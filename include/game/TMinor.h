@@ -49,6 +49,9 @@ public:
   void ClearTileActivityOverlayByProvinceId(int provinceId);
   void QueueInterNationEvent17ForState300AffectedNations(void);
   void ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId);
+  short GetDiplomacyRandomThreshold124() const {
+    return diplomacyRandomThreshold124;
+  }
 
   void ReassignUnitOrdersForCountryTargetChange(short provinceId, char includeAllPolicyTargets);
   void ReassignTileObjectOwnerAndNotifyForSelectedCells(int priorOwnerNationSlot);
