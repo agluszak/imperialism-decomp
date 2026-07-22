@@ -1,8 +1,8 @@
 // TMapMaker::BuildCityRegionBorderOverlaySegments (0x0052c1a0) -- a ~1.6 KB UMapper.cpp
 // routine that scans every tile's hex neighbours and appends a Seapoint into the overlay-quad
 // table (g_seapointQuadTable_006a3478) for each city-region border edge. It runs in four
-// phases over the 108x60 (=0x1950) tile grid at this->mapTileGrid08 (stride 0x24; a city
-// region tile has tile[0]==5, region id = tile[4]-0x17):
+// phases over the 108x60 (=0x1950) tile grid at this->mapTileGrid08 (stride 0x24; a water
+// tile carries a city-region id at tile[4]-0x17):
 //   1. row 0 tiles (0..0x6b): direction-4 edges only;
 //   2. tiles 0x6c..0x194f: directions 4 and 5, with 3-region triple-junction emission;
 //   3. all tiles: directions 1 and 2, triple-junction emission via
@@ -24,14 +24,15 @@
 namespace {
 
 // City-region id at a byte offset / tile index into the grid (inline forms matching the
-// original's inlined tile[0]==5 ? tile[4]-0x17 : -1 reads; the method GetCityRegionIdAtTileIndex
+// original's inlined water-terrain ? tile[4]-0x17 : -1 reads; the method
+// GetCityRegionIdAtTileIndex
 // is the same logic, used by the original where it emits a real call, in the tail sweep).
 inline int RegionAtByteOffset(char* grid, int byteOffset) {
   if (byteOffset < 0) {
     return -1;
   }
   char* tile = grid + byteOffset;
-  if (*tile != '\x05') {
+  if (*tile != kStrategicTerrainWater) {
     return -1;
   }
   return tile[4] - 0x17;
@@ -42,7 +43,7 @@ inline int RegionAtTileIndex(char* grid, int tileIndex) {
     return -1;
   }
   char* tile = grid + tileIndex * 0x24;
-  if (*tile != '\x05') {
+  if (*tile != kStrategicTerrainWater) {
     return -1;
   }
   return tile[4] - 0x17;

@@ -21,7 +21,7 @@ IMPLEMENT_DYNCREATE(TNavyHumanPlayer, TNavyPlayer)
 TNavyHumanPlayer::TNavyHumanPlayer() {}
 
 // FUNCTION: IMPERIALISM 0x0059efc0
-void TNavyHumanPlayer::DeploymentClick(int tileIndex) {
+void TNavyHumanPlayer::DeploymentClick(TacticalTileIndex tileIndex) {
   int ordinal = 1;
   TTacticalUnit* unit;
   do {

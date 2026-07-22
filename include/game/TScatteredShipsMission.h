@@ -12,7 +12,7 @@ public:
   TScatteredShipsMission(TZone* targetZone);
   virtual ~TScatteredShipsMission() override;
 
-  virtual char
+  virtual bool
   IsANoBrainer() const override; // slot 0x0a 0x535680 -- returns true (capability flag)
 
   // Slots 0x0c-0x0f: TMission's own virtuals, overridden here.
@@ -26,11 +26,11 @@ public:
   virtual void
   GiveOrders() override; // slot 0x11 0x53bdd0 -- select context, promote mission order chain
   virtual TMission* GetReplacementSlot48() override; // slot 0x12 0x53bbe0 -- passthrough
-  virtual char Matches(eMissionType missionType, int key,
+  virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const override; // slot 0x13 0x53bcc0
 
-  virtual char IsDefensiveSeaZoneMission() const override; // slot 0x18 0x535660 -- returns true
-  virtual char IsHospitalMission() const override;         // slot 0x19 0x535640 -- returns true
+  virtual bool IsDefensiveSeaZoneMission() const override; // slot 0x18 0x535660 -- returns true
+  virtual bool IsHospitalMission() const override;         // slot 0x19 0x535640 -- returns true
 
   // Unconditionally returns nullptr (xor eax,eax; ret) -- see the TNavyMission base
   // declaration comment for why this slot returns TZone*.

@@ -24,7 +24,7 @@
 IMPLEMENT_DYNCREATE(TAdmiral, TObject)
 
 // FUNCTION: IMPERIALISM 0x00551430
-TAdmiral::TAdmiral(short nationSlotArg)
+TAdmiral::TAdmiral(NationSlot nationSlotArg)
     : nationSlot(nationSlotArg), assignedShip(0), displayName(), experiencePoints(0),
       next(g_pNavySecondaryOrderListHead), prev(0) {
   g_pNavySecondaryOrderListHead = this;
@@ -162,7 +162,7 @@ void TAdmiral::ReassignThyself() {
 
 // Mac oracle: TAdmiral::EstimateEnemyForces(short*, const TZone*, short) const.
 // FUNCTION: IMPERIALISM 0x00551a00
-short TAdmiral::EstimateEnemyForces(short* estimatedCounts, TZone* zone, short nation) const {
+short TAdmiral::EstimateEnemyForces(short* estimatedCounts, TZone* zone, NationSlot nation) const {
   int skill = this == 0 ? 0 : experiencePoints / 100 + 1;
   srand(static_cast<unsigned int>(g_pSimMgr->GetEconomicTurn() + reinterpret_cast<int>(this) +
                                   reinterpret_cast<int>(zone) + nation));
@@ -216,7 +216,7 @@ short TAdmiral::EstimateEnemyForces(short* estimatedCounts, TZone* zone, short n
 
 // Mac oracle: TAdmiral::GetFleetReport(CStr255&, TZone*, short) const.
 // FUNCTION: IMPERIALISM 0x00551be0
-void TAdmiral::GetFleetReport(CString* out, TZone* zone, short nation) const {
+void TAdmiral::GetFleetReport(CString* out, TZone* zone, NationSlot nation) const {
   short estimates[5];
   short total = EstimateEnemyForces(estimates, zone, nation);
 
@@ -355,7 +355,7 @@ CString GetLocalizedNavalReportShipType(short category, char plural) {
 }
 
 // FUNCTION: IMPERIALISM 0x005573f0
-TAdmiral* TAdmiral::CreateForTerrainType(short terrainTypeIndex) {
+TAdmiral* TAdmiral::CreateForTerrainType(NationSlot terrainTypeIndex) {
   TAdmiral* admiral = new TAdmiral(terrainTypeIndex);
   if (admiral == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);

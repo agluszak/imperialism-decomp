@@ -44,7 +44,7 @@ public:
   // Builds a per-tile priority map (one byte per map tile, 0x1950 tiles): for every
   // region in ownedRegions, examines the 6 hex neighbors and scores border proximity
   // (4 = borders foreign territory, 3 = borders a 4-tile, 2 = borders a 3-tile or a
-  // terrainType00==5 neighbor, 1 = borders a 2-tile), then a final pass adds +3 to
+  // water neighbor, 1 = borders a 2-tile), then a final pass adds +3 to
   // any region with a qualifying activeFlags1c/resourceTypeByEdge[1] combination and
   // +1 to each of its neighbors that CheckTileProspectingDiscoveryCandidate accepts.
   // Caller owns the returned buffer (operator new[]/delete[]).

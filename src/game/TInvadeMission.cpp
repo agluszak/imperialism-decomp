@@ -25,8 +25,8 @@ TMission* TInvadeMission::GetNavyMission() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053f140
-char TInvadeMission::IsNavyMission() const {
-  return 1;
+bool TInvadeMission::IsNavyMission() const {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x0053f160
@@ -56,8 +56,8 @@ float TInvadeMission::IndustrialCostOfNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053f240
-char TInvadeMission::IsHospitalMission() const {
-  return 0;
+bool TInvadeMission::IsHospitalMission() const {
+  return false;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0053f260
@@ -114,7 +114,7 @@ char TInvadeMission::SmokeEmIfYouGotEm() {
   CIterator iter(orderListAt18);
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
-    if (unit->GetUnitMovementClassId() != 0) {
+    if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       RejectConstituent(unit, 1);
     }
   }
@@ -195,7 +195,7 @@ float TInvadeMission::CalculatePriority() {
   CIterator costIterator(orderListAt18);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(costIterator.Reset()); costIterator.More();
        unit = static_cast<TMilitaryUnit*>(costIterator.Advance())) {
-    currentUnitCost += static_cast<float>(unit->GetUnitTypeCostPoints());
+    currentUnitCost += static_cast<float>(unit->GetArmsCarried());
   }
 
   int resourcePools[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -205,7 +205,7 @@ float TInvadeMission::CalculatePriority() {
   for (TMilitaryUnit* selectedUnit = static_cast<TMilitaryUnit*>(unitIterator.Reset());
        unitIterator.More(); selectedUnit = static_cast<TMilitaryUnit*>(unitIterator.Advance())) {
     selectedUnit->AssertValid();
-    short weightIndex = selectedUnit->IsNotStationedInProvince(GetPresentLocation());
+    short weightIndex = selectedUnit->GetTurnDistanceTo(GetPresentLocation());
     if (weightIndex > 5) {
       weightIndex = 5;
     }
@@ -233,7 +233,7 @@ float TInvadeMission::CalculatePriority() {
   while (SelectBestCityDevelopmentFromResourcePools(nationId04, resourcePools, bestUnitByType,
                                                     &selectedIsIndustry, &selectedIsUpgrade,
                                                     &selectedSlot, 0, 0)) {
-    cityActionCost += static_cast<float>(GetCityActionGateValueBySlot(selectedSlot));
+    cityActionCost += static_cast<float>(TMilitaryUnit::GetTypeArmsCarried(selectedSlot));
   }
 
   if (cityActionCost > currentUnitCost) {
@@ -243,8 +243,8 @@ float TInvadeMission::CalculatePriority() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053faa0
-char TInvadeMission::IsArmyMission() const {
-  return 1;
+bool TInvadeMission::IsArmyMission() const {
+  return true;
 }
 
 // Same shape as TArmyMission::ValueOf, but the "not this mission's own unit"
@@ -287,10 +287,10 @@ void TInvadeMission::Hold(unsigned char value) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053fbc0
-char TInvadeMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+bool TInvadeMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   return missionType == kMissionTypeInvadeProvince && key == targetProvince30 &&
          beachhead34 != nullptr &&
-         beachhead34->Matches(kMissionTypeInvadeProvince, key, zoneContext) != 0;
+         beachhead34->Matches(kMissionTypeInvadeProvince, key, zoneContext);
 }
 
 // Builds the order-list contribution vector, then subtracts it from this mission's desired
@@ -307,7 +307,7 @@ int TInvadeMission::AccumulateLack(int* accumulatedLack, unsigned char includeEx
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
     unit->AssertValid();
-    short weightIndex = unit->IsNotStationedInProvince(GetPresentLocation());
+    short weightIndex = unit->GetTurnDistanceTo(GetPresentLocation());
     if (weightIndex > 5) {
       weightIndex = 5;
     }

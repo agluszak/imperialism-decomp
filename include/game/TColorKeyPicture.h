@@ -12,8 +12,9 @@ public:
   virtual ~TColorKeyPicture() override;         // slot 0x01 (scalar deleting destructor)
   virtual void Free() override;                 // slot 0x07 0x573090
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x572e60
-  virtual void SetPictureResourceIdAndRefresh(short nPictureId,
-                                              bool fRefreshNow) override; // slot 0x72 0x573040
+  virtual void
+  SetPictureResourceIdAndRefresh(short nPictureId,
+                                 unsigned char fRefreshNow) override; // slot 0x72 0x573040
 
   TColorKeyPicture();
 

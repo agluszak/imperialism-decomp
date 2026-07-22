@@ -31,11 +31,11 @@ public:
 
   virtual TMission* GetReplacementSlot48()
       override; // slot 0x12 0x538900 -- validate terrain coverage / refresh target (shared)
-  virtual char Matches(eMissionType missionType, int key,
+  virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const override; // slot 0x13 0x539600
 
-  virtual char IsDefensiveSeaZoneMission() const override; // slot 0x18 0x5355d0
-  virtual char IsHospitalMission() const override;         // slot 0x19 0x5355b0
+  virtual bool IsDefensiveSeaZoneMission() const override; // slot 0x18 0x5355d0
+  virtual bool IsHospitalMission() const override;         // slot 0x19 0x5355b0
 
   virtual void GiveActionOrders(TTaskForce* mapOrderEntry)
       override; // slot 0x27 0x539640 -- resolve+queue port-zone map order

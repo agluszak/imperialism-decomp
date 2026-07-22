@@ -30,7 +30,8 @@ public:
   void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                       int multiplier) override;
   // slot 0x23 — 0x004e7b50: proposal queue with alliance guards.
-  void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId) override;
+  void QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode,
+                                                 NationSlot targetNationSlot) override;
   // slot 0x25 — 0x004e7c50: policy side effects before slot 0x94 dispatch.
   void NotifyActionSlot94(int sourceNation, int actionCode) override;
   // slot 0x4d — 0x004ea470: rebuild yields and roll field 0x134 into 0x136.
@@ -48,8 +49,8 @@ public:
   // slot 0x81 — 0x004e7be0: replay proposal rows then reset policy state.
   void ReplyToDiplomacyOffers(void) override;
   // slot 0xa1 — 0x004e9ed0: war-transition propagation from advisory action.
-  void ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNationSlot, int policyCode,
-                                                            int sourceNationSlot) override;
+  void QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNationSlot, int transitionMode,
+                                                     int sourceNationSlot) override;
   // slot 0xa2 — 0x004e9a50: select and queue advisory map missions (case 16).
   void SelectAndQueueAdvisoryMapMissionsCase16(void) override;
   // slot 0xa4 — 0x004eb0d0: prune invalid missionQueue entries.
@@ -60,9 +61,9 @@ public:
   // slot 0x36 — 0x004e7550: forward to slots 0x4d/0x4e when city exists.
   void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) override;
   // slot 0x67 — 0x004e7680: need assignment with capability caps / escalation roll.
-  void AssignNeedSlotFromSourceSlot19C(short needSlot, short sourceNation) override;
+  void SetTradeOffersFor(short resourceKind, short offerContext) override;
   // slot 0x9f — 0x004e7cc0: war-transition propagation across eligible allied nations.
-  int CheckTransitionSlot27C(int targetNation, int sourceNation) override;
+  int HandleWarTransitionRequest(int targetNation, int sourceNation) override;
   // slot 0xab — 0x004e7510: 'lost' game-state event when redraw is enabled.
   void SorryYouLose(void) override;
   // slot 0x18 — 0x004ea1c0: also drop the matching mission and map-node flag.
@@ -83,7 +84,8 @@ public:
   // slot 0x85 — 0x004ea0e0: clear a candidate nation (and its port zone).
   void NotifyAllianceSlot214(int targetNation) override;
   // slot 0xa0 — 0x004e7ec0: war-transition propagation for a nation pair.
-  int PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode) override;
+  int HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
+                                             char swapRoles) override;
   // slot 0xaf — 0x004e6b10: intentional AI override. TGreatPower owns the live
   // pressure/escalation routine at 0x004db380; automated nations suppress it.
   char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
@@ -141,8 +143,8 @@ public:
                      int relatedMapNodeIndex);
   void RemoveMission(eMissionType missionType, int key, TZone* zoneContext);
   void MReassess();
-  // For every unassigned (ownerMission40 == nullptr) non-naval (GetUnitMovementClassId()
-  // == 0) unit in militaryUnitList44, finds the queued mission (kind 3, keyed by the
+  // For every unassigned (ownerMission40 == nullptr) militia-category unit in
+  // militaryUnitList44, finds the queued mission (kind 3, keyed by the
   // unit's own tileIndex06) in missionQueue and adopts the unit into it. 0x4eafa0.
   void SeedTrackedEntryAssignmentsFromEligibleUnits();
   void QueueMapActionMissionsForPortZoneCandidates();
@@ -183,4 +185,4 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
 
 // Scores the current AI nation's owned regions as city-development targets and returns the
 // best region id, or -1 when the nation is unavailable/ineligible. 0x00540440, __cdecl.
-int ComputeBestNationTileDevelopmentScore(short nationSlot);
+int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot);

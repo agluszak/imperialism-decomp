@@ -63,7 +63,7 @@ void BuildMapContextStatusStringVariantK(CString* out);
 void BuildMapContextStatusStringVariantL(CString* out);
 void GenerateMappedFlavorTextByTableSlot(CString* dest, short tableSlot);
 CString BuildSharedStringFromMappedFlavorTextIndex(short variantIndex);
-char ShouldRetryMappedFlavorTextGeneration(CString* dest);
+bool ShouldRetryMappedFlavorTextGeneration(CString* dest);
 void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantIndex);
 void SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* dest, short tableSlot);
 // nationSlot == -1 resets the per-nation localized province-name ordinals.

@@ -49,7 +49,7 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
     }
 
     for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-      short orderState = unit->field_8;
+      short orderState = unit->unitOrder;
       switch (orderState) {
       case 0:
         ++availableUnitCounts[g_anArmyToolbarCategoryByUnitType[unit->orderType]];
@@ -59,7 +59,7 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
         ++totalUnitCounts[g_anArmyToolbarCategoryByUnitType[unit->orderType]];
         break;
       }
-      if (unit->HasEraCapabilityFallbackSlot()) {
+      if (unit->CanUpgrade()) {
         hasUpgradeableUnit = 1;
       }
     }

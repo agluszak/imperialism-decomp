@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/CString.h"
+#include "game/nation_domain_types.h"
 #include "game/TObject.h"
 
 class TStream;
@@ -26,7 +27,7 @@ ASSERT_SIZE(GameSetup, 0x3e);
 // formatting the turn's diplomacy-notice text.
 struct DiplomacyNotice {
   short policyOrGrantCode;
-  short nationSlot;
+  NationSlot nationSlot;
 };
 
 ASSERT_SIZE(DiplomacyNotice, 4);
@@ -112,16 +113,16 @@ public:
   // Active great-power slot (this+0x2e). Every original callsite loads ECX from
   // g_pSimMgr (0x6a20f8) — this getter belongs to TSimMgr, not the view
   // managers that many older ports called it on.
-  short GetActiveNationId(); // 0x581260
+  NationSlot GetActiveNationId(); // 0x581260
   // 0x581280 -- real __thiscall on the TSimMgr singleton (ret 4; every caller loads
   // g_pSimMgr into ecx); `this` is unused by the body. Slot is eligible when its
   // terrain descriptor exists and (for great powers) isn't a 100..199 profile.
-  char IsNationSlotEligibleForEventProcessing(short nationSlot);
+  char IsNationSlotEligibleForEventProcessing(NationSlot nationSlot);
   // 0x581300 -- removes a nation slot at end of turn: neutralizes the removed nation's
   // percent field on every still-active great power, calls the removed nation's Free(),
   // clears its state/descriptor slots and the per-slot flag byte, decrements the active
   // count, then resets its diplomacy relation matrices via g_pDiplomacyTurnStateManager.
-  void RemoveNationSlotAndNotifyPeers(short nationSlot);
+  void RemoveNationSlotAndNotifyPeers(NationSlot nationSlot);
   // Mac symbol oracle: SetDifficultyLevel(eDifficulty). Store the selected difficulty
   // into +0x40 and set the +0x5c short flag only for the zero-valued level; values 1..4
   // and out-of-range values clear it. Windows 0x57d870.
@@ -156,7 +157,7 @@ public:
   // view's cached bitmap 244 (TMacViewMgr::ReloadBitmap244AndRefreshUiCaches on
   // g_pStrategicMapViewSystem).
   void SetSelectedIndex6AAndTriggerRefresh(short index);
-  void SetActiveNationSlotAndRefreshCityCapabilityUiHandles(short nationSlot); // 0x5837c0
+  void SetActiveNationSlotAndRefreshCityCapabilityUiHandles(NationSlot nationSlot); // 0x5837c0
 
   // --- turn-instruction stream handlers (dispatched by FourCC through the table at
   //     0x698b50 inside ProcessScenarioScript; each reads one or
@@ -204,7 +205,7 @@ public:
   unsigned char field14;
   unsigned char field15[0x17];
   short economicTurn;
-  short activeNationSlot;
+  NationSlot activeNationSlot;
   int numGreatPowers;
   int numMinorCountries;
   // +0x38 — sign-extended char result of ShowTurnAlertsForActiveNation stored by

@@ -53,10 +53,10 @@ void TGrantsView::Draw(RECT* rectBuffer) {
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b68);
 
-  int styleShadow = 0;
-  int styleForeground = 0;
-  MapUiThemeCodeToStyleFlags(0x2b6b, &styleShadow);
-  MapUiThemeCodeToStyleFlags(0x2b68, &styleForeground);
+  COLORREF styleShadow = 0;
+  COLORREF styleForeground = 0;
+  ResolveUiThemeColor(0x2b6b, &styleShadow);
+  ResolveUiThemeColor(0x2b68, &styleForeground);
 
   g_pSimMgr->GetString(0x2733, 0x21, &labelText);
   SetQuickDrawColorAndSyncGlobals(styleForeground);
@@ -112,7 +112,7 @@ void TGrantsView::Setup() {
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), documentCluster);
   documentCluster->SetSelectedChildTagAndRefresh(0x646f6330); // 'doc0'
   diplomacyMapView60->selectedGrantRowC0 = 0;
-  diplomacyMapView60->actionCodeBC = 7;
+  diplomacyMapView60->actionCodeBC = kDipActionOneTimeGrant;
 }
 
 // FUNCTION: IMPERIALISM 0x004f8650
@@ -121,9 +121,9 @@ void TGrantsView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
     short tagOffset = static_cast<short>(sourceHandler->controlTag - 0x6330);
     TDiplomacyMapView* mapView = diplomacyMapView60;
     if (tagOffset & 1) {
-      mapView->actionCodeBC = 8;
+      mapView->actionCodeBC = kDipActionRecurringGrant;
     } else {
-      mapView->actionCodeBC = 7;
+      mapView->actionCodeBC = kDipActionOneTimeGrant;
     }
     mapView = diplomacyMapView60;
     mapView->selectedGrantRowC0 = static_cast<short>(tagOffset / 2);

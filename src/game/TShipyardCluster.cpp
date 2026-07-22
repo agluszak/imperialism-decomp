@@ -1,8 +1,8 @@
-#include "game/TIndustryCluster.h"
 #include "game/TSimMgr.h"
 #include "game/TShipyardCluster.h"
 
 #include "game/TAmtBar.h"
+#include "game/TBuildingView.h"
 #include "game/TView.h"
 #include "game/TGreatPower.h"
 #include "game/TCity.h"
@@ -19,14 +19,6 @@
 
 #include "game/mfc.h"
 
-static __inline TCity* GetNationCityStateBySlot(short slotId) {
-  TGreatPower* nationState = GetNationStateBySlot(slotId);
-  if (nationState == 0) {
-    return 0;
-  }
-  return nationState->GetCityState();
-}
-
 // SYNTHETIC: IMPERIALISM 0x0058a4d0
 // TShipyardCluster::CreateObject
 
@@ -36,23 +28,25 @@ static __inline TCity* GetNationCityStateBySlot(short slotId) {
 IMPLEMENT_DYNCREATE(TShipyardCluster, TAmtBarCluster)
 
 // FUNCTION: IMPERIALISM 0x0058a590
-TShipyardCluster::TShipyardCluster() : TAmtBarCluster(), field_88(0), field_8c(0), field_8e(0) {}
+TShipyardCluster::TShipyardCluster()
+    : TAmtBarCluster(), selectedMetricOrder(0), selectedMetricValue(0), selectedMetricStep(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x0058a5c0
 // TShipyardCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058a610
 void TShipyardCluster::DoPostCreate(int styleSeed) {
-  TCity* province = GetNationCityStateBySlot(g_pSimMgr->GetActiveNationId());
-  field_88 = province != 0 ? (int)province->shipOrderSlots[0] : 0;
-  field_8c = 999;
+  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  TCity* province = nationState == 0 ? 0 : nationState->GetCityState();
+  selectedMetricOrder = province->shipOrderSlots[0];
+  selectedMetricValue = 999;
   TAmtBarCluster::DoPostCreate(styleSeed);
   this->SetMoveAmount(0);
 }
 
 // FUNCTION: IMPERIALISM 0x0058a690
 void TShipyardCluster::SetMoveAmount(short amount) {
-  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+  TAmtBar* moveControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
   if (moveControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }
@@ -64,31 +58,38 @@ void TShipyardCluster::SetMoveAmount(short amount) {
   moveControl->QueryBounds(&moveRect);
   OffsetRect(&moveRect, this->ownerLocalX, this->ownerLocalY);
   CopyRect(&invalidateRect, &moveRect);
-  reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&invalidateRect, 1);
+  this->ownerContext->InvalidateCityDialogRectRegion(&invalidateRect, 1);
 
-  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
+  TAmtBar* barControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }
 
-  barControl->auxValueB = (field_8c == 0) ? 0x34 : 0x3a;
+  if (selectedMetricValue == 0) {
+    barControl->auxValueB = 0x34;
+  } else {
+    barControl->auxValueB = 0x3a;
+  }
   barControl->SetBarMetric(0, 0);
 
-  moveControl->CaptureLayoutF0(reinterpret_cast<int*>(&moveRect), 1);
+  int moveControlPosition[2];
+  moveControlPosition[0] = barControl->ownerLocalX - 2;
+  moveControlPosition[1] = barControl->ownerLocalY + barControl->frameHeight38;
+  moveControl->CaptureLayoutF0(moveControlPosition, 1);
+  moveControl->QueryBounds(&moveRect);
   OffsetRect(&moveRect, this->ownerLocalX, this->ownerLocalY);
   CopyRect(&invalidateRect, &moveRect);
-  reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&invalidateRect, 1);
+  this->ownerContext->InvalidateCityDialogRectRegion(&invalidateRect, 1);
 
-  TAmtBar* turnControl =
-      reinterpret_cast<TAmtBar*>(this->ownerContext->ResolveControlByTag(0x7475726e));
+  TAmtBar* turnControl = static_cast<TAmtBar*>(this->ownerContext->ResolveControlByTag(0x7475726e));
   if (turnControl != 0) {
     turnControl->SetControlValueSlot1E4(0, 0);
     turnControl->QueryBounds(&moveRect);
     CopyRect(&invalidateRect, &moveRect);
-    reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&invalidateRect, 1);
+    this->ownerContext->InvalidateCityDialogRectRegion(&invalidateRect, 1);
   }
 
-  static_cast<TIndustryCluster*>(this->ownerContext)->UpdateMax();
+  static_cast<TBuildingView*>(this->ownerContext)->UpdateFields();
   (void)amount;
 }
 

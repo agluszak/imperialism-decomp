@@ -23,10 +23,10 @@ TTechHistoryView::TTechHistoryView() {}
 
 // FUNCTION: IMPERIALISM 0x005b22c0
 void TTechHistoryView::ConstructTTechHistoryViewBaseState(short techId) {
-  int mainStyle = 0;
-  int shadowStyle = 0;
-  MapUiThemeCodeToStyleFlags(0x2b6a, &mainStyle);
-  MapUiThemeCodeToStyleFlags(0x2b68, &shadowStyle);
+  COLORREF mainStyle = 0;
+  COLORREF shadowStyle = 0;
+  ResolveUiThemeColor(0x2b6a, &mainStyle);
+  ResolveUiThemeColor(0x2b68, &shadowStyle);
   TextStyle style;
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
 

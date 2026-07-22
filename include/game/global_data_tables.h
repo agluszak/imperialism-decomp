@@ -10,11 +10,13 @@
 #include <new.h> // _PNH (CRT new-handler type)
 
 #include "game/mfc.h"
+#include "game/military_domain_types.h"
 #include <afxtempl.h>
 #include "game/app_init_globals.h"
 #include "game/TCountry.h"
 #include "game/TDisplayMgr.h"
 #include "game/quickdraw_regions.h"
+#include "game/strategic_terrain.h"
 #include "game/TGreatPower.h"
 #include "game/TMacViewMgr.h"
 #include "game/TMinor.h"
@@ -130,7 +132,7 @@ extern "C" float g_fScatteredShipsMissionDefaultScore;
 // TShip navy-order contribution percentages, normalized against
 // g_Populate_Beachhead_Mission_LookupTable_00697958), a "mobile units"
 // divergence/score pair (from militaryUnitList44 entries with a nonzero
-// GetUnitMovementClassId, normalized against g_awTacticalCompositionReferenceProfiles_00697870),
+// GetCategory, normalized against g_awTacticalCompositionReferenceProfiles_00697870),
 // a "combined units" divergence (mobile + static units), and a final
 // military-power-weighted order score.
 extern "C" float g_afNationOrderQueueDivergence_006a3a88[7];
@@ -174,38 +176,33 @@ void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commod
 
 // Per-unit-type military stat records (7 shorts per type, record base 0x695cd2):
 // column 0 = category flag (0x10 = counted toward power/cost), column 1 = power/cost
-// points. See TMilitaryUnit::GetUnitTypeCostPoints (0x5c3400).
+// points. See TMilitaryUnit::GetArmsCarried (0x5c3400).
 
 // Per-unit-type stat table (7 shorts per type; unit types 0x00-0x1d) and per-stat
-// divisor baseline used by TMilitaryUnit::GetUnitTypeStatPercent (0x5c3530).
+// divisor baseline used by TMilitaryUnit::GetAttribute (0x5c3530).
 extern "C" short g_UnitTypeStatTable_0066EB88[30][7];
 extern "C" short g_UnitTypeStatDivisorTable_0066ED30[7];
 
-// Standalone (slot-indexed) accessors over the two unit-type tables above; siblings of the
-// TMilitaryUnit::GetUnitTypeCostPoints / GetUnitTypeStatPercent methods but taking the index
-// directly. 0x5c3450 / 0x5c3580.
-short GetCityActionGateValueBySlot(int slot);
-short GetNormalizedCityActionResourceCostPercent(short unitType, short statIndex);
-// 0x5c34b0: g_awTacticalUnitCategoryCodeBySlot[slot] (standalone sibling of
-// TMilitaryUnit::GetUnitMovementClassId, which uses this->orderType).
-short GetCityActionCategoryCodeBySlot(short slot);
+// TMilitaryUnit exposes the listing-backed instance and static accessors over
+// these tables; their declarations live on the owning class.
 // 0x54fee0: g_aCategoryMetricBaselineAverage[index] (returns the int metric, not a pointer
 // despite Ghidra's placeholder name).
 int GetNavyContextPointerFromGlobalTableByIndex(int index);
 
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
-// minister's skill value at +0x0C. Used by TGreatPower vtable slots 0x88-0x8c.
+// minister's skill value at +0x0C. The foreign-minister tables have eight entries;
+// the defense-minister tables have six. Used by TGreatPower vtable slots 0x88-0x8c.
 extern "C" {
-extern float g_DAT_Value_00653308[];
-extern float g_DAT_Value_00653328[];
-extern float g_DAT_Value_00653340[];
-extern float g_DAT_Value_00653360[];
-extern float g_DAT_Value_00653378[];
-extern float g_DAT_Value_00653398[];
-extern float g_DAT_006533b0_Value_006533B0[];
-extern float g_DAT_006533d0_Value_006533D0[];
-extern float g_DAT_006533e8_Value_006533E8[];
-extern float g_DAT_Value_00653408[];
+extern float g_DAT_Value_00653308[8];
+extern float g_DAT_Value_00653328[6];
+extern float g_DAT_Value_00653340[8];
+extern float g_DAT_Value_00653360[6];
+extern float g_DAT_Value_00653378[8];
+extern float g_DAT_Value_00653398[6];
+extern float g_DAT_006533b0_Value_006533B0[8];
+extern float g_DAT_006533d0_Value_006533D0[6];
+extern float g_DAT_006533e8_Value_006533E8[8];
+extern float g_DAT_Value_00653408[6];
 
 // Float constants used by the TGreatPower relative-power-score family
 // (vtable slots 0x8e-0x9e, bodies 0x004e07b0..0x004e1c20).
@@ -232,7 +229,7 @@ extern float g_Classify_Nation_Military_Value_0065370C;
 extern float g_Classify_Nation_Military_Value_00653710;
 
 // Per-order-type sort priority table (slot 0x55 selection sort).
-extern short g_DAT_006966d0_Value_006966D0[];
+extern short g_DAT_006966d0_Value_006966D0[12];
 // Cursor resource id by civilian-tile-order action code (12 entries).
 extern short g_civilianTileOrderCursorTokenTable[];
 // Cursor resource ids keyed by the military/civilian map state classifiers (12 entries each).
@@ -240,7 +237,7 @@ extern short g_mapCursorTokenByStateIndex_00695668[12];
 extern short g_civilianMapCursorTokenByStateIndex_00695680[12];
 // Per-unit-type tactical category code (slot 0x11 garrison sweep).
 extern int g_anUnitTypeTacticalRangeByType_006699E8[30];
-extern short g_awTacticalUnitCategoryCodeBySlot[];
+extern ArmyUnitCategoryStorage g_awTacticalUnitCategoryCodeBySlot[];
 extern int g_nTacticalTileWidthPx_006A5430;
 extern int g_nTacticalTileRowHeightPx_006A5434;
 extern int g_nTacticalBattlefieldSurfaceWidth_006A5448;
@@ -310,7 +307,7 @@ extern int g_bQuickDrawStrokePairDirty;
 // at 0x494040 (ported in quickdraw_rendering.cpp as TQuickDrawClipStateInitializer).
 // GetClip seeds from it; SetClip (0x495a30) copies a RgnHandle's region into it.
 extern CRgn* g_pGlobalClipRegionHandleObject;
-extern int g_Quick_Draw_Color_State_006950FC;
+extern COLORREF g_QuickDrawForegroundColor;
 extern CFont* g_pQuickDrawCachedUiFont;
 extern TextStyle g_QuickDrawCachedFontPreset;
 extern unsigned char g_bQuickDrawCachedFontDirty;
@@ -325,7 +322,7 @@ extern const char* const g_apszQuickDrawFontFaceNames[5];
 extern CFont* g_pQuickDrawCachedMeasureFont;       // 0x6a1d48
 extern TextStyle g_QuickDrawMeasureFontPreset;     // 0x6a1d4c
 extern unsigned char g_bQuickDrawMeasureFontDirty; // 0x6a1d56
-extern int g_uQuickDrawStrokeColor;
+extern COLORREF g_QuickDrawBackgroundColor;
 extern int g_nQuickDrawOriginX;
 extern int g_nQuickDrawOriginY;
 extern int g_nQuickDrawResolvedTextOriginX;
@@ -383,7 +380,7 @@ extern TGreatPower* g_apNationStates[7];
 extern TGreatPower* g_apNationStates_End;
 extern TSimMgr* g_pSimMgr;
 extern THelpMgr* g_pHelpMgr;
-extern TNewsMgr* g_pInterNationEventQueueManager;
+extern TNewsMgr* g_pNewsMgr;
 extern TAmbitApplication* g_pGlobalUiRootController;
 
 // The live tactical battle (turn-event 0x29/0x2a receive dispatch target).
@@ -621,9 +618,10 @@ extern TMacViewMgr* g_pStrategicMapViewSystem;
 extern TViewMgr* g_pUiRuntimeContext;
 extern "C" int g_diplomacyActionButtonTagTable_00696960[6];
 extern "C" unsigned int g_councilControlTagTable[6];
+extern "C" short g_aDiplomacyRelationPaletteColorCodes[7];
 extern "C" short g_infoPanelLabelXByRow_006969b0[4];
 extern "C" short g_infoPanelLabelYByRow_006969c0[4];
-extern "C" int g_defaultDropShadowTextColor;
+extern "C" COLORREF g_defaultDropShadowTextColor;
 extern TAssetMgr* g_pUiViewManager;
 extern TLanguageMgr* g_pLanguageMgr;
 extern TAnimator* g_pUiAnimator;
@@ -988,14 +986,14 @@ extern const float g_MissionOrderDistanceDecayWeightTable_006978c8[6];
 extern float g_ArmyMissionDotProductWeights_00697980[5];
 extern float g_ArmyMissionCandidateScoreTable_006978f8[];
 
-// TAutoGreatPower.cpp — AssignNeedSlotFromSourceSlot19C scaling constants.
+// TAutoGreatPower.cpp — SetTradeOffersFor scaling constants.
 extern double g_DAT_00653fc0_Value_00653FC0;             // 1/255
 extern double g_DAT_00653fc8_Value_00653FC8;             // 32767.0
 extern double g_Evaluate_Advisory_Case11_Value_00653FD8; // 0.5
 
 // TCivMgr.cpp — engineer construction cost tables.
 extern short g_awEngineerFortBuildCostByLevel[5];
-extern int g_adwEngineerRailBuildCostByTerrainType[8];
+extern int g_adwEngineerRailBuildCostByTerrainType[kStrategicTerrainCount];
 // Civilian work-order rescind refund by cost class.
 extern int g_adwCivilianWorkOrderCostByClass[16];
 
@@ -1067,30 +1065,22 @@ extern unsigned char g_abGateFlagQualifies[24];
 extern short g_Build_Hex_Area_LookupTable_00696E70[];
 extern short g_Build_Hex_Area_LookupTable_00696E80[];
 
-// TMapMgr.cpp — per-terrainType00 gate table read by
-// MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA for both the origin tile and each of
-// its hex neighbors. Only indices 0-5 are meaningful (terrainType00's real range); read raw at
-// 0x00696f08, ground truth for the game's 6 terrain types.
-extern unsigned char g_abTerrainTypeSeedGateProfileA[6];
+// TMapMgr.cpp — per-StrategicTerrainKind capability table at 0x00696f08, read by
+// MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA for both the origin tile and each
+// of its hex neighbors. Technology checks update its Hills, Mountain, and Swamp elements;
+// the old model incorrectly split those three bytes into standalone flag globals.
+extern unsigned char g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainCount];
 
-// TMapMgr.cpp — per-terrainType00 priority score, read by
+// TMapMgr.cpp — per-StrategicTerrainKind priority score, read by
 // TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority (0x50fca0) to rank same-city
 // hex neighbors when picking primaryNeighborTileIndex40/secondaryNeighborTileIndex3e. Indexed
-// 0-7 (terrainType00's declared range); read raw at 0x00696e10.
-extern short g_anTerrainTypeNeighborLinkPriority[8];
+// all eight strategic terrain kinds; read raw at 0x00696e10.
+extern short g_anStrategicTerrainNeighborLinkPriority[kStrategicTerrainCount];
 
 // TMapMgr.cpp — running region-marker id, assigned to a tile's regionSubtypeTag05 by
 // TMapMgr::FloodFillTileRegionMarker (0x5143d0) and incremented (low 16 bits only) after each
 // call. Read raw at 0x00696d90 (initial value 1).
 extern int g_nNextRegionMarkerId;
-
-// TMapMgr.cpp — three single-byte UI/notification flags set by
-// MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA when a nation-indexed
-// TTechMgr::OrderCapRow padding byte reads 2; purpose beyond that one comparison not
-// identified.
-extern unsigned char g_bSeedGateNotifyFlag_00696f0a;
-extern unsigned char g_bSeedGateNotifyFlag_00696f0b;
-extern unsigned char g_bSeedGateNotifyFlag_00696f0c;
 
 // TMapMgr.cpp — per-tile sprite-variant bitmap-strip offset tables, indexed
 // [gateFlag][spriteVariantIndex01] (table39 by spriteVariantIndex01 alone). Read by the

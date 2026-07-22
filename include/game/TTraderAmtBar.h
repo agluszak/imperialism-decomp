@@ -10,7 +10,7 @@ public:
   // ~TTraderAmtBar is compiler-generated (implicit virtual dtor).
   DECLARE_DYNCREATE(TTraderAmtBar)
   void DoPostCreate(int arg) override;
-  int ApplyMoveClamp(int baseValue, int requestedValue) override;
+  short ApplyMoveClamp(int baseValue, int requestedValue) override;
   void RenderPrimarySurfaceOverlayPanelWithClipCache() override;
 
   void UpdateFromScaleOrRatio(int scaleValue, int ratioValue);

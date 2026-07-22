@@ -30,10 +30,10 @@ TTextList::TTextList() : TView() {
 void TTextList::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
 
-  int styleFlags1 = 0;
-  int styleFlags2 = 0;
-  MapUiThemeCodeToStyleFlags(0x2b6c, &styleFlags1);
-  MapUiThemeCodeToStyleFlags(0x2b6a, &styleFlags2);
+  COLORREF styleFlags1 = 0;
+  COLORREF styleFlags2 = 0;
+  ResolveUiThemeColor(0x2b6c, &styleFlags1);
+  ResolveUiThemeColor(0x2b6a, &styleFlags2);
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b6c);
 

@@ -115,8 +115,8 @@ void TUnitOrder::Produce() {
       continue;
     }
 
-    short packedOrderType = entryId;
-    orderObject->InitializeCivWorkOrderState(packedOrderType, i, ownerNationSlot);
+    CivilianUnitKind unitKind = DecodeCivilianUnitKind(entryId);
+    orderObject->ICivUnit(unitKind, i, ownerNationSlot);
   }
 
   quantityField04 = 0;

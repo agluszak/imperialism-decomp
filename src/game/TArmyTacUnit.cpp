@@ -33,7 +33,7 @@ void TArmyTacUnit::ConstructTArmyTacUnitBaseState(TMilitaryUnit* source) {
   sapTargetTileIndex40 = -1;
   sourceUnit38 = source;
   unsigned char deployedCategory0Flag;
-  if (source->field_8 == 2 && g_anUnitTypeCombatCategoryByType00669858[unitTypeC] == 0) {
+  if (source->unitOrder == 2 && g_anUnitTypeCombatCategoryByType00669858[unitTypeC] == 0) {
     deployedCategory0Flag = 1;
   } else {
     deployedCategory0Flag = 0;
@@ -48,15 +48,15 @@ void TArmyTacUnit::ComputeTacticalProjectionScoreVector() {
   float qualityFactor = static_cast<float>(g_dTacticalQualityFactorBase_00669ED0 -
                                            static_cast<short>(sourceUnit38->field_38 / 100) *
                                                g_dTacticalQualityFactorStep_00669EC8);
-  sourceUnit38->GetUnitTypeStatPercent(5);
+  sourceUnit38->GetAttribute(5);
   float unitFactor = 1.0f;
   float strengthTerm = strength4 * g_fTacticalStrengthProjectionScale_00669F0C;
   float scale = strengthTerm * qualityFactor;
-  field44 = sourceUnit38->GetUnitTypeStatPercent(0) * scale * strengthTerm * unitFactor;
-  field48 = sourceUnit38->GetUnitTypeStatPercent(1) * scale * unitFactor;
-  field4c = sourceUnit38->GetUnitTypeStatPercent(2) * scale;
-  field50 = sourceUnit38->GetUnitTypeStatPercent(3) * scale;
-  field54 = sourceUnit38->GetUnitTypeStatPercent(4) * scale * unitFactor;
+  field44 = sourceUnit38->GetAttribute(0) * scale * strengthTerm * unitFactor;
+  field48 = sourceUnit38->GetAttribute(1) * scale * unitFactor;
+  field4c = sourceUnit38->GetAttribute(2) * scale;
+  field50 = sourceUnit38->GetAttribute(3) * scale;
+  field54 = sourceUnit38->GetAttribute(4) * scale * unitFactor;
 }
 
 // FUNCTION: IMPERIALISM 0x005a6120

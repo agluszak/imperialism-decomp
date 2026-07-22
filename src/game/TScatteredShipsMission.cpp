@@ -25,18 +25,18 @@ TScatteredShipsMission::TScatteredShipsMission() : TNavyMission() {}
 TScatteredShipsMission::TScatteredShipsMission(TZone* targetZone) : TNavyMission(targetZone) {}
 
 // FUNCTION: IMPERIALISM 0x00535640
-char TScatteredShipsMission::IsHospitalMission() const {
-  return 1;
+bool TScatteredShipsMission::IsHospitalMission() const {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00535660
-char TScatteredShipsMission::IsDefensiveSeaZoneMission() const {
-  return 1;
+bool TScatteredShipsMission::IsDefensiveSeaZoneMission() const {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00535680
-char TScatteredShipsMission::IsANoBrainer() const {
-  return 1;
+bool TScatteredShipsMission::IsANoBrainer() const {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005356d0
@@ -89,7 +89,7 @@ void TScatteredShipsMission::CalculateNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053bcc0
-char TScatteredShipsMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+bool TScatteredShipsMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   return missionType == kMissionTypeScatteredShips && zoneContext == nullptr && key == -1;
 }
 

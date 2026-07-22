@@ -327,8 +327,8 @@ int TShip::ComputeValueForMission(int missionType) const {
     default:
       contribution = 0;
     }
-    total += static_cast<int>(static_cast<short>(
-                 g_Populate_Beachhead_Mission_LookupTable_00697958[missionType * 4 + category])) *
+    total += static_cast<short>(
+                 g_Populate_Beachhead_Mission_LookupTable_00697958[missionType * 4 + category]) *
              static_cast<int>(contribution);
   }
   return total;

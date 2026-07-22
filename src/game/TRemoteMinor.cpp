@@ -16,8 +16,8 @@
 IMPLEMENT_DYNCREATE(TRemoteMinor, TRemoteMinor)
 
 // FUNCTION: IMPERIALISM 0x00541c90
-char TRemoteMinor::IsRemote(void) {
-  return 1;
+bool TRemoteMinor::IsRemote(void) {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00541cb0

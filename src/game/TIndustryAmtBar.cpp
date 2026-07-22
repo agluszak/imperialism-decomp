@@ -125,9 +125,8 @@ void TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegion(short selectedValue) {
     if (IsActionable() != 0) {
       CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
       TranslatePointToParentChain4E(&translatedOrigin);
-      RECT invalidRect = {translatedOrigin.x, translatedOrigin.y,
-                          translatedOrigin.x + (int)(short)frameWidth34,
-                          translatedOrigin.y + (int)(short)frameHeight38};
+      RECT invalidRect = {translatedOrigin.x, translatedOrigin.y, translatedOrigin.x + frameWidth34,
+                          translatedOrigin.y + frameHeight38};
       InvalidateCityDialogRectRegion(&invalidRect, 1);
     }
   }

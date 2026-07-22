@@ -4,9 +4,9 @@
 #include "game/ui_control_tags.h"
 
 // FUNCTION: IMPERIALISM 0x0045d3b0
-void TTacMapUberPicture::AutoScrollByEdgeMask(short edgeMask) {
+void TTacMapUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {
   if (tacticalBattleView94 != nullptr) {
-    tacticalBattleView94->AdjustTacticalUnitVerticalOffsetAndRefreshMarker(edgeMask);
+    tacticalBattleView94->Scroll(edgeMask);
   }
 }
 

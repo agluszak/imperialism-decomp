@@ -15,7 +15,7 @@ public:
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5a4da0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5a4990
   virtual void DeployTacticalUnitToTile(TTacticalUnit* unit,
-                                        int tileIndex) override; // slot 0x0c 0x5a51e0
+                                        TacticalTileIndex tileIndex) override; // slot 0x0c 0x5a51e0
   // Marks the battle decided (battleOutcomeCode44 = 1), asserts both sides, silences the
   // blink cue, resets the 'tool' toolbar's current-unit display, then delegates to
   // g_pMapContextActionManager->ApplyPostBattleStackOutcomeAndGrowUnitMeters with each

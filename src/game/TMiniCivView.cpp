@@ -44,25 +44,25 @@ void TMiniCivView::ConstructTMiniCivViewBaseState(TView* panel, int* offsetLayou
     assembled = empty;
   }
 
-  switch (civUnit->field_8) {
-  case 5:
+  switch (civUnit->unitOrder) {
+  case kUnitOrderLayRail:
     g_pSimMgr->GetString(0x2724, 1, &textA);
     assembled += textA + "\n";
     break;
-  case 6:
+  case kUnitOrderBuildDepot:
     g_pSimMgr->GetString(0x2724, 2, &textA);
     assembled += textA + "\n";
     break;
-  case 7:
+  case kUnitOrderBuildPort:
     g_pSimMgr->GetString(0x2724, 3, &textA);
     assembled += textA + "\n";
     break;
-  case 8:
+  case kUnitOrderProspect:
     g_pSimMgr->GetString(0x2724, 4, &textA);
     assembled += textA + "\n";
     break;
-  case 10:
-    if (civUnit->orderType == 0 &&
+  case kUnitOrderDevelopResource:
+    if (civUnit->orderType == EncodeCivilianUnitKind(kCivilianUnitMiner) &&
         g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tile, 1) == 0) {
       // Undeveloped tile: name the (up to two) improvable edge resources.
       int matchCount = 0;
@@ -86,7 +86,7 @@ void TMiniCivView::ConstructTMiniCivViewBaseState(TView* panel, int* offsetLayou
       assembled += formatted + "\n";
     } else {
       // Active work order: "<building X>"-style line keyed by the order type.
-      if (civUnit->orderType == 7) {
+      if (civUnit->orderType == EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
         g_pSimMgr->GetString(0x2724, 5, &templateText);
       } else {
         g_pSimMgr->GetString(0x2724, 7, &templateText);
@@ -97,7 +97,7 @@ void TMiniCivView::ConstructTMiniCivViewBaseState(TView* panel, int* offsetLayou
       assembled += formatted + "\n";
     }
     break;
-  case 1:
+  case kUnitOrderRedeploy:
     g_pSimMgr->GetString(0x2724, 8, &textA);
     assembled += textA;
     break;

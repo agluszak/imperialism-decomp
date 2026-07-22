@@ -29,22 +29,11 @@ const unsigned int kAddrCivilianLegendSelectionCountsBySlot = 0x006A4490;
 
 typedef TCivDescription CivDescriptionState;
 
-enum ECivilianClassId {
-  kCivilianClass_Miner = 0,
-  kCivilianClass_Prospector = 1,
-  kCivilianClass_Farmer = 2,
-  kCivilianClass_Forester = 3,
-  kCivilianClass_Engineer = 4,
-  kCivilianClass_Rancher = 5,
-  kCivilianClass_Developer = 7,
-  kCivilianClass_Driller = 8,
-};
-
 struct CivilianClassCacheContext {
   void* vftable;
   unsigned char pad_04_to_83[0x80];
-  short selectedCivilianClass;
-  short ownerNationId;
+  CivilianUnitKindStorage selectedCivilianClass;
+  NationSlot ownerNationId;
   short targetTileCountsBySlot[5];
   unsigned char pad_6e_to_6f[0x02];
 };
@@ -81,7 +70,7 @@ IMPLEMENT_DYNCREATE(TCivDescription, TView)
 void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivUnit* orderState) {
   TCivDescription* context = this;
   // ORIG_CALLCONV: __thiscall
-  short civilianClassId;
+  CivilianUnitKindStorage civilianClassId;
   if (orderState == 0) {
     context->selectedCivilianClass = (short)-1;
     return;
@@ -89,14 +78,14 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivUnit* o
   civilianClassId = orderState->orderType;
   if (civilianClassId != context->selectedCivilianClass) {
     context->selectedCivilianClass = civilianClassId;
-    switch ((ECivilianClassId)civilianClassId) {
-    case kCivilianClass_Miner:
-    case kCivilianClass_Prospector:
-    case kCivilianClass_Farmer:
-    case kCivilianClass_Forester:
-    case kCivilianClass_Rancher:
-    case kCivilianClass_Developer:
-    case kCivilianClass_Driller:
+    switch (DecodeCivilianUnitKind(civilianClassId)) {
+    case kCivilianUnitMiner:
+    case kCivilianUnitProspector:
+    case kCivilianUnitFarmer:
+    case kCivilianUnitForester:
+    case kCivilianUnitRancher:
+    case kCivilianUnitDeveloper:
+    case kCivilianUnitDriller:
       context->legendInitialized = 0;
       context->UpdateCivilianOrderTargetTileCountsForOwnerNation(orderState);
       break;
@@ -122,8 +111,7 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivUnit* o
    Notes:
    - Output counters feed civilian command-panel availability UI/hints.
 
-   ECivilianClassId enum anchor: 0 Miner, 1 Prospector, 2 Farmer, 3 Forester, 4 Engineer, 5 Rancher,
-   7 Developer, 8 Driller.
+   CivilianUnitKind is the canonical 0..8 civilian class vocabulary.
 
    Consumes pCivilianOrderState->currentTileIndex and class-indexed target profile table. */
 
@@ -202,7 +190,7 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
 void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit* orderState) {
   TCivDescription* context = this;
   // ORIG_CALLCONV: __thiscall
-  short ownerNationId;
+  NationSlot ownerNationId;
   int provinceTileOrdinal;
   char* provinceRecord;
   short* targetCountSlot;
@@ -217,8 +205,8 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
   int provinceCount;
 
   provinceOrdinal = 1;
-  ownerNationId = (short)*(char*)(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) +
-                                  4 + orderState->tileIndex06 * 0x24);
+  ownerNationId = static_cast<NationSlot>(
+      g_pGlobalMapState->terrainStateTable[orderState->tileIndex06].ownerNationTag04);
   context->ownerNationId = ownerNationId;
   ownerNationProvinceCollection = g_apTerrainTypeDescriptorTable[ownerNationId]->ownedRegionList;
   context->targetTileCountsBySlot[4] = 0;
@@ -240,7 +228,7 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
       do {
         provinceTileIndex = (short)*provinceTileIndices;
         tableBase = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) +
-                    (int)(short)provinceTileIndex * 0x24;
+                    static_cast<short>(provinceTileIndex) * 0x24;
         if (*(char*)(tableBase + 0xe) == '\0') {
           tileProfileId = (short)*(char*)(tableBase + 0x13);
           classSlotOrdinal = 0;
@@ -271,10 +259,10 @@ void TCivDescription::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   // ORIG_CALLCONV: __thiscall
   unsigned short* legendSelectionCountsBySlot;
-  int stylePrimary;
-  int styleSecondary;
+  COLORREF stylePrimary;
+  COLORREF styleSecondary;
   CString localizedTextRef;
-  short selectedClass;
+  CivilianUnitKindStorage selectedClass;
   short textWidth;
   short textOriginX;
 
@@ -292,11 +280,11 @@ void TCivDescription::Draw(RECT* rectBuffer) {
   }
 
   selectedClass = this->selectedCivilianClass;
-  if (selectedClass == kCivilianClass_Prospector) {
+  if (selectedClass == EncodeCivilianUnitKind(kCivilianUnitProspector)) {
     this->DrawProspector(rectBuffer);
-  } else if (selectedClass == kCivilianClass_Engineer) {
+  } else if (selectedClass == EncodeCivilianUnitKind(kCivilianUnitEngineer)) {
     this->DrawEngineer(rectBuffer);
-  } else if (selectedClass != kCivilianClass_Developer) {
+  } else if (selectedClass != EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
     this->DrawDeveloper(rectBuffer);
   }
 
@@ -309,8 +297,8 @@ void TCivDescription::Draw(RECT* rectBuffer) {
     // TSimMgr GetString virtual, and passes each mapped color to 0x4950a0 — the
     // previous port dropped both color arguments.
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
-    MapUiThemeCodeToStyleFlags(0x2b6c, &stylePrimary);
-    MapUiThemeCodeToStyleFlags(0x2b67, &styleSecondary);
+    ResolveUiThemeColor(0x2b6c, &stylePrimary);
+    ResolveUiThemeColor(0x2b67, &styleSecondary);
     g_pSimMgr->GetString(0x2718, selectedClass, &localizedTextRef);
 
     textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&localizedTextRef);

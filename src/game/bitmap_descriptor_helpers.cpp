@@ -85,8 +85,8 @@ TBitmapSurfaceContextDescriptor::TBitmapSurfaceContextDescriptor() {
   blitSurface.field18 = 0;
   blitSurface.surfaceDib = 0;
   blitSurface.surfaceObject = 0;
-  blitSurface.quickDrawColor = 0;
-  blitSurface.transparentBlitColor = 0;
+  blitSurface.foregroundColor = 0;
+  blitSurface.backgroundColor = 0;
 
   // The Windows QuickDraw constructor repeats the CGrafPort-facing defaults after
   // initializing its PixMap-handle and color state.

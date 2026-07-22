@@ -138,14 +138,15 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
 
   if (g_pGlobalMapState->terrainStateTable[currentTile].recruitSearchVisited0e == 0) {
     updateNeighborHighlights = true;
-    TMapMgr::ComputeHexNeighborTileIndices(currentTile, neighborTiles,
-                                           g_pGlobalMapState->hexNeighborWrapHorizontally20);
+    TMapMgr::GetNeighborTileIDArray(currentTile, neighborTiles,
+                                    g_pGlobalMapState->hexNeighborWrapHorizontally20);
     short activeNation = g_pSimMgr->GetActiveNationId();
     for (int i = 0; i < 6; ++i) {
       short neighbor = neighborTiles[i];
       if (neighbor != -1 &&
           g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04 != activeNation &&
-          g_pGlobalMapState->terrainStateTable[neighbor].terrainType00 != 5) {
+          g_pGlobalMapState->terrainStateTable[neighbor].GetTerrainKind() !=
+              kStrategicTerrainWater) {
         neighborTiles[i] = -1;
       }
     }
@@ -207,20 +208,21 @@ void TCitySiteView::HandleMapClickByInteractionMode(short nTileIndex, int nInput
   (void)nInputFlags;
 
   TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[nTileIndex];
-  signed char terrainType = tile.terrainType00;
+  StrategicTerrainKind terrainKind = tile.GetTerrainKind();
   signed char ownerNation = tile.ownerNationTag04;
   short activeNation = g_pSimMgr->GetActiveNationId();
 
   if (ownerNation != activeNation) {
     PlayDefaultMessageBeep(1);
     CString message;
-    g_pSimMgr->GetString(0x273b, terrainType == 5 ? 3 : 0, &message);
+    g_pSimMgr->GetString(0x273b, terrainKind == kStrategicTerrainWater ? 3 : 0, &message);
     g_pDisplayMgr->ModalMessage(message, g_MapInteractionPreviewPoint_006a3370);
     return;
   }
 
   bool supportsCitySite =
-      terrainType == 0 || terrainType == 7 || terrainType == 1 || terrainType == 6;
+      terrainKind == kStrategicTerrainPlains || terrainKind == kStrategicTerrainFarmland ||
+      terrainKind == kStrategicTerrainForest || terrainKind == kStrategicTerrainDesert;
   if (!supportsCitySite ||
       !g_pGlobalMapState->IsValidSecondaryNationHomeTileCandidate(nTileIndex)) {
     PlayDefaultMessageBeep(1);

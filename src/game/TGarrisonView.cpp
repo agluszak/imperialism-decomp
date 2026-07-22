@@ -33,7 +33,7 @@ void TGarrisonView::StuffValues(short tileIndex) {
 
   int lineBounds[2] = {0xec, 0x31};
   while (unit != 0) {
-    if (unit->field_8 != 1) {
+    if (unit->unitOrder != kUnitOrderRedeploy) {
       TArmyUnitLine* line = new TArmyUnitLine;
       line->SetLineDataRowAndBounds(0, 0, lineBounds);
       line->militaryUnit10 = unit;
@@ -61,7 +61,7 @@ void TGarrisonView::Close() {
       unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain98;
     }
     while (unit != 0 && hasDismissibleOrder == 0) {
-      if (unit->field_8 == kDismissOnCloseOrderState) {
+      if (unit->unitOrder == static_cast<UnitOrder>(kDismissOnCloseOrderState)) {
         hasDismissibleOrder = 1;
       }
       unit = static_cast<TMilitaryUnit*>(unit->nextOnTile);
@@ -79,7 +79,7 @@ void TGarrisonView::Close() {
           unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain98;
         }
         while (unit != 0) {
-          if (unit->field_8 == kDismissOnCloseOrderState) {
+          if (unit->unitOrder == static_cast<UnitOrder>(kDismissOnCloseOrderState)) {
             TMilitaryUnit* nextUnit = static_cast<TMilitaryUnit*>(unit->nextOnTile);
             CString unitName;
             unitName = unit->name24;

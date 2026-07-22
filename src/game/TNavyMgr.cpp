@@ -36,7 +36,7 @@ Province* __stdcall GetProvinceByTileIndex(short nTileIndex);
 // g_pGlobalMapState's cityScoreTable. Real __fastcall: the single arg arrives in ecx
 // and no original callsite pushes anything.
 // FUNCTION: IMPERIALISM 0x0050e2c0
-int __fastcall GetProvinceIndex(Province* province) {
+ProvinceIndex __fastcall GetProvinceIndex(Province* province) {
   return static_cast<int>(province - g_pGlobalMapState->cityScoreTable);
 }
 
@@ -1171,7 +1171,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
                                                                              entry->nation) == 0) {
       return 1;
     }
-    short roll = static_cast<short>(static_cast<int>(rand()) % 100);
+    short roll = static_cast<short>(rand() % 100);
     short bias = static_cast<short>(entryChildren + 10);
     if (roll >= bias) {
       if (roll < bias * 2) {
@@ -1491,7 +1491,7 @@ unsigned short TNavyMgr::SelectionCursor(short nTileIndex, int nInputFlags) {
     return g_awMapContextActionLabelTokenByCommand[0];
   }
 
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainType00 == 5) {
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].GetTerrainKind() == kStrategicTerrainWater) {
     TZone* context = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
     bool canResolve = false;
     if (context != nullptr && entry->IsEmpty() == 0) {
@@ -1537,7 +1537,7 @@ unsigned short TNavyMgr::SelectionCursor(short nTileIndex, int nInputFlags) {
       }
     }
     if (canResolve) {
-      char relationOutOfDate = g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+      bool relationOutOfDate = g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
           entry->nation, province->ownerNationCode00);
       return g_awMapContextActionLabelTokenByCommand[relationOutOfDate != 0 ? 16 : 1];
     }
@@ -1602,7 +1602,8 @@ int TNavyMgr::DoTileClick(short nTileIndex, int nInputFlags) {
   int commandId;
   if (entry == nullptr) {
     commandId = 0;
-  } else if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainType00 == 5) {
+  } else if (g_pGlobalMapState->terrainStateTable[nTileIndex].GetTerrainKind() ==
+             kStrategicTerrainWater) {
     TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
     bool queueable;
     if (ctx == nullptr) {

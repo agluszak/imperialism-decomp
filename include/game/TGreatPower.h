@@ -70,7 +70,8 @@ public:
   // minister (slot 0x98) or appends a kind-1 tracked-slot entry; returns 0.
   char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                      int arg4) override;
-  void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId) override;
+  void QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode,
+                                                 NationSlot targetNationSlot) override;
   void NotifyActionSlot94(int sourceNation, int actionCode) override; // slot 0x94
   virtual void NoOpNationPendingActionHook(void);
 
@@ -100,7 +101,7 @@ public:
   void SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityName);
   // slot 0x33 — body 0x004dae70: scans trackedObjectList for an order with
   // orderType == 7.
-  virtual char HasTrackedOrderOfType7(void);
+  virtual char HasDeveloper(void);
   // slot 0x34 — body 0x004db7d0: builds the 0x1950-byte transport-influence region map
   // (flood-filled from the home region via slot 0x35, extended through transport-linked
   // town markers), updates each marker's transportLinkedFlag4c, and hands the map to the
@@ -192,7 +193,7 @@ public:
   virtual void ReleaseDiplomacyTrackedObjectSlots850(void); // slot 0x5c
   virtual void AddAmountToAidAllocationMatrixCellAndTotal(int amount, short columnIndex,
                                                           short rowIndex);
-  virtual int SumAidAllocationMatrixColumnForTarget(short targetNationId);
+  virtual int SumAidAllocationMatrixColumnForTarget(NationSlot targetNationSlot);
   virtual int SumAidAllocationMatrixAllCells(void); // slot 0x5f
   virtual int ComputeRemainingDiplomacyAidBudget(void);
   virtual void ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void);
@@ -204,7 +205,7 @@ public:
   // city stock counters, clamped at 0).
   virtual unsigned int ComputeProductionMetricForOrderKind(short orderKind);
   virtual void DecrementDiplomacyCounterA2Slot66(int delta);                          // slot 0x66
-  virtual void AssignNeedSlotFromSourceSlot19C(short needSlot, short sourceNation);   // slot 0x19c
+  virtual void SetTradeOffersFor(short resourceKind, short offerContext);             // slot 0x19c
   virtual char AreDiplomacyState1c6Slots13To16AllNonPositive(void);                   // slot 0x68
   virtual void SetDiplomacyState1c6ClampedToCounterA4(short targetSlot, short value); // slot 0x69
   virtual void SnapshotDiplomacyState1c6Into250(void);                                // slot 0x6a
@@ -231,16 +232,17 @@ public:
   virtual void
   RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(int sourceNation); // index 118
   virtual char
-  CanAffordDiplomacyGrantEntryForTarget(short targetNationId,
+  CanAffordDiplomacyGrantEntryForTarget(NationSlot targetNationSlot,
                                         unsigned short proposedGrantEntry); // index 119
-  virtual void ApplyTurnDiplomacyStateSlot1e0();                 // index 120 — body 0x004de7e0
-  virtual void DecrementNeedLevelByNationStep(short nationSlot); // index 121
+  virtual void ApplyTurnDiplomacyStateSlot1e0();                      // index 120 — body 0x004de7e0
+  virtual void DecrementNeedLevelByNationStep(NationSlot nationSlot); // index 121
   virtual char CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // index 122
   virtual void AcceptOffer(short proposalIndex);                                       // index 123
   virtual void RejectOffer(unsigned short proposalQueueIndex);                         // index 124
-  // slot 0x7d — body 0x004df4b0: whether eventCode may target the nation given the
-  // current relation tier (tiers 2..6 progressively restrict 0x12e-0x130).
-  virtual char IsEventCodeAllowedForRelationTier(short eventCode, int targetNation);
+  // slot 0x7d — body 0x004df4b0: whether the proposal may target the nation given the
+  // current relationship (alliance through war progressively restricts treaty offers).
+  virtual char IsDiplomacyProposalAllowedForRelationship(DiplomacyProposalCodeStorage proposalCode,
+                                                         int targetNation);
   virtual void ResetNationDiplomacyProposalQueue(void);
   virtual void ReleaseProposalQueueSlot7F(void);
   virtual void DispatchTurnEvent2103WithNationFromRecord(void);
@@ -299,15 +301,15 @@ public:
   // slot 0x9e — joins a war against targetNation when minister skill beats the war
   // threshold; propagates relation code 4 to tier-2 partners and queues event 0x1c.
   virtual char EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation);
-  virtual int CheckTransitionSlot27C(int targetNation, int sourceNation); // slot 0x27c
-  virtual int PropagateWarTransitionSlot280(int targetNation, int sourceNation,
-                                            int mode); // slot 0x280
+  virtual int HandleWarTransitionRequest(int targetNation, int sourceNation); // slot 0x27c
+  virtual int HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
+                                                     char swapRoles); // slot 0x280
   // index 0xa1 / vtable+0x284 — body 0x004e27f0 (vtable holds ILT thunk 0x00406fe1).
   // Queues a nation-pair war transition and notifies the third-party minor nation
-  // when the policy code is 1 or 0x132.
-  virtual void ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNationSlot,
-                                                                    int policyCode,
-                                                                    int sourceNationSlot);
+  // for the direct-transition mode or a join-empire offer with war entanglements.
+  virtual void QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNationSlot,
+                                                             int transitionMode,
+                                                             int sourceNationSlot);
   // slot 0xa2 — base body 0x004e1f20 is an empty hook; TAutoGreatPower's override
   // (0x004e9a50) selects and queues the case-16 advisory map missions.
   virtual void SelectAndQueueAdvisoryMapMissionsCase16(void); // body 0x004e1f20
@@ -325,7 +327,8 @@ public:
   virtual void CallSlotA9(int targetNation);
   // slot 0x2a8 — body 0x004e27b0: mode-dispatched diplomacy slot action (mode 6 ->
   // slot 0xa8, etc.). TDiplomacyMgr notifies relation-code changes here.
-  virtual void DispatchNationDiplomacySlotActionByMode(int targetNationSlot, int mode);
+  virtual void DispatchNationDiplomacySlotActionByMode(int targetNationSlot,
+                                                       DiplomacyRelationship relationship);
   // slot 0x2ac — handles this nation leaving play. The base dispatches turn event
   // 0x11f8; network and AI nation types override the transition behavior.
   virtual void SorryYouLose(void);
@@ -481,7 +484,7 @@ public:
 
   void CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
   void ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass);
-  bool ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2);
+  bool TryHandleWarTransitionRequest(int targetNation, int sourceNation);
   void RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1);
   // 0x004e3620 — sums the encoded diplomacyGrantByNation entries (masking off the
   // top 2 flag bits), skipping the 0xffff "no grant" sentinel. Used by the grants/aid
@@ -516,9 +519,6 @@ public:
   int SumNavyOrderPriorityForNationAndNodeType(TZone* zone);
   int SumNavyOrderPriorityForNation();
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
-
-  void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
-                                                       short sourceNationSlot);
 
   // 0x004e32a0. Rebuilds the economySummary930.. snapshot block wholesale: population
   // baseline, summed city building types, owned-region score (this nation plus any
