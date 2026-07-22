@@ -107,27 +107,27 @@ public:
   // Scores every valid owned tile through a temporary TTown resource projection and
   // returns the best home-city TILE index. An existing capital-site flag wins with a
   // score of 32000. Mac/curated name: SelectBestSecondaryHomeTileByFrogCityScore.
-  virtual int SelectBestSecondaryHomeTileByFrogCityScore();             // slot 0x30 0x4c11c0
-  virtual undefined RebuildMapTileNeighborBucketsForInteriorMinister(); // slot 0x31 0x4c1ac0
-  virtual undefined GetTEventHandlerClassNamePointer_32();              // slot 0x32 0x4c2010
-  virtual undefined AutoAssignProspectingOrdersByTileHeuristics();      // slot 0x33 0x4c2120
-  virtual undefined AutoAssignProspectingOrdersFromSeedTileNeighbors(); // slot 0x34 0x4c2a30
-  virtual void ProcessUnitOrders(); // slot 0x35 0x4c1510; Mac oracle
-  virtual undefined SeekLostTowns(char* primaryDistanceMap,
-                                  char* secondaryDistanceMap); // slot 0x36 0x4c2d50
-  virtual undefined ContinueRailheadProject(TUnit* order, char* primaryDistanceMap,
-                                            char* secondaryDistanceMap); // slot 0x37 0x4c2e10
-  virtual undefined StartRailheadProject(short orderType, TShortintList* ownedTiles,
-                                         char* primaryDistanceMap,
-                                         char* secondaryDistanceMap);      // slot 0x38 0x4c3170
-  virtual undefined ComputeFrogCityCandidateScoreFromNationNeeds(int arg); // slot 0x39 0x4c3490
-  virtual undefined GetTEventHandlerClassNamePointer_3a(int arg1, int arg2,
-                                                        int unusedArg3); // slot 0x3a 0x4c3620
-  virtual char* CreateSeaDistanceMap(TShortintList* ownedTiles);         // slot 0x3b 0x4c3640
+  virtual int SelectBestSecondaryHomeTileByFrogCityScore();        // slot 0x30 0x4c11c0
+  virtual void RebuildMapTileNeighborBucketsForInteriorMinister(); // slot 0x31 0x4c1ac0
+  virtual void RequestMissingCivilianOrderTypes();                 // slot 0x32 0x4c2010
+  virtual void AutoAssignProspectingOrdersByTileHeuristics();      // slot 0x33 0x4c2120
+  virtual void AutoAssignProspectingOrdersFromSeedTileNeighbors(); // slot 0x34 0x4c2a30
+  virtual void ProcessUnitOrders();                                // slot 0x35 0x4c1510; Mac oracle
+  virtual void SeekLostTowns(char* primaryDistanceMap,
+                             char* secondaryDistanceMap); // slot 0x36 0x4c2d50
+  virtual void ContinueRailheadProject(TUnit* order, char* primaryDistanceMap,
+                                       char* secondaryDistanceMap); // slot 0x37 0x4c2e10
+  virtual void StartRailheadProject(short orderType, TShortintList* ownedTiles,
+                                    char* primaryDistanceMap,
+                                    char* secondaryDistanceMap); // slot 0x38 0x4c3170
+  virtual short EvaluateResources(short tileIndex);              // slot 0x39 0x4c3490
+  virtual int ScoreResource(int amount, int unusedResourceType,
+                            int scorePerUnit); // slot 0x3a 0x4c3620; Mac oracle name
+  virtual char* CreateSeaDistanceMap(TShortintList* ownedTiles); // slot 0x3b 0x4c3640
   virtual char*
   BuildFrogCityDistanceMapFromReachableSeaCandidates(TShortintList* ownedTiles); // slot 0x3c
                                                                                  // 0x4c3910
-  virtual undefined RebalanceCityOrderAllocationTargets(TCity* city);        // slot 0x3d 0x4c3c00
+  virtual void RebalanceCityOrderAllocationTargets(TCity* city);             // slot 0x3d 0x4c3c00
   virtual undefined ProcessCityOrderStateTickAndApplyCapabilitySelection();  // slot 0x3e 0x4c3d60
   virtual undefined RebalanceCitySupportAndLaborAllocations();               // slot 0x3f 0x4c40c0
   virtual undefined ChooseAndMarkNextCityProductionCommand();                // slot 0x40 0x4c4370
@@ -136,7 +136,8 @@ public:
   virtual undefined UpdateMinisterProductionMetricsForResourceIndex();       // slot 0x43 0x4c49f0
   virtual undefined CityMinisterSlot44();                                    // slot 0x44 0x4c4d40
   virtual undefined CityMinisterSlot45();                                    // slot 0x45 0x4c4e60
-  virtual undefined CityMinisterSlot46();                                    // slot 0x46 0x4c4fe0
+  virtual short RequestResource(short resourceType, short requestedAmount,
+                                short flags); // slot 0x46 0x4c4fe0; Mac oracle
   virtual undefined SeekResources(TShortintList* ownedTiles,
                                   char* primaryDistanceMap); // slot 0x47 0x4c5240
   void DispatchBuilders();                                   // 0x4c1990
@@ -182,13 +183,15 @@ public:
   short orderShortTableDC[16];  // +0xdc..0xfc
   // Three parallel short[23] order-type tables (InteriorSlot1D/1E/1F index +0x12a/+0x158
   // by order-type code); all cleared together by InitializeCityInteriorState.
-  short orderTypeTableFC[23];                        // +0xfc..0x12a
-  short orderTypeTable12A[23];                       // +0x12a..0x158
-  short orderTypeTable158[23];                       // +0x158..0x186
-  short field186;                                    // +0x186
-  TFuzzySet* cityPolicyFuzzySet;                     // +0x188 (new TFuzzySet, 4 policy curves)
-  TList* orderList18c;                               // +0x18c (new TList; ctor 0x4be840 nulls it)
-  TLongintList* list190;                             // +0x190 (new TLongintList)
-  unsigned char cityMinisterState194[0x1c2 - 0x194]; // +0x194 (unrecovered)
-  short field1c2;                                    // +0x1c2
+  short orderTypeTableFC[23];    // +0xfc..0x12a
+  short orderTypeTable12A[23];   // +0x12a..0x158
+  short orderTypeTable158[23];   // +0x158..0x186
+  short field186;                // +0x186
+  TFuzzySet* cityPolicyFuzzySet; // +0x188 (new TFuzzySet, 4 policy curves)
+  TList* orderList18c;           // +0x18c (new TList; ctor 0x4be840 nulls it)
+  TLongintList* list190;         // +0x190 (new TLongintList)
+  // Per-resource demand/capacity values consulted when deciding which missing
+  // civilian order classes must be requested. One short per resource type.
+  short civilianOrderDemandByResourceType194[23]; // +0x194
+  short field1c2;                                 // +0x1c2
 };
