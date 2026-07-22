@@ -122,6 +122,8 @@ extern "C" float g_fScatteredShipsMissionDefaultScore;
 // a "combined units" divergence (mobile + static units), and a final
 // military-power-weighted order score.
 extern "C" float g_afNationOrderQueueDivergence_006a3a88[7];
+extern "C" short g_nArmsBasicResourceOfferSplitCount_006a3a54;
+extern "C" short g_nArmsAdvancedResourceOfferSplitCount_006a3a58;
 extern "C" float g_afNationOrderQueueDivergenceMirror_006a3ac0[7];
 extern "C" float g_afNationMobileUnitDivergence_006a3ae0[7];
 extern "C" float g_afNationWeightedMilitaryOrderScore_006a3b20[7];

@@ -1092,6 +1092,12 @@ float g_fMissionScoreNormalizationDivisor = 5000.0f;
 float g_fScatteredShipsMissionDefaultScore = 0.001f;
 
 // Per-nation output caches for RecomputeNationOrderPriorityMetrics (0x53fe30).
+// Shared counters selecting the initial one-third offer and later one-half offers for
+// the arms personality's basic and advanced resource groups.
+// GLOBAL: IMPERIALISM 0x006a3a54
+short g_nArmsBasicResourceOfferSplitCount_006a3a54 = 0;
+// GLOBAL: IMPERIALISM 0x006a3a58
+short g_nArmsAdvancedResourceOfferSplitCount_006a3a58 = 0;
 // GLOBAL: IMPERIALISM 0x006a3a88
 float g_afNationOrderQueueDivergence_006a3a88[7] = {0};
 // GLOBAL: IMPERIALISM 0x006a3ac0
