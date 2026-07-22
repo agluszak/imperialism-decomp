@@ -13798,6 +13798,23 @@
       ],
       "source_file": "src/game/TTaskForce.cpp"
     },
+    "0x00554e70": {
+      "references": [
+        {
+          "address": "0x0069430c",
+          "kind": "embedded_global",
+          "symbol": "g_szDecimalFormat",
+          "text": "%d"
+        },
+        {
+          "address": "0x00695794",
+          "kind": "embedded_global",
+          "symbol": "s_szSpaceSeparator_00695794",
+          "text": " "
+        }
+      ],
+      "source_file": "src/game/TTaskForce.cpp"
+    },
     "0x005551d0": {
       "references": [
         {
@@ -14745,6 +14762,39 @@
         }
       ],
       "source_file": "src/game/TStatusPicture.cpp"
+    },
+    "0x00595130": {
+      "references": [
+        {
+          "group": 10072,
+          "index": 11,
+          "kind": "windows_gob",
+          "load_string_id": 24171,
+          "text": "Round"
+        },
+        {
+          "group": 10072,
+          "index": 12,
+          "kind": "windows_gob",
+          "load_string_id": 24172,
+          "text": "Locate Province:"
+        },
+        {
+          "group": 10072,
+          "index": 13,
+          "kind": "windows_gob",
+          "load_string_id": 24173,
+          "text": "Locate Sea Zone:"
+        },
+        {
+          "group": 10072,
+          "index": 14,
+          "kind": "windows_gob",
+          "load_string_id": 24174,
+          "text": "There is no province named '[1:name]'"
+        }
+      ],
+      "source_file": "src/game/TWorldView.cpp"
     },
     "0x00596a80": {
       "references": [
@@ -190636,7 +190686,7 @@
   "summary": {
     "embedded_globals": 770,
     "formula_matches": 2356,
-    "functions_with_references": 300,
+    "functions_with_references": 302,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3272,
     "text_resources": 182,

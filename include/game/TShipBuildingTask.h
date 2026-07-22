@@ -30,6 +30,9 @@ public:
 
   TShipBuildingTask();
 
+  void InitializeShipProductionQueueTask(short citySlotType, TCity* owner,
+                                         short requestedShipType); // 0x005ae710
+
   short requestedShipType14;
   short waitingForShipOrderAdvance16;
 };

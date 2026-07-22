@@ -21,7 +21,9 @@
 #include "game/TMapMgr.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TShip.h"
+#include "game/TStream.h"
 #include "game/navy_order.h"
+#include "game/nation_stream_serialization.h"
 #include "game/TTaskForce.h"
 #include "game/TUnitOrder.h"
 #include "game/TViewMgr.h"
@@ -200,12 +202,77 @@ void TTechMgr::GenerateRandomCapabilityPrioritySlots() {
 
 // FUNCTION: IMPERIALISM 0x005af460
 void TTechMgr::ReadFrom(TStream* stream) {
-  (void)stream;
+  TObject::ReadFrom(stream);
+
+  if (g_nSaveFormatVersion >= 0x27) {
+    stream->ReadBytes(prioritySlots04, sizeof(prioritySlots04));
+    SwapShortArrayBytes(prioritySlots04, 0x1d);
+    stream->ReadBytes(capabilityValueByNationAndResource,
+                      sizeof(capabilityValueByNationAndResource));
+    SwapShortArrayBytes(capabilityValueByNationAndResource, 0xa1);
+    stream->ReadBytes(&techSelectorShort1d2, 2);
+    stream->ReadBytes(&activeZoneIndex1d4, 2);
+    stream->ReadBytes(perTechUnlockFlag180, 0x1d);
+    stream->ReadBytes(resourceTypeEnabled19d, sizeof(resourceTypeEnabled19d));
+    stream->ReadBytes(initFlags1ab, 0x1e);
+    stream->ReadBytes(initFlags1c9, sizeof(initFlags1c9));
+    if (g_nSaveFormatVersion > 0x34) {
+      stream->ReadBytes(&packedRulePair264, sizeof(packedRulePair264));
+    }
+  } else {
+    stream->ReadBytes(prioritySlots04, sizeof(prioritySlots04));
+    stream->ReadBytes(capabilityValueByNationAndResource, 0x2e);
+    stream->ReadBytes(&techSelectorShort1d2, 2);
+    stream->ReadBytes(&activeZoneIndex1d4, 2);
+    stream->ReadBytes(perTechUnlockFlag180, 0x1d);
+    stream->ReadBytes(resourceTypeEnabled19d, sizeof(resourceTypeEnabled19d));
+    stream->ReadBytes(initFlags1ab, 0x1e);
+    stream->ReadBytes(initFlags1c9, sizeof(initFlags1c9));
+  }
+
+  if (g_nSaveFormatVersion > 0xf) {
+    stream->ReadBytes(nationCapRows1e8, sizeof(nationCapRows1e8));
+    SwapShortArrayBytes(nationCapRows1e8, 0x46);
+  }
+  if (g_nSaveFormatVersion > 0x17) {
+    stream->ReadBytes(orderCapRows277, sizeof(orderCapRows277));
+    stream->ReadBytes(capRowsB333, sizeof(capRowsB333));
+    stream->ReadBytes(abilityActiveRows395, sizeof(abilityActiveRows395));
+    stream->ReadBytes(capRowsD467, sizeof(capRowsD467));
+    stream->ReadBytes(capRowsE4a6, sizeof(capRowsE4a6));
+    SwapShortArrayBytes(capRowsE4a6, 0xcb);
+  }
+  if (g_nSaveFormatVersion > 0x18) {
+    stream->ReadBytes(capabilityValueByNationAndResource,
+                      sizeof(capabilityValueByNationAndResource));
+    SwapShortArrayBytes(capabilityValueByNationAndResource, 0xa1);
+  }
+  if (g_nSaveFormatVersion > 0x1e) {
+    stream->ReadBytes(&marker262, sizeof(marker262));
+  }
+  RecomputeGlobalCapabilityAverages();
 }
 
 // FUNCTION: IMPERIALISM 0x005af710
 void TTechMgr::WriteTo(TStream* stream) {
-  (void)stream;
+  TObject::WriteTo(stream);
+  WriteShortArrayElems(stream, prioritySlots04, 0x1d);
+  WriteShortArrayElems(stream, &capabilityValueByNationAndResource[0][0], 0xa1);
+  stream->WriteBytesSlot78(&techSelectorShort1d2, 2);
+  stream->WriteBytesSlot78(&activeZoneIndex1d4, 2);
+  stream->WriteBytesSlot78(perTechUnlockFlag180, 0x1d);
+  stream->WriteBytesSlot78(resourceTypeEnabled19d, sizeof(resourceTypeEnabled19d));
+  stream->WriteBytesSlot78(initFlags1ab, 0x1e);
+  stream->WriteBytesSlot78(initFlags1c9, sizeof(initFlags1c9));
+  stream->WriteBytesSlot78(&packedRulePair264, sizeof(packedRulePair264));
+  WriteShortArrayElems(stream, nationCapRows1e8[0].slots, 0x46);
+  stream->WriteBytesSlot78(orderCapRows277, sizeof(orderCapRows277));
+  stream->WriteBytesSlot78(capRowsB333, sizeof(capRowsB333));
+  stream->WriteBytesSlot78(abilityActiveRows395, sizeof(abilityActiveRows395));
+  stream->WriteBytesSlot78(capRowsD467, sizeof(capRowsD467));
+  WriteShortArrayElems(stream, capRowsE4a6[0].completionYearOffsetByTechId, 0xcb);
+  WriteShortArrayElems(stream, &capabilityValueByNationAndResource[0][0], 0xa1);
+  stream->WriteBytesSlot78(&marker262, sizeof(marker262));
 }
 
 // FUNCTION: IMPERIALISM 0x005af980
@@ -580,11 +647,11 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
       TAdmiral* admiral = node->admiralBacklink20;
       TShip* next = node->nextOlder24;
       if (admiral != 0) {
-        admiral->SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(0);
+        admiral->AssignToShip(0);
       }
       node->PruneOrPromoteOrderNodeWhenChildCostDepleted();
       if (admiral != 0) {
-        admiral->SelectNavyPrimaryOrderByNationAndRecomputePreferredChild();
+        admiral->ReassignThyself();
       }
       node = next;
     } else {

@@ -64,7 +64,7 @@ short TInteriorMinister::GetRankingCriterionForGP(short nationSlot) {
 void TInteriorMinister::InteriorSlot1A(short) {}
 
 // FUNCTION: IMPERIALISM 0x004be410
-void TInteriorMinister::InteriorSlot1B(short) {}
+void TInteriorMinister::IndustryOrder(short) {}
 
 // FUNCTION: IMPERIALISM 0x004be430
 void TInteriorMinister::InteriorSlot1C(short) {}
@@ -125,7 +125,7 @@ void TInteriorMinister::MinisterSlot14() {
 }
 
 // FUNCTION: IMPERIALISM 0x004be5b0
-void TInteriorMinister::Call54() {
+void TInteriorMinister::FillOrders() {
   int accumulated = 0;
   int i = 0;
   short count = InteriorSlot17();

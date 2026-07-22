@@ -733,6 +733,9 @@ public:
   // 0x513ed0. True if either of the tile's two edge resources is a prospecting-discovery
   // candidate (codes 3/4/0x15/0x16, or 6 when the active nation has a production order).
   byte CheckTileProspectingDiscoveryCandidate(short nTileIndex);
+  // 0x5137b0. Port construction is allowed beside a sea hex, or on a road/flow tile
+  // whose flow reaches sea without crossing a nation boundary.
+  char CanBuildPortAtTile(short tileIndex);
   // 0x513ca0 -- whether tileIndex reaches a sea tile (hex neighbour or terrain-flow
   // chain) owned outside the active type-3/4 diplomatic mask; receiver is
   // g_pGlobalMapState at every callsite.

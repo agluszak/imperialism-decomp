@@ -193,6 +193,9 @@ public:
   // Mac oracle: TTaskForce::GetCompositionDescription(CStr255&) const. Counts the
   // child ships by resource type and joins the localized, pluralized labels.
   void GetCompositionDescription(CString* out) const; // 0x554b20
+  // Mac oracle: TTaskForce::GetGeneralDescription(CStr255&) const. Builds the concise
+  // "fleet of N <current order>" status line used outside the detailed overlay.
+  void GetGeneralDescription(CString* out) const; // 0x554e70
   // Mac oracle: GetAuthority / CancelOrders. GetAuthority names the admiral or
   // captain commanding activeChildEntry; CancelOrders removes this queue entry.
   void GetAuthority(CString* out) const;             // 0x5551d0
@@ -340,6 +343,14 @@ public:
   // survivors. The original inlines both passes here rather than calling
   // RecomputeMapOrderChildAggregateMetric for the second pass.
   void RebuildMapOrderEntryChildren(); // 0x553f10
+
+  // Mac oracle: Remove(TShip*). Removes the ship's child link, updates its class
+  // count and the preferred-child cache, then clears the ship's owner backlink.
+  void Remove(TShip* ship); // 0x553d40
+
+  // Mac oracle: SubmitOrders(eShipOrders, void*). The Windows ABI passes both values
+  // as dwords; orderArgument is the attachment-specific zone/city context payload.
+  void SubmitOrders(int orderType, int orderArgument); // 0x5540b0
 
   // bd 1uj.16 target: sets attachment=9 (map-order kind 9), frees any
   // childOrderList entries whose owning link is inactive, recomputes

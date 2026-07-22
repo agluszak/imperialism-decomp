@@ -1092,6 +1092,12 @@ float g_fMissionScoreNormalizationDivisor = 5000.0f;
 float g_fScatteredShipsMissionDefaultScore = 0.001f;
 
 // Per-nation output caches for RecomputeNationOrderPriorityMetrics (0x53fe30).
+// Shared counters selecting the initial one-third offer and later one-half offers for
+// the arms personality's basic and advanced resource groups.
+// GLOBAL: IMPERIALISM 0x006a3a54
+short g_nArmsBasicResourceOfferSplitCount_006a3a54 = 0;
+// GLOBAL: IMPERIALISM 0x006a3a58
+short g_nArmsAdvancedResourceOfferSplitCount_006a3a58 = 0;
 // GLOBAL: IMPERIALISM 0x006a3a88
 float g_afNationOrderQueueDivergence_006a3a88[7] = {0};
 // GLOBAL: IMPERIALISM 0x006a3ac0
@@ -1780,6 +1786,8 @@ POINT g_ptTechItemModalMessage = {0, 0};
 POINT g_ptNationAwolModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a45c0
 POINT g_ptMapModeModalMessage = {0, 0};
+// GLOBAL: IMPERIALISM 0x006a4650
+POINT g_ptTacticalAutoPlayModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a57c8
 POINT g_ptTechCapabilityModalMessage = {0, 0};
 // Modal-message placement point used by the TViewMgr prompt helpers (0x5de990/0x5deb40).
@@ -3498,8 +3506,19 @@ short g_MapOrderResourceRollWeightTable_0064c5d8[6][6] = {
     {30, 50, 20, 65, 20, 15}, {20, 65, 15, 70, 20, 10}, {10, 80, 10, 80, 10, 10},
 };
 
+// GLOBAL: IMPERIALISM 0x00696400
+short g_cityProductionReserveByPolicyBand_00696400[4] = {0, 2, 6, 12};
+
 // GLOBAL: IMPERIALISM 0x00696408
 short g_aInteriorMinisterNeedPriorityOrder_00696408[10] = {17, 18, 20, 19, 2, 3, 4, 0, 1, 5};
+
+// GLOBAL: IMPERIALISM 0x00696450
+float g_cityProductionUpgradeRatioThreshold_00696450[4] = {2.0f, 2.0f, 2.0f, 0.0f};
+
+// Groups city-action capability slots into their upgrade-compatible families.
+// GLOBAL: IMPERIALISM 0x00650670
+short g_cityActionCapabilityGroupBySlot_00650670[32] = {
+    0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4, 0, 0};
 
 // GLOBAL: IMPERIALISM 0x00669f10
 double g_dNavyDamageSplitRatioA_00669f10 = 0.25;

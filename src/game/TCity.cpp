@@ -5,6 +5,7 @@
 
 #include "game/TGreatPower.h"
 #include "game/TCapacityOrder.h"
+#include "game/TCityTask.h"
 #include "game/TExpansionOrder.h"
 #include "game/TFoodProcessingOrder.h"
 #include "game/TItemOrder.h"
@@ -13,6 +14,7 @@
 #include "game/TPowerPlantOrder.h"
 #include "game/TProductionOrder.h"
 #include "game/TShipOrder.h"
+#include "game/TShipBuildingTask.h"
 #include "game/TSortedList.h"
 #include "game/TTrainingOrder.h"
 #include "game/TTown.h"
@@ -23,6 +25,8 @@
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/TShip.h" // GetResourceDescriptorWeightWord0ByType
+#include "game/TStream.h"
+#include "game/nation_stream_serialization.h"
 
 static const char kUCityCppPath[] = "D:\\Ambit\\Cross\\UCity.cpp";
 static const unsigned int kAddrClassDescTCity = 0x0064f338;
@@ -61,7 +65,8 @@ void TCity::InitializeCityProductionState(TGreatPower* ownerNation) {
   powerPlantUpgradeQueuedFlag04 = 0;
   memset(reservedByType7e, 0, sizeof(reservedByType7e));
   memset(&cityStockCottonB6, 0, sizeof(short) * 0x17);
-  memset(pad278, 0, sizeof(pad278));
+  memset(unmetResourceRetryCount278, 0,
+         sizeof(unmetResourceRetryCount278) + sizeof(consumedProductionInputByType2a6));
 
   for (int productionSlot = 0; productionSlot < 0x10; ++productionSlot) {
     productionAccum1fc[productionSlot] = static_cast<short>(
@@ -200,8 +205,7 @@ void TCity::InitializeCityProductionState(TGreatPower* ownerNation) {
   eventQueue274 = new TPtrList();
   eventQueue274->recordSize14 = 4;
 
-  pad0c[0] = 0;
-  pad0c[1] = 0;
+  serializedState0c = 0;
   memset(cityMetricsBlock0E, 0, sizeof(cityMetricsBlock0E));
   memset(cityMetricsBlock4A, 0, sizeof(cityMetricsBlock4A));
   memset(orderCountByType5c, 0, sizeof(orderCountByType5c));
@@ -210,12 +214,142 @@ void TCity::InitializeCityProductionState(TGreatPower* ownerNation) {
 
 // FUNCTION: IMPERIALISM 0x004b30a0
 void TCity::ReadFrom(TStream* stream) {
-  (void)stream;
+  int productionSlotCount = 16;
+  int orderSlotCount = 61;
+  if (g_nSaveFormatVersion < 0x13) {
+    productionSlotCount = 15;
+    orderSlotCount = 60;
+  }
+
+  TObject::ReadFrom(stream);
+  stream->ReadBytes(&powerPlantUpgradeQueuedFlag04, 1);
+  stream->ReadBytes(&lowProductionFlag7c, 1);
+  stream->ReadBytes(&lowStockFlag7d, 1);
+  stream->ReadBytes(productionFlags21c, productionSlotCount);
+  stream->ReadBytes(&field06, 2);
+  stream->ReadBytes(&field08, 2);
+  stream->ReadBytes(&serializedState0a, 2);
+  stream->ReadBytes(&serializedState0c, 2);
+  stream->ReadBytes(&powerAvailableB4, 2);
+  stream->ReadBytes(cityMetricsBlock0E, sizeof(cityMetricsBlock0E));
+  SwapShortArrayBytes(cityMetricsBlock0E, 0x1e);
+  stream->ReadBytes(cityMetricsBlock4A, sizeof(cityMetricsBlock4A));
+  SwapShortArrayBytes(cityMetricsBlock4A, 9);
+  stream->ReadBytes(orderCountByType5c, sizeof(orderCountByType5c));
+  SwapShortArrayBytes(orderCountByType5c, 0x0e);
+  stream->ReadBytes(&cityStockCottonB6, sizeof(short) * 0x17);
+  SwapShortArrayBytes(&cityStockCottonB6, 0x17);
+  stream->ReadBytes(productionOrderTable1dc, productionSlotCount * 2);
+  SwapShortArrayBytes(productionOrderTable1dc, productionSlotCount);
+  stream->ReadBytes(productionAccum1fc, productionSlotCount * 2);
+  SwapShortArrayBytes(productionAccum1fc, productionSlotCount);
+  stream->ReadBytes(unmetResourceRetryCount278, sizeof(unmetResourceRetryCount278));
+  SwapShortArrayBytes(unmetResourceRetryCount278, 0x17);
+  stream->ReadBytes(reservedByType7e, sizeof(reservedByType7e));
+  SwapShortArrayBytes(reservedByType7e, 0x17);
+  stream->ReadBytes(production22c, productionSlotCount * 2);
+  SwapShortArrayBytes(production22c, productionSlotCount);
+  stream->ReadBytes(production24c, productionSlotCount * 2);
+  SwapShortArrayBytes(production24c, productionSlotCount);
+  stream->ReadBytes(consumedProductionInputByType2a6, sizeof(consumedProductionInputByType2a6));
+  SwapShortArrayBytes(consumedProductionInputByType2a6, 0x17);
+
+  if (g_nSaveFormatVersion > 0x27) {
+    stream->ReadBytes(&field78, 4);
+  } else {
+    field78 = 0;
+  }
+
+  productionSummary1d8->ReadFrom(stream);
+  for (int orderSlot = 0; orderSlot < orderSlotCount; ++orderSlot) {
+    TObject* order = static_cast<TObject*>(orderSlotsE4[orderSlot]);
+    if (order != 0) {
+      order->ReadFrom(stream);
+    }
+  }
+
+  int oldTaskCount = trackedOrderList270->GetCount();
+  for (int oldTaskOrdinal = 1; oldTaskOrdinal <= oldTaskCount; ++oldTaskOrdinal) {
+    TObject* oldTask = static_cast<TObject*>(trackedOrderList270->GetEntryByOrdinal(1));
+    trackedOrderList270->RemoveAtOrdinal(1);
+    if (oldTask != 0) {
+      oldTask->Free();
+    }
+  }
+  trackedOrderList270->ReadFrom(stream);
+
+  int taskCount;
+  stream->ReadBytes(&taskCount, 4);
+  for (int taskOrdinal = 1; taskOrdinal <= taskCount; ++taskOrdinal) {
+    unsigned char taskKind;
+    stream->ReadBytes(&taskKind, 1);
+    TCityTask* task;
+    if (taskKind == 1) {
+      task = new TCityTask();
+      task->InitializeCityProductionQueueCommand(0, this, 0);
+      task->ReadFrom(stream);
+    } else {
+      TShipBuildingTask* shipTask = new TShipBuildingTask();
+      shipTask->InitializeShipProductionQueueTask(0, this, 0);
+      shipTask->ReadFrom(stream);
+      task = shipTask;
+    }
+    trackedOrderList270->AddTail(task);
+  }
+  eventQueue274->ReadFrom(stream);
 }
 
 // FUNCTION: IMPERIALISM 0x004b35d0
 void TCity::WriteTo(TStream* stream) {
-  (void)stream;
+  TObject::WriteTo(stream);
+  stream->WriteBytesSlot78(&powerPlantUpgradeQueuedFlag04, 1);
+  stream->WriteBytesSlot78(&lowProductionFlag7c, 1);
+  stream->WriteBytesSlot78(&lowStockFlag7d, 1);
+  stream->WriteBytesSlot78(productionFlags21c, sizeof(productionFlags21c));
+  stream->WriteBytesSlot78(&field06, 2);
+  stream->WriteBytesSlot78(&field08, 2);
+  stream->WriteBytesSlot78(&serializedState0a, 2);
+  stream->WriteBytesSlot78(&serializedState0c, 2);
+  stream->WriteBytesSlot78(&powerAvailableB4, 2);
+  WriteShortArrayElems(stream, cityMetricsBlock0E, 0x1e);
+  WriteShortArrayElems(stream, cityMetricsBlock4A, 9);
+  WriteShortArrayElems(stream, orderCountByType5c, 0x0e);
+  WriteShortArrayElems(stream, &cityStockCottonB6, 0x17);
+  WriteShortArrayElems(stream, productionOrderTable1dc, 0x10);
+  WriteShortArrayElems(stream, productionAccum1fc, 0x10);
+  WriteShortArrayElems(stream, unmetResourceRetryCount278, 0x17);
+  WriteShortArrayElems(stream, reservedByType7e, 0x17);
+
+  for (int productionSlot = 0; productionSlot < 0x10; ++productionSlot) {
+    short value = production22c[productionSlot];
+    SwapFirstTwoBytesInBuffer(reinterpret_cast<unsigned char*>(&value));
+    stream->WriteBytesSlot78(&value, 2);
+  }
+  for (int accumulatedProductionSlot = 0; accumulatedProductionSlot < 0x10;
+       ++accumulatedProductionSlot) {
+    short value = production24c[accumulatedProductionSlot];
+    SwapFirstTwoBytesInBuffer(reinterpret_cast<unsigned char*>(&value));
+    stream->WriteBytesSlot78(&value, 2);
+  }
+  WriteWordArrayToOutputCallbackLE(stream, consumedProductionInputByType2a6, 0x17);
+
+  stream->WriteBytesSlot78(&field78, 4);
+  productionSummary1d8->WriteTo(stream);
+  for (int orderSlot = 0; orderSlot < 0x3d; ++orderSlot) {
+    TObject* order = static_cast<TObject*>(orderSlotsE4[orderSlot]);
+    if (order != 0) {
+      order->WriteTo(stream);
+    }
+  }
+
+  trackedOrderList270->WriteTo(stream);
+  int taskCount = trackedOrderList270->GetCount();
+  stream->WriteBytesSlot78(&taskCount, 4);
+  for (int taskOrdinal = 1; taskOrdinal <= taskCount; ++taskOrdinal) {
+    TObject* task = static_cast<TObject*>(trackedOrderList270->GetEntryByOrdinal(taskOrdinal));
+    task->WriteTo(stream);
+  }
+  eventQueue274->WriteTo(stream);
 }
 
 // FUNCTION: IMPERIALISM 0x004b3a60

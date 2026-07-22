@@ -12,6 +12,13 @@ class TStream;
 class TShipOrder;
 class TUnitOrder;
 
+struct TCityTransportRequest {
+  short resourceType;
+  short requestedAmount;
+};
+
+ASSERT_SIZE(TCityTransportRequest, 0x04);
+
 // The per-nation city/production model at TGreatPower+0x894 (field `city`).
 // RTTI: g_pClassDescTCity @ 0x0064f338; CreateObject body at 0x004b2410.
 // LAYOUT: RECOVERED
@@ -110,7 +117,7 @@ public:
   short field06; // +0x06 — zeroed by the ctor
   short field08; // +0x08 — zeroed by the ctor
   short serializedState0a;
-  unsigned char pad0c[0x0e - 0x0c];
+  short serializedState0c;
   // +0x0e..+0x4a and +0x4a..+0x5c — city metric blocks snapshotted wholesale by the
   // turn-event-0x2c composite packet (0x54ce80); interior meaning still unmapped.
   short cityMetricsBlock0E[0x1e];
@@ -192,7 +199,12 @@ public:
   // 0x274 — TPtrList (vtable 0x649068, recordSize14 4; allocated in
   // InitializeCityProductionState 0x4b2dca); released via ReleasePtrList.
   class TPtrList* eventQueue274;
-  unsigned char pad278[0x2d4 - 0x278];
+  // +0x278 — per-resource failed-request counters maintained by the interior
+  // minister when a production sheet cannot be fully transported.
+  short unmetResourceRetryCount278[0x17];
+  // +0x2a6 — one short per resource type. Existing consumers use entries 13..16;
+  // ReadFrom/WriteTo serialize and byte-swap all 23 entries as one array.
+  short consumedProductionInputByType2a6[0x17];
 
   TCity(); // 0x004b24b0 ("InitializeCityModel")
 

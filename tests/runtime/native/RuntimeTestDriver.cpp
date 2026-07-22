@@ -1,18 +1,22 @@
 #include "RuntimeTestDriver.h"
 
+#include "game/bitmap_descriptor_helpers.h"
 #include "game/TAmbitApplication.h"
 #include "game/TControl.h"
+#include "game/TCitySiteView.h"
 #include "game/TDisplayMgr.h"
 #include "game/TDialogBehavior.h"
 #include "game/TEditText.h"
 #include "game/TGameSetupPicture.h"
 #include "game/ImperialismApp.h"
 #include "game/TMapUberPicture.h"
+#include "game/TMapMgr.h"
 #include "game/TPicture.h"
 #include "game/TRadioTextCluster.h"
 #include "game/TSetupRandomMapPicture.h"
 #include "game/TSimMgr.h"
 #include "game/TStaticText.h"
+#include "game/TUiEvent.h"
 #include "game/TView.h"
 #include "game/TViewMgr.h"
 #include "game/TWindow.h"
@@ -38,6 +42,9 @@ enum RuntimeTestPhase {
   kRuntimeTestWaitingForStrategicMap,
   kRuntimeTestVerifyingStrategicMap,
   kRuntimeTestWaitingForModalDismissal,
+  kRuntimeTestPrimingMapHover,
+  kRuntimeTestDispatchingMapHotkey,
+  kRuntimeTestExercisingMapHover,
   kRuntimeTestFinished
 };
 
@@ -569,7 +576,74 @@ void RunWaitingForModalDismissal() {
     Fail("\"difficulty level is not Normal\"");
     return;
   }
-  SetPhase(kRuntimeTestWaitingForStrategicMap, "assert_map_state_after_city_site_prompt");
+  SetPhase(kRuntimeTestPrimingMapHover, "prime_city_site_hover");
+  RequestAnotherDriverTick();
+}
+
+void RunPrimingMapHover() {
+  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+  TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+  if (mapDialog == 0 || !IsViewKindOf(mapDialog, RUNTIME_CLASS(TCitySiteView))) {
+    Fail("\"strategic map has no city-site hover view\"");
+    return;
+  }
+
+  mapDialog->RefreshControl();
+  mapDialog->ForceRedraw();
+  CPoint point(256, 224);
+  mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&point, 0);
+  short paintedTile = static_cast<short>(mapDialog->paintedHoverTileIndex6e);
+  signed char markerIndex = g_pGlobalMapState->terrainStateTable[paintedTile].markerSlotIndex10;
+  if (markerIndex == -1 || mapDialog->tileMarkers7c[markerIndex].flag == 0) {
+    Fail("\"primed city-site hover tile is not present in the render cache\"");
+    return;
+  }
+  SetPhase(kRuntimeTestDispatchingMapHotkey, "forward_map_hotkey_x");
+  RequestAnotherDriverTick();
+}
+
+void RunDispatchingMapHotkey() {
+  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+  if (mapView == 0) {
+    Fail("\"strategic map has no map input view\"");
+    return;
+  }
+
+  TKeyCommandEvent commandEvent;
+  commandEvent.commandCode = 'x';
+  commandEvent.keyFlags = 0;
+  commandEvent.handledMarker = 0;
+  mapView->ForwardParam(reinterpret_cast<int>(&commandEvent));
+
+  TMapDialog* mapDialog = mapView->subview2A8;
+  if (mapDialog != 0) {
+    mapDialog->TMapDialog::SetMapDialogCellCoordinatesAndRefresh(1, 1, 0);
+  }
+
+  if (g_pUiRuntimeContext->currentTurnEventCode != 0x3b8 ||
+      !IsViewKindOf(MainView(), RUNTIME_CLASS(TMapUberPicture))) {
+    Fail("\"map hotkey forwarding left the strategic map\"");
+    return;
+  }
+  SetPhase(kRuntimeTestExercisingMapHover, "exercise_city_site_hover");
+  RequestAnotherDriverTick();
+}
+
+void RunExercisingMapHover() {
+  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+  TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+  if (mapDialog == 0 || !IsViewKindOf(mapDialog, RUNTIME_CLASS(TCitySiteView))) {
+    Fail("\"strategic map has no city-site hover view\"");
+    return;
+  }
+
+  TQuickDrawSurfaceContext* savedSurface;
+  int savedSurfaceFlags;
+  GetGWorld(&savedSurface, &savedSurfaceFlags);
+  SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
+  CPoint point(0, 0);
+  mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&point, 0);
+  SetGWorld(savedSurface, savedSurfaceFlags);
   Finish("passed", "null");
 }
 
@@ -612,6 +686,15 @@ void RuntimeTestDriver::OnIdle() {
     break;
   case kRuntimeTestWaitingForModalDismissal:
     RunWaitingForModalDismissal();
+    break;
+  case kRuntimeTestPrimingMapHover:
+    RunPrimingMapHover();
+    break;
+  case kRuntimeTestDispatchingMapHotkey:
+    RunDispatchingMapHotkey();
+    break;
+  case kRuntimeTestExercisingMapHover:
+    RunExercisingMapHover();
     break;
   default:
     Fail("\"runtime-test driver entered an invalid phase\"");

@@ -141,7 +141,7 @@ void TAdmiral::ReadFrom(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x00551850
-void TAdmiral::SelectNavyPrimaryOrderByNationAndRecomputePreferredChild() {
+void TAdmiral::ReassignThyself() {
   if (this->primaryOrderNode08 != 0) {
     this->primaryOrderNode08->admiralBacklink20 = 0;
     RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
@@ -288,7 +288,7 @@ void TAdmiral::GetFleetReport(CString* out, TZone* zone, short nation) const {
 }
 
 // FUNCTION: IMPERIALISM 0x00552250
-void TAdmiral::SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(TShip* primaryOrderNode) {
+void TAdmiral::AssignToShip(TShip* primaryOrderNode) {
   if (this->primaryOrderNode08 != 0) {
     this->primaryOrderNode08->admiralBacklink20 = 0;
     RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
@@ -296,6 +296,34 @@ void TAdmiral::SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(TShip* prima
   this->primaryOrderNode08 = primaryOrderNode;
   if (primaryOrderNode != 0) {
     primaryOrderNode->admiralBacklink20 = this;
+    RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
+  }
+}
+
+// The original function extends from 0x552310 through 0x552404. Earlier inventory
+// rows incorrectly treated its loop body as three independent orphan functions.
+// FUNCTION: IMPERIALISM 0x00552310
+void TAdmiral::ReassignToZone(TZone* zone) {
+  if (this->primaryOrderNode08 != 0) {
+    this->primaryOrderNode08->admiralBacklink20 = 0;
+    RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
+  }
+  this->primaryOrderNode08 = 0;
+
+  TShip* best = 0;
+  for (TShip* node = g_pNavyPrimaryOrderListHead; node != 0; node = node->nextOlder24) {
+    if (node->field08 == zone && node->ownerNationSlot14 == this->terrainType) {
+      best = node->SelectPreferredMapOrderEntryByPriorityRules(best, 1);
+    }
+  }
+
+  if (this->primaryOrderNode08 != 0) {
+    this->primaryOrderNode08->admiralBacklink20 = 0;
+    RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
+  }
+  this->primaryOrderNode08 = best;
+  if (best != 0) {
+    best->admiralBacklink20 = this;
     RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
   }
 }

@@ -122,6 +122,8 @@ extern "C" float g_fScatteredShipsMissionDefaultScore;
 // a "combined units" divergence (mobile + static units), and a final
 // military-power-weighted order score.
 extern "C" float g_afNationOrderQueueDivergence_006a3a88[7];
+extern "C" short g_nArmsBasicResourceOfferSplitCount_006a3a54;
+extern "C" short g_nArmsAdvancedResourceOfferSplitCount_006a3a58;
 extern "C" float g_afNationOrderQueueDivergenceMirror_006a3ac0[7];
 extern "C" float g_afNationMobileUnitDivergence_006a3ae0[7];
 extern "C" float g_afNationWeightedMilitaryOrderScore_006a3b20[7];
@@ -790,6 +792,7 @@ extern POINT g_ptNationComparisonModalMessage;     // @ 0x6a3180
 extern POINT g_ptTechItemModalMessage;             // @ 0x6a5820
 extern POINT g_ptNationAwolModalMessage;           // @ 0x6a3d08
 extern POINT g_ptMapModeModalMessage;              // @ 0x6a45c0
+extern POINT g_ptTacticalAutoPlayModalMessage;     // @ 0x6a4650
 extern POINT g_ptTechCapabilityModalMessage;       // @ 0x6a57c8
 extern POINT g_ptUiPromptModalMessage;             // @ 0x6a5be0
 extern POINT g_ptCitySiteSelectionDialogPlacement; // @ 0x6a5b58
@@ -1857,6 +1860,9 @@ extern short g_MapOrderResourceRollWeightTable_0064c5d8[6][6];
 // order, that TInteriorMinister::MinisterSlot14 (0x4be520) tops up each turn while the
 // nation still has need-cap headroom (needCapA6 - needsOverCapFlag).
 extern short g_aInteriorMinisterNeedPriorityOrder_00696408[10];
+extern short g_cityProductionReserveByPolicyBand_00696400[4];
+extern float g_cityProductionUpgradeRatioThreshold_00696450[4];
+extern short g_cityActionCapabilityGroupBySlot_00650670[32];
 // Naval combat damage-split ratios (TNavyTacUnit::ApplyTacticalDamageAndDeathState, 0x5a63c0):
 // the two shares a hit's damage is divided between strength4 (hull) and crewStrength38
 // depending on the attacker's ship-panel aim mode.

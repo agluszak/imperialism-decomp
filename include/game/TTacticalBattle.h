@@ -191,6 +191,8 @@ public:
   // Helpers the command family dispatches into (all __thiscall on the battle).
   void ApplyTacticalDoneSelectionAndRefreshUi(TTacticalUnit* unit);                   // 0x59fe40
   void ComputeHexNeighborTileIndices_005A0420(int tileIndex, int* outNeighborTiles6); // 0x5a0420
+  unsigned char IsHexNeighborTileIndex(int tileIndex,
+                                       int candidateTileIndex); // 0x5a0550
   void ConsumeFortStrengthPointsAndInvalidateIfDepleted(int tileIndex,
                                                         int consumeAmount); // 0x5a3c20
   void EvaluateTacticalSideStateAndShowBattleSummaryDialog();               // 0x5a2750

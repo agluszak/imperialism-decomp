@@ -1519,7 +1519,7 @@ address|name|symbol|size|type|prototype|provenance
 4a6e80|DispatchMapInteractionPayloadAndResetWorkingFields||68|function|undefined DispatchMapInteractionPayloadAndResetWorkingFields()|
 4a6ef0|TrimExcessNavyOrderSupportAndRebuildOrderBuffer||897|function|undefined TrimExcessNavyOrderSupportAndRebuildOrderBuffer()|
 4a7370|ValidateOrderSupportDeltaAndMarkDirectionalOverlays||421|function|undefined ValidateOrderSupportDeltaAndMarkDirectionalOverlays()|
-4a7590|TArmyStack::CreateTArmyStackInstance||208|function|undefined CreateTArmyStackInstance()|
+4a7590|TArmyMgr::ClearNationArmyActionModesAndCycleSelection||208|function|void __thiscall ClearNationArmyActionModesAndCycleSelection(int nationId)|listing
 4a76a0|TArmyStack::CreateObject|?CreateObject@TArmyStack@@SGPAVCObject@@XZ|32|function|undefined CreateObject()|rtti
 4a76d0|TArmyStack::GetRuntimeClass||6|function|undefined GetTArmyStackClassNamePointer()|rtti
 4a76f0|TArmyStack::TArmyStack||17|function|undefined ConstructTArmyStackBaseState()|
@@ -1932,7 +1932,7 @@ address|name|symbol|size|type|prototype|provenance
 4bd880|TNewTownView::StuffValues||719|function|void StuffValues(TTown* town)|
 4bdc10|TNewTownView::Close||170|function|void Close()|macos-name-oracle:Close()
 4bde50|WrapperFor_ftol_At004bde50||30|function|undefined WrapperFor_ftol_At004bde50()|
-4be000|InsertScoredTileCandidateWithRandomTieBreak||145|function|undefined InsertScoredTileCandidateWithRandomTieBreak()|
+4be000|InsertScoredTileCandidateWithRandomTieBreak||145|function|void __cdecl InsertScoredTileCandidateWithRandomTieBreak(float score, short tileIndex, float * candidateScores, short * candidateTiles, int capacity)|
 4be0d0|TInteriorMinister::CreateObject|?CreateObject@TInteriorMinister@@SGPAVCObject@@XZ|93|function|undefined CreateObject()|rtti
 4be150|TInteriorMinister::VTableSlot1D||8|function|undefined 'scalar_deleting_destructor'(void)|
 4be170|TInteriorMinister::CreateTInteriorMinisterInstance||8|function|undefined CreateTInteriorMinisterInstance()|
@@ -1991,39 +1991,38 @@ address|name|symbol|size|type|prototype|provenance
 4c0730|TCityInteriorMinister::QueueSingleCityProductionCommandFromField38||127|function|undefined QueueSingleCityProductionCommandFromField38()|
 4c07d0|TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits||1163|function|undefined DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits()|
 4c0d90|TCityInteriorMinister::NoOpForeignMinisterUtilityStub||58|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-4c0de0|TCityInteriorMinister::SetForeignMinisterReadyFlag14_2e||73|function|undefined SetForeignMinisterReadyFlag14(void)|
-4c0e50|TCityInteriorMinister::ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders||697|function|undefined ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders()|
+4c0de0|TCityInteriorMinister::RaiseNeedTargetWithinAvailableSurplus||73|function|short __thiscall RaiseNeedTargetWithinAvailableSurplus(short resourceType, short requestedAmount, short allocationLimit)|
+4c0e50|TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls||697|function|short __thiscall RebuildNeedTargetsAndQueueProductionShortfalls(TCity* city, TTaskList* commandQueue)|
 4c11c0|TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore||643|function|int __thiscall SelectBestSecondaryHomeTileByFrogCityScore()|
 4c1510|TCityInteriorMinister::BuildNationTileDevelopmentScoreListForTerrainClass||706|function|undefined BuildNationTileDevelopmentScoreListForTerrainClass()|
 4c18a0|AppendInteriorMinisterValueGrowShortBuffer||131|function|undefined AppendInteriorMinisterValueGrowShortBuffer()|
 4c1990|WrapperFor_ComputeBestNationTileDevelopmentScore_At004c1990||238|function|undefined WrapperFor_ComputeBestNationTileDevelopmentScore_At004c1990()|
-4c1ac0|TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister||1022|function|undefined RebuildMapTileNeighborBucketsForInteriorMinister()|
+4c1ac0|TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister||1022|function|void __thiscall RebuildMapTileNeighborBucketsForInteriorMinister()|
 4c1fc0|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004c1fc0||55|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004c1fc0()|
-4c2010|TCityInteriorMinister::GetTEventHandlerClassNamePointer_32||208|function|undefined GetTEventHandlerClassNamePointer(void)|
-4c2120|TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics||1845|function|undefined AutoAssignProspectingOrdersByTileHeuristics()|
-4c2a30|TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors||628|function|undefined AutoAssignProspectingOrdersFromSeedTileNeighbors()|
-4c2d50|TCityInteriorMinister::IterateLinkedListCursorEntries_004c2d50||134|function|undefined IterateLinkedListCursorEntries_004c2d50()|
-4c2e10|TCityInteriorMinister::HandleFrogCityTileSelectionAndDispatchOrders||513|function|undefined HandleFrogCityTileSelectionAndDispatchOrders()|
-4c30b0|TraceDescendingTileScoreGradientToSource||130|function|undefined TraceDescendingTileScoreGradientToSource()|
-4c3170|TCityInteriorMinister::SelectBestFrogCityTileFromCandidateSet||636|function|undefined SelectBestFrogCityTileFromCandidateSet()|
-4c3490|TCityInteriorMinister::ComputeFrogCityCandidateScoreFromNationNeeds||311|function|undefined ComputeFrogCityCandidateScoreFromNationNeeds()|
-4c3620|TCityInteriorMinister::GetTEventHandlerClassNamePointer_3a||14|function|undefined GetTEventHandlerClassNamePointer(void)|
-4c3640|TCityInteriorMinister::BuildFrogCityDistanceMapFromPrimarySeedSet||576|function|undefined BuildFrogCityDistanceMapFromPrimarySeedSet()|
-4c3910|TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates||589|function|undefined BuildFrogCityDistanceMapFromReachableSeaCandidates()|
-4c3c00|TCityInteriorMinister::RebalanceCityOrderAllocationTargets||267|function|undefined RebalanceCityOrderAllocationTargets()|
-4c3d60|TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection||686|function|undefined ProcessCityOrderStateTickAndApplyCapabilitySelection()|
-4c40c0|TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations||540|function|undefined RebalanceCitySupportAndLaborAllocations()|
-4c4370|TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand||631|function|undefined ChooseAndMarkNextCityProductionCommand()|
-4c4690|TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutputs||335|function|undefined ComputeCityProductionCommandLimitsFromBuildingOutputs()|
-4c4840|TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle||323|function|undefined RebuildCityOrderCommandAvailabilityAndPriorityCycle()|
-4c49f0|UpdateMinisterProductionMetricsForResourceIndex||1|function|undefined UpdateMinisterProductionMetricsForResourceIndex()|
-4c4c4c|OrphanCallChain_C1_I20_004c4c4c||65|function|undefined OrphanCallChain_C1_I20_004c4c4c()|
-4c4d40|OrphanCallChain_C2_I72_004c4d40||219|function|undefined OrphanCallChain_C2_I72_004c4d40()|
-4c4e60|OrphanCallChain_C3_I79_004c4e60||229|function|undefined OrphanCallChain_C3_I79_004c4e60()|
+4c2010|TCityInteriorMinister::RequestMissingCivilianOrderTypes||208|function|void __thiscall RequestMissingCivilianOrderTypes()|
+4c2120|TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics||1845|function|void __thiscall AutoAssignProspectingOrdersByTileHeuristics()|
+4c2a30|TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors||628|function|void __thiscall AutoAssignProspectingOrdersFromSeedTileNeighbors()|
+4c2d50|TCityInteriorMinister::SeekLostTowns||134|function|void __thiscall SeekLostTowns(char * primaryDistanceMap, char * secondaryDistanceMap)|
+4c2e10|TCityInteriorMinister::ContinueRailheadProject||513|function|void __thiscall ContinueRailheadProject(TUnit * builderOrder, char * primaryDistanceMap, char * secondaryDistanceMap)|
+4c30b0|TraceDescendingTileScoreGradientToSource||130|function|short __stdcall TraceDescendingTileScoreGradientToSource(short startTile, char * scoreMap, short * previousTileOut)|
+4c3170|TCityInteriorMinister::StartRailheadProject||636|function|void __thiscall StartRailheadProject(short resourceType, TShortintList * ownedTiles, char * primaryDistanceMap, char * secondaryDistanceMap)|
+4c3490|TCityInteriorMinister::EvaluateResources||311|function|short __thiscall EvaluateResources(short tileIndex)|
+4c3620|TCityInteriorMinister::ScoreResource||14|function|int __thiscall ScoreResource(int amount, int unusedResourceType, int scorePerUnit)|
+4c3640|TCityInteriorMinister::CreateSeaDistanceMap||576|function|char * __thiscall CreateSeaDistanceMap(TShortintList * ownedTiles)|
+4c3910|TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates||589|function|char * __thiscall BuildFrogCityDistanceMapFromReachableSeaCandidates(TShortintList * ownedTiles)|
+4c3c00|TCityInteriorMinister::RebalanceCityOrderAllocationTargets||267|function|void __thiscall RebalanceCityOrderAllocationTargets(TCity * city)|
+4c3d60|TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection||686|function|void __thiscall ProcessCityOrderStateTickAndApplyCapabilitySelection()|
+4c40c0|TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations||540|function|void __thiscall RebalanceCitySupportAndLaborAllocations()|
+4c4370|TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand||631|function|void __thiscall ChooseAndMarkNextCityProductionCommand()|
+4c4690|TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutputs||335|function|void __thiscall ComputeCityProductionCommandLimitsFromBuildingOutputs()|
+4c4840|TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle||323|function|void __thiscall RebuildCityOrderCommandAvailabilityAndPriorityCycle()|
+4c49f0|TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex||669|function|void __thiscall UpdateMinisterProductionMetricsForResourceIndex(short orderSlot)|
+4c4d40|TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget||219|function|short __thiscall RaisePowerPlantOrderToReachLaborTarget(short targetLabor)|
+4c4e60|TCityInteriorMinister::FillRemainingNeedCapacityAndReducePowerPlantOrder||229|function|void __thiscall FillRemainingNeedCapacityAndReducePowerPlantOrder()|
 4c4f90|TCityInteriorMinister::GetAverageDevelopmentOrderAllocation||49|function|int GetAverageDevelopmentOrderAllocation(void)|
-4c4fe0|OrphanCallChain_C4_I151_004c4fe0||471|function|undefined OrphanCallChain_C4_I151_004c4fe0()|
+4c4fe0|TCityInteriorMinister::RequestResource||471|function|short __thiscall RequestResource(short resourceType, short requestedAmount, short flags)|
 4c5240|BuildFrogCityTerrainCountsAndOverlayStats||930|function|undefined BuildFrogCityTerrainCountsAndOverlayStats()|
-4c56e0|TryApplyCityOrderCapabilitySelectionBySlot||427|function|undefined TryApplyCityOrderCapabilitySelectionBySlot()|
+4c56e0|TCityInteriorMinister::TryApplyCityOrderCapabilitySelectionBySlot||427|function|bool __thiscall TryApplyCityOrderCapabilitySelectionBySlot(short capabilitySlot)|
 4c5900|TSteelCityMinister::CreateObject|?CreateObject@TSteelCityMinister@@SGPAVCObject@@XZ|132|function|undefined CreateObject()|rtti
 4c59c0|TSteelCityMinister::GetRuntimeClass||6|function|undefined GetTSteelCityMinisterClassNamePointer()|rtti
 4c59e0|TSteelCityMinister::ConstructTSteelCityMinisterBaseState||43|function|undefined ConstructTSteelCityMinisterBaseState()|
@@ -2249,7 +2248,7 @@ address|name|symbol|size|type|prototype|provenance
 4d4740|TCivMgr::ResolveCivilianDisputes||474|function|void __thiscall ResolveCivilianDisputes()|
 4d49a0|TLandSaleEvent::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4d49d0|DestructLandSaleEventToBase||7|function|undefined DestructLandSaleEventToBase()|
-4d49f0|HandleMapHotkeyW_ResetSelectedActionableObjects||146|function|undefined HandleMapHotkeyW_ResetSelectedActionableObjects()|
+4d49f0|TCivMgr::ClearNationCivilianActionModesAndCycleSelection||146|function|void __thiscall ClearNationCivilianActionModesAndCycleSelection(int nationId)|listing
 4d4b90|OrphanLeaf_NoCall_Ins15_004d4b90||48|function|undefined OrphanLeaf_NoCall_Ins15_004d4b90()|
 4d4bd0|DiscardTileTokenArgumentAndReturn||3|function|undefined DiscardTileTokenArgumentAndReturn()|
 4d4bf0|StrategicMapCallbackRecord::AppendPackedColorDword||382|function|undefined AppendPackedColorDwordToMaskBuffers()|
@@ -2939,7 +2938,7 @@ address|name|symbol|size|type|prototype|provenance
 4ff750|InitializeCityInteriorMinister_Impl||22|function|undefined InitializeCityInteriorMinister_Impl()|
 4ff780|TFuzzySet::Free||52|function|undefined OrphanCallChain_C2_I27_004ff780(void)|
 4ff7d0|TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0||73|function|undefined AllocateAndAppendTFuzzyVarRecord_004ff7d0()|
-4ff840|WrapperFor_GenerateThreadLocalRandom15_At004ff840||317|function|undefined WrapperFor_GenerateThreadLocalRandom15_At004ff840()|
+4ff840|TFuzzySet::SelectWeightedMemberIndex||317|function|int __thiscall SelectWeightedMemberIndex(float input)|
 4ffb00|WrapperFor_ftol_At004ffb00||30|function|undefined WrapperFor_ftol_At004ffb00()|
 4ffb30|TGameWindow::CreateObject|?CreateObject@TGameWindow@@SGPAVCObject@@XZ|137|function|undefined CreateObject()|rtti
 4ffbf0|TGameWindow::GetRuntimeClass||6|function|undefined GetTGameWindowClassNamePointer()|rtti
@@ -3181,7 +3180,7 @@ address|name|symbol|size|type|prototype|provenance
 513660|TMapMgr::GetTileCivilianWorkOrderCostClassNibble||44|function|byte __thiscall GetTileCivilianWorkOrderCostClassNibble(short nTileIndex, char fUseHighNibble)|
 5136a0|TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0||90|function|undefined OrphanLeaf_NoCall_Ins35_005136a0(short param_1, char param_2, byte param_3, char param_4)|
 513720|TMapMgr::OrphanLeaf_NoCall_Ins37_00513720||105|function|undefined OrphanLeaf_NoCall_Ins37_00513720(short param_1, char param_2, int param_3)|
-5137b0|TDeluxeText::CanBuildPortAtTile||362|function|char __thiscall CanBuildPortAtTile(int nTileIndex)|
+5137b0|TMapMgr::CanBuildPortAtTile||362|function|char __thiscall CanBuildPortAtTile(short tileIndex)|
 513980|TMapMgr::IsValidSecondaryNationHomeTileCandidate||632|function|bool __thiscall IsValidSecondaryNationHomeTileCandidate(short tileIndex)|
 513ca0|HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask||443|function|undefined HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask()|
 513ed0|CheckTileProspectingDiscoveryCandidate||100|function|byte __thiscall CheckTileProspectingDiscoveryCandidate(short nTileIndex)|
@@ -3512,10 +3511,10 @@ address|name|symbol|size|type|prototype|provenance
 531240|TTedForeignMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 531270|TTedForeignMinister::DestructTTedForeignMinister||7|function|undefined DestructTTedForeignMinister()|
 531290|InitializeTedForeignMinisterOrderCandidates||549|function|undefined InitializeTedForeignMinisterOrderCandidates()|
-531550|RunForeignMinisterVtableSlot90TedVariant||428|function|undefined RunForeignMinisterVtableSlot90TedVariant()|
-531770|DispatchNationInteractionAmountByModePolicyA||521|function|undefined DispatchNationInteractionAmountByModePolicyA()|
-531a10|QueueTedFourRandomAvailableTerrainActionsCode133||168|function|undefined QueueTedFourRandomAvailableTerrainActionsCode133()|
-531af0|NoOpTedForeignMinisterSlot25Handler||1|function|undefined NoOpTedForeignMinisterSlot25Handler()|
+531550|TTedForeignMinister::SetTradeBids||428|function|void __thiscall SetTradeBids(void)|
+531770|TTedForeignMinister::ReplyToTradeOffer||521|function|void __thiscall ReplyToTradeOffer(short,short,short,short)|
+531a10|TTedForeignMinister::DoFirstTurnDiplomacy||168|function|void __thiscall DoFirstTurnDiplomacy(void)|
+531af0|TTedForeignMinister::DoSecondTurnDiplomacy||1|function|void __thiscall DoSecondTurnDiplomacy(void)|
 531b10|SetTedCounter60ToThree||13|function|undefined SetTedCounter60ToThree()|
 531b30|TBillForeignMinister::CreateObject|?CreateObject@TBillForeignMinister@@SGPAVCObject@@XZ|100|function|undefined CreateObject()|rtti
 531bc0|TBillForeignMinister::GetRuntimeClass|?GetRuntimeClass@TBillForeignMinister@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
@@ -3525,21 +3524,21 @@ address|name|symbol|size|type|prototype|provenance
 531ca0|DeserializeTBillForeignMinisterStateWithOrderFlagByte||35|function|undefined DeserializeTBillForeignMinisterStateWithOrderFlagByte()|
 531ce0|SerializeTBillForeignMinisterStateWithOrderFlagByte||35|function|undefined SerializeTBillForeignMinisterStateWithOrderFlagByte()|
 531d20|InitializeBillForeignMinisterOrderCandidates||231|function|undefined InitializeBillForeignMinisterOrderCandidates()|
-531e50|RunForeignMinisterVtableSlot90BillVariant||656|function|undefined RunForeignMinisterVtableSlot90BillVariant()|
-532190|DispatchNationInteractionAmountByModePolicyB||707|function|undefined DispatchNationInteractionAmountByModePolicyB()|
-532520|TControl::QueueDiplomatTwoRandomAvailableTerrainActionsCode133||140|function|undefined QueueDiplomatTwoRandomAvailableTerrainActionsCode133()|
-5325e0|TControl::QueueDiplomatTwoCompatibleMatrixActionsCode5A||70|function|undefined QueueDiplomatTwoCompatibleMatrixActionsCode5A()|
+531e50|TBillForeignMinister::SetTradeBids||656|function|void __thiscall SetTradeBids(void)|
+532190|TBillForeignMinister::ReplyToTradeOffer||707|function|void __thiscall ReplyToTradeOffer(short,short,short,short)|
+532520|TBillForeignMinister::DoFirstTurnDiplomacy||140|function|void __thiscall DoFirstTurnDiplomacy(void)|
+5325e0|TBillForeignMinister::DoSecondTurnDiplomacy||70|function|void __thiscall DoSecondTurnDiplomacy(void)|
 532650|UpdateDiplomatProgressFromProductionSlots2And4||105|function|undefined UpdateDiplomatProgressFromProductionSlots2And4()|
 5326e0|TDiplomatForeignMinister::CreateObject|?CreateObject@TDiplomatForeignMinister@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 532760|TDiplomatForeignMinister::GetRuntimeClass|?GetRuntimeClass@TDiplomatForeignMinister@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
 532780|TDiplomatForeignMinister::ConstructTDiplomatForeignMinister||69|function|undefined ConstructTDiplomatForeignMinister()|
 5327f0|TDiplomatForeignMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 532820|TDiplomatForeignMinister::DestructTDiplomatForeignMinister||7|function|undefined DestructTDiplomatForeignMinister()|
-532840|TControl::QueueDiplomatWeightedTerrainActionRunCode133||97|function|undefined QueueDiplomatWeightedTerrainActionRunCode133()|
-5328d0|OrphanRetStub_005328d0||1|function|undefined OrphanRetStub_005328d0()|
+532840|TDiplomatForeignMinister::DoFirstTurnDiplomacy||97|function|void __thiscall DoFirstTurnDiplomacy(void)|
+5328d0|TDiplomatForeignMinister::DoSecondTurnDiplomacy||1|function|void __thiscall DoSecondTurnDiplomacy(void)|
 5328f0|SelectNationInteractionModePriorityTriplet||703|function|undefined SelectNationInteractionModePriorityTriplet()|
-532c60|RunForeignMinisterPolicySlot28VariantA||611|function|undefined RunForeignMinisterPolicySlot28VariantA()|
-532f70|RunForeignMinisterPolicySlot30VariantA||170|function|undefined RunForeignMinisterPolicySlot30VariantA()|
+532c60|TDiplomatForeignMinister::SetTradeBids||611|function|void __thiscall SetTradeBids(void)|
+532f70|TDiplomatForeignMinister::ReplyToTradeOffer||170|function|void __thiscall ReplyToTradeOffer(short,short,short,short)|
 533050|IncrementDiplomatCounter5EByFive||12|function|undefined IncrementDiplomatCounter5EByFive()|
 533070|TTextileForeignMinister::CreateObject|?CreateObject@TTextileForeignMinister@@SGPAVCObject@@XZ|91|function|undefined CreateObject()|rtti
 5330f0|TTextileForeignMinister::GetRuntimeClass|?GetRuntimeClass@TTextileForeignMinister@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
@@ -3547,8 +3546,8 @@ address|name|symbol|size|type|prototype|provenance
 533180|TTextileForeignMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5331b0|TTextileForeignMinister::DestructTTextileForeignMinister||7|function|undefined DestructTTextileForeignMinister()|
 5331d0|InitializeTextileForeignMinisterOrderCandidates||322|function|undefined InitializeTextileForeignMinisterOrderCandidates()|
-533380|RunForeignMinisterPolicySlot28VariantB||587|function|undefined RunForeignMinisterPolicySlot28VariantB()|
-533670|DispatchNationInteractionAmountWithAvailableCap||200|function|undefined DispatchNationInteractionAmountWithAvailableCap()|
+533380|TTextileForeignMinister::SetTradeBids||587|function|void __thiscall SetTradeBids(void)|
+533670|TTextileForeignMinister::ReplyToTradeOffer||200|function|void __thiscall ReplyToTradeOffer(short,short,short,short)|
 533780|UpdateTextileProgressFromProductionSlots1And2||88|function|undefined UpdateTextileProgressFromProductionSlots1And2()|
 533800|TTraderForeignMinister::CreateObject|?CreateObject@TTraderForeignMinister@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 533880|TTraderForeignMinister::GetRuntimeClass|?GetRuntimeClass@TTraderForeignMinister@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
@@ -3556,9 +3555,9 @@ address|name|symbol|size|type|prototype|provenance
 533910|TTraderForeignMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 533940|TTraderForeignMinister::DestructTTraderForeignMinister||7|function|undefined DestructTTraderForeignMinister()|
 533960|TControl::InitializeTraderForeignMinisterOrderCandidates||323|function|undefined InitializeTraderForeignMinisterOrderCandidates()|
-533b10|RunForeignMinisterPolicySlot28VariantC||524|function|undefined RunForeignMinisterPolicySlot28VariantC()|
-533db0|DispatchNationInteractionAmountWithFallbackVariant||166|function|undefined DispatchNationInteractionAmountWithFallbackVariant()|
-533e90|TControl::QueueTraderFourRandomTerrainActionsCode133||142|function|undefined QueueTraderFourRandomTerrainActionsCode133()|
+533b10|TTraderForeignMinister::SetTradeBids||524|function|void __thiscall SetTradeBids(void)|
+533db0|TTraderForeignMinister::ReplyToTradeOffer||166|function|void __thiscall ReplyToTradeOffer(short,short,short,short)|
+533e90|TTraderForeignMinister::DoFirstTurnDiplomacy||142|function|void __thiscall DoFirstTurnDiplomacy(void)|
 533f50|IncrementTraderCounter60ByThree||12|function|undefined IncrementTraderCounter60ByThree()|
 533f70|TArmsForeignMinister::CreateObject|?CreateObject@TArmsForeignMinister@@SGPAVCObject@@XZ|92|function|undefined CreateObject()|rtti
 533ff0|TArmsForeignMinister::GetRuntimeClass|?GetRuntimeClass@TArmsForeignMinister@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
@@ -3566,8 +3565,8 @@ address|name|symbol|size|type|prototype|provenance
 534080|TArmsForeignMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5340b0|TArmsForeignMinister::DestructTArmsForeignMinister||7|function|undefined DestructTArmsForeignMinister()|
 5340d0|InitializeArmsForeignMinisterOrderCandidates||135|function|undefined InitializeArmsForeignMinisterOrderCandidates()|
-534190|RunForeignMinisterVtableSlot90ArmsVariant||559|function|undefined RunForeignMinisterVtableSlot90ArmsVariant()|
-534450|DispatchNationInteractionAmountWithSharedSplitCache||404|function|undefined DispatchNationInteractionAmountWithSharedSplitCache()|
+534190|TArmsForeignMinister::SetTradeBids||559|function|void __thiscall SetTradeBids(void)|
+534450|TArmsForeignMinister::ReplyToTradeOffer||404|function|void __thiscall ReplyToTradeOffer(short,short,short,short)|
 534660|IncrementArmsCounter5EByFive||12|function|undefined IncrementArmsCounter5EByFive()|
 534680|TSortByPriceList::CreateObject|?CreateObject@TSortByPriceList@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5346f0|TSortByPriceList::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
@@ -3849,7 +3848,7 @@ address|name|symbol|size|type|prototype|provenance
 53fdc0|TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass||52|function|undefined TryResolveInvadeMissionTargetTerrainClass()|
 53fe10|TAttackProvinceMission::ResetInvadeMissionTargetTerrainClassAndRefresh||11|function|undefined ResetInvadeMissionTargetTerrainClassAndRefresh()|
 53fe30|RecomputeNationOrderPriorityMetrics||1217|function|undefined RecomputeNationOrderPriorityMetrics()|
-540440|ComputeBestNationTileDevelopmentScore||523|function|undefined ComputeBestNationTileDevelopmentScore()|
+540440|ComputeBestNationTileDevelopmentScore||523|function|int ComputeBestNationTileDevelopmentScore(short nationSlot)|
 540810|WrapperFor_ftol_At00540810||30|function|undefined WrapperFor_ftol_At00540810()|
 540840|TProxyGreatPower::CreateObject|?CreateObject@TProxyGreatPower@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 5408c0|TProxyGreatPower::ReturnFalseNationStateCapabilityFlag98||3|function|undefined ReturnTrueNationStateCapabilityFlag98()|
@@ -4109,14 +4108,12 @@ address|name|symbol|size|type|prototype|provenance
 5515d0|TAdmiral::Free||68|function|undefined Free()|
 551670|TAdmiral::WriteTo||101|function|undefined WriteTo()|
 551700|TAdmiral::ReadFrom||211|function|undefined ReadFrom()|
-551850|SelectNavyPrimaryOrderByNationAndRecomputePreferredChild||248|function|undefined SelectNavyPrimaryOrderByNationAndRecomputePreferredChild()|
+551850|TAdmiral::ReassignThyself||248|function|void __thiscall ReassignThyself()|
 5519d0|FindCumulativeWeightBucketIndex||29|function|undefined FindCumulativeWeightBucketIndex()|
 551a00|AccumulateRandomizedNavyOrderResourceDeltasByNationAndOwner||373|function|undefined AccumulateRandomizedNavyOrderResourceDeltasByNationAndOwner()|
 551be0|BuildNavyOrderResourceDeltaSummaryText||1110|function|undefined BuildNavyOrderResourceDeltaSummaryText()|
-552250|SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks||135|function|undefined SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks()|
-552336|OrphanRecovered_00552336_SelectPreferredOrderLoop||8|function|undefined OrphanRecovered_00552336_SelectPreferredOrderLoop()|
-552340|ObjectPool::OrphanRecovered_00552340_OverlappingStub||3|function|undefined OrphanRecovered_00552340_OverlappingStub()|
-552349|RecomputeNavyOrderSelectionPriorityChain_00552349||190|function|undefined RecomputeNavyOrderSelectionPriorityChain_00552349()|
+552250|TAdmiral::AssignToShip||135|function|void __thiscall AssignToShip(TShip * primaryOrderNode)|
+552310|TAdmiral::ReassignToZone||245|function|void __thiscall ReassignToZone(TZone * zone)|
 552450|RemoveDuplicateNavySecondaryOrdersByDisplayName||81|function|undefined RemoveDuplicateNavySecondaryOrdersByDisplayName()|
 552510|ObjectPool::FindMissionOrderNodeById||26|function|void * __thiscall FindMissionOrderNodeById(int nChildNodeId)|
 552590|DeleteMapOrderChildLinkAndReturnNext||40|function|int * __fastcall DeleteMapOrderChildLinkAndReturnNext(int * pChildLinkNode)|
@@ -4145,11 +4142,11 @@ address|name|symbol|size|type|prototype|provenance
 553b10|HasNoMapOrderEntryChildrenQueued||37|function|undefined HasNoMapOrderEntryChildrenQueued()|
 553b50|HasActiveMapOrderEntryChildren||71|function|undefined HasActiveMapOrderEntryChildren()|
 553bc0|GetOrCreateTaskForceOrderNodeByTemplate||293|function|undefined GetOrCreateTaskForceOrderNodeByTemplate()|
-553d40|ObjectPool::RemoveTaskForceOrderNodeById||180|function|undefined RemoveTaskForceOrderNodeById()|
+553d40|TTaskForce::Remove||180|function|void __thiscall Remove(TShip * ship)|
 553e30|RecomputeMapOrderChildAggregateMetric||44|function|void __fastcall RecomputeMapOrderChildAggregateMetric(int * pMapOrderEntry)|
 553f10|RebuildMapOrderEntryChildren||146|function|undefined RebuildMapOrderEntryChildren()|
 553fe0|PruneInactiveTaskForceOrderHead||154|function|undefined PruneInactiveTaskForceOrderHead()|
-5540b0|TScatteredShipsMission::ApplyMapOrderTypeAndQueue||424|function|void __thiscall ApplyMapOrderTypeAndQueue(int nOrderType, int nOrderArg)|
+5540b0|TTaskForce::SubmitOrders||424|function|void __thiscall SubmitOrders(int orderType, int orderArgument)|
 554300|ResolveMapOrderCommandFromActionContext||259|function|undefined ResolveMapOrderCommandFromActionContext()|
 554460|ResolveMapOrderCommandFromProvinceContext||40|function|undefined ResolveMapOrderCommandFromProvinceContext()|
 554590|CanQueueMapOrderForProvinceContext||103|function|undefined CanQueueMapOrderForProvinceContext()|
@@ -4163,7 +4160,7 @@ address|name|symbol|size|type|prototype|provenance
 554ad0|CalculateMapOrderEntryAverageChildRatingX10||64|function|undefined CalculateMapOrderEntryAverageChildRatingX10()|
 554b20|BuildTaskForceOrderBreakdownSummaryText||273|function|undefined BuildTaskForceOrderBreakdownSummaryText()|
 554c90|BuildTaskForceSelectionOverlayLabelText||370|function|undefined BuildTaskForceSelectionOverlayLabelText()|
-554e70|TToolBarCluster::BuildNavyOrderStatusLineText||400|function|undefined BuildNavyOrderStatusLineText()|
+554e70|TTaskForce::GetGeneralDescription||400|function|void __thiscall GetGeneralDescription(CString * out)|
 555090|PruneNavyOrderIfUnserviceableOrNoChildren||159|function|undefined PruneNavyOrderIfUnserviceableOrNoChildren()|
 5551d0|BuildTaskForcePrimaryObjectiveDescriptionText||450|function|undefined BuildTaskForcePrimaryObjectiveDescriptionText()|
 555420|ResolveTaskForceOrderConflictAndPickCandidate||608|function|undefined ResolveTaskForceOrderConflictAndPickCandidate()|
@@ -4191,7 +4188,7 @@ address|name|symbol|size|type|prototype|provenance
 5568f0|SerializeNavyOrderListsByNation||333|function|undefined SerializeNavyOrderListsByNation()|
 556aa0|TNavyMgr::ReadFrom||29|function|undefined DeserializeNavyManager()|
 556ad0|TNavyMgr::DeserializeNavyOrderListsByNation||915|function|void DeserializeNavyOrderListsByNation(TStream* stream, short nationFilter)|
-556f60|CancelNationOrdersAndResetPrimaryFlags||79|function|undefined CancelNationOrdersAndResetPrimaryFlags()|
+556f60|TNavyMgr::FreeShipsOf||79|function|void __thiscall FreeShipsOf(short nation)|
 556fd0|ResetPrimaryOrderActiveFlagsAndClearManagerState||67|function|undefined ResetPrimaryOrderActiveFlagsAndClearManagerState()|
 557040|TNavyMgr::ClearAllTransientOrders||47|function|void ClearAllTransientOrders(void)|mac-oracle
 557080|TNavyMgr::MoveMapOrderEntryToQueueHeadIfValid||123|function|unsigned char __thiscall MoveMapOrderEntryToQueueHeadIfValid(TTaskForce* entry)|
@@ -5247,7 +5244,7 @@ address|name|symbol|size|type|prototype|provenance
 597810|TMapUberPicture::RefreshMapOrderEntryPanel||246|function|void __thiscall RefreshMapOrderEntryPanel(void * pMapOrderEntry)|
 597950|TMapUberPicture::SetActiveMapOrderEntry||113|function|void __thiscall SetActiveMapOrderEntry(void * pMapOrderEntry)|
 5979f0|GetActiveMapOrderEntry||9|function|void * __thiscall GetActiveMapOrderEntry(void)|
-597a10|TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10||68|function|bool OrphanLeaf_NoCall_Ins23_00597a10(void)|
+597a10|TMapUberPicture::HasActiveMapInteractionSelection||68|function|bool HasActiveMapInteractionSelection(void)|listing
 597a80|TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick||996|function|void __thiscall CycleMapInteractionSelectionAfterHandledClick(void)|
 597f80|TMapUberPicture::InspectTaskForceDialog||1761|function|void __thiscall InspectTaskForceDialog(TTaskForce * taskForce)|
 598840|TToolBarCluster::InvalidateMapRegionForEntryIfUiPassive||29|function|undefined InvalidateMapRegionForEntryIfUiPassive()|
@@ -5266,7 +5263,7 @@ address|name|symbol|size|type|prototype|provenance
 5998a0|TToolBarCluster::TrySelectNextValidMapOrderEntry||217|function|byte __thiscall TrySelectNextValidMapOrderEntry(void * pMapInteractionState, byte fStartAfterCurrent)|
 5999f0|ResetMapInteractionToCivilianMode||21|function|void __thiscall ResetMapInteractionToCivilianMode(void * pMapInteractionState)|
 599a20|NotifyTaskForceSelectionListenerByWord62||24|function|undefined NotifyTaskForceSelectionListenerByWord62()|
-599a50|TacticalBattleView::EnterMapInteractionOverlayMode||252|function|undefined EnterMapInteractionOverlayMode()|
+599a50|TMapUberPicture::EnterMapInteractionOverlayMode||252|function|void __thiscall EnterMapInteractionOverlayMode(TView * controlOverride)|
 599b90|TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews||263|function|void __thiscall CommitPendingUiModeChangeAndRefreshViews(void)|
 599cf0|TMapUberPicture::DisplayMiniMap||541|function|void DisplayMiniMap()|macos-name-oracle:DisplayMiniMap()
 599fa0|TMapUberPicture::InvalidateMiniMap||23|function|void InvalidateMiniMap()|macos-name-oracle:InvalidateMiniMap() const
@@ -5298,11 +5295,11 @@ address|name|symbol|size|type|prototype|provenance
 59b070|CompareTacticalCursorEntriesByActionClassPriority||119|function|undefined CompareTacticalCursorEntriesByActionClassPriority()|
 59b110|TArmyPlayer::CreateObject|?CreateObject@TArmyPlayer@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 59b140|TArmyPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-59b170|TArmyPlayer::CreateTArmyPlayerInstance||7|function|undefined CreateTArmyPlayerInstance()|
+59b170|TArmyPlayer::~TArmyPlayer|??1TArmyPlayer@@UAE@XZ|7|function|void __thiscall ~TArmyPlayer()|
 59b190|TArmyPlayer::GetRuntimeClass||6|function|undefined GetTArmyPlayerClassNamePointer()|rtti
 59b1b0|TArmyPlayer::InitializeTacticalSideFromArmyUnitList||379|function|undefined InitializeTacticalSideFromArmyUnitList()|
 59b390|TArmyTacUnit::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-59b3c0|DestructTArmyPlayerAndMaybeFree_Impl||7|function|undefined DestructTArmyPlayerAndMaybeFree_Impl()|
+59b3c0|TArmyTacUnit::~TArmyTacUnit|??1TArmyTacUnit@@UAE@XZ|7|function|void __thiscall ~TArmyTacUnit()|
 59b3e0|TArmyPlayer::CommitTacticalResultsToSourceUnits||193|function|undefined OrphanRetStub_0059add0(void)|
 59b4f0|TArmyPlayer::RemoveTacticalUnitFromUnitList||55|function|undefined TArmyTacUnit_VtblSlot02(int param_1)|
 59b540|TArmyPlayer::AddTacticalUnitToUnitListHead||73|function|undefined TArmyTacUnit_VtblSlot03(int * param_1)|
@@ -5329,7 +5326,7 @@ address|name|symbol|size|type|prototype|provenance
 59ca26|WrapperFor_thunk_ApplyTacticalCursorModeProfile6_DefaultByActionClass_At0059ca26|||global||
 59ca32|SetLinkedListEntryState2CTo13ForAllNodes|||global||
 59caf0|TArmyPlayer::ApplyDefenderHoldLineStanceByActionClass||276|function|undefined ApplyTacticalCursorModeProfile0_ByActionClassCounts()|
-59cc70|IterateLinkedListCursorEntries_0059cc70||100|function|undefined IterateLinkedListCursorEntries_0059cc70()|
+59cc70|TArmyPlayer::AssignJobsByZeroCategory||100|function|void __thiscall AssignJobsByZeroCategory()|
 59cd00|TArmyPlayer::ApplyDefenderBombardStanceByActionClass||296|function|undefined ApplyTacticalCursorModeProfile2_ByActionClassCounts()|
 59ce90|TArmyPlayer::ApplyAttackerSiegeStanceByActionClass||296|function|undefined ApplyTacticalCursorModeProfile3_ClassAware()|
 59d020|TArmyPlayer::ApplyAttackerAssaultStanceByActionClass||272|function|undefined ApplyTacticalCursorModeProfile4_ClassAware()|
@@ -5356,28 +5353,28 @@ address|name|symbol|size|type|prototype|provenance
 59e110|TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics||568|function|undefined SelectBestTacticalTargetTileByActionHeuristics()|
 59e3e0|TArmyPlayer::AdvanceTacticalTurnPulse||203|function|undefined OrphanRetStub_0059ad90(void)|
 59e4f0|TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit||752|function|undefined RunTacticalAutoTurnControllerForActiveUnit()|
-59e8a0|BuildTacticalActionClassAndPositionFlags||201|function|undefined BuildTacticalActionClassAndPositionFlags()|
-59e9c0|IterateLinkedListCursorEntries_0059e9c0||114|function|undefined IterateLinkedListCursorEntries_0059e9c0()|
-59ea60|TArmyPlayer::TArmyTacUnit_VtblSlot09||166|function|undefined TArmyTacUnit_VtblSlot09()|
+59e8a0|TArmyPlayer::BuildTacticalActionClassAndPositionFlags||201|function|unsigned int __thiscall BuildTacticalActionClassAndPositionFlags(int referenceTileIndex, TTacticalUnit * unit)|
+59e9c0|TArmyPlayer::GetMinimumActiveUnitRangeForStates2Or4||114|function|int __thiscall GetMinimumActiveUnitRangeForStates2Or4()|
+59ea60|TArmyPlayer::SwitchToAutoPlay||166|function|unsigned char __thiscall SwitchToAutoPlay()|mac-oracle
 59eb40|TArmyPlayer::ProceedAfterBattleIntroAccepted||46|function|undefined OrphanRetStub_0059ae10(void)|
 59eb80|TNavyPlayer::CreateObject|?CreateObject@TNavyPlayer@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 59ebb0|TNavyPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-59ebe0|TNavyPlayer::CreateTNavyPlayerInstance||7|function|undefined CreateTNavyPlayerInstance()|
+59ebe0|TNavyPlayer::~TNavyPlayer|??1TNavyPlayer@@UAE@XZ|7|function|void __thiscall ~TNavyPlayer()|
 59ec00|TNavyPlayer::GetRuntimeClass||6|function|undefined GetTNavyPlayerClassNamePointer()|rtti
 59ed60|TNavyTacUnit::GetSourceTaskForce||4|function|undefined ConstructTNavyPlayerBaseState()|
 59ed80|TNavyTacUnit::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-59edb0|DestructTNavyPlayerAndMaybeFree_Impl||7|function|undefined DestructTNavyPlayerAndMaybeFree_Impl()|
+59edb0|TNavyTacUnit::~TNavyTacUnit|??1TNavyTacUnit@@UAE@XZ|7|function|void __thiscall ~TNavyTacUnit()|
 59edd0|TNavyPlayer::CommitTacticalResultsToSourceUnits||110|function|undefined OrphanRetStub_0059add0(void)|
 59ee60|TNavyPlayer::RemoveTacticalUnitFromUnitList||37|function|undefined Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059ee60(void)|
 59eea0|TNavyPlayer::AddTacticalUnitToUnitListHead||51|function|undefined AddOrderNodeToHeadAndReassignNationCounters(int * param_1)|
 59eef0|TNavyHumanPlayer::CreateObject|?CreateObject@TNavyHumanPlayer@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 59ef20|TNavyHumanPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-59ef50|TNavyHumanPlayer::CreateTNavyHumanPlayerInstance||7|function|undefined CreateTNavyHumanPlayerInstance()|
+59ef50|TNavyHumanPlayer::~TNavyHumanPlayer|??1TNavyHumanPlayer@@UAE@XZ|7|function|void __thiscall ~TNavyHumanPlayer()|
 59ef70|TNavyHumanPlayer::GetRuntimeClass||6|function|undefined GetTNavyHumanPlayerClassNamePointer()|rtti
 59efc0|TNavyHumanPlayer::DeploymentClick||89|function|void __thiscall DeploymentClick(int tileIndex)|
 59f040|TNavyAutoPlayer::CreateObject|?CreateObject@TNavyAutoPlayer@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 59f070|TNavyAutoPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-59f0a0|TNavyAutoPlayer::CreateTNavyAutoPlayerInstance||7|function|undefined CreateTNavyAutoPlayerInstance()|
+59f0a0|TNavyAutoPlayer::~TNavyAutoPlayer|??1TNavyAutoPlayer@@UAE@XZ|7|function|void __thiscall ~TNavyAutoPlayer()|
 59f0c0|TNavyAutoPlayer::GetRuntimeClass||6|function|undefined GetTNavyAutoPlayerClassNamePointer()|rtti
 59f110|TNavyAutoPlayer::StartBattle||64|function|undefined StartBattle(void)|
 59f160|TNavyAutoPlayer::AdvanceTacticalTurnPulse||428|function|undefined OrphanRetStub_0059ad90(void)|
@@ -5402,7 +5399,7 @@ address|name|symbol|size|type|prototype|provenance
 59ff20|TTacticalBattle::ComputeTacticalReachableTileCostsByUnitCategory||765|function|undefined ComputeTacticalReachableTileCostsByUnitCategory()|
 5a02e0|TTacticalBattle::PropagateTileAccessibilityStrengthLevels||251|function|undefined PropagateTileAccessibilityStrengthLevels()|
 5a0420|TTacticalBattle::ComputeHexNeighborTileIndices_005A0420||225|function|undefined ComputeHexNeighborTileIndices_005A0420()|
-5a0550|IsHexNeighborTileIndex||57|function|undefined IsHexNeighborTileIndex()|
+5a0550|TTacticalBattle::IsHexNeighborTileIndex||57|function|unsigned char __thiscall IsHexNeighborTileIndex(int tileIndex, int candidateTileIndex)|
 5a05a0|ComputeTacticalHoverCursorStateIndex||1002|function|undefined ComputeTacticalHoverCursorStateIndex()|
 5a0a90|ResolveTacticalHoverCursorToken||348|function|undefined ResolveTacticalHoverCursorToken()|
 5a0c50|TTacticalBattle::HandleTacticalBattleCommandTag||193|function|void __thiscall HandleTacticalBattleCommandTag(int commandTag)|
@@ -5507,7 +5504,7 @@ address|name|symbol|size|type|prototype|provenance
 5a6a20|InitializeTacticalUnitFacingOffsetTable||5022|function|undefined OrphanLeaf_NoCall_Ins838_005a6a20()|
 5a82b0|TTacticalBattleView::CreateObject|?CreateObject@TTacticalBattleView@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 5a8330|TTacticalBattleView::GetRuntimeClass||6|function|undefined GetTacticalBattleViewClassNamePointer()|rtti
-5a8350|TacticalBattleView::ConstructTacticalBattleViewBaseState||71|function|undefined ConstructTacticalBattleViewBaseState()|
+5a8350|TTacticalBattleView::TTacticalBattleView||71|function|void __thiscall TTacticalBattleView()|
 5a83c0|TTacticalBattleView::DrawTacticalTileInClipRect||3|function|undefined OrphanRetStub_005a83c0(void)|
 5a83e0|TTacticalBattleView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5a8430|TTacticalBattleView::Free||116|function|void __thiscall Free(void)|
@@ -5538,7 +5535,7 @@ address|name|symbol|size|type|prototype|provenance
 5a9d90|TTacArmyView::ConstructTTacArmyViewBaseState||1074|function|undefined ConstructTTacArmyViewBaseState()|
 5aa2e0|TTacArmyView::Draw||718|function|undefined DestructTTacArmyViewAndMaybeFree()|
 5aa670|TCivDescription::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy||257|function|undefined ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy()|
-5aa7d0|TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset||231|function|undefined ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset()|
+5aa7d0|TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset||231|function|undefined ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset()|
 5aa900|TTacArmyView::DrawTacticalTileInClipRect||6235|function|undefined OrphanRetStub_005a83c0(int param_1)|
 5ac780|TTacticalToolbar::CreateObject|?CreateObject@TTacticalToolbar@@SGPAVCObject@@XZ|128|function|undefined CreateObject()|rtti
 5ac820|TTacticalToolbar::GetRuntimeClass||6|function|undefined GetTTacticalToolbarClassNamePointer()|rtti
@@ -8655,6 +8652,8 @@ address|name|symbol|size|type|prototype|provenance
 6a327c|g_pLanguageMgr|||global||
 6a3338|g_pMapContextActionManager|||global||
 6a33b0|g_wMapDialogViewportTileSpan|||global||
+6a3a54|g_nArmsBasicResourceOfferSplitCount_006a3a54|||global||
+6a3a58|g_nArmsAdvancedResourceOfferSplitCount_006a3a58|||global||
 6a3a88|g_afNationOrderQueueDivergence_006a3a88|||global||
 6a3ac0|g_afNationOrderQueueDivergenceMirror_006a3ac0|||global||
 6a3ae0|g_afNationMobileUnitDivergence_006a3ae0|||global||

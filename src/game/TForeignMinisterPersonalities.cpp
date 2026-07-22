@@ -1,9 +1,13 @@
 #include "game/TForeignMinisterPersonalities.h"
 
 #include "game/TCity.h"
+#include "game/TCityInteriorMinister.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
+#include "game/TMapMgr.h"
 #include "game/TMinisterBaseOrderArray.h"
 #include "game/TSimMgr.h"
+#include "game/TSortByPriceList.h"
 #include "game/TStream.h"
 #include "game/TTechMgr.h"
 #include "game/TTradeMgr.h"
@@ -22,6 +26,56 @@ static bool HasAdvancedTradeResource(const TForeignMinister* minister) {
              .techStatusByTechId[0x13] == 2;
 }
 
+static inline short MinShort(short a, short b) {
+  return a < b ? a : b;
+}
+
+static inline void PreparePersonalityTradeBids(TForeignMinister* minister) {
+  minister->InitializeTradeStatus();
+  TGreatPower* owner = minister->ownerContextAt04;
+  if (minister->diplomacyPhaseCounter18 >= minister->tradeBidRefreshInterval1a ||
+      minister->WeNeedMoney() != 0) {
+    owner->interiorMinister->InteriorSlot1A(minister->interiorOrderKind1c);
+    minister->diplomacyPhaseCounter18 = 0;
+  }
+  minister->SetBuyPriorities();
+  if (minister->interiorBidResource10 != -10) {
+    short resourceCode = minister->interiorBidResource10;
+    owner->SetDiplomacyState1c6ClampedToCounterA4(resourceCode, -1);
+    minister->purchasePriorityByResource1e[resourceCode] = minister->interiorBidAmount12;
+  }
+  for (int index = 0; index < 4; ++index) {
+    owner->SetDiplomacyState1c6ClampedToCounterA4(minister->preferredResourceSlots40[index], -1);
+  }
+}
+
+static inline void AddSortedResourcePrice(TSortByPriceList* prices, short resourceCode) {
+  ResourcePriorityEntry entry;
+  entry.resourceCode = resourceCode;
+  entry.priority = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(resourceCode);
+  prices->InsertCopiedRecordSortedByComparator(&entry);
+}
+
+static inline short GetSortedResourceCode(TSortByPriceList* prices, int oneBasedIndex) {
+  ResourcePriorityEntry* entry =
+      static_cast<ResourcePriorityEntry*>(prices->GetPtrListEntryByOneBasedIndex(oneBasedIndex));
+  return entry->resourceCode;
+}
+
+static inline void SetTedStyleAdvancedResourceBid(TForeignMinister* minister, short threshold) {
+  TGreatPower* owner = minister->ownerContextAt04;
+  if (g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x10) > threshold &&
+      g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot) == 0) {
+    short available = owner->GetDiplomacyExternalStateByTarget(0x10);
+    short amount = static_cast<short>(available / 10);
+    if (amount > 2) {
+      owner->SetDiplomacyState1c6ClampedToCounterA4(0x10, amount);
+    } else if (available > 6) {
+      owner->SetDiplomacyState1c6ClampedToCounterA4(0x10, 2);
+    }
+  }
+}
+
 } // namespace
 
 // ===================== TTedForeignMinister (0x659d70) =====================
@@ -37,7 +91,7 @@ IMPLEMENT_DYNCREATE(TTedForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x005311d0
 TTedForeignMinister::TTedForeignMinister() : TForeignMinister() {
-  field1a = 4;
+  tradeBidRefreshInterval1a = 4;
   this->skillIndexC = 5;
 }
 
@@ -81,22 +135,102 @@ void TTedForeignMinister::SetBuyPriorities() {
 
 // FUNCTION: IMPERIALISM 0x00531550
 void TTedForeignMinister::SetTradeBids() {
-  // Partial port (RunForeignMinisterVtableSlot90TedVariant).
+  PreparePersonalityTradeBids(this);
+  TGreatPower* owner = ownerContextAt04;
+  short tradeCapacity = owner->tradeCapacity;
+  short resourceAmount = owner->GetDiplomacyExternalStateByTarget(0x0f);
+  if (owner->treasuryValue10 >= 0 && tradeCapacity > resourceAmount && resourceAmount < 10) {
+    owner->SetDiplomacyState1c6ClampedToCounterA4(0x0d,
+                                                  owner->GetDiplomacyExternalStateByTarget(0x0d));
+    owner->SetDiplomacyState1c6ClampedToCounterA4(0x0e,
+                                                  owner->GetDiplomacyExternalStateByTarget(0x0e));
+  } else {
+    short amount = MinShort(tradeCapacity, resourceAmount);
+    owner->SetDiplomacyState1c6ClampedToCounterA4(0x0f, amount);
+    if (tradeCapacity > amount * 2) {
+      owner->SetDiplomacyState1c6ClampedToCounterA4(0x0d,
+                                                    owner->GetDiplomacyExternalStateByTarget(0x0d));
+      owner->SetDiplomacyState1c6ClampedToCounterA4(0x0e,
+                                                    owner->GetDiplomacyExternalStateByTarget(0x0e));
+    }
+  }
+  SetTedStyleAdvancedResourceBid(this, 1500);
 }
 
 // FUNCTION: IMPERIALISM 0x00531770
 void TTedForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
                                             short resourceCode) {
-  (void)arg1;
-  (void)arg2;
-  (void)arg3;
-  (void)resourceCode;
-  // Partial port (DispatchNationInteractionAmountByModePolicyA).
+  if (purchasePriorityByResource1e[resourceCode] != 0) {
+    TForeignMinister::ReplyToTradeOffer(arg1, arg2, arg3, resourceCode);
+    return;
+  }
+  TGreatPower* owner = ownerContextAt04;
+  if (resourceCode == 3) {
+    if (tradePartnerEnabled49[3] != 0) {
+      capabilityFlag16 = static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(3) / 2);
+      tradePartnerEnabled49[3] = 0;
+    }
+    if (capabilityFlag16 >= arg2) {
+      g_pNationInteractionStateManager->DispatchProposalAmountSlot60(owner->nationSlot, arg1, arg2,
+                                                                     arg3, 3, 0, 0);
+      capabilityFlag16 = static_cast<short>(capabilityFlag16 - arg2);
+    } else {
+      g_pNationInteractionStateManager->DispatchProposalAmountSlot60(
+          owner->nationSlot, arg1, capabilityFlag16, arg3, 3, 1, 0);
+      capabilityFlag16 = 0;
+    }
+    return;
+  }
+  if (resourceCode == 2 || resourceCode == 4 || resourceCode == 6) {
+    short available =
+        static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
+    short amount =
+        available >= arg2
+            ? arg2
+            : static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
+    g_pNationInteractionStateManager->DispatchProposalAmountSlot60(owner->nationSlot, arg1, amount,
+                                                                   arg3, resourceCode, 0, 0);
+    return;
+  }
+  if (resourceCode == 0 || resourceCode == 1) {
+    short amount = owner->tradeCapacity < 15 ? 1 : (owner->tradeCapacity >= 30 ? 3 : 2);
+    amount = MinShort(amount, arg2);
+    short available =
+        static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
+    if (available < amount) {
+      amount = static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
+    }
+    g_pNationInteractionStateManager->DispatchProposalAmountSlot60(owner->nationSlot, arg1, amount,
+                                                                   arg3, resourceCode, 0, 0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00531a10
 void TTedForeignMinister::DoFirstTurnDiplomacy() {
-  // Partial port (QueueTedFourRandomAvailableTerrainActionsCode133).
+  short selectedNations[4] = {0, 0, 0, 0};
+  short selectedCount = 0;
+  short attempts = 0;
+  while (selectedCount < 4) {
+    if (attempts > 15) {
+      return;
+    }
+    ++attempts;
+    short candidate = static_cast<short>(abs(rand()) % 0x10 + 7);
+    bool duplicate = false;
+    for (int index = 0; index < selectedCount; ++index) {
+      if (selectedNations[index] == candidate) {
+        duplicate = true;
+      }
+    }
+    if (!duplicate &&
+        !g_pGlobalMapState->TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(
+            ownerContextAt04->nationSlot, candidate) &&
+        g_apTerrainTypeDescriptorTable[candidate] != 0) {
+      selectedNations[selectedCount] = candidate;
+      ownerContextAt04->ApplyDiplomacyPolicyStateForTargetWithCostChecks(candidate, 0x133);
+      ++selectedCount;
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00531af0
@@ -122,8 +256,8 @@ IMPLEMENT_DYNCREATE(TBillForeignMinister, TMinister)
 TBillForeignMinister::TBillForeignMinister() : TForeignMinister() {
   orderFlag80 = 0;
   field48 = 1;
-  field1c = 1;
-  field1a = 4;
+  interiorOrderKind1c = 1;
+  tradeBidRefreshInterval1a = 4;
   skillIndexC = 4;
 }
 
@@ -164,27 +298,151 @@ void TBillForeignMinister::SetBuyPriorities() {
 
 // FUNCTION: IMPERIALISM 0x00531e50
 void TBillForeignMinister::SetTradeBids() {
-  // Partial port (RunForeignMinisterVtableSlot90BillVariant).
+  PreparePersonalityTradeBids(this);
+  TGreatPower* owner = ownerContextAt04;
+  short targetAmount = owner->treasuryValue10 < 0 ? owner->tradeCapacity
+                                                  : static_cast<short>(owner->tradeCapacity / 2);
+  TSortByPriceList* prices = new TSortByPriceList();
+  prices->recordSize14 = sizeof(ResourcePriorityEntry);
+  AddSortedResourcePrice(prices, 0x0d);
+  AddSortedResourcePrice(prices, 0x0e);
+  AddSortedResourcePrice(prices, 0x0f);
+  short amounts[0x11] = {0};
+  int selectedOrdinal = 3;
+  int iteration = 0;
+  while (targetAmount > 0 && iteration < targetAmount * 3) {
+    short resourceCode = GetSortedResourceCode(prices, selectedOrdinal);
+    if (amounts[resourceCode] < owner->GetDiplomacyExternalStateByTarget(resourceCode)) {
+      ++amounts[resourceCode];
+      owner->SetDiplomacyState1c6ClampedToCounterA4(resourceCode, amounts[resourceCode]);
+    }
+    if (amounts[0x0d] + amounts[0x0e] + amounts[0x0f] >= targetAmount) {
+      break;
+    }
+    --selectedOrdinal;
+    if (selectedOrdinal == 0) {
+      selectedOrdinal = 3;
+    }
+    ++iteration;
+  }
+  prices->ReleasePtrList();
+  SetTedStyleAdvancedResourceBid(this, 1500);
 }
 
 // FUNCTION: IMPERIALISM 0x00532190
 void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
                                              short resourceCode) {
-  (void)arg1;
-  (void)arg2;
-  (void)arg3;
-  (void)resourceCode;
-  // Partial port (DispatchNationInteractionAmountByModePolicyB).
+  if (purchasePriorityByResource1e[resourceCode] != 0) {
+    TForeignMinister::ReplyToTradeOffer(arg1, arg2, arg3, resourceCode);
+    return;
+  }
+  TGreatPower* owner = ownerContextAt04;
+  short available;
+  short amount;
+  if (resourceCode == 2) {
+    if (g_pNationInteractionStateManager->QueryProposalWeightSlot4C(3) >= 105 &&
+        g_pNationInteractionStateManager->QueryProposalWeightSlot4C(4) >= 105) {
+      if (tradePartnerEnabled49[2] != 0) {
+        capabilityFlag16 = static_cast<short>(owner->GetDiplomacyCounterA2() / 3);
+        if (capabilityFlag16 < 2) {
+          capabilityFlag16 = 2;
+        }
+        tradePartnerEnabled49[2] = 0;
+      }
+      available = owner->GetDiplomacyCounterA2();
+      amount = MinShort(capabilityFlag16, available);
+      if (amount >= arg2) {
+        g_pNationInteractionStateManager->DispatchProposalAmountSlot60(owner->nationSlot, arg1,
+                                                                       arg2, arg3, 2, 0, 0);
+        capabilityFlag16 = static_cast<short>(capabilityFlag16 - arg2);
+        if (capabilityFlag16 < 0) {
+          capabilityFlag16 = 0;
+        }
+      } else {
+        g_pNationInteractionStateManager->DispatchProposalAmountSlot60(owner->nationSlot, arg1,
+                                                                       amount, arg3, 2, 1, 0);
+        capabilityFlag16 = 0;
+      }
+    } else {
+      available = owner->GetDiplomacyCounterA2();
+      amount = available >= arg2 ? arg2 : owner->GetDiplomacyCounterA2();
+      g_pNationInteractionStateManager->DispatchProposalAmountSlot60(owner->nationSlot, arg1,
+                                                                     amount, arg3, 2, 0, 0);
+    }
+    return;
+  }
+  if (resourceCode == 3) {
+    if (tradePartnerEnabled49[3] != 0) {
+      capabilityFlag16 = static_cast<short>(owner->GetDiplomacyCounterA2() / 2);
+      tradePartnerEnabled49[3] = 0;
+    }
+    amount = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(4) < 105
+                 ? arg2
+                 : capabilityFlag16;
+    amount = MinShort(amount, arg2);
+    available = owner->GetDiplomacyCounterA2();
+    if (available >= amount) {
+      g_pNationInteractionStateManager->DispatchProposalAmountSlot60(owner->nationSlot, arg1,
+                                                                     amount, arg3, 3, 0, 0);
+      capabilityFlag16 = static_cast<short>(capabilityFlag16 - amount);
+    } else {
+      g_pNationInteractionStateManager->DispatchProposalAmountSlot60(
+          owner->nationSlot, arg1, owner->GetDiplomacyCounterA2(), arg3, 3, 1, 0);
+      capabilityFlag16 = 0;
+    }
+    return;
+  }
+  if (resourceCode == 4 || resourceCode == 6) {
+    available = owner->GetDiplomacyCounterA2();
+    if (available >= arg2) {
+      g_pNationInteractionStateManager->DispatchProposalAmountSlot60(owner->nationSlot, arg1, arg2,
+                                                                     arg3, resourceCode, 0, 0);
+      if (resourceCode == 4) {
+        capabilityFlag16 = static_cast<short>(capabilityFlag16 - arg2);
+      }
+    } else {
+      g_pNationInteractionStateManager->DispatchProposalAmountSlot60(
+          owner->nationSlot, arg1, owner->GetDiplomacyCounterA2(), arg3, resourceCode,
+          resourceCode == 4, 0);
+      if (resourceCode == 4) {
+        capabilityFlag16 = 0;
+      }
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00532520
 void TBillForeignMinister::DoFirstTurnDiplomacy() {
-  // Partial port (QueueDiplomatTwoRandomAvailableTerrainActionsCode133).
+  short selectedNations[2] = {0, 0};
+  short selectedCount = 0;
+  short attempts = 0;
+  while (selectedCount < 2) {
+    if (attempts > 15) {
+      return;
+    }
+    ++attempts;
+    short candidate = static_cast<short>(abs(rand()) % 0x10 + 7);
+    if ((selectedCount == 0 || selectedNations[0] != candidate) &&
+        !g_pGlobalMapState->TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(
+            ownerContextAt04->nationSlot, candidate) &&
+        g_apTerrainTypeDescriptorTable[candidate] != 0) {
+      selectedNations[selectedCount] = candidate;
+      ownerContextAt04->ApplyDiplomacyPolicyStateForTargetWithCostChecks(candidate, 0x133);
+      ++selectedCount;
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005325e0
 void TBillForeignMinister::DoSecondTurnDiplomacy() {
-  // Partial port (QueueDiplomatTwoCompatibleMatrixActionsCode5A).
+  short selectedCount = 0;
+  for (short candidate = 7; candidate < 0x17 && selectedCount < 2; ++candidate) {
+    if (g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
+            ownerContextAt04->nationSlot, candidate) >= 1) {
+      ownerContextAt04->SetTradePolicyTo(static_cast<NationSlot>(candidate), 0x5a);
+      ++selectedCount;
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00532650
@@ -220,7 +478,20 @@ TDiplomatForeignMinister::TDiplomatForeignMinister() : TForeignMinister() {}
 
 // FUNCTION: IMPERIALISM 0x00532840
 void TDiplomatForeignMinister::DoFirstTurnDiplomacy() {
-  // Partial port (QueueDiplomatWeightedTerrainActionRunCode133).
+  int roll = rand() % 100;
+  short firstNation;
+  if (roll < 25) {
+    firstNation = 7;
+  } else if (roll < 50) {
+    firstNation = 11;
+  } else if (roll < 75) {
+    firstNation = 15;
+  } else {
+    firstNation = 19;
+  }
+  for (short nation = firstNation; nation < firstNation + 4; ++nation) {
+    ownerContextAt04->ApplyDiplomacyPolicyStateForTargetWithCostChecks(nation, 0x133);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005328d0
@@ -294,17 +565,55 @@ void TDiplomatForeignMinister::SetBuyPriorities() {
 
 // FUNCTION: IMPERIALISM 0x00532c60
 void TDiplomatForeignMinister::SetTradeBids() {
-  // Partial port (RunForeignMinisterPolicySlot28VariantA).
+  PreparePersonalityTradeBids(this);
+  TGreatPower* owner = ownerContextAt04;
+  short targetAmount = owner->treasuryValue10 < 0 ? owner->tradeCapacity
+                                                  : static_cast<short>(owner->tradeCapacity / 2);
+  TSortByPriceList* prices = new TSortByPriceList();
+  prices->recordSize14 = sizeof(ResourcePriorityEntry);
+  AddSortedResourcePrice(prices, 0x0d);
+  AddSortedResourcePrice(prices, 0x0e);
+  AddSortedResourcePrice(prices, 0x0f);
+  short amounts[0x11] = {0};
+  int selectedOrdinal = 3;
+  int iteration = 0;
+  while (targetAmount > 0 && iteration < targetAmount * 3) {
+    short resourceCode = GetSortedResourceCode(prices, selectedOrdinal);
+    if (amounts[resourceCode] < owner->GetDiplomacyExternalStateByTarget(resourceCode)) {
+      ++amounts[resourceCode];
+      owner->SetDiplomacyState1c6ClampedToCounterA4(resourceCode, amounts[resourceCode]);
+    }
+    if (amounts[0x0d] + amounts[0x0e] + amounts[0x0f] >= targetAmount) {
+      break;
+    }
+    --selectedOrdinal;
+    if (selectedOrdinal == 0) {
+      selectedOrdinal = 3;
+    }
+    ++iteration;
+  }
+  prices->ReleasePtrList();
+  if (g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x10) > 1200 &&
+      owner->GetDiplomacyExternalStateByTarget(0x10) > 6 &&
+      g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot) == 0) {
+    owner->SetDiplomacyState1c6ClampedToCounterA4(0x10, 2);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00532f70
 void TDiplomatForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
                                                  short resourceCode) {
-  (void)arg1;
-  (void)arg2;
-  (void)arg3;
-  (void)resourceCode;
-  // Partial port (RunForeignMinisterPolicySlot30VariantA).
+  if (purchasePriorityByResource1e[resourceCode] != 0) {
+    TForeignMinister::ReplyToTradeOffer(arg1, arg2, arg3, resourceCode);
+    return;
+  }
+  TGreatPower* owner = ownerContextAt04;
+  short amount = owner->tradeCapacity < 12 ? 1 : (owner->tradeCapacity >= 25 ? 3 : 2);
+  amount = MinShort(amount,
+                    static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode)));
+  amount = MinShort(amount, arg2);
+  g_pNationInteractionStateManager->DispatchProposalAmountSlot60(owner->nationSlot, arg1, amount,
+                                                                 arg3, resourceCode, 0, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00533050
@@ -354,17 +663,49 @@ void TTextileForeignMinister::SetBuyPriorities() {
 
 // FUNCTION: IMPERIALISM 0x00533380
 void TTextileForeignMinister::SetTradeBids() {
-  // Partial port (RunForeignMinisterPolicySlot28VariantB).
+  short tradeCapacity = ownerContextAt04->tradeCapacity;
+  PreparePersonalityTradeBids(this);
+  TGreatPower* owner = ownerContextAt04;
+  short textileAmount = owner->GetDiplomacyExternalStateByTarget(0x0d);
+  if (owner->treasuryValue10 < 0 || textileAmount >= tradeCapacity ||
+      (textileAmount > 4 &&
+       g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0d) > 1000)) {
+    owner->SetDiplomacyState1c6ClampedToCounterA4(0x0d, MinShort(textileAmount, tradeCapacity));
+  }
+  if (owner->treasuryValue10 < 0 || owner->QueryNationMetricBySlot7C(0x0d) == 0) {
+    short budget = static_cast<short>(tradeCapacity / 2);
+    short firstResource = 0x0e;
+    short secondResource = 0x0f;
+    if (g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0f) >
+        g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0e)) {
+      firstResource = 0x0f;
+      secondResource = 0x0e;
+    }
+    short firstAmount = MinShort(budget, owner->GetDiplomacyExternalStateByTarget(firstResource));
+    owner->SetDiplomacyState1c6ClampedToCounterA4(firstResource, firstAmount);
+    short remaining = static_cast<short>(budget - firstAmount);
+    owner->SetDiplomacyState1c6ClampedToCounterA4(
+        secondResource,
+        MinShort(remaining, owner->GetDiplomacyExternalStateByTarget(secondResource)));
+  }
+  SetTedStyleAdvancedResourceBid(this, 1500);
 }
 
 // FUNCTION: IMPERIALISM 0x00533670
 void TTextileForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
                                                 short resourceCode) {
-  (void)arg1;
-  (void)arg2;
-  (void)arg3;
-  (void)resourceCode;
-  // Partial port (DispatchNationInteractionAmountWithAvailableCap).
+  if (purchasePriorityByResource1e[resourceCode] != 0) {
+    TForeignMinister::ReplyToTradeOffer(arg1, arg2, arg3, resourceCode);
+    return;
+  }
+  TGreatPower* owner = ownerContextAt04;
+  short available = static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
+  short amount =
+      available >= arg2
+          ? arg2
+          : static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
+  g_pNationInteractionStateManager->DispatchProposalAmountSlot60(owner->nationSlot, arg1, amount,
+                                                                 arg3, resourceCode, 0, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00533780
@@ -429,22 +770,73 @@ void TTraderForeignMinister::SetBuyPriorities() {
 
 // FUNCTION: IMPERIALISM 0x00533b10
 void TTraderForeignMinister::SetTradeBids() {
-  // Partial port (RunForeignMinisterPolicySlot28VariantC).
+  PreparePersonalityTradeBids(this);
+  TGreatPower* owner = ownerContextAt04;
+  TSortByPriceList* prices = new TSortByPriceList();
+  prices->recordSize14 = sizeof(ResourcePriorityEntry);
+  AddSortedResourcePrice(prices, 0x0d);
+  AddSortedResourcePrice(prices, 0x0e);
+  AddSortedResourcePrice(prices, 0x0f);
+  short divisor = owner->treasuryValue10 < 0 ? 1 : 4;
+  short budget = static_cast<short>(owner->tradeCapacity / divisor);
+  int selectedOrdinal = 3;
+  short allocated = 0;
+  while (budget > allocated && selectedOrdinal >= 1) {
+    short resourceCode = GetSortedResourceCode(prices, selectedOrdinal);
+    short amount = owner->GetDiplomacyExternalStateByTarget(resourceCode);
+    owner->SetDiplomacyState1c6ClampedToCounterA4(resourceCode, amount);
+    allocated =
+        static_cast<short>(allocated + owner->GetDiplomacyExternalStateByTarget(resourceCode));
+    --selectedOrdinal;
+  }
+  prices->ReleasePtrList();
+  if (g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x10) > 1200 &&
+      owner->GetDiplomacyExternalStateByTarget(0x10) > 6 &&
+      g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot) == 0) {
+    owner->SetDiplomacyState1c6ClampedToCounterA4(0x10, 2);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00533db0
 void TTraderForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
                                                short resourceCode) {
-  (void)arg1;
-  (void)arg2;
-  (void)arg3;
-  (void)resourceCode;
-  // Partial port (DispatchNationInteractionAmountWithFallbackVariant).
+  if (purchasePriorityByResource1e[resourceCode] != 0) {
+    TForeignMinister::ReplyToTradeOffer(arg1, arg2, arg3, resourceCode);
+    return;
+  }
+  TGreatPower* owner = ownerContextAt04;
+  short available = static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
+  short amount =
+      available >= arg2
+          ? arg2
+          : static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
+  g_pNationInteractionStateManager->DispatchProposalAmountSlot60(
+      owner->nationSlot, arg1, amount, arg3, resourceCode, available < arg2, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00533e90
 void TTraderForeignMinister::DoFirstTurnDiplomacy() {
-  // Partial port (QueueTraderFourRandomTerrainActionsCode133).
+  short selectedNations[4] = {0, 0, 0, 0};
+  short selectedCount = 0;
+  short attempts = 0;
+  while (selectedCount < 4) {
+    if (attempts > 15) {
+      return;
+    }
+    ++attempts;
+    short candidate = static_cast<short>(abs(rand()) % 0x10 + 7);
+    bool duplicate = false;
+    for (int index = 0; index < selectedCount; ++index) {
+      if (selectedNations[index] == candidate) {
+        duplicate = true;
+      }
+    }
+    if (!duplicate && g_apTerrainTypeDescriptorTable[candidate] != 0) {
+      selectedNations[selectedCount] = candidate;
+      ownerContextAt04->ApplyDiplomacyPolicyStateForTargetWithCostChecks(candidate, 0x133);
+      ++selectedCount;
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00533f50
@@ -466,8 +858,8 @@ IMPLEMENT_DYNCREATE(TArmsForeignMinister, TMinister)
 // FUNCTION: IMPERIALISM 0x00534010
 TArmsForeignMinister::TArmsForeignMinister() : TForeignMinister() {
   field48 = 1;
-  field1a = 4;
-  field1c = 1;
+  tradeBidRefreshInterval1a = 4;
+  interiorOrderKind1c = 1;
   skillIndexC = 0;
 }
 
@@ -492,17 +884,76 @@ void TArmsForeignMinister::SetBuyPriorities() {
 
 // FUNCTION: IMPERIALISM 0x00534190
 void TArmsForeignMinister::SetTradeBids() {
-  // Partial port (RunForeignMinisterVtableSlot90ArmsVariant).
+  PreparePersonalityTradeBids(this);
+  TGreatPower* owner = ownerContextAt04;
+  TSortByPriceList* prices = new TSortByPriceList();
+  prices->recordSize14 = sizeof(ResourcePriorityEntry);
+  AddSortedResourcePrice(prices, 0x0d);
+  AddSortedResourcePrice(prices, 0x0e);
+  AddSortedResourcePrice(prices, 0x0f);
+  short budget = static_cast<short>(owner->tradeCapacity / 2);
+  int selectedOrdinal = 3;
+  short allocated = 0;
+  while (allocated < budget && selectedOrdinal >= 1) {
+    short resourceCode = GetSortedResourceCode(prices, selectedOrdinal);
+    short amount = MinShort(owner->GetDiplomacyExternalStateByTarget(resourceCode),
+                            static_cast<short>(budget - allocated));
+    owner->SetDiplomacyState1c6ClampedToCounterA4(resourceCode, amount);
+    allocated = static_cast<short>(allocated + amount);
+    --selectedOrdinal;
+  }
+  prices->ReleasePtrList();
+  if (owner->treasuryValue10 < 0 &&
+      g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot) == 0) {
+    short available = owner->GetDiplomacyExternalStateByTarget(0x10);
+    short amount = static_cast<short>(available / 10);
+    if (amount > 10) {
+      amount = 10;
+    }
+    if (amount > 2) {
+      owner->SetDiplomacyState1c6ClampedToCounterA4(0x10, amount);
+    } else if (available > 6) {
+      owner->SetDiplomacyState1c6ClampedToCounterA4(0x10, 2);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00534450
 void TArmsForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
                                              short resourceCode) {
-  (void)arg1;
-  (void)arg2;
-  (void)arg3;
-  (void)resourceCode;
-  // Partial port (DispatchNationInteractionAmountWithSharedSplitCache).
+  if (purchasePriorityByResource1e[resourceCode] != 0) {
+    TForeignMinister::ReplyToTradeOffer(arg1, arg2, arg3, resourceCode);
+    return;
+  }
+  TGreatPower* owner = ownerContextAt04;
+  bool eligibleForSplit;
+  short* splitCount;
+  if (HasAdvancedTradeResource(this)) {
+    eligibleForSplit = resourceCode == 2 || resourceCode == 3 || resourceCode == 4;
+    splitCount = &g_nArmsAdvancedResourceOfferSplitCount_006a3a58;
+  } else {
+    eligibleForSplit = resourceCode >= 0 && resourceCode <= 3;
+    splitCount = &g_nArmsBasicResourceOfferSplitCount_006a3a54;
+  }
+  if (eligibleForSplit) {
+    if (tradePartnerEnabled49[resourceCode] != 0) {
+      short divisor = *splitCount == 0 ? 3 : 2;
+      capabilityFlag16 = static_cast<short>(owner->GetDiplomacyCounterA2() / divisor);
+      ++*splitCount;
+    }
+    tradePartnerEnabled49[resourceCode] = 0;
+  } else {
+    capabilityFlag16 = owner->GetDiplomacyCounterA2();
+  }
+  if (capabilityFlag16 >= arg2) {
+    g_pNationInteractionStateManager->DispatchProposalAmountSlot60(owner->nationSlot, arg1, arg2,
+                                                                   arg3, resourceCode, 0, 0);
+    capabilityFlag16 = static_cast<short>(capabilityFlag16 - arg2);
+  } else {
+    g_pNationInteractionStateManager->DispatchProposalAmountSlot60(
+        owner->nationSlot, arg1, capabilityFlag16, arg3, resourceCode, 1, 0);
+    capabilityFlag16 = 0;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00534660

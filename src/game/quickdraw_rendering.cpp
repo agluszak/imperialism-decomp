@@ -622,13 +622,63 @@ void __cdecl BlitRectWithOptionalTransparency(TQuickDrawBlitSurface* srcSurface,
   } else {
     int srcPitch = srcSurface->stride;
     int dstPitch = dstSurface->stride;
-    unsigned char* srcPtr = srcSurface->pixelBits + srcRect->top * srcPitch + srcRect->left;
-    unsigned char* dstPtr = dstSurface->pixelBits + dstRect->top * dstPitch + dstRect->left;
     int rowCount = CRect(srcRect).Height();
     int rowBytes = CRect(srcRect).Width();
     if (rowCount < 0) {
       rowCount = -rowCount;
     }
+
+    // The GDI branch clips off-screen rectangles for us. Memory-backed GWorlds need the
+    // equivalent paired clipping before forming their pixel pointers: strategic-map hover
+    // restoration can legitimately request a cached tile at (-32, -64), which otherwise
+    // starts the destination copy before the DIB allocation.
+    int srcX = srcRect->left;
+    int srcY = srcRect->top;
+    int dstX = dstRect->left;
+    int dstY = dstRect->top;
+    int trim = dstSurface->clipRect.left - dstX;
+    if (trim > 0) {
+      srcX += trim;
+      dstX += trim;
+      rowBytes -= trim;
+    }
+    trim = srcSurface->clipRect.left - srcX;
+    if (trim > 0) {
+      srcX += trim;
+      dstX += trim;
+      rowBytes -= trim;
+    }
+    if (dstX + rowBytes > dstSurface->clipRect.right) {
+      rowBytes = dstSurface->clipRect.right - dstX;
+    }
+    if (srcX + rowBytes > srcSurface->clipRect.right) {
+      rowBytes = srcSurface->clipRect.right - srcX;
+    }
+
+    trim = dstSurface->clipRect.top - dstY;
+    if (trim > 0) {
+      srcY += trim;
+      dstY += trim;
+      rowCount -= trim;
+    }
+    trim = srcSurface->clipRect.top - srcY;
+    if (trim > 0) {
+      srcY += trim;
+      dstY += trim;
+      rowCount -= trim;
+    }
+    if (dstY + rowCount > dstSurface->clipRect.bottom) {
+      rowCount = dstSurface->clipRect.bottom - dstY;
+    }
+    if (srcY + rowCount > srcSurface->clipRect.bottom) {
+      rowCount = srcSurface->clipRect.bottom - srcY;
+    }
+    if (rowBytes <= 0 || rowCount <= 0) {
+      return;
+    }
+
+    unsigned char* srcPtr = srcSurface->pixelBits + srcY * srcPitch + srcX;
+    unsigned char* dstPtr = dstSurface->pixelBits + dstY * dstPitch + dstX;
     if ((blitFlags & 0x24) != 0x24) {
       while (rowCount-- != 0) {
         memcpy(dstPtr, srcPtr, rowBytes);
