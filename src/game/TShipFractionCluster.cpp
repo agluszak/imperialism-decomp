@@ -2,6 +2,8 @@
 #include "game/TWindow.h"
 
 #include "game/TOcean.h"
+#include "game/TMapUberPicture.h"
+#include "game/TPicture.h"
 #include "game/TTaskForce.h"
 #include "game/TTechMgr.h"
 #include "game/global_data_tables.h"
@@ -26,17 +28,16 @@ IMPLEMENT_DYNCREATE(TShipFractionCluster, TCluster)
 void TShipFractionCluster::DoPostCreate(int arg) {
   TCluster::DoPostCreate(arg);
 
-  mainSelectionView8c = GetWindow()->ResolveControlByTag(kControlTagMain);
+  mainSelectionView8c =
+      static_cast<TMapUberPicture*>(GetWindow()->ResolveControlByTag(kControlTagMain));
   mainSelectionView8c->AssertValid();
 
-  TView* shipControl = ResolveControlByTag(kControlTagShip);
+  TPicture* shipControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagShip));
   shipControl->AssertValid();
 
   short slot = GetEnabledIndustryCapabilitySlotByClass(static_cast<short>(controlTag - 0x7330));
   if (slot != 0) {
-    // The original also calls shipControl's own vtbl slot 0x1c8 (LoadUiStringAndDispatch
-    // ViaVslot1C8-shaped) here with a computed (slot + 0x5e6, 0) argument pair -- exact
-    // group/index semantics not resolved, so left unmodeled.
+    shipControl->SetPictureResourceIdAndRefresh(static_cast<short>(slot + 0x5e6), 0);
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2716, static_cast<short>(slot + 1),
                                                           controlTag);
     SetEnabled(1, 1);
@@ -56,30 +57,21 @@ void TShipFractionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, 
     if (selectedShipCount94 < availableShipCount88) {
       selectedShipCount94 = static_cast<short>(selectedShipCount94 + 1);
       shipCountButton90->SetValue(selectedShipCount94, 1);
-      SelectTaskForceOrderForActiveNationClass(1);
+      g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
+                                                            1);
+      mainSelectionView8c->UpdateRoster();
     }
   } else if (commandId == 0x65) {
     if (selectedShipCount94 > 0) {
       selectedShipCount94 = static_cast<short>(selectedShipCount94 - 1);
       shipCountButton90->SetValue(selectedShipCount94, 1);
-      SelectTaskForceOrderForActiveNationClass(0);
+      g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
+                                                            0);
+      mainSelectionView8c->UpdateRoster();
     }
   } else {
     TCluster::DoEvent(commandId, sourceHandler, event);
   }
-}
-
-// Shared tail for the increment/decrement handlers above: reselects this cluster's task
-// force order entry for the active nation class and notifies the main selection view's
-// listener.
-void TShipFractionCluster::SelectTaskForceOrderForActiveNationClass(char activeFlag) {
-  g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
-                                                        activeFlag);
-  // TODO: the original then calls mainSelectionView8c's own vtable slot 0x1b0 with an arg
-  // read from a sub-object at mainSelectionView8c+0xa0
-  // (NotifyTaskForceSelectionListenerByWord62, 0x599a20). Its concrete class beyond
-  // TView isn't confirmed, so this notify step is left unmodeled rather than guessing a
-  // type for the +0xa0 field.
 }
 
 // The original names this via a stale/reused symbol ("TToolBarCluster::..."); confirmed as

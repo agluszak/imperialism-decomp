@@ -69,5 +69,5 @@ void TNavyRoster::Close() {
   TMapDialog* mapDialog = mapUberPicture->subview2A8;
   mapDialog->suppressMarkerOverlay34C = false;
   mapDialog->ResetAllTileMarkersToSentinel();
-  mapUberPicture->unresolvedZeroA0 = 0;
+  mapUberPicture->navyRosterA0 = 0;
 }
