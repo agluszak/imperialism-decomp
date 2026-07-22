@@ -2,6 +2,7 @@
 
 #include "game/CString.h"
 #include "game/TObject.h"
+#include "game/map_domain_types.h"
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
 #include "game/strategic_terrain.h"
@@ -120,7 +121,7 @@ struct Province {
   unsigned char fortLevel03; // fort level (indexes g_awEngineerFortBuildCostByLevel)
   // +0x04 — tile index this city record is anchored to (-1 = none); rebound by
   // the 0x00516100-family setters and matched against TCountry::homeTileIndex.
-  short cityTileIndex04;
+  StrategicTileIndex cityTileIndex04;
   short lastTurnTick;
   signed char adjacentRegionCount08;
   unsigned char pad09;
@@ -129,7 +130,7 @@ struct Province {
   short adjacentRegionIds0A[0xc];
   // +0x22 parallel array: for each adjacent record above, one representative linked
   // tile of THIS record that borders it (written alongside the id insert in 0x50f860).
-  short adjacentRegionAnchorTiles22[0xc];
+  StrategicTileIndex adjacentRegionAnchorTiles22[0xc];
   signed char linkedRegionCount;
   unsigned char byte3B;
   unsigned char byte3C;
@@ -138,8 +139,8 @@ struct Province {
   // TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority (0x50fca0) via a
   // per-terrainKindStorage00 priority table (g_anStrategicTerrainNeighborLinkPriority), with same-city
   // neighbors preferred; also snapshotted by the city-redraw packet.
-  short secondaryNeighborTileIndex3e; // 0x3e
-  short primaryNeighborTileIndex40;   // 0x40
+  StrategicTileIndex secondaryNeighborTileIndex3e; // 0x3e
+  StrategicTileIndex primaryNeighborTileIndex40;   // 0x40
   short linkedRegionIds[0x20];
   // 0x82..0x95 — per-resource-type development counters, indexed by resourceType - 7
   // (resource types 7..0x10). One array everywhere: the development advance
@@ -184,11 +185,11 @@ int __fastcall GetProvinceIndex(Province* province);
 
 // 0x5127e0: tileIndex -> (hex raster column*2 (+1 on odd rows), row = tileIndex/0x6c).
 // Genuine __cdecl free function (pure arithmetic).
-void SplitTileIndexToHexRasterColumnX2AndRow(short tileIndex, short* outColX2,
+void SplitTileIndexToHexRasterColumnX2AndRow(StrategicTileIndex tileIndex, short* outColX2,
                                              unsigned short* outRow);
 // 0x5125a0: tileIndex -> (row = tileIndex/0x6c, col = tileIndex%0x6c). Genuine __cdecl
 // free function (pure arithmetic); Ghidra's TMapDialog:: label is spurious (no `this`).
-void SplitTileIndexToRowAndColumn(short tileIndex, short* outRow, short* outCol);
+void SplitTileIndexToRowAndColumn(StrategicTileIndex tileIndex, short* outRow, short* outCol);
 
 // 0x005114b0. Maps an editor river connection mask to the tile-sprite variant stored in
 // TTerrainStateRecordView::roadFlag. Water tiles accept only a single direction bit; land
@@ -198,7 +199,7 @@ short __stdcall ResolveRiverSpriteVariantForConnectionMask(unsigned char connect
 // 0x5123e0: recordBase + recordIndex * 0x6c (strided record address). __cdecl free function.
 int ComputeStridedRecordAddress6C(int recordBase, int recordIndex);
 // 0x563990 — walks the terrain-flow chain from tileIndex to the nearest sea tile.
-short TraceTerrainFlowToNearestSeaTile(short tileIndex);
+StrategicTileIndex TraceTerrainFlowToNearestSeaTile(StrategicTileIndex tileIndex);
 
 struct HexSpiralSearchState {
   int row;
@@ -210,21 +211,24 @@ struct HexSpiralSearchState {
 
 // 0x00512dd0. Hex direction (0-6) from sourceTile to destTile on the 0x6c(108)-wide map. Free
 // __cdecl function (no `this`), defined in TMapMgr.cpp.
-extern "C" short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short destTile);
+extern "C" short __cdecl GetHexDirectionBetweenTiles(StrategicTileIndex sourceTile,
+                                                     StrategicTileIndex destTile);
 
 // 0x00512930. Heap-allocates (`operator new`, caller frees via `operator delete`) and fills a
 // `radius*6`-entry tile-index ring around centerTileIndex: each of the 6 hex directions gets
 // one "corner" tile at exactly `radius` steps out, followed by (radius-1) more tiles walking
 // the ring's edge toward the next corner. Distinct from the stack-buffer, direct-neighbors-only
 // ComputeHexNeighborTileIndices. Free __cdecl function (no `this`), defined in TMapMgr.cpp.
-extern "C" short* __cdecl BuildHexAreaTileIndexList(short centerTileIndex, short radius);
+extern "C" StrategicTileIndex* __cdecl BuildHexAreaTileIndexList(StrategicTileIndex centerTileIndex,
+                                                                 short radius);
 
 // VTABLE: IMPERIALISM 0x006587e0
 class TMapMgr : public TObject {
 public:
   // Writes one tile's action/marker byte and invalidates that tile in the active map view.
   // Ground truth receives this manager in ECX and returns with two stack args consumed.
-  void SetMapTileStateByteAndNotifyObserver(short tileIndex, int stateByte); // 0x515e00
+  void SetMapTileStateByteAndNotifyObserver(StrategicTileIndex tileIndex,
+                                            int stateByte); // 0x515e00
   // Retail callers pass g_pGlobalMapState in ECX; the body intentionally does not
   // inspect the receiver and returns the constant province-order weight.
   short GetProvinceUnitOrderWeight(short provinceId); // 0x5184e0
@@ -252,7 +256,7 @@ public:
                                                    char* tuningOverride);   // slot 0x0b 0x50ec90
   virtual undefined LoadPoliticalMapRegionSubtypeTableFromResourceStream(); // slot 0x0c 0x50f200
   virtual unsigned char*
-  UpdateMapTileAdjacencyMasksAndVariantForTile(short tileIndex); // slot 0x0d 0x510210
+  UpdateMapTileAdjacencyMasksAndVariantForTile(StrategicTileIndex tileIndex); // slot 0x0d 0x510210
   // If tileIndex's gateFlag != 1 (not yet initialized): resets the strategic terrain kind
   // to plains and
   // resourceTypeByEdge to {0x11, 0xff}, refreshes gateFlag via
@@ -269,7 +273,7 @@ public:
   // gap for a land/land owner or city mismatch. Finishes by OR-ing in 0x40/0x80 compound
   // flags on cityBorderMask08 and ownerBorderMask07 based on specific neighbor-pair
   // mismatches.
-  virtual void UpdateTileNeighborBorderInfluenceCounters(short tileIndex,
+  virtual void UpdateTileNeighborBorderInfluenceCounters(StrategicTileIndex tileIndex,
                                                          short mode); // slot 0x0f 0x50fe10
   // Map-gen resource-type assignment for a single tile: for water, marks
   // resourceTypeByEdge[0]=0x13 if any hex neighbor is land; for the other seven terrain kinds,
@@ -277,7 +281,8 @@ public:
   // (mountain can additionally fill resourceTypeByEdge[1]), then always resolves and
   // stores the tile's border/subtype code via ResolveRegionTileSubtypeCodeForTileIndex into
   // gateFlag.
-  virtual short UpdateStrategicMapTileIconVariantState(short tileIndex); // slot 0x10 0x511610
+  virtual short
+  UpdateStrategicMapTileIconVariantState(StrategicTileIndex tileIndex); // slot 0x10 0x511610
   // For each of the 7 nations: collects every linkedRegionIds entry across that nation's
   // owned cities into a heap scratch array, tallies resourceTypeByEdge occurrences by type
   // (0-23) across those regions, then for resourceType 3 and (independently) 4 whose tally
@@ -321,13 +326,15 @@ public:
   // sourceTile to destTile into sourceTile's adjacencyBits06, and the opposite direction's
   // bit into destTile's adjacencyBits06. Real signature has 3 stack slots (RET 0xc); the
   // third is never read.
-  virtual void SetHexAdjacencyDirectionFlagsForTilePair(short sourceTile, short destTile,
+  virtual void SetHexAdjacencyDirectionFlagsForTilePair(StrategicTileIndex sourceTile,
+                                                        StrategicTileIndex destTile,
                                                         int unusedParam3); // slot 0x1a 0x513f60
   // Walks terrainStateTable[tileIndex].firstCivilianOrder20 (a TCivUnit list threaded via
   // TUnit::nextOnTile) for a node whose orderType matches.
-  virtual bool TileHasCivilianOrderOfType(short tileIndex, short orderType); // slot 0x1b 0x514310
+  virtual bool TileHasCivilianOrderOfType(StrategicTileIndex tileIndex,
+                                          short orderType); // slot 0x1b 0x514310
   // Same walk as above, additionally requiring TUnit::field_8 == field8Value.
-  virtual bool TileHasCivilianOrderOfTypeAndField8(short tileIndex, short orderType,
+  virtual bool TileHasCivilianOrderOfTypeAndField8(StrategicTileIndex tileIndex, short orderType,
                                                    short field8Value); // slot 0x1c 0x514360
   // Seeds recruitSearchVisited0e across all tiles: 1 (already visited/blocked) for every
   // tile NOT owned by ownerNationTag, 0 (unvisited seed candidate) for tiles it owns, and
@@ -492,31 +499,34 @@ public:
   // g_abUniversityRequirementLevelById[resourceType][developmentClassNibbles0c's high
   // nibble if g_abResourceTypeUsesHighNibbleFlag[resourceType] is set, else the raw
   // (unmasked) byte].
-  virtual byte FindResourceCapabilityRequirementLevel(short tileIndex,
+  virtual byte FindResourceCapabilityRequirementLevel(StrategicTileIndex tileIndex,
                                                       short edgeIndex); // slot 0x31 0x513610
-  virtual byte GetTileCivilianWorkOrderCostClassNibble(short nTileIndex,
+  virtual byte GetTileCivilianWorkOrderCostClassNibble(StrategicTileIndex nTileIndex,
                                                        char fUseHighNibble); // slot 0x32 0x513660
   // Packs value into developmentClassNibbles0c's low or high nibble (selectHighNibble
   // picks which); when writing the high nibble with a positive value and param4 != 0,
   // also sets pendingDevelopmentFlag0d = 0x7f.
-  virtual void SetCivilianDevelopmentClassNibble(short tileIndex, char selectHighNibble, byte value,
+  virtual void SetCivilianDevelopmentClassNibble(StrategicTileIndex tileIndex,
+                                                 char selectHighNibble, byte value,
                                                  char param4); // slot 0x33 0x5136a0
   // For each of tileIndex's 2 resourceTypeByEdge entries (skipping the -1 sentinel) whose
   // g_abResourceTypeCapabilityCategory matches categoryCode, reads
   // g_pCityOrderCapabilityState->capabilityValueByNationAndResource[nationSlot][resourceType]
   // and returns the max across both edges (0 if neither qualifies).
-  virtual short FindMaxResourceCapabilityValueForTile(short tileIndex, char categoryCode,
+  virtual short FindMaxResourceCapabilityValueForTile(StrategicTileIndex tileIndex,
+                                                      char categoryCode,
                                                       int nationSlot); // slot 0x34 0x513720
   // Finds the edge (0 or 1) whose resourceTypeByEdge matches resourceType, then dispatches
   // to FindResourceCapabilityRequirementLevel (slot 0x31) for that edge; 0 if no edge
   // matches.
   virtual byte
-  FindResourceCapabilityRequirementLevelByType(short tileIndex,
+  FindResourceCapabilityRequirementLevelByType(StrategicTileIndex tileIndex,
                                                char resourceType); // slot 0x35 0x5135a0
   // Looks up the TTown marker for tileIndex on its owning nation's townMarkerList
   // (g_apNationStates[terrainStateTable[tileIndex].ownerNationTag04]->townMarkerList),
   // matching TTown::tileIndex14 == tileIndex.
-  virtual class TTown* FindTownMarkerForTileByOwnerNation(short tileIndex); // slot 0x36 0x513170
+  virtual class TTown*
+  FindTownMarkerForTileByOwnerNation(StrategicTileIndex tileIndex); // slot 0x36 0x513170
   // Updates terrainStateTable[regionId]'s owner nation, refreshes its own and its 6
   // neighbors' border-influence counters via UpdateTileNeighborBorderInfluenceCounters, and
   // -- if the tile carries a town (activeFlags1c & 0x14) and the old owner is a great power
@@ -528,14 +538,14 @@ public:
   // sprite, indexed by gateFlag and/or spriteVariantIndex01. Tables verified via
   // raw-listing + ghidra-read-data at 0x38: 0x696f10, 0x39: 0x696f50, 0x3a: 0x696f60,
   // 0x3b: 0x697000.
-  virtual short
-  LookupTileSpriteVariantOffsetByTerrainAndGate(short nTileIndex); // slot 0x38 0x516150
-  virtual short
-  LookupTileSpriteVariantOffsetByAdjacencyMaskB(short nTileIndex); // slot 0x39 0x5161a0
-  virtual short
-  LookupTileSpriteVariantOffsetByGateAndVariant(short nTileIndex); // slot 0x3a 0x5161e0
-  virtual short
-  LookupTileSpriteVariantOffsetByGateAndVariantAlt(short nTileIndex); // slot 0x3b 0x516220
+  virtual short LookupTileSpriteVariantOffsetByTerrainAndGate(
+      StrategicTileIndex nTileIndex); // slot 0x38 0x516150
+  virtual short LookupTileSpriteVariantOffsetByAdjacencyMaskB(
+      StrategicTileIndex nTileIndex); // slot 0x39 0x5161a0
+  virtual short LookupTileSpriteVariantOffsetByGateAndVariant(
+      StrategicTileIndex nTileIndex); // slot 0x3a 0x5161e0
+  virtual short LookupTileSpriteVariantOffsetByGateAndVariantAlt(
+      StrategicTileIndex nTileIndex); // slot 0x3b 0x516220
   // Body is a 64x7 lookup table (`table[bitmaskIndex][direction]`), materialized as
   // literal per-element stack stores in the original (not static rodata) -- reproduced
   // as a local (non-static) initializer to match. Column 0 always equals the row index
@@ -564,12 +574,12 @@ public:
   // developmentStage (0/1/2 -> 0x700/0x740/0x780); else falls back to the >=7 family
   // (0x9c0/0x980).
   virtual int
-  GetMapImprovementOffsetByActiveFlagsAndCityStage(short tileIndex,
+  GetMapImprovementOffsetByActiveFlagsAndCityStage(StrategicTileIndex tileIndex,
                                                    short categoryCode); // slot 0x40 0x517540
   // Real signature has 2 stack slots (RET 8); the second is never read. Dispatches to
   // FindTownMarkerForTileByOwnerNation (slot 0x36) and combines its transportLinkedFlag4c
   // with activeFlags1c bits 2/4 to pick one of 6 fixed bitmap offsets.
-  virtual short GetMapImprovementOffsetByTownTransportLink(short tileIndex,
+  virtual short GetMapImprovementOffsetByTownTransportLink(StrategicTileIndex tileIndex,
                                                            int unusedParam2); // slot 0x41 0x517600
   // (index + 0x23) << 6 -- a bitmap-strip row offset, 64 bytes/row; sits in the same
   // "map improvement" offset family as the following GetMapImprovementTierBucketOffset/
@@ -599,13 +609,15 @@ public:
   // Bitmap tile-sprite offset (16-byte cells) for a tile's improvement class, gated on
   // activeFlags1c bits 0/5/2 (checked in that priority order) and scaled by
   // ownerNationTag04 below tier 7, else a fixed overflow cell.
-  virtual short GetMapImprovementTileSpriteOffset(short tileIndex); // slot 0x48 0x5177f0
+  virtual short
+  GetMapImprovementTileSpriteOffset(StrategicTileIndex tileIndex); // slot 0x48 0x5177f0
   // slot 0x49 0x5145b0 -- RET 8 confirms two stack args (the earlier pMapContext/param_4 were
   // Ghidra artifacts); every call site passes (tile index, owner nation tag).
-  virtual int QueueDepotConstructionOrder(short nTileIndex, short nNationId);
-  virtual void QueuePortConstructionOrder(short nTileIndex, short nNationId); // slot 0x4a 0x5147d0
-  virtual void SetProvinceCapitalTileFlagBit08(short nProvinceId);            // slot 0x4b 0x5149d0
-  virtual void FloodFillTileRegionMarker(short nTileIndex,
+  virtual int QueueDepotConstructionOrder(StrategicTileIndex nTileIndex, short nNationId);
+  virtual void QueuePortConstructionOrder(StrategicTileIndex nTileIndex,
+                                          short nNationId);        // slot 0x4a 0x5147d0
+  virtual void SetProvinceCapitalTileFlagBit08(short nProvinceId); // slot 0x4b 0x5149d0
+  virtual void FloodFillTileRegionMarker(StrategicTileIndex nTileIndex,
                                          short nOwnerNationId); // slot 0x4c 0x5143d0
   // Moves cityRecordIndex's anchor to nTileIndex (real call into
   // SetRegionTileSubtypeAndRefreshNeighborFlags), sets its activeFlags1c to 0x37 (0x17 then
@@ -617,7 +629,7 @@ public:
   // it. Finishes by calling EnsurePortZoneForTile(nTileIndex) and refreshing nTileIndex's
   // gateFlag via ResolveRegionTileSubtypeCodeForTileIndex.
   virtual void
-  SetTileTransportFlagsTo0x37AndRefreshNeighbors(short nTileIndex,
+  SetTileTransportFlagsTo0x37AndRefreshNeighbors(StrategicTileIndex nTileIndex,
                                                  short nOwnerNationId); // slot 0x4d 0x514a20
 
   // Recomputes the per-region strategic-score heatmap (cityScoreTable[*].cityScoreValue)
@@ -664,19 +676,22 @@ public:
   // Real CString, not a raw char* -- ~TMapMgr's own decompile (0x50e490) shows an explicit
   // CString::~CString() call on this field (LEA ECX,[this+0x1c]; CALL 0x6058e2), the sole
   // action the base destructor performs.
-  CString scenarioTagText1c;          // +0x1c
-  char hexNeighborWrapHorizontally20; // +0x20
-  char pad21;                         // +0x21
-  short pendingRiverMouthTile22;      // +0x22 -- tile awaiting a river-mouth variant assign
-  unsigned char field24;              // +0x24 -- zeroed by the ctor; no observed reader yet
+  CString scenarioTagText1c;                  // +0x1c
+  char hexNeighborWrapHorizontally20;         // +0x20
+  char pad21;                                 // +0x21
+  StrategicTileIndex pendingRiverMouthTile22; // +0x22 -- pending river-mouth tile
+  unsigned char field24;                      // +0x24 -- zeroed by the ctor; no observed reader yet
 
-  static void ComputeHexNeighborTileIndices(short tileIndex, short* neighborTiles,
+  static void ComputeHexNeighborTileIndices(StrategicTileIndex tileIndex,
+                                            StrategicTileIndex* neighborTiles,
                                             char wrapHorizontally);
-  static short GetWrappedHexNeighborTileIndexByDirection(short tileIndex, short direction);
-  static short StepHexTileIndexByDirectionWithWrapRules(short tileIndex, short direction);
+  static StrategicTileIndex GetWrappedHexNeighborTileIndexByDirection(StrategicTileIndex tileIndex,
+                                                                      short direction);
+  static StrategicTileIndex StepHexTileIndexByDirectionWithWrapRules(StrategicTileIndex tileIndex,
+                                                                     short direction);
   static bool StepHexRowColByDirectionWithWrapRules(int* row, int* col, int direction);
   static void AdvanceSpiralSearchStateAndStepHexCoordinates(struct HexSpiralSearchState* state);
-  static short TileIndexFromRowCol(int row, int col);
+  static StrategicTileIndex TileIndexFromRowCol(int row, int col);
 
   int ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot, char wrapBias);
 
@@ -700,16 +715,20 @@ public:
   // body comment.
   char AreAllLinkedEntriesTerrainFlagBit2Clear(int regionIndex);
   void SetRegionDevelopmentStageByte(short regionId, unsigned char stage);
-  int SetTileTransportFlags(short nTileIndex, unsigned short wTileTransportFlags);
-  void ApplyRailSectionEndpointDirectionFlags(short sourceTile, short destTile, short ownerNation);
+  int SetTileTransportFlags(StrategicTileIndex nTileIndex, unsigned short wTileTransportFlags);
+  void ApplyRailSectionEndpointDirectionFlags(StrategicTileIndex sourceTile,
+                                              StrategicTileIndex destTile, short ownerNation);
   // 0x514080. Rescind counterpart -- see the .cpp body comment.
-  void ApplyEngineerRailCostDeltaForConnectedTiles(short tileA, short tileB, short ownerNation);
-  short FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex, char allowActiveFlag2);
+  void ApplyEngineerRailCostDeltaForConnectedTiles(StrategicTileIndex tileA,
+                                                   StrategicTileIndex tileB, short ownerNation);
+  StrategicTileIndex
+  FindReachableRecruitSpawnTileWithVisitedReset(StrategicTileIndex startTileIndex,
+                                                char allowActiveFlag2);
   // 0x515f40. Write a city display-name CString into cityScoreTable[cityRecordIndex]+0xa4.
   void SetGlobalMapCellSharedLabel(int cityRecordIndex, CString* name);
   // 0x518b40. Developer purchase cost of a tile's two edge resources (weights the trade
   // manager's proposal-weight metric). Reattributed from TCivToolbar (heuristic 46).
-  int CalculateDeveloperTilePurchaseCost(short nTileIndex);
+  int CalculateDeveloperTilePurchaseCost(StrategicTileIndex nTileIndex);
 
   // 0x517f80. For each of cityRecordIndex's adjacent regions that itself has at least one
   // adjacent region, appends it to nodeBuffer (capacity assumed by caller) once if
@@ -737,48 +756,48 @@ public:
   // 0x5112f0/0x511360/0x5113d0/0x511440. Predicate helpers for the variant resolver:
   // each returns 1 iff the neighbor tile's byte-2 feature code is in a specific set of
   // adjacency-continuation codes (west-run set A/B, north-run set C/D).
-  char CheckTileVariantCodeMembershipSetA(short tileIndex);
-  char CheckTileVariantCodeMembershipSetB(short tileIndex);
-  char CheckTileVariantCodeMembershipSetC(short tileIndex);
-  char CheckTileVariantCodeMembershipSetD(short tileIndex);
+  char CheckTileVariantCodeMembershipSetA(StrategicTileIndex tileIndex);
+  char CheckTileVariantCodeMembershipSetB(StrategicTileIndex tileIndex);
+  char CheckTileVariantCodeMembershipSetC(StrategicTileIndex tileIndex);
+  char CheckTileVariantCodeMembershipSetD(StrategicTileIndex tileIndex);
 
   // 0x513ed0. True if either of the tile's two edge resources is a prospecting-discovery
   // candidate (codes 3/4/0x15/0x16, or 6 when the active nation has a production order).
-  byte CheckTileProspectingDiscoveryCandidate(short nTileIndex);
+  byte CheckTileProspectingDiscoveryCandidate(StrategicTileIndex nTileIndex);
   // 0x5137b0. Port construction is allowed beside a sea hex, or on a road/flow tile
   // whose flow reaches sea without crossing a nation boundary.
-  char CanBuildPortAtTile(short tileIndex);
+  char CanBuildPortAtTile(StrategicTileIndex tileIndex);
   // 0x513ca0 -- whether tileIndex reaches a sea tile (hex neighbour or terrain-flow
   // chain) owned outside the active type-3/4 diplomatic mask; receiver is
   // g_pGlobalMapState at every callsite.
-  char HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(short tileIndex);
+  char HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(StrategicTileIndex tileIndex);
 
   // 0x514110. Resolves a tile's border/subtype icon code from its StrategicTerrainKind, keyed off
   // resourceTypeByEdge[0]/gateFlag/activeFlags1c depending on terrain class; falls back to
   // returning gateFlag verbatim once it's been assigned (non-(-1)). Called by the region
   // subtype/border-refresh family (0x50f200, 0x5107e0, 0x511a70, 0x514a20, 0x515f80) and by
   // UpdateStrategicMapTileIconVariantState (0x511610).
-  short ResolveRegionTileSubtypeCodeForTileIndex(short tileIndex);
+  short ResolveRegionTileSubtypeCodeForTileIndex(StrategicTileIndex tileIndex);
 
-  TCivUnit* GetFirstCivilianOrderOnTile(short tileIndex) {
+  TCivUnit* GetFirstCivilianOrderOnTile(StrategicTileIndex tileIndex) {
     return terrainStateTable[tileIndex].firstCivilianOrder20;
   }
 
   // 0x514250. Walks the tile's civilian-order chain (GetFirstCivilianOrderOnTile) for the
   // first entry owned by nationId. Reattributed from TCivToolbar (Ghidra bucket heuristic;
   // `this` at the callsite is the global map state, not a TCivToolbar).
-  TCivUnit* GetTileUnitEntryByOwner(short tileIndex, short nationId);
+  TCivUnit* GetTileUnitEntryByOwner(StrategicTileIndex tileIndex, short nationId);
 
   // 0x513980, 632 bytes, __thiscall, 1 arg (tileIndex), returns bool. Called by
   // SeedValidCitySiteCandidateTilesForNation. TODO stub: large body not
   // yet ported.
-  bool IsValidSecondaryNationHomeTileCandidate(short tileIndex);
+  bool IsValidSecondaryNationHomeTileCandidate(StrategicTileIndex tileIndex);
 
   // Reset tileIndex's transport/anchor flags to the base state: re-anchor its city
   // record to it (SetRegionTileSubtypeAndRefreshNeighborFlags), drop its port zone if
   // the 0x4 flag was set, write activeFlags1c = 1 then set the 0x20 anchor bit, and
   // refresh the neighbor connection mask. 0x518990, __thiscall, RET 4.
-  void ResetTileToBaseTransportFlag(short tileIndex);
+  void ResetTileToBaseTransportFlag(StrategicTileIndex tileIndex);
 
   char CallMetricSlotC4(int regionIndex, int edgeIndex);
   short QueryIconStripXSlot110(int iconCode);

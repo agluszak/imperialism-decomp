@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TTacticalPlayer.h"
+#include "game/map_domain_types.h"
 #include "game/mfc.h"
 
 class TArmyStack;
@@ -28,7 +29,7 @@ public:
   // slot 0x10 AlwaysTrueTacticalPredicate10 inherited unchanged (0x59adf0)
   virtual void ProceedAfterBattleIntroAccepted() override;   // slot 0x11 0x59eb40
   virtual void AutoDeploySideUnitsAndMarkReady();            // slot 0x12 0x59bc80
-  virtual void DeploymentClick(int tileIndex);               // slot 0x13 0x59c3c0
+  virtual void DeploymentClick(TacticalTileIndex tileIndex); // slot 0x13 0x59c3c0
   virtual void RunTacticalAutoTurnControllerForActiveUnit(); // slot 0x14 0x59e4f0
   // Mac oracle: SwitchToAutoPlay. Applies the side's confirmation gate before AI control.
   virtual unsigned char SwitchToAutoPlay(); // slot 0x15 0x59ea60
@@ -45,11 +46,11 @@ public:
   short maxNonArtilleryUnitRange42; // +0x42 same, skipping aiClass-2 units
   int lastAppliedCursorMode44;      // +0x44 init -1; SelectAndApply... early-outs on equality
   // Target-selection mode: == 1 also engages morale-broken (state1c == 1) units.
-  int field48;             // +0x48
-  int field4C;             // +0x4c init -1; cached fort-bombardment target tile for indirect fire
-  char randomParityByte50; // +0x50 coin flip at side init (move-first side?)
-  char field51;            // +0x51 init 0
-  unsigned char pad52[2];  // +0x52
+  int field48;                           // +0x48
+  int cachedFortBombardmentTargetTile4c; // +0x4c init -1; cached fort-bombardment target tile for indirect fire
+  char randomParityByte50;               // +0x50 coin flip at side init (move-first side?)
+  char field51;                          // +0x51 init 0
+  unsigned char pad52[2];                // +0x52
 
   // Both original construction sites (0x5a4790, 0x5a4990) inline the ctor as a bare
   // vptr store.
@@ -103,7 +104,7 @@ public:
                                                      int flag); // 0x59e110
   // Encodes the unit's action class, adjacency, deploy-mark, and battlefield-position
   // properties into the bit mask consumed by the tactical action selector.
-  unsigned int BuildTacticalActionClassAndPositionFlags(int referenceTileIndex,
+  unsigned int BuildTacticalActionClassAndPositionFlags(TacticalTileIndex referenceTileIndex,
                                                         TTacticalUnit* unit); // 0x59e8a0
   // Minimum GetUnitRange among active units in AI states 2 or 4; 1000 if none.
   int GetMinimumActiveUnitRangeForStates2Or4(); // 0x59e9c0
@@ -111,25 +112,36 @@ public:
   // The fifteen per-tile heuristic scorers driven (via the 0x6994c0 member-function-
   // pointer table) by SelectBestTacticalTileByWeightedHeuristics; entry i pairs with
   // weight column i of g_anTacticalTileHeuristicWeightsByAiState_00699500.
-  int ScoreTacticalTileHoldPositionBonus(TTacticalUnit* unit, int tileIndex); // 0x59d6b0
+  int ScoreTacticalTileHoldPositionBonus(TTacticalUnit* unit,
+                                         TacticalTileIndex tileIndex); // 0x59d6b0
   int ScoreTacticalTileFireOpportunityAndTargetApproach(TTacticalUnit* unit,
-                                                        int tileIndex);              // 0x59d6e0
-  int ScoreTacticalTileSapperWallApproachColumn(TTacticalUnit* unit, int tileIndex); // 0x59d810
-  int ScoreTacticalTileAdjacentEnemyContact(TTacticalUnit* unit, int tileIndex);     // 0x59d8a0
+                                                        TacticalTileIndex tileIndex); // 0x59d6e0
+  int ScoreTacticalTileSapperWallApproachColumn(TTacticalUnit* unit,
+                                                TacticalTileIndex tileIndex); // 0x59d810
+  int ScoreTacticalTileAdjacentEnemyContact(TTacticalUnit* unit,
+                                            TacticalTileIndex tileIndex); // 0x59d8a0
   int ScoreTacticalTileEnemyEngagementExposureCount(TTacticalUnit* unit,
-                                                    int tileIndex);                  // 0x59d940
-  int ScoreTacticalTileRetreatEdgeRowProximity(TTacticalUnit* unit, int tileIndex);  // 0x59da20
-  int ScoreTacticalTileCoverTerrainBonus(TTacticalUnit* unit, int tileIndex);        // 0x59dac0
-  int ScoreTacticalTileAdjacentRallyTargetBonus(TTacticalUnit* unit, int tileIndex); // 0x59db00
-  int ScoreTacticalTileDistanceFieldAdvance(TTacticalUnit* unit, int tileIndex);     // 0x59dba0
-  int ScoreTacticalTileFriendlyArtillerySpacing(TTacticalUnit* unit, int tileIndex); // 0x59dbe0
+                                                    TacticalTileIndex tileIndex); // 0x59d940
+  int ScoreTacticalTileRetreatEdgeRowProximity(TTacticalUnit* unit,
+                                               TacticalTileIndex tileIndex); // 0x59da20
+  int ScoreTacticalTileCoverTerrainBonus(TTacticalUnit* unit,
+                                         TacticalTileIndex tileIndex); // 0x59dac0
+  int ScoreTacticalTileAdjacentRallyTargetBonus(TTacticalUnit* unit,
+                                                TacticalTileIndex tileIndex); // 0x59db00
+  int ScoreTacticalTileDistanceFieldAdvance(TTacticalUnit* unit,
+                                            TacticalTileIndex tileIndex); // 0x59dba0
+  int ScoreTacticalTileFriendlyArtillerySpacing(TTacticalUnit* unit,
+                                                TacticalTileIndex tileIndex); // 0x59dbe0
   int ScoreTacticalTileArtilleryFiringLaneColumn(TTacticalUnit* unit,
-                                                 int tileIndex); // 0x59dcd0
+                                                 TacticalTileIndex tileIndex); // 0x59dcd0
   int ScoreTacticalTileEnemyArtilleryExposureCount(TTacticalUnit* unit,
-                                                   int tileIndex);                   // 0x59dd40
-  int ScoreTacticalTileEngageableEnemyStandoff(TTacticalUnit* unit, int tileIndex);  // 0x59de30
-  int ScoreTacticalTileEnemyArtilleryHuntBonus(TTacticalUnit* unit, int tileIndex);  // 0x59dfe0
-  int ScoreTacticalTileEnemyEdgeColumnZoneBonus(TTacticalUnit* unit, int tileIndex); // 0x59e0d0
+                                                   TacticalTileIndex tileIndex); // 0x59dd40
+  int ScoreTacticalTileEngageableEnemyStandoff(TTacticalUnit* unit,
+                                               TacticalTileIndex tileIndex); // 0x59de30
+  int ScoreTacticalTileEnemyArtilleryHuntBonus(TTacticalUnit* unit,
+                                               TacticalTileIndex tileIndex); // 0x59dfe0
+  int ScoreTacticalTileEnemyEdgeColumnZoneBonus(TTacticalUnit* unit,
+                                                TacticalTileIndex tileIndex); // 0x59e0d0
 
   // Builds the side's tactical unit records from the stack's army unit chain and
   // stores the stack into armyStack28. 0x0059b1b0, __thiscall, ret 0x10.
@@ -142,7 +154,8 @@ ASSERT_SIZE(TArmyPlayer, 0x54);
 // The per-tile heuristic scorer table type (0x6994c0, declared in
 // global_data_tables.h): entry i pairs with weight column i of
 // g_anTacticalTileHeuristicWeightsByAiState_00699500.
-typedef int (TArmyPlayer::*TacticalTileHeuristicScorerFn)(TTacticalUnit* unit, int tileIndex);
+typedef int (TArmyPlayer::*TacticalTileHeuristicScorerFn)(TTacticalUnit* unit,
+                                                          TacticalTileIndex tileIndex);
 
 // Distribution-similarity score between a five-component vector and a reference
 // profile row (movsx short reads). Owned alongside its only tactical

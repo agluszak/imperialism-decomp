@@ -22,14 +22,15 @@ public:
       TTacticalUnit* unit) override; // slot 0x0a 0x5a59f0
   // slot 0x0b PropagateTileAccessibilityStrengthLevels inherited unchanged (0x5a02e0)
   virtual void DeployTacticalUnitToTile(TTacticalUnit* unit,
-                                        int tileIndex) override; // slot 0x0c 0x5a55c0
+                                        TacticalTileIndex tileIndex) override; // slot 0x0c 0x5a55c0
   virtual void MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
-      TTacticalUnit* unit, int targetTileIndex) override; // slot 0x0d 0x5a5c50
+      TTacticalUnit* unit, TacticalTileIndex targetTileIndex) override; // slot 0x0d 0x5a5c50
   // slot 0x0e HasEnemyUnitOnTilesFlankingHexDirection inherited unchanged (0x5a1400)
   virtual void ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
-      TTacticalUnit* unit, int targetTileIndex) override; // slot 0x0f 0x5a5bc0
+      TTacticalUnit* unit, TacticalTileIndex targetTileIndex) override; // slot 0x0f 0x5a5bc0
   virtual void EvaluateAndResolveTacticalActionAgainstTileOccupant(
-      TTacticalUnit* attackerUnit, int targetTileIndex) override; // slot 0x10 0x5a5730
+      TTacticalUnit* attackerUnit,
+      TacticalTileIndex targetTileIndex) override; // slot 0x10 0x5a5730
   // slot 0x11 TransferTacticalUnitToOpposingSide inherited unchanged (0x5a2700)
   // Simply re-resolves the navy order manager's map-order chains; the int param is
   // unused (RET 0x4 cleans the stack without reading it).
@@ -51,5 +52,5 @@ public:
 
 // 0x5a59a0: tileIndex -> (row = tileIndex/0x1d, doubled column = (row&1) + (tileIndex%0x1d)*2)
 // for the 29-wide tactical hex grid. Genuine __stdcall free function (pure arithmetic).
-void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex, unsigned int* outRow,
-                                                       int* outCol2X);
+void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(TacticalTileIndex tileIndex,
+                                                       unsigned int* outRow, int* outCol2X);

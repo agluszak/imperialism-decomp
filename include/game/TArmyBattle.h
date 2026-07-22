@@ -23,7 +23,7 @@ public:
   // slot 0x0a ComputeTacticalReachableTileCostsByUnitCategory inherited unchanged (0x59ff20)
   // slot 0x0b PropagateTileAccessibilityStrengthLevels inherited unchanged (0x5a02e0)
   virtual void DeployTacticalUnitToTile(TTacticalUnit* unit,
-                                        int tileIndex) override; // slot 0x0c 0x5a51e0
+                                        TacticalTileIndex tileIndex) override; // slot 0x0c 0x5a51e0
   // slot 0x0d MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget inherited unchanged (0x5a1bd0)
   // slot 0x0e HasEnemyUnitOnTilesFlankingHexDirection inherited unchanged (0x5a1400)
   // slot 0x0f ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget inherited unchanged (0x5a1ca0)

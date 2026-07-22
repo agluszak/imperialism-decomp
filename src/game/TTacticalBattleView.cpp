@@ -900,7 +900,8 @@ TTacticalBattleView::TTacticalBattleView() : TView() {
 }
 
 // FUNCTION: IMPERIALISM 0x005a83c0
-undefined TTacticalBattleView::DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect) {
+undefined TTacticalBattleView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex,
+                                                          RECT* clipRect) {
   (void)tileIndex;
   (void)clipRect;
   return 0;
@@ -1008,7 +1009,8 @@ void TTacticalBattleView::SyncStatusPanelBounds() {
 }
 
 // FUNCTION: IMPERIALISM 0x005a87d0
-void TTacticalBattleView::ComputeTacticalHexTileScreenRect(RECT* rectOut, int tileIndex) {
+void TTacticalBattleView::ComputeTacticalHexTileScreenRect(RECT* rectOut,
+                                                           TacticalTileIndex tileIndex) {
   int row = tileIndex / tileColumnsPerRow80;
   int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
   rectOut->left = x;
@@ -1022,7 +1024,7 @@ void TTacticalBattleView::ComputeTacticalHexTileScreenRect(RECT* rectOut, int ti
 }
 
 // FUNCTION: IMPERIALISM 0x005a8860
-void TTacticalBattleView::InvalidateTacticalHexTileRect(int tileIndex) {
+void TTacticalBattleView::InvalidateTacticalHexTileRect(TacticalTileIndex tileIndex) {
   RECT tileRect;
   int row = tileIndex / tileColumnsPerRow80;
   int tileWidth = tileWidthPx88;
@@ -1057,7 +1059,7 @@ void TTacticalBattleView::InvalidateTacticalUnitTileRect(TTacticalUnit* unit) {
 // FUNCTION: IMPERIALISM 0x005a89f0
 undefined TTacticalBattleView::ComputeTacticalUnitTileScreenRect(TTacticalUnit* unit,
                                                                  RECT* rectOut) {
-  int tileIndex = unit->tileIndex8;
+  TacticalTileIndex tileIndex = unit->tileIndex8;
   if (tileIndex == -1) {
     rectOut->left = 0;
     rectOut->top = 0;
@@ -1086,7 +1088,7 @@ undefined TTacticalBattleView::ComputeTacticalUnitTileScreenRect(TTacticalUnit* 
 }
 
 // FUNCTION: IMPERIALISM 0x005a8ac0
-void TTacticalBattleView::CenterViewportAroundGridIndexAndSnap(int tileIndex) {
+void TTacticalBattleView::CenterViewportAroundGridIndexAndSnap(TacticalTileIndex tileIndex) {
   int firstVisibleColumn = viewOriginX78 / tileWidthPx88;
   int visibleColumnCount = frameWidth34 / tileWidthPx88;
   int lastVisibleColumn = firstVisibleColumn + visibleColumnCount;
@@ -1154,7 +1156,8 @@ void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
 }
 
 // FUNCTION: IMPERIALISM 0x005a9090
-undefined TTacticalBattleView::PlayTacticalTileEffect(int tileIndex, int effectId, int frameCount) {
+undefined TTacticalBattleView::PlayTacticalTileEffect(TacticalTileIndex tileIndex, int effectId,
+                                                      int frameCount) {
   RECT effectRect;
   TTacticalUnit* occupant = tacticalBattle60->tileGrid4[tileIndex].occupant4;
   if (occupant != 0) {
@@ -1187,7 +1190,7 @@ undefined TTacticalBattleView::PlayTacticalTileEffect(int tileIndex, int effectI
 
 // FUNCTION: IMPERIALISM 0x005a9170
 undefined TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog(
-    RECT* rect, int effectId, int frameCount, int tileIndex, int mode) {
+    RECT* rect, int effectId, int frameCount, TacticalTileIndex tileIndex, int mode) {
   TOneTimeAnimation* animation = new TOneTimeAnimation;
   // The original calls the init body unconditionally on the new-result (no null guard).
   animation->ConstructTOneTimeAnimationBaseState(this, rect, static_cast<short>(frameCount),
@@ -1210,8 +1213,8 @@ undefined TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDial
 
 // FUNCTION: IMPERIALISM 0x005a9240
 undefined TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles(TTacticalUnit* unit,
-                                                                   int fromTileIndex,
-                                                                   int toTileIndex) {
+                                                                   TacticalTileIndex fromTileIndex,
+                                                                   TacticalTileIndex toTileIndex) {
   // VERIFIED: 0x5a9248 reads word [g_pSimMgr + 0x52] = preferenceValues[5]
   // (preferenceValues[0] is at +0x48), the animation-enable preference gate.
   if (g_pSimMgr->preferenceValues[5] == 0) {
@@ -1446,7 +1449,7 @@ void TTacticalBattleView::SpawnTacticalUiMarkerAtUnitTile() {
   if (selectedUnit == 0) {
     return;
   }
-  int tileIndex = selectedUnit->tileIndex8;
+  TacticalTileIndex tileIndex = selectedUnit->tileIndex8;
   if (tileIndex < 0) {
     return;
   }
@@ -1476,14 +1479,14 @@ void TTacticalBattleView::TriggerTacticalUiUpdate2711() {
 
 // FUNCTION: IMPERIALISM 0x005aa670
 short TTacticalBattleView::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(
-    int tileIndex) {
+    TacticalTileIndex tileIndex) {
   // Orientation-code -> sprite-facing lookup (built on the stack as 8 dwords, returned
   // as a short). The code is derived from which of two parity-selected opposite hex
   // neighbors are trench-deploy tiles (TacticalTileRecord::deployMark8 == 1): even rows
   // consult neighbors[0]/[2], odd rows consult neighbors[5]/[3].
   int orientationTable[8] = {6, 3, 5, 1, 6, 0, 2, 4};
-  int neighbors[6];
-  tacticalBattle60->ComputeHexNeighborTileIndices_005A0420(tileIndex, neighbors);
+  TacticalTileIndex neighbors[6];
+  tacticalBattle60->ComputeTacticalHexNeighborTileIndices(tileIndex, neighbors);
   int code;
   if ((tileIndex / 29 & 1) != 0) {
     code = 0;
@@ -1508,7 +1511,7 @@ short TTacticalBattleView::ComputeTacticalUnitSpriteOrientationIndexByAdjacentTy
 // FUNCTION: IMPERIALISM 0x005aa7d0
 void TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(TTacticalUnit* unit,
                                                                                 RECT* rectOut) {
-  int tileIndex = unit->tileIndex8;
+  TacticalTileIndex tileIndex = unit->tileIndex8;
   int row = tileIndex / tileColumnsPerRow80;
   int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
   rectOut->left = x;

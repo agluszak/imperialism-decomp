@@ -328,7 +328,7 @@ void TArmyBattle::LoadBattleSetupTabDataByIndex(int compositionClass, int fortLe
 // undeployed unit, resets the move-cost plane, and either fires the ready handler when
 // the side has fully deployed or refreshes the 'tool' toolbar's current-unit control.
 // FUNCTION: IMPERIALISM 0x005a51e0
-void TArmyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileIndex) {
+void TArmyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
   unit->AssertValid();
   int column = tileIndex % 29;
   if (tileIndex < 29) {
