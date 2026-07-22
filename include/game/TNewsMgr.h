@@ -7,7 +7,6 @@
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
-class CFile_Virtuals;
 
 // 0x18-byte big-endian row of Data/news.tab (byteswapped at load, 0x55ba30).
 // Mac oracle type name: newsEntry. Keyed by storyId:
@@ -60,7 +59,7 @@ public:
   // Per-nation newspaper page: 3x3 story slots (entry.storyId == 0 = empty).
   newsStory stories[7][3][3]; // +0x00c..0xecf
   // Transient "news.tex" resource stream held open across the CreateNewspaper calls.
-  CFile_Virtuals* newsTexStream; // +0xed0
+  CFile* newsTexStream; // +0xed0
   // Per-nation event buckets (recordSize14 = 0x24) and the shared event record queue
   // (recordSize14 = 0x10; records are {int code, int nation, int mask, int extra}).
   TSortedPtrList* perNationEventBuckets[7]; // +0xed4

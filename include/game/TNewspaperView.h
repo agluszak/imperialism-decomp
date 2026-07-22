@@ -12,8 +12,8 @@ public:
 
   // Layout past TPicture (0x90): the advisor-summary builder caches its page argument
   // and holds the news .tex resource stream open across the row loop.
-  int summaryPageIndex90;                // 0x90
-  class CFile_Virtuals* newsTexStream94; // 0x94
+  int summaryPageIndex90; // 0x90
+  CFile* newsTexStream94; // 0x94
 
   TNewspaperView();
 
