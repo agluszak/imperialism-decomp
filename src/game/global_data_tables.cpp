@@ -3506,8 +3506,19 @@ short g_MapOrderResourceRollWeightTable_0064c5d8[6][6] = {
     {30, 50, 20, 65, 20, 15}, {20, 65, 15, 70, 20, 10}, {10, 80, 10, 80, 10, 10},
 };
 
+// GLOBAL: IMPERIALISM 0x00696400
+short g_cityProductionReserveByPolicyBand_00696400[4] = {0, 2, 6, 12};
+
 // GLOBAL: IMPERIALISM 0x00696408
 short g_aInteriorMinisterNeedPriorityOrder_00696408[10] = {17, 18, 20, 19, 2, 3, 4, 0, 1, 5};
+
+// GLOBAL: IMPERIALISM 0x00696450
+float g_cityProductionUpgradeRatioThreshold_00696450[4] = {2.0f, 2.0f, 2.0f, 0.0f};
+
+// Groups city-action capability slots into their upgrade-compatible families.
+// GLOBAL: IMPERIALISM 0x00650670
+short g_cityActionCapabilityGroupBySlot_00650670[32] = {
+    0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4, 0, 0};
 
 // GLOBAL: IMPERIALISM 0x00669f10
 double g_dNavyDamageSplitRatioA_00669f10 = 0.25;

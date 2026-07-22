@@ -12,6 +12,13 @@ class TStream;
 class TShipOrder;
 class TUnitOrder;
 
+struct TCityTransportRequest {
+  short resourceType;
+  short requestedAmount;
+};
+
+ASSERT_SIZE(TCityTransportRequest, 0x04);
+
 // The per-nation city/production model at TGreatPower+0x894 (field `city`).
 // RTTI: g_pClassDescTCity @ 0x0064f338; CreateObject body at 0x004b2410.
 // LAYOUT: RECOVERED
@@ -195,7 +202,9 @@ public:
   // +0x278 — per-resource failed-request counters maintained by the interior
   // minister when a production sheet cannot be fully transported.
   short unmetResourceRetryCount278[0x17];
-  unsigned char serializedState2a6[0x2d4 - 0x2a6];
+  unsigned char serializedState2a6[0x1a];
+  short consumedProductionInputByType2c0[4]; // +0x2c0, resource types 13..16
+  unsigned char serializedState2c8[0x2d4 - 0x2c8];
 
   TCity(); // 0x004b24b0 ("InitializeCityModel")
 
