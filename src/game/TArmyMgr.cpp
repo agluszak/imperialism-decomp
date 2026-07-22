@@ -1743,7 +1743,7 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
         bestScore = 0;
       }
     } else {
-      int admiralScore = static_cast<short>(admiral->field_10 / 100) + 1;
+      int admiralScore = static_cast<short>(admiral->experiencePoints / 100) + 1;
       if (bestScore < admiralScore) {
         selectedName = CString(s_szAdmiralPrefix_0069578c + admiral->displayName);
         g_pSimMgr->GetString(0x2744, 2, &outDefenderSummary);
