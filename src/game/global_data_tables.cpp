@@ -895,17 +895,18 @@ short g_NavyMissionOrderRanking[14];
 short g_NavyPriorityOrderRanking[14];
 
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
-// minister's skill value at +0x0C. Used by TGreatPower vtable slots 0x88-0x8c.
-float g_DAT_Value_00653308[8] = {0};
-float g_DAT_Value_00653328[8] = {0};
-float g_DAT_Value_00653340[8] = {0};
-float g_DAT_Value_00653360[8] = {0};
-float g_DAT_Value_00653378[8] = {0};
-float g_DAT_Value_00653398[8] = {0};
-float g_DAT_006533b0_Value_006533B0[8] = {0};
-float g_DAT_006533d0_Value_006533D0[8] = {0};
-float g_DAT_006533e8_Value_006533E8[8] = {0};
-float g_DAT_Value_00653408[8] = {0};
+// minister's skill value at +0x0C. The alternating extents are retail data boundaries:
+// foreign-minister skills use eight entries and defense-minister skills use six.
+float g_DAT_Value_00653308[8] = {0.7f, 1.1f, 1.2f, 1.5f, 1.0f, 0.9f, 0.7f, 0.0f};
+float g_DAT_Value_00653328[6] = {1.0f, 1.0f, 1.3f, 1.3f, 1.3f, 0.0f};
+float g_DAT_Value_00653340[8] = {0.6f, 0.7f, 0.7f, 0.7f, 0.8f, 0.6f, 0.6f, 0.0f};
+float g_DAT_Value_00653360[6] = {0.7f, 1.1f, 1.3f, 0.9f, 1.0f, 0.0f};
+float g_DAT_Value_00653378[8] = {0.5f, 0.6f, 0.6f, 0.6f, 0.7f, 0.5f, 0.5f, 0.0f};
+float g_DAT_Value_00653398[6] = {1.0f, 1.0f, 1.2f, 0.8f, 0.9f, 0.0f};
+float g_DAT_006533b0_Value_006533B0[8] = {0.4f, 0.5f, 0.5f, 0.5f, 0.6f, 0.4f, 0.4f, 0.0f};
+float g_DAT_006533d0_Value_006533D0[6] = {1.1f, 1.0f, 1.3f, 0.7f, 1.1f, 0.0f};
+float g_DAT_006533e8_Value_006533E8[8] = {0.4f, 0.5f, 0.5f, 0.5f, 0.6f, 0.4f, 0.4f, 0.0f};
+float g_DAT_Value_00653408[8] = {0.9f, 0.8f, 1.1f, 0.5f, 0.9f, 0.0f, 1.5f, 1.5f};
 
 // Float constants used by the TGreatPower relative-power-score family
 // (vtable slots 0x8e-0x9e, bodies 0x004e07b0..0x004e1c20). Values in the
@@ -935,8 +936,9 @@ short g_UnitTypeStatTable_0066EB88[30][7] = {0};
 short g_UnitTypeStatDivisorTable_0066ED30[7] = {0};
 
 // Per-order-type sort priority (short table at 0x6966d0), used by the TGreatPower
-// slot 0x55 tracked-order selection sort (0x004e0290).
-short g_DAT_006966d0_Value_006966D0[16] = {0};
+// slot 0x55 tracked-order selection sort (0x004e0290). The following string begins at
+// 0x6966e8, fixing the table's extent at twelve shorts.
+short g_DAT_006966d0_Value_006966D0[12] = {2, 0, 4, 3, 1, 5, 0, 0, 0, 0, 0, 0};
 
 // Cursor resource id by civilian-tile-order action code (short table at 0x696678, 12
 // entries), used by TCivMgr::LookupCivilianTileOrderCursorTokenByActionIndex (0x4d2930).
@@ -1023,9 +1025,9 @@ unsigned char g_abUniversityRequirementLevelById[24][4] = {
 int g_UniversityRequirementResourceTypeTable[30] = {3,  4,  21, 22, -1, -1, -1, -1, 0,  17,
                                                     18, -1, 2,  -1, -1, -1, -1, -1, -1, -1,
                                                     1,  20, -1, -1, 19, -1, -1, -1, -1, -1};
-// Per-resourceType "requires tiered nibble" boolean flag table. Read by the same function
-// above; only nonzero-ness is consumed there.
-unsigned char g_abResourceTypeUsesHighNibbleFlag[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
+// Per-resourceType "requires tiered nibble" byte table. Read by the same function above;
+// only nonzero-ness is consumed, but retail stores resource type 6 as 6 rather than bool 1.
+unsigned char g_abResourceTypeUsesHighNibbleFlag[24] = {0, 0, 0, 1, 1, 0, 6, 0, 0, 0, 0, 0,
                                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
 // Per-resourceType capability-category code. Read by FindMaxResourceCapabilityValueForTile
 // (0x513720).
@@ -1040,7 +1042,7 @@ unsigned char g_abResourceTypeMiniCivMentionFlag[24] = {0, 0, 0, 1, 1, 0, 1, 0, 
 // Per-resourceType required-order-type code. Read by
 // SeedRecruitSearchVisitedStateByCapabilityThresholdAlt (0x515890).
 short g_anResourceTypeRequiredOrderType[24] = {2,  5,  3,  -1, -1, -1, -1, -1, -1, -1, -1, -1,
-                                               -1, -1, -1, -1, 2,  2,  6,  5,  -1, -1, 0,  0};
+                                               -1, -1, -1, -1, -1, 2,  2,  6,  5,  -1, -1, 0};
 // Per-resourceType "always-qualifies" flag; same caller as above.
 unsigned char g_abResourceTypeAlwaysQualifies[24] = {1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0,
                                                      0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
@@ -1266,7 +1268,13 @@ double g_Compute_Advisory_OnePointFive_00654008 = 1.5;
 
 // Scenario-level relation preset rows (0x17 shorts per row, stride 0x2e), loaded into
 // the relation manager's city stock block by TGreatPower slot 0x39 (0x004df810).
-short g_Rebuild_Primary_Nation_Value_00653570[6][0x17] = {0};
+// difficultyLevel is 0..4; the runtime-class object at 0x653658 follows row four.
+short g_Rebuild_Primary_Nation_Value_00653570[5][0x17] = {
+    {20, 20, 40, 30, 30, 10, 0, 20, 20, 20, 20, 20, 0, 10, 10, 10, 10, 10, 5, 0, 5, 0, 0},
+    {5, 5, 10, 5, 5, 2, 0, 20, 10, 15, 8, 10, 0, 5, 5, 0, 0, 10, 5, 0, 5, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 20, 10, 24, 8, 19, 0, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 15, 6, 16, 6, 12, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 15, 6, 16, 6, 12, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 // Shared empty-text pointer passed by value as the modal's byval CString message seed
 // (TViewMgr::BuildAndShowTurnOverlayByMode tail, 0x5d67fc).
@@ -1388,8 +1396,11 @@ CString g_cstrCountryNameSettingValue006A4220;
 TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268 = 0;
 
 extern "C" {
-short g_awEngineerFortBuildCostByLevel[8] = {0};
-int g_adwEngineerRailBuildCostByTerrainType[16] = {0};
+// Five fort levels occupy 0x65318a..0x653193; the civilian cost table starts at 0x653194.
+short g_awEngineerFortBuildCostByLevel[5] = {5000, 7500, 10000, 0, 0};
+// One cost per StrategicTerrainKind; TCivMgr::classTCivMgr starts at 0x6531f8.
+int g_adwEngineerRailBuildCostByTerrainType[kStrategicTerrainCount] = {100, 150, 200, 400,
+                                                                       300, 0,   150, 100};
 // Civilian work-order rescind refund by cost class (nibble from
 // GetTileCivilianWorkOrderCostClassNibble); -1 entries are unused classes.
 int g_adwCivilianWorkOrderCostByClass[16] = {100, 1000, 5000, -1, -1, -1, 0, 1,
@@ -3557,7 +3568,7 @@ char s_mcflavor_0069b638[] = "";
 // GLOBAL: IMPERIALISM 0x0069b640
 char s_mcflavor_0069b640[] = "";
 // GLOBAL: IMPERIALISM 0x0069b7fc
-char s_Data_scores_dat_0069b7fc[] = "Data\\scores.dat";
+char s_Data_scores_dat_0069b7fc[] = "Data/scores.dat";
 
 // Screen-offset scale (-0.3125 = -5/16) applied to a tile's isometric screen offset when
 // positioning the hex-neighbor highlight polygon (BuildHexNeighborHighlightPolygonForTile

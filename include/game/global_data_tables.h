@@ -195,18 +195,19 @@ short GetCityActionCategoryCodeBySlot(short slot);
 int GetNavyContextPointerFromGlobalTableByIndex(int index);
 
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
-// minister's skill value at +0x0C. Used by TGreatPower vtable slots 0x88-0x8c.
+// minister's skill value at +0x0C. The foreign-minister tables have eight entries;
+// the defense-minister tables have six. Used by TGreatPower vtable slots 0x88-0x8c.
 extern "C" {
-extern float g_DAT_Value_00653308[];
-extern float g_DAT_Value_00653328[];
-extern float g_DAT_Value_00653340[];
-extern float g_DAT_Value_00653360[];
-extern float g_DAT_Value_00653378[];
-extern float g_DAT_Value_00653398[];
-extern float g_DAT_006533b0_Value_006533B0[];
-extern float g_DAT_006533d0_Value_006533D0[];
-extern float g_DAT_006533e8_Value_006533E8[];
-extern float g_DAT_Value_00653408[];
+extern float g_DAT_Value_00653308[8];
+extern float g_DAT_Value_00653328[6];
+extern float g_DAT_Value_00653340[8];
+extern float g_DAT_Value_00653360[6];
+extern float g_DAT_Value_00653378[8];
+extern float g_DAT_Value_00653398[6];
+extern float g_DAT_006533b0_Value_006533B0[8];
+extern float g_DAT_006533d0_Value_006533D0[6];
+extern float g_DAT_006533e8_Value_006533E8[8];
+extern float g_DAT_Value_00653408[8];
 
 // Float constants used by the TGreatPower relative-power-score family
 // (vtable slots 0x8e-0x9e, bodies 0x004e07b0..0x004e1c20).
@@ -233,7 +234,7 @@ extern float g_Classify_Nation_Military_Value_0065370C;
 extern float g_Classify_Nation_Military_Value_00653710;
 
 // Per-order-type sort priority table (slot 0x55 selection sort).
-extern short g_DAT_006966d0_Value_006966D0[];
+extern short g_DAT_006966d0_Value_006966D0[12];
 // Cursor resource id by civilian-tile-order action code (12 entries).
 extern short g_civilianTileOrderCursorTokenTable[];
 // Cursor resource ids keyed by the military/civilian map state classifiers (12 entries each).
@@ -285,7 +286,7 @@ extern int g_anCountWeightByOrderType[32];         // 0x695578
 
 // Scenario-level relation preset rows (0x17 shorts per row, stride 0x2e), loaded into
 // the relation manager's city stock block by TGreatPower slot 0x39 (0x004df810).
-extern short g_Rebuild_Primary_Nation_Value_00653570[6][0x17];
+extern short g_Rebuild_Primary_Nation_Value_00653570[5][0x17];
 } // extern "C"
 
 // ============================================================================
@@ -994,8 +995,8 @@ extern double g_DAT_00653fc8_Value_00653FC8;             // 32767.0
 extern double g_Evaluate_Advisory_Case11_Value_00653FD8; // 0.5
 
 // TCivMgr.cpp — engineer construction cost tables.
-extern short g_awEngineerFortBuildCostByLevel[8];
-extern int g_adwEngineerRailBuildCostByTerrainType[16];
+extern short g_awEngineerFortBuildCostByLevel[5];
+extern int g_adwEngineerRailBuildCostByTerrainType[kStrategicTerrainCount];
 // Civilian work-order rescind refund by cost class.
 extern int g_adwCivilianWorkOrderCostByClass[16];
 
