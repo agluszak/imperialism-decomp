@@ -8,9 +8,11 @@
 #include "game/TGameSetupPicture.h"
 #include "game/ImperialismApp.h"
 #include "game/TMapUberPicture.h"
+#include "game/TPicture.h"
 #include "game/TRadioTextCluster.h"
 #include "game/TSetupRandomMapPicture.h"
 #include "game/TSimMgr.h"
+#include "game/TStaticText.h"
 #include "game/TView.h"
 #include "game/TViewMgr.h"
 #include "game/TWindow.h"
@@ -52,6 +54,8 @@ struct RuntimeTestState {
 
 RuntimeTestState g_runtimeTestState = {
     kRuntimeTestNone, kRuntimeTestNotStarted, 0, 0, -1, 0, "", ""};
+CString g_randomSetupUiSnapshot;
+CString g_strategicMapUiSnapshot;
 
 const char* TestName() {
   if (g_runtimeTestState.kind == kRuntimeTestRandomGame) {
@@ -110,6 +114,138 @@ bool WriteAll(HANDLE file, const char* bytes, DWORD size) {
   return WriteFile(file, bytes, size, &written, 0) != 0 && written == size;
 }
 
+void AppendJsonString(CString& json, const char* value) {
+  json += '"';
+  for (const unsigned char* cursor = reinterpret_cast<const unsigned char*>(value); *cursor != 0;
+       ++cursor) {
+    char escaped[7];
+    switch (*cursor) {
+    case '"':
+      json += "\\\"";
+      break;
+    case '\\':
+      json += "\\\\";
+      break;
+    case '\n':
+      json += "\\n";
+      break;
+    case '\r':
+      json += "\\r";
+      break;
+    case '\t':
+      json += "\\t";
+      break;
+    default:
+      if (*cursor < 0x20) {
+        wsprintfA(escaped, "\\u%04x", static_cast<unsigned int>(*cursor));
+        json += escaped;
+      } else {
+        json += static_cast<char>(*cursor);
+      }
+      break;
+    }
+  }
+  json += '"';
+}
+
+void FourCcText(unsigned int tag, char text[5]) {
+  text[0] = static_cast<char>(tag >> 24);
+  text[1] = static_cast<char>(tag >> 16);
+  text[2] = static_cast<char>(tag >> 8);
+  text[3] = static_cast<char>(tag);
+  text[4] = 0;
+}
+
+int TagOccurrenceBefore(TView* parent, TView* target) {
+  if (parent == 0 || parent->childList44 == 0) {
+    return 1;
+  }
+  int occurrence = 1;
+  POSITION position = parent->childList44->GetHeadPosition();
+  while (position != 0) {
+    TView* sibling = parent->childList44->GetNext(position);
+    if (sibling == target) {
+      break;
+    }
+    if (sibling->controlTag == target->controlTag) {
+      ++occurrence;
+    }
+  }
+  return occurrence;
+}
+
+CString ViewPath(TView* view, const CString& parentPath) {
+  CString path;
+  path.Format("%08x#%d", static_cast<unsigned int>(view->controlTag),
+              TagOccurrenceBefore(view->ownerContext, view));
+  if (!parentPath.IsEmpty()) {
+    path = parentPath + "/" + path;
+  }
+  return path;
+}
+
+void AppendViewTreeNodes(CString& json, TView* view, const CString& parentPath, bool& firstNode) {
+  if (view == 0) {
+    return;
+  }
+  CString path = ViewPath(view, parentPath);
+  char tag[5];
+  FourCcText(static_cast<unsigned int>(view->controlTag), tag);
+  if (!firstNode) {
+    json += ",\n";
+  }
+  firstNode = false;
+  json += "      {\"path\": ";
+  AppendJsonString(json, path);
+  json += ", \"parent\": ";
+  if (parentPath.IsEmpty()) {
+    json += "null";
+  } else {
+    AppendJsonString(json, parentPath);
+  }
+  json += ", \"tag\": ";
+  AppendJsonString(json, tag);
+  json += ", \"class\": ";
+  AppendJsonString(json, RuntimeClassName(view));
+  CString fields;
+  fields.Format(", \"bounds\": [%d, %d, %d, %d], \"state\": %d, \"enabled\": %d, "
+                "\"control_value\": %d",
+                view->ownerLocalX, view->ownerLocalY, view->frameWidth34, view->frameHeight38,
+                view->field04, view->field08, view->controlValue3c);
+  json += fields;
+  if (view->IsKindOf(RUNTIME_CLASS(TPicture)) != 0) {
+    TPicture* picture = static_cast<TPicture*>(view);
+    fields.Format(", \"picture_id\": %d", static_cast<int>(picture->glyphBase84));
+    json += fields;
+  }
+  if (view->IsKindOf(RUNTIME_CLASS(TStaticText)) != 0) {
+    TStaticText* text = static_cast<TStaticText*>(view);
+    json += ", \"text\": ";
+    AppendJsonString(json, text->text != 0 ? static_cast<LPCSTR>(*text->text) : "");
+  }
+  json += "}";
+
+  if (view->childList44 == 0) {
+    return;
+  }
+  POSITION position = view->childList44->GetHeadPosition();
+  while (position != 0) {
+    TView* child = view->childList44->GetNext(position);
+    AppendViewTreeNodes(json, child, path, firstNode);
+  }
+}
+
+CString CaptureUiSnapshot(int eventCode, TView* root) {
+  CString json;
+  CString header;
+  header.Format("    {\"event\": %d, \"nodes\": [\n", eventCode);
+  json += header;
+  bool firstNode = true;
+  AppendViewTreeNodes(json, root, CString(), firstNode);
+  json += "\n    ]}";
+  return json;
+}
+
 bool WriteResultFile(const char* status, const char* failure) {
   TView* mainView = MainView();
   const char* eventSequence = g_runtimeTestState.kind == kRuntimeTestRandomGame
@@ -117,43 +253,66 @@ bool WriteResultFile(const char* status, const char* failure) {
                                   : "[]";
   const char* handledModals =
       g_runtimeTestState.kind == kRuntimeTestRandomGame ? "[\"city_site_prompt\"]" : "[]";
+  if (g_runtimeTestState.kind == kRuntimeTestRandomGame &&
+      (g_randomSetupUiSnapshot.IsEmpty() || g_strategicMapUiSnapshot.IsEmpty())) {
+    status = "failed";
+    failure = "\"generated UI factory snapshot is missing\"";
+  }
+  CString uiSnapshots("[");
+  if (g_runtimeTestState.kind == kRuntimeTestRandomGame) {
+    if (!g_randomSetupUiSnapshot.IsEmpty()) {
+      uiSnapshots += "\n";
+      uiSnapshots += g_randomSetupUiSnapshot;
+    }
+    if (!g_strategicMapUiSnapshot.IsEmpty()) {
+      if (!g_randomSetupUiSnapshot.IsEmpty()) {
+        uiSnapshots += ",";
+      }
+      uiSnapshots += "\n";
+      uiSnapshots += g_strategicMapUiSnapshot;
+    }
+    uiSnapshots += "\n  ";
+  }
+  uiSnapshots += "]";
   CString json;
-  json.Format(
-      "{\n"
-      "  \"format_version\": 1,\n"
-      "  \"name\": \"%s\",\n"
-      "  \"status\": \"%s\",\n"
-      "  \"idle_ticks\": %lu,\n"
-      "  \"last_action\": \"%s\",\n"
-      "  \"event_sequence\": %s,\n"
-      "  \"state\": {\n"
-      "    \"turn_event\": %d,\n"
-      "    \"root_class\": \"%s\",\n"
-      "    \"active_nation\": %d,\n"
-      "    \"selected_nation\": %d,\n"
-      "    \"difficulty\": %d,\n"
-      "    \"global_map\": %s,\n"
-      "    \"display_manager\": %s,\n"
-      "    \"global_ui_root\": %s,\n"
-      "    \"simulation_manager\": %s,\n"
-      "    \"ui_runtime_context\": %s,\n"
-      "    \"ui_view_manager\": %s\n"
-      "  },\n"
-      "  \"runtime\": {\n"
-      "    \"faults\": [],\n"
-      "    \"handled_modals\": %s,\n"
-      "    \"unexpected_modals\": []\n"
-      "  },\n"
-      "  \"failure\": %s\n"
-      "}\n",
-      TestName(), status, g_runtimeTestState.idleTicks, g_runtimeTestState.lastAction,
-      eventSequence, g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
-      RuntimeClassName(mainView), g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1,
-      g_runtimeTestState.selectedNationSlot, g_pSimMgr != 0 ? g_pSimMgr->difficultyLevel : -1,
-      g_pGlobalMapState != 0 ? "true" : "false", g_pDisplayMgr != 0 ? "true" : "false",
-      g_pGlobalUiRootController != 0 ? "true" : "false", g_pSimMgr != 0 ? "true" : "false",
-      g_pUiRuntimeContext != 0 ? "true" : "false", g_pUiViewManager != 0 ? "true" : "false",
-      handledModals, failure);
+  json.Format("{\n"
+              "  \"format_version\": 1,\n"
+              "  \"name\": \"%s\",\n"
+              "  \"status\": \"%s\",\n"
+              "  \"idle_ticks\": %lu,\n"
+              "  \"last_action\": \"%s\",\n"
+              "  \"event_sequence\": %s,\n"
+              "  \"ui_snapshots\": %s,\n"
+              "  \"state\": {\n"
+              "    \"turn_event\": %d,\n"
+              "    \"root_class\": \"%s\",\n"
+              "    \"active_nation\": %d,\n"
+              "    \"selected_nation\": %d,\n"
+              "    \"difficulty\": %d,\n"
+              "    \"global_map\": %s,\n"
+              "    \"display_manager\": %s,\n"
+              "    \"global_ui_root\": %s,\n"
+              "    \"simulation_manager\": %s,\n"
+              "    \"ui_runtime_context\": %s,\n"
+              "    \"ui_view_manager\": %s\n"
+              "  },\n"
+              "  \"runtime\": {\n"
+              "    \"faults\": [],\n"
+              "    \"handled_modals\": %s,\n"
+              "    \"unexpected_modals\": []\n"
+              "  },\n"
+              "  \"failure\": %s\n"
+              "}\n",
+              TestName(), status, g_runtimeTestState.idleTicks, g_runtimeTestState.lastAction,
+              eventSequence, static_cast<LPCSTR>(uiSnapshots),
+              g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
+              RuntimeClassName(mainView), g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1,
+              g_runtimeTestState.selectedNationSlot,
+              g_pSimMgr != 0 ? g_pSimMgr->difficultyLevel : -1,
+              g_pGlobalMapState != 0 ? "true" : "false", g_pDisplayMgr != 0 ? "true" : "false",
+              g_pGlobalUiRootController != 0 ? "true" : "false", g_pSimMgr != 0 ? "true" : "false",
+              g_pUiRuntimeContext != 0 ? "true" : "false", g_pUiViewManager != 0 ? "true" : "false",
+              handledModals, failure);
 
   CString temporaryPath(g_runtimeTestState.resultPath);
   temporaryPath += ".tmp";
@@ -460,6 +619,21 @@ void RuntimeTestDriver::OnIdle() {
   }
 }
 
+void RuntimeTestDriver::ObserveBuiltUiTree(int eventCode, TView* root) {
+  if (g_runtimeTestState.kind != kRuntimeTestRandomGame) {
+    return;
+  }
+  if (eventCode == 0x5dd) {
+    g_randomSetupUiSnapshot = CaptureUiSnapshot(eventCode, root);
+  } else if (eventCode == 0x3b8) {
+    g_strategicMapUiSnapshot = CaptureUiSnapshot(eventCode, root);
+  }
+}
+
 unsigned int RuntimeTestDriver::RandomSeed() {
   return 1;
+}
+
+void RuntimeTestObserveBuiltUiTree(int eventCode, TView* root) {
+  RuntimeTestDriver::ObserveBuiltUiTree(eventCode, root);
 }
