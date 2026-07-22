@@ -78,7 +78,7 @@ public:
   virtual bool IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot);
   virtual char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                              int arg4);
-  virtual void QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode,
+  virtual void QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode,
                                                          NationSlot targetNationSlot);
   virtual char ReturnFalseNationStateCapabilityFlag90(short arg);
   virtual void NotifyActionSlot94(int sourceNation, int actionCode);

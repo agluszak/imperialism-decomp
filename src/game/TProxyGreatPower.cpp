@@ -62,8 +62,8 @@ void TProxyGreatPower::AddToTreasury(int amount) {
 void TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord() {}
 
 // FUNCTION: IMPERIALISM 0x00540ac0
-void TProxyGreatPower::QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode,
-                                                                 NationSlot targetNationSlot) {
+void TProxyGreatPower::QueueDiplomacyProposalCodeForTargetNation(
+    DiplomacyProposalCodeStorage proposalCode, NationSlot targetNationSlot) {
   TGreatPower::QueueDiplomacyProposalCodeForTargetNation(proposalCode, targetNationSlot);
 
   TurnEvent16DiplomacyProposalPacket packetPayload;

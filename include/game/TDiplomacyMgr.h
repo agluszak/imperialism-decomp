@@ -52,7 +52,7 @@ public:
                                                          int minorNationSlot); // 22 (0x58)
   virtual bool
   ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(int sourceNation, int targetNation,
-                                                           int actionCode); // 23 (0x5c)
+                                                           eDipAction action); // 23 (0x5c)
   virtual bool HasAllianceGuardForNationPair(int sourceNation,
                                              int targetNation);               // 24 (0x60)
   virtual bool HasNationPairNeedLevel300(int sourceNation, int targetNation); // 25 (0x64)
@@ -60,14 +60,18 @@ public:
                                                      int targetNation); // 26 (0x68)
   virtual void ShowRelationCodeNoticeForNationPairIfRelevant(int sourceNation, int targetNation,
                                                              int unusedArg); // 27 (0x6c)
-  virtual short GetNationPairDiplomacyRelationCode(NationSlot sourceNation,
-                                                   NationSlot targetNation); // 28 (0x70)
+  virtual DiplomacyRelationshipStorage
+  GetNationPairDiplomacyRelationCode(NationSlot sourceNation,
+                                     NationSlot targetNation); // 28 (0x70)
   virtual void SetNationPairDiplomacyRelationCode(int sourceNation, int targetNation,
-                                                  int relationCode, int updateMode); // 29 (0x74)
+                                                  DiplomacyRelationship relationship,
+                                                  int updateMode); // 29 (0x74)
   virtual void SetNationPairDiplomacyRelationCodeFinal(int sourceNation, int targetNation,
-                                                       int relationCode); // 30 (0x78)
-  virtual void ApplyRelationCode4AndQueueEvent18ForTargetNation(int sourceNation, int targetNation,
-                                                                int updateMode); // 31 (0x7c)
+                                                       DiplomacyRelationship relationship); // 30
+  // (0x78)
+  virtual void ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(int sourceNation,
+                                                                    int targetNation,
+                                                                    int updateMode); // 31 (0x7c)
   virtual void PropagateRelationSideEffectSlot80(int sourceNation, int targetNation,
                                                  int updateMode); // 32 (0x80)
   virtual bool IsMajorNationSlot(int nationSlot);                 // 33 (0x84)
@@ -89,23 +93,6 @@ public:
   char SetNationPairSpecialRelationFlagAndQueueEvent14Or16(short flag, int sourceNation,
                                                            int targetNation);
 
-  // Temporary slot-name aliases retained only where the underlying operation is not yet renamed.
-  int GetRelationTypeSlot68(int sourceNation, int targetNation) {
-    return GetNationPairDiplomacyStandingTierCode(sourceNation, targetNation);
-  }
-  short GetRelationTierSlot70(NationSlot sourceNation, NationSlot targetNation) {
-    return GetNationPairDiplomacyRelationCode(sourceNation, targetNation);
-  }
-  void SetRelationCodeSlot74WithMode(int sourceNation, int targetNation, int relationCode,
-                                     int updateMode) {
-    SetNationPairDiplomacyRelationCode(sourceNation, targetNation, relationCode, updateMode);
-  }
-  void SetRelationCodeSlot78Final(int sourceNation, int targetNation, int relationCode) {
-    SetNationPairDiplomacyRelationCodeFinal(sourceNation, targetNation, relationCode);
-  }
-  void ApplyRelationCode4Slot7c(int sourceNation, int targetNation, int updateMode) {
-    ApplyRelationCode4AndQueueEvent18ForTargetNation(sourceNation, targetNation, updateMode);
-  }
   short relationCodeMatrix04[kDiplomacyPairMatrixEntries];
   signed char pendingPolicyCodeMatrix304[kDiplomacyPairMatrixEntries];
   short pendingPolicyTierMatrix484[kDiplomacyPairMatrixEntries];
@@ -128,7 +115,7 @@ public:
   short* relationMatrixBaselineCopy794;
   int relationMatrixBaselineSize798;
   short relationStandingScoreMatrix79c[kNationPairMatrixEntries];
-  short relationPropagationMatrixBbe[kNationPairMatrixEntries];
+  DiplomacyRelationshipStorage relationPropagationMatrixBbe[kNationPairMatrixEntries];
   short relationTurnStampMatrixFe0[kNationPairMatrixEntries];
   short relationSideEffectMatrix1402[kNationPairMatrixEntries];
   // 0x004f1760 — see comparativePowerRows1824 below.

@@ -314,7 +314,7 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
       }
       break;
     }
-    case 0x131: {
+    case kDiplomacyProposalDeclareWar: {
       g_apNationStates[eventRecord[1]]->FormatOverlayTerrainLabelText(&nationNameText);
       g_pSimMgr->GetString(0x2753, 0x1c, &titleText);
       g_pSimMgr->GetString(0x2753, 0x1d, &templateText);

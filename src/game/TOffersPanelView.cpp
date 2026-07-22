@@ -118,19 +118,19 @@ char TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
   } else {
     short stringIndex = 0;
     switch (offerType) {
-    case 0x12d:
+    case kDiplomacyProposalJoinEmpire:
       stringIndex = 0;
       break;
-    case 0x12e:
+    case kDiplomacyProposalAlliance:
       stringIndex = 1;
       break;
-    case 0x12f:
+    case kDiplomacyProposalNonAggressionPact:
       stringIndex = 2;
       break;
-    case 0x130:
+    case kDiplomacyProposalPeaceTreaty:
       stringIndex = 3;
       break;
-    case 0x132:
+    case kDiplomacyProposalJoinEmpireWithWarEntanglements:
       stringIndex = 4;
       break;
     }
@@ -195,7 +195,8 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
   } else if (promptCode == 0x14) {
     for (nationSlot = 0; nationSlot < 7 && !addsEntanglements; ++nationSlot) {
       if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
-              static_cast<short>(enemyNationSlot), static_cast<short>(nationSlot)) == 2 &&
+              static_cast<short>(enemyNationSlot), static_cast<short>(nationSlot)) ==
+              kDiplomacyRelationshipAlliance &&
           g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot) == 0) {
         addsEntanglements = true;
       }
@@ -221,7 +222,8 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
   } else {
     for (nationSlot = 0; nationSlot < 7 && !addsEntanglements; ++nationSlot) {
       if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
-              static_cast<short>(minorNationSlot), static_cast<short>(nationSlot)) == 2 &&
+              static_cast<short>(minorNationSlot), static_cast<short>(nationSlot)) ==
+              kDiplomacyRelationshipAlliance &&
           g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot) == 0) {
         addsEntanglements = true;
       }

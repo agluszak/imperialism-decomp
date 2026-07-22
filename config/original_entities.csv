@@ -2434,15 +2434,15 @@ address|name|symbol|size|type|prototype|provenance
 4de810|TGreatPower::ReleaseAllTrackedObjectsFromList89C||57|function|undefined ReleaseAllTrackedObjectsFromList89C()|
 4de860|TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers||864|function|undefined ApplyJoinEmpireMode0GlobalDiplomacyReset()|
 4deca0|TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_79||82|function|undefined SelectCandidateTilesWithLowGroundUnitCount(void)|
-4dedf0|TGreatPower::OrphanRetStub_004d7f80||383|function|undefined OrphanRetStub_004d7f80(void)|
-4defd0|TGreatPower::OrphanRetStub_004d7fe0_23||39|function|undefined OrphanRetStub_004d7fe0(void)|
-4df010|TGreatPower::ApplyAcceptedDiplomacyProposalCode||659|function|undefined ApplyAcceptedDiplomacyProposalCode()|
-4df370|TGreatPower::QueueInterNationEventForProposalCode12D_130||230|function|undefined QueueInterNationEventForProposalCode12D_130()|
-4df4b0|TGreatPower::ApplyJoinEmpireMode1TargetTransition||139|function|undefined ApplyJoinEmpireMode1TargetTransition(void)|
+4dedf0|TGreatPower::NotifyActionSlot94||383|function|undefined OrphanRetStub_004d7f80(void)|
+4defd0|TGreatPower::QueueDiplomacyProposalCodeForTargetNation||39|function|undefined OrphanRetStub_004d7fe0(void)|
+4df010|TGreatPower::AcceptOffer||659|function|undefined ApplyAcceptedDiplomacyProposalCode()|
+4df370|TGreatPower::RejectOffer||230|function|undefined QueueInterNationEventForProposalCode12D_130()|
+4df4b0|TGreatPower::IsDiplomacyProposalAllowedForRelationship||139|function|undefined ApplyJoinEmpireMode1TargetTransition(void)|
 4df580|TGreatPower::ResetNationDiplomacyProposalQueue||11|function|undefined ResetNationDiplomacyProposalQueue()|
 4df5a0|OrphanLeaf_NoCall_Ins03_004df5a0||11|function|undefined OrphanLeaf_NoCall_Ins03_004df5a0()|
 4df5c0|TGreatPower::DispatchTurnEvent2103WithNationFromRecord||24|function|undefined DispatchTurnEvent2103WithNationFromRecord()|
-4df5f0|TGreatPower::ProcessPendingDiplomacyProposalQueue||429|function|undefined ProcessPendingDiplomacyProposalQueue()|
+4df5f0|TGreatPower::ReplyToDiplomacyOffers||429|function|undefined ProcessPendingDiplomacyProposalQueue()|
 4df810|TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity||403|function|void ApplyScenarioRelationPresetAndSpawnFrogCity()|
 4dfa20|TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders_3a||139|function|undefined __thiscall DeserializeRecruitScenarioAndInstantiateOrders(int * param_1)|
 4dfae0|TGreatPower::CreateFrogCityAtHomeRegionAndAttach||449|function|void __thiscall CreateFrogCityAtHomeRegionAndAttach(void * receiver)|
@@ -2580,10 +2580,10 @@ address|name|symbol|size|type|prototype|provenance
 4e79d0|TAutoGreatPower::ReturnFalseNationStateActionStub||88|function|undefined OrphanCallChain_C3_I38_004e79d0(void)|
 4e7a50|TAutoGreatPower::ClearFieldBlock1c6||119|function|undefined ClearDiplomacyState1c6Block()|
 4e7af0|TAutoGreatPower::BeginTurnDiplomacyPrePassSlot1c8||22|function|undefined OrphanLeaf_NoCall_Ins07_004e7af0(void)|
-4e7b20|TGreatPower::ForwardApplyDiplomacyPolicyStateForTargetWithCostChecks||18|function|undefined ForwardApplyDiplomacyPolicyStateForTargetWithCostChecks()|
-4e7b50|TGreatPower::QueueDiplomacyProposalCodeWithAllianceGuards||88|function|undefined QueueDiplomacyProposalCodeWithAllianceGuards()|
-4e7be0|TAutoGreatPower::ProcessPendingDiplomacyProposalQueue||70|function|undefined ReplayQueuedDiplomacyProposalRowsAndProcessQueue()|
-4e7c50|TGreatPower::ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook||53|function|undefined ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook()|
+4e7b20|TAutoGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks||18|function|undefined ForwardApplyDiplomacyPolicyStateForTargetWithCostChecks()|
+4e7b50|TAutoGreatPower::QueueDiplomacyProposalCodeForTargetNation||88|function|undefined QueueDiplomacyProposalCodeWithAllianceGuards()|
+4e7be0|TAutoGreatPower::ReplyToDiplomacyOffers||70|function|undefined ReplayQueuedDiplomacyProposalRowsAndProcessQueue()|
+4e7c50|TAutoGreatPower::NotifyActionSlot94||53|function|undefined ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook()|
 4e7ca0|TAutoGreatPower::DispatchTurnEvent2103WithNationFromRecord||1|function|undefined OrphanRetStub_004e7ca0(void)|
 4e7cc0|TAutoGreatPower::HandleWarTransitionRequest||397|function|int HandleWarTransitionRequest(int targetNation, int sourceNation)|
 4e7ec0|TAutoGreatPower::HandleWarTransitionRequestWithRoleSwap||300|function|int HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation, char swapRoles)|
@@ -2599,7 +2599,7 @@ address|name|symbol|size|type|prototype|provenance
 4e9060|TGreatPower::ComputeMapActionContextCompositeScoreForNation||458|function|float __thiscall ComputeMapActionContextCompositeScoreForNation(TZone* zone)|
 4e92b0|TGreatPower::PopulateCase16AdvisoryMapNodeCandidateState||1548|function|void __thiscall PopulateCase16AdvisoryMapNodeCandidateState(void)|
 4e9a50|TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16||901|function|void __thiscall SelectAndQueueAdvisoryMapMissionsCase16(void)|
-4e9ed0|TGreatPower::QueueWarTransitionFromAdvisoryAction||40|function|undefined QueueWarTransitionFromAdvisoryAction()|
+4e9ed0|TAutoGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded||40|function|undefined QueueWarTransitionFromAdvisoryAction()|
 4e9f10|TAutoGreatPower::HasActiveCandidateNationSlots||172|function|undefined HasActiveCandidateNationSlots()|
 4e9ff0|TAutoGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0||184|function|undefined VTableSlot84_Provisional(void)|
 4ea0e0|TAutoGreatPower::OrphanLeaf_NoCall_Ins02_004d7f00||77|function|undefined NotifyAllianceSlot214(void)|
@@ -2715,7 +2715,7 @@ address|name|symbol|size|type|prototype|provenance
 4efc30|TDiplomacyMgr::HasAllianceGuardSlot60||90|function|undefined HasAsymmetricWarRelationForPrimaryNation()|
 4efcb0|TDiplomacyMgr::SetStandingScoreSlot28||302|function|undefined SetNationPairDiplomacyStandingScoreClampedAndNotifyMinors()|
 4efe30|TDiplomacyMgr::CopyDiplomacyStandingMatrixRowAndColumnSlot2c||95|function|undefined CopyDiplomacyStandingMatrixRowAndColumn()|
-4efeb0|TDiplomacyMgr::ApplyRelationCode4AndQueueEvent18ForTargetNation||97|function|undefined ApplyRelationCode4AndQueueEvent18ForTargetNation()|
+4efeb0|TDiplomacyMgr::ApplyPeaceRelationshipAndQueueEvent18ForTargetNation||97|function|undefined ApplyRelationCode4AndQueueEvent18ForTargetNation()|
 4eff40|TDiplomacyMgr::PropagateRelationSideEffectSlot80||517|function|undefined AdjustNationPairDiplomacyStandingAndPropagate()|
 4f01e0|TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn||739|function|undefined ApplyDiplomacyInterNationStatesForTurn()|
 4f0590|SyncNationField790FromLocalizationStateId||23|function|undefined SyncNationField790FromLocalizationStateId()|
@@ -2800,9 +2800,9 @@ address|name|symbol|size|type|prototype|provenance
 4f4a30|TDiplomacyMapView::RenderTerrainAndMinorNationLegendLabels||920|function|undefined RenderTerrainAndMinorNationLegendLabels()|
 4f4ec0|RenderDiplomacyMatrixRowStatusIcons||1084|function|undefined RenderDiplomacyMatrixRowStatusIcons()|
 4f5410|TDiplomacyMapView::HandleDiplomacySelectedNationActionCommand||1971|function|undefined HandleDiplomacySelectedNationActionCommand()|
-4f5e00|TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget||281|function|undefined ResolveDiplomacyActionFromClickAndUpdateTarget()|
+4f5e00|TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget||281|function|undefined ResolveDiplomacyActionFromClickAndUpdateTarget()|
 4f5f90|TDiplomacyMapView::DoSetCursor||3|function|void __thiscall DoSetCursor(CPoint* point, RgnHandle hitArg)|
-4f5fb0|TDiplomacyMapView::UpdateDiplomacyMapHoverCursorFromActionSelection||349|function|undefined UpdateDiplomacyMapHoverCursorFromActionSelection()|
+4f5fb0|TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback||349|function|undefined UpdateDiplomacyMapHoverCursorFromActionSelection()|
 4f6170|TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent||563|function|void __thiscall RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect)|listing
 4f6440|TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch||87|function|undefined BuildCombinedTerrainTypeRegionMaskAndDispatch()|
 4f64c0|TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit||396|function|undefined RebuildDiplomacyLegendPaletteMode4AndBlit()|

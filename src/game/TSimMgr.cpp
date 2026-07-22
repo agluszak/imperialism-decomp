@@ -1123,7 +1123,7 @@ CString TSimMgr::DiplomacyNoticeString(const DiplomacyNotice* notice) {
     result = noticeText;
     break;
   }
-  case 0x12d:
+  case kDiplomacyProposalJoinEmpire:
     if (rejected) {
       CString noticeText = countryName + " has rejected our invitation to join our Empire!";
       result = noticeText;
@@ -1133,7 +1133,7 @@ CString TSimMgr::DiplomacyNoticeString(const DiplomacyNotice* notice) {
       result = noticeText;
     }
     break;
-  case 0x12e:
+  case kDiplomacyProposalAlliance:
     if (rejected) {
       CString noticeText = countryName + " has rejected our offer of an alliance";
       result = noticeText;
@@ -1142,7 +1142,7 @@ CString TSimMgr::DiplomacyNoticeString(const DiplomacyNotice* notice) {
       result = noticeText;
     }
     break;
-  case 0x12f:
+  case kDiplomacyProposalNonAggressionPact:
     if (rejected) {
       CString noticeText = countryName + " has rejected our offer of a non-aggression pact";
       result = noticeText;
@@ -1151,7 +1151,7 @@ CString TSimMgr::DiplomacyNoticeString(const DiplomacyNotice* notice) {
       result = noticeText;
     }
     break;
-  case 0x130:
+  case kDiplomacyProposalPeaceTreaty:
     if (rejected) {
       CString noticeText = countryName + " has rejected our offer of a peace treaty.";
       result = noticeText;
@@ -1160,7 +1160,7 @@ CString TSimMgr::DiplomacyNoticeString(const DiplomacyNotice* notice) {
       result = noticeText;
     }
     break;
-  case 0x131: {
+  case kDiplomacyProposalDeclareWar: {
     CString noticeText = "War! " + countryName + "declares war on us!";
     result = noticeText;
     break;
@@ -2041,10 +2041,10 @@ void TSimMgr::HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry(void* pInst
 
   int sourceNation = static_cast<int>(sourceToken);
   int targetNation = static_cast<int>(targetToken);
-  int relationCode = static_cast<int>(relationToken);
+  DiplomacyRelationship relationship = static_cast<DiplomacyRelationship>(relationToken);
   g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(sourceNation, targetNation,
-                                                                        relationCode);
-  if (relationCode == 5) {
+                                                                        relationship);
+  if (relationship == kDiplomacyRelationshipJoinedEmpire) {
     TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
     short relationSideEffect = 2;
     diplomacy->relationSideEffectMatrix1402[sourceNation * kNationSlotCount + targetNation] =

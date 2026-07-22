@@ -30,7 +30,7 @@ public:
   void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                       int multiplier) override;
   // slot 0x23 — 0x004e7b50: proposal queue with alliance guards.
-  void QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode,
+  void QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode,
                                                  NationSlot targetNationSlot) override;
   // slot 0x25 — 0x004e7c50: policy side effects before slot 0x94 dispatch.
   void NotifyActionSlot94(int sourceNation, int actionCode) override;
@@ -49,8 +49,8 @@ public:
   // slot 0x81 — 0x004e7be0: replay proposal rows then reset policy state.
   void ReplyToDiplomacyOffers(void) override;
   // slot 0xa1 — 0x004e9ed0: war-transition propagation from advisory action.
-  void ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNationSlot, int policyCode,
-                                                            int sourceNationSlot) override;
+  void QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNationSlot, int transitionMode,
+                                                     int sourceNationSlot) override;
   // slot 0xa2 — 0x004e9a50: select and queue advisory map missions (case 16).
   void SelectAndQueueAdvisoryMapMissionsCase16(void) override;
   // slot 0xa4 — 0x004eb0d0: prune invalid missionQueue entries.

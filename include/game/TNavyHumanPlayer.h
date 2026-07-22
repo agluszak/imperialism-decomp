@@ -8,7 +8,7 @@
 class TNavyHumanPlayer : public TNavyPlayer {
 public:
   DECLARE_DYNCREATE(TNavyHumanPlayer)
-  virtual ~TNavyHumanPlayer() override;        // slot 0x01 (scalar deleting destructor)
+  virtual ~TNavyHumanPlayer() override; // slot 0x01 (scalar deleting destructor)
   virtual void DeploymentClick(TacticalTileIndex tileIndex); // slot 0x12 0x59efc0
 
   TNavyHumanPlayer();

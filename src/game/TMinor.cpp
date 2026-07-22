@@ -687,9 +687,10 @@ char TMinor::HasMinorStandingLinkSlot5C(int sourceNation) {
   return this->IsEncodedNationSlotMinus200Equal(sourceNation);
 }
 
-void TMinor::ApplyTerrainDiplomacyRelationFlagSlot8c(int sourceNation, int packedRelationCode) {
-  g_pDiplomacyTurnStateManager->SetRelationCodeSlot74WithMode(sourceNation, this->nationSlot,
-                                                              packedRelationCode, 0);
+void TMinor::ApplyTerrainDiplomacyRelationFlagSlot8c(int sourceNation,
+                                                     DiplomacyRelationship relationship) {
+  g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCode(sourceNation, this->nationSlot,
+                                                                   relationship, 0);
 }
 
 char TMinor::HasStandingPropagationBridgeSlot90(int targetNation) {
@@ -726,8 +727,8 @@ void TMinor::ClearNationAuxRuntimeGrantSlotC4(int grantValue) {
 
 // FUNCTION: IMPERIALISM 0x004e4ff0
 char TMinor::CanInitiateJoinEmpireProposalToTarget(NationSlot targetNationSlot,
-                                                   ProposalCode proposalCode) {
-  if (proposalCode != 0x12d || this->encodedNationSlot != -1) {
+                                                   DiplomacyProposalCodeStorage proposalCode) {
+  if (proposalCode != kDiplomacyProposalJoinEmpire || this->encodedNationSlot != -1) {
     return 0;
   }
 
@@ -759,10 +760,10 @@ char TMinor::CanInitiateJoinEmpireProposalToTarget(NationSlot targetNationSlot,
 }
 
 // FUNCTION: IMPERIALISM 0x004e50d0
-void TMinor::QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode,
+void TMinor::QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode,
                                                        NationSlot targetNationSlot) {
   NationSlot targetNation = targetNationSlot;
-  if (proposalCode == 0x12d) {
+  if (proposalCode == kDiplomacyProposalJoinEmpire) {
     char canPropose = 0;
     if (this->encodedNationSlot == -1) {
       canPropose = this->CanInitiateJoinEmpireProposalToTarget(targetNation, proposalCode);
@@ -776,8 +777,8 @@ void TMinor::QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode
         return;
       }
       if (g_apNationStates[targetNation] != 0) {
-        g_apNationStates[targetNation]->QueueDiplomacyProposalCodeForTargetNation(0x132,
-                                                                                  this->nationSlot);
+        g_apNationStates[targetNation]->QueueDiplomacyProposalCodeForTargetNation(
+            kDiplomacyProposalJoinEmpireWithWarEntanglements, this->nationSlot);
       }
       g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(3, this->nationSlot,
                                                                           targetNation, 0);
@@ -792,9 +793,10 @@ void TMinor::QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode
     return;
   }
 
-  if (proposalCode == 0x12f) {
+  if (proposalCode == kDiplomacyProposalNonAggressionPact) {
     if (this->encodedNationSlot == -1) {
-      g_pDiplomacyTurnStateManager->SetRelationCodeSlot78Final(this->nationSlot, targetNation, 3);
+      g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
+          this->nationSlot, targetNation, kDiplomacyRelationshipNonAggressionPact);
       if (g_apNationStates[targetNation] != 0) {
         g_apNationStates[targetNation]->NotifyActionSlot94(this->nationSlot, proposalCode);
       }
@@ -804,8 +806,9 @@ void TMinor::QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode
     return;
   }
 
-  if (proposalCode == 0x130 && this->encodedNationSlot == -1) {
-    g_pDiplomacyTurnStateManager->SetRelationCodeSlot78Final(this->nationSlot, targetNation, 4);
+  if (proposalCode == kDiplomacyProposalPeaceTreaty && this->encodedNationSlot == -1) {
+    g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
+        this->nationSlot, targetNation, kDiplomacyRelationshipPeace);
     if (g_apNationStates[targetNation] != 0) {
       g_apNationStates[targetNation]->NotifyActionSlot94(this->nationSlot, proposalCode);
     }
@@ -817,7 +820,7 @@ void TMinor::QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode
 // FUNCTION: IMPERIALISM 0x004e5300
 void TMinor::NotifyActionSlot94(int sourceNation, int actionCode) {
   (void)sourceNation;
-  if (actionCode == 0x131) {
+  if (actionCode == kDiplomacyProposalDeclareWar) {
     this->ApplyDiplomacyRelationMaskToProvinceLinkedObjects(-1);
     this->QueueInterNationEvent17ForState300AffectedNations();
   }
@@ -847,10 +850,10 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
           0) {
         TGreatPower* majorNation = g_apNationStates[majorNationSlot];
         if (majorNation != 0 && majorNation->diplomacyEligibilityA0 == 0) {
-          majorNation->NotifyActionSlot94(this->nationSlot, 0x131);
+          majorNation->NotifyActionSlot94(this->nationSlot, kDiplomacyProposalDeclareWar);
         }
-        g_pDiplomacyTurnStateManager->SetRelationCodeSlot74WithMode(this->nationSlot,
-                                                                    majorNationSlot, 6, 0);
+        g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCode(
+            this->nationSlot, majorNationSlot, kDiplomacyRelationshipWar, 0);
         g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(this->nationSlot, majorNationSlot,
                                                              0x31);
       }
@@ -875,8 +878,8 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
   for (int resetNationSlot = 0; resetNationSlot < kNationSlotCount; ++resetNationSlot) {
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(resetNationSlot)) !=
         0) {
-      g_pDiplomacyTurnStateManager->SetRelationCodeSlot78Final(this->nationSlot, resetNationSlot,
-                                                               4);
+      g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
+          this->nationSlot, resetNationSlot, kDiplomacyRelationshipPeace);
       g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(this->nationSlot, resetNationSlot, 0x5a);
     }
   }

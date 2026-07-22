@@ -417,7 +417,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
   selectedTerrainIndexAt90 = activeNation;
   frameRegionSelectorAt98 = activeNation;
   activeNationC2 = activeNation;
-  actionCodeBC = 0xd;
+  actionCodeBC = kDipActionInspectNation;
 }
 
 // Shared nil-pointer assert used by InitializeDiplomacyMinisterActionControlsAndLabels'
@@ -710,44 +710,41 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
 }
 
 // FUNCTION: IMPERIALISM 0x004f5e00
-int TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* clickPoint) {
-  char* self = reinterpret_cast<char*>(this);
+eDipAction TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* clickPoint) {
   static CRect diplomacyHitBounds = CRect(0x31, 0x2d, 0x24d, 0x159);
 
   if (PtInRect(&diplomacyHitBounds, *clickPoint) == 0) {
-    return 0;
+    return kDipActionNone;
   }
   if (interactionModeAt94 == 5) {
-    return 0;
+    return kDipActionNone;
   }
 
   CPoint localPoint = this->ViewToQDPt(clickPoint);
 
   int terrainIndex = 0;
-  int* terrainDescriptors = reinterpret_cast<int*>(kAddrTerrainTypeDescriptorTable);
   do {
-    if (*terrainDescriptors != 0) {
+    if (g_apTerrainTypeDescriptorTable[terrainIndex] != 0) {
       char hit = g_pStrategicMapViewSystem->MacViewMgrSlot24(&localPoint,
                                                              static_cast<short>(terrainIndex));
       if (hit != 0) {
         break;
       }
     }
-    terrainDescriptors += 1;
     terrainIndex += 1;
-  } while (reinterpret_cast<unsigned int>(terrainDescriptors) < 0x6a436c);
+  } while (terrainIndex < kNationSlotCount);
 
-  int actionCode = 0;
-  if (terrainIndex < 0x17) {
-    actionCode = *reinterpret_cast<int*>(self + 0xbc);
-    *reinterpret_cast<short*>(self + 0xc2) = static_cast<short>(terrainIndex);
-    if (actionCode != 0xd && terrainIndex == selectedTerrainIndexAt90) {
-      return 1;
+  eDipAction action = kDipActionNone;
+  if (terrainIndex < kNationSlotCount) {
+    action = actionCodeBC;
+    activeNationC2 = static_cast<short>(terrainIndex);
+    if (action != kDipActionInspectNation && terrainIndex == selectedTerrainIndexAt90) {
+      return kDipActionSelectedNation;
     }
   } else {
-    *reinterpret_cast<short*>(self + 0xc2) = static_cast<short>(0xffff);
+    activeNationC2 = -1;
   }
-  return actionCode;
+  return action;
 }
 
 // FUNCTION: IMPERIALISM 0x004f5f90
@@ -759,7 +756,6 @@ void TDiplomacyMapView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
 // FUNCTION: IMPERIALISM 0x004f5fb0
 void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* clickPoint,
                                                                             RgnHandle dispatchArg) {
-  char* self = reinterpret_cast<char*>(this);
   CPoint localPoint;
   localPoint.x = clickPoint->x;
   localPoint.y = clickPoint->y;
@@ -782,11 +778,10 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
   cursorIdsByAction[14] = 0x419;
   cursorIdsByAction[15] = 0x41a;
 
-  void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
   int hitIndex = 0;
   bool hit = false;
   do {
-    if (terrainDescriptors[static_cast<short>(hitIndex)] != 0) {
+    if (g_apTerrainTypeDescriptorTable[static_cast<short>(hitIndex)] != 0) {
       char regionHit =
           g_pStrategicMapViewSystem->MacViewMgrSlot24(&localPoint, static_cast<short>(hitIndex));
       if (regionHit != 0) {
@@ -797,38 +792,38 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
     hitIndex += 1;
   } while (static_cast<short>(hitIndex) < 0x17);
 
-  void* hCursor;
+  HCURSOR hCursor;
   bool applyCursor = false;
   if (hit) {
-    int actionCode = ResolveDiplomacyActionFromClickAndUpdateTarget(clickPoint);
+    eDipAction action = ResolveDiplomacyActionFromClickAndUpdateTarget(clickPoint);
     bool valid =
         g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-            selectedTerrainIndexAt90, *reinterpret_cast<short*>(self + 0xc2), actionCode);
+            selectedTerrainIndexAt90, activeNationC2, action);
 
     short cursorId;
     if (valid == 0) {
       cursorId = 0x41b;
     } else {
-      cursorId = cursorIdsByAction[actionCode];
-      if (actionCode == 9 || actionCode == 7 || actionCode == 8) {
-        cursorId = static_cast<short>(cursorId + *reinterpret_cast<short*>(self + 0xc0));
+      cursorId = cursorIdsByAction[action];
+      if (action == kDipActionTradeSubsidy || action == kDipActionOneTimeGrant ||
+          action == kDipActionRecurringGrant) {
+        cursorId = static_cast<short>(cursorId + selectedGrantRowC0);
       }
     }
-    *reinterpret_cast<short*>(self + 0x52a) = cursorId;
+    currentCursorResourceId52A = cursorId;
     hCursor = g_pUiRuntimeContext->turnEventCursors[cursorId - TViewMgr::kCursorResourceIdBase];
     applyCursor = true;
-  } else if (*reinterpret_cast<short*>(self + 0x52a) != 0x41b) {
-    *reinterpret_cast<short*>(self + 0x52a) = 0x41b;
+  } else if (currentCursorResourceId52A != 0x41b) {
+    currentCursorResourceId52A = 0x41b;
     hCursor = g_pUiRuntimeContext->turnEventCursors[0x41b - TViewMgr::kCursorResourceIdBase];
     applyCursor = true;
   }
 
   if (applyCursor) {
-    SetCursor(reinterpret_cast<HCURSOR>(hCursor));
+    SetCursor(hCursor);
   }
 
-  reinterpret_cast<TControl*>(this)->TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(
-      clickPoint, dispatchArg);
+  TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(clickPoint, dispatchArg);
 }
 
 // FUNCTION: IMPERIALISM 0x004f6170
@@ -948,9 +943,10 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
       if (nationIndex == static_cast<short>(activeNationSlot)) {
         eventCode = 0x40;
       } else {
-        short relationTier =
-            g_pDiplomacyTurnStateManager->GetRelationTierSlot70(activeNationSlot, nationIndex);
-        eventCode = g_aDiplomacyRelationPaletteColorCodes[relationTier];
+        DiplomacyRelationshipStorage relationship =
+            g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(activeNationSlot,
+                                                                             nationIndex);
+        eventCode = g_aDiplomacyRelationPaletteColorCodes[relationship];
       }
 
       maskOrigin.x = 0;
@@ -1080,8 +1076,8 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
     void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
     do {
       if (*terrainDescriptors != 0) {
-        short eventCode =
-            g_pDiplomacyTurnStateManager->GetRelationTypeSlot68(activeNationSlot, terrainIndex);
+        short eventCode = g_pDiplomacyTurnStateManager->GetNationPairDiplomacyStandingTierCode(
+            activeNationSlot, terrainIndex);
 
         maskOrigin.x = 0;
         maskOrigin.y = 0;

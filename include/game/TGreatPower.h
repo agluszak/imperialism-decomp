@@ -70,7 +70,7 @@ public:
   // minister (slot 0x98) or appends a kind-1 tracked-slot entry; returns 0.
   char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                      int arg4) override;
-  void QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode,
+  void QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode,
                                                  NationSlot targetNationSlot) override;
   void NotifyActionSlot94(int sourceNation, int actionCode) override; // slot 0x94
   virtual void NoOpNationPendingActionHook(void);
@@ -239,9 +239,10 @@ public:
   virtual char CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // index 122
   virtual void AcceptOffer(short proposalIndex);                                       // index 123
   virtual void RejectOffer(unsigned short proposalQueueIndex);                         // index 124
-  // slot 0x7d — body 0x004df4b0: whether eventCode may target the nation given the
-  // current relation tier (tiers 2..6 progressively restrict 0x12e-0x130).
-  virtual char IsEventCodeAllowedForRelationTier(short eventCode, int targetNation);
+  // slot 0x7d — body 0x004df4b0: whether the proposal may target the nation given the
+  // current relationship (alliance through war progressively restricts treaty offers).
+  virtual char IsDiplomacyProposalAllowedForRelationship(DiplomacyProposalCodeStorage proposalCode,
+                                                         int targetNation);
   virtual void ResetNationDiplomacyProposalQueue(void);
   virtual void ReleaseProposalQueueSlot7F(void);
   virtual void DispatchTurnEvent2103WithNationFromRecord(void);
@@ -305,10 +306,10 @@ public:
                                                      char swapRoles); // slot 0x280
   // index 0xa1 / vtable+0x284 — body 0x004e27f0 (vtable holds ILT thunk 0x00406fe1).
   // Queues a nation-pair war transition and notifies the third-party minor nation
-  // when the policy code is 1 or 0x132.
-  virtual void ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNationSlot,
-                                                                    int policyCode,
-                                                                    int sourceNationSlot);
+  // for the direct-transition mode or a join-empire offer with war entanglements.
+  virtual void QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNationSlot,
+                                                             int transitionMode,
+                                                             int sourceNationSlot);
   // slot 0xa2 — base body 0x004e1f20 is an empty hook; TAutoGreatPower's override
   // (0x004e9a50) selects and queues the case-16 advisory map missions.
   virtual void SelectAndQueueAdvisoryMapMissionsCase16(void); // body 0x004e1f20
@@ -326,7 +327,8 @@ public:
   virtual void CallSlotA9(int targetNation);
   // slot 0x2a8 — body 0x004e27b0: mode-dispatched diplomacy slot action (mode 6 ->
   // slot 0xa8, etc.). TDiplomacyMgr notifies relation-code changes here.
-  virtual void DispatchNationDiplomacySlotActionByMode(int targetNationSlot, int mode);
+  virtual void DispatchNationDiplomacySlotActionByMode(int targetNationSlot,
+                                                       DiplomacyRelationship relationship);
   // slot 0x2ac — handles this nation leaving play. The base dispatches turn event
   // 0x11f8; network and AI nation types override the transition behavior.
   virtual void SorryYouLose(void);

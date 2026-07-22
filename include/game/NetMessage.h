@@ -73,7 +73,7 @@ struct TurnEvent14NationMetricPacket : TimelyMessageHeader {
 // Event-0x16 diplomacy proposal for one nation.
 struct TurnEvent16DiplomacyProposalPacket : TimelyMessageHeader {
   NationSlot nationSlot18;
-  ProposalCode proposalCode1A;
+  DiplomacyProposalCodeStorage proposalCode1A;
   NationSlot targetNationId1C;
   unsigned char pad1e[2];
 };

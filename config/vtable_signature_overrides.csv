@@ -1,1 +1,2 @@
 address|class|slot|prototype|evidence|confidence
+4f1b10|TDiplomacyMgr|28|DiplomacyRelationshipStorage TDiplomacyMgr::GetNationPairDiplomacyRelationCode(NationSlot sourceNationSlot, NationSlot targetNationSlot)|0x004f1b10 returns the matrix word in AX and RET 8 proves exactly two explicit stack arguments; the project-local return typedef is signed short rather than an aggregate sret|proven

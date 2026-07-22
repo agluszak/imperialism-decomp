@@ -35,7 +35,7 @@ public:
   bool IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot) override;
   char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                      int arg4) override;
-  void QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode,
+  void QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode,
                                                  NationSlot targetNationSlot) override;
   char ReturnFalseNationStateCapabilityFlag90(short arg) override;
   void NotifyActionSlot94(int sourceNation, int actionCode) override;
@@ -45,7 +45,7 @@ public:
   virtual void RebuildDiplomacyEconomicPressureFromMapState(void);
   void SeedRandomDiplomacyPolicyThresholds(void);
   char CanInitiateJoinEmpireProposalToTarget(NationSlot targetNationSlot,
-                                             ProposalCode proposalCode);
+                                             DiplomacyProposalCodeStorage proposalCode);
   void HandleNetworkPortConstructionOrder(int nationId);
   void SetNationRowDisplayValueByDiplomacyPredicate(NationSlot targetNationSlot);
   void ClearTileActivityOverlayByProvinceId(int provinceId);
@@ -61,7 +61,8 @@ public:
 
   void SetDiplomacyStandingSlot48(int targetNation, int standing);
   char HasMinorStandingLinkSlot5C(int sourceNation);
-  void ApplyTerrainDiplomacyRelationFlagSlot8c(int sourceNation, int packedRelationCode);
+  void ApplyTerrainDiplomacyRelationFlagSlot8c(int sourceNation,
+                                               DiplomacyRelationship relationship);
   char HasStandingPropagationBridgeSlot90(int targetNation);
   void NotifyNationAuxRuntimeFinalizeSlotC0(void);
   void ClearNationAuxRuntimeGrantSlotC4(int grantValue);

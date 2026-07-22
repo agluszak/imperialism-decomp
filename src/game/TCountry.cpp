@@ -412,8 +412,10 @@ void TCountry::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode
   }
 
   if (mode == 1) {
-    g_pDiplomacyTurnStateManager->SetRelationCodeSlot78Final(this->nationSlot, targetNationSlot, 5);
-    g_pDiplomacyTurnStateManager->SetRelationCodeSlot78Final(targetNationSlot, this->nationSlot, 5);
+    g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
+        this->nationSlot, targetNationSlot, kDiplomacyRelationshipJoinedEmpire);
+    g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
+        targetNationSlot, this->nationSlot, kDiplomacyRelationshipJoinedEmpire);
   }
 
   if (this->nationSlot < 7) {
@@ -574,7 +576,7 @@ bool TCountry::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetN
 }
 
 // FUNCTION: IMPERIALISM 0x004d7fe0
-void TCountry::QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode,
+void TCountry::QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode,
                                                          NationSlot targetNationSlot) {
   (void)proposalCode;
   (void)targetNationSlot;

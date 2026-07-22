@@ -1,6 +1,7 @@
 #pragma once
 
 #include "compat.h"
+#include "game/diplomacy_domain_types.h"
 #include "game/StrategicMapCallbackRecord.h"
 #include "game/TPicture.h"
 #include "game/mfc.h"
@@ -22,11 +23,6 @@ struct DiplomacyMaskBufferRun {
 };
 
 ASSERT_SIZE(DiplomacyMaskBufferRun, 0x14);
-
-// Mac CodeWarrior names the action parameter eDipAction. Only the two values used by
-// CheckEntanglements are named here; the diplomacy-map click handler uses the wider
-// action range for unrelated offer types.
-enum eDipAction { kDipActionJoinEmpire = 2, kDipActionAlliance = 3 };
 
 // Constructor evidence calls TPicture::TPicture at 0x0048efc0, then writes the
 // complete-object vfptr at 0x00655b68. The table at 0x0066f16c is separate
@@ -70,7 +66,7 @@ public:
 
   TDiplomacyMapView();
 
-  int ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* clickPoint);
+  eDipAction ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* clickPoint);
   void BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode);
   // Mac CodeWarrior: TDiplomacyMapView::PoseWarOffer(short, long, long, long).
   char PoseWarOffer(short sourceNationSlot, int minorNationSlot, int enemyNationSlot,
@@ -148,7 +144,7 @@ public:
   // by TGrantsView::DoEvent (via TPanelView::diplomacyMapView60) keyed off the parity of a
   // clicked control's tag -- public because that sibling panel writes it directly
   // through the panel's owner pointer, with no accessor method in the original.
-  int actionCodeBC;
+  eDipAction actionCodeBC;
   // 0xc0 -- a row/index value derived from a clicked control's tag
   // ((controlTag - 0x6330) / 2), written by TGrantsView::DoEvent through
   // TPanelView::diplomacyMapView60.
@@ -178,7 +174,7 @@ protected:
   // 0x528 — highest pending-policy tier currently visible in the council vote animation.
   // DrawVoteNuggets draws entries at or below it; TCouncilView advances/resets it.
   short visibleVoteTier528;
-  char pad_52a[0x2];
+  short currentCursorResourceId52A;
   // 0x52c -- per-tile flag: owner byte in g_pDiplomacyTurnStateManager's table != -1.
   bool tileHasOwnerFlags52C[0x180];
   // 0x6ac -- per-tile 10x7 marker rect anchored at the tile's hex-raster position.

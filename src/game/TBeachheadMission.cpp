@@ -123,7 +123,7 @@ bool TBeachheadMission::Matches(eMissionType missionType, int key, TZone* zoneCo
 // the two nations aren't currently at war (IsNationPairAtWar/IsNationPairAtWar),
 // applies the diplomacy policy state via
 // TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks (real vtable slot 0x1d0/116),
-// unless the owner's diplomacyPolicyByNation entry already carries that same 0x131 policy code.
+// unless the owner's diplomacyPolicyByNation entry already carries the declaration-of-war code.
 // FUNCTION: IMPERIALISM 0x0053a800
 void TBeachheadMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
   signed char ownerCode =
@@ -142,9 +142,10 @@ void TBeachheadMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
 
   ownerCode =
       g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30].ownerNationCode00;
-  if (g_apNationStates[nationId04]->diplomacyPolicyByNation[ownerCode] != 0x131) {
-    g_apNationStates[nationId04]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(ownerCode,
-                                                                                   0x131);
+  if (g_apNationStates[nationId04]->diplomacyPolicyByNation[ownerCode] !=
+      kDiplomacyProposalDeclareWar) {
+    g_apNationStates[nationId04]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+        ownerCode, kDiplomacyProposalDeclareWar);
   }
 }
 

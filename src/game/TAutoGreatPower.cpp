@@ -451,14 +451,14 @@ bool TAutoGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short tar
 }
 
 // FUNCTION: IMPERIALISM 0x004e7b50
-void TAutoGreatPower::QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode,
-                                                                NationSlot targetNationSlot) {
+void TAutoGreatPower::QueueDiplomacyProposalCodeForTargetNation(
+    DiplomacyProposalCodeStorage proposalCode, NationSlot targetNationSlot) {
   switch (proposalCode) {
-  case 0x12D:
-  case 0x12F:
+  case kDiplomacyProposalJoinEmpire:
+  case kDiplomacyProposalNonAggressionPact:
     return;
-  case 0x12E:
-  case 0x132: {
+  case kDiplomacyProposalAlliance:
+  case kDiplomacyProposalJoinEmpireWithWarEntanglements: {
     if (g_pDiplomacyTurnStateManager != 0) {
       bool hasAllianceGuard = g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(
           targetNationSlot, this->nationSlot);
@@ -493,7 +493,7 @@ void TAutoGreatPower::ReplyToDiplomacyOffers(void) {
 
 // FUNCTION: IMPERIALISM 0x004e7c50
 void TAutoGreatPower::NotifyActionSlot94(int sourceNation, int actionCode) {
-  if (actionCode == 0x131) {
+  if (actionCode == kDiplomacyProposalDeclareWar) {
     this->SetCandidateNationFlagAndPortZoneState(static_cast<short>(sourceNation));
   }
   TGreatPower::NotifyActionSlot94(sourceNation, actionCode);
@@ -543,7 +543,7 @@ int TAutoGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNati
   if (allBeatable) {
     for (int helperNation = 0; helperNation < 7; ++helperNation) {
       if (beatableByNation[helperNation]) {
-        this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(helperNation, 1, targetNation);
+        this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(helperNation, 1, targetNation);
       }
     }
     TMinor* minor = g_apSecondaryNationStateSlots[targetNation];
@@ -591,16 +591,18 @@ int TAutoGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, in
     float combinedScore = standingScore + ratioScore;
     if (this->ComputeMinisterSkillFloatSlot88() <= combinedScore) {
       if (swapRoles == 0) {
-        this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(sourceNation, 2, targetNation);
+        this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(sourceNation, 2, targetNation);
         return 1;
       }
-      this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(targetNation, 2, sourceNation);
+      this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(targetNation, 2, sourceNation);
       return 1;
     }
     if (swapRoles == 0) {
-      g_pDiplomacyTurnStateManager->ApplyRelationCode4Slot7c(this->nationSlot, targetNation, 1);
+      g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
+          this->nationSlot, targetNation, 1);
     } else {
-      g_pDiplomacyTurnStateManager->ApplyRelationCode4Slot7c(this->nationSlot, sourceNation, 0);
+      g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
+          this->nationSlot, sourceNation, 0);
     }
   }
   return 1;
@@ -908,14 +910,15 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
         if (owner == -1) {
           continue;
         }
-        if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(this->nationSlot,
-                                                                             owner) == 2) {
+        if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
+                this->nationSlot, owner) == kDiplomacyRelationshipAlliance) {
           continue;
         }
         if (g_apTerrainTypeDescriptorTable[owner]->encodedNationSlot >= 200) {
           if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
                   this->nationSlot,
-                  g_apTerrainTypeDescriptorTable[owner]->DecodeOwnerNationSlot()) == 2) {
+                  g_apTerrainTypeDescriptorTable[owner]->DecodeOwnerNationSlot()) ==
+              kDiplomacyRelationshipAlliance) {
             continue;
           }
         }
@@ -1150,12 +1153,12 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e9ed0
-void TAutoGreatPower::ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNationSlot,
-                                                                           int policyCode,
-                                                                           int sourceNationSlot) {
+void TAutoGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNationSlot,
+                                                                    int transitionMode,
+                                                                    int sourceNationSlot) {
   this->SetCandidateNationFlagAndPortZoneState(targetNationSlot);
-  TGreatPower::ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(targetNationSlot, policyCode,
-                                                                    sourceNationSlot);
+  TGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded(targetNationSlot, transitionMode,
+                                                             sourceNationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x004e9f10
@@ -1179,7 +1182,8 @@ char TAutoGreatPower::HasActiveCandidateNationSlots(void) {
       if ((*minorCursor)->ownedRegionList->GetSize() == 0) {
         this->candidateNationFlags[candidate] = 0;
         if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, candidate) != 0) {
-          g_pDiplomacyTurnStateManager->SetRelationCodeSlot78Final(this->nationSlot, candidate, 4);
+          g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
+              this->nationSlot, candidate, kDiplomacyRelationshipPeace);
         }
       } else {
         anyActive = 1;

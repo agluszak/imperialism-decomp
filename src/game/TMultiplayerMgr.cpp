@@ -1649,25 +1649,25 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       if (action->flag21 != 0) {
         TGreatPower* nation1E = g_apNationStates[action->nation1C];
         if (action->flag20 == 0) {
-          nation1E->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(action->nationB1E, 2,
-                                                                         action->nationA1D);
+          nation1E->QueueWarTransitionAndNotifyThirdPartyIfNeeded(action->nationB1E, 2,
+                                                                  action->nationA1D);
         } else {
-          nation1E->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(action->nationA1D, 2,
-                                                                         action->nationB1E);
+          nation1E->QueueWarTransitionAndNotifyThirdPartyIfNeeded(action->nationA1D, 2,
+                                                                  action->nationB1E);
         }
       } else {
         if (action->flag20 == 0) {
-          g_pDiplomacyTurnStateManager->ApplyRelationCode4AndQueueEvent18ForTargetNation(
+          g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
               action->nation1C, action->nationA1D, 1);
         } else {
-          g_pDiplomacyTurnStateManager->ApplyRelationCode4AndQueueEvent18ForTargetNation(
+          g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
               action->nation1C, action->nationB1E, 0);
         }
       }
     } else if (action->actionCode1F == 0x69 /* 'i' */ && action->flag21 != 0) {
       if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(action->nation1C, action->nationB1E) ==
           0) {
-        g_apNationStates[action->nation1C]->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(
+        g_apNationStates[action->nation1C]->QueueWarTransitionAndNotifyThirdPartyIfNeeded(
             action->nationB1E, 1, action->nationA1D);
       } else {
         TMinor* minor1E = g_apSecondaryNationStateSlots[action->nationA1D];
