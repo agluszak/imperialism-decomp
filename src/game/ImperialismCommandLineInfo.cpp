@@ -41,6 +41,3 @@ void ImperialismCommandLineInfo::ParseParam(LPCSTR pszParam, BOOL bFlag, BOOL bL
 
 // SYNTHETIC: IMPERIALISM 0x00413550
 // ImperialismCommandLineInfo::`scalar deleting destructor'
-
-// FUNCTION: IMPERIALISM 0x00413580
-ImperialismCommandLineInfo::~ImperialismCommandLineInfo() {}
