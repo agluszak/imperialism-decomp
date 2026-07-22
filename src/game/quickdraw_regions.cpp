@@ -127,6 +127,19 @@ void SetEmptyRgn(RgnHandle rgn) {
   ::GetRgnBox(static_cast<HRGN>((*rgn)->rgn.m_hObject), &(*rgn)->rgnBBox);
 }
 
+// FUNCTION: IMPERIALISM 0x00497860
+void QDFrameRgn(RgnHandle rgn) {
+  CBrush brush(static_cast<COLORREF>(g_Quick_Draw_Color_State_006950FC));
+  CDC* dc = g_pQuickDrawMemoryDc;
+  if (dc == 0) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  if (dc != 0) {
+    ::FrameRgn(dc->m_hDC, static_cast<HRGN>((*rgn)->rgn.m_hObject), static_cast<HBRUSH>(brush), 1,
+               1);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00497bb0
 void CopyRgn(RgnHandle src, RgnHandle dst) {
   CRgn* srcRgn = &(*src)->rgn;

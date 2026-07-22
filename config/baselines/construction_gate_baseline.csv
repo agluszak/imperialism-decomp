@@ -5,7 +5,7 @@ src/game/T2PictToggleButton.cpp|0|0|0|0|0|3|0|0|0|3
 src/game/TAnimation.cpp|0|0|0|0|0|0|0|1|0|1
 src/game/TCivDescription.cpp|0|0|0|0|1|0|0|0|0|1
 src/game/TCivilianButton.cpp|0|0|0|0|1|1|0|0|0|2
-src/game/TDiplomacyMapView.cpp|0|0|0|0|0|4|0|2|0|6
+src/game/TDiplomacyMapView.cpp|0|0|0|0|0|2|0|0|0|2
 src/game/TDiplomacyMgr.cpp|0|0|0|0|0|0|0|3|0|3
 src/game/TMacViewMgr.cpp|0|0|0|0|0|0|0|2|0|2
 src/game/TMapDialog.cpp|0|0|0|0|0|3|0|0|1|4
@@ -15,7 +15,6 @@ src/game/TMapMaker_RotateMapColumns.cpp|0|0|0|0|0|0|0|2|0|2
 src/game/TMapMgr.cpp|0|0|0|0|0|2|0|6|0|8
 src/game/TMinor.cpp|0|0|0|0|0|0|0|0|3|3
 src/game/TObject.cpp|0|0|1|0|0|0|0|0|0|1
-src/game/TOcean.cpp|0|0|0|0|1|2|0|0|0|3
 src/game/TOcean_RouteBuffer.cpp|0|0|0|0|0|0|0|2|0|2
 src/game/TPtrList.cpp|0|0|0|0|0|0|0|1|0|1
 src/game/TSortedPtrList.cpp|0|0|0|0|0|0|0|7|0|7

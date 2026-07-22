@@ -22,8 +22,6 @@
 #include "game/navy_order.h"
 #include "game/TTaskForce.h"
 
-undefined4 SelectBestSeedTileForNationFromCostField(void);
-
 namespace {
 // Retain TOcean::`vftable' in the link until save/load paths virtual-dispatch through
 // g_pActiveMapOrderContext (currently only non-virtual methods are referenced).
@@ -34,10 +32,6 @@ void NotifyMapUberPictureTileMarker(short tileIndex) {
   if (g_pUiRuntimeContext != 0 && g_pUiRuntimeContext->mapUberPictureF0 != 0) {
     g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(static_cast<short>(tileIndex));
   }
-}
-
-void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte) {
-  g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(tileIndex, stateByte);
 }
 
 // FUNCTION: IMPERIALISM 0x0055fc40
@@ -247,6 +241,53 @@ int RelaxMapTileCostFieldByNeighborTerrain(short* costField) {
   } while (true);
 }
 
+// FUNCTION: IMPERIALISM 0x00562c00
+int SelectBestSeedTileForNationFromCostField(short* costField, short nationTag) {
+  int bestTile = -1;
+  int bestScore = -1;
+  short equalBestCount = 0;
+
+  for (int tileIndex = 0; static_cast<short>(tileIndex) < 0x1878; ++tileIndex) {
+    TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
+    if (static_cast<short>(tile->ownerNationTag04) != nationTag) {
+      continue;
+    }
+
+    int score = costField[tileIndex] * 12;
+    for (int direction = 0; direction < 6; ++direction) {
+      short neighbor = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(tileIndex, direction);
+      if (neighbor != -1 && g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04 ==
+                                tile->ownerNationTag04) {
+        score += costField[neighbor] * 2;
+        if (direction == 4 || direction == 1) {
+          score += costField[neighbor];
+        }
+      }
+    }
+
+    if (bestTile == -1 || bestScore < score) {
+      bestTile = tileIndex;
+      bestScore = score;
+      equalBestCount = 1;
+    } else if (score == bestScore) {
+      ++equalBestCount;
+      if (rand() % equalBestCount == 0 || bestTile < 0xd8) {
+        bestTile = tileIndex;
+        bestScore = score;
+      }
+    } else if (bestTile < 0xd8) {
+      bestTile = tileIndex;
+      bestScore = score;
+    }
+  }
+
+  return bestTile;
+}
+
+void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte) {
+  g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(tileIndex, stateByte);
+}
+
 // FUNCTION: IMPERIALISM 0x00562d90
 void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg) {
   TZone* contextBase;
@@ -256,8 +297,7 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
 
   nationCount = static_cast<short>(nationCountArg);
   if (contextArray != 0) {
-    reinterpret_cast<void(__fastcall*)(TZone*, int, int)>(*reinterpret_cast<int*>(contextArray) +
-                                                          4)(contextArray, 0, 3);
+    delete[] contextArray;
   }
   contextBase = new TZone[static_cast<int>(static_cast<short>(nationCountArg))];
   contextArray = contextBase;
@@ -279,10 +319,10 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
   nationIndex = 0;
   if (0 < static_cast<int>(static_cast<short>(nationCountArg))) {
     do {
-      reinterpret_cast<int(__cdecl*)(int*, int)>(SelectBestSeedTileForNationFromCostField)(
-          costField, nationIndex + 0x17);
+      int seedTile = SelectBestSeedTileForNationFromCostField(
+          reinterpret_cast<short*>(costField), static_cast<short>(nationIndex + 0x17));
       contextArray[nationIndex].SetMapActionContextTargetTileAndRefreshMarkers(nationIndex + 0x17,
-                                                                               0xffff);
+                                                                               seedTile);
       nationIndex = nationIndex + 1;
     } while (nationIndex < static_cast<int>(static_cast<short>(nationCountArg)));
   }

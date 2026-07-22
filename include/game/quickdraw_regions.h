@@ -36,6 +36,7 @@ void SetClip(RgnHandle rgn);                                  // 0x00495a30
 void ClipRect(RECT* rect);                                    // 0x00495a80
 void UnionRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst); // 0x004977a0
 void SetEmptyRgn(RgnHandle rgn);                              // 0x00497810
+void QDFrameRgn(RgnHandle rgn);                               // 0x00497860
 void SetRectRgn(RgnHandle rgn, short left, short top, short right,
                 short bottom);                   // 0x00498be0
 void CopyRgn(RgnHandle src, RgnHandle dst);      // 0x00497bb0
