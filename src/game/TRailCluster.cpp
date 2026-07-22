@@ -1,4 +1,5 @@
 #include "game/TAmtBar.h"
+#include "game/TBuildingView.h"
 #include "game/TSimMgr.h"
 #include "game/TIndustryCluster.h"
 #include "game/TShipyardCluster.h"
@@ -23,17 +24,14 @@
 const int kAssertLineRatioA = 0xd1d;
 
 static __inline void UpdateTradeBarFromSelectedMetricRatio(TRailCluster* context, int assertLine) {
-  void* owner = context;
-  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(
-      reinterpret_cast<TView*>(owner)->ResolveControlByTag(kControlTagBar));
+  TAmtBar* barControl = static_cast<TAmtBar*>(context->ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
     FailNilPointerInUSmallViews(assertLine);
   }
 
-  TAmtBar* barLayout = reinterpret_cast<TAmtBar*>(barControl);
-  if (barLayout->auxValueA != 0) {
-    int ratioValue = ((int)context->selectedMetricOrder->MaxOrder() * barLayout->frameWidth34) /
-                     (int)barLayout->auxValueA;
+  if (barControl->auxValueA != 0) {
+    int ratioValue = (context->selectedMetricOrder->MaxOrder() * barControl->frameWidth34) /
+                     barControl->auxValueA;
     barControl->SetBarMetricRatio(ratioValue);
   }
 }
@@ -126,7 +124,7 @@ void TRailCluster::SetMoveAmount(short amount) {
 // FUNCTION: IMPERIALISM 0x005899f0
 void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
   short step = this->selectedMetricStep;
-  int quantizedDragValue = ((((int)step / 2) + (int)(short)dragValue) / (int)step) * (int)step;
+  int quantizedDragValue = ((step / 2 + dragValue) / step) * step;
   TProductionOrder* selectedOrder = this->selectedMetricOrder;
   short previousValue = selectedOrder->quantityField04;
   if (selectedOrder != 0) {
@@ -137,8 +135,7 @@ void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
     return;
   }
 
-  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(
-      reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagMove));
+  TAmtBar* moveControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
   if (moveControl == 0) {
     FailNilPointerInUSmallViews(0xcf2);
   }
@@ -150,31 +147,40 @@ void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
   moveControl->QueryBounds(&moveBoundsRect);
   OffsetRect(&moveBoundsRect, this->ownerLocalX, this->ownerLocalY);
   CopyRect(&moveInvalidRect, &moveBoundsRect);
-  reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&moveInvalidRect, 1);
+  this->ownerContext->InvalidateCityDialogRectRegion(&moveInvalidRect, 1);
 
-  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(
-      reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagBar));
+  TAmtBar* barControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
     FailNilPointerInUSmallViews(0xcf9);
   }
 
-  TAmtBar* barLayout = reinterpret_cast<TAmtBar*>(barControl);
-  TAmtBar* barAmount = reinterpret_cast<TAmtBar*>(barControl);
   float barScale = 9999.0f;
-  if (barLayout->auxValueA != 0) {
-    barScale = (float)barLayout->frameWidth34 / (float)barLayout->auxValueA;
+  if (barControl->auxValueA != 0) {
+    barScale =
+        static_cast<float>(barControl->frameWidth34) / static_cast<float>(barControl->auxValueA);
   }
 
   if (selectedOrder->quantityField04 == selectedMetricValue) {
-    barAmount->auxValueB = 0x34;
+    barControl->auxValueB = 0x34;
   } else {
-    barAmount->auxValueB = 0x3a;
+    barControl->auxValueB = 0x3a;
   }
 
-  int scaledMetric = (int)((float)selectedOrder->MaxOrder() * barScale);
-  int scaledRange = (int)((float)selectedOrder->quantityField04 * barScale);
-  barControl->SetBarMetric(scaledMetric, scaledRange);
-  this->UpdateMax();
+  int scaledMoveAmount =
+      static_cast<int>(static_cast<float>(selectedOrder->quantityField04) * barScale);
+  int scaledMaximum = static_cast<int>(static_cast<float>(selectedOrder->MaxOrder()) * barScale);
+  barControl->SetBarMetric(scaledMoveAmount, scaledMaximum);
+
+  int moveControlPosition[2];
+  moveControlPosition[0] = barControl->ownerLocalX + static_cast<short>(scaledMoveAmount) - 2;
+  moveControlPosition[1] = barControl->ownerLocalY + barControl->frameHeight38;
+  moveControl->CaptureLayoutF0(moveControlPosition, 1);
+  moveControl->QueryBounds(&moveBoundsRect);
+  OffsetRect(&moveBoundsRect, this->ownerLocalX, this->ownerLocalY);
+  CopyRect(&moveInvalidRect, &moveBoundsRect);
+  this->ownerContext->InvalidateCityDialogRectRegion(&moveInvalidRect, 1);
+
+  static_cast<TBuildingView*>(this->ownerContext)->UpdateFields();
 }
 
 // FUNCTION: IMPERIALISM 0x00589d10
@@ -185,7 +191,7 @@ void TRailCluster::UpdateMax() {
 // FUNCTION: IMPERIALISM 0x00589da0
 void TRailCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 100) {
-    TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+    TAmtBar* moveControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
     if (moveControl == 0) {
       FailNilPointerInUSmallViews(0xcf2);
     }
@@ -197,7 +203,7 @@ void TRailCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
     return;
   }
-  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+  TAmtBar* moveControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
   if (moveControl == 0) {
     FailNilPointerInUSmallViews(0xcf2);
   }

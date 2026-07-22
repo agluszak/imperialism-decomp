@@ -4915,7 +4915,7 @@ address|matching|name
 0x588b20|0.9090909090909091|TIndustryCluster::`scalar deleting destructor'
 0x588b70|0.2736842105263158|TIndustryCluster::DoPostCreate
 0x588c30|1.0|TIndustryCluster::SetMoveAmount(short)
-0x588c60|0.1780821917808219|TIndustryCluster::SetMoveAmount(short, unsigned char)
+0x588c60|0.39274924471299094|TIndustryCluster::SetMoveAmount(short, unsigned char)
 0x588f60|0.7301587301587301|TIndustryCluster::UpdateMax
 0x588ff0|0.37681159420289856|TIndustryCluster::DoEvent
 0x589110|0.5161290322580645|TIndustryAmtBar::CreateObject
@@ -4929,9 +4929,9 @@ address|matching|name
 0x589700|1.0|TRailCluster::GetRuntimeClass
 0x589720|0.9|TRailCluster::TRailCluster
 0x589760|0.9090909090909091|TRailCluster::`scalar deleting destructor'
-0x5897b0|0.375|TRailCluster::DoPostCreate
+0x5897b0|0.32|TRailCluster::DoPostCreate
 0x5899c0|1.0|TRailCluster::SetMoveAmount(short)
-0x5899f0|0.23717948717948717|TRailCluster::SetMoveAmount(short, unsigned char)
+0x5899f0|0.34285714285714286|TRailCluster::SetMoveAmount(short, unsigned char)
 0x589d10|0.7301587301587301|TRailCluster::UpdateMax
 0x589da0|0.2962962962962963|TRailCluster::DoEvent
 0x589ed0|0.5161290322580645|TRailAmtBar::CreateObject
@@ -4945,8 +4945,8 @@ address|matching|name
 0x58a570|1.0|TShipyardCluster::GetRuntimeClass
 0x58a590|0.631578947368421|TShipyardCluster::TShipyardCluster
 0x58a5c0|0.9090909090909091|TShipyardCluster::`scalar deleting destructor'
-0x58a610|0.5882352941176471|TShipyardCluster::DoPostCreate
-0x58a690|0.43986254295532645|TShipyardCluster::SetMoveAmount
+0x58a610|0.9130434782608695|TShipyardCluster::DoPostCreate
+0x58a690|0.5412541254125413|TShipyardCluster::SetMoveAmount
 0x58a940|0.4823529411764706|TShipyardCluster::DoEvent
 0x58aaa0|0.5161290322580645|TShipAmtBar::CreateObject
 0x58ab40|0.5|TShipAmtBar::GetRuntimeClass

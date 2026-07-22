@@ -5,6 +5,7 @@
 
 struct CRuntimeClass;
 class TAmtBar;
+class TShipOrder;
 
 // VTABLE: IMPERIALISM 0x666760
 class TShipyardCluster : public TAmtBarCluster {
@@ -125,9 +126,9 @@ public:
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   // slot 0x73 IsTradeControlAtMinimum inherited unchanged (0x5714e0)
   void SetMoveAmount(short amount) override; // slot 0x74 0x58a690
-  int field_88;
-  short field_8c;
-  short field_8e;
+  TShipOrder* selectedMetricOrder;           // 0x88
+  short selectedMetricValue;                 // 0x8c
+  short selectedMetricStep;                  // 0x8e
 
   TShipyardCluster();
   DECLARE_DYNCREATE(TShipyardCluster)
