@@ -74,6 +74,8 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: astral-sh/setup-uv@v5
+
       - name: Require approval label for policy-baseline changes
         env:
           LABELS: ${{ join(github.event.pull_request.labels.*.name, ' ') }}
