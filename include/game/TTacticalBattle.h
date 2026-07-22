@@ -235,6 +235,7 @@ public:
   // wall (9), adjacent dig/mine target (7), adjacent rally target (8), ranged/fire attack
   // target (5), adjacent melee attack target (0xa). 0 when nothing applies. 0x5a05a0.
   int ComputeTacticalHoverCursorStateIndex(int tileIndex);
+  short ResolveTacticalHoverCursorResourceId(int tileIndex); // 0x005a0a90
   // Builds the per-tile distance field into tileIntArray30 for the given side
   // (consumed by the AI advance heuristic). 0x5a4460.
   void BuildTacticalDistanceFieldForSide(char ourSideFlag);

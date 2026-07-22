@@ -129,6 +129,9 @@ public:
 
   TStatusPicture();
 
+  // Mac oracle: DrawBar(short, short, short). Draws a black shadow and then the
+  // nation-colored comparison bar at the fixed graph origin.
+  void DrawBar(short rowY, short width, short nationSlot);
   // Sorts the seven entries by descending value (empty -1 ids sink to the end), then pushes
   // each entry's picture id into its child picture widget. 0x594c00.
   void SortSevenEntriesAndUpdatePictureWidgets();

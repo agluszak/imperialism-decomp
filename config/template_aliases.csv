@@ -13,6 +13,7 @@
 # Discover candidates with `just mfc-collection-audit <Class|0xCTOR>`.
 #
 # original_address|canonical_address|decorated_name|classification
+0x00426ec0|0x00479b00|?AddTail@?$CList@PAVTView@@PAV1@@@QAEPAU__POSITION@@PAVTView@@@Z|per_tu_duplicate
 0x004847a0|0x004829f0|??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z|per_tu_duplicate
 0x004847d0|0x00482a20|??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ|per_tu_duplicate
 0x005e4a30|0x00486f60|??_G?$CList@PAXPAX@@UAEPAXI@Z|per_tu_duplicate

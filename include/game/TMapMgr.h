@@ -699,6 +699,8 @@ public:
   // 0x514080. Rescind counterpart -- see the .cpp body comment.
   void ApplyEngineerRailCostDeltaForConnectedTiles(short tileA, short tileB, short ownerNation);
   short FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex, char allowActiveFlag2);
+  short FindReachableRecruitSpawnTileRecursive(short tileIndex, short ownerNationTag,
+                                               char allowActiveFlag2); // 0x00514cd0
   // 0x515f40. Write a city display-name CString into cityScoreTable[cityRecordIndex]+0xa4.
   void SetGlobalMapCellSharedLabel(int cityRecordIndex, CString* name);
   // 0x518b40. Developer purchase cost of a tile's two edge resources (weights the trade
