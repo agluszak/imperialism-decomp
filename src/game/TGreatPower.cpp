@@ -62,10 +62,6 @@
 // predicate: returns 1 when the resource index is in [13,16].
 char __stdcall IsSpecialNationInteractionResource(short resourceIndex);
 
-// Real body ported in TMission.cpp (0x00535940).
-TMission* __cdecl FindFirstTrackedHandlerMatchingModeAndShortKey(TSortedList* list, int kind,
-                                                                 short key, int mode);
-
 static const int kMapNodeCount = 0x180;
 static const int kAidAllocationRowCount = 0x10;
 static const int kAidAllocationColumnCount = 0x17;

@@ -9,9 +9,10 @@ class TZone;
 class TMilitaryUnit;
 class TShip;
 class TTaskForce;
+class TSortedList;
 
 // Mac oracle: eMissionType -- the mission-kind selector passed to the mission factory
-// (CreateMissionObjectByKindAndNodeContext) and to TMission::Matches. The Windows
+// (TMission::CreateMission) and to TMission::Matches. The Windows
 // binary only exposes the integer values 0..5; enumerator names below are provisional,
 // taken from the mission each kind primarily constructs (several kinds fall back to a
 // TControlSeaZoneMission when their context/beachhead argument is absent).
@@ -68,16 +69,18 @@ public:
   virtual void Reassess();                                             // 0x10 0x534cc0
   virtual void GiveOrders();                                           // 0x11 0x534cf0
   virtual TMission* GetReplacementSlot48();                            // 0x12 0x534d10
-  virtual char Matches(int kind, int key, int mode) const;             // 0x13 0x534d30
-  virtual char IsArmyMission() const;                                  // 0x14 0x534d50
-  virtual char IsNavyMission() const;                                  // 0x15 0x534d70
-  virtual TMission* GetArmyMission();                                  // 0x16 0x534d90
-  virtual TMission* GetNavyMission();                                  // 0x17 0x534db0
-  virtual char IsDefensiveSeaZoneMission() const;                      // 0x18 0x534dd0
-  virtual char IsHospitalMission() const;                              // 0x19 0x534df0
-  virtual float GetWeightedSatisfaction();                             // 0x1a 0x534e10
-  virtual float IndustrialCostOfNeeds();                               // 0x1b 0x534e30
-  virtual float ValueOf(TShip* candidate);                             // 0x1d 0x534e50
+  // Mac: Matches(eMissionType, long, TZone*) const.
+  virtual char Matches(eMissionType missionType, int key,
+                       TZone* zoneContext) const; // 0x13 0x534d30
+  virtual char IsArmyMission() const;             // 0x14 0x534d50
+  virtual char IsNavyMission() const;             // 0x15 0x534d70
+  virtual TMission* GetArmyMission();             // 0x16 0x534d90
+  virtual TMission* GetNavyMission();             // 0x17 0x534db0
+  virtual char IsDefensiveSeaZoneMission() const; // 0x18 0x534dd0
+  virtual char IsHospitalMission() const;         // 0x19 0x534df0
+  virtual float GetWeightedSatisfaction();        // 0x1a 0x534e10
+  virtual float IndustrialCostOfNeeds();          // 0x1b 0x534e30
+  virtual float ValueOf(TShip* candidate);        // 0x1d 0x534e50
   virtual float
   ValueOf(TMilitaryUnit* candidateUnit); // 0x1c 0x534e70 (ret 4 -- verified against base stub)
   virtual float FitnessOf(TShip* candidate, float* targetProfile); // 0x1f 0x534e90
@@ -100,6 +103,15 @@ public:
 
   void InitializeMissionWithNationIdAndResetPathMarker(short nationId);
 
+  // Mac: TMission::CreateMission(short, eMissionType, long, TZone*, long).
+  static TMission* CreateMission(short sourceNation, eMissionType missionKind, int nodeKey,
+                                 TZone* zoneContext, int relatedNodeKey);
+
+  // Mac: TMission::Find(TList*, eMissionType, short, TZone*). TSortedList is the
+  // corresponding Windows list implementation used by every caller.
+  static TMission* Find(TSortedList* missions, eMissionType missionType, short key,
+                        TZone* zoneContext);
+
   // Slots 0x27-0x2f are NULL in the base table (abstract: filled only by derived
   // classes). Not declared here — C++ pure virtuals would emit _purecall, not NULL,
   // and the next derived class (TNavyMission/TArmyMission) appends its own virtuals
@@ -107,13 +119,6 @@ public:
 };
 
 ASSERT_SIZE(TMission, 0x14);
-
-// Mission factory (0x5350d0, __cdecl): allocates and constructs the concrete mission
-// subtype selected by missionKind, stamps the common owner/marker fields, and runs the
-// mission's Initialize initializer. contextArg is the map-order context / target port zone
-// (a TZone) for the navy missions; nodeKey/keyArg carry province or amassing keys.
-TMission* CreateMissionObjectByKindAndNodeContext(int sourceNation, eMissionType missionKind,
-                                                  int nodeKey, int contextArg, int keyArg);
 
 // Three-way ordering used by TAutoGreatPower's mission-eligibility pass. The opaque
 // callback signature is the one required by TSortedList; both entries are TMission

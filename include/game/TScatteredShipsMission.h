@@ -26,7 +26,8 @@ public:
   virtual void
   GiveOrders() override; // slot 0x11 0x53bdd0 -- select context, promote mission order chain
   virtual TMission* GetReplacementSlot48() override; // slot 0x12 0x53bbe0 -- passthrough
-  virtual char Matches(int kind, int key, int mode) const override; // slot 0x13 0x53bcc0
+  virtual char Matches(eMissionType missionType, int key,
+                       TZone* zoneContext) const override; // slot 0x13 0x53bcc0
 
   virtual char IsDefensiveSeaZoneMission() const override; // slot 0x18 0x535660 -- returns true
   virtual char IsHospitalMission() const override;         // slot 0x19 0x535640 -- returns true

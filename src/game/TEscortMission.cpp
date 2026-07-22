@@ -191,12 +191,10 @@ void TEscortMission::CalculateNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053a250
-char TEscortMission::Matches(int kind, int key, int mode) const {
-  (void)mode;
-  if ((kind == 0 || kind == 3) && key == reinterpret_cast<int>(targetZone14)) {
-    return 1;
-  }
-  return 0;
+char TEscortMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+  (void)key;
+  return (missionType == kMissionTypeAttackProvince || missionType == kMissionTypeDefendProvince) &&
+         zoneContext == targetZone14;
 }
 
 // FUNCTION: IMPERIALISM 0x0053a290

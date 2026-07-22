@@ -4,14 +4,6 @@
 #include "game/TMission.h"
 #include <new>
 
-// SYNTHETIC: IMPERIALISM 0x00487b10
-// TSortedList::GetRuntimeClass
-
-IMPLEMENT_DYNCREATE(TSortedList, TObject)
-
-// SYNTHETIC: IMPERIALISM 0x00487a90
-// TSortedList::CreateObject
-
 // Default-compare trampoline whose address Sort() passes as the comparator: adapts the
 // three-arg __cdecl comparator shape onto the virtual Compare of the list supplied as
 // context. (Ghidra: OrphanCallChain_C1_I08_00487a60.)
@@ -19,6 +11,14 @@ IMPLEMENT_DYNCREATE(TSortedList, TObject)
 static short __cdecl DispatchTSortedListDefaultCompare(void* a, void* b, void* context) {
   return static_cast<TSortedList*>(context)->Compare(a, b);
 }
+
+// SYNTHETIC: IMPERIALISM 0x00487a90
+// TSortedList::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00487b10
+// TSortedList::GetRuntimeClass
+
+IMPLEMENT_DYNCREATE(TSortedList, TObject)
 
 // FUNCTION: IMPERIALISM 0x00487b30
 short TSortedList::Compare(void* a, void* b) {
@@ -92,6 +92,19 @@ void TSortedList::SortBy(TSortedListCompareFunc compare, void* context) {
   if (GetCount() > 0) {
     QuickSort(1, GetCount(), compare, context);
   }
+}
+
+// FUNCTION: IMPERIALISM 0x00487e10
+int TSortedList::FindOneBasedOrdinalOf(void* item) {
+  POSITION position = listState.GetHeadPosition();
+  int ordinal = 1;
+  while (position != nullptr) {
+    if (listState.GetNext(position) == item) {
+      return ordinal;
+    }
+    ++ordinal;
+  }
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004885d0
