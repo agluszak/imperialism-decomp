@@ -178,21 +178,26 @@ prune-ilt-thunks *args:
 # build — compile, lint, run.
 # ---------------------------------------------------------------------------
 
+# jobs=1 uses the classic serial NMake generator; any other value builds with the
+# parallel JOM generator (-j jobs). VC5 has no /MP, so parallelism lives in the make
+# layer; /Z7 (see CMakeLists.txt) keeps parallel cl.exe off the shared vc50.pdb.
 [doc('Docker MSVC500 build into build-msvc500/ (runs vtable-gate + generate first)')]
 [group('build')]
-build:
+build jobs=num_cpus():
   mkdir -p "{{build_dir}}"
   uv run python -m tools.workflow.msvc_build_lock \
-    --lock "{{build_dir}}/.msvc-build.lock" -- just _build-msvc500-unlocked
+    --lock "{{build_dir}}/.msvc-build.lock" -- just _build-msvc500-unlocked {{jobs}}
 
 # The public `build` target is the only caller. Keeping generation and compilation
 # under one lock prevents concurrent agents in this worktree from racing on either.
 [private]
-_build-msvc500-unlocked:
+_build-msvc500-unlocked jobs:
   just vtable-gate
   just generate
   docker run --rm --network none \
     -e CMAKE_FLAGS="{{cmake_flags}}" \
+    -e CMAKE_GENERATOR="{{ if jobs == '1' { 'NMake Makefiles' } else { 'NMake Makefiles JOM' } }}" \
+    -e BUILD_JOBS="{{ if jobs == '1' { '' } else { jobs } }}" \
     -v "$PWD":/imperialism \
     -v "$PWD/{{build_dir}}":/build \
     "{{docker_image}}"
