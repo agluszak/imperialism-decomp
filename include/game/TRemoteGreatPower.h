@@ -13,7 +13,7 @@ public:
   void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char* mapCellLabel) override;
   void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) override;
   void NotifyCitySlot2C(void) override;
-  void OrphanRetStub_004dcc30(void) override;
+  void FillInteriorMinisterOrders(void) override;
   void SortTrackedOrdersByTypePriority(void) override;
   void ClearDiplomacyState1c6ForTarget(short targetSlot) override;
   void ClearDiplomacyState1c6Block(void) override;

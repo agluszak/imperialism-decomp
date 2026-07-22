@@ -1719,7 +1719,7 @@ unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode
 }
 
 // FUNCTION: IMPERIALISM 0x004dcc30
-void TGreatPower::OrphanRetStub_004dcc30(void) {}
+void TGreatPower::FillInteriorMinisterOrders(void) {}
 
 // FUNCTION: IMPERIALISM 0x004dcc50
 void TGreatPower::ApplyDiplomacyState222ToCityStockAndClear(void) {
@@ -3900,7 +3900,7 @@ float TGreatPower::ComputeNavyScoreStandingRatioForNationPair(int nationA, int n
 }
 
 // FUNCTION: IMPERIALISM 0x004e1c00
-char TGreatPower::ReturnZeroSlot9D(int targetNation) {
+char TGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation) {
   (void)targetNation;
   return 0;
 }

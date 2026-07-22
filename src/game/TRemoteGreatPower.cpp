@@ -21,7 +21,7 @@ void TRemoteGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(v
 void TRemoteGreatPower::NotifyCitySlot2C(void) {}
 
 // FUNCTION: IMPERIALISM 0x005418c0
-void TRemoteGreatPower::OrphanRetStub_004dcc30(void) {}
+void TRemoteGreatPower::FillInteriorMinisterOrders(void) {}
 
 // FUNCTION: IMPERIALISM 0x005418e0
 void TRemoteGreatPower::OrphanRetStub_005418e0(void) {}
