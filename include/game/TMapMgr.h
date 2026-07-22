@@ -90,7 +90,7 @@ struct TTerrainStateRecordView {
   signed char secondaryOwnerNationTag18;
   unsigned char pad19;
   // Per-tile ordinal within its tile-action-class bucket (GetMapContextActionCode 0x559a70
-  // uses it to pick the Nth queued TTaskForce entry whose required_count matches the tile's
+  // uses it to pick the Nth queued TTaskForce entry whose nation matches the tile's
   // class). Not padding.
   short tileActionOrdinal1a;
   // 0x1c -- written as a full 16-bit unit by the transport-flag setters (0x518990
@@ -105,7 +105,7 @@ struct TTerrainStateRecordView {
 // (0x54abf0) snapshots the whole record field-by-field and skips exactly bytes 0x09, 0x3d and
 // 0x96..0x97 — so 0x3e/0x40/0x94 are real short fields (formerly folded into pads) and 0xa4 is
 // the CString city display name (also read by AssignCityRecordDisplayName).
-struct TGlobalMapCityScoreRecord {
+struct Province {
   signed char ownerNationCode00;
   // Previous/founding owner nation code: the tile context menu (0x504e90) renders a
   // "formerly of <nation>" line when it differs from ownerNationCode00 (same idiom as
@@ -171,12 +171,12 @@ struct TGlobalMapCityScoreRecord {
 // Endian fixup of every city-score record's short fields after a raw scenario table
 // load (called only by TMapMgr::LoadScenarioMapStateFromTableResource). 0x518840,
 // __cdecl, defined in TMapMgr.cpp.
-void ByteSwapCityScoreTableShortFields(TGlobalMapCityScoreRecord* table);
+void ByteSwapCityScoreTableShortFields(Province* table);
 
-// Resolve a raw TGlobalMapCityScoreRecord* back into its cityScoreTable index.
+// Resolve a raw Province* back into its cityScoreTable index.
 // Real __fastcall (single ecx arg, no stack cleanup: every original callsite loads
 // ecx and pushes nothing). 0x0050e2c0, defined in TNavyMgr.cpp.
-int __fastcall GetCityIndexFromCityStatePointer(TGlobalMapCityScoreRecord* cityState);
+int __fastcall GetProvinceIndex(Province* province);
 
 // 0x5127e0: tileIndex -> (hex raster column*2 (+1 on odd rows), row = tileIndex/0x6c).
 // Genuine __cdecl free function (pure arithmetic).
@@ -235,7 +235,7 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // Lazily allocates terrainStateTable (0x1950 tiles, raw 0x24-byte records) and
-  // cityScoreTable (0x180 records, real TGlobalMapCityScoreRecord[] so CString members
+  // cityScoreTable (0x180 records, real Province[] so CString members
   // construct), then resets every record to its sentinel defaults (-1 for
   // unassigned owner/region/index fields, 0 for counters/masks, 999 for lastTurnTick).
   virtual void AllocateAndResetTerrainAndCityScoreTables(); // slot 0x0a 0x50e8b0
@@ -292,7 +292,7 @@ public:
   virtual void ResetAllTileMarkerSlotIndicesToSentinel(); // slot 0x14 0x5178c0
   // Mac oracle; 0x0050f740.
   void GenerateProvinceNames();
-  // Builds the set of region classes (TGlobalMapCityScoreRecord::regionClassA3) present in
+  // Builds the set of region classes (Province::regionClassA3) present in
   // nationA's owned regions (plus every minor nation tied to nationA per
   // IsEncodedNationSlotMinus200Equal, i.e. encodedNationSlot - 200 == nationA), then
   // returns true if nationB (plus its tied minors) owns any region sharing one of those
@@ -476,7 +476,7 @@ public:
   // If nationSlotParam < 7, marks that nation's capital-tile city (found via
   // g_apTerrainTypeDescriptorTable[nationSlotParam]->homeTileIndex used as a
   // terrainStateTable index -- one index into tables keyed by the same tile/region domain
-  // (cf. TGlobalMapCityScoreRecord::cityTileIndex04), not a re-typed slot) as
+  // (cf. Province::cityTileIndex04), not a re-typed slot) as
   // developmentStage 2. param_2 is unused
   // by this body but the original callee epilogue pops 8 bytes (2 stack args), matching
   // slot 0x2f's signature.
@@ -627,7 +627,7 @@ public:
   // are not subject to the header's prior offset comments): field_0xc is dereferenced as
   // a pointer and filled with a 0x38f40-byte buffer (0x1950 tiles * 0x24-byte records,
   // matching TTerrainStateRecordView exactly), field_0x10 is a pointer walked in 0x180
-  // steps of 0xa8 bytes (matching TGlobalMapCityScoreRecord exactly), and the following
+  // steps of 0xa8 bytes (matching Province exactly), and the following
   // divisor field lands at field_0x18 -- confirmed independently by 3 call sites reading
   // [g_pGlobalMapState+0x10] with the cityScoreTable stride/sub-offsets directly (bd
   // 1uj.8, bd 1uj.23: TDefendProvinceMission::CalculateImportance 0x53ed00 and
@@ -649,7 +649,7 @@ public:
   unsigned char field9;                            // +0x09 -- 1-byte stream read
   unsigned char pad0a[2];                     // +0x0a -- alignment gap before the +0x0c pointer
   TTerrainStateRecordView* terrainStateTable; // +0x0c
-  TGlobalMapCityScoreRecord* cityScoreTable;  // +0x10
+  Province* cityScoreTable;                   // +0x10
   // Per-tile ownership/region table (0x24-byte records, one per map tile: terrain/region
   // tag at +0x04 valid in [7,22], owner-nation byte at +0x18). Full record layout is
   // unknown, so accessed via byte offsets.

@@ -35,22 +35,21 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
 
   CString statusLine;
   CString label;
-  label = shipNode84->displayName18;
+  label = shipNode84->name;
 
   // Single-entry order-status string lookup (GetString group 0x2760): the index is
   // precomputed via g_ShipOrderStatusStringIndexByResourceType_0065c7f8, unlike
   // TShipView's sibling which builds the full 8-entry pool first.
   g_pSimMgr->GetString(
-      0x2760, g_ShipOrderStatusStringIndexByResourceType_0065c7f8[shipNode84->resourceType04],
-      &statusLine);
+      0x2760, g_ShipOrderStatusStringIndexByResourceType_0065c7f8[shipNode84->type], &statusLine);
   statusLine += s_szSpaceSeparator_00695794 + label;
 
   TruncateTextToFitWidthWithEllipsis(&statusLine, 0x5a);
   SetQuickDrawTextOriginWithContextOffset(0xa, 0xc);
   DrawTextWithCachedQuickDrawStyleState(&statusLine);
 
-  short normBase = shipNode84->GetNavyOrderNormalizationBaseByNationType();
-  short levelBucket = static_cast<short>(shipNode84->stockLevel1c * 20 / normBase) + 1;
+  short normBase = shipNode84->GetMaxStrength();
+  short levelBucket = static_cast<short>(shipNode84->strength * 20 / normBase) + 1;
   if (levelBucket > 0x14) {
     levelBucket = 0x14;
   }
@@ -80,7 +79,7 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
   // Re-derived in each branch below rather than cached, matching the original (which
   // re-reads it separately at each blit site instead of hoisting it).
 
-  if (shipNode84->admiralBacklink20 != 0) {
+  if (shipNode84->admiral != 0) {
     // An admiral is assigned: draw the per-nation admiral-rank badge from the badge
     // strip's (nationId + 7)-th 16px row.
     TQuickDrawBlitSurface* badgeStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
@@ -96,11 +95,11 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
     UpdatePaletteIndexWithDefaultFallback(0x13);
   }
 
-  if (shipNode84->ownerOrderEntry0c != 0) {
+  if (shipNode84->taskForce != 0) {
     // Order-type badge row, keyed by the owning task force's order-kind tag
     // (TTaskForce::shipOrders). 0 = no badge for that order kind.
     short orderTypeBadgeRowTable[10] = {0, 4, 3, 5, 5, 6, 2, 3, 0, 0};
-    short orderKind = static_cast<short>(shipNode84->ownerOrderEntry0c->shipOrders);
+    short orderKind = static_cast<short>(shipNode84->taskForce->shipOrders);
     short badgeRow = orderTypeBadgeRowTable[orderKind];
     if (badgeRow != 0) {
       TQuickDrawBlitSurface* badgeStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
@@ -124,13 +123,13 @@ void TMiniShipView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TT
   TSuperNavyRoster* roster = static_cast<TSuperNavyRoster*>(ownerContext);
   roster->AssertValid();
 
-  TTaskForce* taskForce = shipNode84->ownerOrderEntry0c;
+  TTaskForce* taskForce = shipNode84->taskForce;
   if (taskForce != 0) {
     roster->selectedTaskForce88 = taskForce;
     roster->selectedZone84 = 0;
   } else {
     roster->selectedTaskForce88 = 0;
-    roster->selectedZone84 = shipNode84->field08;
+    roster->selectedZone84 = shipNode84->location;
   }
 
   TControl::BeginMouseCaptureAndStartRepeatTimer(point, event, origin);

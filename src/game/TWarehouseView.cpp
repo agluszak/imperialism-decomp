@@ -43,7 +43,7 @@ void TWarehouseView::UpdateFields() {
   }
 
   if (laborValueControlFC != 0) {
-    short labor = city94->productionSummary1d8->stockLevel1c;
+    short labor = city94->productionSummary1d8->strength;
     if (laborValueControlFC->UpdateControlCachedIntFromWindowText() != labor) {
       laborValueControlFC->SetControlValue(labor, 1);
     }

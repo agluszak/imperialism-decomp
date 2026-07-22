@@ -97,7 +97,7 @@ void TEscortMission::CalculateImportance() {
 // primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0), the same idiom
 // CalculateImportance above uses) and scores that context's tagged primary navy order-list
 // ships (gated by TDiplomacyMgr::HasPolicyWithNationSlot44) into a 4-category vector --
-// categories 0-2 scaled by stockLevel1c/normalizationBase, category 3 unscaled -- via the
+// categories 0-2 scaled by strength/normalizationBase, category 3 unscaled -- via the
 // same per-ship math as AccumulateNavyOrderCategoryVectorWithScale, but inlined here rather
 // than calling out (no CALL to 0x537c60 in the raw listing; same inlining choice as
 // TNavyMission::BuildMissionQueuedOrderCategoryVector). Scores the vector's divergence from
@@ -142,16 +142,15 @@ void TEscortMission::CalculateNeeds() {
     TZone* targetContext = *homePortZone->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
 
     float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-    for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
-      if (node->field08 != targetContext) {
+    for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
+      if (node->location != targetContext) {
         continue;
       }
-      if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04,
-                                                                   node->ownerNationSlot14)) {
+      if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, node->nation)) {
         continue;
       }
-      short normalizationBase = node->GetNavyOrderNormalizationBaseByNationType();
-      float scale = static_cast<float>(node->stockLevel1c / normalizationBase);
+      short normalizationBase = node->GetMaxStrength();
+      float scale = static_cast<float>(node->strength / normalizationBase);
       vector[0] +=
           static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
           scale;

@@ -134,8 +134,7 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
   presentLocation14 = static_cast<short>(0xffff);
   float bestScore = 0.0f;
 
-  const TGlobalMapCityScoreRecord& targetRecord =
-      g_pGlobalMapState->cityScoreTable[targetProvince30];
+  const Province& targetRecord = g_pGlobalMapState->cityScoreTable[targetProvince30];
 
   int candidateIndex = 0;
   const short* candidateCursor = targetRecord.adjacentRegionIds0A;
@@ -145,8 +144,7 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
         g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(candidateTile);
     if (tileOwnerNationCode == nationId04) {
       if (presentLocation14 != -1) {
-        const TGlobalMapCityScoreRecord& candidateRecord =
-            g_pGlobalMapState->cityScoreTable[candidateTile];
+        const Province& candidateRecord = g_pGlobalMapState->cityScoreTable[candidateTile];
         float candidateScore = static_cast<float>(candidateRecord.cityScoreValue);
         int matchCount = 0;
         int adjacentIndex = 0;
@@ -175,8 +173,7 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
 
       presentLocation14 = candidateTile;
 
-      const TGlobalMapCityScoreRecord& candidateRecord =
-          g_pGlobalMapState->cityScoreTable[candidateTile];
+      const Province& candidateRecord = g_pGlobalMapState->cityScoreTable[candidateTile];
       float candidateScore = static_cast<float>(candidateRecord.cityScoreValue);
       int matchCount = 0;
       int adjacentIndex = 0;
@@ -316,7 +313,7 @@ void TAttackProvinceMission::CalculateImportance() {
   short missionNation = nationId04;
   int matchCount = 0;
   int adjacentIndex = 0;
-  const TGlobalMapCityScoreRecord& targetRecord = g_pGlobalMapState->cityScoreTable[targetProvince];
+  const Province& targetRecord = g_pGlobalMapState->cityScoreTable[targetProvince];
   float score = static_cast<float>(targetRecord.cityScoreValue);
 
   if (targetRecord.adjacentRegionCount08 > 0) {

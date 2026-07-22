@@ -396,7 +396,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
       packetHeader.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
       packetHeader.cityRecordIndex = cityRecordIndex;
       // Same 0xa8 record: the packet-side NationStateRecordA8 is a view of
-      // TGlobalMapCityScoreRecord (identical layout, CString at +0xa4; the original
+      // Province (identical layout, CString at +0xa4; the original
       // copies with the shared operator= 0x54ae90). Confined here pending a merge of
       // the two reconstructions.
       cityRecord = *reinterpret_cast<NationStateRecordA8*>(
@@ -578,7 +578,7 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
   }
   switch (header.eventCode) {
   case 0x2e:
-    g_pNavyOrderManager->DeserializeNavyOrderListsByNation(stream, nation);
+    g_pNavyOrderManager->ReadFromFilterously(stream, nation);
     g_pActiveMapOrderContext->RefreshMapActionContextNationOverlaysAndOrderRanks();
     break;
   case 0x2f:

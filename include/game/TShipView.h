@@ -118,8 +118,8 @@ public:
 
   // Original object size is 0x68 (CRuntimeClass m_nObjectSize); the source class ended at 0x60. Trailing 8 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
   // The order node this row represents: Draw (0x5654e0) reads
-  // resourceType04 (+4), displayName18 (+0x18), stockLevel1c (+0x1c), and
-  // admiralBacklink20 (+0x20) through this pointer, matching TShip's layout exactly.
+  // type (+4), name (+0x18), strength (+0x1c), and
+  // admiral (+0x20) through this pointer, matching TShip's layout exactly.
   TShip* shipNode60;
   class TTaskForce* field64;
 

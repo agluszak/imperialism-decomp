@@ -62,7 +62,7 @@ void TIndustryCluster::DoPostCreate(int styleSeed) {
   short tagIndex = 0;
   short activeNationId = g_pSimMgr->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
-  TCity* cityState = activeNationState == 0 ? 0 : activeNationState->GetCityState();
+  TCity* province = activeNationState == 0 ? 0 : activeNationState->GetCityState();
 
   int mappedSummaryTag = GetTradeSummarySelectionTagByIndex(0);
   while (mappedSummaryTag != this->controlTag) {
@@ -70,7 +70,7 @@ void TIndustryCluster::DoPostCreate(int styleSeed) {
     mappedSummaryTag = GetTradeSummarySelectionTagByIndex(tagIndex);
   }
 
-  TProductionOrder* selectedMetricRecord = cityState->tradeCommodityRecordPtrs[tagIndex];
+  TProductionOrder* selectedMetricRecord = province->tradeCommodityRecordPtrs[tagIndex];
   // `selectedMetricControl` is declared TAmtBar* but this control's vtable
   // slot 0x30 (GetNextHandler, see UpdateTradeBarFromSelectedMetricRatio
   // above) and TProductionOrder's slot 0x30 (MaxOrder) are the same "return a

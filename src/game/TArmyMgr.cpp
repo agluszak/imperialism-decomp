@@ -724,7 +724,7 @@ undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack*
   TUnit* headUnit = (stack->head14 != nullptr) ? stack->head14->unit : nullptr;
   short headUnitTag = headUnit->field_18;
 
-  const TGlobalMapCityScoreRecord& record = g_pGlobalMapState->cityScoreTable[tileIndex];
+  const Province& record = g_pGlobalMapState->cityScoreTable[tileIndex];
   short candidateRegions[12];
   int candidateCount = 0;
   for (int i = 0; i < 0x18; ++i) {
@@ -1188,7 +1188,7 @@ short TArmyMgr::FindNextSelectableProvinceForNation(short nationId) {
   }
 
   while (candidate < 0x180) {
-    const TGlobalMapCityScoreRecord& cityRecord = g_pGlobalMapState->cityScoreTable[candidate];
+    const Province& cityRecord = g_pGlobalMapState->cityScoreTable[candidate];
     short ownerNation = cityRecord.ownerNationCode00;
     bool ownerPermitsSelection = false;
     if (ownerNation > -1) {
@@ -1304,8 +1304,7 @@ undefined TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short m
     return 0;
   }
 
-  const TGlobalMapCityScoreRecord& selectedTile =
-      g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex];
+  const Province& selectedTile = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex];
   bool cityIsAdjacent = false;
   for (short i = 0; i < selectedTile.adjacentRegionCount08; ++i) {
     if (selectedTile.adjacentRegionIds0A[i] == cityRecordIndex) {
@@ -1434,7 +1433,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
     }
   }
 
-  int seaValue = g_pNavyOrderManager->ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(
+  int seaValue = g_pNavyOrderManager->GetInvasionCapacity(
       activeNationId, &g_pGlobalMapState->cityScoreTable[cityRecordIndex], 0);
   if (totalCost + reinforcementCost > seaValue) {
     // Ground truth builds and dispatches an "insufficient capacity" localized message
@@ -1726,18 +1725,18 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
   // pick, or (only when Phase 1 found nothing at all) the ship's own name is the
   // fallback.
   TShip* bestShip = nullptr;
-  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
-    if (ship->ownerNationSlot14 == g_pSimMgr->GetActiveNationId() &&
-        ship->field08->ContainsCityStatePointerInZoneArrayByCityIndex(cityRecordIndex)) {
-      bestShip = ship->SelectPreferredMapOrderEntryByPriorityRules(bestShip, 0);
+  for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
+    if (ship->nation == g_pSimMgr->GetActiveNationId() &&
+        ship->location->ContainsCityStatePointerInZoneArrayByCityIndex(cityRecordIndex)) {
+      bestShip = ship->Finest(bestShip, 0);
     }
   }
   if (bestShip != nullptr) {
     CString selectedName;
-    TAdmiral* admiral = bestShip->admiralBacklink20;
+    TAdmiral* admiral = bestShip->admiral;
     if (admiral == nullptr) {
       if (bestScore == -1) {
-        selectedName = bestShip->displayName18;
+        selectedName = bestShip->name;
         g_pSimMgr->GetString(0x2744, 3, &outDefenderSummary);
         outDefenderSummary += s_szSpaceSeparator_00695794 + selectedName;
         bestScore = 0;
@@ -1949,7 +1948,7 @@ void TArmyMgr::AppendMapContextActionRecordAndResetWorkingFields(MapOrderBattleS
 // FUNCTION: IMPERIALISM 0x004a6ef0
 void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, int cityIndex,
                                                                MapOrderBattleSnapshot* snapshot) {
-  // nationId carries TTaskForce::required_count, which every navy-order reader
+  // nationId carries TTaskForce::nation, which every navy-order reader
   // treats as the entry's owning nation slot (RemoveMatchingTaskForceOrders above) --
   // used below as a g_apNationStates index. `side` is recovered implicitly by comparing
   // this byte against snapshot->nationIds[0]: side 0's own call always matches
@@ -1971,7 +1970,7 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
     }
   }
 
-  budget -= g_pNavyOrderManager->ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(
+  budget -= g_pNavyOrderManager->GetInvasionCapacity(
       nationId, &g_pGlobalMapState->cityScoreTable[cityIndex], 0);
 
   if (budget > 0) {

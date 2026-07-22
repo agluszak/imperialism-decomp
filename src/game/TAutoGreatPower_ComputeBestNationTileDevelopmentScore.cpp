@@ -28,7 +28,7 @@ int ComputeBestNationTileDevelopmentScore(short nationSlot) {
   int ownedRegionCount = ownedRegions->GetSize();
   while (regionOrdinal <= ownedRegionCount) {
     short regionId = static_cast<short>(ownedRegions->At(regionOrdinal));
-    TGlobalMapCityScoreRecord* region = &g_pGlobalMapState->cityScoreTable[regionId];
+    Province* region = &g_pGlobalMapState->cityScoreTable[regionId];
 
     if (region->fortLevel03 < g_pCityOrderCapabilityState->GetNationFortLevelCap(nationSlot)) {
       float developmentPressure = averageUnitDivergence;

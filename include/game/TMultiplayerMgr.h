@@ -12,11 +12,11 @@ struct NetMessage;
 // used as a stack local by the diplomacy turn-event packet handler (0x543910); it is also
 // literally the wire body of the event-0x24 city-record packet
 // (TurnEvent24CityRecordPacket::record in TMultiplayerMgr.cpp), and its case-0x24 handler
-// copies field00/02/03/06/block82/A1/A2 directly into TGlobalMapCityScoreRecord's
+// copies field00/02/03/06/block82/A1/A2 directly into Province's
 // same-named, same-offset fields (TMapMgr.h) -- so this struct is that record's serialized
 // mirror, byte-for-byte. Fields below are renamed by that position-for-position
 // correspondence (serialization-order evidence); byte3B/byte3C are left unrenamed because
-// TGlobalMapCityScoreRecord's own fields at those offsets are themselves still unresolved
+// Province's own fields at those offsets are themselves still unresolved
 // placeholders. field98/field9C stay `int` (not TMilitaryUnit*/int) since the wire copy is
 // never dereferenced -- the case-0x24 handler skips them entirely when merging into the
 // live record. The default ctor (0x50ec60) constructs only the CString member; the

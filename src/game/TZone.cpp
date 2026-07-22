@@ -183,8 +183,7 @@ TZone** TZonePrimaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055e9c0
-TGlobalMapCityScoreRecord**
-TZoneSecondaryNeighborStretch::GetOrAppendUnique(TGlobalMapCityScoreRecord* entry) {
+Province** TZoneSecondaryNeighborStretch::GetOrAppendUnique(Province* entry) {
   int count = Count();
   for (int index = 0; index < count; ++index) {
     if (Data()[index] == entry) {
@@ -198,10 +197,10 @@ TZoneSecondaryNeighborStretch::GetOrAppendUnique(TGlobalMapCityScoreRecord* entr
     }
     void* grownBuffer = realloc(Data(), (count + 1) * 8);
     if (grownBuffer == 0) {
-      Data() = static_cast<TGlobalMapCityScoreRecord**>(realloc(Data(), (count + 1) * 4));
+      Data() = static_cast<Province**>(realloc(Data(), (count + 1) * 4));
       Capacity() = count + 1;
     } else {
-      Data() = static_cast<TGlobalMapCityScoreRecord**>(grownBuffer);
+      Data() = static_cast<Province**>(grownBuffer);
       Capacity() = static_cast<int>(doubledCapacity);
     }
   }
@@ -236,7 +235,7 @@ void TZonePrimaryNeighborStretch::Add(TZone* zone) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055eba0
-void TZoneSecondaryNeighborStretch::Add(TGlobalMapCityScoreRecord* entry) {
+void TZoneSecondaryNeighborStretch::Add(Province* entry) {
   int index = Count();
   if (index >= Capacity()) {
     unsigned int doubledCapacity = static_cast<unsigned int>((index + 1) * 2);
@@ -245,10 +244,10 @@ void TZoneSecondaryNeighborStretch::Add(TGlobalMapCityScoreRecord* entry) {
     }
     void* grownBuffer = realloc(Data(), (index + 1) * 8);
     if (grownBuffer == 0) {
-      Data() = static_cast<TGlobalMapCityScoreRecord**>(realloc(Data(), (index + 1) * 4));
+      Data() = static_cast<Province**>(realloc(Data(), (index + 1) * 4));
       Capacity() = index + 1;
     } else {
-      Data() = static_cast<TGlobalMapCityScoreRecord**>(grownBuffer);
+      Data() = static_cast<Province**>(grownBuffer);
       Capacity() = static_cast<int>(doubledCapacity);
     }
   }
@@ -326,7 +325,7 @@ void TZone::ReadFrom(TStream* stream) {
     short secondaryCount;
     stream->ReadBytes(&secondaryCount, 2);
     for (short j = 0; j < secondaryCount; ++j) {
-      TGlobalMapCityScoreRecord* entry;
+      Province* entry;
       stream->ReadBytes(&entry, 4);
       if (j >= secondaryNeighbors.Capacity()) {
         secondaryNeighbors.ResizePointerArrayCapacityByRequestedCount(j + 1);
@@ -400,8 +399,7 @@ int TZone::ComputeMapActionContextNodeValueAverage() {
     unsigned int sum = 0;
     for (unsigned int i = 0; i < static_cast<unsigned int>(secondaryNeighbors.Count()); ++i) {
       sum += g_pGlobalMapState
-                 ->cityScoreTable[static_cast<short>(
-                     GetCityIndexFromCityStatePointer(secondaryNeighbors[i]))]
+                 ->cityScoreTable[static_cast<short>(GetProvinceIndex(secondaryNeighbors[i]))]
                  .cityScoreValue;
     }
     return sum / secondaryNeighbors.Count();
@@ -420,11 +418,11 @@ char TZone::ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex) {
   if (entryCount == 0) {
     return 0;
   }
-  const TGlobalMapCityScoreRecord* target = &g_pGlobalMapState->cityScoreTable[cityIndex];
+  const Province* target = &g_pGlobalMapState->cityScoreTable[cityIndex];
   for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
     // Inlined bounds-guarded stretch element access, as in the original (mirrors
     // HasSecondaryNeighborWithNationTag / IsZoneMaskOrArrayEntryPresentForKey).
-    TGlobalMapCityScoreRecord* const* entrySlot =
+    Province* const* entrySlot =
         (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
     if (*entrySlot == target) {
       return 1;
@@ -441,7 +439,7 @@ char TZone::HasSecondaryNeighborWithNationTag(short nationTag) {
   }
   for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
     // Inlined bounds-guarded stretch element access, as in the original.
-    TGlobalMapCityScoreRecord* const* entrySlot =
+    Province* const* entrySlot =
         (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
     short entryNationTag = (*entrySlot)->ownerNationCode00;
     if (entryNationTag == nationTag) {
@@ -463,7 +461,7 @@ char TZone::IsZoneMaskOrArrayEntryPresentForKey(short key) {
   }
   for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
     // Inlined bounds-guarded stretch element access, as in the original.
-    TGlobalMapCityScoreRecord* const* entrySlot =
+    Province* const* entrySlot =
         (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
     short entryKey = (*entrySlot)->ownerNationCode00;
     if (entryKey == key) {
@@ -566,7 +564,7 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
       if (static_cast<unsigned int>(secondaryNeighbors.Count()) <= pick) {
         secondaryNeighbors.Count() = pick + 1;
       }
-      TGlobalMapCityScoreRecord* cityRecord = secondaryNeighbors.Data()[pick];
+      Province* cityRecord = secondaryNeighbors.Data()[pick];
       short tile = cityRecord->linkedRegionIds[0];
       chosenCity = g_pGlobalMapState->terrainStateTable[tile].cityRecordIndex;
       if (usedCity[chosenCity] == '\0') {
@@ -623,11 +621,11 @@ void TZoneSecondaryNeighborStretch::ResizePointerArrayCapacityByRequestedCount(i
   }
   void* grown = realloc(Data(), count * 8);
   if (grown == 0) {
-    Data() = static_cast<TGlobalMapCityScoreRecord**>(realloc(Data(), count * 4));
+    Data() = static_cast<Province**>(realloc(Data(), count * 4));
     Capacity() = count;
     return;
   }
-  Data() = static_cast<TGlobalMapCityScoreRecord**>(grown);
+  Data() = static_cast<Province**>(grown);
   Capacity() = static_cast<int>(doubled);
 }
 
@@ -703,7 +701,7 @@ short TZone::GetActiveNationSlotTile() {
 
 // FUNCTION: IMPERIALISM 0x0055ff70
 int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* contextZone,
-                                                          int contextCityState) {
+                                                          Province* contextProvince) {
   TTerrainStateRecordView& tileRecord =
       g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)];
   if (tileRecord.terrainType00 != 5) {
@@ -736,11 +734,11 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
           }
         } else {
           short cityStateLink = neighborRecord.cityRecordIndex;
-          TGlobalMapCityScoreRecord* cityStateRecord = 0;
+          Province* province = 0;
           if (cityStateLink != -1) {
-            cityStateRecord = &g_pGlobalMapState->cityScoreTable[cityStateLink];
+            province = &g_pGlobalMapState->cityScoreTable[cityStateLink];
           }
-          if (reinterpret_cast<int>(cityStateRecord) == contextCityState) {
+          if (province == contextProvince) {
             score = score + 0x64;
           } else {
             score = score - 0xa;
@@ -755,7 +753,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
 }
 
 // FUNCTION: IMPERIALISM 0x00560150
-short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCityState) {
+short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* contextProvince) {
   unsigned int tileCandidate = 0;
 
   for (;;) {
@@ -777,11 +775,11 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
                 g_pGlobalMapState->terrainStateTable[neighborTile];
             if (neighborRecord.terrainType00 != 5) {
               short cityStateLink = neighborRecord.cityRecordIndex;
-              TGlobalMapCityScoreRecord* cityStateRecord = 0;
+              Province* province = 0;
               if (cityStateLink != -1) {
-                cityStateRecord = &g_pGlobalMapState->cityScoreTable[cityStateLink];
+                province = &g_pGlobalMapState->cityScoreTable[cityStateLink];
               }
-              if (reinterpret_cast<int>(cityStateRecord) == contextCityState) {
+              if (province == contextProvince) {
                 break;
               }
             }
@@ -806,7 +804,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
   short bestTile = static_cast<short>(tileCandidate);
   int bestTileIndex = static_cast<int>(bestTile);
   int bestScore =
-      ScoreCoastalTileForContextAndCityStateAffinity(bestTileIndex, this, contextCityState);
+      ScoreCoastalTileForContextAndCityStateAffinity(bestTileIndex, this, contextProvince);
 
   HexSpiralSearchState spiral;
   spiral.row = bestTileIndex / 0x6c;
@@ -829,7 +827,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
     if (tileInBounds) {
       int spiralTileIndex = TMapMgr::TileIndexFromRowCol(spiral.row, spiral.col);
       int candidateScore =
-          ScoreCoastalTileForContextAndCityStateAffinity(spiralTileIndex, this, contextCityState);
+          ScoreCoastalTileForContextAndCityStateAffinity(spiralTileIndex, this, contextProvince);
       if (bestScore < candidateScore) {
         bestScore = candidateScore;
         short nextTile = TMapMgr::TileIndexFromRowCol(spiral.row, spiral.col);
@@ -892,9 +890,9 @@ void TZone::SetMapOrderUiFlag(int flag) {
 // FUNCTION: IMPERIALISM 0x005606f0
 void TZone::BuildNavalIntelligenceSourceDescription(CString* out, short nation) {
   TShip* selected = 0;
-  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
-    if (ship->field08 == this && ship->ownerNationSlot14 == nation) {
-      selected = ship->SelectPreferredMapOrderEntryByPriorityRules(selected, 0);
+  for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
+    if (ship->location == this && ship->nation == nation) {
+      selected = ship->Finest(selected, 0);
     }
   }
 
@@ -904,15 +902,14 @@ void TZone::BuildNavalIntelligenceSourceDescription(CString* out, short nation) 
   }
 
   CString reportTemplate;
-  if (selected->admiralBacklink20 != 0) {
-    CString admiralName =
-        CString(s_szAdmiralPrefix_0069578c) + selected->admiralBacklink20->displayName;
-    CString shipName = selected->displayName18;
+  if (selected->admiral != 0) {
+    CString admiralName = CString(s_szAdmiralPrefix_0069578c) + selected->admiral->displayName;
+    CString shipName = selected->name;
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0xe);
     scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(reportTemplate),
                            static_cast<LPCSTR>(admiralName), static_cast<LPCSTR>(shipName));
   } else {
-    CString shipName = selected->displayName18;
+    CString shipName = selected->name;
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0xf);
     scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(reportTemplate),
                            static_cast<LPCSTR>(shipName));
@@ -922,12 +919,12 @@ void TZone::BuildNavalIntelligenceSourceDescription(CString* out, short nation) 
 // FUNCTION: IMPERIALISM 0x00560970
 TAdmiral* TZone::FindReportingAdmiralForNation(short nation) {
   TShip* selected = 0;
-  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
-    if (ship->field08 == this && ship->ownerNationSlot14 == nation) {
-      selected = ship->SelectPreferredMapOrderEntryByPriorityRules(selected, 0);
+  for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
+    if (ship->location == this && ship->nation == nation) {
+      selected = ship->Finest(selected, 0);
     }
   }
-  return selected != 0 ? selected->admiralBacklink20 : 0;
+  return selected != 0 ? selected->admiral : 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005609e0
@@ -938,15 +935,14 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
   }
   unsigned char nationBit = static_cast<unsigned char>(1 << resolvedNation);
   if ((nationKeyMask10 & nationBit) != 0) {
-    for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
-      if (ship->field08 == this && ship->ownerNationSlot14 == resolvedNation &&
-          ship->ownerOrderEntry0c == 0) {
+    for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
+      if (ship->location == this && ship->nation == resolvedNation && ship->taskForce == 0) {
         // requiredCount seeds from the raw incoming nation arg, which the original keeps
         // distinct from the active-nation-resolved slot used above.
         TTaskForce* taskForce = new TTaskForce(this, nation);
-        taskForce->NoOpTaskForceInitSlot();
-        taskForce->RefreshTaskForceSelectionFlagsForCurrentNationOrders(0);
-        taskForce->RecomputeTaskForceAverageOrderScore();
+        taskForce->ITaskForce();
+        taskForce->MaxOut(0);
+        taskForce->DemocraticallyDetermineAggressionLevel();
         return taskForce;
       }
     }
@@ -963,15 +959,15 @@ char TZone::CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField
   if ((nationKeyMask10 & nationBit) == 0) {
     return 0;
   }
-  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
-    if (ship->field08 == this && ship->ownerNationSlot14 == nation) {
+  for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
+    if (ship->location == this && ship->nation == nation) {
       if (skipField34Check == 0) {
-        unsigned char hasField34 = (ship->field34 != 0);
+        unsigned char hasField34 = (ship->selection != 0);
         if (hasField34 != 0) {
           continue;
         }
       }
-      if (ship->ownerOrderEntry0c == 0) {
+      if (ship->taskForce == 0) {
         return 1;
       }
     }
@@ -999,7 +995,7 @@ void TZone::ExpandTaskForceTraversalDepthAndMarkDeferredNodes(int remainingDepth
 
   if (depth > 0 && markAdjacentCities != 0) {
     for (int i = secondaryNeighbors.Count() - 1; i >= 0; --i) {
-      TGlobalMapCityScoreRecord* city = secondaryNeighbors.Data()[i];
+      Province* city = secondaryNeighbors.Data()[i];
       city->navyOrderReachableA0 = 1;
     }
   }
@@ -1135,12 +1131,12 @@ void TZonePrimaryNeighborStretch::EnsureCapacityAtLeast(int count) {
 // FUNCTION: IMPERIALISM 0x00561400
 unsigned int TZone::BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(unsigned char nation) {
   unsigned int mask = 0;
-  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
-    if (ship->field08 == this) {
-      TTaskForce* entry = ship->ownerOrderEntry0c;
-      if (entry != 0 && entry->eliminatedFlag26 == 0 &&
+  for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
+    if (ship->location == this) {
+      TTaskForce* entry = ship->taskForce;
+      if (entry != 0 && entry->defeated == 0 &&
           (entry->shipOrders == 3 || entry->shipOrders == 4)) {
-        mask |= 1u << (ship->ownerNationSlot14 & 0x1f);
+        mask |= 1u << (ship->nation & 0x1f);
       }
     }
   }
@@ -1150,12 +1146,12 @@ unsigned int TZone::BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(uns
 // FUNCTION: IMPERIALISM 0x00561490
 unsigned int TZone::BuildNationBitmaskForActiveType3Or4Orders() {
   unsigned int mask = 0;
-  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
-    if (ship->field08 == this) {
-      TTaskForce* entry = ship->ownerOrderEntry0c;
-      if (entry != 0 && entry->eliminatedFlag26 == 0 &&
+  for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
+    if (ship->location == this) {
+      TTaskForce* entry = ship->taskForce;
+      if (entry != 0 && entry->defeated == 0 &&
           (entry->shipOrders == 3 || entry->shipOrders == 4)) {
-        mask |= 1u << (ship->ownerNationSlot14 & 0x1f);
+        mask |= 1u << (ship->nation & 0x1f);
       }
     }
   }
@@ -1165,12 +1161,12 @@ unsigned int TZone::BuildNationBitmaskForActiveType3Or4Orders() {
 // FUNCTION: IMPERIALISM 0x00561510
 unsigned int TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int nation) {
   unsigned int mask = 0;
-  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
-    if (ship->field08 == this) {
-      TTaskForce* entry = ship->ownerOrderEntry0c;
-      if (entry != 0 && entry->eliminatedFlag26 == 0 &&
+  for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
+    if (ship->location == this) {
+      TTaskForce* entry = ship->taskForce;
+      if (entry != 0 && entry->defeated == 0 &&
           (entry->shipOrders == 3 || entry->shipOrders == 4)) {
-        mask |= 1u << (ship->ownerNationSlot14 & 0x1f);
+        mask |= 1u << (ship->nation & 0x1f);
       }
     }
   }
@@ -1344,7 +1340,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
           short cityIdx = *reinterpret_cast<short*>(
               reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) + 0x14 +
               neighborTile * 0x24);
-          TGlobalMapCityScoreRecord* cityRecord;
+          Province* cityRecord;
           if (cityIdx == -1) {
             cityRecord = 0;
           } else {
@@ -1352,11 +1348,11 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
           }
           if (cityRecord != 0) {
             // Append the neighbour's city context to the secondary list if not already present.
-            TGlobalMapCityScoreRecord** match = 0;
+            Province** match = 0;
             if (context->secondaryNeighbors.Count() != 0) {
-              TGlobalMapCityScoreRecord** entries = context->secondaryNeighbors.Data();
+              Province** entries = context->secondaryNeighbors.Data();
               unsigned int j = 0;
-              TGlobalMapCityScoreRecord** scan = entries;
+              Province** scan = entries;
               do {
                 if (*scan == cityRecord) {
                   match = entries + j;
@@ -1387,7 +1383,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
 // ResolvePortZoneOwnerContextAndDispatch, reading tileOrTerrainId0c directly instead of
 // searching outward via FindNearestActiveSeaContextTileFromOffset216). Otherwise, for each
 // of the tile's 6 hex neighbours: a neighbour with a city record resolves to that city's
-// TGlobalMapCityScoreRecord and is appended (if absent) to secondaryNeighbors; a neighbour
+// Province and is appended (if absent) to secondaryNeighbors; a neighbour
 // without one resolves to a port zone or region context (same two-way match as above) and,
 // unless it's this same context or itself a capable port zone, is appended (if absent) to
 // primaryNeighbors. This backfills the primary/secondary neighbour graph for contexts the
@@ -1424,8 +1420,7 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
         TTerrainStateRecordView& neighborRecord =
             g_pGlobalMapState->terrainStateTable[neighborTile];
         if (neighborRecord.cityRecordIndex != -1) {
-          TGlobalMapCityScoreRecord* candidate =
-              &g_pGlobalMapState->cityScoreTable[neighborRecord.cityRecordIndex];
+          Province* candidate = &g_pGlobalMapState->cityScoreTable[neighborRecord.cityRecordIndex];
           if (!zone->secondaryNeighbors.ContainsEntry(candidate)) {
             zone->secondaryNeighbors.GetOrAppendUnique(candidate);
           }

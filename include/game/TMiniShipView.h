@@ -128,8 +128,8 @@ public:
 
   // Original object size is 0x88 (CRuntimeClass m_nObjectSize); the source class ended at 0x84. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
   // The order node this row represents: Draw (0x569eb0) reads
-  // resourceType04 (+4), displayName18 (+0x18), stockLevel1c (+0x1c),
-  // admiralBacklink20 (+0x20), and ownerOrderEntry0c (+0xc) through this
+  // type (+4), name (+0x18), strength (+0x1c),
+  // admiral (+0x20), and taskForce (+0xc) through this
   // pointer, matching TShip's layout exactly (same shape as TShipView::shipNode60).
   TShip* shipNode84;
 };

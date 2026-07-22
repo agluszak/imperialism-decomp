@@ -27,4 +27,4 @@ address|calling_convention|note
 0x004d83c0|__thiscall|ecx_this: MOV ESI,ECX (SumWeightedNeighborLinkScoreForLinkedNodes)
 0x004e0460|__thiscall|ecx_this: MOV EDI,ECX (SumNavyOrderPriorityForNationAndNodeType)
 0x004e04b0|__thiscall|ecx_this: MOV EDI,ECX (SumNavyOrderPriorityForNation)
-0x00550b60|__thiscall|ecx_this: MOV ESI,ECX (ComputeOrderNodeCompositeEconomicScore)
+0x00550b60|__thiscall|ecx_this: MOV ESI,ECX (TShip::GetStudliness)

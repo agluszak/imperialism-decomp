@@ -252,7 +252,7 @@ void TMapUberPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     if (tag >= kControlTagAgr0 && tag <= kControlTagAgr2) {
       TTaskForce* taskForce = g_pActiveMapOrderContext->selectedTaskForce14;
       if (taskForce != nullptr) {
-        taskForce->ResetOrderTypeAndStrengthDword(static_cast<int>(tag - kControlTagAgr0));
+        taskForce->SetAggression(static_cast<int>(tag - kControlTagAgr0));
       }
     }
   }
@@ -327,9 +327,8 @@ void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
     return;
   }
 
-  TZone* context = pMapOrderEntry->contextAnchor;
-  context->ExpandTaskForceTraversalDepthAndMarkDeferredNodes(
-      pMapOrderEntry->GetMinActionThresholdFromEntryChildren(), 1);
+  TZone* context = pMapOrderEntry->location;
+  context->ExpandTaskForceTraversalDepthAndMarkDeferredNodes(pMapOrderEntry->GetWorstSpeed(), 1);
   CenterOn(static_cast<short>(context->tileOrTerrainId0c));
 
   for (int i = 0; i < 4; ++i) {
@@ -337,14 +336,14 @@ void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
         static_cast<TShipFractionCluster*>(ResolveControlByTag(0x636c7330 + i)); // 'cls0'..'cls3'
     shipClass->AssertValid();
     shipClass->SetAvailableAndSelectedShipCounts(
-        pMapOrderEntry->shipCountsByClass[i],
-        pMapOrderEntry->CountTaskForceSelectedOrdersByNationClass(static_cast<short>(i)));
+        pMapOrderEntry->shipCountsByToolbarSlot[i],
+        pMapOrderEntry->GetSelected(static_cast<short>(i)));
   }
 
   TNavyToolbarCluster* navyToolbar =
       static_cast<TNavyToolbarCluster*>(ResolveControlByTag(0x756e6176)); // 'unav'
   navyToolbar->AssertValid();
-  navyToolbar->SetSelectedChildTagAndRefresh(kControlTagAgr0 + pMapOrderEntry->order_type);
+  navyToolbar->SetSelectedChildTagAndRefresh(kControlTagAgr0 + pMapOrderEntry->aggression);
 }
 
 // FUNCTION: IMPERIALISM 0x00597950
@@ -520,7 +519,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   CString reportTemplate;
   TStaticText* control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x7a6f6e65)); // zone
   control->AssertValid();
-  taskForce->contextAnchor->AssignZoneDisplayNameToOutputRef(&text);
+  taskForce->location->AssignZoneDisplayNameToOutputRef(&text);
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(bodyStyle, 0);
 
@@ -543,13 +542,13 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   control->AssertValid();
   switch (taskForce->shipOrders) {
   case 1:
-    taskForce->owner.asZone->AssignZoneDisplayNameToOutputRef(&value);
+    taskForce->target.asZone->AssignZoneDisplayNameToOutputRef(&value);
     g_pSimMgr->GetString(0x2762, 0xb, &reportTemplate);
     scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
                            static_cast<LPCSTR>(value));
     break;
   case 3:
-    taskForce->contextAnchor->AssignZoneDisplayNameToOutputRef(&value);
+    taskForce->location->AssignZoneDisplayNameToOutputRef(&value);
     g_pSimMgr->GetString(0x2762, 1, &reportTemplate);
     scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
                            static_cast<LPCSTR>(value));
@@ -558,7 +557,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
     g_pSimMgr->GetString(0x2762, 2, &text);
     break;
   case 6:
-    taskForce->owner.asZone->AssignZoneDisplayNameToOutputRef(&value);
+    taskForce->target.asZone->AssignZoneDisplayNameToOutputRef(&value);
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0x39);
     scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
                            static_cast<LPCSTR>(value));
@@ -572,7 +571,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6167726f)); // agro
   control->AssertValid();
-  g_pSimMgr->GetString(0x2762, static_cast<short>(taskForce->order_type + 4), &text);
+  g_pSimMgr->GetString(0x2762, static_cast<short>(taskForce->aggression + 4), &text);
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(attributionStyle, 0);
 
@@ -609,7 +608,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   dialog->Free();
 
   if (result == 0x63616e63) { // 'canc'
-    TZone* previousContext = taskForce->contextAnchor;
+    TZone* previousContext = taskForce->location;
     taskForce->CancelOrders(0);
     SetMapInteractionMode(2);
     goodGoldTagControlA4->InvalidateZone(orderEntryContext98);
@@ -803,7 +802,7 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
   if (cachedTaskForce != 0) {
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0x34);
     scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
-                           static_cast<LPCSTR>(cachedTaskForce->owner.asCityTarget->cityNameA4));
+                           static_cast<LPCSTR>(cachedTaskForce->target.asProvince->cityNameA4));
   } else {
     zone->BuildNavalIntelligenceSourceDescription(&text, g_pSimMgr->GetActiveNationId());
   }

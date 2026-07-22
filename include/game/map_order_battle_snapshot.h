@@ -27,10 +27,10 @@ ASSERT_SIZE(CStr255, 0xff);
 // four-byte category tag consumed by the battle-report UI. Interaction outcomes create
 // already-finalized resource and diplomacy rows directly.
 struct MapOrderBattleSideChildRecord {
-  short resourceType;    // +0x00 -- child TShip::resourceType04
-  short stockOrRequired; // +0x02 -- child TShip::stockLevel1c
-  char nameBuffer[0x20]; // +0x04 -- copy of child TShip::displayName18
-  short strengthBucket;  // +0x24 -- child TShip::experiencePoints30 / 100
+  short resourceType;    // +0x00 -- child TShip::type
+  short stockOrRequired; // +0x02 -- child TShip::strength
+  char nameBuffer[0x20]; // +0x04 -- copy of child TShip::name
+  short strengthBucket;  // +0x24 -- child TShip::experience / 100
   char pad26[2];
   union DetailIdentity {
     void* sourceObject;       // while the resolver is still updating a live unit

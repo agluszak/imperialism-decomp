@@ -99,9 +99,9 @@ void RecomputeNationOrderPriorityMetrics() {
     TGreatPower* nation = g_apNationStates[nationIdx];
 
     float categoryVector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-    for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
-      if (ship->ownerNationSlot14 == nationIdx) {
-        ship->GetNavyOrderNormalizationBaseByNationType();
+    for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
+      if (ship->nation == nationIdx) {
+        ship->GetMaxStrength();
         categoryVector[0] +=
             static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0));
         categoryVector[1] +=
