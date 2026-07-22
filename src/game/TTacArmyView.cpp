@@ -111,7 +111,7 @@ void TTacArmyView::ConstructTTacArmyViewBaseState(int compositionClass, TArmyBat
     loader->ReleaseBitmapResource();
     loader->flags &= 0xfe;
     delete loader;
-    ::operator delete(loaderHandle);
+    delete loaderHandle;
     UnlockPixels(GetGWorldPixMap(battlefieldSurface64));
     SetGWorld(savedContext, savedFlags);
 

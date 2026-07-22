@@ -963,7 +963,7 @@ void TSimMgr::DoTrade() {
     }
   }
 
-  g_pNationInteractionStateManager->OrphanCallChain_C3_I50_005b7fc0();
+  g_pNationInteractionStateManager->ResetNationMetricRowsAndClearCategoryRankLists();
   g_pNationInteractionStateManager->RunNationUpdatePassesAndResetTransitionFlags();
   g_pNationInteractionStateManager->RunNationMetricPreUpdatePassAcrossSecondaryNations();
   g_pNationInteractionStateManager->BuildEligibleNationMetricBucketsAndWeightedTrendScores();
@@ -974,7 +974,7 @@ void TSimMgr::DoTrade() {
   if (shouldSendTradeBook) {
     g_pGameFlowState->SendTradeBook();
   }
-  g_pNationInteractionStateManager->ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper();
+  g_pNationInteractionStateManager->InitializePendingDiplomacyTransferCursorAndProcess();
 }
 
 // FUNCTION: IMPERIALISM 0x0057f490

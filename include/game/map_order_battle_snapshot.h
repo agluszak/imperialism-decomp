@@ -22,31 +22,39 @@ struct CStr255 {
 };
 ASSERT_SIZE(CStr255, 0xff);
 
-// Per-child record built by BuildMapOrderBattleSideSnapshot for one side of a task-force
-// order conflict. Populated from a TShip node reached through the owning TTaskForce's
-// childOrderList (TMapOrderChildLinkNode::payload, reinterpreted here since these
-// particular children are ships, not nested task-force entries -- see the field-offset
-// evidence in BuildMapOrderBattleSideSnapshot).
+// One detail row in a map-order action report. Conflict resolution initially retains a
+// live unit pointer while refreshing ship state, then finalizes that same slot to the
+// four-byte category tag consumed by the battle-report UI. Interaction outcomes create
+// already-finalized resource and diplomacy rows directly.
 struct MapOrderBattleSideChildRecord {
   short resourceType;    // +0x00 -- child TShip::resourceType04
   short stockOrRequired; // +0x02 -- child TShip::stockLevel1c
   char nameBuffer[0x20]; // +0x04 -- copy of child TShip::displayName18
   short strengthBucket;  // +0x24 -- signed-divide-by-100 bucket of child TShip::field30
   char pad26[2];
-  void* childPtr; // +0x28 -- the child TShip* itself
+  union DetailIdentity {
+    void* sourceObject;       // while the resolver is still updating a live unit
+    unsigned int categoryTag; // once finalized: 'army', 'navy', 'merc', 'item', or 'rupt'
+  } detailIdentity;           // +0x28
 };
 ASSERT_SIZE(MapOrderBattleSideChildRecord, 0x2c);
 
-// Stack-local working record ResolveMapOrderPairConflictStep builds for each side (0 =
-// left, 1 = right) of a task-force order conflict: display strings for the eventual
-// conflict-resolution message, plus a snapshot of each side's current children.
+// Stack-local working record shared by task-force conflict resolution and nation
+// map-order interaction processing. Its 0x0c..0x257 tail is also embedded unchanged in
+// MapContextActionRecord, which takes ownership of the finalized per-side detail rows.
 struct MapOrderBattleSnapshot {
-  char requiredCountByte[2]; // +0x00/+0x01, indexed by side: low byte of
-                             // entry->required_count (used elsewhere as a nation slot)
-  char pad02[0xa];           // +0x02..+0x0b
-  CStr32 nameBuffer[2];      // +0x0c..+0x4b -- per-side terrain/nation label text
-  CStr255 overlayLabel[2];   // +0x4c..+0x249 -- per-side selection overlay label text
-  short childCount[2];       // +0x24a/+0x24c
+  unsigned char nationIds[2];       // +0x00/+0x01, indexed by participant side
+  unsigned char participantIndex02; // +0x02
+  unsigned char reservedByte03;     // +0x03
+  int actionType04;                 // +0x04
+  union TargetContext {
+    int tileIndex;
+    void* object;
+    int raw;
+  } targetContext08;       // +0x08, discriminated by actionType04
+  CStr32 nameBuffer[2];    // +0x0c..+0x4b -- per-side terrain/nation label text
+  CStr255 overlayLabel[2]; // +0x4c..+0x249 -- per-side selection overlay label text
+  short childCount[2];     // +0x24a/+0x24c
   MapOrderBattleSideChildRecord* childRecords[2]; // +0x250/+0x254
 
   ~MapOrderBattleSnapshot() {
