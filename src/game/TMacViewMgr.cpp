@@ -162,7 +162,7 @@ unsigned char* StrategicMapCallbackRecord::EnsureOpcodeBufferByteAtIndex(int ind
       newCapacity = required;
     }
 
-    char* newBuffer = new char[newCapacity];
+    unsigned char* newBuffer = new unsigned char[newCapacity];
     if (ownedBuffer04 != 0 && committedLength0c > 0) {
       memcpy(newBuffer, ownedBuffer04, committedLength0c);
     }
@@ -174,12 +174,12 @@ unsigned char* StrategicMapCallbackRecord::EnsureOpcodeBufferByteAtIndex(int ind
   if (index >= committedLength0c) {
     committedLength0c = index + 1;
   }
-  return reinterpret_cast<unsigned char*>(ownedBuffer04 + index);
+  return ownedBuffer04 + index;
 }
 
 // FUNCTION: IMPERIALISM 0x004d4ff0
 void StrategicMapCallbackRecord::ApplyBitmapMaskToPixelBuffer(unsigned char* destinationPixels) {
-  unsigned char* instruction = reinterpret_cast<unsigned char*>(ownedBuffer04);
+  unsigned char* instruction = ownedBuffer04;
   unsigned char* end = instruction + committedLength0c;
   unsigned char* destinationBase = destinationPixels;
 
@@ -282,9 +282,9 @@ StrategicMapCallbackRecord* StrategicMapCallbackRecord::AppendOpcodeByte(int val
     if (0x7fffffff < grownCapacity) {
       clampedCapacity = 0x7fffffff;
     }
-    char* grown = static_cast<char*>(realloc(ownedBuffer04, grownCapacity));
+    unsigned char* grown = static_cast<unsigned char*>(realloc(ownedBuffer04, grownCapacity));
     if (grown == 0) {
-      ownedBuffer04 = static_cast<char*>(realloc(ownedBuffer04, newCount));
+      ownedBuffer04 = static_cast<unsigned char*>(realloc(ownedBuffer04, newCount));
       bufferCapacity08 = newCount;
     } else {
       ownedBuffer04 = grown;
@@ -294,7 +294,7 @@ StrategicMapCallbackRecord* StrategicMapCallbackRecord::AppendOpcodeByte(int val
   if (index >= static_cast<unsigned int>(committedLength0c)) {
     committedLength0c = newCount;
   }
-  ownedBuffer04[index] = static_cast<char>(value);
+  ownedBuffer04[index] = static_cast<unsigned char>(value);
   return this;
 }
 

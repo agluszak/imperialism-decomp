@@ -73,8 +73,7 @@ void TPortZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFla
   (void)usedCityFlags;
   (void)overrideName;
   short cityIndex = g_pGlobalMapState->terrainStateTable[portTileIndex48].cityRecordIndex;
-  TGlobalMapCityScoreRecord* city =
-      cityIndex == -1 ? 0 : &g_pGlobalMapState->cityScoreTable[cityIndex];
+  Province* city = cityIndex == -1 ? 0 : &g_pGlobalMapState->cityScoreTable[cityIndex];
   CString headlineTemplate;
   CString expandedHeadline;
   g_pSimMgr->GetString(0x275a, statusCode04, &headlineTemplate);

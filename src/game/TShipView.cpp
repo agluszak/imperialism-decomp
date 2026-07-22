@@ -42,17 +42,17 @@ void TShipView::Draw(RECT* rectBuffer) {
   CString label;
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(2, 0xc, 0x2b6a, 3);
-  label = shipNode60->displayName18;
+  label = shipNode60->name;
 
   // 8-line order-status string pool (GetString group 0x2760), one entry per naval
-  // order state; selected by resourceType04 via
+  // order state; selected by type via
   // g_ShipOrderStatusStringIndexByResourceType_0065c7f8.
   CString orderStatusStrings[8];
   for (int i = 0; i < 8; ++i) {
     g_pSimMgr->GetString(0x2760, i, &orderStatusStrings[i]);
   }
-  statusLine = orderStatusStrings
-      [g_ShipOrderStatusStringIndexByResourceType_0065c7f8[shipNode60->resourceType04]];
+  statusLine =
+      orderStatusStrings[g_ShipOrderStatusStringIndexByResourceType_0065c7f8[shipNode60->type]];
   statusLine += s_szSpaceSeparator_00695794 + label;
 
   SetQuickDrawTextOriginWithContextOffset(0x50, 0x18);
@@ -60,18 +60,18 @@ void TShipView::Draw(RECT* rectBuffer) {
   SetQuickDrawStrokeColor(0xffffff);
   DrawTextWithCachedQuickDrawStyleState(&statusLine);
 
-  if (shipNode60->admiralBacklink20 != 0) {
+  if (shipNode60->admiral != 0) {
     // An admiral is assigned to this ship: overwrite/replace the status line's
     // position with "Adm. <admiral name>" drawn one row higher.
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 9, 0x2b6a);
-    CString admiralLine = s_szAdmiralPrefix_0069578c + shipNode60->admiralBacklink20->displayName;
+    CString admiralLine = s_szAdmiralPrefix_0069578c + shipNode60->admiral->displayName;
     label = admiralLine;
     SetQuickDrawTextOriginWithContextOffset(0x50, 0xc);
     DrawTextWithCachedQuickDrawStyleState(&label);
   }
 
-  short normBase = shipNode60->GetNavyOrderNormalizationBaseByNationType();
-  short levelBucket = static_cast<short>(shipNode60->stockLevel1c * 20 / normBase) + 1;
+  short normBase = shipNode60->GetMaxStrength();
+  short levelBucket = static_cast<short>(shipNode60->strength * 20 / normBase) + 1;
   if (levelBucket > 0x14) {
     levelBucket = 0x14;
   }
@@ -99,20 +99,20 @@ void TShipView::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x005658d0
 void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (sourceHandler->controlTag == kControlTagChec) {
-    TMapOrderChildLinkNode* node = field64->childOrderList->FindNodeMatching(shipNode60);
+    TMapOrderChildLinkNode* node = field64->shipList->FindNodeMatching(shipNode60);
     int delta;
     if (node->active == 0) {
-      field64->SetTaskForceOrderSelectionByNodeId(shipNode60, 1);
+      field64->Select(shipNode60, 1);
       delta = 1;
     } else {
-      field64->SetTaskForceOrderSelectionByNodeId(shipNode60, 0);
+      field64->Select(shipNode60, 0);
       delta = -1;
     }
 
     TMapUberPicture* mapUber = g_pUiRuntimeContext->mapUberPictureF0;
     TView* categoryControl = mapUber->categoryPages[mapUber->activeUnitCategoryIndex96];
     if (categoryControl != nullptr) {
-      short resourceType = shipNode60->GetOrderNodeDescriptorWord20ByResourceType();
+      short resourceType = shipNode60->GetToolbarSlot();
       TShipFractionCluster* shipFraction = static_cast<TShipFractionCluster*>(
           categoryControl->ResolveControlByTag(kControlTagCls0 + resourceType));
       if (delta > 0) {
@@ -137,7 +137,7 @@ void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
 // HandleCrossUArmyViewsNameCommand (0x4a9ca0), but a genuinely different function (own thunk
 // 0x4092ff, not 0x403986) with real differences: no forced default command (no
 // SetField84/GetEmbeddedDialogBehavior calls), the title uses string index 5 instead of 1,
-// the edited name is shipNode60->displayName18 (TShip's own name field, not TMilitaryUnit's
+// the edited name is shipNode60->name (TShip's own name field, not TMilitaryUnit's
 // name24 -- confirms the earlier field60+offset concern was specific to each class, not a
 // shared conflict), and the commit condition is inverted: applies only when the modal result
 // is exactly 'okay' (rather than "commit unless 'cncl'").
@@ -161,7 +161,7 @@ void TShipView::RunEngineerOrderNameEditDialogAndApply() {
   TEditText* nameControl = static_cast<TEditText*>(node->ResolveControlByTag(kControlTagName));
   nameControl->AssertValid();
   CString editedName;
-  editedName = shipNode60->displayName18;
+  editedName = shipNode60->name;
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&editedName, 1);
   nameControl->textStyle78 = style;
 
@@ -170,7 +170,7 @@ void TShipView::RunEngineerOrderNameEditDialogAndApply() {
   node->Close();
   node->Free();
   if (modalResult == 0x6f6b6179 /* 'okay' */) {
-    shipNode60->displayName18 = editedName;
+    shipNode60->name = editedName;
   }
   RefreshControl();
 }

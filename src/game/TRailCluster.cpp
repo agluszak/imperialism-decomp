@@ -16,7 +16,6 @@
 
 #include "game/TRailCluster.h"
 #include "game/TView.h"
-#include "game/TUberCluster.h"
 
 #include "game/mfc.h"
 
@@ -49,10 +48,10 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TRailCluster* context
 // SYNTHETIC: IMPERIALISM 0x00589700
 // TRailCluster::GetRuntimeClass
 
-IMPLEMENT_DYNCREATE(TRailCluster, TUberCluster)
+IMPLEMENT_DYNCREATE(TRailCluster, TAmtBarCluster)
 
 // FUNCTION: IMPERIALISM 0x00589720
-TRailCluster::TRailCluster() : TUberCluster() {
+TRailCluster::TRailCluster() : TAmtBarCluster() {
   this->selectedMetricControl = 0;
   this->selectedMetricStep = 0;
 }
@@ -65,10 +64,10 @@ void TRailCluster::DoPostCreate(int styleSeed) {
   short recordIndex = static_cast<short>(styleSeed);
   short activeNationId = g_pSimMgr->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
-  TCity* cityState = activeNationState == 0 ? 0 : activeNationState->GetCityState();
+  TCity* province = activeNationState == 0 ? 0 : activeNationState->GetCityState();
 
   unsigned int summaryTag = (unsigned int)this->controlTag;
-  TPopulationMgr* scenarioDescriptor = cityState->productionSummary1d8;
+  TPopulationMgr* scenarioDescriptor = province->productionSummary1d8;
   if (summaryTag < 0x706f7076) {
     if (summaryTag == kSummaryTagPopu) {
       recordIndex = 0x3c;
@@ -82,7 +81,7 @@ void TRailCluster::DoPostCreate(int styleSeed) {
       recordIndex = 0x3e;
       this->selectedMetricStep = 0;
       this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 4) +
-                                  scenarioDescriptor->extraAt1e - scenarioDescriptor->stockLevel1c;
+                                  scenarioDescriptor->extraAt1e - scenarioDescriptor->strength;
       goto LABEL_12;
     }
     if (summaryTag == kSummaryTagFood) {
@@ -116,7 +115,7 @@ void TRailCluster::DoPostCreate(int styleSeed) {
       recordIndex = 0x3a;
       this->selectedMetricStep = 0;
       this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 1) +
-                                  scenarioDescriptor->stockLevel1c -
+                                  scenarioDescriptor->strength -
                                   scenarioDescriptor->productionSlots14->lowSkillCount04;
       goto LABEL_12;
     }
@@ -133,6 +132,7 @@ LABEL_12:
   if (this->selectedMetricValue < 0) {
     this->selectedMetricValue = 0;
   }
+  TAmtBarCluster::DoPostCreate(styleSeed);
 }
 
 // FUNCTION: IMPERIALISM 0x005899c0
@@ -213,7 +213,7 @@ void TRailCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     return;
   }
   if (commandId != 0x65) {
-    this->HandleTradeMoveControlAdjustment(commandId, sourceHandler, reinterpret_cast<int>(event));
+    TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
     return;
   }
   TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));

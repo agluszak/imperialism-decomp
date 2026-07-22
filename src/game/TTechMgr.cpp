@@ -637,27 +637,27 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
   }
   order->resourceTypeIndex48 = static_cast<short>(resourceType);
 
-  TShip* node = GetNavyPrimaryOrderListHead();
+  TShip* node = TShip::GetFirst();
   while (node != 0) {
-    if (node->ownerNationSlot14 == nationSlot &&
-        capRowsB333[nationSlot].selectedByResourceType[node->resourceType04] == 0) {
-      scoreSum += static_cast<short>(node->experiencePoints30 / 100);
+    if (node->nation == nationSlot &&
+        capRowsB333[nationSlot].selectedByResourceType[node->type] == 0) {
+      scoreSum += static_cast<short>(node->experience / 100);
       ++matchedCount;
-      TAdmiral* admiral = node->admiralBacklink20;
-      TShip* next = node->nextOlder24;
+      TAdmiral* admiral = node->admiral;
+      TShip* next = node->next;
       if (admiral != 0) {
         admiral->AssignToShip(0);
       }
-      node->PruneOrPromoteOrderNodeWhenChildCostDepleted();
+      node->Sink();
       if (admiral != 0) {
         admiral->ReassignThyself();
       }
       node = next;
     } else {
-      if (node->ownerNationSlot14 == nationSlot) {
+      if (node->nation == nationSlot) {
         ++remainingOwned;
       }
-      node = node->nextOlder24;
+      node = node->next;
     }
   }
 
@@ -678,8 +678,8 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
     g_pUiRuntimeContext->ModalMessage(formattedMessage, g_ptTechCapabilityModalMessage, 2, 0);
   }
 
-  for (node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
-    if (node->ownerNationSlot14 == nationSlot) {
+  for (node = TShip::GetFirst(); node != 0; node = node->next) {
+    if (node->nation == nationSlot) {
       node->Victory(static_cast<short>(scoreSum / remainingOwned));
     }
   }

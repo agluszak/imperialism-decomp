@@ -42,7 +42,7 @@ TIndustryAmtBar::TIndustryAmtBar() : TAmtBar(), selectedMetricRecord(0) {}
 void TIndustryAmtBar::DoPostCreate(int arg) {
   // ORIG_CALLCONV: __thiscall
   TGreatPower* nationState = GetActiveNationState();
-  TCity* cityState = nationState != 0 ? nationState->GetCityState() : 0;
+  TCity* province = nationState != 0 ? nationState->GetCityState() : 0;
   short summaryTagIndex = 0;
   int mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
   int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);
@@ -51,7 +51,7 @@ void TIndustryAmtBar::DoPostCreate(int arg) {
     mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
   }
 
-  selectedMetricRecord = cityState->tradeCommodityRecordPtrs[summaryTagIndex];
+  selectedMetricRecord = province->tradeCommodityRecordPtrs[summaryTagIndex];
   // `productionSlot` only exists on TItemOrder-sized (0x54-byte) objects. This
   // downcast is safe here: the summary-tag scan above bounds summaryTagIndex
   // to the 23-entry g_pTradeSummarySelectionMap table (0x696108), so tagIndex

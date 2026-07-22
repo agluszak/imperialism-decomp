@@ -509,7 +509,7 @@ public:
                                                    int linkCityRecordIndex);
   // 0x004e8c20 — two-arg convenience wrapper (linkCityRecordIndex = -1).
   float ComputeAdvisoryMapNodeCompositeScore(int cityRecordIndex, int mode);
-  // 0x004e0460 / 0x004e04b0 — sum ComputeOrderNodeCompositeEconomicScore over the
+  // 0x004e0460 / 0x004e04b0 — sum GetStudliness over the
   // g_pNavyPrimaryOrderListHead chain entries owned by this nation (optionally only
   // those targeting `zone`). Real __thiscall methods: both bodies compare the ship's
   // owner tag against [this+0xc] (ret 4 / ret).

@@ -172,7 +172,7 @@ void TInvadeMission::GiveOrders() {
     beachhead34->GiveOrders();
   }
   // Per-region, per-nation dispatch-dirty bitmask gate (byte at record+0xa1,
-  // bit index nationId04) -- pending exact TGlobalMapCityScoreRecord field
+  // bit index nationId04) -- pending exact Province field
   // recovery for that byte; approximated via raw offset access for now.
   const unsigned char* recordBytes =
       reinterpret_cast<const unsigned char*>(&g_pGlobalMapState->cityScoreTable[targetProvince30]);

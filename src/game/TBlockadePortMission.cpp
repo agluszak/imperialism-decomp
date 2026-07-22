@@ -143,16 +143,15 @@ void TBlockadePortMission::CalculateNeeds() {
   float baseVector[4] = {
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
-  for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
-    if (node->field08 != targetZone14) {
+  for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
+    if (node->location != targetZone14) {
       continue;
     }
-    if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04,
-                                                                 node->ownerNationSlot14)) {
+    if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, node->nation)) {
       continue;
     }
-    short normalizationBase = node->GetNavyOrderNormalizationBaseByNationType();
-    float scale = static_cast<float>(node->stockLevel1c / normalizationBase);
+    short normalizationBase = node->GetMaxStrength();
+    float scale = static_cast<float>(node->strength / normalizationBase);
     baseVector[0] +=
         static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(0)) * scale;
     baseVector[1] +=
@@ -203,9 +202,9 @@ void TBlockadePortMission::CalculateNeeds() {
                        g_Recompute_Nation_Order_LookupTable_0065A9E8,
                        g_Recompute_Nation_Order_LookupTable_0065A9E8,
                        g_Recompute_Nation_Order_LookupTable_0065A9E8};
-    for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
-      if (node->ownerNationSlot14 == targetNationCode && node->IsInHomePort() &&
-          node->GetNavyOrderNormalizationBaseByNationType() <= node->stockLevel1c) {
+    for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
+      if (node->nation == targetNationCode && node->IsInHomePort() &&
+          node->GetMaxStrength() <= node->strength) {
         AccumulateNavyOrderCategoryVectorWithScale(node, vector, 1.0f);
       }
     }
@@ -224,9 +223,9 @@ void TBlockadePortMission::CalculateNeeds() {
                          g_Recompute_Nation_Order_LookupTable_0065A9E8,
                          g_Recompute_Nation_Order_LookupTable_0065A9E8,
                          g_Recompute_Nation_Order_LookupTable_0065A9E8};
-      for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
-        if (node->ownerNationSlot14 == targetNationCode && node->IsInHomePort() &&
-            node->GetNavyOrderNormalizationBaseByNationType() <= node->stockLevel1c) {
+      for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
+        if (node->nation == targetNationCode && node->IsInHomePort() &&
+            node->GetMaxStrength() <= node->strength) {
           AccumulateNavyOrderCategoryVectorWithScale(node, vector, 1.0f);
         }
       }
@@ -261,5 +260,5 @@ char TBlockadePortMission::Matches(eMissionType missionType, int key, TZone* zon
 
 // FUNCTION: IMPERIALISM 0x0053ba40
 void TBlockadePortMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
-  mapOrderEntry->SetMapOrderType6AndQueue(reinterpret_cast<int>(portZoneContext3c));
+  mapOrderEntry->OrderBlockade(portZoneContext3c);
 }

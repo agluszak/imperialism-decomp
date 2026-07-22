@@ -63,7 +63,7 @@ void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
   if (supplyLabor == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x229);
   }
-  supplyLabor->SetNumIcons(city60->productionSummary1d8->stockLevel1c);
+  supplyLabor->SetNumIcons(city60->productionSummary1d8->strength);
   supplyLabor->SetPictureResourceIdAndRefresh(0x148, true);
 
   TIconBar* usePrimary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagUse1));
@@ -123,7 +123,7 @@ void TOrderView::UpdateFields() {
   if (supplyLabor == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x262);
   }
-  supplyLabor->SetNumIcons(city60->productionSummary1d8->stockLevel1c);
+  supplyLabor->SetNumIcons(city60->productionSummary1d8->strength);
   supplyLabor->RefreshControl();
 
   TIconBar* usePrimary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagUse1));

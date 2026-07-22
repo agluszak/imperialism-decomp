@@ -8,12 +8,6 @@
 
 class TShip;
 class TZone;
-
-// Head of the global primary navy-order roster (Mac oracle: TShip::GetFirst).
-TShip* GetNavyPrimaryOrderListHead(void);
-// Walks g_pNavyPrimaryOrderListHead's nextOlder24 chain `index` steps (stopping early
-// at the list's end); returns the node reached (Mac oracle: TShip::GetNth).
-TShip* GetNavyPrimaryOrderNodeByIndex(short index);
 // Cumulative-weight roll-table search: subtracts weightTable[0], [1], ... from `roll`
 // until it drops to <= 0, returning the index reached.
 int FindCumulativeWeightBucketIndex(short* weightTable, short roll);
@@ -23,7 +17,7 @@ short GetResourceDescriptorWeightWord0ByType(short resourceType);
 // Walks the primary navy order list for `nation`'s eligible port-owner ships (owner
 // matches, the order's zone is a port zone, and the ship's normalization base doesn't
 // exceed its stock), accumulates a 4-category priority vector (categories 0..2 scaled
-// by stockLevel1c/normalizationBase, category 3 unscaled), then scores the vector's
+// by strength/normalizationBase, category 3 unscaled), then scores the vector's
 // divergence from g_NavyOrderDistributionCategoryWeights_00697978's target percentages
 // (same divergence-score shape as TNavyMission's NormalizeFourComponentNavyVector).
 // Returns 0 if the vector sums to zero. 0x53b800.

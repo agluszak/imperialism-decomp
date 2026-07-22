@@ -49,8 +49,9 @@ static __inline char TuningKeywordMatches(const char* text, const char* keyword)
 }
 
 // FUNCTION: IMPERIALISM 0x00525a30
-void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(
-    char* tileGrid, TGlobalMapCityScoreRecord* cityTable, CString* tuningString) {
+void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileGrid,
+                                                                     Province* cityTable,
+                                                                     CString* tuningString) {
   mapTileGrid08 = tileGrid;
   cityScoreTable0c = cityTable;
   g_mapGenDesertQuota_006a38bc = 200;

@@ -62,7 +62,7 @@ public:
   TLaborPool* baselineSlots10;     // +0x10
   TLaborPool* productionSlots14;   // +0x14
   TLaborPool* pendingDeltaSlots18; // +0x18
-  short stockLevel1c;              // +0x1c — low-stock flag / trade production cap
+  short strength;                  // +0x1c — low-stock flag / trade production cap
   short extraAt1e;                 // +0x1e
   short fieldAt20;                 // +0x20 — snapshotted by the turn-event-0x2c packet
 

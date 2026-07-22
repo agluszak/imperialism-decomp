@@ -15,7 +15,6 @@
 #include "decomp_types.h"
 
 #include "game/TTradeCluster.h"
-#include "game/TUberCluster.h"
 #include "game/TView.h"
 #include "game/TAmtBar.h"
 #include "game/TPicture.h"
@@ -92,10 +91,10 @@ static __inline short QueryNationTradeCapacity(TGreatPower* nationState) {
 // SYNTHETIC: IMPERIALISM 0x00587090
 // TTradeCluster::GetRuntimeClass
 
-IMPLEMENT_DYNCREATE(TTradeCluster, TUberCluster)
+IMPLEMENT_DYNCREATE(TTradeCluster, TAmtBarCluster)
 
 // FUNCTION: IMPERIALISM 0x005870b0
-TTradeCluster::TTradeCluster() : TUberCluster() {}
+TTradeCluster::TTradeCluster() : TAmtBarCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x005870e0
 // TTradeCluster::`scalar deleting destructor'
@@ -152,7 +151,7 @@ void TTradeCluster::DoPostCreate(int styleSeed) {
     }
   }
 
-  this->InitializeTradeMoveAndBarControls(styleSeed);
+  TAmtBarCluster::DoPostCreate(styleSeed);
 }
 
 // FUNCTION: IMPERIALISM 0x005873e0
@@ -185,7 +184,7 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
         int capacityValue = capacityControl->QueryValue();
         if ((int)maxByNationMetric < capacityValue) {
           sellControl->SetEnabled(maxByNationMetric + 1 != 0, 1);
-          this->ApplyMoveValue(maxByNationMetric + 1);
+          this->SetMoveAmount(static_cast<short>(maxByNationMetric + 1));
           return;
         }
       }
@@ -199,7 +198,7 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     }
     int sellValue = sellControl->QueryValue();
     if (1 < sellValue) {
-      this->ApplyMoveValue(sellValue - 1);
+      this->SetMoveAmount(static_cast<short>(sellValue - 1));
       return;
     }
     break;
@@ -263,7 +262,7 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       FailNilPointerInUSmallViews(kAssertLineTradeSellMoveBar);
     }
     barControl->SetState(1, 0);
-    this->ApplyMoveValue(applyValue);
+    this->SetMoveAmount(static_cast<short>(applyValue));
     return;
   }
   case 0x6a: {
@@ -275,15 +274,15 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       FailNilPointerInUSmallViews(kAssertLineTradeSellZeroBar);
     }
     barControl->SetState(0, 1);
-    this->ApplyMoveValue(0);
+    this->SetMoveAmount(0);
     return;
   }
   default:
-    this->HandleTradeMoveControlAdjustment(commandId, sourceHandler, reinterpret_cast<int>(event));
+    TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
     return;
   }
 
-  this->HandleTradeMoveControlAdjustment(commandId, sourceHandler, reinterpret_cast<int>(event));
+  TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
 }
 
 // Returns early if UI mode is outside trade range (>3); otherwise reports
@@ -525,7 +524,7 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
 // Updates the Sell control quantity and the Bar fill from the nation's current
 // trade metric, clamped to metricClampMax.
 // FUNCTION: IMPERIALISM 0x005882f0
-void TTradeCluster::ApplyMoveValue(int metricClampMax) {
+void TTradeCluster::SetMoveAmount(short metricClampMax) {
   short activeNationSlot = g_pSimMgr->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
   int tradeMetricValue = (int)QueryNationMetricBySlot(activeNationState, tradeMetricSlot);

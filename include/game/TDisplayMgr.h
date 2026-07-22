@@ -68,3 +68,6 @@ struct GlobalViewportRectDefaultsRecord;
 
 // 0x00497230 — lazily seeds default 640x480 viewport rect globals.
 GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized();
+
+// 0x004931e0. Emits the default Win32 warning beep.
+void PlayDefaultMessageBeep();

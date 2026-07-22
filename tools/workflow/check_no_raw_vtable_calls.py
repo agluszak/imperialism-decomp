@@ -105,8 +105,9 @@ def main() -> int:
         print(f"Wrote baseline: {baseline_path} ({len(current)} files)")
         return 0
 
+    baseline_exists = baseline_path.exists()
     baseline = read_baseline(baseline_path, KEYS)
-    if not baseline:
+    if not baseline_exists:
         print(f"Baseline missing: {baseline_path}")
         print("Run with --write-baseline once, then re-run the gate.")
         return 1

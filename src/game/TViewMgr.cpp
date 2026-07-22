@@ -2242,11 +2242,11 @@ void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
 
   if (selectedTaskForce != 0) {
     if (static_cast<short>(selectedTaskForce->shipOrders) == 0) {
-      mapUberPictureF0->SetActiveMapOrderEntry(selectedTaskForce->contextAnchor);
+      mapUberPictureF0->SetActiveMapOrderEntry(selectedTaskForce->location);
     } else {
       mapUberPictureF0->RefreshMapOrderEntryPanel(0);
       mapUberPictureF0->SetMapInteractionMode(3);
-      mapUberPictureF0->NoticeTile(selectedTaskForce->tiebreak_strength);
+      mapUberPictureF0->NoticeTile(selectedTaskForce->ingotTileIndex);
     }
   } else if (selectedZone != 0) {
     mapUberPictureF0->SetActiveMapOrderEntry(selectedZone);

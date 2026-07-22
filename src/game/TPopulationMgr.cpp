@@ -50,7 +50,7 @@ void TPopulationMgr::SetPopulation(short lowSkillCount, short mediumSkillCount,
   baselineSlots10->highSkillCount08 = highSkillCount;
   productionSlots14->highSkillCount08 = highSkillCount;
 
-  stockLevel1c = static_cast<short>(
+  strength = static_cast<short>(
       productionSlots14->lowSkillCount04 +
       (productionSlots14->mediumSkillCount06 + productionSlots14->highSkillCount08 * 2) * 2);
   short total = static_cast<short>(mediumSkillCount + highSkillCount + lowSkillCount);
@@ -104,12 +104,12 @@ void TPopulationMgr::RemovePopulation(short startingSkillBand, short amount) {
       baselineSlots10->lowSkillCount04 = 0;
       productionSlots14->lowSkillCount04 = 0;
       startingSkillBand = 2;
-      stockLevel1c = static_cast<short>(stockLevel1c - remaining);
+      strength = static_cast<short>(strength - remaining);
     } else {
       baselineSlots10->lowSkillCount04 = static_cast<short>(available - remaining);
       productionSlots14->lowSkillCount04 =
           static_cast<short>(productionSlots14->lowSkillCount04 - remaining);
-      stockLevel1c = static_cast<short>(stockLevel1c - remaining);
+      strength = static_cast<short>(strength - remaining);
       remaining = 0;
     }
   }
@@ -121,12 +121,12 @@ void TPopulationMgr::RemovePopulation(short startingSkillBand, short amount) {
       baselineSlots10->mediumSkillCount06 = 0;
       productionSlots14->mediumSkillCount06 = 0;
       startingSkillBand = 4;
-      stockLevel1c = static_cast<short>(stockLevel1c - remaining * 2);
+      strength = static_cast<short>(strength - remaining * 2);
     } else {
       baselineSlots10->mediumSkillCount06 = static_cast<short>(available - remaining);
       productionSlots14->mediumSkillCount06 =
           static_cast<short>(productionSlots14->mediumSkillCount06 - remaining);
-      stockLevel1c = static_cast<short>(stockLevel1c - remaining * 2);
+      strength = static_cast<short>(strength - remaining * 2);
       remaining = 0;
     }
   }
@@ -137,12 +137,12 @@ void TPopulationMgr::RemovePopulation(short startingSkillBand, short amount) {
       remaining = static_cast<short>(remaining - available);
       baselineSlots10->highSkillCount08 = 0;
       productionSlots14->highSkillCount08 = 0;
-      stockLevel1c = static_cast<short>(stockLevel1c - remaining * 4);
+      strength = static_cast<short>(strength - remaining * 4);
     } else {
       baselineSlots10->highSkillCount08 = static_cast<short>(available - remaining);
       productionSlots14->highSkillCount08 =
           static_cast<short>(productionSlots14->highSkillCount08 - remaining);
-      stockLevel1c = static_cast<short>(stockLevel1c - remaining * 4);
+      strength = static_cast<short>(strength - remaining * 4);
       remaining = 0;
     }
   }
@@ -161,7 +161,7 @@ undefined TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0(short param_1, short 
 void TPopulationMgr::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   stream->WriteBytesSlot78(&populationCount08, 2);
-  stream->WriteBytesSlot78(&stockLevel1c, 2);
+  stream->WriteBytesSlot78(&strength, 2);
   stream->WriteBytesSlot78(&extraAt1e, 2);
   stream->WriteBytesSlot78(&fieldAt20, 2);
   stream->WriteBytesSlot78(serializedState22, sizeof(serializedState22));
@@ -175,7 +175,7 @@ void TPopulationMgr::WriteTo(TStream* stream) {
 void TPopulationMgr::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   stream->ReadBytes(&populationCount08, 2);
-  stream->ReadBytes(&stockLevel1c, 2);
+  stream->ReadBytes(&strength, 2);
   stream->ReadBytes(&extraAt1e, 2);
   stream->ReadBytes(&fieldAt20, 2);
   stream->ReadBytes(serializedState22, sizeof(serializedState22));

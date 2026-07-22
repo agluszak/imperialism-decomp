@@ -994,7 +994,7 @@ short g_anUnitStrengthWeightPercentBySlot[32] = {
 short g_anMapImprovementSpriteClassByOrderType[9] = {2, 3, 1, 6, 0, 7, 5, 4, 8};
 
 // Per-fort-level attacker penalty percent (int table at 0x695568); indexed by
-// TGlobalMapCityScoreRecord::fortLevel03.
+// Province::fortLevel03.
 int g_anFortLevelAttackerPenaltyPercentByLevel[8] = {0};
 // Per-unit-type blink/boost eligibility flag (byte table at 0x64c808); indexed by
 // TUnit::orderType.
@@ -1081,20 +1081,20 @@ short g_awTileSpriteVariantOffsetTable3b[16][2] = {
 // ComputeNavyOrderPriorityContributionPercentByCategory family); see TNavyOrderResourceDescriptor
 // in global_data_tables.h.
 TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[14] = {
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0},
-    {0, 0, 0, 0, 100, 0, 600, 0, 0, 2, 0, -1, 1, 0, 0, 0},
-    {0, 0, 0, 0, 95, 0, 1000, 0, 0, 4, 0, -1, 1, 0, 0, 0},
-    {300, 0, 5, 0, 90, 0, 900, 0, 4, 0, 0, 1, 3, 0, 1, 0},
-    {600, 0, 6, 0, 80, 0, 1700, 0, 3, 0, 0, 0, 2, 0, 1, 0},
-    {0, 0, 0, 0, 95, 0, 900, 0, 0, 8, 0, -1, 1, 0, 0, 0},
-    {0, 0, 0, 0, 100, 0, 600, 0, 0, 4, 0, -1, 1, 0, 0, 0},
-    {300, 0, 7, 0, 80, 0, 700, 0, 7, 0, 0, 2, 5, 0, 2, 0},
-    {500, 0, 8, 0, 45, 0, 1200, 0, 5, 0, 0, 3, 3, 0, 2, 0},
-    {1000, 0, 10, 0, 40, 0, 1800, 0, 6, 0, 0, 0, 4, 0, 3, 0},
-    {0, 0, 0, 0, 75, 0, 1200, 0, 0, 16, 0, -1, 1, 0, 0, 0},
-    {600, 0, 9, 0, 50, 0, 1000, 0, 8, 0, 0, 1, 6, 0, 3, 0},
-    {2000, 0, 13, 0, 30, 0, 2800, 0, 7, 0, 0, 3, 5, 0, 4, 0},
-    {1800, 0, 13, 0, 45, 0, 2200, 0, 9, 0, 0, 2, 6, 0, 4, 0}};
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0},
+    {0, 0, 100, 0, 600, 0, 0, 2, 0, -1, 1, 0, 0, 0},
+    {0, 0, 95, 0, 1000, 0, 0, 4, 0, -1, 1, 0, 0, 0},
+    {300, 5, 90, 0, 900, 0, 4, 0, 0, 1, 3, 0, 1, 0},
+    {600, 6, 80, 0, 1700, 0, 3, 0, 0, 0, 2, 0, 1, 0},
+    {0, 0, 95, 0, 900, 0, 0, 8, 0, -1, 1, 0, 0, 0},
+    {0, 0, 100, 0, 600, 0, 0, 4, 0, -1, 1, 0, 0, 0},
+    {300, 7, 80, 0, 700, 0, 7, 0, 0, 2, 5, 0, 2, 0},
+    {500, 8, 45, 0, 1200, 0, 5, 0, 0, 3, 3, 0, 2, 0},
+    {1000, 10, 40, 0, 1800, 0, 6, 0, 0, 0, 4, 0, 3, 0},
+    {0, 0, 75, 0, 1200, 0, 0, 16, 0, -1, 1, 0, 0, 0},
+    {600, 9, 50, 0, 1000, 0, 8, 0, 0, 1, 6, 0, 3, 0},
+    {2000, 13, 30, 0, 2800, 0, 7, 0, 0, 3, 5, 0, 4, 0},
+    {1800, 13, 45, 0, 2200, 0, 9, 0, 0, 2, 6, 0, 4, 0}};
 
 // Per-category (0..3) capability metric baseline averages, recomputed at runtime by
 // RecomputeGlobalCapabilityAverages (0x54fd50) and read back as the normalization divisor
@@ -1709,17 +1709,17 @@ extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;
 // 4-byte flag (written as a dword by TStatusButton::DoEvent); BOOL-style int.
 int g_bCityDialogLegendSelectionInitialized = 0;
 
-// Per-resourceType04 index into TShipView::Draw's 8-entry order-status
+// Per-type index into TShipView::Draw's 8-entry order-status
 // string pool (GetString group 0x2760); -1 = no status line for that resource type
 // (verified via `just ghidra-read-data 0x65c7f8 dword 14`; the table ends there --
 // the next dword looks like unrelated pointer data, matching
-// g_NavyOrderResourceDescriptorTable's 14-entry resourceType04 domain).
+// g_NavyOrderResourceDescriptorTable's 14-entry type domain).
 // GLOBAL: IMPERIALISM 0x0065c7f8
 const int g_ShipOrderStatusStringIndexByResourceType_0065c7f8[14] = {
     -1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7,
 };
 
-// Per-resourceType04 horizontal source offset in TNavyRoster's 0xdba bitmap atlas.
+// Per-type horizontal source offset in TNavyRoster's 0xdba bitmap atlas.
 // GLOBAL: IMPERIALISM 0x006985e8
 const short g_ShipRosterAtlasHorizontalOffsetByResourceType_006985E8[14] = {
     0, 0, 0, 0, 160, 0, 0, 320, 480, 640, 0, 800, 960, 1120,

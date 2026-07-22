@@ -44,7 +44,7 @@ TDefendProvinceMission::~TDefendProvinceMission() {}
 // the owner's own bit.
 // FUNCTION: IMPERIALISM 0x005359e0
 char IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
-  TGlobalMapCityScoreRecord& record = g_pGlobalMapState->cityScoreTable[tileIndex];
+  Province& record = g_pGlobalMapState->cityScoreTable[tileIndex];
   signed char primaryOwner = record.ownerNationCode00;
   if (g_apTerrainTypeDescriptorTable[primaryOwner]->GetHomeRegionCityRecordIndex() == tileIndex) {
     return 1;
@@ -124,13 +124,12 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
   float unitOrderWeight = static_cast<float>(
       g_pGlobalMapState->GetProvinceUnitOrderWeight(static_cast<short>(nodeContext)));
 
-  TGlobalMapCityScoreRecord* sourceRecord = &g_pGlobalMapState->cityScoreTable[nodeContext];
+  Province* sourceRecord = &g_pGlobalMapState->cityScoreTable[nodeContext];
   int sourceNation = static_cast<int>(sourceRecord->ownerNationCode00);
 
   for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
     short navyBudget =
-        g_pNavyOrderManager->ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(
-            static_cast<short>(nationIndex), sourceRecord, 0);
+        g_pNavyOrderManager->GetInvasionCapacity(static_cast<short>(nationIndex), sourceRecord, 0);
     remainingBudgetByNation[nationIndex] = static_cast<int>(navyBudget);
   }
 
@@ -261,7 +260,7 @@ void TDefendProvinceMission::SetStateByte8To2() {
 // FUNCTION: IMPERIALISM 0x0053ed00
 void TDefendProvinceMission::CalculateImportance() {
   int tileIndex = presentLocation14;
-  const TGlobalMapCityScoreRecord& cityRecord = g_pGlobalMapState->cityScoreTable[tileIndex];
+  const Province& cityRecord = g_pGlobalMapState->cityScoreTable[tileIndex];
 
   // Ground truth: 0x53ed00 uses FILD (int-to-float conversion), not a raw float
   // bit-reinterpret -- cityScoreValue is a genuine int (see TMapMgr.h).

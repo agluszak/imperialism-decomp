@@ -1258,7 +1258,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
   if (influenceByRegion != 0 && globalMapState != 0 && globalMapState->terrainStateTable != 0 &&
       globalMapState->cityScoreTable != 0) {
     TTerrainStateRecordView* terrainTable = globalMapState->terrainStateTable;
-    TGlobalMapCityScoreRecord* cityTable = globalMapState->cityScoreTable;
+    Province* cityTable = globalMapState->cityScoreTable;
     while (static_cast<short>(regionIndex) < kMapRegionSlotCount) {
       char influence = *influenceByRegion;
       if (influence != 0) {
@@ -1282,7 +1282,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
           }
 
           int cityIndex = static_cast<int>(terrainRecord->cityRecordIndex);
-          TGlobalMapCityScoreRecord* cityRecord = &cityTable[cityIndex];
+          Province* cityRecord = &cityTable[cityIndex];
           if (cityRecord->cityTileIndex04 == static_cast<short>(regionIndex)) {
             for (int devIdx = 0; devIdx < 10; ++devIdx) {
               developmentByType[devIdx] = static_cast<short>(
@@ -1324,9 +1324,9 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
     TSimMgr* localizationRuntime = g_pSimMgr;
     if (globalMapState != 0 && localizationRuntime != 0 && globalMapState->cityScoreTable != 0 &&
         globalMapState->terrainStateTable != 0) {
-      TGlobalMapCityScoreRecord* cityTable = globalMapState->cityScoreTable;
+      Province* cityTable = globalMapState->cityScoreTable;
       TTerrainStateRecordView* terrainTable = globalMapState->terrainStateTable;
-      TGlobalMapCityScoreRecord* cityRecord = cityTable + regionId;
+      Province* cityRecord = cityTable + regionId;
       short homeTileIndex = static_cast<short>(this->homeTileIndex);
       if (cityRecord->cityTileIndex04 != homeTileIndex) {
         unsigned int turnDelta =
@@ -1479,7 +1479,7 @@ char TGreatPower::AnyNeedCurrentExceedsTargetWhenCapMismatch(void) {
 // FUNCTION: IMPERIALISM 0x004dc440
 char TGreatPower::HasAnyCommodityRecordBelowStepValue(void) {
   TCity* tradeCity = this->city;
-  if (tradeCity->productionSummary1d8->stockLevel1c <= 1) {
+  if (tradeCity->productionSummary1d8->strength <= 1) {
     return 0;
   }
   for (int recordIndex = 8; recordIndex < 0xd; ++recordIndex) {
@@ -3457,9 +3457,9 @@ void TGreatPower::NotifyAllianceSlot214(int targetNation) {
 // FUNCTION: IMPERIALISM 0x004e0460
 int TGreatPower::SumNavyOrderPriorityForNationAndNodeType(TZone* zone) {
   int sum = 0;
-  for (TShip* node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
-    if (node->ownerNationSlot14 == this->nationSlot && node->field08 == zone) {
-      sum += node->ComputeOrderNodeCompositeEconomicScore();
+  for (TShip* node = TShip::GetFirst(); node != 0; node = node->next) {
+    if (node->nation == this->nationSlot && node->location == zone) {
+      sum += node->GetStudliness();
     }
   }
   return sum;
@@ -3468,9 +3468,9 @@ int TGreatPower::SumNavyOrderPriorityForNationAndNodeType(TZone* zone) {
 // FUNCTION: IMPERIALISM 0x004e04b0
 int TGreatPower::SumNavyOrderPriorityForNation() {
   int sum = 0;
-  for (TShip* node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
-    if (node->ownerNationSlot14 == this->nationSlot) {
-      sum += node->ComputeOrderNodeCompositeEconomicScore();
+  for (TShip* node = TShip::GetFirst(); node != 0; node = node->next) {
+    if (node->nation == this->nationSlot) {
+      sum += node->GetStudliness();
     }
   }
   return sum;
@@ -3479,9 +3479,9 @@ int TGreatPower::SumNavyOrderPriorityForNation() {
 // FUNCTION: IMPERIALISM 0x004e0500
 int TGreatPower::SumNavyOrderPriorityForNationSlot86(void) {
   int prioritySum = 0;
-  for (TShip* node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
-    if (node->ownerNationSlot14 == this->nationSlot) {
-      prioritySum += GetIndustryActionCostWeightByResourceType(node->resourceType04);
+  for (TShip* node = TShip::GetFirst(); node != 0; node = node->next) {
+    if (node->nation == this->nationSlot) {
+      prioritySum += GetIndustryActionCostWeightByResourceType(node->type);
     }
   }
   return prioritySum;
@@ -3534,14 +3534,14 @@ double TGreatPower::ComputeMinisterSkillFloatSlot8C(void) {
 
 // FUNCTION: IMPERIALISM 0x004e06d0
 int TGreatPower::SumCommodityRecordAccumulatedValues(void) {
-  TCity* cityState = this->city;
+  TCity* province = this->city;
   int total = 0;
-  if (cityState != 0) {
-    total = cityState->tradeCommodityRecordPtrs[12]->accumulatedValue +
-            cityState->tradeCommodityRecordPtrs[11]->accumulatedValue +
-            cityState->tradeCommodityRecordPtrs[9]->accumulatedValue +
-            cityState->tradeCommodityRecordPtrs[10]->accumulatedValue +
-            cityState->tradeCommodityRecordPtrs[8]->accumulatedValue;
+  if (province != 0) {
+    total = province->tradeCommodityRecordPtrs[12]->accumulatedValue +
+            province->tradeCommodityRecordPtrs[11]->accumulatedValue +
+            province->tradeCommodityRecordPtrs[9]->accumulatedValue +
+            province->tradeCommodityRecordPtrs[10]->accumulatedValue +
+            province->tradeCommodityRecordPtrs[8]->accumulatedValue;
   }
   return total;
 }
@@ -3575,7 +3575,7 @@ int TGreatPower::ComputeArmyCommitBudgetSlot8E(void) {
     return 0;
   }
   TPopulationMgr* scenario = this->city->productionSummary1d8;
-  short scenarioCap = scenario->stockLevel1c;
+  short scenarioCap = scenario->strength;
   short productionCap = scenario->productionSlots14->lowSkillCount04;
   if (scenarioCap < productionCap) {
     productionCap = scenarioCap;
@@ -4396,12 +4396,11 @@ int TGreatPower::ComputeNationNavyOrderWeightedMovementScore() {
                (static_cast<short>(unit->field_38 / 100) + 10) / 10;
     }
   }
-  for (TShip* node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
-    if (node->ownerNationSlot14 != nationSlot) {
+  for (TShip* node = TShip::GetFirst(); node != 0; node = node->next) {
+    if (node->nation != nationSlot) {
       continue;
     }
-    score += navyWeightByType[node->resourceType04] *
-             (static_cast<short>(node->experiencePoints30 / 100) + 10) / 10;
+    score += navyWeightByType[node->type] * (static_cast<short>(node->experience / 100) + 10) / 10;
   }
   return score;
 }
@@ -4590,7 +4589,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
                ->relationStandingScoreMatrix79c[nationSlot * kNationSlotCount +
                                                 static_cast<short>(selectedNationSlot)];
   case 6: {
-    const TGlobalMapCityScoreRecord* record = &g_pGlobalMapState->cityScoreTable[cityIndex];
+    const Province* record = &g_pGlobalMapState->cityScoreTable[cityIndex];
     result = static_cast<float>(record->cityScoreValue) / g_pGlobalMapState->cityScoreTotal;
     short claimantTag =
         g_pGlobalMapState->cityScoreTable[static_cast<short>(cityIndex)].formerOwnerNationCode01;

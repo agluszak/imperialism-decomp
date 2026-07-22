@@ -64,7 +64,7 @@ void TAmtBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
     }
     short availableValue = availableControl->QueryValue();
     if (moveValue < availableValue) {
-      ApplyMoveValue(moveValue + 1);
+      SetMoveAmount(static_cast<short>(moveValue + 1));
     }
   } else if (normalizedCommand == 1) {
     TAmtBar* moveControl = static_cast<TAmtBar*>(ResolveControlByTag(kControlTagMove));
@@ -73,15 +73,15 @@ void TAmtBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
     }
     int moveValue = moveControl->QueryValue();
     if (static_cast<short>(moveValue) != 0) {
-      ApplyMoveValue(moveValue - 1);
+      SetMoveAmount(static_cast<short>(moveValue - 1));
     }
   }
   TCluster::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x00586ff0
-void TAmtBarCluster::ApplyMoveValue(int value) {
-  (void)value;
+void TAmtBarCluster::SetMoveAmount(short amount) {
+  (void)amount;
 }
 
 TAmtBarCluster::~TAmtBarCluster() {}

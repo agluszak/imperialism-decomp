@@ -5,7 +5,7 @@
 #include "game/TView.h"
 #include "game/mfc.h"
 
-struct TGlobalMapCityScoreRecord;
+struct Province;
 
 // VTABLE: IMPERIALISM 0x006598f8
 class TMapMaker : public TObject {
@@ -220,8 +220,7 @@ public:
   // the follow-on passes, applies the easter-egg keyword terrain overrides, and
   // retries the whole pipeline until ValidateSeedCandidateExistsForEachTerrainClass
   // accepts the map. 0x525a30, __thiscall, RET 0xc.
-  void GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileGrid,
-                                                            TGlobalMapCityScoreRecord* cityTable,
+  void GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileGrid, Province* cityTable,
                                                             CString* tuningString);
 
   // --- data fields (raw pad except the ones the ported passes read) ---
@@ -229,7 +228,7 @@ public:
   char* mapTileGrid08;      // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
   // +0x0c the city-score record table, stored verbatim by the 0x525a30 entry
   // (the caller passes TMapMgr::cityScoreTable).
-  TGlobalMapCityScoreRecord* cityScoreTable0c;
+  Province* cityScoreTable0c;
   // +0x10 region-class grid: 15 rows x 27 columns of region-class bytes (-1 = unassigned).
   signed char regionClassGrid10[15][27];
   char pad_1a5[0x1a8 - 0x1a5]; // +0x1a5
