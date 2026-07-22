@@ -896,8 +896,7 @@ TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOr
   // order nodes; and if the new context is null, free and forget the cached task force.
   if (selectedTaskForce14 != nullptr &&
       selectedTaskForce14->contextAnchor != pMapOrderContextZone) {
-    selectedTaskForce14->RemoveTaskForceOrderNodesByNationAndClearSelectionState(
-        g_pSimMgr->GetActiveNationId(), pMapOrderContextZone);
+    selectedTaskForce14->RegainVirginity(g_pSimMgr->GetActiveNationId(), pMapOrderContextZone);
     if (pMapOrderContextZone == nullptr) {
       TTaskForce* previous = selectedTaskForce14;
       selectedTaskForce14 = nullptr;

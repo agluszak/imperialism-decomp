@@ -14,8 +14,6 @@
 
 #include <new>
 
-extern "C" TShip* g_pNavyPrimaryOrderListHead = 0;
-
 static __inline short SignedDiv10(int value) {
   return static_cast<short>(value / 10);
 }
@@ -144,8 +142,7 @@ void TShip::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0054fbf0
 void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode) {
   do {
-    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
-        static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[shipNode->resourceType04]),
+    g_apTerrainTypeDescriptorTable[shipNode->resourceType04]->GenerateEthnicName(
         &shipNode->displayName18);
     for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0;
          existing = existing->nextOlder24) {
@@ -462,7 +459,7 @@ TShip* GetNavyPrimaryOrderNodeByIndex(short index) {
 }
 
 // Priority compare between two ship order nodes (see the header note); the original
-// reads +0x20 (admiral backlink, then its field_10) SYMMETRICALLY on both receiver
+// reads +0x20 (admiral backlink, then its experiencePoints) SYMMETRICALLY on both receiver
 // and candidate -- the previous TTaskForce-receiver model misread the receiver side
 // as +0x08/+0x06 (attachment/order_strength), a genuine mis-port this migration
 // fixes.
@@ -492,7 +489,7 @@ TShip* TShip::SelectPreferredMapOrderEntryByPriorityRules(TShip* candidate,
     } else if (candidateAdmiral == nullptr) {
       preferSelf = true;
     } else {
-      preferSelf = candidateAdmiral->field_10 < selfAdmiral->field_10;
+      preferSelf = candidateAdmiral->experiencePoints < selfAdmiral->experiencePoints;
     }
     if (preferSelf) {
       return this;
@@ -504,7 +501,7 @@ TShip* TShip::SelectPreferredMapOrderEntryByPriorityRules(TShip* candidate,
     } else if (selfAdmiral == nullptr) {
       preferCandidate = true;
     } else {
-      preferCandidate = selfAdmiral->field_10 < candidateAdmiral->field_10;
+      preferCandidate = selfAdmiral->experiencePoints < candidateAdmiral->experiencePoints;
     }
     if (!preferCandidate) {
       if (resourceType04 != candidate->resourceType04) {
@@ -733,7 +730,7 @@ void TShip::ReassignOrderNodeNationAndRebindParentCounters(short nation) {
 
   TMission* missionBackref = missionBacklink2c;
   if (missionBackref != 0 && missionBackref->nationId04 != nation) {
-    missionBackref->NoOpSlot8C(this, 1);
+    missionBackref->RejectConstituent(this, 1);
   }
 
   ownerNationSlot14 = nation;
@@ -749,7 +746,7 @@ void TShip::SetOwnerOrderEntryAndCacheType(TTaskForce* newEntry) {
 
   // Cache the entry's packed order_type/order_strength pair (entry+0x04 read as one
   // dword, the original's shape).
-  quantityFlag10 = *reinterpret_cast<int*>(&newEntry->order_type);
+  quantityFlag10 = newEntry->packedOrderTypeAndStrength;
 
   short kind = static_cast<short>(newEntry->attachment);
   if (kind != 0 && kind != 7 && kind != 8 && kind != 4) {

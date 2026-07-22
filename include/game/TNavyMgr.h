@@ -1,5 +1,8 @@
 #pragma once
 
+#include "game/TAdmiral.h"
+#include "game/TShip.h"
+#include "game/TTaskForce.h"
 #include "game/global_data_tables.h"
 
 class TStream;
@@ -70,6 +73,22 @@ public:
   // Mac oracle: FreeShipsOf(short). Cancels every queued task force for the nation,
   // then clears the transient primary-order flags on that nation's ships.
   void FreeShipsOf(short nation); // 0x556f60
+  // Mac oracle: ClearAllOrders. The class-body definition is material: VC5 expands
+  // it in Free() and retains its out-of-line COMDAT copy at 0x556850.
+  // FUNCTION: IMPERIALISM 0x00556850
+  void ClearAllOrders() {
+    while (g_pNavyPrimaryOrderListHead != 0) {
+      g_pNavyPrimaryOrderListHead->Free();
+    }
+    while (g_pNavySecondaryOrderListHead != 0) {
+      g_pNavySecondaryOrderListHead->Free();
+    }
+    TTaskForce* orderHead = orderListHead04;
+    if (orderHead != 0) {
+      orderHead->queue_next->DestroyNavyOrderAndChildren();
+      orderHead->Free();
+    }
+  }
   // 0x557170. Walks orderListHead04 (the same raw task-force-order node list
   // RemoveMatchingTaskForceOrders in the .cpp already indexes via node[7]=
   // nationSlot@+0x1c, node[0xb]=next@+0x2c); matches nodes with orderType@+0x8==5,

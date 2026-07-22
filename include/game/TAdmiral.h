@@ -23,16 +23,19 @@ public:
   virtual void ReadFrom(TStream* stream) override; // 0x18 0x551700
   virtual void Free() override;                    // 0x1c 0x5515d0
 
-  short terrainType;         // 0x04 (index into g_apTerrainTypeDescriptorTable; 0xffff = none)
-  unsigned char pad06[2];    // 0x06
-  TShip* primaryOrderNode08; // 0x08 — linked navy primary-order node (0x00552250)
-  CString displayName;       // 0x0c
-  short field_10;            // 0x10
-  unsigned char pad12[2];    // 0x12
-  TAdmiral* next;            // 0x14 (toward older entries)
-  TAdmiral* prev;            // 0x18 (toward newer entries)
+  short nationSlot;       // 0x04 (also indexes the nation's terrain descriptor; -1 = none)
+  unsigned char pad06[2]; // 0x06
+  TShip* assignedShip;    // 0x08 — linked navy primary-order node (0x00552250)
+  CString displayName;    // 0x0c
+  // Experience points. Mac resource evidence labels admirals as "amt = exp"; every
+  // reader converts this to a skill tier with experiencePoints / 100 (+1 where the
+  // zero-experience tier is numbered one).
+  short experiencePoints; // 0x10
+  unsigned char pad12[2]; // 0x12
+  TAdmiral* next;         // 0x14 (toward older entries)
+  TAdmiral* prev;         // 0x18 (toward newer entries)
 
-  TAdmiral(short terrainTypeIndex = static_cast<short>(0xffff));
+  TAdmiral(short nationSlotArg = static_cast<short>(0xffff));
   virtual ~TAdmiral() override;
 
   // Mac oracle: AssignToShip / ReassignThyself. AssignToShip replaces the primary
@@ -45,10 +48,13 @@ public:
   // 0x552310..0x552404 body into three overlapping orphan functions.
   void ReassignToZone(TZone* zone); // 0x552310
 
-  static void __fastcall GenerateMappedFlavorTextByNationSlotField0C(TMinor* terrainDescriptor,
-                                                                     CString* dest);
+  // Mac oracle: NameThyself. Regenerates displayName until it is unique in the
+  // global admiral list.
+  void NameThyself(); // 0x552450
 
-  void RemoveDuplicateNavySecondaryOrdersByDisplayName();
+  // Allocate a linked admiral and report the original UNavy.cpp nil-pointer failure
+  // when allocation fails. 0x5573f0.
+  static TAdmiral* CreateForTerrainType(short terrainTypeIndex);
 
   // Mac oracle: EstimateEnemyForces / GetFleetReport. The report intentionally
   // perturbs observed ship counts and classes according to this admiral's skill.

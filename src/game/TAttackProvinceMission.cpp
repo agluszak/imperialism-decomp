@@ -24,20 +24,6 @@ IMPLEMENT_SERIAL(TAttackProvinceMission, TArmyMission, 1)
 // SYNTHETIC: IMPERIALISM 0x0053d7c0
 // TAttackProvinceMission::`scalar deleting destructor'
 
-namespace {
-// See TArmyMission.cpp's identical TArmyMissionOrderItemLayout/OwnerOf --
-// orderListAt18 payloads are an unrecovered subtype; only the owner
-// back-pointer at +0x40 is known.
-struct TAttackProvinceMissionOrderItemLayout {
-  char pad_00[0x40];
-  TMission* owner; // +0x40
-};
-
-TMission*& OwnerOf(TMission* item) {
-  return reinterpret_cast<TAttackProvinceMissionOrderItemLayout*>(item)->owner;
-}
-} // namespace
-
 // FUNCTION: IMPERIALISM 0x0053d6f0
 char TAttackProvinceMission::IsHospitalMission() const {
   return 0;
@@ -81,18 +67,18 @@ void TAttackProvinceMission::Free() {
 
   nationState->SetMapStateByteFlag970WithRuntimeGate(targetProvince30, 0);
 
-  if (orderListAt18 != nullptr) {
-    CIterator iter(orderListAt18);
-    void* current = iter.Reset();
-    while (iter.More()) {
-      OwnerOf(static_cast<TMission*>(current)) = nullptr;
-      current = iter.Advance();
-    }
-
-    orderListAt18->RemoveAll();
-    orderListAt18->FreePayloadsAndDestroy();
-    orderListAt18 = nullptr;
+  CIterator iter(orderListAt18);
+  void* current = iter.Reset();
+  while (iter.More()) {
+    static_cast<TMilitaryUnit*>(current)->ownerMission40 = nullptr;
+    current = iter.Advance();
   }
+
+  orderListAt18->RemoveAll();
+  if (orderListAt18 != nullptr) {
+    orderListAt18->FreePayloadsAndDestroy();
+  }
+  orderListAt18 = nullptr;
 
   if (this != nullptr) {
     delete this;
@@ -100,7 +86,7 @@ void TAttackProvinceMission::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053d950
-char TAttackProvinceMission::ReturnFalseSlot98() {
+char TAttackProvinceMission::SmokeEmIfYouGotEm() {
   if (flag10 == 0) {
     float vector[5];
     float total = 0.0f;
@@ -122,7 +108,7 @@ char TAttackProvinceMission::ReturnFalseSlot98() {
           for (unit = static_cast<TMilitaryUnit*>(queueIter.Reset()); queueIter.More();
                unit = static_cast<TMilitaryUnit*>(queueIter.Advance())) {
             if (unit->GetUnitMovementClassId() != 0) {
-              NoOpSlot88(unit, 1);
+              RejectConstituent(unit, 1);
             }
           }
           return 1;
@@ -137,7 +123,7 @@ char TAttackProvinceMission::ReturnFalseSlot98() {
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(queueIter.Reset()); queueIter.More();
        unit = static_cast<TMilitaryUnit*>(queueIter.Advance())) {
     if (unit->GetUnitMovementClassId() != 0) {
-      NoOpSlot88(unit, 1);
+      RejectConstituent(unit, 1);
     }
   }
   return 1;
@@ -410,14 +396,13 @@ void TAttackProvinceMission::CalculateNeeds() {
 
 // Shared with TInvadeMission (COMDAT-folded body).
 // FUNCTION: IMPERIALISM 0x0053e500
-float TAttackProvinceMission::ReturnZeroFloatSlot78(TMilitaryUnit* candidateUnit,
-                                                    float* referenceVector) {
+float TAttackProvinceMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector) {
   if (referenceVector[2] > 0.0f) {
     if (candidateUnit->GetUnitTypeStatPercent(2) < 10) {
       return -1000.0f;
     }
   }
-  return TArmyMission::ReturnZeroFloatSlot78(candidateUnit, referenceVector);
+  return TArmyMission::FitnessOf(candidateUnit, referenceVector);
 }
 
 // FUNCTION: IMPERIALISM 0x0053e570

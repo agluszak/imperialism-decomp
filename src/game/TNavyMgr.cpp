@@ -32,9 +32,6 @@
 // reattributed TryQueueMapOrderFromTileAction below.
 TGlobalMapCityScoreRecord* __stdcall GetProvinceByTileIndex(short nTileIndex);
 
-extern "C" TShip* g_pNavyPrimaryOrderListHead;
-extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
-
 // Resolves a raw TGlobalMapCityScoreRecord* back into its index in
 // g_pGlobalMapState's cityScoreTable. Real __fastcall: the single arg arrives in ecx
 // and no original callsite pushes anything.
@@ -48,7 +45,7 @@ namespace {
 // Shared by BuildMapOrderBattleSideSnapshot's two fixed-size name/label copies and its
 // per-child name copy: copies up to destSize-1 chars of `src` into `dest`, stopping at
 // the first NUL (matching the original's own byte-at-a-time copy loop).
-void CopyCStringIntoFixedBuffer(char* dest, int destSize, const char* src) {
+static inline void CopyCStringIntoFixedBuffer(char* dest, int destSize, const char* src) {
   int i = 0;
   for (; i < destSize; ++i) {
     char c = src[i];
@@ -62,7 +59,7 @@ void CopyCStringIntoFixedBuffer(char* dest, int destSize, const char* src) {
 // Sum, over childOrderList entries whose resource-type priorityTier is >= minTier, of
 // (child->field30/100 + resolveWeight*10 + 5)/10 -- the per-child "combat power"
 // term ResolveMapOrderPairConflictStep's tier-scoring loop accumulates as a float.
-float SumMapOrderChildPowerAtOrAboveTier(TMapOrderChildLinkNode* head, int minTier) {
+static inline float SumMapOrderChildPowerAtOrAboveTier(TMapOrderChildLinkNode* head, int minTier) {
   float total = 0.0f;
   for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
     TShip* child = static_cast<TShip*>(node->payload);
@@ -78,7 +75,7 @@ float SumMapOrderChildPowerAtOrAboveTier(TMapOrderChildLinkNode* head, int minTi
 }
 
 // Count of childOrderList entries whose resource-type priorityTier is >= minTier.
-int CountMapOrderChildrenAtOrAboveTier(TMapOrderChildLinkNode* head, int minTier) {
+static inline int CountMapOrderChildrenAtOrAboveTier(TMapOrderChildLinkNode* head, int minTier) {
   int count = 0;
   for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
     if (g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
@@ -89,7 +86,7 @@ int CountMapOrderChildrenAtOrAboveTier(TMapOrderChildLinkNode* head, int minTier
   return count;
 }
 
-int CountMapOrderChildren(TMapOrderChildLinkNode* head) {
+static inline int CountMapOrderChildren(TMapOrderChildLinkNode* head) {
   int count = 0;
   for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
     ++count;
@@ -97,30 +94,48 @@ int CountMapOrderChildren(TMapOrderChildLinkNode* head) {
   return count;
 }
 
+static inline int CalculateActiveChildAverageDescriptorWeightX10(TMapOrderChildLinkNode* head) {
+  int sum = 0;
+  int count = 0;
+  for (TMapOrderChildLinkNode* node = head; node != 0; node = node->next) {
+    if (node->active != 0) {
+      sum += g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->resourceType04]
+                 .descriptorWeight;
+      ++count;
+    }
+  }
+  if (count == 0) {
+    return 0;
+  }
+  return (sum * 10) / count;
+}
+
 // Randomly applies a resource-weighted attrition roll (0x55ae70/0x55af36) to up to
-// `target` of `*headSlot`'s children: for each candidate node, rolls
-// rand()%currentCount < target to select it (a single-pass approximation of the real
-// per-node selection gate), then reduces its required_count by
+// `target` of `head`'s children: for each candidate node, rolls
+// rand()%currentCount < target to select it, restarting at the head until exactly
+// `target` children have been selected, then reduces its required_count by
 // 0.5 + taskForceWeight[child->resourceType04] * ((rand()%100+rand()%100+100) * 0.005) *
 // favorRatio * 0.01 (the confirmed real float constants at 0x65c3a8/0x65c3b0/0x65c3b8).
-void ApplyMapOrderConflictAttrition(TMapOrderChildLinkNode* head, int currentCount, int target,
-                                    float favorRatio) {
+static inline void ApplyMapOrderConflictAttrition(TMapOrderChildLinkNode* head, int currentCount,
+                                                  int target, float favorRatio) {
   if (target <= 0) {
     return;
   }
   int selected = 0;
-  for (TMapOrderChildLinkNode* node = head; node != nullptr && selected < target;
-       node = node->next) {
-    if (currentCount == target || static_cast<int>(rand()) % currentCount < target) {
-      ++selected;
-      int roll = static_cast<int>(rand()) % 100 + static_cast<int>(rand()) % 100 + 100;
-      TShip* child = static_cast<TShip*>(node->payload);
-      float delta =
-          0.5f + g_NavyOrderResourceDescriptorTable[child->resourceType04].taskForceWeight *
-                     (roll * 0.005f) * favorRatio * -0.01f;
-      child->stockLevel1c = static_cast<short>(child->stockLevel1c - static_cast<short>(delta));
+  do {
+    for (TMapOrderChildLinkNode* node = head; node != nullptr && selected < target;
+         node = node->next) {
+      if (currentCount == target || static_cast<int>(rand()) % currentCount < target) {
+        ++selected;
+        int roll = static_cast<int>(rand()) % 100 + static_cast<int>(rand()) % 100 + 100;
+        TShip* child = static_cast<TShip*>(node->payload);
+        float delta =
+            0.5f + g_NavyOrderResourceDescriptorTable[child->resourceType04].taskForceWeight *
+                       (roll * 0.005f) * favorRatio * -0.01f;
+        child->stockLevel1c = static_cast<short>(child->stockLevel1c - static_cast<short>(delta));
+      }
     }
-  }
+  } while (selected < target);
 }
 
 // Removes a depleted (required_count < 1) list head and prunes any other depleted entries
@@ -129,7 +144,8 @@ void ApplyMapOrderConflictAttrition(TMapOrderChildLinkNode* head, int currentCou
 // depleted head, else a side-effect-only PruneDefeatedMapOrderChildrenAndReturnHead(head->next)
 // call on a still-alive head) rather than TTaskForce::PruneDefeatedMapOrderChildrenAndReturnHead's
 // own equivalent-but-differently-sequenced internal logic.
-TMapOrderChildLinkNode* PruneMapOrderConflictHeadAndTail(TMapOrderChildLinkNode* head) {
+static inline TMapOrderChildLinkNode*
+PruneMapOrderConflictHeadAndTail(TMapOrderChildLinkNode* head) {
   if (head == nullptr) {
     return nullptr;
   }
@@ -154,11 +170,13 @@ void BuildMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
   CString terrainLabel;
   g_apTerrainTypeDescriptorTable[entry->required_count]->FormatOverlayTerrainLabelText(
       &terrainLabel);
-  CopyCStringIntoFixedBuffer(snapshot->nameBuffer[side], 0x20, static_cast<LPCSTR>(terrainLabel));
+  CopyCStringIntoFixedBuffer(snapshot->nameBuffer[side].data, 0x20,
+                             static_cast<LPCSTR>(terrainLabel));
 
   CString overlayLabel;
   entry->BuildTaskForceSelectionOverlayLabelText(&overlayLabel);
-  CopyCStringIntoFixedBuffer(snapshot->overlayLabel[side], 0xff, static_cast<LPCSTR>(overlayLabel));
+  CopyCStringIntoFixedBuffer(snapshot->overlayLabel[side].data, 0xff,
+                             static_cast<LPCSTR>(overlayLabel));
 
   short childCount = static_cast<short>(entry->GetMapOrderEntryChildCount());
   snapshot->childCount[side] = childCount;
@@ -299,17 +317,7 @@ void TNavyMgr::INavyMgr() {
 
 // FUNCTION: IMPERIALISM 0x005567a0
 void TNavyMgr::Free() {
-  while (g_pNavyPrimaryOrderListHead != 0) {
-    g_pNavyPrimaryOrderListHead->Free();
-  }
-  while (g_pNavySecondaryOrderListHead != 0) {
-    g_pNavySecondaryOrderListHead->Free();
-  }
-  TTaskForce* orderHead = orderListHead04;
-  if (orderHead != 0) {
-    orderHead->queue_next->DestroyNavyOrderAndChildren();
-    orderHead->Free();
-  }
+  ClearAllOrders();
   delete this;
 }
 
@@ -347,14 +355,14 @@ void TNavyMgr::SerializeNavyOrderListsByNation(TStream* stream, short nationFilt
   }
   matchCount = 0;
   for (TAdmiral* admiral = g_pNavySecondaryOrderListHead; admiral != 0; admiral = admiral->next) {
-    if (nationFilter == -1 || nationFilter == admiral->terrainType) {
+    if (nationFilter == -1 || nationFilter == admiral->nationSlot) {
       ++matchCount;
     }
   }
   stream->WriteBytesSlot78(&matchCount, 2);
   for (TAdmiral* admiral2 = g_pNavySecondaryOrderListHead; admiral2 != 0;
        admiral2 = admiral2->next) {
-    if (nationFilter == -1 || nationFilter == admiral2->terrainType) {
+    if (nationFilter == -1 || nationFilter == admiral2->nationSlot) {
       admiral2->WriteTo(stream);
     }
   }
@@ -447,7 +455,7 @@ void TNavyMgr::DeserializeNavyOrderListsByNation(TStream* stream, short nationFi
       FailNilPointerWithAssert(s_SourcePathUNavy_006983C8, 0xd24);
     }
     admiralNode->ReadFrom(stream);
-    if (nationFilter != -1 && admiralNode->terrainType != nationFilter) {
+    if (nationFilter != -1 && admiralNode->nationSlot != nationFilter) {
       admiralNode->Free();
     }
   }
@@ -1442,6 +1450,10 @@ int TNavyMgr::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags) 
 // FUNCTION: IMPERIALISM 0x0055a780
 void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce* rightEntry) {
   MapOrderBattleSnapshot snapshot;
+  snapshot.childCount[0] = 0;
+  snapshot.childCount[1] = 0;
+  snapshot.childRecords[0] = 0;
+  snapshot.childRecords[1] = 0;
   BuildMapOrderBattleSideSnapshot(&snapshot, 0, leftEntry);
   BuildMapOrderBattleSideSnapshot(&snapshot, 1, rightEntry);
 
@@ -1473,21 +1485,22 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
   // indexed by the (order_type, order_strength) short pair at +0x04/+0x06 read together as
   // one dword index here -- two adjacent shorts read as a bulk index, one meaning per short,
   // not one slot with two overlaid types).
-  static const float kTierConvergenceThreshold[3] = {1.1f, 0.95f, 0.8f};
-  float leftThreshold = kTierConvergenceThreshold[*reinterpret_cast<int*>(&leftEntry->order_type)];
-  float rightThreshold =
-      kTierConvergenceThreshold[*reinterpret_cast<int*>(&rightEntry->order_type)];
+  const float kTierConvergenceThreshold[3] = {1.1f, 0.95f, 0.8f};
+  float leftThreshold = kTierConvergenceThreshold[leftEntry->packedOrderTypeAndStrength];
+  float rightThreshold = kTierConvergenceThreshold[rightEntry->packedOrderTypeAndStrength];
 
   int candidateTier = maxTier;
   bool tierUnreachable = false;
 
   for (;;) {
-    // Each side's "current active order" tiebreak bucket -- TODO: the real chain
-    // (entry->activeChildEntry->attached_entity interpreted as a pointer to an
-    // unidentified record, reading a short at +0x10) isn't recovered yet; treated as 0
-    // (no scaling correction) pending a dedicated class-recovery pass.
-    int leftBucket = 0;
-    int rightBucket = 0;
+    TAdmiral* leftAdmiral = leftEntry == 0 || leftEntry->activeChildEntry == 0
+                                ? 0
+                                : leftEntry->activeChildEntry->admiralBacklink20;
+    int leftBucket = leftAdmiral == 0 ? 0 : leftAdmiral->experiencePoints / 100;
+    TAdmiral* rightAdmiral = rightEntry == 0 || rightEntry->activeChildEntry == 0
+                                 ? 0
+                                 : rightEntry->activeChildEntry->admiralBacklink20;
+    int rightBucket = rightAdmiral == 0 ? 0 : rightAdmiral->experiencePoints / 100;
 
     int bestLeftFavorTier = 0;
     float bestLeftFavorRatio = 0.0f;
@@ -1528,9 +1541,10 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
       rightTierAdjust = 1;
     }
 
-    int leftWeight = (leftBucket + 10) * leftEntry->CalculateMapOrderEntryAverageChildRatingX10();
-    int rightWeight =
-        (rightBucket + 10) * rightEntry->CalculateMapOrderEntryAverageChildRatingX10();
+    int leftWeight = (leftBucket + 10) *
+                     CalculateActiveChildAverageDescriptorWeightX10(leftEntry->childOrderList);
+    int rightWeight = (rightBucket + 10) *
+                      CalculateActiveChildAverageDescriptorWeightX10(rightEntry->childOrderList);
     int totalWeight = leftWeight + rightWeight;
 
     if (static_cast<int>(rand()) % totalWeight < leftWeight) {
@@ -1590,9 +1604,19 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
     TTaskForce* loser = leftEliminated ? leftEntry : rightEntry;
     TTaskForce* winner = leftEliminated ? rightEntry : leftEntry;
     int loserStart = leftEliminated ? leftStartCount : rightStartCount;
-    int bump = loserStart * 5 + candidateTier;
+    int loserRemaining = CountMapOrderChildren(loser->childOrderList);
+    int bump = (loserStart - loserRemaining) * 5 + loserRemaining;
     int winnerCount = CountMapOrderChildren(winner->childOrderList);
     if (winnerCount > 0) {
+      TAdmiral* winningAdmiral =
+          winner->activeChildEntry == 0 ? 0 : winner->activeChildEntry->admiralBacklink20;
+      if (winningAdmiral != 0) {
+        winningAdmiral->experiencePoints =
+            static_cast<short>(winningAdmiral->experiencePoints + bump);
+        if (winningAdmiral->experiencePoints > 499) {
+          winningAdmiral->experiencePoints = 499;
+        }
+      }
       for (TMapOrderChildLinkNode* node = winner->childOrderList; node != nullptr;
            node = node->next) {
         static_cast<TShip*>(node->payload)

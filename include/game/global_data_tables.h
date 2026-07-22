@@ -21,6 +21,7 @@
 #include "game/TView.h"
 #include "game/TMouseCaptureState.h"
 #include "game/TWNetSessionManager.h"
+#include "game/timer_slots.h"
 
 TGreatPower* GetNationStateBySlot(short slotId);
 short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot);
@@ -32,8 +33,10 @@ struct TextStyle;
 struct TQuickDrawSurfaceContext;
 struct TCdAudioDevice;
 class TArmyMgr;
+class TAdmiral;
 class TDiplomacyMgr;
 class TNavyMgr;
+class TShip;
 class TSimMgr;
 class TAssetMgr;
 class TNewsMgr;
@@ -331,12 +334,21 @@ extern TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext;
 extern CDib* g_pColorKeyCompositeDib;
 // TCitySiteView's currently painted six-neighbor highlight set. Each entry is a map tile
 // index or -1; the paint pass restores the previous cells before replacing this cache.
-extern short g_aCitySiteNeighborHighlightTiles_00697320[6];
+extern short g_aStrategicMapNeighborHighlightTiles_00697320[6];
 // Strategic-map preview cursor and the two half-cell parity remainders maintained while
 // converting its point into a viewport cell.
 extern CPoint g_MapInteractionPreviewPoint_006a3370;
 extern int g_MapInteractionPreviewRowParity_006a33b4;
 extern int g_MapInteractionPreviewColumnParity_006a33b8;
+// Owner-nation tag (0..23) to the QuickDraw palette index used behind ocean-map
+// order previews and garrison badges.
+extern const unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24];
+// Per-owner outline palette used by the ocean overview's direct 16x16 neighbor-edge pass.
+extern const unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24];
+extern const unsigned char g_bDrawOceanRouteOverlay;
+extern const unsigned char g_bTransferOceanViewportToActiveSurface;
+extern const unsigned char g_bDrawOceanZoneLabels;
+extern const unsigned char g_bDrawOceanNationLabels;
 extern CDC* g_pQuickDrawMemoryDc;
 extern HGDIOBJ g_hQuickDrawSavedBitmap;
 extern int g_nActiveQuickDrawSurfaceFlags;
@@ -425,6 +437,8 @@ extern const char s_OutOfMemoryText_006941F0[];
 extern const char s_ErrorCaption_00694204[];
 extern TDiplomacyMgr* g_pDiplomacyTurnStateManager;
 extern TNavyMgr* g_pNavyOrderManager;
+extern "C" TShip* g_pNavyPrimaryOrderListHead;
+extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
 extern TArmyMgr* g_pMapContextActionManager;
 // Two 0x20-byte flag tables installed into TArmyMgr+0x14/+0x18 by
 // InitializeMapContextActionManager (0x4a18f0); 8 rows x 4 flag bytes.
@@ -575,9 +589,11 @@ extern TSoundResourceManager g_soundResourceManager;
 // CD-audio MCI device singleton (see game/cd_audio.h).
 extern TCdAudioDevice g_cdAudioDevice; // 0x006a60bc
 // Audio timer-slot registry (see game/timer_slots.h): 10 callbacks + 10 live timer ids.
-extern undefined4 (*g_timerSlotCallbacks[10])(); // 0x006a5cf8
-extern UINT g_timerSlotIds[10];                  // 0x006a5c98
-extern int g_timerDispatchSuppressAssert;        // 0x006a5d24
+extern TimerSlotCallback g_timerSlotCallbacks[10]; // 0x006a5cf8
+extern UINT g_timerSlotIds[10];                    // 0x006a5c98
+extern int g_timerDispatchSuppressAssert;          // 0x006a5d24
+// Counts idle/audio-state polls before another random cue selection attempt.
+extern short g_randomAudioCuePollCounter; // 0x006a4520
 extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
 // Tactical unit facing-offset table (0x006a4780); see global_data_tables.cpp.
 extern POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
@@ -786,19 +802,20 @@ extern "C" const int g_anNationStartingTreasuryByLocale[6];
 extern POINT g_ptGreatPowerModalMessage; // @ 0x6a2df0
 // Per-subsystem VPoint equivalents passed to the ModalMessage overloads. The Mac
 // signatures provide the semantic type; Windows stores them as zero-initialized POINTs.
-extern POINT g_ptArmyOrderModalMessage;            // @ 0x6a2318
-extern POINT g_ptCityInteriorMinisterModalMessage; // @ 0x6a2c18
-extern POINT g_ptNationComparisonModalMessage;     // @ 0x6a3180
-extern POINT g_ptTechItemModalMessage;             // @ 0x6a5820
-extern POINT g_ptNationAwolModalMessage;           // @ 0x6a3d08
-extern POINT g_ptMapModeModalMessage;              // @ 0x6a45c0
-extern POINT g_ptTacticalAutoPlayModalMessage;     // @ 0x6a4650
-extern POINT g_ptTechCapabilityModalMessage;       // @ 0x6a57c8
-extern POINT g_ptUiPromptModalMessage;             // @ 0x6a5be0
-extern POINT g_ptCitySiteSelectionDialogPlacement; // @ 0x6a5b58
-extern POINT g_ptQueryFloaterModalMessage;         // @ 0x6a4048
-extern POINT g_ptDiplomacyNoticeModalMessage;      // @ 0x6a2fc0
-extern POINT g_ptGameSetupModalMessage;            // @ 0x6a4218
+extern POINT g_ptArmyOrderModalMessage;               // @ 0x6a2318
+extern POINT g_ptCityInteriorMinisterModalMessage;    // @ 0x6a2c18
+extern POINT g_ptNationComparisonModalMessage;        // @ 0x6a3180
+extern POINT g_ptTechItemModalMessage;                // @ 0x6a5820
+extern POINT g_ptNationAwolModalMessage;              // @ 0x6a3d08
+extern POINT g_ptLoungeNationReplacementModalMessage; // @ 0x6a3d98
+extern POINT g_ptMapModeModalMessage;                 // @ 0x6a45c0
+extern POINT g_ptTacticalAutoPlayModalMessage;        // @ 0x6a4650
+extern POINT g_ptTechCapabilityModalMessage;          // @ 0x6a57c8
+extern POINT g_ptUiPromptModalMessage;                // @ 0x6a5be0
+extern POINT g_ptCitySiteSelectionDialogPlacement;    // @ 0x6a5b58
+extern POINT g_ptQueryFloaterModalMessage;            // @ 0x6a4048
+extern POINT g_ptDiplomacyNoticeModalMessage;         // @ 0x6a2fc0
+extern POINT g_ptGameSetupModalMessage;               // @ 0x6a4218
 extern int g_nationInfoGoldResourceOverride_006a5bac;
 extern int g_lastTurnAlertTick_006a31c0;
 extern int g_lastClickedMapTileIndex_006a4608;

@@ -30,29 +30,29 @@ char TInvadeMission::IsNavyMission() const {
 }
 
 // FUNCTION: IMPERIALISM 0x0053f160
-void TInvadeMission::NoOpSlot90(void* a) {
+void TInvadeMission::ForgetTaskForce(TTaskForce* taskForce) {
   if (beachhead34 != nullptr) {
-    beachhead34->NoOpSlot90(a);
+    beachhead34->ForgetTaskForce(taskForce);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053f190
-void TInvadeMission::NoOpSlot84(void* a, int b) {
+void TInvadeMission::AcceptReenforcement(TShip* ship, unsigned char notify) {
   if (beachhead34 != nullptr) {
-    beachhead34->NoOpSlot84(a, b);
+    beachhead34->AcceptReenforcement(ship, notify);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053f1c0
-void TInvadeMission::NoOpSlot8C(void* a, int b) {
+void TInvadeMission::RejectConstituent(TShip* ship, unsigned char notify) {
   if (beachhead34 != nullptr) {
-    beachhead34->NoOpSlot8C(a, b);
+    beachhead34->RejectConstituent(ship, notify);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053f1f0
-float TInvadeMission::ReturnZeroFloatSlot6C() {
-  return TArmyMission::ReturnZeroFloatSlot6C() + beachhead34->ReturnZeroFloatSlot6C();
+float TInvadeMission::IndustrialCostOfNeeds() {
+  return TArmyMission::IndustrialCostOfNeeds() + beachhead34->IndustrialCostOfNeeds();
 }
 
 // FUNCTION: IMPERIALISM 0x0053f240
@@ -77,25 +77,42 @@ TInvadeMission::TInvadeMission() : TAttackProvinceMission(), beachhead34(nullptr
 
 // FUNCTION: IMPERIALISM 0x0053f410
 void TInvadeMission::Free() {
-  if (beachhead34 != nullptr) {
-    beachhead34->Free();
-    beachhead34 = nullptr;
+  beachhead34->Free();
+
+  TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
+  nationState->AssertValid();
+  nationState->SetMapStateByteFlag970WithRuntimeGate(targetProvince30, 0);
+
+  CIterator iter(orderListAt18);
+  TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(iter.Reset());
+  while (iter.More()) {
+    unit->ownerMission40 = nullptr;
+    unit = static_cast<TMilitaryUnit*>(iter.Advance());
   }
-  TAttackProvinceMission::Free();
+
+  orderListAt18->RemoveAll();
+  if (orderListAt18 != nullptr) {
+    orderListAt18->FreePayloadsAndDestroy();
+  }
+  orderListAt18 = nullptr;
+
+  if (this != nullptr) {
+    delete this;
+  }
 }
 
 // Matches the original exactly: unconditionally dereferences beachhead34 (no null check),
 // so this is only ever called on an instance with a live beachhead child.
 // FUNCTION: IMPERIALISM 0x0053f4e0
-char TInvadeMission::ReturnFalseSlot98() {
-  if (!beachhead34->ReturnFalseSlot98()) {
+char TInvadeMission::SmokeEmIfYouGotEm() {
+  if (!beachhead34->SmokeEmIfYouGotEm()) {
     return 0;
   }
   CIterator iter(orderListAt18);
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
     if (unit->GetUnitMovementClassId() != 0) {
-      NoOpSlot88(unit, 1);
+      RejectConstituent(unit, 1);
     }
   }
   return 1;
@@ -225,20 +242,21 @@ char TInvadeMission::IsArmyMission() const {
   return 1;
 }
 
-// Same shape as TArmyMission::ReturnZeroFloatSlot70, but the "not this mission's own unit"
+// Same shape as TArmyMission::ValueOf, but the "not this mission's own unit"
 // branch is scaled down by 0.1 unless IsArmyMission() says otherwise (TInvadeMission's
 // own override always returns true, so the scale-down never actually triggers here -- kept
 // as a real virtual dispatch to match the original rather than hardcoding).
 // FUNCTION: IMPERIALISM 0x0053fac0
-float TInvadeMission::ReturnZeroFloatSlot70(TMilitaryUnit* candidateUnit) {
+float TInvadeMission::ValueOf(TMilitaryUnit* candidateUnit) {
   float delta;
   if (flag10 != 0) {
     delta = 0.0f;
   } else if (candidateUnit->ownerMission40 == this) {
-    delta = ReturnZeroFloatSlot68() -
+    delta = GetWeightedSatisfaction() -
             ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(candidateUnit);
   } else {
-    delta = ComputeArmyMissionScoreDeltaWithCandidateUnit(candidateUnit) - ReturnZeroFloatSlot68();
+    delta =
+        ComputeArmyMissionScoreDeltaWithCandidateUnit(candidateUnit) - GetWeightedSatisfaction();
   }
 
   if (!IsArmyMission()) {
@@ -248,18 +266,18 @@ float TInvadeMission::ReturnZeroFloatSlot70(TMilitaryUnit* candidateUnit) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053fb60
-float TInvadeMission::ReturnZeroFloatSlot74(void* candidate) {
+float TInvadeMission::ValueOf(TShip* candidate) {
   if (flag10 != 0) {
     return g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
-  return beachhead34->ReturnZeroFloatSlot74(candidate);
+  return beachhead34->ValueOf(candidate);
 }
 
 // FUNCTION: IMPERIALISM 0x0053fb90
-void TInvadeMission::SetFlag10FromArgSlot94(unsigned char value) {
+void TInvadeMission::Hold(unsigned char value) {
   flag10 = value;
   if (beachhead34 != nullptr) {
-    beachhead34->SetFlag10FromArgSlot94(value);
+    beachhead34->Hold(value);
   }
 }
 

@@ -1,7 +1,6 @@
 #include "game/TMilitaryUnit.h"
 
 #include "game/CIterator.h"
-#include "game/TAdmiral.h"
 #include "game/TCountry.h"
 #include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
@@ -52,8 +51,7 @@ void TMilitaryUnit::InitializeRecruitOrderState(short capValue, int nodeContext,
   field_36 = static_cast<short>(
       (static_cast<int>(capValue) + (static_cast<int>(capValue) >> 31 & 7)) >> 3);
   if (capValue >= 0x1b) {
-    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
-        static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[nationSlot]), &name24);
+    g_apTerrainTypeDescriptorTable[nationSlot]->GenerateEthnicName(&name24);
   }
   CopyUnitCurrentTileIntoOrderTargets();
 }
@@ -126,7 +124,7 @@ void TMilitaryUnit::CopyUnitCurrentTileIntoOrderTargets() {
 // FUNCTION: IMPERIALISM 0x005c31c0
 void TMilitaryUnit::DetachUnitOrderFromOwnerAndReset() {
   if (ownerMission40 != 0) {
-    ownerMission40->NoOpSlot88(this, 1);
+    ownerMission40->RejectConstituent(this, 1);
   }
   VTableSlot10(-1);
   CopyUnitCurrentTileIntoOrderTargets();

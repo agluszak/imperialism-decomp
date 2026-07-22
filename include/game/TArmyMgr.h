@@ -319,7 +319,7 @@ public:
   // (field08) contains cityRecordIndex (TZone::ContainsCityStatePointerInZoneArrayBy-
   // CityIndex), reducing over TShip::SelectPreferredMapOrderEntryByPriorityRules; if
   // found, its admiral (admiralBacklink20) can override outDefenderSummary with
-  // "Adm. <name>" when the admiral's field_10/100+1 score beats Phase 1's, or (only if
+  // "Adm. <name>" when the admiral's experiencePoints/100+1 score beats Phase 1's, or (only if
   // Phase 1 found nothing at all -- zero adjacent regions) falls back to the ship's own
   // displayName18.
   //

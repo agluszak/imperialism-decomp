@@ -251,6 +251,21 @@ int TAssetMgr::DeleteLegacyCliSaveImpFiles() {
   return deletedCount;
 }
 
+// FUNCTION: IMPERIALISM 0x005e0520
+void TAssetMgr::ScheduleTimerSlotCallbackWithInterval(TimerSlotCallback callback, UINT interval,
+                                                      int slot) {
+  g_timerSlotCallbacks[slot] = callback;
+
+  CWnd* mainWnd;
+  if (AfxGetThread() == NULL) {
+    mainWnd = NULL;
+  } else {
+    mainWnd = AfxGetThread()->GetMainWnd();
+  }
+  g_timerSlotIds[slot] = ::SetTimer(mainWnd->m_hWnd, slot + 0xa000, interval,
+                                    &DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot);
+}
+
 // FUNCTION: IMPERIALISM 0x005e0590
 void TAssetMgr::FormatVersionStringFromVersionResource(CString* out) {
   HRSRC resourceHandle = FindResourceA(nullptr, MAKEINTRESOURCEA(1), MAKEINTRESOURCEA(16));

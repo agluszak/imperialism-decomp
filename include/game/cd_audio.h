@@ -18,14 +18,14 @@ struct TCdAudioDevice {
   void SendMciCommand804IfDeviceOpenAndClearHandle();
   // 0x0047cd00 — open the device handle only if it is not already set.
   void EnsureCdAudioDeviceHandleInitialized();
-  // 0x0047cdf0 — forward the current handle to the MCI_STATUS (0x814) helper; returns its result.
-  bool ForwardMciStatusCommand814IgnoreFailure();
+  // 0x0047cd80 — stop playback on the current MCI device.
+  void StopPlayback();
+  // 0x0047cdd0 — scale one 16-bit value into both aux-output channels.
+  int ApplyAuxOutputVolumeFromScalar(int scalar);
+  // 0x0047cdf0 — true while the current MCI device is not stopped (and its status query succeeds).
+  bool IsPlaybackActive();
 };
 // g_cdAudioDevice (0x006a60bc) is declared in game/global_data_tables.h.
-
-// Thin forwarder (0x0047cdd0) -- doubles scalar into both aux-volume channel words and
-// applies it via SetAuxOutputVolumeFromScalar.
-int __stdcall ApplyAuxOutputVolumeFromScalar(int scalar);
 
 // Aux-output (CD-audio line) volume: g_nAuxOutputDeviceIndex (global_data_tables.h) holds
 // the probed aux device index (-1 = none found; set by the still-unported
@@ -47,6 +47,10 @@ WORD OpenCdAudioAndProbeAuxOutputDevice(void);
 
 // 0x005e19e0 — send MCI command 0x804 to the given device; returns true on success.
 bool __stdcall SendMciCommand804ToDevice(MCIDEVICEID device);
+
+// 0x005e1a10 — send MCI_STOP to the given device. The parameter block pointer is ignored
+// for this command, but the retail helper passes the address of its device argument.
+void __stdcall SendMciStopCommandToDevice(MCIDEVICEID device);
 
 // 0x005df8d0 — shared predicate stub, always returns 1 (the audio-changed feature is a no-op
 // in the retail build). Called with an unused receiver in ECX at every call site.

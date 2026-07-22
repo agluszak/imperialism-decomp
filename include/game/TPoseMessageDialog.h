@@ -27,3 +27,6 @@ public:
   // store); defined in-class so `new TPoseMessageDialog()` reproduces that shape.
   TPoseMessageDialog() : TCommand() {}
 };
+
+// Build and queue the 'pose' command for a nation slot. 0x54b0f0, genuine cdecl.
+void __cdecl QueuePoseMessageDialogForNationSlot(int nationSlot);

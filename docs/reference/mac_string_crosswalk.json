@@ -13657,6 +13657,18 @@
       ],
       "source_file": "src/game/TLoungeDialog.cpp"
     },
+    "0x0054dfc0": {
+      "references": [
+        {
+          "group": 10050,
+          "index": 27,
+          "kind": "windows_gob",
+          "load_string_id": 21987,
+          "text": "Do you wish to force the human playing [1: country] out of the game?  If you do so, his control will be overthrown and replaced by a technocratic computerized government.  This process is irreversible."
+        }
+      ],
+      "source_file": "src/game/TLoungeDialog.cpp"
+    },
     "0x0054e4c0": {
       "references": [
         {
@@ -13857,6 +13869,23 @@
         }
       ],
       "source_file": "src/game/TNavyMgr.cpp"
+    },
+    "0x005573f0": {
+      "references": [
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        }
+      ],
+      "source_file": "src/game/TAdmiral.cpp"
     },
     "0x0055ba30": {
       "references": [
@@ -190686,7 +190715,7 @@
   "summary": {
     "embedded_globals": 770,
     "formula_matches": 2356,
-    "functions_with_references": 302,
+    "functions_with_references": 304,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3272,
     "text_resources": 182,
