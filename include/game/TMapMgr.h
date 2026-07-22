@@ -3,7 +3,6 @@
 #include "game/CString.h"
 #include "game/TObject.h"
 #include "game/mfc.h"
-#include "game/global_data_tables.h"
 
 // Forward declarations for types referenced by generated signatures.
 class TCivUnit;

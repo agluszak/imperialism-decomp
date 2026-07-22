@@ -1,7 +1,6 @@
 #pragma once
 
 #include "game/TEventHandler.h"
-#include "game/global_data_tables.h"
 #include "game/TLongintList.h"
 
 struct CRuntimeClass;

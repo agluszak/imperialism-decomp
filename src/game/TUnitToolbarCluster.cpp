@@ -19,6 +19,7 @@
 
 #include "game/TApplication.h"
 #include "game/mfc.h"
+#include "game/global_data_tables.h"
 
 extern "C" {
 char g_vtblTUnitToolbarCluster = 0;

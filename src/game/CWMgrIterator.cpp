@@ -1,4 +1,5 @@
 #include "game/CWMgrIterator.h"
+#include "game/global_data_tables.h"
 
 // FUNCTION: IMPERIALISM 0x004923f0
 CWMgrIterator* CWMgrIterator::Reset(char fForwardArg) {

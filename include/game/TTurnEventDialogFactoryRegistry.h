@@ -3,7 +3,6 @@
 #include "compat.h"
 #include "game/TObject.h"
 #include "game/mfc.h"
-#include "game/global_data_tables.h"
 // Full TView definition required: MSVC500 instantiates DestructElements for the
 // factory-pointer CList and demands the pointee type be complete.
 #include "game/TView.h"

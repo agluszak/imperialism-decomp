@@ -180,4 +180,3 @@ public:
   void RebuildMinorNationDispositionLookupTables(int nationCode);
 };
 
-#include "game/global_data_tables.h"

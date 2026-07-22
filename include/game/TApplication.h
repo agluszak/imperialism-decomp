@@ -4,7 +4,6 @@
 #include "decomp_types.h"
 #include "game/mfc.h"
 #include "game/TCommandHandler.h"
-#include "game/global_data_tables.h"
 #include <afxtempl.h>
 
 // Application UI root controller — global modal-view gatekeeper installed at startup.

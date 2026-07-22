@@ -5,7 +5,6 @@
 #include "game/TObject.h"
 #include "game/TStream.h"
 #include "game/TZone.h"
-#include "game/global_data_tables.h"
 
 class TCity;
 class TTaskForce;
