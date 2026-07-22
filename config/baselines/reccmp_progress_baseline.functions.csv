@@ -3255,7 +3255,7 @@ address|matching|name
 0x51e1a0|1.0|TMapDialog::ResetAllTileMarkersToSentinel
 0x51e1f0|0.2777777777777778|TMapDialog::ReleaseTileMarkerForTile
 0x51e260|0.07543323139653414|TMapDialog::Draw
-0x51eb40|0.12786885245901639|TMapDialog::RenderStrategicMapTileCell
+0x51eb40|0.13807024626564393|TMapDialog::RenderStrategicMapTileCell
 0x520670|0.860125260960334|TMapDialog::DrawBorder
 0x520970|0.7682926829268293|TMapDialog::DrawMapDialogGuidePatternSetA_00520970
 0x520a90|1.0|TMapDialog::DrawMapDialogGuidePatternSetB_00520a90
@@ -3271,9 +3271,9 @@ address|matching|name
 0x521a40|0.14349775784753363|TMapDialog::DrawNationBorderSegmentsByMask
 0x522000|1.0|TMapDialog::DrawSeaZoneBorders(unsigned char, int, int, short)
 0x5220f0|0.4877323420074349|TMapDialog::DrawSeaZoneBorders(int, int, short)
-0x522c10|1.0|TMapDialog::DrawWrappedMapRouteSegment
+0x522c10|0.20168067226890757|TMapDialog::DrawWrappedMapRouteSegment
 0x522cf0|0.6458333333333334|TMapDialog::DrawHexNeighborConnectionMask
-0x523060|0.21476510067114093|TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor
+0x523060|0.23129251700680273|TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor
 0x523170|0.2868217054263566|TMapDialog::RenderMapTileAtScreenPositionUsingCache
 0x523640|0.2831541218637993|TMapDialog::RenderMapOrderEntryTilePreview
 0x523b70|0.21818181818181817|TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge
@@ -3287,9 +3287,9 @@ address|matching|name
 0x524b30|0.14285714285714285|TMapDialog::CopyCoastCornerMaskBetweenDirections1And2
 0x524c60|0.10101010101010101|TMapDialog::CopyCoastCornerMaskBetweenDirections0And1
 0x524e70|0.0639269406392694|TMapDialog::CopyCoastCornerMaskBetweenDirections2And3
-0x5250a0|0.09090909090909091|TMapDialog::CopyCoastCornerMaskBetweenDirections5And0
-0x5252d0|0.061855670103092786|TMapDialog::CopyCoastCornerMaskBetweenDirections4And5
-0x5254a0|0.12631578947368421|TMapDialog::CopyCoastCornerMaskBetweenDirections3And4
+0x5250a0|0.0639269406392694|TMapDialog::CopyCoastCornerMaskBetweenDirections5And0
+0x5252d0|0.06217616580310881|TMapDialog::CopyCoastCornerMaskBetweenDirections4And5
+0x5254a0|0.1164021164021164|TMapDialog::CopyCoastCornerMaskBetweenDirections3And4
 0x525670|0.29906542056074764|TMapDialog::Copy64x64TileBlockWithStrideAdjustment
 0x525730|1.0|TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale
 0x5258c0|0.25|WrapperFor_ftol_At005258c0

@@ -16,6 +16,7 @@ from tools.ui_codegen import (
     CLASS_ALIASES,
     DEFAULT_CLASSES,
     _render_factory_with_map,
+    apply_case_windows_overrides,
     load_recipes,
     load_text_resources,
     load_ui_views,
@@ -97,6 +98,7 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
         "windows_only_cases": 0,
         "nodes": 0,
         "same_semantics": 0,
+        "expected_windows_field_override": 0,
         "expected_windows_class_substitution": 0,
         "windows_only_nodes": 0,
         "unexplained_deltas": 0,
@@ -120,7 +122,12 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
             generated_case = source_map["cases"].get(event_key, {})
             if case.resource is not None:
                 raw_view = raw_views[case.resource]
-                semantic_view = normalize_resource_view(case.resource, raw_view, text_resources)
+                mac_semantic_view = normalize_resource_view(
+                    case.resource, raw_view, text_resources
+                )
+                semantic_view = apply_case_windows_overrides(
+                    recipe, case, mac_semantic_view
+                )
                 case_classification = "mapped_mac_resource"
                 summary["mapped_mac_cases"] += 1
                 if case.evidence:
@@ -135,11 +142,15 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
                 raw_by_id = {
                     f"0x{int(node['offset']):04x}": node for node in raw_view.get("nodes", [])
                 }
-                if len(raw_by_id) != len(semantic_view.nodes):
+                if len(raw_by_id) != len(mac_semantic_view.nodes):
                     errors.append(
                         f"{parity_key}: Mac node count {len(raw_by_id)} != normalized node count "
-                        f"{len(semantic_view.nodes)}"
+                        f"{len(mac_semantic_view.nodes)}"
                     )
+                mac_nodes_by_id = {node.node_id: node for node in mac_semantic_view.nodes}
+                overrides_by_id = {
+                    override.node_id: override for override in case.windows_overrides
+                }
                 node_rows: dict[str, dict] = {}
                 for node in semantic_view.nodes:
                     raw = raw_by_id.get(node.node_id)
@@ -149,6 +160,21 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
                     raw_class = _class_from_raw_node(raw)
                     classification = "same_semantics"
                     delta: dict | None = None
+                    windows_binary_evidence = (
+                        "not encoded; Mac semantic resource is canonical for functional parity"
+                    )
+                    override = overrides_by_id.get(node.node_id)
+                    if override is not None:
+                        mac_node = mac_nodes_by_id[node.node_id]
+                        classification = "expected_windows_field_override"
+                        windows_binary_evidence = override.evidence
+                        delta = {
+                            "field": "enabled",
+                            "mac": mac_node.enabled,
+                            "windows": node.enabled,
+                            "reason": "original Windows builder differs from the Mac resource",
+                            "evidence": override.evidence,
+                        }
                     if raw_class != node.class_name:
                         declaration = declared_substitutions.get(raw_class)
                         if declaration is None or declaration["windows_class"] != node.class_name:
@@ -183,7 +209,7 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
                         "tag": node.tag,
                         "classification": classification,
                         "mac_source": f"{case.resource.text()} node {node.node_id}",
-                        "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity",
+                        "windows_binary_evidence": windows_binary_evidence,
                         "generated_lines": generated_lines,
                         "semantic": _semantic_snapshot(node),
                         "delta": delta,
