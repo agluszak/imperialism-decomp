@@ -1408,7 +1408,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
             TTechMgr* orderCapabilityState = g_pCityOrderCapabilityState;
             int capabilityScore = this->city->GetBuildingType(7);
             if (capabilityScore != 0 && orderCapabilityState != 0 &&
-                orderCapabilityState->hasProductionOrder193 != 0) {
+                orderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) {
               if (static_cast<int>(*stage1CounterD) < capabilityScore / 2) {
                 pendingStage = 1;
                 *stage1CounterD = static_cast<short>(*stage1CounterD + 1);

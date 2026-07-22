@@ -106147,6 +106147,12 @@
       "to": "control_tag:0x444c4f47"
     },
     {
+      "from": "windows_function:0x005d8750",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x74746c31"
+    },
+    {
       "from": "windows_function:0x005da180",
       "relation": "resolves_control_tag",
       "status": "resolved",
@@ -204799,6 +204805,11 @@
       "kind": "windows_function",
       "source": "src/game/TViewMgr.cpp"
     },
+    "windows_function:0x005d8750": {
+      "address": "0x005d8750",
+      "kind": "windows_function",
+      "source": "src/game/TViewMgr.cpp"
+    },
     "windows_function:0x005da180": {
       "address": "0x005da180",
       "kind": "windows_function",
@@ -204902,9 +204913,9 @@
       "references_picture": 909,
       "references_string": 1451,
       "references_text_style": 1784,
-      "resolves_control_tag": 257
+      "resolves_control_tag": 258
     },
-    "edges": 17608,
+    "edges": 17609,
     "mac_classes_without_windows_header": 18,
     "node_kinds": {
       "control_tag": 813,
@@ -204918,9 +204929,9 @@
       "view_node": 3263,
       "windows_event": 94,
       "windows_factory": 17,
-      "windows_function": 104
+      "windows_function": 105
     },
-    "nodes": 11279,
+    "nodes": 11280,
     "unreferenced_resources": {
       "pict": 1998,
       "str_entry": 3616,

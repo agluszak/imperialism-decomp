@@ -15,6 +15,7 @@ const unsigned int kControlTagScen = 0x7363656eu; // 'scen' — main-menu scenar
 const unsigned int kControlTagQuit = 0x71756974u; // 'quit' — main-menu quit button
 const unsigned int kControlTagPref = 0x70726566u; // 'pref' — main-menu preferences button
 const unsigned int kControlTagMain = 0x6d61696eu; // 'main' — council ticker panel
+const unsigned int kControlTagPage = 0x70616765u; // 'page'
 const unsigned int kControlTagValu = 0x76616c75u; // 'valu' — purchase-cluster numeric value control
 const unsigned int kControlTagQuer = 0x71756572u; // 'quer'
 const unsigned int kControlTagPurc = 0x70757263u; // 'purc' — tech-item purchase button
@@ -71,6 +72,10 @@ const unsigned int kControlTagInfo = 0x696e666fu;     // 'info' — info text bl
 const unsigned int kControlTagTevw = 0x74657677u;     // 'tevw' — text-view name tag
 const unsigned int kControlTagSeas = 0x73656173u;     // 'seas' — season label
 const unsigned int kControlTagTrea = 0x74726561u;     // 'trea' — treasury label
+const unsigned int kControlTagTree = 0x74726565u;     // 'tree'
+const unsigned int kControlTagYear = 0x79656172u;     // 'year'
+const unsigned int kControlTagWord = 0x776f7264u;     // 'word'
+const unsigned int kControlTagToo3 = 0x746f6f33u;     // 'too3'
 const unsigned int kControlTagPatc = 0x70617463u;     // 'patc' — patch picture
 
 // New-game random-map setup screen (turn event 0x5dd) tags

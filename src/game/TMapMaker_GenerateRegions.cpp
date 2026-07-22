@@ -46,7 +46,7 @@ inline int HexNeighbor(int tileIndex, int direction) {
 
 // FUNCTION: IMPERIALISM 0x0052a160
 void TMapMaker::GenerateCityRegionIdsBySeedAndNeighborPropagation() {
-  short* labels = reinterpret_cast<short*>(::operator new(0x32a0));
+  short* labels = new short[0x1950];
 
   // Phase 1: seed a label per tile: -1 for city tiles (tile[0]==5), -2 otherwise.
   int i = 0;
@@ -167,7 +167,7 @@ void TMapMaker::GenerateCityRegionIdsBySeedAndNeighborPropagation() {
         off = off + 0x24;
         pw = pw + 1;
       } while (off < 0x38f40);
-      ::operator delete(labels);
+      delete[] labels;
       return;
     }
   } while (true);

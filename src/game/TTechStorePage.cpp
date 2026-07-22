@@ -1,5 +1,11 @@
 #include "game/TTechStorePage.h"
 
+#include "game/TBook.h"
+#include "game/TTechItemLine.h"
+#include "game/TTechMgr.h"
+#include "game/global_data_tables.h"
+#include "game/ui_text_label_helpers_decls.h"
+
 // TTechStorePage's vtable (0x645ca8) is a TPageView clone: only slot 0x00
 // (GetRuntimeClass, via IMPLEMENT_DYNCREATE) and the scalar deleting destructor
 // differ; every other slot is inherited unchanged from TPageView. The functions
@@ -21,3 +27,21 @@ IMPLEMENT_DYNCREATE(TTechStorePage, TPageView)
 
 // FUNCTION: IMPERIALISM 0x004600c0
 TTechStorePage::TTechStorePage() {}
+
+// FUNCTION: IMPERIALISM 0x005b0f10
+void TTechStorePage::PopulateUnlockedTechnologyRows(int nationSlot) {
+  for (int techId = 0x1c; techId > 0; --techId) {
+    if (g_pCityOrderCapabilityState->perTechUnlockFlag180[techId] != 0) {
+      TTechItemLine* line = new TTechItemLine();
+      int lineBounds[2] = {0x232, 0x3f};
+      line->SetLineDataRowAndBounds(0, 0, lineBounds);
+      line->nationSlot10 = nationSlot;
+      line->techId14 = techId;
+      AddOrderedEntry(line);
+    }
+  }
+  BuildPageLayout();
+  ShowPage(1);
+  static_cast<TBook*>(ownerContext)->ShowPage(currentPage);
+  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), controlTag);
+}

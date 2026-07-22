@@ -14641,6 +14641,73 @@
       ],
       "source_file": "src/game/TSimMgr.cpp"
     },
+    "0x005853f0": {
+      "references": [
+        {
+          "address": "0x00695760",
+          "kind": "embedded_global",
+          "symbol": "g_szListSeparator_00695760",
+          "text": ", "
+        },
+        {
+          "group": 10032,
+          "index": 2,
+          "kind": "windows_gob",
+          "load_string_id": 20162,
+          "text": "not implemented"
+        },
+        {
+          "group": 10032,
+          "index": 8,
+          "kind": "windows_gob",
+          "load_string_id": 20168,
+          "text": "End Phase"
+        },
+        {
+          "group": 10032,
+          "index": 9,
+          "kind": "windows_gob",
+          "load_string_id": 20169,
+          "text": "Year"
+        },
+        {
+          "group": 10032,
+          "index": 18,
+          "kind": "windows_gob",
+          "load_string_id": 20178,
+          "text": "End Turn"
+        },
+        {
+          "group": 10032,
+          "index": 19,
+          "kind": "windows_gob",
+          "load_string_id": 20179,
+          "text": "Season"
+        },
+        {
+          "group": 10032,
+          "index": 20,
+          "kind": "windows_gob",
+          "load_string_id": 20180,
+          "text": "Give Trade Orders"
+        },
+        {
+          "group": 10032,
+          "index": 21,
+          "kind": "windows_gob",
+          "load_string_id": 20181,
+          "text": "Give Diplomacy Orders"
+        },
+        {
+          "group": 10032,
+          "index": 22,
+          "kind": "windows_gob",
+          "load_string_id": 20182,
+          "text": "Give Industry Orders"
+        }
+      ],
+      "source_file": "src/game/TToolBarCluster.cpp"
+    },
     "0x00585ba0": {
       "references": [
         {
@@ -26224,6 +26291,25 @@
           "kind": "embedded_global",
           "symbol": "s_SourcePathUViewMgr_0069B6BC",
           "text": "D:\\Ambit\\Cross\\UViewMgr.cpp"
+        }
+      ],
+      "source_file": "src/game/TViewMgr.cpp"
+    },
+    "0x005d8750": {
+      "references": [
+        {
+          "group": 10032,
+          "index": 3,
+          "kind": "windows_gob",
+          "load_string_id": 20163,
+          "text": "Help"
+        },
+        {
+          "group": 10032,
+          "index": 13,
+          "kind": "windows_gob",
+          "load_string_id": 20173,
+          "text": "Return to Map"
         }
       ],
       "source_file": "src/game/TViewMgr.cpp"
@@ -190732,7 +190818,7 @@
   "summary": {
     "embedded_globals": 770,
     "formula_matches": 2356,
-    "functions_with_references": 305,
+    "functions_with_references": 307,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3272,
     "text_resources": 182,

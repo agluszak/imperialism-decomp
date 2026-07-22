@@ -55,7 +55,7 @@ public:
   void PostStartupCommand100();                                      // 0x004138b0
   LPCTSTR DetectImperialismInstallDriveAndSetPathPrefix();           // 0x00414870
   // Modal-pump helper (ExecuteViewModalStateWithPushPopChain 0x48da60,
-  // ShowDialogTemplateE0ModalAndReleaseCapture 0x498cc0 — both call it on
+  // ShowBlockingWaitOverlayDialog 0x498cc0 — both call it on
   // g_pImperialismApp): keep the wait cursor up while HandleStartupCommand100 runs.
   void RestoreWaitCursorIfStartupBusy(); // 0x004139f0
 

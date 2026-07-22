@@ -536,7 +536,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
   } break;
 
   case 8: {
-    if (g_pCityOrderCapabilityState->hasProductionOrder193 == 0) {
+    if (g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0) {
       break;
     }
     if (g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(6) == 0) {
