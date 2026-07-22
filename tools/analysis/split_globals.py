@@ -28,6 +28,7 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
+from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file
 
 GOD = "include/game/global_data_tables.h"
@@ -98,10 +99,9 @@ def tu_subsystems(repo_root: Path) -> dict[str, str]:
     flavor-text builders inside UUnit.cpp's single-sample tail) has a guessed
     subsystem and must not vote on global placement."""
     out = {}
-    for line in (repo_root / ASSIGN).read_text(encoding="utf-8").splitlines()[1:]:
-        f = line.split("|")
-        if f[4] and int(f[5]) < int(f[1]):
-            out[f[0]] = f[4]
+    for row in read_pipe_rows(repo_root / ASSIGN):
+        if row["proposed_subsystem"] and int(row["tail_uncertain"]) < int(row["n_markers"]):
+            out[row["file"]] = row["proposed_subsystem"]
     return out
 
 

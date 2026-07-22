@@ -39,9 +39,7 @@ void TNumberedItem::Draw(RECT* rectBuffer) {
   RECT dstRect = {0, 0, 0x1f, 0x17};
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  TQuickDrawBlitSurface* badgeStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
-      *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x674) + 4);
-  BlitRectWithOptionalTransparency(badgeStripSurface,
+  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas674->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                    &dstRect, 0x24, 0);
 
