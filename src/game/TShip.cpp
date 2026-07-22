@@ -84,7 +84,7 @@ TShip::TShip()
     : TObject(), displayName18(), resourceType04(0), pad06(0), field08(0), ownerOrderEntry0c(0),
       quantityFlag10(1), ownerNationSlot14(static_cast<short>(-1)), stockLevel1c(0), pad1e(0),
       admiralBacklink20(0), nextOlder24(g_pNavyPrimaryOrderListHead), prevNewer28(0),
-      missionBacklink2c(0), field30(0), field34(0) {
+      missionBacklink2c(0), experiencePoints30(0), field34(0) {
   g_pNavyPrimaryOrderListHead = this;
   if (nextOlder24 != 0) {
     nextOlder24->prevNewer28 = this;
@@ -119,7 +119,7 @@ void TShip::WriteTo(TStream* stream) {
   stream->streamSlotAc(&displayName18);
   stream->WriteBytesSlot78(&stockLevel1c, 2);
   stream->WriteBytesSlot78(&field34, 4);
-  stream->WriteBytesSlot78(&field30, 2);
+  stream->WriteBytesSlot78(&experiencePoints30, 2);
   short zoneIndex = field08->GetContextOrdinalOrInvalid();
   stream->WriteBytesSlot78(&zoneIndex, 2);
 }
@@ -133,7 +133,7 @@ void TShip::ReadFrom(TStream* stream) {
   stream->ReadBytes(&displayName18, 0x20);
   stream->ReadBytes(&stockLevel1c, 2);
   stream->ReadBytes(&field34, 4);
-  stream->ReadBytes(&field30, 2);
+  stream->ReadBytes(&experiencePoints30, 2);
   short zoneIndex = 0;
   stream->ReadBytes(&zoneIndex, 2);
   field08 = FindMapActionContextByNodeId(zoneIndex);
@@ -243,8 +243,8 @@ short TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int category)
     const TNavyOrderResourceDescriptor& descriptor =
         g_NavyOrderResourceDescriptorTable[resourceType04];
     int weight = descriptor.calculateWeight;
-    int quantityTerm =
-        field30 / 100 + *reinterpret_cast<const int*>(&descriptor.resolveWeight) * 10 + 5;
+    int quantityTerm = experiencePoints30 / 100 +
+                       *reinterpret_cast<const int*>(&descriptor.resolveWeight) * 10 + 5;
     return (SignedDiv10(quantityTerm) * weight * weight * 100) / divisor;
   }
   case 1: {
@@ -308,7 +308,7 @@ int TShip::CalculateMissionOrderPriorityScore(int nScoreProfileId) {
     short contribution;
     switch (category) {
     case 0: {
-      int quantityTerm = static_cast<short>(field30 / 100) + 5 +
+      int quantityTerm = static_cast<short>(experiencePoints30 / 100) + 5 +
                          *reinterpret_cast<const int*>(&desc.resolveWeight) * 10;
       int weight = desc.calculateWeight;
       contribution = static_cast<short>(
@@ -346,10 +346,10 @@ int TShip::CalculateMissionOrderPriorityScore(int nScoreProfileId) {
 }
 
 // FUNCTION: IMPERIALISM 0x00550370
-void TShip::AdjustMapOrderNodeStatCapped499(short delta) {
-  field30 = static_cast<short>(field30 + delta);
-  if (field30 > 499) {
-    field30 = 499;
+void TShip::Victory(short experienceGain) {
+  experiencePoints30 = static_cast<short>(experiencePoints30 + experienceGain);
+  if (experiencePoints30 > 499) {
+    experiencePoints30 = 499;
   }
 }
 
@@ -459,9 +459,9 @@ TShip* GetNavyPrimaryOrderNodeByIndex(short index) {
 }
 
 // Priority compare between two ship order nodes (see the header note); the original
-// reads +0x20 (admiral backlink, then its field_10) SYMMETRICALLY on both receiver
+// reads +0x20 (admiral backlink, then its experiencePoints) SYMMETRICALLY on both receiver
 // and candidate -- the previous TTaskForce-receiver model misread the receiver side
-// as +0x08/+0x06 (attachment/order_strength), a genuine mis-port this migration
+// as +0x08/+0x06 (shipOrders/order_strength), a genuine mis-port this migration
 // fixes.
 // FUNCTION: IMPERIALISM 0x00550670
 TShip* TShip::SelectPreferredMapOrderEntryByPriorityRules(TShip* candidate,
@@ -489,7 +489,7 @@ TShip* TShip::SelectPreferredMapOrderEntryByPriorityRules(TShip* candidate,
     } else if (candidateAdmiral == nullptr) {
       preferSelf = true;
     } else {
-      preferSelf = candidateAdmiral->field_10 < selfAdmiral->field_10;
+      preferSelf = candidateAdmiral->experiencePoints < selfAdmiral->experiencePoints;
     }
     if (preferSelf) {
       return this;
@@ -501,7 +501,7 @@ TShip* TShip::SelectPreferredMapOrderEntryByPriorityRules(TShip* candidate,
     } else if (selfAdmiral == nullptr) {
       preferCandidate = true;
     } else {
-      preferCandidate = selfAdmiral->field_10 < candidateAdmiral->field_10;
+      preferCandidate = selfAdmiral->experiencePoints < candidateAdmiral->experiencePoints;
     }
     if (!preferCandidate) {
       if (resourceType04 != candidate->resourceType04) {
@@ -510,8 +510,8 @@ TShip* TShip::SelectPreferredMapOrderEntryByPriorityRules(TShip* candidate,
         }
         return candidate;
       }
-      short selfBucket = static_cast<short>(field30 / 100);
-      short candidateBucket = static_cast<short>(candidate->field30 / 100);
+      short selfBucket = static_cast<short>(experiencePoints30 / 100);
+      short candidateBucket = static_cast<short>(candidate->experiencePoints30 / 100);
       if (selfBucket != candidateBucket) {
         if (candidateBucket <= selfBucket) {
           return this;
@@ -534,7 +534,7 @@ short TShip::GetOrderNodeDescriptorWord0CByResourceType() {
 // FUNCTION: IMPERIALISM 0x00550840
 int TShip::ComputeOrderNodeDerivedScoreFromQuantityAndWord18() {
   const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[resourceType04];
-  short strengthBucket = static_cast<short>(field30 / 100);
+  short strengthBucket = static_cast<short>(experiencePoints30 / 100);
   return (strengthBucket + 5 + desc.navyPriorityWeight * 10) / 10;
 }
 
@@ -591,17 +591,17 @@ void TShip::PruneOrPromoteOrderNodeWhenChildCostDepleted() {
 }
 
 // FUNCTION: IMPERIALISM 0x00550aa0
-int TShip::ComputeMapOrderEntryHeuristicScore() {
-  short strengthBucket = static_cast<short>(field30 / 100);
+int TShip::GetBattleStrengthRating() const {
+  short resourceType = resourceType04;
+  short strengthBucket = static_cast<short>(experiencePoints30 / 100);
 
-  const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[resourceType04];
+  const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[resourceType];
   int navyPriorityScore = strengthBucket + 5 + desc.navyPriorityWeight * 10;
-  int resolveScore = strengthBucket + 5 + desc.resolveWeight * 10;
-
-  short resolveBucket = static_cast<short>(resolveScore / 10);
   short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
+  int resolveScore = strengthBucket + 5 + desc.resolveWeight * 10;
+  short resolveBucket = static_cast<short>(resolveScore / 10);
 
-  return ((resolveBucket + navyPriorityBucket + desc.calculateWeight) * 100 + stockLevel1c) /
+  return ((navyPriorityBucket + desc.calculateWeight) * 100 + resolveBucket + stockLevel1c) /
          desc.taskForceWeight;
 }
 
@@ -609,7 +609,7 @@ int TShip::ComputeMapOrderEntryHeuristicScore() {
 int TShip::ComputeOrderNodeCompositeEconomicScore() {
   const TNavyOrderResourceDescriptor& descriptor =
       g_NavyOrderResourceDescriptorTable[resourceType04];
-  short quantityTerm = static_cast<short>(field30 / 100);
+  short quantityTerm = static_cast<short>(experiencePoints30 / 100);
   short navyTerm = static_cast<short>((quantityTerm + descriptor.navyPriorityWeight * 10 + 5) / 10);
   // resolveWeight is read as a full dword here (its pad02 is always zero) -- the usual
   // dual-width read, kept as a one-spot wide-read cast (heuristic 118).
@@ -730,7 +730,7 @@ void TShip::ReassignOrderNodeNationAndRebindParentCounters(short nation) {
 
   TMission* missionBackref = missionBacklink2c;
   if (missionBackref != 0 && missionBackref->nationId04 != nation) {
-    missionBackref->NoOpSlot8C(this, 1);
+    missionBackref->RejectConstituent(this, 1);
   }
 
   ownerNationSlot14 = nation;
@@ -746,9 +746,9 @@ void TShip::SetOwnerOrderEntryAndCacheType(TTaskForce* newEntry) {
 
   // Cache the entry's packed order_type/order_strength pair (entry+0x04 read as one
   // dword, the original's shape).
-  quantityFlag10 = *reinterpret_cast<int*>(&newEntry->order_type);
+  quantityFlag10 = newEntry->packedOrderTypeAndStrength;
 
-  short kind = static_cast<short>(newEntry->attachment);
+  short kind = static_cast<short>(newEntry->shipOrders);
   if (kind != 0 && kind != 7 && kind != 8 && kind != 4) {
     field34 = 0;
   }

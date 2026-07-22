@@ -18,7 +18,7 @@ void TSortedPtrList::ClearAndFreeAllPtrListRecords() {
   int ordinal = 1;
   void* record = GetPtrListEntryByOneBasedIndex(1);
   while (record != 0) {
-    operator delete(record);
+    delete[] static_cast<unsigned char*>(record);
     ordinal++;
     record = GetPtrListEntryByOneBasedIndex(ordinal);
   }
@@ -56,7 +56,7 @@ void* TSortedPtrList::GetPtrListEntryByOneBasedIndex(int oneBasedIndex) {
 void TSortedPtrList::RemovePtrListEntryByOneBasedIndexAndFree(int oneBasedIndex) {
   void* record = GetPtrListEntryByOneBasedIndex(oneBasedIndex);
   RemoveAt(oneBasedIndex - 1, 1);
-  operator delete(record);
+  delete[] static_cast<unsigned char*>(record);
 }
 
 // FUNCTION: IMPERIALISM 0x004881d0
@@ -74,7 +74,7 @@ void TSortedPtrList::InsertCopiedRecordSortedByComparator(void* record) {
   if (entry != 0) {
     do {
       if (Compare(record, entry) != 1) {
-        void* copy = operator new(recordSize14);
+        unsigned char* copy = new unsigned char[recordSize14];
         memcpy(copy, record, recordSize14);
         InsertAt(ordinal - 1, copy, 1);
         return;
@@ -88,14 +88,14 @@ void TSortedPtrList::InsertCopiedRecordSortedByComparator(void* record) {
 
 // FUNCTION: IMPERIALISM 0x004882c0
 void TSortedPtrList::AppendCopiedRecordToPtrList(void* record) {
-  void* copy = operator new(recordSize14);
+  unsigned char* copy = new unsigned char[recordSize14];
   memcpy(copy, record, recordSize14);
   SetAtGrow(m_nSize, copy);
 }
 
 // FUNCTION: IMPERIALISM 0x00488310
 void TSortedPtrList::InsertCopiedRecordAtFrontOfPtrList(void* record) {
-  void* copy = operator new(recordSize14);
+  unsigned char* copy = new unsigned char[recordSize14];
   memcpy(copy, record, recordSize14);
   InsertAt(0, copy, 1);
 }
@@ -124,12 +124,12 @@ TSortedPtrList::TSortedPtrList() {}
 void TSortedPtrList::ReadFrom(TStream* stream) {
   stream->ReadBytes(&recordSize14, 2);
   int count = stream->streamSlot50();
-  void* buffer = operator new(recordSize14);
+  unsigned char* buffer = new unsigned char[recordSize14];
   for (short i = 1; i <= count; i++) {
     stream->ReadBytes(buffer, recordSize14);
     InsertCopiedRecordSortedByComparator(buffer);
   }
-  operator delete(buffer);
+  delete[] buffer;
 }
 
 // FUNCTION: IMPERIALISM 0x005e1f10

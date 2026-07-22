@@ -71,8 +71,7 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
   perTechUnlockFlag180[0] = 1;
   perTechUnlockFlag180[1] = 1;
   perTechUnlockFlag180[2] = 1;
-  // One flat 0x1a-byte clear covering perTechUnlockFlag180[3..], hasProductionOrder193
-  // and pad194 (0x183..0x19c) -- the original clears the whole span in one memset.
+  // One flat 0x1a-byte clear covering perTechUnlockFlag180[3..0x1c].
   memset(&perTechUnlockFlag180[3], 0, 0x1a);
   memset(resourceTypeEnabled19d, 1, 4);
   resourceTypeEnabled19d[4] = 1;
@@ -642,7 +641,7 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
   while (node != 0) {
     if (node->ownerNationSlot14 == nationSlot &&
         capRowsB333[nationSlot].selectedByResourceType[node->resourceType04] == 0) {
-      scoreSum += static_cast<short>(node->field30 / 100);
+      scoreSum += static_cast<short>(node->experiencePoints30 / 100);
       ++matchedCount;
       TAdmiral* admiral = node->admiralBacklink20;
       TShip* next = node->nextOlder24;
@@ -681,7 +680,7 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
 
   for (node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
     if (node->ownerNationSlot14 == nationSlot) {
-      node->AdjustMapOrderNodeStatCapped499(static_cast<short>(scoreSum / remainingOwned));
+      node->Victory(static_cast<short>(scoreSum / remainingOwned));
     }
   }
 

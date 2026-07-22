@@ -3,6 +3,7 @@
 #include "game/CString.h"
 
 class TDropShadowText;
+class TDropShadowNumberText;
 class TStaticText;
 class TView;
 struct TextStyle;
@@ -63,6 +64,12 @@ TStaticText* __cdecl RefreshActiveControlThenApplyThemeStyleAndCaption(unsigned 
 // the control, and map shadowThemeCode into the control's +0x94 shadow style flags.
 void __cdecl ApplyUiTextStyleAndThemeFlags(TDropShadowText* control, int unused, int pointSize,
                                            int shadowThemeCode, int textThemeCode);
+
+// 0x5c4620: numeric-text sibling of ApplyUiTextStyleAndThemeFlags. The numeric control's
+// drop-shadow theme field is at +0xac rather than TDropShadowText's +0x94.
+void __cdecl ApplyUiNumberTextStyleAndThemeColor(TDropShadowNumberText* control, int unused,
+                                                 int pointSize, int shadowThemeCode,
+                                                 int textThemeCode);
 
 void LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(short group, short index,
                                                            unsigned int controlTag);

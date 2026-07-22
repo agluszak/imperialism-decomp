@@ -156,8 +156,8 @@ TOceanDialog::TOceanDialog() : scrollRowOffset7c(0), scrollColOffset7e(0) {
   // (0x6a3ff0/0x6a3ff4); their only writer is the reset helper at 0x56a3b0 which zeroes
   // both. projectionScale76/previewSquareRadius78 are fixed layout constants for the
   // ocean dialog.
-  viewportOffsetX = g_nOceanDialogSeedViewportOffsetX;
-  viewportOffsetY = g_nOceanDialogSeedViewportOffsetY;
+  viewportOrigin60.x = g_nOceanDialogSeedViewportOffsetX;
+  viewportOrigin60.y = g_nOceanDialogSeedViewportOffsetY;
   projectionScale76 = 4;
   previewSquareRadius78 = 0x10;
 }
@@ -286,8 +286,7 @@ void TOceanDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
 
   short projectedY;
   short projectedX;
-  ForwardProjectTileIndexToWrappedScreenOffsetByScale(paintedHoverTileIndex6e,
-                                                      reinterpret_cast<short*>(&viewportOffsetX),
+  ForwardProjectTileIndexToWrappedScreenOffsetByScale(paintedHoverTileIndex6e, &viewportOrigin60,
                                                       &projectedY, &projectedX, projectionScale76);
   CRect tileRect(projectedX, projectedY, projectedX + previewSquareRadius78,
                  projectedY + previewSquareRadius78);
@@ -297,8 +296,7 @@ void TOceanDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
 
   if (frameHoveredTile) {
     ForwardProjectTileIndexToWrappedScreenOffsetByScale(
-        hoveredTileIndex6c, reinterpret_cast<short*>(&viewportOffsetX), &projectedY, &projectedX,
-        projectionScale76);
+        hoveredTileIndex6c, &viewportOrigin60, &projectedY, &projectedX, projectionScale76);
     tileRect.SetRect(projectedX, projectedY, projectedX + previewSquareRadius78,
                      projectedY + previewSquareRadius78);
     QDFrameRect(&tileRect);
@@ -656,11 +654,11 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
 
 // FUNCTION: IMPERIALISM 0x00568640
 void TOceanDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
-                                                                       short* viewportOriginXY,
+                                                                       const CPoint* viewportOrigin,
                                                                        short* outVerticalOffset,
                                                                        short* outHorizontalOffset,
                                                                        int projectionScale) {
-  (void)viewportOriginXY;
+  (void)viewportOrigin;
   (void)projectionScale;
 
   short mapTileIndex = static_cast<short>(tileIndex);
@@ -711,8 +709,8 @@ void TOceanDialog::SetMapViewCellCoordinates(int column, int row) {
     scrollRowOffset7c = 0x20;
   }
 
-  viewportOffsetY = scrollRowOffset7c << 4;
-  viewportOffsetX = scrollColOffset7e << 4;
+  viewportOrigin60.y = scrollRowOffset7c << 4;
+  viewportOrigin60.x = scrollColOffset7e << 4;
   g_pGlobalMapState->field6 = static_cast<short>(scrollColOffset7e + scrollRowOffset7c * 0x6c);
 
   CRect invalidateRect(0, 0, 0x1ff, 0x1bf);

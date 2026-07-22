@@ -39,6 +39,9 @@ char TScatteredShipsMission::IsANoBrainer() const {
   return 1;
 }
 
+// FUNCTION: IMPERIALISM 0x005356d0
+TScatteredShipsMission::~TScatteredShipsMission() {}
+
 // FUNCTION: IMPERIALISM 0x0053bb90
 void TScatteredShipsMission::Initialize() {
   marker11 = 0;
@@ -86,10 +89,8 @@ void TScatteredShipsMission::CalculateNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053bcc0
-char TScatteredShipsMission::Matches(int kind, int key, int mode) const {
-  (void)key;
-  (void)mode;
-  return kind == 5;
+char TScatteredShipsMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+  return missionType == kMissionTypeScatteredShips && zoneContext == nullptr && key == -1;
 }
 
 // Deactivates the whole existing childOrderList chain, then hunts for a port-zone context
@@ -101,7 +102,7 @@ char TScatteredShipsMission::Matches(int kind, int key, int mode) const {
 // head on a null prev18), as the starting point for an unbounded sweep: for every eligible
 // zone visited (wrapping forever via prev18), picks the first still-inactive orderList24
 // node, then scans the remaining inactive nodes for the one whose (TZone*) reading of
-// TTaskForce::attachment is nearest that zone (TZone::GetCachedMapActionContextDistanceOrRecompute),
+// TTaskForce::shipOrders is nearest that zone (TZone::GetCachedMapActionContextDistanceOrRecompute),
 // marks it active, and -- unless it's already anchored on that same zone -- promotes/queues
 // it there. Returns as soon as no inactive node remains (childOrderList is finite, so the
 // sweep is bounded even though the zone ring never explicitly stops).

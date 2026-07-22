@@ -71,7 +71,7 @@ public:
   char TryDispatchNationActionViaUiContextOrFallback(int targetNation, int arg2, int arg3,
                                                      int slotIndex) override;
   // slot 0x38 — 0x004e7590: interior-minister slot 0x54 when city exists.
-  void OrphanRetStub_004dcc30(void) override;
+  void FillInteriorMinisterOrders(void) override;
   // slot 0x71 — 0x004e7a50: flush actionMetricByQuarter into city stock.
   void ClearDiplomacyState1c6Block(void) override;
   // slot 0x72 — 0x004e7af0: foreign-minister slot 0x58 when city exists.
@@ -88,7 +88,7 @@ public:
   char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
   // slot 0x9d — 0x004e8040: alliance-aware strength evaluation against the strongest
   // peer; true when minister skill (slot 0x8a) clears the combined score.
-  char ReturnZeroSlot9D(int targetNation) override;
+  char PassesDiplomacyStrengthThresholdForTarget(int targetNation) override;
   // slot 0xa7 — 0x004ea300: base reset plus marking every owned region / the port
   // zone of targetNation as action candidates.
   void ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation) override;
@@ -106,21 +106,21 @@ public:
   // slot 0x80 — 0x004e7ca0.
   void DispatchTurnEvent2103WithNationFromRecord() override;
   // slots 0x2c8/0x2cc — base vtable NULL; TAutoGreatPower fills these entries.
-  // slot 0xb2 — 0x004e75c0.
-  virtual undefined OrphanCallChain_C4_I28_004e75c0(int needSlot);
-  // slot 0xb3 — 0x004ea990.
-  virtual undefined IterateLinkedListCursorAndRelinkNodeOwners_004ea990();
+  // slot 0xb2 — 0x004e75c0: raise the three AI planning metrics for needSlot.
+  virtual void RaiseNeedPlanningMetrics(int needSlot);
+  // slot 0xb3 — 0x004ea990: free every queued mission.
+  virtual void KillMissions();
 
   // 0x4eb8b0 — repeatedly assigns the highest-priority tracked mission's action to a
-  // matching order/unit. Resets every missionQueue entry (ReturnFalseSlot98), then loops:
+  // matching order/unit. Resets every missionQueue entry (SmokeEmIfYouGotEm), then loops:
   // (1) pick the best-scoring TNavyMission (GetNavyMission identity filter — army
   // entries return null there); if found, build its 9-category weight profile
   // (AccumulateLack) and pair it with the best same-nation, unassigned
-  // (field2c == nullptr) TShip primary-order node (ReturnZeroFloatSlot7C), dispatching
-  // via NoOpSlot84 and restarting. (2) Otherwise pick the best-scoring TArmyMission
+  // (field2c == nullptr) TShip primary-order node (FitnessOf), dispatching
+  // via AcceptReenforcement and restarting. (2) Otherwise pick the best-scoring TArmyMission
   // (GetArmyMission identity filter, with a state08/marker11 tie-break against a
   // runner-up candidate), build its weight profile, and pair it with the best unassigned
-  // (ownerMission40 == nullptr) militaryUnitList44 unit (ReturnZeroFloatSlot78),
+  // (ownerMission40 == nullptr) militaryUnitList44 unit (FitnessOf),
   // dispatching via AdoptUnitSlot80 and restarting. Stops when neither pass finds a
   // candidate to act on.
   void AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unused);
@@ -136,8 +136,10 @@ public:
   float ComputeAiCityActionCostFromSlotAndMode(short actionSlot, char skipContextBias);
   float GetCachedAiCityActionContextBias(short selector);
 
-  void QueueMapActionMissionFromCandidateAndMarkState(eMissionType missionType, int mapNodeIndex,
-                                                      TZone* zoneContext, int relatedMapNodeIndex);
+  void CreateMission(eMissionType missionType, int mapNodeIndex, TZone* zoneContext,
+                     int relatedMapNodeIndex);
+  void RemoveMission(eMissionType missionType, int key, TZone* zoneContext);
+  void MReassess();
   // For every unassigned (ownerMission40 == nullptr) non-naval (GetUnitMovementClassId()
   // == 0) unit in militaryUnitList44, finds the queued mission (kind 3, keyed by the
   // unit's own tileIndex06) in missionQueue and adopts the unit into it. 0x4eafa0.

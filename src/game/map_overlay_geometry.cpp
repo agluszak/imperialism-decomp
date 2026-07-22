@@ -183,7 +183,7 @@ int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
     g_pCachedMapActionContext = 0;
     if (ordinal != -1) {
       int matchIndex = 0;
-      for (TTaskForce* entry = g_pNavyOrderManager->orderListHead04; entry != 0;
+      for (TTaskForce* entry = g_pNavyOrderManager->orderQueueHead; entry != 0;
            entry = entry->queue_next) {
         if (entry->required_count == static_cast<short>(actionClass - 7)) {
           if (matchIndex == ordinal) {

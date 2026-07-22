@@ -337,12 +337,12 @@ address|name|symbol|size|type|prototype|provenance
 47cb60|WrapperFor_DeleteRegionHandleFromClipState_At0047cb60||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At0047cb60()|
 47cca0|ResetAndOpenCdAudioDeviceHandle||25|function|undefined ResetAndOpenCdAudioDeviceHandle()|
 47ccd0|SendMciCommand804IfDeviceOpenAndClearHandle||23|function|undefined SendMciCommand804IfDeviceOpenAndClearHandle()|
-47cd00|EnsureCdAudioDeviceHandleInitialized||22|function|undefined EnsureCdAudioDeviceHandleInitialized()|
-47cd30|SendMciCommand804IfDeviceOpenAndClearHandle_FastcallBridge||23|function|undefined SendMciCommand804IfDeviceOpenAndClearHandle_FastcallBridge()|
+47cd00|TCdAudioDevice::EnsureCdAudioDeviceHandleInitialized||22|function|void __thiscall EnsureCdAudioDeviceHandleInitialized(void)|
+47cd30|CloseGlobalCdAudioDeviceAndClearHandle||23|function|void __cdecl CloseGlobalCdAudioDeviceAndClearHandle(void)|
 47cd60|TCdAudioDevice::ApplyMciPlaybackRangeFromAudioManager||16|function|undefined ApplyMciPlaybackRangeFromAudioManager()|
-47cd80|ForwardMciCommand808ToDevice||9|function|undefined ForwardMciCommand808ToDevice()|
-47cdd0|ApplyAuxOutputVolumeFromScalar||13|function|undefined ApplyAuxOutputVolumeFromScalar()|
-47cdf0|ForwardMciStatusCommand814IgnoreFailure||9|function|undefined ForwardMciStatusCommand814IgnoreFailure()|
+47cd80|TCdAudioDevice::StopPlayback||9|function|void __thiscall StopPlayback(void)|
+47cdd0|TCdAudioDevice::ApplyAuxOutputVolumeFromScalar||13|function|int __thiscall ApplyAuxOutputVolumeFromScalar(int scalar)|
+47cdf0|TCdAudioDevice::IsPlaybackActive||9|function|bool __thiscall IsPlaybackActive(void)|
 47cfa0|WrapperFor_ftol_At0047cfa0||30|function|undefined WrapperFor_ftol_At0047cfa0()|
 47cfd0|InitializeDialogTemplateC2WithTextState||133|function|undefined InitializeDialogTemplateC2WithTextState()|
 47d090|TC2TemplateDialog::`scalar deleting destructor'|??_GTC2TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
@@ -585,7 +585,7 @@ address|name|symbol|size|type|prototype|provenance
 485e20|TObject::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 485e40|WrapperFor_AFX_CLASSINIT_At00485e40||16|function|undefined WrapperFor_AFX_CLASSINIT_At00485e40()|
 485e90|TObject::Serialize||143|function|void __thiscall Serialize(CArchive& archive)|
-485f50|TObject::RestoreConstructionSentinelVtable||7|function|void RestoreConstructionSentinelVtable()|
+485f50|TObject::~TObject||7|function|void __thiscall ~TObject()|windows_listing
 485f70|TObject::WriteTo||3|function|void __thiscall WriteTo(TStream* stream)|
 485f90|TObject::ReadFrom||3|function|void __thiscall ReadFrom(TStream* stream)|
 485fb0|TTEView::CreateObject|?CreateObject@TTEView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
@@ -694,7 +694,7 @@ address|name|symbol|size|type|prototype|provenance
 488390|TSortedPtrList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4883e0|TSortedPtrList::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 488400|TPtrList::CreateObject|?CreateObject@TPtrList@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
-488470|TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt||60|function|undefined InsertCopiedRecordAtFrontOfPtrListAlt()|
+488470|TPtrList::PrependCopiedRecordToPtrList||60|function|undefined PrependCopiedRecordToPtrList()|
 4884c0|TPtrList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 488510|TPtrList::GetRuntimeClass||6|function|undefined GetTPtrListClassNamePointer()|rtti
 4885d0|TPtrList::AddHeadSlot28||16|function|undefined AddHeadSlot28()|
@@ -1317,9 +1317,9 @@ address|name|symbol|size|type|prototype|provenance
 49c430|TSoundResourceManager::LoadWaveResourceByNumericIdAndBuildBuffer||583|function|int LoadWaveResourceByNumericIdAndBuildBuffer(unsigned int waveId, int slot)|
 49c720|TSoundResourceManager::ReadWaveDataAndFormatViaLoaderWithRetry||225|function|int ReadWaveDataAndFormatViaLoaderWithRetry(WaveLoadDescriptor* desc, int slot)|
 49c850|TSoundResourceManager::SetChannelVolumesUntilAccepted||61|function|int SetChannelVolumesUntilAccepted(int volume)|
-49c8e0|ClearDirectSoundInitPendingAndResetState_Impl||80|function|undefined ClearDirectSoundInitPendingAndResetState_Impl()|
-49c970|InitializeDirectSoundDeviceAndChannels||161|function|undefined InitializeDirectSoundDeviceAndChannels()|
-49ca50|ReleaseRuntimeSelectionPeersAndResetOwner_Impl||80|function|undefined ReleaseRuntimeSelectionPeersAndResetOwner_Impl()|
+49c8e0|TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels||80|function|void __thiscall ReleaseDirectSoundDeviceAndChannels(void)|
+49c970|TSoundResourceManager::InitializeDirectSoundDeviceAndChannels||161|function|int __thiscall InitializeDirectSoundDeviceAndChannels(void)|
+49ca50|TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels_SecondTuCopy||80|function|void __thiscall ReleaseDirectSoundDeviceAndChannels_SecondTuCopy(void)|
 49cac0|ResetGlobalPair6A1FD0And6A1FD4||13|function|undefined ResetGlobalPair6A1FD0And6A1FD4()|
 49cae0|ResetGlobalPair6A2000And6A2004||13|function|undefined ResetGlobalPair6A2000And6A2004()|
 49cb00|ResetGlobalQuad6A1FD8To6A1FE4||23|function|undefined ResetGlobalQuad6A1FD8To6A1FE4()|
@@ -1476,7 +1476,7 @@ address|name|symbol|size|type|prototype|provenance
 4a2610|BuildArmyActionLabelFromLocalizationAndCounts||582|function|undefined BuildArmyActionLabelFromLocalizationAndCounts()|
 4a2900|BuildArmyContextActionRecordsAndDispatchLabel||1791|function|undefined BuildArmyContextActionRecordsAndDispatchLabel()|
 4a31c0|OrphanVtableAssignStub_004a31c0||6|function|undefined OrphanVtableAssignStub_004a31c0()|
-4a31e0|OrphanVtableAssignStub_004a31e0||6|function|undefined OrphanVtableAssignStub_004a31e0()|
+4a31e0|CStr255::CStr255||6|function|CStr255 * __thiscall CStr255::CStr255(CStr255 * this)|
 4a3200|TArmyMgr::TryCreateTacticalBattleViewForTileArmies||784|function|undefined TryCreateTacticalBattleViewForTileArmies()|
 4a35e0|TArmyMgr::Helper_Uses_GenerateThreadLocalRandom15_At004a35e0||357|function|undefined Helper_Uses_GenerateThreadLocalRandom15_At004a35e0(int param_1, short param_2)|
 4a37b0|TArmyMgr::OrphanCallChain_C2_I40_004a37b0||87|function|undefined OrphanCallChain_C2_I40_004a37b0(int param_1)|
@@ -2282,7 +2282,7 @@ address|name|symbol|size|type|prototype|provenance
 4d67b0|TCountry::GetRuntimeClass||6|function|undefined GetTCountryClassNamePointer()|rtti
 4d67d0|TCountry::TCountry||88|function|void __thiscall TCountry(void)|
 4d6850|TCountry::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4d6880|WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880||80|function|undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880()|
+4d6880|TCountry::~TCountry||80|function|undefined ~TCountry()|
 4d68f0|InitializeNationStateIdentityAndOwnedRegionList||509|function|undefined InitializeNationStateIdentityAndOwnedRegionList()|
 4d6b70|CString::operator=|??4CString@@QAEABV0@ABV0@@Z|19|function|CString & __thiscall operator=(CString const &)|
 4d6ba0|TCountry::Free||62|function|void __thiscall Free(void)|
@@ -3138,7 +3138,7 @@ address|name|symbol|size|type|prototype|provenance
 50f3c0|VerifyMapDataAndWriteReport||434|function|void __fastcall VerifyMapDataAndWriteReport(int pMapDataContext)|
 50f5f0|WrapperFor_thunk_SetMapRecordFlagA3AndPropagateToChildren_At0050f5f0||139|function|undefined WrapperFor_thunk_SetMapRecordFlagA3AndPropagateToChildren_At0050f5f0()|
 50f6b0|TMapMgr::SetMapRecordFlagA3AndPropagateToChildren||110|function|void __thiscall SetMapRecordFlagA3AndPropagateToChildren(int recordIndex, int classCode)|
-50f740|RefreshMapContextRotatingStatusStrings||221|function|undefined RefreshMapContextRotatingStatusStrings()|
+50f740|TMapMgr::GenerateProvinceNames||221|function|void __thiscall GenerateProvinceNames()|
 50f860|TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments||858|function|void __thiscall RebuildTileOwnerNeighborCachesAndFallbackAssignments()|
 50fca0|TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority||285|function|void __thiscall UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(int cityRecordIndex)|
 50fe10|TMapMgr::UpdateTileNeighborBorderInfluenceCounters||812|function|undefined UpdateTileNeighborBorderInfluenceCounters()|
@@ -3151,7 +3151,7 @@ address|name|symbol|size|type|prototype|provenance
 511440|CheckTileVariantCodeMembershipSetD||65|function|undefined CheckTileVariantCodeMembershipSetD()|
 5114b0|CheckTilePatternMaskAllowedByModeFlag||268|function|undefined CheckTilePatternMaskAllowedByModeFlag()|
 511610|TMapMgr::UpdateStrategicMapTileIconVariantState||864|function|short __thiscall UpdateStrategicMapTileIconVariantState(short param_1)|
-511a70|TMapMgr::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng||830|function|undefined TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng()|
+511a70|TMapMgr::GuaranteeResources||830|function|void __thiscall GuaranteeResources()|
 511e80|TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress||49|function|undefined TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress()|
 511ed0|TMapMgr::DispatchTurnEvent7DDForActiveNation||42|function|undefined DispatchTurnEvent7DDForActiveNation()|
 511f10|TMapMgr::ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias||15|function|short __thiscall ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(int terrainType)|
@@ -3598,19 +3598,19 @@ address|name|symbol|size|type|prototype|provenance
 534db0|ReturnZeroMissionVtableSlot5C||3|function|undefined ReturnZeroMissionVtableSlot5C()|
 534dd0|ReturnFalseMissionVtableSlot60||3|function|undefined ReturnFalseMissionVtableSlot60()|
 534df0|ReturnFalseMissionVtableSlot64||3|function|undefined ReturnFalseMissionVtableSlot64()|
-534e10|ReturnMissionConstantFloatSlot68||7|function|undefined ReturnMissionConstantFloatSlot68()|
-534e30|ReturnMissionConstantFloatSlot6C||7|function|undefined ReturnMissionConstantFloatSlot6C()|
-534e50|ReturnMissionConstantFloatSlot74||9|function|undefined ReturnMissionConstantFloatSlot74()|
-534e70|ReturnMissionConstantFloatSlot70||9|function|undefined ReturnMissionConstantFloatSlot70()|
-534e90|ReturnMissionConstantFloatSlot7C||9|function|undefined ReturnMissionConstantFloatSlot7C()|
-534eb0|ReturnMissionConstantFloatSlot78||9|function|undefined ReturnMissionConstantFloatSlot78()|
-534ed0|NoOpMissionVtableSlot84||3|function|undefined NoOpMissionVtableSlot84()|
-534ef0|NoOpMissionVtableSlot80Ret8||3|function|undefined NoOpMissionVtableSlot80Ret8()|
-534f10|NoOpMissionVtableSlot8CRet8||3|function|undefined NoOpMissionVtableSlot8CRet8()|
-534f30|NoOpMissionVtableSlot88Ret8||3|function|undefined NoOpMissionVtableSlot88Ret8()|
-534f50|NoOpMissionVtableSlot90Ret4||3|function|undefined NoOpMissionVtableSlot90Ret4()|
-534f70|SetMissionField10FromArgSlot94||10|function|undefined SetMissionField10FromArgSlot94()|
-534f90|ReturnFalseMissionVtableSlot98||3|function|undefined ReturnFalseMissionVtableSlot98()|
+534e10|TMission::GetWeightedSatisfaction||7|function|float GetWeightedSatisfaction()|
+534e30|TMission::IndustrialCostOfNeeds||7|function|float IndustrialCostOfNeeds()|
+534e50|TMission::ValueOf||9|function|float ValueOf(TShip* candidate)|
+534e70|TMission::ValueOf||9|function|float ValueOf(TMilitaryUnit* candidateUnit)|
+534e90|TMission::FitnessOf||9|function|float FitnessOf(TShip* candidate, float* targetProfile)|
+534eb0|TMission::FitnessOf||9|function|float FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector)|
+534ed0|TMission::AcceptReenforcement||3|function|void AcceptReenforcement(TShip* ship, unsigned char notify)|
+534ef0|TMission::AcceptReenforcement||3|function|void AcceptReenforcement(TMilitaryUnit* unit, unsigned char notify)|
+534f10|TMission::RejectConstituent||3|function|void RejectConstituent(TShip* ship, unsigned char notify)|
+534f30|TMission::RejectConstituent||3|function|void RejectConstituent(TMilitaryUnit* unit, unsigned char notify)|
+534f50|TMission::ForgetTaskForce||3|function|void ForgetTaskForce(TTaskForce* taskForce)|
+534f70|TMission::Hold||10|function|void Hold(unsigned char value)|
+534f90|TMission::SmokeEmIfYouGotEm||3|function|char SmokeEmIfYouGotEm()|
 534fb0|TMission::GetRuntimeClass||6|function|undefined GetTMissionClassNamePointer()|rtti
 534fd0|WrapperFor_AFX_CLASSINIT_At00534fd0||16|function|undefined WrapperFor_AFX_CLASSINIT_At00534fd0()|
 535020|TMission::ConstructTMission||24|function|undefined ConstructTMission()|
@@ -3625,16 +3625,16 @@ address|name|symbol|size|type|prototype|provenance
 535520|ReturnZeroMissionSlot58NavyOverride||3|function|undefined ReturnZeroMissionSlot58NavyOverride()|
 535540|ReturnArgMissionSlot5CNavyOverride||3|function|undefined ReturnArgMissionSlot5CNavyOverride()|
 535560|TNavyMission::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-535590|ResetTNavyMissionToSentinelVtable||7|function|undefined ResetTNavyMissionToSentinelVtable()|
+535590|TNavyMission::~TNavyMission||7|function|TNavyMission::~TNavyMission()|
 5355b0|ReturnTrueForControlSeaZoneMissionCapabilityFlagA||3|function|undefined ReturnTrueForControlSeaZoneMissionCapabilityFlagA()|
 5355d0|ReturnFalseForControlSeaZoneMissionCapabilityFlagB||3|function|undefined ReturnFalseForControlSeaZoneMissionCapabilityFlagB()|
 5355f0|TControlSeaZoneMission::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-535620|ResetTControlSeaZoneMissionToSentinelVtable||7|function|undefined ResetTControlSeaZoneMissionToSentinelVtable()|
+535620|TControlSeaZoneMission::~TControlSeaZoneMission||7|function|TControlSeaZoneMission::~TControlSeaZoneMission()|
 535640|ReturnTrueForScatteredShipsMissionCapabilityFlagA||3|function|undefined ReturnTrueForScatteredShipsMissionCapabilityFlagA()|
 535660|ReturnTrueForScatteredShipsMissionCapabilityFlagB||3|function|undefined ReturnTrueForScatteredShipsMissionCapabilityFlagB()|
 535680|ReturnTrueForScatteredShipsMissionSlot20||3|function|undefined ReturnTrueForScatteredShipsMissionSlot20()|
 5356a0|TScatteredShipsMission::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-5356d0|ResetTScatteredShipsMissionToSentinelVtable||7|function|undefined ResetTScatteredShipsMissionToSentinelVtable()|
+5356d0|TScatteredShipsMission::~TScatteredShipsMission||7|function|TScatteredShipsMission::~TScatteredShipsMission()|
 5356f0|ReturnTrueForArmyMissionCapabilityFlag||3|function|undefined ReturnTrueForArmyMissionCapabilityFlag()|
 535710|ReturnMissionSelfPointer||3|function|undefined ReturnMissionSelfPointer()|
 535730|ReturnZeroForArmyMissionCapabilityFlag||3|function|undefined ReturnZeroForArmyMissionCapabilityFlag()|
@@ -3643,7 +3643,7 @@ address|name|symbol|size|type|prototype|provenance
 535790|ReturnTrueForDefendProvinceMissionCapabilityFlagA||3|function|undefined ReturnTrueForDefendProvinceMissionCapabilityFlagA()|
 5357b0|ReturnTrueForDefendProvinceMissionCapabilityFlagB||3|function|undefined ReturnTrueForDefendProvinceMissionCapabilityFlagB()|
 5357d0|TDefendProvinceMission::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-535800|ResetTDefendProvinceMissionToSentinelVtable||7|function|undefined ResetTDefendProvinceMissionToSentinelVtable()|
+535800|TDefendProvinceMission::~TDefendProvinceMission||7|function|TDefendProvinceMission::~TDefendProvinceMission()|
 535820|TMission::SerializeMissionState||86|function|void __thiscall SerializeMissionState(TStream* stream)|
 5358a0|TMission::DeserializeMissionState||125|function|void __thiscall DeserializeMissionState(TStream* stream)|
 535940|FindFirstTrackedHandlerMatchingModeAndShortKey||123|function|undefined FindFirstTrackedHandlerMatchingModeAndShortKey()|
@@ -3659,10 +3659,10 @@ address|name|symbol|size|type|prototype|provenance
 5364c0|CleanupTMissionAndReleaseOwnedOrders||67|function|undefined CleanupTMissionAndReleaseOwnedOrders()|
 536530|SerializeTNavyMissionCommon||211|function|undefined SerializeTNavyMissionCommon()|
 536650|DeserializeTNavyMissionCommon||189|function|undefined DeserializeTNavyMissionCommon()|
-536740|ClearMissionQueuedOrderLinksAndOwnerPointers||39|function|undefined ClearMissionQueuedOrderLinksAndOwnerPointers()|
-536780|AttachMissionOrderAsQueuedChildAndNotify||62|function|undefined AttachMissionOrderAsQueuedChildAndNotify()|
-5367d0|DetachMissionOrderChildAndClearPrimaryIfMatch||40|function|undefined DetachMissionOrderChildAndClearPrimaryIfMatch()|
-536810|ClearMissionSecondaryOrderIfMatch||21|function|undefined ClearMissionSecondaryOrderIfMatch()|
+536740|TNavyMission::SmokeEmIfYouGotEm||39|function|char SmokeEmIfYouGotEm()|
+536780|TNavyMission::AcceptReenforcement||62|function|void AcceptReenforcement(TShip* ship, unsigned char notify)|
+5367d0|TNavyMission::RejectConstituent||40|function|void RejectConstituent(TShip* ship, unsigned char notify)|
+536810|TNavyMission::ForgetTaskForce||21|function|void ForgetTaskForce(TTaskForce* taskForce)|
 536840|BuildMissionQueuedOrderCategoryWeightsAndReturnTotal||389|function|undefined BuildMissionQueuedOrderCategoryWeightsAndReturnTotal()|
 536b30|UpdateMissionOrderSelectionStateByNationSimilarityThresholds||445|function|undefined UpdateMissionOrderSelectionStateByNationSimilarityThresholds()|
 536d60|RebuildMapOrderEntryChildrenForContext||174|function|undefined RebuildMapOrderEntryChildrenForContext()|
@@ -3675,14 +3675,14 @@ address|name|symbol|size|type|prototype|provenance
 5370f0|QueueMissionOrderEntriesAcrossSelectionRange|||global||
 53714f|QueueMissionOrderEntryAndPropagateSelectionRange|||global||
 5371d0|ConsolidateMissionOrderEntriesByTargetAndQueue||115|function|undefined ConsolidateMissionOrderEntriesByTargetAndQueue()|
-537270|TNavyMission::ComputeMissionOrderMatchDeltaWithCandidateNavyOrder||724|function|undefined ComputeMissionOrderMatchDeltaWithCandidateNavyOrder()|
-537610|TNavyMission::ComputeMissionOrderPenaltyForCandidateAgainstTargetProfile||530|function|undefined ComputeMissionOrderPenaltyForCandidateAgainstTargetProfile()|
-5378c0|ComputeMissionWeightDotProductWithBaselineProfile||34|function|undefined ComputeMissionWeightDotProductWithBaselineProfile()|
+537270|TNavyMission::ValueOf||724|function|float ValueOf(TShip* candidate)|
+537610|TNavyMission::FitnessOf||530|function|float FitnessOf(TShip* candidate, float* targetProfile)|
+5378c0|TNavyMission::IndustrialCostOfNeeds||34|function|float IndustrialCostOfNeeds()|
 537900|BuildNavyOrderCategoryVectorForNationWithExclusion||424|function|undefined BuildNavyOrderCategoryVectorForNationWithExclusion()|
 537c60|AccumulateNavyOrderCategoryVectorWithScale||166|function|undefined AccumulateNavyOrderCategoryVectorWithScale()|
 537d40|BuildMissionQueuedOrderCategoryVector||283|function|undefined BuildMissionQueuedOrderCategoryVector()|
 537eb0|ComputeMissionQueuedOrderSimilarityForTargetNation||108|function|undefined ComputeMissionQueuedOrderSimilarityForTargetNation()|
-537f40|ComputeMissionQueuedOrderSimilarityWithFloorAdjustedCandidateVector||384|function|undefined ComputeMissionQueuedOrderSimilarityWithFloorAdjustedCandidateVector()|
+537f40|TNavyMission::GetWeightedSatisfaction||384|function|float GetWeightedSatisfaction()|
 538120|ComputeMissionOrderMatchScoreWithCandidateNavyOrder||567|function|undefined ComputeMissionOrderMatchScoreWithCandidateNavyOrder()|
 5383f0|ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder||573|function|undefined ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder()|
 5386c0|TControlSeaZoneMission::CreateObject|?CreateObject@TControlSeaZoneMission@@SGPAVCObject@@XZ|133|function|undefined CreateObject()|rtti
@@ -3704,7 +3704,7 @@ address|name|symbol|size|type|prototype|provenance
 539920|ReturnTrueForEscortMissionCapabilityFlagA||3|function|undefined ReturnTrueForEscortMissionCapabilityFlagA()|
 539940|ReturnFalseForEscortMissionCapabilityFlagB||3|function|undefined ReturnFalseForEscortMissionCapabilityFlagB()|
 539960|TEscortMission::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-539990|ResetTEscortMissionToSentinelVtable||7|function|undefined ResetTEscortMissionToSentinelVtable()|
+539990|TEscortMission::~TEscortMission||7|function|TEscortMission::~TEscortMission()|
 5399b0|TEscortMission::GetRuntimeClass|?GetRuntimeClass@TEscortMission@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
 5399d0|WrapperFor_AFX_CLASSINIT_At005399d0||16|function|undefined WrapperFor_AFX_CLASSINIT_At005399d0()|
 539a20|TMission::ConstructTEscortMissionForPortContext||58|function|undefined ConstructTEscortMissionForPortContext()|
@@ -3718,7 +3718,7 @@ address|name|symbol|size|type|prototype|provenance
 53a390|ReturnFalseForBeachheadMissionCapabilityFlagA||3|function|undefined ReturnFalseForBeachheadMissionCapabilityFlagA()|
 53a3b0|ReturnFalseForBeachheadMissionCapabilityFlagB||3|function|undefined ReturnFalseForBeachheadMissionCapabilityFlagB()|
 53a3d0|TBeachheadMission::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-53a400|ResetTBeachheadMissionToSentinelVtable||7|function|undefined ResetTBeachheadMissionToSentinelVtable()|
+53a400|TBeachheadMission::~TBeachheadMission||7|function|TBeachheadMission::~TBeachheadMission()|
 53a420|TBeachheadMission::GetRuntimeClass|?GetRuntimeClass@TBeachheadMission@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
 53a440|WrapperFor_AFX_CLASSINIT_At0053a440||16|function|undefined WrapperFor_AFX_CLASSINIT_At0053a440()|
 53a490|TBeachheadMission::ConstructTBeachheadMissionWithNodeAndParent||65|function|undefined ConstructTBeachheadMissionWithNodeAndParent()|
@@ -3731,7 +3731,7 @@ address|name|symbol|size|type|prototype|provenance
 53aa50|ReturnFalseForBlockadePortMissionCapabilityFlagA||3|function|undefined ReturnFalseForBlockadePortMissionCapabilityFlagA()|
 53aa70|ReturnFalseForBlockadePortMissionCapabilityFlagB||3|function|undefined ReturnFalseForBlockadePortMissionCapabilityFlagB()|
 53aa90|TBlockadePortMission::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-53aac0|ResetTBlockadePortMissionToSentinelVtable||7|function|undefined ResetTBlockadePortMissionToSentinelVtable()|
+53aac0|TBlockadePortMission::~TBlockadePortMission||7|function|TBlockadePortMission::~TBlockadePortMission()|
 53aae0|TBlockadePortMission::GetRuntimeClass|?GetRuntimeClass@TBlockadePortMission@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
 53ab00|WrapperFor_AFX_CLASSINIT_At0053ab00||16|function|undefined WrapperFor_AFX_CLASSINIT_At0053ab00()|
 53ab50|TMission::ConstructBlockadePortMissionForContext||195|function|undefined ConstructBlockadePortMissionForContext()|
@@ -3763,13 +3763,13 @@ address|name|symbol|size|type|prototype|provenance
 53c0a0|TMission::ConstructTArmyMissionWithNodeKey||196|function|undefined ConstructTArmyMissionWithNodeKey()|
 53c1b0|ReturnFalseForArmyAttackInvadeCapabilityFlag||3|function|undefined ReturnFalseForArmyAttackInvadeCapabilityFlag()|
 53c1d0|TArmyMission::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-53c200|ResetTArmyMissionToSentinelVtable||7|function|undefined ResetTArmyMissionToSentinelVtable()|
+53c200|TArmyMission::~TArmyMission||7|function|TArmyMission::~TArmyMission()|
 53c220|TArmyMission::CleanupTArmyMissionAndReleaseChildContext||111|function|undefined CleanupTArmyMissionAndReleaseChildContext()|
 53c2b0|SerializeTArmyMission||219|function|undefined SerializeTArmyMission()|
 53c3d0|DeserializeTArmyMission||221|function|undefined DeserializeTArmyMission()|
-53c4f0|EvaluateMissionAndQueueEligibleUnitsByMovementClass||95|function|undefined EvaluateMissionAndQueueEligibleUnitsByMovementClass()|
-53c570|AttachMissionAsOwnerAndNotifyIfRequested||66|function|undefined AttachMissionAsOwnerAndNotifyIfRequested()|
-53c5e0|ReleaseMissionOwnerLinkAtOffset40||46|function|undefined ReleaseMissionOwnerLinkAtOffset40()|
+53c4f0|TArmyMission::SmokeEmIfYouGotEm||95|function|char SmokeEmIfYouGotEm()|
+53c570|TArmyMission::AcceptReenforcement||66|function|void AcceptReenforcement(TMilitaryUnit* unit, unsigned char notify)|
+53c5e0|TArmyMission::RejectConstituent||46|function|void RejectConstituent(TMilitaryUnit* unit, unsigned char notify)|
 53c620|BuildMissionPriorityVectorAndReturnTotal||300|function|undefined BuildMissionPriorityVectorAndReturnTotal()|
 53c950|PropagateTargetTileToLinkedUnitsIfDifferent||88|function|undefined PropagateTargetTileToLinkedUnitsIfDifferent()|
 53c9d0|AccumulateMissionUnitPriorityVectorWithOptionalFilter||182|function|undefined AccumulateMissionUnitPriorityVectorWithOptionalFilter()|
@@ -3777,12 +3777,12 @@ address|name|symbol|size|type|prototype|provenance
 53cb50|AccumulateMissionUnitPriorityContributionWithScaleMode||134|function|undefined AccumulateMissionUnitPriorityContributionWithScaleMode()|
 53cc10|AccumulateUnitOrderPriorityVectorContribution||319|function|undefined AccumulateUnitOrderPriorityVectorContribution()|
 53cda0|AccumulateMissionUnitPriorityVector||194|function|undefined AccumulateMissionUnitPriorityVector()|
-53ceb0|ComputeArmyMissionCompositionAlignmentScore||277|function|undefined ComputeArmyMissionCompositionAlignmentScore()|
+53ceb0|TArmyMission::GetWeightedSatisfaction||277|function|float GetWeightedSatisfaction()|
 53d020|ComputeArmyMissionScoreDeltaWithCandidateUnit||378|function|undefined ComputeArmyMissionScoreDeltaWithCandidateUnit()|
 53d200|ComputeArmyMissionScoreDeltaWithScaledCandidateUnit||384|function|undefined ComputeArmyMissionScoreDeltaWithScaledCandidateUnit()|
-53d3e0|ComputeArmyMissionDotProductScore||34|function|undefined ComputeArmyMissionDotProductScore()|
-53d420|ComputeArmyMissionScoreDeltaAgainstCurrentSelection||87|function|undefined ComputeArmyMissionScoreDeltaAgainstCurrentSelection()|
-53d4a0|ComputeArmyMissionCandidateVectorDistanceScore||317|function|undefined ComputeArmyMissionCandidateVectorDistanceScore()|
+53d3e0|TArmyMission::IndustrialCostOfNeeds||34|function|float IndustrialCostOfNeeds()|
+53d420|TArmyMission::ValueOf||87|function|float ValueOf(TMilitaryUnit* candidateUnit)|
+53d4a0|TArmyMission::FitnessOf||317|function|float FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector)|
 53d630|ReturnMissionIfMovementClassMatchesTargetTile||34|function|undefined ReturnMissionIfMovementClassMatchesTargetTile()|
 53d670|TAttackProvinceMission::CreateObject|?CreateObject@TAttackProvinceMission@@SGPAVCObject@@XZ|94|function|undefined CreateObject()|rtti
 53d6f0|ReturnFalseForAttackProvinceMissionCapabilityFlag||3|function|undefined ReturnFalseForAttackProvinceMissionCapabilityFlag()|
@@ -3790,7 +3790,7 @@ address|name|symbol|size|type|prototype|provenance
 53d730|WrapperFor_AFX_CLASSINIT_At0053d730||16|function|undefined WrapperFor_AFX_CLASSINIT_At0053d730()|
 53d780|TAttackProvinceMission::ConstructTAttackProvinceMission||40|function|undefined ConstructTAttackProvinceMission()|
 53d7c0|TAttackProvinceMission::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-53d7f0|ResetTAttackProvinceMissionToSentinelVtable||7|function|undefined ResetTAttackProvinceMissionToSentinelVtable()|
+53d7f0|TAttackProvinceMission::~TAttackProvinceMission||7|function|TAttackProvinceMission::~TAttackProvinceMission()|
 53d810|TAttackProvinceMission::SerializeTAttackProvinceMission||46|function|undefined SerializeTAttackProvinceMission()|
 53d850|TAttackProvinceMission::DeserializeTAttackProvinceMission||46|function|undefined DeserializeTAttackProvinceMission()|
 53d890|TAttackProvinceMission::CleanupTAttackProvinceMissionAndReleaseChildContext||142|function|undefined CleanupTAttackProvinceMissionAndReleaseChildContext()|
@@ -3819,18 +3819,18 @@ address|name|symbol|size|type|prototype|provenance
 53f080|TInvadeMission::CreateObject|?CreateObject@TInvadeMission@@SGPAVCObject@@XZ|121|function|undefined CreateObject()|rtti
 53f120|GetInvadeMissionBeachheadChild||4|function|undefined GetInvadeMissionBeachheadChild()|
 53f140|ReturnTrueForInvadeMissionCapabilityFlagAlt||3|function|undefined ReturnTrueForInvadeMissionCapabilityFlagAlt()|
-53f160|TInvadeMission::ForwardInvadeMissionArgToBeachheadSlot90||19|function|undefined ForwardInvadeMissionArgToBeachheadSlot90()|
-53f190|TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot84||24|function|undefined ForwardInvadeMissionArgsToBeachheadSlot84()|
-53f1c0|TInvadeMission::ForwardInvadeMissionArgsToBeachheadSlot8C||24|function|undefined ForwardInvadeMissionArgsToBeachheadSlot8C()|
-53f1f0|TInvadeMission::ComputeInvadeMissionCompositeScoreWithBeachhead||52|function|undefined ComputeInvadeMissionCompositeScoreWithBeachhead()|
+53f160|TInvadeMission::ForgetTaskForce||19|function|void ForgetTaskForce(TTaskForce* taskForce)|
+53f190|TInvadeMission::AcceptReenforcement||24|function|void AcceptReenforcement(TShip* ship, unsigned char notify)|
+53f1c0|TInvadeMission::RejectConstituent||24|function|void RejectConstituent(TShip* ship, unsigned char notify)|
+53f1f0|TInvadeMission::IndustrialCostOfNeeds||52|function|float IndustrialCostOfNeeds()|
 53f240|ReturnFalseForInvadeMissionCapabilityFlag||3|function|undefined ReturnFalseForInvadeMissionCapabilityFlag()|
 53f260|TInvadeMission::GetRuntimeClass|?GetRuntimeClass@TInvadeMission@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
 53f280|WrapperFor_AFX_CLASSINIT_At0053f280||16|function|undefined WrapperFor_AFX_CLASSINIT_At0053f280()|
 53f2d0|TMission::ConstructTInvadeMissionWithOptionalBeachhead||180|function|undefined ConstructTInvadeMissionWithOptionalBeachhead()|
 53f3c0|TInvadeMission::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-53f3f0|ResetTInvadeMissionToSentinelVtable||7|function|undefined ResetTInvadeMissionToSentinelVtable()|
+53f3f0|TInvadeMission::~TInvadeMission||7|function|TInvadeMission::~TInvadeMission()|
 53f410|TInvadeMission::CleanupTInvadeMissionAndReleaseOwnedOrders||150|function|undefined CleanupTInvadeMissionAndReleaseOwnedOrders()|
-53f4e0|TInvadeMission::EvaluateInvadeMissionBeachheadAndQueueEligibleUnits||117|function|undefined EvaluateInvadeMissionBeachheadAndQueueEligibleUnits()|
+53f4e0|TInvadeMission::SmokeEmIfYouGotEm||117|function|char SmokeEmIfYouGotEm()|
 53f580|TInvadeMission::InitializeInvadeMissionFromNationAndTargetTile||67|function|undefined InitializeInvadeMissionFromNationAndTargetTile()|
 53f5f0|TInvadeMission::SetInvadeMissionKindTag2||5|function|undefined SetInvadeMissionKindTag2()|
 53f610|TAttackProvinceMission::UpdateInvadeMissionAndBeachheadChildState||18|function|undefined UpdateInvadeMissionAndBeachheadChildState()|
@@ -3840,9 +3840,9 @@ address|name|symbol|size|type|prototype|provenance
 53f7d0|TInvadeMission::AdvanceInvadeMissionCompositeHandlers||32|function|undefined AdvanceInvadeMissionCompositeHandlers()|
 53f800|ComputeInvadeMissionPriorityScore||526|function|undefined ComputeInvadeMissionPriorityScore()|
 53faa0|ReturnTrueForInvadeMissionCapabilityFlag||3|function|undefined ReturnTrueForInvadeMissionCapabilityFlag()|
-53fac0|TInvadeMission::ComputeInvadeMissionWeightedScoreDelta||117|function|undefined ComputeInvadeMissionWeightedScoreDelta()|
-53fb60|TInvadeMission::ComputeInvadeMissionBeachheadScoreIfEnabled||32|function|undefined ComputeInvadeMissionBeachheadScoreIfEnabled()|
-53fb90|TInvadeMission::SetInvadeMissionBeachheadDisabledFlag||22|function|undefined SetInvadeMissionBeachheadDisabledFlag()|
+53fac0|TInvadeMission::ValueOf||117|function|float ValueOf(TMilitaryUnit* candidateUnit)|
+53fb60|TInvadeMission::ValueOf||32|function|float ValueOf(TShip* candidate)|
+53fb90|TInvadeMission::Hold||22|function|void Hold(unsigned char value)|
 53fbc0|TInvadeMission::HandleInvadeMissionActionOnTargetViaBeachhead||61|function|undefined HandleInvadeMissionActionOnTargetViaBeachhead()|
 53fc10|TInvadeMission::BuildInvadeMissionUnitPriorityVectorAndScore||336|function|undefined BuildInvadeMissionUnitPriorityVectorAndScore()|
 53fdc0|TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass||52|function|undefined TryResolveInvadeMissionTargetTerrainClass()|
@@ -3856,7 +3856,7 @@ address|name|symbol|size|type|prototype|provenance
 540900|TProxyGreatPower::ProcessPendingDiplomacyProposalQueue||8|function|undefined DispatchProxyGreatPowerCallbackSlot1CC()|
 540920|TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage||3|function|undefined ReturnFalseProxyGreatPowerCapabilityStub()|
 540940|TProxyGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-540970|TProxyGreatPower::DestructTProxyGreatPower||80|function|undefined DestructTProxyGreatPower()|
+540970|TProxyGreatPower::~TProxyGreatPower||80|function|undefined ~TProxyGreatPower()|
 5409e0|TProxyGreatPower::GetRuntimeClass||6|function|undefined GetTProxyGreatPowerClassNamePointer()|rtti
 540a00|TProxyGreatPower::AddToNationMetricAtField10||127|function|undefined EmitTurnEvent14ForProxyGreatPowerAction()|
 540aa0|TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord||1|function|undefined RemoveRegionIdFromNationOwnedRegionList(void)|
@@ -3871,7 +3871,7 @@ address|name|symbol|size|type|prototype|provenance
 540e90|THostGreatPower::CreateObject|?CreateObject@THostGreatPower@@SGPAVCObject@@XZ|110|function|undefined CreateObject()|rtti
 540f20|THostGreatPower::ReturnFalseNationStateCapabilityFlag9C||3|function|undefined ReturnTrueNationStateCapabilityFlag9C()|
 540f40|THostGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-540f70|THostGreatPower::DestructTHostGreatPower||80|function|undefined DestructTHostGreatPower()|
+540f70|THostGreatPower::~THostGreatPower||80|function|undefined ~THostGreatPower()|
 540fe0|THostGreatPower::GetRuntimeClass||6|function|undefined GetTHostGreatPowerClassNamePointer()|rtti
 541000|THostGreatPower::ReadFrom||44|function|undefined UpdateHostGreatPowerStatePathAAndMaybeSetLossFlag()|
 541040|THostGreatPower::WriteTo||35|function|undefined UpdateHostGreatPowerStatePathBAndSetLossFlag()|
@@ -3882,7 +3882,7 @@ address|name|symbol|size|type|prototype|provenance
 5412b0|TClientGreatPower::ReturnFalseNationStateCapabilityFlag98||3|function|undefined ReturnTrueNationStateCapabilityFlag98Alt()|
 5412d0|TClientGreatPower::ReturnFalseNationStateCapabilityFlagA0||3|function|undefined ReturnFalseNationStateCapabilityFlagA0Alt()|
 5412f0|TClientGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-541320|TClientGreatPower::DestructTClientGreatPower||80|function|undefined DestructTClientGreatPower()|
+541320|TClientGreatPower::~TClientGreatPower||80|function|undefined ~TClientGreatPower()|
 541390|TClientGreatPower::GetRuntimeClass||6|function|undefined GetTClientGreatPowerClassNamePointer()|rtti
 5413b0|TClientGreatPower::ApplyAcceptedDiplomacyProposalCode||119|function|undefined EmitTurnEvent17ClientGreatPowerFlagEnabled()|
 541450|TClientGreatPower::QueueInterNationEventForProposalCode12D_130||118|function|undefined EmitTurnEvent17ClientGreatPowerFlagDisabled()|
@@ -3910,7 +3910,7 @@ address|name|symbol|size|type|prototype|provenance
 541a40|TRemoteGreatPower::RecomputeAiExpansionAndMissionPressureScores||1|function|void RecomputeAiExpansionAndMissionPressureScores(void)|
 541a60|TRemoteGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment||3|function|void RefreshTrackedEntriesAndReplanAiDevelopment(int unused)|
 541a80|TRemoteGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-541ab0|TRemoteGreatPower::DestructTRemoteGreatPower||80|function|undefined DestructTRemoteGreatPower()|
+541ab0|TRemoteGreatPower::~TRemoteGreatPower||80|function|undefined ~TRemoteGreatPower()|
 541b20|TRemoteGreatPower::GetRuntimeClass||6|function|undefined GetTRemoteGreatPowerClassNamePointer()|rtti
 541b40|TRemoteGreatPower::SetNationSelectedRegionAndMapCellLabel||127|function|void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char * mapCellLabel)|
 541be0|TRemoteGreatPower::HandleNationLost||17|function|void HandleNationLost()|
@@ -3934,8 +3934,8 @@ address|name|symbol|size|type|prototype|provenance
 5425d0|TMultiplayerMgr::CreateObject|?CreateObject@TMultiplayerMgr@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 542650|TMultiplayerMgr::GetRuntimeClass||6|function|undefined GetTMultiplayerMgrClassNamePointer()|rtti
 542670|ConstructMultiplayerManager||234|function|undefined4 * __fastcall ConstructMultiplayerManager(astruct_11 * this_obj)|
-5427a0|InitializePointerPairToNull||16|function|undefined InitializePointerPairToNull()|
-5427c0|FreePointerIfNotNull||16|function|undefined FreePointerIfNotNull()|
+5427a0|TMultiplayerSlotHandle::TMultiplayerSlotHandle||16|function|void __thiscall TMultiplayerSlotHandle()|windows_listing
+5427c0|TMultiplayerSlotHandle::~TMultiplayerSlotHandle||16|function|void __thiscall ~TMultiplayerSlotHandle()|windows_listing
 5427e0|TMultiplayerMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 542810|TMultiplayerMgr::~TMultiplayerMgr||187|function|undefined ~TMultiplayerMgr()|
 542900|TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext||404|function|undefined InitializeMultiplayerManagerForSessionContext()|
@@ -3965,7 +3965,7 @@ address|name|symbol|size|type|prototype|provenance
 545480|AssignStringAtB4FromB0AndResetState40||32|function|undefined AssignStringAtB4FromB0AndResetState40()|
 5454b0|ResetNationStatusSlotsAndInitializeNameControls||325|function|undefined ResetNationStatusSlotsAndInitializeNameControls()|
 545660|ResetLocalUiStateAndPostTurnEvent5E5||42|function|undefined ResetLocalUiStateAndPostTurnEvent5E5()|
-5456a0|ResetDialogContextField40AndEmitTurnEvent3Mode18||108|function|undefined ResetDialogContextField40AndEmitTurnEvent3Mode18()|
+5456a0|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3||108|function|unsigned char CloseLobbyDialogAndEmitTurnEvent3()|
 545730|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue||331|function|undefined RouteAndProcessDiplomacyTurnStateEventQueue()|
 545940|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine||11459|function|unsigned char ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet)|curated
 549240|TouchSessionActiveNationId||11|function|undefined TouchSessionActiveNationId()|
@@ -3984,7 +3984,7 @@ address|name|symbol|size|type|prototype|provenance
 549c60|SerializeOrderDataIntoTurnEventByTag||396|function|undefined SerializeOrderDataIntoTurnEventByTag()|
 549ff0|TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32||623|function|void HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream)|
 54a340|DispatchTaggedGameStateEvent1F20||156|function|undefined DispatchTaggedGameStateEvent1F20()|
-54a410|DispatchTextPairEvent8FromContext||184|function|undefined DispatchTextPairEvent8FromContext()|
+54a410|TMultiplayerMgr::DispatchLobbyTextPairEvent8||184|function|void DispatchLobbyTextPairEvent8(unsigned char sourceNationSlot)|
 54a500|PublishTerrainDescriptorAndNotifyOrderListeners||169|function|undefined PublishTerrainDescriptorAndNotifyOrderListeners()|
 54a5e0|PublishNationDescriptorAndNotifyOrderListeners||177|function|undefined PublishNationDescriptorAndNotifyOrderListeners()|
 54a6d0|TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain||280|function|void CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* stream, short nationSlot)|
@@ -4005,12 +4005,12 @@ address|name|symbol|size|type|prototype|provenance
 54b040|DestructPoseMessageDialogTurnEventPacket||7|function|undefined DestructPoseMessageDialogTurnEventPacket()|
 54b060|TPoseMessageDialog::CreateObject|?CreateObject@TPoseMessageDialog@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 54b0d0|TPoseMessageDialog::GetRuntimeClass||6|function|undefined GetTPoseMessageDialogClassNamePointer()|rtti
-54b0f0|DispatchSimpleTurnEventEsopWithParam||136|function|undefined DispatchSimpleTurnEventEsopWithParam()|
+54b0f0|QueuePoseMessageDialogForNationSlot||136|function|void __cdecl QueuePoseMessageDialogForNationSlot(int nationSlot)|
 54b1b0|RefreshPoseMessageDialogNationSelectionControls||611|function|undefined RefreshPoseMessageDialogNationSelectionControls()|
 54b4c0|DispatchTurnEventCode9WithTwoTextTokens||180|function|undefined DispatchTurnEventCode9WithTwoTextTokens()|
 54b5b0|TMultiplayerMgr::SendTradeBook||12|function|void __thiscall SendTradeBook()|
 54b5d0|EmitNationDiplomacyNeedStateSnapshotEvent15||384|function|undefined EmitNationDiplomacyNeedStateSnapshotEvent15()|
-54b7e0|SetNationStatusCodeForSlotOrActiveAndEmitEvent25||166|function|undefined SetNationStatusCodeForSlotOrActiveAndEmitEvent25()|
+54b7e0|TMultiplayerMgr::SetNationStatusCodeAndEmitEvent25||166|function|void SetNationStatusCodeAndEmitEvent25(int statusTag, int nationSlot)|
 54b8c0|GetNationStatusCodeForSlotOrActiveNation||80|function|undefined GetNationStatusCodeForSlotOrActiveNation()|
 54b930|SetNationStatusAwolByNationIdAndDispatchNotices||743|function|undefined SetNationStatusAwolByNationIdAndDispatchNotices()|
 54bce0|InitializeNationStatusEvent25PayloadDefaults||46|function|undefined InitializeNationStatusEvent25PayloadDefaults()|
@@ -4036,7 +4036,7 @@ address|name|symbol|size|type|prototype|provenance
 54d6f0|TLoungeDialog::Free||38|function|void __thiscall Free(void)|
 54d730|TLoungeDialog::DoPostCreate||821|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 54db40|TLoungeDialog::DoIdle||899|function|undefined RefreshNationStatusDialogRowsAndSummaryMessage()|
-54dfc0|TryInvokeNationStateReplacementForSlot||444|function|undefined TryInvokeNationStateReplacementForSlot()|
+54dfc0|TLoungeDialog::TryReplaceRemoteNationSlot||444|function|void TryReplaceRemoteNationSlot(int nationSlot)|
 54e1f0|TLoungeDialog::DoEvent||562|function|undefined HandleNationStatusDialogCommand()|
 54e4c0|RefreshMapAndMessageControlsForCurrentContext||357|function|undefined RefreshMapAndMessageControlsForCurrentContext()|
 54e690|TJoinSelectorDialog::CreateObject|?CreateObject@TJoinSelectorDialog@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
@@ -4070,7 +4070,7 @@ address|name|symbol|size|type|prototype|provenance
 54ff00|TShip::ComputeNavyOrderPriorityContributionPercentByCategory||297|function|undefined ComputeNavyOrderPriorityContributionPercentByCategory()|
 550090|GetNormalizedIndustryActionResourceCostPercent||207|function|undefined GetNormalizedIndustryActionResourceCostPercent()|
 5501b0|TShip::CalculateMissionOrderPriorityScore||336|function|int __thiscall CalculateMissionOrderPriorityScore(int nScoreProfileId)|
-550370|TShip::AdjustMapOrderNodeStatCapped499||26|function|void __thiscall AdjustMapOrderNodeStatCapped499(short nDelta)|
+550370|TShip::Victory||26|function|void TShip::Victory(short experienceGain)|
 5503a0|TShip::GetOrCreateMissionOrderEntryForNode||285|function|void * __thiscall GetOrCreateMissionOrderEntryForNode(void)|
 550510|TShip::GetOrderNodeDescriptorWord20ByResourceType||16|function|undefined GetOrderNodeDescriptorWord20ByResourceType()|
 550550|TShip::ComputeOrderNodeDistanceQuotientByDescriptorWord24||51|function|undefined ComputeOrderNodeDistanceQuotientByDescriptorWord24()|
@@ -4083,7 +4083,7 @@ address|name|symbol|size|type|prototype|provenance
 550840|TShip::ComputeOrderNodeDerivedScoreFromQuantityAndWord18||67|function|undefined ComputeOrderNodeDerivedScoreFromQuantityAndWord18()|
 550970|GetIndustryActionCostWeightByResourceType||14|function|short __cdecl GetIndustryActionCostWeightByResourceType(short resourceType)|
 5509c0|PruneOrPromoteOrderNodeWhenChildCostDepleted||171|function|undefined PruneOrPromoteOrderNodeWhenChildCostDepleted()|
-550aa0|TShip::ComputeMapOrderEntryHeuristicScore||141|function|undefined ComputeMapOrderEntryHeuristicScore()|
+550aa0|TShip::GetBattleStrengthRating||141|function|int __thiscall TShip::GetBattleStrengthRating() const|
 550b60|ComputeOrderNodeCompositeEconomicScore||141|function|int __cdecl ComputeOrderNodeCompositeEconomicScore(TShip* node)|
 550c20|FormatLocalizedCommodityCountLabelByIndex||264|function|undefined FormatLocalizedCommodityCountLabelByIndex()|
 550d80|GetResourceTypeRandomDrawBlockFlag||17|function|short __cdecl GetResourceTypeRandomDrawBlockFlag(short resourceType)|
@@ -4161,7 +4161,7 @@ address|name|symbol|size|type|prototype|provenance
 554b20|BuildTaskForceOrderBreakdownSummaryText||273|function|undefined BuildTaskForceOrderBreakdownSummaryText()|
 554c90|BuildTaskForceSelectionOverlayLabelText||370|function|undefined BuildTaskForceSelectionOverlayLabelText()|
 554e70|TTaskForce::GetGeneralDescription||400|function|void __thiscall GetGeneralDescription(CString * out)|
-555090|PruneNavyOrderIfUnserviceableOrNoChildren||159|function|undefined PruneNavyOrderIfUnserviceableOrNoChildren()|
+555090|TTaskForce::PruneNavyOrderIfUnserviceableOrNoChildren||159|function|TTaskForce * __thiscall TTaskForce::PruneNavyOrderIfUnserviceableOrNoChildren()|
 5551d0|BuildTaskForcePrimaryObjectiveDescriptionText||450|function|undefined BuildTaskForcePrimaryObjectiveDescriptionText()|
 555420|ResolveTaskForceOrderConflictAndPickCandidate||608|function|undefined ResolveTaskForceOrderConflictAndPickCandidate()|
 555720|ShouldAttemptMapOrderPairResolution||400|function|undefined ShouldAttemptMapOrderPairResolution()|
@@ -4169,8 +4169,8 @@ address|name|symbol|size|type|prototype|provenance
 555c20|ComputeTaskForceOrderTieBreakScore||183|function|undefined ComputeTaskForceOrderTieBreakScore()|
 555d10|TryResolveMapOrderEntryPairExecution||151|function|undefined TryResolveMapOrderEntryPairExecution()|
 555de0|IsTaskForceOrderMixWithinPriorityThresholds||433|function|undefined IsTaskForceOrderMixWithinPriorityThresholds()|
-556010|ComputeTaskForceOrderAggregateScore||183|function|undefined ComputeTaskForceOrderAggregateScore()|
-556100|ApplyMapOrderTypeExecutionEffects||250|function|void __fastcall ApplyMapOrderTypeExecutionEffects(void * pMapOrderEntry)|
+556010|TTaskForce::GetBattleStrengthRating||183|function|int __thiscall TTaskForce::GetBattleStrengthRating() const|
+556100|TTaskForce::CarryOutOrders||250|function|void __thiscall TTaskForce::CarryOutOrders()|
 5562c0|GetMapOrderEntryChildCount||26|function|undefined GetMapOrderEntryChildCount()|
 5563d0|GetNavyOrderRankWithinNationBucket||46|function|undefined GetNavyOrderRankWithinNationBucket()|
 556410|UpdateNavyOrderMapMarkerByOrderType||137|function|undefined UpdateNavyOrderMapMarkerByOrderType()|
@@ -4191,18 +4191,18 @@ address|name|symbol|size|type|prototype|provenance
 556f60|TNavyMgr::FreeShipsOf||79|function|void __thiscall FreeShipsOf(short nation)|
 556fd0|ResetPrimaryOrderActiveFlagsAndClearManagerState||67|function|undefined ResetPrimaryOrderActiveFlagsAndClearManagerState()|
 557040|TNavyMgr::ClearAllTransientOrders||47|function|void ClearAllTransientOrders(void)|mac-oracle
-557080|TNavyMgr::MoveMapOrderEntryToQueueHeadIfValid||123|function|unsigned char __thiscall MoveMapOrderEntryToQueueHeadIfValid(TTaskForce* entry)|
-557170|ComputeAggregateWeightedChildCostForMatchingType5NavyOrders||120|function|undefined ComputeAggregateWeightedChildCostForMatchingType5NavyOrders()|
+557080|TNavyMgr::CommitForce||123|function|unsigned char __thiscall TNavyMgr::CommitForce(TTaskForce* entry)|
+557170|TNavyMgr::ComputeAggregateWeightedChildCostForMatchingType5NavyOrders||120|function|short TNavyMgr::ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(short nationSlot, TGlobalMapCityScoreRecord* cityTarget, TZone* contextFilter)|
 557210|RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists||140|function|undefined RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists()|
 5572d0|GetEnabledIndustryCapabilitySlotByClass||58|function|undefined GetEnabledIndustryCapabilitySlotByClass()|
 557320|BuildNavyOrderPromptTextByLocalizationMode||150|function|undefined BuildNavyOrderPromptTextByLocalizationMode()|
-5573f0|CreateNavySecondaryOrderEntryAndDeduplicateDisplayName||286|function|undefined CreateNavySecondaryOrderEntryAndDeduplicateDisplayName()|
+5573f0|TAdmiral::CreateForTerrainType||286|function|TAdmiral* CreateForTerrainType(short terrainTypeIndex)|
 557560|RevalidateAndRequeueMapOrdersForTurn||464|function|void RevalidateAndRequeueMapOrdersForTurn(void)|
-5577b0|PrepareMapOrdersForExecutionPhase||137|function|void __fastcall PrepareMapOrdersForExecutionPhase(int * pOrderManager, int nQueueDomain, short nPhaseId)|
-557870|ClearMapOrderProcessedFlagsChain||17|function|void __fastcall ClearMapOrderProcessedFlagsChain(int * pOrderNode)|
-5578a0|ResolveMapOrderChainsForTurnPhase||1102|function|void __fastcall ResolveMapOrderChainsForTurnPhase(int * pOrderManager)|
-557e10|UpdateType7NavyOrderChildSelectionByChanceThreshold||140|function|undefined UpdateType7NavyOrderChildSelectionByChanceThreshold()|
-557f10|SelectEligibleMapOrderInteractionForNationAndContext||1901|function|undefined SelectEligibleMapOrderInteractionForNationAndContext()|
+5577b0|TNavyMgr::PrepareToCarryOutAllOrders||137|function|void __thiscall TNavyMgr::PrepareToCarryOutAllOrders(short phaseId)|
+557870|TTaskForce::ClearMapOrderProcessedFlagsChain||17|function|void __thiscall TTaskForce::ClearMapOrderProcessedFlagsChain()|
+5578a0|TNavyMgr::CarryOutOrders||1102|function|void __thiscall TNavyMgr::CarryOutOrders()|
+557e10|TNavyMgr::AssignEscorts||140|function|TTaskForce * __thiscall TNavyMgr::AssignEscorts(short requiredCount, short chancePercent)|
+557f10|TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext||1901|function|char __thiscall TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(TMapOrderInteractionSelection * outResult, TZone * portZoneContext, short nation, short offerAmount)|
 558860|EnsureDwordPointerArraySlotAndReturnPointer||117|function|undefined EnsureDwordPointerArraySlotAndReturnPointer()|
 558960|ProcessNationMapOrderInteractionsAndApplyOutcomes||3485|function|undefined ProcessNationMapOrderInteractionsAndApplyOutcomes()|
 559a70|GetMapContextActionCode||260|function|int __cdecl GetMapContextActionCode(short nTileIndex, int dwInputFlags)|
@@ -4219,7 +4219,7 @@ address|name|symbol|size|type|prototype|provenance
 55a292|commit_order_entry_to_global_queue|||global||
 55a2b5|set_order_type_6_from_context|||global||
 55a37e|set_order_type_5_from_province|||global||
-55a780|ResolveMapOrderPairConflictStep||2934|function|void __cdecl ResolveMapOrderPairConflictStep(int * pLeftOrderEntry, int * pRightOrderEntry)|
+55a780|TNavyMgr::ResolveStrategicBattle||2934|function|void __thiscall TNavyMgr::ResolveStrategicBattle(TTaskForce * leftEntry, TTaskForce * rightEntry)|
 55b640|WrapperFor_ftol_At0055b640||30|function|undefined WrapperFor_ftol_At0055b640()|
 55b670|TNewsMgr::CreateObject|?CreateObject@TNewsMgr@@SGPAVCObject@@XZ|27|function|undefined CreateObject()|rtti
 55b6a0|TNewsMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -5075,7 +5075,7 @@ address|name|symbol|size|type|prototype|provenance
 58b3c0|TCivilianButton::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 58b3e0|TCivilianButton::TCivilianButton||25|function|undefined TCivilianButton()|
 58b410|TCivilianButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-58b460|TCivilianButton::SetSelectionAndEnableByMappedValue||97|function|undefined SetSelectionAndEnableByMappedValue()|
+58b460|TCivilianButton::SetSelectedCivilianOrderAndEnableButton||97|function|void __thiscall SetSelectedCivilianOrderAndEnableButton(TCivUnit* selectedOrder)|windows_listing
 58b4f0|TCivilianButton::Draw||159|function|undefined BlitHintOverlayRectWithCtrlModifierPalette()|
 58b5c0|THQButton::CreateObject|?CreateObject@THQButton@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 58b640|THQButton::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
@@ -5168,22 +5168,22 @@ address|name|symbol|size|type|prototype|provenance
 592980|TWarningView::DoEvent||161|function|undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(void)|
 592a70|TWarningView::DoPostCreate||1432|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5931e0|WrapperFor_ftol_At005931e0||30|function|undefined WrapperFor_ftol_At005931e0()|
-593210|Function_00593210||113|function|undefined4 Function_00593210(void)|
+593210|UpdateDeferredCdAudioFade||113|function|char __cdecl UpdateDeferredCdAudioFade(void)|
 5932b0|TSoundPlayer::CreateObject|?CreateObject@TSoundPlayer@@SGPAVCObject@@XZ|122|function|undefined CreateObject()|rtti
 593350|TSoundPlayer::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
-593370|TSoundPlayer::?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@@Z||38|function|undefined ?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@@Z()|
+593370|TSoundPlayer::TSoundPlayer||38|function|void __thiscall TSoundPlayer(void)|
 5933b0|TSoundPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-5933e0|TSoundPlayer::?DestructTSoundPlayerBaseState@@YIXPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@@Z||7|function|undefined ?DestructTSoundPlayerBaseState@@YIXPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@@Z()|
-593400|TSoundPlayer::DoIdle||240|function|undefined UpdateAudioPlaybackStateAndScheduleRandomCue()|
-5935c0|UpdateTurnAudioPlaybackStateAndScheduleCue||276|function|undefined UpdateTurnAudioPlaybackStateAndScheduleCue()|
-593730|ResetDualAudioCuePools||21|function|undefined ResetDualAudioCuePools()|
-593760|PushCueToDualAudioCuePools||31|function|undefined PushCueToDualAudioCuePools()|
-593790|TSoundPlayer::SelectAndScheduleRandomAudioCue||317|function|undefined SelectAndScheduleRandomAudioCue()|
-593920|TSoundPlayer::RequestAudioPresetChangeWithDeferredApply||183|function|undefined RequestAudioPresetChangeWithDeferredApply()|
-593a10|TSimMgr::SetOutputDevice||388|function|void __thiscall SetOutputDevice(int this_ptr)|
-593c10|TSoundPlayer::HandleBlinkStateAndScheduleTimerTick||116|function|void __thiscall HandleBlinkStateAndScheduleTimerTick(char enabled)|
-593cb0|ScaleAndApplyAuxOutputVolume||22|function|undefined __cdecl ScaleAndApplyAuxOutputVolume(int volumeScalar)|
-593ce0|Helper_Uses_thunk_GetTickCountDiv16_At00593ce0||40|function|undefined Helper_Uses_thunk_GetTickCountDiv16_At00593ce0()|
+5933e0|TSoundPlayer::~TSoundPlayer||7|function|void __thiscall ~TSoundPlayer(void)|
+593400|TSoundPlayer::DoIdle||240|function|char __thiscall DoIdle(int action)|
+5935c0|TSoundPlayer::UpdateAudioPlaybackStateAndScheduleRandomCue||276|function|void __thiscall UpdateAudioPlaybackStateAndScheduleRandomCue(void)|
+593730|TSoundPlayer::ResetDualAudioCuePools||21|function|void __thiscall ResetDualAudioCuePools(void)|
+593760|TSoundPlayer::PushCueToDualAudioCuePools||31|function|void __thiscall PushCueToDualAudioCuePools(int cueId)|
+593790|TSoundPlayer::SelectAndScheduleRandomAudioCue||317|function|void __thiscall SelectAndScheduleRandomAudioCue(void)|
+593920|TSoundPlayer::RequestAudioPresetChangeWithDeferredApply||183|function|void __thiscall RequestAudioPresetChangeWithDeferredApply(int presetId, bool defer)|
+593a10|TSoundPlayer::SetActiveAudioCueAndResetQueue||388|function|void __thiscall SetActiveAudioCueAndResetQueue(int cueId, bool defer)|
+593c10|TSoundPlayer::StopCdAudioPlayback||116|function|void __thiscall StopCdAudioPlayback(char fadeOut)|
+593cb0|TSoundPlayer::ScaleAndApplyAuxOutputVolume||22|function|void __thiscall ScaleAndApplyAuxOutputVolume(short scalar)|
+593ce0|TSoundPlayer::StartDeferredAudioFadeTimerIfIdle||40|function|void __thiscall StartDeferredAudioFadeTimerIfIdle(void)|
 593e50|WrapperFor_ftol_At00593e50||30|function|undefined WrapperFor_ftol_At00593e50()|
 593e80|TStatusPicture::CreateObject|?CreateObject@TStatusPicture@@SGPAVCObject@@XZ|93|function|TStatusPicture * __cdecl CreateObject(void)|rtti
 593f00|TStatusPicture::GetRuntimeClass||6|function|undefined GetTStatusPictureClassNamePointer()|rtti
@@ -6002,7 +6002,7 @@ address|name|symbol|size|type|prototype|provenance
 5d41a0|GenerateMappedFlavorTextVariantDToSharedString||119|function|undefined GenerateMappedFlavorTextVariantDToSharedString()|
 5d4240|ShouldRetryMappedFlavorTextGeneration||366|function|undefined ShouldRetryMappedFlavorTextGeneration()|
 5d4410|SetSharedStringFromMappedFlavorTextWithLengthClamp||253|function|void __fastcall SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* sharedStr, int dummyEdx, int index)|
-5d4550|SetSharedStringFromRotatingFlavorTextBySlot||269|function|undefined SetSharedStringFromRotatingFlavorTextBySlot()|
+5d4550|AssignNextProvinceNameForNationSlot||269|function|void __cdecl AssignNextProvinceNameForNationSlot(CString* dest, short nationSlot)|
 5d46b0|GenerateMappedFlavorTextByTableSlot||28|function|undefined GenerateMappedFlavorTextByTableSlot()|
 5d46e0|GenerateMappedFlavorTextByCurrentContextNation||45|function|undefined GenerateMappedFlavorTextByCurrentContextNation()|
 5d4720|GenerateMappedFlavorTextUntilValidationPasses||205|function|undefined GenerateMappedFlavorTextUntilValidationPasses()|
@@ -6151,7 +6151,7 @@ address|name|symbol|size|type|prototype|provenance
 5e02f0|WrapperFor_FindFirstFileAndPopulateFileInfoRecord_At005e02f0||54|function|undefined WrapperFor_FindFirstFileAndPopulateFileInfoRecord_At005e02f0()|
 5e0340|DeleteLegacyCliSaveImpFiles||220|function|undefined DeleteLegacyCliSaveImpFiles()|
 5e0460|DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot||137|function|undefined DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot()|
-5e0520|ScheduleTimerSlotCallbackWithInterval||79|function|undefined ScheduleTimerSlotCallbackWithInterval()|
+5e0520|TAssetMgr::ScheduleTimerSlotCallbackWithInterval||79|function|void __thiscall ScheduleTimerSlotCallbackWithInterval(char (__cdecl* callback)(void), unsigned int interval, int slot)|
 5e0590|FormatVersionStringFromVersionResource||212|function|undefined FormatVersionStringFromVersionResource()|
 5e0780|OpenWaveMmioReadFmtChunkAndAllocateHeader||428|function|UINT OpenWaveMmioReadFmtChunkAndAllocateHeader(char* pszFileName, HMMIO* phmmio, WAVEFORMATEX** ppwfx, MMCKINFO* pckInRIFF, MMIOINFO* pmmioInfo)|
 5e09f0|ReadMmioBytesToBufferAndUpdateChunkRemaining||205|function|UINT ReadMmioBytesToBufferAndUpdateChunkRemaining(HMMIO hmmio, UINT cbRead, HPSTR pbDest, MMCKINFO* pckIn, UINT* pcbActualRead)|
@@ -6169,7 +6169,7 @@ address|name|symbol|size|type|prototype|provenance
 5e1850|SetMciPlaybackRangeByTrackIndexAndDevice||114|function|undefined SetMciPlaybackRangeByTrackIndexAndDevice()|
 5e18f0|OpenCdAudioAndProbeAuxOutputDevice||190|function|undefined OpenCdAudioAndProbeAuxOutputDevice()|
 5e19e0|SendMciCommand804ToDevice||32|function|undefined SendMciCommand804ToDevice()|
-5e1a10|SendMciCommand808ToDeviceWithParam||26|function|undefined SendMciCommand808ToDeviceWithParam()|
+5e1a10|SendMciStopCommandToDevice||26|function|void __stdcall SendMciStopCommandToDevice(unsigned int device)|
 5e1b90|WrapperFor_ftol_At005e1b90||30|function|undefined WrapperFor_ftol_At005e1b90()|
 5e1bc0|InitializeDialogTemplate98WithSharedText||120|function|undefined InitializeDialogTemplate98WithSharedText()|
 5e1c60|TLowDiskWarningDialog::`scalar deleting destructor'|??_GTLowDiskWarningDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
@@ -6249,9 +6249,9 @@ address|name|symbol|size|type|prototype|provenance
 5e4a90|ResizeDwordPointerArrayAndZeroNewSlots||310|function|undefined ResizeDwordPointerArrayAndZeroNewSlots()|
 5e4d50|WrapperFor_ftol_At005e4d50||30|function|undefined WrapperFor_ftol_At005e4d50()|
 5e4d80|WrapperFor_AppendPointerToGlobalVectorAsStatus_At005e4d80||40|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At005e4d80()|
-5e4dc0|thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0||10|function|undefined thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0()|
-5e4de0|InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0||24|function|undefined InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0()|
-5e4e70|TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists||192|function|undefined InitializeSoundSubsystemAndAllocateChannelLists()|
+5e4dc0|ReleaseGlobalDirectSoundDeviceAndChannels||10|function|void __cdecl ReleaseGlobalDirectSoundDeviceAndChannels(void)|
+5e4de0|ResetAndOpenGlobalCdAudioDevice||24|function|void __cdecl ResetAndOpenGlobalCdAudioDevice(void)|
+5e4e70|TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists||192|function|void __thiscall InitializeSoundSubsystemAndAllocateChannelLists(int handlerTag)|
 5e4f60|TSoundPlayer::ReturnConstantTrue_SoundPredicate||3|function|undefined ReturnConstantTrue_SoundPredicate()|
 5e4f80|TSoundPlayer::RequestDirectSoundInitIfAllowed||22|function|undefined RequestDirectSoundInitIfAllowed()|
 5e4fb0|TSoundPlayer::ReturnConstantFalse_SoundPredicate||5|function|undefined ReturnConstantFalse_SoundPredicate()|
@@ -6264,7 +6264,7 @@ address|name|symbol|size|type|prototype|provenance
 5e5170|TSoundPlayer::ReturnConstantZero_005e5170||5|function|undefined ReturnConstantZero_005e5170()|
 5e5190|TSoundPlayer::ReturnConstantZero_005e5190||5|function|undefined ReturnConstantZero_005e5190()|
 5e51b0|TSoundPlayer::VTableSlot31||14|function|undefined 'scalar_deleting_destructor'(void)|
-5e51d0|TSoundPlayer::Free||70|function|undefined ReleaseRuntimeSelectionPeersAndResetOwner()|
+5e51d0|TSoundPlayer::Free||70|function|void __thiscall Free(void)|
 5e539c|AfxGetMainWnd|?AfxGetMainWnd@@YGPAVCWnd@@XZ|25|function|class CWnd * __stdcall AfxGetMainWnd(void)|msvc500_library_override
 5e53bc|CNoTrackObject::`scalar deleting dtor'|??_GCNoTrackObject@@UAEPAXI@Z|28|function|public: virtual void * __thiscall CNoTrackObject::`scalar deleting dtor'(unsigned int)|msvc500_library_oracle
 5e53d8|CThreadLocal<class AFX_MODULE_THREAD_STATE>::CreateObject|?CreateObject@?$CThreadLocal@VAFX_MODULE_THREAD_STATE@@@@SGPAVCNoTrackObject@@XZ|52|function|public: static class CNoTrackObject * __stdcall CThreadLocal<class AFX_MODULE_THREAD_STATE>::CreateObject(void)|msvc500_library_override
@@ -8660,6 +8660,7 @@ address|name|symbol|size|type|prototype|provenance
 6a3b20|g_afNationWeightedMilitaryOrderScore_006a3b20|||global||
 6a3b50|g_afNationCombinedUnitDivergence_006a3b50|||global||
 6a3b88|g_afNationMobileUnitScore_006a3b88|||global||
+6a3d98|g_ptLoungeNationReplacementModalMessage|||global||
 6a3ebc|g_pNavySecondaryOrderListHead|||global||
 6a3ed8|g_pCachedMapActionContext|||global||
 6a3edc|g_pNavyPrimaryOrderListHead|||global||
@@ -8696,7 +8697,7 @@ address|name|symbol|size|type|prototype|provenance
 6a4490|g_awCivilianLegendSelectionCountsBySlot|||global||
 6a44b0|g_pActiveCityDialogLegendSelectionOwner|||global||
 6a44b4|g_bCityDialogLegendSelectionInitialized|||global||
-6a4520|DAT_006a4520|||global||xref_oracle
+6a4520|g_randomAudioCuePollCounter|||global||xref_oracle
 6a4780|g_aTacticalUnitFacingOffsetTable|||global||
 6a5458|g_nUiFrameClipOriginX|||global||
 6a545c|g_nUiFrameClipOriginY|||global||

@@ -625,7 +625,10 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case 0x67:
     turnStateCode = 4;
     g_pUiRuntimeContext->DispatchTurnEvent(
-        g_pCityOrderCapabilityState->hasProductionOrder193 != 0 ? 0x7da : 0x7d9, activeNationSlot);
+        g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0
+            ? 0x7da
+            : 0x7d9,
+        activeNationSlot);
     break;
 
   case 0x68:

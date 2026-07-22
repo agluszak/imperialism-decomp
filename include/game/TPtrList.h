@@ -17,9 +17,9 @@ public:
   DECLARE_DYNCREATE(TPtrList)
   TPtrList();
 
-  // Same copy-to-front body as the inherited slot 0x40 -- TPtrList re-declares the
-  // operation as its own new slot (hence the curated "Alt" name).
-  virtual void InsertCopiedRecordAtFrontOfPtrListAlt(void* record); // slot 0x48 0x488470
+  // Same copy-to-front behavior as inherited slot 0x40, exposed by TPtrList as its
+  // own final virtual slot.
+  virtual void PrependCopiedRecordToPtrList(void* record); // slot 0x48 0x488470
 
   int GetIntByOrdinalSlot24(int ordinal);
 

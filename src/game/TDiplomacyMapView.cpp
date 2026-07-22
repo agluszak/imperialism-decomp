@@ -39,14 +39,11 @@ void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* ru
                                                       void* surfacePixels, int flag,
                                                       int surfaceHeight);
 
-undefined4 FrameRegionOnHdcAndReleaseBrushState(void);
 undefined4 BlitMonochromeMaskBytePatternToSurface(void);
 namespace {
 const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
 const unsigned int kAddrDiplomacyTurnStateManager = 0x006A43D0;
 const unsigned int kAddrDiplomacyRelationPaletteMap = 0x00696990;
-const unsigned int kAddrDiplomacyHitRectInitialized = 0x006A2FBC;
-const unsigned int kAddrResolveDiplomacyActionValue = 0x004F5F70;
 
 // The Windows port brackets minor-nation label drawing with the palette built from
 // bitmap 0x3b6. The original uses an 8-byte compiler-generated guard around
@@ -257,13 +254,12 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
     DiplomacyMaskBufferRun* run = &maskRuns[nationIndex];
     RgnHandle nationRgn = g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(nationIndex);
     CopyRect(&run->boundsAt04, &(*nationRgn)->rgnBBox);
-    char* oldMask = reinterpret_cast<char*>(run->maskBytesAt00);
     run->boundsAt04.right =
         run->boundsAt04.left + ((run->boundsAt04.right - run->boundsAt04.left) + 7 >> 3) * 8;
-    operator delete(oldMask);
-    char* mask = static_cast<char*>(operator new((run->boundsAt04.right - run->boundsAt04.left) *
-                                                 (run->boundsAt04.bottom - run->boundsAt04.top)));
-    run->maskBytesAt00 = reinterpret_cast<unsigned char*>(mask);
+    delete[] run->maskBytesAt00;
+    run->maskBytesAt00 = new unsigned char[(run->boundsAt04.right - run->boundsAt04.left) *
+                                           (run->boundsAt04.bottom - run->boundsAt04.top)];
+    unsigned char* mask = run->maskBytesAt00;
     for (int y = run->boundsAt04.top; y < run->boundsAt04.bottom; ++y) {
       for (int x = run->boundsAt04.left; x < run->boundsAt04.right;) {
         *mask = 0;
@@ -272,7 +268,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
           probe.x = x;
           probe.y = y;
           if (PtInRgn(&probe, nationRgn) != 0) {
-            *mask = static_cast<char>(*mask + bit);
+            *mask = static_cast<unsigned char>(*mask + bit);
           }
           ++x;
         }
@@ -447,11 +443,7 @@ void TDiplomacyMapView::Draw(RECT* rectBuffer) {
   SetQuickDrawFillColor(0xffffff);
   RgnHandle frameRegion = g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(
       static_cast<short>(frameRegionSelectorAt98));
-  // 0x497860 is a genuine __cdecl free function (ret 0, all args on the stack); this
-  // call site's disassembly pushes exactly one argument (unlike the 3-arg cast used at
-  // the RenderDiplomacyLegendSurfaceAndPresent call site above) -- only the arg/return
-  // types are adjusted here, the convention is not faked.
-  reinterpret_cast<void(__cdecl*)(void*)>(FrameRegionOnHdcAndReleaseBrushState)(frameRegion);
+  QDFrameRgn(frameRegion);
   SetQuickDrawFillColor(0);
 
   if (interactionModeAt94 == 5) {
@@ -684,21 +676,9 @@ void TDiplomacyMapView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point
 // FUNCTION: IMPERIALISM 0x004f5e00
 int TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* clickPoint) {
   char* self = reinterpret_cast<char*>(this);
-  char initFlags = *reinterpret_cast<char*>(kAddrDiplomacyHitRectInitialized);
-  if ((initFlags & 1) == 0) {
-    *reinterpret_cast<char*>(kAddrDiplomacyHitRectInitialized) = static_cast<char>(initFlags | 1);
-    RECT initRect;
-    initRect.left = 0x31;
-    initRect.top = 0x2d;
-    initRect.right = 0x24d;
-    initRect.bottom = 0x159;
-    CopyRect(&g_diplomacyHitBounds, &initRect);
-    // 0x5e7920 is the CRT atexit (libcmt onexit.obj, oracle-confirmed): the original
-    // registers the static hit-rect cleanup at 0x4f5f70 as an exit handler.
-    atexit(reinterpret_cast<void(__cdecl*)(void)>(kAddrResolveDiplomacyActionValue));
-  }
+  static CRect diplomacyHitBounds = CRect(0x31, 0x2d, 0x24d, 0x159);
 
-  if (PtInRect(&g_diplomacyHitBounds, *clickPoint) == 0) {
+  if (PtInRect(&diplomacyHitBounds, *clickPoint) == 0) {
     return 0;
   }
   if (interactionModeAt94 == 5) {
@@ -884,10 +864,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
   SetQuickDrawFillColor(0xffffff);
   RgnHandle frameRegion = g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(
       static_cast<short>(frameRegionSelectorAt98));
-  // 0x497860 is a genuine __cdecl free function (ret 0, all args on the stack); only its
-  // stub arg/return types are adjusted here -- the convention is not faked.
-  reinterpret_cast<void(__cdecl*)(void*, int, void*)>(FrameRegionOnHdcAndReleaseBrushState)(
-      this, 0, frameRegion);
+  QDFrameRgn(frameRegion);
   SetQuickDrawFillColor(0);
 }
 

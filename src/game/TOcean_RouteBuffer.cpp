@@ -12,8 +12,8 @@
 // FUNCTION: IMPERIALISM 0x0052e7b0
 void TOcean::AllocateRouteNodeStateBufferByCount(short count) {
   routeNodeCount = count;
-  ::operator delete(routeSegments);
-  routeSegments = static_cast<CRect*>(::operator new(count << 4));
+  delete[] routeSegments;
+  routeSegments = new CRect[count];
   if (routeSegments == nullptr) {
     routeSegments = nullptr;
   }

@@ -13,6 +13,7 @@
 #include "game/global_data_tables.h"
 #include "game/TStream.h"
 #include "game/CString.h"
+#include "game/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x005512d0
 // TAdmiral::CreateObject
@@ -23,15 +24,15 @@
 IMPLEMENT_DYNCREATE(TAdmiral, TObject)
 
 // FUNCTION: IMPERIALISM 0x00551430
-TAdmiral::TAdmiral(short terrainTypeIndex)
-    : terrainType(terrainTypeIndex), primaryOrderNode08(0), displayName(), field_10(0),
+TAdmiral::TAdmiral(short nationSlotArg)
+    : nationSlot(nationSlotArg), assignedShip(0), displayName(), experiencePoints(0),
       next(g_pNavySecondaryOrderListHead), prev(0) {
   g_pNavySecondaryOrderListHead = this;
   if (next != 0) {
     next->prev = this;
   }
-  if (static_cast<unsigned short>(terrainType) != 0xffff) {
-    g_apTerrainTypeDescriptorTable[terrainType]->GenerateEthnicName(&displayName);
+  if (static_cast<unsigned short>(nationSlot) != 0xffff) {
+    g_apTerrainTypeDescriptorTable[nationSlot]->GenerateEthnicName(&displayName);
     for (TAdmiral* node = g_pNavySecondaryOrderListHead; node != 0; node = node->next) {
       if (node == this) {
         continue;
@@ -53,7 +54,7 @@ TAdmiral::TAdmiral(short terrainTypeIndex)
 // Inline-expanded into every caller in the original (0x552250 and 0x551850 carry the
 // body verbatim, and 0x5b0500 in another TU still CALLs 0x552250 itself), so it must be
 // `inline` for MSVC500 /Ob1 to reproduce that. Callers spell the clear-backlink steps
-// out on `this->primaryOrderNode08` directly (the original re-reads the member after
+// out on `this->assignedShip` directly (the original re-reads the member after
 // the +0x20 store), so there is no ClearPrimaryOrderBacklink helper.
 static inline void RecomputeMapOrderOwnerActiveSelection(TTaskForce* ownerContext) {
   if (ownerContext == 0) {
@@ -87,14 +88,14 @@ void TAdmiral::Free() {
 // FUNCTION: IMPERIALISM 0x00551670
 void TAdmiral::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&terrainType, 2);
+  stream->WriteBytesSlot78(&nationSlot, 2);
   stream->streamSlotAc(&displayName);
-  stream->WriteBytesSlot78(&field_10, 2);
+  stream->WriteBytesSlot78(&experiencePoints, 2);
 
   int index = 0;
   TShip* node = g_pNavyPrimaryOrderListHead;
   if (node != 0) {
-    while (node != primaryOrderNode08) {
+    while (node != assignedShip) {
       node = node->nextOlder24;
       ++index;
       if (node == 0) {
@@ -108,9 +109,9 @@ void TAdmiral::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x00551700
 void TAdmiral::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  stream->ReadBytes(&terrainType, 2);
+  stream->ReadBytes(&nationSlot, 2);
   stream->streamSlot70(&displayName, 0x20);
-  stream->ReadBytes(&field_10, 2);
+  stream->ReadBytes(&experiencePoints, 2);
   short index;
   stream->ReadBytes(&index, 2);
 
@@ -120,12 +121,12 @@ void TAdmiral::ReadFrom(TStream* stream) {
     --index;
   }
 
-  if (primaryOrderNode08 != 0) {
-    primaryOrderNode08->admiralBacklink20 = 0;
-    RecomputeMapOrderOwnerActiveSelection(primaryOrderNode08->ownerOrderEntry0c);
+  if (assignedShip != 0) {
+    assignedShip->admiralBacklink20 = 0;
+    RecomputeMapOrderOwnerActiveSelection(assignedShip->ownerOrderEntry0c);
   }
 
-  primaryOrderNode08 = node;
+  assignedShip = node;
   if (node != 0) {
     node->admiralBacklink20 = this;
     RecomputeMapOrderOwnerActiveSelection(node->ownerOrderEntry0c);
@@ -134,27 +135,27 @@ void TAdmiral::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x00551850
 void TAdmiral::ReassignThyself() {
-  if (this->primaryOrderNode08 != 0) {
-    this->primaryOrderNode08->admiralBacklink20 = 0;
-    RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
+  if (this->assignedShip != 0) {
+    this->assignedShip->admiralBacklink20 = 0;
+    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->ownerOrderEntry0c);
   }
-  this->primaryOrderNode08 = 0;
+  this->assignedShip = 0;
 
   TShip* best = 0;
   for (TShip* node = g_pNavyPrimaryOrderListHead; node != 0; node = node->nextOlder24) {
-    if (node->ownerNationSlot14 == this->terrainType) {
+    if (node->ownerNationSlot14 == this->nationSlot) {
       best = node->SelectPreferredMapOrderEntryByPriorityRules(best, 1);
     }
   }
 
-  if (this->primaryOrderNode08 != 0) {
-    this->primaryOrderNode08->admiralBacklink20 = 0;
-    RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
+  if (this->assignedShip != 0) {
+    this->assignedShip->admiralBacklink20 = 0;
+    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->ownerOrderEntry0c);
   }
-  this->primaryOrderNode08 = best;
+  this->assignedShip = best;
   if (best != 0) {
     best->admiralBacklink20 = this;
-    RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
+    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->ownerOrderEntry0c);
   }
   if (best == 0) {
     this->Free();
@@ -164,7 +165,7 @@ void TAdmiral::ReassignThyself() {
 // Mac oracle: TAdmiral::EstimateEnemyForces(short*, const TZone*, short) const.
 // FUNCTION: IMPERIALISM 0x00551a00
 short TAdmiral::EstimateEnemyForces(short* estimatedCounts, TZone* zone, short nation) const {
-  int skill = this == 0 ? 0 : field_10 / 100 + 1;
+  int skill = this == 0 ? 0 : experiencePoints / 100 + 1;
   srand(static_cast<unsigned int>(g_pSimMgr->GetEconomicTurn() + reinterpret_cast<int>(this) +
                                   reinterpret_cast<int>(zone) + nation));
 
@@ -270,7 +271,7 @@ void TAdmiral::GetFleetReport(CString* out, TZone* zone, short nation) const {
     *out += item;
   }
 
-  int skill = this == 0 ? 0 : field_10 / 100 + 1;
+  int skill = this == 0 ? 0 : experiencePoints / 100 + 1;
   CString observedComposition = *out;
   CString certaintyTemplate;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&certaintyTemplate, 0x2762,
@@ -281,14 +282,14 @@ void TAdmiral::GetFleetReport(CString* out, TZone* zone, short nation) const {
 
 // FUNCTION: IMPERIALISM 0x00552250
 void TAdmiral::AssignToShip(TShip* primaryOrderNode) {
-  if (this->primaryOrderNode08 != 0) {
-    this->primaryOrderNode08->admiralBacklink20 = 0;
-    RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
+  if (this->assignedShip != 0) {
+    this->assignedShip->admiralBacklink20 = 0;
+    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->ownerOrderEntry0c);
   }
-  this->primaryOrderNode08 = primaryOrderNode;
+  this->assignedShip = primaryOrderNode;
   if (primaryOrderNode != 0) {
     primaryOrderNode->admiralBacklink20 = this;
-    RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
+    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->ownerOrderEntry0c);
   }
 }
 
@@ -296,27 +297,27 @@ void TAdmiral::AssignToShip(TShip* primaryOrderNode) {
 // rows incorrectly treated its loop body as three independent orphan functions.
 // FUNCTION: IMPERIALISM 0x00552310
 void TAdmiral::ReassignToZone(TZone* zone) {
-  if (this->primaryOrderNode08 != 0) {
-    this->primaryOrderNode08->admiralBacklink20 = 0;
-    RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
+  if (this->assignedShip != 0) {
+    this->assignedShip->admiralBacklink20 = 0;
+    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->ownerOrderEntry0c);
   }
-  this->primaryOrderNode08 = 0;
+  this->assignedShip = 0;
 
   TShip* best = 0;
   for (TShip* node = g_pNavyPrimaryOrderListHead; node != 0; node = node->nextOlder24) {
-    if (node->field08 == zone && node->ownerNationSlot14 == this->terrainType) {
+    if (node->field08 == zone && node->ownerNationSlot14 == this->nationSlot) {
       best = node->SelectPreferredMapOrderEntryByPriorityRules(best, 1);
     }
   }
 
-  if (this->primaryOrderNode08 != 0) {
-    this->primaryOrderNode08->admiralBacklink20 = 0;
-    RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
+  if (this->assignedShip != 0) {
+    this->assignedShip->admiralBacklink20 = 0;
+    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->ownerOrderEntry0c);
   }
-  this->primaryOrderNode08 = best;
+  this->assignedShip = best;
   if (best != 0) {
     best->admiralBacklink20 = this;
-    RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
+    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->ownerOrderEntry0c);
   }
 }
 
@@ -324,7 +325,7 @@ void TAdmiral::ReassignToZone(TZone* zone) {
 // repeats when it collides with another live admiral.
 // FUNCTION: IMPERIALISM 0x00552450
 void TAdmiral::NameThyself() {
-  g_apTerrainTypeDescriptorTable[this->terrainType]->GenerateEthnicName(&this->displayName);
+  g_apTerrainTypeDescriptorTable[this->nationSlot]->GenerateEthnicName(&this->displayName);
   for (TAdmiral* node = g_pNavySecondaryOrderListHead; node != 0; node = node->next) {
     if (node == this) {
       continue;
@@ -354,4 +355,14 @@ CString GetLocalizedNavalReportShipType(short category, char plural) {
   CString result;
   g_pSimMgr->GetString(plural != 0 ? 0x271a : 0x2716, resourceType, &result);
   return result;
+}
+
+// FUNCTION: IMPERIALISM 0x005573f0
+TAdmiral* TAdmiral::CreateForTerrainType(short terrainTypeIndex) {
+  TAdmiral* admiral = new TAdmiral(terrainTypeIndex);
+  if (admiral == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UNavy.cpp", 0xe21);
+  }
+  return admiral;
 }

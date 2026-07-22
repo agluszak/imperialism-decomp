@@ -128,5 +128,7 @@ public:
   // as TTechStorePage slots 0x84-0x9d. Those declarations were removed; the bodies at
   // 0x479440/0x4796xx etc. belong to TScroller, not TTechStorePage.
 
+  void PopulateUnlockedTechnologyRows(int nationSlot); // 0x005b0f10
+
   TTechStorePage();
 };

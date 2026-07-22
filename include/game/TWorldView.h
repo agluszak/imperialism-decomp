@@ -10,8 +10,7 @@ class TCivUnit;
 // VTABLE: IMPERIALISM 0x668cb0
 class TWorldView : public TView {
 public:
-  int viewportOffsetX; // field_0x60
-  int viewportOffsetY; // field_0x64
+  CPoint viewportOrigin60;
   unsigned short field68;
   unsigned short field6a;
   // Hovered tile under the current cursor sample and the tile whose hover decoration is
@@ -76,7 +75,7 @@ public:
                                                              unsigned char altOverlay);
   virtual void RenderStrategicTileSelectionAndNeighborHighlights();
   virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
-                                                                   short* viewportOriginXY,
+                                                                   const CPoint* viewportOrigin,
                                                                    short* outVerticalOffset,
                                                                    short* outHorizontalOffset,
                                                                    int projectionScale);

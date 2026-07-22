@@ -52,15 +52,12 @@ TArmyMission::TArmyMission() : TMission() {
 
 // FUNCTION: IMPERIALISM 0x0053c0a0
 TArmyMission::TArmyMission(int nodeKey) : TMission() {
-  nationId04 = 0xffff;
-  pathMarker06 = 0xffff;
   presentLocation14 = static_cast<short>(nodeKey);
-  padding_16 = static_cast<short>(0xffff);
 
-  TList* list = static_cast<TList*>(TList::CreateObject());
+  TList* list = new TList;
   orderListAt18 = list;
   if (list == nullptr) {
-    MessageBoxA(nullptr, "Nil Pointer", "Failure", 0x30);
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMissionSubs.cpp", 0x842);
   }
 
@@ -81,13 +78,15 @@ static inline float SwapFloat(float val) {
   union {
     float f;
     unsigned char b[4];
-  } src, dst;
-  src.f = val;
-  dst.b[0] = src.b[3];
-  dst.b[1] = src.b[2];
-  dst.b[2] = src.b[1];
-  dst.b[3] = src.b[0];
-  return dst.f;
+  } swapped;
+  swapped.f = val;
+  unsigned char byte0 = swapped.b[0];
+  unsigned char byte1 = swapped.b[1];
+  swapped.b[0] = swapped.b[3];
+  swapped.b[1] = swapped.b[2];
+  swapped.b[2] = byte1;
+  swapped.b[3] = byte0;
+  return swapped.f;
 }
 
 // Shared accumulation loop over orderListAt18 (0x53c620 / 0x53ceb0 / 0x53d020 / 0x53d200 /
@@ -140,37 +139,24 @@ void TArmyMission::WriteTo(TStream* stream) {
     stream->WriteBytesSlot78(&swapped, 4);
   }
 
-  int count = (orderListAt18 != nullptr) ? orderListAt18->GetCount() : 0;
-  stream->WriteCountSlot88(count);
+  stream->WriteCountSlot88(orderListAt18->GetCount());
 
   TGreatPower* nation = g_apNationStates[nationId04];
-  TSortedList* unitList = reinterpret_cast<TSortedList*>(nation->militaryUnitList44);
+  TSortedList* unitList = nation->militaryUnitList44;
 
-  if (orderListAt18 != nullptr) {
-    CIterator iter(orderListAt18);
-    void* currentUnit = iter.Reset();
-    while (iter.More()) {
-      int index = 1;
-      POSITION pos = unitList->listState.GetHeadPosition();
-      while (pos != nullptr) {
-        if (unitList->listState.GetNext(pos) == currentUnit) {
-          break;
-        }
-        index++;
-      }
-      stream->WriteCountSlot88(index);
-      currentUnit = iter.Advance();
-    }
+  CIterator iter(orderListAt18);
+  void* currentUnit = iter.Reset();
+  while (iter.More()) {
+    stream->WriteCountSlot88(unitList->FindOneBasedOrdinalOf(currentUnit));
+    currentUnit = iter.Advance();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053c3d0
 void TArmyMission::ReadFrom(TStream* stream) {
-  int saveFormatVersion = g_nSaveFormatVersion;
-
   TMission::ReadFrom(stream);
   stream->ReadBytes(&presentLocation14, 2);
-  if (saveFormatVersion < 0xb) {
+  if (g_nSaveFormatVersion < 0xb) {
     stream->ReadBytes(&requiredEquipageByClass[0], 0x10);
     requiredEquipageByClass[4] = 0.0f;
   } else {
@@ -186,15 +172,13 @@ void TArmyMission::ReadFrom(TStream* stream) {
 
   for (int i = 0; i < count; ++i) {
     short index = stream->ReadShort();
-    void* unit = unitList->GetEntryByOrdinal(index);
-    if (orderListAt18 != nullptr) {
-      orderListAt18->AddTail(unit);
-    }
+    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitList->GetEntryByOrdinal(index));
+    AcceptReenforcement(unit, 0);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053c4f0
-char TArmyMission::ReturnFalseSlot98() {
+char TArmyMission::SmokeEmIfYouGotEm() {
   if (orderListAt18 != nullptr) {
     CIterator iter(orderListAt18);
     void* item = iter.Reset();
@@ -202,7 +186,7 @@ char TArmyMission::ReturnFalseSlot98() {
       TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
       short movementClass = unit->GetUnitMovementClassId();
       if (movementClass != 0) {
-        NoOpSlot88(unit, 1);
+        RejectConstituent(unit, 1);
       }
       item = iter.Advance();
     }
@@ -211,11 +195,11 @@ char TArmyMission::ReturnFalseSlot98() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053c570
-void TArmyMission::NoOpSlot80(TMilitaryUnit* unit, int notify) {
+void TArmyMission::AcceptReenforcement(TMilitaryUnit* unit, unsigned char notify) {
   unit->TObject::AssertValid();
   TMission* owner = unit->ownerMission40;
   if (owner != nullptr) {
-    owner->NoOpSlot88(unit, notify);
+    owner->RejectConstituent(unit, notify);
   }
   unit->ownerMission40 = this;
   orderListAt18->AddHead(unit);
@@ -225,8 +209,8 @@ void TArmyMission::NoOpSlot80(TMilitaryUnit* unit, int notify) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053c5e0
-void TArmyMission::NoOpSlot88(TMilitaryUnit* unit, int unused) {
-  (void)unused;
+void TArmyMission::RejectConstituent(TMilitaryUnit* unit, unsigned char notify) {
+  (void)notify;
   if (orderListAt18 != nullptr) {
     POSITION pos = orderListAt18->listState.Find(unit);
     if (pos != nullptr) {
@@ -355,7 +339,7 @@ void TArmyMission::GetWeightedEquipage(float* vector) const {
 }
 
 // FUNCTION: IMPERIALISM 0x0053ceb0
-float TArmyMission::ReturnZeroFloatSlot68() {
+float TArmyMission::GetWeightedSatisfaction() {
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   AccumulateOrderPriorityVector(vector);
 
@@ -429,7 +413,7 @@ float TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(
 }
 
 // FUNCTION: IMPERIALISM 0x0053d3e0
-float TArmyMission::ReturnZeroFloatSlot6C() {
+float TArmyMission::IndustrialCostOfNeeds() {
   double total = 0.0;
   for (int i = 0; i < 5; ++i) {
     total += static_cast<double>(requiredEquipageByClass[i]) *
@@ -439,21 +423,21 @@ float TArmyMission::ReturnZeroFloatSlot6C() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053d420
-float TArmyMission::ReturnZeroFloatSlot70(TMilitaryUnit* candidateUnit) {
+float TArmyMission::ValueOf(TMilitaryUnit* candidateUnit) {
   if (flag10 != 0) {
     return g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
 
   if (candidateUnit->ownerMission40 == this) {
-    float ownScore = ReturnZeroFloatSlot68();
+    float ownScore = GetWeightedSatisfaction();
     return ownScore - ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(candidateUnit);
   }
   float withCandidate = ComputeArmyMissionScoreDeltaWithCandidateUnit(candidateUnit);
-  return withCandidate - ReturnZeroFloatSlot68();
+  return withCandidate - GetWeightedSatisfaction();
 }
 
 // FUNCTION: IMPERIALISM 0x0053d4a0
-float TArmyMission::ReturnZeroFloatSlot78(TMilitaryUnit* candidateUnit, float* referenceVector) {
+float TArmyMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector) {
   if (static_cast<double>(candidateUnit->field_34) * 0.002 < 139069760.0) {
     if (!IsANoBrainer()) {
       return -1000.0f;

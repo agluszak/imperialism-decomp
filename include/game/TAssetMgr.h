@@ -3,6 +3,7 @@
 #include "game/CString.h"
 #include "game/TObject.h"
 #include "game/mfc.h"
+#include "game/timer_slots.h"
 
 class TView;
 class TMovieView;
@@ -95,6 +96,10 @@ public:
   // Deletes every "save/cli_*.imp" legacy client save file, returning the count
   // removed. `this` is unused; callers dispatch through g_pUiViewManager. 0x5e0340.
   int DeleteLegacyCliSaveImpFiles();
+  // Register an audio-state callback in the shared slot table and arm its Win32 timer.
+  // Every caller loads ECX = g_pUiViewManager even though the body does not read `this`.
+  // 0x005e0520.
+  void ScheduleTimerSlotCallbackWithInterval(TimerSlotCallback callback, UINT interval, int slot);
   // Loads the module's RT_VERSION resource and formats "(v. major.minor[.build[.revision]])"
   // into *out from its VS_FIXEDFILEINFO dwFileVersionMS/dwFileVersionLS fields (raw offsets
   // into the loaded resource block, matching the original's direct FindResource/

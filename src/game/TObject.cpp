@@ -10,7 +10,6 @@
 
 IMPLEMENT_SERIAL(TObject, CObject, 1)
 
-
 // FUNCTION: IMPERIALISM 0x00415ce0
 TObject* TObject::ShallowFree() {
   CRuntimeClass* runtimeClass = GetRuntimeClass();
@@ -41,9 +40,7 @@ TObject* TObject::ShallowClone() {
 // TObject::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00485f50
-void TObject::RestoreConstructionSentinelVtable() {
-  *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(0x0066fec4);
-}
+TObject::~TObject() {}
 
 // FUNCTION: IMPERIALISM 0x00485f70
 void TObject::WriteTo(TStream* stream) {

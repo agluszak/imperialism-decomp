@@ -57,19 +57,16 @@ struct NationStateRecordA8 {
 };
 
 // One of TMultiplayerMgr::nationStatusControlSlots' 4 elements. Ground truth from
-// TMultiplayerMgr::~TMultiplayerMgr (0x542810): each slot's destructor frees dataPtr via
-// a raw operator delete (no typed destructor on the pointee), gated on non-null. Neither
-// the pointee type nor tagOrSize's meaning is recovered yet; no reader/writer of the
-// array besides the ctor's memset zero-init is ported.
+// TMultiplayerMgr construction/destruction (0x542670/0x542810) uses VC5's vector
+// iterators over four of these records. The element ctor zeroes both fields and the
+// element dtor scalar-deletes the byte/POD storage when present. Neither the payload
+// shape nor tagOrSize's meaning is recovered yet.
 struct TMultiplayerSlotHandle {
-  void* dataPtr;
+  unsigned char* allocatedData;
   int tagOrSize;
 
-  ~TMultiplayerSlotHandle() {
-    if (dataPtr != 0) {
-      operator delete(dataPtr);
-    }
-  }
+  TMultiplayerSlotHandle();
+  ~TMultiplayerSlotHandle();
 };
 
 // Multiplayer session / game-flow manager (g_pGameFlowState). Inherits the shared
@@ -136,6 +133,9 @@ public:
   // g_pNetMgr006a6014 global.
   void EmitTurnEvent3Mode18WithActiveNation(); // 0x5446a0
   void EmitTurnEvent10ForFlaggedNationSlots(); // 0x544720
+  // Close the current lounge dialog, emit the loopback event-3 tick, and notify the
+  // network manager that the dialog-mode tag changed. 0x5456a0.
+  unsigned char CloseLobbyDialogAndEmitTurnEvent3();
   // 0x54c480 — builds a turn-event-26 packet snapshotting g_pDiplomacyTurnStateManager's
   // relation/pending-policy/selection/comparative-power matrices and hands it to
   // TNetMgr::Send. Body not yet ported (separate packet-struct modeling task); called
@@ -181,7 +181,9 @@ public:
                                         int destinationSlot);
   void DispatchTaggedGameStateEvent1F20(int packetTag, int param2,
                                         int nationSlotOrMode); // 0x54a340
-  void DispatchCityRedrawInvalidateEvent(short cityId);        // 0x54abf0
+  // Event-8 lobby text packet: source slot plus the manager's player-name pair.
+  void DispatchLobbyTextPairEvent8(unsigned char sourceNationSlot); // 0x54a410
+  void DispatchCityRedrawInvalidateEvent(short cityId);             // 0x54abf0
   void DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
                                               int mode);                        // 0x54c5a0
   unsigned char ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet); // 0x545940
@@ -302,6 +304,10 @@ public:
   // Send the turn-event-0x15 diplomacy need-state snapshot for nationSlot (broadcast
   // when broadcastFlag != 0). 0x54b5d0.
   void EmitNationDiplomacyNeedStateSnapshotEvent15(char broadcastFlag, int nationSlot);
+
+  // Update one nation-status tag (resolving -1 to the active/fallback slot) and send
+  // the corresponding event-0x25 status-board delta. 0x54b7e0.
+  void SetNationStatusCodeAndEmitEvent25(int statusTag, int nationSlot);
 
   // Send the turn-event-0x19 per-nation state-array packet for nationSlot to
   // destinationSlot (sentinels as NetMessage::DestinateTo; -3 also marks the send

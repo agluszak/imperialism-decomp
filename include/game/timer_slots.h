@@ -8,16 +8,12 @@
 // callback returns 0 ("done").
 
 // Slot callback: returns non-zero to keep the timer running, 0 to have the dispatcher stop
-// and clear the slot. (Modeled as undefined4 to match the generic function-pointer table the
-// original stores; the dispatcher only tests it against zero.)
-typedef undefined4 (*TimerSlotCallback)();
+// and clear the slot. The dispatcher tests AL, so this is an actual byte result rather than
+// the old undefined4 placeholder.
+typedef char(__cdecl* TimerSlotCallback)();
 
 // The registry globals (g_timerSlotCallbacks @0x006a5cf8, g_timerSlotIds @0x006a5c98,
 // g_timerDispatchSuppressAssert @0x006a5d24) are declared in game/global_data_tables.h.
-
-// 0x005e0520 — register callback in slot and (re)arm a Win32 timer on the main window.
-void __stdcall ScheduleTimerSlotCallbackWithInterval(TimerSlotCallback callback, UINT interval,
-                                                     int slot);
 
 // 0x005e0460 — WM_TIMER dispatcher shared by all slots (passed as the TIMERPROC).
 void CALLBACK DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot(HWND hwnd, UINT msg,

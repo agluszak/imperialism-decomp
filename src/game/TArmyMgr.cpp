@@ -104,7 +104,7 @@ void MapContextActionRecord::ReadFrom(TStream* stream) {
         stream->ReadBytes(&elem.nameBuffer, 0x20);
       }
       stream->ReadBytes(&elem.strengthBucket, 2);
-      stream->ReadBytes(&elem.childPtr, 4);
+      stream->ReadBytes(&elem.detailIdentity, 4);
     }
   }
 }
@@ -134,7 +134,7 @@ void MapContextActionRecord::WriteTo(TStream* stream) {
       stream->WriteBytesSlot78(&child.stockOrRequired, 2);
       stream->WriteBytesSlot78(child.nameBuffer, 0x20);
       stream->WriteBytesSlot78(&child.strengthBucket, 2);
-      stream->WriteBytesSlot78(&child.childPtr, 4);
+      stream->WriteBytesSlot78(&child.detailIdentity, 4);
     }
   }
 }
@@ -1743,7 +1743,7 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
         bestScore = 0;
       }
     } else {
-      int admiralScore = static_cast<short>(admiral->field_10 / 100) + 1;
+      int admiralScore = static_cast<short>(admiral->experiencePoints / 100) + 1;
       if (bestScore < admiralScore) {
         selectedName = CString(s_szAdmiralPrefix_0069578c + admiral->displayName);
         g_pSimMgr->GetString(0x2744, 2, &outDefenderSummary);
@@ -1947,21 +1947,20 @@ void TArmyMgr::AppendMapContextActionRecordAndResetWorkingFields(MapOrderBattleS
 }
 
 // FUNCTION: IMPERIALISM 0x004a6ef0
-void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char requiredCountByte,
-                                                               int cityIndex,
+void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, int cityIndex,
                                                                MapOrderBattleSnapshot* snapshot) {
-  // requiredCountByte carries TTaskForce::required_count, which every navy-order reader
+  // nationId carries TTaskForce::required_count, which every navy-order reader
   // treats as the entry's owning nation slot (RemoveMatchingTaskForceOrders above) --
   // used below as a g_apNationStates index. `side` is recovered implicitly by comparing
-  // this byte against snapshot->requiredCountByte[0]: side 0's own call always matches
+  // this byte against snapshot->nationIds[0]: side 0's own call always matches
   // trivially (side = 0); side 1's call only diverges -- and only then runs the trim --
   // when the two sides' nation slots differ.
-  int side = (requiredCountByte != snapshot->requiredCountByte[0]) ? 1 : 0;
+  int side = (nationId != snapshot->nationIds[0]) ? 1 : 0;
 
   TList* scratchList = new TList();
 
   int budget = 0;
-  TCountry* nation = g_apNationStates[requiredCountByte];
+  TCountry* nation = g_apNationStates[nationId];
   CIterator unitIter(nation->militaryUnitList44);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
@@ -1973,7 +1972,7 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char requiredCoun
   }
 
   budget -= g_pNavyOrderManager->ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(
-      requiredCountByte, &g_pGlobalMapState->cityScoreTable[cityIndex], 0);
+      nationId, &g_pGlobalMapState->cityScoreTable[cityIndex], 0);
 
   if (budget > 0) {
     int evictedCount = 0;
@@ -2031,10 +2030,9 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char requiredCoun
                 break;
               }
             }
-            // Sentinel matching RefreshMapOrderBattleSideSnapshot's "yvan"/navy marker
-            // (0x6e617679) -- this side stamps the army equivalent instead of the real
-            // evicted-unit pointer.
-            rec.childPtr = reinterpret_cast<void*>(0x61726d79);
+            // Final battle-report row category; the working unit pointer is no longer
+            // needed once the evicted unit has been copied into the record.
+            rec.detailIdentity.categoryTag = 0x61726d79; // 'army'
             rec.strengthBucket = static_cast<short>(unit->field_38 / 100);
             unit->DetachUnitOrderFromOwnerAndReset();
             unit->Free();

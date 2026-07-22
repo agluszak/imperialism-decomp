@@ -13,6 +13,7 @@ char THostGreatPower::IsHost(void) {
 
 // SYNTHETIC: IMPERIALISM 0x00540f40
 // THostGreatPower::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00540f70
 THostGreatPower::~THostGreatPower() {}
 // SYNTHETIC: IMPERIALISM 0x00540e90
 // THostGreatPower::CreateObject

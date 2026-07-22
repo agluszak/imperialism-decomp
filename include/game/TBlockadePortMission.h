@@ -27,6 +27,7 @@ public:
   // target port zone from context->primaryNeighbors[0] and stores the node in
   // portZoneContext3c.
   TBlockadePortMission(TZone* context);
+  virtual ~TBlockadePortMission() override;
 
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x53ac60
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x53aca0
@@ -38,7 +39,8 @@ public:
 
   virtual TMission*
   GetReplacementSlot48() override; // slot 0x12 0x53adf0 -- validate context / refresh child
-  virtual char Matches(int kind, int key, int mode) const override; // slot 0x13 0x53ba10
+  virtual char Matches(eMissionType missionType, int key,
+                       TZone* zoneContext) const override; // slot 0x13 0x53ba10
 
   virtual char IsDefensiveSeaZoneMission() const override; // slot 0x18 0x53aa70
   virtual char IsHospitalMission() const override;         // slot 0x19 0x53aa50

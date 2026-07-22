@@ -56,6 +56,8 @@
 #include "game/TTacticalBattleView.h"
 #include "game/TScrollView.h" // nation-info modal overflow scroll wrapper
 #include "game/TStaticText.h"
+#include "game/TDropShadowText.h"
+#include "game/TTechStorePage.h"
 #include "game/mapped_flavor_text.h" // BuildUiMessageTextFromBracketTemplate / scanBracketExpressions
 #include "game/TEditText.h"
 #include "game/TRadioText.h"
@@ -69,9 +71,6 @@
 #include "game/TTurnEventDialogFactoryRegistry.h"
 #include "game/quickdraw_rendering.h" // ApplyControlThemeStyleAndOptionalCaption
 #include "game/ui_text_label_helpers_decls.h"
-
-undefined4 ShowDialogTemplateE0ModalAndReleaseCapture(void);
-undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 
 #include <new>
 
@@ -1191,7 +1190,7 @@ void TViewMgr::DispatchTurnEvent(short eventCode, int payload) {
       g_pCursorControlPanel->AssertValid();
     } else if (newCode == 0x8fc) {
       mainView->RefreshControl();
-      HandleTurnEvent8FC_RebuildPageTabsAndTitles();
+      this->RefreshTechnologyStorePageAndHudText(0);
     } else if (newCode == 0x7d8) {
       if (static_cast<short>(g_pSimMgr->mode) == 0x68) {
         mainView->RefreshControl();
@@ -1223,7 +1222,7 @@ void TViewMgr::DispatchTurnEvent(short eventCode, int payload) {
   g_pUiViewManager->OpenFilesForView(0);
   mainView->Open();
   if (this->field10 != 0) {
-    ShowDialogTemplateE0ModalAndReleaseCapture();
+    ShowBlockingWaitOverlayDialog();
     this->field10 = 0;
   }
   TControl* inclControl =
@@ -1246,7 +1245,7 @@ void TViewMgr::DispatchTurnEvent(short eventCode, int payload) {
   packet->RefreshControl();
   g_pDisplayMgr->UpdateTheGWorld(newCode);
   if (this->field10 != 0) {
-    ShowDialogTemplateE0ModalAndReleaseCapture();
+    ShowBlockingWaitOverlayDialog();
     this->field10 = 0;
   }
   this->currentTurnEventCode = newCode;
@@ -1280,7 +1279,7 @@ void TViewMgr::DispatchTurnEvent(short eventCode, int payload) {
       if (newCode == 0xed8 || newCode == 0xf3c) {
         this->SyncTacticalStatusPanelRegion();
       } else if (newCode == 0x8fc) {
-        HandleTurnEvent8FC_RebuildPageTabsAndTitles();
+        this->RefreshTechnologyStorePageAndHudText(0);
       } else if (newCode == 0x11f8) {
         this->HandleTurnEventDialogFactorySlotF4();
       } else if (newCode == 0xf3d) {
@@ -1437,6 +1436,46 @@ void TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(int)
     querControl->AssertValid();
     querControl->SetHoverHelpText(g_szEmptyString);
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005d8750
+void TViewMgr::RefreshTechnologyStorePageAndHudText(int nationSlot) {
+  TView* mainView = g_pDisplayMgr->activeDialog;
+
+  TTechStorePage* page =
+      static_cast<TTechStorePage*>(mainView->ResolveControlByTag(kControlTagPage));
+  page->AssertValid();
+  page->PopulateUnlockedTechnologyRows(nationSlot);
+
+  TToolBarCluster* toolbar =
+      static_cast<TToolBarCluster*>(mainView->ResolveControlByTag(kControlTagTool));
+  toolbar->AssertValid();
+  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
+  toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
+
+  g_pCursorControlPanel =
+      static_cast<TInfoBarText*>(mainView->ResolveControlByTag(kControlTagCurs));
+  g_pCursorControlPanel->AssertValid();
+  g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
+
+  toolbar = static_cast<TToolBarCluster*>(mainView->ResolveControlByTag(kControlTagTopB));
+  toolbar->AssertValid();
+  toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
+
+  for (int titleIndex = 0; titleIndex < 3; ++titleIndex) {
+    CString title;
+    TDropShadowText* titleControl = static_cast<TDropShadowText*>(
+        mainView->ResolveControlByTag(0x74746c31u + titleIndex)); // 'ttl1'..'ttl3'
+    titleControl->AssertValid();
+    ApplyUiTextStyleAndThemeFlags(titleControl, 0, 0xe, 0x2b6a, 0x2b68);
+    g_pSimMgr->GetString(0x274f, static_cast<short>(titleIndex + 4), &title);
+    titleControl->SetTextAndMaybeRefresh(&title, 1);
+  }
+
+  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
+  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagPage);
+  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730, 0xd, kControlTagEnd);
+  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730, 3, kControlTagQuer);
 }
 
 // FUNCTION: IMPERIALISM 0x005d8980
@@ -2202,7 +2241,7 @@ void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
   node->Free();
 
   if (selectedTaskForce != 0) {
-    if (static_cast<short>(selectedTaskForce->attachment) == 0) {
+    if (static_cast<short>(selectedTaskForce->shipOrders) == 0) {
       mapUberPictureF0->SetActiveMapOrderEntry(selectedTaskForce->contextAnchor);
     } else {
       mapUberPictureF0->RefreshMapOrderEntryPanel(0);

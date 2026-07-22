@@ -36,13 +36,16 @@ char TBlockadePortMission::IsDefensiveSeaZoneMission() const {
 // SYNTHETIC: IMPERIALISM 0x0053aa90
 // TBlockadePortMission::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x0053aac0
+TBlockadePortMission::~TBlockadePortMission() {}
+
 TBlockadePortMission::TBlockadePortMission()
     : TControlSeaZoneMission(), portZoneContext3c(nullptr) {}
 
 // SYNTHETIC: IMPERIALISM 0x0053aae0
 // TBlockadePortMission::GetRuntimeClass
 
-// The mission factory (CreateMissionObjectByKindAndNodeContext, case 4) builds a
+// The mission factory (TMission::CreateMission, case 4) builds a
 // blockade mission from a map-order context node (a TZone). It lazily ensures the
 // context's primaryNeighbors array has slot 0 allocated -- that first entry is the
 // target port zone -- constructs the TControlSeaZoneMission base on it, back-links
@@ -251,14 +254,9 @@ void TBlockadePortMission::CalculateNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053ba10
-char TBlockadePortMission::Matches(int kind, int key, int mode) const {
+char TBlockadePortMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   (void)key;
-  // Original (0x53ba10) compares the third argument against the inherited
-  // targetZone14 pointer, not the second argument against portZoneContext3c.
-  if (kind == 4 && mode == reinterpret_cast<int>(targetZone14)) {
-    return 1;
-  }
-  return 0;
+  return missionType == kMissionTypeBlockadePort && zoneContext == targetZone14;
 }
 
 // FUNCTION: IMPERIALISM 0x0053ba40

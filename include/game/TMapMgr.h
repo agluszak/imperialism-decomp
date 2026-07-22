@@ -274,8 +274,7 @@ public:
   // exists (else an LCG-random region not already gateFlag 8/9, forcing its gateFlag to 8),
   // assigns resourceTypeByEdge = {3-or-4, -1}, and refreshes gateFlag via
   // ResolveRegionTileSubtypeCodeForTileIndex.
-  virtual void TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(); // slot 0x11
-                                                                               // 0x511a70
+  virtual void GuaranteeResources(); // slot 0x11 0x511a70, Mac oracle
   // If field8 is idle: forces hexNeighborWrapHorizontally20 and (re)opens the "mapdata"
   // session stream via BuildOrLoadGlobalMapStateForSession. If the strategic-map palette
   // preview is not ready, renders it through the strategic map view. Called from
@@ -285,7 +284,8 @@ public:
   // (a UI refresh notification) to g_pUiRuntimeContext for the active nation.
   virtual void DispatchTurnEvent7DDForActiveNation();     // slot 0x13 0x511ed0
   virtual void ResetAllTileMarkerSlotIndicesToSentinel(); // slot 0x14 0x5178c0
-  void RefreshMapContextRotatingStatusStrings();
+  // Mac oracle; 0x0050f740.
+  void GenerateProvinceNames();
   // Builds the set of region classes (TGlobalMapCityScoreRecord::regionClassA3) present in
   // nationA's owned regions (plus every minor nation tied to nationA per
   // IsEncodedNationSlotMinus200Equal, i.e. encodedNationSlot - 200 == nationA), then

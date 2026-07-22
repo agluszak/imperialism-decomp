@@ -124,7 +124,7 @@ void TMilitaryUnit::CopyUnitCurrentTileIntoOrderTargets() {
 // FUNCTION: IMPERIALISM 0x005c31c0
 void TMilitaryUnit::DetachUnitOrderFromOwnerAndReset() {
   if (ownerMission40 != 0) {
-    ownerMission40->NoOpSlot88(this, 1);
+    ownerMission40->RejectConstituent(this, 1);
   }
   VTableSlot10(-1);
   CopyUnitCurrentTileIntoOrderTargets();

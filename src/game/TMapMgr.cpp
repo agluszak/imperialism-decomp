@@ -42,7 +42,6 @@
 short TraceTerrainFlowToNearestSeaTile(short tileIndex);
 char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(short tileIndex);
 void NormalizeWrappedMapCoord217x60(short* xCoord, short* yCoord);
-undefined4 SetSharedStringFromRotatingFlavorTextBySlot(void);
 
 // FUNCTION: IMPERIALISM 0x004a4190
 TMilitaryUnit* TMapMgr::ValidateGridIndexRange0To17F(short index) {
@@ -258,7 +257,7 @@ void TMapMgr::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0050e8b0
 void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
   if (terrainStateTable == 0) {
-    terrainStateTable = static_cast<TTerrainStateRecordView*>(::operator new(0x38f40));
+    terrainStateTable = new TTerrainStateRecordView[0x1950];
     if (terrainStateTable == 0) {
       MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMap.cpp", 0x198);
@@ -441,7 +440,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
     g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
   }
   if (sessionActive == 0) {
-    TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng();
+    GuaranteeResources();
   }
   if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
@@ -492,7 +491,7 @@ void TMapMgr::SetMapRecordFlagA3AndPropagateToChildren(int recordIndex, int clas
 }
 
 // FUNCTION: IMPERIALISM 0x0050f740
-void TMapMgr::RefreshMapContextRotatingStatusStrings() {
+void TMapMgr::GenerateProvinceNames() {
   // Hash the scenario tag string to seed the zone status-code PRNG.
   const char* tag = scenarioTagText1c;
   int seed = 0x6e616461; // "adan"
@@ -505,18 +504,15 @@ void TMapMgr::RefreshMapContextRotatingStatusStrings() {
     g_zoneStatusCodePrngSeed_006a5aec = time(0);
   }
 
-  // Reset the rotating-flavor-text slot counters (slot = -1), then assign a
-  // display name to every city record that has at least one linked region.
+  // Reset the localized province-name ordinals, then assign a name to every
+  // province record that has at least one linked region.
   CString local_10;
-  reinterpret_cast<void(__cdecl*)(CString*, short)>(SetSharedStringFromRotatingFlavorTextBySlot)(
-      &local_10, -1);
+  AssignNextProvinceNameForNationSlot(&local_10, -1);
 
   for (int i = 0; i < 0x180; i++) {
     TGlobalMapCityScoreRecord* record = &cityScoreTable[i];
     if (record->linkedRegionIds[0] != -1) {
-      reinterpret_cast<void(__cdecl*)(CString*, short)>(
-          SetSharedStringFromRotatingFlavorTextBySlot)(&record->cityNameA4,
-                                                       record->ownerNationCode00);
+      AssignNextProvinceNameForNationSlot(&record->cityNameA4, record->ownerNationCode00);
     }
   }
 
@@ -1397,8 +1393,8 @@ short TMapMgr::UpdateStrategicMapTileIconVariantState(short tileIndex) {
 
 namespace {
 
-// Shared body for TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng's
-// resourceType-3 and resourceType-4 passes: both are behaviorally identical (the original's
+// Shared body for GuaranteeResources' resourceType-3 and resourceType-4 passes: both are
+// behaviorally identical (the original's
 // resourceType-4 pass has an extra early-exit goto around the tail cleanup, but every branch
 // still performs that exact same cleanup before reaching it, so unifying the two produces
 // identical observable state).
@@ -1441,7 +1437,7 @@ void EnsureRegionHasResourceTypeAssignment(TMapMgr* mapMgr, short* linkedRegionI
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00511a70
-void TMapMgr::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng() {
+void TMapMgr::GuaranteeResources() {
   for (int nationTag = 0; nationTag <= 6; ++nationTag) {
     int i;
     int linkedRegionTotal = 0;
@@ -1451,7 +1447,7 @@ void TMapMgr::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng() {
       }
     }
 
-    short* linkedRegionIds = static_cast<short*>(::operator new(linkedRegionTotal * 2));
+    short* linkedRegionIds = new short[linkedRegionTotal];
     short* cursor = linkedRegionIds;
     for (i = 0; i < 0x180; ++i) {
       if (cityScoreTable[i].ownerNationCode00 == nationTag) {
@@ -1480,7 +1476,7 @@ void TMapMgr::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng() {
       EnsureRegionHasResourceTypeAssignment(this, linkedRegionIds, linkedRegionTotal, 4);
     }
 
-    ::operator delete(linkedRegionIds);
+    delete[] linkedRegionIds;
   }
 }
 
@@ -1641,7 +1637,7 @@ short LookupHexNeighborRowDeltaByDirection(short direction) {
 
 // FUNCTION: IMPERIALISM 0x00512930
 extern "C" short* __cdecl BuildHexAreaTileIndexList(short centerTileIndex, short radius) {
-  short* buffer = static_cast<short*>(::operator new(static_cast<short>(radius * 6) << 1));
+  short* buffer = new short[static_cast<short>(radius * 6)];
   if (buffer == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMap.cpp", 0xb85);
@@ -2268,7 +2264,8 @@ byte TMapMgr::CheckTileProspectingDiscoveryCandidate(short nTileIndex) {
            (cTileResourceCode == '\x15')) ||
           ((cTileResourceCode == '\x16') ||
            ((cTileResourceCode == '\x06') &&
-            (g_pCityOrderCapabilityState->hasProductionOrder193 != '\0')))) {
+            (g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] !=
+             '\0')))) {
         fHasDiscoveryCandidate = 1;
       }
       nResourceSlotIndex = nResourceSlotIndex + 1;
@@ -2991,7 +2988,7 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(
       }
       ++directionBit;
     }
-    ::operator delete(neighbors);
+    delete[] neighbors;
   }
 }
 
@@ -3040,7 +3037,7 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(
       }
       ++directionBit;
     }
-    ::operator delete(neighbors);
+    delete[] neighbors;
   }
 }
 
@@ -3616,7 +3613,9 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
         TTerrainStateRecordView* tile = &terrainStateTable[*linkedTile];
         for (edge = 0; edge < 2; ++edge) {
           int resType = tile->resourceTypeByEdge[edge];
-          if ((resType != 6 || g_pCityOrderCapabilityState->hasProductionOrder193 != 0) &&
+          if ((resType != 6 ||
+               g_pCityOrderCapabilityState
+                       ->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) &&
               resType != -1) {
             score += g_abUniversityRequirementLevelById[resType][tile->developmentClassNibbles0c] *
                      resourceWeights[resType];

@@ -21,6 +21,7 @@
 #include "game/TView.h"
 #include "game/TMouseCaptureState.h"
 #include "game/TWNetSessionManager.h"
+#include "game/timer_slots.h"
 
 TGreatPower* GetNationStateBySlot(short slotId);
 short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot);
@@ -96,7 +97,7 @@ struct TNavyOrderResourceDescriptor {
                                  // enabled/disabled gate)
   short descriptorWeight;        // +0x1c (was DAT_00698124)
   short pad1e;
-  // Per-order-type priority tier used by TNavyMgr::ResolveMapOrderPairConflictStep's
+  // Per-order-type priority tier used by TNavyMgr::ResolveStrategicBattle's
   // candidate-tier scan/scoring loop (was DAT_00698128).
   short priorityTier; // +0x20
   short pad22;
@@ -459,8 +460,8 @@ extern const unsigned int g_anScenarioScriptInstructionTags[27];
 extern void (TSimMgr::* g_apfnScenarioScriptInstructionHandlers[27])(void*);
 extern unsigned char g_bScenarioScriptTerminationRequested;
 extern int g_nScenarioScriptInstructionCount;
-// Gates the assert-messagebox in TTaskForce::ApplyMapOrderTypeExecutionEffects's default
-// (unhandled attachment/kind) case; not yet recovered beyond that one read site.
+// Gates the assert-messagebox in TTaskForce::CarryOutOrders' default
+// (unhandled ship-order kind) case; not yet recovered beyond that one read site.
 extern int g_UnknownMapOrderExecutionGuard_006a3ee0;
 // Guards the nil-pointer assert in TColorFill::Draw (0x004ff1c0, TColorFill.cpp);
 // no write site found anywhere in ported source, so this may be a debug/never-reached
@@ -562,7 +563,6 @@ extern "C" const unsigned int g_tradeCommodityRowTagTable[17];
 extern const char* g_cstrTradeTotalsBalanceSubstitution0066DB50;
 extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
 extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
-extern CRect g_diplomacyHitBounds;
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;
 extern const GUID g_ImperialismDirectPlayApplicationGuid0066f968;
 extern CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords006a15e0;
@@ -588,9 +588,11 @@ extern TSoundResourceManager g_soundResourceManager;
 // CD-audio MCI device singleton (see game/cd_audio.h).
 extern TCdAudioDevice g_cdAudioDevice; // 0x006a60bc
 // Audio timer-slot registry (see game/timer_slots.h): 10 callbacks + 10 live timer ids.
-extern undefined4 (*g_timerSlotCallbacks[10])(); // 0x006a5cf8
-extern UINT g_timerSlotIds[10];                  // 0x006a5c98
-extern int g_timerDispatchSuppressAssert;        // 0x006a5d24
+extern TimerSlotCallback g_timerSlotCallbacks[10]; // 0x006a5cf8
+extern UINT g_timerSlotIds[10];                    // 0x006a5c98
+extern int g_timerDispatchSuppressAssert;          // 0x006a5d24
+// Counts idle/audio-state polls before another random cue selection attempt.
+extern short g_randomAudioCuePollCounter; // 0x006a4520
 extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
 // Tactical unit facing-offset table (0x006a4780); see global_data_tables.cpp.
 extern POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
@@ -799,19 +801,20 @@ extern "C" const int g_anNationStartingTreasuryByLocale[6];
 extern POINT g_ptGreatPowerModalMessage; // @ 0x6a2df0
 // Per-subsystem VPoint equivalents passed to the ModalMessage overloads. The Mac
 // signatures provide the semantic type; Windows stores them as zero-initialized POINTs.
-extern POINT g_ptArmyOrderModalMessage;            // @ 0x6a2318
-extern POINT g_ptCityInteriorMinisterModalMessage; // @ 0x6a2c18
-extern POINT g_ptNationComparisonModalMessage;     // @ 0x6a3180
-extern POINT g_ptTechItemModalMessage;             // @ 0x6a5820
-extern POINT g_ptNationAwolModalMessage;           // @ 0x6a3d08
-extern POINT g_ptMapModeModalMessage;              // @ 0x6a45c0
-extern POINT g_ptTacticalAutoPlayModalMessage;     // @ 0x6a4650
-extern POINT g_ptTechCapabilityModalMessage;       // @ 0x6a57c8
-extern POINT g_ptUiPromptModalMessage;             // @ 0x6a5be0
-extern POINT g_ptCitySiteSelectionDialogPlacement; // @ 0x6a5b58
-extern POINT g_ptQueryFloaterModalMessage;         // @ 0x6a4048
-extern POINT g_ptDiplomacyNoticeModalMessage;      // @ 0x6a2fc0
-extern POINT g_ptGameSetupModalMessage;            // @ 0x6a4218
+extern POINT g_ptArmyOrderModalMessage;               // @ 0x6a2318
+extern POINT g_ptCityInteriorMinisterModalMessage;    // @ 0x6a2c18
+extern POINT g_ptNationComparisonModalMessage;        // @ 0x6a3180
+extern POINT g_ptTechItemModalMessage;                // @ 0x6a5820
+extern POINT g_ptNationAwolModalMessage;              // @ 0x6a3d08
+extern POINT g_ptLoungeNationReplacementModalMessage; // @ 0x6a3d98
+extern POINT g_ptMapModeModalMessage;                 // @ 0x6a45c0
+extern POINT g_ptTacticalAutoPlayModalMessage;        // @ 0x6a4650
+extern POINT g_ptTechCapabilityModalMessage;          // @ 0x6a57c8
+extern POINT g_ptUiPromptModalMessage;                // @ 0x6a5be0
+extern POINT g_ptCitySiteSelectionDialogPlacement;    // @ 0x6a5b58
+extern POINT g_ptQueryFloaterModalMessage;            // @ 0x6a4048
+extern POINT g_ptDiplomacyNoticeModalMessage;         // @ 0x6a2fc0
+extern POINT g_ptGameSetupModalMessage;               // @ 0x6a4218
 extern int g_nationInfoGoldResourceOverride_006a5bac;
 extern int g_lastTurnAlertTick_006a31c0;
 extern int g_lastClickedMapTileIndex_006a4608;
@@ -845,6 +848,9 @@ extern int g_nUiInvalidationAssertFlagLine495;
 // the start of RegenerateAllMapActionContextStatusCodes, then advanced by the LCG in
 // GenerateZoneStatusCodeIfUnset (x = x*0x15a4e35 + 1).
 extern unsigned int g_zoneStatusCodePrngSeed_006a5aec;
+// Per-nation ordinal used while assigning province names from string-resource groups
+// 8000 + nationSlot. GenerateProvinceNames resets all 23 entries before each pass.
+extern "C" short g_anProvinceNameOrdinalByNationSlot_006a5af0[23];
 // Map-action-context display-name cache key (0x6984b8): reset to -1 before each status
 // regen pass; read/written by GenerateMapActionContextDisplayNameAndHeadline.
 extern int g_mapActionContextDisplayNameCacheId_006984b8;
@@ -866,7 +872,7 @@ extern TTaskForce* g_pCachedMapActionContext;
 extern TMapMgr* g_pGlobalMapState;
 extern TCivMgr* g_pSelectedCivilianOrderState; // 0x6a43dc — the TCivMgr instance
 
-// Seed viewport offsets copied into TWorldView::viewportOffsetX/Y by the TOceanDialog
+// Seed viewport offsets copied into TWorldView::viewportOrigin60.x/Y by the TOceanDialog
 // ctor; the only known writer (0x56a3b0) zeroes both.
 extern int g_nOceanDialogSeedViewportOffsetX; // 0x6a3ff0
 extern int g_nOceanDialogSeedViewportOffsetY; // 0x6a3ff4
@@ -1233,6 +1239,7 @@ extern int g_streamLine596AssertGuard;
 
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
+extern "C" const char s_szLineBreak_00695880[8];
 extern char s_szTurnHistorySeparator_00699320[];
 extern char s_szCombatLossesHeading_00699324[];
 extern char s_szTurnHistoryPrefix_0069b71c[];

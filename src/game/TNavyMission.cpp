@@ -14,20 +14,6 @@
 
 IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
 
-// Swaps float byte order (Big-Endian <-> Little-Endian)
-static inline float SwapFloat(float val) {
-  union {
-    float f;
-    unsigned char b[4];
-  } src, dst;
-  src.f = val;
-  dst.b[0] = src.b[3];
-  dst.b[1] = src.b[2];
-  dst.b[2] = src.b[1];
-  dst.b[3] = src.b[0];
-  return dst.f;
-}
-
 // The binary body inlines TMission() (state08/importanceScore0c/marker11) and does NOT touch
 // nationId04/pathMarker06; the vtable install lands mid-way through the zero stores.
 // FUNCTION: IMPERIALISM 0x00535470
@@ -41,6 +27,22 @@ TNavyMission::TNavyMission(TZone* targetZone) : TMission() {
   for (int i = 0; i < 4; ++i) {
     requiredShipEquipageByCategory[i] = 0.0f;
   }
+}
+
+// Swaps float byte order (Big-Endian <-> Little-Endian)
+static inline float SwapFloat(float val) {
+  union {
+    float f;
+    unsigned char b[4];
+  } swapped;
+  swapped.f = val;
+  unsigned char byte0 = swapped.b[0];
+  unsigned char byte1 = swapped.b[1];
+  swapped.b[0] = swapped.b[3];
+  swapped.b[1] = swapped.b[2];
+  swapped.b[2] = byte1;
+  swapped.b[3] = byte0;
+  return swapped.f;
 }
 
 // FUNCTION: IMPERIALISM 0x005354c0
@@ -70,11 +72,6 @@ TMission* TNavyMission::GetNavyMission() {
 
 // SYNTHETIC: IMPERIALISM 0x00535560
 // TNavyMission::`scalar deleting destructor'
-
-// The trivial base-chain destructors collapse to a single reset of the vptr to CObject's
-// runtime-object base vtable; MSVC emits exactly that write for this empty destructor.
-// FUNCTION: IMPERIALISM 0x00535590
-TNavyMission::~TNavyMission() {}
 
 // SYNTHETIC: IMPERIALISM 0x00536390
 // TNavyMission::CreateObject
@@ -142,16 +139,10 @@ void TNavyMission::Free() {
 void TNavyMission::WriteTo(TStream* stream) {
   TMission::WriteTo(stream);
 
-  int nodeIdx1 = -1;
-  if (targetZone14 != nullptr) {
-    nodeIdx1 = targetZone14->GetContextOrdinalOrInvalid();
-  }
+  int nodeIdx1 = targetZone14 != nullptr ? targetZone14->GetContextOrdinalOrInvalid() : -1;
   stream->WriteCountSlot88(nodeIdx1);
 
-  int nodeIdx2 = -1;
-  if (targetZone18 != nullptr) {
-    nodeIdx2 = targetZone18->GetContextOrdinalOrInvalid();
-  }
+  int nodeIdx2 = targetZone18 != nullptr ? targetZone18->GetContextOrdinalOrInvalid() : -1;
   stream->WriteCountSlot88(nodeIdx2);
 
   for (int i = 0; i < 4; ++i) {
@@ -188,7 +179,7 @@ void TNavyMission::ReadFrom(TStream* stream) {
   if (nodeIdx > -1) {
     do {
       TShip* orderNode = GetNavyPrimaryOrderNodeByIndex(nodeIdx);
-      NoOpSlot84(orderNode, 0);
+      AcceptReenforcement(orderNode, 0);
       nodeIdx = stream->ReadShort();
     } while (nodeIdx >= 0);
   }
@@ -202,7 +193,7 @@ void TNavyMission::ReadFrom(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x00536740
-char TNavyMission::ReturnFalseSlot98() {
+char TNavyMission::SmokeEmIfYouGotEm() {
   while (orderList24 != nullptr) {
     orderList24->payload = nullptr;
     orderList24 = orderList24->DeleteMapOrderChildLinkAndReturnNext();
@@ -211,23 +202,21 @@ char TNavyMission::ReturnFalseSlot98() {
 }
 
 // FUNCTION: IMPERIALISM 0x00536780
-void TNavyMission::NoOpSlot84(void* a, int b) {
-  TShip* item = static_cast<TShip*>(a);
+void TNavyMission::AcceptReenforcement(TShip* item, unsigned char notify) {
   if (item->missionBacklink2c != nullptr) {
-    item->missionBacklink2c->NoOpSlot8C(a, b);
+    item->missionBacklink2c->RejectConstituent(item, notify);
   }
   item->missionBacklink2c = this;
   TMapOrderChildLinkNode* node = orderList24->CreateLinkedOrderNode(item);
   orderList24 = node;
-  if (static_cast<char>(b) != 0) {
+  if (notify != 0) {
     Reassess();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005367d0
-void TNavyMission::NoOpSlot8C(void* a, int b) {
-  (void)b;
-  TShip* item = static_cast<TShip*>(a);
+void TNavyMission::RejectConstituent(TShip* item, unsigned char notify) {
+  (void)notify;
   if (orderList24 != nullptr) {
     if (orderList24->payload == item) {
       orderList24 = orderList24->DeleteMapOrderChildLinkAndReturnNext();
@@ -242,8 +231,8 @@ void TNavyMission::NoOpSlot8C(void* a, int b) {
 }
 
 // FUNCTION: IMPERIALISM 0x00536810
-void TNavyMission::NoOpSlot90(void* a) {
-  if (taskForce20 == a) {
+void TNavyMission::ForgetTaskForce(TTaskForce* taskForce) {
+  if (taskForce20 == taskForce) {
     taskForce20 = nullptr;
   }
 }
@@ -263,12 +252,14 @@ int TNavyMission::AccumulateLack(int* accumulatedLack, unsigned char includeExis
     float scale =
         g_MissionOrderDistanceDecayWeightTable_006978c8[distance] *
         static_cast<float>(ship->stockLevel1c / ship->GetNavyOrderNormalizationBaseByNationType());
-    for (int category = 0; category < 4; ++category) {
-      vector[category] +=
-          static_cast<float>(
-              ship->ComputeNavyOrderPriorityContributionPercentByCategory(category)) *
-          scale;
-    }
+    vector[0] +=
+        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) * scale;
+    vector[1] +=
+        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) * scale;
+    vector[2] +=
+        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) * scale;
+    vector[3] +=
+        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3)) * scale;
   }
 
   int total = 0;
@@ -407,7 +398,7 @@ TZone* TNavyMission::GetActiveTargetZoneByState28() const {
 // FUNCTION: IMPERIALISM 0x00537090
 void TNavyMission::QueueMissionOrdersByPriorityForContext(TZone* contextAnchor,
                                                           TShip** selectedOrder) {
-  // Was bridged through a mis-targeted "FindFirstTrackedHandlerMatchingModeAndShortKey"
+  // Was bridged through a mis-targeted TMission::Find
   // cdecl stub cast (a name collision with the unrelated real function at 0x535940); the
   // actual callee here (verified via the 0x40635c ILT thunk row) is the already-ported
   // TMapOrderChildLinkNode::FindNodeMatching (0x552510).
@@ -491,11 +482,11 @@ void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(TZone* context
 // the candidate order is added (foreign candidate) or removed (own candidate),
 // relative to the current-profile score from slot 0x68.
 // FUNCTION: IMPERIALISM 0x00537270
-float TNavyMission::ReturnZeroFloatSlot74(void* candidate) {
+float TNavyMission::ValueOf(TShip* candidate) {
   if (flag10 != 0) {
     return g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
-  TShip* orderNode = static_cast<TShip*>(candidate);
+  TShip* orderNode = candidate;
   float profile[4];
   if (orderNode->missionBacklink2c == this) {
     profile[0] = 0.0f;
@@ -555,7 +546,7 @@ float TNavyMission::ReturnZeroFloatSlot74(void* candidate) {
           sqrt(requiredShipEquipageByCategory[componentIndex] * profile[componentIndex]));
       weightSum += requiredShipEquipageByCategory[componentIndex];
     }
-    return ReturnZeroFloatSlot68() - sqrtSum / weightSum;
+    return GetWeightedSatisfaction() - sqrtSum / weightSum;
   }
   profile[0] = 0.0f;
   profile[1] = 0.0f;
@@ -595,7 +586,7 @@ float TNavyMission::ReturnZeroFloatSlot74(void* candidate) {
         sqrt(requiredShipEquipageByCategory[componentIndex] * profile[componentIndex]));
     weightSum += requiredShipEquipageByCategory[componentIndex];
   }
-  return sqrtSum / weightSum - ReturnZeroFloatSlot68();
+  return sqrtSum / weightSum - GetWeightedSatisfaction();
 }
 
 // Scores how badly a candidate navy order node fits this mission's target profile:
@@ -603,8 +594,8 @@ float TNavyMission::ReturnZeroFloatSlot74(void* candidate) {
 // profile floats at targetProfile+0x10, plus a distance-bucket weight from the score
 // table and an understock penalty.
 // FUNCTION: IMPERIALISM 0x00537610
-float TNavyMission::ReturnZeroFloatSlot7C(void* candidate, void* targetProfile) {
-  TShip* orderNode = static_cast<TShip*>(candidate);
+float TNavyMission::FitnessOf(TShip* candidate, float* targetProfile) {
+  TShip* orderNode = candidate;
   int stockRatio = orderNode->stockLevel1c / orderNode->GetNavyOrderNormalizationBaseByNationType();
   if (static_cast<float>(stockRatio) < g_Recompute_Nation_Order_LookupTable_0065AA20 &&
       !IsANoBrainer()) {
@@ -647,7 +638,7 @@ float TNavyMission::ReturnZeroFloatSlot7C(void* candidate, void* targetProfile) 
   if (sum == g_Recompute_Nation_Order_LookupTable_0065A9F0) {
     return g_Recompute_Nation_Order_LookupTable_0065A9C4;
   }
-  const float* targetVector = static_cast<float*>(targetProfile);
+  const float* targetVector = targetProfile;
   for (componentIndex = 0; componentIndex < 4; ++componentIndex) {
     float delta = profile[componentIndex] / sum - targetVector[componentIndex + 4];
     sumSquares = delta * delta + sumSquares;
@@ -667,7 +658,7 @@ float TNavyMission::ReturnZeroFloatSlot7C(void* candidate, void* targetProfile) 
 }
 
 // FUNCTION: IMPERIALISM 0x005378c0
-float TNavyMission::ReturnZeroFloatSlot6C() {
+float TNavyMission::IndustrialCostOfNeeds() {
   double total = 0.0;
   for (int i = 0; i < 4; ++i) {
     total += static_cast<double>(requiredShipEquipageByCategory[i]);
@@ -814,7 +805,7 @@ float TNavyMission::ComputeMissionQueuedOrderSimilarityForTargetNation(short dis
 }
 
 // FUNCTION: IMPERIALISM 0x00537f40
-float TNavyMission::ReturnZeroFloatSlot68() {
+float TNavyMission::GetWeightedSatisfaction() {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
     TShip* ship = static_cast<TShip*>(node->payload);

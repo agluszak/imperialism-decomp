@@ -23,7 +23,8 @@ public:
   virtual void GiveOrders()
       override; // slot 0x11 0x53a290 -- reset beachhead-child flags, dispatch field5 context
   virtual TMission* GetReplacementSlot48() override; // slot 0x12 0x539900 -- passthrough
-  virtual char Matches(int kind, int key, int mode) const override; // slot 0x13 0x53a250
+  virtual char Matches(eMissionType missionType, int key,
+                       TZone* zoneContext) const override; // slot 0x13 0x53a250
 
   virtual char IsDefensiveSeaZoneMission() const override; // slot 0x18 0x539940
   virtual char IsHospitalMission() const override;         // slot 0x19 0x539920

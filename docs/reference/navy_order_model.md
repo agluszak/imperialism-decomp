@@ -163,7 +163,7 @@ order nodes. Proof (all from raw listings, not the decompiler):
   through a `reinterpret_cast<TTaskForce*>(node)` -- deleted.
 - `SelectPreferredMapOrderEntryByPriorityRules` (0x550670): the binary reads
   `[ecx+0x20]`/`[edi+0x20]` (admiral backlink) SYMMETRICALLY and then each
-  admiral's `field_10`; the old TTaskForce-receiver body misread the receiver
+  admiral's `experiencePoints`; the old TTaskForce-receiver body misread the receiver
   side as +0x08/+0x06 (attachment/order_strength) -- a genuine logic mis-port,
   fixed by the migration.
 - `SelectEligibleMapOrderInteractionForNationAndContext` (0x557f10) at 0x5582a2

@@ -62,10 +62,6 @@
 // predicate: returns 1 when the resource index is in [13,16].
 char __stdcall IsSpecialNationInteractionResource(short resourceIndex);
 
-// Real body ported in TMission.cpp (0x00535940).
-TMission* __cdecl FindFirstTrackedHandlerMatchingModeAndShortKey(TSortedList* list, int kind,
-                                                                 short key, int mode);
-
 static const int kMapNodeCount = 0x180;
 static const int kAidAllocationRowCount = 0x10;
 static const int kAidAllocationColumnCount = 0x17;
@@ -245,9 +241,6 @@ void TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
 
 // SYNTHETIC: IMPERIALISM 0x004d8c20
 // TGreatPower::`scalar deleting destructor'
-
-// FUNCTION: IMPERIALISM 0x004d8c50
-TGreatPower::~TGreatPower() {}
 
 // FUNCTION: IMPERIALISM 0x004d8cc0
 void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
@@ -1412,7 +1405,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
             TTechMgr* orderCapabilityState = g_pCityOrderCapabilityState;
             int capabilityScore = this->city->GetBuildingType(7);
             if (capabilityScore != 0 && orderCapabilityState != 0 &&
-                orderCapabilityState->hasProductionOrder193 != 0) {
+                orderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) {
               if (static_cast<int>(*stage1CounterD) < capabilityScore / 2) {
                 pendingStage = 1;
                 *stage1CounterD = static_cast<short>(*stage1CounterD + 1);
@@ -1723,7 +1716,7 @@ unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode
 }
 
 // FUNCTION: IMPERIALISM 0x004dcc30
-void TGreatPower::OrphanRetStub_004dcc30(void) {}
+void TGreatPower::FillInteriorMinisterOrders(void) {}
 
 // FUNCTION: IMPERIALISM 0x004dcc50
 void TGreatPower::ApplyDiplomacyState222ToCityStockAndClear(void) {
@@ -3904,7 +3897,7 @@ float TGreatPower::ComputeNavyScoreStandingRatioForNationPair(int nationA, int n
 }
 
 // FUNCTION: IMPERIALISM 0x004e1c00
-char TGreatPower::ReturnZeroSlot9D(int targetNation) {
+char TGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation) {
   (void)targetNation;
   return 0;
 }
@@ -4408,7 +4401,7 @@ int TGreatPower::ComputeNationNavyOrderWeightedMovementScore() {
       continue;
     }
     score += navyWeightByType[node->resourceType04] *
-             (static_cast<short>(node->field30 / 100) + 10) / 10;
+             (static_cast<short>(node->experiencePoints30 / 100) + 10) / 10;
   }
   return score;
 }

@@ -21,7 +21,10 @@ enum { kTerrainTypeDescriptorTableCount = 23 };
 class TCountry : public TObject {
 public:
   DECLARE_DYNCREATE(TCountry)
-  ~TCountry() override;
+  // Inline so derived destructors reproduce the original direct CString teardown rather
+  // than calling an out-of-line TCountry destructor.
+  // FUNCTION: IMPERIALISM 0x004d6880
+  ~TCountry() override {}
 
   // slots 0x05–0x07 — TObject stream lifecycle (Mac: WriteTo / ReadFrom / Free).
   void WriteTo(TStream* stream) override;  // body 0x004d6e60

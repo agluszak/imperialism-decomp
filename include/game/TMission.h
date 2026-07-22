@@ -7,9 +7,12 @@
 
 class TZone;
 class TMilitaryUnit;
+class TShip;
+class TTaskForce;
+class TSortedList;
 
 // Mac oracle: eMissionType -- the mission-kind selector passed to the mission factory
-// (CreateMissionObjectByKindAndNodeContext) and to TMission::Matches. The Windows
+// (TMission::CreateMission) and to TMission::Matches. The Windows
 // binary only exposes the integer values 0..5; enumerator names below are provisional,
 // taken from the mission each kind primarily constructs (several kinds fall back to a
 // TControlSeaZoneMission when their context/beachhead argument is absent).
@@ -24,10 +27,9 @@ enum eMissionType {
 };
 
 // Mac: TMission — base AI-mission class. Real polymorphic MFC object rooted at
-// CObject<-TObject (slot 0x00 RTTI, dtor resets vptr to the CObject sentinel
-// 0x66fec4). Single-inheritance base of TNavyMission / TArmyMission (and through
-// them every concrete mission); proven by vtable prefix-sharing and ctor sequencing
-// (ConstructTArmyMissionWithNodeKey calls ConstructTMission then installs its vtable).
+// CObject<-TObject. Single-inheritance base of TNavyMission / TArmyMission (and through
+// them every concrete mission); proven by vtable prefix-sharing and constructor/
+// destructor sequencing.
 //
 // 48-slot vtable: slots 0x00-0x04 are the MFC CObject prefix (0x00 RTTI + 0x01 dtor
 // overridden here; 0x02 Serialize / 0x03 AssertValid / 0x04 Dump inherited). Slots
@@ -51,7 +53,9 @@ public:
 
   // --- MFC CObject prefix slots 0x00-0x04 ---
   DECLARE_SERIAL(TMission)
-  virtual ~TMission() override; // 0x01 dtor 0x535080 / ??_G 0x535050
+  // Inline so every mission subclass reproduces the original direct CObject teardown.
+  // FUNCTION: IMPERIALISM 0x00535080
+  virtual ~TMission() override {}
   // 0x02 Serialize / 0x03 AssertValid / 0x04 Dump inherited from CObject.
 
   // --- TMission's own virtuals, exact vtable slot order ---
@@ -67,40 +71,48 @@ public:
   virtual void Reassess();                                             // 0x10 0x534cc0
   virtual void GiveOrders();                                           // 0x11 0x534cf0
   virtual TMission* GetReplacementSlot48();                            // 0x12 0x534d10
-  virtual char Matches(int kind, int key, int mode) const;             // 0x13 0x534d30
-  virtual char IsArmyMission() const;                                  // 0x14 0x534d50
-  virtual char IsNavyMission() const;                                  // 0x15 0x534d70
-  virtual TMission* GetArmyMission();                                  // 0x16 0x534d90
-  virtual TMission* GetNavyMission();                                  // 0x17 0x534db0
-  virtual char IsDefensiveSeaZoneMission() const;                      // 0x18 0x534dd0
-  virtual char IsHospitalMission() const;                              // 0x19 0x534df0
-  virtual float ReturnZeroFloatSlot68();                               // 0x1a 0x534e10
-  virtual float ReturnZeroFloatSlot6C();                               // 0x1b 0x534e30
-  virtual float ReturnZeroFloatSlot70(
-      TMilitaryUnit* candidateUnit); // 0x1c 0x534e70 (ret 4 -- verified against base stub)
-  virtual float ReturnZeroFloatSlot74(void* candidate); // 0x1d 0x534e50 (ret 4 -- navy
-                                                        // overrides read a TShip order node)
-  virtual float ReturnZeroFloatSlot78(
-      TMilitaryUnit* candidateUnit,
-      float* referenceVector); // 0x1e 0x534eb0 (ret 8 -- verified against base stub)
-  virtual float ReturnZeroFloatSlot7C(void* candidate,
-                                      void* targetProfile); // 0x1f 0x534e90 (ret 8)
-  virtual void NoOpSlot80(TMilitaryUnit* unit, int notify); // 0x20 0x534ef0 — AdoptUnitSlot80
-  // Slot 0x84/0x8c/0x90's first argument is an opaque order-node pointer: navy overrides
-  // interpret it as TTaskForce* (attach/detach) or TShip* (primary-order clear), so it stays
-  // void* here rather than picking one caller's type.
-  virtual void NoOpSlot84(void* a, int b);                  // 0x21 0x534ed0 (ret 8)
-  virtual void NoOpSlot88(TMilitaryUnit* unit, int unused); // 0x22 0x534f30
-  virtual void NoOpSlot8C(void* a, int b);                  // 0x23 0x534f10
-  virtual void NoOpSlot90(void* a);                         // 0x24 0x534f50
-  virtual void SetFlag10FromArgSlot94(unsigned char value); // 0x25 0x534f70
-  virtual char ReturnFalseSlot98();                         // 0x26 0x534f90
+  // Mac: Matches(eMissionType, long, TZone*) const.
+  virtual char Matches(eMissionType missionType, int key,
+                       TZone* zoneContext) const; // 0x13 0x534d30
+  virtual char IsArmyMission() const;             // 0x14 0x534d50
+  virtual char IsNavyMission() const;             // 0x15 0x534d70
+  virtual TMission* GetArmyMission();             // 0x16 0x534d90
+  virtual TMission* GetNavyMission();             // 0x17 0x534db0
+  virtual char IsDefensiveSeaZoneMission() const; // 0x18 0x534dd0
+  virtual char IsHospitalMission() const;         // 0x19 0x534df0
+  virtual float GetWeightedSatisfaction();        // 0x1a 0x534e10
+  virtual float IndustrialCostOfNeeds();          // 0x1b 0x534e30
+  virtual float ValueOf(TShip* candidate);        // 0x1d 0x534e50
+  virtual float
+  ValueOf(TMilitaryUnit* candidateUnit); // 0x1c 0x534e70 (ret 4 -- verified against base stub)
+  virtual float FitnessOf(TShip* candidate, float* targetProfile); // 0x1f 0x534e90
+  virtual float
+  FitnessOf(TMilitaryUnit* candidateUnit,
+            float* referenceVector); // 0x1e 0x534eb0 (ret 8 -- verified against base stub)
+  virtual void AcceptReenforcement(TShip* ship, unsigned char notify); // 0x21 0x534ed0
+  virtual void AcceptReenforcement(TMilitaryUnit* unit,
+                                   unsigned char notify);            // 0x20 0x534ef0
+  virtual void RejectConstituent(TShip* ship, unsigned char notify); // 0x23 0x534f10
+  virtual void RejectConstituent(TMilitaryUnit* unit,
+                                 unsigned char notify); // 0x22 0x534f30
+  virtual void ForgetTaskForce(TTaskForce* taskForce);  // 0x24 0x534f50
+  virtual void Hold(unsigned char value);               // 0x25 0x534f70
+  virtual char SmokeEmIfYouGotEm();                     // 0x26 0x534f90
 
-  void AdoptUnitSlot80(TMilitaryUnit* unit, int flag) {
-    NoOpSlot80(unit, flag);
+  void AdoptUnitSlot80(TMilitaryUnit* unit, unsigned char flag) {
+    AcceptReenforcement(unit, flag);
   }
 
   void InitializeMissionWithNationIdAndResetPathMarker(short nationId);
+
+  // Mac: TMission::CreateMission(short, eMissionType, long, TZone*, long).
+  static TMission* CreateMission(short sourceNation, eMissionType missionKind, int nodeKey,
+                                 TZone* zoneContext, int relatedNodeKey);
+
+  // Mac: TMission::Find(TList*, eMissionType, short, TZone*). TSortedList is the
+  // corresponding Windows list implementation used by every caller.
+  static TMission* Find(TSortedList* missions, eMissionType missionType, short key,
+                        TZone* zoneContext);
 
   // Slots 0x27-0x2f are NULL in the base table (abstract: filled only by derived
   // classes). Not declared here — C++ pure virtuals would emit _purecall, not NULL,
@@ -109,13 +121,6 @@ public:
 };
 
 ASSERT_SIZE(TMission, 0x14);
-
-// Mission factory (0x5350d0, __cdecl): allocates and constructs the concrete mission
-// subtype selected by missionKind, stamps the common owner/marker fields, and runs the
-// mission's Initialize initializer. contextArg is the map-order context / target port zone
-// (a TZone) for the navy missions; nodeKey/keyArg carry province or amassing keys.
-TMission* CreateMissionObjectByKindAndNodeContext(int sourceNation, eMissionType missionKind,
-                                                  int nodeKey, int contextArg, int keyArg);
 
 // Three-way ordering used by TAutoGreatPower's mission-eligibility pass. The opaque
 // callback signature is the one required by TSortedList; both entries are TMission

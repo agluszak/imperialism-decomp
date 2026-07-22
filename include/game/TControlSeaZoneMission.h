@@ -11,7 +11,10 @@
 class TControlSeaZoneMission : public TNavyMission {
   DECLARE_SERIAL(TControlSeaZoneMission)
 public:
-  virtual ~TControlSeaZoneMission() override; // slot 0x01 dtor 0x00535620 / ??_G 0x005355f0
+  // Inline so beachhead and blockade destructors emit the original direct CObject teardown.
+  // FUNCTION: IMPERIALISM 0x00535620
+  virtual ~TControlSeaZoneMission() override {}
+
 public:
   TControlSeaZoneMission();
   TControlSeaZoneMission(TZone* targetZone);
@@ -28,7 +31,8 @@ public:
 
   virtual TMission* GetReplacementSlot48()
       override; // slot 0x12 0x538900 -- validate terrain coverage / refresh target (shared)
-  virtual char Matches(int kind, int key, int mode) const override; // slot 0x13 0x539600
+  virtual char Matches(eMissionType missionType, int key,
+                       TZone* zoneContext) const override; // slot 0x13 0x539600
 
   virtual char IsDefensiveSeaZoneMission() const override; // slot 0x18 0x5355d0
   virtual char IsHospitalMission() const override;         // slot 0x19 0x5355b0

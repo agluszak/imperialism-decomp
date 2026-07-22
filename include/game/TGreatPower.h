@@ -27,8 +27,10 @@ public:
   // ---- identity / serialization ----
   // slot 0x00 — body 0x004d89d0: returns TGreatPower CRuntimeClass descriptor.
   DECLARE_DYNCREATE(TGreatPower)
-  // 0x004d8c50 tears down the two identity CStrings.
-  ~TGreatPower() override;
+  // Inline so every derived nation class reproduces the original direct teardown of
+  // TCountry's two identity CStrings.
+  // FUNCTION: IMPERIALISM 0x004d8c50
+  ~TGreatPower() override {}
   // slots 0x05–0x07 — TObject stream lifecycle (Mac: WriteTo / ReadFrom / Free).
   void WriteTo(TStream* stream) override;  // body 0x004d9c70
   void ReadFrom(TStream* stream) override; // body 0x004d92e0
@@ -116,7 +118,7 @@ public:
   // ---- turn-event message dispatch ----
   virtual void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void);
   virtual void NotifyCitySlot2C(void);
-  virtual void OrphanRetStub_004dcc30(void);
+  virtual void FillInteriorMinisterOrders(void);
   // slot 0x39 — body 0x004df810: loads the scenario-level preset row (table 0x653570)
   // into the city stock relation deltas, maxes six production-order entries to
   // 999, notifies the manager's 0x1d8 sink, then spawns the Frog City marker through
@@ -293,7 +295,7 @@ public:
                                                    char swapRoles); // slot 0x9b
   virtual float ComputeNavyScoreStandingRatioForNationPair(int nationA, int nationB,
                                                            char swapRoles); // slot 0x9c
-  virtual char ReturnZeroSlot9D(int targetNation);                          // body 0x004e1c00
+  virtual char PassesDiplomacyStrengthThresholdForTarget(int targetNation); // body 0x004e1c00
   // slot 0x9e — joins a war against targetNation when minister skill beats the war
   // threshold; propagates relation code 4 to tier-2 partners and queues event 0x1c.
   virtual char EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation);

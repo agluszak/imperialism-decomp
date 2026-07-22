@@ -236,17 +236,20 @@ void TDealBookPicture::CalculatePages() {
 
   TDealTabControl* tabs = static_cast<TDealTabControl*>(ResolveControlByTag(0x74616273)); // 'tabs'
   tabs->AssertValid();
-  tabs->Setup(0x2266, g_pCityOrderCapabilityState->hasProductionOrder193);
+  tabs->Setup(0x2266,
+              g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId]);
 }
 
 // FUNCTION: IMPERIALISM 0x005bbc30
 void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId >= 0x2af8) {
     // The real table is much larger than the declared 8-entry span (the original indexes
-    // it with commandId + hasProductionOrder193*17, which can run far past 8) -- the
+    // it with commandId + production-order-tech-unlocked*17, which can run far past 8) -- the
     // pointer arithmetic still lands on the correct address either way since C++ doesn't
     // bounds-check here, matching the original's raw displacement + computed offset.
-    int categoryTableIndex = commandId + g_pCityOrderCapabilityState->hasProductionOrder193 * 17;
+    int categoryTableIndex =
+        commandId +
+        g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] * 17;
     short categorySlot = g_offerDeskSelectionIndexTable_00668568[categoryTableIndex];
     if (categorySlot != -1) {
       sellPageViewA4->RebuildNationOfferRowsForCategory(categorySlot);

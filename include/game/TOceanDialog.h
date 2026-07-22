@@ -31,7 +31,7 @@ public:
                                                              unsigned char altOverlay) override;
   virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;
   virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
-                                                                   short* viewportOriginXY,
+                                                                   const CPoint* viewportOrigin,
                                                                    short* outVerticalOffset,
                                                                    short* outHorizontalOffset,
                                                                    int projectionScale) override;

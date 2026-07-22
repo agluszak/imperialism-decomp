@@ -16,6 +16,7 @@ public:
   // NOOP: verified empty in original 0x005e33e0 (no standalone body exists; every
   // derived ctor absorbs it — e.g. TNetMgr::TNetMgr is just the vptr store)
   TObject() {}
+  virtual ~TObject() override;
 
   void Serialize(CArchive& archive) override;
   virtual void WriteTo(TStream* stream);
@@ -23,8 +24,6 @@ public:
   virtual void Free();
   virtual TObject* ShallowClone();
   virtual TObject* ShallowFree();
-
-  void RestoreConstructionSentinelVtable();
 };
 
 ASSERT_SIZE(TObject, 0x4);

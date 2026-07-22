@@ -774,7 +774,7 @@ extern "C" {
 extern const float g_MissionDefaultScore_0065a468 = 0.0f;
 
 // 1.0 constant (double), used by CompareMissionOrderEntriesByPriorityScore (0x536090)
-// to compute each side's "remaining priority" as 1.0 - ReturnZeroFloatSlot68().
+// to compute each side's "remaining priority" as 1.0 - GetWeightedSatisfaction().
 // GLOBAL: IMPERIALISM 0x0065a470
 extern const double g_MissionScoreOneConstant_0065a470 = 1.0;
 
@@ -1313,7 +1313,7 @@ TZone* g_pMapActionContextListHead = 0;
 TOcean* g_pActiveMapOrderContext = 0;
 TMapMgr* g_pGlobalMapState = 0;
 TCivMgr* g_pSelectedCivilianOrderState = 0;
-// Seed viewport offsets copied into TWorldView::viewportOffsetX/Y by the TOceanDialog
+// Seed viewport offsets copied into TWorldView::viewportOrigin60.x/Y by the TOceanDialog
 // ctor (0x565e90). Only known writer is the reset helper at 0x56a3b0 (`xor eax,eax;
 // mov [6a3ff0],eax; mov [6a3ff4],eax; ret`), which zeroes both.
 // GLOBAL: IMPERIALISM 0x006a3ff0
@@ -1370,6 +1370,8 @@ short g_aTechItemPrerequisitePairs[34][2] = {
 // GLOBAL: IMPERIALISM 0x006a3ed8
 TTaskForce* g_pCachedMapActionContext = 0;
 TSoundPlayer* g_pSfxPlaybackSystem = 0;
+// GLOBAL: IMPERIALISM 0x006a4520
+short g_randomAudioCuePollCounter = 0;
 // GLOBAL: IMPERIALISM 0x006a43cc
 TTradeMgr* g_pNationInteractionStateManager = 0;
 // GLOBAL: IMPERIALISM 0x006a4220
@@ -1399,7 +1401,7 @@ unsigned char g_bRandomMapDeveloperCheatFlag = 0;
 char g_szConanCheatFileName_00698BEC[] = "Conan";
 
 // Trade-item dispatch order consumed by
-// TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper (0x5b9190). Values
+// TTradeMgr::InitializePendingDiplomacyTransferCursorAndProcess (0x5b9190). Values
 // are read directly from the original rdata table.
 // GLOBAL: IMPERIALISM 0x0066d810
 short g_aTradeDealCategoryOrder_0066D810[0x11] = {13, 14, 15, 16, 7, 8, 9, 10, 11,
@@ -1769,9 +1771,6 @@ TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry = nullptr;
 GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord = {0, {0, 0, 0, 0}};
 // GLOBAL: IMPERIALISM 0x006a1dc0
 GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord = nullptr;
-// GLOBAL: IMPERIALISM 0x006a3008
-CRect g_diplomacyHitBounds;
-
 // UDisplayMgr font-name literals and runtime CString slots (InitializeTurnOrderNavigationDialog).
 // GLOBAL: IMPERIALISM 0x00695150
 extern "C" const char g_szUiFontLiteralBelweBdBt[] = "Belwe Bd BT";
@@ -1822,6 +1821,9 @@ POINT g_ptNationComparisonModalMessage = {0, 0};
 POINT g_ptTechItemModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a3d08
 POINT g_ptNationAwolModalMessage = {0, 0};
+// Lounge host confirmation for replacing a remote nation with an AI.
+// GLOBAL: IMPERIALISM 0x006a3d98
+POINT g_ptLoungeNationReplacementModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a45c0
 POINT g_ptMapModeModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a4650
@@ -2242,6 +2244,8 @@ int g_streamLine596AssertGuard = 0;
 // see global_data_tables.h. Runtime-initialized.
 // GLOBAL: IMPERIALISM 0x006a5aec
 unsigned int g_zoneStatusCodePrngSeed_006a5aec = 0;
+// GLOBAL: IMPERIALISM 0x006a5af0
+extern "C" short g_anProvinceNameOrdinalByNationSlot_006a5af0[23] = {0};
 // GLOBAL: IMPERIALISM 0x006984b8 (static init -1 in the original .data section)
 int g_mapActionContextDisplayNameCacheId_006984b8 = -1;
 // GLOBAL: IMPERIALISM 0x006984bc (static init 7 in the original .data section)
@@ -2252,6 +2256,11 @@ int g_mapActionContextDisplayNameCacheStep_006984bc = 7;
 // Empty content: reccmp pairs by the // GLOBAL address marker, not by value. ===
 // GLOBAL: IMPERIALISM 0x00695794
 char s_szSpaceSeparator_00695794[] = " ";
+// Newline separator used by TNavyMgr's map-order interaction report builder. The
+// original symbol's eight-byte comparison extent includes two alignment NULs and the
+// first four bytes of the adjacent pooled "TBattleUnits" class-name literal.
+// GLOBAL: IMPERIALISM 0x00695880
+extern "C" const char s_szLineBreak_00695880[8] = {'\n', 0, 0, 0, 'T', 'B', 'a', 't'};
 // Separator used by TViewMgr::ShowUnitHistory to build "Turn N: count message".
 // The original symbol's eight-byte comparison extent includes the aligned NUL and
 // the first four bytes of the adjacent pooled "Losses\n" literal.
@@ -3518,7 +3527,8 @@ short g_creditsPlaybackActive_006a4084 = 0;
 
 // GLOBAL: IMPERIALISM 0x00668568
 // Indexed directly by raw commandId (a large turn-event/menu command code, not a small
-// enum) plus hasProductionOrder193*0x11; the real table base sits at a negative
+// enum) plus perTechUnlockFlag180[kProductionOrderTechId]*0x11; the real table base sits at a
+// negative
 // C-array-index offset baked into the instruction displacement, so only the leading
 // zero run at this exact address is meaningfully checked.
 short g_offerDeskSelectionIndexTable_00668568[8] = {0};

@@ -38,13 +38,16 @@ char TBeachheadMission::IsDefensiveSeaZoneMission() const {
 // SYNTHETIC: IMPERIALISM 0x0053a3d0 (approx -- see symbols.csv)
 // TBeachheadMission::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x0053a400
+TBeachheadMission::~TBeachheadMission() {}
+
 TBeachheadMission::TBeachheadMission() : TControlSeaZoneMission(), parentMission3c(nullptr) {}
 
 // SYNTHETIC: IMPERIALISM 0x0053a420
 // TBeachheadMission::GetRuntimeClass
 
 // FUNCTION: IMPERIALISM 0x0053a490
-TBeachheadMission::TBeachheadMission(TZone* targetZone, TAttackProvinceMission* parentMission)
+TBeachheadMission::TBeachheadMission(TZone* targetZone, TInvadeMission* parentMission)
     : TControlSeaZoneMission(targetZone), parentMission3c(parentMission) {}
 
 // Reproduces the base TControlSeaZoneMission::CalculateNeeds's targetZone14-tagged base score
@@ -102,20 +105,16 @@ void TBeachheadMission::CalculateNeeds() {
 
   float invadePriority = static_cast<float>(g_BeachheadMissionPriorityNormalization_0065AA30 /
                                             GetNavyContextPointerFromGlobalTableByIndex(3)) *
-                         static_cast<TInvadeMission*>(parentMission3c)->CalculatePriority();
+                         parentMission3c->CalculatePriority();
   if (requiredShipEquipageByCategory[3] < invadePriority) {
     requiredShipEquipageByCategory[3] = invadePriority;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053a7b0
-char TBeachheadMission::Matches(int kind, int key, int mode) const {
-  if (kind == 2 && key != -1 && parentMission3c != nullptr &&
-      static_cast<short>(key) == parentMission3c->targetProvince30 &&
-      mode == reinterpret_cast<int>(targetZone14)) {
-    return 1;
-  }
-  return 0;
+char TBeachheadMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+  return missionType == kMissionTypeInvadeProvince && key != -1 &&
+         key == parentMission3c->targetProvince30 && zoneContext == targetZone14;
 }
 
 // this->parentMission3c->targetProvince30 (city/region record index) reads
@@ -156,7 +155,7 @@ TMission* TBeachheadMission::GetArmyMission() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053a940
-char TBeachheadMission::ReturnFalseSlot98() {
+char TBeachheadMission::SmokeEmIfYouGotEm() {
   // ClearBlockadePortMissionChildOrderLinksIfReady: clears each queued
   // order-child's owner-back-pointer, then frees the chain.
   if (marker11 == 0 && taskForce20 != nullptr) {

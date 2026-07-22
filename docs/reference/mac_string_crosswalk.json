@@ -13385,6 +13385,23 @@
       ],
       "source_file": "src/game/TOcean_RouteBuffer.cpp"
     },
+    "0x0053c0a0": {
+      "references": [
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        }
+      ],
+      "source_file": "src/game/TArmyMission.cpp"
+    },
     "0x00542900": {
       "references": [
         {
@@ -13657,6 +13674,18 @@
       ],
       "source_file": "src/game/TLoungeDialog.cpp"
     },
+    "0x0054dfc0": {
+      "references": [
+        {
+          "group": 10050,
+          "index": 27,
+          "kind": "windows_gob",
+          "load_string_id": 21987,
+          "text": "Do you wish to force the human playing [1: country] out of the game?  If you do so, his control will be overthrown and replaced by a technocratic computerized government.  This process is irreversible."
+        }
+      ],
+      "source_file": "src/game/TLoungeDialog.cpp"
+    },
     "0x0054e4c0": {
       "references": [
         {
@@ -13854,6 +13883,53 @@
           "kind": "embedded_global",
           "symbol": "s_SourcePathUNavy_006983C8",
           "text": "D:\\Ambit\\Cross\\UNavy.cpp"
+        }
+      ],
+      "source_file": "src/game/TNavyMgr.cpp"
+    },
+    "0x005573f0": {
+      "references": [
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        }
+      ],
+      "source_file": "src/game/TAdmiral.cpp"
+    },
+    "0x00558960": {
+      "references": [
+        {
+          "address": "0x0069430c",
+          "kind": "embedded_global",
+          "symbol": "g_szDecimalFormat",
+          "text": "%d"
+        },
+        {
+          "address": "0x00695760",
+          "kind": "embedded_global",
+          "symbol": "g_szListSeparator_00695760",
+          "text": ", "
+        },
+        {
+          "address": "0x00695794",
+          "kind": "embedded_global",
+          "symbol": "s_szSpaceSeparator_00695794",
+          "text": " "
+        },
+        {
+          "group": 10044,
+          "index": 3,
+          "kind": "windows_gob",
+          "load_string_id": 21363,
+          "text": "Merchants sunk:"
         }
       ],
       "source_file": "src/game/TNavyMgr.cpp"
@@ -14594,6 +14670,73 @@
         }
       ],
       "source_file": "src/game/TSimMgr.cpp"
+    },
+    "0x005853f0": {
+      "references": [
+        {
+          "address": "0x00695760",
+          "kind": "embedded_global",
+          "symbol": "g_szListSeparator_00695760",
+          "text": ", "
+        },
+        {
+          "group": 10032,
+          "index": 2,
+          "kind": "windows_gob",
+          "load_string_id": 20162,
+          "text": "not implemented"
+        },
+        {
+          "group": 10032,
+          "index": 8,
+          "kind": "windows_gob",
+          "load_string_id": 20168,
+          "text": "End Phase"
+        },
+        {
+          "group": 10032,
+          "index": 9,
+          "kind": "windows_gob",
+          "load_string_id": 20169,
+          "text": "Year"
+        },
+        {
+          "group": 10032,
+          "index": 18,
+          "kind": "windows_gob",
+          "load_string_id": 20178,
+          "text": "End Turn"
+        },
+        {
+          "group": 10032,
+          "index": 19,
+          "kind": "windows_gob",
+          "load_string_id": 20179,
+          "text": "Season"
+        },
+        {
+          "group": 10032,
+          "index": 20,
+          "kind": "windows_gob",
+          "load_string_id": 20180,
+          "text": "Give Trade Orders"
+        },
+        {
+          "group": 10032,
+          "index": 21,
+          "kind": "windows_gob",
+          "load_string_id": 20181,
+          "text": "Give Diplomacy Orders"
+        },
+        {
+          "group": 10032,
+          "index": 22,
+          "kind": "windows_gob",
+          "load_string_id": 20182,
+          "text": "Give Industry Orders"
+        }
+      ],
+      "source_file": "src/game/TToolBarCluster.cpp"
     },
     "0x00585ba0": {
       "references": [
@@ -26178,6 +26321,25 @@
           "kind": "embedded_global",
           "symbol": "s_SourcePathUViewMgr_0069B6BC",
           "text": "D:\\Ambit\\Cross\\UViewMgr.cpp"
+        }
+      ],
+      "source_file": "src/game/TViewMgr.cpp"
+    },
+    "0x005d8750": {
+      "references": [
+        {
+          "group": 10032,
+          "index": 3,
+          "kind": "windows_gob",
+          "load_string_id": 20163,
+          "text": "Help"
+        },
+        {
+          "group": 10032,
+          "index": 13,
+          "kind": "windows_gob",
+          "load_string_id": 20173,
+          "text": "Return to Map"
         }
       ],
       "source_file": "src/game/TViewMgr.cpp"
@@ -190686,7 +190848,7 @@
   "summary": {
     "embedded_globals": 770,
     "formula_matches": 2356,
-    "functions_with_references": 302,
+    "functions_with_references": 308,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3272,
     "text_resources": 182,

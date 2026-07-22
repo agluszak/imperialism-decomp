@@ -48,10 +48,6 @@ char TControlSeaZoneMission::IsDefensiveSeaZoneMission() const {
   return 0;
 }
 
-// Inherited unchanged by TBeachheadMission (real base class relationship).
-// FUNCTION: IMPERIALISM 0x00535620
-TControlSeaZoneMission::~TControlSeaZoneMission() {}
-
 // FUNCTION: IMPERIALISM 0x005387f0
 void TControlSeaZoneMission::Initialize() {
   float score = static_cast<float>(targetZone14->ComputeMapActionContextNodeValueAverage());
@@ -228,12 +224,10 @@ void TControlSeaZoneMission::CalculateNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x00539600
-char TControlSeaZoneMission::Matches(int kind, int key, int mode) const {
-  (void)mode;
-  if ((kind == 0 || kind == 3) && key == reinterpret_cast<int>(targetZone14)) {
-    return 1;
-  }
-  return 0;
+char TControlSeaZoneMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+  (void)key;
+  return (missionType == kMissionTypeAttackProvince || missionType == kMissionTypeDefendProvince) &&
+         zoneContext == targetZone14;
 }
 
 // Resolves a port-zone context command into a queued order type. `pMapOrderEntry` is the

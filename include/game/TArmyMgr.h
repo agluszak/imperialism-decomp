@@ -22,12 +22,6 @@ struct TextStyle;
 // table), otherwise a map-object pointer (its short at +0xc is the map cell / a TZone*).
 // All members alias the same 4 bytes, so accessing the right one is codegen-identical to the
 // old raw int while making the discriminated intent explicit.
-union MapContextTarget {
-  int tileIndex; // actionType04 in {0,3,4}
-  void* object;  // otherwise: a map object / TZone* (readers cast per actionType04)
-  int raw;       // untyped 4-byte payload (e.g. copied into a news-story parm)
-};
-
 struct MapContextActionRecord {
   unsigned char nationIds[2];       // +0x00
   unsigned char participantIndex02; // +0x02
@@ -35,8 +29,8 @@ struct MapContextActionRecord {
   // real serialized byte rather than compiler padding, even though no reader has been
   // found for it yet.
   unsigned char reservedByte03;
-  int actionType04;                // +0x04 (0..4; 2 widens the marker sprite code)
-  MapContextTarget tileOrObject08; // +0x08 (tagged by actionType04 -- see MapContextTarget)
+  int actionType04; // +0x04 (0..4; 2 widens the marker sprite code)
+  MapOrderBattleSnapshot::TargetContext tileOrObject08; // +0x08 (tagged by actionType04)
   // +0xc..+0x24f -- per-side (0/1) working state, laid out exactly like the tail of
   // MapOrderBattleSnapshot (map_order_battle_snapshot.h): a fixed name buffer, a fixed
   // overlay-label buffer, a child-record count, then (after a 2-byte alignment pad) the
@@ -319,7 +313,7 @@ public:
   // (field08) contains cityRecordIndex (TZone::ContainsCityStatePointerInZoneArrayBy-
   // CityIndex), reducing over TShip::SelectPreferredMapOrderEntryByPriorityRules; if
   // found, its admiral (admiralBacklink20) can override outDefenderSummary with
-  // "Adm. <name>" when the admiral's field_10/100+1 score beats Phase 1's, or (only if
+  // "Adm. <name>" when the admiral's experiencePoints/100+1 score beats Phase 1's, or (only if
   // Phase 1 found nothing at all -- zero adjacent regions) falls back to the ship's own
   // displayName18.
   //
@@ -342,22 +336,22 @@ public:
   // Called from RefreshMapOrderBattleSideSnapshot's type-5 (ship-order) tail. 0x004a6ef0,
   // 897 bytes.
   //
-  // requiredCountByte carries TTaskForce::required_count, which every navy-order reader
+  // nationId carries TTaskForce::required_count, which every navy-order reader
   // treats as the entry's owning nation slot (see RemoveMatchingTaskForceOrders in
   // TNavyMgr.cpp) -- used as a g_apNationStates index. The function has no explicit
-  // `side` parameter; it recovers `side` implicitly by comparing requiredCountByte
-  // against snapshot->requiredCountByte[0]: side 0's own call always matches trivially
+  // `side` parameter; it recovers `side` implicitly by comparing nationId
+  // against snapshot->nationIds[0]: side 0's own call always matches trivially
   // (side = 0), while side 1's call only diverges -- and only then runs the trim pass --
   // when the two sides' nation-slot bytes differ.
   //
   // Body:
   //  - Allocates a scratch `TList` (0x20 bytes, already-recovered class), CIterator-walks
-  //    g_apNationStates[requiredCountByte]'s order list (TCountry::militaryUnitList44, a
+  //    g_apNationStates[nationId]'s order list (TCountry::militaryUnitList44, a
   //    TSortedList* of TMilitaryUnit*), and AddTail()s every entry whose tileIndex06
   //    isn't a movement-class tile (TileHasMovementClassId) for cityIndex when its
   //    field_C == cityIndex, summing GetUnitTypeCostPoints per entry into a budget.
   //  - Subtracts g_pNavyOrderManager->ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(
-  //    requiredCountByte, &g_pGlobalMapState->cityScoreTable[cityIndex], 0) from that
+  //    nationId, &g_pGlobalMapState->cityScoreTable[cityIndex], 0) from that
   //    budget; if the remainder is positive, randomly evicts entries from the TList
   //    (rand() % GetCount() + 1 via GetEntryByOrdinal) until the remainder is <= 0, each
   //    time looking the evicted TMilitaryUnit* up in the TList's underlying CPtrList via
@@ -373,12 +367,11 @@ public:
   //    since the marker is cleared as each is processed, but every pass rescans from the
   //    head) appending one new MapOrderBattleSideChildRecord per marked-evicted
   //    TMilitaryUnit (resourceType = orderType, stockOrRequired = 0xffaa, nameBuffer =
-  //    name24 clamped to 0x20 chars, childPtr = the army-side sentinel 0x61726d79
-  //    ("army", mirroring RefreshMapOrderBattleSideSnapshot's "navy" sentinel, not the
-  //    real pointer, strengthBucket = field_38 / 100) before DetachUnitOrderFromOwnerAndReset()
+  //    name24 clamped to 0x20 chars, detail category = 0x61726d79 ("army"), and
+  //    strengthBucket = field_38 / 100) before DetachUnitOrderFromOwnerAndReset()
   //    + Free()ing the evicted unit. The old childRecords array is never freed here --
   //    reproduced as a faithful leak, matching this file's other acknowledged leaks.
-  void TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char requiredCountByte, int cityIndex,
+  void TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, int cityIndex,
                                                        struct MapOrderBattleSnapshot* snapshot);
 
   // Bare `this+8` accessor; sole caller is TSimMgr::AdvanceGlobalTurnStateMachine
