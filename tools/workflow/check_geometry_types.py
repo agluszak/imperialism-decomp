@@ -41,7 +41,6 @@ C_STYLE_CAST = re.compile(rf"\(\s*(?:const\s+)?\b{GEOMETRY_TYPE}\b\s*\*\s*\)")
 POLICY_METHODS: dict[str, dict[str, str]] = {
     "include/game/TView.h": {
         "HandleMouseDown": "CPoint",
-        "BeginMouseCaptureAndStartRepeatTimer": "CPoint",
         "HandleMouseUp": "CPoint",
         "DoMouseCommand": "CPoint",
         "QueryContentBounds": "CRect",

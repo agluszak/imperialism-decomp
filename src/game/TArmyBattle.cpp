@@ -180,7 +180,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
   stream->ReadBytes(&battleSiteIndex38, 4);
   stream->ReadBytes(&battleOutcomeCode44, 4);
   stream->ReadBytes(&fortLevel49, 1);
-  stream->ReadBytes(&moveAnimSuppressCode4c, 4);
+  stream->ReadBytes(&currentTacticalActionCode4c, 4);
   stream->ReadBytes(&compositionClass50, 4);
 
   // Rebuild the two combatant stacks and re-add every source unit to its side.
@@ -259,7 +259,7 @@ void TArmyBattle::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&battleSiteIndex38, 4);
   stream->WriteBytesSlot78(&battleOutcomeCode44, 4);
   stream->WriteBytesSlot78(&fortLevel49, 1);
-  stream->WriteBytesSlot78(&moveAnimSuppressCode4c, 4);
+  stream->WriteBytesSlot78(&currentTacticalActionCode4c, 4);
   stream->WriteBytesSlot78(&compositionClass50, 4);
 }
 

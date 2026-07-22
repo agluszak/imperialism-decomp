@@ -102,11 +102,11 @@
 | `0x0048c890` | `void __thiscall DispatchVfuncA0ToLinkedChildListSlot44(TControl * this)` |
 | `0x0048e520` | `void __thiscall ConstructUiCommandTagResourceEntryBase(TControl * this)` |
 | `0x0048e590` | `TControl * __thiscall DestructTControlAndMaybeFree(TControl * this, byte freeSelfFlag)` |
-| `0x0048e640` | `void __thiscall BeginMouseCaptureAndStartRepeatTimer(TControl * this, int arg1, int arg2, int arg3, int arg4)` |
+| `0x0048e640` | `void __thiscall TControl::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin)` |
 | `0x0048e7a0` | `void __thiscall SetControlPictureEntryAndMaybeRefresh(TControl * this, int * pPictureEntryRef, bool fRefreshNow)` |
 | `0x0048e7d0` | `void __thiscall SetCityProductionDialogPictureRectAndMaybeRefresh(TControl * this, int * pRectState, int refreshFlag)` |
 | `0x0048e810` | `void __thiscall SetControlStateFlagAndMaybeRefresh(TControl * this, bool fEnabledState, bool fRefreshNow)` |
-| `0x0048e850` | `void __thiscall DispatchPictureResourceCommand(TControl * this, int nEventType, void * pEventSender, void * pEventDataA, PanelEventPayload * pEventDataB)` |
+| `0x0048e850` | `void __thiscall TControl::TrackMouse(TrackPhase phase, CPoint& point, CPoint& anchor, CPoint& delta, unsigned char modifiers)` |
 | `0x0048e980` | `void __thiscall WrapperFor_ApplyRectMarginsInPlace_At0048e980(TControl * this)` |
 | `0x0048e9c0` | `void __thiscall NoOpUiViewSlotHandler(TControl * this)` |
 | `0x00492e10` | `void __cdecl DestructTControlAndMaybeFree_Impl(void)` |
@@ -268,4 +268,3 @@ struct TradeControl {
     // +0x94: uint autoRepeatTick94;
 };
 ```
-

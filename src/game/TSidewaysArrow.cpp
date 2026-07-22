@@ -21,13 +21,11 @@ TSidewaysArrow::TSidewaysArrow() : TUpDownPictureButton() {
 #include "game/TAmbitApplication.h"
 
 // FUNCTION: IMPERIALISM 0x00583bd0
-void TSidewaysArrow::DispatchPictureResourceCommand(int eventType, void* eventSender,
-                                                    void* eventDataA, void* eventDataB,
-                                                    int commandFlag) {
-  TUpDownPictureButton::DispatchPictureResourceCommand(eventType, eventSender, eventDataA,
-                                                       eventDataB, commandFlag);
+void TSidewaysArrow::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
+                                CPoint& currentPoint, unsigned char commandFlag) {
+  TUpDownPictureButton::TrackMouse(phase, startPoint, previousPoint, currentPoint, commandFlag);
 
-  if (eventType == 2) {
+  if (phase == kTrackPhaseEnd) {
     return;
   }
 
@@ -38,11 +36,11 @@ void TSidewaysArrow::DispatchPictureResourceCommand(int eventType, void* eventSe
 
   tick = GetTickCountDiv16();
   repeatDeadlineTick = (int)tick;
-  if (eventType == 0) {
+  if (phase == kTrackPhaseBegin) {
     repeatDeadlineTick = (int)tick + 10;
   }
 
-  CPoint* point = static_cast<CPoint*>(eventDataB);
+  CPoint* point = &currentPoint;
   if (!this->PointInBoundsAndActionable(point)) {
     return;
   }

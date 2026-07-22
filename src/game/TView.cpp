@@ -67,7 +67,7 @@ unsigned short TView::GetCursorID() {
 void TView::PostRender() {}
 
 // FUNCTION: IMPERIALISM 0x00427240
-char TView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
+char TView::HandleMouseCommandToSelf(CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)point;
   (void)event;
   (void)origin;
@@ -121,8 +121,7 @@ void TView::Draw(RECT* rectBuffer) {
 // Base TView slot 0x47: orphan RET 0x10 stub (real capture on TControl 0x48e640).
 
 // FUNCTION: IMPERIALISM 0x00430c10
-void TView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
-                                                 CPoint origin) {
+void TView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)point;
   (void)event;
   (void)origin;
@@ -869,7 +868,7 @@ char TView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint or
 
   if (PrepareForDrawing() != 0 && IsEnabled() != 0) {
     CPoint localPoint = point;
-    BeginMouseCaptureAndStartRepeatTimer(localPoint, event, origin);
+    DoMouseCommand(localPoint, event, origin);
     return 1;
   }
   return 0;
@@ -894,7 +893,7 @@ char TView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint orig
   if (PrepareForDrawing() != 0) {
     CPoint localPoint = point;
     if (IsEnabled() != 0) {
-      return DoMouseCommand(localPoint, event, origin) != 0;
+      return HandleMouseCommandToSelf(localPoint, event, origin) != 0;
     }
   }
   return 0;

@@ -14,8 +14,8 @@ public:
   virtual void DoPostCreate(int arg) override;
   virtual void Draw(RECT* rectBuffer) override;
   virtual char HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
-  virtual void DispatchPictureResourceCommand(int nEventType, void* pEventSender, void* pEventDataA,
-                                              void* pEventDataB, int nCommandFlag) override;
+  virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
+                          CPoint& currentPoint, unsigned char commandFlag) override;
   virtual void SetNumIcons(short numIcons) override;
   virtual void SetMax(short maxValue);
   virtual char KnobContainsMouse(const CPoint& point);

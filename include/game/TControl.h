@@ -2,6 +2,10 @@
 
 #include "game/TView.h"
 
+// Mac CodeWarrior names the shared capture callback TrackMouse and gives its first
+// argument this phase type. Windows passes the same 0/1/2 begin/update/end values.
+enum TrackPhase { kTrackPhaseBegin = 0, kTrackPhaseUpdate = 1, kTrackPhaseEnd = 2 };
+
 // 10-byte packed text-style descriptor: three shorts plus a COLORREF-bearing text-color
 // field at offset 6, as built by BuildUiTextStyleDescriptor (0x5c3e80) and
 // BindUiResourceTextAndStyle (0x41b490). This is a reusable UI value type, not
@@ -36,7 +40,7 @@ public:
   // slot 0x0f DoEvent override declared below (0x48e710)
   // slot 0x10 HandleEvent inherited unchanged (0x48a2e0)
   // slot 0x11 DoMenuCommand inherited unchanged (0x48a310)
-  // slot 0x12 ForwardParam inherited unchanged (0x48a380)
+  // slot 0x12 DoKeyEvent inherited unchanged (0x48a380)
   // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetIdleFreq inherited unchanged (0x415d50)
   // slot 0x15 SetIdleFreq inherited unchanged (0x415d70)
@@ -89,7 +93,7 @@ public:
   // slot 0x45 PaintOrInvalidateControl inherited unchanged (0x48b860)
   // slot 0x46 HandleMouseDown inherited unchanged (0x48c450)
   // slot 0x48 HandleMouseUp inherited unchanged (0x48c590)
-  // slot 0x49 DoMouseCommand inherited unchanged (0x427240)
+  // slot 0x49 HandleMouseCommandToSelf inherited unchanged (0x427240)
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
   // slot 0x4b QueryBounds inherited unchanged (0x427290)
   // slot 0x4c TranslateRectToWindow inherited unchanged (0x4272d0)
@@ -120,9 +124,9 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 WindowToLocal inherited unchanged (0x48bac0)
-  virtual void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
-                                              void* eventDataB,
-                                              int commandFlag); // slot 0x68 0x48e850
+  virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
+                          CPoint& currentPoint,
+                          unsigned char commandFlag); // slot 0x68 0x48e850
   // Build this control's content bounds (via QueryContentBounds) then deflate by
   // contentInsets68 -- the shared "content rect with margins applied" primitive used by
   // Draw-family paint code. Some subclasses (e.g. TCivDescription) repurpose
@@ -163,8 +167,7 @@ public:
 
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
                        TEvent* event) override; // 0x0f 0x48e710
-  virtual void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
-                                                    CPoint origin) override;
+  virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;
   virtual int GetEventNumber() override;
 
   // Not yet ported (0x5be150, 420 bytes) -- called by TOfferDeskPicture::DoEvent with a

@@ -248,9 +248,7 @@ void TCityProductionView::DoEvent(int commandId, TEventHandler* sourceHandler, T
 }
 
 // FUNCTION: IMPERIALISM 0x004bc660
-void TCityProductionView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
-                                                               TToolboxEvent* event,
-                                                               CPoint origin) {
+void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)event;
   (void)origin;
   short buildingSlot = -1;
@@ -282,7 +280,7 @@ void TCityProductionView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& poi
             g_pCityOrderCapabilityState->orderCapRows277[nationId].techStatusByTechId[19] == 2;
       }
       if (available) {
-        DispatchPictureResourceCommand(2, &localPoint, &localPoint, &localPoint, 0);
+        TrackMouse(kTrackPhaseEnd, localPoint, localPoint, localPoint, 0);
         UpdateToolbar();
         return;
       }
@@ -297,17 +295,16 @@ void TCityProductionView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& poi
 }
 
 // FUNCTION: IMPERIALISM 0x004bc870
-void TCityProductionView::DispatchPictureResourceCommand(int eventType, void* eventSender,
-                                                         void* eventDataA, void* eventDataB,
-                                                         int commandFlag) {
+void TCityProductionView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
+                                     CPoint& currentPoint, unsigned char commandFlag) {
   (void)commandFlag;
-  (void)eventSender;
-  (void)eventDataA;
-  if (eventType != 2) {
+  (void)startPoint;
+  (void)previousPoint;
+  if (phase != kTrackPhaseEnd) {
     return;
   }
 
-  CPoint point(*static_cast<CPoint*>(eventDataB));
+  CPoint point(currentPoint);
   for (int priority = 15; priority >= 0; --priority) {
     short buildingSlot = g_cityBuildingHitTestOrder[priority];
     if (PtInRgn(&point, buildingClipRegionsEC[buildingSlot])) {
@@ -335,9 +332,9 @@ void TCityProductionView::CloseAndSaveWindows() {
 }
 
 // FUNCTION: IMPERIALISM 0x004bc9b0
-void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
+void TCityProductionView::SetBuildingPicture(short buildingSlot, short buildingType) {
+  (void)buildingSlot;
+  (void)buildingType;
   CTemporaryRegion surface;
 
   CRect boundsRecord;

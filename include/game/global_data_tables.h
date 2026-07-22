@@ -940,6 +940,7 @@ extern "C" const char s_SourcePathUOcean_006984CC[];
 // marker-box construction (assigned once via ftol() elsewhere; role beyond that isn't
 // further recovered).
 extern "C" short g_defaultMarkerBoxWidth_006a460c;
+extern short g_awDiplomacyTradePolicyIconValueTable[7];
 extern TSoundPlayer* g_pSfxPlaybackSystem;
 extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
 extern TApplication* g_pApplicationUiRootController;

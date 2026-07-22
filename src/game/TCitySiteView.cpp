@@ -43,7 +43,7 @@ void TCitySiteView::DoPostCreate(int arg) {
 
   g_pCitySiteCachedPrimaryRenderSurfaceContext = g_pPrimaryRenderSurfaceContext;
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
-  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagGold /* 'DLOG' */);
+  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagDialog /* 'DLOG' */);
 
   // TCitySiteView is always hosted as TMapUberPicture's 'DLOG' child (see
   // TMapUberPicture.h's "event 0x3b8 constructs a TCitySiteView" note and the real
@@ -91,7 +91,7 @@ void TCitySiteView::DoPostCreate(int arg) {
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x273f, 9, kControlTagCanc);
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730, 3, kControlTagQuer);
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
-  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagGold /* 'DLOG' */);
+  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagDialog /* 'DLOG' */);
 }
 
 // FUNCTION: IMPERIALISM 0x0051c2a0

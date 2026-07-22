@@ -893,7 +893,7 @@ void THelpMgr::EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextI
   }
 
   TTerrainHelpPicture* terrainHelp =
-      static_cast<TTerrainHelpPicture*>(pendingDialogViewC->ResolveControlByTag(kControlTagGold));
+      static_cast<TTerrainHelpPicture*>(pendingDialogViewC->ResolveControlByTag(kControlTagDialog));
   terrainHelp->BuildMapTileActionContextMenu(static_cast<short>(mapContextIndex));
 }
 

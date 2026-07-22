@@ -70,8 +70,8 @@ void TWorldView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* ev
 }
 
 // FUNCTION: IMPERIALISM 0x00595130
-void TWorldView::ForwardParam(int param) {
-  TKeyCommandEvent* commandEvent = reinterpret_cast<TKeyCommandEvent*>(param);
+void TWorldView::DoKeyEvent(TToolboxEvent* event) {
+  TToolboxEvent* commandEvent = event;
   CString message;
 
   switch (commandEvent->commandCode) {

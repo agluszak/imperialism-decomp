@@ -277,11 +277,24 @@ void TBattleReportView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
 }
 
 // FUNCTION: IMPERIALISM 0x004adcb0
-void TBattleReportView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
-                                                             TToolboxEvent* event, CPoint origin) {
-  (void)point;
+void TBattleReportView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)event;
   (void)origin;
+  MapContextActionRecord* selectedRecord = 0;
+  int remaining = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
+  for (; remaining > 0; --remaining) {
+    MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
+        g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
+            remaining));
+    if (record->placedFlag260 != 0 && point.x >= record->markerPixelX258 &&
+        point.x < record->markerPixelX258 + 0x12 && point.y >= record->markerPixelY25c &&
+        point.y < record->markerPixelY25c + 0x12) {
+      selectedRecord = record;
+    }
+  }
+  if (selectedRecord != 0) {
+    RefreshMapContextSelectionPanelAndInfoLabels(selectedRecord);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004ade00

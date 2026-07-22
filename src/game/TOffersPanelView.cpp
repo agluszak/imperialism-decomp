@@ -1,9 +1,12 @@
 #include "game/TOffersPanelView.h"
 
 #include "game/TDeluxeText.h"
+#include "game/TPictureButton.h"
 #include "game/TCountry.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TSimMgr.h"
+#include "game/TSoundPlayer.h"
+#include "game/TUiEvent.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/quickdraw_rendering.h"
@@ -19,7 +22,7 @@
 IMPLEMENT_DYNCREATE(TOffersPanelView, TPanelView)
 
 // FUNCTION: IMPERIALISM 0x004f8f70
-TOffersPanelView::TOffersPanelView() : TPanelView(), acceptText(0), rejectText(0) {}
+TOffersPanelView::TOffersPanelView() : TPanelView(), acceptButton(0), rejectButton(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x004f8fa0
 // TOffersPanelView::`scalar deleting destructor'
@@ -29,12 +32,12 @@ TOffersPanelView::~TOffersPanelView() {}
 void TOffersPanelView::DoPostCreate(int arg) {
   TPanelView::DoPostCreate(arg);
 
-  acceptText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagAcce));
-  acceptText->AssertValid();
-  rejectText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagReje));
-  rejectText->AssertValid();
-  acceptText->textOptionFlags = 0x1388;
-  rejectText->textOptionFlags = 0x1388;
+  acceptButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
+  acceptButton->AssertValid();
+  rejectButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
+  rejectButton->AssertValid();
+  acceptButton->timingWord92 = 0x1388;
+  rejectButton->timingWord92 = 0x1388;
 
   TextStyle sharedStyle;
   BuildUiTextStyleDescriptor(&sharedStyle, 0, 0, 0x2b68);
@@ -58,10 +61,10 @@ void TOffersPanelView::DoPostCreate(int arg) {
 
   CString acceHint;
   g_pSimMgr->GetString(0x274a, 6, &acceHint);
-  SetControlHoverHelpText(acceHint, acceptText);
+  SetControlHoverHelpText(acceHint, acceptButton);
   CString rejeHint;
   g_pSimMgr->GetString(0x274a, 7, &rejeHint);
-  SetControlHoverHelpText(rejeHint, rejectText);
+  SetControlHoverHelpText(rejeHint, rejectButton);
 
   // Blanks the panel's own hover-help text (SetControlHoverHelpText's callee target
   // decodes to the real ported SetControlHoverHelpText/TView::SetHoverHelpText, not the
@@ -79,7 +82,24 @@ void TOffersPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 }
 
 // FUNCTION: IMPERIALISM 0x004f9350
-void TOffersPanelView::ForwardParam(int param) {}
+void TOffersPanelView::DoKeyEvent(TToolboxEvent* event) {
+  int commandCode = event->commandCode;
+  if (commandCode == 3 || commandCode == 0xd) {
+    TPictureButton* button = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
+    if (button == 0) {
+      return;
+    }
+    g_pSfxPlaybackSystem->PlaySoundEffect(button->timingWord92, 0, 1);
+    QueueDeferredUiEventPacket(this, 0xa, button);
+  } else if (commandCode == 0x1b) {
+    TPictureButton* button = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
+    if (button == 0) {
+      return;
+    }
+    g_pSfxPlaybackSystem->PlaySoundEffect(button->timingWord92, 0, 1);
+    QueueDeferredUiEventPacket(this, 0xa, button);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004f9420
 char TOffersPanelView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint origin) {

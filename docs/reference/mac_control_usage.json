@@ -307,7 +307,15 @@
       "nodes": [
         "Citydlog.rsrc:9220@0x029e"
       ],
-      "original_modules": [],
+      "original_modules": [
+        {
+          "functions": [
+            "0x004ca8f0"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TWindow": 1
       },
@@ -329,7 +337,15 @@
       "nodes": [
         "Citydlog.rsrc:9221@0x029e"
       ],
-      "original_modules": [],
+      "original_modules": [
+        {
+          "functions": [
+            "0x004cebb0"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TWindow": 1
       },
@@ -11013,6 +11029,8 @@
       "original_modules": [
         {
           "classes": [
+            "TBuildingConstructionView",
+            "TBuildingExpansionView",
             "TIndustryView",
             "TTradeSchoolView"
           ],
@@ -11028,7 +11046,9 @@
             "0x23fb",
             "0x23fc",
             "0x23fe",
-            "0x23ff"
+            "0x23ff",
+            "0x2404",
+            "0x2405"
           ],
           "module": "UCityViews.cpp",
           "resources": [
@@ -11043,7 +11063,9 @@
             "Citydlog.rsrc:9211",
             "Citydlog.rsrc:9212",
             "Citydlog.rsrc:9214",
-            "Citydlog.rsrc:9215"
+            "Citydlog.rsrc:9215",
+            "Citydlog.rsrc:9220",
+            "Citydlog.rsrc:9221"
           ],
           "status": "candidate"
         }
@@ -175600,7 +175622,15 @@
         "Citydlog.rsrc:9220@0x0699",
         "Citydlog.rsrc:9220@0x06ff"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TBuildingConstructionView"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "Citydlog.rsrc:9221": {
       "name": "Generic expander",
@@ -175615,7 +175645,15 @@
         "Citydlog.rsrc:9221@0x04c8",
         "Citydlog.rsrc:9221@0x052e"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TBuildingExpansionView"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "Citymain.rsrc:2011": {
       "name": "City Screen",
@@ -179822,6 +179860,25 @@
         "owner_class": null,
         "recovered_source": "src/game/TCityInteriorMinister.cpp"
       },
+      "0x004ca8f0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp",
+                "symbol": "s_SourcePathUCityViews_00696650"
+              }
+            ],
+            "module": "UCityViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TBuildingConstructionView::DoClosingAction",
+        "owner_class": "TBuildingConstructionView",
+        "recovered_source": "src/game/TBuildingConstructionView.cpp"
+      },
       "0x004cc550": {
         "modules": [
           {
@@ -179895,6 +179952,25 @@
         "name": "TTradeSchoolView::UpdateFields",
         "owner_class": "TTradeSchoolView",
         "recovered_source": "src/game/TTradeSchoolView.cpp"
+      },
+      "0x004cebb0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp",
+                "symbol": "s_SourcePathUCityViews_00696650"
+              }
+            ],
+            "module": "UCityViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TBuildingExpansionView::DoClosingAction",
+        "owner_class": "TBuildingExpansionView",
+        "recovered_source": "src/game/TBuildingExpansionView.cpp"
       },
       "0x004cf350": {
         "modules": [
@@ -181861,16 +181937,20 @@
       "UCityViews.cpp": {
         "classes": [
           "TArmoryView",
+          "TBuildingConstructionView",
+          "TBuildingExpansionView",
           "TIndustryView",
           "TPlaceCityDialog",
           "TPurchaseCluster",
           "TTradeSchoolView"
         ],
         "functions": [
+          "0x004ca8f0",
           "0x004cc550",
           "0x004ccf30",
           "0x004cd8d0",
           "0x004ce070",
+          "0x004cebb0",
           "0x004cf350",
           "0x004d1880"
         ]
@@ -182187,13 +182267,13 @@
   "summary": {
     "ambiguous_tags": 153,
     "classes": 162,
-    "classes_with_source_module_evidence": 17,
+    "classes_with_source_module_evidence": 19,
     "declared_classes": 152,
     "factories_with_source_module_candidates": 10,
-    "functions_with_source_module_evidence": 121,
+    "functions_with_source_module_evidence": 123,
     "nodes": 3263,
     "screens": 121,
-    "screens_with_source_module_candidates": 27,
+    "screens_with_source_module_candidates": 29,
     "source_modules": 35,
     "tags": 813
   },
