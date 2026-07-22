@@ -34,19 +34,18 @@ public:
   virtual TMission*
   GetNavyMission() override; // slot 0x5c 0x535730 -- army: no navy-selectable mission (null)
   virtual float
-  ReturnZeroFloatSlot68() override; // slot 0x68 0x53ceb0 -- composition alignment score
-  virtual float ReturnZeroFloatSlot6C() override; // slot 0x6c 0x53d3e0 -- dot product score
-  virtual float ReturnZeroFloatSlot70(TMilitaryUnit* candidateUnit)
+  GetWeightedSatisfaction() override; // slot 0x68 0x53ceb0 -- composition alignment score
+  virtual float IndustrialCostOfNeeds() override; // slot 0x6c 0x53d3e0 -- dot product score
+  virtual float ValueOf(TMilitaryUnit* candidateUnit)
       override; // slot 0x70 0x53d420 -- score delta vs current selection
-  virtual float ReturnZeroFloatSlot78(TMilitaryUnit* candidateUnit, float* referenceVector)
+  virtual float FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector)
       override; // slot 0x78 0x53d4a0 -- candidate vector distance score
-  virtual void
-  NoOpSlot80(TMilitaryUnit* unit,
-             int notify) override; // slot 0x80 0x53c570 -- adopt unit into order list and notify
-  virtual void NoOpSlot88(TMilitaryUnit* unit,
-                          int unused) override; // slot 0x88 0x53c5e0 -- release unit owner link
+  virtual void AcceptReenforcement(TMilitaryUnit* unit,
+                                   unsigned char notify) override; // slot 0x80 0x53c570
+  virtual void RejectConstituent(TMilitaryUnit* unit,
+                                 unsigned char notify) override; // slot 0x88 0x53c5e0
   virtual char
-  ReturnFalseSlot98() override; // slot 0x98 0x53c4f0 -- queue eligible units by movement class
+  SmokeEmIfYouGotEm() override; // slot 0x98 0x53c4f0 -- queue eligible units by movement class
 
   // First TArmyMission-introduced virtual (TMission abstract slot 0x27 / offset 0x9c).
   // Mac: GetPresentLocation() const. Returns the mission's target province/context id.

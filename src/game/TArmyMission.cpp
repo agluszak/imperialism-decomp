@@ -194,7 +194,7 @@ void TArmyMission::ReadFrom(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053c4f0
-char TArmyMission::ReturnFalseSlot98() {
+char TArmyMission::SmokeEmIfYouGotEm() {
   if (orderListAt18 != nullptr) {
     CIterator iter(orderListAt18);
     void* item = iter.Reset();
@@ -202,7 +202,7 @@ char TArmyMission::ReturnFalseSlot98() {
       TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
       short movementClass = unit->GetUnitMovementClassId();
       if (movementClass != 0) {
-        NoOpSlot88(unit, 1);
+        RejectConstituent(unit, 1);
       }
       item = iter.Advance();
     }
@@ -211,11 +211,11 @@ char TArmyMission::ReturnFalseSlot98() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053c570
-void TArmyMission::NoOpSlot80(TMilitaryUnit* unit, int notify) {
+void TArmyMission::AcceptReenforcement(TMilitaryUnit* unit, unsigned char notify) {
   unit->TObject::AssertValid();
   TMission* owner = unit->ownerMission40;
   if (owner != nullptr) {
-    owner->NoOpSlot88(unit, notify);
+    owner->RejectConstituent(unit, notify);
   }
   unit->ownerMission40 = this;
   orderListAt18->AddHead(unit);
@@ -225,8 +225,8 @@ void TArmyMission::NoOpSlot80(TMilitaryUnit* unit, int notify) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053c5e0
-void TArmyMission::NoOpSlot88(TMilitaryUnit* unit, int unused) {
-  (void)unused;
+void TArmyMission::RejectConstituent(TMilitaryUnit* unit, unsigned char notify) {
+  (void)notify;
   if (orderListAt18 != nullptr) {
     POSITION pos = orderListAt18->listState.Find(unit);
     if (pos != nullptr) {
@@ -355,7 +355,7 @@ void TArmyMission::GetWeightedEquipage(float* vector) const {
 }
 
 // FUNCTION: IMPERIALISM 0x0053ceb0
-float TArmyMission::ReturnZeroFloatSlot68() {
+float TArmyMission::GetWeightedSatisfaction() {
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   AccumulateOrderPriorityVector(vector);
 
@@ -429,7 +429,7 @@ float TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(
 }
 
 // FUNCTION: IMPERIALISM 0x0053d3e0
-float TArmyMission::ReturnZeroFloatSlot6C() {
+float TArmyMission::IndustrialCostOfNeeds() {
   double total = 0.0;
   for (int i = 0; i < 5; ++i) {
     total += static_cast<double>(requiredEquipageByClass[i]) *
@@ -439,21 +439,21 @@ float TArmyMission::ReturnZeroFloatSlot6C() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053d420
-float TArmyMission::ReturnZeroFloatSlot70(TMilitaryUnit* candidateUnit) {
+float TArmyMission::ValueOf(TMilitaryUnit* candidateUnit) {
   if (flag10 != 0) {
     return g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
 
   if (candidateUnit->ownerMission40 == this) {
-    float ownScore = ReturnZeroFloatSlot68();
+    float ownScore = GetWeightedSatisfaction();
     return ownScore - ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(candidateUnit);
   }
   float withCandidate = ComputeArmyMissionScoreDeltaWithCandidateUnit(candidateUnit);
-  return withCandidate - ReturnZeroFloatSlot68();
+  return withCandidate - GetWeightedSatisfaction();
 }
 
 // FUNCTION: IMPERIALISM 0x0053d4a0
-float TArmyMission::ReturnZeroFloatSlot78(TMilitaryUnit* candidateUnit, float* referenceVector) {
+float TArmyMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector) {
   if (static_cast<double>(candidateUnit->field_34) * 0.002 < 139069760.0) {
     if (!IsANoBrainer()) {
       return -1000.0f;

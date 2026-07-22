@@ -262,6 +262,10 @@ public:
   short scenarioMapIndexPlusOne;
 };
 
+// Read the current DirectPlay session id while touching the session runtime state.
+// Genuine cdecl helper at 0x549240.
+int __cdecl TouchSessionActiveNationId(void);
+
 ASSERT_SIZE(TSimMgr, 0x118);
 
 // 0x5d4c10 / 0x5d4c40 — file-metadata probe (CFile::GetStatus) and delete-with-error-box

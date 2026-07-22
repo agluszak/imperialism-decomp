@@ -15,7 +15,7 @@ namespace {
 // (TMission.cpp:276), just against the 0x6545d0/d8 address instances of the same
 // conceptual constants.
 inline float ComputeMissionRemainingPriorityScore(TMission* mission) {
-  float diff = g_MissionScoreOneConstant_006545d8 - mission->ReturnZeroFloatSlot68();
+  float diff = g_MissionScoreOneConstant_006545d8 - mission->GetWeightedSatisfaction();
   return (diff >= g_MissionDefaultScore_006545d0) ? diff * mission->importanceScore0c
                                                   : diff / mission->importanceScore0c;
 }
@@ -29,7 +29,7 @@ void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unus
     CIterator resetIter(missionQueue);
     for (TMission* entry = static_cast<TMission*>(resetIter.Reset()); resetIter.More();
          entry = static_cast<TMission*>(resetIter.Advance())) {
-      entry->ReturnFalseSlot98();
+      entry->SmokeEmIfYouGotEm();
     }
   }
 
@@ -83,7 +83,7 @@ void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unus
       for (TShip* shipNode = GetNavyPrimaryOrderListHead(); shipNode != nullptr;
            shipNode = shipNode->nextOlder24) {
         if (shipNode->ownerNationSlot14 == nationSlot && shipNode->missionBacklink2c == nullptr) {
-          float score = bestNavy->ReturnZeroFloatSlot7C(shipNode, weightFractions);
+          float score = bestNavy->FitnessOf(shipNode, weightFractions);
           if (bestShip == nullptr || bestShipScore < score) {
             bestShipScore = score;
             bestShip = shipNode;
@@ -92,7 +92,7 @@ void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unus
       }
 
       if (bestShip != nullptr) {
-        bestNavy->NoOpSlot84(bestShip, 1);
+        bestNavy->AcceptReenforcement(bestShip, 1);
         continue;
       }
     }
@@ -138,9 +138,9 @@ void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unus
     if (eligibleRunnerUp != nullptr &&
         static_cast<char>(eligibleRunnerUp->state08) <= static_cast<char>(bestArmy->state08) &&
         (bestArmy->marker11 & 1) == 0) {
-      float bestArmyRatio = bestArmy->importanceScore0c / bestArmy->ReturnZeroFloatSlot6C();
+      float bestArmyRatio = bestArmy->importanceScore0c / bestArmy->IndustrialCostOfNeeds();
       float runnerUpRatio =
-          eligibleRunnerUp->importanceScore0c / eligibleRunnerUp->ReturnZeroFloatSlot6C();
+          eligibleRunnerUp->importanceScore0c / eligibleRunnerUp->IndustrialCostOfNeeds();
       if (bestArmyRatio < runnerUpRatio) {
         bestArmy = eligibleRunnerUp;
       }
@@ -172,7 +172,7 @@ void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unus
       for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
            unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
         if (unit->ownerMission40 == nullptr) {
-          float score = bestArmy->ReturnZeroFloatSlot78(unit, weightFractions);
+          float score = bestArmy->FitnessOf(unit, weightFractions);
           if (bestUnit == nullptr || bestUnitScore < score) {
             bestUnitScore = score;
             bestUnit = unit;
