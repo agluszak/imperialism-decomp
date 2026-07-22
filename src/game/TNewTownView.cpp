@@ -87,4 +87,13 @@ void TNewTownView::StuffValues(TTown* town) {
 }
 
 // FUNCTION: IMPERIALISM 0x004bdc10
-void TNewTownView::Close() {}
+void TNewTownView::Close() {
+  CString townName;
+  TEditText* nameControl = static_cast<TEditText*>(ResolveControlByTag(0x6e616d65)); // 'name'
+  if (nameControl == 0) {
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x82e);
+  }
+  nameControl->GetCurrentText(&townName);
+  town60->SetName(static_cast<LPCSTR>(townName));
+  TView::Close();
+}

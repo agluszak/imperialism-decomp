@@ -90,4 +90,9 @@ void TMilitaryPageView::PrepareUnitCache(int bitmapResourceId, int width, int he
 }
 
 // FUNCTION: IMPERIALISM 0x00564bf0
-void TMilitaryPageView::Close() {}
+void TMilitaryPageView::Close() {
+  TView::Close();
+  TMapDialog* mapDialog = g_pUiRuntimeContext->mapUberPictureF0->subview2A8;
+  mapDialog->suppressMarkerOverlay34C = false;
+  mapDialog->ResetAllTileMarkersToSentinel();
+}
