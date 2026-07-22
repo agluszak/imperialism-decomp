@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Check that // GLOBAL: markers live in global_data_tables.cpp only,
-and global declarations live in global_data_tables.h.
+and global declarations live in global_data_tables.h or include/game/globals/*.h.
 """
 
 import argparse
@@ -44,7 +44,9 @@ def check_global_declarations(header_dir: Path) -> List[Tuple[Path, int, str]]:
         if is_excluded_scan_path(header_file):
             continue
         if header_file.name == "global_data_tables.h":
-            continue  # This is the allowed location
+            continue  # This is the allowed location (umbrella)
+        if header_file.parent.name == "globals":
+            continue  # The per-subsystem globals headers (split, bead 8mo.2)
         if header_file.name.startswith("mfc_"):
             continue  # Skip MFC headers
             

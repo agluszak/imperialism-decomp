@@ -139,3 +139,4 @@ module|tools.ghidra.signature_evidence_union|just:signature-evidence-union|Merge
 module|tools.ghidra.weak_pointer_type_inventory|just:weak-pointer-type-inventory|Classify every remaining weak (opaque_pointee/generic_pointer_fallback/unresolved) source-signature pointee type
 module|tools.ghidra.original_module_map|registry:original-modules|Original .cpp module segmentation from assert-path strings (just original-module-map)
 module|tools.analysis.assign_subsystems|just:assign-subsystems|Join module map with source markers -> per-file subsystem assignment
+module|tools.analysis.split_globals|direct|One-shot god-header split into per-subsystem globals headers (bead 8mo.2)
