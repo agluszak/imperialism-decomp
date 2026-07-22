@@ -12,8 +12,8 @@
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
   "git_branch": "agent/city-view-debt-batch-97c",
-  "git_commit": "232309680464bfe60b9a9e07a25746200ea03ebb",
-  "git_commit_date": "2026-07-23T01:25:51+02:00",
+  "git_commit": "1b86a03496df0e676ec86b85887490c5f623d1d6",
+  "git_commit_date": "2026-07-23T01:37:32+02:00",
   "global_coverage_pct": 24.46082949308756,
   "global_orig_only_count": 8196,
   "global_recomp_only_count": 7630,
@@ -61,7 +61,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-22T23:37:22+00:00",
+  "timestamp_utc": "2026-07-22T23:37:37+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
