@@ -153,7 +153,7 @@ public:
 
 Placement-new is only acceptable for actual placement-new semantics: object pools, custom allocators, explicit reconstruction into storage, or code where the original program really constructs a separate object into a buffer.
 
-### 8. Retire bridge helpers as classes become understood (count baseline-tracked by `just antipattern-gate`)
+### 8. Retire bridge helpers as classes become understood (hard-banned by `just antipattern-gate`)
 
 Any helper named like:
 
@@ -355,7 +355,7 @@ is not, recover the real inheritance first rather than hand-writing the destruct
 Watch for false positives: a `Destruct*AndMaybeFree` NAME is not proof — read the body
 before converting.
 
-### 17. No `operator new`/`operator delete` factories or `__cdecl` factory helpers (baseline-tracked by `just antipattern-gate`)
+### 17. No `operator new`/`operator delete` factories or `__cdecl` factory helpers (hard-banned by `just antipattern-gate`)
 
 Class-declared `operator new`/`operator delete` and `__cdecl` free-function factory /
 class-name helpers (e.g. `CreateTViewInstance`, `GetTViewClassNamePointer`) are a
@@ -372,5 +372,5 @@ Instead, port the real thing: resolve the class's vtable-slot ILT thunks
 "Port more methods to class X" means real virtual methods on the real class — not a
 factory and not `operator new`.
 
-The existing `operator new`/`operator delete` sites are baseline-tracked so they ratchet
-down; new occurrences fail the gate.
+This is a baseline-free hard ban: the debt was fully eradicated, so any occurrence fails
+the gate (there is no baseline and no `-update` escape hatch).

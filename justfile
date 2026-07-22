@@ -8,8 +8,6 @@ runtime_test_build_dir := "build-runtime-tests"
 docker_image := "imperialism-msvc500"
 lint_build_dir := "build-clang"
 cmake_flags := "-DCMAKE_BUILD_TYPE=RelWithDebInfo -DIMPERIALISM_LINK_MFC=ON -DIMPERIALISM_MATCH_FLAGS_CSV=/Oy,/Ob1"
-vtable_gate_baseline := "config/baselines/vtable_gate_baseline.csv"
-construction_gate_baseline := "config/baselines/construction_gate_baseline.csv"
 tgreatpower_gate_baseline := "config/baselines/tgreatpower_gate_baseline.csv"
 class_discovery_classes := "TGreatPower,TAutoGreatPower"
 
@@ -1331,7 +1329,7 @@ test:
 # Raw-vtable source gate (Hard Rule 13); also runs as the first step of `just build`.
 [group('gates')]
 vtable-gate:
-  uv run python -m tools.workflow.check_no_raw_vtable_calls --baseline "{{vtable_gate_baseline}}"
+  uv run python -m tools.workflow.check_no_raw_vtable_calls
 
 # Vtable ABI audit: current source declarations vs the binary's immutable
 # calling-convention evidence (config/vtable_abi_evidence.json). Catches wrong
@@ -1343,18 +1341,12 @@ vtable-gate:
 vtable-abi-audit *args:
   uv run python -m tools.workflow.vtable_abi_audit {{args}}
 
-# Ratchet gate over the ABI audit: fails on NEW proven declaration conflicts
-# (address+class not in config/baselines/vtable_abi_gate_baseline.csv and not covered by a
-# reviewed config/vtable_signature_overrides.csv row). Pure source + static
-# evidence; no Ghidra needed.
+# Hard-ban gate over the ABI audit: fails on ANY proven declaration conflict not
+# covered by a reviewed config/vtable_signature_overrides.csv row. Baseline-free.
+# Pure source + static evidence; no Ghidra needed.
 [group('gates')]
 vtable-abi-gate:
   uv run python -m tools.workflow.vtable_abi_audit --gate
-
-# MUTATES: config/baselines/vtable_abi_gate_baseline.csv. Refresh after fixing conflicts.
-[group('gates')]
-vtable-abi-gate-update:
-  uv run python -m tools.workflow.vtable_abi_audit --write-baseline
 
 [group('gates')]
 marker-gate:
@@ -1368,15 +1360,11 @@ marker-gate:
 generated-marker-gate:
   uv run python -m tools.workflow.check_generated_markers
 
-# Ratchet gate against ILT/thunk-name ossification in manual source: rejects NEW
-# identifiers that start with thunk_/ILT_/WrapperFor_ or end with _At<8hex> (calls
-# via linker thunks; history-encoded body names). Existing debt is grandfathered in
-# config/baselines/ilt_ossification_baseline.csv — a finite, shrink-only migration queue.
-# Rejects "dual-use"/"dual-purpose"/"reused as" hand-waving and raw pointer<->int member
-# storage (reinterpret_cast<int>(ptr), int-member->class-pointer casts). A purported dual-use
-# field is an unresolved modelling defect: prove one model (union/record/accessors) or mark it
-# // UNRESOLVED_FIELD_ATTRIBUTION: with both readings + evidence. Existing debt grandfathered in
-# config/baselines/dual_use_baseline.csv (shrink-only migration queue).
+# Hard-ban gate: "dual-use"/"dual-purpose"/"reused as" hand-waving and raw
+# pointer<->int member storage (reinterpret_cast<int>(ptr), int-member->class-pointer
+# casts). A purported dual-use field is an unresolved modelling defect: prove one model
+# (union/record/accessors) or mark it // UNRESOLVED_FIELD_ATTRIBUTION: with both readings
+# + evidence. Baseline-free: zero occurrences allowed.
 [group('gates')]
 dual-use-gate:
   uv run python -m tools.workflow.check_dual_use
@@ -1388,21 +1376,12 @@ dual-use-gate:
 geometry-type-gate:
   uv run python -m tools.workflow.check_geometry_types
 
-# MUTATES: config/baselines/dual_use_baseline.csv. Ratchet down after resolving a field's
-# attribution. Never run to silence a new offender.
-[group('gates')]
-dual-use-gate-update:
-  uv run python -m tools.workflow.check_dual_use --write-baseline
-
+# Hard-ban gate against ILT/thunk-name ossification in manual source: rejects ANY
+# identifier that starts with thunk_/ILT_/WrapperFor_ or ends with _At<8hex> (calls via
+# linker thunks; history-encoded body names). Baseline-free: zero occurrences allowed.
 [group('gates')]
 ilt-ossification-gate:
   uv run python -m tools.workflow.check_ilt_ossification
-
-# MUTATES: config/baselines/ilt_ossification_baseline.csv. Ratchet down after migrating a thunk
-# or renaming a WrapperFor_/_At body. Never run to silence a new offender.
-[group('gates')]
-ilt-ossification-gate-update:
-  uv run python -m tools.workflow.check_ilt_ossification --write-baseline
 
 # Ensure every `// VTABLE:` annotation is immediately followed by its class/struct
 # (not a forward declaration, comment, or blank line).
@@ -1455,7 +1434,7 @@ symbols-anchor-gate:
 
 [group('gates')]
 antipattern-gate:
-  uv run python -m tools.workflow.check_construction_antipatterns --baseline "{{construction_gate_baseline}}"
+  uv run python -m tools.workflow.check_construction_antipatterns
 
 [group('gates')]
 tgreatpower-gate:
@@ -1530,8 +1509,8 @@ template-emission-matrix *args:
 template-alias-check:
   uv run python -m tools.workflow.template_alias_check
 
-# Ratchet gate over the boundary report: no new manual->stub call/cast references
-# and no new function-pointer casts of named symbols (both counts must not rise).
+# Hard-ban gate over the boundary report: zero manual->stub call/cast references
+# and zero function-pointer casts of named symbols (both counts must stay at 0).
 [group('gates')]
 boundary-gate:
   uv run python -m tools.workflow.check_boundary_ratchet
@@ -1593,16 +1572,6 @@ stats-baseline-update:
 tooling-surface-update:
   uv run python -m tools.workflow.check_tooling_surface --write
 
-# MUTATES: config/baselines/vtable_gate_baseline.csv.
-[group('baseline-update')]
-vtable-gate-update:
-  uv run python -m tools.workflow.baseline_guard --wrap "{{vtable_gate_baseline}}" -- uv run python -m tools.workflow.check_no_raw_vtable_calls --baseline "{{vtable_gate_baseline}}" --write-baseline
-
-# MUTATES: config/baselines/construction_gate_baseline.csv.
-[group('baseline-update')]
-antipattern-gate-update:
-  uv run python -m tools.workflow.baseline_guard --wrap "{{construction_gate_baseline}}" -- uv run python -m tools.workflow.check_construction_antipatterns --baseline "{{construction_gate_baseline}}" --write-baseline
-
 # MUTATES: config/baselines/tgreatpower_gate_baseline.csv.
 [group('baseline-update')]
 tgreatpower-gate-update:
@@ -1612,11 +1581,6 @@ tgreatpower-gate-update:
 [group('baseline-update')]
 stub-count-gate-update:
   uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/stub_count_baseline.json" -- uv run python -m tools.workflow.check_stub_count --write-baseline
-
-# MUTATES: config/baselines/boundary_baseline.json.
-[group('baseline-update')]
-boundary-gate-update:
-  uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/boundary_baseline.json" -- uv run python -m tools.workflow.check_boundary_ratchet --write-baseline
 
 # MUTATES: config/baselines/datacmp_baseline.csv.
 [group('baseline-update')]

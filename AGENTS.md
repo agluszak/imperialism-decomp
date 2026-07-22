@@ -36,10 +36,13 @@ just agent-release             # after the work lands: free the claim refs (24h 
 ```
 
 The receipt is guidance, not proof — CI recomputes the checks. Policy-baseline
-updates (`antipattern-gate-update`, `stub-count-gate-update`, and friends) are
-exceptions to architecture rules and refuse to run without
+updates (`stub-count-gate-update`, `datacmp-gate-update`, `noop-gate-update`, and
+friends) are exceptions to architecture rules and refuse to run without
 `ALLOW_POLICY_BASELINE_UPDATE=1`, which requires an explicit human approval —
-never set it to make a red gate go away (see the gate-chasing guardrail).
+never set it to make a red gate go away (see the gate-chasing guardrail). The
+fully-eradicated gates (construction/antipattern, raw-vtable, dual-use, ilt-
+ossification, boundary, vtable-abi) are baseline-free **hard bans** with no
+`-update` target at all: any hit is a source defect to fix, never to bless.
 
 ## Workflow skills (how to do each kind of task)
 
@@ -260,7 +263,7 @@ examples, and rationale: `docs/reference/construction.md`.
 8. **No `operator new`/`operator delete` factories or `__cdecl` free-function factory /
    class-name helpers** (`CreateTViewInstance`, etc.) as a porting approach — port real
    methods + real inheritance. The retired "EH-new factory" pattern is not a template.
-   *(baseline-tracked by `just antipattern-gate`)*
+   *(hard-banned by `just antipattern-gate`)*
 9. **No placement-new (`new (this) T()`) for base construction** — use real inheritance;
    placement-new is only for genuine placement semantics (pools, explicit reconstruction
    into a buffer). *(enforced by `just antipattern-gate`)*
@@ -269,7 +272,7 @@ examples, and rationale: `docs/reference/construction.md`.
    hand-write a `Destruct*AndMaybeFree` bridge. Requires a genuinely polymorphic class.
 11. **Retire temporary scaffolding** (`Construct*AtThis`, `VCall_*Runtime`,
     `*AndMaybeFree`) as classes become understood; name any unavoidable bridge as
-    temporary with a removal condition. *(count baseline-tracked by `just antipattern-gate`)*
+    temporary with a removal condition. *(hard-banned by `just antipattern-gate`)*
 12. **Don't corrupt the source model to chase a local score.** A 70% match with correct
     architecture beats a 100% match built on fake source that blocks hierarchy recovery.
     **This applies to gates too:** a failing `just gates` / `just vtable` with correct

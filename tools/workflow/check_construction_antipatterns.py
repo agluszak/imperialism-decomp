@@ -2,15 +2,10 @@
 """Gate real-C++-construction anti-patterns in gameplay code.
 
 Enforces the mechanically-checkable subset of the "real C++ construction and
-inheritance" Hard Rules in AGENTS.md. Like the raw-vtable gate, it compares
-current per-file pattern counts against a checked-in baseline:
-- New files with any tracked pattern fail.
-- Existing files may not increase a pattern's count.
-
-The baseline lets pre-existing, knowingly-temporary bridges stay (tracked so they
-ratchet downward) while blocking any new occurrence. Patterns that should never
-appear (inline asm, placement-new on this, manual vptr writes, thiscall
-reinterpret_cast) carry a baseline of 0, so the first new occurrence fails.
+inheritance" Hard Rules in AGENTS.md as a baseline-free HARD BAN: any occurrence
+of a tracked pattern in manual source fails the gate. There is no baseline file
+and no update escape hatch -- the debt these patterns represent was fully
+eradicated, so re-introducing one is always a regression to fix, never to bless.
 """
 
 from __future__ import annotations
@@ -20,7 +15,6 @@ import re
 from pathlib import Path
 
 from tools.common.file_scan import is_excluded_scan_path, strip_generated_blocks
-from tools.common.ratchet import compare, read_baseline, write_baseline
 from tools.common.repo import normalize_repo_relative_path, repo_root_from_file, resolve_repo_path
 
 PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
@@ -52,16 +46,14 @@ PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
         r"(?:/\*\s*edx\s*\*/|\bedx\w*|\bunused\w*|\bdummy\w*)")),
     # Function-pointer casts of known symbols in ANY spelling (typedef'd or inline
     # cast to a fn-ptr type): the durable fix is a real method/prototype, not a cast.
-    # Baseline-tracked so the legacy bridge inventory can only ratchet down.
     ("fnptr_cast", re.compile(
         r"reinterpret_cast<\s*\w[^>]*\(\s*(?:__cdecl|__stdcall|__fastcall|__thiscall)?\s*\*")),
     # Construction rules 8/16: temporary construction-bridge helper names.
     ("bridge_name", re.compile(r"\b(?:Construct\w*AtThis|VCall_\w*Runtime|\w*AndMaybeFree)\b")),
     # Banned porting approach: class operator new/delete used as a construction factory.
-    # Port real methods + real inheritance instead. (Baseline-tracked: ratchet down.)
+    # Port real methods + real inheritance instead.
     ("operator_new_delete", re.compile(r"\boperator\s+(?:new|delete)\s*\(")),
     # Hard Rule 8: raw byte-offset access through `this` instead of a typed field.
-    # Baseline-tracked: the existing inventory may only shrink as fields get promoted.
     ("raw_this_offset", re.compile(
         r"reinterpret_cast<\s*(?:unsigned\s+)?char\s*\*\s*>\s*\(\s*this\s*\)\s*\+"
         r"|\(\s*(?:unsigned\s+)?(?:char|BYTE)\s*\*\s*\)\s*this\s*\+")),
@@ -78,19 +70,8 @@ GENERATED_MARKERS = ("/ghidra_autogen/", "/autogen/stubs/")
 
 
 def parse_args() -> argparse.Namespace:
-    repo_root = repo_root_from_file(__file__)
     parser = argparse.ArgumentParser()
     parser.add_argument("--roots", nargs="+", default=["src", "include"], help="Root paths to scan.")
-    parser.add_argument(
-        "--baseline",
-        default=str(repo_root / "config" / "baselines" / "construction_gate_baseline.csv"),
-        help="CSV file with baseline per-file pattern counts.",
-    )
-    parser.add_argument(
-        "--write-baseline",
-        action="store_true",
-        help="Write current counts as baseline and exit successfully.",
-    )
     return parser.parse_args()
 
 
@@ -124,7 +105,6 @@ def count_patterns(file_path: Path) -> dict[str, int]:
 def main() -> int:
     args = parse_args()
     repo_root = repo_root_from_file(__file__)
-    baseline_path = resolve_repo_path(repo_root, args.baseline)
 
     current: dict[str, dict[str, int]] = {}
     for file_path in collect_files(repo_root, args.roots):
@@ -136,37 +116,16 @@ def main() -> int:
             continue
         current[rel] = counts
 
-    if args.write_baseline:
-        write_baseline(baseline_path, current, KEYS)
-        print(f"Wrote baseline: {baseline_path} ({len(current)} files)")
-        return 0
-
-    baseline_exists = baseline_path.exists()
-    baseline = read_baseline(baseline_path, KEYS)
-    if not baseline_exists:
-        print(f"Baseline missing: {baseline_path}")
-        print("Run with --write-baseline once, then re-run the gate.")
-        return 1
-
-    def _new_file(file_key: str, counts: dict[str, int]) -> str:
-        present = ", ".join(k for k in KEYS if counts.get(k, 0))
-        return f"{file_key}: new construction anti-pattern(s) [{present}] (not in baseline)"
-
-    violations = compare(current, baseline, KEYS, new_file_message=_new_file)
-
-    if violations:
-        print("Construction anti-pattern gate failed:")
-        for item in violations:
-            print(f"  - {item}")
+    if current:
+        print("Construction anti-pattern gate failed (hard ban -- zero occurrences allowed):")
+        for rel in sorted(current):
+            present = ", ".join(k for k in KEYS if current[rel].get(k, 0))
+            print(f"  - {rel}: construction anti-pattern(s) [{present}]")
         print("See AGENTS.md 'Hard rules: real C++ construction and inheritance'.")
-        print(f"Baseline: {baseline_path}")
+        print("This is a hard ban with no baseline: fix the source, do not bless it.")
         return 1
 
-    scanned_total = sum(sum(values.values()) for values in current.values())
-    print(
-        f"Construction anti-pattern gate passed. Baseline-tracked files: {len(current)} "
-        f"(total matches: {scanned_total})"
-    )
+    print("Construction anti-pattern gate passed (hard ban -- zero offenders).")
     return 0
 
 
