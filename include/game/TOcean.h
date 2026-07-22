@@ -5,7 +5,6 @@
 #include "game/TObject.h"
 #include "game/TStream.h"
 #include "game/TZone.h"
-#include "game/global_data_tables.h"
 
 class TCity;
 class TTaskForce;
@@ -25,19 +24,14 @@ public:
       : TObject(), nationCount(0), contextArray(0), routeNodeCount(0), routeSegments(0),
         selectedTaskForce14(0) {}
   DECLARE_DYNCREATE(TOcean)
-  virtual ~TOcean() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
+  virtual ~TOcean() override;                      // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5628f0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x562340
   virtual void Free() override;                    // slot 0x07 0x5621e0
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  short nationCount;    // +0x04
-  TZone* contextArray;  // +0x08
-  short routeNodeCount; // +0x0c number of route records in routeSegments
-  char pad0e[2];        // +0x0e
+  short nationCount;                               // +0x04
+  TZone* contextArray;                             // +0x08
+  short routeNodeCount;                            // +0x0c number of route records in routeSegments
+  char pad0e[2];                                   // +0x0e
   // Built through the retail CRect(int,int,int,int) constructor, then consumed as two
   // CPoint-compatible endpoints by the strategic-map renderer.
   CRect* routeSegments; // +0x10 heap buffer of routeNodeCount map-route line segments

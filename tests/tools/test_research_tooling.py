@@ -100,6 +100,7 @@ class DaemonSocketTests(unittest.TestCase):
 class QueryRegistryTests(unittest.TestCase):
     EXPECTED = {
         "listing",
+        "original-modules",
         "xrefs",
         "search",
         "linear-disasm",

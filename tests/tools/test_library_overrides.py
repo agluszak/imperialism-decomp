@@ -46,8 +46,14 @@ class LoadOverridesTests(unittest.TestCase):
         with self.assertRaises(SystemExit):
             load_overrides(self._overrides(f"{RAND_ROW}\n{RAND_ROW}"))
 
-    def test_missing_required_field_rejected(self) -> None:
-        bad = "0x005e83f0|rand||int __cdecl rand(void)|libcmt|rand.obj|e"
+    def test_symbol_only_row_accepted(self) -> None:
+        # Migrated annotation rows (bead 8mo.11) may carry only a symbol (or only
+        # evidence); the raw-inventory spelling stays authoritative for the rest.
+        ok = "0x005e83f0||_rand||libcmt|rand.obj|e"
+        self.assertEqual(load_overrides(self._overrides(ok))[0].symbol, "_rand")
+
+    def test_anonymous_evidence_free_row_rejected(self) -> None:
+        bad = "0x005e83f0||||libcmt|rand.obj|"
         with self.assertRaises(SystemExit):
             load_overrides(self._overrides(bad))
 

@@ -28,7 +28,8 @@ after the TObject inheritance migration.
 
 ## Scope freeze
 
-- `vtable+0x28` and later entries are game-domain virtuals tracked in
-  `docs/tgreatpower_vtable_evidence.csv`.
+- `vtable+0x28` and later entries are game-domain virtuals were tracked in
+  `docs/tgreatpower_vtable_evidence.csv` (evidence CSV retired 2026-07-22; see
+  git history — `just vtable TGreatPower` reproduces the live slot view).
 - `TAutoGreatPower` may override game-domain slots, but the lifecycle prefix
   above must remain stable.

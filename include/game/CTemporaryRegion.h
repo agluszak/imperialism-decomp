@@ -2,7 +2,6 @@
 
 #include "decomp_types.h"
 #include "game/quickdraw_regions.h"
-#include "game/global_data_tables.h"
 
 // Mac-oracle class (CW symbols: CTemporaryRegion ctor/dtor/Cleanup): a stack-scoped
 // QuickDraw region handle with a one-slot reuse cache (g_pTemporaryRegionCache) so

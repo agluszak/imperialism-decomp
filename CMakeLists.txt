@@ -185,6 +185,17 @@ else()
         )
         target_link_options(Imperialism PRIVATE /INCREMENTAL:NO)
 
+        # /Z7 instead of /Zi: VC5 predates /FS, so /Zi's shared vc50.pdb would be a
+        # write race under the parallel (jom) build. /Z7 embeds the same C7 debug
+        # info per-object; the linker still emits the Imperialism.pdb reccmp reads.
+        # Code sections are unaffected (verified: reccmp stats identical).
+        foreach(_imp_flags_var
+            CMAKE_CXX_FLAGS_RELWITHDEBINFO
+            CMAKE_CXX_FLAGS_DEBUG
+        )
+            string(REPLACE "/Zi" "/Z7" ${_imp_flags_var} "${${_imp_flags_var}}")
+        endforeach()
+
         if(IMPERIALISM_MATCH_FLAGS_CSV)
             # Matching default is global frame-pointer omission (/Oy): recovered game
             # code overwhelmingly matches frameless output, while CRT/MFC bodies are

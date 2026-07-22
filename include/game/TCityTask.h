@@ -17,15 +17,9 @@ class TSortedList;
 class TCityTask : public TTask {
 public:
   DECLARE_DYNCREATE(TCityTask)
-  virtual ~TCityTask() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
+  virtual ~TCityTask() override;                   // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5ae570
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5ae5e0
-  // slot 0x07 Free inherited unchanged (0x4798b0)
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // Tries to satisfy requestedAmount directly from the owning city's stock
   // (TCity::DirectTransport) for slot indices 0..6, then always re-checks the order's
   // MaxOrder()/quantityField04 headroom, filling the order's OrderSheet and draining

@@ -1,4 +1,4 @@
-address|name|symbol|prototype|library_family|object_member|evidence
+address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x00415030|CWnd::DoDataExchange|?DoDataExchange@CWnd@@MAEXPAVCDataExchange@@@Z|protected: virtual void __thiscall CWnd::DoDataExchange(class CDataExchange *)|nafxcw|wincore.obj|cdialog_vtable_0x66fc2c_slot_recomp_pdb+ghidra_decompile+mfc_header_order(agent-verified)
 0x00415050|CWnd::BeginModalState|?BeginModalState@CWnd@@UAEXXZ|public: virtual void __thiscall CWnd::BeginModalState(void)|nafxcw|wincore.obj|cdialog_vtable_0x66fc2c_slot_recomp_pdb+ghidra_decompile+mfc_header_order(agent-verified)
 0x00415070|CWnd::EndModalState|?EndModalState@CWnd@@UAEXXZ|public: virtual void __thiscall CWnd::EndModalState(void)|nafxcw|wincore.obj|cdialog_vtable_0x66fc2c_slot_recomp_pdb+ghidra_decompile+mfc_header_order(agent-verified)
@@ -969,3 +969,510 @@ address|name|symbol|prototype|library_family|object_member|evidence
 0x00626c02|AUX_DATA::~AUX_DATA|??1AUX_DATA@@QAE@XZ|public: __thiscall AUX_DATA::~AUX_DATA(void)|nafxcw|auxdata.obj|oracle_unique_high_match_below_min_convert_size;hand_verified_disasm:CString_dtor_on_afxData_member_at_+0x50
 0x00626c0c|CDocManager::~CDocManager|??1CDocManager@@UAE@XZ|public: virtual __thiscall CDocManager::~CDocManager(void)|nafxcw|docmgr.obj|object_matcher:unique:high (accepted 2026-07)
 0x00626c7d|AfxWinTerm|?AfxWinTerm@@YGXXZ|void __stdcall AfxWinTerm(void)|nafxcw|appterm.obj|object_matcher:unique:high (accepted 2026-07)
+0x0047d960|CGdiObject::~CGdiObject|||||migrated_from:src/game/CBrush.cpp|LIBRARY
+0x005e6ea2||||||migrated_from:src/game/CBrush.cpp comment:"CBrush::`scalar deleting destructor'"|SYNTHETIC
+0x00613791|CClientDC::CClientDC|||||migrated_from:src/game/CClientDC.cpp|LIBRARY
+0x00613803|CClientDC::~CClientDC|||||migrated_from:src/game/CClientDC.cpp|LIBRARY
+0x00612a78||||||migrated_from:src/game/CDC.cpp original_tu_name:"?SelectPalette@CDC@@QAEPAVCPalette@@PAV2@H@Z" (inventory name kept)|LIBRARY
+0x006109cf||||||migrated_from:src/game/CDocument.cpp comment:"CDocument::`scalar deleting destructor'"|SYNTHETIC
+0x00610c08|CDocument::PreCloseFrame|||||migrated_from:src/game/CDocument.cpp|LIBRARY
+0x00610f84|CDocument::GetDefaultMenu|||||migrated_from:src/game/CDocument.cpp|LIBRARY
+0x00610f87|CDocument::GetDefaultAccelerator|||||migrated_from:src/game/CDocument.cpp|LIBRARY
+0x0061180f|CDocument::OnIdle|||||migrated_from:src/game/CDocument.cpp|LIBRARY
+0x00603423|CMapPtrToPtr::RemoveAll|||||migrated_from:src/game/CMapPtrToPtr.cpp|LIBRARY
+0x006034cb|CMapPtrToPtr::FreeAssoc|||||migrated_from:src/game/CMapPtrToPtr.cpp|LIBRARY
+0x006035bb|CMapPtrToPtr::RemoveKey|||||migrated_from:src/game/CMapPtrToPtr.cpp|LIBRARY
+0x00415f00||||||migrated_from:src/game/CObject.cpp comment:"CObject::`scalar deleting destructor'"|SYNTHETIC
+0x00412bd0|CObject::Serialize|||||migrated_from:src/game/CObject.cpp|LIBRARY
+0x00412bf0|CObject::AssertValid|||||migrated_from:src/game/CObject.cpp|LIBRARY
+0x00412c10|CObject::Dump|||||migrated_from:src/game/CObject.cpp|LIBRARY
+0x00606fba|CObject::GetRuntimeClass|||||migrated_from:src/game/CObject.cpp|LIBRARY
+0x00623a9a|CPalette::GetRuntimeClass|||||migrated_from:src/game/CPalette.cpp|LIBRARY
+0x00601bdd|CPtrArray::~CPtrArray|||||migrated_from:src/game/CPtrArray.cpp|LIBRARY
+0x00601de3|CPtrArray::SetAtGrow|||||migrated_from:src/game/CPtrArray.cpp|LIBRARY
+0x00601e9f|CPtrArray::RemoveAt|||||migrated_from:src/game/CPtrArray.cpp|LIBRARY
+0x00601f40||||||migrated_from:src/game/CPtrList.cpp comment:"CPtrList::`scalar deleting destructor'"|SYNTHETIC
+0x00602004|CPtrList::FreeNode|||||migrated_from:src/game/CPtrList.cpp|LIBRARY
+0x006020b9|CPtrList::RemoveHead|||||migrated_from:src/game/CPtrList.cpp|LIBRARY
+0x006020dd|CPtrList::RemoveTail|||||migrated_from:src/game/CPtrList.cpp|LIBRARY
+0x00602101|CPtrList::InsertBefore|||||migrated_from:src/game/CPtrList.cpp|LIBRARY
+0x00602140|CPtrList::InsertAfter|||||migrated_from:src/game/CPtrList.cpp|LIBRARY
+0x0060217d|CPtrList::RemoveAt|||||migrated_from:src/game/CPtrList.cpp|LIBRARY
+0x006021b4|CPtrList::FindIndex|||||migrated_from:src/game/CPtrList.cpp|LIBRARY
+0x006021d6|CPtrList::Find|||||migrated_from:src/game/CPtrList.cpp|LIBRARY
+0x00623b3a|CPtrList::GetRuntimeClass|||||migrated_from:src/game/CPtrList.cpp|LIBRARY
+0x00607706|CWnd::CWnd|||||migrated_from:src/game/MfcRuntime.cpp|LIBRARY
+0x00607744|CWnd::CWnd_00607744|||||migrated_from:src/game/MfcRuntime.cpp|LIBRARY
+0x00607782|CWnd::CWnd_00607782|||||migrated_from:src/game/MfcRuntime.cpp|LIBRARY
+0x006077c0|CWnd::CWnd_006077C0|||||migrated_from:src/game/MfcRuntime.cpp|LIBRARY
+0x005e8c50|CallCallbackRepeatedly|||||migrated_from:src/game/MfcRuntime.cpp|SYNTHETIC
+0x005e8cc8|SehCleanup_CallCallbackRepeatedly|||||migrated_from:src/game/MfcRuntime.cpp|SYNTHETIC
+0x005d4ba0||||||migrated_from:src/game/buffered_stream.cpp comment:"fgets-style line read from CRT FILE"|LIBRARY
+0x005e8760||||||migrated_from:src/game/buffered_stream.cpp comment:"atoi-style signed decimal parse"|LIBRARY
+0x005e8800||||||migrated_from:src/game/buffered_stream.cpp comment:"atoi wrapper"|LIBRARY
+0x005e9010||||||migrated_from:src/game/buffered_stream.cpp comment:"fclose-style stream close"|LIBRARY
+0x005e9050||||||migrated_from:src/game/buffered_stream.cpp comment:"flush/close/reset CRT FILE state"|LIBRARY
+0x005e90c0||||||migrated_from:src/game/buffered_stream.cpp comment:"fopen-style stream open with mode"|LIBRARY
+0x005e9100||||||migrated_from:src/game/buffered_stream.cpp comment:"fopen wrapper"|LIBRARY
+0x005e9440||||||migrated_from:src/game/buffered_stream.cpp comment:"fread wrapper with stream lock"|LIBRARY
+0x005e9480||||||migrated_from:src/game/buffered_stream.cpp comment:"fread core over CRT FILE buffer"|LIBRARY
+0x005e95c0||||||migrated_from:src/game/buffered_stream.cpp comment:"getc-style read with stream lock"|LIBRARY
+0x005edbc0||||||migrated_from:src/game/buffered_stream.cpp comment:"CRT FILE stream lock enter"|LIBRARY
+0x005edc30||||||migrated_from:src/game/buffered_stream.cpp comment:"CRT FILE stream lock leave"|LIBRARY
+0x005efd50||||||migrated_from:src/game/buffered_stream.cpp comment:"close low-level file descriptor"|LIBRARY
+0x005efe50||||||migrated_from:src/game/buffered_stream.cpp comment:"free CRT FILE buffer"|LIBRARY
+0x005eff10||||||migrated_from:src/game/buffered_stream.cpp comment:"fflush pending write buffer"|LIBRARY
+0x005f0050||||||migrated_from:src/game/buffered_stream.cpp comment:"initialize CRT FILE from mode string"|LIBRARY
+0x005f0220||||||migrated_from:src/game/buffered_stream.cpp comment:"allocate/reuse CRT FILE slot"|LIBRARY
+0x005f1490||||||migrated_from:src/game/buffered_stream.cpp comment:"refill CRT FILE buffer and read first byte"|LIBRARY
+0x005f1580||||||migrated_from:src/game/buffered_stream.cpp comment:"read low-level file descriptor"|LIBRARY
+0x005e7ae0||||||migrated_from:src/game/crt_io_library.cpp comment:"_findfirst (FindFirstFileAndPopulateFileInfoRecord)"|LIBRARY
+0x005e7c10||||||migrated_from:src/game/crt_io_library.cpp comment:"_findnext (FindNextFileAndPopulateFileInfoRecord)"|LIBRARY
+0x005e7d30|_findclose|||||migrated_from:src/game/crt_io_library.cpp|LIBRARY
+0x005e7d60|ConvertFileTimeToLocalEpochSeconds|||||migrated_from:src/game/crt_io_library.cpp|LIBRARY
+0x005edcc0|ConvertBrokenDownLocalTimeToEpochSeconds|||||migrated_from:src/game/crt_io_library.cpp|LIBRARY
+0x005ef5d0|EnsureRuntimeLocaleTablesInitializedOnce|||||migrated_from:src/game/crt_io_library.cpp|LIBRARY
+0x005ef910|isindst|||||migrated_from:src/game/crt_io_library.cpp|LIBRARY
+0x004943e0|WrapperFor_AppendPointerToGlobalVectorAsStatus_At004943e0|||||migrated_from:src/game/crt_io_library.cpp|LIBRARY
+0x00494430|ReleaseQuickDrawCachedFontHandleIfPresent_At00494430|||||migrated_from:src/game/crt_io_library.cpp|LIBRARY
+0x00494460|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00494460|||||migrated_from:src/game/crt_io_library.cpp|LIBRARY
+0x004944b0|ReleaseCachedGlobalFontObjectIfPresent_At004944b0|||||migrated_from:src/game/crt_io_library.cpp|LIBRARY
+0x00618df2|DDX_LBString|||||migrated_from:src/game/list_box.cpp|LIBRARY
+0x00618e72|DDX_LBStringExact|||||migrated_from:src/game/list_box.cpp|LIBRARY
+0x005e7f50||||||migrated_from:src/game/mfc_heap_library.cpp comment:"_free (CRT free(), per symbols.csv -- not a game-specific tracking helper despite the"|LIBRARY
+0x005e8310|AllocateWithGlobalNewMode|||||migrated_from:src/game/mfc_heap_library.cpp|LIBRARY
+0x0041b1c0|CObject::operator new|||||migrated_from:src/game/mfc_heap_library.cpp|LIBRARY
+0x0049eb00||||||migrated_from:src/game/mfc_heap_library.cpp comment:"CString::CString(class CString const &)"|LIBRARY
+0x004b0970||||||migrated_from:src/game/mfc_heap_library.cpp comment:"CString::CString(void)"|LIBRARY
+0x004ac370||||||migrated_from:src/game/mfc_heap_library.cpp comment:"CString::CString(char const *)"|LIBRARY
+0x005db2f0|CString::GetLength|||||migrated_from:src/game/mfc_heap_library.cpp|LIBRARY
+0x005d5d10|CString::operator char const *|||||migrated_from:src/game/mfc_heap_library.cpp|LIBRARY
+0x00413380|CObject::operator delete|||||migrated_from:src/game/mfc_heap_library.cpp|LIBRARY
+0x005e54d1||?GetOwner@CWnd@@QBEPAV1@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e55ee||?Dropped@CDragListBox@@UAEXHVCPoint@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e58e4||??1CProgressCtrl@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e5a6f||??1CProgressCtrl@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e5bd7||?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e5c44||??1CProgressCtrl@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e5eee||?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e601e||??1CProgressCtrl@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e61e9||?SetItem@CTreeCtrl@@QAEHPAU_TREEITEM@@IPBDHHIIJ@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e63b2||??1CProgressCtrl@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e644f|CProgressCtrl::~CHotKeyCtrl|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6590||??1CProgressCtrl@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6601||??1CProgressCtrl@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e663c||?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e66a3||??1CProgressCtrl@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6749||??1CProgressCtrl@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6784||?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6825||??1CProgressCtrl@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e685d||??1CProgressCtrl@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e68a2||??_GCGdiObject@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e68be||??1CBrush@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e68f1||?Detach@CMenu@@QAEPAUHMENU__@@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e691b||?afxMapHMENU@@YAPAVCHandleMap@@H@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e69a1||?DeleteTempMap@CMenu@@SGXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6b35||??_GCHeaderCtrl@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6b51||??_GCHeaderCtrl@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6b6d||??_GCHeaderCtrl@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6b89||??_GCHeaderCtrl@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6ba5||??_GCHeaderCtrl@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6bc1||??_GCHeaderCtrl@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6bdd||??_GCHeaderCtrl@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6bf9||??_GCHeaderCtrl@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6c15||??_GCHeaderCtrl@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6c31||??_GCHeaderCtrl@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6c4d||??_GCHeaderCtrl@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6c69||??_GCHeaderCtrl@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6c85||??_GCHeaderCtrl@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6ca1||??_GCHeaderCtrl@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6cbd||??_GCHeaderCtrl@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6cd9||??_GCHeaderCtrl@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6e08||??0CMemoryException@@QAE@HI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6e55||??0CMemoryException@@QAE@HI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e6fdf||??0CMemoryException@@QAE@HI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e702c||??0CMemoryException@@QAE@HI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e7079||||||migrated_from:src/game/library_msvc500_fid.cpp comment:"CSharedFile::`scalar deleting destructor'"|LIBRARY
+0x005e709d|CCtrlView::~CListView|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e70ce||??_GCGdiObject@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e70ea||??1CBrush@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e717e||?Read@CArchiveStream@@UAGJPAXKPAK@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e71d6||?Write@CArchiveStream@@UAGJPBXKPAK@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e722f||?Seek@CArchiveStream@@UAGJT_LARGE_INTEGER@@KPAT_ULARGE_INTEGER@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e730d|CFileException::~CArchiveException|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e7400||?_JumpToContinuation@@YGXPAXPAUEHRegistrationNode@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e7450||?_CallMemberFunction2@@YGXPAX00H@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e7460||?_CallMemberFunction2@@YGXPAX00H@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e74d0||___CxxFrameHandler||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e7590||?CatchGuardHandler@@YA?AW4_EXCEPTION_DISPOSITION@@PAUEHExceptionRecord@@PAUCatchGuardRN@@PAX2@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e7690||?TranslatorGuardHandler@@YA?AW4_EXCEPTION_DISPOSITION@@PAUEHExceptionRecord@@PAUTranslatorGuardRN@@PAX2@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e77a0||__global_unwind2||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e77e2||__local_unwind2||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e784a||__abnormal_termination||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e786d||__NLG_Notify1||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e7876||__NLG_Notify||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e7890||__onexit||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e7ac0||__callnewh||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e7df0||__aullshr||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e7e10||??_M@YGXPAXIHP6EX0@Z@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e7e89||||||migrated_from:src/game/library_msvc500_fid.cpp comment:"$L12052"|LIBRARY
+0x005e7ec0||?__ArrayUnwind@@YGXPAXIHP6EX0@Z@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e8330||__nh_malloc||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e8380||__heap_alloc||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e8970|_isdigit|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e89d0|_isspace|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e8bb0|_vsprintf|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e9120|_fprintf|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e9170|_fwrite|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e91b0||__fwrite_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e9300|_fscanf|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e9340|_strncpy|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e9620||__itoa||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e9660|_xtoa|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e9840|_sprintf|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e98b0|_WinMainCRTStartup|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e9b10||__strdup||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e9b60||__cinit||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e9b90|_exit|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e9cb0||__lockexit||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e9cc0||__unlockexit||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e9cd0||__initterm||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005e9cf0|_memcpy|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ea030|_wcslen|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ea050||__mbschr||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ea120||__mbspbrk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ea1d0||__mbsupr||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ea280||__mbslwr||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ea330||__mbsrev||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ea3b0||__beginthreadex||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ea430||__threadstartex@4||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ea520|_memcmp|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ea5d0||__CxxThrowException@8||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ea620||__mbsspn||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ea6d0||__mbscspn||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ea780||__mbsrchr||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ea810||__mbsstr||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ea8d0||__ismbcdigit||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ea970||__mbsinc||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ea990||__ismbcspace||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005eaa40|_strtol|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005eaa60|_strtoxl|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005eacf0|_strtoul|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ead20||__dosmaperr||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005eae70||__msize||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005eaee0||__setmbcp||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005eb100|_getSystemCP|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005eb150|_CPtoLCID|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005eb1b0|_setSBCS|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005eb1f0||___initmbctable||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005eb200|_mktime|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005eb220||__make_time_t||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005eb460|_gmtime|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ebb20|_strftime|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ebb40||__Strftime||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ebc90||__expandtime||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ec230||__store_str||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ec260||__store_num||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ec300||__store_number||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ec370||__store_winword||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005eccc0||___InternalCxxFrameHandler||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ecd90||?FindHandler@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@EH1@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ed050||?FindHandlerForForeignException@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@HH1@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ed130||___FrameUnwindToState||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ed210||?CatchIt@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@PBU_s_HandlerType@@PBU_s_CatchableType@@PBU_s_TryBlockMapEntry@@H1@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ed2a0||?CallCatchBlock@@YAPAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PBU_s_FuncInfo@@PAXHK@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ed398||||||migrated_from:src/game/library_msvc500_fid.cpp comment:"$L12812"|LIBRARY
+0x005ed430||?BuildCatchObject@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PBU_s_HandlerType@@PBU_s_CatchableType@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ed640||?_DestructExceptionObject@@YAXPAUEHExceptionRecord@@E@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ed6c0||?AdjustPointer@@YAPAXPAXABUPMD@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ed6f0||__CallSettingFrame@12||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ed740||__mtinit||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ed7d0||__initptd||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ed7f0||__getptd||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ed870||__freeptd||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ed9e0||?_inconsistency@@YAXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005eda70||__mtinitlocks||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005edc00||__lock_file2||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005edc70||__unlock_file2||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ede75||__seh_longjmp_unwind@4||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ede90||__heap_init||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005edf40||___sbh_new_region||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ee0b0||___sbh_release_region||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ee110||___sbh_decommit_pages||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ee1e0||___sbh_find_block||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ee240||___sbh_free_block||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ee2a0||___sbh_alloc_block||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ee4e0||___sbh_alloc_block_from_page||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ee660||___sbh_resize_block||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ee900||__isctype||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ee9a0||__allmul||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ee9e0||__flsbuf||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005eeb10||__output||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ef4a0|_write_char|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ef4f0|_write_multi_char|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ef530|_write_string|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ef570|_get_int_arg|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ef590|_get_int64_arg|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ef5b0|_get_short_arg|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ef630||__tzset_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ef940||__isindst_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005efbb0|_cvtdate|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005efdc0||__close_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005efe90|_fflush|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005efed0||__fflush_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005eff90|_flsall|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f0300||__stbuf||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f03a0||__ftbuf||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f03e0||__write||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f0460||__write_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f0670||__input||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f13b0||__hextodec||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f13f0||__inc||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f1420||__un_inc||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f1440||__whiteout||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f1600||__read_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f1830||__aulldiv||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f18a0||__aullrem||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f1c70||__ismbblead||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f1ce0|_x_ismbbtype|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f1d20||__setenvp||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f1e10||__setargv||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f1eb0|_parse_cmdline|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f22c0||___crtGetEnvironmentStringsA||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f2420||__ioinit||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f2690||__FF_MSGBANNER||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f26d0||__NMSG_WRITE||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f28f0|_strchr|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f29b0|_strpbrk|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f29f0||___crtLCMapStringW||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f2c00|_wcsncnt|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f2c40||___crtLCMapStringA||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f2e60|_strncnt|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f2e90||__strrev||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f2ec0|_calloc|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f3000|_strspn|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f3040|_strcspn|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f3080|_strrchr|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f30b0|_strstr|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f3130||___crtGetStringTypeW||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f32c0||___crtGetStringTypeA||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f3400|_toupper|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f3490||__toupper_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f3ec0||__strcmpi||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f41e0|_tolower|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f4270||__tolower_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f4950||__fptostr||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f4bb0||||||migrated_from:src/game/library_msvc500_fid.cpp original_tu_name:"_abort" (inventory name kept)|LIBRARY
+0x005f4cb0||__lseek||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f4d30||__lseek_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f4db0||__getbuf||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f4e10||__isatty||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f4e40|_wctomb|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f4eb0||__wctomb_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f4f30|_wcstombs|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f4fb0||__wcstombs_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f51a0|_wcsncnt|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f5210||__getenv_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f52a0||__alloc_osfhnd||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f5410||__set_osfhnd||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f54c0||__free_osfhnd||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f5560||__get_osfhandle||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f5660||__lock_fhandle||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f56d0||__unlock_fhandle||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f5700||__commit||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f57c0||__sopen||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f5b60|_mbtowc|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f5be0||__mbtowc_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f5ce0||__allshl||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f5d30||__ungetc_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f5dc0||___crtMessageBoxA||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f5f00||__get_lc_time||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f6280||__free_lc_time||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f64c0|_storeTimeFmt|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f67c0|_fix_grouping|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f68f0||__get_lc_lconv||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f6a40|_fix_grouping|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f6a80||__free_lc_lconv||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f6dc0|_strncmp|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f7300|_signal|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f77d0|_siglookup|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f8640||__mbsnbicoll||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f8680||___wtomb_environ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f8770||__chsize_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f88c0||___getlocaleinfo||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f8a80||___crtGetLocaleInfoW||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f8bb0||___crtGetLocaleInfoA||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f8d10|_wcstoxl|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f94b0||___crtCompareStringA||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f9780|_strncnt|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f97b0||___crtsetenv||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f99c0|_findenv|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f9a40|_copy_environ|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f9b20||__setmode_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f9b90|_towupper|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f9c20||__towupper_lk||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005f9ca0|_iswctype|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005fa7c2||||||migrated_from:src/game/library_msvc500_fid.cpp comment:"_WinMain@16"|LIBRARY
+0x005fb0d5||?RelayToolTipMessage@@YGXPAVCToolTipCtrl@@PAUtagMSG@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005fee24||?SpanExcluding@CString@@QBE?AV1@PBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005fee4e||?SpanExcluding@CString@@QBE?AV1@PBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005fee99||?FindOneOf@CString@@QBEHPBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005ff3cd||?InitString@CSimpleException@@QAEXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060038d||?FormatGmt@CTime@@QBE?AVCString@@PBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006003de||?FormatGmt@CTime@@QBE?AVCString@@PBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060042f||?FormatGmt@CTime@@QBE?AVCString@@I@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060048b||?FormatGmt@CTime@@QBE?AVCString@@I@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060339a||??0CMapPtrToPtr@@QAE@H@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006033c1||??_GCGdiObject@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00603516||?GetValueAt@CMapPtrToPtr@@QBEPAXPAX@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00603549||?Lookup@CMapPtrToPtr@@QBEHPAXAAPAX@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00603696||??_GCGdiObject@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006036b2||?InitHashTable@CMapStringToOb@@QAEXIH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006036f8||?RemoveAll@CMapStringToOb@@QAEXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060377d||?NewAssoc@CMapStringToOb@@IAEPAUCAssoc@1@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006037dd||?FreeAssoc@CMapStringToOb@@IAEXPAUCAssoc@1@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00603806||?GetAssocAt@CMapStringToOb@@IBEPAUCAssoc@1@PBDAAI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00603906||?RemoveKey@CMapStringToOb@@QAEHPBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00604ce8||||||migrated_from:src/game/library_msvc500_fid.cpp comment:"CSharedFile::`scalar deleting destructor'"|LIBRARY
+0x00604d04||??1CDialog@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00604e5e||?CreateDlgIndirect@CWnd@@IAEHPBUDLGTEMPLATE@@PAV1@PAUHINSTANCE__@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00605e12||?Find@CString@@QBEHD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00605e33||?FindOneOf@CString@@QBEHPBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00605e52||||||migrated_from:src/game/library_msvc500_fid.cpp original_tu_name:"?MakeReverse@CString@@QAEXXZ" (inventory name kept)|LIBRARY
+0x00605e64||?MakeReverse@CString@@QAEXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00605e76||?MakeReverse@CString@@QAEXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00605ea1||?OemToCharA@CString@@QAEXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00605eb5||?OemToCharA@CString@@QAEXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00605f87||?_AfxThreadEntry@@YGIPAX@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006068e9||?IsHelpKey@@YGHPAUtagMSG@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00606b1f||?DispatchCmdMsg@@YAHPAVCCmdTarget@@IHP81@AEXXZPAXIPAUAFX_CMDHANDLERINFO@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00606ff2||?CreateObject@CRuntimeClass@@QAEPAVCObject@@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00607643||?AttachControlSite@CWnd@@IAEXPAVCHandleMap@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006076d8||||||migrated_from:src/game/library_msvc500_fid.cpp comment:"_$E361"|LIBRARY
+0x00607716||||||migrated_from:src/game/library_msvc500_fid.cpp comment:"_$E367"|LIBRARY
+0x00607754||||||migrated_from:src/game/library_msvc500_fid.cpp comment:"_$E372"|LIBRARY
+0x00607792||||||migrated_from:src/game/library_msvc500_fid.cpp comment:"_$E377"|LIBRARY
+0x006077f0||??_GCWnd@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060785a||?_AfxModifyStyle@@YGHPAUHWND__@@HKKI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006078c3||?AfxCallWndProc@@YGJPAVCWnd@@PAUHWND__@@IIJ@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006079b3||?_AfxPreInitDialog@@YGXPAVCWnd@@PAUtagRECT@@PAK@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006079d6||?_AfxPostInitDialog@@YGXPAVCWnd@@ABUtagRECT@@K@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00607aab||?DeleteTempMap@CMenu@@SGXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00607abf||?afxMapHWND@@YAPAVCHandleMap@@H@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00607c10||?_AfxActivationWndProc@@YGJPAUHWND__@@IIJ@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00607d5d||?_AfxHandleActivate@@YGXPAVCWnd@@I0@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00607dbe||?_AfxHandleSetCursor@@YGHPAVCWnd@@II@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00608257||??1CWnd@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060870c||?OnCharToItem@CWnd@@IAEHIPAVCListBox@@I@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00608737||?OnCharToItem@CWnd@@IAEHIPAVCListBox@@I@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060882f||?FindPopupMenuFromID@@YAPAVCMenu@@PAV1@I@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00608892||?AfxRegisterClass@@YGHPAUtagWNDCLASSA@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00608ba8||?OnWndMsg@CWnd@@MAEHIIJPAJ@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006093b6||?ActivateTopParent@CWnd@@QAEXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00609d88||?OnParentNotify@CWnd@@IAEXIJ@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00609fba||?OnDisplayChange@CWnd@@IAEJIJ@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060a031||?OnVScroll@CWnd@@IAEXIIPAVCScrollBar@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060a052||?OnVScroll@CWnd@@IAEXIIPAVCScrollBar@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060a8ce|AfxRegisterWithIcon|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060b05c||?LockRange@CFile@@UAEXKK@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060b085||?LockRange@CFile@@UAEXKK@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060be52||?OsErrorToException@CFileException@@SGHJ@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060c622||?ConvertDialogUnitsToPixels@@YAXPBDGHHPAUtagSIZE@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060cda8||?AbbreviateName@@YAXPADHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060d044||?DeleteTempMap@CMenu@@SGXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060d058||?afxMapHMENU@@YAPAVCHandleMap@@H@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060d151|CMenu::DeleteObject|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060d2c0||?FromHandle@CHandleMap@@QAEPAVCObject@@PAX@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00610ce5||?DoSave@CDocument@@UAEHPBDH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006113aa||??_GCCtrlView@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00611443||?OnOpenDocument@CDocument@@UAEHPBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0061160e||?OnSaveDocument@CDocument@@UAEHPBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00611a47||?ReadStringLength@@YGIAAVCArchive@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0061207b||?ReadString@CArchive@@QAEPADPADI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006126b2||?DeleteTempMap@CMenu@@SGXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006126c6||?afxMapHDC@@YAPAVCHandleMap@@H@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612984||?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006129d7||?SelectObject@CDC@@QAEPAVCPen@@PAV2@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612a2a|CDC::SelectClipRgn|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612a9a||?SetPolyFillMode@CDC@@QAEHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612ad2||?SetMapperFlags@CDC@@QAEKK@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612b0a||?SetPolyFillMode@CDC@@QAEHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612b42||?SetPolyFillMode@CDC@@QAEHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612b7a||?SetPolyFillMode@CDC@@QAEHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612bb2||?SetPolyFillMode@CDC@@QAEHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612c22||?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612c6e||?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612cba||?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612d06||?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612daa||?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612df6||?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612e42||?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612eaa||?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612ef8||?IntersectClipRect@CDC@@QAEHHHHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612f42||?ExcludeClipRect@CDC@@QAEHHHHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612f8e||?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612fd8|CDC::IntersectClipRect|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00613024||?OffsetClipRgn@CDC@@QAEHHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00613062||?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006130a0||?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00613155|CDC::OffsetClipRgn|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00613193||?SetPolyFillMode@CDC@@QAEHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006131cb||?SetMapperFlags@CDC@@QAEKK@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00613203||?ArcTo@CDC@@QAEHHHHHHHHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0061325b||?SetPolyFillMode@CDC@@QAEHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00613293||?PolyDraw@CDC@@QAEHPBUtagPOINT@@PBEH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006132dc||?PolyBezierTo@CDC@@QAEHPBUtagPOINT@@H@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00613322||?SetPolyFillMode@CDC@@QAEHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0061335a||?PolyBezierTo@CDC@@QAEHPBUtagPOINT@@H@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006137e7||||||migrated_from:src/game/library_msvc500_fid.cpp comment:"CClientDC::`scalar deleting destructor'"|LIBRARY
+0x0061394f||??_GCPaintDC@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0061396b||??1CPaintDC@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006139b2||?DeleteTempMap@CMenu@@SGXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006139c6||?afxMapHGDIOBJ@@YGPAVCHandleMap@@H@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00613a79||?Detach@CMenu@@QAEPAUHMENU__@@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00613c43||?CreateDIBPatternBrush@CBrush@@QAEHPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006142c0||??_GCCtrlView@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00618ab1||?DDX_TextWithFormat@@YAXPAVCDataExchange@@HPBDIZZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00618b21||?AfxSimpleScanf@@YGHPBD0PAD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00618c01||?DDX_Text@@YGXPAVCDataExchange@@HAAJ@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00618c30||?DDX_Text@@YGXPAVCDataExchange@@HAAK@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00618c5f||?DDX_Text@@YGXPAVCDataExchange@@HAAH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00618c8e||?DDX_Text@@YGXPAVCDataExchange@@HAAI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00619083||?FailMinMaxWithFormat@@YGXPAVCDataExchange@@JJPBDI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00619149||?DDV_MinMaxLong@@YGXPAVCDataExchange@@JJJ@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00619175||?DDV_MinMaxLong@@YGXPAVCDataExchange@@JJJ@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006191a1||?DDV_MinMaxUInt@@YGXPAVCDataExchange@@III@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006191cd||?DDV_MinMaxUInt@@YGXPAVCDataExchange@@III@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006194df||?CanEnterHelpMode@CFrameWnd@@QAEHXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006199fd||?MapClientArea@@YGKPAUHWND__@@UtagPOINT@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00619a92||?MapNonClientArea@@YGKH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0061a216||?AppendFilterSuffix@@YAXAAVCString@@AAUtagOFNA@@PAVCDocTemplate@@PAV1@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0061e0bd||?OnUpdateFrameTitle@CFrameWnd@@UAEXH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0061e733||?BringToTop@CFrameWnd@@IAEXH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0061e79d||?Create@CButton@@QAEHPBDKABUtagRECT@@PAVCWnd@@I@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0061e7bf||??1CProgressCtrl@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0061e7f7||?Create@CButton@@QAEHPBDKABUtagRECT@@PAVCWnd@@I@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0061e819|CProgressCtrl::~CHotKeyCtrl|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0061e87c||?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0061e8cb|Dtor_CListBox_FID_61e8cb|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0061ea56||??1CProgressCtrl@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0061eb67||??1CProgressCtrl@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0061ebc0||??1CProgressCtrl@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00621176||??6CDumpContext@@QAEAAV0@H@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006211a6||??6CDumpContext@@QAEAAV0@I@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006211d6||??6CDumpContext@@QAEAAV0@J@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00621206||??6CDumpContext@@QAEAAV0@K@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00621267||??6CDumpContext@@QAEAAV0@ABVCObject@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00622b3c||??_GCWinThread@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00622bcd||?_AfxLoadDotBitmap@@YGXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006235bd||??_G_AFX_BASE_MODULE_STATE@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00623866||??_G_AFX_BASE_MODULE_STATE@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006238c3||?Unlock@CTypeLibCache@@QAEXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006239b8||||||migrated_from:src/game/library_msvc500_fid.cpp comment:"_$E350"|LIBRARY
+0x006239f0||||||migrated_from:src/game/library_msvc500_fid.cpp comment:"_$E355"|LIBRARY
+0x00623abc||||||migrated_from:src/game/library_msvc500_fid.cpp comment:"_$E350"|LIBRARY
+0x00623af4||||||migrated_from:src/game/library_msvc500_fid.cpp comment:"_$E355"|LIBRARY
+0x006240b8||?GetData@CProcessLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00624123||??1CProcessLocalObject@@QAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00624dda||?SetRegKey@@YGHPBD00@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00626bb3||??1CWinThread@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY

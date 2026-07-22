@@ -17,34 +17,16 @@ class TFuzzySet;
 class TCityInteriorMinister : public TInteriorMinister {
 public:
   virtual ~TCityInteriorMinister() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   short GetRankingCriterionForGP(short nationSlot) override; // slot 0x0a 0x4bee20
-  // slot 0x0b RebuildTerrainPreferenceEntriesAndAssignRanks inherited unchanged (0x52ed50)
-  // slot 0x0c MapTerrainTypeToPreferenceRank inherited unchanged (0x52ee20)
-  // slot 0x0d MapPreferenceRankToTerrainType inherited unchanged (0x52eea0)
-  // slot 0x0e GetPreferenceTerrainTypeByEntryIndex inherited unchanged (0x52ef80)
-  // slot 0x0f GetPreferenceGroupRankByEntryIndex inherited unchanged (0x52ef20)
-  // slot 0x10 GetPreferenceScoreByEntryIndex inherited unchanged (0x52ef50)
-  virtual void MakeNewCity(TCity* city) override; // slot 0x11 0x4c0d90
-  // slot 0x12 OrphanCallChain_C11_I88_004874b0 inherited unchanged (0x4be450)
-  // slot 0x13 VTableSlot13 inherited unchanged (0x4be4f0)
-  // slot 0x14 SetForeignMinisterReadyFlag14 inherited unchanged (0x4be520)
-  virtual void FillOrders() override; // slot 0x15 0x4bf770
-  // slot 0x16 GetTEventHandlerClassNamePointer inherited unchanged (0x4be480)
-  // slot 0x17 VTableSlot17 inherited unchanged (0x4be4c0)
-  // slot 0x18 OrphanCallChain_C11_I88_004874b0 inherited unchanged (0x4be650)
-  // slot 0x19 OrphanLeaf_NoCall_Ins07_004d8920 inherited unchanged (0x4be690)
-  virtual void InteriorSlot1A(short arg) override;         // slot 0x1a 0x4beeb0
-  virtual void IndustryOrder(short industrySlot) override; // slot 0x1b 0x4beee0
-  virtual void InteriorSlot1C(short arg) override;         // slot 0x1c 0x4bef30
-  virtual short InteriorSlot1D(int arg) override;          // slot 0x1d 0x4be7b0
-  virtual short InteriorSlot1E(int arg) override;          // slot 0x1e 0x4be7d0
-  virtual void InteriorSlot1F(int arg) override;           // slot 0x1f 0x4be7f0
-  virtual void FillLists();                                // slot 0x20 0x4bed60
+  virtual void MakeNewCity(TCity* city) override;            // slot 0x11 0x4c0d90
+  virtual void FillOrders() override;                        // slot 0x15 0x4bf770
+  virtual void InteriorSlot1A(short arg) override;           // slot 0x1a 0x4beeb0
+  virtual void IndustryOrder(short industrySlot) override;   // slot 0x1b 0x4beee0
+  virtual void InteriorSlot1C(short arg) override;           // slot 0x1c 0x4bef30
+  virtual short InteriorSlot1D(int arg) override;            // slot 0x1d 0x4be7b0
+  virtual short InteriorSlot1E(int arg) override;            // slot 0x1e 0x4be7d0
+  virtual void InteriorSlot1F(int arg) override;             // slot 0x1f 0x4be7f0
+  virtual void FillLists();                                  // slot 0x20 0x4bed60
   // Reports orderMetricTable40 deltas to the owner's foreign minister (index 0 as a
   // 25%-chance roll gated on either of the paired trigger slots [0]/[1], indices 2..6
   // forwarded directly when nonzero), then picks a (resultCode, magnitude) pair from
