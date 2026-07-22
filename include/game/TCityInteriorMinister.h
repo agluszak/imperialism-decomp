@@ -31,7 +31,7 @@ public:
   // 25%-chance roll gated on either of the paired trigger slots [0]/[1], indices 2..6
   // forwarded directly when nonzero), then picks a (resultCode, magnitude) pair from
   // the city's population-vs-stock shortage state (TPopulationMgr's
-  // GetRecentStormImpactMetrics pair, else cityStockSteelCC/cityStockLumberC8/
+  // PretendToEat substitution/starvation pair, else cityStockSteelCC/cityStockLumberC8/
   // cityStockCannedFoodC4 vs TPopulationMgr::populationCount08) and reports it via
   // SetInteriorMinisterBid, unless no condition qualified.
   virtual undefined EvaluateCityShortagesAndNotifyForeignMinister(TCity* city); // slot 0x21

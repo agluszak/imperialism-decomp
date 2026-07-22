@@ -448,8 +448,8 @@ undefined TCityInteriorMinister::EvaluateCityShortagesAndNotifyForeignMinister(T
   }
 
   short localB;
-  unsigned short localA;
-  city->productionSummary1d8->GetRecentStormImpactMetrics(&localB, &localA);
+  short localA;
+  city->productionSummary1d8->PretendToEat(localB, localA);
 
   short resultCode;
   short magnitude;

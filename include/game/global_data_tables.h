@@ -284,7 +284,7 @@ extern int g_anCountWeightByOrderType[32];         // 0x695578
 
 // Scenario-level relation preset rows (0x17 shorts per row, stride 0x2e), loaded into
 // the relation manager's city stock block by TGreatPower slot 0x39 (0x004df810).
-extern short g_Rebuild_Primary_Nation_Value_00653570[6][0x17];
+extern short g_Rebuild_Primary_Nation_Value_00653570[5][0x17];
 } // extern "C"
 
 // ============================================================================
@@ -992,8 +992,8 @@ extern double g_DAT_00653fc8_Value_00653FC8;             // 32767.0
 extern double g_Evaluate_Advisory_Case11_Value_00653FD8; // 0.5
 
 // TCivMgr.cpp — engineer construction cost tables.
-extern short g_awEngineerFortBuildCostByLevel[8];
-extern int g_adwEngineerRailBuildCostByTerrainType[16];
+extern short g_awEngineerFortBuildCostByLevel[5];
+extern int g_adwEngineerRailBuildCostByTerrainType[8];
 // Civilian work-order rescind refund by cost class.
 extern int g_adwCivilianWorkOrderCostByClass[16];
 
@@ -1908,6 +1908,17 @@ extern float g_cityProductionUpgradeRatioThreshold_00696450[4];
 extern short g_cityActionCapabilityGroupBySlot_00650670[32];
 // Resource ids cleared before TPopulationMgr recomputes the three derived food needs.
 extern "C" short g_cityPredictedNeedResetResourceIds[3];
+extern "C" const float g_PopulationGrowthRateUnder10;
+extern "C" const float g_PopulationGrowthRateUnder15;
+extern "C" const float g_PopulationGrowthRateUnder20;
+extern "C" const float g_PopulationGrowthRateUnder30;
+extern "C" const float g_PopulationGrowthRateUnder40;
+extern "C" const float g_PopulationGrowthRateUnder60;
+extern "C" const float g_PopulationGrowthRateUnder80;
+extern "C" const float g_PopulationGrowthRateUnder400;
+extern "C" const double g_PopulationGrowthPenaltyPerRetry;
+extern "C" const double g_PopulationGrowthMaximumRetryPenalty;
+extern "C" const float g_PopulationGrowthRateAtOrAbove400;
 // Reverse hit-test priority for the 16 city-production building regions.
 extern short g_cityBuildingHitTestOrder[16];
 // Per-building offset added to the city-building sound-effect base (3000).

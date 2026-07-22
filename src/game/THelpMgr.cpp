@@ -349,7 +349,8 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
                                       1, 0);
   }
 
-  if (activeCity != 0 && activeCity->field06 != 0 && activeCity->field08 == 0) {
+  if (activeCity != 0 && activeCity->foodSubstitutionCount06 != 0 &&
+      activeCity->starvationPopulationLoss08 == 0) {
     g_pSimMgr->GetString(0x2753, 0x16, &titleText);
     g_pSimMgr->GetString(0x2753, 0x17, &templateText);
     g_pUiRuntimeContext->ModalMessage(5, titleText, templateText, g_ptNationComparisonModalMessage,
@@ -662,10 +663,10 @@ char ShowTurnAlertsForActiveNation() {
   CString scratchC;
   CString scratchD;
   char anyAlertShown = 0;
-  int stormOutA;
+  short starvationCount;
   TCity* city = (g_apNationStates[nationId] != 0) ? g_apNationStates[nationId]->city : 0;
-  int stormOutB;
-  stormOutA = stormOutB = 0;
+  short foodSubstitutionCount;
+  starvationCount = foodSubstitutionCount = 0;
   short currentTick = g_pSimMgr->GetEconomicTurn();
   if (g_pSimMgr->preferenceValues[8] == 0) {
     return 0;
@@ -723,9 +724,8 @@ char ShowTurnAlertsForActiveNation() {
         anyAlertShown = 1;
       }
     }
-    city->productionSummary1d8->GetRecentStormImpactMetrics(
-        reinterpret_cast<short*>(&stormOutB), reinterpret_cast<unsigned short*>(&stormOutA));
-    if (*reinterpret_cast<short*>(&stormOutA) != 0) {
+    city->productionSummary1d8->PretendToEat(foodSubstitutionCount, starvationCount);
+    if (starvationCount != 0) {
       g_pSimMgr->GetString(0x2753, 0x20, &titleText);
       g_pSimMgr->GetString(0x2753, 0x21, &bodyText);
       g_pUiRuntimeContext->ModalMessage(5, CString(titleText), CString(bodyText),

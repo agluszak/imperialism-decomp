@@ -67,18 +67,18 @@ struct TurnEvent2CPacket : NetMessage {
   unsigned char pad1a[2];
   short nationSlot; // +0x1c
   unsigned char pad1e[2];
-  int field910;                     // +0x20
-  int aidAllocationTotal;           // +0x24
-  unsigned char pad28[6];           // +0x28
-  short cityMetricsBlock0E[0x1e];   // +0x2e
-  short cityMetricsBlock4A[9];      // +0x6a
-  short orderCountByType[0x0e];     // +0x7c
-  int cityField78;                  // +0x98
-  short cityFieldB4;                // +0x9c
-  short cityStock[0x17];            // +0x9e
-  short productionOrderTable[0x10]; // +0xcc
-  short productionAccum[0x10];      // +0xec
-  short cityField26C;               // +0x10c
+  int field910;                       // +0x20
+  int aidAllocationTotal;             // +0x24
+  unsigned char pad28[6];             // +0x28
+  short cityMetricsBlock0E[0x1e];     // +0x2e
+  short cityMetricsBlock4A[9];        // +0x6a
+  short orderCountByType[0x0e];       // +0x7c
+  int cityRollingItemProductionScore; // +0x98
+  short cityFieldB4;                  // +0x9c
+  short cityStock[0x17];              // +0x9e
+  short productionOrderTable[0x10];   // +0xcc
+  short productionAccum[0x10];        // +0xec
+  short populationGrowthPenaltyTicks; // +0x10c
   unsigned char pad10e[2];
   int orderAccumulatedValues[0x17]; // +0x110
   short popFieldAt8;                // +0x16c
@@ -1823,7 +1823,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       city2C->orderCountByType5c[orderType2C] = composite->orderCountByType[orderType2C];
     }
     g_apNationStates[nationSlot2C]->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
-    city2C->field78 = composite->cityField78;
+    city2C->rollingItemProductionScore78 = composite->cityRollingItemProductionScore;
     city2C->powerAvailableB4 = composite->cityFieldB4;
     short* stock2C = &city2C->cityStockCottonB6;
     for (int stockType = 0; stockType < 0x17; ++stockType) {
@@ -1835,7 +1835,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     for (int accumSlot = 0; accumSlot < 0x10; ++accumSlot) {
       city2C->productionAccum1fc[accumSlot] = composite->productionAccum[accumSlot];
     }
-    city2C->field26c = composite->cityField26C;
+    city2C->populationGrowthPenaltyTicks26c = composite->populationGrowthPenaltyTicks;
     // Second, duplicate copy of the city stock block - original behavior, kept as-is.
     for (int stockType2 = 0; stockType2 < 0x17; ++stockType2) {
       stock2C[stockType2] = composite->cityStock[stockType2];
@@ -3464,7 +3464,7 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
     for (int orderType = 0; orderType < 0x0e; ++orderType) {
       packet.orderCountByType[orderType] = city->orderCountByType5c[orderType];
     }
-    packet.cityField78 = city->field78;
+    packet.cityRollingItemProductionScore = city->rollingItemProductionScore78;
     packet.cityFieldB4 = city->powerAvailableB4;
     short* stock = &city->cityStockCottonB6;
     for (int stockType = 0; stockType < 0x17; ++stockType) {
@@ -3476,7 +3476,7 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
     for (int slot2 = 0; slot2 < 0x10; ++slot2) {
       packet.productionAccum[slot2] = city->productionAccum1fc[slot2];
     }
-    packet.cityField26C = city->field26c;
+    packet.populationGrowthPenaltyTicks = city->populationGrowthPenaltyTicks26c;
     for (int record = 0; record < 0x17; ++record) {
       TProductionOrder* order = city->tradeCommodityRecordPtrs[record];
       if (order == 0) {
