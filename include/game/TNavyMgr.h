@@ -36,35 +36,35 @@ public:
   // element class, see bd 1uj.16). TTaskForce::Free/SetMapOrderType9AndQueue/
   // PromoteMapOrderChainAndQueue (TTaskForce.cpp) all read/write this same
   // field via the g_pNavyOrderManager global.
-  TTaskForce* orderListHead04;
-  // ctor initializes to -1; real purpose not yet identified from any confirmed reader.
-  short field08;
+  TTaskForce* orderQueueHead;
+  // Mac oracle: PrepareToCarryOutAllOrders(short). Stores the phase passed to that step.
+  short executionPhase;
   char pad0a[2];
-  // Transient dialog/context task-force reference: ResolveMapOrderChainsForTurnPhase's
-  // prologue (0x5578ad) is field0c's only confirmed reader/writer -- it Free()s the
-  // pointee (vtable slot 0x1c) if non-null, then clears field0c, at the start of every
+  // Transient task-force reference: CarryOutOrders' prologue (0x5578ad) is its only
+  // confirmed reader/writer -- it Free()s the pointee (vtable slot 0x1c) if non-null,
+  // then clears the pointer at the start of every
   // turn-phase order resolution pass.
-  TTaskForce* field0c;
+  TTaskForce* pendingOrderEntry;
 
   void RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short nationSlot);
   // Clears every cityScoreTable record's exploredByNationMaskA1 flag (dispatching a
   // per-province redraw-invalidate event through g_pGameFlowState while g_pSimMgr's
   // multiplayerSessionRole == 1, for each record found dirty), stores
-  // `phaseId` into field08, revalidates/requeues the map-order queue for the new turn
-  // phase, then clears eliminatedFlag26 across the whole orderListHead04 chain
+  // `phaseId` into executionPhase, revalidates/requeues the map-order queue for the new turn
+  // phase, then clears eliminatedFlag26 across the whole orderQueueHead chain
   // (directly on the head, via ClearMapOrderProcessedFlagsChain for the rest). 0x5577b0.
-  void PrepareMapOrdersForExecutionPhase(short phaseId);
+  void PrepareToCarryOutAllOrders(short phaseId);
 
-  // Finds the first orderListHead04 entry with attachment==7 (a "type 7" task-force
+  // Finds the first orderQueueHead entry with shipOrders==7 (an escort task-force
   // order kind) and matching required_count, then walks its childOrderList setting each
   // child's active: false if the child's required_count is below its resource
   // type's stockCap column, otherwise a chancePercent-vs-rand()%100 coin flip. Returns
   // the matched entry (or null). 0x557e10.
-  TTaskForce* UpdateType7NavyOrderChildSelectionByChanceThreshold(short requiredCount,
-                                                                  short chancePercent);
+  // Mac oracle: AssignEscorts(short, short).
+  TTaskForce* AssignEscorts(short requiredCount, short chancePercent);
 
   // 0x5568f0 - stream out the three navy order lists (primary TShip chain tail-first,
-  // TAdmiral secondary chain, orderListHead04 task-force chain), each prefixed with a
+  // TAdmiral secondary chain, orderQueueHead task-force chain), each prefixed with a
   // 16-bit count; nationFilter -1 serializes every nation's entries.
   void SerializeNavyOrderListsByNation(TStream* stream, short nationFilter);
   // 0x556ad0 - receive-side twin of SerializeNavyOrderListsByNation: rebuild the three
@@ -83,37 +83,31 @@ public:
     while (g_pNavySecondaryOrderListHead != 0) {
       g_pNavySecondaryOrderListHead->Free();
     }
-    TTaskForce* orderHead = orderListHead04;
+    TTaskForce* orderHead = orderQueueHead;
     if (orderHead != 0) {
       orderHead->queue_next->DestroyNavyOrderAndChildren();
       orderHead->Free();
     }
   }
-  // 0x557170. Walks orderListHead04 (the same raw task-force-order node list
-  // RemoveMatchingTaskForceOrders in the .cpp already indexes via node[7]=
-  // nationSlot@+0x1c, node[0xb]=next@+0x2c); matches nodes with orderType@+0x8==5,
-  // targetRecord@+0xc==cityRecordPtr, and (filterValue==0 || filterTag@+0x18==
-  // filterValue), then sums a per-TShip weighted cost from the sub-list at +0x10
-  // (each entry is {TShip*, next}; TShip::resourceType04/stockLevel1c line up with
-  // the entry's ship's own fields).
-  short ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(short nationSlot,
-                                                                    void* cityRecordPtr,
-                                                                    int filterValue);
+  // 0x557170. Walks typed task-force orders for the requested nation, city target,
+  // and optional context-zone filter, then sums the active child ships' weighted cost.
+  short ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(
+      short nationSlot, TGlobalMapCityScoreRecord* cityTarget, TZone* contextFilter);
 
-  // bd 1uj.16: if `entry` is already linked into orderListHead04, returns
+  // Mac oracle: CommitForce. If `entry` is already linked into orderQueueHead, returns
   // true (no-op). Otherwise, if `entry` has no live childOrderList entries,
   // frees it and returns false; else unlinks it from wherever it is
-  // currently queued and (re)inserts it at orderListHead04, returning true.
-  bool MoveMapOrderEntryToQueueHeadIfValid(TTaskForce* entry); // 0x557080
+  // currently queued and (re)inserts it at orderQueueHead, returning true.
+  bool CommitForce(TTaskForce* entry); // 0x557080
 
   // Called from TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate's tail
   // (ECX=g_pNavyOrderManager evidence at that callsite) when neither entry's priority
   // clears the other's threshold and no tie-break resolves it outright. Runs the
   // tier-scoring / random-attrition resolution between the two order entries' children.
-  void ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce* rightEntry); // 0x55a780
+  void ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEntry); // 0x55a780
 
   // Zeroes every g_pNavyPrimaryOrderListHead ship's field0c, destroys the whole
-  // orderListHead04 task-force queue, clears the head, and notifies
+  // orderQueueHead task-force queue, clears the head, and notifies
   // g_pActiveMapOrderContext that no order entry is selected anymore.
   void ResetPrimaryOrderActiveFlagsAndClearManagerState(); // 0x556fd0
 
@@ -122,7 +116,7 @@ public:
   void ClearAllTransientOrders();
 
   // 0x558960 (3485 bytes). Called twice in sequence from the map-order turn-phase
-  // resolver (ResolveMapOrderChainsForTurnPhase, 0x5578a0) with `mode` = 1 then 2
+  // resolver (CarryOutOrders, 0x5578a0) with `mode` = 1 then 2
   // -- confirmed __thiscall on this (TNavyMgr) via the `MOV ECX,EBP; PUSH mode;
   // CALL` sequence at 0x557ca7/0x557cb1 and the callee's `RET 4`. Sweeps the 7
   // playable nations that have a live city, and for each its 17 tracked map-order
@@ -137,32 +131,32 @@ public:
   // selected TTaskForce comes from SelectEligibleMapOrderInteractionForNationAndContext.
   // The "g_pLocalizationTable" provisional Ghidra label in this body is g_pSimMgr itself
   // (vtable 0x662a58; calls are TSimMgr::GetStringPrelude/GetString).
-  // 0x557f10 (1901 bytes). Scans orderListHead04 for the first queued order entry
+  // 0x557f10 (1901 bytes). Scans orderQueueHead for the first queued order entry
   // whose interaction is eligible to fire this turn for `nation`: gates the nation's
   // own type-7 entry children by a priority-vs-descriptor roll, then for each
-  // non-eliminated queued entry checks attachment/context match + diplomacy relation
+  // non-eliminated queued entry checks shipOrders/context match + diplomacy relation
   // (g_pDiplomacyTurnStateManager) and an order-score comparison (the same
-  // ComputeMapOrderEntryHeuristicScore / ComputeTaskForceOrderAggregateScore /
-  // ResolveMapOrderPairConflictStep helpers the conflict resolver uses). On the first
+  // TShip/TTaskForce::GetBattleStrengthRating /
+  // ResolveStrategicBattle helpers the conflict resolver uses). On the first
   // eligible entry it fills `outResult` and returns 1; otherwise 0. `portZoneContext`
   // is the resolved TZone* (as int), `offerAmount` the transfer size.
   char
   SelectEligibleMapOrderInteractionForNationAndContext(TMapOrderInteractionSelection* outResult,
-                                                       int portZoneContext, short nation,
+                                                       TZone* portZoneContext, short nation,
                                                        short offerAmount);
 
   void ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode); // 0x558960
 
-  // 0x5578a0 (1102 bytes). Per-turn-phase map-order conflict resolver: clears any
-  // pending field0c context reference, then runs 6 filter/inner-loop passes over
-  // orderListHead04 pairing competing order entries (3/4-vs-6, 6-vs-1, direct
+  // Mac oracle: CarryOutOrders. Per-turn-phase map-order conflict resolver: clears any
+  // pending order-entry reference, then runs 6 filter/inner-loop passes over
+  // orderQueueHead pairing competing order entries (3/4-vs-6, 6-vs-1, direct
   // type-1 apply, 3/4-vs-non-6, 1-vs-5 with an inlined threshold roll, direct
   // type-5/8 apply), returning immediately if any pairwise resolution reports a
   // result. Finishes by running the two-pass nation nation-interaction sweep,
-  // rebuilding orderListHead04 via PruneNavyOrderIfUnserviceableOrNoChildren,
+  // rebuilding orderQueueHead via PruneNavyOrderIfUnserviceableOrNoChildren,
   // clearing the primary TShip list's transient field34 flag, and refreshing the
   // active map-order context's overlays.
-  void ResolveMapOrderChainsForTurnPhase(); // 0x5578a0
+  void CarryOutOrders(); // 0x5578a0
 
   // Map-hover label lookups. These are real __thiscall members on the navy manager;
   // 0x559e00 additionally resolves the active task-force entry against the clicked
@@ -174,7 +168,7 @@ public:
 
   // 0x0055a020 -- resolves and executes a context-sensitive map click action against this
   // manager's active map-order state (dialogs for actions 2..8, set-active-entry for 9,
-  // UI-runtime slot 0xf0 for 10, entry-order dialog for 11 which walks orderListHead04).
+  // UI-runtime slot 0xf0 for 10, entry-order dialog for 11 which walks orderQueueHead).
   // Returns true if the click was consumed. Ghidra's `int` prototype is a mislabel --
   // callers store the result in a `char fHandled` and test `!= '\0'`, and the real codegen
   // only ever sets/tests AL. Not virtual -- called directly (via an ILT thunk) from
@@ -196,5 +190,5 @@ ASSERT_SIZE(TNavyMgr, 0x10);
 
 // 0x557560 -- free __cdecl per-turn map-order revalidation sweep over every
 // map-action context zone x great-power slot (body in TNavyMgr.cpp; called by
-// TNavyMgr::PrepareMapOrdersForExecutionPhase).
+// TNavyMgr::PrepareToCarryOutAllOrders).
 void RevalidateAndRequeueMapOrdersForTurn();

@@ -13,7 +13,7 @@ ASSERT_SIZE(CStr32, 0x20);
 
 // Fixed-capacity long string used by the map-action report records. The Windows
 // constructor is the six-byte body at 0x4a31e0; an array of two instances is why
-// ResolveMapOrderPairConflictStep invokes VC5's vector-construction helper with a
+// ResolveStrategicBattle invokes VC5's vector-construction helper with a
 // 0xff-byte stride. Mac symbols call the corresponding type CStr255.
 struct CStr255 {
   char data[0xff];
@@ -30,7 +30,7 @@ struct MapOrderBattleSideChildRecord {
   short resourceType;    // +0x00 -- child TShip::resourceType04
   short stockOrRequired; // +0x02 -- child TShip::stockLevel1c
   char nameBuffer[0x20]; // +0x04 -- copy of child TShip::displayName18
-  short strengthBucket;  // +0x24 -- signed-divide-by-100 bucket of child TShip::field30
+  short strengthBucket;  // +0x24 -- child TShip::experiencePoints30 / 100
   char pad26[2];
   union DetailIdentity {
     void* sourceObject;       // while the resolver is still updating a live unit

@@ -20,7 +20,7 @@ struct TGlobalMapCityScoreRecord;
 // receiver to be TTaskForce itself (the parent order entry), not a distinct
 // manager class -- see FindOrCreateChildOrderLink's own declaration. The `owner`
 // slot (+0x0c) that was previously flagged UNRESOLVED is now modeled as the
-// attachment-keyed union TMapOrderContext (see the field comment below); a full
+// shipOrders-keyed union TMapOrderContext (see the field comment below); a full
 // writer/receiver disassembly inventory confirmed the discriminator mapping and
 // found no wrong-receiver/wrong-offset defect.
 
@@ -31,7 +31,7 @@ struct TGlobalMapCityScoreRecord;
 // the RTTI name once TTaskForce's own vtable (0x0065c468) was found to be the
 // SAME vtable TNavyMission.cpp's map-order bridges dispatch through (bd
 // 1uj.16). Objects live in a global doubly-linked queue headed by
-// TNavyMgr::orderListHead04 (g_pNavyOrderManager @ 0x6a43e4), threaded via
+// TNavyMgr::orderQueueHead (g_pNavyOrderManager @ 0x6a43e4), threaded via
 // queue_prev/queue_next; TTaskForce::Free (0x552930) unlinks from that queue.
 // VTABLE: IMPERIALISM 0x0065c468
 class TTaskForce : public TObject {
@@ -60,25 +60,23 @@ public:
       s16 order_strength;
     };
   };
-  // Order/entry "kind" tag (was named `attachment`): TNavyMgr's
+  // Mac oracle: eShipOrders. This is the submitted ship-order kind. TNavyMgr's
   // RemoveMatchingTaskForceOrders (0x557170 cluster) checks this == 5 for
   // "task force" queue entries; SetMapOrderType9AndQueue (0x552f80) sets it to
-  // 9 for the map-order-9 kind. Kept the established `attachment` spelling
-  // (already used by TTaskForce::SelectPreferredMapOrderEntryByPriorityRules)
-  // to avoid touching working code; see bd 1uj.16 notes.
-  int attachment;
-  // +0x0c order-context payload: a discriminated variant keyed by `attachment` (+0x08).
+  // 9 for the map-order-9 kind.
+  int shipOrders;
+  // +0x0c order-context payload: a discriminated variant keyed by `shipOrders` (+0x08).
   // The order-entry machinery reuses this one 4-byte slot for the order's context object,
   // whose concrete type depends on the order kind:
-  //   attachment 1/2/3/4/6 -> asZone       (map/port-zone context; walked through the zone
+  //   shipOrders 1/2/3/4/6 -> asZone       (map/port-zone context; walked through the zone
   //                           neighbor graph in PromoteMapOrderChainAndQueue, dispatched via
   //                           TZone vtable slot 0x4c in UpdateNavyOrderMapMarkerByOrderType)
-  //   attachment 5         -> asCityTarget (record in the 384-entry city-score table; its
+  //   shipOrders 5         -> asCityTarget (record in the 384-entry city-score table; its
   //                           +0xa1 owner-nation flag is read by ApplyMapOrderTypeExecution-
   //                           Effects, and GetCityIndexFromCityStatePointer resolves it)
-  //   attachment 9 / 0     -> null (SetMapOrderType9AndQueue never writes it; ctor nulls it)
+  //   shipOrders 9 / 0     -> null (SetMapOrderType9AndQueue never writes it; ctor nulls it)
   // Proven a real tagged union (not incidental reuse) by WriteTo/ReadFrom (0x552b90/
-  // 0x552d10), which serialize THIS slot two different ways depending on attachment==5 (a
+  // 0x552d10), which serialize THIS slot two different ways depending on shipOrders==5 (a
   // city-table index) vs otherwise (a generic CObject reference). Every reader/writer
   // touches [this+0xc] as one 4-byte pointer, so the members alias at offset 0 and codegen
   // is identical to the former raw pointer.
@@ -102,7 +100,7 @@ public:
   // writer stores a zone/context and every reader treats it as TZone* -- equality vs a
   // primary order node's own +0x08 (TShip::field08, a TZone*), and vtable dispatch through
   // TZone slots 0x2c (AssignZoneDisplayName), 0x38, 0x4c (tile search) and 0x54 (coastal
-  // heuristic). Serialized as a single CObject reference regardless of attachment. Seeded
+  // heuristic). Serialized as a single CObject reference regardless of shipOrders. Seeded
   // from the source order node's +0x08 when the entry is created (0x5503a0); the 2-arg ctor
   // takes the real TZone* directly.
   TZone* contextAnchor; // +0x18
@@ -175,13 +173,13 @@ public:
   // 0x00554300 -- action-context command resolver (0x0C/0x0D/0x0E/0x0F, fallback 1) from
   // this entry's contextAnchor zone and a candidate context zone's capability slots.
   int ResolveMapOrderCommandFromActionContext(TZone* candidate);
-  // This entry's 0-based rank among g_pNavyOrderManager->orderListHead04 entries
+  // This entry's 0-based rank among g_pNavyOrderManager->orderQueueHead entries
   // sharing the same required_count value; -1 if `this` is null or not found in the
   // queue.
   int GetNavyOrderRankWithinNationBucket(); // 0x5563d0
   // Clears this order's map marker tile if one is set (tiebreak_strength != -1).
   void ClearNavyOrderMapMarker(); // 0x5564f0
-  // Recomputes and repaints this order's map-tile marker from its `attachment` kind,
+  // Recomputes and repaints this order's map-tile marker from its `shipOrders` kind,
   // dispatching through the order's zone (owner/contextAnchor as TZone) tile-search
   // virtuals; called on a TTaskForce entry by FinalizeQueuedMapOrderEntry and ReadFrom.
   void UpdateNavyOrderMapMarkerByOrderType(); // 0x556410
@@ -195,7 +193,7 @@ public:
   // 0x11/0x12), g_apTerrainTypeDescriptorTable[required_count]'s terrain/nation name,
   // contextAnchor's (real TZone*, see TMapOrderEntryOwnerContext note above)
   // AssignZoneDisplayNameToOutputRef label, the decimal child count, and the
-  // order-kind label (string group 0x2762, index attachment+0x13). 0x554c90.
+  // order-kind label (string group 0x2762, index shipOrders+0x13). 0x554c90.
   // Used by BuildMapOrderBattleSideSnapshot for its overlay label field.
   void BuildTaskForceSelectionOverlayLabelText(CString* out); // 0x554c90
 
@@ -210,7 +208,7 @@ public:
   void GetAuthority(CString* out) const;             // 0x5551d0
   void CancelOrders(unsigned char cancellationMode); // 0x5547d0
 
-  // Null-safe tail-recursive queue_next walk used by ResolveMapOrderChainsForTurnPhase
+  // Null-safe tail-recursive queue_next walk used by TNavyMgr::CarryOutOrders
   // to rebuild the order queue head: prunes (Free()s) any entry with no active children,
   // or a live entry whose order_type is 0/1/4/7/8, or (order_type == 5) whose target
   // city's diplomacy relation stamp with this entry's nation is out of date; every
@@ -222,7 +220,7 @@ public:
   // its resource-type's navy-priority/resolve/calculate/task-force weight columns
   // (g_NavyOrderResourceDescriptorTable[order_type]) plus required_count. Used by the
   // order-selection cluster to rank candidate task-force order entries.
-  // Simplified single-term variant of ComputeMapOrderEntryHeuristicScore. 0x550840.
+  // Simplified single-term variant of TShip::GetBattleStrengthRating. 0x550840.
 
   // Weighted 4-category priority score for the given score profile: sums each
   // category's ComputeNavyOrderPriorityContributionPercentByCategory contribution
@@ -253,19 +251,21 @@ public:
   // childOrderList entries; 0 if none are active.
   int CalculateMapOrderEntryAverageChildRatingX10(); // 0x554ad0
 
-  // Sum of ComputeMapOrderEntryHeuristicScore() over every childOrderList entry (each
+  // Mac oracle: GetBattleStrengthRating() const. Sum of each child ship's corresponding
+  // battle-strength rating over every childOrderList entry (each
   // entry's own order_type/tiebreak_strength/required_count, not this entry's own).
-  int ComputeTaskForceOrderAggregateScore(); // 0x556010
+  int GetBattleStrengthRating() const; // 0x556010
 
   // Immediate/deferred execution effects for a resolved queue entry
-  // (ResolveMapOrderChainsForTurnPhase's tail passes): no-op once already eliminated.
+  // (TNavyMgr::CarryOutOrders' tail passes): no-op once already eliminated.
   // Type 1 propagates the raw `owner` payload value into every active child's own
-  // attachment field. Type 5 sets the target city's owner-flag bit
+  // shipOrders field. Type 5 sets the target city's owner-flag bit
   // for this entry's nation and, in single-player mode, invalidates that city's redraw.
   // Type 8 advances every active child's required_count by a quarter-step toward its
   // resource-type's stockCap. Any other type asserts once, then (except type 1) marks
   // this entry processed.
-  void ApplyMapOrderTypeExecutionEffects(); // 0x556100
+  // Mac oracle: CarryOutOrders().
+  void CarryOutOrders(); // 0x556100
 
   // Compares this entry's best (lowest descriptorWeight) active child against `other`'s
   // average active-child rating; rolls against the gap to decide a tie-break winner.
@@ -274,39 +274,39 @@ public:
   // consulted by callers, so this is modeled returning char rather than int.
   char ComputeTaskForceOrderTieBreakScore(TTaskForce* other); // 0x555c20
 
-  // Sub-step of ResolveMapOrderChainsForTurnPhase's pairwise resolution pass (called
+  // Sub-step of TNavyMgr::CarryOutOrders' pairwise resolution pass (called
   // after the caller's own ShouldAttemptMapOrderPairResolution gate): bails (0) if
   // either side has no active children; if the active nation preference is set and
   // owns either side, returns 1 without resolving; otherwise hands off to
-  // g_pNavyOrderManager->ResolveMapOrderPairConflictStep(this, other), clears
+  // g_pNavyOrderManager->ResolveStrategicBattle(this, other), clears
   // *pResolvedFlag to signal the caller a resolution happened, and returns 0.
   char TryResolveMapOrderEntryPairExecution(TTaskForce* other, int* pResolvedFlag); // 0x555d10
 
-  // this->ComputeTaskForceOrderAggregateScore()*100 < kOrderTypePriorityWeight[order_type] *
-  // other->ComputeTaskForceOrderAggregateScore(). Same per-order-type {200,100,50}
+  // this->GetBattleStrengthRating()*100 < kOrderTypePriorityWeight[order_type] *
+  // other->GetBattleStrengthRating(). Same per-order-type {200,100,50}
   // weight table ResolveTaskForceOrderConflictAndPickCandidate uses.
   char IsTaskForceOrderMixWithinPriorityThresholds(TTaskForce* other); // 0x555de0
 
   // Top-level task-force order-conflict resolver: bails if either side has no active
-  // children; force-attempts resolution for type-5/6 attachments, else rolls against a
+  // children; force-attempts resolution for ship-order kinds 5/6, else rolls against a
   // priority-gap threshold (childRating average delta + child-count overflow); if
   // attempted, compares aggregate scores (weighted by kOrderTypePriorityWeight) both
   // ways and falls back to ComputeTaskForceOrderTieBreakScore on a near-tie; on a
   // resolved conflict with both sides still non-empty, returns true immediately if
   // either side is the active nation (when g_pSimMgr->preferenceValues[3] is set), else
-  // hands off to TNavyMgr::ResolveMapOrderPairConflictStep and returns false.
+  // hands off to TNavyMgr::ResolveStrategicBattle and returns false.
   char ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other); // 0x555420
 
   // Standalone sibling of the identical inline "shouldAttempt" computation in
   // ResolveTaskForceOrderConflictAndPickCandidate: bails if either side has no active
-  // children; force-attempts for type-5/6 attachments; else rolls against a priority-gap
+  // children; force-attempts for ship-order kinds 5/6; else rolls against a priority-gap
   // threshold (childRating average delta + child-count overflow past 10).
   char ShouldAttemptMapOrderPairResolution(TTaskForce* other); // 0x555720
 
   // Direct sibling of ResolveTaskForceOrderConflictAndPickCandidate/ComputeTaskForceOrder-
   // TieBreakScore -- same per-order-type {200,100,50} weighted-heuristic-sum comparison,
   // checked both ways, but with its own inline elimination roll (not a call to either
-  // sibling): whichever side's ComputeMapOrderEntryHeuristicScore-summed heuristic total
+  // sibling): whichever side's GetBattleStrengthRating-summed heuristic total
   // is priority-weighted weaker gets one shot at elimination (gap between the OTHER
   // side's best active child and this side's average active-child rating), and only when
   // the reciprocal aggregate-score check doesn't already favor it and it isn't already
@@ -388,13 +388,13 @@ public:
   }
 
   // Mac oracle: SubmitOrders(eShipOrders, void*). The Windows ABI passes both values
-  // as dwords; orderArgument is the attachment-specific zone/city context payload.
+  // as dwords; orderArgument is the ship-order-specific zone/city context payload.
   void SubmitOrders(int orderType, int orderArgument); // 0x5540b0
 
-  // bd 1uj.16 target: sets attachment=9 (map-order kind 9), frees any
+  // bd 1uj.16 target: sets shipOrders=9 (map-order kind 9), frees any
   // childOrderList entries whose owning link is inactive, recomputes
   // activeChildEntry, then either self-Frees (no live children) or
-  // (re)inserts `this` at the head of g_pNavyOrderManager->orderListHead04
+  // (re)inserts `this` at the head of g_pNavyOrderManager->orderQueueHead
   // and notifies g_pActiveMapOrderContext.
   void SetMapOrderType9AndQueue(); // 0x552f80
 
@@ -414,18 +414,18 @@ public:
   // bd 1uj.16.2/1uj.16.5 target: sibling of SetMapOrderType9AndQueue for map-order kind
   // 6 (port-zone blockade orders) -- stores `nOrderTarget` (a port-zone TZone* passed as an
   // opaque value) into the `owner` variant via owner.raw, read back as owner.asZone under
-  // attachment 6, sets
-  // attachment=6, then the identical free-inactive-children / recompute /
+  // shipOrders 6, sets
+  // shipOrders=6, then the identical free-inactive-children / recompute /
   // self-Free-or-queue tail as SetMapOrderType9AndQueue. Ghidra/symbols.csv mis-attribute
   // this to TControlSeaZoneMission, but its body only ever reads TTaskForce's own field
-  // offsets (owner/attachment/childOrderList/activeChildEntry/bucket-count region) --
+  // offsets (owner/shipOrders/childOrderList/activeChildEntry/bucket-count region) --
   // real owner is TTaskForce, called from TControlSeaZoneMission::GiveActionOrders (0x539640)
   // and TBlockadePortMission::GiveActionOrders (0x53ba40, "QueueMapOrderType6FromContext
   // Pointer") on the map-order entry passed to that virtual slot.
   void SetMapOrderType6AndQueue(int nOrderTarget); // 0x5536c0
 
   // Sibling of SetMapOrderType6AndQueue for map-order kind 5 -- byte-identical body except
-  // it stores attachment=5 instead of 6 (owner=nOrderTarget, activeChildEntry=null, same
+  // it stores shipOrders=5 instead of 6 (owner=nOrderTarget, activeChildEntry=null, same
   // free-inactive-children / recompute / self-Free-or-queue tail). Ghidra/symbols.csv model
   // it as a free __thiscall function; real owner is TTaskForce (body reads only this class's
   // own field offsets).
@@ -448,7 +448,7 @@ public:
   // .enabledFlagOrBucketOffset), bumps this entry's bucket counter, sets
   // node->owner = this, then calls this->AssertValid() (CObject virtual, slot
   // 0xc) and copies this entry's own packed order_type/order_strength dword and
-  // attachment-kind gate onto `node` -- the same fields/gate
+  // ship-order-kind gate onto `node` -- the same fields/gate
   // TShip::SetOwnerOrderEntryAndCacheType applies, just with `this` playing the role of
   // that method's `newEntry` parameter (bd 1uj.16.1).
   void FindOrCreateChildOrderLink(TShip* node); // 0x553bc0
