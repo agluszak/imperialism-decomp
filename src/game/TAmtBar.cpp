@@ -161,7 +161,7 @@ void TAmtBar::ClampAndApplyTradeMoveValue(int requestedValue) {
     }
   }
 
-  reinterpret_cast<TUberCluster*>(owner)->DispatchRuntimeApplyMoveValue(appliedValue);
+  static_cast<TUberCluster*>(owner)->SetAmountValueOnConcreteCluster(appliedValue);
 }
 
 void TAmtBar::SetBarMetricRatio(int value) {

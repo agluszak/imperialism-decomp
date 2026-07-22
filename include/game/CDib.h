@@ -20,8 +20,8 @@ public:
   void* m_dibBits;           // 0x0c  DIB section bits (owned when m_dibBitsOwned == 1)
   BITMAPINFO* m_pInfoHeader; // 0x10  packed BITMAPINFOHEADER + RGBQUAD palette
   HGLOBAL m_hGlobalInfo;     // 0x14  GlobalAlloc handle backing m_pInfoHeader (own mode 2)
-  int m_infoOwnMode;         // 0x18  0=not owned, 1=heap (operator delete), 2=GlobalFree
-  int m_dibBitsOwned;        // 0x1c  1 when m_dibBits is heap-owned
+  int m_infoOwnMode;         // 0x18  0=not owned, 1=byte-array storage, 2=GlobalFree
+  int m_dibBitsOwned;        // 0x1c  1 when m_dibBits is byte-array storage
   int m_pixelBytes;          // 0x20  size of the pixel buffer in bytes
   int m_paletteCount;        // 0x24  number of palette entries (biClrUsed)
   HANDLE m_hFileMapping;     // 0x28  file-mapping handle (memory-mapped bmp path)
