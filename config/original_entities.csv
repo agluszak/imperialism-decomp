@@ -1991,8 +1991,8 @@ address|name|symbol|size|type|prototype|provenance
 4c0730|TCityInteriorMinister::QueueSingleCityProductionCommandFromField38||127|function|undefined QueueSingleCityProductionCommandFromField38()|
 4c07d0|TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits||1163|function|undefined DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits()|
 4c0d90|TCityInteriorMinister::NoOpForeignMinisterUtilityStub||58|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-4c0de0|TCityInteriorMinister::SetForeignMinisterReadyFlag14_2e||73|function|undefined SetForeignMinisterReadyFlag14(void)|
-4c0e50|TCityInteriorMinister::ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders||697|function|undefined ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders()|
+4c0de0|TCityInteriorMinister::RaiseNeedTargetWithinAvailableSurplus||73|function|short __thiscall RaiseNeedTargetWithinAvailableSurplus(short resourceType, short requestedAmount, short allocationLimit)|
+4c0e50|TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls||697|function|short __thiscall RebuildNeedTargetsAndQueueProductionShortfalls(TCity* city, TTaskList* commandQueue)|
 4c11c0|TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore||643|function|int __thiscall SelectBestSecondaryHomeTileByFrogCityScore()|
 4c1510|TCityInteriorMinister::BuildNationTileDevelopmentScoreListForTerrainClass||706|function|undefined BuildNationTileDevelopmentScoreListForTerrainClass()|
 4c18a0|AppendInteriorMinisterValueGrowShortBuffer||131|function|undefined AppendInteriorMinisterValueGrowShortBuffer()|
@@ -2011,19 +2011,18 @@ address|name|symbol|size|type|prototype|provenance
 4c3640|TCityInteriorMinister::CreateSeaDistanceMap||576|function|char * __thiscall CreateSeaDistanceMap(TShortintList * ownedTiles)|
 4c3910|TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates||589|function|char * __thiscall BuildFrogCityDistanceMapFromReachableSeaCandidates(TShortintList * ownedTiles)|
 4c3c00|TCityInteriorMinister::RebalanceCityOrderAllocationTargets||267|function|void __thiscall RebalanceCityOrderAllocationTargets(TCity * city)|
-4c3d60|TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection||686|function|undefined ProcessCityOrderStateTickAndApplyCapabilitySelection()|
-4c40c0|TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations||540|function|undefined RebalanceCitySupportAndLaborAllocations()|
-4c4370|TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand||631|function|undefined ChooseAndMarkNextCityProductionCommand()|
-4c4690|TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutputs||335|function|undefined ComputeCityProductionCommandLimitsFromBuildingOutputs()|
-4c4840|TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle||323|function|undefined RebuildCityOrderCommandAvailabilityAndPriorityCycle()|
-4c49f0|UpdateMinisterProductionMetricsForResourceIndex||1|function|undefined UpdateMinisterProductionMetricsForResourceIndex()|
-4c4c4c|OrphanCallChain_C1_I20_004c4c4c||65|function|undefined OrphanCallChain_C1_I20_004c4c4c()|
-4c4d40|OrphanCallChain_C2_I72_004c4d40||219|function|undefined OrphanCallChain_C2_I72_004c4d40()|
-4c4e60|OrphanCallChain_C3_I79_004c4e60||229|function|undefined OrphanCallChain_C3_I79_004c4e60()|
+4c3d60|TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection||686|function|void __thiscall ProcessCityOrderStateTickAndApplyCapabilitySelection()|
+4c40c0|TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations||540|function|void __thiscall RebalanceCitySupportAndLaborAllocations()|
+4c4370|TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand||631|function|void __thiscall ChooseAndMarkNextCityProductionCommand()|
+4c4690|TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutputs||335|function|void __thiscall ComputeCityProductionCommandLimitsFromBuildingOutputs()|
+4c4840|TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle||323|function|void __thiscall RebuildCityOrderCommandAvailabilityAndPriorityCycle()|
+4c49f0|TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex||669|function|void __thiscall UpdateMinisterProductionMetricsForResourceIndex(short orderSlot)|
+4c4d40|TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget||219|function|short __thiscall RaisePowerPlantOrderToReachLaborTarget(short targetLabor)|
+4c4e60|TCityInteriorMinister::FillRemainingNeedCapacityAndReducePowerPlantOrder||229|function|void __thiscall FillRemainingNeedCapacityAndReducePowerPlantOrder()|
 4c4f90|TCityInteriorMinister::GetAverageDevelopmentOrderAllocation||49|function|int GetAverageDevelopmentOrderAllocation(void)|
 4c4fe0|TCityInteriorMinister::RequestResource||471|function|short __thiscall RequestResource(short resourceType, short requestedAmount, short flags)|
 4c5240|BuildFrogCityTerrainCountsAndOverlayStats||930|function|undefined BuildFrogCityTerrainCountsAndOverlayStats()|
-4c56e0|TryApplyCityOrderCapabilitySelectionBySlot||427|function|undefined TryApplyCityOrderCapabilitySelectionBySlot()|
+4c56e0|TCityInteriorMinister::TryApplyCityOrderCapabilitySelectionBySlot||427|function|bool __thiscall TryApplyCityOrderCapabilitySelectionBySlot(short capabilitySlot)|
 4c5900|TSteelCityMinister::CreateObject|?CreateObject@TSteelCityMinister@@SGPAVCObject@@XZ|132|function|undefined CreateObject()|rtti
 4c59c0|TSteelCityMinister::GetRuntimeClass||6|function|undefined GetTSteelCityMinisterClassNamePointer()|rtti
 4c59e0|TSteelCityMinister::ConstructTSteelCityMinisterBaseState||43|function|undefined ConstructTSteelCityMinisterBaseState()|
@@ -2939,7 +2938,7 @@ address|name|symbol|size|type|prototype|provenance
 4ff750|InitializeCityInteriorMinister_Impl||22|function|undefined InitializeCityInteriorMinister_Impl()|
 4ff780|TFuzzySet::Free||52|function|undefined OrphanCallChain_C2_I27_004ff780(void)|
 4ff7d0|TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0||73|function|undefined AllocateAndAppendTFuzzyVarRecord_004ff7d0()|
-4ff840|WrapperFor_GenerateThreadLocalRandom15_At004ff840||317|function|undefined WrapperFor_GenerateThreadLocalRandom15_At004ff840()|
+4ff840|TFuzzySet::SelectWeightedMemberIndex||317|function|int __thiscall SelectWeightedMemberIndex(float input)|
 4ffb00|WrapperFor_ftol_At004ffb00||30|function|undefined WrapperFor_ftol_At004ffb00()|
 4ffb30|TGameWindow::CreateObject|?CreateObject@TGameWindow@@SGPAVCObject@@XZ|137|function|undefined CreateObject()|rtti
 4ffbf0|TGameWindow::GetRuntimeClass||6|function|undefined GetTGameWindowClassNamePointer()|rtti

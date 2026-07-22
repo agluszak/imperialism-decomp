@@ -92,11 +92,11 @@ public:
   virtual void DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits(
       TCity* city);                                                    // slot 0x2c 0x4c07d0
   virtual void SelectRecruitmentProductionCommand(short commandIndex); // slot 0x2d 0x4bef10
-  virtual undefined SetForeignMinisterReadyFlag14_2e(short arg1, short arg2,
-                                                     short arg3); // slot 0x2e 0x4c0de0
-  virtual undefined
-  ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders(int* arg1,
-                                                            int unusedArg2); // slot 0x2f 0x4c0e50
+  virtual short RaiseNeedTargetWithinAvailableSurplus(short resourceType, short requestedAmount,
+                                                      short allocationLimit); // slot 0x2e 0x4c0de0
+  virtual short
+  RebuildNeedTargetsAndQueueProductionShortfalls(TCity* city,
+                                                 TTaskList* commandQueue); // slot 0x2f 0x4c0e50
   // Scores every valid owned tile through a temporary TTown resource projection and
   // returns the best home-city TILE index. An existing capital-site flag wins with a
   // score of 32000. Mac/curated name: SelectBestSecondaryHomeTileByFrogCityScore.
@@ -120,15 +120,16 @@ public:
   virtual char*
   BuildFrogCityDistanceMapFromReachableSeaCandidates(TShortintList* ownedTiles); // slot 0x3c
                                                                                  // 0x4c3910
-  virtual void RebalanceCityOrderAllocationTargets(TCity* city);             // slot 0x3d 0x4c3c00
-  virtual undefined ProcessCityOrderStateTickAndApplyCapabilitySelection();  // slot 0x3e 0x4c3d60
-  virtual undefined RebalanceCitySupportAndLaborAllocations();               // slot 0x3f 0x4c40c0
-  virtual undefined ChooseAndMarkNextCityProductionCommand();                // slot 0x40 0x4c4370
-  virtual undefined ComputeCityProductionCommandLimitsFromBuildingOutputs(); // slot 0x41 0x4c4690
-  virtual undefined RebuildCityOrderCommandAvailabilityAndPriorityCycle();   // slot 0x42 0x4c4840
-  virtual undefined UpdateMinisterProductionMetricsForResourceIndex();       // slot 0x43 0x4c49f0
-  virtual undefined CityMinisterSlot44();                                    // slot 0x44 0x4c4d40
-  virtual undefined CityMinisterSlot45();                                    // slot 0x45 0x4c4e60
+  virtual void RebalanceCityOrderAllocationTargets(TCity* city);        // slot 0x3d 0x4c3c00
+  virtual void ProcessCityOrderStateTickAndApplyCapabilitySelection();  // slot 0x3e 0x4c3d60
+  virtual void RebalanceCitySupportAndLaborAllocations();               // slot 0x3f 0x4c40c0
+  virtual void ChooseAndMarkNextCityProductionCommand();                // slot 0x40 0x4c4370
+  virtual void ComputeCityProductionCommandLimitsFromBuildingOutputs(); // slot 0x41 0x4c4690
+  virtual void RebuildCityOrderCommandAvailabilityAndPriorityCycle();   // slot 0x42 0x4c4840
+  virtual void
+  UpdateMinisterProductionMetricsForResourceIndex(short orderSlot);        // slot 0x43 0x4c49f0
+  virtual short RaisePowerPlantOrderToReachLaborTarget(short targetLabor); // slot 0x44 0x4c4d40
+  virtual void FillRemainingNeedCapacityAndReducePowerPlantOrder();        // slot 0x45 0x4c4e60
   virtual short RequestResource(short resourceType, short requestedAmount,
                                 short flags); // slot 0x46 0x4c4fe0; Mac oracle
   virtual undefined SeekResources(TShortintList* ownedTiles,
@@ -142,6 +143,7 @@ public:
   void InitializeCityInteriorState(TGreatPower* owner);
   float GetAiDevelopmentResourceBudgetScale(int* resourcePools);
   int GetAverageDevelopmentOrderAllocation();
+  bool TryApplyCityOrderCapabilitySelectionBySlot(short capabilitySlot); // 0x004c56e0
 
   DECLARE_DYNCREATE(TCityInteriorMinister)
   void WriteTo(TStream* stream) override;  // slot 0x14
@@ -169,22 +171,22 @@ public:
   // one short at a time (EvaluateCityShortagesAndNotifyForeignMinister reads
   // orderMetricTable40[0]/[1] as a paired "any nonzero" trigger and [2]..[6]
   // individually), not as packed ints.
-  short orderMetricTable40[60]; // +0x40..0xb8  (zeroed on init)
-  short fieldB8;                // +0xb8
-  short orderShortTableBA[16];  // +0xba..0xda
-  short fieldDA;                // +0xda
-  short orderShortTableDC[16];  // +0xdc..0xfc
+  short orderMetricTable40[60];   // +0x40..0xb8  (zeroed on init)
+  short lowSkillLaborShortfallB8; // +0xb8
+  short orderShortTableBA[16];    // +0xba..0xda
+  short deferredLaborShortfallDA; // +0xda
+  short orderShortTableDC[16];    // +0xdc..0xfc
   // Three parallel short[23] order-type tables (InteriorSlot1D/1E/1F index +0x12a/+0x158
   // by order-type code); all cleared together by InitializeCityInteriorState.
-  short orderTypeTableFC[23];    // +0xfc..0x12a
-  short orderTypeTable12A[23];   // +0x12a..0x158
-  short orderTypeTable158[23];   // +0x158..0x186
-  short field186;                // +0x186
-  TFuzzySet* cityPolicyFuzzySet; // +0x188 (new TFuzzySet, 4 policy curves)
-  TList* orderList18c;           // +0x18c (new TList; ctor 0x4be840 nulls it)
-  TLongintList* list190;         // +0x190 (new TLongintList)
+  short orderTypeTableFC[23];           // +0xfc..0x12a
+  short orderTypeTable12A[23];          // +0x12a..0x158
+  short orderTypeTable158[23];          // +0x158..0x186
+  short temporarilyReservedShipArms186; // +0x186
+  TFuzzySet* cityPolicyFuzzySet;        // +0x188 (new TFuzzySet, 4 policy curves)
+  TList* orderList18c;                  // +0x18c (new TList; ctor 0x4be840 nulls it)
+  TLongintList* list190;                // +0x190 (new TLongintList)
   // Per-resource demand/capacity values consulted when deciding which missing
   // civilian order classes must be requested. One short per resource type.
   short civilianOrderDemandByResourceType194[23]; // +0x194
-  short field1c2;                                 // +0x1c2
+  short temporaryFurnitureSubstituteLumber1c2;    // +0x1c2
 };
