@@ -8,7 +8,7 @@ src/game/TCivilianButton.cpp|0|0|0|0|1|1|0|0|0|2
 src/game/TDiplomacyMapView.cpp|0|0|0|0|0|2|0|0|0|2
 src/game/TDiplomacyMgr.cpp|0|0|0|0|0|0|0|3|0|3
 src/game/TMacViewMgr.cpp|0|0|0|0|0|0|0|2|0|2
-src/game/TMapDialog.cpp|0|0|0|0|0|3|0|0|1|4
+src/game/TMapDialog.cpp|0|0|0|0|0|0|0|0|1|1
 src/game/TMapMaker_GenerateRegions.cpp|0|0|0|0|0|0|0|2|0|2
 src/game/TMapMaker_MergeSmallCityRegions.cpp|0|0|0|0|0|0|0|4|0|4
 src/game/TMapMaker_RotateMapColumns.cpp|0|0|0|0|0|0|0|2|0|2

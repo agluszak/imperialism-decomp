@@ -76,6 +76,9 @@ char TArmyMission::IsANoBrainer() const {
 // SYNTHETIC: IMPERIALISM 0x0053c1d0
 // TArmyMission::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x0053c200
+TArmyMission::~TArmyMission() {}
+
 // Swaps float byte order (Big-Endian <-> Little-Endian)
 static inline float SwapFloat(float val) {
   union {

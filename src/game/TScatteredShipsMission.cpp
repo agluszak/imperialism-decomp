@@ -39,6 +39,9 @@ char TScatteredShipsMission::IsANoBrainer() const {
   return 1;
 }
 
+// FUNCTION: IMPERIALISM 0x005356d0
+TScatteredShipsMission::~TScatteredShipsMission() {}
+
 // FUNCTION: IMPERIALISM 0x0053bb90
 void TScatteredShipsMission::Initialize() {
   marker11 = 0;
