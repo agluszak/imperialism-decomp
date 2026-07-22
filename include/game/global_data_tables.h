@@ -202,7 +202,7 @@ extern float g_DAT_Value_00653398[6];
 extern float g_DAT_006533b0_Value_006533B0[8];
 extern float g_DAT_006533d0_Value_006533D0[6];
 extern float g_DAT_006533e8_Value_006533E8[8];
-extern float g_DAT_Value_00653408[8];
+extern float g_DAT_Value_00653408[6];
 
 // Float constants used by the TGreatPower relative-power-score family
 // (vtable slots 0x8e-0x9e, bodies 0x004e07b0..0x004e1c20).
@@ -1900,6 +1900,17 @@ extern float g_cityProductionUpgradeRatioThreshold_00696450[4];
 extern short g_cityActionCapabilityGroupBySlot_00650670[32];
 // Resource ids cleared before TPopulationMgr recomputes the three derived food needs.
 extern "C" short g_cityPredictedNeedResetResourceIds[3];
+extern "C" const float g_PopulationGrowthRateUnder10;
+extern "C" const float g_PopulationGrowthRateUnder15;
+extern "C" const float g_PopulationGrowthRateUnder20;
+extern "C" const float g_PopulationGrowthRateUnder30;
+extern "C" const float g_PopulationGrowthRateUnder40;
+extern "C" const float g_PopulationGrowthRateUnder60;
+extern "C" const float g_PopulationGrowthRateUnder80;
+extern "C" const float g_PopulationGrowthRateUnder400;
+extern "C" const double g_PopulationGrowthPenaltyPerRetry;
+extern "C" const double g_PopulationGrowthMaximumRetryPenalty;
+extern "C" const float g_PopulationGrowthRateAtOrAbove400;
 // Reverse hit-test priority for the 16 city-production building regions.
 extern short g_cityBuildingHitTestOrder[16];
 // Per-building offset added to the city-building sound-effect base (3000).

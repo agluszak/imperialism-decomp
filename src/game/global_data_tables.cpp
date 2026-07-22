@@ -3,8 +3,9 @@
 // These exist so reccmp can pair instruction operands that reference named global
 // data (float coefficient tables, named global pointers) instead of bare immediate
 // addresses. reccmp maps the original symbol (config/symbols.csv) to the recomp PDB
-// symbol by name (the C-linkage leading underscore is stripped), so the *values* here
-// are irrelevant to matching — only the symbol identity and its use site matter.
+// symbol by name (the C-linkage leading underscore is stripped). Symbol identity and
+// use sites drive function pairing, while the initializers and extents must still
+// reproduce retail because datacmp verifies the data itself.
 //
 // Symbol names below are taken verbatim from config/symbols.csv (including the few
 // historically double-named float tables) so the address mapping resolves.
@@ -631,6 +632,28 @@ const unsigned int g_majorTreatyCellTags[7] = {0x72475030, 0x72475031, 0x7247503
 // Industry action cost weight tables
 // GLOBAL: IMPERIALISM 0x00650758
 float g_AiDevelopmentResourceBudgetScale_00650758 = 1000.0f;
+// GLOBAL: IMPERIALISM 0x0064f488
+extern const float g_PopulationGrowthRateUnder10 = 1.2f;
+// GLOBAL: IMPERIALISM 0x0064f48c
+extern const float g_PopulationGrowthRateUnder15 = 1.03f;
+// GLOBAL: IMPERIALISM 0x0064f490
+extern const float g_PopulationGrowthRateUnder20 = 1.02f;
+// GLOBAL: IMPERIALISM 0x0064f494
+extern const float g_PopulationGrowthRateUnder30 = 1.015f;
+// GLOBAL: IMPERIALISM 0x0064f498
+extern const float g_PopulationGrowthRateUnder40 = 1.012f;
+// GLOBAL: IMPERIALISM 0x0064f49c
+extern const float g_PopulationGrowthRateUnder60 = 1.011f;
+// GLOBAL: IMPERIALISM 0x0064f4a0
+extern const float g_PopulationGrowthRateUnder80 = 1.01f;
+// GLOBAL: IMPERIALISM 0x0064f4a4
+extern const float g_PopulationGrowthRateUnder400 = 1.005f;
+// GLOBAL: IMPERIALISM 0x0064f4a8
+extern const double g_PopulationGrowthPenaltyPerRetry = -0.001;
+// GLOBAL: IMPERIALISM 0x0064f4b0
+extern const double g_PopulationGrowthMaximumRetryPenalty = -0.02;
+// GLOBAL: IMPERIALISM 0x0064f4b8
+extern const float g_PopulationGrowthRateAtOrAbove400 = 1.0f;
 // GLOBAL: IMPERIALISM 0x00695b48
 short g_cityPredictedNeedResetResourceIds[3] = {15, 13, 14};
 // GLOBAL: IMPERIALISM 0x00695b50
@@ -900,8 +923,7 @@ short g_NavyMissionOrderRanking[14];
 short g_NavyPriorityOrderRanking[14];
 
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
-// minister's skill value at +0x0C. The alternating extents are retail data boundaries:
-// foreign-minister skills use eight entries and defense-minister skills use six.
+// minister's skill value at +0x0C. Used by TGreatPower vtable slots 0x88-0x8c.
 float g_DAT_Value_00653308[8] = {0.7f, 1.1f, 1.2f, 1.5f, 1.0f, 0.9f, 0.7f, 0.0f};
 float g_DAT_Value_00653328[6] = {1.0f, 1.0f, 1.3f, 1.3f, 1.3f, 0.0f};
 float g_DAT_Value_00653340[8] = {0.6f, 0.7f, 0.7f, 0.7f, 0.8f, 0.6f, 0.6f, 0.0f};
@@ -911,7 +933,7 @@ float g_DAT_Value_00653398[6] = {1.0f, 1.0f, 1.2f, 0.8f, 0.9f, 0.0f};
 float g_DAT_006533b0_Value_006533B0[8] = {0.4f, 0.5f, 0.5f, 0.5f, 0.6f, 0.4f, 0.4f, 0.0f};
 float g_DAT_006533d0_Value_006533D0[6] = {1.1f, 1.0f, 1.3f, 0.7f, 1.1f, 0.0f};
 float g_DAT_006533e8_Value_006533E8[8] = {0.4f, 0.5f, 0.5f, 0.5f, 0.6f, 0.4f, 0.4f, 0.0f};
-float g_DAT_Value_00653408[8] = {0.9f, 0.8f, 1.1f, 0.5f, 0.9f, 0.0f, 1.5f, 1.5f};
+float g_DAT_Value_00653408[6] = {0.9f, 0.8f, 1.1f, 0.5f, 0.9f, 0.0f};
 
 // Float constants used by the TGreatPower relative-power-score family
 // (vtable slots 0x8e-0x9e, bodies 0x004e07b0..0x004e1c20). Values in the

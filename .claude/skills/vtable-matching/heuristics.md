@@ -44,6 +44,17 @@ A duplicated or over-sized declaration shifts every later slot/field by a consta
   a redeclared-but-not-overriding virtual becomes a NEW appended slot (+misalignment).
   See [[diplomacy-state-cleanup-progress]].
 
+### VC5 reverses overloaded virtuals within their name group
+
+MSVC 5.0 can emit overloaded virtuals with the same name in reverse declaration
+order. `TPopulationMgr` proved the practical consequence: declaring
+`SetPopulation(short, short, short)` before `SetPopulation(short)` put the one-argument
+body in the first original slot and the three-argument body in the second. Declaring
+the one-argument overload first produced the required binary order and restored the
+vtable to 100%. When two adjacent slots contain overloads of one name and appear
+swapped despite correct signatures, reverse only their declaration order, rebuild,
+and verify with `just vtable <Class>` before renaming or changing the signatures.
+
 ### 12b. Vtable-not-matching: the five recurring defects
 
 `override` is `#define override` (empty) in `compat.h` — MSVC500 has no override

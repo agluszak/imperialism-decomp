@@ -86,7 +86,8 @@ public:
   // slot 0xa0 — 0x004e7ec0: war-transition propagation for a nation pair.
   int HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
                                              char swapRoles) override;
-  // slot 0xaf — 0x004e6b10: pressure update stubbed out for AI nations.
+  // slot 0xaf — 0x004e6b10: intentional AI override. TGreatPower owns the live
+  // pressure/escalation routine at 0x004db380; automated nations suppress it.
   char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
   // slot 0x9d — 0x004e8040: alliance-aware strength evaluation against the strongest
   // peer; true when minister skill (slot 0x8a) clears the combined score.

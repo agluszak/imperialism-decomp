@@ -67,7 +67,7 @@ void TItemOrder::Produce() {
   cityField08->CityStockByType(resourceTypeIndex48) =
       static_cast<short>(cityField08->CityStockByType(resourceTypeIndex48) + quantityField04);
   cityField08->VerifyStocks();
-  cityField08->field78 += quantityField04;
+  cityField08->rollingItemProductionScore78 += quantityField04;
   trackingSlots10[primaryInputResourceId] = 0;
   if (secondaryInputResourceId >= 0) {
     trackingSlots10[secondaryInputResourceId] = 0;
