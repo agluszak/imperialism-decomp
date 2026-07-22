@@ -2279,10 +2279,10 @@ short TMapMgr::ResolveTileOwnerNationCodeNormalized(int tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00514310
-bool TMapMgr::TileHasCivilianOrderOfType(StrategicTileIndex tileIndex, short orderType) {
+bool TMapMgr::HasCivilianUnitKind(StrategicTileIndex tileIndex, CivilianUnitKindStorage unitKind) {
   for (TCivUnit* order = terrainStateTable[tileIndex].firstCivilianOrder20; order != nullptr;
        order = static_cast<TCivUnit*>(order->nextOnTile)) {
-    if (order->orderType == orderType) {
+    if (order->orderType == unitKind) {
       return true;
     }
   }
@@ -2290,11 +2290,12 @@ bool TMapMgr::TileHasCivilianOrderOfType(StrategicTileIndex tileIndex, short ord
 }
 
 // FUNCTION: IMPERIALISM 0x00514360
-bool TMapMgr::TileHasCivilianOrderOfTypeAndField8(StrategicTileIndex tileIndex, short orderType,
-                                                  short field8Value) {
+bool TMapMgr::HasCivilianUnitKindWithOrder(StrategicTileIndex tileIndex,
+                                           CivilianUnitKindStorage unitKind,
+                                           UnitOrderStorage orderValue) {
   for (TCivUnit* order = terrainStateTable[tileIndex].firstCivilianOrder20; order != nullptr;
        order = static_cast<TCivUnit*>(order->nextOnTile)) {
-    if (order->orderType == orderType && order->field_8 == field8Value) {
+    if (order->orderType == unitKind && order->unitOrder == DecodeUnitOrder(orderValue)) {
       return true;
     }
   }

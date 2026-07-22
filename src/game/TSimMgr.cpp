@@ -789,7 +789,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
       do {
         TMilitaryUnit* order = new TMilitaryUnit();
         order->InitializeRecruitOrderState(2, cityRecordIndex, slotIndex, 0);
-        order->SetOrderModeSlot34(2, -1);
+        order->SetOrders(static_cast<UnitOrder>(2), -1);
         --remainingOrders;
       } while (remainingOrders != 0);
 
@@ -1683,7 +1683,7 @@ void TSimMgr::HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders(void*
     TMilitaryUnit* order = new TMilitaryUnit();
     order->InitializeRecruitOrderState(static_cast<short>(orderTypeToken),
                                        static_cast<int>(regionToken), ownerNationCode, 0);
-    order->SetOrderModeSlot34(2, -1);
+    order->SetOrders(static_cast<UnitOrder>(2), -1);
     --remaining;
   }
 }
@@ -1710,7 +1710,7 @@ void TSimMgr::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pIn
   int ownerNationTag =
       g_pGlobalMapState->terrainStateTable[static_cast<short>(terrainToken)].ownerNationTag04;
   TCivUnit* order = new TCivUnit();
-  order->InitializeCivWorkOrderState(orderTypeToken, terrainToken, ownerNationTag);
+  order->ICivUnit(static_cast<CivilianUnitKind>(orderTypeToken), terrainToken, ownerNationTag);
 }
 
 // Reads nation, navy-order type, map-action-context id, and count. It updates the

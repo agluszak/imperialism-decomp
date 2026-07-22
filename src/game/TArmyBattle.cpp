@@ -143,7 +143,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
     record->sapTargetTileIndex40 = -1;
     record->sourceUnit38 = sourceUnit;
     unsigned char deployedCategory0Flag;
-    if (sourceUnit->field_8 == 2 &&
+    if (sourceUnit->unitOrder == 2 &&
         g_anUnitTypeCombatCategoryByType00669858[record->unitTypeC] == 0) {
       deployedCategory0Flag = 1;
     } else {

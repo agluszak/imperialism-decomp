@@ -51,7 +51,7 @@ void TArmyUnitView::Draw(RECT* rectBuffer) {
   // special-cased unit-type 0xe, otherwise group 0x272c substituting the unit-type code.
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(2, 9, 0);
   SetQuickDrawColorAndSyncGlobals(0x1c474b);
-  int unitTypeCode = militaryUnit60->field_8;
+  int unitTypeCode = militaryUnit60->unitOrder;
   if (unitTypeCode == 0xe) {
     g_pSimMgr->GetString(0x2746, 7, &descriptor);
   } else {
@@ -109,17 +109,17 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     short availableCountDelta = 0;
     if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0) {
       // Ctrl held: force the unit into escort-order mode (0xe) unless already there.
-      if (militaryUnit60->field_8 != 0xe) {
-        if (militaryUnit60->field_8 == 0) {
+      if (militaryUnit60->unitOrder != 0xe) {
+        if (militaryUnit60->unitOrder == 0) {
           availableCountDelta = -1;
         }
-        militaryUnit60->SetOrderModeSlot34(0xe, -1);
+        militaryUnit60->SetOrders(static_cast<UnitOrder>(0xe), -1);
       }
-    } else if (militaryUnit60->field_8 != 0) {
-      militaryUnit60->SetOrderModeSlot34(0, -1);
+    } else if (militaryUnit60->unitOrder != 0) {
+      militaryUnit60->SetOrders(kUnitOrderIdle, -1);
       availableCountDelta = 1;
     } else {
-      militaryUnit60->SetOrderModeSlot34(3, -1);
+      militaryUnit60->SetOrders(static_cast<UnitOrder>(3), -1);
       availableCountDelta = -1;
     }
 

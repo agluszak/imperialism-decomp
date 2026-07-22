@@ -1009,7 +1009,7 @@ void TMinor::SetNationRowDisplayValueByDiplomacyPredicate(NationSlot targetNatio
 namespace {
 
 void DispatchCivilianOrderRelationMaskSlots(TUnit* orderNode) {
-  if (orderNode->orderType == 7) {
+  if (orderNode->orderType == EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
     TGreatPower* ownerNation = g_apNationStates[orderNode->field_18];
     if (ownerNation != 0) {
       short payload = static_cast<short>(ownerNation->homeTileIndex);
@@ -1240,7 +1240,7 @@ void RetargetUnitOrderForAllowedNationWithModeReset(TUnit* orderNode) {
     orderNode->Free();
     return;
   }
-  orderNode->SetOrderModeSlot34(0, -1);
+  orderNode->SetOrders(kUnitOrderIdle, -1);
   orderNode->VTableSlot10(static_cast<int>(spawnTile));
 }
 

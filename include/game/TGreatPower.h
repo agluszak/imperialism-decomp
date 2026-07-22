@@ -101,7 +101,7 @@ public:
   void SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityName);
   // slot 0x33 — body 0x004dae70: scans trackedObjectList for an order with
   // orderType == 7.
-  virtual char HasTrackedOrderOfType7(void);
+  virtual char HasDeveloper(void);
   // slot 0x34 — body 0x004db7d0: builds the 0x1950-byte transport-influence region map
   // (flood-filled from the home region via slot 0x35, extended through transport-linked
   // town markers), updates each marker's transportLinkedFlag4c, and hands the map to the

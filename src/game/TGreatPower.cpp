@@ -592,7 +592,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
   while (orderOrdinal < 5) {
     TCivUnit* civOrderObj = new TCivUnit();
     if (civOrderObj != nullptr) {
-      civOrderObj->InitializeCivWorkOrderState(0, -1, this->nationSlot);
+      civOrderObj->ICivUnit(kCivilianUnitMiner, -1, this->nationSlot);
       civOrderObj->ReadFrom(stream);
     }
     ++orderOrdinal;
@@ -755,7 +755,7 @@ void TGreatPower::ReadCoreFieldsFromStream(TStream* stream, int unusedArg) {
   int orderCount = stream->ReadShort();
   for (; orderCount > 0; --orderCount) {
     TCivUnit* civOrder = new TCivUnit();
-    civOrder->InitializeCivWorkOrderState(0, -1, this->nationSlot);
+    civOrder->ICivUnit(kCivilianUnitMiner, -1, this->nationSlot);
     civOrder->ReadFrom(stream);
   }
 }
@@ -923,12 +923,12 @@ void TGreatPower::DispatchMissionNodeCallbacksAndClearQueue(void) {
 void TGreatPower::NoOpNationQueuedOrderHook(void) {}
 
 // FUNCTION: IMPERIALISM 0x004dae70
-char TGreatPower::HasTrackedOrderOfType7(void) {
+char TGreatPower::HasDeveloper(void) {
   char found = 0;
   CIterator orderIter(this->trackedObjectList);
   TUnit* order = static_cast<TUnit*>(orderIter.Reset());
   if (orderIter.More()) {
-    while (order->orderType != 7) {
+    while (order->orderType != EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
       order = static_cast<TUnit*>(orderIter.Advance());
       if (!orderIter.More()) {
         return 0;
@@ -3337,12 +3337,12 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityN
     short result1 =
         g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 0);
     TCivUnit* civ1 = new TCivUnit();
-    civ1->InitializeCivWorkOrderState(1, result1, this->nationSlot);
+    civ1->ICivUnit(kCivilianUnitProspector, result1, this->nationSlot);
 
     short result2 =
         g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 1);
     TCivUnit* civ2 = new TCivUnit();
-    civ2->InitializeCivWorkOrderState(4, result2, this->nationSlot);
+    civ2->ICivUnit(kCivilianUnitEngineer, result2, this->nationSlot);
 
     city->orderCountByType5c[1] += 2;
 
@@ -3352,17 +3352,17 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityN
       short result3 =
           g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 0);
       TCivUnit* civ3 = new TCivUnit();
-      civ3->InitializeCivWorkOrderState(1, result3, this->nationSlot);
+      civ3->ICivUnit(kCivilianUnitProspector, result3, this->nationSlot);
 
       short result4 =
           g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 0);
       TCivUnit* civ4 = new TCivUnit();
-      civ4->InitializeCivWorkOrderState(0, result4, this->nationSlot);
+      civ4->ICivUnit(kCivilianUnitMiner, result4, this->nationSlot);
 
       short result5 =
           g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 0);
       TCivUnit* civ5 = new TCivUnit();
-      civ5->InitializeCivWorkOrderState(2, result5, this->nationSlot);
+      civ5->ICivUnit(kCivilianUnitFarmer, result5, this->nationSlot);
     }
   }
 

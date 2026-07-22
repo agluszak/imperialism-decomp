@@ -336,7 +336,7 @@ void TArmyMgr::FormStacks() {
           milUnit->field_34 = 500;
         }
         if (unitField18 < 7 && g_apNationStates[unitField18]->diplomacyEligibilityA0 == 0) {
-          unit->SetOrderModeSlot34(2, -1);
+          unit->SetOrders(static_cast<UnitOrder>(2), -1);
         }
         continue;
       }
@@ -469,7 +469,7 @@ void TArmyMgr::ResolveNextMove() {
         TUnit* unit = (node != nullptr) ? node->unit : nullptr;
         while (unit != nullptr) {
           unit->VTableSlot10(unit->field_C);
-          unit->SetOrderModeSlot34(0, -1);
+          unit->SetOrders(kUnitOrderIdle, -1);
           node = stack->cursor18;
           if (node != nullptr) {
             node = node->next;
@@ -692,7 +692,7 @@ bool TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack, short
       TUnit* unit = (node != nullptr) ? node->unit : nullptr;
       while (unit != nullptr) {
         unit->VTableSlot10(unit->field_C);
-        unit->SetOrderModeSlot34(0, -1);
+        unit->SetOrders(kUnitOrderIdle, -1);
         node = ourStack->cursor18;
         if (node != nullptr) {
           node = node->next;
@@ -766,7 +766,7 @@ undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack*
     if (g_awTacticalUnitCategoryCodeBySlot[unit->orderType] == 0) {
       unit->DetachUnitOrderFromOwnerAndReset();
     } else {
-      unit->SetOrderModeSlot34(1, chosenRegion);
+      unit->SetOrders(kUnitOrderRedeploy, chosenRegion);
     }
     node = stack->cursor18;
     if (node != nullptr) {
@@ -786,7 +786,7 @@ undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack*
   }
   do {
     unit->VTableSlot10(unit->field_C);
-    unit->SetOrderModeSlot34(0, -1);
+    unit->SetOrders(kUnitOrderIdle, -1);
     node = stack->cursor18;
     if (node != nullptr) {
       node = node->next;
@@ -805,7 +805,7 @@ undefined TArmyMgr::ResetAndRelocateUnitOrderQueue_004a37b0(TArmyStack* stack) {
   TArmyStackUnitNode* node = stack->cursor18;
   TUnit* unit = (node != nullptr) ? node->unit : nullptr;
   while (unit != nullptr) {
-    unit->SetOrderModeSlot34(0, -1);
+    unit->SetOrders(kUnitOrderIdle, -1);
     if (unit->tileIndex06 != stack->tileIndex10) {
       unit->VTableSlot10(stack->tileIndex10);
     }
@@ -981,8 +981,8 @@ undefined TArmyMgr::DispatchTileActionByKind_004a3d90(int contextArg, short acti
     unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain98;
   }
   for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-    if (unit->field_8 == 4) {
-      unit->SetOrderModeSlot34(0, -1);
+    if (unit->unitOrder == 4) {
+      unit->SetOrders(kUnitOrderIdle, -1);
     }
   }
   return 0;
@@ -996,8 +996,8 @@ bool TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx(int contextArg) {
   }
   bool foundMovableUnit = false;
   for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-    if (unit->field_8 == 0 && unit->GetUnitMovementClassId() != 0) {
-      unit->SetOrderModeSlot34(1, contextArg);
+    if (unit->unitOrder == 0 && unit->GetUnitMovementClassId() != 0) {
+      unit->SetOrders(kUnitOrderRedeploy, contextArg);
       foundMovableUnit = true;
     }
   }
@@ -1017,7 +1017,7 @@ bool TArmyMgr::CommitCityActionGateCostIfAffordable(int contextArg) {
   }
   int totalCost = 0;
   for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-    if (unit->field_8 == 0 && unit->GetUnitMovementClassId() != 0) {
+    if (unit->unitOrder == 0 && unit->GetUnitMovementClassId() != 0) {
       totalCost += unit->GetUnitTypeCostPoints();
     }
   }
@@ -1058,7 +1058,7 @@ int TArmyMgr::ComputeSelectedTileCityActionGateSum() {
   }
   int totalCost = 0;
   for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-    if (unit->field_8 == 0 && unit->GetUnitMovementClassId() != 0) {
+    if (unit->unitOrder == 0 && unit->GetUnitMovementClassId() != 0) {
       totalCost += unit->GetUnitTypeCostPoints();
     }
   }
@@ -1072,8 +1072,8 @@ undefined TArmyMgr::OrphanCallChain_C1_I34_004a4260(int mode) {
     unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain98;
   }
   for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-    if (unit->field_8 == 0) {
-      unit->SetOrderModeSlot34(mode, -1);
+    if (unit->unitOrder == 0) {
+      unit->SetOrders(static_cast<UnitOrder>(mode), -1);
     }
   }
   return 0;
@@ -1089,11 +1089,11 @@ short TArmyMgr::ActivateFirstIdleTacticalUnitByCategoryAtTile(short categoryId, 
   bool activatedUnit = false;
   short remainingIdleCount = 0;
   for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-    if (g_awTacticalUnitCategoryCodeBySlot[unit->orderType] == categoryId && unit->field_8 == 0) {
+    if (g_awTacticalUnitCategoryCodeBySlot[unit->orderType] == categoryId && unit->unitOrder == 0) {
       if (activatedUnit) {
         ++remainingIdleCount;
       } else {
-        unit->SetOrderModeSlot34(4, -1);
+        unit->SetOrders(static_cast<UnitOrder>(4), -1);
         activatedUnit = true;
       }
     }
@@ -1114,11 +1114,11 @@ short TArmyMgr::ActivateFirstActiveTacticalUnitByCategoryAtTile(short categoryId
     if (g_awTacticalUnitCategoryCodeBySlot[unit->orderType] != categoryId) {
       continue;
     }
-    if (unit->field_8 == 0) {
+    if (unit->unitOrder == 0) {
       ++idleCount;
-    } else if ((unit->field_8 == 2 || unit->field_8 == 4 || unit->field_8 == 3) &&
+    } else if ((unit->unitOrder == 2 || unit->unitOrder == 4 || unit->unitOrder == 3) &&
                !deactivatedUnit) {
-      unit->SetOrderModeSlot34(0, -1);
+      unit->SetOrders(kUnitOrderIdle, -1);
       deactivatedUnit = true;
       ++idleCount;
     }
@@ -1136,7 +1136,7 @@ bool TArmyMgr::HasEligibleStationedUnitInRegion(short regionId) {
     unit = g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain98;
   }
   for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-    if (unit->field_8 == 0 && unit->GetUnitMovementClassId() != 0) {
+    if (unit->unitOrder == 0 && unit->GetUnitMovementClassId() != 0) {
       return true;
     }
   }
@@ -1154,10 +1154,10 @@ void TArmyMgr::SetActiveProvinceSelection(short tileIndex) {
       unit = nullptr;
     }
     for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-      int orderState = unit->field_8;
+      int orderState = unit->unitOrder;
       if ((static_cast<short>(orderState) == 4 || static_cast<short>(orderState) == 3) &&
           g_awTacticalUnitCategoryCodeBySlot[unit->orderType] != 0) {
-        unit->SetOrderModeSlot34(0, -1);
+        unit->SetOrders(kUnitOrderIdle, -1);
       }
     }
     TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
@@ -1173,8 +1173,8 @@ void TArmyMgr::ClearProvinceSelectionHighlightsForNation(short nationId) {
   int unitCount = unitList->GetCount();
   for (short ordinal = 1; ordinal <= unitCount; ++ordinal) {
     TUnit* unit = static_cast<TUnit*>(unitList->GetEntryByOrdinal(ordinal));
-    if (unit->field_8 == 3) {
-      unit->SetOrderModeSlot34(0, -1);
+    if (unit->unitOrder == 3) {
+      unit->SetOrders(kUnitOrderIdle, -1);
     }
   }
   this->pendingMapActionIndex = -1;
@@ -1200,7 +1200,7 @@ short TArmyMgr::FindNextSelectableProvinceForNation(short nationId) {
     if (ownerPermitsSelection) {
       TMilitaryUnit* unit = cityRecord.stationedUnitChain98;
       while (unit != nullptr) {
-        if (unit->field_8 == 0 && unit->GetUnitMovementClassId() != 0) {
+        if (unit->unitOrder == 0 && unit->GetUnitMovementClassId() != 0) {
           return candidate;
         }
         unit = static_cast<TMilitaryUnit*>(unit->nextOnTile);
@@ -1343,7 +1343,7 @@ int TArmyMgr::ComputeCivilianMapCursorStateIndex(short tileIndex, short mode) {
   }
   bool hasMovableUnit = false;
   for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-    if (unit->field_8 == 0 && unit->GetUnitMovementClassId() != 0) {
+    if (unit->unitOrder == 0 && unit->GetUnitMovementClassId() != 0) {
       hasMovableUnit = true;
       break;
     }
@@ -1396,7 +1396,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
       g_pGlobalMapState->ValidateGridIndexRange0To17F(this->pendingMapActionIndex);
   int totalCost = 0;
   for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-    if (unit->field_8 == 0 && unit->GetUnitMovementClassId() != 0) {
+    if (unit->unitOrder == 0 && unit->GetUnitMovementClassId() != 0) {
       totalCost += unit->GetUnitTypeCostPoints();
     }
   }
@@ -1427,7 +1427,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
   CIterator orderIter(activeCountry->militaryUnitList44);
   for (TUnit* order = static_cast<TUnit*>(orderIter.Reset()); orderIter.More();
        order = static_cast<TUnit*>(orderIter.Advance())) {
-    if (order->field_8 == 1 && order->field_C == cityRecordIndex &&
+    if (order->unitOrder == 1 && order->field_C == cityRecordIndex &&
         !g_pGlobalMapState->TileHasMovementClassId(order->tileIndex06, cityRecordIndex)) {
       reinforcementCost += static_cast<TMilitaryUnit*>(order)->GetUnitTypeCostPoints();
     }
@@ -1444,8 +1444,8 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
 
   for (unit = g_pGlobalMapState->ValidateGridIndexRange0To17F(this->pendingMapActionIndex);
        unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-    if (unit->field_8 == 0 && unit->GetUnitMovementClassId() != 0) {
-      unit->SetOrderModeSlot34(1, cityRecordIndex);
+    if (unit->unitOrder == 0 && unit->GetUnitMovementClassId() != 0) {
+      unit->SetOrders(kUnitOrderRedeploy, cityRecordIndex);
     }
   }
   g_pGlobalMapState->MarkAdjacentHexOrderDirectionAndSelectTile(this->pendingMapActionIndex,
@@ -1503,7 +1503,7 @@ void TArmyMgr::MarchSelectedArmies(short tileIndex) {
           short activeNationId3 = g_pSimMgr->GetActiveNationId();
           g_apNationStates[activeNationId3]->field900 += cost;
         }
-        unit->SetOrderModeSlot34(0, -1);
+        unit->SetOrders(kUnitOrderIdle, -1);
       }
       ++flagCursor;
     }
@@ -1596,7 +1596,7 @@ void TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack
     TUnit* unit = (node != 0) ? node->unit : 0;
     while (unit != 0) {
       unit->VTableSlot10(unit->field_C);
-      unit->SetOrderModeSlot34(0, -1);
+      unit->SetOrders(kUnitOrderIdle, -1);
       node = ourStack->cursor18;
       if (node != 0) {
         node = node->next;
@@ -2053,8 +2053,8 @@ void TArmyMgr::ClearNationArmyActionModesAndCycleSelection(int nationId) {
     short cityIndex = static_cast<short>(regionList->GetNext(position));
     TMilitaryUnit* unit = g_pGlobalMapState->ValidateGridIndexRange0To17F(cityIndex);
     while (unit != 0) {
-      if (unit->GetUnitMovementClassId() != 0 && unit->field_8 != 1) {
-        unit->SetOrderModeSlot34(0, -1);
+      if (unit->GetUnitMovementClassId() != 0 && unit->unitOrder != 1) {
+        unit->SetOrders(kUnitOrderIdle, -1);
       }
       unit = static_cast<TMilitaryUnit*>(unit->nextOnTile);
     }

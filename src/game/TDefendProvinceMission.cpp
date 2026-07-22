@@ -73,7 +73,7 @@ char IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
   return 1;
 }
 
-// Walks orderListAt18 and re-issues TUnit::SetOrderModeSlot34(1, newTile) on every linked
+// Walks orderListAt18 and re-issues TUnit::SetOrders(kUnitOrderRedeploy, newTile) on every linked
 // TMilitaryUnit whose tileIndex06 differs from newTile.
 // FUNCTION: IMPERIALISM 0x0053c950
 void TDefendProvinceMission::PropagateTargetTileToLinkedUnitsIfDifferent(short newTile) {
@@ -81,7 +81,7 @@ void TDefendProvinceMission::PropagateTargetTileToLinkedUnitsIfDifferent(short n
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
     if (unit->tileIndex06 != newTile) {
-      unit->SetOrderModeSlot34(1, newTile);
+      unit->SetOrders(kUnitOrderRedeploy, newTile);
     }
   }
 }

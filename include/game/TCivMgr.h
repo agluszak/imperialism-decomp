@@ -2,6 +2,7 @@
 
 #include "game/TObject.h"
 #include "game/mfc.h"
+#include "game/unit_domain_types.h"
 
 // VTABLE: IMPERIALISM 0x00653248
 class TCivMgr : public TObject {
@@ -38,7 +39,7 @@ public:
   // Map hotkey 'W': clear every actionable civilian order mode for `nationId`, then
   // advance the map interaction selection when no selection remains. 0x004d49f0.
   void ClearNationCivilianActionModesAndCycleSelection(int nationId);
-  void QueueImmediateCivilianCommandAndCycleSelection(int commandType);
+  void OrderAndCycle(UnitOrder order);
   void ShowDisbandCivilianConfirmationDialog();
 
   // Data members (object size 0x0c, base TObject = vptr only).

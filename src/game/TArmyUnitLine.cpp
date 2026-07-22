@@ -41,7 +41,7 @@ void TArmyUnitLine::InstallViews(TView* panel, int* offsetLayout) {
   if (militaryUnit10->GetUnitMovementClassId() != 0) {
     static_cast<TView*>(checkbox)->SetState(1, 0);
     checkbox->eventNumber60 = 4;
-    if (militaryUnit10->field_8 == 0) {
+    if (militaryUnit10->unitOrder == 0) {
       checkbox->SetState(1, 0);
     }
   } else {

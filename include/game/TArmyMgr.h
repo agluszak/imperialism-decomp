@@ -80,7 +80,7 @@ public:
   virtual void FormStacks();    // slot 0x0b 0x4a1f80
   // Walks pendingUnitPool0c's TArmyStack entries starting at nextStackOrdinal10: for
   // each stack whose categoryFlag8 matches regionAffinityTable1c[ownerNationCodeE],
-  // relocates every unit on its embedded chain (VTableSlot10 + SetOrderModeSlot34);
+  // relocates every unit on its embedded chain (VTableSlot10 + SetOrders);
   // otherwise tries TryCreateTacticalBattleViewForTileArmies. Stops early on the first
   // battle view created; always re-releases the 3 cached objects up front and, when the
   // pass fully completes without creating one, via ReleaseThreeLinkedObjectsAndReset-
@@ -102,7 +102,7 @@ public:
   // stack is the same TArmyStack the tile-army-composition pass (0x4a1f80) builds and
   // ResolveNextMove (0x4a2390) iterates. Picks a random adjacent region
   // matching the stack's head unit's field_18 tag and relocates every movable unit there
-  // (TUnit::SetOrderModeSlot34), or resets them if none qualifies.
+  // (TUnit::SetOrders), or resets them if none qualifies.
   virtual undefined
   RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack* stack,
                                                    short tileIndex); // slot 0x0f 0x4a35e0
@@ -126,7 +126,7 @@ public:
   virtual undefined DispatchTileActionByKind_004a3d90(int contextArg,
                                                       short actionKind); // slot 0x13 0x4a3d90
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill arity
-  // mismatch; contextArg is forwarded as TUnit::SetOrderModeSlot34's payload. Returns
+  // mismatch; contextArg is forwarded as TUnit::SetOrders's payload. Returns
   // whether a movable unit was found and commanded (BL in the ground truth, matching
   // TCivMgr's directly-analogous HandleCivilianTileSelectionOrReportClick/
   // HandleCivilianTileOrderAction shape) -- not a meaningless `undefined` stub value.
@@ -228,7 +228,7 @@ public:
   short ActivateFirstActiveTacticalUnitByCategoryAtTile(short categoryId, short tileIndex);
 
   // Walks the region's stationed-unit chain (Province::stationedUnitChain98,
-  // via TUnit::nextOnTile) for one whose field_8 is idle and whose
+  // via TUnit::nextOnTile) for one whose unitOrder is idle and whose
   // TMilitaryUnit::GetUnitMovementClassId() is nonzero. 0x004a4550, __thiscall (this unused --
   // operates purely off g_pGlobalMapState), 1 arg.
   bool HasEligibleStationedUnitInRegion(short regionId);
@@ -380,7 +380,7 @@ public:
   // Called by TArmyBattle::FinalizeTacticalBattleOutcome once a tactical battle's
   // outcome is decided (sideWonFlag = whether ourStack's side won). Dispatches the
   // army-context report, then applies the win/loss aftermath to both stacks: the
-  // winning stack's units settle into their tile (VTableSlot10 + SetOrderModeSlot34)
+  // winning stack's units settle into their tile (VTableSlot10 + SetOrders)
   // while the losing stack is redistributed to a random adjacent region (sideWonFlag
   // != 0) or relocated back to its origin tile (sideWonFlag == 0, via
   // ResetAndRelocateUnitOrderQueue_004a37b0); both stacks then grow unit quality

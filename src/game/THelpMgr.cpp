@@ -835,13 +835,13 @@ void THelpMgr::TryShowCivilianCompletionMilestoneNotification(TCivUnit* civilian
   int titleStringIndex = -1;
   int messageStringIndex = -1;
 
-  if (civilianOrderEntry->orderType == 1) {
+  if (civilianOrderEntry->orderType == EncodeCivilianUnitKind(kCivilianUnitProspector)) {
     if (civilianOrderEntry->completionMarker26 == 0x232f &&
         ++civilianCompletionCounters10.values[0] == 1) {
       titleStringIndex = 0x2c;
       messageStringIndex = 0x2d;
     }
-  } else if (civilianOrderEntry->orderType == 4) {
+  } else if (civilianOrderEntry->orderType == EncodeCivilianUnitKind(kCivilianUnitEngineer)) {
     switch (civilianOrderEntry->completionMarker26) {
     case 0x2329:
       if (++civilianCompletionCounters10.values[1] == 3) {

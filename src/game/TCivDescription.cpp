@@ -29,21 +29,10 @@ const unsigned int kAddrCivilianLegendSelectionCountsBySlot = 0x006A4490;
 
 typedef TCivDescription CivDescriptionState;
 
-enum ECivilianClassId {
-  kCivilianClass_Miner = 0,
-  kCivilianClass_Prospector = 1,
-  kCivilianClass_Farmer = 2,
-  kCivilianClass_Forester = 3,
-  kCivilianClass_Engineer = 4,
-  kCivilianClass_Rancher = 5,
-  kCivilianClass_Developer = 7,
-  kCivilianClass_Driller = 8,
-};
-
 struct CivilianClassCacheContext {
   void* vftable;
   unsigned char pad_04_to_83[0x80];
-  short selectedCivilianClass;
+  CivilianUnitKindStorage selectedCivilianClass;
   NationSlot ownerNationId;
   short targetTileCountsBySlot[5];
   unsigned char pad_6e_to_6f[0x02];
@@ -81,7 +70,7 @@ IMPLEMENT_DYNCREATE(TCivDescription, TView)
 void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivUnit* orderState) {
   TCivDescription* context = this;
   // ORIG_CALLCONV: __thiscall
-  short civilianClassId;
+  CivilianUnitKindStorage civilianClassId;
   if (orderState == 0) {
     context->selectedCivilianClass = (short)-1;
     return;
@@ -89,14 +78,14 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivUnit* o
   civilianClassId = orderState->orderType;
   if (civilianClassId != context->selectedCivilianClass) {
     context->selectedCivilianClass = civilianClassId;
-    switch ((ECivilianClassId)civilianClassId) {
-    case kCivilianClass_Miner:
-    case kCivilianClass_Prospector:
-    case kCivilianClass_Farmer:
-    case kCivilianClass_Forester:
-    case kCivilianClass_Rancher:
-    case kCivilianClass_Developer:
-    case kCivilianClass_Driller:
+    switch (DecodeCivilianUnitKind(civilianClassId)) {
+    case kCivilianUnitMiner:
+    case kCivilianUnitProspector:
+    case kCivilianUnitFarmer:
+    case kCivilianUnitForester:
+    case kCivilianUnitRancher:
+    case kCivilianUnitDeveloper:
+    case kCivilianUnitDriller:
       context->legendInitialized = 0;
       context->UpdateCivilianOrderTargetTileCountsForOwnerNation(orderState);
       break;
@@ -122,8 +111,7 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivUnit* o
    Notes:
    - Output counters feed civilian command-panel availability UI/hints.
 
-   ECivilianClassId enum anchor: 0 Miner, 1 Prospector, 2 Farmer, 3 Forester, 4 Engineer, 5 Rancher,
-   7 Developer, 8 Driller.
+   CivilianUnitKind is the canonical 0..8 civilian class vocabulary.
 
    Consumes pCivilianOrderState->currentTileIndex and class-indexed target profile table. */
 
@@ -274,7 +262,7 @@ void TCivDescription::Draw(RECT* rectBuffer) {
   COLORREF stylePrimary;
   COLORREF styleSecondary;
   CString localizedTextRef;
-  short selectedClass;
+  CivilianUnitKindStorage selectedClass;
   short textWidth;
   short textOriginX;
 
@@ -292,11 +280,11 @@ void TCivDescription::Draw(RECT* rectBuffer) {
   }
 
   selectedClass = this->selectedCivilianClass;
-  if (selectedClass == kCivilianClass_Prospector) {
+  if (selectedClass == EncodeCivilianUnitKind(kCivilianUnitProspector)) {
     this->DrawProspector(rectBuffer);
-  } else if (selectedClass == kCivilianClass_Engineer) {
+  } else if (selectedClass == EncodeCivilianUnitKind(kCivilianUnitEngineer)) {
     this->DrawEngineer(rectBuffer);
-  } else if (selectedClass != kCivilianClass_Developer) {
+  } else if (selectedClass != EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
     this->DrawDeveloper(rectBuffer);
   }
 

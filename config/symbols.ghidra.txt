@@ -58,7 +58,7 @@ thunk_SetEventPayloadNationIdFromSlotIndex 401BFE l
 thunk_HandlePostPendingEventActivationNoOp 401C03 l
 TViewMgr::TViewMgr_VtblSlot035 401CDF l
 thunk_ConstructTradeMoveStepControlPanel 401D11 l
-TCivToolbar::thunk_QueueImmediateCivilianCommandAndCycleSelection 401D48 l
+TCivToolbar::thunk_OrderAndCycle 401D48 l
 TControl::thunk_ForwardCityDialogParamToChildSlot48 401D61 l
 thunk_SetMapOrderType3Or4AndQueue 401DB1 l
 TMultiplayerMgr::thunk_ActivateCityProductionViewIfAllowed 401E1F l
@@ -249,7 +249,7 @@ TDiplomacyMapView::thunk_AppendPackedColorDwordToMaskBuffers 404A25 l
 thunk_InitializeDialogTemplateDDPictureState 404A4D l
 thunk_CommitCityRecruitmentOrderDelta 404A89 l
 thunk_BuildCityViewProductionControls 404AB6 l
-TCivWorkOrderState::thunk_InitializeCivWorkOrderState 404B33 l
+TCivWorkOrderState::thunk_ICivUnit 404B33 l
 thunk_CanQueueMapOrderForProvinceContext 404B60 l
 thunk_GetCityInteriorMinisterTypeName 404B65 l
 thunk_RebuildNationStateSlotsAndAvailability 404BBA l
@@ -2878,7 +2878,7 @@ TCivMgr::HandleCivilianTileOrderAction 4D26D0 f
 TCivMgr::LookupCivilianTileOrderCursorTokenByActionIndex 4D2930 f
 TCivMgr::ResolveCivilianTileOrderActionCode 4D2960 f
 TCivMgr::SetActiveCivilianSelection 4D2C60 f
-TCivMgr::QueueImmediateCivilianCommandAndCycleSelection 4D2CF0 f
+TCivMgr::OrderAndCycle 4D2CF0 f
 TCivMgr::ShowDisbandCivilianConfirmationDialog 4D2D30 f
 TCivMgr::TryQueueCivilianMoveOrderToTile 4D2EF0 f
 TCivMgr::CanAssignCivilianOrderToTile 4D2F60 f
@@ -3003,7 +3003,7 @@ TGreatPower::AddNodeToMissionNodeQueue 4DAA50 f
 TGreatPower::DispatchMissionNodeCallbacksAndClearQueue 4DAA80 f
 TGreatPower::NoOpNationQueuedOrderHook 4DAB00 f
 TGreatPower::ExecuteNationPendingActionStateMachine 4DAB20 f
-TGreatPower::HasTrackedOrderOfType7 4DAE70 f
+TGreatPower::HasDeveloper 4DAE70 f
 TGreatPower::HandleNationLost 4DAF00 f
 TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage 4DAF30 f
 TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage 4DB380 f
@@ -3849,8 +3849,8 @@ TMapMgr::ApplyEngineerRailCostDeltaForConnectedTiles 514080 f
 TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex 514110 f
 TMapMgr::GetTileUnitEntryByOwner 514250 f
 TMapMgr::ResolveTileOwnerNationCodeNormalized 514290 f
-TMapMgr::TileHasCivilianOrderOfType 514310 f
-TMapMgr::TileHasCivilianOrderOfTypeAndField8 514360 f
+TMapMgr::HasCivilianUnitKind 514310 f
+TMapMgr::HasCivilianUnitKindWithOrder 514360 f
 TMapMgr::FloodFillTileRegionMarker 5143D0 f
 TMapMgr::QueueDepotConstructionOrder 5145B0 f
 check_bit10_order_exists 5145FB l
@@ -6583,7 +6583,7 @@ TUnit::'scalar_deleting_destructor' 5C24E0 f
 TUnit::~TUnit 5C2510 f
 TUnit::RegisterUnitOrderWithOwnerManager 5C2530 f
 TUnit::VTableSlot10 5C2610 f
-TUnit::SetOrderModeSlot34 5C2630 f
+TUnit::SetOrders 5C2630 f
 TUnit::DispatchSlot2C 5C2660 f
 TUnit::Free 5C2680 f
 TUnit::ReadFrom 5C2700 f
@@ -6593,10 +6593,10 @@ TCivUnit::GetRuntimeClass 5C28A0 f
 TCivUnit::TCivUnit 5C28C0 f
 TCivUnit::'scalar_deleting_destructor' 5C28F0 f
 TCivUnit::~TCivUnit 5C2920 f
-TCivUnit::InitializeCivWorkOrderState 5C2940 f
+TCivUnit::ICivUnit 5C2940 f
 TCivUnit::IsInIdleSelectionState 5C2980 f
 TickCivWorkOrderCountdownAndComplete 5C29B0 f
-TCivUnit::SetOrderModeSlot34 5C29F0 f
+TCivUnit::SetOrders 5C29F0 f
 TCivUnit::DispatchSlot2C 5C2A90 f
 TCivUnit::ReadFrom 5C2B10 f
 TCivUnit::WriteTo 5C2B40 f

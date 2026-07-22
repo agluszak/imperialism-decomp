@@ -2225,7 +2225,7 @@ address|name|symbol|size|type|prototype|provenance
 4d2930|TCivToolbar::LookupCivilianTileOrderCursorTokenByActionIndex||26|function|undefined LookupCivilianTileOrderCursorTokenByActionIndex()|
 4d2960|TCivToolbar::ResolveCivilianTileOrderActionCode||602|function|int __thiscall ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHint)|
 4d2c60|TCivMgr::SetActiveCivilianSelection||106|function|void __thiscall SetActiveCivilianSelection(class TCivUnit * entryContext, char refreshCommandPanel)|
-4d2cf0|TCivMgr::QueueImmediateCivilianCommandAndCycleSelection||42|function|void __thiscall QueueImmediateCivilianCommandAndCycleSelection(int commandType)|
+4d2cf0|TCivMgr::OrderAndCycle||42|function|void __thiscall OrderAndCycle(UnitOrder order)|mac_oracle
 4d2d30|TCivMgr::ShowDisbandCivilianConfirmationDialog||350|function|void __thiscall ShowDisbandCivilianConfirmationDialog(void)|
 4d2ef0|TCivToolbar::TryQueueCivilianMoveOrderToTile||79|function|bool __thiscall TryQueueCivilianMoveOrderToTile(int nTileIndex)|
 4d2f60|TCivMgr::CanAssignCivilianOrderToTile||193|function|bool __thiscall CanAssignCivilianOrderToTile(short nTileIndex)|
@@ -2349,7 +2349,7 @@ address|name|symbol|size|type|prototype|provenance
 4daa80|TGreatPower::ClearQueuedNationOrdersAndResetOrderManager_30||89|function|undefined ClearQueuedNationOrdersAndResetOrderManager()|
 4dab00|TGreatPower::NoOpNationQueuedOrderHook||1|function|undefined NoOpNationQueuedOrderHook(void)|
 4dab20|ExecuteNationPendingActionStateMachine||661|function|undefined ExecuteNationPendingActionStateMachine()|
-4dae70|TGreatPower::HasQueuedCivWorkOrderType7||97|function|undefined HasQueuedCivWorkOrderType7()|
+4dae70|TGreatPower::HasDeveloper||97|function|char __thiscall HasDeveloper(void)|mac_oracle
 4daf00|TGreatPower::HandleNationLost||19|function|void HandleNationLost()|
 4daf30|TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage||879|function|undefined CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage()|
 4db380|TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage||867|function|undefined UpdateGreatPowerPressureStateAndDispatchEscalationMessage()|
@@ -3192,8 +3192,8 @@ address|name|symbol|size|type|prototype|provenance
 514110|TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex||218|function|undefined ResolveRegionTileSubtypeCodeForTileIndex()|
 514250|TCivToolbar::GetTileUnitEntryByOwner||40|function|int * __thiscall GetTileUnitEntryByOwner(short nTileIndex, short nOwnerNationId)|
 514290|GetTileNormalizedMovementClassId||88|function|undefined GetTileNormalizedMovementClassId()|
-514310|TMapMgr::OrphanLeaf_NoCall_Ins18_00514310||52|function|undefined OrphanLeaf_NoCall_Ins18_00514310(short param_1, short param_2)|
-514360|TMapMgr::OrphanLeaf_NoCall_Ins31_00514360||75|function|undefined OrphanLeaf_NoCall_Ins31_00514360(short param_1, short param_2, short param_3)|
+514310|TMapMgr::HasCivilianUnitKind||52|function|bool __thiscall HasCivilianUnitKind(StrategicTileIndex tileIndex, CivilianUnitKindStorage unitKind)|listing
+514360|TMapMgr::HasCivilianUnitKindWithOrder||75|function|bool __thiscall HasCivilianUnitKindWithOrder(StrategicTileIndex tileIndex, CivilianUnitKindStorage unitKind, UnitOrderStorage order)|listing
 5143d0|TMapMgr::FloodFillTileRegionMarker||378|function|void __thiscall FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId)|
 5145b0|TMapMgr::QueueDepotConstructionOrder||417|function|int __thiscall QueueDepotConstructionOrder(int * pMapContext, short nTileIndex, short nNationId)|
 5145fb|check_bit10_order_exists|||global||
@@ -5905,7 +5905,7 @@ address|name|symbol|size|type|prototype|provenance
 5c2510|TUnit::~TUnit||7|function|void __thiscall ~TUnit()|
 5c2530|TUnit::RegisterUnitOrderWithOwnerManager||165|function|undefined RegisterUnitOrderWithOwnerManager()|
 5c2610|TUnit::OrphanRetStub_005c2610||3|function|undefined OrphanRetStub_005c2610(void)|
-5c2630|TUnit::SetOrderModeSlot34||19|function|void __thiscall SetOrderModeSlot34(int mode, int payload)|
+5c2630|TUnit::SetOrders||19|function|void __thiscall SetOrders(UnitOrder order, int payload)|mac_oracle
 5c2660|TUnit::ContinueOrders||16|function|void __thiscall ContinueOrders()|mac_oracle
 5c2680|TUnit::Free||89|function|void __thiscall Free()|
 5c2700|TUnit::ReadFrom||159|function|void __thiscall ReadFrom(TStream* stream)|
@@ -5915,10 +5915,10 @@ address|name|symbol|size|type|prototype|provenance
 5c28c0|TCivUnit::TCivUnit||29|function|undefined TCivUnit()|
 5c28f0|TCivUnit::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5c2920|TCivUnit::~TCivUnit||7|function|void __thiscall ~TCivUnit()|
-5c2940|TCivUnit::InitializeCivWorkOrderState||43|function|void __thiscall InitializeCivWorkOrderState(int nOrderType, int pOwnerContext, int nOrderOwnerNationId)|
+5c2940|TCivUnit::ICivUnit||43|function|void __thiscall ICivUnit(CivilianUnitKind unitKind, int pOwnerContext, int nOrderOwnerNationId)|mac_oracle
 5c2980|TCivUnit::IsInIdleSelectionState||23|function|int __thiscall IsInIdleSelectionState()|
 5c29b0|TickCivWorkOrderCountdownAndComplete||35|function|undefined TickCivWorkOrderCountdownAndComplete()|
-5c29f0|TCivUnit::SetOrderModeSlot34||119|function|void __thiscall SetOrderModeSlot34(int mode, int payload)|
+5c29f0|TCivUnit::SetOrders||119|function|void __thiscall SetOrders(UnitOrder order, int payload)|mac_oracle
 5c2a90|TCivUnit::ContinueOrders||61|function|void __thiscall ContinueOrders()|mac_oracle
 5c2b10|TCivUnit::ReadFrom||32|function|void __thiscall ReadFrom(TStream* stream)|
 5c2b40|TCivUnit::WriteTo||32|function|void __thiscall WriteTo(TStream* stream)|

@@ -687,7 +687,7 @@ void TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations(TStream* stream
     short workOrderCount = stream->ReadShort();
     for (int workOrderIdx = workOrderCount; workOrderIdx != 0; --workOrderIdx) {
       TCivUnit* workOrder = new TCivUnit();
-      workOrder->InitializeCivWorkOrderState(0, -1, nationIdx);
+      workOrder->ICivUnit(kCivilianUnitMiner, -1, nationIdx);
       workOrder->ReadFrom(stream);
       workOrder->AssertValid();
       if (nationSelected == 0) {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TObject.h"
+#include "game/unit_domain_types.h"
 
 // Base class for the per-nation pending unit-order objects (civilian work,
 // military recruit, navy task-force). The concrete subclasses each install their
@@ -22,19 +23,19 @@ public:
   void Free() override;                    // slot 0x1c
 
   // --- TUnit virtual functions ---
-  virtual void VTableSlot10(int pOwnerContext);           // slot 0x28
-  virtual void ContinueOrders();                          // slot 0x2c, Mac oracle
-  virtual void DetachUnitOrderFromOwnerAndReset();        // slot 0x30
-  virtual void SetOrderModeSlot34(int mode, int payload); // slot 0x34
+  virtual void VTableSlot10(int pOwnerContext);         // slot 0x28
+  virtual void ContinueOrders();                        // slot 0x2c, Mac oracle
+  virtual void DetachUnitOrderFromOwnerAndReset();      // slot 0x30
+  virtual void SetOrders(UnitOrder order, int payload); // slot 0x34
 
   short orderType; // 0x04
   // 0x06 — map tile index the order is anchored to (-1 = unassigned); read as
   // the recruit/civilian target tile by TMapMgr and matched against the terrain
   // table by TGreatPower slot 0x298.
   short tileIndex06;
-  int field_8;   // 0x08
-  short field_C; // 0x0c
-  short field_E; // 0x0e
+  UnitOrder unitOrder; // 0x08
+  short field_C;       // 0x0c
+  short field_E;       // 0x0e
   // Doubly-linked-list back-pointer for the tile's civilian-order chain (terrainState-
   // Table[tileIndex06].firstCivilianOrder20, threaded via nextOnTile); null when this is
   // the chain head. Recovered from TCivUnit::VTableSlot10 (0x5c2b70), which dereferences

@@ -193,8 +193,9 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
   short hoveredTile = static_cast<short>(hoveredTileIndex6c);
   if (cursorId4e == 0x3eb) {
     TCivUnit* selectedOrder = g_pSelectedCivilianOrderState->selectedEntry;
-    short orderType = selectedOrder != 0 ? selectedOrder->orderType : 9;
-    if (orderType == 4 &&
+    CivilianUnitKindStorage unitKind =
+        selectedOrder != 0 ? selectedOrder->orderType : kCivilianUnitKindCount;
+    if (unitKind == EncodeCivilianUnitKind(kCivilianUnitEngineer) &&
         g_pGlobalMapState->terrainStateTable[hoveredTile].regionSubtypeTag05 == -1) {
       updateNeighborHighlights = true;
       TMapMgr::ComputeHexNeighborTileIndices(hoveredTile, neighborTiles,
@@ -823,7 +824,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
         } else {
           TCivUnit* unit =
               g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, g_pSimMgr->GetActiveNationId());
-          if (unit != 0 && unit->field_8 > 4 &&
+          if (unit != 0 && unit->unitOrder > static_cast<UnitOrder>(4) &&
               g_pUiAnimator->FindRegisteredAnimationByTag(reinterpret_cast<int>(unit)) == 0) {
             short animationY;
             short animationX;
@@ -2034,7 +2035,7 @@ void TMapDialog::RenderMapTileAtScreenPositionUsingCache(short tileIndex, short 
 void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX,
                                                 int projectedY, int flag, short tileIndex) {
   bool belongsToActiveNation = orderEntry->field_18 == g_pSimMgr->GetActiveNationId();
-  if (orderEntry->field_8 > 4 && belongsToActiveNation) {
+  if (orderEntry->unitOrder > static_cast<UnitOrder>(4) && belongsToActiveNation) {
     int animationTag = reinterpret_cast<int>(orderEntry);
     if (g_pUiAnimator->FindRegisteredAnimationByTag(animationTag) == 0) {
       short animationY;

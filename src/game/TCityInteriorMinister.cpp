@@ -39,6 +39,10 @@
 short __stdcall TraceDescendingTileScoreGradientToSource(short startTile, char* scoreMap,
                                                          short* previousTileOut);
 
+// TCity::trackedOrderList270 contains TCityTask/TShipBuildingTask objects. The
+// +0x04 value tested at 0x004c2c23 is TTask::citySlotIndex, not TUnit::orderType.
+static const short kPendingProspectorRecruitmentCitySlot = 0x22;
+
 // FUNCTION: IMPERIALISM 0x004be000
 void InsertScoredTileCandidateWithRandomTieBreak(float score, short tileIndex,
                                                  float* candidateScores, short* candidateTiles,
@@ -1170,15 +1174,15 @@ void TCityInteriorMinister::ProcessUnitOrders() {
     int orderCount = trackedOrders->GetCount();
     for (int ordinal = 1; ordinal <= orderCount && availableBuilderOrder == 0; ++ordinal) {
       TUnit* order = static_cast<TUnit*>(trackedOrders->GetEntryByOrdinal(ordinal));
-      if (order->orderType == 4) {
+      if (order->orderType == EncodeCivilianUnitKind(kCivilianUnitEngineer)) {
         hasBuilderOrder = true;
-        if (order->field_8 == 0) {
+        if (order->unitOrder == kUnitOrderIdle) {
           availableBuilderOrder = order;
         }
       }
     }
     if (!hasBuilderOrder) {
-      SelectRecruitmentProductionCommand(4);
+      SelectRecruitmentProductionCommand(EncodeCivilianUnitKind(kCivilianUnitEngineer));
     }
     if (availableBuilderOrder != 0) {
       ContinueRailheadProject(availableBuilderOrder, primaryDistanceMap, secondaryDistanceMap);
@@ -1198,7 +1202,8 @@ void TCityInteriorMinister::DispatchBuilders() {
   int orderCount = trackedOrders->GetCount();
   for (int ordinal = 1; ordinal <= orderCount && builderOrder == 0; ++ordinal) {
     TUnit* order = static_cast<TUnit*>(trackedOrders->GetEntryByOrdinal(ordinal));
-    if (order->orderType == 4 && order->field_8 == 0) {
+    if (order->orderType == EncodeCivilianUnitKind(kCivilianUnitEngineer) &&
+        order->unitOrder == kUnitOrderIdle) {
       builderOrder = order;
     }
   }
@@ -1214,7 +1219,7 @@ void TCityInteriorMinister::DispatchBuilders() {
           g_awEngineerFortBuildCostByLevel[cityRecord->fortLevel03] <=
               ownerContextAt04->treasuryValue10) {
         builderOrder->VTableSlot10(cityTileIndex);
-        builderOrder->SetOrderModeSlot34(12, cityTileIndex);
+        builderOrder->SetOrders(kUnitOrderBuildFort, cityTileIndex);
       }
     }
   }
@@ -1268,15 +1273,18 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
   int orderCount = trackedOrders->GetCount();
   for (int orderOrdinal = 1; orderOrdinal <= orderCount; ++orderOrdinal) {
     TUnit* order = static_cast<TUnit*>(trackedOrders->GetEntryByOrdinal(orderOrdinal));
-    if (order->orderType == 4 || order->field_8 != 0) {
+    if (order->orderType == EncodeCivilianUnitKind(kCivilianUnitEngineer) ||
+        order->unitOrder != kUnitOrderIdle) {
       continue;
     }
-    char useHighNibble = order->orderType == 0 || order->orderType == 8;
+    char useHighNibble = order->orderType == EncodeCivilianUnitKind(kCivilianUnitMiner) ||
+                         order->orderType == EncodeCivilianUnitKind(kCivilianUnitDriller);
     bool assigned = false;
     for (unsigned int candidateOrdinal = 0; candidateOrdinal < candidateTiles.count && !assigned;
          ++candidateOrdinal) {
       short tileIndex = candidateTiles.values[candidateOrdinal];
-      if (g_pGlobalMapState->TileHasCivilianOrderOfTypeAndField8(tileIndex, order->orderType, 10)) {
+      if (g_pGlobalMapState->HasCivilianUnitKindWithOrder(
+              tileIndex, order->orderType, EncodeUnitOrder(kUnitOrderDevelopResource))) {
         continue;
       }
       TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
@@ -1295,7 +1303,7 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
               g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, useHighNibble);
           if (availableClass > currentClass) {
             order->VTableSlot10(tileIndex);
-            order->SetOrderModeSlot34(10, tileIndex);
+            order->SetOrders(kUnitOrderDevelopResource, tileIndex);
             int cost = currentClass == 0 ? 0 : g_adwCivilianWorkOrderCostByClass[currentClass - 1];
             ownerContextAt04->AddToTreasury(-cost);
             assigned = true;
@@ -1316,22 +1324,23 @@ void TCityInteriorMinister::RequestMissingCivilianOrderTypes() {
     TUnit* order = static_cast<TUnit*>(trackedOrders->GetEntryByOrdinal(ordinal));
     hasOrderType[order->orderType] = true;
   }
-  hasOrderType[1] = true;
-  hasOrderType[7] = true;
+  hasOrderType[kCivilianUnitProspector] = true;
+  hasOrderType[kCivilianUnitDeveloper] = true;
 
   short nationSlot = ownerContextAt04->nationSlot;
-  for (short orderType = 8; orderType >= 0; --orderType) {
-    if (g_pCityOrderCapabilityState->capRowsD467[nationSlot].flags[orderType] != 0 &&
-        !hasOrderType[orderType]) {
+  for (CivilianUnitKindStorage unitKindStorage = EncodeCivilianUnitKind(kCivilianUnitDriller);
+       unitKindStorage >= EncodeCivilianUnitKind(kCivilianUnitMiner); --unitKindStorage) {
+    if (g_pCityOrderCapabilityState->capRowsD467[nationSlot].flags[unitKindStorage] != 0 &&
+        !hasOrderType[unitKindStorage]) {
       bool needed = false;
       for (short resourceType = 0; resourceType < 23; ++resourceType) {
-        if (g_anResourceTypeRequiredOrderType[resourceType] == orderType &&
+        if (g_anResourceTypeRequiredOrderType[resourceType] == unitKindStorage &&
             civilianOrderDemandByResourceType194[resourceType] != 0) {
           needed = true;
         }
       }
       if (needed) {
-        SelectRecruitmentProductionCommand(orderType);
+        SelectRecruitmentProductionCommand(unitKindStorage);
       }
     }
   }
@@ -1372,10 +1381,10 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
   int orderCount = trackedOrders->GetCount();
   for (int ordinal = 1; ordinal <= orderCount; ++ordinal) {
     TUnit* order = static_cast<TUnit*>(trackedOrders->GetEntryByOrdinal(ordinal));
-    if (order->field_8 == 0) {
-      if (order->orderType == 1) {
+    if (order->unitOrder == kUnitOrderIdle) {
+      if (order->orderType == EncodeCivilianUnitKind(kCivilianUnitProspector)) {
         ++prospectingOrderCount;
-      } else if (order->orderType == 7) {
+      } else if (order->orderType == EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
         ++developerOrderCount;
       }
     }
@@ -1442,7 +1451,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
     if (prospectableTerrain[tile->GetTerrainKind()] != 0) {
       for (TCivUnit* order = tile->firstCivilianOrder20; order != 0;
            order = static_cast<TCivUnit*>(order->nextOnTile)) {
-        if (order->field_8 == 13 && order->remainingTurns24 == 8) {
+        if (order->unitOrder == kUnitOrderPurchaseLand && order->remainingTurns24 == 8) {
           hasActiveProspecting = true;
         }
       }
@@ -1480,18 +1489,18 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
   int developerIndex = 0;
   for (int assignmentOrdinal = 1; assignmentOrdinal <= orderCount; ++assignmentOrdinal) {
     TUnit* order = static_cast<TUnit*>(trackedOrders->GetEntryByOrdinal(assignmentOrdinal));
-    if (order->field_8 != 0) {
+    if (order->unitOrder != kUnitOrderIdle) {
       continue;
     }
-    if (order->orderType == 1 && prospectingIndex < prospectingOrderCount &&
-        prospectingScores[prospectingIndex] != 0.0f) {
+    if (order->orderType == EncodeCivilianUnitKind(kCivilianUnitProspector) &&
+        prospectingIndex < prospectingOrderCount && prospectingScores[prospectingIndex] != 0.0f) {
       short tileIndex = prospectingTiles[prospectingIndex++];
-      order->SetOrderModeSlot34(8, tileIndex);
+      order->SetOrders(kUnitOrderProspect, tileIndex);
       order->VTableSlot10(tileIndex);
-    } else if (order->orderType == 7 && developerIndex < developerOrderCount &&
-               developerScores[developerIndex] != 0.0f) {
+    } else if (order->orderType == EncodeCivilianUnitKind(kCivilianUnitDeveloper) &&
+               developerIndex < developerOrderCount && developerScores[developerIndex] != 0.0f) {
       short tileIndex = developerTiles[developerIndex++];
-      order->SetOrderModeSlot34(13, tileIndex);
+      order->SetOrders(kUnitOrderPurchaseLand, tileIndex);
       order->VTableSlot10(tileIndex);
       ownerContextAt04->treasuryValue10 -=
           g_pGlobalMapState->CalculateDeveloperTilePurchaseCost(tileIndex);
@@ -1530,7 +1539,8 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() {
 
       char currentClass = g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 1);
       if (!g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(tileIndex) ||
-          g_pGlobalMapState->TileHasCivilianOrderOfType(tileIndex, 0)) {
+          g_pGlobalMapState->HasCivilianUnitKind(tileIndex,
+                                                 EncodeCivilianUnitKind(kCivilianUnitMiner))) {
         continue;
       }
       short availableClass =
@@ -1546,9 +1556,9 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() {
       for (int orderOrdinal = 1; orderOrdinal <= orderCount && idleProspector == 0;
            ++orderOrdinal) {
         TUnit* order = static_cast<TUnit*>(trackedOrders->GetEntryByOrdinal(orderOrdinal));
-        if (order->orderType == 0) {
+        if (order->orderType == EncodeCivilianUnitKind(kCivilianUnitMiner)) {
           hasProspector = true;
-          if (order->field_8 == 0) {
+          if (order->unitOrder == kUnitOrderIdle) {
             idleProspector = order;
           }
         }
@@ -1556,16 +1566,16 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() {
 
       if (idleProspector != 0) {
         idleProspector->VTableSlot10(tileIndex);
-        idleProspector->SetOrderModeSlot34(10, tileIndex);
+        idleProspector->SetOrders(kUnitOrderDevelopResource, tileIndex);
       } else if (!hasProspector) {
         TCity* city = ownerContextAt04->city;
         bool shouldRequestProspector = true;
         if (city->buildOrderSlots[9]->quantityField04 == 0) {
           int pendingCount = city->trackedOrderList270->GetCount();
           for (int pendingOrdinal = 1; pendingOrdinal < pendingCount; ++pendingOrdinal) {
-            TUnit* pendingOrder =
-                static_cast<TUnit*>(city->trackedOrderList270->GetEntryByOrdinal(pendingOrdinal));
-            if (pendingOrder->orderType == 0x22) {
+            TCityTask* pendingTask = static_cast<TCityTask*>(
+                city->trackedOrderList270->GetEntryByOrdinal(pendingOrdinal));
+            if (pendingTask->citySlotIndex == kPendingProspectorRecruitmentCitySlot) {
               shouldRequestProspector = false;
             }
           }
@@ -1573,7 +1583,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() {
           shouldRequestProspector = false;
         }
         if (shouldRequestProspector) {
-          SelectRecruitmentProductionCommand(0);
+          SelectRecruitmentProductionCommand(EncodeCivilianUnitKind(kCivilianUnitMiner));
         }
       }
     }
@@ -1610,7 +1620,7 @@ void TCityInteriorMinister::ContinueRailheadProject(TUnit* builderOrder, char* p
         TraceDescendingTileScoreGradientToSource(field3c, secondaryDistanceMap, &previousTile);
     if (g_pGlobalMapState->GetTileUnitEntryByOwner(sourceTile, ownerContextAt04->nationSlot) == 0) {
       builderOrder->VTableSlot10(sourceTile);
-      builderOrder->SetOrderModeSlot34(7, sourceTile);
+      builderOrder->SetOrders(kUnitOrderBuildPort, sourceTile);
     }
     return;
   }
@@ -1623,16 +1633,17 @@ void TCityInteriorMinister::ContinueRailheadProject(TUnit* builderOrder, char* p
     unsigned short sourceFlags = g_pGlobalMapState->terrainStateTable[sourceTile].activeFlags1c;
     if ((sourceFlags & 4) != 0 && (sourceFlags & 0x10) == 0) {
       builderOrder->VTableSlot10(sourceTile);
-      builderOrder->SetOrderModeSlot34(6, sourceTile);
+      builderOrder->SetOrders(kUnitOrderBuildDepot, sourceTile);
     } else {
       builderOrder->VTableSlot10(previousTile);
-      builderOrder->SetOrderModeSlot34(5, sourceTile);
+      builderOrder->SetOrders(kUnitOrderLayRail, sourceTile);
     }
     return;
   }
 
   builderOrder->VTableSlot10(field3c);
-  builderOrder->SetOrderModeSlot34(primaryDistance == 1 ? 6 : 7, field3c);
+  builderOrder->SetOrders(primaryDistance == 1 ? kUnitOrderBuildDepot : kUnitOrderBuildPort,
+                          field3c);
 
   TTown* projectedTown = new TTown();
   projectedTown->InitializeTownMarker(g_szEmptyString, field3c, primaryDistance != 1,

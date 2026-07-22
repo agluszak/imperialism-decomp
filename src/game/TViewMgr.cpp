@@ -2418,9 +2418,10 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
 
   if (selectedIndex != -1) {
     this->mapUberPictureF0->NoticeTile(selectedIndex);
-    int orderState =
-        g_pGlobalMapState->terrainStateTable[selectedIndex].firstCivilianOrder20->field_8;
-    if (orderState == 0 || orderState == 3 || orderState == 2) {
+    UnitOrder orderState =
+        g_pGlobalMapState->terrainStateTable[selectedIndex].firstCivilianOrder20->unitOrder;
+    if (orderState == kUnitOrderIdle || orderState == static_cast<UnitOrder>(3) ||
+        orderState == static_cast<UnitOrder>(2)) {
       g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(selectedIndex, 2);
     }
   }

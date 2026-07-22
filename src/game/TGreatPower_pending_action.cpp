@@ -31,7 +31,7 @@ void TCountry::CreateMilitaryRecruitOrderForNode(int nodeContext) {
   TMilitaryUnit* militaryOrder = new TMilitaryUnit();
   militaryOrder->InitializeRecruitOrderState(static_cast<short>(capabilityBonus), nodeContext,
                                              this->nationSlot);
-  militaryOrder->SetOrderModeSlot34(2, -1);
+  militaryOrder->SetOrders(static_cast<UnitOrder>(2), -1);
 }
 
 // FUNCTION: IMPERIALISM 0x004dab20
@@ -90,8 +90,8 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
 
     if (needsCivOrder) {
       TCivUnit* civOrder = new TCivUnit();
-      civOrder->InitializeCivWorkOrderState(
-          7,
+      civOrder->ICivUnit(
+          kCivilianUnitDeveloper,
           g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 0),
           nationSlot);
       this->SetNationPendingActionStateAndPayload(2, -1);

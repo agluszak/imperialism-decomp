@@ -280,17 +280,17 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
         TMilitaryUnit* order = new TMilitaryUnit();
         order->InitializeRecruitOrderState(2, regionId, this->nationSlot);
         if (g_pSimMgr->difficultyLevel < 2) {
-          order->SetOrderModeSlot34(2, -1);
+          order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
         order = new TMilitaryUnit();
         order->InitializeRecruitOrderState(2, regionId, this->nationSlot);
         if (g_pSimMgr->difficultyLevel < 2) {
-          order->SetOrderModeSlot34(2, -1);
+          order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
         order = new TMilitaryUnit();
         order->InitializeRecruitOrderState(7, regionId, this->nationSlot);
         if (g_pSimMgr->difficultyLevel < 2) {
-          order->SetOrderModeSlot34(2, -1);
+          order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
         g_pGlobalMapState->NotifyCityRecordSlot12C(regionId);
         if (this->nationSlot < 7 &&
@@ -299,12 +299,12 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
           order = new TMilitaryUnit();
           order->InitializeRecruitOrderState(6, regionId, this->nationSlot);
           if (g_pSimMgr->difficultyLevel < 2) {
-            order->SetOrderModeSlot34(2, -1);
+            order->SetOrders(static_cast<UnitOrder>(2), -1);
           }
           order = new TMilitaryUnit();
           order->InitializeRecruitOrderState(5, regionId, this->nationSlot);
           if (g_pSimMgr->difficultyLevel < 2) {
-            order->SetOrderModeSlot34(2, -1);
+            order->SetOrders(static_cast<UnitOrder>(2), -1);
           }
           TGreatPower* nation = g_apNationStates[this->nationSlot];
           TCity* cityForPort = (nation != 0) ? nation->city : 0;
@@ -348,7 +348,7 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
       if (*g_pGlobalMapState->scenarioTagText1c == '+') {
         TMilitaryUnit* bonusOrder = new TMilitaryUnit();
         bonusOrder->InitializeRecruitOrderState(2, regionId, this->nationSlot);
-        bonusOrder->SetOrderModeSlot34(2, -1);
+        bonusOrder->SetOrders(static_cast<UnitOrder>(2), -1);
       }
       ++ordinal;
     } while (ordinal <= this->ownedRegionList->GetSize());

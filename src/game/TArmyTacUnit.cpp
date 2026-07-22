@@ -33,7 +33,7 @@ void TArmyTacUnit::ConstructTArmyTacUnitBaseState(TMilitaryUnit* source) {
   sapTargetTileIndex40 = -1;
   sourceUnit38 = source;
   unsigned char deployedCategory0Flag;
-  if (source->field_8 == 2 && g_anUnitTypeCombatCategoryByType00669858[unitTypeC] == 0) {
+  if (source->unitOrder == 2 && g_anUnitTypeCombatCategoryByType00669858[unitTypeC] == 0) {
     deployedCategory0Flag = 1;
   } else {
     deployedCategory0Flag = 0;

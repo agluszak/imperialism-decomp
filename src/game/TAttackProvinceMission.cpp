@@ -230,7 +230,7 @@ void TAttackProvinceMission::GiveOrders() {
         for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(targetIter.Reset());
              targetIter.More(); unit = static_cast<TMilitaryUnit*>(targetIter.Advance())) {
           if (unit->tileIndex06 == presentLocation14) {
-            unit->SetOrderModeSlot34(1, targetProvince30);
+            unit->SetOrders(kUnitOrderRedeploy, targetProvince30);
           }
         }
       } else if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
@@ -251,7 +251,7 @@ void TAttackProvinceMission::GiveOrders() {
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(retargetIter.Reset()); retargetIter.More();
        unit = static_cast<TMilitaryUnit*>(retargetIter.Advance())) {
     if (unit->tileIndex06 != resolvedTarget) {
-      unit->SetOrderModeSlot34(1, resolvedTarget);
+      unit->SetOrders(kUnitOrderRedeploy, resolvedTarget);
     }
   }
 }

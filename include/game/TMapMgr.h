@@ -2,9 +2,11 @@
 
 #include "game/CString.h"
 #include "game/TObject.h"
+#include "game/civilian_domain_types.h"
 #include "game/map_domain_types.h"
 #include "game/mfc.h"
 #include "game/strategic_terrain.h"
+#include "game/unit_domain_types.h"
 
 // Forward declarations for types referenced by generated signatures.
 class TCivUnit;
@@ -323,13 +325,12 @@ public:
   virtual void SetHexAdjacencyDirectionFlagsForTilePair(StrategicTileIndex sourceTile,
                                                         StrategicTileIndex destTile,
                                                         int unusedParam3); // slot 0x1a 0x513f60
-  // Walks terrainStateTable[tileIndex].firstCivilianOrder20 (a TCivUnit list threaded via
-  // TUnit::nextOnTile) for a node whose orderType matches.
-  virtual bool TileHasCivilianOrderOfType(StrategicTileIndex tileIndex,
-                                          short orderType); // slot 0x1b 0x514310
-  // Same walk as above, additionally requiring TUnit::field_8 == field8Value.
-  virtual bool TileHasCivilianOrderOfTypeAndField8(StrategicTileIndex tileIndex, short orderType,
-                                                   short field8Value); // slot 0x1c 0x514360
+  // Both lookup helpers take signed-word discriminants at the listing-proven stack boundary.
+  virtual bool HasCivilianUnitKind(StrategicTileIndex tileIndex,
+                                   CivilianUnitKindStorage unitKind); // slot 0x1b 0x514310
+  virtual bool HasCivilianUnitKindWithOrder(StrategicTileIndex tileIndex,
+                                            CivilianUnitKindStorage unitKind,
+                                            UnitOrderStorage order); // slot 0x1c 0x514360
   // Seeds recruitSearchVisited0e across all tiles: 1 (already visited/blocked) for every
   // tile NOT owned by ownerNationTag, 0 (unvisited seed candidate) for tiles it owns, and
   // flags field9 = 1 ("search in progress"). Pairs with ResetRecruitSearchVisitedState below.

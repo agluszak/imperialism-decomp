@@ -97,7 +97,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
     menuItemIds94[count++] = 0x1c;
   }
   for (short orderType = 0; orderType <= 8; orderType++) {
-    if (g_pGlobalMapState->TileHasCivilianOrderOfType(nTileIndex, orderType)) {
+    if (g_pGlobalMapState->HasCivilianUnitKind(nTileIndex, orderType)) {
       menuItemIds94[count++] = static_cast<short>(orderType + 0x21);
     }
   }
