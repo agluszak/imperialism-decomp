@@ -3166,7 +3166,7 @@ void TGreatPower::ReplyToDiplomacyOffers(void) {
       short targetNation = proposalEntry[1];
       char shouldApplyProposal;
 
-      if (IsTurnCooldownCounterActiveOrResetFlag() == 0) {
+      if (IsTurnFlowCooldownActiveAndResetExpiredState() == 0) {
         if (this->diplomacyPolicyByNation[targetNation] == proposalCode) {
           shouldApplyProposal = 1;
         } else if (proposalCode == kProposalTradeEmbargo) {

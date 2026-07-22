@@ -3646,7 +3646,7 @@ address|name|symbol|size|type|prototype|provenance
 535820|TMission::SerializeMissionState||86|function|void __thiscall SerializeMissionState(TStream* stream)|
 5358a0|TMission::DeserializeMissionState||125|function|void __thiscall DeserializeMissionState(TStream* stream)|
 535940|FindFirstTrackedHandlerMatchingModeAndShortKey||123|function|undefined FindFirstTrackedHandlerMatchingModeAndShortKey()|
-5359e0|IsMapTileCompatibleWithCurrentTerrainOrActionContext||210|function|char IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex)|
+5359e0|IsMapTileCompatibleWithCurrentTerrainOrActionContext||210|function|bool __cdecl IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex)|
 535b00|SelectBestCityDevelopmentFromResourcePools||899|function|bool SelectBestCityDevelopmentFromResourcePools(short nationSlot, int* resourcePools, TMilitaryUnit** bestUnitByType, char* selectedIsIndustry, char* selectedIsUpgrade, int* selectedSlot, int unused, float* selectedWeightedCost)|
 535f80|CompareMissionOrderEntriesByMovementClassThenEfficiency||197|function|short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, void* b, void* reverseOrder)|
 536090|CompareMissionOrderEntriesByPriorityScore||153|function|undefined CompareMissionOrderEntriesByPriorityScore()|
@@ -4796,7 +4796,7 @@ address|name|symbol|size|type|prototype|provenance
 57b740|TSelectoText::GetRuntimeClass||6|function|undefined GetTSelectoTextClassNamePointer()|rtti
 57b760|TSelectoText::Hilite||1|function|void Hilite(void)|mac_oracle
 57b8b0|WrapperFor_ftol_At0057b8b0||30|function|undefined WrapperFor_ftol_At0057b8b0()|
-57b900|IsTurnCooldownCounterActiveOrResetFlag||34|function|undefined IsTurnCooldownCounterActiveOrResetFlag()|
+57b900|IsTurnFlowCooldownActiveAndResetExpiredState||34|function|bool __cdecl IsTurnFlowCooldownActiveAndResetExpiredState(void)|
 57b940|TSimMgr::CreateObject|?CreateObject@TSimMgr@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 57b9c0|TSimMgr::GetRuntimeClass||6|function|undefined GetTSimMgrClassNamePointer()|rtti
 57b9e0|TSimMgr::ConstructTurnFlowStateManagerVtable00662a58||283|function|undefined ConstructTurnFlowStateManagerVtable00662a58()|
@@ -5998,7 +5998,7 @@ address|name|symbol|size|type|prototype|provenance
 5d3300|GenerateMappedFlavorTextVariantAToSharedString||119|function|undefined GenerateMappedFlavorTextVariantAToSharedString()|
 5d33a0|GenerateMappedFlavorTextVariantD_005d33a0||2858|function|undefined GenerateMappedFlavorTextVariantD_005d33a0()|
 5d41a0|GenerateMappedFlavorTextVariantDToSharedString||119|function|undefined GenerateMappedFlavorTextVariantDToSharedString()|
-5d4240|ShouldRetryMappedFlavorTextGeneration||366|function|undefined ShouldRetryMappedFlavorTextGeneration()|
+5d4240|ShouldRetryMappedFlavorTextGeneration||366|function|bool __cdecl ShouldRetryMappedFlavorTextGeneration(CString* dest)|
 5d4410|SetSharedStringFromMappedFlavorTextWithLengthClamp||253|function|void __fastcall SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* sharedStr, int dummyEdx, int index)|
 5d4550|AssignNextProvinceNameForNationSlot||269|function|void __cdecl AssignNextProvinceNameForNationSlot(CString* dest, short nationSlot)|
 5d46b0|GenerateMappedFlavorTextByTableSlot||28|function|undefined GenerateMappedFlavorTextByTableSlot()|

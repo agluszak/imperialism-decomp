@@ -43,34 +43,34 @@ TDefendProvinceMission::~TDefendProvinceMission() {}
 // entry) by some other map-action-context zone whose nationKeyMask10 mask has a bit set outside
 // the owner's own bit.
 // FUNCTION: IMPERIALISM 0x005359e0
-char IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
+bool IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
   Province& record = g_pGlobalMapState->cityScoreTable[tileIndex];
   signed char primaryOwner = record.ownerNationCode00;
   if (g_apTerrainTypeDescriptorTable[primaryOwner]->GetHomeRegionCityRecordIndex() == tileIndex) {
-    return 1;
+    return true;
   }
 
   for (int i = record.adjacentRegionCount08 - 1; i >= 0; --i) {
     short neighborTile = record.adjacentRegionIds0A[i];
     signed char neighborOwner = g_pGlobalMapState->cityScoreTable[neighborTile].ownerNationCode00;
     if (neighborOwner < 7 && neighborOwner != primaryOwner) {
-      return 1;
+      return true;
     }
   }
 
   TZone* zone = g_pMapActionContextListHead;
   if (zone == nullptr) {
-    return 0;
+    return false;
   }
   unsigned char excludeOwnerMask = static_cast<unsigned char>((1 << (primaryOwner & 0x1f)) ^ 0x7f);
   while ((zone->nationKeyMask10 & excludeOwnerMask) == 0 ||
          !zone->ContainsCityStatePointerInZoneArrayByCityIndex(static_cast<short>(tileIndex))) {
     zone = zone->prev18;
     if (zone == nullptr) {
-      return 0;
+      return false;
     }
   }
-  return 1;
+  return true;
 }
 
 // Walks orderListAt18 and re-issues TUnit::SetOrders(kUnitOrderRedeploy, newTile) on every linked
@@ -300,7 +300,7 @@ void TDefendProvinceMission::CalculateNeeds() {
     fStack_c = g_MissionPositiveFallback_0065A9B8;
   }
 
-  int compat = IsMapTileCompatibleWithCurrentTerrainOrActionContext(presentLocation14);
+  bool compat = IsMapTileCompatibleWithCurrentTerrainOrActionContext(presentLocation14);
 
   if (compat == 0) {
     unsigned char bVar8;

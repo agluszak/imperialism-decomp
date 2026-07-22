@@ -1596,7 +1596,7 @@ int g_nRandomMapSelectedNationSlot00698AB0 = -1;
 // GLOBAL: IMPERIALISM 0x00698ae0
 char g_szCountryNameProfileKey00698AE0[] = "CountryName";
 
-// Turn-flow cooldown defer counter and side flag (IsTurnCooldownCounterActiveOrResetFlag).
+// Turn-flow cooldown defer counter and side flag (IsTurnFlowCooldownActiveAndResetExpiredState).
 // GLOBAL: IMPERIALISM 0x006a43c4
 short g_nTurnCooldownDeferCounter006A43C4 = 0;
 // GLOBAL: IMPERIALISM 0x006a43c0 — set once scenario/turn-flow bootstrap completes.

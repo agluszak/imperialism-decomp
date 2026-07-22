@@ -476,7 +476,7 @@ void TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423() {
 void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
   short nationId;
   unsigned int variant;
-  if (IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+  if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
     return;
   }
   if (this == 0 || g_pCityOrderCapabilityState == 0) {

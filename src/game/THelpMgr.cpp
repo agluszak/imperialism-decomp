@@ -670,7 +670,7 @@ char ShowTurnAlertsForActiveNation() {
   if (g_pSimMgr->preferenceValues[8] == 0) {
     return 0;
   }
-  if (IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+  if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
     return 0;
   }
   if (g_lastTurnAlertTick_006a31c0 == currentTick) {

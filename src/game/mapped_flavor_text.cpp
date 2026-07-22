@@ -210,7 +210,7 @@ void TResizableByteSink::AppendByteToResizableBuffer(char byteValue) {
 // The generated flavor text is rejected (regenerate) if it contains any character from
 // this banned set list; each entry is a FindOneOf char-set probe against the result.
 // FUNCTION: IMPERIALISM 0x005d4240
-char ShouldRetryMappedFlavorTextGeneration(CString* dest) {
+bool ShouldRetryMappedFlavorTextGeneration(CString* dest) {
   const char* bannedSets[34] = {s_mcflavor_0069b640, s_mcflavor_0069b638,
                                 s_mcflavor_0069b630, s_mcflavor_0069b628,
                                 s_mcflavor_0069b624, s_mcflavor_0069b61c,
@@ -230,10 +230,10 @@ char ShouldRetryMappedFlavorTextGeneration(CString* dest) {
                                 s_mcflavor_0069b53c, 0};
   for (const char* const* set = bannedSets; *set != 0; set = set + 1) {
     if (dest->FindOneOf(*set) > -1) {
-      return 1;
+      return true;
     }
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005d4410
@@ -289,7 +289,7 @@ void GenerateMappedFlavorTextByCurrentContextNation(CString* dest) {
 
 // FUNCTION: IMPERIALISM 0x005d4720
 void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantIndex) {
-  char retry;
+  bool retry;
   do {
     switch (static_cast<int>(variantIndex) % 0x12) {
     case 0:

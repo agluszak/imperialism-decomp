@@ -41,7 +41,7 @@
 #include "game/TToolBarCluster.h"
 #include "game/TPicture.h"
 #include "game/nation_slot_eligibility.h"
-#include "game/turn_flow_cooldown.h" // IsTurnCooldownCounterActiveOrResetFlag
+#include "game/turn_flow_cooldown.h" // IsTurnFlowCooldownActiveAndResetExpiredState
 #include "game/ui_invalidation_guard.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TCluster.h"
@@ -364,7 +364,7 @@ void TViewMgr::SetBackColor(short colorCode) {
 
 // FUNCTION: IMPERIALISM 0x005d57b0
 void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
-  if (IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+  if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
     return;
   }
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
@@ -950,7 +950,7 @@ char TViewMgr::MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
 
 // FUNCTION: IMPERIALISM 0x005d7100
 char TViewMgr::PoseWarOfferIfTurnFlowReady(int sourceNation, int arg1, int arg2, int promptCode) {
-  if (IsTurnCooldownCounterActiveOrResetFlag()) {
+  if (IsTurnFlowCooldownActiveAndResetExpiredState()) {
     return 1;
   }
   TView* activeDialog = g_pDisplayMgr->activeDialog;
@@ -1091,7 +1091,7 @@ void DispatchPostTurnStateUpdatesTail() {
   if (g_pHelpMgr == nullptr) {
     return;
   }
-  if (IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+  if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
     return;
   }
   g_pHelpMgr->HandlePostDispatchTurnStateEventUpdates();

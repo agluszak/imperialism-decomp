@@ -3721,7 +3721,7 @@ address|matching|name
 0x53ebe0|0.9622641509433962|TDefendProvinceMission::Free
 0x53ecc0|0.896551724137931|TDefendProvinceMission::SetStateByte8To2
 0x53ed00|0.336283185840708|TDefendProvinceMission::CalculateImportance
-0x53edf0|0.40148698884758366|TDefendProvinceMission::CalculateNeeds
+0x53edf0|0.41044776119402987|TDefendProvinceMission::CalculateNeeds
 0x53eff0|1.0|TDefendProvinceMission::Initialize
 0x53f010|1.0|TDefendProvinceMission::Matches
 0x53f040|0.5925925925925926|TDefendProvinceMission::GetReplacementSlot48
@@ -4689,7 +4689,7 @@ address|matching|name
 0x57b740|1.0|TSelectoText::GetRuntimeClass
 0x57b760|1.0|TSelectoText::Hilite
 0x57b8b0|0.25|WrapperFor_ftol_At0057b8b0
-0x57b900|0.4|IsTurnCooldownCounterActiveOrResetFlag
+0x57b900|0.4|IsTurnFlowCooldownActiveAndResetExpiredState
 0x57b940|1.0|TSimMgr::CreateObject
 0x57b9c0|1.0|TSimMgr::GetRuntimeClass
 0x57b9e0|0.9615384615384616|TSimMgr::TSimMgr

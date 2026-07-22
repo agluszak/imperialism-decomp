@@ -200,7 +200,7 @@ thunk_DispatchCityRedrawInvalidateEvent 403B34 l
 thunk_EmitTurnEvent3Mode18WithActiveNation 403B5C l
 thunk_HandleScenarioSelectionKeyInput 403B75 l
 thunk_DrawCenteredGuideLineOnMapDc 403BB6 l
-thunk_IsTurnCooldownCounterActiveOrResetFlag 403C2E l
+thunk_IsTurnFlowCooldownActiveAndResetExpiredState 403C2E l
 thunk_SetCityProductionDialogPictureRectAndMaybeRefresh 403C60 l
 thunk_InitializeStrategicMapTileIconStateCache 403CB5 l
 thunk_ConsumeFirstPendingAbilityUnlock 403CF6 l
@@ -5450,7 +5450,7 @@ TSelectoText::CreateTSelectoTextInstance 57B720 f
 TSelectoText::GetRuntimeClass 57B740 f
 TSelectoText::OrphanRetStub_0057b760 57B760 f
 WrapperFor_ftol_At0057b8b0 57B8B0 f
-IsTurnCooldownCounterActiveOrResetFlag 57B900 f
+IsTurnFlowCooldownActiveAndResetExpiredState 57B900 f
 TSimMgr::CreateObject 57B940 f
 TSimMgr::GetRuntimeClass 57B9C0 f
 TSimMgr::TSimMgr 57B9E0 f
