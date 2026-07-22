@@ -180,7 +180,6 @@ TInfoBarBehavior.cpp|3|Cross/UBattleReportViews.cpp|3|military_ui|3||Cross/UBatt
 TInfoBarPictureText.cpp|2|Cross/UTestDialogs.cpp|2|ui_widgets|2||Cross/UTestDialogs.cpp:2
 TInfoBarText.cpp|6|Cross/UTestDialogs.cpp|5|ui_widgets|6|multi_module|Cross/UTestDialogs.cpp:5+Ambit.cpp:1
 TInfoPanelView.cpp|5|Cross/UDiplomacyViews.cpp|5|diplomacy_ui|5||Cross/UDiplomacyViews.cpp:5
-TInterNationEventQueueManager.cpp|8|Cross/UNewspaper.cpp|5|ui_screens|8|multi_module|Cross/UNewspaper.cpp:5+WAssetMgr.cpp:3
 TInteriorMinister.cpp|19|Cross/UCityDialogs.cpp|19|city_ui|19||Cross/UCityDialogs.cpp:19
 TInteriorMinisterView.cpp|2|Cross/UDiplomacyViews.cpp|2|diplomacy_ui|0||Cross/UDiplomacyViews.cpp:2
 TInterruptusView.cpp|1|Cross/UBattleReportViews.cpp|1|military_ui|1||Cross/UBattleReportViews.cpp:1

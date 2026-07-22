@@ -30,37 +30,6 @@ const short kCouncilTickerIntervalMapMode = 0x2710;
 const unsigned int kEndControlTagReselect = 0x52655374u;    // mode 0x17
 const unsigned int kEndControlTagReselectAlt = 0x53636f72u; // mode 0x16
 
-void ApplyCouncilCandidateTextStyle(TStaticText* textControl, const TextStyle* style) {
-  textControl->InstallTextStyle(*style, 0);
-}
-
-void RefreshCouncilCandidateNameText(TView* hostPanel, unsigned int controlTag, short nationSlot) {
-  TControl* control = static_cast<TControl*>(hostPanel->ResolveControlByTag(controlTag));
-  if (control == nullptr) {
-    return;
-  }
-  control->AssertValid();
-
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == nullptr) {
-    return;
-  }
-
-  CString labelText;
-  nation->LoadNationDisplayNameSharedRefFromField8(&labelText);
-  TStaticText* textControl = static_cast<TStaticText*>(control);
-  textControl->SetTextAndMaybeRefresh(&labelText, 1);
-}
-
-void RefreshCouncilCoatOfArmsPicture(TView* hostPanel, unsigned int controlTag, short nationSlot) {
-  TControl* control = static_cast<TControl*>(hostPanel->ResolveControlByTag(controlTag));
-  if (control == nullptr) {
-    return;
-  }
-  control->AssertValid();
-  const short pictureId = static_cast<short>(nationSlot + kCouncilCoatOfArmsPictureBase);
-  static_cast<TPicture*>(control)->SetPictureResourceIdAndRefresh(pictureId, 1);
-}
 } // namespace
 
 // SYNTHETIC: IMPERIALISM 0x00430660
@@ -174,41 +143,44 @@ void TCouncilView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   }
 }
 
-// Receiver confirmed to be TCouncilView (writes councilNationCount24c8 / visibleVoteTier528; resolves
-// its own controls via the TView vtable). NOTE: still 24.80% -- the original inlines the
-// candidate/coat-of-arms/text-style helpers (and a leading CString ctor) rather than calling
-// them out of line as below; a faithful match needs those inlined. TODO: inline helpers.
+// Receiver confirmed to be TCouncilView (writes councilNationCount24c8 / visibleVoteTier528 and
+// resolves its own controls via the TView vtable).
 // FUNCTION: IMPERIALISM 0x004fc2e0
 void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
-  TCouncilView* hostPanel = this;
+  CString candidateName;
 
   TextStyle councilTextStyle;
-  councilTextStyle.fontFamily = 0;
-  councilTextStyle.fontStyleFlags = 0;
-  councilTextStyle.fontSize = 0;
   councilTextStyle.textColor = 0;
   BuildUiTextStyleDescriptor(&councilTextStyle, 0, 0xe, 0x2b6a);
 
   councilNationCount24c8 = 0;
 
-  RefreshCouncilCandidateNameText(hostPanel, kControlTagCan0,
-                                  g_pDiplomacyTurnStateManager->selectedSourceNationSlot784);
-  TControl* can0Control = static_cast<TControl*>(hostPanel->ResolveControlByTag(kControlTagCan0));
-  if (can0Control != nullptr) {
-    ApplyCouncilCandidateTextStyle(static_cast<TStaticText*>(can0Control), &councilTextStyle);
-  }
+  TStaticText* can0 = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan0));
+  can0->AssertValid();
+  g_apNationStates[g_pDiplomacyTurnStateManager->selectedSourceNationSlot784]
+      ->LoadNationDisplayNameSharedRefFromField8(&candidateName);
+  can0->SetTextAndMaybeRefresh(&candidateName, 1);
+  can0->InstallTextStyle(councilTextStyle, 0);
 
-  RefreshCouncilCandidateNameText(hostPanel, kControlTagCan1,
-                                  g_pDiplomacyTurnStateManager->selectedTargetNationSlot786);
-  TControl* can1Control = static_cast<TControl*>(hostPanel->ResolveControlByTag(kControlTagCan1));
-  if (can1Control != nullptr) {
-    ApplyCouncilCandidateTextStyle(static_cast<TStaticText*>(can1Control), &councilTextStyle);
-  }
+  TStaticText* can1 = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan1));
+  can1->AssertValid();
+  g_apNationStates[g_pDiplomacyTurnStateManager->selectedTargetNationSlot786]
+      ->LoadNationDisplayNameSharedRefFromField8(&candidateName);
+  can1->SetTextAndMaybeRefresh(&candidateName, 1);
+  can1->InstallTextStyle(councilTextStyle, 0);
 
-  RefreshCouncilCoatOfArmsPicture(hostPanel, kControlTagCoa0,
-                                  g_pDiplomacyTurnStateManager->selectedSourceNationSlot784);
-  RefreshCouncilCoatOfArmsPicture(hostPanel, kControlTagCoa1,
-                                  g_pDiplomacyTurnStateManager->selectedTargetNationSlot786);
+  TPicture* coat0 = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoa0));
+  coat0->AssertValid();
+  coat0->SetPictureResourceIdAndRefresh(
+      static_cast<short>(g_pDiplomacyTurnStateManager->selectedSourceNationSlot784 +
+                         kCouncilCoatOfArmsPictureBase),
+      1);
+  TPicture* coat1 = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoa1));
+  coat1->AssertValid();
+  coat1->SetPictureResourceIdAndRefresh(
+      static_cast<short>(g_pDiplomacyTurnStateManager->selectedTargetNationSlot786 +
+                         kCouncilCoatOfArmsPictureBase),
+      1);
 
   const short localizationMode = static_cast<short>(g_pSimMgr->mode);
   if (localizationMode == 0x16 || localizationMode == 0x17) {
@@ -222,7 +194,7 @@ void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
     }
     visibleVoteTier528 = kCouncilTickerIntervalMapMode;
 
-    TControl* endControl = static_cast<TControl*>(hostPanel->ResolveControlByTag(kControlTagEnd));
+    TControl* endControl = static_cast<TControl*>(ResolveControlByTag(kControlTagEnd));
     if (endControl != nullptr) {
       endControl->AssertValid();
       endControl->controlTag =
@@ -243,7 +215,7 @@ void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
 
   TCouncilTickerAnimation* tickerAnimation = new TCouncilTickerAnimation();
   if (tickerAnimation != nullptr) {
-    tickerAnimation->ConstructTCouncilTickerAnimationBaseState(hostPanel, 2);
+    tickerAnimation->InitializeCouncilTicker(this, 2);
     if (g_pUiAnimator != nullptr) {
       g_pUiAnimator->AddObjectToUiTransientRegistry(tickerAnimation);
     }
@@ -251,7 +223,7 @@ void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
 
   SetCursor(g_pUiRuntimeContext->turnEventCursors[26]);
 
-  TControl* endControl = static_cast<TControl*>(hostPanel->ResolveControlByTag(kControlTagEnd));
+  TControl* endControl = static_cast<TControl*>(ResolveControlByTag(kControlTagEnd));
   if (endControl != nullptr) {
     endControl->AssertValid();
     endControl->SetState(0, 0);

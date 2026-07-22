@@ -49,7 +49,7 @@ Common conventions in every ratio body:
    (vt+0x28c, body 0x004e1f40, **not yet ported**; provisional inline returns 0.0f).
 4. On join: for each eligible nation `i<7` with `GetRelationTierSlot70(my, i) == 2` and
    `HasPolicyWithNationSlot44(i, target)`, call `ApplyRelationCode4Slot7c(my, i, 1)`;
-   then `TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(0x1c, target, my, 0)`.
+   then `TNewsMgr::AddTreatyEvent(0x1c, target, my, 0)`.
 
 ## CIterator (0x00487ef0 / 0x00487f20 / 0x00487f40)
 
@@ -124,7 +124,7 @@ Write the arithmetic against the named constants in the original FPU shape
 | 0x6a43d0 | `g_pDiplomacyTurnStateManager` | manager (alliance slots 0x8c/0x90, standing matrix +0x79c) |
 | 0x6a43d4 | `g_pGlobalMapState` | receiver of `AreNationsBorderLinked` |
 | 0x6a43d8 | `g_pCityOrderCapabilityState` | capability bytes 0x1a5/0x1a8 used by slot 0x90 |
-| 0x6a43e8 | `g_pInterNationEventQueueManager` | event queue (event 0x1c from slot 0x9e) |
+| 0x6a43e8 | `g_pNewsMgr` | event queue (event 0x1c from slot 0x9e) |
 
 `TMinor` and `TGreatPower` share the nation-state prefix layout: **military unit list
 at +0x44** (`militaryUnitList44`, entries carry the unit type id short at +4) and

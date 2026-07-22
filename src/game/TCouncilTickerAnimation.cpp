@@ -31,8 +31,7 @@ IMPLEMENT_DYNCREATE(TCouncilTickerAnimation, TAnimation)
 TCouncilTickerAnimation::TCouncilTickerAnimation() {}
 
 // FUNCTION: IMPERIALISM 0x0049ff90
-void TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState(TCouncilView* hostPanel,
-                                                                        int tickInterval) {
+void TCouncilTickerAnimation::InitializeCouncilTicker(TCouncilView* hostPanel, int tickInterval) {
   ownerView04 = hostPanel;
   frameIndex08 = 0;
   frameCount0A = 0;

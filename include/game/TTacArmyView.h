@@ -25,5 +25,5 @@ public:
   // (called by InitializeBattleSetupAndMaybeDispatchTurnEventED8 after resolving the
   // 'DLOG' control). Not a real constructor despite the symbols.csv name.
   // 0x5a9d90, __thiscall, ret 8.
-  void ConstructTTacArmyViewBaseState(int compositionClass, class TArmyBattle* battle);
+  void InitializeBattlefieldView(int compositionClass, class TArmyBattle* battle);
 };

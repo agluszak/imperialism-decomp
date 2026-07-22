@@ -1193,8 +1193,8 @@ undefined TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDial
     RECT* rect, int effectId, int frameCount, TacticalTileIndex tileIndex, int mode) {
   TOneTimeAnimation* animation = new TOneTimeAnimation;
   // The original calls the init body unconditionally on the new-result (no null guard).
-  animation->ConstructTOneTimeAnimationBaseState(this, rect, static_cast<short>(frameCount),
-                                                 static_cast<short>(effectId), mode, tileIndex);
+  animation->InitializeOneTimeAnimation(this, rect, static_cast<short>(frameCount),
+                                        static_cast<short>(effectId), mode, tileIndex);
   // The registry stores heterogeneous animation objects; TOneTimeAnimation is
   // CObject-rooted, not TAnimation-derived, so this is a genuine pun confined here.
   g_pUiAnimator->AddObjectToUiTransientRegistry(
@@ -1468,7 +1468,7 @@ void TTacticalBattleView::SpawnTacticalUiMarkerAtUnitTile() {
   tileRect.bottom = tileRect.top + rowHeight;
   TAnimation* marker = new TAnimation;
   // Original calls the init body unconditionally on the new-result (no null guard).
-  marker->ConstructTAnimationBaseState(this, &tileRect, 2, 0, 0xa, 0x2711);
+  marker->InitializeAnimation(this, &tileRect, 2, 0, 0xa, 0x2711);
   g_pUiAnimator->AddObjectToUiTransientRegistry(marker);
 }
 

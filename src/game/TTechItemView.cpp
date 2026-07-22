@@ -28,8 +28,8 @@ TTechItemView::~TTechItemView() {}
 IMPLEMENT_DYNCREATE(TTechItemView, TView)
 
 // FUNCTION: IMPERIALISM 0x005b12e0
-void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLayout,
-                                                    int* sizeLayout, int nationSlot, int techId) {
+void TTechItemView::InitializeTechItem(TView* panel, int* offsetLayout, int* sizeLayout,
+                                       int nationSlot, int techId) {
   CString techName;
   CString yearText;
   CString labelText;
@@ -66,8 +66,7 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
     TDeluxeText* titleControl = new TDeluxeText();
     int titleOffset[2] = {0x4d, 0};
     int titleSize[2] = {0x69, 0x3f};
-    titleControl->ConstructTDeluxeTextBaseState(this, titleOffset, titleSize, &zeroRect, &textStyle,
-                                                -2);
+    titleControl->InitializeDeluxeText(this, titleOffset, titleSize, &zeroRect, &textStyle, -2);
     titleControl->textColor98 = titleStyleFlags;
     titleControl->shadowTextColor9C = shadowStyleFlags;
     titleControl->dropShadowEnabledA0 = true;
@@ -84,7 +83,7 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
     TDeluxeText* descText = new TDeluxeText();
     int descOffset[2] = {0x127, 0};
     int descSize[2] = {0x10d, 0x3f};
-    descText->ConstructTDeluxeTextBaseState(this, descOffset, descSize, &zeroRect, &textStyle, -2);
+    descText->InitializeDeluxeText(this, descOffset, descSize, &zeroRect, &textStyle, -2);
     descText->textColor98 = titleStyleFlags;
     descText->shadowTextColor9C = shadowStyleFlags;
     descText->dropShadowEnabledA0 = true;
@@ -99,8 +98,7 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
     TDeluxeText* dateControl = new TDeluxeText();
     int dateOffset[2] = {0xba, 0};
     int dateSize[2] = {0x53, 0x3f};
-    dateControl->ConstructTDeluxeTextBaseState(this, dateOffset, dateSize, &zeroRect, &textStyle,
-                                               1);
+    dateControl->InitializeDeluxeText(this, dateOffset, dateSize, &zeroRect, &textStyle, 1);
     dateControl->textColor98 = titleStyleFlags;
     dateControl->shadowTextColor9C = shadowStyleFlags;
     dateControl->dropShadowEnabledA0 = true;
@@ -135,8 +133,7 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
     TDeluxeText* prereqControl = new TDeluxeText();
     int prereqOffset[2] = {0xbd, 0};
     int prereqSize[2] = {0x53, 0x3f};
-    prereqControl->ConstructTDeluxeTextBaseState(this, prereqOffset, prereqSize, &zeroRect,
-                                                 &textStyle, 1);
+    prereqControl->InitializeDeluxeText(this, prereqOffset, prereqSize, &zeroRect, &textStyle, 1);
     prereqControl->textColor98 = titleStyleFlags;
     prereqControl->shadowTextColor9C = shadowStyleFlags;
     prereqControl->dropShadowEnabledA0 = true;
@@ -190,7 +187,7 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     } else if (sourceHandler->controlTag == kControlTagDesc) {
       // Turn-event dialog root for the tech-history popup (a TWindow, per this session's
       // established dialog-node pattern). Its 'DLOG' child is restyled via
-      // TTechHistoryView::ConstructTTechHistoryViewBaseState; the rest of the modal sequence
+      // TTechHistoryView::PopulateTechHistory; the rest of the modal sequence
       // matches the pattern already ported elsewhere this session
       // (DispatchUiRuntimeMessage102CAndRefreshActiveView, TArmyUnitView::
       // HandleCrossUArmyViewsNameCommand).
@@ -199,7 +196,7 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       TTechHistoryView* historyView =
           static_cast<TTechHistoryView*>(node->ResolveControlByTag(kControlTagDialog /* 'DLOG' */));
       historyView->AssertValid();
-      historyView->ConstructTTechHistoryViewBaseState(static_cast<short>(techId64));
+      historyView->PopulateTechHistory(static_cast<short>(techId64));
 
       POINT placement;
       g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(node, &placement);

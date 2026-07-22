@@ -6,6 +6,7 @@
 // Forward declarations for types referenced by generated signatures.
 class TTaskForce;
 class TZone;
+class TNavyRoster;
 class TWorldView;
 class TMiniMapView;
 class TMapDialog;
@@ -63,10 +64,12 @@ public:
   // TTaskForce: its CreateTaskForceFromNavyOrders... factory produces the task force
   // panel shown for it (SetActiveMapOrderEntry/RefreshMapOrderEntryPanel).
   TZone* orderEntryContext98;
-  // Windows field-xrefs find only the constructor's zero writes at +0x9c/+0xa0.
-  // Preserve the storage explicitly until a reader or writer establishes semantics.
+  // Windows field-xrefs find only the constructor's zero write at +0x9c.
   int unresolvedZero9C;
-  int unresolvedZeroA0;
+  // Mac TMapUberPicture::UpdateRoster (Windows 0x599a20) refreshes this page at its
+  // currentPage. The Combined Map resource identifies the enclosing 'main' receiver as
+  // TMapUberPicture; the pointed-to page is optional.
+  TNavyRoster* navyRosterA0;
   // Optional 'DOOG' child used by the 0x7dd dual-map factory. Its factory constructs a
   // TOceanDialog, and Scroll calls ApplyDirectionalNudgeAndRefreshDisplay
   // directly when that child is active.
@@ -146,6 +149,9 @@ public:
   // Resets map interaction back to civilian-selection mode: enters the overlay mode with
   // no explicit control, then sets interaction mode 0. 0x005999f0, __thiscall, 0 args.
   void ResetMapInteractionToCivilianMode();
+  // Mac oracle: UpdateRoster(). Refresh the optional roster page without changing its
+  // current page. 0x00599a20.
+  void UpdateRoster();
   // Cycles map interaction selection to the next civilian/province/map-order candidate
   // after a handled click (priority: civilian, then province, then map-order entry;
   // clears the active pointer if none remain). 0x00597a80, __thiscall, 0 args, 996 bytes.

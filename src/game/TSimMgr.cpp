@@ -1456,7 +1456,7 @@ void TSimMgr::ProcessScenarioScript() {
     zone->displayName = ordinalText;
   }
 
-  CFile_Virtuals* stream = g_pUiViewManager->LoadTableResourceStreamByName(scenarioPath);
+  CFile* stream = g_pUiViewManager->LoadTableResourceStreamByName(scenarioPath);
   int resourceSize = g_pUiViewManager->GetResourceStreamSize(stream);
   unsigned char* buffer = new unsigned char[resourceSize];
   g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(stream, buffer, &resourceSize);

@@ -68,6 +68,14 @@ agent-finish *args:
 advice *args:
   uv run python -m tools.workflow.advice {{args}}
 
+# Strict source codemod for listing-reviewed return-type migrations. Dry-run by
+# default; --apply updates the owned definition and its class declaration only
+# after every requested address validates without ambiguity.
+[doc('MUTATES (--apply): rewrite reviewed method return types by owned address')]
+[group('agent')]
+rewrite-return-types *args:
+  uv run python -m tools.workflow.rewrite_return_types {{args}}
+
 [doc('Release this task: delete the claim refs for the receipt targets')]
 [group('agent')]
 agent-release *args:

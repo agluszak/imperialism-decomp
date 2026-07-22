@@ -28,6 +28,7 @@
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/navy_order.h"
+#include "game/TNavyRoster.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -47,8 +48,7 @@ IMPLEMENT_DYNCREATE(TMapUberPicture, TMapUberUberPicture)
 // FUNCTION: IMPERIALISM 0x005969e0
 TMapUberPicture::TMapUberPicture()
     : invalidationFlag94(1), activeUnitCategoryIndex96(3), orderEntryContext98(nullptr),
-      unresolvedZero9C(0), unresolvedZeroA0(0), goodGoldTagControlA4(nullptr),
-      miniMapViewC0(nullptr) {}
+      unresolvedZero9C(0), navyRosterA0(0), goodGoldTagControlA4(nullptr), miniMapViewC0(nullptr) {}
 
 // SYNTHETIC: IMPERIALISM 0x00596a30
 // TMapUberPicture::`scalar deleting destructor'
@@ -925,6 +925,13 @@ bool TMapUberPicture::TrySelectNextValidMapOrderEntry(char includeCurrent) {
 void TMapUberPicture::ResetMapInteractionToCivilianMode() {
   EnterMapInteractionOverlayMode(nullptr);
   SetMapInteractionMode(0);
+}
+
+// FUNCTION: IMPERIALISM 0x00599a20
+void TMapUberPicture::UpdateRoster() {
+  if (navyRosterA0 != 0) {
+    navyRosterA0->ShowPage(navyRosterA0->currentPage);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00599a50

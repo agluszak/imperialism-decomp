@@ -75,9 +75,7 @@ int TModalDialogBase::DoModal() {
       ::SetActiveWindow(ownerWindow);
     }
   }
-  // The dialog result the game reads back is the CWnd-region word at this+0x2c, set by
-  // the modal loop before the owner-focus restore.
-  const int result = reinterpret_cast<const int*>(this)[0x2c / 4];
+  const int result = m_nModalResult;
   finalizeState = 1;
   return result;
 }

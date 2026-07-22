@@ -6,8 +6,11 @@
 #include "game/TApplication.h"
 #include "game/TCity.h"
 #include "game/TCountry.h"
+#include "game/TDealTabControl.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TDisplayMgr.h"
+#include "game/TDropShadowNumberText.h"
+#include "game/TDropShadowText.h"
 #include "game/TGreatPower.h"
 #include "game/THelpMgr.h"
 #include "game/TNextTradeCommand.h"
@@ -17,12 +20,16 @@
 #include "game/TSoundPlayer.h"
 #include "game/TStaticText.h"
 #include "game/TTechMgr.h"
+#include "game/TToolBarCluster.h"
 #include "game/TTradeMgr.h"
+#include "game/TTradeBookView.h"
 #include "game/TUiEvent.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
+#include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x005be4b0
 // TOfferDeskPicture::CreateObject
 
@@ -42,8 +49,70 @@ TOfferDeskPicture::~TOfferDeskPicture() {}
 // FUNCTION: IMPERIALISM 0x005be600
 void TOfferDeskPicture::DoPostCreate(int arg) {
   TPicture::DoPostCreate(arg);
-  // The original then sets up the offer-desk's per-nation control table (816 bytes) -- not
-  // yet ported.
+
+  TDropShadowText* treasury = static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTrea));
+  treasury->AssertValid();
+  ApplyUiTextStyleAndThemeFlags(treasury, 0, 0xe, 0x2b6c, 0x2b6b);
+
+  TDropShadowNumberText* maximum = static_cast<TDropShadowNumberText*>(ResolveControlByTag('mCap'));
+  maximum->AssertValid();
+  ApplyUiNumberTextStyleAndThemeColor(maximum, 0, 0xc, 0x2b6c, 0x2b6b);
+  LoadUiStringByGroupAndIndexToControlObject(0x2740, 1, maximum);
+  maximum->SetTextAlignmentAndMaybeRefresh(0, 1);
+
+  TDealTabControl* tabs = static_cast<TDealTabControl*>(ResolveControlByTag('tabs'));
+  tabs->AssertValid();
+  tabs->Setup(0x2264,
+              g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId]);
+  tabs->RefreshControl();
+
+  TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(ResolveControlByTag(kControlTagTool));
+  toolbar->AssertValid();
+  toolbar->RefreshControl();
+  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
+
+  TView* miniPicture = ResolveControlByTag('mPic');
+  miniPicture->AssertValid();
+
+  TView* offerCluster = ResolveControlByTag(kControlTagClus);
+  offerCluster->AssertValid();
+  offerCluster->SetState(0, 1);
+  SetControlHoverHelpText(CString(g_szEmptyString), this);
+
+  LoadUiStringByGroupAndIndexToControlObject(0x2740, 2, maximum);
+  LoadUiStringByGroupAndIndexToControlObject(0x2740, 5, ResolveControlByTag(kTagDone));
+  LoadUiStringByGroupAndIndexToControlObject(0x2740, 6, ResolveControlByTag(kControlTagReje));
+  LoadUiStringByGroupAndIndexToControlObject(0x2740, 7, ResolveControlByTag(kControlTagAcce));
+
+  TView* sheet = ResolveControlByTag('shee');
+  SetControlHoverHelpText(CString(g_szEmptyString), sheet);
+  TView* wait = ResolveControlByTag('wait');
+  SetControlHoverHelpText(CString(g_szEmptyString), wait);
+  TTradeBookView* book = static_cast<TTradeBookView*>(ResolveControlByTag(kControlTagBook));
+  SetControlHoverHelpText(CString(g_szEmptyString), book);
+  LoadUiStringByGroupAndIndexToControlObject(0x2740, 1, miniPicture);
+  SetControlHoverHelpText(CString(g_szEmptyString), book->ResolveControlByTag('list'));
+  LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, ResolveControlByTag(kControlTagQuer));
+
+  TStaticText* waitText = static_cast<TStaticText*>(wait->ResolveControlByTag('text'));
+  waitText->AssertValid();
+  TextStyle waitStyle;
+  waitStyle.textColor = 0;
+  BuildUiTextStyleDescriptor(&waitStyle, 0, 0xe, 0x2b67);
+  waitText->InstallTextStyle(waitStyle, 0);
+  waitText->SetTextAlignmentAndMaybeRefresh(1, 0);
+
+  acceptButtonA0 = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
+  acceptButtonA0->AssertValid();
+  acceptButtonA0->timingWord92 = 0x1388;
+  rejectButtonA4 = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
+  rejectButtonA4->AssertValid();
+  rejectButtonA4->timingWord92 = 0x1388;
+
+  TPictureButton* formatButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagForM));
+  formatButton->AssertValid();
+  formatButton->timingWord92 = 0x1b58;
+  LoadUiStringByGroupAndIndexToControlObject(0x2764, 0x12, formatButton);
 }
 
 // FUNCTION: IMPERIALISM 0x005bea00
@@ -98,8 +167,9 @@ void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     } else {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x13f0, 0, 1);
     }
-    TControl* bookControl = static_cast<TControl*>(ResolveControlByTag(kControlTagBook));
-    bookControl->UpdateSelectionRect(selectionIndex);
+    TTradeBookView* bookControl =
+        static_cast<TTradeBookView*>(ResolveControlByTag(kControlTagBook));
+    bookControl->SetItem(selectionIndex);
   } else if (commandId == 0xa) {
     if (tag == kControlTagAcce || tag == kControlTagReje) {
       CreateNextTradeCommandAndFormatPrompt(tag);

@@ -11975,6 +11975,24 @@
       ],
       "source_file": "src/game/TShipyardView.cpp"
     },
+    "0x004c97c0": {
+      "references": [
+        {
+          "address": "0x0069430c",
+          "kind": "embedded_global",
+          "symbol": "g_szDecimalFormat",
+          "text": "%d"
+        },
+        {
+          "group": 10040,
+          "index": 28,
+          "kind": "windows_gob",
+          "load_string_id": 20988,
+          "text": "Provinces"
+        }
+      ],
+      "source_file": "src/game/TShipyardView.cpp"
+    },
     "0x004ca8f0": {
       "references": [
         {
@@ -16075,6 +16093,72 @@
         }
       ],
       "source_file": "src/game/TTradeBookView.cpp"
+    },
+    "0x005be150": {
+      "references": [
+        {
+          "group": 10049,
+          "index": 3,
+          "kind": "windows_gob",
+          "load_string_id": 21863,
+          "text": "Bidding Nations"
+        }
+      ],
+      "source_file": "src/game/TTradeBookView.cpp"
+    },
+    "0x005be600": {
+      "references": [
+        {
+          "group": 10032,
+          "index": 3,
+          "kind": "windows_gob",
+          "load_string_id": 20163,
+          "text": "Help"
+        },
+        {
+          "group": 10048,
+          "index": 1,
+          "kind": "windows_gob",
+          "load_string_id": 21761,
+          "text": "Remaining Merchant Marine"
+        },
+        {
+          "group": 10048,
+          "index": 2,
+          "kind": "windows_gob",
+          "load_string_id": 21762,
+          "text": "Open Trade Book"
+        },
+        {
+          "group": 10048,
+          "index": 5,
+          "kind": "windows_gob",
+          "load_string_id": 21765,
+          "text": "Close Trade Book"
+        },
+        {
+          "group": 10048,
+          "index": 6,
+          "kind": "windows_gob",
+          "load_string_id": 21766,
+          "text": "Reject Offer"
+        },
+        {
+          "group": 10048,
+          "index": 7,
+          "kind": "windows_gob",
+          "load_string_id": 21767,
+          "text": "Accept Offer"
+        },
+        {
+          "group": 10084,
+          "index": 18,
+          "kind": "windows_gob",
+          "load_string_id": 25378,
+          "text": "Advice From Foreign Minister"
+        }
+      ],
+      "source_file": "src/game/TOfferDeskPicture.cpp"
     },
     "0x005bf930": {
       "references": [
@@ -191397,7 +191481,7 @@
   "summary": {
     "embedded_globals": 773,
     "formula_matches": 2356,
-    "functions_with_references": 324,
+    "functions_with_references": 327,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3272,
     "text_resources": 182,

@@ -32,7 +32,7 @@ public:
   // Real ctor (0x49f6a0): looks up a per-kind (stringId, ticksPerFrame) pair from two
   // 9-entry tables baked into the original as immediate stores (kind 0..8 -- battle
   // report civ animation variants) and forwards them to the already-ported
-  // TAnimation::ConstructTAnimationBaseState with frameCount pinned to 0 (this class
+  // TAnimation::InitializeAnimation with frameCount pinned to 0 (this class
   // overrides Tick itself, so the inherited
   // frame-index scheme is unused). Confirmed against both call sites
   // (OrphanTiny_ReturnZero_0048a730 and Draw): param_1 is the enclosing

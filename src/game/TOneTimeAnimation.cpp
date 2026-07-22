@@ -29,9 +29,8 @@ TOneTimeAnimation::~TOneTimeAnimation() {}
 IMPLEMENT_DYNCREATE(TOneTimeAnimation, TAnimation)
 
 // FUNCTION: IMPERIALISM 0x0049fd60
-void TOneTimeAnimation::ConstructTOneTimeAnimationBaseState(TView* view, RECT* rect,
-                                                            short frameCountArg, short effectId,
-                                                            int tickLimit, int registryTag) {
+void TOneTimeAnimation::InitializeOneTimeAnimation(TView* view, RECT* rect, short frameCountArg,
+                                                   short effectId, int tickLimit, int registryTag) {
   ownerView04 = view;
   screenRect1C = *rect;
   frameCount0A = frameCountArg;

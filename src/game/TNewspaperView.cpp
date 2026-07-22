@@ -1,6 +1,5 @@
 #include "game/TNewspaperView.h"
 
-#include "game/CFile_Virtuals.h"
 #include "game/TAssetMgr.h"
 #include "game/TDeluxeText.h"
 #include "game/TDiplomacyMgr.h"
@@ -276,12 +275,12 @@ int TNewspaperView::AppendInterNationEventSummaryTextEntry(int column, int y, in
     inset.bottom = 4;
     sizePair[0] = 0xbc;
     sizePair[1] = 0x18c;
-    text->ConstructTDeluxeTextBaseState(this, offsetPair, sizePair, &inset, style,
-                                        static_cast<short>(styleWord));
+    text->InitializeDeluxeText(this, offsetPair, sizePair, &inset, style,
+                               static_cast<short>(styleWord));
   }
 
   char* recordBuffer = new char[recordLength];
-  g_pUiViewManager->InvokeVtableSlot30OnTargetObject(newsTexStream94, recordLength);
+  g_pUiViewManager->SeekResourceStreamFromBeginning(newsTexStream94, recordLength);
   g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(newsTexStream94, recordBuffer,
                                                            &recordLength);
   char* formatted = AppendInterNationEventSummaryTextEntry_Impl(

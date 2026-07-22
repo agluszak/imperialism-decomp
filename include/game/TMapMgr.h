@@ -342,8 +342,7 @@ public:
       class TCivUnit* unusedOrder); // slot 0x1e 0x514e80
   // Seeds recruitSearchVisited0e like the SeedRecruitSearchVisitedState* family: eligible
   // only if the tile is owned by nationTag and its terrain kind is not hills, mountain, or
-  // swamp, gated further
-  // by IsValidSecondaryNationHomeTileCandidate (0x513980, not yet ported).
+  // swamp, gated further by IsValidSecondaryNationHomeTileCandidate (0x513980).
   virtual void SeedValidCitySiteCandidateTilesForNation(short nationTag); // slot 0x1f 0x514dc0
   // Resets recruitSearchVisited0e to 0 across all tiles and clears field9 back to idle.
   virtual void ResetRecruitSearchVisitedState(); // slot 0x20 0x514ef0
@@ -437,11 +436,11 @@ public:
   // classCode (no-op when already stamped) and recurses over the record's
   // adjacentRegionIds0A children. 0x0050f6b0, RET 8.
   void SetMapRecordFlagA3AndPropagateToChildren(int recordIndex, int classCode);
-  // 0x0050f860 -- rebuilds the per-tile owner/neighbor caches and fallback assignments
-  // after generation/load (858B; body deferred).
+  // 0x0050f860 -- rebuilds per-tile owner/neighbor caches and supplies fallback city
+  // assignments after generation or scenario load.
   void RebuildTileOwnerNeighborCachesAndFallbackAssignments();
-  // 0x00518540 -- loads a scenario map state from the table resource by index; returns
-  // 0 on failure (536B; body deferred). RET 4.
+  // 0x00518540 -- loads and validates a scenario map state from the table resource by
+  // index, then installs its city/tile records; returns 0 on failure. RET 4.
   char LoadScenarioMapStateFromTableResource(int scenarioIndex);
 
   // Moves cityRecordIndex's "anchor" tile (cityScoreTable[cityRecordIndex].cityTileIndex04,
@@ -770,10 +769,10 @@ public:
   // 0x5112f0/0x511360/0x5113d0/0x511440. Predicate helpers for the variant resolver:
   // each returns 1 iff the neighbor tile's byte-2 feature code is in a specific set of
   // adjacency-continuation codes (west-run set A/B, north-run set C/D).
-  char CheckTileVariantCodeMembershipSetA(StrategicTileIndex tileIndex);
-  char CheckTileVariantCodeMembershipSetB(StrategicTileIndex tileIndex);
-  char CheckTileVariantCodeMembershipSetC(StrategicTileIndex tileIndex);
-  char CheckTileVariantCodeMembershipSetD(StrategicTileIndex tileIndex);
+  bool CheckTileVariantCodeMembershipSetA(StrategicTileIndex tileIndex);
+  bool CheckTileVariantCodeMembershipSetB(StrategicTileIndex tileIndex);
+  bool CheckTileVariantCodeMembershipSetC(StrategicTileIndex tileIndex);
+  bool CheckTileVariantCodeMembershipSetD(StrategicTileIndex tileIndex);
 
   // 0x513ed0. True if either of the tile's two edge resources is a prospecting-discovery
   // candidate (codes 3/4/0x15/0x16, or 6 when the active nation has a production order).
@@ -802,9 +801,8 @@ public:
   // `this` at the callsite is the global map state, not a TCivToolbar).
   TCivUnit* GetTileUnitEntryByOwner(StrategicTileIndex tileIndex, short nationId);
 
-  // 0x513980, 632 bytes, __thiscall, 1 arg (tileIndex), returns bool. Called by
-  // SeedValidCitySiteCandidateTilesForNation. TODO stub: large body not
-  // yet ported.
+  // 0x513980, __thiscall, RET 4. Validates a secondary-nation city-site candidate from
+  // its terrain, ownership, adjacent-resource, and map-capability state.
   bool IsValidSecondaryNationHomeTileCandidate(StrategicTileIndex tileIndex);
 
   // Reset tileIndex's transport/anchor flags to the base state: re-anchor its city

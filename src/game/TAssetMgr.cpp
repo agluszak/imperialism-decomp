@@ -1,7 +1,5 @@
 #include "game/TAssetMgr.h"
 
-#include "game/CFile_Virtuals.h"
-
 #include "game/CAmbitDocument.h"
 #include "game/ImperialismApp.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
@@ -58,7 +56,7 @@ void TAssetMgr::CloseFilesFor(short fileSet) {
 int g_resourceStreamOpenSuppressAssert; // 0x6a5d20
 
 // FUNCTION: IMPERIALISM 0x005df430
-CFile_Virtuals* TAssetMgr::LoadTableResourceStreamByName(CString name) {
+CFile* TAssetMgr::LoadTableResourceStreamByName(CString name) {
   HMODULE hModule = LoadLibraryA(g_pImperialismApp->field_D4);
   HRSRC hResInfo = FindResourceA(hModule, name, "TABLE");
   if (hResInfo != 0) {
@@ -67,7 +65,7 @@ CFile_Virtuals* TAssetMgr::LoadTableResourceStreamByName(CString name) {
     LPVOID buffer = LockResource(hResData);
     DWORD size = SizeofResource(hModule, hResInfo);
     memFile->Attach(static_cast<BYTE*>(buffer), size, 0);
-    return reinterpret_cast<CFile_Virtuals*>(memFile);
+    return memFile;
   }
 
   CFile* file = new CFile();
@@ -76,33 +74,32 @@ CFile_Virtuals* TAssetMgr::LoadTableResourceStreamByName(CString name) {
       g_resourceStreamOpenSuppressAssert == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\WAssetMgr.cpp", 0xce);
   }
-  return reinterpret_cast<CFile_Virtuals*>(file);
+  return file;
 }
 
-// `this` (g_pUiViewManager at every callsite) is unused; the method just reseeks the
-
 // FUNCTION: IMPERIALISM 0x005df6d0
-void TAssetMgr::ReleaseResourceStreamIfNotNull(CFile_Virtuals* stream) {
+void TAssetMgr::ReleaseResourceStreamIfNotNull(CFile* stream) {
   if (stream != 0) {
-    stream->CloseAndMaybeDeleteSlot04(1);
+    delete stream;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005df700
-int TAssetMgr::ReadResourceStreamIntoBufferAndAdvance(CFile_Virtuals* stream, void* buffer,
+int TAssetMgr::ReadResourceStreamIntoBufferAndAdvance(CFile* stream, void* buffer,
                                                       int* countInOut) {
-  *countInOut = stream->ReadBytesSlot3C(buffer, *countInOut);
+  *countInOut = stream->Read(buffer, *countInOut);
   return 0;
 }
-// stream. Curated name kept from symbols.csv.
+// `this` (g_pUiViewManager at every callsite) is unused; the method just reseeks the
+// stream.
 // FUNCTION: IMPERIALISM 0x005df730
-void TAssetMgr::InvokeVtableSlot30OnTargetObject(CFile_Virtuals* stream, int offset) {
-  stream->SeekSlot30(offset, 0);
+void TAssetMgr::SeekResourceStreamFromBeginning(CFile* stream, int offset) {
+  stream->Seek(offset, CFile::begin);
 }
 
 // FUNCTION: IMPERIALISM 0x005df760
-int TAssetMgr::GetResourceStreamSize(CFile_Virtuals* stream) {
-  return stream->GetLengthSlot38();
+int TAssetMgr::GetResourceStreamSize(CFile* stream) {
+  return stream->GetLength();
 }
 
 // FUNCTION: IMPERIALISM 0x005df780

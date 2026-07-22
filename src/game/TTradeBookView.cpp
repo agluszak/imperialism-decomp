@@ -7,6 +7,8 @@
 #include "game/TTradePageBuyView.h"
 #include "game/TTradePageSellView.h"
 #include "game/global_data_tables.h"
+#include "game/mapped_flavor_text.h"
+#include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
@@ -52,6 +54,38 @@ void TTradeBookView::DoPostCreate(int arg) {
   combined = quarterText + s_szSpaceSeparator_00695794 + formattedText;
   rtilControl->SetTextAndMaybeRefresh(&combined, 0);
   rtilControl->SetEnabled(1, 1);
+}
+
+// FUNCTION: IMPERIALISM 0x005be150
+void TTradeBookView::SetItem(short categorySlot) {
+  buyPanel->RebuildNationBidRowsForCategory(categorySlot);
+  sellPanel->RebuildNationOfferRowsForCategory(categorySlot);
+
+  if (categorySlot != -1) {
+    pageCount =
+        buyPanel->pageCount > sellPanel->pageCount ? buyPanel->pageCount : sellPanel->pageCount;
+
+    TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitL));
+    title->AssertValid();
+
+    CString composedTitle;
+    CString categoryName;
+    CString titleTemplate;
+    g_pSimMgr->GetString(0x2741, 3, &titleTemplate);
+    g_pSimMgr->GetString(0x2711, categorySlot, &categoryName);
+    scanBracketExpressions(g_pSimMgr, &composedTitle, static_cast<LPCSTR>(titleTemplate),
+                           static_cast<LPCSTR>(categoryName));
+    title->SetTextAndMaybeRefresh(&composedTitle, 0);
+
+    CRect titleBounds;
+    title->QueryBounds(&titleBounds);
+    InvalidateCityDialogRectRegion(&titleBounds, 1);
+  } else {
+    pageCount = 0;
+  }
+
+  currentPage = 0;
+  ShowPage(1);
 }
 
 // FUNCTION: IMPERIALISM 0x005be370

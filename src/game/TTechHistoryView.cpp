@@ -22,7 +22,7 @@ IMPLEMENT_DYNCREATE(TTechHistoryView, TView)
 TTechHistoryView::TTechHistoryView() {}
 
 // FUNCTION: IMPERIALISM 0x005b22c0
-void TTechHistoryView::ConstructTTechHistoryViewBaseState(short techId) {
+void TTechHistoryView::PopulateTechHistory(short techId) {
   COLORREF mainStyle = 0;
   COLORREF shadowStyle = 0;
   ResolveUiThemeColor(0x2b6a, &mainStyle);
@@ -47,7 +47,7 @@ void TTechHistoryView::ConstructTTechHistoryViewBaseState(short techId) {
   int offset[2] = {0, 0};
   int size[2] = {scrollView->frameWidth34 - 0x19, frameHeight38};
   CRect zeroRect(0, 0, 0, 0);
-  descText->ConstructTDeluxeTextBaseState(scrollView, offset, size, &zeroRect, &style, -2);
+  descText->InitializeDeluxeText(scrollView, offset, size, &zeroRect, &style, -2);
   descText->textColor98 = mainStyle;
   descText->SetTextFromUiStringResourceId(static_cast<short>(techId + 0x8fc));
 

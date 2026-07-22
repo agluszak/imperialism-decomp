@@ -72,10 +72,6 @@ public:
                        TEvent* event) override; // 0x0f 0x48e710
   virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;
   virtual int GetEventNumber() override;
-
-  // Not yet ported (0x5be150, 420 bytes) -- called by TOfferDeskPicture::DoEvent with a
-  // lookup-table-derived selection index; body left as an honest stub pending investigation.
-  void UpdateSelectionRect(short selectionIndex);
 };
 
 ASSERT_SIZE(TControl, 0x84);

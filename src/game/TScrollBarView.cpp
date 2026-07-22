@@ -32,8 +32,7 @@ IMPLEMENT_DYNCREATE(TScrollBarView, TControl)
 // This address was previously claimed by a fabricated empty `TScrollBarView()` body;
 // the real ctor is inline (see the header) and 0x5744b0 is the 3-arg builder below.
 // FUNCTION: IMPERIALISM 0x005744b0
-void TScrollBarView::ConstructTScrollBarViewBaseState(TScrollView* panel, int* offsetLayout,
-                                                      int* sizeLayout) {
+void TScrollBarView::InitializeScrollBar(TScrollView* panel, int* offsetLayout, int* sizeLayout) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 4, 4, 0);
   ownerView84 = static_cast<TScrollView*>(ownerContext);
   ownerView84->AssertValid();
