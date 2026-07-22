@@ -4099,7 +4099,7 @@ address|matching|name
 0x557080|0.7058823529411765|TNavyMgr::MoveMapOrderEntryToQueueHeadIfValid
 0x557170|0.35789473684210527|TNavyMgr::ComputeAggregateWeightedChildCostForMatchingType5NavyOrders
 0x557210|0.2826086956521739|TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists
-0x5572d0|0.9302325581395349|GetEnabledIndustryCapabilitySlotByClass
+0x5572d0|0.8837209302325582|GetEnabledIndustryCapabilitySlotByClass
 0x557320|0.5106382978723404|GetLocalizedNavalReportShipType
 0x5573f0|0.0|CreateNavySecondaryOrderEntryAndDeduplicateDisplayName
 0x557560|0.9866666666666667|RevalidateAndRequeueMapOrdersForTurn
@@ -4223,13 +4223,13 @@ address|matching|name
 0x562190|1.0|TOcean::GetRuntimeClass
 0x5621b0|1.0|ResetPortZoneGlobalContextCounters
 0x5621e0|1.0|TOcean::Free
-0x562340|0.006514657980456026|TOcean::ReadFrom
+0x562340|0.38974358974358975|TOcean::ReadFrom
 0x5627a0|0.9583333333333334|TZone::~TZone
 0x562880|1.0|TZone::`vector deleting destructor'
-0x5628f0|0.012422360248447204|TOcean::WriteTo
+0x5628f0|0.7735849056603774|TOcean::WriteTo
 0x562af0|0.8322147651006712|RelaxMapTileCostFieldByNeighborTerrain
 0x562c00|0.02|SelectBestSeedTileForNationFromCostField
-0x562d90|0.6237623762376238|TOcean::InitializeMapActionContextsForNationCountUsingCostField
+0x562d90|0.65|TOcean::InitializeMapActionContextsForNationCountUsingCostField
 0x562f20|0.514745308310992|TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks
 0x563220|1.0|RegenerateAllMapActionContextStatusCodes
 0x563300|1.0|TOcean::GetMapActionContextEntryByNationCodeOffset17
@@ -5499,8 +5499,8 @@ address|matching|name
 0x5aefd0|0.5|DestructTTechMgrAndMaybeFree_Impl
 0x5aeff0|0.6985915492957746|TTechMgr::InitializeCityOrderCapabilityStateDefaults
 0x5af330|0.4936708860759494|TTechMgr::GenerateRandomCapabilityPrioritySlots
-0x5af460|0.01|TTechMgr::ReadFrom
-0x5af710|0.011904761904761904|TTechMgr::WriteTo
+0x5af460|1.0|TTechMgr::ReadFrom
+0x5af710|1.0|TTechMgr::WriteTo
 0x5af980|0.37158469945355194|TTechMgr::CheckForAdvances
 0x5afb10|0.9487179487179487|TTechMgr::ApplyTechUnlockAndQueueNationAbilityNotices
 0x5afba0|0.71875|TTechMgr::ApplyCityOrderCapabilityUnlockByTechId
@@ -5508,7 +5508,7 @@ address|matching|name
 0x5b0340|0.8787878787878788|TTechMgr::ActivateSlotAndUpdateUI
 0x5b0500|0.6409807355516638|TTechMgr::UpdateSelectionAndRecalculateScores
 0x5b0a20|0.7619047619047619|TTechMgr::AreTechItemPrerequisitePairCompleted
-0x5b0a90|0.38235294117647056|TTechMgr::SelectMissingTechItemPrerequisitesFromPair
+0x5b0a90|0.37681159420289856|TTechMgr::SelectMissingTechItemPrerequisitesFromPair
 0x5b0b30|1.0|TTechMgr::ApplyTechItemPurchaseCostAndState
 0x5b0bb0|1.0|TTechMgr::RefundTechItemPurchaseCostAndClearState
 0x5b0c20|1.0|TTechMgr::ConsumeFirstPendingAbilityUnlock
