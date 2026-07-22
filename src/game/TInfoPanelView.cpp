@@ -59,21 +59,21 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
 
   short ownerY = static_cast<short>(ownerLocalY);
   short ownerX = static_cast<short>(ownerLocalX);
-  int shadowStyle = 0;
-  int foregroundStyle = 0;
+  COLORREF shadowColor = 0;
+  COLORREF foregroundColor = 0;
   selectedNation = diplomacyMapView60->frameRegionSelectorAt98;
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b68);
-  MapUiThemeCodeToStyleFlags(0x2b6b, &shadowStyle);
-  MapUiThemeCodeToStyleFlags(0x2b68, &foregroundStyle);
+  ResolveUiThemeColor(0x2b6b, &shadowColor);
+  ResolveUiThemeColor(0x2b68, &foregroundColor);
 
   short baseY = static_cast<short>(0x16f - ownerY);
   short baseX = static_cast<short>(0x48 - ownerX);
   g_pSimMgr->GetString(0x2733, 0, &text); // "Information:"
-  SetQuickDrawColorAndSyncGlobals(foregroundStyle);
+  SetQuickDrawColorAndSyncGlobals(foregroundColor);
   SetQuickDrawTextOriginWithContextOffset(baseX + 1, baseY + 1);
   DrawTextWithCachedQuickDrawStyleState(&text);
-  SetQuickDrawColorAndSyncGlobals(shadowStyle);
+  SetQuickDrawColorAndSyncGlobals(shadowColor);
   SetQuickDrawTextOriginWithContextOffset(baseX, baseY);
   DrawTextWithCachedQuickDrawStyleState(&text);
 
@@ -81,10 +81,10 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
   g_pSimMgr->GetString(0x2733, 1, &text); // "Provinces:"
   short labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[0] - ownerY);
   short labelX = static_cast<short>(g_infoPanelLabelXByRow_006969b0[0] - ownerX);
-  SetQuickDrawColorAndSyncGlobals(foregroundStyle);
+  SetQuickDrawColorAndSyncGlobals(foregroundColor);
   SetQuickDrawTextOriginWithContextOffset(labelX + 1, labelY + 1);
   DrawTextWithCachedQuickDrawStyleState(&text);
-  SetQuickDrawColorAndSyncGlobals(shadowStyle);
+  SetQuickDrawColorAndSyncGlobals(shadowColor);
   SetQuickDrawTextOriginWithContextOffset(labelX, labelY);
   DrawTextWithCachedQuickDrawStyleState(&text);
 
@@ -93,10 +93,10 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
       g_pSimMgr->GetString(0x2733, static_cast<short>(row + 1), &text);
       labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[row] - ownerY);
       labelX = static_cast<short>(g_infoPanelLabelXByRow_006969b0[row] - ownerX);
-      SetQuickDrawColorAndSyncGlobals(foregroundStyle);
+      SetQuickDrawColorAndSyncGlobals(foregroundColor);
       SetQuickDrawTextOriginWithContextOffset(labelX + 1, labelY + 1);
       DrawTextWithCachedQuickDrawStyleState(&text);
-      SetQuickDrawColorAndSyncGlobals(shadowStyle);
+      SetQuickDrawColorAndSyncGlobals(shadowColor);
       SetQuickDrawTextOriginWithContextOffset(labelX, labelY);
       DrawTextWithCachedQuickDrawStyleState(&text);
     }
@@ -107,20 +107,20 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
       g_pSimMgr->GetString(0x2733, 0x61, &text); // "Most Favored"
       labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[1] - ownerY);
       labelX = static_cast<short>(g_infoPanelLabelXByRow_006969b0[1] - ownerX);
-      SetQuickDrawColorAndSyncGlobals(foregroundStyle);
+      SetQuickDrawColorAndSyncGlobals(foregroundColor);
       SetQuickDrawTextOriginWithContextOffset(labelX + 1, labelY + 1);
       DrawTextWithCachedQuickDrawStyleState(&text);
-      SetQuickDrawColorAndSyncGlobals(shadowStyle);
+      SetQuickDrawColorAndSyncGlobals(shadowColor);
       SetQuickDrawTextOriginWithContextOffset(labelX, labelY);
       DrawTextWithCachedQuickDrawStyleState(&text);
 
       g_pSimMgr->GetString(0x2733, 0x62, &text); // "Trading Nation:"
       labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[2] - ownerY);
       labelX = static_cast<short>(g_infoPanelLabelXByRow_006969b0[2] - ownerX);
-      SetQuickDrawColorAndSyncGlobals(foregroundStyle);
+      SetQuickDrawColorAndSyncGlobals(foregroundColor);
       SetQuickDrawTextOriginWithContextOffset(labelX + 1, labelY + 1);
       DrawTextWithCachedQuickDrawStyleState(&text);
-      SetQuickDrawColorAndSyncGlobals(shadowStyle);
+      SetQuickDrawColorAndSyncGlobals(shadowColor);
       SetQuickDrawTextOriginWithContextOffset(labelX, labelY);
       DrawTextWithCachedQuickDrawStyleState(&text);
     }
@@ -130,10 +130,10 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
   TCountry* selectedCountry = g_apTerrainTypeDescriptorTable[selectedNation];
   selectedCountry->LoadNationDisplayNameSharedRefFromField8(&text);
   short valueX = static_cast<short>(0xa7 - ownerX);
-  SetQuickDrawColorAndSyncGlobals(foregroundStyle);
+  SetQuickDrawColorAndSyncGlobals(foregroundColor);
   SetQuickDrawTextOriginWithContextOffset(valueX + 1, baseY + 1);
   DrawTextWithCachedQuickDrawStyleState(&text);
-  SetQuickDrawColorAndSyncGlobals(shadowStyle);
+  SetQuickDrawColorAndSyncGlobals(shadowColor);
   SetQuickDrawTextOriginWithContextOffset(valueX, baseY);
   DrawTextWithCachedQuickDrawStyleState(&text);
 
@@ -145,10 +145,10 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
     scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(ownerName));
     labelX = static_cast<short>(g_infoPanelLabelXByRow_006969b0[1] - ownerX);
-    SetQuickDrawColorAndSyncGlobals(foregroundStyle);
+    SetQuickDrawColorAndSyncGlobals(foregroundColor);
     SetQuickDrawTextOriginWithContextOffset(labelX + 1, 0x25);
     DrawTextWithCachedQuickDrawStyleState(&text);
-    SetQuickDrawColorAndSyncGlobals(shadowStyle);
+    SetQuickDrawColorAndSyncGlobals(shadowColor);
     SetQuickDrawTextOriginWithContextOffset(labelX, 0x24);
     DrawTextWithCachedQuickDrawStyleState(&text);
   } else if (selectedCountry != 0 && selectedCountry->encodedNationSlot >= 100 &&
@@ -158,20 +158,20 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
     g_pSimMgr->GetString(0x2733, 0x17, &templateText); // "Anarchy"
     scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(ownerName));
-    SetQuickDrawColorAndSyncGlobals(foregroundStyle);
+    SetQuickDrawColorAndSyncGlobals(foregroundColor);
     SetQuickDrawTextOriginWithContextOffset(0x79, 0x25);
     DrawTextWithCachedQuickDrawStyleState(&text);
-    SetQuickDrawColorAndSyncGlobals(shadowStyle);
+    SetQuickDrawColorAndSyncGlobals(shadowColor);
     SetQuickDrawTextOriginWithContextOffset(0x78, 0x24);
     DrawTextWithCachedQuickDrawStyleState(&text);
   }
 
   text.Format(g_szDecimalFormat, selectedCountry->ownedRegionList->GetSize());
   labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[0] - ownerY);
-  SetQuickDrawColorAndSyncGlobals(foregroundStyle);
+  SetQuickDrawColorAndSyncGlobals(foregroundColor);
   SetQuickDrawTextOriginWithContextOffset(valueX + 1, labelY + 1);
   DrawTextWithCachedQuickDrawStyleState(&text);
-  SetQuickDrawColorAndSyncGlobals(shadowStyle);
+  SetQuickDrawColorAndSyncGlobals(shadowColor);
   SetQuickDrawTextOriginWithContextOffset(valueX, labelY);
   DrawTextWithCachedQuickDrawStyleState(&text);
 
@@ -180,10 +180,10 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
                            ->ClassifyNationMilitaryPowerBandAgainstGlobalMean();
     g_pSimMgr->GetString(0x2733, static_cast<short>(militaryTier + 0x19), &text);
     labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[1] - ownerY);
-    SetQuickDrawColorAndSyncGlobals(foregroundStyle);
+    SetQuickDrawColorAndSyncGlobals(foregroundColor);
     SetQuickDrawTextOriginWithContextOffset(valueX + 1, labelY + 1);
     DrawTextWithCachedQuickDrawStyleState(&text);
-    SetQuickDrawColorAndSyncGlobals(shadowStyle);
+    SetQuickDrawColorAndSyncGlobals(shadowColor);
     SetQuickDrawTextOriginWithContextOffset(valueX, labelY);
     DrawTextWithCachedQuickDrawStyleState(&text);
   }
@@ -194,10 +194,10 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
       int productionTier = g_apNationStates[selectedNation]->ClassifyNationProductionTierVsPeers();
       g_pSimMgr->GetString(0x2733, static_cast<short>(productionTier + 0x19), &text);
       labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[2] - ownerY);
-      SetQuickDrawColorAndSyncGlobals(foregroundStyle);
+      SetQuickDrawColorAndSyncGlobals(foregroundColor);
       SetQuickDrawTextOriginWithContextOffset(valueX + 1, labelY + 1);
       DrawTextWithCachedQuickDrawStyleState(&text);
-      SetQuickDrawColorAndSyncGlobals(shadowStyle);
+      SetQuickDrawColorAndSyncGlobals(shadowColor);
       SetQuickDrawTextOriginWithContextOffset(valueX, labelY);
       DrawTextWithCachedQuickDrawStyleState(&text);
     }
@@ -212,10 +212,10 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
       g_apTerrainTypeDescriptorTable[favoredNation]->FormatOverlayTerrainLabelText(&text);
     }
     labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[2] - ownerY);
-    SetQuickDrawColorAndSyncGlobals(foregroundStyle);
+    SetQuickDrawColorAndSyncGlobals(foregroundColor);
     SetQuickDrawTextOriginWithContextOffset(valueX + 1, labelY + 1);
     DrawTextWithCachedQuickDrawStyleState(&text);
-    SetQuickDrawColorAndSyncGlobals(shadowStyle);
+    SetQuickDrawColorAndSyncGlobals(shadowColor);
     SetQuickDrawTextOriginWithContextOffset(valueX, labelY);
     DrawTextWithCachedQuickDrawStyleState(&text);
   }
