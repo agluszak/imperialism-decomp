@@ -10,6 +10,7 @@
 #include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
 #include "game/TMapUberPicture.h"
+#include "game/TMilitaryUnit.h"
 #include "game/TOcean.h"
 #include "game/TSimMgr.h"
 #include "game/TStaticText.h"
@@ -53,6 +54,19 @@ static inline void SetMapBorderColorForTileOwner(short tileIndex) {
     nation = 0x35;
   }
   g_pUiRuntimeContext->SetForeColor(nation);
+}
+
+static inline void Blit64x64StrategicMapAtlasTile(TQuickDrawSurfaceContext* atlas,
+                                                  TQuickDrawSurfaceContext* destination,
+                                                  int sourceOffset, CRect& destinationRect) {
+  if (atlas == 0 || destination == 0) {
+    return;
+  }
+  CRect sourceRect(sourceOffset, 0, sourceOffset + 0x40, 0x40);
+  UpdatePaletteIndexWithDefaultFallback(0x10);
+  BlitRectWithOptionalTransparency(atlas->GetBlitSurface(), destination->GetBlitSurface(),
+                                   &sourceRect, &destinationRect, 0x24, 0);
+  UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
 double g_mapCellRowScale_006a3360 = DefaultMapCellScale();
@@ -407,12 +421,11 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mod
 }
 
 // FUNCTION: IMPERIALISM 0x0051AF60
-void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites(int unusedArg) {
-  (void)unusedArg;
+void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites(int edgeMask) {
   short row;
   short col;
-  short directionFlags;
-  ConvertPoint(g_MapInteractionPreviewPoint_006a3370, row, col, directionFlags);
+  short regionBand;
+  ConvertPoint(g_MapInteractionPreviewPoint_006a3370, row, col, regionBand);
 
   if ((row & 1) != 0) {
     ++col;
@@ -429,14 +442,14 @@ void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites(int 
     adjustedCol = g_MapInteractionPreviewColumnParity_006a33b8 + col * 2;
   }
 
-  if ((directionFlags & 1) != 0) {
+  if ((edgeMask & 1) != 0) {
     --adjustedRow;
-  } else if ((directionFlags & 2) != 0) {
+  } else if ((edgeMask & 2) != 0) {
     ++adjustedRow;
   }
-  if ((directionFlags & 4) != 0) {
+  if ((edgeMask & 4) != 0) {
     ++adjustedCol;
-  } else if ((directionFlags & 8) != 0) {
+  } else if ((edgeMask & 8) != 0) {
     --adjustedCol;
   }
 
@@ -936,6 +949,90 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
         routeMask->ApplyBitmapMaskToPixelBuffer(destinationPixels);
       }
     }
+  }
+
+  CRect tileRect;
+  tileRect.left = screenX;
+  tileRect.top = screenY;
+  tileRect.right = screenX + 0x40;
+  tileRect.bottom = screenY + 0x40;
+
+  const unsigned short activeFlags = terrain.activeFlags1c;
+  TMapUberPicture* mapOwner = static_cast<TMapUberPicture*>(ownerContext);
+  const bool cityOverlayVisible = mapOwner == 0 || mapOwner->activeUnitCategoryIndex96 != 4;
+
+  if ((activeFlags & 3) != 0 && terrain.gateFlag != 0 && cityOverlayVisible) {
+    int improvementOffset = g_pGlobalMapState->GetMapImprovementOffsetByActiveFlagsAndCityStage(
+        tileIndex, terrain.formerOwnerNationTag03);
+    Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas66c, quickDrawSurface350,
+                                   improvementOffset, tileRect);
+  }
+
+  if ((activeFlags & 0x14) != 0 && (activeFlags & 1) == 0) {
+    int transportOffset = g_pGlobalMapState->GetMapImprovementOffsetByTownTransportLink(
+        tileIndex, terrain.ownerNationTag04);
+    if (transportOffset != 0) {
+      Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas66c, quickDrawSurface350,
+                                     transportOffset, tileRect);
+    }
+  }
+
+  if ((activeFlags & 3) != 0 && terrain.gateFlag != 0) {
+    RenderTacticalStackCountIndicatorAndUnitBadge(tileIndex, &tileRect, 0);
+    if (terrain.cityRecordIndex >= 0 && terrain.cityRecordIndex < 0x180) {
+      int fortLevel = g_pGlobalMapState->cityScoreTable[terrain.cityRecordIndex].fortLevel03;
+      if (fortLevel != 0) {
+        int fortOffset = g_pGlobalMapState->GetMapImprovementBitmapRowOffsetForIndex(fortLevel - 1);
+        Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas66c, quickDrawSurface350,
+                                       fortOffset, tileRect);
+      }
+    }
+  }
+
+  if ((activeFlags & 3) == 0 || terrain.gateFlag == 0) {
+    const char improvementClasses[2] = {
+        static_cast<char>(g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 1)),
+        static_cast<char>(
+            g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 0))};
+    const int activeNation = g_pSimMgr->GetActiveNationId();
+    bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;
+    if (!tileVisible && g_pGlobalMapState->field24 != 0) {
+      tileVisible = terrain.terrainType00 == 2 || terrain.terrainType00 == 3 ||
+                    terrain.terrainType00 == 4 || terrain.terrainType00 == 6;
+    }
+
+    for (int edge = 0; edge < 2; ++edge) {
+      const signed char resourceType = terrain.resourceTypeByEdge[edge];
+      if (resourceType < 0) {
+        continue;
+      }
+      const short destinationX = static_cast<short>(screenX + (edge == 0 ? 2 : 0x1c));
+      if (improvementClasses[edge] != 0) {
+        g_pStrategicMapViewSystem->DrawStrategicMapUnitIconOverlay(
+            destinationSurfaceObject, static_cast<unsigned short>(resourceType),
+            improvementClasses[edge], destinationX, static_cast<short>(screenY + 2));
+      } else if (tileVisible) {
+        g_pStrategicMapViewSystem->DrawStrategicMapUnitIcon(destinationSurfaceObject, resourceType,
+                                                            destinationX, screenY);
+      }
+    }
+
+    if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(terrain.ownerNationTag04) == 0 &&
+        terrain.secondaryOwnerNationTag18 != -1) {
+      g_pStrategicMapViewSystem->BlitStrategicMapUnitActivityOverlayFrame(
+          destinationSurfaceObject, terrain.secondaryOwnerNationTag18,
+          static_cast<short>(screenX + 0x1e), static_cast<short>(screenY + 0x14));
+    }
+  }
+
+  if (terrain.perTileVisitedFlag0f > 0) {
+    int markerOffset = (terrain.perTileVisitedFlag0f - 1) << 6;
+    Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas694[6], quickDrawSurface350,
+                                   markerOffset, tileRect);
+  } else if (isOcean && terrain.tileActionClass16 >= 0 && terrain.tileActionClass16 < 0x12) {
+    int actionOffset = terrain.tileActionClass16 << 6;
+    Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas690, quickDrawSurface350,
+                                   actionOffset, tileRect);
   }
 }
 
@@ -1783,9 +1880,90 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
 // FUNCTION: IMPERIALISM 0x00523b70
 void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
                                                                int flag) {
-  (void)tileIndex;
-  (void)dstRect;
-  (void)flag;
+  TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
+  if (terrain.cityRecordIndex < 0 || terrain.cityRecordIndex >= 0x180) {
+    return;
+  }
+
+  TUnit* unit = static_cast<TUnit*>(
+      g_pGlobalMapState->cityScoreTable[terrain.cityRecordIndex].stationedUnitChain98);
+  if (unit == 0) {
+    return;
+  }
+
+  if (flag != 0 && overlayFlagByte74 == 0) {
+    short markerIndex = terrain.markerSlotIndex10;
+    if (markerIndex == -1) {
+      return;
+    }
+    RECT sourceRect;
+    sourceRect.left = markerIndex << 6;
+    sourceRect.top = 0;
+    sourceRect.right = sourceRect.left + 0x40;
+    sourceRect.bottom = 0x40;
+    BlitRectWithOptionalTransparency(quickDrawSurface350->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                     &sourceRect, dstRect, 0, 0);
+    return;
+  }
+
+  short visibleUnitCount = 0;
+  while (unit != 0) {
+    if (unit->orderType != 0 && unit->orderType != 8 && unit->orderType != 0x10) {
+      ++visibleUnitCount;
+    }
+    unit = unit->nextOnTile;
+  }
+
+  int countClass = 0;
+  if (visibleUnitCount != 0) {
+    if (visibleUnitCount < 6) {
+      countClass = 1;
+    } else {
+      countClass = visibleUnitCount >= 11 ? 3 : 2;
+    }
+  }
+
+  TQuickDrawSurfaceContext* destination =
+      flag != 0 ? g_pActiveQuickDrawSurfaceContext : quickDrawSurface350;
+  int sourceX = g_pGlobalMapState->ComputeTerrainRecordByteOffsetForIndex(countClass);
+  if (flag != 0) {
+    sourceX += 0x12;
+  }
+  RECT sourceRect = {sourceX, 0, sourceX + 0x12, 0x26};
+  RECT countRect;
+  countRect.left = dstRect->left;
+  countRect.right = countRect.left + 0x12;
+  if (flag == 0 && quickDrawSurface350->blitSurface.surfaceDib != 0) {
+    countRect.bottom = dstRect->bottom;
+    countRect.top = countRect.bottom - 0x26;
+  } else {
+    countRect.top = dstRect->top;
+    countRect.bottom = countRect.top + 0x26;
+  }
+  UpdatePaletteIndexWithDefaultFallback(0x10);
+  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas6b4->GetBlitSurface(),
+                                   destination->GetBlitSurface(), &sourceRect, &countRect, 0x24, 0);
+
+  int ownerBadgeX = g_pGlobalMapState->GetMapImprovementTierBucketOffset(terrain.ownerNationTag04);
+  sourceRect.left = ownerBadgeX;
+  sourceRect.top = 0;
+  sourceRect.right = ownerBadgeX + 9;
+  sourceRect.bottom = 6;
+  RECT ownerBadgeRect;
+  ownerBadgeRect.left = dstRect->left + 7;
+  ownerBadgeRect.right = dstRect->left + 0x10;
+  if (flag == 0 && quickDrawSurface350->blitSurface.surfaceDib != 0) {
+    ownerBadgeRect.top = dstRect->bottom - 8;
+    ownerBadgeRect.bottom = dstRect->bottom - 2;
+  } else {
+    ownerBadgeRect.top = dstRect->top + 2;
+    ownerBadgeRect.bottom = dstRect->top + 8;
+  }
+  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas6b8->GetBlitSurface(),
+                                   destination->GetBlitSurface(), &sourceRect, &ownerBadgeRect,
+                                   0x24, 0);
+  UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
 // FUNCTION: IMPERIALISM 0x00523ff0

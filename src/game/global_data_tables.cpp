@@ -1050,12 +1050,21 @@ unsigned char g_bSeedGateNotifyFlag_00696f0c = 0;
 // Per-tile sprite-variant bitmap-strip offset tables, indexed [gateFlag][spriteVariantIndex01]
 // (or, for the 39-suffixed table, by spriteVariantIndex01 alone). Read by
 // TMapMgr's rendering-variant lookup family (0x516150/0x5161a0/0x5161e0/0x516220).
-short g_awTileSpriteVariantOffsetTable38[4][2] = {
-    {0x140, 0x140}, {0, 0}, {0x200, 0x200}, {0x240, 0x240}};
-short g_awTileSpriteVariantOffsetTable39[4] = {0x140, 0x980, 0x9c0, 0xa00};
-short g_awTileSpriteVariantOffsetTable3a[4][5] = {
-    {0x140, 0x140, 0, 0, 0}, {0, 0, 0, 0, 0}, {0x280, 0x280, 0, 0, 0}, {0x340, 0x340, 0, 0, 0}};
-short g_awTileSpriteVariantOffsetTable3b[4][2] = {{0, 0}, {0, 0}, {0, 0}, {0, 0}};
+short g_awTileSpriteVariantOffsetTable38[16][2] = {
+    {0x140, 0x140}, {0, 0},         {0x200, 0x200}, {0x240, 0x240}, {0x300, 0x300}, {0x1c0, 0x1c0},
+    {0x3c0, 0x3c0}, {0x700, 0x700}, {0x080, 0x080}, {0x0c0, 0x2c0}, {0x100, 0x100}, {0x180, 0x180},
+    {0xb80, 0xb80}, {0x040, 0x040}, {0, 0},         {0xc00, 0xc00}};
+short g_awTileSpriteVariantOffsetTable39[8] = {0x140, 0x980, 0x9c0, 0xa00, 0xa40, 0, 0, 0};
+short g_awTileSpriteVariantOffsetTable3a[16][5] = {
+    {0x140, 0x140, 0, 0, 0}, {0, 0, 0, 0, 0},         {0x280, 0x280, 0, 0, 0},
+    {0x340, 0x340, 0, 0, 0}, {0x300, 0x300, 0, 0, 0}, {0x680, 0x680, 0, 0, 0},
+    {0x940, 0x940, 0, 0, 0}, {0x740, 0x740, 0, 0, 0}, {0x440, 0x440, 0, 0, 0},
+    {0x4c0, 0x780, 0, 0, 0}, {0x540, 0x540, 0, 0, 0}, {0x640, 0x6c0, 0x900, 0x380, 0xbc0},
+    {0xbc0, 0, 0, 0, 0x400}, {0x400, 0, 0, 0, 0},     {0, 0, 0, 0, 0xc40},
+    {0xc40, 0, 0, 0, 0}};
+short g_awTileSpriteVariantOffsetTable3b[16][2] = {
+    {0, 0},         {0, 0},         {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0x800, 0x800},
+    {0x480, 0x480}, {0x500, 0x7c0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}};
 
 // Navy/order composite score table (0x550b60 /
 // ComputeNavyOrderPriorityContributionPercentByCategory family); see TNavyOrderResourceDescriptor
