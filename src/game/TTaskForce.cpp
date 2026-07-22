@@ -256,11 +256,14 @@ void TTaskForce::Free() {
   delete this;
 }
 
+// Mac oracle: TTaskForce::RegainVirginity(int, TZone*).
 // FUNCTION: IMPERIALISM 0x00552a70
-void TTaskForce::RemoveTaskForceOrderNodesByNationAndClearSelectionState(int nation,
-                                                                         TZone* contextZone) {
-  (void)nation;
-  (void)contextZone;
+void TTaskForce::RegainVirginity(int nation, TZone* contextZone) {
+  while (childOrderList != 0) {
+    Remove(static_cast<TShip*>(childOrderList->payload));
+  }
+  required_count = static_cast<short>(nation);
+  contextAnchor = contextZone;
 }
 
 // FUNCTION: IMPERIALISM 0x00552b90
@@ -936,37 +939,6 @@ void TTaskForce::FindOrCreateChildOrderLink(TShip* node) {
       node->field34 = 0;
     }
   }
-}
-
-// Mac oracle: TTaskForce::Remove(TShip*).
-// FUNCTION: IMPERIALISM 0x00553d40
-void TTaskForce::Remove(TShip* ship) {
-  TMapOrderChildLinkNode* matchingLink;
-  if (childOrderList == 0) {
-    matchingLink = 0;
-  } else if (childOrderList->payload != ship) {
-    matchingLink = childOrderList->next->FindNodeMatching(ship);
-  } else {
-    matchingLink = childOrderList;
-  }
-
-  if (matchingLink != 0) {
-    if (childOrderList != 0) {
-      if (childOrderList->payload == ship) {
-        childOrderList = childOrderList->DeleteMapOrderChildLinkAndReturnNext();
-      } else {
-        childOrderList->next->RemoveLinkedOrderNodeByValueRecursive(ship);
-      }
-    }
-    short bucketIndex = static_cast<short>(
-        g_NavyOrderResourceDescriptorTable[ship->resourceType04].enabledFlagOrBucketOffset);
-    --shipCountsByClass[bucketIndex];
-  }
-
-  if (ship == activeChildEntry) {
-    RecomputeMapOrderChildAggregateMetric();
-  }
-  ship->ownerOrderEntry0c = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00553e30

@@ -2309,7 +2309,7 @@ address|name|symbol|size|type|prototype|provenance
 4d7da0|TCountry::AddRegionIdToNationOwnedRegionList||19|function|undefined AddRegionIdToNationOwnedRegionList()|
 4d7dd0|TCountry::SetNationPercentFieldByModeAndDescriptorLinks||140|function|undefined SetNationPercentFieldByModeAndDescriptorLinks()|
 4d7e90|TCountry::OrphanRetStub_004d7e90||3|function|undefined OrphanRetStub_004d7e90(void)|
-4d7eb0|TAdmiral::GenerateMappedFlavorTextByNationSlotField0C||21|function|undefined GenerateMappedFlavorTextByNationSlotField0C()|
+4d7eb0|TCountry::GenerateEthnicName||21|function|void __thiscall GenerateEthnicName(CString * out) const|Mac oracle: TCountry::GenerateEthnicName(CStr32&) const
 4d7ee0|TCountry::OrphanLeaf_NoCall_Ins02_004d7ee0||6|function|undefined OrphanLeaf_NoCall_Ins02_004d7ee0(void)|
 4d7f00|TCountry::OrphanLeaf_NoCall_Ins02_004d7f00||4|function|undefined OrphanLeaf_NoCall_Ins02_004d7f00(void)|
 4d7f20|TCountry::GetDiplomacyExternalStateByTarget||6|function|short GetDiplomacyExternalStateByTarget(short nationSlot)|
@@ -4114,7 +4114,7 @@ address|name|symbol|size|type|prototype|provenance
 551be0|BuildNavyOrderResourceDeltaSummaryText||1110|function|undefined BuildNavyOrderResourceDeltaSummaryText()|
 552250|TAdmiral::AssignToShip||135|function|void __thiscall AssignToShip(TShip * primaryOrderNode)|
 552310|TAdmiral::ReassignToZone||245|function|void __thiscall ReassignToZone(TZone * zone)|
-552450|RemoveDuplicateNavySecondaryOrdersByDisplayName||81|function|undefined RemoveDuplicateNavySecondaryOrdersByDisplayName()|
+552450|TAdmiral::NameThyself||81|function|void __thiscall NameThyself(void)|macos-name-oracle:NameThyself()
 552510|ObjectPool::FindMissionOrderNodeById||26|function|void * __thiscall FindMissionOrderNodeById(int nChildNodeId)|
 552590|DeleteMapOrderChildLinkAndReturnNext||40|function|int * __fastcall DeleteMapOrderChildLinkAndReturnNext(int * pChildLinkNode)|
 5525d0|RemoveLinkedOrderNodeByValueRecursive||83|function|undefined RemoveLinkedOrderNodeByValueRecursive()|
@@ -4122,16 +4122,16 @@ address|name|symbol|size|type|prototype|provenance
 5526e0|PruneDefeatedMapOrderChildrenAndReturnHead||97|function|int * __fastcall PruneDefeatedMapOrderChildrenAndReturnHead(int * pChildLinkHead)|
 552770|TTaskForce::CreateObject|?CreateObject@TTaskForce@@SGPAVCObject@@XZ|73|function|undefined CreateObject()|rtti
 5527e0|TTaskForce::GetRuntimeClass||6|function|undefined GetTTaskForceClassNamePointer()|rtti
-552800|TTaskForce::ConstructTTaskForce||68|function|undefined ConstructTTaskForce()|
+552800|TTaskForce::TTaskForce||68|function|TTaskForce* __thiscall TTaskForce(TZone* contextAnchorArg, short requiredCountArg)|
 552870|TTaskForce::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-5528a0|ResetTTaskForceToSentinelVtable||7|function|undefined ResetTTaskForceToSentinelVtable()|
-5528c0|NoOpTaskForceVtableSlot||1|function|undefined NoOpTaskForceVtableSlot()|
-5528e0|RelinkMapOrderQueueNodeBetween||60|function|void __thiscall RelinkMapOrderQueueNodeBetween(int pPrevNode, int pNextNode)|
-552930|TTaskForce::Free||252|function|void __fastcall DeleteMapOrderEntryAndUnlink(int * pMapOrderEntry)|
-552a70|RemoveTaskForceOrderNodesByNationAndClearSelectionState||212|function|undefined RemoveTaskForceOrderNodesByNationAndClearSelectionState()|
-552b90|TTaskForce::WriteTo||298|function|undefined SerializeTaskForceToBinaryStream()|
-552d10|TTaskForce::ReadFrom||460|function|undefined DeserializeTaskForceFromBinaryStreamAndRefreshMarkers()|
-552f60|SetTaskForceOwnerPointer||10|function|undefined SetTaskForceOwnerPointer()|
+5528a0|TTaskForce::~TTaskForce||7|function|void __thiscall ~TTaskForce(void)|
+5528c0|TTaskForce::NoOpTaskForceInitSlot||1|function|void __thiscall NoOpTaskForceInitSlot(void)|
+5528e0|TTaskForce::RelinkMapOrderQueueNodeBetween||60|function|void __thiscall RelinkMapOrderQueueNodeBetween(TTaskForce* prevNode, TTaskForce* nextNode)|
+552930|TTaskForce::Free||252|function|void __thiscall Free(void)|
+552a70|TTaskForce::RegainVirginity||212|function|void __thiscall RegainVirginity(int nation, TZone* contextZone)|macos-name-oracle:RegainVirginity(int,TZone*)
+552b90|TTaskForce::WriteTo||298|function|void __thiscall WriteTo(TStream* stream)|
+552d10|TTaskForce::ReadFrom||460|function|void __thiscall ReadFrom(TStream* stream)|
+552f60|TTaskForce::ResetOrderTypeAndStrengthDword||10|function|void __thiscall ResetOrderTypeAndStrengthDword(int packedValue)|
 552f80|SetMapOrderType9AndQueue||282|function|void __fastcall SetMapOrderType9AndQueue(int * pMapOrderEntry)|
 5530f0|SetMapOrderType3Or4AndQueue||296|function|void __thiscall SetMapOrderType3Or4AndQueue(char fUseType4)|
 5533f0|PromoteMapOrderChainAndQueue||566|function|void __fastcall PromoteMapOrderChainAndQueue(int * pMapOrderEntry)|
@@ -4179,14 +4179,14 @@ address|name|symbol|size|type|prototype|provenance
 556570|TNavyMgr::GetRuntimeClass||6|function|undefined GetTNavyMgrClassNamePointer()|rtti
 556590|TNavyMgr::TNavyMgr|??0TNavyMgr@@QAE@XZ|23|function|TNavyMgr* __thiscall TNavyMgr(void)|
 5565c0|TNavyMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-5565f0|ResetNavyManagerVtable||7|function|undefined ResetNavyManagerVtable()|
+5565f0|TNavyMgr::~TNavyMgr||7|function|void __thiscall ~TNavyMgr(void)|
 556610|TNavyMgr::INavyMgr||308|function|void __thiscall INavyMgr(void)|
-5567a0|TNavyMgr::Free||92|function|undefined ClearNavyOrderLists()|
-556820|DestroyNavyOrderAndChildren||24|function|undefined DestroyNavyOrderAndChildren()|
-556850|ResetNavyOrderListsAndManagerOwner||77|function|undefined ResetNavyOrderListsAndManagerOwner()|
-5568c0|TNavyMgr::WriteTo||29|function|undefined SerializeNavyManager()|
-5568f0|SerializeNavyOrderListsByNation||333|function|undefined SerializeNavyOrderListsByNation()|
-556aa0|TNavyMgr::ReadFrom||29|function|undefined DeserializeNavyManager()|
+5567a0|TNavyMgr::Free||92|function|void __thiscall Free(void)|
+556820|TTaskForce::DestroyNavyOrderAndChildren||24|function|void __thiscall DestroyNavyOrderAndChildren(void)|
+556850|TNavyMgr::ClearAllOrders||77|function|void __thiscall ClearAllOrders(void)|macos-name-oracle:ClearAllOrders()
+5568c0|TNavyMgr::WriteTo||29|function|void __thiscall WriteTo(TStream* stream)|
+5568f0|TNavyMgr::SerializeNavyOrderListsByNation||333|function|void __thiscall SerializeNavyOrderListsByNation(TStream* stream, short nationFilter)|
+556aa0|TNavyMgr::ReadFrom||29|function|void __thiscall ReadFrom(TStream* stream)|
 556ad0|TNavyMgr::DeserializeNavyOrderListsByNation||915|function|void DeserializeNavyOrderListsByNation(TStream* stream, short nationFilter)|
 556f60|TNavyMgr::FreeShipsOf||79|function|void __thiscall FreeShipsOf(short nation)|
 556fd0|ResetPrimaryOrderActiveFlagsAndClearManagerState||67|function|undefined ResetPrimaryOrderActiveFlagsAndClearManagerState()|

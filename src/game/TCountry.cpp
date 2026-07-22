@@ -3,8 +3,6 @@
 #include "game/TCountry.h"
 
 #include "game/TMapMgr.h"
-#include "game/global_data_tables.h"
-
 #include "game/CString.h"
 #include "game/global_data_tables.h"
 #include "game/TGreatPower.h"
@@ -14,7 +12,6 @@
 #include "game/TNewsMgr.h"
 #include "game/TCity.h"
 #include "game/TGlobalMapState.h"
-#include "game/TGreatPower.h"
 #include "game/TSimMgr.h"
 #include "game/TOcean.h"
 #include "game/CIterator.h"
@@ -519,6 +516,12 @@ void TCountry::SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlo
 // FUNCTION: IMPERIALISM 0x004d7e90
 void TCountry::DecrementDiplomacyCounterA2ByValue(int delta) {
   (void)delta;
+}
+
+// Mac oracle: TCountry::GenerateEthnicName(CStr32&) const.
+// FUNCTION: IMPERIALISM 0x004d7eb0
+void TCountry::GenerateEthnicName(CString* out) const {
+  GenerateMappedFlavorTextByTableSlot(out, nationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7ee0

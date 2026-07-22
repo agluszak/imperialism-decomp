@@ -32,8 +32,10 @@ struct TextStyle;
 struct TQuickDrawSurfaceContext;
 struct TCdAudioDevice;
 class TArmyMgr;
+class TAdmiral;
 class TDiplomacyMgr;
 class TNavyMgr;
+class TShip;
 class TSimMgr;
 class TAssetMgr;
 class TNewsMgr;
@@ -434,6 +436,8 @@ extern const char s_OutOfMemoryText_006941F0[];
 extern const char s_ErrorCaption_00694204[];
 extern TDiplomacyMgr* g_pDiplomacyTurnStateManager;
 extern TNavyMgr* g_pNavyOrderManager;
+extern "C" TShip* g_pNavyPrimaryOrderListHead;
+extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
 extern TArmyMgr* g_pMapContextActionManager;
 // Two 0x20-byte flag tables installed into TArmyMgr+0x14/+0x18 by
 // InitializeMapContextActionManager (0x4a18f0); 8 rows x 4 flag bytes.
