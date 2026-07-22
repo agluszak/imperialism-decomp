@@ -1815,8 +1815,8 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF8() {
   g_pCursorControlPanel->SetTextStyle(styleDescriptor, 1);
   g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, 0);
 
-  int mappedStyleFlags = 0;
-  MapUiThemeCodeToStyleFlags(0x2b6b, &mappedStyleFlags);
+  COLORREF mappedStyleFlags = 0;
+  ResolveUiThemeColor(0x2b6b, &mappedStyleFlags);
   g_pCursorControlPanel->shadowTextColor9C = mappedStyleFlags;
   g_pCursorControlPanel->dropShadowEnabledA0 = true;
 
@@ -2461,8 +2461,8 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   planetEdit->SetEditSelectionAndScrollCaret(0, static_cast<short>(editText.GetLength()), 1);
   dialog->SetWindowTarget(planetEdit);
 
-  int mappedThemeValue = 0;
-  MapUiThemeCodeToStyleFlags(0x2b6c, &mappedThemeValue);
+  COLORREF mappedThemeValue = 0;
+  ResolveUiThemeColor(0x2b6c, &mappedThemeValue);
   RGBQUAD mappedTheme;
   mappedTheme.rgbBlue = static_cast<BYTE>(mappedThemeValue);
   mappedTheme.rgbGreen = static_cast<BYTE>(mappedThemeValue >> 8);

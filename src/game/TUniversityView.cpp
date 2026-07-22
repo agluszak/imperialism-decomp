@@ -69,10 +69,10 @@ void TUniversityView::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
 
 // FUNCTION: IMPERIALISM 0x004cbb20
 void TUniversityView::UpdateFields() {
-  int normalTextColor;
-  int warningTextColor;
-  MapUiThemeCodeToStyleFlags(0x2b6b, &normalTextColor);
-  MapUiThemeCodeToStyleFlags(0x2b69, &warningTextColor);
+  COLORREF normalTextColor;
+  COLORREF warningTextColor;
+  ResolveUiThemeColor(0x2b6b, &normalTextColor);
+  ResolveUiThemeColor(0x2b69, &warningTextColor);
 
   if (selectedRecruitmentOrderA8 == 0) {
     return;

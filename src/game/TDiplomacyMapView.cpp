@@ -497,11 +497,11 @@ void TDiplomacyMapView::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x004f4a30
 void TDiplomacyMapView::DrawNames(const RECT* presentRect) {
   (void)presentRect; // ignored stack arg threaded through by the caller
-  int styleForeground = 0;
-  int styleShadow = 0;
+  COLORREF styleForeground = 0;
+  COLORREF styleShadow = 0;
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 10, 0x2b68, 1);
-  MapUiThemeCodeToStyleFlags(0x2b68, &styleForeground);
-  MapUiThemeCodeToStyleFlags(0x2b6b, &styleShadow);
+  ResolveUiThemeColor(0x2b68, &styleForeground);
+  ResolveUiThemeColor(0x2b6b, &styleShadow);
 
   // Great powers (slots 0..6): text-only legend labels, drawn as a 1px drop shadow
   // (shadow color at +1,+1) plus the foreground color at the label origin.
@@ -518,12 +518,12 @@ void TDiplomacyMapView::DrawNames(const RECT* presentRect) {
     short code = terrain->encodedNationSlot;
     if (code < 100 || code > 199) {
       terrain->FormatOverlayTerrainLabelText(&label);
-      MapUiThemeCodeToStyleFlags(0x2b68, &styleForeground);
-      MapUiThemeCodeToStyleFlags(0x2b6b, &styleShadow);
+      ResolveUiThemeColor(0x2b68, &styleForeground);
+      ResolveUiThemeColor(0x2b6b, &styleShadow);
     } else {
       terrain->LoadNationDisplayNameSharedRefFromField8(&label);
-      MapUiThemeCodeToStyleFlags(0x2b67, &styleForeground);
-      MapUiThemeCodeToStyleFlags(0x2b6f, &styleShadow);
+      ResolveUiThemeColor(0x2b67, &styleForeground);
+      ResolveUiThemeColor(0x2b6f, &styleShadow);
     }
     short x = static_cast<short>(labelRect->left);
     short y = static_cast<short>(labelRect->bottom);
@@ -551,12 +551,12 @@ void TDiplomacyMapView::DrawNames(const RECT* presentRect) {
     short code = terrain->encodedNationSlot;
     if (code == -1) {
       terrain->FormatOverlayTerrainLabelText(&label);
-      MapUiThemeCodeToStyleFlags(0x2b6b, &styleForeground);
-      MapUiThemeCodeToStyleFlags(0x2b68, &styleShadow);
+      ResolveUiThemeColor(0x2b6b, &styleForeground);
+      ResolveUiThemeColor(0x2b68, &styleShadow);
     } else if (code >= 100 && code < 200) {
       terrain->LoadNationDisplayNameSharedRefFromField8(&label);
-      MapUiThemeCodeToStyleFlags(0x2b67, &styleForeground);
-      MapUiThemeCodeToStyleFlags(0x2b6f, &styleShadow);
+      ResolveUiThemeColor(0x2b67, &styleForeground);
+      ResolveUiThemeColor(0x2b6f, &styleShadow);
     } else {
       int band;
       if (code >= 200) {
@@ -566,8 +566,8 @@ void TDiplomacyMapView::DrawNames(const RECT* presentRect) {
       } else {
         band = terrain->nationSlot;
       }
-      MapUiThemeCodeToStyleFlags(kMinorThemeByBand[band], &styleForeground);
-      MapUiThemeCodeToStyleFlags(0x2b68, &styleShadow);
+      ResolveUiThemeColor(kMinorThemeByBand[band], &styleForeground);
+      ResolveUiThemeColor(0x2b68, &styleShadow);
       terrain->FormatOverlayTerrainLabelText(&label);
     }
 
@@ -837,8 +837,8 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
   QueryBounds(&bounds);
 
   if (legendSurfaceModeAt524 != 0) {
-    int savedTransparentColor = g_pActiveQuickDrawSurfaceContext->blitSurface.transparentBlitColor;
-    int savedQuickDrawColor = g_pActiveQuickDrawSurfaceContext->blitSurface.quickDrawColor;
+    COLORREF savedBackgroundColor = g_pActiveQuickDrawSurfaceContext->blitSurface.backgroundColor;
+    COLORREF savedForegroundColor = g_pActiveQuickDrawSurfaceContext->blitSurface.foregroundColor;
 
     TQuickDrawSurfaceContext* previousSurface = 0;
     int contextFlags = 0;
@@ -883,8 +883,8 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
     }
 
     SetGWorld(previousSurface, contextFlags);
-    SetQuickDrawColorAndSyncGlobals(savedQuickDrawColor);
-    SetGlobalBlitTransparentColorRaw(savedTransparentColor);
+    SetQuickDrawColorAndSyncGlobals(savedForegroundColor);
+    SetGlobalBlitTransparentColorRaw(savedBackgroundColor);
     legendSurfaceModeAt524 = 0;
   }
 

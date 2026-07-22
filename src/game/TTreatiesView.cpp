@@ -50,10 +50,10 @@ void TTreatiesView::Draw(RECT* rectBuffer) {
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xe, 0x2b68, 1);
 
-  int styleShadow = 0;
-  int styleForeground = 0;
-  MapUiThemeCodeToStyleFlags(0x2b6b, &styleShadow);
-  MapUiThemeCodeToStyleFlags(0x2b68, &styleForeground);
+  COLORREF styleShadow = 0;
+  COLORREF styleForeground = 0;
+  ResolveUiThemeColor(0x2b6b, &styleShadow);
+  ResolveUiThemeColor(0x2b68, &styleForeground);
 
   g_pSimMgr->GetString(0x2733, 0x20, &labelText);
   short headerX = static_cast<short>(0x48 - ownerLocalX);

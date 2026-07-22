@@ -17,7 +17,7 @@ struct TextStyle {
                         // 3 when fontSize < 12, else 1
   short fontStyleFlags; // 0x2 -- bold/italic/underline bits
   short fontSize;       // 0x4 -- font size or size index
-  int textColor;        // 0x6 -- COLORREF, passed to CDC::SetTextColor
+  COLORREF textColor;   // 0x6 -- Win32/MFC text color, including PALETTEINDEX values
 };
 #pragma pack(pop)
 
@@ -140,7 +140,7 @@ public:
   virtual void NoOpControlAction(int unusedArg); // slot 0x6c 0x48e9e0
   virtual void InstallTextStyle(const TextStyle& style,
                                 char refreshNow); // slot 0x6d 0x48e7d0
-  virtual void SetTextColorAndMaybeRefresh(const int* textColor,
+  virtual void SetTextColorAndMaybeRefresh(const COLORREF* textColor,
                                            bool refreshNow); // slot 0x6e 0x48e7a0
   virtual char LogUnhandledDialogMethodAndReturnFalse();     // slot 0x6f 0x4294a0
   virtual void HiliteState(unsigned char enabledState,

@@ -5955,7 +5955,7 @@ address|name|symbol|size|type|prototype|provenance
 5c3b00|WrapperFor_thunk_GetTickCountDiv16_At005c3b00||15|function|undefined WrapperFor_thunk_GetTickCountDiv16_At005c3b00()|
 5c3b40|Function_005c3b40||19|function|undefined4 Function_005c3b40(void)|
 5c3b70|LoadBitmapResourceSurfaceAndRestoreQuickDrawContext||336|function|TQuickDrawSurfaceContext * __cdecl LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId)|windows_listing
-5c3d20|MapUiThemeCodeToStyleFlags||201|function|undefined MapUiThemeCodeToStyleFlags()|
+5c3d20|ResolveUiThemeColor||201|function|undefined ResolveUiThemeColor()|
 5c3e80|BuildUiTextStyleDescriptor||151|function|void __cdecl BuildUiTextStyleDescriptor(void * styleDescriptor, int unused, int arg2, int arg3)|
 5c3f50|InitializeUiTextStyleDescriptor||146|function|undefined InitializeUiTextStyleDescriptor()|
 5c4020|ApplyControlThemeStyleAndOptionalCaption||268|function|class TStaticText * __cdecl ApplyControlThemeStyleAndOptionalCaption(class TStaticText * control, int unused2, int pointSize, int themeCode, int themeCode2, char * caption)|
@@ -8494,8 +8494,8 @@ address|name|symbol|size|type|prototype|provenance
 6950b0|g_szMcAppUiSourcePath_006950B0|||global||
 6950d8|g_szMcWindowSourcePath_006950D8|||global||
 6950f8|g_pActiveQuickDrawSurfaceContextHead|||global||
-6950fc|g_Quick_Draw_Color_State_006950FC|||global||
-695100|g_uQuickDrawStrokeColor|||global||
+6950fc|g_QuickDrawForegroundColor|||global||
+695100|g_QuickDrawBackgroundColor|||global||
 695150|g_szUiFontLiteralBelweBdBt|||global||
 695168|g_szQuickDrawSourcePath_00695168|||global||
 695188|s_MissingRequiredFileFormat_00695188|||global||

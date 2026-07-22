@@ -5838,7 +5838,7 @@ address|matching|name
 0x5c3b00|0.2857142857142857|WrapperFor_thunk_GetTickCountDiv16_At005c3b00
 0x5c3b40|1.0|WaitForSixteenthSecondTicks
 0x5c3b70|0.32142857142857145|LoadBitmapResourceSurfaceAndRestoreQuickDrawContext
-0x5c3d20|0.8617886178861789|MapUiThemeCodeToStyleFlags
+0x5c3d20|0.8617886178861789|ResolveUiThemeColor
 0x5c3e80|0.4444444444444444|BuildUiTextStyleDescriptor
 0x5c3f50|0.5066666666666667|InitializeUiTextStyleDescriptor
 0x5c4020|0.5|ApplyControlThemeStyleAndOptionalCaption

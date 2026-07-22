@@ -465,7 +465,7 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(RgnHandle region) {
   // (a Region* placed so &(*region)->rgn == NULL) some callers store in the handle.
   HRGN sourceRegion = 0;
   if (region != 0) {
-    sourceRegion = (HRGN)(*region)->rgn;
+    sourceRegion = static_cast<HRGN>((*region)->rgn);
   }
   HRGN destRegion = static_cast<HRGN>((*localRegion)->rgn.m_hObject);
   CombineRgn(destRegion, sourceRegion, nullptr, RGN_COPY);

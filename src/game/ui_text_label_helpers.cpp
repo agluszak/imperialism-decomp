@@ -14,52 +14,52 @@ void SetControlHoverHelpText(CString sharedString, TView* control);
 void SetControlHoverHelpTextAltEntry(CString sharedString, TView* control);
 
 // FUNCTION: IMPERIALISM 0x005c3d20
-void MapUiThemeCodeToStyleFlags(short themeCode, int* outStyleFlags) {
+void ResolveUiThemeColor(short themeCode, COLORREF* outColor) {
   switch (themeCode) {
   case 0x2b67:
-    *outStyleFlags = 0x1000000;
+    *outColor = PALETTEINDEX(0);
     return;
   case 0x2b68:
-    *outStyleFlags = 0x1000013;
+    *outColor = PALETTEINDEX(0x13);
     return;
   case 0x2b6a:
-    *outStyleFlags = 0x100005c;
+    *outColor = PALETTEINDEX(0x5c);
     return;
   case 0x2b6b:
-    *outStyleFlags = 0x10000d2;
+    *outColor = PALETTEINDEX(0xd2);
     return;
   case 0x2b69:
-    *outStyleFlags = 0x10000cb;
+    *outColor = PALETTEINDEX(0xcb);
     return;
   case 0x2b6c:
-    *outStyleFlags = 0x1000028;
+    *outColor = PALETTEINDEX(0x28);
     return;
   case 0x2b6d:
-    *outStyleFlags = 0x1000001;
+    *outColor = PALETTEINDEX(1);
     return;
   case 0x2b6e:
-    *outStyleFlags = 0x1000001;
+    *outColor = PALETTEINDEX(1);
     return;
   case 0x2b6f:
-    *outStyleFlags = 0x100002a;
+    *outColor = PALETTEINDEX(0x2a);
     return;
   case 0x2b70:
-    *outStyleFlags = 0x10000c9;
+    *outColor = PALETTEINDEX(0xc9);
     return;
   case 0x2b71:
-    *outStyleFlags = 0x100001b;
+    *outColor = PALETTEINDEX(0x1b);
     return;
   case 0x2b72:
-    *outStyleFlags = 0x1000030;
+    *outColor = PALETTEINDEX(0x30);
     return;
   case 0x2b73:
-    *outStyleFlags = 0x10000c8;
+    *outColor = PALETTEINDEX(0xc8);
     return;
   case 0x2b74:
-    *outStyleFlags = 0x10000e3;
+    *outColor = PALETTEINDEX(0xe3);
     return;
   default:
-    *outStyleFlags = (themeCode & 0xffff) | 0x1000000;
+    *outColor = PALETTEINDEX(themeCode);
     return;
   }
 }
@@ -72,9 +72,9 @@ void BuildUiTextStyleDescriptor(TextStyle* styleDescriptor, int unused, int arg2
   // artifact; the original does the same).
   CString deadLocal;
   styleDescriptor->fontStyleFlags = 0;
-  int styleFlags = 0;
-  MapUiThemeCodeToStyleFlags(static_cast<short>(themeCode), &styleFlags);
-  styleDescriptor->textColor = styleFlags;
+  COLORREF textColor = 0;
+  ResolveUiThemeColor(static_cast<short>(themeCode), &textColor);
+  styleDescriptor->textColor = textColor;
   styleDescriptor->fontSize = static_cast<short>(arg2);
   styleDescriptor->fontFamily = (arg2 >= 0xc) ? 1 : 3;
 }
@@ -85,11 +85,11 @@ void InitializeUiTextStyleDescriptor(TextStyle* styleDescriptor, short face, sho
   // Same dead CString shape as BuildUiTextStyleDescriptor; the original constructs and
   // destroys it while only using the packed descriptor fields below.
   CString deadLocal;
-  int styleFlags = 0;
+  COLORREF textColor = 0;
   styleDescriptor->fontStyleFlags = face;
-  MapUiThemeCodeToStyleFlags(static_cast<short>(themeCode), &styleFlags);
+  ResolveUiThemeColor(static_cast<short>(themeCode), &textColor);
   styleDescriptor->fontSize = pointSize;
-  styleDescriptor->textColor = styleFlags;
+  styleDescriptor->textColor = textColor;
   styleDescriptor->fontFamily = font;
 }
 
@@ -200,7 +200,7 @@ void __cdecl ApplyUiTextStyleAndThemeFlags(TDropShadowText* control, int unused,
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, unused, pointSize, textThemeCode);
   control->InstallTextStyle(styleDescriptor, 0);
-  MapUiThemeCodeToStyleFlags(static_cast<short>(shadowThemeCode), &control->shadowThemeCode94);
+  ResolveUiThemeColor(static_cast<short>(shadowThemeCode), &control->shadowColor94);
 }
 
 // FUNCTION: IMPERIALISM 0x005c4620
@@ -211,7 +211,7 @@ void __cdecl ApplyUiNumberTextStyleAndThemeColor(TDropShadowNumberText* control,
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, unused, pointSize, textThemeCode);
   control->InstallTextStyle(styleDescriptor, 0);
-  MapUiThemeCodeToStyleFlags(static_cast<short>(shadowThemeCode), &control->shadowColorAc);
+  ResolveUiThemeColor(static_cast<short>(shadowThemeCode), &control->shadowColorAc);
 }
 
 // FUNCTION: IMPERIALISM 0x005c46b0

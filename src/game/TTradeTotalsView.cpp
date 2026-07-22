@@ -34,10 +34,10 @@ void TTradeTotalsView::Draw(RECT* rectBuffer) {
 
   g_pSimMgr->GetString(0x2740, 0x17, &strA);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b6b);
-  int style1;
-  int style2;
-  MapUiThemeCodeToStyleFlags(0x2b6b, &style1);
-  MapUiThemeCodeToStyleFlags(0x2b6c, &style2);
+  COLORREF style1;
+  COLORREF style2;
+  ResolveUiThemeColor(0x2b6b, &style1);
+  ResolveUiThemeColor(0x2b6c, &style2);
   SetQuickDrawColorAndSyncGlobals(style2);
   SetQuickDrawTextOriginWithContextOffset(10, 18);
   DrawTextWithCachedQuickDrawStyleState(&strA);

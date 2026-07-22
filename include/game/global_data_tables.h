@@ -311,7 +311,7 @@ extern int g_bQuickDrawStrokePairDirty;
 // at 0x494040 (ported in quickdraw_rendering.cpp as TQuickDrawClipStateInitializer).
 // GetClip seeds from it; SetClip (0x495a30) copies a RgnHandle's region into it.
 extern CRgn* g_pGlobalClipRegionHandleObject;
-extern int g_Quick_Draw_Color_State_006950FC;
+extern COLORREF g_QuickDrawForegroundColor;
 extern CFont* g_pQuickDrawCachedUiFont;
 extern TextStyle g_QuickDrawCachedFontPreset;
 extern unsigned char g_bQuickDrawCachedFontDirty;
@@ -326,7 +326,7 @@ extern const char* const g_apszQuickDrawFontFaceNames[5];
 extern CFont* g_pQuickDrawCachedMeasureFont;       // 0x6a1d48
 extern TextStyle g_QuickDrawMeasureFontPreset;     // 0x6a1d4c
 extern unsigned char g_bQuickDrawMeasureFontDirty; // 0x6a1d56
-extern int g_uQuickDrawStrokeColor;
+extern COLORREF g_QuickDrawBackgroundColor;
 extern int g_nQuickDrawOriginX;
 extern int g_nQuickDrawOriginY;
 extern int g_nQuickDrawResolvedTextOriginX;
@@ -622,7 +622,7 @@ extern TMacViewMgr* g_pStrategicMapViewSystem;
 extern TViewMgr* g_pUiRuntimeContext;
 extern "C" int g_diplomacyActionButtonTagTable_00696960[6];
 extern "C" unsigned int g_councilControlTagTable[6];
-extern "C" int g_defaultDropShadowTextColor;
+extern "C" COLORREF g_defaultDropShadowTextColor;
 extern TAssetMgr* g_pUiViewManager;
 extern TLanguageMgr* g_pLanguageMgr;
 extern TAnimator* g_pUiAnimator;

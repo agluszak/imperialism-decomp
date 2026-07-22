@@ -483,9 +483,9 @@ int g_bQuickDrawStrokePairDirty = 0;
 // GLOBAL: IMPERIALISM 0x006a1da8
 CRgn* g_pGlobalClipRegionHandleObject = nullptr;
 // GLOBAL: IMPERIALISM 0x006950fc
-int g_Quick_Draw_Color_State_006950FC = 0x010000FF;
+COLORREF g_QuickDrawForegroundColor = PALETTEINDEX(0xff);
 // GLOBAL: IMPERIALISM 0x00695100
-int g_uQuickDrawStrokeColor = 0x01000000;
+COLORREF g_QuickDrawBackgroundColor = PALETTEINDEX(0);
 // Cached UI CFont built from the last text-style preset (quickdraw_rendering.cpp,
 // 0x494130/0x4944e0). Left zero-initialized to match the original .data image: the
 // 0x494460 CRT static-init function seeds mode/flag2/pointSize/styleRef6 to 0xc and
@@ -1431,7 +1431,7 @@ const unsigned int g_tradeCommodityRowTagTable[17] = {
     0x6d613520, 0x67643020, 0x67643120, 0x67643220, 0x67643320};
 
 // GLOBAL: IMPERIALISM 0x006a58c8
-int g_defaultDropShadowTextColor = 0;
+COLORREF g_defaultDropShadowTextColor = 0;
 // 26 (start, end) capability-priority range pairs walked by
 // TTechMgr::GenerateRandomCapabilityPrioritySlots. The reccmp symbol points at pair 0's END
 // value; pair 0's START value (1) lives one short earlier and is read via cursor[-1].

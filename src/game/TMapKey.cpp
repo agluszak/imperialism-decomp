@@ -38,8 +38,8 @@ void TMapKey::DoPostCreate(int arg) {
   short baseX = static_cast<short>(ownerLocalX + anchor->ownerLocalX);
   short baseY = static_cast<short>(ownerLocalY + anchor->ownerLocalY);
 
-  int shadowStyleFlags = 0;
-  MapUiThemeCodeToStyleFlags(0x2b68, &shadowStyleFlags);
+  COLORREF shadowStyleFlags = 0;
+  ResolveUiThemeColor(0x2b68, &shadowStyleFlags);
   TextStyle style;
   InitializeUiTextStyleDescriptor(&style, 0, 0xa, 0x2b6b, 3);
 
@@ -104,12 +104,12 @@ void TMapKey::RenderMapHintOverlayMode0() {
   short baseY = (short)this->ownerLocalY + (short)anchor->ownerLocalY;
 
   CString label;
-  int shadowStyle = 0;
-  int mainStyle = 0;
+  COLORREF shadowStyle = 0;
+  COLORREF mainStyle = 0;
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xa, 0x2b68, 3);
-  MapUiThemeCodeToStyleFlags(0x2b6b, &mainStyle);
-  MapUiThemeCodeToStyleFlags(0x2b68, &shadowStyle);
+  ResolveUiThemeColor(0x2b6b, &mainStyle);
+  ResolveUiThemeColor(0x2b68, &shadowStyle);
 
   g_pSimMgr->GetString(0x2733, 5, &label);
   short x = 0x1de - baseX;
@@ -148,12 +148,12 @@ void TMapKey::RenderMapHintOverlayMode4() {
   CString label;
   CString terrainName;
   CString expanded;
-  int shadowStyle = 0;
-  int mainStyle = 0;
+  COLORREF shadowStyle = 0;
+  COLORREF mainStyle = 0;
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
-  MapUiThemeCodeToStyleFlags(0x2b6b, &mainStyle);
-  MapUiThemeCodeToStyleFlags(0x2b68, &shadowStyle);
+  ResolveUiThemeColor(0x2b6b, &mainStyle);
+  ResolveUiThemeColor(0x2b68, &shadowStyle);
 
   for (int k = 0; k < 7; ++k) {
     g_pSimMgr->GetString(0x2733, (short)(6 + k), &label);
@@ -198,12 +198,12 @@ void TMapKey::RenderMapHintOverlayMode1() {
   CString label;
   CString terrainName;
   CString expanded;
-  int shadowStyle = 0;
-  int mainStyle = 0;
+  COLORREF shadowStyle = 0;
+  COLORREF mainStyle = 0;
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
-  MapUiThemeCodeToStyleFlags(0x2b6b, &mainStyle);
-  MapUiThemeCodeToStyleFlags(0x2b68, &shadowStyle);
+  ResolveUiThemeColor(0x2b6b, &mainStyle);
+  ResolveUiThemeColor(0x2b68, &shadowStyle);
 
   for (int k = 0; k < 3; ++k) {
     g_pSimMgr->GetString(0x2733, (short)(0xe + k), &label);
@@ -248,12 +248,12 @@ void TMapKey::RenderMapHintOverlayMode2() {
   CString label;
   CString terrainName;
   CString expanded;
-  int shadowStyle = 0;
-  int mainStyle = 0;
+  COLORREF shadowStyle = 0;
+  COLORREF mainStyle = 0;
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
-  MapUiThemeCodeToStyleFlags(0x2b6b, &mainStyle);
-  MapUiThemeCodeToStyleFlags(0x2b68, &shadowStyle);
+  ResolveUiThemeColor(0x2b6b, &mainStyle);
+  ResolveUiThemeColor(0x2b68, &shadowStyle);
 
   g_pSimMgr->GetString(0x2733, 0x12, &label);
   short x1 = 0x153 - baseX;

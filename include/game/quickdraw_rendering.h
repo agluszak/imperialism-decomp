@@ -3,11 +3,11 @@
 #include "decomp_types.h"
 #include "game/mfc.h"
 
-void SetQuickDrawFillColor(int fillColor);
-void SetQuickDrawColorAndPropagateIfChanged(int newColor);
-void SetQuickDrawStrokeColor(int strokeColor);
-void SetQuickDrawColorAndSyncGlobals(int color);
-void SetGlobalBlitTransparentColorRaw(int transparentColor);
+void SetQuickDrawFillColor(COLORREF fillColor);
+void SetQuickDrawColorAndPropagateIfChanged(COLORREF newColor);
+void SetQuickDrawStrokeColor(COLORREF strokeColor);
+void SetQuickDrawColorAndSyncGlobals(COLORREF color);
+void SetGlobalBlitTransparentColorRaw(COLORREF transparentColor);
 void SetGlobalQuickDrawOrigin(short originX, short originY);
 void SetQuickDrawPenSizeAndMarkDirty(short horizontalSize, short verticalSize);
 void ResetQuickDrawStrokeState();
@@ -43,7 +43,7 @@ CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TextStyle* styl
 // InitializeUiTextStyleDescriptor, ApplyControlThemeStyleAndOptionalCaption,
 // ConfigureUiControlStyleValueAndCaptionFromStringResource,
 // ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor, InitializeUiTextStyleDescriptorAndApplyQuickDraw,
-// MapUiThemeCodeToStyleFlags) live in game/ui_text_label_helpers_decls.h -- they belong to the
+// ResolveUiThemeColor) live in game/ui_text_label_helpers_decls.h -- they belong to the
 // ui_text_label_helpers.cpp unit, not the QuickDraw surface/font engine.
 
 // If paletteIndex is the sentinel -1 (as a short), resolves the nearest white entry

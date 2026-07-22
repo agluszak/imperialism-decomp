@@ -61,10 +61,10 @@ void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int
   layoutRectA4.top = 0;
   layoutRectA4.right = 0;
   layoutRectA4.bottom = 0;
-  int mappedFlags = 0;
-  MapUiThemeCodeToStyleFlags(static_cast<short>(stylePrimary), &mappedFlags);
+  COLORREF mappedFlags = 0;
+  ResolveUiThemeColor(static_cast<short>(stylePrimary), &mappedFlags);
   textColor98 = mappedFlags;
-  MapUiThemeCodeToStyleFlags(static_cast<short>(styleSecondary), &mappedFlags);
+  ResolveUiThemeColor(static_cast<short>(styleSecondary), &mappedFlags);
   shadowTextColor9C = mappedFlags;
   dropShadowEnabledA0 = true;
 }

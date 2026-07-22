@@ -43,10 +43,10 @@ void TTradePanelView::Draw(RECT* rectBuffer) {
   CString strB; // constructed/destroyed only in the original; never otherwise touched.
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b68);
-  int shadowStyle;
-  int foregroundStyle;
-  MapUiThemeCodeToStyleFlags(0x2b6b, &shadowStyle);
-  MapUiThemeCodeToStyleFlags(0x2b68, &foregroundStyle);
+  COLORREF shadowStyle;
+  COLORREF foregroundStyle;
+  ResolveUiThemeColor(0x2b6b, &shadowStyle);
+  ResolveUiThemeColor(0x2b68, &foregroundStyle);
 
   g_pSimMgr->GetString(0x2733, 0x2a, &strA);
   short baseX = static_cast<short>(0x48 - ownerLocalX);

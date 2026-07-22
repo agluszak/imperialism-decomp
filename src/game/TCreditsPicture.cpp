@@ -37,8 +37,8 @@ void TCreditsPicture::DoPostCreate(int arg) {
   line1->GetNextHandler();
   TextStyle style;
   InitializeUiTextStyleDescriptor(&style, 0, 0xc, 0x2b68, 3);
-  int cursorTheme;
-  MapUiThemeCodeToStyleFlags(0x2b6b, &cursorTheme);
+  COLORREF cursorTheme;
+  ResolveUiThemeColor(0x2b6b, &cursorTheme);
   line1->SetTextFromUiStringResourceId(0xfb0);
   line1->SetTextStyle(style, 1);
   line1->shadowTextColor9C = cursorTheme;
@@ -65,8 +65,8 @@ void TCreditsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     } else {
       g_creditsPlaybackActive_006a4084 = 1;
 
-      int cursorTheme;
-      MapUiThemeCodeToStyleFlags(0x2b6b, &cursorTheme);
+      COLORREF cursorTheme;
+      ResolveUiThemeColor(0x2b6b, &cursorTheme);
       TextStyle style;
       InitializeUiTextStyleDescriptor(&style, 0, 0xc, 0x2b68, 3);
 

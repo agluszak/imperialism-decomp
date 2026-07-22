@@ -271,8 +271,8 @@ void TCivDescription::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   // ORIG_CALLCONV: __thiscall
   unsigned short* legendSelectionCountsBySlot;
-  int stylePrimary;
-  int styleSecondary;
+  COLORREF stylePrimary;
+  COLORREF styleSecondary;
   CString localizedTextRef;
   short selectedClass;
   short textWidth;
@@ -309,8 +309,8 @@ void TCivDescription::Draw(RECT* rectBuffer) {
     // TSimMgr GetString virtual, and passes each mapped color to 0x4950a0 — the
     // previous port dropped both color arguments.
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
-    MapUiThemeCodeToStyleFlags(0x2b6c, &stylePrimary);
-    MapUiThemeCodeToStyleFlags(0x2b67, &styleSecondary);
+    ResolveUiThemeColor(0x2b6c, &stylePrimary);
+    ResolveUiThemeColor(0x2b67, &styleSecondary);
     g_pSimMgr->GetString(0x2718, selectedClass, &localizedTextRef);
 
     textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&localizedTextRef);
