@@ -68,8 +68,8 @@ TAutoGreatPower::TAutoGreatPower() : TGreatPower() {
 // SYNTHETIC: IMPERIALISM 0x004e6b80
 // TAutoGreatPower::`scalar deleting destructor'
 
-// SYNTHETIC: IMPERIALISM 0x004e6bb0
-// TAutoGreatPower::~TAutoGreatPower
+// FUNCTION: IMPERIALISM 0x004e6bb0
+TAutoGreatPower::~TAutoGreatPower() {}
 
 // FUNCTION: IMPERIALISM 0x004e6c20
 void TAutoGreatPower::InitializeNationMinisterSubsystemsByPolicyIds(int nationSlot,
@@ -1908,4 +1908,3 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
   }
   return true;
 }
-TAutoGreatPower::~TAutoGreatPower() {}

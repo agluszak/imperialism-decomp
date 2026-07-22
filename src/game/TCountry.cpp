@@ -93,7 +93,6 @@ TCountry::TCountry() {}
 
 // SYNTHETIC: IMPERIALISM 0x004d6850
 // TCountry::`scalar deleting destructor'
-TCountry::~TCountry() {}
 
 // FUNCTION: IMPERIALISM 0x004d68f0
 void TCountry::InitializeNationStateIdentityAndOwnedRegionList(short nationSlot) {
