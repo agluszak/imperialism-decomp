@@ -1,5 +1,6 @@
 #include "game/TInterruptusView.h"
 
+#include "game/battle_report_records.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
@@ -25,13 +26,10 @@ void TInterruptusView::Draw(RECT* rectBuffer) {
   CString countText;
   CString nationLabel;
 
-  // field60 is re-read fresh at each site here (not cached in a local) -- matches the
-  // original, which re-fetches `this->field60` for every access instead of keeping it
-  // live in a register across these calls.
-  short kindIdx = *reinterpret_cast<short*>(static_cast<char*>(field60));
+  short kindIdx = battleDetail60->payload.interrupt.itemType00;
   g_pSimMgr->GetStringPrelude(kindIdx, &kindText);
 
-  short count = *reinterpret_cast<short*>(static_cast<char*>(field60) + 2);
+  short count = battleDetail60->payload.interrupt.itemCount02;
   countText.Format(g_szDecimalFormat, count);
 
   CString templateText;
@@ -40,7 +38,7 @@ void TInterruptusView::Draw(RECT* rectBuffer) {
   // extra scanBracketExpressions token this override passes.
   g_pSimMgr->GetString(0x273c, 0x1e, &templateText);
 
-  short minorIndex = *reinterpret_cast<short*>(static_cast<char*>(field60) + 0x24);
+  short minorIndex = battleDetail60->payload.interrupt.minorNationSlot24;
   g_apNationAuxRuntimeStateSlots[minorIndex]->FormatOverlayTerrainLabelText(&nationLabel);
 
   scanBracketExpressions(g_pSimMgr, &label, static_cast<const char*>(templateText),

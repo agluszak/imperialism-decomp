@@ -123,8 +123,5 @@ public:
   // the raw listing).
   void DrawItemHeaderAndIconRows(CString* header);
 
-  // Unrecovered context object read by Draw/DrawItemHeaderAndIconRows:
-  // +0 item "kind" id (short), +2 item count (short). Raw storage until the real
-  // pointee class is identified (same pattern as TArmyBoyView::field60).
-  void* field60; // +0x60
+  struct BattleReportDetailRecord* battleDetail60; // +0x60
 };

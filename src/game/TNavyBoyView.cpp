@@ -1,5 +1,6 @@
 #include "game/TNavyBoyView.h"
 
+#include "game/battle_report_records.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
@@ -54,25 +55,19 @@ void TNavyBoyView::Draw(RECT* rectBuffer) {
   g_pSimMgr->GetString(0x2760, 6, &typeNames[12]);
   g_pSimMgr->GetString(0x2760, 6, &typeNames[13]);
 
-  // field60 is re-read fresh at each site here (not cached in a local) -- matches the
-  // original, which re-fetches `this->field60` for every access instead of keeping it
-  // live in a register across these calls.
-  short kindId = *reinterpret_cast<short*>(static_cast<char*>(field60));
+  short kindId = battleDetail60->payload.navy.shipType00;
   finalLabel = typeNames[kindId];
   // The ship-name temporary and the " "+name concat temporary both destruct right
   // after this statement in the original (two back-to-back ~CString calls) --
   // matched here by keeping the name construction an unnamed temporary inside the
   // expression rather than a function-scoped local.
-  finalLabel += s_szSpaceSeparator_00695794 + CString(static_cast<char*>(field60) + 4);
+  finalLabel += s_szSpaceSeparator_00695794 + CString(battleDetail60->payload.navy.shipName04);
 
   SetQuickDrawTextOriginWithContextOffset(0x50, 0x18);
   DrawTextWithCachedQuickDrawStyleState(&finalLabel);
 
-  // Both re-derived fresh from field60 again here, matching the original's second
-  // independent reload (not reused from kindId/level above).
-  short levelDivisor =
-      GetResourceDescriptorWord14ByType(*reinterpret_cast<short*>(static_cast<char*>(field60)));
-  short level = *reinterpret_cast<short*>(static_cast<char*>(field60) + 2);
+  short levelDivisor = GetResourceDescriptorWord14ByType(battleDetail60->payload.navy.shipType00);
+  short level = battleDetail60->payload.navy.trainingLevel02;
   short sVar2 = (level * 0x14) / levelDivisor + 1;
   if (sVar2 > 0x14) {
     sVar2 = 0x14;

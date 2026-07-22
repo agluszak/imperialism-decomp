@@ -113,9 +113,5 @@ public:
 
   TMerchantBoyView();
 
-  // Unrecovered context object read by Draw: +0 commodity code (short,
-  // passed to FormatLocalizedCommodityCountLabelByIndex), +2 status flag (short,
-  // selects one of two group-0x273c strings/themes). Raw storage until the real
-  // pointee class is identified (same pattern as TArmyBoyView::field60).
-  void* field60; // +0x60
+  struct BattleReportDetailRecord* battleDetail60; // +0x60
 };

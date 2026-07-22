@@ -8511,7 +8511,6 @@ address|name|symbol|size|type|prototype|provenance
 695bf0|g_industryActionCostWeightResCode0C|||global||
 695c50|g_aInitialCityRecruitmentOrderProfiles|||global||
 695cd0|g_aUnitOrderCostProfileByAbilityId|||global||
-695cd4|g_Classify_Nation_Military_LookupTable_00695CD4|||global||
 696108|g_pTradeSummarySelectionMap|||global||
 696178|g_anCityBuildingSlotOrder|||global||
 696196|g_nCityBuildingSlotOrderLast|||global||

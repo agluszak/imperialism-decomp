@@ -1,5 +1,6 @@
 #include "game/TMerchantBoyView.h"
 
+#include "game/battle_report_records.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
@@ -31,15 +32,13 @@ void TMerchantBoyView::Draw(RECT* rectBuffer) {
   CString unusedLabel;
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xc, 0x2b6a, 3);
 
-  // field60 is re-read fresh at each site here (not cached in a local) -- matches the
-  // original, which re-fetches `this->field60` for every access.
-  short commodityCode = *reinterpret_cast<short*>(static_cast<char*>(field60));
+  short commodityCode = battleDetail60->payload.merchant.commodityType00;
   FormatLocalizedCommodityCountLabelByIndex(&label, commodityCode, -1);
 
   SetQuickDrawTextOriginWithContextOffset(0x50, 0x18);
   DrawTextWithCachedQuickDrawStyleState(&label);
 
-  short statusFlag = *reinterpret_cast<short*>(static_cast<char*>(field60) + 2);
+  short statusFlag = battleDetail60->payload.merchant.completed02;
   int themeCode;
   if (statusFlag != 0) {
     g_pSimMgr->GetString(0x273c, 0x1c, &label);

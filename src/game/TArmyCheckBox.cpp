@@ -25,7 +25,7 @@ TArmyCheckBox::TArmyCheckBox(TView* panel, int* offsetLayout, int* sizeLayout, i
     : TControl() {
   (void)unused1;
   (void)unused2;
-  InitializeUiResourceEntryFrameAndParent(nullptr, panel, offsetLayout, sizeLayout, 4, 4, 0);
+  InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 4, 4, 0);
   surfaceContext90 = surfaceContext90Value;
   iconStripHorizontalOffset88 = iconStripHorizontalOffsetValue;
 }

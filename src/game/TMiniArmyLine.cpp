@@ -1,5 +1,14 @@
 #include "game/TMiniArmyLine.h"
 
+#include "game/CString.h"
+#include "game/TGWorldButton.h"
+#include "game/TMilitaryUnit.h"
+#include "game/TMiniArmyView.h"
+#include "game/TSimMgr.h"
+#include "game/global_data_tables.h"
+#include "game/mapped_flavor_text.h"
+#include "game/ui_text_label_helpers_decls.h"
+
 // SYNTHETIC: IMPERIALISM 0x004aa840
 // TMiniArmyLine::`scalar deleting destructor'
 TMiniArmyLine::~TMiniArmyLine() {}
@@ -15,6 +24,43 @@ TMiniArmyLine::TMiniArmyLine() {}
 
 // FUNCTION: IMPERIALISM 0x004aa960
 void TMiniArmyLine::InstallViews(TView* panel, int* offsetLayout) {
-  (void)panel;
-  (void)offsetLayout;
+  TMiniArmyView* armyView = new TMiniArmyView;
+  armyView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &field08, 5, 5, 0);
+  armyView->militaryUnit84 = militaryUnit10;
+  armyView->eventNumber60 = 0x22;
+  SetControlHoverHelpText(CString(g_pMiniCivSharedText_0064cb18), armyView);
+
+  if (militaryUnit10->HasEraCapabilityFallbackSlot()) {
+    int upgradeOffset[2] = {0x73, 0};
+    int upgradeSize[2] = {0x13, 0x12};
+    TGWorldButton* upgradeButton = new TGWorldButton;
+    upgradeButton->InitializeWithBitmapResource(armyView, upgradeOffset, upgradeSize, 0xdae);
+    upgradeButton->SetState(1, 0);
+    upgradeButton->controlTag = 0x75706772; // 'upgr'
+
+    CString armsText;
+    CString cashText;
+    CString fuelText;
+    CString templateText;
+    CString hoverText;
+    short candidateSlot;
+    short armsCost;
+    short cashCost;
+    short fuelCost;
+    militaryUnit10->GetEraCapabilityFallbackCosts(&candidateSlot, &armsCost, &cashCost, &fuelCost);
+    armsText.Format(g_szDecimalFormat, static_cast<int>(armsCost));
+    g_pSimMgr->NumToCurrency(cashCost, &cashText);
+    if (fuelCost == 0) {
+      g_pSimMgr->GetString(0x2746, 2, &templateText);
+      scanBracketExpressions(g_pSimMgr, &hoverText, static_cast<LPCSTR>(templateText),
+                             static_cast<LPCSTR>(armsText), static_cast<LPCSTR>(cashText));
+    } else {
+      fuelText.Format(g_szDecimalFormat, static_cast<int>(fuelCost));
+      g_pSimMgr->GetString(0x2746, 6, &templateText);
+      scanBracketExpressions(g_pSimMgr, &hoverText, static_cast<LPCSTR>(templateText),
+                             static_cast<LPCSTR>(armsText), static_cast<LPCSTR>(fuelText),
+                             static_cast<LPCSTR>(cashText));
+    }
+    SetControlHoverHelpText(hoverText, upgradeButton);
+  }
 }
