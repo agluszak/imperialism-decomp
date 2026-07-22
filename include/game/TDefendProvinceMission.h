@@ -20,8 +20,9 @@ public:
   virtual char IsHospitalMission() const override; // slot 0x64 0x535790
   virtual void
   GiveOrders() override; // slot 0x44 0x535770 -- propagates target tile to linked units
-  virtual TMission* GetReplacementSlot48() override;                // slot 0x48 0x53f040
-  virtual char Matches(int kind, int key, int mode) const override; // slot 0x4c 0x53f010
+  virtual TMission* GetReplacementSlot48() override; // slot 0x48 0x53f040
+  virtual char Matches(eMissionType missionType, int key,
+                       TZone* zoneContext) const override; // slot 0x4c 0x53f010
 
   // These override TMission's own slots 0x0d/0x0e/0x0f (SetStateByte8To2 /
   // CalculateImportance / CalculateNeeds) with DefendProvinceMission-specific bodies.

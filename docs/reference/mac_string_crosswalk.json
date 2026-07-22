@@ -13385,6 +13385,23 @@
       ],
       "source_file": "src/game/TOcean_RouteBuffer.cpp"
     },
+    "0x0053c0a0": {
+      "references": [
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        }
+      ],
+      "source_file": "src/game/TArmyMission.cpp"
+    },
     "0x00542900": {
       "references": [
         {

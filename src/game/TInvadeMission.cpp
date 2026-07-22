@@ -64,7 +64,7 @@ char TInvadeMission::IsHospitalMission() const {
 // TInvadeMission::GetRuntimeClass
 
 // FUNCTION: IMPERIALISM 0x0053f2d0
-TInvadeMission::TInvadeMission(short targetProvince, TZone* beachheadZone)
+TInvadeMission::TInvadeMission(TZone* beachheadZone, short targetProvince)
     : TAttackProvinceMission(targetProvince, -1), beachhead34(nullptr) {
   if (beachheadZone != nullptr) {
     beachhead34 = new TBeachheadMission(beachheadZone, this);
@@ -285,13 +285,10 @@ void TInvadeMission::Hold(unsigned char value) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053fbc0
-char TInvadeMission::Matches(int kind, int key, int mode) const {
-  if (kind == 2 && key == targetProvince30 && beachhead34 != nullptr) {
-    if (beachhead34->Matches(2, key, mode) != 0) {
-      return 1;
-    }
-  }
-  return 0;
+char TInvadeMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+  return missionType == kMissionTypeInvadeProvince && key == targetProvince30 &&
+         beachhead34 != nullptr &&
+         beachhead34->Matches(kMissionTypeInvadeProvince, key, zoneContext) != 0;
 }
 
 // Builds the order-list contribution vector, then subtracts it from this mission's desired
