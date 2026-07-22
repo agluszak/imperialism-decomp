@@ -84,7 +84,7 @@ inline void AppendBorderQuad(int tileIndex, int regionA, int regionB, int sideCo
   Seapoint sp;
   sp.InitSorted(ConvertTileIndexToOverlayCoord216BySide(tileIndex, 1), regionA, regionB, sideCode);
   stretch<Seapoint, SeapointTag>* quad = &g_seapointQuadTable_006a3478;
-  quad->GetOrAppendUnique(sp);
+  quad->Add(sp);
 }
 
 } // namespace

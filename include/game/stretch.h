@@ -12,7 +12,7 @@
 // stretch<T> with Add/operator[]/OverStretch members; the Windows TZone evidence shows
 // a polymorphic 0x10-byte layout: vfptr, data, capacity, count.
 //
-// Only GetOrAppendUnique is a real vtable slot: TZoneSecondaryNeighborStretch's orig
+// Only Add is a real vtable slot: TZoneSecondaryNeighborStretch's original
 // vtable (0x0065c748) is confirmed exactly 1 slot long (the very next vtable,
 // TZonePrimaryNeighborStretch's at 0x0065c74c, starts 4 bytes later). The two recovered
 // Add bodies are ordinary non-virtual members on the concrete specializations; they are
@@ -33,8 +33,7 @@ public:
       free(data);
     }
   }
-  virtual T* GetOrAppendUnique(T value) = 0;
-  void Add(T value);
+  virtual T* Add(T value) = 0;
 
   int GetSize() const {
     return count;
@@ -84,8 +83,6 @@ public:
   int& Count() {
     return count;
   }
-
-  void EnsureFirstSlotAllocated();
 
 protected:
   T* data;      // +0x04

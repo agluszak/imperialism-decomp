@@ -1,7 +1,7 @@
 // SeapointStretch / SeaSegmentStretch -- two concrete instantiations of the project-local
 // stretch<T> growable-array family used by the UMapper coastline/region builder.
 //
-// The single vtable slot of each (GetOrAppendUnique) is the by-value append; it was
+// The single vtable slot of each (Add) is the by-value append; it was
 // previously mis-attributed to TMapMaker (SetEnabled/SetState) because Ghidra merged the
 // two adjacent single-slot vtables into TMapMaker's. See sea_geometry.h.
 
@@ -34,7 +34,7 @@ const double kSeaAngleScale = 11733.857334728455;
 // the Seapoint/SeaSegment record methods interleave with the two stretch arrays' methods.
 
 // FUNCTION: IMPERIALISM 0x0052a760
-SeaSegment* SeaSegmentStretch::GetOrAppendUnique(SeaSegment value) {
+SeaSegment* SeaSegmentStretch::Add(SeaSegment value) {
   unsigned int index = count;
   if (index >= static_cast<unsigned int>(capacity)) {
     int want = index + 1;
@@ -241,7 +241,7 @@ SeaSegment* SeaSegmentStretch::At(unsigned int index) {
 // --- SeapointStretch (0x10-byte elements) ----------------------------------------------
 
 // FUNCTION: IMPERIALISM 0x0052c0a0
-Seapoint* SeapointStretch::GetOrAppendUnique(Seapoint value) {
+Seapoint* SeapointStretch::Add(Seapoint value) {
   unsigned int index = count;
   if (index >= static_cast<unsigned int>(capacity)) {
     int want = index + 1;
@@ -301,7 +301,7 @@ void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b
   // Dispatch through the stretch<Seapoint> base so the append goes through the vtable slot
   // (the original calls it indirectly), rather than being devirtualized to a direct call.
   stretch<Seapoint, SeapointTag>* table = &g_seapointQuadTable_006a3478;
-  table->GetOrAppendUnique(pt);
+  table->Add(pt);
 }
 
 // FUNCTION: IMPERIALISM 0x0052d030
