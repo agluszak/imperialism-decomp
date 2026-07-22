@@ -580,11 +580,11 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
       TAdmiral* admiral = node->admiralBacklink20;
       TShip* next = node->nextOlder24;
       if (admiral != 0) {
-        admiral->SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(0);
+        admiral->AssignToShip(0);
       }
       node->PruneOrPromoteOrderNodeWhenChildCostDepleted();
       if (admiral != 0) {
-        admiral->SelectNavyPrimaryOrderByNationAndRecomputePreferredChild();
+        admiral->ReassignThyself();
       }
       node = next;
     } else {

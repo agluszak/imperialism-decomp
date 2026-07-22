@@ -36,7 +36,7 @@ public:
   short stockLevel1c;
   short pad1e;
   // Backlink to the TAdmiral whose primaryOrderNode08 is this node (TAdmiral::
-  // SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks writes `this` here).
+  // TAdmiral::AssignToShip writes `this` here).
   TAdmiral* admiralBacklink20;
   TShip* nextOlder24;
   TShip* prevNewer28;

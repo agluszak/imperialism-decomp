@@ -4109,14 +4109,12 @@ address|name|symbol|size|type|prototype|provenance
 5515d0|TAdmiral::Free||68|function|undefined Free()|
 551670|TAdmiral::WriteTo||101|function|undefined WriteTo()|
 551700|TAdmiral::ReadFrom||211|function|undefined ReadFrom()|
-551850|SelectNavyPrimaryOrderByNationAndRecomputePreferredChild||248|function|undefined SelectNavyPrimaryOrderByNationAndRecomputePreferredChild()|
+551850|TAdmiral::ReassignThyself||248|function|void __thiscall ReassignThyself()|
 5519d0|FindCumulativeWeightBucketIndex||29|function|undefined FindCumulativeWeightBucketIndex()|
 551a00|AccumulateRandomizedNavyOrderResourceDeltasByNationAndOwner||373|function|undefined AccumulateRandomizedNavyOrderResourceDeltasByNationAndOwner()|
 551be0|BuildNavyOrderResourceDeltaSummaryText||1110|function|undefined BuildNavyOrderResourceDeltaSummaryText()|
-552250|SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks||135|function|undefined SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks()|
-552336|OrphanRecovered_00552336_SelectPreferredOrderLoop||8|function|undefined OrphanRecovered_00552336_SelectPreferredOrderLoop()|
-552340|ObjectPool::OrphanRecovered_00552340_OverlappingStub||3|function|undefined OrphanRecovered_00552340_OverlappingStub()|
-552349|RecomputeNavyOrderSelectionPriorityChain_00552349||190|function|undefined RecomputeNavyOrderSelectionPriorityChain_00552349()|
+552250|TAdmiral::AssignToShip||135|function|void __thiscall AssignToShip(TShip * primaryOrderNode)|
+552310|TAdmiral::ReassignToZone||245|function|void __thiscall ReassignToZone(TZone * zone)|
 552450|RemoveDuplicateNavySecondaryOrdersByDisplayName||81|function|undefined RemoveDuplicateNavySecondaryOrdersByDisplayName()|
 552510|ObjectPool::FindMissionOrderNodeById||26|function|void * __thiscall FindMissionOrderNodeById(int nChildNodeId)|
 552590|DeleteMapOrderChildLinkAndReturnNext||40|function|int * __fastcall DeleteMapOrderChildLinkAndReturnNext(int * pChildLinkNode)|
@@ -4145,11 +4143,11 @@ address|name|symbol|size|type|prototype|provenance
 553b10|HasNoMapOrderEntryChildrenQueued||37|function|undefined HasNoMapOrderEntryChildrenQueued()|
 553b50|HasActiveMapOrderEntryChildren||71|function|undefined HasActiveMapOrderEntryChildren()|
 553bc0|GetOrCreateTaskForceOrderNodeByTemplate||293|function|undefined GetOrCreateTaskForceOrderNodeByTemplate()|
-553d40|ObjectPool::RemoveTaskForceOrderNodeById||180|function|undefined RemoveTaskForceOrderNodeById()|
+553d40|TTaskForce::Remove||180|function|void __thiscall Remove(TShip * ship)|
 553e30|RecomputeMapOrderChildAggregateMetric||44|function|void __fastcall RecomputeMapOrderChildAggregateMetric(int * pMapOrderEntry)|
 553f10|RebuildMapOrderEntryChildren||146|function|undefined RebuildMapOrderEntryChildren()|
 553fe0|PruneInactiveTaskForceOrderHead||154|function|undefined PruneInactiveTaskForceOrderHead()|
-5540b0|TScatteredShipsMission::ApplyMapOrderTypeAndQueue||424|function|void __thiscall ApplyMapOrderTypeAndQueue(int nOrderType, int nOrderArg)|
+5540b0|TTaskForce::SubmitOrders||424|function|void __thiscall SubmitOrders(int orderType, int orderArgument)|
 554300|ResolveMapOrderCommandFromActionContext||259|function|undefined ResolveMapOrderCommandFromActionContext()|
 554460|ResolveMapOrderCommandFromProvinceContext||40|function|undefined ResolveMapOrderCommandFromProvinceContext()|
 554590|CanQueueMapOrderForProvinceContext||103|function|undefined CanQueueMapOrderForProvinceContext()|
@@ -4163,7 +4161,7 @@ address|name|symbol|size|type|prototype|provenance
 554ad0|CalculateMapOrderEntryAverageChildRatingX10||64|function|undefined CalculateMapOrderEntryAverageChildRatingX10()|
 554b20|BuildTaskForceOrderBreakdownSummaryText||273|function|undefined BuildTaskForceOrderBreakdownSummaryText()|
 554c90|BuildTaskForceSelectionOverlayLabelText||370|function|undefined BuildTaskForceSelectionOverlayLabelText()|
-554e70|TToolBarCluster::BuildNavyOrderStatusLineText||400|function|undefined BuildNavyOrderStatusLineText()|
+554e70|TTaskForce::GetGeneralDescription||400|function|void __thiscall GetGeneralDescription(CString * out)|
 555090|PruneNavyOrderIfUnserviceableOrNoChildren||159|function|undefined PruneNavyOrderIfUnserviceableOrNoChildren()|
 5551d0|BuildTaskForcePrimaryObjectiveDescriptionText||450|function|undefined BuildTaskForcePrimaryObjectiveDescriptionText()|
 555420|ResolveTaskForceOrderConflictAndPickCandidate||608|function|undefined ResolveTaskForceOrderConflictAndPickCandidate()|
@@ -4191,7 +4189,7 @@ address|name|symbol|size|type|prototype|provenance
 5568f0|SerializeNavyOrderListsByNation||333|function|undefined SerializeNavyOrderListsByNation()|
 556aa0|TNavyMgr::ReadFrom||29|function|undefined DeserializeNavyManager()|
 556ad0|TNavyMgr::DeserializeNavyOrderListsByNation||915|function|void DeserializeNavyOrderListsByNation(TStream* stream, short nationFilter)|
-556f60|CancelNationOrdersAndResetPrimaryFlags||79|function|undefined CancelNationOrdersAndResetPrimaryFlags()|
+556f60|TNavyMgr::FreeShipsOf||79|function|void __thiscall FreeShipsOf(short nation)|
 556fd0|ResetPrimaryOrderActiveFlagsAndClearManagerState||67|function|undefined ResetPrimaryOrderActiveFlagsAndClearManagerState()|
 557040|TNavyMgr::ClearAllTransientOrders||47|function|void ClearAllTransientOrders(void)|mac-oracle
 557080|TNavyMgr::MoveMapOrderEntryToQueueHeadIfValid||123|function|unsigned char __thiscall MoveMapOrderEntryToQueueHeadIfValid(TTaskForce* entry)|

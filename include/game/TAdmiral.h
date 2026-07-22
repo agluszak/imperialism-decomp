@@ -35,12 +35,15 @@ public:
   TAdmiral(short terrainTypeIndex = static_cast<short>(0xffff));
   virtual ~TAdmiral() override;
 
-  void SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(TShip* primaryOrderNode);
-  // 0x00551850 -- drops the current primary-order link, rescans the global navy
-  // primary-order list for this admiral's nation and links the preferred node
-  // (folding SelectPreferredMapOrderEntryByPriorityRules over matching nodes);
-  // Free()s this admiral when no node qualifies.
-  void SelectNavyPrimaryOrderByNationAndRecomputePreferredChild();
+  // Mac oracle: AssignToShip / ReassignThyself. AssignToShip replaces the primary
+  // order link and refreshes both old and new task-force child selections.
+  void AssignToShip(TShip* primaryOrderNode); // 0x552250
+  // ReassignThyself rescans the global primary-order list for this admiral's nation;
+  // it Free()s this admiral when no ship qualifies.
+  void ReassignThyself(); // 0x551850
+  // Reassigns within both a zone and this admiral's nation. Ghidra split the original
+  // 0x552310..0x552404 body into three overlapping orphan functions.
+  void ReassignToZone(TZone* zone); // 0x552310
 
   static void __fastcall GenerateMappedFlavorTextByNationSlotField0C(TMinor* terrainDescriptor,
                                                                      CString* dest);
