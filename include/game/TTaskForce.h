@@ -5,6 +5,8 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 #include "game/TMapOrderChildLinkNode.h"
+#include "game/TShip.h"
+#include "game/global_data_tables.h"
 
 class TTaskForce;
 class TStream;
@@ -121,10 +123,9 @@ public:
 
   void RelinkMapOrderQueueNodeBetween(TTaskForce* prev_node, TTaskForce* next_node);
 
-  // Map-order selection helpers driven by TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh.
-  // 0x00552a70 — drops this task force's queued order nodes belonging to `nation` and
-  // clears the selection state tied to `contextZone` (the selected map-order context).
-  void RemoveTaskForceOrderNodesByNationAndClearSelectionState(int nation, TZone* contextZone);
+  // Mac oracle: RegainVirginity(int, TZone*). Removes every child ship and resets
+  // the task force's nation/context identity for a new map selection.
+  void RegainVirginity(int nation, TZone* contextZone); // 0x552a70
   // 0x005528c0 — empty post-construction slot invoked thiscall (no args) by both
   // TTaskForce factory sites right after the ctor; the real body is a single ret.
   void NoOpTaskForceInitSlot();
@@ -346,7 +347,37 @@ public:
 
   // Mac oracle: Remove(TShip*). Removes the ship's child link, updates its class
   // count and the preferred-child cache, then clears the ship's owner backlink.
-  void Remove(TShip* ship); // 0x553d40
+  // Mac oracle: TTaskForce::Remove(TShip*). The class-body definition is material:
+  // VC5 both expands it in RegainVirginity and retains its COMDAT copy at 0x553d40.
+  // FUNCTION: IMPERIALISM 0x00553d40
+  void Remove(TShip* ship) {
+    TMapOrderChildLinkNode* matchingLink;
+    if (childOrderList == 0) {
+      matchingLink = 0;
+    } else if (childOrderList->payload != ship) {
+      matchingLink = childOrderList->next->FindNodeMatching(ship);
+    } else {
+      matchingLink = childOrderList;
+    }
+
+    if (matchingLink != 0) {
+      if (childOrderList != 0) {
+        if (childOrderList->payload == ship) {
+          childOrderList = childOrderList->DeleteMapOrderChildLinkAndReturnNext();
+        } else {
+          childOrderList->next->RemoveLinkedOrderNodeByValueRecursive(ship);
+        }
+      }
+      short bucketIndex = static_cast<short>(
+          g_NavyOrderResourceDescriptorTable[ship->resourceType04].enabledFlagOrBucketOffset);
+      --shipCountsByClass[bucketIndex];
+    }
+
+    if (ship == activeChildEntry) {
+      RecomputeMapOrderChildAggregateMetric();
+    }
+    ship->ownerOrderEntry0c = 0;
+  }
 
   // Mac oracle: SubmitOrders(eShipOrders, void*). The Windows ABI passes both values
   // as dwords; orderArgument is the attachment-specific zone/city context payload.

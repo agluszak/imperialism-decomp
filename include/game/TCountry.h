@@ -97,6 +97,9 @@ public:
   void ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot);
 
   void InitializeNationStateIdentityAndOwnedRegionList(short nationSlot);
+  // Mac oracle: GenerateEthnicName(CStr32&) const. The Windows port uses CString;
+  // the ABI is a single CString* stack argument on this TCountry receiver.
+  void GenerateEthnicName(CString* out) const; // 0x4d7eb0
   // Fill out with this nation's overlay label (its shared credential/name text), or the
   // empty string when the descriptor slot is null. 0x004d7860.
   void FormatOverlayTerrainLabelText(CString* out);
