@@ -5121,9 +5121,9 @@ address|name|symbol|size|type|prototype|provenance
 58d950|TCombatReportView::DoEvent||995|function|void __thiscall DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
 58de40|TArmyToolbar::CreateObject|?CreateObject@TArmyToolbar@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 58dec0|TArmyToolbar::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
-58dee0|TArmyToolbar::?ConstructTArmyToolbarBaseState@@YIPAUArmyToolbarState@?%Z:imperialismsrcgameTArmyToolbar.cpp126722299@@PAU12@@Z||18|function|undefined ?ConstructTArmyToolbarBaseState@@YIPAUArmyToolbarState@?%Z:imperialismsrcgameTArmyToolbar.cpp126722299@@PAU12@@Z()|
+58dee0|TArmyToolbar::TArmyToolbar||18|function|void __thiscall TArmyToolbar(void)|
 58df10|TArmyToolbar::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-58df60|Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60||466|function|undefined Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60()|
+58df60|TArmyToolbar::SetProvince||466|function|void __thiscall SetProvince(short provinceIndex)|mac-symbol
 58e1c0|TArmyToolbar::DoEvent||282|function|undefined DoEvent()|
 58e330|TStratReportView::CreateObject|?CreateObject@TStratReportView@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 58e3a0|TStratReportView::GetRuntimeClass|?GetRuntimeClass@TStratReportView@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
@@ -8558,6 +8558,7 @@ address|name|symbol|size|type|prototype|provenance
 698b50|g_apfnScenarioScriptInstructionHandlers|||global||
 698bf4|s_PictWvGobPathFormat_00698BF4|||global||
 698c0c|s_Chunk_00698C0C|||global||
+698ee0|g_anArmyToolbarCategoryByUnitType|||global||
 698f58|g_anTargetTileProfileByCivilianClassAndSlot|||global||
 69a7f8|s_SourcePathUTestDialogs_0069A7F8|||global||binary_string
 69a910|g_aTradeItemBasePriceByCategory_0069A910|||global||

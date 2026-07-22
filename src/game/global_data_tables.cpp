@@ -1524,6 +1524,10 @@ char g_szEmptyString[1] = {0};
 // GLOBAL: IMPERIALISM 0x006a4490
 extern "C" unsigned short g_awCivilianLegendSelectionCountsBySlot[16] = {0};
 
+// GLOBAL: IMPERIALISM 0x00698ee0
+extern "C" int g_anArmyToolbarCategoryByUnitType[30] = {
+    0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 9, 9, 9};
+
 // GLOBAL: IMPERIALISM 0x698f58
 extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[45] = {
     8,  9, -1, -1, -1, 8,  9,  10, 11, 12, 6,  5, 2,  -1, -1, 13, -1, -1, -1, -1, -1, -1, -1,
