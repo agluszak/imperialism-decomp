@@ -71,7 +71,7 @@ TMinor::TMinor() {}
 // TMinor::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004e3830
-void TMinor::InitializeSecondaryNationStateAndSelectHomeTile(short nationSlot) {
+void TMinor::InitializeSecondaryNationStateAndSelectHomeTile(NationSlot nationSlot) {
   // Constructed and destroyed unused in the original (EH state 0) -- kept for the
   // matching EH frame.
   CString unusedText;
@@ -725,7 +725,8 @@ void TMinor::ClearNationAuxRuntimeGrantSlotC4(int grantValue) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e4ff0
-char TMinor::CanInitiateJoinEmpireProposalToTarget(short targetNationSlot, short proposalCode) {
+char TMinor::CanInitiateJoinEmpireProposalToTarget(NationSlot targetNationSlot,
+                                                   ProposalCode proposalCode) {
   if (proposalCode != 0x12d || this->encodedNationSlot != -1) {
     return 0;
   }
@@ -758,8 +759,9 @@ char TMinor::CanInitiateJoinEmpireProposalToTarget(short targetNationSlot, short
 }
 
 // FUNCTION: IMPERIALISM 0x004e50d0
-void TMinor::QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId) {
-  short targetNation = static_cast<short>(targetNationId);
+void TMinor::QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode,
+                                                       NationSlot targetNationSlot) {
+  NationSlot targetNation = targetNationSlot;
   if (proposalCode == 0x12d) {
     char canPropose = 0;
     if (this->encodedNationSlot == -1) {
@@ -823,7 +825,7 @@ void TMinor::NotifyActionSlot94(int sourceNation, int actionCode) {
 
 // FUNCTION: IMPERIALISM 0x004e5340
 void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) {
-  this->SetNationRowDisplayValueByDiplomacyPredicate(static_cast<short>(targetNationSlot));
+  this->SetNationRowDisplayValueByDiplomacyPredicate(static_cast<NationSlot>(targetNationSlot));
 
   if (this->encodedNationSlot < 200) {
     this->encodedNationSlot = static_cast<short>(targetNationSlot + 100);
@@ -989,7 +991,7 @@ void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e5a40
-void TMinor::SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot) {
+void TMinor::SetNationRowDisplayValueByDiplomacyPredicate(NationSlot targetNationSlot) {
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(targetNationSlot, nationSlot) ==
             0 &&

@@ -451,8 +451,8 @@ bool TAutoGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short tar
 }
 
 // FUNCTION: IMPERIALISM 0x004e7b50
-void TAutoGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalCode,
-                                                                short targetNationId) {
+void TAutoGreatPower::QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode,
+                                                                NationSlot targetNationSlot) {
   switch (proposalCode) {
   case 0x12D:
   case 0x12F:
@@ -461,15 +461,15 @@ void TAutoGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalCo
   case 0x132: {
     if (g_pDiplomacyTurnStateManager != 0) {
       char hasAllianceGuard =
-          g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(targetNationId, this->nationSlot);
+          g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(targetNationSlot, this->nationSlot);
       if (hasAllianceGuard == 0) {
-        TGreatPower::QueueDiplomacyProposalCodeForTargetNation(proposalCode, targetNationId);
+        TGreatPower::QueueDiplomacyProposalCodeForTargetNation(proposalCode, targetNationSlot);
       }
     }
     return;
   }
   default:
-    TGreatPower::QueueDiplomacyProposalCodeForTargetNation(proposalCode, targetNationId);
+    TGreatPower::QueueDiplomacyProposalCodeForTargetNation(proposalCode, targetNationSlot);
     return;
   }
 }

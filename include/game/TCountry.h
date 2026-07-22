@@ -78,7 +78,8 @@ public:
   virtual bool IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot);
   virtual char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                              int arg4);
-  virtual void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId);
+  virtual void QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode,
+                                                         NationSlot targetNationSlot);
   virtual char ReturnFalseNationStateCapabilityFlag90(short arg);
   virtual void NotifyActionSlot94(int sourceNation, int actionCode);
   virtual char IsClient(void);
@@ -96,10 +97,10 @@ public:
   void DeserializeDiplomacyNationStateFromStream(TStream* stream);
   void SerializeDiplomacyNationStateToStream(TStream* stream);
   char IsDiplomacyPolicyAllowedForTargetClassState(short policyCode, short targetNationSlot);
-  void SetNationTradePolicyValueForTargetAndNotify(short targetNationSlot, short policyValue);
+  void SetNationTradePolicyValueForTargetAndNotify(NationSlot targetNationSlot, short policyValue);
   void ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot);
 
-  void InitializeNationStateIdentityAndOwnedRegionList(short nationSlot);
+  void InitializeNationStateIdentityAndOwnedRegionList(NationSlot nationSlot);
   // Mac oracle: GenerateEthnicName(CStr32&) const. The Windows port uses CString;
   // the ABI is a single CString* stack argument on this TCountry receiver.
   void GenerateEthnicName(CString* out) const; // 0x4d7eb0

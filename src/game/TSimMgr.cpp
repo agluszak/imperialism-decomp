@@ -765,7 +765,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
     g_apSecondaryNationStateSlots[nationIndex] = nullptr;
     g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
     minor = new TRemoteMinor();
-    minor->InitializeSecondaryNationStateAndSelectHomeTile(slotIndex);
+    minor->InitializeSecondaryNationStateAndSelectHomeTile(static_cast<NationSlot>(slotIndex));
   } else if (nationIndex < numMinorCountries + 7) {
     if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
       g_apSecondaryNationStateSlots[nationIndex]->Free();
@@ -774,7 +774,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
     g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
 
     minor = new TMinor();
-    minor->InitializeSecondaryNationStateAndSelectHomeTile(slotIndex);
+    minor->InitializeSecondaryNationStateAndSelectHomeTile(static_cast<NationSlot>(slotIndex));
 
     g_apSecondaryNationStateSlots[nationIndex] = minor;
     g_apTerrainTypeDescriptorTable[nationIndex] = minor;
@@ -1204,12 +1204,12 @@ int TSimMgr::GetNumCountries() {
 }
 
 // FUNCTION: IMPERIALISM 0x00581260
-short TSimMgr::GetActiveNationId() {
+NationSlot TSimMgr::GetActiveNationId() {
   return activeNationSlot;
 }
 
 // FUNCTION: IMPERIALISM 0x00581280
-char TSimMgr::IsNationSlotEligibleForEventProcessing(short nationSlot) {
+char TSimMgr::IsNationSlotEligibleForEventProcessing(NationSlot nationSlot) {
   if (nationSlot == -1) {
     return 0;
   }
@@ -1233,7 +1233,7 @@ char TSimMgr::IsNationSlotEligibleForEventProcessing(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x00581300
-void TSimMgr::RemoveNationSlotAndNotifyPeers(short nationSlot) {
+void TSimMgr::RemoveNationSlotAndNotifyPeers(NationSlot nationSlot) {
   // Neutralize the removed nation's diplomacy percent field on every other live slot. For
   // the seven great-power slots a nation whose terrain profile is in the reserved band
   // [100,200) is left alone; minor slots (i >= 7) and unreserved great powers are reset.
@@ -2407,7 +2407,7 @@ void TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionR
 }
 
 // FUNCTION: IMPERIALISM 0x005837c0
-void TSimMgr::SetActiveNationSlotAndRefreshCityCapabilityUiHandles(short nationSlot) {
+void TSimMgr::SetActiveNationSlotAndRefreshCityCapabilityUiHandles(NationSlot nationSlot) {
   activeNationSlot = nationSlot;
   g_pStrategicMapViewSystem->RefreshCityCapabilityUiHandlesForActiveNation();
 }

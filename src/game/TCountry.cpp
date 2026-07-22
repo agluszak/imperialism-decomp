@@ -95,7 +95,7 @@ TCountry::TCountry() {}
 // TCountry::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004d68f0
-void TCountry::InitializeNationStateIdentityAndOwnedRegionList(short nationSlot) {
+void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nationSlot) {
   this->nationSlot = nationSlot;
   this->homeTileIndex = -1;
   this->overlayAnchorTileCache8c = -1;
@@ -574,9 +574,10 @@ bool TCountry::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetN
 }
 
 // FUNCTION: IMPERIALISM 0x004d7fe0
-void TCountry::QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId) {
+void TCountry::QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode,
+                                                         NationSlot targetNationSlot) {
   (void)proposalCode;
-  (void)targetNationId;
+  (void)targetNationSlot;
 }
 
 // FUNCTION: IMPERIALISM 0x004d8000
@@ -807,7 +808,7 @@ char OrphanCallChain_C2_I27_004e4f50(int arg1, int arg2, int arg3, int arg4) {
   return 0;
 }
 
-void TCountry::SetNationTradePolicyValueForTargetAndNotify(short targetNationSlot,
+void TCountry::SetNationTradePolicyValueForTargetAndNotify(NationSlot targetNationSlot,
                                                            short policyValue) {
   if (targetNationSlot != this->nationSlot) {
     if (policyValue != this->needLevelByNation[targetNationSlot]) {

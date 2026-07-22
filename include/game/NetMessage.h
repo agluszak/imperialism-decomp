@@ -1,6 +1,7 @@
 #pragma once
 
 #include "decomp_types.h"
+#include "game/nation_domain_types.h"
 
 // Windows counterpart of the Mac build's network message header (Mac oracle names the
 // class NetMessage with methods DestinateTo(int)/DestinateToGP(int); on Mac the header
@@ -58,28 +59,28 @@ struct TimelyNetMessagePrefix : TimelyMessageHeader {
 
 // Event-0xF per-nation turn-resume acknowledgement.
 struct TurnEventFResumeAckPacket : TimelyNetMessagePrefix {
-  short nationSlot1C;
+  NationSlot nationSlot1C;
   unsigned char pad1e[2];
 };
 
 // Event-0x14 treasury delta for one nation.
 struct TurnEvent14NationMetricPacket : TimelyMessageHeader {
-  short nationSlot18;
+  NationSlot nationSlot18;
   unsigned char pad1a[2];
   int amount1C;
 };
 
 // Event-0x16 diplomacy proposal for one nation.
 struct TurnEvent16DiplomacyProposalPacket : TimelyMessageHeader {
-  short nationSlot18;
-  short proposalCode1A;
-  short targetNationId1C;
+  NationSlot nationSlot18;
+  ProposalCode proposalCode1A;
+  NationSlot targetNationId1C;
   unsigned char pad1e[2];
 };
 
 // Event-0x17 proposal resolution (accept/decline).
 struct TurnEvent17ProposalResolutionPacket : TimelyMessageHeader {
-  short nationSlot18;
+  NationSlot nationSlot18;
   unsigned char acceptedFlag1A;
   unsigned char pad1b;
   short proposalIndex1C;
@@ -91,12 +92,12 @@ struct TurnEvent17ProposalResolutionPacket : TimelyMessageHeader {
 // 0x89c-short block, delta form (deltaKind21 == 2) carries (index, value) pairs for the
 // entries that differ from the baseline.
 struct TurnEvent2SyncPacket : NetMessage {
-  int pad10;                 // +0x10 - zeroed, no 'time' tag on this packet
-  int pad14;                 // +0x14
-  short pendingNationSlot;   // +0x18
-  unsigned char pad1a[6];    // +0x1a
-  unsigned char flag20;      // +0x20 - cleared by the caller after the baseline refresh
-  unsigned char deltaKind21; // +0x21 - 2 = delta pairs, 0 = full block
+  int pad10;                    // +0x10 - zeroed, no 'time' tag on this packet
+  int pad14;                    // +0x14
+  NationSlot pendingNationSlot; // +0x18
+  unsigned char pad1a[6];       // +0x1a
+  unsigned char flag20;         // +0x20 - cleared by the caller after the baseline refresh
+  unsigned char deltaKind21;    // +0x21 - 2 = delta pairs, 0 = full block
   unsigned char pad22[2];
   short payload[1]; // +0x24 - variable length
 

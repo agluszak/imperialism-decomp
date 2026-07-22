@@ -167,8 +167,8 @@ TMission::TMission() {
 // mission's initialization hook. TInvadeMission uses this to initialize its
 // owned beachhead mission with the same nation.
 // FUNCTION: IMPERIALISM 0x005350a0
-void TMission::InitializeMissionWithNationIdAndResetPathMarker(short nationId) {
-  nationId04 = nationId;
+void TMission::InitializeMissionWithNationIdAndResetPathMarker(NationSlot nationSlot) {
+  nationId04 = nationSlot;
   pathMarker06 = -1;
   Initialize();
 }
@@ -180,7 +180,7 @@ void TMission::InitializeMissionWithNationIdAndResetPathMarker(short nationId) {
 // target port zone (a TZone) for the navy missions; nodeKey/keyArg carry the province
 // or amassing keys for the army missions.
 // FUNCTION: IMPERIALISM 0x005350d0
-TMission* TMission::CreateMission(short sourceNation, eMissionType missionKind, int nodeKey,
+TMission* TMission::CreateMission(NationSlot sourceNation, eMissionType missionKind, int nodeKey,
                                   TZone* zoneContext, int relatedNodeKey) {
   TMission* mission = nullptr;
   switch (missionKind) {

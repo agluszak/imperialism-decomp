@@ -284,7 +284,7 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
 }
 
 // FUNCTION: IMPERIALISM 0x004eee60
-void TDiplomacyMgr::RemoveNationSlotAndNotifyPeers_Impl(short nationSlot) {
+void TDiplomacyMgr::RemoveNationSlotAndNotifyPeers_Impl(NationSlot nationSlot) {
   const int row = nationSlot;
   // Great-power slots 0..6: clear the propagation-matrix entry (both [row][i] and [i][row])
   // unless it already holds the "6" sentinel and the nation still has a terrain descriptor.
@@ -310,7 +310,7 @@ void TDiplomacyMgr::RemoveNationSlotAndNotifyPeers_Impl(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004eef50
-void TDiplomacyMgr::ResetTerrainAdjacencyMatrixRowAndSymmetricLink(short nationSlot) {
+void TDiplomacyMgr::ResetTerrainAdjacencyMatrixRowAndSymmetricLink(NationSlot nationSlot) {
   int row = nationSlot;
   int remaining = kNationSlotCount;
   short* rowCursor = &relationSideEffectMatrix1402[row * kNationSlotCount];
@@ -363,7 +363,7 @@ void TDiplomacyMgr::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ef540
-char TDiplomacyMgr::IsNationPairAtWar(short sourceNationSlot, short targetNationSlot) {
+char TDiplomacyMgr::IsNationPairAtWar(NationSlot sourceNationSlot, NationSlot targetNationSlot) {
   if ((g_apTerrainTypeDescriptorTable[sourceNationSlot] != 0) &&
       (g_apTerrainTypeDescriptorTable[targetNationSlot] != 0)) {
     return GetRelationTierSlot70(sourceNationSlot, targetNationSlot) == 6;
@@ -1306,8 +1306,8 @@ void TDiplomacyMgr::ShowRelationCodeNoticeForNationPairIfRelevant(int sourceNati
 }
 
 // FUNCTION: IMPERIALISM 0x004f1b10
-short TDiplomacyMgr::GetNationPairDiplomacyRelationCode(short sourceNationSlot,
-                                                        short targetNationSlot) {
+short TDiplomacyMgr::GetNationPairDiplomacyRelationCode(NationSlot sourceNationSlot,
+                                                        NationSlot targetNationSlot) {
   return (&relationPropagationMatrixBbe[sourceNationSlot * kNationSlotCount])[targetNationSlot];
 }
 
@@ -1414,7 +1414,7 @@ char TDiplomacyMgr::IsPrimaryNationSlotIndex(int nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f1f70
-void TDiplomacyMgr::BuildRelationshipListSlot88(short sourceNationSlot, short primaryOnlyFlag,
+void TDiplomacyMgr::BuildRelationshipListSlot88(NationSlot sourceNationSlot, short primaryOnlyFlag,
                                                 void* listHandle) {
   // The slot signature is the native void* handle; recover the common list base once
   // (InsertCopiedRecordSortedByComparator is a TIndexAndRankList virtual, shared by every sorted-list leaf).

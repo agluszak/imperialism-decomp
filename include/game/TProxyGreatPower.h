@@ -43,9 +43,9 @@ public:
   // slot 0x21 OrphanLeaf_NoCall_Ins02_004d7fc0 inherited unchanged (0x4ddd50)
   char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                      int arg4) override; // slot 0x22 0x540ba0
-  void
-  QueueDiplomacyProposalCodeForTargetNation(short proposalCode,
-                                            short targetNationId) override; // slot 0x23 0x540ac0
+  void QueueDiplomacyProposalCodeForTargetNation(
+      ProposalCode proposalCode,
+      NationSlot targetNationSlot) override; // slot 0x23 0x540ac0
   // slot 0x24 ReturnFalseNationStateCapabilityFlag90 inherited unchanged (0x4d7f60)
   // slot 0x25 OrphanRetStub_004d7f80 inherited unchanged (0x4dedf0)
   virtual char IsClient() override; // slot 0x26 0x5408c0

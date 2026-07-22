@@ -23,7 +23,7 @@ public:
   virtual void ReadFrom(TStream* stream) override; // 0x18 0x551700
   virtual void Free() override;                    // 0x1c 0x5515d0
 
-  short nationSlot;       // 0x04 (also indexes the nation's terrain descriptor; -1 = none)
+  NationSlot nationSlot;  // 0x04 (also indexes the nation's terrain descriptor; -1 = none)
   unsigned char pad06[2]; // 0x06
   TShip* assignedShip;    // 0x08 — linked navy primary-order node (0x00552250)
   CString displayName;    // 0x0c
@@ -35,7 +35,7 @@ public:
   TAdmiral* next;         // 0x14 (toward older entries)
   TAdmiral* prev;         // 0x18 (toward newer entries)
 
-  TAdmiral(short nationSlotArg = static_cast<short>(0xffff));
+  TAdmiral(NationSlot nationSlotArg = -1);
   virtual ~TAdmiral() override;
 
   // Mac oracle: AssignToShip / ReassignThyself. AssignToShip replaces the primary
@@ -54,12 +54,12 @@ public:
 
   // Allocate a linked admiral and report the original UNavy.cpp nil-pointer failure
   // when allocation fails. 0x5573f0.
-  static TAdmiral* CreateForTerrainType(short terrainTypeIndex);
+  static TAdmiral* CreateForTerrainType(NationSlot terrainTypeIndex);
 
   // Mac oracle: EstimateEnemyForces / GetFleetReport. The report intentionally
   // perturbs observed ship counts and classes according to this admiral's skill.
-  short EstimateEnemyForces(short* estimatedCounts, TZone* zone, short nation) const;
-  void GetFleetReport(CString* out, TZone* zone, short nation) const;
+  short EstimateEnemyForces(short* estimatedCounts, TZone* zone, NationSlot nation) const;
+  void GetFleetReport(CString* out, TZone* zone, NationSlot nation) const;
 };
 
 CString GetLocalizedNavalReportShipType(short category, char plural);

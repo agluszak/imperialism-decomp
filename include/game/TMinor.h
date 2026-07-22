@@ -35,7 +35,8 @@ public:
   bool IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot) override;
   char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                      int arg4) override;
-  void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId) override;
+  void QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode,
+                                                 NationSlot targetNationSlot) override;
   char ReturnFalseNationStateCapabilityFlag90(short arg) override;
   void NotifyActionSlot94(int sourceNation, int actionCode) override;
 
@@ -43,9 +44,10 @@ public:
   // dispatched virtually by HandleTurnResumeStateTelemetry (0x5434 0e region).
   virtual void RebuildDiplomacyEconomicPressureFromMapState(void);
   void SeedRandomDiplomacyPolicyThresholds(void);
-  char CanInitiateJoinEmpireProposalToTarget(short targetNationSlot, short proposalCode);
+  char CanInitiateJoinEmpireProposalToTarget(NationSlot targetNationSlot,
+                                             ProposalCode proposalCode);
   void HandleNetworkPortConstructionOrder(int nationId);
-  void SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot);
+  void SetNationRowDisplayValueByDiplomacyPredicate(NationSlot targetNationSlot);
   void ClearTileActivityOverlayByProvinceId(int provinceId);
   void QueueInterNationEvent17ForState300AffectedNations(void);
   void ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId);
@@ -69,7 +71,7 @@ public:
   // map tiles, home tile selected (flagged tile, else a random valid candidate) with
   // its port zone ensured, and the per-slot diplomacy random thresholds and save
   // fields set from the 16-way nation-slot table. 0x4e3830, __thiscall, RET 4.
-  void InitializeSecondaryNationStateAndSelectHomeTile(short nationSlot);
+  void InitializeSecondaryNationStateAndSelectHomeTile(NationSlot nationSlot);
 
 private:
   short needCurrentByType[0x17];

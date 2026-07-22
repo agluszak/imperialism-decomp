@@ -62,9 +62,9 @@ void TProxyGreatPower::AddToTreasury(int amount) {
 void TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord() {}
 
 // FUNCTION: IMPERIALISM 0x00540ac0
-void TProxyGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalCode,
-                                                                 short targetNationId) {
-  TGreatPower::QueueDiplomacyProposalCodeForTargetNation(proposalCode, targetNationId);
+void TProxyGreatPower::QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode,
+                                                                 NationSlot targetNationSlot) {
+  TGreatPower::QueueDiplomacyProposalCodeForTargetNation(proposalCode, targetNationSlot);
 
   TurnEvent16DiplomacyProposalPacket packetPayload;
   packetPayload.messageTag = 0x74696D65;
@@ -73,7 +73,7 @@ void TProxyGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalC
   packetPayload.eventCode = 0x16;
   packetPayload.messageLength = 0x20;
   packetPayload.proposalCode1A = proposalCode;
-  packetPayload.targetNationId1C = targetNationId;
+  packetPayload.targetNationId1C = targetNationSlot;
 
   packetPayload.DestinateToGP(static_cast<int>(this->nationSlot));
   g_pNetMgr006a6014->Send(&packetPayload, 0);

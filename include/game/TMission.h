@@ -3,6 +3,7 @@
 #include "compat.h"
 #include "decomp_types.h"
 #include "game/mfc.h"
+#include "game/nation_domain_types.h"
 #include "game/TObject.h"
 
 class TZone;
@@ -40,7 +41,7 @@ enum eMissionType {
 // VTABLE: IMPERIALISM 0x0065a4e8
 class TMission : public TObject {
 public:
-  short nationId04;      // 0x04 source-nation id (InitializeMission...)
+  NationSlot nationId04; // 0x04 source-nation id (InitializeMission...)
   short pathMarker06;    // 0x06 path/dispatch marker (set 0xffff)
   unsigned char state08; // 0x08 lifecycle state byte (ctor = 2)
   unsigned char padding09[3];
@@ -103,10 +104,10 @@ public:
     AcceptReenforcement(unit, flag);
   }
 
-  void InitializeMissionWithNationIdAndResetPathMarker(short nationId);
+  void InitializeMissionWithNationIdAndResetPathMarker(NationSlot nationSlot);
 
   // Mac: TMission::CreateMission(short, eMissionType, long, TZone*, long).
-  static TMission* CreateMission(short sourceNation, eMissionType missionKind, int nodeKey,
+  static TMission* CreateMission(NationSlot sourceNation, eMissionType missionKind, int nodeKey,
                                  TZone* zoneContext, int relatedNodeKey);
 
   // Mac: TMission::Find(TList*, eMissionType, short, TZone*). TSortedList is the

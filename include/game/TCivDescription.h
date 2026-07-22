@@ -1,6 +1,7 @@
 #pragma once
 
 #include "compat.h"
+#include "game/nation_domain_types.h"
 #include "game/TView.h"
 
 struct CRuntimeClass;
@@ -20,7 +21,7 @@ public:
   virtual void DrawEngineer(RECT* bounds);  // slot 0x69 0x58f7b0
   virtual void DrawDeveloper(RECT* bounds); // slot 0x6a 0x5903c0
   short selectedCivilianClass;
-  short ownerNationId;
+  NationSlot ownerNationId;
   union {
     short targetTileCountsBySlot[5];
     struct {

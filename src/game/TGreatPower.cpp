@@ -244,7 +244,7 @@ void TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
 
 // FUNCTION: IMPERIALISM 0x004d8cc0
 void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
-  this->InitializeNationStateIdentityAndOwnedRegionList(static_cast<short>(arg1));
+  this->InitializeNationStateIdentityAndOwnedRegionList(static_cast<NationSlot>(arg1));
 
   TSimMgr* localizationRuntime = g_pSimMgr;
   if (localizationRuntime != 0) {
@@ -1946,11 +1946,11 @@ void TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal(int amount, short c
 }
 
 // FUNCTION: IMPERIALISM 0x004dd3b0
-int TGreatPower::SumAidAllocationMatrixColumnForTarget(short targetNationId) {
+int TGreatPower::SumAidAllocationMatrixColumnForTarget(NationSlot targetNationSlot) {
   int total = 0;
   int rowIndex = 0;
   while (rowIndex < kAidAllocationRowCount) {
-    int matrixIndex = rowIndex * kAidAllocationColumnCount + static_cast<int>(targetNationId);
+    int matrixIndex = rowIndex * kAidAllocationColumnCount + static_cast<int>(targetNationSlot);
     total += this->aidAllocationMatrix[matrixIndex];
     ++rowIndex;
   }
@@ -2192,8 +2192,8 @@ void TGreatPower::AssignNeedSlotFromSourceSlot19C(short targetNationSlot, short 
   }
 }
 
-void TGreatPower::QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
-                                                                  short sourceNationSlot) {
+void TGreatPower::QueueInterNationEventType0FForNationPairContext(NationSlot targetNationSlot,
+                                                                  NationSlot sourceNationSlot) {
   this->AssignNeedSlotFromSourceSlot19C(targetNationSlot, sourceNationSlot);
 }
 
@@ -2620,14 +2620,14 @@ void TGreatPower::RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004de700
-char TGreatPower::CanAffordDiplomacyGrantEntryForTarget(short targetNationId,
+char TGreatPower::CanAffordDiplomacyGrantEntryForTarget(NationSlot targetNationSlot,
                                                         unsigned short proposedGrantEntry) {
   int proposedGrantValue = static_cast<short>(proposedGrantEntry & 0x3FFF);
   if (proposedGrantValue < 0) {
     return 1;
   }
 
-  short currentGrantEntry = this->diplomacyGrantByNation[targetNationId];
+  short currentGrantEntry = this->diplomacyGrantByNation[targetNationSlot];
   int currentGrant = 0;
   if (currentGrantEntry > 0) {
     currentGrant = static_cast<short>(currentGrantEntry & 0x3FFF);
@@ -2818,7 +2818,7 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004deca0
-void TGreatPower::DecrementNeedLevelByNationStep(short nationSlot) {
+void TGreatPower::DecrementNeedLevelByNationStep(NationSlot nationSlot) {
   short* needLevel = &this->needLevelByNation[nationSlot];
   switch (*needLevel) {
   case 0x4b:
@@ -2917,16 +2917,16 @@ void TGreatPower::NotifyActionSlot94(int arg1, int arg2) {
 }
 
 // FUNCTION: IMPERIALISM 0x004defd0
-void TGreatPower::QueueDiplomacyProposalCodeForTargetNation(short proposalCode,
-                                                            short targetNationId) {
+void TGreatPower::QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode,
+                                                            NationSlot targetNationSlot) {
   struct DiplomacyProposalRecord {
-    short proposalCode;
-    short targetNationId;
+    ProposalCode proposalCode;
+    NationSlot targetNationSlot;
   };
 
   DiplomacyProposalRecord proposalRecord;
   proposalRecord.proposalCode = proposalCode;
-  proposalRecord.targetNationId = targetNationId;
+  proposalRecord.targetNationSlot = targetNationSlot;
 
   this->proposalQueue->InsertCopiedRecordSortedByComparator(&proposalRecord);
 }

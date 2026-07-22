@@ -70,7 +70,8 @@ public:
   // minister (slot 0x98) or appends a kind-1 tracked-slot entry; returns 0.
   char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                      int arg4) override;
-  void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId) override;
+  void QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode,
+                                                 NationSlot targetNationSlot) override;
   void NotifyActionSlot94(int sourceNation, int actionCode) override; // slot 0x94
   virtual void NoOpNationPendingActionHook(void);
 
@@ -192,7 +193,7 @@ public:
   virtual void ReleaseDiplomacyTrackedObjectSlots850(void); // slot 0x5c
   virtual void AddAmountToAidAllocationMatrixCellAndTotal(int amount, short columnIndex,
                                                           short rowIndex);
-  virtual int SumAidAllocationMatrixColumnForTarget(short targetNationId);
+  virtual int SumAidAllocationMatrixColumnForTarget(NationSlot targetNationSlot);
   virtual int SumAidAllocationMatrixAllCells(void); // slot 0x5f
   virtual int ComputeRemainingDiplomacyAidBudget(void);
   virtual void ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void);
@@ -231,10 +232,10 @@ public:
   virtual void
   RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(int sourceNation); // index 118
   virtual char
-  CanAffordDiplomacyGrantEntryForTarget(short targetNationId,
+  CanAffordDiplomacyGrantEntryForTarget(NationSlot targetNationSlot,
                                         unsigned short proposedGrantEntry); // index 119
-  virtual void ApplyTurnDiplomacyStateSlot1e0();                 // index 120 — body 0x004de7e0
-  virtual void DecrementNeedLevelByNationStep(short nationSlot); // index 121
+  virtual void ApplyTurnDiplomacyStateSlot1e0();                      // index 120 — body 0x004de7e0
+  virtual void DecrementNeedLevelByNationStep(NationSlot nationSlot); // index 121
   virtual char CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // index 122
   virtual void AcceptOffer(short proposalIndex);                                       // index 123
   virtual void RejectOffer(unsigned short proposalQueueIndex);                         // index 124
@@ -517,8 +518,8 @@ public:
   int SumNavyOrderPriorityForNation();
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
 
-  void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
-                                                       short sourceNationSlot);
+  void QueueInterNationEventType0FForNationPairContext(NationSlot targetNationSlot,
+                                                       NationSlot sourceNationSlot);
 
   // 0x004e32a0. Rebuilds the economySummary930.. snapshot block wholesale: population
   // baseline, summed city building types, owned-region score (this nation plus any

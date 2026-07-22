@@ -44,7 +44,7 @@ struct CivilianClassCacheContext {
   void* vftable;
   unsigned char pad_04_to_83[0x80];
   short selectedCivilianClass;
-  short ownerNationId;
+  NationSlot ownerNationId;
   short targetTileCountsBySlot[5];
   unsigned char pad_6e_to_6f[0x02];
 };
@@ -202,7 +202,7 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
 void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit* orderState) {
   TCivDescription* context = this;
   // ORIG_CALLCONV: __thiscall
-  short ownerNationId;
+  NationSlot ownerNationId;
   int provinceTileOrdinal;
   char* provinceRecord;
   short* targetCountSlot;
@@ -217,8 +217,8 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
   int provinceCount;
 
   provinceOrdinal = 1;
-  ownerNationId = (short)*(char*)(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) +
-                                  4 + orderState->tileIndex06 * 0x24);
+  ownerNationId = static_cast<NationSlot>(
+      g_pGlobalMapState->terrainStateTable[orderState->tileIndex06].ownerNationTag04);
   context->ownerNationId = ownerNationId;
   ownerNationProvinceCollection = g_apTerrainTypeDescriptorTable[ownerNationId]->ownedRegionList;
   context->targetTileCountsBySlot[4] = 0;

@@ -30,7 +30,8 @@ public:
   void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                       int multiplier) override;
   // slot 0x23 — 0x004e7b50: proposal queue with alliance guards.
-  void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId) override;
+  void QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode,
+                                                 NationSlot targetNationSlot) override;
   // slot 0x25 — 0x004e7c50: policy side effects before slot 0x94 dispatch.
   void NotifyActionSlot94(int sourceNation, int actionCode) override;
   // slot 0x4d — 0x004ea470: rebuild yields and roll field 0x134 into 0x136.
@@ -182,4 +183,4 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
 
 // Scores the current AI nation's owned regions as city-development targets and returns the
 // best region id, or -1 when the nation is unavailable/ineligible. 0x00540440, __cdecl.
-int ComputeBestNationTileDevelopmentScore(short nationSlot);
+int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot);
