@@ -16,10 +16,13 @@ has a reviewed classification and a durable Beads owner in
 
 ## clang-tidy evaluation
 
-- Status: `unavailable_in_lint_image`
+- Status: `evaluated_with_llvm_19`
+- Version: `19.1.7`
 - Decision: `advisory_only`
 - Evaluated checks: `bugprone-narrowing-conversions`, `cppcoreguidelines-narrowing-conversions`, `readability-redundant-casting`
-- Rationale: The lint image installs clang-cl but not clang-tidy; broad narrowing checks also require VC5-aware classification before gating.
+- Sample: 5 manually owned translation units (TScrollBarView, TGreatPower, TMapMaker, TViewMgr, and NetMessage)
+- Result: 138 source-visible diagnostics (131 narrowing, 7 redundant casts); no diagnostics in generated or retail library code were included.
+- Rationale: Narrowing diagnostics expose real signature and storage-width debt but mix listing-required truncation, signed-byte preservation, predicate storage, negative hex constants, and floating-point codegen. The cppcoreguidelines check aliases the same diagnostics as bugprone under LLVM 19. Redundant casts were low-noise (7 of 7 same-type casts), but remain advisory until their .99.2-owned baseline is cleared.
 
 ## Findings
 

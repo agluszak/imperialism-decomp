@@ -252,6 +252,27 @@ lint flags="":
     -v "$PWD/{{lint_build_dir}}":/build \
     "{{docker_image}}"
 
+# Evaluate the scalar-focused clang-tidy checks on a stable sample of manually
+# owned TUs. Regenerating the lint database first prevents cached/no-op lint
+# builds from leaving the analysis on stale compile flags.
+[doc('Run scalar-focused clang-tidy checks on representative manual source')]
+[group('build')]
+scalar-clang-tidy:
+  just gen-compile-commands
+  docker run --rm --network none --entrypoint clang-tidy \
+    -v "$PWD":/imperialism \
+    -v "$PWD/{{lint_build_dir}}":/build \
+    "{{docker_image}}" \
+    -p /build \
+    --checks='-*,bugprone-narrowing-conversions,cppcoreguidelines-narrowing-conversions,readability-redundant-casting' \
+    --header-filter='^/imperialism/(include|src)/game/' \
+    --quiet \
+    /imperialism/src/game/TScrollBarView.cpp \
+    /imperialism/src/game/TGreatPower.cpp \
+    /imperialism/src/game/TMapMaker.cpp \
+    /imperialism/src/game/TViewMgr.cpp \
+    /imperialism/src/game/NetMessage.cpp
+
 # Assert the recomp PE has .rsrc and SDI template MENU id 128 (0x80).
 [group('build')]
 resource-check:

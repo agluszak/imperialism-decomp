@@ -223,8 +223,15 @@ def render_report(findings: list[Finding], config: dict) -> str:
             "## clang-tidy evaluation",
             "",
             f"- Status: `{clang_tidy['status']}`",
+            *(
+                [f"- Version: `{clang_tidy['version']}`"]
+                if "version" in clang_tidy
+                else []
+            ),
             f"- Decision: `{clang_tidy['decision']}`",
             "- Evaluated checks: " + ", ".join(f"`{item}`" for item in clang_tidy["evaluated_checks"]),
+            *([f"- Sample: {clang_tidy['sample']}"] if "sample" in clang_tidy else []),
+            *([f"- Result: {clang_tidy['result']}"] if "result" in clang_tidy else []),
             f"- Rationale: {clang_tidy['rationale']}",
             "",
             "## Findings",
