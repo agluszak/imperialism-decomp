@@ -195,7 +195,7 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
   }
 
   for (index = 0; index < kCityRecordCount; ++index) {
-    TGlobalMapCityScoreRecord& city = g_pGlobalMapState->cityScoreTable[index];
+    Province& city = g_pGlobalMapState->cityScoreTable[index];
     city.adjacentRegionCount08 = 0;
     city.stationedUnitChain98 = 0;
     city.linkedRegionCount = 0;

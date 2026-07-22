@@ -24,11 +24,10 @@ static __inline short SignedDiv10(int value) {
 // FUNCTION: IMPERIALISM 0x0053b800
 float ComputeNavyOrderDistributionScoreForNation(short nation) {
   float categoryVector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
-    if (ship->ownerNationSlot14 == nation && ship->IsInHomePort() &&
-        ship->GetNavyOrderNormalizationBaseByNationType() <= ship->stockLevel1c) {
-      float stockRatio = static_cast<float>(ship->stockLevel1c /
-                                            ship->GetNavyOrderNormalizationBaseByNationType());
+  for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
+    if (ship->nation == nation && ship->IsInHomePort() &&
+        ship->GetMaxStrength() <= ship->strength) {
+      float stockRatio = static_cast<float>(ship->strength / ship->GetMaxStrength());
       categoryVector[0] =
           static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
               stockRatio +
@@ -81,13 +80,12 @@ IMPLEMENT_DYNCREATE(TShip, TObject)
 
 // FUNCTION: IMPERIALISM 0x0054f500
 TShip::TShip()
-    : TObject(), displayName18(), resourceType04(0), pad06(0), field08(0), ownerOrderEntry0c(0),
-      quantityFlag10(1), ownerNationSlot14(static_cast<short>(-1)), stockLevel1c(0), pad1e(0),
-      admiralBacklink20(0), nextOlder24(g_pNavyPrimaryOrderListHead), prevNewer28(0),
-      missionBacklink2c(0), experiencePoints30(0), field34(0) {
+    : TObject(), name(), type(0), pad06(0), location(0), taskForce(0), aggression(1),
+      nation(static_cast<short>(-1)), strength(0), pad1e(0), admiral(0),
+      next(g_pNavyPrimaryOrderListHead), previous(0), mission(0), experience(0), selection(0) {
   g_pNavyPrimaryOrderListHead = this;
-  if (nextOlder24 != 0) {
-    nextOlder24->prevNewer28 = this;
+  if (next != 0) {
+    next->previous = this;
   }
 }
 
@@ -98,61 +96,58 @@ TShip::~TShip() {}
 // FUNCTION: IMPERIALISM 0x0054f640
 void TShip::Free() {
   if (g_pNavyPrimaryOrderListHead == this) {
-    g_pNavyPrimaryOrderListHead = this->nextOlder24;
+    g_pNavyPrimaryOrderListHead = this->next;
   }
-  if (this->nextOlder24 != 0) {
-    this->nextOlder24->prevNewer28 = this->prevNewer28;
+  if (this->next != 0) {
+    this->next->previous = this->previous;
   }
-  if (this->prevNewer28 != 0) {
-    this->prevNewer28->nextOlder24 = this->nextOlder24;
+  if (this->previous != 0) {
+    this->previous->next = this->next;
   }
-  displayName18.~CString();
+  name.~CString();
   delete this;
 }
 
 // FUNCTION: IMPERIALISM 0x0054fab0
 void TShip::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&resourceType04, 2);
-  stream->WriteBytesSlot78(&quantityFlag10, 4);
-  stream->WriteBytesSlot78(&ownerNationSlot14, 2);
-  stream->streamSlotAc(&displayName18);
-  stream->WriteBytesSlot78(&stockLevel1c, 2);
-  stream->WriteBytesSlot78(&field34, 4);
-  stream->WriteBytesSlot78(&experiencePoints30, 2);
-  short zoneIndex = field08->GetContextOrdinalOrInvalid();
+  stream->WriteBytesSlot78(&type, 2);
+  stream->WriteBytesSlot78(&aggression, 4);
+  stream->WriteBytesSlot78(&nation, 2);
+  stream->streamSlotAc(&name);
+  stream->WriteBytesSlot78(&strength, 2);
+  stream->WriteBytesSlot78(&selection, 4);
+  stream->WriteBytesSlot78(&experience, 2);
+  short zoneIndex = location->GetContextOrdinalOrInvalid();
   stream->WriteBytesSlot78(&zoneIndex, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0054fb50
 void TShip::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  stream->ReadBytes(&resourceType04, 2);
-  stream->ReadBytes(&quantityFlag10, 4);
-  stream->ReadBytes(&ownerNationSlot14, 2);
-  stream->ReadBytes(&displayName18, 0x20);
-  stream->ReadBytes(&stockLevel1c, 2);
-  stream->ReadBytes(&field34, 4);
-  stream->ReadBytes(&experiencePoints30, 2);
+  stream->ReadBytes(&type, 2);
+  stream->ReadBytes(&aggression, 4);
+  stream->ReadBytes(&nation, 2);
+  stream->ReadBytes(&name, 0x20);
+  stream->ReadBytes(&strength, 2);
+  stream->ReadBytes(&selection, 4);
+  stream->ReadBytes(&experience, 2);
   short zoneIndex = 0;
   stream->ReadBytes(&zoneIndex, 2);
-  field08 = FindMapActionContextByNodeId(zoneIndex);
+  location = FindMapActionContextByNodeId(zoneIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x0054fbf0
 void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode) {
   do {
-    g_apTerrainTypeDescriptorTable[shipNode->resourceType04]->GenerateEthnicName(
-        &shipNode->displayName18);
-    for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0;
-         existing = existing->nextOlder24) {
+    g_apTerrainTypeDescriptorTable[shipNode->type]->GenerateEthnicName(&shipNode->name);
+    for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0; existing = existing->next) {
       if (existing == shipNode) {
         continue;
       }
-      if (_mbscmp(
-              reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(existing->displayName18)),
-              reinterpret_cast<unsigned char*>(
-                  (char*)static_cast<LPCSTR>(shipNode->displayName18))) == 0) {
+      if (_mbscmp(reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(existing->name)),
+                  reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(shipNode->name))) ==
+          0) {
         goto retry;
       }
     }
@@ -183,7 +178,7 @@ void RecomputeGlobalCapabilityAverages(void) {
     // The enabled gate tests the record's first DWORD (resolveWeight together with
     // pad02) for > 0, while the case-0 blend reads resolveWeight as a word -- the
     // usual dual-width read (heuristic 118), kept as a one-spot wide-read cast.
-    if (0 < *reinterpret_cast<int*>(&g_NavyOrderResourceDescriptorTable[i].resolveWeight) &&
+    if (0 < g_NavyOrderResourceDescriptorTable[i].resolveWeightDword &&
         g_pCityOrderCapabilityState->resourceTypeEnabled19d[type] != 0) {
       ++enabledCount;
       int category;
@@ -231,7 +226,7 @@ int GetNavyContextPointerFromGlobalTableByIndex(int index) {
 }
 
 // Receiver-agnostic: also called directly on a TTaskForce's own
-// order_type/required_count/tiebreak_strength fields (TNavyMission::AccumulateLack),
+// aggression/nation/ingotTileIndex fields (TNavyMission::AccumulateLack),
 // which happen to share these same 3 offsets with TShip -- see the header comment.
 
 // FUNCTION: IMPERIALISM 0x0054ff00
@@ -240,30 +235,24 @@ short TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int category)
 
   switch (category) {
   case 0: {
-    const TNavyOrderResourceDescriptor& descriptor =
-        g_NavyOrderResourceDescriptorTable[resourceType04];
+    const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[type];
     int weight = descriptor.calculateWeight;
-    int quantityTerm = experiencePoints30 / 100 +
-                       *reinterpret_cast<const int*>(&descriptor.resolveWeight) * 10 + 5;
+    int quantityTerm = experience / 100 + descriptor.resolveWeightDword * 10 + 5;
     return (SignedDiv10(quantityTerm) * weight * weight * 100) / divisor;
   }
   case 1: {
-    const TNavyOrderResourceDescriptor& descriptor =
-        g_NavyOrderResourceDescriptorTable[resourceType04];
+    const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[type];
     int weight = descriptor.calculateWeight;
-    return (weight * static_cast<int>(stockLevel1c) * 10000) /
-           (descriptor.taskForceWeight * divisor);
+    return (weight * static_cast<int>(strength) * 10000) / (descriptor.taskForceWeight * divisor);
   }
   case 2:
-    return (static_cast<int>(g_NavyOrderResourceDescriptorTable[resourceType04].descriptorWeight) *
-            100) /
+    return (static_cast<int>(g_NavyOrderResourceDescriptorTable[type].descriptorWeight) * 100) /
            divisor;
   case 3:
-    if (stockLevel1c < 1) {
+    if (strength < 1) {
       return 0;
     }
-    return (static_cast<int>(GetIndustryActionCostWeightByResourceType(resourceType04)) * 100) /
-           divisor;
+    return (static_cast<int>(GetIndustryActionCostWeightByResourceType(type)) * 100) / divisor;
   default:
     return 0;
   }
@@ -300,67 +289,67 @@ int GetNormalizedIndustryActionResourceCostPercent(int nCategory, short nResourc
 }
 
 // FUNCTION: IMPERIALISM 0x005501b0
-int TShip::CalculateMissionOrderPriorityScore(int nScoreProfileId) {
+int TShip::ComputeValueForMission(int missionType) const {
   int total = 0;
   for (int category = 0; category < 4; category++) {
     int divisor = g_aCategoryMetricBaselineAverage[category];
-    const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[resourceType04];
     short contribution;
     switch (category) {
     case 0: {
-      int quantityTerm = static_cast<short>(experiencePoints30 / 100) + 5 +
-                         *reinterpret_cast<const int*>(&desc.resolveWeight) * 10;
-      int weight = desc.calculateWeight;
+      int quantityTerm = static_cast<short>(experience / 100) + 5 +
+                         g_NavyOrderResourceDescriptorTable[type].resolveWeightDword * 10;
+      int weight = g_NavyOrderResourceDescriptorTable[type].calculateWeight;
       contribution = static_cast<short>(
           (static_cast<short>(quantityTerm / 10) * weight * weight * 100) / divisor);
       break;
     }
     case 1: {
-      int requiredCountValue = stockLevel1c;
-      int weight = desc.calculateWeight;
-      contribution = static_cast<short>((weight * requiredCountValue * 10000) /
-                                        (desc.taskForceWeight * divisor));
+      int requiredCountValue = strength;
+      int weight = g_NavyOrderResourceDescriptorTable[type].calculateWeight;
+      contribution =
+          static_cast<short>((weight * requiredCountValue * 10000) /
+                             (g_NavyOrderResourceDescriptorTable[type].taskForceWeight * divisor));
       break;
     }
     case 2:
-      contribution = static_cast<short>((static_cast<int>(desc.descriptorWeight) * 100) / divisor);
+      contribution = static_cast<short>(
+          (static_cast<int>(g_NavyOrderResourceDescriptorTable[type].descriptorWeight) * 100) /
+          divisor);
       break;
-    case 3:
-      if (stockLevel1c < 1) {
-        contribution = static_cast<short>(0 / divisor);
-      } else {
-        contribution = static_cast<short>(
-            (static_cast<int>(GetIndustryActionCostWeightByResourceType(resourceType04)) * 100) /
-            divisor);
+    case 3: {
+      short industryCost = 0;
+      if (strength > 0) {
+        industryCost = g_industryActionCostWeightResCode10[type];
       }
+      contribution = static_cast<short>((static_cast<int>(industryCost) * 100) / divisor);
       break;
+    }
     default:
       contribution = 0;
     }
-    total +=
-        static_cast<int>(static_cast<short>(
-            g_Populate_Beachhead_Mission_LookupTable_00697958[nScoreProfileId * 4 + category])) *
-        static_cast<int>(contribution);
+    total += static_cast<int>(static_cast<short>(
+                 g_Populate_Beachhead_Mission_LookupTable_00697958[missionType * 4 + category])) *
+             static_cast<int>(contribution);
   }
   return total;
 }
 
 // FUNCTION: IMPERIALISM 0x00550370
 void TShip::Victory(short experienceGain) {
-  experiencePoints30 = static_cast<short>(experiencePoints30 + experienceGain);
-  if (experiencePoints30 > 499) {
-    experiencePoints30 = 499;
+  experience = static_cast<short>(experience + experienceGain);
+  if (experience > 499) {
+    experience = 499;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005503a0
-TTaskForce* TShip::GetOrCreateMissionOrderEntryForNode() {
-  TTaskForce* owner_ctx = ownerOrderEntry0c;
+TTaskForce* TShip::DemandExclusiveTaskForce() {
+  TTaskForce* owner_ctx = taskForce;
   if (owner_ctx != nullptr) {
     owner_ctx->AssertValid();
 
     short childCount = 0;
-    TMapOrderChildLinkNode* head = owner_ctx->childOrderList;
+    TMapOrderChildLinkNode* head = owner_ctx->shipList;
     for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
       ++childCount;
     }
@@ -375,18 +364,16 @@ TTaskForce* TShip::GetOrCreateMissionOrderEntryForNode() {
         found = head->next->FindNodeMatching(this);
       }
       if (found != nullptr) {
-        owner_ctx->childOrderList = head->RemoveLinkedOrderNodeByValueRecursive(this);
+        owner_ctx->shipList = head->RemoveLinkedOrderNodeByValueRecursive(this);
 
-        short bucketIndex = static_cast<short>(
-            g_NavyOrderResourceDescriptorTable[resourceType04].enabledFlagOrBucketOffset);
-        short* bucketCounter =
-            reinterpret_cast<short*>(reinterpret_cast<char*>(owner_ctx) + 0x1e + bucketIndex * 2);
-        --*bucketCounter;
+        short bucketIndex =
+            static_cast<short>(g_NavyOrderResourceDescriptorTable[type].enabledFlagOrBucketOffset);
+        --owner_ctx->shipCountsByToolbarSlot[bucketIndex];
       }
-      if (this == owner_ctx->activeChildEntry) {
-        owner_ctx->RecomputeMapOrderChildAggregateMetric();
+      if (this == owner_ctx->flagship) {
+        owner_ctx->ElectFlagship();
       }
-      SetOwnerOrderEntryAndCacheType(nullptr);
+      SetTaskForce(nullptr);
       owner_ctx = nullptr;
     }
 
@@ -403,56 +390,54 @@ TTaskForce* TShip::GetOrCreateMissionOrderEntryForNode() {
   // Hard Rule 2 forbids outside quarantined runtime files. `new T()` is the correct
   // model here even though it costs some match percentage at this address.
   // The entry's zone context comes from this ship's port zone.
-  TTaskForce* entry = new TTaskForce(field08, ownerNationSlot14);
+  TTaskForce* entry = new TTaskForce(location, nation);
   if (entry == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UNavy.cpp", 0x306);
   }
-  entry->FindOrCreateChildOrderLink(this);
+  entry->Add(this);
   return entry;
 }
 
 // FUNCTION: IMPERIALISM 0x00550510
-short TShip::GetOrderNodeDescriptorWord20ByResourceType() {
-  return static_cast<short>(
-      g_NavyOrderResourceDescriptorTable[resourceType04].enabledFlagOrBucketOffset);
+short TShip::GetToolbarSlot() const {
+  return static_cast<short>(g_NavyOrderResourceDescriptorTable[type].enabledFlagOrBucketOffset);
 }
 
 // FUNCTION: IMPERIALISM 0x00550550
-short TShip::ComputeOrderNodeDistanceQuotientByDescriptorWord24(TZone* otherZone) {
-  short hopDistance = field08->GetCachedMapActionContextDistanceOrRecompute(otherZone);
-  short descriptorWeight = g_NavyOrderResourceDescriptorTable[resourceType04].descriptorWeight;
+short TShip::GetTurnDistanceTo(TZone* otherZone) const {
+  short hopDistance = location->GetCachedMapActionContextDistanceOrRecompute(otherZone);
+  short descriptorWeight = g_NavyOrderResourceDescriptorTable[type].descriptorWeight;
   return static_cast<short>((descriptorWeight - 1 + hopDistance) / descriptorWeight);
 }
 
 // Mac oracle: TShip::GetMaxStrength() const. The established descriptive name is kept
 // for now, but this is a real TShip method, not a free resource-type lookup: every
-// callsite loads the ship receiver into ECX and the body reads resourceType04 at +0x04.
+// callsite loads the ship receiver into ECX and the body reads type at +0x04.
 // FUNCTION: IMPERIALISM 0x005505a0
-short TShip::GetNavyOrderNormalizationBaseByNationType() {
-  return g_NavyOrderResourceDescriptorTable[resourceType04].stockCap;
+short TShip::GetMaxStrength() const {
+  return g_NavyOrderResourceDescriptorTable[type].stockCap;
 }
 
 // FUNCTION: IMPERIALISM 0x005505c0
-TShip* GetNavyPrimaryOrderListHead(void) {
+TShip* TShip::GetFirst() {
   return g_pNavyPrimaryOrderListHead;
 }
 
 // FUNCTION: IMPERIALISM 0x00550610
-int TShip::GetIndexInPrimaryOrderList() {
+int TShip::GetIndex() const {
   int index = 0;
-  for (TShip* node = g_pNavyPrimaryOrderListHead; node != 0 && node != this;
-       node = node->nextOlder24) {
+  for (TShip* node = g_pNavyPrimaryOrderListHead; node != 0 && node != this; node = node->next) {
     ++index;
   }
   return index;
 }
 
 // FUNCTION: IMPERIALISM 0x00550640
-TShip* GetNavyPrimaryOrderNodeByIndex(short index) {
+TShip* TShip::GetNth(short index) {
   TShip* node = g_pNavyPrimaryOrderListHead;
   while (node != nullptr && index != 0) {
-    node = node->nextOlder24;
+    node = node->next;
     --index;
   }
   return node;
@@ -460,20 +445,18 @@ TShip* GetNavyPrimaryOrderNodeByIndex(short index) {
 
 // Priority compare between two ship order nodes (see the header note); the original
 // reads +0x20 (admiral backlink, then its experiencePoints) SYMMETRICALLY on both receiver
-// and candidate -- the previous TTaskForce-receiver model misread the receiver side
-// as +0x08/+0x06 (shipOrders/order_strength), a genuine mis-port this migration
-// fixes.
+// and candidate -- the previous TTaskForce-receiver model misread the receiver side,
+// a genuine mis-port this migration fixes.
 // FUNCTION: IMPERIALISM 0x00550670
-TShip* TShip::SelectPreferredMapOrderEntryByPriorityRules(TShip* candidate,
-                                                          int preferUnassignedFlag) {
-  if (static_cast<char>(preferUnassignedFlag) != '\0') {
-    if (admiralBacklink20 != nullptr) {
+TShip* TShip::Finest(TShip* candidate, unsigned char preferUnassigned) {
+  if (preferUnassigned != 0) {
+    if (admiral != nullptr) {
       return candidate;
     }
     if (candidate == nullptr) {
       return this;
     }
-    if (candidate->admiralBacklink20 != nullptr) {
+    if (candidate->admiral != nullptr) {
       return this;
     }
   }
@@ -481,8 +464,8 @@ TShip* TShip::SelectPreferredMapOrderEntryByPriorityRules(TShip* candidate,
     return this;
   }
   if (this != nullptr) {
-    TAdmiral* selfAdmiral = admiralBacklink20;
-    TAdmiral* candidateAdmiral = candidate->admiralBacklink20;
+    TAdmiral* selfAdmiral = admiral;
+    TAdmiral* candidateAdmiral = candidate->admiral;
     bool preferSelf = false;
     if (selfAdmiral == nullptr) {
       preferSelf = false;
@@ -504,21 +487,21 @@ TShip* TShip::SelectPreferredMapOrderEntryByPriorityRules(TShip* candidate,
       preferCandidate = selfAdmiral->experiencePoints < candidateAdmiral->experiencePoints;
     }
     if (!preferCandidate) {
-      if (resourceType04 != candidate->resourceType04) {
-        if (candidate->resourceType04 <= resourceType04) {
+      if (type != candidate->type) {
+        if (candidate->type <= type) {
           return this;
         }
         return candidate;
       }
-      short selfBucket = static_cast<short>(experiencePoints30 / 100);
-      short candidateBucket = static_cast<short>(candidate->experiencePoints30 / 100);
+      short selfBucket = static_cast<short>(experience / 100);
+      short candidateBucket = static_cast<short>(candidate->experience / 100);
       if (selfBucket != candidateBucket) {
         if (candidateBucket <= selfBucket) {
           return this;
         }
         return candidate;
       }
-      if (candidate->stockLevel1c < stockLevel1c) {
+      if (candidate->strength < strength) {
         return this;
       }
     }
@@ -527,14 +510,14 @@ TShip* TShip::SelectPreferredMapOrderEntryByPriorityRules(TShip* candidate,
 }
 
 // FUNCTION: IMPERIALISM 0x00550820
-short TShip::GetOrderNodeDescriptorWord0CByResourceType() {
-  return g_NavyOrderResourceDescriptorTable[resourceType04].calculateWeight;
+short TShip::GetRange() const {
+  return g_NavyOrderResourceDescriptorTable[type].calculateWeight;
 }
 
 // FUNCTION: IMPERIALISM 0x00550840
-int TShip::ComputeOrderNodeDerivedScoreFromQuantityAndWord18() {
-  const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[resourceType04];
-  short strengthBucket = static_cast<short>(experiencePoints30 / 100);
+int TShip::GetSpeed() const {
+  const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[type];
+  short strengthBucket = static_cast<short>(experience / 100);
   return (strengthBucket + 5 + desc.navyPriorityWeight * 10) / 10;
 }
 
@@ -544,18 +527,18 @@ short GetIndustryActionCostWeightByResourceType(short resourceType) {
 }
 
 // FUNCTION: IMPERIALISM 0x005509c0
-void TShip::PruneOrPromoteOrderNodeWhenChildCostDepleted() {
-  TTaskForce* ownerEntry = this->ownerOrderEntry0c;
-  this->stockLevel1c = -666;
+void TShip::Sink() {
+  TTaskForce* ownerEntry = this->taskForce;
+  this->strength = -666;
   if (ownerEntry != 0) {
-    // Same prune-head-then-recompute body TTaskForce::PruneInactiveTaskForceOrderHead
+    // Same prune-head-then-recompute body TTaskForce::SinkOrSwimShips
     // (0x553fe0) runs on itself, minus the return flag.
-    TMapOrderChildLinkNode* head = ownerEntry->childOrderList;
+    TMapOrderChildLinkNode* head = ownerEntry->shipList;
     if (head != 0) {
       TShip* headChild = static_cast<TShip*>(head->payload);
-      unsigned char headDefeated = (headChild->stockLevel1c <= 0);
+      unsigned char headDefeated = (headChild->strength <= 0);
       if (headDefeated != 0) {
-        headChild->ownerOrderEntry0c = 0;
+        headChild->taskForce = 0;
         static_cast<TShip*>(head->payload)->Free();
 
         TMapOrderChildLinkNode* next = head->next;
@@ -573,17 +556,15 @@ void TShip::PruneOrPromoteOrderNodeWhenChildCostDepleted() {
       }
     }
 
-    ownerEntry->childOrderList = head;
-    ownerEntry->activeChildEntry = 0;
+    ownerEntry->shipList = head;
+    ownerEntry->flagship = 0;
     TMapOrderChildLinkNode* node;
     for (node = head; node != 0; node = node->next) {
-      ownerEntry->activeChildEntry =
-          static_cast<TShip*>(node->payload)
-              ->SelectPreferredMapOrderEntryByPriorityRules(ownerEntry->activeChildEntry, 0);
+      ownerEntry->flagship = static_cast<TShip*>(node->payload)->Finest(ownerEntry->flagship, 0);
     }
 
-    if (ownerEntry->childOrderList == 0) {
-      ownerEntry->eliminatedFlag26 = 1;
+    if (ownerEntry->shipList == 0) {
+      ownerEntry->defeated = 1;
     }
   } else {
     this->Free();
@@ -592,8 +573,8 @@ void TShip::PruneOrPromoteOrderNodeWhenChildCostDepleted() {
 
 // FUNCTION: IMPERIALISM 0x00550aa0
 int TShip::GetBattleStrengthRating() const {
-  short resourceType = resourceType04;
-  short strengthBucket = static_cast<short>(experiencePoints30 / 100);
+  short resourceType = type;
+  short strengthBucket = static_cast<short>(experience / 100);
 
   const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[resourceType];
   int navyPriorityScore = strengthBucket + 5 + desc.navyPriorityWeight * 10;
@@ -601,23 +582,20 @@ int TShip::GetBattleStrengthRating() const {
   int resolveScore = strengthBucket + 5 + desc.resolveWeight * 10;
   short resolveBucket = static_cast<short>(resolveScore / 10);
 
-  return ((navyPriorityBucket + desc.calculateWeight) * 100 + resolveBucket + stockLevel1c) /
+  return ((navyPriorityBucket + desc.calculateWeight) * 100 + resolveBucket + strength) /
          desc.taskForceWeight;
 }
 
 // FUNCTION: IMPERIALISM 0x00550b60
-int TShip::ComputeOrderNodeCompositeEconomicScore() {
-  const TNavyOrderResourceDescriptor& descriptor =
-      g_NavyOrderResourceDescriptorTable[resourceType04];
-  short quantityTerm = static_cast<short>(experiencePoints30 / 100);
+int TShip::GetStudliness() const {
+  const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[type];
+  short quantityTerm = static_cast<short>(experience / 100);
   short navyTerm = static_cast<short>((quantityTerm + descriptor.navyPriorityWeight * 10 + 5) / 10);
   // resolveWeight is read as a full dword here (its pad02 is always zero) -- the usual
   // dual-width read, kept as a one-spot wide-read cast (heuristic 118).
   return ((navyTerm + descriptor.calculateWeight) * 100 +
-          static_cast<short>(
-              (quantityTerm + *reinterpret_cast<const int*>(&descriptor.resolveWeight) * 10 + 5) /
-              10) +
-          stockLevel1c) /
+          static_cast<short>((quantityTerm + descriptor.resolveWeightDword * 10 + 5) / 10) +
+          strength) /
          descriptor.taskForceWeight;
 }
 
@@ -628,26 +606,26 @@ short GetResourceDescriptorWeightWord0ByType(short resourceType) {
 
 // FUNCTION: IMPERIALISM 0x00550f60
 bool TShip::IsInHomePort() const {
-  return field08->QueryPortZoneCapability();
+  return location->QueryPortZoneCapability();
 }
 
 // FUNCTION: IMPERIALISM 0x00550f80
-void TShip::DecrementRequiredCount(short decrement) {
-  stockLevel1c = static_cast<short>(stockLevel1c - decrement);
+void TShip::Damage(short decrement) {
+  strength = static_cast<short>(strength - decrement);
 }
 
 // FUNCTION: IMPERIALISM 0x00550ff0
-void TShip::RemoveNode(TTaskForce* newOwnerEntry) {
-  TTaskForce* owner_ctx = ownerOrderEntry0c;
+void TShip::ReassignToForce(TTaskForce* newOwnerEntry) {
+  TTaskForce* owner_ctx = taskForce;
   if (owner_ctx != 0) {
-    TMapOrderChildLinkNode* list_head = owner_ctx->childOrderList;
+    TMapOrderChildLinkNode* list_head = owner_ctx->shipList;
 
     if ((list_head != 0) && (this != list_head->payload)) {
       list_head = list_head->next->FindNodeMatching(this);
     }
 
     if (list_head != 0) {
-      list_head = owner_ctx->childOrderList;
+      list_head = owner_ctx->shipList;
       if (list_head != 0) {
         if (this == list_head->payload) {
           list_head = list_head->DeleteMapOrderChildLinkAndReturnNext();
@@ -656,49 +634,46 @@ void TShip::RemoveNode(TTaskForce* newOwnerEntry) {
         }
       }
 
-      owner_ctx->childOrderList = list_head;
+      owner_ctx->shipList = list_head;
 
       // Low 16 bits of the shared per-order-type descriptor's enabled-flag
       // dword (see TNavyOrderResourceDescriptor in global_data_tables.h),
       // reused here as a bucket-count array index into the SAME +0x1e-based
-      // short[] region ApplyTaskForceSelectionModeForCurrentNationOrders /
-      // PruneInactiveTaskForceOrderHead use on the entry (0x551066 disassembly:
+      // short[] region DropShips /
+      // SinkOrSwimShips use on the entry (0x551066 disassembly:
       // `dec word ptr [edi + eax*2 + 0x1e]` -- confirmed +0x1e, not +0x18).
-      short bucket_offset = static_cast<short>(
-          g_NavyOrderResourceDescriptorTable[resourceType04].enabledFlagOrBucketOffset);
-      short* bucket_counter =
-          reinterpret_cast<short*>(reinterpret_cast<char*>(owner_ctx) + 0x1e + bucket_offset * 2);
-      *bucket_counter = *bucket_counter - 1;
+      short bucket_offset =
+          static_cast<short>(g_NavyOrderResourceDescriptorTable[type].enabledFlagOrBucketOffset);
+      --owner_ctx->shipCountsByToolbarSlot[bucket_offset];
     }
 
-    if (this == owner_ctx->activeChildEntry) {
-      list_head = owner_ctx->childOrderList;
-      owner_ctx->activeChildEntry = 0;
+    if (this == owner_ctx->flagship) {
+      list_head = owner_ctx->shipList;
+      owner_ctx->flagship = 0;
       for (; list_head != 0; list_head = list_head->next) {
-        owner_ctx->activeChildEntry =
-            static_cast<TShip*>(list_head->payload)
-                ->SelectPreferredMapOrderEntryByPriorityRules(owner_ctx->activeChildEntry, 0);
+        owner_ctx->flagship =
+            static_cast<TShip*>(list_head->payload)->Finest(owner_ctx->flagship, 0);
       }
     }
 
-    ownerOrderEntry0c = 0;
+    taskForce = 0;
   }
 
   if (newOwnerEntry != 0) {
-    newOwnerEntry->FindOrCreateChildOrderLink(this);
+    newOwnerEntry->Add(this);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00551100
-void TShip::ReassignOrderNodeNationAndRebindParentCounters(short nation) {
-  TTaskForce* parent = ownerOrderEntry0c;
-  if (parent != 0 && parent->required_count != nation) {
-    TMapOrderChildLinkNode* link = parent->childOrderList;
+void TShip::Capture(short nation) {
+  TTaskForce* parent = taskForce;
+  if (parent != 0 && parent->nation != nation) {
+    TMapOrderChildLinkNode* link = parent->shipList;
     if (link != 0 && this != link->payload) {
       link = link->next->FindNodeMatching(this);
     }
     if (link != 0) {
-      TMapOrderChildLinkNode* head = parent->childOrderList;
+      TMapOrderChildLinkNode* head = parent->shipList;
       if (head != 0) {
         if (this == head->payload) {
           head = head->DeleteMapOrderChildLinkAndReturnNext();
@@ -706,51 +681,46 @@ void TShip::ReassignOrderNodeNationAndRebindParentCounters(short nation) {
           head->next->RemoveLinkedOrderNodeByValueRecursive(this);
         }
       }
-      parent->childOrderList = head;
+      parent->shipList = head;
 
-      short bucketIndex = static_cast<short>(
-          g_NavyOrderResourceDescriptorTable[resourceType04].enabledFlagOrBucketOffset);
-      short* bucketCounter =
-          reinterpret_cast<short*>(reinterpret_cast<char*>(parent) + 0x1e + bucketIndex * 2);
-      --*bucketCounter;
+      short bucketIndex =
+          static_cast<short>(g_NavyOrderResourceDescriptorTable[type].enabledFlagOrBucketOffset);
+      --parent->shipCountsByToolbarSlot[bucketIndex];
     }
 
-    if (this == parent->activeChildEntry) {
-      parent->activeChildEntry = 0;
+    if (this == parent->flagship) {
+      parent->flagship = 0;
       TMapOrderChildLinkNode* node;
-      for (node = parent->childOrderList; node != 0; node = node->next) {
-        parent->activeChildEntry =
-            static_cast<TShip*>(node->payload)
-                ->SelectPreferredMapOrderEntryByPriorityRules(parent->activeChildEntry, 0);
+      for (node = parent->shipList; node != 0; node = node->next) {
+        parent->flagship = static_cast<TShip*>(node->payload)->Finest(parent->flagship, 0);
       }
     }
 
-    ownerOrderEntry0c = 0;
+    taskForce = 0;
   }
 
-  TMission* missionBackref = missionBacklink2c;
+  TMission* missionBackref = mission;
   if (missionBackref != 0 && missionBackref->nationId04 != nation) {
     missionBackref->RejectConstituent(this, 1);
   }
 
-  ownerNationSlot14 = nation;
+  nation = nation;
 }
 
 // FUNCTION: IMPERIALISM 0x00551220
-void TShip::SetOwnerOrderEntryAndCacheType(TTaskForce* newEntry) {
-  ownerOrderEntry0c = newEntry;
+void TShip::SetTaskForce(TTaskForce* newEntry) {
+  taskForce = newEntry;
   if (newEntry == nullptr) {
     return;
   }
   newEntry->AssertValid();
 
-  // Cache the entry's packed order_type/order_strength pair (entry+0x04 read as one
-  // dword, the original's shape).
-  quantityFlag10 = newEntry->packedOrderTypeAndStrength;
+  // Cache the entry's aggression dword.
+  aggression = newEntry->aggression;
 
   short kind = static_cast<short>(newEntry->shipOrders);
   if (kind != 0 && kind != 7 && kind != 8 && kind != 4) {
-    field34 = 0;
+    selection = 0;
   }
 }
 

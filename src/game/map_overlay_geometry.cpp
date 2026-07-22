@@ -24,7 +24,7 @@
 void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
   short neighborTiles[6];
   TMapMgr::ComputeHexNeighborTileIndices(tileId, neighborTiles,
-                                         *(reinterpret_cast<char*>(g_pGlobalMapState) + 0x20));
+                                         g_pGlobalMapState->hexNeighborWrapHorizontally20);
   int screenXY[2];
   ComputeWrappedIsometricScreenOffsetFromTile(tileId, screenXY, 0x10, 0, 0);
   int baseX = static_cast<short>(
@@ -162,7 +162,7 @@ unsigned int MapEdgePoint::Equals(const MapEdgePoint* other) const {
 // Maps a clicked tile to a map-context action code used by the map-order handlers.
 // - Tile action class 2..6 (excluding 3): open the entry-order dialog (11).
 // - Class 7..13: walk g_pNavyOrderManager's TTaskForce queue for the ordinal-th entry whose
-//   required_count matches (class-7), cache it in g_pCachedMapActionContext for a downstream
+//   nation matches (class-7), cache it in g_pCachedMapActionContext for a downstream
 //   dialog branch, return class-5.
 // - Class 14..21: compare the tile's resolved zone against the UI's currently-active order
 //   context zone; return 10 if the same, 9 if different.
@@ -184,8 +184,8 @@ int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
     if (ordinal != -1) {
       int matchIndex = 0;
       for (TTaskForce* entry = g_pNavyOrderManager->orderQueueHead; entry != 0;
-           entry = entry->queue_next) {
-        if (entry->required_count == static_cast<short>(actionClass - 7)) {
+           entry = entry->nextForce) {
+        if (entry->nation == static_cast<short>(actionClass - 7)) {
           if (matchIndex == ordinal) {
             g_pCachedMapActionContext = entry;
             break;

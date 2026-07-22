@@ -91,7 +91,7 @@ void TUniversityView::UpdateFields() {
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   TPopulationMgr* population = city94->productionSummary1d8;
-  short recruitmentCapacity = static_cast<short>(population->stockLevel1c / 4);
+  short recruitmentCapacity = static_cast<short>(population->strength / 4);
   if (population->productionSlots14->highSkillCount08 < recruitmentCapacity) {
     recruitmentCapacity = population->productionSlots14->highSkillCount08;
   }

@@ -232,7 +232,7 @@ public:
   short ActivateFirstIdleTacticalUnitByCategoryAtTile(short categoryId, short tileIndex);
   short ActivateFirstActiveTacticalUnitByCategoryAtTile(short categoryId, short tileIndex);
 
-  // Walks the region's stationed-unit chain (TGlobalMapCityScoreRecord::stationedUnitChain98,
+  // Walks the region's stationed-unit chain (Province::stationedUnitChain98,
   // via TUnit::nextOnTile) for one whose field_8 is idle and whose
   // TMilitaryUnit::GetUnitMovementClassId() is nonzero. 0x004a4550, __thiscall (this unused --
   // operates purely off g_pGlobalMapState), 1 arg.
@@ -309,13 +309,13 @@ public:
   // (score = field_38/100 + 1); ties keep the first found. If no adjacent region is
   // owned (or none qualifies), falls back to the region's own city display name
   // (TMapMgr::AssignCityRecordDisplayName). Phase 2 separately scans
-  // GetNavyPrimaryOrderListHead() for a TShip owned by the active nation whose zone
+  // TShip::GetFirst() for a TShip owned by the active nation whose zone
   // (field08) contains cityRecordIndex (TZone::ContainsCityStatePointerInZoneArrayBy-
-  // CityIndex), reducing over TShip::SelectPreferredMapOrderEntryByPriorityRules; if
-  // found, its admiral (admiralBacklink20) can override outDefenderSummary with
+  // CityIndex), reducing over TShip::Finest; if
+  // found, its admiral (admiral) can override outDefenderSummary with
   // "Adm. <name>" when the admiral's experiencePoints/100+1 score beats Phase 1's, or (only if
   // Phase 1 found nothing at all -- zero adjacent regions) falls back to the ship's own
-  // displayName18.
+  // name.
   //
   // outGarrisonSummary: a comma-separated "<count> <resource type name>" list (or a
   // "nothing garrisoned" fallback) built from cityScoreTable[cityRecordIndex]'s
@@ -336,7 +336,7 @@ public:
   // Called from RefreshMapOrderBattleSideSnapshot's type-5 (ship-order) tail. 0x004a6ef0,
   // 897 bytes.
   //
-  // nationId carries TTaskForce::required_count, which every navy-order reader
+  // nationId carries TTaskForce::nation, which every navy-order reader
   // treats as the entry's owning nation slot (see RemoveMatchingTaskForceOrders in
   // TNavyMgr.cpp) -- used as a g_apNationStates index. The function has no explicit
   // `side` parameter; it recovers `side` implicitly by comparing nationId
@@ -350,7 +350,7 @@ public:
   //    TSortedList* of TMilitaryUnit*), and AddTail()s every entry whose tileIndex06
   //    isn't a movement-class tile (TileHasMovementClassId) for cityIndex when its
   //    field_C == cityIndex, summing GetUnitTypeCostPoints per entry into a budget.
-  //  - Subtracts g_pNavyOrderManager->ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(
+  //  - Subtracts g_pNavyOrderManager->GetInvasionCapacity(
   //    nationId, &g_pGlobalMapState->cityScoreTable[cityIndex], 0) from that
   //    budget; if the remainder is positive, randomly evicts entries from the TList
   //    (rand() % GetCount() + 1 via GetEntryByOrdinal) until the remainder is <= 0, each

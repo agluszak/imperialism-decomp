@@ -32,9 +32,9 @@ TShipAmtBar::TShipAmtBar() : TAmtBar() {
 // FUNCTION: IMPERIALISM 0x0058abf0
 void TShipAmtBar::DoPostCreate(int arg) {
   TGreatPower* nationState = GetActiveNationState();
-  TCity* cityState = nationState != 0 ? nationState->GetCityState() : 0;
-  selectedMetricRecord = cityState->shipOrderSlots[0];
-  short productionCap = cityState->productionSummary1d8->stockLevel1c;
+  TCity* province = nationState != 0 ? nationState->GetCityState() : 0;
+  selectedMetricRecord = province->shipOrderSlots[0];
+  short productionCap = province->productionSummary1d8->strength;
   stepOrCurrentValue = (short)this->frameWidth34;
   auxValueA = productionCap;
   auxValueB = 0x3a;

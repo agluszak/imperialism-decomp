@@ -24,29 +24,27 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone*
     return 0;
   }
 
-  shipNode->field08 = portZoneContext;
-  shipNode->resourceType04 = resourceType;
-  shipNode->ownerNationSlot14 = static_cast<short>(nationSlot);
+  shipNode->location = portZoneContext;
+  shipNode->type = resourceType;
+  shipNode->nation = static_cast<short>(nationSlot);
 
   if (displayNameOverride == 0) {
-    g_apTerrainTypeDescriptorTable[resourceType]->GenerateEthnicName(&shipNode->displayName18);
-    for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0;
-         existing = existing->nextOlder24) {
+    g_apTerrainTypeDescriptorTable[resourceType]->GenerateEthnicName(&shipNode->name);
+    for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0; existing = existing->next) {
       if (existing != shipNode &&
-          _mbscmp(
-              reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(existing->displayName18)),
-              reinterpret_cast<unsigned char*>(
-                  (char*)static_cast<LPCSTR>(shipNode->displayName18))) == 0) {
+          _mbscmp(reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(existing->name)),
+                  reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(shipNode->name))) ==
+              0) {
         RegenerateNavyPrimaryOrderDisplayNameUntilUnique(shipNode);
         break;
       }
     }
   } else {
     CString temp(displayNameOverride);
-    shipNode->displayName18 = temp;
+    shipNode->name = temp;
   }
 
-  shipNode->stockLevel1c = g_NavyOrderResourceDescriptorTable[resourceType].stockCap;
+  shipNode->strength = g_NavyOrderResourceDescriptorTable[resourceType].stockCap;
 
   if (portZoneContext != 0) {
     portZoneContext->HandleKeyDown(nationSlot);

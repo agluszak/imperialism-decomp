@@ -21,7 +21,7 @@ IMPLEMENT_DYNCREATE(TNavyPlayer, TTacticalPlayer)
 
 TNavyPlayer::TNavyPlayer() {}
 
-// Writes each surviving ship's losses back to its source fleet (required_count drops
+// Writes each surviving ship's losses back to its source fleet (nation drops
 // to the unit's remaining strength), then marks this side's fleet order node
 // eliminated and prunes its order head.
 // FUNCTION: IMPERIALISM 0x0059edd0
@@ -31,10 +31,10 @@ void TNavyPlayer::CommitTacticalResultsToSourceUnits(int unused) {
   for (TNavyTacUnit* unit = static_cast<TNavyTacUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TNavyTacUnit*>(unitIter.Advance())) {
     TShip* force = unit->GetSourceTaskForce();
-    force->DecrementRequiredCount(static_cast<short>(force->stockLevel1c - unit->strength4));
+    force->Damage(static_cast<short>(force->strength - unit->strength4));
   }
-  taskForce28->eliminatedFlag26 = 1;
-  taskForce28->PruneInactiveTaskForceOrderHead();
+  taskForce28->defeated = 1;
+  taskForce28->SinkOrSwimShips();
 }
 
 // FUNCTION: IMPERIALISM 0x0059ee60
@@ -52,7 +52,6 @@ void TNavyPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
 void TNavyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
   unitList4->listState.AddHead(unit);
   unit->FlipUnitSideAffiliation();
-  static_cast<TNavyTacUnit*>(unit)
-      ->GetSourceTaskForce()
-      ->ReassignOrderNodeNationAndRebindParentCounters(static_cast<short>(nationIndex1C));
+  static_cast<TNavyTacUnit*>(unit)->GetSourceTaskForce()->Capture(
+      static_cast<short>(nationIndex1C));
 }

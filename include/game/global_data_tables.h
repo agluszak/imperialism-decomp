@@ -78,13 +78,22 @@ struct GlobalViewportRectDefaultsRecord {
 // g_ResourceDescriptorWeightWord0Base0069811c); every one of those "tables" is read at
 // per-index byte offset `index * 0x24` from a base address exactly 4/8/0x10/0x14 bytes
 // apart -- confirmed via TShip.cpp/TTaskForce.cpp callsite disassembly, they are one
-// struct array. Element count is not yet pinned down (32 vs 64 in the pre-split
-// declarations); 64 is the conservative (larger) choice pending confirmation.
+// struct array. The initializer and all indexed users agree on fourteen resource rows.
 struct TNavyOrderResourceDescriptor {
-  short resolveWeight; // +0x00 (was g_Resolve_Map_Order_LookupTable_00698108)
-  short pad02;
-  short calculateWeight; // +0x04 (was g_Calculate_Mission_Order_LookupTable_0069810C)
-  short pad06;
+  union {
+    int resolveWeightDword;
+    struct {
+      short resolveWeight; // +0x00 (was g_Resolve_Map_Order_LookupTable_00698108)
+      short resolveWeightHighWord;
+    };
+  };
+  union {
+    int calculateWeightDword;
+    struct {
+      short calculateWeight; // +0x04 (was g_Calculate_Mission_Order_LookupTable_0069810C)
+      short calculateWeightHighWord;
+    };
+  };
   short taskForceWeight; // +0x08 (was g_Task_Force_Order_LookupTable_00698110's own +0x00)
   short pad0a;
   short stockCap; // +0x0c (was same table's +0x04); the navy-order normalization base
@@ -257,7 +266,7 @@ extern short g_anUnitStrengthWeightPercentBySlot[32];
 extern short g_anMapImprovementSpriteClassByOrderType[9];
 
 // Per-fort-level attacker penalty percent (0x695568), indexed by
-// TGlobalMapCityScoreRecord::fortLevel03; observed values 100/85/75/65/0/0/0/0 for levels
+// Province::fortLevel03; observed values 100/85/75/65/0/0/0/0 for levels
 // 0-7 (only the low byte of each int is ever read). Used by
 // TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState to gate the per-unit meter snapshot.
 extern int g_anFortLevelAttackerPenaltyPercentByLevel[8];
@@ -543,7 +552,7 @@ extern char g_szCountryNameProfileKey00698AE0[];
 }
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
-// Per-resourceType04 index into TShipView::Draw's 8-entry order-status
+// Per-type index into TShipView::Draw's 8-entry order-status
 // string pool (GetString group 0x2760, one status line per naval order state);
 // -1 = no status line for that resource type.
 extern const int g_ShipOrderStatusStringIndexByResourceType_0065c7f8[14];
@@ -866,7 +875,7 @@ extern int g_mapActionContextDisplayNameCacheStep_006984bc;
 
 // Localized-label string-group indices, keyed by GetMapContextActionCode's return value
 // (0..0x10 hold real tokens 0x3f0..0x3f8; the table is read by
-// GetMapContextActionLabelTokenByActionCode, 0x559dd0).
+// ActionCursor, 0x559dd0).
 extern short g_awMapContextActionLabelTokenByCommand[17];
 
 // Game singleton pointers (markers in global_data_tables.cpp).

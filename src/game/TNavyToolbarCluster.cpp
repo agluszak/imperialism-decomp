@@ -34,7 +34,7 @@ void TNavyToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
       main->GetNextHandler();
       TTaskForce* order = GetActiveMapOrderEntry();
       if (order != nullptr) {
-        order->ResetOrderTypeAndStrengthDword(idx);
+        order->SetAggression(idx);
       }
     }
   } else if (commandId == 0xa) {
@@ -44,7 +44,7 @@ void TNavyToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
     case kTagDone: {
       TTaskForce* order = GetActiveMapOrderEntry();
       if (order != nullptr) {
-        order->ApplyTaskForceSelectionModeForCurrentNationOrders(tag == kTagDone);
+        order->DropShips(tag == kTagDone);
       }
       g_pUiRuntimeContext->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
       break;

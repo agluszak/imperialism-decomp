@@ -7,7 +7,7 @@ class TTaskForce;
 class TShip;
 
 // Custom 16-byte doubly-linked-list *cell* used for the map-order child chains
-// (TTaskForce::childOrderList and TNavyMission::orderList24 /
+// (TTaskForce::shipList and TNavyMission::orderList24 /
 // TScatteredShipsMission). This is a hand-rolled linked list, NOT an MFC CList:
 //   * each cell is a separately heap-allocated 16-byte block (CreateLinkedOrder-
 //     Node 0x552650 allocates one; 0x552590/0x5525d0/0x5526e0 free one);
@@ -23,7 +23,7 @@ class TShip;
 // (verified via xrefs), so there are no `TLinkNode<TTaskForce>` /
 // `TLinkNode<TShip>` template specializations -- with this toolchain those would
 // emit separate symbols/bodies. The stored payload is therefore the common base
-// `TObject*` (TTaskForce derives `TObject` at offset 0 for childOrderList, TShip
+// `TObject*` (TTaskForce derives `TObject` at offset 0 for shipList, TShip
 // derives `TObject` at offset 0 for orderList24); semantic call sites downcast
 // with `static_cast`, since the owning context determines the concrete type.
 //
@@ -34,10 +34,10 @@ class TShip;
 // the payload on its own.
 class TMapOrderChildLinkNode {
 public:
-  TObject* payload;              // +0x00 (TTaskForce* for childOrderList, TShip* for orderList24)
-  TMapOrderChildLinkNode* next;  // +0x04
-  TMapOrderChildLinkNode* prev;  // +0x08
-  unsigned char active;          // +0x0c
+  TObject* payload;             // +0x00 (TTaskForce* for shipList, TShip* for orderList24)
+  TMapOrderChildLinkNode* next; // +0x04
+  TMapOrderChildLinkNode* prev; // +0x08
+  unsigned char active;         // +0x0c
   unsigned char pad_0d;
   unsigned char pad_0e;
   unsigned char pad_0f;
@@ -93,8 +93,8 @@ public:
   // Null-safe on `this`; frees leading defeated children off the chain (each
   // payload's short at +0x1c <= 0), recursively prunes the survivors' tail, and
   // returns the new head. This is the one method that dereferences the payload:
-  // it is only ever called on childOrderList (TTaskForce payloads -- see the
-  // TShip caller 0x5509c0, which prunes owner->childOrderList), so it reads the
+  // it is only ever called on shipList (TTaskForce payloads -- see the
+  // TShip caller 0x5509c0, which prunes owner->shipList), so it reads the
   // payload as TTaskForce and calls the payload's virtual Free() (TObject slot
   // 7) before freeing the cell. 0x5526e0.
   TMapOrderChildLinkNode* PruneDefeatedMapOrderChildrenAndReturnHead();

@@ -33,7 +33,7 @@ int TNavyTacUnit::GetBaseActionPoints() {
 
 // FUNCTION: IMPERIALISM 0x005a6330
 int TNavyTacUnit::GetUnitRange() {
-  return sourceTaskForce34->GetOrderNodeDescriptorWord0CByResourceType();
+  return sourceTaskForce34->GetRange();
 }
 
 // FUNCTION: IMPERIALISM 0x005a6350

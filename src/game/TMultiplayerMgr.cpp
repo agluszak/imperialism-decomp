@@ -1848,7 +1848,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TPopulationMgr* summary2C = city2C->productionSummary1d8;
     summary2C->populationCount08 = composite->popFieldAt8;
     summary2C->populationCountFloat0c = composite->popFieldAtC;
-    summary2C->stockLevel1c = composite->popStockLevel;
+    summary2C->strength = composite->popStockLevel;
     summary2C->extraAt1e = composite->popExtraAt1e;
     summary2C->fieldAt20 = composite->popFieldAt20;
     summary2C->baselineSlots10->lowSkillCount04 = composite->popBucketWords[0];
@@ -2157,8 +2157,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   }
   case 0x24: { // patch selected fields of one city-score record
     TurnEvent24CityRecordPacket* cityRecord = static_cast<TurnEvent24CityRecordPacket*>(packet);
-    TGlobalMapCityScoreRecord* city24 =
-        &g_pGlobalMapState->cityScoreTable[cityRecord->cityRecordIndex];
+    Province* city24 = &g_pGlobalMapState->cityScoreTable[cityRecord->cityRecordIndex];
     city24->ownerNationCode00 = cityRecord->record.ownerNationCode00;
     city24->developmentStage = cityRecord->record.developmentStage;
     city24->fortLevel03 = cityRecord->record.fortLevel03;
@@ -2662,8 +2661,8 @@ void TMultiplayerMgr::SerializeOrderDataIntoTurnEventByTag(TStream* stream, shor
     static_cast<TObject*>(payload)->WriteTo(stream);
     return;
   case 0x2e:
-    g_pNavyOrderManager->SerializeNavyOrderListsByNation(
-        stream, static_cast<short>(reinterpret_cast<int>(payload)));
+    g_pNavyOrderManager->WriteToFilterously(stream,
+                                            static_cast<short>(reinterpret_cast<int>(payload)));
     return;
   case 0x2f:
     PublishTerrainDescriptorAndNotifyOrderListeners(stream, reinterpret_cast<int>(payload));
@@ -2898,7 +2897,7 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
   packet.cityId = cityId;
 
-  const TGlobalMapCityScoreRecord* src = &g_pGlobalMapState->cityScoreTable[cityId];
+  const Province* src = &g_pGlobalMapState->cityScoreTable[cityId];
   packet.cityHeader00[0] = src->ownerNationCode00;
   packet.cityHeader00[1] = src->formerOwnerNationCode01;
   packet.cityHeader00[2] = src->developmentStage;
@@ -3488,7 +3487,7 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
     TPopulationMgr* summary = city->productionSummary1d8;
     packet.popFieldAt8 = summary->populationCount08;
     packet.popFieldAtC = summary->populationCountFloat0c;
-    packet.popStockLevel = summary->stockLevel1c;
+    packet.popStockLevel = summary->strength;
     packet.popExtraAt1e = summary->extraAt1e;
     packet.popFieldAt20 = summary->fieldAt20;
     packet.popBucketWords[0] = summary->baselineSlots10->lowSkillCount04;

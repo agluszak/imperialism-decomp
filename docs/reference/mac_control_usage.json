@@ -180495,7 +180495,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TShip::GetOrCreateMissionOrderEntryForNode",
+        "name": "TShip::DemandExclusiveTaskForce",
         "owner_class": "TShip",
         "recovered_source": "src/game/TShip.cpp"
       },
@@ -180514,8 +180514,8 @@
             "status": "confirmed"
           }
         ],
-        "name": "CreateLinkedOrderNode",
-        "owner_class": null,
+        "name": "TMapOrderChildLinkNode::CreateLinkedOrderNode",
+        "owner_class": "TMapOrderChildLinkNode",
         "recovered_source": "src/game/TTaskForce.cpp"
       },
       "0x00553bc0": {
@@ -180533,8 +180533,8 @@
             "status": "confirmed"
           }
         ],
-        "name": "GetOrCreateTaskForceOrderNodeByTemplate",
-        "owner_class": null,
+        "name": "TTaskForce::Add",
+        "owner_class": "TTaskForce",
         "recovered_source": "src/game/TTaskForce.cpp"
       },
       "0x00556100": {
@@ -180569,7 +180569,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TNavyMgr::DeserializeNavyOrderListsByNation",
+        "name": "TNavyMgr::ReadFromFilterously",
         "owner_class": "TNavyMgr",
         "recovered_source": "src/game/TNavyMgr.cpp"
       },
@@ -181801,6 +181801,7 @@
       "UNavy.cpp": {
         "classes": [
           "TAdmiral",
+          "TMapOrderChildLinkNode",
           "TNavyMgr",
           "TShip",
           "TTaskForce"

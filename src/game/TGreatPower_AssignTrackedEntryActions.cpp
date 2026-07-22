@@ -80,9 +80,8 @@ void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unus
 
       TShip* bestShip = nullptr;
       float bestShipScore = 0.0f;
-      for (TShip* shipNode = GetNavyPrimaryOrderListHead(); shipNode != nullptr;
-           shipNode = shipNode->nextOlder24) {
-        if (shipNode->ownerNationSlot14 == nationSlot && shipNode->missionBacklink2c == nullptr) {
+      for (TShip* shipNode = TShip::GetFirst(); shipNode != nullptr; shipNode = shipNode->next) {
+        if (shipNode->nation == nationSlot && shipNode->mission == nullptr) {
           float score = bestNavy->FitnessOf(shipNode, weightFractions);
           if (bestShip == nullptr || bestShipScore < score) {
             bestShipScore = score;

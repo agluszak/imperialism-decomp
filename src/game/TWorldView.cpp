@@ -234,8 +234,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
     cursorToken = static_cast<short>(
         g_pMapContextActionManager->LookupMapCursorTokenByStateIndex(tileIndex, *hoverBand));
     if (cursorToken == 0) {
-      cursorToken = static_cast<short>(
-          g_pNavyOrderManager->GetMapContextActionLabelTokenByActionCode(tileIndex, *hoverBand));
+      cursorToken = static_cast<short>(g_pNavyOrderManager->ActionCursor(tileIndex, *hoverBand));
     }
     if (cursorToken == 0) {
       cursorToken = static_cast<short>(
@@ -253,8 +252,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
               tileIndex, *hoverBand));
     }
     if (cursorToken == 0) {
-      cursorToken = static_cast<short>(
-          g_pNavyOrderManager->GetMapContextActionLabelTokenByActionCode(tileIndex, *hoverBand));
+      cursorToken = static_cast<short>(g_pNavyOrderManager->ActionCursor(tileIndex, *hoverBand));
     }
     if (cursorToken == 0) {
       cursorToken =
@@ -272,8 +270,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
               tileIndex, *hoverBand));
     }
     if (cursorToken == 0) {
-      cursorToken = static_cast<short>(
-          g_pNavyOrderManager->GetMapContextActionLabelToken(tileIndex, *hoverBand));
+      cursorToken = static_cast<short>(g_pNavyOrderManager->SelectionCursor(tileIndex, *hoverBand));
     }
     break;
 
@@ -292,8 +289,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
               tileIndex, *hoverBand));
     }
     if (cursorToken == 0) {
-      cursorToken = static_cast<short>(
-          g_pNavyOrderManager->GetMapContextActionLabelTokenByActionCode(tileIndex, *hoverBand));
+      cursorToken = static_cast<short>(g_pNavyOrderManager->ActionCursor(tileIndex, *hoverBand));
     }
     break;
   }
@@ -583,7 +579,7 @@ void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFla
   case 0:
     if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) !=
             0 ||
-        g_pNavyOrderManager->TryHandleMapContextAction(nTileIndex, nInputFlags) != 0) {
+        g_pNavyOrderManager->SelectionClick(nTileIndex, nInputFlags) != 0) {
       goto refresh;
     }
     handled = g_pSelectedCivilianOrderState->HandleCivilianTileOrderAction(nTileIndex, nInputFlags);
@@ -593,7 +589,7 @@ void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFla
             0 ||
         g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
                                                                                 nInputFlags) != 0 ||
-        g_pNavyOrderManager->TryHandleMapContextAction(nTileIndex, nInputFlags) != 0) {
+        g_pNavyOrderManager->SelectionClick(nTileIndex, nInputFlags) != 0) {
       goto refresh;
     }
     handled =
@@ -606,15 +602,14 @@ void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFla
                                                                                 nInputFlags) != 0) {
       goto refresh;
     }
-    handled = static_cast<char>(
-        g_pNavyOrderManager->TryQueueMapOrderFromTileAction(nTileIndex, nInputFlags));
+    handled = static_cast<char>(g_pNavyOrderManager->DoTileClick(nTileIndex, nInputFlags));
     goto cycle;
   case 3:
     if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) ==
             0 &&
         g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
                                                                                 nInputFlags) == 0) {
-      g_pNavyOrderManager->TryHandleMapContextAction(nTileIndex, nInputFlags);
+      g_pNavyOrderManager->SelectionClick(nTileIndex, nInputFlags);
     }
     goto tail;
   default:

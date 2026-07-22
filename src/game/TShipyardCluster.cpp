@@ -43,8 +43,8 @@ TShipyardCluster::TShipyardCluster() : TAmtBarCluster(), field_88(0), field_8c(0
 
 // FUNCTION: IMPERIALISM 0x0058a610
 void TShipyardCluster::DoPostCreate(int styleSeed) {
-  TCity* cityState = GetNationCityStateBySlot(g_pSimMgr->GetActiveNationId());
-  field_88 = cityState != 0 ? (int)cityState->shipOrderSlots[0] : 0;
+  TCity* province = GetNationCityStateBySlot(g_pSimMgr->GetActiveNationId());
+  field_88 = province != 0 ? (int)province->shipOrderSlots[0] : 0;
   field_8c = 999;
   TAmtBarCluster::DoPostCreate(styleSeed);
   this->SetMoveAmount(0);
