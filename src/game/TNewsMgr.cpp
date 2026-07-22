@@ -95,8 +95,7 @@ void TNewsMgr::StartNewsPhase() {
 
 // FUNCTION: IMPERIALISM 0x0055ba30
 void TNewsMgr::LoadNewsTable() {
-  CFile_Virtuals* stream =
-      g_pUiViewManager->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTabPath());
+  CFile* stream = g_pUiViewManager->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTabPath());
   int byteCount = g_pUiViewManager->GetResourceStreamSize(stream);
   // Byte-sized blob whose record count is only known after the divide below.
   storyTemplateTable = reinterpret_cast<newsEntry*>(new unsigned char[byteCount]);

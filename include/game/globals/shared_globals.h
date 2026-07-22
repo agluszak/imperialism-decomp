@@ -1427,9 +1427,8 @@ extern int g_nQuickDrawOriginX;
 
 extern int g_nQuickDrawOriginY;
 
-// TODO(hedge): only observed as the left/top of a view-frame clip bounds rect in
-// TTacticalBattleView::DrawUiTilesAndOverlay; sole writer (0x005ad9e2) not yet
-// identified/named. 0x6a5458/0x6a545c
+// Left/top of the view-frame clip bounds used by TTacticalBattleView. Reset together by
+// ResetUiFrameClipOrigin (0x005ad9e0). 0x6a5458/0x6a545c
 extern int g_nUiFrameClipOriginX;
 
 extern int g_nUiFrameClipOriginY;

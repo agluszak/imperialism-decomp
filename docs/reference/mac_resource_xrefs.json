@@ -104947,6 +104947,174 @@
       "to": "control_tag:0x7469746c"
     },
     {
+      "from": "windows_function:0x004c8ac0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x62757430"
+    },
+    {
+      "from": "windows_function:0x004c8ac0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x636c7530"
+    },
+    {
+      "from": "windows_function:0x004c8ac0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6e756d62"
+    },
+    {
+      "from": "windows_function:0x004c8ac0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x73656c65"
+    },
+    {
+      "from": "windows_function:0x004c8d70",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x64657363"
+    },
+    {
+      "from": "windows_function:0x004c8d70",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x736e616d"
+    },
+    {
+      "from": "windows_function:0x004c8d70",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x73706963"
+    },
+    {
+      "from": "windows_function:0x004c9a60",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x68697374"
+    },
+    {
+      "from": "windows_function:0x004c9a60",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x736e616d"
+    },
+    {
+      "from": "windows_function:0x004c9a60",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x73746130"
+    },
+    {
+      "from": "windows_function:0x004cace0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x63697630"
+    },
+    {
+      "from": "windows_function:0x004cace0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x636c7530"
+    },
+    {
+      "from": "windows_function:0x004cace0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x64657363"
+    },
+    {
+      "from": "windows_function:0x004cace0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x66697830"
+    },
+    {
+      "from": "windows_function:0x004cace0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x66697832"
+    },
+    {
+      "from": "windows_function:0x004cace0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6d696e75"
+    },
+    {
+      "from": "windows_function:0x004cace0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6e756d62"
+    },
+    {
+      "from": "windows_function:0x004cace0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x706c7573"
+    },
+    {
+      "from": "windows_function:0x004cace0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x73656c65"
+    },
+    {
+      "from": "windows_function:0x004cace0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x7469746c"
+    },
+    {
+      "from": "windows_function:0x004cace0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x756e6974"
+    },
+    {
+      "from": "windows_function:0x004cb320",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x63617368"
+    },
+    {
+      "from": "windows_function:0x004cb320",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x63706170"
+    },
+    {
+      "from": "windows_function:0x004cb320",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x64657363"
+    },
+    {
+      "from": "windows_function:0x004cb320",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x66697832"
+    },
+    {
+      "from": "windows_function:0x004cb320",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x756e6974"
+    },
+    {
+      "from": "windows_function:0x004cb8a0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6e756d30"
+    },
+    {
+      "from": "windows_function:0x004cb8a0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6e756d62"
+    },
+    {
       "from": "windows_function:0x004cb8a0",
       "relation": "resolves_control_tag",
       "status": "resolved",
@@ -204483,6 +204651,31 @@
       "kind": "windows_function",
       "source": "src/game/TShipyardView.cpp"
     },
+    "windows_function:0x004c8ac0": {
+      "address": "0x004c8ac0",
+      "kind": "windows_function",
+      "source": "src/game/TShipyardView.cpp"
+    },
+    "windows_function:0x004c8d70": {
+      "address": "0x004c8d70",
+      "kind": "windows_function",
+      "source": "src/game/TShipyardView.cpp"
+    },
+    "windows_function:0x004c9a60": {
+      "address": "0x004c9a60",
+      "kind": "windows_function",
+      "source": "src/game/TShipyardView.cpp"
+    },
+    "windows_function:0x004cace0": {
+      "address": "0x004cace0",
+      "kind": "windows_function",
+      "source": "src/game/TUniversityView.cpp"
+    },
+    "windows_function:0x004cb320": {
+      "address": "0x004cb320",
+      "kind": "windows_function",
+      "source": "src/game/TUniversityView.cpp"
+    },
     "windows_function:0x004cb8a0": {
       "address": "0x004cb8a0",
       "kind": "windows_function",
@@ -205026,9 +205219,9 @@
       "references_picture": 909,
       "references_string": 1451,
       "references_text_style": 1784,
-      "resolves_control_tag": 271
+      "resolves_control_tag": 299
     },
-    "edges": 17622,
+    "edges": 17650,
     "mac_classes_without_windows_header": 18,
     "node_kinds": {
       "control_tag": 813,
@@ -205042,9 +205235,9 @@
       "view_node": 3263,
       "windows_event": 94,
       "windows_factory": 17,
-      "windows_function": 112
+      "windows_function": 117
     },
-    "nodes": 11287,
+    "nodes": 11292,
     "unreferenced_resources": {
       "pict": 1998,
       "str_entry": 3616,

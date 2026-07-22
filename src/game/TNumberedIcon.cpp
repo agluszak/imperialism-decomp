@@ -35,7 +35,7 @@ void TNumberedIcon::InstallNumberText() {
   TMyNumberText* numberText = new TMyNumberText;
   int offsetLayout[2] = {0, 0};
   int sizeLayout[2] = {1, 1};
-  numberText->ConstructTNumberTextBaseState(this, offsetLayout, sizeLayout, 0, 0, 9999);
+  numberText->InitializeNumberText(this, offsetLayout, sizeLayout, 0, 0, 9999);
 
   TextStyle style;
   style.textColor = 0;

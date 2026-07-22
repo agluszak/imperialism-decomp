@@ -2,7 +2,6 @@
 
 #include <stdlib.h>
 #include "game/TMission.h"
-#include <new>
 
 // Default-compare trampoline whose address Sort() passes as the comparator: adapts the
 // three-arg __cdecl comparator shape onto the virtual Compare of the list supplied as
@@ -227,10 +226,3 @@ void TSortedList::SetAtOrdinal(int ordinal, void** entryPtr, int unusedFlag) {
 
 // SYNTHETIC: IMPERIALISM 0x004888f0
 // TSortedList::`scalar deleting destructor'
-
-// Genuine reconstruction, not base construction: derived ctors (TArmyStackList,
-// TTaskList) run the default TSortedList() first and then re-run the CPtrList ctor
-// over listState with their real block size, exactly as the original binary does.
-void TSortedList::ConstructTSortedListBaseState(int blockSize) {
-  new (&this->listState) CPtrList(blockSize);
-}

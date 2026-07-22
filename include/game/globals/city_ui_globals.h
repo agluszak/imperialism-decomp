@@ -36,13 +36,9 @@ extern short g_awEngineerFortBuildCostByLevel[5];
 // Civilian work-order rescind refund by cost class.
 extern int g_adwCivilianWorkOrderCostByClass[16];
 
-// TUniversityView.cpp — TUniversityView::Draw (0x4cbf70) reads
-// table[row + fielda4*4] (row 0-4, only the low 16 bits used, -1 = empty slot) to pick
-// which resource's requirement row to draw for the selected recruitment category
-// (fielda4). Real category boundaries/count not otherwise recovered; declared to the
-// extent read (30 dwords @ 0x651030, raw-read from the binary since this region was
-// previously unclaimed).
-extern int g_UniversityRequirementResourceTypeTable[30];
+// Four requirement-resource rows for each of the nine university recruitment
+// categories. A -1 entry leaves that row empty.
+extern int g_anUniversityRequirementIdByRecruitRow[9][4];
 
 extern "C" const char g_szCityProductionUniversityPrefix[];
 

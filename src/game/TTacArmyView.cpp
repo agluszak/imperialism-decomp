@@ -60,7 +60,7 @@ TTacArmyView::TTacArmyView() {}
 // Listing 0x005a9d90 inlines the loader's exact-type non-virtual destructor.
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x005a9d90
-void TTacArmyView::ConstructTTacArmyViewBaseState(int compositionClass, TArmyBattle* battle) {
+void TTacArmyView::InitializeBattlefieldView(int compositionClass, TArmyBattle* battle) {
   int savedFlags = 0;
   tileWidthPx88 = g_nTacticalTileWidthPx_006A5430;
   tileRowHeightPx8C = g_nTacticalTileRowHeightPx_006A5434;

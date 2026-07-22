@@ -26,8 +26,8 @@ TMiniCivView::~TMiniCivView() {}
 IMPLEMENT_DYNCREATE(TMiniCivView, TControl)
 
 // FUNCTION: IMPERIALISM 0x004ab970
-void TMiniCivView::ConstructTMiniCivViewBaseState(TView* panel, int* offsetLayout, int* sizeLayout,
-                                                  TCivUnit* civUnit) {
+void TMiniCivView::InitializeForCivilianUnit(TView* panel, int* offsetLayout, int* sizeLayout,
+                                             TCivUnit* civUnit) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
   civUnit84 = civUnit;
   eventNumber60 = 0x22;

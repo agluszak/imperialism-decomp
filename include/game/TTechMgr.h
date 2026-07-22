@@ -86,7 +86,8 @@ public:
   };
   CapRowB capRowsB333[7];
   // Per-nation ability-activation row (byte[abilityId], ids 0..0x1d; true base 0x395,
-  // tiling exactly between capRowsB333 and capRowsD467). ActivateSlotAndUpdateUI
+  // tiling exactly between capRowsB333 and universityRecruitmentAvailabilityByNation467).
+  // ActivateSlotAndUpdateUI
   // (0x5b0340) sets [abilityId] on activation and clears the replaced slot's ability;
   // UpgradeType (0x5c35c0) probes candidate upgrades dynamically.
   // Defaults: ids 0..7 = 1 plus 0x18/0x1b = 1. Former per-flag names were specific ids:
@@ -95,11 +96,13 @@ public:
     unsigned char abilityActiveById[0x1e];
   };
   MilitaryCapRow abilityActiveRows395[7];
-  // Per-nation table D (true base 0x467, stride 9); init-only.
-  struct CapRowD {
-    unsigned char flags[9]; // init: [0,1,2,4,7] = 1, rest 0
+  // Per-nation recruitment-category availability (true base 0x467, stride 9).
+  // The university and civilian-order AI read these category flags directly; tech
+  // unlocks enable categories 3, 5, and 8 after the default 0/1/2/4/7 set.
+  struct UniversityRecruitmentAvailabilityRow {
+    unsigned char availableByCategory[9];
   };
-  CapRowD capRowsD467[7];
+  UniversityRecruitmentAvailabilityRow universityRecruitmentAvailabilityByNation467[7];
   // Per-nation table E (true base 0x4a6, stride 0x3a = 0x1d shorts); init zeroes it. Ends
   // at the real 0x63c allocation size. Per-tech completion-year offset, added to the 0x717
   // base year by the tech-item completion-date line (0x5b12e0).

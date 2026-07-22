@@ -15,7 +15,7 @@ public:
   void DestroyListBoxAndHotKeyChildren(); // 0x004152e0
 
   int DialogResult() const {
-    return reinterpret_cast<const int*>(this)[0x2c / 4];
+    return m_nModalResult;
   }
 };
 

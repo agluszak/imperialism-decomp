@@ -22,8 +22,8 @@ public:
   // tech-item row UI — 'desc' picture button, title (name + newline + year) and
   // description TDeluxeText children, and one of three status variants (completion date /
   // 'purc' buy button / missing-prerequisites line). 0x5b12e0, __thiscall, RET 0x14.
-  void ConstructTTechItemViewBaseState(TView* panel, int* offsetLayout, int* sizeLayout,
-                                       int nationSlot, int techId);
+  void InitializeTechItem(TView* panel, int* offsetLayout, int* sizeLayout, int nationSlot,
+                          int techId);
 };
 
 ASSERT_SIZE(TTechItemView, 0x68);

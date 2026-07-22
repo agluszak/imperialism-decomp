@@ -215,7 +215,7 @@ void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
 
   TCouncilTickerAnimation* tickerAnimation = new TCouncilTickerAnimation();
   if (tickerAnimation != nullptr) {
-    tickerAnimation->ConstructTCouncilTickerAnimationBaseState(this, 2);
+    tickerAnimation->InitializeCouncilTicker(this, 2);
     if (g_pUiAnimator != nullptr) {
       g_pUiAnimator->AddObjectToUiTransientRegistry(tickerAnimation);
     }

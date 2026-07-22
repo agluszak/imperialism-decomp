@@ -181,10 +181,8 @@ public:
                     const POINT& messagePosition, short overlayMode, unsigned char showCancel);
 
   // 0x5de4f0. Shows the Civilian Report confirmation dialog (resource 0xbc4) for
-  // pCivilianOrderEntry and returns true iff the player picked "confirm" ('okay').
-  // TODO(port): real body creates the dialog via g_pUiViewManager and formats its message
-  // text through a 'DLOG'-tagged control -- not yet ported; stubbed to the conservative
-  // "confirm, no changes" default so callers don't act on unverified dialog state.
+  // pCivilianOrderEntry, fills its 'DLOG' civilian-report control, runs the modal dialog,
+  // and returns true iff the player picked "confirm" ('okay').
   bool ShowCivilianReportDialogAndReturnConfirm(class TCivUnit* pCivilianOrderEntry);
 
   // 0x5d5d30 (ret 0x1c). The shared nation-info/modal-message implementation driven by
