@@ -7,6 +7,7 @@
 #include "game/TEditText.h"
 #include "game/TMapUberPicture.h"
 #include "game/TMilitaryUnit.h"
+#include "game/TNumberedArrowButton.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TSimMgr.h"
 #include "game/TStaticText.h"
@@ -105,26 +106,36 @@ void TArmyUnitView::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x004a9990
 void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (sourceHandler->controlTag == kControlTagChec) {
+    short availableCountDelta = 0;
     if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0) {
       // Ctrl held: force the unit into escort-order mode (0xe) unless already there.
       if (field60->field_8 != 0xe) {
+        if (field60->field_8 == 0) {
+          availableCountDelta = -1;
+        }
         field60->SetOrderModeSlot34(0xe, -1);
       }
-    } else if (field60->field_8 == 0) {
+    } else if (field60->field_8 != 0) {
       field60->SetOrderModeSlot34(0, -1);
+      availableCountDelta = 1;
     } else {
       field60->SetOrderModeSlot34(3, -1);
+      availableCountDelta = -1;
     }
 
     RECT invalidateRect = {0x40, 0x18, 0x108, 0x24};
     InvalidateCityDialogRectRegion(&invalidateRect, 1);
 
-    // The original then resolves a per-order-mode indicator control from the active
-    // unit-category page (TMapUberPicture::categoryPages[activeUnitCategoryIndex96],
-    // tag computed from a table keyed by field60->orderType) and nudges its count text.
-    // The indicator's concrete class is unresolved (its field84 is read as a raw short,
-    // unlike TStaticText's CString* field84 at the same offset), so that adjustment is
-    // left unmodeled here.
+    TMapUberPicture* mapPicture = g_pUiRuntimeContext->mapUberPictureF0;
+    TView* activeToolbar = mapPicture->categoryPages[mapPicture->activeUnitCategoryIndex96];
+    if (activeToolbar != nullptr) {
+      unsigned int arrowTag =
+          kTagArmyRatioMin + g_awTacticalUnitCategoryCodeBySlot[field60->orderType];
+      TNumberedArrowButton* arrow =
+          static_cast<TNumberedArrowButton*>(activeToolbar->ResolveControlByTag(arrowTag));
+      arrow->SetValue(static_cast<short>(arrow->value84 + availableCountDelta), 1);
+      g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+    }
   } else if (sourceHandler->controlTag == kControlTagUpgr) {
     if (field60->ApplyEraCapabilityCostAndSetSelection()) {
       TView* sourceView = static_cast<TView*>(sourceHandler);

@@ -212,8 +212,8 @@ void TDealBookPicture::CalculatePages() {
       TDealLine* line = new TDealLine();
       line->SetLineDataRowAndBounds(static_cast<short>(*row), 0, lineBounds);
       line->commoditySlot10 = commoditySlot;
-      line->nationId12 = selectedNationId90;
-      line->ordinal14 = ordinal;
+      line->ownerNationSlot12 = selectedNationId90;
+      line->entryOrdinal14 = ordinal;
       page->AddOrderedEntry(line);
     }
   }

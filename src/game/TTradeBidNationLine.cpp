@@ -1,5 +1,7 @@
 #include "game/TTradeBidNationLine.h"
 
+#include "game/TTradeBidNationView.h"
+
 // SYNTHETIC: IMPERIALISM 0x005bd900
 // TTradeBidNationLine::`scalar deleting destructor'
 TTradeBidNationLine::~TTradeBidNationLine() {}
@@ -15,6 +17,9 @@ TTradeBidNationLine::TTradeBidNationLine() {}
 
 // FUNCTION: IMPERIALISM 0x005bda20
 void TTradeBidNationLine::InstallViews(TView* panel, int* offsetLayout) {
-  (void)panel;
-  (void)offsetLayout;
+  TTradeBidNationView* view = new TTradeBidNationView();
+  view->InitializeUiResourceEntryFrameAndParent(panel->resourceContext, panel, offsetLayout,
+                                                &field08, 5, 5, 0);
+  view->categorySlot60 = categorySlot10;
+  view->nationSlot62 = nationSlot12;
 }

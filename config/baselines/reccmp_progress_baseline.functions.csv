@@ -1547,7 +1547,7 @@ address|matching|name
 0x4a94e0|1.0|TArmyUnitView::TArmyUnitView
 0x4a9510|0.9090909090909091|TArmyUnitView::`scalar deleting destructor'
 0x4a95b0|0.5504587155963303|TArmyUnitView::Draw
-0x4a9990|0.60625|TArmyUnitView::DoEvent
+0x4a9990|0.6171428571428571|TArmyUnitView::DoEvent
 0x4a9ca0|0.5112781954887218|TArmyUnitView::HandleCrossUArmyViewsNameCommand
 0x4a9f20|0.5161290322580645|TArmyCheckBox::CreateObject
 0x4a9fc0|1.0|TArmyCheckBox::GetRuntimeClass
@@ -5729,7 +5729,7 @@ address|matching|name
 0x5bcfa0|0.5|TTradePageSellView::DestructTTradePageSellViewAndMaybeFree_Impl
 0x5bcfc0|0.4897959183673469|TTradeOfferNationLine::CreateObject
 0x5bd030|1.0|TTradeOfferNationLine::GetRuntimeClass
-0x5bd090|0.029411764705882353|TTradeOfferNationLine::InstallViews
+0x5bd090|0.6717557251908397|TTradeOfferNationLine::InstallViews
 0x5bd1a0|0.9090909090909091|TTradeOfferNationView::`scalar deleting destructor'
 0x5bd1f0|0.4897959183673469|TTradeOfferNationView::CreateObject
 0x5bd260|1.0|TTradeOfferNationView::GetRuntimeClass
@@ -5741,7 +5741,7 @@ address|matching|name
 0x5bd930|0.5|TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl
 0x5bd950|0.4897959183673469|TTradeBidNationLine::CreateObject
 0x5bd9c0|1.0|TTradeBidNationLine::GetRuntimeClass
-0x5bda20|0.0392156862745098|TTradeBidNationLine::InstallViews
+0x5bda20|0.5263157894736842|TTradeBidNationLine::InstallViews
 0x5bdaf0|0.9090909090909091|TTradeBidNationView::`scalar deleting destructor'
 0x5bdb40|0.4897959183673469|TTradeBidNationView::CreateObject
 0x5bdbb0|1.0|TTradeBidNationView::GetRuntimeClass
@@ -5769,19 +5769,19 @@ address|matching|name
 0x5c0d80|1.0|TDealLine::TDealLine
 0x5c0db0|0.9090909090909091|TDealLine::`scalar deleting destructor'
 0x5c0de0|0.5|DestructTDealLineAndMaybeFree_Impl
-0x5c0e50|0.005649717514124294|TDealLine::InstallViews
+0x5c0e50|0.5773809523809523|TDealLine::InstallViews
 0x5c1430|0.4897959183673469|TCommodityLine::CreateObject
 0x5c14a0|1.0|TCommodityLine::GetRuntimeClass
 0x5c14c0|1.0|TCommodityLine::TCommodityLine
 0x5c14f0|0.9090909090909091|TCommodityLine::`scalar deleting destructor'
 0x5c1520|0.5|DestructTCommodityLineAndMaybeFree_Impl
-0x5c1580|0.011428571428571429|TCommodityLine::InstallViews
+0x5c1580|0.5345345345345346|TCommodityLine::InstallViews
 0x5c1870|0.4897959183673469|TTradeTotalsLine::CreateObject
 0x5c18e0|1.0|TTradeTotalsLine::GetRuntimeClass
 0x5c1900|1.0|TTradeTotalsLine::TTradeTotalsLine
 0x5c1930|0.9090909090909091|TTradeTotalsLine::`scalar deleting destructor'
 0x5c1960|0.5|TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl
-0x5c19c0|0.043478260869565216|TTradeTotalsLine::InstallViews
+0x5c19c0|0.6206896551724138|TTradeTotalsLine::InstallViews
 0x5c1a80|0.4897959183673469|TTradeTotalsView::CreateObject
 0x5c1af0|1.0|TTradeTotalsView::GetRuntimeClass
 0x5c1b10|1.0|TTradeTotalsView::TTradeTotalsView

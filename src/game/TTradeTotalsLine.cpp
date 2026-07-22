@@ -1,4 +1,6 @@
 #include "game/TTradeTotalsLine.h"
+
+#include "game/TTradeTotalsView.h"
 // SYNTHETIC: IMPERIALISM 0x005c1870
 // TTradeTotalsLine::CreateObject
 
@@ -16,6 +18,7 @@ TTradeTotalsLine::~TTradeTotalsLine() {}
 
 // FUNCTION: IMPERIALISM 0x005c19c0
 void TTradeTotalsLine::InstallViews(TView* panel, int* offsetLayout) {
-  (void)panel;
-  (void)offsetLayout;
+  TTradeTotalsView* view = new TTradeTotalsView();
+  view->InitializeUiResourceEntryFrameAndParent(nullptr, panel, offsetLayout, &field08, 5, 5, 0);
+  view->nationSlot60 = nationId10;
 }
