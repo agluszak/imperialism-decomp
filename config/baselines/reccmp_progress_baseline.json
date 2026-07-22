@@ -12,8 +12,8 @@
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
   "git_branch": "agent/finish-menu-movie-followups",
-  "git_commit": "c3d6171311ab7710ef5e1b6016965f6a61c37609",
-  "git_commit_date": "2026-07-22T18:47:28+02:00",
+  "git_commit": "269f3a65343e682fc0dfd807025e0f03551c05e6",
+  "git_commit_date": "2026-07-22T18:50:18+02:00",
   "global_coverage_pct": 24.32856483617905,
   "global_orig_only_count": 8199,
   "global_recomp_only_count": 7601,
@@ -61,7 +61,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-22T16:48:34+00:00",
+  "timestamp_utc": "2026-07-22T16:50:23+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
