@@ -18,13 +18,10 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // Both base slots are 3-byte `RET 0x8` no-ops: 2 stack dwords, not 1. The caller
-  // (CAmbitDocument::Serialize) pushes (adapter, 0), so the second dword is a constant
-  // flag the base ignores. Arity corrected against RET-imm evidence.
-  virtual undefined OrphanRetStub_00486530(ArchiveStreamAdapter* stream,
-                                           int flag); // slot 0x0a 0x486530
-  virtual undefined OrphanRetStub_00486550(ArchiveStreamAdapter* stream,
-                                           int flag); // slot 0x0b 0x486550
+  // Mac oracle: TFileBasedDocument::DoRead / DoWrite. The TDocument defaults are
+  // genuine no-ops; concrete file-based documents override both slots.
+  virtual void DoRead(ArchiveStreamAdapter* file, unsigned char flags);  // slot 0x0a 0x486530
+  virtual void DoWrite(ArchiveStreamAdapter* file, unsigned char flags); // slot 0x0b 0x486550
 
   TDocument();
 };

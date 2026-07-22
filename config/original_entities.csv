@@ -605,8 +605,8 @@ address|name|symbol|size|type|prototype|provenance
 4863f0|TFileBasedDocument::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 486420|TFileBasedDocument::CreateTFileBasedDocumentInstance||7|function|undefined CreateTFileBasedDocumentInstance()|
 486440|TFileBasedDocument::GetRuntimeClass||6|function|undefined GetTFileBasedDocumentClassNamePointer()|rtti
-486530|TDocument::OrphanRetStub_00486530||3|function|undefined OrphanRetStub_00486530(ArchiveStreamAdapter* stream, int flag)|
-486550|TDocument::OrphanRetStub_00486550||3|function|undefined OrphanRetStub_00486550(ArchiveStreamAdapter* stream, int flag)|
+486530|TDocument::DoRead||3|function|void __thiscall DoRead(ArchiveStreamAdapter* file, unsigned char flags)|mac-oracle
+486550|TDocument::DoWrite||3|function|void __thiscall DoWrite(ArchiveStreamAdapter* file, unsigned char flags)|mac-oracle
 486570|TCommandHandler::CreateObject|?CreateObject@TCommandHandler@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4865e0|TCommandHandler::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 486610|TCommandHandler::CreateTCommandHandlerInstance||7|function|undefined CreateTCommandHandlerInstance()|
@@ -1381,12 +1381,12 @@ address|name|symbol|size|type|prototype|provenance
 49e5f0|TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState||9|function|undefined ConstructTAmbitFileBasedDocumentBaseState()|
 49e610|TAmbitFileBasedDocument::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 49e640|DestructTAmbitFileBasedDocumentAndMaybeFree_Impl||7|function|undefined DestructTAmbitFileBasedDocumentAndMaybeFree_Impl()|
-49e660|TAmbitFileBasedDocument::OrphanRetStub_0049e660||3|function|undefined OrphanRetStub_0049e660(int arg1, int arg2)|
-49e680|TAmbitFileBasedDocument::OrphanRetStub_0049e680||3|function|undefined OrphanRetStub_0049e680(int arg)|
-49e6a0|TAmbitFileBasedDocument::OrphanRetStub_00486530||845|function|undefined OrphanRetStub_00486530(ArchiveStreamAdapter* stream, int flag)|
+49e660|TAmbitFileBasedDocument::IAmbitDocument||3|function|void __thiscall IAmbitDocument(ArchiveStreamAdapter* file, unsigned long documentKind)|mac-oracle
+49e680|TAmbitFileBasedDocument::DoMakeViews||3|function|void __thiscall DoMakeViews(unsigned char flags)|mac-oracle
+49e6a0|TAmbitFileBasedDocument::DoRead||845|function|void __thiscall DoRead(ArchiveStreamAdapter* file, unsigned char flags)|mac-oracle
 49eb00|CString::CString(class CString const &)||19|function|void CString(CString const &other)|
-49eb30|TAmbitFileBasedDocument::OrphanRetStub_00486550||650|function|undefined OrphanRetStub_00486550(ArchiveStreamAdapter* stream, int flag)|
-49ee70|TAmbitFileBasedDocument::AssertUAmbitLine1335||30|function|undefined AssertUAmbitLine1335(int arg)|
+49eb30|TAmbitFileBasedDocument::DoWrite||650|function|void __thiscall DoWrite(ArchiveStreamAdapter* file, unsigned char flags)|mac-oracle
+49ee70|TAmbitFileBasedDocument::SaveDocument||30|function|void __thiscall SaveDocument(long saveMode)|mac-oracle
 49efd0|WrapperFor_ftol_At0049efd0||30|function|undefined WrapperFor_ftol_At0049efd0()|
 49f020|TAnimation::CreateObject|?CreateObject@TAnimation@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 49f050|TAnimation::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -7954,6 +7954,8 @@ address|name|symbol|size|type|prototype|provenance
 64b8f8|g_Reset_Quick_Draw_WordState_0064B8F8|||global||
 64bd90|TAdorner::classTAdorner|||global||
 64bda8|TDialogView::classTDialogView|||global||
+64c094|g_nAmbitSaveFileMagic|||global||
+64c098|g_nCurrentAmbitSaveFormatVersion|||global||
 64c0a0|TNewGameCommand::classTNewGameCommand|||global||
 64c0b8|TAmbitApplication::classTAmbitApplication|||global||
 64c0d0|TAmbitFileBasedDocument::classTAmbitFileBasedDocument|||global||
@@ -8499,6 +8501,7 @@ address|name|symbol|size|type|prototype|provenance
 695188|s_MissingRequiredFileFormat_00695188|||global||
 6951c4|s_BmpResourceNameFormat_006951C4|||global||
 695278|g_nSaveFormatVersion|||global||
+69527c|g_szUAmbitSourcePath|||global||
 6955f0|g_anWeightedNeighborUnitScoreByType_006955F0|||global||
 695b50|g_industryActionCostWeightResCode09|||global||
 695b70|g_industryActionCostWeightResCode08|||global||
@@ -8631,12 +8634,14 @@ address|name|symbol|size|type|prototype|provenance
 6a2018|g_cachedShowSplashFlag|||global||
 6a2054|DAT_006a2054|||global||
 6a20f8|g_pSimMgr|||global||
+6a2128|g_ptSaveLoadErrorModalMessage|||global||
 6a2148|g_pUiViewManager|||global||
 6a2158|g_pDisplayMgr|||global||
 6a21a8|g_pStrategicMapViewSystem|||global||
 6a21b8|g_pHelpMgr|||global||
 6a21bc|g_pUiRuntimeContext|||global||
 6a21c0|g_lastEdgeAutoScrollTick16|||global||
+6a21c4|g_saveDocumentAssertGuard|||global||
 6a24d4|g_Sanitize_City_Counter_Value_006A24D4|||global||
 6a24e8|g_anCityBuildingLayoutValues|||global||
 6a2778|g_aCityBuildingActionRects|||global||
