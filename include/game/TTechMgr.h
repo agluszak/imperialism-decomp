@@ -6,6 +6,8 @@
 // VTABLE: IMPERIALISM 0x0066ad28
 class TTechMgr : public TObject {
 public:
+  enum { kProductionOrderTechId = 0x13 };
+
   DECLARE_DYNCREATE(TTechMgr)
   TTechMgr();
   void WriteTo(TStream* stream) override;  // slot 0x14 (0x005af710)
@@ -22,13 +24,9 @@ public:
   // 0x515890. Row count (7) matches g_apNationStates[7]; column count (23) matches the
   // resourceType range used throughout TMapMgr (see resourceTypeByEdge).
   short capabilityValueByNationAndResource[7][23];
-  // Per-tech unlock flags, indexed by tech id (ApplyCityOrderCapabilityUnlockByTechId writes
-  // perTechUnlockFlag180[nTechId] = 1). The declared span covers ids 0..0x12; higher ids the
-  // original also marks here run one-past into hasProductionOrder193 and pad194 (intentional,
-  // matching the flat write in the original -- see the sibling out-of-bounds reads below).
-  unsigned char perTechUnlockFlag180[0x13];
-  unsigned char hasProductionOrder193;
-  unsigned char pad194[0x19d - 0x194];
+  // Per-tech unlock flags, indexed by the full 0..0x1c technology-id domain. The production
+  // order gate is technology 0x13, not a separate field following a shorter array.
+  unsigned char perTechUnlockFlag180[0x1d];
   // Per-resource-type capability-enabled bytes (index = navy-order resource type,
   // 0..0xd -- the same 0xe domain as CapRowB below). RecomputeGlobalCapabilityAverages
   // (0x54fd50) indexes this dynamically ([0x19d + type]) to gate each type's

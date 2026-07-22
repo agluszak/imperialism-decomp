@@ -115,7 +115,7 @@ void TMapMaker::RotateMapColumnsByPeakCityTileDensity() {
   }
 
   // Copy the whole grid, then write it back rotated so the chosen column band leads.
-  int* scratch = reinterpret_cast<int*>(::operator new(0x38f40));
+  int* scratch = new int[0xe3d0];
   if (scratch == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMapper.cpp", 0x904);
@@ -151,6 +151,6 @@ void TMapMaker::RotateMapColumnsByPeakCityTileDensity() {
   } while (destByte < 0xf30);
 
   if (scratch != nullptr) {
-    ::operator delete(scratch);
+    delete[] scratch;
   }
 }

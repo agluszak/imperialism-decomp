@@ -595,6 +595,13 @@ void TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void) {
   g_pImperialismApp->PostStartupCommand100();
 }
 
+// FUNCTION: IMPERIALISM 0x00498cc0
+void ShowBlockingWaitOverlayDialog(void) {
+  TE0TemplateDialog dialog(0);
+  dialog.DoModal();
+  g_pImperialismApp->RestoreWaitCursorIfStartupBusy();
+}
+
 // Releases the input capture the overlay grabbed; the vtable reset + base-dtor chain are
 // compiler-emitted.
 // FUNCTION: IMPERIALISM 0x00498d60

@@ -2,6 +2,7 @@
 #include "game/TDisplayMgr.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TDropShadowText.h"
+#include "game/TDropShadowNumberText.h"
 #include "game/CSubViewIterator.h"
 #include "game/TStaticText.h"
 #include "game/TView.h"
@@ -200,6 +201,17 @@ void __cdecl ApplyUiTextStyleAndThemeFlags(TDropShadowText* control, int unused,
   BuildUiTextStyleDescriptor(&styleDescriptor, unused, pointSize, textThemeCode);
   control->InstallTextStyle(styleDescriptor, 0);
   MapUiThemeCodeToStyleFlags(static_cast<short>(shadowThemeCode), &control->shadowThemeCode94);
+}
+
+// FUNCTION: IMPERIALISM 0x005c4620
+void __cdecl ApplyUiNumberTextStyleAndThemeColor(TDropShadowNumberText* control, int unused,
+                                                 int pointSize, int shadowThemeCode,
+                                                 int textThemeCode) {
+  TextStyle styleDescriptor;
+  styleDescriptor.textColor = 0;
+  BuildUiTextStyleDescriptor(&styleDescriptor, unused, pointSize, textThemeCode);
+  control->InstallTextStyle(styleDescriptor, 0);
+  MapUiThemeCodeToStyleFlags(static_cast<short>(shadowThemeCode), &control->shadowColorAc);
 }
 
 // FUNCTION: IMPERIALISM 0x005c46b0
