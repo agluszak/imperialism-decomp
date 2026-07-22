@@ -4884,9 +4884,9 @@ address|matching|name
 0x586cc0|1.0|TAmtBarCluster::GetRuntimeClass
 0x586ce0|1.0|TAmtBarCluster::TAmtBarCluster
 0x586d10|0.9090909090909091|TAmtBarCluster::`scalar deleting destructor'
-0x586d60|0.05970149253731343|TAmtBarCluster::DoPostCreate
+0x586d60|0.6333333333333333|TAmtBarCluster::DoPostCreate
 0x586e50|0.5|TAmtBar::ApplyMoveClamp
-0x586e70|0.07692307692307693|TAmtBarCluster::DoEvent
+0x586e70|0.32941176470588235|TAmtBarCluster::DoEvent
 0x586ff0|1.0|TAmtBarCluster::ApplyMoveValue
 0x587010|0.4897959183673469|TTradeCluster::CreateObject
 0x587090|1.0|TTradeCluster::GetRuntimeClass

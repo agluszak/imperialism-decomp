@@ -1,5 +1,5 @@
 {
-  "avg_matching_pct": 73.18094256880913,
+  "avg_matching_pct": 73.19182833147323,
   "compared_fun_count": 7589,
   "coverage_pct": 97.2699307869777,
   "dat_orig_only_count": 1600,
@@ -12,8 +12,8 @@
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
   "git_branch": "agent/network-nation-diplomacy-batch-20260722",
-  "git_commit": "12db2fa7b1bdf68b9a3c025e97a4eb396accc795",
-  "git_commit_date": "2026-07-22T14:03:59+02:00",
+  "git_commit": "1341f802180d1490422847d42516aa5a14092524",
+  "git_commit_date": "2026-07-22T14:07:44+02:00",
   "global_coverage_pct": 24.19876235337582,
   "global_orig_only_count": 8207,
   "global_recomp_only_count": 7535,
@@ -61,7 +61,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-22T12:05:31+00:00",
+  "timestamp_utc": "2026-07-22T12:08:25+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
