@@ -85,7 +85,9 @@ jobs:
           # Baselines live under config/baselines/ (the old per-file list had
           # gone stale and guarded nothing). Pure shrinks — the ratchet working
           # as designed — pass without the label; only growth needs approval.
-          changed="$(git diff --name-only "$base" -- config/baselines/)"
+          # Reccmp progress snapshots contain commit/timestamp metadata and are
+          # validated by the stats/generated-artifact gates, not this debt ratchet.
+          changed="$(git diff --name-only "$base" -- config/baselines/ | grep -v '^config/baselines/reccmp_progress_baseline' || true)"
           grown=""
           for f in $changed; do
             git show "$base:$f" > /tmp/baseline_old 2>/dev/null || : > /tmp/baseline_old
