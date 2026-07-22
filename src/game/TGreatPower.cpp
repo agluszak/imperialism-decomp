@@ -3245,9 +3245,9 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
   mgr->productionAccum1fc[13] += 999 - mgr->productionOrderTable1dc[13];
   mgr->productionOrderTable1dc[13] = 999;
   if (presetLevel == 0) {
-    notifySink->NotifyProductionPresetSlot2C(2, 3, 2);
+    notifySink->SetPopulation(2, 3, 2);
   } else {
-    notifySink->NotifyProductionPresetSlot2C(4, 2, 1);
+    notifySink->SetPopulation(4, 2, 1);
   }
   TSimMgr* localization = g_pSimMgr;
   if (this->diplomacyEligibilityA0 == 0 || localization->difficultyLevel < 2 ||

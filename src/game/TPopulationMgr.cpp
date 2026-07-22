@@ -41,19 +41,19 @@ undefined TPopulationMgr::OrphanLeaf_NoCall_Ins20_004b5d50(short param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b5dc0
-undefined TPopulationMgr::OrphanLeaf_NoCall_Ins47_004b5dc0(short param_1, short param_2,
-                                                           short param_3) {
-  baselineSlots10->lowSkillCount04 = param_1;
-  productionSlots14->lowSkillCount04 = param_1;
-  baselineSlots10->mediumSkillCount06 = param_2;
-  productionSlots14->mediumSkillCount06 = param_2;
-  baselineSlots10->highSkillCount08 = param_3;
-  productionSlots14->highSkillCount08 = param_3;
+void TPopulationMgr::SetPopulation(short lowSkillCount, short mediumSkillCount,
+                                   short highSkillCount) {
+  baselineSlots10->lowSkillCount04 = lowSkillCount;
+  productionSlots14->lowSkillCount04 = lowSkillCount;
+  baselineSlots10->mediumSkillCount06 = mediumSkillCount;
+  productionSlots14->mediumSkillCount06 = mediumSkillCount;
+  baselineSlots10->highSkillCount08 = highSkillCount;
+  productionSlots14->highSkillCount08 = highSkillCount;
 
   stockLevel1c = static_cast<short>(
       productionSlots14->lowSkillCount04 +
       (productionSlots14->mediumSkillCount06 + productionSlots14->highSkillCount08 * 2) * 2);
-  short total = static_cast<short>(param_2 + param_3 + param_1);
+  short total = static_cast<short>(mediumSkillCount + highSkillCount + lowSkillCount);
   populationCount08 = total;
   populationCountFloat0c = static_cast<float>(total);
 
@@ -61,7 +61,6 @@ undefined TPopulationMgr::OrphanLeaf_NoCall_Ins47_004b5dc0(short param_1, short 
   pendingDeltaSlots18->mediumSkillCount06 = 0;
   pendingDeltaSlots18->lowSkillCount04 = 0;
   fieldAt20 = 0;
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b5e80
