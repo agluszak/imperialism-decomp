@@ -21,6 +21,7 @@
 #include "game/TView.h"
 #include "game/TMouseCaptureState.h"
 #include "game/TWNetSessionManager.h"
+#include "game/timer_slots.h"
 
 TGreatPower* GetNationStateBySlot(short slotId);
 short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot);
@@ -588,9 +589,11 @@ extern TSoundResourceManager g_soundResourceManager;
 // CD-audio MCI device singleton (see game/cd_audio.h).
 extern TCdAudioDevice g_cdAudioDevice; // 0x006a60bc
 // Audio timer-slot registry (see game/timer_slots.h): 10 callbacks + 10 live timer ids.
-extern undefined4 (*g_timerSlotCallbacks[10])(); // 0x006a5cf8
-extern UINT g_timerSlotIds[10];                  // 0x006a5c98
-extern int g_timerDispatchSuppressAssert;        // 0x006a5d24
+extern TimerSlotCallback g_timerSlotCallbacks[10]; // 0x006a5cf8
+extern UINT g_timerSlotIds[10];                    // 0x006a5c98
+extern int g_timerDispatchSuppressAssert;          // 0x006a5d24
+// Counts idle/audio-state polls before another random cue selection attempt.
+extern short g_randomAudioCuePollCounter; // 0x006a4520
 extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
 // Tactical unit facing-offset table (0x006a4780); see global_data_tables.cpp.
 extern POINT g_aTacticalUnitFacingOffsetTable[29][7][2];

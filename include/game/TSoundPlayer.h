@@ -13,25 +13,21 @@ public:
   unsigned char directSoundInitOkAt20;      // 0x20 — set by InitializeSoundSubsystem
   unsigned char directSoundInitPendingAt21; // 0x21 — set by RequestDirectSoundInitIfAllowed
   char pad22[0x4a];
-  TLongintList* runtimePeerAt6c;
-  TLongintList* runtimePeerAt70;
-  unsigned short fieldShort74;
-  unsigned short fieldShort76;
-  unsigned char stateByte78;
+  TLongintList* audioCuePool;
+  TLongintList* remainingRandomAudioCues;
+  unsigned short activeAudioCueId;
+  unsigned short pendingAudioCueId;
+  unsigned char cdAudioPlaybackActive;
   unsigned char stateByte79;
   unsigned char stateByte7a;
   unsigned char pad7b;
-  int stateDword7c;
-  unsigned char stateByte80;
+  unsigned int fadeStartTick16;
+  unsigned char clearCuePoolsAfterFade;
   char pad81[0x03];
 
   TSoundPlayer();
   ~TSoundPlayer() override; // 0x5933e0 (slot 0x01 scalar deleting dtor 0x5933b0)
   DECLARE_DYNCREATE(TSoundPlayer)
-  void EnsureCdAudioDeviceHandleInitialized();
-  void ForwardMciCommand808ToDevice();
-  BOOL ForwardMciStatusCommand814IgnoreFailure();
-
   void Free() override;             // 0x07 -> 0x5e51d0
   char DoIdle(int action) override; // 0x13 -> 0x593400
 
@@ -54,7 +50,11 @@ public:
   // (garbage upper bits), which only compiles against a short parameter.
   virtual int PlaySoundEffect(short sfxToken, int param_2 = 0, int param_3 = 1); // 0x2e -> 0x5e5140
 
-  void HandleBlinkStateAndScheduleTimerTick(char enabled); // 0x593c10
+  void StopCdAudioPlayback(char fadeOut); // 0x593c10
+
+  // Arm the deferred CD-audio fade callback unless a fade is already active. This is
+  // the out-of-line copy used by the original sound-player TU. 0x593ce0.
+  void StartDeferredAudioFadeTimerIfIdle();
 
   // Non-virtual: queue an audio-preset (music cue) change applied on the next audio
   // tick. Called with rand%3+6 for the tactical-battle cues. Both original callsites

@@ -34,18 +34,3 @@ void CALLBACK DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot(HWND hwn
     g_timerSlotCallbacks[slot] = NULL;
   }
 }
-
-// FUNCTION: IMPERIALISM 0x005e0520
-void __stdcall ScheduleTimerSlotCallbackWithInterval(TimerSlotCallback callback, UINT interval,
-                                                     int slot) {
-  g_timerSlotCallbacks[slot] = callback;
-
-  CWnd* mainWnd;
-  if (AfxGetThread() == NULL) {
-    mainWnd = NULL;
-  } else {
-    mainWnd = AfxGetThread()->GetMainWnd();
-  }
-  g_timerSlotIds[slot] = ::SetTimer(mainWnd->m_hWnd, slot + 0xa000, interval,
-                                    &DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot);
-}
