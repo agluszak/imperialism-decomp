@@ -296,18 +296,18 @@ void TCivMgr::ShowDisbandCivilianConfirmationDialog() {
 
 // FUNCTION: IMPERIALISM 0x004d2ef0
 bool TCivMgr::TryQueueCivilianMoveOrderToTile(short nTileIndex) {
-  char canAssign = this->CanAssignCivilianOrderToTile(nTileIndex);
-  if (canAssign != 0) {
+  bool canAssign = this->CanAssignCivilianOrderToTile(nTileIndex);
+  if (canAssign) {
     TCivUnit* entry = this->selectedEntry;
     entry->SetOrderModeSlot34(1, entry->tileIndex06);
     g_pSfxPlaybackSystem->PlaySoundEffect(9000, 0, 1);
     this->RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, entry);
   }
-  return canAssign != 0;
+  return canAssign;
 }
 
 // FUNCTION: IMPERIALISM 0x004d2f60
-char TCivMgr::CanAssignCivilianOrderToTile(short nTileIndex) {
+bool TCivMgr::CanAssignCivilianOrderToTile(short nTileIndex) {
   TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[nTileIndex];
   short tileTerrainClass = tile->ownerNationTag04;
   TCivUnit* entry = this->selectedEntry;

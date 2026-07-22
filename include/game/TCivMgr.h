@@ -53,7 +53,7 @@ public:
   // 0x004d2f60. Validate whether the selected civilian (selectedEntry) can be assigned to the
   // clicked tile. (Ghidra mis-attributed this to TCivToolbar via a thunk-only caller; the `this`
   // is the TCivMgr order manager — [this+4] is selectedEntry.)
-  char CanAssignCivilianOrderToTile(short nTileIndex);
+  bool CanAssignCivilianOrderToTile(short nTileIndex);
 
   // 0x004d2960. Resolves the civilian map-click action code from current selection and tile
   // context (see cpp for the full action-code map). Ghidra mis-attributed this to TCivToolbar

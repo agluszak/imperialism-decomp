@@ -2170,7 +2170,7 @@ address|matching|name
 0x4d2c60|0.7352941176470589|TCivMgr::SetActiveCivilianSelection
 0x4d2cf0|1.0|TCivMgr::QueueImmediateCivilianCommandAndCycleSelection
 0x4d2d30|0.7461139896373057|TCivMgr::ShowDisbandCivilianConfirmationDialog
-0x4d2ef0|0.4|TCivMgr::TryQueueCivilianMoveOrderToTile
+0x4d2ef0|0.4411764705882353|TCivMgr::TryQueueCivilianMoveOrderToTile
 0x4d2f60|0.4566929133858268|TCivMgr::CanAssignCivilianOrderToTile
 0x4d3070|0.5407166123778502|TCivMgr::HandleCivilianReportDecision
 0x4d3310|0.3202416918429003|TCivMgr::QueueCivilianWorkOrderWithCostCheck

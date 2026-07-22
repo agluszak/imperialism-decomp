@@ -2228,7 +2228,7 @@ address|name|symbol|size|type|prototype|provenance
 4d2cf0|TCivMgr::QueueImmediateCivilianCommandAndCycleSelection||42|function|void __thiscall QueueImmediateCivilianCommandAndCycleSelection(int commandType)|
 4d2d30|TCivMgr::ShowDisbandCivilianConfirmationDialog||350|function|void __thiscall ShowDisbandCivilianConfirmationDialog(void)|
 4d2ef0|TCivToolbar::TryQueueCivilianMoveOrderToTile||79|function|bool __thiscall TryQueueCivilianMoveOrderToTile(int nTileIndex)|
-4d2f60|TCivMgr::CanAssignCivilianOrderToTile||193|function|undefined1 __thiscall CanAssignCivilianOrderToTile(short nTileIndex)|
+4d2f60|TCivMgr::CanAssignCivilianOrderToTile||193|function|bool __thiscall CanAssignCivilianOrderToTile(short nTileIndex)|
 4d3070|TCivToolbar::HandleCivilianReportDecision||478|function|void __thiscall HandleCivilianReportDecision(int * pCivilianOrderEntry)|
 4d3310|TMapMgr::QueueCivilianWorkOrderWithCostCheck||606|function|bool __thiscall QueueCivilianWorkOrderWithCostCheck(short nTileIndex)|
 4d3610|TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder||757|function|bool __thiscall PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex)|
