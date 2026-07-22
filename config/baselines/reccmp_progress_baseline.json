@@ -1,5 +1,5 @@
 {
-  "avg_matching_pct": 73.98455702696116,
+  "avg_matching_pct": 73.98752060597701,
   "compared_fun_count": 7589,
   "coverage_pct": 97.2699307869777,
   "dat_orig_only_count": 1601,
@@ -12,8 +12,8 @@
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
   "git_branch": "agent/finish-menu-movie-followups",
-  "git_commit": "b78f2776e9b6e17191c79e428f4a85252992aba5",
-  "git_commit_date": "2026-07-22T18:27:35+02:00",
+  "git_commit": "dc70ec4a8d394d70de10c5ad5e8b49048d4af83a",
+  "git_commit_date": "2026-07-22T18:39:00+02:00",
   "global_coverage_pct": 24.32856483617905,
   "global_orig_only_count": 8199,
   "global_recomp_only_count": 7587,
@@ -61,7 +61,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-22T16:38:46+00:00",
+  "timestamp_utc": "2026-07-22T16:41:04+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
