@@ -72,6 +72,7 @@ void TRemoteGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) 
 
 // SYNTHETIC: IMPERIALISM 0x00541a80
 // TRemoteGreatPower::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00541ab0
 TRemoteGreatPower::~TRemoteGreatPower() {}
 // SYNTHETIC: IMPERIALISM 0x005417c0
 // TRemoteGreatPower::CreateObject

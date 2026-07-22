@@ -1,8 +1,10 @@
 #include "game/TCivilianButton.h"
 #include "game/TAmtBar.h"
+#include "game/TMapMgr.h"
 #include "game/TPicture.h"
 #include "game/global_data_tables.h"
 #include "game/TQuickDrawSurfaceContext.h"
+#include "game/TCivUnit.h"
 #include "game/TControl.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
@@ -29,16 +31,14 @@ TCivilianButton::TCivilianButton() : TRadioPictureButton() {
 TCivilianButton::~TCivilianButton() {}
 
 // FUNCTION: IMPERIALISM 0x0058b460
-void TCivilianButton::SetSelectionAndEnableByMappedValue(int selectedValue) {
+void TCivilianButton::SetSelectedCivilianOrderAndEnableButton(TCivUnit* selectedOrder) {
   this->eventNumber60 = 0xc;
-  this->selectedValue9c = (short)selectedValue;
-  if (selectedValue != 0) {
+  this->selectedCivilianOrder9c = selectedOrder;
+  if (selectedOrder != 0) {
     SetEnabled(1, 0);
     SetState(1, 0);
 
-    char* globalMapState = reinterpret_cast<char**>(0x00693a10)[0];
-    short mappedValue = reinterpret_cast<short(__fastcall*)(int)>(
-        *reinterpret_cast<int*>(globalMapState + 0x118))(selectedValue);
+    short mappedValue = g_pGlobalMapState->ApplyMapImprovementSelectionState(selectedOrder);
     this->mappedSelection98 = mappedValue;
     return;
   }

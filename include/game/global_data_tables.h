@@ -873,7 +873,7 @@ extern TTaskForce* g_pCachedMapActionContext;
 extern TMapMgr* g_pGlobalMapState;
 extern TCivMgr* g_pSelectedCivilianOrderState; // 0x6a43dc — the TCivMgr instance
 
-// Seed viewport offsets copied into TWorldView::viewportOffsetX/Y by the TOceanDialog
+// Seed viewport offsets copied into TWorldView::viewportOrigin60.x/Y by the TOceanDialog
 // ctor; the only known writer (0x56a3b0) zeroes both.
 extern int g_nOceanDialogSeedViewportOffsetX; // 0x6a3ff0
 extern int g_nOceanDialogSeedViewportOffsetY; // 0x6a3ff4

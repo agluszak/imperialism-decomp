@@ -2282,7 +2282,7 @@ address|name|symbol|size|type|prototype|provenance
 4d67b0|TCountry::GetRuntimeClass||6|function|undefined GetTCountryClassNamePointer()|rtti
 4d67d0|TCountry::TCountry||88|function|void __thiscall TCountry(void)|
 4d6850|TCountry::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4d6880|WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880||80|function|undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880()|
+4d6880|TCountry::~TCountry||80|function|undefined ~TCountry()|
 4d68f0|InitializeNationStateIdentityAndOwnedRegionList||509|function|undefined InitializeNationStateIdentityAndOwnedRegionList()|
 4d6b70|CString::operator=|??4CString@@QAEABV0@ABV0@@Z|19|function|CString & __thiscall operator=(CString const &)|
 4d6ba0|TCountry::Free||62|function|void __thiscall Free(void)|
@@ -3856,7 +3856,7 @@ address|name|symbol|size|type|prototype|provenance
 540900|TProxyGreatPower::ProcessPendingDiplomacyProposalQueue||8|function|undefined DispatchProxyGreatPowerCallbackSlot1CC()|
 540920|TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage||3|function|undefined ReturnFalseProxyGreatPowerCapabilityStub()|
 540940|TProxyGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-540970|TProxyGreatPower::DestructTProxyGreatPower||80|function|undefined DestructTProxyGreatPower()|
+540970|TProxyGreatPower::~TProxyGreatPower||80|function|undefined ~TProxyGreatPower()|
 5409e0|TProxyGreatPower::GetRuntimeClass||6|function|undefined GetTProxyGreatPowerClassNamePointer()|rtti
 540a00|TProxyGreatPower::AddToNationMetricAtField10||127|function|undefined EmitTurnEvent14ForProxyGreatPowerAction()|
 540aa0|TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord||1|function|undefined RemoveRegionIdFromNationOwnedRegionList(void)|
@@ -3871,7 +3871,7 @@ address|name|symbol|size|type|prototype|provenance
 540e90|THostGreatPower::CreateObject|?CreateObject@THostGreatPower@@SGPAVCObject@@XZ|110|function|undefined CreateObject()|rtti
 540f20|THostGreatPower::ReturnFalseNationStateCapabilityFlag9C||3|function|undefined ReturnTrueNationStateCapabilityFlag9C()|
 540f40|THostGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-540f70|THostGreatPower::DestructTHostGreatPower||80|function|undefined DestructTHostGreatPower()|
+540f70|THostGreatPower::~THostGreatPower||80|function|undefined ~THostGreatPower()|
 540fe0|THostGreatPower::GetRuntimeClass||6|function|undefined GetTHostGreatPowerClassNamePointer()|rtti
 541000|THostGreatPower::ReadFrom||44|function|undefined UpdateHostGreatPowerStatePathAAndMaybeSetLossFlag()|
 541040|THostGreatPower::WriteTo||35|function|undefined UpdateHostGreatPowerStatePathBAndSetLossFlag()|
@@ -3882,7 +3882,7 @@ address|name|symbol|size|type|prototype|provenance
 5412b0|TClientGreatPower::ReturnFalseNationStateCapabilityFlag98||3|function|undefined ReturnTrueNationStateCapabilityFlag98Alt()|
 5412d0|TClientGreatPower::ReturnFalseNationStateCapabilityFlagA0||3|function|undefined ReturnFalseNationStateCapabilityFlagA0Alt()|
 5412f0|TClientGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-541320|TClientGreatPower::DestructTClientGreatPower||80|function|undefined DestructTClientGreatPower()|
+541320|TClientGreatPower::~TClientGreatPower||80|function|undefined ~TClientGreatPower()|
 541390|TClientGreatPower::GetRuntimeClass||6|function|undefined GetTClientGreatPowerClassNamePointer()|rtti
 5413b0|TClientGreatPower::ApplyAcceptedDiplomacyProposalCode||119|function|undefined EmitTurnEvent17ClientGreatPowerFlagEnabled()|
 541450|TClientGreatPower::QueueInterNationEventForProposalCode12D_130||118|function|undefined EmitTurnEvent17ClientGreatPowerFlagDisabled()|
@@ -3910,7 +3910,7 @@ address|name|symbol|size|type|prototype|provenance
 541a40|TRemoteGreatPower::RecomputeAiExpansionAndMissionPressureScores||1|function|void RecomputeAiExpansionAndMissionPressureScores(void)|
 541a60|TRemoteGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment||3|function|void RefreshTrackedEntriesAndReplanAiDevelopment(int unused)|
 541a80|TRemoteGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-541ab0|TRemoteGreatPower::DestructTRemoteGreatPower||80|function|undefined DestructTRemoteGreatPower()|
+541ab0|TRemoteGreatPower::~TRemoteGreatPower||80|function|undefined ~TRemoteGreatPower()|
 541b20|TRemoteGreatPower::GetRuntimeClass||6|function|undefined GetTRemoteGreatPowerClassNamePointer()|rtti
 541b40|TRemoteGreatPower::SetNationSelectedRegionAndMapCellLabel||127|function|void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char * mapCellLabel)|
 541be0|TRemoteGreatPower::HandleNationLost||17|function|void HandleNationLost()|
@@ -5075,7 +5075,7 @@ address|name|symbol|size|type|prototype|provenance
 58b3c0|TCivilianButton::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 58b3e0|TCivilianButton::TCivilianButton||25|function|undefined TCivilianButton()|
 58b410|TCivilianButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-58b460|TCivilianButton::SetSelectionAndEnableByMappedValue||97|function|undefined SetSelectionAndEnableByMappedValue()|
+58b460|TCivilianButton::SetSelectedCivilianOrderAndEnableButton||97|function|void __thiscall SetSelectedCivilianOrderAndEnableButton(TCivUnit* selectedOrder)|windows_listing
 58b4f0|TCivilianButton::Draw||159|function|undefined BlitHintOverlayRectWithCtrlModifierPalette()|
 58b5c0|THQButton::CreateObject|?CreateObject@THQButton@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 58b640|THQButton::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti

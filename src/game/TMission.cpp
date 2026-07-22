@@ -163,9 +163,6 @@ TMission::TMission() {
 // SYNTHETIC: IMPERIALISM 0x00535050
 // TMission::`scalar deleting destructor'
 
-// FUNCTION: IMPERIALISM 0x00535080
-TMission::~TMission() {}
-
 // Sets the common mission owner and path sentinel, then dispatches the concrete
 // mission's initialization hook. TInvadeMission uses this to initialize its
 // owned beachhead mission with the same nation.

@@ -17,7 +17,9 @@ public:
 
   TArmyMission();
   TArmyMission(int nodeKey);
-  virtual ~TArmyMission() override;
+  // Inline so concrete army-mission destructors collapse through the empty base chain.
+  // FUNCTION: IMPERIALISM 0x0053c200
+  virtual ~TArmyMission() override {}
 
   virtual void WriteTo(TStream* stream) override;  // slot 0x05
   virtual void ReadFrom(TStream* stream) override; // slot 0x06

@@ -242,9 +242,6 @@ void TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
 // SYNTHETIC: IMPERIALISM 0x004d8c20
 // TGreatPower::`scalar deleting destructor'
 
-// FUNCTION: IMPERIALISM 0x004d8c50
-TGreatPower::~TGreatPower() {}
-
 // FUNCTION: IMPERIALISM 0x004d8cc0
 void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
   this->InitializeNationStateIdentityAndOwnedRegionList(static_cast<short>(arg1));
