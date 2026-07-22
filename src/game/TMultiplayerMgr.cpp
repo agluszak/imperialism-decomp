@@ -222,12 +222,21 @@ TMultiplayerMgr::TMultiplayerMgr()
     : TEventHandler(), gameNameString(), defaultNationTextSlots(), nationDisplayNameSlots(),
       playerNameString(), playerNameMirror(), fieldb8() {
   InitializeUiResourceEntryBaseHeaderDefaults();
-  memset(nationStatusControlSlots, 0, sizeof(nationStatusControlSlots));
   lobbyDialogView40 = 0;
   primaryTurnEventQueueHead = 0;
   secondaryTurnEventQueueHead = 0;
   sessionPhaseTag = 0x6e616461;
   fieldF4 = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005427a0
+TMultiplayerSlotHandle::TMultiplayerSlotHandle() : allocatedData(0), tagOrSize(0) {}
+
+// FUNCTION: IMPERIALISM 0x005427c0
+TMultiplayerSlotHandle::~TMultiplayerSlotHandle() {
+  if (allocatedData != 0) {
+    delete allocatedData;
+  }
 }
 
 // SYNTHETIC: IMPERIALISM 0x005427e0

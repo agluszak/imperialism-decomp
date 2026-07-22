@@ -57,19 +57,16 @@ struct NationStateRecordA8 {
 };
 
 // One of TMultiplayerMgr::nationStatusControlSlots' 4 elements. Ground truth from
-// TMultiplayerMgr::~TMultiplayerMgr (0x542810): each slot's destructor frees dataPtr via
-// a raw operator delete (no typed destructor on the pointee), gated on non-null. Neither
-// the pointee type nor tagOrSize's meaning is recovered yet; no reader/writer of the
-// array besides the ctor's memset zero-init is ported.
+// TMultiplayerMgr construction/destruction (0x542670/0x542810) uses VC5's vector
+// iterators over four of these records. The element ctor zeroes both fields and the
+// element dtor scalar-deletes the byte/POD storage when present. Neither the payload
+// shape nor tagOrSize's meaning is recovered yet.
 struct TMultiplayerSlotHandle {
-  void* dataPtr;
+  unsigned char* allocatedData;
   int tagOrSize;
 
-  ~TMultiplayerSlotHandle() {
-    if (dataPtr != 0) {
-      operator delete(dataPtr);
-    }
-  }
+  TMultiplayerSlotHandle();
+  ~TMultiplayerSlotHandle();
 };
 
 // Multiplayer session / game-flow manager (g_pGameFlowState). Inherits the shared
