@@ -62,7 +62,7 @@ void TTradeScreenPicture::Draw(RECT* rectBuffer) {
     // Entries 6 (" 6sr") and 12 (" 5am") are group terminators, skipped unless a production
     // order is active.
     if ((tagPtr != &g_tradeCommodityRowTagTable[6] && tagPtr != &g_tradeCommodityRowTagTable[12]) ||
-        g_pCityOrderCapabilityState->hasProductionOrder193 != 0) {
+        g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) {
       RECT cellRect;
 
       // Right cell: the active nation's diplomacy value for this commodity.

@@ -87,10 +87,10 @@ void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, s
 void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   int tag = sourceHandler->controlTag;
   if (commandId >= 0x2af8) {
-    short selectionIndex =
-        g_offerDeskSelectionIndexTable_00668568[commandId +
-                                                g_pCityOrderCapabilityState->hasProductionOrder193 *
-                                                    0x11];
+    short selectionIndex = g_offerDeskSelectionIndexTable_00668568
+        [commandId +
+         g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] *
+             0x11];
     if (!selectionActive9e) {
       UpdateTradeSelectionStateAndRefreshUiIfChanged(1);
     } else {

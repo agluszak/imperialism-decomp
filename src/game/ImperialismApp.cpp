@@ -319,7 +319,7 @@ int ImperialismApp::ExitInstance() {
     g_pGlobalUiRootController->Free();
     g_pGlobalUiRootController = nullptr;
   }
-  ReleaseGlobalClipRegionHandleListAndReset_006a1c98();
+  DisposeTemporaryRegionCache();
 
   LPCSTR* ppFontFiles = g_apFontFiles;
   if (ppFontFiles != nullptr && *ppFontFiles != nullptr) {

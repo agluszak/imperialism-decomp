@@ -8,6 +8,8 @@
 #include "game/TNavyMgr.h"
 #include "game/TOcean.h"
 #include "game/TSimMgr.h"
+#include "game/TDropShadowNumberText.h"
+#include "game/TDropShadowText.h"
 #include "game/TStaticText.h"
 #include "game/TTaskForce.h"
 #include "game/TViewMgr.h"
@@ -18,6 +20,7 @@
 #include "game/mapped_flavor_text.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 struct TGlobalMapCityScoreRecord;
 // 0x00563360 -- __stdcall free resolver (defined in TMapMgr.cpp).
@@ -307,8 +310,129 @@ void TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint
 }
 
 // FUNCTION: IMPERIALISM 0x005853f0
-undefined TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls() {
-  return 0;
+void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls() {
+  CString text;
+
+  TView* mainControl = GetWindow()->ResolveControlByTag(kControlTagMain);
+  mainControl->AssertValid();
+  SetControlHoverHelpText(CString(g_szEmptyString), this);
+
+  TView* control = ResolveControlByTag(kControlTagFlagCaps);
+  if (control != 0) {
+    g_pSimMgr->GetString(0x2730, 0, &text);
+    SetControlHoverHelpText(text, control);
+  }
+
+  control = ResolveControlByTag(kControlTagQuer);
+  if (control != 0) {
+    g_pSimMgr->GetString(0x2730, 2, &text);
+    SetControlHoverHelpText(text, control);
+  }
+
+  control = ResolveControlByTag(kControlTagTrad);
+  if (control != 0 && control->IsEnabled()) {
+    g_pSimMgr->GetString(0x2730, 0x13, &text);
+    SetControlHoverHelpText(text, control);
+  }
+
+  control = ResolveControlByTag(kControlTagCity);
+  if (control != 0 && control->IsEnabled()) {
+    g_pSimMgr->GetString(0x2730, 0x15, &text);
+    SetControlHoverHelpText(text, control);
+  }
+
+  control = ResolveControlByTag(kControlTagTran);
+  if (control != 0 && control->IsEnabled()) {
+    g_pSimMgr->GetString(0x2730, 0x16, &text);
+    SetControlHoverHelpText(text, control);
+  }
+
+  control = ResolveControlByTag(kControlTagDipl);
+  if (control != 0 && control->IsEnabled()) {
+    g_pSimMgr->GetString(0x2730, 0x14, &text);
+    SetControlHoverHelpText(text, control);
+  }
+
+  control = ResolveControlByTag(kControlTagEnd);
+  if (control == 0) {
+    TView* thirdToolbar = ownerContext->ResolveControlByTag(kControlTagToo3);
+    if (thirdToolbar != 0) {
+      control = thirdToolbar->ResolveControlByTag(kControlTagEnd);
+    }
+  }
+  if (control != 0) {
+    short stringIndex = 7;
+    switch (g_pUiRuntimeContext->currentTurnEventCode) {
+    case 0x7d8:
+      stringIndex = 0xf;
+      break;
+    case 0x7d9:
+    case 0x7da:
+      stringIndex = 0x10;
+      break;
+    case 0x7db:
+      stringIndex = 0xe;
+      break;
+    case 0x7dd:
+      stringIndex = 0x11;
+      break;
+    case 0x7de:
+    case 0x8fc:
+      stringIndex = 0xc;
+      break;
+    case 0x2260:
+      stringIndex = 0xd;
+      break;
+    }
+    g_pSimMgr->GetString(0x2730, stringIndex, &text);
+    SetControlHoverHelpText(text, control);
+  }
+
+  control = ResolveControlByTag(kControlTagTree);
+  if (control != 0) {
+    g_pSimMgr->GetSeason(&text);
+    SetControlHoverHelpText(text, control);
+  }
+
+  TDropShadowText* seasonControl =
+      static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagSeas));
+  if (seasonControl != 0) {
+    CString seasonLabel;
+    CString yearLabel;
+    g_pSimMgr->GetString(0x2730, 0x12, &seasonLabel);
+    g_pSimMgr->GetString(0x2730, 8, &yearLabel);
+    text = seasonLabel + g_szListSeparator_00695760 + yearLabel;
+    SetControlHoverHelpText(text, seasonControl);
+    ApplyUiTextStyleAndThemeFlags(seasonControl, 0, 0xc, 0x2b6c, 0x2b67);
+    seasonControl->SetTextAlignmentAndMaybeRefresh(-2, 0);
+  } else {
+    TDropShadowNumberText* yearControl =
+        static_cast<TDropShadowNumberText*>(ResolveControlByTag(kControlTagYear));
+    if (yearControl != 0) {
+      g_pSimMgr->GetString(0x2730, 8, &text);
+      SetControlHoverHelpText(text, yearControl);
+      ApplyUiNumberTextStyleAndThemeColor(yearControl, 0, 0xe, 0x2b6c, 0x2b67);
+      yearControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+    }
+  }
+
+  TDropShadowText* treasuryControl =
+      static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTrea));
+  if (treasuryControl != 0) {
+    g_pSimMgr->GetString(0x2730, 9, &text);
+    SetControlHoverHelpText(text, treasuryControl);
+    ApplyUiTextStyleAndThemeFlags(treasuryControl, 0, 0xc, 0x2b6c, 0x2b67);
+    treasuryControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+  }
+
+  TDropShadowText* wordControl =
+      static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagWord));
+  if (wordControl != 0) {
+    ApplyUiTextStyleAndThemeFlags(wordControl, 0, 0xc, 0x2b6c, 0x2b67);
+    wordControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+    g_pSimMgr->GetString(0x2730, 9, &text);
+    wordControl->SetTextAndMaybeRefresh(&text, 0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00585ba0
