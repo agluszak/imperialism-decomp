@@ -55,8 +55,8 @@ CDib::CDib(int width, int height, int bitDepth) : CObject() {
     m_paletteCount = m_pInfoHeader->bmiHeader.biClrUsed;
   }
 
-  m_pInfoHeader = static_cast<BITMAPINFO*>(
-      ::operator new(width * height + sizeof(BITMAPINFOHEADER) + m_paletteCount * 4));
+  int infoBytes = width * height + sizeof(BITMAPINFOHEADER) + m_paletteCount * sizeof(RGBQUAD);
+  m_pInfoHeader = static_cast<BITMAPINFO*>(static_cast<void*>(new unsigned char[infoBytes]));
   m_infoOwnMode = 1;
   m_pInfoHeader->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
   m_pInfoHeader->bmiHeader.biWidth = width;
@@ -104,7 +104,7 @@ CDib::CDib(const CDib& source)
       m_hPalette(NULL) {
   unsigned int infoBytes =
       static_cast<unsigned int>(m_paletteCount) * sizeof(RGBQUAD) + sizeof(BITMAPINFOHEADER);
-  m_pInfoHeader = reinterpret_cast<BITMAPINFO*>(new unsigned char[infoBytes]);
+  m_pInfoHeader = static_cast<BITMAPINFO*>(static_cast<void*>(new unsigned char[infoBytes]));
   memcpy(m_pInfoHeader, source.m_pInfoHeader, infoBytes);
 
   m_infoOwnMode = 1;
@@ -262,7 +262,8 @@ int CDib::BuildPaletteFromRgbQuadBuffer() {
   if (m_hPalette != NULL) {
     DeleteObject(m_hPalette);
   }
-  LOGPALETTE* logPalette = static_cast<LOGPALETTE*>(::operator new(m_paletteCount * 4 + 4));
+  unsigned char* paletteStorage = new unsigned char[m_paletteCount * 4 + 4];
+  LOGPALETTE* logPalette = static_cast<LOGPALETTE*>(static_cast<void*>(paletteStorage));
   logPalette->palVersion = 0x300;
   logPalette->palNumEntries = static_cast<WORD>(m_paletteCount);
   const BYTE* source = static_cast<const BYTE*>(m_colorTablePixels);
@@ -274,7 +275,7 @@ int CDib::BuildPaletteFromRgbQuadBuffer() {
     source += 4;
   }
   m_hPalette = CreatePalette(logPalette);
-  ::operator delete(logPalette);
+  delete[] paletteStorage;
   return 1;
 }
 
@@ -314,7 +315,7 @@ int CDib::Read(CFile* file) {
   }
 
   int infoBytes = fileHeader.bfOffBits - sizeof(BITMAPFILEHEADER);
-  m_pInfoHeader = static_cast<BITMAPINFO*>(::operator new(infoBytes));
+  m_pInfoHeader = static_cast<BITMAPINFO*>(static_cast<void*>(new unsigned char[infoBytes]));
   m_dibBitsOwned = 1;
   m_infoOwnMode = 1;
   file->Read(m_pInfoHeader, infoBytes);
@@ -335,7 +336,7 @@ int CDib::Read(CFile* file) {
   }
 
   m_colorTablePixels = m_pInfoHeader->bmiColors;
-  m_dibBits = ::operator new(m_pixelBytes);
+  m_dibBits = new unsigned char[m_pixelBytes];
   file->Read(m_dibBits, m_pixelBytes);
 
   if (m_pInfoHeader->bmiHeader.biClrUsed != 0) {
@@ -395,13 +396,13 @@ void CDib::Release() {
     m_hFileMapping = NULL;
   }
   if (m_infoOwnMode == 1) {
-    ::operator delete(m_pInfoHeader);
+    delete[] static_cast<unsigned char*>(static_cast<void*>(m_pInfoHeader));
   } else if (m_infoOwnMode == 2) {
     GlobalUnlock(m_hGlobalInfo);
     GlobalFree(m_hGlobalInfo);
   }
   if (m_dibBitsOwned == 1) {
-    ::operator delete(m_dibBits);
+    delete[] static_cast<unsigned char*>(m_dibBits);
   }
   if (m_hPalette != NULL) {
     DeleteObject(m_hPalette);

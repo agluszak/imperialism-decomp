@@ -1,5 +1,5 @@
 {
-  "avg_matching_pct": 72.7956182374726,
+  "avg_matching_pct": 72.80650400013668,
   "compared_fun_count": 7589,
   "coverage_pct": 97.2699307869777,
   "dat_orig_only_count": 1600,
@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
-  "git_branch": "agent/ratchet-boundary-construction-final",
-  "git_commit": "001ce82eb488b263e13e74b4d69d460c6c080104",
-  "git_commit_date": "2026-07-22T13:47:43+02:00",
+  "git_branch": "agent/ratchet-boundary-construction-next",
+  "git_commit": "0617dd1849b866d4052e973645a244f88dbaea9c",
+  "git_commit_date": "2026-07-22T13:50:44+02:00",
   "global_coverage_pct": 24.19876235337582,
   "global_orig_only_count": 8207,
   "global_recomp_only_count": 7528,
@@ -61,7 +61,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-22T11:49:17+00:00",
+  "timestamp_utc": "2026-07-22T12:02:55+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
