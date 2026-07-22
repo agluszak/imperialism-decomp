@@ -1673,7 +1673,7 @@ void TGreatPower::AbsorbCityNeedVectorSlotFC(short* needVector) {
 
 // FUNCTION: IMPERIALISM 0x004dcaa0
 unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode) {
-  if (this->foreignMinister->capabilityFlag26 != 0) {
+  if (this->foreignMinister->purchasePriorityByResource1e[4] != 0) {
     if (g_pNationInteractionStateManager->IsCapabilityCategoryActiveSlot3C(4) != 0) {
       if (static_cast<short>(proposalCode) == 4) {
         return static_cast<unsigned short>(this->diplomacyCounterA2);
@@ -1687,7 +1687,7 @@ unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode
       return static_cast<unsigned short>(this->diplomacyCounterA2);
     }
   }
-  if (this->foreignMinister->capabilityFlag28 != 0) {
+  if (this->foreignMinister->purchasePriorityByResource1e[5] != 0) {
     if (g_pNationInteractionStateManager->IsCapabilityCategoryActiveSlot3C(5) != 0) {
       if (static_cast<short>(proposalCode) == 5) {
         return static_cast<unsigned short>(this->diplomacyCounterA2);
@@ -1701,7 +1701,7 @@ unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode
       return static_cast<unsigned short>(this->diplomacyCounterA2);
     }
   }
-  if (this->foreignMinister->capabilityFlag24 != 0 &&
+  if (this->foreignMinister->purchasePriorityByResource1e[3] != 0 &&
       g_pNationInteractionStateManager->IsCapabilityCategoryActiveSlot3C(3) != 0) {
     if (static_cast<short>(proposalCode) != 3) {
       short resolvedCode =
@@ -1714,7 +1714,7 @@ unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode
         return static_cast<unsigned short>(this->diplomacyCounterA2);
       }
     }
-    if (this->foreignMinister->capabilityFlag26 != 0) {
+    if (this->foreignMinister->purchasePriorityByResource1e[4] != 0) {
       int reducedCounter = static_cast<int>(this->diplomacyCounterA2) - 1;
       return reducedCounter & (static_cast<int>(reducedCounter < 1) - 1);
     }
@@ -2012,7 +2012,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
 
   if (this->diplomacyEligibilityA0 == 0) {
     if (this->foreignMinister != 0) {
-      this->foreignMinister->Call8C();
+      this->foreignMinister->ArrangeMaterialsOffers();
     }
     return;
   }
@@ -2658,7 +2658,7 @@ char TGreatPower::CanAffordAdditionalDiplomacyCostAfterCommitments(short additio
 // FUNCTION: IMPERIALISM 0x004de7e0
 void TGreatPower::ApplyTurnDiplomacyStateSlot1e0(void) {
   if (this->city != 0 && this->foreignMinister != 0) {
-    this->foreignMinister->Call80();
+    this->foreignMinister->FinishDiplomacyPhase();
   }
 }
 
@@ -3308,7 +3308,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   g_pGlobalMapState->SetTileTransportFlagsTo0x37AndRefreshNeighbors(marker->tileIndex14,
                                                                     this->nationSlot);
   if (this->diplomacyEligibilityA0 == 0 && this->interiorMinister != 0) {
-    this->interiorMinister->NoOpForeignMinisterUtilityStub(receiver);
+    this->interiorMinister->MakeNewCity(static_cast<TCity*>(receiver));
   }
 }
 

@@ -84,7 +84,12 @@ public:
                                                                 int sideEffectCode); // 37 (0x94)
   virtual int SelectNationSlotFromCollectedStandingEntriesSlot98(int sourceNation,
                                                                  int primaryOnlyFlag); // 38 (0x98)
-  virtual int IsNationSlotEligibleForEventProcessing(int nationSlot);                  // 39 (0x9c)
+  virtual int SelectBestMajorNationForMinorByStandingAndNeed(int minorNationSlot);     // 39 (0x9c)
+
+  // 0x004f2820 — stores a symmetric nation-pair relation-side-effect flag and queues
+  // event 0x14 for flag 2, otherwise event 0x12.
+  char SetNationPairSpecialRelationFlagAndQueueEvent14Or16(short flag, int sourceNation,
+                                                           int targetNation);
 
   // Slot-name aliases retained for recovered call sites.
   char HasPolicyWithNationSlot44(short sourceNation, short targetNation) {

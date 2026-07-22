@@ -9,7 +9,7 @@ class TNapoleonMinister : public TDefenseMinister {
 public:
   TNapoleonMinister();
   DECLARE_DYNCREATE(TNapoleonMinister)
-  void NoOpForeignMinisterUtilityStub(void* receiver) override;
+  void MakeNewCity(TCity* city) override;
   double GetPersonalityWeightByFlag(char flag) override;
 };
 
@@ -18,7 +18,7 @@ class TBismarckMinister : public TDefenseMinister {
 public:
   TBismarckMinister();
   DECLARE_DYNCREATE(TBismarckMinister)
-  void NoOpForeignMinisterUtilityStub(void* receiver) override;
+  void MakeNewCity(TCity* city) override;
   double GetPersonalityWeightByFlag(char flag) override;
 };
 
@@ -27,7 +27,7 @@ class TPirateMinister : public TDefenseMinister {
 public:
   TPirateMinister();
   DECLARE_DYNCREATE(TPirateMinister)
-  void NoOpForeignMinisterUtilityStub(void* receiver) override;
+  void MakeNewCity(TCity* city) override;
   double GetPersonalityWeightByFlag(char flag) override;
 };
 
@@ -36,7 +36,7 @@ class TDefenderMinister : public TDefenseMinister {
 public:
   TDefenderMinister();
   DECLARE_DYNCREATE(TDefenderMinister)
-  void NoOpForeignMinisterUtilityStub(void* receiver) override;
+  void MakeNewCity(TCity* city) override;
   double GetPersonalityWeightByFlag(char flag) override;
 };
 
@@ -45,6 +45,6 @@ class TBullyMinister : public TDefenseMinister {
 public:
   TBullyMinister();
   DECLARE_DYNCREATE(TBullyMinister)
-  void NoOpForeignMinisterUtilityStub(void* receiver) override;
+  void MakeNewCity(TCity* city) override;
   double GetPersonalityWeightByFlag(char flag) override;
 };

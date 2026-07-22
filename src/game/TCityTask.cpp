@@ -117,7 +117,7 @@ void TCityTask::QueueCityOrderType10CommandIfReady(TSortedList* commandQueue) {
     alreadyQueuedFlag = 1;
   }
   if (order->field40 == 3) {
-    ownerCity->ownerNationAc->foreignMinister->SetForeignMinisterReadyFlag14();
+    ownerCity->ownerNationAc->foreignMinister->PriceCheck();
   }
 }
 
@@ -226,7 +226,7 @@ void TCityTask::ApplyProductionDistributionToCitySlots() {
   for (short i = 0; i < 0x17; ++i) {
     short amount = sheet.slotByResourceCode[i];
     if (amount != 0) {
-      foreignMinister->AddToForeignMinisterCounterAtIndex(i, amount);
+      foreignMinister->PleaseBuy(i, amount);
       ownerCity->AddTransportRequest(i, amount);
     }
   }

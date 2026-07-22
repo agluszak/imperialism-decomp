@@ -439,6 +439,7 @@ extern char* g_pStatusPictureMainSharedText_00668b88;
 extern char* g_pLoungeLocalPlayerNameSharedText_0065c160;
 extern int g_lastEdgeAutoScrollTick16;
 extern int g_nSaveFormatVersion;
+extern const short g_aDiplomacyPlanningQuarterPhaseByNation[7];
 extern const unsigned int g_anScenarioScriptInstructionTags[27];
 extern void (TSimMgr::* g_apfnScenarioScriptInstructionHandlers[27])(void*);
 extern unsigned char g_bScenarioScriptTerminationRequested;

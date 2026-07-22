@@ -130,7 +130,7 @@ void TDefenseMinister::ReadFrom(TStream* stream) {
 // Slot 10 override (0x4ec3d0).
 
 // FUNCTION: IMPERIALISM 0x004ec3d0
-short TDefenseMinister::DispatchNationStateEventCode10(short nationSlot) {
+short TDefenseMinister::GetRankingCriterionForGP(short nationSlot) {
   (void)nationSlot;
   return 0;
 }

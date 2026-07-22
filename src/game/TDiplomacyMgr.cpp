@@ -67,8 +67,36 @@ short DecodeTerrainDescriptorNationSlotForAdjacency(int terrainRecord) {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00413250
-int TDiplomacyMgr::IsNationSlotEligibleForEventProcessing(int nationSlot) {
-  return g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot));
+int TDiplomacyMgr::SelectBestMajorNationForMinorByStandingAndNeed(int minorNationSlot) {
+  int bestScore = 0;
+  int selectedNation = -1;
+  for (int majorNation = 0; majorNation < 7; ++majorNation) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(majorNation)) == 0) {
+      continue;
+    }
+
+    int score = (200 - g_apNationStates[majorNation]->needLevelByNation[minorNationSlot]) *
+                relationStandingScoreMatrix79c[minorNationSlot * kNationSlotCount + majorNation];
+    bool select = score > bestScore;
+    if (score == bestScore) {
+      select = g_apTerrainTypeDescriptorTable[minorNationSlot]->IsEncodedNationSlotMinus200Equal(
+                   majorNation) != 0;
+      if (!select) {
+        unsigned int tieSeed =
+            minorNationSlot * 7 + majorNation + g_pSimMgr->GetEconomicTurn() + score;
+        if (tieSeed == 0) {
+          tieSeed = minorNationSlot;
+        }
+        tieSeed = tieSeed * 0x15a4e35 + 1;
+        select = ((tieSeed >> 12) & 1) != 0;
+      }
+    }
+    if (select) {
+      bestScore = score;
+      selectedNation = majorNation;
+    }
+  }
+  return selectedNation;
 }
 // SYNTHETIC: IMPERIALISM 0x004ee650
 // TDiplomacyMgr::CreateObject
@@ -1593,6 +1621,18 @@ TDiplomacyMgr::BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy() 
 // FUNCTION: IMPERIALISM 0x004f27f0
 void TDiplomacyMgr::ApplyTurnEvent2SyncPacketToRelationMatrix(TurnEvent2SyncPacket* packet) {
   packet->ApplyEncodedDeltaPayloadToBufferByMode(relationStandingScoreMatrix79c);
+}
+
+// FUNCTION: IMPERIALISM 0x004f2820
+char TDiplomacyMgr::SetNationPairSpecialRelationFlagAndQueueEvent14Or16(short flag,
+                                                                        int sourceNation,
+                                                                        int targetNation) {
+  relationSideEffectMatrix1402[sourceNation * kNationSlotCount + targetNation] = flag;
+  relationSideEffectMatrix1402[targetNation * kNationSlotCount + sourceNation] = flag;
+  int eventCode = flag == 2 ? 0x14 : 0x12;
+  g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(eventCode, sourceNation,
+                                                                      targetNation, 0);
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x005449b0

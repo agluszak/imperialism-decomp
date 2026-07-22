@@ -397,8 +397,8 @@ void TAutoGreatPower::SnapshotDiplomacyState1c6Into250(void) {}
 
 // FUNCTION: IMPERIALISM 0x004e7990
 void TAutoGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void) {
-  this->foreignMinister->Call90();
-  this->foreignMinister->Call94();
+  this->foreignMinister->SetTradeBids();
+  this->foreignMinister->DoUsualSubsidyRule();
 }
 
 // FUNCTION: IMPERIALISM 0x004e79d0
@@ -406,7 +406,9 @@ char TAutoGreatPower::TryDispatchNationActionViaUiContextOrFallback(int targetNa
                                                                     int arg3, int slotIndex) {
   if (this->IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(static_cast<short>(slotIndex)) !=
       0) {
-    this->foreignMinister->DispatchProposalSlot98(targetNation, arg2, arg3, slotIndex);
+    this->foreignMinister->ReplyToTradeOffer(static_cast<short>(targetNation),
+                                             static_cast<short>(arg2), static_cast<short>(arg3),
+                                             static_cast<short>(slotIndex));
     return 0;
   }
   this->AppendTrackedSlotEntry(1, targetNation, 0, static_cast<short>(slotIndex), 0);
@@ -416,7 +418,7 @@ char TAutoGreatPower::TryDispatchNationActionViaUiContextOrFallback(int targetNa
 // FUNCTION: IMPERIALISM 0x004e7a50
 void TAutoGreatPower::ClearDiplomacyState1c6Block(void) {
   if (this->city != 0) {
-    this->foreignMinister->RecomputeOrderStateSlot9C();
+    this->foreignMinister->EndTradePhase();
     short* pendingMetric = this->actionMetricByQuarter;
     for (short needSlot = 7; needSlot < 0x0d; ++needSlot) {
       short pending = *pendingMetric;
@@ -440,7 +442,7 @@ void TAutoGreatPower::ClearDiplomacyState1c6Block(void) {
 // FUNCTION: IMPERIALISM 0x004e7af0
 void TAutoGreatPower::BeginTurnDiplomacyPrePassSlot1c8() {
   if (this->city != 0) {
-    this->foreignMinister->RefreshForeignMinisterStateByLocalizationMode();
+    this->foreignMinister->SetDiplomacyPolicies();
   }
 }
 
@@ -483,7 +485,7 @@ void TAutoGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
   int rowIndex = 1;
   if (this->proposalQueue->GetSize() >= rowIndex) {
     do {
-      this->foreignMinister->ValidateProposalSelectionAndQueueEvent1C(static_cast<short>(rowIndex));
+      this->foreignMinister->ReplyToDiplomacyOffers(static_cast<short>(rowIndex));
       ++rowIndex;
     } while (rowIndex <= this->proposalQueue->GetSize());
   }

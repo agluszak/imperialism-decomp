@@ -67,7 +67,7 @@ void TMinister::SerializeTMinisterBaseOrderArrayHeader(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x0052ed20
-short TMinister::DispatchNationStateEventCode10(short nationSlot) {
+short TMinister::GetRankingCriterionForGP(short nationSlot) {
   return g_apNationStates[nationSlot]->GetDiplomacyExternalStateByTarget(0x10);
 }
 
@@ -81,7 +81,7 @@ void TMinister::RebuildTerrainPreferenceEntriesAndAssignRanks() {
     if (*tableCursor != 0) {
       MinisterTerrainPreferenceEntry entry;
       entry.terrainType = static_cast<short>(terrainIndex);
-      entry.score = DispatchNationStateEventCode10(static_cast<short>(terrainIndex));
+      entry.score = GetRankingCriterionForGP(static_cast<short>(terrainIndex));
       this->field_8->InsertCopiedRecordSortedByComparator(&entry);
     }
     terrainIndex = terrainIndex + 1;
@@ -161,6 +161,6 @@ short TMinister::GetPreferenceTerrainTypeByEntryIndex(short index) {
 }
 
 // FUNCTION: IMPERIALISM 0x0052efb0
-void TMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
-  (void)receiver;
+void TMinister::MakeNewCity(TCity* city) {
+  (void)city;
 }
