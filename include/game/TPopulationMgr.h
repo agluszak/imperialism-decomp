@@ -45,9 +45,9 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins50_004b63e0();                 // slot 0x12 0x4b63e0
   virtual undefined OrphanLeaf_NoCall_Ins26_004b67e0(short param_1,
                                                      short param_2); // slot 0x13 0x4b67e0
-  virtual undefined OrphanLeaf_NoCall_Ins63_004b64c0();              // slot 0x14 0x4b64c0
-
-  short* GetSummaryArraySlot50();
+  // Mac CodeWarrior oracle: PredictedNeeds(). Rebuilds and returns the per-resource
+  // predicted-needs vector stored at +0x22.
+  virtual short* PredictedNeeds(); // slot 0x14 0x4b64c0
 
   // 0x004b5c00: attach this population state to a city and allocate its three
   // labor pools.
@@ -66,10 +66,9 @@ public:
   short extraAt1e;                 // +0x1e
   short fieldAt20;                 // +0x20 — snapshotted by the turn-event-0x2c packet
 
-  // +0x22..+0x4f is persistent state: ReadFrom/WriteTo serialize the region wholesale.
-  // Its internal fields are not yet individually interpreted, so retain one honest
-  // byte block instead of mislabeling live save-game data as padding.
-  unsigned char serializedState22[0x50 - 0x22];
+  // +0x22..+0x4f — one predicted requirement per resource type. ReadFrom/WriteTo
+  // serialize all 23 shorts as a single persistent block.
+  short predictedNeedByResource22[0x17];
 
   TPopulationMgr();
 };

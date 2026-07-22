@@ -921,6 +921,7 @@ extern "C" const char s_SourcePathUDefenseMinister_00696860[];
 // Assert source-path string for the UArmyMgr TU.
 extern "C" const char s_SourcePathUArmyMgr_0069573C[];
 extern "C" const char s_SourcePathUCityDialogs_006962E8[];
+extern "C" const char s_SourcePathUMacViewMgr_00696D68[];
 extern "C" const char s_SourcePathUTestDialogs_0069A7F8[];
 extern "C" const char s_SourcePathUCityViews_00696650[];
 extern "C" const char s_SourcePathUArmyViews_00695858[];
@@ -1899,6 +1900,15 @@ extern short g_aInteriorMinisterNeedPriorityOrder_00696408[10];
 extern short g_cityProductionReserveByPolicyBand_00696400[4];
 extern float g_cityProductionUpgradeRatioThreshold_00696450[4];
 extern short g_cityActionCapabilityGroupBySlot_00650670[32];
+// Resource ids cleared before TPopulationMgr recomputes the three derived food needs.
+extern "C" short g_cityPredictedNeedResetResourceIds[3];
+// Reverse hit-test priority for the 16 city-production building regions.
+extern short g_cityBuildingHitTestOrder[16];
+// Per-building offset added to the city-building sound-effect base (3000).
+extern short g_cityBuildingSoundCueOffsets[16];
+extern "C" const char g_szCityProductionUniversityPrefix[];
+extern "C" const char g_szCityProductionArmoryPrefix[];
+extern "C" const char g_szCityProductionShipyardPrefix[];
 // Naval combat damage-split ratios (TNavyTacUnit::ApplyTacticalDamageAndDeathState, 0x5a63c0):
 // the two shares a hit's damage is divided between strength4 (hull) and crewStrength38
 // depending on the attacker's ship-panel aim mode.

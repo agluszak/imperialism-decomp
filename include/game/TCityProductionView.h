@@ -6,6 +6,7 @@
 
 class TBuildingView;
 class TCity;
+class TTransFocusAnimation;
 
 // VTABLE: IMPERIALISM 0x0064fc20
 class TCityProductionView : public TNoHilitePicture {
@@ -37,12 +38,12 @@ public:
   virtual void RenderNationHeaderDateLabelWithPeriodicRefresh(); // slot 0x75 0x4badd0
   // RET 0x8 = 2 stack dwords (int + int*), not 0. slot 0x76 0x4bb7a0
   virtual void InitializeCityProductionDialog(TCity* city, TView* dialogRoot);
-  virtual void UpdateCityProductionDialogCommodityValueControls(); // slot 0x77 0x4bc0b0
-  virtual void RefreshCityBuildingActionAvailabilityIndicators();  // slot 0x78 0x4bc500
-  virtual void OrphanCallChain_C5_I49_004bc910();                  // slot 0x79 0x4bc910
+  virtual void UpdateUnits();         // slot 0x77 0x4bc0b0
+  virtual void UpdateToolbar();       // slot 0x78 0x4bc500
+  virtual void CloseAndSaveWindows(); // slot 0x79 0x4bc910
   // RET 0x8 = 2 stack dwords (vestigial; SEH-framed body reads neither). slot 0x7a 0x4bc9b0
   virtual void RenderViewIntoPrimaryRenderContextWithTemporaryClip(int arg1, int arg2);
-  virtual void RefreshCityDialogSummaryValues(); // slot 0x7b 0x4bcaf0
+  virtual void UpdateFields(); // slot 0x7b 0x4bcaf0
 
   TCityProductionView();
 
@@ -65,7 +66,8 @@ private:
   TBuildingView* buildingViewsAC[16];
   // One region handle per building slot, disposed by Free().
   RgnHandle buildingClipRegionsEC[16];
-  unsigned char padding12C[0x60];
+  // Eight action groups, each with three synchronized transition animations.
+  TTransFocusAnimation* buildingActionAnimations12C[8][3];
 };
 
 ASSERT_SIZE(TCityProductionView, 0x18c);

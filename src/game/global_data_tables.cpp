@@ -622,6 +622,8 @@ const unsigned int g_majorTreatyCellTags[7] = {0x72475030, 0x72475031, 0x7247503
 // Industry action cost weight tables
 // GLOBAL: IMPERIALISM 0x00650758
 float g_AiDevelopmentResourceBudgetScale_00650758 = 1000.0f;
+// GLOBAL: IMPERIALISM 0x00695b48
+short g_cityPredictedNeedResetResourceIds[3] = {15, 13, 14};
 // GLOBAL: IMPERIALISM 0x00695b50
 short g_industryActionCostWeightResCode09[16] = {0, 4, 7, 5, 8, 6, 6, 6, 4, 8, 0, 2, 0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x00695b70
@@ -1495,6 +1497,17 @@ extern "C" const char s_SourcePathUDefenseMinister_00696860[] =
 extern "C" const char s_SourcePathUArmyMgr_0069573C[] = "D:\\Ambit\\Cross\\UArmyMgr.cpp";
 // GLOBAL: IMPERIALISM 0x006962e8
 extern "C" const char s_SourcePathUCityDialogs_006962E8[] = "D:\\Ambit\\Cross\\UCityDialogs.cpp";
+// GLOBAL: IMPERIALISM 0x00696d68
+extern "C" const char s_SourcePathUMacViewMgr_00696D68[] = "D:\\Ambit\\Cross\\UMacViewMgr.cpp";
+// GLOBAL: IMPERIALISM 0x00696310
+extern "C" const char g_szCityProductionUniversityPrefix[] = "University: ";
+// GLOBAL: IMPERIALISM 0x00696320
+// The original data symbol spans through the aligned start of the following string,
+// so preserve those four leading "Ship" bytes in its raw extent as well.
+extern "C" const char g_szCityProductionArmoryPrefix[16] = {
+    'A', 'r', 'm', 'o', 'r', 'y', ':', ' ', '\0', '\0', '\0', '\0', 'S', 'h', 'i', 'p'};
+// GLOBAL: IMPERIALISM 0x0069632c
+extern "C" const char g_szCityProductionShipyardPrefix[] = "Shipyard: ";
 // GLOBAL: IMPERIALISM 0x0069a7f8
 extern "C" const char s_SourcePathUTestDialogs_0069A7F8[] = "D:\\Ambit\\Cross\\UTestDialogs.cpp";
 extern "C" const char s_SourcePathUCityViews_00696650[] = "D:\\Ambit\\Cross\\UCityViews.cpp";
@@ -3590,6 +3603,12 @@ float g_cityProductionUpgradeRatioThreshold_00696450[4] = {2.0f, 2.0f, 2.0f, 0.0
 // GLOBAL: IMPERIALISM 0x00650670
 short g_cityActionCapabilityGroupBySlot_00650670[32] = {
     0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4, 0, 0};
+
+// GLOBAL: IMPERIALISM 0x0064fab0
+short g_cityBuildingSoundCueOffsets[16] = {2, 3, 4, 5, 0, 1, 6, 10, 11, 12, 13, 7, 8, 9, 14, 35};
+
+// GLOBAL: IMPERIALISM 0x00696178
+short g_cityBuildingHitTestOrder[16] = {12, 13, 7, 10, 14, 15, 9, 6, 11, 2, 3, 8, 0, 1, 4, 5};
 
 // GLOBAL: IMPERIALISM 0x00669f10
 double g_dNavyDamageSplitRatioA_00669f10 = 0.25;
