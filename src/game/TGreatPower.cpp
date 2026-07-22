@@ -4404,7 +4404,7 @@ int TGreatPower::ComputeNationNavyOrderWeightedMovementScore() {
       continue;
     }
     score += navyWeightByType[node->resourceType04] *
-             (static_cast<short>(node->field30 / 100) + 10) / 10;
+             (static_cast<short>(node->experiencePoints30 / 100) + 10) / 10;
   }
   return score;
 }

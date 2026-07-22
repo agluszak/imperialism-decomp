@@ -1139,7 +1139,7 @@ unsigned int TZone::BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(uns
     if (ship->field08 == this) {
       TTaskForce* entry = ship->ownerOrderEntry0c;
       if (entry != 0 && entry->eliminatedFlag26 == 0 &&
-          (entry->attachment == 3 || entry->attachment == 4)) {
+          (entry->shipOrders == 3 || entry->shipOrders == 4)) {
         mask |= 1u << (ship->ownerNationSlot14 & 0x1f);
       }
     }
@@ -1154,7 +1154,7 @@ unsigned int TZone::BuildNationBitmaskForActiveType3Or4Orders() {
     if (ship->field08 == this) {
       TTaskForce* entry = ship->ownerOrderEntry0c;
       if (entry != 0 && entry->eliminatedFlag26 == 0 &&
-          (entry->attachment == 3 || entry->attachment == 4)) {
+          (entry->shipOrders == 3 || entry->shipOrders == 4)) {
         mask |= 1u << (ship->ownerNationSlot14 & 0x1f);
       }
     }
@@ -1169,7 +1169,7 @@ unsigned int TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int 
     if (ship->field08 == this) {
       TTaskForce* entry = ship->ownerOrderEntry0c;
       if (entry != 0 && entry->eliminatedFlag26 == 0 &&
-          (entry->attachment == 3 || entry->attachment == 4)) {
+          (entry->shipOrders == 3 || entry->shipOrders == 4)) {
         mask |= 1u << (ship->ownerNationSlot14 & 0x1f);
       }
     }

@@ -948,8 +948,8 @@ void TSimMgr::DoMilitary() {
   g_pMapContextActionManager->CleanUpStacks();
   isClient = multiplayerSessionRole == 2;
   if (!isClient) {
-    g_pNavyOrderManager->PrepareMapOrdersForExecutionPhase(1);
-    g_pNavyOrderManager->ResolveMapOrderChainsForTurnPhase();
+    g_pNavyOrderManager->PrepareToCarryOutAllOrders(1);
+    g_pNavyOrderManager->CarryOutOrders();
   }
 }
 

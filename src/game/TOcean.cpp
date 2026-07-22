@@ -535,12 +535,12 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
   // 5) Order ranks: for every other nation's type-5 (task-force) order entry anchored on
   // an active-nation-owned city, mark that nation's overlay on the anchor context's best
   // coastal tile and store the entry's within-nation order rank in the tile's +0x1a word.
-  for (TTaskForce* rankEntry = g_pNavyOrderManager->orderListHead04; rankEntry != 0;
+  for (TTaskForce* rankEntry = g_pNavyOrderManager->orderQueueHead; rankEntry != 0;
        rankEntry = rankEntry->queue_next) {
     if (rankEntry->required_count == g_pSimMgr->GetActiveNationId()) {
       continue;
     }
-    unsigned char isTaskForceEntry = (rankEntry->attachment == 5);
+    unsigned char isTaskForceEntry = (rankEntry->shipOrders == 5);
     if (isTaskForceEntry == 0) {
       continue;
     }

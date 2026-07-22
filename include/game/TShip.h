@@ -44,7 +44,10 @@ public:
   // here, slot-0x8C detach nulls it (TGreatPower's assignment scan checks it for
   // "unassigned").
   TMission* missionBacklink2c;
-  short field30;
+  // Per-ship experience, stored in hundred-point tiers by the naval scoring code.
+  // Mac oracle: Victory(int) raises it and caps it at 499; ModByExp(int) and
+  // Finest(TShip*, unsigned char) consume the same value.
+  short experiencePoints30;
   unsigned char pad32[2];
   int field34;
 
@@ -90,17 +93,16 @@ public:
   // Node-score family (0x550840 / 0x550aa0): descriptor-blended scores of this
   // order node's strength/stock.
   int ComputeOrderNodeDerivedScoreFromQuantityAndWord18();
-  int ComputeMapOrderEntryHeuristicScore();
+  // Mac oracle: GetBattleStrengthRating() const.
+  int GetBattleStrengthRating() const;
   // 0x00550f80 -- stockLevel1c -= decrement (battle losses commit path).
   void DecrementRequiredCount(short decrement);
   // 0x005501b0 -- 4-category priority score of this order node against score
   // profile `nScoreProfileId` (same descriptor/divisor tables as the per-category
   // contribution scorer).
   int CalculateMissionOrderPriorityScore(int nScoreProfileId);
-  // 0x00550370 -- caps-at-499 adjustment of field30 (the roster-wide strength/
-  // tiebreak stat TTechMgr's capability sweep and the navy-order transfer paths
-  // bump per ship).
-  void AdjustMapOrderNodeStatCapped499(short delta);
+  // Mac oracle: Victory(int). The Windows ABI passes the experience gain as a short.
+  void Victory(short experienceGain); // 0x00550370
   // 0x005503a0 -- returns this ship's owner entry, unless the owner has other
   // children too (then this ship is split off it: unlinked from the owner's
   // childOrderList, bucket counter decremented, active child recomputed) or there
@@ -108,7 +110,7 @@ public:
   // this ship (zone context = field08, nation = ownerNationSlot14) and returned.
   TTaskForce* GetOrCreateMissionOrderEntryForNode();
   // 0x00550670 -- priority compare between two ships: admiral experiencePoints first,
-  // then resourceType04, then field30/100 buckets, then stockLevel1c; returns the
+  // then resourceType04, then experiencePoints30/100 tiers, then stockLevel1c; returns the
   // preferred node. With preferUnassignedFlag, an admiral-assigned receiver loses
   // to the candidate outright (and vice versa).
   TShip* SelectPreferredMapOrderEntryByPriorityRules(TShip* candidate, int preferUnassignedFlag);

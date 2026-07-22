@@ -102,7 +102,7 @@ char TScatteredShipsMission::Matches(eMissionType missionType, int key, TZone* z
 // head on a null prev18), as the starting point for an unbounded sweep: for every eligible
 // zone visited (wrapping forever via prev18), picks the first still-inactive orderList24
 // node, then scans the remaining inactive nodes for the one whose (TZone*) reading of
-// TTaskForce::attachment is nearest that zone (TZone::GetCachedMapActionContextDistanceOrRecompute),
+// TTaskForce::shipOrders is nearest that zone (TZone::GetCachedMapActionContextDistanceOrRecompute),
 // marks it active, and -- unless it's already anchored on that same zone -- promotes/queues
 // it there. Returns as soon as no inactive node remains (childOrderList is finite, so the
 // sweep is bounded even though the zone ring never explicitly stops).
