@@ -91,25 +91,24 @@ void TDefendProvinceMission::PropagateTargetTileToLinkedUnitsIfDifferent(short n
 
 namespace {
 
-float NormalizeFiveComponentPriorityVector(const float* vector, float sum,
-                                           const short* lookupTable) {
-  if (sum == static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+inline float NormalizeFiveComponentPriorityVector(const float* vector, float sum,
+                                                  const short* lookupTable) {
+  if (sum == g_Recompute_Nation_Order_LookupTable_0065A9F0) {
     return g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
 
   float accum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   for (int componentIndex = 0; componentIndex < 5; ++componentIndex) {
-    float diff = vector[componentIndex] / sum -
-                 static_cast<float>(static_cast<short>(lookupTable[componentIndex])) *
-                     static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
-    if (diff <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+    float diff = vector[componentIndex] / sum - static_cast<short>(lookupTable[componentIndex]) *
+                                                    g_Recompute_Nation_Order_LookupTable_0065A9F8;
+    if (diff <= g_Recompute_Nation_Order_LookupTable_0065A9F0) {
       diff = -diff;
     }
     accum += diff;
   }
 
-  return sum * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
-                accum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
+  return sum * (g_Recompute_Nation_Order_LookupTable_0065AA08 -
+                accum * g_Recompute_Nation_Order_LookupTable_0065AA00);
 }
 
 } // namespace
@@ -120,10 +119,10 @@ float NormalizeFiveComponentPriorityVector(const float* vector, float sum,
 // FUNCTION: IMPERIALISM 0x0053e6e0
 float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeContext) {
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
-  int remainingBudgetByNation[7] = {0, 0, 0, 0, 0, 0, 0};
+  int remainingBudgetByNation[7];
 
-  short unitOrderWeight =
-      g_pGlobalMapState->GetProvinceUnitOrderWeight(static_cast<short>(nodeContext));
+  float unitOrderWeight = static_cast<float>(
+      g_pGlobalMapState->GetProvinceUnitOrderWeight(static_cast<short>(nodeContext)));
 
   TGlobalMapCityScoreRecord* sourceRecord = &g_pGlobalMapState->cityScoreTable[nodeContext];
   int sourceNation = static_cast<int>(sourceRecord->ownerNationCode00);
@@ -135,56 +134,48 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
     remainingBudgetByNation[nationIndex] = static_cast<int>(navyBudget);
   }
 
-  short regionIndex = 0;
-  TGlobalMapCityScoreRecord* candidateRecord = g_pGlobalMapState->cityScoreTable;
+  int regionIndex = 0;
   do {
-    short candidateNation = static_cast<short>(candidateRecord->ownerNationCode00);
+    short candidateNation =
+        static_cast<short>(g_pGlobalMapState->cityScoreTable[regionIndex].ownerNationCode00);
     if (candidateNation < 7) {
       int candidateNationIndex = static_cast<int>(candidateNation);
       if (candidateNationIndex != sourceNation &&
           g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(candidateNation, sourceNation) !=
               0) {
-
-        char tileHasMovementClass =
-            g_pGlobalMapState->TileHasMovementClassId(nodeContext, regionIndex);
-
-        if (tileHasMovementClass == 0) {
-          if (remainingBudgetByNation[candidateNationIndex] > 0) {
-
-            char linkedTerrainClear =
-                g_pGlobalMapState->AreAllLinkedEntriesTerrainFlagBit2Clear(regionIndex);
-
-            if (linkedTerrainClear != 0) {
-              for (TMilitaryUnit* unit = candidateRecord->stationedUnitChain98; unit != 0;
-                   unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-                short costPoints = unit->GetUnitTypeCostPoints();
-                short movementClassId = unit->GetUnitMovementClassId();
-                if (movementClassId > 0) {
-                  int remainingBudget = remainingBudgetByNation[candidateNationIndex];
-                  if (costPoints < remainingBudget) {
-                    AccumulateUnitOrderPriorityVectorContribution(
-                        unit, vector, 1.0f, static_cast<float>(unitOrderWeight));
-                    remainingBudgetByNation[candidateNationIndex] = remainingBudget - costPoints;
-                  }
-                }
-              }
+        if (g_pGlobalMapState->TileHasMovementClassId(nodeContext, regionIndex) != 0) {
+          short checkedRegion = static_cast<short>(regionIndex);
+          TMilitaryUnit* unit = 0;
+          if (checkedRegion >= 0 && checkedRegion < 0x180) {
+            unit = g_pGlobalMapState->cityScoreTable[checkedRegion].stationedUnitChain98;
+          }
+          for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+            if (unit->GetUnitMovementClassId() > 0) {
+              AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f, unitOrderWeight);
             }
           }
-        } else {
-          for (TMilitaryUnit* unit = candidateRecord->stationedUnitChain98; unit != 0;
-               unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
-            short movementClassId = unit->GetUnitMovementClassId();
-            if (movementClassId > 0) {
-              AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f,
-                                                            static_cast<float>(unitOrderWeight));
+        } else if (remainingBudgetByNation[candidateNationIndex] > 0 &&
+                   g_pGlobalMapState->AreAllLinkedEntriesTerrainFlagBit2Clear(regionIndex) != 0) {
+          short checkedRegion = static_cast<short>(regionIndex);
+          TMilitaryUnit* unit = 0;
+          if (checkedRegion >= 0 && checkedRegion < 0x180) {
+            unit = g_pGlobalMapState->cityScoreTable[checkedRegion].stationedUnitChain98;
+          }
+          for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+            short costPoints = unit->GetUnitTypeCostPoints();
+            if (unit->GetUnitMovementClassId() > 0) {
+              int remainingBudget = remainingBudgetByNation[candidateNationIndex];
+              if (costPoints < remainingBudget) {
+                AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f, unitOrderWeight);
+                remainingBudgetByNation[candidateNationIndex] = remainingBudget - costPoints;
+              }
             }
           }
         }
       }
     }
     ++regionIndex;
-    ++candidateRecord;
-  } while (candidateRecord < g_pGlobalMapState->cityScoreTable + 0x180);
+  } while (regionIndex < 0x180);
 
   float sum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   for (int componentIndex = 0; componentIndex < 5; ++componentIndex) {
@@ -230,19 +221,6 @@ TDefendProvinceMission::TDefendProvinceMission() : TArmyMission() {}
 // case 3, param_4 == 0); has no standalone address of its own.
 TDefendProvinceMission::TDefendProvinceMission(int nodeKey) : TArmyMission(nodeKey) {}
 
-namespace {
-
-// Order-list items (orderListAt18) are a not-yet-recovered mission/order
-// subtype whose instance size exceeds every currently-modelled mission class;
-// only its owner back-pointer at +0x40 is known. Real type/name TBD via
-// further class recovery (see TArmyMission.cpp for the sibling definition).
-struct TDefendProvinceMissionOrderItemLayout {
-  char pad_00[0x40];
-  TMission* owner; // +0x40
-};
-
-} // namespace
-
 // FUNCTION: IMPERIALISM 0x0053ebe0
 void TDefendProvinceMission::Free() {
   // See TAttackProvinceMission::Free: the tail AI state block is TAutoGreatPower-only.
@@ -251,18 +229,18 @@ void TDefendProvinceMission::Free() {
 
   nationState->SetMapStateByteFlag970WithRuntimeGate(presentLocation14, 0);
 
-  if (orderListAt18 != nullptr) {
-    CIterator iter(orderListAt18);
-    void* current = iter.Reset();
-    while (iter.More()) {
-      reinterpret_cast<TDefendProvinceMissionOrderItemLayout*>(current)->owner = nullptr;
-      current = iter.Advance();
-    }
-
-    orderListAt18->RemoveAll();
-    orderListAt18->FreePayloadsAndDestroy();
-    orderListAt18 = nullptr;
+  CIterator iter(orderListAt18);
+  void* current = iter.Reset();
+  while (iter.More()) {
+    static_cast<TMilitaryUnit*>(current)->ownerMission40 = nullptr;
+    current = iter.Advance();
   }
+
+  orderListAt18->RemoveAll();
+  if (orderListAt18 != nullptr) {
+    orderListAt18->FreePayloadsAndDestroy();
+  }
+  orderListAt18 = nullptr;
 
   if (this != nullptr) {
     delete this;

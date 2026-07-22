@@ -24,20 +24,6 @@ IMPLEMENT_SERIAL(TAttackProvinceMission, TArmyMission, 1)
 // SYNTHETIC: IMPERIALISM 0x0053d7c0
 // TAttackProvinceMission::`scalar deleting destructor'
 
-namespace {
-// See TArmyMission.cpp's identical TArmyMissionOrderItemLayout/OwnerOf --
-// orderListAt18 payloads are an unrecovered subtype; only the owner
-// back-pointer at +0x40 is known.
-struct TAttackProvinceMissionOrderItemLayout {
-  char pad_00[0x40];
-  TMission* owner; // +0x40
-};
-
-TMission*& OwnerOf(TMission* item) {
-  return reinterpret_cast<TAttackProvinceMissionOrderItemLayout*>(item)->owner;
-}
-} // namespace
-
 // FUNCTION: IMPERIALISM 0x0053d6f0
 char TAttackProvinceMission::IsHospitalMission() const {
   return 0;
@@ -81,18 +67,18 @@ void TAttackProvinceMission::Free() {
 
   nationState->SetMapStateByteFlag970WithRuntimeGate(targetProvince30, 0);
 
-  if (orderListAt18 != nullptr) {
-    CIterator iter(orderListAt18);
-    void* current = iter.Reset();
-    while (iter.More()) {
-      OwnerOf(static_cast<TMission*>(current)) = nullptr;
-      current = iter.Advance();
-    }
-
-    orderListAt18->RemoveAll();
-    orderListAt18->FreePayloadsAndDestroy();
-    orderListAt18 = nullptr;
+  CIterator iter(orderListAt18);
+  void* current = iter.Reset();
+  while (iter.More()) {
+    static_cast<TMilitaryUnit*>(current)->ownerMission40 = nullptr;
+    current = iter.Advance();
   }
+
+  orderListAt18->RemoveAll();
+  if (orderListAt18 != nullptr) {
+    orderListAt18->FreePayloadsAndDestroy();
+  }
+  orderListAt18 = nullptr;
 
   if (this != nullptr) {
     delete this;
