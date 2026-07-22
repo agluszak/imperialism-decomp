@@ -1051,7 +1051,7 @@ void TTacticalBattle::MoveTacticalUnitBetweenTiles(TTacticalUnit* unit, int from
   if (battleView8 != 0) {
     battleView8->TriggerTacticalUiUpdate2711();
   }
-  if (moveAnimSuppressCode4c != 7) {
+  if (currentTacticalActionCode4c != 7) {
     if (battleView8 != 0) {
       battleView8->AnimateTacticalUnitMoveBetweenTiles(unit, fromTileIndex, toTileIndex);
     }
@@ -1726,6 +1726,50 @@ void TTacticalBattle::ClearTacticalTileStateRunByStride(int tileIndex) {
     if (battleView8 != 0) {
       battleView8->InvalidateTacticalHexTileRect(runTileIndex);
     }
+  }
+}
+
+// Resolve the action represented by the current hover cursor and dispatch it through the
+// battle's real virtual action slots. This is the common click path for army and navy battles.
+// FUNCTION: IMPERIALISM 0x005a3370
+void TTacticalBattle::DispatchTacticalActionByHoverStateIndex(int tileIndex) {
+  currentTacticalActionCode4c = ComputeTacticalHoverCursorStateIndex(tileIndex);
+  switch (currentTacticalActionCode4c) {
+  case 3:
+    DeployTacticalUnitToTile(selectedUnit1c, tileIndex);
+    break;
+  case 4:
+    MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(selectedUnit1c, tileIndex);
+    break;
+  case 5:
+  case 0xa:
+    ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(selectedUnit1c, tileIndex);
+    break;
+  case 6:
+    QueueTacticalEventPacket232A();
+    break;
+  case 7:
+    ExecuteTacticalDigActionAndConsumeUnitActionPoints(selectedUnit1c, tileIndex);
+    break;
+  case 8: {
+    TTacticalUnit* occupant = tileGrid4[tileIndex].occupant4;
+    occupant->AssertValid();
+    ComputeRallyStrengthAndQueueTacticalRallyCommand(selectedUnit1c,
+                                                     static_cast<TArmyTacUnit*>(occupant));
+    break;
+  }
+  case 9:
+    ExecuteTacticalMineActionAndQueuePacket(selectedUnit1c, tileIndex);
+    break;
+  case 0xc: {
+    TTacticalUnit* occupant = tileGrid4[tileIndex].occupant4;
+    if (battleView8 != 0) {
+      battleView8->InvalidateTacticalUnitTileRect(occupant);
+    }
+    occupant->tileIndex8 = -2;
+    tileGrid4[tileIndex].occupant4 = 0;
+    break;
+  }
   }
 }
 

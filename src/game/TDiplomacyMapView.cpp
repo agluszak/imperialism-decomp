@@ -494,11 +494,6 @@ void TDiplomacyMapView::Draw(RECT* rectBuffer) {
   DrawIcons(rectBuffer);
 }
 
-// Relation-percentage -> icon-row lookup for interactionModeAt94 == 2 (0x00696950).
-namespace {
-const short kRelationTierThresholds[7] = {95, 90, 75, 50, 25, 0, 300};
-} // namespace
-
 // FUNCTION: IMPERIALISM 0x004f4a30
 void TDiplomacyMapView::DrawNames(const RECT* presentRect) {
   (void)presentRect; // ignored stack arg threaded through by the caller
@@ -646,7 +641,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
           (g_apNationStates[frameRegionSelectorAt98]->colonyBoycottFlags[terrainIndex] != 0);
       if (relation != 100) {
         for (short tier = 0; tier < 7; ++tier) {
-          if (kRelationTierThresholds[tier] == relation) {
+          if (g_awDiplomacyTradePolicyIconValueTable[tier] == relation) {
             iconOffset = static_cast<short>((tier + 5) * 0x10);
           }
         }
@@ -710,9 +705,8 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f5410
-void TDiplomacyMapView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
-                                                             TToolboxEvent* event, CPoint origin) {
-  TPicture::BeginMouseCaptureAndStartRepeatTimer(point, event, origin);
+void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
+  TPicture::DoMouseCommand(point, event, origin);
 }
 
 // FUNCTION: IMPERIALISM 0x004f5e00
@@ -1285,7 +1279,7 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
   // TTreatiesView, TGrantsView, TTradePanelView, TCouncilPanelView, TOffersPanelView),
   // not TControl -- verified by the zero pushed args at this call in the raw
   // disassembly, matching TPanelView's slot 0x68 stub rather than TControl's 5-arg
-  // DispatchPictureResourceCommand at the same vtable byte offset.
+  // TrackMouse at the same vtable byte offset.
   static_cast<TPanelView*>(actionButtonsA0[newTopic])->Setup();
 
   if (selectedTerrainIndexAt90 != frameRegionSelectorAt98) {
@@ -1333,14 +1327,14 @@ void TDiplomacyMapView::DoEvent(int commandId, TEventHandler* panelEvent, TEvent
 }
 
 // FUNCTION: IMPERIALISM 0x004f7130
-void TDiplomacyMapView::ForwardParam(int param) {
+void TDiplomacyMapView::DoKeyEvent(TToolboxEvent* event) {
   if (stateFlagAtB8 == 5) {
-    actionButtonsA0[5]->ForwardParam(param);
+    actionButtonsA0[5]->DoKeyEvent(event);
     return;
   }
-  // Non-virtual call to TEventHandler::ForwardParam's body (orig routes through the
+  // Non-virtual call to TEventHandler::DoKeyEvent's body (orig routes through the
   // ILT thunk at 0x401d61 -> 0x48a380); the qualified call forces static dispatch.
-  TEventHandler::ForwardParam(param);
+  TEventHandler::DoKeyEvent(event);
 }
 
 // FUNCTION: IMPERIALISM 0x004f71a0

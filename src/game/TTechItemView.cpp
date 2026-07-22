@@ -197,7 +197,7 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       TWindow* node = static_cast<TWindow*>(
           g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x942));
       TTechHistoryView* historyView =
-          static_cast<TTechHistoryView*>(node->ResolveControlByTag(kControlTagGold /* 'DLOG' */));
+          static_cast<TTechHistoryView*>(node->ResolveControlByTag(kControlTagDialog /* 'DLOG' */));
       historyView->AssertValid();
       historyView->ConstructTTechHistoryViewBaseState(static_cast<short>(techId64));
 

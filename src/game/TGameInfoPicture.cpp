@@ -1,7 +1,10 @@
 #include "game/TGameInfoPicture.h"
 
 #include "game/CString.h"
+#include "game/TArmyMgr.h"
+#include "game/TNewsMgr.h"
 #include "game/TSimMgr.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -37,4 +40,44 @@ void TGameInfoPicture::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056b9b0
-void TGameInfoPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TGameInfoPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  CString message;
+  if (commandId != 0xa) {
+    TControl::DoEvent(commandId, sourceHandler, event);
+    return;
+  }
+
+  unsigned int tag = sourceHandler->controlTag;
+  if (tag == 0x6275746e) { // 'butn' — newspaper
+    if (g_pInterNationEventQueueManager->perNationStoryLastUsedTick[0] != 0) {
+      g_pSimMgr->EnterOptionalPhase(0x66);
+    } else {
+      g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x275e, 6, 2, 0);
+    }
+    return;
+  }
+  if (tag == 0x6275746d) { // 'butm' — military/battle report
+    short activeNationId = g_pSimMgr->GetActiveNationId();
+    if (g_pMapContextActionManager->ScanMapContextActionEntriesForCodeMatch(activeNationId)) {
+      g_pSimMgr->EnterOptionalPhase(0x65);
+    } else {
+      g_pSimMgr->GetString(0x273d, 0x12, &message);
+      g_pUiRuntimeContext->ModalMessage(message, g_ptQueryFloaterModalMessage, 1, 0);
+    }
+    return;
+  }
+  if (tag == 0x6275746c) { // 'butl' — trade/deals
+    if (g_pSimMgr->GetEconomicTurn() == 1) {
+      g_pSimMgr->GetString(0x2741, 9, &message);
+      g_pUiRuntimeContext->ModalMessage(message, g_ptQueryFloaterModalMessage, 0, 0);
+    } else {
+      g_pSimMgr->EnterOptionalPhase(0x64);
+    }
+    return;
+  }
+  if (tag == 0x6f6b6179) { // 'okay'
+    g_pSimMgr->StartNextPhase();
+    return;
+  }
+  TControl::DoEvent(commandId, sourceHandler, event);
+}

@@ -98,7 +98,7 @@ void TMovieView::PlayMovieIfActive() {
 // Stop (skip) the movie: sends MCI_STOP, which makes the MCIWnd notify its parent with
 // MCIWNDM_NOTIFYMODE/MCI_MODE_STOP -> CIncludeView::OnMciNotifyMode advances the turn state.
 // Same void-return shape as PlayMovieIfActive above (0x005e2500 listing; caller
-// ForwardParam at 0x4ffd70 via thunk 0x40485e also discards the result).
+// DoKeyEvent at 0x4ffd70 via thunk 0x40485e also discards the result).
 // FUNCTION: IMPERIALISM 0x005e2500
 void TMovieView::StopMovieIfActive() {
   if (movieWindowState != 0) {

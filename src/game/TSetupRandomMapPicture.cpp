@@ -384,8 +384,8 @@ void TSetupRandomMapPicture::GroundControlToMajorTom(unsigned char mode) {
 }
 
 // FUNCTION: IMPERIALISM 0x005782f0
-void TSetupRandomMapPicture::ForwardParam(int param) {
-  TKeyCommandEvent* commandEvent = reinterpret_cast<TKeyCommandEvent*>(param);
+void TSetupRandomMapPicture::DoKeyEvent(TToolboxEvent* event) {
+  TToolboxEvent* commandEvent = event;
   int commandCode = commandEvent->commandCode;
   if (commandCode == 3 || commandCode == 0xd) {
     StartGame();

@@ -74,7 +74,7 @@ ResolveControlByTag is slot **0x25** (offset 0x94) — note `TView.h` grep-order
 
 ## TControl-introduced slots 0x68–0x70
 ```
-68 DispatchPictureResourceCommand   69 FUN_0048e980
+68 TrackMouse                       69 FUN_0048e980
 6a AssertCityProductionGlobalStateInitialized  6b NoOpCityProductionDialogMethod
 6c NoOpCityProductionDialogPictureHook  6d SetCityProductionDialogPictureRectAndMaybeRefresh
 6e SetControlPictureEntryAndMaybeRefresh  6f LogUnhandledDialogMethodAndReturnFalse

@@ -1,4 +1,8 @@
 #include "game/TTradeOrderPicture.h"
+
+#include "game/TSoundPlayer.h"
+#include "game/TTradeCluster.h"
+#include "game/global_data_tables.h"
 // SYNTHETIC: IMPERIALISM 0x005843e0
 // TTradeOrderPicture::CreateObject
 
@@ -21,9 +25,44 @@ void TTradeOrderPicture::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00584520
-void TTradeOrderPicture::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point,
-                                                              TToolboxEvent* event, CPoint origin) {
+void TTradeOrderPicture::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)point;
   (void)event;
   (void)origin;
+
+  if (IsActionable() == 0) {
+    return;
+  }
+
+  TTradeCluster* tradeRow = static_cast<TTradeCluster*>(ownerContext);
+  if (controlTag == 0x63617264) { // 'card'
+    if (glyphBase84 == 0x83f || glyphBase84 == 0x84d) {
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
+      tradeRow->HandleEvent(0x67, this, 0);
+      tradeRow->DoControlAction();
+      return;
+    }
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
+    tradeRow->HandleEvent(0x68, this, 0);
+    tradeRow->SetTradeBidControlBitmap();
+    tradeRow->SetTradeOfferSecondaryBitmap();
+    tradeRow->HandleEvent(0x6a, this, 0);
+    return;
+  }
+
+  if (controlTag == 0x6f666672) { // 'offr'
+    if (glyphBase84 == 0x841 || glyphBase84 == 0x84f) {
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
+      tradeRow->HandleEvent(0x6a, this, 0);
+      tradeRow->SetTradeOfferSecondaryBitmap();
+      return;
+    }
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
+    tradeRow->HandleEvent(0x69, this, 0);
+    tradeRow->SetTradeOfferControlBitmap();
+    if (tradeRow->IsSelectionAllowed() != 0) {
+      tradeRow->DoControlAction();
+      tradeRow->HandleEvent(0x67, this, 0);
+    }
+  }
 }

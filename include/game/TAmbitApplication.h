@@ -28,7 +28,7 @@ public:
   virtual void ReadFrom(TStream* stream) override; // slot 0x06, 0x0049e280
   virtual void Free() override;                    // slot 0x07, 0x0049e1a0
 
-  virtual void ForwardParam(int param) override; // slot 0x12, 0x0049e4b0
+  virtual void DoKeyEvent(TToolboxEvent* event) override; // slot 0x12, 0x0049e4b0
 
   // New virtuals beyond TApplication (slots 0x2b-0x2d; the base vtable ends at 0x2a).
   // MacApp TAmbitApplication::HandleCursor(CPoint, Region**).

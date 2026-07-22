@@ -1,4 +1,10 @@
 #include "game/TBuildingExpansionView.h"
+
+#include "game/TCity.h"
+#include "game/TCityProductionView.h"
+#include "game/TProductionOrder.h"
+#include "game/global_data_tables.h"
+#include "game/ui_invalidation_guard.h"
 // SYNTHETIC: IMPERIALISM 0x004ce480
 // TBuildingExpansionView::CreateObject
 
@@ -18,4 +24,23 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
                                          TCityProductionView* productionView) {}
 
 // FUNCTION: IMPERIALISM 0x004cebb0
-void TBuildingExpansionView::DoClosingAction(unsigned long dialogActionTag) {}
+void TBuildingExpansionView::DoClosingAction(unsigned long dialogActionTag) {
+  TProductionOrder* order =
+      static_cast<TProductionOrder*>(city94->orderSlotsE4[buildingSlotId90 + 0x35]);
+  if (order == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0xac6);
+  }
+  if (dialogActionTag == 0x6f6b6179) { // 'okay'
+    short previousBuildingType = static_cast<short>(city94->GetBuildingType(buildingSlotId90));
+    order->SetQuantity(static_cast<short>(city94->GetMaxBuildingCapacity(buildingSlotId90) -
+                                          previousBuildingType));
+  } else if (order->quantityField04 > 0) {
+    order->SetQuantity(0);
+  }
+
+  productionView98->SetBuildingPicture(
+      buildingSlotId90, static_cast<short>(city94->GetBuildingType(buildingSlotId90)));
+  productionView98->UpdateToolbar();
+  productionView98->RefreshControl();
+}

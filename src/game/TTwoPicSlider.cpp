@@ -66,8 +66,8 @@ static __inline short ClampSliderSplitForFill(short splitPosition) {
   return splitPosition;
 }
 
-static __inline short ClampSliderInputToHeight(int height, int pointRecord) {
-  int requested = *reinterpret_cast<short*>(pointRecord + 4);
+static __inline short ClampSliderInputToHeight(int height, const CPoint& point) {
+  int requested = static_cast<short>(point.y);
   if (height <= requested) {
     requested = height;
   }
@@ -146,21 +146,19 @@ void TTwoPicSlider::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056e640
-void TTwoPicSlider::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
-                                                   void* pEventDataA, void* pEventDataB,
-                                                   int nCommandFlag) {
-  (void)nCommandFlag;
+void TTwoPicSlider::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
+                               CPoint& currentPoint, unsigned char commandFlag) {
+  (void)commandFlag;
   TTwoPicSlider* slider = this;
   // ORIG_CALLCONV: __thiscall; Mac CodeWarrior evidence calls this TTwoPicSlider::TrackMouse.
-  (void)pEventSender;
-  (void)pEventDataA;
-  int pointRecord = reinterpret_cast<int>(pEventDataB);
-  if (0 < nEventType) {
-    if (2 < nEventType) {
+  (void)startPoint;
+  (void)previousPoint;
+  if (kTrackPhaseBegin < phase) {
+    if (kTrackPhaseEnd < phase) {
       return;
     }
 
-    short nextSplit = ClampSliderInputToHeight(slider->frameHeight38, pointRecord);
+    short nextSplit = ClampSliderInputToHeight(slider->frameHeight38, currentPoint);
     if (slider->splitPosition != nextSplit) {
       slider->splitPosition = nextSplit;
 
@@ -187,7 +185,7 @@ void TTwoPicSlider::DispatchPictureResourceCommand(int nEventType, void* pEventS
     }
   }
 
-  if ((nEventType == 2) && (slider->mode == 2)) {
+  if ((phase == kTrackPhaseEnd) && (slider->mode == 2)) {
     int percent = SliderScaledValue(slider, 100);
     g_pSfxPlaybackSystem->SetMasterVolumeFromPercent(static_cast<short>(percent));
     g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);

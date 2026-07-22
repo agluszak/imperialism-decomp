@@ -120,8 +120,10 @@ public:
   char pendingEndOfActionFlag48; // +0x48
   char fortLevel49;              // +0x49 serialized; nonzero suppresses depl trench-marking
   unsigned char pad4a[2];        // +0x4a
-  int moveAnimSuppressCode4c;    // +0x4c serialized; == 7 suppresses the move animation
-  int compositionClass50;        // +0x50 stack-composition class of the battle
+  // Hover/action code chosen for the current tile (0..0xc). Code 7 is a dig action,
+  // so MoveTacticalUnitBetweenTiles suppresses its ordinary move animation.
+  int currentTacticalActionCode4c; // +0x4c serialized
+  int compositionClass50;          // +0x50 stack-composition class of the battle
   // Per-row-pair fort strength pools (one slot per two grid rows, tile/58), seeded by
   // LoadBattleSetupTabDataByIndex from g_anFortStrengthPointsByFortLevel; consumed by
   // the mine action, gates passability in slot 0x0a.
@@ -149,6 +151,7 @@ public:
   // the 0x545940 dispatcher's pushes.
   TArmyTacUnit* SeekLinkedListCursorByNestedId(int nestedId);                 // 0x5a53e0
   void SetCurrentTacticalUnitSelection(TTacticalUnit* unit, char remoteFlag); // 0x5a1010
+  void DispatchTacticalActionByHoverStateIndex(int tileIndex);                // 0x5a3370
   // Per-turn upkeep for a unit sitting in state 1 (morale broken): retreats it toward the
   // lowest-distance-field tile (BuildTacticalDistanceFieldForSide), then -- if still
   // morale-broken -- scores its odds of being removed from the battle by comparing a

@@ -19,8 +19,8 @@ public:
                                                            RgnHandle hitArg) override; // slot 0x35
   void DoPostCreate(int arg) override;                                                 // slot 0x37
   void Draw(RECT* rectBuffer) override;                                                // slot 0x44
-  void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
-                                            CPoint origin) override; // slot 0x47 0x4adcb0
+  void DoMouseCommand(CPoint& point, TToolboxEvent* event,
+                      CPoint origin) override; // slot 0x47 0x4adcb0
 
   void RefreshMapContextSelectionPanelAndInfoLabels(void* mapContextRecord);
 

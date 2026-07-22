@@ -12,8 +12,10 @@
 #include "game/TEditText.h"
 #include "game/TEventHandler.h"
 #include "game/TMapPreviewView.h"
+#include "game/TPictureButton.h"
 #include "game/TSoundPlayer.h"
 #include "game/TViewMgr.h"
+#include "game/TUiEvent.h"
 #include "game/mapped_flavor_text.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/ui_control_tags.h"
@@ -190,7 +192,18 @@ undefined TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC() {
 }
 
 // FUNCTION: IMPERIALISM 0x0056d1e0
-void TLoadSavePicture::ForwardParam(int param) {}
+void TLoadSavePicture::DoKeyEvent(TToolboxEvent* event) {
+  int commandCode = event->commandCode;
+  if (commandCode == 3 || commandCode == 0xd) {
+    TPictureButton* okayButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagOkay));
+    if (okayButton != 0) {
+      g_pSfxPlaybackSystem->PlaySoundEffect(okayButton->timingWord92, 0, 1);
+      QueueDeferredUiEventPacket(this, 0xa, okayButton);
+    }
+  } else if (commandCode == 0x1b && ResolveControlByTag(kControlTagCncl) != 0) {
+    QueueDeferredUiEventPacket(this, 0x14, ResolveControlByTag(kControlTagCncl));
+  }
+}
 
 namespace {
 

@@ -17,13 +17,12 @@ TArrowsControl::TArrowsControl() : TPicture(), timingDword90(0) {}
 TArrowsControl::~TArrowsControl() {}
 
 // FUNCTION: IMPERIALISM 0x005839f0
-void TArrowsControl::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
-                                                    void* pEventDataA, void* pEventDataB,
-                                                    int nCommandFlag) {
-  (void)pEventSender;
-  (void)pEventDataA;
-  (void)nCommandFlag;
-  if (nEventType == 2) {
+void TArrowsControl::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
+                                CPoint& currentPoint, unsigned char commandFlag) {
+  (void)startPoint;
+  (void)previousPoint;
+  (void)commandFlag;
+  if (phase == kTrackPhaseEnd) {
     return;
   }
 
@@ -34,11 +33,11 @@ void TArrowsControl::DispatchPictureResourceCommand(int nEventType, void* pEvent
 
   unsigned int now = GetTickCountDiv16();
   this->timingDword90 = now;
-  if (nEventType == 0) {
+  if (phase == kTrackPhaseBegin) {
     this->timingDword90 = now + 10;
   }
 
-  CPoint* point = static_cast<CPoint*>(pEventDataB);
+  CPoint* point = &currentPoint;
   if (!this->PointInBoundsAndActionable(point)) {
     return;
   }

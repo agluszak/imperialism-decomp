@@ -125,7 +125,7 @@ undefined TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTact
     unitName = static_cast<TArmyTacUnit*>(unit)->sourceUnit38->name24;
   }
   AssignSharedStringToTaggedControlAndProcessState(static_cast<const char*>(unitName),
-                                                   kControlTagGold);
+                                                   kControlTagDialog);
   return 0;
 }
 

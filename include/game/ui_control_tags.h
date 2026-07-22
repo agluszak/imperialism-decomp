@@ -27,8 +27,8 @@ const unsigned int kControlTagTran = 0x7472616eu; // 'tran'
 const unsigned int kControlTagBpot = 0x746f7042u; // 'Bpot'
 const unsigned int kControlTagTool = 0x746f6f6cu; // 'tool'
 const unsigned int kControlTagTrb1 = 0x74627231u; // 'trb1'
-const unsigned int kControlTagGold =
-    0x444c4f47u; // NOTE: decodes as 'DLOG' (dialog label), not 'GOLD'; rename pending a dedicated sweep
+const unsigned int kControlTagDialog =
+    0x444c4f47u; // 'DLOG' — the root content view inside many dialog windows
 const unsigned int kControlTagCan0 = 0x63616e30u; // 'can0'
 const unsigned int kControlTagCan1 = 0x63616e31u; // 'can1'
 const unsigned int kControlTagCoa0 = 0x636f6130u; // 'coa0'

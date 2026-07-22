@@ -219,9 +219,9 @@ void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
 }
 
 // FUNCTION: IMPERIALISM 0x0049e4b0
-void TAmbitApplication::ForwardParam(int param) {
+void TAmbitApplication::DoKeyEvent(TToolboxEvent* event) {
   if (g_pDisplayMgr != nullptr && g_pDisplayMgr->activeDialog != nullptr) {
-    g_pDisplayMgr->activeDialog->ForwardParam(param);
+    g_pDisplayMgr->activeDialog->DoKeyEvent(event);
   }
 }
 
