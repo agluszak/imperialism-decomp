@@ -112,6 +112,9 @@ public:
 
   TMacViewMgr();
   void InitializeStrategicMapViewSystem();
+  void BlitStrategicMapUnitActivityOverlayFrame(TBitmapSurfaceNode** destinationSurface,
+                                                short overlayFrameIndex, short destinationX,
+                                                short destinationYFromBottom);
   void BuildStrategicMapGaugeAtlasFrom1422And1423();
   void RefreshCityCapabilityUiHandlesForActiveNation();
   void BuildStrategicMapTileOverlayStripSurfaces800To807();

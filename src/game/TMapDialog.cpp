@@ -59,6 +59,19 @@ static inline void SetMapBorderColorForTileOwner(short tileIndex) {
   g_pUiRuntimeContext->SetForeColor(nation);
 }
 
+static inline void Blit64x64StrategicMapAtlasTile(TQuickDrawSurfaceContext* atlas,
+                                                  TQuickDrawSurfaceContext* destination,
+                                                  int sourceOffset, CRect& destinationRect) {
+  if (atlas == 0 || destination == 0) {
+    return;
+  }
+  CRect sourceRect(sourceOffset, 0, sourceOffset + 0x40, 0x40);
+  UpdatePaletteIndexWithDefaultFallback(0x10);
+  BlitRectWithOptionalTransparency(atlas->GetBlitSurface(), destination->GetBlitSurface(),
+                                   &sourceRect, &destinationRect, 0x24, 0);
+  UpdatePaletteIndexWithDefaultFallback(0x13);
+}
+
 double g_mapCellRowScale_006a3360 = DefaultMapCellScale();
 double g_mapCellColumnScale_006a3388 = DefaultMapCellScale();
 
@@ -521,12 +534,11 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mod
 }
 
 // FUNCTION: IMPERIALISM 0x0051AF60
-void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites(int unusedArg) {
-  (void)unusedArg;
-  short row;
+void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites(int edgeMask) {
   short col;
-  short directionFlags;
-  ConvertPoint(g_MapInteractionPreviewPoint_006a3370, row, col, directionFlags);
+  short row;
+  short regionBand;
+  ConvertPoint(g_MapInteractionPreviewPoint_006a3370, col, row, regionBand);
 
   if ((row & 1) != 0) {
     ++col;
@@ -543,14 +555,14 @@ void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites(int 
     adjustedCol = g_MapInteractionPreviewColumnParity_006a33b8 + col * 2;
   }
 
-  if ((directionFlags & 1) != 0) {
+  if ((edgeMask & 1) != 0) {
     --adjustedRow;
-  } else if ((directionFlags & 2) != 0) {
+  } else if ((edgeMask & 2) != 0) {
     ++adjustedRow;
   }
-  if ((directionFlags & 4) != 0) {
+  if ((edgeMask & 4) != 0) {
     ++adjustedCol;
-  } else if ((directionFlags & 8) != 0) {
+  } else if ((edgeMask & 8) != 0) {
     --adjustedCol;
   }
 
@@ -861,6 +873,13 @@ void TMapDialog::Draw(RECT* rectBuffer) {
   UnlockPixels(GetGWorldPixMap(quickDrawSurface350));
 }
 
+static unsigned char ConvertGeneratedCoastMaskToLegacyRasterOrder(unsigned char mask) {
+  // Map generation numbers the diagonal neighbors in top-to-bottom world order. The
+  // bottom-up DIB coast compositor consumes the vertically reflected packed order.
+  return static_cast<unsigned char>(((mask & 0x01) << 2) | (mask & 0x02) | ((mask & 0x04) >> 2) |
+                                    ((mask & 0x08) << 2) | (mask & 0x10) | ((mask & 0x20) >> 2));
+}
+
 // FUNCTION: IMPERIALISM 0x0051EB40
 void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, short screenX) {
   if (g_pGlobalMapState == 0 || g_pStrategicMapViewSystem == 0 ||
@@ -952,9 +971,19 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
     }
 
     if (isOcean && terrain.adjacencyMaskB0b != 0) {
-      const unsigned char adjacencyMask = terrain.adjacencyMaskB0b;
-      const unsigned char variantMask = terrain.spriteVariantIndex01;
-      const short roadType = terrain.roadFlag;
+      unsigned char adjacencyMask = terrain.adjacencyMaskB0b;
+      unsigned char variantMask = terrain.spriteVariantIndex01;
+      // Fixed maps carry a pre-resolved coastline/river-mouth shape in byte +2. Fresh random
+      // maps leave ordinary coast tiles at zero, even though adjacencyMaskB0b already contains
+      // the complete six-direction shoreline mask. Convert that semantic mask to the legacy
+      // raster order for ordinary coasts; preserve explicit +2 variants for river mouths and
+      // loaded-map artwork.
+      short roadType = terrain.roadFlag;
+      if (roadType == 0) {
+        adjacencyMask = ConvertGeneratedCoastMaskToLegacyRasterOrder(adjacencyMask);
+        variantMask = ConvertGeneratedCoastMaskToLegacyRasterOrder(variantMask);
+        roadType = adjacencyMask;
+      }
       for (int corner = 0; corner < 6; ++corner) {
         int previousDirection = (corner + 5) % 6;
         int cornerBits = (1 << previousDirection) | (1 << corner);
@@ -1050,6 +1079,90 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
         routeMask->ApplyBitmapMaskToPixelBuffer(destinationPixels);
       }
     }
+  }
+
+  CRect tileRect;
+  tileRect.left = screenX;
+  tileRect.top = screenY;
+  tileRect.right = screenX + 0x40;
+  tileRect.bottom = screenY + 0x40;
+
+  const unsigned short activeFlags = terrain.activeFlags1c;
+  TMapUberPicture* mapOwner = static_cast<TMapUberPicture*>(ownerContext);
+  const bool cityOverlayVisible = mapOwner == 0 || mapOwner->activeUnitCategoryIndex96 != 4;
+
+  if ((activeFlags & 3) != 0 && terrain.gateFlag != 0 && cityOverlayVisible) {
+    int improvementOffset = g_pGlobalMapState->GetMapImprovementOffsetByActiveFlagsAndCityStage(
+        tileIndex, terrain.formerOwnerNationTag03);
+    Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas66c, quickDrawSurface350,
+                                   improvementOffset, tileRect);
+  }
+
+  if ((activeFlags & 0x14) != 0 && (activeFlags & 1) == 0) {
+    int transportOffset = g_pGlobalMapState->GetMapImprovementOffsetByTownTransportLink(
+        tileIndex, terrain.ownerNationTag04);
+    if (transportOffset != 0) {
+      Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas66c, quickDrawSurface350,
+                                     transportOffset, tileRect);
+    }
+  }
+
+  if ((activeFlags & 3) != 0 && terrain.gateFlag != 0) {
+    RenderTacticalStackCountIndicatorAndUnitBadge(tileIndex, &tileRect, 0);
+    if (terrain.cityRecordIndex >= 0 && terrain.cityRecordIndex < 0x180) {
+      int fortLevel = g_pGlobalMapState->cityScoreTable[terrain.cityRecordIndex].fortLevel03;
+      if (fortLevel != 0) {
+        int fortOffset = g_pGlobalMapState->GetMapImprovementBitmapRowOffsetForIndex(fortLevel - 1);
+        Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas66c, quickDrawSurface350,
+                                       fortOffset, tileRect);
+      }
+    }
+  }
+
+  if ((activeFlags & 3) == 0 || terrain.gateFlag == 0) {
+    const char improvementClasses[2] = {
+        static_cast<char>(g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 1)),
+        static_cast<char>(
+            g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 0))};
+    const int activeNation = g_pSimMgr->GetActiveNationId();
+    bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;
+    if (!tileVisible && g_pGlobalMapState->field24 != 0) {
+      tileVisible = terrain.terrainType00 == 2 || terrain.terrainType00 == 3 ||
+                    terrain.terrainType00 == 4 || terrain.terrainType00 == 6;
+    }
+
+    for (int edge = 0; edge < 2; ++edge) {
+      const signed char resourceType = terrain.resourceTypeByEdge[edge];
+      if (resourceType < 0) {
+        continue;
+      }
+      const short destinationX = static_cast<short>(screenX + (edge == 0 ? 2 : 0x1c));
+      if (improvementClasses[edge] != 0) {
+        g_pStrategicMapViewSystem->DrawStrategicMapUnitIconOverlay(
+            destinationSurfaceObject, static_cast<unsigned short>(resourceType),
+            improvementClasses[edge], destinationX, static_cast<short>(screenY + 2));
+      } else if (tileVisible) {
+        g_pStrategicMapViewSystem->DrawStrategicMapUnitIcon(destinationSurfaceObject, resourceType,
+                                                            destinationX, screenY);
+      }
+    }
+
+    if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(terrain.ownerNationTag04) == 0 &&
+        terrain.secondaryOwnerNationTag18 != -1) {
+      g_pStrategicMapViewSystem->BlitStrategicMapUnitActivityOverlayFrame(
+          destinationSurfaceObject, terrain.secondaryOwnerNationTag18,
+          static_cast<short>(screenX + 0x1e), static_cast<short>(screenY + 0x14));
+    }
+  }
+
+  if (terrain.perTileVisitedFlag0f > 0) {
+    int markerOffset = (terrain.perTileVisitedFlag0f - 1) << 6;
+    Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas694[6], quickDrawSurface350,
+                                   markerOffset, tileRect);
+  } else if (isOcean && terrain.tileActionClass16 >= 0 && terrain.tileActionClass16 < 0x12) {
+    int actionOffset = terrain.tileActionClass16 << 6;
+    Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas690, quickDrawSurface350,
+                                   actionOffset, tileRect);
   }
 }
 

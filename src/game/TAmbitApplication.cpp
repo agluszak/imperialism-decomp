@@ -196,7 +196,11 @@ void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
               }
               if (edgeMask != 0) {
                 int ticks = GetTickCountDiv16();
-                if (g_lastEdgeAutoScrollTick16 > ticks || g_lastEdgeAutoScrollTick16 + 3 < ticks) {
+                // The reconstructed software compositor needs longer than the retail three-tick
+                // cadence to finish a full strategic-map repaint. Keep one completed frame
+                // between scroll steps instead of continuously invalidating the dialog and
+                // starving the wood frame and toolbar paints.
+                if (g_lastEdgeAutoScrollTick16 > ticks || g_lastEdgeAutoScrollTick16 + 12 < ticks) {
                   g_lastEdgeAutoScrollTick16 = ticks;
                   edgeScrollTarget48->AutoScrollByEdgeMask(edgeMask);
                   return;

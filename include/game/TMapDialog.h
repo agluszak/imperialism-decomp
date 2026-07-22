@@ -158,7 +158,7 @@ public:
   // Mac CodeWarrior identity: TMapDialog::GetCenterTile() const.
   virtual int GetCenterTile() const;
   virtual void SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode);
-  virtual void UpdateMapInteractionPreviewParityAndRenderTransientSprites(int unusedArg);
+  virtual void UpdateMapInteractionPreviewParityAndRenderTransientSprites(int edgeMask);
 };
 
 ASSERT_SIZE(TMapDialog, 0x364);

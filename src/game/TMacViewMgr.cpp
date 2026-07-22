@@ -105,8 +105,14 @@ void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
 
 void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstRect) {
   TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(resourceId);
-  if (*loaderHandle != 0) {
+  QDLoadResource(loaderHandle);
+  TBitmapResourceLoader* loader = loaderHandle != 0 ? *loaderHandle : 0;
+  if (loader != 0) {
+    loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+    loader->flags |= 1;
     BlitBitmapResourceLoaderToActiveDc(loaderHandle, dstRect);
+    loader->ReleaseBitmapResource();
+    loader->flags &= static_cast<unsigned char>(~1);
   }
   ReleaseBitmapLoaderHandle(loaderHandle);
 }
@@ -1731,6 +1737,8 @@ void TMacViewMgr::DrawStrategicMapUnitIcon(TBitmapSurfaceNode** pDstSurface, sho
       dstRow[8] = srcRow[8];
     if (srcRow[9] != '\x10')
       dstRow[9] = srcRow[9];
+    if (srcRow[0x0a] != '\x10')
+      dstRow[0x0a] = srcRow[0x0a];
     if (srcRow[0x0b] != '\x10')
       dstRow[0x0b] = srcRow[0x0b];
     if (srcRow[0x0c] != '\x10')
@@ -1760,23 +1768,23 @@ void TMacViewMgr::DrawStrategicMapUnitIcon(TBitmapSurfaceNode** pDstSurface, sho
 void TMacViewMgr::DrawStrategicMapUnitIconOverlay(TBitmapSurfaceNode** pDstSurface,
                                                   ushort wOverlayIconId, short nVariantRow,
                                                   short nDstX, short nYShift) {
+  TBitmapSurfaceNode** atlasSurface = GetGWorldPixMap(unitOverlayAtlas);
   if (nVariantRow <= 0) {
     return;
   }
-  short overlaySourceRow =
+  short overlaySourceOffset =
       reinterpret_cast<short*>(kAddrStrategicMapOverlaySourceRowByIconId)[wOverlayIconId];
-  if (overlaySourceRow < 0) {
+  if (overlaySourceOffset < 0) {
     return;
   }
-  TBitmapSurfaceNode** atlasSurface =
-      static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(unitOverlayAtlas));
   LockPixels(atlasSurface);
   unsigned char* srcPixels = GetPixBaseAddr(atlasSurface);
   ushort srcStrideRaw = static_cast<ushort>((*atlasSurface)->stride);
   unsigned char* dstPixels = GetPixBaseAddr(pDstSurface);
   int dstStrideBytes =
       static_cast<int>(static_cast<short>(static_cast<ushort>((*pDstSurface)->stride) & 0x3fff));
-  unsigned char* srcRow = srcPixels + overlaySourceRow * (srcStrideRaw & 0x3fff);
+  unsigned char* srcRow =
+      srcPixels + static_cast<short>(overlaySourceOffset - 0x26 + nVariantRow * 0x26);
   unsigned char* dstRow = dstPixels + (0x28 - nYShift) * dstStrideBytes + static_cast<int>(nDstX);
   int rowsRemaining = 0x1a;
   do {
@@ -1794,6 +1802,40 @@ void TMacViewMgr::DrawStrategicMapUnitIconOverlay(TBitmapSurfaceNode** pDstSurfa
     rowsRemaining = rowsRemaining - 1;
     dstRow = dstRow + dstStrideBytes;
     srcRow = srcRow + static_cast<short>(srcStrideRaw & 0x3fff);
+  } while (rowsRemaining != 0);
+  UnlockPixels(atlasSurface);
+}
+
+// FUNCTION: IMPERIALISM 0x0050e070
+void TMacViewMgr::BlitStrategicMapUnitActivityOverlayFrame(TBitmapSurfaceNode** destinationSurface,
+                                                           short overlayFrameIndex,
+                                                           short destinationX,
+                                                           short destinationYFromBottom) {
+  TBitmapSurfaceNode** atlasSurface = GetGWorldPixMap(unitOverlayAtlas);
+  unsigned short destinationStride =
+      static_cast<unsigned short>((*destinationSurface)->stride) & 0x3fff;
+  LockPixels(atlasSurface);
+  unsigned char* sourcePixels = GetPixBaseAddr(atlasSurface);
+  unsigned short sourceStride = static_cast<unsigned short>((*atlasSurface)->stride) & 0x3fff;
+  unsigned char* destinationPixels = GetPixBaseAddr(destinationSurface);
+
+  unsigned char* sourceRow = sourcePixels + static_cast<short>((overlayFrameIndex + 0x1b) * 0x26);
+  unsigned char* destinationRow =
+      destinationPixels + (0x26 - destinationYFromBottom) * destinationStride + destinationX;
+  int rowsRemaining = 0x1a;
+  do {
+    int columnsRemaining = 0x26;
+    do {
+      if (*sourceRow != 0x10) {
+        *destinationRow = *sourceRow;
+      }
+      ++sourceRow;
+      ++destinationRow;
+      --columnsRemaining;
+    } while (columnsRemaining != 0);
+    destinationRow += destinationStride - 0x26;
+    sourceRow += sourceStride - 0x26;
+    --rowsRemaining;
   } while (rowsRemaining != 0);
   UnlockPixels(atlasSurface);
 }
