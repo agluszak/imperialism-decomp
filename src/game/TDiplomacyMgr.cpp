@@ -1209,7 +1209,7 @@ void TDiplomacyMgr::RecomputeNationComparativePowerMetrics() {
       maxTerritory = territory;
     }
     TGreatPower* nation = g_apNationStates[i];
-    int tech = (nation != 0 ? nation->city : 0)->productionSummary1d8->fieldAt8;
+    int tech = (nation != 0 ? nation->city : 0)->productionSummary1d8->populationCount08;
     techScore[i] = tech;
     if (tech > maxTech) {
       maxTech = tech;

@@ -24,11 +24,12 @@ public:
   // back by the slot-0x0b override (0x5a6620).
   TTacticalBattle* battle18; // +0x18
 
-  // The posting site (0x5a0d60) inlines the ctor as TCommand() + vtable store, so it
-  // must stay in-class; the original also keeps a compiler-emitted out-of-line copy at
-  // 0x5a6560, but our toolchain fully inlines this trivial ctor away at its call
-  // sites (no matching recompiled address) -- a genuine optimizer-choice mismatch, not
-  // a modeling gap, so that address is left unclaimed rather than faked.
+  // Keep this in-class: VC5 inlines it as TCommand() + one vtable store in both
+  // CreateObject (0x5a64d0) and the posting site (0x5a0d60). The retail compiler also
+  // emitted an unused standalone copy at 0x5a6560, while the reproduced build discards
+  // that copy. Moving this definition out of line recovers 0x5a6560 but regresses those
+  // two live callers from 100% to 49% and 82%, respectively, so the dead copy remains
+  // intentionally unclaimed rather than being represented by a fake helper.
   TNextMoveCommand() : TCommand() {}
 };
 

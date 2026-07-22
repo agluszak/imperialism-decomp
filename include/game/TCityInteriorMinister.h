@@ -47,7 +47,7 @@ public:
   // forwarded directly when nonzero), then picks a (resultCode, magnitude) pair from
   // the city's population-vs-stock shortage state (TPopulationMgr's
   // GetRecentStormImpactMetrics pair, else cityStockSteelCC/cityStockLumberC8/
-  // cityStockCannedFoodC4 vs TPopulationMgr::fieldAt8) and reports it via
+  // cityStockCannedFoodC4 vs TPopulationMgr::populationCount08) and reports it via
   // SetForeignMinisterPrimaryAndSecondaryTargets, unless no condition qualified.
   virtual undefined EvaluateCityShortagesAndNotifyForeignMinister(TCity* city); // slot 0x21
                                                                                 // 0x4bf8a0

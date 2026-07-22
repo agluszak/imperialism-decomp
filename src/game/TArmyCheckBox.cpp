@@ -21,29 +21,29 @@ TArmyCheckBox::TArmyCheckBox() {}
 // FUNCTION: IMPERIALISM 0x004a9fe0
 TArmyCheckBox::TArmyCheckBox(TView* panel, int* offsetLayout, int* sizeLayout, int unused1,
                              int unused2, TQuickDrawSurfaceContext* surfaceContext90Value,
-                             int field88Value)
+                             int iconStripHorizontalOffsetValue)
     : TControl() {
   (void)unused1;
   (void)unused2;
   InitializeUiResourceEntryFrameAndParent(nullptr, panel, offsetLayout, sizeLayout, 4, 4, 0);
   surfaceContext90 = surfaceContext90Value;
-  field88 = field88Value;
+  iconStripHorizontalOffset88 = iconStripHorizontalOffsetValue;
 }
 
 // FUNCTION: IMPERIALISM 0x004aa030
 void TArmyCheckBox::CheckTheLook(unsigned char drawImmediate) {
   if (isOn84 == 0 && controlState64 == 0) {
-    if (checkedGlyphOffsetApplied8c != 0) {
-      field88 -= frameWidth34;
-      checkedGlyphOffsetApplied8c = 0;
+    if (checkedFrameOffsetApplied8c != 0) {
+      iconStripHorizontalOffset88 -= frameWidth34;
+      checkedFrameOffsetApplied8c = 0;
       RefreshControl();
       if (drawImmediate != 0) {
         DrawImmediate();
       }
     }
-  } else if (checkedGlyphOffsetApplied8c == 0) {
-    field88 += frameWidth34;
-    checkedGlyphOffsetApplied8c = 1;
+  } else if (checkedFrameOffsetApplied8c == 0) {
+    iconStripHorizontalOffset88 += frameWidth34;
+    checkedFrameOffsetApplied8c = 1;
     RefreshControl();
     if (drawImmediate != 0) {
       DrawImmediate();
@@ -63,8 +63,8 @@ void TArmyCheckBox::Draw(RECT* rectBuffer) {
     ResetQuickDrawStrokeState();
 
     RECT srcRect;
-    srcRect.left = rectBuffer->left + field88;
-    srcRect.right = rectBuffer->right + field88;
+    srcRect.left = rectBuffer->left + iconStripHorizontalOffset88;
+    srcRect.right = rectBuffer->right + iconStripHorizontalOffset88;
     srcRect.bottom = rectBuffer->bottom - 1;
     srcRect.top = rectBuffer->top;
 

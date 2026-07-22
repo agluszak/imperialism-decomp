@@ -7,8 +7,10 @@
 #include "game/TCzechBox.h"
 #include "game/TDeluxeText.h"
 #include "game/TEventHandler.h"
+#include "game/TRadioTextCluster.h"
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
+#include "game/TTwoPicSlider.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
@@ -51,14 +53,29 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
         }
       }
 
-      // TODO: the original also reads two scrollbar-style controls here ('musi'/'soun')
-      // and derives preferenceValues[3]/[2] as percentages:
-      //   percent = max(0, current - 0xc) * scale / (maxPos - 0xc)   (scale = 0xff/100)
-      // reading `current` at the control's own +0x38 and `maxPos` at +0x90 (raw field
-      // reads in the disassembly, no accessor call). Neither offset matches any
-      // TView-family class recovered so far and no construction site was found tying a
-      // concrete class to the 'musi'/'soun' tags -- left unmodeled rather than guessing
-      // a type, per the type-modeling guardrail.
+      TTwoPicSlider* musicSlider =
+          static_cast<TTwoPicSlider*>(ResolveControlByTag(kControlTagMusi));
+      musicSlider->AssertValid();
+      short musicPosition = musicSlider->splitPosition;
+      if (musicPosition < 0xc) {
+        musicPosition = 0;
+      } else {
+        musicPosition -= 0xc;
+      }
+      g_pSimMgr->preferenceValues[3] = static_cast<short>(
+          (musicPosition * 0xff) / static_cast<short>(musicSlider->frameHeight38 - 0xc));
+
+      TTwoPicSlider* soundSlider =
+          static_cast<TTwoPicSlider*>(ResolveControlByTag(kControlTagSoun));
+      soundSlider->AssertValid();
+      short soundPosition = soundSlider->splitPosition;
+      if (soundPosition < 0xc) {
+        soundPosition = 0;
+      } else {
+        soundPosition -= 0xc;
+      }
+      g_pSimMgr->preferenceValues[2] = static_cast<short>(
+          (soundPosition * 100) / static_cast<short>(soundSlider->frameHeight38 - 0xc));
 
       g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[3]);
       if (g_pSimMgr->mode == 1 || g_pSimMgr->mode == 3) {
@@ -67,14 +84,10 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
         g_pSimMgr->StartNextPhase();
       }
 
-      // TODO: the original also resolves the 'opca' auto-resolution checkbox here and
-      // reads its own +0x88 field, comparing it against the FourCC 'yess':
-      //   TView* opca = ResolveControlByTag(kControlTagOpca);
-      //   opca->AssertValid();
-      //   bool autoResolve = *(int*)((char*)opca + 0x88) == 0x79657373; // 'yess'
-      // +0x88 doesn't match TCzechBox's own checkedStateByte94 (+0x94) or any other
-      // recovered class at this tag -- left unmodeled rather than guessing a type.
-      bool autoResolve = false;
+      TRadioTextCluster* autoResolutionCluster =
+          static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagOpca));
+      autoResolutionCluster->AssertValid();
+      bool autoResolve = autoResolutionCluster->selectedTag88 == 0x79657373; // 'yess'
       if (!g_pImperialismApp->ApplyAutoResolutionModeAndPersist(autoResolve)) {
         g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2763, 7, 2, 0);
       }

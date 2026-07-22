@@ -47,13 +47,11 @@ public:
 
   TAdorner();
 
-  // Original object size is 0xc: CRuntimeClass m_nObjectSize = 0xc and
-  // CreateObject (0x49d650) allocates via operator_new(0xc). UNRESOLVED_FIELD_ATTRIBUTION:
-  // neither dword is touched by ReadFrom/WriteTo/the ctor, or by any of the seven
-  // AdornerSlot* overrides -- with no owner/attacher recovered yet (see class comment
-  // above), there is no evidence available to type or name these two dwords. Declared raw
-  // so sizeof(TAdorner) and the recomp's allocation size match the original binary; revisit
-  // once an owner is found.
-  int field04;
-  int field08;
+  // The Mac constructor oracle is TAdorner::IAdorner(unsigned long, unsigned char), and
+  // TView's AdornerWithID/DeleteAdornerByID methods confirm the first argument is the
+  // stable lookup ID. Windows RTTI and CreateObject independently fix the total size at
+  // 0xc, leaving three bytes of tail padding after the one-byte flags value.
+  unsigned long adornerId04;
+  unsigned char adornerFlags08;
+  unsigned char pad09[3];
 };
