@@ -22,6 +22,23 @@ TShipBuildingTask::TShipBuildingTask() : TCityTask() {}
 // TShipBuildingTask::`scalar deleting destructor'
 TShipBuildingTask::~TShipBuildingTask() {}
 
+// FUNCTION: IMPERIALISM 0x005ae710
+void TShipBuildingTask::InitializeShipProductionQueueTask(short citySlotType, TCity* owner,
+                                                          short requestedShipType) {
+  ownerCity = owner;
+  citySlotIndex = citySlotType;
+  remainingAttempts = 4;
+  requestedAmount = 1;
+  alreadyQueuedFlag = 0;
+  if (citySlotType == 5) {
+    remainingAttempts = 3;
+  }
+  requestedShipType14 = requestedShipType;
+  waitingForShipOrderAdvance16 = 0;
+  remainingAttempts += 2;
+  pendingFlag = 2;
+}
+
 // FUNCTION: IMPERIALISM 0x005ae780
 bool TShipBuildingTask::Tick(TSortedList* commandQueue) {
   TShipOrder* shipOrder = ownerCity->shipOrderSlots[0];

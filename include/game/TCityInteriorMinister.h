@@ -7,6 +7,7 @@ class TGreatPower;
 class TLongintList;
 class TList;
 class TShortintList;
+class TTaskList;
 class TUnit;
 class TFuzzySet;
 
@@ -57,48 +58,40 @@ public:
   // QueueCityProductionCommand17Or18FromSupportRatio (lowProductionFlag7c set,
   // lowStockFlag7d clear) / DistributeCityProductionCommandBudgetAndQueueOrders
   // (the reverse), then unconditionally QueueCityProductionCommand33From
-  // AccumulatedDeficit / QueueCityProductionCommand2BIfMissingAndResetValue /
-  // QueueSingleCityProductionCommandFromField36 / ...Field38 (each gated on this
-  // minister's own field3e/field32/field36/field38), then always
+  // AccumulatedDeficit / QueueShipProductionCommandIfMissing /
+  // QueuePendingRecruitmentProductionCommand / QueuePendingUnitProductionCommand,
+  // then always
   // QueueCityProductionRebalanceCommandsByThresholds.
-  virtual undefined GetTEventHandlerClassNamePointer_22(TCity* city,
-                                                        int* arg2); // slot 0x22 0x4bfa50
-  virtual undefined
-  QueueCityProductionRebalanceCommandsByThresholds(TCity* city, int* arg2); // slot 0x23 0x4bfb20
+  virtual void QueueCityProductionPolicyCommands(TCity* city,
+                                                 TTaskList* commandQueue); // slot 0x22 0x4bfa50
+  virtual void
+  QueueCityProductionRebalanceCommandsByThresholds(TCity* city,
+                                                   TTaskList* commandQueue); // slot 0x23 0x4bfb20
   // Verified empty in the original: `ret 8` only, no reads/writes. Ghidra's
   // "GetTEventHandlerClassNamePointer" name is a misattribution shared by several
   // no-op/near-no-op slots in this class; renamed to reflect the real (empty) body.
   virtual void NoOpProductionCommandHook24(int unusedArg1, int unusedArg2); // slot 0x24 0x4bff60
-  virtual undefined
-  QueueCityProductionCommand17Or18FromSupportRatio(void* arg1, int* arg2); // slot 0x25 0x4c02c0
-  virtual undefined
-  DistributeCityProductionCommandBudgetAndQueueOrders(TCity* city,
-                                                      void* arg2); // slot 0x26 0x4c0090
-  virtual undefined QueueRandomCityProductionCommand19To1C(void* arg1,
-                                                           void* arg2); // slot 0x27 0x4c04e0
-  virtual undefined
-  QueueCityProductionCommand2BIfMissingAndResetValue(int arg1, int* arg2); // slot 0x28 0x4c05a0
-  virtual undefined QueueSingleCityProductionCommandFromField36(void* arg1,
-                                                                void* arg2); // slot 0x29 0x4c0690
-  virtual undefined QueueSingleCityProductionCommandFromField38(void* arg1,
-                                                                void* arg2); // slot 0x2a 0x4c0730
-  // NOT YET PORTED (raw disassembly investigated): arg1 is TCity* (matches the ESP+0x20
-  // read, confirmed via lowProductionFlag7c-style offsets at the caller). arg2 is NOT an
-  // `int` -- it is dereferenced as a vtable pointer (`MOV EAX,[arg2]; CALL [EAX+0x7c]`
-  // with a pushed short constant, e.g. 0x33, and the bool return tested via TEST AL,AL).
-  // Checked TCity (slot 0x7c = MouseTrap, a real no-arg no-op -- wrong shape) and
-  // TSortedList (slot 0x7c is null, past its vtable end) -- arg2's real class is still
-  // unidentified. Needs its own class-recovery pass before this can be ported; the
-  // accumulated-deficit sum (23-entry loop over `field_0x10e`) and the
-  // the 0x14-byte heap allocation + TCityTask-shaped field stores later in the body are already
-  // understood (see TCityTask.h/.cpp), it's specifically this one vtable receiver that's
-  // blocking completion.
-  virtual undefined
-  QueueCityProductionCommand33FromAccumulatedDeficit(TCity* arg1,
-                                                     int* arg2); // slot 0x2b 0x4bff80
-  virtual undefined DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits(
-      TCity* city);                     // slot 0x2c 0x4c07d0
-  virtual void VTableSlot2D(short arg); // slot 0x2d 0x4bef10
+  virtual void
+  QueueCityProductionCommand17Or18FromSupportRatio(TCity* city,
+                                                   TTaskList* commandQueue); // slot 0x25 0x4c02c0
+  virtual void DistributeCityProductionCommandBudgetAndQueueOrders(
+      TCity* city, TTaskList* commandQueue); // slot 0x26 0x4c0090
+  virtual void
+  QueueRandomCityProductionCommand19To1C(TCity* city,
+                                         TTaskList* commandQueue); // slot 0x27 0x4c04e0
+  virtual void QueueShipProductionCommandIfMissing(TCity* city,
+                                                   TTaskList* commandQueue); // slot 0x28 0x4c05a0
+  virtual void
+  QueuePendingRecruitmentProductionCommand(TCity* city,
+                                           TTaskList* commandQueue); // slot 0x29 0x4c0690
+  virtual void QueuePendingUnitProductionCommand(TCity* city,
+                                                 TTaskList* commandQueue); // slot 0x2a 0x4c0730
+  virtual void
+  QueueCityProductionCommand33FromAccumulatedDeficit(TCity* city,
+                                                     TTaskList* commandQueue); // slot 0x2b 0x4bff80
+  virtual void DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits(
+      TCity* city);                                                    // slot 0x2c 0x4c07d0
+  virtual void SelectRecruitmentProductionCommand(short commandIndex); // slot 0x2d 0x4bef10
   virtual undefined SetForeignMinisterReadyFlag14_2e(short arg1, short arg2,
                                                      short arg3); // slot 0x2e 0x4c0de0
   virtual undefined
@@ -162,16 +155,16 @@ public:
   // InteriorSlot1D/1E/1F (0x4be7b0/0x4be7d0/0x4be7f0) index short arrays inside it at
   // +0x12a and +0x158 via raw this+offset access (callers pass order-type codes up to
   // 6 -- TAutoGreatPower.cpp ~L1035/1049), not yet promoted to named array fields.
-  TLongintList* list28; // +0x28  (new TLongintList, vtable 0x650a08)
-  TLongintList* list2c; // +0x2c  (new TLongintList)
-  short field30;        // +0x30  set to 1 by InitializeCityInteriorState
-  short field32;        // +0x32
-  short field34;        // +0x34
-  short field36;        // +0x36  init -1
-  short field38;        // +0x38  init -1
-  short field3a;        // +0x3a  init 50
-  short field3c;        // +0x3c  init -1
-  short field3e;        // +0x3e
+  TLongintList* list28;                   // +0x28  (new TLongintList, vtable 0x650a08)
+  TLongintList* list2c;                   // +0x2c  (new TLongintList)
+  short nextProductionBuildingOrdinal30;  // +0x30  1-based cursor into list2c
+  short pendingShipType32;                // +0x32  ship type queued at city slot 0x2b
+  short field34;                          // +0x34
+  short pendingRecruitmentCommandIndex36; // +0x36  maps to city order slot 0x22 + value
+  short pendingUnitCommandIndex38;        // +0x38  maps to city order slot 0x19 + value
+  short resource15ProductionPercent3a;    // +0x3a  init 50
+  short field3c;                          // +0x3c  init -1
+  short accumulatedUnmetNeed3e;           // +0x3e  queued via command 0x33
   // +0x40..0xb8 -- per-resource-index foreign-minister counter deltas, read/written
   // one short at a time (EvaluateCityShortagesAndNotifyForeignMinister reads
   // orderMetricTable40[0]/[1] as a paired "any nonzero" trigger and [2]..[6]

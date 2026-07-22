@@ -192,7 +192,10 @@ public:
   // 0x274 — TPtrList (vtable 0x649068, recordSize14 4; allocated in
   // InitializeCityProductionState 0x4b2dca); released via ReleasePtrList.
   class TPtrList* eventQueue274;
-  unsigned char pad278[0x2d4 - 0x278];
+  // +0x278 — per-resource failed-request counters maintained by the interior
+  // minister when a production sheet cannot be fully transported.
+  short unmetResourceRetryCount278[0x17];
+  unsigned char serializedState2a6[0x2d4 - 0x2a6];
 
   TCity(); // 0x004b24b0 ("InitializeCityModel")
 
