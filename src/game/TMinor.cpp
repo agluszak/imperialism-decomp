@@ -69,7 +69,6 @@ TMinor::TMinor() {}
 
 // SYNTHETIC: IMPERIALISM 0x004e3790
 // TMinor::`scalar deleting destructor'
-TMinor::~TMinor() {}
 
 // FUNCTION: IMPERIALISM 0x004e3830
 void TMinor::InitializeSecondaryNationStateAndSelectHomeTile(short nationSlot) {

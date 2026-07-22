@@ -28,7 +28,8 @@ public:
   void RecomputeAiExpansionAndMissionPressureScores(void) override;
   void RefreshTrackedEntriesAndReplanAiDevelopment(int unused) override;
   char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
-  virtual void OrphanRetStub_005418e0(void);
+  // Remote-only vtable slot 0x2c8; Mac symbol oracle: DoMovePhase().
+  virtual void DoMovePhase(void);
 
   TRemoteGreatPower() : TGreatPower() {}
 };

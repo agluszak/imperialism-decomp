@@ -105,7 +105,9 @@ private:
   short runtimeStatusTail2da;
 
 protected:
-  ~TMinor() override;
+  // Inline so network minor subclasses reproduce the original direct CString teardown.
+  // FUNCTION: IMPERIALISM 0x004e37c0
+  ~TMinor() override {}
 };
 
 ASSERT_SIZE(TMinor, 0x2dc);

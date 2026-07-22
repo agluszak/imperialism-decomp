@@ -62,6 +62,22 @@ void TClientGreatPower::RejectOffer(unsigned short proposalQueueIndex) {
 // FUNCTION: IMPERIALISM 0x005414f0
 void TClientGreatPower::ReplyToDiplomacyOffers(void) {
   TGreatPower::ReplyToDiplomacyOffers();
+
+  TurnEventFResumeAckPacket packet;
+  packet.messageTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.eventCode = 0;
+  packet.fromNetworkId = 0;
+  packet.eventCode = 0xf;
+  packet.toNetworkId = 0;
+  packet.toNetworkId = -1;
+  packet.messageLength = 0;
+  packet.messageLength = 0x20;
+  packet.SetTimeEmitPacketGameFlowTurnId();
+  packet.nationSlot1C = static_cast<short>(g_pSimMgr->GetActiveNationId());
+  g_pNetMgr006a6014->Send(&packet, 0);
+
+  g_pUiRuntimeContext->MakeDiplomacyOfferDialog(nationSlot, nationSlot, 0x29a);
 }
 
 // FUNCTION: IMPERIALISM 0x005415c0
