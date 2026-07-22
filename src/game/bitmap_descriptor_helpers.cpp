@@ -23,7 +23,7 @@ static void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
     loader->flags &= static_cast<unsigned char>(~1);
     delete loader;
   }
-  ::operator delete(loaderHandle);
+  delete loaderHandle;
 }
 
 } // namespace
@@ -99,7 +99,7 @@ TBitmapSurfaceContextDescriptor::TBitmapSurfaceContextDescriptor() {
 
 // FUNCTION: IMPERIALISM 0x00495eb0
 bool TBitmapSurfaceContextDescriptor::InitializeSurfaceNode(int width, int height, int bitDepth) {
-  SetPixMapHandle(static_cast<TBitmapSurfaceNode**>(::operator new(sizeof(TBitmapSurfaceNode*))));
+  SetPixMapHandle(new TBitmapSurfaceNode*);
   *GetPixMapHandle() = new TBitmapSurfaceNode(width, height, bitDepth);
 
   // Original (0x495eb0): +0x4 = dib bits pointer, +0x8 = (biWidth + 3) & ~3 as a 16-bit
@@ -126,9 +126,9 @@ void TBitmapSurfaceContextDescriptor::ReleaseSurfaceNode() {
     TBitmapSurfaceNode* node = *slot;
     if (node != nullptr) {
       delete node->dib;
-      ::operator delete(node);
+      delete node;
     }
-    ::operator delete(slot);
+    delete slot;
   }
   SetPixMapHandle(nullptr);
   blitSurface.pixelBits = 0;
@@ -243,7 +243,7 @@ LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId) {
   QDLoadResource(loaderHandle);
   TBitmapResourceLoader* loader = loaderHandle != nullptr ? *loaderHandle : nullptr;
   if (loader == nullptr) {
-    ::operator delete(loaderHandle);
+    delete loaderHandle;
     return 0;
   }
 

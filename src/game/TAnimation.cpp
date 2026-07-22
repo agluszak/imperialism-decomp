@@ -146,8 +146,7 @@ undefined4 TBitmapResourceLoader::ReportUnimplementedResourceVirtualSlot02() {
 
 // FUNCTION: IMPERIALISM 0x004a1130
 TBitmapResourceLoader** CreateBitmapResourceLoaderHandle(unsigned short resourceId) {
-  TBitmapResourceLoader** handleSlot =
-      static_cast<TBitmapResourceLoader**>(::operator new(sizeof(TBitmapResourceLoader*)));
+  TBitmapResourceLoader** handleSlot = new TBitmapResourceLoader*;
   TBitmapResourceLoader* loader = new TBitmapResourceLoader(resourceId);
   *handleSlot = loader;
   return handleSlot;
