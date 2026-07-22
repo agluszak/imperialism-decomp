@@ -404,6 +404,7 @@ extern double g_dTacticalCursorAssaultRatioThreshold_00669530;
 extern double g_dTacticalCursorRetreatRatioThreshold_00669538;
 extern float g_afTacticalNavyDamageScaleByUnitType[8];
 extern float g_afTacticalNavyBaseAttackPowerByUnitType[8];
+extern int g_anTacticalNavyUnitTypeByShipType_00669D80[14];
 extern float g_fTacticalRetreatQualityWeightDefault_00669EC0;
 extern double g_dTacticalQualityFactorStep_00669EC8;
 extern double g_dTacticalQualityFactorBase_00669ED0;
