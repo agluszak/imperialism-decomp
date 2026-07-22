@@ -3312,7 +3312,7 @@ address|matching|name
 0x5274d0|0.37593984962406013|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.3783783783783784|TMapMaker::MapGenPassSlot0E
 0x527730|0.29577464788732394|TMapMaker::MapGenPassSlot0F
-0x527d00|0.4268774703557312|TMapMaker::CreateRivers
+0x527d00|0.43478260869565216|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
@@ -3576,7 +3576,7 @@ address|matching|name
 0x536780|1.0|TNavyMission::AcceptReenforcement
 0x5367d0|0.4|TNavyMission::RejectConstituent
 0x536810|1.0|TNavyMission::ForgetTaskForce
-0x536840|0.21238938053097345|TNavyMission::AccumulateLack
+0x536840|0.39183673469387753|TNavyMission::AccumulateLack
 0x536b30|0.2818181818181818|TNavyMission::Reassess
 0x536d60|0.64|TNavyMission::CombineForce
 0x536e40|0.6772486772486772|TNavyMission::GiveOrders
@@ -3688,9 +3688,9 @@ address|matching|name
 0x53cb50|0.9032258064516129|TArmyMission::AccumulateMissionUnitPriorityContributionWithScaleMode
 0x53cc10|0.4731182795698925|AccumulateUnitOrderPriorityVectorContribution
 0x53cda0|0.562962962962963|TArmyMission::GetWeightedEquipage
-0x53ceb0|0.4631578947368421|TArmyMission::GetWeightedSatisfaction
-0x53d020|0.4444444444444444|TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit
-0x53d200|0.4330708661417323|TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit
+0x53ceb0|0.4607329842931937|TArmyMission::GetWeightedSatisfaction
+0x53d020|0.44621513944223107|TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit
+0x53d200|0.43137254901960786|TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit
 0x53d3e0|0.7272727272727273|TArmyMission::IndustrialCostOfNeeds
 0x53d420|1.0|TArmyMission::ValueOf
 0x53d4a0|0.6985645933014354|TArmyMission::FitnessOf
@@ -3704,7 +3704,7 @@ address|matching|name
 0x53d7f0|0.5|TAttackProvinceMission::~TAttackProvinceMission(void)
 0x53d810|1.0|TAttackProvinceMission::WriteTo
 0x53d850|1.0|TAttackProvinceMission::ReadFrom
-0x53d890|0.6792452830188679|TAttackProvinceMission::Free
+0x53d890|0.9622641509433962|TAttackProvinceMission::Free
 0x53d950|0.8150943396226416|TAttackProvinceMission::SmokeEmIfYouGotEm
 0x53db60|0.42424242424242425|TAttackProvinceMission::TryResolveTargetTerrainClass
 0x53de00|0.7986348122866894|TAttackProvinceMission::GiveOrders
@@ -3718,9 +3718,9 @@ address|matching|name
 0x53e5f0|0.48|TDefendProvinceMission::CreateObject
 0x53e670|1.0|TDefendProvinceMission::GetRuntimeClass
 0x53e690|0.3333333333333333|WrapperFor_AFX_CLASSINIT_At0053e690
-0x53e6e0|0.2194513715710723|TDefendProvinceMission::ComputeCrossNationSupportVectorScore
-0x53ea70|0.3096774193548387|TDefendProvinceMission::ComputeLocalSupportVectorScore
-0x53ebe0|0.9433962264150944|TDefendProvinceMission::Free
+0x53e6e0|0.6590909090909091|TDefendProvinceMission::ComputeCrossNationSupportVectorScore
+0x53ea70|0.574585635359116|TDefendProvinceMission::ComputeLocalSupportVectorScore
+0x53ebe0|0.9622641509433962|TDefendProvinceMission::Free
 0x53ecc0|0.896551724137931|TDefendProvinceMission::SetStateByte8To2
 0x53ed00|0.336283185840708|TDefendProvinceMission::CalculateImportance
 0x53edf0|0.40148698884758366|TDefendProvinceMission::CalculateNeeds
@@ -3740,7 +3740,7 @@ address|matching|name
 0x53f2d0|0.3|TInvadeMission::TInvadeMission(short, class TZone *)
 0x53f3c0|1.0|TInvadeMission::`scalar deleting destructor'
 0x53f3f0|0.5|TInvadeMission::~TInvadeMission(void)
-0x53f410|0.23529411764705882|TInvadeMission::Free
+0x53f410|0.9642857142857143|TInvadeMission::Free
 0x53f4e0|0.8705882352941177|TInvadeMission::SmokeEmIfYouGotEm
 0x53f580|1.0|TInvadeMission::Initialize
 0x53f5f0|1.0|TInvadeMission::SetStateByte8To2

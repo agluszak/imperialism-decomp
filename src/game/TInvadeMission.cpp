@@ -77,11 +77,28 @@ TInvadeMission::TInvadeMission() : TAttackProvinceMission(), beachhead34(nullptr
 
 // FUNCTION: IMPERIALISM 0x0053f410
 void TInvadeMission::Free() {
-  if (beachhead34 != nullptr) {
-    beachhead34->Free();
-    beachhead34 = nullptr;
+  beachhead34->Free();
+
+  TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
+  nationState->AssertValid();
+  nationState->SetMapStateByteFlag970WithRuntimeGate(targetProvince30, 0);
+
+  CIterator iter(orderListAt18);
+  TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(iter.Reset());
+  while (iter.More()) {
+    unit->ownerMission40 = nullptr;
+    unit = static_cast<TMilitaryUnit*>(iter.Advance());
   }
-  TAttackProvinceMission::Free();
+
+  orderListAt18->RemoveAll();
+  if (orderListAt18 != nullptr) {
+    orderListAt18->FreePayloadsAndDestroy();
+  }
+  orderListAt18 = nullptr;
+
+  if (this != nullptr) {
+    delete this;
+  }
 }
 
 // Matches the original exactly: unconditionally dereferences beachhead34 (no null check),

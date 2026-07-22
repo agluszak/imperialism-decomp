@@ -166,11 +166,9 @@ void TArmyMission::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x0053c3d0
 void TArmyMission::ReadFrom(TStream* stream) {
-  int saveFormatVersion = g_nSaveFormatVersion;
-
   TMission::ReadFrom(stream);
   stream->ReadBytes(&presentLocation14, 2);
-  if (saveFormatVersion < 0xb) {
+  if (g_nSaveFormatVersion < 0xb) {
     stream->ReadBytes(&requiredEquipageByClass[0], 0x10);
     requiredEquipageByClass[4] = 0.0f;
   } else {
@@ -186,10 +184,8 @@ void TArmyMission::ReadFrom(TStream* stream) {
 
   for (int i = 0; i < count; ++i) {
     short index = stream->ReadShort();
-    void* unit = unitList->GetEntryByOrdinal(index);
-    if (orderListAt18 != nullptr) {
-      orderListAt18->AddTail(unit);
-    }
+    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitList->GetEntryByOrdinal(index));
+    AcceptReenforcement(unit, 0);
   }
 }
 

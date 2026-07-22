@@ -261,12 +261,14 @@ int TNavyMission::AccumulateLack(int* accumulatedLack, unsigned char includeExis
     float scale =
         g_MissionOrderDistanceDecayWeightTable_006978c8[distance] *
         static_cast<float>(ship->stockLevel1c / ship->GetNavyOrderNormalizationBaseByNationType());
-    for (int category = 0; category < 4; ++category) {
-      vector[category] +=
-          static_cast<float>(
-              ship->ComputeNavyOrderPriorityContributionPercentByCategory(category)) *
-          scale;
-    }
+    vector[0] +=
+        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) * scale;
+    vector[1] +=
+        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) * scale;
+    vector[2] +=
+        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) * scale;
+    vector[3] +=
+        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3)) * scale;
   }
 
   int total = 0;
