@@ -3275,7 +3275,7 @@ address|name|symbol|size|type|prototype|provenance
 519010|CreateTacticalBattleViewAndInitializeBattleSetup_Impl||179|function|undefined CreateTacticalBattleViewAndInitializeBattleSetup_Impl()|
 519140|DumpAndResetMapScriptState||965|function|void __fastcall DumpAndResetMapScriptState(void * pMapState)|
 519610|TMapMgr::ChooseNationSetupProfilesForOpenSlots||604|function|void __thiscall ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot)|
-519970|WrapperFor_ftol_At00519970||30|function|undefined WrapperFor_ftol_At00519970()|
+519970|InitializeMapDialogViewportTileSpan||30|function|void InitializeMapDialogViewportTileSpan()|
 5199c0|TMapDialog::CreateObject|?CreateObject@TMapDialog@@SGPAVCObject@@XZ|226|function|undefined CreateObject()|rtti
 519af0|TWorldView::OrphanTiny_ReturnMinusOneWord_00519af0||5|function|undefined OrphanTiny_ReturnMinusOneWord_00519af0(void)|
 519b30|TMapDialog::GetRuntimeClass||6|function|undefined GetTMapDialogClassNamePointer()|rtti

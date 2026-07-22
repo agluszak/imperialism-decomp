@@ -100,6 +100,19 @@ void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, const CPoint*
   *outY = static_cast<short>(*outY / scale);
   *outX = static_cast<short>(*outX / scale);
 }
+
+// The retail CRT initializer computes the nine staggered columns covered by the
+// 512-pixel map viewport and writes only the low word of the BSS-backed dword. Keep the
+// same partial-store contract because TMapDialog's clamp reads the full dword while its
+// centering helpers read the signed low word.
+// FUNCTION: IMPERIALISM 0x00519970
+void InitializeMapDialogViewportTileSpan() {
+  *reinterpret_cast<short*>(&g_wMapDialogViewportTileSpan) =
+      static_cast<short>(g_mapCellRowScale_006a3360 * 512.0 - -1.0);
+}
+
+static int g_mapDialogViewportTileSpanInitializer = (InitializeMapDialogViewportTileSpan(), 0);
+
 // SYNTHETIC: IMPERIALISM 0x005199c0
 // TMapDialog::CreateObject
 

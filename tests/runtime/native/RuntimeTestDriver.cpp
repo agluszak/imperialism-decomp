@@ -46,6 +46,10 @@ enum RuntimeTestPhase {
   kRuntimeTestPrimingMapHover,
   kRuntimeTestDispatchingMapHotkey,
   kRuntimeTestExercisingMapHover,
+  kRuntimeTestReturningToRandomSetup,
+  kRuntimeTestReturningToMainMenu,
+  kRuntimeTestReenteringRandomSetup,
+  kRuntimeTestVerifyingReturnedRandomSetup,
   kRuntimeTestFinished
 };
 
@@ -425,6 +429,22 @@ void RunWaitingForManagers() {
   RequestAnotherDriverTick();
 }
 
+bool ClickViewThroughNativeHost(TView* view) {
+  CIncludeView* host = GetMainViewHostFromActiveThread();
+  if (view == 0 || host == 0 || host->m_hWnd == 0) {
+    return false;
+  }
+
+  CPoint position;
+  view->GetAbsolutePosition(&position);
+  position.x += view->frameWidth34 / 2;
+  position.y += view->frameHeight38 / 2;
+  LPARAM mousePosition = MAKELPARAM(position.x, position.y);
+  SendMessageA(host->m_hWnd, WM_LBUTTONDOWN, MK_LBUTTON, mousePosition);
+  SendMessageA(host->m_hWnd, WM_LBUTTONUP, 0, mousePosition);
+  return true;
+}
+
 void RunWaitingForMainMenu() {
   TView* mainView = MainView();
   if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dc ||
@@ -435,19 +455,10 @@ void RunWaitingForMainMenu() {
 
   srand(RuntimeTestDriver::RandomSeed());
   TView* randomButton = mainView->ResolveControlByTag(kControlTagRand);
-  CIncludeView* host = GetMainViewHostFromActiveThread();
-  if (randomButton == 0 || host == 0 || host->m_hWnd == 0) {
+  if (!ClickViewThroughNativeHost(randomButton)) {
     Fail("\"main-menu random-game button or native host is missing\"");
     return;
   }
-
-  CPoint buttonPosition;
-  randomButton->GetAbsolutePosition(&buttonPosition);
-  buttonPosition.x += randomButton->frameWidth34 / 2;
-  buttonPosition.y += randomButton->frameHeight38 / 2;
-  LPARAM mousePosition = MAKELPARAM(buttonPosition.x, buttonPosition.y);
-  SendMessageA(host->m_hWnd, WM_LBUTTONDOWN, MK_LBUTTON, mousePosition);
-  SendMessageA(host->m_hWnd, WM_LBUTTONUP, 0, mousePosition);
   SetPhase(kRuntimeTestWaitingForRandomSetup, "click_main_menu_rand");
   RequestAnotherDriverTick();
 }
@@ -656,12 +667,23 @@ void RunDispatchingMapHotkey() {
   }
 
   TCitySiteView* citySiteView = static_cast<TCitySiteView*>(mapDialog);
+  if (g_wMapDialogViewportTileSpan != 9) {
+    Fail("\"strategic-map viewport tile span was not initialized\"");
+    return;
+  }
   mapDialog->SetMapDialogCellCoordinatesAndRefresh(citySiteView->minColBound368 + 1,
                                                    citySiteView->minRowBound370 + 1, 0);
-  int viewportXBeforeEdgeScroll = mapDialog->viewportOrigin60.x;
+  for (int scroll = 0; scroll < 0x80; ++scroll) {
+    mapView->AutoScrollByEdgeMask(4);
+  }
+  int rightEdgeViewportX = mapDialog->viewportOrigin60.x;
+  if (rightEdgeViewportX != citySiteView->maxColBound36c * 0x40) {
+    Fail("\"right-edge scrolling stopped before the strategic map clamp\"");
+    return;
+  }
   mapView->AutoScrollByEdgeMask(4);
-  if (mapDialog->viewportOrigin60.x == viewportXBeforeEdgeScroll) {
-    Fail("\"right-edge scrolling did not move the strategic map viewport\"");
+  if (mapDialog->viewportOrigin60.x != rightEdgeViewportX) {
+    Fail("\"right-edge scrolling moved beyond the strategic map clamp\"");
     return;
   }
   int viewportYBeforeTopEdgeScroll = mapDialog->viewportOrigin60.y;
@@ -707,6 +729,77 @@ void RunExercisingMapHover() {
   SetGWorld(savedSurface, savedSurfaceFlags);
   mapView->RefreshControl();
   mapView->ForceRedraw();
+  TView* cancel = mapView->ResolveControlByTag(kControlTagCanc);
+  if (!ClickViewThroughNativeHost(cancel)) {
+    Fail("\"strategic-map return button or native host is missing\"");
+    return;
+  }
+  SetPhase(kRuntimeTestReturningToRandomSetup, "click_strategic_map_canc");
+  RequestAnotherDriverTick();
+}
+
+void RunReturningToRandomSetup() {
+  TView* mainView = MainView();
+  if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dd ||
+      !IsViewKindOf(mainView, RUNTIME_CLASS(TSetupRandomMapPicture))) {
+    WaitForNextTickOrTimeout("\"random setup did not return after leaving the strategic map\"");
+    return;
+  }
+
+  TView* cancel = mainView->ResolveControlByTag(kControlTagCncl);
+  if (!ClickViewThroughNativeHost(cancel)) {
+    Fail("\"returned random setup main-menu button or native host is missing\"");
+    return;
+  }
+  SetPhase(kRuntimeTestReturningToMainMenu, "click_returned_setup_cncl");
+  RequestAnotherDriverTick();
+}
+
+void RunReturningToMainMenu() {
+  TView* mainView = MainView();
+  if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dc ||
+      !IsViewKindOf(mainView, RUNTIME_CLASS(TGameSetupPicture))) {
+    WaitForNextTickOrTimeout("\"main menu did not return after leaving random setup\"");
+    return;
+  }
+
+  TView* randomButton = mainView->ResolveControlByTag(kControlTagRand);
+  if (!ClickViewThroughNativeHost(randomButton)) {
+    Fail("\"returned main-menu random-game button or native host is missing\"");
+    return;
+  }
+  SetPhase(kRuntimeTestReenteringRandomSetup, "click_returned_main_menu_rand");
+  RequestAnotherDriverTick();
+}
+
+void RunReenteringRandomSetup() {
+  TView* mainView = MainView();
+  if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dd ||
+      !IsViewKindOf(mainView, RUNTIME_CLASS(TSetupRandomMapPicture))) {
+    WaitForNextTickOrTimeout("\"random setup did not reopen from the returned main menu\"");
+    return;
+  }
+
+  TView* hard = mainView->ResolveControlByTag(kControlTagDif3);
+  if (!ClickViewThroughNativeHost(hard)) {
+    Fail("\"reopened random setup difficulty control or native host is missing\"");
+    return;
+  }
+  SetPhase(kRuntimeTestVerifyingReturnedRandomSetup, "click_reopened_setup_dif3");
+  RequestAnotherDriverTick();
+}
+
+void RunVerifyingReturnedRandomSetup() {
+  TView* mainView = MainView();
+  TRadioTextCluster* difficulty =
+      mainView != 0
+          ? static_cast<TRadioTextCluster*>(mainView->ResolveControlByTag(kControlTagDiff))
+          : 0;
+  if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dd || difficulty == 0 ||
+      difficulty->selectedTag88 != static_cast<int>(kControlTagDif3)) {
+    Fail("\"returned random setup did not accept the difficulty click\"");
+    return;
+  }
   Finish("passed", "null");
 }
 
@@ -758,6 +851,18 @@ void RuntimeTestDriver::OnIdle() {
     break;
   case kRuntimeTestExercisingMapHover:
     RunExercisingMapHover();
+    break;
+  case kRuntimeTestReturningToRandomSetup:
+    RunReturningToRandomSetup();
+    break;
+  case kRuntimeTestReturningToMainMenu:
+    RunReturningToMainMenu();
+    break;
+  case kRuntimeTestReenteringRandomSetup:
+    RunReenteringRandomSetup();
+    break;
+  case kRuntimeTestVerifyingReturnedRandomSetup:
+    RunVerifyingReturnedRandomSetup();
     break;
   default:
     Fail("\"runtime-test driver entered an invalid phase\"");
