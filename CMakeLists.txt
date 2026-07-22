@@ -24,6 +24,7 @@ file(GLOB IMPERIALISM_GAME_SOURCES CONFIGURE_DEPENDS
 # provide a complete link surface. Default OFF so the MSVC500 reccmp build is
 # unaffected and still produces a real executable.
 option(IMPERIALISM_LINT_COMPILE_ONLY "Compile sources only; do not link an executable" OFF)
+option(IMPERIALISM_RUNTIME_TESTS "Compile the native semantic runtime-test driver" OFF)
 
 if(IMPERIALISM_LINT_COMPILE_ONLY)
     add_library(Imperialism OBJECT
@@ -35,6 +36,17 @@ else()
         src/main.cpp
         ${IMPERIALISM_GAME_SOURCES}
     )
+endif()
+
+# Runtime-test instrumentation belongs to a separate build tree. Nothing under
+# tests/runtime/native is part of the production source glob, and the compile
+# definition below is absent from the byte-matching build.
+if(IMPERIALISM_RUNTIME_TESTS)
+    target_sources(Imperialism PRIVATE
+        tests/runtime/native/RuntimeTestDriver.cpp
+    )
+    target_include_directories(Imperialism PRIVATE tests/runtime/native)
+    target_compile_definitions(Imperialism PRIVATE IMPERIALISM_RUNTIME_TESTS=1)
 endif()
 
 # Generated build inputs (stubs) live in the build tree, not the source tree.

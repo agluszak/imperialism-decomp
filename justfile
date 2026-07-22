@@ -4,6 +4,7 @@ set dotenv-load := true
 # Project constants. These are not machine-specific; edit here if they ever change.
 target := "IMPERIALISM"
 build_dir := "build-msvc500"
+runtime_test_build_dir := "build-runtime-tests"
 docker_image := "imperialism-msvc500"
 lint_build_dir := "build-clang"
 cmake_flags := "-DCMAKE_BUILD_TYPE=RelWithDebInfo -DIMPERIALISM_LINK_MFC=ON -DIMPERIALISM_MATCH_FLAGS_CSV=/Oy,/Ob1"
@@ -196,6 +197,26 @@ _build-msvc500-unlocked:
     -v "$PWD/{{build_dir}}":/build \
     "{{docker_image}}"
 
+# Test-instrumented build. It deliberately shares build-msvc500's lock with the
+# byte-matching build so two VC5 builds cannot race in one worktree even though
+# their build products live in separate directories.
+[doc('Build the native semantic runtime-test executable into build-runtime-tests/')]
+[group('build')]
+runtime-test-build:
+  mkdir -p "{{runtime_test_build_dir}}"
+  uv run python -m tools.workflow.msvc_build_lock \
+    --lock "{{build_dir}}/.msvc-build.lock" -- just _build-runtime-tests-unlocked
+
+[private]
+_build-runtime-tests-unlocked:
+  just vtable-gate
+  uv run python -m tools.generate --gen-dir "{{runtime_test_build_dir}}/generated"
+  docker run --rm --network none \
+    -e CMAKE_FLAGS="{{cmake_flags}} -DIMPERIALISM_RUNTIME_TESTS=ON" \
+    -v "$PWD":/imperialism \
+    -v "$PWD/{{runtime_test_build_dir}}":/build \
+    "{{docker_image}}"
+
 [doc('reccmp-project detect: record the recompiled binary/PDB for comparison')]
 [group('build')]
 detect:
@@ -260,6 +281,14 @@ run-original *args:
   export WINEDEBUG="${WINEDEBUG--all}"
   cd "$game_dir"
   exec wine "$ORIGINAL_BINARY" "$@"
+
+# Run one compiled semantic test through the instrumented executable. The host
+# runner only owns process lifetime and result transport; game actions execute
+# inside Imperialism.exe on the UI thread.
+[doc('Run one native semantic runtime test (default: boot_managers)')]
+[group('build')]
+runtime-test name='boot_managers' *args:
+  uv run python tools/runtime/runtime_tests.py "{{name}}" {{args}}
 
 # Kill any stale game/wineserver state, then launch the recomp detached and confirm
 # it is alive. Replaces the error-prone manual three-command dance (kill+settle,

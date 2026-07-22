@@ -1,4 +1,8 @@
 #include "game/ImperialismApp.h"
+
+#ifdef IMPERIALISM_RUNTIME_TESTS
+#include "RuntimeTestDriver.h"
+#endif
 #include "game/ImperialismCommandLineInfo.h"
 #include "game/app_init_globals.h"
 #include "game/global_data_tables.h"
@@ -488,6 +492,11 @@ BOOL ImperialismApp::OnIdle(LONG lCount) {
     g_pGlobalUiRootController->Idle(0);
   }
   g_pGlobalUiRootController->Idle(1);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  if (lCount == 0) {
+    RuntimeTestDriver::OnIdle();
+  }
+#endif
   return TRUE;
 }
 
