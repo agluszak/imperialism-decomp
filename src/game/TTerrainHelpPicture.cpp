@@ -44,7 +44,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   }
   menuItemIds94[count++] =
       static_cast<short>(g_pGlobalMapState->terrainStateTable[nTileIndex].gateFlag + 1);
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].roadFlag != 0) {
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].riverSpriteCode != kRiverSpriteCodeNone) {
     menuItemIds94[count++] = 0x16;
   }
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].ownerBorderMask07 != 0) {
@@ -104,26 +104,34 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].perTileVisitedFlag0f > 0) {
     menuItemIds94[count++] = 0x2a;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionClass16 == 2) {
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
+      kMapTileActionStateBlockadingFleet) {
     menuItemIds94[count++] = 0x2b;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionClass16 == 3) {
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
+      kMapTileActionStateAnchor) {
     menuItemIds94[count++] = 0x2c;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionClass16 == 4) {
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
+      kMapTileActionStateMovingFleet) {
     menuItemIds94[count++] = 0x2d;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionClass16 == 5) {
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
+      kMapTileActionStatePatrollingFleet) {
     menuItemIds94[count++] = 0x2e;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionClass16 == 6) {
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
+      kMapTileActionStateInvadingFleet) {
     menuItemIds94[count++] = 0x2f;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionClass16 == 0xe) {
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
+      kMapTileActionStateDockedFleet) {
     menuItemIds94[count++] = 0x30;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionClass16 == 0x10 ||
-      g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionClass16 == 0x11) {
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
+          kMapTileActionStateFleetFrameFirst ||
+      g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
+          kMapTileActionStateFleetFrameLast) {
     menuItemIds94[count++] = 0x31;
   }
 

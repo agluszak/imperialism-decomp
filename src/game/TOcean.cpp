@@ -83,20 +83,17 @@ void TZone::HandleKeyDown(int key_id) {
         do {
           if ((nationKeyMask10 & (1U << ((unsigned char)(key_id % 7) & 0x1f))) != 0) {
             sVarSlotId = GetActiveNationSlotTile();
-            SetMapTileStateByteAndNotifyObserver(sVarSlotId, key_id % 7 + 7);
-            *reinterpret_cast<unsigned short*>(
-                reinterpret_cast<char*>(&g_pGlobalMapState->terrainStateTable[sVarSlotId]) + 0x1a) =
-                0xffff;
+            SetMapTileStateByteAndNotifyObserver(sVarSlotId,
+                                                 key_id % 7 + kMapTileActionStateNationOrderFirst);
+            g_pGlobalMapState->terrainStateTable[sVarSlotId].tileActionOrdinal1a = -1;
           }
           key_id = key_id + 1;
           nSlotsRemaining = nSlotsRemaining - 1;
         } while (nSlotsRemaining != 0);
       } else {
         sVarSlotId = GetActiveNationSlotTile();
-        SetMapTileStateByteAndNotifyObserver(sVarSlotId, 7);
-        *reinterpret_cast<unsigned short*>(
-            reinterpret_cast<char*>(&g_pGlobalMapState->terrainStateTable[sVarSlotId]) + 0x1a) =
-            0xffff;
+        SetMapTileStateByteAndNotifyObserver(sVarSlotId, kMapTileActionStateNationOrderFirst);
+        g_pGlobalMapState->terrainStateTable[sVarSlotId].tileActionOrdinal1a = -1;
       }
     }
   }
@@ -486,12 +483,14 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
   // clear to -1, linked-zone overlay states (0xe..0x15) flip to their negated value.
   for (short overlayTile = 0; overlayTile < 0x1950; ++overlayTile) {
     short overlayState = static_cast<signed char>(
-        g_pGlobalMapState->terrainStateTable[overlayTile].tileActionClass16);
-    unsigned char isNationOverlay = (overlayState >= 7 && overlayState <= 0xd);
+        g_pGlobalMapState->terrainStateTable[overlayTile].tileActionState16);
+    unsigned char isNationOverlay = (overlayState >= kMapTileActionStateNationOrderFirst &&
+                                     overlayState <= kMapTileActionStateNationOrderLast);
     if (isNationOverlay != 0) {
-      SetMapTileStateByteAndNotifyObserver(overlayTile, -1);
+      SetMapTileStateByteAndNotifyObserver(overlayTile, kMapTileActionStateNone);
     } else {
-      unsigned char isLinkedZoneOverlay = (overlayState >= 0xe && overlayState < 0x16);
+      unsigned char isLinkedZoneOverlay = (overlayState >= kMapTileActionStateLinkedZoneFirst &&
+                                           overlayState <= kMapTileActionStateLinkedZoneLast);
       if (isLinkedZoneOverlay != 0) {
         SetMapTileStateByteAndNotifyObserver(overlayTile, -overlayState);
       }
@@ -516,10 +515,9 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
           int slotWrapped = slotCursor % 7;
           if ((ctxZone->nationKeyMask10 & static_cast<unsigned char>(1 << slotWrapped)) != 0) {
             short slotTile = ctxZone->GetActiveNationSlotTile();
-            SetMapTileStateByteAndNotifyObserver(slotTile, slotWrapped + 7);
-            *reinterpret_cast<unsigned short*>(
-                reinterpret_cast<char*>(&g_pGlobalMapState->terrainStateTable[slotTile]) + 0x1a) =
-                0xffff;
+            SetMapTileStateByteAndNotifyObserver(slotTile,
+                                                 slotWrapped + kMapTileActionStateNationOrderFirst);
+            g_pGlobalMapState->terrainStateTable[slotTile].tileActionOrdinal1a = -1;
           }
           ++slotCursor;
           --slotsRemaining;
@@ -552,10 +550,10 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
     if (coastalTile == -1) {
       continue;
     }
-    SetMapTileStateByteAndNotifyObserver(coastalTile, rankEntry->nation + 7);
-    *reinterpret_cast<unsigned short*>(
-        reinterpret_cast<char*>(&g_pGlobalMapState->terrainStateTable[coastalTile]) + 0x1a) =
-        static_cast<unsigned short>(rankEntry->GetNationalIndex());
+    SetMapTileStateByteAndNotifyObserver(coastalTile,
+                                         rankEntry->nation + kMapTileActionStateNationOrderFirst);
+    g_pGlobalMapState->terrainStateTable[coastalTile].tileActionOrdinal1a =
+        static_cast<short>(rankEntry->GetNationalIndex());
   }
 }
 
@@ -567,8 +565,8 @@ TZone* TOcean::GetMapActionContextEntryByNationCodeOffset17(short nationCode) {
 // FUNCTION: IMPERIALISM 0x005633b0
 TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
   TTerrainStateRecordView& terrainRecord = g_pGlobalMapState->terrainStateTable[seaTileIndex];
-  signed char terrainClass = static_cast<signed char>(terrainRecord.tileActionClass16);
-  if (terrainClass == 3 || terrainClass == 0x0e) {
+  signed char terrainClass = static_cast<signed char>(terrainRecord.tileActionState16);
+  if (terrainClass == kMapTileActionStateAnchor || terrainClass == kMapTileActionStateDockedFleet) {
     return TZone::FindPortZoneByTile(seaTileIndex);
   }
   signed char nationCode = terrainRecord.ownerNationTag04;
@@ -696,8 +694,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
     }
     bool allNeighborsQualify = true;
     for (int j = 0; j < 6; ++j) {
-      short neighborTile =
-          TMapMgr::GetWrappedHexNeighborTileIndexByDirection(candidateTile, static_cast<short>(j));
+      short neighborTile = TMapMgr::GetNeighborTileID(candidateTile, static_cast<short>(j));
       if (neighborTile == -1) {
         continue;
       }
@@ -717,8 +714,8 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
   }
 
   TZone* linkedContext;
-  signed char seaTileClass = terrainTable[bestSeaTile].tileActionClass16;
-  if (seaTileClass == 3 || seaTileClass == 0xe) {
+  signed char seaTileClass = terrainTable[bestSeaTile].tileActionState16;
+  if (seaTileClass == kMapTileActionStateAnchor || seaTileClass == kMapTileActionStateDockedFleet) {
     linkedContext = TZone::GetFirstPortZone();
     while (linkedContext != 0 &&
            static_cast<short>(linkedContext->tileOrTerrainId0c) != bestSeaTile &&
@@ -754,7 +751,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
     }
   }
 
-  SetMapTileStateByteAndNotifyObserver(static_cast<int>(bestSeaTile), 3);
+  SetMapTileStateByteAndNotifyObserver(static_cast<int>(bestSeaTile), kMapTileActionStateAnchor);
   portZone->tileOrTerrainId0c = static_cast<int>(bestSeaTile);
   portZone->activeTileIndex20 = portZone->FindNearestActiveSeaContextTileFromOffset216();
 }

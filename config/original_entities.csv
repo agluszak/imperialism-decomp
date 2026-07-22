@@ -244,11 +244,11 @@ address|name|symbol|size|type|prototype|provenance
 45b0a0|SetColorRgbAndClearAlphaByte||35|function|undefined SetColorRgbAndClearAlphaByte()|
 45b100|InitializeTacticalBattleViewToolbarAndDialogControls||6845|function|undefined InitializeTacticalBattleViewToolbarAndDialogControls()|
 45d270|TOffLimitsPicture::WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270||18|function|undefined WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270()|
-45d2a0|TMapUberUberPicture::AutoScrollByEdgeMask||3|function|undefined AutoScrollByEdgeMask(short)|
+45d2a0|TMapUberUberPicture::Scroll||3|function|void __thiscall Scroll(MapScrollEdgeMaskStorage edgeMask)|mac_oracle
 45d2c0|TMapUberUberPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 45d310|TTacArmyView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 45d360|TTacticalToolbar::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-45d3b0|TTacMapUberPicture::AutoScrollByEdgeMask||26|function|undefined AutoScrollByEdgeMask(short)|
+45d3b0|TTacMapUberPicture::Scroll||26|function|void __thiscall Scroll(MapScrollEdgeMaskStorage edgeMask)|mac_oracle
 45d3e0|TTacMapUberPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 45d430|TTacticalAdiosPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 45d480|WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480||18|function|undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480()|
@@ -3165,9 +3165,9 @@ address|name|symbol|size|type|prototype|provenance
 512850|NoOpMapTilePredicateStub||24|function|undefined NoOpMapTilePredicateStub()|
 5128f0|ReturnIfTileIndexNegative||45|function|undefined ReturnIfTileIndexNegative()|
 512930|BuildHexAreaTileIndexList||426|function|short * __cdecl BuildHexAreaTileIndexList(short nCenterTileIndex, short nRadius)|
-512b50|ComputeHexNeighborTileIndices||281|function|void ComputeHexNeighborTileIndices(short nTileIndex, short * pnNeighborTiles, char fWrapHorizontally)|
-512cc0|GetWrappedHexNeighborTileIndexByDirection||206|function|undefined GetWrappedHexNeighborTileIndexByDirection()|
-512dd0|GetHexDirectionBetweenTiles||242|function|short __cdecl GetHexDirectionBetweenTiles(short nFromTileIndex, short nToTileIndex)|
+512b50|TMapMgr::GetNeighborTileIDArray||281|function|void __cdecl GetNeighborTileIDArray(StrategicTileIndex tileIndex, StrategicTileIndex* neighborTiles, unsigned char wrapHorizontally)|mac_oracle
+512cc0|TMapMgr::GetNeighborTileID||206|function|StrategicTileIndex __cdecl GetNeighborTileID(StrategicTileIndex tileIndex, StrategicHexDirectionStorage direction)|mac_oracle
+512dd0|TMapMgr::GetDirectionFrom||242|function|StrategicHexDirectionStorage __cdecl GetDirectionFrom(StrategicTileIndex sourceTile, StrategicTileIndex destTile)|mac_oracle
 513050|NormalizeWrappedMapCoord108x60||59|function|undefined NormalizeWrappedMapCoord108x60()|
 513120|NormalizeWrappedMapCoord217x60||63|function|undefined NormalizeWrappedMapCoord217x60()|
 513170|TMapMgr::OrphanCallChain_C3_I43_00513170||109|function|undefined OrphanCallChain_C3_I43_00513170(short param_1)|
@@ -5238,7 +5238,7 @@ address|name|symbol|size|type|prototype|provenance
 5974eb|ReinitializeGameFlowAndPostTurnEvent5DD||32|function|undefined ReinitializeGameFlowAndPostTurnEvent5DD()|
 597600|TMapUberPicture::DoMenuCommand||272|function|void __thiscall DoMenuCommand(int command)|
 597770|TMapUberPicture::DoKeyEvent||23|function|undefined OrphanTiny_ReturnZero_0048a730(void)|
-5977a0|TMapUberPicture::AutoScrollByEdgeMask||72|function|undefined AutoScrollByEdgeMask(short)|
+5977a0|TMapUberPicture::Scroll||72|function|void __thiscall Scroll(MapScrollEdgeMaskStorage edgeMask)|mac_oracle
 597810|TMapUberPicture::RefreshMapOrderEntryPanel||246|function|void __thiscall RefreshMapOrderEntryPanel(void * pMapOrderEntry)|
 597950|TMapUberPicture::SetActiveMapOrderEntry||113|function|void __thiscall SetActiveMapOrderEntry(void * pMapOrderEntry)|
 5979f0|GetActiveMapOrderEntry||9|function|void * __thiscall GetActiveMapOrderEntry(void)|
@@ -5396,8 +5396,8 @@ address|name|symbol|size|type|prototype|provenance
 59fe40|TTacticalBattle::ApplyTacticalDoneSelectionAndRefreshUi||171|function|undefined ApplyTacticalDoneSelectionAndRefreshUi()|
 59ff20|TTacticalBattle::ComputeTacticalReachableTileCostsByUnitCategory||765|function|undefined ComputeTacticalReachableTileCostsByUnitCategory()|
 5a02e0|TTacticalBattle::PropagateTileAccessibilityStrengthLevels||251|function|undefined PropagateTileAccessibilityStrengthLevels()|
-5a0420|TTacticalBattle::ComputeHexNeighborTileIndices_005A0420||225|function|undefined ComputeHexNeighborTileIndices_005A0420()|
-5a0550|TTacticalBattle::IsHexNeighborTileIndex||57|function|unsigned char __thiscall IsHexNeighborTileIndex(int tileIndex, int candidateTileIndex)|
+5a0420|TTacticalBattle::GetNeighborList||225|function|void TTacticalBattle::GetNeighborList(TacticalTileIndex tileIndex, TacticalTileIndex* outNeighborTiles6)|mac_oracle
+5a0550|TTacticalBattle::AreNeighbors||57|function|unsigned char TTacticalBattle::AreNeighbors(TacticalTileIndex tileIndex, TacticalTileIndex candidateTileIndex)|mac_oracle
 5a05a0|ComputeTacticalHoverCursorStateIndex||1002|function|undefined ComputeTacticalHoverCursorStateIndex()|
 5a0a90|ResolveTacticalHoverCursorToken||348|function|undefined ResolveTacticalHoverCursorToken()|
 5a0c50|TTacticalBattle::HandleTacticalBattleCommandTag||193|function|void __thiscall HandleTacticalBattleCommandTag(int commandTag)|
@@ -5405,7 +5405,7 @@ address|name|symbol|size|type|prototype|provenance
 5a0ea0|AdvanceToNextTacticalUnitTurnStep||277|function|undefined AdvanceToNextTacticalUnitTurnStep()|
 5a1010|TTacticalBattle::SetCurrentTacticalUnitSelection||155|function|undefined SetCurrentTacticalUnitSelection()|
 5a10e0|ProcessTacticalUnitState1TurnStep||630|function|undefined ProcessTacticalUnitState1TurnStep()|
-5a1400|TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection||146|function|undefined WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400(undefined4 param_1, int param_2, char param_3)|
+5a1400|TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection||146|function|unsigned char TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection(TacticalTileIndex tileIndex, TacticalHexDirection hexDirection, char side)|
 5a1520|TTacticalBattle::MoveTacticalUnitTowardTile||341|function|undefined MoveTacticalUnitTowardTile()|
 5a16e0|BuildPathToTargetByDistanceField||443|function|undefined BuildPathToTargetByDistanceField()|
 5a1910|TTacticalBattle::MoveTacticalUnitBetweenTiles||195|function|undefined MoveTacticalUnitBetweenTiles()|
@@ -5517,7 +5517,7 @@ address|name|symbol|size|type|prototype|provenance
 5a89a0|TTacticalBattleView::InvalidateTacticalUnitTileRect||53|function|undefined WrapperFor_InvalidateCityDialogRectRegion_At005a89a0(int param_1)|
 5a89f0|TTacticalBattleView::ComputeTacticalUnitTileScreenRect||156|function|undefined OrphanLeaf_NoCall_Ins59_005a89f0(int param_1, int * param_2)|
 5a8ac0|TTacticalBattleView::CenterViewportAroundGridIndexAndSnap||210|function|undefined CenterViewportAroundGridIndexAndSnap()|
-5a8be0|TTacticalBattleView::AdjustTacticalUnitVerticalOffsetAndRefreshMarker||132|function|undefined AdjustTacticalUnitVerticalOffsetAndRefreshMarker()|
+5a8be0|TTacticalBattleView::Scroll||132|function|void __thiscall Scroll(MapScrollEdgeMaskStorage edgeMask)|mac_oracle
 5a8ca0|TTacticalBattleView::DoSetCursor||125|function|void __thiscall DoSetCursor(CPoint* point, RgnHandle hitArg)|
 5a8d40|TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback||659|function|void __thiscall HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint * point, int hitArg)|
 5a9090|TTacticalBattleView::PlayTacticalTileEffect||169|function|undefined OrphanCallChain_C2_I66_005a9090(int param_1, undefined4 param_2, undefined4 param_3)|

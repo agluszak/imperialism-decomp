@@ -35,7 +35,9 @@ struct TTerrainStateRecordView {
   // UpdateMapTileAdjacencyMasksAndVariantForTile's streak-length bookkeeping. Same
   // evidence basis as terrainKindStorage00 above; also MOVSX-read there.
   signed char spriteVariantIndex01;
-  unsigned char roadFlag;
+  // Staged river/coast connection and sprite code. The high bit marks a
+  // pre-resolved map-editor value; finalized variants occupy 0x0b..0x3a.
+  RiverSpriteCodeStorage riverSpriteCode;
   // Previous owner-nation tag: the map context info panel (0x51b1c0) compares it with
   // ownerNationTag04 and renders a "(formerly of <nation>)" suffix when they differ.
   signed char formerOwnerNationTag03;
@@ -84,10 +86,10 @@ struct TTerrainStateRecordView {
   // Signed: same MOVSX-index evidence as terrainKindStorage00/spriteVariantIndex01 above.
   signed char gateFlag;
   ProvinceIndexStorage cityRecordIndex;
-  // Tile action class (structure/site type): equality-compared against 2..6/0xe/0x10/0x11
+  // Tile action state (fleet/zone marker): equality-compared against 2..6/0xe/0x10/0x11
   // by the tile context menu (0x504e90) to pick menu items 0x2b..0x31; read signed by
   // map_overlay_geometry; reset to -1 by the TMapMgr table init.
-  signed char tileActionClass16;
+  MapTileActionStateStorage tileActionState16;
   unsigned char railFlags17; // 0x17
   // Secondary/alternate owner nation tag (offset 0x18): the recruit-search-eligibility
   // family (0x5155c0, 0x515890) accepts a tile as owned by a nation if EITHER
@@ -193,7 +195,7 @@ void SplitTileIndexToHexRasterColumnX2AndRow(StrategicTileIndex tileIndex, short
 void SplitTileIndexToRowAndColumn(StrategicTileIndex tileIndex, short* outRow, short* outCol);
 
 // 0x005114b0. Maps an editor river connection mask to the tile-sprite variant stored in
-// TTerrainStateRecordView::roadFlag. Water tiles accept only a single direction bit; land
+// TTerrainStateRecordView::riverSpriteCode. Water tiles accept only a single direction bit; land
 // tiles additionally accept the 16 supported two-direction masks. Returns -1 when invalid.
 short __stdcall ResolveRiverSpriteVariantForConnectionMask(unsigned char connectionMask,
                                                            unsigned char waterTerrain);
@@ -210,16 +212,11 @@ struct HexSpiralSearchState {
   int stepInRing;
 };
 
-// 0x00512dd0. Hex direction (0-6) from sourceTile to destTile on the 0x6c(108)-wide map. Free
-// __cdecl function (no `this`), defined in TMapMgr.cpp.
-extern "C" short __cdecl GetHexDirectionBetweenTiles(StrategicTileIndex sourceTile,
-                                                     StrategicTileIndex destTile);
-
 // 0x00512930. Heap-allocates (`operator new`, caller frees via `operator delete`) and fills a
 // `radius*6`-entry tile-index ring around centerTileIndex: each of the 6 hex directions gets
 // one "corner" tile at exactly `radius` steps out, followed by (radius-1) more tiles walking
 // the ring's edge toward the next corner. Distinct from the stack-buffer, direct-neighbors-only
-// ComputeHexNeighborTileIndices. Free __cdecl function (no `this`), defined in TMapMgr.cpp.
+// GetNeighborTileIDArray. Free __cdecl function (no `this`), defined in TMapMgr.cpp.
 extern "C" StrategicTileIndex* __cdecl BuildHexAreaTileIndexList(StrategicTileIndex centerTileIndex,
                                                                  short radius);
 
@@ -679,13 +676,28 @@ public:
   StrategicTileIndex pendingRiverMouthTile22; // +0x22 -- pending river-mouth tile
   unsigned char field24;                      // +0x24 -- zeroed by the ctor; no observed reader yet
 
-  static void ComputeHexNeighborTileIndices(StrategicTileIndex tileIndex,
-                                            StrategicTileIndex* neighborTiles,
-                                            char wrapHorizontally);
-  static StrategicTileIndex GetWrappedHexNeighborTileIndexByDirection(StrategicTileIndex tileIndex,
-                                                                      short direction);
-  static StrategicTileIndex StepHexTileIndexByDirectionWithWrapRules(StrategicTileIndex tileIndex,
-                                                                     short direction);
+  static void GetNeighborTileIDArray(StrategicTileIndex tileIndex,
+                                     StrategicTileIndex* neighborTiles,
+                                     unsigned char wrapHorizontally);
+  static StrategicTileIndex GetNeighborTileID(StrategicTileIndex tileIndex,
+                                              StrategicHexDirectionStorage direction);
+  static StrategicTileIndex GetNeighborTileID(StrategicTileIndex tileIndex,
+                                              StrategicHexDirection direction) {
+    return GetNeighborTileID(tileIndex, EncodeStrategicHexDirection(direction));
+  }
+  // Mac identity: TMapMgr::GetDirectionFrom(short, short). Static membership preserves the
+  // Windows cdecl ABI while restoring the owning class.
+  static StrategicHexDirectionStorage GetDirectionFrom(StrategicTileIndex sourceTile,
+                                                       StrategicTileIndex destTile);
+  static StrategicTileIndex
+  StepHexTileIndexByDirectionWithWrapRules(StrategicTileIndex tileIndex,
+                                           StrategicHexDirectionStorage direction);
+  static StrategicTileIndex
+  StepHexTileIndexByDirectionWithWrapRules(StrategicTileIndex tileIndex,
+                                           StrategicHexDirection direction) {
+    return StepHexTileIndexByDirectionWithWrapRules(tileIndex,
+                                                    EncodeStrategicHexDirection(direction));
+  }
   static bool StepHexRowColByDirectionWithWrapRules(int* row, int* col, int direction);
   static void AdvanceSpiralSearchStateAndStepHexCoordinates(struct HexSpiralSearchState* state);
   static StrategicTileIndex TileIndexFromRowCol(int row, int col);
@@ -750,7 +762,7 @@ public:
 
   // 0x5108d0. Map-tile sprite-variant resolver: reads the tile's terrain type
   // (terrainStateTable byte 0) and feature/subtype code (byte 2, the field the layout
-  // calls roadFlag), inspects the west (tile-1) and NE-row (tile-0x6b) neighbors, and
+  // calls riverSpriteCode), inspects the west (tile-1) and NE-row (tile-0x6b) neighbors, and
   // picks a sprite-variant id -- using the map-generation LCG (g_mapGenLcgState_006a38e8)
   // to break ties. Called by UpdateMapTileAdjacencyMasksAndVariantForTile (0x510210).
   int ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex);
@@ -814,7 +826,7 @@ public:
 
   // 0x00518bd0 (reached through the ILT thunk at 0x004079af): computes the hex-grid
   // cell adjacent to cityScoreTable[contextArg]'s tile in the direction of
-  // cityScoreTable[tileIndex]'s tile (GetHexDirectionBetweenTiles +
+  // cityScoreTable[tileIndex]'s tile (GetDirectionFrom +
   // g_Build_Hex_Area_LookupTable_00696E70/E80's per-direction offsets), clamps it onto
   // the wrapped map grid, and -- if the resulting tile is on-map -- stamps its
   // perTileVisitedFlag0f with a direction-overlay code ((direction+3)%6+1, or +7 when

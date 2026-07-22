@@ -1190,7 +1190,7 @@ void TGreatPower::MarkConnectedOwnedRegionsFrom(unsigned char* regionMap, short 
     char adjacencyBits = g_pGlobalMapState->terrainStateTable[regionId].adjacencyBits06;
     for (short direction = 0; direction < 6; ++direction) {
       if ((adjacencyBits & (1 << direction)) != 0) {
-        short neighbor = TMapMgr::GetWrappedHexNeighborTileIndexByDirection(regionId, direction);
+        short neighbor = TMapMgr::GetNeighborTileID(regionId, direction);
         if (static_cast<short>(g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04) ==
                 this->nationSlot &&
             regionMap[neighbor] == 0) {
@@ -1221,8 +1221,8 @@ char* TGreatPower::BuildCityInfluenceLevelMap() {
       influenceByTile[town->tileIndex14] = influence;
 
       short neighbors[6];
-      TMapMgr::ComputeHexNeighborTileIndices(town->tileIndex14, neighbors,
-                                             g_pGlobalMapState->hexNeighborWrapHorizontally20);
+      TMapMgr::GetNeighborTileIDArray(town->tileIndex14, neighbors,
+                                      g_pGlobalMapState->hexNeighborWrapHorizontally20);
       for (int direction = 0; direction < 6; ++direction) {
         short neighbor = neighbors[direction];
         if (neighbor != -1) {
@@ -1277,7 +1277,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
             }
           }
 
-          if (terrainRecord->roadFlag != 0 && influence == 2) {
+          if (terrainRecord->riverSpriteCode != kRiverSpriteCodeNone && influence == 2) {
             ++controlledRegionCount;
           }
 

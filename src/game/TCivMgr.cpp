@@ -184,7 +184,7 @@ int TCivMgr::ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHi
       if (nTileIndex == homeTile) {
         return 4;
       }
-      short dir = GetHexDirectionBetweenTiles(homeTile, nTileIndex);
+      StrategicHexDirectionStorage dir = TMapMgr::GetDirectionFrom(homeTile, nTileIndex);
       if ((dir == 1) || (dir == 4)) {
         return 5;
       }
@@ -752,8 +752,8 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
   case 1:
   case 2: {
     short neighborBuf[7];
-    TMapMgr::ComputeHexNeighborTileIndices(order->tileIndex06, neighborBuf,
-                                           g_pGlobalMapState->hexNeighborWrapHorizontally20);
+    TMapMgr::GetNeighborTileIDArray(order->tileIndex06, neighborBuf,
+                                    g_pGlobalMapState->hexNeighborWrapHorizontally20);
     neighborBuf[6] = order->tileIndex06;
     TTerrainStateRecordView& centerTile = g_pGlobalMapState->terrainStateTable[order->tileIndex06];
     for (int i = 0; i < 7; ++i) {

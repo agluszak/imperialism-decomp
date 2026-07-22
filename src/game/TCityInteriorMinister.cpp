@@ -1238,8 +1238,7 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
     short regionSubtype =
         g_pGlobalMapState->terrainStateTable[town->tileIndex14].regionSubtypeTag05;
     for (short direction = 0; direction < 6; ++direction) {
-      short neighbor =
-          TMapMgr::GetWrappedHexNeighborTileIndexByDirection(town->tileIndex14, direction);
+      short neighbor = TMapMgr::GetNeighborTileID(town->tileIndex14, direction);
       if (neighbor != -1 &&
           g_pGlobalMapState->terrainStateTable[neighbor].regionSubtypeTag05 == regionSubtype &&
           static_cast<short>(g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04) ==
@@ -1252,7 +1251,7 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
   if (field3c != -1) {
     candidateTiles.InsertLast(field3c);
     for (short direction = 0; direction < 6; ++direction) {
-      short neighbor = TMapMgr::GetWrappedHexNeighborTileIndexByDirection(field3c, direction);
+      short neighbor = TMapMgr::GetNeighborTileID(field3c, direction);
       if (neighbor != -1 &&
           static_cast<short>(g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04) ==
               ownerContextAt04->nationSlot) {
@@ -1525,8 +1524,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() {
     for (short direction = 0; direction <= 6; ++direction) {
       short tileIndex = town->tileIndex14;
       if (direction < 6) {
-        tileIndex =
-            TMapMgr::GetWrappedHexNeighborTileIndexByDirection(town->tileIndex14, direction);
+        tileIndex = TMapMgr::GetNeighborTileID(town->tileIndex14, direction);
       }
       if (tileIndex == -1) {
         continue;
@@ -1671,7 +1669,7 @@ short __stdcall TraceDescendingTileScoreGradientToSource(short startTile, char* 
       short desiredScore = static_cast<short>(score - 1);
       direction = 0;
       do {
-        short neighbor = TMapMgr::GetWrappedHexNeighborTileIndexByDirection(currentTile, direction);
+        short neighbor = TMapMgr::GetNeighborTileID(currentTile, direction);
         if (neighbor != -1) {
           score = static_cast<signed char>(scoreMap[neighbor]);
         }
@@ -1680,7 +1678,7 @@ short __stdcall TraceDescendingTileScoreGradientToSource(short startTile, char* 
       --direction;
       previousTile = currentTile;
     }
-    currentTile = TMapMgr::GetWrappedHexNeighborTileIndexByDirection(currentTile, direction);
+    currentTile = TMapMgr::GetNeighborTileID(currentTile, direction);
   }
   *previousTileOut = previousTile;
   return currentTile;
@@ -1707,8 +1705,8 @@ void TCityInteriorMinister::StartRailheadProject(short resourceType, TShortintLi
 
     bool hasConnectedNeighbor = false;
     short neighbors[6];
-    TMapMgr::ComputeHexNeighborTileIndices(tileIndex, neighbors,
-                                           g_pGlobalMapState->hexNeighborWrapHorizontally20);
+    TMapMgr::GetNeighborTileIDArray(tileIndex, neighbors,
+                                    g_pGlobalMapState->hexNeighborWrapHorizontally20);
     for (short direction = 0; direction < 6; ++direction) {
       if (neighbors[direction] != -1 &&
           (g_pGlobalMapState->terrainStateTable[neighbors[direction]].activeFlags1c & 0x10) != 0) {
@@ -1823,8 +1821,8 @@ char* TCityInteriorMinister::CreateSeaDistanceMap(TShortintList* ownedTiles) {
           g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind();
       if (distanceMap[tileIndex] == 0 && allowedTerrain[terrainKind] != 0) {
         short neighbors[6];
-        TMapMgr::ComputeHexNeighborTileIndices(tileIndex, neighbors,
-                                               g_pGlobalMapState->hexNeighborWrapHorizontally20);
+        TMapMgr::GetNeighborTileIDArray(tileIndex, neighbors,
+                                        g_pGlobalMapState->hexNeighborWrapHorizontally20);
         char bestNeighborDistance = 0;
         for (short direction = 0; direction < 6; ++direction) {
           char neighborDistance =
@@ -1886,8 +1884,8 @@ char* TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates(
           g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind();
       if (distanceMap[tileIndex] == 0 && allowedTerrain[terrainKind] != 0) {
         short neighbors[6];
-        TMapMgr::ComputeHexNeighborTileIndices(tileIndex, neighbors,
-                                               g_pGlobalMapState->hexNeighborWrapHorizontally20);
+        TMapMgr::GetNeighborTileIDArray(tileIndex, neighbors,
+                                        g_pGlobalMapState->hexNeighborWrapHorizontally20);
         char bestNeighborDistance = 0;
         for (short direction = 0; direction < 6; ++direction) {
           char neighborDistance =

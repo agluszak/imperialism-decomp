@@ -10,7 +10,7 @@
 #include "game/global_data_tables.h"
 #include "game/sea_geometry.h"
 
-// Same hex-neighbor math as TMapMgr::ComputeHexNeighborTileIndices, but over
+// Same hex-neighbor math as TMapMgr::GetNeighborTileIDArray, but over
 // TMapMaker's own full-resolution generation grid (mapTileGrid08, 108x60, stride
 // 0x24) rather than the coarse 15x27 region grid.
 static __inline int ComputeHexAdjacentFullGridTileIndex(int tileIndex, int direction);
@@ -1078,7 +1078,7 @@ char TMapMaker::GrowRiver(long tileIndex, long incomingDirection, long outgoingD
   return 1;
 }
 
-// Same hex-neighbor math as TMapMgr::ComputeHexNeighborTileIndices, but over
+// Same hex-neighbor math as TMapMgr::GetNeighborTileIDArray, but over
 // TMapMaker's own full-resolution generation grid (mapTileGrid08, 108x60, stride
 // 0x24) rather than the coarse 15x27 region grid.
 static __inline int ComputeHexAdjacentFullGridTileIndex(int tileIndex, int direction) {

@@ -359,8 +359,8 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
     for (int capitalSlot = 0; capitalSlot < 7; ++capitalSlot) {
       int homeTile = g_apTerrainTypeDescriptorTable[capitalSlot]->homeTileIndex;
       short neighborTiles[7];
-      TMapMgr::ComputeHexNeighborTileIndices(static_cast<short>(homeTile), neighborTiles,
-                                             g_pGlobalMapState->hexNeighborWrapHorizontally20);
+      TMapMgr::GetNeighborTileIDArray(static_cast<short>(homeTile), neighborTiles,
+                                      g_pGlobalMapState->hexNeighborWrapHorizontally20);
       neighborTiles[6] = static_cast<short>(homeTile);
       for (int k = 0; k < 7; ++k) {
         short tileIndex = neighborTiles[k];

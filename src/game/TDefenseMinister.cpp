@@ -290,7 +290,7 @@ TDefenseMinister::BuildTileRingPriorityMapForNationTileList(TLongintList* ownedR
   // Pass 1: mark regions bordering foreign-owned territory with priority 4.
   for (int i = 1; i <= regionCount; ++i) {
     short regionId = static_cast<short>(ownedRegions->At(i));
-    TMapMgr::ComputeHexNeighborTileIndices(regionId, neighbors, wrapHorizontally);
+    TMapMgr::GetNeighborTileIDArray(regionId, neighbors, wrapHorizontally);
     for (int dir = 0; dir < 6; ++dir) {
       short neighborTile = neighbors[dir];
       int neighborOwner = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
@@ -303,7 +303,7 @@ TDefenseMinister::BuildTileRingPriorityMapForNationTileList(TLongintList* ownedR
   // Pass 2: mark regions bordering a priority-4 tile with priority 3.
   for (int i2 = 1; i2 <= regionCount; ++i2) {
     short regionId = static_cast<short>(ownedRegions->At(i2));
-    TMapMgr::ComputeHexNeighborTileIndices(regionId, neighbors, wrapHorizontally);
+    TMapMgr::GetNeighborTileIDArray(regionId, neighbors, wrapHorizontally);
     for (int dir = 0; dir < 6; ++dir) {
       short neighborTile = neighbors[dir];
       if (priorityMap[neighborTile] == 4) {
@@ -316,7 +316,7 @@ TDefenseMinister::BuildTileRingPriorityMapForNationTileList(TLongintList* ownedR
   // priority 2.
   for (int i3 = 1; i3 <= regionCount; ++i3) {
     short regionId = static_cast<short>(ownedRegions->At(i3));
-    TMapMgr::ComputeHexNeighborTileIndices(regionId, neighbors, wrapHorizontally);
+    TMapMgr::GetNeighborTileIDArray(regionId, neighbors, wrapHorizontally);
     for (int dir = 0; dir < 6; ++dir) {
       short neighborTile = neighbors[dir];
       if (priorityMap[neighborTile] == 3 ||
@@ -330,7 +330,7 @@ TDefenseMinister::BuildTileRingPriorityMapForNationTileList(TLongintList* ownedR
   // Pass 4: mark regions bordering a priority-2 tile with priority 1.
   for (int i4 = 1; i4 <= regionCount; ++i4) {
     short regionId = static_cast<short>(ownedRegions->At(i4));
-    TMapMgr::ComputeHexNeighborTileIndices(regionId, neighbors, wrapHorizontally);
+    TMapMgr::GetNeighborTileIDArray(regionId, neighbors, wrapHorizontally);
     for (int dir = 0; dir < 6; ++dir) {
       short neighborTile = neighbors[dir];
       if (priorityMap[neighborTile] == 2) {
@@ -349,7 +349,7 @@ TDefenseMinister::BuildTileRingPriorityMapForNationTileList(TLongintList* ownedR
     }
     priorityMap[regionId] += 3;
 
-    TMapMgr::ComputeHexNeighborTileIndices(regionId, neighbors, wrapHorizontally);
+    TMapMgr::GetNeighborTileIDArray(regionId, neighbors, wrapHorizontally);
     for (int dir = 0; dir < 6; ++dir) {
       short neighborTile = neighbors[dir];
       if (g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(neighborTile)) {

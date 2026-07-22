@@ -394,7 +394,7 @@ void TTaskForce::ReadFrom(TStream* stream) {
   }
 
   bool tileActionClassNonNegative =
-      g_pGlobalMapState->terrainStateTable[ingotTileIndex].tileActionClass16 >= 0;
+      g_pGlobalMapState->terrainStateTable[ingotTileIndex].tileActionState16 >= 0;
   if (!isActiveNation) {
     ingotTileIndex = -1;
     return;

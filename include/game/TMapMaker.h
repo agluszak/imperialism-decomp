@@ -77,7 +77,7 @@ public:
   // random retry on collision) up to `retryBudget` steps, laying a linear terrain
   // feature (river/road-shaped); returns the number of steps placed. Uses the same
   // g_hexColOffsetEvenRow_00697450/g_hexRowOffset_00697468/g_hexColOffsetOddRow_00697480
-  // hex-direction tables as ComputeHexNeighborTileIndices. slot 18 / 0x48
+  // hex-direction tables as GetNeighborTileIDArray. slot 18 / 0x48
   virtual int ForwardParam(int tileIndex, int retryBudget, int featureType);
   // Verified 0 stack args from the caller (0x527730 calls it with no pushes) -- the
   // header's previous 1-arg form was wrong. slot 19 / 0x4c

@@ -1116,16 +1116,16 @@ void TTacticalBattleView::CenterViewportAroundGridIndexAndSnap(TacticalTileIndex
 // on direction 4 pans right by one tile while within the scrollable content width, then
 // repaints and refreshes the unit marker. Gated on the modal-wait-done flag.
 // FUNCTION: IMPERIALISM 0x005a8be0
-void TTacticalBattleView::AdjustTacticalUnitVerticalOffsetAndRefreshMarker(short scrollDirection) {
+void TTacticalBattleView::Scroll(MapScrollEdgeMaskStorage scrollDirection) {
   if (modalAnimWaitDoneFlag98 != 0) {
-    if (scrollDirection == 8) {
+    if (scrollDirection == kMapScrollEdgeLeft) {
       if (viewOriginX78 > 0) {
         viewOriginX78 = viewOriginX78 - static_cast<short>(tileWidthPx88);
         RefreshControl();
         SpawnTacticalUiMarkerAtUnitTile();
         return;
       }
-    } else if (scrollDirection == 4 &&
+    } else if (scrollDirection == kMapScrollEdgeRight &&
                static_cast<int>(viewOriginX78) <
                    (static_cast<int>(scrollableContentWidth7A) - frameWidth34) - tileWidthPx88) {
       viewOriginX78 = static_cast<short>(tileWidthPx88) + viewOriginX78;
@@ -1486,7 +1486,7 @@ short TTacticalBattleView::ComputeTacticalUnitSpriteOrientationIndexByAdjacentTy
   // consult neighbors[0]/[2], odd rows consult neighbors[5]/[3].
   int orientationTable[8] = {6, 3, 5, 1, 6, 0, 2, 4};
   TacticalTileIndex neighbors[6];
-  tacticalBattle60->ComputeTacticalHexNeighborTileIndices(tileIndex, neighbors);
+  tacticalBattle60->GetNeighborList(tileIndex, neighbors);
   int code;
   if ((tileIndex / 29 & 1) != 0) {
     code = 0;

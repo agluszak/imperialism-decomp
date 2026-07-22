@@ -93,7 +93,7 @@ thunk_EnsurePortZoneForTile 402419 l
 thunk_HandleTurnEventDialogFactorySlotF4 402432 l
 thunk_SetMapTileIconVariantTriplet 402437 l
 thunk_ShowCivilianLedgerDialogAndSelectUnit 402469 l
-thunk_GetWrappedHexNeighborTileIndexByDirection 40246E l
+thunk_GetNeighborTileID 40246E l
 thunk_TriggerTacticalUiUpdate2711 4024D2 l
 thunk_HandleTurnEventDialogFactorySlotEC 4024EB l
 thunk_UnlockPixels 4024FA l
@@ -161,7 +161,7 @@ thunk_GetMapContextActionLabelTokenByActionCode 403265 l
 TCivToolbar::thunk_SetMapInteractionMode 4032A1 l
 thunk_LoadFirstUiWindowTraversalEntry 4032C9 l
 thunk_HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons 4032DD l
-thunk_ComputeHexNeighborTileIndices 4032EC l
+thunk_GetNeighborTileIDArray 4032EC l
 TMapUberPicture::TMapUberPicture_VtblSlot127 4032FB l
 thunk_ConstructPictureResourceEntryType606E8 403328 l
 thunk_PromptAndQueueEngineerRailOrder 403332 l
@@ -253,7 +253,7 @@ TCivWorkOrderState::thunk_ICivUnit 404B33 l
 thunk_CanQueueMapOrderForProvinceContext 404B60 l
 thunk_GetCityInteriorMinisterTypeName 404B65 l
 thunk_RebuildNationStateSlotsAndAvailability 404BBA l
-thunk_IsHexNeighborTileIndex 404C2D l
+thunk_AreNeighbors 404C2D l
 thunk_ConstructTradeMoveScaledControlPanel 404C3C l
 thunk_ApplyCityEntryOrderDeltaAndCosts 404C5A l
 thunk_HandleTurnEventVtableSlot40RefreshGoldDialog 404C91 l
@@ -557,7 +557,7 @@ thunk_GetMinActionThresholdFromEntryChildren 408AD0 l
 thunk_AdvanceCityOrderAndQueueRequirementCommands 408ADA l
 TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback 408B07 l
 thunk_InitializeDialogTemplateD0WithTextState 408B2F l
-thunk_GetHexDirectionBetweenTiles 408B8E l
+thunk_GetDirectionFrom 408B8E l
 TCivToolbar::thunk_CycleMapInteractionSelectionAfterHandledClick 408B93 l
 thunk_ApplyCityViewBuildingOrderDialogResult 408BA7 l
 thunk_SetControlPictureEntryAndMaybeRefresh 408CDD l
@@ -872,11 +872,11 @@ ClearColorRgbaBytes 45B080 f
 SetColorRgbAndClearAlphaByte 45B0A0 f
 InitializeTacticalBattleViewToolbarAndDialogControls 45B100 f
 TOffLimitsPicture::WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270 45D270 f
-TMapUberUberPicture::AutoScrollByEdgeMask 45D2A0 f
+TMapUberUberPicture::Scroll 45D2A0 f
 TMapUberUberPicture::'scalar_deleting_destructor' 45D2C0 f
 TTacArmyView::'scalar_deleting_destructor' 45D310 f
 TTacticalToolbar::'scalar_deleting_destructor' 45D360 f
-TTacMapUberPicture::AutoScrollByEdgeMask 45D3B0 f
+TTacMapUberPicture::Scroll 45D3B0 f
 TTacMapUberPicture::'scalar_deleting_destructor' 45D3E0 f
 TTacticalAdiosPicture::'scalar_deleting_destructor' 45D430 f
 WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480 45D480 f
@@ -3822,9 +3822,9 @@ SplitTileIndexToHexRasterColumnX2AndRow 5127E0 f
 ComputeTileIndexFromHexColumnX2AndRow 512850 f
 LookupHexNeighborRowDeltaByDirection 5128F0 f
 BuildHexAreaTileIndexList 512930 f
-TMapMgr::ComputeHexNeighborTileIndices 512B50 f
-TMapMgr::GetWrappedHexNeighborTileIndexByDirection 512CC0 f
-GetHexDirectionBetweenTiles 512DD0 f
+TMapMgr::GetNeighborTileIDArray 512B50 f
+TMapMgr::GetNeighborTileID 512CC0 f
+TMapMgr::GetDirectionFrom 512DD0 f
 NormalizeWrappedMapCoord108x60 513050 f
 NormalizeWrappedMapCoord217x60 513120 f
 TMapMgr::FindTownMarkerForTileByOwnerNation 513170 f
@@ -5914,7 +5914,7 @@ Helper_Uses_thunk_AssignStringSharedRefAndReturnThis_At005974a4 5974A4 f
 ReinitializeGameFlowAndPostTurnEvent5DD 5974EB f
 TMapUberPicture::vmethod_0017 597600 f
 TMapUberPicture::ForwardParam 597770 f
-TMapUberPicture::AutoScrollByEdgeMask 5977A0 f
+TMapUberPicture::Scroll 5977A0 f
 TMapUberPicture::RefreshMapOrderEntryPanel 597810 f
 TMapUberPicture::SetActiveMapOrderEntry 597950 f
 GetActiveMapOrderEntry 5979F0 f
@@ -6072,8 +6072,8 @@ TTacticalBattle::FinalizeTacticalTurnStateAndQueueEvent232A 59FDB0 f
 TTacticalBattle::ApplyTacticalDoneSelectionAndRefreshUi 59FE40 f
 TTacticalBattle::ComputeTacticalReachableTileCostsByUnitCategory 59FF20 f
 TTacticalBattle::PropagateTileAccessibilityStrengthLevels 5A02E0 f
-TTacticalBattle::ComputeHexNeighborTileIndices_005A0420 5A0420 f
-IsHexNeighborTileIndex 5A0550 f
+TTacticalBattle::GetNeighborList 5A0420 f
+TTacticalBattle::AreNeighbors 5A0550 f
 ComputeTacticalHoverCursorStateIndex 5A05A0 f
 ResolveTacticalHoverCursorToken 5A0A90 f
 TTacticalBattle::HandleTacticalBattleCommandTag 5A0C50 f
@@ -6193,7 +6193,7 @@ TTacticalBattleView::TacticalBattleViewSlot68 5A8900 f
 TTacticalBattleView::InvalidateTacticalUnitTileRect 5A89A0 f
 TTacticalBattleView::ComputeTacticalUnitTileScreenRect 5A89F0 f
 TTacticalBattleView::CenterViewportAroundGridIndexAndSnap 5A8AC0 f
-TTacticalBattleView::AdjustTacticalUnitVerticalOffsetAndRefreshMarker 5A8BE0 f
+TTacticalBattleView::Scroll 5A8BE0 f
 TTacticalBattleView::HandleCursorHoverFallback 5A8CA0 f
 TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback 5A8D40 f
 TTacticalBattleView::PlayTacticalTileEffect 5A9090 f

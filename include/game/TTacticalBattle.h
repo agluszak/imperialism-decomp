@@ -45,7 +45,7 @@ public:
   // Whether either neighbor tile flanking hex direction `hexDirection` around
   // `tileIndex` holds a unit of the other side.
   virtual unsigned char HasEnemyUnitOnTilesFlankingHexDirection(TacticalTileIndex tileIndex,
-                                                                int hexDirection,
+                                                                TacticalHexDirection hexDirection,
                                                                 char side); // slot 0x0e 0x5a1400
   virtual void ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
       TTacticalUnit* unit, TacticalTileIndex targetTileIndex); // slot 0x0f 0x5a1ca0
@@ -192,10 +192,11 @@ public:
 
   // Helpers the command family dispatches into (all __thiscall on the battle).
   void ApplyTacticalDoneSelectionAndRefreshUi(TTacticalUnit* unit); // 0x59fe40
-  void ComputeTacticalHexNeighborTileIndices(TacticalTileIndex tileIndex,
-                                             TacticalTileIndex* outNeighborTiles6); // 0x5a0420
-  unsigned char IsHexNeighborTileIndex(TacticalTileIndex tileIndex,
-                                       TacticalTileIndex candidateTileIndex); // 0x5a0550
+  // Mac identities: GetNeighborList(long, long*) and AreNeighbors(long, long).
+  void GetNeighborList(TacticalTileIndex tileIndex,
+                       TacticalTileIndex* outNeighborTiles6); // 0x5a0420
+  unsigned char AreNeighbors(TacticalTileIndex tileIndex,
+                             TacticalTileIndex candidateTileIndex); // 0x5a0550
   void ConsumeFortStrengthPointsAndInvalidateIfDepleted(TacticalTileIndex tileIndex,
                                                         int consumeAmount); // 0x5a3c20
   void EvaluateTacticalSideStateAndShowBattleSummaryDialog();               // 0x5a2750

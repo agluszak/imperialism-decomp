@@ -182,7 +182,7 @@ void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit*
       }
 
       TacticalTileIndex neighborTiles[6];
-      ComputeTacticalHexNeighborTileIndices(tileIndex, neighborTiles);
+      GetNeighborList(tileIndex, neighborTiles);
       int direction;
       for (direction = 0; direction < 6; ++direction) {
         TacticalTileIndex neighborTile = neighborTiles[direction];
@@ -217,7 +217,7 @@ void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
   EvaluateAndResolveTacticalActionAgainstTileOccupant(unit, targetTileIndex);
   if (battleOutcomeCode44 == 0) {
     TacticalTileIndex neighborTiles[6];
-    ComputeTacticalHexNeighborTileIndices(selectedUnit1c->tileIndex8, neighborTiles);
+    GetNeighborList(selectedUnit1c->tileIndex8, neighborTiles);
     int direction;
     for (direction = 0; direction < 6; ++direction) {
       TacticalTileIndex neighborTile = neighborTiles[direction];
@@ -238,7 +238,7 @@ void TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
   MoveTacticalUnitTowardTile(unit, targetTileIndex);
   if (unit->selectedFlag18 == 0) {
     TacticalTileIndex neighborTiles[6];
-    ComputeTacticalHexNeighborTileIndices(selectedUnit1c->tileIndex8, neighborTiles);
+    GetNeighborList(selectedUnit1c->tileIndex8, neighborTiles);
     int direction;
     for (direction = 0; direction < 6; ++direction) {
       TacticalTileIndex neighborTile = neighborTiles[direction];

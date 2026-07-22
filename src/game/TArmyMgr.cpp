@@ -1470,7 +1470,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
 // FUNCTION: IMPERIALISM 0x004a5760
 void TArmyMgr::MarchSelectedArmies(short tileIndex) {
   short direction = (g_pGlobalMapState->terrainStateTable[tileIndex].perTileVisitedFlag0f - 1) % 6;
-  short neighborTile = TMapMgr::GetWrappedHexNeighborTileIndexByDirection(tileIndex, direction);
+  short neighborTile = TMapMgr::GetNeighborTileID(tileIndex, direction);
   short cityRecordIndex = g_pGlobalMapState->terrainStateTable[neighborTile].cityRecordIndex;
 
   short activeNationId = g_pSimMgr->GetActiveNationId();
@@ -1517,8 +1517,8 @@ void TArmyMgr::MarchSelectedArmies(short tileIndex) {
     }
 
     short neighborTiles[6];
-    TMapMgr::ComputeHexNeighborTileIndices(tileIndex, neighborTiles,
-                                           g_pGlobalMapState->hexNeighborWrapHorizontally20);
+    TMapMgr::GetNeighborTileIDArray(tileIndex, neighborTiles,
+                                    g_pGlobalMapState->hexNeighborWrapHorizontally20);
     for (int i = 0; i < 6; ++i) {
       short nt = neighborTiles[i];
       if (nt == -1) {

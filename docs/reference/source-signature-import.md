@@ -191,7 +191,7 @@ projector consults it (`resolve_entity_kind`, matched on qualified name + arity 
 overloads) and falls back to the punctuation guess only when a name is absent —
 true of free functions defined only in a `.cpp`, where punctuation is already right.
 It corrects the convention for **12** source-owned functions that are `static`
-methods (e.g. `TMapMgr::ComputeHexNeighborTileIndices`); none currently have
+methods (e.g. `TMapMgr::GetNeighborTileIDArray`); none currently have
 `in_stack`, so this changes no projection today — it is defensive correctness and
 the input to the audit below.
 

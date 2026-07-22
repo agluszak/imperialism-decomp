@@ -198,8 +198,8 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
     if (unitKind == EncodeCivilianUnitKind(kCivilianUnitEngineer) &&
         g_pGlobalMapState->terrainStateTable[hoveredTile].regionSubtypeTag05 == -1) {
       updateNeighborHighlights = true;
-      TMapMgr::ComputeHexNeighborTileIndices(hoveredTile, neighborTiles,
-                                             g_pGlobalMapState->hexNeighborWrapHorizontally20);
+      TMapMgr::GetNeighborTileIDArray(hoveredTile, neighborTiles,
+                                      g_pGlobalMapState->hexNeighborWrapHorizontally20);
       short activeNation = g_pSimMgr->GetActiveNationId();
       for (int i = 0; i < 6; ++i) {
         short neighbor = neighborTiles[i];
@@ -1001,11 +1001,11 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
       // the complete six-direction shoreline mask. Convert that semantic mask to the legacy
       // raster order for ordinary coasts; preserve explicit +2 variants for river mouths and
       // loaded-map artwork.
-      short roadType = terrain.roadFlag;
-      if (roadType == 0) {
+      short riverSpriteCode = terrain.riverSpriteCode;
+      if (riverSpriteCode == kRiverSpriteCodeNone) {
         adjacencyMask = ReflectHexDirectionMaskForBottomUpSurface(adjacencyMask);
         variantMask = ReflectHexDirectionMaskForBottomUpSurface(variantMask);
-        roadType = adjacencyMask;
+        riverSpriteCode = adjacencyMask;
       }
       for (int corner = 0; corner < 6; ++corner) {
         int previousDirection = (corner + 5) % 6;
@@ -1017,28 +1017,33 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
         bool useTripleOffset = false;
         switch (corner) {
         case 1:
-          useTripleOffset = roadType == 0x33 || roadType == 0x34;
+          useTripleOffset = riverSpriteCode == kRiverSpriteCodeWaterSingleDirectionFirst ||
+                            riverSpriteCode == kRiverSpriteCodeWaterSingleDirectionFirst + 1;
           break;
         case 2:
-          useTripleOffset = roadType == 0x35 || roadType == 0x36;
+          useTripleOffset = riverSpriteCode == kRiverSpriteCodeWaterSingleDirectionFirst + 2 ||
+                            riverSpriteCode == kRiverSpriteCodeWaterSingleDirectionFirst + 3;
           break;
         case 3:
-          useTripleOffset = roadType == 0x36 || roadType == 0x37;
+          useTripleOffset = riverSpriteCode == kRiverSpriteCodeWaterSingleDirectionFirst + 3 ||
+                            riverSpriteCode == kRiverSpriteCodeWaterSingleDirectionFirst + 4;
           break;
         case 4:
-          useTripleOffset = roadType == 0x37 || roadType == 0x39;
+          useTripleOffset = riverSpriteCode == kRiverSpriteCodeWaterSingleDirectionFirst + 4 ||
+                            riverSpriteCode == kRiverSpriteCodeWaterSingleDirectionFirst + 6;
           break;
         case 5:
-          useTripleOffset = roadType == 0x38 || roadType == 0x3a;
+          useTripleOffset = riverSpriteCode == kRiverSpriteCodeWaterSingleDirectionFirst + 5 ||
+                            riverSpriteCode == kRiverSpriteCodeWaterSingleDirectionLast;
           break;
         }
         short coastOffset;
         if (useTripleOffset) {
           coastOffset = g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariantTriple(
-              static_cast<char>(roadType), static_cast<char>(corner + 1), roadType);
+              static_cast<char>(riverSpriteCode), static_cast<char>(corner + 1), riverSpriteCode);
         } else {
           coastOffset = g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariant(
-              static_cast<char>(roadType), static_cast<char>(corner + 1),
+              static_cast<char>(riverSpriteCode), static_cast<char>(corner + 1),
               static_cast<char>(variantMask & (1 << corner)));
         }
         if (coastOffset == 0) {
@@ -1184,8 +1189,9 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
     int markerOffset = (terrain.perTileVisitedFlag0f - 1) << 6;
     Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas694[6], quickDrawSurface350,
                                    markerOffset, tileRect);
-  } else if (isOcean && terrain.tileActionClass16 >= 0 && terrain.tileActionClass16 < 0x12) {
-    int actionOffset = terrain.tileActionClass16 << 6;
+  } else if (isOcean && terrain.tileActionState16 >= 0 &&
+             terrain.tileActionState16 < kMapTileActionStateStrategicAtlasFrameCount) {
+    int actionOffset = terrain.tileActionState16 << 6;
     Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas690, quickDrawSurface350,
                                    actionOffset, tileRect);
   }
@@ -1594,7 +1600,8 @@ void TMapDialog::DrawCityBorderSegmentsByMask(unsigned char borderMask, int scre
   }
 
   if (g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind() != kStrategicTerrainWater) {
-    short neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 0);
+    short neighborTile =
+        g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthEast);
     if (neighborTile != -1 &&
         g_pGlobalMapState->terrainStateTable[neighborTile].GetTerrainKind() ==
             kStrategicTerrainWater &&
@@ -1605,7 +1612,7 @@ void TMapDialog::DrawCityBorderSegmentsByMask(unsigned char borderMask, int scre
       DrawMapDialogGuidePatternSetD_00520d20(screenX, screenY, 0);
     }
 
-    neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 2);
+    neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
     if (neighborTile != -1 &&
         g_pGlobalMapState->terrainStateTable[neighborTile].GetTerrainKind() ==
             kStrategicTerrainWater &&
@@ -1629,25 +1636,27 @@ void TMapDialog::DrawNationBorderSegmentsByMask(unsigned char borderMask, int sc
   short neighborTile;
 
   if (direction1) {
-    neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 1);
+    neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionEast);
     short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
     if ((borderMask & 1) == 0) {
       DrawBorder(2, screenX, screenY, currentNation, neighborNation);
     } else {
       DrawBorder(1, screenX, screenY, currentNation, neighborNation);
       if ((borderMask & 0x40) != 0) {
-        neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 0);
+        neighborTile =
+            g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthEast);
         neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
         DrawBorder(3, screenX, screenY, currentNation, neighborNation);
       }
     }
 
     if ((borderMask & 4) == 0) {
-      neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 1);
+      neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionEast);
       neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
       DrawBorder(6, screenX, screenY, currentNation, neighborNation);
     } else {
-      neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 2);
+      neighborTile =
+          g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
       neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
       DrawBorder(7, screenX, screenY, currentNation, neighborNation);
       if ((borderMask & 0x80) != 0) {
@@ -1657,7 +1666,7 @@ void TMapDialog::DrawNationBorderSegmentsByMask(unsigned char borderMask, int sc
   }
 
   if ((borderMask & 1) != 0) {
-    neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 0);
+    neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthEast);
     short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
     DrawBorder(0, screenX, screenY, currentNation, neighborNation);
     if (!direction1) {
@@ -1665,7 +1674,7 @@ void TMapDialog::DrawNationBorderSegmentsByMask(unsigned char borderMask, int sc
     }
   }
   if ((borderMask & 4) != 0) {
-    neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 2);
+    neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
     short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
     DrawBorder(9, screenX, screenY, currentNation, neighborNation);
     if (!direction1) {
@@ -1674,23 +1683,25 @@ void TMapDialog::DrawNationBorderSegmentsByMask(unsigned char borderMask, int sc
   }
 
   if (g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind() != kStrategicTerrainWater) {
-    neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 0);
+    neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthEast);
     if (neighborTile != -1 &&
         g_pGlobalMapState->terrainStateTable[neighborTile].GetTerrainKind() ==
             kStrategicTerrainWater &&
         (borderMask & 0x20) != 0 && !direction1) {
-      neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 5);
+      neighborTile =
+          g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthWest);
       short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
       DrawBorder(0, screenX, screenY, currentNation, neighborNation);
       DrawBorder(3, screenX, screenY, currentNation, neighborNation);
     }
 
-    neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 2);
+    neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
     if (neighborTile != -1 &&
         g_pGlobalMapState->terrainStateTable[neighborTile].GetTerrainKind() ==
             kStrategicTerrainWater &&
         (borderMask & 8) != 0 && !direction1) {
-      neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(tileIndex, 3);
+      neighborTile =
+          g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthWest);
       short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
       DrawBorder(5, screenX, screenY, currentNation, neighborNation);
       DrawBorder(9, screenX, screenY, currentNation, neighborNation);
@@ -1722,8 +1733,8 @@ void TMapDialog::DrawSeaZoneBorders(unsigned char edgeMask, int screenX, int scr
 // FUNCTION: IMPERIALISM 0x005220F0
 void TMapDialog::DrawSeaZoneBorders(int screenX, int screenY, short tileIndex) {
   short neighbors[6];
-  TMapMgr::ComputeHexNeighborTileIndices(tileIndex, neighbors,
-                                         g_pGlobalMapState->hexNeighborWrapHorizontally20);
+  TMapMgr::GetNeighborTileIDArray(tileIndex, neighbors,
+                                  g_pGlobalMapState->hexNeighborWrapHorizontally20);
 
   if (LandTilesHaveDifferentNationOwners(neighbors[3], neighbors[2])) {
     SetMapBorderColorForTileOwner(neighbors[3]);
@@ -1861,8 +1872,8 @@ void TMapDialog::DrawWrappedMapRouteSegment(short col1, int row1, short col2, in
 void TMapDialog::DrawHexNeighborConnectionMask(unsigned char connectionMask, int screenX,
                                                int screenY, short tileIndex) {
   short neighborTiles[6];
-  TMapMgr::ComputeHexNeighborTileIndices(tileIndex, neighborTiles,
-                                         g_pGlobalMapState->hexNeighborWrapHorizontally20);
+  TMapMgr::GetNeighborTileIDArray(tileIndex, neighborTiles,
+                                  g_pGlobalMapState->hexNeighborWrapHorizontally20);
   TTerrainStateRecordView* tiles = g_pGlobalMapState->terrainStateTable;
   unsigned char northeastOcean = connectionMask & 2;
 
@@ -2187,8 +2198,9 @@ void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
 // FUNCTION: IMPERIALISM 0x00523ff0
 void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                                unsigned char altOverlay) {
-  signed char tileActionClass = g_pGlobalMapState->terrainStateTable[tileIndex].tileActionClass16;
-  if (tileActionClass < 0 || tileActionClass >= 0x13) {
+  MapTileActionStateStorage tileActionClass =
+      g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState16;
+  if (tileActionClass < 0 || tileActionClass >= kMapTileActionStateOceanAtlasFrameCount) {
     return;
   }
 

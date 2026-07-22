@@ -12,12 +12,12 @@ public:
   virtual ~TTacMapUberPicture() override;                 // slot 0x01 (scalar deleting destructor)
   virtual void DoKeyEvent(TToolboxEvent* event) override; // slot 0x12 0x5ad3f0
   virtual void DoPostCreate(int arg) override;            // slot 0x37 0x5ad3a0
-  virtual void AutoScrollByEdgeMask(short edgeMask) override; // slot 0x74 0x45d3b0
+  virtual void Scroll(MapScrollEdgeMaskStorage edgeMask) override; // slot 0x74 0x45d3b0
 
   TTacMapUberPicture();
 
-  // Tactical 'DLOG' child resolved by DoPostCreate. AutoScrollByEdgeMask forwards
+  // Tactical 'DLOG' child resolved by DoPostCreate. Scroll forwards
   // the edge mask to its slot 0x6b
-  // (TTacticalBattleView::AdjustTacticalUnitVerticalOffsetAndRefreshMarker).
+  // (TTacticalBattleView::Scroll).
   TTacticalBattleView* tacticalBattleView94;
 };

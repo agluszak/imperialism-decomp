@@ -507,7 +507,7 @@ int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantA() {
       score += rowDistance;
       TacticalTileIndex neighborTiles[6];
       int adjacentArtilleryBonus = 0;
-      battle14->ComputeTacticalHexNeighborTileIndices(tileIndex, neighborTiles);
+      battle14->GetNeighborList(tileIndex, neighborTiles);
       for (int neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
         TacticalTileIndex neighborTileIndex = neighborTiles[neighborIndex];
         if (neighborTileIndex != -1) {
@@ -548,7 +548,7 @@ int TArmyPlayer::SelectTacticalTileByActionClassAdjacencyPriority() {
       score += rowDistance;
       TacticalTileIndex neighborTiles[6];
       int adjacencyBonus = 0;
-      battle14->ComputeTacticalHexNeighborTileIndices(tileIndex, neighborTiles);
+      battle14->GetNeighborList(tileIndex, neighborTiles);
       for (int neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
         TacticalTileIndex neighborTileIndex = neighborTiles[neighborIndex];
         if (neighborTileIndex != -1) {
@@ -589,7 +589,7 @@ int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantB() {
       score += row;
       TacticalTileIndex neighborTiles[6];
       int occupiedNeighborBonus = 0;
-      battle14->ComputeTacticalHexNeighborTileIndices(tileIndex, neighborTiles);
+      battle14->GetNeighborList(tileIndex, neighborTiles);
       for (int neighborIndex = 0; occupiedNeighborBonus == 0 && neighborIndex < 6;
            ++neighborIndex) {
         TacticalTileIndex neighborTileIndex = neighborTiles[neighborIndex];
@@ -1309,7 +1309,7 @@ int TArmyPlayer::ScoreTacticalTileSapperWallApproachColumn(TTacticalUnit* unit,
 int TArmyPlayer::ScoreTacticalTileAdjacentEnemyContact(TTacticalUnit* unit,
                                                        TacticalTileIndex tileIndex) {
   TacticalTileIndex neighborTiles[6];
-  battle14->ComputeTacticalHexNeighborTileIndices(tileIndex, neighborTiles);
+  battle14->GetNeighborList(tileIndex, neighborTiles);
   for (int neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
     TacticalTileIndex neighborTileIndex = neighborTiles[neighborIndex];
     if (neighborTileIndex != -1) {
@@ -1390,7 +1390,7 @@ int TArmyPlayer::ScoreTacticalTileCoverTerrainBonus(TTacticalUnit* unit,
 int TArmyPlayer::ScoreTacticalTileAdjacentRallyTargetBonus(TTacticalUnit* unit,
                                                            TacticalTileIndex tileIndex) {
   TacticalTileIndex neighborTiles[6];
-  battle14->ComputeTacticalHexNeighborTileIndices(tileIndex, neighborTiles);
+  battle14->GetNeighborList(tileIndex, neighborTiles);
   for (int neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
     TacticalTileIndex neighborTileIndex = neighborTiles[neighborIndex];
     if (neighborTileIndex != -1) {
@@ -1594,7 +1594,7 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
     enemyList = battle14->tacticalPlayer14->unitList4;
   }
   TacticalTileIndex neighborTiles[6];
-  battle14->ComputeTacticalHexNeighborTileIndices(unit->tileIndex8, neighborTiles);
+  battle14->GetNeighborList(unit->tileIndex8, neighborTiles);
 
   CIterator enemyIter(enemyList);
   for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(enemyIter.Reset()); enemyIter.More();
@@ -1760,7 +1760,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
       // Officer types: rally the first adjacent friendly whose morale dropped below
       // its strength.
       TacticalTileIndex neighborTiles[6];
-      battle14->ComputeTacticalHexNeighborTileIndices(unit->tileIndex8, neighborTiles);
+      battle14->GetNeighborList(unit->tileIndex8, neighborTiles);
       TArmyTacUnit* rallyTarget = 0;
       for (int neighborIndex = 0; neighborIndex < 6 && rallyTarget == 0; ++neighborIndex) {
         TacticalTileIndex neighborTileIndex = neighborTiles[neighborIndex];
@@ -1861,7 +1861,7 @@ TArmyPlayer::BuildTacticalActionClassAndPositionFlags(TacticalTileIndex referenc
     break;
   }
 
-  if (battle14->IsHexNeighborTileIndex(tileIndex, referenceTileIndex) != 0) {
+  if (battle14->AreNeighbors(tileIndex, referenceTileIndex) != 0) {
     flags |= 0x10;
   }
   if (g_awTacticalUnitAiClassByUnitType_006693B8[unit->unitTypeC] == 0 &&

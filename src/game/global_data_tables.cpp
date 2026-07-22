@@ -1051,7 +1051,7 @@ unsigned char g_abGateFlagQualifies[24] = {
     0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 // Doubled-column and row hex-direction deltas (direction 0..5), read by
-// GetWrappedHexNeighborTileIndexByDirection and BuildHexAreaTileIndexList to step across the
+// GetNeighborTileID and BuildHexAreaTileIndexList to step across the
 // 0x6c(108)-wide hex grid. Confirmed via raw read of the original .rdata bytes.
 short g_Build_Hex_Area_LookupTable_00696E70[6] = {1, 2, 1, -1, -2, -1};
 short g_Build_Hex_Area_LookupTable_00696E80[6] = {-1, 0, 1, 1, 0, -1};

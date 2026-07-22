@@ -300,7 +300,7 @@ void TMapUberPicture::DoKeyEvent(TToolboxEvent* event) {
 }
 
 // FUNCTION: IMPERIALISM 0x005977a0
-void TMapUberPicture::AutoScrollByEdgeMask(short edgeMask) {
+void TMapUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {
   if (invalidationFlag94 != 0) {
     subview2A8->UpdateMapInteractionPreviewParityAndRenderTransientSprites(edgeMask);
   } else {
