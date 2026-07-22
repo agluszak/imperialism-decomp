@@ -103,8 +103,8 @@ void TCitySiteView::SetMapViewTileIndex(int arg1) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051c2f0
-void TCitySiteView::SetMapViewCellCoordinates(int arg1, int arg2) {
-  SetMapDialogCellCoordinatesAndRefresh(arg1, arg2, 0);
+void TCitySiteView::SetMapViewCellCoordinates(int column, int row) {
+  SetMapDialogCellCoordinatesAndRefresh(column, row, 0);
 }
 
 // The original keeps col/row as word registers throughout (the clamp writes replace only

@@ -30,12 +30,15 @@ public:
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                              unsigned char altOverlay) override;
   virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;
-  virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
-                                                                   int arg4, int arg5) override;
-  virtual void ConvertPoint(const CPoint& point, short& outRow, short& outCol,
-                            short& outBand) override;
+  virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
+                                                                   short* viewportOriginXY,
+                                                                   short* outVerticalOffset,
+                                                                   short* outHorizontalOffset,
+                                                                   int projectionScale) override;
+  virtual void ConvertPoint(const CPoint& point, short& outColumn, short& outRow,
+                            short& outRegionBand) override;
   virtual void CenterOn(int tileIndex) override;
-  virtual void SetMapViewCellCoordinates(int arg1, int arg2) override;
+  virtual void SetMapViewCellCoordinates(int column, int row) override;
   virtual void OrphanRetStub_005966c0(short arg1) override;
   virtual undefined OrphanLeaf_NoCall_Ins02_005966e0(short arg1) override;
   // Wraps (scrollRowOffset7c+0xe, scrollColOffset7e+0x10) onto the 108x60 hex map via

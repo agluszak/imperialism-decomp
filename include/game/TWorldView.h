@@ -75,12 +75,16 @@ public:
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                              unsigned char altOverlay);
   virtual void RenderStrategicTileSelectionAndNeighborHighlights();
-  virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
-                                                                   int arg4, int arg5);
+  virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
+                                                                   short* viewportOriginXY,
+                                                                   short* outVerticalOffset,
+                                                                   short* outHorizontalOffset,
+                                                                   int projectionScale);
   // One ignored stack arg (body is `OR AX,0xffff; RET 0x4`) -- present only for
   // stack-cleanup fidelity; the previous 0-arg declaration purged 4 bytes short.
   virtual short QueryMinusOneWordSlot1BC(int unusedArg);
-  virtual void ConvertPoint(const CPoint& point, short& outRow, short& outCol, short& outBand);
+  virtual void ConvertPoint(const CPoint& point, short& outColumn, short& outRow,
+                            short& outRegionBand);
   virtual void InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchContext);
   virtual void HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int arg2);
   virtual void DispatchOverlayEvent78FromStridedRecord(int stridedRecord, int dispatchContext);
@@ -92,7 +96,7 @@ public:
   virtual void CenterOn(int tileIndex);
   virtual short QueryMinusOneWordSlot77();
   virtual void SetMapViewTileIndex(int arg1);
-  virtual void SetMapViewCellCoordinates(int arg1, int arg2);
+  virtual void SetMapViewCellCoordinates(int column, int row);
   virtual void OrphanRetStub_005966c0(short arg1);
   virtual undefined OrphanLeaf_NoCall_Ins02_005966e0(short arg1);
   virtual void OrphanCallChain_C6_I29_00596700(int arg1);

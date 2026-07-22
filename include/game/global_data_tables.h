@@ -337,6 +337,9 @@ extern short g_aCitySiteNeighborHighlightTiles_00697320[6];
 extern CPoint g_MapInteractionPreviewPoint_006a3370;
 extern int g_MapInteractionPreviewRowParity_006a33b4;
 extern int g_MapInteractionPreviewColumnParity_006a33b8;
+// Owner-nation tag (0..23) to the QuickDraw palette index used behind ocean-map
+// order previews and garrison badges.
+extern const unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24];
 extern CDC* g_pQuickDrawMemoryDc;
 extern HGDIOBJ g_hQuickDrawSavedBitmap;
 extern int g_nActiveQuickDrawSurfaceFlags;
