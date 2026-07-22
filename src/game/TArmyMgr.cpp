@@ -1959,7 +1959,7 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
   TList* scratchList = new TList();
 
   int budget = 0;
-  TCountry* nation = g_apNationStates[nationId];
+  TCountry* nation = g_apNationStates[static_cast<int>(nationId)];
   CIterator unitIter(nation->militaryUnitList44);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {

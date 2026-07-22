@@ -97,6 +97,8 @@ static void InvokeBuildHexNeighborHighlightPolygonForTile(short tileId, int tile
   BuildHexNeighborHighlightPolygonForTile(tileId, tileIndex);
 }
 
+// The loader's original vtable has no destructor slot; every caller owns this exact type.
+IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
   if (loaderHandle == nullptr) {
     return;
@@ -104,6 +106,7 @@ void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
   delete *loaderHandle;
   delete loaderHandle;
 }
+IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
 void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstRect) {
   TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(resourceId);
@@ -502,6 +505,8 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
   atlas690 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x564 + variant * 7);
 }
 
+// Listing 0x0050a820 inlines the loader's exact-type non-virtual destructor.
+IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x0050a820
 void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
   TQuickDrawSurfaceContext* savedContext;
@@ -541,6 +546,7 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807() {
   }
   SetGWorld(savedContext, savedFlags);
 }
+IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
 // FUNCTION: IMPERIALISM 0x0050a9f0
 void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {

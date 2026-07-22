@@ -10,6 +10,7 @@
 
 IMPLEMENT_SERIAL(TObject, CObject, 1)
 
+IMPERIALISM_BEGIN_RETAIL_POLYMORPHIC_BYTE_COPY
 // FUNCTION: IMPERIALISM 0x00415ce0
 TObject* TObject::ShallowFree() {
   CRuntimeClass* runtimeClass = GetRuntimeClass();
@@ -22,6 +23,7 @@ TObject* TObject::ShallowFree() {
   memcpy(destObject, this, payloadSize);
   return reinterpret_cast<TObject*>(destObject);
 }
+IMPERIALISM_END_RETAIL_POLYMORPHIC_BYTE_COPY
 
 // FUNCTION: IMPERIALISM 0x004798b0
 void TObject::Free() {

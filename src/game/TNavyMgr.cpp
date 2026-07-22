@@ -991,6 +991,9 @@ TTaskForce* TNavyMgr::AssignEscorts(short requiredCount, short chancePercent) {
   return entry;
 }
 
+// Listing 0x00558424 initializes the survivor slot only after battle resolution, then
+// 0x00558439 reads it on both paths. Preserve that retail stack-slot behavior locally.
+IMPERIALISM_BEGIN_RETAIL_UNINITIALIZED_READ
 // FUNCTION: IMPERIALISM 0x00557f10
 char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
     TMapOrderInteractionSelection* outResult, TZone* portZoneContext, short nation,
@@ -1181,6 +1184,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
   }
   return 0;
 }
+IMPERIALISM_END_RETAIL_UNINITIALIZED_READ
 
 // FUNCTION: IMPERIALISM 0x00558960
 void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {

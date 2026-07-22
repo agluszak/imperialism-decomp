@@ -71,6 +71,24 @@ remaining candidates in [[next-scalar-dtor-rollout]].
 - A `Destruct*AndMaybeFree` **name** is not proof of a destructor — read the body
   (false positives: `0x58f1a0`, `0x4a0190` are hit-test/render functions).
 
+### Destructor placement follows original emission, not source-style preference
+
+Moving `~T()` between a header and `.cpp` changes VC5 inlining and COMDAT folding across
+callers, derived destructors, scalar deleting destructors, and vtables. Classify it first:
+
+- no standalone ordinary body and member/base teardown is sufficient: keep it implicit;
+- standalone original ordinary-destructor address: out-of-line definition with a FUNCTION
+  marker in the owning `.cpp`;
+- body expanded at listing-proven retail call sites: inline in the header, after checking
+  more than one caller when the class is shared;
+- vtable proven to have no destructor slot: a non-virtual destructor is valid, but delete
+  only through the exact concrete type.
+
+Never add or relocate an empty ordinary destructor merely to emit or claim `??_G`; that
+body stays compiler-generated and SYNTHETIC. After a visibility change, compare the real
+ordinary destructor (if any) and run `just vtable` for the class plus affected siblings.
+The full policy is in `docs/reference/construction.md`.
+
 ### A local object with a non-trivial dtor forces MSVC's single-epilogue shape
 *(ex decomp-loop note 33)*
 

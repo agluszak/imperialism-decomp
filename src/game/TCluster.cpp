@@ -84,7 +84,7 @@ void TCluster::SetSelectedChildTagAndRefresh(int childTag) {
   while (pos != NULL) {
     TControl* child = reinterpret_cast<TControl*>(childList44->GetNext(pos));
     if (child != 0) {
-      if (child->controlTag == static_cast<unsigned int>(childTag)) {
+      if (child->controlTag == childTag) {
         child->DoEvent(0x1f, this, 0);
       } else {
         child->DoEvent(0x20, this, 0);
