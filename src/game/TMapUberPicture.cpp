@@ -642,7 +642,7 @@ void TMapUberPicture::InvalidateTile(short tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x005988c0
 void TMapUberPicture::RedrawTile(short tileIndex) {
-  this->subviewAc->OrphanRetStub_005966c0(tileIndex);
+  this->subviewAc->RefreshMapTile(tileIndex);
   if (this->invalidationFlag94 == 0) {
     this->subview2A8->ReleaseTileMarkerForTile(tileIndex);
   }

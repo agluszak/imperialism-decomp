@@ -39,8 +39,8 @@ public:
                             short& outRegionBand) override;
   virtual void CenterOn(int tileIndex) override;
   virtual void SetMapViewCellCoordinates(int column, int row) override;
-  virtual void OrphanRetStub_005966c0(short arg1) override;
-  virtual undefined OrphanLeaf_NoCall_Ins02_005966e0(short arg1) override;
+  virtual void RefreshMapTile(short tileIndex) override;
+  virtual unsigned char IsTileVisible(short tileIndex) override;
   // Wraps (scrollRowOffset7c+0xe, scrollColOffset7e+0x10) onto the 108x60 hex map via
   // NormalizeWrappedMapCoord108x60 and returns the resulting linear tile index
   // (row*0x6c + col). 0x00568ab0.

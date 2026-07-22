@@ -97,7 +97,11 @@ public:
   virtual short QueryMinusOneWordSlot77();
   virtual void SetMapViewTileIndex(int arg1);
   virtual void SetMapViewCellCoordinates(int column, int row);
-  virtual void OrphanRetStub_005966c0(short arg1);
-  virtual undefined OrphanLeaf_NoCall_Ins02_005966e0(short arg1);
+  // Refreshes one map tile after its cached/rendered state changes. Concrete land/ocean
+  // dialogs choose their own cache-release and invalidation strategy.
+  virtual void RefreshMapTile(short tileIndex);
+  // Mac CodeWarrior identity: TWorldView::IsTileVisible(short). Concrete map dialogs
+  // test the tile against their projected viewport; the abstract base has no viewport.
+  virtual unsigned char IsTileVisible(short tileIndex);
   virtual void OrphanCallChain_C6_I29_00596700(int arg1);
 };

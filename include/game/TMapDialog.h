@@ -75,8 +75,8 @@ public:
 
   virtual void DoPostCreate(int arg) override;
 
-  void OrphanRetStub_005966c0(short arg1) override;
-  undefined OrphanLeaf_NoCall_Ins02_005966e0(short arg1) override;
+  void RefreshMapTile(short tileIndex) override;
+  unsigned char IsTileVisible(short tileIndex) override;
   void SetMapViewTileIndex(int arg1) override;
   void SetMapViewCellCoordinates(int column, int row) override;
   virtual void DrawHexNeighborOutlineFromTileArray(short* neighborTiles);
