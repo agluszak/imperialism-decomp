@@ -61,7 +61,8 @@ void TCity::InitializeCityProductionState(TGreatPower* ownerNation) {
   powerPlantUpgradeQueuedFlag04 = 0;
   memset(reservedByType7e, 0, sizeof(reservedByType7e));
   memset(&cityStockCottonB6, 0, sizeof(short) * 0x17);
-  memset(pad278, 0, sizeof(pad278));
+  memset(unmetResourceRetryCount278, 0,
+         sizeof(unmetResourceRetryCount278) + sizeof(serializedState2a6));
 
   for (int productionSlot = 0; productionSlot < 0x10; ++productionSlot) {
     productionAccum1fc[productionSlot] = static_cast<short>(

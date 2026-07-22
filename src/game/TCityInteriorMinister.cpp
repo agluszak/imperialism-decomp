@@ -6,6 +6,7 @@
 #include "game/TAutoGreatPower.h"
 #include "game/CIterator.h"
 #include "game/TCity.h"
+#include "game/TCityTask.h"
 #include "game/TCivUnit.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TForeignMinister.h"
@@ -15,9 +16,13 @@
 #include "game/TList.h"
 #include "game/TLongintList.h"
 #include "game/TMapMgr.h"
+#include "game/TPopulationMgr.h"
 #include "game/TShortintList.h"
+#include "game/TShipBuildingTask.h"
 #include "game/TSimMgr.h"
 #include "game/TSortedList.h"
+#include "game/TTask.h"
+#include "game/TTaskList.h"
 #include "game/TTechMgr.h"
 #include "game/TTown.h"
 #include "game/TUnit.h"
@@ -108,14 +113,14 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
   trailingTable[4] = 0;
   trailingTable[5] = 0;
   trailingTable[6] = 0;
-  field32 = 0;
-  field36 = -1;
-  field38 = -1;
-  field3a = 50;
+  pendingShipType32 = 0;
+  pendingRecruitmentCommandIndex36 = -1;
+  pendingUnitCommandIndex38 = -1;
+  resource15ProductionPercent3a = 50;
 
   list28 = new TLongintList();
   list2c = new TLongintList();
-  field30 = 1;
+  nextProductionBuildingOrdinal30 = 1;
 
   orderList18c = new TList();
   if (orderList18c == 0) {
@@ -126,7 +131,7 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
   FillLists();
 
   field3c = -1;
-  field3e = 0;
+  accumulatedUnmetNeed3e = 0;
 
   for (short i = 0; i < 23; ++i) {
     orderTypeTableFC[i] = 0;
@@ -207,8 +212,8 @@ short TCityInteriorMinister::GetRankingCriterionForGP(short nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x004beeb0
 void TCityInteriorMinister::InteriorSlot1A(short orderKind) {
-  if (field32 == 0) {
-    field32 = static_cast<short>((orderKind == 2) + 1);
+  if (pendingShipType32 == 0) {
+    pendingShipType32 = static_cast<short>((orderKind == 2) + 1);
   }
 }
 
@@ -218,8 +223,8 @@ void TCityInteriorMinister::IndustryOrder(short industrySlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004bef10
-void TCityInteriorMinister::VTableSlot2D(short arg) {
-  field36 = arg;
+void TCityInteriorMinister::SelectRecruitmentProductionCommand(short commandIndex) {
+  pendingRecruitmentCommandIndex36 = commandIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x004bef30
@@ -332,77 +337,412 @@ undefined TCityInteriorMinister::EvaluateCityShortagesAndNotifyForeignMinister(T
 }
 
 // FUNCTION: IMPERIALISM 0x004bfa50
-undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_22(TCity* city, int* arg2) {
+void TCityInteriorMinister::QueueCityProductionPolicyCommands(TCity* city,
+                                                              TTaskList* commandQueue) {
   if (city->lowProductionFlag7c != 0 && city->lowStockFlag7d == 0) {
-    QueueCityProductionCommand17Or18FromSupportRatio(city, arg2);
+    QueueCityProductionCommand17Or18FromSupportRatio(city, commandQueue);
   } else if (city->lowProductionFlag7c == 0 && city->lowStockFlag7d != 0) {
-    DistributeCityProductionCommandBudgetAndQueueOrders(city, arg2);
+    DistributeCityProductionCommandBudgetAndQueueOrders(city, commandQueue);
   }
 
-  if (field3e != 0) {
-    QueueCityProductionCommand33FromAccumulatedDeficit(city, arg2);
+  if (accumulatedUnmetNeed3e != 0) {
+    QueueCityProductionCommand33FromAccumulatedDeficit(city, commandQueue);
   }
-  if (field32 != 0) {
-    QueueCityProductionCommand2BIfMissingAndResetValue(reinterpret_cast<int>(city), arg2);
+  if (pendingShipType32 != 0) {
+    QueueShipProductionCommandIfMissing(city, commandQueue);
   }
-  if (field36 > -1) {
-    QueueSingleCityProductionCommandFromField36(city, arg2);
+  if (pendingRecruitmentCommandIndex36 > -1) {
+    QueuePendingRecruitmentProductionCommand(city, commandQueue);
   }
-  if (field38 > -1) {
-    QueueSingleCityProductionCommandFromField38(city, arg2);
+  if (pendingUnitCommandIndex38 > -1) {
+    QueuePendingUnitProductionCommand(city, commandQueue);
   }
 
-  return QueueCityProductionRebalanceCommandsByThresholds(city, arg2);
+  QueueCityProductionRebalanceCommandsByThresholds(city, commandQueue);
 }
 
 // FUNCTION: IMPERIALISM 0x004bfb20
-undefined TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(TCity*, int*) {
-  return 0;
+void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
+    TCity* city, TTaskList* commandQueue) {
+  short amount;
+  TCityTask* task;
+
+  if (city->cityStockCottonB6 > 14 || city->cityStockWoolB8 > 14) {
+    amount = static_cast<short>(
+        (ownerContextAt04->needCurrentByType[1] + ownerContextAt04->needCurrentByType[0]) / 2 -
+        city->GetBuildingType(0));
+    if (amount > 0 && commandQueue->ContainsTask(0x35) == 0) {
+      task = new TCityTask();
+      task->InitializeCityProductionQueueCommand(0x35, city, amount);
+      commandQueue->AddTail(task);
+    }
+  }
+
+  if (city->cityStockCoalBC > 14 && city->cityStockIronBE > 14) {
+    amount = static_cast<short>(ownerContextAt04->needCurrentByType[3] - city->GetBuildingType(2));
+    if (amount > 0 && commandQueue->ContainsTask(0x37) == 0) {
+      task = new TCityTask();
+      task->InitializeCityProductionQueueCommand(0x37, city, amount);
+      commandQueue->AddTail(task);
+    }
+  }
+
+  if (city->cityStockTimberBA > 14) {
+    amount =
+        static_cast<short>(ownerContextAt04->needCurrentByType[2] / 2 - city->GetBuildingType(4));
+    if (amount > 0 && commandQueue->ContainsTask(0x39) == 0) {
+      task = new TCityTask();
+      task->InitializeCityProductionQueueCommand(0x39, city, amount);
+      commandQueue->AddTail(task);
+    }
+  }
+
+  if (city->cityStockFabricC6 > 14) {
+    amount = static_cast<short>(city->GetBuildingType(0) / 2 - city->GetBuildingType(1));
+    if (amount > 0 && commandQueue->ContainsTask(0x36) == 0) {
+      task = new TCityTask();
+      task->InitializeCityProductionQueueCommand(0x36, city, amount);
+      commandQueue->AddTail(task);
+    }
+  }
+
+  if (city->cityStockSteelCC > 14) {
+    amount = static_cast<short>(city->GetBuildingType(2) / 2 - city->GetBuildingType(3));
+    if (amount > 0 && commandQueue->ContainsTask(0x38) == 0) {
+      task = new TCityTask();
+      task->InitializeCityProductionQueueCommand(0x38, city, amount);
+      commandQueue->AddTail(task);
+    }
+  }
+
+  if (city->cityStockLumberC8 > 14) {
+    amount = static_cast<short>(city->GetBuildingType(4) / 2 - city->GetBuildingType(5));
+    if (amount > 0 && commandQueue->ContainsTask(0x3a) == 0) {
+      task = new TCityTask();
+      task->InitializeCityProductionQueueCommand(0x3a, city, amount);
+      commandQueue->AddTail(task);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004bff60
 void TCityInteriorMinister::NoOpProductionCommandHook24(int, int) {}
 
 // FUNCTION: IMPERIALISM 0x004bff80
-undefined TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit(TCity*, int*) {
-  return 0;
+void TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit(
+    TCity* city, TTaskList* commandQueue) {
+  short needCap = ownerContextAt04 != 0 ? ownerContextAt04->needCapA6 : 0;
+  if (commandQueue->ContainsTask(0x33) != 0) {
+    return;
+  }
+
+  short totalCurrentNeed = 0;
+  for (short resource = 0; resource < 0x17; ++resource) {
+    totalCurrentNeed =
+        static_cast<short>(totalCurrentNeed + ownerContextAt04->needCurrentByType[resource]);
+  }
+
+  short amount = accumulatedUnmetNeed3e;
+  if (needCap + amount > totalCurrentNeed) {
+    amount = static_cast<short>(totalCurrentNeed - needCap);
+  }
+  if (amount > 0) {
+    TCityTask* task = new TCityTask();
+    task->InitializeCityProductionQueueCommand(0x33, city, amount);
+    commandQueue->AddTail(task);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004c0090
-undefined TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders(TCity*,
-                                                                                     void*) {
-  return 0;
+void TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders(
+    TCity* city, TTaskList* commandQueue) {
+  short totalProduction = 0;
+  for (short initialBuildingSlot = 0; initialBuildingSlot <= 6; ++initialBuildingSlot) {
+    totalProduction =
+        static_cast<short>(totalProduction + city->GetBuildingType(initialBuildingSlot));
+  }
+  short commandBudget = static_cast<short>(totalProduction * 20 / 100);
+  if (commandBudget < 2) {
+    commandBudget = 2;
+  }
+
+  short selectedOrdinal = nextProductionBuildingOrdinal30;
+  short lastOrdinal = static_cast<short>(list2c->GetSize());
+  short commandCounts[7] = {0, 0, 0, 0, 0, 0, 0};
+  while (commandBudget != 0) {
+    short selectedBuildingSlot = static_cast<short>(list2c->At(selectedOrdinal));
+    bool qualifies = false;
+    if (selectedBuildingSlot == 0 || selectedBuildingSlot == 2 || selectedBuildingSlot == 4) {
+      qualifies = true;
+    } else if (selectedBuildingSlot == 1 || selectedBuildingSlot == 3 ||
+               selectedBuildingSlot == 5) {
+      qualifies = city->GetBuildingType(selectedBuildingSlot) <
+                  city->GetBuildingType(static_cast<short>(selectedBuildingSlot - 1)) / 2;
+    }
+    if (qualifies) {
+      ++commandCounts[selectedBuildingSlot];
+      --commandBudget;
+    }
+    if (selectedOrdinal == lastOrdinal) {
+      selectedOrdinal = 1;
+    } else {
+      ++selectedOrdinal;
+    }
+  }
+  nextProductionBuildingOrdinal30 = selectedOrdinal;
+
+  for (short queuedBuildingSlot = 0; queuedBuildingSlot <= 6; ++queuedBuildingSlot) {
+    if (commandCounts[queuedBuildingSlot] != 0) {
+      TCityTask* task = new TCityTask();
+      task->InitializeCityProductionQueueCommand(static_cast<short>(queuedBuildingSlot + 0x35),
+                                                 city, commandCounts[queuedBuildingSlot]);
+      commandQueue->AddTail(task);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004c02c0
-undefined TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio(void*, int*) {
-  return 0;
+void TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio(
+    TCity* city, TTaskList* commandQueue) {
+  TLaborPool* labor = city->productionSummary1d8->baselineSlots10;
+  short mediumSkill = labor->mediumSkillCount06;
+  short lowSkill = labor->lowSkillCount04;
+  short highSkill = labor->highSkillCount08;
+
+  for (int ordinal = 1; ordinal <= commandQueue->GetCount(); ++ordinal) {
+    TTask* task = static_cast<TTask*>(commandQueue->GetEntryByOrdinal(ordinal));
+    if (task->citySlotIndex == 0x17 || task->citySlotIndex == 0x18) {
+      return;
+    }
+  }
+
+  short supportCycle = static_cast<short>((mediumSkill + highSkill) % 10);
+  short amount = static_cast<short>((lowSkill + mediumSkill + highSkill) * 20 / 100);
+  if (amount < 1) {
+    amount = 1;
+  }
+
+  short command;
+  if ((supportCycle == 9 && mediumSkill != 0) || lowSkill < 1) {
+    if (mediumSkill < 1) {
+      return;
+    }
+    if (amount > mediumSkill) {
+      amount = mediumSkill;
+    }
+    command = 0x18;
+  } else {
+    if (amount > lowSkill) {
+      amount = lowSkill;
+    }
+    if (amount + supportCycle > 9 && supportCycle != 9) {
+      amount = static_cast<short>(9 - supportCycle);
+    }
+    command = 0x17;
+  }
+
+  TCityTask* task = new TCityTask();
+  task->InitializeCityProductionQueueCommand(command, city, amount);
+  commandQueue->AddTail(task);
 }
 
 // FUNCTION: IMPERIALISM 0x004c04e0
-undefined TCityInteriorMinister::QueueRandomCityProductionCommand19To1C(void*, void*) {
-  return 0;
+void TCityInteriorMinister::QueueRandomCityProductionCommand19To1C(TCity* city,
+                                                                   TTaskList* commandQueue) {
+  short command = static_cast<short>(rand() % 4 + 0x19);
+  TCityTask* task = new TCityTask();
+  task->InitializeCityProductionQueueCommand(command, city, 1);
+  commandQueue->AddTail(task);
 }
 
 // FUNCTION: IMPERIALISM 0x004c05a0
-undefined TCityInteriorMinister::QueueCityProductionCommand2BIfMissingAndResetValue(int, int*) {
-  return 0;
+void TCityInteriorMinister::QueueShipProductionCommandIfMissing(TCity* city,
+                                                                TTaskList* commandQueue) {
+  for (int ordinal = 1; ordinal <= commandQueue->GetCount(); ++ordinal) {
+    TTask* task = static_cast<TTask*>(commandQueue->GetEntryByOrdinal(ordinal));
+    if (task->citySlotIndex == 0x2b) {
+      return;
+    }
+  }
+
+  TShipBuildingTask* task = new TShipBuildingTask();
+  task->InitializeShipProductionQueueTask(0x2b, city, pendingShipType32);
+  commandQueue->AddTail(task);
+  pendingShipType32 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c0690
-undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField36(void*, void*) {
-  return 0;
+void TCityInteriorMinister::QueuePendingRecruitmentProductionCommand(TCity* city,
+                                                                     TTaskList* commandQueue) {
+  short command = static_cast<short>(pendingRecruitmentCommandIndex36 + 0x22);
+  TCityTask* task = new TCityTask();
+  task->InitializeCityProductionQueueCommand(command, city, 1);
+  commandQueue->AddTail(task);
+  pendingRecruitmentCommandIndex36 = -1;
 }
 
 // FUNCTION: IMPERIALISM 0x004c0730
-undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField38(void*, void*) {
-  return 0;
+void TCityInteriorMinister::QueuePendingUnitProductionCommand(TCity* city,
+                                                              TTaskList* commandQueue) {
+  short command = static_cast<short>(pendingUnitCommandIndex38 + 0x19);
+  TCityTask* task = new TCityTask();
+  task->InitializeCityProductionQueueCommand(command, city, 1);
+  commandQueue->AddTail(task);
+  pendingUnitCommandIndex38 = -1;
 }
 
 // FUNCTION: IMPERIALISM 0x004c07d0
-undefined
-TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits(TCity*) {
-  return 0;
+void TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits(
+    TCity* city) {
+  accumulatedUnmetNeed3e = 0;
+
+  int orderOrdinal = 1;
+  while (city->productionSummary1d8->stockLevel1c > 1 && orderOrdinal <= list28->GetSize()) {
+    short orderSlot = static_cast<short>(list28->At(orderOrdinal));
+    TItemOrder* order = static_cast<TItemOrder*>(city->orderSlotsE4[orderSlot]);
+    order->AssertValid();
+
+    short maxOrder = order->MaxOrder();
+    city->DirectTransport(order->resourceTypeIndex48, city->GetBuildingType(order->productionSlot));
+
+    if (order->field40 == 0) {
+      if (order->resourceTypeIndex48 != 8) {
+        OrderSheet orderSheet;
+        order->FillOrderSheet(&orderSheet, city->productionAccum1fc[order->productionSlot]);
+
+        short resourceCount = 0;
+        short totalRequested = 0;
+        for (short countedResource = 0; countedResource < 0x17; ++countedResource) {
+          short requested = orderSheet.ForResourceCode(countedResource);
+          if (requested != 0) {
+            ++resourceCount;
+            totalRequested = static_cast<short>(totalRequested + requested);
+          }
+        }
+
+        short needHeadroom =
+            static_cast<short>(ownerContextAt04->needCapA6 - ownerContextAt04->needsOverCapFlag);
+        if (needHeadroom < totalRequested) {
+          totalRequested = needHeadroom;
+        }
+        short transportShare = static_cast<short>(totalRequested / resourceCount);
+
+        for (short requestedResource = 0; requestedResource < 0x17; ++requestedResource) {
+          short requested = orderSheet.ForResourceCode(requestedResource);
+          if (requested != 0) {
+            short transported = city->DirectTransport(requestedResource, transportShare);
+            short deficit = static_cast<short>(requested - transported);
+            if (deficit > 0) {
+              city->AddTransportRequest(requestedResource, deficit);
+              short availableNeed =
+                  static_cast<short>(ownerContextAt04->needCurrentByType[requestedResource] -
+                                     ownerContextAt04->needTargetByType[requestedResource]);
+              if ((requestedResource >= 0 && requestedResource <= 6) ||
+                  (requestedResource >= 0x11 && requestedResource <= 0x16)) {
+                short countedDeficit = availableNeed;
+                if (countedDeficit > deficit) {
+                  countedDeficit = deficit;
+                }
+                if (countedDeficit > 0) {
+                  accumulatedUnmetNeed3e =
+                      static_cast<short>(accumulatedUnmetNeed3e + countedDeficit);
+                }
+                if (countedDeficit < deficit) {
+                  ++city->unmetResourceRetryCount278[requestedResource];
+                }
+              }
+            }
+          }
+        }
+      } else {
+        short requested =
+            static_cast<short>((city->productionAccum1fc[order->productionSlot] - maxOrder) * 2);
+        short primaryResource;
+        short secondaryResource;
+        if (rand() % 100 < 50) {
+          primaryResource = 0;
+          secondaryResource = 1;
+        } else {
+          primaryResource = 1;
+          secondaryResource = 0;
+        }
+
+        short transported = city->DirectTransport(primaryResource, requested);
+        if (transported < requested) {
+          transported = static_cast<short>(
+              transported + city->DirectTransport(secondaryResource,
+                                                  static_cast<short>(requested - transported)));
+        }
+        if (transported < requested) {
+          city->AddTransportRequest(primaryResource, static_cast<short>(requested - transported));
+          short availableNeed =
+              static_cast<short>(ownerContextAt04->needCurrentByType[primaryResource] -
+                                 ownerContextAt04->needTargetByType[primaryResource] +
+                                 ownerContextAt04->needCurrentByType[secondaryResource] -
+                                 ownerContextAt04->needTargetByType[secondaryResource]);
+          if (availableNeed > 0) {
+            accumulatedUnmetNeed3e = static_cast<short>(accumulatedUnmetNeed3e + availableNeed);
+          }
+          if (availableNeed < requested) {
+            ++city->unmetResourceRetryCount278[1];
+          }
+        }
+      }
+
+      maxOrder = order->MaxOrder();
+    }
+
+    if (order->resourceTypeIndex48 == 0x0f) {
+      maxOrder = static_cast<short>(resource15ProductionPercent3a * maxOrder / 100);
+    }
+    order->SetQuantity(maxOrder);
+    ++orderOrdinal;
+  }
+
+  short needHeadroom =
+      static_cast<short>(ownerContextAt04->needCapA6 - ownerContextAt04->needsOverCapFlag);
+  if (city->cityStockHorsesC0 < 5) {
+    needHeadroom = static_cast<short>(
+        needHeadroom - city->DirectTransport(5, ownerContextAt04->needCurrentByType[5]));
+  }
+
+  short lateResourceTotal = 0;
+  for (short lateResource = 0x11; lateResource <= 0x14; ++lateResource) {
+    short available = static_cast<short>(ownerContextAt04->needCurrentByType[lateResource] -
+                                         ownerContextAt04->needTargetByType[lateResource]);
+    if (lateResourceTotal + available > 20) {
+      available = static_cast<short>(20 - lateResourceTotal);
+    }
+    if (available > 0) {
+      lateResourceTotal =
+          static_cast<short>(lateResourceTotal + city->DirectTransport(lateResource, available));
+    }
+  }
+
+  short previousHeadroom = 0;
+  while (needHeadroom > 0 && previousHeadroom != needHeadroom) {
+    previousHeadroom = needHeadroom;
+    for (int ordinal = 1; ordinal <= list28->GetSize() && needHeadroom != 0; ++ordinal) {
+      short orderSlot = static_cast<short>(list28->At(ordinal));
+      TItemOrder* order = static_cast<TItemOrder*>(city->orderSlotsE4[orderSlot]);
+      order->AssertValid();
+      OrderSheet orderSheet;
+      order->FillOrderSheet(&orderSheet, city->GetBuildingType(order->productionSlot));
+      for (short sheetResource = 0; sheetResource < 0x17; ++sheetResource) {
+        needHeadroom = static_cast<short>(
+            needHeadroom -
+            city->DirectTransport(sheetResource, orderSheet.ForResourceCode(sheetResource)));
+      }
+    }
+  }
+
+  previousHeadroom = 0;
+  while (needHeadroom > 0 && previousHeadroom != needHeadroom) {
+    previousHeadroom = needHeadroom;
+    for (short fallbackResource = 0; fallbackResource < 0x17; ++fallbackResource) {
+      needHeadroom = static_cast<short>(needHeadroom - city->DirectTransport(fallbackResource, 1));
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004c0d90
@@ -593,7 +933,7 @@ void TCityInteriorMinister::ProcessUnitOrders() {
       }
     }
     if (!hasBuilderOrder) {
-      VTableSlot2D(4);
+      SelectRecruitmentProductionCommand(4);
     }
     if (availableBuilderOrder != 0) {
       ContinueRailheadProject(availableBuilderOrder, primaryDistanceMap, secondaryDistanceMap);
@@ -746,7 +1086,7 @@ void TCityInteriorMinister::RequestMissingCivilianOrderTypes() {
         }
       }
       if (needed) {
-        VTableSlot2D(orderType);
+        SelectRecruitmentProductionCommand(orderType);
       }
     }
   }
@@ -986,7 +1326,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() {
           shouldRequestProspector = false;
         }
         if (shouldRequestProspector) {
-          VTableSlot2D(0);
+          SelectRecruitmentProductionCommand(0);
         }
       }
     }
