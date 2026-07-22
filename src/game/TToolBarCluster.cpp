@@ -1,9 +1,11 @@
 #include "game/TToolBarCluster.h"
 
 #include "game/TApplication.h"
+#include "game/TAmbitApplication.h"
 #include "game/TArmyMgr.h"
 #include "game/TAssetMgr.h"
 #include "game/TGlobalMapState.h"
+#include "game/THelpMgr.h"
 #include "game/TMapUberPicture.h"
 #include "game/TNavyMgr.h"
 #include "game/TOcean.h"
@@ -11,6 +13,7 @@
 #include "game/TDropShadowNumberText.h"
 #include "game/TDropShadowText.h"
 #include "game/TStaticText.h"
+#include "game/TTechMgr.h"
 #include "game/TTaskForce.h"
 #include "game/TViewMgr.h"
 #include "game/TWindow.h"
@@ -289,16 +292,70 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
   if (g_pApplicationUiRootController->screenModeAt24 > 1) {
     eligible = false;
   }
-  if (commandId == 10 && eligible) {
-    unsigned int tag = sourceHandler->controlTag;
-    if (tag > kControlTagFlagCaps) {
-      // Original tail-calls into the shared 499-byte HandleCrossUSmallViewsCommandTagDispatch
-      // (0x584f27, unowned) for every tag above 'Flag' -- not yet ported.
-    } else if (tag == kControlTagFlagCaps) {
-      DispatchUiRuntimeMessage102CAndRefreshActiveView();
-    } else if (tag == kControlTagDoneCaps) {
+  if (commandId != 10 || !eligible) {
+    return;
+  }
+
+  unsigned int tag = sourceHandler->controlTag;
+  switch (tag) {
+  case kControlTagDoneCaps:
+    g_pSimMgr->StartNextPhase();
+    break;
+  case kControlTagFlagCaps:
+    DispatchUiRuntimeMessage102CAndRefreshActiveView();
+    break;
+  case kControlTagRestartCaps:
+    ReinitializeGameFlowAndPostTurnEventCode(0);
+    break;
+  case kControlTagScoreCaps:
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5eb);
+    break;
+  case kControlTagCity:
+    g_pSimMgr->EnterOptionalPhase(0x6a);
+    break;
+  case kControlTagDipl:
+    g_pSimMgr->EnterOptionalPhase(0x68);
+    break;
+  case kControlTagMmap:
+    g_pSimMgr->EnterOptionalPhase(0x6d);
+    break;
+  case kControlTagTrad:
+    g_pSimMgr->EnterOptionalPhase(0x67);
+    break;
+  case kControlTagTran:
+    g_pSimMgr->EnterOptionalPhase(0x69);
+    break;
+  case kControlTagEnd:
+    if (g_pSimMgr->mode != 0x11) {
       g_pSimMgr->StartNextPhase();
+      break;
     }
+    {
+      short nationId = g_pSimMgr->GetActiveNationId();
+      short abilityIndex = g_pCityOrderCapabilityState->ConsumeFirstPendingAbilityUnlock(nationId);
+      if (abilityIndex != -1) {
+        g_pUiRuntimeContext->ShowAbilityStatusReport(abilityIndex);
+      } else {
+        g_pSimMgr->StartNextPhase();
+      }
+    }
+    break;
+  case kControlTagQuer:
+    if (g_pSimMgr->mode == 4 || g_pSimMgr->mode == 0x12 || g_pSimMgr->mode == 5) {
+      g_pUiRuntimeContext->DispatchUiRuntimeMessage101AAndRefreshActiveView();
+    } else {
+      g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
+    }
+    break;
+  case kControlTagDefe:
+  case kControlTagMove:
+  case kControlTagOpt1:
+  case kControlTagOpt2: {
+    TView* dialogRoot = ownerContext->ResolveControlByTag(kControlTagDialog);
+    dialogRoot->AssertValid();
+    dialogRoot->DoEvent(10, sourceHandler, event);
+    break;
+  }
   }
 }
 

@@ -48,6 +48,12 @@ int TTEView::MeasureCurrentTextHeightInLayoutRect() {
   return bounds.bottom - bounds.top;
 }
 
+// FUNCTION: IMPERIALISM 0x004861f0
+void TTEView::SetText(const CString& newText) {
+  CString copiedText(newText);
+  SetTextAndMaybeRefresh(&copiedText, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x004862b0
 short TTEView::GetNumberOfChars() {
   return 1;
