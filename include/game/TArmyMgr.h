@@ -70,6 +70,7 @@ struct MapContextActionRecord {
   // a live TZone* depending on actionType04, then for each side allocates and reads its
   // MapOrderBattleSideChildRecord array.
   void ReadFrom(TStream* stream);
+  void WriteTo(TStream* stream); // 0x4a1640
 };
 
 // VTABLE: IMPERIALISM 0x0064c928

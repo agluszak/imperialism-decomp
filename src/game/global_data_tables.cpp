@@ -2174,6 +2174,13 @@ int g_mapGenRiverCount_006a38e4 = 0;
 int DAT_006a3910 = 0;
 int DAT_006a3914 = 0;
 
+// Private retail assert guards read by TStream's two diagnostic virtuals. No writer is
+// present in the executable; a zero value takes the McAppStream.cpp assert path.
+// GLOBAL: IMPERIALISM 0x006a1a10
+int g_streamLine304AssertGuard = 0;
+// GLOBAL: IMPERIALISM 0x006a1a14
+int g_streamLine596AssertGuard = 0;
+
 // Zone status-code PRNG seed (0x006a5aec) + display-name cache key (0x006984b8);
 // see global_data_tables.h. Runtime-initialized.
 // GLOBAL: IMPERIALISM 0x006a5aec

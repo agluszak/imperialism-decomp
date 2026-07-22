@@ -32,7 +32,6 @@ namespace {
 TOcean g_anchorTOceanInstance;
 } // namespace
 
-// FUNCTION: IMPERIALISM 0x00515e00
 void NotifyMapUberPictureTileMarker(short tileIndex) {
   if (g_pUiRuntimeContext != 0 && g_pUiRuntimeContext->mapUberPictureF0 != 0) {
     g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(static_cast<short>(tileIndex));
@@ -40,9 +39,7 @@ void NotifyMapUberPictureTileMarker(short tileIndex) {
 }
 
 void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte) {
-  g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].tileActionClass16 =
-      static_cast<unsigned char>(stateByte);
-  NotifyMapUberPictureTileMarker(tileIndex);
+  g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(tileIndex, stateByte);
 }
 
 // FUNCTION: IMPERIALISM 0x0055fc40
@@ -383,7 +380,7 @@ TZone* TOcean::FindPortZoneBySelectedTile(TCity* city) {
     if (portZone->activeTileIndex20 == selectedTileId) {
       return portZone;
     }
-    if (portZone->field48 == selectedTileId) {
+    if (portZone->portTileIndex48 == selectedTileId) {
       break;
     }
     node = portZone->prev18;
@@ -412,7 +409,7 @@ TZone* TOcean::FindFirstPortZoneContextByNation(short nationSlot) {
   }
 
   do {
-    short tileIndex = static_cast<TPortZone*>(eax)->field48;
+    short tileIndex = static_cast<TPortZone*>(eax)->portTileIndex48;
     short ownerTag =
         static_cast<short>(g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
     if (ownerTag == nationSlot) {
@@ -449,7 +446,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
   TZone* existingZone = TZone::GetFirstPortZone();
   while (existingZone != 0 && static_cast<short>(existingZone->tileOrTerrainId0c) != nTileIndex &&
          existingZone->activeTileIndex20 != nTileIndex &&
-         static_cast<TPortZone*>(existingZone)->field48 != nTileIndex) {
+         static_cast<TPortZone*>(existingZone)->portTileIndex48 != nTileIndex) {
     existingZone = existingZone->GetNextPortZone();
   }
   if (existingZone != 0) {
@@ -458,7 +455,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
 
   TPortZone* portZone = new TPortZone();
   if (portZone != 0) {
-    portZone->field48 = nTileIndex;
+    portZone->portTileIndex48 = nTileIndex;
   }
   if (portZone == 0) {
     FailNilPointerWithAssert(s_SourcePathUOcean_006984CC, 0x96a);
@@ -508,7 +505,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
     while (linkedContext != 0 &&
            static_cast<short>(linkedContext->tileOrTerrainId0c) != bestSeaTile &&
            linkedContext->activeTileIndex20 != bestSeaTile &&
-           static_cast<TPortZone*>(linkedContext)->field48 != bestSeaTile) {
+           static_cast<TPortZone*>(linkedContext)->portTileIndex48 != bestSeaTile) {
       linkedContext = linkedContext->GetNextPortZone();
     }
   } else {
@@ -553,7 +550,7 @@ void TOcean::RemovePortZoneByTile(short nTileIndex) {
   while (zone != 0) {
     if (static_cast<short>(zone->tileOrTerrainId0c) == nTileIndex ||
         zone->activeTileIndex20 == nTileIndex ||
-        static_cast<TPortZone*>(zone)->field48 == nTileIndex) {
+        static_cast<TPortZone*>(zone)->portTileIndex48 == nTileIndex) {
       zone->Free();
       return;
     }

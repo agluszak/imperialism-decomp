@@ -388,8 +388,9 @@ TZone* FindMapActionContextByNodeId(short nodeId) {
 int TZone::ComputeMapActionContextNodeValueAverage() {
   if (QueryPortZoneCapability()) {
     AssertValid();
-    int ownerTag = g_pGlobalMapState->terrainStateTable[static_cast<TPortZone*>(this)->field48]
-                       .ownerNationTag04;
+    int ownerTag =
+        g_pGlobalMapState->terrainStateTable[static_cast<TPortZone*>(this)->portTileIndex48]
+            .ownerNationTag04;
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(ownerTag) != 0) {
       return g_pGlobalMapState
           ->cityScoreTable[g_apTerrainTypeDescriptorTable[ownerTag]->GetHomeRegionCityRecordIndex()]
@@ -1199,7 +1200,7 @@ void TZone::ResolvePortZoneOwnerContextAndDispatch() {
 
 // FUNCTION: IMPERIALISM 0x00561b90
 short TZone::GetPortZoneOwnerNationCodeFromMissionField48() {
-  short tileIndex = static_cast<TPortZone*>(this)->field48;
+  short tileIndex = static_cast<TPortZone*>(this)->portTileIndex48;
   return g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
 }
 
@@ -1215,7 +1216,7 @@ TZone* TZone::FindPortZoneByTile(short nTileIndex) {
     }
     if (static_cast<short>(zone->tileOrTerrainId0c) == nTileIndex ||
         zone->activeTileIndex20 == nTileIndex ||
-        static_cast<TPortZone*>(zone)->field48 == nTileIndex) {
+        static_cast<TPortZone*>(zone)->portTileIndex48 == nTileIndex) {
       return zone;
     }
     zone = zone->prev18;
@@ -1318,7 +1319,8 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
       while (context != 0) {
         short ti = static_cast<short>(tileIndex);
         if (static_cast<short>(context->tileOrTerrainId0c) == ti ||
-            context->activeTileIndex20 == ti || static_cast<TPortZone*>(context)->field48 == ti) {
+            context->activeTileIndex20 == ti ||
+            static_cast<TPortZone*>(context)->portTileIndex48 == ti) {
           break;
         }
         context = context->GetNextPortZone();
@@ -1437,7 +1439,7 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
           while (candidateContext != 0) {
             if (static_cast<short>(candidateContext->tileOrTerrainId0c) == neighborTile ||
                 candidateContext->activeTileIndex20 == neighborTile ||
-                static_cast<TPortZone*>(candidateContext)->field48 == neighborTile) {
+                static_cast<TPortZone*>(candidateContext)->portTileIndex48 == neighborTile) {
               break;
             }
             candidateContext = candidateContext->GetNextPortZone();

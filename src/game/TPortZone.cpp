@@ -2,6 +2,11 @@
 
 #include <new.h>
 
+#include "game/TMapMgr.h"
+#include "game/TSimMgr.h"
+#include "game/TStream.h"
+#include "game/global_data_tables.h"
+#include "game/mapped_flavor_text.h"
 #include "game/mfc.h"
 
 // SYNTHETIC: IMPERIALISM 0x005615e0
@@ -43,20 +48,66 @@ IMPLEMENT_DYNCREATE(TPortZone, TZone)
 
 // slot 0x06 — TZone::ReadFrom override.
 // FUNCTION: IMPERIALISM 0x005617f0
-void TPortZone::ReadFrom(TStream* stream) {}
+void TPortZone::ReadFrom(TStream* stream) {
+  TZone::ReadFrom(stream);
+  stream->ReadBytes(&portTileIndex48, 2);
+}
 
 // slot 0x05 — TZone::WriteTo override.
 // FUNCTION: IMPERIALISM 0x00561820
-void TPortZone::WriteTo(TStream* stream) {}
+void TPortZone::WriteTo(TStream* stream) {
+  TObject::WriteTo(stream);
+  stream->streamSlotAc(&displayName);
+  stream->WriteBytesSlot78(&statusCode04, 2);
+  stream->WriteBytesSlot78(&tileOrTerrainId0c, 4);
+  stream->WriteBytesSlot78(&seedNationId12, 2);
+  stream->WriteBytesSlot78(&activeTileIndex20, 2);
+  stream->WriteBytesSlot78(&contextOrdinal14, 2);
+  stream->WriteBytesSlot78(&portTileIndex48, 2);
+}
 
 // slot 0x0a — TZone::GenerateMapActionContextDisplayNameAndHeadline override.
 // FUNCTION: IMPERIALISM 0x005618b0
 void TPortZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
-                                                               void* overrideName) {}
+                                                               void* overrideName) {
+  (void)usedCityFlags;
+  (void)overrideName;
+  short cityIndex = g_pGlobalMapState->terrainStateTable[portTileIndex48].cityRecordIndex;
+  TGlobalMapCityScoreRecord* city =
+      cityIndex == -1 ? 0 : &g_pGlobalMapState->cityScoreTable[cityIndex];
+  CString headlineTemplate;
+  CString expandedHeadline;
+  g_pSimMgr->GetString(0x275a, statusCode04, &headlineTemplate);
+  scanBracketExpressions(g_pSimMgr, &expandedHeadline, static_cast<LPCSTR>(headlineTemplate),
+                         static_cast<LPCSTR>(city->cityNameA4));
+  displayName = expandedHeadline;
+}
 
 // slot 0x07 — TZone::Free override.
 // FUNCTION: IMPERIALISM 0x00561a70
-void TPortZone::Free() {}
+void TPortZone::Free() {
+  if (g_pGlobalMapState != 0) {
+    if (activeTileIndex20 != -1) {
+      g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(activeTileIndex20, -1);
+    }
+    if (tileOrTerrainId0c != -1) {
+      g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(static_cast<short>(tileOrTerrainId0c),
+                                                              -1);
+    }
+  }
+  if (g_pMapActionContextListHead == this) {
+    g_pMapActionContextListHead = prev18;
+  }
+  if (prev18 != 0) {
+    prev18->next1c = next1c;
+  }
+  if (next1c != 0) {
+    next1c->prev18 = prev18;
+  }
+  next1c = 0;
+  prev18 = 0;
+  delete this;
+}
 
 // slot 0x10 — TZone::QueryZoneCapabilityFlagD override.
 // FUNCTION: IMPERIALISM 0x00561b10

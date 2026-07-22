@@ -26,12 +26,12 @@ public:
   virtual ~TStream() override;
   // Slots 0x14/0x18 (WriteTo/ReadFrom) and 0x20/0x24 (ShallowClone/ShallowFree)
   // are inherited from TObject unchanged; 0x1c (Free) is overridden below.
-  void Free() override;           // 7 (0x1c)  0x00488ab0
-  virtual int streamSlot28();     // 10 (0x28) 0x00488ad0 (read by streamSlot38)
-  virtual void streamSlot2c(int); // 11 (0x2c) 0x00488e30
-  virtual int streamSlot30();     // 12 (0x30) 0x00488af0 (read by streamSlot38)
-  virtual void streamSlot34(int); // 13 (0x34) 0x00488e50
-  virtual char streamSlot38();    // 14 (0x38) 0x00488a80
+  void Free() override;                   // 7 (0x1c)  0x00488ab0
+  virtual int GetPosition();              // 10 (0x28) 0x00488ad0
+  virtual void SetPosition(int position); // 11 (0x2c) 0x00488e30
+  virtual int GetLength();                // 12 (0x30) 0x00488af0
+  virtual void SetLength(int length);     // 13 (0x34) 0x00488e50
+  virtual char IsAtEnd();                 // 14 (0x38) 0x00488a80
   virtual void ReadBytes(void* buffer,
                          int sizeBytes); // 15 (0x3c) primitive 0x00488b40 (no-op base)
   virtual char ReadInteger();            // 16 (0x40) 0x00488b60 read 1 byte
@@ -47,7 +47,7 @@ public:
   virtual int streamSlot68();            // 26 (0x68) 0x00488da0
   virtual void streamSlot6c(void* buffer, int maxLen);  // 27 (0x6c) 0x00488ca0 read len+bytes
   virtual void streamSlot70(CString* dest, int maxLen); // 28 (0x70) 0x00488c50 read shared string
-  virtual void streamSlot74();                          // 29 (0x74) 0x00488dd0
+  virtual void SkipPaddingToEvenByteBoundary();         // 29 (0x74) 0x00488dd0
   virtual void WriteBytesSlot78(void* data,
                                 int length);      // 30 (0x78) primitive 0x00488e70 (no-op base)
   virtual void streamSlot7c(unsigned char value); // 31 (0x7c) 0x00488e90
@@ -65,7 +65,7 @@ public:
   virtual void streamSlotAc(CString* sharedString);       // 43 (0xac) writes a CString ref
   virtual char ReadByte(void* outByte);                   // 44 (0xb0) primitive 0x00489980
   virtual void WriteObjectSlotB4(void* object, int flag); // 45 (0xb4) writes a polymorphic object
-  virtual void OrphanCallChain_C2_I18_00488ff0();         // 46 (0xb8)
-  virtual void AssertMcAppStreamLine304(int unusedArg);   // 47 (0xbc)
+  virtual void WritePaddingToEvenByteBoundary();          // 46 (0xb8) 0x00488ff0
+  virtual int AssertMcAppStreamLine304(int unusedArg);    // 47 (0xbc)
   virtual void AssertMcAppStreamLine596(int unusedArg1, int unusedArg2); // 48 (0xc0)
 };

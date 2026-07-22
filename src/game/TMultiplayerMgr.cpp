@@ -2494,14 +2494,14 @@ void TMultiplayerMgr::DispatchTurnEventPacketWithCodeAndPayloadBuffer(short even
   TCountingStream* counter = new TCountingStream();
   counter->PrepareForUse();
   SerializeOrderDataIntoTurnEventByTag(counter, eventTag, destinationSlot, payload);
-  int packetBytes = counter->streamSlot28();
+  int packetBytes = counter->GetPosition();
   counter->Free();
   HGLOBAL packetMemory = GlobalAlloc(GMEM_MOVEABLE, packetBytes);
   THandleStream* writer = new THandleStream();
   writer->AttachGlobalMemoryHandleAndResetPosition(packetMemory, 0x10);
   SerializeOrderDataIntoTurnEventByTag(writer, eventTag, destinationSlot, payload);
   NetMessage* packet = static_cast<NetMessage*>(GlobalLock(packetMemory));
-  packet->messageLength = writer->streamSlot28();
+  packet->messageLength = writer->GetPosition();
   writer->Free();
   g_pNetMgr006a6014->Send(packet, destinationSlot == -3);
   GlobalFree(packetMemory);

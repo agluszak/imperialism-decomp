@@ -11,7 +11,7 @@ public:
   // a standalone out-of-line copy (see the ctors-dtors-eh skill's trivial-ctor-factory
   // note); define it inline here so it inlines the same way, not as a real CALL.
   TPortZone() : TZone() {
-    field48 = -1;
+    portTileIndex48 = -1;
   }
   ~TPortZone() override; // slot 0x01 scalar deleting destructor 0x5616c0
 
@@ -34,7 +34,7 @@ public:
 
   // +0x48 selected/coastal tile index. Genuinely a short: every original reader
   // is a `movsx word` (0x55f157, 0x562e15, ...).
-  short field48;
+  short portTileIndex48;
   unsigned char pad4a[2]; // +0x4a
 };
 

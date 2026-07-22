@@ -17,10 +17,7 @@ public:
   virtual void Free() override; // slot 0x07 0x4896a0
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // slot 0x0a streamSlot28 owned by the hand declaration below (0x4896e0)
-  // slot 0x0b streamSlot2c owned by the hand declaration below (0x489740)
-  // slot 0x0c streamSlot30 owned by the hand declaration below (0x489700)
-  // slot 0x0d streamSlot34 owned by the hand declaration below (0x489760)
+  // slots 0x0a..0x0d: position/length accessors below
   // slot 0x0e OrphanCallChain_C2_I15_00488a80 inherited unchanged (0x488a80)
   // slot 0x10 ReadInteger inherited unchanged (0x488b60)
   // slot 0x11 streamSlot44 inherited unchanged (0x488b90)
@@ -35,7 +32,7 @@ public:
   // slot 0x1a OrphanCallChain_C1_I09_00488da0 inherited unchanged (0x488da0)
   // slot 0x1b streamSlot6c inherited unchanged (0x488ca0)
   // slot 0x1c Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50 inherited unchanged (0x488c50)
-  // slot 0x1d streamSlot74 inherited unchanged (0x488dd0)
+  // slot 0x1d SkipPaddingToEvenByteBoundary inherited unchanged (0x488dd0)
   // slot 0x1e WriteBytesSlot78 owned by the hand declaration below (0x489810)
   // slot 0x1f OrphanCallChain_C1_I06_00488e90 inherited unchanged (0x488e90)
   // slot 0x20 OrphanCallChain_C1_I06_00488eb0 inherited unchanged (0x488eb0)
@@ -52,7 +49,7 @@ public:
   // slot 0x2b OrphanCallChain_C2_I21_00489030 inherited unchanged (0x489030)
   // slot 0x2c OrphanLeaf_NoCall_Ins02_00489980 inherited unchanged (0x489980)
   // slot 0x2d OrphanRetStub_004899a0 inherited unchanged (0x4899a0)
-  // slot 0x2e OrphanCallChain_C2_I18_00488ff0 inherited unchanged (0x488ff0)
+  // slot 0x2e WritePaddingToEvenByteBoundary inherited unchanged (0x488ff0)
   // slot 0x2f AssertMcAppStreamLine304 inherited unchanged (0x488b10)
   // slot 0x30 AssertMcAppStreamLine596 inherited unchanged (0x488e00)
   virtual int GrowthSize(int requestedSize); // slot 0x31 0x489720
@@ -74,10 +71,10 @@ public:
   // size from GlobalSize. A null handle only resets position/mode. (0x489660)
   void AttachGlobalMemoryHandleAndResetPosition(HGLOBAL memoryHandle, int growthSize);
 
-  int streamSlot28() override;
-  void streamSlot2c(int) override;
-  int streamSlot30() override;
-  void streamSlot34(int) override;
+  int GetPosition() override;
+  void SetPosition(int position) override;
+  int GetLength() override;
+  void SetLength(int length) override;
   void ReadBytes(void* buffer, int sizeBytes) override;
   void WriteBytesSlot78(void* data, int length) override;
 };

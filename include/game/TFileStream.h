@@ -21,10 +21,7 @@ public:
   // slot 0x07 Free inherited unchanged (0x488ab0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // slot 0x0a streamSlot28 owned by the hand declaration below (0x489180)
-  // slot 0x0b streamSlot2c owned by the hand declaration below (0x4891c0)
-  // slot 0x0c streamSlot30 owned by the hand declaration below (0x4891a0)
-  // slot 0x0d streamSlot34 owned by the hand declaration below (0x4891f0)
+  // slots 0x0a..0x0d: position/length accessors below
   // slot 0x0e OrphanCallChain_C2_I15_00488a80 inherited unchanged (0x488a80)
   // slot 0x10 ReadInteger inherited unchanged (0x488b60)
   // slot 0x11 streamSlot44 inherited unchanged (0x488b90)
@@ -39,7 +36,7 @@ public:
   // slot 0x1a OrphanCallChain_C1_I09_00488da0 inherited unchanged (0x488da0)
   // slot 0x1b streamSlot6c inherited unchanged (0x488ca0)
   // slot 0x1c streamSlot70 owned by the hand declaration below (0x489360)
-  // slot 0x1d streamSlot74 inherited unchanged (0x488dd0)
+  // slot 0x1d SkipPaddingToEvenByteBoundary inherited unchanged (0x488dd0)
   // slot 0x1e WriteBytesSlot78 owned by the hand declaration below (0x489290)
   // slot 0x1f OrphanCallChain_C1_I06_00488e90 inherited unchanged (0x488e90)
   // slot 0x20 OrphanCallChain_C1_I06_00488eb0 inherited unchanged (0x488eb0)
@@ -56,7 +53,7 @@ public:
   virtual void streamSlotAc(CString* sharedString) override;       // slot 0x2b 0x489390
   virtual char ReadByte(void* outByte) override;                   // slot 0x2c 0x489300
   virtual void WriteObjectSlotB4(void* object, int flag) override; // slot 0x2d 0x489330
-  // slot 0x2e OrphanCallChain_C2_I18_00488ff0 inherited unchanged (0x488ff0)
+  // slot 0x2e WritePaddingToEvenByteBoundary inherited unchanged (0x488ff0)
   // slot 0x2f AssertMcAppStreamLine304 inherited unchanged (0x488b10)
   // slot 0x30 AssertMcAppStreamLine596 inherited unchanged (0x488e00)
   // clang-format on
@@ -68,10 +65,10 @@ public:
 
   void SetBackingArchive(ArchiveStreamAdapter* backingArchive);
 
-  int streamSlot28() override;
-  void streamSlot2c(int) override;
-  int streamSlot30() override;
-  void streamSlot34(int) override;
+  int GetPosition() override;
+  void SetPosition(int position) override;
+  int GetLength() override;
+  void SetLength(int length) override;
   void ReadBytes(void* buffer, int sizeBytes) override;
   void streamSlot70(CString* dest, int maxLen) override;
   void WriteBytesSlot78(void* data, int length) override;
@@ -83,4 +80,3 @@ public:
   // backing CArchive. The read form stores the resolved object through its
   // out-param and returns a success byte.
 };
-
