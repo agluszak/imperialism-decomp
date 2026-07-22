@@ -73,8 +73,8 @@ void TShipFractionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, 
 // force order entry for the active nation class and notifies the main selection view's
 // listener.
 void TShipFractionCluster::SelectTaskForceOrderForActiveNationClass(char activeFlag) {
-  g_pActiveMapOrderContext->selectedTaskForce14->SetTaskForceOrderSelectionByNationClassAndFlag(
-      static_cast<short>(controlTag - 0x7330), activeFlag);
+  g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
+                                                        activeFlag);
   // TODO: the original then calls mainSelectionView8c's own vtable slot 0x1b0 with an arg
   // read from a sub-object at mainSelectionView8c+0xa0
   // (NotifyTaskForceSelectionListenerByWord62, 0x599a20). Its concrete class beyond

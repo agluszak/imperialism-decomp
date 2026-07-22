@@ -60,16 +60,15 @@ TBeachheadMission::TBeachheadMission(TZone* targetZone, TInvadeMission* parentMi
 // FUNCTION: IMPERIALISM 0x0053a500
 void TBeachheadMission::CalculateNeeds() {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-  for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
-    if (node->field08 != targetZone14) {
+  for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
+    if (node->location != targetZone14) {
       continue;
     }
-    if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04,
-                                                                 node->ownerNationSlot14)) {
+    if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, node->nation)) {
       continue;
     }
-    short normalizationBase = node->GetNavyOrderNormalizationBaseByNationType();
-    float scale = static_cast<float>(node->stockLevel1c / normalizationBase);
+    short normalizationBase = node->GetMaxStrength();
+    float scale = static_cast<float>(node->strength / normalizationBase);
     vector[0] +=
         static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(0)) * scale;
     vector[1] +=
@@ -130,8 +129,8 @@ void TBeachheadMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
   signed char ownerCode =
       g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30].ownerNationCode00;
   if (g_pDiplomacyTurnStateManager->HasOutdatedWarRelationSlot48(nationId04, ownerCode)) {
-    mapOrderEntry->SetMapOrderType5AndQueue(reinterpret_cast<int>(
-        &g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30]));
+    mapOrderEntry->OrderSendInTheMarines(
+        &g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30]);
     return;
   }
 

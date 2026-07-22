@@ -71,15 +71,15 @@ public:
   // targetZone18).
   virtual TZone* RefreshMissionPortZoneContextForNation(); // slot 0x28 0x536fa0
   virtual void
-  ConsolidateMissionOrderEntriesByTargetAndQueue(TZone* contextAnchor); // slot 0x29 0x5371d0
-  virtual void QueueMissionOrdersByPriorityForContext(TZone* contextAnchor,
+  ConsolidateMissionOrderEntriesByTargetAndQueue(TZone* location); // slot 0x29 0x5371d0
+  virtual void QueueMissionOrdersByPriorityForContext(TZone* location,
                                                       TShip** selectedOrder); // slot 0x2a 0x537090
   // Selects the active target zone from lifecycle state28 (0 -> zone18, 1..2 -> zone14).
   virtual TZone* GetActiveTargetZoneByState28() const; // slot 0x2b 0x537060
 
   // Mac: CombineForce(TZone*, TTaskForce*&). Reuses or creates the task force for
-  // `contextAnchor`, then moves every matching mission order into it.
-  void CombineForce(TZone* contextAnchor, TTaskForce*& taskForce); // 0x536d60
+  // `location`, then moves every matching mission order into it.
+  void CombineForce(TZone* location, TTaskForce*& taskForce); // 0x536d60
 
   static float ComputeOrderDistributionSimilarityScoreForExactSourceNation(int sourceNation,
                                                                            TZone* nodeContext);
@@ -113,7 +113,7 @@ public:
   // mission's own nationId04 and takes the best such score -- though each iteration
   // re-reads portZone's (still out-of-range) owner code as the ship filter rather than
   // the candidate ally's index, so in practice this branch only ever contributes 0 (no
-  // ship's ownerNationSlot14 can equal an out-of-range code); modeled exactly as observed
+  // ship's nation can equal an out-of-range code); modeled exactly as observed
   // rather than "corrected", per Hard Rule 6. 0x53b350.
   float ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(TZone* portZone);
   // Builds a per-category priority vector over every orderList24 ship: a ship counts if
@@ -124,7 +124,7 @@ public:
   void BuildNavyOrderCategoryVectorForNationWithExclusion(float* vector, TZone* nearZone,
                                                           short distanceThreshold, TZone* farZone);
   // Builds a per-category priority vector over every orderList24 ship, each weighted by
-  // (stockLevel1c/normalizationBase) * a distance-decay factor (0.8^hopDistance to the
+  // (strength/normalizationBase) * a distance-decay factor (0.8^hopDistance to the
   // active target zone, clamped to index 5) -- same per-ship math as
   // AccumulateNavyOrderCategoryVectorWithScale, but the original inlines its own copy here
   // rather than calling out to 0x537c60, so the body is reproduced inline to match. 0x537d40.

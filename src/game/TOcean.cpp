@@ -44,8 +44,8 @@ void TZone::HandleKeyDown(int key_id) {
   bool bSlotIsActive;
   unsigned int uSlotIndex;
   unsigned int uSlotCountLocal;
-  TGlobalMapCityScoreRecord** piSlotEntry;
-  TGlobalMapCityScoreRecord** slotTable = secondaryNeighbors.Data();
+  Province** piSlotEntry;
+  Province** slotTable = secondaryNeighbors.Data();
   unsigned int slotCount = static_cast<unsigned int>(secondaryNeighbors.GetSize());
 
   if ((nationKeyMask10 & (1U << ((unsigned char)key_id & 0x1f))) == 0) {
@@ -107,9 +107,9 @@ void TZone::HandleKeyDown(int key_id) {
   }
 
   if ((nationKeyMask10 & (1U << ((unsigned char)sVarActiveSlot & 0x1f))) != 0) {
-    for (pvNode = GetNavyPrimaryOrderListHead(); pvNode != 0; pvNode = pvNode->nextOlder24) {
-      if (((pvNode->field08 == this) && (pvNode->ownerNationSlot14 == sVarActiveSlot)) &&
-          (pvNode->ownerOrderEntry0c == 0)) {
+    for (pvNode = TShip::GetFirst(); pvNode != 0; pvNode = pvNode->next) {
+      if (((pvNode->location == this) && (pvNode->nation == sVarActiveSlot)) &&
+          (pvNode->taskForce == 0)) {
         SetMapOrderUiFlag(1);
         return;
       }
@@ -140,7 +140,7 @@ IMPLEMENT_DYNCREATE(TOcean, TObject)
 // FUNCTION: IMPERIALISM 0x005621e0
 void TOcean::Free() {
   if (g_pNavyOrderManager != 0) {
-    g_pNavyOrderManager->ResetPrimaryOrderActiveFlagsAndClearManagerState();
+    g_pNavyOrderManager->ScuttleEverything();
   }
   if (g_pMapActionContextDistanceCache != 0) {
     delete[] static_cast<char*>(g_pMapActionContextDistanceCache);
@@ -478,12 +478,10 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
 
   // 2) Re-seed the masks from the primary navy order list: each ship flags its zone
   // with its owner nation's bit.
-  for (TShip* shipNode = GetNavyPrimaryOrderListHead(); shipNode != 0;
-       shipNode = shipNode->nextOlder24) {
-    TZone* orderZone = shipNode->field08;
-    orderZone->nationKeyMask10 =
-        static_cast<unsigned short>(orderZone->nationKeyMask10 |
-                                    (1 << static_cast<unsigned char>(shipNode->ownerNationSlot14)));
+  for (TShip* shipNode = TShip::GetFirst(); shipNode != 0; shipNode = shipNode->next) {
+    TZone* orderZone = shipNode->location;
+    orderZone->nationKeyMask10 = static_cast<unsigned short>(
+        orderZone->nationKeyMask10 | (1 << static_cast<unsigned char>(shipNode->nation)));
   }
 
   // 3) Reset overlay tile states across the whole map: nation-overlay states (7..0xd)
@@ -536,31 +534,30 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
   // an active-nation-owned city, mark that nation's overlay on the anchor context's best
   // coastal tile and store the entry's within-nation order rank in the tile's +0x1a word.
   for (TTaskForce* rankEntry = g_pNavyOrderManager->orderQueueHead; rankEntry != 0;
-       rankEntry = rankEntry->queue_next) {
-    if (rankEntry->required_count == g_pSimMgr->GetActiveNationId()) {
+       rankEntry = rankEntry->nextForce) {
+    if (rankEntry->nation == g_pSimMgr->GetActiveNationId()) {
       continue;
     }
     unsigned char isTaskForceEntry = (rankEntry->shipOrders == 5);
     if (isTaskForceEntry == 0) {
       continue;
     }
-    int cityIndex = GetCityIndexFromCityStatePointer(rankEntry->owner.asCityTarget);
+    int cityIndex = GetProvinceIndex(rankEntry->target.asProvince);
     if (static_cast<short>(g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode00) !=
         g_pSimMgr->GetActiveNationId()) {
       continue;
     }
-    // contextAnchor is the anchoring map-action context TZone*; owner.raw is the kind-5
-    // city-target record passed through as the heuristic's opaque second argument.
-    short coastalTile =
-        rankEntry->contextAnchor->FindBestCoastalTileForContextAndCityStateByHeuristic(
-            rankEntry->owner.raw);
+    // location is the anchoring map-action context TZone*; target.asProvince is the
+    // kind-5 city record used by the coastal-tile heuristic.
+    short coastalTile = rankEntry->location->FindBestCoastalTileForContextAndCityStateByHeuristic(
+        rankEntry->target.asProvince);
     if (coastalTile == -1) {
       continue;
     }
-    SetMapTileStateByteAndNotifyObserver(coastalTile, rankEntry->required_count + 7);
+    SetMapTileStateByteAndNotifyObserver(coastalTile, rankEntry->nation + 7);
     *reinterpret_cast<unsigned short*>(
         reinterpret_cast<char*>(&g_pGlobalMapState->terrainStateTable[coastalTile]) + 0x1a) =
-        static_cast<unsigned short>(rankEntry->GetNavyOrderRankWithinNationBucket());
+        static_cast<unsigned short>(rankEntry->GetNationalIndex());
   }
 }
 
@@ -784,7 +781,7 @@ void TOcean::RemovePortZoneByTile(short nTileIndex) {
   }
 }
 
-// bd 1uj.16: TTaskForce::SetMapOrderType9AndQueue / PromoteMapOrderChainAndQueue's
+// bd 1uj.16: TTaskForce::OrderEvade / OrderSailTowards's
 // final notification step (0x5642e0). Only runs when the entry belongs to the active
 // nation. It re-marks the entry's map tile (TTaskForce::UpdateNavyOrderMapMarkerByOrder-
 // Type), lights the entry's TZone map-order UI flag iff the active nation still has a
@@ -792,24 +789,23 @@ void TOcean::RemovePortZoneByTile(short nTileIndex) {
 // tile, and clears this manager's cached selected task force if it pointed at the entry.
 // FUNCTION: IMPERIALISM 0x005642e0
 void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
-  // entry->required_count (+0x1c) holds this entry's owner-nation slot here.
-  if (g_pSimMgr->GetActiveNationId() != entry->required_count) {
+  // entry->nation (+0x1c) holds this entry's owner-nation slot here.
+  if (g_pSimMgr->GetActiveNationId() != entry->nation) {
     return;
   }
-  entry->UpdateNavyOrderMapMarkerByOrderType();
+  entry->CreateIngot();
 
-  // contextAnchor (+0x18) is the entry's owning map-order zone (see the TZone casts in
+  // location (+0x18) is the entry's owning map-order zone (see the TZone casts in
   // TNavyMgr/TToolBarCluster); slot 0x58 is TZone::SetMapOrderUiFlag.
-  TZone* zone = entry->contextAnchor;
+  TZone* zone = entry->location;
   short nation = g_pSimMgr->GetActiveNationId();
   if (nation == -1) {
     nation = g_pSimMgr->GetActiveNationId();
   }
   int hasPendingNode = 0;
   if ((zone->nationKeyMask10 & static_cast<unsigned char>(1 << (nation & 0x1f))) != 0) {
-    for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
-      if (node->field08 == zone && node->ownerNationSlot14 == nation &&
-          node->ownerOrderEntry0c == nullptr) {
+    for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
+      if (node->location == zone && node->nation == nation && node->taskForce == nullptr) {
         hasPendingNode = 1;
         break;
       }
@@ -817,10 +813,10 @@ void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
   }
   zone->SetMapOrderUiFlag(hasPendingNode);
 
-  // tiebreak_strength (+0x30) doubles as the entry's active map-tile notify index; 0xffff
+  // ingotTileIndex (+0x30) doubles as the entry's active map-tile notify index; 0xffff
   // means "no tile". Mac CodeWarrior identifies mapUberPictureF0 slot 0x1e8 as
   // NoticeTile.
-  short tileNotifyIndex = entry->tiebreak_strength;
+  short tileNotifyIndex = entry->ingotTileIndex;
   if (tileNotifyIndex != -1 && g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
     g_pUiRuntimeContext->mapUberPictureF0->NoticeTile(tileNotifyIndex);
   }
@@ -840,12 +836,12 @@ void TOcean::ForgetForce(TTaskForce* entry) {
     selectedTaskForce14 = 0;
   }
   short nation = g_pSimMgr->GetActiveNationId();
-  if (entry->required_count != nation) {
+  if (entry->nation != nation) {
     return;
   }
 
-  entry->ClearNavyOrderMapMarker();
-  TZone* zone = entry->contextAnchor;
+  entry->DestroyIngot();
+  TZone* zone = entry->location;
   if (zone == 0) {
     return;
   }
@@ -855,9 +851,8 @@ void TOcean::ForgetForce(TTaskForce* entry) {
 
   int hasUnassignedShip = 0;
   if ((zone->nationKeyMask10 & static_cast<unsigned char>(1 << nation)) != 0) {
-    for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
-      if (ship->field08 == zone && ship->ownerNationSlot14 == nation &&
-          ship->ownerOrderEntry0c == 0) {
+    for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
+      if (ship->location == zone && ship->nation == nation && ship->taskForce == 0) {
         hasUnassignedShip = 1;
         break;
       }
@@ -881,7 +876,7 @@ int TOcean::ComputeGlobalMapActionContextNodeValueAverage() {
 
 // FUNCTION: IMPERIALISM 0x00564570
 TZone* TOcean::FindMapActionContextContainingNodeByIndex(int cityRecordIndex) {
-  TGlobalMapCityScoreRecord* target = &g_pGlobalMapState->cityScoreTable[cityRecordIndex];
+  Province* target = &g_pGlobalMapState->cityScoreTable[cityRecordIndex];
   for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
     if (zone->secondaryNeighbors.ContainsEntry(target)) {
       return zone;
@@ -894,8 +889,7 @@ TZone* TOcean::FindMapActionContextContainingNodeByIndex(int cityRecordIndex) {
 TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOrderContextZone) {
   // If a different context zone is now selected, drop the cached task force's per-nation
   // order nodes; and if the new context is null, free and forget the cached task force.
-  if (selectedTaskForce14 != nullptr &&
-      selectedTaskForce14->contextAnchor != pMapOrderContextZone) {
+  if (selectedTaskForce14 != nullptr && selectedTaskForce14->location != pMapOrderContextZone) {
     selectedTaskForce14->RegainVirginity(g_pSimMgr->GetActiveNationId(), pMapOrderContextZone);
     if (pMapOrderContextZone == nullptr) {
       TTaskForce* previous = selectedTaskForce14;
@@ -910,7 +904,7 @@ TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOr
       return selectedTaskForce14;
     }
   } else if (pMapOrderContextZone != nullptr) {
-    selectedTaskForce14->RefreshTaskForceSelectionFlagsForCurrentNationOrders(0);
+    selectedTaskForce14->MaxOut(0);
   }
   return selectedTaskForce14;
 }

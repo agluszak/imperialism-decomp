@@ -9,7 +9,7 @@
 #include "game/global_data_tables.h"
 
 struct CRuntimeClass;
-struct TGlobalMapCityScoreRecord;
+struct Province;
 class TStream;
 class TZone;
 class TTaskForce;
@@ -55,20 +55,19 @@ public:
 };
 
 // City/province records adjacent to a map-action context. Every reader treats each entry
-// as a TGlobalMapCityScoreRecord*, and both map-generation writers append that type.
+// as a Province*, and both map-generation writers append that type.
 // EnsurePortZoneForTile (0x005635e0) links a newly founded port to its owning context via
 // the PRIMARY stretch at +0x24 in both directions; writing the port into this +0x34 stretch
 // is a receiver-offset error and corrupts the city-record index calculation at 0x0055f23a.
 // VTABLE: IMPERIALISM 0x0065c748
-class TZoneSecondaryNeighborStretch
-    : public stretch<TGlobalMapCityScoreRecord*, TZoneSecondaryNeighborTag> {
+class TZoneSecondaryNeighborStretch : public stretch<Province*, TZoneSecondaryNeighborTag> {
 public:
   // Linear scan for `value`; returns the matching slot or null. Always inlined
   // (ground truth: TOcean::FindMapActionContextContainingNodeByIndex, 0x00564570,
   // where the index/count comparisons are unsigned and the hit materializes as a
   // slot pointer). Lives here rather than on stretch<> because MSVC500 eagerly
   // instantiates template members for element types without operator==.
-  TGlobalMapCityScoreRecord** FindEntry(TGlobalMapCityScoreRecord* value) {
+  Province** FindEntry(Province* value) {
     unsigned int count = Count();
     for (unsigned int index = 0; index < count; ++index) {
       if (Data()[index] == value) {
@@ -77,16 +76,15 @@ public:
     }
     return 0;
   }
-  bool ContainsEntry(TGlobalMapCityScoreRecord* value) {
+  bool ContainsEntry(Province* value) {
     return FindEntry(value) != 0;
   }
 
 public:
-  TGlobalMapCityScoreRecord**
-  GetOrAppendUnique(TGlobalMapCityScoreRecord* entry) override; // 0x55e9c0
+  Province** GetOrAppendUnique(Province* entry) override; // 0x55e9c0
   // Not a vtable slot (see stretch.h); called only on the concrete type. The orig
   // vtable at 0x0065c748 is confirmed exactly 1 slot long (GetOrAppendUnique only).
-  void Add(TGlobalMapCityScoreRecord* entry); // 0x55eba0
+  void Add(Province* entry); // 0x55eba0
   // Unconditionally reallocate `data` to hold `count` entries (double-or-exact grow),
   // updating capacity. 0x55fae0.
   void ResizePointerArrayCapacityByRequestedCount(int count);
@@ -125,9 +123,9 @@ public:
   virtual bool HasZoneActiveChildCount(int unused);                       // slot 0x12 0x55e8c0
   virtual short FindNearestActiveSeaContextTileFromOffset216();           // slot 0x13 0x55fe60
   virtual short GetActiveNationSlotTile();                                // slot 0x14 0x55fef0
-  virtual short
-  FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCityState); // slot 0x15 0x560150
-  virtual void SetMapOrderUiFlag(int flag);                                   // slot 0x16 0x560580
+  virtual short FindBestCoastalTileForContextAndCityStateByHeuristic(
+      Province* contextProvince);           // slot 0x15 0x560150
+  virtual void SetMapOrderUiFlag(int flag); // slot 0x16 0x560580
   // --- vtable ends at slot 0x16 (orig 0x17..0x1b are NULL; see note above) ---
 
   // The original table group continues with two embedded stretch<TZone*> member vtables
@@ -168,7 +166,7 @@ public:
   char ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex);
   // 0x560b00: whether this map-order context has a displayable primary navy order for
   // `nation` (-1 = active nation): nationKeyMask10 bit set and a g_pNavyPrimaryOrderListHead
-  // ship with field08 == this, matching owner, field0c == 0 (and field34 == 0 unless
+  // ship with location == this, matching owner, field0c == 0 (and selection == 0 unless
   // skipField34Check). Ghidra's TCivToolbar attribution is junk.
   char CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField34Check);
   // RefreshMapOrderEntryPanel's reachability expansion. A higher remaining depth wins;
@@ -187,7 +185,7 @@ public:
   // Capability true) refresh via AssertValid, then return the home-region city score
   // of the terrain-table owner nation under the port tile (0 if that nation isn't
   // eligible); other contexts average cityScoreValue over the secondaryNeighbors
-  // entries (TGlobalMapCityScoreRecord* stretch pun).
+  // entries (Province* stretch pun).
   int ComputeMapActionContextNodeValueAverage();
 
   // statusCode04: -1 sentinel means unset; GenerateZoneStatusCodeIfUnset (0x55f5c0) rolls a
@@ -216,7 +214,7 @@ public:
 
   // 0x0055ff70 — coastal-tile affinity heuristic (cdecl; used by FindBestCoastalTile).
   static int ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* contextZone,
-                                                            int contextCityState);
+                                                            Province* contextProvince);
 
   // 0x0055fc40 — Ghidra labeled InputState::; dispatches through TZone vtable 0x50/0x58.
   void HandleKeyDown(int key_id);
@@ -246,7 +244,7 @@ public:
 
   // 0x005609e0. If `nation` has this map-order context zone flagged (nationKeyMask10 bit) and a
   // matching primary-order ship, builds and returns a new TTaskForce order entry for it
-  // (via the TTaskForce(contextAnchor, requiredCount) ctor); otherwise returns null.
+  // (via the TTaskForce(location, requiredCount) ctor); otherwise returns null.
   // `nation` == -1 resolves the active nation. Called by
   // TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh.
   TTaskForce* CreateTaskForceFromNavyOrdersForNationIfEligible(short nation);

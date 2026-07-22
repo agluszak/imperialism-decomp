@@ -397,7 +397,7 @@ void TCity::EndCityPhase() {}
 
 // FUNCTION: IMPERIALISM 0x004b3de0
 void TCity::PredictedNeeds() {
-  if (this->productionSummary1d8->stockLevel1c < 2) {
+  if (this->productionSummary1d8->strength < 2) {
     this->lowStockFlag7d = 0;
   } else {
     this->lowStockFlag7d = 1;

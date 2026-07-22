@@ -48,7 +48,7 @@ void TNavyRoster::StuffValues(TTaskForce* taskForce) {
     classControls90[i] = classControl;
   }
 
-  for (TMapOrderChildLinkNode* link = taskForce->childOrderList; link != 0; link = link->next) {
+  for (TMapOrderChildLinkNode* link = taskForce->shipList; link != 0; link = link->next) {
     TShipLine* line = new TShipLine();
     int lineBounds[2] = {0xec, 0x31};
     line->SetLineDataRowAndBounds(0, 0, lineBounds);

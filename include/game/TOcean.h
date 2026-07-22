@@ -69,7 +69,7 @@ public:
 
   // 0x00564570 — walk g_pMapActionContextListHead (via prev18) for the zone whose
   // secondaryNeighbors list contains &g_pGlobalMapState->cityScoreTable[cityRecordIndex]
-  // (the documented TGlobalMapCityScoreRecord* stretch pun). Real __thiscall on the
+  // (the documented Province* stretch pun). Real __thiscall on the
   // TOcean singleton (ret 4; every caller loads g_pActiveMapOrderContext into ecx);
   // `this` is unused by the body.
   TZone* FindMapActionContextContainingNodeByIndex(int cityRecordIndex);
@@ -83,7 +83,7 @@ public:
 
   // 0x562f20 - refresh every map-action context's nation overlays and per-nation order
   // ranks after an order-list resync (turn-event-0x2E receive path calls it right after
-  // TNavyMgr::DeserializeNavyOrderListsByNation).
+  // TNavyMgr::ReadFromFilterously).
   void RefreshMapActionContextNationOverlaysAndOrderRanks();
 
   // The original keeps this standalone copy and calls it from four sites; other sites
@@ -96,8 +96,8 @@ public:
   // 0x005634a0 — walks g_pMapActionContextListHead for TPortZone tile-id match.
   TZone* FindPortZoneBySelectedTile(TCity* city);
 
-  // bd 1uj.16: final step of TTaskForce::SetMapOrderType9AndQueue /
-  // PromoteMapOrderChainAndQueue (0x552f80 / 0x5533f0). Not yet recovered --
+  // bd 1uj.16: final step of TTaskForce::OrderEvade /
+  // OrderSailTowards (0x552f80 / 0x5533f0). Not yet recovered --
   // body is a documented placeholder; see bd 1uj.16 follow-up notes.
   void FinalizeQueuedMapOrderEntry(TTaskForce* entry); // 0x5642e0
 
@@ -125,7 +125,7 @@ void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte);
 
 // Returns the currently active map-order entry (g_pActiveMapOrderContext->
 // selectedTaskForce14). Ghidra labels this __thiscall, but the real call sites (e.g.
-// TToolBarCluster::TryHandleMapContextAction's case-10 branch) pass an unrelated
+// TToolBarCluster::SelectionClick's case-10 branch) pass an unrelated
 // TMapUberPicture receiver in ecx and the body never touches `this` -- it reads the
 // TOcean global directly, so the thiscall attribution is spurious. 0x005979f0.
 TTaskForce* GetActiveMapOrderEntry();

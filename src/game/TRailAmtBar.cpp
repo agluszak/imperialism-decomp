@@ -39,7 +39,7 @@ TRailAmtBar::TRailAmtBar() : TIndustryAmtBar() {}
 // FUNCTION: IMPERIALISM 0x0058a020
 void TRailAmtBar::DoPostCreate(int arg) {
   TGreatPower* nationState = GetActiveNationState();
-  TCity* cityState = nationState != 0 ? nationState->GetCityState() : 0;
+  TCity* province = nationState != 0 ? nationState->GetCityState() : 0;
   int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);
 
   short recordIndex = 0;
@@ -61,11 +61,11 @@ void TRailAmtBar::DoPostCreate(int arg) {
     recordIndex = 0x17;
   }
 
-  selectedMetricRecord = cityState->tradeCommodityRecordPtrs[recordIndex];
+  selectedMetricRecord = province->tradeCommodityRecordPtrs[recordIndex];
 
   short productionOrCapValue = 0;
   if (recordIndex == 0x33 || recordIndex == 7) {
-    TPopulationMgr* scenario = cityState->productionSummary1d8;
+    TPopulationMgr* scenario = province->productionSummary1d8;
     TLaborPool* slots = scenario->productionSlots14;
     productionOrCapValue = (short)(((slots->highSkillCount08 * 2 + slots->mediumSkillCount06) * 2 +
                                     scenario->extraAt1e + slots->lowSkillCount04) /

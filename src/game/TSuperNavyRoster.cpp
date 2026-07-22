@@ -28,8 +28,8 @@ void TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext(TView* panel, in
 
   short activeNation = g_pSimMgr->GetActiveNationId();
   for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
-    for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
-      if (ship->field08 != zone || ship->ownerNationSlot14 != activeNation) {
+    for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
+      if (ship->location != zone || ship->nation != activeNation) {
         continue;
       }
       TMiniShipLine* line = new TMiniShipLine;

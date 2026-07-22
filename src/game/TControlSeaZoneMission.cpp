@@ -114,14 +114,14 @@ void TControlSeaZoneMission::SetStateByte8To2() {
   TZone** ownerSlot = homePort->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
   if (*ownerSlot == targetZone14) {
     float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-    for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
-      if (ship->field08 != targetZone14 || !g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
-                                               nationId04, ship->ownerNationSlot14)) {
+    for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
+      if (ship->location != targetZone14 ||
+          !g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, ship->nation)) {
         continue;
       }
 
-      short normalizationBase = ship->GetNavyOrderNormalizationBaseByNationType();
-      float scale = static_cast<float>(ship->stockLevel1c / normalizationBase);
+      short normalizationBase = ship->GetMaxStrength();
+      float scale = static_cast<float>(ship->strength / normalizationBase);
       vector[0] +=
           static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
           scale;
@@ -179,16 +179,15 @@ void TControlSeaZoneMission::CalculateImportance() {
 // FUNCTION: IMPERIALISM 0x005393a0
 void TControlSeaZoneMission::CalculateNeeds() {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-  for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
-    if (node->field08 != targetZone14) {
+  for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
+    if (node->location != targetZone14) {
       continue;
     }
-    if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04,
-                                                                 node->ownerNationSlot14)) {
+    if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, node->nation)) {
       continue;
     }
-    short normalizationBase = node->GetNavyOrderNormalizationBaseByNationType();
-    float scale = static_cast<float>(node->stockLevel1c / normalizationBase);
+    short normalizationBase = node->GetMaxStrength();
+    float scale = static_cast<float>(node->strength / normalizationBase);
     vector[0] +=
         static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(0)) * scale;
     vector[1] +=
@@ -234,12 +233,12 @@ char TControlSeaZoneMission::Matches(eMissionType missionType, int key, TZone* z
 // TTaskForce map-order entry GiveOrders's dispatch passed (taskForce20). Builds a per-nation
 // bitmask of nations with an outdated war-relation timestamp against this mission's nation,
 // tracking the first such nation's port-zone context whose cached owner (primaryNeighbors slot
-// 0) matches the entry's contextAnchor (a TZone*). If the entry's own target
-// context (also contextAnchor) has none of those nations already flagged AND a matching context
+// 0) matches the entry's location (a TZone*). If the entry's own target
+// context (also location) has none of those nations already flagged AND a matching context
 // was found, queues map-order type 6 with that context; otherwise queues type 3.
 // FUNCTION: IMPERIALISM 0x00539640
 void TControlSeaZoneMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
-  mapOrderEntry->ResetOrderTypeAndStrengthDword(1);
+  mapOrderEntry->SetAggression(1);
 
   int nationBitmask = 0;
   TZone* firstMatchContext = nullptr;
@@ -249,19 +248,19 @@ void TControlSeaZoneMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
       TZone* portZone =
           g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(nation));
       TZone** cachedOwnerSlot = portZone->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
-      if (*cachedOwnerSlot == mapOrderEntry->contextAnchor) {
+      if (*cachedOwnerSlot == mapOrderEntry->location) {
         firstMatchContext =
             g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(nation));
       }
     }
   }
 
-  TZone* entryContext = mapOrderEntry->contextAnchor;
+  TZone* entryContext = mapOrderEntry->location;
   if ((entryContext->nationKeyMask10 & nationBitmask) == 0 && firstMatchContext != nullptr) {
-    mapOrderEntry->SetMapOrderType6AndQueue(reinterpret_cast<int>(firstMatchContext));
+    mapOrderEntry->OrderBlockade(firstMatchContext);
     return;
   }
-  mapOrderEntry->SetMapOrderType3Or4AndQueue(0);
+  mapOrderEntry->OrderPatrol(0);
 }
 
 // Inherited unchanged by TBeachheadMission and TBlockadePortMission (real base class relationship).

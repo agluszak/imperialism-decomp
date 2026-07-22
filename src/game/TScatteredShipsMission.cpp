@@ -93,7 +93,7 @@ char TScatteredShipsMission::Matches(eMissionType missionType, int key, TZone* z
   return missionType == kMissionTypeScatteredShips && zoneContext == nullptr && key == -1;
 }
 
-// Deactivates the whole existing childOrderList chain, then hunts for a port-zone context
+// Deactivates the whole existing shipList chain, then hunts for a port-zone context
 // eligible for this mission's nation (!QueryPortZoneCapability() &&
 // HasSecondaryNeighborWithNationTag(nationId04), same eligibility pair the whole
 // TControlSeaZoneMission family's CalculateNeeds/GiveActionOrders use elsewhere) -- first to confirm
@@ -104,7 +104,7 @@ char TScatteredShipsMission::Matches(eMissionType missionType, int key, TZone* z
 // node, then scans the remaining inactive nodes for the one whose (TZone*) reading of
 // TTaskForce::shipOrders is nearest that zone (TZone::GetCachedMapActionContextDistanceOrRecompute),
 // marks it active, and -- unless it's already anchored on that same zone -- promotes/queues
-// it there. Returns as soon as no inactive node remains (childOrderList is finite, so the
+// it there. Returns as soon as no inactive node remains (shipList is finite, so the
 // sweep is bounded even though the zone ring never explicitly stops).
 // FUNCTION: IMPERIALISM 0x0053bdd0
 void TScatteredShipsMission::GiveOrders() {
@@ -146,8 +146,8 @@ void TScatteredShipsMission::GiveOrders() {
       for (TMapOrderChildLinkNode* candidate = best->next; candidate != nullptr;
            candidate = candidate->next) {
         if (candidate->active == 0) {
-          TZone* candidateZone = static_cast<TShip*>(candidate->payload)->field08;
-          TZone* bestZone = static_cast<TShip*>(best->payload)->field08;
+          TZone* candidateZone = static_cast<TShip*>(candidate->payload)->location;
+          TZone* bestZone = static_cast<TShip*>(best->payload)->location;
           short candidateDistance =
               candidateZone->GetCachedMapActionContextDistanceOrRecompute(current);
           short bestDistance = bestZone->GetCachedMapActionContextDistanceOrRecompute(current);
@@ -162,8 +162,8 @@ void TScatteredShipsMission::GiveOrders() {
       if (target == nullptr) {
         return;
       }
-      if (target->field08 != current) {
-        target->GetOrCreateMissionOrderEntryForNode()->PromoteMapOrderChainAndQueue(current);
+      if (target->location != current) {
+        target->DemandExclusiveTaskForce()->OrderSailTowards(current);
       }
     }
 

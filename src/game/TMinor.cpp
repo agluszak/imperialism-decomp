@@ -1051,7 +1051,7 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
     int oneBasedIndex = 1;
     while (oneBasedIndex <= ownedCount) {
       int regionId = this->ownedRegionList->At(oneBasedIndex);
-      TGlobalMapCityScoreRecord* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
+      Province* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
       if (regionRecord->linkedRegionCount > 0) {
         int linkedIndex = 0;
         while (linkedIndex < regionRecord->linkedRegionCount) {
@@ -1066,7 +1066,7 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
     return;
   }
 
-  TGlobalMapCityScoreRecord* regionRecord = &g_pGlobalMapState->cityScoreTable[provinceId];
+  Province* regionRecord = &g_pGlobalMapState->cityScoreTable[provinceId];
   if (regionRecord->linkedRegionCount > 0) {
     int linkedIndex = 0;
     while (linkedIndex < regionRecord->linkedRegionCount) {
@@ -1094,7 +1094,7 @@ void TMinor::QueueInterNationEvent17ForState300AffectedNations(void) {
     int oneBasedIndex = 1;
     while (oneBasedIndex <= ownedCount) {
       int regionId = this->ownedRegionList->At(oneBasedIndex);
-      TGlobalMapCityScoreRecord* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
+      Province* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
       if (regionRecord->linkedRegionCount > 0) {
         int linkedIndex = 0;
         while (linkedIndex < regionRecord->linkedRegionCount) {
@@ -1143,7 +1143,7 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
     int oneBasedIndex = 1;
     while (oneBasedIndex <= ownedCount) {
       int regionId = this->ownedRegionList->At(oneBasedIndex);
-      TGlobalMapCityScoreRecord* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
+      Province* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
       if (regionRecord->linkedRegionCount > 0) {
         int linkedIndex = 0;
         while (linkedIndex < regionRecord->linkedRegionCount) {
@@ -1158,7 +1158,7 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
     return;
   }
 
-  TGlobalMapCityScoreRecord* regionRecord = &g_pGlobalMapState->cityScoreTable[provinceId];
+  Province* regionRecord = &g_pGlobalMapState->cityScoreTable[provinceId];
   if (regionRecord->linkedRegionCount > 0) {
     int linkedIndex = 0;
     while (linkedIndex < regionRecord->linkedRegionCount) {
@@ -1293,7 +1293,7 @@ void TMinor::ReassignUnitOrdersForCountryTargetChange(short provinceId,
     int oneBasedIndex = 1;
     while (oneBasedIndex <= ownedCount) {
       int regionId = this->ownedRegionList->At(oneBasedIndex);
-      TGlobalMapCityScoreRecord* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
+      Province* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
       if (regionRecord->linkedRegionCount > 0) {
         int linkedIndex = 0;
         while (linkedIndex < regionRecord->linkedRegionCount) {
@@ -1308,7 +1308,7 @@ void TMinor::ReassignUnitOrdersForCountryTargetChange(short provinceId,
     return;
   }
 
-  TGlobalMapCityScoreRecord* regionRecord = &g_pGlobalMapState->cityScoreTable[provinceId];
+  Province* regionRecord = &g_pGlobalMapState->cityScoreTable[provinceId];
   if (regionRecord->linkedRegionCount > 0) {
     int linkedIndex = 0;
     while (linkedIndex < regionRecord->linkedRegionCount) {

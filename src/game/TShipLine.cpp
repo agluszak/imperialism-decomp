@@ -33,8 +33,7 @@ void TShipLine::InstallViews(TView* panel, int* offsetLayout) {
 
   int checkboxOffset[2] = {0, 0};
   int checkboxSize[2] = {0x50, 0x2d};
-  int atlasOffset =
-      g_ShipRosterAtlasHorizontalOffsetByResourceType_006985E8[shipNode10->resourceType04];
+  int atlasOffset = g_ShipRosterAtlasHorizontalOffsetByResourceType_006985E8[shipNode10->type];
   TArmyCheckBox* checkbox =
       new TArmyCheckBox(shipView, checkboxOffset, checkboxSize, 5, 5,
                         static_cast<TMilitaryPageView*>(panel)->primaryUnitAtlas84, atlasOffset);

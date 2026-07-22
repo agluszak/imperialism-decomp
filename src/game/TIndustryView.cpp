@@ -219,7 +219,7 @@ void TIndustryView::UpdateFields() {
     }
 
     if (child->controlTag == 0x6c616256u) { // 'Vbal'
-      SetIndustryControlEnabledIfChanged(child, city94->productionSummary1d8->stockLevel1c >= 2);
+      SetIndustryControlEnabledIfChanged(child, city94->productionSummary1d8->strength >= 2);
     }
 
     child = iterator.NextSubView();

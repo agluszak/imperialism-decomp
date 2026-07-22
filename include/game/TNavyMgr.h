@@ -33,8 +33,8 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // Head of the global task-force order queue (was `void*`; retyped once
   // TTaskForce -- née TMapOrderEntry -- was RTTI-confirmed as the real
-  // element class, see bd 1uj.16). TTaskForce::Free/SetMapOrderType9AndQueue/
-  // PromoteMapOrderChainAndQueue (TTaskForce.cpp) all read/write this same
+  // element class, see bd 1uj.16). TTaskForce::Free/OrderEvade/
+  // OrderSailTowards (TTaskForce.cpp) all read/write this same
   // field via the g_pNavyOrderManager global.
   TTaskForce* orderQueueHead;
   // Mac oracle: PrepareToCarryOutAllOrders(short). Stores the phase passed to that step.
@@ -51,13 +51,16 @@ public:
   // per-province redraw-invalidate event through g_pGameFlowState while g_pSimMgr's
   // multiplayerSessionRole == 1, for each record found dirty), stores
   // `phaseId` into executionPhase, revalidates/requeues the map-order queue for the new turn
-  // phase, then clears eliminatedFlag26 across the whole orderQueueHead chain
-  // (directly on the head, via ClearMapOrderProcessedFlagsChain for the rest). 0x5577b0.
+  // phase, then clears defeated across the whole orderQueueHead chain
+  // (directly on the head, via RechargeAll for the rest). 0x5577b0.
   void PrepareToCarryOutAllOrders(short phaseId);
+  // Mac oracle: MakeSureAllShipsHaveOrders(). Rebuilds and requeues every nation's
+  // task force for each map-action zone before an execution phase.
+  void MakeSureAllShipsHaveOrders(); // 0x557560
 
   // Finds the first orderQueueHead entry with shipOrders==7 (an escort task-force
-  // order kind) and matching required_count, then walks its childOrderList setting each
-  // child's active: false if the child's required_count is below its resource
+  // order kind) and matching nation, then walks its shipList setting each
+  // child's active: true if the child's strength is below its resource
   // type's stockCap column, otherwise a chancePercent-vs-rand()%100 coin flip. Returns
   // the matched entry (or null). 0x557e10.
   // Mac oracle: AssignEscorts(short, short).
@@ -66,10 +69,10 @@ public:
   // 0x5568f0 - stream out the three navy order lists (primary TShip chain tail-first,
   // TAdmiral secondary chain, orderQueueHead task-force chain), each prefixed with a
   // 16-bit count; nationFilter -1 serializes every nation's entries.
-  void SerializeNavyOrderListsByNation(TStream* stream, short nationFilter);
-  // 0x556ad0 - receive-side twin of SerializeNavyOrderListsByNation: rebuild the three
+  void WriteToFilterously(TStream* stream, short nationFilter);
+  // 0x556ad0 - receive-side twin of WriteToFilterously: rebuild the three
   // navy order lists from the stream for `nationFilter` (-1 = all nations).
-  void DeserializeNavyOrderListsByNation(TStream* stream, short nationFilter);
+  void ReadFromFilterously(TStream* stream, short nationFilter);
   // Mac oracle: FreeShipsOf(short). Cancels every queued task force for the nation,
   // then clears the transient primary-order flags on that nation's ships.
   void FreeShipsOf(short nation); // 0x556f60
@@ -85,31 +88,30 @@ public:
     }
     TTaskForce* orderHead = orderQueueHead;
     if (orderHead != 0) {
-      orderHead->queue_next->DestroyNavyOrderAndChildren();
+      orderHead->nextForce->FreeAll();
       orderHead->Free();
     }
   }
-  // 0x557170. Walks typed task-force orders for the requested nation, city target,
+  // 0x557170. Walks typed task-force orders for the requested nation, province target,
   // and optional context-zone filter, then sums the active child ships' weighted cost.
-  short ComputeAggregateWeightedChildCostForMatchingType5NavyOrders(
-      short nationSlot, TGlobalMapCityScoreRecord* cityTarget, TZone* contextFilter);
+  short GetInvasionCapacity(short nationSlot, Province* provinceTarget, TZone* contextFilter);
 
   // Mac oracle: CommitForce. If `entry` is already linked into orderQueueHead, returns
-  // true (no-op). Otherwise, if `entry` has no live childOrderList entries,
+  // true (no-op). Otherwise, if `entry` has no live shipList entries,
   // frees it and returns false; else unlinks it from wherever it is
   // currently queued and (re)inserts it at orderQueueHead, returning true.
   bool CommitForce(TTaskForce* entry); // 0x557080
 
-  // Called from TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate's tail
+  // Called from TTaskForce::Encounter's tail
   // (ECX=g_pNavyOrderManager evidence at that callsite) when neither entry's priority
   // clears the other's threshold and no tie-break resolves it outright. Runs the
   // tier-scoring / random-attrition resolution between the two order entries' children.
   void ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEntry); // 0x55a780
 
-  // Zeroes every g_pNavyPrimaryOrderListHead ship's field0c, destroys the whole
+  // Clears every primary ship's task-force backlink, destroys the whole
   // orderQueueHead task-force queue, clears the head, and notifies
   // g_pActiveMapOrderContext that no order entry is selected anymore.
-  void ResetPrimaryOrderActiveFlagsAndClearManagerState(); // 0x556fd0
+  void ScuttleEverything(); // 0x556fd0
 
   // Mac oracle: ClearAllTransientOrders. Prunes the queued task-force chain and clears
   // the transient ready flag on every primary ship. 0x557040.
@@ -152,19 +154,17 @@ public:
   // orderQueueHead pairing competing order entries (3/4-vs-6, 6-vs-1, direct
   // type-1 apply, 3/4-vs-non-6, 1-vs-5 with an inlined threshold roll, direct
   // type-5/8 apply), returning immediately if any pairwise resolution reports a
-  // result. Finishes by running the two-pass nation nation-interaction sweep,
-  // rebuilding orderQueueHead via PruneNavyOrderIfUnserviceableOrNoChildren,
-  // clearing the primary TShip list's transient field34 flag, and refreshing the
+  // result. Finishes by running the two-pass nation-interaction sweep,
+  // rebuilding orderQueueHead via RemoveStragglers,
+  // clearing the primary TShip list's transient selection flag, and refreshing the
   // active map-order context's overlays.
   void CarryOutOrders(); // 0x5578a0
 
   // Map-hover label lookups. These are real __thiscall members on the navy manager;
   // 0x559e00 additionally resolves the active task-force entry against the clicked
   // sea-zone or province context before choosing a cursor token.
-  unsigned short GetMapContextActionLabelTokenByActionCode(short nTileIndex,
-                                                           int nInputFlags); // 0x559dd0
-  unsigned short GetMapContextActionLabelToken(short nTileIndex,
-                                               int nInputFlags); // 0x559e00
+  unsigned short ActionCursor(short nTileIndex, int nInputFlags);    // 0x559dd0
+  unsigned short SelectionCursor(short nTileIndex, int nInputFlags); // 0x559e00
 
   // 0x0055a020 -- resolves and executes a context-sensitive map click action against this
   // manager's active map-order state (dialogs for actions 2..8, set-active-entry for 9,
@@ -172,13 +172,13 @@ public:
   // Returns true if the click was consumed. Ghidra's `int` prototype is a mislabel --
   // callers store the result in a `char fHandled` and test `!= '\0'`, and the real codegen
   // only ever sets/tests AL. Not virtual -- called directly (via an ILT thunk) from
-  // TWorldView::HandleMapClickByInteractionMode and from TryQueueMapOrderFromTileAction.
-  bool TryHandleMapContextAction(short nTileIndex, int nInputFlags);
+  // TWorldView::HandleMapClickByInteractionMode and from DoTileClick.
+  bool SelectionClick(short nTileIndex, int nInputFlags);
   // 0x0055a160 -- when a click is not consumed by immediate context handling, resolves a
   // map-order command from the active entry's tile-action/province context and runs the
   // set-type + rebuild/queue/finalize pipeline. Receiver at every call site is
   // g_pNavyOrderManager (this manager).
-  int TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags);
+  int DoTileClick(short nTileIndex, int nInputFlags);
 
   // Mac name oracle: INavyMgr. Initializes the three global navy-order priority tables.
   void INavyMgr();
@@ -187,8 +187,3 @@ public:
 };
 
 ASSERT_SIZE(TNavyMgr, 0x10);
-
-// 0x557560 -- free __cdecl per-turn map-order revalidation sweep over every
-// map-action context zone x great-power slot (body in TNavyMgr.cpp; called by
-// TNavyMgr::PrepareToCarryOutAllOrders).
-void RevalidateAndRequeueMapOrdersForTurn();

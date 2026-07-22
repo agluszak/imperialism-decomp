@@ -744,7 +744,7 @@ void TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackf
   accumulatedUnmetNeed3e = 0;
 
   int orderOrdinal = 1;
-  while (city->productionSummary1d8->stockLevel1c > 1 && orderOrdinal <= list28->GetSize()) {
+  while (city->productionSummary1d8->strength > 1 && orderOrdinal <= list28->GetSize()) {
     short orderSlot = static_cast<short>(list28->At(orderOrdinal));
     TItemOrder* order = static_cast<TItemOrder*>(city->orderSlotsE4[orderSlot]);
     order->AssertValid();
@@ -1205,7 +1205,7 @@ void TCityInteriorMinister::DispatchBuilders() {
   if (builderOrder != 0) {
     int cityRecordIndex = ComputeBestNationTileDevelopmentScore(ownerContextAt04->nationSlot);
     if (cityRecordIndex != -1) {
-      TGlobalMapCityScoreRecord* cityRecord = &g_pGlobalMapState->cityScoreTable[cityRecordIndex];
+      Province* cityRecord = &g_pGlobalMapState->cityScoreTable[cityRecordIndex];
       short cityTileIndex = cityRecord->cityTileIndex04;
       TCivUnit* tileOrder =
           g_pGlobalMapState->terrainStateTable[cityTileIndex].firstCivilianOrder20;
@@ -2391,7 +2391,7 @@ void TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex(shor
 // FUNCTION: IMPERIALISM 0x004c4d40
 short TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget(short targetLabor) {
   TCity* city = ownerContextAt04->city;
-  short currentLabor = city->productionSummary1d8->stockLevel1c;
+  short currentLabor = city->productionSummary1d8->strength;
   if (currentLabor < targetLabor) {
     short nationSlot = ownerContextAt04->nationSlot;
     if (g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[19] != 2) {
@@ -2407,7 +2407,7 @@ short TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget(short target
       increment = static_cast<short>(maximumQuantity - currentQuantity);
     }
     powerPlantOrder->SetQuantity(static_cast<short>(currentQuantity + increment));
-    currentLabor = city->productionSummary1d8->stockLevel1c;
+    currentLabor = city->productionSummary1d8->strength;
     if (currentLabor < targetLabor) {
       return currentLabor;
     }
@@ -2433,7 +2433,7 @@ void TCityInteriorMinister::FillRemainingNeedCapacityAndReducePowerPlantOrder() 
     }
   }
 
-  short availablePower = city->productionSummary1d8->stockLevel1c;
+  short availablePower = city->productionSummary1d8->strength;
   if (availablePower > city->powerAvailableB4) {
     availablePower = city->powerAvailableB4;
   }

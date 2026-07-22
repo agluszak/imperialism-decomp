@@ -1011,7 +1011,7 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
   int maxResidual = 0;
   for (int tileIndex = 0; tileIndex < kDiplomacyPairMatrixEntries; ++tileIndex) {
     pendingPolicyTierMatrix484[tileIndex] = -1;
-    TGlobalMapCityScoreRecord* cityRecord = reinterpret_cast<TGlobalMapCityScoreRecord*>(
+    Province* cityRecord = reinterpret_cast<Province*>(
         reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + tileIndex * 0xa8);
     int ownerNationCode = cityRecord->ownerNationCode00;
     if (ownerNationCode == -1) {

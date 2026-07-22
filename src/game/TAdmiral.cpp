@@ -60,12 +60,10 @@ static inline void RecomputeMapOrderOwnerActiveSelection(TTaskForce* ownerContex
   if (ownerContext == 0) {
     return;
   }
-  ownerContext->activeChildEntry = 0;
-  for (TMapOrderChildLinkNode* link = ownerContext->childOrderList; link != 0; link = link->next) {
-    TShip* activeEntry = ownerContext->activeChildEntry;
-    ownerContext->activeChildEntry =
-        static_cast<TShip*>(link->payload)
-            ->SelectPreferredMapOrderEntryByPriorityRules(activeEntry, 0);
+  ownerContext->flagship = 0;
+  for (TMapOrderChildLinkNode* link = ownerContext->shipList; link != 0; link = link->next) {
+    TShip* activeEntry = ownerContext->flagship;
+    ownerContext->flagship = static_cast<TShip*>(link->payload)->Finest(activeEntry, 0);
   }
 }
 
@@ -96,7 +94,7 @@ void TAdmiral::WriteTo(TStream* stream) {
   TShip* node = g_pNavyPrimaryOrderListHead;
   if (node != 0) {
     while (node != assignedShip) {
-      node = node->nextOlder24;
+      node = node->next;
       ++index;
       if (node == 0) {
         break;
@@ -117,45 +115,45 @@ void TAdmiral::ReadFrom(TStream* stream) {
 
   TShip* node = g_pNavyPrimaryOrderListHead;
   while (node != 0 && index != 0) {
-    node = node->nextOlder24;
+    node = node->next;
     --index;
   }
 
   if (assignedShip != 0) {
-    assignedShip->admiralBacklink20 = 0;
-    RecomputeMapOrderOwnerActiveSelection(assignedShip->ownerOrderEntry0c);
+    assignedShip->admiral = 0;
+    RecomputeMapOrderOwnerActiveSelection(assignedShip->taskForce);
   }
 
   assignedShip = node;
   if (node != 0) {
-    node->admiralBacklink20 = this;
-    RecomputeMapOrderOwnerActiveSelection(node->ownerOrderEntry0c);
+    node->admiral = this;
+    RecomputeMapOrderOwnerActiveSelection(node->taskForce);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00551850
 void TAdmiral::ReassignThyself() {
   if (this->assignedShip != 0) {
-    this->assignedShip->admiralBacklink20 = 0;
-    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->ownerOrderEntry0c);
+    this->assignedShip->admiral = 0;
+    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->taskForce);
   }
   this->assignedShip = 0;
 
   TShip* best = 0;
-  for (TShip* node = g_pNavyPrimaryOrderListHead; node != 0; node = node->nextOlder24) {
-    if (node->ownerNationSlot14 == this->nationSlot) {
-      best = node->SelectPreferredMapOrderEntryByPriorityRules(best, 1);
+  for (TShip* node = g_pNavyPrimaryOrderListHead; node != 0; node = node->next) {
+    if (node->nation == this->nationSlot) {
+      best = node->Finest(best, 1);
     }
   }
 
   if (this->assignedShip != 0) {
-    this->assignedShip->admiralBacklink20 = 0;
-    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->ownerOrderEntry0c);
+    this->assignedShip->admiral = 0;
+    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->taskForce);
   }
   this->assignedShip = best;
   if (best != 0) {
-    best->admiralBacklink20 = this;
-    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->ownerOrderEntry0c);
+    best->admiral = this;
+    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->taskForce);
   }
   if (best == 0) {
     this->Free();
@@ -175,8 +173,8 @@ short TAdmiral::EstimateEnemyForces(short* estimatedCounts, TZone* zone, short n
   }
 
   short total = 0;
-  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->nextOlder24) {
-    if (ship->ownerNationSlot14 != nation || ship->field08 != zone) {
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
+    if (ship->nation != nation || ship->location != zone) {
       continue;
     }
 
@@ -208,8 +206,7 @@ short TAdmiral::EstimateEnemyForces(short* estimatedCounts, TZone* zone, short n
     } else if (classEstimate == 2) {
       category = static_cast<short>(rand() % 4);
     } else {
-      category =
-          static_cast<short>(g_aIndustryCapabilityClassSlotTable[ship->resourceType04].classId);
+      category = static_cast<short>(g_aIndustryCapabilityClassSlotTable[ship->type].classId);
     }
     estimatedCounts[category] = static_cast<short>(estimatedCounts[category] + estimatedCount);
     total = static_cast<short>(total + estimatedCount);
@@ -283,13 +280,13 @@ void TAdmiral::GetFleetReport(CString* out, TZone* zone, short nation) const {
 // FUNCTION: IMPERIALISM 0x00552250
 void TAdmiral::AssignToShip(TShip* primaryOrderNode) {
   if (this->assignedShip != 0) {
-    this->assignedShip->admiralBacklink20 = 0;
-    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->ownerOrderEntry0c);
+    this->assignedShip->admiral = 0;
+    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->taskForce);
   }
   this->assignedShip = primaryOrderNode;
   if (primaryOrderNode != 0) {
-    primaryOrderNode->admiralBacklink20 = this;
-    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->ownerOrderEntry0c);
+    primaryOrderNode->admiral = this;
+    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->taskForce);
   }
 }
 
@@ -298,26 +295,26 @@ void TAdmiral::AssignToShip(TShip* primaryOrderNode) {
 // FUNCTION: IMPERIALISM 0x00552310
 void TAdmiral::ReassignToZone(TZone* zone) {
   if (this->assignedShip != 0) {
-    this->assignedShip->admiralBacklink20 = 0;
-    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->ownerOrderEntry0c);
+    this->assignedShip->admiral = 0;
+    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->taskForce);
   }
   this->assignedShip = 0;
 
   TShip* best = 0;
-  for (TShip* node = g_pNavyPrimaryOrderListHead; node != 0; node = node->nextOlder24) {
-    if (node->field08 == zone && node->ownerNationSlot14 == this->nationSlot) {
-      best = node->SelectPreferredMapOrderEntryByPriorityRules(best, 1);
+  for (TShip* node = g_pNavyPrimaryOrderListHead; node != 0; node = node->next) {
+    if (node->location == zone && node->nation == this->nationSlot) {
+      best = node->Finest(best, 1);
     }
   }
 
   if (this->assignedShip != 0) {
-    this->assignedShip->admiralBacklink20 = 0;
-    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->ownerOrderEntry0c);
+    this->assignedShip->admiral = 0;
+    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->taskForce);
   }
   this->assignedShip = best;
   if (best != 0) {
-    best->admiralBacklink20 = this;
-    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->ownerOrderEntry0c);
+    best->admiral = this;
+    RecomputeMapOrderOwnerActiveSelection(this->assignedShip->taskForce);
   }
 }
 

@@ -115,14 +115,14 @@ void TTradeSchoolView::UpdateFields() {
   shouldEnable[3] = availableBudget >= 1000;
 
   TPopulationMgr* population = city94->productionSummary1d8;
-  short availableWorkers = population->stockLevel1c;
+  short availableWorkers = population->strength;
   short professionalLimit = population->productionSlots14->lowSkillCount04;
   if (availableWorkers > professionalLimit) {
     availableWorkers = professionalLimit;
   }
   shouldEnable[4] = availableWorkers != 0;
 
-  short railWorkers = static_cast<short>(population->stockLevel1c / 2);
+  short railWorkers = static_cast<short>(population->strength / 2);
   short railLimit = population->productionSlots14->mediumSkillCount06;
   if (railWorkers > railLimit) {
     railWorkers = railLimit;
