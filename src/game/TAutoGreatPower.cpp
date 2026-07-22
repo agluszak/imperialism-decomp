@@ -305,31 +305,31 @@ void TAutoGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourc
 }
 
 // FUNCTION: IMPERIALISM 0x004e7680
-void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(short needSlot, short sourceNation) {
-  if (g_apNationStates[static_cast<short>(sourceNation)]->diplomacyEligibilityA0 != 0) {
-    if (static_cast<short>(needSlot) != 5) {
+void TAutoGreatPower::SetTradeOffersFor(short resourceKind, short offerContext) {
+  if (g_apNationStates[static_cast<short>(offerContext)]->diplomacyEligibilityA0 != 0) {
+    if (static_cast<short>(resourceKind) != 5) {
       short relationScore = g_pDiplomacyTurnStateManager
                                 ->relationStandingScoreMatrix79c[this->nationSlot * 0x17 +
-                                                                 static_cast<short>(sourceNation)];
+                                                                 static_cast<short>(offerContext)];
       double scaledScore = static_cast<double>(relationScore) * g_DAT_00653fc0_Value_00653FC0;
       int roll = rand();
       if (static_cast<double>(roll) > scaledScore * g_DAT_00653fc8_Value_00653FC8) {
-        this->RaiseNeedPlanningMetrics(needSlot);
+        this->RaiseNeedPlanningMetrics(resourceKind);
       }
       return;
     }
-  } else if (static_cast<short>(needSlot) != 5) {
+  } else if (static_cast<short>(resourceKind) != 5) {
     short metricCap = 10;
-    if (this->GetDiplomacyExternalStateByTarget(static_cast<short>(needSlot)) < 10) {
-      metricCap = this->GetDiplomacyExternalStateByTarget(static_cast<short>(needSlot));
+    if (this->GetDiplomacyExternalStateByTarget(static_cast<short>(resourceKind)) < 10) {
+      metricCap = this->GetDiplomacyExternalStateByTarget(static_cast<short>(resourceKind));
     }
     if (this->tradeCapacity < metricCap) {
       metricCap = this->tradeCapacity;
     }
-    if (this->QueryNationMetricBySlot7C(static_cast<short>(needSlot)) == -1) {
+    if (this->QueryNationMetricBySlot7C(static_cast<short>(resourceKind)) == -1) {
       return;
     }
-    this->SetDiplomacyState1c6ClampedToCounterA4(static_cast<short>(needSlot), metricCap);
+    this->SetDiplomacyState1c6ClampedToCounterA4(static_cast<short>(resourceKind), metricCap);
     return;
   }
   if (this->GetDiplomacyExternalStateByTarget(5) != 0 && this->QueryNationMetricBySlot7C(5) != -1) {

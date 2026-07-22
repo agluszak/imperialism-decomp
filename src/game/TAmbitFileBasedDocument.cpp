@@ -104,7 +104,7 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
     }
     g_pUiRuntimeContext->ReadFrom(stream);
     g_pStrategicMapViewSystem->ReadFrom(stream);
-    g_pInterNationEventQueueManager->ReadFrom(stream);
+    g_pNewsMgr->ReadFrom(stream);
     g_pHelpMgr->ReadFrom(stream);
   }
 
@@ -179,7 +179,7 @@ void TAmbitFileBasedDocument::DoWrite(ArchiveStreamAdapter* file, unsigned char 
   }
   g_pUiRuntimeContext->WriteTo(stream);
   g_pStrategicMapViewSystem->WriteTo(stream);
-  g_pInterNationEventQueueManager->WriteTo(stream);
+  g_pNewsMgr->WriteTo(stream);
   g_pHelpMgr->WriteTo(stream);
 
   stream->Free();

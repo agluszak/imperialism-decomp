@@ -3,6 +3,7 @@
 #include "compat.h"
 #include "game/TEventHandler.h"
 #include "game/mfc.h"
+#include "game/news_domain_types.h"
 
 class TStream;
 class TTacticalUnit;
@@ -164,8 +165,7 @@ public:
                                                   int absoluteOffset, short shortA,
                                                   short shortB);       // 0x5493c0
   void CreateAndSendTurnEvent12_TwoShorts(short shortA, short shortB); // 0x5494b0
-  void CreateAndSendTurnEvent13_NationAndNineDwords(int nationSlot,
-                                                    int* payloadDwords); // 0x549540
+  void SendNewsEvent(int nationSlot, NewsEvent* event);                // 0x549540 (Mac oracle)
   void CreateAndSendTurnEvent1B_FiveShortsAndDword(short shortA, short shortB, short shortC,
                                                    short shortD, short shortE,
                                                    int trailingValue); // 0x5498d0

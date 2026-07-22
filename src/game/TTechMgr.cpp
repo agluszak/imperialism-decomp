@@ -281,7 +281,7 @@ void TTechMgr::CheckForAdvances() {
     if (perTechUnlockFlag180[techId] == 0) {
       if (prioritySlots04[techId] == economicTurn) {
         ApplyCityOrderCapabilityUnlockByTechId(techId);
-        g_pInterNationEventQueueManager->QueueInterNationEventType11(999, techId, 1);
+        g_pNewsMgr->AddMiscEvent(999, techId, 1);
       }
       continue;
     }

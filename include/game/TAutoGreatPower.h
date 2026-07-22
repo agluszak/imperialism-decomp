@@ -61,7 +61,7 @@ public:
   // slot 0x36 — 0x004e7550: forward to slots 0x4d/0x4e when city exists.
   void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) override;
   // slot 0x67 — 0x004e7680: need assignment with capability caps / escalation roll.
-  void AssignNeedSlotFromSourceSlot19C(short needSlot, short sourceNation) override;
+  void SetTradeOffersFor(short resourceKind, short offerContext) override;
   // slot 0x9f — 0x004e7cc0: war-transition propagation across eligible allied nations.
   int HandleWarTransitionRequest(int targetNation, int sourceNation) override;
   // slot 0xab — 0x004e7510: 'lost' game-state event when redraw is enabled.

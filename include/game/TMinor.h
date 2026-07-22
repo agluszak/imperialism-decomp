@@ -49,7 +49,7 @@ public:
   void HandleNetworkPortConstructionOrder(int nationId);
   void SetNationRowDisplayValueByDiplomacyPredicate(NationSlot targetNationSlot);
   void ClearTileActivityOverlayByProvinceId(int provinceId);
-  void QueueInterNationEvent17ForState300AffectedNations(void);
+  void NotifyMajorPowersAffectedByMinorTerritoryChange(void);
   void ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId);
   short GetDiplomacyRandomThreshold124() const {
     return diplomacyRandomThreshold124;

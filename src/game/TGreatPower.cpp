@@ -2048,7 +2048,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
         if (selectedNation >= 0) {
           TGreatPower* selectedNationState = g_apNationStates[selectedNation];
           if (selectedNationState != 0) {
-            selectedNationState->AssignNeedSlotFromSourceSlot19C(needSlot, this->nationSlot);
+            selectedNationState->SetTradeOffersFor(needSlot, this->nationSlot);
           }
         }
       }
@@ -2074,7 +2074,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
 
     TGreatPower* fallbackNationState = g_apNationStates[fallbackNationSlot];
     if (fallbackNationState != 0) {
-      fallbackNationState->AssignNeedSlotFromSourceSlot19C(kNeedSlotFallback, this->nationSlot);
+      fallbackNationState->SetTradeOffersFor(kNeedSlotFallback, this->nationSlot);
     }
   }
 }
@@ -2181,17 +2181,10 @@ int TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) 
 }
 
 // FUNCTION: IMPERIALISM 0x004dda90
-void TGreatPower::AssignNeedSlotFromSourceSlot19C(short targetNationSlot, short sourceNationSlot) {
-  TNewsMgr* queueManager = g_pInterNationEventQueueManager;
-  if (queueManager != 0) {
-    queueManager->QueueInterNationEventType0FWithBitmaskMerge(this->nationSlot, sourceNationSlot,
-                                                              targetNationSlot, '\0');
+void TGreatPower::SetTradeOffersFor(short resourceKind, short offerContext) {
+  if (g_pNewsMgr != 0) {
+    g_pNewsMgr->AddShortageEvent(this->nationSlot, offerContext, resourceKind, 0);
   }
-}
-
-void TGreatPower::QueueInterNationEventType0FForNationPairContext(NationSlot targetNationSlot,
-                                                                  NationSlot sourceNationSlot) {
-  this->AssignNeedSlotFromSourceSlot19C(targetNationSlot, sourceNationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x004ddad0
@@ -2676,9 +2669,8 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
   const DiplomacyRelationship kResetRelationship = kDiplomacyRelationshipWar;
   const int kDipFlagPolicy = 0x31;
 
-  if (g_pInterNationEventQueueManager != 0) {
-    g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1D, this->nationSlot, 7,
-                                                                        '\0');
+  if (g_pNewsMgr != 0) {
+    g_pNewsMgr->AddTreatyEvent(kInterNationEventNationTransferred, this->nationSlot, 7, 0);
   }
   g_pDiplomacyTurnStateManager->RebuildMinorNationDispositionLookupTables(this->nationSlot);
 
@@ -2839,12 +2831,6 @@ void TGreatPower::DecrementNeedLevelByNationStep(NationSlot nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x004dedf0
 void TGreatPower::NotifyActionSlot94(int arg1, int arg2) {
-  struct Event13Payload {
-    int marker0;
-    int nationMask;
-    int marker1;
-    int targetMask;
-  };
   const int kMajorNationCount = 7;
   DiplomacyProposalCodeStorage proposalCode = static_cast<DiplomacyProposalCodeStorage>(arg2);
 
@@ -2853,22 +2839,19 @@ void TGreatPower::NotifyActionSlot94(int arg1, int arg2) {
                      static_cast<unsigned short>(arg2);
     this->turnEventQueue->InsertCopiedRecordSortedByComparator(&packedCode);
 
-    Event13Payload payload;
+    NewsEvent payload;
     payload.marker0 = 1;
-    payload.nationMask = 1 << (static_cast<unsigned char>(this->nationSlot) & 0x1F);
-    payload.marker1 = 1;
-    payload.targetMask = 1 << (static_cast<unsigned char>(arg1) & 0x1F);
+    payload.subjectNationMask4 = 1 << (static_cast<unsigned char>(this->nationSlot) & 0x1F);
+    payload.marker8 = 1;
+    payload.targetNationMask0C = 1 << (static_cast<unsigned char>(arg1) & 0x1F);
 
     bool immediateDispatch = this->IsRemote();
     if (immediateDispatch == 0) {
-      if (g_pInterNationEventQueueManager != 0) {
-        // The bucket API packs the payload pointer into its int parameter.
-        g_pInterNationEventQueueManager->QueueInterNationEventIntoNationBucket(
-            static_cast<int>(this->nationSlot), reinterpret_cast<int>(&payload), '\0');
+      if (g_pNewsMgr != 0) {
+        g_pNewsMgr->AddEvent(static_cast<int>(this->nationSlot), &payload, 0);
       }
     } else {
-      g_pGameFlowState->CreateAndSendTurnEvent13_NationAndNineDwords(
-          static_cast<int>(this->nationSlot), &payload.marker0);
+      g_pGameFlowState->SendNewsEvent(static_cast<int>(this->nationSlot), &payload);
     }
   }
 
@@ -2950,9 +2933,9 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
   switch (proposal->proposalCode) {
   case kDiplomacyProposalJoinEmpire:
     this->ApplyJoinEmpireModeForTargetNation(static_cast<int>(proposal->targetNationSlot), 1);
-    if (g_pInterNationEventQueueManager != 0) {
-      g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(
-          3, this->nationSlot, static_cast<int>(proposal->targetNationSlot), '\0');
+    if (g_pNewsMgr != 0) {
+      g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireAccepted, this->nationSlot,
+                                 static_cast<int>(proposal->targetNationSlot), 0);
     }
     break;
 
@@ -2960,9 +2943,9 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
     g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
         this->nationSlot, static_cast<int>(proposal->targetNationSlot),
         kDiplomacyRelationshipAlliance);
-    if (g_pInterNationEventQueueManager != 0) {
-      g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(
-          4, this->nationSlot, static_cast<int>(proposal->targetNationSlot), '\0');
+    if (g_pNewsMgr != 0) {
+      g_pNewsMgr->AddTreatyEvent(kInterNationEventAllianceAccepted, this->nationSlot,
+                                 static_cast<int>(proposal->targetNationSlot), 0);
     }
     for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
       if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(
@@ -2980,9 +2963,9 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
     g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
         this->nationSlot, static_cast<int>(proposal->targetNationSlot),
         kDiplomacyRelationshipNonAggressionPact);
-    if (g_pInterNationEventQueueManager != 0) {
-      g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(
-          5, this->nationSlot, static_cast<int>(proposal->targetNationSlot), '\0');
+    if (g_pNewsMgr != 0) {
+      g_pNewsMgr->AddTreatyEvent(kInterNationEventNonAggressionPactAccepted, this->nationSlot,
+                                 static_cast<int>(proposal->targetNationSlot), 0);
     }
     break;
 
@@ -2990,9 +2973,9 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
     g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
         this->nationSlot, static_cast<int>(proposal->targetNationSlot),
         kDiplomacyRelationshipPeace);
-    if (g_pInterNationEventQueueManager != 0) {
-      g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(
-          2, this->nationSlot, static_cast<int>(proposal->targetNationSlot), '\0');
+    if (g_pNewsMgr != 0) {
+      g_pNewsMgr->AddTreatyEvent(kInterNationEventPeaceTreatyAccepted, this->nationSlot,
+                                 static_cast<int>(proposal->targetNationSlot), 0);
     }
     if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(
             static_cast<int>(proposal->targetNationSlot)) != 0) {
@@ -3013,9 +2996,9 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
   case kDiplomacyProposalJoinEmpireWithWarEntanglements: {
     g_apTerrainTypeDescriptorTable[static_cast<int>(proposal->targetNationSlot)]
         ->ApplyJoinEmpireModeForTargetNation(this->nationSlot, 1);
-    if (g_pInterNationEventQueueManager != 0) {
-      g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(
-          3, static_cast<int>(proposal->targetNationSlot), this->nationSlot, '\0');
+    if (g_pNewsMgr != 0) {
+      g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireAccepted,
+                                 static_cast<int>(proposal->targetNationSlot), this->nationSlot, 0);
     }
     break;
   }
@@ -3035,11 +3018,6 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
 
 // FUNCTION: IMPERIALISM 0x004df370
 void TGreatPower::RejectOffer(unsigned short proposalQueueIndex) {
-  const int kEvent09 = 9;
-  const int kEvent0B = 11;
-  const int kEvent0D = 13;
-  const int kEvent07 = 7;
-
   TSortedByRelationshipList* queue = this->proposalQueue;
   if (queue == 0) {
     return;
@@ -3064,27 +3042,27 @@ void TGreatPower::RejectOffer(unsigned short proposalQueueIndex) {
 
   switch (proposalCode) {
   case kDiplomacyProposalJoinEmpire:
-    if (g_pInterNationEventQueueManager != 0) {
-      g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(kEvent09, targetNation,
-                                                                          this->nationSlot, '\0');
+    if (g_pNewsMgr != 0) {
+      g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireRejected, targetNation,
+                                 this->nationSlot, 0);
     }
     return;
   case kDiplomacyProposalAlliance:
-    if (g_pInterNationEventQueueManager != 0) {
-      g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(kEvent0B, targetNation,
-                                                                          this->nationSlot, '\0');
+    if (g_pNewsMgr != 0) {
+      g_pNewsMgr->AddTreatyEvent(kInterNationEventAllianceRejected, targetNation, this->nationSlot,
+                                 0);
     }
     return;
   case kDiplomacyProposalNonAggressionPact:
-    if (g_pInterNationEventQueueManager != 0) {
-      g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(kEvent0D, targetNation,
-                                                                          this->nationSlot, '\0');
+    if (g_pNewsMgr != 0) {
+      g_pNewsMgr->AddTreatyEvent(kInterNationEventNonAggressionPactRejected, targetNation,
+                                 this->nationSlot, 0);
     }
     return;
   case kDiplomacyProposalPeaceTreaty:
-    if (g_pInterNationEventQueueManager != 0) {
-      g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(kEvent07, targetNation,
-                                                                          this->nationSlot, '\0');
+    if (g_pNewsMgr != 0) {
+      g_pNewsMgr->AddTreatyEvent(kInterNationEventPeaceTreatyRejected, targetNation,
+                                 this->nationSlot, 0);
     }
     return;
   default:
@@ -3927,8 +3905,7 @@ char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
     }
   }
   if (joinsWar != 0) {
-    g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1c, targetNation,
-                                                                        this->nationSlot, 0);
+    g_pNewsMgr->AddTreatyEvent(kInterNationEventNationJoinedWar, targetNation, this->nationSlot, 0);
   }
   return joinsWar;
 }
@@ -4366,10 +4343,7 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
     return;
   }
 
-  TNewsMgr* queueManager = g_pInterNationEventQueueManager;
-  if (queueManager != 0) {
-    queueManager->QueueInterNationEventIntoNationBucket(0x13A0, mergedNationMask, '\0');
-  }
+  (void)mergedNationMask;
 }
 
 // Army-plus-navy power score: land units weighted by the per-type table scaled by

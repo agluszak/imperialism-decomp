@@ -554,11 +554,12 @@ struct TurnEvent11MapPokePacket : TimelyMessageHeader {
 };
 
 // Event-0x13 nine-dword nation payload.
-struct TurnEvent13NationPayloadPacket : TimelyMessageHeader {
+struct TurnEvent13NewsPacket : TimelyMessageHeader {
   short nationSlot18; // +0x18
   unsigned char pad1a[2];
-  int payloadDwords1C[9]; // +0x1c, total 0x40
+  NewsEvent newsEvent1C; // +0x1c, total 0x40
 };
+ASSERT_SIZE(TurnEvent13NewsPacket, 0x40);
 
 // Event-0x18 host broadcast of all seven great powers' diplomacy arrays (same shape as
 // the dispatcher TU emit-side copy).
@@ -1602,28 +1603,24 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   }
   case 0x13: {
     // Queue the nine-dword payload into the nation's event bucket.
-    TurnEvent13NationPayloadPacket* nationPayload =
-        static_cast<TurnEvent13NationPayloadPacket*>(packet);
-    g_pInterNationEventQueueManager->QueueInterNationEventIntoNationBucket(
-        nationPayload->nationSlot18, reinterpret_cast<int>(nationPayload->payloadDwords1C), 1);
+    TurnEvent13NewsPacket* nationPayload = static_cast<TurnEvent13NewsPacket*>(packet);
+    g_pNewsMgr->AddEvent(nationPayload->nationSlot18, &nationPayload->newsEvent1C, 1);
     break;
   }
   case 0x20: {
     TurnEvent20PacketM* dedupedEvent = static_cast<TurnEvent20PacketM*>(packet);
-    g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(
-        dedupedEvent->eventParam18, dedupedEvent->nationA1A, dedupedEvent->nationB1B, 1);
+    g_pNewsMgr->AddTreatyEvent(static_cast<InterNationEventKind>(dedupedEvent->eventParam18),
+                               dedupedEvent->nationA1A, dedupedEvent->nationB1B, 1);
     break;
   }
   case 0x21: {
     TurnEvent21PacketM* mergedEvent = static_cast<TurnEvent21PacketM*>(packet);
-    g_pInterNationEventQueueManager->QueueInterNationEventType0FWithBitmaskMerge(
-        mergedEvent->byte18, mergedEvent->byte19, mergedEvent->byte1A, 1);
+    g_pNewsMgr->AddShortageEvent(mergedEvent->byte18, mergedEvent->byte19, mergedEvent->byte1A, 1);
     break;
   }
   case 0x22: {
     TurnEvent22PacketM* type11Event = static_cast<TurnEvent22PacketM*>(packet);
-    g_pInterNationEventQueueManager->QueueInterNationEventType11(type11Event->byte18,
-                                                                 type11Event->word1A, 1);
+    g_pNewsMgr->AddMiscEvent(type11Event->byte18, type11Event->word1A, 1);
     break;
   }
   case 0x1d: {
@@ -2386,29 +2383,17 @@ void TMultiplayerMgr::CreateAndSendTurnEvent12_TwoShorts(short shortA, short sho
   g_pNetMgr006a6014->Send(&packet, 0);
 }
 
-struct TurnEvent13Packet : NetMessage {
-  int packetTag;
-  unsigned char activeNationId;
-  unsigned char pad15;
-  short nationSlot;
-  int payloadDwords[9];
-  unsigned char pad3C[4]; // original frame/messageLength is 0x40
-};
-
 // FUNCTION: IMPERIALISM 0x00549540
-void TMultiplayerMgr::CreateAndSendTurnEvent13_NationAndNineDwords(int nationSlot,
-                                                                   int* payloadDwords) {
-  TurnEvent13Packet packet;
+void TMultiplayerMgr::SendNewsEvent(int nationSlot, NewsEvent* event) {
+  TurnEvent13NewsPacket packet;
   packet.eventCode = 0x13;
   packet.fromNetworkId = 0;
   packet.toNetworkId = g_pGameFlowState->nationSessionIds[nationSlot];
   packet.messageLength = 0x40;
-  packet.packetTag = 0x74696d65;
+  packet.messageTag = 0x74696d65;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
-  packet.nationSlot = static_cast<short>(nationSlot);
-  for (int dwordIndex = 0; dwordIndex < 9; ++dwordIndex) {
-    packet.payloadDwords[dwordIndex] = payloadDwords[dwordIndex];
-  }
+  packet.nationSlot18 = static_cast<short>(nationSlot);
+  packet.newsEvent1C = *event;
   g_pNetMgr006a6014->Send(&packet, 0);
 }
 

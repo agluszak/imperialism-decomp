@@ -56,8 +56,8 @@ public:
   virtual bool HasAllianceGuardForNationPair(int sourceNation,
                                              int targetNation);               // 24 (0x60)
   virtual bool HasNationPairNeedLevel300(int sourceNation, int targetNation); // 25 (0x64)
-  virtual int GetNationPairDiplomacyStandingTierCode(int sourceNation,
-                                                     int targetNation); // 26 (0x68)
+  virtual DiplomacyRelationshipNotch GetRelationshipNotch(NationSlot sourceNation,
+                                                          NationSlot targetNation); // 26 (0x68)
   virtual void ShowRelationCodeNoticeForNationPairIfRelevant(int sourceNation, int targetNation,
                                                              int unusedArg); // 27 (0x6c)
   virtual DiplomacyRelationshipStorage
@@ -88,10 +88,9 @@ public:
                                                                  int primaryOnlyFlag); // 38 (0x98)
   virtual int SelectBestMajorNationForMinorByStandingAndNeed(int minorNationSlot);     // 39 (0x9c)
 
-  // 0x004f2820 — stores a symmetric nation-pair relation-side-effect flag and queues
-  // event 0x14 for flag 2, otherwise event 0x12.
-  char SetNationPairSpecialRelationFlagAndQueueEvent14Or16(short flag, int sourceNation,
-                                                           int targetNation);
+  // 0x004f2820 (Mac: BuildEmbassy) — stores the symmetric mission level and queues
+  // the corresponding trade-consulate or embassy news event.
+  char BuildEmbassy(DiplomaticMissionLevelStorage missionLevel, int sourceNation, int targetNation);
 
   short relationCodeMatrix04[kDiplomacyPairMatrixEntries];
   signed char pendingPolicyCodeMatrix304[kDiplomacyPairMatrixEntries];
@@ -117,7 +116,7 @@ public:
   short relationStandingScoreMatrix79c[kNationPairMatrixEntries];
   DiplomacyRelationshipStorage relationPropagationMatrixBbe[kNationPairMatrixEntries];
   short relationTurnStampMatrixFe0[kNationPairMatrixEntries];
-  short relationSideEffectMatrix1402[kNationPairMatrixEntries];
+  DiplomaticMissionLevelStorage relationSideEffectMatrix1402[kNationPairMatrixEntries];
   // 0x004f1760 — see comparativePowerRows1824 below.
   void RecomputeNationComparativePowerMetrics();
 

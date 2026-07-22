@@ -829,8 +829,8 @@ void TriggerNationWarTransitionHandlersIfNeeded(int arg1, int arg2) {
 
 void TCountry::ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot) {
   this->ApplyJoinEmpireMode1TargetTransition(targetNationSlot);
-  g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1b, this->nationSlot,
-                                                                      targetNationSlot, 0);
+  g_pNewsMgr->AddTreatyEvent(kInterNationEventNationJoinedEmpire, this->nationSlot,
+                             targetNationSlot, 0);
 }
 
 void OrphanCallChain_C2_I28_004e59d0(void) {}

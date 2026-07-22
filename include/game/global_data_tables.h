@@ -380,7 +380,7 @@ extern TGreatPower* g_apNationStates[7];
 extern TGreatPower* g_apNationStates_End;
 extern TSimMgr* g_pSimMgr;
 extern THelpMgr* g_pHelpMgr;
-extern TNewsMgr* g_pInterNationEventQueueManager;
+extern TNewsMgr* g_pNewsMgr;
 extern TAmbitApplication* g_pGlobalUiRootController;
 
 // The live tactical battle (turn-event 0x29/0x2a receive dispatch target).
@@ -984,7 +984,7 @@ extern const float g_MissionOrderDistanceDecayWeightTable_006978c8[6];
 extern float g_ArmyMissionDotProductWeights_00697980[5];
 extern float g_ArmyMissionCandidateScoreTable_006978f8[];
 
-// TAutoGreatPower.cpp — AssignNeedSlotFromSourceSlot19C scaling constants.
+// TAutoGreatPower.cpp — SetTradeOffersFor scaling constants.
 extern double g_DAT_00653fc0_Value_00653FC0;             // 1/255
 extern double g_DAT_00653fc8_Value_00653FC8;             // 32767.0
 extern double g_Evaluate_Advisory_Case11_Value_00653FD8; // 0.5

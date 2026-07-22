@@ -1076,13 +1076,14 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
     void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
     do {
       if (*terrainDescriptors != 0) {
-        short eventCode = g_pDiplomacyTurnStateManager->GetNationPairDiplomacyStandingTierCode(
-            activeNationSlot, terrainIndex);
+        DiplomacyRelationshipNotch relationshipNotch =
+            g_pDiplomacyTurnStateManager->GetRelationshipNotch(
+                activeNationSlot, static_cast<NationSlot>(terrainIndex));
 
         maskOrigin.x = 0;
         maskOrigin.y = 0;
         QuickDrawPaletteIndex paletteIndex =
-            g_pUiRuntimeContext->GetColor(static_cast<short>(eventCode + 200));
+            g_pUiRuntimeContext->GetColor(static_cast<short>(relationshipNotch + 200));
         maskRuns[terrainIndex].BlitMonochromeMaskBytePatternToSurface(
             &g_pActiveQuickDrawSurfaceContext->blitSurface, static_cast<short>(paletteIndex),
             &maskOrigin, 1);

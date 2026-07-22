@@ -205,7 +205,7 @@ public:
   // city stock counters, clamped at 0).
   virtual unsigned int ComputeProductionMetricForOrderKind(short orderKind);
   virtual void DecrementDiplomacyCounterA2Slot66(int delta);                          // slot 0x66
-  virtual void AssignNeedSlotFromSourceSlot19C(short needSlot, short sourceNation);   // slot 0x19c
+  virtual void SetTradeOffersFor(short resourceKind, short offerContext);             // slot 0x19c
   virtual char AreDiplomacyState1c6Slots13To16AllNonPositive(void);                   // slot 0x68
   virtual void SetDiplomacyState1c6ClampedToCounterA4(short targetSlot, short value); // slot 0x69
   virtual void SnapshotDiplomacyState1c6Into250(void);                                // slot 0x6a
@@ -519,9 +519,6 @@ public:
   int SumNavyOrderPriorityForNationAndNodeType(TZone* zone);
   int SumNavyOrderPriorityForNation();
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
-
-  void QueueInterNationEventType0FForNationPairContext(NationSlot targetNationSlot,
-                                                       NationSlot sourceNationSlot);
 
   // 0x004e32a0. Rebuilds the economySummary930.. snapshot block wholesale: population
   // baseline, summed city building types, owned-region score (this nation plus any

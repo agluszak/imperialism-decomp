@@ -244,8 +244,8 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
           int reverseIndex = targetNation * kNationSlotCount + sourceNation;
           relationSideEffectMatrix1402[forwardIndex] = 1;
           relationSideEffectMatrix1402[reverseIndex] = 1;
-          g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x12, sourceNation,
-                                                                              targetNation, 0);
+          g_pNewsMgr->AddTreatyEvent(kInterNationEventTradeConsulateEstablished, sourceNation,
+                                     targetNation, 0);
           relationStandingScoreMatrix79c[forwardIndex] = 0x6e;
           relationStandingScoreMatrix79c[reverseIndex] = 0x6e;
         }
@@ -261,8 +261,8 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
         int reverseIndex = targetNation * kNationSlotCount + sourceNation;
         relationSideEffectMatrix1402[forwardIndex] = 1;
         relationSideEffectMatrix1402[reverseIndex] = 1;
-        g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x12, sourceNation,
-                                                                            targetNation, 0);
+        g_pNewsMgr->AddTreatyEvent(kInterNationEventTradeConsulateEstablished, sourceNation,
+                                   targetNation, 0);
         relationStandingScoreMatrix79c[forwardIndex] = 0x6e;
         relationStandingScoreMatrix79c[reverseIndex] = 0x6e;
       }
@@ -681,8 +681,9 @@ void TDiplomacyMgr::ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(int sou
       static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[static_cast<short>(targetNationSlot)]);
   if (targetTerrain != 0) {
     targetTerrain->NotifyActionSlot94(sourceNationSlot, 0x139);
-    g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(
-        0x18, static_cast<short>(targetNationSlot), static_cast<short>(sourceNationSlot), 0);
+    g_pNewsMgr->AddTreatyEvent(kInterNationEventPeaceRelationshipPropagated,
+                               static_cast<short>(targetNationSlot),
+                               static_cast<short>(sourceNationSlot), 0);
   }
 }
 
@@ -822,13 +823,11 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
               if (relationCode == 0x133) {
                 relationSideEffectMatrix1402[rowBase + col] = 1;
                 relationSideEffectMatrix1402[row + colBase] = 1;
-                g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x12, row, col,
-                                                                                    0);
+                g_pNewsMgr->AddTreatyEvent(kInterNationEventTradeConsulateEstablished, row, col, 0);
               } else if (relationCode == 0x134) {
                 relationSideEffectMatrix1402[rowBase + col] = 2;
                 relationSideEffectMatrix1402[row + colBase] = 2;
-                g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x14, row, col,
-                                                                                    0);
+                g_pNewsMgr->AddTreatyEvent(kInterNationEventEmbassyEstablished, row, col, 0);
               } else if (relationCode == kDiplomacyProposalDeclareWar) {
                 if (IsNationPairAtWar(row, col) == 0) {
                   g_apNationStates[row]->QueueWarTransitionAndNotifyThirdPartyIfNeeded(col, 4, -1);
@@ -887,10 +886,10 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
     static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[targetNationSlot])
         ->NotifyActionSlot94(sourceNationSlot, kDiplomacyProposalDeclareWar);
 
-    g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(1, targetNationSlot,
-                                                                        sourceNationSlot, 0);
-    g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0, sourceNationSlot,
-                                                                        targetNationSlot, 0);
+    g_pNewsMgr->AddTreatyEvent(kInterNationEventWarDeclaredAgainstSubject, targetNationSlot,
+                               sourceNationSlot, 0);
+    g_pNewsMgr->AddTreatyEvent(kInterNationEventWarDeclaredBySubject, sourceNationSlot,
+                               targetNationSlot, 0);
 
     if (targetNationSlot < 7) {
       g_apNationStates[sourceNationSlot]->NotifyActionSlot94(targetNationSlot, 0xc8);
@@ -1278,33 +1277,36 @@ bool TDiplomacyMgr::HasNationPairNeedLevel300(int sourceNation, int targetNation
 }
 
 // FUNCTION: IMPERIALISM 0x004f19c0
-int TDiplomacyMgr::GetNationPairDiplomacyStandingTierCode(int sourceNationSlot,
-                                                          int targetNationSlot) {
-  int source = static_cast<short>(sourceNationSlot);
-  int target = static_cast<short>(targetNationSlot);
+DiplomacyRelationshipNotch TDiplomacyMgr::GetRelationshipNotch(NationSlot sourceNationSlot,
+                                                               NationSlot targetNationSlot) {
+  int source = sourceNationSlot;
+  int target = targetNationSlot;
   short standingScore = relationStandingScoreMatrix79c[source * kNationSlotCount + target];
   if (standingScore <= 0x14) {
-    return 0;
+    return kDiplomacyRelationshipNotchThrough20;
   }
   if (standingScore <= 0x31) {
-    return 1;
+    return kDiplomacyRelationshipNotchThrough49;
   }
   if (standingScore <= 0x4f) {
-    return 2;
+    return kDiplomacyRelationshipNotchThrough79;
   }
   if (standingScore <= 0x64) {
-    return 3;
+    return kDiplomacyRelationshipNotchThrough100;
   }
   if (standingScore <= 0x87) {
-    return 4;
+    return kDiplomacyRelationshipNotchThrough135;
   }
   if (standingScore <= 0xaa) {
-    return 5;
+    return kDiplomacyRelationshipNotchThrough170;
   }
   if (standingScore <= 0xcd) {
-    return 6;
+    return kDiplomacyRelationshipNotchThrough205;
   }
-  return (standingScore > 0xf0) + 7;
+  if (standingScore <= 0xf0) {
+    return kDiplomacyRelationshipNotchThrough240;
+  }
+  return kDiplomacyRelationshipNotchAbove240;
 }
 
 // FUNCTION: IMPERIALISM 0x004f1a80
@@ -1360,7 +1362,7 @@ void TDiplomacyMgr::SetNationPairDiplomacyRelationCode(int sourceNationSlot, int
   case 1:
     break;
   case kDiplomacyRelationshipAlliance:
-    g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1a, source, target, 0);
+    g_pNewsMgr->AddTreatyEvent(kInterNationEventAllianceRelationshipEstablished, source, target, 0);
     return;
   case kDiplomacyRelationshipNonAggressionPact:
     SetStandingScoreSlot28(sourceNationSlot, targetNationSlot,
@@ -1393,7 +1395,7 @@ void TDiplomacyMgr::SetNationPairDiplomacyRelationCode(int sourceNationSlot, int
     TMinor* sourceTerrain = static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[source]);
     TMinor* targetTerrain = static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[target]);
     if ((sourceTerrain->encodedNationSlot == -1) && (targetTerrain->encodedNationSlot < 200)) {
-      g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x19, source, target, 0);
+      g_pNewsMgr->AddTreatyEvent(kInterNationEventWarWithIndependentMinor, source, target, 0);
     }
     sourceTerrain->SetDiplomacyStandingSlot48(targetNationSlot, 300);
     targetTerrain->SetDiplomacyStandingSlot48(sourceNationSlot, 300);
@@ -1637,14 +1639,14 @@ void TDiplomacyMgr::ApplyTurnEvent2SyncPacketToRelationMatrix(TurnEvent2SyncPack
 }
 
 // FUNCTION: IMPERIALISM 0x004f2820
-char TDiplomacyMgr::SetNationPairSpecialRelationFlagAndQueueEvent14Or16(short flag,
-                                                                        int sourceNation,
-                                                                        int targetNation) {
-  relationSideEffectMatrix1402[sourceNation * kNationSlotCount + targetNation] = flag;
-  relationSideEffectMatrix1402[targetNation * kNationSlotCount + sourceNation] = flag;
-  int eventCode = flag == 2 ? 0x14 : 0x12;
-  g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(eventCode, sourceNation,
-                                                                      targetNation, 0);
+char TDiplomacyMgr::BuildEmbassy(DiplomaticMissionLevelStorage missionLevel, int sourceNation,
+                                 int targetNation) {
+  relationSideEffectMatrix1402[sourceNation * kNationSlotCount + targetNation] = missionLevel;
+  relationSideEffectMatrix1402[targetNation * kNationSlotCount + sourceNation] = missionLevel;
+  InterNationEventKind eventKind = missionLevel == kDiplomaticMissionEmbassy
+                                       ? kInterNationEventEmbassyEstablished
+                                       : kInterNationEventTradeConsulateEstablished;
+  g_pNewsMgr->AddTreatyEvent(eventKind, sourceNation, targetNation, 0);
   return 1;
 }
 

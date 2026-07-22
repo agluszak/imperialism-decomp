@@ -94,7 +94,7 @@ TSimMgr* g_pSimMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a21b8
 THelpMgr* g_pHelpMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a43e8
-TNewsMgr* g_pInterNationEventQueueManager = 0;
+TNewsMgr* g_pNewsMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a1344
 TAmbitApplication* g_pGlobalUiRootController = 0;
 // GLOBAL: IMPERIALISM 0x006a43c8
@@ -1241,7 +1241,7 @@ float g_ArmyMissionCandidateScoreTable_006978f8[48] = {0};
 // GLOBAL: IMPERIALISM 0x0065aa30
 extern const double g_BeachheadMissionPriorityNormalization_0065AA30 = 100.0;
 
-// Random-roll scaling constants for TAutoGreatPower::AssignNeedSlotFromSourceSlot19C
+// Random-roll scaling constants for TAutoGreatPower::SetTradeOffersFor
 // (0x004e7680): 1/255 and 32767.
 double g_DAT_00653fc0_Value_00653FC0 = 0.00392156862745098;
 double g_DAT_00653fc8_Value_00653FC8 = 32767.0;

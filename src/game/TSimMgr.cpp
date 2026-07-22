@@ -203,9 +203,9 @@ void TSimMgr::Free() {
     g_pCityOrderCapabilityState->Free();
     g_pCityOrderCapabilityState = nullptr;
   }
-  if (g_pInterNationEventQueueManager != nullptr) {
-    g_pInterNationEventQueueManager->Free();
-    g_pInterNationEventQueueManager = nullptr;
+  if (g_pNewsMgr != nullptr) {
+    g_pNewsMgr->Free();
+    g_pNewsMgr = nullptr;
   }
   if (g_pSelectedCivilianOrderState != nullptr) {
     g_pSelectedCivilianOrderState->Free();
@@ -440,13 +440,13 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
     tradeManager->InitializeNationInteractionStateManagerDefaults();
     g_pNationInteractionStateManager = tradeManager;
 
-    if (g_pInterNationEventQueueManager != nullptr) {
-      g_pInterNationEventQueueManager->Free();
-      g_pInterNationEventQueueManager = nullptr;
+    if (g_pNewsMgr != nullptr) {
+      g_pNewsMgr->Free();
+      g_pNewsMgr = nullptr;
     }
     TNewsMgr* newsManager = new TNewsMgr();
-    newsManager->InitializeInterNationEventQueueManager();
-    g_pInterNationEventQueueManager = newsManager;
+    newsManager->InitializeNewsManager();
+    g_pNewsMgr = newsManager;
 
     if (g_pMapContextActionManager != nullptr) {
       g_pMapContextActionManager->Free();
@@ -593,8 +593,8 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
     g_pCityOrderCapabilityState->GenerateRandomCapabilityPrioritySlots();
     g_pGlobalMapState->GenerateProvinceNames();
     RegenerateAllMapActionContextStatusCodes();
-    g_pInterNationEventQueueManager->QueueInterNationEventType11(999, 1, 1);
-    g_pInterNationEventQueueManager->QueueInterNationEventType11(999, 2, 1);
+    g_pNewsMgr->AddMiscEvent(999, 1, 1);
+    g_pNewsMgr->AddMiscEvent(999, 2, 1);
 
     const char* tagText = g_pGlobalMapState->scenarioTagText1c;
     if (tagText[0] == '.') {

@@ -3,6 +3,7 @@
 #include "game/TObject.h"
 #include "game/TSortedPtrList.h"
 #include "game/mfc.h"
+#include "game/news_domain_types.h"
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
@@ -38,7 +39,7 @@ struct newsStory {
 };
 
 // The newspaper / inter-nation event manager (Mac oracle: TNewsMgr; the singleton at
-// g_pInterNationEventQueueManager 0x6a43e8 is `new TNewsMgr()` + INewsMgr — proven by
+// g_pNewsMgr 0x6a43e8 is `new TNewsMgr()` + INewsMgr — proven by
 // RebuildGlobalOrderManagersAndCapabilityState 0x57c3b0 storing exactly that). Gameplay
 // code queues inter-nation event records into the per-nation buckets / shared queue;
 // the turn machine's news phase (StartNewsPhase, turn case 0xf) turns them into the
@@ -74,19 +75,18 @@ public:
 
   // Mac-style second-phase init (Mac: INewsMgr): creates the buckets/queue and nulls
   // the tick arrays. 0x55b710.
-  void InitializeInterNationEventQueueManager();
+  void InitializeNewsManager();
 
-  // Event-queue writers (gameplay side).
-  void QueueInterNationEventRecordDeduped(int eventCode, int nationA, int nationB,
-                                          char isReplayBypass);
-  void QueueInterNationEventIntoNationBucket(int eventCode, int payloadOrNation,
-                                             char isReplayBypass);
-  void QueueInterNationEventType0FWithBitmaskMerge(int eventCode, int nationA, int nationB,
-                                                   char isReplayBypass);
-  // 0x55cd00 — type-0x11 event: with the bypass flag clear in a live multiplayer
+  // Mac-oracle event-queue API (gameplay side).
+  void AddTreatyEvent(InterNationEventKind eventKind, int nationA, int nationB,
+                      unsigned char isReplayBypass);
+  void AddEvent(int nationSlot, NewsEvent* event, unsigned char isReplayBypass);
+  void AddShortageEvent(int subjectNation, int affectedNation, int relatedNation,
+                        unsigned char isReplayBypass);
+  // 0x55cd00 — miscellaneous event: with the bypass flag clear in a live multiplayer
   // session it re-emits over the network as turn-event 0x22 instead of queueing.
-  void QueueInterNationEventType11(int eventParam, int value, char isReplayBypass);
-  void AddOrUpdateBilateralActionRelationEntry(int eventCode, int nationA, int nationB);
+  void AddMiscEvent(int nationSlotOrAll, int storyCode, unsigned char isReplayBypass);
+  void ConcatenateTreaty(InterNationEventKind eventKind, int nationA, int nationB);
 
   // News phase (turn case 0xf; Mac: StartNewsPhase): loads the template table, builds
   // each eligible nation's newspaper, then drops the consumed event records. 0x55b8e0.
@@ -99,9 +99,6 @@ public:
   // Fills event stories for one nation, advancing the (major, minor) cursors through
   // the 3x3 page. 0x55c010 (Mac: CreateEventStories(long, long&, long&)).
   void CreateEventStories(int nation, int* majorCursor, int* minorCursor);
-
-private:
-  TSortedPtrList* GetInterNationQueueByEventCode(int eventCode);
 };
 
 ASSERT_SIZE(TNewsMgr, 0xf10);

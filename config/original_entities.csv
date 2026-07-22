@@ -2407,7 +2407,7 @@ address|name|symbol|size|type|prototype|provenance
 4dda20|TGreatPower::OrphanRetStub_004d7e90_1b||15|function|undefined OrphanRetStub_004d7e90(void)|
 4dda40|TGreatPower::ExecuteNationPendingActionStateMachine_66||15|function|undefined ExecuteNationPendingActionStateMachine(void)|
 4dda60|TGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0_1c||26|function|undefined OrphanLeaf_NoCall_Ins02_004d7ee0(void)|
-4dda90|TGreatPower::AssignNeedSlotFromSourceSlot19C||33|function|undefined AssignNeedSlotFromSourceSlot19C()|
+4dda90|TGreatPower::SetTradeOffersFor||33|function|void __thiscall SetTradeOffersFor(short resourceKind,short offerContext)|
 4ddad0|TGreatPower::GetTCountryClassNamePointer||58|function|undefined GetTCountryClassNamePointer(void)|
 4ddb20|TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f40_1f||16|function|undefined OrphanLeaf_NoCall_Ins02_004d7f40(void)|
 4ddb40|TGreatPower::VTableSlot69||45|function|undefined 'scalar_deleting_destructor'(void)|
@@ -2536,7 +2536,7 @@ address|name|symbol|size|type|prototype|provenance
 4e59d0|TMinor::ApplyJoinEmpireMode2FinalizeNationNameState||79|function|undefined ApplyJoinEmpireMode2FinalizeNationNameState(void)|
 4e5a40|TMinor::SetNationRowDisplayValueByDiplomacyPredicate||91|function|void __thiscall SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot)|
 4e5ac0|TMinor::ClearTileActivityOverlayByProvinceId||215|function|undefined ClearTileActivityOverlayByProvinceId()|
-4e5be0|TMinor::QueueInterNationEvent17ForState300AffectedNations||322|function|undefined QueueInterNationEvent17ForState300AffectedNations()|
+4e5be0|TMinor::NotifyMajorPowersAffectedByMinorTerritoryChange||322|function|void __thiscall NotifyMajorPowersAffectedByMinorTerritoryChange()|
 4e5d90|TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects||543|function|undefined ApplyDiplomacyRelationMaskToProvinceLinkedObjects()|
 4e6040|TRemoteMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells||204|function|undefined ReassignTileObjectOwnerAndNotifyForSelectedCells()|
 4e6150|TRemoteMinor::ReassignUnitOrdersForCountryTargetChange||662|function|undefined ReassignUnitOrdersForCountryTargetChange()|
@@ -2568,7 +2568,7 @@ address|name|symbol|size|type|prototype|provenance
 4e7590|TAutoGreatPower::GetTEventHandlerClassNamePointer_38||22|function|undefined OrphanLeaf_NoCall_Ins07_004e7590(void)|
 4e75c0|TAutoGreatPower::OrphanCallChain_C4_I28_004e75c0||72|function|undefined OrphanCallChain_C4_I28_004e75c0(void)|
 4e7630|TGreatPower::ApplyIndexedResourceDeltaWithNeedClamp||60|function|undefined ApplyIndexedResourceDeltaWithNeedClamp()|
-4e7680|TAutoGreatPower::AssignNeedSlotFromSourceSlot19C||308|function|undefined AssignNeedSlotFromSourceSlot19C()|
+4e7680|TAutoGreatPower::SetTradeOffersFor||308|function|void __thiscall SetTradeOffersFor(short resourceKind,short offerContext)|
 4e7810|TAutoGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix||131|function|undefined RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix()|
 4e78d0|TAutoGreatPower::DispatchNationField98CallbackD4||14|function|undefined DispatchNationField98CallbackD4()|
 4e78f0|TAutoGreatPower::DispatchNationField9CCallback4C||11|function|undefined DispatchNationField9CCallback4C()|
@@ -2730,7 +2730,7 @@ address|name|symbol|size|type|prototype|provenance
 4f1630|TDiplomacyMgr::BuildMajorNationDiplomacyStandingRanking||234|function|undefined BuildMajorNationDiplomacyStandingRanking()|
 4f1760|RecomputeNationComparativePowerMetrics||415|function|undefined RecomputeNationComparativePowerMetrics()|
 4f1970|HasState300LinkBetweenNationPair||56|function|undefined HasState300LinkBetweenNationPair()|
-4f19c0|TDiplomacyMgr::GetNationPairDiplomacyStandingTierCode||140|function|undefined GetNationPairDiplomacyStandingTierCode()|
+4f19c0|TDiplomacyMgr::GetRelationshipNotch||140|function|DiplomacyRelationshipNotch __thiscall GetRelationshipNotch(short sourceNation,short targetNation)|
 4f1a80|TDiplomacyMgr::ShowRelationCodeNoticeForNationPairIfRelevant||73|function|void ShowRelationCodeNoticeForNationPairIfRelevant(int sourceNation, int targetNation, int unusedArg)|
 4f1b10|TDiplomacyMgr::GetNationPairDiplomacyRelationCode||32|function|undefined GetNationPairDiplomacyRelationCode()|
 4f1b40|TDiplomacyMgr::SetNationPairDiplomacyRelationCodeFinal||25|function|undefined SetNationPairDiplomacyRelationWithFinalFlag()|
@@ -2745,7 +2745,7 @@ address|name|symbol|size|type|prototype|provenance
 4f24a0|RebuildMinorNationDispositionLookupTables||553|function|undefined RebuildMinorNationDispositionLookupTables()|
 4f2760|BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy||109|function|undefined BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy()|
 4f27f0|TDiplomacyMgr::ApplyTurnEvent2SyncPacketToRelationMatrix||19|function|void __thiscall ApplyTurnEvent2SyncPacketToRelationMatrix(TurnEvent2SyncPacket *)|
-4f2820|SetNationPairSpecialRelationFlagAndQueueEvent14Or16||88|function|undefined SetNationPairSpecialRelationFlagAndQueueEvent14Or16()|
+4f2820|TDiplomacyMgr::BuildEmbassy||88|function|char __thiscall BuildEmbassy(short missionLevel,int sourceNation,int targetNation)|
 4f28a0|TNextDiplomationCommand::CreateObject|?CreateObject@TNextDiplomationCommand@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4f2910|TNextDiplomationCommand::GetRuntimeClass|?GetRuntimeClass@TNextDiplomationCommand@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
 4f2930|DispatchUiPacketWithTagNEXT||39|function|undefined DispatchUiPacketWithTagNEXT()|
@@ -3971,7 +3971,7 @@ address|name|symbol|size|type|prototype|provenance
 549280|AppendNodeToTurnEventLinkedListAt6C||35|function|undefined AppendNodeToTurnEventLinkedListAt6C()|
 5493c0|CreateAndSendTurnEvent11_MapOffsetAndFlags||185|function|undefined CreateAndSendTurnEvent11_MapOffsetAndFlags()|
 5494b0|CreateAndSendTurnEvent12_TwoShorts||107|function|undefined CreateAndSendTurnEvent12_TwoShorts()|
-549540|CreateAndSendTurnEvent13_NationAndNineDwords||126|function|undefined CreateAndSendTurnEvent13_NationAndNineDwords()|
+549540|TMultiplayerMgr::SendNewsEvent||126|function|void __thiscall SendNewsEvent(int nationSlot,NewsEvent * event)|
 5495e0|CreateAndSendTurnEvent20_ShortAndTwoBytes||118|function|undefined CreateAndSendTurnEvent20_ShortAndTwoBytes()|
 549680|CreateAndSendTurnEvent21_ThreeBytes||116|function|undefined CreateAndSendTurnEvent21_ThreeBytes()|
 549720|CreateAndSendTurnEvent22_ByteAndShort||106|function|undefined CreateAndSendTurnEvent22_ByteAndShort()|
@@ -4224,7 +4224,7 @@ address|name|symbol|size|type|prototype|provenance
 55b6a0|TNewsMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 55b6d0|ResetTNewsMgrToSentinelVtable||7|function|undefined ResetTNewsMgrToSentinelVtable()|
 55b6f0|TNewsMgr::GetRuntimeClass||6|function|undefined GetTNewsMgrClassNamePointer()|rtti
-55b710|TInterNationEventQueueManager::InitializeInterNationEventQueueManager||196|function|undefined InitializeInterNationEventQueueManager()|
+55b710|TNewsMgr::InitializeNewsManager||196|function|void __thiscall InitializeNewsManager()|
 55b820|TNewsMgr::Free||81|function|undefined DestroyTNewsMgrAndReleaseHeadlineEntries()|
 55b8a0|TNewsMgr::ReadFrom||13|function|undefined IsDiplomacyTargetClassCode200Match(void)|
 55b8c0|TNewsMgr::WriteTo||13|function|undefined ApplyJoinEmpireMode2FinalizeNationNameState(void)|
@@ -4234,11 +4234,11 @@ address|name|symbol|size|type|prototype|provenance
 55bbf0|TLanguageMgr::GetNewsTabPath||4|function|CString& GetNewsTabPath()|
 55bc10|TNewsMgr::CreateNewspaper||816|function|void CreateNewspaper(int nation)|
 55c010|TNewsMgr::CreateEventStories||1701|function|void CreateEventStories(int nation, int* majorCursor, int* minorCursor)|
-55c970|TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket||85|function|void __thiscall QueueInterNationEventIntoNationBucket(int eventCode,int payloadOrNation,char isReplayBypass)|
-55c9f0|TInterNationEventQueueManager::QueueInterNationEventRecordDeduped||379|function|void __thiscall QueueInterNationEventRecordDeduped(int eventCode,int nationA,int nationB,char isReplayBypass)|
-55cbd0|TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge||226|function|void __thiscall QueueInterNationEventType0FWithBitmaskMerge(int eventCode,int nationA,int nationB,char isReplayBypass)|
-55cd00|TInterNationEventQueueManager::QueueInterNationEventType11||113|function|undefined QueueInterNationEventType11()|
-55cda0|AddOrUpdateBilateralActionRelationEntry||292|function|undefined AddOrUpdateBilateralActionRelationEntry()|
+55c970|TNewsMgr::AddEvent||85|function|void __thiscall AddEvent(int nationSlot,NewsEvent * event,unsigned char isReplayBypass)|
+55c9f0|TNewsMgr::AddTreatyEvent||379|function|void __thiscall AddTreatyEvent(InterNationEventKind eventKind,int nationA,int nationB,unsigned char isReplayBypass)|
+55cbd0|TNewsMgr::AddShortageEvent||226|function|void __thiscall AddShortageEvent(int subjectNation,int affectedNation,int relatedNation,unsigned char isReplayBypass)|
+55cd00|TNewsMgr::AddMiscEvent||113|function|void __thiscall AddMiscEvent(int nationSlotOrAll,int storyCode,unsigned char isReplayBypass)|
+55cda0|TNewsMgr::ConcatenateTreaty||292|function|void __thiscall ConcatenateTreaty(InterNationEventKind eventKind,int nationA,int nationB)|
 55d160|TNewspaperView::CreateObject|?CreateObject@TNewspaperView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 55d1e0|TNewspaperView::GetRuntimeClass||6|function|undefined GetTNewspaperViewClassNamePointer()|rtti
 55d200|TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog||1415|function|undefined BuildInterNationEventSummaryRowsForAdvisorDialog()|
@@ -6176,9 +6176,9 @@ address|name|symbol|size|type|prototype|provenance
 5e1ce0|UpdateCursorHelperWindowTextFromUiString||120|function|undefined UpdateCursorHelperWindowTextFromUiString()|
 5e1e50|TSortedPtrList::ReadFrom||136|function|undefined EnumerateStreamEntriesWithDualCallbacksAndTempBuffer()|
 5e1f10|TSortedPtrList::WriteTo||103|function|undefined EnumerateStateEntriesAndInvokeObjectCallback()|
-5e1fa0|SetPlaybackState2AndNotifyOwnerCallback||17|function|undefined SetPlaybackState2AndNotifyOwnerCallback()|
-5e1fd0|NoOpPlaybackCallback_005e1fd0||20|function|undefined NoOpPlaybackCallback_005e1fd0()|
-5e2000|IncrementPlaybackCounterAndNotifyOwnerCallback||17|function|undefined IncrementPlaybackCounterAndNotifyOwnerCallback()|
+5e1fa0|CPtrIterator::FirstPtr||17|function|void * __thiscall FirstPtr()|
+5e1fd0|CPtrIterator::More||20|function|int __thiscall More()|
+5e2000|CPtrIterator::NextPtr||17|function|void * __thiscall NextPtr()|
 5e2100|TMovieView::CreateObject|?CreateObject@TMovieView@@SGPAVCObject@@XZ|204|function|undefined CreateObject()|rtti
 5e2210|TMovieView::GetRuntimeClass||6|function|undefined GetTMovieViewClassNamePointer()|
 5e2230|TMovieView::ConstructTMovieViewBaseState||130|function|undefined ConstructTMovieViewBaseState()|
@@ -8692,7 +8692,7 @@ address|name|symbol|size|type|prototype|provenance
 6a43dc|g_pSelectedCivilianOrderState|||global||
 6a43e0|g_pUiAnimator|||global||
 6a43e4|g_pNavyOrderManager|||global||
-6a43e8|g_pInterNationEventQueueManager|||global||
+6a43e8|g_pNewsMgr|||global||
 6a43ec|g_pSfxPlaybackSystem|||global||
 6a43f0|g_bMultiplayerScenarioSetupActive|||global||
 6a4450|g_nOverlayClipCacheParamX|||global||

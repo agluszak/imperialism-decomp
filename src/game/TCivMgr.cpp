@@ -279,8 +279,7 @@ void TCivMgr::ShowDisbandCivilianConfirmationDialog() {
 
   short tileIndex = entry->tileIndex06;
   if (entry->orderType == EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
-    g_pInterNationEventQueueManager->QueueInterNationEventType11(g_pSimMgr->GetActiveNationId(), 0,
-                                                                 0);
+    g_pNewsMgr->AddMiscEvent(g_pSimMgr->GetActiveNationId(), 0, 0);
   }
   entry->ResetCivWorkOrderAndRefreshCounters();
 

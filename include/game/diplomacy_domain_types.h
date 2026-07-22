@@ -46,3 +46,28 @@ enum DiplomacyRelationship {
   kDiplomacyRelationshipJoinedEmpire = 5,
   kDiplomacyRelationshipWar = 6
 };
+
+// Mac names the monotonic 0..8 result of the standing-score classifier a
+// relationship notch. The Windows thresholds prove ordering, but not adjective
+// labels, so keep the enumerators ordinal and avoid inventing diplomatic prose.
+enum DiplomacyRelationshipNotch {
+  kDiplomacyRelationshipNotchThrough20 = 0,
+  kDiplomacyRelationshipNotchThrough49 = 1,
+  kDiplomacyRelationshipNotchThrough79 = 2,
+  kDiplomacyRelationshipNotchThrough100 = 3,
+  kDiplomacyRelationshipNotchThrough135 = 4,
+  kDiplomacyRelationshipNotchThrough170 = 5,
+  kDiplomacyRelationshipNotchThrough205 = 6,
+  kDiplomacyRelationshipNotchThrough240 = 7,
+  kDiplomacyRelationshipNotchAbove240 = 8
+};
+
+// The symmetric diplomacy matrix stores this state as a signed word. Mac calls
+// the mutator BuildEmbassy; gameplay checks prove 1 = trade consulate, 2 = embassy.
+typedef short DiplomaticMissionLevelStorage;
+
+enum DiplomaticMissionLevel {
+  kDiplomaticMissionNone = 0,
+  kDiplomaticMissionTradeConsulate = 1,
+  kDiplomaticMissionEmbassy = 2
+};
