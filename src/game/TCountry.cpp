@@ -65,18 +65,18 @@ static void SwapAdjacentBytesInShortArray(short* entries, int pairCount) {
 // TCountry::CreateObject
 
 // FUNCTION: IMPERIALISM 0x004d6730
-char TCountry::ReturnFalseNationStateCapabilityFlag98(void) {
+char TCountry::IsClient(void) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d6750
-char TCountry::ReturnFalseNationStateCapabilityFlag9C(void) {
+char TCountry::IsHost(void) {
   return 0;
 }
 
-// slot 0x28 — ShouldDispatchImmediatelySlot28 (real body).
+// slot 0x28 — IsRemote (real body).
 // FUNCTION: IMPERIALISM 0x004d6770
-char TCountry::ShouldDispatchImmediatelySlot28(void) {
+char TCountry::IsRemote(void) {
   return 0;
 }
 
@@ -394,7 +394,7 @@ void TCountry::LoadNationDisplayNameSharedRefFromField8(CString* destString) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7ae0
-void TCountry::AddToNationMetricAtField10(int amount) {
+void TCountry::AddToTreasury(int amount) {
   this->treasuryValue10 += amount;
 }
 
@@ -453,7 +453,7 @@ void TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNatio
 // FUNCTION: IMPERIALISM 0x004d7c90
 void TCountry::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
   this->encodedNationSlot = static_cast<short>(targetNationSlot + 200);
-  this->ResetDiplomacyLevelForNationSlot12(static_cast<NationSlot>(targetNationSlot), 100);
+  this->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), 100);
 
   int nationSlot = 0;
   do {
@@ -714,9 +714,9 @@ void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d8920
-void TCountry::ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) {
+void TCountry::SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) {
   if (nationSlot != this->nationSlot) {
-    this->needLevelByNation[nationSlot] = static_cast<short>(resetLevel);
+    this->needLevelByNation[nationSlot] = tradePolicy;
   }
 }
 

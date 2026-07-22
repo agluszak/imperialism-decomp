@@ -80,8 +80,7 @@ void TNewsMgr::StartNewsPhase() {
   newsTexStream = g_pUiViewManager->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTexPath());
   memset(stories, 0, sizeof(stories));
   short slot = 0;
-  for (TGreatPower** nation = g_apNationStates; nation < (TGreatPower**)&g_apNationStates_End;
-       nation++, slot++) {
+  for (TGreatPower** nation = g_apNationStates; nation < &g_apNationStates_End; nation++, slot++) {
     if ((*nation != 0 && (*nation)->diplomacyEligibilityA0 != 0) ||
         g_pSimMgr->GetActiveNationId() == slot) {
       CreateNewspaper(slot);

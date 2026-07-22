@@ -9,7 +9,7 @@ public:
   DECLARE_DYNCREATE(TRemoteGreatPower)
   ~TRemoteGreatPower() override;
 
-  char ShouldDispatchImmediatelySlot28(void) override;
+  char IsRemote(void) override;
   void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char* mapCellLabel) override;
   void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) override;
   void NotifyCitySlot2C(void) override;
@@ -21,10 +21,10 @@ public:
   void ApplyTurnDiplomacyStateSlot1e0(void) override;
   void ResetNationDiplomacyProposalQueue(void) override;
   void ReleaseProposalQueueSlot7F(void) override;
-  void ProcessPendingDiplomacyProposalQueue(void) override;
+  void ReplyToDiplomacyOffers(void) override;
   void SetCandidateNationFlagAndPortZoneState(int targetNation) override;
   void CallSlotA8(int targetNation) override;
-  void HandleNationLost(void) override;
+  void SorryYouLose(void) override;
   void RecomputeAiExpansionAndMissionPressureScores(void) override;
   void RefreshTrackedEntriesAndReplanAiDevelopment(int unused) override;
   char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;

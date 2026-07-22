@@ -181,7 +181,7 @@ public:
   // standing/propagation) and every other eligible minor (looked up from the other
   // minor's own decoded disposition band when it already has one, else from the
   // requesting nation's ReturnFalseNationStateCapabilityFlag90 capability check), and
-  // finally notifies every eligible major power via ResetDiplomacyLevelForNationSlot12.
+  // finally notifies every eligible major power via SetTradePolicyTo.
   void RebuildMinorNationDispositionLookupTables(int nationCode);
 };
 

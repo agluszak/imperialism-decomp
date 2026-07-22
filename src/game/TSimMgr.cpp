@@ -895,7 +895,7 @@ void TSimMgr::DoCityAndTransport() {
       --nationSlot;
       continue;
     }
-    int shouldRunHandlers = !(*nation)->ShouldDispatchImmediatelySlot28();
+    int shouldRunHandlers = !(*nation)->IsRemote();
     if (shouldRunHandlers) {
       (*nation)->OrphanRetStub_004dcc30();
       (*nation)->NotifyCitySlot2C();
@@ -997,8 +997,7 @@ unsigned char TSimMgr::TestTurnFlowStatusFlagMask(unsigned int mask) {
 
 // FUNCTION: IMPERIALISM 0x0057f4f0
 int TSimMgr::AllHumansFinished() {
-  for (TGreatPower** nation = g_apNationStates; nation < (TGreatPower**)&g_apNationStates_End;
-       ++nation) {
+  for (TGreatPower** nation = g_apNationStates; nation < &g_apNationStates_End; ++nation) {
     if ((*nation)->field904 == 0) {
       return 0;
     }
@@ -1014,7 +1013,7 @@ void TSimMgr::ResetTurnFlags() {
       (*nation)->field904 = 0;
     }
     ++nation;
-  } while (nation < (TGreatPower**)&g_apNationStates_End);
+  } while (nation < &g_apNationStates_End);
 }
 
 // FUNCTION: IMPERIALISM 0x0057f5b0
@@ -1489,7 +1488,7 @@ void TSimMgr::ProcessScenarioScript() {
   }
 
   TGreatPower** nationCursor = g_apNationStates;
-  while (nationCursor < reinterpret_cast<TGreatPower**>(&g_apNationStates_End)) {
+  while (nationCursor < &g_apNationStates_End) {
     (*nationCursor)->AssignDisplayNamesToUnnamedMilitaryUnits();
     (*nationCursor)->MarkStatusFlag5HandledIfCapabilityActive();
     ++nationCursor;
@@ -1992,8 +1991,8 @@ void TSimMgr::HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(void* pInstruct
   lraw[0] = lraw[3];
   lraw[1] = lraw[2];
 
-  g_apNationStates[ownerToken]->ResetDiplomacyLevelForNationSlot12(
-      static_cast<NationSlot>(targetToken), static_cast<int>(levelToken));
+  g_apNationStates[ownerToken]->SetTradePolicyTo(static_cast<NationSlot>(targetToken),
+                                                 static_cast<int>(levelToken));
 }
 
 // Reads source nation, target nation, and relation code, applies the diplomacy entry,

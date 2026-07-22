@@ -88,7 +88,7 @@ TMinor* g_apNationAuxRuntimeStateSlots[16] = {0};
 // GLOBAL: IMPERIALISM 0x006a4370
 TGreatPower* g_apNationStates[7] = {0};
 // GLOBAL: IMPERIALISM 0x006a438c
-void* g_apNationStates_End;
+TGreatPower* g_apNationStates_End;
 // GLOBAL: IMPERIALISM 0x006a20f8
 TSimMgr* g_pSimMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a21b8

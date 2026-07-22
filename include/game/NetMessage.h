@@ -49,6 +49,30 @@ struct TimelyNetMessagePrefix : TimelyMessageHeader {
   void SetTimeEmitPacketGameFlowTurnId();
 };
 
+// Event-0x14 treasury delta for one nation.
+struct TurnEvent14NationMetricPacket : TimelyMessageHeader {
+  short nationSlot18;
+  unsigned char pad1a[2];
+  int amount1C;
+};
+
+// Event-0x16 diplomacy proposal for one nation.
+struct TurnEvent16DiplomacyProposalPacket : TimelyMessageHeader {
+  short nationSlot18;
+  short proposalCode1A;
+  short targetNationId1C;
+  unsigned char pad1e[2];
+};
+
+// Event-0x17 proposal resolution (accept/decline).
+struct TurnEvent17ProposalResolutionPacket : TimelyMessageHeader {
+  short nationSlot18;
+  unsigned char acceptedFlag1A;
+  unsigned char pad1b;
+  short proposalIndex1C;
+  unsigned char pad1e[2];
+};
+
 // 0x5449b0 (TMultiplayerMgr TU): heap-build the turn-event-2 sync packet, delta or full.
 // Turn-event-2 relation-matrix sync packet. Variable-length: full form carries the raw
 // 0x89c-short block, delta form (deltaKind21 == 2) carries (index, value) pairs for the

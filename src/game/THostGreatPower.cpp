@@ -7,8 +7,8 @@
 #include "game/TViewMgr.h"
 
 // FUNCTION: IMPERIALISM 0x00540f20
-char THostGreatPower::ReturnFalseNationStateCapabilityFlag9C(void) {
-  return 0;
+char THostGreatPower::IsHost(void) {
+  return 1;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00540f40
@@ -47,10 +47,26 @@ char THostGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, in
 }
 
 // FUNCTION: IMPERIALISM 0x005410f0
-void THostGreatPower::ProcessPendingDiplomacyProposalQueue(void) {}
+void THostGreatPower::ReplyToDiplomacyOffers(void) {
+  TGreatPower::ReplyToDiplomacyOffers();
+
+  int nationSlot = 0;
+  TGreatPower** nation = g_apNationStates;
+  do {
+    if (*nation != 0 && (*nation)->IsRemote() == 0) {
+      g_pGameFlowState->ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(nationSlot);
+    }
+    ++nation;
+    ++nationSlot;
+  } while (reinterpret_cast<int>(nation) < reinterpret_cast<int>(&g_apNationStates_End));
+
+  TViewMgr* uiRuntimeContext = g_pUiRuntimeContext;
+  short ownerNationSlot = this->nationSlot;
+  uiRuntimeContext->MakeDiplomacyOfferDialog(ownerNationSlot, ownerNationSlot, 0x29a);
+}
 
 // FUNCTION: IMPERIALISM 0x00541170
-void THostGreatPower::HandleNationLost(void) {
+void THostGreatPower::SorryYouLose(void) {
   if (nationLostEventDispatched == 0) {
     g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6c6f7374, nationSlot | 0xff00, -3);
     nationLostEventDispatched = 1;
@@ -67,10 +83,10 @@ void THostGreatPower::HandleNationLost(void) {
     }
     ++nation;
     ++nationIndex;
-  } while (reinterpret_cast<int>(nation) < reinterpret_cast<int>(&g_apNationStates_End));
+  } while (nation < &g_apNationStates_End);
 
   if (eligibleOtherNationCount == 0) {
-    TGreatPower::HandleNationLost();
+    TGreatPower::SorryYouLose();
     return;
   }
   g_pSimMgr->StartNextPhase();

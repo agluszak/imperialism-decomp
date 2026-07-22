@@ -17,6 +17,7 @@ class TCityInteriorMinister;
 class TSortedByRelationshipList;
 class TCity;
 class TZone;
+class TTurnStartEvent;
 
 // Nation object: inherits the intermediate base TCountry (identity strings, nation-slot
 // metrics, military-unit + owned-region lists), itself a TObject.
@@ -40,7 +41,7 @@ public:
   void ReadCoreFieldsFromStream(TStream* stream, int unusedArg) override;
 
   // ---- diplomacy grants / policies / proposal queue ----
-  void ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) override;
+  void SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) override;
   // index 0x13 / vtable+0x04c. Evidence: 0x004df010 calls this on `this`
   // with (targetNationSlot, 1); return value ignored.
   void ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode) override;
@@ -82,8 +83,8 @@ public:
   // flag via g_pUiRuntimeContext slot 0x3c.
   virtual void DispatchPendingStatusPrompts(void);
   virtual void SetNationPendingActionStateAndPayload(int index, short payload); // slot 0x2e
-  // slot 0x2f — body 0x004daa50: appends a node to missionNodeQueue.
-  virtual void AddNodeToMissionNodeQueue(void* node);
+  // slot 0x2f — Mac oracle: AddTurnStartEvent(TTurnStartEvent*); the base queues it.
+  virtual void AddTurnStartEvent(TTurnStartEvent* event);
   // slot 0x30 — body 0x004daa80: invokes [vt+0x28] on every mission node, then
   // clears missionNodeQueue.
   virtual void DispatchMissionNodeCallbacksAndClearQueue(void);
@@ -233,16 +234,15 @@ public:
   virtual void ApplyTurnDiplomacyStateSlot1e0();                 // index 120 — body 0x004de7e0
   virtual void DecrementNeedLevelByNationStep(short nationSlot); // index 121
   virtual char CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // index 122
-  virtual void ApplyAcceptedDiplomacyProposalCode(short proposalIndex);                // index 123
-  virtual void
-  QueueInterNationEventForProposalCode12D_130(unsigned short proposalQueueIndex); // index 124
+  virtual void AcceptOffer(short proposalIndex);                                       // index 123
+  virtual void RejectOffer(unsigned short proposalQueueIndex);                         // index 124
   // slot 0x7d — body 0x004df4b0: whether eventCode may target the nation given the
   // current relation tier (tiers 2..6 progressively restrict 0x12e-0x130).
   virtual char IsEventCodeAllowedForRelationTier(short eventCode, int targetNation);
   virtual void ResetNationDiplomacyProposalQueue(void);
   virtual void ReleaseProposalQueueSlot7F(void);
   virtual void DispatchTurnEvent2103WithNationFromRecord(void);
-  virtual void ProcessPendingDiplomacyProposalQueue(void);
+  virtual void ReplyToDiplomacyOffers(void);
   // slot 0x82 — body 0x004e2880: ranks this nation's summed building production against
   // the mean/stddev across all eligible nations; returns tier 0..4.
   virtual int ClassifyNationProductionTierVsPeers(void);
@@ -326,7 +326,7 @@ public:
   virtual void DispatchNationDiplomacySlotActionByMode(int targetNationSlot, int mode);
   // slot 0x2ac — handles this nation leaving play. The base dispatches turn event
   // 0x11f8; network and AI nation types override the transition behavior.
-  virtual void HandleNationLost(void);
+  virtual void SorryYouLose(void);
   // slot 0xac — body 0x004e06d0: sums the accumulated value (+0x44) of city
   // commodity records 8..0xc.
   virtual int SumCommodityRecordAccumulatedValues(void);

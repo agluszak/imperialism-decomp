@@ -434,8 +434,7 @@ int TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask() {
   int slot = 0;
   for (TGreatPower** cell = g_apNationStates; cell < g_apNationStates + 7; ++cell, ++slot) {
     TGreatPower* nation = *cell;
-    if (nation != 0 && nation->diplomacyEligibilityA0 != 0 &&
-        nation->ShouldDispatchImmediatelySlot28() != 0) {
+    if (nation != 0 && nation->diplomacyEligibilityA0 != 0 && nation->IsRemote() != 0) {
       if (g_pGameFlowState->nationSessionIds[slot] == -2) {
         awolBitmask += 1 << slot;
       } else {

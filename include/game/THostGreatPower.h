@@ -15,9 +15,9 @@ public:
   void ReadFrom(TStream* stream) override;
   char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                      int arg4) override;
-  char ReturnFalseNationStateCapabilityFlag9C(void) override;
-  void ProcessPendingDiplomacyProposalQueue(void) override;
-  void HandleNationLost(void) override;
+  char IsHost(void) override;
+  void ReplyToDiplomacyOffers(void) override;
+  void SorryYouLose(void) override;
 
   THostGreatPower() : nationLostEventDispatched(0) {}
 

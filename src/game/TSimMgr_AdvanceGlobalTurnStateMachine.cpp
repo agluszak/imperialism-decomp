@@ -125,8 +125,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
       nation->AssertValid();
-      if (nation->ShouldDispatchImmediatelySlot28() == 0 &&
-          g_bMultiplayerScenarioSetupActive == 0) {
+      if (nation->IsRemote() == 0 && g_bMultiplayerScenarioSetupActive == 0) {
         nation->SetHomeCityTileAndDisplayName(-1, 0);
       }
     }
@@ -216,7 +215,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     }
     if (difficultyLevel == 0) {
       TGreatPower** nationCursor = g_apNationStates;
-      TGreatPower** nationEnd = reinterpret_cast<TGreatPower**>(&g_apNationStates_End);
+      TGreatPower** nationEnd = &g_apNationStates_End;
       while (nationCursor < nationEnd) {
         TGreatPower* nation = *nationCursor;
         if (nation != nullptr && nation->diplomacyEligibilityA0 != 0 &&
@@ -233,7 +232,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
       if (nation != nullptr) {
-        nation->ProcessPendingDiplomacyProposalQueue();
+        nation->ReplyToDiplomacyOffers();
       }
     }
     if (ShouldDispatchNextTradePacket(this)) {
@@ -309,7 +308,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         continue;
       }
       TGreatPower* activeNation = g_apNationStates[activeNationSlot];
-      activeNation->HandleNationLost();
+      activeNation->SorryYouLose();
       actionNeeded = 1;
     }
     if (actionNeeded == 0) {
@@ -542,7 +541,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         const short encoded = localizationNationState->encodedNationSlot;
         if (encoded > 99 && encoded < 200) {
           TGreatPower* activeNation = g_apNationStates[activeNationSlot];
-          activeNation->HandleNationLost();
+          activeNation->SorryYouLose();
           actionNeeded = 1;
         }
       }

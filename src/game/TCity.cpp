@@ -416,7 +416,7 @@ void TCity::VerifyStocks() {
   short* needCursor = &this->cityStockCottonB6;
   do {
     if (*needCursor < 0) {
-      char dispatchGate = this->ownerNationAc->ShouldDispatchImmediatelySlot28();
+      char dispatchGate = this->ownerNationAc->IsRemote();
       if ((dispatchGate == 0 || g_pSimMgr->difficultyLevel != 2) &&
           g_Sanitize_City_Counter_Value_006A24D4 == 0) {
         TemporarilyClearAndRestoreUiInvalidationFlag();

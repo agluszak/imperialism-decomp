@@ -46,7 +46,7 @@ public:
   bool ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetClass,
                                                         short policyCode) override;
   // slot 0x81 — 0x004e7be0: replay proposal rows then reset policy state.
-  void ProcessPendingDiplomacyProposalQueue(void) override;
+  void ReplyToDiplomacyOffers(void) override;
   // slot 0xa1 — 0x004e9ed0: war-transition propagation from advisory action.
   void ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNationSlot, int policyCode,
                                                             int sourceNationSlot) override;
@@ -64,7 +64,7 @@ public:
   // slot 0x9f — 0x004e7cc0: war-transition propagation across eligible allied nations.
   int CheckTransitionSlot27C(int targetNation, int sourceNation) override;
   // slot 0xab — 0x004e7510: 'lost' game-state event when redraw is enabled.
-  void HandleNationLost(void) override;
+  void SorryYouLose(void) override;
   // slot 0x18 — 0x004ea1c0: also drop the matching mission and map-node flag.
   void RemoveRegionIdFromNationOwnedRegionList(int regionId) override;
   // slot 0x22 — 0x004e79d0: forward to the foreign minister or queue a tracked entry.

@@ -920,8 +920,7 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
         ++nationStateCursor;
         ++otherNationSlot;
         ++targetRelationCursor;
-      } while (reinterpret_cast<int>(nationStateCursor) <
-               reinterpret_cast<int>(&g_apNationStates_End));
+      } while (nationStateCursor < &g_apNationStates_End);
 
       otherNationSlot = 0;
       nationStateCursor = g_apNationStates;
@@ -939,8 +938,7 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
         ++nationStateCursor;
         ++otherNationSlot;
         ++sourceRelationCursor;
-      } while (reinterpret_cast<int>(nationStateCursor) <
-               reinterpret_cast<int>(&g_apNationStates_End));
+      } while (nationStateCursor < &g_apNationStates_End);
     }
 
     if (propagatedTransition == 0) {
@@ -1597,7 +1595,7 @@ void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(int nationCode) {
 
     for (int notifySlot = 0; notifySlot < 7; ++notifySlot) {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(notifySlot)) {
-        g_apNationStates[notifySlot]->ResetDiplomacyLevelForNationSlot12(minorSlot, 100);
+        g_apNationStates[notifySlot]->SetTradePolicyTo(minorSlot, 100);
       }
     }
   }

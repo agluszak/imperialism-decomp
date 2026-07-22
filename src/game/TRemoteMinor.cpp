@@ -16,7 +16,7 @@
 IMPLEMENT_DYNCREATE(TRemoteMinor, TRemoteMinor)
 
 // FUNCTION: IMPERIALISM 0x00541c90
-char TRemoteMinor::ShouldDispatchImmediatelySlot28(void) {
+char TRemoteMinor::IsRemote(void) {
   return 1;
 }
 
