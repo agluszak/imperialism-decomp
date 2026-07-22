@@ -1327,8 +1327,8 @@ void TSimMgr::UpdatePersistentTopTenNationScores() {
     fclose(file);
   }
 
-  g_apNationStates[activeNationSlot]->RecomputeNationEconomyAndDiplomacySummaryMetrics();
-  int score = g_apNationStates[activeNationSlot]->economySummaryWeightedTotal95c;
+  g_apNationStates[activeNationSlot]->GenerateGameScore();
+  int score = g_apNationStates[activeNationSlot]->gameScoreTotal95c;
 
   int insertIndex = 0;
   while (insertIndex < 10 && score <= scoreValues[insertIndex]) {

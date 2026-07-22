@@ -430,21 +430,25 @@ public:
   int aidAllocationTotal;
   unsigned char colonyBoycottFlags[0x17];
   unsigned char pad_92f;
-  // 0x930..0x95c — per-turn economy/diplomacy summary snapshot rebuilt wholesale by
-  // RecomputeNationEconomyAndDiplomacySummaryMetrics (0x4e32a0); interior meaning
-  // still mostly unmapped beyond the two aliased copies noted below.
-  int economySummaryBaseline930;        // 0x930 — from city->population baseline bucket
-  int economySummaryNeedCapSnapshot934; // 0x934 — copy of needCapA6
-  int economySummaryBuildingTypeSum938; // 0x938 — sum of city GetBuildingType(0..5)
-  int economySummaryRegionScore93c; // 0x93c — owned-region counts (this + qualifying minors) * 10
-  int economySummaryMilitaryOrderCostSum940; // 0x940 — sum over militaryUnitList44 of unit order cost table col 2
-  int economySummaryNavyOrderPriority944; // 0x944 — SumNavyOrderPriorityForNationSlot86()
-  int economySummaryAvgRelationScore948; // 0x948 — average relation-matrix score vs other live nations
-  int economySummaryTradeCapacitySnapshot94c; // 0x94c — copy of tradeCapacity
-  int economySummarySeasonCountdown950;       // 0x950 — (100 - currentQuarter) * 10
-  int economySummaryTotal954;                 // 0x954 — sum of the 9 fields above (930..950)
-  int economySummarySeasonPercent958; // 0x958 — seasonPercentTable[g_pSimMgr->difficultyLevel]
-  int economySummaryWeightedTotal95c; // 0x95c — economySummaryTotal954 * economySummarySeasonPercent958 / 10
+  // 0x930..0x95c — the twelve rows displayed by TGameScorePicture. GenerateGameScore
+  // rebuilds the block wholesale before the score screen reads it by row index.
+  union {
+    struct {
+      int gameScoreLabor930;
+      int gameScoreTransport934;
+      int gameScoreIndustry938;
+      int gameScoreProvinces93c;
+      int gameScoreMilitary940;
+      int gameScoreNavy944;
+      int gameScoreDiplomacy948;
+      int gameScoreMerchantMarine94c;
+      int gameScoreYear950;
+      int gameScoreSubtotal954;
+      int gameScoreDifficultyPercent958;
+      int gameScoreTotal95c;
+    };
+    int gameScoreRows930[12];
+  };
   // Mac PayForMilitary writes this turn's army+navy maintenance charge here before
   // deducting it from treasury. The trade totals / remaining-budget views present the
   // same charge as an expense; the old pendingAidTotal name was misleading.
@@ -520,13 +524,14 @@ public:
   int SumNavyOrderPriorityForNation();
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
 
-  // 0x004e32a0. Rebuilds the economySummary930.. snapshot block wholesale: population
+  // Mac oracle: GenerateGameScore. Rebuilds the gameScoreRows930 snapshot wholesale:
+  // population
   // baseline, summed city building types, owned-region score (this nation plus any
   // minor nation whose encoded slot matches), militaryUnitList44 order-cost sum, navy
   // order priority, average diplomatic relation standing, trade capacity, and a
   // season-weighted countdown total. Called once per turn to refresh the cached
   // metrics consumed elsewhere (advisory scoring, UI summaries).
-  void RecomputeNationEconomyAndDiplomacySummaryMetrics(void);
+  void GenerateGameScore(void); // 0x004e32a0
 
   // Mac oracle: PayForMilitary. Computes the army and navy maintenance charge using the
   // current scenario multiplier, stores it in militaryExpenses960, and deducts it from

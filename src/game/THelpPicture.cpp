@@ -7,6 +7,7 @@
 #include "game/TSortedPtrList.h"
 #include "game/TSoundPlayer.h"
 #include "game/TStaticText.h"
+#include "game/TWindow.h"
 #include "game/global_data_tables.h"
 #include "game/ui_text_label_helpers_decls.h"
 

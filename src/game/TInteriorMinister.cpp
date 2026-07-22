@@ -27,9 +27,6 @@ void TInteriorMinister::InteriorSlot1F(int) {}
 
 IMPLEMENT_DYNCREATE(TInteriorMinister, TMinister)
 
-// FUNCTION: IMPERIALISM 0x004be1d0
-TInteriorMinister::TInteriorMinister() : TMinister() {}
-
 // SYNTHETIC: IMPERIALISM 0x004be200
 // TInteriorMinister::`scalar deleting destructor'
 
