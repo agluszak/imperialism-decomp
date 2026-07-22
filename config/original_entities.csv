@@ -94,7 +94,7 @@ address|name|symbol|size|type|prototype|provenance
 41b5f0|ClearUiResourceContext||11|function|undefined ClearUiResourceContext()|
 41b610|PopUiResourcePoolNode||115|function|undefined PopUiResourcePoolNode()|
 41b6d0|InitializeIndustryViewTradeMoveControlsAndCommodityRows||37576|function|undefined InitializeIndustryViewTradeMoveControlsAndCommodityRows()|
-426ec0|PushUiLinkedListNodeWithPayload||125|function|undefined PushUiLinkedListNodeWithPayload()|
+426ec0|CList<TView *,TView *>::AddTail|?AddTail@?$CList@PAVTView@@PAV1@@@QAEPAU__POSITION@@PAVTView@@@Z|125|function|POSITION __thiscall AddTail(TView *)|template
 426f60|GetUiLinkedListNodePayload||7|function|undefined GetUiLinkedListNodePayload()|
 426f80|NoOpRuntimeCallback_00426f80||1|function|undefined NoOpRuntimeCallback_00426f80()|
 426fa0|SetUiResourceContextFlagsAndMetrics||69|function|undefined SetUiResourceContextFlagsAndMetrics()|
@@ -435,8 +435,7 @@ address|name|symbol|size|type|prototype|provenance
 4803d0|CheckConnectivityOrShowLocalizedWarningAndReturnReady_Impl||32|function|undefined CheckConnectivityOrShowLocalizedWarningAndReturnReady_Impl()|
 480400|ResetRuntimeSelectionRecordBuffer||139|function|undefined ResetRuntimeSelectionRecordBuffer()|
 4804c0|ApplyCtrlScrollAccelerationToListStep||40|function|undefined ApplyCtrlScrollAccelerationToListStep()|
-480500|ShowRuntimeSelectionDialogAndReturnRecord||230|function|undefined ShowRuntimeSelectionDialogAndReturnRecord()|
-4805e6|CopyListBoxItemDataStructByIndex||145|function|undefined CopyListBoxItemDataStructByIndex()|
+480500|TDirectPlaySessionManagerBase::SelectRuntimeProvider||452|function|BOOL __thiscall SelectRuntimeProvider(GUID *)|
 480750|InitializeDialogTemplateBaseState||43|function|undefined InitializeDialogTemplateBaseState()|
 480790|WrapperFor_FreeHeapBufferIfNotNull_At00480aa0_Impl||104|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00480aa0_Impl()|
 480820|ReportDirectPlayAssertionStub||23|function|undefined ReportDirectPlayAssertionStub()|
@@ -3275,7 +3274,7 @@ address|name|symbol|size|type|prototype|provenance
 519010|CreateTacticalBattleViewAndInitializeBattleSetup_Impl||179|function|undefined CreateTacticalBattleViewAndInitializeBattleSetup_Impl()|
 519140|DumpAndResetMapScriptState||965|function|void __fastcall DumpAndResetMapScriptState(void * pMapState)|
 519610|TMapMgr::ChooseNationSetupProfilesForOpenSlots||604|function|void __thiscall ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot)|
-519970|WrapperFor_ftol_At00519970||30|function|undefined WrapperFor_ftol_At00519970()|
+519970|InitializeMapDialogViewportTileSpan||30|function|void InitializeMapDialogViewportTileSpan()|
 5199c0|TMapDialog::CreateObject|?CreateObject@TMapDialog@@SGPAVCObject@@XZ|226|function|undefined CreateObject()|rtti
 519af0|TWorldView::OrphanTiny_ReturnMinusOneWord_00519af0||5|function|undefined OrphanTiny_ReturnMinusOneWord_00519af0(void)|
 519b30|TMapDialog::GetRuntimeClass||6|function|undefined GetTMapDialogClassNamePointer()|rtti
@@ -4246,7 +4245,7 @@ address|name|symbol|size|type|prototype|provenance
 55d910|TNewspaperView::FormatInterNationEventRowTokensToSharedStrings||272|function|undefined FormatInterNationEventRowTokensToSharedStrings()|
 55da80|TNewspaperView::BuildLocalizedTokenListFromBitmaskWithConjunction||462|function|undefined BuildLocalizedTokenListFromBitmaskWithConjunction()|
 55dcd0|TNewspaperView::BuildLocalizedNationListFromBitmaskWithConjunction||347|function|undefined BuildLocalizedNationListFromBitmaskWithConjunction()|
-55de90|AssignLocalizedIndexedNameFromA8Entry||108|function|undefined AssignLocalizedIndexedNameFromA8Entry()|
+55de90|TNewspaperView::ProvinceParmList||108|function|void __thiscall ProvinceParmList(CString & out, int cityRecordIndex)|mac_oracle
 55df50|TNewspaperView::AppendInterNationEventSummaryTextEntry||532|function|undefined AppendInterNationEventSummaryTextEntry()|
 55e330|WrapperFor_ftol_At0055e330||30|function|undefined WrapperFor_ftol_At0055e330()|
 55e360|StepHexTileIndexByDirectionWithWrapRules||199|function|undefined StepHexTileIndexByDirectionWithWrapRules()|
@@ -4950,8 +4949,7 @@ address|name|symbol|size|type|prototype|provenance
 584e00|TToolBarCluster::GetRuntimeClass||6|function|undefined GetTToolBarClusterClassNamePointer()|rtti
 584e20|TToolBarCluster::TToolBarCluster||18|function|void __thiscall TToolBarCluster(void)|
 584e50|TToolBarCluster::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-584ea0|TToolBarCluster::DoEvent||135|function|undefined DispatchEvent10CommandTagsWithLocalizationGuards()|
-584f27|TToolBarCluster::HandleCrossUSmallViewsCommandTagDispatch||499|function|undefined HandleCrossUSmallViewsCommandTagDispatch()|
+584ea0|TToolBarCluster::DoEvent||633|function|void __thiscall DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
 5851c0|TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback||446|function|undefined UpdateMainCursorRegionAndEmitLocalizedHintIfEligible()|
 5853f0|TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls||1531|function|undefined RefreshTurnOrderStatusPanelTextsAndControls()|
 585ba0|TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext||651|function|undefined UpdateControlTagTreaTextFromNationAndMapContext()|
@@ -5190,7 +5188,7 @@ address|name|symbol|size|type|prototype|provenance
 593f20|TStatusPicture::DoPostCreate||548|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5942f0|TStatusPicture::DoEvent||450|function|undefined DestructTStatusPictureAndMaybeFree()|
 594540|TStatusPicture::Draw||463|function|undefined RenderLocalizedHeaderAndSevenLineTerrainSummary()|
-594790|Helper_Uses_SetQuickDrawFillColor_At00594790||122|function|undefined Helper_Uses_SetQuickDrawFillColor_At00594790()|
+594790|TStatusPicture::DrawBar||122|function|void __thiscall DrawBar(short rowY, short width, short nationSlot)|mac_oracle
 594900|RecomputeNationComparisonValuesAndNormalizeScale||559|function|undefined RecomputeNationComparisonValuesAndNormalizeScale()|
 594c00|TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets||225|function|undefined SortSevenEntriesAndUpdatePictureWidgets()|
 594ed0|WrapperFor_ftol_At00594ed0||30|function|undefined WrapperFor_ftol_At00594ed0()|

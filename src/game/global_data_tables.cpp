@@ -1330,10 +1330,8 @@ TCivMgr* g_pSelectedCivilianOrderState = 0;
 int g_nOceanDialogSeedViewportOffsetX = 0;
 // GLOBAL: IMPERIALISM 0x006a3ff4
 int g_nOceanDialogSeedViewportOffsetY = 0;
-// Map-dialog viewport width in tiles; TMapDialog::CenterOn
-// (0x51ac40) centers the view by backing the column up half this span. Dual-width slot:
-// 0x51adf0 loads it as a full dword while 0x51ac40 reads only the low word (movsx), so
-// it stays int and word readers cast with static_cast<short>.
+// Map-dialog viewport width in staggered tile columns. The BSS-backed value is seeded by
+// InitializeMapDialogViewportTileSpan (0x519970) before WinMain.
 // GLOBAL: IMPERIALISM 0x006a33b0
 int g_wMapDialogViewportTileSpan;
 // GLOBAL: IMPERIALISM 0x0065c2f0

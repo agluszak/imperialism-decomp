@@ -244,6 +244,13 @@ void TNewspaperView::BuildLocalizedNationListFromBitmaskWithConjunction(CString*
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0055de90
+void TNewspaperView::ProvinceParmList(CString& out, int cityRecordIndex) {
+  CString cityName;
+  g_pGlobalMapState->AssignCityRecordDisplayName(cityRecordIndex, &cityName);
+  out = cityName;
+}
+
 // FUNCTION: IMPERIALISM 0x0055df50
 int TNewspaperView::AppendInterNationEventSummaryTextEntry(int column, int y, int recordId,
                                                            int recordLength, TextStyle* style,

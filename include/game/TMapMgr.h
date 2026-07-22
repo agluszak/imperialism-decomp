@@ -727,6 +727,9 @@ public:
   StrategicTileIndex
   FindReachableRecruitSpawnTileWithVisitedReset(StrategicTileIndex startTileIndex,
                                                 char allowActiveFlag2);
+  StrategicTileIndex FindReachableRecruitSpawnTileRecursive(StrategicTileIndex tileIndex,
+                                                            short ownerNationTag,
+                                                            char allowActiveFlag2); // 0x00514cd0
   // 0x515f40. Write a city display-name CString into cityScoreTable[cityRecordIndex]+0xa4.
   void SetGlobalMapCellSharedLabel(ProvinceIndex cityRecordIndex, CString* name);
   // 0x518b40. Developer purchase cost of a tile's two edge resources (weights the trade

@@ -805,8 +805,12 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
     }
     tileIndex = tileIndex + 1;
   }
-  pixelBase = GetPixBaseAddr(surfaceObject);
-  pixelBase = pixelBase + strideBytes * 2;
+  // The original keeps two distinct pointers here: a fresh surface base for both
+  // 216x120 copies, and base+two rows for the interior smoothing pass. Reusing the
+  // latter for the copies shifts the mini-map by two rows and reads/writes beyond the
+  // 120-row surface, which shows up as stray pixels around the atlas edge.
+  unsigned char* surfaceBase = GetPixBaseAddr(surfaceObject);
+  unsigned char* smoothingBase = surfaceBase + strideBytes * 2;
   scratchBuffer = new unsigned char[0x6540];
   if (scratchBuffer == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -816,7 +820,7 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
     int copyRow = 0;
     unsigned char* scratchCursor = scratchBuffer;
     while (copyRow < 0x78) {
-      unsigned char* srcCursor = pixelBase + copyRow * strideBytes;
+      unsigned char* srcCursor = surfaceBase + copyRow * strideBytes;
       int copyCol = 0;
       while (copyCol < 0xd8) {
         *scratchCursor = srcCursor[copyCol];
@@ -831,7 +835,7 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
     // iteration); compareRow is a fresh per-row cursor reset from it -- the original
     // (pcVar9/pcVar10 at 0x0050b640) keeps these separate so the inner loop's 214
     // single-byte steps never bleed into the row stride advance.
-    char* rowStart = reinterpret_cast<char*>(pixelBase + 1);
+    char* rowStart = reinterpret_cast<char*>(smoothingBase + 1);
     char* scratchRow = reinterpret_cast<char*>(scratchBuffer + 0x1b1);
     int edgeRow = 0x70;
     while (edgeRow != 0) {
@@ -855,7 +859,10 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
         edgeCol = edgeCol - 1;
       }
       rowStart = rowStart + strideBytes;
-      scratchRow = scratchRow + 3;
+      // The inner loop already advances scratchRow by 214 bytes. The retail ADD
+      // ESI,2 at 0x50b866 completes the 216-byte row stride; adding three here
+      // shifts every following row and scatters isolated nation-color pixels.
+      scratchRow = scratchRow + 2;
       edgeRow = edgeRow - 1;
     }
   }
@@ -863,7 +870,7 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
     int copyRow = 0;
     unsigned char* scratchCursor = scratchBuffer;
     while (copyRow < 0x78) {
-      unsigned char* dstCursor = pixelBase + copyRow * strideBytes;
+      unsigned char* dstCursor = surfaceBase + copyRow * strideBytes;
       int copyCol = 0;
       while (copyCol < 0xd8) {
         dstCursor[copyCol] = scratchCursor[0];
