@@ -1747,15 +1747,15 @@ void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unuse
     if (eligible && classMask != 0) {
       TMission* nextMission = nextByClass[classMask];
       if (nextMission != nullptr &&
-          mission->importanceScore0c / mission->ReturnZeroFloatSlot6C() <
-              (nextMission->importanceScore0c / nextMission->ReturnZeroFloatSlot6C()) *
+          mission->importanceScore0c / mission->IndustrialCostOfNeeds() <
+              (nextMission->importanceScore0c / nextMission->IndustrialCostOfNeeds()) *
                   g_MissionEligibilityRatioMargin_006545f8) {
         eligible = 0;
       } else {
         availableClassMask &= ~classMask;
       }
     }
-    mission->SetFlag10FromArgSlot94(!eligible);
+    mission->Hold(!eligible);
   }
 }
 

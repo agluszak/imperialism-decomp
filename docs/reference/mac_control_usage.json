@@ -180516,6 +180516,23 @@
         "owner_class": "TNavyMgr",
         "recovered_source": "src/game/TNavyMgr.cpp"
       },
+      "0x005573f0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UNavy.cpp"
+              }
+            ],
+            "module": "UNavy.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TAdmiral::CreateForTerrainType",
+        "owner_class": "TAdmiral",
+        "recovered_source": "src/game/TAdmiral.cpp"
+      },
       "0x0055ba30": {
         "modules": [
           {
@@ -181716,6 +181733,7 @@
       },
       "UNavy.cpp": {
         "classes": [
+          "TAdmiral",
           "TNavyMgr",
           "TShip"
         ],
@@ -181725,7 +181743,8 @@
           "0x00552650",
           "0x00553bc0",
           "0x00556100",
-          "0x00556ad0"
+          "0x00556ad0",
+          "0x005573f0"
         ]
       },
       "UNewspaper.cpp": {
@@ -181887,7 +181906,7 @@
     "classes_with_source_module_evidence": 16,
     "declared_classes": 152,
     "factories_with_source_module_candidates": 9,
-    "functions_with_source_module_evidence": 108,
+    "functions_with_source_module_evidence": 109,
     "nodes": 3263,
     "screens": 121,
     "screens_with_source_module_candidates": 26,

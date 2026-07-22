@@ -136,6 +136,9 @@ public:
   // g_pNetMgr006a6014 global.
   void EmitTurnEvent3Mode18WithActiveNation(); // 0x5446a0
   void EmitTurnEvent10ForFlaggedNationSlots(); // 0x544720
+  // Close the current lounge dialog, emit the loopback event-3 tick, and notify the
+  // network manager that the dialog-mode tag changed. 0x5456a0.
+  unsigned char CloseLobbyDialogAndEmitTurnEvent3();
   // 0x54c480 — builds a turn-event-26 packet snapshotting g_pDiplomacyTurnStateManager's
   // relation/pending-policy/selection/comparative-power matrices and hands it to
   // TNetMgr::Send. Body not yet ported (separate packet-struct modeling task); called
@@ -181,7 +184,9 @@ public:
                                         int destinationSlot);
   void DispatchTaggedGameStateEvent1F20(int packetTag, int param2,
                                         int nationSlotOrMode); // 0x54a340
-  void DispatchCityRedrawInvalidateEvent(short cityId);        // 0x54abf0
+  // Event-8 lobby text packet: source slot plus the manager's player-name pair.
+  void DispatchLobbyTextPairEvent8(unsigned char sourceNationSlot); // 0x54a410
+  void DispatchCityRedrawInvalidateEvent(short cityId);             // 0x54abf0
   void DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
                                               int mode);                        // 0x54c5a0
   unsigned char ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet); // 0x545940
@@ -302,6 +307,10 @@ public:
   // Send the turn-event-0x15 diplomacy need-state snapshot for nationSlot (broadcast
   // when broadcastFlag != 0). 0x54b5d0.
   void EmitNationDiplomacyNeedStateSnapshotEvent15(char broadcastFlag, int nationSlot);
+
+  // Update one nation-status tag (resolving -1 to the active/fallback slot) and send
+  // the corresponding event-0x25 status-board delta. 0x54b7e0.
+  void SetNationStatusCodeAndEmitEvent25(int statusTag, int nationSlot);
 
   // Send the turn-event-0x19 per-nation state-array packet for nationSlot to
   // destinationSlot (sentinels as NetMessage::DestinateTo; -3 also marks the send

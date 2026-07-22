@@ -32,11 +32,11 @@ public:
 
   virtual char IsHospitalMission() const override; // slot 0x19 0x53d6f0
 
-  virtual float ReturnZeroFloatSlot78(
-      TMilitaryUnit* candidateUnit,
-      float* referenceVector) override; // slot 0x1e 0x53e500 (shared w/ TInvadeMission)
+  virtual float
+  FitnessOf(TMilitaryUnit* candidateUnit,
+            float* referenceVector) override; // slot 0x1e 0x53e500 (shared w/ TInvadeMission)
 
-  virtual char ReturnFalseSlot98() override; // slot 0x26 0x53d950
+  virtual char SmokeEmIfYouGotEm() override; // slot 0x26 0x53d950
 
   // First TAttackProvinceMission-introduced virtual (slot 0x28 / offset 0xa0).
   virtual char TryResolveTargetTerrainClass(); // 0x53db60

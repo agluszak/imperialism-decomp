@@ -730,7 +730,7 @@ void TShip::ReassignOrderNodeNationAndRebindParentCounters(short nation) {
 
   TMission* missionBackref = missionBacklink2c;
   if (missionBackref != 0 && missionBackref->nationId04 != nation) {
-    missionBackref->NoOpSlot8C(this, 1);
+    missionBackref->RejectConstituent(this, 1);
   }
 
   ownerNationSlot14 = nation;

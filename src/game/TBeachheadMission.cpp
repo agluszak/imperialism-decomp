@@ -156,7 +156,7 @@ TMission* TBeachheadMission::GetArmyMission() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053a940
-char TBeachheadMission::ReturnFalseSlot98() {
+char TBeachheadMission::SmokeEmIfYouGotEm() {
   // ClearBlockadePortMissionChildOrderLinksIfReady: clears each queued
   // order-child's owner-back-pointer, then frees the chain.
   if (marker11 == 0 && taskForce20 != nullptr) {

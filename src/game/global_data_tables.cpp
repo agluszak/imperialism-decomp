@@ -774,7 +774,7 @@ extern "C" {
 extern const float g_MissionDefaultScore_0065a468 = 0.0f;
 
 // 1.0 constant (double), used by CompareMissionOrderEntriesByPriorityScore (0x536090)
-// to compute each side's "remaining priority" as 1.0 - ReturnZeroFloatSlot68().
+// to compute each side's "remaining priority" as 1.0 - GetWeightedSatisfaction().
 // GLOBAL: IMPERIALISM 0x0065a470
 extern const double g_MissionScoreOneConstant_0065a470 = 1.0;
 
@@ -1815,6 +1815,9 @@ POINT g_ptNationComparisonModalMessage = {0, 0};
 POINT g_ptTechItemModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a3d08
 POINT g_ptNationAwolModalMessage = {0, 0};
+// Lounge host confirmation for replacing a remote nation with an AI.
+// GLOBAL: IMPERIALISM 0x006a3d98
+POINT g_ptLoungeNationReplacementModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a45c0
 POINT g_ptMapModeModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a4650

@@ -88,65 +88,65 @@ char TMission::IsHospitalMission() const {
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x00534e10
-float TMission::ReturnZeroFloatSlot68() {
+float TMission::GetWeightedSatisfaction() {
   return g_MissionDefaultScore_0065a468;
 }
 // FUNCTION: IMPERIALISM 0x00534e30
-float TMission::ReturnZeroFloatSlot6C() {
+float TMission::IndustrialCostOfNeeds() {
   return g_MissionDefaultScore_0065a468;
 }
 // FUNCTION: IMPERIALISM 0x00534e50
-float TMission::ReturnZeroFloatSlot74(void* candidate) {
+float TMission::ValueOf(TShip* candidate) {
   (void)candidate;
   return g_MissionDefaultScore_0065a468;
 }
 // FUNCTION: IMPERIALISM 0x00534e70
-float TMission::ReturnZeroFloatSlot70(TMilitaryUnit* candidateUnit) {
+float TMission::ValueOf(TMilitaryUnit* candidateUnit) {
   (void)candidateUnit;
   return g_MissionDefaultScore_0065a468;
 }
 // FUNCTION: IMPERIALISM 0x00534e90
-float TMission::ReturnZeroFloatSlot7C(void* candidate, void* targetProfile) {
+float TMission::FitnessOf(TShip* candidate, float* targetProfile) {
   (void)candidate;
   (void)targetProfile;
   return g_MissionDefaultScore_0065a468;
 }
 // FUNCTION: IMPERIALISM 0x00534eb0
-float TMission::ReturnZeroFloatSlot78(TMilitaryUnit* candidateUnit, float* referenceVector) {
+float TMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector) {
   (void)candidateUnit;
   (void)referenceVector;
   return g_MissionDefaultScore_0065a468;
 }
 // FUNCTION: IMPERIALISM 0x00534ed0
-void TMission::NoOpSlot84(void* a, int b) {
-  (void)a;
-  (void)b;
+void TMission::AcceptReenforcement(TShip* ship, unsigned char notify) {
+  (void)ship;
+  (void)notify;
 }
 // FUNCTION: IMPERIALISM 0x00534ef0
-void TMission::NoOpSlot80(TMilitaryUnit* unit, int notify) {
+void TMission::AcceptReenforcement(TMilitaryUnit* unit, unsigned char notify) {
   (void)unit;
   (void)notify;
 }
 // FUNCTION: IMPERIALISM 0x00534f10
-void TMission::NoOpSlot8C(void* a, int b) {
-  (void)a;
-  (void)b;
+void TMission::RejectConstituent(TShip* ship, unsigned char notify) {
+  (void)ship;
+  (void)notify;
 }
 // FUNCTION: IMPERIALISM 0x00534f30
-void TMission::NoOpSlot88(TMilitaryUnit* unit, int unused) {
+void TMission::RejectConstituent(TMilitaryUnit* unit, unsigned char notify) {
   (void)unit;
-  (void)unused;
+  (void)notify;
 }
 // FUNCTION: IMPERIALISM 0x00534f50
-void TMission::NoOpSlot90(void* a) {
-  (void)a;
+void TMission::ForgetTaskForce(TTaskForce* taskForce) {
+  (void)taskForce;
 }
 // FUNCTION: IMPERIALISM 0x00534f70
-void TMission::SetFlag10FromArgSlot94(unsigned char value) {
+void TMission::Hold(unsigned char value) {
   flag10 = value;
 }
 // FUNCTION: IMPERIALISM 0x00534f90
-char TMission::ReturnFalseSlot98() {
+char TMission::SmokeEmIfYouGotEm() {
   return 0;
 }
 
@@ -296,8 +296,8 @@ short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, v
     return lesserResult;
   }
 
-  float ratioA = missionA->importanceScore0c / missionA->ReturnZeroFloatSlot6C();
-  float ratioB = missionB->importanceScore0c / missionB->ReturnZeroFloatSlot6C();
+  float ratioA = missionA->importanceScore0c / missionA->IndustrialCostOfNeeds();
+  float ratioB = missionB->importanceScore0c / missionB->IndustrialCostOfNeeds();
   if (ratioA < ratioB) {
     return greaterResult;
   }
@@ -308,7 +308,7 @@ short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, v
 }
 
 // qsort-style comparator: descending order by a "remaining priority" score --
-// (1.0 - ReturnZeroFloatSlot68()) scaled by importanceScore0c (multiplied when that difference is
+// (1.0 - GetWeightedSatisfaction()) scaled by importanceScore0c (multiplied when that difference is
 // >= 0, divided when negative). AssertValid() is invoked on both sides first (the
 // inherited CObject/MFC debug-assert virtual, a no-op in release builds), matching the
 // ground truth's double-dispatch shape before the scores are read.
@@ -317,11 +317,13 @@ short __cdecl CompareMissionOrderEntriesByPriorityScore(TMission* a, TMission* b
   a->AssertValid();
   b->AssertValid();
 
-  float diffA = static_cast<float>(g_MissionScoreOneConstant_0065a470) - a->ReturnZeroFloatSlot68();
+  float diffA =
+      static_cast<float>(g_MissionScoreOneConstant_0065a470) - a->GetWeightedSatisfaction();
   float weightedA = (diffA >= g_MissionDefaultScore_0065a468) ? diffA * a->importanceScore0c
                                                               : diffA / a->importanceScore0c;
 
-  float diffB = static_cast<float>(g_MissionScoreOneConstant_0065a470) - b->ReturnZeroFloatSlot68();
+  float diffB =
+      static_cast<float>(g_MissionScoreOneConstant_0065a470) - b->GetWeightedSatisfaction();
   float weightedB = (diffB >= g_MissionDefaultScore_0065a468) ? diffB * b->importanceScore0c
                                                               : diffB / b->importanceScore0c;
 

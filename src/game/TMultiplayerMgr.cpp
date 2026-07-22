@@ -33,6 +33,16 @@ struct LobbyChatEvent9Packet : TimelyMessageHeader {
   char messageText[0x23]; // +0x41 (total 0x64)
 };
 
+// Event-8 lobby text pair: the selected/source nation byte followed by the two
+// 32-character player-name fields copied from this manager.
+struct LobbyTextPairEvent8Packet : TimelyMessageHeader {
+  unsigned char sourceNationSlot18;
+  char playerName19[0x21];
+  char playerNameMirror3A[0x22];
+};
+
+ASSERT_SIZE(LobbyTextPairEvent8Packet, 0x5c);
+
 // Case-0x31 payload of SerializeOrderDataIntoTurnEventByTag: a {tag, object} pair whose
 // 'star'-tagged object carries a sub-tag plus two shorts on the 'land' route. Minimal
 // typed view until the real order class is recovered.
@@ -864,6 +874,24 @@ unsigned char TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5() {
   ResetNationStatusArraysAndTurnEventContext();
   g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5e5);
   queueSyncDword = 0;
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x005456a0
+unsigned char TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3() {
+  lobbyDialogView40 = 0;
+
+  TurnEvent3Mode18Packet packet;
+  packet.packetTag = 0x74696d65; // 'time'
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.eventCode = 0;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = 0;
+  packet.messageLength = 0;
+  packet.messageLength = 0x18;
+  packet.eventCode = 3;
+  g_pNetMgr006a6014->Send(&packet, 1);
+  g_pNetMgr006a6014->NoOpDialogModeTagChangedHook(0);
   return 1;
 }
 
@@ -2574,6 +2602,24 @@ void TMultiplayerMgr::DispatchTaggedGameStateEvent1F20(int packetTag, int param2
   g_pNetMgr006a6014->Send(&packet, nationSlotOrMode == -3 ? 1 : 0);
 }
 
+// FUNCTION: IMPERIALISM 0x0054a410
+void TMultiplayerMgr::DispatchLobbyTextPairEvent8(unsigned char sourceNationSlot) {
+  LobbyTextPairEvent8Packet packet;
+  packet.messageTag = 0x74696d65; // 'time'
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.eventCode = 0;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = 0;
+  packet.eventCode = 8;
+  packet.messageLength = 0;
+  packet.messageLength = 0x5c;
+  packet.toNetworkId = -1;
+  packet.sourceNationSlot18 = sourceNationSlot;
+  strcpy(packet.playerName19, static_cast<LPCSTR>(playerNameString));
+  strcpy(packet.playerNameMirror3A, static_cast<LPCSTR>(playerNameMirror));
+  g_pNetMgr006a6014->Send(&packet, 0);
+}
+
 #pragma pack(push, 1)
 struct CityRedrawInvalidateTurnEventPacket : NetMessage {
   int packetTag;
@@ -2871,6 +2917,33 @@ void TMultiplayerMgr::EmitNationDiplomacyNeedStateSnapshotEvent15(char broadcast
   packet.escalationCounter = nation->escalationCounter;
   packet.pendingCommitmentCost = nation->pendingCommitmentCost;
   packet.pressureCounter = nation->pressureCounter;
+  g_pNetMgr006a6014->Send(&packet, 0);
+}
+
+// FUNCTION: IMPERIALISM 0x0054b7e0
+void TMultiplayerMgr::SetNationStatusCodeAndEmitEvent25(int statusTag, int nationSlot) {
+  if (nationSlot == -1) {
+    nationSlot = g_pSimMgr->GetActiveNationId();
+    if (nationSlot == -1) {
+      nationSlot = static_cast<signed char>(activeNationTagIndex);
+    }
+  }
+  nationStatusTags[nationSlot] = statusTag;
+
+  NationStatusEvent25Packet packet;
+  packet.messageTag = 0x74696d65; // 'time'
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.eventCode = 0;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = 0;
+  packet.eventCode = 0x25;
+  packet.messageLength = 0;
+  packet.messageLength = 0x34;
+  for (int slot = 0; slot < kNationSlotCount; ++slot) {
+    packet.statusTags[slot] = 0x756e6b6e; // 'unkn'
+  }
+  packet.toNetworkId = 0;
+  packet.statusTags[nationSlot] = statusTag;
   g_pNetMgr006a6014->Send(&packet, 0);
 }
 

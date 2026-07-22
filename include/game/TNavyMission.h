@@ -38,22 +38,23 @@ public:
   virtual char IsNavyMission() const override;       // slot 0x54 0x5354e0
   virtual TMission* GetArmyMission() override;       // slot 0x58 0x535520 -- returns null
   virtual TMission* GetNavyMission() override;       // slot 0x5c 0x535540 -- returns this
-  virtual float ReturnZeroFloatSlot68() override;    // slot 0x68 0x537f40
+  virtual float GetWeightedSatisfaction() override;  // slot 0x68 0x537f40
   virtual float
-  ReturnZeroFloatSlot6C() override; // slot 0x6c 0x5378c0 -- dot product with baseline profile
-  virtual float ReturnZeroFloatSlot74(
-      void* candidate) override; // slot 0x74 0x537270 -- match delta vs candidate navy order
-  virtual float ReturnZeroFloatSlot7C(
-      void* candidate,
-      void* targetProfile) override; // slot 0x7c 0x537610 -- order penalty vs target profile
-  virtual void
-  NoOpSlot84(void* a,
-             int b) override; // slot 0x84 0x536780 -- attach order child as queued and notify
-  virtual void
-  NoOpSlot8C(void* a,
-             int b) override; // slot 0x8c 0x5367d0 -- detach order child, clear primary if match
-  virtual void NoOpSlot90(void* a) override; // slot 0x90 0x536810 -- clear secondary order if match
-  virtual char ReturnFalseSlot98()
+  IndustrialCostOfNeeds() override; // slot 0x6c 0x5378c0 -- dot product with baseline profile
+  virtual float
+  ValueOf(TShip* candidate) override; // slot 0x74 0x537270 -- match delta vs candidate navy order
+  virtual float
+  FitnessOf(TShip* candidate,
+            float* targetProfile) override; // slot 0x7c 0x537610 -- order penalty vs target profile
+  virtual void AcceptReenforcement(
+      TShip* ship,
+      unsigned char notify) override; // slot 0x84 0x536780 -- attach order child and notify
+  virtual void RejectConstituent(
+      TShip* ship,
+      unsigned char notify) override; // slot 0x8c 0x5367d0 -- detach and clear primary
+  virtual void ForgetTaskForce(
+      TTaskForce* taskForce) override; // slot 0x90 0x536810 -- clear secondary order if match
+  virtual char SmokeEmIfYouGotEm()
       override; // slot 0x98 0x536740 -- clears queued order links/owner pointers, returns true
 
   // TNavyMission-introduced virtuals (TMission abstract slots 0x27+ / offset 0x9c+).
