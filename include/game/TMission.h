@@ -53,7 +53,9 @@ public:
 
   // --- MFC CObject prefix slots 0x00-0x04 ---
   DECLARE_SERIAL(TMission)
-  virtual ~TMission() override; // 0x01 dtor 0x535080 / ??_G 0x535050
+  // Inline so every mission subclass reproduces the original direct CObject teardown.
+  // FUNCTION: IMPERIALISM 0x00535080
+  virtual ~TMission() override {}
   // 0x02 Serialize / 0x03 AssertValid / 0x04 Dump inherited from CObject.
 
   // --- TMission's own virtuals, exact vtable slot order ---

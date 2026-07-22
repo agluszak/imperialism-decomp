@@ -48,10 +48,6 @@ char TControlSeaZoneMission::IsDefensiveSeaZoneMission() const {
   return 0;
 }
 
-// Inherited unchanged by TBeachheadMission (real base class relationship).
-// FUNCTION: IMPERIALISM 0x00535620
-TControlSeaZoneMission::~TControlSeaZoneMission() {}
-
 // FUNCTION: IMPERIALISM 0x005387f0
 void TControlSeaZoneMission::Initialize() {
   float score = static_cast<float>(targetZone14->ComputeMapActionContextNodeValueAverage());
