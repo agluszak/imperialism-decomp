@@ -107,7 +107,7 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
       SeaSegment tmp;
       tmp.InitFromPoints(quad[bestPrimary], quad[i]);
       stretch<SeaSegment, SeaSegmentTag>* out = &seg;
-      out->GetOrAppendUnique(tmp);
+      out->Add(tmp);
       Seapoint* pi = quad[i];
       pi->coord00 = -1;
       pi->hi08 = -1;

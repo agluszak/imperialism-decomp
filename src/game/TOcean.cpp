@@ -751,8 +751,8 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
       }
     }
     if (!alreadyLinked) {
-      portZone->primaryNeighbors.GetOrAppendUnique(linkedContext);
-      linkedContext->primaryNeighbors.GetOrAppendUnique(portZone);
+      portZone->primaryNeighbors.Add(linkedContext);
+      linkedContext->primaryNeighbors.Add(portZone);
     }
   }
 

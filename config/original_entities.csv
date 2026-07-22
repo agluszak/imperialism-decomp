@@ -145,8 +145,8 @@ address|name|symbol|size|type|prototype|provenance
 430690|WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl||115|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl()|
 430730|WrapperFor_FreeHeapBufferIfNotNull_At00430730||12|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00430730()|
 430750|WrapperFor_FreeHeapBlockWithAllocatorTracking_At00430750||50|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At00430750()|
-4307a0|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0||109|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004307a0()|
-430830|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830||124|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830()|
+4307a0|StrategicMapOpcodeByteStretch::Add||109|function|unsigned char * __thiscall Add(unsigned char value)|
+430830|StrategicMapCursorStretch::Add||124|function|int * __thiscall Add(int value)|
 4308d0|ConstructPictureResourceEntry_Vtbl006404b0||27|function|undefined ConstructPictureResourceEntry_Vtbl006404b0()|
 430900|TMapKey::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 430950|ConstructUiColorTextResourceEntry||102|function|undefined ConstructUiColorTextResourceEntry()|
@@ -2252,10 +2252,10 @@ address|name|symbol|size|type|prototype|provenance
 4d4b90|OrphanLeaf_NoCall_Ins15_004d4b90||48|function|undefined OrphanLeaf_NoCall_Ins15_004d4b90()|
 4d4bd0|DiscardTileTokenArgumentAndReturn||3|function|undefined DiscardTileTokenArgumentAndReturn()|
 4d4bf0|StrategicMapCallbackRecord::AppendPackedColorDword||382|function|undefined AppendPackedColorDwordToMaskBuffers()|
-4d4dd0|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4dd0||80|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4dd0()|
-4d4e40|StrategicMapCallbackRecord::EnsureOpcodeBufferByteAtIndex||102|function|unsigned char * __thiscall EnsureOpcodeBufferByteAtIndex(int index)|
-4d4ed0|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4ed0||94|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4ed0()|
-4d4f50|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4f50||117|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4f50()|
+4d4dd0|StrategicMapOpcodeByteStretch::OverStretch||80|function|void __thiscall OverStretch(unsigned int requestedCount)|
+4d4e40|StrategicMapOpcodeByteStretch::operator[]||102|function|unsigned char * __thiscall operator[](unsigned int index)|
+4d4ed0|StrategicMapCursorStretch::OverStretch||94|function|void __thiscall OverStretch(unsigned int requestedCount)|
+4d4f50|StrategicMapCursorStretch::operator[]||117|function|int * __thiscall operator[](unsigned int index)|
 4d4ff0|StrategicMapCallbackRecord::ApplyBitmapMaskToPixelBuffer||123|function|void __thiscall ApplyBitmapMaskToPixelBuffer(unsigned char * destinationPixels)|
 4d5090|StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows||996|function|void __thiscall BuildBitmapMaskOpcodeBufferFromResourceRows(int resourceId, short width, short height, int destinationRowStride, unsigned char transparentPixel)|
 4d5580|StrategicMapCallbackRecord::AppendOpcodeByte||110|function|void __thiscall AppendOpcodeByte(int value)|
@@ -3422,7 +3422,7 @@ address|name|symbol|size|type|prototype|provenance
 52a670|GetCityRegionIdAtTileIndex||45|function|undefined GetCityRegionIdAtTileIndex()|
 52a6e0|WrapExtendedMapXCoordinateInPlace||48|function|undefined WrapExtendedMapXCoordinateInPlace()|
 52a720|WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052a720||41|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052a720()|
-52a760|SeaSegmentStretch::GetOrAppendUnique||132|function|undefined AppendSixDwordsToDynamicRecordArray()|
+52a760|SeaSegmentStretch::Add||132|function|undefined AppendSixDwordsToDynamicRecordArray()|
 52a820|WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052a820||29|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052a820()|
 52ab00|RecomputeOverlaySegmentEndpointsAndAngle||242|function|undefined RecomputeOverlaySegmentEndpointsAndAngle()|
 52b1e0|InitializeOverlaySpanRecordSorted||42|function|undefined InitializeOverlaySpanRecordSorted()|
@@ -3435,7 +3435,7 @@ address|name|symbol|size|type|prototype|provenance
 52c000|SelectSpanEndpointXByThreshold||18|function|undefined SelectSpanEndpointXByThreshold()|
 52c030|GetOverlaySpanRecordByIndex||28|function|undefined GetOverlaySpanRecordByIndex()|
 52c060|WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060||41|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060()|
-52c0a0|SeapointStretch::GetOrAppendUnique||147|function|undefined AppendOverlayQuadRecord()|
+52c0a0|SeapointStretch::Add||147|function|undefined AppendOverlayQuadRecord()|
 52c170|WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052c170||29|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052c170()|
 52c1a0|BuildCityRegionBorderOverlaySegments||1602|function|undefined BuildCityRegionBorderOverlaySegments()|
 52c990|ConvertTileIndexToOverlayCoord216BySide||77|function|undefined ConvertTileIndexToOverlayCoord216BySide()|
@@ -4260,10 +4260,10 @@ address|name|symbol|size|type|prototype|provenance
 55e880|TZone::ReturnFalseForZoneCapabilityFlagD||5|function|undefined ReturnFalseForZoneCapabilityFlagD()|
 55e8a0|TZone::ReturnFalseForZoneCapabilityFlagE||5|function|undefined ReturnFalseForZoneCapabilityFlagE()|
 55e8c0|TZone::HasZoneActiveChildCount||12|function|undefined HasZoneActiveChildCount()|
-55e8e0|TZonePrimaryNeighborStretch::GetOrAppendUnique||167|function|TZone** __thiscall GetOrAppendUnique(TZone* zone)|
-55e9c0|TZoneSecondaryNeighborStretch::GetOrAppendUnique||167|function|Province** __thiscall GetOrAppendUnique(Province* entry)|
-55ead0|TZonePrimaryNeighborStretch::Add||124|function|void __thiscall Add(TZone* zone)|
-55eba0|TZoneSecondaryNeighborStretch::Add||124|function|void __thiscall Add(Province* entry)|
+55e8e0|TZonePrimaryNeighborStretch::Add||167|function|TZone** __thiscall Add(TZone* zone)|
+55e9c0|TZoneSecondaryNeighborStretch::Add||167|function|Province** __thiscall Add(Province* entry)|
+55ead0|TZonePrimaryNeighborStretch::Append||124|function|void __thiscall Append(TZone* zone)|
+55eba0|TZoneSecondaryNeighborStretch::Append||124|function|void __thiscall Append(Province* entry)|
 55ec60|TZone::Free||65|function|undefined RemoveZoneFromGlobalListAndRelease()|
 55ed20|TZone::ReadFrom||564|function|undefined DeserializeZoneFromBinaryStream()|
 55eff0|TZone::WriteTo||88|function|undefined SerializeZoneToBinaryStream()|

@@ -17,7 +17,7 @@
 // The Ghidra extractor over-extended TMapMaker's vtable to swallow those two adjacent
 // tables, which is why 0x0052a760/0x0052c0a0 were previously mis-attributed as
 // TMapMaker::SetEnabled/SetState. They are in fact the by-value append virtual (the single
-// vtable slot, modelled here as GetOrAppendUnique to match the stretch<T> template).
+// vtable slot, modelled here as Add to match the stretch<T> template).
 
 struct SeapointTag;
 struct SeaSegmentTag;
@@ -73,7 +73,7 @@ IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 class SeapointStretch : public stretch<Seapoint, SeapointTag> {
 public:
   // The single vtable slot: append `value` at the end, growing on demand. 0x0052c0a0.
-  Seapoint* GetOrAppendUnique(Seapoint value) override;
+  Seapoint* Add(Seapoint value) override;
   // Non-virtual helpers (paired by address marker, called on the concrete type).
   void OverStretch(unsigned int newCount);  // 0x0052d0d0
   Seapoint* operator[](unsigned int index); // 0x0052d150
@@ -84,7 +84,7 @@ public:
 class SeaSegmentStretch : public stretch<SeaSegment, SeaSegmentTag> {
 public:
   // The single vtable slot: append `value` at the end, growing on demand. 0x0052a760.
-  SeaSegment* GetOrAppendUnique(SeaSegment value) override;
+  SeaSegment* Add(SeaSegment value) override;
   // Non-virtual helpers (paired by address marker, called on the concrete type).
   void OverStretch(unsigned int newCount);    // 0x0052b3e0
   SeaSegment* operator[](unsigned int index); // 0x0052b460

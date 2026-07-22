@@ -154,7 +154,7 @@ bool TZone::HasZoneActiveChildCount(int unused) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055e8e0
-TZone** TZonePrimaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
+TZone** TZonePrimaryNeighborStretch::Add(TZone* zone) {
   int count = Count();
   for (int index = 0; index < count; ++index) {
     if (Data()[index] == zone) {
@@ -183,7 +183,7 @@ TZone** TZonePrimaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055e9c0
-Province** TZoneSecondaryNeighborStretch::GetOrAppendUnique(Province* entry) {
+Province** TZoneSecondaryNeighborStretch::Add(Province* entry) {
   int count = Count();
   for (int index = 0; index < count; ++index) {
     if (Data()[index] == entry) {
@@ -212,7 +212,7 @@ Province** TZoneSecondaryNeighborStretch::GetOrAppendUnique(Province* entry) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055ead0
-void TZonePrimaryNeighborStretch::Add(TZone* zone) {
+void TZonePrimaryNeighborStretch::Append(TZone* zone) {
   int index = Count();
   if (index >= Capacity()) {
     unsigned int doubledCapacity = static_cast<unsigned int>((index + 1) * 2);
@@ -235,7 +235,7 @@ void TZonePrimaryNeighborStretch::Add(TZone* zone) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055eba0
-void TZoneSecondaryNeighborStretch::Add(Province* entry) {
+void TZoneSecondaryNeighborStretch::Append(Province* entry) {
   int index = Count();
   if (index >= Capacity()) {
     unsigned int doubledCapacity = static_cast<unsigned int>((index + 1) * 2);
@@ -409,7 +409,7 @@ int TZone::ComputeMapActionContextNodeValueAverage() {
 
 // FUNCTION: IMPERIALISM 0x0055f300
 void TZone::AppendUniquePrimaryNeighbor(TZone* zone) {
-  primaryNeighbors.GetOrAppendUnique(zone);
+  primaryNeighbors.Add(zone);
 }
 
 // FUNCTION: IMPERIALISM 0x0055f440
@@ -1190,8 +1190,8 @@ void TZone::ResolvePortZoneOwnerContextAndDispatch() {
   short tileIndex = FindNearestActiveSeaContextTileFromOffset216();
   short ownerNation = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
   TZone* contextElement = &g_pActiveMapOrderContext->contextArray[ownerNation - 0x17];
-  primaryNeighbors.GetOrAppendUnique(contextElement);
-  contextElement->primaryNeighbors.GetOrAppendUnique(this);
+  primaryNeighbors.Add(contextElement);
+  contextElement->primaryNeighbors.Add(this);
 }
 
 // FUNCTION: IMPERIALISM 0x00561b90
@@ -1363,7 +1363,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
               } while (j < static_cast<unsigned int>(context->secondaryNeighbors.Count()));
             }
             if (match == 0) {
-              context->secondaryNeighbors.GetOrAppendUnique(cityRecord);
+              context->secondaryNeighbors.Add(cityRecord);
             }
           }
         }
@@ -1406,8 +1406,8 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
         short tileIdx = static_cast<short>(zone->tileOrTerrainId0c);
         short ownerNation = g_pGlobalMapState->terrainStateTable[tileIdx].ownerNationTag04;
         TZone* contextElement = &g_pActiveMapOrderContext->contextArray[ownerNation - 0x17];
-        zone->primaryNeighbors.GetOrAppendUnique(contextElement);
-        contextElement->primaryNeighbors.GetOrAppendUnique(zone);
+        zone->primaryNeighbors.Add(contextElement);
+        contextElement->primaryNeighbors.Add(zone);
       }
     } else if (zone != 0) {
       for (int direction = 0; direction < 6; ++direction) {
@@ -1422,7 +1422,7 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
         if (neighborRecord.cityRecordIndex != -1) {
           Province* candidate = &g_pGlobalMapState->cityScoreTable[neighborRecord.cityRecordIndex];
           if (!zone->secondaryNeighbors.ContainsEntry(candidate)) {
-            zone->secondaryNeighbors.GetOrAppendUnique(candidate);
+            zone->secondaryNeighbors.Add(candidate);
           }
           continue;
         }
@@ -1449,7 +1449,7 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
         if (candidateContext != 0 && candidateContext != zone &&
             !candidateContext->QueryPortZoneCapability() &&
             !zone->primaryNeighbors.ContainsEntry(candidateContext)) {
-          zone->primaryNeighbors.GetOrAppendUnique(candidateContext);
+          zone->primaryNeighbors.Add(candidateContext);
         }
       }
     }

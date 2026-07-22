@@ -80,26 +80,25 @@ void StrategicMapCallbackRecord::AppendPackedColorDword(unsigned char* destinati
                                                         int packedColor) {
   const unsigned int packed = (packedColor & 0xff) * 0x01010101u;
 
-  if (cursorBufferSize24 == 0) {
-    ownedBuffer20 = new int[1];
-    cursorBufferSize24 = 1;
+  if (packedColorCursor1c.Capacity() == 0) {
+    packedColorCursor1c.OverStretch(1);
   }
-  if (cursorBufferInitialized28 == 0) {
-    cursorBufferInitialized28 = 1;
+  if (packedColorCursor1c.Count() == 0) {
+    packedColorCursor1c.Count() = 1;
   }
-  const int cursor = ownedBuffer20[0];
-  *EnsureOpcodeBufferByteAtIndex(cursor) = static_cast<unsigned char>(packed);
-  *EnsureOpcodeBufferByteAtIndex(cursor + 1) = static_cast<unsigned char>(packed >> 8);
-  *EnsureOpcodeBufferByteAtIndex(cursor + 2) = static_cast<unsigned char>(packed >> 16);
-  *EnsureOpcodeBufferByteAtIndex(cursor + 3) = static_cast<unsigned char>(packed >> 24);
+  const int cursor = packedColorCursor1c.Data()[0];
+  opcodeBytes00[cursor] = static_cast<unsigned char>(packed);
+  opcodeBytes00[cursor + 1] = static_cast<unsigned char>(packed >> 8);
+  opcodeBytes00[cursor + 2] = static_cast<unsigned char>(packed >> 16);
+  opcodeBytes00[cursor + 3] = static_cast<unsigned char>(packed >> 24);
 
-  EnsureOpcodeBufferByteAtIndex(alignmentCursor14);
+  opcodeBytes00[opcodeAlignmentOffset14];
   ApplyPackedColorToPixelBuffer(destinationPixels);
 }
 
 void StrategicMapCallbackRecord::ApplyPackedColorToPixelBuffer(unsigned char* destinationPixels) {
-  unsigned char* instruction = ownedBuffer04 + alignmentCursor14;
-  unsigned char* end = ownedBuffer04 + committedLength0c;
+  unsigned char* instruction = opcodeBytes00.Data() + opcodeAlignmentOffset14;
+  unsigned char* end = opcodeBytes00.Data() + opcodeBytes00.Count();
   unsigned char* destinationBase = destinationPixels;
   unsigned int packedColor = 0;
 
@@ -376,10 +375,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
         labelRect->top = labelY;
         labelRect->right = labelX + textWidth;
         labelRect->bottom = labelY + 0xc;
-        // This explicit union arm is scratch rectangle storage before any opcode data has
-        // been written to the record in this session.
-        ClampRectWithinBoundsPreservingSize(labelRect,
-                                            &packedColorRuns[nationIndex].scratchBounds08);
+        ClampRectWithinBoundsPreservingSize(labelRect, &mapViewportRect514);
         int markerX = (static_cast<short>(nation->homeTileIndex) % 0x6c) * 5;
         int markerY = (static_cast<short>(nation->homeTileIndex) / 0x6c + 9) * 5;
         RECT* anchorRect = &nationAnchorRects3A4[nationIndex];
