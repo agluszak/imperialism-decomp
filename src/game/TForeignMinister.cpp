@@ -60,8 +60,8 @@ TForeignMinister::TForeignMinister() : TMinister() {
   memset(developmentGrantByNation50, 0, sizeof(developmentGrantByNation50));
   capabilityFlag16 = 0;
   field48 = 0;
-  field1a = 5;
-  field1c = 2;
+  tradeBidRefreshInterval1a = 5;
+  interiorOrderKind1c = 2;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0052f0e0
@@ -89,8 +89,8 @@ void TForeignMinister::ReadFrom(TStream* stream) {
   stream->ReadBytes(&capabilityFlag14, 2);
   stream->ReadBytes(&capabilityFlag16, 2);
   stream->ReadBytes(&diplomacyPhaseCounter18, 2);
-  stream->ReadBytes(&field1a, 2);
-  stream->ReadBytes(&field1c, 2);
+  stream->ReadBytes(&tradeBidRefreshInterval1a, 2);
+  stream->ReadBytes(&interiorOrderKind1c, 2);
   stream->ReadBytes(purchasePriorityByResource1e, sizeof(purchasePriorityByResource1e));
   SwapShortArrayBytes(purchasePriorityByResource1e, 0x11);
   stream->ReadBytes(preferredResourceSlots40, sizeof(preferredResourceSlots40));
@@ -112,8 +112,8 @@ void TForeignMinister::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&capabilityFlag14, 2);
   stream->WriteBytesSlot78(&capabilityFlag16, 2);
   stream->WriteBytesSlot78(&diplomacyPhaseCounter18, 2);
-  stream->WriteBytesSlot78(&field1a, 2);
-  stream->WriteBytesSlot78(&field1c, 2);
+  stream->WriteBytesSlot78(&tradeBidRefreshInterval1a, 2);
+  stream->WriteBytesSlot78(&interiorOrderKind1c, 2);
   WriteShortArrayElems(stream, purchasePriorityByResource1e, 0x11);
   WriteShortArrayElems(stream, preferredResourceSlots40, 4);
   stream->WriteBytesSlot78(&field48, 1);
@@ -272,7 +272,7 @@ void TForeignMinister::SetTradeBids() {
   this->InitializeTradeStatus();
   TGreatPower* owner = this->ownerContextAt04;
   int skipMissionSlot1A = 0;
-  if (diplomacyPhaseCounter18 < field1a) {
+  if (diplomacyPhaseCounter18 < tradeBidRefreshInterval1a) {
     if (this->WeNeedMoney() == 0) {
       skipMissionSlot1A = 1;
     }

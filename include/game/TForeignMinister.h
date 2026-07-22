@@ -63,8 +63,8 @@ public:
   short capabilityFlag14;                   // +0x14
   short capabilityFlag16;                   // +0x16
   short diplomacyPhaseCounter18;            // +0x18 — reset after SetTradeBids
-  short field1a;                            // +0x1a — ctor seeds 5 (0x52f070)
-  short field1c;                            // +0x1c — ctor seeds 2 (0x52f070)
+  short tradeBidRefreshInterval1a;          // +0x1a — turns before forced trade-bid refresh
+  short interiorOrderKind1c;                // +0x1c — passed to TInteriorMinister slot 0x1a
   short purchasePriorityByResource1e[0x11]; // +0x1e..0x3f — per-resource demand
   short preferredResourceSlots40[4];        // +0x40..0x47 — top four resource codes
 
