@@ -1,6 +1,7 @@
 #include "game/TNetMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TGreatPower.h"
 #include "game/TRadioTextCluster.h"
 
@@ -36,6 +37,12 @@ void TNetMgr::StartMultiplayerSupport() {}
 // FUNCTION: IMPERIALISM 0x005e3470
 void TNetMgr::Free() {
   delete this;
+}
+
+// FUNCTION: IMPERIALISM 0x005e3490
+unsigned char TNetMgr::DefaultUnhandledTurnEventHookReturnsFalse(TurnEventQueuePacket* packet) {
+  (void)packet;
+  return 0;
 }
 
 static const char kDirectPlayErrorTitle[] = "DirectPlay Error";
@@ -394,8 +401,70 @@ void TNetMgr::ResetTurnEventQueueRuntimeRecordBuffer() {
   g_NetworkSessionManager006a5f60.ResetRuntimeSelectionRecordBuffer();
 }
 
+// FUNCTION: IMPERIALISM 0x005e3f10
+void TNetMgr::FreeTurnEventPacketBuffer(TurnEventQueuePacket* packet) {
+  GlobalFree(packet);
+}
+
+// Pull a locally queued packet first; otherwise receive from DirectPlay, consuming
+// system notifications internally until an application packet is available.
+// FUNCTION: IMPERIALISM 0x005e3f30
+TurnEventQueuePacket* TNetMgr::PopNextTurnEventPacketOrProcessSpecialQueueRecords() {
+  if (g_NetworkSessionManager006a5f60.directPlayInterface04 == 0) {
+    return 0;
+  }
+  if (!g_WNetPendingPacketList006a5f40.IsEmpty()) {
+    return static_cast<TurnEventQueuePacket*>(g_WNetPendingPacketList006a5f40.RemoveHead());
+  }
+
+  for (;;) {
+    DWORD fromId = 0;
+    DWORD toId;
+    void* packetBuffer = 0;
+    int received = g_NetworkSessionManager006a5f60.TryReceiveNetworkPacketIntoResizableBuffer(
+        &fromId, &toId, &packetBuffer);
+    TurnEventQueuePacket* packet = static_cast<TurnEventQueuePacket*>(packetBuffer);
+    if (received == 0 && g_NetworkSessionManager006a5f60.lastErrorCode0c != DPERR_NOMESSAGES) {
+      HandleError(g_NetworkSessionManager006a5f60.lastErrorCode0c);
+      return packet;
+    }
+    if (packet == 0 || fromId != 0) {
+      if (packet != 0) {
+        packet->fromNetworkId = fromId;
+        packet->toNetworkId = toId;
+      }
+      return packet;
+    }
+
+    switch (packet->eventCode) {
+    case 3:
+    case 7:
+    case 0x21:
+    case 0x102:
+    case 0x103:
+      break;
+    case 5:
+      if (packet->fromNetworkId == 1) {
+        g_pGameFlowState->SetNationStatusAwolByNationIdAndDispatchNotices(packet->toNetworkId);
+      }
+      break;
+    case 0x31:
+    case 0x101:
+      g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2759, 6, 0, 0);
+      g_pGameFlowState->HandleActiveNationAwolTransitionOrRecovery();
+      break;
+    default:
+      if (g_suppressUnexpectedDirectPlaySystemMessageAssert006a6020 == 0) {
+        TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\WNetMgr.cpp", 0x2f6);
+      }
+      break;
+    }
+    GlobalFree(packet);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x005e4280
-int GetSessionActiveNationId() {
+int TNetMgr::GetSessionActiveNationId() {
   return g_NetworkSessionManager006a5f60.localPlayerId60;
 }
 
@@ -411,6 +480,18 @@ void TNetMgr::NotifyIfNationMatchesSessionActiveNation(int nationId) {
   if (nationId == g_NetworkSessionManager006a5f60.localPlayerId60) {
     g_NetworkSessionManager006a5f60.DestroyPlayerAndStoreResult(nationId);
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005e42f0
+unsigned char TNetMgr::CheckConnectivityOrShowLocalizedWarningAndReturnReady() {
+  if (g_pSimMgr->multiplayerSessionRole == 2 &&
+      g_NetworkSessionManager006a5f60.OpenCurrentSessionDescriptionForJoin() != 0) {
+    return 1;
+  }
+  CString message;
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2742, 0x19);
+  g_pUiRuntimeContext->ModalMessage(message, g_ptNetworkModalMessage006a5ed8, 0, 0);
+  return 0;
 }
 
 // Event-0x2b reachability probe header: two per-nation bytes reuse the +0x18 area.

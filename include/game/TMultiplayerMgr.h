@@ -7,6 +7,7 @@
 class TStream;
 class TTacticalUnit;
 struct NetMessage;
+struct TurnEventQueuePacket;
 
 // 0xa8-byte nation-status snapshot record with a trailing shared-text CString at +0xa4,
 // used as a stack local by the diplomacy turn-event packet handler (0x543910); it is also
@@ -89,17 +90,17 @@ public:
   char processPrimaryEventQueue;          // +0x68
   char processSecondaryEventQueue;        // +0x69
   unsigned char pad6a[2];
-  int primaryTurnEventQueueHead;                    // +0x6c
-  int secondaryTurnEventQueueHead;                  // +0x70
-  CString gameNameString;                           // +0x74
-  CString defaultNationTextSlots[kNationSlotCount]; // +0x78
-  CString nationDisplayNameSlots[kNationSlotCount]; // +0x94
-  CString playerNameString;                         // +0xb0
-  CString playerNameMirror;                         // +0xb4
-  CString fieldb8;                                  // +0xb8
-  int nationStatusTags[kNationSlotCount];           // +0xbc — four-cc tags ('suna', 'lwoa', …)
-  int sessionPhaseTag;                              // +0xd8 — four-cc phase tag ('adam', 'init', …)
-  unsigned char activeNationTagIndex;               // +0xdc
+  TurnEventQueuePacket* primaryTurnEventQueueHead;   // +0x6c
+  TurnEventQueuePacket* secondaryTurnEventQueueHead; // +0x70
+  CString gameNameString;                            // +0x74
+  CString defaultNationTextSlots[kNationSlotCount];  // +0x78
+  CString nationDisplayNameSlots[kNationSlotCount];  // +0x94
+  CString playerNameString;                          // +0xb0
+  CString playerNameMirror;                          // +0xb4
+  CString fieldb8;                                   // +0xb8
+  int nationStatusTags[kNationSlotCount];            // +0xbc — four-cc tags ('suna', 'lwoa', …)
+  int sessionPhaseTag;                // +0xd8 — four-cc phase tag ('adam', 'init', …)
+  unsigned char activeNationTagIndex; // +0xdc
   unsigned char padDd[3];
   int scenarioSelectionTag;       // +0xe0 — four-cc from the code-0xe session-init packet
                                   // ('load', 'rand', 'scn0'..'szz9')
@@ -143,7 +144,7 @@ public:
   void EmitTurnEvent26DiplomacyMatrixSnapshot();
   // Appends a queue node (next pointer at node+0x10) to the tail of
   // primaryTurnEventQueueHead. 0x549280.
-  void AppendNodeToTurnEventLinkedListAt6C(int node);
+  void AppendNodeToTurnEventLinkedListAt6C(TurnEventQueuePacket* node);
   // 0x5430c0 — enable both diplomacy queue-processing flags and set the routing context.
   void EnableDiplomacyQueueRoutingAndSetContextField44(void* nContext, char fEnable);
   // 0x54b4c0, RET 0x10 (4 stack args). Builds and sends a LobbyChatEvent9Packet: reasonCode
@@ -165,6 +166,9 @@ public:
   void CreateAndSendTurnEvent12_TwoShorts(short shortA, short shortB); // 0x5494b0
   void CreateAndSendTurnEvent13_NationAndNineDwords(int nationSlot,
                                                     int* payloadDwords); // 0x549540
+  void CreateAndSendTurnEvent1B_FiveShortsAndDword(short shortA, short shortB, short shortC,
+                                                   short shortD, short shortE,
+                                                   int trailingValue); // 0x5498d0
   void CreateAndSendTurnEvent1C_BoolAndSixShorts(bool broadcastFlag, short shortA, short shortB,
                                                  short shortC, short shortD, short shortE,
                                                  short shortF);                      // 0x5499b0
@@ -183,7 +187,9 @@ public:
                                         int nationSlotOrMode); // 0x54a340
   // Event-8 lobby text packet: source slot plus the manager's player-name pair.
   void DispatchLobbyTextPairEvent8(unsigned char sourceNationSlot); // 0x54a410
-  void DispatchCityRedrawInvalidateEvent(short cityId);             // 0x54abf0
+  void CreateAndSendTurnEvent0C_Text256AndTwoFlags(CString* text, unsigned char firstFlag,
+                                                   unsigned char secondFlag); // 0x54aa10
+  void DispatchCityRedrawInvalidateEvent(short cityId);                       // 0x54abf0
   void DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
                                               int mode);                        // 0x54c5a0
   unsigned char ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet); // 0x545940
@@ -242,8 +248,13 @@ public:
                                  int arg4); // 0x54c680
   void EmitTacticalFireCommandPacket(int commandTag, TTacticalUnit* attackerUnit,
                                      TTacticalUnit* targetUnit, int damageA, int damageB,
-                                     int effectCode); // 0x54c6a0
-  void ResetNationStatusArraysAndTurnEventContext();  // 0x54c6e0
+                                     int effectCode);         // 0x54c6a0
+  void ResetNationStatusArraysAndTurnEventContext();          // 0x54c6e0
+  unsigned char HandleActiveNationAwolTransitionOrRecovery(); // 0x54c800
+  void CreateAndQueueTurnEventPacketTagPOGC();                // 0x54cde0
+  void CreateAndSendTurnEvent2D_TableRowShortArray(short nationSlot,
+                                                   int destinationSlot); // 0x54d3d0
+  void RouteAndProcessDiplomacyTurnStateEventQueue();                    // 0x545730
 
   // Unlike the emitters above, `this` IS used here: called as
   // g_pGameFlowState->EnsureGameFlowStateAndPostTurnEvent5E5() where g_pGameFlowState may

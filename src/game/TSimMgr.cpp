@@ -93,7 +93,7 @@ CString& __stdcall GetProfileStringFromSettingsSection(CString* result, LPCTSTR 
 
 // FUNCTION: IMPERIALISM 0x00549240
 int __cdecl TouchSessionActiveNationId(void) {
-  return GetSessionActiveNationId();
+  return g_pNetMgr006a6014->GetSessionActiveNationId();
 }
 
 // FUNCTION: IMPERIALISM 0x005621b0

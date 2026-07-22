@@ -26957,6 +26957,18 @@
         }
       ],
       "source_file": "src/game/TLowDiskWarningDialog.cpp"
+    },
+    "0x005e42f0": {
+      "references": [
+        {
+          "group": 10050,
+          "index": 25,
+          "kind": "windows_gob",
+          "load_string_id": 21985,
+          "text": "I am afraid we've lost our connection to the game."
+        }
+      ],
+      "source_file": "src/game/TNetMgr.cpp"
     }
   },
   "mac_strings": [
@@ -190867,7 +190879,7 @@
   "summary": {
     "embedded_globals": 770,
     "formula_matches": 2356,
-    "functions_with_references": 309,
+    "functions_with_references": 310,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3272,
     "text_resources": 182,
