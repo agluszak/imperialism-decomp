@@ -6,6 +6,7 @@
 #include "game/TSimMgr.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 // FUNCTION: IMPERIALISM 0x0056d5c0
 CString BuildSharedStringFromMappedFlavorTextIndex(short variantIndex) {
@@ -251,6 +252,26 @@ void SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* dest, short tab
   CString localizedName;
   g_pSimMgr->GetString(0x2715, tableSlot, &localizedName);
   *dest = localizedName;
+}
+
+// FUNCTION: IMPERIALISM 0x005d4550
+void __cdecl AssignNextProvinceNameForNationSlot(CString* dest, short nationSlot) {
+  if (nationSlot == -1) {
+    memset(g_anProvinceNameOrdinalByNationSlot_006a5af0, 0,
+           sizeof(g_anProvinceNameOrdinalByNationSlot_006a5af0));
+    return;
+  }
+
+  if (g_pSimMgr->useLocalizedNameTables68 != '\0') {
+    CString provinceName;
+    short ordinal = ++g_anProvinceNameOrdinalByNationSlot_006a5af0[nationSlot];
+    g_pSimMgr->GetString(static_cast<short>(nationSlot + 8000), ordinal, &provinceName);
+    *dest = provinceName;
+    return;
+  }
+
+  GenerateMappedFlavorTextUntilValidationPasses(
+      dest, g_MappedFlavorTextNationVariantTable_0066EF30[nationSlot].variantIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x005d46b0

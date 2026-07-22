@@ -73,6 +73,9 @@ TInvadeMission::TInvadeMission(short targetProvince, TZone* beachheadZone)
 // SYNTHETIC: IMPERIALISM 0x0053f3c0
 // TInvadeMission::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x0053f3f0
+TInvadeMission::~TInvadeMission() {}
+
 TInvadeMission::TInvadeMission() : TAttackProvinceMission(), beachhead34(nullptr) {}
 
 // FUNCTION: IMPERIALISM 0x0053f410

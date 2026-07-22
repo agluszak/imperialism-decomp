@@ -13,6 +13,7 @@ public:
 
   TAttackProvinceMission();
   TAttackProvinceMission(short targetProvince, short amassingProvince);
+  virtual ~TAttackProvinceMission() override;
 
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x53d810
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x53d850

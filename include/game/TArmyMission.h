@@ -17,6 +17,7 @@ public:
 
   TArmyMission();
   TArmyMission(int nodeKey);
+  virtual ~TArmyMission() override;
 
   virtual void WriteTo(TStream* stream) override;  // slot 0x05
   virtual void ReadFrom(TStream* stream) override; // slot 0x06

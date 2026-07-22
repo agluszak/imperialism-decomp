@@ -18,6 +18,7 @@ public:
 
   TInvadeMission();
   TInvadeMission(short targetProvince, TZone* beachheadZone);
+  virtual ~TInvadeMission() override;
 
   // Mac: CalculatePriority(). Sums the current army cost, derives remaining
   // city-development resource demand, and returns the larger pressure score.
