@@ -2250,6 +2250,11 @@ int g_mapActionContextDisplayNameCacheStep_006984bc = 7;
 // Empty content: reccmp pairs by the // GLOBAL address marker, not by value. ===
 // GLOBAL: IMPERIALISM 0x00695794
 char s_szSpaceSeparator_00695794[] = " ";
+// Newline separator used by TNavyMgr's map-order interaction report builder. The
+// original symbol's eight-byte comparison extent includes two alignment NULs and the
+// first four bytes of the adjacent pooled "TBattleUnits" class-name literal.
+// GLOBAL: IMPERIALISM 0x00695880
+extern "C" const char s_szLineBreak_00695880[8] = {'\n', 0, 0, 0, 'T', 'B', 'a', 't'};
 // Separator used by TViewMgr::ShowUnitHistory to build "Turn N: count message".
 // The original symbol's eight-byte comparison extent includes the aligned NUL and
 // the first four bytes of the adjacent pooled "Losses\n" literal.

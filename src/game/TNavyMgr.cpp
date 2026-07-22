@@ -56,6 +56,22 @@ static inline void CopyCStringIntoFixedBuffer(char* dest, int destSize, const ch
   }
 }
 
+static inline void AppendCStringIntoFixedBuffer(char* dest, int destSize, const char* src) {
+  int offset = 0;
+  while (offset < destSize && dest[offset] != '\0') {
+    ++offset;
+  }
+  while (offset < destSize) {
+    char c = src[0];
+    dest[offset] = c;
+    if (c == '\0') {
+      break;
+    }
+    ++offset;
+    ++src;
+  }
+}
+
 // Sum, over childOrderList entries whose resource-type priorityTier is >= minTier, of
 // (child->field30/100 + resolveWeight*10 + 5)/10 -- the per-child "combat power"
 // term ResolveMapOrderPairConflictStep's tier-scoring loop accumulates as a float.
@@ -165,7 +181,7 @@ PruneMapOrderConflictHeadAndTail(TMapOrderChildLinkNode* head) {
 // FUNCTION: IMPERIALISM 0x0054f110
 void BuildMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
                                      TTaskForce* entry) {
-  snapshot->requiredCountByte[side] = static_cast<char>(entry->required_count);
+  snapshot->nationIds[side] = static_cast<unsigned char>(entry->required_count);
 
   CString terrainLabel;
   g_apTerrainTypeDescriptorTable[entry->required_count]->FormatOverlayTerrainLabelText(
@@ -202,7 +218,7 @@ void BuildMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
     rec.resourceType = child->resourceType04;
     rec.stockOrRequired = child->stockLevel1c;
     CopyCStringIntoFixedBuffer(rec.nameBuffer, 0x20, static_cast<LPCSTR>(child->displayName18));
-    rec.childPtr = child;
+    rec.detailIdentity.sourceObject = child;
     rec.strengthBucket = static_cast<short>(child->field30 / 100);
     ++idx;
   }
@@ -214,7 +230,7 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
   short count = snapshot->childCount[side];
   for (int i = 0; i < count; ++i) {
     MapOrderBattleSideChildRecord& rec = snapshot->childRecords[side][i];
-    TShip* child = reinterpret_cast<TShip*>(rec.childPtr);
+    TShip* child = static_cast<TShip*>(rec.detailIdentity.sourceObject);
     bool stillPresent = entry != nullptr && entry->childOrderList->FindNodeMatching(
                                                 reinterpret_cast<TTaskForce*>(child)) != nullptr;
     if (stillPresent) {
@@ -223,15 +239,15 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
     } else {
       rec.stockOrRequired = 0;
     }
-    // Sentinel/debug marker written unconditionally each pass, matching the original's
-    // own literal write (ASCII bytes "yvan", real meaning not recovered).
-    rec.childPtr = reinterpret_cast<void*>(0x6e617679);
+    // Finalize the working pointer slot into the report-row category consumed by
+    // TBatRepDetLine::InstallViews.
+    rec.detailIdentity.categoryTag = 0x6e617679; // 'navy'
   }
 
   if (entry != nullptr && entry->attachment == 5) {
     int cityIndex = GetCityIndexFromCityStatePointer(entry->owner.asCityTarget);
     g_pMapContextActionManager->TrimExcessNavyOrderSupportAndRebuildOrderBuffer(
-        snapshot->requiredCountByte[side], cityIndex, snapshot);
+        snapshot->nationIds[side], cityIndex, snapshot);
   }
 }
 
@@ -1103,14 +1119,6 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
 
 // FUNCTION: IMPERIALISM 0x00558960
 void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
-  // Query skeleton (fully ported): iterate the 7 playable nations that have a live
-  // city, then each nation's 17 tracked map-order interaction slots, reading every
-  // queued entry via TGreatPower's tracked-slot virtuals. `slot` is passed to
-  // GetTrackedSlotEntryCountLow (slot 0x6d) and, with the 1-based ordinal, to
-  // ReadTrackedSlotEntryFields (slot 0x6f), which unpacks the entry's
-  // {kind, value, targetNation, payload} tuple. Confirmed against the disassembly:
-  // count call PUSHes the slot index, the field-read PUSHes (slot, ordinal, &kind,
-  // &value, &targetNation, &payload).
   for (short nation = 0; nation <= 6; ++nation) {
     if (g_apTerrainTypeDescriptorTable[nation] == nullptr) {
       continue;
@@ -1133,78 +1141,263 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
           continue;
         }
 
-        // `entryKind` carries the exchange direction (1 = order offered by this
-        // nation, 0 = order offered to it); `entryPayload` is the offered order
-        // entry, `entryValue` the transferred amount.
-        short orderMode = entryKind;
-        short offerNation = (orderMode != 1) ? entryTargetNation : nation;
-        short acceptNation = (orderMode != 1) ? nation : entryTargetNation;
-        TTaskForce* orderEntry = reinterpret_cast<TTaskForce*>(entryPayload);
+        short offerNation = (entryKind == 1) ? nation : entryTargetNation;
+        short acceptNation = (entryKind == 1) ? entryTargetNation : nation;
 
-        // Resolve the port-zone context and filter interactions the map-order context
-        // deems ineligible (order-score comparison + diplomacy relation gate).
-        TZone* portZoneContext = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nation);
-        TMapOrderInteractionSelection eligibilityResult = {0};
+        short contextNation = (mode == 1) ? nation : entryTargetNation;
+        TZone* portZoneContext =
+            g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(contextNation);
+        TMapOrderInteractionSelection selection;
         char eligible = SelectEligibleMapOrderInteractionForNationAndContext(
-            &eligibilityResult, reinterpret_cast<int>(portZoneContext), nation, entryValue);
+            &selection, reinterpret_cast<int>(portZoneContext), nation, entryValue);
         if (eligible == 0) {
           continue;
         }
 
-        // Build the localized order-exchange event message: the transferred commodity
-        // label spliced into the base template (GetString group 0x273c) expanded
-        // through g_pSimMgr's bracket-expression helper.
-        CString commodityLabel;
-        FormatLocalizedCommodityCountLabelByIndex(&commodityLabel, entryTargetNation, entryValue);
-        CString exchangeMessage;
-        g_pSimMgr->GetString(0x273c, 0, &exchangeMessage);
-        scanBracketExpressions(g_pSimMgr, &exchangeMessage, static_cast<LPCSTR>(commodityLabel));
+        MapOrderBattleSnapshot snapshot;
+        snapshot.childCount[0] = 0;
+        snapshot.childCount[1] = 0;
+        snapshot.childRecords[0] = nullptr;
+        snapshot.childRecords[1] = nullptr;
+        snapshot.nationIds[0] = static_cast<unsigned char>(selection.offerNationCode);
+        snapshot.nationIds[1] = static_cast<unsigned char>(nation);
+        snapshot.participantIndex02 = 0;
+        snapshot.reservedByte03 = 0;
+        snapshot.actionType04 = 2;
+        snapshot.targetContext08.object = selection.selectedEntry->contextAnchor;
 
-        // `mode` runs two complementary passes: pass 1 handles offered orders,
-        // pass 2 handles accepted ones. Only the pass matching this entry's
-        // direction applies its exchange outcome.
-        bool isOfferPass = (mode == 1) && (orderMode == 1);
-        bool isAcceptPass = (mode == 2) && (orderMode == 0);
-        if (!isOfferPass && !isAcceptPass) {
+        CString labelScratch;
+        g_apTerrainTypeDescriptorTable[selection.offerNationCode]->FormatOverlayTerrainLabelText(
+            &labelScratch);
+        CopyCStringIntoFixedBuffer(snapshot.nameBuffer[0].data, 0x20,
+                                   static_cast<LPCSTR>(labelScratch));
+
+        g_apTerrainTypeDescriptorTable[nation]->FormatOverlayTerrainLabelText(&labelScratch);
+        CopyCStringIntoFixedBuffer(snapshot.nameBuffer[1].data, 0x20,
+                                   static_cast<LPCSTR>(labelScratch));
+
+        selection.selectedEntry->BuildTaskForceSelectionOverlayLabelText(&labelScratch);
+        CopyCStringIntoFixedBuffer(snapshot.overlayLabel[0].data, 0xff,
+                                   static_cast<LPCSTR>(labelScratch));
+
+        g_apTerrainTypeDescriptorTable[entryTargetNation]->FormatOverlayTerrainLabelText(
+            &labelScratch);
+        CString entryValueText;
+        entryValueText.Format(g_szDecimalFormat, static_cast<int>(entryValue));
+        CString commodityName;
+        g_pSimMgr->GetStringPrelude(slot, &commodityName);
+        CString interactionTemplate;
+        g_pSimMgr->GetString(0x273c, 0, &interactionTemplate);
+        CString interactionText;
+        scanBracketExpressions(
+            g_pSimMgr, &interactionText, static_cast<LPCSTR>(interactionTemplate),
+            static_cast<LPCSTR>(entryValueText), static_cast<LPCSTR>(commodityName),
+            static_cast<LPCSTR>(labelScratch));
+        CopyCStringIntoFixedBuffer(snapshot.overlayLabel[1].data, 0xff,
+                                   static_cast<LPCSTR>(interactionText));
+
+        char modeIsOffer = (mode == 1);
+        char matchesOfferPass = modeIsOffer && entryKind == 1;
+        char matchesAcceptPass = mode == 2 && entryKind == 0;
+        char passMismatch = !matchesOfferPass && !matchesAcceptPass;
+        char movedTrackedCounter = 0;
+
+        unsigned int directionFlags = selection.directionFlags;
+        if ((directionFlags & 3) == 0 && matchesAcceptPass) {
           continue;
         }
 
-        // Draw a randomized transferred resource count within the order's weight
-        // budget from the offering nation's city resource counters.
-        short drawnCounts[0x0e] = {0};
-        int transferredCount =
-            city->AllocateRandomResourceCountsWithinWeightBudget(entryValue, drawnCounts);
+        short transferredWeight = 0;
+        int strengthDelta = entryValue;
+        if ((directionFlags & 3) != 0) {
+          short drawnCounts[0x0e] = {0};
+          transferredWeight = static_cast<short>(
+              city->AllocateRandomResourceCountsWithinWeightBudget(entryValue, drawnCounts));
+          if (transferredWeight != 0) {
+            strengthDelta = static_cast<int>(transferredWeight) * 3 + entryValue;
 
-        // Apply the exchange to the offered order entry's children: bump the active
-        // child's tiebreak stat and each child's strength, both capped at 499
-        // (the same AdjustMapOrderNodeStatCapped499 pattern the conflict resolver uses).
-        if (orderEntry != nullptr) {
-          if (orderEntry->activeChildEntry != nullptr) {
-            orderEntry->activeChildEntry->field30 =
-                static_cast<short>(orderEntry->activeChildEntry->field30 + transferredCount);
-            if (orderEntry->activeChildEntry->field30 > 499) {
-              orderEntry->activeChildEntry->field30 = 499;
+            if (passMismatch) {
+              if (offerNation < 7) {
+                g_apNationStates[offerNation]->AddShortDeltaToNationCounterAtOffset198(
+                    slot, static_cast<short>(-transferredWeight));
+              }
+              movedTrackedCounter = 1;
             }
-          }
-          int childCount = CountMapOrderChildren(orderEntry->childOrderList);
-          if (childCount > 0) {
-            for (TMapOrderChildLinkNode* node = orderEntry->childOrderList; node != nullptr;
-                 node = node->next) {
-              static_cast<TShip*>(node->payload)->field30 =
-                  static_cast<short>(static_cast<TShip*>(node->payload)->field30 +
-                                     (transferredCount * 3) / childCount);
-              if (static_cast<TShip*>(node->payload)->field30 > 499) {
-                static_cast<TShip*>(node->payload)->field30 = 499;
+
+            short detailCount = static_cast<short>(transferredWeight + 1);
+            if (passMismatch && (directionFlags & 2) != 0) {
+              detailCount = static_cast<short>(detailCount + 1);
+            }
+            snapshot.childCount[1] = detailCount;
+            snapshot.childRecords[1] = new MapOrderBattleSideChildRecord[detailCount];
+            for (int detailIndex = 0; detailIndex < detailCount; ++detailIndex) {
+              snapshot.childRecords[1][detailIndex].nameBuffer[0] = 0;
+            }
+
+            CString resourceList;
+            int reportIndex = 1;
+            for (int resourceType = 0; resourceType < 0x0e; ++resourceType) {
+              short resourceCount = drawnCounts[resourceType];
+              if (resourceCount == 0) {
+                continue;
+              }
+              if (resourceList != g_szEmptyString) {
+                resourceList += g_szListSeparator_00695760;
+              }
+              CString resourceLabel;
+              FormatLocalizedCommodityCountLabelByIndex(
+                  &resourceLabel, static_cast<unsigned int>(resourceType), resourceCount);
+              resourceList += resourceLabel;
+
+              for (int unit = 0; unit < resourceCount; ++unit) {
+                MapOrderBattleSideChildRecord& detail = snapshot.childRecords[1][reportIndex];
+                detail.resourceType = static_cast<short>(resourceType);
+                detail.stockOrRequired = static_cast<short>((directionFlags >> 1) & 1);
+                detail.detailIdentity.categoryTag = 0x6d657263; // 'merc'
+                ++reportIndex;
+              }
+            }
+
+            CString resourceActionText;
+            g_pSimMgr->GetString(0x273c, static_cast<short>(2 - ((directionFlags >> 1) & 1)),
+                                 &resourceActionText);
+            CString resourceSummary = s_szLineBreak_00695880 + resourceActionText +
+                                      s_szSpaceSeparator_00695794 + resourceList;
+            AppendCStringIntoFixedBuffer(snapshot.overlayLabel[1].data, 0xff,
+                                         static_cast<LPCSTR>(resourceSummary));
+
+            if ((directionFlags & 2) != 0) {
+              if (passMismatch) {
+                CString transferredText;
+                transferredText.Format(g_szDecimalFormat, static_cast<int>(transferredWeight));
+                CString transferredCommodityName;
+                g_pSimMgr->GetStringPrelude(slot, &transferredCommodityName);
+                CString transferredActionText;
+                g_pSimMgr->GetString(0x273c, 3, &transferredActionText);
+                CString transferredSummary = s_szLineBreak_00695880 + transferredActionText +
+                                             s_szSpaceSeparator_00695794 + transferredText +
+                                             s_szSpaceSeparator_00695794 + transferredCommodityName;
+                AppendCStringIntoFixedBuffer(snapshot.overlayLabel[1].data, 0xff,
+                                             static_cast<LPCSTR>(transferredSummary));
+
+                MapOrderBattleSideChildRecord& item = snapshot.childRecords[1][reportIndex];
+                item.resourceType = slot;
+                item.stockOrRequired = transferredWeight;
+                item.detailIdentity.categoryTag = 0x6974656d; // 'item'
+              }
+
+              for (int resourceType2 = 0; resourceType2 < 0x0e; ++resourceType2) {
+                if (drawnCounts[resourceType2] != 0) {
+                  g_apNationStates[selection.offerNationCode]
+                      ->city->orderCountByType5c[resourceType2] =
+                      static_cast<short>(g_apNationStates[selection.offerNationCode]
+                                             ->city->orderCountByType5c[resourceType2] +
+                                         drawnCounts[resourceType2]);
+                }
+              }
+              if (passMismatch) {
+                g_apNationStates[selection.offerNationCode]
+                    ->AddShortDeltaToNationCounterAtOffset198(slot, transferredWeight);
               }
             }
           }
         }
 
-        // Credit the accepting nation's per-source order-transfer counter with the
-        // transferred amount (offered nation is the source index).
-        if (offerNation < 7 && acceptNation < 7 && g_apNationStates[acceptNation] != nullptr) {
-          g_apNationStates[acceptNation]->AddShortDeltaToNationCounterAtOffset198(
-              offerNation, static_cast<short>(transferredCount));
+        if (snapshot.childCount[1] < 1) {
+          snapshot.childCount[1] = 1;
+          snapshot.childRecords[1] = new MapOrderBattleSideChildRecord[1];
+          snapshot.childRecords[1][0].nameBuffer[0] = 0;
+        }
+
+        MapOrderBattleSideChildRecord& interaction = snapshot.childRecords[1][0];
+        interaction.resourceType = slot;
+        interaction.stockOrRequired = entryValue;
+        interaction.strengthBucket = entryTargetNation;
+        interaction.detailIdentity.categoryTag = 0x72757074; // 'rupt'
+
+        int selectedChildCount = CountMapOrderChildren(selection.selectedEntry->childOrderList);
+        if (selection.selectedEntry->activeChildEntry != nullptr &&
+            selection.selectedEntry->activeChildEntry->admiralBacklink20 != nullptr) {
+          TAdmiral* admiral = selection.selectedEntry->activeChildEntry->admiralBacklink20;
+          admiral->experiencePoints = static_cast<short>(admiral->experiencePoints + strengthDelta);
+          if (admiral->experiencePoints >= 500) {
+            admiral->experiencePoints = 499;
+          }
+        }
+        if (selectedChildCount > 0) {
+          short childStrengthDelta = static_cast<short>((strengthDelta * 3) / selectedChildCount);
+          for (TMapOrderChildLinkNode* childNode = selection.selectedEntry->childOrderList;
+               childNode != nullptr; childNode = childNode->next) {
+            TShip* ship = static_cast<TShip*>(childNode->payload);
+            ship->field30 = static_cast<short>(ship->field30 + childStrengthDelta);
+            if (ship->field30 >= 500) {
+              ship->field30 = 499;
+            }
+          }
+        }
+
+        if (passMismatch && !movedTrackedCounter) {
+          modeIsOffer = 1;
+          matchesOfferPass = 1;
+        }
+
+        snapshot.childCount[0] =
+            static_cast<short>(CountMapOrderChildren(selection.selectedEntry->childOrderList));
+        if (snapshot.childCount[0] > 0) {
+          snapshot.childRecords[0] = new MapOrderBattleSideChildRecord[snapshot.childCount[0]];
+          for (int childIndex = 0; childIndex < snapshot.childCount[0]; ++childIndex) {
+            snapshot.childRecords[0][childIndex].nameBuffer[0] = 0;
+          }
+        }
+        int selectedChildIndex = 0;
+        for (TMapOrderChildLinkNode* selectedNode = selection.selectedEntry->childOrderList;
+             selectedNode != nullptr; selectedNode = selectedNode->next) {
+          TShip* selectedShip = static_cast<TShip*>(selectedNode->payload);
+          MapOrderBattleSideChildRecord& detail = snapshot.childRecords[0][selectedChildIndex];
+          detail.resourceType = selectedShip->resourceType04;
+          detail.stockOrRequired = selectedShip->stockLevel1c;
+          CopyCStringIntoFixedBuffer(detail.nameBuffer, 0x20,
+                                     static_cast<LPCSTR>(selectedShip->displayName18));
+          detail.strengthBucket = static_cast<short>(selectedShip->field30 / 100);
+          detail.detailIdentity.categoryTag = 0x6e617679; // 'navy'
+          ++selectedChildIndex;
+        }
+
+        g_pMapContextActionManager->AppendMapContextActionRecordAndResetWorkingFields(&snapshot, 0);
+
+        if (modeIsOffer) {
+          int treasuryDelta = static_cast<int>(entryValue) * entryPayload;
+          g_apTerrainTypeDescriptorTable[acceptNation]->AddToTreasury(-treasuryDelta);
+          g_apTerrainTypeDescriptorTable[offerNation]->AddToTreasury(treasuryDelta);
+          if (offerNation < 7) {
+            g_apNationStates[offerNation]->budgetPoolDelta -= treasuryDelta;
+          }
+          if (acceptNation < 7) {
+            g_apNationStates[acceptNation]->budgetPoolBase -= treasuryDelta;
+          }
+        }
+
+        if (matchesOfferPass && acceptNation < 7) {
+          g_apNationStates[acceptNation]->AddShortDeltaToNationCounterAtOffset198(slot, entryValue);
+        }
+
+        if (acceptNation < 7) {
+          if (movedTrackedCounter) {
+            g_apNationStates[acceptNation]->AssignPayloadToTrackedSlotEntryMatchingField2(
+                slot, offerNation, -123456);
+          } else if (matchesOfferPass) {
+            g_apNationStates[acceptNation]->AssignPayloadToTrackedSlotEntryMatchingField2(
+                slot, offerNation, -123457);
+          }
+        }
+        if (offerNation < 7) {
+          if (movedTrackedCounter) {
+            g_apNationStates[offerNation]->AssignPayloadToTrackedSlotEntryMatchingField2(
+                slot, acceptNation, -123456);
+          } else if (matchesOfferPass) {
+            g_apNationStates[offerNation]->AssignPayloadToTrackedSlotEntryMatchingField2(
+                slot, acceptNation, -123459);
+          }
         }
       }
     }
