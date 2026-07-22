@@ -94,7 +94,7 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
         g_pDisplayMgr->activeDialog->ResolveControlByTag(0x444c4f47 /* 'DLOG' */));
     battleView->AssertValid();
     battleView8 = battleView;
-    battleView->ConstructTTacArmyViewBaseState(compositionClass, this);
+    battleView->InitializeBattlefieldView(compositionClass, this);
   }
 }
 

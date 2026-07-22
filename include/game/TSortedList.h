@@ -89,8 +89,6 @@ public:
 
   CPtrList listState; // +0x04
 
-  void ConstructTSortedListBaseState(int blockSize);
-
   // Defined inline (like the original): construction sites inline the TObject-vtbl +
   // CPtrList(10) sequence (e.g. 0x4a18f0); the binary also carries a COMDAT copy at
   // 0x4a8640 that two call sites invoke non-inlined.

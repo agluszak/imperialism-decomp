@@ -11,5 +11,3 @@ public:
   DECLARE_DYNCREATE(TStatusButton)
   void DoEvent(int selectedIndex, TEventHandler* sourceHandler, TEvent* event) override;
 };
-
-TStatusButton* __cdecl CreateTStatusButtonInstance(void);

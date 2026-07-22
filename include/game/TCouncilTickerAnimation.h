@@ -13,9 +13,9 @@ public:
   virtual void Tick() override;                // slot 0x0a 0x49ffe0
 
   // Initializes the inherited TAnimation fields directly (inline duplicate of
-  // TAnimation::ConstructTAnimationBaseState's pattern, not a call to it): owner view,
+  // TAnimation::InitializeAnimation's pattern, not a call to it): owner view,
   // zeroed frame/tag state, the tick interval, and a zeroed screen rect.
-  void ConstructTCouncilTickerAnimationBaseState(TCouncilView* hostPanel, int tickInterval);
+  void InitializeCouncilTicker(TCouncilView* hostPanel, int tickInterval);
 
   TCouncilTickerAnimation();
 };

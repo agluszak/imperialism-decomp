@@ -21,7 +21,7 @@ public:
 
   // Layout past TControl (0x84): allocation size 0x94 (`new` at 0x573d15). The three
   // words at 0x88..0x8c are the bounded-value triple seeded by
-  // ConstructTScrollBarViewBaseState / the slot-0x37 hook (18 / height-36 / 18) and
+  // InitializeScrollBar / the slot-0x37 hook (18 / height-36 / 18) and
   // clamped by TScrollView::SyncBoundedValueAndToggleControlStates
   // (word8c = min(word88, word8a)).
   // 0x84 — cached ownerContext (both builders store it + AssertValid). Always the
@@ -46,8 +46,7 @@ public:
   // the bounded-value words, allocate the 8-bit surface for the full frame rect, and
   // build the 'scup'/'scdn' TPictureButton pair (18x18, bitmaps 0xbbb/0xbbc),
   // disabled+pressed by default.
-  void ConstructTScrollBarViewBaseState(class TScrollView* panel, int* offsetLayout,
-                                        int* sizeLayout);
+  void InitializeScrollBar(class TScrollView* panel, int* offsetLayout, int* sizeLayout);
 
   // 0x005740a0 — RAII-scoped map QuickDraw context around a PrepareForDrawing() + viewport rect
   // rebuild (Draw): rect = {0, word88, frameWidth34, word8a + 0x12}.

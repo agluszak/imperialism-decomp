@@ -181185,7 +181185,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TTacArmyView::ConstructTTacArmyViewBaseState",
+        "name": "TTacArmyView::InitializeBattlefieldView",
         "owner_class": "TTacArmyView",
         "recovered_source": "src/game/TTacArmyView.cpp"
       },

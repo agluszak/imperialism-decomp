@@ -9,9 +9,7 @@
 IMPLEMENT_DYNCREATE(TTaskList, TList)
 
 // FUNCTION: IMPERIALISM 0x005aeb90
-TTaskList::TTaskList() : TList() {
-  ConstructTSortedListBaseState(10);
-}
+TTaskList::TTaskList() : TList() {}
 
 // SYNTHETIC: IMPERIALISM 0x005aec00
 // TTaskList::`scalar deleting destructor'

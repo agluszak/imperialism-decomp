@@ -30,8 +30,8 @@ public:
 
   // MacApp second-phase init (0x4ab970): frames the control, binds the civ unit,
   // and assembles unitText88 from the unit's UnitOrder state.
-  void ConstructTMiniCivViewBaseState(TView* panel, int* offsetLayout, int* sizeLayout,
-                                      TCivUnit* civUnit);
+  void InitializeForCivilianUnit(TView* panel, int* offsetLayout, int* sizeLayout,
+                                 TCivUnit* civUnit);
 };
 
 ASSERT_SIZE(TMiniCivView, 0x8c);
