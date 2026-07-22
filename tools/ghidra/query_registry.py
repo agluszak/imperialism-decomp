@@ -24,6 +24,7 @@ from tools.ghidra import (
     jumptable,
     linear_disasm,
     listing_one,
+    original_module_map,
     raw_disasm,
     read_data,
     search_whole_binary,
@@ -35,6 +36,7 @@ from tools.ghidra import (
 
 COMMANDS: dict[str, Callable] = {
     "listing": listing_one.run,
+    "original-modules": original_module_map.run,
     "portprep": portprep.run,
     "xrefs": xrefs_to.run,
     "search": search_whole_binary.run,

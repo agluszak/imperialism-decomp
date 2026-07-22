@@ -583,6 +583,19 @@ ghidra-daemon-status:
 ghidra-listing *args: _require-ghidra-install
   uv run python -m tools.ghidra.query listing {{args}}
 
+# Recovers the retail binary's original .cpp module segmentation from embedded
+# assert-path strings (see tools/ghidra/original_module_map.py). Regenerate the
+# committed map with:  just original-module-map > docs/reference/original_module_map.csv
+[doc('Original module (source-file) segmentation of the retail binary')]
+[group('ghidra-inspect')]
+original-module-map *args: _require-ghidra-install
+  uv run python -m tools.ghidra.query original-modules {{args}}
+
+[doc('Assign src/game files to subsystems via the original module map')]
+[group('analysis')]
+assign-subsystems *args:
+  uv run python -m tools.analysis.assign_subsystems {{args}}
+
 # Read-only vtable evidence dump: resolve each slot of one or more vtables to its real
 # body (ILT thunks chased) as JSON on stdout — target address, Ghidra name, size,
 # listing signature, optional decompile. Inspection only; never writes source/symbols.

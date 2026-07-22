@@ -137,3 +137,5 @@ module|tools.class_field_coverage|just:class-field-coverage|Semantic field-quali
 module|tools.ghidra.no_rtti_class_audit|just:no-rtti-class-audit|Cross-check no_rtti class records against original-binary evidence (operator new, ctor/dtor offsets)
 module|tools.ghidra.signature_evidence_union|just:signature-evidence-union|Merge in_stack/divergent/packed signature queues + structural/datatype audits into one address-keyed view
 module|tools.ghidra.weak_pointer_type_inventory|just:weak-pointer-type-inventory|Classify every remaining weak (opaque_pointee/generic_pointer_fallback/unresolved) source-signature pointee type
+module|tools.ghidra.original_module_map|registry:original-modules|Original .cpp module segmentation from assert-path strings (just original-module-map)
+module|tools.analysis.assign_subsystems|just:assign-subsystems|Join module map with source markers -> per-file subsystem assignment
