@@ -33,7 +33,8 @@ public:
   void ReadFrom(TStream* stream) override;
   void Free() override;
 
-  // slot 0x0a — body 0x004b3b40 (528B, unported).
+  // slot 0x0a — body 0x004b3b40: settle city production, restock order sheets,
+  // refresh population production state, and publish the resulting UI state.
   virtual void EndCityPhase();
   // slot 0x0b — body 0x004b3de0: refresh the low-stock/low-summary flags and push
   // city stock counters to the owner (TGreatPower slot 0x3f).
@@ -50,7 +51,8 @@ public:
   // E0/E2. MSVC500 emits overloaded virtuals in reverse declaration order — short*
   // must be declared before the no-arg overload to land in vtable slots 0x0f / 0x0e.
   virtual void AddTransportedItems();
-  // slot 0x10 — body 0x004b4580 (247B, unported): create the Altown city object.
+  // slot 0x10 — body 0x004b4580: create the Altown city object. The selected
+  // resource type is passed by the railhead dialog but unused by the retail body.
   virtual void MakeTown(short selectedResourceType);
   // slot 0x11 — body 0x004b3b20: adopt the selected order/marker (TGreatPower slots
   // 0x3a/0x3b hand the new Frog City marker through this).
@@ -69,8 +71,8 @@ public:
   // slot 0x16 — body 0x004b48a0: capacity tier (1..4) for a building slot, with the
   // tighter thresholds for slots 1/3/5.
   virtual char GetNextBuildingLevel(int buildingSlot);
-  // slot 0x17 — body 0x004b4940 (577B, unported).
-  virtual int GetActiveNationBuildingMetricSlot5C(short buildingSlot);
+  // slot 0x17 — body 0x004b4940. Mac oracle: GetNextBuildingType(short).
+  virtual short GetNextBuildingType(short buildingSlot);
   // slot 0x18 — body 0x004b4d50 (vtable stores direct body, not ILT 0x0040494e).
   virtual void BuildPowerPlant(char enableUpgrade);
   // slot 0x19 — body 0x004b4c80: write the production flag/current/accum for a slot.
@@ -109,10 +111,10 @@ public:
 
   unsigned char powerPlantUpgradeQueuedFlag04; // +0x04 — BuildPowerPlant queue flag
   unsigned char pad05;
-  short field06; // +0x06 — zeroed by the ctor
-  short field08; // +0x08 — zeroed by the ctor
+  short foodSubstitutionCount06;    // +0x06 — workers reassigned after food substitution
+  short starvationPopulationLoss08; // +0x08 — population lost during the last Eat pass
   short serializedState0a;
-  short serializedState0c;
+  short cityPhaseCounter0c;
   // +0x0e..+0x4a and +0x4a..+0x5c — city metric blocks snapshotted wholesale by the
   // turn-event-0x2c composite packet (0x54ce80); interior meaning still unmapped.
   short cityMetricsBlock0E[0x1e];
@@ -122,7 +124,9 @@ public:
   // (navy secondary orders); 0x004dd140 weights all 14 entries by the resource
   // descriptor to rebuild the diplomacy aid budget score.
   short orderCountByType5c[0x0e];
-  int field78;                       // +0x78 — snapshotted by the turn-event-0x2c packet
+  // +0x78 — exponentially decayed item-production activity. TItemOrder::Produce
+  // accumulates completed quantities here; EndCityPhase applies old*0.9 + new*10.
+  int rollingItemProductionScore78;
   unsigned char lowProductionFlag7c; // +0x7c — PredictedNeeds
   unsigned char lowStockFlag7d;      // +0x7d — PredictedNeeds
   // +0x7e..0xac — per-resource reserved amounts subtracted from the summary
@@ -188,7 +192,7 @@ public:
   unsigned char productionFlags21c[0x10]; // 0x21C — ctor-cleared
   short production22c[0x10];              // 0x22C — GetBuildingWindowState outCurrent
   short production24c[0x10];              // 0x24C — GetBuildingWindowState outAccum
-  short field26c;                         // 0x26C — zeroed by the ctor
+  short populationGrowthPenaltyTicks26c;  // 0x26C — GrowthRate penalty counter
   short pad26e;
   TSortedList* trackedOrderList270; // 0x270 — released via FreePayloadsAndDestroy
   // 0x274 — TPtrList (vtable 0x649068, recordSize14 4; allocated in

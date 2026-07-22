@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "game/TCity.h"
+#include "game/TGreatPower.h"
 #include "game/TStream.h"
 #include "game/global_data_tables.h"
 // SYNTHETIC: IMPERIALISM 0x004b5b40
@@ -32,13 +33,23 @@ void TPopulationMgr::InitializePopulationState(TCity* city) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b5d10
-undefined TPopulationMgr::OrphanLeaf_NoCall_Ins09_004b5d10(int param_1, int param_2) {
-  return 0;
+void TPopulationMgr::Copy(TLaborPool* source, TLaborPool* destination) {
+  destination->lowSkillCount04 = source->lowSkillCount04;
+  destination->mediumSkillCount06 = source->mediumSkillCount06;
+  destination->highSkillCount08 = source->highSkillCount08;
 }
 
 // FUNCTION: IMPERIALISM 0x004b5d50
-undefined TPopulationMgr::OrphanLeaf_NoCall_Ins20_004b5d50(short param_1) {
-  return 0;
+void TPopulationMgr::SetPopulation(short lowSkillCount) {
+  baselineSlots10->lowSkillCount04 = lowSkillCount;
+  productionSlots14->lowSkillCount04 = lowSkillCount;
+  strength = lowSkillCount;
+  populationCount08 = lowSkillCount;
+  populationCountFloat0c = static_cast<float>(lowSkillCount);
+  pendingDeltaSlots18->highSkillCount08 = 0;
+  pendingDeltaSlots18->mediumSkillCount06 = 0;
+  pendingDeltaSlots18->lowSkillCount04 = 0;
+  fieldAt20 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b5dc0
@@ -65,23 +76,255 @@ void TPopulationMgr::SetPopulation(short lowSkillCount, short mediumSkillCount,
 }
 
 // FUNCTION: IMPERIALISM 0x004b5e80
-undefined TPopulationMgr::OrphanCallChain_C2_I24_004b5e80() {
-  return 0;
+void TPopulationMgr::StartProductionPhase() {
+  Copy(baselineSlots10, productionSlots14);
+  Eat();
+  strength = static_cast<short>(
+      productionSlots14->lowSkillCount04 +
+      (productionSlots14->mediumSkillCount06 + productionSlots14->highSkillCount08 * 2) * 2);
+  extraAt1e = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b5ed0
-undefined TPopulationMgr::PopulationMgrSlot0E() {
-  return 0;
+void TPopulationMgr::Eat() {
+  int substitutedFoodCount = 0;
+  int starvationLoss = 0;
+
+  productionSlots14->lowSkillCount04 =
+      static_cast<short>(productionSlots14->lowSkillCount04 + pendingDeltaSlots18->lowSkillCount04);
+  productionSlots14->mediumSkillCount06 = static_cast<short>(
+      productionSlots14->mediumSkillCount06 + pendingDeltaSlots18->mediumSkillCount06);
+  productionSlots14->highSkillCount08 = static_cast<short>(productionSlots14->highSkillCount08 +
+                                                           pendingDeltaSlots18->highSkillCount08);
+
+  int population = populationCount08;
+  short grainRemaining = city04->cityStockGrainD8;
+  short fruitRemaining = city04->cityStockFruitDA;
+  short animalFoodRemaining =
+      static_cast<short>(city04->cityStockFishDC + city04->cityStockLivestockDE);
+  short unmetFoodNeed = 0;
+
+  short grainNeed = static_cast<short>((population + 1) / 2);
+  if (grainRemaining < grainNeed) {
+    unmetFoodNeed = static_cast<short>(grainNeed - grainRemaining);
+    grainRemaining = 0;
+  } else {
+    grainRemaining = static_cast<short>(grainRemaining - grainNeed);
+  }
+
+  short fruitNeed = static_cast<short>((population + 2) / 4);
+  if (fruitRemaining < fruitNeed) {
+    unmetFoodNeed = static_cast<short>(unmetFoodNeed + fruitNeed - fruitRemaining);
+    fruitRemaining = 0;
+  } else {
+    fruitRemaining = static_cast<short>(fruitRemaining - fruitNeed);
+  }
+
+  short animalFoodNeed = static_cast<short>(population / 4);
+  if (animalFoodRemaining < animalFoodNeed) {
+    unmetFoodNeed = static_cast<short>(unmetFoodNeed + animalFoodNeed - animalFoodRemaining);
+    animalFoodRemaining = 0;
+  } else {
+    animalFoodRemaining = static_cast<short>(animalFoodRemaining - animalFoodNeed);
+  }
+
+  if (unmetFoodNeed != 0) {
+    if (unmetFoodNeed < city04->cityStockCannedFoodC4) {
+      city04->cityStockCannedFoodC4 =
+          static_cast<short>(city04->cityStockCannedFoodC4 - unmetFoodNeed);
+      city04->VerifyStocks();
+      unmetFoodNeed = 0;
+    } else {
+      unmetFoodNeed = static_cast<short>(unmetFoodNeed - city04->cityStockCannedFoodC4);
+      city04->cityStockCannedFoodC4 = 0;
+      city04->VerifyStocks();
+    }
+
+    if (unmetFoodNeed != 0) {
+      short deficitBeforeSubstitution = unmetFoodNeed;
+      if (grainRemaining < unmetFoodNeed) {
+        unmetFoodNeed = static_cast<short>(unmetFoodNeed - grainRemaining);
+        grainRemaining = 0;
+        if (fruitRemaining < unmetFoodNeed) {
+          unmetFoodNeed = static_cast<short>(unmetFoodNeed - fruitRemaining);
+          fruitRemaining = 0;
+          if (animalFoodRemaining < unmetFoodNeed) {
+            unmetFoodNeed = static_cast<short>(unmetFoodNeed - animalFoodRemaining);
+            animalFoodRemaining = 0;
+          } else {
+            animalFoodRemaining = static_cast<short>(animalFoodRemaining - unmetFoodNeed);
+            unmetFoodNeed = 0;
+          }
+        } else {
+          fruitRemaining = static_cast<short>(fruitRemaining - unmetFoodNeed);
+          unmetFoodNeed = 0;
+        }
+      } else {
+        grainRemaining = static_cast<short>(grainRemaining - unmetFoodNeed);
+        unmetFoodNeed = 0;
+      }
+      substitutedFoodCount = deficitBeforeSubstitution - unmetFoodNeed;
+    }
+  }
+
+  city04->cityStockGrainD8 = grainRemaining;
+  city04->VerifyStocks();
+  city04->cityStockFruitDA = fruitRemaining;
+  city04->VerifyStocks();
+
+  if (animalFoodRemaining != 0) {
+    short livestockRemaining;
+    short fishRemaining;
+    if ((animalFoodRemaining & 1) != 0) {
+      livestockRemaining = static_cast<short>(animalFoodRemaining / 2 + 1);
+      fishRemaining = static_cast<short>(livestockRemaining - 1);
+    } else {
+      livestockRemaining = static_cast<short>(animalFoodRemaining / 2);
+      fishRemaining = livestockRemaining;
+    }
+
+    if (city04->cityStockLivestockDE < livestockRemaining) {
+      short shift = static_cast<short>(livestockRemaining - city04->cityStockLivestockDE);
+      livestockRemaining = static_cast<short>(livestockRemaining - shift);
+      fishRemaining = static_cast<short>(fishRemaining + shift);
+    } else if (city04->cityStockFishDC < fishRemaining) {
+      short shift = static_cast<short>(fishRemaining - city04->cityStockFishDC);
+      fishRemaining = static_cast<short>(fishRemaining - shift);
+      livestockRemaining = static_cast<short>(livestockRemaining + shift);
+    }
+    city04->cityStockLivestockDE = livestockRemaining;
+    city04->VerifyStocks();
+    city04->cityStockFishDC = fishRemaining;
+    city04->VerifyStocks();
+  } else {
+    city04->cityStockLivestockDE = 0;
+    city04->VerifyStocks();
+    city04->cityStockFishDC = 0;
+    city04->VerifyStocks();
+  }
+
+  if (unmetFoodNeed != 0) {
+    TLaborPool* lostPopulation = new TLaborPool();
+    lostPopulation->mediumSkillCount06 = 0;
+    lostPopulation->lowSkillCount04 = 0;
+    lostPopulation->highSkillCount08 = 0;
+    baselineSlots10->TransferToLowSkillFirst(lostPopulation, unmetFoodNeed);
+    lostPopulation->Free();
+    populationCount08 = static_cast<short>(populationCount08 - unmetFoodNeed);
+    populationCountFloat0c -= static_cast<float>(unmetFoodNeed);
+    starvationLoss = unmetFoodNeed > 0 ? unmetFoodNeed : 0;
+  }
+
+  Copy(baselineSlots10, productionSlots14);
+  if (substitutedFoodCount != 0) {
+    productionSlots14->TransferToLowSkillFirst(pendingDeltaSlots18,
+                                               static_cast<short>(substitutedFoodCount));
+  }
+  city04->foodSubstitutionCount06 = static_cast<short>(substitutedFoodCount);
+  city04->starvationPopulationLoss08 = static_cast<short>(starvationLoss);
 }
 
 // FUNCTION: IMPERIALISM 0x004b6260
-undefined TPopulationMgr::GetRecentStormImpactMetrics(short* damageOut, ushort* eventCountOut) {
-  return 0;
+void TPopulationMgr::PretendToEat(short& substitutionCount, short& starvationCount) {
+  int population = populationCount08;
+  substitutionCount = 0;
+  starvationCount = 0;
+
+  TGreatPower* owner = city04->ownerNationAc;
+  short grainRemaining = owner->needTargetByType[0x11];
+  short fruitRemaining = owner->needTargetByType[0x12];
+  short animalFoodRemaining =
+      static_cast<short>(owner->needTargetByType[0x13] + owner->needTargetByType[0x14]);
+  short unmetFoodNeed = 0;
+
+  short grainNeed = static_cast<short>((population + 1) / 2);
+  if (grainRemaining < grainNeed) {
+    unmetFoodNeed = static_cast<short>(grainNeed - grainRemaining);
+    grainRemaining = 0;
+  } else {
+    grainRemaining = static_cast<short>(grainRemaining - grainNeed);
+  }
+
+  short fruitNeed = static_cast<short>((population + 2) / 4);
+  if (fruitRemaining < fruitNeed) {
+    unmetFoodNeed = static_cast<short>(unmetFoodNeed + fruitNeed - fruitRemaining);
+    fruitRemaining = 0;
+  } else {
+    fruitRemaining = static_cast<short>(fruitRemaining - fruitNeed);
+  }
+
+  short animalFoodNeed = static_cast<short>(population / 4);
+  if (animalFoodRemaining < animalFoodNeed) {
+    unmetFoodNeed = static_cast<short>(unmetFoodNeed + animalFoodNeed - animalFoodRemaining);
+    animalFoodRemaining = 0;
+  } else {
+    animalFoodRemaining = static_cast<short>(animalFoodRemaining - animalFoodNeed);
+  }
+
+  if (unmetFoodNeed != 0) {
+    if (unmetFoodNeed < city04->cityStockCannedFoodC4) {
+      unmetFoodNeed = 0;
+    } else {
+      unmetFoodNeed = static_cast<short>(unmetFoodNeed - city04->cityStockCannedFoodC4);
+    }
+
+    if (unmetFoodNeed != 0) {
+      short deficitBeforeSubstitution = unmetFoodNeed;
+      if (grainRemaining < unmetFoodNeed) {
+        unmetFoodNeed = static_cast<short>(unmetFoodNeed - grainRemaining);
+        if (fruitRemaining < unmetFoodNeed) {
+          unmetFoodNeed = static_cast<short>(unmetFoodNeed - fruitRemaining);
+          if (animalFoodRemaining < unmetFoodNeed) {
+            unmetFoodNeed = static_cast<short>(unmetFoodNeed - animalFoodRemaining);
+          } else {
+            unmetFoodNeed = 0;
+          }
+        } else {
+          unmetFoodNeed = 0;
+        }
+      } else {
+        unmetFoodNeed = 0;
+      }
+      substitutionCount = static_cast<short>(deficitBeforeSubstitution - unmetFoodNeed);
+      if (unmetFoodNeed != 0) {
+        starvationCount = unmetFoodNeed;
+      }
+    }
+  }
+
+  if (starvationCount != 0) {
+    starvationCount = starvationCount > 0 ? starvationCount : 0;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004b63e0
-undefined TPopulationMgr::OrphanLeaf_NoCall_Ins50_004b63e0() {
-  return 0;
+float TPopulationMgr::GrowthRate() {
+  float rate;
+  if (populationCount08 < 10) {
+    rate = g_PopulationGrowthRateUnder10;
+  } else if (populationCount08 < 15) {
+    rate = g_PopulationGrowthRateUnder15;
+  } else if (populationCount08 < 20) {
+    rate = g_PopulationGrowthRateUnder20;
+  } else if (populationCount08 < 30) {
+    rate = g_PopulationGrowthRateUnder30;
+  } else if (populationCount08 < 40) {
+    rate = g_PopulationGrowthRateUnder40;
+  } else if (populationCount08 < 60) {
+    rate = g_PopulationGrowthRateUnder60;
+  } else if (populationCount08 < 80) {
+    rate = g_PopulationGrowthRateUnder80;
+  } else if (populationCount08 < 400) {
+    rate = g_PopulationGrowthRateUnder400;
+  } else {
+    return g_PopulationGrowthRateAtOrAbove400;
+  }
+
+  if (city04->populationGrowthPenaltyTicks26c < 20) {
+    return static_cast<float>(rate - city04->populationGrowthPenaltyTicks26c *
+                                         g_PopulationGrowthPenaltyPerRetry);
+  }
+  return static_cast<float>(rate - g_PopulationGrowthMaximumRetryPenalty);
 }
 
 // FUNCTION: IMPERIALISM 0x004b64c0
@@ -113,8 +356,36 @@ short* TPopulationMgr::PredictedNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b65b0
-undefined TPopulationMgr::OrphanCallChain_C2_I61_004b65b0() {
-  return 0;
+char TPopulationMgr::Strike() {
+  char shortage = 0;
+  int skilledPopulation = baselineSlots10->mediumSkillCount06 + baselineSlots10->highSkillCount08;
+  short consumptionByResource[4];
+  consumptionByResource[0] = 0;
+  consumptionByResource[1] = 0;
+  consumptionByResource[2] = 0;
+
+  short cycles = static_cast<short>(skilledPopulation / 10);
+  while (cycles != 0) {
+    ++consumptionByResource[fieldAt20];
+    fieldAt20 = fieldAt20 == 3 ? 0 : static_cast<short>(fieldAt20 + 1);
+    --cycles;
+  }
+
+  int resourceIndex;
+  for (resourceIndex = 0; resourceIndex < 3; ++resourceIndex) {
+    short resourceType = g_cityPredictedNeedResetResourceIds[resourceIndex];
+    short amount = consumptionByResource[resourceIndex];
+    if (city04->CityStockByType(resourceType) < amount) {
+      city04->CityStockByType(resourceType) = 0;
+      city04->VerifyStocks();
+      shortage = 1;
+    } else {
+      city04->CityStockByType(resourceType) =
+          static_cast<short>(city04->CityStockByType(resourceType) - amount);
+      city04->VerifyStocks();
+    }
+  }
+  return shortage;
 }
 
 // FUNCTION: IMPERIALISM 0x004b66a0
@@ -177,8 +448,24 @@ void TPopulationMgr::RemovePopulation(short startingSkillBand, short amount) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b67e0
-undefined TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0(short param_1, short param_2) {
-  return 0;
+void TPopulationMgr::MakeUnavailable(short skillBand, short amount) {
+  switch (skillBand) {
+  case 1:
+    productionSlots14->lowSkillCount04 =
+        static_cast<short>(productionSlots14->lowSkillCount04 - amount);
+    strength = static_cast<short>(strength - amount);
+    break;
+  case 2:
+    productionSlots14->mediumSkillCount06 =
+        static_cast<short>(productionSlots14->mediumSkillCount06 - amount);
+    strength = static_cast<short>(strength - amount * 2);
+    break;
+  case 4:
+    productionSlots14->highSkillCount08 =
+        static_cast<short>(productionSlots14->highSkillCount08 - amount);
+    strength = static_cast<short>(strength - amount * 4);
+    break;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004b6850

@@ -100,8 +100,9 @@ def tu_subsystems(repo_root: Path) -> dict[str, str]:
     subsystem and must not vote on global placement."""
     out = {}
     for row in read_pipe_rows(repo_root / ASSIGN):
-        if row["proposed_subsystem"] and int(row["tail_uncertain"]) < int(row["n_markers"]):
-            out[row["file"]] = row["proposed_subsystem"]
+        subsystem = row["proposed_subsystem"]
+        if subsystem and int(row["tail_uncertain"]) < int(row["n_markers"]):
+            out[row["file"]] = subsystem
     return out
 
 
