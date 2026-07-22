@@ -625,7 +625,9 @@ void RunDispatchingMapHotkey() {
     return;
   }
 
-  mapDialog->TMapDialog::SetMapDialogCellCoordinatesAndRefresh(10, 10, 0);
+  TCitySiteView* citySiteView = static_cast<TCitySiteView*>(mapDialog);
+  mapDialog->SetMapDialogCellCoordinatesAndRefresh(citySiteView->minColBound368 + 1,
+                                                   citySiteView->minRowBound370 + 1, 0);
   int viewportXBeforeEdgeScroll = mapDialog->viewportOffsetX;
   mapView->AutoScrollByEdgeMask(4);
   if (mapDialog->viewportOffsetX == viewportXBeforeEdgeScroll) {

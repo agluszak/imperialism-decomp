@@ -534,10 +534,10 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mod
 
 // FUNCTION: IMPERIALISM 0x0051AF60
 void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites(int edgeMask) {
-  short row;
   short col;
+  short row;
   short regionBand;
-  ConvertPoint(g_MapInteractionPreviewPoint_006a3370, row, col, regionBand);
+  ConvertPoint(g_MapInteractionPreviewPoint_006a3370, col, row, regionBand);
 
   if ((row & 1) != 0) {
     ++col;
@@ -872,6 +872,13 @@ void TMapDialog::Draw(RECT* rectBuffer) {
   UnlockPixels(GetGWorldPixMap(quickDrawSurface350));
 }
 
+static unsigned char ConvertGeneratedCoastMaskToLegacyRasterOrder(unsigned char mask) {
+  // Map generation numbers the diagonal neighbors in top-to-bottom world order. The
+  // bottom-up DIB coast compositor consumes the vertically reflected packed order.
+  return static_cast<unsigned char>(((mask & 0x01) << 2) | (mask & 0x02) | ((mask & 0x04) >> 2) |
+                                    ((mask & 0x08) << 2) | (mask & 0x10) | ((mask & 0x20) >> 2));
+}
+
 // FUNCTION: IMPERIALISM 0x0051EB40
 void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, short screenX) {
   if (g_pGlobalMapState == 0 || g_pStrategicMapViewSystem == 0 ||
@@ -963,9 +970,19 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
     }
 
     if (isOcean && terrain.adjacencyMaskB0b != 0) {
-      const unsigned char adjacencyMask = terrain.adjacencyMaskB0b;
-      const unsigned char variantMask = terrain.spriteVariantIndex01;
-      const short roadType = terrain.roadFlag;
+      unsigned char adjacencyMask = terrain.adjacencyMaskB0b;
+      unsigned char variantMask = terrain.spriteVariantIndex01;
+      // Fixed maps carry a pre-resolved coastline/river-mouth shape in byte +2. Fresh random
+      // maps leave ordinary coast tiles at zero, even though adjacencyMaskB0b already contains
+      // the complete six-direction shoreline mask. Convert that semantic mask to the legacy
+      // raster order for ordinary coasts; preserve explicit +2 variants for river mouths and
+      // loaded-map artwork.
+      short roadType = terrain.roadFlag;
+      if (roadType == 0) {
+        adjacencyMask = ConvertGeneratedCoastMaskToLegacyRasterOrder(adjacencyMask);
+        variantMask = ConvertGeneratedCoastMaskToLegacyRasterOrder(variantMask);
+        roadType = adjacencyMask;
+      }
       for (int corner = 0; corner < 6; ++corner) {
         int previousDirection = (corner + 5) % 6;
         int cornerBits = (1 << previousDirection) | (1 << corner);

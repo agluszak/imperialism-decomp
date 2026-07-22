@@ -1357,7 +1357,7 @@ address|matching|name
 0x49e1a0|1.0|TAmbitApplication::Free
 0x49e280|0.9629629629629629|TAmbitApplication::ReadFrom
 0x49e2f0|1.0|TAmbitApplication::WriteTo
-0x49e320|1.0|TAmbitApplication::HandleCursor
+0x49e320|0.9904761904761905|TAmbitApplication::HandleCursor
 0x49e4b0|1.0|TAmbitApplication::ForwardParam
 0x49e4e0|1.0|TAmbitApplication::CloseAndFreeWindow
 0x49e500|1.0|TApplication::CreateAndQueueTurnEventPacketTagGWEN
@@ -3212,7 +3212,7 @@ address|matching|name
 0x51ad70|1.0|TMapDialog::SetMapViewTileIndex
 0x51adc0|1.0|TMapDialog::SetMapViewCellCoordinates
 0x51adf0|0.8387096774193549|TMapDialog::SetMapDialogCellCoordinatesAndRefresh
-0x51af60|0.3558282208588957|TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites
+0x51af60|0.36809815950920244|TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites
 0x51b0a0|0.4897959183673469|TTerrainInfoDialog::CreateObject
 0x51b120|1.0|TTerrainInfoDialog::GetRuntimeClass
 0x51b140|1.0|TTerrainInfoDialog::TTerrainInfoDialog
@@ -3258,7 +3258,7 @@ address|matching|name
 0x51e1a0|1.0|TMapDialog::ResetAllTileMarkersToSentinel
 0x51e1f0|0.2777777777777778|TMapDialog::ReleaseTileMarkerForTile
 0x51e260|0.07543323139653414|TMapDialog::Draw
-0x51eb40|0.13371853074700785|TMapDialog::RenderStrategicMapTileCell
+0x51eb40|0.13464696223316913|TMapDialog::RenderStrategicMapTileCell
 0x520670|0.860125260960334|TMapDialog::DrawBorder
 0x520970|0.7682926829268293|TMapDialog::DrawMapDialogGuidePatternSetA_00520970
 0x520a90|1.0|TMapDialog::DrawMapDialogGuidePatternSetB_00520a90
