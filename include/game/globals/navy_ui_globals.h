@@ -4,7 +4,6 @@
 // assignment evidence: docs/reference/subsystem_assignment.csv.
 #include "game/globals/prelude.h"
 
-
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 // Per-type index into TShipView::Draw's 8-entry order-status
 // string pool (GetString group 0x2760, one status line per naval order state);

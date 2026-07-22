@@ -4,9 +4,7 @@
 // assignment evidence: docs/reference/subsystem_assignment.csv.
 #include "game/globals/prelude.h"
 
-
 // Private retail assert guards for TStream's McAppStream.cpp diagnostics.
 extern int g_streamLine304AssertGuard;
 
 extern int g_streamLine596AssertGuard;
-

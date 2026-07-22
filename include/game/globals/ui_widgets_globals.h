@@ -46,24 +46,20 @@ extern "C" const unsigned int g_tradeCommodityRowTagTable[17];
 
 extern "C" const char s_SourcePathUTestDialogs_0069A7F8[];
 
-
 // TSimMgr_AdvanceGlobalTurnStateMachine.cpp / turn_flow_cooldown.cpp — turn-cooldown state.
 extern short g_nTurnCooldownDeferCounter006A43C4;
 
 extern short g_nTurnCooldownSideFlag00698B10;
-
 
 // TStatusButton.cpp / TCivDescription.cpp — city-dialog legend selection state.
 extern void* g_pActiveCityDialogLegendSelectionOwner;
 
 extern int g_bCityDialogLegendSelectionInitialized;
 
-
 // TCivDescription.cpp — per-civilian-class tile profile / legend selection counts.
 extern short g_anTargetTileProfileByCivilianClassAndSlot[];
 
 extern unsigned short g_awCivilianLegendSelectionCountsBySlot[16];
-
 
 // TArmyToolbar.cpp — maps each of the 30 military-unit types to one of the ten
 // toolbar placard/arrow categories.

@@ -185,8 +185,6 @@ ASSERT_SIZE(AiCityActionCostProfile, 14);
 // McAppUI globals
 // ============================================================================
 
-
-
 // ============================================================================
 // UI runtime globals
 // ============================================================================
@@ -203,7 +201,6 @@ int GetMcAppUiActiveFlag();
 // .cpp instead of being declared here (see AGENTS.md's global_data_tables.h
 // consolidation rule). Grouped by consumer cluster below.
 // ============================================================================
-
 
 // Per-nation-variant mapped flavor-text table (mapped_flavor_text.cpp / global_data_tables.cpp).
 struct MappedFlavorTextNationVariantEntry {

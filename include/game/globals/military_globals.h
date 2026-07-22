@@ -6,7 +6,7 @@
 
 // Per-subsystem VPoint equivalents passed to the ModalMessage overloads. The Mac
 // signatures provide the semantic type; Windows stores them as zero-initialized POINTs.
-extern POINT g_ptArmyOrderModalMessage;               // @ 0x6a2318
+extern POINT g_ptArmyOrderModalMessage; // @ 0x6a2318
 
 extern short g_MapOrderResourceRollWeightTable_0064c5d8[6][6];
 
@@ -31,7 +31,6 @@ extern short g_civilianMapCursorTokenByStateIndex_00695680[12];
 // bound unconfirmed beyond the observed min/max class range (1..5-ish).
 extern unsigned char g_abStackCompositionClassTable[16];
 
-
 // Per-fort-level attacker penalty percent (0x695568), indexed by
 // Province::fortLevel03; observed values 100/85/75/65/0/0/0/0 for levels
 // 0-7 (only the low byte of each int is ever read). Used by
@@ -42,17 +41,16 @@ extern int g_anFortLevelAttackerPenaltyPercentByLevel[8];
 // bound unconfirmed beyond the observed ~28 nonzero/zero entries.
 extern unsigned char g_abUnitTypeBlinkEligibilityFlag[32];
 
-
 // Four per-unit-type meter-scoring tables read by
 // TArmyStack::AccumulateWeightedMeterAndCountFromEligibleLinkedEntries, all indexed by
 // TUnit::orderType; true bounds unconfirmed beyond the observed sampled entries.
-extern int g_anWeightClassByOrderType[32];         // 0x64c790
+extern int g_anWeightClassByOrderType[32]; // 0x64c790
 
-extern short g_anScaledFactorByOrderType[32];      // 0x64c660
+extern short g_anScaledFactorByOrderType[32]; // 0x64c660
 
 extern float g_afPercentEfficiencyByOrderType[32]; // 0x64c6a0
 
-extern int g_anCountWeightByOrderType[32];         // 0x695578
+extern int g_anCountWeightByOrderType[32]; // 0x695578
 
 // Two 0x20-byte flag tables installed into TArmyMgr+0x14/+0x18 by
 // InitializeMapContextActionManager (0x4a18f0); 8 rows x 4 flag bytes.
@@ -66,7 +64,6 @@ extern char* g_pMiniCivSharedText_0064cb18;
 extern "C" const char s_SourcePathUArmyMgr_0069573C[];
 
 extern "C" const char s_SourcePathUArmyViews_00695858[];
-
 
 // TArmyMission.cpp / TNavyMission.cpp — shared per-hop/per-province distance decay
 // weights (1.0, 0.8, ...), used by both army and navy mission scoring.

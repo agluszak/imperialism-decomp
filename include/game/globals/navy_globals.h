@@ -4,7 +4,6 @@
 // assignment evidence: docs/reference/subsystem_assignment.csv.
 #include "game/globals/prelude.h"
 
-
 // Localized-label string-group indices, keyed by GetMapContextActionCode's return value
 // (0..0x10 hold real tokens 0x3f0..0x3f8; the table is read by
 // ActionCursor, 0x559dd0).
@@ -14,12 +13,10 @@ extern "C" {
 
 extern "C" TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[14];
 
-
 // Per-category (0..3) capability metric baseline averages (0x006a3ec8): recomputed at
 // runtime by RecomputeGlobalCapabilityAverages and read back as the normalization divisor
 // by the navy/map-order per-category scoring helpers.
 extern "C" int g_aCategoryMetricBaselineAverage[4];
-
 
 // Six admiral-skill rows. Columns 0..2 select an estimated ship count and columns
 // 3..5 select class accuracy; each triplet is a percentage distribution.

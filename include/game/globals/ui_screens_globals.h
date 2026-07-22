@@ -12,11 +12,11 @@ extern char g_szSaveDirectoryPrefix_00698724[];
 
 extern char g_szLiteralA_0069872C[];
 
-extern const char* const g_pszSingleSlotSavePrefix_0065DDD0;  // "slot" @ 0x65ddd0
+extern const char* const g_pszSingleSlotSavePrefix_0065DDD0; // "slot" @ 0x65ddd0
 
 extern const char* const g_pszMultiplayerSavePrefix_0065DDD4; // "mult" @ 0x65ddd4
 
-extern const char* const g_pszImpSaveExtension_0065DDD8;      // ".imp" @ 0x65ddd8
+extern const char* const g_pszImpSaveExtension_0065DDD8; // ".imp" @ 0x65ddd8
 
 // Map-action-context display-name cache key (0x6984b8): reset to -1 before each status
 // regen pass; read/written by GenerateMapActionContextDisplayNameAndHeadline.
@@ -33,13 +33,11 @@ extern unsigned char g_bScenarioScriptTerminationRequested;
 
 extern int g_nScenarioScriptInstructionCount;
 
-
 // Source path/gate for the USetupScreens.cpp line-0x2e6 assert in
 // TNetSelectPicture::DoEvent (and siblings in that TU).
 extern char g_szSetupScreensSourcePath_00698AB8[];
 
 extern int g_SetupScreensAssertFlag_006A4264;
-
 
 // TSimMgr.cpp — per-nation scenario setup source table.
 // Seven default nation setup rows: {control mode, city minister policy,

@@ -4,23 +4,20 @@
 // assignment evidence: docs/reference/subsystem_assignment.csv.
 #include "game/globals/prelude.h"
 
-extern POINT g_ptMapModeModalMessage;                 // @ 0x6a45c0
+extern POINT g_ptMapModeModalMessage; // @ 0x6a45c0
 
 extern SeapointStretch g_seapointQuadTable_006a3478;
 
 extern SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 
-
 // Per-hex-direction adjacency bit masks (1,2,4,8,16,32), indexed by direction 0..5. Read
 // byte-wise (OR'd into per-tile adjacency mask bytes) by the tile-adjacency update pass.
 extern const unsigned short g_hexDirectionBitMasks_00696e40[6];
-
 
 // Second copy of the per-hex-direction adjacency bit mask table (1,2,4,8,16,32,0), indexed
 // by direction 0..6 (index 6 is an unused trailing zero); read byte-wise into
 // TTerrainStateRecordView::adjacencyBits06 by SetHexAdjacencyDirectionFlagsForTilePair.
 extern const unsigned short g_hexDirectionBitMasksAlt_00696ea8[7];
-
 
 // One-shot assert-suppression flags for the UMapper overlay-segment passes (0x006a3910 for the
 // scanline fill, 0x006a3914 for the route rebuild).
@@ -75,12 +72,10 @@ extern unsigned char g_abResourceTypeUsesHighNibbleFlag[24];
 // a caller-supplied category code by FindMaxResourceCapabilityValueForTile (0x513720).
 extern unsigned char g_abResourceTypeCapabilityCategory[24];
 
-
 // TMapMgr.cpp — hex-area neighbor lookup tables.
 extern short g_Build_Hex_Area_LookupTable_00696E70[];
 
 extern short g_Build_Hex_Area_LookupTable_00696E80[];
-
 
 // TMapMgr.cpp — per-terrainType00 gate table read by
 // MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA for both the origin tile and each of
@@ -88,19 +83,16 @@ extern short g_Build_Hex_Area_LookupTable_00696E80[];
 // 0x00696f08, ground truth for the game's 6 terrain types.
 extern unsigned char g_abTerrainTypeSeedGateProfileA[6];
 
-
 // TMapMgr.cpp — per-terrainType00 priority score, read by
 // TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority (0x50fca0) to rank same-city
 // hex neighbors when picking primaryNeighborTileIndex40/secondaryNeighborTileIndex3e. Indexed
 // 0-7 (terrainType00's declared range); read raw at 0x00696e10.
 extern short g_anTerrainTypeNeighborLinkPriority[8];
 
-
 // TMapMgr.cpp — running region-marker id, assigned to a tile's regionSubtypeTag05 by
 // TMapMgr::FloodFillTileRegionMarker (0x5143d0) and incremented (low 16 bits only) after each
 // call. Read raw at 0x00696d90 (initial value 1).
 extern int g_nNextRegionMarkerId;
-
 
 // TMapMgr.cpp — three single-byte UI/notification flags set by
 // MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA when a nation-indexed
@@ -111,7 +103,6 @@ extern unsigned char g_bSeedGateNotifyFlag_00696f0a;
 extern unsigned char g_bSeedGateNotifyFlag_00696f0b;
 
 extern unsigned char g_bSeedGateNotifyFlag_00696f0c;
-
 
 // TMapMgr.cpp — per-tile sprite-variant bitmap-strip offset tables, indexed
 // [gateFlag][spriteVariantIndex01] (table39 by spriteVariantIndex01 alone). Read by the

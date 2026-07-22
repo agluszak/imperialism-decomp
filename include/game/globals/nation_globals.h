@@ -48,20 +48,19 @@ extern float g_DAT_006533e8_Value_006533E8[];
 
 extern float g_DAT_Value_00653408[];
 
-
 // Float constants used by the TGreatPower relative-power-score family
 // (vtable slots 0x8e-0x9e, bodies 0x004e07b0..0x004e1c20).
 extern const float g_Compute_Advisory_Handler_LookupTable_00653700; // 0.0f
 
-extern float g_Compute_Advisory_Handler_LookupTable_00653714;       // -0.25f
+extern float g_Compute_Advisory_Handler_LookupTable_00653714; // -0.25f
 
-extern float g_Iterate_Linked_List_Value_00653718;                  // 0.25f
+extern float g_Iterate_Linked_List_Value_00653718; // 0.25f
 
-extern float g_Compute_City_Order_Value_0065371C;                   // 0.5f
+extern float g_Compute_City_Order_Value_0065371C; // 0.5f
 
-extern float g_Compute_Advisory_Handler_LookupTable_00653720;       // -90.0f
+extern float g_Compute_Advisory_Handler_LookupTable_00653720; // -90.0f
 
-extern float g_Compute_Advisory_Peer_LookupTable_00653724;          // -0.5f
+extern float g_Compute_Advisory_Peer_LookupTable_00653724; // -0.5f
 
 extern float g_afAdvisoryMissionTierThresholdByMinisterSkill_00653F18[5][6];
 
@@ -79,7 +78,6 @@ extern double g_Compute_Advisory_Hundred_00654000;
 
 extern double g_Compute_Advisory_OnePointFive_00654008;
 
-
 // 0x653704-0x653710 — production-tier classification constants (TGreatPower slot
 // 0x82, body 0x004e2880): -1.0, 2.0, 1.0, -2.0.
 extern float g_Classify_Nation_Military_Value_00653704;
@@ -90,10 +88,8 @@ extern float g_Classify_Nation_Military_Value_0065370C;
 
 extern float g_Classify_Nation_Military_Value_00653710;
 
-
 // Per-order-type sort priority table (slot 0x55 selection sort).
 extern short g_DAT_006966d0_Value_006966D0[];
-
 
 // Scenario-level relation preset rows (0x17 shorts per row, stride 0x2e), loaded into
 // the relation manager's city stock block by TGreatPower slot 0x39 (0x004df810).
@@ -115,11 +111,9 @@ extern short g_cachedAiCityActionTurnTick_006967d8;
 
 extern float g_cachedAiCityActionContextBias[3];
 
-
 // Source-file path string ("D:\\Ambit\\Cross\\UCountry.cpp") passed with a line number to
 // the UI invalidation-flag assert helper from TGreatPower nil-pointer assert hooks.
 extern char g_szUCountrySourcePath_00696728[];
-
 
 // Great-power pressure tuning tables (see global_data_tables.cpp for values).
 extern "C" const int g_anNationBasePressureByLocale[6];
@@ -140,11 +134,10 @@ extern "C" const int g_anGreatPowerPressureHardAlertThresholdByLocale[6];
 
 extern "C" const int g_anNationStartingTreasuryByLocale[6];
 
-
 // TAutoGreatPower.cpp — AssignNeedSlotFromSourceSlot19C scaling constants.
-extern double g_DAT_00653fc0_Value_00653FC0;             // 1/255
+extern double g_DAT_00653fc0_Value_00653FC0; // 1/255
 
-extern double g_DAT_00653fc8_Value_00653FC8;             // 32767.0
+extern double g_DAT_00653fc8_Value_00653FC8; // 32767.0
 
 extern double g_Evaluate_Advisory_Case11_Value_00653FD8; // 0.5
 

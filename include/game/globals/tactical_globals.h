@@ -4,7 +4,7 @@
 // assignment evidence: docs/reference/subsystem_assignment.csv.
 #include "game/globals/prelude.h"
 
-extern POINT g_ptTacticalAutoPlayModalMessage;        // @ 0x6a4650
+extern POINT g_ptTacticalAutoPlayModalMessage; // @ 0x6a4650
 
 extern "C" {
 extern "C" const char s_SourcePathUTacPlayer_00699D84[];

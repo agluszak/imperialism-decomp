@@ -4,12 +4,10 @@
 // assignment evidence: docs/reference/subsystem_assignment.csv.
 #include "game/globals/prelude.h"
 
-extern POINT g_ptTechCapabilityModalMessage;          // @ 0x6a57c8
-
+extern POINT g_ptTechCapabilityModalMessage; // @ 0x6a57c8
 
 // Per-tech prerequisite pair (tech ids; 0 = none), indexed by tech id. 0x66ac10.
 extern short g_aTechItemPrerequisitePairs[34][2];
-
 
 // Hex-neighbour offset tables (offset-coordinate grid; even/odd rows shift columns
 // differently), indexed by direction 0..5. Read by the city-region border/merge passes.

@@ -4,7 +4,7 @@
 // assignment evidence: docs/reference/subsystem_assignment.csv.
 #include "game/globals/prelude.h"
 
-extern POINT g_ptCityInteriorMinisterModalMessage;    // @ 0x6a2c18
+extern POINT g_ptCityInteriorMinisterModalMessage; // @ 0x6a2c18
 
 extern char s_mcflavor_00696674[];
 
@@ -29,7 +29,6 @@ extern "C" const char s_SourcePathUCityViews_00696650[];
 
 // Assert source-path string for the UCityMinister TU.
 extern "C" const char s_SourcePathUCityMinister_006964B0[];
-
 
 // TCivMgr.cpp — engineer construction cost tables.
 extern short g_awEngineerFortBuildCostByLevel[8];

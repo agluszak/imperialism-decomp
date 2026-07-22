@@ -45,11 +45,9 @@ extern RgnHandle g_pTemporaryRegionCache;
 // Provisional flag (0x00694c50) selecting the CDib blit path in TDDTemplateDialog::OnPaint.
 extern int g_useCompatibleBitmapBlit;
 
-
 // Source-file path string ("D:\\Ambit\\Cross\\UGameWindow.cpp") passed with a line number to
 // the UI invalidation-flag assert helper from the TDlgWindow/UGameWindow assert hooks.
 extern char g_szUGameWindowSourcePath_00696bc0[];
-
 
 // UDisplayMgr font literals and runtime CString slots (markers in global_data_tables.cpp).
 extern "C" const char g_szUiFontLiteralBelweBdBt[];

@@ -4,7 +4,6 @@
 // assignment evidence: docs/reference/subsystem_assignment.csv.
 #include "game/globals/prelude.h"
 
-
 // Map-dialog viewport width in tiles (0x51ac40 centers on a tile by column - span/2).
 // int, not short: 0x51adf0 reads the full dword; word readers use static_cast<short>.
 extern int g_wMapDialogViewportTileSpan; // 0x6a33b0

@@ -47,9 +47,9 @@ extern POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
 
 extern TDisplayMgr* g_pDisplayMgr;
 
-extern int g_nUiAnimatorSurfaceBoundsWidth;   // 0x006a2228
+extern int g_nUiAnimatorSurfaceBoundsWidth; // 0x006a2228
 
-extern int g_nUiAnimatorSurfaceBoundsHeight;  // 0x006a222c
+extern int g_nUiAnimatorSurfaceBoundsHeight; // 0x006a222c
 
 extern TMacViewMgr* g_pStrategicMapViewSystem;
 
@@ -61,17 +61,16 @@ extern TLanguageMgr* g_pLanguageMgr;
 
 extern TAnimator* g_pUiAnimator;
 
-
 // Active root of the in-progress UI resource tree and the entry currently being registered.
 extern TView* g_pUiResourceHead;
 
-extern POINT g_ptTechItemModalMessage;                // @ 0x6a5820
+extern POINT g_ptTechItemModalMessage; // @ 0x6a5820
 
 extern POINT g_ptLoungeNationReplacementModalMessage; // @ 0x6a3d98
 
-extern POINT g_ptQueryFloaterModalMessage;            // @ 0x6a4048
+extern POINT g_ptQueryFloaterModalMessage; // @ 0x6a4048
 
-extern POINT g_ptGameSetupModalMessage;               // @ 0x6a4218
+extern POINT g_ptGameSetupModalMessage; // @ 0x6a4218
 
 extern int g_lastClickedMapTileIndex_006a4608;
 
@@ -83,7 +82,7 @@ extern char g_szMultiplayerSavePrefix_00698710[];
 
 extern char g_szSingleSlotSavePrefix_00698718[];
 
-extern char g_ScenarioSaveNameBuffer_006A2178[0x30];     // scenario name for save flow
+extern char g_ScenarioSaveNameBuffer_006A2178[0x30]; // scenario name for save flow
 
 extern char* g_pszDescriptorDefaultName_00653300;
 
@@ -91,12 +90,10 @@ extern char g_szUiCloseParen_006973C8[];
 
 extern POINT g_ptCivilianOrderModalMessage; // @ 0x6a2d40
 
-
 // Zone status-code PRNG seed (0x6a5aec): reseeded from the scenario tag string hash at
 // the start of RegenerateAllMapActionContextStatusCodes, then advanced by the LCG in
 // GenerateZoneStatusCodeIfUnset (x = x*0x15a4e35 + 1).
 extern unsigned int g_zoneStatusCodePrngSeed_006a5aec;
-
 
 // Game singleton pointers (markers in global_data_tables.cpp).
 extern TZone* g_pMapActionContextListHead;
@@ -111,13 +108,11 @@ extern TMapMgr* g_pGlobalMapState;
 
 extern TCivMgr* g_pSelectedCivilianOrderState; // 0x6a43dc — the TCivMgr instance
 
-
 // Seed viewport offsets copied into TWorldView::viewportOrigin60.x/Y by the TOceanDialog
 // ctor; the only known writer (0x56a3b0) zeroes both.
 extern int g_nOceanDialogSeedViewportOffsetX; // 0x6a3ff0
 
 extern int g_nOceanDialogSeedViewportOffsetY; // 0x6a3ff4
-
 
 // Per-ability unit-order cost profile rows (see TUnitOrder::SetOrderCostProfile). 0x695cd0.
 extern short g_aUnitOrderCostProfileByAbilityId[0x1e][7];
@@ -137,7 +132,6 @@ extern const int g_hexRowOffset_00697468[6];
 
 extern const int g_hexColOffsetOddRow_00697480[6];
 
-
 // Map-generation PRNG state (LCG: x = x*0x15a4e35 + 1) and the region-seed grid dimensions,
 // shared by the city-region seeding/template passes.
 extern unsigned int g_mapGenLcgState_006a38e8;
@@ -145,7 +139,6 @@ extern unsigned int g_mapGenLcgState_006a38e8;
 extern int g_regionSeedGridRows_006a38ec;
 
 extern int g_regionSeedGridCols_006a38f0;
-
 
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
@@ -162,7 +155,6 @@ extern char s_szColonSeparator_00696b10[];
 extern char s_mcflavor_00696d10[];
 
 extern char s_mcflavor_006976e0[];
-
 
 extern char s_mcflavor_00698b0c[];
 
@@ -1390,9 +1382,9 @@ extern double g_dNavyDamageSplitRatioB_00669f18; // 0.75
 // ratio = hexDistance / (range * 0.5).
 extern double g_dNavyHitChanceRangeScale_00669ef8; // 0.5
 
-extern float g_fNavyHitChanceCubeOffset_00669f00;  // -1.0
+extern float g_fNavyHitChanceCubeOffset_00669f00; // -1.0
 
-extern float g_fNavyHitChanceNumerator_00669f04;   // 80.0
+extern float g_fNavyHitChanceNumerator_00669f04; // 80.0
 
 extern "C" {
 extern "C" float g_fMissionScoreNormalizationDivisor;
@@ -1412,7 +1404,6 @@ extern short g_civilianTileOrderCursorTokenTable[];
 extern int g_anUnitTypeTacticalRangeByType_006699E8[30];
 
 extern short g_awTacticalUnitCategoryCodeBySlot[];
-
 
 // Per-unit-type combat/composition class (0x695380), read by
 // FormStacks when building a TArmyStack's
@@ -1476,7 +1467,6 @@ extern const unsigned char g_bDrawOceanNationLabels;
 extern CDC* g_pQuickDrawMemoryDc;
 
 extern const int g_pTradeSummarySelectionMap[23];
-
 
 // 0x6a4280..0x6a4310 — secondary (minor-power) nation rows; TMinor layout
 // (military unit list at +0x44 summed by 0x004e0fe0/0x004e1300).
@@ -1634,7 +1624,6 @@ extern "C" const double g_TradePowerIdentity_0066D8E0;
 extern "C" const short g_aTradeItemBasePriceByCategory_0069A910[0x11];
 
 extern "C" int g_defaultDropShadowTextColor;
-
 
 // Placeholder strings baked into the turn-event dialog builders (season/treasury/info
 // text shown until real values are bound).
@@ -1801,7 +1790,6 @@ extern "C" const char g_szUiFailureMessage[];
 // 8000 + nationSlot. GenerateProvinceNames resets all 23 entries before each pass.
 extern "C" short g_anProvinceNameOrdinalByNationSlot_006a5af0[23];
 
-
 // Assert source-path strings for the UViewMgr TU family.
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[];
 
@@ -1823,13 +1811,11 @@ extern const char* const g_pRegistryAutoResKey_0063E048;
 
 extern const char* const g_pRegistryLanguageKey_0063E04C;
 
-
 // Shared empty-string literal (ImperialismApp/TCountry/TIncludeView/
 // TLowDiskWarningDialog/TModuleLibraryCacheTableStateB/TSimMgr).
 extern char g_szEmptyString[];
 
 extern int g_adwEngineerRailBuildCostByTerrainType[16];
-
 
 // TControlSeaZoneMission.cpp / TDefendProvinceMission.cpp / TNavyMission.cpp —
 // defend-province / mission priority-vector normalization constants.
@@ -1879,7 +1865,6 @@ extern const float g_MissionEmptyResourceWeight_0065AA24;
 // calculated priority contribution.
 extern const double g_BeachheadMissionPriorityNormalization_0065AA30;
 
-
 // TMapMgr.cpp — per-resourceType requirement level table (0x513610).
 extern unsigned char g_abUniversityRequirementLevelById[24][4];
 
@@ -1897,10 +1882,8 @@ extern unsigned char g_abResourceTypeAlwaysQualifies[24];
 // range); same caller as above.
 extern unsigned char g_abGateFlagQualifies[24];
 
-
 // TMinor.cpp — ApplyIndexedResourceDeltaAndAdjustNationTotals scale constant.
 extern float g_ApplyIndexedResourceDeltaScale_00653728;
-
 
 // TMission.cpp — default mission score constant.
 extern const float g_MissionDefaultScore_0065a468;
@@ -1920,7 +1903,6 @@ extern const float g_DefenderMinisterWeight_00654908;
 extern const double g_BullyWeightLow_00654910;
 
 extern const double g_BullyWeightHigh_00654918;
-
 
 extern const float g_UnreferencedConstant_006545d4;
 
@@ -1944,7 +1926,6 @@ extern int g_ResetStateDword6A1F38;
 
 extern int g_ResetStateDword6A1F3C;
 
-
 // TSimMgr_AdvanceGlobalTurnStateMachine.cpp — debug tag literal passed to
 // TSimMgr::RebuildMapContextAndGlobalMapState.
 extern const char s_Chunk_00698C0C[];
@@ -1953,14 +1934,12 @@ extern "C" char g_bMultiplayerScenarioSetupActive;
 
 extern "C" const char s_PictWvGobPathFormat_00698BF4[];
 
-
 // TZone.cpp — zone-graph BFS distance cache (see bd 1uj.16).
 extern int g_nMapActionContextCount;
 
 extern void* g_pMapActionContextDistanceCache;
 
 extern int g_nMapActionContextDistanceCacheSizedFor;
-
 
 // TGameSetupPicture.cpp — main-menu 'rand' button developer cheat gate: holding shift
 // while clicking only takes the instant-random-map shortcut when this flag is set

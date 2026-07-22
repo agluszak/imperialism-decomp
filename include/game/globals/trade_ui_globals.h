@@ -7,4 +7,3 @@
 extern POINT g_ptControlStringModalMessage;
 
 extern short g_offerDeskSelectionIndexTable_00668568[8];
-

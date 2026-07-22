@@ -18,7 +18,7 @@ extern CList<void*, void*> g_WNetPendingPacketList006a5f40;
 
 extern POINT g_ptNetworkModalMessage006a5ed8;
 
-extern POINT g_ptNationAwolModalMessage;              // @ 0x6a3d08
+extern POINT g_ptNationAwolModalMessage; // @ 0x6a3d08
 
 extern const char* const g_pszClientSavePrefix_0065BF5C; // "cli_" @ 0x65bf5c
 
