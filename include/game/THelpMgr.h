@@ -6,7 +6,7 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 class TSortedPtrList;
-class TView;
+class TWindow;
 class TCivUnit;
 
 // Mac oracle: HelpSetRecord — 0xe bytes stored in TSortedPtrList (recordSize14 0xe).
@@ -96,8 +96,8 @@ public:
   // 0x2e (ctor 0x5005f3 writes word [this+0x2e]; read at 0x5bfae6 as the help detail level).
 #pragma pack(push, 2)
   TSortedPtrList* indexList;
-  TView* pendingDialogView8;
-  TView* pendingDialogViewC;
+  TWindow* pendingDialogView8;
+  TWindow* pendingDialogViewC;
   // Five independent completion counters consumed by
   // TryShowCivilianCompletionMilestoneNotification. Their short widths and offsets are
   // explicit in the increment/compare instructions at 0x005038b0.
