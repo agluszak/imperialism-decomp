@@ -4,6 +4,7 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
+#include "game/strategic_terrain.h"
 
 // Forward declarations for types referenced by generated signatures.
 class TCivUnit;
@@ -17,18 +18,20 @@ struct GlobalMapTileRecord {
 };
 
 struct TTerrainStateRecordView {
-  // Region/terrain class (0-7), the switch key read by the map-gen resource-assignment
-  // dispatcher (0x511610) and by several rendering-variant lookups (e.g. 0x516150); also
-  // widely compared against fixed small values (2/3/5) elsewhere in this file and in
-  // TZone.cpp/TCivMgr.cpp. Confirmed via raw-listing cross-checks across those callers --
-  // not padding.
-  // Signed: the rendering-variant lookup family (0x516150/0x5161a0/0x5161e0/0x516220)
-  // reads this with MOVSX when computing a table index, not MOVZX.
-  signed char terrainType00;
+  // Packed StrategicTerrainKind representation. Signed MOVSX reads are confirmed by
+  // 0x516150/0x5161a0/0x5161e0/0x516220; -1 is the unassigned sentinel. Keep this byte
+  // private by convention and use GetTerrainKind/SetTerrainKind in game-owned code.
+  StrategicTerrainKindStorage terrainKindStorage00;
+  StrategicTerrainKind GetTerrainKind() const {
+    return static_cast<StrategicTerrainKind>(terrainKindStorage00);
+  }
+  void SetTerrainKind(StrategicTerrainKind terrainKind) {
+    terrainKindStorage00 = static_cast<StrategicTerrainKindStorage>(terrainKind);
+  }
   // Per-tile sprite/adjacency variant index, read by the rendering-variant lookup family
   // (0x516150/0x5161a0/0x5161e0/0x516220) and written by
   // UpdateMapTileAdjacencyMasksAndVariantForTile's streak-length bookkeeping. Same
-  // evidence basis as terrainType00 above; also MOVSX-read there.
+  // evidence basis as terrainKindStorage00 above; also MOVSX-read there.
   signed char spriteVariantIndex01;
   unsigned char roadFlag;
   // Previous owner-nation tag: the map context info panel (0x51b1c0) compares it with
@@ -52,7 +55,7 @@ struct TTerrainStateRecordView {
   // touched when UpdateTileNeighborBorderInfluenceCounters's mode param != 2). Not padding.
   unsigned char cityBorderMask08; // 0x08
   // Per-direction "this land tile borders open water" bitmask, same accumulation site;
-  // only ever written for a non-water tile whose neighbor is water. Not padding.
+  // only ever written for a non-water tile whose neighbor has water terrain. Not padding.
   unsigned char waterAdjacencyMask09; // 0x09
   unsigned char adjacencyMaskA0a;     // 0x0a -- per-direction bit mask (land coastline/edges)
   unsigned char adjacencyMaskB0b;     // 0x0b -- per-direction bit mask (region/water borders)
@@ -76,7 +79,7 @@ struct TTerrainStateRecordView {
   // reset to 0xff by TMapDialog's marker-release path. Read MOVSX (signed).
   signed char markerSlotIndex10;
   signed char resourceTypeByEdge[2];
-  // Signed: same MOVSX-index evidence as terrainType00/spriteVariantIndex01 above.
+  // Signed: same MOVSX-index evidence as terrainKindStorage00/spriteVariantIndex01 above.
   signed char gateFlag;
   short cityRecordIndex;
   // Tile action class (structure/site type): equality-compared against 2..6/0xe/0x10/0x11
@@ -100,6 +103,7 @@ struct TTerrainStateRecordView {
   unsigned char pad1e[0x20 - 0x1e];
   TCivUnit* firstCivilianOrder20; // 0x20
 };
+ASSERT_SIZE(TTerrainStateRecordView, 0x24);
 
 // Field evidence beyond the original recovery: TMultiplayerMgr::DispatchCityRedrawInvalidateEvent
 // (0x54abf0) snapshots the whole record field-by-field and skips exactly bytes 0x09, 0x3d and
@@ -132,7 +136,7 @@ struct Province {
   unsigned char pad3D;
   // Secondary/primary same-cityRecordIndex neighbor tile index, chosen by
   // TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority (0x50fca0) via a
-  // per-terrainType00 priority table (g_anTerrainTypeNeighborLinkPriority), with same-city
+  // per-terrainKindStorage00 priority table (g_anStrategicTerrainNeighborLinkPriority), with same-city
   // neighbors preferred; also snapshotted by the city-redraw packet.
   short secondaryNeighborTileIndex3e; // 0x3e
   short primaryNeighborTileIndex40;   // 0x40
@@ -249,7 +253,8 @@ public:
   virtual undefined LoadPoliticalMapRegionSubtypeTableFromResourceStream(); // slot 0x0c 0x50f200
   virtual unsigned char*
   UpdateMapTileAdjacencyMasksAndVariantForTile(short tileIndex); // slot 0x0d 0x510210
-  // If tileIndex's gateFlag != 1 (not yet initialized): resets terrainType00 to 0 and
+  // If tileIndex's gateFlag != 1 (not yet initialized): resets the strategic terrain kind
+  // to plains and
   // resourceTypeByEdge to {0x11, 0xff}, refreshes gateFlag via
   // ResolveRegionTileSubtypeCodeForTileIndex, then for each hex neighbor clears the
   // corresponding "opposite direction" bit in that neighbor's adjacencyMaskA0a if set.
@@ -266,10 +271,10 @@ public:
   // mismatches.
   virtual void UpdateTileNeighborBorderInfluenceCounters(short tileIndex,
                                                          short mode); // slot 0x0f 0x50fe10
-  // Map-gen resource-type assignment for a single tile: for water (terrainType00==5), marks
-  // resourceTypeByEdge[0]=0x13 if any hex neighbor is land; for the other 7 terrain classes,
+  // Map-gen resource-type assignment for a single tile: for water, marks
+  // resourceTypeByEdge[0]=0x13 if any hex neighbor is land; for the other seven terrain kinds,
   // rolls the map-gen LCG against fixed percentage thresholds to assign resourceTypeByEdge[0]
-  // (terrainType00==3 can additionally fill resourceTypeByEdge[1]), then always resolves and
+  // (mountain can additionally fill resourceTypeByEdge[1]), then always resolves and
   // stores the tile's border/subtype code via ResolveRegionTileSubtypeCodeForTileIndex into
   // gateFlag.
   virtual short UpdateStrategicMapTileIconVariantState(short tileIndex); // slot 0x10 0x511610
@@ -337,7 +342,8 @@ public:
   virtual void SeedRecruitSearchVisitedStateFromSelectedCivilianOrder(
       class TCivUnit* unusedOrder); // slot 0x1e 0x514e80
   // Seeds recruitSearchVisited0e like the SeedRecruitSearchVisitedState* family: eligible
-  // only if the tile is owned by nationTag and its terrainType00 isn't 2/3/4, gated further
+  // only if the tile is owned by nationTag and its terrain kind is not hills, mountain, or
+  // swamp, gated further
   // by IsValidSecondaryNationHomeTileCandidate (0x513980, not yet ported).
   virtual void SeedValidCitySiteCandidateTilesForNation(short nationTag); // slot 0x1f 0x514dc0
   // Resets recruitSearchVisited0e to 0 across all tiles and clears field9 back to idle.
@@ -410,14 +416,14 @@ public:
   // TTechMgr::OrderCapRow's tech-status gate comments (ids 0x17/0x06/0x0c)).
   virtual void MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(
       class TCivUnit* pCivilianOrderEntry); // slot 0x28 0x5159b0
-  // Same shape as ProfileA (slot 0x28), but the terrainType00 gate is a per-call local
+  // Same shape as ProfileA (slot 0x28), but the terrain-kind gate is a per-call local
   // 8-entry table built from the same 3 OrderCapRow checks (rather than ProfileA's shared
   // global table), and it additionally clears the origin tile's own recruitSearchVisited0e
   // when its regionSubtypeTag05 is -1 or its city's fortLevel03 is below 3.
   virtual void MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(
       class TCivUnit* pCivilianOrderEntry); // slot 0x29 0x515b10
   // Picks 2 of cityRecordIndex's 6 hex neighbors as "linked" tiles, ranked by
-  // g_anTerrainTypeNeighborLinkPriority[terrainType00] (same-cityRecordIndex neighbors get a
+  // g_anStrategicTerrainNeighborLinkPriority[GetTerrainKind()] (same-cityRecordIndex neighbors get a
   // +0x14 bonus in the second pass): the top-ranked same-city neighbor becomes
   // primaryNeighborTileIndex40, then the next-best remaining neighbor (any city) becomes
   // secondaryNeighborTileIndex3e. The original assumes both passes find a direction;
@@ -747,7 +753,7 @@ public:
   // g_pGlobalMapState at every callsite.
   char HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(short tileIndex);
 
-  // 0x514110. Resolves a tile's border/subtype icon code from terrainType00, keyed off
+  // 0x514110. Resolves a tile's border/subtype icon code from its StrategicTerrainKind, keyed off
   // resourceTypeByEdge[0]/gateFlag/activeFlags1c depending on terrain class; falls back to
   // returning gateFlag verbatim once it's been assigned (non-(-1)). Called by the region
   // subtype/border-refresh family (0x50f200, 0x5107e0, 0x511a70, 0x514a20, 0x515f80) and by

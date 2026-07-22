@@ -161,7 +161,7 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
   int i;
   for (i = 0; i < 0x1950; ++i) {
     TTerrainStateRecordView* tile = &terrainStateTable[i];
-    tile->terrainType00 = -1;
+    tile->SetTerrainKind(kStrategicTerrainUnassigned);
     tile->spriteVariantIndex01 = 0;
     tile->roadFlag = 0;
     tile->formerOwnerNationTag03 = -1;
@@ -423,7 +423,7 @@ void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {
   // (AllocateAndResetTerrainAndCityScoreTables left the lists empty).
   short tile;
   for (tile = 0; tile < 0x1950; ++tile) {
-    if (terrainStateTable[tile].terrainType00 != 5) {
+    if (terrainStateTable[tile].GetTerrainKind() != kStrategicTerrainWater) {
       short tileIndex = tile;
       short cityRec = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
       cityScoreTable[cityRec].linkedRegionIds[cityScoreTable[cityRec].linkedRegionCount] =
@@ -509,7 +509,7 @@ void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {
               record->linkedRegionIds[static_cast<int>(g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) %
                                       record->linkedRegionCount];
         } else {
-          // Prefer flat terrain (types 0/7) among the interior tiles.
+          // Prefer plains and farmland among the interior tiles.
           short flatTiles[0x18];
           short flatCount = 0;
           int j = interiorCount;
@@ -517,8 +517,10 @@ void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {
             const short* interiorWalker = interiorTiles;
             do {
               short candidate = *interiorWalker;
-              short terrainType = g_pGlobalMapState->terrainStateTable[candidate].terrainType00;
-              if (terrainType == 0 || terrainType == 7) {
+              StrategicTerrainKind terrainKind =
+                  g_pGlobalMapState->terrainStateTable[candidate].GetTerrainKind();
+              if (terrainKind == kStrategicTerrainPlains ||
+                  terrainKind == kStrategicTerrainFarmland) {
                 flatTiles[flatCount] = candidate;
                 ++flatCount;
               }
@@ -577,9 +579,9 @@ void TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(int cityRecor
     if (neighbors[d] != -1) {
       TTerrainStateRecordView* neighbor = &terrainStateTable[neighbors[d]];
       if (neighbor->cityRecordIndex == cityRecordIndex) {
-        if (bestPriority < g_anTerrainTypeNeighborLinkPriority[neighbor->terrainType00]) {
+        if (bestPriority < g_anStrategicTerrainNeighborLinkPriority[neighbor->GetTerrainKind()]) {
           bestDirection = d;
-          bestPriority = g_anTerrainTypeNeighborLinkPriority[neighbor->terrainType00];
+          bestPriority = g_anStrategicTerrainNeighborLinkPriority[neighbor->GetTerrainKind()];
         }
       }
     }
@@ -592,7 +594,7 @@ void TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(int cityRecor
   for (d = 0; d < 6; ++d) {
     if (neighbors[d] != -1 && !consumed[d]) {
       TTerrainStateRecordView* neighbor = &terrainStateTable[neighbors[d]];
-      short priority = g_anTerrainTypeNeighborLinkPriority[neighbor->terrainType00];
+      short priority = g_anStrategicTerrainNeighborLinkPriority[neighbor->GetTerrainKind()];
       if (neighbor->cityRecordIndex == cityRecordIndex) {
         priority += 0x14;
       }
@@ -625,7 +627,7 @@ void TMapMgr::UpdateTileNeighborBorderInfluenceCounters(short tileIndex, short m
   ComputeHexNeighborTileIndices(tileIndex, neighbors, hexNeighborWrapHorizontally20);
 
   TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
-  bool isWater = tile->terrainType00 == 5;
+  bool isWater = tile->GetTerrainKind() == kStrategicTerrainWater;
 
   for (int d = 0; d < 6; ++d) {
     short neighborTile = neighbors[d];
@@ -635,11 +637,11 @@ void TMapMgr::UpdateTileNeighborBorderInfluenceCounters(short tileIndex, short m
     }
     TTerrainStateRecordView* neighbor = &terrainStateTable[neighborTile];
     if (isWater) {
-      if (mode == 0 && neighbor->terrainType00 == 5 &&
+      if (mode == 0 && neighbor->GetTerrainKind() == kStrategicTerrainWater &&
           neighbor->ownerNationTag04 != tile->ownerNationTag04) {
         tile->ownerBorderMask07 += kHexDirectionBitMask[d];
       }
-    } else if (neighbor->terrainType00 == 5) {
+    } else if (neighbor->GetTerrainKind() == kStrategicTerrainWater) {
       tile->waterAdjacencyMask09 += kHexDirectionBitMask[d];
     } else {
       if (neighbor->ownerNationTag04 != tile->ownerNationTag04) {
@@ -660,7 +662,8 @@ void TMapMgr::UpdateTileNeighborBorderInfluenceCounters(short tileIndex, short m
       }
       TTerrainStateRecordView* tileA = &terrainStateTable[neighborA];
       TTerrainStateRecordView* tileB = &terrainStateTable[neighborB];
-      if (tileA->terrainType00 == 5 || tileB->terrainType00 == 5) {
+      if (tileA->GetTerrainKind() == kStrategicTerrainWater ||
+          tileB->GetTerrainKind() == kStrategicTerrainWater) {
         continue;
       }
       if (tileA->ownerNationTag04 != tileB->ownerNationTag04) {
@@ -721,7 +724,7 @@ unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(short tileI
   short neighbors[6];
   unsigned char* result;
 
-  if (terrainStateTable[tileIndex].terrainType00 != 5) {
+  if (terrainStateTable[tileIndex].GetTerrainKind() != kStrategicTerrainWater) {
     ComputeHexNeighborTileIndices(tileIndex, neighbors, hexNeighborWrapHorizontally20);
     result = reinterpret_cast<unsigned char*>(terrainStateTable);
     for (int d = 0; d < 6; ++d) {
@@ -731,29 +734,30 @@ unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(short tileI
             (unsigned char)g_hexDirectionBitMasks_00696e40[d];
       }
     }
-    if (terrainStateTable[tileIndex].terrainType00 == 2) {
+    if (terrainStateTable[tileIndex].GetTerrainKind() == kStrategicTerrainHills) {
       for (int d = 0; d < 6; ++d) {
         if (neighbors[d] != -1) {
-          if (terrainStateTable[neighbors[d]].terrainType00 == 3) {
+          if (terrainStateTable[neighbors[d]].GetTerrainKind() == kStrategicTerrainMountain) {
             terrainStateTable[tileIndex].adjacencyMaskB0b |=
                 (unsigned char)g_hexDirectionBitMasks_00696e40[d];
           }
-          if (terrainStateTable[neighbors[d]].terrainType00 == 2) {
+          if (terrainStateTable[neighbors[d]].GetTerrainKind() == kStrategicTerrainHills) {
             terrainStateTable[tileIndex].adjacencyMaskA0a |=
                 (unsigned char)g_hexDirectionBitMasks_00696e40[d];
           }
         }
       }
     }
-    if (terrainStateTable[tileIndex].terrainType00 == 3) {
+    if (terrainStateTable[tileIndex].GetTerrainKind() == kStrategicTerrainMountain) {
       for (int d = 0; d < 6; ++d) {
-        if (neighbors[d] != -1 && terrainStateTable[neighbors[d]].terrainType00 == 2) {
+        if (neighbors[d] != -1 &&
+            terrainStateTable[neighbors[d]].GetTerrainKind() == kStrategicTerrainHills) {
           terrainStateTable[tileIndex].adjacencyMaskB0b |=
               (unsigned char)g_hexDirectionBitMasks_00696e40[d];
         }
       }
     }
-    if (terrainStateTable[tileIndex].terrainType00 == 3) {
+    if (terrainStateTable[tileIndex].GetTerrainKind() == kStrategicTerrainMountain) {
       g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
       result = 0;
       if ((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0) {
@@ -824,7 +828,8 @@ unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(short tileI
     ComputeHexNeighborTileIndices(tileIndex, neighbors, hexNeighborWrapHorizontally20);
     unsigned int lcg = g_mapGenLcgState_006a38e8;
     for (int d = 0; d < 6; ++d) {
-      if (neighbors[d] != -1 && terrainStateTable[neighbors[d]].terrainType00 != 5) {
+      if (neighbors[d] != -1 &&
+          terrainStateTable[neighbors[d]].GetTerrainKind() != kStrategicTerrainWater) {
         terrainStateTable[tileIndex].adjacencyMaskB0b |=
             (unsigned char)g_hexDirectionBitMasks_00696e40[d];
         g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
@@ -920,7 +925,7 @@ void TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded(int tileIndex) {
     return;
   }
 
-  tile->terrainType00 = 0;
+  tile->SetTerrainKind(kStrategicTerrainPlains);
   tile->resourceTypeByEdge[0] = -1;
   tile->resourceTypeByEdge[1] = -1;
   tile->resourceTypeByEdge[0] = 0x11;
@@ -947,7 +952,7 @@ int TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex) {
   int result = 0;
   TTerrainStateRecordView* tiles = terrainStateTable;
   TTerrainStateRecordView* cur = &tiles[iTileIndex];
-  if (cur->terrainType00 != 5) {
+  if (cur->GetTerrainKind() != kStrategicTerrainWater) {
     char code = cur->roadFlag;
     switch (code) {
     case 1:
@@ -1194,13 +1199,14 @@ short __stdcall ResolveRiverSpriteVariantForConnectionMask(unsigned char connect
 // FUNCTION: IMPERIALISM 0x00511610
 short TMapMgr::UpdateStrategicMapTileIconVariantState(short tileIndex) {
   TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
-  switch (static_cast<unsigned char>(tile->terrainType00)) {
-  case 5: {
+  switch (static_cast<unsigned char>(tile->GetTerrainKind())) {
+  case kStrategicTerrainWater: {
     short neighbors[6];
     ComputeHexNeighborTileIndices(tileIndex, neighbors, hexNeighborWrapHorizontally20);
     bool foundLandNeighbor = false;
     for (int i = 0; i < 6; ++i) {
-      if (neighbors[i] != -1 && terrainStateTable[neighbors[i]].terrainType00 != 5) {
+      if (neighbors[i] != -1 &&
+          terrainStateTable[neighbors[i]].GetTerrainKind() != kStrategicTerrainWater) {
         foundLandNeighbor = true;
       }
     }
@@ -1209,7 +1215,7 @@ short TMapMgr::UpdateStrategicMapTileIconVariantState(short tileIndex) {
     }
     break;
   }
-  case 0: {
+  case kStrategicTerrainPlains: {
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     unsigned int roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
     if (roll % 100 < 10) {
@@ -1231,7 +1237,7 @@ short TMapMgr::UpdateStrategicMapTileIconVariantState(short tileIndex) {
     }
     break;
   }
-  case 7: {
+  case kStrategicTerrainFarmland: {
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     unsigned int roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
     if (roll % 100 < 0x37) {
@@ -1241,11 +1247,11 @@ short TMapMgr::UpdateStrategicMapTileIconVariantState(short tileIndex) {
     }
     break;
   }
-  case 1:
+  case kStrategicTerrainForest:
     tile->resourceTypeByEdge[0] = 2;
     break;
-  case 4:
-  case 6: {
+  case kStrategicTerrainSwamp:
+  case kStrategicTerrainDesert: {
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     unsigned int roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
     if (roll % 100 < 0xf) {
@@ -1253,7 +1259,7 @@ short TMapMgr::UpdateStrategicMapTileIconVariantState(short tileIndex) {
     }
     break;
   }
-  case 2: {
+  case kStrategicTerrainHills: {
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     unsigned int roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
     if (roll % 100 < 0xc) {
@@ -1273,7 +1279,7 @@ short TMapMgr::UpdateStrategicMapTileIconVariantState(short tileIndex) {
     }
     break;
   }
-  case 3: {
+  case kStrategicTerrainMountain: {
     int edgeIndex = 0;
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     unsigned int roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
@@ -2002,12 +2008,14 @@ short TMapMgr::FindMaxResourceCapabilityValueForTile(short tileIndex, char categ
 char TMapMgr::CanBuildPortAtTile(short tileIndex) {
   TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
   char result = 0;
-  if (tile->terrainType00 != 3 && tile->terrainType00 != 2) {
+  if (tile->GetTerrainKind() != kStrategicTerrainMountain &&
+      tile->GetTerrainKind() != kStrategicTerrainHills) {
     short neighbors[6];
     ComputeHexNeighborTileIndices(tileIndex, neighbors, hexNeighborWrapHorizontally20);
     for (short direction = 0; direction < 6; ++direction) {
       short neighbor = neighbors[direction];
-      if (neighbor != -1 && terrainStateTable[neighbor].terrainType00 == 5) {
+      if (neighbor != -1 &&
+          terrainStateTable[neighbor].GetTerrainKind() == kStrategicTerrainWater) {
         result = 1;
         break;
       }
@@ -2021,18 +2029,18 @@ char TMapMgr::CanBuildPortAtTile(short tileIndex) {
 }
 // sea tile reachable without crossing into another nation's territory. Not (region class
 // 2 or 3): scans the 6 hex neighbors for an unclaimed (tileActionClass16 == -1) sea tile
-// (terrainType00 == 5) none of whose own 6 neighbors belong to a different, non-unclaimed
+// (water terrain) none of whose own 6 neighbors belong to a different, non-unclaimed
 // nation (ownerNationTag04 < 0x17 and != this tile's own owner). Falls back to
 // EvaluateTerrainFlowCrossNationBoundaryToSea when no such neighbor exists but this tile
 // has a road/feature flow code.
 // FUNCTION: IMPERIALISM 0x00513980
 bool TMapMgr::IsValidSecondaryNationHomeTileCandidate(short tileIndex) {
   TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
-  signed char terrainType = tile->terrainType00;
+  StrategicTerrainKind terrainKind = tile->GetTerrainKind();
   short homeNation = tile->ownerNationTag04;
   bool isValid = false;
 
-  if (terrainType != 3 && terrainType != 2) {
+  if (terrainKind != kStrategicTerrainMountain && terrainKind != kStrategicTerrainHills) {
     short row = static_cast<short>(tileIndex / 0x6c);
     short colX2 = static_cast<short>(row % 2 + (tileIndex % 0x6c) * 2);
 
@@ -2053,7 +2061,8 @@ bool TMapMgr::IsValidSecondaryNationHomeTileCandidate(short tileIndex) {
         candidateTile = -1;
       }
 
-      if (candidateTile != -1 && terrainStateTable[candidateTile].terrainType00 == 5) {
+      if (candidateTile != -1 &&
+          terrainStateTable[candidateTile].GetTerrainKind() == kStrategicTerrainWater) {
         isValid = true;
         short seaRow = static_cast<short>(candidateTile / 0x6c);
         short seaColX2 = static_cast<short>(seaRow % 2 + (candidateTile % 0x6c) * 2);
@@ -2146,7 +2155,8 @@ char TMapMgr::HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(short tileI
     if (neighborTile < 0 || neighborTile >= 0x1950) {
       neighborTile = -1;
     }
-    if (neighborTile != -1 && terrainStateTable[neighborTile].terrainType00 == 5) {
+    if (neighborTile != -1 &&
+        terrainStateTable[neighborTile].GetTerrainKind() == kStrategicTerrainWater) {
       short neighborNation = terrainStateTable[neighborTile].ownerNationTag04;
       if (g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(neighborNation)
               ->HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(originNation) == 0) {
@@ -2233,8 +2243,8 @@ void TMapMgr::ApplyEngineerRailCostDeltaForConnectedTiles(short tileA, short til
 // FUNCTION: IMPERIALISM 0x00514110
 short TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex(short tileIndex) {
   TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
-  switch (static_cast<unsigned char>(tile->terrainType00)) {
-  case 0:
+  switch (static_cast<unsigned char>(tile->GetTerrainKind())) {
+  case kStrategicTerrainPlains:
     if (tile->resourceTypeByEdge[0] == 0) {
       return 2;
     }
@@ -2245,18 +2255,18 @@ short TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex(short tileIndex) {
       return 3;
     }
     return (tile->activeFlags1c & 2) ? 0xe : 1;
-  case 1:
+  case kStrategicTerrainForest:
     if (tile->gateFlag == -1) {
       return 0xd;
     }
     return tile->gateFlag;
-  case 2:
+  case kStrategicTerrainHills:
     return (tile->resourceTypeByEdge[0] != 1) + 7;
-  case 3:
+  case kStrategicTerrainMountain:
     return 9;
-  case 4:
+  case kStrategicTerrainSwamp:
     return 0xa;
-  case 6:
+  case kStrategicTerrainDesert:
     if (tile->gateFlag != -1) {
       return tile->gateFlag;
     } else {
@@ -2269,7 +2279,7 @@ short TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex(short tileIndex) {
       }
       return 0xb;
     }
-  case 7:
+  case kStrategicTerrainFarmland:
     return (tile->resourceTypeByEdge[0] != 0x11) + 5;
   default:
     return 0;
@@ -2511,8 +2521,9 @@ void TMapMgr::SeedValidCitySiteCandidateTilesForNation(short nationTag) {
   field9 = 1;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
-    if (tile->ownerNationTag04 == nationTag && tile->terrainType00 != 2 &&
-        tile->terrainType00 != 3 && tile->terrainType00 != 4) {
+    if (tile->ownerNationTag04 == nationTag && tile->GetTerrainKind() != kStrategicTerrainHills &&
+        tile->GetTerrainKind() != kStrategicTerrainMountain &&
+        tile->GetTerrainKind() != kStrategicTerrainSwamp) {
       tile->recruitSearchVisited0e = IsValidSecondaryNationHomeTileCandidate(tileIndex) ? 0 : 1;
     } else {
       tile->recruitSearchVisited0e = 1;
@@ -2679,7 +2690,7 @@ void TMapMgr::MapMgrSlot23(TCivUnit* pCivilianOrderEntry) {
   unsigned char nationBit = 1 << nationTag;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
-    if (tile->terrainType00 == 5) {
+    if (tile->GetTerrainKind() == kStrategicTerrainWater) {
       tile->recruitSearchVisited0e = 0;
       continue;
     }
@@ -2712,7 +2723,7 @@ void TMapMgr::MapMgrSlot24(TCivUnit* pCivilianOrderEntry) {
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
     tile->recruitSearchVisited0e = 1;
-    if (tile->terrainType00 == 5) {
+    if (tile->GetTerrainKind() == kStrategicTerrainWater) {
       continue;
     }
     if (tile->ownerNationTag04 < 7) {
@@ -2766,7 +2777,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateByCapabilityThreshold(TCivUnit* pCivi
   short nationTag = pCivilianOrderEntry->field_18;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
-    if (tile->terrainType00 == 5) {
+    if (tile->GetTerrainKind() == kStrategicTerrainWater) {
       tile->recruitSearchVisited0e = 1;
       continue;
     }
@@ -2822,7 +2833,7 @@ void TMapMgr::MarkType5NeighborTilesUnavailableByNationCapability(TCivUnit* pCiv
         continue;
       }
       TTerrainStateRecordView* neighbor = &terrainStateTable[neighbors[d]];
-      if (neighbor->terrainType00 != 5) {
+      if (neighbor->GetTerrainKind() != kStrategicTerrainWater) {
         continue;
       }
       if (neighbor->regionSubtypeTag05 != townTag5) {
@@ -2887,24 +2898,24 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(
   short nationTag = pCivilianOrderEntry->field_18;
   short tileIndex = pCivilianOrderEntry->tileIndex06;
 
-  // These flags sit at the head of orderCapRows277[nationTag]'s record (offsets 6/0xc); they
-  // used to be reached via the previous row at the old +0xf phase, now corrected.
+  // Each researched technology enables another terrain in the shared capability profile.
+  // The listing writes 0x00696f0c/0a/0b: indices 4/2/3 from the table base 0x00696f08.
   if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x06] == 2) {
-    g_bSeedGateNotifyFlag_00696f0c = 1;
+    g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainSwamp] = 1;
   }
   if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x0c] == 2) {
-    g_bSeedGateNotifyFlag_00696f0a = 1;
+    g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainHills] = 1;
   }
   if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x17] == 2) {
-    g_bSeedGateNotifyFlag_00696f0b = 1;
+    g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainMountain] = 1;
   }
 
-  if (g_abTerrainTypeSeedGateProfileA[terrainStateTable[tileIndex].terrainType00] != 0) {
+  if (g_abStrategicTerrainSeedGateProfileA[terrainStateTable[tileIndex].GetTerrainKind()] != 0) {
     short* neighbors = BuildHexAreaTileIndexList(tileIndex, 1);
     unsigned char directionBit = 0;
     for (int d = 0; d < 6; ++d) {
       TTerrainStateRecordView* neighbor = &terrainStateTable[neighbors[d]];
-      if (g_abTerrainTypeSeedGateProfileA[neighbor->terrainType00] != 0 &&
+      if (g_abStrategicTerrainSeedGateProfileA[neighbor->GetTerrainKind()] != 0 &&
           neighbor->ownerNationTag04 == nationTag &&
           ((1 << directionBit) & terrainStateTable[tileIndex].adjacencyBits06) == 0) {
         neighbor->recruitSearchVisited0e = 0;
@@ -2921,21 +2932,21 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(
   short tileIndex = pCivilianOrderEntry->tileIndex06;
   short nationTag = pCivilianOrderEntry->field_18;
 
-  unsigned char terrainTypeGate[8] = {1, 1, 0, 0, 0, 0, 1, 1};
+  unsigned char terrainKindGate[kStrategicTerrainCount] = {1, 1, 0, 0, 0, 0, 1, 1};
   if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x06] == 2) {
-    terrainTypeGate[4] = 1;
-    terrainTypeGate[5] = 0;
-    terrainTypeGate[6] = 1;
-    terrainTypeGate[7] = 1;
+    terrainKindGate[kStrategicTerrainSwamp] = 1;
+    terrainKindGate[kStrategicTerrainWater] = 0;
+    terrainKindGate[kStrategicTerrainDesert] = 1;
+    terrainKindGate[kStrategicTerrainFarmland] = 1;
   }
   if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x0c] == 2) {
-    terrainTypeGate[0] = 1;
-    terrainTypeGate[1] = 1;
-    terrainTypeGate[2] = 1;
-    terrainTypeGate[3] = 0;
+    terrainKindGate[kStrategicTerrainPlains] = 1;
+    terrainKindGate[kStrategicTerrainForest] = 1;
+    terrainKindGate[kStrategicTerrainHills] = 1;
+    terrainKindGate[kStrategicTerrainMountain] = 0;
   }
   if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x17] == 2) {
-    terrainTypeGate[3] = 1;
+    terrainKindGate[kStrategicTerrainMountain] = 1;
   }
 
   this->field9 = 1;
@@ -2944,7 +2955,7 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(
   }
 
   TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
-  if (terrainTypeGate[tile->terrainType00] != 0) {
+  if (terrainKindGate[tile->GetTerrainKind()] != 0) {
     if (tile->regionSubtypeTag05 == -1 || cityScoreTable[tile->cityRecordIndex].fortLevel03 < 3) {
       tile->recruitSearchVisited0e = 0;
     }
@@ -2953,7 +2964,7 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(
     unsigned char directionBit = 0;
     for (int d = 0; d < 6; ++d) {
       TTerrainStateRecordView* neighbor = &terrainStateTable[neighbors[d]];
-      if (terrainTypeGate[neighbor->terrainType00] != 0 &&
+      if (terrainKindGate[neighbor->GetTerrainKind()] != 0 &&
           neighbor->ownerNationTag04 == nationTag &&
           ((1 << directionBit) & tile->adjacencyBits06) == 0) {
         neighbor->recruitSearchVisited0e = 0;
@@ -3073,12 +3084,12 @@ void TMapMgr::SetCapitalCityDevelopmentStageIfValidNationSlot(int nationSlotPara
   }
 }
 
-// terrainType00 == 3 (region class 3) selects a per-spriteVariantIndex01 column;
-// every other terrainType00 always reads column 0 of the same gateFlag row.
+// Mountain selects a per-spriteVariantIndex01 column; every other strategic terrain kind
+// always reads column 0 of the same gateFlag row.
 // FUNCTION: IMPERIALISM 0x00516150
 short TMapMgr::LookupTileSpriteVariantOffsetByTerrainAndGate(short nTileIndex) {
   TTerrainStateRecordView* tile = &terrainStateTable[nTileIndex];
-  if (tile->terrainType00 == 3) {
+  if (tile->GetTerrainKind() == kStrategicTerrainMountain) {
     return g_awTileSpriteVariantOffsetTable38[tile->gateFlag][tile->spriteVariantIndex01];
   }
   return g_awTileSpriteVariantOffsetTable38[tile->gateFlag][0];
@@ -3675,7 +3686,7 @@ char TMapMgr::LoadScenarioMapStateFromTableResource(int scenarioIndex) {
   int row;
   for (row = 0; row < 0x3c; ++row) {
     short rowTile = static_cast<short>(row * 0x6c);
-    if (terrainStateTable[rowTile].terrainType00 == 5) {
+    if (terrainStateTable[rowTile].GetTerrainKind() == kStrategicTerrainWater) {
       terrainStateTable[rowTile].waterAdjacencyMask09 = 0;
       terrainStateTable[rowTile].adjacencyMaskB0b = 0;
       terrainStateTable[rowTile].spriteVariantIndex01 = 0;
@@ -4331,7 +4342,7 @@ short TraceTerrainFlowToNearestSeaTile(short tileIndex) {
     for (int stepCount = 0; stepCount < 100; ++stepCount) {
       walkTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(walkTile, stepDirection);
       TTerrainStateRecordView& walkRecord = terrainTable[walkTile];
-      if (walkRecord.terrainType00 == 5) {
+      if (walkRecord.GetTerrainKind() == kStrategicTerrainWater) {
         return walkTile;
       }
 
@@ -4365,7 +4376,7 @@ short TraceTerrainFlowToNearestSeaTile(short tileIndex) {
 }
 
 // Sibling of TraceTerrainFlowToNearestSeaTile: walks the same roadFlag-driven flow chain
-// (same type-remap/direction tables, same terrainType00==5 sea-reached terminal), but from
+// (same type-remap/direction tables, same water-terrain terminal), but from
 // `tileIndex`'s own starting owner nation, tracking whether the flow crosses into a
 // differently-owned tile before reaching the sea. Tries flow variant 0 first (setting
 // crossedBoundary and continuing to walk on a first crossing), then variant 1 (returning 1
@@ -4400,7 +4411,7 @@ char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(short tileIndex) {
         return crossedBoundary;
       }
       TTerrainStateRecordView& walkRecord = terrainTable[walkTile];
-      if (walkRecord.terrainType00 == 5) {
+      if (walkRecord.GetTerrainKind() == kStrategicTerrainWater) {
         return crossedBoundary;
       }
 

@@ -122,7 +122,7 @@ void TMapMaker::AssignCityRegionIdsFromOverlayScanlineIntersections() {
       col = cellX + -0x6c;
     }
     char* tile = mapTileGrid08 + (col + rowBase) * 0x24;
-    if (*tile == '\x05' && region != -1) {
+    if (*tile == kStrategicTerrainWater && region != -1) {
       tile[4] = static_cast<char>(region) + '\x17';
     }
     leftCol = col;

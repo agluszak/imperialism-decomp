@@ -48,7 +48,8 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
     menuItemIds94[count++] = 0x16;
   }
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].ownerBorderMask07 != 0) {
-    if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainType00 != 5) {
+    if (g_pGlobalMapState->terrainStateTable[nTileIndex].GetTerrainKind() !=
+        kStrategicTerrainWater) {
       menuItemIds94[count++] = 0x13;
     } else {
       menuItemIds94[count++] = 0x32;
@@ -175,7 +176,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   titlePane->SetTextAlignmentAndMaybeRefresh(1, 0);
   titlePane->InstallTextStyle(titleStyle, 0);
 
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainType00 == 5) {
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].GetTerrainKind() == kStrategicTerrainWater) {
     TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
     zone->AssignZoneDisplayNameToOutputRef(&strInfoText);
   } else {

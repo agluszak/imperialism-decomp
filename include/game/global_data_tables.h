@@ -15,6 +15,7 @@
 #include "game/TCountry.h"
 #include "game/TDisplayMgr.h"
 #include "game/quickdraw_regions.h"
+#include "game/strategic_terrain.h"
 #include "game/TGreatPower.h"
 #include "game/TMacViewMgr.h"
 #include "game/TMinor.h"
@@ -1065,30 +1066,22 @@ extern unsigned char g_abGateFlagQualifies[24];
 extern short g_Build_Hex_Area_LookupTable_00696E70[];
 extern short g_Build_Hex_Area_LookupTable_00696E80[];
 
-// TMapMgr.cpp — per-terrainType00 gate table read by
-// MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA for both the origin tile and each of
-// its hex neighbors. Only indices 0-5 are meaningful (terrainType00's real range); read raw at
-// 0x00696f08, ground truth for the game's 6 terrain types.
-extern unsigned char g_abTerrainTypeSeedGateProfileA[6];
+// TMapMgr.cpp — per-StrategicTerrainKind capability table at 0x00696f08, read by
+// MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA for both the origin tile and each
+// of its hex neighbors. Technology checks update its Hills, Mountain, and Swamp elements;
+// the old model incorrectly split those three bytes into standalone flag globals.
+extern unsigned char g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainCount];
 
-// TMapMgr.cpp — per-terrainType00 priority score, read by
+// TMapMgr.cpp — per-StrategicTerrainKind priority score, read by
 // TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority (0x50fca0) to rank same-city
 // hex neighbors when picking primaryNeighborTileIndex40/secondaryNeighborTileIndex3e. Indexed
-// 0-7 (terrainType00's declared range); read raw at 0x00696e10.
-extern short g_anTerrainTypeNeighborLinkPriority[8];
+// all eight strategic terrain kinds; read raw at 0x00696e10.
+extern short g_anStrategicTerrainNeighborLinkPriority[kStrategicTerrainCount];
 
 // TMapMgr.cpp — running region-marker id, assigned to a tile's regionSubtypeTag05 by
 // TMapMgr::FloodFillTileRegionMarker (0x5143d0) and incremented (low 16 bits only) after each
 // call. Read raw at 0x00696d90 (initial value 1).
 extern int g_nNextRegionMarkerId;
-
-// TMapMgr.cpp — three single-byte UI/notification flags set by
-// MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA when a nation-indexed
-// TTechMgr::OrderCapRow padding byte reads 2; purpose beyond that one comparison not
-// identified.
-extern unsigned char g_bSeedGateNotifyFlag_00696f0a;
-extern unsigned char g_bSeedGateNotifyFlag_00696f0b;
-extern unsigned char g_bSeedGateNotifyFlag_00696f0c;
 
 // TMapMgr.cpp — per-tile sprite-variant bitmap-strip offset tables, indexed
 // [gateFlag][spriteVariantIndex01] (table39 by spriteVariantIndex01 alone). Read by the

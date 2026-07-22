@@ -1025,8 +1025,9 @@ int TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore() {
     TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
     if (static_cast<short>(tile->ownerNationTag04) == nationSlot &&
         g_pGlobalMapState->IsValidSecondaryNationHomeTileCandidate(static_cast<short>(tileIndex))) {
-      short terrainType = tile->terrainType00;
-      if (terrainType == 0 || terrainType == 7 || terrainType == 1 || terrainType == 6) {
+      StrategicTerrainKind terrainKind = tile->GetTerrainKind();
+      if (terrainKind == kStrategicTerrainPlains || terrainKind == kStrategicTerrainFarmland ||
+          terrainKind == kStrategicTerrainForest || terrainKind == kStrategicTerrainDesert) {
         candidateTown->tileIndex14 = static_cast<short>(tileIndex);
         candidateTown->CalculateCityResources();
 
@@ -1414,10 +1415,10 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
     resourceWeights[6] = orderTypeTable12A[6] + 10;
   }
 
-  char prospectableTerrain[8] = {0, 0, 1, 1, 0, 0, 0, 0};
+  char prospectableTerrain[kStrategicTerrainCount] = {0, 0, 1, 1, 0, 0, 0, 0};
   if (hasOilProspecting) {
-    prospectableTerrain[4] = 1;
-    prospectableTerrain[6] = 1;
+    prospectableTerrain[kStrategicTerrainSwamp] = 1;
+    prospectableTerrain[kStrategicTerrainDesert] = 1;
   }
 
   for (short tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
@@ -1438,7 +1439,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
     }
 
     bool hasActiveProspecting = false;
-    if (prospectableTerrain[tile->terrainType00] != 0) {
+    if (prospectableTerrain[tile->GetTerrainKind()] != 0) {
       for (TCivUnit* order = tile->firstCivilianOrder20; order != 0;
            order = static_cast<TCivUnit*>(order->nextOnTile)) {
         if (order->field_8 == 13 && order->remainingTurns24 == 8) {
@@ -1447,8 +1448,10 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
       }
       bool developmentBlocked = (tile->pendingDevelopmentFlag0d & (1 << nationSlot)) != 0 ||
                                 (g_pGlobalMapState->field24 != 0 &&
-                                 (tile->terrainType00 == 2 || tile->terrainType00 == 3 ||
-                                  tile->terrainType00 == 4 || tile->terrainType00 == 6));
+                                 (tile->GetTerrainKind() == kStrategicTerrainHills ||
+                                  tile->GetTerrainKind() == kStrategicTerrainMountain ||
+                                  tile->GetTerrainKind() == kStrategicTerrainSwamp ||
+                                  tile->GetTerrainKind() == kStrategicTerrainDesert));
       if (!hasActiveProspecting && !developmentBlocked && prospectingOrderCount != 0 &&
           relationScale[minorNation] != 0.0f) {
         InsertScoredTileCandidateWithRandomTieBreak(relationScale[minorNation], tileIndex,
@@ -1772,18 +1775,18 @@ int TCityInteriorMinister::ScoreResource(int amount, int, int scorePerUnit) {
 // FUNCTION: IMPERIALISM 0x004c3640
 char* TCityInteriorMinister::CreateSeaDistanceMap(TShortintList* ownedTiles) {
   short nationSlot = ownerContextAt04->nationSlot;
-  char allowedTerrain[8];
-  allowedTerrain[0] = 1;
-  allowedTerrain[1] = 1;
-  allowedTerrain[2] =
+  char allowedTerrain[kStrategicTerrainCount];
+  allowedTerrain[kStrategicTerrainPlains] = 1;
+  allowedTerrain[kStrategicTerrainForest] = 1;
+  allowedTerrain[kStrategicTerrainHills] =
       g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[12] == 2;
-  allowedTerrain[3] =
+  allowedTerrain[kStrategicTerrainMountain] =
       g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[23] == 2;
-  allowedTerrain[4] =
+  allowedTerrain[kStrategicTerrainSwamp] =
       g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[6] == 2;
-  allowedTerrain[5] = 0;
-  allowedTerrain[6] = 1;
-  allowedTerrain[7] = 1;
+  allowedTerrain[kStrategicTerrainWater] = 0;
+  allowedTerrain[kStrategicTerrainDesert] = 1;
+  allowedTerrain[kStrategicTerrainFarmland] = 1;
 
   char* distanceMap = new char[0x1950];
   memset(distanceMap, 0, 0x1950);
@@ -1805,8 +1808,9 @@ char* TCityInteriorMinister::CreateSeaDistanceMap(TShortintList* ownedTiles) {
     short previousRemaining = static_cast<short>(remaining);
     for (ordinal = 0; ordinal < ownedTiles->count; ++ordinal) {
       short tileIndex = ownedTiles->values[ordinal];
-      short terrainType = g_pGlobalMapState->terrainStateTable[tileIndex].terrainType00;
-      if (distanceMap[tileIndex] == 0 && allowedTerrain[terrainType] != 0) {
+      StrategicTerrainKind terrainKind =
+          g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind();
+      if (distanceMap[tileIndex] == 0 && allowedTerrain[terrainKind] != 0) {
         short neighbors[6];
         TMapMgr::ComputeHexNeighborTileIndices(tileIndex, neighbors,
                                                g_pGlobalMapState->hexNeighborWrapHorizontally20);
@@ -1836,18 +1840,18 @@ char* TCityInteriorMinister::CreateSeaDistanceMap(TShortintList* ownedTiles) {
 char* TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates(
     TShortintList* ownedTiles) {
   short nationSlot = ownerContextAt04->nationSlot;
-  char allowedTerrain[8];
-  allowedTerrain[0] = 1;
-  allowedTerrain[1] = 1;
-  allowedTerrain[2] =
+  char allowedTerrain[kStrategicTerrainCount];
+  allowedTerrain[kStrategicTerrainPlains] = 1;
+  allowedTerrain[kStrategicTerrainForest] = 1;
+  allowedTerrain[kStrategicTerrainHills] =
       g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[11] == 2;
-  allowedTerrain[3] =
+  allowedTerrain[kStrategicTerrainMountain] =
       g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[19] == 2;
-  allowedTerrain[4] =
+  allowedTerrain[kStrategicTerrainSwamp] =
       g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[5] == 2;
-  allowedTerrain[5] = 0;
-  allowedTerrain[6] = 1;
-  allowedTerrain[7] = 1;
+  allowedTerrain[kStrategicTerrainWater] = 0;
+  allowedTerrain[kStrategicTerrainDesert] = 1;
+  allowedTerrain[kStrategicTerrainFarmland] = 1;
 
   char* distanceMap = new char[0x1950];
   memset(distanceMap, 0, 0x1950);
@@ -1856,7 +1860,7 @@ char* TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates(
   for (ordinal = 0; ordinal < ownedTiles->count; ++ordinal) {
     short tileIndex = ownedTiles->values[ordinal];
     TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
-    if (tile->regionSubtypeTag05 == -1 && allowedTerrain[tile->terrainType00] != 0 &&
+    if (tile->regionSubtypeTag05 == -1 && allowedTerrain[tile->GetTerrainKind()] != 0 &&
         g_pGlobalMapState->HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(tileIndex)) {
       distanceMap[tileIndex] = 1;
       --remaining;
@@ -1867,8 +1871,9 @@ char* TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates(
     short previousRemaining = static_cast<short>(remaining);
     for (ordinal = 0; ordinal < ownedTiles->count; ++ordinal) {
       short tileIndex = ownedTiles->values[ordinal];
-      short terrainType = g_pGlobalMapState->terrainStateTable[tileIndex].terrainType00;
-      if (distanceMap[tileIndex] == 0 && allowedTerrain[terrainType] != 0) {
+      StrategicTerrainKind terrainKind =
+          g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind();
+      if (distanceMap[tileIndex] == 0 && allowedTerrain[terrainKind] != 0) {
         short neighbors[6];
         TMapMgr::ComputeHexNeighborTileIndices(tileIndex, neighbors,
                                                g_pGlobalMapState->hexNeighborWrapHorizontally20);

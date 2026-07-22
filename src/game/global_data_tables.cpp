@@ -1050,15 +1050,12 @@ unsigned char g_abGateFlagQualifies[24] = {
 short g_Build_Hex_Area_LookupTable_00696E70[6] = {1, 2, 1, -1, -2, -1};
 short g_Build_Hex_Area_LookupTable_00696E80[6] = {-1, 0, 1, 1, 0, -1};
 
-unsigned char g_abTerrainTypeSeedGateProfileA[6] = {1, 1, 0, 0, 0, 0};
+unsigned char g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainCount] = {1, 1, 0, 0,
+                                                                              0, 0, 1, 1};
 
-short g_anTerrainTypeNeighborLinkPriority[8] = {10, 4, 7, 6, 8, 0, 9, 5};
+short g_anStrategicTerrainNeighborLinkPriority[kStrategicTerrainCount] = {10, 4, 7, 6, 8, 0, 9, 5};
 
 int g_nNextRegionMarkerId = 1;
-
-unsigned char g_bSeedGateNotifyFlag_00696f0a = 0;
-unsigned char g_bSeedGateNotifyFlag_00696f0b = 0;
-unsigned char g_bSeedGateNotifyFlag_00696f0c = 0;
 
 // Per-tile sprite-variant bitmap-strip offset tables, indexed [gateFlag][spriteVariantIndex01]
 // (or, for the 39-suffixed table, by spriteVariantIndex01 alone). Read by

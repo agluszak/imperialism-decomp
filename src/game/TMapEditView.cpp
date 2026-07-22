@@ -81,7 +81,7 @@ void TMapEditView::DoPostCreate(int arg) {
                                               -1, -1, -1, -1, -1, 2,  -1};
   for (int tileIndex = 0; tileIndex < kMapTileCount; ++tileIndex) {
     TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-    if (tile.terrainType00 != 5) {
+    if (tile.GetTerrainKind() != kStrategicTerrainWater) {
       tile.resourceTypeByEdge[0] = defaultResourceByProfile[tile.gateFlag];
       tile.resourceTypeByEdge[1] = -1;
     }
@@ -96,7 +96,7 @@ void TMapEditView::HandleMapClickByInteractionMode(short tileIndex, int inputFla
   ownerContext->ResolveControlByTag(kControlTagEcon)->AssertValid();
 
   TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-  if (tile.terrainType00 == 5 && editorActionMode368 != 5) {
+  if (tile.GetTerrainKind() == kStrategicTerrainWater && editorActionMode368 != 5) {
     return;
   }
 
@@ -211,7 +211,7 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
 
   for (index = 0; index < kMapTileCount; ++index) {
     TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[index];
-    if (tile.terrainType00 != 5 || tile.ownerNationTag04 >= 0x17) {
+    if (tile.GetTerrainKind() != kStrategicTerrainWater || tile.ownerNationTag04 >= 0x17) {
       continue;
     }
 
@@ -221,7 +221,8 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
     for (int direction = 0; direction < 6; ++direction) {
       TTerrainStateRecordView& neighbor =
           g_pGlobalMapState->terrainStateTable[neighbors[direction]];
-      if (neighbor.terrainType00 == 5 && neighbor.ownerNationTag04 >= 0x17) {
+      if (neighbor.GetTerrainKind() == kStrategicTerrainWater &&
+          neighbor.ownerNationTag04 >= 0x17) {
         tile.ownerNationTag04 = neighbor.ownerNationTag04;
       }
     }
@@ -231,7 +232,7 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
 // FUNCTION: IMPERIALISM 0x0051d380
 void TMapEditView::PlaceTerrain(short tileIndex) {
   TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-  tile.terrainType00 = static_cast<signed char>(editorActionValue36c);
+  tile.SetTerrainKind(static_cast<StrategicTerrainKind>(editorActionValue36c));
   ClearTileAdjacencyRenderCache(tile);
   g_pGlobalMapState->UpdateMapTileAdjacencyMasksAndVariantForTile(tileIndex);
   InvalidateTile(tileIndex);
@@ -266,7 +267,7 @@ void TMapEditView::DefaultResources(short tileIndex) {
 
   g_pSfxPlaybackSystem->PlaySoundEffect(4000);
   tile.gateFlag = static_cast<signed char>(editorActionValue36c);
-  tile.terrainType00 = static_cast<signed char>(terrainByProfile[editorActionValue36c]);
+  tile.SetTerrainKind(static_cast<StrategicTerrainKind>(terrainByProfile[editorActionValue36c]));
   ClearTileAdjacencyRenderCache(tile);
   tile.resourceTypeByEdge[0] = static_cast<signed char>(resourceByProfile[tile.gateFlag]);
   tile.resourceTypeByEdge[1] = -1;
@@ -340,8 +341,9 @@ void TMapEditView::PlaceRail(short tileIndex) {
 // FUNCTION: IMPERIALISM 0x0051dba0
 void TMapEditView::PlaceRiver(short tileIndex) {
   TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-  short variant = ResolveRiverSpriteVariantForConnectionMask(
-      static_cast<unsigned char>(editorActionValue36c), tile.terrainType00 == 5);
+  short variant =
+      ResolveRiverSpriteVariantForConnectionMask(static_cast<unsigned char>(editorActionValue36c),
+                                                 tile.GetTerrainKind() == kStrategicTerrainWater);
   if (variant == -1) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5a);
     return;

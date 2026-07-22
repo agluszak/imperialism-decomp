@@ -378,7 +378,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
 
       TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
       int ownerTag = ClampOceanOwnerTag(tile.ownerNationTag04);
-      if (tile.terrainType00 != 5) {
+      if (tile.GetTerrainKind() != kStrategicTerrainWater) {
         SetQuickDrawFillColorFromPaletteIndex(g_aOceanMapOwnerPaletteIndexByNationTag[ownerTag]);
         FillRectWithQuickDrawBrushAndContextOffset(&tileRect);
       }

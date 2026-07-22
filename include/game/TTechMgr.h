@@ -67,10 +67,10 @@ public:
   // sets techs 0..2 to 2 and zeroes the rest; readers index it dynamically by tech id
   // (0x5b0a20/0x5b0a90/0x5b12e0/0x5b192c). Specific tech ids gate named capabilities and
   // used to carry per-flag field names:
-  //   [0x06] TMapMgr order gate (DAT_00696f0c)     [0x0b] intermediate fort (cap level 2)
-  //   [0x0c] TMapMgr order gate (DAT_00696f0a)     [0x0f] engineer gate (0x277)
+  //   [0x06] TMapMgr swamp-terrain capability      [0x0b] intermediate fort (cap level 2)
+  //   [0x0c] TMapMgr hills-terrain capability      [0x0f] engineer gate (0x277)
   //   [0x13] recruit tier (0x27b)                  [0x16] advanced fort (cap level 3)
-  //   [0x17] TMapMgr order gate (DAT_00696f0b)     [0x18] secondary capability (0x280)
+  //   [0x17] TMapMgr mountain-terrain capability   [0x18] secondary capability (0x280)
   // Fields formerly reached via orderCapRows277[nationTag - 1] (the apparent "previous
   // row", an artifact of the old +0xf phase) are just in-row bytes here.
   struct OrderCapRow {

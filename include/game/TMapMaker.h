@@ -4,6 +4,7 @@
 #include "game/TEventHandler.h"
 #include "game/TView.h"
 #include "game/mfc.h"
+#include "game/strategic_terrain.h"
 
 struct Province;
 
@@ -155,7 +156,7 @@ public:
   // append virtuals are owned in sea_geometry.cpp; see sea_geometry.h.
 
   // City-region id (tile[4] - 0x17) at a tile index, or -1 if the tile is out of range or
-  // not a city-region tile (tile[0] != 5). 0x0052a670.
+  // not a water tile. 0x0052a670.
   int GetCityRegionIdAtTileIndex(int tileIndex);
 
   // True when some column of regionClassGrid10 is entirely unassigned (all 15 rows == -1).

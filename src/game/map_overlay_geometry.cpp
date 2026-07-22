@@ -18,7 +18,7 @@
 // has a different city/region (cityRecordIndex != compareValue on both sides of the edge)
 // or forms a type-5 (ocean) pairing. Neighbor tile indices [0..5] come from
 // ComputeHexNeighborTileIndices. Called from TMacViewMgr's map-highlight pass. Reads the
-// typed TTerrainStateRecordView fields cityRecordIndex (+0x14) and terrainType00 (+0x00,
+// typed TTerrainStateRecordView fields cityRecordIndex (+0x14) and GetTerrainKind() (+0x00,
 // == 5 for ocean) directly, instead of the former raw `terrain + n*0x24 + off` casts.
 // FUNCTION: IMPERIALISM 0x00508f30
 void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
@@ -56,8 +56,8 @@ void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
     QDFrameRect(&edgeLowerRight);
   }
   if (neighborTiles[4] != -1 && neighborTiles[3] != -1 &&
-      terrain[neighborTiles[4]].terrainType00 == 5 &&
-      terrain[neighborTiles[3]].terrainType00 == 5) {
+      terrain[neighborTiles[4]].GetTerrainKind() == kStrategicTerrainWater &&
+      terrain[neighborTiles[3]].GetTerrainKind() == kStrategicTerrainWater) {
     QDFrameRect(&edgeUpperLeft);
   }
   if (neighborTiles[0] != -1 && neighborTiles[1] != -1 &&
@@ -66,8 +66,9 @@ void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
     QDFrameRect(&edgeCornerBR);
   }
   if (neighborTiles[4] != -1) {
-    if (neighborTiles[5] != -1 && terrain[neighborTiles[4]].terrainType00 == 5 &&
-        terrain[neighborTiles[5]].terrainType00 == 5) {
+    if (neighborTiles[5] != -1 &&
+        terrain[neighborTiles[4]].GetTerrainKind() == kStrategicTerrainWater &&
+        terrain[neighborTiles[5]].GetTerrainKind() == kStrategicTerrainWater) {
       QDFrameRect(&edgeCornerTL);
     }
     if (neighborTiles[3] != -1 && terrain[neighborTiles[4]].cityRecordIndex != compareValue &&
@@ -76,8 +77,8 @@ void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
     }
   }
   if (neighborTiles[1] != -1 && neighborTiles[2] != -1 &&
-      terrain[neighborTiles[1]].terrainType00 == 5 &&
-      terrain[neighborTiles[2]].terrainType00 == 5) {
+      terrain[neighborTiles[1]].GetTerrainKind() == kStrategicTerrainWater &&
+      terrain[neighborTiles[2]].GetTerrainKind() == kStrategicTerrainWater) {
     QDFrameRect(&edgeUpperRight);
   }
   if (neighborTiles[4] != -1 && neighborTiles[5] != -1 &&
@@ -86,8 +87,8 @@ void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
     QDFrameRect(&edgeCornerBL);
   }
   if (neighborTiles[1] != -1 && neighborTiles[0] != -1 &&
-      terrain[neighborTiles[1]].terrainType00 == 5 &&
-      terrain[neighborTiles[0]].terrainType00 == 5) {
+      terrain[neighborTiles[1]].GetTerrainKind() == kStrategicTerrainWater &&
+      terrain[neighborTiles[0]].GetTerrainKind() == kStrategicTerrainWater) {
     QDFrameRect(&edgeCornerTR);
   }
 }

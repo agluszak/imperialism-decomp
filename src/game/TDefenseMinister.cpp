@@ -312,7 +312,7 @@ TDefenseMinister::BuildTileRingPriorityMapForNationTileList(TLongintList* ownedR
     }
   }
 
-  // Pass 3: mark regions bordering a priority-3 tile, or a terrainType00==5 tile, with
+  // Pass 3: mark regions bordering a priority-3 tile, or a water tile, with
   // priority 2.
   for (int i3 = 1; i3 <= regionCount; ++i3) {
     short regionId = static_cast<short>(ownedRegions->At(i3));
@@ -320,7 +320,8 @@ TDefenseMinister::BuildTileRingPriorityMapForNationTileList(TLongintList* ownedR
     for (int dir = 0; dir < 6; ++dir) {
       short neighborTile = neighbors[dir];
       if (priorityMap[neighborTile] == 3 ||
-          g_pGlobalMapState->terrainStateTable[neighborTile].terrainType00 == 5) {
+          g_pGlobalMapState->terrainStateTable[neighborTile].GetTerrainKind() ==
+              kStrategicTerrainWater) {
         priorityMap[regionId] = 2;
       }
     }

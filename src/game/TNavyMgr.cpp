@@ -1491,7 +1491,7 @@ unsigned short TNavyMgr::SelectionCursor(short nTileIndex, int nInputFlags) {
     return g_awMapContextActionLabelTokenByCommand[0];
   }
 
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainType00 == 5) {
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].GetTerrainKind() == kStrategicTerrainWater) {
     TZone* context = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
     bool canResolve = false;
     if (context != nullptr && entry->IsEmpty() == 0) {
@@ -1602,7 +1602,8 @@ int TNavyMgr::DoTileClick(short nTileIndex, int nInputFlags) {
   int commandId;
   if (entry == nullptr) {
     commandId = 0;
-  } else if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainType00 == 5) {
+  } else if (g_pGlobalMapState->terrainStateTable[nTileIndex].GetTerrainKind() ==
+             kStrategicTerrainWater) {
     TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
     bool queueable;
     if (ctx == nullptr) {

@@ -516,8 +516,7 @@ void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int
   TEvent* event = new TEvent();
 
   int tileIndex = static_cast<short>(arg1);
-  char* terrainTable = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable);
-  if (terrainTable[tileIndex * 0x24] == '\x05') {
+  if (g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind() == kStrategicTerrainWater) {
     // ILT thunk 0x40318e resolves to TOcean::GetLinkedZoneForSeaTile on the
     // g_pActiveMapOrderContext singleton (same call TToolBarCluster uses).
     TZone* orderContext =

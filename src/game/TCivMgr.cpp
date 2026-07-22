@@ -344,8 +344,9 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
 
   switch (pCivilianOrderEntry->orderType) {
   case 5: {
-    unsigned char terrainType = g_pGlobalMapState->terrainStateTable[targetTileIndex].terrainType00;
-    refundAmount = g_adwEngineerRailBuildCostByTerrainType[terrainType];
+    StrategicTerrainKind terrainKind =
+        g_pGlobalMapState->terrainStateTable[targetTileIndex].GetTerrainKind();
+    refundAmount = g_adwEngineerRailBuildCostByTerrainType[terrainKind];
     g_pGlobalMapState->ApplyEngineerRailCostDeltaForConnectedTiles(
         targetTileIndex, subtypeOrTargetProvince, pCivilianOrderEntry->field_18);
     break;
@@ -618,8 +619,9 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
       }
     }
   } else { // adjacent tile click
-    int terrainType = g_pGlobalMapState->terrainStateTable[nTileIndex].terrainType00;
-    int cost = g_adwEngineerRailBuildCostByTerrainType[terrainType];
+    StrategicTerrainKind terrainKind =
+        g_pGlobalMapState->terrainStateTable[nTileIndex].GetTerrainKind();
+    int cost = g_adwEngineerRailBuildCostByTerrainType[terrainKind];
 
     short nationId = g_pSimMgr->GetActiveNationId();
     int cash = g_apNationStates[nationId]->diplomacyBudgetBase / 100 +

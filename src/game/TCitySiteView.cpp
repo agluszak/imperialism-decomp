@@ -143,7 +143,8 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
       short neighbor = neighborTiles[i];
       if (neighbor != -1 &&
           g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04 != activeNation &&
-          g_pGlobalMapState->terrainStateTable[neighbor].terrainType00 != 5) {
+          g_pGlobalMapState->terrainStateTable[neighbor].GetTerrainKind() !=
+              kStrategicTerrainWater) {
         neighborTiles[i] = -1;
       }
     }

@@ -704,7 +704,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
                                                           Province* contextProvince) {
   TTerrainStateRecordView& tileRecord =
       g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)];
-  if (tileRecord.terrainType00 != 5) {
+  if (tileRecord.GetTerrainKind() != kStrategicTerrainWater) {
     return 0;
   }
   if (static_cast<signed char>(tileRecord.tileActionClass16) != static_cast<signed char>(-1)) {
@@ -725,7 +725,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
         static_cast<short>(tileIndex), static_cast<short>(neighborDir));
     if (neighborTile != -1) {
       TTerrainStateRecordView& neighborRecord = g_pGlobalMapState->terrainStateTable[neighborTile];
-      if (neighborRecord.terrainType00 == 5) {
+      if (neighborRecord.GetTerrainKind() == kStrategicTerrainWater) {
         signed char neighborSubtype = static_cast<signed char>(neighborRecord.tileActionClass16);
         if ((neighborSubtype == 3) || (neighborSubtype == 0x0e)) {
           TZone* portZone = TZone::FindPortZoneByTile(neighborTile);
@@ -759,7 +759,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
   for (;;) {
     TTerrainStateRecordView& tileRecord =
         g_pGlobalMapState->terrainStateTable[static_cast<short>(tileCandidate)];
-    if (tileRecord.terrainType00 == 5) {
+    if (tileRecord.GetTerrainKind() == kStrategicTerrainWater) {
       TZone* zoneForTile = 0;
       if (g_pActiveMapOrderContext != 0) {
         zoneForTile =
@@ -773,7 +773,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
           if (neighborTile != -1) {
             TTerrainStateRecordView& neighborRecord =
                 g_pGlobalMapState->terrainStateTable[neighborTile];
-            if (neighborRecord.terrainType00 != 5) {
+            if (neighborRecord.GetTerrainKind() != kStrategicTerrainWater) {
               short cityStateLink = neighborRecord.cityRecordIndex;
               Province* province = 0;
               if (cityStateLink != -1) {
