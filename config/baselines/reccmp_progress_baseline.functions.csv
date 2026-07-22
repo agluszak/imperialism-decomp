@@ -4713,7 +4713,7 @@ address|matching|name
 0x57d950|1.0|TSimMgr::AdvanceSeason
 0x57d970|1.0|TSimMgr::StartNextPhase
 0x57d990|0.2803738317757009|TSimMgr::EnterOptionalPhase
-0x57da70|0.282981267437226|TSimMgr::AdvanceGlobalTurnStateMachine
+0x57da70|0.28616978876046234|TSimMgr::AdvanceGlobalTurnStateMachine
 0x57f0e0|1.0|TCountry::IsNationProfileInMinorRange100To199
 0x57f110|0.3333333333333333|TSimMgr::InLinearPhase
 0x57f140|0.7663551401869159|TSimMgr::DoCityAndTransport
@@ -5928,7 +5928,7 @@ address|matching|name
 0x5d7100|1.0|TViewMgr::PoseWarOfferIfTurnFlowReady
 0x5d7190|1.0|TViewMgr::NoOpTurnEventStateVtableSlotD4
 0x5d71b0|1.0|TViewMgr::DispatchNationActionToMainControl
-0x5d7240|0.1491395793499044|TViewMgr::DispatchTurnEvent
+0x5d7240|0.1489971346704871|TViewMgr::DispatchTurnEvent
 0x5d7c40|0.6666666666666666|TViewMgr::DispatchTurnEvent3B8AndWaitForCompletion
 0x5d7cb0|0.1471861471861472|TViewMgr::HandleTurnEvent7DB_SelectCityAndRefreshView
 0x5d7f70|1.0|TViewMgr::RefreshCityProductionUi

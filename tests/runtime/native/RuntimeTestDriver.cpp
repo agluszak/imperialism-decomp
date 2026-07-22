@@ -12,6 +12,7 @@
 #include "game/ImperialismApp.h"
 #include "game/TMapUberPicture.h"
 #include "game/TMapMgr.h"
+#include "game/TNewspaperView.h"
 #include "game/TPicture.h"
 #include "game/TRadioTextCluster.h"
 #include "game/TSetupRandomMapPicture.h"
@@ -30,7 +31,12 @@
 
 namespace {
 
-enum RuntimeTestKind { kRuntimeTestNone, kRuntimeTestBootManagers, kRuntimeTestRandomGame };
+enum RuntimeTestKind {
+  kRuntimeTestNone,
+  kRuntimeTestBootManagers,
+  kRuntimeTestRandomGame,
+  kRuntimeTestEasyRandomGame
+};
 
 enum RuntimeTestPhase {
   kRuntimeTestNotStarted,
@@ -40,6 +46,7 @@ enum RuntimeTestPhase {
   kRuntimeTestSettingCountryName,
   kRuntimeTestSelectingDifficulty,
   kRuntimeTestActivatingOkay,
+  kRuntimeTestWaitingForEasyStrategicMap,
   kRuntimeTestWaitingForStrategicMap,
   kRuntimeTestVerifyingStrategicMap,
   kRuntimeTestWaitingForModalDismissal,
@@ -65,18 +72,27 @@ struct RuntimeTestState {
   unsigned long phaseTicks;
   short selectedNationSlot;
   HWND mainWindowHandle;
+  bool newspaperAdvanced;
   char resultPath[MAX_PATH];
   char lastAction[64];
 };
 
 RuntimeTestState g_runtimeTestState = {
-    kRuntimeTestNone, kRuntimeTestNotStarted, 0, 0, -1, 0, "", ""};
+    kRuntimeTestNone, kRuntimeTestNotStarted, 0, 0, -1, 0, false, "", ""};
 CString g_randomSetupUiSnapshot;
 CString g_strategicMapUiSnapshot;
 CString g_capitalConfirmationUiSnapshot;
 CString g_activatedEventSequence("[");
 
+bool IsRandomGameTest() {
+  return g_runtimeTestState.kind == kRuntimeTestRandomGame ||
+         g_runtimeTestState.kind == kRuntimeTestEasyRandomGame;
+}
+
 const char* TestName() {
+  if (g_runtimeTestState.kind == kRuntimeTestEasyRandomGame) {
+    return "random_game_easy_skips_capital";
+  }
   if (g_runtimeTestState.kind == kRuntimeTestRandomGame) {
     return "random_game_enters_map";
   }
@@ -274,13 +290,13 @@ bool WriteResultFile(const char* status, const char* failure) {
       g_runtimeTestState.kind == kRuntimeTestRandomGame
           ? "[\"city_site_prompt\", \"city_site_prompt\", \"city_site_confirmation\"]"
           : "[]";
-  if (g_runtimeTestState.kind == kRuntimeTestRandomGame &&
+  if (IsRandomGameTest() &&
       (g_randomSetupUiSnapshot.IsEmpty() || g_strategicMapUiSnapshot.IsEmpty())) {
     status = "failed";
     failure = "\"generated UI factory snapshot is missing\"";
   }
   CString uiSnapshots("[");
-  if (g_runtimeTestState.kind == kRuntimeTestRandomGame) {
+  if (IsRandomGameTest()) {
     if (!g_randomSetupUiSnapshot.IsEmpty()) {
       uiSnapshots += "\n";
       uiSnapshots += g_randomSetupUiSnapshot;
@@ -315,6 +331,9 @@ bool WriteResultFile(const char* status, const char* failure) {
               "    \"active_nation\": %d,\n"
               "    \"selected_nation\": %d,\n"
               "    \"difficulty\": %d,\n"
+              "    \"multiplayer_role\": %d,\n"
+              "    \"turn_state\": %d,\n"
+              "    \"mode\": %d,\n"
               "    \"global_map\": %s,\n"
               "    \"display_manager\": %s,\n"
               "    \"global_ui_root\": %s,\n"
@@ -336,6 +355,8 @@ bool WriteResultFile(const char* status, const char* failure) {
               RuntimeClassName(mainView), g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1,
               g_runtimeTestState.selectedNationSlot,
               g_pSimMgr != 0 ? g_pSimMgr->difficultyLevel : -1,
+              g_pSimMgr != 0 ? g_pSimMgr->multiplayerSessionRole : -1,
+              g_pSimMgr != 0 ? g_pSimMgr->turnStateCode : -1, g_pSimMgr != 0 ? g_pSimMgr->mode : -1,
               g_pGlobalMapState != 0 ? "true" : "false", g_pDisplayMgr != 0 ? "true" : "false",
               g_pGlobalUiRootController != 0 ? "true" : "false", g_pSimMgr != 0 ? "true" : "false",
               g_pUiRuntimeContext != 0 ? "true" : "false", g_pUiViewManager != 0 ? "true" : "false",
@@ -412,6 +433,8 @@ void InitializeDriver() {
     g_runtimeTestState.kind = kRuntimeTestBootManagers;
   } else if (lstrcmpA(testName, "random_game_enters_map") == 0) {
     g_runtimeTestState.kind = kRuntimeTestRandomGame;
+  } else if (lstrcmpA(testName, "random_game_easy_skips_capital") == 0) {
+    g_runtimeTestState.kind = kRuntimeTestEasyRandomGame;
   } else {
     Finish("failed", "\"unknown compiled runtime test\"");
     return;
@@ -519,19 +542,29 @@ void RunSelectingDifficulty() {
       mainView != 0
           ? static_cast<TRadioTextCluster*>(mainView->ResolveControlByTag(kControlTagDiff))
           : 0;
-  TControl* normal = difficulty != 0
-                         ? static_cast<TControl*>(difficulty->ResolveControlByTag(kControlTagDif2))
-                         : 0;
-  if (difficulty == 0 || normal == 0) {
-    Fail("\"normal difficulty control is missing\"");
+  const unsigned long expectedTag =
+      g_runtimeTestState.kind == kRuntimeTestEasyRandomGame ? kControlTagDif1 : kControlTagDif2;
+  TControl* option =
+      difficulty != 0 ? static_cast<TControl*>(difficulty->ResolveControlByTag(expectedTag)) : 0;
+  if (difficulty == 0 || option == 0) {
+    Fail("\"requested difficulty control is missing\"");
     return;
   }
-  normal->HandleEvent(normal->GetEventNumber(), normal, 0);
-  if (difficulty->selectedTag88 != static_cast<int>(kControlTagDif2)) {
-    Fail("\"normal difficulty event was not applied\"");
+  if (g_runtimeTestState.kind == kRuntimeTestEasyRandomGame) {
+    if (!ClickViewThroughNativeHost(option)) {
+      Fail("\"easy difficulty control or native host is missing\"");
+      return;
+    }
+  } else {
+    option->HandleEvent(option->GetEventNumber(), option, 0);
+  }
+  if (difficulty->selectedTag88 != static_cast<int>(expectedTag)) {
+    Fail("\"requested difficulty event was not applied\"");
     return;
   }
-  SetPhase(kRuntimeTestActivatingOkay, "select_diff_dif2");
+  SetPhase(kRuntimeTestActivatingOkay, g_runtimeTestState.kind == kRuntimeTestEasyRandomGame
+                                           ? "click_diff_dif1"
+                                           : "select_diff_dif2");
   RequestAnotherDriverTick();
 }
 
@@ -543,8 +576,16 @@ void RunActivatingOkay() {
     Fail("\"okay control is missing\"");
     return;
   }
-  okay->HandleEvent(okay->GetEventNumber(), okay, 0);
-  SetPhase(kRuntimeTestWaitingForStrategicMap, "activate_okay");
+  if (g_runtimeTestState.kind == kRuntimeTestEasyRandomGame) {
+    if (!ClickViewThroughNativeHost(okay)) {
+      Fail("\"okay control or native host is missing\"");
+      return;
+    }
+    SetPhase(kRuntimeTestWaitingForEasyStrategicMap, "click_okay");
+  } else {
+    okay->HandleEvent(okay->GetEventNumber(), okay, 0);
+    SetPhase(kRuntimeTestWaitingForStrategicMap, "activate_okay");
+  }
   RequestAnotherDriverTick();
 }
 
@@ -556,6 +597,69 @@ bool NationModesMatchSelectedNation() {
     }
   }
   return true;
+}
+
+bool AdvanceInitialNewspaperIfNeeded() {
+  if (g_pUiRuntimeContext->currentTurnEventCode != 0x2103) {
+    return false;
+  }
+  TView* mainView = MainView();
+  if (!IsViewKindOf(mainView, RUNTIME_CLASS(TNewspaperView))) {
+    Fail("\"event 0x2103 did not construct the newspaper view\"");
+    return true;
+  }
+  if (g_runtimeTestState.newspaperAdvanced) {
+    WaitForNextTickOrTimeout("\"newspaper end action did not advance to the combined map\"");
+    return true;
+  }
+  TControl* endControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagEnd));
+  if (endControl == 0 || endControl->IsActionable() == 0) {
+    Fail("\"newspaper end control is missing or disabled\"");
+    return true;
+  }
+  g_runtimeTestState.newspaperAdvanced = true;
+  lstrcpynA(g_runtimeTestState.lastAction, "activate_newspaper_end",
+            sizeof(g_runtimeTestState.lastAction));
+  endControl->HandleEvent(endControl->GetEventNumber(), endControl, 0);
+  RequestAnotherDriverTick();
+  return true;
+}
+
+void RunWaitingForEasyStrategicMap() {
+  const int eventCode = g_pUiRuntimeContext->currentTurnEventCode;
+  if (eventCode == 0x3b8) {
+    Fail("\"Easy difficulty incorrectly entered capital-site selection\"");
+    return;
+  }
+  if (eventCode == 0x5e4) {
+    Fail("\"single-player Easy game incorrectly entered multiplayer synchronization\"");
+    return;
+  }
+  if (AdvanceInitialNewspaperIfNeeded()) {
+    return;
+  }
+  TView* mainView = MainView();
+  if (eventCode != 0x7dd || !IsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture))) {
+    WaitForNextTickOrTimeout("\"Easy random game did not reach the combined strategic map\"");
+    return;
+  }
+  if (!g_ModalViewStack.IsEmpty()) {
+    Fail("\"Easy random game unexpectedly displayed a modal capital prompt\"");
+    return;
+  }
+  if (g_pSimMgr->difficultyLevel != 1) {
+    Fail("\"native Easy selection did not store difficulty level 1\"");
+    return;
+  }
+  if (g_pSimMgr->multiplayerSessionRole != 0) {
+    Fail("\"single-player Easy game has a multiplayer session role\"");
+    return;
+  }
+  if (!NationModesMatchSelectedNation()) {
+    Fail("\"nation control modes do not match the Easy setup selection\"");
+    return;
+  }
+  Finish("passed", "null");
 }
 
 void RunWaitingForStrategicMap() {
@@ -918,6 +1022,9 @@ void RunWaitingForCitySiteConfirmation() {
 }
 
 void RunWaitingForCombinedMap() {
+  if (AdvanceInitialNewspaperIfNeeded()) {
+    return;
+  }
   WaitForNextTickOrTimeout("\"accepted city site did not advance to the combined map\"");
 }
 
@@ -999,6 +1106,9 @@ void RuntimeTestDriver::OnIdle() {
   case kRuntimeTestActivatingOkay:
     RunActivatingOkay();
     break;
+  case kRuntimeTestWaitingForEasyStrategicMap:
+    RunWaitingForEasyStrategicMap();
+    break;
   case kRuntimeTestWaitingForStrategicMap:
     RunWaitingForStrategicMap();
     break;
@@ -1051,31 +1161,36 @@ void RuntimeTestDriver::OnIdle() {
 }
 
 void RuntimeTestDriver::ObserveBuiltUiTree(int eventCode, TView* root) {
-  if (g_runtimeTestState.kind != kRuntimeTestRandomGame) {
+  if (!IsRandomGameTest()) {
     return;
   }
   if (eventCode == 0x5dd) {
     g_randomSetupUiSnapshot = CaptureUiSnapshot(eventCode, root);
-  } else if (eventCode == 0x3b8) {
+  } else if (eventCode == 0x3b8 ||
+             (g_runtimeTestState.kind == kRuntimeTestEasyRandomGame && eventCode == 0x7dd)) {
     g_strategicMapUiSnapshot = CaptureUiSnapshot(eventCode, root);
   }
 }
 
 void RuntimeTestDriver::ObserveActivatedTurnEvent(int eventCode) {
-  if (g_runtimeTestState.kind == kRuntimeTestRandomGame) {
+  if (IsRandomGameTest()) {
     CString event;
     event.Format("%s\"0x%04x\"", g_activatedEventSequence.GetLength() == 1 ? "" : ", ",
                  static_cast<unsigned short>(eventCode));
     g_activatedEventSequence += event;
   }
+  if (IsRandomGameTest() && g_pSimMgr != 0 && g_pSimMgr->multiplayerSessionRole == 0 &&
+      eventCode == 0x5e4) {
+    Fail("\"single-player game entered multiplayer synchronization event 0x5e4\"");
+    return;
+  }
+  if (g_runtimeTestState.kind == kRuntimeTestEasyRandomGame && eventCode == 0x3b8) {
+    Fail("\"Easy difficulty entered capital-site selection event 0x3b8\"");
+    return;
+  }
   if (g_runtimeTestState.kind != kRuntimeTestRandomGame ||
       (g_runtimeTestState.phase != kRuntimeTestWaitingForCitySiteConfirmation &&
        g_runtimeTestState.phase != kRuntimeTestWaitingForCombinedMap)) {
-    return;
-  }
-  if (eventCode == 0x5e4) {
-    SetPhase(kRuntimeTestWaitingForCombinedMap, "post_combined_map_after_city_setup");
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x7dd);
     return;
   }
   if (eventCode != 0x7dd) {
