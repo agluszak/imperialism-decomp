@@ -1,6 +1,7 @@
 #include "game/TDisplayMgr.h"
 
 #include <new>
+#include <windows.h>
 
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/CTemporaryRegion.h"
@@ -29,6 +30,11 @@ static void AssignUiFontGlobalFromLiteral(CString& globalSlot, const char* liter
 }
 
 } // namespace
+
+// FUNCTION: IMPERIALISM 0x004931e0
+void PlayDefaultMessageBeep() {
+  MessageBeep(static_cast<UINT>(-1));
+}
 
 // FUNCTION: IMPERIALISM 0x00497230
 GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized() {
