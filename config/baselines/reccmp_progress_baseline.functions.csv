@@ -5,7 +5,7 @@ address|matching|name
 0x412640|0.43548387096774194|OpenOrCreateCompanyProductRegistryKey
 0x412720|0.042105263157894736|OrphanCallChain_C7_I93_00412720
 0x412840|0.5634674922600619|ReadOrCreateRegistryStringValueWithFallback
-0x412a70|0.35294117647058826|GetMainViewHostFromActiveThread
+0x412a70|1.0|GetMainViewHostFromActiveThread
 0x412aa0|0.5|ImperialismApp::GetMessageMap
 0x412ac0|0.6744186046511628|ImperialismApp::ImperialismApp
 0x412bd0|1.0|CObject::Serialize
