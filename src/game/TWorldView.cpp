@@ -12,12 +12,14 @@
 #include "game/TGlobalMapState.h"
 #include "game/TMapMgr.h"
 #include "game/TMapUberPicture.h"
+#include "game/mapped_flavor_text.h"
 #include "game/TNavyMgr.h"
 #include "game/TOcean.h"
 #include "game/TToolBarCluster.h"
 #include "game/TUiEvent.h"
 #include "game/TViewMgr.h"
 #include "game/ScopedMapQuickDrawContext.h"
+#include "game/TSimMgr.h"
 #include "game/TTaskForce.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
@@ -71,7 +73,124 @@ void TWorldView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* ev
 
 // FUNCTION: IMPERIALISM 0x00595130
 void TWorldView::ForwardParam(int param) {
-  TEventHandler::ForwardParam(param);
+  TKeyCommandEvent* commandEvent = reinterpret_cast<TKeyCommandEvent*>(param);
+  CString message;
+
+  switch (commandEvent->commandCode) {
+  case 0x1b:
+    DispatchUiRuntimeMessage102CAndRefreshActiveView();
+    return;
+
+  case 'P':
+  case 'p': {
+    CString searchText(g_szEmptyString);
+    CString prompt;
+    g_pSimMgr->GetString(0x2758, 0xb, &prompt);
+    g_pUiRuntimeContext->MakePlanetSeedDialog(static_cast<LPCSTR>(prompt), searchText, 0, 0, 0, 0);
+
+    for (int cityIndex = 0; cityIndex < 0x180; ++cityIndex) {
+      CString cityName;
+      g_pGlobalMapState->AssignCityRecordDisplayName(cityIndex, &cityName);
+      if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(searchText)),
+                  reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(cityName))) == 0) {
+        CenterOn(g_pGlobalMapState->cityScoreTable[cityIndex].cityTileIndex04);
+        return;
+      }
+    }
+
+    if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(searchText)),
+                reinterpret_cast<const unsigned char*>(g_szEmptyString)) != 0) {
+      CString notFoundTemplate;
+      g_pSimMgr->GetString(0x2758, 0xd, &notFoundTemplate);
+      scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(notFoundTemplate),
+                             static_cast<LPCSTR>(searchText));
+      g_pUiRuntimeContext->ModalMessage(message, g_ptMapModeModalMessage, 0, 0);
+    }
+    return;
+  }
+
+  case 'O':
+  case 'o': {
+    CString searchText(g_szEmptyString);
+    CString prompt;
+    g_pSimMgr->GetString(0x2758, 0xc, &prompt);
+    g_pUiRuntimeContext->MakePlanetSeedDialog(static_cast<LPCSTR>(prompt), searchText, 0, 0, 0, 0);
+
+    for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+      CString zoneName;
+      zone->AssignZoneDisplayNameToOutputRef(&zoneName);
+      if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(searchText)),
+                  reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(zoneName))) == 0) {
+        CenterOn(static_cast<short>(zone->tileOrTerrainId0c));
+        return;
+      }
+    }
+
+    if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(searchText)),
+                reinterpret_cast<const unsigned char*>(g_szEmptyString)) != 0) {
+      CString notFoundTemplate;
+      g_pSimMgr->GetString(0x2758, 0xe, &notFoundTemplate);
+      scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(notFoundTemplate),
+                             static_cast<LPCSTR>(searchText));
+      g_pUiRuntimeContext->ModalMessage(message, g_ptMapModeModalMessage, 0, 0);
+    }
+    return;
+  }
+
+  case 'W':
+  case 'w':
+    g_pSelectedCivilianOrderState->ClearNationCivilianActionModesAndCycleSelection(
+        g_pSimMgr->GetActiveNationId());
+    return;
+
+  case 'N':
+  case 'n':
+    g_pMapContextActionManager->ClearNationArmyActionModesAndCycleSelection(
+        g_pSimMgr->GetActiveNationId());
+    return;
+
+  case 'A':
+  case 'a':
+    g_pNavyOrderManager->FreeShipsOf(g_pSimMgr->GetActiveNationId());
+    return;
+
+  case 'X':
+  case 'x':
+    CenterOn(
+        g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(g_pSimMgr->GetActiveNationId()));
+    return;
+
+  case 'Z':
+  case 'z': {
+    TMapUberPicture* mapView = static_cast<TMapUberPicture*>(ownerContext);
+    if (mapView->invalidationFlag94 != 0) {
+      mapView->CommitPendingUiModeChangeAndRefreshViews(0);
+    } else {
+      mapView->EnterMapInteractionOverlayMode(0);
+    }
+    return;
+  }
+
+  case 'C':
+  case 'c':
+    ownerContext->DoMenuCommand(0x406);
+    return;
+
+  default:
+    break;
+  }
+
+  switch (static_cast<char>(commandEvent->commandCode)) {
+  case 't':
+    g_pUiRuntimeContext->ShowCivilianLedgerDialogAndSelectUnit();
+    break;
+  case 'u':
+    g_pUiRuntimeContext->ShowArmyRosterDialogAndActivateProvinceSelection();
+    break;
+  case 'v':
+    g_pUiRuntimeContext->ShowNavyRosterDialogAndApplySelection();
+    break;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00595810

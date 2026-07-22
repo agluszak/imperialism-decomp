@@ -1519,7 +1519,7 @@ address|name|symbol|size|type|prototype|provenance
 4a6e80|DispatchMapInteractionPayloadAndResetWorkingFields||68|function|undefined DispatchMapInteractionPayloadAndResetWorkingFields()|
 4a6ef0|TrimExcessNavyOrderSupportAndRebuildOrderBuffer||897|function|undefined TrimExcessNavyOrderSupportAndRebuildOrderBuffer()|
 4a7370|ValidateOrderSupportDeltaAndMarkDirectionalOverlays||421|function|undefined ValidateOrderSupportDeltaAndMarkDirectionalOverlays()|
-4a7590|TArmyStack::CreateTArmyStackInstance||208|function|undefined CreateTArmyStackInstance()|
+4a7590|TArmyMgr::ClearNationArmyActionModesAndCycleSelection||208|function|void __thiscall ClearNationArmyActionModesAndCycleSelection(int nationId)|listing
 4a76a0|TArmyStack::CreateObject|?CreateObject@TArmyStack@@SGPAVCObject@@XZ|32|function|undefined CreateObject()|rtti
 4a76d0|TArmyStack::GetRuntimeClass||6|function|undefined GetTArmyStackClassNamePointer()|rtti
 4a76f0|TArmyStack::TArmyStack||17|function|undefined ConstructTArmyStackBaseState()|
@@ -2249,7 +2249,7 @@ address|name|symbol|size|type|prototype|provenance
 4d4740|TCivMgr::ResolveCivilianDisputes||474|function|void __thiscall ResolveCivilianDisputes()|
 4d49a0|TLandSaleEvent::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4d49d0|DestructLandSaleEventToBase||7|function|undefined DestructLandSaleEventToBase()|
-4d49f0|HandleMapHotkeyW_ResetSelectedActionableObjects||146|function|undefined HandleMapHotkeyW_ResetSelectedActionableObjects()|
+4d49f0|TCivMgr::ClearNationCivilianActionModesAndCycleSelection||146|function|void __thiscall ClearNationCivilianActionModesAndCycleSelection(int nationId)|listing
 4d4b90|OrphanLeaf_NoCall_Ins15_004d4b90||48|function|undefined OrphanLeaf_NoCall_Ins15_004d4b90()|
 4d4bd0|DiscardTileTokenArgumentAndReturn||3|function|undefined DiscardTileTokenArgumentAndReturn()|
 4d4bf0|StrategicMapCallbackRecord::AppendPackedColorDword||382|function|undefined AppendPackedColorDwordToMaskBuffers()|
@@ -5245,7 +5245,7 @@ address|name|symbol|size|type|prototype|provenance
 597810|TMapUberPicture::RefreshMapOrderEntryPanel||246|function|void __thiscall RefreshMapOrderEntryPanel(void * pMapOrderEntry)|
 597950|TMapUberPicture::SetActiveMapOrderEntry||113|function|void __thiscall SetActiveMapOrderEntry(void * pMapOrderEntry)|
 5979f0|GetActiveMapOrderEntry||9|function|void * __thiscall GetActiveMapOrderEntry(void)|
-597a10|TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10||68|function|bool OrphanLeaf_NoCall_Ins23_00597a10(void)|
+597a10|TMapUberPicture::HasActiveMapInteractionSelection||68|function|bool HasActiveMapInteractionSelection(void)|listing
 597a80|TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick||996|function|void __thiscall CycleMapInteractionSelectionAfterHandledClick(void)|
 597f80|TMapUberPicture::InspectTaskForceDialog||1761|function|void __thiscall InspectTaskForceDialog(TTaskForce * taskForce)|
 598840|TToolBarCluster::InvalidateMapRegionForEntryIfUiPassive||29|function|undefined InvalidateMapRegionForEntryIfUiPassive()|

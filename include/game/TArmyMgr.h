@@ -222,6 +222,10 @@ public:
   class TArmyStack* enemyStackBattle3a0;
   class TArmyBattle* activeBattleView3a4;
 
+  // Map hotkey 'N': clear active order modes on the nation's stationed army units,
+  // then advance the map interaction selection when no selection remains. 0x004a7590.
+  void ClearNationArmyActionModesAndCycleSelection(int nationId);
+
   // Retail Mac EndBattlePhase. Releases the 3 cached battle objects, performs the
   // slot-0x0d unit cleanup and DoOwnershipChanges, refreshes nation clip regions when
   // needed, then advances the simulation phase. 0x004a1eb0, __thiscall, no args.

@@ -1246,7 +1246,7 @@ static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
     return 6;
   }
   if (mode != 2) {
-    if (g_pUiRuntimeContext->mapUberPictureF0->OrphanLeaf_NoCall_Ins23_00597a10() != 0) {
+    if (g_pUiRuntimeContext->mapUberPictureF0->HasActiveMapInteractionSelection() != 0) {
       return 0;
     }
     if (mode != 2 && rec->firstCivilianOrder20 != nullptr) {
@@ -2046,4 +2046,25 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char requiredCoun
 
   scratchList->RemoveAll();
   scratchList->Free();
+}
+
+// FUNCTION: IMPERIALISM 0x004a7590
+void TArmyMgr::ClearNationArmyActionModesAndCycleSelection(int nationId) {
+  TLongintList* regionList = g_apNationStates[nationId]->ownedRegionList;
+  POSITION position = regionList->GetHeadPosition();
+  while (position != NULL) {
+    short cityIndex = static_cast<short>(regionList->GetNext(position));
+    TMilitaryUnit* unit = g_pGlobalMapState->ValidateGridIndexRange0To17F(cityIndex);
+    while (unit != 0) {
+      if (unit->GetUnitMovementClassId() != 0 && unit->field_8 != 1) {
+        unit->SetOrderModeSlot34(0, -1);
+      }
+      unit = static_cast<TMilitaryUnit*>(unit->nextOnTile);
+    }
+  }
+
+  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+  if (mapView != 0 && !mapView->HasActiveMapInteractionSelection()) {
+    mapView->CycleMapInteractionSelectionAfterHandledClick();
+  }
 }

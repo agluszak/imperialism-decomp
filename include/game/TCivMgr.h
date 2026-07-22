@@ -40,6 +40,9 @@ public:
   // to the map state, and consume any pending completion sound/advisor marker.
   // 0x004d2160, __thiscall.
   class TCivUnit* SelectFirstAvailableCivilianForNation(short nationId);
+  // Map hotkey 'W': clear every actionable civilian order mode for `nationId`, then
+  // advance the map interaction selection when no selection remains. 0x004d49f0.
+  void ClearNationCivilianActionModesAndCycleSelection(int nationId);
   void QueueImmediateCivilianCommandAndCycleSelection(int commandType);
   void ShowDisbandCivilianConfirmationDialog();
 

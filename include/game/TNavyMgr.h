@@ -44,7 +44,6 @@ public:
   TTaskForce* field0c;
 
   void RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short nationSlot);
-
   // Clears every cityScoreTable record's exploredByNationMaskA1 flag (dispatching a
   // per-province redraw-invalidate event through g_pGameFlowState while g_pSimMgr's
   // multiplayerSessionRole == 1, for each record found dirty), stores

@@ -367,7 +367,7 @@ void TMapUberPicture::SetActiveMapOrderEntry(TZone* pMapOrderContextZone) {
 // selection/pending order to act on -- used by TArmyMgr::ComputeMapCursorStateIndex to
 // gate map-click cursor state. 68 bytes, ground-truth-confirmed via decompile.
 // FUNCTION: IMPERIALISM 0x00597a10
-bool TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10() {
+bool TMapUberPicture::HasActiveMapInteractionSelection() {
   switch (this->activeUnitCategoryIndex96) {
   case 0:
     return g_pSelectedCivilianOrderState->selectedEntry != nullptr;
