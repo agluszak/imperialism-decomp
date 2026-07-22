@@ -80,8 +80,8 @@ IMPLEMENT_DYNCREATE(TShip, TObject)
 
 // FUNCTION: IMPERIALISM 0x0054f500
 TShip::TShip()
-    : TObject(), name(), type(0), pad06(0), location(0), taskForce(0), aggression(1),
-      nation(static_cast<short>(-1)), strength(0), pad1e(0), admiral(0),
+    : TObject(), type(0), pad06(0), location(0), taskForce(0), aggression(1),
+      nation(static_cast<short>(-1)), name(), strength(0), pad1e(0), admiral(0),
       next(g_pNavyPrimaryOrderListHead), previous(0), mission(0), experience(0), selection(0) {
   g_pNavyPrimaryOrderListHead = this;
   if (next != 0) {
@@ -704,7 +704,7 @@ void TShip::Capture(short nation) {
     missionBackref->RejectConstituent(this, 1);
   }
 
-  nation = nation;
+  this->nation = nation;
 }
 
 // FUNCTION: IMPERIALISM 0x00551220

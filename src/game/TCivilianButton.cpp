@@ -69,6 +69,6 @@ void TCivilianButton::Draw(RECT* rectBuffer) {
   UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
-#if defined(_MSC_VER)
+#if defined(_MSC_VER) && !defined(__clang__)
 #pragma auto_inline(on)
 #endif

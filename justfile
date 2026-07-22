@@ -224,15 +224,16 @@ detect:
 
 # Modern second compiler (clang/MinGW) used ONLY to catch errors early — never
 # for reccmp. Compile-only; does not touch the MSVC build, gates, or reccmp
-# config. Pass FLAGS=-DIMPERIALISM_LINT_WERROR=ON to fail on warnings.
-[doc('Compile-only clang/MinGW error check; never used for reccmp')]
+# config. Warning-as-error is forced here as well as defaulted in CMake so an old
+# build-clang cache cannot silently retain the former OFF value.
+[doc('Compile-only clang/MinGW warning-as-error check; never used for reccmp')]
 [group('build')]
 lint flags="":
   mkdir -p "{{lint_build_dir}}"
   uv run python -m tools.generate --gen-dir "{{lint_build_dir}}/generated" \
     --chunk-prefix lint_stubs_part --annotation-kind none
   docker run --rm --network none \
-    -e CMAKE_FLAGS="{{flags}}" \
+    -e CMAKE_FLAGS="-DIMPERIALISM_LINT_WERROR=ON {{flags}}" \
     -e LINT=1 \
     -v "$PWD":/imperialism \
     -v "$PWD/{{lint_build_dir}}":/build \
@@ -1232,7 +1233,29 @@ gates:
   just vtable
   just datacmp-gate
   just decomplint
+  just lint-warning-gate
+
+# Named warning gate used by the general checks and CI. Keep it separate from the
+# implementation recipe so callers have one stable policy entrypoint.
+[doc('Fail unless every clang-cl lint translation unit compiles warning-free')]
+[group('gates')]
+lint-warning-gate:
   just lint
+
+# Regression proof: enabling the fixture must make the real project lint gate fail.
+# Restore the cache option afterward so subsequent incremental lint runs stay usable.
+[doc('Prove the lint warning gate rejects an intentionally warning-producing TU')]
+[group('test')]
+lint-warning-gate-test:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  if just lint "-DIMPERIALISM_LINT_WARNING_GATE_TEST=ON"; then
+    echo "lint warning gate unexpectedly accepted the intentional warning fixture"
+    just lint "-DIMPERIALISM_LINT_WARNING_GATE_TEST=OFF"
+    exit 1
+  fi
+  just lint "-DIMPERIALISM_LINT_WARNING_GATE_TEST=OFF"
+  echo "lint warning gate regression fixture rejected as expected"
 
 [group('gates')]
 tooling-check:

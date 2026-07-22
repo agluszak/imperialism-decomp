@@ -47,6 +47,8 @@ void TMilitaryPageView::AfterStuffValues() {
   book->ShowPage(currentPage);
 }
 
+// Listing 0x00564a60 inlines the loader's exact-type non-virtual destructor.
+IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x00564a60
 void TMilitaryPageView::PrepareUnitCache(int bitmapResourceId, int width, int height) {
   TMapDialog* mapDialog = g_pUiRuntimeContext->mapUberPictureF0->subview2A8;
@@ -88,6 +90,7 @@ void TMilitaryPageView::PrepareUnitCache(int bitmapResourceId, int width, int he
 
   SetGWorld(savedContext, savedFlags);
 }
+IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
 // FUNCTION: IMPERIALISM 0x00564bf0
 void TMilitaryPageView::Close() {

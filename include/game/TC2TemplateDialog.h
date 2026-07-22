@@ -267,7 +267,7 @@ public:
   unsigned int flag84;  // 0x84 = flags88 & 1 (computed in OnInitDialog)
   unsigned int flags88; // 0x88 flags source (set by the caller)
   int* outlinePolygon;  // 0x8c heap silhouette buffer: [0]=count, POINT pairs from index 2
-  char* windowTitle;    // 0x90 LPCSTR passed to SetWindowText (set by the caller)
+  const char* windowTitle; // 0x90 LPCSTR passed to SetWindowText (set by the caller)
 
 protected:
   BOOL OnInitDialog() override;                            // 0x0047dae0 (slot 0xc4)

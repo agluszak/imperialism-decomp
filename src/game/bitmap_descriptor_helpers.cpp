@@ -13,6 +13,8 @@ namespace {
 
 const char kQuickDrawDebugSourcePath[] = "D:\\Ambit\\QuickDraw.cpp";
 
+// The loader's original vtable has no destructor slot; every caller owns this exact type.
+IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 static void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
   if (loaderHandle == nullptr) {
     return;
@@ -25,6 +27,7 @@ static void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
   }
   delete loaderHandle;
 }
+IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
 } // namespace
 

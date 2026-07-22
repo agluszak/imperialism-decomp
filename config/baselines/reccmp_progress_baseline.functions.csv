@@ -2451,7 +2451,7 @@ address|matching|name
 0x4e3710|0.3333333333333333|TMinor::TMinor
 0x4e3790|1.0|TMinor::`scalar deleting destructor'
 0x4e37c0|0.9767441860465116|TMinor
-0x4e3830|0.9719350073855244|TMinor::InitializeSecondaryNationStateAndSelectHomeTile
+0x4e3830|0.9526627218934911|TMinor::InitializeSecondaryNationStateAndSelectHomeTile
 0x4e41c0|0.5615384615384615|TMinor::ReadFrom
 0x4e4390|0.81875|TMinor::WriteTo
 0x4e45f0|1.0|TMinor::ReturnFalseNationStateCapabilityFlag90
@@ -3217,7 +3217,7 @@ address|matching|name
 0x51b120|1.0|TTerrainInfoDialog::GetRuntimeClass
 0x51b140|1.0|TTerrainInfoDialog::TTerrainInfoDialog
 0x51b170|0.9090909090909091|TTerrainInfoDialog::`scalar deleting destructor'
-0x51b1c0|0.6766595289079229|TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection
+0x51b1c0|0.6609442060085837|TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection
 0x51ba70|0.4897959183673469|TTownNameDialog::CreateObject
 0x51baf0|1.0|TTownNameDialog::GetRuntimeClass
 0x51bb10|1.0|TTownNameDialog::TTownNameDialog
@@ -3312,7 +3312,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.48623853211009177|TMapMaker::MapGenPassSlot0E
 0x527730|0.29577464788732394|TMapMaker::MapGenPassSlot0F
-0x527d00|0.43478260869565216|TMapMaker::CreateRivers
+0x527d00|0.4268774703557312|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
@@ -3856,7 +3856,7 @@ address|matching|name
 0x5430c0|1.0|TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
 0x543120|0.9583333333333334|TMultiplayerMgr::ConfigureTurnResumeStateAndNationMask
 0x5431a0|0.7380952380952381|TMultiplayerMgr::ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry
-0x543280|0.4340836012861736|TMultiplayerMgr::HandleTurnResumeStateTelemetry
+0x543280|0.4437299035369775|TMultiplayerMgr::HandleTurnResumeStateTelemetry
 0x5438e0|1.0|TimelyMessageHeader::InitializeEmitEventHeaderWithActiveNation
 0x543910|0.3557446808510638|TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode
 0x544540|0.66|TMultiplayerMgr::EnsureGameFlowStateAndPostTurnEvent5E5
@@ -3878,7 +3878,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.42348008385744235|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.46537842190016104|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags
@@ -4003,7 +4003,7 @@ address|matching|name
 0x550f60|1.0|TShip::IsInHomePort
 0x550f80|1.0|TShip::Damage
 0x550ff0|0.5112781954887218|TShip::ReassignToForce
-0x551100|0.5|TShip::Capture
+0x551100|0.5211267605633803|TShip::Capture
 0x551220|1.0|TShip::SetTaskForce
 0x5512d0|0.3018867924528302|TAdmiral::CreateObject
 0x551410|1.0|TAdmiral::GetRuntimeClass
@@ -4918,8 +4918,8 @@ address|matching|name
 0x588b20|0.9090909090909091|TIndustryCluster::`scalar deleting destructor'
 0x588b70|0.2736842105263158|TIndustryCluster::DoPostCreate
 0x588c30|1.0|TIndustryCluster::SetMoveAmount(short)
-0x588c60|0.23448275862068965|TIndustryCluster::SetMoveAmount(short, unsigned char)
-0x588f60|0.7096774193548387|TIndustryCluster::UpdateMax
+0x588c60|0.1780821917808219|TIndustryCluster::SetMoveAmount(short, unsigned char)
+0x588f60|0.7301587301587301|TIndustryCluster::UpdateMax
 0x588ff0|0.37681159420289856|TIndustryCluster::DoEvent
 0x589110|0.5161290322580645|TIndustryAmtBar::CreateObject
 0x5891b0|1.0|TIndustryAmtBar::GetRuntimeClass
@@ -4932,10 +4932,10 @@ address|matching|name
 0x589700|1.0|TRailCluster::GetRuntimeClass
 0x589720|0.9|TRailCluster::TRailCluster
 0x589760|0.9090909090909091|TRailCluster::`scalar deleting destructor'
-0x5897b0|0.12871287128712872|TRailCluster::DoPostCreate
+0x5897b0|0.32|TRailCluster::DoPostCreate
 0x5899c0|1.0|TRailCluster::SetMoveAmount(short)
-0x5899f0|0.22580645161290322|TRailCluster::SetMoveAmount(short, unsigned char)
-0x589d10|0.7096774193548387|TRailCluster::UpdateMax
+0x5899f0|0.23717948717948717|TRailCluster::SetMoveAmount(short, unsigned char)
+0x589d10|0.7301587301587301|TRailCluster::UpdateMax
 0x589da0|0.2962962962962963|TRailCluster::DoEvent
 0x589ed0|0.5161290322580645|TRailAmtBar::CreateObject
 0x589f70|0.5|TRailAmtBar::GetRuntimeClass

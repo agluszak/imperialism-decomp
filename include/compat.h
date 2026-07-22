@@ -69,12 +69,67 @@ typedef unsigned long long qword;
 // MSVC 5.0 never warned about this; adding a real destructor here would insert a
 // vtable slot the original binary doesn't have and corrupt the modeled layout.
 #if defined(__clang__)
-#define IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR                                            \
+#define IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR                                             \
   _Pragma("clang diagnostic push") _Pragma("clang diagnostic ignored \"-Wnon-virtual-dtor\"")
 #define IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR _Pragma("clang diagnostic pop")
 #else
 #define IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 #define IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 #endif
+
+// Suppress Clang's exact-type delete warning only at call sites where the recovered
+// class deliberately has a non-virtual destructor. This is narrower than disabling
+// -Wdelete-non-abstract-non-virtual-dtor for the whole lint build: every use must sit
+// beside evidence that the original vtable has no destructor slot and that the delete
+// expression names the concrete type.
+// clang-format off
+#if defined(__clang__)
+#define IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE                                       \
+  _Pragma("clang diagnostic push")                                                                 \
+      _Pragma("clang diagnostic ignored \"-Wdelete-non-abstract-non-virtual-dtor\"")
+#define IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE _Pragma("clang diagnostic pop")
+#else
+#define IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
+#define IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
+#endif
+
+// Preserve listing-proven reads of genuinely uninitialized retail stack slots. Keep
+// this scoped to the exact function; new uninitialized reads remain lint failures.
+#if defined(__clang__)
+#define IMPERIALISM_BEGIN_RETAIL_UNINITIALIZED_READ                                                \
+  _Pragma("clang diagnostic push")                                                                 \
+  _Pragma("clang diagnostic ignored \"-Wsometimes-uninitialized\"")
+#define IMPERIALISM_END_RETAIL_UNINITIALIZED_READ _Pragma("clang diagnostic pop")
+#else
+#define IMPERIALISM_BEGIN_RETAIL_UNINITIALIZED_READ
+#define IMPERIALISM_END_RETAIL_UNINITIALIZED_READ
+#endif
+
+// Preserve the few retail methods which explicitly test a possibly-null `this` before
+// accessing fields. Such calls are undefined in standard C++, but removing the test
+// changes the original behavior and code shape.
+#if defined(__clang__)
+#define IMPERIALISM_BEGIN_RETAIL_NULL_THIS_CHECK                                                   \
+  _Pragma("clang diagnostic push")                                                                 \
+      _Pragma("clang diagnostic ignored \"-Wundefined-bool-conversion\"")
+#define IMPERIALISM_END_RETAIL_NULL_THIS_CHECK _Pragma("clang diagnostic pop")
+#else
+#define IMPERIALISM_BEGIN_RETAIL_NULL_THIS_CHECK
+#define IMPERIALISM_END_RETAIL_NULL_THIS_CHECK
+#endif
+
+// Preserve listing-proven whole-object byte copies performed by the retail binary.
+// These copies include the vptr and are not ordinary C++ assignment; keep the warning
+// active everywhere else so a new polymorphic memcpy is investigated.
+#if defined(__clang__)
+#define IMPERIALISM_BEGIN_RETAIL_POLYMORPHIC_BYTE_COPY                                             \
+  _Pragma("clang diagnostic push")                                                                 \
+  _Pragma("clang diagnostic ignored \"-Wdynamic-class-memaccess\"")
+#define IMPERIALISM_END_RETAIL_POLYMORPHIC_BYTE_COPY _Pragma("clang diagnostic pop")
+#else
+#define IMPERIALISM_BEGIN_RETAIL_POLYMORPHIC_BYTE_COPY
+#define IMPERIALISM_END_RETAIL_POLYMORPHIC_BYTE_COPY
+#endif
+// clang-format on
 
 #endif // COMPAT_H

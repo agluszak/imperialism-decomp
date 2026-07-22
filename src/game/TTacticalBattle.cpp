@@ -876,6 +876,9 @@ unsigned char TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection(int tileI
   return foundEnemy;
 }
 
+// Listing 0x005a1520 reads the stack byte without initializing it on the headless,
+// unbroken-morale path; preserve that retail behavior but keep the warning elsewhere.
+IMPERIALISM_BEGIN_RETAIL_UNINITIALIZED_READ
 // FUNCTION: IMPERIALISM 0x005a1520
 void TTacticalBattle::MoveTacticalUnitTowardTile(TTacticalUnit* unit, int targetTileIndex) {
   int pathTiles[12];
@@ -938,6 +941,7 @@ void TTacticalBattle::MoveTacticalUnitTowardTile(TTacticalUnit* unit, int target
     battleView8->RefreshControl();
   }
 }
+IMPERIALISM_END_RETAIL_UNINITIALIZED_READ
 
 // Recursive distance-field path builder: when the walk tile is the goal, records it
 // and returns the depth; otherwise collects the neighbors whose move cost is known

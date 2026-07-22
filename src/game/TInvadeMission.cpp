@@ -221,6 +221,8 @@ float TInvadeMission::CalculatePriority() {
                          committedResources[resourceIndex] + resourcePools[resourceIndex]);
     totalResourceDemand += resourcePools[resourceIndex];
   }
+  // Listing 0x0053f800 accumulates this retail local but never reads the final sum.
+  (void)totalResourceDemand;
 
   TMilitaryUnit* bestUnitByType[30];
   memset(bestUnitByType, 0, sizeof(bestUnitByType));

@@ -115,20 +115,24 @@ if(IMPERIALISM_LINT_COMPILE_ONLY)
     # Lint-only modern compiler (clang/MinGW or clang-cl). Never used for reccmp; its job is
     # to surface errors MSVC 5.0 silently accepts (missing `override`, narrowing,
     # bad vtable signatures).
-    option(IMPERIALISM_LINT_WERROR "Lint build: treat warnings as errors" OFF)
+    option(IMPERIALISM_LINT_WERROR "Lint build: treat warnings as errors" ON)
+    option(IMPERIALISM_LINT_WARNING_GATE_TEST
+           "Lint build: add an intentionally warning-producing regression fixture" OFF)
 
     target_compile_definitions(Imperialism PRIVATE IMPERIALISM_LINT)
 
     target_compile_options(Imperialism PRIVATE
-        # Tolerate residual MSVC-isms and old-MSVC pragmas in the sources.
-        -fms-extensions
-        -Wno-unknown-pragmas
-        -Wno-ignored-pragmas
         # Core diagnostics. NOTE: this compiler is clang-cl (see cmake/clang-cl-i686.cmake),
         # where bare "-Wall"/"-Wextra" are parsed as the MSVC /Wall/​/Wextra spelling — i.e.
         # "enable nearly every diagnostic clang has", not GNU clang's modest -Wall/-Wextra
         # default set. /W4 is the real clang-cl equivalent of a sane default level.
         /W4
+        # Tolerate residual MSVC-isms and old-MSVC pragmas in the sources. These must
+        # follow /W4: clang-cl processes warning flags in order, and /W4 otherwise
+        # re-enables -Wunknown-pragmas.
+        -fms-extensions
+        -Wno-unknown-pragmas
+        -Wno-ignored-pragmas
         # High-value vtable checks — the reason for this second compiler.
         -Werror=inconsistent-missing-override
         -Werror=suggest-override
@@ -161,6 +165,9 @@ if(IMPERIALISM_LINT_COMPILE_ONLY)
 
     if(IMPERIALISM_LINT_WERROR)
         target_compile_options(Imperialism PRIVATE -Werror)
+    endif()
+    if(IMPERIALISM_LINT_WARNING_GATE_TEST)
+        target_sources(Imperialism PRIVATE tests/lint/intentional_warning.cpp)
     endif()
 else()
     if(MSVC)
