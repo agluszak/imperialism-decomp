@@ -83,8 +83,8 @@ void TUnit::SetOrderModeSlot34(int mode, int payload) {
 }
 
 // FUNCTION: IMPERIALISM 0x005c2660
-void TUnit::DispatchSlot2C() {
-  if (this->field_8 != 2) {
+void TUnit::ContinueOrders() {
+  if (this->field_8 - 2 != 0) {
     this->field_8 = 0;
   }
 }

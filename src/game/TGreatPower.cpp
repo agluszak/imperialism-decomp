@@ -3403,7 +3403,7 @@ void TGreatPower::DispatchTrackedOrderSlot2CCallbacks(void) {
   CIterator orderIter(this->trackedObjectList);
   for (TUnit* order = static_cast<TUnit*>(orderIter.Reset()); orderIter.More();
        order = static_cast<TUnit*>(orderIter.Advance())) {
-    order->DispatchSlot2C();
+    order->ContinueOrders();
   }
 }
 

@@ -122,7 +122,7 @@ public:
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 HiliteState inherited unchanged (0x48e810)
-  virtual undefined OrphanRetStub_00569d50(); // slot 0x71 0x569d50
+  virtual void Hilite(); // slot 0x71 0x569d50
 
   TMiniShipView();
 

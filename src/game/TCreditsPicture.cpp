@@ -10,9 +10,7 @@
 #include "game/ui_text_label_helpers_decls.h"
 
 // FUNCTION: IMPERIALISM 0x0043d9f0
-undefined TCreditsPicture::OrphanRetStub_0043d9f0() {
-  return 0;
-}
+void TCreditsPicture::Hilite() {}
 
 // SYNTHETIC: IMPERIALISM 0x0043dad0
 // TCreditsPicture::`scalar deleting destructor'

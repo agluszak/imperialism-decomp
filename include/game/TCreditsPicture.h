@@ -12,7 +12,7 @@ public:
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   virtual void DoPostCreate(int arg) override;
   virtual void Draw(RECT* rectBuffer) override;
-  virtual undefined OrphanRetStub_0043d9f0();
+  virtual void Hilite();
 
   TCreditsPicture();
 };

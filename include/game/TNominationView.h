@@ -122,7 +122,7 @@ public:
   // slot 0x70 HiliteState inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual undefined OrphanRetStub_004305c0(); // slot 0x73 0x4305c0
+  virtual void Hilite(); // slot 0x73 0x4305c0; Mac symbol oracle
 
   TNominationView();
 };

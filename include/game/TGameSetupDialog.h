@@ -9,8 +9,7 @@ public:
   DECLARE_DYNCREATE(TGameSetupDialog)
   ~TGameSetupDialog() override;
 
-  virtual undefined OrphanRetStub_005b2860();
+  virtual void StuffValues();
 
   TGameSetupDialog();
 };
-

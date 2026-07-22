@@ -110,7 +110,7 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 WindowToLocal inherited unchanged (0x48bac0)
-  virtual undefined OrphanRetStub_004b1410() override; // slot 0x68 0x4b1990
+  void ApplyCheats() override; // slot 0x68 0x4b1990; Mac symbol oracle
 
   TTechCheater();
 };

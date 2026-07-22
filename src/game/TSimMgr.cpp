@@ -978,7 +978,7 @@ void TSimMgr::DoTrade() {
 }
 
 // FUNCTION: IMPERIALISM 0x0057f490
-int TSimMgr::ReturnZeroSlot6c() {
+int TSimMgr::PlayerLost() {
   return 0;
 }
 

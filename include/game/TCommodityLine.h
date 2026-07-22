@@ -17,7 +17,7 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x5c1580
-  // slot 0x0b OrphanRetStub_0056f480 inherited unchanged (0x56f480)
+  // slot 0x0b RemoveViews inherited unchanged (0x56f480)
 
   TCommodityLine();
 

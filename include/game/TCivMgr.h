@@ -24,6 +24,9 @@ public:
       short nNewTileIndex, class TCivUnit* pCivOrderEntry); // slot 0x0c 0x4d4310
   virtual void DispatchSelectedUnitToGlobalMapStateHandler(
       class TCivUnit* pUnitOrderEntry); // slot 0x0d 0x4d2270
+  // Apply a completed civilian work order to the map and dispatch the required redraws.
+  // 0x004d4390, real __thiscall on g_pSelectedCivilianOrderState.
+  void ApplyCompletedCivWorkOrderToMapState(class TCivUnit* order);
   // Non-virtual order-action helper (0x4d3a60); dispatched from the slot 0x0b virtual
   // HandleCivilianTileOrderAction via thunk_HandleEngineerConstructionAction (0x406ccb).
   bool HandleEngineerConstructionAction(short nTileIndex);

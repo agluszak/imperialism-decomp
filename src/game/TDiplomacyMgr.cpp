@@ -1633,6 +1633,14 @@ char TDiplomacyMgr::SetNationPairSpecialRelationFlagAndQueueEvent14Or16(short fl
   return 1;
 }
 
+// FUNCTION: IMPERIALISM 0x004f2970
+void ByteSwapShortInPlace(unsigned char* bytes) {
+  unsigned char firstByte = bytes[0];
+  unsigned char secondByte = bytes[1];
+  bytes[0] = secondByte;
+  bytes[1] = firstByte;
+}
+
 // FUNCTION: IMPERIALISM 0x005449b0
 TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned int shortCount,
                                                                         short* current,

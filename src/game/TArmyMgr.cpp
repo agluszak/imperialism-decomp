@@ -515,7 +515,7 @@ void TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits() {
     for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
          unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
       if (unit->field_34 > 0 && unit->tileIndex06 != -1) {
-        unit->DispatchSlot2C();
+        unit->ContinueOrders();
       } else {
         unit->DetachUnitOrderFromOwnerAndReset();
         unit->Free();
