@@ -12496,6 +12496,59 @@
       ],
       "source_file": "src/game/TOffersPanelView.cpp"
     },
+    "0x004fa190": {
+      "references": [
+        {
+          "address": "0x0069430c",
+          "kind": "embedded_global",
+          "symbol": "g_szDecimalFormat",
+          "text": "%d"
+        },
+        {
+          "group": 10035,
+          "index": 1,
+          "kind": "windows_gob",
+          "load_string_id": 20461,
+          "text": "Information:"
+        },
+        {
+          "group": 10035,
+          "index": 22,
+          "kind": "windows_gob",
+          "load_string_id": 20482,
+          "text": "Colony Boycott"
+        },
+        {
+          "group": 10035,
+          "index": 23,
+          "kind": "windows_gob",
+          "load_string_id": 20483,
+          "text": "Colony of [1:Zimm]"
+        },
+        {
+          "group": 10035,
+          "index": 24,
+          "kind": "windows_gob",
+          "load_string_id": 20484,
+          "text": "Anarchy"
+        },
+        {
+          "group": 10035,
+          "index": 97,
+          "kind": "windows_gob",
+          "load_string_id": 20557,
+          "text": "Total Boycott"
+        },
+        {
+          "group": 10035,
+          "index": 98,
+          "kind": "windows_gob",
+          "load_string_id": 20558,
+          "text": "Most Favored"
+        }
+      ],
+      "source_file": "src/game/TInfoPanelView.cpp"
+    },
     "0x004fb030": {
       "references": [
         {
@@ -191297,7 +191350,7 @@
   "summary": {
     "embedded_globals": 773,
     "formula_matches": 2356,
-    "functions_with_references": 321,
+    "functions_with_references": 322,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3272,
     "text_resources": 182,
