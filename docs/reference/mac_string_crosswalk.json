@@ -15400,6 +15400,18 @@
       ],
       "source_file": "src/game/TDealBookPicture.cpp"
     },
+    "0x005bd090": {
+      "references": [
+        {
+          "group": 10048,
+          "index": 3,
+          "kind": "windows_gob",
+          "load_string_id": 21763,
+          "text": "Preferred Order of Bidders"
+        }
+      ],
+      "source_file": "src/game/TTradeOfferNationLine.cpp"
+    },
     "0x005bd2d0": {
       "references": [
         {
@@ -15569,6 +15581,48 @@
         }
       ],
       "source_file": "src/game/TOfferDeskPicture.cpp"
+    },
+    "0x005c0e50": {
+      "references": [
+        {
+          "address": "0x0069430c",
+          "kind": "embedded_global",
+          "symbol": "g_szDecimalFormat",
+          "text": "%d"
+        },
+        {
+          "address": "0x00695794",
+          "kind": "embedded_global",
+          "symbol": "s_szSpaceSeparator_00695794",
+          "text": " "
+        },
+        {
+          "group": 10048,
+          "index": 22,
+          "kind": "windows_gob",
+          "load_string_id": 21782,
+          "text": "Sold [1:amount] [2:item] to [3:buyer]"
+        },
+        {
+          "group": 10048,
+          "index": 31,
+          "kind": "windows_gob",
+          "load_string_id": 21791,
+          "text": "Don't show any more offers this turn for current commodity"
+        }
+      ],
+      "source_file": "src/game/TDealLine.cpp"
+    },
+    "0x005c1580": {
+      "references": [
+        {
+          "address": "0x00695794",
+          "kind": "embedded_global",
+          "symbol": "s_szSpaceSeparator_00695794",
+          "text": " "
+        }
+      ],
+      "source_file": "src/game/TCommodityLine.cpp"
     },
     "0x005c1bd0": {
       "references": [
@@ -190525,7 +190579,7 @@
   "summary": {
     "embedded_globals": 770,
     "formula_matches": 2356,
-    "functions_with_references": 295,
+    "functions_with_references": 298,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3272,
     "text_resources": 182,

@@ -22,8 +22,8 @@ public:
   TDealLine();
 
   short commoditySlot10;
-  short nationId12;
-  short ordinal14;
+  short ownerNationSlot12;
+  short entryOrdinal14;
   short padding16;
 };
 

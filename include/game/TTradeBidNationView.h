@@ -114,9 +114,8 @@ public:
   TTradeBidNationView();
 
   // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended
-  // at 0x60. The trailing 4 bytes split into two shorts: +0x60 is still unobserved,
-  // +0x62 is read repeatedly by Draw as this row's nation slot index
-  // (0..6, passed to g_apNationStates[] and LoadNormalizedCredentialName).
-  short field60;
+  // at 0x60. InstallViews writes the line's trade-category slot to +0x60 and the nation
+  // slot to +0x62; Draw currently consumes the latter.
+  short categorySlot60;
   short nationSlot62;
 };
