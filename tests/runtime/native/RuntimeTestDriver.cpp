@@ -628,9 +628,9 @@ void RunDispatchingMapHotkey() {
   TCitySiteView* citySiteView = static_cast<TCitySiteView*>(mapDialog);
   mapDialog->SetMapDialogCellCoordinatesAndRefresh(citySiteView->minColBound368 + 1,
                                                    citySiteView->minRowBound370 + 1, 0);
-  int viewportXBeforeEdgeScroll = mapDialog->viewportOffsetX;
+  int viewportXBeforeEdgeScroll = mapDialog->viewportOrigin60.x;
   mapView->AutoScrollByEdgeMask(4);
-  if (mapDialog->viewportOffsetX == viewportXBeforeEdgeScroll) {
+  if (mapDialog->viewportOrigin60.x == viewportXBeforeEdgeScroll) {
     Fail("\"right-edge scrolling did not move the strategic map viewport\"");
     return;
   }
