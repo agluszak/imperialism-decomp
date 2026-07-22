@@ -64,7 +64,7 @@ void TBeachheadMission::CalculateNeeds() {
     if (node->location != targetZone14) {
       continue;
     }
-    if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, node->nation)) {
+    if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, node->nation)) {
       continue;
     }
     short normalizationBase = node->GetMaxStrength();
@@ -120,7 +120,7 @@ bool TBeachheadMission::Matches(eMissionType missionType, int key, TZone* zoneCo
 // g_pGlobalMapState->cityScoreTable[cityId].ownerNationCode00. If that owner has an outdated
 // war-relation timestamp with this mission's nation (TDiplomacyMgr::IsNationPairAtWar's slot
 // 0x48 sibling), queues map-order type 5 on the passed-in TTaskForce* directly. Otherwise, if
-// the two nations aren't currently at war (IsNationPairAtWar/HasPolicyWithNationSlot44),
+// the two nations aren't currently at war (IsNationPairAtWar/IsNationPairAtWar),
 // applies the diplomacy policy state via
 // TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks (real vtable slot 0x1d0/116),
 // unless the owner's diplomacyPolicyByNation entry already carries that same 0x131 policy code.
@@ -128,7 +128,7 @@ bool TBeachheadMission::Matches(eMissionType missionType, int key, TZone* zoneCo
 void TBeachheadMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
   signed char ownerCode =
       g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30].ownerNationCode00;
-  if (g_pDiplomacyTurnStateManager->HasOutdatedWarRelationSlot48(nationId04, ownerCode)) {
+  if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nationId04, ownerCode)) {
     mapOrderEntry->OrderSendInTheMarines(
         &g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30]);
     return;
@@ -136,7 +136,7 @@ void TBeachheadMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
 
   ownerCode =
       g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30].ownerNationCode00;
-  if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, ownerCode)) {
+  if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, ownerCode)) {
     return;
   }
 

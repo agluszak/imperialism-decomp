@@ -113,7 +113,7 @@ void TMinor::InitializeSecondaryNationStateAndSelectHomeTile(NationSlot nationSl
   }
 
   if (g_bMultiplayerScenarioSetupActive == 0) {
-    char noImmediateDispatch = IsRemote() == 0;
+    bool noImmediateDispatch = IsRemote() == 0;
     if (noImmediateDispatch || g_pSimMgr->scenarioMapIndexPlusOne != 0) {
       TLongintList* candidateTiles = new TLongintList();
       short selectedTile = -1;
@@ -768,8 +768,8 @@ void TMinor::QueueDiplomacyProposalCodeForTargetNation(ProposalCode proposalCode
       canPropose = this->CanInitiateJoinEmpireProposalToTarget(targetNation, proposalCode);
     }
     if (canPropose != 0) {
-      if (g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(this->nationSlot, targetNation) ==
-          0) {
+      if (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(this->nationSlot,
+                                                                      targetNation) == 0) {
         this->SetTradePolicyTo(static_cast<NationSlot>(targetNation), 1);
         g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(3, this->nationSlot,
                                                                             targetNation, 0);
@@ -993,8 +993,7 @@ void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
 // FUNCTION: IMPERIALISM 0x004e5a40
 void TMinor::SetNationRowDisplayValueByDiplomacyPredicate(NationSlot targetNationSlot) {
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
-    if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(targetNationSlot, nationSlot) ==
-            0 &&
+    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(targetNationSlot, nationSlot) == 0 &&
         (nationSlot == this->nationSlot ||
          (g_apNationStates[targetNationSlot] != 0 &&
           reinterpret_cast<unsigned char*>(
@@ -1131,7 +1130,7 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
   for (int nationSlot = 0; nationSlot < kTerrainTypeDescriptorTableCount; ++nationSlot) {
     relationMaskByNation[nationSlot] = 0;
     if (g_apTerrainTypeDescriptorTable[nationSlot] != 0 && nationSlot != ownerNationSlot &&
-        g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(ownerNationSlot, nationSlot) != 0) {
+        g_pDiplomacyTurnStateManager->IsNationPairAtWar(ownerNationSlot, nationSlot) != 0) {
       relationMaskByNation[nationSlot] = 1;
     }
   }
@@ -1280,8 +1279,8 @@ void TMinor::ReassignUnitOrdersForCountryTargetChange(short provinceId,
   for (int nationSlot = 0; nationSlot < kTerrainTypeDescriptorTableCount; ++nationSlot) {
     relationMaskByNation[nationSlot] = 0;
     if (g_apTerrainTypeDescriptorTable[nationSlot] != 0 && nationSlot != ownerNationSlot &&
-        (includeAllPolicyTargets != 0 || g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
-                                             this->nationSlot, nationSlot) != 0)) {
+        (includeAllPolicyTargets != 0 ||
+         g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, nationSlot) != 0)) {
       relationMaskByNation[nationSlot] = 1;
     }
   }

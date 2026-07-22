@@ -1848,7 +1848,7 @@ void TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
   g_pMapContextActionManager->perTileOwnerNationCodeCache1c[cityRecordIndex] =
       static_cast<short>(newNationTag);
 
-  bool isPrimary = g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(newNationTag) != 0;
+  bool isPrimary = g_pDiplomacyTurnStateManager->IsMajorNationSlot(newNationTag) != 0;
   if (isPrimary && g_pSimMgr->multiplayerSessionRole != 2) {
     g_apNationStates[newNationTag]->NotifyActionSlot94(oldNationCode, 0x135);
   }
@@ -3892,7 +3892,7 @@ void TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders() {
   TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
   while (cursor.More()) {
     if (unit->field_C != -1) {
-      char atWar = g_pDiplomacyTurnStateManager->IsNationPairAtWar(
+      bool atWar = g_pDiplomacyTurnStateManager->IsNationPairAtWar(
           activeNationId, cityScoreTable[unit->field_C].ownerNationCode00);
 
       short anchorTile = cityScoreTable[unit->field_C].cityTileIndex04;

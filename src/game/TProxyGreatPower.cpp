@@ -9,13 +9,13 @@
 #include "game/UiRuntimeContext.h"
 
 // FUNCTION: IMPERIALISM 0x005408c0
-char TProxyGreatPower::IsClient() {
-  return 1;
+bool TProxyGreatPower::IsClient() {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005408e0
-char TProxyGreatPower::IsRemote(void) {
-  return 1;
+bool TProxyGreatPower::IsRemote(void) {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00540900

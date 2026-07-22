@@ -1537,7 +1537,7 @@ unsigned short TNavyMgr::SelectionCursor(short nTileIndex, int nInputFlags) {
       }
     }
     if (canResolve) {
-      char relationOutOfDate = g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+      bool relationOutOfDate = g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
           entry->nation, province->ownerNationCode00);
       return g_awMapContextActionLabelTokenByCommand[relationOutOfDate != 0 ? 16 : 1];
     }

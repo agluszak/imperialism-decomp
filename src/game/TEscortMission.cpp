@@ -96,7 +96,7 @@ void TEscortMission::CalculateImportance() {
 // port zone's cached-owner context (FindFirstPortZoneContextByNation +
 // primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0), the same idiom
 // CalculateImportance above uses) and scores that context's tagged primary navy order-list
-// ships (gated by TDiplomacyMgr::HasPolicyWithNationSlot44) into a 4-category vector --
+// ships (gated by TDiplomacyMgr::IsNationPairAtWar) into a 4-category vector --
 // categories 0-2 scaled by strength/normalizationBase, category 3 unscaled -- via the
 // same per-ship math as AccumulateNavyOrderCategoryVectorWithScale, but inlined here rather
 // than calling out (no CALL to 0x537c60 in the raw listing; same inlining choice as
@@ -146,7 +146,7 @@ void TEscortMission::CalculateNeeds() {
       if (node->location != targetContext) {
         continue;
       }
-      if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, node->nation)) {
+      if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, node->nation)) {
         continue;
       }
       short normalizationBase = node->GetMaxStrength();

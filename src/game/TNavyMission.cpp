@@ -941,8 +941,8 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(i
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TShip* orderNode = TShip::GetFirst(); orderNode != 0; orderNode = orderNode->next) {
     if (orderNode->location == nodeContext &&
-        g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(static_cast<short>(sourceNation),
-                                                                orderNode->nation) != 0) {
+        g_pDiplomacyTurnStateManager->IsNationPairAtWar(static_cast<short>(sourceNation),
+                                                        orderNode->nation) != 0) {
       AccumulateNavyOrderVectorFromNode(orderNode, vector);
     }
   }
@@ -984,8 +984,7 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfil
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
   for (TShip* orderNode = TShip::GetFirst(); orderNode != 0; orderNode = orderNode->next) {
     if (orderNode->location == nodeContext &&
-        g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, orderNode->nation) !=
-            0) {
+        g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, orderNode->nation) != 0) {
       AccumulateNavyOrderCategoryVectorWithScale(
           orderNode, vector, static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08));
     }
@@ -1035,8 +1034,7 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeCo
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
   for (TShip* orderNode = TShip::GetFirst(); orderNode != 0; orderNode = orderNode->next) {
     if (orderNode->location == nodeContext &&
-        g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, orderNode->nation) !=
-            0) {
+        g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, orderNode->nation) != 0) {
       AccumulateNavyOrderCategoryVectorWithScale(
           orderNode, vector, static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08));
     }
@@ -1121,7 +1119,7 @@ float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
 
   for (short allyIdx = 0; allyIdx < 7; ++allyIdx) {
     if (g_apNationStates[allyIdx] != nullptr &&
-        g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, allyIdx) != 0) {
+        g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, allyIdx) != 0) {
       short scoreNation = portZone->GetPortZoneOwnerNationCodeFromMissionField48();
       float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
       for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {

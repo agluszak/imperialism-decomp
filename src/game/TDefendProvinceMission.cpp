@@ -140,8 +140,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
     if (candidateNation < 7) {
       int candidateNationIndex = static_cast<int>(candidateNation);
       if (candidateNationIndex != sourceNation &&
-          g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(candidateNation, sourceNation) !=
-              0) {
+          g_pDiplomacyTurnStateManager->IsNationPairAtWar(candidateNation, sourceNation) != 0) {
         if (g_pGlobalMapState->TileHasMovementClassId(nodeContext, regionIndex) != 0) {
           short checkedRegion = static_cast<short>(regionIndex);
           TMilitaryUnit* unit = 0;
@@ -328,7 +327,7 @@ void TDefendProvinceMission::CalculateNeeds() {
     return;
   }
 
-  char hasWar = g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationId04);
+  bool hasWar = g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationId04);
   float unaff_EBX = nationState->expansionPressurePerCompatibleRegionB64 + fStack_c;
 
   if (hasWar != 0) {

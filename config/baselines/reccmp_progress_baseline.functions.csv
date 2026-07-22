@@ -1956,11 +1956,11 @@ address|matching|name
 0x4bf770|0.7017543859649122|TCityInteriorMinister::FillOrders
 0x4bf8a0|0.43564356435643564|TCityInteriorMinister::EvaluateCityShortagesAndNotifyForeignMinister
 0x4bfa50|1.0|TCityInteriorMinister::QueueCityProductionPolicyCommands
-0x4bfb20|0.5316901408450704|TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
+0x4bfb20|0.4973730297723292|TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
 0x4bff60|1.0|TCityInteriorMinister::NoOpProductionCommandHook24
 0x4bff80|0.4217687074829932|TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit
 0x4c0090|0.35789473684210527|TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders
-0x4c02c0|0.5399239543726235|TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio
+0x4c02c0|0.5247148288973384|TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio
 0x4c04e0|0.9662921348314607|TCityInteriorMinister::QueueRandomCityProductionCommand19To1C
 0x4c05a0|0.5454545454545454|TCityInteriorMinister::QueueShipProductionCommandIfMissing
 0x4c0690|0.963855421686747|TCityInteriorMinister::QueuePendingRecruitmentProductionCommand
@@ -1969,7 +1969,7 @@ address|matching|name
 0x4c0d90|1.0|TCityInteriorMinister::MakeNewCity
 0x4c0de0|1.0|TCityInteriorMinister::RaiseNeedTargetWithinAvailableSurplus
 0x4c0e50|0.31555555555555553|TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls
-0x4c11c0|0.2766990291262136|TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore
+0x4c11c0|0.3058252427184466|TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore
 0x4c1510|0.44495412844036697|TCityInteriorMinister::ProcessUnitOrders
 0x4c18a0|0.7216494845360825|TShortArrayBase::InsertLast
 0x4c1990|0.5432098765432098|TCityInteriorMinister::DispatchBuilders
@@ -1982,7 +1982,7 @@ address|matching|name
 0x4c2e10|0.8202247191011236|TCityInteriorMinister::ContinueRailheadProject
 0x4c30b0|0.5102040816326531|TraceDescendingTileScoreGradientToSource
 0x4c3170|0.37866666666666665|TCityInteriorMinister::StartRailheadProject
-0x4c3490|0.6019417475728155|TCityInteriorMinister::EvaluateResources
+0x4c3490|0.6116504854368932|TCityInteriorMinister::EvaluateResources
 0x4c3620|0.5714285714285714|TCityInteriorMinister::ScoreResource
 0x4c3640|0.3395061728395062|TCityInteriorMinister::CreateSeaDistanceMap
 0x4c3910|0.3431952662721893|TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates
@@ -1992,8 +1992,8 @@ address|matching|name
 0x4c4370|0.37628865979381443|TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand
 0x4c4690|0.5872340425531914|TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutputs
 0x4c4840|0.8477366255144033|TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle
-0x4c49f0|0.8207792207792208|TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex
-0x4c4d40|0.5179856115107914|TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget
+0x4c49f0|0.8103896103896104|TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex
+0x4c4d40|0.5899280575539568|TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget
 0x4c4e60|0.7973856209150327|TCityInteriorMinister::FillRemainingNeedCapacityAndReducePowerPlantOrder
 0x4c4f90|0.9473684210526315|TCityInteriorMinister::GetAverageDevelopmentOrderAllocation
 0x4c4fe0|0.10344827586206896|TCityInteriorMinister::RequestResource
@@ -2298,7 +2298,7 @@ address|matching|name
 0x4dc4c0|0.8888888888888888|TGreatPower::ComputeTreasuryStatusPromptCode
 0x4dc540|0.775|TGreatPower::CompareMissionScoreVariantsByMode
 0x4dc660|0.851063829787234|TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages
-0x4dc840|0.9484536082474226|TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList
+0x4dc840|0.9587628865979382|TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList
 0x4dc9f0|1.0|TGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary
 0x4dca60|1.0|TGreatPower::NotifyCitySlot2C
 0x4dca80|1.0|TGreatPower::AbsorbCityNeedVectorSlotFC
@@ -2324,7 +2324,7 @@ address|matching|name
 0x4dd340|0.6222222222222222|TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal
 0x4dd3b0|1.0|TGreatPower::SumAidAllocationMatrixColumnForTarget
 0x4dd3f0|1.0|TGreatPower::SumAidAllocationMatrixAllCells
-0x4dd430|0.5142857142857142|TGreatPower::ComputeRemainingDiplomacyAidBudget
+0x4dd430|0.5714285714285714|TGreatPower::ComputeRemainingDiplomacyAidBudget
 0x4dd470|1.0|TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches
 0x4dd4e0|0.4585987261146497|TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots
 0x4dd740|1.0|TGreatPower::GetDiplomacyExternalStateByTarget
@@ -2372,7 +2372,7 @@ address|matching|name
 0x4dedf0|0.39245283018867927|TGreatPower::NotifyActionSlot94
 0x4defd0|0.5|TGreatPower::QueueDiplomacyProposalCodeForTargetNation
 0x4df010|0.6407322654462243|TGreatPower::AcceptOffer
-0x4df370|0.5108695652173914|TGreatPower::RejectOffer
+0x4df370|0.532608695652174|TGreatPower::RejectOffer
 0x4df4b0|0.6355140186915887|TGreatPower::IsEventCodeAllowedForRelationTier
 0x4df580|0.6666666666666666|TGreatPower::ResetNationDiplomacyProposalQueue
 0x4df5a0|0.6666666666666666|TGreatPower::ReleaseProposalQueueSlot7F
@@ -2401,12 +2401,12 @@ address|matching|name
 0x4e0610|1.0|TGreatPower::ComputeMinisterSkillFloatSlot8A
 0x4e0650|1.0|TGreatPower::ComputeMinisterSkillFloatSlot8B
 0x4e0690|1.0|TGreatPower::ComputeMinisterSkillFloatSlot8C
-0x4e06d0|0.7619047619047619|TGreatPower::SumCommodityRecordAccumulatedValues
+0x4e06d0|0.8095238095238095|TGreatPower::SumCommodityRecordAccumulatedValues
 0x4e0740|1.0|TGreatPower::GetCityBuildingProductionSlot8D
 0x4e0770|0.6666666666666666|TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6
 0x4e07b0|0.35294117647058826|TGreatPower::ComputeArmyCommitBudgetSlot8E
 0x4e0890|0.2828282828282828|TGreatPower::GetScoreFactorSlot23C
-0x4e09a0|0.5662650602409639|TGreatPower::GetScoreFactorSlot240
+0x4e09a0|0.5903614457831325|TGreatPower::GetScoreFactorSlot240
 0x4e0b20|0.43902439024390244|TGreatPower::ComputeArmyScoreRatioVsNation
 0x4e0c10|0.24806201550387597|TGreatPower::ComputeArmyScoreStandingRatioVsNation
 0x4e0d80|0.43902439024390244|TGreatPower::ComputeNavyScoreRatioVsNation
@@ -2535,7 +2535,7 @@ address|matching|name
 0x4e92b0|0.4961580680570801|TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState
 0x4e9a50|0.8576104746317512|TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16
 0x4e9ed0|1.0|TAutoGreatPower::ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284
-0x4e9f10|0.6|TAutoGreatPower::HasActiveCandidateNationSlots
+0x4e9f10|0.6166666666666667|TAutoGreatPower::HasActiveCandidateNationSlots
 0x4e9ff0|0.873015873015873|TAutoGreatPower::SetCandidateNationFlagAndPortZoneState
 0x4ea0e0|0.723404255319149|TAutoGreatPower::NotifyAllianceSlot214
 0x4ea150|0.8372093023255814|TAutoGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers
@@ -2572,7 +2572,7 @@ address|matching|name
 0x4ec3d0|0.05|TDefenseMinister::GetRankingCriterionForGP
 0x4ec450|0.06666666666666667|TDefenseMinister::MinisterSlot12
 0x4ec4c0|1.0|TDefenseMinister::Call4C
-0x4ec540|0.5081585081585082|TDefenseMinister::AssignDefenseUnitsToHomeAndBorderRegions
+0x4ec540|0.5034965034965035|TDefenseMinister::AssignDefenseUnitsToHomeAndBorderRegions
 0x4ecbb0|0.3755274261603376|TDefenseMinister::BuildTileRingPriorityMapForNationTileList
 0x4ecf20|0.5212121212121212|TDefenseMinister::BuildStrategicTilePriorityHeatmap
 0x4ed050|0.4092827004219409|TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer
@@ -2639,14 +2639,14 @@ address|matching|name
 0x4ef590|0.7384615384615385|TDiplomacyMgr::IsNationPairRelationTurnStampOutOfDate
 0x4ef600|0.59375|TDiplomacyMgr::HasAnyWarRelationForNation
 0x4ef650|0.59375|TDiplomacyMgr::HasAnyWarRelationTurnStampOutOfDateForNation
-0x4ef6a0|0.2857142857142857|TDiplomacyMgr::IsNationSlotInPrimaryGroupA
-0x4ef6d0|0.2857142857142857|TDiplomacyMgr::IsNationSlotInPrimaryGroupB
+0x4ef6a0|0.3333333333333333|TDiplomacyMgr::IsSpecialRelationSourceForMinorNationSlot
+0x4ef6d0|0.3333333333333333|TDiplomacyMgr::IsSpecialRelationTargetForMinorNationSlot
 0x4ef700|0.6158357771260997|TDiplomacyMgr::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode
-0x4efc30|0.6808510638297872|TDiplomacyMgr::HasAllianceGuardSlot60
-0x4efcb0|0.3944954128440367|TDiplomacyMgr::SetStandingScoreSlot28
+0x4efc30|0.8602150537634409|TDiplomacyMgr::HasAllianceGuardForNationPair
+0x4efcb0|0.41284403669724773|TDiplomacyMgr::SetStandingScoreSlot28
 0x4efe30|0.36065573770491804|TDiplomacyMgr::CopyDiplomacyStandingMatrixRowAndColumnSlot2c
 0x4efeb0|1.0|TDiplomacyMgr::ApplyRelationCode4AndQueueEvent18ForTargetNation
-0x4eff40|0.27988338192419826|TDiplomacyMgr::PropagateRelationSideEffectSlot80
+0x4eff40|0.2857142857142857|TDiplomacyMgr::PropagateRelationSideEffectSlot80
 0x4f01e0|0.473551637279597|TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn
 0x4f0590|1.0|TDiplomacyMgr::SyncNationField790FromLocalizationStateId
 0x4f05c0|0.006968641114982578|TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows
@@ -2659,14 +2659,14 @@ address|matching|name
 0x4f1570|0.7578947368421053|TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom
 0x4f1630|0.7108433734939759|TDiplomacyMgr::BuildMajorNationDiplomacyStandingRanking
 0x4f1760|0.7320754716981132|TDiplomacyMgr::RecomputeNationComparativePowerMetrics
-0x4f1970|0.2222222222222222|TDiplomacyMgr::HasState300LinkBetweenNationPair
+0x4f1970|0.5142857142857142|TDiplomacyMgr::HasNationPairNeedLevel300
 0x4f19c0|1.0|TDiplomacyMgr::GetNationPairDiplomacyStandingTierCode
 0x4f1a80|0.09090909090909091|TDiplomacyMgr::ShowRelationCodeNoticeForNationPairIfRelevant
 0x4f1b10|1.0|TDiplomacyMgr::GetNationPairDiplomacyRelationCode
 0x4f1b40|1.0|TDiplomacyMgr::SetNationPairDiplomacyRelationCodeFinal
-0x4f1b70|0.23788546255506607|TDiplomacyMgr::SetNationPairDiplomacyRelationCode
+0x4f1b70|0.24724061810154527|TDiplomacyMgr::SetNationPairDiplomacyRelationCode
 0x4f1f20|0.75|TDiplomacyMgr::LookupOrderCompatibilityMatrixValue
-0x4f1f50|0.8571428571428571|TDiplomacyMgr::IsPrimaryNationSlotIndex
+0x4f1f50|0.8571428571428571|TDiplomacyMgr::IsMajorNationSlot
 0x4f1f70|0.7592592592592593|TDiplomacyMgr::BuildRelationshipListSlot88
 0x4f2050|1.0|TDiplomacyMgr::CountMajorAllianceRelationsSlot8c
 0x4f2090|0.35714285714285715|TDiplomacyMgr::GetNthAlliedMajorNationSlot90
@@ -3094,7 +3094,7 @@ address|matching|name
 0x5127e0|0.6551724137931034|SplitTileIndexToHexRasterColumnX2AndRow
 0x512850|0.5555555555555556|ComputeTileIndexFromHexColumnX2AndRow
 0x5128f0|1.0|LookupHexNeighborRowDeltaByDirection
-0x512930|0.25622775800711745|BuildHexAreaTileIndexList
+0x512930|0.26334519572953735|BuildHexAreaTileIndexList
 0x512b50|0.4375|TMapMgr::GetNeighborTileIDArray
 0x512cc0|0.4647887323943662|TMapMgr::GetNeighborTileID
 0x512dd0|0.5435897435897435|TMapMgr::GetDirectionFrom
@@ -3169,7 +3169,7 @@ address|matching|name
 0x5177d0|1.0|TMapMgr::GetMapImprovementTileOffsetFromClass
 0x5177f0|0.25806451612903225|TMapMgr::GetMapImprovementTileSpriteOffset
 0x5178c0|0.75|TMapMgr::ResetAllTileMarkerSlotIndicesToSentinel
-0x5178f0|0.3389830508474576|TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias
+0x5178f0|0.32038834951456313|TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias
 0x517c30|0.358974358974359|TMapMgr::AreNationsBorderLinked
 0x517d40|0.0|OrphanDeadLeaf_NoRefs_00517d40
 0x517dd0|0.40963855421686746|TMapMgr::HasDirectOrFallbackLinkedNodeType
@@ -3187,7 +3187,7 @@ address|matching|name
 0x518aa0|0.0|WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask_At00518aa0
 0x518b40|0.9523809523809523|TMapMgr::CalculateDeveloperTilePurchaseCost
 0x518bd0|0.6|TMapMgr::MarkAdjacentHexOrderDirectionAndSelectTile
-0x518d90|0.43843843843843844|TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders
+0x518d90|0.4107142857142857|TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders
 0x519010|0.3821656050955414|TMapMgr::ClassifyCityGateTerrainComposition
 0x519140|0.5647058823529412|TMapMgr::DumpAndResetMapScriptState
 0x519610|0.4939759036144578|TMapMgr::ChooseNationSetupProfilesForOpenSlots
@@ -3202,7 +3202,7 @@ address|matching|name
 0x519e00|0.3269961977186312|TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights
 0x51a2a0|0.7175925925925926|TMapDialog::DrawHexNeighborOutlineFromTileArray
 0x51a900|0.6486486486486487|TMapDialog::InvalidateTile
-0x51a990|1.0|TMapDialog::ConvertPoint
+0x51a990|0.9502762430939227|TMapDialog::ConvertPoint
 0x51aad0|0.8780487804878049|TMapDialog::RefreshMapTile
 0x51ab60|0.7863247863247863|TMapDialog::IsTileVisible
 0x51ac40|1.0|TMapDialog::CenterOn
@@ -3400,7 +3400,7 @@ address|matching|name
 0x52f540|1.0|TForeignMinister::SetInteriorMinisterBid
 0x52f570|0.7111111111111111|TForeignMinister::SetBuyPriorities
 0x52f730|1.0|TForeignMinister::WeNeedMoney
-0x52f7b0|0.5561497326203209|TForeignMinister::ArrangeMaterialsOffers
+0x52f7b0|0.5026737967914439|TForeignMinister::ArrangeMaterialsOffers
 0x52f940|0.5526315789473685|TForeignMinister::SetTradeBids
 0x52f9d0|0.391304347826087|TForeignMinister::DoUsualSubsidyRule
 0x52fba0|0.19883040935672514|TForeignMinister::ReplyToTradeOffer
@@ -3649,7 +3649,7 @@ address|matching|name
 0x53ace0|0.49122807017543857|TBlockadePortMission::Initialize
 0x53adf0|0.6990291262135923|TBlockadePortMission::GetReplacementSlot48
 0x53ae90|1.0|TBlockadePortMission::SetStateByte8To2
-0x53aeb0|0.6423611111111112|TBlockadePortMission::CalculateNeeds
+0x53aeb0|0.6631944444444444|TBlockadePortMission::CalculateNeeds
 0x53b350|0.4027777777777778|TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
 0x53b800|0.544|ComputeNavyOrderDistributionScoreForNation
 0x53ba10|1.0|TBlockadePortMission::Matches
@@ -3876,7 +3876,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.4532860824742268|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.46602254428341383|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags
@@ -4042,7 +4042,7 @@ address|matching|name
 0x553840|0.6697247706422018|TTaskForce::OrderSendInTheMarines
 0x5539c0|1.0|TTaskForce::MaxOut
 0x553a50|1.0|TTaskForce::DropShips
-0x553b10|0.4827586206896552|TTaskForce::IsEmpty
+0x553b10|0.6206896551724138|TTaskForce::IsEmpty
 0x553b50|0.4727272727272727|TTaskForce::NoSelection
 0x553bc0|0.6536585365853659|TTaskForce::Add
 0x553e30|1.0|TTaskForce::ElectFlagship
@@ -4065,7 +4065,7 @@ address|matching|name
 0x554e70|0.5514018691588785|TTaskForce::GetGeneralDescription
 0x555090|0.4647887323943662|TTaskForce::RemoveStragglers
 0x5551d0|0.37104072398190047|TTaskForce::GetAuthority
-0x555420|0.5531914893617021|TTaskForce::Encounter
+0x555420|0.5638297872340425|TTaskForce::Encounter
 0x555720|0.248|TTaskForce::TryToSpot
 0x555920|0.39628482972136225|TTaskForce::ResolveEncounterWith
 0x555c20|0.5945945945945946|TTaskForce::AttemptToEvade
@@ -4101,7 +4101,7 @@ address|matching|name
 0x557560|0.9866666666666667|TNavyMgr::MakeSureAllShipsHaveOrders
 0x5577b0|0.8043478260869565|TNavyMgr::PrepareToCarryOutAllOrders
 0x557870|1.0|TTaskForce::RechargeAll
-0x5578a0|0.4507422402159244|TNavyMgr::CarryOutOrders
+0x5578a0|0.44804318488529016|TNavyMgr::CarryOutOrders
 0x557e10|0.6464646464646465|TNavyMgr::AssignEscorts
 0x557f10|0.33389544688026984|TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext
 0x558860|0.7126436781609196|TZonePrimaryNeighborStretch::EnsureSlotAllocatedAndReturnPointer
@@ -4111,7 +4111,7 @@ address|matching|name
 0x559e00|0.39464882943143814|TNavyMgr::SelectionCursor
 0x55a020|0.6847826086956522|TNavyMgr::SelectionClick
 0x55a160|0.4221105527638191|TNavyMgr::DoTileClick
-0x55a780|0.34954954954954953|TNavyMgr::ResolveStrategicBattle
+0x55a780|0.3391461214672279|TNavyMgr::ResolveStrategicBattle
 0x55b640|0.25|WrapperFor_ftol_At0055b640
 0x55b670|1.0|TNewsMgr::CreateObject
 0x55b6a0|0.9090909090909091|TNewsMgr::`scalar deleting destructor'
@@ -4716,7 +4716,7 @@ address|matching|name
 0x57da70|0.282981267437226|TSimMgr::AdvanceGlobalTurnStateMachine
 0x57f0e0|1.0|TCountry::IsNationProfileInMinorRange100To199
 0x57f110|0.3333333333333333|TSimMgr::InLinearPhase
-0x57f140|0.7663551401869159|TSimMgr::DoCityAndTransport
+0x57f140|0.8|TSimMgr::DoCityAndTransport
 0x57f200|0.8|TSimMgr::DoCivilians
 0x57f280|0.4810126582278481|TSimMgr::DoMilitary
 0x57f3c0|0.9072164948453608|TSimMgr::DoTrade
@@ -4745,7 +4745,7 @@ address|matching|name
 0x581280|0.8148148148148148|TSimMgr::IsNationSlotEligibleForEventProcessing
 0x581300|0.6238532110091743|TSimMgr::RemoveNationSlotAndNotifyPeers
 0x581400|0.5362318840579711|TSimMgr::InitializeOrLoadEntryArray14AndClampLimits
-0x581510|0.9829683698296837|TSimMgr::UpdatePersistentTopTenNationScores
+0x581510|0.9781021897810219|TSimMgr::UpdatePersistentTopTenNationScores
 0x581870|0.5555555555555556|ReinitializeGameFlowAndPostTurnEventCode
 0x581ae0|1.0|TSimMgr::SetSelectedIndex6AAndTriggerRefresh
 0x581b20|1.0|TSimMgr::LoadNormalizedCredentialName
@@ -5659,7 +5659,7 @@ address|matching|name
 0x5b8ad0|0.484375|TTradeMgr::ComputeNationMetricBaselineValueForSlot
 0x5b8d40|1.0|TTradeMgr::GetNationMetricWeightedScoreForSlot
 0x5b8d70|1.0|TTradeMgr::IsCapabilityCategoryActiveSlot3C
-0x5b8da0|0.56|TTradeMgr::ComputeNationMetricDispatchScoreAndResolveScale
+0x5b8da0|0.552|TTradeMgr::ComputeNationMetricDispatchScoreAndResolveScale
 0x5b8f80|1.0|TTradeMgr::GetNationMetricRosterWordAtOffset0E
 0x5b8fb0|1.0|TTradeMgr::GetNationMetricRosterWordAtOffset0C
 0x5b8fe0|0.6428571428571429|TTradeMgr::QueryProposalWeightSlot4C
@@ -5669,7 +5669,7 @@ address|matching|name
 0x5b91e0|0.38|TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked
 0x5b9370|0.8571428571428571|TTradeMgr::RefreshNationStateAndEmitTurnEvent3Mode18
 0x5b9410|0.6486486486486487|TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline
-0x5b94d0|0.4945652173913043|TTradeMgr::DispatchProposalAmountSlot60
+0x5b94d0|0.49591280653950953|TTradeMgr::DispatchProposalAmountSlot60
 0x5b9790|1.0|TTradeMgr::SetNationMetricCellValueByIndex
 0x5b97c0|1.0|TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags
 0x5b9890|0.7317073170731707|TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations
@@ -5752,7 +5752,7 @@ address|matching|name
 0x5bea00|0.09692671394799054|TOfferDeskPicture::PoseOfferSheet
 0x5bf740|0.6442953020134228|TOfferDeskPicture::DoEvent
 0x5bf860|1.0|TOfferDeskPicture::DoKeyEvent
-0x5bf930|0.7543424317617866|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
+0x5bf930|0.7907361455748553|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
 0x5c04f0|0.8108108108108109|TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt
 0x5c0930|0.05|TOfferDeskPicture::HandleMouseUp
 0x5c09d0|0.010309278350515464|TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged

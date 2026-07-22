@@ -12,7 +12,7 @@ public:
 
   void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                       int multiplier) override;
-  char IsRemote(void) override;
+  bool IsRemote(void) override;
   void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char* mapCellLabel) override;
 
 protected:

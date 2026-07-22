@@ -5,8 +5,8 @@
 #include "game/TSimMgr.h"
 
 // FUNCTION: IMPERIALISM 0x00541840
-char TRemoteGreatPower::IsRemote(void) {
-  return 1;
+bool TRemoteGreatPower::IsRemote(void) {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00541860

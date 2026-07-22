@@ -82,9 +82,9 @@ public:
                                                          NationSlot targetNationSlot);
   virtual char ReturnFalseNationStateCapabilityFlag90(short arg);
   virtual void NotifyActionSlot94(int sourceNation, int actionCode);
-  virtual char IsClient(void);
-  virtual char IsHost(void);
-  virtual char IsRemote(void);
+  virtual bool IsClient(void);
+  virtual bool IsHost(void);
+  virtual bool IsRemote(void);
   virtual void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char* mapCellLabel);
 
   int SumWeightedNeighborLinkScoreForLinkedNodes(void);

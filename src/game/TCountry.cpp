@@ -62,19 +62,19 @@ static void SwapAdjacentBytesInShortArray(short* entries, int pairCount) {
 // TCountry::CreateObject
 
 // FUNCTION: IMPERIALISM 0x004d6730
-char TCountry::IsClient(void) {
-  return 0;
+bool TCountry::IsClient(void) {
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004d6750
-char TCountry::IsHost(void) {
-  return 0;
+bool TCountry::IsHost(void) {
+  return false;
 }
 
 // slot 0x28 — IsRemote (real body).
 // FUNCTION: IMPERIALISM 0x004d6770
-char TCountry::IsRemote(void) {
-  return 0;
+bool TCountry::IsRemote(void) {
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004d6790

@@ -10,9 +10,9 @@ public:
   ~TClientGreatPower() override;
 
   // slot 0x26 — 0x005412b0
-  char IsClient(void) override;
+  bool IsClient(void) override;
   // slot 0x28 — 0x005412d0
-  char IsRemote(void) override;
+  bool IsRemote(void) override;
   // slot 0x7b — 0x005413b0
   void AcceptOffer(short proposalIndex) override;
   // slot 0x7c — 0x00541450

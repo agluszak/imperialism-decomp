@@ -54,7 +54,7 @@ static inline bool LandTilesHaveDifferentNationOwners(short firstTile, short sec
 
 static inline void SetMapBorderColorForTileOwner(short tileIndex) {
   short nation = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
-  if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(nation) == 0) {
+  if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(nation) == 0) {
     nation = 0x35;
   }
   g_pUiRuntimeContext->SetForeColor(nation);
@@ -1177,7 +1177,7 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
       }
     }
 
-    if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(terrain.ownerNationTag04) == 0 &&
+    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(terrain.ownerNationTag04) == 0 &&
         terrain.secondaryOwnerNationTag18 != -1) {
       g_pStrategicMapViewSystem->BlitStrategicMapUnitActivityOverlayFrame(
           destinationSurfaceObject, terrain.secondaryOwnerNationTag18,
@@ -1204,7 +1204,7 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
 // FUNCTION: IMPERIALISM 0x00520670
 void TMapDialog::DrawBorder(short relationLevel, int originX, int originY, int nationA,
                             int nationB) {
-  if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(nationA) == 0) {
+  if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(nationA) == 0) {
     g_pUiRuntimeContext->SetForeColor(0x35);
   } else {
     g_pUiRuntimeContext->SetForeColor(nationA);
@@ -1242,7 +1242,7 @@ void TMapDialog::DrawBorder(short relationLevel, int originX, int originY, int n
     DrawMapDialogGuidePatternSetI_00521540(originX, originY, 1);
     break;
   }
-  if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(nationB) == 0) {
+  if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(nationB) == 0) {
     g_pUiRuntimeContext->SetForeColor(0x35);
   } else {
     g_pUiRuntimeContext->SetForeColor(nationB);

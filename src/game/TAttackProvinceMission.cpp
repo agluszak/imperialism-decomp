@@ -225,7 +225,7 @@ void TAttackProvinceMission::GiveOrders() {
     } while (remainingWeights != 0);
 
     if (weighted / total > g_AttackProvinceMissionReadinessThreshold_0065A8F0) {
-      if (g_pDiplomacyTurnStateManager->HasOutdatedWarRelationSlot48(
+      if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
               nationId04, g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00)) {
         for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(targetIter.Reset());
              targetIter.More(); unit = static_cast<TMilitaryUnit*>(targetIter.Advance())) {
@@ -233,7 +233,7 @@ void TAttackProvinceMission::GiveOrders() {
             unit->SetOrders(kUnitOrderRedeploy, targetProvince30);
           }
         }
-      } else if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
+      } else if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(
                      nationId04,
                      g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00)) {
         signed char targetOwnerNation =
@@ -293,8 +293,9 @@ TMission* TAttackProvinceMission::GetReplacementSlot48() {
     return nullptr;
   }
 
-  if (g_pDiplomacyTurnStateManager->HasOutdatedWarRelationSlot48(pathMarker06, nationId04) &&
-      !g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(pathMarker06, targetOwnerNation)) {
+  if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(pathMarker06,
+                                                                           nationId04) &&
+      !g_pDiplomacyTurnStateManager->IsNationPairAtWar(pathMarker06, targetOwnerNation)) {
     return nullptr;
   }
   return this;

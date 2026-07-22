@@ -899,7 +899,7 @@ void TSimMgr::DoCityAndTransport() {
       --nationSlot;
       continue;
     }
-    int shouldRunHandlers = !(*nation)->IsRemote();
+    bool shouldRunHandlers = !(*nation)->IsRemote();
     if (shouldRunHandlers) {
       (*nation)->FillInteriorMinisterOrders();
       (*nation)->NotifyCitySlot2C();

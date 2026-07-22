@@ -622,7 +622,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
     }
 
     if (interactionModeAt94 == 4) {
-      if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(frameRegionSelectorAt98)) {
+      if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(frameRegionSelectorAt98)) {
         short need =
             g_apNationStates[frameRegionSelectorAt98]->diplomacyPolicyByNation[terrainIndex];
         if (need == 0x133) {
@@ -655,7 +655,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
         }
       }
     } else { // interactionModeAt94 == 1
-      if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(frameRegionSelectorAt98)) {
+      if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(frameRegionSelectorAt98)) {
         short need =
             g_apNationStates[frameRegionSelectorAt98]->diplomacyGrantByNation[terrainIndex];
         if (need == 1000) {
@@ -801,8 +801,9 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
   bool applyCursor = false;
   if (hit) {
     int actionCode = ResolveDiplomacyActionFromClickAndUpdateTarget(clickPoint);
-    char valid = g_pDiplomacyTurnStateManager->ValidateDiplomacyActionSlot5c(
-        selectedTerrainIndexAt90, *reinterpret_cast<short*>(self + 0xc2), actionCode);
+    bool valid =
+        g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
+            selectedTerrainIndexAt90, *reinterpret_cast<short*>(self + 0xc2), actionCode);
 
     short cursorId;
     if (valid == 0) {
@@ -1395,8 +1396,8 @@ void TDiplomacyMapView::DrawVoteNuggets() {
 
 // FUNCTION: IMPERIALISM 0x004f74f0
 char TDiplomacyMapView::CheckEntanglements(int targetNationSlot, eDipAction action) {
-  if (g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(targetNationSlot,
-                                                           selectedTerrainIndexAt90) != 0) {
+  if (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(targetNationSlot,
+                                                                  selectedTerrainIndexAt90) != 0) {
     CString formattedIntro;
     CString entangledNations;
     CString unusedSuffix;

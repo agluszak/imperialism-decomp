@@ -253,8 +253,8 @@ void TForeignMinister::ArrangeMaterialsOffers() {
       fallbackNationSlot = rand() % 7;
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(
               static_cast<short>(fallbackNationSlot)) != 0) {
-        if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(fallbackNationSlot,
-                                                                    owner->nationSlot) == 0 &&
+        if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(fallbackNationSlot,
+                                                            owner->nationSlot) == 0 &&
             fallbackNationSlot != owner->nationSlot) {
           foundFallbackNation = true;
         }
@@ -520,8 +520,8 @@ void TForeignMinister::DoProposeTreaties() {
       continue;
     }
     if (minor->CanInitiateJoinEmpireProposalToTarget(owner->nationSlot, 0x12d) != 0) {
-      if (g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(minorNation, owner->nationSlot) ==
-          0) {
+      if (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(minorNation,
+                                                                      owner->nationSlot) == 0) {
         owner->ApplyDiplomacyPolicyStateForTargetWithCostChecks(minorNation, 0x12d);
       }
     } else if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(owner->nationSlot,
@@ -596,8 +596,8 @@ void TForeignMinister::DoProposeTreaties() {
       int candidateNation = entry->nationSlot;
       if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
               owner->nationSlot, static_cast<short>(candidateNation)) != 2 &&
-          g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(static_cast<short>(candidateNation),
-                                                               owner->nationSlot) == 0) {
+          g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(
+              static_cast<short>(candidateNation), owner->nationSlot) == 0) {
         selectedNation = candidateNation;
       }
     }
@@ -830,8 +830,8 @@ void TForeignMinister::ReplyToDiplomacyOffers(short queueIndex) {
                                                                           targetNation, '\0');
       break;
     case 0x132:
-      valid =
-          (g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(targetNation, gp->nationSlot) == 0);
+      valid = (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(targetNation,
+                                                                           gp->nationSlot) == 0);
       break;
     }
   }

@@ -16,8 +16,8 @@ public:
   void QueueDiplomacyProposalCodeForTargetNation(
       ProposalCode proposalCode,
       NationSlot targetNationSlot) override;               // slot 0x23 0x540ac0
-  virtual char IsClient() override;                        // slot 0x26 0x5408c0
-  char IsRemote(void) override;                            // slot 0x28 0x5408e0
+  virtual bool IsClient() override;                        // slot 0x26 0x5408c0
+  bool IsRemote(void) override;                            // slot 0x28 0x5408e0
   void AddTurnStartEvent(TTurnStartEvent* event) override; // slot 0x2f 0x540c70
   virtual void
   RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary() override;           // slot 0x36 0x540b80

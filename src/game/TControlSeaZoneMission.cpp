@@ -116,7 +116,7 @@ void TControlSeaZoneMission::SetStateByte8To2() {
     float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
     for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
       if (ship->location != targetZone14 ||
-          !g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, ship->nation)) {
+          !g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, ship->nation)) {
         continue;
       }
 
@@ -183,7 +183,7 @@ void TControlSeaZoneMission::CalculateNeeds() {
     if (node->location != targetZone14) {
       continue;
     }
-    if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, node->nation)) {
+    if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, node->nation)) {
       continue;
     }
     short normalizationBase = node->GetMaxStrength();
@@ -243,7 +243,7 @@ void TControlSeaZoneMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
   int nationBitmask = 0;
   TZone* firstMatchContext = nullptr;
   for (int nation = 0; nation < 7; ++nation) {
-    if (g_pDiplomacyTurnStateManager->HasOutdatedWarRelationSlot48(nation, nationId04)) {
+    if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nation, nationId04)) {
       nationBitmask |= 1 << nation;
       TZone* portZone =
           g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(nation));

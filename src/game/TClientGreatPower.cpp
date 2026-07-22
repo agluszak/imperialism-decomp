@@ -8,13 +8,13 @@
 #include "game/TMultiplayerMgr.h"
 
 // FUNCTION: IMPERIALISM 0x005412b0
-char TClientGreatPower::IsClient(void) {
-  return 1;
+bool TClientGreatPower::IsClient(void) {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005412d0
-char TClientGreatPower::IsRemote(void) {
-  return 0;
+bool TClientGreatPower::IsRemote(void) {
+  return false;
 }
 
 // SYNTHETIC: IMPERIALISM 0x005412f0
