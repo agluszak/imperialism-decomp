@@ -125,7 +125,7 @@ public:
   // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 HiliteState inherited unchanged (0x48e810)
-  virtual undefined OrphanRetStub_004ab800(); // slot 0x71 0x4ab800
+  virtual void Hilite(); // slot 0x71 0x4ab800
 
   // The civilian unit this row describes (stored by the second-phase init).
   TCivUnit* civUnit84;

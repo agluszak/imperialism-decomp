@@ -110,7 +110,7 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 WindowToLocal inherited unchanged (0x48bac0)
-  // slot 0x68 OrphanRetStub_004b1410 inherited unchanged (0x4b1410)
+  // slot 0x68 ApplyCheats inherited unchanged (0x4b1410)
 
   TGPCheater();
 };

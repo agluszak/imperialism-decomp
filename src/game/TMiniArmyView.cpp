@@ -13,9 +13,7 @@
 #include "game/ui_text_label_helpers_decls.h"
 
 // FUNCTION: IMPERIALISM 0x004aad20
-undefined TMiniArmyView::OrphanRetStub_004aad20() {
-  return 0;
-}
+void TMiniArmyView::Hilite() {}
 
 // SYNTHETIC: IMPERIALISM 0x004aad40
 // TMiniArmyView::`scalar deleting destructor'

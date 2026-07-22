@@ -29,6 +29,4 @@ void TLineData::InstallViews(TView* panel, int* offsetLayout) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056f480
-undefined TLineData::OrphanRetStub_0056f480() {
-  return 0;
-}
+void TLineData::RemoveViews() {}

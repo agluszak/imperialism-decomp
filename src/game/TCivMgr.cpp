@@ -20,6 +20,8 @@
 #include "game/TCivToolbar.h"
 #include "game/TNewsMgr.h"
 #include "game/TMapUberPicture.h"
+#include "game/TMapMgr.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/TViewMgr.h"
 #include "game/mapped_flavor_text.h"
 #include "game/mfc.h"
@@ -47,6 +49,9 @@ TCivMgr::TCivMgr() {}
 // TCivMgr::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004d20a0
 TCivMgr::~TCivMgr() {}
+
+// Applies the world-state mutation for a completed civilian work order (order->field_8, an
+// int inherited-but-repurposed slot distinct from TUnit's own `orderType` short, holds this
 
 // FUNCTION: IMPERIALISM 0x004d20c0
 void TCivMgr::ICivMgr() {}
@@ -670,6 +675,102 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
 // FUNCTION: IMPERIALISM 0x004d4310
 void TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex,
                                                            TCivUnit* pCivOrderEntry) {}
+// specific completion kind: 5=rail section, 6=depot, 7=port, 8=discovery/prospecting,
+// 10=development-tier advance, 12=city/building completion, 13=tile activity byte), then
+// dispatches redraw invalidation for the affected tiles/cities when the localized map UI
+// is active (g_pSimMgr->multiplayerSessionRole != 0).
+// FUNCTION: IMPERIALISM 0x004d4390
+void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
+  // Case bodies are written in the original's physical block layout (5, 8, 3, 1, 2, 0, 7 --
+  // not ascending case-value order) so MSVC500's jump-table codegen lays them out the same
+  // way; the jump table itself (built from the case labels) is unaffected by text order.
+  switch (order->field_8 - 5) {
+  case 5: {
+    bool selectHighNibble = (order->orderType == 0 || order->orderType == 8);
+    byte result = g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(order->tileIndex06,
+                                                                             selectHighNibble);
+    g_pGlobalMapState->SetCivilianDevelopmentClassNibble(order->tileIndex06, selectHighNibble,
+                                                         static_cast<byte>(result + 1), 1);
+    break;
+  }
+  case 8:
+    g_pGlobalMapState->terrainStateTable[order->tileIndex06].secondaryOwnerNationTag18 =
+        static_cast<signed char>(order->field_18);
+    break;
+  case 3: {
+    TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[order->tileIndex06];
+    tile.pendingDevelopmentFlag0d |= static_cast<unsigned char>(1 << order->field_18);
+    if (g_apNationStates[order->field_18]->diplomacyEligibilityA0 != 0 &&
+        g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(order->tileIndex06) != 0) {
+      order->completionMarker26 = 0x232f;
+    }
+    break;
+  }
+  case 1:
+    g_pGlobalMapState->QueueDepotConstructionOrder(order->tileIndex06, order->field_18);
+    g_apNationStates[order->field_18]->BuildTransportLinkedInfluenceMap(nullptr);
+    order->completionMarker26 = 0x232a;
+    break;
+  case 2:
+    g_pGlobalMapState->QueuePortConstructionOrder(order->tileIndex06, order->field_18);
+    g_apNationStates[order->field_18]->BuildTransportLinkedInfluenceMap(nullptr);
+    order->completionMarker26 = 0x232b;
+    break;
+  case 0:
+    g_pGlobalMapState->SetHexAdjacencyDirectionFlagsForTilePair(order->field_C, order->tileIndex06,
+                                                                order->field_18);
+    order->completionMarker26 = 0x2329;
+    break;
+  case 7:
+    g_pGlobalMapState->SetProvinceCapitalTileFlagBit08(
+        g_pGlobalMapState->terrainStateTable[order->tileIndex06].cityRecordIndex);
+    break;
+  default:
+    break;
+  }
+
+  if (g_pSimMgr->multiplayerSessionRole == 0) {
+    return;
+  }
+
+  switch (order->field_8 - 5) {
+  case 0:
+    DispatchTileRedrawInvalidateEvent(order->field_C);
+  case 3:
+  case 5:
+  case 8:
+    DispatchTileRedrawInvalidateEvent(order->tileIndex06);
+    return;
+  case 1:
+  case 2: {
+    short neighborBuf[7];
+    TMapMgr::ComputeHexNeighborTileIndices(order->tileIndex06, neighborBuf,
+                                           g_pGlobalMapState->hexNeighborWrapHorizontally20);
+    neighborBuf[6] = order->tileIndex06;
+    TTerrainStateRecordView& centerTile = g_pGlobalMapState->terrainStateTable[order->tileIndex06];
+    for (int i = 0; i < 7; ++i) {
+      short t = neighborBuf[i];
+      if (t == -1) {
+        continue;
+      }
+      DispatchTileRedrawInvalidateEvent(t);
+      short cityIdx = g_pGlobalMapState->terrainStateTable[t].cityRecordIndex;
+      if ((centerTile.activeFlags1c & 3) != 0 && centerTile.gateFlag != 0 && cityIdx != -1) {
+        g_pGameFlowState->DispatchCityRedrawInvalidateEvent(cityIdx);
+      }
+    }
+    return;
+  }
+  case 7: {
+    short cityIdx = g_pGlobalMapState->terrainStateTable[order->tileIndex06].cityRecordIndex;
+    g_pGameFlowState->DispatchCityRedrawInvalidateEvent(cityIdx);
+    DispatchTileRedrawInvalidateEvent(g_pGlobalMapState->cityScoreTable[cityIdx].cityTileIndex04);
+    return;
+  }
+  default:
+    return;
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004d4740
 void TCivMgr::ResolveCivilianDisputes() {

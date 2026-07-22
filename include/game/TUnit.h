@@ -26,7 +26,7 @@ public:
 
   // --- TUnit virtual functions ---
   virtual void VTableSlot10(int pOwnerContext);           // slot 0x28
-  virtual void DispatchSlot2C();                          // slot 0x2c
+  virtual void ContinueOrders();                          // slot 0x2c, Mac oracle
   virtual void DetachUnitOrderFromOwnerAndReset();        // slot 0x30
   virtual void SetOrderModeSlot34(int mode, int payload); // slot 0x34
 
@@ -35,9 +35,9 @@ public:
   // the recruit/civilian target tile by TMapMgr and matched against the terrain
   // table by TGreatPower slot 0x298.
   short tileIndex06;
-  int field_8;            // 0x08
-  short field_C;          // 0x0c
-  short field_E;          // 0x0e
+  int field_8;   // 0x08
+  short field_C; // 0x0c
+  short field_E; // 0x0e
   // Doubly-linked-list back-pointer for the tile's civilian-order chain (terrainState-
   // Table[tileIndex06].firstCivilianOrder20, threaded via nextOnTile); null when this is
   // the chain head. Recovered from TCivUnit::VTableSlot10 (0x5c2b70), which dereferences

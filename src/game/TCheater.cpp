@@ -1,9 +1,7 @@
 #include "game/TCheater.h"
 
 // FUNCTION: IMPERIALISM 0x004b1410
-undefined TCheater::OrphanRetStub_004b1410() {
-  return 0;
-}
+void TCheater::ApplyCheats() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b1430
 // TCheater::`scalar deleting destructor'

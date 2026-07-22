@@ -124,8 +124,7 @@ public:
   // slot 0x73 SetTextFromStringResource inherited unchanged (0x48fed0)
   // slot 0x74 CopyTextTo inherited unchanged (0x4294d0)
   // slot 0x75 DrawTextAligned inherited unchanged (0x4900a0)
-  virtual void
-  OrphanRetStub_0057b760(); // slot 0x76 0x57b760 — genuinely a 1-byte no-op (bare `ret`)
+  virtual void Hilite(); // slot 0x76 0x57b760; Mac symbol oracle
 
   TSelectoText();
 };

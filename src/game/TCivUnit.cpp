@@ -1,4 +1,5 @@
 #include "game/TCivUnit.h"
+#include "game/TCivMgr.h"
 #include "game/TUnit.h"
 #include "game/TMapMgr.h"
 #include "game/TStream.h"
@@ -47,7 +48,26 @@ void TCivUnit::SetOrderModeSlot34(int mode, int payload) {
 }
 
 // FUNCTION: IMPERIALISM 0x005c2a90
-void TCivUnit::DispatchSlot2C() {}
+void TCivUnit::ContinueOrders() {
+  switch (field_8) {
+  case 2:
+    return;
+  case 5:
+  case 6:
+  case 7:
+  case 8:
+  case 10:
+  case 11:
+  case 12:
+  case 13:
+    --remainingTurns24;
+    if (remainingTurns24 >= 1) {
+      return;
+    }
+    g_pSelectedCivilianOrderState->ApplyCompletedCivWorkOrderToMapState(this);
+  }
+  field_8 = 0;
+}
 
 // FUNCTION: IMPERIALISM 0x005c2b10
 void TCivUnit::ReadFrom(TStream* stream) {

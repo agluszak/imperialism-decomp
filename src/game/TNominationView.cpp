@@ -11,9 +11,7 @@
 #include "game/ui_text_label_helpers_decls.h"
 
 // FUNCTION: IMPERIALISM 0x004305c0
-undefined TNominationView::OrphanRetStub_004305c0() {
-  return 0;
-}
+void TNominationView::Hilite() {}
 
 // SYNTHETIC: IMPERIALISM 0x004305e0
 // TNominationView::`scalar deleting destructor'

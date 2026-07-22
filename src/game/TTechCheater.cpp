@@ -14,6 +14,4 @@ IMPLEMENT_DYNCREATE(TTechCheater, TCheater)
 TTechCheater::TTechCheater() {}
 
 // FUNCTION: IMPERIALISM 0x004b1990
-undefined TTechCheater::OrphanRetStub_004b1410() {
-  return 0;
-}
+void TTechCheater::ApplyCheats() {}

@@ -21,12 +21,12 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual void VTableSlot10(int pOwnerContext) override;           // slot 0x0a 0x5c2b70
-  virtual void DispatchSlot2C() override;                          // slot 0x0b 0x5c2a90
+  virtual void ContinueOrders() override;                          // slot 0x0b 0x5c2a90
   virtual void DetachUnitOrderFromOwnerAndReset() override;        // slot 0x0c 0x5c2c40
   virtual void SetOrderModeSlot34(int mode, int payload) override; // slot 0x0d 0x5c29f0
   virtual void ResetCivWorkOrderAndRefreshCounters();              // slot 0x0e 0x5c2c60
-  short remainingTurns24;   // 0x24
-  short completionMarker26; // 0x26
+  short remainingTurns24;                                          // 0x24
+  short completionMarker26;                                        // 0x26
 
   TCivUnit();
 
