@@ -43,7 +43,7 @@ int __stdcall GetAuxOutputVolumeFromFirstCompatibleDevice(unsigned int* outVolum
 void __stdcall SetMciPlaybackRangeByTrackIndexAndDevice(int trackIndex, MCIDEVICEID device);
 
 // 0x005e18f0 — open the CD-audio MCI device and probe the aux-output device; returns the id.
-unsigned int OpenCdAudioAndProbeAuxOutputDevice(void);
+WORD OpenCdAudioAndProbeAuxOutputDevice(void);
 
 // 0x005e19e0 — send MCI command 0x804 to the given device; returns true on success.
 bool __stdcall SendMciCommand804ToDevice(MCIDEVICEID device);

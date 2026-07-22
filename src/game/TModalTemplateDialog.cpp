@@ -10,14 +10,3 @@ void TModalTemplateDialog::DestroyListBoxAndHotKeyChildren() {
     CleanupModalCreateState();
   }
 }
-
-BOOL TModalTemplateDialog::UpdateData(BOOL saveAndValidate) {
-  if (createdDialog == nullptr) {
-    return FALSE;
-  }
-  CDialog dialog;
-  dialog.Attach(createdDialog);
-  const BOOL result = dialog.UpdateData(saveAndValidate);
-  dialog.Detach();
-  return result;
-}

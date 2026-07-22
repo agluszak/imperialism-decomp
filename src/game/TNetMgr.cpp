@@ -30,6 +30,9 @@ TNetMgr::TNetMgr() : TObject() {}
 // TNetMgr::`scalar deleting destructor'
 TNetMgr::~TNetMgr() {}
 
+// FUNCTION: IMPERIALISM 0x005e3450
+void TNetMgr::StartMultiplayerSupport() {}
+
 // FUNCTION: IMPERIALISM 0x005e3470
 void TNetMgr::Free() {
   delete this;

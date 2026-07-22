@@ -13,7 +13,6 @@ public:
   ~TModalTemplateDialog() override;
 
   void DestroyListBoxAndHotKeyChildren(); // 0x004152e0
-  BOOL UpdateData(BOOL saveAndValidate);
 
   int DialogResult() const {
     return reinterpret_cast<const int*>(this)[0x2c / 4];

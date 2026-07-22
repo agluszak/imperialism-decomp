@@ -7,7 +7,7 @@ TCdAudioDevice g_cdAudioDevice; // 0x006a60bc
 // FUNCTION: IMPERIALISM 0x0047cca0
 void TCdAudioDevice::ResetAndOpenCdAudioDeviceHandle() {
   m_deviceId = 0;
-  m_deviceId = OpenCdAudioAndProbeAuxOutputDevice() & 0xffff;
+  m_deviceId = OpenCdAudioAndProbeAuxOutputDevice();
 }
 
 // FUNCTION: IMPERIALISM 0x0047ccd0
@@ -21,7 +21,7 @@ void TCdAudioDevice::SendMciCommand804IfDeviceOpenAndClearHandle() {
 // FUNCTION: IMPERIALISM 0x0047cd00
 void TCdAudioDevice::EnsureCdAudioDeviceHandleInitialized() {
   if (m_deviceId == 0) {
-    m_deviceId = OpenCdAudioAndProbeAuxOutputDevice() & 0xffff;
+    m_deviceId = OpenCdAudioAndProbeAuxOutputDevice();
   }
 }
 
@@ -145,6 +145,44 @@ void __stdcall SetMciPlaybackRangeByTrackIndexAndDevice(int trackIndex, MCIDEVIC
       mciSendCommandA(device, MCI_PLAY, MCI_TO, (DWORD)&playParms);
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005e18f0
+WORD OpenCdAudioAndProbeAuxOutputDevice(void) {
+  MCI_OPEN_PARMS openParams;
+  openParams.dwCallback = 0;
+  openParams.wDeviceID = 0;
+  openParams.lpstrDeviceType = "cdaudio";
+  openParams.lpstrElementName = 0;
+  openParams.lpstrAlias = 0;
+
+  MCIERROR openResult =
+      mciSendCommandA(0, MCI_OPEN, MCI_OPEN_TYPE | MCI_OPEN_SHAREABLE, (DWORD)&openParams);
+  if (openResult != 0) {
+    return 0;
+  }
+
+  MMRESULT auxResult = 0;
+  int deviceCount = auxGetNumDevs();
+  int deviceId = 0;
+  if (deviceCount > 0) {
+    AUXCAPSA caps;
+    do {
+      auxResult = auxGetDevCapsA(deviceId, &caps, sizeof(caps));
+      WORD deviceKind = caps.wPid & 7;
+      if (deviceKind == 1 || deviceKind == 2) {
+        g_nAuxOutputDeviceIndex = deviceId;
+        break;
+      }
+      ++deviceId;
+    } while (deviceId < deviceCount);
+  }
+
+  if (auxResult != MMSYSERR_NOERROR) {
+    g_nAuxOutputDeviceIndex = -1;
+    return 0;
+  }
+  return openParams.wDeviceID;
 }
 
 // FUNCTION: IMPERIALISM 0x005e19e0

@@ -180,12 +180,6 @@ struct TurnEvent15Packet : NetMessage {
 
 using turn_event_dialog::TurnEventDialogNode;
 
-// Leaf helpers reached through ILT thunks / autogen stubs. They are genuine __cdecl free
-// functions (verified against the disassembly — none consume ECX as `this` on entry; the
-// ECX loads before some calls are optimizer reuse, not a this-arg). Declared extern in the
-// generic repo form per Hard Rule 9 and cast to their real typed signatures at the call sites.
-extern undefined4 NoOpInitializeGlobalTurnEventQueueManager();
-
 // Forward decl: real definition (with its // FUNCTION: marker) sits address-ordered
 // further down this file, near TMultiplayerMgr's other 0x5exxxx-adjacent members.
 static char ReturnTrueRuntimeCredentialInitStub();
@@ -243,7 +237,7 @@ undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int ses
 
   TNetMgr* queueStorage = new TNetMgr();
   g_pNetMgr006a6014 = queueStorage;
-  NoOpInitializeGlobalTurnEventQueueManager();
+  g_pNetMgr006a6014->StartMultiplayerSupport();
 
   CString loadedString;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&loadedString, 0x2759, 1);
