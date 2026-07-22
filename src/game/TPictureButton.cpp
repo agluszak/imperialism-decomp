@@ -27,13 +27,13 @@ void TPictureButton::HiliteState(unsigned char enabledState, unsigned char refre
     this->controlState64 = enabledState;
     this->SetEnabled(enabledState, true);
     if (refreshNow) {
-      this->IsSelected();
+      this->DrawImmediate();
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005708c0
-bool TPictureButton::IsSelected() {
+bool TPictureButton::DrawImmediate() {
   CRect rect;
   this->GetQDExtent(&rect);
   return RedrawWindow(reinterpret_cast<HWND>(this->nativeWindow50->m_hWnd), &rect, NULL,

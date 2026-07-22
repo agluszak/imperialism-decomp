@@ -123,7 +123,7 @@ public:
                            unsigned char fRefreshNow) override; // slot 0x70 0x571620
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual bool IsSelected(); // slot 0x73 0x571690
+  virtual bool DrawImmediate(); // slot 0x73 0x571690
   short glyph90;
   short timingWord92;
 

@@ -14,7 +14,7 @@ IMPLEMENT_DYNCREATE(TMiniArmyLine, TLineData)
 TMiniArmyLine::TMiniArmyLine() {}
 
 // FUNCTION: IMPERIALISM 0x004aa960
-void TMiniArmyLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+void TMiniArmyLine::InstallViews(TView* panel, int* offsetLayout) {
   (void)panel;
   (void)offsetLayout;
 }

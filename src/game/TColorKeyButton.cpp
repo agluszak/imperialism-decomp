@@ -1,4 +1,5 @@
 #include "game/TColorKeyButton.h"
+#include "game/TWindow.h"
 // SYNTHETIC: IMPERIALISM 0x00571ed0
 // TColorKeyButton::CreateObject
 
@@ -15,9 +16,19 @@ TColorKeyButton::TColorKeyButton() {}
 TColorKeyButton::~TColorKeyButton() {}
 
 // FUNCTION: IMPERIALISM 0x00571ff0
-void TColorKeyButton::HiliteState(unsigned char fEnabledState, unsigned char fRefreshNow) {}
+void TColorKeyButton::HiliteState(unsigned char fEnabledState, unsigned char fRefreshNow) {
+  if (controlState64 != fEnabledState) {
+    controlState64 = fEnabledState;
+    short pictureId =
+        fEnabledState ? static_cast<short>(glyphBase84 + 1) : static_cast<short>(glyphBase84 - 1);
+    SetPictureResourceIdAndRefresh(pictureId, true);
+    if (fRefreshNow) {
+      DrawImmediate();
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00572060
-undefined TColorKeyButton::OrphanCallChain_C1_I05_00572060() {
-  return 0;
+void TColorKeyButton::DrawImmediate() {
+  GetWindow()->ForceRedraw();
 }

@@ -15,7 +15,7 @@ TTradeTotalsLine::TTradeTotalsLine() : TLineData() {}
 TTradeTotalsLine::~TTradeTotalsLine() {}
 
 // FUNCTION: IMPERIALISM 0x005c19c0
-void TTradeTotalsLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+void TTradeTotalsLine::InstallViews(TView* panel, int* offsetLayout) {
   (void)panel;
   (void)offsetLayout;
 }

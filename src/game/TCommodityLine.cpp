@@ -15,7 +15,7 @@ TCommodityLine::TCommodityLine() : TLineData() {}
 TCommodityLine::~TCommodityLine() {}
 
 // FUNCTION: IMPERIALISM 0x005c1580
-void TCommodityLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+void TCommodityLine::InstallViews(TView* panel, int* offsetLayout) {
   (void)panel;
   (void)offsetLayout;
 }

@@ -120,7 +120,7 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  // slot 0x73 IsSelected inherited unchanged (0x5708c0)
+  // slot 0x73 DrawImmediate inherited unchanged (0x5708c0)
   TAlwaysPictureButton();
   DECLARE_DYNCREATE(TAlwaysPictureButton)
   void HiliteState(unsigned char enabledState, unsigned char refreshNow) override;

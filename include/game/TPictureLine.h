@@ -16,11 +16,12 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual void CreateLineItemView(TView* panel, int* offsetLayout) override; // slot 0x0a 0x570130
+  virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x570130
   // slot 0x0b OrphanRetStub_0056f480 inherited unchanged (0x56f480)
 
   TPictureLine();
 
   // Original object size is 0x14 (CRuntimeClass m_nObjectSize); the source class ended at 0x10. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field10;
+  short pictureResourceId10;
+  short reserved12;
 };

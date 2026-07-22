@@ -1,6 +1,7 @@
 #include "game/TTextLine.h"
 
 #include "game/TSimMgr.h"
+#include "game/TStaticText.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
 #include "game/ui_text_label_helpers_decls.h"
@@ -48,7 +49,12 @@ void TTextLine::SetField1E(short value) {
 }
 
 // FUNCTION: IMPERIALISM 0x00570500
-void TTextLine::CreateLineItemView(TView* panel, int* offsetLayout) {
-  (void)panel;
-  (void)offsetLayout;
+void TTextLine::InstallViews(TView* panel, int* offsetLayout) {
+  TStaticText* text = new TStaticText();
+  text->InitializeTextEntryBaseAndOptionalStringResource(panel, offsetLayout, &field08, 5, 5, -1,
+                                                         0);
+  text->SetTextAndMaybeRefresh(&captionText10, 0);
+  text->InstallTextStyle(styleDescriptor14, 0);
+  text->SetTextAlignmentAndMaybeRefresh(field1e, 0);
+  text->RefreshControl();
 }

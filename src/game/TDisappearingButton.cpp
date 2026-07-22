@@ -15,9 +15,18 @@ TDisappearingButton::TDisappearingButton() {}
 TDisappearingButton::~TDisappearingButton() {}
 
 // FUNCTION: IMPERIALISM 0x00568c40
-void TDisappearingButton::HiliteState(unsigned char fEnabledState, unsigned char fRefreshNow) {}
+void TDisappearingButton::HiliteState(unsigned char fEnabledState, unsigned char fRefreshNow) {
+  if (controlState64 != fEnabledState) {
+    controlState64 = fEnabledState;
+    SetEnabled(fEnabledState == 0, true);
+    if (fRefreshNow) {
+      DrawImmediate();
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00568c90
-undefined TDisappearingButton::OrphanCallChain_C2_I18_00568c90() {
-  return 0;
+void TDisappearingButton::DrawImmediate() {
+  CRect bounds;
+  RedrawWindow(nativeWindow50->m_hWnd, GetQDExtent(&bounds), NULL, RDW_INVALIDATE | RDW_UPDATENOW);
 }

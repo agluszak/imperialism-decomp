@@ -1,4 +1,6 @@
 #include "game/TClickZone.h"
+#include "game/TSoundPlayer.h"
+#include "game/global_data_tables.h"
 
 // FUNCTION: IMPERIALISM 0x005723d0
 void TClickZone::Hilite() {}
@@ -19,4 +21,7 @@ TClickZone::~TClickZone() {}
 
 // FUNCTION: IMPERIALISM 0x00572490
 void TClickZone::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
-                                                      CPoint origin) {}
+                                                      CPoint origin) {
+  g_pSfxPlaybackSystem->PlaySoundEffect(clickSoundId84, 0, 1);
+  TControl::BeginMouseCaptureAndStartRepeatTimer(point, event, origin);
+}

@@ -15,7 +15,7 @@ TDealLine::TDealLine() : TLineData() {}
 TDealLine::~TDealLine() {}
 
 // FUNCTION: IMPERIALISM 0x005c0e50
-void TDealLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+void TDealLine::InstallViews(TView* panel, int* offsetLayout) {
   (void)panel;
   (void)offsetLayout;
 }

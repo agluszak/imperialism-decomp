@@ -105445,6 +105445,24 @@
       "to": "control_tag:0x6d6f7665"
     },
     {
+      "from": "windows_function:0x00572e60",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x444c4f47"
+    },
+    {
+      "from": "windows_function:0x00572e60",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6261636b"
+    },
+    {
+      "from": "windows_function:0x00572e60",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6d61696e"
+    },
+    {
       "from": "windows_function:0x00573ce0",
       "relation": "resolves_control_tag",
       "status": "resolved",
@@ -204551,6 +204569,11 @@
       "kind": "windows_function",
       "source": "src/game/TUberCluster.cpp"
     },
+    "windows_function:0x00572e60": {
+      "address": "0x00572e60",
+      "kind": "windows_function",
+      "source": "src/game/TColorKeyPicture.cpp"
+    },
     "windows_function:0x00573ce0": {
       "address": "0x00573ce0",
       "kind": "windows_function",
@@ -204879,9 +204902,9 @@
       "references_picture": 909,
       "references_string": 1451,
       "references_text_style": 1784,
-      "resolves_control_tag": 254
+      "resolves_control_tag": 257
     },
-    "edges": 17605,
+    "edges": 17608,
     "mac_classes_without_windows_header": 18,
     "node_kinds": {
       "control_tag": 813,
@@ -204895,9 +204918,9 @@
       "view_node": 3263,
       "windows_event": 94,
       "windows_factory": 17,
-      "windows_function": 103
+      "windows_function": 104
     },
-    "nodes": 11278,
+    "nodes": 11279,
     "unreferenced_resources": {
       "pict": 1998,
       "str_entry": 3616,

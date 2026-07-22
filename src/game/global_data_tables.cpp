@@ -530,6 +530,10 @@ TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext = 0;
 // TCitySiteView::DoPostCreate after allocating its own surface.
 // GLOBAL: IMPERIALISM 0x006a3450
 TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext = 0;
+// Scratch DIB used only while TColorKeyPicture composites its tagged background and
+// transparent foreground before presenting the result.
+// GLOBAL: IMPERIALISM 0x006a4194
+CDib* g_pColorKeyCompositeDib = 0;
 
 // GLOBAL: IMPERIALISM 0x00697320
 short g_aCitySiteNeighborHighlightTiles_00697320[6] = {-1, -1, -1, -1, -1, -1};

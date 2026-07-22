@@ -16,7 +16,7 @@ IMPLEMENT_DYNCREATE(TMiniShipLine, TLineData)
 TMiniShipLine::TMiniShipLine() {}
 
 // FUNCTION: IMPERIALISM 0x00569c80
-void TMiniShipLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+void TMiniShipLine::InstallViews(TView* panel, int* offsetLayout) {
   TMiniShipView* view = new TMiniShipView();
   view->InitializeUiResourceEntryFrameAndParent(nullptr, panel, offsetLayout, &field08, 5, 5, 0);
   view->shipNode84 = field10;

@@ -16,7 +16,7 @@ IMPLEMENT_DYNCREATE(TMiniCivLine, TLineData)
 TMiniCivLine::TMiniCivLine() {}
 
 // FUNCTION: IMPERIALISM 0x004ab740
-void TMiniCivLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+void TMiniCivLine::InstallViews(TView* panel, int* offsetLayout) {
   TMiniCivView* view = new TMiniCivView();
   view->ConstructTMiniCivViewBaseState(panel, offsetLayout, &field08, civUnit10);
 }
