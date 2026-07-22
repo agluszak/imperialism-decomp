@@ -2078,6 +2078,28 @@ short TMapMgr::FindMaxResourceCapabilityValueForTile(short tileIndex, char categ
   }
   return maxValue;
 }
+
+// FUNCTION: IMPERIALISM 0x005137b0
+char TMapMgr::CanBuildPortAtTile(short tileIndex) {
+  TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
+  char result = 0;
+  if (tile->terrainType00 != 3 && tile->terrainType00 != 2) {
+    short neighbors[6];
+    ComputeHexNeighborTileIndices(tileIndex, neighbors, hexNeighborWrapHorizontally20);
+    for (short direction = 0; direction < 6; ++direction) {
+      short neighbor = neighbors[direction];
+      if (neighbor != -1 && terrainStateTable[neighbor].terrainType00 == 5) {
+        result = 1;
+        break;
+      }
+    }
+  }
+  if (result == 0 && tile->roadFlag != 0 &&
+      EvaluateTerrainFlowCrossNationBoundaryToSea(tileIndex) == 0) {
+    result = 1;
+  }
+  return result;
+}
 // sea tile reachable without crossing into another nation's territory. Not (region class
 // 2 or 3): scans the 6 hex neighbors for an unclaimed (tileActionClass16 == -1) sea tile
 // (terrainType00 == 5) none of whose own 6 neighbors belong to a different, non-unclaimed

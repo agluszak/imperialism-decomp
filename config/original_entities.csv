@@ -1932,7 +1932,7 @@ address|name|symbol|size|type|prototype|provenance
 4bd880|TNewTownView::StuffValues||719|function|void StuffValues(TTown* town)|
 4bdc10|TNewTownView::Close||170|function|void Close()|macos-name-oracle:Close()
 4bde50|WrapperFor_ftol_At004bde50||30|function|undefined WrapperFor_ftol_At004bde50()|
-4be000|InsertScoredTileCandidateWithRandomTieBreak||145|function|undefined InsertScoredTileCandidateWithRandomTieBreak()|
+4be000|InsertScoredTileCandidateWithRandomTieBreak||145|function|void __cdecl InsertScoredTileCandidateWithRandomTieBreak(float score, short tileIndex, float * candidateScores, short * candidateTiles, int capacity)|
 4be0d0|TInteriorMinister::CreateObject|?CreateObject@TInteriorMinister@@SGPAVCObject@@XZ|93|function|undefined CreateObject()|rtti
 4be150|TInteriorMinister::VTableSlot1D||8|function|undefined 'scalar_deleting_destructor'(void)|
 4be170|TInteriorMinister::CreateTInteriorMinisterInstance||8|function|undefined CreateTInteriorMinisterInstance()|
@@ -1997,20 +1997,20 @@ address|name|symbol|size|type|prototype|provenance
 4c1510|TCityInteriorMinister::BuildNationTileDevelopmentScoreListForTerrainClass||706|function|undefined BuildNationTileDevelopmentScoreListForTerrainClass()|
 4c18a0|AppendInteriorMinisterValueGrowShortBuffer||131|function|undefined AppendInteriorMinisterValueGrowShortBuffer()|
 4c1990|WrapperFor_ComputeBestNationTileDevelopmentScore_At004c1990||238|function|undefined WrapperFor_ComputeBestNationTileDevelopmentScore_At004c1990()|
-4c1ac0|TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister||1022|function|undefined RebuildMapTileNeighborBucketsForInteriorMinister()|
+4c1ac0|TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister||1022|function|void __thiscall RebuildMapTileNeighborBucketsForInteriorMinister()|
 4c1fc0|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004c1fc0||55|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004c1fc0()|
-4c2010|TCityInteriorMinister::GetTEventHandlerClassNamePointer_32||208|function|undefined GetTEventHandlerClassNamePointer(void)|
-4c2120|TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics||1845|function|undefined AutoAssignProspectingOrdersByTileHeuristics()|
-4c2a30|TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors||628|function|undefined AutoAssignProspectingOrdersFromSeedTileNeighbors()|
-4c2d50|TCityInteriorMinister::IterateLinkedListCursorEntries_004c2d50||134|function|undefined IterateLinkedListCursorEntries_004c2d50()|
-4c2e10|TCityInteriorMinister::HandleFrogCityTileSelectionAndDispatchOrders||513|function|undefined HandleFrogCityTileSelectionAndDispatchOrders()|
-4c30b0|TraceDescendingTileScoreGradientToSource||130|function|undefined TraceDescendingTileScoreGradientToSource()|
-4c3170|TCityInteriorMinister::SelectBestFrogCityTileFromCandidateSet||636|function|undefined SelectBestFrogCityTileFromCandidateSet()|
-4c3490|TCityInteriorMinister::ComputeFrogCityCandidateScoreFromNationNeeds||311|function|undefined ComputeFrogCityCandidateScoreFromNationNeeds()|
-4c3620|TCityInteriorMinister::GetTEventHandlerClassNamePointer_3a||14|function|undefined GetTEventHandlerClassNamePointer(void)|
-4c3640|TCityInteriorMinister::BuildFrogCityDistanceMapFromPrimarySeedSet||576|function|undefined BuildFrogCityDistanceMapFromPrimarySeedSet()|
-4c3910|TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates||589|function|undefined BuildFrogCityDistanceMapFromReachableSeaCandidates()|
-4c3c00|TCityInteriorMinister::RebalanceCityOrderAllocationTargets||267|function|undefined RebalanceCityOrderAllocationTargets()|
+4c2010|TCityInteriorMinister::RequestMissingCivilianOrderTypes||208|function|void __thiscall RequestMissingCivilianOrderTypes()|
+4c2120|TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics||1845|function|void __thiscall AutoAssignProspectingOrdersByTileHeuristics()|
+4c2a30|TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors||628|function|void __thiscall AutoAssignProspectingOrdersFromSeedTileNeighbors()|
+4c2d50|TCityInteriorMinister::SeekLostTowns||134|function|void __thiscall SeekLostTowns(char * primaryDistanceMap, char * secondaryDistanceMap)|
+4c2e10|TCityInteriorMinister::ContinueRailheadProject||513|function|void __thiscall ContinueRailheadProject(TUnit * builderOrder, char * primaryDistanceMap, char * secondaryDistanceMap)|
+4c30b0|TraceDescendingTileScoreGradientToSource||130|function|short __stdcall TraceDescendingTileScoreGradientToSource(short startTile, char * scoreMap, short * previousTileOut)|
+4c3170|TCityInteriorMinister::StartRailheadProject||636|function|void __thiscall StartRailheadProject(short resourceType, TShortintList * ownedTiles, char * primaryDistanceMap, char * secondaryDistanceMap)|
+4c3490|TCityInteriorMinister::EvaluateResources||311|function|short __thiscall EvaluateResources(short tileIndex)|
+4c3620|TCityInteriorMinister::ScoreResource||14|function|int __thiscall ScoreResource(int amount, int unusedResourceType, int scorePerUnit)|
+4c3640|TCityInteriorMinister::CreateSeaDistanceMap||576|function|char * __thiscall CreateSeaDistanceMap(TShortintList * ownedTiles)|
+4c3910|TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates||589|function|char * __thiscall BuildFrogCityDistanceMapFromReachableSeaCandidates(TShortintList * ownedTiles)|
+4c3c00|TCityInteriorMinister::RebalanceCityOrderAllocationTargets||267|function|void __thiscall RebalanceCityOrderAllocationTargets(TCity * city)|
 4c3d60|TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection||686|function|undefined ProcessCityOrderStateTickAndApplyCapabilitySelection()|
 4c40c0|TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations||540|function|undefined RebalanceCitySupportAndLaborAllocations()|
 4c4370|TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand||631|function|undefined ChooseAndMarkNextCityProductionCommand()|
@@ -2021,7 +2021,7 @@ address|name|symbol|size|type|prototype|provenance
 4c4d40|OrphanCallChain_C2_I72_004c4d40||219|function|undefined OrphanCallChain_C2_I72_004c4d40()|
 4c4e60|OrphanCallChain_C3_I79_004c4e60||229|function|undefined OrphanCallChain_C3_I79_004c4e60()|
 4c4f90|TCityInteriorMinister::GetAverageDevelopmentOrderAllocation||49|function|int GetAverageDevelopmentOrderAllocation(void)|
-4c4fe0|OrphanCallChain_C4_I151_004c4fe0||471|function|undefined OrphanCallChain_C4_I151_004c4fe0()|
+4c4fe0|TCityInteriorMinister::RequestResource||471|function|short __thiscall RequestResource(short resourceType, short requestedAmount, short flags)|
 4c5240|BuildFrogCityTerrainCountsAndOverlayStats||930|function|undefined BuildFrogCityTerrainCountsAndOverlayStats()|
 4c56e0|TryApplyCityOrderCapabilitySelectionBySlot||427|function|undefined TryApplyCityOrderCapabilitySelectionBySlot()|
 4c5900|TSteelCityMinister::CreateObject|?CreateObject@TSteelCityMinister@@SGPAVCObject@@XZ|132|function|undefined CreateObject()|rtti
@@ -3181,7 +3181,7 @@ address|name|symbol|size|type|prototype|provenance
 513660|TMapMgr::GetTileCivilianWorkOrderCostClassNibble||44|function|byte __thiscall GetTileCivilianWorkOrderCostClassNibble(short nTileIndex, char fUseHighNibble)|
 5136a0|TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0||90|function|undefined OrphanLeaf_NoCall_Ins35_005136a0(short param_1, char param_2, byte param_3, char param_4)|
 513720|TMapMgr::OrphanLeaf_NoCall_Ins37_00513720||105|function|undefined OrphanLeaf_NoCall_Ins37_00513720(short param_1, char param_2, int param_3)|
-5137b0|TDeluxeText::CanBuildPortAtTile||362|function|char __thiscall CanBuildPortAtTile(int nTileIndex)|
+5137b0|TMapMgr::CanBuildPortAtTile||362|function|char __thiscall CanBuildPortAtTile(short tileIndex)|
 513980|TMapMgr::IsValidSecondaryNationHomeTileCandidate||632|function|bool __thiscall IsValidSecondaryNationHomeTileCandidate(short tileIndex)|
 513ca0|HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask||443|function|undefined HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask()|
 513ed0|CheckTileProspectingDiscoveryCandidate||100|function|byte __thiscall CheckTileProspectingDiscoveryCandidate(short nTileIndex)|
