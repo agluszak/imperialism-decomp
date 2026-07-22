@@ -3424,7 +3424,7 @@ address|matching|name
 0x5311d0|0.06666666666666667|TTedForeignMinister::TTedForeignMinister
 0x531240|0.9090909090909091|TTedForeignMinister::`scalar deleting destructor'
 0x531270|0.5|TTedForeignMinister::DestructTTedForeignMinister
-0x531290|0.010416666666666666|TTedForeignMinister::SetBuyPriorities
+0x531290|0.2662337662337662|TTedForeignMinister::SetBuyPriorities
 0x531550|0.013071895424836602|TTedForeignMinister::SetTradeBids
 0x531770|0.010256410256410256|TTedForeignMinister::ReplyToTradeOffer
 0x531a10|0.03225806451612903|TTedForeignMinister::DoFirstTurnDiplomacy
@@ -3432,17 +3432,17 @@ address|matching|name
 0x531b10|1.0|TTedForeignMinister::MakeNewCity
 0x531b30|0.18518518518518517|TBillForeignMinister::CreateObject
 0x531bc0|1.0|TBillForeignMinister::GetRuntimeClass
-0x531be0|0.06451612903225806|TBillForeignMinister::TBillForeignMinister
+0x531be0|0.15789473684210525|TBillForeignMinister::TBillForeignMinister
 0x531c50|0.9090909090909091|TBillForeignMinister::`scalar deleting destructor'
 0x531c80|0.5|TBillForeignMinister::DestructTBillForeignMinister
-0x531ca0|0.10526315789473684|TBillForeignMinister::ReadFrom
-0x531ce0|0.10526315789473684|TBillForeignMinister::WriteTo
-0x531d20|0.02702702702702703|TBillForeignMinister::SetBuyPriorities
+0x531ca0|1.0|TBillForeignMinister::ReadFrom
+0x531ce0|1.0|TBillForeignMinister::WriteTo
+0x531d20|0.35384615384615387|TBillForeignMinister::SetBuyPriorities
 0x531e50|0.009478672985781991|TBillForeignMinister::SetTradeBids
 0x532190|0.007272727272727273|TBillForeignMinister::ReplyToTradeOffer
 0x532520|0.03571428571428571|TBillForeignMinister::DoFirstTurnDiplomacy
 0x5325e0|0.06451612903225806|TBillForeignMinister::DoSecondTurnDiplomacy
-0x532650|0.06060606060606061|TBillForeignMinister::MakeNewCity
+0x532650|1.0|TBillForeignMinister::MakeNewCity
 0x5326e0|0.19607843137254902|TDiplomatForeignMinister::CreateObject
 0x532760|1.0|TDiplomatForeignMinister::GetRuntimeClass
 0x532780|0.07142857142857142|TDiplomatForeignMinister::TDiplomatForeignMinister
@@ -3450,7 +3450,7 @@ address|matching|name
 0x532820|0.5|TDiplomatForeignMinister::DestructTDiplomatForeignMinister
 0x532840|0.04878048780487805|TDiplomatForeignMinister::DoFirstTurnDiplomacy
 0x5328d0|1.0|TDiplomatForeignMinister::DoSecondTurnDiplomacy
-0x5328f0|0.007547169811320755|TDiplomatForeignMinister::SetBuyPriorities
+0x5328f0|0.32793522267206476|TDiplomatForeignMinister::SetBuyPriorities
 0x532c60|0.010362694300518135|TDiplomatForeignMinister::SetTradeBids
 0x532f70|0.029850746268656716|TDiplomatForeignMinister::ReplyToTradeOffer
 0x533050|1.0|TDiplomatForeignMinister::MakeNewCity
@@ -3459,26 +3459,26 @@ address|matching|name
 0x533110|0.07142857142857142|TTextileForeignMinister::TTextileForeignMinister
 0x533180|0.9090909090909091|TTextileForeignMinister::`scalar deleting destructor'
 0x5331b0|0.5|TTextileForeignMinister::DestructTTextileForeignMinister
-0x5331d0|0.018867924528301886|TTextileForeignMinister::SetBuyPriorities
+0x5331d0|0.29743589743589743|TTextileForeignMinister::SetBuyPriorities
 0x533380|0.009433962264150943|TTextileForeignMinister::SetTradeBids
 0x533670|0.024691358024691357|TTextileForeignMinister::ReplyToTradeOffer
-0x533780|0.07692307692307693|TTextileForeignMinister::MakeNewCity
+0x533780|1.0|TTextileForeignMinister::MakeNewCity
 0x533800|0.19607843137254902|TTraderForeignMinister::CreateObject
 0x533880|1.0|TTraderForeignMinister::GetRuntimeClass
 0x5338a0|0.07142857142857142|TTraderForeignMinister::TTraderForeignMinister
 0x533910|0.9090909090909091|TTraderForeignMinister::`scalar deleting destructor'
 0x533940|0.5|TTraderForeignMinister::DestructTTraderForeignMinister
-0x533960|0.01904761904761905|TTraderForeignMinister::SetBuyPriorities
+0x533960|0.4845360824742268|TTraderForeignMinister::SetBuyPriorities
 0x533b10|0.011363636363636364|TTraderForeignMinister::SetTradeBids
 0x533db0|0.028985507246376812|TTraderForeignMinister::ReplyToTradeOffer
 0x533e90|0.038461538461538464|TTraderForeignMinister::DoFirstTurnDiplomacy
 0x533f50|1.0|TTraderForeignMinister::MakeNewCity
 0x533f70|0.19230769230769232|TArmsForeignMinister::CreateObject
 0x533ff0|1.0|TArmsForeignMinister::GetRuntimeClass
-0x534010|0.0625|TArmsForeignMinister::TArmsForeignMinister
+0x534010|0.11764705882352941|TArmsForeignMinister::TArmsForeignMinister
 0x534080|0.9090909090909091|TArmsForeignMinister::`scalar deleting destructor'
 0x5340b0|0.5|TArmsForeignMinister::DestructTArmsForeignMinister
-0x5340d0|0.047619047619047616|TArmsForeignMinister::SetBuyPriorities
+0x5340d0|0.39436619718309857|TArmsForeignMinister::SetBuyPriorities
 0x534190|0.010416666666666666|TArmsForeignMinister::SetTradeBids
 0x534450|0.013793103448275862|TArmsForeignMinister::ReplyToTradeOffer
 0x534660|1.0|TArmsForeignMinister::MakeNewCity
@@ -6170,7 +6170,7 @@ address|matching|name
 0x5e55ee|0.6607142857142857|CDragListBox::Dropped
 0x5e5661|0.0|MoveListBoxEntryPreserveItemData
 0x5e56cd|1.0|CDragListBox::DrawInsert
-0x5e56f2|0.9466666666666667|CDragListBox::DrawSingle
+0x5e56f2|0.96|CDragListBox::DrawSingle
 0x5e57e9|0.9871794871794872|CDragListBox::OnChildNotify
 0x5e58ab|1.0|CToolBarCtrl::Create
 0x5e58e4|0.9411764705882353|CProgressCtrl::~CProgressCtrl(void)
@@ -7450,7 +7450,7 @@ address|matching|name
 0x61ed3c|1.0|CDC::LPtoHIMETRIC
 0x61ed57|1.0|CDC::HIMETRICtoLP
 0x61ed72|1.0|CDC::GetHalftoneBrush
-0x61ede5|0.966789667896679|CDC::DrawDragRect
+0x61ede5|0.974169741697417|CDC::DrawDragRect
 0x61f0fa|1.0|CDC::FillSolidRect(struct tagRECT const *, unsigned long)
 0x61f124|1.0|CDC::FillSolidRect(int, int, int, int, unsigned long)
 0x61f19b|1.0|CDC::Draw3dRect(int, int, int, int, unsigned long, unsigned long)
