@@ -11885,7 +11885,29 @@
       ],
       "source_file": "src/game/TTransportView.cpp"
     },
+    "0x004bd690": {
+      "references": [
+        {
+          "address": "0x006962e8",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUCityDialogs_006962E8",
+          "text": "D:\\Ambit\\Cross\\UCityDialogs.cpp"
+        }
+      ],
+      "source_file": "src/game/TTransportView.cpp"
+    },
     "0x004bd880": {
+      "references": [
+        {
+          "address": "0x006962e8",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUCityDialogs_006962E8",
+          "text": "D:\\Ambit\\Cross\\UCityDialogs.cpp"
+        }
+      ],
+      "source_file": "src/game/TNewTownView.cpp"
+    },
+    "0x004bdc10": {
       "references": [
         {
           "address": "0x006962e8",
@@ -15579,6 +15601,28 @@
       ],
       "source_file": "src/game/TMinorTradeBidsDialog.cpp"
     },
+    "0x005b2da0": {
+      "references": [
+        {
+          "address": "0x0069a7f8",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUTestDialogs_0069A7F8",
+          "text": "D:\\Ambit\\Cross\\UTestDialogs.cpp"
+        }
+      ],
+      "source_file": "src/game/TRelationshipDialog.cpp"
+    },
+    "0x005b3400": {
+      "references": [
+        {
+          "address": "0x0069a7f8",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUTestDialogs_0069A7F8",
+          "text": "D:\\Ambit\\Cross\\UTestDialogs.cpp"
+        }
+      ],
+      "source_file": "src/game/TMinorRelationshipDialog.cpp"
+    },
     "0x005b3be0": {
       "references": [
         {
@@ -15600,6 +15644,17 @@
         }
       ],
       "source_file": "src/game/TMinorTreatyDialog.cpp"
+    },
+    "0x005b46c0": {
+      "references": [
+        {
+          "address": "0x0069a7f8",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUTestDialogs_0069A7F8",
+          "text": "D:\\Ambit\\Cross\\UTestDialogs.cpp"
+        }
+      ],
+      "source_file": "src/game/TAutomatedPlayDialog.cpp"
     },
     "0x005b4810": {
       "references": [
@@ -191170,7 +191225,7 @@
   "summary": {
     "embedded_globals": 773,
     "formula_matches": 2356,
-    "functions_with_references": 312,
+    "functions_with_references": 317,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3272,
     "text_resources": 182,

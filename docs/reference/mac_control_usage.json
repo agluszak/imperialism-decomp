@@ -179746,6 +179746,25 @@
         "owner_class": "TTransportView",
         "recovered_source": "src/game/TTransportView.cpp"
       },
+      "0x004bd690": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
+                "symbol": "s_SourcePathUCityDialogs_006962E8"
+              }
+            ],
+            "module": "UCityDialogs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TTransportView::Close",
+        "owner_class": "TTransportView",
+        "recovered_source": "src/game/TTransportView.cpp"
+      },
       "0x004bd880": {
         "modules": [
           {
@@ -179762,6 +179781,25 @@
           }
         ],
         "name": "TNewTownView::StuffValues",
+        "owner_class": "TNewTownView",
+        "recovered_source": "src/game/TNewTownView.cpp"
+      },
+      "0x004bdc10": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
+                "symbol": "s_SourcePathUCityDialogs_006962E8"
+              }
+            ],
+            "module": "UCityDialogs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TNewTownView::Close",
         "owner_class": "TNewTownView",
         "recovered_source": "src/game/TNewTownView.cpp"
       },
@@ -181075,6 +181113,44 @@
         "owner_class": "TMinorTradeBidsDialog",
         "recovered_source": "src/game/TMinorTradeBidsDialog.cpp"
       },
+      "0x005b2da0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UTestDialogs.cpp",
+                "symbol": "s_SourcePathUTestDialogs_0069A7F8"
+              }
+            ],
+            "module": "UTestDialogs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TRelationshipDialog::Close",
+        "owner_class": "TRelationshipDialog",
+        "recovered_source": "src/game/TRelationshipDialog.cpp"
+      },
+      "0x005b3400": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UTestDialogs.cpp",
+                "symbol": "s_SourcePathUTestDialogs_0069A7F8"
+              }
+            ],
+            "module": "UTestDialogs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMinorRelationshipDialog::Close",
+        "owner_class": "TMinorRelationshipDialog",
+        "recovered_source": "src/game/TMinorRelationshipDialog.cpp"
+      },
       "0x005b3be0": {
         "modules": [
           {
@@ -181112,6 +181188,25 @@
         "name": "TMinorTreatyDialog::StuffValues",
         "owner_class": "TMinorTreatyDialog",
         "recovered_source": "src/game/TMinorTreatyDialog.cpp"
+      },
+      "0x005b46c0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UTestDialogs.cpp",
+                "symbol": "s_SourcePathUTestDialogs_0069A7F8"
+              }
+            ],
+            "module": "UTestDialogs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TAutomatedPlayDialog::Close",
+        "owner_class": "TAutomatedPlayDialog",
+        "recovered_source": "src/game/TAutomatedPlayDialog.cpp"
       },
       "0x005ba7a0": {
         "modules": [
@@ -181752,7 +181847,9 @@
           "0x004bd040",
           "0x004bd260",
           "0x004bd3e0",
-          "0x004bd880"
+          "0x004bd690",
+          "0x004bd880",
+          "0x004bdc10"
         ]
       },
       "UCityMinister.cpp": {
@@ -182006,14 +182103,20 @@
       },
       "UTestDialogs.cpp": {
         "classes": [
+          "TAutomatedPlayDialog",
           "TGPTreatyDialog",
+          "TMinorRelationshipDialog",
           "TMinorTradeBidsDialog",
-          "TMinorTreatyDialog"
+          "TMinorTreatyDialog",
+          "TRelationshipDialog"
         ],
         "functions": [
           "0x005b2aa0",
+          "0x005b2da0",
+          "0x005b3400",
           "0x005b3be0",
-          "0x005b4090"
+          "0x005b4090",
+          "0x005b46c0"
         ]
       },
       "UTradeViews.cpp": {
@@ -182087,7 +182190,7 @@
     "classes_with_source_module_evidence": 17,
     "declared_classes": 152,
     "factories_with_source_module_candidates": 10,
-    "functions_with_source_module_evidence": 116,
+    "functions_with_source_module_evidence": 121,
     "nodes": 3263,
     "screens": 121,
     "screens_with_source_module_candidates": 27,

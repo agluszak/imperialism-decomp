@@ -354,6 +354,9 @@ extern int g_MapInteractionPreviewColumnParity_006a33b8;
 extern const unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24];
 // Per-owner outline palette used by the ocean overview's direct 16x16 neighbor-edge pass.
 extern const unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24];
+// Secret garrison-close names used by the retail easter-egg path.
+extern const char g_szGarrisonSecretNationNameFrog[];
+extern const char g_szGarrisonSecretUnitNameSnidely[];
 extern const unsigned char g_bDrawOceanRouteOverlay;
 extern const unsigned char g_bTransferOceanViewportToActiveSurface;
 extern const unsigned char g_bDrawOceanZoneLabels;
