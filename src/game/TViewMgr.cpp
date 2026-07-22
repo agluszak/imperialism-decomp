@@ -1296,12 +1296,10 @@ void TViewMgr::DispatchTurnEvent(short eventCode, int payload) {
         this->HandleTurnEvent2103_RunNationStatusReportUpdate();
       }
     } else if (newCode == 0x898) {
-      this->HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(newCode);
+      this->ShowAbilityStatusReport(secondary);
     } else {
       switch (newCode) {
       case 0x7d9:
-        this->HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(newCode);
-        break;
       case 0x7da:
         this->HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(newCode);
         break;
@@ -1309,7 +1307,7 @@ void TViewMgr::DispatchTurnEvent(short eventCode, int payload) {
         this->HandleTurnEvent7DB_SelectCityAndRefreshView(newCode);
         break;
       case 0x7dd:
-        this->SetCursorRangeAndRefreshMainPanel(static_cast<int>(secondary));
+        this->HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(newCode);
         break;
       case 0x7de:
         this->HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(newCode);

@@ -665,7 +665,7 @@ void RunDispatchingMapHotkey() {
   commandEvent.commandCode = 'x';
   commandEvent.keyFlags = 0;
   commandEvent.handledMarker = 0;
-  mapView->ForwardParam(reinterpret_cast<int>(&commandEvent));
+  mapView->DoKeyEvent(&commandEvent);
 
   TMapDialog* mapDialog = mapView->subview2A8;
   if (mapDialog == 0) {
