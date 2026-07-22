@@ -111,6 +111,16 @@ void ClipRect(RECT* rect) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004974f0
+void DisposeTemporaryRegionCache(void) {
+  RgnHandle cache = g_pTemporaryRegionCache;
+  if (cache != 0 && *cache != 0) {
+    delete *cache;
+  }
+  delete cache;
+  g_pTemporaryRegionCache = 0;
+}
+
 // FUNCTION: IMPERIALISM 0x004977a0
 void UnionRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst) {
   CRgn* rgnB = &(*srcB)->rgn;

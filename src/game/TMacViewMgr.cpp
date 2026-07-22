@@ -1000,7 +1000,7 @@ undefined TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, sh
   TSellOrderRowControl* row = static_cast<TSellOrderRowControl*>(view);
   view->DoPostCreate(0);
   *reinterpret_cast<short*>(reinterpret_cast<char*>(view) + 0x88) = orderSlot;
-  if (g_pCityOrderCapabilityState->hasProductionOrder193 == 0 &&
+  if (g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0 &&
       (orderSlot == 6 || orderSlot == 0xc)) {
     view->SetEnabled(0, 0);
   }

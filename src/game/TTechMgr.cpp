@@ -71,8 +71,7 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
   perTechUnlockFlag180[0] = 1;
   perTechUnlockFlag180[1] = 1;
   perTechUnlockFlag180[2] = 1;
-  // One flat 0x1a-byte clear covering perTechUnlockFlag180[3..], hasProductionOrder193
-  // and pad194 (0x183..0x19c) -- the original clears the whole span in one memset.
+  // One flat 0x1a-byte clear covering perTechUnlockFlag180[3..0x1c].
   memset(&perTechUnlockFlag180[3], 0, 0x1a);
   memset(resourceTypeEnabled19d, 1, 4);
   resourceTypeEnabled19d[4] = 1;

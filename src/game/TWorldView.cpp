@@ -23,12 +23,10 @@
 #include "game/TTaskForce.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_timing.h"
 
 #include <new>
 
-// 0x005c3b40 -- genuine __cdecl free thunk taking one int (ret 0, caller cleans); the
-// typed cast at the call site only adjusts the void stub's argument type.
-undefined4 Function_005c3b40(void);
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 
 // FUNCTION: IMPERIALISM 0x00519af0
@@ -672,5 +670,5 @@ void TWorldView::OrphanCallChain_C6_I29_00596700(int arg1) {
   }
   static_cast<TWorldView*>(ownerContext)->CenterOn(arg1);
   GetWindow()->ForceRedraw();
-  reinterpret_cast<void(__cdecl*)(int)>(Function_005c3b40)(0x1e);
+  WaitForSixteenthSecondTicks(0x1e);
 }

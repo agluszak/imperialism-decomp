@@ -326,12 +326,11 @@ ASSERT_SIZE(TD0TemplateDialog, 0x98);
 class TE0TemplateDialog : public CDialog {
 public:
   TE0TemplateDialog(void* initParam); // 0x005dee50
+  ~TE0TemplateDialog() override;      // 0x00498d60 — ReleaseCapture()
 
   unsigned char scratch5c[0x74 - 0x5c]; // 0x5c-0x74 — template scratch written by the ctor
 
 protected:
-  ~TE0TemplateDialog() override; // 0x00498d60 — ReleaseCapture()
-
   BOOL PreCreateWindow(CREATESTRUCT& cs) override;  // 0x005def40 (slot 0x64)
   BOOL OnInitDialog() override;                     // 0x005def70 (slot 0xc4)
   void DoDataExchange(CDataExchange* pDX) override; // 0x005dee80 (empty body)
@@ -350,6 +349,8 @@ protected:
 };
 
 ASSERT_SIZE(TE0TemplateDialog, 0x74);
+
+void ShowBlockingWaitOverlayDialog(void); // 0x00498cc0
 
 // Windows game-setup dialog (template id 0xa1, own vtable 0x647428): three policy sliders,
 // two DDX checkboxes, and the caller-owned GameSetup record at +0x118.

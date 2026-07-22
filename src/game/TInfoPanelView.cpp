@@ -106,7 +106,9 @@ void TInfoPanelView::SetInfoCountry(short countryId) {
     short indices[7];
     for (int idx = 0; idx < 7; idx++) {
       values[idx] = secondary->diplomacySaveExt13c[idx];
-      if (idx == 6 && g_pCityOrderCapabilityState->hasProductionOrder193 == 0) {
+      if (idx == 6 &&
+          g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] ==
+              0) {
         values[6] = 0;
       }
       indices[idx] = (short)idx;

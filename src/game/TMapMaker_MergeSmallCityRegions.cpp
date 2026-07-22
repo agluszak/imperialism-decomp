@@ -78,12 +78,12 @@ inline int TileRegionId(char* grid, int off) {
 
 // FUNCTION: IMPERIALISM 0x0052d750
 void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
-  int* tileCounts = reinterpret_cast<int*>(::operator new(cityRegionCount2a4 * 4));
+  int* tileCounts = new int[cityRegionCount2a4];
   if (tileCounts == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMapper.cpp", 0x11c5);
   }
-  char* mergedFlags = reinterpret_cast<char*>(::operator new(cityRegionCount2a4));
+  char* mergedFlags = new char[cityRegionCount2a4];
   if (mergedFlags == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMapper.cpp", 0x11c8);
@@ -107,8 +107,8 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
   while (true) {
     --region;
     if (region < 0) {
-      ::operator delete(tileCounts);
-      ::operator delete(mergedFlags);
+      delete[] tileCounts;
+      delete[] mergedFlags;
       return;
     }
 

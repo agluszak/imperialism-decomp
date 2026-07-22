@@ -2264,7 +2264,8 @@ byte TMapMgr::CheckTileProspectingDiscoveryCandidate(short nTileIndex) {
            (cTileResourceCode == '\x15')) ||
           ((cTileResourceCode == '\x16') ||
            ((cTileResourceCode == '\x06') &&
-            (g_pCityOrderCapabilityState->hasProductionOrder193 != '\0')))) {
+            (g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] !=
+             '\0')))) {
         fHasDiscoveryCandidate = 1;
       }
       nResourceSlotIndex = nResourceSlotIndex + 1;
@@ -3612,7 +3613,9 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
         TTerrainStateRecordView* tile = &terrainStateTable[*linkedTile];
         for (edge = 0; edge < 2; ++edge) {
           int resType = tile->resourceTypeByEdge[edge];
-          if ((resType != 6 || g_pCityOrderCapabilityState->hasProductionOrder193 != 0) &&
+          if ((resType != 6 ||
+               g_pCityOrderCapabilityState
+                       ->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) &&
               resType != -1) {
             score += g_abUniversityRequirementLevelById[resType][tile->developmentClassNibbles0c] *
                      resourceWeights[resType];

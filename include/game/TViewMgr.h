@@ -224,6 +224,8 @@ public:
   // Object layout recovered from ctor 0x5d5060 / ReadFrom 0x5d5200 /
   // LoadTurnEventCursorTable 0x5d5100. Field names past the event code are
   // provisional. Total size 0xfc, base TObject = 0x4.
+  void RefreshTechnologyStorePageAndHudText(int nationSlot); // 0x005d8750
+
   short currentTurnEventCode;         // +0x04 (turn-event dispatch code)
   short currentTurnEventNationSlot06; // +0x06
   POINT dialogPlacement08;            // +0x08 (seeded from g_ptCitySiteSelectionDialogPlacement)
