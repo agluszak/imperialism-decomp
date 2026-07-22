@@ -25,7 +25,7 @@ public:
                        TEvent* event) override; // slot 0x0f 0x0057a050
   // slot 0x10 HandleEvent inherited unchanged (0x48a2e0)
   // slot 0x11 DoMenuCommand inherited unchanged (0x48a310)
-  virtual void ForwardParam(int param) override; // slot 0x12 0x57a310
+  virtual void DoKeyEvent(TToolboxEvent* event) override; // slot 0x12 0x57a310
   // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetIdleFreq inherited unchanged (0x415d50)
   // slot 0x15 SetIdleFreq inherited unchanged (0x415d70)
@@ -78,9 +78,9 @@ public:
   // slot 0x44 Draw inherited unchanged (0x48f3c0)
   // slot 0x45 PaintOrInvalidateControl inherited unchanged (0x48b860)
   // slot 0x46 HandleMouseDown inherited unchanged (0x48c450)
-  // slot 0x47 BeginMouseCaptureAndStartRepeatTimer inherited unchanged (0x48e640)
+  // slot 0x47 DoMouseCommand inherited unchanged (0x48e640)
   // slot 0x48 HandleMouseUp inherited unchanged (0x48c590)
-  // slot 0x49 DoMouseCommand inherited unchanged (0x427240)
+  // slot 0x49 HandleMouseCommandToSelf inherited unchanged (0x427240)
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
   // slot 0x4b QueryBounds inherited unchanged (0x427290)
   // slot 0x4c TranslateRectToWindow inherited unchanged (0x4272d0)
@@ -111,7 +111,7 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 WindowToLocal inherited unchanged (0x48bac0)
-  // slot 0x68 DispatchPictureResourceCommand inherited unchanged (0x48e850)
+  // slot 0x68 TrackMouse inherited unchanged (0x48e850)
   // slot 0x69 BuildInsetContentRect inherited unchanged (0x48e980)
   // slot 0x6a AssertCityProductionGlobalStateInitialized inherited unchanged (0x429470)
   // slot 0x6b NoOpUiViewSlotHandler inherited unchanged (0x48e9c0)
@@ -123,8 +123,8 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 NoOpUiVirtualSlot73 inherited unchanged (0x572bb0)
-  virtual undefined ApplyScenarioSelectionAndPostTurnEvent5E4();     // slot 0x74 0x57a350
-  virtual undefined PostTurnEvent5DCOrResetScenarioSelectionState(); // slot 0x75 0x57a2d0
+  virtual void StartGame();  // slot 0x74 0x57a350
+  virtual void ExitScreen(); // slot 0x75 0x57a2d0
 
   // 0x57a6e0, RET 4 (non-virtual thiscall, 1 arg). Confirmed receiver via the write to
   // selectedScenarioIndex142 at +0x1e (MOV word ptr [ecx+0x142],ax) in its opening bytes.
@@ -145,8 +145,8 @@ public:
   // by TMapPreviewView::pendingNation6C.
   char* nationDescriptionTextByMapSelection118[(0x134 - 0x118) / 4];
   short nationDescriptionLengthByMapSelection134[(0x142 - 0x134) / 2];
-  // Selected scenario index (-1 = none); read by ApplyScenarioSelectionAndPostTurnEvent5E4
-  // and PostTurnEvent5DCOrResetScenarioSelectionState. -1 also short-circuits the whole
+  // Selected scenario index (-1 = none); read by StartGame and ExitScreen. -1 also
+  // short-circuits the whole
   // apply flow.
   short selectedScenarioIndex142;
   // Per-nation-slot state codes, indexed by TMapPreviewView::selectedNation68 and applied

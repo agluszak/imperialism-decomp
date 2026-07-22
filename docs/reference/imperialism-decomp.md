@@ -278,11 +278,11 @@ Scope: generic factory/mill-style production dialog flow (excluding University, 
 - Dialog logic references control tags like `'okay'`, and row control tags associated with plus/minus semantics.
 
 
-### Supporting UI Command Dispatcher
+### Supporting Mouse-Tracking Dispatcher
 
-- `DispatchPictureResourceCommand @ 0x0048e850`
-  - Generic picture-control command router used by production UI controls.
-  - Routes events to owner callback and emits action IDs (`0x1F`, `0x20`, `0x21`, or control-specific ID), which feed city dialog behaviors.
+- `TControl::TrackMouse @ 0x0048e850`
+  - Generic control mouse-tracking hook used by production UI controls.
+  - Receives the tracking phase, current/anchor/delta points, and modifier state; concrete controls translate that input into their owner callbacks.
 
 
 ## City Production State Storage (Confirmed)

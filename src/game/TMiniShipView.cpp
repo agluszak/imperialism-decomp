@@ -118,8 +118,7 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056a330
-void TMiniShipView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
-                                                         CPoint origin) {
+void TMiniShipView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   TSuperNavyRoster* roster = static_cast<TSuperNavyRoster*>(ownerContext);
   roster->AssertValid();
 
@@ -132,5 +131,5 @@ void TMiniShipView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TT
     roster->selectedZone84 = shipNode84->location;
   }
 
-  TControl::BeginMouseCaptureAndStartRepeatTimer(point, event, origin);
+  TControl::DoMouseCommand(point, event, origin);
 }

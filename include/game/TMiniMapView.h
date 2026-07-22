@@ -6,7 +6,7 @@
 class TMapUberPicture;
 
 // A small world-map thumbnail with a highlighted viewport-marker box (see
-// Draw/DispatchPictureResourceCommand). Constructed by
+// Draw/TrackMouse). Constructed by
 // TMapUberPicture::DisplayMiniMap (0x599cf0), which stores the new instance
 // into the owner's miniMapViewC0.
 // VTABLE: IMPERIALISM 0x00669170
@@ -30,7 +30,7 @@ public:
   // slot 0x0f DoEvent inherited unchanged (0x48e710)
   // slot 0x10 HandleEvent inherited unchanged (0x48a2e0)
   // slot 0x11 DoMenuCommand inherited unchanged (0x48a310)
-  // slot 0x12 ForwardParam inherited unchanged (0x48a380)
+  // slot 0x12 DoKeyEvent inherited unchanged (0x48a380)
   // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetIdleFreq inherited unchanged (0x415d50)
   // slot 0x15 SetIdleFreq inherited unchanged (0x415d70)
@@ -83,9 +83,9 @@ public:
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x59a540
   // slot 0x45 PaintOrInvalidateControl inherited unchanged (0x48b860)
   // slot 0x46 HandleMouseDown inherited unchanged (0x48c450)
-  // slot 0x47 BeginMouseCaptureAndStartRepeatTimer inherited unchanged (0x48e640)
+  // slot 0x47 DoMouseCommand inherited unchanged (0x48e640)
   // slot 0x48 HandleMouseUp inherited unchanged (0x48c590)
-  // slot 0x49 DoMouseCommand inherited unchanged (0x427240)
+  // slot 0x49 HandleMouseCommandToSelf inherited unchanged (0x427240)
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
   // slot 0x4b QueryBounds inherited unchanged (0x427290)
   // slot 0x4c TranslateRectToWindow inherited unchanged (0x4272d0)
@@ -116,9 +116,9 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 WindowToLocal inherited unchanged (0x48bac0)
-  virtual void DispatchPictureResourceCommand(int nEventType, void* pEventSender, void* pEventDataA,
-                                              void* pEventDataB,
-                                              int nCommandFlag) override; // slot 0x68 0x59a920
+  virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
+                          CPoint& currentPoint,
+                          unsigned char commandFlag) override; // slot 0x68 0x59a920
   // slot 0x69 BuildInsetContentRect inherited unchanged (0x48e980)
   // slot 0x6a AssertCityProductionGlobalStateInitialized inherited unchanged (0x429470)
   // slot 0x6b NoOpUiViewSlotHandler inherited unchanged (0x48e9c0)
@@ -132,7 +132,7 @@ public:
   // construction (not by the ctor itself; ctor leaves it untouched).
   TMapUberPicture* ownerPicture84;
   // Tile-column/row scroll offset on the strategic map (Draw/
-  // DispatchPictureResourceCommand evidence; those bodies aren't ported yet).
+  // TrackMouse evidence; those bodies aren't ported yet).
   int scrollTileColumn88;
   int scrollTileRow8c;
   // Centered viewport-marker-box draw position, recomputed whenever frameWidth34/frameHeight38 or

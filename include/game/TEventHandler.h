@@ -11,6 +11,7 @@ class TWindow;
 class TControl;
 class TEvent;
 class TBehavior;
+struct TToolboxEvent;
 
 //
 // The real shared base of TView and TApplication (TApplication). Both
@@ -74,7 +75,7 @@ public:
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
                            TEvent* event);          // 0x10 0x48a2e0 DoEvent
   virtual void DoMenuCommand(int command);          // 0x11 0x48a310
-  virtual void ForwardParam(int param);             // 0x12 0x48a380
+  virtual void DoKeyEvent(TToolboxEvent* event);    // 0x12 0x48a380
   virtual char DoIdle(int action);                  // 0x13 0x48a480 (MacApp DoIdle)
   virtual int GetIdleFreq();                        // 0x14 0x415d50
   virtual void SetIdleFreq(int frequency);          // 0x15 0x415d70

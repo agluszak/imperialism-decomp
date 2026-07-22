@@ -82,8 +82,7 @@ void TTextList::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057af20
-void TTextList::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
-                                                     CPoint origin) {
+void TTextList::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)event;
   (void)origin;
 

@@ -23,8 +23,7 @@ public:
   TTextList();
 
   void Draw(RECT* rectBuffer) override;
-  void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
-                                            CPoint origin) override;
+  void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;
 };
 
 ASSERT_SIZE(TTextList, 0x1070);

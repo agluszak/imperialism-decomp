@@ -26,9 +26,14 @@ TTacMapUberPicture::TTacMapUberPicture() : tacticalBattleView94(nullptr) {}
 // FUNCTION: IMPERIALISM 0x005ad3a0
 void TTacMapUberPicture::DoPostCreate(int arg) {
   TMapUberUberPicture::DoPostCreate(arg);
-  tacticalBattleView94 = static_cast<TTacticalBattleView*>(ResolveControlByTag(kControlTagGold));
+  tacticalBattleView94 = static_cast<TTacticalBattleView*>(ResolveControlByTag(kControlTagDialog));
   tacticalBattleView94->AssertValid();
 }
 
 // FUNCTION: IMPERIALISM 0x005ad3f0
-void TTacMapUberPicture::ForwardParam(int param) {}
+void TTacMapUberPicture::DoKeyEvent(TToolboxEvent* event) {
+  TTacticalBattleView* battleView =
+      static_cast<TTacticalBattleView*>(ResolveControlByTag(kControlTagDialog));
+  battleView->AssertValid();
+  battleView->DoKeyEvent(event);
+}

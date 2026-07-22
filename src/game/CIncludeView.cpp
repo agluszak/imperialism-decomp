@@ -38,8 +38,8 @@ static void CALLBACK UiCursorTickTimerProc(HWND hWnd, UINT uMsg, UINT idEvent, D
 }
 
 // The shared keyboard command event (original object @ 0x6a1780) lives as a function-local
-// static so first use constructs it once; the whole block is forwarded (as an int, == &event)
-// into the active TView tree. Layout/type shared with TGameWindow::ForwardParam (which reads
+// static so first use constructs it once; the whole block is forwarded as a typed event
+// into the active TView tree. Layout/type shared with TGameWindow::DoKeyEvent (which reads
 // commandCode/handledMarker) and the not-yet-ported CMcWindow WM_CHAR handler 0x493ce0 via
 // game/TUiEvent.h (TKeyCommandEvent).
 static void PopulateKeyCommandBlock(TKeyCommandEvent& block, UINT nChar, UINT nRepCnt,
@@ -282,8 +282,8 @@ void CIncludeView::OnMouseMove(UINT nFlags, CPoint point) {
     m_capturedControl74->WindowToLocal(&controlRelativePoint);
     m_captureLastPoint80 = m_captureCurrentPoint88;
     m_captureCurrentPoint88 = controlRelativePoint;
-    m_capturedControl74->DispatchPictureResourceCommand(
-        1, &m_captureStartPoint78, &m_captureLastPoint80, &m_captureCurrentPoint88, 1);
+    m_capturedControl74->TrackMouse(kTrackPhaseUpdate, m_captureStartPoint78, m_captureLastPoint80,
+                                    m_captureCurrentPoint88, 1);
   }
   g_pGlobalUiRootController->HandleCursor(point.x, point.y, 0);
   if (m_activeDialogContext != 0 && GetMcAppUiActiveFlag() != 0) {
@@ -508,11 +508,10 @@ LRESULT CIncludeView::OnMciNotifyMode(WPARAM wParam, LPARAM mciMode) {
 // window's TView tree. Two dispatch targets are consulted: the modal-stack top host (as a
 // CIncludeView -> its hosted dialog tree) and the live-registry head host (as a CMcWindow
 // -> its owning TWindow and embedded dialog behaviour). This is how ESC/Space/Enter reach
-// TGameWindow::ForwardParam, e.g. to stop (skip) a playing movie.
+// TGameWindow::DoKeyEvent, e.g. to stop (skip) a playing movie.
 // FUNCTION: IMPERIALISM 0x00484260
 void CIncludeView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
   static TKeyCommandEvent s_keyCommand;
-  const int commandParam = reinterpret_cast<int>(&s_keyCommand);
 
   CWnd* target = GetModalStackTopHostView();
   if (target == 0) {
@@ -522,7 +521,7 @@ void CIncludeView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
     CIncludeView* view = static_cast<CIncludeView*>(target);
     if (view->m_activeDialogContext != 0) {
       PopulateKeyCommandBlock(s_keyCommand, nChar, nRepCnt, nFlags);
-      view->m_activeDialogContext->ForwardParam(commandParam);
+      view->m_activeDialogContext->DoKeyEvent(&s_keyCommand);
     }
   }
 
@@ -533,7 +532,7 @@ void CIncludeView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
     TWindow* ownerWindow = static_cast<CMcWindow*>(target)->m_pOwnerWindow;
     if (ownerWindow != 0) {
       PopulateKeyCommandBlock(s_keyCommand, nChar, nRepCnt, nFlags);
-      ownerWindow->ForwardParam(commandParam);
+      ownerWindow->DoKeyEvent(&s_keyCommand);
       if (ownerWindow->GetDialogBehavior() != 0) {
         ownerWindow->GetDialogBehavior()->DoKeyEvent(&s_keyCommand);
       }

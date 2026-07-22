@@ -77,23 +77,22 @@ void TNumberedArrowButton::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058c640
-void TNumberedArrowButton::DispatchPictureResourceCommand(int eventType, void* eventSender,
-                                                          void* eventDataA, void* eventDataB,
-                                                          int commandFlag) {
+void TNumberedArrowButton::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
+                                      CPoint& currentPoint, unsigned char commandFlag) {
   (void)commandFlag;
-  (void)eventSender;
-  (void)eventDataA;
-  (void)eventDataB;
-  short phase = 0;
-  if (eventType >= 0 && eventType < 2) {
-    if (value86 != phase) {
+  (void)startPoint;
+  (void)previousPoint;
+  (void)currentPoint;
+  short visualState = 0;
+  if (phase >= kTrackPhaseBegin && phase < kTrackPhaseEnd) {
+    if (value86 != visualState) {
       RefreshControl();
-      value86 = phase;
+      value86 = visualState;
     }
     PaintOrInvalidateControl(0);
     return;
   }
-  if (eventType == 2 && phase != 0) {
+  if (phase == kTrackPhaseEnd && visualState != 0) {
     if (value86 != 0) {
       RefreshControl();
       value86 = 0;

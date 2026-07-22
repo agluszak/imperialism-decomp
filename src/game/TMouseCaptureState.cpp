@@ -17,13 +17,13 @@ VOID CALLBACK NotifyGlobalCaptureOwnerState1WithCachedCoords(HWND hwnd, UINT mes
     CPoint scratchPoint(0, 0);
     captured->WindowToLocal(&scratchPoint);
     g_McAppMouseCaptureState.lastPoint = g_McAppMouseCaptureState.currentPoint;
-    captured->DispatchPictureResourceCommand(1, &g_McAppMouseCaptureState.startPoint,
-                                             &g_McAppMouseCaptureState.lastPoint,
-                                             &g_McAppMouseCaptureState.currentPoint, 1);
+    captured->TrackMouse(kTrackPhaseUpdate, g_McAppMouseCaptureState.startPoint,
+                         g_McAppMouseCaptureState.lastPoint, g_McAppMouseCaptureState.currentPoint,
+                         1);
   }
 }
 
-// State-side twin of TControl::BeginMouseCaptureAndStartRepeatTimer (no static callers in
+// State-side twin of TControl::DoMouseCommand (no static callers in
 // the original binary; kept by the linker). Latches the capture on `control`, seeds all
 // three cached points from `point`, sends the state-0 (begin) picture-resource command,
 // and arms the shared 17ms repeat timer.
@@ -35,7 +35,7 @@ void TMouseCaptureState::BeginMouseCaptureForControlAndStartRepeatTimer(CPoint* 
   startPoint = *point;
   lastPoint = *point;
   currentPoint = *point;
-  control->DispatchPictureResourceCommand(0, &startPoint, &lastPoint, &currentPoint, 1);
+  control->TrackMouse(kTrackPhaseBegin, startPoint, lastPoint, currentPoint, 1);
   if (g_McAppUiMouseCaptureTimerId_006A1ADC == 0) {
     g_McAppUiMouseCaptureTimerId_006A1ADC =
         ::SetTimer(control->nativeWindow50->m_hWnd, 0xef, 0x11,
@@ -59,7 +59,7 @@ void TMouseCaptureState::NotifyCaptureOwnerState1AndMaybeUpdateCoords(unsigned i
   if ((nFlags & 0x20) == 0) {
     currentPoint = ownerRelativePoint;
   }
-  capturedControl->DispatchPictureResourceCommand(1, &startPoint, &lastPoint, &currentPoint, 1);
+  capturedControl->TrackMouse(kTrackPhaseUpdate, startPoint, lastPoint, currentPoint, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00489d40
@@ -79,7 +79,7 @@ void TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer(unsigned int nFlags, 
   lastPoint = currentPoint;
   // Owner-relative, as in Notify... above (0x489db2 reloads the converted stack local).
   currentPoint = ownerRelativePoint;
-  capturedControl->DispatchPictureResourceCommand(2, &startPoint, &lastPoint, &currentPoint, 1);
+  capturedControl->TrackMouse(kTrackPhaseEnd, startPoint, lastPoint, currentPoint, 1);
   capturedControl = 0;
 }
 

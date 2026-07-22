@@ -8,6 +8,7 @@
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
 #include "game/TTextList.h"
+#include "game/TUiEvent.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
@@ -63,7 +64,7 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     }
   } else if (commandId == 0xa) {
     if (sourceHandler->controlTag == 0x73746172u) { // 'star'
-      ApplyScenarioSelectionAndPostTurnEvent5E4();
+      StartGame();
     }
   } else if (commandId == 0xd) {
     if (sourceHandler->controlTag == 0x6d6f7265u) {                                // 'more'
@@ -75,32 +76,38 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     }
   } else if (commandId == 0x14) {
     if (sourceHandler->controlTag == 0x65786974u) { // 'exit'
-      PostTurnEvent5DCOrResetScenarioSelectionState();
+      ExitScreen();
     }
   }
   TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x0057a2d0
-undefined TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState() {
+void TScenarioChooser::ExitScreen() {
   if (g_pSimMgr->multiplayerSessionRole != 0) {
     g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
   } else {
     g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0057a310
-void TScenarioChooser::ForwardParam(int param) {}
+void TScenarioChooser::DoKeyEvent(TToolboxEvent* event) {
+  int commandCode = event->commandCode;
+  if (commandCode == 3 || commandCode == 0xd) {
+    StartGame();
+  } else if (commandCode == 0x1b) {
+    ExitScreen();
+  }
+}
 
 // Per-scenario-index language/campaign tag consumed by TAssetMgr::EnsurePictWvDataGobLoadedBySlot.
 static const int kScenarioLanguageTagByIndex[15] = {1, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
 
 // FUNCTION: IMPERIALISM 0x0057a350
-undefined TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4() {
+void TScenarioChooser::StartGame() {
   if (selectedScenarioIndex142 == -1) {
-    return 0;
+    return;
   }
 
   int languageTag = 1;
@@ -129,7 +136,6 @@ undefined TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4() {
     g_pSimMgr->nationControlModes[mapControl->selectedNation68] = 1;
     g_pSimMgr->StartNextPhase();
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0057a6e0

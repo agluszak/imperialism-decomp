@@ -17,13 +17,12 @@ TUpDownView::TUpDownView() : TControl(), timingDword84(0) {}
 TUpDownView::~TUpDownView() {}
 
 // FUNCTION: IMPERIALISM 0x00583dd0
-void TUpDownView::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
-                                                 void* pEventDataA, void* pEventDataB,
-                                                 int nCommandFlag) {
-  (void)pEventSender;
-  (void)pEventDataA;
-  (void)nCommandFlag;
-  if (nEventType == 2) {
+void TUpDownView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
+                             CPoint& currentPoint, unsigned char commandFlag) {
+  (void)startPoint;
+  (void)previousPoint;
+  (void)commandFlag;
+  if (phase == kTrackPhaseEnd) {
     return;
   }
 
@@ -34,11 +33,11 @@ void TUpDownView::DispatchPictureResourceCommand(int nEventType, void* pEventSen
 
   unsigned int now = GetTickCountDiv16();
   this->timingDword84 = now;
-  if (nEventType == 0) {
+  if (phase == kTrackPhaseBegin) {
     this->timingDword84 = now + 10;
   }
 
-  CPoint* point = static_cast<CPoint*>(pEventDataB);
+  CPoint* point = &currentPoint;
   if (!this->PointInBoundsAndActionable(point)) {
     return;
   }

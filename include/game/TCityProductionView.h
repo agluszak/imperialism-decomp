@@ -21,11 +21,10 @@ public:
       RgnHandle hitArg) override;       // slot 0x35 0x4bafa0
   void DoPostCreate(int arg) override;  // slot 0x37 0x4ba3b0
   void Draw(RECT* rectBuffer) override; // slot 0x44 0x4ba7b0
-  void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
-                                            CPoint origin) override; // slot 0x47 0x4bc660
-  void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
-                                      void* eventDataB,
-                                      int commandFlag) override; // slot 0x68 0x4bc870
+  void DoMouseCommand(CPoint& point, TToolboxEvent* event,
+                      CPoint origin) override; // slot 0x47 0x4bc660
+  void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint, CPoint& currentPoint,
+                  unsigned char commandFlag) override; // slot 0x68 0x4bc870
   // slots 0x02..0x06, 0x08..0x0e, 0x10..0x34, 0x36, 0x38..0x43, and
   // 0x45..0x67 and 0x69..0x73 inherited from TNoHilitePicture.
   // RET 0x1c = 7 stack dwords; Ghidra recovered only 6. The trailing dword is the
@@ -41,8 +40,9 @@ public:
   virtual void UpdateUnits();         // slot 0x77 0x4bc0b0
   virtual void UpdateToolbar();       // slot 0x78 0x4bc500
   virtual void CloseAndSaveWindows(); // slot 0x79 0x4bc910
-  // RET 0x8 = 2 stack dwords (vestigial; SEH-framed body reads neither). slot 0x7a 0x4bc9b0
-  virtual void RenderViewIntoPrimaryRenderContextWithTemporaryClip(int arg1, int arg2);
+  // Mac oracle: SetBuildingPicture(short, short). The Windows body redraws the top-level
+  // production view and does not read either argument. slot 0x7a 0x4bc9b0
+  virtual void SetBuildingPicture(short buildingSlot, short buildingType);
   virtual void UpdateFields(); // slot 0x7b 0x4bcaf0
 
   TCityProductionView();

@@ -10,6 +10,7 @@
 #include "game/TEvent.h"
 #include "game/TCommand.h"
 #include "game/TFileStream.h"
+#include "game/TUiEvent.h"
 #include "game/TView.h"
 #include "game/TApplication.h"
 #include "game/global_data_tables.h"
@@ -120,10 +121,10 @@ void TEventHandler::DoMenuCommand(int param) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048a380
-void TEventHandler::ForwardParam(int param) {
+void TEventHandler::DoKeyEvent(TToolboxEvent* event) {
   TEventHandler* child = GetNextHandler();
   if (child != 0) {
-    child->ForwardParam(param);
+    child->DoKeyEvent(event);
   }
 }
 

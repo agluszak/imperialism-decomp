@@ -37,17 +37,17 @@ public:
   }
   void Free() override; // slot 0x07 0x4f3e60
   void DoEvent(int commandId, TEventHandler* sourceHandler,
-               TEvent* event) override;  // slot 0x0f 0x4f70c0
-  void ForwardParam(int param) override; // slot 0x12 0x4f7130
-  void Close() override;                 // slot 0x28 0x4f3e30
+               TEvent* event) override;           // slot 0x0f 0x4f70c0
+  void DoKeyEvent(TToolboxEvent* event) override; // slot 0x12 0x4f7130
+  void Close() override;                          // slot 0x28 0x4f3e30
   void DoSetCursor(CPoint* point,
                    RgnHandle hitArg) override; // slot 0x2c 0x4f5f90
   void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                            RgnHandle hitArg) override; // slot 0x35
   void DoPostCreate(int arg) override;                                                 // slot 0x37
   void Draw(RECT* rectBuffer) override;                                                // slot 0x44
-  void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
-                                            CPoint origin) override; // slot 0x47 0x4f5410
+  void DoMouseCommand(CPoint& point, TToolboxEvent* event,
+                      CPoint origin) override; // slot 0x47 0x4f5410
 
   virtual void RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect); // slot 0x73
   virtual void BuildCombinedTerrainTypeRegionMaskAndDispatch();           // slot 0x74

@@ -24,7 +24,7 @@ public:
   // slot 0x0f DoEvent inherited unchanged (0x48a280)
   // slot 0x10 HandleEvent inherited unchanged (0x48a2e0)
   // slot 0x11 DoMenuCommand inherited unchanged (0x48a310)
-  // slot 0x12 ForwardParam inherited unchanged (0x48a380)
+  // slot 0x12 DoKeyEvent inherited unchanged (0x48a380)
   // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetIdleFreq inherited unchanged (0x415d50)
   // slot 0x15 SetIdleFreq inherited unchanged (0x415d70)
@@ -76,7 +76,7 @@ public:
   // slot 0x45 PaintOrInvalidateControl inherited unchanged (0x48b860)
   // slot 0x46 HandleMouseDown inherited unchanged (0x48c450)
   // slot 0x48 HandleMouseUp inherited unchanged (0x48c590)
-  // slot 0x49 DoMouseCommand inherited unchanged (0x427240)
+  // slot 0x49 HandleMouseCommandToSelf inherited unchanged (0x427240)
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
   // slot 0x4b QueryBounds inherited unchanged (0x427290)
   // slot 0x4c TranslateRectToWindow inherited unchanged (0x4272d0)
@@ -118,8 +118,7 @@ public:
   // TView-branch slot overrides (0xdc, 0x110, 0x11c).
   void DoPostCreate(int arg) override;
   void Draw(RECT* rectBuffer) override;
-  void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
-                                            CPoint origin) override;
+  void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;
 
   // TAmtBar-introduced virtuals (slots 0x1a0–0x1a8 only; tail slots are NULL in orig).
   virtual int ApplyMoveClamp(int baseValue, int requestedValue);

@@ -158,7 +158,7 @@ address|name|symbol|size|type|prototype|provenance
 430b80|TBattleUnitsView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 430bd0|TView::GetEventNumber||3|function|int GetEventNumber()|
 430bf0|TView::Draw||3|function|void __thiscall Draw(RECT * rectBuffer)|
-430c10|TView::BeginMouseCaptureAndStartRepeatTimer||3|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
+430c10|TView::DoMouseCommand||3|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 430c50|InitializeDealBookScreenControlsAndCommandTags||14917|function|undefined InitializeDealBookScreenControlsAndCommandTags()|
 435540|TDealTabControl::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 435590|TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590||27|function|undefined WrapperFor_ConstructTPageViewBaseState_At00435590()|
@@ -975,12 +975,12 @@ address|name|symbol|size|type|prototype|provenance
 48e500|TControl::GetRuntimeClass||6|function|undefined GetTControlClassNamePointer()|rtti
 48e520|TControl::TControl||74|function|undefined TControl()|
 48e590|TControl::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-48e640|TControl::BeginMouseCaptureAndStartRepeatTimer||149|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
+48e640|TControl::DoMouseCommand||149|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 48e710|TControl::DoEvent||111|function|undefined HandleCityDialogToggleCommandOrForward()|
 48e7a0|TControl::SetControlPictureEntryAndMaybeRefresh||30|function|void __thiscall SetControlPictureEntryAndMaybeRefresh(int * pPictureEntryRef, bool fRefreshNow)|
 48e7d0|TControl::InstallTextStyle||48|function|void __thiscall InstallTextStyle(const TextStyle & style, char refreshNow)|
 48e810|TControl::HiliteState||33|function|void __thiscall HiliteState(unsigned char hilited, unsigned char drawImmediate)|
-48e850|TControl::DispatchPictureResourceCommand||189|function|void __thiscall DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB)|
+48e850|TControl::TrackMouse||189|function|void __thiscall TrackMouse(TrackPhase phase, CPoint &startPoint, CPoint &previousPoint, CPoint &currentPoint, unsigned char commandFlag)|
 48e940|TControl::PointInBoundsAndActionable||44|function|undefined 'scalar_deleting_destructor'(void)|
 48e980|TControl::BuildInsetContentRect||33|function|void __thiscall BuildInsetContentRect(CRect* boundsBuffer)|listing
 48e9c0|TControl::NoOpUiViewSlotHandler||3|function|undefined NoOpUiViewSlotHandler(void)|
@@ -1634,7 +1634,7 @@ address|name|symbol|size|type|prototype|provenance
 4ad7a0|TBattleReportView::DoEvent||937|function|void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event)|
 4adc40|InitializeOutSharedStringWithEmptyRefAndCopyBuffer||42|function|undefined InitializeOutSharedStringWithEmptyRefAndCopyBuffer()|
 4adc80|TBattleReportView::HandleCursorHoverSelectionByChildHitTestAndFallback||18|function|void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, int hitArg)|
-4adcb0|TBattleReportView::BeginMouseCaptureAndStartRepeatTimer||117|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
+4adcb0|TBattleReportView::DoMouseCommand||117|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 4ade00|TBattleReportView::Draw||27|function|void Draw(RECT* rectBuffer)|
 4ade30|TDiplomacyMapView::WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFill_At004ade00_Impl||311|function|undefined WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFill_At004ade00_Impl()|
 4adfc0|TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels||1973|function|void RefreshMapContextSelectionPanelAndInfoLabels(void* mapContextRecord)|
@@ -1911,10 +1911,10 @@ address|name|symbol|size|type|prototype|provenance
 4bc0b0|TCityProductionView::UpdateUnits||871|function|void __thiscall UpdateUnits(void)|mac_oracle
 4bc500|TCityProductionView::UpdateToolbar||199|function|void __thiscall UpdateToolbar(void)|mac_oracle
 4bc610|TCityProductionView::DoEvent||62|function|void __thiscall DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|mac_oracle
-4bc660|TCityProductionView::BeginMouseCaptureAndStartRepeatTimer||411|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(CPoint const & point, TToolboxEvent * event, CPoint origin)|
-4bc870|TCityProductionView::DispatchPictureResourceCommand||121|function|void __thiscall DispatchPictureResourceCommand(int eventType, void * eventSender, void * eventDataA, void * eventDataB, int commandFlag)|
+4bc660|TCityProductionView::DoMouseCommand||411|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent * event, CPoint origin)|
+4bc870|TCityProductionView::TrackMouse||121|function|void __thiscall TrackMouse(TrackPhase phase, CPoint &startPoint, CPoint &previousPoint, CPoint &currentPoint, unsigned char commandFlag)|
 4bc910|TCityProductionView::CloseAndSaveWindows||119|function|void __thiscall CloseAndSaveWindows(void)|mac_oracle
-4bc9b0|TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip||244|function|undefined RenderViewIntoPrimaryRenderContextWithTemporaryClip(int arg1, int arg2)|
+4bc9b0|TCityProductionView::SetBuildingPicture||244|function|undefined SetBuildingPicture(short buildingSlot, short buildingType)|
 4bcaf0|TCityProductionView::UpdateFields||874|function|void __thiscall UpdateFields(void)|mac_oracle
 4bcf40|TRailheadDialog::CreateObject|?CreateObject@TRailheadDialog@@SGPAVCObject@@XZ|106|function|undefined CreateObject()|rtti
 4bcfd0|TRailheadDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -2078,7 +2078,7 @@ address|name|symbol|size|type|prototype|provenance
 4c7290|TWarehouseView::GetRuntimeClass||6|function|undefined GetTWarehouseViewClassNamePointer()|rtti
 4c72b0|TWarehouseView::ConstructTWarehouseViewBaseState||28|function|undefined ConstructTWarehouseViewBaseState()|
 4c72e0|TWarehouseView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4c7330|TWarehouseView::BeginMouseCaptureAndStartRepeatTimer||28|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
+4c7330|TWarehouseView::DoMouseCommand||28|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 4c7360|TWarehouseView::DoStartup||2022|function|void DoStartup()|
 4c7d90|TWarehouseView::UpdateFields||297|function|void UpdateFields()|
 4c7f10|TUnitsView::CreateObject|?CreateObject@TUnitsView@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
@@ -2148,7 +2148,7 @@ address|name|symbol|size|type|prototype|provenance
 4cc3c0|TPurchaseCluster::ConstructTPurchaseClusterBaseState||28|function|undefined ConstructTPurchaseClusterBaseState()|
 4cc3f0|TPurchaseCluster::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4cc440|TPurchaseCluster::OrphanCallChain_C1_I08_004cc440||28|function|undefined OrphanCallChain_C1_I08_004cc440(int param_1)|
-4cc470|TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer||3|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
+4cc470|TPurchaseCluster::DoMouseCommand||3|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 4cc490|TPurchaseCluster::DoEvent||132|function|undefined OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)|
 4cc550|TPurchaseCluster::SetCityViewValueControlAmount||181|function|void __fastcall SetCityViewValueControlAmount(int * pCityViewDialog, short nValue)|
 4cc640|TPurchaseCluster::UpdateCityViewValueControl||69|function|undefined UpdateCityViewValueControl()|
@@ -2848,7 +2848,7 @@ address|name|symbol|size|type|prototype|provenance
 4f8fa0|TOffersPanelView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4f8ff0|TOffersPanelView::DoPostCreate||617|function|undefined OrphanCallChain_C6_I49_004875d0(void)|
 4f9300|TOffersPanelView::DoEvent||55|function|undefined OrphanRetStub_0059add0(int param_1, int param_2, undefined4 param_3)|
-4f9350|TOffersPanelView::ForwardParam||153|function|undefined HandleDialogAcceptRejectShortcutAndQueueUiEvent()|
+4f9350|TOffersPanelView::DoKeyEvent||153|function|undefined HandleDialogAcceptRejectShortcutAndQueueUiEvent()|
 4f9420|TOffersPanelView::HandleMouseUp||28|function|char HandleMouseUp(const CPoint &point, TToolboxEvent *event, CPoint origin)|
 4f9450|TOffersPanelView::PoseOffer||1194|function|char __thiscall PoseOffer(short sourceNation, short targetNation, short offerType)|listing+mac-symbol
 4f9a60|TOffersPanelView::PoseWarOffer||1014|function|char PoseWarOffer(short sourceNationSlot, int minorNationSlot, int enemyNationSlot, int promptCode)|
@@ -2947,7 +2947,7 @@ address|name|symbol|size|type|prototype|provenance
 4ffcb0|TGameWindow::Open||34|function|CMcWindow* Open()|macos-name-oracle:Open()
 4ffd10|TGameWindow::HandleMouseDown||28|function|char __thiscall HandleMouseDown(const CPoint &point, TToolboxEvent *event, CPoint origin)|macos-name-oracle:HandleMouseDown(const VPoint&, TToolboxEvent*, CPoint)
 4ffd40|TGameWindow::HandleMouseUp||28|function|char HandleMouseUp(const CPoint &point, TToolboxEvent *event, CPoint origin)|
-4ffd70|TGameWindow::ForwardParam||776|function|undefined HandleTurnOrderNavigationCommand()|
+4ffd70|TGameWindow::DoKeyEvent||776|function|undefined HandleTurnOrderNavigationCommand()|
 500160|TGameWindow::UpdateTurnOrderNavigationWindowLayout||120|function|undefined UpdateTurnOrderNavigationWindowLayout()|
 500200|TGameWindow::NoOpTurnOrderNavigationVtableSlotA||1|function|undefined NoOpTurnOrderNavigationVtableSlotA(void)|
 500220|TGameWindow::NoOpTurnOrderNavigationVtableSlotB||1|function|undefined NoOpTurnOrderNavigationVtableSlotB(void)|
@@ -3035,7 +3035,7 @@ address|name|symbol|size|type|prototype|provenance
 506690|TIconSlider::Draw||27|function|undefined OrphanTiny_ReturnZero_0048a730(void)|
 5066c0|TIconSlider::IconSliderResolveBmpResource||61|function|undefined Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0(void)|
 506710|TIconSlider::OrphanCallChain_C1_I36_00506710||98|function|undefined OrphanCallChain_C1_I36_00506710(LPRECT param_1)|
-5067a0|TIconSlider::DispatchPictureResourceCommand||444|function|undefined UpdateIconBarOffsetAndRecomputeClipRegion()|
+5067a0|TIconSlider::TrackMouse||444|function|undefined UpdateIconBarOffsetAndRecomputeClipRegion()|
 5069d0|TOrderView::CreateObject|?CreateObject@TOrderView@@SGPAVCObject@@XZ|107|function|undefined CreateObject()|rtti
 506a60|TOrderView::GetRuntimeClass||6|function|undefined GetTOrderViewClassNamePointer()|rtti
 506a80|TOrderView::ConstructTOrderViewBaseState||25|function|undefined ConstructTOrderViewBaseState()|
@@ -3332,7 +3332,7 @@ address|name|symbol|size|type|prototype|provenance
 51db30|ApplyTileOrderOverlayMaskAndInvalidate||71|function|undefined ApplyTileOrderOverlayMaskAndInvalidate()|
 51dba0|ApplyTileTerrainIndexAndInvalidateAdjacency||180|function|undefined ApplyTileTerrainIndexAndInvalidateAdjacency()|
 51dc90|PromoteTileToCityAndRefreshNeighbors||421|function|undefined PromoteTileToCityAndRefreshNeighbors()|
-51deb0|TMapEditView::ForwardParam||185|function|undefined OrphanTiny_ReturnZero_0048a730(int param_1)|
+51deb0|TMapEditView::DoKeyEvent||185|function|undefined OrphanTiny_ReturnZero_0048a730(int param_1)|
 51e0b0|InitializeMapInteractionPreviewScaleXDefault||21|function|undefined InitializeMapInteractionPreviewScaleXDefault()|
 51e0e0|InitializeMapInteractionPreviewScaleYDefault||21|function|undefined InitializeMapInteractionPreviewScaleYDefault()|
 51e110|RecomputeMapInteractionPreviewVerticalOffsetFromScale||30|function|undefined RecomputeMapInteractionPreviewVerticalOffsetFromScale()|
@@ -4443,7 +4443,7 @@ address|name|symbol|size|type|prototype|provenance
 569dc0|TMiniShipView::CreateObject|?CreateObject@TMiniShipView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 569e40|TMiniShipView::GetRuntimeClass||6|function|undefined GetTMiniShipViewClassNamePointer()|rtti
 569eb0|TMiniShipView::Draw||901|function|undefined RenderNavyOrderNormalizationGaugeAndNationMarker()|
-56a330|TMiniShipView::BeginMouseCaptureAndStartRepeatTimer||96|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
+56a330|TMiniShipView::DoMouseCommand||96|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 56a4e0|WrapperFor_ftol_At0056a4e0||30|function|undefined WrapperFor_ftol_At0056a4e0()|
 56a510|TGamePreferencesPicture::CreateObject|?CreateObject@TGamePreferencesPicture@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 56a590|TGamePreferencesPicture::GetRuntimeClass||6|function|undefined GetTGamePreferencesPictureClassNamePointer()|rtti
@@ -4466,7 +4466,7 @@ address|name|symbol|size|type|prototype|provenance
 56c740|TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree||1173|function|undefined DestructTLoadSavePictureAndMaybeFree()|
 56cd10|TLoadSavePicture::DoEvent||911|function|undefined HandleLoadSaveSlotControlSelectionAndQueueOkay()|
 56d190|TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC||59|function|undefined HandleTurnFlowStateTickOrPostTurnEvent5DC()|
-56d1e0|TLoadSavePicture::ForwardParam||138|function|undefined HandleDialogOkayCancelShortcutAndQueueUiEvent()|
+56d1e0|TLoadSavePicture::DoKeyEvent||138|function|undefined HandleDialogOkayCancelShortcutAndQueueUiEvent()|
 56d2a0|TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow||639|function|undefined HandleSaveGameSlotSelectionAndPromptFlow()|
 56d5c0|BuildSharedStringFromMappedFlavorTextIndex||124|function|undefined BuildSharedStringFromMappedFlavorTextIndex()|
 56d660|BuildSavePathStringForMode||275|function|undefined BuildSavePathStringForMode()|
@@ -4479,7 +4479,7 @@ address|name|symbol|size|type|prototype|provenance
 56e200|TTwoPicSlider::ConstructTTwoPicSliderBaseState||179|function|undefined ConstructTTwoPicSliderBaseState()|
 56e2f0|TTwoPicSlider::Free||96|function|undefined DestructTTwoPicSliderAndMaybeFree()|
 56e370|TTwoPicSlider::Draw||576|function|undefined RenderSplitOverlaySurfaceAndCenteredStatusText()|
-56e640|TTwoPicSlider::DispatchPictureResourceCommand||395|function|undefined HandleMapOverlaySliderInputAndRefresh()|
+56e640|TTwoPicSlider::TrackMouse||395|function|undefined HandleMapOverlaySliderInputAndRefresh()|
 56e840|TQueryFloater::CreateObject|?CreateObject@TQueryFloater@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 56e8c0|TQueryFloater::GetRuntimeClass||6|function|undefined GetTQueryFloaterClassNamePointer()|rtti
 56e8e0|TQueryFloater::DoPostCreate||252|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
@@ -4540,7 +4540,7 @@ address|name|symbol|size|type|prototype|provenance
 570820|TPictureButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 570870|TPictureButton::HiliteState||59|function|void __thiscall HiliteState(bool enabledState, bool refreshNow)|
 5708c0|TPictureButton::IsSelected||47|function|bool __thiscall IsSelected()|
-570900|TPictureButton::BeginMouseCaptureAndStartRepeatTimer||60|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
+570900|TPictureButton::DoMouseCommand||60|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 570950|TAlwaysPictureButton::CreateObject|?CreateObject@TAlwaysPictureButton@@SGPAVCObject@@XZ|92|function|undefined CreateObject()|rtti
 5709d0|TAlwaysPictureButton::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 5709f0|TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState||27|function|undefined ConstructTAlwaysPictureButtonBaseState()|
@@ -4579,7 +4579,7 @@ address|name|symbol|size|type|prototype|provenance
 5715d0|TUpDownPictureButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 571620|SetPressedStateAdjustPictureBitmapByOne||75|function|undefined SetPressedStateAdjustPictureBitmapByOne()|
 571690|TUpDownPictureButton::IsSelected||15|function|bool __thiscall IsSelected()|
-5716b0|TCivilianButton::BeginMouseCaptureAndStartRepeatTimer||60|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
+5716b0|TCivilianButton::DoMouseCommand||60|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 571700|TRadioPictureButton::CreateObject|?CreateObject@TRadioPictureButton@@SGPAVCObject@@XZ|126|function|undefined CreateObject()|rtti
 5717a0|TRadioPictureButton::GetRuntimeClass||6|function|undefined GetTRadioPictureButtonClassNamePointer()|rtti
 5717c0|TRadioPictureButton::TRadioPictureButton||41|function|undefined TRadioPictureButton()|
@@ -4622,7 +4622,7 @@ address|name|symbol|size|type|prototype|provenance
 5723f0|TClickZone::GetRuntimeClass||6|function|undefined GetTClickZoneClassNamePointer()|rtti
 572410|TClickZone::ConstructUiCommandTagResourceEntry||27|function|undefined ConstructUiCommandTagResourceEntry()|
 572440|TClickZone::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-572490|TClickZone::BeginMouseCaptureAndStartRepeatTimer||60|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
+572490|TClickZone::DoMouseCommand||60|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 5724e0|TTextPictureButton::CreateObject|?CreateObject@TTextPictureButton@@SGPAVCObject@@XZ|156|function|undefined CreateObject()|rtti
 5725b0|TTextPictureButton::GetRuntimeClass||6|function|undefined GetTTextPictureButtonClassNamePointer()|rtti
 5725d0|TLineData::ConstructPictureScreenVariantEntry||113|function|undefined ConstructPictureScreenVariantEntry()|
@@ -4694,14 +4694,14 @@ address|name|symbol|size|type|prototype|provenance
 5746e0|TScrollBarView::Free||40|function|undefined DestructTScrollBarViewAndMaybeFree()|
 574720|TScrollBarView::DoPostCreate||120|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5747c0|TScrollBarView::DoEvent||80|function|undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2)|
-574830|TScrollBarView::BeginMouseCaptureAndStartRepeatTimer||243|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
+574830|TScrollBarView::DoMouseCommand||243|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 574970|TScrollBarView::Draw||724|function|undefined RenderStrategicMapViewportBandsAndBlit()|
-574d10|TScrollBarView::DispatchPictureResourceCommand||208|function|undefined QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int param_2)|
+574d10|TScrollBarView::TrackMouse||208|function|undefined QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int param_2)|
 574ea0|TScrollerButton::CreateObject|?CreateObject@TScrollerButton@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 574f20|TScrollerButton::GetRuntimeClass||6|function|undefined GetTScrollerButtonClassNamePointer()|rtti
 574f40|TScrollerButton::ConstructTScrollerButtonBaseState||18|function|undefined ConstructTScrollerButtonBaseState()|
 574f70|TScrollerButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-574fc0|TScrollerButton::DispatchPictureResourceCommand||3|function|undefined QueueCityRecruitmentSupportCommandsIfDeficit(void)|
+574fc0|TScrollerButton::TrackMouse||3|function|undefined QueueCityRecruitmentSupportCommandsIfDeficit(void)|
 575080|RenderStrategicMapViewportBandsAndBlit_Impl||13|function|undefined RenderStrategicMapViewportBandsAndBlit_Impl()|
 575130|WrapperFor_ftol_At00575130||30|function|undefined WrapperFor_ftol_At00575130()|
 575180|TSpaceCommand::CreateObject|?CreateObject@TSpaceCommand@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
@@ -4749,14 +4749,14 @@ address|name|symbol|size|type|prototype|provenance
 577e40|TSetupRandomMapPicture::StartGame||751|function|void __thiscall StartGame()|
 5781f0|TSetupRandomMapPicture::ExitScreen||48|function|void __thiscall ExitScreen()|
 578230|TSetupRandomMapPicture::GroundControlToMajorTom||144|function|void __thiscall GroundControlToMajorTom(unsigned char mode)|
-5782f0|TSetupRandomMapPicture::ForwardParam||45|function|undefined DispatchByEntryTypeToVslots1D0_1D4()|
+5782f0|TSetupRandomMapPicture::DoKeyEvent||45|function|undefined DispatchByEntryTypeToVslots1D0_1D4()|
 578330|TSetupRandomMapPicture::MajorTomToGroundControl||669|function|void __thiscall MajorTomToGroundControl(unsigned char mode)|
 578680|TSetupRandomMapPicture::SpinYourGlobe||236|function|void __thiscall SpinYourGlobe()|
 5787b0|TMapPreviewView::CreateObject|?CreateObject@TMapPreviewView@@SGPAVCObject@@XZ|87|function|undefined CreateObject()|rtti
 578830|TMapPreviewView::GetRuntimeClass||6|function|undefined GetTMapPreviewViewClassNamePointer()|rtti
 578850|TMapPreviewView::DoPostCreate||258|function|void __thiscall DoPostCreate(int arg)|
 5789b0|TMapPreviewView::Free||27|function|undefined DestructTMapPreviewViewAndMaybeFree()|
-5789e0|TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer||122|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
+5789e0|TMapPreviewView::DoMouseCommand||122|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 578a80|TMapPreviewView::Draw||307|function|void __thiscall Draw(RECT* rectBuffer)|
 578c10|TMapPreviewView::TakeSatellitePhoto||1295|function|void __thiscall TakeSatellitePhoto(char* tileOwnerTagTable)|
 579270|TMapPreviewView::EnhancePhoto||299|function|void __thiscall EnhancePhoto()|
@@ -4778,15 +4778,15 @@ address|name|symbol|size|type|prototype|provenance
 579b60|TScenarioChooser::GetRuntimeClass||6|function|undefined GetTScenarioChooserClassNamePointer()|rtti
 579b80|TScenarioChooser::DoPostCreate||973|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 57a050|TScenarioChooser::DoEvent||497|function|undefined DestructTScenarioChooserAndMaybeFree()|
-57a2d0|TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState||48|function|undefined PostTurnEvent5DCOrResetScenarioSelectionState()|
-57a310|TScenarioChooser::ForwardParam||45|function|undefined HandleScenarioSelectionKeyInput()|
-57a350|TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4||716|function|undefined ApplyScenarioSelectionAndPostTurnEvent5E4()|
+57a2d0|TScenarioChooser::ExitScreen||48|function|void ExitScreen()|
+57a310|TScenarioChooser::DoKeyEvent||45|function|undefined HandleScenarioSelectionKeyInput()|
+57a350|TScenarioChooser::StartGame||716|function|void StartGame()|
 57a6e0|LoadScenarioMetadataByIndexIntoUiControlCore||872|function|undefined LoadScenarioMetadataByIndexIntoUiControlCore()|
 57ab30|TScenarioChooser::Free||48|function|void __thiscall Free(void)|
 57ab70|TTextList::CreateObject|?CreateObject@TTextList@@SGPAVCObject@@XZ|142|function|undefined CreateObject()|rtti
 57ac30|TTextList::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 57acc0|TTextList::Draw||478|function|undefined Draw(RECT * rectBuffer)|
-57af20|TTextList::BeginMouseCaptureAndStartRepeatTimer||166|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
+57af20|TTextList::DoMouseCommand||166|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 57b000|TGameScorePicture::CreateObject|?CreateObject@TGameScorePicture@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 57b080|TGameScorePicture::GetRuntimeClass||6|function|undefined GetTGameScorePictureClassNamePointer()|rtti
 57b0a0|TGameScorePicture::DoPostCreate||1108|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
@@ -4893,22 +4893,22 @@ address|name|symbol|size|type|prototype|provenance
 583950|TArrowsControl::GetRuntimeClass||6|function|undefined GetTArrowsControlClassNamePointer()|rtti
 583970|TArrowsControl::ConstructTArrowsControlBaseState||28|function|undefined ConstructTArrowsControlBaseState()|
 5839a0|TArrowsControl::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-5839f0|TArrowsControl::DispatchPictureResourceCommand||119|function|undefined HandleSplitArrowAutoRepeatTickAndDispatch_Offset90()|
+5839f0|TArrowsControl::TrackMouse||119|function|undefined HandleSplitArrowAutoRepeatTickAndDispatch_Offset90()|
 583a90|TSidewaysArrow::CreateObject|?CreateObject@TSidewaysArrow@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
 583b30|TSidewaysArrow::GetRuntimeClass||6|function|undefined GetTSidewaysArrowClassNamePointer()|rtti
 583b50|TSidewaysArrow::TSidewaysArrow||28|function|void __thiscall TSidewaysArrow(void)|
 583b80|TSidewaysArrow::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-583bd0|TSidewaysArrow::DispatchPictureResourceCommand||138|function|undefined HandleTradeArrowAutoRepeatTickAndDispatch()|
+583bd0|TSidewaysArrow::TrackMouse||138|function|undefined HandleTradeArrowAutoRepeatTickAndDispatch()|
 583c90|TUpDownView::CreateObject|?CreateObject@TUpDownView@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
 583d30|TUpDownView::GetRuntimeClass||6|function|undefined GetTUpDownViewClassNamePointer()|rtti
 583d50|TUpDownView::ConstructTUpDownViewBaseState||28|function|undefined ConstructTUpDownViewBaseState()|
 583d80|TUpDownView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-583dd0|TUpDownView::DispatchPictureResourceCommand||119|function|undefined HandleSplitArrowAutoRepeatTickAndDispatch_Offset84()|
+583dd0|TUpDownView::TrackMouse||119|function|undefined HandleSplitArrowAutoRepeatTickAndDispatch_Offset84()|
 583e70|TRightLeftView::CreateObject|?CreateObject@TRightLeftView@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
 583f10|TRightLeftView::GetRuntimeClass||6|function|undefined GetTRightLeftViewClassNamePointer()|rtti
 583f30|TRightLeftView::ConstructTRightLeftViewBaseState||28|function|undefined ConstructTRightLeftViewBaseState()|
 583f60|TRightLeftView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-583fb0|TRightLeftView::DispatchPictureResourceCommand||111|function|undefined HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84()|
+583fb0|TRightLeftView::TrackMouse||111|function|undefined HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84()|
 584040|TDipDlgCluster::CreateObject|?CreateObject@TDipDlgCluster@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 5840c0|TDipDlgCluster::GetRuntimeClass||6|function|undefined GetTDipDlgClusterClassNamePointer()|rtti
 5840e0|TDipDlgCluster::ConstructTDipDlgClusterBaseState||18|function|undefined ConstructTDipDlgClusterBaseState()|
@@ -4924,7 +4924,7 @@ address|name|symbol|size|type|prototype|provenance
 584480|TTradeOrderPicture::TTradeOrderPicture||18|function|void __thiscall TTradeOrderPicture(void)|
 5844b0|TTradeOrderPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 584500|TTradeOrderPicture::DoPostCreate||15|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-584520|TTradeOrderPicture::BeginMouseCaptureAndStartRepeatTimer||349|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
+584520|TTradeOrderPicture::DoMouseCommand||349|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 5846e0|TBoycottButton::CreateObject|?CreateObject@TBoycottButton@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 584760|TBoycottButton::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 584780|TBoycottButton::ConstructTBoycottButtonBaseState||18|function|undefined ConstructTBoycottButtonBaseState()|
@@ -5017,7 +5017,7 @@ address|name|symbol|size|type|prototype|provenance
 588630|TAmtBar::UpdateBarValuesAndRefresh||45|function|undefined UpdateBarValuesAndRefresh()|
 588670|TAmtBar::Draw||11|function|undefined InvokeSlot1A8NoArg()|
 588690|TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache||549|function|undefined RenderPrimarySurfaceOverlayPanelWithClipCache()|
-588950|TAmtBar::BeginMouseCaptureAndStartRepeatTimer||173|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
+588950|TAmtBar::DoMouseCommand||173|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 588a30|TIndustryCluster::CreateObject|?CreateObject@TIndustryCluster@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
 588ad0|TIndustryCluster::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 588af0|TIndustryCluster::ConstructTradeMoveStepControlPanel||28|function|undefined ConstructTradeMoveStepControlPanel()|
@@ -5107,7 +5107,7 @@ address|name|symbol|size|type|prototype|provenance
 58c330|TNumberedArrowButton::SetValue||31|function|void __thiscall SetValue(short value,unsigned char refreshFlag)|
 58c360|TNumberedArrowButton::SetState||67|function|void __thiscall SetState(short value,unsigned char refreshFlag)|
 58c3d0|TNumberedArrowButton::Draw||489|function|undefined RenderLeftRightIndicatorIconsAndValueText()|
-58c640|TNumberedArrowButton::DispatchPictureResourceCommand||304|function|undefined HandleSplitArrowMousePhaseStateAndDispatchCommand64or65()|
+58c640|TNumberedArrowButton::TrackMouse||304|function|undefined HandleSplitArrowMousePhaseStateAndDispatchCommand64or65()|
 58c7c0|TNumberedArrowButton::HandleCursorHoverSelectionByChildHitTestAndFallback||80|function|undefined SetForeignMinisterReadyFlag14(void)|
 58c830|TCombatReportView::CreateObject|?CreateObject@TCombatReportView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 58c8b0|TCombatReportView::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
@@ -5138,7 +5138,7 @@ address|name|symbol|size|type|prototype|provenance
 58f050|TCivDescription::CreateObject|?CreateObject@TCivDescription@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
 58f0f0|TCivDescription::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 58f110|TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts||84|function|undefined UpdateCivilianOrderClassAndRefreshTargetCounts()|
-58f1a0|TCivDescription::BeginMouseCaptureAndStartRepeatTimer||420|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
+58f1a0|TCivDescription::DoMouseCommand||420|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 58f3c0|TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation||317|function|void __thiscall UpdateCivilianOrderTargetTileCountsForOwnerNation(int * pCivilianOrderEntry)|
 58f550|TCivDescription::Draw||469|function|undefined RefreshCivilianTargetLegendBySelectedClass()|
 58f7b0|TCivDescription::DrawEngineer||1438|function|void __thiscall DrawEngineer(RECT * bounds)|
@@ -5201,7 +5201,7 @@ address|name|symbol|size|type|prototype|provenance
 595040|TWorldView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 595090|TWorldView::DoPostCreate||13|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5950b0|TWorldView::DoEvent||81|function|undefined HandleNationStateCommandX78AndForwardToChild()|
-595130|TWorldView::ForwardParam||1232|function|void __thiscall HandleMapScreenHotkeyDispatch(int * pKeyEvent)|
+595130|TWorldView::DoKeyEvent||1232|function|void __thiscall HandleMapScreenHotkeyDispatch(int * pKeyEvent)|
 595810|TWorldView::DoSetCursor||125|function|void __thiscall DoSetCursor(CPoint* point, RgnHandle hitArg)|
 5958b0|TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback||686|function|undefined UpdateMapCursorForTileAndAction()|
 595c40|TWorldView::SetFlagByteAndInvokeVslot1A4||18|function|undefined SetFlagByteAndInvokeVslot1A4()|
@@ -5239,7 +5239,7 @@ address|name|symbol|size|type|prototype|provenance
 597340|TMapUberPicture::DoEvent||453|function|undefined HandleMapOverlayDialogCommandTagsAndForward()|
 5974eb|ReinitializeGameFlowAndPostTurnEvent5DD||32|function|undefined ReinitializeGameFlowAndPostTurnEvent5DD()|
 597600|TMapUberPicture::DoMenuCommand||272|function|void __thiscall DoMenuCommand(int command)|
-597770|TMapUberPicture::ForwardParam||23|function|undefined OrphanTiny_ReturnZero_0048a730(void)|
+597770|TMapUberPicture::DoKeyEvent||23|function|undefined OrphanTiny_ReturnZero_0048a730(void)|
 5977a0|TMapUberPicture::AutoScrollByEdgeMask||72|function|undefined AutoScrollByEdgeMask(short)|
 597810|TMapUberPicture::RefreshMapOrderEntryPanel||246|function|void __thiscall RefreshMapOrderEntryPanel(void * pMapOrderEntry)|
 597950|TMapUberPicture::SetActiveMapOrderEntry||113|function|void __thiscall SetActiveMapOrderEntry(void * pMapOrderEntry)|
@@ -5274,7 +5274,7 @@ address|name|symbol|size|type|prototype|provenance
 59a380|TMiniMapView::ConstructTMiniMapViewBaseState||67|function|undefined ConstructTMiniMapViewBaseState()|
 59a3f0|TMiniMapView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 59a540|TMiniMapView::Draw||783|function|undefined RecomputeAndRenderStrategicMapViewportOverlay()|
-59a920|TMiniMapView::DispatchPictureResourceCommand||312|function|undefined QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int * param_2)|
+59a920|TMiniMapView::TrackMouse||312|function|undefined QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int * param_2)|
 59acf0|WrapperFor_ftol_At0059acf0||30|function|undefined WrapperFor_ftol_At0059acf0()|
 59ad40|TTacticalPlayer::CreateObject|?CreateObject@TTacticalPlayer@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 59ad70|TTacticalPlayer::StartBattle||1|function|undefined StartBattle(void)|
@@ -5424,7 +5424,7 @@ address|name|symbol|size|type|prototype|provenance
 5a3190|TTacticalBattle::MarkTacticalTileStateQueuedAndMaybeDispatchPacket||86|function|undefined MarkTacticalTileStateQueuedAndMaybeDispatchPacket()|
 5a3210|TTacticalBattle::AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket||200|function|undefined AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket()|
 5a3320|TTacticalBattle::ClearTacticalTileStateRunByStride||56|function|undefined ClearTacticalTileStateRunByStride()|
-5a3370|DispatchTacticalActionByHoverStateIndex||228|function|undefined DispatchTacticalActionByHoverStateIndex()|
+5a3370|TTacticalBattle::DispatchTacticalActionByHoverStateIndex||228|function|void __thiscall DispatchTacticalActionByHoverStateIndex(int tileIndex)|
 5a34d0|TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket||156|function|undefined ExecuteTacticalMineActionAndQueuePacket()|
 5a35a0|TTacticalBattle::HandleTacticalCommandTag_mine||125|function|undefined HandleTacticalCommandTag_mine()|
 5a3640|TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints||98|function|undefined ExecuteTacticalDigActionAndConsumeUnitActionPoints()|
@@ -5509,8 +5509,8 @@ address|name|symbol|size|type|prototype|provenance
 5a83e0|TTacticalBattleView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5a8430|TTacticalBattleView::Free||116|function|void __thiscall Free(void)|
 5a84d0|TTacticalBattleView::DoPostCreate||96|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-5a8550|TTacticalBattleView::ForwardParam||88|function|undefined HandleTacticalInputCommandKeyAndTagDispatch()|
-5a8660|TTacticalBattleView::BeginMouseCaptureAndStartRepeatTimer||67|function|void __thiscall BeginMouseCaptureAndStartRepeatTimer(const CPoint &point, TToolboxEvent *event, CPoint origin)|
+5a8550|TTacticalBattleView::DoKeyEvent||88|function|undefined HandleTacticalInputCommandKeyAndTagDispatch()|
+5a8660|TTacticalBattleView::DoMouseCommand||67|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 5a86d0|ConvertScreenPointToHexGridCoordClamped||130|function|undefined ConvertScreenPointToHexGridCoordClamped()|
 5a8790|SyncTacticalStatusPanelRegion_Impl||44|function|undefined SyncTacticalStatusPanelRegion_Impl()|
 5a87d0|TTacticalBattleView::ComputeTacticalHexTileScreenRect||108|function|undefined EvaluateAndResolveTacticalActionAgainstTileOccupant_Impl()|
@@ -5555,7 +5555,7 @@ address|name|symbol|size|type|prototype|provenance
 5ad2e0|TTacMapUberPicture::CreateObject|?CreateObject@TTacMapUberPicture@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
 5ad380|TTacMapUberPicture::GetRuntimeClass||6|function|undefined GetTTacMapUberPictureClassNamePointer()|rtti
 5ad3a0|TTacMapUberPicture::DoPostCreate||49|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-5ad3f0|TTacMapUberPicture::ForwardParam||39|function|undefined DestructTTacMapUberPictureAndMaybeFree()|
+5ad3f0|TTacMapUberPicture::DoKeyEvent||39|function|undefined DestructTTacMapUberPictureAndMaybeFree()|
 5ad430|TTacticalAdiosPicture::CreateObject|?CreateObject@TTacticalAdiosPicture@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 5ad4b0|TTacticalAdiosPicture::GetRuntimeClass||6|function|undefined GetTTacticalAdiosPictureClassNamePointer()|rtti
 5ad4d0|TTacticalAdiosPicture::DoPostCreate||295|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
@@ -5832,7 +5832,7 @@ address|name|symbol|size|type|prototype|provenance
 5bc760|TDealTabControl::GetRuntimeClass||6|function|undefined GetTDealTabControlClassNamePointer()|rtti
 5bc780|TDealTabControl::Setup||79|function|void Setup(short bitmapResourceId, unsigned char useAlternatePair)|
 5bc7f0|TDealTabControl::Draw||389|function|undefined DestructTDealTabControlAndMaybeFree()|
-5bc9f0|TDealTabControl::DispatchPictureResourceCommand||237|function|undefined QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)|
+5bc9f0|TDealTabControl::TrackMouse||237|function|undefined QueueCityRecruitmentSupportCommandsIfDeficit(int param_1)|
 5bcb20|TDealTabControl::Free||68|function|void __thiscall Free(void)|
 5bcb90|TTradePageSellView::CreateObject|?CreateObject@TTradePageSellView@@SGPAVCObject@@XZ|92|function|undefined CreateObject()|rtti
 5bcc10|TTradePageSellView::GetRuntimeClass||6|function|undefined GetTTradePageSellViewClassNamePointer()|rtti
@@ -5871,7 +5871,7 @@ address|name|symbol|size|type|prototype|provenance
 5be600|TOfferDeskPicture::DoPostCreate||816|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5bea00|TOfferDeskPicture::PoseOfferSheet||2692|function|void __thiscall PoseOfferSheet(short sourceNation, short targetNation, short proposedAmount, short maxAmount, short commodityType)|listing+mac-symbol
 5bf740|TOfferDeskPicture::DoEvent||223|function|undefined HandleTradeCommandTagsAndSelectionUpdates()|
-5bf860|TOfferDeskPicture::ForwardParam||153|function|undefined HandleDialogAcceptRejectShortcutAndQueueUiEventAlt()|
+5bf860|TOfferDeskPicture::DoKeyEvent||153|function|undefined HandleDialogAcceptRejectShortcutAndQueueUiEventAlt()|
 5bf930|RefreshSelectedNationOrderCompatibilityInfo||2386|function|undefined RefreshSelectedNationOrderCompatibilityInfo()|
 5c04f0|TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt||852|function|undefined CreateNextTradeCommandAndFormatPrompt()|
 5c0930|TOfferDeskPicture::HandleMouseUp||114|function|char HandleMouseUp(const CPoint &point, TToolboxEvent *event, CPoint origin)|

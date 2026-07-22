@@ -3618,6 +3618,11 @@ short g_cityBuildingSoundCueOffsets[16] = {2, 3, 4, 5, 0, 1, 6, 10, 11, 12, 13, 
 // GLOBAL: IMPERIALISM 0x00696178
 short g_cityBuildingHitTestOrder[16] = {12, 13, 7, 10, 14, 15, 9, 6, 11, 2, 3, 8, 0, 1, 4, 5};
 
+// Threshold/sentinel table used by diplomacy trade controls: 300 selects action 11,
+// values below 96 select action 9, and the remaining values select action 10.
+// GLOBAL: IMPERIALISM 0x00696950
+short g_awDiplomacyTradePolicyIconValueTable[7] = {95, 90, 75, 50, 25, 0, 300};
+
 // GLOBAL: IMPERIALISM 0x00669f10
 double g_dNavyDamageSplitRatioA_00669f10 = 0.25;
 // GLOBAL: IMPERIALISM 0x00669f18

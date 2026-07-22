@@ -16,8 +16,8 @@ public:
   void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* cursorPoint,
                                                            RgnHandle hitArg) override;
   void Draw(RECT* rectBuffer) override;
-  void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
-                                      void* eventDataB, int commandFlag) override;
+  void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint, CPoint& currentPoint,
+                  unsigned char commandFlag) override;
 
   using TControl::SetState;
   virtual void SetValue(short value84, unsigned char refreshFlag); // slot 0x71 0x58c330

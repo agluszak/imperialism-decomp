@@ -69,7 +69,7 @@ void TMapEditView::DoPostCreate(int arg) {
 
   g_pCitySiteCachedPrimaryRenderSurfaceContext = g_pPrimaryRenderSurfaceContext;
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
-  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagGold);
+  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagDialog);
 
   TMapUberPicture* mapOwner = static_cast<TMapUberPicture*>(ownerContext);
   mapOwner->SetMapInteractionMode(5);
@@ -391,8 +391,7 @@ void TMapEditView::PlaceCountySeat(short tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051deb0
-void TMapEditView::ForwardParam(int param) {
-  TToolboxEvent* event = reinterpret_cast<TToolboxEvent*>(param);
+void TMapEditView::DoKeyEvent(TToolboxEvent* event) {
   int delta;
   switch (event->commandCode) {
   case 0x2c:

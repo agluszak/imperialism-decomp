@@ -119,11 +119,10 @@ void TScrollBarView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
 }
 
 // FUNCTION: IMPERIALISM 0x00574830
-void TScrollBarView::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
-                                                          CPoint origin) {
+void TScrollBarView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   RECT thumbRect = {0, word8c, frameWidth34, static_cast<int>(word8c) + 0x12};
   if (PtInRect(&thumbRect, point)) {
-    TControl::BeginMouseCaptureAndStartRepeatTimer(point, event, origin);
+    TControl::DoMouseCommand(point, event, origin);
     return;
   }
 
@@ -218,14 +217,13 @@ void TScrollBarView::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x00574d10
-void TScrollBarView::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
-                                                    void* pEventDataA, void* pEventDataB,
-                                                    int nCommandFlag) {
-  (void)pEventSender;
-  (void)pEventDataA;
-  (void)nCommandFlag;
-  short target = *reinterpret_cast<short*>(static_cast<char*>(pEventDataB) + 4) - 9;
-  if (nEventType <= 0 || nEventType > 2) {
+void TScrollBarView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
+                                CPoint& currentPoint, unsigned char commandFlag) {
+  (void)startPoint;
+  (void)previousPoint;
+  (void)commandFlag;
+  short target = static_cast<short>(currentPoint.y) - 9;
+  if (phase <= kTrackPhaseBegin || phase > kTrackPhaseEnd) {
     return;
   }
 
@@ -239,7 +237,7 @@ void TScrollBarView::DispatchPictureResourceCommand(int nEventType, void* pEvent
     RefreshCityDialogScrollableViewportWithQuickDrawContext();
   }
 
-  if (nEventType != 2) {
+  if (phase != kTrackPhaseEnd) {
     return;
   }
 

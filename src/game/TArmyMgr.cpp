@@ -1410,7 +1410,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
     // TViewMgr::ModalMessage(5)). That dispatch's own real
     // arity (3 explicit stack args per its own disassembly at 0x5d5c40) contradicts this
     // callsite's 0 explicit args -- the same class of contradiction already documented on
-    // TMapUberPicture::DispatchPictureResourceCommand -- so it's left undone rather than
+    // TMapUberPicture::TrackMouse -- so it's left undone rather than
     // faked.
     return false;
   }
@@ -1867,7 +1867,7 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
     // TViewMgr::ModalMessage here -- that dispatch's own
     // real arity (per its disassembly at 0x5d5b00) contradicts this callsite's 0
     // explicit args, the same class of contradiction already documented on
-    // TMapUberPicture::DispatchPictureResourceCommand and
+    // TMapUberPicture::TrackMouse and
     // ValidateOrderPlacementPrerequisitesForSelectedTile, so it's left undone rather
     // than faked.
     return;
@@ -1876,7 +1876,7 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
   // Ground truth also resolves g_pUiViewManager->ResolveTurnEventDialogNodeByMessage-
   // Context(0x2503) here (asserting non-null via the established MessageBox+assert
   // pattern), then dispatches through that node's own slot-0x1a0 virtual (the same
-  // DispatchPictureResourceCommand-shaped slot, and the same arity contradiction, as
+  // TrackMouse-shaped slot, and the same arity contradiction, as
   // above) and a further ResolveControlByTag('geep')-based chain. Left undone rather
   // than faked; styleA/styleB/styleC/styleD's real consumption in that path (and the
   // per-owner-nation theme-code lookup at cityScoreTable[cityRecordIndex].ownerNation-

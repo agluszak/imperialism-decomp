@@ -20,8 +20,7 @@ TClickZone::TClickZone() : TControl(), clickSoundId84(0x1b58) {}
 TClickZone::~TClickZone() {}
 
 // FUNCTION: IMPERIALISM 0x00572490
-void TClickZone::BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
-                                                      CPoint origin) {
+void TClickZone::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   g_pSfxPlaybackSystem->PlaySoundEffect(clickSoundId84, 0, 1);
-  TControl::BeginMouseCaptureAndStartRepeatTimer(point, event, origin);
+  TControl::DoMouseCommand(point, event, origin);
 }

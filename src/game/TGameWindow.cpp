@@ -106,8 +106,8 @@ char TGameWindow::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoin
 }
 
 // FUNCTION: IMPERIALISM 0x004ffd70
-void TGameWindow::ForwardParam(int param) {
-  TKeyCommandEvent* commandEvent = reinterpret_cast<TKeyCommandEvent*>(param);
+void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
+  TToolboxEvent* commandEvent = event;
   TControl* mainControl = static_cast<TControl*>(ResolveControlByTag(kTagMain));
   if (mainControl == 0) {
     return;
@@ -160,17 +160,17 @@ void TGameWindow::ForwardParam(int param) {
       activeMovieView->StopMovieIfActive();
       return;
     }
-    mainControl->ForwardParam(param);
+    mainControl->DoKeyEvent(event);
     return;
   }
 
   if (g_pSimMgr == 0) {
-    mainControl->ForwardParam(param);
+    mainControl->DoKeyEvent(event);
     return;
   }
   if (g_pSimMgr->mode != 0x69 && g_pSimMgr->mode != 0x68 && g_pSimMgr->mode != 0x67 &&
       g_pSimMgr->mode != 0x6a && g_pSimMgr->mode != 0x6d && QueryUiRuntimeEventCode() != 0x7dd) {
-    mainControl->ForwardParam(param);
+    mainControl->DoKeyEvent(event);
     return;
   }
 
@@ -211,7 +211,7 @@ void TGameWindow::ForwardParam(int param) {
     }
     break;
   default:
-    mainControl->ForwardParam(param);
+    mainControl->DoKeyEvent(event);
     return;
   }
 }

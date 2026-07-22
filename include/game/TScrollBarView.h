@@ -25,7 +25,7 @@ public:
                        TEvent* event) override; // slot 0x0f 0x005747c0
   // slot 0x10 HandleEvent inherited unchanged (0x48a2e0)
   // slot 0x11 DoMenuCommand inherited unchanged (0x48a310)
-  // slot 0x12 ForwardParam inherited unchanged (0x48a380)
+  // slot 0x12 DoKeyEvent inherited unchanged (0x48a380)
   // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetIdleFreq inherited unchanged (0x415d50)
   // slot 0x15 SetIdleFreq inherited unchanged (0x415d70)
@@ -78,10 +78,10 @@ public:
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x574970
   // slot 0x45 PaintOrInvalidateControl inherited unchanged (0x48b860)
   // slot 0x46 HandleMouseDown inherited unchanged (0x48c450)
-  virtual void BeginMouseCaptureAndStartRepeatTimer(const CPoint& point, TToolboxEvent* event,
-                                                    CPoint origin) override; // slot 0x47 0x574830
+  virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event,
+                              CPoint origin) override; // slot 0x47 0x574830
   // slot 0x48 HandleMouseUp inherited unchanged (0x48c590)
-  // slot 0x49 DoMouseCommand inherited unchanged (0x427240)
+  // slot 0x49 HandleMouseCommandToSelf inherited unchanged (0x427240)
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
   // slot 0x4b QueryBounds inherited unchanged (0x427290)
   // slot 0x4c TranslateRectToWindow inherited unchanged (0x4272d0)
@@ -112,9 +112,9 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 WindowToLocal inherited unchanged (0x48bac0)
-  virtual void DispatchPictureResourceCommand(int nEventType, void* pEventSender, void* pEventDataA,
-                                              void* pEventDataB,
-                                              int nCommandFlag) override; // slot 0x68 0x574d10
+  virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
+                          CPoint& currentPoint,
+                          unsigned char commandFlag) override; // slot 0x68 0x574d10
   // slot 0x69 BuildInsetContentRect inherited unchanged (0x48e980)
   // slot 0x6a AssertCityProductionGlobalStateInitialized inherited unchanged (0x429470)
   // slot 0x6b NoOpUiViewSlotHandler inherited unchanged (0x48e9c0)
