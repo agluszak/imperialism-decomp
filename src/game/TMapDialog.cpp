@@ -347,8 +347,8 @@ void TMapDialog::SetMapViewTileIndex(int arg1) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051adc0
-void TMapDialog::SetMapViewCellCoordinates(int arg1, int arg2) {
-  SetMapDialogCellCoordinatesAndRefresh(arg1, arg2, 0);
+void TMapDialog::SetMapViewCellCoordinates(int column, int row) {
+  SetMapDialogCellCoordinatesAndRefresh(column, row, 0);
 }
 
 // Clamps/wraps the requested viewport cell (108x54 tile map, viewport span from
@@ -2024,9 +2024,12 @@ void TMapDialog::Copy64x64TileBlockWithStrideAdjustment(int* src, int* dest, sho
 }
 
 // FUNCTION: IMPERIALISM 0x00525730
-void TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
-                                                                     int arg4, int arg5) {
-  ProjectTileIndexToWrappedScreenOffsetByScale(
-      static_cast<short>(arg1), reinterpret_cast<short*>(arg2), reinterpret_cast<short*>(arg3),
-      reinterpret_cast<short*>(arg4), static_cast<short>(arg5));
+void TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
+                                                                     short* viewportOriginXY,
+                                                                     short* outVerticalOffset,
+                                                                     short* outHorizontalOffset,
+                                                                     int projectionScale) {
+  ProjectTileIndexToWrappedScreenOffsetByScale(static_cast<short>(tileIndex), viewportOriginXY,
+                                               outVerticalOffset, outHorizontalOffset,
+                                               static_cast<short>(projectionScale));
 }

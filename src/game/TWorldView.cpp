@@ -375,8 +375,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   short outY = 0;
   short outX = 0;
   ForwardProjectTileIndexToWrappedScreenOffsetByScale(
-      previewTile, reinterpret_cast<int>(&viewportOffsetX), reinterpret_cast<int>(&outX),
-      reinterpret_cast<int>(&outY), projectionScale76);
+      previewTile, reinterpret_cast<short*>(&viewportOffsetX), &outX, &outY, projectionScale76);
 
   GetClip(reusableSurfaceA.tempRgn);
   SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
@@ -451,21 +450,25 @@ short TWorldView::QueryMinusOneWordSlot1BC(int unusedArg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005960c0
-void TWorldView::ConvertPoint(const CPoint& point, short& outRow, short& outCol, short& outBand) {
+void TWorldView::ConvertPoint(const CPoint& point, short& outColumn, short& outRow,
+                              short& outRegionBand) {
   (void)point;
+  (void)outColumn;
   (void)outRow;
-  (void)outCol;
-  (void)outBand;
+  (void)outRegionBand;
 }
 
 // FUNCTION: IMPERIALISM 0x005960e0
-void TWorldView::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
-                                                                     int arg4, int arg5) {
-  (void)arg1;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
-  (void)arg5;
+void TWorldView::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
+                                                                     short* viewportOriginXY,
+                                                                     short* outVerticalOffset,
+                                                                     short* outHorizontalOffset,
+                                                                     int projectionScale) {
+  (void)tileIndex;
+  (void)viewportOriginXY;
+  (void)outVerticalOffset;
+  (void)outHorizontalOffset;
+  (void)projectionScale;
 }
 
 // FUNCTION: IMPERIALISM 0x00596100
@@ -634,9 +637,9 @@ tail:
 }
 
 // FUNCTION: IMPERIALISM 0x00596680
-void TWorldView::SetMapViewCellCoordinates(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
+void TWorldView::SetMapViewCellCoordinates(int column, int row) {
+  (void)column;
+  (void)row;
 }
 
 // FUNCTION: IMPERIALISM 0x005966a0

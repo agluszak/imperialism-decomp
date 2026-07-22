@@ -1703,6 +1703,13 @@ const short g_ShipRosterAtlasHorizontalOffsetByResourceType_006985E8[14] = {
     0, 0, 0, 0, 160, 0, 0, 320, 480, 640, 0, 800, 960, 1120,
 };
 
+// Palette entries used to color ocean-map previews by their owning nation tag.
+// GLOBAL: IMPERIALISM 0x006985b8
+const unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24] = {
+    0xf3, 0x2a, 0x25, 0x1d, 0xf6, 0x8c, 0xbd, 0x0a, 0x0b, 0x0d, 0x29, 0xde,
+    0xdf, 0xfa, 0x2c, 0x31, 0x33, 0x41, 0x48, 0xd0, 0xcd, 0xce, 0xcf, 0x00,
+};
+
 // GLOBAL: IMPERIALISM 0x006a590c
 TInfoBarText* g_pCursorControlPanel = nullptr;
 

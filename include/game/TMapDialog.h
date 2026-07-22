@@ -57,10 +57,13 @@ public:
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                              unsigned char altOverlay) override;
   virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;
-  virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
-                                                                   int arg4, int arg5) override;
-  virtual void ConvertPoint(const CPoint& point, short& outRow, short& outCol,
-                            short& outBand) override;
+  virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
+                                                                   short* viewportOriginXY,
+                                                                   short* outVerticalOffset,
+                                                                   short* outHorizontalOffset,
+                                                                   int projectionScale) override;
+  virtual void ConvertPoint(const CPoint& point, short& outColumn, short& outRow,
+                            short& outRegionBand) override;
   virtual void CenterOn(int tileIndex) override;
 
   // Fills the map-context info panel's 'titl' / 'info' / 'loca' text controls for the
@@ -75,7 +78,7 @@ public:
   void OrphanRetStub_005966c0(short arg1) override;
   undefined OrphanLeaf_NoCall_Ins02_005966e0(short arg1) override;
   void SetMapViewTileIndex(int arg1) override;
-  void SetMapViewCellCoordinates(int arg1, int arg2) override;
+  void SetMapViewCellCoordinates(int column, int row) override;
   virtual void DrawHexNeighborOutlineFromTileArray(short* neighborTiles);
   // Resets the map-tile sprite variants and all 90 transient tile-marker slots to sentinels.
   virtual void ResetAllTileMarkersToSentinel(); // 0x0051e1a0
