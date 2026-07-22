@@ -2,7 +2,6 @@
 #include "game/TSimMgr.h"
 
 #include "game/TAmtBar.h"
-#include "game/TUberCluster.h"
 #include "game/TView.h"
 #include "game/TGreatPower.h"
 #include "game/TCity.h"
@@ -49,11 +48,11 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TIndustryCluster* con
 // SYNTHETIC: IMPERIALISM 0x00588ad0
 // TIndustryCluster::GetRuntimeClass
 
-IMPLEMENT_DYNCREATE(TIndustryCluster, TUberCluster)
+IMPLEMENT_DYNCREATE(TIndustryCluster, TAmtBarCluster)
 
 // FUNCTION: IMPERIALISM 0x00588af0
 TIndustryCluster::TIndustryCluster()
-    : TUberCluster(), selectedMetricControl(0), selectedMetricValue(0), selectedMetricStep(0) {}
+    : TAmtBarCluster(), selectedMetricControl(0), selectedMetricValue(0), selectedMetricStep(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00588b20
 // TIndustryCluster::`scalar deleting destructor'
@@ -85,27 +84,25 @@ void TIndustryCluster::DoPostCreate(int styleSeed) {
   this->selectedMetricValue = static_cast<short>(activeNationState->GetCityState()->GetBuildingType(
       static_cast<TItemOrder*>(selectedMetricRecord)->productionSlot));
 
-  this->InitializeTradeMoveAndBarControls(styleSeed);
-  this->NotifyControlSelectionChange(reinterpret_cast<void*>(selectedMetricRecord->quantityField04),
-                                     1);
+  TAmtBarCluster::DoPostCreate(styleSeed);
+  this->SetMoveAmount(selectedMetricRecord->quantityField04, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00588c30
-void TIndustryCluster::ApplyMoveValue(int value) {
-  this->NotifyControlSelectionChange(reinterpret_cast<void*>(value), 0);
+void TIndustryCluster::SetMoveAmount(short amount) {
+  this->SetMoveAmount(amount, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00588c60
-int TIndustryCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFlag) {
-  int dragValue = (int)dragValuePtr;
+void TIndustryCluster::SetMoveAmount(short dragValue, unsigned char updateControls) {
   TAmtBar* selectedControl = this->selectedMetricControl;
   short previousValue = ReadControlValueFieldPlus4(selectedControl);
   if (selectedControl != 0) {
     selectedControl->SetEnable(static_cast<unsigned char>(dragValue));
   }
 
-  if (((char)updateFlag == 0) && (ReadControlValueFieldPlus4(selectedControl) == previousValue)) {
-    return 0;
+  if ((updateControls == 0) && (ReadControlValueFieldPlus4(selectedControl) == previousValue)) {
+    return;
   }
 
   TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
@@ -141,12 +138,11 @@ int TIndustryCluster::NotifyControlSelectionChange(void* dragValuePtr, int updat
   int scaledMetric = (int)((float)selectedControl->QueryValue() * barScale);
   int scaledRange = (int)((float)ReadControlValueFieldPlus4(selectedControl) * barScale);
   barControl->SetBarMetric(scaledMetric, scaledRange);
-  this->RefreshBarFromSelectedMetric();
-  return 0;
+  this->UpdateMax();
 }
 
 // FUNCTION: IMPERIALISM 0x00588f60
-void TIndustryCluster::RefreshBarFromSelectedMetric() {
+void TIndustryCluster::UpdateMax() {
   UpdateTradeBarFromSelectedMetricRatio(this, kAssertLineRatioB);
 }
 
@@ -158,11 +154,11 @@ void TIndustryCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       GAME_FAIL_NIL_POINTER();
     }
     int moveValue = moveControl->QueryValue();
-    this->ApplyMoveValue(moveValue + 1);
+    this->SetMoveAmount(static_cast<short>(moveValue + 1));
     return;
   }
   if (commandId != 0x65) {
-    this->HandleTradeMoveControlAdjustment(commandId, sourceHandler, reinterpret_cast<int>(event));
+    TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
     return;
   }
   TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
@@ -170,7 +166,7 @@ void TIndustryCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     GAME_FAIL_NIL_POINTER();
   }
   int moveValue = moveControl->QueryValue();
-  this->ApplyMoveValue(moveValue - 1);
+  this->SetMoveAmount(static_cast<short>(moveValue - 1));
 }
 
 TIndustryCluster::~TIndustryCluster() {}

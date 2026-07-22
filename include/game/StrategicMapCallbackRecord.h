@@ -7,7 +7,7 @@ struct StrategicMapCallbackRecord {
   StrategicMapCallbackRecord();
   ~StrategicMapCallbackRecord();
 
-  void AppendPackedColorDword(int surface, int packedColor);
+  void AppendPackedColorDword(unsigned char* destinationPixels, int packedColor);
   unsigned char* EnsureOpcodeBufferByteAtIndex(int index);
   StrategicMapCallbackRecord* AppendOpcodeByte(int value); // returns this (original mov eax,esi)
   void AppendOpcodeBytePair(int value);
@@ -15,24 +15,17 @@ struct StrategicMapCallbackRecord {
   void BuildBitmapMaskOpcodeBufferFromResourceRows(int resourceId, short width, short height,
                                                    int destinationRowStride,
                                                    unsigned char transparentPixel);
-  // Apply the generated sparse bitmap writes to a destination tile. The retail build executes
-  // the generated x86 stream directly; interpreting the same opcodes keeps the recovered source
+  // Apply generated sparse writes to a destination pixel buffer. The retail build executes the
+  // x86 stream directly; interpreting its small opcode vocabulary keeps the recovered source
   // portable and avoids inline assembly while preserving the mask semantics.
   void ApplyBitmapMaskToPixelBuffer(unsigned char* destinationPixels);
+  void ApplyPackedColorToPixelBuffer(unsigned char* destinationPixels);
 
-  // dispatchTable00/subobjectDispatchTable1c (below) are NOT a C++ vfptr despite the ctor
-  // writing a shared constant .rdata address into both, matching each dtor-restore before the
-  // owned buffer is freed: `just xrefs to 0x006404a4/0x006404a8` shows zero read/call sites
-  // anywhere in the binary -- only these two ctor/dtor writes -- so nothing ever dispatches
-  // through them. The two addresses are adjacent slots in one shared 2-entry .rdata table;
-  // each dword there is an ILT-thunk to a distinct compiler-emitted
-  // WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At... COMDAT (0x004307a0 for slot 0,
-  // 0x00430830 for slot 1 -- both tail-calling CRT _realloc, see
-  // config/original_entities.csv:153-154 and the LIBRARY note in mfc_heap_library.cpp:7-9), one
-  // per owned buffer (ownedBuffer04 / ownedBuffer20). A QuickDraw-style per-buffer "procs table"
-  // reference carried over from the Mac codebase, not compiler vtable dispatch.
+  // The two one-entry tables dispatch element-sized append/grow operations for the byte and int
+  // buffers. They are called at 0x004d53f2 and 0x004d5d94 and target the type-specific routines
+  // at 0x004307a0/0x00430830. Their exact source container type remains unrecovered.
   int dispatchTable00;
-  char* ownedBuffer04;
+  unsigned char* ownedBuffer04;
   // bufferCapacity08/committedLength0c: EnsureOpcodeBufferByteAtIndex and AppendOpcodeByte
   // both compare against bufferCapacity08 before growing ownedBuffer04 via realloc/new, and
   // raise committedLength0c to index+1 whenever a touched index exceeds it (also used as the
@@ -58,9 +51,9 @@ struct StrategicMapCallbackRecord {
   // still nonzero at exit (0x004d5720).
   int hadTrailingPadding18;
   int subobjectDispatchTable1c;
-  char* ownedBuffer20;
+  int* ownedBuffer20;
   // cursorBufferSize24/cursorBufferInitialized28: AppendPackedColorDword (0x004d4bf0) lazily
-  // allocates ownedBuffer20 as a single int-sized write-cursor cell the first time
+  // allocates ownedBuffer20 as a single write-cursor element the first time
   // cursorBufferSize24 is 0, then sets cursorBufferInitialized28 as a parallel init guard.
   int cursorBufferSize24;
   int cursorBufferInitialized28;

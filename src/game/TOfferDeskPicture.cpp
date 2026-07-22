@@ -331,7 +331,8 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
     if (proposedAmount98 != 0) {
       TView* toolbar = g_pDisplayMgr->activeDialog->ResolveControlByTag('tool');
       if (toolbar != nullptr) {
-        static_cast<TAmtBarCluster*>(toolbar)->ApplyMoveValue(sourceNationSlot90);
+        static_cast<TAmtBarCluster*>(toolbar)->SetMoveAmount(
+            static_cast<short>(sourceNationSlot90));
       }
     }
 

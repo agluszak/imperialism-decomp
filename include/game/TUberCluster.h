@@ -121,9 +121,6 @@ public:
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   virtual int IsTradeControlAtMinimum(); // slot 0x73 0x5714e0
-  void HandleTradeMoveControlAdjustment(int commandId, void* eventArg, int eventExtra);
-  void SetAmountValueOnConcreteCluster(int value);
   TUberCluster();
   DECLARE_DYNCREATE(TUberCluster)
-  void InitializeTradeMoveAndBarControls(unsigned int styleSeed = 0);
 };

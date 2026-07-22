@@ -3,8 +3,8 @@
 
 #include "game/global_data_tables.h"
 #include "game/TAmtBar.h"
+#include "game/TAmtBarCluster.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/TUberCluster.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_rendering.h"
@@ -161,7 +161,7 @@ void TAmtBar::ClampAndApplyTradeMoveValue(int requestedValue) {
     }
   }
 
-  static_cast<TUberCluster*>(owner)->SetAmountValueOnConcreteCluster(appliedValue);
+  static_cast<TAmtBarCluster*>(owner)->SetMoveAmount(static_cast<short>(appliedValue));
 }
 
 void TAmtBar::SetBarMetricRatio(int value) {
