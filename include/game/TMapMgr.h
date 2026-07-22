@@ -770,10 +770,10 @@ public:
   // 0x5112f0/0x511360/0x5113d0/0x511440. Predicate helpers for the variant resolver:
   // each returns 1 iff the neighbor tile's byte-2 feature code is in a specific set of
   // adjacency-continuation codes (west-run set A/B, north-run set C/D).
-  char CheckTileVariantCodeMembershipSetA(StrategicTileIndex tileIndex);
-  char CheckTileVariantCodeMembershipSetB(StrategicTileIndex tileIndex);
-  char CheckTileVariantCodeMembershipSetC(StrategicTileIndex tileIndex);
-  char CheckTileVariantCodeMembershipSetD(StrategicTileIndex tileIndex);
+  bool CheckTileVariantCodeMembershipSetA(StrategicTileIndex tileIndex);
+  bool CheckTileVariantCodeMembershipSetB(StrategicTileIndex tileIndex);
+  bool CheckTileVariantCodeMembershipSetC(StrategicTileIndex tileIndex);
+  bool CheckTileVariantCodeMembershipSetD(StrategicTileIndex tileIndex);
 
   // 0x513ed0. True if either of the tile's two edge resources is a prospecting-discovery
   // candidate (codes 3/4/0x15/0x16, or 6 when the active nation has a production order).

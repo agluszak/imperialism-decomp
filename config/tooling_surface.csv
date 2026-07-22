@@ -106,6 +106,7 @@ module|tools.workflow.func_status|just:func-status|One-stop function status from
 module|tools.workflow.agent_task|just:agent-start|Stateful agent workflow entrypoints (start/check/finish)
 module|tools.workflow.check_global_redeclarations|just:global-redeclaration-gate|No local externs shadowing global_data_tables.h
 module|tools.workflow.advice|just:advice|Relevant active rules for a target or diff
+module|tools.workflow.rewrite_return_types|just:rewrite-return-types|Strict dry-run-first method return-type codemod by owned address
 module|tools.workflow.check_agent_rules|just:agent-rules-gate|Structured agent-rule KB linter
 module|tools.workflow.port_candidates|just:port-candidates|Rank porting candidates by size and match gap
 module|tools.binary.decode_builder|just:decode-builder|Widget-block pseudo-source decoder for screen builders (bd 1uj.51)
