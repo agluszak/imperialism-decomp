@@ -580,6 +580,22 @@ void RunWaitingForModalDismissal() {
     Fail("\"difficulty level is not Normal\"");
     return;
   }
+  TMapUberPicture* mapView = static_cast<TMapUberPicture*>(mainView);
+  TView* cancel = mapView->ResolveControlByTag(kControlTagCanc);
+  TView* query = mapView->ResolveControlByTag(kControlTagQuer);
+  if (cancel == 0 || query == 0) {
+    Fail("\"city-site toolbar button controls are missing\"");
+    return;
+  }
+  if (mapView->miniMapViewC0 == 0) {
+    Fail("\"strategic map did not create its mini-map view\"");
+    return;
+  }
+  if (getenv("IMPERIALISM_RUNTIME_TEST_HOLD") != 0) {
+    RedrawWindow(mapView->nativeWindow50->m_hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+    Finish("passed", "null");
+    return;
+  }
   SetPhase(kRuntimeTestPrimingMapHover, "prime_city_site_hover");
   RequestAnotherDriverTick();
 }
@@ -634,6 +650,23 @@ void RunDispatchingMapHotkey() {
     Fail("\"right-edge scrolling did not move the strategic map viewport\"");
     return;
   }
+  int viewportYBeforeTopEdgeScroll = mapDialog->viewportOrigin60.y;
+  mapView->AutoScrollByEdgeMask(2);
+  if (mapDialog->viewportOrigin60.y <= viewportYBeforeTopEdgeScroll) {
+    Fail("\"top-edge scrolling moved the strategic map viewport downward\"");
+    return;
+  }
+  short finalTile = static_cast<short>(g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(
+      g_runtimeTestState.selectedNationSlot));
+  for (short tile = 0; tile < 0x1950; ++tile) {
+    const TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tile];
+    if (terrain.terrainType00 == 3 &&
+        terrain.ownerNationTag04 == g_runtimeTestState.selectedNationSlot) {
+      finalTile = tile;
+      break;
+    }
+  }
+  citySiteView->SetMapViewTileIndex(finalTile);
   if (g_pUiRuntimeContext->currentTurnEventCode != 0x3b8 ||
       !IsViewKindOf(MainView(), RUNTIME_CLASS(TMapUberPicture))) {
     Fail("\"map hotkey forwarding left the strategic map\"");
@@ -658,6 +691,8 @@ void RunExercisingMapHover() {
   CPoint point(0, 0);
   mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&point, 0);
   SetGWorld(savedSurface, savedSurfaceFlags);
+  mapView->RefreshControl();
+  mapView->ForceRedraw();
   Finish("passed", "null");
 }
 

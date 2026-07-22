@@ -596,6 +596,7 @@ def normalize_resource_view(
     for row in view.get("nodes", []):
         offset = int(row["offset"])
         type_code = str(row["type_code"])
+        class_name = _resolved_class(row)
         raw_family = row.get("family", {})
         frame_style: int | None = None
         content_insets: tuple[int, int, int, int] | None = None
@@ -708,7 +709,7 @@ def normalize_resource_view(
                 node_id=f"0x{offset:04x}",
                 type_code=type_code,
                 tag=str(row["tag"]),
-                class_name=_resolved_class(row),
+                class_name=class_name,
                 parent_id=(
                     f"0x{int(parent_offset):04x}" if parent_offset is not None else None
                 ),
@@ -719,7 +720,15 @@ def normalize_resource_view(
                     int(geometry["height"]),
                 ),
                 state=int(row["state"]),
-                enabled=int(row["enabled"]),
+                # Mac picture buttons remain visibly drawn while disabled. The Windows
+                # view traversal uses this bit as a paint gate too, so stateful resource
+                # buttons must stay renderable even when the Mac enabled byte is clear.
+                enabled=(
+                    1
+                    if class_name in ("TPictureButton", "T2PictureButton")
+                    and int(row["state"]) != 0
+                    else int(row["enabled"])
+                ),
                 input_gate=int(row["input_gate"]),
                 child_hit_test=int(row["child_hit_test"]),
                 control_value=int(row["control_value"]),

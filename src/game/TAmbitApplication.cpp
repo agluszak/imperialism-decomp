@@ -190,9 +190,12 @@ void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
                 edgeMask = 4;
               }
               if (pt.y <= 4) {
-                edgeMask |= 1;
-              } else if (pt.y >= height - 4) {
+                // The strategic-map backing surface is vertically reflected relative to
+                // the window coordinate system.  Feed the map's "down-row" bit at the
+                // top window edge so the visible viewport moves upward.
                 edgeMask |= 2;
+              } else if (pt.y >= height - 4) {
+                edgeMask |= 1;
               }
               if (edgeMask != 0) {
                 int ticks = GetTickCountDiv16();

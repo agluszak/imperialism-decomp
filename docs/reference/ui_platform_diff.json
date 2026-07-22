@@ -16609,7 +16609,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -17043,7 +17043,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -17123,7 +17123,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_00427360.cpp",
-      "generated_sha256": "38e40bea0a55be5ee0612bf87dfec8bbb00c7c697f8943a4325b71b350996d97",
+      "generated_sha256": "c9a91b50c81a2b15ff0f0fe49e0e6c67ef6134cb266d5490d7277bc9fe2dcb12",
       "name": "InitializeIndustryOverviewPlacardsAndTradeStatusTags"
     },
     "0x004295a0": {
@@ -17405,7 +17405,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -17971,7 +17971,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -18218,7 +18218,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -20679,7 +20679,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -21134,7 +21134,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -21749,7 +21749,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -21841,7 +21841,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -23283,7 +23283,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_004295a0.cpp",
-      "generated_sha256": "b6ef0b94c3ac8448fa6fba92e472ffea08acaf11fb15a0ee7140bb301b3568c5",
+      "generated_sha256": "99738304d943473d338bf8adc73d769a793a0995130fb3c046cd5ed8cebc7130",
       "name": "BuildTurnEventDialogResourcesForEvent547Or7D8"
     },
     "0x00430c50": {
@@ -23437,7 +23437,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -23529,7 +23529,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -24289,7 +24289,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -24335,7 +24335,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -25397,7 +25397,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -25443,7 +25443,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -25711,7 +25711,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -26381,7 +26381,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -26461,7 +26461,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_00430c50.cpp",
-      "generated_sha256": "d25afb142e58ac2a80cda0666700a0e564233507775b7fc99ec6d9056b62ae8e",
+      "generated_sha256": "469245dba8bb6e0f45e2c1fc13bb440337a784895bd4609017ca57645fd8ce75",
       "name": "InitializeDealBookScreenControlsAndCommandTags"
     },
     "0x004357b0": {
@@ -31049,7 +31049,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -31095,7 +31095,7 @@
                 "child_hit_test": 1,
                 "class_name": "T2PictureButton",
                 "control_value": 4130,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -31141,7 +31141,7 @@
                 "child_hit_test": 1,
                 "class_name": "T2PictureButton",
                 "control_value": 4131,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -31187,7 +31187,7 @@
                 "child_hit_test": 1,
                 "class_name": "T2PictureButton",
                 "control_value": 4132,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -31233,7 +31233,7 @@
                 "child_hit_test": 1,
                 "class_name": "T2PictureButton",
                 "control_value": 4133,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -31279,7 +31279,7 @@
                 "child_hit_test": 1,
                 "class_name": "T2PictureButton",
                 "control_value": 4134,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -31325,7 +31325,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -32320,7 +32320,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -32366,7 +32366,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -32412,7 +32412,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -32458,7 +32458,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -32504,7 +32504,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -32550,7 +32550,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -32596,7 +32596,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -33068,7 +33068,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -33564,7 +33564,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -33967,7 +33967,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -34560,7 +34560,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -34802,7 +34802,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_004357b0.cpp",
-      "generated_sha256": "d95959a0b30efe66e09f6adf41bf72bca924c332ebe3445bf9c3c000dc81b47c",
+      "generated_sha256": "313cecfcc7472cbbd494f5e1c0cdf086a7207a33cebe107ad95c9e1c6b44e42c",
       "name": "BuildTurnEventDialogUiByCode"
     },
     "0x0043dbc0": {
@@ -35657,7 +35657,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -35749,7 +35749,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -38095,7 +38095,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -38504,7 +38504,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -38960,7 +38960,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -39006,7 +39006,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -39984,7 +39984,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -48016,7 +48016,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -48188,7 +48188,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0043dbc0.cpp",
-      "generated_sha256": "fcc00693cdbe8b1d8599160d20f9601ad80420c8d30c5bc8bfad281f18e62157",
+      "generated_sha256": "760084663a1d49873452b5bc2671b236240c65f9f43e85a6526d42138aa202e9",
       "name": "InitializeArmyNavyReportViewsAndCommandTags"
     },
     "0x0044a810": {
@@ -55916,7 +55916,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -55962,7 +55962,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -61733,7 +61733,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -61779,7 +61779,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -64720,7 +64720,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -64942,7 +64942,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -64988,7 +64988,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -65221,7 +65221,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_004538a0.cpp",
-      "generated_sha256": "c8042dc36382447c4a71c0b927e58ea9f5e3f32421b872379b027d3fbae596ce",
+      "generated_sha256": "0288a8c6e6928d1aba105f669cd1bf55ed97f4ba0ffcc7bf0e642f7b546934e7",
       "name": "InitializeGameSetupScreenControlsAndModeTags"
     },
     "0x0045b100": {
@@ -65733,7 +65733,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -66613,7 +66613,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0045b100.cpp",
-      "generated_sha256": "785bc4504d44d92bfd04c897b45f791b65fd043550ca7d4d0bf929b037b57fe6",
+      "generated_sha256": "e825bc821da53807f079dfc7fab8c02d462e2240aca1488204d0d8ea54063669",
       "name": "InitializeTacticalBattleViewToolbarAndDialogControls"
     },
     "0x0045d520": {
@@ -66823,7 +66823,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -67061,7 +67061,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0045d520.cpp",
-      "generated_sha256": "3d2eb0eb874f3166bd5aad2e5a07979243fb95af961d0c9bf8d6a4362fdd1086",
+      "generated_sha256": "f05c9575d2bd416b9632602f483945c99d9032c739f24615a9feba2ae7fb21d0",
       "name": "BuildTurnEventDialogResourcesForEvent898"
     },
     "0x0045e0b0": {
@@ -67215,7 +67215,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -67649,7 +67649,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -68369,7 +68369,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0045e0b0.cpp",
-      "generated_sha256": "f7560ce9686005e5dc99fbae11ba6e56aa31a7cbd8e1318f8c374d9a3143b9c9",
+      "generated_sha256": "949c166dfaf4f392e79d77fc9a75cd254148edca15a63dc18f38be6a02496ad3",
       "name": "BuildTurnEventDialogResourcesForEvent8FC"
     },
     "0x004601b0": {
@@ -68523,7 +68523,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -68794,7 +68794,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -76531,7 +76531,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -83368,7 +83368,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -84351,7 +84351,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_004601b0.cpp",
-      "generated_sha256": "695a94b45593cc00a45689a25efef5770065d5d85fbe0646c3283b0b2cbef0cd",
+      "generated_sha256": "0e114b07568cbebe4bc03e3dbb09ae07166770a1dc4285a30ccf7f2803d81f7e",
       "name": "InitializeTradeScreenBitmapControls"
     },
     "0x0046fd10": {
@@ -84735,7 +84735,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -84827,7 +84827,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -87808,7 +87808,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 0,
+                "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -89170,7 +89170,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0046fd10.cpp",
-      "generated_sha256": "25a3ed7cf9199bb5b906c02009405847c3dbe3ecb9cc86400cbd9b25d2dd2d74",
+      "generated_sha256": "a95141f0233763bf6519df48b5c582e1263df49a83e454df28d74c99dc1f9ff9",
       "name": "BuildTurnEventDialogResourcesForEvent7DE"
     },
     "0x004749a0": {
