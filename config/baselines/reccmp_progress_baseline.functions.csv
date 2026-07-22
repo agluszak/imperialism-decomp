@@ -2421,8 +2421,8 @@ address|matching|name
 0x4e1a40|0.3411764705882353|TGreatPower::ComputeNavyScoreStandingRatioForNationPair
 0x4e1c00|1.0|TGreatPower::PassesDiplomacyStrengthThresholdForTarget
 0x4e1c20|0.5697674418604651|TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent
-0x4e1d50|0.5408805031446541|TGreatPower::CheckTransitionSlot27C
-0x4e1e40|0.19148936170212766|TGreatPower::PropagateWarTransitionSlot280
+0x4e1d50|0.5408805031446541|TGreatPower::HandleWarTransitionRequest
+0x4e1e40|0.19148936170212766|TGreatPower::HandleWarTransitionRequestWithRoleSwap
 0x4e1f20|1.0|TGreatPower::SelectAndQueueAdvisoryMapMissionsCase16
 0x4e1f40|0.34726688102893893|TGreatPower::ComputeWarThresholdSlotA3
 0x4e2190|1.0|TGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner
@@ -2520,8 +2520,8 @@ address|matching|name
 0x4e7be0|0.8163265306122449|TAutoGreatPower::ReplyToDiplomacyOffers
 0x4e7c50|0.5909090909090909|TAutoGreatPower::NotifyActionSlot94
 0x4e7ca0|1.0|TAutoGreatPower::DispatchTurnEvent2103WithNationFromRecord
-0x4e7cc0|0.7286821705426356|TAutoGreatPower::CheckTransitionSlot27C
-0x4e7ec0|0.921161825726141|TAutoGreatPower::PropagateWarTransitionSlot280
+0x4e7cc0|0.8957528957528957|TAutoGreatPower::HandleWarTransitionRequest
+0x4e7ec0|0.921161825726141|TAutoGreatPower::HandleWarTransitionRequestWithRoleSwap
 0x4e8040|0.8347826086956521|TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget
 0x4e83d0|0.6470588235294118|TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates
 0x4e8540|0.6163522012578616|TAutoGreatPower::CreateMission
@@ -3775,8 +3775,8 @@ address|matching|name
 0x540c20|1.0|TProxyGreatPower::SetTradePolicyTo
 0x540c70|1.0|TProxyGreatPower::AddTurnStartEvent
 0x540cb0|1.0|TProxyGreatPower::SorryYouLose
-0x540cf0|0.10810810810810811|TProxyGreatPower::CheckTransitionSlot27C
-0x540dc0|0.10256410256410256|TProxyGreatPower::PropagateWarTransitionSlot280
+0x540cf0|0.10810810810810811|TProxyGreatPower::HandleWarTransitionRequest
+0x540dc0|0.10256410256410256|TProxyGreatPower::HandleWarTransitionRequestWithRoleSwap
 0x540e90|1.0|THostGreatPower::CreateObject
 0x540f20|1.0|THostGreatPower::IsHost
 0x540f40|1.0|THostGreatPower::`scalar deleting destructor'
@@ -3796,8 +3796,8 @@ address|matching|name
 0x5413b0|0.5384615384615384|TClientGreatPower::AcceptOffer
 0x541450|0.7169811320754716|TClientGreatPower::RejectOffer
 0x5414f0|0.7647058823529411|TClientGreatPower::ReplyToDiplomacyOffers
-0x5415c0|0.14285714285714285|TClientGreatPower::PropagateWarTransitionSlot280
-0x5416b0|0.6746987951807228|TClientGreatPower::CheckTransitionSlot27C
+0x5415c0|0.14285714285714285|TClientGreatPower::HandleWarTransitionRequestWithRoleSwap
+0x5416b0|0.6746987951807228|TClientGreatPower::HandleWarTransitionRequest
 0x541790|1.0|TClientGreatPower::SorryYouLose
 0x5417c0|1.0|TRemoteGreatPower::CreateObject
 0x541840|1.0|TRemoteGreatPower::IsRemote
@@ -3876,7 +3876,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.4666666666666667|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.46602254428341383|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags

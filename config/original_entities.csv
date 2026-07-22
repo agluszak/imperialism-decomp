@@ -2486,8 +2486,8 @@ address|name|symbol|size|type|prototype|provenance
 4e1a40|TGreatPower::ComputeNavyScoreStandingRatioForNationPair||339|function|undefined ComputeNavyScoreStandingRatioForNationPair()|
 4e1c00|TGreatPower::VTableSlot9D||5|function|undefined 'scalar_deleting_destructor'(void)|
 4e1c20|TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent||230|function|undefined EvaluateJoinWarAgainstNationAndQueueEvent()|
-4e1d50|TGreatPower::ExecuteAdvisoryPromptAndApplyActionType1||192|function|undefined ExecuteAdvisoryPromptAndApplyActionType1()|
-4e1e40|TGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback||168|function|undefined ExecuteAdvisoryPromptAndApplyActionType2OrFallback()|
+4e1d50|TGreatPower::HandleWarTransitionRequest||192|function|int HandleWarTransitionRequest(int targetNation, int sourceNation)|
+4e1e40|TGreatPower::HandleWarTransitionRequestWithRoleSwap||168|function|int HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation, char swapRoles)|
 4e1f20|TGreatPower::SelectAndQueueAdvisoryMapMissionsCase16||1|function|void __thiscall SelectAndQueueAdvisoryMapMissionsCase16(void)|
 4e1f40|TGreatPower::ComputeWarThresholdSlotA3||452|function|undefined ComputeWarThresholdSlotA3()|
 4e2190|TGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner||1|function|undefined PruneInvalidTrackedEntriesAndNotifyOwner(void)|
@@ -2585,8 +2585,8 @@ address|name|symbol|size|type|prototype|provenance
 4e7be0|TAutoGreatPower::ProcessPendingDiplomacyProposalQueue||70|function|undefined ReplayQueuedDiplomacyProposalRowsAndProcessQueue()|
 4e7c50|TGreatPower::ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook||53|function|undefined ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook()|
 4e7ca0|TAutoGreatPower::DispatchTurnEvent2103WithNationFromRecord||1|function|undefined OrphanRetStub_004e7ca0(void)|
-4e7cc0|TAutoGreatPower::ExecuteAdvisoryPromptAndApplyActionType1||397|function|undefined CheckTransitionSlot27C()|
-4e7ec0|TAutoGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback||300|function|undefined PropagateWarTransitionSlot280()|
+4e7cc0|TAutoGreatPower::HandleWarTransitionRequest||397|function|int HandleWarTransitionRequest(int targetNation, int sourceNation)|
+4e7ec0|TAutoGreatPower::HandleWarTransitionRequestWithRoleSwap||300|function|int HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation, char swapRoles)|
 4e8040|TAutoGreatPower::VTableSlot9D||554|function|undefined ReturnZeroSlot9D(void)|
 4e83d0|TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates||287|function|void __thiscall QueueMapActionMissionsForPortZoneCandidates(void)|
 4e8540|TAutoGreatPower::QueueMapActionMissionFromCandidateAndMarkState||248|function|void __thiscall QueueMapActionMissionFromCandidateAndMarkState(eMissionType missionType,int mapNodeIndex,TZone* zoneContext,int relatedMapNodeIndex)|
@@ -3865,8 +3865,8 @@ address|name|symbol|size|type|prototype|provenance
 540c20|TProxyGreatPower::OrphanLeaf_NoCall_Ins07_004d8920||61|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(undefined4 param_1, undefined4 param_2)|
 540c70|TProxyGreatPower::QueueNationOrderManagerPayloadObject_2f||38|function|undefined DispatchTurnEvent31StarPayloadForNationAndReleaseObject()|
 540cb0|TProxyGreatPower::HandleNationLost||44|function|void HandleNationLost()|
-540cf0|TProxyGreatPower::ExecuteAdvisoryPromptAndApplyActionType1||145|function|undefined EmitTurnEvent1DCommand69ForCurrentNationSlot()|
-540dc0|TProxyGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback||153|function|undefined EmitTurnEvent1DCommand61ForCurrentNationSlot()|
+540cf0|TProxyGreatPower::HandleWarTransitionRequest||145|function|int HandleWarTransitionRequest(int targetNation, int sourceNation)|
+540dc0|TProxyGreatPower::HandleWarTransitionRequestWithRoleSwap||153|function|int HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation, char swapRoles)|
 540e90|THostGreatPower::CreateObject|?CreateObject@THostGreatPower@@SGPAVCObject@@XZ|110|function|undefined CreateObject()|rtti
 540f20|THostGreatPower::ReturnFalseNationStateCapabilityFlag9C||3|function|undefined ReturnTrueNationStateCapabilityFlag9C()|
 540f40|THostGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -3886,8 +3886,8 @@ address|name|symbol|size|type|prototype|provenance
 5413b0|TClientGreatPower::ApplyAcceptedDiplomacyProposalCode||119|function|undefined EmitTurnEvent17ClientGreatPowerFlagEnabled()|
 541450|TClientGreatPower::QueueInterNationEventForProposalCode12D_130||118|function|undefined EmitTurnEvent17ClientGreatPowerFlagDisabled()|
 5414f0|TClientGreatPower::ProcessPendingDiplomacyProposalQueue||149|function|undefined QueueTimeEmitPacketAndDispatchTurnEvent29A()|
-5415c0|TClientGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback||181|function|undefined ApplyClientGreatPowerCommand61AndEmitTurnEvent1E()|
-5416b0|TClientGreatPower::CheckTransitionSlot27C||168|function|undefined CheckTransitionSlot27C()|
+5415c0|TClientGreatPower::HandleWarTransitionRequestWithRoleSwap||181|function|int HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation, char swapRoles)|
+5416b0|TClientGreatPower::HandleWarTransitionRequest||168|function|int HandleWarTransitionRequest(int targetNation, int sourceNation)|
 541790|TClientGreatPower::HandleNationLost||24|function|void HandleNationLost()|
 5417c0|TRemoteGreatPower::CreateObject|?CreateObject@TRemoteGreatPower@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 541840|TRemoteGreatPower::ReturnFalseNationStateCapabilityFlagA0||3|function|undefined ReturnTrueNationStateCapabilityFlagA0Alt()|

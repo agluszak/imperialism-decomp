@@ -300,9 +300,9 @@ public:
   // slot 0x9e — joins a war against targetNation when minister skill beats the war
   // threshold; propagates relation code 4 to tier-2 partners and queues event 0x1c.
   virtual char EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation);
-  virtual int CheckTransitionSlot27C(int targetNation, int sourceNation); // slot 0x27c
-  virtual int PropagateWarTransitionSlot280(int targetNation, int sourceNation,
-                                            int mode); // slot 0x280
+  virtual int HandleWarTransitionRequest(int targetNation, int sourceNation); // slot 0x27c
+  virtual int HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
+                                                     char swapRoles); // slot 0x280
   // index 0xa1 / vtable+0x284 — body 0x004e27f0 (vtable holds ILT thunk 0x00406fe1).
   // Queues a nation-pair war transition and notifies the third-party minor nation
   // when the policy code is 1 or 0x132.
@@ -482,7 +482,7 @@ public:
 
   void CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
   void ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass);
-  bool ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2);
+  bool TryHandleWarTransitionRequest(int targetNation, int sourceNation);
   void RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1);
   // 0x004e3620 — sums the encoded diplomacyGrantByNation entries (masking off the
   // top 2 flag bits), skipping the 0xffff "no grant" sentinel. Used by the grants/aid

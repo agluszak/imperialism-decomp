@@ -900,7 +900,7 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
       }
 
       if (ownerNationSlot > -1) {
-        int transitionResult = g_apNationStates[ownerNationSlot]->CheckTransitionSlot27C(
+        int transitionResult = g_apNationStates[ownerNationSlot]->HandleWarTransitionRequest(
             targetNationSlot, sourceNationSlot);
         propagatedTransition = (transitionResult == 2);
       }
@@ -914,7 +914,7 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
             HasPolicyWithNationSlot44(otherNationSlot, sourceNationSlot) == 0) {
           int transitionResult =
               (*nationStateCursor)
-                  ->PropagateWarTransitionSlot280(targetNationSlot, sourceNationSlot, 0);
+                  ->HandleWarTransitionRequestWithRoleSwap(targetNationSlot, sourceNationSlot, 0);
           propagatedTransition = (transitionResult == 2);
         }
         ++nationStateCursor;
@@ -932,7 +932,7 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
                 otherNationSlot, targetNationSlot) == 0) {
           int transitionResult =
               (*nationStateCursor)
-                  ->PropagateWarTransitionSlot280(targetNationSlot, sourceNationSlot, 1);
+                  ->HandleWarTransitionRequestWithRoleSwap(targetNationSlot, sourceNationSlot, 1);
           propagatedTransition = (transitionResult == 2);
         }
         ++nationStateCursor;

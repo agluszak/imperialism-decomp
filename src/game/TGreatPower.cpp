@@ -3935,22 +3935,24 @@ char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e1d50
-int TGreatPower::CheckTransitionSlot27C(int arg1, int arg2) {
+int TGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNation) {
   char result = 0;
   TViewMgr* uiRuntimeContext = g_pUiRuntimeContext;
 
-  result = g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, arg2);
+  result = g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, sourceNation);
 
   if (result == 0) {
-    result = uiRuntimeContext->PoseWarOfferIfTurnFlowReady(this->nationSlot, arg1, arg2, 0x0A);
+    result = uiRuntimeContext->PoseWarOfferIfTurnFlowReady(this->nationSlot, targetNation,
+                                                           sourceNation, 0x0A);
     if (result != 0) {
-      this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(arg2, 1, arg1);
+      this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(sourceNation, 1, targetNation);
       return true;
     }
   } else {
-    result = uiRuntimeContext->PoseWarOfferIfTurnFlowReady(this->nationSlot, arg1, arg2, 0x0B);
+    result = uiRuntimeContext->PoseWarOfferIfTurnFlowReady(this->nationSlot, targetNation,
+                                                           sourceNation, 0x0B);
     if (result != 0) {
-      TMinor* secondaryNationState = g_apSecondaryNationStateSlots[arg1];
+      TMinor* secondaryNationState = g_apSecondaryNationStateSlots[targetNation];
       if (secondaryNationState != 0) {
         short stateValue = secondaryNationState->DecodeOwnerNationSlot();
         if (stateValue != this->nationSlot) {
@@ -3962,14 +3964,15 @@ int TGreatPower::CheckTransitionSlot27C(int arg1, int arg2) {
   return result != 0;
 }
 
-bool TGreatPower::ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2) {
-  return this->CheckTransitionSlot27C(arg1, arg2) != 0;
+bool TGreatPower::TryHandleWarTransitionRequest(int targetNation, int sourceNation) {
+  return this->HandleWarTransitionRequest(targetNation, sourceNation) != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004e1e40
-int TGreatPower::PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode) {
+int TGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
+                                                        char swapRoles) {
   this->SetCandidateNationFlagAndPortZoneState(targetNation);
-  this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(targetNation, mode, sourceNation);
+  this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(targetNation, swapRoles, sourceNation);
   return 1;
 }
 

@@ -108,11 +108,12 @@ void TProxyGreatPower::SorryYouLose() {
 }
 
 // FUNCTION: IMPERIALISM 0x00540cf0
-int TProxyGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) {
+int TProxyGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNation) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00540dc0
-int TProxyGreatPower::PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode) {
+int TProxyGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
+                                                             char swapRoles) {
   return 0;
 }

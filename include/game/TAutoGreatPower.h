@@ -63,7 +63,7 @@ public:
   // slot 0x67 — 0x004e7680: need assignment with capability caps / escalation roll.
   void AssignNeedSlotFromSourceSlot19C(short needSlot, short sourceNation) override;
   // slot 0x9f — 0x004e7cc0: war-transition propagation across eligible allied nations.
-  int CheckTransitionSlot27C(int targetNation, int sourceNation) override;
+  int HandleWarTransitionRequest(int targetNation, int sourceNation) override;
   // slot 0xab — 0x004e7510: 'lost' game-state event when redraw is enabled.
   void SorryYouLose(void) override;
   // slot 0x18 — 0x004ea1c0: also drop the matching mission and map-node flag.
@@ -84,7 +84,8 @@ public:
   // slot 0x85 — 0x004ea0e0: clear a candidate nation (and its port zone).
   void NotifyAllianceSlot214(int targetNation) override;
   // slot 0xa0 — 0x004e7ec0: war-transition propagation for a nation pair.
-  int PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode) override;
+  int HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
+                                             char swapRoles) override;
   // slot 0xaf — 0x004e6b10: pressure update stubbed out for AI nations.
   char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
   // slot 0x9d — 0x004e8040: alliance-aware strength evaluation against the strongest

@@ -503,57 +503,57 @@ void TAutoGreatPower::NotifyActionSlot94(int sourceNation, int actionCode) {
 void TAutoGreatPower::DispatchTurnEvent2103WithNationFromRecord() {}
 
 // FUNCTION: IMPERIALISM 0x004e7cc0
-int TAutoGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) {
-  char allBeatable = 1;
-  char beatableByNation[7] = {0, 0, 0, 0, 0, 0, 0};
+int TAutoGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNation) {
+  bool allBeatable = true;
+  bool beatableByNation[7] = {false, false, false, false, false, false, false};
   int nation = 0;
-  do {
-    if (nation > 6) {
+  while (allBeatable) {
+    if (nation >= 7) {
       break;
     }
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nation) != 0 &&
-        nation != static_cast<short>(this->nationSlot)) {
+        nation != this->nationSlot) {
       if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, nation) == 0 &&
           g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(targetNation, nation) != 0) {
-        char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(
-            targetNation, static_cast<int>(static_cast<short>(this->nationSlot)));
-        float ratioScore;
-        float standingScore;
+        char borderLinked =
+            g_pGlobalMapState->AreNationsBorderLinked(targetNation, this->nationSlot);
+        float combinedScore;
         if (borderLinked != 0) {
-          ratioScore = this->ComputeArmyScoreRatioVsNationWithSecondary(sourceNation, targetNation);
-          standingScore =
-              this->ComputeArmyScoreStandingRatioVsNationPair(sourceNation, targetNation);
+          combinedScore =
+              this->ComputeArmyScoreRatioVsNationWithSecondary(sourceNation, targetNation);
+          combinedScore =
+              this->ComputeArmyScoreStandingRatioVsNationPair(sourceNation, targetNation) +
+              combinedScore;
         } else {
-          ratioScore = this->ComputeNavyScoreRatioVsNationWithSecondary(sourceNation, targetNation);
-          standingScore =
-              this->ComputeNavyScoreStandingRatioVsNationPair(sourceNation, targetNation);
+          combinedScore =
+              this->ComputeNavyScoreRatioVsNationWithSecondary(sourceNation, targetNation);
+          combinedScore =
+              this->ComputeNavyScoreStandingRatioVsNationPair(sourceNation, targetNation) +
+              combinedScore;
         }
-        float combinedScore = ratioScore + standingScore;
-        if (this->ComputeMinisterSkillFloatSlot88() <= combinedScore) {
-          beatableByNation[nation] = 1;
+        if (this->ComputeMinisterSkillFloatSlot88() > combinedScore) {
+          allBeatable = false;
         } else {
-          allBeatable = 0;
+          beatableByNation[nation] = true;
         }
       }
     }
     ++nation;
-  } while (allBeatable != 0);
-  if (allBeatable != 0) {
+  }
+  if (allBeatable) {
     for (int helperNation = 0; helperNation < 7; ++helperNation) {
-      if (beatableByNation[helperNation] != 0) {
+      if (beatableByNation[helperNation]) {
         this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(helperNation, 1, targetNation);
       }
     }
     TMinor* minor = g_apSecondaryNationStateSlots[targetNation];
     short ownerSlot = minor->encodedNationSlot;
-    if (ownerSlot < 200) {
-      if (ownerSlot < 100) {
-        ownerSlot = minor->nationSlot;
-      } else {
-        ownerSlot = static_cast<short>(ownerSlot - 100);
-      }
+    if (ownerSlot >= 200) {
+      ownerSlot = static_cast<short>(ownerSlot + -200);
+    } else if (ownerSlot >= 100) {
+      ownerSlot = static_cast<short>(ownerSlot + -100);
     } else {
-      ownerSlot = static_cast<short>(ownerSlot - 200);
+      ownerSlot = minor->nationSlot;
     }
     if (ownerSlot != this->nationSlot) {
       minor->ApplyJoinEmpireModeForTargetNation(this->nationSlot, 1);
@@ -563,9 +563,10 @@ int TAutoGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) 
 }
 
 // FUNCTION: IMPERIALISM 0x004e7ec0
-int TAutoGreatPower::PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode) {
+int TAutoGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
+                                                            char swapRoles) {
   char hasPolicy = 0;
-  if (static_cast<char>(mode) == 0) {
+  if (swapRoles == 0) {
     if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, sourceNation) !=
         0) {
       hasPolicy = 1;
@@ -577,31 +578,28 @@ int TAutoGreatPower::PropagateWarTransitionSlot280(int targetNation, int sourceN
     }
   }
   if (hasPolicy == 0) {
-    char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(
-        sourceNation, static_cast<int>(static_cast<short>(this->nationSlot)));
+    char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(sourceNation, this->nationSlot);
     float ratioScore;
     float standingScore;
     if (borderLinked != 0) {
-      ratioScore = this->ComputeArmyScoreRatioForNationPair(sourceNation, targetNation,
-                                                            static_cast<char>(mode));
-      standingScore = this->ComputeArmyScoreStandingRatioForNationPair(sourceNation, targetNation,
-                                                                       static_cast<char>(mode));
+      ratioScore = this->ComputeArmyScoreRatioForNationPair(sourceNation, targetNation, swapRoles);
+      standingScore =
+          this->ComputeArmyScoreStandingRatioForNationPair(sourceNation, targetNation, swapRoles);
     } else {
-      ratioScore = this->ComputeNavyScoreRatioForNationPair(sourceNation, targetNation,
-                                                            static_cast<char>(mode));
-      standingScore = this->ComputeNavyScoreStandingRatioForNationPair(sourceNation, targetNation,
-                                                                       static_cast<char>(mode));
+      ratioScore = this->ComputeNavyScoreRatioForNationPair(sourceNation, targetNation, swapRoles);
+      standingScore =
+          this->ComputeNavyScoreStandingRatioForNationPair(sourceNation, targetNation, swapRoles);
     }
     float combinedScore = standingScore + ratioScore;
     if (this->ComputeMinisterSkillFloatSlot88() <= combinedScore) {
-      if (static_cast<char>(mode) == 0) {
+      if (swapRoles == 0) {
         this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(sourceNation, 2, targetNation);
         return 1;
       }
       this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(targetNation, 2, sourceNation);
       return 1;
     }
-    if (static_cast<char>(mode) == 0) {
+    if (swapRoles == 0) {
       g_pDiplomacyTurnStateManager->ApplyRelationCode4Slot7c(this->nationSlot, targetNation, 1);
     } else {
       g_pDiplomacyTurnStateManager->ApplyRelationCode4Slot7c(this->nationSlot, sourceNation, 0);

@@ -3140,8 +3140,8 @@ TGreatPower::ComputeNavyScoreRatioForNationPair 4E1910 f
 TGreatPower::ComputeNavyScoreStandingRatioForNationPair 4E1A40 f
 TGreatPower::ReturnZeroSlot9D 4E1C00 f
 TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent 4E1C20 f
-TGreatPower::CheckTransitionSlot27C 4E1D50 f
-TGreatPower::PropagateWarTransitionSlot280 4E1E40 f
+TGreatPower::HandleWarTransitionRequest 4E1D50 f
+TGreatPower::HandleWarTransitionRequestWithRoleSwap 4E1E40 f
 TGreatPower::SelectAndQueueAdvisoryMapMissionsCase16 4E1F20 f
 TGreatPower::ComputeWarThresholdSlotA3 4E1F40 f
 TGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner 4E2190 f
@@ -3239,8 +3239,8 @@ TAutoGreatPower::QueueDiplomacyProposalCodeForTargetNation 4E7B50 f
 TAutoGreatPower::ProcessPendingDiplomacyProposalQueue 4E7BE0 f
 TAutoGreatPower::NotifyActionSlot94 4E7C50 f
 TAutoGreatPower::DispatchTurnEvent2103WithNationFromRecord 4E7CA0 f
-TAutoGreatPower::CheckTransitionSlot27C 4E7CC0 f
-TAutoGreatPower::PropagateWarTransitionSlot280 4E7EC0 f
+TAutoGreatPower::HandleWarTransitionRequest 4E7CC0 f
+TAutoGreatPower::HandleWarTransitionRequestWithRoleSwap 4E7EC0 f
 TAutoGreatPower::ReturnZeroSlot9D 4E8040 f
 TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates 4E83D0 f
 TAutoGreatPower::QueueMapActionMissionFromCandidateAndMarkState 4E8540 f
@@ -4517,8 +4517,8 @@ TProxyGreatPower::TryDispatchNationActionViaUiContextOrFallback 540BA0 f
 TProxyGreatPower::ResetDiplomacyLevelForNationSlot12 540C20 f
 TProxyGreatPower::AddNodeToMissionNodeQueue 540C70 f
 TProxyGreatPower::HandleNationLost 540CB0 f
-TProxyGreatPower::CheckTransitionSlot27C 540CF0 f
-TProxyGreatPower::PropagateWarTransitionSlot280 540DC0 f
+TProxyGreatPower::HandleWarTransitionRequest 540CF0 f
+TProxyGreatPower::HandleWarTransitionRequestWithRoleSwap 540DC0 f
 THostGreatPower::CreateObject 540E90 f
 THostGreatPower::ReturnFalseNationStateCapabilityFlag9C 540F20 f
 THostGreatPower::'scalar_deleting_destructor' 540F40 f
@@ -4538,8 +4538,8 @@ TClientGreatPower::GetRuntimeClass 541390 f
 TClientGreatPower::ApplyAcceptedDiplomacyProposalCode 5413B0 f
 TClientGreatPower::QueueInterNationEventForProposalCode12D_130 541450 f
 TClientGreatPower::ProcessPendingDiplomacyProposalQueue 5414F0 f
-TClientGreatPower::PropagateWarTransitionSlot280 5415C0 f
-TClientGreatPower::CheckTransitionSlot27C 5416B0 f
+TClientGreatPower::HandleWarTransitionRequestWithRoleSwap 5415C0 f
+TClientGreatPower::HandleWarTransitionRequest 5416B0 f
 TClientGreatPower::HandleNationLost 541790 f
 TRemoteGreatPower::CreateObject 5417C0 f
 TRemoteGreatPower::ShouldDispatchImmediatelySlot28 541840 f

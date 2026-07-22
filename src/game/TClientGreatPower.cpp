@@ -81,12 +81,13 @@ void TClientGreatPower::ReplyToDiplomacyOffers(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005415c0
-int TClientGreatPower::PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode) {
-  return TGreatPower::PropagateWarTransitionSlot280(targetNation, sourceNation, mode);
+int TClientGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
+                                                              char swapRoles) {
+  return TGreatPower::HandleWarTransitionRequestWithRoleSwap(targetNation, sourceNation, swapRoles);
 }
 
 // FUNCTION: IMPERIALISM 0x005416b0
-int TClientGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) {
+int TClientGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNation) {
   struct TurnEvent1EPacketPayload : TimelyNetMessagePrefix {
     unsigned char activeNationIdBeforePayload;
     unsigned char acceptedFlag;
@@ -95,7 +96,7 @@ int TClientGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation
     unsigned char commandArgB;
   };
 
-  int accepted = TGreatPower::CheckTransitionSlot27C(targetNation, sourceNation);
+  int accepted = TGreatPower::HandleWarTransitionRequest(targetNation, sourceNation);
   TurnEvent1EPacketPayload packetPayload;
   packetPayload.messageTag = 0x74696D65;
   packetPayload.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());

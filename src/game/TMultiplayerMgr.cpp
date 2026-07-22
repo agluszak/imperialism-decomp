@@ -1632,10 +1632,10 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         static_cast<TurnEvent1DWarTransitionPacket*>(packet);
     TGreatPower* nation1D = g_apNationStates[g_pSimMgr->GetActiveNationId()];
     if (warTransition->actionCode1C == 0x69 /* 'i' */) {
-      nation1D->CheckTransitionSlot27C(warTransition->nationA1D, warTransition->nationB1E);
+      nation1D->HandleWarTransitionRequest(warTransition->nationA1D, warTransition->nationB1E);
     } else {
-      nation1D->PropagateWarTransitionSlot280(warTransition->nationA1D, warTransition->nationB1E,
-                                              warTransition->mode1F);
+      nation1D->HandleWarTransitionRequestWithRoleSwap(
+          warTransition->nationA1D, warTransition->nationB1E, warTransition->mode1F);
     }
     break;
   }
