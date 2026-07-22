@@ -89,10 +89,8 @@ void TScatteredShipsMission::CalculateNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053bcc0
-char TScatteredShipsMission::Matches(int kind, int key, int mode) const {
-  (void)key;
-  (void)mode;
-  return kind == 5;
+char TScatteredShipsMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+  return missionType == kMissionTypeScatteredShips && zoneContext == nullptr && key == -1;
 }
 
 // Deactivates the whole existing childOrderList chain, then hunts for a port-zone context

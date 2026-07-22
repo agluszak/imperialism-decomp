@@ -24,7 +24,8 @@ public:
   TBeachheadMission(TZone* targetZone, TInvadeMission* parentMission);
   virtual ~TBeachheadMission() override;
 
-  virtual char Matches(int kind, int key, int mode) const override; // slot 0x13 0x53a7b0
+  virtual char Matches(eMissionType missionType, int key,
+                       TZone* zoneContext) const override; // slot 0x13 0x53a7b0
 
   virtual TMission*
   GetArmyMission() override; // slot 0x16 0x53a920 -- returns parentMission3c (not `this`)

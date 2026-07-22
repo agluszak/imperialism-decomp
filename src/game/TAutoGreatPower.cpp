@@ -41,10 +41,6 @@
 #include "game/TMilitaryUnit.h"
 #include "game/TProvinceDesirabilityList.h"
 
-// Real body ported in TMission.cpp (0x00535940).
-TMission* __cdecl FindFirstTrackedHandlerMatchingModeAndShortKey(TSortedList* list, int kind,
-                                                                 short key, int mode);
-
 // kNationSlotCount (0x17) comes from TDiplomacyMgr.h.
 static const int kAidAllocationRowCount = 0x10;
 static const int kAidAllocationColumnCount = 0x17;
@@ -1246,7 +1242,7 @@ void TAutoGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
   CIterator missionCursor(this->missionQueue);
   TMission* mission = static_cast<TMission*>(missionCursor.Reset());
   while (missionCursor.More() != 0) {
-    if (mission->Matches(3, regionId, 0) != 0) {
+    if (mission->Matches(kMissionTypeDefendProvince, regionId, nullptr) != 0) {
       CPtrList* listState = &this->missionQueue->listState;
       POSITION pos = listState->Find(mission, 0);
       if (pos != 0) {
@@ -1538,7 +1534,7 @@ void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
     if (unit->ownerMission40 == nullptr && unit->GetUnitMovementClassId() == 0) {
       TMission* mission =
-          FindFirstTrackedHandlerMatchingModeAndShortKey(missionQueue, 3, unit->tileIndex06, 0);
+          TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex06, nullptr);
       mission->AdoptUnitSlot80(unit, 1);
     }
   }
@@ -1565,7 +1561,7 @@ void TAutoGreatPower::SeedTrackedEntryAssignmentsFromEligibleUnits() {
        unit = static_cast<TMilitaryUnit*>(iter.Advance())) {
     if (unit->ownerMission40 == nullptr && unit->GetUnitMovementClassId() == 0) {
       TMission* handler =
-          FindFirstTrackedHandlerMatchingModeAndShortKey(missionQueue, 3, unit->tileIndex06, 0);
+          TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex06, nullptr);
       handler->AdoptUnitSlot80(unit, 1);
     }
   }

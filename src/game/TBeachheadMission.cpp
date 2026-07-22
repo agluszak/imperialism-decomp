@@ -112,13 +112,9 @@ void TBeachheadMission::CalculateNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053a7b0
-char TBeachheadMission::Matches(int kind, int key, int mode) const {
-  if (kind == 2 && key != -1 && parentMission3c != nullptr &&
-      static_cast<short>(key) == parentMission3c->targetProvince30 &&
-      mode == reinterpret_cast<int>(targetZone14)) {
-    return 1;
-  }
-  return 0;
+char TBeachheadMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+  return missionType == kMissionTypeInvadeProvince && key != -1 &&
+         key == parentMission3c->targetProvince30 && zoneContext == targetZone14;
 }
 
 // this->parentMission3c->targetProvince30 (city/region record index) reads

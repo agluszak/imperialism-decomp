@@ -57,10 +57,10 @@ TMission* TMission::GetReplacementSlot48() {
   return this;
 }
 // FUNCTION: IMPERIALISM 0x00534d30
-char TMission::Matches(int a, int b, int c) const {
-  (void)a;
-  (void)b;
-  (void)c;
+char TMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+  (void)missionType;
+  (void)key;
+  (void)zoneContext;
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x00534d50
@@ -259,17 +259,17 @@ void TMission::ReadFrom(TStream* stream) {
   stream->ReadBytes(&marker11, 1);
 }
 
-// Walks `list` (a TSortedList) calling AssertValid() then Matches(kind,
-// key, mode) on each TMission-derived entry, returning the first one that matches (or
-// nullptr).
+// Mac: TMission::Find(TList*, eMissionType, short, TZone*). Walks the Windows
+// TSortedList equivalent, returning the first mission whose virtual Matches accepts
+// the requested mission identity.
 // FUNCTION: IMPERIALISM 0x00535940
-TMission* __cdecl FindFirstTrackedHandlerMatchingModeAndShortKey(TSortedList* list, int kind,
-                                                                 short key, int mode) {
-  CIterator iter(list);
+TMission* TMission::Find(TSortedList* missions, eMissionType missionType, short key,
+                         TZone* zoneContext) {
+  CIterator iter(missions);
   for (TMission* entry = static_cast<TMission*>(iter.Reset()); iter.More();
        entry = static_cast<TMission*>(iter.Advance())) {
     entry->AssertValid();
-    if (entry->Matches(kind, key, mode)) {
+    if (entry->Matches(missionType, key, zoneContext)) {
       return entry;
     }
   }

@@ -403,7 +403,7 @@ TZone* TNavyMission::GetActiveTargetZoneByState28() const {
 // FUNCTION: IMPERIALISM 0x00537090
 void TNavyMission::QueueMissionOrdersByPriorityForContext(TZone* contextAnchor,
                                                           TShip** selectedOrder) {
-  // Was bridged through a mis-targeted "FindFirstTrackedHandlerMatchingModeAndShortKey"
+  // Was bridged through a mis-targeted TMission::Find
   // cdecl stub cast (a name collision with the unrelated real function at 0x535940); the
   // actual callee here (verified via the 0x40635c ILT thunk row) is the already-ported
   // TMapOrderChildLinkNode::FindNodeMatching (0x552510).

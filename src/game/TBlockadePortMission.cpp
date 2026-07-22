@@ -254,14 +254,9 @@ void TBlockadePortMission::CalculateNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053ba10
-char TBlockadePortMission::Matches(int kind, int key, int mode) const {
+char TBlockadePortMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   (void)key;
-  // Original (0x53ba10) compares the third argument against the inherited
-  // targetZone14 pointer, not the second argument against portZoneContext3c.
-  if (kind == 4 && mode == reinterpret_cast<int>(targetZone14)) {
-    return 1;
-  }
-  return 0;
+  return missionType == kMissionTypeBlockadePort && zoneContext == targetZone14;
 }
 
 // FUNCTION: IMPERIALISM 0x0053ba40
