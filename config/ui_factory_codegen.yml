@@ -81,7 +81,11 @@ functions:
     prototype: TView* __cdecl InitializeArmyNavyReportViewsAndCommandTags(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x0546, resource: MapView.rsrc:1350}
-      - {event: 0x07dd, resource: MapView.rsrc:2013}
+      - event: 0x07dd
+        resource: MapView.rsrc:2013
+        windows_overrides:
+          0x01fc: {enabled: 0, evidence: "original builder 0x0043e5c3-0x0043e624"}
+          0x02de: {enabled: 0, evidence: "original builder 0x0043e6d3-0x0043e734"}
       - {event: 0x0bc4, resource: MapView.rsrc:3012}
       - {event: 0x0c1c, resource: MapView.rsrc:3100}
       - {event: 0x0dac, resource: MapView.rsrc:3500}

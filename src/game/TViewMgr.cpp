@@ -1289,11 +1289,11 @@ void TViewMgr::DispatchTurnEvent(short eventCode, int payload) {
       } else if (newCode == 0xf3d) {
         this->ShowUnitHistory(secondary);
       } else if (newCode == 0x2103) {
-        this->HandleTurnEvent2260_RefreshMainHudTitles(newCode);
+        this->HandleTurnEvent2103_RunNationStatusReportUpdate(secondary);
       } else if (newCode == 0x2134) {
         this->RefreshMainDialogAndCursorHelp(newCode);
       } else if (newCode == 0x2260) {
-        this->HandleTurnEvent2103_RunNationStatusReportUpdate();
+        this->HandleTurnEvent2260_RefreshMainHudTitles(newCode);
       }
     } else if (newCode == 0x898) {
       this->ShowAbilityStatusReport(secondary);

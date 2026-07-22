@@ -75,6 +75,9 @@ class UiCodegenTests(unittest.TestCase):
         startup_factory = self.rendered[0x004538A0]
         self.assertIn("node_quer, 0x5b, 8, 0x1a, 0x24, 1, 1,", startup_factory)
         self.assertIn("node_canc, 4, 8, 0x53, 0x24, 1, 1,", startup_factory)
+        map_factory = self.rendered[0x0043DBC0]
+        self.assertIn("node_flag, 0x3e, 8, 0x19, 0x23, 1, 0,", map_factory)
+        self.assertIn("node_quer, 0x5b, 8, 0x19, 0x23, 1, 0,", map_factory)
 
     def test_all_factories_use_the_canonical_semantic_emitter(self) -> None:
         manifest_text = (REPO_ROOT / "config/ui_factory_codegen.yml").read_text()
