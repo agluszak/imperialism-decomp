@@ -12,7 +12,8 @@ groups them by target name, and reports:
   * CONFLICT  — one target name declared with more than one (return, args) signature
   * CONVENTION— one target name declared with more than one calling convention
 
-Exit code 1 when conflicts exist (report-only today; not wired into `just gates`).
+Exit code 1 when conflicts exist. Wired into `just gates` as `typedef-cast-gate`
+(via `_source-gates-parallel`); `just typedef-cast-audit` is the report-only variant.
 """
 
 from __future__ import annotations
