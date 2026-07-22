@@ -591,7 +591,7 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
     g_pDiplomacyTurnStateManager->RebuildCivilianOrderCompatibilityMatrices();
     g_pUiRuntimeContext->RebuildMapTileNeighborHighlightPolygonsForAllTiles();
     g_pCityOrderCapabilityState->GenerateRandomCapabilityPrioritySlots();
-    g_pGlobalMapState->RefreshMapContextRotatingStatusStrings();
+    g_pGlobalMapState->GenerateProvinceNames();
     RegenerateAllMapActionContextStatusCodes();
     g_pInterNationEventQueueManager->QueueInterNationEventType11(999, 1, 1);
     g_pInterNationEventQueueManager->QueueInterNationEventType11(999, 2, 1);

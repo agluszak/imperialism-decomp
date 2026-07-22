@@ -36,6 +36,9 @@ char TBlockadePortMission::IsDefensiveSeaZoneMission() const {
 // SYNTHETIC: IMPERIALISM 0x0053aa90
 // TBlockadePortMission::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x0053aac0
+TBlockadePortMission::~TBlockadePortMission() {}
+
 TBlockadePortMission::TBlockadePortMission()
     : TControlSeaZoneMission(), portZoneContext3c(nullptr) {}
 

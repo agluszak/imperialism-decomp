@@ -27,6 +27,7 @@ public:
   // target port zone from context->primaryNeighbors[0] and stores the node in
   // portZoneContext3c.
   TBlockadePortMission(TZone* context);
+  virtual ~TBlockadePortMission() override;
 
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x53ac60
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x53aca0

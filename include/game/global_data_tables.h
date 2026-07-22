@@ -849,6 +849,9 @@ extern int g_nUiInvalidationAssertFlagLine495;
 // the start of RegenerateAllMapActionContextStatusCodes, then advanced by the LCG in
 // GenerateZoneStatusCodeIfUnset (x = x*0x15a4e35 + 1).
 extern unsigned int g_zoneStatusCodePrngSeed_006a5aec;
+// Per-nation ordinal used while assigning province names from string-resource groups
+// 8000 + nationSlot. GenerateProvinceNames resets all 23 entries before each pass.
+extern "C" short g_anProvinceNameOrdinalByNationSlot_006a5af0[23];
 // Map-action-context display-name cache key (0x6984b8): reset to -1 before each status
 // regen pass; read/written by GenerateMapActionContextDisplayNameAndHeadline.
 extern int g_mapActionContextDisplayNameCacheId_006984b8;

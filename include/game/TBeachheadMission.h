@@ -22,6 +22,7 @@ public:
 
   TBeachheadMission();
   TBeachheadMission(TZone* targetZone, TInvadeMission* parentMission);
+  virtual ~TBeachheadMission() override;
 
   virtual char Matches(int kind, int key, int mode) const override; // slot 0x13 0x53a7b0
 

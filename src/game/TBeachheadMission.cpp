@@ -38,6 +38,9 @@ char TBeachheadMission::IsDefensiveSeaZoneMission() const {
 // SYNTHETIC: IMPERIALISM 0x0053a3d0 (approx -- see symbols.csv)
 // TBeachheadMission::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x0053a400
+TBeachheadMission::~TBeachheadMission() {}
+
 TBeachheadMission::TBeachheadMission() : TControlSeaZoneMission(), parentMission3c(nullptr) {}
 
 // SYNTHETIC: IMPERIALISM 0x0053a420

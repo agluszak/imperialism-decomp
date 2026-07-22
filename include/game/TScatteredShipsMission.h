@@ -10,6 +10,7 @@ class TScatteredShipsMission : public TNavyMission {
 public:
   TScatteredShipsMission();
   TScatteredShipsMission(TZone* targetZone);
+  virtual ~TScatteredShipsMission() override;
 
   virtual char
   IsANoBrainer() const override; // slot 0x0a 0x535680 -- returns true (capability flag)
