@@ -82,8 +82,7 @@ static __inline int SliderScaledValue(TTwoPicSlider* slider, int scale) {
   if (slider->splitPosition >= 0x0c) {
     adjustedSplit = static_cast<short>(slider->splitPosition - 0x0c);
   }
-  return (adjustedSplit * scale) /
-         static_cast<int>(static_cast<short>(slider->frameHeight38 - 0x0c));
+  return (adjustedSplit * scale) / static_cast<short>(slider->frameHeight38 - 0x0c);
 }
 } // namespace
 
@@ -121,13 +120,13 @@ void TTwoPicSlider::Draw(RECT* rectBuffer) {
 
     if (slider->splitPosition < 0x0c) {
       CString statusText;
-      int textShadowColor = 0;
-      int textMainColor = 0;
+      COLORREF textShadowColor = 0;
+      COLORREF textMainColor = 0;
 
       g_pSimMgr->GetString(0x2743, 0x3b, &statusText);
       ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b6c);
-      MapUiThemeCodeToStyleFlags(0x2b6c, &textShadowColor);
-      MapUiThemeCodeToStyleFlags(0x2b67, &textMainColor);
+      ResolveUiThemeColor(0x2b6c, &textShadowColor);
+      ResolveUiThemeColor(0x2b67, &textMainColor);
 
       short textCenterY = static_cast<short>(slider->frameHeight38 / 2);
       short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&statusText);

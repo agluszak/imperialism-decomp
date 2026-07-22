@@ -53,10 +53,10 @@ void TTechItemView::ConstructTTechItemViewBaseState(TView* panel, int* offsetLay
     LoadUiStringByGroupAndIndexToControlObject(0x274f, 8, descButton);
   }
 
-  int titleStyleFlags = 0;
-  int shadowStyleFlags = 0;
-  MapUiThemeCodeToStyleFlags(0x2b6a, &titleStyleFlags);
-  MapUiThemeCodeToStyleFlags(0x2b68, &shadowStyleFlags);
+  COLORREF titleStyleFlags = 0;
+  COLORREF shadowStyleFlags = 0;
+  ResolveUiThemeColor(0x2b6a, &titleStyleFlags);
+  ResolveUiThemeColor(0x2b68, &shadowStyleFlags);
   TextStyle textStyle;
   BuildUiTextStyleDescriptor(&textStyle, 0, 0xc, 0x2b6a);
   CRect zeroRect(0, 0, 0, 0);

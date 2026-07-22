@@ -114,8 +114,8 @@ static void PaintOceanOverviewOwnerTransitions(short tileIndex, int tileX, int t
   short neighborCities[6];
   TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
   int currentOwner = ClampOceanOwnerTag(tile.ownerNationTag04);
-  TMapMgr::ComputeHexNeighborTileIndices(tileIndex, neighbors,
-                                         g_pGlobalMapState->hexNeighborWrapHorizontally20);
+  TMapMgr::GetNeighborTileIDArray(tileIndex, neighbors,
+                                  g_pGlobalMapState->hexNeighborWrapHorizontally20);
 
   int direction;
   for (direction = 0; direction < 6; ++direction) {
@@ -378,7 +378,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
 
       TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
       int ownerTag = ClampOceanOwnerTag(tile.ownerNationTag04);
-      if (tile.terrainType00 != 5) {
+      if (tile.GetTerrainKind() != kStrategicTerrainWater) {
         SetQuickDrawFillColorFromPaletteIndex(g_aOceanMapOwnerPaletteIndexByNationTag[ownerTag]);
         FillRectWithQuickDrawBrushAndContextOffset(&tileRect);
       }
@@ -387,7 +387,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
         PaintOceanOverviewOwnerTransitions(static_cast<short>(tileIndex), screenX, screenY);
       }
 
-      bool hasImprovementSprite = tile.tileActionClass16 >= 0 || tile.perTileVisitedFlag0f > 0 ||
+      bool hasImprovementSprite = tile.tileActionState16 >= 0 || tile.perTileVisitedFlag0f > 0 ||
                                   (((tile.activeFlags1c & 3) != 0) && tile.gateFlag != 0) ||
                                   (tile.activeFlags1c & 4) != 0;
       if (!hasImprovementSprite) {
@@ -396,9 +396,9 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
 
       TQuickDrawSurfaceContext* spriteAtlas;
       short spriteX;
-      if (tile.tileActionClass16 >= 2) {
+      if (tile.tileActionState16 >= 2) {
         spriteAtlas = g_pStrategicMapViewSystem->atlas68c;
-        spriteX = static_cast<short>(tile.tileActionClass16 << 4);
+        spriteX = static_cast<short>(tile.tileActionState16 << 4);
       } else if (tile.perTileVisitedFlag0f > 0) {
         spriteAtlas = g_pStrategicMapViewSystem->atlas694[7];
         spriteX = static_cast<short>((tile.perTileVisitedFlag0f - 1) << 4);
@@ -595,8 +595,8 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
                                                                  unsigned char altOverlay) {
   (void)altOverlay;
 
-  signed char tileActionClass = g_pGlobalMapState->terrainStateTable[tileIndex].tileActionClass16;
-  if (tileActionClass < 0 || tileActionClass >= 0x13) {
+  signed char tileActionClass = g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState16;
+  if (tileActionClass < 0 || tileActionClass >= kMapTileActionStateOceanAtlasFrameCount) {
     return;
   }
 

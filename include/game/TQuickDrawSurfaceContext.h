@@ -21,8 +21,8 @@ struct TQuickDrawBlitSurface {
   short pad1a;              // +0x1a
   CDib* surfaceDib;         // +0x1c
   void* surfaceObject;      // +0x20
-  int quickDrawColor;       // +0x24
-  int transparentBlitColor; // +0x28
+  COLORREF foregroundColor; // +0x24 -- current QuickDraw/GDI foreground color
+  COLORREF backgroundColor; // +0x28 -- current background / transparent-pixel color
 };
 ASSERT_SIZE(TQuickDrawBlitSurface, 0x2c);
 

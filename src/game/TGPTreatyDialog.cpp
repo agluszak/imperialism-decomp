@@ -50,7 +50,7 @@ void TGPTreatyDialog::StuffValues() {
 
       if (column < row) {
         relationControl->SetControlValue(
-            g_pDiplomacyTurnStateManager->GetRelationTierSlot70(column, row), 0);
+            g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(column, row), 0);
         relationControl->SetState(0, 0);
       } else {
         relationControl->SetEnabled(0, 1);

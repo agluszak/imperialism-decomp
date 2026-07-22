@@ -22,7 +22,7 @@ public:
   virtual CMcWindow* Open() override;                                     // slot 0x27 0x48de00
   virtual void Close() override;                                          // slot 0x28 0x48e060
   virtual TView* GetRootView() override;                                  // slot 0x3a 0x492ce0
-  virtual char IsActionable() override;                                   // slot 0x3b 0x48d980
+  virtual bool IsActionable() override;                                   // slot 0x3b 0x48d980
   virtual void TranslateRectToWindow(CRect* rect) override;               // slot 0x4c 0x492d40
   virtual void TranslatePointToParentChain4D(CPoint* point = 0) override; // slot 0x4d 0x492d20
   virtual void TranslatePointToParentChain4E(CPoint* point) override;     // slot 0x4e 0x492d00

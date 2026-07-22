@@ -125,7 +125,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
   while (static_cast<short>(unitRecordCount--) != 0) {
     int unitId;
     stream->ReadBytes(&unitId, 4);
-    TMilitaryUnit* sourceUnit = FindMilitaryUnitByIdAcrossTerrainDescriptors(unitId);
+    TMilitaryUnit* sourceUnit = TMilitaryUnit::FindUnitByUID(unitId);
     TArmyTacUnit* record = new TArmyTacUnit();
     // Field-fill mirrors the TArmyTacUnit base-state init (0x5a5f20) exactly (same
     // store order) -- the original duplicated this init here.
@@ -143,7 +143,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
     record->sapTargetTileIndex40 = -1;
     record->sourceUnit38 = sourceUnit;
     unsigned char deployedCategory0Flag;
-    if (sourceUnit->field_8 == 2 &&
+    if (sourceUnit->unitOrder == 2 &&
         g_anUnitTypeCombatCategoryByType00669858[record->unitTypeC] == 0) {
       deployedCategory0Flag = 1;
     } else {
@@ -328,7 +328,7 @@ void TArmyBattle::LoadBattleSetupTabDataByIndex(int compositionClass, int fortLe
 // undeployed unit, resets the move-cost plane, and either fires the ready handler when
 // the side has fully deployed or refreshes the 'tool' toolbar's current-unit control.
 // FUNCTION: IMPERIALISM 0x005a51e0
-void TArmyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileIndex) {
+void TArmyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
   unit->AssertValid();
   int column = tileIndex % 29;
   if (tileIndex < 29) {

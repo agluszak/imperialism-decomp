@@ -2,12 +2,13 @@
 
 #include "decomp_types.h"
 #include "game/mfc.h"
+#include "game/quickdraw_types.h"
 
-void SetQuickDrawFillColor(int fillColor);
-void SetQuickDrawColorAndPropagateIfChanged(int newColor);
-void SetQuickDrawStrokeColor(int strokeColor);
-void SetQuickDrawColorAndSyncGlobals(int color);
-void SetGlobalBlitTransparentColorRaw(int transparentColor);
+void SetQuickDrawFillColor(COLORREF fillColor);
+void SetQuickDrawColorAndPropagateIfChanged(COLORREF newColor);
+void SetQuickDrawStrokeColor(COLORREF strokeColor);
+void SetQuickDrawColorAndSyncGlobals(COLORREF color);
+void SetGlobalBlitTransparentColorRaw(COLORREF transparentColor);
 void SetGlobalQuickDrawOrigin(short originX, short originY);
 void SetQuickDrawPenSizeAndMarkDirty(short horizontalSize, short verticalSize);
 void ResetQuickDrawStrokeState();
@@ -43,12 +44,12 @@ CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TextStyle* styl
 // InitializeUiTextStyleDescriptor, ApplyControlThemeStyleAndOptionalCaption,
 // ConfigureUiControlStyleValueAndCaptionFromStringResource,
 // ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor, InitializeUiTextStyleDescriptorAndApplyQuickDraw,
-// MapUiThemeCodeToStyleFlags) live in game/ui_text_label_helpers_decls.h -- they belong to the
+// ResolveUiThemeColor) live in game/ui_text_label_helpers_decls.h -- they belong to the
 // ui_text_label_helpers.cpp unit, not the QuickDraw surface/font engine.
 
 // If paletteIndex is the sentinel -1 (as a short), resolves the nearest white entry
 // from the default cached bitmap resource's palette instead. 0x004951e0
-void UpdatePaletteIndexWithDefaultFallback(unsigned int paletteIndex);
+void UpdatePaletteIndexWithDefaultFallback(QuickDrawPaletteIndex paletteIndex);
 
 // Cached-style text measurement leaf (0x494e00): rebuilds the cached measure-font from
 // g_QuickDrawMeasureFontPreset if dirty, selects it into the active QuickDraw CDC (or a

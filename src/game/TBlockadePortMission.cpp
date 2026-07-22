@@ -25,13 +25,13 @@ IMPLEMENT_SERIAL(TBlockadePortMission, TControlSeaZoneMission, 1)
 // TBlockadePortMission::CreateObject
 
 // FUNCTION: IMPERIALISM 0x0053aa50
-char TBlockadePortMission::IsHospitalMission() const {
-  return 0;
+bool TBlockadePortMission::IsHospitalMission() const {
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0053aa70
-char TBlockadePortMission::IsDefensiveSeaZoneMission() const {
-  return 0;
+bool TBlockadePortMission::IsDefensiveSeaZoneMission() const {
+  return false;
 }
 // SYNTHETIC: IMPERIALISM 0x0053aa90
 // TBlockadePortMission::`scalar deleting destructor'
@@ -124,7 +124,7 @@ void TBlockadePortMission::SetStateByte8To2() {
 // score (duplicated inline -- see the in-body comment), then computes a second "threat"
 // score: either from a single target nation (this blockade's portZoneContext3c owner-
 // nation-code, if < 7) or maxed over every nation in g_apNationStates whose diplomacy
-// relation with this mission's nation is outdated (TDiplomacyMgr::HasPolicyWithNationSlot44).
+// relation with this mission's nation is outdated (TDiplomacyMgr::IsNationPairAtWar).
 // Either way the threat score itself is portZoneContext3c's owner-nation-code's navy-order
 // distribution score -- the same per-ship walk/accumulate/normalize shape as
 // TShip::ComputeNavyOrderDistributionScoreForNation, inlined here rather than calling that
@@ -147,7 +147,7 @@ void TBlockadePortMission::CalculateNeeds() {
     if (node->location != targetZone14) {
       continue;
     }
-    if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, node->nation)) {
+    if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, node->nation)) {
       continue;
     }
     short normalizationBase = node->GetMaxStrength();
@@ -215,7 +215,7 @@ void TBlockadePortMission::CalculateNeeds() {
       if (g_apNationStates[nation] == nullptr) {
         continue;
       }
-      if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, nation)) {
+      if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, nation)) {
         continue;
       }
       short targetNationCode = portZoneContext3c->GetPortZoneOwnerNationCodeFromMissionField48();
@@ -253,7 +253,7 @@ void TBlockadePortMission::CalculateNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053ba10
-char TBlockadePortMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+bool TBlockadePortMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   (void)key;
   return missionType == kMissionTypeBlockadePort && zoneContext == targetZone14;
 }

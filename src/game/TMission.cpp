@@ -22,8 +22,8 @@ IMPLEMENT_SERIAL(TMission, TObject, 1)
 
 // --- TMission default-mission virtual stubs (concrete missions override) ---
 // FUNCTION: IMPERIALISM 0x00534c00
-char TMission::IsANoBrainer() const {
-  return 0;
+bool TMission::IsANoBrainer() const {
+  return false;
 }
 // FUNCTION: IMPERIALISM 0x00534c20
 int TMission::AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack) const {
@@ -57,19 +57,19 @@ TMission* TMission::GetReplacementSlot48() {
   return this;
 }
 // FUNCTION: IMPERIALISM 0x00534d30
-char TMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+bool TMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   (void)missionType;
   (void)key;
   (void)zoneContext;
-  return 0;
+  return false;
 }
 // FUNCTION: IMPERIALISM 0x00534d50
-char TMission::IsArmyMission() const {
-  return 0;
+bool TMission::IsArmyMission() const {
+  return false;
 }
 // FUNCTION: IMPERIALISM 0x00534d70
-char TMission::IsNavyMission() const {
-  return 0;
+bool TMission::IsNavyMission() const {
+  return false;
 }
 // FUNCTION: IMPERIALISM 0x00534d90
 TMission* TMission::GetArmyMission() {
@@ -80,12 +80,12 @@ TMission* TMission::GetNavyMission() {
   return nullptr;
 }
 // FUNCTION: IMPERIALISM 0x00534dd0
-char TMission::IsDefensiveSeaZoneMission() const {
-  return 0;
+bool TMission::IsDefensiveSeaZoneMission() const {
+  return false;
 }
 // FUNCTION: IMPERIALISM 0x00534df0
-char TMission::IsHospitalMission() const {
-  return 0;
+bool TMission::IsHospitalMission() const {
+  return false;
 }
 // FUNCTION: IMPERIALISM 0x00534e10
 float TMission::GetWeightedSatisfaction() {
@@ -167,8 +167,8 @@ TMission::TMission() {
 // mission's initialization hook. TInvadeMission uses this to initialize its
 // owned beachhead mission with the same nation.
 // FUNCTION: IMPERIALISM 0x005350a0
-void TMission::InitializeMissionWithNationIdAndResetPathMarker(short nationId) {
-  nationId04 = nationId;
+void TMission::InitializeMissionWithNationIdAndResetPathMarker(NationSlot nationSlot) {
+  nationId04 = nationSlot;
   pathMarker06 = -1;
   Initialize();
 }
@@ -180,7 +180,7 @@ void TMission::InitializeMissionWithNationIdAndResetPathMarker(short nationId) {
 // target port zone (a TZone) for the navy missions; nodeKey/keyArg carry the province
 // or amassing keys for the army missions.
 // FUNCTION: IMPERIALISM 0x005350d0
-TMission* TMission::CreateMission(short sourceNation, eMissionType missionKind, int nodeKey,
+TMission* TMission::CreateMission(NationSlot sourceNation, eMissionType missionKind, int nodeKey,
                                   TZone* zoneContext, int relatedNodeKey) {
   TMission* mission = nullptr;
   switch (missionKind) {

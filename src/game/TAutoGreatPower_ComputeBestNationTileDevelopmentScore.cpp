@@ -8,7 +8,7 @@
 #include "game/global_data_tables.h"
 
 // FUNCTION: IMPERIALISM 0x00540440
-int ComputeBestNationTileDevelopmentScore(short nationSlot) {
+int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot) {
   TAutoGreatPower* nation = static_cast<TAutoGreatPower*>(g_apNationStates[nationSlot]);
   if (nation == 0 || nation->diplomacyEligibilityA0 != 0) {
     return -1;

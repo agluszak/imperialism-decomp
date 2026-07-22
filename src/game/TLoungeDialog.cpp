@@ -169,7 +169,7 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
         }
       } else {
         unsigned char hasOtherSession = 0;
-        for (int slot = 0; slot < TMultiplayerMgr::kNationSlotCount; ++slot) {
+        for (int slot = 0; slot < TMultiplayerMgr::kMajorNationSessionSlotCount; ++slot) {
           int sessionId = g_pGameFlowState->nationSessionIds[slot];
           if (sessionId != 0 && sessionId != TouchSessionActiveNationId()) {
             hasOtherSession = 1;

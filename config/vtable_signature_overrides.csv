@@ -1,1 +1,3 @@
 address|class|slot|prototype|evidence|confidence
+4f19c0|TDiplomacyMgr|26|DiplomacyRelationshipNotch TDiplomacyMgr::GetRelationshipNotch(NationSlot sourceNationSlot, NationSlot targetNationSlot)|Mac names GetRelationshipNotch(short short); 0x004f19c0 returns the classic enum value 0 through 8 in full EAX and RET 8 proves exactly two explicit stack arguments; the project-local enum is not an aggregate sret|proven
+4f1b10|TDiplomacyMgr|28|DiplomacyRelationshipStorage TDiplomacyMgr::GetNationPairDiplomacyRelationCode(NationSlot sourceNationSlot, NationSlot targetNationSlot)|0x004f1b10 returns the matrix word in AX and RET 8 proves exactly two explicit stack arguments; the project-local return typedef is signed short rather than an aggregate sret|proven

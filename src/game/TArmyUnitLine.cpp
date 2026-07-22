@@ -38,10 +38,10 @@ void TArmyUnitLine::InstallViews(TView* panel, int* offsetLayout) {
       armyView, checkboxOffset, checkboxSize, 4, 4,
       static_cast<TMilitaryPageView*>(panel)->primaryUnitAtlas84, militaryUnit10->orderType << 7);
   checkbox->controlTag = 0x63686563; // 'chec'
-  if (militaryUnit10->GetUnitMovementClassId() != 0) {
+  if (militaryUnit10->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
     static_cast<TView*>(checkbox)->SetState(1, 0);
     checkbox->eventNumber60 = 4;
-    if (militaryUnit10->field_8 == 0) {
+    if (militaryUnit10->unitOrder == 0) {
       checkbox->SetState(1, 0);
     }
   } else {
@@ -50,10 +50,10 @@ void TArmyUnitLine::InstallViews(TView* panel, int* offsetLayout) {
   }
 
   CString movementHelp;
-  g_pSimMgr->GetString(0x2726, militaryUnit10->GetUnitMovementClassId(), &movementHelp);
+  g_pSimMgr->GetString(0x2726, militaryUnit10->GetCategory(), &movementHelp);
   SetControlHoverHelpText(movementHelp, checkbox);
 
-  if (militaryUnit10->HasEraCapabilityFallbackSlot()) {
+  if (militaryUnit10->CanUpgrade()) {
     int upgradeOffset[2] = {armyView->frameWidth34 - 0x28, 0};
     int upgradeSize[2] = {0x13, 0x12};
     TGWorldButton* upgradeButton = new TGWorldButton;
@@ -70,7 +70,7 @@ void TArmyUnitLine::InstallViews(TView* panel, int* offsetLayout) {
     short armsCost;
     short cashCost;
     short fuelCost;
-    militaryUnit10->GetEraCapabilityFallbackCosts(&candidateSlot, &armsCost, &cashCost, &fuelCost);
+    militaryUnit10->UpgradeRequirements(candidateSlot, armsCost, cashCost, fuelCost);
     armsText.Format(g_szDecimalFormat, static_cast<int>(armsCost));
     g_pSimMgr->NumToCurrency(cashCost, &cashText);
     if (fuelCost == 0) {

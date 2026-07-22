@@ -359,8 +359,8 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
     for (int capitalSlot = 0; capitalSlot < 7; ++capitalSlot) {
       int homeTile = g_apTerrainTypeDescriptorTable[capitalSlot]->homeTileIndex;
       short neighborTiles[7];
-      TMapMgr::ComputeHexNeighborTileIndices(static_cast<short>(homeTile), neighborTiles,
-                                             g_pGlobalMapState->hexNeighborWrapHorizontally20);
+      TMapMgr::GetNeighborTileIDArray(static_cast<short>(homeTile), neighborTiles,
+                                      g_pGlobalMapState->hexNeighborWrapHorizontally20);
       neighborTiles[6] = static_cast<short>(homeTile);
       for (int k = 0; k < 7; ++k) {
         short tileIndex = neighborTiles[k];
@@ -659,7 +659,7 @@ void TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* str
     short recruitOrderCount = stream->ReadShort();
     for (int recruitOrderIdx = recruitOrderCount; recruitOrderIdx != 0; --recruitOrderIdx) {
       TMilitaryUnit* recruitOrder = new TMilitaryUnit();
-      recruitOrder->InitializeRecruitOrderState(0, -1, static_cast<short>(terrainSlot), 0);
+      recruitOrder->IMilitaryUnit(0, -1, static_cast<short>(terrainSlot), 0);
       recruitOrder->ReadFrom(stream);
       recruitOrder->AssertValid();
     }
@@ -687,7 +687,7 @@ void TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations(TStream* stream
     short workOrderCount = stream->ReadShort();
     for (int workOrderIdx = workOrderCount; workOrderIdx != 0; --workOrderIdx) {
       TCivUnit* workOrder = new TCivUnit();
-      workOrder->InitializeCivWorkOrderState(0, -1, nationIdx);
+      workOrder->ICivUnit(kCivilianUnitMiner, -1, nationIdx);
       workOrder->ReadFrom(stream);
       workOrder->AssertValid();
       if (nationSelected == 0) {

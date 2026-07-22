@@ -33,5 +33,5 @@ short TProvinceDesirabilityList::Compare(void* a, void* b) {
   if (aKey < bKey) {
     return -1;
   }
-  return static_cast<short>(static_cast<int>(rand()) % 2 != 0 ? 1 : -1);
+  return static_cast<short>(rand() % 2 != 0 ? 1 : -1);
 }

@@ -91,7 +91,7 @@ void TTraderAmtBar::UpdateFromScaleOrRatio(int scaleValue, int ratioValue) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b070
-int TTraderAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
+short TTraderAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
   short priorResult = static_cast<short>(baseValue);
   short requested = static_cast<short>(requestedValue);
   short result = priorResult;
@@ -109,7 +109,7 @@ int TTraderAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
       }
     }
   }
-  return static_cast<int>(result);
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x0058b0f0

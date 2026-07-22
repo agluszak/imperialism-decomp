@@ -33,11 +33,11 @@ void TPictureButton::HiliteState(unsigned char enabledState, unsigned char refre
 }
 
 // FUNCTION: IMPERIALISM 0x005708c0
-bool TPictureButton::DrawImmediate() {
+void TPictureButton::DrawImmediate() {
   CRect rect;
-  this->GetQDExtent(&rect);
-  return RedrawWindow(reinterpret_cast<HWND>(this->nativeWindow50->m_hWnd), &rect, NULL,
-                      RDW_INVALIDATE | RDW_UPDATENOW);
+  CRect* redrawRect = this->GetQDExtent(&rect);
+  CWnd* nativeWindow = this->nativeWindow50;
+  RedrawWindow(nativeWindow->m_hWnd, redrawRect, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
 }
 
 // FUNCTION: IMPERIALISM 0x00570900

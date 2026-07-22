@@ -2,6 +2,7 @@
 
 #include "game/TObject.h"
 #include "game/mfc.h"
+#include "game/unit_domain_types.h"
 
 // VTABLE: IMPERIALISM 0x00653248
 class TCivMgr : public TObject {
@@ -38,7 +39,7 @@ public:
   // Map hotkey 'W': clear every actionable civilian order mode for `nationId`, then
   // advance the map interaction selection when no selection remains. 0x004d49f0.
   void ClearNationCivilianActionModesAndCycleSelection(int nationId);
-  void QueueImmediateCivilianCommandAndCycleSelection(int commandType);
+  void OrderAndCycle(UnitOrder order);
   void ShowDisbandCivilianConfirmationDialog();
 
   // Data members (object size 0x0c, base TObject = vptr only).
@@ -53,7 +54,7 @@ public:
   // 0x004d2f60. Validate whether the selected civilian (selectedEntry) can be assigned to the
   // clicked tile. (Ghidra mis-attributed this to TCivToolbar via a thunk-only caller; the `this`
   // is the TCivMgr order manager — [this+4] is selectedEntry.)
-  char CanAssignCivilianOrderToTile(short nTileIndex);
+  bool CanAssignCivilianOrderToTile(short nTileIndex);
 
   // 0x004d2960. Resolves the civilian map-click action code from current selection and tile
   // context (see cpp for the full action-code map). Ghidra mis-attributed this to TCivToolbar

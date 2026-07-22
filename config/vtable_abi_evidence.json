@@ -372205,9 +372205,9 @@
    "cc": "__thiscall",
    "ecx": "ecx_this",
    "ghidra_params": 3,
-   "ghidra_proto": "undefined SetOrderModeSlot34(undefined4 nOrderType, undefined2 nOrderOwnerId)",
+   "ghidra_proto": "undefined SetOrders(undefined4 nOrderType, undefined2 nOrderOwnerId)",
    "max_stack_arg_read": null,
-   "name": "SetOrderModeSlot34",
+   "name": "SetOrders",
    "ret_imm": 8,
    "ret_kind": "imm",
    "size": 19
@@ -372369,9 +372369,9 @@
    "cc": "__thiscall",
    "ecx": "no_ecx",
    "ghidra_params": 3,
-   "ghidra_proto": "void SetOrderModeSlot34(int nOrderType, short nTargetTileIndex)",
+   "ghidra_proto": "void SetOrders(int nOrderType, short nTargetTileIndex)",
    "max_stack_arg_read": null,
-   "name": "SetOrderModeSlot34",
+   "name": "SetOrders",
    "ret_imm": 8,
    "ret_kind": "imm",
    "size": 119

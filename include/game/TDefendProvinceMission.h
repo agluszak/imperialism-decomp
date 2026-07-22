@@ -16,12 +16,12 @@ public:
   virtual void
   Free() override; // slot 0x1c (TObject) 0x53ebe0 -- releases orderListAt18 and deletes self
 
-  virtual char IsANoBrainer() const override;      // slot 0x28 0x5357b0
-  virtual char IsHospitalMission() const override; // slot 0x64 0x535790
+  virtual bool IsANoBrainer() const override;      // slot 0x28 0x5357b0
+  virtual bool IsHospitalMission() const override; // slot 0x64 0x535790
   virtual void
   GiveOrders() override; // slot 0x44 0x535770 -- propagates target tile to linked units
   virtual TMission* GetReplacementSlot48() override; // slot 0x48 0x53f040
-  virtual char Matches(eMissionType missionType, int key,
+  virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const override; // slot 0x4c 0x53f010
 
   // These override TMission's own slots 0x0d/0x0e/0x0f (SetStateByte8To2 /
@@ -36,12 +36,12 @@ public:
   static float ComputeLocalSupportVectorScore(int nodeContext);
   static float ComputeCrossNationSupportVectorScore(int nodeContext);
 
-  // Walks orderListAt18 and re-issues TUnit::SetOrderModeSlot34(1, newTile) on every
+  // Walks orderListAt18 and re-issues TUnit::SetOrders(kUnitOrderRedeploy, newTile) on every
   // linked TMilitaryUnit whose tileIndex06 differs from newTile (propagating this
   // mission's new target tile to units still ordered against the old one). 0x53c950.
   void PropagateTargetTileToLinkedUnitsIfDifferent(short newTile);
 };
 
-char IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex);
+bool IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex);
 
 ASSERT_SIZE(TDefendProvinceMission, 0x30);

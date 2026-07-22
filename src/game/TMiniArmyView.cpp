@@ -77,7 +77,7 @@ void TMiniArmyView::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x004ab1d0
 void TMiniArmyView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (sourceHandler->controlTag == kControlTagUpgr) {
-    if (militaryUnit84->ApplyEraCapabilityCostAndSetSelection()) {
+    if (militaryUnit84->Upgrade()) {
       TView* sourceView = static_cast<TView*>(sourceHandler);
       sourceView->SetEnabled(0, 1);
       SetControlHoverHelpTextAltEntry(CString(g_pMiniCivSharedText_0064cb18), sourceView);

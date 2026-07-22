@@ -31,13 +31,13 @@ public:
   virtual void
   Free() override; // slot 0x1c (TObject) 0x5364c0 -- releases orderList24 and deletes self
 
-  virtual char IsANoBrainer() const override; // slot 0x28 0x535500
+  virtual bool IsANoBrainer() const override; // slot 0x28 0x535500
   virtual int AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack)
       const override; // slot 0x2c 0x536840 -- accumulates remaining ship-equipage lack
   virtual void Reassess() override;   // slot 0x40 0x536b30 -- updates order-selection-mode state
   virtual void GiveOrders() override; // slot 0x44 0x536e40 -- processes queued-order context mode
   virtual TMission* GetReplacementSlot48() override; // slot 0x48 0x536fc0
-  virtual char IsNavyMission() const override;       // slot 0x54 0x5354e0
+  virtual bool IsNavyMission() const override;       // slot 0x54 0x5354e0
   virtual TMission* GetArmyMission() override;       // slot 0x58 0x535520 -- returns null
   virtual TMission* GetNavyMission() override;       // slot 0x5c 0x535540 -- returns this
   virtual float GetWeightedSatisfaction() override;  // slot 0x68 0x537f40

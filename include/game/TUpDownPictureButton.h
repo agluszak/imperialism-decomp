@@ -12,7 +12,7 @@ public:
                               CPoint origin) override; // slot 0x47 0x5716b0
   virtual void HiliteState(unsigned char fEnabledState,
                            unsigned char fRefreshNow) override; // slot 0x70 0x571620
-  virtual bool DrawImmediate();                                 // slot 0x73 0x571690
+  virtual void DrawImmediate();                                 // slot 0x73 0x571690
   short glyph90;
   short timingWord92;
 

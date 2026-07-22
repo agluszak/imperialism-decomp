@@ -39,8 +39,8 @@ public:
   virtual short CenterVertically(unsigned char refreshNow); // slot 0x7e 0x5b63e0
   // field94/field95/padding96 moved to the base TTEView (its RTTI object size is
   // 0x98; TDeluxeText's own fields start at 0x98 — see TTEView.h).
-  int textColor98;            // +0x98
-  int shadowTextColor9C;      // +0x9c
+  COLORREF textColor98;       // +0x98
+  COLORREF shadowTextColor9C; // +0x9c
   bool dropShadowEnabledA0;   // +0xa0
   unsigned char paddingA1[3]; // +0xa1
 

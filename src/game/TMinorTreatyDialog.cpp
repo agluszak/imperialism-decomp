@@ -49,7 +49,9 @@ void TMinorTreatyDialog::StuffValues() {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x304);
       }
       relationControl->SetControlValue(
-          g_pDiplomacyTurnStateManager->GetRelationTierSlot70(majorNationSlot, minorNationSlot), 0);
+          g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(majorNationSlot,
+                                                                           minorNationSlot),
+          0);
       relationControl->SetState(0, 0);
     }
   }

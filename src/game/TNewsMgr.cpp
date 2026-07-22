@@ -2,9 +2,11 @@
 
 #include "game/TArmyMgr.h"
 #include "game/TAssetMgr.h"
+#include "game/CPtrIterator.h"
 #include "game/TCountry.h"
 #include "game/TGreatPower.h"
 #include "game/TLanguageMgr.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TSortedPtrList.h"
 #include "game/TZone.h"
@@ -12,12 +14,12 @@
 #include "game/ui_invalidation_guard.h"
 
 #include <string.h>
+// SYNTHETIC: IMPERIALISM 0x0055b670
+// TNewsMgr::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x0055b6a0
 // TNewsMgr::`scalar deleting destructor'
 TNewsMgr::~TNewsMgr() {}
-// SYNTHETIC: IMPERIALISM 0x0055b670
-// TNewsMgr::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x0055b6f0
 // TNewsMgr::GetRuntimeClass
@@ -25,7 +27,7 @@ TNewsMgr::~TNewsMgr() {}
 IMPLEMENT_DYNCREATE(TNewsMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x0055b710
-void TNewsMgr::InitializeInterNationEventQueueManager() {
+void TNewsMgr::InitializeNewsManager() {
   for (int i = 0; i < 7; i++) {
     perNationEventBuckets[i] = new TSortedPtrList();
     perNationEventBuckets[i]->recordSize14 = 0x24;
@@ -207,13 +209,13 @@ void TNewsMgr::CreateNewspaper(int nation) {
   delete[] order;
 }
 
-// Fills event stories for one nation from the shared event record queue, advancing the
-// (major, minor) page cursors. Records are {int code, int nation, int mask, int extra}.
+// Fills event stories for one nation from the shared discriminated event-record queue,
+// advancing the (major, minor) page cursors.
 // FUNCTION: IMPERIALISM 0x0055c010
 void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor) {
   int ordinal = 0;
   int code = 0;
-  int* rec;
+  InterNationNewsRecord* rec;
   newsEntry* tmpl;
   int t;
 
@@ -225,8 +227,9 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
     if (code <= 0xd || code >= 0x12) {
       rec = 0;
       for (int i = ordinal + 1; i <= sharedEventRecordQueue->GetSize(); i++) {
-        int* entry = static_cast<int*>(sharedEventRecordQueue->GetPtrListEntryByOneBasedIndex(i));
-        if (entry[0] == code && entry[1] == nation) {
+        InterNationNewsRecord* entry = static_cast<InterNationNewsRecord*>(
+            sharedEventRecordQueue->GetPtrListEntryByOneBasedIndex(i));
+        if (entry->eventKind == code && entry->payload.treaty.subjectNation == nation) {
           rec = entry;
           ordinal = i;
           break;
@@ -239,23 +242,24 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
         newsStory* story = &stories[nation][*minorCursor][*majorCursor];
         story->feature38 = 0;
         story->parmKind[0] = 1;
-        story->parmValue[0] = 1 << rec[1];
-        story->parmValue[1] = rec[2];
+        story->parmValue[0] = 1 << rec->payload.treaty.subjectNation;
+        story->parmValue[1] = rec->payload.treaty.counterpartNationMask;
         story->parmKind[1] = 1;
         for (int k = 2; k < 4; k++) {
           story->parmValue[k] = 0;
           story->parmKind[k] = 0;
         }
-        int wantId = -100 - rec[0];
-        if (rec[0] >= 5 && rec[0] <= 0x15) {
+        int wantId = -100 - rec->eventKind;
+        if (rec->eventKind >= kInterNationEventNonAggressionPactAccepted &&
+            rec->eventKind <= 0x15) {
           short bits = 0;
           for (int b = 0; b < 0x17; b++) {
-            if (rec[2] & (1 << b)) {
+            if (rec->payload.treaty.counterpartNationMask & (1 << b)) {
               bits++;
             }
           }
           if (bits > 1) {
-            wantId = -0x65 - rec[0];
+            wantId = -0x65 - rec->eventKind;
           }
         }
         tmpl = storyTemplateTable;
@@ -290,28 +294,29 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
     }
     rec = 0;
     for (int i = ordinal + 1; i <= sharedEventRecordQueue->GetSize(); i++) {
-      int* entry = static_cast<int*>(sharedEventRecordQueue->GetPtrListEntryByOneBasedIndex(i));
-      if (entry[0] == code && entry[1] != nation) {
+      InterNationNewsRecord* entry = static_cast<InterNationNewsRecord*>(
+          sharedEventRecordQueue->GetPtrListEntryByOneBasedIndex(i));
+      if (entry->eventKind == code && entry->payload.treaty.subjectNation != nation) {
         rec = entry;
         ordinal = i;
         break;
       }
     }
-    if (rec == 0 || rec[2] == (1 << nation)) {
+    if (rec == 0 || rec->payload.treaty.counterpartNationMask == (1 << nation)) {
       ordinal = 0;
       code++;
     } else {
       newsStory* story = &stories[nation][*minorCursor][*majorCursor];
       story->feature38 = 0;
       story->parmKind[0] = 1;
-      story->parmValue[0] = 1 << rec[1];
-      story->parmValue[1] = rec[2];
+      story->parmValue[0] = 1 << rec->payload.treaty.subjectNation;
+      story->parmValue[1] = rec->payload.treaty.counterpartNationMask;
       story->parmKind[1] = 1;
       for (int k = 2; k < 4; k++) {
         story->parmValue[k] = 0;
         story->parmKind[k] = 0;
       }
-      int wantId = -100 - rec[0];
+      int wantId = -100 - rec->eventKind;
       tmpl = storyTemplateTable;
       for (t = 0; t < storyTemplateCount; t++, tmpl++) {
         if (tmpl->storyId == wantId) {
@@ -338,8 +343,10 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
   for (;;) {
     rec = 0;
     for (int i = ordinal + 1; i <= sharedEventRecordQueue->GetSize(); i++) {
-      int* entry = static_cast<int*>(sharedEventRecordQueue->GetPtrListEntryByOneBasedIndex(i));
-      if (entry[0] == 0xf && entry[1] == nation) {
+      InterNationNewsRecord* entry = static_cast<InterNationNewsRecord*>(
+          sharedEventRecordQueue->GetPtrListEntryByOneBasedIndex(i));
+      if (entry->eventKind == kInterNationEventShortage &&
+          entry->payload.shortage.subjectNation == nation) {
         rec = entry;
         ordinal = i;
         break;
@@ -350,19 +357,19 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
     }
     newsStory* story = &stories[nation][*minorCursor][*majorCursor];
     story->feature38 = 0;
-    story->parmValue[0] = 1 << rec[3];
+    story->parmValue[0] = 1 << rec->payload.shortage.relatedNation;
     story->parmKind[0] = 2;
-    story->parmValue[1] = rec[2];
+    story->parmValue[1] = rec->payload.shortage.affectedNationMask;
     story->parmKind[1] = 1;
     for (int k = 2; k < 4; k++) {
       story->parmValue[k] = 0;
       story->parmKind[k] = 0;
     }
     int wantId = -0x14;
-    if (rec[0] >= 5 && rec[0] <= 0x15) {
+    if (rec->eventKind >= kInterNationEventNonAggressionPactAccepted && rec->eventKind <= 0x15) {
       short bits = 0;
       for (int b = 0; b < 0x17; b++) {
-        if (rec[2] & (1 << b)) {
+        if (rec->payload.shortage.affectedNationMask & (1 << b)) {
           bits++;
         }
       }
@@ -450,8 +457,10 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
     for (;;) {
       rec = 0;
       for (int i = ordinal + 1; i <= sharedEventRecordQueue->GetSize(); i++) {
-        int* entry = static_cast<int*>(sharedEventRecordQueue->GetPtrListEntryByOneBasedIndex(i));
-        if (entry[0] == 0x11 && entry[1] == static_cast<int>(target)) {
+        InterNationNewsRecord* entry = static_cast<InterNationNewsRecord*>(
+            sharedEventRecordQueue->GetPtrListEntryByOneBasedIndex(i));
+        if (entry->eventKind == kInterNationEventMiscellaneous &&
+            entry->payload.misc.subjectNationOrAll == static_cast<int>(target)) {
           rec = entry;
           ordinal = i;
           break;
@@ -462,12 +471,12 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
       }
       newsStory* story = &stories[nation][*minorCursor][*majorCursor];
       story->feature38 = 0;
-      if (rec[1] == -1) {
+      if (rec->payload.misc.subjectNationOrAll == -1) {
         story->parmValue[0] = 0;
         story->parmKind[0] = 0;
       } else {
         story->parmKind[0] = 1;
-        story->parmValue[0] = 1 << rec[1];
+        story->parmValue[0] = 1 << rec->payload.misc.subjectNationOrAll;
       }
       for (int k = 1; k < 4; k++) {
         story->parmValue[k] = 0;
@@ -475,7 +484,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
       }
       tmpl = storyTemplateTable;
       for (t = 0; t < storyTemplateCount; t++, tmpl++) {
-        if (tmpl->storyId == -1000 - rec[2]) {
+        if (tmpl->storyId == -1000 - rec->payload.misc.storyCode) {
           break;
         }
       }
@@ -495,5 +504,170 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
     if (pass >= 2) {
       return;
     }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0055c970
+void TNewsMgr::AddEvent(int nationSlot, NewsEvent* event, unsigned char isReplayBypass) {
+  if (g_pSimMgr->gateFlag7a != 0) {
+    return;
+  }
+  if (isReplayBypass == 0 && g_pSimMgr->difficultyLevel != 0) {
+    g_pGameFlowState->SendNewsEvent(nationSlot, event);
+    return;
+  }
+  perNationEventBuckets[nationSlot]->InsertCopiedRecordSortedByComparator(event);
+}
+
+// FUNCTION: IMPERIALISM 0x0055c9f0
+void TNewsMgr::AddTreatyEvent(InterNationEventKind eventKind, int nationA, int nationB,
+                              unsigned char isReplayBypass) {
+  if (g_pSimMgr->gateFlag7a != 0) {
+    return;
+  }
+  if (isReplayBypass == 0 && g_pSimMgr->difficultyLevel != 0) {
+    if (g_pSimMgr->difficultyLevel == 1) {
+      g_pGameFlowState->CreateAndSendTurnEvent20_ShortAndTwoBytes(
+          static_cast<short>(eventKind), static_cast<unsigned char>(nationA),
+          static_cast<unsigned char>(nationB));
+    }
+    return;
+  }
+
+  if (eventKind >= kInterNationEventNonAggressionPactAccepted && eventKind < 0x16) {
+    ConcatenateTreaty(eventKind, nationA, nationB);
+    return;
+  }
+
+  CPtrIterator iterator;
+  iterator.list = sharedEventRecordQueue;
+  InterNationNewsRecord* record = static_cast<InterNationNewsRecord*>(iterator.FirstPtr());
+  while (iterator.More() != 0) {
+    if (record->eventKind == eventKind) {
+      if (record->payload.treaty.subjectNation == nationA &&
+          (record->payload.treaty.counterpartNationMask & (1 << nationB)) != 0) {
+        return;
+      }
+      if (record->payload.treaty.subjectNation == nationB &&
+          (record->payload.treaty.counterpartNationMask & (1 << nationA)) != 0) {
+        return;
+      }
+    }
+    record = static_cast<InterNationNewsRecord*>(iterator.NextPtr());
+  }
+
+  if (nationA < 7) {
+    InterNationNewsRecord recordA;
+    recordA.eventKind = eventKind;
+    recordA.payload.treaty.subjectNation = nationA;
+    recordA.payload.treaty.counterpartNationMask = 1 << nationB;
+    sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&recordA);
+  }
+  if (nationB < 7 && eventKind > kInterNationEventWarDeclaredAgainstSubject &&
+      eventKind < kInterNationEventWarWithIndependentMinor) {
+    InterNationNewsRecord recordB;
+    recordB.eventKind = eventKind;
+    recordB.payload.treaty.subjectNation = nationB;
+    recordB.payload.treaty.counterpartNationMask = 1 << nationA;
+    sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&recordB);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0055cbd0
+void TNewsMgr::AddShortageEvent(int subjectNation, int affectedNation, int relatedNation,
+                                unsigned char isReplayBypass) {
+  if (g_pSimMgr->gateFlag7a != 0) {
+    return;
+  }
+  if (isReplayBypass == 0 && g_pSimMgr->difficultyLevel != 0) {
+    g_pGameFlowState->CreateAndSendTurnEvent21_ThreeBytes(
+        static_cast<unsigned char>(subjectNation), static_cast<unsigned char>(affectedNation),
+        static_cast<unsigned char>(relatedNation));
+    return;
+  }
+
+  int entryIndex = 1;
+  while (entryIndex <= sharedEventRecordQueue->GetSize()) {
+    InterNationNewsRecord* existing = static_cast<InterNationNewsRecord*>(
+        sharedEventRecordQueue->GetPtrListEntryByOneBasedIndex(entryIndex));
+    if (existing->eventKind == kInterNationEventShortage &&
+        existing->payload.shortage.relatedNation == relatedNation &&
+        existing->payload.shortage.subjectNation == subjectNation) {
+      existing->payload.shortage.affectedNationMask |= 1 << affectedNation;
+      return;
+    }
+    ++entryIndex;
+  }
+
+  InterNationNewsRecord record;
+  record.eventKind = kInterNationEventShortage;
+  record.payload.shortage.subjectNation = subjectNation;
+  record.payload.shortage.affectedNationMask = 1 << affectedNation;
+  record.payload.shortage.relatedNation = relatedNation;
+  sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&record);
+}
+
+// FUNCTION: IMPERIALISM 0x0055cd00
+void TNewsMgr::AddMiscEvent(int nationSlotOrAll, int storyCode, unsigned char isReplayBypass) {
+  TSimMgr* simManager = g_pSimMgr;
+  if (simManager->gateFlag7a == 0) {
+    if (isReplayBypass == 0) {
+      unsigned char multiplayerActive = simManager->multiplayerSessionRole != 0;
+      if (multiplayerActive != 0) {
+        g_pGameFlowState->CreateAndSendTurnEvent22_ByteAndShort(
+            static_cast<unsigned char>(nationSlotOrAll), static_cast<short>(storyCode));
+        return;
+      }
+    }
+
+    InterNationNewsRecord record;
+    record.eventKind = kInterNationEventMiscellaneous;
+    record.payload.misc.subjectNationOrAll = nationSlotOrAll;
+    record.payload.misc.storyCode = storyCode;
+    sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&record);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0055cda0
+void TNewsMgr::ConcatenateTreaty(InterNationEventKind eventKind, int nationA, int nationB) {
+  bool nationAHandled = nationA >= 7;
+  bool nationBHandled = nationB >= 7;
+  if ((eventKind >= kInterNationEventPeaceTreatyRejected &&
+       eventKind <= kInterNationEventNonAggressionPactRejected) ||
+      eventKind == kInterNationEventTradeConsulateEstablished ||
+      eventKind == kInterNationEventEmbassyEstablished) {
+    nationBHandled = true;
+  }
+
+  int entryIndex = 1;
+  while (!(nationAHandled && nationBHandled) && entryIndex <= sharedEventRecordQueue->GetSize()) {
+    InterNationNewsRecord* record = static_cast<InterNationNewsRecord*>(
+        sharedEventRecordQueue->GetPtrListEntryByOneBasedIndex(entryIndex));
+    if (record->eventKind == eventKind) {
+      if (!nationAHandled && record->payload.treaty.subjectNation == nationA) {
+        nationAHandled = true;
+        record->payload.treaty.counterpartNationMask |= 1 << nationB;
+      }
+      if (!nationBHandled && record->payload.treaty.subjectNation == nationB) {
+        nationBHandled = true;
+        record->payload.treaty.counterpartNationMask |= 1 << nationA;
+      }
+    }
+    ++entryIndex;
+  }
+
+  if (!nationAHandled) {
+    InterNationNewsRecord recordA;
+    recordA.eventKind = eventKind;
+    recordA.payload.treaty.subjectNation = nationA;
+    recordA.payload.treaty.counterpartNationMask = 1 << nationB;
+    sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&recordA);
+  }
+  if (!nationBHandled) {
+    InterNationNewsRecord recordB;
+    recordB.eventKind = eventKind;
+    recordB.payload.treaty.subjectNation = nationB;
+    recordB.payload.treaty.counterpartNationMask = 1 << nationA;
+    sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&recordB);
   }
 }

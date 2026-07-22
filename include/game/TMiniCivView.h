@@ -29,7 +29,7 @@ public:
   TMiniCivView() {}
 
   // MacApp second-phase init (0x4ab970): frames the control, binds the civ unit,
-  // and assembles unitText88 from the unit's order state (field_8 switch).
+  // and assembles unitText88 from the unit's UnitOrder state.
   void ConstructTMiniCivViewBaseState(TView* panel, int* offsetLayout, int* sizeLayout,
                                       TCivUnit* civUnit);
 };

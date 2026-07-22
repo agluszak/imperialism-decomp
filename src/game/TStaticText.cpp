@@ -178,7 +178,7 @@ void TStaticText::DrawTextAligned(const char* textChars, int textLength, RECT* r
   dc->SetBkMode(TRANSPARENT);
   CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle78);
   CFont* oldFont = dc->SelectObject(font);
-  dc->SetTextColor(g_Quick_Draw_Color_State_006950FC);
+  dc->SetTextColor(g_QuickDrawForegroundColor);
   UINT format = 0x910;
   if (alignmentCode != -2) {
     if (alignmentCode == -1) {

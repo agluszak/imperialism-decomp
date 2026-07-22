@@ -25,8 +25,8 @@ IMPLEMENT_SERIAL(TAttackProvinceMission, TArmyMission, 1)
 // TAttackProvinceMission::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0053d6f0
-char TAttackProvinceMission::IsHospitalMission() const {
-  return 0;
+bool TAttackProvinceMission::IsHospitalMission() const {
+  return false;
 }
 
 TAttackProvinceMission::TAttackProvinceMission() : TArmyMission(0xffff) {
@@ -107,7 +107,7 @@ char TAttackProvinceMission::SmokeEmIfYouGotEm() {
           CIterator queueIter(orderListAt18);
           for (unit = static_cast<TMilitaryUnit*>(queueIter.Reset()); queueIter.More();
                unit = static_cast<TMilitaryUnit*>(queueIter.Advance())) {
-            if (unit->GetUnitMovementClassId() != 0) {
+            if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
               RejectConstituent(unit, 1);
             }
           }
@@ -122,7 +122,7 @@ char TAttackProvinceMission::SmokeEmIfYouGotEm() {
   CIterator queueIter(orderListAt18);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(queueIter.Reset()); queueIter.More();
        unit = static_cast<TMilitaryUnit*>(queueIter.Advance())) {
-    if (unit->GetUnitMovementClassId() != 0) {
+    if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       RejectConstituent(unit, 1);
     }
   }
@@ -225,22 +225,23 @@ void TAttackProvinceMission::GiveOrders() {
     } while (remainingWeights != 0);
 
     if (weighted / total > g_AttackProvinceMissionReadinessThreshold_0065A8F0) {
-      if (g_pDiplomacyTurnStateManager->HasOutdatedWarRelationSlot48(
+      if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
               nationId04, g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00)) {
         for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(targetIter.Reset());
              targetIter.More(); unit = static_cast<TMilitaryUnit*>(targetIter.Advance())) {
           if (unit->tileIndex06 == presentLocation14) {
-            unit->SetOrderModeSlot34(1, targetProvince30);
+            unit->SetOrders(kUnitOrderRedeploy, targetProvince30);
           }
         }
-      } else if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
+      } else if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(
                      nationId04,
                      g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00)) {
         signed char targetOwnerNation =
             g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00;
-        if (g_apNationStates[nationId04]->diplomacyPolicyByNation[targetOwnerNation] != 0x131) {
+        if (g_apNationStates[nationId04]->diplomacyPolicyByNation[targetOwnerNation] !=
+            kDiplomacyProposalDeclareWar) {
           g_apNationStates[nationId04]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-              targetOwnerNation, 0x131);
+              targetOwnerNation, kDiplomacyProposalDeclareWar);
         }
       }
     }
@@ -251,7 +252,7 @@ void TAttackProvinceMission::GiveOrders() {
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(retargetIter.Reset()); retargetIter.More();
        unit = static_cast<TMilitaryUnit*>(retargetIter.Advance())) {
     if (unit->tileIndex06 != resolvedTarget) {
-      unit->SetOrderModeSlot34(1, resolvedTarget);
+      unit->SetOrders(kUnitOrderRedeploy, resolvedTarget);
     }
   }
 }
@@ -293,8 +294,9 @@ TMission* TAttackProvinceMission::GetReplacementSlot48() {
     return nullptr;
   }
 
-  if (g_pDiplomacyTurnStateManager->HasOutdatedWarRelationSlot48(pathMarker06, nationId04) &&
-      !g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(pathMarker06, targetOwnerNation)) {
+  if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(pathMarker06,
+                                                                           nationId04) &&
+      !g_pDiplomacyTurnStateManager->IsNationPairAtWar(pathMarker06, targetOwnerNation)) {
     return nullptr;
   }
   return this;
@@ -395,7 +397,7 @@ void TAttackProvinceMission::CalculateNeeds() {
 // FUNCTION: IMPERIALISM 0x0053e500
 float TAttackProvinceMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector) {
   if (referenceVector[2] > 0.0f) {
-    if (candidateUnit->GetUnitTypeStatPercent(2) < 10) {
+    if (candidateUnit->GetAttribute(2) < 10) {
       return -1000.0f;
     }
   }
@@ -412,7 +414,7 @@ void TAttackProvinceMission::Initialize() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053e5b0
-char TAttackProvinceMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+bool TAttackProvinceMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   (void)zoneContext;
   return (missionType == kMissionTypeAttackProvince || missionType == kMissionTypeAmassProvince) &&
          key == static_cast<int>(targetProvince30);

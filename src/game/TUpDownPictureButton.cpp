@@ -34,9 +34,8 @@ void TUpDownPictureButton::HiliteState(unsigned char enabledState, unsigned char
 }
 
 // FUNCTION: IMPERIALISM 0x00571690
-bool TUpDownPictureButton::DrawImmediate() {
+void TUpDownPictureButton::DrawImmediate() {
   GetWindow()->ForceRedraw();
-  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005716b0

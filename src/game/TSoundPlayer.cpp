@@ -125,7 +125,7 @@ void TSoundPlayer::PushCueToDualAudioCuePools(int cueId) {
 
 // FUNCTION: IMPERIALISM 0x00593790
 void TSoundPlayer::SelectAndScheduleRandomAudioCue() {
-  if (g_pSimMgr->preferenceValues[3] == 0 || IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+  if (g_pSimMgr->preferenceValues[3] == 0 || IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
     return;
   }
 
@@ -147,7 +147,7 @@ void TSoundPlayer::SelectAndScheduleRandomAudioCue() {
   int chosen = this->remainingRandomAudioCues->At(pick);
   this->remainingRandomAudioCues->AtDelete(pick);
 
-  if (g_pSimMgr->preferenceValues[3] == 0 || IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+  if (g_pSimMgr->preferenceValues[3] == 0 || IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
     return;
   }
   if (ReturnTrueStub() == 0) {
@@ -178,7 +178,7 @@ void TSoundPlayer::RequestAudioPresetChangeWithDeferredApply(int presetId, bool 
   if (g_pSimMgr->preferenceValues[3] == 0) {
     return;
   }
-  if (IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+  if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
     return;
   }
   if (ReturnTrueStub() == 0) {
@@ -249,7 +249,7 @@ void TSoundPlayer::SetActiveAudioCueAndResetQueue(int cueId, bool flag) {
   if (g_pSimMgr->preferenceValues[3] == 0) {
     return;
   }
-  if (IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+  if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
     return;
   }
   if (ReturnTrueStub() == 0) {

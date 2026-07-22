@@ -314,7 +314,7 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
       }
       break;
     }
-    case 0x131: {
+    case kDiplomacyProposalDeclareWar: {
       g_apNationStates[eventRecord[1]]->FormatOverlayTerrainLabelText(&nationNameText);
       g_pSimMgr->GetString(0x2753, 0x1c, &titleText);
       g_pSimMgr->GetString(0x2753, 0x1d, &templateText);
@@ -671,7 +671,7 @@ char ShowTurnAlertsForActiveNation() {
   if (g_pSimMgr->preferenceValues[8] == 0) {
     return 0;
   }
-  if (IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+  if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
     return 0;
   }
   if (g_lastTurnAlertTick_006a31c0 == currentTick) {
@@ -835,13 +835,13 @@ void THelpMgr::TryShowCivilianCompletionMilestoneNotification(TCivUnit* civilian
   int titleStringIndex = -1;
   int messageStringIndex = -1;
 
-  if (civilianOrderEntry->orderType == 1) {
+  if (civilianOrderEntry->orderType == EncodeCivilianUnitKind(kCivilianUnitProspector)) {
     if (civilianOrderEntry->completionMarker26 == 0x232f &&
         ++civilianCompletionCounters10.values[0] == 1) {
       titleStringIndex = 0x2c;
       messageStringIndex = 0x2d;
     }
-  } else if (civilianOrderEntry->orderType == 4) {
+  } else if (civilianOrderEntry->orderType == EncodeCivilianUnitKind(kCivilianUnitEngineer)) {
     switch (civilianOrderEntry->completionMarker26) {
     case 0x2329:
       if (++civilianCompletionCounters10.values[1] == 3) {

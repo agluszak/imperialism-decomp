@@ -104,7 +104,7 @@ void TControl::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* even
 }
 
 // FUNCTION: IMPERIALISM 0x0048e7a0
-void TControl::SetTextColorAndMaybeRefresh(const int* textColor, bool refreshNow) {
+void TControl::SetTextColorAndMaybeRefresh(const COLORREF* textColor, bool refreshNow) {
   textStyle78.textColor = *textColor;
   if (refreshNow) {
     PaintOrInvalidateControl(0);

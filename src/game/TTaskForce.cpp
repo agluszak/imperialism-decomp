@@ -394,7 +394,7 @@ void TTaskForce::ReadFrom(TStream* stream) {
   }
 
   bool tileActionClassNonNegative =
-      g_pGlobalMapState->terrainStateTable[ingotTileIndex].tileActionClass16 >= 0;
+      g_pGlobalMapState->terrainStateTable[ingotTileIndex].tileActionState16 >= 0;
   if (!isActiveNation) {
     ingotTileIndex = -1;
     return;
@@ -1175,7 +1175,7 @@ int TTaskForce::MouseCodeForTarget(TZone* candidate) const {
 // (byte 0) have a stale pair-relation turn stamp.
 // FUNCTION: IMPERIALISM 0x00554460
 char TTaskForce::MouseCodeForTarget(Province* province) const {
-  char stale = g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+  bool stale = g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
       nation, province->ownerNationCode00);
   return stale ? 0x10 : 1;
 }

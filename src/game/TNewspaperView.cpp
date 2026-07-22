@@ -125,7 +125,7 @@ void TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog(int pageNa
   for (int col = 0; col < 3; col++) {
     int y = 0x50;
     for (int i = 0; i < 3; i++) {
-      newsStory* story = &g_pInterNationEventQueueManager->stories[pageNation][col][i];
+      newsStory* story = &g_pNewsMgr->stories[pageNation][col][i];
       if (story->entry.storyId == 0) {
         continue;
       }

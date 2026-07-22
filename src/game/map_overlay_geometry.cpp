@@ -17,14 +17,14 @@
 // screen position, then emits a QDFrameRect segment for each hex edge whose neighbor either
 // has a different city/region (cityRecordIndex != compareValue on both sides of the edge)
 // or forms a type-5 (ocean) pairing. Neighbor tile indices [0..5] come from
-// ComputeHexNeighborTileIndices. Called from TMacViewMgr's map-highlight pass. Reads the
-// typed TTerrainStateRecordView fields cityRecordIndex (+0x14) and terrainType00 (+0x00,
+// GetNeighborTileIDArray. Called from TMacViewMgr's map-highlight pass. Reads the
+// typed TTerrainStateRecordView fields cityRecordIndex (+0x14) and GetTerrainKind() (+0x00,
 // == 5 for ocean) directly, instead of the former raw `terrain + n*0x24 + off` casts.
 // FUNCTION: IMPERIALISM 0x00508f30
 void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
   short neighborTiles[6];
-  TMapMgr::ComputeHexNeighborTileIndices(tileId, neighborTiles,
-                                         g_pGlobalMapState->hexNeighborWrapHorizontally20);
+  TMapMgr::GetNeighborTileIDArray(tileId, neighborTiles,
+                                  g_pGlobalMapState->hexNeighborWrapHorizontally20);
   int screenXY[2];
   ComputeWrappedIsometricScreenOffsetFromTile(tileId, screenXY, 0x10, 0, 0);
   int baseX = static_cast<short>(
@@ -56,8 +56,8 @@ void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
     QDFrameRect(&edgeLowerRight);
   }
   if (neighborTiles[4] != -1 && neighborTiles[3] != -1 &&
-      terrain[neighborTiles[4]].terrainType00 == 5 &&
-      terrain[neighborTiles[3]].terrainType00 == 5) {
+      terrain[neighborTiles[4]].GetTerrainKind() == kStrategicTerrainWater &&
+      terrain[neighborTiles[3]].GetTerrainKind() == kStrategicTerrainWater) {
     QDFrameRect(&edgeUpperLeft);
   }
   if (neighborTiles[0] != -1 && neighborTiles[1] != -1 &&
@@ -66,8 +66,9 @@ void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
     QDFrameRect(&edgeCornerBR);
   }
   if (neighborTiles[4] != -1) {
-    if (neighborTiles[5] != -1 && terrain[neighborTiles[4]].terrainType00 == 5 &&
-        terrain[neighborTiles[5]].terrainType00 == 5) {
+    if (neighborTiles[5] != -1 &&
+        terrain[neighborTiles[4]].GetTerrainKind() == kStrategicTerrainWater &&
+        terrain[neighborTiles[5]].GetTerrainKind() == kStrategicTerrainWater) {
       QDFrameRect(&edgeCornerTL);
     }
     if (neighborTiles[3] != -1 && terrain[neighborTiles[4]].cityRecordIndex != compareValue &&
@@ -76,8 +77,8 @@ void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
     }
   }
   if (neighborTiles[1] != -1 && neighborTiles[2] != -1 &&
-      terrain[neighborTiles[1]].terrainType00 == 5 &&
-      terrain[neighborTiles[2]].terrainType00 == 5) {
+      terrain[neighborTiles[1]].GetTerrainKind() == kStrategicTerrainWater &&
+      terrain[neighborTiles[2]].GetTerrainKind() == kStrategicTerrainWater) {
     QDFrameRect(&edgeUpperRight);
   }
   if (neighborTiles[4] != -1 && neighborTiles[5] != -1 &&
@@ -86,8 +87,8 @@ void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
     QDFrameRect(&edgeCornerBL);
   }
   if (neighborTiles[1] != -1 && neighborTiles[0] != -1 &&
-      terrain[neighborTiles[1]].terrainType00 == 5 &&
-      terrain[neighborTiles[0]].terrainType00 == 5) {
+      terrain[neighborTiles[1]].GetTerrainKind() == kStrategicTerrainWater &&
+      terrain[neighborTiles[0]].GetTerrainKind() == kStrategicTerrainWater) {
     QDFrameRect(&edgeCornerTR);
   }
 }
@@ -171,21 +172,24 @@ unsigned int MapEdgePoint::Equals(const MapEdgePoint* other) const {
 int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
   (void)dwInputFlags;
   TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[nTileIndex];
-  short actionClass = tile.tileActionClass16;
-  if (actionClass == -1) {
+  short actionClass = tile.tileActionState16;
+  if (actionClass == kMapTileActionStateNone) {
     return 0;
   }
-  if (actionClass >= 2 && actionClass <= 6 && actionClass != 3) {
+  if (actionClass >= kMapTileActionStateBlockadingFleet &&
+      actionClass <= kMapTileActionStateInvadingFleet && actionClass != kMapTileActionStateAnchor) {
     return 0xb;
   }
-  if (actionClass >= 7 && actionClass <= 0xd) {
+  if (actionClass >= kMapTileActionStateNationOrderFirst &&
+      actionClass <= kMapTileActionStateNationOrderLast) {
     short ordinal = tile.tileActionOrdinal1a;
     g_pCachedMapActionContext = 0;
     if (ordinal != -1) {
       int matchIndex = 0;
       for (TTaskForce* entry = g_pNavyOrderManager->orderQueueHead; entry != 0;
            entry = entry->nextForce) {
-        if (entry->nation == static_cast<short>(actionClass - 7)) {
+        if (entry->nation ==
+            static_cast<short>(actionClass - kMapTileActionStateNationOrderFirst)) {
           if (matchIndex == ordinal) {
             g_pCachedMapActionContext = entry;
             break;
@@ -196,7 +200,8 @@ int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
     }
     return actionClass - 5;
   }
-  if (actionClass >= 0xe && actionClass <= 0x15) {
+  if (actionClass >= kMapTileActionStateLinkedZoneFirst &&
+      actionClass <= kMapTileActionStateLinkedZoneLast) {
     TZone* activeOrderContext = 0;
     if (g_pUiRuntimeContext->mapUberPictureF0->activeUnitCategoryIndex96 == 2) {
       activeOrderContext = g_pUiRuntimeContext->mapUberPictureF0->orderEntryContext98;

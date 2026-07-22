@@ -24,13 +24,13 @@ public:
   TBeachheadMission(TZone* targetZone, TInvadeMission* parentMission);
   virtual ~TBeachheadMission() override;
 
-  virtual char Matches(eMissionType missionType, int key,
+  virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const override; // slot 0x13 0x53a7b0
 
   virtual TMission*
   GetArmyMission() override; // slot 0x16 0x53a920 -- returns parentMission3c (not `this`)
-  virtual char IsDefensiveSeaZoneMission() const override; // slot 0x18 0x53a3b0
-  virtual char IsHospitalMission() const override;         // slot 0x19 0x53a390
+  virtual bool IsDefensiveSeaZoneMission() const override; // slot 0x18 0x53a3b0
+  virtual bool IsHospitalMission() const override;         // slot 0x19 0x53a390
 
   virtual char SmokeEmIfYouGotEm()
       override; // slot 0x26 0x53a940 -- clears blockade-port child order links if ready

@@ -30,7 +30,7 @@ void TMiniArmyLine::InstallViews(TView* panel, int* offsetLayout) {
   armyView->eventNumber60 = 0x22;
   SetControlHoverHelpText(CString(g_pMiniCivSharedText_0064cb18), armyView);
 
-  if (militaryUnit10->HasEraCapabilityFallbackSlot()) {
+  if (militaryUnit10->CanUpgrade()) {
     int upgradeOffset[2] = {0x73, 0};
     int upgradeSize[2] = {0x13, 0x12};
     TGWorldButton* upgradeButton = new TGWorldButton;
@@ -47,7 +47,7 @@ void TMiniArmyLine::InstallViews(TView* panel, int* offsetLayout) {
     short armsCost;
     short cashCost;
     short fuelCost;
-    militaryUnit10->GetEraCapabilityFallbackCosts(&candidateSlot, &armsCost, &cashCost, &fuelCost);
+    militaryUnit10->UpgradeRequirements(candidateSlot, armsCost, cashCost, fuelCost);
     armsText.Format(g_szDecimalFormat, static_cast<int>(armsCost));
     g_pSimMgr->NumToCurrency(cashCost, &cashText);
     if (fuelCost == 0) {

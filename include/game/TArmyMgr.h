@@ -80,7 +80,7 @@ public:
   virtual void FormStacks();    // slot 0x0b 0x4a1f80
   // Walks pendingUnitPool0c's TArmyStack entries starting at nextStackOrdinal10: for
   // each stack whose categoryFlag8 matches regionAffinityTable1c[ownerNationCodeE],
-  // relocates every unit on its embedded chain (VTableSlot10 + SetOrderModeSlot34);
+  // relocates every unit on its embedded chain (VTableSlot10 + SetOrders);
   // otherwise tries TryCreateTacticalBattleViewForTileArmies. Stops early on the first
   // battle view created; always re-releases the 3 cached objects up front and, when the
   // pass fully completes without creating one, via ReleaseThreeLinkedObjectsAndReset-
@@ -102,7 +102,7 @@ public:
   // stack is the same TArmyStack the tile-army-composition pass (0x4a1f80) builds and
   // ResolveNextMove (0x4a2390) iterates. Picks a random adjacent region
   // matching the stack's head unit's field_18 tag and relocates every movable unit there
-  // (TUnit::SetOrderModeSlot34), or resets them if none qualifies.
+  // (TUnit::SetOrders), or resets them if none qualifies.
   virtual undefined
   RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack* stack,
                                                    short tileIndex); // slot 0x0f 0x4a35e0
@@ -126,7 +126,7 @@ public:
   virtual undefined DispatchTileActionByKind_004a3d90(int contextArg,
                                                       short actionKind); // slot 0x13 0x4a3d90
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill arity
-  // mismatch; contextArg is forwarded as TUnit::SetOrderModeSlot34's payload. Returns
+  // mismatch; contextArg is forwarded as TUnit::SetOrders's payload. Returns
   // whether a movable unit was found and commanded (BL in the ground truth, matching
   // TCivMgr's directly-analogous HandleCivilianTileSelectionOrReportClick/
   // HandleCivilianTileOrderAction shape) -- not a meaningless `undefined` stub value.
@@ -228,12 +228,12 @@ public:
   short ActivateFirstActiveTacticalUnitByCategoryAtTile(short categoryId, short tileIndex);
 
   // Walks the region's stationed-unit chain (Province::stationedUnitChain98,
-  // via TUnit::nextOnTile) for one whose field_8 is idle and whose
-  // TMilitaryUnit::GetUnitMovementClassId() is nonzero. 0x004a4550, __thiscall (this unused --
+  // via TUnit::nextOnTile) for one whose unitOrder is idle and whose
+  // TMilitaryUnit::GetCategory() is nonzero. 0x004a4550, __thiscall (this unused --
   // operates purely off g_pGlobalMapState), 1 arg.
   bool HasEligibleStationedUnitInRegion(short regionId);
 
-  // Sums TMilitaryUnit::GetUnitTypeCostPoints() over the same eligible-unit walk as
+  // Sums TMilitaryUnit::GetArmsCarried() over the same eligible-unit walk as
   // CommitCityActionGateCostIfAffordable (idle unit, nonzero movement class) for
   // pendingMapActionIndex's tile, without the affordability/commit side effects --
   // used purely to display the pending action-gate cost. 0x004a41d0, __thiscall
@@ -300,7 +300,7 @@ public:
   // cityScoreTable[cityRecordIndex]'s adjacent regions (adjacentRegionIds0A[0..
   // adjacentRegionCount08)) owned by the active nation (TMapMgr::
   // ResolveTileOwnerNationCodeNormalized == TSimMgr::GetActiveNationId), and over their
-  // stationedUnitChain98 picks the highest-scoring TMilitaryUnit with orderType > 0x1a
+  // stationedUnitChain98 picks the highest-scoring General TMilitaryUnit
   // (score = field_38/100 + 1); ties keep the first found. If no adjacent region is
   // owned (or none qualifies), falls back to the region's own city display name
   // (TMapMgr::AssignCityRecordDisplayName). Phase 2 separately scans
@@ -319,7 +319,7 @@ public:
   // from cityRecordIndex+TSimMgr::GetEconomicTurn()+GetActiveNationId(): the first roll
   // picks a 0-2 "point cost". The second result is biased by 3: selector 4 uses the
   // fixed "misc" bucket, selector 5 rolls uniformly over buckets 0-9, and the default
-  // uses the unit's GetUnitMovementClassId(). Singular/plural localized names come from
+  // uses the unit's GetCategory(). Singular/plural localized names come from
   // string group 0x2726 (offset i vs i+11). Returns false only when Phase 1/2 found
   // nothing at all (bestScore == -1, i.e. zero adjacent regions AND no owned ship in
   // zone).
@@ -344,13 +344,13 @@ public:
   //    g_apNationStates[nationId]'s order list (TCountry::militaryUnitList44, a
   //    TSortedList* of TMilitaryUnit*), and AddTail()s every entry whose tileIndex06
   //    isn't a movement-class tile (TileHasMovementClassId) for cityIndex when its
-  //    field_C == cityIndex, summing GetUnitTypeCostPoints per entry into a budget.
+  //    field_C == cityIndex, summing GetArmsCarried per entry into a budget.
   //  - Subtracts g_pNavyOrderManager->GetInvasionCapacity(
   //    nationId, &g_pGlobalMapState->cityScoreTable[cityIndex], 0) from that
   //    budget; if the remainder is positive, randomly evicts entries from the TList
   //    (rand() % GetCount() + 1 via GetEntryByOrdinal) until the remainder is <= 0, each
   //    time looking the evicted TMilitaryUnit* up in the TList's underlying CPtrList via
-  //    CPtrList::Find/RemoveAt, re-subtracting its GetUnitTypeCostPoints, and stamping
+  //    CPtrList::Find/RemoveAt, re-subtracting its GetArmsCarried, and stamping
   //    TUnit::field_34 to 0xffaa as a scratch "evicted" marker (field_34 is otherwise a
   //    persisted strength scalar -- reused here since the unit is about to be destroyed).
   //  - Grows snapshot->childRecords[side] (MapOrderBattleSideChildRecord array,
@@ -380,7 +380,7 @@ public:
   // Called by TArmyBattle::FinalizeTacticalBattleOutcome once a tactical battle's
   // outcome is decided (sideWonFlag = whether ourStack's side won). Dispatches the
   // army-context report, then applies the win/loss aftermath to both stacks: the
-  // winning stack's units settle into their tile (VTableSlot10 + SetOrderModeSlot34)
+  // winning stack's units settle into their tile (VTableSlot10 + SetOrders)
   // while the losing stack is redistributed to a random adjacent region (sideWonFlag
   // != 0) or relocated back to its origin tile (sideWonFlag == 0, via
   // ResetAndRelocateUnitOrderQueue_004a37b0); both stacks then grow unit quality

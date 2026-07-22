@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TObject.h"
+#include "game/map_domain_types.h"
 #include "game/mfc.h"
 
 class TArmyTacUnit;
@@ -37,18 +38,20 @@ public:
   ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit);       // slot 0x0a 0x59ff20
   virtual void PropagateTileAccessibilityStrengthLevels(TTacticalUnit* unit); // slot 0x0b 0x5a02e0
   // Places a unit on a battle-grid tile (deployment). Base is a no-op stub.
-  virtual void DeployTacticalUnitToTile(TTacticalUnit* unit, int tileIndex); // slot 0x0c 0x59f710
+  virtual void DeployTacticalUnitToTile(TTacticalUnit* unit,
+                                        TacticalTileIndex tileIndex); // slot 0x0c 0x59f710
   virtual void MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
-      TTacticalUnit* unit, int targetTileIndex); // slot 0x0d 0x5a1bd0
+      TTacticalUnit* unit, TacticalTileIndex targetTileIndex); // slot 0x0d 0x5a1bd0
   // Whether either neighbor tile flanking hex direction `hexDirection` around
   // `tileIndex` holds a unit of the other side.
-  virtual unsigned char HasEnemyUnitOnTilesFlankingHexDirection(int tileIndex, int hexDirection,
+  virtual unsigned char HasEnemyUnitOnTilesFlankingHexDirection(TacticalTileIndex tileIndex,
+                                                                TacticalHexDirection hexDirection,
                                                                 char side); // slot 0x0e 0x5a1400
   virtual void ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
-      TTacticalUnit* unit, int targetTileIndex); // slot 0x0f 0x5a1ca0
-  virtual void
-  EvaluateAndResolveTacticalActionAgainstTileOccupant(TTacticalUnit* attackerUnit,
-                                                      int targetTileIndex); // slot 0x10 0x5a1ee0
+      TTacticalUnit* unit, TacticalTileIndex targetTileIndex); // slot 0x0f 0x5a1ca0
+  virtual void EvaluateAndResolveTacticalActionAgainstTileOccupant(
+      TTacticalUnit* attackerUnit,
+      TacticalTileIndex targetTileIndex); // slot 0x10 0x5a1ee0
   // Moves a unit's record onto the opposing side's player list (artillery capture).
   virtual void TransferTacticalUnitToOpposingSide(TTacticalUnit* unit); // slot 0x11 0x5a2700
   // Called once the battle's outcome is decided (TNextMoveCommand::DoIt, 0x5a6620).
@@ -56,20 +59,21 @@ public:
   // outcome processing. The old "CreateTTacticalBattleInstance" name was Ghidra junk
   // (the function finalizes an existing battle, it never constructs one).
   virtual undefined FinalizeTacticalBattleOutcome(int sideWonFlag); // slot 0x12 0x59f730
-  virtual void
-  MarkTacticalTileStateQueuedAndMaybeDispatchPacket(TArmyTacUnit* unit,
-                                                    int targetTileIndex); // slot 0x13 0x5a3190
+  virtual void MarkTacticalTileStateQueuedAndMaybeDispatchPacket(
+      TArmyTacUnit* unit,
+      TacticalTileIndex targetTileIndex); // slot 0x13 0x5a3190
   virtual void AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket(
-      TArmyTacUnit* unit);                                       // slot 0x14 0x5a3210
-  virtual void ClearTacticalTileStateRunByStride(int tileIndex); // slot 0x15 0x5a3320
+      TArmyTacUnit* unit);                                                     // slot 0x14 0x5a3210
+  virtual void ClearTacticalTileStateRunByStride(TacticalTileIndex tileIndex); // slot 0x15 0x5a3320
   virtual undefined
   ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalUnit* rallyingUnit,
                                                    TArmyTacUnit* rallyTarget); // slot 0x16 0x5a3810
-  virtual void ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* unit,
-                                                       int tileIndex); // slot 0x17 0x5a34d0
   virtual void
-  ExecuteTacticalDigActionAndConsumeUnitActionPoints(TTacticalUnit* unit,
-                                                     int tileIndex); // slot 0x18 0x5a3640
+  ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* unit,
+                                          TacticalTileIndex tileIndex); // slot 0x17 0x5a34d0
+  virtual void ExecuteTacticalDigActionAndConsumeUnitActionPoints(
+      TTacticalUnit* unit,
+      TacticalTileIndex tileIndex); // slot 0x18 0x5a3640
 
   // Offset-faithful layout (object is 0x78 per RTTI; TArmyBattle adds no bytes).
   // The ctor (0x59f770) zeroes +4, +8, +0x24, +0x1c, +0x34, +0x74, +0x20 -- in that
@@ -144,7 +148,7 @@ public:
   // the 0x545940 dispatcher's pushes.
   TArmyTacUnit* SeekLinkedListCursorByNestedId(int nestedId);                 // 0x5a53e0
   void SetCurrentTacticalUnitSelection(TTacticalUnit* unit, char remoteFlag); // 0x5a1010
-  void DispatchTacticalActionByHoverStateIndex(int tileIndex);                // 0x5a3370
+  void DispatchTacticalActionByHoverStateIndex(TacticalTileIndex tileIndex);  // 0x5a3370
   // Per-turn upkeep for a unit sitting in state 1 (morale broken): retreats it toward the
   // lowest-distance-field tile (BuildTacticalDistanceFieldForSide), then -- if still
   // morale-broken -- scores its odds of being removed from the battle by comparing a
@@ -152,18 +156,20 @@ public:
   // fatal if the retreat couldn't move the unit at all), and always queues the end-of-
   // action turn event. 0x5a10e0.
   void ProcessTacticalUnitState1TurnStep(TTacticalUnit* unit);
-  void MoveTacticalUnitBetweenTiles(TTacticalUnit* unit, int fromTileIndex, int toTileIndex,
-                                    char remoteFlag); // 0x5a1910
+  void MoveTacticalUnitBetweenTiles(TTacticalUnit* unit, TacticalTileIndex fromTileIndex,
+                                    TacticalTileIndex toTileIndex, char remoteFlag); // 0x5a1910
   void ApplyTacticalActionEffectsAndMaybeRemoveUnit(TTacticalUnit* attackerUnit,
-                                                    TTacticalUnit* targetUnit, int targetTileIndex,
-                                                    int damageA, int damageB, char effectCode2C,
-                                                    char remoteFlag);             // 0x5a24a0
-  void HandleTacticalCommandTag_mine(int tileIndex, int amount, char remoteFlag); // 0x5a35a0
-  void HandleTacticalCommandTag_digg(TTacticalUnit* unit, int targetTileIndex,
+                                                    TTacticalUnit* targetUnit,
+                                                    TacticalTileIndex targetTileIndex, int damageA,
+                                                    int damageB, char effectCode2C,
+                                                    char remoteFlag); // 0x5a24a0
+  void HandleTacticalCommandTag_mine(TacticalTileIndex tileIndex, int amount,
+                                     char remoteFlag); // 0x5a35a0
+  void HandleTacticalCommandTag_digg(TTacticalUnit* unit, TacticalTileIndex targetTileIndex,
                                      char remoteFlag); // 0x5a36d0
   void HandleTacticalCommandTag_raly(TArmyTacUnit* unit, int newMorale, int newState,
                                      char remoteFlag); // 0x5a38e0
-  void HandleTacticalCommandTag_depl(TArmyTacUnit* unit, int tileIndex,
+  void HandleTacticalCommandTag_depl(TArmyTacUnit* unit, TacticalTileIndex tileIndex,
                                      char remoteFlag); // 0x5a4370
   // Hands the round over once the current side is done deploying: flips currentSideC,
   // selects the incoming side's next unit, refreshes the 'tool' toolbar, then either
@@ -185,11 +191,13 @@ public:
   void SetCurrentSideNavyShipDisplayMode(int mode);
 
   // Helpers the command family dispatches into (all __thiscall on the battle).
-  void ApplyTacticalDoneSelectionAndRefreshUi(TTacticalUnit* unit);                   // 0x59fe40
-  void ComputeHexNeighborTileIndices_005A0420(int tileIndex, int* outNeighborTiles6); // 0x5a0420
-  unsigned char IsHexNeighborTileIndex(int tileIndex,
-                                       int candidateTileIndex); // 0x5a0550
-  void ConsumeFortStrengthPointsAndInvalidateIfDepleted(int tileIndex,
+  void ApplyTacticalDoneSelectionAndRefreshUi(TTacticalUnit* unit); // 0x59fe40
+  // Mac identities: GetNeighborList(long, long*) and AreNeighbors(long, long).
+  void GetNeighborList(TacticalTileIndex tileIndex,
+                       TacticalTileIndex* outNeighborTiles6); // 0x5a0420
+  unsigned char AreNeighbors(TacticalTileIndex tileIndex,
+                             TacticalTileIndex candidateTileIndex); // 0x5a0550
+  void ConsumeFortStrengthPointsAndInvalidateIfDepleted(TacticalTileIndex tileIndex,
                                                         int consumeAmount); // 0x5a3c20
   void EvaluateTacticalSideStateAndShowBattleSummaryDialog();               // 0x5a2750
   // Queues the 0x232a end-of-action turn event (news a TCommand and clears pendingEndOfActionFlag48).
@@ -205,44 +213,47 @@ public:
   // 0x5a0ea0, __thiscall, no args.
   void AdvanceToNextTacticalUnitTurnStep();
   // Paths the unit toward the target tile. 0x5a1520, __thiscall.
-  void MoveTacticalUnitTowardTile(TTacticalUnit* unit, int targetTileIndex);
+  void MoveTacticalUnitTowardTile(TTacticalUnit* unit, TacticalTileIndex targetTileIndex);
   // Whether the selected unit still has a valid follow-up target for the current
   // action. 0x5a1d70, __thiscall.
   unsigned char HasValidTacticalFollowupTargetForCurrentAction();
   // Fort-wall tile index where the firing line between the two tiles crosses the wall
   // column, 0 when it does not. 0x5a3a70, __thiscall.
-  int FindFortWallTileCrossedByFiringLine(int targetTileIndex, int attackerTileIndex);
+  TacticalTileIndex FindFortWallTileCrossedByFiringLine(TacticalTileIndex targetTileIndex,
+                                                        TacticalTileIndex attackerTileIndex);
   // Recursive distance-field path builder into outPathTiles (caller pre-seeds
   // outPathTiles[0] = target); returns the path depth or -1. 0x5a16e0.
-  int BuildPathToTargetByDistanceField(int walkTileIndex, int pathDepth, int goalTileIndex,
-                                       int* outPathTiles);
+  int BuildPathToTargetByDistanceField(TacticalTileIndex walkTileIndex, int pathDepth,
+                                       TacticalTileIndex goalTileIndex,
+                                       TacticalTileIndex* outPathTiles);
   // Reaction checks fired when a unit enters a tile; nonzero stops the walk. 0x5a1a20.
-  unsigned char ResolveTacticalReactionChecksForTile(int tileIndex);
+  unsigned char ResolveTacticalReactionChecksForTile(TacticalTileIndex tileIndex);
   // Whether the target tile is reachable for the current action (range scaled by the
   // attacker category's direct-fire flag). 0x5a3d30, ret 0x10.
-  unsigned char IsTacticalTargetTileReachableForAction(int attackerTileIndex, int targetTileIndex,
+  unsigned char IsTacticalTargetTileReachableForAction(TacticalTileIndex attackerTileIndex,
+                                                       TacticalTileIndex targetTileIndex,
                                                        char directFireFlag, int range);
   // Hover-cursor state for `tileIndex` relative to the current selection/side: not-your-turn
   // (1), pre-battle-live setup checks (own-unit hover 0xc, blocked 2, deployment zone 3), and
   // once the battle is live: own-tile reselect (6), reachable empty move tile (4), manned fort
   // wall (9), adjacent dig/mine target (7), adjacent rally target (8), ranged/fire attack
   // target (5), adjacent melee attack target (0xa). 0 when nothing applies. 0x5a05a0.
-  int ComputeTacticalHoverCursorStateIndex(int tileIndex);
-  short ResolveTacticalHoverCursorResourceId(int tileIndex); // 0x005a0a90
+  int ComputeTacticalHoverCursorStateIndex(TacticalTileIndex tileIndex);
+  short ResolveTacticalHoverCursorResourceId(TacticalTileIndex tileIndex); // 0x005a0a90
   // Builds the per-tile distance field into tileIntArray30 for the given side
   // (consumed by the AI advance heuristic). 0x5a4460.
   void BuildTacticalDistanceFieldForSide(char ourSideFlag);
   // Whether the tile sits on a fort-wall gun-slot row (5/7/9) at the wall column.
   // 0x5a4690.
-  unsigned char IsTacticalTileAtFortWallSectionSlot(int tileIndex);
+  unsigned char IsTacticalTileAtFortWallSectionSlot(TacticalTileIndex tileIndex);
   // Deployment-zone queries. 0x5a4240 / 0x5a41c0 / 0x5a4330.
   int CountFreeDeploymentZoneTilesForCurrentSide();
-  unsigned char ApplyGridColumnSelectionGuard(int tileIndex);
+  unsigned char ApplyGridColumnSelectionGuard(TacticalTileIndex tileIndex);
   // True when there is no fort or a wall section is breached (curated name kept).
   unsigned char IsTacticalSideCategoryCoverageIncompleteOrFlagOff();
   // True when tileIndex is a fort-wall tile (deployMark8 > 1) whose double-row group
   // still has a positive fortStrengthPoints54 entry (garrison intact). 0x5a42e0.
-  bool HasFortWallGarrison(int tileIndex);
+  bool HasFortWallGarrison(TacticalTileIndex tileIndex);
 };
 
 ASSERT_SIZE(TTacticalBattle, 0x78);

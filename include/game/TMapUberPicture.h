@@ -18,11 +18,11 @@ public:
   virtual ~TMapUberPicture() override; // slot 0x01 (scalar deleting destructor)
   virtual void Free() override;        // slot 0x07 0x596c60
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
-                       TEvent* event) override;               // slot 0x0f 0x00597340
-  virtual void DoMenuCommand(int param) override;             // slot 0x11 0x597600
-  virtual void DoKeyEvent(TToolboxEvent* event) override;     // slot 0x12 0x597770
-  virtual void DoPostCreate(int arg) override;                // slot 0x37 0x596a80
-  virtual void AutoScrollByEdgeMask(short edgeMask) override; // slot 0x74 0x5977a0
+                       TEvent* event) override;                    // slot 0x0f 0x00597340
+  virtual void DoMenuCommand(int param) override;                  // slot 0x11 0x597600
+  virtual void DoKeyEvent(TToolboxEvent* event) override;          // slot 0x12 0x597770
+  virtual void DoPostCreate(int arg) override;                     // slot 0x37 0x596a80
+  virtual void Scroll(MapScrollEdgeMaskStorage edgeMask) override; // slot 0x74 0x5977a0
   // Mac CodeWarrior identity: TMapUberPicture::InvalidateMap(). Refreshes whichever
   // concrete map dialog is active.
   virtual void InvalidateMap(); // slot 0x75 0x598950
@@ -68,12 +68,12 @@ public:
   int unresolvedZero9C;
   int unresolvedZeroA0;
   // Optional 'DOOG' child used by the 0x7dd dual-map factory. Its factory constructs a
-  // TOceanDialog, and AutoScrollByEdgeMask calls ApplyDirectionalNudgeAndRefreshDisplay
+  // TOceanDialog, and Scroll calls ApplyDirectionalNudgeAndRefreshDisplay
   // directly when that child is active.
   TOceanDialog* goodGoldTagControlA4;
   // The 'DLOG' child. Event 0x3b8 constructs a TCitySiteView (a TMapDialog subclass),
   // while event 0x7dd constructs TMapDialog directly. The slot-0xa4 dispatch in
-  // AutoScrollByEdgeMask resolves to
+  // Scroll resolves to
   // TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites.
   TMapDialog* subview2A8;
   // Active strategic-map dialog. Both TMapDialog and TOceanDialog derive from TWorldView;
@@ -89,7 +89,7 @@ public:
   // SetActiveProvinceSelection (0x4a45e0) dispatches categoryPages[1]'s own vtable slot at
   // byte offset 0x1d0 -- but TArmyToolbar's real vtable (dumped at 0x667ad0) is far larger
   // than TMapUberPicture's (entries confirmed past index 0xb7), and slot 0x1d0 there
-  // resolves to TArmyToolbar's own 0x58df60, not TMapUberPicture::AutoScrollByEdgeMask.
+  // resolves to TArmyToolbar's own 0x58df60, not TMapUberPicture::Scroll.
   // So categoryPages[] is genuinely heterogeneous per index (civ=TCivToolbar,
   // army=TArmyToolbar, navy presumably TNavyToolbarCluster) -- distinct TView-derived
   // hierarchies, not further TMapUberPicture instances. TView is their true common
@@ -151,7 +151,7 @@ public:
   // clears the active pointer if none remain). 0x00597a80, __thiscall, 0 args, 996 bytes.
   // Re-attributed from a `TCivToolbar::` mis-label (symbols.csv/bd 4yz): its body reads
   // this+0x96 (activeUnitCategoryIndex96, MOV BL,byte[ESI+0x96]) and both real call sites
-  // (TCivMgr::QueueImmediateCivilianCommandAndCycleSelection's thunk 0x408b93, and
+  // (TCivMgr::OrderAndCycle's thunk 0x408b93, and
   // TArmyToolbar.cpp's own call) load ECX from g_pUiRuntimeContext->mapUberPictureF0
   // directly -- ground-truth-confirmed via `just ghidra-listing`, not a categoryPages[]
   // dispatch.

@@ -257,7 +257,7 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
     // Save/restore the QuickDraw clip around the per-tile pass.
     CTemporaryRegion savedClip;
     GetClip(savedClip.tempRgn);
-    int tileIndex;
+    TacticalTileIndex tileIndex;
     for (tileIndex = 0; tileIndex < 0x1b3; tileIndex++) {
       DrawTacticalTileInClipRect(tileIndex, &clipRect);
     }
@@ -277,7 +277,7 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x005aa900
-undefined TTacArmyView::DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect) {
+undefined TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT* clipRect) {
   int row = tileIndex / tileColumnsPerRow80;
   int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
   if (row & 1) {

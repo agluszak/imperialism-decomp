@@ -236,8 +236,7 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
           int source = 0;
           do {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[row * 0x50 + source] < 0) &&
-                (g_pDiplomacyTurnStateManager->HasState300LinkBetweenNationPair(source, target) ==
-                 0) &&
+                (g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target) == 0) &&
                 (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, target) == 0)) {
               DiplomacyRelationEvent event;
               event.sourceSlot = static_cast<short>(source);
@@ -269,8 +268,7 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
           int source = 0;
           do {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[row * 0x50 + source] < 0) &&
-                (g_pDiplomacyTurnStateManager->HasState300LinkBetweenNationPair(source,
-                                                                                secTarget) == 0) &&
+                (g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, secTarget) == 0) &&
                 (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, secTarget) == 0)) {
               DiplomacyRelationEvent event;
               event.sourceSlot = static_cast<short>(source);
@@ -306,8 +304,7 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
           do {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) &&
                 (cells[midRow * 0x50 + source] < 0) &&
-                (g_pDiplomacyTurnStateManager->HasState300LinkBetweenNationPair(source, target) ==
-                 0) &&
+                (g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target) == 0) &&
                 (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, target) == 0)) {
               DiplomacyRelationEvent event;
               event.sourceSlot = static_cast<short>(source);
@@ -340,8 +337,8 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
             int source = 0;
             do {
               if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[7 * 0x50 + source] < 0) &&
-                  (g_pDiplomacyTurnStateManager->HasState300LinkBetweenNationPair(
-                       source, secTarget) == 0) &&
+                  (g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, secTarget) ==
+                   0) &&
                   (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, secTarget) == 0)) {
                 DiplomacyRelationEvent event;
                 event.sourceSlot = static_cast<short>(source);
@@ -379,8 +376,7 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
           do {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) &&
                 (cells[lastRow * 0x50 + source] < 0) &&
-                (g_pDiplomacyTurnStateManager->HasState300LinkBetweenNationPair(source, target) ==
-                 0) &&
+                (g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target) == 0) &&
                 (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, target) == 0)) {
               DiplomacyRelationEvent event;
               event.sourceSlot = static_cast<short>(source);
@@ -514,7 +510,7 @@ int TTradeMgr::ComputeNationMetricDispatchScoreAndResolveScale(short sourceSlot,
     return (scoreA > scoreB) ? scoreA : scoreB;
   }
 
-  if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(targetSlot) != 0) {
+  if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(targetSlot) != 0) {
     int relation = *reinterpret_cast<short*>(reinterpret_cast<char*>(g_apNationStates[targetSlot]) +
                                              0x14 + sourceSlot * 2);
     if (relation == 100) {
@@ -575,9 +571,8 @@ void TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short slot
       int transfer =
           g_apTerrainTypeDescriptorTable[entry[1]]->SumDiplomacyState1c6AndRelationDeltaSnapshot(
               slot);
-      char inPlay = g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(entry[1]);
-      if ((inPlay != 0) &&
-          (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(entry[0]) == 0) &&
+      bool inPlay = g_pDiplomacyTurnStateManager->IsMajorNationSlot(entry[1]);
+      if ((inPlay != 0) && (g_pDiplomacyTurnStateManager->IsMajorNationSlot(entry[0]) == 0) &&
           (g_apTerrainTypeDescriptorTable[entry[1]]->GetDiplomacyCounterA2() < transfer)) {
         transfer = g_apTerrainTypeDescriptorTable[entry[1]]->GetDiplomacyCounterA2();
       }
@@ -630,8 +625,8 @@ void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked() {
     int relationDelta =
         g_apTerrainTypeDescriptorTable[entry[1]]->SumDiplomacyState1c6AndRelationDeltaSnapshot(
             dispatchIdx);
-    if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(entry[1]) != 0 &&
-        g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(entry[0]) == 0) {
+    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(entry[1]) != 0 &&
+        g_pDiplomacyTurnStateManager->IsMajorNationSlot(entry[0]) == 0) {
       if (g_apTerrainTypeDescriptorTable[entry[1]]->GetDiplomacyCounterA2() < relationDelta) {
         relationDelta = g_apTerrainTypeDescriptorTable[entry[1]]->GetDiplomacyCounterA2();
       }
@@ -762,13 +757,13 @@ void TTradeMgr::DispatchProposalAmountSlot60(short ownerNation, int sourceContex
 
   short ownerSlot = ownerNation;
   if (emitEventFlag != 0) {
-    if (g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(ownerNation) != 0) {
+    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(ownerNation) != 0) {
       g_apNationStates[ownerSlot]->ClearDiplomacyState1c6ForTarget(
           static_cast<short>(targetNation));
     }
   }
   if (static_cast<short>(amount) < 1) {
-    if (g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(ownerNation) != 0) {
+    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(ownerNation) != 0) {
       g_apNationStates[ownerSlot]->AppendTrackedSlotEntry(
           1, ownerNation, static_cast<short>(amount), static_cast<short>(targetNation), amount);
     }
@@ -778,8 +773,8 @@ void TTradeMgr::DispatchProposalAmountSlot60(short ownerNation, int sourceContex
         ->ApplyIndexedResourceDeltaAndAdjustNationTotals(targetNation, amount, maxAmount);
     static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[static_cast<short>(sourceContext)])
         ->ApplyIndexedResourceDeltaAndAdjustNationTotals(targetNation, -amount, ownerNation);
-    if (g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(maxAmount) != 0) {
-      if (g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(ownerNation) == 0) {
+    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(maxAmount) != 0) {
+      if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(ownerNation) == 0) {
         static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[sourceContext])
             ->DecrementDiplomacyCounterA2ByValue(amount);
       }
@@ -794,12 +789,12 @@ void TTradeMgr::DispatchProposalAmountSlot60(short ownerNation, int sourceContex
                                                            static_cast<short>(standingScore + 1));
     }
     short targetCode = static_cast<short>(maxAmount);
-    if (g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(maxAmount) != 0) {
+    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(maxAmount) != 0) {
       g_apNationStates[static_cast<short>(targetNation)]->AppendTrackedSlotEntry(
           0, ownerNation, static_cast<short>(amount), static_cast<short>(targetNation),
           sourceContext);
     }
-    if (g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(ownerNation) != 0) {
+    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(ownerNation) != 0) {
       g_apNationStates[ownerIndex]->AppendTrackedSlotEntry(
           1, targetNation, static_cast<short>(amount), static_cast<short>(targetNation),
           targetCode);

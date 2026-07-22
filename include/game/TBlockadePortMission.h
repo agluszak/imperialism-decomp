@@ -39,11 +39,11 @@ public:
 
   virtual TMission*
   GetReplacementSlot48() override; // slot 0x12 0x53adf0 -- validate context / refresh child
-  virtual char Matches(eMissionType missionType, int key,
+  virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const override; // slot 0x13 0x53ba10
 
-  virtual char IsDefensiveSeaZoneMission() const override; // slot 0x18 0x53aa70
-  virtual char IsHospitalMission() const override;         // slot 0x19 0x53aa50
+  virtual bool IsDefensiveSeaZoneMission() const override; // slot 0x18 0x53aa70
+  virtual bool IsHospitalMission() const override;         // slot 0x19 0x53aa50
 
   virtual void GiveActionOrders(TTaskForce* mapOrderEntry)
       override; // slot 0x27 0x53ba40 -- queue map-order type 6 from context pointer

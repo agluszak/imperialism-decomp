@@ -48,14 +48,13 @@ inline int HexNeighbor(int tileIndex, int direction) {
 void TMapMaker::GenerateCityRegionIdsBySeedAndNeighborPropagation() {
   short* labels = new short[0x1950];
 
-  // Phase 1: seed a label per tile: -1 for city tiles (tile[0]==5), -2 otherwise.
+  // Phase 1: seed a label per tile: -1 for water tiles, -2 otherwise.
   int i = 0;
   short* p = labels;
   do {
     short index = static_cast<short>(i);
     i = i + 1;
-    *p = (*(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) + index * 0x24) ==
-          '\x05') -
+    *p = (g_pGlobalMapState->terrainStateTable[index].GetTerrainKind() == kStrategicTerrainWater) -
          2;
     p = p + 1;
   } while (i < 0x1950);
