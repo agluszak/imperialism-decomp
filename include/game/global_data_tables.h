@@ -435,6 +435,7 @@ extern TMultiplayerMgr* g_pGameFlowState;
 // statics (see the typed C++ section below); the previous six raw queue globals were the
 // members of the CList at 0x6a5f40.
 extern int DAT_006a601c;
+extern int g_suppressUnexpectedDirectPlaySystemMessageAssert006a6020;
 // City-order capability rule-table pointer slots written into TTechMgr+0x264 as tech
 // unlocks are applied (default at construction, alternates for tech ids 0x0b/0x16).
 // 26 (start, end) capability-priority range pairs (see the .cpp note).

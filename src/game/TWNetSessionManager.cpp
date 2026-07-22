@@ -172,6 +172,13 @@ unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004803d0
+unsigned char TWNetSessionManager::OpenCurrentSessionDescriptionForJoin() {
+  long result = directPlayInterface04->Open(&sessionDescription10, DPOPEN_JOIN);
+  lastErrorCode0c = result;
+  return result >= 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00480400
 void TWNetSessionManager::ResetRuntimeSelectionRecordBuffer() {
   for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
