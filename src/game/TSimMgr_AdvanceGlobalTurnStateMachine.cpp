@@ -69,7 +69,7 @@ static inline void RunQuarterGateCheckAndMaybeRequeue(TSimMgr* simMgr) {
     simMgr->StartNextPhase();
     return;
   }
-  g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x11f8, simMgr->activeNationSlot);
+  g_pUiRuntimeContext->DispatchTurnEvent(0x11f8, simMgr->activeNationSlot);
 }
 
 static inline short ReadCityOrderCapabilityField262(void) {
@@ -112,12 +112,12 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       // Verified against 0x0057daf5: real event code is 0x11f8, payload 0, no null
       // guard on g_pUiRuntimeContext (matches the original — see heuristics for the
       // full re-verification note on this switch).
-      g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x11f8, 0);
+      g_pUiRuntimeContext->DispatchTurnEvent(0x11f8, 0);
       break;
     }
     // Verified against 0x0057db06: real event code is 0x5dc, payload 0 (not
     // activeNationSlot/0x5e4 — that call was misattributed to this branch).
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x5dc, 0);
+    g_pUiRuntimeContext->DispatchTurnEvent(0x5dc, 0);
     break;
 
   case 2: {
@@ -172,7 +172,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     // there is no null guard on g_pUiRuntimeContext -- same missing-guard pattern as
     // case 1 above. field34/0x5e4/guarded call was an unverified placeholder shape.
     if (g_pSimMgr->difficultyLevel > 1 && scenarioMapIndexPlusOne == 0) {
-      g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x3b8, activeNationSlot);
+      g_pUiRuntimeContext->DispatchTurnEvent(0x3b8, activeNationSlot);
     } else {
       StartNextPhase();
     }
@@ -180,7 +180,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 4:
     turnStateCode = 5;
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x7dd, g_pSimMgr->activeNationSlot);
+    g_pUiRuntimeContext->DispatchTurnEvent(0x7dd, g_pSimMgr->activeNationSlot);
     if (difficultyLevel != 0) {
       if (activeNationSlot == -1 || g_apTerrainTypeDescriptorTable[activeNationSlot] == nullptr ||
           (activeNationSlot <= 6 &&
@@ -222,13 +222,13 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         if (nation != nullptr && nation->diplomacyEligibilityA0 != 0 &&
             GetNationTrackedOrderCount(nation) > 0) {
           g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
-          g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x7d8, activeNationSlot);
+          g_pUiRuntimeContext->DispatchTurnEvent(0x7d8, activeNationSlot);
           break;
         }
         ++nationCursor;
       }
     } else if (IsNationTerrainEligible(activeNationSlot)) {
-      g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x7d8, activeNationSlot);
+      g_pUiRuntimeContext->DispatchTurnEvent(0x7d8, activeNationSlot);
     }
     for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
@@ -251,8 +251,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     if (difficultyLevel != 0) {
       g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(previousTurnStateCode, turnStateCode);
       g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
-      g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x2134, activeNationSlot);
-      g_pUiRuntimeContext->DispatchDecisionSlot98(-1, 0, 0, 0, 0x16);
+      g_pUiRuntimeContext->DispatchTurnEvent(0x2134, activeNationSlot);
+      g_pUiRuntimeContext->DispatchNationActionToMainControl(-1, 0, 0, 0, 0x16);
     }
     if (difficultyLevel != 2) {
       DoTrade();
@@ -321,7 +321,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case 0xc: {
     turnStateCode = 0xe;
     if (IsNationTerrainEligible(activeNationSlot)) {
-      g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x2260, activeNationSlot);
+      g_pUiRuntimeContext->DispatchTurnEvent(0x2260, activeNationSlot);
       g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
       break;
     }
@@ -337,7 +337,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     // guard on it, matching the missing-guard pattern used elsewhere in this switch).
     if (g_pMapContextActionManager->GetByteFlagAtOffset8() != 0 &&
         IsNationTerrainEligible(activeNationSlot)) {
-      g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x547, activeNationSlot);
+      g_pUiRuntimeContext->DispatchTurnEvent(0x547, activeNationSlot);
       break;
     }
     if (!IsNationTerrainEligible(activeNationSlot)) {
@@ -361,7 +361,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     turnStateCode = 0x12;
     g_pUiViewManager->OpenFilesFor(0xa);
     g_pInterNationEventQueueManager->StartNewsPhase();
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x2103, activeNationSlot);
+    g_pUiRuntimeContext->DispatchTurnEvent(0x2103, activeNationSlot);
     for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
       if (!IsNationTerrainEligible(nationSlot)) {
         continue;
@@ -415,7 +415,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
           short unlockSlot = g_pCityOrderCapabilityState->ConsumeFirstPendingAbilityUnlock(
               static_cast<short>(nationSlot));
           if (unlockSlot != -1) {
-            g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x898, unlockSlot);
+            g_pUiRuntimeContext->DispatchTurnEvent(0x898, unlockSlot);
             actionNeeded = 0;
           }
           continue;
@@ -463,7 +463,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case 0x13: {
     turnStateCode = g_pGameFlowState->activeNationSlotIndex;
     g_pGameFlowState->HandleTurnResumeStateTelemetry();
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x5e4, activeNationSlot);
+    g_pUiRuntimeContext->DispatchTurnEvent(0x5e4, activeNationSlot);
     break;
   }
 
@@ -525,7 +525,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   }
 
   case 0x17:
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x11f8, 0);
+    g_pUiRuntimeContext->DispatchTurnEvent(0x11f8, 0);
     break;
 
   case 0x19: {
@@ -582,7 +582,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     if (eligibleMinorCount == 1 && IsNationTerrainEligible(activeNationSlot)) {
       actionNeeded = 1;
       UpdatePersistentTopTenNationScores();
-      g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x11f8, 0);
+      g_pUiRuntimeContext->DispatchTurnEvent(0x11f8, 0);
     }
     if (actionNeeded == 0) {
       StartNextPhase();
@@ -592,12 +592,12 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 0x16:
     UpdatePersistentTopTenNationScores();
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x11f8, 0);
+    g_pUiRuntimeContext->DispatchTurnEvent(0x11f8, 0);
     break;
 
   case 100:
     turnStateCode = 4;
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x2260, activeNationSlot);
+    g_pUiRuntimeContext->DispatchTurnEvent(0x2260, activeNationSlot);
     break;
 
   // Jump-table ground truth (0x57dad8, index-byte table 0x57ebec): case 0x71 -> 0x57eabf
@@ -615,36 +615,36 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 0x65:
     turnStateCode = 4;
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x547, activeNationSlot);
+    g_pUiRuntimeContext->DispatchTurnEvent(0x547, activeNationSlot);
     break;
 
   case 0x66:
     turnStateCode = 4;
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x2103, activeNationSlot);
+    g_pUiRuntimeContext->DispatchTurnEvent(0x2103, activeNationSlot);
     break;
 
   case 0x67:
     turnStateCode = 4;
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(
+    g_pUiRuntimeContext->DispatchTurnEvent(
         g_pCityOrderCapabilityState->hasProductionOrder193 != 0 ? 0x7da : 0x7d9, activeNationSlot);
     break;
 
   case 0x68:
     turnStateCode = 4;
     g_apNationStates[activeNationSlot]->BeginTurnDiplomacyPrePassSlot1c8();
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x7d8, activeNationSlot);
+    g_pUiRuntimeContext->DispatchTurnEvent(0x7d8, activeNationSlot);
     g_pDiplomacyTurnStateManager->SyncNationField790FromLocalizationStateId();
     break;
 
   case 0x69:
     turnStateCode = 4;
     g_apNationStates[activeNationSlot]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x7de, activeNationSlot);
+    g_pUiRuntimeContext->DispatchTurnEvent(0x7de, activeNationSlot);
     break;
 
   case 0x6a:
     turnStateCode = 4;
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x7db, activeNationSlot);
+    g_pUiRuntimeContext->DispatchTurnEvent(0x7db, activeNationSlot);
     break;
 
   case 0x6b:
@@ -654,30 +654,30 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 0x6c:
     turnStateCode = 4;
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0xf3d, activeNationSlot);
+    g_pUiRuntimeContext->DispatchTurnEvent(0xf3d, activeNationSlot);
     break;
 
   case 0x6d:
     turnStateCode = 4;
     turnFlowStatusFlags |= 0x40;
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x8fc, activeNationSlot);
+    g_pUiRuntimeContext->DispatchTurnEvent(0x8fc, activeNationSlot);
     break;
 
   case 0x6e:
     turnStateCode = 4;
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x10cc, activeNationSlot);
+    g_pUiRuntimeContext->DispatchTurnEvent(0x10cc, activeNationSlot);
     break;
 
   case 0x6f:
     turnStateCode = 4;
     g_nSaveFormatVersion = -1;
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x5de, activeNationSlot);
+    g_pUiRuntimeContext->DispatchTurnEvent(0x5de, activeNationSlot);
     break;
 
   case 0x70:
     turnStateCode = 4;
     g_nSaveFormatVersion = -2;
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x5de, activeNationSlot);
+    g_pUiRuntimeContext->DispatchTurnEvent(0x5de, activeNationSlot);
     break;
 
   default:

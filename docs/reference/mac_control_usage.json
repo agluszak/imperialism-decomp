@@ -159309,7 +159309,7 @@
             "status": "confirmed"
           }
         ],
-        "name": "TViewMgr::InvokeMainWidgetMethod1CCWithArgs",
+        "name": "TViewMgr::DispatchNationActionToMainControl",
         "owner_class": "TViewMgr",
         "recovered_source": "src/game/TViewMgr.cpp"
       },

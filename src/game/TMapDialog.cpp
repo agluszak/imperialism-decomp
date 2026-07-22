@@ -657,14 +657,13 @@ void TMapDialog::Draw(RECT* rectBuffer) {
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags = 0;
   GetClip(savedClip.tempRgn);
-  GetActiveQuickDrawSurfaceContextAndFlags(&savedSurface, &savedSurfaceFlags);
+  GetGWorld(&savedSurface, &savedSurfaceFlags);
 
   if (!suppressMarkerOverlay34C) {
     ResetQuickDrawStrokeState();
-    SetActiveQuickDrawSurfaceContext(quickDrawSurface350, savedSurfaceFlags);
-    ReturnConstantTrueQuickDrawFlag(
-        GetSurfaceNodeSlot(g_pCitySiteCachedPrimaryRenderSurfaceContext));
-    ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(quickDrawSurface350));
+    SetGWorld(quickDrawSurface350, savedSurfaceFlags);
+    LockPixels(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
+    LockPixels(GetGWorldPixMap(quickDrawSurface350));
 
     int firstRowValue = viewportOffsetY + rectBuffer->top;
     int firstRow = DivideMapPixelOffsetBy64(firstRowValue);
@@ -682,11 +681,10 @@ void TMapDialog::Draw(RECT* rectBuffer) {
                     marker.b <= lastCol;
     }
 
-    ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(quickDrawSurface350));
-    ReturnConstantTrueQuickDrawFlag(
-        GetSurfaceNodeSlot(g_pCitySiteCachedPrimaryRenderSurfaceContext));
+    LockPixels(GetGWorldPixMap(quickDrawSurface350));
+    LockPixels(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
     if (g_pStrategicMapViewSystem != 0 && g_pStrategicMapViewSystem->atlas668 != 0) {
-      ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(g_pStrategicMapViewSystem->atlas668));
+      LockPixels(GetGWorldPixMap(g_pStrategicMapViewSystem->atlas668));
     }
 
     for (int row = firstRow; row < lastRow && row < 60; ++row) {
@@ -770,28 +768,26 @@ void TMapDialog::Draw(RECT* rectBuffer) {
           TAnimation* animation = g_pUiAnimator->FindRegisteredAnimationByTag(
               reinterpret_cast<int>(firstCivilianOrder));
           if (animation != 0) {
-            SetActiveQuickDrawSurfaceContext(g_pCitySiteCachedPrimaryRenderSurfaceContext,
-                                             savedSurfaceFlags);
+            SetGWorld(g_pCitySiteCachedPrimaryRenderSurfaceContext, savedSurfaceFlags);
             RECT animationClip = animation->screenRect1C;
             OffsetRect(&animationClip, 0x40, 0x40);
             ClipRect(&animationClip);
             POINT drawOffset = {0x40, 0x40};
             animation->DrawNextFrame(&drawOffset);
-            SetActiveQuickDrawSurfaceContext(quickDrawSurface350, savedSurfaceFlags);
+            SetGWorld(quickDrawSurface350, savedSurfaceFlags);
           }
         }
       }
     }
 
-    SetActiveQuickDrawSurfaceContext(g_pCitySiteCachedPrimaryRenderSurfaceContext,
-                                     savedSurfaceFlags);
+    SetGWorld(g_pCitySiteCachedPrimaryRenderSurfaceContext, savedSurfaceFlags);
     RECT overlayClip = cacheRect;
     overlayClip.right += 0x80;
     overlayClip.bottom += 0x80;
     ClipRect(&overlayClip);
     DrawGeneratedMapRouteSegmentsAndResetFillColor();
     ResetQuickDrawStrokeState();
-    SetActiveQuickDrawSurfaceContext(savedSurface, savedSurfaceFlags);
+    SetGWorld(savedSurface, savedSurfaceFlags);
     SetClip(savedClip.tempRgn);
   }
 
@@ -800,8 +796,8 @@ void TMapDialog::Draw(RECT* rectBuffer) {
   BlitRectWithOptionalTransparency(g_pCitySiteCachedPrimaryRenderSurfaceContext->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &cacheRect,
                                    &dirtyRect, 0, 0);
-  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pCitySiteCachedPrimaryRenderSurfaceContext));
-  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(quickDrawSurface350));
+  UnlockPixels(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
+  UnlockPixels(GetGWorldPixMap(quickDrawSurface350));
 }
 
 // FUNCTION: IMPERIALISM 0x0051EB40
@@ -812,19 +808,14 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
   }
 
   CTemporaryRegion temporaryRegion;
-  void* destinationSurfaceObject = GetSurfaceNodeSlot(quickDrawSurface350);
-  TBitmapSurfaceNode** destinationSurfaceSlot =
-      static_cast<TBitmapSurfaceNode**>(destinationSurfaceObject);
-  unsigned char* destinationPixels =
-      static_cast<unsigned char*>(GetSurfaceNodePixelBits(destinationSurfaceObject));
-  short destinationStride = static_cast<short>((*destinationSurfaceSlot)->stride & 0x3fff);
+  TBitmapSurfaceNode** destinationSurfaceObject = GetGWorldPixMap(quickDrawSurface350);
+  unsigned char* destinationPixels = GetPixBaseAddr(destinationSurfaceObject);
+  short destinationStride = static_cast<short>((*destinationSurfaceObject)->stride & 0x3fff);
   destinationPixels += static_cast<int>(screenY) * destinationStride + screenX;
 
-  void* sourceSurfaceObject = GetSurfaceNodeSlot(g_pStrategicMapViewSystem->atlas668);
-  TBitmapSurfaceNode** sourceSurfaceSlot = static_cast<TBitmapSurfaceNode**>(sourceSurfaceObject);
-  unsigned char* sourcePixels =
-      static_cast<unsigned char*>(GetSurfaceNodePixelBits(sourceSurfaceObject));
-  short sourceStride = static_cast<short>((*sourceSurfaceSlot)->stride & 0x3fff);
+  TBitmapSurfaceNode** sourceSurfaceObject = GetGWorldPixMap(g_pStrategicMapViewSystem->atlas668);
+  unsigned char* sourcePixels = GetPixBaseAddr(sourceSurfaceObject);
+  short sourceStride = static_cast<short>((*sourceSurfaceObject)->stride & 0x3fff);
 
   const TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
   const bool isOcean = terrain.terrainType00 == 5;
@@ -1669,11 +1660,11 @@ void TMapDialog::RenderMapTileAtScreenPositionUsingCache(short tileIndex, short 
                                                          short screenY) {
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags = 0;
-  GetActiveQuickDrawSurfaceContextAndFlags(&savedSurface, &savedSurfaceFlags);
+  GetGWorld(&savedSurface, &savedSurfaceFlags);
   ResetQuickDrawStrokeState();
-  SetActiveQuickDrawSurfaceContext(quickDrawSurface350, savedSurfaceFlags);
-  ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(g_pCitySiteCachedPrimaryRenderSurfaceContext));
-  ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(quickDrawSurface350));
+  SetGWorld(quickDrawSurface350, savedSurfaceFlags);
+  LockPixels(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
+  LockPixels(GetGWorldPixMap(quickDrawSurface350));
 
   int markerIndex = 0;
   while (markerIndex < 90 && tileMarkers7c[markerIndex].c != tileIndex) {
@@ -1686,7 +1677,7 @@ void TMapDialog::RenderMapTileAtScreenPositionUsingCache(short tileIndex, short 
     }
   }
   if (markerIndex == 90) {
-    SetActiveQuickDrawSurfaceContext(savedSurface, savedSurfaceFlags);
+    SetGWorld(savedSurface, savedSurfaceFlags);
     return;
   }
 
@@ -1713,25 +1704,24 @@ void TMapDialog::RenderMapTileAtScreenPositionUsingCache(short tileIndex, short 
     TAnimation* animation =
         g_pUiAnimator->FindRegisteredAnimationByTag(reinterpret_cast<int>(firstCivilianOrder));
     if (animation != 0) {
-      SetActiveQuickDrawSurfaceContext(g_pCitySiteCachedPrimaryRenderSurfaceContext,
-                                       savedSurfaceFlags);
+      SetGWorld(g_pCitySiteCachedPrimaryRenderSurfaceContext, savedSurfaceFlags);
       RECT animationClip = animation->screenRect1C;
       OffsetRect(&animationClip, 0x40, 0x40);
       ClipRect(&animationClip);
       POINT drawOffset = {0x40, 0x40};
       animation->DrawNextFrame(&drawOffset);
-      SetActiveQuickDrawSurfaceContext(quickDrawSurface350, savedSurfaceFlags);
+      SetGWorld(quickDrawSurface350, savedSurfaceFlags);
     }
   }
 
   ResetQuickDrawStrokeState();
-  SetActiveQuickDrawSurfaceContext(savedSurface, savedSurfaceFlags);
+  SetGWorld(savedSurface, savedSurfaceFlags);
   RECT destinationRect = {screenX, screenY, screenX + 0x40, screenY + 0x40};
   BlitRectWithOptionalTransparency(g_pCitySiteCachedPrimaryRenderSurfaceContext->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &cacheRect,
                                    &destinationRect, 0, 0);
-  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pCitySiteCachedPrimaryRenderSurfaceContext));
-  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(quickDrawSurface350));
+  UnlockPixels(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
+  UnlockPixels(GetGWorldPixMap(quickDrawSurface350));
 }
 
 // FUNCTION: IMPERIALISM 0x00523640

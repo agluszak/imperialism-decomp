@@ -86,7 +86,7 @@ void TTacArmyView::ConstructTTacArmyViewBaseState(int compositionClass, TArmyBat
   }
 
   TQuickDrawSurfaceContext* savedContext;
-  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
+  GetGWorld(&savedContext, &savedFlags);
   // Two rect buffers reused across every init/blit below (the original's frame holds
   // exactly two RECT locals).
   RECT bounds;
@@ -98,8 +98,8 @@ void TTacArmyView::ConstructTTacArmyViewBaseState(int compositionClass, TArmyBat
   g_pDisplayMgr->MakeNewGWorld(battlefieldSurface64, 8, bounds);
   TBitmapResourceLoader** loaderHandle =
       CreateBitmapResourceLoaderHandle(static_cast<unsigned short>(compositionClass + 0xf0a));
-  SetActiveQuickDrawSurfaceContext(battlefieldSurface64, savedFlags);
-  ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(battlefieldSurface64));
+  SetGWorld(battlefieldSurface64, savedFlags);
+  LockPixels(GetGWorldPixMap(battlefieldSurface64));
   QDLoadResource(loaderHandle);
   TBitmapResourceLoader* loader = *loaderHandle;
   if (loader != 0) {
@@ -112,8 +112,8 @@ void TTacArmyView::ConstructTTacArmyViewBaseState(int compositionClass, TArmyBat
     loader->flags &= 0xfe;
     delete loader;
     ::operator delete(loaderHandle);
-    NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(battlefieldSurface64));
-    SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
+    UnlockPixels(GetGWorldPixMap(battlefieldSurface64));
+    SetGWorld(savedContext, savedFlags);
 
     if (battle->fortLevel49 != 0) {
       TQuickDrawSurfaceContext* fortStripSurface =
@@ -195,10 +195,10 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
   clipRect = *rectBuffer;
 
   TQuickDrawSurfaceContext* savedContext;
-  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, savedFlags);
-  ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
-  ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(battlefieldSurface64));
+  GetGWorld(&savedContext, &savedFlags);
+  SetGWorld(g_pPrimaryRenderSurfaceContext, savedFlags);
+  LockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
+  LockPixels(GetGWorldPixMap(battlefieldSurface64));
 
   // Backdrop source-x origin: the battlefield bitmap is right-aligned inside the
   // 0x1d-column grid, shifted by the current horizontal scroll.
@@ -261,7 +261,7 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
     SetClip(savedClip.tempRgn);
   }
 
-  SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
+  SetGWorld(savedContext, savedFlags);
   ResetQuickDrawStrokeState();
   SetQuickDrawStrokeColor(0xffffff);
   // Present: primary render surface -> the restored active surface.
@@ -269,8 +269,8 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &clipRect,
                         &presentDstRect, 0);
   DrawUiTilesAndOverlay();
-  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
-  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(battlefieldSurface64));
+  UnlockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
+  UnlockPixels(GetGWorldPixMap(battlefieldSurface64));
 }
 
 // FUNCTION: IMPERIALISM 0x005aa900

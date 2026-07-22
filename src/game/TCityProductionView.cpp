@@ -189,15 +189,15 @@ void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip(in
 
   TQuickDrawSurfaceContext* previousSurface = 0;
   int contextFlags = 0;
-  GetActiveQuickDrawSurfaceContextAndFlags(&previousSurface, &contextFlags);
+  GetGWorld(&previousSurface, &contextFlags);
 
-  SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, contextFlags);
+  SetGWorld(g_pPrimaryRenderSurfaceContext, contextFlags);
   ClipRect(&clipRect);
 
   needsRefreshAtA6 = 1;
   this->Draw(&boundsRecord);
 
-  SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
+  SetGWorld(previousSurface, contextFlags);
   SetClip(surface.tempRgn);
 }
 

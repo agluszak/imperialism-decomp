@@ -79,8 +79,8 @@ struct GoldFactoryPanel : public TControl {
 struct MainActionControl : public TControl {
   virtual void mainAction71();
   virtual void mainAction72();
-  virtual void InvokeMainAction(void* arg1, void* arg2, void* arg3, void* arg4,
-                                void* arg5); // slot 0x73 byte 0x1cc
+  virtual void InvokeMainAction(int sourceNation, int arg1, int arg2, int arg3,
+                                int targetNation); // slot 0x73 byte 0x1cc
 };
 
 struct GoldSinglePayloadControl : public TControl {

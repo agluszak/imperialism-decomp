@@ -1604,15 +1604,16 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     short sourceNation = nationAction->sourceNation1C;
     if (sourceNation != g_pSimMgr->GetActiveNationId()) {
-      g_pUiRuntimeContext->DispatchDecisionSlot98(sourceNation, nationAction->param1E, 0, 0, 0);
+      g_pUiRuntimeContext->DispatchNationActionToMainControl(sourceNation, nationAction->param1E, 0,
+                                                             0, 0);
       return 1;
     }
     unsigned char stillClientSession = g_pSimMgr->multiplayerSessionRole == 2;
     if (stillClientSession == 0) {
       return 1;
     }
-    g_pUiRuntimeContext->DispatchDecisionSlot98(sourceNation, nationAction->param1E,
-                                                nationAction->param20, nationAction->param22, 0);
+    g_pUiRuntimeContext->DispatchNationActionToMainControl(
+        sourceNation, nationAction->param1E, nationAction->param20, nationAction->param22, 0);
     break;
   }
   case 0x1b: {

@@ -110,7 +110,7 @@ void TAnimation::DrawNextFrame(POINT* offset) {
 void TAnimation::LoadFrameIntoBuffer() {
   TQuickDrawSurfaceContext* savedContext = 0;
   int savedFlags = 0;
-  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
+  GetGWorld(&savedContext, &savedFlags);
 
   TBitmapResourceLoader** loaderHandle =
       CreateBitmapResourceLoaderHandle(static_cast<unsigned short>(field0C + frameIndex08));
@@ -118,9 +118,9 @@ void TAnimation::LoadFrameIntoBuffer() {
   TBitmapResourceLoader* loader = loaderHandle != 0 ? *loaderHandle : 0;
   if (loader != 0) {
     TQuickDrawSurfaceContext* frameBuffer = g_pUiAnimator->renderSurfaceContext;
-    SetActiveQuickDrawSurfaceContext(frameBuffer, savedFlags);
-    void* surfaceObject = GetSurfaceNodeSlot(frameBuffer);
-    ReturnConstantTrueQuickDrawFlag(surfaceObject);
+    SetGWorld(frameBuffer, savedFlags);
+    TBitmapSurfaceNode** pixMap = GetGWorldPixMap(frameBuffer);
+    LockPixels(pixMap);
 
     loader->EnsureBitmapResourceLoadedAndCopyRectSize();
     loader->flags |= 1;
@@ -130,8 +130,8 @@ void TAnimation::LoadFrameIntoBuffer() {
 
     delete loader;
     delete loaderHandle;
-    NoOpQuickDrawLifecycleHookB(surfaceObject);
-    SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
+    UnlockPixels(pixMap);
+    SetGWorld(savedContext, savedFlags);
   }
 }
 

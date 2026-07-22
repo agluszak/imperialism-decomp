@@ -543,8 +543,8 @@ void TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void) {
     LRESULT sliderPos = ::SendMessageA(hSlider, TBM_GETPOS, 0, 0);
     WPARAM selectedRow = ::SendMessageA(hList, LB_GETCURSEL, 0, 0);
     LRESULT eventCode = ::SendMessageA(hList, LB_GETITEMDATA, selectedRow, 0);
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(static_cast<short>(eventCode),
-                                                 static_cast<int>(sliderPos));
+    g_pUiRuntimeContext->DispatchTurnEvent(static_cast<short>(eventCode),
+                                           static_cast<int>(sliderPos));
   }
 }
 

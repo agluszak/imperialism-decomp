@@ -42,22 +42,22 @@ public:
   virtual void RefreshMainViewNationIndicatorForCurrentTurnEvent();        // slot 0x12 0x5d6b70
 
   // Extended UI-runtime virtuals (same object as g_pUiRuntimeContext @ 0x006A21BC).
-  virtual void DispatchTurnEventSlot4C(short eventCode, int payload); // 0x4c
-  virtual void UiRuntimeSlot50(int payload);                          // 0x50
-  virtual short GetPendingTurnOverlayCode();                          // 0x54
-  virtual void UiRuntimeSlot58();                                     // 0x58
-  virtual void UiRuntimeSlot5C(int eventCode);                        // 0x5c
+  virtual void DispatchTurnEvent(short eventCode, int payload);                    // 0x4c
+  virtual void SetCursorRangeAndRefreshMainPanel(int payload);                     // 0x50
+  virtual short GetPendingTurnOverlayCode();                                       // 0x54
+  virtual void RefreshStrategicMapStatusIconsForActiveNation();                    // 0x58
+  virtual void HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(int eventCode); // 0x5c
   // Resolves the active dialog's 'main' and 'curs' panels, refreshes the cursor info
   // panel's map-hint style, then clears the 'main' panel's title text (0x5da040).
-  virtual void HandleTurnEventVtableSlot60ActivateMainDialog(int eventCode); // 0x60
+  virtual void RefreshMainDialogAndCursorHelp(int eventCode); // 0x60
   // Sibling of slot 0x60: refreshes the 'curs' cursor panel, then repopulates the
   // 'quer' query label and 'titL' nation-title panel from the current scenario setup
   // (0x5da180).
   virtual void HandleTurnEvent2260_RefreshMainHudTitles(int eventCode); // 0x64
 
   // UI runtime helper functions
-  virtual void AddPendingTurnOverlayCode(int modeValue); // 0x68
-  virtual void UiRuntimeSlot6C(int eventCode);           // 0x6c
+  virtual void AddPendingTurnOverlayCode(int modeValue);                   // 0x68
+  virtual void HandleTurnEvent7D8_ActivateDiplomacyMapView(int eventCode); // 0x6c
   // Resolve the factory dialog for eventCode, commit its 'GOLD' child, then push the
   // slot-0x9c refresh down the dialog's linked children (0x5d6cd0).
   virtual void HandleTurnEventDialogFactorySlot70(int eventCode); // 0x70 0x5d6cd0
@@ -67,48 +67,49 @@ public:
   virtual void HandleTurnEventDialogFactorySlot78(int eventCode); // 0x78 0x5d6e50
   virtual void HandleTurnEventDialogFactorySlot7C(int eventCode); // 0x7c 0x5d6f10
   virtual void HandleTurnEventDialogFactorySlot80(int eventCode); // 0x80 0x5d6fd0
-  virtual void UiRuntimeSlot84(int eventCode);                    // 0x84
-  virtual void UiRuntimeSlot88(int abilityIndex);                 // 0x88 0x5d8980 (ret 4)
-  virtual void UiRuntimeSlot8C(int arg);                          // 0x8c
-  virtual char RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation,
-                                              int proposalCode); // 0x90
-  virtual char RequestDecisionSlot94(int sourceNation, int arg1, int arg2,
-                                     int promptCode); // 0x94
-  virtual void DispatchDecisionSlot98(int sourceNation, int arg1, int arg2, int arg3,
-                                      int targetNation);                // 0x98
-  virtual void UiRuntimeSlot9C(int pageIndex = 0);                      // 0x9c
-  virtual void UiRuntimeSlotA0();                                       // 0xa0
-  virtual void UiRuntimeSlotA4(int payload, TEventHandler* waitTarget); // 0xa4
-  virtual void UiRuntimeSlotA8(int eventCode);                          // 0xa8
+  virtual void HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(int eventCode); // 0x84
+  virtual void ShowAbilityStatusReport(int abilityIndex); // 0x88 0x5d8980 (ret 4)
+  virtual void NoOpTurnEventStateVtableSlot8C(int arg);   // 0x8c
+  virtual char PoseDiplomacyOffer(int sourceNation, int targetNation,
+                                  int proposalCode); // 0x90
+  virtual char PoseWarOfferIfTurnFlowReady(int sourceNation, int arg1, int arg2,
+                                           int promptCode); // 0x94
+  virtual void DispatchNationActionToMainControl(int sourceNation, int arg1, int arg2, int arg3,
+                                                 int targetNation);                // 0x98
+  virtual void HandleTurnEvent2103_RunNationStatusReportUpdate(int pageIndex = 0); // 0x9c
+  virtual void SyncTacticalStatusPanelRegion();                                    // 0xa0
+  virtual void DispatchTurnEvent3B8AndWaitForCompletion(int payload,
+                                                        TEventHandler* waitTarget); // 0xa4
+  virtual void HandleTurnEvent7DB_SelectCityAndRefreshView(int eventCode);          // 0xa8
   // Forwards to g_pStrategicMapViewSystem's own vtable slot 0x5c/0x60/0x68/0x6c/
   // 0x70/0x74 (TMacViewMgr) -- verified via disassembly (0057db14-style pattern:
   // `mov ecx,[g_pStrategicMapViewSystem]; mov eax,[ecx]; jmp [eax+0xNN]`, no
   // wrapping logic). Real orig names embed the target slot's byte offset. bd
   // imperialism-decomp-kdm.
-  virtual void InvokeStrategicMapViewMethod5C();             // 0xac 0x5d7f70
-  virtual void InvokeStrategicMapViewMethod60(short param1); // 0xb0 0x5d7f90
-  virtual char UiRuntimeSlotB4(void* payload);               // 0xb4
+  virtual void RefreshCityProductionUi();                         // 0xac 0x5d7f70
+  virtual void ClearActiveCityBuildingViewSlot(short param1);     // 0xb0 0x5d7f90
+  virtual char HandleTurnEventDialogFactorySlotB4(void* payload); // 0xb4
   // Opens factory dialog 0x2405, seeds its 'GOLD' trade-summary child with the three
   // caller args, places/refreshes it, then forwards the refresh result to the child
   // (0x5dc430).
   virtual void HandleTurnEventDialogFactorySlotB8(int a, int b, int c);            // 0xb8 0x5dc430
   virtual void HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int eventCode); // 0xbc
   virtual void ForwardBuildStrategicMapRenderAtlasesAndTileMaskCaches();           // 0xc0 0x5dc180
-  virtual void InvokeStrategicMapViewMethod70();                                   // 0xc4 0x5dc1c0
-  virtual void InvokeStrategicMapViewMethod74();                                   // 0xc8 0x5dc1a0
-  virtual void InvokeStrategicMapViewMethod6C();                                   // 0xcc 0x5dc160
+  virtual void RenderTurnEventPalettePreviewSurfaceAndProgress();                  // 0xc4 0x5dc1c0
+  virtual void RebuildMapTileNeighborHighlightPolygonsForAllTiles();               // 0xc8 0x5dc1a0
+  virtual void RefreshActiveGoldControlAndUiRuntimeState();                        // 0xcc 0x5dc160
   virtual void InitializeCitySiteSelectionScreenForNation(int nationSlot);         // 0xd0
-  virtual void UiRuntimeSlotD4(int arg);                                           // 0xd4
+  virtual void NoOpTurnEventStateVtableSlotD4(int arg);                            // 0xd4
   // Resolves the active dialog's 'GOLD' panel, notifies it of the current turn-event
   // code, then resolves+shows+refreshes the 0x546 factory dialog's own 'GOLD' child
   // (0x5dcf20).
-  virtual void HandleTurnEventDialogFactorySlotD8(int eventCode); // 0xd8
-  virtual int ShowConstructionOptionsDialog(int dialogValue = 0); // 0xdc
-  virtual void UiRuntimeSlotE0(int nationSlot, int unused = 0);   // 0xe0
+  virtual void HandleTurnEventDialogFactorySlotD8(int eventCode);                     // 0xd8
+  virtual int ShowConstructionOptionsDialog(int dialogValue = 0);                     // 0xdc
+  virtual void HandleGlobalMapNationContextSelection(int nationSlot, int unused = 0); // 0xe0
   // Opens factory dialog 0x1c52, places it, and sets the 'GOLD'->'name' text from a
   // localized string code (0x5dd220).
-  virtual void HandleTurnEventDialogFactorySlotE4(int stringCode); // 0xe4
-  virtual void UiRuntimeSlotE8(void* selection);                   // 0xe8
+  virtual void HandleTurnEventDialogFactorySlotE4(int stringCode);  // 0xe4
+  virtual void HandleTurnEventDialogFactorySlotE8(void* selection); // 0xe8
   // Refreshes the 0xdac factory dialog's 'page' roster for a tile-selection map click
   // (0x5dd900); reached from TArmyToolbar's map-tile-selection handler.
   virtual void HandleTurnEventDialogFactorySlotEC(int mapSelection); // 0xec
@@ -117,19 +118,19 @@ public:
   // returns the page after the modal dialog closes (0x5dd340).
   virtual TNavyRoster* MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry); // 0xf0
   virtual void HandleTurnEventDialogFactorySlotF4();                          // 0xf4
-  virtual void UiRuntimeSlotF8();                                             // 0xf8
+  virtual void HandleTurnEventDialogFactorySlotF8();                          // 0xf8
   virtual void NoOpTurnEventStateVtableSlotFC(); // 0xfc 0x5dbd10 -- real body is a bare `ret`
   // Turn-event 0x5DE: re-assert + refresh the 'main' view panel (sibling of the 0x5DF
   // handler; the original brackets the body with a scoped empty CString). 0x5dbd30.
   virtual void HandleTurnEvent5DE_RefreshMainView(); // 0x100 0x5dbd30
-  // Turn-event 0x5DF path (see DispatchTurnEventSlot4C): re-asserts and refreshes
+  // Turn-event 0x5DF path (see DispatchTurnEvent): re-asserts and refreshes
   // the main view's 'main' panel (0x5dbdd0).
   virtual void HandleTurnEvent5DF_RefreshMainView(); // 0x104
-  virtual void UiRuntimeSlot108();                   // 0x108
+  virtual void RefreshMainViewForTurnEvent5DF();     // 0x108
   // Resolves the active dialog's 'GOLD' control and configures its value-cell grid
   // (0x14 x 0x14) via the control's slot-0x79 virtual (0x5dc3f0).
-  virtual void ConfigureActiveDialogGoldValueGridForTurnEvent3C0();           // 0x10c 0x5dc3f0
-  virtual void ShowUnitHistory(short nationSlot); // 0x110 0x5dc690
+  virtual void ConfigureActiveDialogGoldValueGridForTurnEvent3C0(); // 0x10c 0x5dc3f0
+  virtual void ShowUnitHistory(short nationSlot);                   // 0x110 0x5dc690
 
   void ApplyLegendSplitSlot34(int split) {
     SetForeColor(static_cast<short>(split));

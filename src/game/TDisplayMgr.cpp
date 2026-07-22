@@ -126,13 +126,10 @@ void TDisplayMgr::Free() {
 // FUNCTION: IMPERIALISM 0x004feab0
 void TDisplayMgr::MakeNewGWorld(TQuickDrawSurfaceContext*& outContext, short bitDepth,
                                 const RECT& bounds) {
-  short result = InitializeBitmapDescriptorRecordAndLoadSurfaceNode(&outContext, bitDepth, &bounds,
-                                                                    field18, 0, 0);
+  short result = NewGWorld(&outContext, bitDepth, &bounds, field18, 0, 0);
   if (result != 0) {
-    InitializeBitmapDescriptorRecordAndLoadSurfaceNode(&outContext, bitDepth, &bounds, field18, 0,
-                                                       0);
-    InitializeBitmapDescriptorRecordAndLoadSurfaceNode(&outContext, bitDepth, &bounds, field18, 0,
-                                                       0);
+    NewGWorld(&outContext, bitDepth, &bounds, field18, 0, 0);
+    NewGWorld(&outContext, bitDepth, &bounds, field18, 0, 0);
   }
 }
 
@@ -214,9 +211,9 @@ void TDisplayMgr::UpdateTheGWorld(short eventCode) {
   TQuickDrawSurfaceContext* savedContext = 0;
   CTemporaryRegion surfaceGuard;
   GetClip(surfaceGuard.tempRgn);
-  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
-  SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, savedFlags);
-  ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
+  GetGWorld(&savedContext, &savedFlags);
+  SetGWorld(g_pPrimaryRenderSurfaceContext, savedFlags);
+  LockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
 
   TView* mainControl = activeDialog->ResolveControlByTag(kControlTagMain);
   if (mainControl == 0) {
@@ -240,8 +237,8 @@ void TDisplayMgr::UpdateTheGWorld(short eventCode) {
   ClipRect(&clipRect);
   mainView->Draw(&queryBounds);
 
-  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
-  SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
+  UnlockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
+  SetGWorld(savedContext, savedFlags);
   SetClip(surfaceGuard.tempRgn);
   clipSnapshotEvent = eventCode;
 }

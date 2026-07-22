@@ -53,6 +53,9 @@ public:
   UINT SelectAndRealizeDibPalette(CDC* dc, BOOL background);
   // Stretch-blit stored DIB bits to a DC. 0x0047aa70
   BOOL StretchDibitsFromStoredBitmapToHdcSimple(CDC* dc, int x, int y, int width, int height);
+  // Copy a source rectangle to the same-sized destination rectangle. 0x0047aae0
+  BOOL StretchDibitsRectAtNaturalSize(int srcX, int srcY, CDC* dc, int destX, int destY, int width,
+                                      int height);
   // Blit the whole stored DIB to a DC at the given top-left point (natural size). 0x0047ab60
   BOOL StretchDibitsFromStoredBitmapToHdc(CDC* dc, POINT* topLeft);
   // Full-control StretchDIBits of this DIB's bits/header: explicit dest and src rects,
@@ -73,6 +76,8 @@ public:
   // For a 1-bpp DIB, replace every set pixel with the one-pixel ring immediately outside
   // the original bitmap. Used by the diagnostic DIB preview dialog. 0x0047c1f0
   int BuildMonochromeOutlineMaskInPlace();
+  // Reverse the DIB's scanline order in place. 0x0047c980
+  void FlipScanlineOrder();
   // Software-blit a `width`x`height` rect from this DIB's pixel buffer (top-left at
   // srcX/srcY) into destDib's pixel buffer (top-left at destX/destY), skipping any
   // source byte equal to transparentColor (a straight block copy when

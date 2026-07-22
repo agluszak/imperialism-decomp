@@ -139,6 +139,19 @@ BOOL CDib::StretchDibitsFromStoredBitmapToHdcSimple(CDC* dc, int x, int y, int w
   return TRUE;
 }
 
+// FUNCTION: IMPERIALISM 0x0047aae0
+BOOL CDib::StretchDibitsRectAtNaturalSize(int srcX, int srcY, CDC* dc, int destX, int destY,
+                                          int width, int height) {
+  if (m_pInfoHeader == NULL) {
+    return FALSE;
+  }
+
+  HDC hdc = dc == NULL ? NULL : dc->m_hDC;
+  ::StretchDIBits(hdc, destX, destY, width, height, srcX, srcY, width, height, m_dibBits,
+                  m_pInfoHeader, DIB_RGB_COLORS, SRCCOPY);
+  return TRUE;
+}
+
 // FUNCTION: IMPERIALISM 0x0047ab60
 BOOL CDib::StretchDibitsFromStoredBitmapToHdc(CDC* dc, POINT* topLeft) {
   if (m_pInfoHeader == NULL) {
@@ -827,6 +840,27 @@ LAB_0047c603:
     scan_offset = scan_offset + 2;
     scan_ptr = scan_ptr + row_stride;
   } while (true);
+}
+
+// FUNCTION: IMPERIALISM 0x0047c980
+void CDib::FlipScanlineOrder() {
+  const unsigned int stride = (m_pInfoHeader->bmiHeader.biWidth + 3U) & ~3U;
+  unsigned char* temporaryRow = new unsigned char[stride];
+  unsigned char* firstRow = static_cast<unsigned char*>(m_dibBits);
+  int height = m_pInfoHeader->bmiHeader.biHeight;
+  if (height < 1) {
+    height = -height;
+  }
+  unsigned char* lastRow = firstRow + (height - 1) * stride;
+
+  for (int remaining = height / 2; remaining != 0; --remaining) {
+    memcpy(temporaryRow, firstRow, stride);
+    memcpy(firstRow, lastRow, stride);
+    firstRow += stride;
+    memcpy(lastRow, temporaryRow, stride);
+    lastRow -= stride;
+  }
+  delete[] temporaryRow;
 }
 
 // FUNCTION: IMPERIALISM 0x00575080

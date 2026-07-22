@@ -98,6 +98,7 @@ public:
   int hoverHelpEnabled5c;
 
   TView();
+  TView(const TView& source); // 0x48bd30
   void InitializeUiResourceEntryFrameAndParent(TView* resourceContext, TView* panel,
                                                int* offsetLayout, int* sizeLayout, int layoutParam6,
                                                int layoutParam7, int attachFlag);

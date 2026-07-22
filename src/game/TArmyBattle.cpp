@@ -90,7 +90,7 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
     g_nTurnCooldownDeferCounter006A43C4 = 0;
     g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(
         static_cast<int>(rand()) % 3 + 6, 0); // battle cue 6..8
-    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0xed8, 0);
+    g_pUiRuntimeContext->DispatchTurnEvent(0xed8, 0);
     TTacArmyView* battleView = static_cast<TTacArmyView*>(
         g_pDisplayMgr->activeDialog->ResolveControlByTag(0x444c4f47 /* 'DLOG' */));
     battleView->AssertValid();

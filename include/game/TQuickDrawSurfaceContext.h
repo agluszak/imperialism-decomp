@@ -42,7 +42,7 @@ struct TQuickDrawSurfaceContext {
 ASSERT_SIZE(TQuickDrawSurfaceContext, 0x30);
 
 struct TBitmapSurfaceNode {
-  void* pixelBits;
+  unsigned char* pixelBits;
   short stride;
   // pad06: alignment filler after `stride`, matching the sibling TQuickDrawBlitSurface's
   // pad06 at the same {pixelBits, stride, pad} layout (see above); never written by the
@@ -71,20 +71,20 @@ ASSERT_SIZE(TBitmapSurfaceNode, 0x20);
 struct TBitmapSurfaceContextDescriptor : public TQuickDrawSurfaceContext {
   const char* debugSourcePath; // +0x30
 
-  void Reset();
+  TBitmapSurfaceContextDescriptor();
   bool InitializeSurfaceNode(int width, int height, int bitDepth);
   void ReleaseSurfaceNode();
 
-  TBitmapSurfaceNode** GetSurfaceNodeSlot() const {
+  TBitmapSurfaceNode** GetPixMapHandle() const {
     return static_cast<TBitmapSurfaceNode**>(blitSurface.surfaceObject);
   }
 
-  void SetSurfaceNodeSlot(TBitmapSurfaceNode** slot) {
+  void SetPixMapHandle(TBitmapSurfaceNode** slot) {
     blitSurface.surfaceObject = slot;
   }
 
-  TBitmapSurfaceNode* GetSurfaceNode() const {
-    TBitmapSurfaceNode** slot = GetSurfaceNodeSlot();
+  TBitmapSurfaceNode* GetPixMap() const {
+    TBitmapSurfaceNode** slot = GetPixMapHandle();
     return slot != 0 ? *slot : 0;
   }
 };

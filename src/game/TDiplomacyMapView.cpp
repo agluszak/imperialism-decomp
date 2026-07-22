@@ -826,11 +826,11 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
 
     TQuickDrawSurfaceContext* previousSurface = 0;
     int contextFlags = 0;
-    GetActiveQuickDrawSurfaceContextAndFlags(&previousSurface, &contextFlags);
-    SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, contextFlags);
+    GetGWorld(&previousSurface, &contextFlags);
+    SetGWorld(g_pPrimaryRenderSurfaceContext, contextFlags);
 
     if (previousSurface != g_pPrimaryRenderSurfaceContext) {
-      ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
+      LockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
     }
 
     // Original passes the present rect here (mov ecx,[esp+0x58]; thiscall 0x48f3c0),
@@ -863,10 +863,10 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
     DrawNames(presentRect);
 
     if (previousSurface != g_pPrimaryRenderSurfaceContext) {
-      NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
+      UnlockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
     }
 
-    SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
+    SetGWorld(previousSurface, contextFlags);
     SetQuickDrawColorAndSyncGlobals(savedQuickDrawColor);
     SetGlobalBlitTransparentColorRaw(savedTransparentColor);
     legendSurfaceModeAt524 = 0;
@@ -924,9 +924,9 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
   blitRect.bottom = presentRect->bottom;
 
   if (legendSurfaceModeAt524 != 4) {
-    GetActiveQuickDrawSurfaceContextAndFlags(&previousSurface, &contextFlags);
-    SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, contextFlags);
-    ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
+    GetGWorld(&previousSurface, &contextFlags);
+    SetGWorld(g_pPrimaryRenderSurfaceContext, contextFlags);
+    LockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
 
     short nationIndex = 0;
     do {
@@ -961,8 +961,8 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
 
     DrawNames(presentRect);
     legendSurfaceModeAt524 = 4;
-    NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
-    SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
+    UnlockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
+    SetGWorld(previousSurface, contextFlags);
   }
 
   BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
@@ -1066,9 +1066,9 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
   blitRect.bottom = presentRect->bottom;
 
   if (legendSurfaceModeAt524 != 1) {
-    GetActiveQuickDrawSurfaceContextAndFlags(&previousSurface, &contextFlags);
-    SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, contextFlags);
-    ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
+    GetGWorld(&previousSurface, &contextFlags);
+    SetGWorld(g_pPrimaryRenderSurfaceContext, contextFlags);
+    LockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
 
     int terrainIndex = 0;
     void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
@@ -1095,8 +1095,8 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
 
     DrawNames(presentRect);
     legendSurfaceModeAt524 = 1;
-    NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
-    SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
+    UnlockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
+    SetGWorld(previousSurface, contextFlags);
   }
 
   BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
@@ -1427,7 +1427,7 @@ char TDiplomacyMapView::CheckEntanglements(int targetNationSlot, eDipAction acti
   return 1;
 }
 
-// 0x005DA040 and 0x005DA180 moved to TViewMgr::HandleTurnEventVtableSlot60ActivateMainDialog
+// 0x005DA040 and 0x005DA180 moved to TViewMgr::RefreshMainDialogAndCursorHelp
 // / HandleTurnEvent2260_RefreshMainHudTitles (src/game/TViewMgr.cpp): the vtable
 // evidence (`just vtable TViewMgr`) shows both are TViewMgr's own vtable slots 0x60/0x64, not
 // TDiplomacyMapView methods -- neither body ever reads `this`, and this class's prior
