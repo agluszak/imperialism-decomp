@@ -621,6 +621,8 @@ extern TMacViewMgr* g_pStrategicMapViewSystem;
 extern TViewMgr* g_pUiRuntimeContext;
 extern "C" int g_diplomacyActionButtonTagTable_00696960[6];
 extern "C" unsigned int g_councilControlTagTable[6];
+extern "C" short g_infoPanelLabelXByRow_006969b0[4];
+extern "C" short g_infoPanelLabelYByRow_006969c0[4];
 extern "C" int g_defaultDropShadowTextColor;
 extern TAssetMgr* g_pUiViewManager;
 extern TLanguageMgr* g_pLanguageMgr;
