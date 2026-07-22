@@ -794,20 +794,20 @@ void RunDispatchingMapHotkey() {
   mapDialog->SetMapDialogCellCoordinatesAndRefresh(citySiteView->minColBound368 + 1,
                                                    citySiteView->minRowBound370 + 1, 0);
   for (int scroll = 0; scroll < 0x80; ++scroll) {
-    mapView->AutoScrollByEdgeMask(4);
+    mapView->Scroll(4);
   }
   int rightEdgeViewportX = mapDialog->viewportOrigin60.x;
   if (rightEdgeViewportX != citySiteView->maxColBound36c * 0x40) {
     Fail("\"right-edge scrolling stopped before the strategic map clamp\"");
     return;
   }
-  mapView->AutoScrollByEdgeMask(4);
+  mapView->Scroll(4);
   if (mapDialog->viewportOrigin60.x != rightEdgeViewportX) {
     Fail("\"right-edge scrolling moved beyond the strategic map clamp\"");
     return;
   }
   int viewportYBeforeTopEdgeScroll = mapDialog->viewportOrigin60.y;
-  mapView->AutoScrollByEdgeMask(2);
+  mapView->Scroll(2);
   if (mapDialog->viewportOrigin60.y <= viewportYBeforeTopEdgeScroll) {
     Fail("\"top-edge scrolling moved the strategic map viewport downward\"");
     return;
@@ -816,7 +816,7 @@ void RunDispatchingMapHotkey() {
       g_runtimeTestState.selectedNationSlot));
   for (short tile = 0; tile < 0x1950; ++tile) {
     const TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tile];
-    if (terrain.terrainType00 == 3 &&
+    if (terrain.GetTerrainKind() == kStrategicTerrainMountain &&
         terrain.ownerNationTag04 == g_runtimeTestState.selectedNationSlot) {
       finalTile = tile;
       break;
@@ -966,8 +966,10 @@ void RunWaitingForSecondPromptDismissal() {
   short citySite = -1;
   for (short tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     const TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-    bool supportsCity = tile.terrainType00 == 0 || tile.terrainType00 == 7 ||
-                        tile.terrainType00 == 1 || tile.terrainType00 == 6;
+    StrategicTerrainKind terrainKind = tile.GetTerrainKind();
+    bool supportsCity =
+        terrainKind == kStrategicTerrainPlains || terrainKind == kStrategicTerrainFarmland ||
+        terrainKind == kStrategicTerrainForest || terrainKind == kStrategicTerrainDesert;
     if (supportsCity && tile.ownerNationTag04 == g_runtimeTestState.selectedNationSlot &&
         tile.recruitSearchVisited0e == 0) {
       citySite = tileIndex;
@@ -1038,12 +1040,12 @@ void RunVerifyingCombinedMapExtents() {
   g_MapInteractionPreviewPoint_006a3370 = CPoint(0, 0);
   if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == 0) {
     mapDialog->SetMapDialogCellCoordinatesAndRefresh(0x6b, 0, 0);
-    mapView->AutoScrollByEdgeMask(4);
+    mapView->Scroll(4);
     if (mapDialog->viewportOrigin60.x != 0) {
       Fail("\"combined-map right-edge scrolling did not wrap to the left edge\"");
       return;
     }
-    mapView->AutoScrollByEdgeMask(8);
+    mapView->Scroll(8);
     if (mapDialog->viewportOrigin60.x != 0x6b * 0x40) {
       Fail("\"combined-map left-edge scrolling did not wrap to the right edge\"");
       return;
