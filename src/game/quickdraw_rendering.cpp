@@ -724,13 +724,14 @@ void SetQuickDrawTextOriginWithContextOffset(short x, short y) {
   }
   g_nQuickDrawResolvedTextOriginX = resolvedX;
   g_nQuickDrawResolvedTextOriginY = resolvedY;
-  // Verified against 0x0057cc4-0x497cdd: no null guard on either DC in the original --
-  // OffsetWindowOrg is called unconditionally, even on a null `dc` (matches faithfully).
+  // Verified against 0x0057cc4-0x497cdd: no null guard on either DC in the original.
+  // The nafxcw body at 0x6130a0 calls MoveToEx; its former OffsetWindowOrg identity was
+  // a false FID attribution among several same-shaped CDC methods.
   CDC* dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->OffsetWindowOrg(resolvedX, resolvedY);
+  dc->MoveTo(resolvedX, resolvedY);
 }
 
 // FUNCTION: IMPERIALISM 0x00497d10
@@ -758,8 +759,8 @@ void DrawCenteredGuideLineOnMapDc(short x, short y) {
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->OffsetWindowOrg(g_nQuickDrawPenHorizontalSize / 2 + g_nQuickDrawResolvedTextOriginX,
-                      g_nQuickDrawPenVerticalSize / 2 + g_nQuickDrawResolvedTextOriginY);
+  dc->MoveTo(g_nQuickDrawPenHorizontalSize / 2 + g_nQuickDrawResolvedTextOriginX,
+             g_nQuickDrawPenVerticalSize / 2 + g_nQuickDrawResolvedTextOriginY);
 
   int resolvedX = x;
   int resolvedY = y;

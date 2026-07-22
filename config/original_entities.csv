@@ -2854,7 +2854,7 @@ address|name|symbol|size|type|prototype|provenance
 4f9f60|TInfoPanelView::CreateObject|?CreateObject@TInfoPanelView@@SGPAVCObject@@XZ|107|function|undefined CreateObject()|rtti
 4f9ff0|TInfoPanelView::GetRuntimeClass||6|function|undefined GetTInfoPanelViewClassNamePointer()|rtti
 4fa010|TInfoPanelView::DoPostCreate||298|function|undefined OrphanCallChain_C6_I49_004875d0(void)|
-4fa190|TInfoPanelView::Draw||2278|function|undefined DestructTInfoPanelViewAndMaybeFree()|
+4fa190|TInfoPanelView::Draw||2278|function|void Draw(RECT* rectBuffer)|listing+source-recovery
 4facc0|TInfoPanelView::Setup||125|function|void Setup()|macos-name-oracle:Setup()
 4fad60|TInfoPanelView::DoEvent||114|function|undefined HandleDiplomacyNationFilterCommandAndForward()|
 4fae00|TInfoPanelView::SetInfoCountry||304|function|void SetInfoCountry(short countryId)|macos-name-oracle:SetInfoCountry(short)

@@ -583,7 +583,12 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
 }
 
 // FUNCTION: IMPERIALISM 0x00526ba0
-void TMapMaker::PickRandomRegionGridCell(unsigned int* outColumn, unsigned int* outRow) {}
+void TMapMaker::PickRandomRegionGridCell(unsigned int* outColumn, unsigned int* outRow) {
+  g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+  *outColumn = (g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) % 27;
+  g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+  *outRow = (g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) % 15;
+}
 
 // Resets the per-attempt scratch state (region-class grid, union-find group tables),
 // then seeds each of the 7 major nations with an 8-cell region at a random unclaimed
@@ -1448,11 +1453,57 @@ void TMapMaker::MapGenPassSlot1E() {
 
 // FUNCTION: IMPERIALISM 0x005296a0
 void TMapMaker::CopyRegionTemplateBankWithRandomVariant(int coarseIndex, int arg2, int arg3,
-                                                        int arg4, int arg5) {}
+                                                        int arg4, int arg5) {
+  (void)arg3;
+  char* cell = reinterpret_cast<char*>(GetFineGridCellBasePointerFromCoarseIndex(coarseIndex));
+
+  if (static_cast<short>(arg4) == static_cast<short>(arg2)) {
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    if ((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0) {
+      memcpy(cell - 0xee8, cell, 0x24);
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      if ((g_mapGenLcgState_006a38e8 >> 0xc & 3) == 0) {
+        memcpy(cell - 0x1e18, cell, 0x24);
+      }
+    } else {
+      memcpy(cell + 0x48, cell - 0xf0c, 0x24);
+    }
+  } else {
+    memcpy(cell - 0xf30, cell, 0x24);
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    if ((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0) {
+      memcpy(cell - 0xf54, cell, 0x24);
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      if ((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0) {
+        memcpy(cell - 0x1e60, cell, 0x24);
+      }
+    }
+  }
+
+  if (static_cast<short>(arg5) != static_cast<short>(arg2)) {
+    memcpy(cell + 0x6c, cell - 0xee8, 0x24);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x005297e0
 void TMapMaker::CopyRegionTemplateBankToNeighborCell(int coarseIndex, int arg2, int arg3, int arg4,
-                                                     int arg5) {}
+                                                     int arg5) {
+  (void)arg3;
+  (void)arg5;
+  int neighbor = GetAdjacentRegionGridCell(coarseIndex, 2);
+  char* cell = reinterpret_cast<char*>(GetFineGridCellBasePointerFromCoarseIndex(neighbor));
+  char* source = cell - 0xf30;
+
+  if (static_cast<short>(arg4) == static_cast<short>(arg2)) {
+    memcpy(cell, source, 0x24);
+  } else if (static_cast<short>(arg2) != 1) {
+    memcpy(cell - 0x24, source, 0x24);
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    if ((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) == 0) {
+      memcpy(cell - 0x48, source, 0x24);
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x005298a0
 int TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex) {
