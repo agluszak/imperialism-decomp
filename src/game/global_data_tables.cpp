@@ -2304,6 +2304,8 @@ extern "C" const char s_szLineBreak_00695880[8] = {'\n', 0, 0, 0, 'T', 'B', 'a',
 char s_szTurnHistorySeparator_00699320[8] = {':', ' ', 0, 0, 'L', 'o', 's', 's'};
 // GLOBAL: IMPERIALISM 0x00699324
 char s_szCombatLossesHeading_00699324[] = "Losses\n";
+// GLOBAL: IMPERIALISM 0x006993e8
+unsigned char g_applyMiniMapVerticalClipOffset_006993e8 = 1;
 // GLOBAL: IMPERIALISM 0x0069b71c
 char s_szTurnHistoryPrefix_0069b71c[] = "Turn ";
 // "Adm. " prefix for the assigned-admiral name line (TShipView::Draw,

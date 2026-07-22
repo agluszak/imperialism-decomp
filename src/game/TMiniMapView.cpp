@@ -1,6 +1,11 @@
 #include "game/TMiniMapView.h"
 
+#include "game/TMacViewMgr.h"
+#include "game/TMapMgr.h"
+#include "game/ScopedMapQuickDrawContext.h"
+#include "game/TQuickDrawSurfaceContext.h"
 #include "game/global_data_tables.h"
+#include "game/quickdraw_rendering.h"
 
 // SYNTHETIC: IMPERIALISM 0x0059a290
 // TMiniMapView::CreateObject
@@ -21,7 +26,89 @@ TMiniMapView::TMiniMapView()
 TMiniMapView::~TMiniMapView() {}
 
 // FUNCTION: IMPERIALISM 0x0059a540
-void TMiniMapView::Draw(RECT* rectBuffer) {}
+void TMiniMapView::Draw(RECT* rectBuffer) {
+  (void)rectBuffer;
+  TQuickDrawSurfaceContext* miniMapAtlas = g_pStrategicMapViewSystem->atlas670;
+  if (miniMapAtlas == 0) {
+    return;
+  }
+
+  short centerTile = g_pGlobalMapState->field6;
+  short sourceColumn = static_cast<short>(centerTile % 108);
+  short sourceRow = static_cast<short>(centerTile / 108);
+  sourceColumn = static_cast<short>(sourceColumn - ((frameWidth34 / 2 - markerBoxWidth98) / 2) - 1);
+  sourceRow = static_cast<short>(sourceRow - ((frameHeight38 / 2 - markerBoxHeight9c) / 2) - 1);
+
+  int verticalClipOffset = 0;
+  if (sourceColumn < 0) {
+    sourceColumn = static_cast<short>(sourceColumn + 108);
+  }
+  if (sourceRow < 0) {
+    verticalClipOffset = sourceRow * 2;
+    sourceRow = 0;
+  } else {
+    short visibleRows = static_cast<short>((frameHeight38 + 1) / 2);
+    if (sourceRow + visibleRows > 60) {
+      verticalClipOffset = (sourceRow + visibleRows) * 2 - 120;
+      sourceRow = static_cast<short>(60 - visibleRows);
+    }
+  }
+  scrollTileColumn88 = sourceColumn;
+  scrollTileRow8c = sourceRow;
+
+  ResetQuickDrawStrokeState();
+  SetQuickDrawFillColor(0);
+  SetQuickDrawStrokeColor(0xffffff);
+
+  CRect sourceRect(sourceColumn * 2, sourceRow * 2, sourceColumn * 2 + frameWidth34,
+                   sourceRow * 2 + frameHeight38);
+  CRect destinationRect(0, 0, frameWidth34, frameHeight38);
+  int overflow = sourceRect.right - 0xd7;
+  if (overflow <= 0) {
+    BlitRectWithOptionalTransparency(miniMapAtlas->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                     &sourceRect, &destinationRect, 0, 0);
+  } else {
+    CRect firstSource(sourceRect.left, sourceRect.top, 0xd7, sourceRect.bottom);
+    CRect firstDestination(0, 0, 0xd7 - sourceRect.left, frameHeight38);
+    if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0 &&
+        firstDestination.right <= frameWidth34 / 2) {
+      FillRectWithQuickDrawBrushAndContextOffset(&firstDestination);
+    } else {
+      BlitRectWithOptionalTransparency(miniMapAtlas->GetBlitSurface(),
+                                       g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                       &firstSource, &firstDestination, 0, 0);
+    }
+
+    CRect secondSource(0, sourceRect.top, overflow, sourceRect.bottom);
+    CRect secondDestination(frameWidth34 - overflow, 0, frameWidth34, frameHeight38);
+    if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0 && overflow <= frameWidth34 / 2) {
+      FillRectWithQuickDrawBrushAndContextOffset(&secondDestination);
+    } else {
+      BlitRectWithOptionalTransparency(miniMapAtlas->GetBlitSurface(),
+                                       g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                       &secondSource, &secondDestination, 0, 0);
+    }
+  }
+
+  short markerX = static_cast<short>(markerBoxX90);
+  short markerY = static_cast<short>(markerBoxY94);
+  if (g_applyMiniMapVerticalClipOffset_006993e8 != 0) {
+    markerY = static_cast<short>(markerY + verticalClipOffset);
+  }
+  CDC* dc = GetActiveQuickDrawDc();
+  int savedDc = dc->SaveDC();
+  SetQuickDrawFillColor(0xffffff);
+  SetQuickDrawTextOriginWithContextOffset(markerX, markerY);
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(markerX + markerBoxWidth98 * 2), markerY);
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(markerX + markerBoxWidth98 * 2),
+                               static_cast<short>(markerY + markerBoxHeight9c * 2));
+  DrawCenteredGuideLineOnMapDc(markerX, static_cast<short>(markerY + markerBoxHeight9c * 2));
+  DrawCenteredGuideLineOnMapDc(markerX, markerY);
+  dc->RestoreDC(savedDc);
+  SetQuickDrawFillColor(0);
+  SetQuickDrawStrokeColor(0xffffff);
+}
 
 // FUNCTION: IMPERIALISM 0x0059a920
 void TMiniMapView::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
