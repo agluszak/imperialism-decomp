@@ -901,7 +901,7 @@ void TSimMgr::DoCityAndTransport() {
     }
     int shouldRunHandlers = !(*nation)->IsRemote();
     if (shouldRunHandlers) {
-      (*nation)->OrphanRetStub_004dcc30();
+      (*nation)->FillInteriorMinisterOrders();
       (*nation)->NotifyCitySlot2C();
       (*nation)->ExecuteNationPendingActionStateMachine();
       (*nation)->RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary();

@@ -814,7 +814,7 @@ void TForeignMinister::ReplyToDiplomacyOffers(short queueIndex) {
                                                                            targetNation) != 4) {
         valid = 0;
       } else {
-        valid = gp->ReturnZeroSlot9D(targetNation);
+        valid = gp->PassesDiplomacyStrengthThresholdForTarget(targetNation);
       }
       break;
     case 0x12f:

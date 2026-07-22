@@ -280,15 +280,17 @@ void TAutoGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(voi
 }
 
 // FUNCTION: IMPERIALISM 0x004e7590
-void TAutoGreatPower::OrphanRetStub_004dcc30(void) {
+void TAutoGreatPower::FillInteriorMinisterOrders(void) {
   if (this->city != 0) {
     this->interiorMinister->FillOrders();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e75c0
-undefined TAutoGreatPower::OrphanCallChain_C4_I28_004e75c0(int) {
-  return 0;
+void TAutoGreatPower::RaiseNeedPlanningMetrics(int needSlot) {
+  actionMetricByQuarter[static_cast<short>(needSlot) - 7] += 4;
+  SetCityStockCounterAndRefresh(needSlot, GetDiplomacyExternalStateByTarget(needSlot) + 4);
+  SetDiplomacyState1c6ClampedToCounterA4(needSlot, QueryNationMetricBySlot7C(needSlot) + 4);
 }
 
 // FUNCTION: IMPERIALISM 0x004e7630
@@ -312,7 +314,7 @@ void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(short needSlot, short sour
       double scaledScore = static_cast<double>(relationScore) * g_DAT_00653fc0_Value_00653FC0;
       int roll = rand();
       if (static_cast<double>(roll) > scaledScore * g_DAT_00653fc8_Value_00653FC8) {
-        this->OrphanCallChain_C4_I28_004e75c0(needSlot);
+        this->RaiseNeedPlanningMetrics(needSlot);
       }
       return;
     }
@@ -611,7 +613,7 @@ int TAutoGreatPower::PropagateWarTransitionSlot280(int targetNation, int sourceN
 // Port-zone refit fields live on TZone (+0x28..+0x30).
 
 // FUNCTION: IMPERIALISM 0x004e8040
-char TAutoGreatPower::ReturnZeroSlot9D(int targetNation) {
+char TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation) {
   if (g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(targetNation, this->nationSlot) != 0) {
     return 0;
   }
@@ -766,6 +768,23 @@ void TAutoGreatPower::CreateMission(eMissionType missionType, int mapNodeIndex, 
   }
   if (relatedMapNodeIndex != -1) {
     this->mapNodeStateFlags[relatedMapNodeIndex] = kNodeStateQueued;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004e8680
+void TAutoGreatPower::RemoveMission(eMissionType missionType, int key, TZone* zoneContext) {
+  CIterator iter(missionQueue);
+  for (TMission* mission = static_cast<TMission*>(iter.Reset()); iter.More();
+       mission = static_cast<TMission*>(iter.Advance())) {
+    if (mission->Matches(missionType, key, zoneContext)) {
+      CPtrList* list = &missionQueue->listState;
+      POSITION position = list->Find(mission, 0);
+      if (position != 0) {
+        list->RemoveAt(position);
+      }
+      mission->Free();
+      return;
+    }
   }
 }
 // province's map-action-context link is unavailable for this nation, in which case it's
@@ -1390,8 +1409,23 @@ float TAutoGreatPower::GetCachedAiCityActionContextBias(short selector) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ea990
-undefined TAutoGreatPower::IterateLinkedListCursorAndRelinkNodeOwners_004ea990() {
-  return 0;
+void TAutoGreatPower::KillMissions() {
+  char removedMission;
+  do {
+    removedMission = 0;
+    CIterator iter(missionQueue);
+    TMission* mission = static_cast<TMission*>(iter.Reset());
+    CPtrList* list;
+    if (iter.More() != 0) {
+      list = &missionQueue->listState;
+      POSITION position = list->Find(mission, 0);
+      if (position != 0) {
+        list->RemoveAt(position);
+      }
+      mission->Free();
+      removedMission = 1;
+    }
+  } while (removedMission != 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004eaa20
@@ -1564,6 +1598,15 @@ void TAutoGreatPower::SeedTrackedEntryAssignmentsFromEligibleUnits() {
           TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex06, nullptr);
       handler->AdoptUnitSlot80(unit, 1);
     }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004eb040
+void TAutoGreatPower::MReassess() {
+  CIterator iter(missionQueue);
+  for (TMission* mission = static_cast<TMission*>(iter.Reset()); iter.More();
+       mission = static_cast<TMission*>(iter.Advance())) {
+    mission->Reassess();
   }
 }
 
