@@ -30,13 +30,18 @@ void TCdAudioDevice::ApplyMciPlaybackRangeFromAudioManager(int trackIndex) {
   SetMciPlaybackRangeByTrackIndexAndDevice(trackIndex, m_deviceId);
 }
 
+// FUNCTION: IMPERIALISM 0x0047cd80
+void TCdAudioDevice::StopPlayback() {
+  SendMciStopCommandToDevice(m_deviceId);
+}
+
 // FUNCTION: IMPERIALISM 0x0047cdd0
-int __stdcall ApplyAuxOutputVolumeFromScalar(int scalar) {
+int TCdAudioDevice::ApplyAuxOutputVolumeFromScalar(int scalar) {
   return SetAuxOutputVolumeFromScalar(scalar);
 }
 
 // FUNCTION: IMPERIALISM 0x0047cdf0
-bool TCdAudioDevice::ForwardMciStatusCommand814IgnoreFailure() {
+bool TCdAudioDevice::IsPlaybackActive() {
   return SendMciStatusCommand814AndIgnoreFailure(m_deviceId);
 }
 
@@ -189,4 +194,9 @@ WORD OpenCdAudioAndProbeAuxOutputDevice(void) {
 bool __stdcall SendMciCommand804ToDevice(MCIDEVICEID device) {
   MCIERROR err = mciSendCommandA(device, 0x804, 0, 0);
   return err == 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005e1a10
+void __stdcall SendMciStopCommandToDevice(MCIDEVICEID device) {
+  mciSendCommandA(device, MCI_STOP, 0, reinterpret_cast<DWORD>(&device));
 }

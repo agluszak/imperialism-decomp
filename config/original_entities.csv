@@ -337,12 +337,12 @@ address|name|symbol|size|type|prototype|provenance
 47cb60|WrapperFor_DeleteRegionHandleFromClipState_At0047cb60||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At0047cb60()|
 47cca0|ResetAndOpenCdAudioDeviceHandle||25|function|undefined ResetAndOpenCdAudioDeviceHandle()|
 47ccd0|SendMciCommand804IfDeviceOpenAndClearHandle||23|function|undefined SendMciCommand804IfDeviceOpenAndClearHandle()|
-47cd00|EnsureCdAudioDeviceHandleInitialized||22|function|undefined EnsureCdAudioDeviceHandleInitialized()|
-47cd30|SendMciCommand804IfDeviceOpenAndClearHandle_FastcallBridge||23|function|undefined SendMciCommand804IfDeviceOpenAndClearHandle_FastcallBridge()|
+47cd00|TCdAudioDevice::EnsureCdAudioDeviceHandleInitialized||22|function|void __thiscall EnsureCdAudioDeviceHandleInitialized(void)|
+47cd30|CloseGlobalCdAudioDeviceAndClearHandle||23|function|void __cdecl CloseGlobalCdAudioDeviceAndClearHandle(void)|
 47cd60|TCdAudioDevice::ApplyMciPlaybackRangeFromAudioManager||16|function|undefined ApplyMciPlaybackRangeFromAudioManager()|
-47cd80|ForwardMciCommand808ToDevice||9|function|undefined ForwardMciCommand808ToDevice()|
-47cdd0|ApplyAuxOutputVolumeFromScalar||13|function|undefined ApplyAuxOutputVolumeFromScalar()|
-47cdf0|ForwardMciStatusCommand814IgnoreFailure||9|function|undefined ForwardMciStatusCommand814IgnoreFailure()|
+47cd80|TCdAudioDevice::StopPlayback||9|function|void __thiscall StopPlayback(void)|
+47cdd0|TCdAudioDevice::ApplyAuxOutputVolumeFromScalar||13|function|int __thiscall ApplyAuxOutputVolumeFromScalar(int scalar)|
+47cdf0|TCdAudioDevice::IsPlaybackActive||9|function|bool __thiscall IsPlaybackActive(void)|
 47cfa0|WrapperFor_ftol_At0047cfa0||30|function|undefined WrapperFor_ftol_At0047cfa0()|
 47cfd0|InitializeDialogTemplateC2WithTextState||133|function|undefined InitializeDialogTemplateC2WithTextState()|
 47d090|TC2TemplateDialog::`scalar deleting destructor'|??_GTC2TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
@@ -1317,9 +1317,9 @@ address|name|symbol|size|type|prototype|provenance
 49c430|TSoundResourceManager::LoadWaveResourceByNumericIdAndBuildBuffer||583|function|int LoadWaveResourceByNumericIdAndBuildBuffer(unsigned int waveId, int slot)|
 49c720|TSoundResourceManager::ReadWaveDataAndFormatViaLoaderWithRetry||225|function|int ReadWaveDataAndFormatViaLoaderWithRetry(WaveLoadDescriptor* desc, int slot)|
 49c850|TSoundResourceManager::SetChannelVolumesUntilAccepted||61|function|int SetChannelVolumesUntilAccepted(int volume)|
-49c8e0|ClearDirectSoundInitPendingAndResetState_Impl||80|function|undefined ClearDirectSoundInitPendingAndResetState_Impl()|
-49c970|InitializeDirectSoundDeviceAndChannels||161|function|undefined InitializeDirectSoundDeviceAndChannels()|
-49ca50|ReleaseRuntimeSelectionPeersAndResetOwner_Impl||80|function|undefined ReleaseRuntimeSelectionPeersAndResetOwner_Impl()|
+49c8e0|TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels||80|function|void __thiscall ReleaseDirectSoundDeviceAndChannels(void)|
+49c970|TSoundResourceManager::InitializeDirectSoundDeviceAndChannels||161|function|int __thiscall InitializeDirectSoundDeviceAndChannels(void)|
+49ca50|TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels_SecondTuCopy||80|function|void __thiscall ReleaseDirectSoundDeviceAndChannels_SecondTuCopy(void)|
 49cac0|ResetGlobalPair6A1FD0And6A1FD4||13|function|undefined ResetGlobalPair6A1FD0And6A1FD4()|
 49cae0|ResetGlobalPair6A2000And6A2004||13|function|undefined ResetGlobalPair6A2000And6A2004()|
 49cb00|ResetGlobalQuad6A1FD8To6A1FE4||23|function|undefined ResetGlobalQuad6A1FD8To6A1FE4()|
@@ -5168,22 +5168,22 @@ address|name|symbol|size|type|prototype|provenance
 592980|TWarningView::DoEvent||161|function|undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(void)|
 592a70|TWarningView::DoPostCreate||1432|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5931e0|WrapperFor_ftol_At005931e0||30|function|undefined WrapperFor_ftol_At005931e0()|
-593210|Function_00593210||113|function|undefined4 Function_00593210(void)|
+593210|UpdateDeferredCdAudioFade||113|function|char __cdecl UpdateDeferredCdAudioFade(void)|
 5932b0|TSoundPlayer::CreateObject|?CreateObject@TSoundPlayer@@SGPAVCObject@@XZ|122|function|undefined CreateObject()|rtti
 593350|TSoundPlayer::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
-593370|TSoundPlayer::?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@@Z||38|function|undefined ?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@@Z()|
+593370|TSoundPlayer::TSoundPlayer||38|function|void __thiscall TSoundPlayer(void)|
 5933b0|TSoundPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-5933e0|TSoundPlayer::?DestructTSoundPlayerBaseState@@YIXPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@@Z||7|function|undefined ?DestructTSoundPlayerBaseState@@YIXPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@@Z()|
-593400|TSoundPlayer::DoIdle||240|function|undefined UpdateAudioPlaybackStateAndScheduleRandomCue()|
-5935c0|UpdateTurnAudioPlaybackStateAndScheduleCue||276|function|undefined UpdateTurnAudioPlaybackStateAndScheduleCue()|
-593730|ResetDualAudioCuePools||21|function|undefined ResetDualAudioCuePools()|
-593760|PushCueToDualAudioCuePools||31|function|undefined PushCueToDualAudioCuePools()|
-593790|TSoundPlayer::SelectAndScheduleRandomAudioCue||317|function|undefined SelectAndScheduleRandomAudioCue()|
-593920|TSoundPlayer::RequestAudioPresetChangeWithDeferredApply||183|function|undefined RequestAudioPresetChangeWithDeferredApply()|
-593a10|TSimMgr::SetOutputDevice||388|function|void __thiscall SetOutputDevice(int this_ptr)|
-593c10|TSoundPlayer::HandleBlinkStateAndScheduleTimerTick||116|function|void __thiscall HandleBlinkStateAndScheduleTimerTick(char enabled)|
-593cb0|ScaleAndApplyAuxOutputVolume||22|function|undefined __cdecl ScaleAndApplyAuxOutputVolume(int volumeScalar)|
-593ce0|Helper_Uses_thunk_GetTickCountDiv16_At00593ce0||40|function|undefined Helper_Uses_thunk_GetTickCountDiv16_At00593ce0()|
+5933e0|TSoundPlayer::~TSoundPlayer||7|function|void __thiscall ~TSoundPlayer(void)|
+593400|TSoundPlayer::DoIdle||240|function|char __thiscall DoIdle(int action)|
+5935c0|TSoundPlayer::UpdateAudioPlaybackStateAndScheduleRandomCue||276|function|void __thiscall UpdateAudioPlaybackStateAndScheduleRandomCue(void)|
+593730|TSoundPlayer::ResetDualAudioCuePools||21|function|void __thiscall ResetDualAudioCuePools(void)|
+593760|TSoundPlayer::PushCueToDualAudioCuePools||31|function|void __thiscall PushCueToDualAudioCuePools(int cueId)|
+593790|TSoundPlayer::SelectAndScheduleRandomAudioCue||317|function|void __thiscall SelectAndScheduleRandomAudioCue(void)|
+593920|TSoundPlayer::RequestAudioPresetChangeWithDeferredApply||183|function|void __thiscall RequestAudioPresetChangeWithDeferredApply(int presetId, bool defer)|
+593a10|TSoundPlayer::SetActiveAudioCueAndResetQueue||388|function|void __thiscall SetActiveAudioCueAndResetQueue(int cueId, bool defer)|
+593c10|TSoundPlayer::StopCdAudioPlayback||116|function|void __thiscall StopCdAudioPlayback(char fadeOut)|
+593cb0|TSoundPlayer::ScaleAndApplyAuxOutputVolume||22|function|void __thiscall ScaleAndApplyAuxOutputVolume(short scalar)|
+593ce0|TSoundPlayer::StartDeferredAudioFadeTimerIfIdle||40|function|void __thiscall StartDeferredAudioFadeTimerIfIdle(void)|
 593e50|WrapperFor_ftol_At00593e50||30|function|undefined WrapperFor_ftol_At00593e50()|
 593e80|TStatusPicture::CreateObject|?CreateObject@TStatusPicture@@SGPAVCObject@@XZ|93|function|TStatusPicture * __cdecl CreateObject(void)|rtti
 593f00|TStatusPicture::GetRuntimeClass||6|function|undefined GetTStatusPictureClassNamePointer()|rtti
@@ -6151,7 +6151,7 @@ address|name|symbol|size|type|prototype|provenance
 5e02f0|WrapperFor_FindFirstFileAndPopulateFileInfoRecord_At005e02f0||54|function|undefined WrapperFor_FindFirstFileAndPopulateFileInfoRecord_At005e02f0()|
 5e0340|DeleteLegacyCliSaveImpFiles||220|function|undefined DeleteLegacyCliSaveImpFiles()|
 5e0460|DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot||137|function|undefined DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot()|
-5e0520|ScheduleTimerSlotCallbackWithInterval||79|function|undefined ScheduleTimerSlotCallbackWithInterval()|
+5e0520|TAssetMgr::ScheduleTimerSlotCallbackWithInterval||79|function|void __thiscall ScheduleTimerSlotCallbackWithInterval(char (__cdecl* callback)(void), unsigned int interval, int slot)|
 5e0590|FormatVersionStringFromVersionResource||212|function|undefined FormatVersionStringFromVersionResource()|
 5e0780|OpenWaveMmioReadFmtChunkAndAllocateHeader||428|function|UINT OpenWaveMmioReadFmtChunkAndAllocateHeader(char* pszFileName, HMMIO* phmmio, WAVEFORMATEX** ppwfx, MMCKINFO* pckInRIFF, MMIOINFO* pmmioInfo)|
 5e09f0|ReadMmioBytesToBufferAndUpdateChunkRemaining||205|function|UINT ReadMmioBytesToBufferAndUpdateChunkRemaining(HMMIO hmmio, UINT cbRead, HPSTR pbDest, MMCKINFO* pckIn, UINT* pcbActualRead)|
@@ -6169,7 +6169,7 @@ address|name|symbol|size|type|prototype|provenance
 5e1850|SetMciPlaybackRangeByTrackIndexAndDevice||114|function|undefined SetMciPlaybackRangeByTrackIndexAndDevice()|
 5e18f0|OpenCdAudioAndProbeAuxOutputDevice||190|function|undefined OpenCdAudioAndProbeAuxOutputDevice()|
 5e19e0|SendMciCommand804ToDevice||32|function|undefined SendMciCommand804ToDevice()|
-5e1a10|SendMciCommand808ToDeviceWithParam||26|function|undefined SendMciCommand808ToDeviceWithParam()|
+5e1a10|SendMciStopCommandToDevice||26|function|void __stdcall SendMciStopCommandToDevice(unsigned int device)|
 5e1b90|WrapperFor_ftol_At005e1b90||30|function|undefined WrapperFor_ftol_At005e1b90()|
 5e1bc0|InitializeDialogTemplate98WithSharedText||120|function|undefined InitializeDialogTemplate98WithSharedText()|
 5e1c60|TLowDiskWarningDialog::`scalar deleting destructor'|??_GTLowDiskWarningDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
@@ -6249,9 +6249,9 @@ address|name|symbol|size|type|prototype|provenance
 5e4a90|ResizeDwordPointerArrayAndZeroNewSlots||310|function|undefined ResizeDwordPointerArrayAndZeroNewSlots()|
 5e4d50|WrapperFor_ftol_At005e4d50||30|function|undefined WrapperFor_ftol_At005e4d50()|
 5e4d80|WrapperFor_AppendPointerToGlobalVectorAsStatus_At005e4d80||40|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At005e4d80()|
-5e4dc0|thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0||10|function|undefined thunk_ReleaseRuntimeSelectionPeersAndResetOwner_Impl_At005e4dc0()|
-5e4de0|InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0||24|function|undefined InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0()|
-5e4e70|TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists||192|function|undefined InitializeSoundSubsystemAndAllocateChannelLists()|
+5e4dc0|ReleaseGlobalDirectSoundDeviceAndChannels||10|function|void __cdecl ReleaseGlobalDirectSoundDeviceAndChannels(void)|
+5e4de0|ResetAndOpenGlobalCdAudioDevice||24|function|void __cdecl ResetAndOpenGlobalCdAudioDevice(void)|
+5e4e70|TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists||192|function|void __thiscall InitializeSoundSubsystemAndAllocateChannelLists(int handlerTag)|
 5e4f60|TSoundPlayer::ReturnConstantTrue_SoundPredicate||3|function|undefined ReturnConstantTrue_SoundPredicate()|
 5e4f80|TSoundPlayer::RequestDirectSoundInitIfAllowed||22|function|undefined RequestDirectSoundInitIfAllowed()|
 5e4fb0|TSoundPlayer::ReturnConstantFalse_SoundPredicate||5|function|undefined ReturnConstantFalse_SoundPredicate()|
@@ -6264,7 +6264,7 @@ address|name|symbol|size|type|prototype|provenance
 5e5170|TSoundPlayer::ReturnConstantZero_005e5170||5|function|undefined ReturnConstantZero_005e5170()|
 5e5190|TSoundPlayer::ReturnConstantZero_005e5190||5|function|undefined ReturnConstantZero_005e5190()|
 5e51b0|TSoundPlayer::VTableSlot31||14|function|undefined 'scalar_deleting_destructor'(void)|
-5e51d0|TSoundPlayer::Free||70|function|undefined ReleaseRuntimeSelectionPeersAndResetOwner()|
+5e51d0|TSoundPlayer::Free||70|function|void __thiscall Free(void)|
 5e539c|AfxGetMainWnd|?AfxGetMainWnd@@YGPAVCWnd@@XZ|25|function|class CWnd * __stdcall AfxGetMainWnd(void)|msvc500_library_override
 5e53bc|CNoTrackObject::`scalar deleting dtor'|??_GCNoTrackObject@@UAEPAXI@Z|28|function|public: virtual void * __thiscall CNoTrackObject::`scalar deleting dtor'(unsigned int)|msvc500_library_oracle
 5e53d8|CThreadLocal<class AFX_MODULE_THREAD_STATE>::CreateObject|?CreateObject@?$CThreadLocal@VAFX_MODULE_THREAD_STATE@@@@SGPAVCNoTrackObject@@XZ|52|function|public: static class CNoTrackObject * __stdcall CThreadLocal<class AFX_MODULE_THREAD_STATE>::CreateObject(void)|msvc500_library_override
@@ -8696,7 +8696,7 @@ address|name|symbol|size|type|prototype|provenance
 6a4490|g_awCivilianLegendSelectionCountsBySlot|||global||
 6a44b0|g_pActiveCityDialogLegendSelectionOwner|||global||
 6a44b4|g_bCityDialogLegendSelectionInitialized|||global||
-6a4520|DAT_006a4520|||global||xref_oracle
+6a4520|g_randomAudioCuePollCounter|||global||xref_oracle
 6a4780|g_aTacticalUnitFacingOffsetTable|||global||
 6a5458|g_nUiFrameClipOriginX|||global||
 6a545c|g_nUiFrameClipOriginY|||global||
