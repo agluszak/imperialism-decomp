@@ -1032,7 +1032,7 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
       secondScore = secondSideScore[ownerNationCode];
       if (ownerNationCode > 6 && cityRecord->linkedRegionCount > 0) {
         for (int i = 0; i < cityRecord->linkedRegionCount; ++i) {
-          short linkedTile = cityRecord->linkedRegionIds[i];
+          short linkedTile = cityRecord->linkedTileIndices42[i];
           int secondaryOwner =
               g_pGlobalMapState->terrainStateTable[linkedTile].secondaryOwnerNationTag18;
           if (secondaryOwner == topNationSlot) {

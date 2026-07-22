@@ -565,7 +565,7 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
         secondaryNeighbors.Count() = pick + 1;
       }
       Province* cityRecord = secondaryNeighbors.Data()[pick];
-      short tile = cityRecord->linkedRegionIds[0];
+      short tile = cityRecord->linkedTileIndices42[0];
       chosenCity = g_pGlobalMapState->terrainStateTable[tile].cityRecordIndex;
       if (usedCity[chosenCity] == '\0') {
         usedCity[chosenCity] = 1;

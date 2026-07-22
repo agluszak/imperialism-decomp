@@ -2919,7 +2919,7 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   packet.cityWord40 = src->primaryNeighborTileIndex40;
 
   for (int linkedIndex = 0; linkedIndex < 32; ++linkedIndex) {
-    packet.linkedRegionIds42[linkedIndex] = src->linkedRegionIds[linkedIndex];
+    packet.linkedRegionIds42[linkedIndex] = src->linkedTileIndices42[linkedIndex];
   }
   packet.linkedRegionIds82[0] = src->resourceDevelopmentCounts82[0];
   packet.linkedRegionIds82[1] = src->resourceDevelopmentCounts82[1];

@@ -1057,7 +1057,7 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
       if (regionRecord->linkedRegionCount > 0) {
         int linkedIndex = 0;
         while (linkedIndex < regionRecord->linkedRegionCount) {
-          short tileId = regionRecord->linkedRegionIds[linkedIndex];
+          short tileId = regionRecord->linkedTileIndices42[linkedIndex];
           tileArrayBase[0x18 + tileId * 0x24] = static_cast<char>(-1);
           linkedIndex++;
         }
@@ -1072,7 +1072,7 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
   if (regionRecord->linkedRegionCount > 0) {
     int linkedIndex = 0;
     while (linkedIndex < regionRecord->linkedRegionCount) {
-      short tileId = regionRecord->linkedRegionIds[linkedIndex];
+      short tileId = regionRecord->linkedTileIndices42[linkedIndex];
       tileArrayBase[0x18 + tileId * 0x24] = static_cast<char>(-1);
       linkedIndex++;
     }
@@ -1100,7 +1100,7 @@ void TMinor::QueueInterNationEvent17ForState300AffectedNations(void) {
       if (regionRecord->linkedRegionCount > 0) {
         int linkedIndex = 0;
         while (linkedIndex < regionRecord->linkedRegionCount) {
-          short tileId = regionRecord->linkedRegionIds[linkedIndex];
+          short tileId = regionRecord->linkedTileIndices42[linkedIndex];
           int tileNation = static_cast<signed char>(terrainBytes[0x18 + tileId * 0x24]);
           if (tileNation != -1 && needLevel300ByMajorSlot[tileNation] != 0) {
             notifyMajorSlots[tileNation] = 1;
@@ -1150,7 +1150,7 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
         int linkedIndex = 0;
         while (linkedIndex < regionRecord->linkedRegionCount) {
           WalkTileCivilianOrdersForRelationMask(
-              terrainTiles, regionRecord->linkedRegionIds[linkedIndex], relationMaskByNation);
+              terrainTiles, regionRecord->linkedTileIndices42[linkedIndex], relationMaskByNation);
           linkedIndex++;
         }
       }
@@ -1165,7 +1165,7 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
     int linkedIndex = 0;
     while (linkedIndex < regionRecord->linkedRegionCount) {
       WalkTileCivilianOrdersForRelationMask(
-          terrainTiles, regionRecord->linkedRegionIds[linkedIndex], relationMaskByNation);
+          terrainTiles, regionRecord->linkedTileIndices42[linkedIndex], relationMaskByNation);
       linkedIndex++;
     }
   }
@@ -1299,8 +1299,9 @@ void TMinor::ReassignUnitOrdersForCountryTargetChange(short provinceId,
       if (regionRecord->linkedRegionCount > 0) {
         int linkedIndex = 0;
         while (linkedIndex < regionRecord->linkedRegionCount) {
-          WalkTileUnitOrdersForRelationMask(
-              terrainTiles, regionRecord->linkedRegionIds[linkedIndex], relationMaskByNation, 0);
+          WalkTileUnitOrdersForRelationMask(terrainTiles,
+                                            regionRecord->linkedTileIndices42[linkedIndex],
+                                            relationMaskByNation, 0);
           linkedIndex++;
         }
       }
@@ -1314,8 +1315,8 @@ void TMinor::ReassignUnitOrdersForCountryTargetChange(short provinceId,
   if (regionRecord->linkedRegionCount > 0) {
     int linkedIndex = 0;
     while (linkedIndex < regionRecord->linkedRegionCount) {
-      WalkTileUnitOrdersForRelationMask(terrainTiles, regionRecord->linkedRegionIds[linkedIndex],
-                                        relationMaskByNation, 1);
+      WalkTileUnitOrdersForRelationMask(
+          terrainTiles, regionRecord->linkedTileIndices42[linkedIndex], relationMaskByNation, 1);
       linkedIndex++;
     }
   }

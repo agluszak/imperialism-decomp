@@ -10,3 +10,10 @@ typedef short StrategicTileIndex;
 // path buffers, and unit fields are all full dwords; 0x005a0420 reads and writes
 // dwords throughout and 0x005a0550 compares a six-element dword neighbor array.
 typedef int TacticalTileIndex;
+
+// Province/city-score identity is a full int in table arithmetic and most game-owned
+// APIs (0x0050e2c0 computes it from a pointer difference; 0x0050fca0 consumes a dword).
+// Packed terrain/Province records and a few legacy stack boundaries retain signed
+// 16-bit storage (0x005149d0 sign-extends its word argument).
+typedef int ProvinceIndex;
+typedef short ProvinceIndexStorage;

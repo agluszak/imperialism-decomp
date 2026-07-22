@@ -82,7 +82,7 @@ struct TTerrainStateRecordView {
   signed char resourceTypeByEdge[2];
   // Signed: same MOVSX-index evidence as terrainKindStorage00/spriteVariantIndex01 above.
   signed char gateFlag;
-  short cityRecordIndex;
+  ProvinceIndexStorage cityRecordIndex;
   // Tile action class (structure/site type): equality-compared against 2..6/0xe/0x10/0x11
   // by the tile context menu (0x504e90) to pick menu items 0x2b..0x31; read signed by
   // map_overlay_geometry; reset to -1 by the TMapMgr table init.
@@ -127,7 +127,7 @@ struct Province {
   unsigned char pad09;
   // +0x0a adjacent city-record ids (-1-terminated, up to 12; adjacentRegionCount08 is
   // the live count), rebuilt by RebuildTileOwnerNeighborCachesAndFallbackAssignments.
-  short adjacentRegionIds0A[0xc];
+  ProvinceIndexStorage adjacentRegionIds0A[0xc];
   // +0x22 parallel array: for each adjacent record above, one representative linked
   // tile of THIS record that borders it (written alongside the id insert in 0x50f860).
   StrategicTileIndex adjacentRegionAnchorTiles22[0xc];
@@ -141,7 +141,7 @@ struct Province {
   // neighbors preferred; also snapshotted by the city-redraw packet.
   StrategicTileIndex secondaryNeighborTileIndex3e; // 0x3e
   StrategicTileIndex primaryNeighborTileIndex40;   // 0x40
-  short linkedRegionIds[0x20];
+  StrategicTileIndex linkedTileIndices42[0x20];
   // 0x82..0x95 — per-resource-type development counters, indexed by resourceType - 7
   // (resource types 7..0x10). One array everywhere: the development advance
   // (TGreatPower 0x4dbf00) increments individual entries against building caps, the
@@ -181,7 +181,7 @@ void ByteSwapCityScoreTableShortFields(Province* table);
 // Resolve a raw Province* back into its cityScoreTable index.
 // Real __fastcall (single ecx arg, no stack cleanup: every original callsite loads
 // ecx and pushes nothing). 0x0050e2c0, defined in TNavyMgr.cpp.
-int __fastcall GetProvinceIndex(Province* province);
+ProvinceIndex __fastcall GetProvinceIndex(Province* province);
 
 // 0x5127e0: tileIndex -> (hex raster column*2 (+1 on odd rows), row = tileIndex/0x6c).
 // Genuine __cdecl free function (pure arithmetic).
@@ -231,7 +231,7 @@ public:
                                             int stateByte); // 0x515e00
   // Retail callers pass g_pGlobalMapState in ECX; the body intentionally does not
   // inspect the receiver and returns the constant province-order weight.
-  short GetProvinceUnitOrderWeight(short provinceId); // 0x5184e0
+  short GetProvinceUnitOrderWeight(ProvinceIndexStorage provinceId); // 0x5184e0
   DECLARE_DYNCREATE(TMapMgr)
   virtual ~TMapMgr() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -283,7 +283,7 @@ public:
   // gateFlag.
   virtual short
   UpdateStrategicMapTileIconVariantState(StrategicTileIndex tileIndex); // slot 0x10 0x511610
-  // For each of the 7 nations: collects every linkedRegionIds entry across that nation's
+  // For each of the 7 nations: collects every linkedTileIndices42 entry across that nation's
   // owned cities into a heap scratch array, tallies resourceTypeByEdge occurrences by type
   // (0-23) across those regions, then for resourceType 3 and (independently) 4 whose tally
   // is 0: picks a region with gateFlag 8 or 9 and an empty resourceTypeByEdge[0] slot if one
@@ -317,7 +317,7 @@ public:
   // (FindMapActionContextContainingNodeByIndex, a free function on TZone's
   // secondaryNeighbors list).
   virtual bool
-  IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(int cityRecordIndex,
+  IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(ProvinceIndex cityRecordIndex,
                                                        short nationTag); // slot 0x16 0x5121d0
   virtual int IsShiftKeyDown();                                          // slot 0x17 0x5122b0
   virtual int IsAltKeyDown();                                            // slot 0x18 0x5122d0
@@ -435,8 +435,8 @@ public:
   // primaryNeighborTileIndex40, then the next-best remaining neighbor (any city) becomes
   // secondaryNeighborTileIndex3e. The original assumes both passes find a direction;
   // callers must provide a real city anchor with eligible neighbors.
-  virtual void
-  UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(int cityRecordIndex); // slot 0x2a 0x50fca0
+  virtual void UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(
+      ProvinceIndex cityRecordIndex); // slot 0x2a 0x50fca0
   // Looks up whether tileIndex's region has an eligible stationed unit
   // (TArmyMgr::HasEligibleStationedUnitInRegion) but discards the result -- the original's
   // own call site never reads the return value either, so this is vestigial/dead code.
@@ -456,24 +456,24 @@ public:
   // reused here as a tile index) to newTileIndex: clears the old anchor tile's activeFlags1c
   // (0x20 bit) and refreshes its gateFlag/resourceTypeByEdge[0], sets the new tile's
   // activeFlags1c to 0x22 and its gateFlag, points cityTileIndex04 at it, then clears the
-  // 0x20 bit from all of the city's linkedRegionIds tiles (unconditionally, even if
+  // 0x20 bit from all of the city's linkedTileIndices42 tiles (unconditionally, even if
   // newTileIndex is itself one of them -- matches the original's literal statement order).
   // Finishes by recomputing the city's primary/secondary neighbor links.
-  virtual void SetRegionTileSubtypeAndRefreshNeighborFlags(int cityRecordIndex,
+  virtual void SetRegionTileSubtypeAndRefreshNeighborFlags(ProvinceIndex cityRecordIndex,
                                                            int newTileIndex); // slot 0x2c 0x515f80
   // Real body is just `ret 0xc` (pops 3 stack dwords, no other instructions) -- no evidence
   // for the real parameter types since none are read; typed as unused ints to match the
   // stack-cleanup byte count.
   virtual void NoOpVirtualSlot2D(int param_1, int param_2, int param_3); // slot 0x2d 0x515de0
   // Reassigns cityRecordIndex's ownerNationCode00 to newNationTag: first tells
-  // SetTileOwnerAndInvalidateNeighborState to update every one of the city's linkedRegionIds,
+  // SetTileOwnerAndInvalidateNeighborState to update every one of the city's linkedTileIndices42,
   // then updates the city's own owned-region-list membership (real TCountry virtuals on
   // g_apTerrainTypeDescriptorTable, resolved from the ILT thunks at 0x4081a2/0x407f72's
   // siblings), sets g_pMapContextActionManager's per-nation slot, notifies the new owner
   // (TGreatPower::NotifyActionSlot94) unless it's the local player's own turn, and creates a
   // turn-12 event when running in multiplayer-host mode.
   virtual void
-  DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short cityRecordIndex,
+  DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(ProvinceIndexStorage cityRecordIndex,
                                                          int newNationTag); // slot 0x2e 0x513290
   // Searches cityScoreTable[cityRecordIndex].adjacentRegionIds0A[0..11] for regionId;
   // on a hit returns the parallel entry at [i+12] (see TMultiplayerMgr's
@@ -484,8 +484,9 @@ public:
   // as one flat, -1-terminated list. The [0..11]/[12..23] split (region id / parallel
   // linked-region id) is a consumer-side interpretation of adjacent slots, not overlapping
   // storage -- each slot has one meaning.
-  virtual short FindLinkedRegionIdForAdjacentRegion(int cityRecordIndex,
-                                                    int regionId); // slot 0x2f 0x516090
+  virtual StrategicTileIndex
+  FindLinkedTileForAdjacentProvince(ProvinceIndex cityRecordIndex,
+                                    ProvinceIndex regionId); // slot 0x2f 0x516090
   // If nationSlotParam < 7, marks that nation's capital-tile city (found via
   // g_apTerrainTypeDescriptorTable[nationSlotParam]->homeTileIndex used as a
   // terrainStateTable index -- one index into tables keyed by the same tile/region domain
@@ -615,8 +616,9 @@ public:
   // Ghidra artifacts); every call site passes (tile index, owner nation tag).
   virtual int QueueDepotConstructionOrder(StrategicTileIndex nTileIndex, short nNationId);
   virtual void QueuePortConstructionOrder(StrategicTileIndex nTileIndex,
-                                          short nNationId);        // slot 0x4a 0x5147d0
-  virtual void SetProvinceCapitalTileFlagBit08(short nProvinceId); // slot 0x4b 0x5149d0
+                                          short nNationId); // slot 0x4a 0x5147d0
+  virtual void
+  SetProvinceCapitalTileFlagBit08(ProvinceIndexStorage nProvinceId); // slot 0x4b 0x5149d0
   virtual void FloodFillTileRegionMarker(StrategicTileIndex nTileIndex,
                                          short nOwnerNationId); // slot 0x4c 0x5143d0
   // Moves cityRecordIndex's anchor to nTileIndex (real call into
@@ -701,11 +703,12 @@ public:
   // nation slot 7..22: if that minor's TCountry entry exists and
   // IsEncodedNationSlotMinus200Equal(nationCode) holds for it, checks whether the minor's own
   // slot number is among cityRecordIndex's adjacent owners too.
-  bool HasDirectOrFallbackLinkedNodeType(int cityRecordIndex, int nationCode, char allowFallback);
+  bool HasDirectOrFallbackLinkedNodeType(ProvinceIndex cityRecordIndex, int nationCode,
+                                         char allowFallback);
   // 0x518090. CollectSecondDegreeLinksMatchingNodeType for nationTag; when that finds
   // nothing and allowFallback is set (and nationTag >= 7), retries each minor slot 7..22
   // whose capability object exists and whose nation row decodes to nationTag.
-  int CollectSecondDegreeLinksWithMinorNationFallback(int cityRecordIndex, int nationTag,
+  int CollectSecondDegreeLinksWithMinorNationFallback(ProvinceIndex cityRecordIndex, int nationTag,
                                                       int* nodeBuffer, char allowFallback);
   // 0x515e50. Despite the name, checks whether regionIndex is in nodeContext's
   // adjacent-region list -- see the .cpp body comment.
@@ -725,7 +728,7 @@ public:
   FindReachableRecruitSpawnTileWithVisitedReset(StrategicTileIndex startTileIndex,
                                                 char allowActiveFlag2);
   // 0x515f40. Write a city display-name CString into cityScoreTable[cityRecordIndex]+0xa4.
-  void SetGlobalMapCellSharedLabel(int cityRecordIndex, CString* name);
+  void SetGlobalMapCellSharedLabel(ProvinceIndex cityRecordIndex, CString* name);
   // 0x518b40. Developer purchase cost of a tile's two edge resources (weights the trade
   // manager's proposal-weight metric). Reattributed from TCivToolbar (heuristic 46).
   int CalculateDeveloperTilePurchaseCost(StrategicTileIndex nTileIndex);
@@ -737,7 +740,8 @@ public:
   // region's own owner on every inner iteration, not the neighbor's or second-degree
   // neighbor's; reproduced as-is (this is the real disassembly, not a simplification).
   // Returns the number of entries appended.
-  int CollectSecondDegreeLinksMatchingNodeType(int cityRecordIndex, int nationTag, int* nodeBuffer);
+  int CollectSecondDegreeLinksMatchingNodeType(ProvinceIndex cityRecordIndex, int nationTag,
+                                               int* nodeBuffer);
 
   // 0x518d90 (thiscall, no explicit args). Clears perTileVisitedFlag0f across the whole
   // terrainStateTable, then walks the active nation's militaryUnitList44 (CIterator) and,
@@ -801,8 +805,8 @@ public:
 
   char CallMetricSlotC4(int regionIndex, int edgeIndex);
   short QueryIconStripXSlot110(int iconCode);
-  void NotifyCityRecordSlot12C(int cityRecordIndex);
-  void AssignCityRecordDisplayName(int cityRecordIndex, CString* dest);
+  void NotifyCityRecordSlot12C(ProvinceIndex cityRecordIndex);
+  void AssignCityRecordDisplayName(ProvinceIndex cityRecordIndex, CString* dest);
   void DumpAndResetMapScriptState(); // 0x00519140
 
   // Join-empire (mode 0) reset: walk the +0x0c tile table (0x24-byte records, one per

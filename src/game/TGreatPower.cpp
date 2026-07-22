@@ -1344,7 +1344,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
           int linkedCount = cityRecord->linkedRegionCount;
           int linkedIndex = 0;
           while (linkedIndex < linkedCount) {
-            short linkedRegion = cityRecord->linkedRegionIds[linkedIndex];
+            short linkedRegion = cityRecord->linkedTileIndices42[linkedIndex];
             int edge = 0;
             while (edge < 2) {
               signed char resourceType = terrainTable[linkedRegion].resourceTypeByEdge[edge];

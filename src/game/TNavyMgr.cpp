@@ -36,7 +36,7 @@ Province* __stdcall GetProvinceByTileIndex(short nTileIndex);
 // g_pGlobalMapState's cityScoreTable. Real __fastcall: the single arg arrives in ecx
 // and no original callsite pushes anything.
 // FUNCTION: IMPERIALISM 0x0050e2c0
-int __fastcall GetProvinceIndex(Province* province) {
+ProvinceIndex __fastcall GetProvinceIndex(Province* province) {
   return static_cast<int>(province - g_pGlobalMapState->cityScoreTable);
 }
 

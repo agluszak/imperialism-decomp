@@ -201,7 +201,7 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
     city.linkedRegionCount = 0;
     int entry;
     for (entry = 0; entry < 0x20; ++entry) {
-      city.linkedRegionIds[entry] = -1;
+      city.linkedTileIndices42[entry] = -1;
     }
     for (entry = 0; entry < 0x0c; ++entry) {
       city.adjacentRegionIds0A[entry] = -1;
