@@ -71,13 +71,6 @@ float TCityInteriorMinister::GetAiDevelopmentResourceBudgetScale(int* resourcePo
 // SYNTHETIC: IMPERIALISM 0x004be710
 // TCityInteriorMinister::CreateObject
 
-// NOTE: The city-policy virtual run (slots 0x58-0xd4) — production rebalancing, command
-// queueing, home-tile selection, neighbor-bucket rebuilds — is promoted here as a real
-// virtual override layout owning the original addresses (previously return-0 autogen
-// stubs / orphan leaves). Bodies are honest partial ports to be enriched later; the slot
-// ownership is what drives vtable matching. Methods are listed in ascending-address order
-// (marker hygiene), which differs from slot order.
-
 // FUNCTION: IMPERIALISM 0x004be7b0
 short TCityInteriorMinister::InteriorSlot1D(int arg) {
   return orderTypeTable12A[arg];
@@ -99,11 +92,7 @@ void TCityInteriorMinister::InteriorSlot1F(int arg) {
 IMPLEMENT_DYNCREATE(TCityInteriorMinister, TInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004be840
-TCityInteriorMinister::TCityInteriorMinister() : TInteriorMinister() {
-  orderList18c = 0;
-  capabilityFlag14 = 1;
-  capabilityFlag16 = 1;
-}
+TCityInteriorMinister::TCityInteriorMinister() : TInteriorMinister(), orderList18c(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x004be880
 // TCityInteriorMinister::`scalar deleting destructor'
@@ -2465,7 +2454,7 @@ int TCityInteriorMinister::GetAverageDevelopmentOrderAllocation() {
   for (int index = 0; index < 16; ++index) {
     total = static_cast<short>(total + orderShortTableBA[index]);
   }
-  return total / 10;
+  return total / 20;
 }
 
 // FUNCTION: IMPERIALISM 0x004c4fe0

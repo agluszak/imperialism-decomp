@@ -180291,6 +180291,25 @@
         "owner_class": "TDlgWindow",
         "recovered_source": "src/game/TDlgWindow.cpp"
       },
+      "0x00503420": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UHelpMgr.cpp",
+                "symbol": "s_SourcePathUHelpMgr_00696C58"
+              }
+            ],
+            "module": "UHelpMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "ActivatePendingEventAndRefreshView",
+        "owner_class": null,
+        "recovered_source": "src/game/THelpMgr.cpp"
+      },
       "0x00503ac0": {
         "modules": [
           {
@@ -182018,6 +182037,7 @@
       "UHelpMgr.cpp": {
         "classes": [],
         "functions": [
+          "0x00503420",
           "0x00503ac0"
         ]
       },
@@ -182270,7 +182290,7 @@
     "classes_with_source_module_evidence": 19,
     "declared_classes": 152,
     "factories_with_source_module_candidates": 10,
-    "functions_with_source_module_evidence": 123,
+    "functions_with_source_module_evidence": 124,
     "nodes": 3263,
     "screens": 121,
     "screens_with_source_module_candidates": 29,

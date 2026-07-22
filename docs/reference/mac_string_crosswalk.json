@@ -13099,6 +13099,29 @@
       ],
       "source_file": "src/game/THelpMgr.cpp"
     },
+    "0x00503420": {
+      "references": [
+        {
+          "address": "0x00694fd8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiFailureMessage",
+          "text": "Failure"
+        },
+        {
+          "address": "0x00694fc8",
+          "kind": "embedded_global",
+          "symbol": "g_szUiNilPointerMessage",
+          "text": "Nil Pointer"
+        },
+        {
+          "address": "0x00696c58",
+          "kind": "embedded_global",
+          "symbol": "s_SourcePathUHelpMgr_00696C58",
+          "text": "D:\\Ambit\\Cross\\UHelpMgr.cpp"
+        }
+      ],
+      "source_file": "src/game/THelpMgr.cpp"
+    },
     "0x00503ac0": {
       "references": [
         {
@@ -191374,7 +191397,7 @@
   "summary": {
     "embedded_globals": 773,
     "formula_matches": 2356,
-    "functions_with_references": 323,
+    "functions_with_references": 324,
     "mac_strings": 3821,
     "mac_strings_with_candidates": 3272,
     "text_resources": 182,

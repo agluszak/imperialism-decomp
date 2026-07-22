@@ -33,14 +33,14 @@ void TGameScorePicture::DoPostCreate(int arg) {
   CString argumentText;
   CString displayText;
   TextStyle scoreStyle = {0, 0, 0, 0};
-  int shadowTheme = 0;
+  COLORREF shadowColor = 0;
 
   g_pSfxPlaybackSystem->ResetDualAudioCuePools();
   g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(11);
   g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
 
   BuildUiTextStyleDescriptor(&scoreStyle, 0, 14, 0x2b68);
-  MapUiThemeCodeToStyleFlags(0x2b6a, &shadowTheme);
+  ResolveUiThemeColor(0x2b6a, &shadowColor);
 
   g_apNationStates[g_pSimMgr->GetActiveNationId()]->GenerateGameScore();
 
@@ -52,7 +52,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
       BuildUiTextStyleDescriptor(&scoreStyle, 0, 18, 0x2b68);
     }
     label->InstallTextStyle(scoreStyle, 1);
-    label->shadowThemeCode94 = shadowTheme;
+    label->shadowColor94 = shadowColor;
 
     g_pSimMgr->GetString(0x2761, static_cast<short>(row + 2), &displayText);
     if (row == 10) {
@@ -68,7 +68,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
         static_cast<TDropShadowText*>(ResolveControlByTag(0x6e756d61u + row)); // 'numa'..
     value->AssertValid();
     value->InstallTextStyle(scoreStyle, 1);
-    value->shadowThemeCode94 = shadowTheme;
+    value->shadowColor94 = shadowColor;
 
     if (row == 10) {
       int difficultyPercent =
@@ -97,7 +97,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
   victory->SetTextAndMaybeRefresh(&displayText, 1);
   InitializeUiTextStyleDescriptor(&scoreStyle, 0, 24, 0x2b68, 1);
   victory->InstallTextStyle(scoreStyle, 1);
-  victory->shadowThemeCode94 = shadowTheme;
+  victory->shadowColor94 = shadowColor;
 
   TDropShadowText* pointsFor =
       static_cast<TDropShadowText*>(ResolveControlByTag(0x70746672u)); // 'ptfr'
@@ -106,7 +106,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
   pointsFor->SetTextAndMaybeRefresh(&displayText, 1);
   BuildUiTextStyleDescriptor(&scoreStyle, 0, 14, 0x2b68);
   pointsFor->InstallTextStyle(scoreStyle, 1);
-  pointsFor->shadowThemeCode94 = shadowTheme;
+  pointsFor->shadowColor94 = shadowColor;
 }
 
 // FUNCTION: IMPERIALISM 0x0057b620
