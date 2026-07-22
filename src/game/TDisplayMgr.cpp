@@ -32,7 +32,7 @@ static void AssignUiFontGlobalFromLiteral(CString& globalSlot, const char* liter
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x004931e0
-void PlayDefaultMessageBeep() {
+void PlayDefaultMessageBeep(...) {
   MessageBeep(static_cast<UINT>(-1));
 }
 
