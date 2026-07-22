@@ -339,10 +339,10 @@ short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text) {
 }
 
 // FUNCTION: IMPERIALISM 0x00495000
-void SetQuickDrawFillColor(int fillColor) {
-  g_Quick_Draw_Color_State_006950FC = fillColor;
+void SetQuickDrawFillColor(COLORREF fillColor) {
+  g_QuickDrawForegroundColor = fillColor;
   if (g_pActiveQuickDrawSurfaceContext != 0) {
-    g_pActiveQuickDrawSurfaceContext->blitSurface.quickDrawColor = fillColor;
+    g_pActiveQuickDrawSurfaceContext->blitSurface.foregroundColor = fillColor;
   }
   g_QuickDrawMeasureFontPreset.textColor = fillColor;
 }
@@ -350,32 +350,32 @@ void SetQuickDrawFillColor(int fillColor) {
 // Sets the current QuickDraw draw color, propagating it to the active surface context and the
 // cached measure-font style ref, but only when it actually changed.
 // FUNCTION: IMPERIALISM 0x00495030
-void SetQuickDrawColorAndPropagateIfChanged(int newColor) {
-  if (g_Quick_Draw_Color_State_006950FC != newColor) {
-    g_Quick_Draw_Color_State_006950FC = newColor;
-    g_pActiveQuickDrawSurfaceContext->blitSurface.quickDrawColor = newColor;
+void SetQuickDrawColorAndPropagateIfChanged(COLORREF newColor) {
+  if (g_QuickDrawForegroundColor != newColor) {
+    g_QuickDrawForegroundColor = newColor;
+    g_pActiveQuickDrawSurfaceContext->blitSurface.foregroundColor = newColor;
     g_QuickDrawMeasureFontPreset.textColor = newColor;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00495070
-void SetQuickDrawStrokeColor(int strokeColor) {
-  g_uQuickDrawStrokeColor = strokeColor;
+void SetQuickDrawStrokeColor(COLORREF strokeColor) {
+  g_QuickDrawBackgroundColor = strokeColor;
   if (g_pActiveQuickDrawSurfaceContext != 0) {
-    g_pActiveQuickDrawSurfaceContext->blitSurface.transparentBlitColor = strokeColor;
+    g_pActiveQuickDrawSurfaceContext->blitSurface.backgroundColor = strokeColor;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004950a0
-void SetQuickDrawColorAndSyncGlobals(int color) {
-  g_Quick_Draw_Color_State_006950FC = color;
-  g_pActiveQuickDrawSurfaceContext->blitSurface.quickDrawColor = color;
+void SetQuickDrawColorAndSyncGlobals(COLORREF color) {
+  g_QuickDrawForegroundColor = color;
+  g_pActiveQuickDrawSurfaceContext->blitSurface.foregroundColor = color;
   g_QuickDrawMeasureFontPreset.textColor = color;
 }
 
 // FUNCTION: IMPERIALISM 0x004950d0
-void SetGlobalBlitTransparentColorRaw(int transparentColor) {
-  g_uQuickDrawStrokeColor = transparentColor;
+void SetGlobalBlitTransparentColorRaw(COLORREF transparentColor) {
+  g_QuickDrawBackgroundColor = transparentColor;
 }
 
 // FUNCTION: IMPERIALISM 0x004950f0
@@ -392,17 +392,17 @@ void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex) {
   } else if (static_cast<short>(paletteIndex) < 1) {
     SetQuickDrawFillColor(0xffffff);
   } else {
-    SetQuickDrawFillColor(paletteIndex | 0x1000000);
+    SetQuickDrawFillColor(PALETTEINDEX(paletteIndex));
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004951e0
-void UpdatePaletteIndexWithDefaultFallback(unsigned int paletteIndex) {
-  if ((short)paletteIndex == -1) {
+void UpdatePaletteIndexWithDefaultFallback(QuickDrawPaletteIndex paletteIndex) {
+  if (static_cast<short>(paletteIndex) == -1) {
     CDibPal* palette = g_pModuleLibraryCacheState->EnsureDefaultDibPalette();
     paletteIndex = palette->GetNearestPaletteIndex(RGB(0xff, 0xff, 0xff));
   }
-  g_uQuickDrawStrokeColor = (paletteIndex & 0xffff) | 0x1000000;
+  g_QuickDrawBackgroundColor = PALETTEINDEX(paletteIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x00495230
@@ -686,7 +686,7 @@ void __cdecl BlitRectWithOptionalTransparency(TQuickDrawBlitSurface* srcSurface,
         dstPtr += dstPitch;
       }
     } else {
-      unsigned char transparentColor = static_cast<unsigned char>(g_uQuickDrawStrokeColor);
+      unsigned char transparentColor = static_cast<unsigned char>(g_QuickDrawBackgroundColor);
       int srcRowAdvance = srcPitch - rowBytes;
       int dstRowAdvance = dstPitch - rowBytes;
       while (rowCount-- != 0) {
@@ -724,13 +724,14 @@ void SetQuickDrawTextOriginWithContextOffset(short x, short y) {
   }
   g_nQuickDrawResolvedTextOriginX = resolvedX;
   g_nQuickDrawResolvedTextOriginY = resolvedY;
-  // Verified against 0x0057cc4-0x497cdd: no null guard on either DC in the original --
-  // OffsetWindowOrg is called unconditionally, even on a null `dc` (matches faithfully).
+  // Verified against 0x0057cc4-0x497cdd: no null guard on either DC in the original.
+  // The nafxcw body at 0x6130a0 calls MoveToEx; its former OffsetWindowOrg identity was
+  // a false FID attribution among several same-shaped CDC methods.
   CDC* dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->OffsetWindowOrg(resolvedX, resolvedY);
+  dc->MoveTo(resolvedX, resolvedY);
 }
 
 // FUNCTION: IMPERIALISM 0x00497d10
@@ -742,7 +743,7 @@ void DrawCenteredGuideLineOnMapDc(short x, short y) {
   if (penWidth <= g_nQuickDrawPenVerticalSize) {
     penWidth = g_nQuickDrawPenVerticalSize;
   }
-  CPen pen(PS_SOLID, penWidth, static_cast<COLORREF>(g_Quick_Draw_Color_State_006950FC));
+  CPen pen(PS_SOLID, penWidth, g_QuickDrawForegroundColor);
 
   CDC* dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {
@@ -758,8 +759,8 @@ void DrawCenteredGuideLineOnMapDc(short x, short y) {
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->OffsetWindowOrg(g_nQuickDrawPenHorizontalSize / 2 + g_nQuickDrawResolvedTextOriginX,
-                      g_nQuickDrawPenVerticalSize / 2 + g_nQuickDrawResolvedTextOriginY);
+  dc->MoveTo(g_nQuickDrawPenHorizontalSize / 2 + g_nQuickDrawResolvedTextOriginX,
+             g_nQuickDrawPenVerticalSize / 2 + g_nQuickDrawResolvedTextOriginY);
 
   int resolvedX = x;
   int resolvedY = y;
@@ -787,7 +788,7 @@ void DrawCenteredGuideLineOnMapDc(short x, short y) {
 // FUNCTION: IMPERIALISM 0x00498980
 void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
   CBrush brush;
-  brush.CreateSolidBrush(static_cast<COLORREF>(g_Quick_Draw_Color_State_006950FC));
+  brush.CreateSolidBrush(g_QuickDrawForegroundColor);
 
   RECT fillRect;
   CopyRect(&fillRect, rect);

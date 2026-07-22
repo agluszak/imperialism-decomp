@@ -26,13 +26,13 @@ IMPLEMENT_SERIAL(TBeachheadMission, TControlSeaZoneMission, 1)
 // TBeachheadMission::CreateObject
 
 // FUNCTION: IMPERIALISM 0x0053a390
-char TBeachheadMission::IsHospitalMission() const {
-  return 0;
+bool TBeachheadMission::IsHospitalMission() const {
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0053a3b0
-char TBeachheadMission::IsDefensiveSeaZoneMission() const {
-  return 0;
+bool TBeachheadMission::IsDefensiveSeaZoneMission() const {
+  return false;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0053a3d0 (approx -- see symbols.csv)
@@ -64,7 +64,7 @@ void TBeachheadMission::CalculateNeeds() {
     if (node->location != targetZone14) {
       continue;
     }
-    if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, node->nation)) {
+    if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, node->nation)) {
       continue;
     }
     short normalizationBase = node->GetMaxStrength();
@@ -111,7 +111,7 @@ void TBeachheadMission::CalculateNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053a7b0
-char TBeachheadMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
+bool TBeachheadMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   return missionType == kMissionTypeInvadeProvince && key != -1 &&
          key == parentMission3c->targetProvince30 && zoneContext == targetZone14;
 }
@@ -120,15 +120,15 @@ char TBeachheadMission::Matches(eMissionType missionType, int key, TZone* zoneCo
 // g_pGlobalMapState->cityScoreTable[cityId].ownerNationCode00. If that owner has an outdated
 // war-relation timestamp with this mission's nation (TDiplomacyMgr::IsNationPairAtWar's slot
 // 0x48 sibling), queues map-order type 5 on the passed-in TTaskForce* directly. Otherwise, if
-// the two nations aren't currently at war (IsNationPairAtWar/HasPolicyWithNationSlot44),
+// the two nations aren't currently at war (IsNationPairAtWar/IsNationPairAtWar),
 // applies the diplomacy policy state via
 // TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks (real vtable slot 0x1d0/116),
-// unless the owner's diplomacyPolicyByNation entry already carries that same 0x131 policy code.
+// unless the owner's diplomacyPolicyByNation entry already carries the declaration-of-war code.
 // FUNCTION: IMPERIALISM 0x0053a800
 void TBeachheadMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
   signed char ownerCode =
       g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30].ownerNationCode00;
-  if (g_pDiplomacyTurnStateManager->HasOutdatedWarRelationSlot48(nationId04, ownerCode)) {
+  if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nationId04, ownerCode)) {
     mapOrderEntry->OrderSendInTheMarines(
         &g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30]);
     return;
@@ -136,15 +136,16 @@ void TBeachheadMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
 
   ownerCode =
       g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30].ownerNationCode00;
-  if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, ownerCode)) {
+  if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, ownerCode)) {
     return;
   }
 
   ownerCode =
       g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30].ownerNationCode00;
-  if (g_apNationStates[nationId04]->diplomacyPolicyByNation[ownerCode] != 0x131) {
-    g_apNationStates[nationId04]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(ownerCode,
-                                                                                   0x131);
+  if (g_apNationStates[nationId04]->diplomacyPolicyByNation[ownerCode] !=
+      kDiplomacyProposalDeclareWar) {
+    g_apNationStates[nationId04]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+        ownerCode, kDiplomacyProposalDeclareWar);
   }
 }
 

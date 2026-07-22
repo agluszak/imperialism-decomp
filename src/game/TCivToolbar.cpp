@@ -172,12 +172,12 @@ void TCivToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
     unsigned int controlTag = sourceHandler->controlTag;
     if (controlTag < 0x646f6e6f) {
       if (controlTag == kTagDone) {
-        selectedCivilianOrderState->QueueImmediateCivilianCommandAndCycleSelection(4);
+        selectedCivilianOrderState->OrderAndCycle(static_cast<UnitOrder>(4));
         this->TCluster::DoEvent(10, sourceHandler, event);
         return;
       }
       if (controlTag == kTagDefend) {
-        selectedCivilianOrderState->QueueImmediateCivilianCommandAndCycleSelection(2);
+        selectedCivilianOrderState->OrderAndCycle(static_cast<UnitOrder>(2));
         this->TCluster::DoEvent(10, sourceHandler, event);
         return;
       }
@@ -191,7 +191,7 @@ void TCivToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
         }
         selectedCivilianOrderState->ShowDisbandCivilianConfirmationDialog();
       } else if (controlTag == kTagLater) {
-        selectedCivilianOrderState->QueueImmediateCivilianCommandAndCycleSelection(3);
+        selectedCivilianOrderState->OrderAndCycle(static_cast<UnitOrder>(3));
         this->TCluster::DoEvent(10, sourceHandler, event);
         return;
       }

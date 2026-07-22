@@ -9,7 +9,7 @@ g_pSelectedCivilianOrderState|0x006a43dc|CivilianMapInteractionManager|1|0xc|Evi
 g_pNavyOrderManager|0x006a43e4|TNavyMgr|1||Evidence: writer RebuildGlobalOrderManagersAndCapabilityState allocates 0x10 (== TNavyMgr recovered size) and constructs via TNavyMgr::ConstructNavyManager before assigning.
 g_apSecondaryNationStateSlots|0x006a4280|TMinor|36||Secondary nation rows (0x6a4280..0x6a4310, 36*4=0x90). Manual diplomacy_globals.h.
 g_apTerrainTypeDescriptorTable|0x006a4310|TCountry|23||Terrain/minor descriptor table; ends at 0x6a436c (23*4) immediately before g_apNationStates @0x6a4370. Manual kTerrainTypeDescriptorTableCount=23.
-g_pInterNationEventQueueManager|0x006a43e8|TInterNationEventQueueManager|1|0xf10|Evidence: RebuildGlobalOrderManagersAndCapabilityState allocates 0xf10 and calls TIndexAndRankList::InitializeInterNationEventQueueManager before assigning.
+g_pNewsMgr|0x006a43e8|TNewsMgr|1|0xf10|Evidence: RebuildGlobalOrderManagersAndCapabilityState allocates 0xf10, constructs TNewsMgr, calls Mac-oracle TNewsMgr::INewsMgr, and stores the result here.
 g_pSfxPlaybackSystem|0x006a43ec|TSoundPlayer|1|0x84|Evidence: CMainFrame::OnEndPrintPreview allocates 0x84 and assigns TSoundPlayer::ConstructTSoundPlayerBaseState.
 g_pSimMgr|0x006a20f8|TSimMgr|1|0x118|Evidence: InitializeGlobalRuntimeSystemsFromConfig allocates 0x118 and assigns TSimMgr::ConstructTurnFlowStateManagerVtable00662a58. Manual port names the same object TSimMgr.
 g_pUiRuntimeContext|0x006a21bc|UiRuntimeContext|1|0xfc|Evidence: InitializeGlobalRuntimeSystemsFromConfig allocates 0xfc via TViewMgr::ConstructGlobalTurnEventState and stores in g_pUiRuntimeContext.

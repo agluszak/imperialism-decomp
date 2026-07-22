@@ -4,6 +4,7 @@
 #include "game/TEventHandler.h"
 #include "game/TView.h"
 #include "game/mfc.h"
+#include "game/strategic_terrain.h"
 
 struct Province;
 
@@ -76,7 +77,7 @@ public:
   // random retry on collision) up to `retryBudget` steps, laying a linear terrain
   // feature (river/road-shaped); returns the number of steps placed. Uses the same
   // g_hexColOffsetEvenRow_00697450/g_hexRowOffset_00697468/g_hexColOffsetOddRow_00697480
-  // hex-direction tables as ComputeHexNeighborTileIndices. slot 18 / 0x48
+  // hex-direction tables as GetNeighborTileIDArray. slot 18 / 0x48
   virtual int ForwardParam(int tileIndex, int retryBudget, int featureType);
   // Verified 0 stack args from the caller (0x527730 calls it with no pushes) -- the
   // header's previous 1-arg form was wrong. slot 19 / 0x4c
@@ -155,7 +156,7 @@ public:
   // append virtuals are owned in sea_geometry.cpp; see sea_geometry.h.
 
   // City-region id (tile[4] - 0x17) at a tile index, or -1 if the tile is out of range or
-  // not a city-region tile (tile[0] != 5). 0x0052a670.
+  // not a water tile. 0x0052a670.
   int GetCityRegionIdAtTileIndex(int tileIndex);
 
   // True when some column of regionClassGrid10 is entirely unassigned (all 15 rows == -1).

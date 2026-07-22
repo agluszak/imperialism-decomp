@@ -281,7 +281,7 @@ void TTechMgr::CheckForAdvances() {
     if (perTechUnlockFlag180[techId] == 0) {
       if (prioritySlots04[techId] == economicTurn) {
         ApplyCityOrderCapabilityUnlockByTechId(techId);
-        g_pInterNationEventQueueManager->QueueInterNationEventType11(999, techId, 1);
+        g_pNewsMgr->AddMiscEvent(999, techId, 1);
       }
       continue;
     }
@@ -570,8 +570,8 @@ void TTechMgr::ActivateSlotAndUpdateUI(int abilityId, int nationSlot) {
       CIterator cursor(g_apTerrainTypeDescriptorTable[nationSlot]->militaryUnitList44);
       TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
       while (cursor.More()) {
-        if (unit->GetUnitMovementClassId() == group) {
-          unit->ApplyEraCapabilityCostAndSetSelection();
+        if (unit->GetCategory() == group) {
+          unit->Upgrade();
         }
         unit = static_cast<TMilitaryUnit*>(cursor.Advance());
       }

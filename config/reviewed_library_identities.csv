@@ -1400,12 +1400,12 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x00612b42||?SetPolyFillMode@CDC@@QAEHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00612b7a||?SetPolyFillMode@CDC@@QAEHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00612bb2||?SetPolyFillMode@CDC@@QAEHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
-0x00612c22||?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
-0x00612c6e||?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
-0x00612cba||?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612c22||?MoveTo@CDC@@QAE?AVCPoint@@HH@Z||||MoveToEx import at 0x006aae18|LIBRARY
+0x00612c6e||?MoveTo@CDC@@QAE?AVCPoint@@HH@Z||||MoveToEx import at 0x006aae18|LIBRARY
+0x00612cba||?MoveTo@CDC@@QAE?AVCPoint@@HH@Z||||MoveToEx import at 0x006aae18|LIBRARY
 0x00612d06||?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
-0x00612daa||?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
-0x00612df6||?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612daa||?MoveTo@CDC@@QAE?AVCPoint@@HH@Z||||MoveToEx import at 0x006aae18|LIBRARY
+0x00612df6||?MoveTo@CDC@@QAE?AVCPoint@@HH@Z||||MoveToEx import at 0x006aae18|LIBRARY
 0x00612e42||?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00612eaa||?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00612ef8||?IntersectClipRect@CDC@@QAEHHHHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
@@ -1414,7 +1414,7 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x00612fd8|CDC::IntersectClipRect|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00613024||?OffsetClipRgn@CDC@@QAEHHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00613062||?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
-0x006130a0||?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006130a0||?MoveTo@CDC@@QAE?AVCPoint@@HH@Z||||MoveToEx import at 0x006aae18|LIBRARY
 0x00613155|CDC::OffsetClipRgn|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00613193||?SetPolyFillMode@CDC@@QAEHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x006131cb||?SetMapperFlags@CDC@@QAEKK@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY

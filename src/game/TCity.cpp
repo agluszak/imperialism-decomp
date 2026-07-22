@@ -19,6 +19,7 @@
 #include "game/TTrainingOrder.h"
 #include "game/TTown.h"
 #include "game/TUnitOrder.h"
+#include "game/TViewMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TPtrList.h"
 #include "game/global_data_tables.h"
@@ -26,6 +27,7 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/TShip.h" // GetResourceDescriptorWeightWord0ByType
 #include "game/TStream.h"
+#include "game/TTechMgr.h"
 #include "game/nation_stream_serialization.h"
 
 static const char kUCityCppPath[] = "D:\\Ambit\\Cross\\UCity.cpp";
@@ -48,9 +50,9 @@ TCity::TCity() {
     productionAccum1fc[productionSlot] = 0;
     productionFlags21c[productionSlot] = 0;
   }
-  field26c = 0;
-  field06 = 0;
-  field08 = 0;
+  populationGrowthPenaltyTicks26c = 0;
+  foodSubstitutionCount06 = 0;
+  starvationPopulationLoss08 = 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x004b2520
@@ -205,11 +207,11 @@ void TCity::InitializeCityProductionState(TGreatPower* ownerNation) {
   eventQueue274 = new TPtrList();
   eventQueue274->recordSize14 = 4;
 
-  serializedState0c = 0;
+  cityPhaseCounter0c = 0;
   memset(cityMetricsBlock0E, 0, sizeof(cityMetricsBlock0E));
   memset(cityMetricsBlock4A, 0, sizeof(cityMetricsBlock4A));
   memset(orderCountByType5c, 0, sizeof(orderCountByType5c));
-  field78 = 0;
+  rollingItemProductionScore78 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b30a0
@@ -226,10 +228,10 @@ void TCity::ReadFrom(TStream* stream) {
   stream->ReadBytes(&lowProductionFlag7c, 1);
   stream->ReadBytes(&lowStockFlag7d, 1);
   stream->ReadBytes(productionFlags21c, productionSlotCount);
-  stream->ReadBytes(&field06, 2);
-  stream->ReadBytes(&field08, 2);
+  stream->ReadBytes(&foodSubstitutionCount06, 2);
+  stream->ReadBytes(&starvationPopulationLoss08, 2);
   stream->ReadBytes(&serializedState0a, 2);
-  stream->ReadBytes(&serializedState0c, 2);
+  stream->ReadBytes(&cityPhaseCounter0c, 2);
   stream->ReadBytes(&powerAvailableB4, 2);
   stream->ReadBytes(cityMetricsBlock0E, sizeof(cityMetricsBlock0E));
   SwapShortArrayBytes(cityMetricsBlock0E, 0x1e);
@@ -255,9 +257,9 @@ void TCity::ReadFrom(TStream* stream) {
   SwapShortArrayBytes(consumedProductionInputByType2a6, 0x17);
 
   if (g_nSaveFormatVersion > 0x27) {
-    stream->ReadBytes(&field78, 4);
+    stream->ReadBytes(&rollingItemProductionScore78, 4);
   } else {
-    field78 = 0;
+    rollingItemProductionScore78 = 0;
   }
 
   productionSummary1d8->ReadFrom(stream);
@@ -306,10 +308,10 @@ void TCity::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&lowProductionFlag7c, 1);
   stream->WriteBytesSlot78(&lowStockFlag7d, 1);
   stream->WriteBytesSlot78(productionFlags21c, sizeof(productionFlags21c));
-  stream->WriteBytesSlot78(&field06, 2);
-  stream->WriteBytesSlot78(&field08, 2);
+  stream->WriteBytesSlot78(&foodSubstitutionCount06, 2);
+  stream->WriteBytesSlot78(&starvationPopulationLoss08, 2);
   stream->WriteBytesSlot78(&serializedState0a, 2);
-  stream->WriteBytesSlot78(&serializedState0c, 2);
+  stream->WriteBytesSlot78(&cityPhaseCounter0c, 2);
   stream->WriteBytesSlot78(&powerAvailableB4, 2);
   WriteShortArrayElems(stream, cityMetricsBlock0E, 0x1e);
   WriteShortArrayElems(stream, cityMetricsBlock4A, 9);
@@ -333,7 +335,7 @@ void TCity::WriteTo(TStream* stream) {
   }
   WriteWordArrayToOutputCallbackLE(stream, consumedProductionInputByType2a6, 0x17);
 
-  stream->WriteBytesSlot78(&field78, 4);
+  stream->WriteBytesSlot78(&rollingItemProductionScore78, 4);
   productionSummary1d8->WriteTo(stream);
   for (int orderSlot = 0; orderSlot < 0x3d; ++orderSlot) {
     TObject* order = static_cast<TObject*>(orderSlotsE4[orderSlot]);
@@ -393,7 +395,113 @@ void TCity::SetSelectedTownMarker(void* order) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b3b40
-void TCity::EndCityPhase() {}
+void TCity::EndCityPhase() {
+  ++cityPhaseCounter0c;
+  VerifyStocks();
+
+  if (ownerNationAc->diplomacyEligibilityA0 == 0) {
+    short* stock = &cityStockCottonB6;
+    int remaining = 0x17;
+    do {
+      *stock = static_cast<short>(*stock + stock[-0x1c]);
+      ++stock;
+      --remaining;
+    } while (remaining != 0);
+  }
+  VerifyStocks();
+
+  short* consumedInput = consumedProductionInputByType2a6;
+  int remaining = 0x17;
+  do {
+    consumedInput[-0xf8] = static_cast<short>(consumedInput[-0xf8] + *consumedInput);
+    *consumedInput = 0;
+    ++consumedInput;
+    --remaining;
+  } while (remaining != 0);
+
+  int previousProductionScore = rollingItemProductionScore78;
+  rollingItemProductionScore78 = 0;
+  TProductionOrder** order = orderSlotsE4;
+  remaining = 0x19;
+  do {
+    if (*order != 0) {
+      (*order)->Produce();
+    }
+    ++order;
+    --remaining;
+  } while (remaining != 0);
+  rollingItemProductionScore78 =
+      (previousProductionScore * 9) / 10 + rollingItemProductionScore78 * 10;
+
+  order = orderSlotsE4 + 0x22;
+  remaining = 9;
+  do {
+    if (*order != 0) {
+      (*order)->Produce();
+    }
+    ++order;
+    --remaining;
+  } while (remaining != 0);
+
+  order = orderSlotsE4 + 0x33;
+  remaining = 10;
+  do {
+    if (*order != 0) {
+      (*order)->Produce();
+    }
+    ++order;
+    --remaining;
+  } while (remaining != 0);
+
+  if (powerPlantUpgradeQueuedFlag04 != 0) {
+    powerPlantUpgradeQueuedFlag04 = 0;
+    productionAccum1fc[0x0b] =
+        static_cast<short>(productionAccum1fc[0x0b] + (999 - productionOrderTable1dc[0x0b]));
+    productionOrderTable1dc[0x0b] = 999;
+  }
+
+  short* stock = &cityStockCottonB6;
+  remaining = 0x17;
+  do {
+    if (*stock > 9999) {
+      *stock = 9999;
+    }
+    ++stock;
+    --remaining;
+  } while (remaining != 0);
+
+  powerAvailableB4 = 0;
+  productionSummary1d8->StartProductionPhase();
+  orderSlotsE4[0x34]->Restock();
+
+  order = orderSlotsE4 + 8;
+  remaining = 9;
+  do {
+    (*order)->Restock();
+    ++order;
+    --remaining;
+  } while (remaining != 0);
+
+  short capacity;
+  if (ownerNationAc->field8d1 >= '3') {
+    int regionCapacity = ownerNationAc->ownedRegionList->GetSize() / 3;
+    if (regionCapacity > 1) {
+      capacity = static_cast<short>(ownerNationAc->ownedRegionList->GetSize() / 3);
+    } else {
+      capacity = 1;
+    }
+  } else {
+    int regionCapacity = ownerNationAc->ownedRegionList->GetSize() / 4;
+    if (regionCapacity > 1) {
+      capacity = static_cast<short>(ownerNationAc->ownedRegionList->GetSize() / 4);
+    } else {
+      capacity = 1;
+    }
+  }
+  productionAccum1fc[0x0f] = capacity;
+  productionAccum1fc[0x0e] = productionOrderTable1dc[0x0e];
+  g_pUiRuntimeContext->RefreshCityProductionUi();
+}
 
 // FUNCTION: IMPERIALISM 0x004b3de0
 void TCity::PredictedNeeds() {
@@ -550,7 +658,7 @@ void TCity::VerifyStocks() {
   short* needCursor = &this->cityStockCottonB6;
   do {
     if (*needCursor < 0) {
-      char dispatchGate = this->ownerNationAc->IsRemote();
+      bool dispatchGate = this->ownerNationAc->IsRemote();
       if ((dispatchGate == 0 || g_pSimMgr->difficultyLevel != 2) &&
           g_Sanitize_City_Counter_Value_006A24D4 == 0) {
         TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -760,9 +868,104 @@ char TCity::GetNextBuildingLevel(int buildingSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b4940
-int TCity::GetActiveNationBuildingMetricSlot5C(short buildingSlot) {
-  (void)buildingSlot;
-  return 0;
+short TCity::GetNextBuildingType(short buildingSlot) {
+  short result = 0;
+  short buildingType;
+  if (buildingSlot == 0x0f) {
+    unsigned char usesThreeRegionsPerLevel = ownerNationAc->field8d1 >= '3';
+    if (usesThreeRegionsPerLevel != 0) {
+      int regionCapacity = ownerNationAc->ownedRegionList->GetSize() / 3;
+      if (regionCapacity > 1) {
+        buildingType = static_cast<short>(ownerNationAc->ownedRegionList->GetSize() / 3);
+      } else {
+        buildingType = 1;
+      }
+    } else {
+      int regionCapacity = ownerNationAc->ownedRegionList->GetSize() / 4;
+      if (regionCapacity > 1) {
+        buildingType = static_cast<short>(ownerNationAc->ownedRegionList->GetSize() / 4);
+      } else {
+        buildingType = 1;
+      }
+    }
+  } else {
+    buildingType = productionOrderTable1dc[buildingSlot];
+  }
+
+  switch (buildingSlot) {
+  case 0:
+  case 2:
+  case 4:
+    if (buildingType == 0) {
+      break;
+    }
+    if (buildingType < 0x10) {
+      result = 1;
+      return result;
+    }
+    result = static_cast<short>((buildingType >= 0x20) + 2);
+    return result;
+
+  case 1:
+  case 3:
+  case 5:
+    if (buildingType == 0) {
+      break;
+    }
+    if (buildingType < 8) {
+      result = 1;
+      return result;
+    }
+    result = static_cast<short>((buildingType >= 0x10) + 2);
+    return result;
+
+  case 6:
+  case 0x0b:
+    result = static_cast<short>(buildingType != 0);
+    return result;
+
+  case 7: {
+    short nationSlot = g_pSimMgr->GetActiveNationId();
+    result = static_cast<short>(
+        (g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[0x0f] == 2) +
+        1);
+    return result;
+  }
+
+  case 8:
+    if (ownerNationAc->expansionEventGate == '3') {
+      result = 3;
+      return result;
+    }
+    result = static_cast<short>((ownerNationAc->serializedStatusFlags[6] == '3') + 1);
+    return result;
+
+  case 10: {
+    signed char status = ownerNationAc->serializedStatusFlags[7];
+    if (status < '3') {
+      result = 1;
+      return result;
+    }
+    result = static_cast<short>((status != '3') + 2);
+    return result;
+  }
+
+  case 0x0e: {
+    unsigned char thresholdReached = ownerNationAc->expansionAlertCounter >= '3';
+    result = static_cast<short>((thresholdReached != 0) + 1);
+    return result;
+  }
+
+  case 0x0f: {
+    unsigned char thresholdReached = ownerNationAc->field8d1 >= '3';
+    result = static_cast<short>((thresholdReached != 0) + 1);
+    return result;
+  }
+
+  default:
+    break;
+  }
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x004b4c80

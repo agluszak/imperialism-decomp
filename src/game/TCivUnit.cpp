@@ -23,9 +23,8 @@ TCivUnit::TCivUnit() {}
 TCivUnit::~TCivUnit() {}
 
 // FUNCTION: IMPERIALISM 0x005c2940
-void TCivUnit::InitializeCivWorkOrderState(int nOrderType, int pOwnerContext,
-                                           int nOrderOwnerNationId) {
-  this->RegisterUnitOrderWithOwnerManager(static_cast<short>(nOrderType), pOwnerContext,
+void TCivUnit::ICivUnit(CivilianUnitKind unitKind, int pOwnerContext, int nOrderOwnerNationId) {
+  this->RegisterUnitOrderWithOwnerManager(EncodeCivilianUnitKind(unitKind), pOwnerContext,
                                           static_cast<short>(nOrderOwnerNationId), 0);
   this->remainingTurns24 = 0;
   this->completionMarker26 = static_cast<short>(-1);
@@ -33,23 +32,24 @@ void TCivUnit::InitializeCivWorkOrderState(int nOrderType, int pOwnerContext,
 
 // FUNCTION: IMPERIALISM 0x005c2980
 int TCivUnit::IsInIdleSelectionState() {
-  if (this->field_8 != 0 && (this->field_8 < 2 || this->field_8 > 3)) {
+  if (this->unitOrder != kUnitOrderIdle && (this->unitOrder < static_cast<UnitOrder>(2) ||
+                                            this->unitOrder > static_cast<UnitOrder>(3))) {
     return 0;
   }
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x005c29f0
-void TCivUnit::SetOrderModeSlot34(int mode, int payload) {
+void TCivUnit::SetOrders(UnitOrder order, int payload) {
   const short kRemainingTurnsByMode[14] = {0, 0, 0, 0, 0, 1, 3, 3, 1, 0, 3, 3, 4, 1};
-  field_8 = mode;
+  unitOrder = order;
   field_C = static_cast<short>(payload);
-  remainingTurns24 = kRemainingTurnsByMode[mode];
+  remainingTurns24 = kRemainingTurnsByMode[order];
 }
 
 // FUNCTION: IMPERIALISM 0x005c2a90
 void TCivUnit::ContinueOrders() {
-  switch (field_8) {
+  switch (unitOrder) {
   case 2:
     return;
   case 5:
@@ -66,7 +66,7 @@ void TCivUnit::ContinueOrders() {
     }
     g_pSelectedCivilianOrderState->ApplyCompletedCivWorkOrderToMapState(this);
   }
-  field_8 = 0;
+  unitOrder = kUnitOrderIdle;
 }
 
 // FUNCTION: IMPERIALISM 0x005c2b10

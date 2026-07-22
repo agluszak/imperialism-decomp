@@ -85,7 +85,7 @@ void TWindow::Show(unsigned char show, unsigned char refresh) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048d980
-char TWindow::IsActionable() {
+bool TWindow::IsActionable() {
   return busyFlag98 != 0 && g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 &&
          field08 != 0;
 }

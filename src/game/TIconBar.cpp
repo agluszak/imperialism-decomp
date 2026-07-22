@@ -27,7 +27,7 @@ void TIconBar::IIconBar(TView* panel, int* position, int* size, int layoutParam4
 }
 
 // FUNCTION: IMPERIALISM 0x005060c0
-void TIconBar::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow) {
+void TIconBar::SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fRefreshNow) {
   iconAtlasFrame94 = nPictureId - 700;
   TPicture::SetPictureResourceIdAndRefresh(nPictureId, fRefreshNow);
 }

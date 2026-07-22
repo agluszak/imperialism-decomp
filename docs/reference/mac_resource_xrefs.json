@@ -105535,6 +105535,30 @@
       "to": "control_tag:0x706d6170"
     },
     {
+      "from": "windows_function:0x0057b0a0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x6e756d61"
+    },
+    {
+      "from": "windows_function:0x0057b0a0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x70746672"
+    },
+    {
+      "from": "windows_function:0x0057b0a0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x73637261"
+    },
+    {
+      "from": "windows_function:0x0057b0a0",
+      "relation": "resolves_control_tag",
+      "status": "resolved",
+      "to": "control_tag:0x76696374"
+    },
+    {
       "from": "windows_function:0x00584800",
       "relation": "resolves_control_tag",
       "status": "resolved",
@@ -204669,6 +204693,11 @@
       "kind": "windows_function",
       "source": "src/game/TScenarioChooser.cpp"
     },
+    "windows_function:0x0057b0a0": {
+      "address": "0x0057b0a0",
+      "kind": "windows_function",
+      "source": "src/game/TGameScorePicture.cpp"
+    },
     "windows_function:0x00584800": {
       "address": "0x00584800",
       "kind": "windows_function",
@@ -204997,9 +205026,9 @@
       "references_picture": 909,
       "references_string": 1451,
       "references_text_style": 1784,
-      "resolves_control_tag": 267
+      "resolves_control_tag": 271
     },
-    "edges": 17618,
+    "edges": 17622,
     "mac_classes_without_windows_header": 18,
     "node_kinds": {
       "control_tag": 813,
@@ -205013,9 +205042,9 @@
       "view_node": 3263,
       "windows_event": 94,
       "windows_factory": 17,
-      "windows_function": 111
+      "windows_function": 112
     },
-    "nodes": 11286,
+    "nodes": 11287,
     "unreferenced_resources": {
       "pict": 1998,
       "str_entry": 3616,

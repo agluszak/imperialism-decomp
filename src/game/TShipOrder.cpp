@@ -149,7 +149,7 @@ short TShipOrder::MaxOrder() {
       limit = candidate;
     }
   }
-  return static_cast<short>(static_cast<short>(this->quantityField04) + static_cast<short>(limit));
+  return static_cast<short>(this->quantityField04 + static_cast<short>(limit));
 }
 
 // FUNCTION: IMPERIALISM 0x004b8800

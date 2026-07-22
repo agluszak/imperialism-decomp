@@ -50,18 +50,18 @@ struct TurnEvent2CPacket : NetMessage {
   unsigned char pad1a[2];
   short nationSlot; // +0x1c
   unsigned char pad1e[2];
-  int field910;                     // +0x20
-  int aidAllocationTotal;           // +0x24
-  unsigned char pad28[6];           // +0x28
-  short cityMetricsBlock0E[0x1e];   // +0x2e
-  short cityMetricsBlock4A[9];      // +0x6a
-  short orderCountByType[0x0e];     // +0x7c
-  int cityField78;                  // +0x98
-  short cityFieldB4;                // +0x9c
-  short cityStock[0x17];            // +0x9e
-  short productionOrderTable[0x10]; // +0xcc
-  short productionAccum[0x10];      // +0xec
-  short cityField26C;               // +0x10c
+  int field910;                       // +0x20
+  int aidAllocationTotal;             // +0x24
+  unsigned char pad28[6];             // +0x28
+  short cityMetricsBlock0E[0x1e];     // +0x2e
+  short cityMetricsBlock4A[9];        // +0x6a
+  short orderCountByType[0x0e];       // +0x7c
+  int cityRollingItemProductionScore; // +0x98
+  short cityFieldB4;                  // +0x9c
+  short cityStock[0x17];              // +0x9e
+  short productionOrderTable[0x10];   // +0xcc
+  short productionAccum[0x10];        // +0xec
+  short populationGrowthPenaltyTicks; // +0x10c
   unsigned char pad10e[2];
   int orderAccumulatedValues[0x17]; // +0x110
   short popFieldAt8;                // +0x16c
@@ -244,7 +244,7 @@ undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int ses
   CString loadedString;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&loadedString, 0x2759, 1);
 
-  for (int i = 0; i < kNationSlotCount; ++i) {
+  for (int i = 0; i < kMajorNationSessionSlotCount; ++i) {
     nationSessionIds[i] = 0;
     nationStatusTags[i] = 0x756e6173;
     nationDisplayNameSlots[i] = loadedString;
@@ -311,7 +311,7 @@ void TMultiplayerMgr::ConfigureTurnResumeStateAndNationMask(int pendingNationSlo
   pendingNationSlotIndex = pendingNationSlot;
   activeNationSlotIndex = activeNationSlot;
   pendingNationBitmask = 0;
-  for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
+  for (int nationSlot = 0; nationSlot < kMajorNationSessionSlotCount; ++nationSlot) {
     if (g_apTerrainTypeDescriptorTable[nationSlot] != nullptr) {
       pendingNationBitmask |= 1 << nationSlot;
     }
@@ -400,7 +400,7 @@ void TMultiplayerMgr::EmitTurnEvent3Mode18WithActiveNation() {
 // slot that has both a live network session id and its pending-nation bit set.
 // FUNCTION: IMPERIALISM 0x00544720
 void TMultiplayerMgr::EmitTurnEvent10ForFlaggedNationSlots() {
-  for (int slot = 0; slot < kNationSlotCount; ++slot) {
+  for (int slot = 0; slot < kMajorNationSessionSlotCount; ++slot) {
     if (nationSessionIds[slot] != 0 && (pendingNationBitmask & (1 << slot)) != 0) {
       TurnEvent3Mode18Packet packet;
       packet.packetTag = 0x74696d65;
@@ -508,11 +508,12 @@ struct TurnEvent11MapPokePacket : TimelyMessageHeader {
 };
 
 // Event-0x13 nine-dword nation payload.
-struct TurnEvent13NationPayloadPacket : TimelyMessageHeader {
+struct TurnEvent13NewsPacket : TimelyMessageHeader {
   short nationSlot18; // +0x18
   unsigned char pad1a[2];
-  int payloadDwords1C[9]; // +0x1c, total 0x40
+  NewsEvent newsEvent1C; // +0x1c, total 0x40
 };
+ASSERT_SIZE(TurnEvent13NewsPacket, 0x40);
 
 // Events 0x20/0x21/0x22 receive views (the emit-side structs later in this TU pack
 // their payload at different offsets; the receive side reads +0x18..).
@@ -750,7 +751,7 @@ unsigned char TMultiplayerMgr::AssignStringAtB4FromB0AndResetState40() {
 unsigned char TMultiplayerMgr::ResetNationStatusSlotsAndInitializeNameControls(TView* panel) {
   lobbyDialogView40 = panel;
   CString loadedString;
-  for (int i = 0; i < kNationSlotCount; ++i) {
+  for (int i = 0; i < kMajorNationSessionSlotCount; ++i) {
     nationSessionIds[i] = 0;
     nationStatusTags[i] = 0x756e6173; // 'unas'
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&loadedString, 0x2759, 1);
@@ -1511,28 +1512,24 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   }
   case 0x13: {
     // Queue the nine-dword payload into the nation's event bucket.
-    TurnEvent13NationPayloadPacket* nationPayload =
-        static_cast<TurnEvent13NationPayloadPacket*>(packet);
-    g_pInterNationEventQueueManager->QueueInterNationEventIntoNationBucket(
-        nationPayload->nationSlot18, reinterpret_cast<int>(nationPayload->payloadDwords1C), 1);
+    TurnEvent13NewsPacket* nationPayload = static_cast<TurnEvent13NewsPacket*>(packet);
+    g_pNewsMgr->AddEvent(nationPayload->nationSlot18, &nationPayload->newsEvent1C, 1);
     break;
   }
   case 0x20: {
     TurnEvent20PacketM* dedupedEvent = static_cast<TurnEvent20PacketM*>(packet);
-    g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(
-        dedupedEvent->eventParam18, dedupedEvent->nationA1A, dedupedEvent->nationB1B, 1);
+    g_pNewsMgr->AddTreatyEvent(static_cast<InterNationEventKind>(dedupedEvent->eventParam18),
+                               dedupedEvent->nationA1A, dedupedEvent->nationB1B, 1);
     break;
   }
   case 0x21: {
     TurnEvent21PacketM* mergedEvent = static_cast<TurnEvent21PacketM*>(packet);
-    g_pInterNationEventQueueManager->QueueInterNationEventType0FWithBitmaskMerge(
-        mergedEvent->byte18, mergedEvent->byte19, mergedEvent->byte1A, 1);
+    g_pNewsMgr->AddShortageEvent(mergedEvent->byte18, mergedEvent->byte19, mergedEvent->byte1A, 1);
     break;
   }
   case 0x22: {
     TurnEvent22PacketM* type11Event = static_cast<TurnEvent22PacketM*>(packet);
-    g_pInterNationEventQueueManager->QueueInterNationEventType11(type11Event->byte18,
-                                                                 type11Event->word1A, 1);
+    g_pNewsMgr->AddMiscEvent(type11Event->byte18, type11Event->word1A, 1);
     break;
   }
   case 0x1d: {
@@ -1541,10 +1538,10 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         static_cast<TurnEvent1DWarTransitionPacket*>(packet);
     TGreatPower* nation1D = g_apNationStates[g_pSimMgr->GetActiveNationId()];
     if (warTransition->actionCode1C == 0x69 /* 'i' */) {
-      nation1D->CheckTransitionSlot27C(warTransition->nationA1D, warTransition->nationB1E);
+      nation1D->HandleWarTransitionRequest(warTransition->nationA1D, warTransition->nationB1E);
     } else {
-      nation1D->PropagateWarTransitionSlot280(warTransition->nationA1D, warTransition->nationB1E,
-                                              warTransition->mode1F);
+      nation1D->HandleWarTransitionRequestWithRoleSwap(
+          warTransition->nationA1D, warTransition->nationB1E, warTransition->mode1F);
     }
     break;
   }
@@ -1558,25 +1555,25 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       if (action->flag21 != 0) {
         TGreatPower* nation1E = g_apNationStates[action->nation1C];
         if (action->flag20 == 0) {
-          nation1E->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(action->nationB1E, 2,
-                                                                         action->nationA1D);
+          nation1E->QueueWarTransitionAndNotifyThirdPartyIfNeeded(action->nationB1E, 2,
+                                                                  action->nationA1D);
         } else {
-          nation1E->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(action->nationA1D, 2,
-                                                                         action->nationB1E);
+          nation1E->QueueWarTransitionAndNotifyThirdPartyIfNeeded(action->nationA1D, 2,
+                                                                  action->nationB1E);
         }
       } else {
         if (action->flag20 == 0) {
-          g_pDiplomacyTurnStateManager->ApplyRelationCode4AndQueueEvent18ForTargetNation(
+          g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
               action->nation1C, action->nationA1D, 1);
         } else {
-          g_pDiplomacyTurnStateManager->ApplyRelationCode4AndQueueEvent18ForTargetNation(
+          g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
               action->nation1C, action->nationB1E, 0);
         }
       }
     } else if (action->actionCode1F == 0x69 /* 'i' */ && action->flag21 != 0) {
       if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(action->nation1C, action->nationB1E) ==
           0) {
-        g_apNationStates[action->nation1C]->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(
+        g_apNationStates[action->nation1C]->QueueWarTransitionAndNotifyThirdPartyIfNeeded(
             action->nationB1E, 1, action->nationA1D);
       } else {
         TMinor* minor1E = g_apSecondaryNationStateSlots[action->nationA1D];
@@ -1732,7 +1729,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       city2C->orderCountByType5c[orderType2C] = composite->orderCountByType[orderType2C];
     }
     g_apNationStates[nationSlot2C]->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
-    city2C->field78 = composite->cityField78;
+    city2C->rollingItemProductionScore78 = composite->cityRollingItemProductionScore;
     city2C->powerAvailableB4 = composite->cityFieldB4;
     short* stock2C = &city2C->cityStockCottonB6;
     for (int stockType = 0; stockType < 0x17; ++stockType) {
@@ -1744,7 +1741,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     for (int accumSlot = 0; accumSlot < 0x10; ++accumSlot) {
       city2C->productionAccum1fc[accumSlot] = composite->productionAccum[accumSlot];
     }
-    city2C->field26c = composite->cityField26C;
+    city2C->populationGrowthPenaltyTicks26c = composite->populationGrowthPenaltyTicks;
     // Second, duplicate copy of the city stock block - original behavior, kept as-is.
     for (int stockType2 = 0; stockType2 < 0x17; ++stockType2) {
       stock2C[stockType2] = composite->cityStock[stockType2];
@@ -2294,29 +2291,17 @@ void TMultiplayerMgr::CreateAndSendTurnEvent12_TwoShorts(short shortA, short sho
   g_pNetMgr006a6014->Send(&packet, 0);
 }
 
-struct TurnEvent13Packet : NetMessage {
-  int packetTag;
-  unsigned char activeNationId;
-  unsigned char pad15;
-  short nationSlot;
-  int payloadDwords[9];
-  unsigned char pad3C[4]; // original frame/messageLength is 0x40
-};
-
 // FUNCTION: IMPERIALISM 0x00549540
-void TMultiplayerMgr::CreateAndSendTurnEvent13_NationAndNineDwords(int nationSlot,
-                                                                   int* payloadDwords) {
-  TurnEvent13Packet packet;
+void TMultiplayerMgr::SendNewsEvent(int nationSlot, NewsEvent* event) {
+  TurnEvent13NewsPacket packet;
   packet.eventCode = 0x13;
   packet.fromNetworkId = 0;
   packet.toNetworkId = g_pGameFlowState->nationSessionIds[nationSlot];
   packet.messageLength = 0x40;
-  packet.packetTag = 0x74696d65;
+  packet.messageTag = 0x74696d65;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
-  packet.nationSlot = static_cast<short>(nationSlot);
-  for (int dwordIndex = 0; dwordIndex < 9; ++dwordIndex) {
-    packet.payloadDwords[dwordIndex] = payloadDwords[dwordIndex];
-  }
+  packet.nationSlot18 = static_cast<short>(nationSlot);
+  packet.newsEvent1C = *event;
   g_pNetMgr006a6014->Send(&packet, 0);
 }
 
@@ -2827,7 +2812,7 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   packet.cityWord40 = src->primaryNeighborTileIndex40;
 
   for (int linkedIndex = 0; linkedIndex < 32; ++linkedIndex) {
-    packet.linkedRegionIds42[linkedIndex] = src->linkedRegionIds[linkedIndex];
+    packet.linkedRegionIds42[linkedIndex] = src->linkedTileIndices42[linkedIndex];
   }
   packet.linkedRegionIds82[0] = src->resourceDevelopmentCounts82[0];
   packet.linkedRegionIds82[1] = src->resourceDevelopmentCounts82[1];
@@ -2999,7 +2984,7 @@ void TMultiplayerMgr::SetNationStatusCodeAndEmitEvent25(int statusTag, int natio
   packet.eventCode = 0x25;
   packet.messageLength = 0;
   packet.messageLength = 0x34;
-  for (int slot = 0; slot < kNationSlotCount; ++slot) {
+  for (int slot = 0; slot < kMajorNationSessionSlotCount; ++slot) {
     packet.statusTags[slot] = 0x756e6b6e; // 'unkn'
   }
   packet.toNetworkId = 0;
@@ -3185,7 +3170,7 @@ void TMultiplayerMgr::EmitTacticalFireCommandPacket(int commandTag, TTacticalUni
 void TMultiplayerMgr::ResetNationStatusArraysAndTurnEventContext() {
   CString statusText;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&statusText, 0x2759, 1);
-  for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
+  for (int nationSlot = 0; nationSlot < kMajorNationSessionSlotCount; ++nationSlot) {
     nationSessionIds[nationSlot] = 0;
     nationStatusTags[nationSlot] = 0x756e6173; // 'suna'
     nationDisplayNameSlots[nationSlot] = statusText;
@@ -3372,7 +3357,7 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
     for (int orderType = 0; orderType < 0x0e; ++orderType) {
       packet.orderCountByType[orderType] = city->orderCountByType5c[orderType];
     }
-    packet.cityField78 = city->field78;
+    packet.cityRollingItemProductionScore = city->rollingItemProductionScore78;
     packet.cityFieldB4 = city->powerAvailableB4;
     short* stock = &city->cityStockCottonB6;
     for (int stockType = 0; stockType < 0x17; ++stockType) {
@@ -3384,7 +3369,7 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
     for (int slot2 = 0; slot2 < 0x10; ++slot2) {
       packet.productionAccum[slot2] = city->productionAccum1fc[slot2];
     }
-    packet.cityField26C = city->field26c;
+    packet.populationGrowthPenaltyTicks = city->populationGrowthPenaltyTicks26c;
     for (int record = 0; record < 0x17; ++record) {
       TProductionOrder* order = city->tradeCommodityRecordPtrs[record];
       if (order == 0) {

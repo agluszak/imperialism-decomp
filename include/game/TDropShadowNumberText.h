@@ -15,7 +15,7 @@ public:
 
   void Draw(RECT* rectBuffer) override; // slot 0x44 0x5b59b0
 
-  int shadowColorAc; // +0xac — quickdraw color used for the shadow pass
+  COLORREF shadowColorAc; // +0xac — quickdraw color used for the shadow pass
 };
 
 ASSERT_SIZE(TDropShadowNumberText, 0xb0);

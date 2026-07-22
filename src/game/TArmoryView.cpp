@@ -91,10 +91,10 @@ void TArmoryView::UpdateFields() {
   TView* availabilityPanel = ResolveControlByTag(0x706c6171u); // 'plaq'
   availabilityPanel->AssertValid();
 
-  int normalTextColor;
-  int warningTextColor;
-  MapUiThemeCodeToStyleFlags(0x2b6b, &normalTextColor);
-  MapUiThemeCodeToStyleFlags(0x2b69, &warningTextColor);
+  COLORREF normalTextColor;
+  COLORREF warningTextColor;
+  ResolveUiThemeColor(0x2b6b, &normalTextColor);
+  ResolveUiThemeColor(0x2b69, &warningTextColor);
 
   if (selectedUnitOrderA8 == 0) {
     return;

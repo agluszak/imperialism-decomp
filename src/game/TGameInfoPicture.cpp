@@ -49,7 +49,7 @@ void TGameInfoPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 
   unsigned int tag = sourceHandler->controlTag;
   if (tag == 0x6275746e) { // 'butn' — newspaper
-    if (g_pInterNationEventQueueManager->perNationStoryLastUsedTick[0] != 0) {
+    if (g_pNewsMgr->perNationStoryLastUsedTick[0] != 0) {
       g_pSimMgr->EnterOptionalPhase(0x66);
     } else {
       g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x275e, 6, 2, 0);

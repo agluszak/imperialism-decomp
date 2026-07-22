@@ -23,6 +23,8 @@ extern "C" int g_diplomacyActionButtonTagTable_00696960[6];
 
 extern "C" unsigned int g_councilControlTagTable[6];
 
+extern "C" short g_aDiplomacyRelationPaletteColorCodes[7];
+
 extern "C" const char s_SourcePathUDiplomacyViews_00696AE0[];
 
 } // extern "C"

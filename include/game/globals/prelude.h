@@ -14,11 +14,13 @@
 #include <new.h> // _PNH (CRT new-handler type)
 
 #include "game/mfc.h"
+#include "game/military_domain_types.h"
 #include <afxtempl.h>
 #include "game/app_init_globals.h"
 #include "game/TCountry.h"
 #include "game/TDisplayMgr.h"
 #include "game/quickdraw_regions.h"
+#include "game/strategic_terrain.h"
 #include "game/TGreatPower.h"
 #include "game/TMacViewMgr.h"
 #include "game/TMinor.h"
@@ -144,20 +146,15 @@ short GetResourceDescriptorWord08ByTypeOffset(short resourceType, short subslot)
 void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commodityCode,
                                                short count);
 
-// Standalone (slot-indexed) accessors over the two unit-type tables above; siblings of the
-// TMilitaryUnit::GetUnitTypeCostPoints / GetUnitTypeStatPercent methods but taking the index
-// directly. 0x5c3450 / 0x5c3580.
-short GetCityActionGateValueBySlot(int slot);
-short GetNormalizedCityActionResourceCostPercent(short unitType, short statIndex);
-// 0x5c34b0: g_awTacticalUnitCategoryCodeBySlot[slot] (standalone sibling of
-// TMilitaryUnit::GetUnitMovementClassId, which uses this->orderType).
-short GetCityActionCategoryCodeBySlot(short slot);
+// TMilitaryUnit exposes the listing-backed instance and static accessors over
+// these tables; their declarations live on the owning class.
 // 0x54fee0: g_aCategoryMetricBaselineAverage[index] (returns the int metric, not a pointer
 // despite Ghidra's placeholder name).
 int GetNavyContextPointerFromGlobalTableByIndex(int index);
 
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
-// minister's skill value at +0x0C. Used by TGreatPower vtable slots 0x88-0x8c.
+// minister's skill value at +0x0C. The foreign-minister tables have eight entries;
+// the defense-minister tables have six. Used by TGreatPower vtable slots 0x88-0x8c.
 
 // ============================================================================
 // Diplomacy globals

@@ -15,7 +15,7 @@ public:
   void ReadFrom(TStream* stream) override;
   char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                      int arg4) override;
-  char IsHost(void) override;
+  bool IsHost(void) override;
   void ReplyToDiplomacyOffers(void) override;
   void SorryYouLose(void) override;
 

@@ -50,10 +50,10 @@ void TTreatiesView::Draw(RECT* rectBuffer) {
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xe, 0x2b68, 1);
 
-  int styleShadow = 0;
-  int styleForeground = 0;
-  MapUiThemeCodeToStyleFlags(0x2b6b, &styleShadow);
-  MapUiThemeCodeToStyleFlags(0x2b68, &styleForeground);
+  COLORREF styleShadow = 0;
+  COLORREF styleForeground = 0;
+  ResolveUiThemeColor(0x2b6b, &styleShadow);
+  ResolveUiThemeColor(0x2b68, &styleForeground);
 
   g_pSimMgr->GetString(0x2733, 0x20, &labelText);
   short headerX = static_cast<short>(0x48 - ownerLocalX);
@@ -92,7 +92,7 @@ void TTreatiesView::Setup() {
   TCluster* scrollCluster = static_cast<TCluster*>(ResolveControlByTag(0x7363726f)); // 'scro'
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), scrollCluster);
   scrollCluster->SetSelectedChildTagAndRefresh(0x73637235); // 'scr5'
-  diplomacyMapView60->actionCodeBC = 0xe;
+  diplomacyMapView60->actionCodeBC = kDipActionBuildConsulate;
 }
 
 // FUNCTION: IMPERIALISM 0x004f7f80
@@ -101,9 +101,11 @@ void TTreatiesView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     unsigned int tag = sourceHandler->controlTag;
     TDiplomacyMapView* mapView = diplomacyMapView60;
     if (tag < kControlTagScr0 + 5) {
-      mapView->actionCodeBC = (tag - kControlTagScr0) + 2;
+      mapView->actionCodeBC =
+          static_cast<eDipAction>((tag - kControlTagScr0) + kDipActionJoinEmpire);
     } else {
-      mapView->actionCodeBC = (tag - kControlTagScr0) + 9;
+      mapView->actionCodeBC =
+          static_cast<eDipAction>((tag - kControlTagScr0) + kDipActionTradeSubsidy);
     }
   }
   TEventHandler::DoEvent(commandId, sourceHandler, event);

@@ -10,7 +10,9 @@ are not yet triaged.
 
 - Triaged: 220  (PORTABLE 190, SKIP_LIBRARY 28, SKIP_COMPILER 2, SKIP_DEAD 0)
 - PORTABLE difficulty: EASY 19, MODERATE 162, HARD 9
-- Already ported from this batch: 4 (NormalizeWrappedMapCoord217x60, CheckTileProspectingDiscoveryCandidate, CreateAndSendTurnEvent12/22)
+- Already ported from this batch: 6 (NormalizeWrappedMapCoord217x60,
+  CheckTileProspectingDiscoveryCandidate, CreateAndSendTurnEvent12/22,
+  TDiplomacyMgr::BuildEmbassy, TNewsMgr::AddMiscEvent)
 
 ## PORTABLE — EASY (15)
 
@@ -32,7 +34,7 @@ are not yet triaged.
 | `0x005e1590` | 110 | SetAuxOutputVolumeAcrossCompatibleDevices | — | Win32 audio free function (game code, not MFC/CRT): loops auxGetNumDevs/auxGetDevCapsA and auxSetVolume for wPid&7 in {1,2}. Mechanical but needs <mms |
 | `0x005e1430` | 110 | ProbeAuxOutputDeviceIndexByPidMask | — | Win32 audio free function: scans aux devices for wPid&7 in {1,2}, caches index in global DAT_0069b89c. Logic simple but relies on an unmodeled global  |
 
-## PORTABLE — MODERATE (162)
+## PORTABLE — MODERATE (160)
 
 | addr | size | name | class | approach |
 |------|------|------|-------|----------|
@@ -102,7 +104,6 @@ are not yet triaged.
 | `0x00561490` | 84 | BuildNationBitmaskForActiveType3Or4Orders | — | Walks a linked list from func_0x0040793c() via +0x24 next, ORing nation bits for active type-3/4 orders. Unresolved list-head thunk and unmodeled node |
 | `0x00582b70` | 86 | HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry | — | 'Pric' turn-instruction: byte-swaps two dwords off stream cursor param_1 then vtable-dispatches g_pNationInteractionStateManager slot [0xc].0x04. Byte |
 | `0x0047fcb0` | 86 | CacheObjectVslot18ResultToField0C | — | __thiscall: builds local arg block, calls vtable slot +0x18 on *(this+4), caches result to this+0xc, returns result>=0. Vtable dispatch on opaque sub- |
-| `0x004f2820` | 88 | SetNationPairSpecialRelationFlagAndQueueEvent14Or16 | — | Writes symmetric 23-stride relation matrix at owner+0x1402 then calls TInterNationEventQueueManager::QueueInterNationEventRecordDeduped (event 0x14/0x |
 | `0x00514290` | 88 | GetTileNormalizedMovementClassId | — | Reads terrain byte from tile grid at (owner+0x10)+idx*0xa8, indexes g_apTerrainTypeDescriptorTable, normalizes movement-class id (-200/-100 bands). CO |
 | `0x0053c950` | 88 | PropagateTargetTileToLinkedUnitsIfDifferent | — | Iterates a unit list (func_0x00401118 first / func_0x00403620 cond / func_0x00406d20 next) and vtable-dispatches slot +0x34 to push target tile when d |
 | `0x00582f20` | 89 | HandleTurnInstruction_Prov_ApplyProvinceAssignmentEn | — | 'Prov' turn-instruction: byte-swaps two dwords off stream cursor then vtable-dispatches g_pGlobalMapState->DispatchFormationEntryActionsAndMaybeCreate |
@@ -145,8 +146,8 @@ are not yet triaged.
 | `0x00430950` | 102 | ConstructUiColorTextResourceEntry | TDeluxeText | Same shape as 0x00429330: base ctor + zero style/color bytes +0x98..+0xa0 + install TDeluxeText vtable. Needs real inheritance model, not a manual vpt |
 | `0x00554590` | 103 | CanQueueMapOrderForProvinceContext | — | Predicate: null-check, sum of shorts +0x1e/+0x20/+0x22/+0x24, then walks a linked list at +0x10 checking byte +0xc, returns eligibility byte from para |
 | `0x0059d810` | 103 | EvaluateTacticalTileScore_Column6OwnershipAdjacencyB | — | Tactical AI tile scoring (col%0x1d==6 bias). Pure arithmetic, no SEH/external calls, but reads a deep unrecovered receiver graph (this+0x14 -> tile ar |
-| `0x005c35c0` | 103 | ResolveEraCapabilityFallbackSlot | — | Era-dependent city-capability fallback-slot resolver. Clean arithmetic over known global g_pCityOrderCapabilityState->field_0x395 with era stride 0x1e |
-| `0x004a4550` | 104 | ForwardGetUnitMovementClassId_At004a4550 | — | Unit movement-class predicate over g_pGlobalMapState->field_0x10 tile records (stride 0xa8, index bound 0x17f), walking a list at +0x14 checking +0x8. |
+| `0x005c35c0` | 103 | TMilitaryUnit::UpgradeType | TMilitaryUnit | Resolves the next military-unit kind across era upgrade chains and checks the owning nation's ability rows. |
+| `0x004a4550` | 104 | TileHasMobileMilitaryUnit | — | Military-category predicate over the strategic tile records, walking the stationed-unit list and checking whether `TMilitaryUnit::GetCategory()` is nonzero. |
 | `0x005539c0` | 104 | RefreshTaskForceSelectionFlagsForCurrentNationOrders | — | Refreshes naval task-force selection flags: walks g_pNavyPrimaryOrderListHead (TShip, field_0x24 next) matching order-manager keys (param_1+0x18/+0x1c |
 | `0x0055f440` | 104 | ContainsCityStatePointerInZoneArrayByCityIndex | — | Predicate: linear scan of pointer array (base +0x38, count +0x40) for a city-state pointer computed as g_pGlobalMapState->field_0x10 + cityIndex*0xa8; |
 | `0x005f7860` | 104 | Add96BitIntegerWithCarry | — | 96-bit (uint[3]) add-with-carry, part of the bignum math unit. Small and mechanical logic but depends on AddUintWithCarryOutFlag, which is not yet por |
@@ -176,7 +177,6 @@ are not yet triaged.
 | `0x005c4500` | 110 | InitializeUiTextStyleDescriptorAndApplyQuickDraw | — | Builds a UI text-style descriptor on the stack then forwards packed CONCAT byte fields to four unresolved func_0x QuickDraw calls; fragile stack-packi |
 | `0x0048f330` | 111 | InitializePictureEntryBaseAndRefresh | — | Picture-entry init: seeds fields then two vtable dispatches (param_2 vfunc +0x170, this vfunc +0x1c8) on unrecovered classes; owning class not identif |
 | `0x005d71b0` | 111 | TViewMgr::InvokeMainWidgetMethod1CCWithArgs | TViewMgr | Resolves 'main' widget via g_pDisplayMgr vtable (+0x94), calls vfunc +0xc, then forwards args to widget vfunc +0x1cc; uses an unaff_retaddr decompiler |
-| `0x0055cd00` | 113 | TSimMgr::QueueInterNationEventType11 | TSimMgr | Queues a type-0x11 inter-nation event: builds a 3-dword event struct and dispatches through a member queue at this+0xef0 vfunc +0x38; also an unresolv |
 | `0x005b0a90` | 113 | SelectMissingTechItemPrerequisitesFromPair | — | Tech-tree prerequisite selection over raw global pair table DAT_0066ac10/ac12 with branchless mask arithmetic; no SEH/no calls but owning __thiscall c |
 | `0x005725d0` | 113 | TLineData::ConstructPictureScreenVariantEntry | TLineData | EH constructor building a TTextPictureButton picture-screen variant: two vptr writes (TUpDownPictureButton then TTextPictureButton) plus embedded CStr |
 | `0x004ac3a0` | 114 | AssignSharedStringFromMidSubstring | — | Assigns dest = src.Mid(pos-1) using CString::Mid with an SEH frame and CString dtor cleanup; game-region helper (0x4ac...), not the MFC library cluste |

@@ -5,6 +5,7 @@
 
 struct CRuntimeClass;
 class TAmtBar;
+class TShipOrder;
 
 // VTABLE: IMPERIALISM 0x666760
 class TShipyardCluster : public TAmtBarCluster {
@@ -13,9 +14,9 @@ public:
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
                        TEvent* event) override; // slot 0x0f 0x0058a940
   void SetMoveAmount(short amount) override;    // slot 0x74 0x58a690
-  int field_88;
-  short field_8c;
-  short field_8e;
+  TShipOrder* selectedMetricOrder;              // 0x88
+  short selectedMetricValue;                    // 0x8c
+  short selectedMetricStep;                     // 0x8e
 
   TShipyardCluster();
   DECLARE_DYNCREATE(TShipyardCluster)

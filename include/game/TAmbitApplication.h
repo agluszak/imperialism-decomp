@@ -45,7 +45,7 @@ public:
   void InitializeGlobalRuntimeSystems(); // 0x49ded0
 
   // 0x48 — receiver of HandleCursor's viewport-edge auto-scroll dispatch
-  // (AutoScrollByEdgeMask, slot 0x74). Cleared by InitializeGlobalRuntimeSystems and the
+  // (Scroll, slot 0x74). Cleared by InitializeGlobalRuntimeSystems and the
   // map pictures' Free; set to the active map picture by the slot-0x37 lifecycle hook
   // (TMapUberUberPicture::DoPostCreate 0x596810 and the TMapUberPicture override).
   TMapUberUberPicture* edgeScrollTarget48;

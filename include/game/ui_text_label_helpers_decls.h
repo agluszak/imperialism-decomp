@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/CString.h"
+#include "game/mfc.h"
 
 class TDropShadowText;
 class TDropShadowNumberText;
@@ -15,7 +16,7 @@ struct TextStyle;
 // CreateFontFromPresetAndAttachRegionHandle / UpdateGlobalFontPresetAndRebuildCachedFontIfDirty
 // stay in quickdraw_rendering.h with their own forward-decl.)
 
-void MapUiThemeCodeToStyleFlags(short themeCode, int* outStyleFlags);
+void ResolveUiThemeColor(short themeCode, COLORREF* outColor);
 void BuildUiTextStyleDescriptor(TextStyle* styleDescriptor, int unused, int arg2, int themeCode);
 void InitializeUiTextStyleDescriptor(TextStyle* styleDescriptor, short face, short pointSize,
                                      int themeCode, short font);

@@ -416,13 +416,18 @@ undefined TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
   pixelCount = (atlasBounds.right - atlasBounds.left) * (atlasBounds.bottom - atlasBounds.top);
   memset(pixelBuffer, 0, pixelCount);
   stridePixels = static_cast<short>(static_cast<ushort>((*atlasSurface)->stride) & 0x3fff);
-  dstCursor = pixelBuffer - 8;
+  dstCursor = pixelBuffer - 0x20;
   commodityIndex = 0;
   while (commodityIndex < 0x17) {
     TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(commodityIndex + 700);
     if (loaderHandle != nullptr && *loaderHandle != 0) {
-      dstCursor += 8;
+      TBitmapResourceLoader* loader = *loaderHandle;
+      loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+      loader->flags |= 1;
+      dstCursor += 0x20;
       CopySpriteSurfaceToStrideBuffer(loaderHandle, dstCursor, static_cast<short>(stridePixels));
+      loader->ReleaseBitmapResource();
+      loader->flags &= static_cast<unsigned char>(~1);
     }
     ReleaseBitmapLoaderHandle(loaderHandle);
     commodityIndex = commodityIndex + 1;
@@ -476,7 +481,7 @@ void TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423() {
 void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
   short nationId;
   unsigned int variant;
-  if (IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+  if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
     return;
   }
   if (this == 0 || g_pCityOrderCapabilityState == 0) {
@@ -1603,7 +1608,7 @@ undefined TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10(TBitmapSurfaceNod
   unsigned char* srcPixels = GetPixBaseAddr(atlasSurface);
   ushort srcStrideRaw = static_cast<ushort>((*atlasSurface)->stride);
   unsigned char* dstPixels = GetPixBaseAddr(dstSurface);
-  int dstStrideBytes = static_cast<int>(static_cast<short>(dstStrideRaw & 0x3fff));
+  int dstStrideBytes = static_cast<short>(dstStrideRaw & 0x3fff);
   unsigned char* srcRow = srcPixels + srcRowOffset;
   unsigned char* dstRow = dstPixels + param_4 * dstStrideBytes + param_3;
   int rowsRemaining = 0x18;
@@ -1689,8 +1694,7 @@ void TMacViewMgr::DrawStrategicMapUnitIcon(TBitmapSurfaceNode** pDstSurface, sho
   unsigned char* srcPixels = GetPixBaseAddr(atlasSurface);
   ushort srcStrideRaw = static_cast<ushort>((*atlasSurface)->stride);
   unsigned char* dstPixels = GetPixBaseAddr(pDstSurface);
-  int dstStrideBytes =
-      static_cast<int>(static_cast<short>(static_cast<ushort>((*pDstSurface)->stride) & 0x3fff));
+  int dstStrideBytes = static_cast<short>(static_cast<ushort>((*pDstSurface)->stride) & 0x3fff);
   unsigned char* srcRow = srcPixels + static_cast<short>(nIconVariant * 0x14);
   unsigned char* dstRow = dstPixels + (0x28 - nYShift) * dstStrideBytes + static_cast<int>(nDstX);
   int rowsRemaining = 0x18;
@@ -1759,8 +1763,7 @@ void TMacViewMgr::DrawStrategicMapUnitIconOverlay(TBitmapSurfaceNode** pDstSurfa
   unsigned char* srcPixels = GetPixBaseAddr(atlasSurface);
   ushort srcStrideRaw = static_cast<ushort>((*atlasSurface)->stride);
   unsigned char* dstPixels = GetPixBaseAddr(pDstSurface);
-  int dstStrideBytes =
-      static_cast<int>(static_cast<short>(static_cast<ushort>((*pDstSurface)->stride) & 0x3fff));
+  int dstStrideBytes = static_cast<short>(static_cast<ushort>((*pDstSurface)->stride) & 0x3fff);
   unsigned char* srcRow =
       srcPixels + static_cast<short>(overlaySourceOffset - 0x26 + nVariantRow * 0x26);
   unsigned char* dstRow = dstPixels + (0x28 - nYShift) * dstStrideBytes + static_cast<int>(nDstX);

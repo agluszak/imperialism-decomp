@@ -2,12 +2,17 @@
 
 #include "game/TControl.h"
 #include "game/TCluster.h"
+#include "game/TCountry.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TDiplomacyMapView.h"
+#include "game/TGreatPower.h"
 #include "game/TMinor.h"
 #include "game/TSimMgr.h"
 #include "game/TTradeMgr.h"
 #include "game/TTechMgr.h"
 #include "game/global_data_tables.h"
+#include "game/mapped_flavor_text.h"
+#include "game/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x004304d0
@@ -45,10 +50,175 @@ void TInfoPanelView::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x004fa190
 void TInfoPanelView::Draw(RECT* rectBuffer) {
-  // TODO: paint the info panel for `rectBuffer` (0x004fa190).  This is a large
-  // draw routine that builds a row of text strings via g_pSimMgr->GetString and
-  // applies them to the child controls, then clears `this` caption.  Ported
-  // prerequisites: the TInfoPanelView/TDiplomacyMapView fields and text helpers.
+  (void)rectBuffer;
+  CString text;
+  CString unusedText;
+  short selectedNation;
+  CString ownerName;
+  CString templateText;
+
+  short ownerY = static_cast<short>(ownerLocalY);
+  short ownerX = static_cast<short>(ownerLocalX);
+  COLORREF shadowColor = 0;
+  COLORREF foregroundColor = 0;
+  selectedNation = diplomacyMapView60->frameRegionSelectorAt98;
+
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b68);
+  ResolveUiThemeColor(0x2b6b, &shadowColor);
+  ResolveUiThemeColor(0x2b68, &foregroundColor);
+
+  short baseY = static_cast<short>(0x16f - ownerY);
+  short baseX = static_cast<short>(0x48 - ownerX);
+  g_pSimMgr->GetString(0x2733, 0, &text); // "Information:"
+  SetQuickDrawColorAndSyncGlobals(foregroundColor);
+  SetQuickDrawTextOriginWithContextOffset(baseX + 1, baseY + 1);
+  DrawTextWithCachedQuickDrawStyleState(&text);
+  SetQuickDrawColorAndSyncGlobals(shadowColor);
+  SetQuickDrawTextOriginWithContextOffset(baseX, baseY);
+  DrawTextWithCachedQuickDrawStyleState(&text);
+
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
+  g_pSimMgr->GetString(0x2733, 1, &text); // "Provinces:"
+  short labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[0] - ownerY);
+  short labelX = static_cast<short>(g_infoPanelLabelXByRow_006969b0[0] - ownerX);
+  SetQuickDrawColorAndSyncGlobals(foregroundColor);
+  SetQuickDrawTextOriginWithContextOffset(labelX + 1, labelY + 1);
+  DrawTextWithCachedQuickDrawStyleState(&text);
+  SetQuickDrawColorAndSyncGlobals(shadowColor);
+  SetQuickDrawTextOriginWithContextOffset(labelX, labelY);
+  DrawTextWithCachedQuickDrawStyleState(&text);
+
+  if (selectedNation < 7) {
+    for (int row = 1; row < 3; ++row) {
+      g_pSimMgr->GetString(0x2733, static_cast<short>(row + 1), &text);
+      labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[row] - ownerY);
+      labelX = static_cast<short>(g_infoPanelLabelXByRow_006969b0[row] - ownerX);
+      SetQuickDrawColorAndSyncGlobals(foregroundColor);
+      SetQuickDrawTextOriginWithContextOffset(labelX + 1, labelY + 1);
+      DrawTextWithCachedQuickDrawStyleState(&text);
+      SetQuickDrawColorAndSyncGlobals(shadowColor);
+      SetQuickDrawTextOriginWithContextOffset(labelX, labelY);
+      DrawTextWithCachedQuickDrawStyleState(&text);
+    }
+  } else {
+    TCountry* selectedCountry = g_apTerrainTypeDescriptorTable[selectedNation];
+    if (selectedCountry == 0 || selectedCountry->encodedNationSlot < 100 ||
+        selectedCountry->encodedNationSlot >= 200) {
+      g_pSimMgr->GetString(0x2733, 0x61, &text); // "Most Favored"
+      labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[1] - ownerY);
+      labelX = static_cast<short>(g_infoPanelLabelXByRow_006969b0[1] - ownerX);
+      SetQuickDrawColorAndSyncGlobals(foregroundColor);
+      SetQuickDrawTextOriginWithContextOffset(labelX + 1, labelY + 1);
+      DrawTextWithCachedQuickDrawStyleState(&text);
+      SetQuickDrawColorAndSyncGlobals(shadowColor);
+      SetQuickDrawTextOriginWithContextOffset(labelX, labelY);
+      DrawTextWithCachedQuickDrawStyleState(&text);
+
+      g_pSimMgr->GetString(0x2733, 0x62, &text); // "Trading Nation:"
+      labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[2] - ownerY);
+      labelX = static_cast<short>(g_infoPanelLabelXByRow_006969b0[2] - ownerX);
+      SetQuickDrawColorAndSyncGlobals(foregroundColor);
+      SetQuickDrawTextOriginWithContextOffset(labelX + 1, labelY + 1);
+      DrawTextWithCachedQuickDrawStyleState(&text);
+      SetQuickDrawColorAndSyncGlobals(shadowColor);
+      SetQuickDrawTextOriginWithContextOffset(labelX, labelY);
+      DrawTextWithCachedQuickDrawStyleState(&text);
+    }
+  }
+
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b68);
+  TCountry* selectedCountry = g_apTerrainTypeDescriptorTable[selectedNation];
+  selectedCountry->LoadNationDisplayNameSharedRefFromField8(&text);
+  short valueX = static_cast<short>(0xa7 - ownerX);
+  SetQuickDrawColorAndSyncGlobals(foregroundColor);
+  SetQuickDrawTextOriginWithContextOffset(valueX + 1, baseY + 1);
+  DrawTextWithCachedQuickDrawStyleState(&text);
+  SetQuickDrawColorAndSyncGlobals(shadowColor);
+  SetQuickDrawTextOriginWithContextOffset(valueX, baseY);
+  DrawTextWithCachedQuickDrawStyleState(&text);
+
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
+  if (selectedCountry->encodedNationSlot >= 200) {
+    short ownerNation = selectedCountry->DecodeOwnerNationSlot();
+    g_apTerrainTypeDescriptorTable[ownerNation]->FormatOverlayTerrainLabelText(&ownerName);
+    g_pSimMgr->GetString(0x2733, 0x16, &templateText); // "Colony of [1:Zimm]"
+    scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(ownerName));
+    labelX = static_cast<short>(g_infoPanelLabelXByRow_006969b0[1] - ownerX);
+    SetQuickDrawColorAndSyncGlobals(foregroundColor);
+    SetQuickDrawTextOriginWithContextOffset(labelX + 1, 0x25);
+    DrawTextWithCachedQuickDrawStyleState(&text);
+    SetQuickDrawColorAndSyncGlobals(shadowColor);
+    SetQuickDrawTextOriginWithContextOffset(labelX, 0x24);
+    DrawTextWithCachedQuickDrawStyleState(&text);
+  } else if (selectedCountry != 0 && selectedCountry->encodedNationSlot >= 100 &&
+             selectedCountry->encodedNationSlot < 200) {
+    short ownerNation = selectedCountry->DecodeOwnerNationSlot();
+    g_apTerrainTypeDescriptorTable[ownerNation]->FormatOverlayTerrainLabelText(&ownerName);
+    g_pSimMgr->GetString(0x2733, 0x17, &templateText); // "Anarchy"
+    scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(ownerName));
+    SetQuickDrawColorAndSyncGlobals(foregroundColor);
+    SetQuickDrawTextOriginWithContextOffset(0x79, 0x25);
+    DrawTextWithCachedQuickDrawStyleState(&text);
+    SetQuickDrawColorAndSyncGlobals(shadowColor);
+    SetQuickDrawTextOriginWithContextOffset(0x78, 0x24);
+    DrawTextWithCachedQuickDrawStyleState(&text);
+  }
+
+  text.Format(g_szDecimalFormat, selectedCountry->ownedRegionList->GetSize());
+  labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[0] - ownerY);
+  SetQuickDrawColorAndSyncGlobals(foregroundColor);
+  SetQuickDrawTextOriginWithContextOffset(valueX + 1, labelY + 1);
+  DrawTextWithCachedQuickDrawStyleState(&text);
+  SetQuickDrawColorAndSyncGlobals(shadowColor);
+  SetQuickDrawTextOriginWithContextOffset(valueX, labelY);
+  DrawTextWithCachedQuickDrawStyleState(&text);
+
+  if (selectedNation < 7) {
+    int militaryTier = static_cast<TGreatPower*>(selectedCountry)
+                           ->ClassifyNationMilitaryPowerBandAgainstGlobalMean();
+    g_pSimMgr->GetString(0x2733, static_cast<short>(militaryTier + 0x19), &text);
+    labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[1] - ownerY);
+    SetQuickDrawColorAndSyncGlobals(foregroundColor);
+    SetQuickDrawTextOriginWithContextOffset(valueX + 1, labelY + 1);
+    DrawTextWithCachedQuickDrawStyleState(&text);
+    SetQuickDrawColorAndSyncGlobals(shadowColor);
+    SetQuickDrawTextOriginWithContextOffset(valueX, labelY);
+    DrawTextWithCachedQuickDrawStyleState(&text);
+  }
+
+  if (selectedNation < 7) {
+    if (selectedCountry == 0 || selectedCountry->encodedNationSlot < 100 ||
+        selectedCountry->encodedNationSlot >= 200) {
+      int productionTier = g_apNationStates[selectedNation]->ClassifyNationProductionTierVsPeers();
+      g_pSimMgr->GetString(0x2733, static_cast<short>(productionTier + 0x19), &text);
+      labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[2] - ownerY);
+      SetQuickDrawColorAndSyncGlobals(foregroundColor);
+      SetQuickDrawTextOriginWithContextOffset(valueX + 1, labelY + 1);
+      DrawTextWithCachedQuickDrawStyleState(&text);
+      SetQuickDrawColorAndSyncGlobals(shadowColor);
+      SetQuickDrawTextOriginWithContextOffset(valueX, labelY);
+      DrawTextWithCachedQuickDrawStyleState(&text);
+    }
+  } else if (selectedCountry == 0 || selectedCountry->encodedNationSlot < 100 ||
+             selectedCountry->encodedNationSlot >= 200) {
+    short favoredNation = static_cast<short>(
+        g_pDiplomacyTurnStateManager->SelectBestMajorNationForMinorByStandingAndNeed(
+            selectedNation));
+    if (favoredNation == -1) {
+      g_pSimMgr->GetString(0x2733, 0x18, &text); // "None"
+    } else {
+      g_apTerrainTypeDescriptorTable[favoredNation]->FormatOverlayTerrainLabelText(&text);
+    }
+    labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[2] - ownerY);
+    SetQuickDrawColorAndSyncGlobals(foregroundColor);
+    SetQuickDrawTextOriginWithContextOffset(valueX + 1, labelY + 1);
+    DrawTextWithCachedQuickDrawStyleState(&text);
+    SetQuickDrawColorAndSyncGlobals(shadowColor);
+    SetQuickDrawTextOriginWithContextOffset(valueX, labelY);
+    DrawTextWithCachedQuickDrawStyleState(&text);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004facc0
@@ -58,7 +228,7 @@ void TInfoPanelView::Setup() {
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), overlayCluster);
   overlayCluster->SetSelectedChildTagAndRefresh(0x6f767230); // 'ovr0'
 
-  diplomacyMapView60->actionCodeBC = 0xd;
+  diplomacyMapView60->actionCodeBC = kDipActionInspectNation;
   selectedOverlayMode6C = 0;
 
   TControl* mapKey = static_cast<TControl*>(ResolveControlByTag(0x6d6b6579)); // 'mkey'

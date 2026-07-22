@@ -7,8 +7,8 @@
 #include "game/TViewMgr.h"
 
 // FUNCTION: IMPERIALISM 0x00540f20
-char THostGreatPower::IsHost(void) {
-  return 1;
+bool THostGreatPower::IsHost(void) {
+  return true;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00540f40

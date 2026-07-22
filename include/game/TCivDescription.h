@@ -1,6 +1,8 @@
 #pragma once
 
 #include "compat.h"
+#include "game/civilian_domain_types.h"
+#include "game/nation_domain_types.h"
 #include "game/TView.h"
 
 struct CRuntimeClass;
@@ -19,8 +21,8 @@ public:
   // the dirty rect and renders the Engineer's Depot/Port/Fort costs plus terrain legend.
   virtual void DrawEngineer(RECT* bounds);  // slot 0x69 0x58f7b0
   virtual void DrawDeveloper(RECT* bounds); // slot 0x6a 0x5903c0
-  short selectedCivilianClass;
-  short ownerNationId;
+  CivilianUnitKindStorage selectedCivilianClass;
+  NationSlot ownerNationId;
   union {
     short targetTileCountsBySlot[5];
     struct {

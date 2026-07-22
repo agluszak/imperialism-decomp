@@ -22,7 +22,7 @@ public:
   void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;
 
   // TAmtBar-introduced virtuals (slots 0x1a0–0x1a8 only; tail slots are NULL in orig).
-  virtual int ApplyMoveClamp(int baseValue, int requestedValue);
+  virtual short ApplyMoveClamp(int baseValue, int requestedValue);
   virtual void UpdateBarValuesAndRefresh(short valueAt60, short valueAt62);
   virtual void RenderPrimarySurfaceOverlayPanelWithClipCache();
 

@@ -17,29 +17,27 @@ public:
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x4b6850
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x4b68f0
   virtual void Free() override;                    // slot 0x07 0x4b6990
-  virtual undefined OrphanLeaf_NoCall_Ins09_004b5d10(int param_1,
-                                                     int param_2); // slot 0x0a 0x4b5d10
+  virtual void Copy(TLaborPool* source, TLaborPool* destination); // slot 0x0a 0x4b5d10
+  // VC5 emits these overloaded virtuals in reverse declaration order.
+  virtual void SetPopulation(short lowSkillCount); // slot 0x0c 0x4b5d50
   // Mac CodeWarrior oracle: SetPopulation(short, short, short). Seeds the low-,
   // medium-, and high-skill labor-pool counts and refreshes aggregate population metrics.
   virtual void SetPopulation(short lowSkillCount, short mediumSkillCount,
-                             short highSkillCount);                  // slot 0x0b 0x4b5dc0
-  virtual undefined OrphanLeaf_NoCall_Ins20_004b5d50(short param_1); // slot 0x0c 0x4b5d50
+                             short highSkillCount); // slot 0x0b 0x4b5dc0
   // Mac CodeWarrior oracle: RemovePopulation(short, short). The first argument selects
   // the starting skill band (1/2/4); a negative amount adds population to that band.
   virtual void RemovePopulation(short startingSkillBand,
                                 short amount); // slot 0x0d 0x4b66a0
-  virtual undefined PopulationMgrSlot0E();     // slot 0x0e 0x4b5ed0
-  // Out-param pair reporting recent storm impact (both callers treat "either output
-  // nonzero" as a noteworthy event to surface -- THelpMgr's periodic advisory and
-  // TCityInteriorMinister's foreign-minister notification). Renamed from the
-  // placeholder OrphanLeaf_NoCall_Ins111_004b6260; still a stub.
-  virtual undefined GetRecentStormImpactMetrics(short* damageOut,
-                                                ushort* eventCountOut); // slot 0x0f 0x4b6260
-  virtual undefined OrphanCallChain_C2_I61_004b65b0();                  // slot 0x10 0x4b65b0
-  virtual undefined OrphanCallChain_C2_I24_004b5e80();                  // slot 0x11 0x4b5e80
-  virtual undefined OrphanLeaf_NoCall_Ins50_004b63e0();                 // slot 0x12 0x4b63e0
-  virtual undefined OrphanLeaf_NoCall_Ins26_004b67e0(short param_1,
-                                                     short param_2); // slot 0x13 0x4b67e0
+  virtual void Eat();                          // slot 0x0e 0x4b5ed0
+  virtual void PretendToEat(short& substitutionCount,
+                            short& starvationCount); // slot 0x0f 0x4b6260
+  virtual char Strike();                             // slot 0x10 0x4b65b0
+  // Mac oracle: StartProductionPhase(). Copies the baseline labor pools into the
+  // working pool, applies pending deltas and consumption, and refreshes strength.
+  virtual void StartProductionPhase(); // slot 0x11 0x4b5e80
+  virtual float GrowthRate();          // slot 0x12 0x4b63e0
+  virtual void MakeUnavailable(short skillBand,
+                               short amount); // slot 0x13 0x4b67e0
   // Mac CodeWarrior oracle: PredictedNeeds(). Rebuilds and returns the per-resource
   // predicted-needs vector stored at +0x22.
   virtual short* PredictedNeeds(); // slot 0x14 0x4b64c0

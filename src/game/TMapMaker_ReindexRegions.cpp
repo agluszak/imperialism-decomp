@@ -1,7 +1,7 @@
 // TMapMaker::ReindexContiguousCityRegionIds (0x0052d1f0) -- a UMapper.cpp pass that compacts
 // city-region ids into a contiguous 0..N range. It works in a 6480-entry (0x1950) short label
 // buffer on the stack (large enough to trip MSVC's _chkstk frame probe):
-//   1. seed labels[tile] = -2 - regionId for city tiles (tile[0]==5), else -1;
+//   1. seed labels[tile] = -2 - regionId for water tiles, else -1;
 //   2. repeatedly: assign the next compacted id to the first tile carrying each old label, then
 //      flood that id to same-original-region hex neighbours, until a pass assigns nothing new;
 //   3. write labels back (tile[4] = label + 0x17) and store the new region count.
@@ -57,7 +57,7 @@ void TMapMaker::ReindexContiguousCityRegionIds() {
   short* p = labels;
   do {
     short value;
-    if (*tile == '\x05') {
+    if (*tile == kStrategicTerrainWater) {
       if (static_cast<int>(i) < 0) {
         value = -1;
       } else {
@@ -103,7 +103,7 @@ void TMapMaker::ReindexContiguousCityRegionIds() {
       short* pw = labels;
       do {
         char* t = mapTileGrid08 + off;
-        if (*t == '\x05') {
+        if (*t == kStrategicTerrainWater) {
           t[4] = static_cast<char>(*pw) + '\x17';
         }
         off = off + 0x24;

@@ -131,7 +131,7 @@ void TPicture::ResetPictureResourceEntry() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048f570
-void TPicture::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow) {
+void TPicture::SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fRefreshNow) {
   this->ResetPictureResourceEntry();
   this->glyphBase84 = nPictureId;
   if (nPictureId != -1) {

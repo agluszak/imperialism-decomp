@@ -14,10 +14,10 @@ extern "C" {
 
 // Per-unit-type military stat records (7 shorts per type, record base 0x695cd2):
 // column 0 = category flag (0x10 = counted toward power/cost), column 1 = power/cost
-// points. See TMilitaryUnit::GetUnitTypeCostPoints (0x5c3400).
+// points. See TMilitaryUnit::GetArmsCarried (0x5c3400).
 
 // Per-unit-type stat table (7 shorts per type; unit types 0x00-0x1d) and per-stat
-// divisor baseline used by TMilitaryUnit::GetUnitTypeStatPercent (0x5c3530).
+// divisor baseline used by TMilitaryUnit::GetAttribute (0x5c3530).
 extern "C" short g_UnitTypeStatTable_0066EB88[30][7];
 
 extern "C" short g_UnitTypeStatDivisorTable_0066ED30[7];

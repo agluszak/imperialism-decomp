@@ -1,6 +1,7 @@
 #pragma once
 
 #include "decomp_types.h"
+#include "game/nation_domain_types.h"
 #include "game/TObject.h"
 #include "game/mfc.h"
 
@@ -11,7 +12,6 @@ enum {
   kNationSlotCount = 0x17,
   kNationPairMatrixEntries = kNationSlotCount * kNationSlotCount
 };
-
 // MFC-style diplomacy backend. The global TDiplomacyTurnStateManager (vtable
 // 0x00654d90) holds the per-nation-pair relation / standing / propagation
 // matrices and the per-turn relationship-processing logic.
@@ -40,37 +40,44 @@ public:
   // ranks the 7 major powers descending by that score (random coin-flip tiebreak),
   // and writes the top two nation slots out. Verified RET 8 (2 stack args).
   virtual void BuildMajorNationDiplomacyStandingRanking(int* topNationSlot,
-                                                        int* secondNationSlot); // 16 (0x40)
-  virtual char IsNationPairAtWar(short sourceNation, short targetNation);       // 17 (0x44)
-  virtual char IsNationPairRelationTurnStampOutOfDate(int sourceNation,
+                                                        int* secondNationSlot);     // 16 (0x40)
+  virtual bool IsNationPairAtWar(NationSlot sourceNation, NationSlot targetNation); // 17 (0x44)
+  virtual bool IsNationPairRelationTurnStampOutOfDate(int sourceNation,
                                                       int targetNation);       // 18 (0x48)
-  virtual char HasAnyWarRelationForNation(int sourceNation);                   // 19 (0x4c)
-  virtual char HasAnyWarRelationTurnStampOutOfDateForNation(int sourceNation); // 20 (0x50)
-  virtual char IsNationSlotInPrimaryGroupA(int nationSlot, int unusedArg);     // 21 (0x54)
-  virtual char IsNationSlotInPrimaryGroupB(int nationSlot, int unusedArg);     // 22 (0x58)
-  virtual char
+  virtual bool HasAnyWarRelationForNation(int sourceNation);                   // 19 (0x4c)
+  virtual bool HasAnyWarRelationTurnStampOutOfDateForNation(int sourceNation); // 20 (0x50)
+  virtual bool IsSpecialRelationSourceForMinorNationSlot(int nationSlot,
+                                                         int minorNationSlot); // 21 (0x54)
+  virtual bool IsSpecialRelationTargetForMinorNationSlot(int nationSlot,
+                                                         int minorNationSlot); // 22 (0x58)
+  virtual bool
   ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(int sourceNation, int targetNation,
-                                                           int actionCode);          // 23 (0x5c)
-  virtual char HasAllianceGuardSlot60(int sourceNation, int targetNation);           // 24 (0x60)
-  virtual char HasState300LinkBetweenNationPair(int sourceNation, int targetNation); // 25 (0x64)
-  virtual int GetNationPairDiplomacyStandingTierCode(int sourceNation,
-                                                     int targetNation); // 26 (0x68)
+                                                           eDipAction action); // 23 (0x5c)
+  virtual bool HasAllianceGuardForNationPair(int sourceNation,
+                                             int targetNation);               // 24 (0x60)
+  virtual bool HasNationPairNeedLevel300(int sourceNation, int targetNation); // 25 (0x64)
+  virtual DiplomacyRelationshipNotch GetRelationshipNotch(NationSlot sourceNation,
+                                                          NationSlot targetNation); // 26 (0x68)
   virtual void ShowRelationCodeNoticeForNationPairIfRelevant(int sourceNation, int targetNation,
                                                              int unusedArg); // 27 (0x6c)
-  virtual short GetNationPairDiplomacyRelationCode(short sourceNation,
-                                                   short targetNation); // 28 (0x70)
+  virtual DiplomacyRelationshipStorage
+  GetNationPairDiplomacyRelationCode(NationSlot sourceNation,
+                                     NationSlot targetNation); // 28 (0x70)
   virtual void SetNationPairDiplomacyRelationCode(int sourceNation, int targetNation,
-                                                  int relationCode, int updateMode); // 29 (0x74)
+                                                  DiplomacyRelationship relationship,
+                                                  int updateMode); // 29 (0x74)
   virtual void SetNationPairDiplomacyRelationCodeFinal(int sourceNation, int targetNation,
-                                                       int relationCode); // 30 (0x78)
-  virtual void ApplyRelationCode4AndQueueEvent18ForTargetNation(int sourceNation, int targetNation,
-                                                                int updateMode); // 31 (0x7c)
+                                                       DiplomacyRelationship relationship); // 30
+  // (0x78)
+  virtual void ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(int sourceNation,
+                                                                    int targetNation,
+                                                                    int updateMode); // 31 (0x7c)
   virtual void PropagateRelationSideEffectSlot80(int sourceNation, int targetNation,
                                                  int updateMode); // 32 (0x80)
-  virtual char IsPrimaryNationSlotIndex(int nationSlot);          // 33 (0x84)
+  virtual bool IsMajorNationSlot(int nationSlot);                 // 33 (0x84)
   // Both scalar params are genuinely short: the body reads primaryOnlyFlag as a word
   // and callers push the raw partial register (mov dx, [this+0xc]; push edx).
-  virtual void BuildRelationshipListSlot88(short sourceNation, short primaryOnlyFlag,
+  virtual void BuildRelationshipListSlot88(NationSlot sourceNation, short primaryOnlyFlag,
                                            void* list);                              // 34 (0x88)
   virtual int CountMajorAllianceRelationsSlot8c(int sourceNation);                   // 35 (0x8c)
   virtual int GetNthAlliedMajorNationSlot90(int nthAllianceIndex, int sourceNation); // 36 (0x90)
@@ -81,47 +88,15 @@ public:
                                                                  int primaryOnlyFlag); // 38 (0x98)
   virtual int SelectBestMajorNationForMinorByStandingAndNeed(int minorNationSlot);     // 39 (0x9c)
 
-  // 0x004f2820 — stores a symmetric nation-pair relation-side-effect flag and queues
-  // event 0x14 for flag 2, otherwise event 0x12.
-  char SetNationPairSpecialRelationFlagAndQueueEvent14Or16(short flag, int sourceNation,
-                                                           int targetNation);
-
-  // Slot-name aliases retained for recovered call sites.
-  char HasPolicyWithNationSlot44(short sourceNation, short targetNation) {
-    return IsNationPairAtWar(sourceNation, targetNation);
-  }
-  char HasOutdatedWarRelationSlot48(int sourceNation, int targetNation) {
-    return IsNationPairRelationTurnStampOutOfDate(sourceNation, targetNation);
-  }
-  char ValidateDiplomacyActionSlot5c(int sourceNation, int targetNation, int actionCode) {
-    return ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(sourceNation, targetNation,
-                                                                    actionCode);
-  }
-  int GetRelationTypeSlot68(int sourceNation, int targetNation) {
-    return GetNationPairDiplomacyStandingTierCode(sourceNation, targetNation);
-  }
-  short GetRelationTierSlot70(short sourceNation, short targetNation) {
-    return GetNationPairDiplomacyRelationCode(sourceNation, targetNation);
-  }
-  void SetRelationCodeSlot74WithMode(int sourceNation, int targetNation, int relationCode,
-                                     int updateMode) {
-    SetNationPairDiplomacyRelationCode(sourceNation, targetNation, relationCode, updateMode);
-  }
-  void SetRelationCodeSlot78Final(int sourceNation, int targetNation, int relationCode) {
-    SetNationPairDiplomacyRelationCodeFinal(sourceNation, targetNation, relationCode);
-  }
-  void ApplyRelationCode4Slot7c(int sourceNation, int targetNation, int updateMode) {
-    ApplyRelationCode4AndQueueEvent18ForTargetNation(sourceNation, targetNation, updateMode);
-  }
-  char HasFlag84ForNationSlot84(int nation) {
-    return IsPrimaryNationSlotIndex(nation);
-  }
+  // 0x004f2820 (Mac: BuildEmbassy) — stores the symmetric mission level and queues
+  // the corresponding trade-consulate or embassy news event.
+  char BuildEmbassy(DiplomaticMissionLevelStorage missionLevel, int sourceNation, int targetNation);
 
   short relationCodeMatrix04[kDiplomacyPairMatrixEntries];
   signed char pendingPolicyCodeMatrix304[kDiplomacyPairMatrixEntries];
   short pendingPolicyTierMatrix484[kDiplomacyPairMatrixEntries];
-  short selectedSourceNationSlot784;
-  short selectedTargetNationSlot786;
+  NationSlot selectedSourceNationSlot784;
+  NationSlot selectedTargetNationSlot786;
   // Build the turn-event-2 relation-matrix sync packet (delta against the baseline
   // snapshot when one exists) and refresh the baseline copy. 0x4f2760.
   struct TurnEvent2SyncPacket* BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
@@ -131,7 +106,7 @@ public:
   short selectionFlagsA788;
   short selectionFlagsB78a;
   short selectionFlagsC78c;
-  short lastProcessedNationSlot78e;
+  NationSlot lastProcessedNationSlot78e;
   short proposalDispatchCounter790;
   unsigned char pad792[2];
   // Baseline snapshot of the relation-matrix block (0x79c..0x18d4, 0x1138 bytes) used
@@ -139,9 +114,9 @@ public:
   short* relationMatrixBaselineCopy794;
   int relationMatrixBaselineSize798;
   short relationStandingScoreMatrix79c[kNationPairMatrixEntries];
-  short relationPropagationMatrixBbe[kNationPairMatrixEntries];
+  DiplomacyRelationshipStorage relationPropagationMatrixBbe[kNationPairMatrixEntries];
   short relationTurnStampMatrixFe0[kNationPairMatrixEntries];
-  short relationSideEffectMatrix1402[kNationPairMatrixEntries];
+  DiplomaticMissionLevelStorage relationSideEffectMatrix1402[kNationPairMatrixEntries];
   // 0x004f1760 — see comparativePowerRows1824 below.
   void RecomputeNationComparativePowerMetrics();
 
@@ -149,8 +124,8 @@ public:
   // RecomputeNationComparativePowerMetrics (0x4f1760): {army, avgRelation,
   // territory+tech combined, commodity} normalized to 0..100 (0..50+50 for combined).
   int comparativePowerRows1824[7][4];
-  short specialRelationSourceSlots1894[0x10];
-  short specialRelationTargetSlots18b4[0x10];
+  NationSlot specialRelationSourceSlots1894[0x10];
+  NationSlot specialRelationTargetSlots18b4[0x10];
   TSortedPtrList* pendingWarTransitionQueue18d4;
   short proposalArrayMode18d8;
   unsigned char pad18da[2];
@@ -161,12 +136,12 @@ public:
   void QueueNationPairWarTransition(int sourceNationSlot, int targetNationSlot);
   short LookupOrderCompatibilityMatrixValue(int sourceNationSlot, int targetNationSlot);
   void ProcessQueuedWarTransitions();
-  void ResetTerrainAdjacencyMatrixRowAndSymmetricLink(short nationSlot);
+  void ResetTerrainAdjacencyMatrixRowAndSymmetricLink(NationSlot nationSlot);
   // 0x4eee60 -- resets the removed nation's relation rows/columns (standing-score and
   // propagation matrices). Great-power slots 0..6 clear the propagation entry unless it is
   // already the "6" sentinel (or the nation lost its terrain descriptor); the standing
   // score resets to 0x5a only when the descriptor is gone. Minor slots 7..22 always reset.
-  void RemoveNationSlotAndNotifyPeers_Impl(short nationSlot);
+  void RemoveNationSlotAndNotifyPeers_Impl(NationSlot nationSlot);
   // Mirrors g_pSimMgr's current turn tick into proposalDispatchCounter790. 0x4f0590.
   void SyncNationField790FromLocalizationStateId();
 
@@ -179,4 +154,3 @@ public:
   // finally notifies every eligible major power via SetTradePolicyTo.
   void RebuildMinorNationDispositionLookupTables(int nationCode);
 };
-

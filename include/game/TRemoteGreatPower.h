@@ -9,7 +9,7 @@ public:
   DECLARE_DYNCREATE(TRemoteGreatPower)
   ~TRemoteGreatPower() override;
 
-  char IsRemote(void) override;
+  bool IsRemote(void) override;
   void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char* mapCellLabel) override;
   void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) override;
   void NotifyCitySlot2C(void) override;

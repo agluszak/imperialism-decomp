@@ -12,7 +12,7 @@ public:
                        TEvent* event) override; // slot 0x0f 0x00571170
   virtual char HandleMouseDown(const CPoint& point, TToolboxEvent* event,
                                CPoint origin) override; // slot 0x46 0x5712a0
-  virtual bool IsSelected(); // slot 0x73 0x571330 (0-arg forwarder to IsActionable)
+  virtual bool IsSelected(); // slot 0x73 0x571330 (forwarder to the bool IsActionable slot)
   virtual void Select(bool isPressed, bool notifyParent); // slot 0x74 0x571350
   TToggleButton();
   DECLARE_DYNCREATE(TToggleButton)

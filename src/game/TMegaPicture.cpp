@@ -45,7 +45,7 @@ void TMegaPicture::Draw(RECT* rectBuffer) {
   }
 
   unsigned char blitFlags = 0;
-  int paletteIndex = 0x13;
+  QuickDrawPaletteIndex paletteIndex = 0x13;
   if (flags98 & 1) {
     blitFlags = 0x24;
     paletteIndex = 0x10;
@@ -59,7 +59,7 @@ void TMegaPicture::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x00573430
-void TMegaPicture::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow) {}
+void TMegaPicture::SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fRefreshNow) {}
 
 // FUNCTION: IMPERIALISM 0x00573650
 void TMegaPicture::Free() {

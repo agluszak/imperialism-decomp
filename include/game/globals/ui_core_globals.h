@@ -57,7 +57,7 @@ extern TextStyle g_QuickDrawMeasureFontPreset; // 0x6a1d4c
 
 extern unsigned char g_bQuickDrawMeasureFontDirty; // 0x6a1d56
 
-extern int g_uQuickDrawStrokeColor;
+extern COLORREF g_QuickDrawBackgroundColor;
 
 extern int g_nQuickDrawResolvedTextOriginX;
 

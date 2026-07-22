@@ -104,7 +104,7 @@ void TControl::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* even
 }
 
 // FUNCTION: IMPERIALISM 0x0048e7a0
-void TControl::SetTextColorAndMaybeRefresh(const int* textColor, bool refreshNow) {
+void TControl::SetTextColorAndMaybeRefresh(const COLORREF* textColor, bool refreshNow) {
   textStyle78.textColor = *textColor;
   if (refreshNow) {
     PaintOrInvalidateControl(0);
@@ -217,11 +217,6 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNat
 // FUNCTION: IMPERIALISM 0x0058e440
 void TControl::SetEventNumber(int value) {
   eventNumber60 = value;
-}
-
-// FUNCTION: IMPERIALISM 0x005be150
-void TControl::UpdateSelectionRect(short selectionIndex) {
-  (void)selectionIndex;
 }
 
 TControl::~TControl() {}

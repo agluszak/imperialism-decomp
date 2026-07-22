@@ -31,7 +31,7 @@ extern "C" const char s_SourcePathUCityViews_00696650[];
 extern "C" const char s_SourcePathUCityMinister_006964B0[];
 
 // TCivMgr.cpp — engineer construction cost tables.
-extern short g_awEngineerFortBuildCostByLevel[8];
+extern short g_awEngineerFortBuildCostByLevel[5];
 
 // Civilian work-order rescind refund by cost class.
 extern int g_adwCivilianWorkOrderCostByClass[16];

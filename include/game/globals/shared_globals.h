@@ -156,7 +156,7 @@ extern char s_mcflavor_00696d10[];
 
 extern char s_mcflavor_006976e0[];
 
-extern char s_mcflavor_00698b0c[];
+extern char g_szLowercaseX[];
 
 extern char s_mcflavor_0069ab00[];
 
@@ -1403,7 +1403,7 @@ extern short g_civilianTileOrderCursorTokenTable[];
 // Per-unit-type tactical category code (slot 0x11 garrison sweep).
 extern int g_anUnitTypeTacticalRangeByType_006699E8[30];
 
-extern short g_awTacticalUnitCategoryCodeBySlot[];
+extern ArmyUnitCategoryStorage g_awTacticalUnitCategoryCodeBySlot[];
 
 // Per-unit-type combat/composition class (0x695380), read by
 // FormStacks when building a TArmyStack's
@@ -1415,7 +1415,7 @@ extern short g_awUnitCombatClassBySlot[32];
 // GetClip seeds from it; SetClip (0x495a30) copies a RgnHandle's region into it.
 extern CRgn* g_pGlobalClipRegionHandleObject;
 
-extern int g_Quick_Draw_Color_State_006950FC;
+extern COLORREF g_QuickDrawForegroundColor;
 
 extern char g_szQuickDrawFontFaceSystem[];
 
@@ -1485,7 +1485,7 @@ extern TSimMgr* g_pSimMgr;
 
 extern THelpMgr* g_pHelpMgr;
 
-extern TNewsMgr* g_pInterNationEventQueueManager;
+extern TNewsMgr* g_pNewsMgr;
 
 extern TAmbitApplication* g_pGlobalUiRootController;
 
@@ -1623,7 +1623,11 @@ extern "C" const double g_TradePowerIdentity_0066D8E0;
 
 extern "C" const short g_aTradeItemBasePriceByCategory_0069A910[0x11];
 
-extern "C" int g_defaultDropShadowTextColor;
+extern "C" short g_infoPanelLabelXByRow_006969b0[4];
+
+extern "C" short g_infoPanelLabelYByRow_006969c0[4];
+
+extern "C" COLORREF g_defaultDropShadowTextColor;
 
 // Placeholder strings baked into the turn-event dialog builders (season/treasury/info
 // text shown until real values are bound).
@@ -1815,7 +1819,7 @@ extern const char* const g_pRegistryLanguageKey_0063E04C;
 // TLowDiskWarningDialog/TModuleLibraryCacheTableStateB/TSimMgr).
 extern char g_szEmptyString[];
 
-extern int g_adwEngineerRailBuildCostByTerrainType[16];
+extern int g_adwEngineerRailBuildCostByTerrainType[kStrategicTerrainCount];
 
 // TControlSeaZoneMission.cpp / TDefendProvinceMission.cpp / TNavyMission.cpp —
 // defend-province / mission priority-vector normalization constants.
@@ -1951,5 +1955,27 @@ extern "C" MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTab
 
 // Resource ids cleared before TPopulationMgr recomputes the three derived food needs.
 extern "C" short g_cityPredictedNeedResetResourceIds[3];
+
+extern "C" const float g_PopulationGrowthRateUnder10;
+
+extern "C" const float g_PopulationGrowthRateUnder15;
+
+extern "C" const float g_PopulationGrowthRateUnder20;
+
+extern "C" const float g_PopulationGrowthRateUnder30;
+
+extern "C" const float g_PopulationGrowthRateUnder40;
+
+extern "C" const float g_PopulationGrowthRateUnder60;
+
+extern "C" const float g_PopulationGrowthRateUnder80;
+
+extern "C" const float g_PopulationGrowthRateUnder400;
+
+extern "C" const double g_PopulationGrowthPenaltyPerRetry;
+
+extern "C" const double g_PopulationGrowthMaximumRetryPenalty;
+
+extern "C" const float g_PopulationGrowthRateAtOrAbove400;
 
 } // extern "C"
