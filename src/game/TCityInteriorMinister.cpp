@@ -199,10 +199,10 @@ undefined TCityInteriorMinister::EvaluateCityShortagesAndNotifyForeignMinister(T
     resultCode = -1;
     magnitude = 0;
 
-    short popHalfNeed = city->productionSummary1d8->fieldAt8 / 2;
+    short popHalfNeed = city->productionSummary1d8->populationCount08 / 2;
     if (city->cityStockCannedFoodC4 < popHalfNeed) {
       resultCode = 7;
-      magnitude = city->productionSummary1d8->fieldAt8 - city->cityStockCannedFoodC4;
+      magnitude = city->productionSummary1d8->populationCount08 - city->cityStockCannedFoodC4;
       if (magnitude > 6) {
         magnitude = 6;
       }

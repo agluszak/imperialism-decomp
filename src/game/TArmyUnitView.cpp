@@ -1,6 +1,7 @@
 #include "game/TArmyUnitView.h"
 
 #include "game/TAssetMgr.h"
+#include "game/TArmyCheckBox.h"
 #include "game/TDialogBehavior.h"
 #include "game/TDisplayMgr.h"
 #include "game/TEditText.h"
@@ -130,14 +131,11 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       sourceView->SetEnabled(0, 1);
       SetControlHoverHelpTextAltEntry(CString(g_pMiniCivSharedText_0064cb18), sourceView);
 
-      TStaticText* checkControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagChec));
-      // UNRESOLVED_FIELD_ATTRIBUTION: the original also updates checkControl's
-      // field88/field8C icon-index state here (a per-unit-type table lookup keyed by
-      // TUnit::orderType) before RefreshControl. field8C is read here as a base pointer
-      // for indexing, but TStaticText.cpp's InitializeTextEntryBaseAndOptionalStringResource
-      // (src/game/TStaticText.cpp:100) writes it as a plain int (stringResourceIndex) --
-      // conflicting readings of the same offset, not yet resolved -- so this table lookup
-      // is left unmodeled rather than guessing which reading applies here.
+      TArmyCheckBox* checkControl =
+          static_cast<TArmyCheckBox*>(ResolveControlByTag(kControlTagChec));
+      checkControl->AssertValid();
+      checkControl->iconStripHorizontalOffset88 =
+          (checkControl->checkedFrameOffsetApplied8c + field60->orderType * 2) << 6;
       checkControl->RefreshControl();
 
       TStaticText* tbr1 = static_cast<TStaticText*>(

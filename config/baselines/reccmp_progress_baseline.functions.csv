@@ -1551,7 +1551,7 @@ address|matching|name
 0x4a94e0|1.0|TArmyUnitView::TArmyUnitView
 0x4a9510|0.9090909090909091|TArmyUnitView::`scalar deleting destructor'
 0x4a95b0|0.5504587155963303|TArmyUnitView::Draw
-0x4a9990|0.6237942122186495|TArmyUnitView::DoEvent
+0x4a9990|0.60625|TArmyUnitView::DoEvent
 0x4a9ca0|0.5112781954887218|TArmyUnitView::HandleCrossUArmyViewsNameCommand
 0x4a9f20|0.5161290322580645|TArmyCheckBox::CreateObject
 0x4a9fc0|1.0|TArmyCheckBox::GetRuntimeClass
@@ -1701,8 +1701,8 @@ address|matching|name
 0x4b2110|1.0|TLaborPool::GetRuntimeClass
 0x4b2160|0.9090909090909091|TLaborPool::`scalar deleting destructor'
 0x4b2190|0.5|TLaborPool::DestructTLaborPoolAndMaybeFree
-0x4b21d0|0.06896551724137931|TLaborPool::WriteTo
-0x4b2220|0.06896551724137931|TLaborPool::ReadFrom
+0x4b21d0|1.0|TLaborPool::WriteTo
+0x4b2220|1.0|TLaborPool::ReadFrom
 0x4b2270|0.07407407407407407|TLaborPool::TransferToLowSkillFirst
 0x4b2340|0.07407407407407407|TLaborPool::TransferToHighSkillFirst
 0x4b2410|0.23076923076923078|TCity::CreateObject
@@ -1792,9 +1792,9 @@ address|matching|name
 0x4b65b0|0.031746031746031744|TPopulationMgr::OrphanCallChain_C2_I61_004b65b0
 0x4b66a0|0.3583815028901734|TPopulationMgr::RemovePopulation
 0x4b67e0|0.07142857142857142|TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0
-0x4b6850|0.03571428571428571|TPopulationMgr::WriteTo
-0x4b68f0|0.03571428571428571|TPopulationMgr::ReadFrom
-0x4b6990|0.06896551724137931|TPopulationMgr::Free
+0x4b6850|1.0|TPopulationMgr::WriteTo
+0x4b68f0|1.0|TPopulationMgr::ReadFrom
+0x4b6990|1.0|TPopulationMgr::Free
 0x4b6a30|0.0|TTrainingOrder::CreateTTrainingOrderInstance
 0x4b6a60|0.42424242424242425|TTrainingOrder::CreateObject
 0x4b6a90|1.0|TTrainingOrder::GetRuntimeClass
@@ -4352,7 +4352,7 @@ address|matching|name
 0x56a510|0.4897959183673469|TGamePreferencesPicture::CreateObject
 0x56a590|1.0|TGamePreferencesPicture::GetRuntimeClass
 0x56a5b0|0.00398406374501992|TGamePreferencesPicture::DoPostCreate
-0x56ae10|0.14093959731543623|TGamePreferencesPicture::DoEvent
+0x56ae10|0.26519337016574585|TGamePreferencesPicture::DoEvent
 0x56af74|0.05|HandleOptionsTagApplyFragmentAndMaybePostTurnEvent5DC
 0x56b021|0.0|HandleOptionsTagAudioRefreshFragmentAndMaybePostTurnEvent5DC
 0x56b210|0.4897959183673469|TFlagOptionsPicture::CreateObject
@@ -5330,7 +5330,7 @@ address|matching|name
 0x5a3a70|0.4|TTacticalBattle::FindFortWallTileCrossedByFiringLine
 0x5a3c20|0.8723404255319149|TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted
 0x5a3d30|0.8163265306122449|TTacticalBattle::IsTacticalTargetTileReachableForAction
-0x5a3f10|0.3389830508474576|TTacticalBattle::HandleTacticalCommandTag_targ
+0x5a3f10|0.3154929577464789|TTacticalBattle::HandleTacticalCommandTag_targ
 0x5a41c0|0.6|TTacticalBattle::ApplyGridColumnSelectionGuard
 0x5a4240|0.48695652173913045|TTacticalBattle::CountFreeDeploymentZoneTilesForCurrentSide
 0x5a42e0|0.5|TTacticalBattle::HasFortWallGarrison
@@ -5487,9 +5487,9 @@ address|matching|name
 0x5ae6c0|0.9090909090909091|TShipBuildingTask::`scalar deleting destructor'
 0x5ae6f0|0.5|DestroyTShipBuildingTask_Impl
 0x5ae710|0.0|InitializeOrderRecordFieldsFromArgs
-0x5ae780|0.027586206896551724|TShipBuildingTask::Tick
-0x5ae9e0|0.04|TShipBuildingTask::WriteTo
-0x5aea70|0.045454545454545456|TShipBuildingTask::ReadFrom
+0x5ae780|0.45774647887323944|TShipBuildingTask::Tick
+0x5ae9e0|1.0|TShipBuildingTask::WriteTo
+0x5aea70|1.0|TShipBuildingTask::ReadFrom
 0x5aeaf0|0.46153846153846156|TTaskList::CreateObject
 0x5aeb70|1.0|TTaskList::GetRuntimeClass
 0x5aeb90|0.8695652173913043|TTaskList::TTaskList

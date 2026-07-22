@@ -19,11 +19,8 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // body 0x5ae780 (472B, unported): compares against ownerCity->shipOrderSlots[0]'s
-  // resourceTypeIndex48, then drains per-resource-cost tables (0x695b50.. globals indexed
-  // by shipClassIndex*2) against the order's trackingSlots10, queueing a follow-up
-  // TCityTask per shortfall. field14/field16 (ship class index + a companion short) still
-  // need their own recovery pass before this can be ported.
+  // Resolves the requested ship type's six resource deficits against city stock, queues
+  // one TCityTask for each remaining deficit, then waits for shipOrderSlots[0] to advance.
   virtual bool Tick(TSortedList* commandQueue) override; // slot 0x0a 0x5ae780
   // slot 0x0b QueueCityOrderType10CommandIfReady inherited unchanged (0x5ae010)
   // slot 0x0c ApplyProductionDistributionToCitySlots inherited unchanged (0x5ae420)
@@ -33,9 +30,6 @@ public:
 
   TShipBuildingTask();
 
-  // Original object size is 0x18 (CRuntimeClass m_nObjectSize); the source class ended at 0x14.
-  // Trailing 4 bytes are two shorts (Tick reads both +0x14 and +0x16 independently) --
-  // not yet semantically recovered.
-  short field14;
-  short field16;
+  short requestedShipType14;
+  short waitingForShipOrderAdvance16;
 };

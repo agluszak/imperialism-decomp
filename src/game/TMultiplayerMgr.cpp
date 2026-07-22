@@ -72,7 +72,7 @@ struct TurnEvent2CPacket : NetMessage {
   int orderAccumulatedValues[0x17]; // +0x110
   short popFieldAt8;                // +0x16c
   unsigned char pad16e[2];
-  float popFieldAtC;       // +0x170 — mirrors TPopulationMgr::fieldAtC (genuinely float)
+  float popFieldAtC;       // +0x170 — mirrors TPopulationMgr::populationCountFloat0c
   short popStockLevel;     // +0x174
   short popExtraAt1e;      // +0x176
   short popFieldAt20;      // +0x178
@@ -1755,8 +1755,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       }
     }
     TPopulationMgr* summary2C = city2C->productionSummary1d8;
-    summary2C->fieldAt8 = composite->popFieldAt8;
-    summary2C->fieldAtC = composite->popFieldAtC;
+    summary2C->populationCount08 = composite->popFieldAt8;
+    summary2C->populationCountFloat0c = composite->popFieldAtC;
     summary2C->stockLevel1c = composite->popStockLevel;
     summary2C->extraAt1e = composite->popExtraAt1e;
     summary2C->fieldAt20 = composite->popFieldAt20;
@@ -3253,8 +3253,8 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
       }
     }
     TPopulationMgr* summary = city->productionSummary1d8;
-    packet.popFieldAt8 = summary->fieldAt8;
-    packet.popFieldAtC = summary->fieldAtC;
+    packet.popFieldAt8 = summary->populationCount08;
+    packet.popFieldAtC = summary->populationCountFloat0c;
     packet.popStockLevel = summary->stockLevel1c;
     packet.popExtraAt1e = summary->extraAt1e;
     packet.popFieldAt20 = summary->fieldAt20;
