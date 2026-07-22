@@ -12,14 +12,8 @@
 class TNextTradeCommand : public TCommand {
 public:
   // slot 0x00 cmd_slot0 — declared in hand section (0x5ba3e0) slot 0x01 ~TNextTradeCommand /
-  // cmd_slot1 — declared in hand section slot 0x02 Serialize inherited unchanged (0x485e90) slot
-  // 0x03 AssertValid inherited unchanged (0x412bf0) slot 0x04 Dump inherited unchanged (0x412c10)
-  // slot 0x05 WriteTo inherited unchanged (0x485f70)
-  // slot 0x06 ReadFrom inherited unchanged (0x485f90)
-  // slot 0x07 Free inherited unchanged (0x4878e0)
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // slot 0x0a NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94 inherited unchanged (0x487900)
+  // cmd_slot1 — declared in hand section
+
   // slot 0x0b cmd_slot11 — declared in hand section (0x5ba4b0)
   TNextTradeCommand();
 

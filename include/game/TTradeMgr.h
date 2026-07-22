@@ -22,15 +22,10 @@ class TLongintList;
 class TTradeMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TTradeMgr)
-  virtual ~TTradeMgr() override; // slot 0x01 (scalar deleting destructor, 0x5b7a40)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
+  virtual ~TTradeMgr() override;           // slot 0x01 (scalar deleting destructor, 0x5b7a40)
   void WriteTo(TStream* stream) override;  // slot 0x05 0x5b7d90
   void ReadFrom(TStream* stream) override; // slot 0x06 0x5b7c10
   void Free() override;                    // slot 0x07 0x5b7bc0
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
 
   // Introduced virtuals (slots 0x0a-0x22), declared in slot order so the compiler lays
   // out vtable 0x66d990 correctly. All carry real, ported bodies (dispatches resolved to

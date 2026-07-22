@@ -22,15 +22,9 @@ class TView;
 class TAdorner : public TObject {
 public:
   DECLARE_DYNCREATE(TAdorner)
-  virtual ~TAdorner() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
+  virtual ~TAdorner() override;                    // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x49d990
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x49d960
-  // slot 0x07 Free inherited unchanged (0x4798b0)
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // The seven adorner hooks follow the MacApp declaration order. Windows RET immediates
   // prove their arity; TColorFill's slot-0x0c override proves Draw's slot, and DoesAdorn
   // uniquely clears AL before returning. The base implementations only pulse the global UI

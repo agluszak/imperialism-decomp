@@ -140,9 +140,12 @@ def reviewed_identities(repo_root: Path) -> list[Claim]:
             addr = int(raw, 16)
         except ValueError:
             continue
+        kind = (row.get("kind") or "LIBRARY").strip().upper()
+        if kind not in ("LIBRARY", "SYNTHETIC"):
+            kind = "LIBRARY"
         out.append(Claim(
             address=addr,
-            kind="LIBRARY",
+            kind=kind,
             file=REVIEWED_CSV,
             line=0,
             name=(row.get("name") or "").strip(),

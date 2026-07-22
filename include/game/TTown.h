@@ -12,7 +12,6 @@ public:
   DECLARE_DYNCREATE(TTown)
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
-  // slot 0x1c Free inherited unchanged (TObject::Free @ 0x004798b0)
 
   virtual void CalculateRawResources();       // slot 0x0a 0x5b6f70
   virtual void CalculateResources();          // slot 0x0b 0x5b7140

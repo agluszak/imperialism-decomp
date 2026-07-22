@@ -4,7 +4,6 @@
 #include "game/TObject.h"
 #include "game/map_domain_types.h"
 #include "game/mfc.h"
-#include "game/global_data_tables.h"
 #include "game/strategic_terrain.h"
 
 // Forward declarations for types referenced by generated signatures.
@@ -233,15 +232,10 @@ public:
   // inspect the receiver and returns the constant province-order weight.
   short GetProvinceUnitOrderWeight(ProvinceIndexStorage provinceId); // 0x5184e0
   DECLARE_DYNCREATE(TMapMgr)
-  virtual ~TMapMgr() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
+  virtual ~TMapMgr() override;                     // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x50e7a0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x50e620
   virtual void Free() override;                    // slot 0x07 0x50e510
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // Lazily allocates terrainStateTable (0x1950 tiles, raw 0x24-byte records) and
   // cityScoreTable (0x180 records, real Province[] so CString members
   // construct), then resets every record to its sentinel defaults (-1 for

@@ -12,7 +12,6 @@ enum {
   kNationSlotCount = 0x17,
   kNationPairMatrixEntries = kNationSlotCount * kNationSlotCount
 };
-
 // MFC-style diplomacy backend. The global TDiplomacyTurnStateManager (vtable
 // 0x00654d90) holds the per-nation-pair relation / standing / propagation
 // matrices and the per-turn relationship-processing logic.
@@ -21,14 +20,9 @@ class TDiplomacyMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TDiplomacyMgr)
   ~TDiplomacyMgr() override;
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
   void WriteTo(TStream* stream) override;  // 5 (0x14) 0x004ef2a0
   void ReadFrom(TStream* stream) override; // 6 (0x18) 0x004ef080
   void Free() override;                    // 7 (0x1c) 0x004ef040
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
 
   virtual void SetStandingScoreSlot28(int sourceNation, int targetNation, int score); // 10 (0x28)
   virtual void CopyDiplomacyStandingMatrixRowAndColumnSlot2c(int destinationNation,
@@ -185,5 +179,3 @@ public:
   // finally notifies every eligible major power via SetTradePolicyTo.
   void RebuildMinorNationDispositionLookupTables(int nationCode);
 };
-
-#include "game/global_data_tables.h"

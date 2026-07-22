@@ -8,12 +8,6 @@ class TLongintList;
 class TDefenseMinister : public TMinister {
 public:
   virtual ~TDefenseMinister() override; // slot 0x01 (scalar deleting destructor)
-  // slot 0x02 Serialize inherited unchanged (0x485e90)
-  // slot 0x03 AssertValid inherited unchanged (0x412bf0)
-  // slot 0x04 Dump inherited unchanged (0x412c10)
-  // slot 0x07 Free inherited unchanged (0x52ec80)
-  // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
-  // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a (byte 0x28) MinisterSlot0A overridden below (body 0x4ec3d0)
   // slots 0x0b-0x11 inherited from TMinister unchanged
   TDefenseMinister();
