@@ -27,8 +27,10 @@ public:
   // ---- identity / serialization ----
   // slot 0x00 — body 0x004d89d0: returns TGreatPower CRuntimeClass descriptor.
   DECLARE_DYNCREATE(TGreatPower)
-  // 0x004d8c50 tears down the two identity CStrings.
-  ~TGreatPower() override;
+  // Inline so every derived nation class reproduces the original direct teardown of
+  // TCountry's two identity CStrings.
+  // FUNCTION: IMPERIALISM 0x004d8c50
+  ~TGreatPower() override {}
   // slots 0x05–0x07 — TObject stream lifecycle (Mac: WriteTo / ReadFrom / Free).
   void WriteTo(TStream* stream) override;  // body 0x004d9c70
   void ReadFrom(TStream* stream) override; // body 0x004d92e0
