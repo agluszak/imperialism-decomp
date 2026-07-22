@@ -45,7 +45,7 @@ void TMegaPicture::Draw(RECT* rectBuffer) {
   }
 
   unsigned char blitFlags = 0;
-  int paletteIndex = 0x13;
+  QuickDrawPaletteIndex paletteIndex = 0x13;
   if (flags98 & 1) {
     blitFlags = 0x24;
     paletteIndex = 0x10;

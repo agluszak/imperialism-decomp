@@ -397,8 +397,8 @@ void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x004951e0
-void UpdatePaletteIndexWithDefaultFallback(unsigned int paletteIndex) {
-  if ((short)paletteIndex == -1) {
+void UpdatePaletteIndexWithDefaultFallback(QuickDrawPaletteIndex paletteIndex) {
+  if (static_cast<short>(paletteIndex) == -1) {
     CDibPal* palette = g_pModuleLibraryCacheState->EnsureDefaultDibPalette();
     paletteIndex = palette->GetNearestPaletteIndex(RGB(0xff, 0xff, 0xff));
   }

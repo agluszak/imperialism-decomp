@@ -6,12 +6,16 @@
 #include "game/mfc.h"
 #include "game/quickdraw_regions.h"
 
+class TUiStyleRef;
+struct TQuickDrawBlitSurface;
+
 struct DiplomacyMaskBufferRun {
   DiplomacyMaskBufferRun();
   ~DiplomacyMaskBufferRun();
 
-  void BlitMonochromeMaskBytePatternToSurface(int surfaceContext, int paletteByte, int* origin,
-                                              int flipVertical);
+  void BlitMonochromeMaskBytePatternToSurface(TQuickDrawBlitSurface* surface,
+                                              TUiStyleRef paletteColor, const CPoint* origin,
+                                              unsigned char flipVertical);
 
   unsigned char* maskBytesAt00;
   CRect boundsAt04;

@@ -2807,7 +2807,7 @@ address|name|symbol|size|type|prototype|provenance
 4f6170|TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent||563|function|void __thiscall RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect)|listing
 4f6440|TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch||87|function|undefined BuildCombinedTerrainTypeRegionMaskAndDispatch()|
 4f64c0|TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit||396|function|undefined RebuildDiplomacyLegendPaletteMode4AndBlit()|
-4f66c0|TDiplomacyMapView::BlitMonochromeMaskBytePatternToSurface||266|function|undefined BlitMonochromeMaskBytePatternToSurface()|
+4f66c0|DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface||266|function|undefined BlitMonochromeMaskBytePatternToSurface()|
 4f6820|TDiplomacyMapView::VisitNationSlotsForOverlay||12|function|void __thiscall VisitNationSlotsForOverlay(int unusedMode)|
 4f6840|TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit||563|function|undefined RebuildDiplomacyLegendPaletteMode1AndBlit()|
 4f6b10|TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers||130|function|undefined BuildTurnEventMonochromeMaskBuffers()|

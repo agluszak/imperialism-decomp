@@ -54,7 +54,7 @@ int CDibPal::BuildPaletteFromBitmapColorTable(CDib* dib) {
 UINT CDibPal::SelectIntoDcAndRealize(CDC* dc, BOOL background) {
   // LIBRARY: CDC::SelectPalette (0x00612a78)
   dc->SelectPalette(this, background);
-  return ::RealizePalette(dc->m_hDC);
+  return dc->RealizePalette();
 }
 
 // FUNCTION: IMPERIALISM 0x0047e960

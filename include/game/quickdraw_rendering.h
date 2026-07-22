@@ -2,6 +2,7 @@
 
 #include "decomp_types.h"
 #include "game/mfc.h"
+#include "game/quickdraw_types.h"
 
 void SetQuickDrawFillColor(COLORREF fillColor);
 void SetQuickDrawColorAndPropagateIfChanged(COLORREF newColor);
@@ -48,7 +49,7 @@ CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TextStyle* styl
 
 // If paletteIndex is the sentinel -1 (as a short), resolves the nearest white entry
 // from the default cached bitmap resource's palette instead. 0x004951e0
-void UpdatePaletteIndexWithDefaultFallback(unsigned int paletteIndex);
+void UpdatePaletteIndexWithDefaultFallback(QuickDrawPaletteIndex paletteIndex);
 
 // Cached-style text measurement leaf (0x494e00): rebuilds the cached measure-font from
 // g_QuickDrawMeasureFontPreset if dirty, selects it into the active QuickDraw CDC (or a

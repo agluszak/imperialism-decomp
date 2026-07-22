@@ -17,6 +17,7 @@
 #include "game/TStrategicMapViewSystem.h"
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/TControl.h"
+#include "game/CDib.h"
 #include "game/TGlobalMapState.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TInfoBarText.h"
@@ -24,6 +25,7 @@
 #include "game/TCountry.h"
 #include "game/TInfoPanelView.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_resource_builder.h"
 #include "game/ui_text_label_helpers_decls.h"
 #include "game/TGreatPower.h"
 #include "game/TMilitaryUnit.h"
@@ -39,11 +41,9 @@ void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* ru
                                                       void* surfacePixels, int flag,
                                                       int surfaceHeight);
 
-undefined4 BlitMonochromeMaskBytePatternToSurface(void);
 namespace {
 const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
 const unsigned int kAddrDiplomacyTurnStateManager = 0x006A43D0;
-const unsigned int kAddrDiplomacyRelationPaletteMap = 0x00696990;
 
 // The Windows port brackets minor-nation label drawing with the palette built from
 // bitmap 0x3b6. The original uses an 8-byte compiler-generated guard around
@@ -928,7 +928,7 @@ void TDiplomacyMapView::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
 void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNationSlot,
                                                                   const RECT* presentRect) {
   TQuickDrawSurfaceContext* previousSurface = 0;
-  int maskState[2] = {0, 0};
+  CPoint maskOrigin;
   int contextFlags = 0;
   RECT blitRect;
   blitRect.left = presentRect->left;
@@ -949,24 +949,20 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
       } else {
         short relationTier =
             g_pDiplomacyTurnStateManager->GetRelationTierSlot70(activeNationSlot, nationIndex);
-        eventCode = static_cast<short>(
-            reinterpret_cast<unsigned char*>(kAddrDiplomacyRelationPaletteMap)[relationTier]);
+        eventCode = g_aDiplomacyRelationPaletteColorCodes[relationTier];
       }
 
-      maskState[0] = 0;
-      maskState[1] = 0;
-      // 0x4270e0 (SetUiResourceContextTagWord, thiscall this[0]=arg) is the original's
-      // compiler-emitted converting-constructor call for BlitMonochromeMaskBytePatternToSurface's
-      // paletteByte argument -- ABI-transparent for a plain int, so passing paletteIndex directly
-      // reproduces it exactly with no separate call needed at this call site (and the two below).
-      int paletteIndex = g_pUiRuntimeContext->GetColor(static_cast<short>(eventCode));
+      maskOrigin.x = 0;
+      maskOrigin.y = 0;
+      QuickDrawPaletteIndex paletteIndex =
+          g_pUiRuntimeContext->GetColor(static_cast<short>(eventCode));
       maskRuns[nationIndex].BlitMonochromeMaskBytePatternToSurface(
-          reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), paletteIndex,
-          maskState, 1);
+          &g_pActiveQuickDrawSurfaceContext->blitSurface, static_cast<short>(paletteIndex),
+          &maskOrigin, 1);
 
       int packedColor = g_pUiRuntimeContext->GetColor(0x3f);
       packedColorRuns[nationIndex].AppendPackedColorDword(
-          g_pActiveQuickDrawSurfaceContext->GetBlitSurface()->pixelBits, packedColor);
+          g_pActiveQuickDrawSurfaceContext->blitSurface.pixelBits, packedColor);
 
       nationIndex = static_cast<short>(nationIndex + 1);
     } while (nationIndex < 0x17);
@@ -983,32 +979,29 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
 }
 
 // FUNCTION: IMPERIALISM 0x004f66c0
-void DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(int surfaceContext,
-                                                                    int paletteByte, int* origin,
-                                                                    int flipVertical) {
+void DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(TQuickDrawBlitSurface* surface,
+                                                                    TUiStyleRef paletteColor,
+                                                                    const CPoint* origin,
+                                                                    unsigned char flipVertical) {
   unsigned char* maskCursor = maskBytesAt00;
   if (maskCursor == 0) {
     return;
   }
 
-  int rowStride = *reinterpret_cast<short*>(surfaceContext + 4);
+  int rowStride = surface->stride;
   unsigned int row = boundsAt04.top;
   unsigned char* destCursor;
   int rowAdvance;
-  if (static_cast<char>(flipVertical) == 0) {
-    destCursor =
-        reinterpret_cast<unsigned char*>((origin[1] + row) * rowStride + origin[0] +
-                                         *reinterpret_cast<int*>(surfaceContext) + boundsAt04.left);
+  if (flipVertical == 0) {
+    destCursor = surface->pixelBits + (origin->y + row) * rowStride + origin->x + boundsAt04.left;
     rowAdvance = boundsAt04.left + (rowStride - boundsAt04.right);
   } else {
-    int surfaceHeight = *reinterpret_cast<int*>(
-        *reinterpret_cast<int*>(*reinterpret_cast<int*>(surfaceContext + 0x1c) + 0x10) + 8);
+    int surfaceHeight = surface->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
     if (surfaceHeight < 1) {
       surfaceHeight = -surfaceHeight;
     }
-    destCursor = reinterpret_cast<unsigned char*>(
-        (((surfaceHeight - origin[1]) - row) - 1) * rowStride + origin[0] +
-        *reinterpret_cast<int*>(surfaceContext) + boundsAt04.left);
+    destCursor = surface->pixelBits + (((surfaceHeight - origin->y) - row) - 1) * rowStride +
+                 origin->x + boundsAt04.left;
     rowAdvance = boundsAt04.left + (-rowStride - boundsAt04.right);
   }
 
@@ -1022,7 +1015,7 @@ void DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(int surfaceC
             x += 8;
             destCursor = rowCursor + 8;
           } else if (*maskCursor == 0xff) {
-            unsigned int fillByte = static_cast<unsigned char>(paletteByte);
+            unsigned int fillByte = static_cast<unsigned char>(paletteColor.value);
             unsigned int packedFill =
                 fillByte | (fillByte << 8) | (fillByte << 16) | (fillByte << 24);
             *reinterpret_cast<unsigned int*>(rowCursor) = packedFill;
@@ -1034,7 +1027,7 @@ void DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(int surfaceC
             destCursor = rowCursor;
             do {
               if ((*maskCursor & static_cast<unsigned char>(bit)) != 0) {
-                *destCursor = static_cast<unsigned char>(paletteByte);
+                *destCursor = static_cast<unsigned char>(paletteColor.value);
               }
               bit = bit * 2;
               x += 1;
@@ -1069,7 +1062,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
   frameRegionSelectorAt98 = (short)activeNationSlot;
 
   TQuickDrawSurfaceContext* previousSurface = 0;
-  int maskState[2];
+  CPoint maskOrigin;
   int contextFlags = 0;
   RECT blitRect;
   blitRect.left = presentRect->left;
@@ -1089,16 +1082,17 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
         short eventCode =
             g_pDiplomacyTurnStateManager->GetRelationTypeSlot68(activeNationSlot, terrainIndex);
 
-        maskState[0] = 0;
-        maskState[1] = 0;
-        int paletteIndex = g_pUiRuntimeContext->GetColor(static_cast<short>(eventCode + 200));
+        maskOrigin.x = 0;
+        maskOrigin.y = 0;
+        QuickDrawPaletteIndex paletteIndex =
+            g_pUiRuntimeContext->GetColor(static_cast<short>(eventCode + 200));
         maskRuns[terrainIndex].BlitMonochromeMaskBytePatternToSurface(
-            reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), paletteIndex,
-            maskState, 1);
+            &g_pActiveQuickDrawSurfaceContext->blitSurface, static_cast<short>(paletteIndex),
+            &maskOrigin, 1);
 
         int packedColor = g_pUiRuntimeContext->GetColor(0x3f);
         packedColorRuns[terrainIndex].AppendPackedColorDword(
-            g_pActiveQuickDrawSurfaceContext->GetBlitSurface()->pixelBits, packedColor);
+            g_pActiveQuickDrawSurfaceContext->blitSurface.pixelBits, packedColor);
       }
       terrainIndex++;
       terrainDescriptors++;
@@ -1118,18 +1112,17 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
 
 // FUNCTION: IMPERIALISM 0x004f6b10
 void TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode) {
-  int maskState[2];
-  maskState[0] = 0;
-  maskState[1] = 0;
-  int paletteIndex = g_pUiRuntimeContext->GetColor(static_cast<short>(eventCode));
+  CPoint maskOrigin;
+  maskOrigin.x = 0;
+  maskOrigin.y = 0;
+  QuickDrawPaletteIndex paletteIndex = g_pUiRuntimeContext->GetColor(static_cast<short>(eventCode));
   DiplomacyMaskBufferRun* maskRun = &maskRuns[maskIndex];
-  maskRun->BlitMonochromeMaskBytePatternToSurface(
-      reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), paletteIndex,
-      maskState, 1);
+  maskRun->BlitMonochromeMaskBytePatternToSurface(&g_pActiveQuickDrawSurfaceContext->blitSurface,
+                                                  static_cast<short>(paletteIndex), &maskOrigin, 1);
 
   int packedColor = g_pUiRuntimeContext->GetColor(0x3f);
   StrategicMapCallbackRecord* packedRun = &packedColorRuns[maskIndex];
-  packedRun->AppendPackedColorDword(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()->pixelBits,
+  packedRun->AppendPackedColorDword(g_pActiveQuickDrawSurfaceContext->blitSurface.pixelBits,
                                     packedColor);
 }
 
