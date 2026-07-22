@@ -1,5 +1,5 @@
 {
-  "avg_matching_pct": 72.8139336472788,
+  "avg_matching_pct": 72.81856666096766,
   "compared_fun_count": 7589,
   "coverage_pct": 97.2699307869777,
   "dat_orig_only_count": 1600,
@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
-  "git_branch": "agent/ratchet-construction-more",
-  "git_commit": "d2cf766f2088b71395ccacce657a981979050540",
-  "git_commit_date": "2026-07-22T12:59:38+02:00",
+  "git_branch": "agent/ratchet-construction-final",
+  "git_commit": "2b5c9c757c3bb25264694e316f07433d5efb169b",
+  "git_commit_date": "2026-07-22T13:08:41+02:00",
   "global_coverage_pct": 24.20576283708903,
   "global_orig_only_count": 8207,
   "global_recomp_only_count": 7499,
@@ -61,7 +61,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-22T11:07:49+00:00",
+  "timestamp_utc": "2026-07-22T11:23:49+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }

@@ -1304,7 +1304,7 @@ TZone* g_pMapActionContextListHead = 0;
 TOcean* g_pActiveMapOrderContext = 0;
 TMapMgr* g_pGlobalMapState = 0;
 TCivMgr* g_pSelectedCivilianOrderState = 0;
-// Seed viewport offsets copied into TWorldView::viewportOffsetX/Y by the TOceanDialog
+// Seed viewport offsets copied into TWorldView::viewportOrigin60.x/Y by the TOceanDialog
 // ctor (0x565e90). Only known writer is the reset helper at 0x56a3b0 (`xor eax,eax;
 // mov [6a3ff0],eax; mov [6a3ff4],eax; ret`), which zeroes both.
 // GLOBAL: IMPERIALISM 0x006a3ff0

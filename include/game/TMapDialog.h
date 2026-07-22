@@ -7,8 +7,8 @@ struct TQuickDrawSurfaceContext;
 // Genuine __cdecl free function (0x00512440, owned by TMapDialog.cpp): projects a tile
 // index to a wrapped screen offset at the given scale. Note the vertical output comes
 // third, the horizontal fourth.
-void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, short* originXY, short* outY,
-                                                  short* outX, short scale);
+void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, const CPoint* viewportOrigin,
+                                                  short* outY, short* outX, short scale);
 
 // One transient tile-marker slot (8 bytes): a flag byte plus three sentinel-initialized
 // coordinate/state shorts. The map dialog keeps an array of 90 (0x5a) of these.
@@ -58,7 +58,7 @@ public:
                                                              unsigned char altOverlay) override;
   virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;
   virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
-                                                                   short* viewportOriginXY,
+                                                                   const CPoint* viewportOrigin,
                                                                    short* outVerticalOffset,
                                                                    short* outHorizontalOffset,
                                                                    int projectionScale) override;

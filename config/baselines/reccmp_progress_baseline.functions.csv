@@ -4829,7 +4829,7 @@ address|matching|name
 0x584930|1.0|T2PictToggleButton::T2PictToggleButton
 0x584960|0.9090909090909091|T2PictToggleButton::`scalar deleting destructor'
 0x5849b0|0.3076923076923077|T2PictToggleButton::IsSelected
-0x5849d0|0.375|T2PictToggleButton::Select
+0x5849d0|0.5538461538461539|T2PictToggleButton::Select
 0x584a50|0.4897959183673469|TCloseButton::CreateObject
 0x584ad0|1.0|TCloseButton::GetRuntimeClass
 0x584af0|1.0|TCloseButton::TCloseButton
@@ -4969,7 +4969,7 @@ address|matching|name
 0x58b3c0|1.0|TCivilianButton::GetRuntimeClass
 0x58b3e0|1.0|TCivilianButton::TCivilianButton
 0x58b410|0.9090909090909091|TCivilianButton::`scalar deleting destructor'
-0x58b460|0.8059701492537313|TCivilianButton::SetSelectionAndEnableByMappedValue
+0x58b460|1.0|TCivilianButton::SetSelectedCivilianOrderAndEnableButton
 0x58b4f0|0.5|TCivilianButton::Draw
 0x58b5c0|0.4897959183673469|THQButton::CreateObject
 0x58b640|1.0|THQButton::GetRuntimeClass
@@ -6886,7 +6886,7 @@ address|matching|name
 0x608ba8|0.9397321428571429|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|1.0|CWnd::OnNotify
+0x6091d9|0.9787234042553191|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent

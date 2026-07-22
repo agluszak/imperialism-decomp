@@ -3,6 +3,7 @@
 #include "game/TRadioPictureButton.h"
 
 extern "C" int g_vtblTCivilianButton;
+class TCivUnit;
 struct CRuntimeClass;
 
 // VTABLE: IMPERIALISM 0x666da8
@@ -123,15 +124,13 @@ public:
   // slot 0x73 DrawImmediate inherited unchanged (0x571690)
   // slot 0x74 OrphanCallChain_C2_I16_005718f0 inherited unchanged (0x5718f0)
   short mappedSelection98;
-  short selectedValue9c;
+  short reserved9a;
+  TCivUnit* selectedCivilianOrder9c;
 
   TCivilianButton();
   virtual ~TCivilianButton() override;
   DECLARE_DYNCREATE(TCivilianButton)
   void Draw(RECT* rectBuffer) override;
 
-  void SetSelectionAndEnableByMappedValue(int selectedValue);
-
-  // Original object size is 0xa0 (CRuntimeClass m_nObjectSize); the source class ended at 0x9c. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field9c;
+  void SetSelectedCivilianOrderAndEnableButton(TCivUnit* selectedOrder);
 };
