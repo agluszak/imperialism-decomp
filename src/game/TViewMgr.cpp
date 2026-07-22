@@ -368,7 +368,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
     return;
   }
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x7e5));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventConfirmEndTurn));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x223);
@@ -481,11 +481,11 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   TurnEventDialogNode* dialog;
   if (static_cast<short>(payloadResource) == 0) {
     dialog = static_cast<TurnEventDialogNode*>(
-        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x7e4));
+        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterMessage));
   } else {
     g_pUiViewManager->OpenFilesFor(0xb);
     dialog = static_cast<TurnEventDialogNode*>(
-        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2508));
+        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterReward));
   }
   if (dialog == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -769,12 +769,14 @@ void TViewMgr::ComputeTurnEventDialogPlacementByCode(TView* dialogView, POINT* o
   int designHeight = 0x1d1;
   int margin = 0x1e;
   short code = this->currentTurnEventCode;
-  if (code == 0x3b8 || code == 0x7dd) {
+  if (code == kTurnEventCitySiteSelector || code == kTurnEventStrategicMap) {
     designWidth = 0x200;
     designHeight = 0x1c0;
     margin = 0x16;
-  } else if ((code >= 0x7d8 && code <= 0x7db) || code == 0x7de || code == 0x898 || code == 0xf3c ||
-             code == 0xed8 || code == 0x2134 || code == 0x2260) {
+  } else if ((code >= kTurnEventDiplomacyMap && code <= kTurnEventCityProduction) ||
+             code == kTurnEventTransport || code == kTurnEventTechnologyAdvance ||
+             code == kTurnEventProvisional0F3C || code == kTurnEventTacticalView ||
+             code == kTurnEventOfferSheet || code == kTurnEventDealBook) {
     designHeight = 0x1c0;
   }
 
@@ -790,7 +792,7 @@ void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   }
   // Turn-event 0x7DD targets the 'trb1' toolbar tag; everything else the 'tool' tag.
   TControl* control;
-  if (this->currentTurnEventCode == 0x7dd) {
+  if (this->currentTurnEventCode == kTurnEventStrategicMap) {
     control = static_cast<TControl*>(mainView->ResolveControlByTag(0x74627231));
   } else {
     control = static_cast<TControl*>(mainView->ResolveControlByTag(0x746f6f6c));
@@ -836,7 +838,8 @@ void TViewMgr::RefreshStrategicMapStatusIconsForActiveNation() {
 // FUNCTION: IMPERIALISM 0x005d6cd0
 void TViewMgr::HandleTurnEventDialogFactorySlot70(int eventCode) {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(eventCode, 0));
+      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
+          static_cast<TurnEventId>(eventCode), 0));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x4ff);
@@ -853,7 +856,8 @@ void TViewMgr::HandleTurnEventDialogFactorySlot70(int eventCode) {
 // FUNCTION: IMPERIALISM 0x005d6d70
 void TViewMgr::HandleTurnEventDialogFactorySlot74(int eventCode) {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(eventCode, 0));
+      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
+          static_cast<TurnEventId>(eventCode), 0));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x514);
@@ -878,7 +882,8 @@ void TViewMgr::NoOpTurnEventStateVtableSlot8C(int arg) {
 // FUNCTION: IMPERIALISM 0x005d6e50
 void TViewMgr::HandleTurnEventDialogFactorySlot78(int eventCode) {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(eventCode, 0));
+      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
+          static_cast<TurnEventId>(eventCode), 0));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x535);
@@ -898,7 +903,8 @@ void TViewMgr::HandleTurnEventDialogFactorySlot78(int eventCode) {
 // FUNCTION: IMPERIALISM 0x005d6f10
 void TViewMgr::HandleTurnEventDialogFactorySlot7C(int eventCode) {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(eventCode, 0));
+      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
+          static_cast<TurnEventId>(eventCode), 0));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x54e);
@@ -918,7 +924,8 @@ void TViewMgr::HandleTurnEventDialogFactorySlot7C(int eventCode) {
 // FUNCTION: IMPERIALISM 0x005d6fd0
 void TViewMgr::HandleTurnEventDialogFactorySlot80(int eventCode) {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(eventCode, 0));
+      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
+          static_cast<TurnEventId>(eventCode), 0));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x566);
@@ -939,7 +946,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlot80(int eventCode) {
 char TViewMgr::MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
                                         short proposalCode) {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
-  DispatchTurnEvent(0x7d8, sourceNation);
+  DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyMap), sourceNation);
   TDiplomacyMapView* mainView =
       static_cast<TDiplomacyMapView*>(activeDialog->ResolveControlByTag(kControlTagMain));
   mainView->AssertValid();
@@ -954,7 +961,7 @@ char TViewMgr::PoseWarOfferIfTurnFlowReady(int sourceNation, int arg1, int arg2,
     return 1;
   }
   TView* activeDialog = g_pDisplayMgr->activeDialog;
-  DispatchTurnEvent(0x7d8, sourceNation);
+  DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyMap), sourceNation);
   TDiplomacyMapView* mainView =
       static_cast<TDiplomacyMapView*>(activeDialog->ResolveControlByTag(kControlTagMain));
   mainView->AssertValid();
@@ -1116,12 +1123,12 @@ void TViewMgr::DispatchNationActionToMainControl(int sourceNation, int arg1, int
 }
 
 // FUNCTION: IMPERIALISM 0x005d7240
-void TViewMgr::DispatchTurnEvent(short eventCode, int payload) {
+void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   TView* mainView = g_pDisplayMgr->activeDialog;
   SetQuickDrawFillColor(0);
   SetQuickDrawStrokeColor(0xffffff);
 
-  const short newCode = eventCode;
+  const TurnEventCodeStorage newCode = eventCode;
   const short secondary = static_cast<short>(payload);
 
   // Sound cue when the turn-flow mode is in the 0x67..0x6a band and the code changed.
@@ -1145,18 +1152,18 @@ void TViewMgr::DispatchTurnEvent(short eventCode, int payload) {
   // Teardown hook for the code currently displayed.
   const int curCode = this->currentTurnEventCode;
   if (curCode < 0x2135) {
-    if (curCode == 0x2134) {
+    if (curCode == kTurnEventOfferSheet) {
       ModifyMainViewChildWindowStyleClear02000000(mainView);
     } else {
       switch (curCode) {
-      case 0x7d9:
-      case 0x7da:
+      case kTurnEventTradeOverview:
+      case kTurnEventIndustryOverview:
         this->RefreshStrategicMapStatusIconsForActiveNation();
         break;
-      case 0x7db:
+      case kTurnEventCityProduction:
         g_pStrategicMapViewSystem->ClearActiveCityProductionViewAndDiscardRegion();
         break;
-      case 0x7dd:
+      case kTurnEventStrategicMap:
         this->mapUberPictureF0 = 0;
         break;
       }
@@ -1187,34 +1194,34 @@ void TViewMgr::DispatchTurnEvent(short eventCode, int payload) {
     if (secondary != -1) {
       this->currentTurnEventNationSlot06 = secondary;
     }
-    if (newCode == 0x5e4) {
+    if (newCode == kTurnEventNetworkGameOptions) {
       QueueDeferredUiEventPacket(mainView, 0x29a, mainView);
-    } else if (newCode == 0x547) {
+    } else if (newCode == kTurnEventDiplomacyOffer) {
       mainView->RefreshControl();
       g_pCursorControlPanel->AssertValid();
-    } else if (newCode == 0x8fc) {
+    } else if (newCode == kTurnEventTechnologyStore) {
       mainView->RefreshControl();
       this->RefreshTechnologyStorePageAndHudText(0);
-    } else if (newCode == 0x7d8) {
+    } else if (newCode == kTurnEventDiplomacyMap) {
       if (static_cast<short>(g_pSimMgr->mode) == 0x68) {
         mainView->RefreshControl();
         this->HandleTurnEvent7D8_ActivateDiplomacyMapView(newCode);
       }
-    } else if (newCode == 0x7d9 || newCode == 0x7da) {
+    } else if (newCode == kTurnEventTradeOverview || newCode == kTurnEventIndustryOverview) {
       mainView->RefreshControl();
       this->HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(newCode);
-    } else if (newCode == 0x7db) {
+    } else if (newCode == kTurnEventCityProduction) {
       mainView->RefreshControl();
       this->HandleTurnEvent7DB_SelectCityAndRefreshView(newCode);
-    } else if (newCode == 0x7dd) {
+    } else if (newCode == kTurnEventStrategicMap) {
       mainView->RefreshControl();
       this->HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(newCode);
-    } else if (newCode == 0x7de) {
+    } else if (newCode == kTurnEventTransport) {
       mainView->RefreshControl();
       this->HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(newCode);
-    } else if (newCode == 0x2103) {
+    } else if (newCode == kTurnEventNewspaperStatus) {
       this->HandleTurnEvent2103_RunNationStatusReportUpdate();
-    } else if (newCode == 0x2260) {
+    } else if (newCode == kTurnEventDealBook) {
       mainView->RefreshControl();
       this->HandleTurnEvent2260_RefreshMainHudTitles(newCode);
     }
@@ -1236,7 +1243,7 @@ void TViewMgr::DispatchTurnEvent(short eventCode, int payload) {
     inclControl->RefreshControl();
     inclControl->Free();
   }
-  if (newCode != 0x898) {
+  if (newCode != kTurnEventTechnologyAdvance) {
     this->currentTurnEventNationSlot06 = secondary;
   }
 
@@ -1254,73 +1261,73 @@ void TViewMgr::DispatchTurnEvent(short eventCode, int payload) {
   }
   this->currentTurnEventCode = newCode;
 
-  if (newCode > 0x3c0) {
-    if (newCode < 0x5dd) {
-      if (newCode == 0x5dc) {
+  if (newCode > kTurnEventMapEditor) {
+    if (newCode < kTurnEventRandomGameSetup) {
+      if (newCode == kTurnEventMainMenu) {
         this->HandleTurnEventDialogFactorySlotF8();
-      } else if (newCode == 0x547) {
+      } else if (newCode == kTurnEventDiplomacyOffer) {
         this->SetCursorRangeAndRefreshMainPanel(static_cast<int>(newCode));
       }
-    } else if (newCode < 0x7d9) {
+    } else if (newCode < kTurnEventTradeOverview) {
       switch (newCode) {
-      case 0x5dd:
+      case kTurnEventRandomGameSetup:
         this->NoOpTurnEventStateVtableSlotFC();
         break;
-      case 0x5de:
+      case kTurnEventLoadSave:
         this->HandleTurnEvent5DE_RefreshMainView();
         break;
-      case 0x5df:
+      case kTurnEventScenarioGameSetup:
         this->HandleTurnEvent5DF_RefreshMainView();
         break;
-      case 0x5e0:
+      case kTurnEventHighScores:
         this->RefreshMainViewForTurnEvent5DF();
         break;
-      case 0x7d8:
+      case kTurnEventDiplomacyMap:
         this->HandleTurnEvent7D8_ActivateDiplomacyMapView(newCode);
         break;
       }
-    } else if (newCode > 0x898) {
-      if (newCode == 0xed8 || newCode == 0xf3c) {
+    } else if (newCode > kTurnEventTechnologyAdvance) {
+      if (newCode == kTurnEventTacticalView || newCode == kTurnEventProvisional0F3C) {
         this->SyncTacticalStatusPanelRegion();
-      } else if (newCode == 0x8fc) {
+      } else if (newCode == kTurnEventTechnologyStore) {
         this->RefreshTechnologyStorePageAndHudText(0);
-      } else if (newCode == 0x11f8) {
+      } else if (newCode == kTurnEventOpeningCinematic) {
         this->HandleTurnEventDialogFactorySlotF4();
-      } else if (newCode == 0xf3d) {
+      } else if (newCode == kTurnEventUnitHistory) {
         this->ShowUnitHistory(secondary);
-      } else if (newCode == 0x2103) {
+      } else if (newCode == kTurnEventNewspaperStatus) {
         this->HandleTurnEvent2260_RefreshMainHudTitles(newCode);
-      } else if (newCode == 0x2134) {
+      } else if (newCode == kTurnEventOfferSheet) {
         this->RefreshMainDialogAndCursorHelp(newCode);
-      } else if (newCode == 0x2260) {
+      } else if (newCode == kTurnEventDealBook) {
         this->HandleTurnEvent2103_RunNationStatusReportUpdate();
       }
-    } else if (newCode == 0x898) {
+    } else if (newCode == kTurnEventTechnologyAdvance) {
       this->ShowAbilityStatusReport(secondary);
     } else {
       switch (newCode) {
-      case 0x7d9:
-      case 0x7da:
+      case kTurnEventTradeOverview:
+      case kTurnEventIndustryOverview:
         this->HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(newCode);
         break;
-      case 0x7db:
+      case kTurnEventCityProduction:
         this->HandleTurnEvent7DB_SelectCityAndRefreshView(newCode);
         break;
-      case 0x7dd:
+      case kTurnEventStrategicMap:
         this->HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(newCode);
         break;
-      case 0x7de:
+      case kTurnEventTransport:
         this->HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(newCode);
         break;
-      case 0x7e0:
+      case kTurnEventCouncilOfGovernors:
         this->SetCursorRangeAndRefreshMainPanel(static_cast<int>(secondary));
         break;
       }
     }
-  } else if (newCode == 0x3c0) {
+  } else if (newCode == kTurnEventMapEditor) {
     this->ConfigureActiveDialogGoldValueGridForTurnEvent3C0();
     g_pGlobalUiRootController->dispatchBusyFlag4c = 0;
-  } else if (newCode == 0x3b8) {
+  } else if (newCode == kTurnEventCitySiteSelector) {
     this->InitializeCitySiteSelectionScreenForNation(static_cast<int>(secondary));
     g_pGlobalUiRootController->dispatchBusyFlag4c = 0;
   }
@@ -1332,7 +1339,7 @@ void TViewMgr::DispatchTurnEvent(short eventCode, int payload) {
 
 // FUNCTION: IMPERIALISM 0x005d7c40
 void TViewMgr::DispatchTurnEvent3B8AndWaitForCompletion(int payload, TEventHandler* waitTarget) {
-  DispatchTurnEvent(0x3b8, payload);
+  DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCitySiteSelector), payload);
   while (static_cast<short>(waitTarget->field14) == 0) {
     if (PumpUiMessagesAndBackgroundTasks(1) == 0) {
       PostWmCloseToMainThreadWindow();
@@ -1780,20 +1787,23 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
   this->activeMovieViewF4 = 0;
   switch (g_pSimMgr->mode) {
   case 1:
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+        EncodeTurnEventCode(kTurnEventMainMenu));
     return;
   case 0xe:
   case 0x16:
   case 0x17:
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x7e0);
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+        EncodeTurnEventCode(kTurnEventCouncilOfGovernors));
     return;
   case 0x19:
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
-      g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5eb);
+      g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+          EncodeTurnEventCode(kTurnEventGameScore));
       return;
     }
   default:
-    ReinitializeGameFlowAndPostTurnEventCode(0);
+    ReinitializeGameFlowAndPostTurnEventCode(kTurnEventRebuildRegisteredWindows);
   }
 }
 
@@ -1932,7 +1942,7 @@ void TViewMgr::ConfigureActiveDialogGoldValueGridForTurnEvent3C0() {
 // FUNCTION: IMPERIALISM 0x005dc430
 void TViewMgr::HandleTurnEventDialogFactorySlotB8(int a, int b, int c) {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2405));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericExpander));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf50);
@@ -2058,7 +2068,7 @@ void TViewMgr::MakeGameSetupDialog() {
 char TViewMgr::HandleTurnEventDialogFactorySlotB4(void* payload) {
   turn_event_dialog::ThreeFlagDialogNode* node =
       static_cast<turn_event_dialog::ThreeFlagDialogNode*>(
-          g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x3b9));
+          g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNewCityDialog));
   if (node == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xbe);
@@ -2093,7 +2103,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotD8(int) {
   rootGold->NotifyGoldControlOfTurnEventCode(currentTurnEventCode);
 
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x546));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventCombatReport));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xe5);
@@ -2118,7 +2128,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotD8(int) {
 // FUNCTION: IMPERIALISM 0x005dd0a0
 int TViewMgr::ShowConstructionOptionsDialog(int dialogValue) {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x1c20));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEngineerBuildMenu));
   if (node == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x100);
@@ -2142,7 +2152,7 @@ void TViewMgr::HandleGlobalMapNationContextSelection(int nationSlot, int unused)
   (void)unused;
   if (static_cast<short>(nationSlot) == g_pGlobalMapState->pendingRiverMouthTile22) {
     TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x24f9));
+        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTerrainInfo));
     if (node == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x11e);
@@ -2158,7 +2168,7 @@ void TViewMgr::HandleGlobalMapNationContextSelection(int nationSlot, int unused)
 // FUNCTION: IMPERIALISM 0x005dd220
 void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x1c52));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventProvisional1C52));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x14a);
@@ -2182,7 +2192,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
 // FUNCTION: IMPERIALISM 0x005dd340
 TNavyRoster* TViewMgr::MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry) {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2506));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNavyRoster));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x167);
@@ -2209,7 +2219,7 @@ TNavyRoster* TViewMgr::MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry) {
 // FUNCTION: IMPERIALISM 0x005dd450
 void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2506));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNavyRoster));
   if (node == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x183);
@@ -2278,7 +2288,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE8(void* selection) {
       g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex04);
 
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xf0a));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventProvisional0F0A));
   if (node == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1c9);
@@ -2303,7 +2313,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE8(void* selection) {
 // FUNCTION: IMPERIALISM 0x005dd900
 void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xdac));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1e2);
@@ -2336,7 +2346,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
 // FUNCTION: IMPERIALISM 0x005dda30
 void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xdac));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x202);
@@ -2381,7 +2391,7 @@ void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
 // FUNCTION: IMPERIALISM 0x005ddd20
 void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xdac));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x232);
@@ -2431,8 +2441,8 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
 int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
                                    const char* firstChoice, const char* secondChoice,
                                    int initialChoice, unsigned char showCancel) const {
-  TWindow* dialog =
-      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x3ba));
+  TWindow* dialog = static_cast<TWindow*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventPlanetSeedDialog));
   if (dialog == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x26a);
@@ -2527,7 +2537,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
 // FUNCTION: IMPERIALISM 0x005de4f0
 bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrderEntry) {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xbc4));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventCivilianInfo));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x2c1);
@@ -2561,7 +2571,7 @@ bool TViewMgr::DispatchProvinceOrderOverlayConfirmDialog(short cityRecordIndex,
 // FUNCTION: IMPERIALISM 0x005de8f0
 void TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView() {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x101a));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventQueryFloater));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x33f);

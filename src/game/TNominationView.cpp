@@ -64,7 +64,8 @@ void TNominationView::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x004fb990
 void TNominationView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa) {
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x7e0);
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+        EncodeTurnEventCode(kTurnEventCouncilOfGovernors));
     return;
   }
   TControl::DoEvent(commandId, sourceHandler, event);

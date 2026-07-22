@@ -941,7 +941,7 @@ char TGreatPower::HasDeveloper(void) {
 
 // FUNCTION: IMPERIALISM 0x004daf00
 void TGreatPower::SorryYouLose(void) {
-  g_pUiRuntimeContext->DispatchTurnEvent(0x11f8, 0);
+  g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic), 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004daf30
@@ -3120,7 +3120,8 @@ void TGreatPower::DispatchTurnEvent2103WithNationFromRecord(void) {
     return;
   }
 
-  uiRuntimeContext->DispatchTurnEvent(0x2103, this->nationSlot);
+  uiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventNewspaperStatus),
+                                      this->nationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x004df5f0

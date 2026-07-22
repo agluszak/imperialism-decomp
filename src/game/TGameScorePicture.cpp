@@ -113,6 +113,6 @@ void TGameScorePicture::DoPostCreate(int arg) {
 void TGameScorePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   TControl::DoEvent(commandId, sourceHandler, event);
   if (commandId == 0xa && sourceHandler->controlTag == kTagDone) {
-    ReinitializeGameFlowAndPostTurnEventCode(0x5e0);
+    ReinitializeGameFlowAndPostTurnEventCode(kTurnEventHighScores);
   }
 }

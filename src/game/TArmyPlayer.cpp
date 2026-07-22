@@ -275,7 +275,8 @@ void TArmyPlayer::StartBattle() {
 
     // Battle-intro ("hola") dialog, id 0xf19.
     TurnEventDialogNode* dialog = static_cast<TurnEventDialogNode*>(
-        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xf19));
+        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
+            kTurnEventTacticalDeployChoice));
     if (dialog == 0) {
       FailNilPointerWithAssert(s_SourcePathUTacPlayer_00699D84, 0x18d);
     }

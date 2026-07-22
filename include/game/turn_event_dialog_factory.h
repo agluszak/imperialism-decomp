@@ -2,6 +2,7 @@
 
 #include "game/TView.h"
 #include "game/mfc.h"
+#include "game/turn_event_codes.h"
 
 // Turn-event dialog factory callbacks registered by RegisterStartupDialogFactoryCallbacks
 // (see TTurnEventDialogFactoryRegistry). Each is invoked as factory(0, nEventCode) from

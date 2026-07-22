@@ -143,8 +143,8 @@ void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
 // is exactly 'okay' (rather than "commit unless 'cncl'").
 // FUNCTION: IMPERIALISM 0x00565a40
 void TShipView::RunEngineerOrderNameEditDialogAndApply() {
-  TWindow* node =
-      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xdb4));
+  TWindow* node = static_cast<TWindow*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUOceanViews_00698650, 0x203);

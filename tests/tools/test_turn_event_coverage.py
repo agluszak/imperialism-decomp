@@ -22,6 +22,16 @@ class TurnEventCoverageTests(unittest.TestCase):
         self.assertTrue(all(not row["gap_bead"] for row in boot))
         self.assertTrue(all(row["status"] == "implemented_reachable" for row in boot))
 
+    def test_vocabulary_is_complete_and_unique(self) -> None:
+        names = [row["vocabulary_name"] for row in self.rows]
+
+        self.assertEqual(len(self.rows), 98)
+        self.assertEqual(len(names), len(set(names)))
+        self.assertTrue(all(name.startswith("kTurnEvent") for name in names))
+        self.assertEqual(self.by_event[0x05DC]["vocabulary_name"], "kTurnEventMainMenu")
+        self.assertEqual(self.by_event[0x07DD]["vocabulary_name"], "kTurnEventStrategicMap")
+        self.assertEqual(self.by_event[0x0F0A]["vocabulary_name"], "kTurnEventProvisional0F0A")
+
     def test_core_screen_factories_and_hooks_are_joined(self) -> None:
         self.assertEqual(self.by_event[0x5DC]["boot_stage"], "main_menu")
         self.assertTrue(self.by_event[0x5DC]["factories"])

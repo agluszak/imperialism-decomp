@@ -22,6 +22,7 @@ import yaml
 from tools.common.file_scan import iter_files
 from tools.common.repo import repo_root_from_file
 from tools.source_model import build_model
+from tools.turn_event_vocabulary import VOCABULARY_PATH, load_turn_event_vocabulary
 from tools.ui_codegen import UiResourceKey, load_recipes, load_ui_views
 from tools.workflow.ui_view_coverage import build_coverage_rows
 
@@ -37,9 +38,11 @@ _FUNCTION_RE = re.compile(r"^// FUNCTION: IMPERIALISM (0x[0-9a-fA-F]+)$", re.MUL
 _EVENT_CALL_RE = re.compile(
     r"\b(?P<callee>PostTurnEventCodeMessage2420|DispatchTurnEvent|"
     r"ResolveTurnEventDialogNodeByMessageContext)\s*\(\s*"
-    r"(?P<code>0x[0-9a-fA-F]+|[0-9]+)"
+    r"(?:EncodeTurnEventCode\s*\(\s*)?"
+    r"(?P<code>0x[0-9a-fA-F]+|[0-9]+|kTurnEvent[A-Za-z0-9_]+)"
 )
-_CASE_RE = re.compile(r"\bcase\s+(0x[0-9a-fA-F]+|[0-9]+)\s*:")
+_EVENT_TOKEN = r"(?:0x[0-9a-fA-F]+|[0-9]+|kTurnEvent[A-Za-z0-9_]+)"
+_CASE_RE = re.compile(rf"\bcase\s+({_EVENT_TOKEN})\s*:")
 _METHOD_CALL_RE = re.compile(r"\b(this|[A-Za-z_]\w*)->([A-Za-z_]\w*)\s*\(")
 
 
@@ -62,6 +65,10 @@ class EventReference:
 
 def _hex_event(event: int) -> str:
     return f"0x{event:04x}"
+
+
+def _event_value(token: str, vocabulary_by_name: dict[str, int]) -> int:
+    return vocabulary_by_name[token] if token.startswith("kTurnEvent") else int(token, 0)
 
 
 def _load_config(repo_root: Path) -> tuple[dict[int, dict], dict[int, str], dict[int, str]]:
@@ -97,11 +104,20 @@ def source_sections(repo_root: Path) -> list[SourceSection]:
     return sections
 
 
-def scan_event_references(sections: list[SourceSection]) -> list[EventReference]:
+def scan_event_references(
+    sections: list[SourceSection], vocabulary_by_name: dict[str, int]
+) -> list[EventReference]:
     references: list[EventReference] = []
     for section in sections:
         for match in _EVENT_CALL_RE.finditer(section.body):
-            event = int(match.group("code"), 0)
+            code = match.group("code")
+            if not code.startswith("kTurnEvent"):
+                line = section.marker_line + section.body.count("\n", 0, match.start()) + 1
+                raise ValueError(
+                    f"{section.path}:{line}: raw turn-event literal {code}; "
+                    f"use the canonical vocabulary"
+                )
+            event = vocabulary_by_name[code] if code.startswith("kTurnEvent") else int(code, 0)
             callee = match.group("callee")
             if callee == "ResolveTurnEventDialogNodeByMessageContext":
                 kind = "dialog_open"
@@ -137,19 +153,21 @@ def _method_calls(text: str) -> list[str]:
     return sorted({f"{match.group(1)}->{match.group(2)}" for match in _METHOD_CALL_RE.finditer(text)})
 
 
-def conditional_hooks(text: str, variable: str) -> dict[int, set[str]]:
+def conditional_hooks(
+    text: str, variable: str, vocabulary_by_name: dict[str, int]
+) -> dict[int, set[str]]:
     """Extract direct method calls from explicit ``variable == constant`` branches."""
     hooks: dict[int, set[str]] = defaultdict(set)
     pattern = re.compile(r"\b(?:if|else\s+if)\s*\(")
     position = 0
-    equality = re.compile(rf"\b{re.escape(variable)}\s*==\s*(0x[0-9a-fA-F]+|[0-9]+)")
+    equality = re.compile(rf"\b{re.escape(variable)}\s*==\s*({_EVENT_TOKEN})")
     while True:
         match = pattern.search(text, position)
         if match is None:
             break
         paren = text.find("(", match.start())
         condition, after_condition = _balanced_region(text, paren, "(", ")")
-        codes = [int(value, 0) for value in equality.findall(condition)]
+        codes = [_event_value(value, vocabulary_by_name) for value in equality.findall(condition)]
         brace = text.find("{", after_condition)
         if not codes or brace < 0:
             position = after_condition
@@ -162,12 +180,12 @@ def conditional_hooks(text: str, variable: str) -> dict[int, set[str]]:
     return hooks
 
 
-def switch_hooks(text: str) -> dict[int, set[str]]:
+def switch_hooks(text: str, vocabulary_by_name: dict[str, int]) -> dict[int, set[str]]:
     """Extract method calls from case-labelled blocks in a selected switch segment."""
     hooks: dict[int, set[str]] = defaultdict(set)
     pending: list[int] = []
     for line in text.splitlines():
-        cases = [int(value, 0) for value in _CASE_RE.findall(line)]
+        cases = [_event_value(value, vocabulary_by_name) for value in _CASE_RE.findall(line)]
         if cases:
             pending.extend(cases)
         if pending:
@@ -189,7 +207,9 @@ def _merge_hooks(*maps: dict[int, set[str]]) -> dict[int, list[str]]:
     return {event: sorted(hooks) for event, hooks in merged.items()}
 
 
-def dispatch_hooks(dispatch_body: str) -> tuple[dict[int, list[str]], dict[int, list[str]]]:
+def dispatch_hooks(
+    dispatch_body: str, vocabulary_by_name: dict[str, int]
+) -> tuple[dict[int, list[str]], dict[int, list[str]]]:
     teardown_start = dispatch_body.index("// Teardown hook")
     teardown_end = dispatch_body.index("// Code 0 =", teardown_start)
     same_start = dispatch_body.index("// Same-code refresh")
@@ -200,25 +220,30 @@ def dispatch_hooks(dispatch_body: str) -> tuple[dict[int, list[str]], dict[int, 
     same = dispatch_body[same_start:same_end]
     cross = dispatch_body[cross_start:cross_end]
     hooks = _merge_hooks(
-        conditional_hooks(dispatch_body[teardown_end:same_start], "newCode"),
-        conditional_hooks(same, "newCode"),
-        conditional_hooks(cross, "newCode"),
-        switch_hooks(cross),
+        conditional_hooks(dispatch_body[teardown_end:same_start], "newCode", vocabulary_by_name),
+        conditional_hooks(same, "newCode", vocabulary_by_name),
+        conditional_hooks(cross, "newCode", vocabulary_by_name),
+        switch_hooks(cross, vocabulary_by_name),
     )
-    teardown_hooks = _merge_hooks(switch_hooks(teardown))
+    teardown_hooks = _merge_hooks(switch_hooks(teardown, vocabulary_by_name))
     return hooks, teardown_hooks
 
 
-def exit_state_senders(exit_body: str) -> dict[int, list[str]]:
+def exit_state_senders(
+    exit_body: str, vocabulary_by_name: dict[str, int]
+) -> dict[int, list[str]]:
     senders: dict[int, set[str]] = defaultdict(set)
     pending_modes: list[int] = []
     for line in exit_body.splitlines():
-        cases = [int(value, 0) for value in _CASE_RE.findall(line)]
+        cases = [_event_value(value, vocabulary_by_name) for value in _CASE_RE.findall(line)]
         if cases:
             pending_modes.extend(cases)
-        match = re.search(r"PostTurnEventCodeMessage2420\s*\(\s*(0x[0-9a-fA-F]+|[0-9]+)", line)
+        match = re.search(
+            rf"PostTurnEventCodeMessage2420\s*\(\s*(?:EncodeTurnEventCode\s*\(\s*)?({_EVENT_TOKEN})",
+            line,
+        )
         if match:
-            event = int(match.group(1), 0)
+            event = _event_value(match.group(1), vocabulary_by_name)
             mode_text = ", ".join(_hex_event(mode) for mode in pending_modes) or "conditional"
             senders[event].add(f"TViewMgr::HandleTurnStateExitAndPostFollowupEventCode modes {mode_text}")
         if re.search(r"\breturn\s*;", line):
@@ -230,13 +255,14 @@ def exit_state_senders(exit_body: str) -> dict[int, list[str]]:
 
 def build_rows(repo_root: Path) -> tuple[list[dict], list[dict], dict]:
     boot, screen_names, gap_owners = _load_config(repo_root)
+    vocabulary_by_event, vocabulary_by_name = load_turn_event_vocabulary(repo_root)
     sections = source_sections(repo_root)
     by_address = {section.address: section for section in sections}
     if DISPATCH_ADDRESS not in by_address or EXIT_ADDRESS not in by_address:
         raise ValueError("ported TViewMgr dispatch/exit source sections are missing")
-    hooks, teardown = dispatch_hooks(by_address[DISPATCH_ADDRESS].body)
-    exit_senders = exit_state_senders(by_address[EXIT_ADDRESS].body)
-    references = scan_event_references(sections)
+    hooks, teardown = dispatch_hooks(by_address[DISPATCH_ADDRESS].body, vocabulary_by_name)
+    exit_senders = exit_state_senders(by_address[EXIT_ADDRESS].body, vocabulary_by_name)
+    references = scan_event_references(sections, vocabulary_by_name)
     refs_by_event: dict[int, list[EventReference]] = defaultdict(list)
     for reference in references:
         refs_by_event[reference.event].append(reference)
@@ -270,6 +296,19 @@ def build_rows(repo_root: Path) -> tuple[list[dict], list[dict], dict]:
             )
 
     events = set(factories) | set(refs_by_event) | set(hooks) | set(teardown) | set(boot)
+    missing_vocabulary = events - set(vocabulary_by_event)
+    extra_vocabulary = set(vocabulary_by_event) - events
+    if missing_vocabulary or extra_vocabulary:
+        details = []
+        if missing_vocabulary:
+            details.append(
+                "missing " + ", ".join(_hex_event(event) for event in sorted(missing_vocabulary))
+            )
+        if extra_vocabulary:
+            details.append(
+                "extra " + ", ".join(_hex_event(event) for event in sorted(extra_vocabulary))
+            )
+        raise ValueError(f"{VOCABULARY_PATH}: coverage mismatch: {'; '.join(details)}")
     rows: list[dict] = []
     for event in sorted(events):
         event_refs = refs_by_event.get(event, [])
@@ -300,6 +339,7 @@ def build_rows(repo_root: Path) -> tuple[list[dict], list[dict], dict]:
         rows.append(
             {
                 "event": event,
+                "vocabulary_name": vocabulary_by_event[event],
                 "status": status,
                 "boot_stage": str(boot_row["stage"]) if boot_row else "",
                 "gap_bead": gap_bead,
@@ -377,8 +417,8 @@ def render_report(rows: list[dict], mac_complement: list[dict], callbacks: dict)
             "",
             "## Event matrix",
             "",
-            "| Code | Status | Screen/resource | Factory | Sender or opener | Dispatch hook | Teardown | Boot/gap |",
-            "| --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| Code | Canonical name | Status | Screen/resource | Factory | Sender or opener | Dispatch hook | Teardown | Boot/gap |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
         )
     )
     for row in rows:
@@ -391,7 +431,7 @@ def render_report(rows: list[dict], mac_complement: list[dict], callbacks: dict)
         if row["gap_bead"]:
             boot = f"{boot} -> `{row['gap_bead']}`" if boot else f"`{row['gap_bead']}`"
         lines.append(
-            f"| `{_hex_event(row['event'])}` | `{row['status']}` | "
+            f"| `{_hex_event(row['event'])}` | `{row['vocabulary_name']}` | `{row['status']}` | "
             f"{_cell(row['identities'])} | {_cell(factories)} | {_cell(senders)} | "
             f"{_cell(row['hooks'])} | {_cell(row['teardown'])} | {boot or '-'} |"
         )

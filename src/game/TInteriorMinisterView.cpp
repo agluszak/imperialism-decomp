@@ -38,14 +38,14 @@ void TInteriorMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler,
     }
   } else if (commandId == 0x14) {
     if (tag == kControlTagRecc) {
-      OpenBook(0x25ee);
+      OpenBook(kTurnEventInteriorMinisterRecommendationBook);
     } else if (tag == kControlTagTran) {
       if (g_pSimMgr->field14 == 0) {
         TWindow* owner = GetWindow();
         g_pGlobalUiRootController->CloseAndFreeWindow(owner);
       }
     } else if (tag == kControlTagTrea) {
-      OpenBook(0x25f8);
+      OpenBook(kTurnEventTreasuriesBook);
     }
     return;
   }

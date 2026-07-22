@@ -354,8 +354,8 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
     return FALSE;
   }
 
-  TWindow* dialog =
-      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x5e3));
+  TWindow* dialog = static_cast<TWindow*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMultiplayerPickGame));
   dialog->SetModality(1);
   TDialogBehavior* behavior = dialog->GetDialogBehavior();
   if (behavior != 0) {

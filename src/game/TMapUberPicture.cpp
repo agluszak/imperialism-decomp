@@ -233,7 +233,7 @@ void TMapUberPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
         g_pSimMgr->GetString(0x2742, 0x25, &msg);
         g_pUiRuntimeContext->ModalMessage(msg, g_ptMapModeModalMessage, 0, 0);
       } else {
-        ReinitializeGameFlowAndPostTurnEventCode(0x5dd);
+        ReinitializeGameFlowAndPostTurnEventCode(kTurnEventRandomGameSetup);
       }
       return;
     } else if (tag == kControlTagSend) {
@@ -506,8 +506,8 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   InitializeUiTextStyleDescriptor(&attributionStyle, 2, 10, 0x2b67, 3);
 
   // Mac resource oracle: MapView.rsrc:9474, event 0x2502, "Friendly Fleet Report".
-  TWindow* dialog =
-      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2502));
+  TWindow* dialog = static_cast<TWindow*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFriendlyFleetReport));
   if (dialog == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0x728);
@@ -696,8 +696,8 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
   RGBQUAD highlightColor = {0xff, 0xff, 0xff, 0};
   g_pDisplayMgr->SetHiliteColor(&highlightColor);
 
-  TWindow* dialog =
-      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x24f6));
+  TWindow* dialog = static_cast<TWindow*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNavyMaker));
   if (dialog == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0x8cc);
@@ -775,8 +775,8 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
   InitializeUiTextStyleDescriptor(&attributionStyle, 2, 10, 0x2b67, 3);
 
   // Mac resource oracle: MapView.rsrc:9475, event 0x2503, "Enemy Fleet Report".
-  TWindow* dialog =
-      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2503));
+  TWindow* dialog = static_cast<TWindow*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEnemyFleetReport));
   if (dialog == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0x923);

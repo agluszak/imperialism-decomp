@@ -261,8 +261,8 @@ char TLanguageMgr::PickGender(const char* name) const {
     return delimiter;
   }
 
-  TWindow* dialog =
-      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x3c6));
+  TWindow* dialog = static_cast<TWindow*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventVerbFormDialog));
   g_pSimMgr->GetString(0x2737, 0x34, &questionText);
   TStaticText* question = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x71756573));
   ApplyControlThemeStyleAndOptionalCaption(question, 0, 0xc, 0x2b6b, 1, questionText);

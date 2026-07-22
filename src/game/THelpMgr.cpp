@@ -742,19 +742,19 @@ char ShowTurnAlertsForActiveNation() {
 }
 
 // FUNCTION: IMPERIALISM 0x005031c0
-char THelpMgr::HandlePendingEventActivationByCode(short eventCode) {
+char THelpMgr::HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode) {
   char activateCandidate = 0;
   bool nationAlreadyCurrent = false;
   HelpSetRecord* pendingEntry = 0;
 
-  if (eventCode != 0x7dd && eventCode != 0x3b8) {
+  if (eventCode != kTurnEventStrategicMap && eventCode != kTurnEventCitySiteSelector) {
     ReleasePendingHelpDialogView(&pendingDialogViewC);
   }
 
   if (ReadLocalizationPendingEventGate5c() == 0) {
     ReleasePendingHelpDialogView(&pendingDialogView8);
   } else {
-    if (eventCode != 0x2103 || g_bMultiplayerScenarioSetupActive == 0) {
+    if (eventCode != kTurnEventNewspaperStatus || g_bMultiplayerScenarioSetupActive == 0) {
       int index = 1;
       while (!nationAlreadyCurrent && activateCandidate == 0) {
         if (indexList == 0 || index > GetSortedPtrListEntryCount(indexList)) {
@@ -820,7 +820,7 @@ void THelpMgr::NoOpDiplomacyPolicyStateChangedHook(int policyOrGrant, int target
 }
 
 // FUNCTION: IMPERIALISM 0x00503400
-void THelpMgr::HandlePostPendingEventActivationNoOp(short eventCode) {
+void THelpMgr::HandlePostPendingEventActivationNoOp(TurnEventCodeStorage eventCode) {
   (void)eventCode;
 }
 
@@ -834,8 +834,8 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
   InitializeUiTextStyleDescriptor(&titleStyle, 0, 12, 0x2b67, 1);
 
   if (pendingDialogView8 == 0) {
-    pendingDialogView8 =
-        static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xbb8));
+    pendingDialogView8 = static_cast<TWindow*>(
+        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventHelpMessage));
     if (pendingDialogView8 == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUHelpMgr_00696C58, 0x5cd);
@@ -940,8 +940,8 @@ void THelpMgr::TryShowCivilianCompletionMilestoneNotification(TCivUnit* civilian
 // FUNCTION: IMPERIALISM 0x00503ac0
 void THelpMgr::EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextIndex) {
   if (pendingDialogViewC == 0) {
-    pendingDialogViewC =
-        static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xbbd));
+    pendingDialogViewC = static_cast<TWindow*>(
+        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTerrainHelp));
     if (pendingDialogViewC == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUHelpMgr_00696C58, 0x6c1);

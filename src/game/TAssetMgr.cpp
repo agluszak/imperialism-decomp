@@ -39,7 +39,7 @@ void TAssetMgr::EnsurePictWvDataGobLoadedForLanguageSlot(int languageTag) {
 }
 
 // FUNCTION: IMPERIALISM 0x005df3c0
-TView* TAssetMgr::ResolveTurnEventDialogNodeByMessageContext(int messageContext) {
+TView* TAssetMgr::ResolveTurnEventDialogNodeByMessageContext(TurnEventId messageContext) {
   return g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(messageContext, 0);
 }
 

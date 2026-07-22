@@ -21,6 +21,7 @@ from typing import Iterable
 import yaml
 
 from tools.common.repo import repo_root_from_file, resolve_repo_path
+from tools.turn_event_vocabulary import load_turn_event_vocabulary
 from tools.workflow.macos_resource_evidence import validate_view_structure
 
 
@@ -1028,6 +1029,9 @@ def _render_factory_with_map(
     windows_views: dict[str, UiSemanticView],
     annotation_kind: str = "FUNCTION",
 ) -> tuple[str, dict[str, object]]:
+    vocabulary_by_event, _ = load_turn_event_vocabulary(
+        repo_root_from_file(__file__, levels_up=1)
+    )
     body: list[str] = []
     classes: set[str] = set()
     case_maps: dict[str, object] = {}
@@ -1037,7 +1041,8 @@ def _render_factory_with_map(
     if len(recipe.cases) == 1:
         body.extend(
             (
-                f"  if (static_cast<unsigned short>(nEventCode) != {_hex(recipe.cases[0].event)}) {{",
+                "  if (static_cast<unsigned short>(nEventCode) != "
+                f"{vocabulary_by_event[recipe.cases[0].event]}) {{",
                 "    return 0;",
                 "  }",
             )
@@ -1047,7 +1052,7 @@ def _render_factory_with_map(
     for case in recipe.cases:
         indent = "  " if len(recipe.cases) == 1 else "    "
         if len(recipe.cases) > 1:
-            body.append(f"  case {_hex(case.event)}: {{")
+            body.append(f"  case {vocabulary_by_event[case.event]}: {{")
         if case.evidence and not case.rejected:
             body.append(f"{indent}// FUNCTIONAL_PARITY: {case.evidence}.")
         if case.resource is not None:
@@ -1093,6 +1098,7 @@ def _render_factory_with_map(
     )
     includes = [
         '#include "game/turn_event_dialog_factory.h"',
+        '#include "game/turn_event_codes.h"',
         '#include "game/global_data_tables.h"',
         '#include "game/ui_resource_builder.h"',
     ]
