@@ -2041,6 +2041,12 @@ float g_afTacticalNavyDamageScaleByUnitType[8] = {0.045f, 0.04f,  0.04f,  0.022f
 float g_afTacticalNavyBaseAttackPowerByUnitType[8] = {3.0f, 3.5f, 4.0f,  4.0f,
                                                       8.0f, 8.0f, 15.0f, 15.0f};
 
+// Strategic ship type -> tactical navy unit type; -1 means the strategic type has no
+// tactical representation.
+// GLOBAL: IMPERIALISM 0x00669d80
+int g_anTacticalNavyUnitTypeByShipType_00669D80[14] = {-1, -1, -1, 0,  1, -1, -1,
+                                                       2,  3,  4,  -1, 5, 6,  7};
+
 // Attack-power terrain modifier [category * 5 + tile terrainType0] (.rdata floats).
 // GLOBAL: IMPERIALISM 0x00669ac8
 float g_afTacticalAttackTerrainModifierByCategory[50] = {

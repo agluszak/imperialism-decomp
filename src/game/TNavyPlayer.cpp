@@ -30,8 +30,8 @@ void TNavyPlayer::CommitTacticalResultsToSourceUnits(int unused) {
   CIterator unitIter(unitList4);
   for (TNavyTacUnit* unit = static_cast<TNavyTacUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TNavyTacUnit*>(unitIter.Advance())) {
-    TShip* force = unit->GetSourceTaskForce();
-    force->Damage(static_cast<short>(force->strength - unit->strength4));
+    TShip* sourceShip = unit->GetSourceShip();
+    sourceShip->Damage(static_cast<short>(sourceShip->strength - unit->strength4));
   }
   taskForce28->defeated = 1;
   taskForce28->SinkOrSwimShips();
@@ -52,6 +52,5 @@ void TNavyPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
 void TNavyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
   unitList4->listState.AddHead(unit);
   unit->FlipUnitSideAffiliation();
-  static_cast<TNavyTacUnit*>(unit)->GetSourceTaskForce()->Capture(
-      static_cast<short>(nationIndex1C));
+  static_cast<TNavyTacUnit*>(unit)->GetSourceShip()->Capture(static_cast<short>(nationIndex1C));
 }

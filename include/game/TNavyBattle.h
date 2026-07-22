@@ -43,14 +43,10 @@ public:
 
   TNavyBattle();
 
-  // Original object size is 0x94 (CRuntimeClass m_nObjectSize); the source class ended at 0x78. Trailing 28 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field78;
-  int field7c;
-  int field80;
-  int field84;
-  int field88;
-  int field8c;
-  int field90;
+  // The navy battle initializer rotates the six base movement costs into this
+  // direction-indexed table from a random starting direction.
+  int moveCostRotationStart78;
+  int neighborMoveCostByDirection7c[6];
 };
 
 // 0x5a59a0: tileIndex -> (row = tileIndex/0x1d, doubled column = (row&1) + (tileIndex%0x1d)*2)
