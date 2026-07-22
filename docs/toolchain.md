@@ -24,6 +24,26 @@ reccmp matching and must not influence the MSVC500 build.
 - The same image installs version-matched `clang-tidy`. `just scalar-clang-tidy`
   regenerates the lint compile database before evaluating scalar-focused checks
   on a stable set of manually owned translation units.
+- `.clang-tidy` holds a separate reviewed advisory profile for bug-prone source
+  shapes, suspicious call arguments, and core analyzer findings. Run
+  `just clang-tidy-audit` for the stable five-TU sample, or pass a compilation-
+  database path regex to expand it. The profile deliberately excludes
+  `modernize-*`, broad `cppcoreguidelines-*`, easily-swappable parameters, and
+  missing-default warnings because they conflict with VC5/ABI recovery or bury
+  evidence-backed findings in expected decompilation shape.
+
+The LLVM 19 evaluation over all manually owned `src/game/*.cpp` translation
+units produced 664 source-visible diagnostics in 131 files. The largest owned
+families are signed-char conversions (136, `imperialism-decomp-1uj.99.7`),
+redundant casts (116, `imperialism-decomp-1uj.99.2`), analyzer null/call paths
+(282), suspicious call arguments (38), and enum casts outside the currently
+declared domain (28, `imperialism-decomp-1uj.99.8`). Smaller high-signal groups
+include casts through `void*` (17), branch clones (17), assignment in conditions
+(12), dead stores (9), redundant expressions (4), `sizeof` misuse (2), macro
+parenthesization (2), and implicit multiplication widening (1). These are audit
+queues, not automatic fixes: analyzer null reports often follow retail-style
+warning/assert paths that deliberately continue, while cast and expression
+changes still require listing and reccmp verification.
 - `just lint` now forces `IMPERIALISM_LINT_WERROR=ON`; CI also proves the gate
   rejects an intentionally warning-producing translation unit. clang-tidy is
   separate and advisory because its scalar diagnostics need listing-aware

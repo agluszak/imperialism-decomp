@@ -273,6 +273,23 @@ scalar-clang-tidy:
     /imperialism/src/game/TViewMgr.cpp \
     /imperialism/src/game/NetMessage.cpp
 
+# Run the reviewed advisory profile from .clang-tidy. The default is the stable
+# five-TU evaluation sample; pass a compile-database path regex to expand scope,
+# e.g. `just clang-tidy-audit '^/imperialism/src/game/.*[.]cpp$'`.
+[doc('Run the reviewed advisory .clang-tidy profile (optional path regex)')]
+[group('build')]
+clang-tidy-audit filter="/(TScrollBarView|TGreatPower|TMapMaker|TViewMgr|NetMessage)[.]cpp$":
+  just gen-compile-commands
+  docker run --rm --network none --entrypoint run-clang-tidy \
+    -v "$PWD":/imperialism \
+    -v "$PWD/{{lint_build_dir}}":/build \
+    "{{docker_image}}" \
+    -p /build \
+    -j 0 \
+    -quiet \
+    -config-file=/imperialism/.clang-tidy \
+    '{{filter}}'
+
 # Assert the recomp PE has .rsrc and SDI template MENU id 128 (0x80).
 [group('build')]
 resource-check:
