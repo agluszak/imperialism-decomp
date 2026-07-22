@@ -6,6 +6,7 @@
 #include "game/TGreatPower.h"
 #include "game/TCity.h"
 #include "game/TItemOrder.h"
+#include "game/TProductionOrder.h"
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
@@ -21,10 +22,6 @@
 
 const int kAssertLineRatioB = 0xb73;
 
-static __inline short ReadControlValueFieldPlus4(TAmtBar* control) {
-  return *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 4);
-}
-
 static __inline void UpdateTradeBarFromSelectedMetricRatio(TIndustryCluster* context,
                                                            int assertLine) {
   TAmtBar* barControl = reinterpret_cast<TAmtBar*>(
@@ -35,9 +32,8 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TIndustryCluster* con
 
   TAmtBar* barLayout = reinterpret_cast<TAmtBar*>(barControl);
   if (barLayout->auxValueA != 0) {
-    int ratioValue =
-        ((int)context->selectedMetricControl->GetNextHandler() * barLayout->frameWidth34) /
-        (int)barLayout->auxValueA;
+    int ratioValue = ((int)context->selectedMetricOrder->MaxOrder() * barLayout->frameWidth34) /
+                     (int)barLayout->auxValueA;
     barControl->SetBarMetricRatio(ratioValue);
   }
 }
@@ -52,7 +48,7 @@ IMPLEMENT_DYNCREATE(TIndustryCluster, TAmtBarCluster)
 
 // FUNCTION: IMPERIALISM 0x00588af0
 TIndustryCluster::TIndustryCluster()
-    : TAmtBarCluster(), selectedMetricControl(0), selectedMetricValue(0), selectedMetricStep(0) {}
+    : TAmtBarCluster(), selectedMetricOrder(0), selectedMetricValue(0), selectedMetricStep(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00588b20
 // TIndustryCluster::`scalar deleting destructor'
@@ -71,12 +67,7 @@ void TIndustryCluster::DoPostCreate(int styleSeed) {
   }
 
   TProductionOrder* selectedMetricRecord = province->tradeCommodityRecordPtrs[tagIndex];
-  // `selectedMetricControl` is declared TAmtBar* but this control's vtable
-  // slot 0x30 (GetNextHandler, see UpdateTradeBarFromSelectedMetricRatio
-  // above) and TProductionOrder's slot 0x30 (MaxOrder) are the same "return a
-  // short value" shape the original exploits at this one call site — the
-  // pointer genuinely is a TProductionOrder, not a TAmtBar.
-  this->selectedMetricControl = reinterpret_cast<TAmtBar*>(selectedMetricRecord);
+  this->selectedMetricOrder = selectedMetricRecord;
   // `productionSlot` only exists on TItemOrder-sized (0x54-byte) objects; safe
   // here because tagIndex is bounded to the 23-entry g_pTradeSummarySelectionMap
   // table (0x696108), which never selects the TTrainingOrder slots
@@ -95,13 +86,13 @@ void TIndustryCluster::SetMoveAmount(short amount) {
 
 // FUNCTION: IMPERIALISM 0x00588c60
 void TIndustryCluster::SetMoveAmount(short dragValue, unsigned char updateControls) {
-  TAmtBar* selectedControl = this->selectedMetricControl;
-  short previousValue = ReadControlValueFieldPlus4(selectedControl);
-  if (selectedControl != 0) {
-    selectedControl->SetEnable(static_cast<unsigned char>(dragValue));
+  TProductionOrder* selectedOrder = this->selectedMetricOrder;
+  short previousValue = selectedOrder->quantityField04;
+  if (selectedOrder != 0) {
+    selectedOrder->SetQuantity(dragValue);
   }
 
-  if ((updateControls == 0) && (ReadControlValueFieldPlus4(selectedControl) == previousValue)) {
+  if ((updateControls == 0) && (selectedOrder->quantityField04 == previousValue)) {
     return;
   }
 
@@ -110,7 +101,7 @@ void TIndustryCluster::SetMoveAmount(short dragValue, unsigned char updateContro
     FailNilPointerInUSmallViews(0xb42);
   }
 
-  moveControl->SetControlValueSlot1E4((int)ReadControlValueFieldPlus4(selectedControl), 0);
+  moveControl->SetControlValueSlot1E4((int)selectedOrder->quantityField04, 0);
 
   CRect moveBoundsRect;
   RECT moveInvalidRect;
@@ -129,14 +120,14 @@ void TIndustryCluster::SetMoveAmount(short dragValue, unsigned char updateContro
     barScale = (float)barControl->frameHeight38 / (float)barControl->frameWidth34;
   }
 
-  if (ReadControlValueFieldPlus4(selectedControl) == this->selectedMetricValue) {
+  if (selectedOrder->quantityField04 == this->selectedMetricValue) {
     barControl->auxValueB = 0x34;
   } else {
     barControl->auxValueB = 0x3a;
   }
 
-  int scaledMetric = (int)((float)selectedControl->QueryValue() * barScale);
-  int scaledRange = (int)((float)ReadControlValueFieldPlus4(selectedControl) * barScale);
+  int scaledMetric = (int)((float)selectedOrder->MaxOrder() * barScale);
+  int scaledRange = (int)((float)selectedOrder->quantityField04 * barScale);
   barControl->SetBarMetric(scaledMetric, scaledRange);
   this->UpdateMax();
 }

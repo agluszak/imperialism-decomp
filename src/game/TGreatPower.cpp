@@ -3301,6 +3301,8 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   }
 }
 
+// Listing 0x004dfd30 begins with TEST ESI,ESI and preserves this retail null-this path.
+IMPERIALISM_BEGIN_RETAIL_NULL_THIS_CHECK
 // FUNCTION: IMPERIALISM 0x004dfd30
 void TGreatPower::SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityName) {
   TCity* city = this ? this->city : 0;
@@ -3368,6 +3370,7 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityN
 
   this->SeedInitialMilitaryAndNavyOrdersForOwnedRegions();
 }
+IMPERIALISM_END_RETAIL_NULL_THIS_CHECK
 
 // FUNCTION: IMPERIALISM 0x004e00d0
 void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* message) {

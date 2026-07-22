@@ -7,6 +7,7 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/TCity.h"
 #include "game/TGreatPower.h"
+#include "game/TProductionOrder.h"
 #include "game/mfc.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
@@ -21,10 +22,6 @@
 
 const int kAssertLineRatioA = 0xd1d;
 
-static __inline short ReadControlValueFieldPlus4(TAmtBar* control) {
-  return *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 4);
-}
-
 static __inline void UpdateTradeBarFromSelectedMetricRatio(TRailCluster* context, int assertLine) {
   void* owner = context;
   TAmtBar* barControl = reinterpret_cast<TAmtBar*>(
@@ -35,9 +32,8 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TRailCluster* context
 
   TAmtBar* barLayout = reinterpret_cast<TAmtBar*>(barControl);
   if (barLayout->auxValueA != 0) {
-    int ratioValue =
-        ((int)context->selectedMetricControl->GetNextHandler() * barLayout->frameWidth34) /
-        (int)barLayout->auxValueA;
+    int ratioValue = ((int)context->selectedMetricOrder->MaxOrder() * barLayout->frameWidth34) /
+                     (int)barLayout->auxValueA;
     barControl->SetBarMetricRatio(ratioValue);
   }
 }
@@ -52,7 +48,7 @@ IMPLEMENT_DYNCREATE(TRailCluster, TAmtBarCluster)
 
 // FUNCTION: IMPERIALISM 0x00589720
 TRailCluster::TRailCluster() : TAmtBarCluster() {
-  this->selectedMetricControl = 0;
+  this->selectedMetricOrder = 0;
   this->selectedMetricStep = 0;
 }
 
@@ -64,75 +60,62 @@ void TRailCluster::DoPostCreate(int styleSeed) {
   short recordIndex = static_cast<short>(styleSeed);
   short activeNationId = g_pSimMgr->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
-  TCity* province = activeNationState == 0 ? 0 : activeNationState->GetCityState();
+  TCity* city = activeNationState == 0 ? 0 : activeNationState->GetCityState();
 
   unsigned int summaryTag = (unsigned int)this->controlTag;
-  TPopulationMgr* scenarioDescriptor = province->productionSummary1d8;
+  TPopulationMgr* population = city->productionSummary1d8;
   if (summaryTag < 0x706f7076) {
     if (summaryTag == kSummaryTagPopu) {
       recordIndex = 0x3c;
       this->selectedMetricStep = 1;
-      this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 2) +
-                                  scenarioDescriptor->productionSlots14->highSkillCount08 -
-                                  scenarioDescriptor->productionSlots14->lowSkillCount04;
-      goto LABEL_12;
-    }
-    if (summaryTag == kSummaryTagProf) {
-      recordIndex = 0x3e;
-      this->selectedMetricStep = 0;
-      this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 4) +
-                                  scenarioDescriptor->extraAt1e - scenarioDescriptor->strength;
+      this->selectedMetricValue = static_cast<short>(city->GetBuildingType(0x0f));
       goto LABEL_12;
     }
     if (summaryTag == kSummaryTagFood) {
-      recordIndex = 0x38;
+      TLaborPool* labor = population->productionSlots14;
+      recordIndex = 7;
+      this->selectedMetricStep = 2;
+      this->selectedMetricValue =
+          static_cast<short>(((labor->highSkillCount08 * 2 + labor->mediumSkillCount06) * 2 +
+                              population->extraAt1e + labor->lowSkillCount04) /
+                             2);
+      goto LABEL_12;
+    }
+  } else if (summaryTag < 0x70726f67) {
+    if (summaryTag == kSummaryTagProf) {
+      recordIndex = 0x18;
       this->selectedMetricStep = 1;
-      this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 0) +
-                                  scenarioDescriptor->productionSlots14->mediumSkillCount06 -
-                                  scenarioDescriptor->productionSlots14->lowSkillCount04;
+      this->selectedMetricValue = population->baselineSlots10->mediumSkillCount06;
+      goto LABEL_12;
+    }
+    if (summaryTag == kSummaryTagPowe) {
+      recordIndex = 0x34;
+      this->selectedMetricStep = 6;
+      this->selectedMetricValue = 999;
       goto LABEL_12;
     }
   } else {
-    if (summaryTag == kSummaryTagPowe) {
-      recordIndex = 0x3f;
-      this->selectedMetricStep = 0;
-      this->selectedMetricValue =
-          QueryNationMetricBySlot(activeNationState, 5) +
-          *reinterpret_cast<int*>(reinterpret_cast<char*>(scenarioDescriptor) + 0x34) -
-          *reinterpret_cast<int*>(reinterpret_cast<char*>(scenarioDescriptor) + 0x20);
-      goto LABEL_12;
-    }
     if (summaryTag == kSummaryTagRail) {
-      recordIndex = 0x39;
-      this->selectedMetricStep = 0;
+      TLaborPool* labor = population->productionSlots14;
+      recordIndex = 0x33;
+      this->selectedMetricStep = 1;
       this->selectedMetricValue =
-          QueryNationMetricBySlot(activeNationState, 6) +
-          *reinterpret_cast<int*>(reinterpret_cast<char*>(scenarioDescriptor) + 0x2c) -
-          *reinterpret_cast<int*>(reinterpret_cast<char*>(scenarioDescriptor) + 0x14);
+          static_cast<short>(((labor->highSkillCount08 * 2 + labor->mediumSkillCount06) * 2 +
+                              labor->lowSkillCount04 + population->extraAt1e) /
+                             2);
       goto LABEL_12;
     }
     if (summaryTag == kSummaryTagIart) {
-      recordIndex = 0x3a;
-      this->selectedMetricStep = 0;
-      this->selectedMetricValue = QueryNationMetricBySlot(activeNationState, 1) +
-                                  scenarioDescriptor->strength -
-                                  scenarioDescriptor->productionSlots14->lowSkillCount04;
+      recordIndex = 0x17;
+      this->selectedMetricStep = 1;
+      this->selectedMetricValue = population->baselineSlots10->lowSkillCount04;
       goto LABEL_12;
     }
   }
-  // No commodity-record read here: the real disassembly (0x005897b0) falls
-  // through to the shared tail with `recordIndex` left at its initial value
-  // (the incoming `styleSeed` argument) and does NOT touch
-  // selectedMetricStep/selectedMetricValue in this branch — they simply keep
-  // whatever the caller/ctor already set. The previous body here read
-  // `buyQuantityStepRaw`/`shortAt6` off the facade at made-up offsets that
-  // never matched any real TProductionOrder field or this function's actual
-  // instructions; removed rather than reinventing conflicting base fields.
 LABEL_12:
-  if (this->selectedMetricValue < 0) {
-    this->selectedMetricValue = 0;
-  }
+  this->selectedMetricOrder = city->orderSlotsE4[recordIndex];
   TAmtBarCluster::DoPostCreate(styleSeed);
+  this->SetMoveAmount(this->selectedMetricOrder->quantityField04, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005899c0
@@ -142,17 +125,15 @@ void TRailCluster::SetMoveAmount(short amount) {
 
 // FUNCTION: IMPERIALISM 0x005899f0
 void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
-  TRailCluster* ctx = reinterpret_cast<TRailCluster*>(this);
-  // ORIG_CALLCONV: __thiscall
-  short step = ctx->selectedMetricStep;
+  short step = this->selectedMetricStep;
   int quantizedDragValue = ((((int)step / 2) + (int)(short)dragValue) / (int)step) * (int)step;
-  TAmtBar* selectedControl = ctx->selectedMetricControl;
-  short previousValue = ReadControlValueFieldPlus4(selectedControl);
-  if (selectedControl != 0) {
-    selectedControl->SetEnable(static_cast<unsigned char>(quantizedDragValue));
+  TProductionOrder* selectedOrder = this->selectedMetricOrder;
+  short previousValue = selectedOrder->quantityField04;
+  if (selectedOrder != 0) {
+    selectedOrder->SetQuantity(static_cast<short>(quantizedDragValue));
   }
 
-  if (((char)updateFlag == 0) && (ReadControlValueFieldPlus4(selectedControl) == previousValue)) {
+  if (((char)updateFlag == 0) && (selectedOrder->quantityField04 == previousValue)) {
     return;
   }
 
@@ -162,12 +143,12 @@ void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
     FailNilPointerInUSmallViews(0xcf2);
   }
 
-  moveControl->SetControlValueSlot1E4((int)ReadControlValueFieldPlus4(selectedControl), 0);
+  moveControl->SetControlValueSlot1E4((int)selectedOrder->quantityField04, 0);
 
   CRect moveBoundsRect;
   RECT moveInvalidRect;
   moveControl->QueryBounds(&moveBoundsRect);
-  OffsetRect(&moveBoundsRect, ctx->ownerLocalX, ctx->ownerLocalY);
+  OffsetRect(&moveBoundsRect, this->ownerLocalX, this->ownerLocalY);
   CopyRect(&moveInvalidRect, &moveBoundsRect);
   reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&moveInvalidRect, 1);
 
@@ -184,21 +165,21 @@ void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
     barScale = (float)barLayout->frameWidth34 / (float)barLayout->auxValueA;
   }
 
-  if (ReadControlValueFieldPlus4(selectedControl) == selectedMetricValue) {
+  if (selectedOrder->quantityField04 == selectedMetricValue) {
     barAmount->auxValueB = 0x34;
   } else {
     barAmount->auxValueB = 0x3a;
   }
 
-  int scaledMetric = (int)((float)selectedControl->QueryValue() * barScale);
-  int scaledRange = (int)((float)ReadControlValueFieldPlus4(selectedControl) * barScale);
+  int scaledMetric = (int)((float)selectedOrder->MaxOrder() * barScale);
+  int scaledRange = (int)((float)selectedOrder->quantityField04 * barScale);
   barControl->SetBarMetric(scaledMetric, scaledRange);
-  ctx->UpdateMax();
+  this->UpdateMax();
 }
 
 // FUNCTION: IMPERIALISM 0x00589d10
 void TRailCluster::UpdateMax() {
-  UpdateTradeBarFromSelectedMetricRatio(reinterpret_cast<TRailCluster*>(this), kAssertLineRatioA);
+  UpdateTradeBarFromSelectedMetricRatio(this, kAssertLineRatioA);
 }
 
 // FUNCTION: IMPERIALISM 0x00589da0

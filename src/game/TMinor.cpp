@@ -100,8 +100,8 @@ void TMinor::InitializeSecondaryNationStateAndSelectHomeTile(short nationSlot) {
       int edgeCount;
       int edge = 0;
       for (edgeCount = 2; edgeCount != 0; --edgeCount) {
-        char resourceType =
-            g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[edge];
+        int resourceType = static_cast<char>(
+            g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[edge]);
         if (g_pGlobalMapState->terrainStateTable[tileIndex].gateFlag != 0xf && resourceType != -1) {
           ++needCurrentByType[resourceType];
           ++diplomacySaveExt13c[resourceType];

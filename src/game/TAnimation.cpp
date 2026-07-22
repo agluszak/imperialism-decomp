@@ -106,6 +106,9 @@ void TAnimation::DrawNextFrame(POINT* offset) {
   UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
+// The original three-slot loader vtable ends at a null dword and has no destructor
+// slot; listing 0x0049f2d0 inlines this exact-type non-virtual destructor.
+IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x0049f2d0
 void TAnimation::LoadFrameIntoBuffer() {
   TQuickDrawSurfaceContext* savedContext = 0;
@@ -134,6 +137,7 @@ void TAnimation::LoadFrameIntoBuffer() {
     SetGWorld(savedContext, savedFlags);
   }
 }
+IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
 // Base slot-0x02 stub: reports an assert (D:\Ambit\QuickDraw.h:417) and returns 0. Its
 // real semantics are unknown, so the name is provisional -- it was previously borrowed

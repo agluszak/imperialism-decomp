@@ -3133,7 +3133,7 @@ short TMapMgr::LookupAdjacencyBitmaskVariantByDirection(char bitmaskIndex, char 
       {60, 3, 0, 2, 1, 1, 1}, {61, 1, 2, 2, 1, 1, 1}, {62, 3, 3, 1, 1, 1, 1},
       {63, 1, 1, 1, 1, 1, 1},
   };
-  return table[bitmaskIndex][direction];
+  return table[static_cast<int>(bitmaskIndex)][static_cast<int>(direction)];
 }
 
 // FUNCTION: IMPERIALISM 0x00517410
@@ -3341,9 +3341,7 @@ int TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlo
     tileCount = tileCount + 1;
   }
 
-  char applyWrapBias = 0;
   if (westCount >= 1 && static_cast<int>(eastCount) >= 1) {
-    applyWrapBias = 1;
     if (wrapBias == 0) {
       tileCount = 0;
       rowSum = 0;

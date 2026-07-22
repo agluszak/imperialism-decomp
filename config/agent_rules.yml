@@ -362,3 +362,16 @@ rules:
       - changing_correct_member_model_to_pair_an_alias
     tools: ["just mfc-collection-audit 0xCTOR", "just template-alias-check"]
     skill: mfc-collections
+
+  - id: EH-DTORPLACE-031
+    status: active
+    title: Destructor placement follows original emission and sibling vtable evidence
+    triggers: [dtor_work, scalar_deleting_dtor]
+    required:
+      - classify_destructor_as_implicit_out_of_line_or_listing_proven_inline
+      - verify_ordinary_destructor_and_affected_sibling_vtables
+    forbidden:
+      - moving_destructor_for_style_or_one_local_score
+      - adding_empty_destructor_to_claim_scalar_deleting_body
+    tools: ["just ghidra-listing 0xDTOR", "just vtable"]
+    skill: ctors-dtors-eh

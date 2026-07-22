@@ -1,9 +1,9 @@
 name: CI
 
-# Source-only enforcement: everything here runs without the original binary,
-# docker, wine, or Ghidra. The binary-dependent checks (build, vtable, datacmp,
-# decomplint, compare/stats) remain local-loop + reviewer responsibilities —
-# the agent-task receipt documents them, and CI never trusts a receipt.
+# Source-model enforcement needs no original binary, Wine runtime, or Ghidra. The
+# clang-lint job uses the public toolchain Docker image; binary-dependent checks
+# (retail build, vtable, datacmp, decomplint, compare/stats) remain local-loop and
+# reviewer responsibilities. CI never trusts the agent-task receipt.
 
 on:
   pull_request:
@@ -11,6 +11,30 @@ on:
     branches: [main]
 
 jobs:
+  clang-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - uses: astral-sh/setup-uv@v5
+
+      - uses: extractions/setup-just@v2
+
+      - name: Sync Python tooling
+        run: uv sync
+
+      - name: Build the public MSVC500/clang-cl toolchain image
+        run: just docker-build
+
+      - name: Warning-free clang-cl gate
+        run: just lint-warning-gate
+
+      - name: Verify a warning is rejected
+        run: just lint-warning-gate-test
+
   source-gates:
     runs-on: ubuntu-latest
     steps:
