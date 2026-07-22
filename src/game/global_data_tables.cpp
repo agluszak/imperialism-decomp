@@ -103,6 +103,10 @@ TMultiplayerMgr* g_pGameFlowState = 0;
 TDiplomacyMgr* g_pDiplomacyTurnStateManager = 0;
 // GLOBAL: IMPERIALISM 0x006a43e4
 TNavyMgr* g_pNavyOrderManager = 0;
+// GLOBAL: IMPERIALISM 0x006a3ebc
+extern "C" TAdmiral* g_pNavySecondaryOrderListHead = 0;
+// GLOBAL: IMPERIALISM 0x006a3edc
+extern "C" TShip* g_pNavyPrimaryOrderListHead = 0;
 // GLOBAL: IMPERIALISM 0x006a3338
 TArmyMgr* g_pMapContextActionManager = 0;
 

@@ -9,8 +9,6 @@
 class TShip;
 class TZone;
 
-extern "C" TShip* g_pNavyPrimaryOrderListHead;
-
 // Head of the global primary navy-order roster (Mac oracle: TShip::GetFirst).
 TShip* GetNavyPrimaryOrderListHead(void);
 // Walks g_pNavyPrimaryOrderListHead's nextOlder24 chain `index` steps (stopping early

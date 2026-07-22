@@ -45,10 +45,9 @@ public:
   // 0x552310..0x552404 body into three overlapping orphan functions.
   void ReassignToZone(TZone* zone); // 0x552310
 
-  static void __fastcall GenerateMappedFlavorTextByNationSlotField0C(TMinor* terrainDescriptor,
-                                                                     CString* dest);
-
-  void RemoveDuplicateNavySecondaryOrdersByDisplayName();
+  // Mac oracle: NameThyself. Regenerates displayName until it is unique in the
+  // global admiral list.
+  void NameThyself(); // 0x552450
 
   // Mac oracle: EstimateEnemyForces / GetFleetReport. The report intentionally
   // perturbs observed ship counts and classes according to this admiral's skill.

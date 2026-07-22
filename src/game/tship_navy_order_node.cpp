@@ -1,14 +1,11 @@
 #include "game/TShip.h"
 #include "game/navy_order.h"
 
-#include "game/TAdmiral.h"
 #include "game/TZone.h"
 #include "game/GameAssert.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/CString.h"
-
-extern "C" TShip* g_pNavyPrimaryOrderListHead;
 
 void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode);
 
@@ -32,9 +29,7 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone*
   shipNode->ownerNationSlot14 = static_cast<short>(nationSlot);
 
   if (displayNameOverride == 0) {
-    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
-        static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[resourceType]),
-        &shipNode->displayName18);
+    g_apTerrainTypeDescriptorTable[resourceType]->GenerateEthnicName(&shipNode->displayName18);
     for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0;
          existing = existing->nextOlder24) {
       if (existing != shipNode &&
