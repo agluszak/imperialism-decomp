@@ -1,6 +1,7 @@
 #include "RuntimeTestDriver.h"
 
 #include "game/bitmap_descriptor_helpers.h"
+#include "game/CIncludeView.h"
 #include "game/TAmbitApplication.h"
 #include "game/TControl.h"
 #include "game/TCitySiteView.h"
@@ -433,8 +434,21 @@ void RunWaitingForMainMenu() {
   }
 
   srand(RuntimeTestDriver::RandomSeed());
-  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dd);
-  SetPhase(kRuntimeTestWaitingForRandomSetup, "post_turn_event_0x05dd");
+  TView* randomButton = mainView->ResolveControlByTag(kControlTagRand);
+  CIncludeView* host = GetMainViewHostFromActiveThread();
+  if (randomButton == 0 || host == 0 || host->m_hWnd == 0) {
+    Fail("\"main-menu random-game button or native host is missing\"");
+    return;
+  }
+
+  CPoint buttonPosition;
+  randomButton->GetAbsolutePosition(&buttonPosition);
+  buttonPosition.x += randomButton->frameWidth34 / 2;
+  buttonPosition.y += randomButton->frameHeight38 / 2;
+  LPARAM mousePosition = MAKELPARAM(buttonPosition.x, buttonPosition.y);
+  SendMessageA(host->m_hWnd, WM_LBUTTONDOWN, MK_LBUTTON, mousePosition);
+  SendMessageA(host->m_hWnd, WM_LBUTTONUP, 0, mousePosition);
+  SetPhase(kRuntimeTestWaitingForRandomSetup, "click_main_menu_rand");
   RequestAnotherDriverTick();
 }
 
