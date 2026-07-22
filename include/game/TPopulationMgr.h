@@ -24,8 +24,10 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined OrphanLeaf_NoCall_Ins09_004b5d10(int param_1,
                                                      int param_2); // slot 0x0a 0x4b5d10
-  virtual undefined OrphanLeaf_NoCall_Ins47_004b5dc0(short param_1, short param_2,
-                                                     short param_3); // slot 0x0b 0x4b5dc0
+  // Mac CodeWarrior oracle: SetPopulation(short, short, short). Seeds the low-,
+  // medium-, and high-skill labor-pool counts and refreshes aggregate population metrics.
+  virtual void SetPopulation(short lowSkillCount, short mediumSkillCount,
+                             short highSkillCount);                  // slot 0x0b 0x4b5dc0
   virtual undefined OrphanLeaf_NoCall_Ins20_004b5d50(short param_1); // slot 0x0c 0x4b5d50
   // Mac CodeWarrior oracle: RemovePopulation(short, short). The first argument selects
   // the starting skill band (1/2/4); a negative amount adds population to that band.
@@ -45,10 +47,6 @@ public:
                                                      short param_2); // slot 0x13 0x4b67e0
   virtual undefined OrphanLeaf_NoCall_Ins63_004b64c0();              // slot 0x14 0x4b64c0
 
-  void NotifyProductionPresetSlot2C(int a, int b, int c) {
-    OrphanLeaf_NoCall_Ins47_004b5dc0(static_cast<short>(a), static_cast<short>(b),
-                                     static_cast<short>(c));
-  }
   short* GetSummaryArraySlot50();
 
   // 0x004b5c00: attach this population state to a city and allocate its three
@@ -59,7 +57,7 @@ public:
   short populationCount08; // +0x08 — total workers across the three skill bands
   unsigned char pad0a[2];
   // +0x0c — snapshotted by the turn-event-0x2c packet. Genuinely float: written via FSTP in
-  // OrphanLeaf_NoCall_Ins47_004b5dc0 (0x4b5dc0), not an int.
+  // SetPopulation (0x4b5dc0), not an int.
   float populationCountFloat0c;
   TLaborPool* baselineSlots10;     // +0x10
   TLaborPool* productionSlots14;   // +0x14

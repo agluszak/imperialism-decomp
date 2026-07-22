@@ -87,19 +87,19 @@ public:
   // +0x10..0x94 -- own block (RTTI m_nObjectSize proves this range is TDefenseMinister-
   // only, not shared TMinister base state; see TMinister.h). Fully recovered from
   // WriteTo/ReadFrom's byte-for-byte (de)serialization order (0x4ec1d0/0x4ec2f0) and the
-  // five personality initializers below: two parallel 30-entry short tables (orig writes
-  // orderWeightTableA/B via a shared zero-loop that indexes both 0x1e apart) plus a
-  // 4-short threshold quad, exactly filling the object to its 0x94 size (`new
-  // TDefenseMinister()` @ 0x4d976f pushes 0x94). Semantic role of each not yet pinned
-  // down beyond "per-order/policy-type weight tables + summary thresholds".
+  // five personality initializers below: recruitOrderCountByType is incremented whenever
+  // the personality seeds a TMilitaryUnit recruit order; orderWeightTableB contains its
+  // per-type policy weights. The two 30-entry short tables plus a 4-short threshold quad
+  // exactly fill the object to its 0x94 size (`new TDefenseMinister()` @ 0x4d976f pushes
+  // 0x94).
   short field10;
   short field12;
-  short orderWeightTableA[0x1e]; // +0x14..0x50
-  short orderWeightTableB[0x1e]; // +0x50..0x8c
-  short thresholdA;              // +0x8c
-  short thresholdB;              // +0x8e
-  short thresholdC;              // +0x90
-  short thresholdD;              // +0x92
+  short recruitOrderCountByType[0x1e]; // +0x14..0x50
+  short orderWeightTableB[0x1e];       // +0x50..0x8c
+  short thresholdA;                    // +0x8c
+  short thresholdB;                    // +0x8e
+  short thresholdC;                    // +0x90
+  short thresholdD;                    // +0x92
 };
 
 ASSERT_SIZE(TDefenseMinister, 0x94);

@@ -53,7 +53,7 @@ void TDefenseMinister::InitializeBaseOrderArrayMetrics(TGreatPower* owner) {
   thresholdD = 0;
   for (int i = 0; i < 0x1e; ++i) {
     orderWeightTableB[i] = 0;
-    orderWeightTableA[i] = 0;
+    recruitOrderCountByType[i] = 0;
   }
 }
 
@@ -64,7 +64,7 @@ void TDefenseMinister::WriteTo(TStream* stream) {
   TMinister::WriteTo(stream);
   stream->WriteBytesSlot78(&field10, 2);
   stream->WriteBytesSlot78(&field12, 2);
-  short* cursor = orderWeightTableA;
+  short* cursor = recruitOrderCountByType;
   int remaining = 0x1e;
   do {
     unsigned int stackWord = static_cast<unsigned int>(*cursor);
@@ -101,8 +101,8 @@ void TDefenseMinister::ReadFrom(TStream* stream) {
   TMinister::ReadFrom(stream);
   stream->ReadBytes(&field10, 2);
   stream->ReadBytes(&field12, 2);
-  stream->ReadBytes(orderWeightTableA, 0x3c);
-  unsigned char* pairCursor = reinterpret_cast<unsigned char*>(orderWeightTableA);
+  stream->ReadBytes(recruitOrderCountByType, 0x3c);
+  unsigned char* pairCursor = reinterpret_cast<unsigned char*>(recruitOrderCountByType);
   int pairCount = 0x1e;
   do {
     unsigned char highByte = pairCursor[0];
@@ -502,7 +502,7 @@ void TDefenseMinister::InitializeOrderArrayPreset50_0_10_50(TGreatPower* owner) 
   thresholdD = 0;
   for (int i = 0; i < 0x1e; ++i) {
     orderWeightTableB[i] = 0;
-    orderWeightTableA[i] = 0;
+    recruitOrderCountByType[i] = 0;
   }
   thresholdC = 10;
   thresholdA = 0x32;
@@ -524,7 +524,7 @@ void TDefenseMinister::InitializeOrderArrayPreset10_10_10_50(TGreatPower* owner)
   thresholdD = 0;
   for (int i = 0; i < 0x1e; ++i) {
     orderWeightTableB[i] = 0;
-    orderWeightTableA[i] = 0;
+    recruitOrderCountByType[i] = 0;
   }
   orderWeightTableB[2] = 0x23;
   thresholdA = 10;
@@ -546,7 +546,7 @@ void TDefenseMinister::InitializeOrderArrayPreset15_20_50_75(TGreatPower* owner)
   thresholdD = 0;
   for (int i = 0; i < 0x1e; ++i) {
     orderWeightTableB[i] = 0;
-    orderWeightTableA[i] = 0;
+    recruitOrderCountByType[i] = 0;
   }
   thresholdA = 0xf;
   thresholdB = 0x14;
@@ -568,7 +568,7 @@ void TDefenseMinister::InitializeOrderArrayPreset20_10_10_50(TGreatPower* owner)
   thresholdD = 0;
   for (int i = 0; i < 0x1e; ++i) {
     orderWeightTableB[i] = 0;
-    orderWeightTableA[i] = 0;
+    recruitOrderCountByType[i] = 0;
   }
   thresholdA = 0x14;
   thresholdB = 10;
@@ -590,7 +590,7 @@ void TDefenseMinister::InitializeOrderArrayPreset25_10_20_50(TGreatPower* owner)
   thresholdD = 0;
   for (int i = 0; i < 0x1e; ++i) {
     orderWeightTableB[i] = 0;
-    orderWeightTableA[i] = 0;
+    recruitOrderCountByType[i] = 0;
   }
   thresholdA = 0x19;
   thresholdB = 10;

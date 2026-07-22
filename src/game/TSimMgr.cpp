@@ -1536,7 +1536,7 @@ void TSimMgr::HandleTurnInstruction_Labo_SetNationLaborTierCounts(void* pInstruc
 
   TGreatPower* nation = g_apNationStates[ownerToken];
   TCity* city = (nation != nullptr) ? nation->city : nullptr;
-  city->productionSummary1d8->NotifyProductionPresetSlot2C(
+  city->productionSummary1d8->SetPopulation(
       static_cast<int>(tierAToken), static_cast<int>(tierBToken), static_cast<int>(tierCToken));
 
   g_apNationStates[ownerToken]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
