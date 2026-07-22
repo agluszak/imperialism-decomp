@@ -7,4 +7,5 @@
 class RuntimeTestDriver {
 public:
   static void OnIdle();
+  static unsigned int RandomSeed();
 };

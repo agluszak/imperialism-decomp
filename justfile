@@ -366,7 +366,7 @@ key *args:
 [doc('Milestone smoke ladder: which startup stages fire + non-black pixel check')]
 [group('build')]
 smoke *args:
-  uv run --with python-xlib --with pillow python tools/runtime/smoke.py run {{args}}
+  uv run python tools/runtime/smoke.py run {{args}}
 
 # Scripted gdb session against the recomp (winedbg --gdb proxy; real gdb front
 # end: conditional breakpoints, set var, inferior calls, raw memory reads).
@@ -376,7 +376,7 @@ smoke *args:
 [doc('Scripted gdb session on the recomp via the winedbg gdb proxy')]
 [group('build')]
 gdb-script *args:
-  uv run --with python-xlib --with pillow python tools/runtime/smoke.py gdb {{args}}
+  uv run python tools/runtime/smoke.py gdb {{args}}
 
 # Run the recomp under winedbg from the retail install directory. By default breaks
 # on MessageBoxA, continues, prints a backtrace, and quits — useful for tracing
