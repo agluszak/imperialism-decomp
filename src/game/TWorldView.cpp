@@ -372,8 +372,8 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
 
   short outY = 0;
   short outX = 0;
-  ForwardProjectTileIndexToWrappedScreenOffsetByScale(
-      previewTile, reinterpret_cast<short*>(&viewportOffsetX), &outX, &outY, projectionScale76);
+  ForwardProjectTileIndexToWrappedScreenOffsetByScale(previewTile, &viewportOrigin60, &outX, &outY,
+                                                      projectionScale76);
 
   GetClip(reusableSurfaceA.tempRgn);
   SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
@@ -458,12 +458,12 @@ void TWorldView::ConvertPoint(const CPoint& point, short& outColumn, short& outR
 
 // FUNCTION: IMPERIALISM 0x005960e0
 void TWorldView::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
-                                                                     short* viewportOriginXY,
+                                                                     const CPoint* viewportOrigin,
                                                                      short* outVerticalOffset,
                                                                      short* outHorizontalOffset,
                                                                      int projectionScale) {
   (void)tileIndex;
-  (void)viewportOriginXY;
+  (void)viewportOrigin;
   (void)outVerticalOffset;
   (void)outHorizontalOffset;
   (void)projectionScale;

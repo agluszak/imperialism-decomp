@@ -154,8 +154,8 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
   if (previousMarker != -1 && tileMarkers7c[previousMarker].flag != 0) {
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(
-        previousTile, reinterpret_cast<short*>(&viewportOffsetX), &projectedY, &projectedX, 1);
+    ProjectTileIndexToWrappedScreenOffsetByScale(previousTile, &viewportOrigin60, &projectedY,
+                                                 &projectedX, 1);
     RECT sourceRect = {projectedX + 0x40, projectedY + 0x40, projectedX + 0x80, projectedY + 0x80};
     RECT destinationRect = {projectedX, projectedY, projectedX + 0x40, projectedY + 0x40};
     BlitRectWithOptionalTransparency(g_pCitySiteCachedPrimaryRenderSurfaceContext->GetBlitSurface(),
@@ -175,8 +175,8 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
 
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(
-        oldNeighbor, reinterpret_cast<short*>(&viewportOffsetX), &projectedY, &projectedX, 1);
+    ProjectTileIndexToWrappedScreenOffsetByScale(oldNeighbor, &viewportOrigin60, &projectedY,
+                                                 &projectedX, 1);
     RECT sourceRect = {projectedX + 0x40, projectedY + 0x40, projectedX + 0x80, projectedY + 0x80};
     RECT destinationRect = {projectedX, projectedY, projectedX + 0x40, projectedY + 0x40};
     BlitRectWithOptionalTransparency(g_pCitySiteCachedPrimaryRenderSurfaceContext->GetBlitSurface(),
@@ -187,8 +187,8 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
   if (updateNeighborHighlights) {
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(
-        currentTile, reinterpret_cast<short*>(&viewportOffsetX), &projectedY, &projectedX, 1);
+    ProjectTileIndexToWrappedScreenOffsetByScale(currentTile, &viewportOrigin60, &projectedY,
+                                                 &projectedX, 1);
     RECT currentTileRect = {projectedX, projectedY, projectedX + 0x40, projectedY + 0x40};
     QDFrameRect(&currentTileRect);
     DrawHexNeighborOutlineFromTileArray(neighborTiles);

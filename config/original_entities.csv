@@ -5075,7 +5075,7 @@ address|name|symbol|size|type|prototype|provenance
 58b3c0|TCivilianButton::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 58b3e0|TCivilianButton::TCivilianButton||25|function|undefined TCivilianButton()|
 58b410|TCivilianButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-58b460|TCivilianButton::SetSelectionAndEnableByMappedValue||97|function|undefined SetSelectionAndEnableByMappedValue()|
+58b460|TCivilianButton::SetSelectedCivilianOrderAndEnableButton||97|function|void __thiscall SetSelectedCivilianOrderAndEnableButton(TCivUnit* selectedOrder)|windows_listing
 58b4f0|TCivilianButton::Draw||159|function|undefined BlitHintOverlayRectWithCtrlModifierPalette()|
 58b5c0|THQButton::CreateObject|?CreateObject@THQButton@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 58b640|THQButton::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti

@@ -1609,7 +1609,7 @@ TDiplomacyMgr::BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy() 
   packet->flag20 = 0;
   if (relationMatrixBaselineCopy794 == 0) {
     relationMatrixBaselineSize798 = 0x1138;
-    relationMatrixBaselineCopy794 = static_cast<short*>(::operator new(0x1138));
+    relationMatrixBaselineCopy794 = new short[0x89c];
   }
   memcpy(relationMatrixBaselineCopy794, relationStandingScoreMatrix79c,
          relationMatrixBaselineSize798);
