@@ -64,8 +64,12 @@ struct MainActionControl : public TControl {
                                 int targetNation); // slot 0x73 byte 0x1cc
 };
 
-struct GoldDialogValueControl : public TView {
-  virtual void ApplyDialogValue(void* value); // slot 0x68 byte 0x1a0
+// The 'DLOG' child of event 0xf0a's dialog. Its slot 0x68 is the class's first new
+// virtual (TView ends at 0x67) and takes one argument, exactly like TEngineerDialog's
+// BuildCityViewProductionControls at the same index -- but the Mac resource oracle has
+// no view for 0xf0a, so the concrete class is genuinely unknown here.
+struct TDialogValueControl : public TView {
+  virtual void StuffValues(void* value); // slot 0x68 byte 0x1a0
 };
 
 // The 'GOLD' child of the factory dialogs opened by HandleTurnEventDialogFactorySlot78

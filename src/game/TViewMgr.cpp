@@ -2124,10 +2124,13 @@ int TViewMgr::ShowConstructionOptionsDialog(int dialogValue) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x100);
   }
-  turn_event_dialog::GoldDialogValueControl* gold =
-      static_cast<turn_event_dialog::GoldDialogValueControl*>(
+  // MapView.rsrc view 7200's 'DLOG' pict is a TEngineerDialog (Mac resource oracle), and
+  // slot 0x68 is its first new virtual -- but that body (0x4d0810, 3,136 bytes) is still
+  // autogen-owned, so declaring the virtual here would cross the manual/autogen boundary.
+  turn_event_dialog::TDialogValueControl* engineerDialog =
+      static_cast<turn_event_dialog::TDialogValueControl*>(
           node->ResolveControlByTag(kControlTagDialog));
-  gold->ApplyDialogValue(reinterpret_cast<void*>(dialogValue));
+  engineerDialog->StuffValues(reinterpret_cast<void*>(dialogValue));
   POINT placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
@@ -2284,14 +2287,14 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE8(void* selection) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1c9);
   }
-  turn_event_dialog::GoldDialogValueControl* gold =
-      static_cast<turn_event_dialog::GoldDialogValueControl*>(
+  turn_event_dialog::TDialogValueControl* gold =
+      static_cast<turn_event_dialog::TDialogValueControl*>(
           node->ResolveControlByTag(kControlTagDialog));
   if (gold == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1ca);
   }
-  gold->ApplyDialogValue(selection);
+  gold->StuffValues(selection);
   POINT placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
