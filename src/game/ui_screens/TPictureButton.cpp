@@ -12,8 +12,8 @@
 
 IMPLEMENT_DYNCREATE(TPictureButton, TPicture)
 
-// FUNCTION: IMPERIALISM 0x005707f0
-TPictureButton::TPictureButton() : TPicture(), timingWord92(7000) {}
+// TPictureButton's ctor is defined inline in the header (marker there): the original
+// inlines it into every derived ctor.
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 

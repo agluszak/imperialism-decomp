@@ -15,6 +15,11 @@ public:
   // identity and Hilite override support this as the local highlight-state byte.
   bool hiliteState90; // +0x90
 
-  TNoHilitePicture();
+  // Inline so derived ctors (e.g. TMegaPicture 0x573190) reproduce the original's
+  // direct TPicture::TPicture call.
+  // FUNCTION: IMPERIALISM 0x00572b30
+  TNoHilitePicture() : TPicture() {
+    hiliteState90 = 0;
+  }
 };
 ASSERT_SIZE(TNoHilitePicture, 0x94);

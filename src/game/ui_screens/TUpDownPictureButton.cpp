@@ -12,8 +12,8 @@
 
 IMPLEMENT_DYNCREATE(TUpDownPictureButton, TPicture)
 
-// FUNCTION: IMPERIALISM 0x005715a0
-TUpDownPictureButton::TUpDownPictureButton() : TPicture(), timingWord92(7000) {}
+// TUpDownPictureButton's ctor is defined inline in the header (marker there): the
+// original inlines it into every derived ctor.
 
 // SYNTHETIC: IMPERIALISM 0x005715d0
 // TUpDownPictureButton::`scalar deleting destructor'

@@ -10,7 +10,6 @@ IMPLEMENT_DYNCREATE(TRadioPictureButton, TUpDownPictureButton)
 
 // FUNCTION: IMPERIALISM 0x005717c0
 TRadioPictureButton::TRadioPictureButton() : TUpDownPictureButton() {
-  this->timingWord92 = 7000;
   this->eventNumber60 = 0xc;
   this->reserved94 = 0;
 }

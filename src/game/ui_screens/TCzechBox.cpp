@@ -8,7 +8,9 @@
 IMPLEMENT_DYNCREATE(TCzechBox, TUpDownPictureButton)
 
 // FUNCTION: IMPERIALISM 0x00571c20
-TCzechBox::TCzechBox() {}
+TCzechBox::TCzechBox() : TUpDownPictureButton() {
+  isOn94 = 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x00571c60
 // TCzechBox::`scalar deleting destructor'

@@ -15,7 +15,9 @@ public:
   // Named SetRadioState here because Windows gives it its own slot rather than
   // overriding TView::SetState(int, int) at slot 0x2a.
   virtual void SetRadioState(unsigned char state, unsigned char refreshNow); // slot 0x74 0x5718f0
-  short reserved94;
+  // The ctor (0x5717c0) zeroes a single byte at +0x94; the rest is layout padding.
+  unsigned char reserved94;
+  unsigned char padding95[3];
 
   TRadioPictureButton();
 };

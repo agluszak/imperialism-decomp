@@ -10,7 +10,10 @@
 IMPLEMENT_DYNCREATE(TOnOffRadioButton, TPictureButton)
 
 // FUNCTION: IMPERIALISM 0x005719f0
-TOnOffRadioButton::TOnOffRadioButton() {}
+TOnOffRadioButton::TOnOffRadioButton() : TPictureButton() {
+  eventNumber60 = 0xc;
+  field94 = 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x00571a30
 // TOnOffRadioButton::`scalar deleting destructor'
