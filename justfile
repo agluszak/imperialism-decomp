@@ -1577,10 +1577,10 @@ tooling-surface-update:
 tgreatpower-gate-update:
   uv run python -m tools.workflow.baseline_guard --wrap "{{tgreatpower_gate_baseline}}" -- uv run python -m tools.workflow.check_tgreatpower_hygiene --baseline "{{tgreatpower_gate_baseline}}" --write-baseline
 
-# MUTATES: config/baselines/stub_count_baseline.json.
+# MUTATES: the stub_count field of config/baselines/reccmp_progress_baseline.json.
 [group('baseline-update')]
 stub-count-gate-update:
-  uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/stub_count_baseline.json" -- uv run python -m tools.workflow.check_stub_count --write-baseline
+  uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/reccmp_progress_baseline.json" -- uv run python -m tools.workflow.check_stub_count --write-baseline
 
 # MUTATES: config/baselines/datacmp_baseline.csv.
 [group('baseline-update')]
