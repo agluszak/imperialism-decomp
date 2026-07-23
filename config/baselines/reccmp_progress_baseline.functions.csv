@@ -2281,7 +2281,7 @@ address|matching|name
 0x4dae70|0.8433734939759037|TGreatPower::HasDeveloper
 0x4daf00|1.0|TGreatPower::SorryYouLose
 0x4daf30|0.22686567164179106|TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage
-0x4db380|0.6099585062240664|TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage
+0x4db380|0.6141078838174274|TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage
 0x4db7d0|0.7043010752688172|TGreatPower::BuildTransportLinkedInfluenceMap
 0x4dbac0|1.0|TGreatPower::MarkConnectedOwnedRegionsFrom
 0x4dbbb0|0.872093023255814|TGreatPower::BuildCityInfluenceLevelMap
@@ -2357,7 +2357,7 @@ address|matching|name
 0x4de2d0|0.7619047619047619|TGreatPower::ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants
 0x4de340|0.5034965034965035|TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury
 0x4de5e0|0.3867403314917127|TGreatPower::RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8
-0x4de700|0.6756756756756757|TGreatPower::CanAffordDiplomacyGrantEntryForTarget
+0x4de700|0.7297297297297297|TGreatPower::CanAffordDiplomacyGrantEntryForTarget
 0x4de790|0.7317073170731707|TGreatPower::CanAffordAdditionalDiplomacyCostAfterCommitments
 0x4de7e0|1.0|TGreatPower::ApplyTurnDiplomacyStateSlot1e0
 0x4de810|1.0|TGreatPower::NotifyWarResetSlotA5
@@ -2799,7 +2799,7 @@ address|matching|name
 0x4fc950|1.0|TCouncilView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x4fc9c0|0.5818181818181818|TMapKey::CreateObject
 0x4fca70|1.0|TMapKey::GetRuntimeClass
-0x4fcac0|0.4481792717086835|TMapKey::DoPostCreate
+0x4fcac0|0.4369747899159664|TMapKey::DoPostCreate
 0x4fcea0|0.3486238532110092|TControl::SetDiplomacyNationSelectionFilterAndRefreshRows
 0x4fcf80|0.75|TMapKey::Draw
 0x4fd000|0.816|TMapKey::RenderMapHintOverlayMode0

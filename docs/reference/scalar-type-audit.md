@@ -45,10 +45,10 @@ a stale category-level approval.
 | `5e99d2391a6383ab` | `src/game/gfx/TModuleLibraryCacheTableStateB.cpp:247` | `mfc_word_map_key` | retail 0x0049a0b0 explicitly loads only the low input word before hashing the CMap key. |
 | `531a3bdd6c6d74a9` | `src/game/gfx/TModuleLibraryCacheTableStateB.cpp:257` | `mfc_word_map_key` | retail 0x0049a190 loads and hashes the signed short argument as the WORD-key representation used by m_tableA. |
 | `1c1d74f04479d145` | `src/game/net/TNetMgr.cpp:387` | `win32_allocation_size` | VC5 GlobalAlloc takes a DWORD byte count; retail 0x005e3d40 forwards the 32-bit packet length unchanged at the API boundary. |
-| `2bda850646430828` | `src/game/ui_core/TViewMgr.cpp:2481` | `win32_struct_byte_field` | RGBQUAD.rgbBlue is BYTE; retail 0x005de010 copies the low packed-color byte into the four-byte local structure. |
-| `85ad520a63a99341` | `src/game/ui_core/TViewMgr.cpp:2482` | `win32_struct_byte_field` | RGBQUAD.rgbGreen is BYTE; retail 0x005de010 extracts packed-color bits 8 through 15 into the structure. |
-| `ef4ec2e8123faa36` | `src/game/ui_core/TViewMgr.cpp:2483` | `win32_struct_byte_field` | RGBQUAD.rgbRed is BYTE; retail 0x005de010 extracts packed-color bits 16 through 23 into the structure. |
-| `6f7ede0ce8020e6f` | `src/game/ui_core/TViewMgr.cpp:2484` | `win32_struct_byte_field` | RGBQUAD.rgbReserved is BYTE; retail 0x005de010 extracts packed-color bits 24 through 31 into the structure. |
+| `fdcb8f20e3a45adb` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:518` | `win32_struct_byte_field` | RGBQUAD.rgbBlue is BYTE; retail 0x005de010 copies the low packed-color byte into the four-byte local structure. |
+| `806aaeb52fe4f325` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:519` | `win32_struct_byte_field` | RGBQUAD.rgbGreen is BYTE; retail 0x005de010 extracts packed-color bits 8 through 15 into the structure. |
+| `ed6f4dcdc439d462` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:520` | `win32_struct_byte_field` | RGBQUAD.rgbRed is BYTE; retail 0x005de010 extracts packed-color bits 16 through 23 into the structure. |
+| `ce82c4c20067c59c` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:521` | `win32_struct_byte_field` | RGBQUAD.rgbReserved is BYTE; retail 0x005de010 extracts packed-color bits 24 through 31 into the structure. |
 | `d97fbba03dae091e` | `src/game/assets/TCdAudioDevice.cpp:149` | `multimedia_dword_field` | MCI_PLAY_PARMS.dwFrom is DWORD; retail 0x005e1850 masks the track index to eight bits before the dword store. |
 | `9440836a8128678f` | `src/game/assets/TCdAudioDevice.cpp:150` | `multimedia_dword_field` | MCI_PLAY_PARMS.dwTo is DWORD; retail 0x005e1850 increments then masks the track index before the dword store. |
 
@@ -71,22 +71,22 @@ a stale category-level approval.
 | `1c1d74f04479d145` | `native_integral_boundary` | `src/game/net/TNetMgr.cpp:387` | game scalar -> DWORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `8643894c63c98a37` | `native_integral_boundary` | `src/game/ui_core/CIncludeView.cpp:400` | game scalar -> BOOL | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `b442f3eac7d1c116` | `native_integral_boundary` | `src/game/ui_core/CMcWindow.cpp:286` | game scalar -> BOOL | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `2bda850646430828` | `native_integral_boundary` | `src/game/ui_core/TViewMgr.cpp:2481` | game scalar -> BYTE | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `85ad520a63a99341` | `native_integral_boundary` | `src/game/ui_core/TViewMgr.cpp:2482` | game scalar -> BYTE | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `ef4ec2e8123faa36` | `native_integral_boundary` | `src/game/ui_core/TViewMgr.cpp:2483` | game scalar -> BYTE | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `6f7ede0ce8020e6f` | `native_integral_boundary` | `src/game/ui_core/TViewMgr.cpp:2484` | game scalar -> BYTE | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
+| `fdcb8f20e3a45adb` | `native_integral_boundary` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:518` | game scalar -> BYTE | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
+| `806aaeb52fe4f325` | `native_integral_boundary` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:519` | game scalar -> BYTE | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
+| `ed6f4dcdc439d462` | `native_integral_boundary` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:520` | game scalar -> BYTE | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
+| `ce82c4c20067c59c` | `native_integral_boundary` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:521` | game scalar -> BYTE | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `fb4cc0429d2807ae` | `nested_integral_cast` | `src/game/city_ui/TUniversityView.cpp:366` | signed char -> int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
 | `caa87a07f2146dbb` | `nested_integral_cast` | `src/game/map_ui/TMapMaker.cpp:1432` | signed char -> unsigned short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
 | `7fcc0893d2017e1f` | `nested_integral_cast` | `src/game/map_ui/TMapMaker.cpp:1439` | signed char -> unsigned short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
 | `b60ed63416b4f980` | `nested_integral_cast` | `src/game/map_ui/TMapMaker.cpp:1442` | signed char -> unsigned short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
 | `3f41f67892a6fd59` | `nested_integral_cast` | `src/game/map_ui/TMapMaker.cpp:1445` | signed char -> unsigned short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `d04e53616a68e0c4` | `nested_integral_cast` | `src/game/military/TArmyMgr.cpp:1792` | int -> short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `5d24093db60dff4e` | `nested_integral_cast` | `src/game/military/TArmyMgr.cpp:1798` | int -> short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `991e04b36a1b6e0f` | `nested_integral_cast` | `src/game/military/TArmyMgr.cpp:1808` | unsigned int -> int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `bb6095bd5a332648` | `nested_integral_cast` | `src/game/nation/TGreatPower.cpp:888` | char -> unsigned char | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `5f2d4b634adf9988` | `nested_integral_cast` | `src/game/nation/TGreatPower.cpp:891` | char -> unsigned char | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `762276b4ea380e3b` | `nested_integral_cast` | `src/game/nation/TGreatPower.cpp:1410` | int -> unsigned int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `68e7a90c5513ee66` | `nested_integral_cast` | `src/game/nation/TGreatPower.cpp:2901` | unsigned short -> int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
+| `d04e53616a68e0c4` | `nested_integral_cast` | `src/game/military/TArmyMgr.cpp:1794` | int -> short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
+| `5d24093db60dff4e` | `nested_integral_cast` | `src/game/military/TArmyMgr.cpp:1800` | int -> short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
+| `991e04b36a1b6e0f` | `nested_integral_cast` | `src/game/military/TArmyMgr.cpp:1810` | unsigned int -> int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
+| `762276b4ea380e3b` | `nested_integral_cast` | `src/game/nation/TGreatPower.cpp:317` | int -> unsigned int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
+| `68e7a90c5513ee66` | `nested_integral_cast` | `src/game/nation/TGreatPower.cpp:1808` | unsigned short -> int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
+| `853f788ff413bf8c` | `nested_integral_cast` | `src/game/nation/TGreatPower_lifecycle.cpp:853` | char -> unsigned char | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
+| `f53ae4b65489ba45` | `nested_integral_cast` | `src/game/nation/TGreatPower_lifecycle.cpp:856` | char -> unsigned char | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
 | `eb265394ddb5605a` | `nested_integral_cast` | `src/game/net/TMultiplayerMgr.cpp:2043` | unsigned int -> short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
 | `d255e88d15a541ef` | `nested_integral_cast` | `src/game/tactical/TArmyPlayer.cpp:1271` | int -> char | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
 | `de75db3d85d58b05` | `nested_integral_cast` | `src/game/tactical/TArmyPlayer.cpp:1348` | int -> char | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
@@ -112,9 +112,9 @@ a stale category-level approval.
 | `1967b73ad8ba131a` | `predicate_storage_cast` | `src/game/map/sea_geometry.cpp:100` | predicate -> unsigned char | `predicate_boundary` | `imperialism-decomp-1uj.99.7` |
 | `ef3d88e3b5456166` | `predicate_storage_cast` | `src/game/military_ui/TArmyCheckBox.cpp:140` | predicate -> unsigned char | `predicate_boundary` | `imperialism-decomp-1uj.99.7` |
 | `1b59484a1b41425a` | `predicate_storage_cast` | `src/game/military_ui/TArmyCheckBox.cpp:146` | predicate -> unsigned char | `predicate_boundary` | `imperialism-decomp-1uj.99.7` |
-| `b441b8502f10ecf2` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:1297` | predicate -> char | `predicate_boundary` | `imperialism-decomp-1uj.99.7` |
-| `f25ec5fb631b91f5` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:2693` | predicate -> char | `predicate_boundary` | `imperialism-decomp-1uj.99.7` |
-| `40aca8b0eb14fbab` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:2701` | predicate -> char | `predicate_boundary` | `imperialism-decomp-1uj.99.7` |
+| `b441b8502f10ecf2` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:204` | predicate -> char | `predicate_boundary` | `imperialism-decomp-1uj.99.7` |
+| `f25ec5fb631b91f5` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:1600` | predicate -> char | `predicate_boundary` | `imperialism-decomp-1uj.99.7` |
+| `40aca8b0eb14fbab` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:1608` | predicate -> char | `predicate_boundary` | `imperialism-decomp-1uj.99.7` |
 | `81d9912d01aceb96` | `predicate_storage_cast` | `src/game/net/TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp:566` | predicate -> unsigned char | `predicate_boundary` | `imperialism-decomp-1uj.99.7` |
 | `6ffcbcbbe443ae4b` | `predicate_storage_cast` | `src/game/net/TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp:595` | predicate -> unsigned char | `predicate_boundary` | `imperialism-decomp-1uj.99.7` |
 | `e646be9da2ded3a5` | `predicate_storage_cast` | `src/game/net/TWNetSessionManager.cpp:107` | predicate -> unsigned char | `predicate_boundary` | `imperialism-decomp-1uj.99.7` |
@@ -344,17 +344,17 @@ a stale category-level approval.
 | `85c16429db5ea9f1` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1299` | ringState == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `2a46803b91939a10` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1302` | ringState == 1 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `a76be91479ae1ec4` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1338` | ringState == 2 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `44df54f8df9583ad` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:71` | actionType04 == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `a18fb0380b7d30ef` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:71` | actionType04 == 3 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `4c220a464b92192d` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:71` | actionType04 == 4 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `85463b774f6115df` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:118` | actionType04 == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `d4eef759c5ec5a6b` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:118` | actionType04 == 3 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `5e36824f4eee85e4` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:118` | actionType04 == 4 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `c653287242f6ce29` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:657` | ownerNationCode < 0x180 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `95fa5a0c36ec0c59` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:657` | ownerNationCode >= 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `16f836edcdaf06a4` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:972` | actionKind == 1 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `71ff442cab82dfbd` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:972` | actionKind == 4 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `334c7e444b353935` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:974` | actionKind == 7 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `44df54f8df9583ad` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:73` | actionType04 == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `a18fb0380b7d30ef` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:73` | actionType04 == 3 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `4c220a464b92192d` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:73` | actionType04 == 4 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `85463b774f6115df` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:120` | actionType04 == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `d4eef759c5ec5a6b` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:120` | actionType04 == 3 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `5e36824f4eee85e4` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:120` | actionType04 == 4 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `c653287242f6ce29` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:659` | ownerNationCode < 0x180 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `95fa5a0c36ec0c59` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:659` | ownerNationCode >= 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `16f836edcdaf06a4` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:974` | actionKind == 1 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `71ff442cab82dfbd` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:974` | actionKind == 4 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `334c7e444b353935` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:976` | actionKind == 7 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `6f878eddf96f7e2e` | `raw_discriminant_literal` | `src/game/military/TArmyUnitView.cpp:57` | unitTypeCode == 0xe | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `ad22edb45462ff50` | `raw_discriminant_literal` | `src/game/military/TMilitaryUnit.cpp:348` | secondaryMetricCode == 0xc | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `e71536a51ec3fed1` | `raw_discriminant_literal` | `src/game/military/mapped_flavor_text.cpp:338` | nShortcutCode == 2 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
@@ -372,25 +372,25 @@ a stale category-level approval.
 | `f50e36331741996f` | `raw_discriminant_literal` | `src/game/nation/TAutoGreatPower.cpp:1337` | primaryMetricCode != 5 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `cd628d669d834c04` | `raw_discriminant_literal` | `src/game/nation/TAutoGreatPower.cpp:1343` | secondaryMetricCode != 5 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `01a039a885041b22` | `raw_discriminant_literal` | `src/game/nation/TAutoGreatPower.cpp:1989` | unitType < 30 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `b4d1804cffc099d9` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:265` | cityModel != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `ce9262c91e3f0a04` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1074` | nationInteractionState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `9d6f3203620fafa5` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1335` | globalMapState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `86c807930dfe72a2` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1335` | terrainStateTable != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `ce8f2bd9eac19337` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1402` | globalMapState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `bd8ab6e92e90e1b2` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1403` | terrainStateTable != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `618d26921c8da832` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1484` | orderCapabilityState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `ad03a478dac10704` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1932` | resourceType < 0x0E | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `efff96a626e4ae7c` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:2101` | candidateState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `ddaf70e702d715c2` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:2112` | selectedNationState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `456f295d3bee9118` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:2138` | fallbackNationState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `3ab16bbe19b7c603` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:3101` | nationState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `eb706f03be757940` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:4001` | secondaryNationState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `4c0bcb8a3065119a` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:4064` | g_pGlobalMapState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `b320a596c7934370` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:4218` | auxRuntimeState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `32b96c6ab54168cb` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:4227` | targetState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `88caccd228e5290c` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:4246` | auxRuntimeState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `c72a0da6796fe9b5` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:4278` | proposalCode != 1 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `06dcd8bb6a31be9f` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:4283` | secondaryNationState == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `9d6f3203620fafa5` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:242` | globalMapState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `86c807930dfe72a2` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:242` | terrainStateTable != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `ce8f2bd9eac19337` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:309` | globalMapState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `bd8ab6e92e90e1b2` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:310` | terrainStateTable != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `618d26921c8da832` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:391` | orderCapabilityState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `ad03a478dac10704` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:839` | resourceType < 0x0E | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `efff96a626e4ae7c` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1008` | candidateState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `ddaf70e702d715c2` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1019` | selectedNationState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `456f295d3bee9118` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1045` | fallbackNationState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `3ab16bbe19b7c603` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:2008` | nationState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `eb706f03be757940` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:2908` | secondaryNationState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `4c0bcb8a3065119a` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:2971` | g_pGlobalMapState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `b320a596c7934370` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:3125` | auxRuntimeState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `32b96c6ab54168cb` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:3134` | targetState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `88caccd228e5290c` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:3153` | auxRuntimeState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `c72a0da6796fe9b5` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:3185` | proposalCode != 1 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `06dcd8bb6a31be9f` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:3190` | secondaryNationState == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `a13f1fc0a4942954` | `raw_discriminant_literal` | `src/game/nation/TGreatPower_lifecycle.cpp:230` | cityModel != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `9449566ad4e70e68` | `raw_discriminant_literal` | `src/game/nation/TGreatPower_lifecycle.cpp:1039` | nationInteractionState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `2de08d0b6ccca2bc` | `raw_discriminant_literal` | `src/game/nation/TMinor.cpp:644` | policyCode <= 0xc | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `f2f4f8df56fd2be1` | `raw_discriminant_literal` | `src/game/nation/TMinor.cpp:644` | policyCode >= 0x11 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `be0a5919e4195581` | `raw_discriminant_literal` | `src/game/nation/TMinor.cpp:699` | resourceType < 7 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
@@ -525,12 +525,12 @@ a stale category-level approval.
 | `3f4c478857b1c59a` | `raw_discriminant_literal` | `src/game/ui_core/TMacViewMgr.cpp:654` | terrainCode == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `30700317d6ed6f45` | `raw_discriminant_literal` | `src/game/ui_core/TStaticText.cpp:166` | textAlignmentCode == 1 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `508c2564ad6ed710` | `raw_discriminant_literal` | `src/game/ui_core/TStaticText.cpp:187` | alignmentCode == 1 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `b78042b12a8ab8bc` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:185` | eventCode < 0x2b68 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `72137b7325079b2f` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:186` | eventCode == 0x2b67 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `a3c931af11fa9b59` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:225` | eventCode != 200 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `bad383d2ccd30214` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:1152` | curCode < 0x2135 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `3057d8baea938a55` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:1172` | newCode == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `2ddea2ec4c95980b` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:1779` | followupState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `b78042b12a8ab8bc` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:187` | eventCode < 0x2b68 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `72137b7325079b2f` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:188` | eventCode == 0x2b67 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `a3c931af11fa9b59` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:227` | eventCode != 200 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `bad383d2ccd30214` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:1154` | curCode < 0x2135 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `3057d8baea938a55` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:1174` | newCode == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
+| `2ddea2ec4c95980b` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:1781` | followupState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `9d5c2b0854ebdcaa` | `raw_discriminant_literal` | `src/game/ui_screens/TAlwaysPictureButton.cpp:25` | enabledState == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `54f643a28e2af6a1` | `raw_discriminant_literal` | `src/game/ui_screens/TCzechBox.cpp:41` | controlState64 != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `c3101696c199afd2` | `raw_discriminant_literal` | `src/game/ui_screens/TGWorldButton.cpp:39` | fEnabledState == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |

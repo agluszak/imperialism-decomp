@@ -64,16 +64,16 @@ native_integral_reviews:
   1c1d74f04479d145:
     classification: win32_allocation_size
     evidence: VC5 GlobalAlloc takes a DWORD byte count; retail 0x005e3d40 forwards the 32-bit packet length unchanged at the API boundary.
-  2bda850646430828:
+  fdcb8f20e3a45adb:
     classification: win32_struct_byte_field
     evidence: RGBQUAD.rgbBlue is BYTE; retail 0x005de010 copies the low packed-color byte into the four-byte local structure.
-  85ad520a63a99341:
+  806aaeb52fe4f325:
     classification: win32_struct_byte_field
     evidence: RGBQUAD.rgbGreen is BYTE; retail 0x005de010 extracts packed-color bits 8 through 15 into the structure.
-  ef4ec2e8123faa36:
+  ed6f4dcdc439d462:
     classification: win32_struct_byte_field
     evidence: RGBQUAD.rgbRed is BYTE; retail 0x005de010 extracts packed-color bits 16 through 23 into the structure.
-  6f7ede0ce8020e6f:
+  ce82c4c20067c59c:
     classification: win32_struct_byte_field
     evidence: RGBQUAD.rgbReserved is BYTE; retail 0x005de010 extracts packed-color bits 24 through 31 into the structure.
   d97fbba03dae091e:
