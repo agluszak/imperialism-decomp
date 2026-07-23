@@ -1307,11 +1307,19 @@ DiplomacyRelationshipNotch TDiplomacyMgr::GetRelationshipNotch(NationSlot source
 }
 
 // FUNCTION: IMPERIALISM 0x004f1a80
-void TDiplomacyMgr::ShowRelationCodeNoticeForNationPairIfRelevant(int sourceNation,
-                                                                  int targetNation, int unusedArg) {
-  (void)sourceNation;
-  (void)targetNation;
-  (void)unusedArg;
+void TDiplomacyMgr::LoadTreatyNameForNationPairIfDisplayable(NationSlot sourceNationSlot,
+                                                             NationSlot targetNationSlot,
+                                                             CString* treatyName) {
+  DiplomacyRelationship relationship = static_cast<DiplomacyRelationship>(
+      relationPropagationMatrixBbe[sourceNationSlot * kNationSlotCount + targetNationSlot]);
+  switch (relationship) {
+  case kDiplomacyRelationshipAlliance:
+  case kDiplomacyRelationshipNonAggressionPact:
+  case kDiplomacyRelationshipPeace:
+  case kDiplomacyRelationshipWar:
+    g_pSimMgr->GetString(0x2714, relationship, treatyName);
+    break;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004f1b10

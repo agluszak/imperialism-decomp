@@ -2749,7 +2749,7 @@ address|matching|name
 0x4f1760|0.7320754716981132|TDiplomacyMgr::RecomputeNationComparativePowerMetrics
 0x4f1970|0.5142857142857142|TDiplomacyMgr::HasNationPairNeedLevel300
 0x4f19c0|1.0|TDiplomacyMgr::GetRelationshipNotch
-0x4f1a80|0.09090909090909091|TDiplomacyMgr::ShowRelationCodeNoticeForNationPairIfRelevant
+0x4f1a80|0.5909090909090909|TDiplomacyMgr::LoadTreatyNameForNationPairIfDisplayable
 0x4f1b10|1.0|TDiplomacyMgr::GetNationPairDiplomacyRelationCode
 0x4f1b40|1.0|TDiplomacyMgr::SetNationPairDiplomacyRelationCodeFinal
 0x4f1b70|0.24724061810154527|TDiplomacyMgr::SetNationPairDiplomacyRelationCode
@@ -6373,7 +6373,7 @@ address|matching|name
 0x5e55ee|0.6607142857142857|CDragListBox::Dropped
 0x5e5661|0.0|MoveListBoxEntryPreserveItemData
 0x5e56cd|1.0|CDragListBox::DrawInsert
-0x5e56f2|0.9466666666666667|CDragListBox::DrawSingle
+0x5e56f2|0.96|CDragListBox::DrawSingle
 0x5e57e9|0.9871794871794872|CDragListBox::OnChildNotify
 0x5e58ab|1.0|CToolBarCtrl::Create
 0x5e58e4|0.9411764705882353|CProgressCtrl::~CProgressCtrl(void)
@@ -7103,7 +7103,7 @@ address|matching|name
 0x608ba8|0.9397321428571429|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|1.0|CWnd::OnNotify
+0x6091d9|0.9787234042553191|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent
@@ -7663,7 +7663,7 @@ address|matching|name
 0x61ed3c|1.0|CDC::LPtoHIMETRIC
 0x61ed57|1.0|CDC::HIMETRICtoLP
 0x61ed72|1.0|CDC::GetHalftoneBrush
-0x61ede5|0.966789667896679|CDC::DrawDragRect
+0x61ede5|0.974169741697417|CDC::DrawDragRect
 0x61f0fa|1.0|CDC::FillSolidRect(struct tagRECT const *, unsigned long)
 0x61f124|1.0|CDC::FillSolidRect(int, int, int, int, unsigned long)
 0x61f19b|1.0|CDC::Draw3dRect(int, int, int, int, unsigned long, unsigned long)
