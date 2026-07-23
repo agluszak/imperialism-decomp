@@ -32,7 +32,7 @@ the shapes below it uses and transcribe them.
   globals (`s_sz*_00xxxxxx` in `global_data_tables`); a "mislabeled empty global"
   operand in a diff often really holds the string (e.g. `" "` behind a junk name).
   Reference the named global, not a duplicate literal, or the operand won't pair.
-  Use `just string-oracle` / `just ghidra-strings` to read the real content.
+  Use `just ghidra string-oracle` (or `just strings-for-function <addr>`) to read the real content.
 - **`LPCSTR` casts**: passing a `CString` where the original passed `char*` needs the
   `(char*)(LPCSTR)` double cast the repo already uses — copy an existing call site.
 

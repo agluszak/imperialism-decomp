@@ -11,7 +11,7 @@ For the function at 0xADDR, prints:
     IAT/import calls (import symbol name);
   - every referenced global (data address -> symbols.csv name, read/write);
   - jump tables (switch dispatch) detected from indirect JMPs;
-  - the decompile (same output as `just ghidra-decompile`).
+  - the decompile (same output as `just ghidra decompile`).
 
 usage: portprep 0xADDR [--no-decompile]
 """

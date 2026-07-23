@@ -27,6 +27,7 @@ from tools.common.function_baseline import (
 )
 from tools.common.repo import repo_root_from_file
 from tools.common.report_score import effective_matching
+from tools.stubgen import compute_stub_rows
 from tools.common.template_aliases import load_aliases
 
 FUNCTION_ROW_TYPE = "fun"
@@ -605,6 +606,11 @@ def build_entry(args: argparse.Namespace, build_dir: Path) -> dict[str, Any]:
         **parse_report_counts(report_json),
         **parse_noise_counts(noise_log),
     }
+    # Generated-stub count (formerly config/baselines/stub_count_baseline.json): the
+    # stub set the generator would emit (symbols.csv function rows minus source-claimed
+    # addresses). A rising count is the tell for accidental un-claiming; the
+    # stub-count-gate ratchets it against this same field. Needs no build.
+    entry["stub_count"] = len(compute_stub_rows(repo_root_from_file(__file__)))
     entry["coverage_pct"] = pct(entry["paired_fun_count"], entry["original_fun_count"])
     entry["exact_vs_original_pct"] = pct(entry["exact_fun_count"], entry["original_fun_count"])
     entry["exact_vs_paired_pct"] = pct(entry["exact_fun_count"], entry["paired_fun_count"])

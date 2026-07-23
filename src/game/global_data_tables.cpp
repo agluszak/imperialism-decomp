@@ -589,7 +589,7 @@ int g_nOverlayClipCacheParamY = 0;
 
 // Trade summary selection map — 23 read-only packed-FourCC commodity tags, one
 // per TCity commodity slot (Cotton..Gold, i.e. tradeCommodityRecordPtrs[0..0x16]
-// / cityStockCottonB6..cityStockGoldE2). Verified via `just ghidra-read-data
+// / cityStockCottonB6..cityStockGoldE2). Verified via `just ghidra read-data
 // 0x696108 dword 23`: the previous model (a zeroed BSS int[32] at 0x6960e0) had
 // the wrong address, wrong size, and wrong storage class — 0x6960e0 actually
 // lands inside the unrelated kTradeSellPropagationTags string data below, and
@@ -1765,7 +1765,7 @@ int g_bCityDialogLegendSelectionInitialized = 0;
 
 // Per-type index into TShipView::Draw's 8-entry order-status
 // string pool (GetString group 0x2760); -1 = no status line for that resource type
-// (verified via `just ghidra-read-data 0x65c7f8 dword 14`; the table ends there --
+// (verified via `just ghidra read-data 0x65c7f8 dword 14`; the table ends there --
 // the next dword looks like unrelated pointer data, matching
 // g_NavyOrderResourceDescriptorTable's 14-entry type domain).
 // GLOBAL: IMPERIALISM 0x0065c7f8

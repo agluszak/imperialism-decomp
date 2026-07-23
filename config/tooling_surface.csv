@@ -26,7 +26,6 @@ module|tools.workflow.check_marker_hygiene|just:marker-gate|Marker hygiene gate 
 module|tools.workflow.check_generated_markers|just:generated-marker-gate|Reject stale recover-class generated-decl markers in manual source
 module|tools.workflow.check_ilt_ossification|just:ilt-ossification-gate|Ratchet gate against ILT/thunk-name ossification in manual source
 module|tools.workflow.check_construction_antipatterns|just:antipattern-gate|Real-C++-construction anti-pattern gate
-module|tools.workflow.check_tgreatpower_hygiene|just:tgreatpower-gate|TGreatPower hygiene policy gate
 module|tools.workflow.check_global_location|just:global-location-gate|Global definition location policy gate
 module|tools.workflow.check_manual_cruntimeclass|just:manual-cruntimeclass-gate|Manual CRuntimeClass definition policy gate
 module|tools.workflow.check_vtable_coverage|just:vtable-coverage|Report unpaired vtable annotations
@@ -95,7 +94,7 @@ module|tools.ghidra.fix_function_bounds|just:fix-function-bounds|Re-bound existi
 module|tools.ghidra.prune_ilt_db_functions|just:prune-ilt-db-functions|Remove Function entities on ILT jmp thunks from the Ghidra DB
 module|tools.workflow.check_typedef_cast_drift|just:typedef-cast-audit|Audit Hard-Rule-9 typedef-cast externs for cross-file signature drift
 module|tools.reccmp.global_xref_oracle|just:global-xref-oracle|Mine reccmp asm diffs for orig-address<->recomp-symbol global pairs
-module|tools.ghidra.query|just:ghidra-listing|Daemon-or-one-shot front door for read-only Ghidra queries
+module|tools.ghidra.query|just:ghidra|Daemon-or-one-shot front door for read-only Ghidra queries
 module|tools.ghidra.daemon|just:ghidra-daemon|Persistent read-only Ghidra query daemon (one JVM per session)
 module|tools.reccmp.addr_translate|just:addr|orig<->recomp address lookup via cached reccmp JSON
 module|tools.ghidra.jumptable|query:jumptable|MSVC500 switch jump-table decoder (works in Ghidra code gaps)

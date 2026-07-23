@@ -14,7 +14,10 @@ methods) lost its claim and would be re-stubbed, which silently breaks vtables.
   - count < baseline  -> PASS + reminder to ratchet the baseline down
   - count == baseline -> PASS
 
-`--write-baseline` records the current count (config/baselines/stub_count_baseline.json).
+The baseline value is the `stub_count` field of config/baselines/reccmp_progress_baseline.json
+(it used to live in a separate stub_count_baseline.json). `stats-baseline-update`
+recomputes it as part of the full progress snapshot; `--write-baseline` here updates
+just that one field in place (cheap, no build) for ratcheting down between snapshots.
 """
 
 from __future__ import annotations
@@ -31,7 +34,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--baseline",
-        default=str(repo_root / "config" / "baselines" / "stub_count_baseline.json"),
+        default=str(repo_root / "config" / "baselines" / "reccmp_progress_baseline.json"),
     )
     parser.add_argument(
         "--write-baseline",
@@ -67,16 +70,26 @@ def main() -> int:
     current = len(compute_stub_rows(repo_root))
 
     if args.write_baseline:
-        baseline_path.write_text(json.dumps({"stub_count": current}, indent=2) + "\n")
-        print(f"Wrote baseline: {baseline_path} (stub_count={current})")
+        # Read-modify-write only the stub_count field of the progress baseline so the
+        # rest of the snapshot (produced by stats-baseline-update) is preserved.
+        data = json.loads(baseline_path.read_text()) if baseline_path.exists() else {}
+        data["stub_count"] = current
+        baseline_path.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n")
+        print(f"Updated stub_count in {baseline_path} (stub_count={current})")
         return 0
 
     if not baseline_path.exists():
         print(f"Baseline missing: {baseline_path}")
-        print("Run `just stub-count-gate-update` once, then re-run the gate.")
+        print("Run `just stats-baseline-update` once, then re-run the gate.")
         return 1
 
-    baseline = int(json.loads(baseline_path.read_text())["stub_count"])
+    baseline_data = json.loads(baseline_path.read_text())
+    if "stub_count" not in baseline_data:
+        print(f"Baseline {baseline_path} has no `stub_count` field.")
+        print("Run `just stats-baseline-update` (or `just stub-count-gate-update`) to record it.")
+        return 1
+
+    baseline = int(baseline_data["stub_count"])
     code, message = compare_counts(current, baseline)
     print(message)
     return code

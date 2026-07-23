@@ -21,6 +21,35 @@ from tools.common.repo import repo_root_from_file, resolve_repo_path
 JUST_MODULE_RE = re.compile(r"python\s+-m\s+([A-Za-z0-9_.]+)")
 PIPE_SPLIT_RE = re.compile(r"""\.split\(\s*(['"])\|\1\s*\)""")
 PIPE_SPLIT_PRAGMA = "pipe-split-ok"
+# `import 'just/foo.just'` / `import? 'just/foo.just'` — the justfile is split into
+# per-group modules under just/, so the surface scan must follow these.
+JUST_IMPORT_RE = re.compile(r"""^\s*import\??\s+['"]([^'"]+)['"]""")
+
+
+def justfile_with_imports_text(justfile_path: Path) -> str:
+    """Concatenated text of the justfile and every file it imports (recursively).
+
+    just's `import` shares one scope, so a recipe living in an imported module is,
+    for surface-tracking purposes, part of the justfile. Import paths resolve
+    relative to the importing file's directory.
+    """
+    seen: set[Path] = set()
+    parts: list[str] = []
+
+    def _load(path: Path) -> None:
+        resolved = path.resolve()
+        if resolved in seen or not path.is_file():
+            return
+        seen.add(resolved)
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        parts.append(text)
+        for line in text.splitlines():
+            m = JUST_IMPORT_RE.match(line)
+            if m:
+                _load(path.parent / m.group(1))
+
+    _load(justfile_path)
+    return "\n".join(parts)
 
 
 def parse_args() -> argparse.Namespace:
@@ -49,7 +78,7 @@ def module_exists(repo_root: Path, module_name: str) -> bool:
 
 
 def parse_just_modules(justfile_path: Path) -> set[str]:
-    text = justfile_path.read_text(encoding="utf-8", errors="ignore")
+    text = justfile_with_imports_text(justfile_path)
     # Only repo tool modules belong in the manifest (not stdlib ones like unittest).
     return {m.group(1) for m in JUST_MODULE_RE.finditer(text) if m.group(1).startswith("tools.")}
 
@@ -68,7 +97,7 @@ def parse_just_module_recipes(justfile_path: Path) -> dict[str, str]:
     """
     mapping: dict[str, str] = {}
     current_recipe: str | None = None
-    for raw_line in justfile_path.read_text(encoding="utf-8", errors="ignore").splitlines():
+    for raw_line in justfile_with_imports_text(justfile_path).splitlines():
         if raw_line and raw_line[0] not in " \t":
             stripped = raw_line.strip()
             if (

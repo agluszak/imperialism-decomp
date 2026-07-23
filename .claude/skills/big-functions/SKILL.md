@@ -14,9 +14,9 @@ mechanically.
 The workflow that scales:
 
 1. **Dossier first**: `just agent-start port 0xADDR` (which runs
-   `just ghidra-portprep` — owner, callers, thunk-resolved callees + their owners,
+   `just ghidra portprep` — owner, callers, thunk-resolved callees + their owners,
    virtual slots, globals, jump tables, decompile), then dump the full listing to a
-   scratch file (`just ghidra-listing 0xADDR` or the raw-PE/capstone fallback) and
+   scratch file (`just ghidra listing 0xADDR` or the raw-PE/capstone fallback) and
    identify every stack local before writing C++.
 2. **Transcribe in binary order** — cases, branches, stores, in the order the binary
    lays them out.
@@ -58,7 +58,7 @@ at ~5%.
 
 
 Every `turn_event_dialog_factory.cpp` screen builder (the 253KB giants, bd 1uj.51) is the
-same repeating widget block — port by recipe from `just ghidra-listing`, not the decompile
+same repeating widget block — port by recipe from `just ghidra listing`, not the decompile
 (which degenerates to `func_0x0040xxxx` stubs, and some builders are split into fragments:
 a listing ending without an epilogue continues in the next "function"). Per widget:
 `new <WidgetClass>()` (size after `PUSH n; CALL 0x606f73` identifies the class) → parent =
@@ -213,7 +213,7 @@ METHOD — TransferTransportRequests vs WriteTo).
 
 
 Two purpose-built tools make the biggest stubs tractable in one pass each:
-- `just ghidra-portprep 0xADDR` — the whole investigation in one query: current owner,
+- `just ghidra portprep 0xADDR` — the whole investigation in one query: current owner,
   callers (with owners), every direct call with ILT thunks chased AND the target's
   ownership (so the callee-porting cascade is visible up front), vtable-slot calls with
   slot indices, IAT imports, referenced globals with consecutive runs collapsed, jump
@@ -258,6 +258,6 @@ static-init modeling decision; defer rather than fake with placement-new.
      SelectAndApplyTacticalCursorModeProfile), so the case bodies can be lifted straight from
      that sibling. Result: parent 0%→100%, junk fragments gone. Scan for the parent's callers
      /ILT-thunk targets with a raw rel32 walk of the .exe (`E8/E9` at file offset O →
-     `off2va(O)+5+rel32 == target`), since `just xrefs` misses address-taken/table dispatch.
+     `off2va(O)+5+rel32 == target`), since `just ghidra xrefs` misses address-taken/table dispatch.
 
   *(ex decomp-loop list-note 104)*

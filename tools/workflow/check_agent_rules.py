@@ -40,16 +40,22 @@ def derivable_tags() -> set[str]:
     return tags
 
 
-def main() -> int:
-    data = yaml.safe_load(RULES_YML.read_text(encoding="utf-8"))
-    rules = data.get("rules", [])
+def lint_rules(
+    rules: list[dict],
+    known_skills: set[str],
+    known_tags: set[str],
+) -> list[str]:
+    """Return a list of human-readable lint failures for the given rules.
+
+    Pure (no filesystem/IO) so every validation branch — including the
+    superseded/superseded_by path that the real KB has never exercised — is unit
+    testable. `main()` supplies `known_skills`/`known_tags` from the repo.
+    """
     failures: list[str] = []
 
     seen: dict[str, int] = {}
     last_num = 0
     active_ids = {r.get("id") for r in rules if r.get("status") == "active"}
-    known_skills = {p.name for p in SKILLS_DIR.iterdir() if p.is_dir()}
-    known_tags = derivable_tags()
 
     for idx, rule in enumerate(rules):
         rid = rule.get("id", f"<rule #{idx}>")
@@ -98,11 +104,23 @@ def main() -> int:
                                     "tools/workflow/advice.py (it would never fire) — "
                                     "add a derivation or fix the tag")
 
+    return failures
+
+
+def main() -> int:
+    data = yaml.safe_load(RULES_YML.read_text(encoding="utf-8"))
+    rules = data.get("rules", [])
+    known_skills = {p.name for p in SKILLS_DIR.iterdir() if p.is_dir()}
+    known_tags = derivable_tags()
+
+    failures = lint_rules(rules, known_skills, known_tags)
     if failures:
         print("Agent-rules KB lint failed:")
         for f in failures:
             print(f"  - {f}")
         return 1
+
+    active_ids = {r.get("id") for r in rules if r.get("status") == "active"}
     print(f"Agent-rules KB lint passed ({len(rules)} rules, "
           f"{len(active_ids)} active, {len(known_tags)} derivable tags).")
     return 0

@@ -233,7 +233,7 @@ each with the evidence needed to start (address, size, current score if any, blo
   branchless `cdq/xor/sub` idiom; using `abs()` scored only 50%, the explicit branch
   hit 100%). Moved from the autogen stub to `CDib.cpp`/`CDib.h`.
   `ApplyRectSlot110` itself (0x574970, 724B) landed 2026-07-18 (0% -> 22.37%) using
-  `just ghidra-decompile 0x574970` to resolve the stack-slot ambiguity the raw
+  `just ghidra decompile 0x574970` to resolve the stack-slot ambiguity the raw
   listing alone left open — the decompile showed there are only TWO local `RECT`s
   (`srcRect`/`dstRect`), reused and re-mutated across all three "band" blocks, not
   three separate pairs as the listing's overlapping-looking offsets suggested.
@@ -371,8 +371,8 @@ each with the evidence needed to start (address, size, current score if any, blo
 ## Workflow-enforcement follow-ups (infrastructure, not ports)
 
 Landed: agent-start/check/finish + portprep-first loop; policy-baseline guard
-(local `ALLOW_POLICY_BASELINE_UPDATE=1` + CI `policy-baseline-approved` label);
-typedef/redeclaration gates; session-loop just-only output; session memory
+(local `ALLOW_POLICY_BASELINE_UPDATE=1` only — the CI baseline-guard job was
+removed); typedef/redeclaration gates; session-loop just-only output; session memory
 untracked; structured rule KB (`config/agent_rules.yml` + `just advice` +
 `just agent-rules-gate` + `docs/case-studies/`); claims registry
 (`refs/agent-claims/<addr>` refs — agent-start claims with a 24h TTL,
@@ -385,8 +385,7 @@ antipattern ratchet.
 Still open:
 
 - **Branch protection** (GitHub admin action, not repo code): protect `main`
-  against force-pushes and require the CI checks + the `policy-baseline-approved`
-  label rule.
+  against force-pushes and require the CI checks.
 - **Semantic gates v3 (true Clang AST)**: today's regex ratchets catch known
   spellings; an AST pass could catch function-pointer casts of known symbols in
   any spelling, raw `this+offset` where a named field already covers the offset,

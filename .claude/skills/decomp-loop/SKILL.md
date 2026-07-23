@@ -55,7 +55,7 @@ Two config-file readers replace the by-hand grep-across-CSVs dance:
    compare, and `library-identify` for library-shaped addresses, writing everything
    to `build-msvc500/agent-task.json`. Do NOT assemble this investigation by hand,
    and do NOT skip it: an agent that hasn't seen the portprep dossier does not know
-   the function's owner, convention, or dependencies. (`just ghidra-portprep 0xADDR`
+   the function's owner, convention, or dependencies. (`just ghidra portprep 0xADDR`
    directly is fine for extra addresses mid-task.)
 1. **Pick one target** function (or a tightly-coupled neighbor pair). Prefer
    high-impact non-trivial bodies over tiny thunks (`just port-candidates`).

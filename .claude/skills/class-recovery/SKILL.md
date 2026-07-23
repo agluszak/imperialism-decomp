@@ -128,7 +128,7 @@ To match EH-framed base destructors (e.g. `CObArray::~` `0x601bdd`, `CPtrList::~
 `0x601f7c`, `CDocument::~` `0x6109eb`), model the MFC foundation hierarchy as real C++
 classes with `// VTABLE:` markers and virtual destructors — the `__EH_prolog` frame
 can only be emitted by the compiler from a real destructor (no inline asm). Real
-layouts (dumped via `just ghidra-vtable-dump`): `CObject` (`0x66fec4`, 5 slots),
+layouts (dumped via `just ghidra vtable-dump`): `CObject` (`0x66fec4`, 5 slots),
 `CObArray`/`TIndexAndRankList` (`0x672eac`, 5 slots), `CPtrList` (`0x672eec`, 5 slots),
 `TSortedPtrList` (`0x649068`, 16 slots). Stage it as one coherent pass
 (`CObject` base → `TIndexAndRankList : CObject` → `CPtrList` → `TSortedPtrList :

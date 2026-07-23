@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Gate raw vtable patterns in gameplay code.
+"""Gate raw vtable patterns in gameplay code (Hard Rule 13).
 
-The gate compares current pattern counts against a checked-in baseline:
-- New files with raw patterns fail.
-- Existing files may not increase pattern counts.
+Baseline-free HARD BAN: any raw-vtable pattern (raw vftable indexing, Fn-typedef
+reinterpret_cast, VCall_ facade) in manual source fails the gate. The debt was
+fully eradicated, so there is no baseline file and no update escape hatch --
+re-introducing one is always a regression to fix.
 """
 
 from __future__ import annotations
@@ -13,7 +14,6 @@ import re
 from pathlib import Path
 
 from tools.common.file_scan import is_excluded_scan_path, strip_generated_blocks
-from tools.common.ratchet import compare, read_baseline, write_baseline
 from tools.common.repo import normalize_repo_relative_path, repo_root_from_file, resolve_repo_path
 
 PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
@@ -31,23 +31,12 @@ DEFAULT_EXTENSIONS = {".h", ".hpp", ".c", ".cc", ".cpp"}
 
 
 def parse_args() -> argparse.Namespace:
-    repo_root = repo_root_from_file(__file__)
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--roots",
         nargs="+",
         default=["src", "include"],
         help="Root paths to scan.",
-    )
-    parser.add_argument(
-        "--baseline",
-        default=str(repo_root / "config" / "baselines" / "vtable_gate_baseline.csv"),
-        help="CSV file with baseline per-file pattern counts.",
-    )
-    parser.add_argument(
-        "--write-baseline",
-        action="store_true",
-        help="Write current counts as baseline and exit successfully.",
     )
     return parser.parse_args()
 
@@ -88,7 +77,6 @@ def count_patterns(file_path: Path) -> dict[str, int]:
 def main() -> int:
     args = parse_args()
     repo_root = repo_root_from_file(__file__)
-    baseline_path = resolve_repo_path(repo_root, args.baseline)
 
     current: dict[str, dict[str, int]] = {}
     for file_path in collect_files(repo_root, args.roots):
@@ -100,39 +88,16 @@ def main() -> int:
             continue
         current[rel] = counts
 
-    if args.write_baseline:
-        write_baseline(baseline_path, current, KEYS)
-        print(f"Wrote baseline: {baseline_path} ({len(current)} files)")
-        return 0
-
-    baseline_exists = baseline_path.exists()
-    baseline = read_baseline(baseline_path, KEYS)
-    if not baseline_exists:
-        print(f"Baseline missing: {baseline_path}")
-        print("Run with --write-baseline once, then re-run the gate.")
+    if current:
+        print("Raw vtable gate failed (hard ban -- zero occurrences allowed):")
+        for rel in sorted(current):
+            present = ", ".join(k for k in KEYS if current[rel].get(k, 0))
+            print(f"  - {rel}: raw-vtable pattern(s) [{present}]")
+        print("See AGENTS.md Hard Rule 13 / construction Hard Rule 9: use real virtual methods.")
+        print("This is a hard ban with no baseline: fix the source, do not bless it.")
         return 1
 
-    violations = compare(
-        current,
-        baseline,
-        KEYS,
-        new_file_message=lambda file_key, _counts: (
-            f"{file_key}: new raw-vtable patterns introduced (not in baseline)"
-        ),
-    )
-
-    if violations:
-        print("Raw vtable gate failed:")
-        for item in violations:
-            print(f"  - {item}")
-        print(f"Baseline: {baseline_path}")
-        return 1
-
-    scanned_total = sum(sum(values.values()) for values in current.values())
-    print(
-        f"Raw vtable gate passed. Files with baseline-tracked patterns: {len(current)} "
-        f"(total matches: {scanned_total})"
-    )
+    print("Raw vtable gate passed (hard ban -- zero offenders).")
     return 0
 
 

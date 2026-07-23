@@ -180,8 +180,8 @@ means the receiver is a different subtree. Recovery recipe (proved the turn-even
 'main' view is a `TDiplomacyMapView`, not a `TWorldView`):
 
 1. Collect every `// VTABLE: IMPERIALISM 0x…` address (grep the headers).
-2. For each vtable V, `just ghidra-read-data 0x<V+off> ptr` — keep non-null slots.
-3. Resolve each filler's ILT thunk (`just ghidra-listing`), filter by the caller's
+2. For each vtable V, `just ghidra read-data 0x<V+off> ptr` — keep non-null slots.
+3. Resolve each filler's ILT thunk (`just ghidra listing`), filter by the caller's
    needed arity via the target's `ret N`.
 4. Map survivors back to vtable → class header; cross-check domain evidence (the class
    that also *stores* the tag constant is the receiver family). `just func-status`
@@ -343,7 +343,7 @@ The note-88 pass (claim inherited MFC slots as LIBRARY so a CView/CFrameWnd-deri
 vtable can be marked and reach 100%) is driven from the **recompiled** vtable, which is
 ground truth because it is built from real nafxcw.lib. Method that worked for CIncludeView
 (`0x648418`, 68 slots, all 18 remaining red slots resolved, +0.11pp, no regressions):
-1. Dump the ORIG vtable (`just ghidra-vtable-dump Class 0xADDR`) → slot byte-offset → orig
+1. Dump the ORIG vtable (`just ghidra vtable-dump Class 0xADDR`) → slot byte-offset → orig
    addr. Game overrides appear as `0x40xxxx` ILT thunks (reccmp resolves them) or `0x48xxxx`
    game addresses; the red LIBRARY slots are direct `0x60xxxx/0x613xxx/0x614xxx` addrs
    carrying junk `symbols.csv` names.

@@ -1,5 +1,4 @@
 file|empty_but_big|empty_unmarked|empty_unresolved|noop_contradicted
-include/game/CDocument_Virtuals.h|0|0|1|0
 include/game/CFile_Virtuals.h|0|0|1|0
 include/game/TAnimation.h|0|0|1|0
 include/game/TArmyPlayer.h|0|0|1|0
