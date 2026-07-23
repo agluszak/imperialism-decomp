@@ -6,13 +6,16 @@
 #include "game/ui_tags_screens.h"
 #include "game/ui_tags_widgets.h"
 #include "game/trade_ui/TOfferDeskPicture.h"
+#include "game/trade_ui/TDealTabControl.h"
+#include "game/trade_ui/TTradeBookView.h"
+#include "game/ui_text_label_helpers_decls.h"
+#include "game/globals/trade_ui_globals.h"
 
 #include "game/ui_screens/CString.h"
 #include "game/ui_widgets/TAmtBarCluster.h"
 #include "game/ui_core/TApplication.h"
 #include "game/city/TCity.h"
 #include "game/city_ui/TCountry.h"
-#include "game/trade_ui/TDealTabControl.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/gfx/TDisplayMgr.h"
 #include "game/ui_widgets/TDropShadowNumberText.h"
@@ -28,15 +31,12 @@
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_widgets/TToolBarCluster.h"
 #include "game/ui_widgets/TTradeMgr.h"
-#include "game/trade_ui/TTradeBookView.h"
 #include "game/ui_core/TUiEvent.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/globals/trade_ui_globals.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/gfx/ui_invalidation_guard.h"
-#include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x005be4b0
 // TOfferDeskPicture::CreateObject
 
@@ -467,6 +467,50 @@ char TOfferDeskPicture::HandleMouseUp(const CPoint& point, TToolboxEvent* event,
 }
 
 // FUNCTION: IMPERIALISM 0x005c09d0
-void TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged(int activate) {
-  (void)activate;
+void TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged(unsigned char activate) {
+  if (activate == selectionActive9e) {
+    return;
+  }
+  TView* bookControl = ResolveControlByTag(kControlTagBook);
+  bookControl->AssertValid();
+  TView* sheetControl = ResolveControlByTag(maxAmount94 == 0 ? kControlTagWait : kControlTagShee);
+  if (sheetControl == 0) {
+    FailNilPointerInUSmallViews(0x8a2);
+  }
+  TView* crupControl = ResolveControlByTag(kControlTagCrup);
+  crupControl->AssertValid();
+  crupControl->SetEnabled(activate == 0, 0);
+  if (activate != 0) {
+    int bookLayout[2] = {0x3a, 0x2d};
+    bookControl->CaptureLayoutF0(bookLayout, 0);
+    sheetControl->CaptureLayoutF0(g_aOfferDeskSheetLayoutActive_006a5a28, 0);
+    SetPictureResourceIdAndRefresh(0x226f, 1);
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x13ee, 0, 1);
+    TDealTabControl* tabsControl =
+        static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs));
+    tabsControl->AssertValid();
+    tabsControl->Setup(0x2266, g_pCityOrderCapabilityState->perTechUnlockFlag180[0x13]);
+    tabsControl->RefreshControl();
+    LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl);
+    TView* listControl = ResolveControlByTag(kControlTagList);
+    listControl->AssertValid();
+    LoadUiStringAndDispatchSharedMessageCommand(0x2740, 1, listControl);
+  } else {
+    bookControl->CaptureLayoutF0(g_aOfferDeskSheetLayoutActive_006a5a28, 0);
+    sheetControl->CaptureLayoutF0(g_aOfferDeskSheetLayoutInactive_006a5a00, 0);
+    SetPictureResourceIdAndRefresh(0x2152, 1);
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x13ef, 0, 1);
+    static_cast<TTradeBookView*>(bookControl)->SetItem(-1);
+    TDealTabControl* tabsControl =
+        static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs));
+    tabsControl->AssertValid();
+    tabsControl->Setup(0x2264, g_pCityOrderCapabilityState->perTechUnlockFlag180[0x13]);
+    tabsControl->selectedRow84 = -1;
+    tabsControl->RefreshControl();
+    LoadUiStringAndDispatchSharedMessageCommand(0x2740, 2, tabsControl);
+    TView* listControl = ResolveControlByTag(kControlTagList);
+    listControl->AssertValid();
+    SetControlHoverHelpTextAltEntry(CString(g_szEmptyString), listControl);
+  }
+  selectionActive9e = activate;
 }

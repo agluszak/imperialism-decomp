@@ -1660,6 +1660,11 @@ extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[45] = {
     8,  9, -1, -1, -1, 8,  9,  10, 11, 12, 6,  5, 2,  -1, -1, 13, -1, -1, -1, -1, -1, -1, -1,
     -1, 0, 3,  7,  -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0,  10, 11, 12, -1, -1};
 
+// Offer-desk CaptureLayoutF0 pairs, written at runtime by the trade screens.
+// GLOBAL: IMPERIALISM 0x006a5a00
+int g_aOfferDeskSheetLayoutInactive_006a5a00[2] = {0, 0};
+// GLOBAL: IMPERIALISM 0x006a5a28
+int g_aOfferDeskSheetLayoutActive_006a5a28[2] = {0, 0};
 // GLOBAL: IMPERIALISM 0x00698ab0
 int g_nRandomMapSelectedNationSlot00698AB0 = -1;
 // Rank separator drawn between the high-score rank number and the player name.

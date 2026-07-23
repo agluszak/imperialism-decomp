@@ -119,5 +119,7 @@ const int kControlTagShee = IMPERIALISM_FOURCC(
     's', 'h', 'e', 'e'); // TOfferDeskPicture.cpp, TOffersPanelView.cpp offer sheet
 const int kControlTagWait = IMPERIALISM_FOURCC(
     'w', 'a', 'i', 't'); // TOfferDeskPicture.cpp, TOffersPanelView.cpp waiting indicator
+const int kControlTagCrup =
+    IMPERIALISM_FOURCC('c', 'r', 'u', 'p'); // TOfferDeskPicture.cpp cancel/close-proposal control
 const int kControlTagNomo =
     IMPERIALISM_FOURCC('n', 'o', 'm', 'o'); // TOfferDeskPicture.cpp no-more-offers control
