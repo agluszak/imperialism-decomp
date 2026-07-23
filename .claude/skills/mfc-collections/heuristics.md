@@ -115,9 +115,18 @@ allocating a fresh block and *copy-constructing* elements across (new + copy + d
 whereas the project's `stretch<T>` family reallocs in place — request `count*2*stride`
 via `ReallocateHeapBlockWithAllocatorTracking`, and on failure realloc to the exact
 `count*stride`. That realloc-double-then-exact-fallback shape (no element copy loop on
-grow) means `stretch<T>`: model it as a real `class X : public stretch<T, Tag>`
+grow) means `stretch<T>`: model it as a real `class X : public stretch<T>`
 overriding the single-slot append virtual, not an ad-hoc struct. Mac evidence names the
 family `stretch<Seapoint>` / `stretch<SeaSegment>` with `Add/operator[]/OverStretch`.
+
+The growth, indexed access, append, exact resize, compaction, bounds lookup, detach,
+and clear operations belong on the `stretch<T>` template itself. Concrete wrappers
+exist only for their vtable/type identity; do not hand-copy those bodies per element
+type. A specialization may override `Add` only when the listing proves extra semantics
+(the TZone pointer stretches perform a uniqueness scan before delegating to
+`stretch<T>::Add`). Compiler-emitted copies are claimed with `// TEMPLATE:` markers;
+they are not gameplay methods to rewrite by hand. Do not add a repo-only tag template
+parameter: the original/Mac identity and the emitted linker symbol are `stretch<T>`.
 
 ### A non-inline wrapper for a CList AddTail/RemoveTail COMDAT can't match the original's direct dispatch — and __inline makes it worse
 *(ex decomp-loop note 56)*
@@ -236,11 +245,13 @@ raw handles. Recipe that matched well:
 
 - **stretch<T> containment scans are two nested inlines: `T* FindEntry(T)` (for-loop,
      unsigned index/count compares, hit returned as `&Data()[index]`) and a bool
-     `ContainsEntry` wrapper whose return materializes via SETNE.** 0x564570 went
-     48% -> 100% by modeling both on TZoneSecondaryNeighborStretch (NOT on the template:
-     MSVC500 eagerly instantiates template members, and stretch<Seapoint> has no
-     operator==). The rotated for-loop shape (pre-test `jbe`, body compare at top,
-     backward `jb`) only falls out of the indexed for-form, not a do-while.
+     `ContainsEntry` wrapper whose return materializes via SETNE.** Keep their
+     definitions out of line after the class template: MSVC500 then instantiates them
+     only for callers that use them, so `stretch<Seapoint>` need not define `operator==`.
+     0x564570 and the two unique TZone Add overrides reach effective 100% through the
+     shared template helpers. The rotated for-loop shape (pre-test `jbe`, body compare
+     at top, backward `jb`) only falls out of the unsigned indexed for-form, not a
+     do-while.
 
   *(ex decomp-loop list-note 117)*
 

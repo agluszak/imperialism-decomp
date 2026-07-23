@@ -12,8 +12,6 @@
 //    connects (uint16 at +0x10/+0x12), which is how this pass reinterprets the segment slot;
 //  - per-region tile-count / merged-flag scratch arrays (function locals).
 
-#include <stdlib.h>
-
 #include "game/TMapMaker.h"
 
 #include <math.h>
@@ -24,8 +22,6 @@
 #include "game/sea_geometry.h"
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
-
-// Allocator-tracked realloc (generic stub form; typed cast at the call site).
 
 // One 0x18-byte region-border-link record (the overlay-span record this pass stores).
 struct RegionBorderLink {
@@ -57,13 +53,7 @@ const int kRegionIdBias = 0x17;     // tile[4] region id is biased by +0x17
 // OverStretch method on a miss, bump count, then return the (region-border-typed) record.
 inline RegionBorderLink* LinkElementAt(unsigned int i) {
   SeaSegmentStretch& t = g_regionBorderLinkTable_006a3900;
-  if (static_cast<unsigned int>(t.Capacity()) <= i) {
-    t.OverStretch(i + 1);
-  }
-  if (static_cast<unsigned int>(t.Count()) <= i) {
-    t.Count() = i + 1;
-  }
-  return reinterpret_cast<RegionBorderLink*>(&t.Data()[i]);
+  return reinterpret_cast<RegionBorderLink*>(&t[i]);
 }
 
 // region id for the city-region tile at byte offset `off` in the grid (-1 if offset negative).
@@ -220,24 +210,7 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
         // referenced `region` at `mergeTarget`.
         if (static_cast<int>(bestLink) >= 0) {
           SeaSegmentStretch& t = g_regionBorderLinkTable_006a3900;
-          if (static_cast<unsigned int>(t.Capacity()) <= bestLink) {
-            int want = bestLink + 1;
-            unsigned int newCap = static_cast<unsigned int>(want) * 2;
-            if (newCap > 0x7fffffff) {
-              newCap = 0x7fffffff;
-            }
-            SeaSegment* grown = reinterpret_cast<SeaSegment*>(realloc(t.Data(), want * 0x30));
-            if (grown == nullptr) {
-              t.ReallocExact(want);
-            } else {
-              t.Data() = grown;
-              t.Capacity() = newCap;
-            }
-          }
-          if (static_cast<unsigned int>(t.Count()) <= bestLink) {
-            t.Count() = bestLink + 1;
-          }
-          RegionBorderLink* consumed = reinterpret_cast<RegionBorderLink*>(&t.Data()[bestLink]);
+          RegionBorderLink* consumed = reinterpret_cast<RegionBorderLink*>(&t[bestLink]);
           consumed->bboxX0 = 0;
           consumed->bboxY0 = 0;
           consumed->bboxX1 = 0;

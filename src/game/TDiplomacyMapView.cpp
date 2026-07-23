@@ -36,11 +36,6 @@
 #include "game/mapped_flavor_text.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// Defined below in address order (0x4d5d30).
-void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* run,
-                                                      void* surfacePixels, int flag,
-                                                      int surfaceHeight);
-
 namespace {
 const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
 const unsigned int kAddrDiplomacyTurnStateManager = 0x006A43D0;
@@ -80,13 +75,7 @@ void StrategicMapCallbackRecord::AppendPackedColorDword(unsigned char* destinati
                                                         int packedColor) {
   const unsigned int packed = (packedColor & 0xff) * 0x01010101u;
 
-  if (packedColorCursor1c.Capacity() == 0) {
-    packedColorCursor1c.OverStretch(1);
-  }
-  if (packedColorCursor1c.Count() == 0) {
-    packedColorCursor1c.Count() = 1;
-  }
-  const int cursor = packedColorCursor1c.Data()[0];
+  const int cursor = packedColorCursor1c[0];
   opcodeBytes00[cursor] = static_cast<unsigned char>(packed);
   opcodeBytes00[cursor + 1] = static_cast<unsigned char>(packed >> 8);
   opcodeBytes00[cursor + 2] = static_cast<unsigned char>(packed >> 16);
@@ -151,32 +140,134 @@ void StrategicMapCallbackRecord::ApplyPackedColorToPixelBuffer(unsigned char* de
   }
 }
 
+// TEMPLATE: IMPERIALISM 0x004d5970
+// stretch::SetCapacity
+
 // FUNCTION: IMPERIALISM 0x004d5cf0
-void __cdecl StreamOverlayHitMaskToSurfaceDib(DiplomacyMaskBufferRun* run,
-                                              TQuickDrawSurfaceContext* surface, int flag) {
+void StrategicMapCallbackRecord::StreamOverlayHitMaskToSurfaceDib(DiplomacyMaskBufferRun* run,
+                                                                  TQuickDrawSurfaceContext* surface,
+                                                                  int outlineOnly) {
   int height = surface->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
-  if (height < 1) {
+  if (height <= 0) {
     height = -height;
   }
   BuildDiplomacyOverlayHitMaskOpcodeStream(
-      run,
-      reinterpret_cast<void*>(surface->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biWidth),
-      flag, height);
+      run, surface->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biWidth, outlineOnly, height);
 }
+// stretch::SetCapacity
+
+// Builds the compact x86 write stream used by AppendPackedColorDword. Each selected mask
+// pixel becomes a byte/word/dword write; long gaps advance the destination base explicitly.
+// FUNCTION: IMPERIALISM 0x004d5d30
+void StrategicMapCallbackRecord::BuildDiplomacyOverlayHitMaskOpcodeStream(
+    DiplomacyMaskBufferRun* run, int destinationRowStride, int outlineOnly, int surfaceHeight) {
+  opcodeBytes00.SetCapacity(0x400);
+  destinationRowStride2c = destinationRowStride;
+
+  AppendOpcodeByte(0xb9);
+  packedColorCursor1c.Add(opcodeAppendCursor10);
+  AppendOpcodeByte(0xcd);
+  AppendOpcodeByte(0xcd);
+  AppendOpcodeByte(0xcd);
+  AppendOpcodeByte(0xcd);
+
+  int generatedBaseOffset = 0;
+  int destinationRow = surfaceHeight - run->boundsAt04.bottom;
+  for (int y = run->boundsAt04.bottom - 1; y >= run->boundsAt04.top; --y, ++destinationRow) {
+    int x = run->boundsAt04.left;
+    while (x < run->boundsAt04.right) {
+      bool emitPixel = run->IsMaskPixelSet(x, y);
+      if (emitPixel && outlineOnly != 0 && run->IsMaskPixelSet(x + 1, y) &&
+          run->IsMaskPixelSet(x - 1, y) && run->IsMaskPixelSet(x, y + 1) &&
+          run->IsMaskPixelSet(x, y - 1)) {
+        emitPixel = false;
+      }
+
+      if (!emitPixel) {
+        ++x;
+        continue;
+      }
+
+      int displacement = destinationRow * destinationRowStride + x - generatedBaseOffset;
+      while (displacement > 0x7f) {
+        int advance = displacement + 0x80;
+        generatedBaseOffset += advance;
+        displacement -= advance;
+        AppendOpcodeByte(0x05);
+        AppendOpcodeByte(advance);
+        AppendOpcodeByte(advance >> 8);
+        AppendOpcodeByte(advance >> 16);
+        AppendOpcodeByte(advance >> 24);
+      }
+
+      int contiguousPixelCount = 1;
+      while (contiguousPixelCount < 4) {
+        int nextX = x + contiguousPixelCount;
+        bool emitNextPixel = run->IsMaskPixelSet(nextX, y);
+        if (emitNextPixel && outlineOnly != 0 && run->IsMaskPixelSet(nextX + 1, y) &&
+            run->IsMaskPixelSet(nextX - 1, y) && run->IsMaskPixelSet(nextX, y + 1) &&
+            run->IsMaskPixelSet(nextX, y - 1)) {
+          emitNextPixel = false;
+        }
+        if (!emitNextPixel) {
+          break;
+        }
+        ++contiguousPixelCount;
+      }
+
+      if (contiguousPixelCount == 4) {
+        AppendOpcodeByte(0x89);
+        AppendOpcodeByte(0x48);
+        AppendOpcodeByte(displacement);
+      } else if (contiguousPixelCount >= 2) {
+        AppendOpcodeByte(0x66);
+        AppendOpcodeByte(0x89);
+        AppendOpcodeByte(0x48);
+        AppendOpcodeByte(displacement);
+        contiguousPixelCount = 2;
+      } else {
+        AppendOpcodeByte(0x88);
+        AppendOpcodeByte(0x48);
+        AppendOpcodeByte(displacement);
+      }
+      x += contiguousPixelCount;
+    }
+  }
+
+  AppendOpcodeByte(0xc3);
+  opcodeBytes00.Compact();
+  FinalizeOpcodeBufferAlignment();
+  unsigned char* alignedEntry = &opcodeBytes00[opcodeAlignmentOffset14];
+  if ((reinterpret_cast<unsigned int>(alignedEntry) & 3) != 0) {
+    FinalizeOpcodeBufferAlignment();
+  }
+}
+
+// TEMPLATE: IMPERIALISM 0x004d62d0
+// stretch::Compact
 
 // Clamps `rect` inside `bounds`, preserving the rect's width/height.
 
-// Streams a nation's packed hit mask into the surface's overlay opcode buffer; body
-// not yet ported (1149 bytes) -- claimed as a typed stub so callers link the real
-// signature.
-// FUNCTION: IMPERIALISM 0x004d5d30
-void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* run,
-                                                      void* surfacePixels, int flag,
-                                                      int surfaceHeight) {
-  (void)run;
-  (void)surfacePixels;
-  (void)flag;
-  (void)surfaceHeight;
+// FUNCTION: IMPERIALISM 0x004d6310
+bool DiplomacyMaskBufferRun::IsMaskPixelSet(int x, int y) const {
+  CPoint point(x, y);
+  if (PtInRect(&boundsAt04, point) == 0) {
+    return false;
+  }
+
+  int xOffset = x - boundsAt04.left;
+  int rowStride = (boundsAt04.right - boundsAt04.left) >> 3;
+  int byteIndex = (y - boundsAt04.top) * rowStride + (xOffset >> 3);
+  return (maskBytesAt00[byteIndex] & (1 << (xOffset & 7))) != 0;
+}
+
+// Shared nil-pointer assert used by InitializeDiplomacyMinisterActionControlsAndLabels'
+// 6 action-button resolves (0x4f4620, D:\Ambit\Cross\UDiplomacyViews.cpp:0x3a7).
+static inline void AssertActionButtonResolved(void* button) {
+  if (button == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUDiplomacyViews_00696AE0, 0x3a7);
+  }
 }
 // FUNCTION: IMPERIALISM 0x004f3a50
 void __cdecl ClampRectWithinBoundsPreservingSize(RECT* rect, RECT* bounds) {
@@ -320,7 +411,8 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
         ++mask;
       }
     }
-    StreamOverlayHitMaskToSurfaceDib(run, g_pPrimaryRenderSurfaceContext, 1);
+    packedColorRuns[nationIndex].StreamOverlayHitMaskToSurfaceDib(
+        run, g_pPrimaryRenderSurfaceContext, 1);
 
     CString nationName;
     TCountry* nation = g_apTerrainTypeDescriptorTable[nationIndex];
@@ -329,7 +421,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
         short anchorTile = nation->GetOrComputeOverlayAnchorTileIndex();
         int labelCenterX = (anchorTile % 0x6c) * 5 + 0x31;
         int labelY = (anchorTile / 0x6c + 9) * 5;
-        static_cast<TGreatPower*>(nation)->LoadNationDisplayNameSharedRefFromField8(&nationName);
+        nation->LoadNationDisplayNameSharedRefFromField8(&nationName);
         short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&nationName);
         labelY -= 6;
         labelWidths[nationIndex] = textWidth;
@@ -376,6 +468,20 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
         labelRect->right = labelX + textWidth;
         labelRect->bottom = labelY + 0xc;
         ClampRectWithinBoundsPreservingSize(labelRect, &mapViewportRect514);
+
+        CPoint labelProbe(labelCenterX, (anchorTile / 0x6c + 9) * 5 + 8);
+        RECT* hitRect = &nationTextHitRectsC4[nationIndex];
+        hitRect->left = labelCenterX - 8;
+        hitRect->right = labelCenterX + 8;
+        if (PtInRgn(&labelProbe, nationRgn) != 0) {
+          hitRect->top = labelProbe.y;
+          hitRect->bottom = labelProbe.y + 0x10;
+        } else {
+          hitRect->top = labelProbe.y - 0x20;
+          hitRect->bottom = labelProbe.y - 0x10;
+        }
+        ClampRectWithinBoundsPreservingSize(hitRect, &mapViewportRect514);
+
         int markerX = (static_cast<short>(nation->homeTileIndex) % 0x6c) * 5;
         int markerY = (static_cast<short>(nation->homeTileIndex) / 0x6c + 9) * 5;
         RECT* anchorRect = &nationAnchorRects3A4[nationIndex];
@@ -399,9 +505,8 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
   }
 
   for (int tile = 0; tile < 0x180; ++tile) {
-    tileHasOwnerFlags52C[tile] = 0;
     tileHasOwnerFlags52C[tile] =
-        reinterpret_cast<char*>(g_pDiplomacyTurnStateManager)[tile - 0x228] != -1;
+        g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix304[tile] != -1;
     short colX2;
     unsigned short row;
     SplitTileIndexToHexRasterColumnX2AndRow(g_pGlobalMapState->cityScoreTable[tile].cityTileIndex04,
@@ -418,15 +523,6 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
   frameRegionSelectorAt98 = activeNation;
   activeNationC2 = activeNation;
   actionCodeBC = kDipActionInspectNation;
-}
-
-// Shared nil-pointer assert used by InitializeDiplomacyMinisterActionControlsAndLabels'
-// 6 action-button resolves (0x4f4620, D:\Ambit\Cross\UDiplomacyViews.cpp:0x3a7).
-static inline void AssertActionButtonResolved(void* button) {
-  if (button == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUDiplomacyViews_00696AE0, 0x3a7);
-  }
 }
 
 // FUNCTION: IMPERIALISM 0x004f4620

@@ -1115,13 +1115,11 @@ void TCityInteriorMinister::ProcessUnitOrders() {
     }
   }
 
-  TShortintList ownedTiles;
-  ownedTiles.values = static_cast<short*>(realloc(0, ownedTileCount * sizeof(short)));
-  ownedTiles.capacity = ownedTileCount;
+  TShortintList ownedTiles(ownedTileCount);
   for (tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     if (g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].ownerNationTag04 ==
         nationSlot) {
-      ownedTiles.InsertLast(static_cast<short>(tileIndex));
+      ownedTiles.Add(static_cast<short>(tileIndex));
     }
   }
 
@@ -1223,7 +1221,7 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
   int townCount = towns->GetCount();
   for (int ordinal = 1; ordinal <= townCount; ++ordinal) {
     TTown* town = static_cast<TTown*>(towns->GetEntryByOrdinal(ordinal));
-    candidateTiles.InsertLast(town->tileIndex14);
+    candidateTiles.Add(town->tileIndex14);
     short regionSubtype =
         g_pGlobalMapState->terrainStateTable[town->tileIndex14].regionSubtypeTag05;
     for (short direction = 0; direction < 6; ++direction) {
@@ -1232,19 +1230,19 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
           g_pGlobalMapState->terrainStateTable[neighbor].regionSubtypeTag05 == regionSubtype &&
           static_cast<short>(g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04) ==
               ownerContextAt04->nationSlot) {
-        candidateTiles.InsertLast(neighbor);
+        candidateTiles.Add(neighbor);
       }
     }
   }
 
   if (field3c != -1) {
-    candidateTiles.InsertLast(field3c);
+    candidateTiles.Add(field3c);
     for (short direction = 0; direction < 6; ++direction) {
       short neighbor = TMapMgr::GetNeighborTileID(field3c, direction);
       if (neighbor != -1 &&
           static_cast<short>(g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04) ==
               ownerContextAt04->nationSlot) {
-        candidateTiles.InsertLast(neighbor);
+        candidateTiles.Add(neighbor);
       }
     }
   }
@@ -1253,7 +1251,7 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
     if (static_cast<short>(
             g_pGlobalMapState->terrainStateTable[tileIndex].secondaryOwnerNationTag18) ==
         ownerContextAt04->nationSlot) {
-      candidateTiles.InsertLast(tileIndex);
+      candidateTiles.Add(tileIndex);
     }
   }
 
@@ -1268,9 +1266,9 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
     char useHighNibble = order->orderType == EncodeCivilianUnitKind(kCivilianUnitMiner) ||
                          order->orderType == EncodeCivilianUnitKind(kCivilianUnitDriller);
     bool assigned = false;
-    for (unsigned int candidateOrdinal = 0; candidateOrdinal < candidateTiles.count && !assigned;
+    for (int candidateOrdinal = 0; candidateOrdinal < candidateTiles.GetSize() && !assigned;
          ++candidateOrdinal) {
-      short tileIndex = candidateTiles.values[candidateOrdinal];
+      short tileIndex = candidateTiles.GetAt(candidateOrdinal);
       if (g_pGlobalMapState->HasCivilianUnitKindWithOrder(
               tileIndex, order->orderType, EncodeUnitOrder(kUnitOrderDevelopResource))) {
         continue;
@@ -1682,9 +1680,8 @@ void TCityInteriorMinister::StartRailheadProject(short resourceType, TShortintLi
   projectedTown->InitializeTownMarker("Bleah", 0, 1, ownerContextAt04->nationSlot);
   TLongintList* candidateTiles = new TLongintList();
 
-  for (unsigned int ownedTileOrdinal = 0; ownedTileOrdinal < ownedTiles->count;
-       ++ownedTileOrdinal) {
-    short tileIndex = ownedTiles->values[ownedTileOrdinal];
+  for (int ownedTileOrdinal = 0; ownedTileOrdinal < ownedTiles->GetSize(); ++ownedTileOrdinal) {
+    short tileIndex = ownedTiles->GetAt(ownedTileOrdinal);
     TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
     if (tile->regionSubtypeTag05 != -1 ||
         !((primaryDistanceMap[tileIndex] > 0 && primaryDistanceMap[tileIndex] < 9) ||
@@ -1792,10 +1789,10 @@ char* TCityInteriorMinister::CreateSeaDistanceMap(TShortintList* ownedTiles) {
   char* transportMap = 0;
   ownerContextAt04->BuildTransportLinkedInfluenceMap(&transportMap);
 
-  int remaining = ownedTiles->count;
-  unsigned int ordinal;
-  for (ordinal = 0; ordinal < ownedTiles->count; ++ordinal) {
-    short tileIndex = ownedTiles->values[ordinal];
+  int remaining = ownedTiles->GetSize();
+  int ordinal;
+  for (ordinal = 0; ordinal < ownedTiles->GetSize(); ++ordinal) {
+    short tileIndex = ownedTiles->GetAt(ordinal);
     if (transportMap[tileIndex] != 0) {
       distanceMap[tileIndex] = 1;
       --remaining;
@@ -1805,8 +1802,8 @@ char* TCityInteriorMinister::CreateSeaDistanceMap(TShortintList* ownedTiles) {
 
   while (remaining != 0) {
     short previousRemaining = static_cast<short>(remaining);
-    for (ordinal = 0; ordinal < ownedTiles->count; ++ordinal) {
-      short tileIndex = ownedTiles->values[ordinal];
+    for (ordinal = 0; ordinal < ownedTiles->GetSize(); ++ordinal) {
+      short tileIndex = ownedTiles->GetAt(ordinal);
       StrategicTerrainKind terrainKind =
           g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind();
       if (distanceMap[tileIndex] == 0 && allowedTerrain[terrainKind] != 0) {
@@ -1854,10 +1851,10 @@ char* TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates(
 
   char* distanceMap = new char[0x1950];
   memset(distanceMap, 0, 0x1950);
-  int remaining = ownedTiles->count;
-  unsigned int ordinal;
-  for (ordinal = 0; ordinal < ownedTiles->count; ++ordinal) {
-    short tileIndex = ownedTiles->values[ordinal];
+  int remaining = ownedTiles->GetSize();
+  int ordinal;
+  for (ordinal = 0; ordinal < ownedTiles->GetSize(); ++ordinal) {
+    short tileIndex = ownedTiles->GetAt(ordinal);
     TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
     if (tile->regionSubtypeTag05 == -1 && allowedTerrain[tile->GetTerrainKind()] != 0 &&
         g_pGlobalMapState->HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(tileIndex)) {
@@ -1868,8 +1865,8 @@ char* TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates(
 
   while (remaining != 0) {
     short previousRemaining = static_cast<short>(remaining);
-    for (ordinal = 0; ordinal < ownedTiles->count; ++ordinal) {
-      short tileIndex = ownedTiles->values[ordinal];
+    for (ordinal = 0; ordinal < ownedTiles->GetSize(); ++ordinal) {
+      short tileIndex = ownedTiles->GetAt(ordinal);
       StrategicTerrainKind terrainKind =
           g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind();
       if (distanceMap[tileIndex] == 0 && allowedTerrain[terrainKind] != 0) {

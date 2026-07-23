@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include <string.h>
 
 #include "game/TTaskForce.h"
@@ -23,41 +22,6 @@
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/ui_invalidation_guard.h"
-
-namespace {
-
-// Reproduces TZonePrimaryNeighborStretch::EnsureSlotAllocatedAndReturnPointer's
-// (0x00558860) grow-on-access body -- same capacity-doubling realloc primitive
-// TZone.cpp's own EnsureSlotAllocatedAndReturnPointer/EnsureCapacityAtLeast use.
-// OrderSailTowards's candidate-promotion loop below inlines this same
-// primitive at its two call sites (verified against the raw listing: two separate
-// runs of the doubling-realloc sequence, not a CALL to 0x558860); since that call
-// site lives in a different translation unit than TZone.cpp's definition, the
-// inline expansion has to be reproduced locally here to match the emitted code.
-inline TZone** EnsurePrimaryNeighborSlot(TZonePrimaryNeighborStretch& neighbors,
-                                         unsigned int index) {
-  if (static_cast<unsigned int>(neighbors.Capacity()) <= index) {
-    int wanted = static_cast<int>(index) + 1;
-    unsigned int doubledCapacity = static_cast<unsigned int>(wanted * 2);
-    if (doubledCapacity > 0x7fffffffU) {
-      doubledCapacity = 0x7fffffffU;
-    }
-    void* grownBuffer = realloc(neighbors.Data(), wanted * 8);
-    if (grownBuffer == 0) {
-      neighbors.Data() = static_cast<TZone**>(realloc(neighbors.Data(), wanted * 4));
-      neighbors.Capacity() = wanted;
-    } else {
-      neighbors.Data() = static_cast<TZone**>(grownBuffer);
-      neighbors.Capacity() = static_cast<int>(doubledCapacity);
-    }
-  }
-  if (static_cast<unsigned int>(neighbors.Count()) <= index) {
-    neighbors.Count() = static_cast<int>(index) + 1;
-  }
-  return neighbors.Data() + index;
-}
-
-} // namespace
 
 // FUNCTION: IMPERIALISM 0x00536f70
 void TMapOrderChildLinkNode::SetChainActiveFlag(unsigned char flag) {
@@ -597,14 +561,14 @@ void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
     unsigned int index = 0;
     if (current->primaryNeighbors.Count() > 0) {
       do {
-        TZone* candidate = *EnsurePrimaryNeighborSlot(current->primaryNeighbors, index);
+        TZone* candidate = current->primaryNeighbors[index];
         current = target.asZone;
         if (candidate->distanceLevel44 < current->distanceLevel44) {
           // Walk one hop closer to pContextAnchor: promote this neighbor to
           // be the new owner (re-fetches the slot, matching the original's
           // repeated ensure-slot call rather than reusing `candidate`).
           TZone* better = (index < static_cast<unsigned int>(current->primaryNeighbors.Count()))
-                              ? *EnsurePrimaryNeighborSlot(current->primaryNeighbors, index)
+                              ? current->primaryNeighbors[index]
                               : nullptr;
           target.asZone = better;
           break;
@@ -1146,23 +1110,7 @@ int TTaskForce::MouseCodeForTarget(TZone* candidate) const {
     return 0x0d;
   }
   if (candidate->QueryZoneCapabilityFlagE(g_pSimMgr->GetActiveNationId())) {
-    // Ensure the candidate's primaryNeighbors stretch has one allocated slot (double-or-
-    // fallback grow, matching the original's inline realloc), then bump count to 1.
-    if (candidate->primaryNeighbors.Capacity() == 0) {
-      void* grown = realloc(candidate->primaryNeighbors.Data(), 8);
-      if (grown == 0) {
-        candidate->primaryNeighbors.Data() =
-            static_cast<TZone**>(realloc(candidate->primaryNeighbors.Data(), 4));
-        candidate->primaryNeighbors.Capacity() = 1;
-      } else {
-        candidate->primaryNeighbors.Data() = static_cast<TZone**>(grown);
-        candidate->primaryNeighbors.Capacity() = 2;
-      }
-    }
-    if (candidate->primaryNeighbors.Count() == 0) {
-      candidate->primaryNeighbors.Count() = 1;
-    }
-    if (candidate->primaryNeighbors.Data()[0] == activeContext) {
+    if (candidate->primaryNeighbors[0] == activeContext) {
       return 0x0e;
     }
   }

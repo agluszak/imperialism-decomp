@@ -4,22 +4,7 @@ class CString;
 class TSimMgr;
 
 #include "compat.h"
-
-// Growable realloc-backed byte sink with a single virtual appender. Stack-local
-// instances drive the bracket-template flatteners (0x580280 and siblings); the
-// caller frees the handed-out buffer with free(). The original vtable has exactly
-// one slot -- no virtual destructor existed.
-IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
-// VTABLE: IMPERIALISM 0x00662b00
-class TResizableByteSink {
-public:
-  virtual void AppendByteToResizableBuffer(char byteValue); // 0x580460
-  char* buffer4; // 0x04 -- realloc-grown storage (returned to the caller)
-  int capacity8; // 0x08
-  int lengthC;   // 0x0c
-  TResizableByteSink() : buffer4(0), capacity8(0), lengthC(0) {}
-};
-IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
+#include "game/stretch.h"
 
 // 0x580280: flatten `templateText` into a fresh realloc'd buffer, substituting each
 // [N] bracket with tokenN ([Nx] with a lowercase letter routes through

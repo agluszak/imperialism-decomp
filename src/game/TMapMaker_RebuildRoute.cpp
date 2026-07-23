@@ -23,10 +23,7 @@ const char kUMapperPath[] = "D:\\Ambit\\Cross\\UMapper.cpp";
 // at every touch of the border-link table, so reproduce it as a file-local inline helper.
 inline SeaSegment* LinkAt(unsigned int index) {
   SeaSegmentStretch& links = g_regionBorderLinkTable_006a3900;
-  if (index < static_cast<unsigned int>(links.Count())) {
-    return &links.Data()[index];
-  }
-  return nullptr;
+  return links.At(index);
 }
 
 inline bool LinkIsEmpty(const SeaSegment* rec) {
@@ -38,13 +35,7 @@ inline bool LinkIsEmpty(const SeaSegment* rec) {
 // the grow) at the mutating access sites.
 inline SeaSegment* LinkReserve(unsigned int index) {
   SeaSegmentStretch& links = g_regionBorderLinkTable_006a3900;
-  if (index >= static_cast<unsigned int>(links.Capacity())) {
-    links.OverStretch(index + 1);
-  }
-  if (index >= static_cast<unsigned int>(links.Count())) {
-    links.Count() = index + 1;
-  }
-  return &links.Data()[index];
+  return &links[index];
 }
 } // namespace
 
@@ -107,9 +98,9 @@ void TMapMaker::RebuildUMapperRouteRecordsAndActiveMapRects() {
     TZone* contextLo = g_pActiveMapOrderContext->GetMapActionContextEntryByIndex(rec->attr10);
     contextLo->AppendUniquePrimaryNeighbor(contextHi);
     TZone* backLo = g_pActiveMapOrderContext->GetMapActionContextEntryByIndex(
-        links[static_cast<unsigned int>(k)]->attr10);
+        links[static_cast<unsigned int>(k)].attr10);
     TZone* backHi = g_pActiveMapOrderContext->GetMapActionContextEntryByIndex(
-        links[static_cast<unsigned int>(k)]->attr12);
+        links[static_cast<unsigned int>(k)].attr12);
     backHi->AppendUniquePrimaryNeighbor(backLo);
   }
 

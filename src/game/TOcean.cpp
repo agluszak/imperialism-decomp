@@ -259,18 +259,10 @@ void TOcean::ReadFrom(TStream* stream) {
   if (g_nSaveFormatVersion < 0xd) {
     for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
       if (zone->primaryNeighbors.Data() != 0) {
-        void* oldEntries = zone->primaryNeighbors.Data();
-        zone->primaryNeighbors.Data() = 0;
-        zone->primaryNeighbors.Capacity() = 0;
-        zone->primaryNeighbors.Count() = 0;
-        free(oldEntries);
+        free(zone->primaryNeighbors.Detach());
       }
       if (zone->secondaryNeighbors.Data() != 0) {
-        void* oldEntries = zone->secondaryNeighbors.Data();
-        zone->secondaryNeighbors.Data() = 0;
-        zone->secondaryNeighbors.Capacity() = 0;
-        zone->secondaryNeighbors.Count() = 0;
-        free(oldEntries);
+        free(zone->secondaryNeighbors.Detach());
       }
     }
   }
