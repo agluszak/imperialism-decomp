@@ -70,7 +70,7 @@ void TMapMaker::RebuildUMapperRouteRecordsAndActiveMapRects() {
   for (i = 0; i < static_cast<unsigned int>(links.Count()); ++i) {
     if (!LinkIsEmpty(LinkAt(i))) {
       if (LinkAt(i)->attr10 == -1 || LinkAt(i)->attr12 == -1) {
-        if (DAT_006a3914 == 0) {
+        if (g_bOverlayRouteRebuildAssertSuppressed == 0) {
           TemporarilyClearAndRestoreUiInvalidationFlag(kUMapperPath, 0x128f);
         }
       }

@@ -2307,8 +2307,8 @@ int g_mapGenSwampQuota_006a38e0 = 0;
 int g_mapGenRiverCount_006a38e4 = 0;
 
 // One-shot assert-suppression flags for the UMapper overlay passes (0x006a3910/0x006a3914).
-int DAT_006a3910 = 0;
-int DAT_006a3914 = 0;
+int g_bOverlayScanlineFillAssertSuppressed = 0;
+int g_bOverlayRouteRebuildAssertSuppressed = 0;
 
 // Private retail assert guards read by TStream's two diagnostic virtuals. No writer is
 // present in the executable; a zero value takes the McAppStream.cpp assert path.

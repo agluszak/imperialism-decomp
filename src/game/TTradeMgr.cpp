@@ -515,8 +515,7 @@ int TTradeMgr::ComputeNationMetricDispatchScoreAndResolveScale(short sourceSlot,
     }
     return static_cast<int>(static_cast<double>(scoreA * relation) * 0.01);
   }
-  int relation = *reinterpret_cast<short*>(reinterpret_cast<char*>(g_apNationStates[sourceSlot]) +
-                                           0x14 + targetSlot * 2);
+  int relation = g_apNationStates[sourceSlot]->needLevelByNation[targetSlot];
   if (relation == 100) {
     return scoreA;
   }
@@ -561,18 +560,20 @@ void TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short slot
   int i = 1;
   if (0 < count) {
     do {
-      short* entry = reinterpret_cast<short*>(list->GetPtrListEntryByOneBasedIndex(i));
-      int transfer =
-          g_apTerrainTypeDescriptorTable[entry[1]]->SumDiplomacyState1c6AndRelationDeltaSnapshot(
-              slot);
-      bool inPlay = g_pDiplomacyTurnStateManager->IsMajorNationSlot(entry[1]);
-      if ((inPlay != 0) && (g_pDiplomacyTurnStateManager->IsMajorNationSlot(entry[0]) == 0) &&
-          (g_apTerrainTypeDescriptorTable[entry[1]]->GetDiplomacyCounterA2() < transfer)) {
-        transfer = g_apTerrainTypeDescriptorTable[entry[1]]->GetDiplomacyCounterA2();
+      TradeDealEntry* entry = static_cast<TradeDealEntry*>(list->GetPtrListEntryByOneBasedIndex(i));
+      int transfer = g_apTerrainTypeDescriptorTable[entry->targetNationSlot]
+                         ->SumDiplomacyState1c6AndRelationDeltaSnapshot(slot);
+      bool inPlay = g_pDiplomacyTurnStateManager->IsMajorNationSlot(entry->targetNationSlot);
+      if ((inPlay != 0) &&
+          (g_pDiplomacyTurnStateManager->IsMajorNationSlot(entry->sourceNationSlot) == 0) &&
+          (g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetDiplomacyCounterA2() <
+           transfer)) {
+        transfer = g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetDiplomacyCounterA2();
       }
       if (0 < transfer) {
-        g_apTerrainTypeDescriptorTable[entry[0]]->TryDispatchNationActionViaUiContextOrFallback(
-            entry[1], transfer, entry[4], slot);
+        g_apTerrainTypeDescriptorTable[entry->sourceNationSlot]
+            ->TryDispatchNationActionViaUiContextOrFallback(entry->targetNationSlot, transfer,
+                                                            entry->dealAmount08, slot);
       }
       idx = idx + 1;
       i = static_cast<int>(idx);
@@ -610,26 +611,25 @@ void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked() {
     }
     short dispatchIdx = g_aTradeDealCategoryOrder_0066D810[categoryRows[0].resetTransitionFlagA00];
     TDealList* list = categoryRankLists[dispatchIdx];
-    // TDealList entry record layout not yet recovered: entry[0]=source nation slot,
-    // entry[1]=target nation slot, entry[4]=amount-ish field (raw short offsets, matching
-    // the original's own untyped short* walk over the GetPtrListEntryByOneBasedIndex result).
-    short* entry = static_cast<short*>(
+    TradeDealEntry* entry = static_cast<TradeDealEntry*>(
         list->GetPtrListEntryByOneBasedIndex(categoryRows[0].resetTransitionFlagB02));
 
-    int relationDelta =
-        g_apTerrainTypeDescriptorTable[entry[1]]->SumDiplomacyState1c6AndRelationDeltaSnapshot(
-            dispatchIdx);
-    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(entry[1]) != 0 &&
-        g_pDiplomacyTurnStateManager->IsMajorNationSlot(entry[0]) == 0) {
-      if (g_apTerrainTypeDescriptorTable[entry[1]]->GetDiplomacyCounterA2() < relationDelta) {
-        relationDelta = g_apTerrainTypeDescriptorTable[entry[1]]->GetDiplomacyCounterA2();
+    int relationDelta = g_apTerrainTypeDescriptorTable[entry->targetNationSlot]
+                            ->SumDiplomacyState1c6AndRelationDeltaSnapshot(dispatchIdx);
+    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(entry->targetNationSlot) != 0 &&
+        g_pDiplomacyTurnStateManager->IsMajorNationSlot(entry->sourceNationSlot) == 0) {
+      if (g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetDiplomacyCounterA2() <
+          relationDelta) {
+        relationDelta =
+            g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetDiplomacyCounterA2();
       }
     }
 
     if (relationDelta > 0) {
       blocked =
-          g_apTerrainTypeDescriptorTable[entry[0]]->TryDispatchNationActionViaUiContextOrFallback(
-              entry[1], relationDelta, entry[4], dispatchIdx) != 0;
+          g_apTerrainTypeDescriptorTable[entry->sourceNationSlot]
+              ->TryDispatchNationActionViaUiContextOrFallback(
+                  entry->targetNationSlot, relationDelta, entry->dealAmount08, dispatchIdx) != 0;
     } else {
       blocked = false;
     }
@@ -1071,9 +1071,9 @@ TLongintList* TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilte
   if (0 < count) {
     int i = 1;
     do {
-      short* entry = reinterpret_cast<short*>(list->GetPtrListEntryByOneBasedIndex(i));
-      if (entry[1] == filterValue) {
-        node->InsertLast(*entry);
+      TradeDealEntry* entry = static_cast<TradeDealEntry*>(list->GetPtrListEntryByOneBasedIndex(i));
+      if (entry->targetNationSlot == filterValue) {
+        node->InsertLast(entry->sourceNationSlot);
       }
       idx = idx + 1;
       i = static_cast<int>(idx);

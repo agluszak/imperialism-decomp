@@ -5,7 +5,20 @@
 #include "game/mfc.h"
 
 class TStream;
+#include "game/nation_domain_types.h"
+
 class TDealList;
+
+// One TDealList payload record, as the recovered readers walk it: a source/target
+// nation-slot pair and the deal amount forwarded to
+// TCountry::TryDispatchNationActionViaUiContextOrFallback. Words 2 and 3 are not read
+// by any recovered caller.
+struct TradeDealEntry {
+  NationSlot sourceNationSlot; // +0x00
+  NationSlot targetNationSlot; // +0x02
+  short unread04[2];           // +0x04
+  short dealAmount08;          // +0x08
+};
 class TLongintList;
 
 // The nation-interaction / trade-metric manager. Its singleton instance is the global
