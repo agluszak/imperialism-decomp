@@ -1,4 +1,7 @@
 #include "game/TLoadSavePicture.h"
+#include "game/ui_text_label_helpers_decls.h"
+#include "game/TStaticText.h"
+#include "game/TInfoBarText.h"
 #include "game/TAmbitApplication.h"
 #include "game/TWindow.h"
 
@@ -36,9 +39,89 @@ TLoadSavePicture::TLoadSavePicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056bcc0
 void TLoadSavePicture::DoPostCreate(int arg) {
+  loadModeFlag90 = static_cast<unsigned char>(g_nSaveFormatVersion == -2);
+  selectedSlot92 = -1;
   TPicture::DoPostCreate(arg);
-  // The original then sets up the load/save dialog's slot-list controls (2136 bytes) --
-  // not yet ported.
+  BuildUiTextStyleDescriptor(&styleAt94, 1, 0xc, 0x2b68);
+  BuildUiTextStyleDescriptor(&styleAt9e, 0, 0xc, 0x2b6c);
+
+  TInfoBarText* cursorPanel = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs));
+  g_pCursorControlPanel = cursorPanel;
+  cursorPanel->AssertValid();
+  cursorPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b6b);
+  cursorPanel->SetTextAlignmentAndMaybeRefresh(1, 1);
+
+  CString slotPath;
+  CString slotCaption;
+  for (int slot = 0; slot < 8; ++slot) {
+    TStaticText* slotControl =
+        static_cast<TStaticText*>(ResolveControlByTag(0x736c7430u + slot)); // 'slt0'
+    slotControl->AssertValid();
+    const char* savePrefix = (g_pSimMgr->multiplayerSessionRole != 0)
+                                 ? g_pszMultiplayerSavePrefix_0065DDD4
+                                 : g_pszSingleSlotSavePrefix_0065DDD0;
+    CString slotNumberText;
+    slotNumberText.Format(g_szDecimalFormat, slot);
+    slotPath = CString(g_szSaveDirectoryPrefix_00698724) + savePrefix + slotNumberText +
+               g_pszImpSaveExtension_0065DDD8;
+
+    if (TryGetFileMetadataForPath(&slotPath) == 0) {
+      // Empty slot: the save picture offers it, the load picture greys it out.
+      if (loadModeFlag90 != 0) {
+        slotControl->SetEnabled(0, 1);
+        slotControl->SetState(0, 0);
+      } else {
+        slotControl->SetTextFromStringResource(0x2737, 0xd, 1);
+      }
+    } else {
+      slotControl->SetTextAndMaybeRefresh(&slotCaption, 1);
+    }
+    slotControl->InstallTextStyle(styleAt9e, 0);
+  }
+
+  if (loadModeFlag90 != 0) {
+    TPicture* okayControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagOkay));
+    okayControl->AssertValid();
+    okayControl->SetPictureResourceIdAndRefresh(static_cast<short>(okayControl->glyphBase84 + 2),
+                                                0);
+  } else {
+    TView* plateControl = ResolveControlByTag(0x706c6174); // 'plat'
+    plateControl->AssertValid();
+    plateControl->SetEnabled(1, 1);
+    TMapPreviewView* preview =
+        static_cast<TMapPreviewView*>(plateControl->ResolveControlByTag(kControlTagMapP));
+    preview->AssertValid();
+    preview->TakeSatellitePhoto(0);
+    preview->selectedNation68 = g_pSimMgr->GetActiveNationId();
+    preview->EnhancePhoto();
+  }
+
+  RefreshActiveControlThenApplyThemeStyleAndCaption(0x696e666f, 0, 0xc, 0x2b6a, 0, 0); // 'info'
+
+  // Hover-help strings differ between the load and the save picture.
+  if (loadModeFlag90 != 0) {
+    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0xc, this);
+    LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x11, ResolveControlByTag(0x6f74746f));
+    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x14, ResolveControlByTag(kControlTagCncl));
+    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x16, ResolveControlByTag(kControlTagMapP));
+    LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x14, ResolveControlByTag(kControlTagOkay));
+    for (int slot = 0; slot < 8; ++slot) {
+      TView* slotControl = ResolveControlByTag(0x736c7430u + slot);
+      slotControl->AssertValid();
+      LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x12, slotControl);
+    }
+  } else {
+    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0xb, this);
+    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0xb, ResolveControlByTag(0x6f74746f));
+    LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x15, ResolveControlByTag(kControlTagCncl));
+    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x16, ResolveControlByTag(kControlTagMapP));
+    LoadUiStringByGroupAndIndexToControlObject(0x2743, 2, ResolveControlByTag(kControlTagOkay));
+    for (int slot = 0; slot < 8; ++slot) {
+      TView* slotControl = ResolveControlByTag(0x736c7430u + slot);
+      slotControl->AssertValid();
+      LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x16, slotControl);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0056c740
