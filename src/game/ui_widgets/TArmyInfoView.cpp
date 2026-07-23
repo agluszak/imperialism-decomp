@@ -1,9 +1,18 @@
 #include "game/ui_widgets/TArmyInfoView.h"
 #include "game/mfc.h"
 
+#include "game/gfx/ui_invalidation_guard.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
+#include "game/map/TMapMgr.h"
+#include "game/military/mapped_flavor_text.h"
+#include "game/ui_core/TStaticText.h"
 #include "game/ui_screens/CString.h"
+#include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TControl.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_map.h"
 
 // SYNTHETIC: IMPERIALISM 0x00591500
 // TArmyInfoView::CreateObject
@@ -22,28 +31,124 @@ TArmyInfoView::TArmyInfoView() : TPicture() {}
 // FUNCTION: IMPERIALISM 0x00591600
 TArmyInfoView::~TArmyInfoView() {}
 
-// PARTIAL PORT of 0x591620 (1,506 bytes). Everything below is read off the listing:
-// the five CString locals and the four text-style descriptors the label pass uses
-// (0x591684-0x591729). Not yet transcribed: the 'titl'/'lab2'/'lab3' label writes
-// (GetString(0x2744, 0xb..0xd) -> SetTextAndMaybeRefresh -> InstallTextStyle) and the
-// 'whom'/'ords'/'gene' text assembly that formats categoryCounts through
-// g_szDecimalFormat and the ", "/" " separators at 0x695760/0x695794.
 // FUNCTION: IMPERIALISM 0x00591620
 void TArmyInfoView::PopulateFriendlyArmyReportContent(short cityRecordIndex, int* categoryCounts) {
-  (void)cityRecordIndex;
-  (void)categoryCounts;
-  CString whomText;
-  CString ordersText;
-  CString scratchText;
-  CString labelText;
-  CString generalText;
+  CString reportText;
+  CString categoryName;
+  CString countText;
+  int renderedCategoryCount = 0;
+  CString orderTemplate;
+  CString cityName;
 
   TextStyle titleStyle;
-  InitializeUiTextStyleDescriptor(&titleStyle, 0, 0xe, 0x2b67, 1);
   TextStyle bodyStyle;
-  BuildUiTextStyleDescriptor(&bodyStyle, 0, 0xc, 0x2b67);
   TextStyle smallStyle;
-  InitializeUiTextStyleDescriptor(&smallStyle, 0, 0xa, 0x2b67, 3);
   TextStyle smallBoldStyle;
+  char* titleColorBytes = reinterpret_cast<char*>(&titleStyle.textColor);
+  titleColorBytes[0] = 0;
+  titleColorBytes[1] = 0;
+  titleColorBytes[2] = 0;
+  titleColorBytes[3] = 0;
+  char* bodyColorBytes = reinterpret_cast<char*>(&bodyStyle.textColor);
+  bodyColorBytes[0] = 0;
+  bodyColorBytes[1] = 0;
+  bodyColorBytes[2] = 0;
+  bodyColorBytes[3] = 0;
+  char* smallColorBytes = reinterpret_cast<char*>(&smallStyle.textColor);
+  smallColorBytes[0] = 0;
+  smallColorBytes[1] = 0;
+  smallColorBytes[2] = 0;
+  smallColorBytes[3] = 0;
+  char* smallBoldColorBytes = reinterpret_cast<char*>(&smallBoldStyle.textColor);
+  smallBoldColorBytes[0] = 0;
+  smallBoldColorBytes[1] = 0;
+  smallBoldColorBytes[2] = 0;
+  smallBoldColorBytes[3] = 0;
+
+  InitializeUiTextStyleDescriptor(&titleStyle, 0, 0xe, 0x2b67, 1);
+  BuildUiTextStyleDescriptor(&bodyStyle, 0, 0xc, 0x2b67);
+  InitializeUiTextStyleDescriptor(&smallStyle, 0, 0xa, 0x2b67, 3);
   InitializeUiTextStyleDescriptor(&smallBoldStyle, 2, 0xa, 0x2b67, 3);
+
+  TStaticText* control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
+  if (control == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x18fd);
+  }
+  g_pSimMgr->GetString(0x2744, 0xb, &reportText);
+  control->SetTextAndMaybeRefresh(&reportText, 1);
+  control->InstallTextStyle(titleStyle, 0);
+
+  control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLab2));
+  if (control == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x1902);
+  }
+  g_pSimMgr->GetString(0x2744, 0xc, &reportText);
+  control->SetTextAndMaybeRefresh(&reportText, 1);
+  control->InstallTextStyle(bodyStyle, 0);
+
+  control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLab3));
+  if (control == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x1907);
+  }
+  g_pSimMgr->GetString(0x2744, 0xd, &reportText);
+  control->SetTextAndMaybeRefresh(&reportText, 1);
+  control->InstallTextStyle(bodyStyle, 0);
+
+  {
+    CString emptyReport(g_pSmallViewsEmptyText_00662B90);
+    reportText = emptyReport;
+  }
+  for (int categoryIndex = 0; categoryIndex < 10; ++categoryIndex) {
+    int count = categoryCounts[categoryIndex];
+    if (count != 0) {
+      countText.Format(g_szDecimalFormat, count);
+      g_pSimMgr->GetString(0x2726, static_cast<short>(categoryIndex), &categoryName);
+      if (renderedCategoryCount == 0) {
+        CString categoryLine = countText + s_szSpaceSeparator_00695794 + categoryName;
+        reportText = categoryLine;
+      } else {
+        reportText +=
+            g_szListSeparator_00695760 + countText + s_szSpaceSeparator_00695794 + categoryName;
+      }
+      ++renderedCategoryCount;
+    }
+  }
+
+  control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagWhom));
+  if (control == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x191b);
+  }
+  control->SetTextAndMaybeRefresh(&reportText, 1);
+  control->InstallTextStyle(smallStyle, 0);
+
+  control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagGene));
+  if (control == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x1920);
+  }
+  {
+    CString emptyGeneralText(g_pSmallViewsEmptyText_00662B90);
+    control->SetTextAndMaybeRefresh(&emptyGeneralText, 1);
+  }
+  control->InstallTextStyle(smallStyle, 0);
+
+  short cityOwner = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(cityRecordIndex);
+  short activeNation = g_pSimMgr->GetActiveNationId();
+  short orderTemplateIndex = static_cast<short>(cityOwner == activeNation ? 0xa : 0xe);
+  g_pSimMgr->GetString(0x2744, orderTemplateIndex, &orderTemplate);
+  g_pGlobalMapState->AssignCityRecordDisplayName(cityRecordIndex, &cityName);
+  scanBracketExpressions(g_pSimMgr, &reportText, static_cast<LPCSTR>(orderTemplate),
+                         static_cast<LPCSTR>(cityName));
+
+  control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagOrds));
+  if (control == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x192c);
+  }
+  control->SetTextAndMaybeRefresh(&reportText, 1);
+  control->InstallTextStyle(smallStyle, 0);
 }

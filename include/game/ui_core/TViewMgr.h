@@ -213,11 +213,8 @@ public:
   // 0x5de5d0 (ret 0x8). Resolves the turn-event dialog node for message context 0xc1c,
   // marks it via TWindow::SetField84(1) (same idiom as MakePlanetSeedDialog),
   // resolves its 'DLOG'-tagged child control, and forwards cityRecordIndex/
-  // categoryCounts into that control's own (unrecovered) slot-0x1cc dispatch, finally
-  // comparing the dialog's result tag to 'okay'. TODO(port): the 'DLOG'
-  // control's own class/vtable (slot 0x1cc onward) isn't recovered yet; stubbed to the
-  // conservative "not confirmed" default, same posture as
-  // ShowCivilianReportDialogAndReturnConfirm (bd imperialism-decomp-1uj.61).
+  // categoryCounts into TArmyInfoView's slot-0x1cc dispatch, finally comparing the
+  // dialog's result tag to 'okay'.
   bool DispatchProvinceOrderOverlayConfirmDialog(short cityRecordIndex, int* categoryCounts);
 
   // Mac oracle: TViewMgr::MakePlanetSeedDialog(const char*, CStr32&, const char*,

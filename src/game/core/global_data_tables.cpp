@@ -119,6 +119,9 @@ extern const unsigned char g_MapContextStaticTable_00695428[0x20] = {
     0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x0064dc30
 char* g_pBattleReportSharedText_0064dc30 = g_szEmptyString;
+
+// GLOBAL: IMPERIALISM 0x00662b90
+char* g_pSmallViewsEmptyText_00662B90 = g_szEmptyString;
 // Shared text pointer the mini-civ row view (0x4ab970) seeds its control text and
 // assembled-string accumulator from; only the empty-string default is observed so far.
 // GLOBAL: IMPERIALISM 0x0064cb18
