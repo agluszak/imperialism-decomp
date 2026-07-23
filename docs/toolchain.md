@@ -168,6 +168,28 @@ Interpretation:
   experiment by the unweighted average. Fold-awareness belongs in reccmp equivalence
   metadata (bd 5jjn), never in our link flags; the VC5 service-pack axis is bd fh2r.
 
+### VC5 service-pack probe (2026-07-23) — RTM confirmed on three independent axes
+
+Toolchains from github.com/archaic-msvc (`msvc500`, `msvc500sp1`, `msvc500sp2`,
+`msvc500sp3`), probed by bind-mounting each over `C:\msvc` in the stock docker image
+(no image rebuild needed).
+
+- Binary differential: `cl.exe` (driver) is identical in all four; **SP1 and SP2 ship
+  byte-identical compilers/linkers** (c1xx 11.00.7149, LINK 5.02.7132, PE stamps
+  1997-05/06); SP3 is c1xx 11.00.7307 + LINK 5.10.7303 (PE stamps 1997-11-04). RTM is
+  c1xx 11.00.0000-family + LINK 5.00.7022 (1997-01-23).
+- **The retail exe rules out every SP without building anything**: its PE linker-version
+  stamp is 5.0 (SP1/2 stamp 5.2, SP3 stamps 5.10) and its link timestamp is
+  **1997-10-31 — four days before SP3's binaries were even built**.
+- Full-build measurements (pinned `/Oy /Ob1 /OPT:NOREF /OPT:NOICF`) confirm empirically:
+  SP1: exact 3778 -> 3520 (−258), avg −2.26 pp; SP3: exact 3778 -> 3516 (−262),
+  avg −2.26 pp; vtables stay 444/444 in both. The SP compilers change codegen broadly
+  and match strictly worse.
+- Conclusion: **the retail toolchain is VC5 RTM (cl 11.00.7022 / LINK 5.00.7022); keep
+  it.** The "standalone body + inlined users" emission cases are not compiler-version
+  artifacts — they are inherent /Ob1 behavior, to be handled by source placement and
+  equivalence metadata, not by switching toolchains.
+
 ## Experiment: template-emission compiler matrix
 
 Harness: `just template-emission-matrix` (tools/workflow/template_emission_matrix.py
