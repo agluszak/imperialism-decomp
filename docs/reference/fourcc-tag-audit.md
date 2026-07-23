@@ -8,7 +8,7 @@ policy (Mac resource order, read big-endian).
 
 ## Summary
 
-- Tags: 540
+- Tags: 541
 - `generated_resource_manifest_tag`: 67
 - `multiplayer_session_or_message_tag`: 32
 - `ui_tag_app_and_setup_screens`: 57
@@ -16,9 +16,9 @@ policy (Mac resource order, read big-endian).
 - `ui_tag_diplomacy`: 18
 - `ui_tag_military_navy_tactical`: 43
 - `ui_tag_shared`: 144
-- `ui_tag_strategic_map`: 21
+- `ui_tag_strategic_map`: 22
 - `ui_tag_widget_plumbing`: 96
-- Corroborated by the Mac control-tag index: 403 of 540
+- Corroborated by the Mac control-tag index: 404 of 541
 - Violations: 0
 
 ## Violations
@@ -461,6 +461,7 @@ build does not ship.
 | `kControlTagAgr2` | `agr2` | `0x61677232` | `ui_tag_strategic_map` | 1 |
 | `kControlTagAgro` | `agro` | `0x6167726f` | `ui_tag_strategic_map` | 1 |
 | `kControlTagEcon` | `econ` | `0x65636f6e` | `ui_tag_strategic_map` | 1 |
+| `kControlTagGene` | `gene` | `0x67656e65` | `ui_tag_strategic_map` | 1 |
 | `kControlTagGpee` | `gpee` | `0x67706565` | `ui_tag_strategic_map` | 2 |
 | `kControlTagLab1` | `lab1` | `0x6c616231` | `ui_tag_strategic_map` | 4 |
 | `kControlTagLab2` | `lab2` | `0x6c616232` | `ui_tag_strategic_map` | 5 |

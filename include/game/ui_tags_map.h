@@ -20,6 +20,8 @@ const int kControlTagAgro =
 const int kControlTagEcon = IMPERIALISM_FOURCC('e', 'c', 'o', 'n'); // map-editor economy panel
 const int kControlTagGpee =
     IMPERIALISM_FOURCC('g', 'p', 'e', 'e'); // TMapUberPicture.cpp; 2 Mac screen(s)
+const int kControlTagGene =
+    IMPERIALISM_FOURCC('g', 'e', 'n', 'e'); // TArmyInfoView.cpp; Friendly army report
 const int kControlTagLab1 =
     IMPERIALISM_FOURCC('l', 'a', 'b', '1'); // TMapUberPicture.cpp; 4 Mac screen(s)
 const int kControlTagLab2 =

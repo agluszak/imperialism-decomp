@@ -5153,7 +5153,7 @@ address|name|symbol|size|type|prototype|provenance
 591580|TArmyInfoView::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 5915a0|TArmyInfoView::?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@PAU12@@Z||18|function|undefined ?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@PAU12@@Z()|
 5915d0|TArmyInfoView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-591620|TArmyInfoView::IsSelected||1506|function|bool __thiscall IsSelected(short value, bool refreshNow)|
+591620|TArmyInfoView::PopulateFriendlyArmyReportContent||1506|function|void __thiscall PopulateFriendlyArmyReportContent(short cityRecordIndex, int * categoryCounts)|manual_recovery
 591d90|TTransportPicture::CreateObject|?CreateObject@TTransportPicture@@SGPAVCObject@@XZ|139|function|undefined CreateObject()|rtti
 591e50|TTransportPicture::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 591e70|TTransportPicture::?ConstructTTransportPictureBaseState@@YIPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@PAU12@@Z||52|function|undefined ?ConstructTTransportPictureBaseState@@YIPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@PAU12@@Z()|
@@ -8251,6 +8251,7 @@ address|name|symbol|size|type|prototype|provenance
 661a88|TSelectoText::classTSelectoText|||global||
 662960|TSimMgr::classTSimMgr|||global||
 662978|g_anScenarioScriptInstructionTags|||global||
+662b90|g_pSmallViewsEmptyText_00662B90|||global||manual_recovery
 662db8|TArrowsControl::classTArrowsControl|||global||
 662dd0|TSidewaysArrow::classTSidewaysArrow|||global||
 662de8|TUpDownView::classTUpDownView|||global||
