@@ -54,9 +54,10 @@ struct GoldDialogControl : public TPicture {
   virtual void InvokeSlot1D0OneParam(void* content);
 };
 
-// Concrete siblings used by TViewMgr's modal-dispatch slots. They share the
-// TView/TControl prefix but interpret later slots differently, so keeping them
-// separate avoids assigning one caller's signature to every 'GOLD' control.
+// Resolved against g_pDisplayMgr->activeDialog's 'main' child -- i.e. whatever dialog
+// happens to be open -- so there is no single concrete class to look up. Kept separate
+// from the 'DLOG' interfaces so one caller's signature is never assigned to another's
+// control (the "never borrow a type" guardrail).
 struct MainActionControl : public TControl {
   virtual void mainAction71();
   virtual void mainAction72();
