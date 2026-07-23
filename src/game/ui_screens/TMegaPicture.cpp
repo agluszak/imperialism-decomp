@@ -107,7 +107,9 @@ void TMegaPicture::SetPictureResourceIdAndRefresh(short nPictureId, unsigned cha
     loader = *loaderHandle;
     loader->ReleaseBitmapResource();
     loader->flags &= 0xfe;
+    IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
     delete *loaderHandle;
+    IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
     delete loaderHandle;
     UnlockPixels(GetGWorldPixMap(surfaceContext94));
     SetGWorld(savedContext, savedFlags);
