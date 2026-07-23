@@ -1,4 +1,7 @@
 #include "game/TScenarioChooser.h"
+#include <mbstring.h>
+#include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/TLanguageMgr.h"
 
 #include "game/TAmbitApplication.h"
 #include "game/TAssetMgr.h"
@@ -125,9 +128,31 @@ void TScenarioChooser::StartGame() {
   g_pSimMgr->SetDifficultyLevel(nationStateCodesByMapSelection144[mapControl->selectedNation68]);
 
   if (g_pSimMgr->multiplayerSessionRole != 0) {
-    // The original then builds a multiplayer save-slot file path (finding the next unused
-    // numbered slot in a loop), publishes it, and posts turn event 0x5e4 -- not yet
-    // decoded.
+    // Ask for the session's save name until it differs from the one already published,
+    // then normalise it and hand it to the game-flow state with the chosen nation and
+    // the scenario's 'scn0'+index tag before posting event 0x5e4.
+    do {
+      CString proposedName;
+      g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&g_pGameFlowState->playerNameString);
+      g_cstrCountryNameSettingValue006A4220 =
+          g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&g_pGameFlowState->playerNameString);
+      CString promptText;
+      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2742, 3);
+      g_pUiRuntimeContext->MakePlanetSeedDialog(promptText, g_cstrCountryNameSettingValue006A4220,
+                                                0, 0, 0, 0);
+    } while (_mbscmp(reinterpret_cast<const unsigned char*>(
+                         static_cast<LPCSTR>(g_cstrCountryNameSettingValue006A4220)),
+                     reinterpret_cast<const unsigned char*>(g_szEmptyString)) == 0);
+
+    CString qualifiedName = g_pLanguageMgr->PickGender(g_cstrCountryNameSettingValue006A4220);
+    qualifiedName += g_cstrCountryNameSettingValue006A4220;
+    g_cstrCountryNameSettingValue006A4220 = qualifiedName;
+    g_pGameFlowState->playerNameMirror = g_cstrCountryNameSettingValue006A4220;
+    g_pGameFlowState->playerNameString = g_cstrCountryNameSettingValue006A4220;
+    g_pGameFlowState->activeNationTagIndex =
+        static_cast<unsigned char>(mapControl->selectedNation68);
+    g_pGameFlowState->scenarioSelectionTag = 0x73636e30 + selectedScenarioIndex142; // 'scn0'
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5e4);
   } else {
     g_pSimMgr->SetActiveNationSlotAndRefreshCityCapabilityUiHandles(mapControl->selectedNation68);
     for (int i = 0; i < 7; ++i) {

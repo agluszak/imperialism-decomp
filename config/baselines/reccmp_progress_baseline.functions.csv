@@ -4659,7 +4659,7 @@ address|matching|name
 0x57a050|0.6187050359712231|TScenarioChooser::DoEvent
 0x57a2d0|0.6086956521739131|TScenarioChooser::ExitScreen
 0x57a310|1.0|TScenarioChooser::DoKeyEvent
-0x57a350|0.2572614107883817|TScenarioChooser::StartGame
+0x57a350|0.5154061624649859|TScenarioChooser::StartGame
 0x57a6e0|0.10457516339869281|TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore
 0x57ab30|1.0|TScenarioChooser::Free
 0x57ab70|0.5517241379310345|TTextList::CreateObject
