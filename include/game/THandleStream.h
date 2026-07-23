@@ -21,7 +21,13 @@ public:
   int streamPosition;           // +0x08
   int attachedSizeBytes;        // +0x0c
   int growthSize10;             // +0x10
-  bool ownsHandleOrDirty;       // +0x14
+  // +0x14 -- one byte, zeroed by the constructor (0x004895e0 stores CL) and never read
+  // or written anywhere else in the retail image. The previous name asserted an
+  // ownership-or-dirty meaning that no writer, reader, or Mac signature supports, so
+  // the slot stays opaque and explicitly unclassified.
+  // UNRESOLVED_FIELD_ATTRIBUTION: no observed reader; candidate readings (handle
+  // ownership flag, dirty flag) are both unevidenced.
+  unsigned char unclassifiedByte14;
 
   DECLARE_DYNCREATE(THandleStream)
   THandleStream();
