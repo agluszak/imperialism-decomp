@@ -1445,7 +1445,7 @@ address|matching|name
 0x4a1870|1.0|TArmyMgr::TArmyMgr
 0x4a18a0|0.9090909090909091|TArmyMgr::`scalar deleting destructor'
 0x4a18d0|0.5|DestructTArmyMgrAndMaybeFree_Impl
-0x4a18f0|0.8245614035087719|TArmyMgr::InitializeMapContextActionManager
+0x4a18f0|0.8421052631578947|TArmyMgr::InitializeMapContextActionManager
 0x4a1a00|1.0|TArmyMgr::Free
 0x4a1b80|0.5096153846153846|TArmyMgr::ReadFrom
 0x4a1d90|0.14285714285714285|WrapperFor_FreeHeapBufferIfNotNull_At004a1d90
@@ -1519,9 +1519,8 @@ address|matching|name
 0x4a7e70|0.45161290322580644|TArmyStack::AccumulateWeightedMeterAndCountFromEligibleLinkedEntries
 0x4a8040|0.17886178861788618|TArmyStack::ApplyRandomizedMeterDecayToEligibleLinkedEntries
 0x4a82b0|0.25|TArmyStack::ApplyMeterGrowthToEligibleUnits
-0x4a83b0|0.46153846153846156|TArmyStackList::CreateObject
+0x4a83b0|1.0|TArmyStackList::CreateObject
 0x4a8430|1.0|TArmyStackList::GetRuntimeClass
-0x4a8450|1.0|TArmyStackList::TArmyStackList
 0x4a84c0|0.9090909090909091|TArmyStackList::`scalar deleting destructor'
 0x4a84f0|0.1111111111111111|TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0
 0x4a8560|1.0|TArmyStackList::Compare
@@ -3866,7 +3865,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.4645618556701031|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.41591494845360827|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags

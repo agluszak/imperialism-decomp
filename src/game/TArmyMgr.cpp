@@ -1,4 +1,5 @@
 #include "game/TArmyMgr.h"
+#include "game/TArmyStackList.h"
 #include "game/TDialogBehavior.h"
 #include "game/TWindow.h"
 #include "game/TAssetMgr.h"
@@ -157,7 +158,7 @@ TArmyMgr::~TArmyMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004a18f0
 void TArmyMgr::InitializeMapContextActionManager() {
-  pendingUnitPool0c = new TList();
+  pendingUnitPool0c = new TArmyStackList();
   staticTable14 = g_MapContextStaticTable_00695448;
   staticTable18 = g_MapContextStaticTable_00695428;
   needsTerrainRefreshFlag39a = 0;

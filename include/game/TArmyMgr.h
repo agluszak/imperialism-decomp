@@ -179,7 +179,9 @@ public:
   // +0x0c -- a TSortedList (GetCount/GetEntryByOrdinal evidence from
   // FormStacks's ground truth); freed at the top of
   // ClearPendingStacksAndFinalizeMilitaryUnits via FreePayloads.
-  TSortedList* pendingUnitPool0c;
+  // The original ctor installs TArmyStackList's vtable here (0x4a193a), so this is the
+  // sorted stack list, not a plain TSortedList; its payloads are TArmyStack*.
+  class TArmyStackList* pendingUnitPool0c;
   // +0x10 -- one-based stack ordinal initialized by DoCombatMoves and advanced by
   // ResolveNextMove as it walks pendingUnitPool0c.
   int nextStackOrdinal10;

@@ -18,10 +18,10 @@ public:
   // expansion site emits only the base ctor call + vtbl install)
   THighScoresPicture() {}
 
-  // Loaded from Data\scores.dat by DoPostCreate: 10 leading 4-byte score values, then
-  // 10 32-byte score-entry records. The record layout stays raw on purpose: the only
-  // access is the bulk file read, so nothing in the binary reveals its fields (see the
-  // focused follow-up bead).
-  int scoreValues94[10];                  // +0x94
-  unsigned char scoreRecordsBc[10][0x20]; // +0xbc
+  // Loaded from Data\scores.dat by DoPostCreate: ten score values interleaved with ten
+  // 32-byte name records. Draw (0x575460) walks them in lockstep, formatting the value
+  // with "%d" and constructing a CString straight from the record pointer -- so each
+  // record is just a NUL-terminated player name, not a struct.
+  int scoreValues94[10];       // +0x94
+  char scoreNamesBc[10][0x20]; // +0xbc
 };
