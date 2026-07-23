@@ -34,6 +34,21 @@ TPicture::TPicture()
     : TControl(), glyphBase84(-1), reserved86(0), bitmapId(0), resourceNamespaceId(0),
       cachedBitmap(0) {}
 
+// The TControl copy constructor is compiler-generated and inlined here: the listing
+// calls the TView copy constructor (0x48bd30) through ILT 0x4017ad, copies
+// eventNumber60/controlState64/contentInsets68/textStyle78, and installs the TControl
+// vptr (0x64a098) before the TPicture members and vptr (0x64a930).
+// reserved86 is deliberately absent from the member-init list: the original copies
+// 0x84, 0x88 and 0x8c but never writes 0x86.
+// FUNCTION: IMPERIALISM 0x0048f080
+TPicture::TPicture(const TPicture& source)
+    : TControl(source), glyphBase84(source.glyphBase84), bitmapId(source.bitmapId),
+      resourceNamespaceId(source.resourceNamespaceId), cachedBitmap(source.cachedBitmap) {
+  if (glyphBase84 != -1) {
+    g_pModuleLibraryCacheState->IncrementDialogResourceRefCountByShortIdInRegistry(glyphBase84);
+  }
+}
+
 // SYNTHETIC: IMPERIALISM 0x0048f050
 // TPicture::`scalar deleting destructor'
 
@@ -165,15 +180,11 @@ TObject* TPicture::ShallowClone() {
   clone->contentInsets68 = contentInsets68;
   clone->textStyle78 = textStyle78;
   clone->glyphBase84 = glyphBase84;
-  clone->reserved86 = reserved86;
   clone->bitmapId = bitmapId;
   clone->resourceNamespaceId = resourceNamespaceId;
   clone->cachedBitmap = cachedBitmap;
-  if (glyphBase84 != static_cast<short>(0xffff)) {
-    unsigned int packedId =
-        (static_cast<unsigned int>(static_cast<unsigned short>(resourceNamespaceId)) << 16) |
-        static_cast<unsigned int>(static_cast<unsigned short>(glyphBase84));
-    g_pModuleLibraryCacheState->IncrementDialogResourceRefCountByShortIdInRegistry(packedId);
+  if (glyphBase84 != -1) {
+    g_pModuleLibraryCacheState->IncrementDialogResourceRefCountByShortIdInRegistry(glyphBase84);
   }
   return clone;
 }

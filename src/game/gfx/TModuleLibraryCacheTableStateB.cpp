@@ -239,6 +239,16 @@ CDib* TModuleLibraryCacheTableStateB::BuildIndexedBmpResourceById(short bmpId, i
 // and bump its ref count directly. Faithful to the original's manually-inlined hash
 // walk, expressed via the public CMap API (mfc-collections: never walk protected
 // CMap internals).
+//
+// UNRESOLVED_FIELD_ATTRIBUTION: the parameter's width does not agree across the ABI
+// boundary. This body reads `word ptr [ESP+8]` for the lookup but `dword ptr [ESP+8]`
+// as a CacheRecord* on the miss path, while all three call sites push only 16 bits and
+// leave the high half as whatever happened to be in the register: 0x48f080
+// `MOV AX,CX` over EAX=cachedBitmap, 0x48f640 `MOV AX,DX` over EAX=[this+0x88],
+// 0x48f190 `MOV SI,CX` over ESI=this. The likeliest reading is an original ODR
+// mismatch (the caller TU declared a 16-bit id parameter, this TU defined a pointer
+// parameter); until that is proved, the call sites pass the plain short id and the
+// miss path stays modelled as the pointer read it compiles to.
 // FUNCTION: IMPERIALISM 0x0049a0b0
 void TModuleLibraryCacheTableStateB::IncrementDialogResourceRefCountByShortIdInRegistry(
     unsigned int packedKey) {

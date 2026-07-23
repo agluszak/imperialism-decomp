@@ -71,14 +71,26 @@ def _event_value(token: str, vocabulary_by_name: dict[str, int]) -> int:
     return vocabulary_by_name[token] if token.startswith("kTurnEvent") else int(token, 0)
 
 
-def _load_config(repo_root: Path) -> tuple[dict[int, dict], dict[int, str], dict[int, str]]:
+def _load_config(
+    repo_root: Path,
+) -> tuple[dict[int, dict], dict[int, str], dict[int, str], dict[int, dict]]:
     data = yaml.safe_load((repo_root / CONFIG_PATH).read_text(encoding="utf-8"))
     if data.get("format_version") != FORMAT_VERSION:
         raise ValueError(f"{CONFIG_PATH}: unsupported format_version")
     boot = {int(key): dict(value) for key, value in data.get("boot_path", {}).items()}
     names = {int(key): str(value) for key, value in data.get("screen_names", {}).items()}
     gaps = {int(key): str(value) for key, value in data.get("gap_owners", {}).items()}
-    return boot, names, gaps
+    dispositions: dict[int, dict] = {}
+    for key, value in (data.get("non_factory_dispositions") or {}).items():
+        entry = dict(value)
+        missing = [field for field in ("status", "summary", "evidence") if not entry.get(field)]
+        if missing:
+            raise ValueError(
+                f"{CONFIG_PATH}: non_factory_dispositions 0x{int(key):04x} "
+                f"is missing {', '.join(missing)}"
+            )
+        dispositions[int(key)] = entry
+    return boot, names, gaps, dispositions
 
 
 def source_sections(repo_root: Path) -> list[SourceSection]:
@@ -254,7 +266,7 @@ def exit_state_senders(
 
 
 def build_rows(repo_root: Path) -> tuple[list[dict], list[dict], dict]:
-    boot, screen_names, gap_owners = _load_config(repo_root)
+    boot, screen_names, gap_owners, dispositions = _load_config(repo_root)
     vocabulary_by_event, vocabulary_by_name = load_turn_event_vocabulary(repo_root)
     sections = source_sections(repo_root)
     by_address = {section.address: section for section in sections}
@@ -328,6 +340,8 @@ def build_rows(repo_root: Path) -> tuple[list[dict], list[dict], dict]:
             status = "implemented_apparently_unreachable"
         elif senders or dialogs:
             status = "posted_missing_builder"
+            if event in dispositions:
+                status = str(dispositions[event]["status"])
         elif event == 0:
             status = "internal_dispatch"
         else:
@@ -343,6 +357,7 @@ def build_rows(repo_root: Path) -> tuple[list[dict], list[dict], dict]:
                 "status": status,
                 "boot_stage": str(boot_row["stage"]) if boot_row else "",
                 "gap_bead": gap_bead,
+                "disposition": dispositions.get(event, {}),
                 "identities": identities,
                 "factories": factory_rows,
                 "senders": senders,
@@ -350,6 +365,14 @@ def build_rows(repo_root: Path) -> tuple[list[dict], list[dict], dict]:
                 "hooks": hooks.get(event, []),
                 "teardown": teardown.get(event, []),
             }
+        )
+
+    disposed = {row["event"] for row in rows if row["disposition"]}
+    stale = sorted(set(dispositions) - disposed)
+    if stale:
+        raise ValueError(
+            f"{CONFIG_PATH}: non_factory_dispositions no longer apply to "
+            + ", ".join(_hex_event(event) for event in stale)
         )
 
     coverage_rows, coverage_errors = build_coverage_rows(repo_root)
@@ -435,6 +458,29 @@ def render_report(rows: list[dict], mac_complement: list[dict], callbacks: dict)
             f"{_cell(row['identities'])} | {_cell(factories)} | {_cell(senders)} | "
             f"{_cell(row['hooks'])} | {_cell(row['teardown'])} | {boot or '-'} |"
         )
+
+    disposed_rows = [row for row in rows if row["disposition"]]
+    if disposed_rows:
+        lines.extend(
+            (
+                "",
+                "## Non-factory dispositions",
+                "",
+                "Codes that reach the view-factory resolver but are provably not view codes.",
+                "Each one is classified from committed evidence instead of being reported as a",
+                "missing builder.",
+                "",
+                "| Code | Canonical name | Status | Disposition | Evidence |",
+                "| --- | --- | --- | --- | --- |",
+            )
+        )
+        for row in disposed_rows:
+            disposition = row["disposition"]
+            evidence = " ".join(str(disposition["evidence"]).split()).replace("|", "\\|")
+            lines.append(
+                f"| `{_hex_event(row['event'])}` | `{row['vocabulary_name']}` | "
+                f"`{row['status']}` | {disposition['summary']} | {evidence} |"
+            )
 
     lines.extend(
         (

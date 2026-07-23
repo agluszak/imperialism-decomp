@@ -208,7 +208,7 @@ void TViewMgr::HandleGlobalMapNationContextSelection(int nationSlot, int unused)
 // FUNCTION: IMPERIALISM 0x005dd220
 void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
   TWindow* node = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventProvisional1C52));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTownNamesStringList));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x14a);
@@ -328,8 +328,9 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE8(void* selection) {
   activeGold->NotifyGoldControlOfTurnEventCode(
       g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex04);
 
-  TWindow* node = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventProvisional0F0A));
+  TWindow* node =
+      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
+          kTurnEventTacticalMapPictureBase));
   if (node == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1c9);

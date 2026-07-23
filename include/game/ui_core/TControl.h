@@ -74,7 +74,9 @@ public:
   // 0x64 -- enabled/mode state byte: HiliteState's enabledState;
   // THQButton/TUpDownPictureButton also drive a multi-valued "mode" through it.
   unsigned char controlState64;
-  unsigned char padding_65_to_67[3];
+  // 0x65-0x67 is natural alignment padding ahead of contentInsets68, not storage: an
+  // explicit filler member here would make every TControl copy constructor copy it, which
+  // the original copy constructors (e.g. TPicture 0x48f080) demonstrably do not.
   CRect contentInsets68; // 0x68-0x77 -- left/top/right/bottom content insets
                          // (BuildInsetContentRect, TStaticText/TTEView::Draw)
   TextStyle textStyle78; // 0x78-0x81

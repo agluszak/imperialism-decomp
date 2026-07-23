@@ -175,12 +175,6 @@ nested_conversion_reviews:
   eb265394ddb5605a:
     classification: packet_word_extract
     evidence: "the trade code is shifted logically as unsigned before the high word is stored into a signed word packet field."
-  3072d3a3b7d11de2:
-    classification: packed_word_pair
-    evidence: "the resource namespace id is isolated as a word before being shifted into the high half of the packed resource id."
-  0322e75e8c60fe53:
-    classification: packed_word_pair
-    evidence: "the glyph base occupies the low half of the same packed resource id."
   070987d9276298aa:
     classification: narrow_operand_then_narrow_result
     evidence: "TView::frameHeight38 is an int, so the inner cast is a real narrowing to the retail word arithmetic."

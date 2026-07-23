@@ -55,6 +55,12 @@ public:
 
   // Free every owned GDI/heap/mapping resource and zero the state. 0x0047bca0
   void Release();
+  // Release the current state and adopt an already-packed BITMAPINFOHEADER + color table
+  // + pixels block: derives m_paletteCount/m_pixelBytes from the header, points
+  // m_colorTablePixels/m_dibBits into the block, and rebuilds m_hPalette. ownsInfo picks
+  // the disposal mode, hGlobalInfo being the GlobalAlloc handle when there is one.
+  // Always returns 1. 0x0047a8a0
+  BOOL AttachPackedInfoHeader(BITMAPINFO* info, BOOL ownsInfo, HGLOBAL hGlobalInfo);
   // Lazily create the DIB section bitmap into m_hBitmap/m_dibBits. The original takes
   // the CDC (it derefs m_hDC itself, null-tolerant), not a raw HDC. 0x0047ae20
   HBITMAP EnsureDibSectionCreated(CDC* dc);
