@@ -102,7 +102,14 @@ public:
   // and freed (POD operator delete) by Free (0x59fb50).
   short* tileMoveCostArray24;   // +0x24 per-tile move cost (-1 unreached); filled by slot 0x0a
   char* tileThreatLevelArray28; // +0x28 per-tile threat level; filled by slot 0x0b
-  int* tileIntArray2c;          // +0x2c TODO(verify): use not yet observed
+  // +0x2c: the AI's per-tile candidate-score plane. Allocated as tacticalTileCount3c
+  // ints and zero-filled by BuildTacticalBattleStateFromBothSides (0x59fa15/0x59fa29)
+  // and freed by Free (0x59fbaf) -- the only three accesses through a TTacticalBattle*
+  // receiver. Its real writers reach it through TArmyPlayer::battle14:
+  // SelectTacticalTileIndexByColumnPriorityVariantA (0x59bfe0) stores each artillery
+  // candidate's zone-cell score, and SelectBestTacticalTileByWeightedHeuristics
+  // (0x59d530) stores the weighted-heuristic score for every reachable tile.
+  int* tileCandidateScorePlane2c;
   int* tileIntArray30;          // +0x30 advance-distance field (0x5a4460); -1 = unreached
   int battlefieldColumnCount34; // +0x34 playable column count of this battle
   int battleSiteIndex38;        // +0x38 cityScoreTable row of the battle site

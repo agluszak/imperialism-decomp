@@ -5404,7 +5404,7 @@ address|matching|name
 0x5a9d90|0.6282051282051282|TTacArmyView::InitializeBattlefieldView
 0x5aa2e0|0.2909930715935335|TTacArmyView::Draw
 0x5aa670|1.0|TTacticalBattleView::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy
-0x5aa7d0|0.5443786982248521|TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
+0x5aa7d0|0.6012269938650306|TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
 0x5aa900|0.22509780318988865|TTacArmyView::DrawTacticalTileInClipRect
 0x5ac780|0.5161290322580645|TTacticalToolbar::CreateObject
 0x5ac820|1.0|TTacticalToolbar::GetRuntimeClass

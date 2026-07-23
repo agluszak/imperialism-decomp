@@ -158,9 +158,9 @@ void TTacticalBattle::BuildTacticalBattleStateFromBothSides(TTacticalPlayer* our
   for (int threatIdx = 0; threatIdx < tacticalTileCount3c; ++threatIdx) {
     tileThreatLevelArray28[threatIdx] = 0;
   }
-  tileIntArray2c = new int[tacticalTileCount3c];
+  tileCandidateScorePlane2c = new int[tacticalTileCount3c];
   for (int workIdxA = 0; workIdxA < tacticalTileCount3c; ++workIdxA) {
-    tileIntArray2c[workIdxA] = 0;
+    tileCandidateScorePlane2c[workIdxA] = 0;
   }
   tileIntArray30 = new int[tacticalTileCount3c];
   for (int workIdxB = 0; workIdxB < tacticalTileCount3c; ++workIdxB) {
@@ -208,8 +208,8 @@ void TTacticalBattle::Free() {
   if (tileThreatLevelArray28 != 0) {
     delete[] tileThreatLevelArray28;
   }
-  if (tileIntArray2c != 0) {
-    delete[] tileIntArray2c;
+  if (tileCandidateScorePlane2c != 0) {
+    delete[] tileCandidateScorePlane2c;
   }
   if (tileIntArray30 != 0) {
     delete[] tileIntArray30;

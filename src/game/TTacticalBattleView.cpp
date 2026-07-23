@@ -1527,12 +1527,10 @@ void TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(
     ::OffsetRect(rectOut, delta->x, delta->y);
     return;
   }
-  // The else path reads word table 0x695528[unit->unitTypeC] (VERIFIED a repeating
-  // identity-mod-8 table {0..7} x N) and tests "== 8", which can never hold against a
-  // mod-8 read -- the branch is structurally preserved but dead for every table region.
-  // Modeled here as unitTypeC % 8 == 8 (equivalently always-false) pending the same
-  // table-global modeling pass noted above.
-  if (tile->trenchMask10 != 0 && unit->unitTypeC % 8 == 8) {
+  // Demolitionists (unit types 24-26, the only entries whose category code is 8) do not
+  // get a sprite rect on a trenched tile.
+  if (tile->trenchMask10 != 0 && g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC] ==
+                                     EncodeArmyUnitCategory(kArmyUnitCategoryDemolitionist)) {
     rectOut->right = -200;
   }
 }
