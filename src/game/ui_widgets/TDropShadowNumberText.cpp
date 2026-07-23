@@ -1,6 +1,7 @@
 #include "game/ui_widgets/TDropShadowNumberText.h"
 
 #include "game/ui_core/TEditText.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
@@ -30,8 +31,17 @@ TDropShadowNumberText::~TDropShadowNumberText() {}
 // FUNCTION: IMPERIALISM 0x005b59b0
 void TDropShadowNumberText::Draw(RECT* rectBuffer) {
   TEditText::Draw(rectBuffer);
-  // TODO(partial 0x5b59b0): the original then sets the quickdraw color to shadowColorAc
-  // (0x495030), formats the value CString via the text virtuals, and draws it offset by
-  // one pixel before the normal pass. Ported as an honest partial pending the cached
-  // text-engine class recovery (docs/TODO.md).
+  SetQuickDrawColorAndPropagateIfChanged(shadowColorAc);
+  CString shadowText;
+  GetCurrentText(&shadowText);
+  CRect shadowRect;
+  BuildInsetContentRect(&shadowRect);
+  // Decremented field by field: the original inlines four DECs (0x5b5a1e-0x5b5a3d)
+  // rather than calling CRect::OffsetRect, which in MSVC500's MFC forwards to the
+  // USER32 ::OffsetRect import.
+  shadowRect.top--;
+  shadowRect.bottom--;
+  shadowRect.left--;
+  shadowRect.right--;
+  DrawTextAligned((LPCSTR)shadowText, shadowText.GetLength(), &shadowRect, textAlignmentCode);
 }

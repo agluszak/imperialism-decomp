@@ -154,6 +154,69 @@ CPoint* CDib::CopyBitmapDimensionsToPoint(CPoint* out) {
   return out;
 }
 
+// FUNCTION: IMPERIALISM 0x0047a8a0
+BOOL CDib::AttachPackedInfoHeader(BITMAPINFO* info, BOOL ownsInfo, HGLOBAL hGlobalInfo) {
+  Release();
+  m_hGlobalInfo = hGlobalInfo;
+  if (ownsInfo == 0) {
+    m_infoOwnMode = kDibInfoNotOwned;
+  } else {
+    m_infoOwnMode = (hGlobalInfo != NULL) ? kDibInfoOwnedGlobalHandle : kDibInfoOwnedByteArray;
+  }
+
+  m_pInfoHeader = info;
+  // The switch selector is read ahead of the null test, exactly as the original does
+  // (the load at 0x47a8d4 precedes the `test eax,eax` at 0x47a8d8), and it dies inside
+  // the switch -- the pixel-size arithmetic below re-reads biBitCount rather than
+  // keeping this value alive in a second register.
+  unsigned int bitCount = info->bmiHeader.biBitCount;
+  // Same palette-entry-count table as the (width, height, bitDepth) constructor; an
+  // unlisted depth leaves m_paletteCount at whatever Release() left behind.
+  if (info == NULL || info->bmiHeader.biClrUsed == 0) {
+    switch (bitCount) {
+    case 1:
+      m_paletteCount = 2;
+      break;
+    case 4:
+      m_paletteCount = 0x10;
+      break;
+    case 8:
+      m_paletteCount = 0x100;
+      break;
+    case 0x10:
+    case 0x18:
+    case 0x20:
+      m_paletteCount = 0;
+      break;
+    }
+  } else {
+    m_paletteCount = info->bmiHeader.biClrUsed;
+  }
+
+  m_pixelBytes = info->bmiHeader.biSizeImage;
+  if (m_pixelBytes == 0) {
+    unsigned int rowBits =
+        info->bmiHeader.biWidth * static_cast<unsigned int>(info->bmiHeader.biBitCount);
+    unsigned int rowDwords = rowBits >> 5;
+    if ((rowBits & 0x1f) != 0) {
+      rowDwords = rowDwords + 1;
+    }
+    unsigned int rowBytes = rowDwords * 4;
+    int rows = info->bmiHeader.biHeight;
+    if (rows < 1) {
+      rows = -rows;
+    }
+    m_pixelBytes = rowBytes * rows;
+  }
+
+  int paletteCount = m_paletteCount;
+  RGBQUAD* colorTable = info->bmiColors;
+  m_colorTablePixels = colorTable;
+  m_dibBits = &colorTable[paletteCount];
+  BuildPaletteFromRgbQuadBuffer();
+  return 1;
+}
+
 // FUNCTION: IMPERIALISM 0x0047aa00
 UINT CDib::SelectAndRealizeDibPalette(CDC* dc, BOOL background) {
   if (m_hPalette == NULL) {

@@ -25,6 +25,7 @@ public:
   CDib* cachedBitmap;        // 0x8c
 
   TPicture();
+  TPicture(const TPicture& source); // 0x48f080
 
   // TPicture-family clone of TView::InitializeUiResourceEntryFrameAndParent: seeds the
   // frame/parent base fields, attaches to the panel, and loads the picture resource via

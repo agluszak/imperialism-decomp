@@ -30,7 +30,7 @@ class TurnEventCoverageTests(unittest.TestCase):
         self.assertTrue(all(name.startswith("kTurnEvent") for name in names))
         self.assertEqual(self.by_event[0x05DC]["vocabulary_name"], "kTurnEventMainMenu")
         self.assertEqual(self.by_event[0x07DD]["vocabulary_name"], "kTurnEventStrategicMap")
-        self.assertEqual(self.by_event[0x0F0A]["vocabulary_name"], "kTurnEventProvisional0F0A")
+        self.assertEqual(self.by_event[0x0F0A]["vocabulary_name"], "kTurnEventTacticalMapPictureBase")
 
     def test_core_screen_factories_and_hooks_are_joined(self) -> None:
         self.assertEqual(self.by_event[0x5DC]["boot_stage"], "main_menu")
@@ -48,8 +48,16 @@ class TurnEventCoverageTests(unittest.TestCase):
     def test_missing_builders_have_follow_up_owners(self) -> None:
         missing = [row for row in self.rows if row["status"] == "posted_missing_builder"]
 
-        self.assertEqual({row["event"] for row in missing}, {0x0F0A, 0x1C52})
-        self.assertTrue(all(row["gap_bead"] for row in missing))
+        self.assertEqual(missing, [])
+
+    def test_non_factory_dispositions_carry_evidence(self) -> None:
+        disposed = {row["event"]: row for row in self.rows if row["disposition"]}
+
+        self.assertEqual(set(disposed), {0x0F0A, 0x1C52})
+        for event, row in disposed.items():
+            self.assertEqual(row["status"], "foreign_resource_domain")
+            self.assertFalse(row["gap_bead"], f"0x{event:04x} still carries a gap bead")
+            self.assertIn("0x", row["disposition"]["evidence"])
 
     def test_all_mac_views_remain_accounted_for(self) -> None:
         generated_resources = {

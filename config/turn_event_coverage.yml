@@ -24,6 +24,36 @@ screen_names:
   0x2103: newspaper_status
   0x2260: deal_book
 
-gap_owners:
-  0x0f0a: imperialism-decomp-1uj.58.13
-  0x1c52: imperialism-decomp-1uj.58.14
+gap_owners: {}
+
+# Codes that reach the view-factory resolver but are provably not view codes.
+# Each entry replaces the `posted_missing_builder` classification with an
+# explicit, evidence-backed disposition; the evidence must name the addresses it
+# rests on.  Do not add an entry here to silence an unexplained gap -- absence of
+# a factory case alone is NOT evidence (many working screens, e.g. the Minister
+# books 0x22e2..0x25f8, are built through other dispatch paths entirely).
+non_factory_dispositions:
+  0x0f0a:
+    status: foreign_resource_domain
+    summary: tactical-map PICT base id handed to the view resolver by a dead slot
+    evidence: >-
+      No registered factory owns 0x0f0a (all 17 startup factory switch chains
+      enumerated; the tactical factory 0x45b100 that owns the neighbouring
+      0x0ed8/0x0eed/0x0f19 ends at XOR EAX,EAX/RET), and the resolver chain
+      0x5df3c0 -> 0x491c80 -> 0x491d80 -> 0x491cc0 has no resource fallback.
+      0x0f0a is a picture id: InitializeBattlefieldView 0x5a9eaa forms picture
+      ids as index + 0xf0a, matching Mac PICT 3850 "Tactical Map 001"
+      (TacMaps.rsrc).  Its only consumer,
+      TViewMgr::HandleTurnEventDialogFactorySlotE8 (0x5dd770), has zero code
+      xrefs.
+  0x1c52:
+    status: foreign_resource_domain
+    summary: town-name STR# list id handed to the view resolver by a dead slot
+    evidence: >-
+      No registered factory owns 0x1c52 (same enumeration as 0x0f0a; the MapView
+      factory 0x43dbc0 that owns the neighbouring 0x1c20 does not reach it).
+      0x1c52 is a string-list id: DoPostCreate 0x51bc1a pushes a random 1..8
+      index and 0x1c52 into a (listId, index) text setter, matching Mac STR# 7250
+      "Town names" (Linger.rsrc, Trade.rsrc).  Its only consumer,
+      TViewMgr::HandleTurnEventDialogFactorySlotE4 (0x5dd220), has zero code
+      xrefs.
