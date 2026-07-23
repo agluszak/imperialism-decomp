@@ -5597,8 +5597,8 @@ address|name|symbol|size|type|prototype|provenance
 5aeb90|TTaskList::ConstructTaskListBaseState||77|function|undefined ConstructTaskListBaseState()|
 5aec00|TTaskList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5aec30|TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30||62|function|undefined WrapperFor_DestructCPtrListBaseState_At005aec30()|
-5aec80|InitializeCityProductionState_Impl_At005aec80||1|function|undefined InitializeCityProductionState_Impl_At005aec80()|
-5aeca0|DispatchCityProductionQueueCommand||13|function|void __thiscall DispatchCityProductionQueueCommand(void * pCommandQueue)|
+5aec80|TTaskList::ITaskList||1|function|void __thiscall ITaskList()|listing+mac-convention
+5aeca0|TTaskList::Insert||13|function|void __thiscall Insert(void * task)|listing+mac-symbol
 5aecc0|OrphanCallChain_C6_I47_005aecc0||98|function|undefined OrphanCallChain_C6_I47_005aecc0()|
 5aed50|TTaskList::ContainsTask||92|function|unsigned char __thiscall ContainsTask(short citySlotIndex)|listing+mac-symbol
 5aef00|WrapperFor_ftol_At005aef00||30|function|undefined WrapperFor_ftol_At005aef00()|

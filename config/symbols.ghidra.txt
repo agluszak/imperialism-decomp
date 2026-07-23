@@ -6274,8 +6274,8 @@ TTaskList::GetRuntimeClass 5AEB70 f
 TTaskList::TTaskList 5AEB90 f
 TTaskList::'scalar_deleting_destructor' 5AEC00 f
 TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30 5AEC30 f
-InitializeCityProductionState_Impl_At005aec80 5AEC80 f
-DispatchCityProductionQueueCommand 5AECA0 f
+TTaskList::ITaskList 5AEC80 f
+TTaskList::Insert 5AECA0 f
 OrphanCallChain_C6_I47_005aecc0 5AECC0 f
 TTaskList::ContainsTask 5AED50 f
 WrapperFor_ftol_At005aef00 5AEF00 f

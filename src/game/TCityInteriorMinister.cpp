@@ -513,7 +513,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
     if (amount > 0 && commandQueue->ContainsTask(0x35) == 0) {
       task = new TCityTask();
       task->InitializeCityProductionQueueCommand(0x35, city, amount);
-      commandQueue->AddTail(task);
+      commandQueue->Insert(task);
     }
   }
 
@@ -522,7 +522,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
     if (amount > 0 && commandQueue->ContainsTask(0x37) == 0) {
       task = new TCityTask();
       task->InitializeCityProductionQueueCommand(0x37, city, amount);
-      commandQueue->AddTail(task);
+      commandQueue->Insert(task);
     }
   }
 
@@ -532,7 +532,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
     if (amount > 0 && commandQueue->ContainsTask(0x39) == 0) {
       task = new TCityTask();
       task->InitializeCityProductionQueueCommand(0x39, city, amount);
-      commandQueue->AddTail(task);
+      commandQueue->Insert(task);
     }
   }
 
@@ -541,7 +541,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
     if (amount > 0 && commandQueue->ContainsTask(0x36) == 0) {
       task = new TCityTask();
       task->InitializeCityProductionQueueCommand(0x36, city, amount);
-      commandQueue->AddTail(task);
+      commandQueue->Insert(task);
     }
   }
 
@@ -550,7 +550,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
     if (amount > 0 && commandQueue->ContainsTask(0x38) == 0) {
       task = new TCityTask();
       task->InitializeCityProductionQueueCommand(0x38, city, amount);
-      commandQueue->AddTail(task);
+      commandQueue->Insert(task);
     }
   }
 
@@ -559,7 +559,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
     if (amount > 0 && commandQueue->ContainsTask(0x3a) == 0) {
       task = new TCityTask();
       task->InitializeCityProductionQueueCommand(0x3a, city, amount);
-      commandQueue->AddTail(task);
+      commandQueue->Insert(task);
     }
   }
 }
@@ -588,7 +588,7 @@ void TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit(
   if (amount > 0) {
     TCityTask* task = new TCityTask();
     task->InitializeCityProductionQueueCommand(0x33, city, amount);
-    commandQueue->AddTail(task);
+    commandQueue->Insert(task);
   }
 }
 
@@ -635,7 +635,7 @@ void TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders(
       TCityTask* task = new TCityTask();
       task->InitializeCityProductionQueueCommand(static_cast<short>(queuedBuildingSlot + 0x35),
                                                  city, commandCounts[queuedBuildingSlot]);
-      commandQueue->AddTail(task);
+      commandQueue->Insert(task);
     }
   }
 }
@@ -682,7 +682,7 @@ void TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio(
 
   TCityTask* task = new TCityTask();
   task->InitializeCityProductionQueueCommand(command, city, amount);
-  commandQueue->AddTail(task);
+  commandQueue->Insert(task);
 }
 
 // FUNCTION: IMPERIALISM 0x004c04e0
@@ -691,7 +691,7 @@ void TCityInteriorMinister::QueueRandomCityProductionCommand19To1C(TCity* city,
   short command = static_cast<short>(rand() % 4 + 0x19);
   TCityTask* task = new TCityTask();
   task->InitializeCityProductionQueueCommand(command, city, 1);
-  commandQueue->AddTail(task);
+  commandQueue->Insert(task);
 }
 
 // FUNCTION: IMPERIALISM 0x004c05a0
@@ -706,7 +706,7 @@ void TCityInteriorMinister::QueueShipProductionCommandIfMissing(TCity* city,
 
   TShipBuildingTask* task = new TShipBuildingTask();
   task->InitializeShipProductionQueueTask(0x2b, city, pendingShipType32);
-  commandQueue->AddTail(task);
+  commandQueue->Insert(task);
   pendingShipType32 = 0;
 }
 
@@ -716,7 +716,7 @@ void TCityInteriorMinister::QueuePendingRecruitmentProductionCommand(TCity* city
   short command = static_cast<short>(pendingRecruitmentCommandIndex36 + 0x22);
   TCityTask* task = new TCityTask();
   task->InitializeCityProductionQueueCommand(command, city, 1);
-  commandQueue->AddTail(task);
+  commandQueue->Insert(task);
   pendingRecruitmentCommandIndex36 = -1;
 }
 
@@ -726,7 +726,7 @@ void TCityInteriorMinister::QueuePendingUnitProductionCommand(TCity* city,
   short command = static_cast<short>(pendingUnitCommandIndex38 + 0x19);
   TCityTask* task = new TCityTask();
   task->InitializeCityProductionQueueCommand(command, city, 1);
-  commandQueue->AddTail(task);
+  commandQueue->Insert(task);
   pendingUnitCommandIndex38 = -1;
 }
 
@@ -972,7 +972,7 @@ short TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls(
           inputResourceType, city,
           static_cast<short>(citySummary[inputResourceType] -
                              city->CityStockByType(inputResourceType)));
-      commandQueue->AddTail(task);
+      commandQueue->Insert(task);
     }
     city->CityStockByType(inputResourceType) =
         static_cast<short>(city->CityStockByType(inputResourceType) - amount);
