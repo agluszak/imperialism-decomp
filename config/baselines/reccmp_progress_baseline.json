@@ -1,5 +1,5 @@
 {
-  "avg_matching_pct": 74.98119765608048,
+  "avg_matching_pct": 74.99308809480254,
   "compared_fun_count": 7582,
   "coverage_pct": 97.2051282051282,
   "dat_orig_only_count": 1600,
@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
-  "git_branch": "agent/ui-gap-and-98x",
-  "git_commit": "2316973c1e0e72c4e64c01358d0b129648e7013c",
-  "git_commit_date": "2026-07-23T10:29:22+02:00",
+  "git_branch": "new-beads",
+  "git_commit": "39efc1808646dfdc557b75753f8ea3d1c413f6d9",
+  "git_commit_date": "2026-07-23T11:49:53+02:00",
   "global_coverage_pct": 24.504836480884386,
   "global_orig_only_count": 8195,
   "global_recomp_only_count": 7724,
@@ -62,7 +62,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-23T08:40:08+00:00",
+  "timestamp_utc": "2026-07-23T10:36:24+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }

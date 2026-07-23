@@ -2449,7 +2449,7 @@ address|matching|name
 0x4e4630|0.6666666666666666|TMinor::SumDiplomacyState1c6AndRelationDeltaSnapshot
 0x4e4660|1.0|TMinor::GetDiplomacyExternalStateByTarget
 0x4e4680|1.0|TMinor::QueryNationMetricBySlot7C
-0x4e46a0|0.04|TMinor::RebuildDiplomacyEconomicPressureFromMapState
+0x4e46a0|0.949438202247191|TMinor::RebuildDiplomacyEconomicPressureFromMapState
 0x4e49b0|0.265625|TMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals
 0x4e4bd0|0.7104477611940299|TMinor::SeedRandomDiplomacyPolicyThresholds
 0x4e4ee0|0.3783783783783784|TMinor::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget
@@ -3303,7 +3303,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::MapGenPassSlot0E
 0x527730|0.29577464788732394|TMapMaker::MapGenPassSlot0F
-0x527d00|0.43478260869565216|TMapMaker::CreateRivers
+0x527d00|0.4268774703557312|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
