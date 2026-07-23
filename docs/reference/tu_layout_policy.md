@@ -29,3 +29,18 @@ Rules:
 `config/tu_layout_allowlist.csv` is pipe-separated (`file|kind|reason`) and is
 consumed by the structure-audit gate; every `TClassName_*.cpp` split and every
 multi-class family file must have a row there, or the gate flags it.
+
+## Allowlist kinds
+
+`config/tu_layout_allowlist.csv` (`file|kind|reason|classes`) records every
+deliberate exception, consumed by the structure-audit gate's cross-file
+ownership rule:
+
+- `family_module` — a closed sibling set sharing one file (personality modules,
+  sea_geometry, TTemplateDialogs). Any class's claims are allowed in the file.
+- `companion_record` — file-private helper records whose only methods serve the
+  file's main class; the `classes` column names exactly which classes are
+  allowed there.
+- `split_exception` — a `ClassName_<part>.cpp` TU kept separate for a
+  demonstrated codegen/pairing reason (recorded in the reason column and the
+  file header). The class must still be the pre-underscore base name.

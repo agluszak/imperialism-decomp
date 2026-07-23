@@ -28,12 +28,16 @@ today (the tree is green behind each):
       packet unification and the RelationshipRankEntry/TScopedWaitCursor twins
       are the precedent). Define the record once in a header.
 
-Deferred rules from the bead, to be enabled as their sibling cleanups land (each
-has its own gate today or is blocked on another bead):
-  (5) class-method claims whose owner differs from the filename, minus an
-      allowlist (needs the 8mo.13 family/TU-split allowlist + tools.source_model);
+  (5) cross-file ownership — a `// FUNCTION:` claim in `src/game/X.cpp` whose
+      declared class is neither `X` nor `X`'s pre-underscore base must be covered
+      by `config/tu_layout_allowlist.csv`: `family_module` rows allow any class,
+      `companion_record` rows allow the classes named in their `classes` column,
+      `split_exception` rows cover the ClassName_<part>.cpp form (Hard Rule 7 +
+      the 8mo.14 TU-layout policy, docs/reference/tu_layout_policy.md).
+
+Not duplicated here:
   (6) `// slot ... inherited unchanged` listing comments — already enforced by
-      `just generated-marker-gate`, so not duplicated here.
+      `just generated-marker-gate`.
 
 File-size limits are WARNINGS only and never hard failures: TUs over
 SIZE_WARN_LINES lines are listed informationally (split candidates tracked in
@@ -138,7 +142,51 @@ def is_annotation_only_tu(text: str) -> bool:
 
 SIZE_WARN_LINES = 2000
 
+ALLOWLIST_PATH = "config/tu_layout_allowlist.csv"
+
 STRUCT_DEF_RE = re.compile(r"^(?:typedef\s+)?struct\s+(\w+)\s*(?::[^{;]*)?\{", re.M)
+
+
+def load_tu_layout_allowlist(repo_root: Path) -> dict[str, tuple[str, set[str]]]:
+    """file -> (kind, allowed companion classes)."""
+    allow: dict[str, tuple[str, set[str]]] = {}
+    path = repo_root / ALLOWLIST_PATH
+    if not path.is_file():
+        return allow
+    from tools.common.pipe_csv import read_pipe_rows
+
+    for row in read_pipe_rows(path):
+        classes = set((row.get("classes") or "").split(";")) - {""}
+        allow[row["file"]] = (row["kind"], classes)
+    return allow
+
+
+CLAIM_CLASS_RE = re.compile(r"\b(\w+)::")
+
+
+def ownership_offenders(repo_root: Path) -> list[str]:
+    """Rule (5): cross-file class-method claims not covered by the allowlist."""
+    from tools.source_model import scan_marker_claims
+
+    allow = load_tu_layout_allowlist(repo_root)
+    offenders = []
+    for claim in scan_marker_claims(repo_root, "IMPERIALISM"):
+        if claim.kind != "FUNCTION" or not claim.file.startswith("src/game/"):
+            continue
+        m = CLAIM_CLASS_RE.search(claim.prototype or "")
+        if not m:
+            continue
+        cls = m.group(1)
+        stem = Path(claim.file).stem
+        if cls in (stem, stem.split("_")[0]):
+            continue
+        kind, classes = allow.get(claim.file, ("", set()))
+        if kind == "family_module":
+            continue
+        if kind == "companion_record" and cls in classes:
+            continue
+        offenders.append(f"{claim.file}:{claim.line}: {cls}::{claim.name}")
+    return sorted(offenders)
 
 
 def tu_struct_definitions(text: str) -> list[str]:
@@ -204,6 +252,7 @@ def main() -> int:
         annotation_offenders,
         twin_offenders,
     ) = collect_offenders(args.paths, repo_root)
+    owner_offenders = ownership_offenders(repo_root)
 
     # Size WARNINGS (never affect the exit code; split candidates live in 8mo.15).
     oversized = []
@@ -218,11 +267,18 @@ def main() -> int:
             print(f"    {lines:6d}  {rel}")
 
     if not any(
-        (dup_offenders, crlf_offenders, alias_offenders, annotation_offenders, twin_offenders)
+        (
+            dup_offenders,
+            crlf_offenders,
+            alias_offenders,
+            annotation_offenders,
+            twin_offenders,
+            owner_offenders,
+        )
     ):
         print(
             "Structure-audit gate passed (no duplicate includes, no CRLF, no alias headers, "
-            "no annotation-only TUs, no cross-TU struct twins)."
+            "no annotation-only TUs, no cross-TU struct twins, no unallowed cross-file claims)."
         )
         return 0
 
@@ -254,6 +310,14 @@ def main() -> int:
         for line in twin_offenders:
             print(f"    - {line}")
         print("Define the record once in a shared header; twin declarations silently drift.")
+    if owner_offenders:
+        print(f"  cross-file class-method claims not in the TU-layout allowlist ({len(owner_offenders)}):")
+        for line in owner_offenders:
+            print(f"    - {line}")
+        print(
+            "Move the method to its owner's ClassName.cpp, or record the file in "
+            "config/tu_layout_allowlist.csv (see docs/reference/tu_layout_policy.md)."
+        )
     return 1
 
 
