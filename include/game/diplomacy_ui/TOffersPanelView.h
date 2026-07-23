@@ -1,6 +1,7 @@
 #pragma once
 
 #include "compat.h"
+#include "game/ui_tags_common.h"
 #include "game/app/TPanelView.h"
 #include "game/mfc.h"
 

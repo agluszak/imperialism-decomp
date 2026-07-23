@@ -1,4 +1,5 @@
 #include "game/gfx/TAmbitFileBasedDocument.h"
+#include "game/ui_tags_widgets.h"
 
 #include "game/GameAssert.h"
 #include "game/app/TAnimator.h"
@@ -58,7 +59,7 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
   stream->ReadBytes(g_ScenarioSaveNameBuffer_006A2178, 0x20);
 
   bool invalidSaveFile = false;
-  if (fileMagic != 0x414d4249) {
+  if (fileMagic != kControlTagAMBI) {
     CString message;
     g_pSimMgr->GetString(0x2737, 7, &message);
     g_pUiRuntimeContext->ModalMessage(message, g_ptSaveLoadErrorModalMessage, 2, 0);

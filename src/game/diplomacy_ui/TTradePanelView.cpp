@@ -1,4 +1,6 @@
 #include "game/diplomacy_ui/TTradePanelView.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_diplomacy.h"
 
 #include "game/ui_screens/CString.h"
 #include "game/ui_core/TCluster.h"
@@ -92,9 +94,9 @@ void TTradePanelView::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x004f8d50
 void TTradePanelView::Setup() {
-  TCluster* tradeCluster = static_cast<TCluster*>(ResolveControlByTag(0x636c7573)); // 'clus'
+  TCluster* tradeCluster = static_cast<TCluster*>(ResolveControlByTag(kControlTagClus)); // 'clus'
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), tradeCluster);
-  tradeCluster->SetSelectedChildTagAndRefresh(0x74726161); // 'traa'
+  tradeCluster->SetSelectedChildTagAndRefresh(kControlTagTraa); // 'traa'
   diplomacyMapView60->selectedGrantRowC0 = 0;
   diplomacyMapView60->actionCodeBC = kDipActionTradeSubsidy;
 }
@@ -102,10 +104,10 @@ void TTradePanelView::Setup() {
 // FUNCTION: IMPERIALISM 0x004f8dd0
 void TTradePanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
-    if (sourceHandler->controlTag == 0x6c696e6b) { // 'link'
+    if (sourceHandler->controlTag == kControlTagLink) { // 'link'
       diplomacyMapView60->actionCodeBC = kDipActionLinkTradePolicy;
     } else {
-      int tradeRow = sourceHandler->controlTag - 0x74726161; // 'traa'
+      int tradeRow = sourceHandler->controlTag - kControlTagTraa; // 'traa'
       diplomacyMapView60->selectedGrantRowC0 = static_cast<short>(tradeRow);
       short threshold = g_awDiplomacyTradePolicyIconValueTable[tradeRow];
       if (threshold == 300) {

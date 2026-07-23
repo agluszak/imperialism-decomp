@@ -1,4 +1,5 @@
 #include "game/city_ui/TBuildingConstructionView.h"
+#include "game/ui_tags_common.h"
 
 #include "game/city/TCity.h"
 #include "game/city_ui/TCityProductionView.h"
@@ -36,14 +37,14 @@ void TBuildingConstructionView::DoClosingAction(unsigned long dialogActionTag) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x519);
     }
-    if (dialogActionTag == 0x6f6b6179) { // 'okay'
+    if (dialogActionTag == kControlTagOkay) { // 'okay'
       short previousBuildingType = static_cast<short>(city90->GetBuildingType(buildingSlotId94));
       order->SetQuantity(static_cast<short>(city90->GetMaxBuildingCapacity(buildingSlotId94) -
                                             previousBuildingType));
     } else if (order->quantityField04 > 0) {
       order->SetQuantity(0);
     }
-  } else if (dialogActionTag == 0x6f6b6179) { // 'okay'
+  } else if (dialogActionTag == kControlTagOkay) { // 'okay'
     city90->BuildPowerPlant(1);
   }
 

@@ -1,4 +1,6 @@
 #include "game/ui_widgets/TWarningView.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 #include "game/mfc.h"
 #include "game/ui_core/TControl.h"
 
@@ -23,7 +25,7 @@ void TWarningView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   if (commandId == 0x22 && event != 0) {
     unsigned int controlTag =
         *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(event) + 0x1c);
-    if (controlTag >= 0x70696331 && controlTag <= 0x70696335) {
+    if (controlTag >= kControlTagPic1 && controlTag <= kControlTagPic5) {
       TControl::DoEvent(commandId, sourceHandler, event);
       return;
     }
@@ -39,7 +41,7 @@ void TWarningView::DoPostCreate(int arg) {
     return;
   }
   TView* titleControl =
-      reinterpret_cast<TView*>(titlePanel->ResolveControlByTag(0x7469746c)); // 'titl'
+      reinterpret_cast<TView*>(titlePanel->ResolveControlByTag(kControlTagTitl)); // 'titl'
   if (titleControl != 0) {
     titleControl->RefreshControl();
   }

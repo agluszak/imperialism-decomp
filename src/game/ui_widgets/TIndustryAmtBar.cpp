@@ -19,7 +19,6 @@
 #include "game/nation/TGreatPower.h"
 #include "game/city/TCity.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 
 // SYNTHETIC: IMPERIALISM 0x00589110
 // TIndustryAmtBar::CreateObject

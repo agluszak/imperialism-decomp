@@ -146,3 +146,4 @@ module|tools.ghidra.original_module_map|registry:original-modules|Original .cpp 
 module|tools.analysis.assign_subsystems|just:assign-subsystems|Join module map with source markers -> per-file subsystem assignment
 module|tools.analysis.split_globals|direct|One-shot god-header split into per-subsystem globals headers (bead 8mo.2)
 module|tools.workflow.baseline_guard|just:*-gate-update|Shrink-aware policy-baseline guard (pure shrinks pass; growth needs approval)
+module|tools.workflow.fourcc_audit|just:fourcc-audit|Classify every four-character tag by domain and reject raw hex, multi-character literals, duplicate values, and stale inventory (fourcc-audit-check gate).

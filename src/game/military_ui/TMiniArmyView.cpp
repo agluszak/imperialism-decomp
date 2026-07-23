@@ -1,5 +1,6 @@
 #include "game/military_ui/TMiniArmyView.h"
 #include "game/military_ui/TSuperArmyRoster.h"
+#include "game/ui_tags_common.h"
 
 #include "game/gfx/TDisplayMgr.h"
 #include "game/ui_core/TEventHandler.h"
@@ -12,7 +13,6 @@
 #include "game/globals/military_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // FUNCTION: IMPERIALISM 0x004aad20

@@ -1,4 +1,5 @@
 #include "game/ui_core/TOrderView.h"
+#include "game/ui_tags_widgets.h"
 
 #include "game/city/TCity.h"
 #include "game/ui_core/TEventHandler.h"
@@ -7,7 +8,6 @@
 #include "game/ui_screens/TIconSlider.h"
 #include "game/city/TItemOrder.h"
 #include "game/city/TPopulationMgr.h"
-#include "game/ui_control_tags.h"
 #include "game/gfx/ui_invalidation_guard.h"
 // SYNTHETIC: IMPERIALISM 0x005069d0
 // TOrderView::CreateObject

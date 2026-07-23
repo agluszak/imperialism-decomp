@@ -1,6 +1,8 @@
 // TDiplomacyMapView QuickDraw legend rendering slice.
 
 #include "decomp_types.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_diplomacy.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/diplomacy_ui/TDiplomacyMapView.h"
 #include "game/globals/prelude.h"
@@ -21,7 +23,6 @@
 #include "game/map/TMapMgr.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/ui_widgets/TInfoBarText.h"
-#include "game/ui_control_tags.h"
 #include "game/city_ui/TCountry.h"
 #include "game/diplomacy_ui/TInfoPanelView.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -149,7 +150,7 @@ void TDiplomacyMapView::DoPostCreate(int arg) {
   SetControlHoverHelpText(CString(g_szEmptyString), this);
 
   if (g_pSimMgr->mode == 6) {
-    TView* endControl = ResolveControlByTag(kControlTagEndSpace);
+    TView* endControl = ResolveControlByTag(kControlTagEnd);
     if (endControl != nullptr) {
       endControl->Free();
     }

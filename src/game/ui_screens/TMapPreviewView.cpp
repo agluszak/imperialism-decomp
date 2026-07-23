@@ -1,4 +1,5 @@
 #include "game/ui_screens/TMapPreviewView.h"
+#include "game/ui_tags_common.h"
 #include "game/gfx/TDisplayMgr.h"
 #include "game/ui_core/TMacViewMgr.h"
 #include "game/map/TMapMgr.h"
@@ -71,7 +72,7 @@ void TMapPreviewView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
         static_cast<unsigned short>(g_pUiRuntimeContext->GetColor(static_cast<short>(nation)));
     if (nationPalette == clickedPalette) {
       pendingNation6C = nation;
-      ownerContext->DoEvent(0x7069636b /* 'pick' */, this, 0);
+      ownerContext->DoEvent(kControlTagPick, this, 0);
     }
   }
 }

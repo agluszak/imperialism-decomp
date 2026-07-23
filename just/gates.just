@@ -39,6 +39,16 @@ scalar-type-audit *args:
 scalar-type-audit-check:
   uv run python -m tools.workflow.scalar_type_audit --check
 
+[doc('Generate the classified four-character tag inventory')]
+[group('reports')]
+fourcc-audit *args:
+  uv run python -m tools.workflow.fourcc_audit {{args}}
+
+[doc('Reject raw/duplicate/mis-spelled four-character tags and a stale inventory')]
+[group('gates')]
+fourcc-audit-check:
+  uv run python -m tools.workflow.fourcc_audit --check
+
 [doc('Reject stale Mac control class/tag/screen semantic metadata')]
 [group('gates')]
 mac-control-usage-check:
@@ -320,7 +330,7 @@ source-gates:
 
 [private]
 [parallel]
-_source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-coverage-check scalar-type-audit-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate destructor-placement-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate stub-count-gate class-size-gate noop-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate
+_source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-coverage-check scalar-type-audit-check fourcc-audit-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate destructor-placement-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate stub-count-gate class-size-gate noop-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate
 
 # Cross-check modeled class sizes (ASSERT_SIZE) against the RTTI oracle's
 # m_nObjectSize. Report-only; pass --strict to fail on mismatches, or

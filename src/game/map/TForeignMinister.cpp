@@ -1,4 +1,5 @@
 #include "game/diplomacy_domain_types.h"
+#include "game/resource_domain_types.h"
 #include "game/map/TForeignMinister.h"
 
 #include "game/ui_widgets/TTradeMgr.h"
@@ -162,7 +163,7 @@ void TForeignMinister::SetInteriorMinisterBid(short primary, short secondary) {
 void TForeignMinister::SetBuyPriorities() {
   TMinisterBaseOrderArray* priorities = new TMinisterBaseOrderArray();
 
-  for (short resourceCode = 0; resourceCode < 0x11; ++resourceCode) {
+  for (short resourceCode = 0; resourceCode < kResourceManufacturedEnd; ++resourceCode) {
     if (purchasePriorityByResource1e[resourceCode] != 0) {
       MinisterPriorityEntry entry;
       entry.resourceCode = resourceCode;

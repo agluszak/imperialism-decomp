@@ -1,4 +1,6 @@
 #include "game/diplomacy_ui/TInfoPanelView.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_diplomacy.h"
 
 #include "game/ui_core/TControl.h"
 #include "game/ui_core/TCluster.h"
@@ -39,7 +41,7 @@ void TInfoPanelView::DoPostCreate(int arg) {
   // as laid out by the original instruction sequence.
   const short kOvrTagOffsets[4] = {0, 4, 1, 2};
   for (int i = 0; i < 4; i++) {
-    TView* child = ResolveControlByTag(0x6f767230 + kOvrTagOffsets[i]);
+    TView* child = ResolveControlByTag(kControlTagOvr0 + kOvrTagOffsets[i]);
     child->AssertValid();
     CString text;
     g_pSimMgr->GetString(0x2733, (short)(0x4e + i), &text);
@@ -225,15 +227,15 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x004facc0
 void TInfoPanelView::Setup() {
-  TCluster* overlayCluster = static_cast<TCluster*>(ResolveControlByTag(0x636c7573)); // 'clus'
+  TCluster* overlayCluster = static_cast<TCluster*>(ResolveControlByTag(kControlTagClus)); // 'clus'
   overlayCluster->AssertValid();
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), overlayCluster);
-  overlayCluster->SetSelectedChildTagAndRefresh(0x6f767230); // 'ovr0'
+  overlayCluster->SetSelectedChildTagAndRefresh(kControlTagOvr0); // 'ovr0'
 
   diplomacyMapView60->actionCodeBC = kDipActionInspectNation;
   selectedOverlayMode6C = 0;
 
-  TControl* mapKey = static_cast<TControl*>(ResolveControlByTag(0x6d6b6579)); // 'mkey'
+  TControl* mapKey = static_cast<TControl*>(ResolveControlByTag(kControlTagMkey)); // 'mkey'
   mapKey->AssertValid();
   mapKey->SetDiplomacyNationSelectionFilterAndRefreshRows(0);
 }
@@ -245,7 +247,7 @@ void TInfoPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
     diplomacyMapView60->interactionModeAt94 = selectedOverlayMode;
     InvalidateCityDialogRectRegion(&diplomacyMapView60->mapViewportRect514, 1);
     selectedOverlayMode6C = selectedOverlayMode;
-    TControl* mkey = static_cast<TControl*>(ResolveControlByTag(0x6d6b6579));
+    TControl* mkey = static_cast<TControl*>(ResolveControlByTag(kControlTagMkey));
     mkey->AssertValid();
     mkey->SetDiplomacyNationSelectionFilterAndRefreshRows(selectedOverlayMode);
   }

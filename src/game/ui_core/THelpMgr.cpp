@@ -1,4 +1,5 @@
 #include "game/ui_core/THelpMgr.h"
+#include "game/ui_tags_common.h"
 
 #include "game/ui_screens/TSimMgr.h"
 #include "game/military/TCivUnit.h"
@@ -25,7 +26,6 @@
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/core/TStream.h"
 #include "game/military/mapped_flavor_text.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 namespace {

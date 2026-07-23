@@ -1,4 +1,5 @@
 #include "game/ui_widgets/TAutomatedPlayDialog.h"
+#include "game/ui_tags_widgets.h"
 
 #include "game/ui_core/TNumberText.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -22,7 +23,8 @@ TAutomatedPlayDialog::TAutomatedPlayDialog() {}
 
 // FUNCTION: IMPERIALISM 0x005b46c0
 void TAutomatedPlayDialog::Close() {
-  TNumberText* turnCount = static_cast<TNumberText*>(ResolveControlByTag(0x6e756d20)); // 'num '
+  TNumberText* turnCount =
+      static_cast<TNumberText*>(ResolveControlByTag(kControlTagNumSp)); // 'num '
   if (turnCount == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x34e);
   }

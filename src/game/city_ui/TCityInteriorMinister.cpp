@@ -1,4 +1,6 @@
 #include "game/city_ui/TCityInteriorMinister.h"
+#include "game/resource_domain_types.h"
+#include "game/ui_tags_city.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -156,7 +158,8 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
   cityPolicyFuzzySet->AllocateAndAppendRecord(0xccbebc20, 0xc7c35000, 0xc69c4000, 0xc61c4000);
   cityPolicyFuzzySet->AllocateAndAppendRecord(0xc66a6000, 0xc59c4000, 0xc59c4000, 0x447a0000);
   cityPolicyFuzzySet->AllocateAndAppendRecord(0, 0x459c4000, 0x461c4000, 0x466a6000);
-  cityPolicyFuzzySet->AllocateAndAppendRecord(0x461c4000, 0x469c4000, 0x49742400, 0x4e6e6b28);
+  cityPolicyFuzzySet->AllocateAndAppendRecord(0x461c4000, 0x469c4000, 0x49742400,
+                                              kControlTagNnkParen);
 
   temporaryFurnitureSubstituteLumber1c2 = 0;
 }
@@ -753,7 +756,7 @@ void TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackf
 
         short resourceCount = 0;
         short totalRequested = 0;
-        for (short countedResource = 0; countedResource < 0x17; ++countedResource) {
+        for (short countedResource = 0; countedResource < kResourceKindCount; ++countedResource) {
           short requested = orderSheet.ForResourceCode(countedResource);
           if (requested != 0) {
             ++resourceCount;
@@ -924,7 +927,7 @@ short TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls(
   short* citySummary = city->GetCitySummaryRecordSlot74();
   short remainingNeedCapacity = owner != 0 ? owner->needCapA6 : 0;
 
-  for (short resourceType = 0; resourceType < 23; ++resourceType) {
+  for (short resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
     owner->UpdateNeedTargetAndAccumulateOverCap(resourceType, 0);
   }
 
@@ -963,7 +966,8 @@ short TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls(
     }
   }
 
-  for (short inputResourceType = 13; inputResourceType < 17; ++inputResourceType) {
+  for (short inputResourceType = kResourceClothing; inputResourceType < kResourceManufacturedEnd;
+       ++inputResourceType) {
     short amount = city->CityStockByType(inputResourceType);
     if (amount > citySummary[inputResourceType]) {
       amount = citySummary[inputResourceType];
@@ -1321,7 +1325,7 @@ void TCityInteriorMinister::RequestMissingCivilianOrderTypes() {
                 .availableByCategory[unitKindStorage] != 0 &&
         !hasOrderType[unitKindStorage]) {
       bool needed = false;
-      for (short resourceType = 0; resourceType < 23; ++resourceType) {
+      for (short resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
         if (g_anResourceTypeRequiredOrderType[resourceType] == unitKindStorage &&
             civilianOrderDemandByResourceType194[resourceType] != 0) {
           needed = true;
@@ -1636,8 +1640,9 @@ void TCityInteriorMinister::ContinueRailheadProject(TUnit* builderOrder, char* p
   projectedTown->InitializeTownMarker(g_szEmptyString, field3c, primaryDistance != 1,
                                       ownerContextAt04->nationSlot);
   projectedTown->CalculateCityResources();
-  for (short resourceType = 0; resourceType < 23; ++resourceType) {
-    if (((resourceType >= 0 && resourceType <= 6) || (resourceType >= 17 && resourceType <= 22)) &&
+  for (short resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
+    if (((resourceType >= kResourceCotton && resourceType <= kResourceOil) ||
+         (resourceType >= kResourceGrain && resourceType <= kResourceGold)) &&
         projectedTown->resourceYieldByType[resourceType] != 0) {
       orderTypeTableFC[resourceType] = 0;
     }
@@ -1737,7 +1742,7 @@ short TCityInteriorMinister::EvaluateResources(short tileIndex) {
   candidateTown->CalculateCityResources();
 
   short score = 0;
-  for (short resourceType = 0; resourceType < 7; ++resourceType) {
+  for (short resourceType = 0; resourceType < kResourceIndustrialRawCount; ++resourceType) {
     score = static_cast<short>(score + candidateTown->resourceYieldByType[resourceType] *
                                            orderTypeTableFC[resourceType]);
   }
@@ -1931,7 +1936,8 @@ void TCityInteriorMinister::RebalanceCityOrderAllocationTargets(TCity* city) {
   }
 
   RequestResource(22, ownerContextAt04->needCurrentByType[22], 1);
-  for (short resourceType = 7; resourceType < 17; ++resourceType) {
+  for (short resourceType = kResourceManufacturedFirst; resourceType < kResourceManufacturedEnd;
+       ++resourceType) {
     RequestResource(resourceType,
                     static_cast<short>(citySummary[resourceType] +
                                        ownerContextAt04->needCurrentByType[resourceType]),
@@ -2327,7 +2333,7 @@ void TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex(shor
   }
 
   if (orderSlot != 8) {
-    for (short resourceType = 0; resourceType < 23; ++resourceType) {
+    for (short resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
       short resourceNeed = orderSheet.ForResourceCode(resourceType);
       if (resourceNeed != 0) {
         RequestResource(resourceType, resourceNeed, 7);
@@ -2429,7 +2435,7 @@ void TCityInteriorMinister::FillRemainingNeedCapacityAndReducePowerPlantOrder() 
   short previousNeedCapacity = -1;
   while (remainingNeedCapacity > 0 && previousNeedCapacity != remainingNeedCapacity) {
     previousNeedCapacity = remainingNeedCapacity;
-    for (short resourceType = 0; resourceType < 23; ++resourceType) {
+    for (short resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
       remainingNeedCapacity =
           static_cast<short>(remainingNeedCapacity - RequestResource(resourceType, 1, 8));
     }
@@ -2486,9 +2492,9 @@ short TCityInteriorMinister::RequestResource(short resourceType, short requested
     }
     owner->UpdateNeedTargetAndAccumulateOverCap(
         resourceType, static_cast<short>(currentTarget + availableCapacity));
-    if (resourceType == 22) {
+    if (resourceType == kResourceGold) {
       owner->treasuryValue10 += availableCapacity * 200;
-    } else if (resourceType == 21) {
+    } else if (resourceType == kResourceGems) {
       owner->treasuryValue10 += availableCapacity * 500;
     } else {
       cityStock[resourceType] = static_cast<short>(cityStock[resourceType] + availableCapacity);
@@ -2498,7 +2504,7 @@ short TCityInteriorMinister::RequestResource(short resourceType, short requested
   } else {
     owner->UpdateNeedTargetAndAccumulateOverCap(
         resourceType, static_cast<short>(currentTarget + availableSupply));
-    if (resourceType == 22) {
+    if (resourceType == kResourceGold) {
       owner->treasuryValue10 += availableSupply * 500;
     } else {
       cityStock[resourceType] = static_cast<short>(cityStock[resourceType] + availableSupply);

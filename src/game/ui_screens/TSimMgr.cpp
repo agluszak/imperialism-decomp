@@ -1,4 +1,6 @@
 #include "game/gfx/TAmbitApplication.h"
+#include "game/ui_tags_screens.h"
+#include "game/resource_domain_types.h"
 #include "game/ui_screens/TSimMgr.h"
 
 #ifdef IMPERIALISM_RUNTIME_TESTS
@@ -1468,7 +1470,7 @@ void TSimMgr::ProcessScenarioScript() {
   instruction.tokenCursor = reinterpret_cast<unsigned int*>(buffer);
   unsigned int instructionTag = 0;
   while (reinterpret_cast<unsigned char*>(instruction.tokenCursor) < buffer + resourceSize &&
-         instructionTag != 0x5445524d && g_bScenarioScriptTerminationRequested == 0) {
+         instructionTag != kControlTagTERM && g_bScenarioScriptTerminationRequested == 0) {
     instructionTag = *instruction.tokenCursor;
     int instructionCount = g_nScenarioScriptInstructionCount;
     unsigned char* raw = reinterpret_cast<unsigned char*>(&instructionTag);
@@ -1482,7 +1484,7 @@ void TSimMgr::ProcessScenarioScript() {
     ++instructionCount;
     g_nScenarioScriptInstructionCount = instructionCount;
 
-    if (instructionTag != 0x5445524d) {
+    if (instructionTag != kControlTagTERM) {
       int handlerIndex = 0;
       while (handlerIndex < 27 &&
              g_anScenarioScriptInstructionTags[handlerIndex] != instructionTag) {
@@ -1820,10 +1822,11 @@ void TSimMgr::HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void* pInstruc
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
 
-  int terrainCode = g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[0];
+  int tileResourceKind = g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[0];
   char selectHighNibble = 0;
-  if (terrainCode == 0x16 || terrainCode == 0x15 || terrainCode == 0x04 || terrainCode == 0x03 ||
-      terrainCode == 0x06) {
+  if (tileResourceKind == kResourceGold || tileResourceKind == kResourceGems ||
+      tileResourceKind == kResourceIron || tileResourceKind == kResourceCoal ||
+      tileResourceKind == kResourceOil) {
     selectHighNibble = 1;
   }
   unsigned char value = reinterpret_cast<unsigned char*>(&valueToken)[3];

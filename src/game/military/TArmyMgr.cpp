@@ -6,6 +6,8 @@
 #include "game/TEvent.h"
 #include "game/ui_core/TStaticText.h"
 #include "game/turn_event_dialog_provisional.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_map.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -1913,7 +1915,7 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
   // MapView.rsrc view 9475's children, in the order the original fills them.
   CString scratchText;
   TStaticText* ownerLabel =
-      static_cast<TStaticText*>(node->ResolveControlByTag(0x67706565)); // 'gpee'
+      static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagGpee)); // 'gpee'
   ownerLabel->AssertValid();
   g_apTerrainTypeDescriptorTable[g_pGlobalMapState->cityScoreTable[cityRecordIndex]
                                      .ownerNationCode00]
@@ -1922,7 +1924,7 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
   ownerLabel->InstallTextStyle(styleB, 0);
 
   TStaticText* zoneLabel =
-      static_cast<TStaticText*>(node->ResolveControlByTag(0x7a6f6e65)); // 'zone'
+      static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagZone)); // 'zone'
   zoneLabel->AssertValid();
   CString cityDisplayName;
   g_pGlobalMapState->AssignCityRecordDisplayName(static_cast<ProvinceIndex>(cityRecordIndex),
@@ -1932,47 +1934,47 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
   zoneLabel->InstallTextStyle(styleB, 0);
 
   TStaticText* defenderLabel =
-      static_cast<TStaticText*>(node->ResolveControlByTag(0x6164616d)); // 'adam'
+      static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagAdam)); // 'adam'
   defenderLabel->AssertValid();
   defenderLabel->SetTextAndMaybeRefresh(&defenderSummary, 0);
   defenderLabel->InstallTextStyle(styleC, 0);
 
   TStaticText* garrisonLabel =
-      static_cast<TStaticText*>(node->ResolveControlByTag(0x73686970)); // 'ship'
+      static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagShip)); // 'ship'
   garrisonLabel->AssertValid();
   CString quotedGarrison = CString(g_szDoubleQuote) + garrisonSummary + g_szDoubleQuote;
   garrisonLabel->SetTextAndMaybeRefresh(&quotedGarrison, 0);
   garrisonLabel->InstallTextStyle(styleC, 0);
 
   TStaticText* titleLabel =
-      static_cast<TStaticText*>(node->ResolveControlByTag(0x7469746c)); // 'titl'
+      static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl)); // 'titl'
   titleLabel->AssertValid();
   titleLabel->SetTextFromStringResource(0x2744, 5, 0);
   titleLabel->InstallTextStyle(styleA, 0);
 
-  TStaticText* label1 = static_cast<TStaticText*>(node->ResolveControlByTag(0x6c616231));
+  TStaticText* label1 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab1));
   label1->AssertValid();
   label1->SetTextFromStringResource(0x2744, 6, 0);
   label1->InstallTextStyle(styleC, 0);
 
-  TStaticText* label2 = static_cast<TStaticText*>(node->ResolveControlByTag(0x6c616232));
+  TStaticText* label2 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab2));
   label2->AssertValid();
   label2->SetTextFromStringResource(0x2744, 7, 0);
   label2->InstallTextStyle(styleC, 0);
 
-  TStaticText* label3 = static_cast<TStaticText*>(node->ResolveControlByTag(0x6c616233));
+  TStaticText* label3 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab3));
   label3->AssertValid();
   label3->SetEnabled(0, 0);
   label3->InstallTextStyle(styleB, 0);
 
-  TStaticText* label4 = static_cast<TStaticText*>(node->ResolveControlByTag(0x6c616234));
+  TStaticText* label4 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab4));
   label4->AssertValid();
   label4->SetTextFromStringResource(0x2744, 8, 0);
   label4->InstallTextStyle(styleD, 0);
 
   TDialogBehavior* behavior = node->GetDialogBehavior();
   if (behavior != nullptr) {
-    behavior->defaultCommandCode = 0x6f6b6179; // 'okay'
+    behavior->defaultCommandCode = kControlTagOkay; // 'okay'
   }
   node->PoseModally();
   node->Close();
@@ -2127,7 +2129,7 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
             }
             // Final battle-report row category; the working unit pointer is no longer
             // needed once the evicted unit has been copied into the record.
-            rec.detailIdentity.categoryTag = 0x61726d79; // 'army'
+            rec.detailIdentity.categoryTag = kControlTagArmy; // 'army'
             rec.strengthBucket = static_cast<short>(unit->field_38 / 100);
             unit->DetachUnitOrderFromOwnerAndReset();
             unit->Free();

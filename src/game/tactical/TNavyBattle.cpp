@@ -1,4 +1,5 @@
 #include "game/tactical/TNavyBattle.h"
+#include "game/ui_tags_common.h"
 
 #include "game/navy/TNavyMgr.h"
 #include "game/tactical/TNavyPlayer.h"
@@ -9,7 +10,6 @@
 #include "game/tactical/TTacticalUnit.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_control_tags.h"
 
 #include <stdlib.h>
 // SYNTHETIC: IMPERIALISM 0x005a5480

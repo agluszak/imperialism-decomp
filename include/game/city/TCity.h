@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstring>
+#include "game/ui_tags_common.h"
 
 #include "decomp_types.h"
 #include "game/app/TObject.h"

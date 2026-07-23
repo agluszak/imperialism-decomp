@@ -1,4 +1,6 @@
 #include "game/ui_widgets/TIndustryCluster.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 #include "game/ui_core/TWindow.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_widgets/TRailCluster.h"
@@ -13,7 +15,6 @@
 #include "game/globals/ui_widgets_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/city/TProductionOrder.h"
 #include "game/city/TCity.h"
 #include "game/nation/TGreatPower.h"
@@ -43,13 +44,13 @@ void TRailAmtBar::DoPostCreate(int arg) {
   int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);
 
   short recordIndex = 0;
-  if ((unsigned int)summaryTag < 0x706f7076) {
+  if ((unsigned int)summaryTag < kControlTagPopv) {
     if (summaryTag == kSummaryTagPopu) {
       recordIndex = 0x3c;
     } else if (summaryTag == kSummaryTagFood) {
       recordIndex = 7;
     }
-  } else if ((unsigned int)summaryTag < 0x70726f67) {
+  } else if ((unsigned int)summaryTag < kControlTagProg) {
     if (summaryTag == kSummaryTagProf) {
       recordIndex = 0x18;
     } else if (summaryTag == kSummaryTagPowe) {
@@ -57,7 +58,7 @@ void TRailAmtBar::DoPostCreate(int arg) {
     }
   } else if (summaryTag == kSummaryTagRail) {
     recordIndex = 0x33;
-  } else if (summaryTag == kSummaryTagIart) {
+  } else if (summaryTag == kSummaryTagTrai) {
     recordIndex = 0x17;
   }
 

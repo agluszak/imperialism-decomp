@@ -1,4 +1,5 @@
 #include "game/diplomacy_ui/TInteriorMinisterView.h"
+#include "game/ui_tags_common.h"
 
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_core/TEventHandler.h"
@@ -6,7 +7,6 @@
 #include "game/ui_core/TWindow.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_control_tags.h"
 // SYNTHETIC: IMPERIALISM 0x004f35e0
 // TInteriorMinisterView::CreateObject
 

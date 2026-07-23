@@ -1,4 +1,6 @@
 #include "game/city_ui/TPlaceCityDialog.h"
+#include "game/ui_tags_city.h"
+#include "game/ui_tags_common.h"
 #include "game/ui_core/TWindow.h"
 
 #include "game/ui_core/TNumberedItem.h"
@@ -58,7 +60,7 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
   dialogBounds.bottom += extraHeight;
   ApplyBounds(&dialogBounds, 1);
 
-  const unsigned int buttonTags[2] = {0x636e636cu, 0x6f6b6179u}; // 'cncl', 'okay'
+  const unsigned int buttonTags[2] = {kControlTagCncl, kControlTagOkay}; // 'cncl', 'okay'
   const int buttonAssertLines[2] = {0xde2, 0xde8};
   for (int buttonIndex = 0; buttonIndex < 2; ++buttonIndex) {
     // Startup.rsrc:953 declares both 'cncl' and 'okay' as TUpDownPictureButton.
@@ -124,13 +126,13 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
                          static_cast<LPCSTR>(sustainableText), static_cast<LPCSTR>(totalText));
 
   TStaticText* sustainability =
-      static_cast<TStaticText*>(ResolveControlByTag(0x73757374u)); // 'sust'
+      static_cast<TStaticText*>(ResolveControlByTag(kControlTagSust)); // 'sust'
   sustainability->SetTextAndMaybeRefresh(&summaryText, 1);
   TextStyle style;
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
   sustainability->InstallTextStyle(style, 0);
 
-  TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(0x7469746cu)); // 'titl'
+  TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
   title->AssertValid();
   BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b6a);
   title->InstallTextStyle(style, 0);

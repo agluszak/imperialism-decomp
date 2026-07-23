@@ -1,6 +1,8 @@
 #pragma once
 
 #include "game/app/TObject.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_diplomacy.h"
 #include "game/map_order_battle_snapshot.h"
 #include "game/mfc.h"
 
@@ -363,7 +365,7 @@ public:
   //    since the marker is cleared as each is processed, but every pass rescans from the
   //    head) appending one new MapOrderBattleSideChildRecord per marked-evicted
   //    TMilitaryUnit (resourceType = orderType, stockOrRequired = 0xffaa, nameBuffer =
-  //    name24 clamped to 0x20 chars, detail category = 0x61726d79 ("army"), and
+  //    name24 clamped to 0x20 chars, detail category = 'army' ("army"), and
   //    strengthBucket = field_38 / 100) before DetachUnitOrderFromOwnerAndReset()
   //    + Free()ing the evicted unit. The old childRecords array is never freed here --
   //    reproduced as a faithful leak, matching this file's other acknowledged leaks.

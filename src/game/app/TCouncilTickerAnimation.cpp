@@ -16,7 +16,6 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/mfc.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 
 // SYNTHETIC: IMPERIALISM 0x0049ff20
 // TCouncilTickerAnimation::`scalar deleting destructor'

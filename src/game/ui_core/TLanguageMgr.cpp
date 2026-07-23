@@ -1,4 +1,6 @@
 #include "game/ui_core/TLanguageMgr.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 #include "game/ImperialismApp.h"
 #include "game/assets/TAssetMgr.h"
@@ -265,11 +267,11 @@ char TLanguageMgr::PickGender(const char* name) const {
   TWindow* dialog = static_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventVerbFormDialog));
   g_pSimMgr->GetString(0x2737, 0x34, &questionText);
-  TStaticText* question = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x71756573));
+  TStaticText* question = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagQues));
   ApplyControlThemeStyleAndOptionalCaption(question, 0, 0xc, 0x2b6b, 1, questionText);
 
   TRadioTextCluster* form =
-      static_cast<TRadioTextCluster*>(dialog->ResolveControlByTag(0x666f726d));
+      static_cast<TRadioTextCluster*>(dialog->ResolveControlByTag(kControlTagForm));
   form->AssertValid();
   form->frameThemeCode90 = 0x2b6b;
   form->itemInset92 = 2;
@@ -289,7 +291,7 @@ char TLanguageMgr::PickGender(const char* name) const {
       codedName += static_cast<char>(rowIndex + rowOffset);
       codedName += name;
       CString localizedName = Localize(codedName, groupCode);
-      unsigned long itemTag = 0x66726d30 + rowIndex;
+      unsigned long itemTag = kControlTagFrm0 + rowIndex;
       TRadioText* item = form->AddItem(itemTag, rowIndex, localizedName, 0xf, -1);
       ApplyUiTextStyleAndThemeFlags(item, 0, 0xc, 0x2b6b, 0x2b6c);
       item->SetTextAlignmentAndMaybeRefresh(1, 0);
@@ -303,7 +305,7 @@ char TLanguageMgr::PickGender(const char* name) const {
   dialog->SetModality(1);
   TDialogBehavior* behavior = dialog->GetDialogBehavior();
   if (behavior != 0) {
-    behavior->defaultCommandCode = 0x6f6b6179;
+    behavior->defaultCommandCode = kControlTagOkay;
   }
   dialog->PoseModally();
 

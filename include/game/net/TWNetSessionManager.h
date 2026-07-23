@@ -97,11 +97,11 @@ public:
   // (DirectPlayEnumerateA, ordinal 2) through this object's virtual provider callback.
   // Either way the resulting IDirectPlay is QueryInterface'd up to
   // IDirectPlay2 into directPlayInterface04 and the runtime-selection list is reset.
-  unsigned char OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry); // 0x47fe50
+  bool OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry); // 0x47fe50
   // Reopens the session with no seed (OpenRuntimeSelectionSourceWithOptionalSeed(null,0)),
   // then rebuilds sessionDescription10, lets the derived slot populate its application
   // identity, and opens it as a newly created DirectPlay session.
-  unsigned char OpenRuntimeSelectionSourceFromCurrentContext(); // 0x480030
+  bool OpenRuntimeSelectionSourceFromCurrentContext(); // 0x480030
   // IDirectPlay2::CreatePlayer wrapper: builds a DPNAME from shortName (dwSize=16,
   // dwFlags=0, lpszShortNameA=shortName, lpszLongNameA=0) and stores the HRESULT in
   // lastErrorCode0c. Returns SUCCEEDED(result).
@@ -121,7 +121,7 @@ public:
   // lastErrorCode0c. Returns SUCCEEDED(result). Ghidra-verified: takes no explicit
   // stack argument (bare RET, no ret-n cleanup) -- TNetMgr's caller does not forward
   // its own `provider` here.
-  unsigned char RebuildRuntimeSelectionSource(); // 0x47fd90
+  bool RebuildRuntimeSelectionSource(); // 0x47fd90
 };
 ASSERT_SIZE(TWNetSessionManager, 0xb4);
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR

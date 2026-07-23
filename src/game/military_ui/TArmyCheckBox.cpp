@@ -100,7 +100,7 @@ void TArmyCheckBox::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x004aa280
 void TArmyCheckBox::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  if (commandId == 0x21) {
+  if (commandId == kControlCommandHiliteToggle) {
     if ((GetAsyncKeyState(0x11) & 0x8000) != 0 || isOn84 != 0) {
       Toggle(1);
     }

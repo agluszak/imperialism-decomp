@@ -1,6 +1,8 @@
 #pragma once
 
 #include "game/ui_screens/TNoHilitePicture.h"
+#include "game/multiplayer_session_tags.h"
+#include "game/ui_tags_common.h"
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x006433b8

@@ -1,4 +1,6 @@
 #include "game/ui_widgets/TToolBarCluster.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 #include "game/ui_core/TApplication.h"
 #include "game/gfx/TAmbitApplication.h"
@@ -23,7 +25,6 @@
 #include "game/globals/ui_widgets_globals.h"
 #include "game/map/map_overlay_geometry.h"
 #include "game/military/mapped_flavor_text.h"
-#include "game/ui_control_tags.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
@@ -504,13 +505,13 @@ void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nati
   if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationId)) {
     g_pSimMgr->NumToCurrency(g_apNationStates[nationId]->treasuryValue10, &treaText);
   }
-  TView* treaControl = this->ResolveControlByTag(0x74726561); // 'trea'
+  TView* treaControl = this->ResolveControlByTag(kControlTagTrea); // 'trea'
   if (treaControl != nullptr) {
     static_cast<TStaticText*>(treaControl)->SetTextAndMaybeRefresh(&treaText, 1);
   }
 
   // 'seas' tag: "<season>, <year>" turn-status text (present on the main map toolbar).
-  TView* seasControl = this->ResolveControlByTag(0x73656173); // 'seas'
+  TView* seasControl = this->ResolveControlByTag(kControlTagSeas); // 'seas'
   if (seasControl != nullptr) {
     CString seasonText;
     g_pSimMgr->GetSeason(&seasonText);
@@ -524,7 +525,7 @@ void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nati
 
   // 'forc' tag: pending city-action-gate unit cost (present on the tactical/army
   // toolbar variant instead of 'seas'), expanded through the localized "[0]" template.
-  TView* forcControl = this->ResolveControlByTag(0x666f7263); // 'forc'
+  TView* forcControl = this->ResolveControlByTag(kControlTagForc); // 'forc'
   if (forcControl == nullptr) {
     return;
   }

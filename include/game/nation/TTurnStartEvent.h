@@ -1,6 +1,8 @@
 #pragma once
 
 #include "game/app/TObject.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x00653d90
@@ -20,7 +22,7 @@ public:
   // dead-store elimination of the intermediate vptr) -- defined in-class so the recompile
   // inlines it the same way; there is no out-of-line copy in the original.
   TTurnStartEvent() {
-    eventTag04 = 0x65727261; // 'erra'
+    eventTag04 = kControlTagErra; // 'erra'
   }
 };
 

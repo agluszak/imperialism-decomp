@@ -1,4 +1,6 @@
 #include "game/city_ui/TNewTownView.h"
+#include "game/resource_domain_types.h"
+#include "game/ui_tags_common.h"
 #include "game/ui_core/TWindow.h"
 
 #include "game/ui_core/TEditText.h"
@@ -29,7 +31,8 @@ void TNewTownView::StuffValues(TTown* town) {
   town->CalculateRawResources();
 
   int visibleResourceCount = 0;
-  for (int countedResourceType = 0; countedResourceType < 0x17; ++countedResourceType) {
+  for (int countedResourceType = 0; countedResourceType < kResourceKindCount;
+       ++countedResourceType) {
     if (town->resourceYieldByType[countedResourceType] != 0) {
       ++visibleResourceCount;
     }
@@ -49,7 +52,7 @@ void TNewTownView::StuffValues(TTown* town) {
   bounds.bottom += extraHeight;
   ApplyBounds(&bounds, 1);
 
-  TView* cancel = ResolveControlByTag(0x636e636c); // 'cncl'
+  TView* cancel = ResolveControlByTag(kControlTagCncl); // 'cncl'
   if (cancel == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x806);
   }
@@ -57,7 +60,7 @@ void TNewTownView::StuffValues(TTown* town) {
   OffsetRect(&bounds, 0, extraHeight);
   cancel->ApplyBounds(&bounds, 1);
 
-  TView* okay = ResolveControlByTag(0x6f6b6179); // 'okay'
+  TView* okay = ResolveControlByTag(kControlTagOkay); // 'okay'
   if (okay == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x80c);
   }
@@ -66,7 +69,7 @@ void TNewTownView::StuffValues(TTown* town) {
   okay->ApplyBounds(&bounds, 1);
 
   int y = 0x40;
-  for (short iconResourceType = 0; iconResourceType < 0x17; ++iconResourceType) {
+  for (short iconResourceType = 0; iconResourceType < kResourceKindCount; ++iconResourceType) {
     short amount = town->resourceYieldByType[iconResourceType];
     if (amount != 0) {
       TIconBar* iconBar = new TIconBar();
@@ -79,7 +82,7 @@ void TNewTownView::StuffValues(TTown* town) {
     }
   }
 
-  TEditText* name = static_cast<TEditText*>(ResolveControlByTag(0x6e616d65)); // 'name'
+  TEditText* name = static_cast<TEditText*>(ResolveControlByTag(kControlTagName)); // 'name'
   if (name == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x821);
   }
@@ -91,7 +94,7 @@ void TNewTownView::StuffValues(TTown* town) {
 // FUNCTION: IMPERIALISM 0x004bdc10
 void TNewTownView::Close() {
   CString townName;
-  TEditText* nameControl = static_cast<TEditText*>(ResolveControlByTag(0x6e616d65)); // 'name'
+  TEditText* nameControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagName)); // 'name'
   if (nameControl == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x82e);
   }

@@ -1,5 +1,7 @@
 #include "game/city_ui/TIndustryView.h"
 #include "game/city_ui/TCityProductionView.h"
+#include "game/ui_tags_city.h"
+#include "game/ui_tags_common.h"
 
 #include "game/CSubViewIterator.h"
 #include "game/city/TCity.h"
@@ -17,7 +19,6 @@
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
-#include "game/ui_control_tags.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
@@ -54,7 +55,7 @@ void TIndustryView::DoStartup() {
   BuildUiTextStyleDescriptor(&headingStyle, 0, 0xc, 0x2b67);
 
   CString displayText;
-  TStaticText* nameText = static_cast<TStaticText*>(ResolveControlByTag(0x6e616d65u)); // 'name'
+  TStaticText* nameText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagName)); // 'name'
   if (nameText != 0) {
     g_pSimMgr->GetString(0x2719, embeddedPageIndex9E, &displayText);
     nameText->InstallTextStyle(headingStyle, 0);
@@ -62,7 +63,8 @@ void TIndustryView::DoStartup() {
     nameText->SetTextAndMaybeRefresh(&displayText, 0);
   }
 
-  TStaticText* capacityText = static_cast<TStaticText*>(ResolveControlByTag(0x63617054u)); // 'capT'
+  TStaticText* capacityText =
+      static_cast<TStaticText*>(ResolveControlByTag(kControlTagCapT)); // 'capT'
   if (capacityText != 0) {
     CString numberText;
     CString templateText;
@@ -75,7 +77,8 @@ void TIndustryView::DoStartup() {
     capacityText->SetTextAndMaybeRefresh(&displayText, 0);
   }
 
-  TStaticText* provinceText = static_cast<TStaticText*>(ResolveControlByTag(0x70726f76u)); // 'prov'
+  TStaticText* provinceText =
+      static_cast<TStaticText*>(ResolveControlByTag(kControlTagProv)); // 'prov'
   if (provinceText != 0) {
     CString numberText;
     CString templateText;
@@ -89,7 +92,7 @@ void TIndustryView::DoStartup() {
   }
 
   TStaticText* conjunctionText =
-      static_cast<TStaticText*>(ResolveControlByTag(0x6f722020u)); // 'or  '
+      static_cast<TStaticText*>(ResolveControlByTag(kControlTagOrSpSp)); // 'or  '
   if (conjunctionText != 0) {
     g_pSimMgr->GetString(0x2738, 0x11, &displayText);
     conjunctionText->InstallTextStyle(headingStyle, 0);
@@ -99,13 +102,13 @@ void TIndustryView::DoStartup() {
 
   SetControlHoverHelpText(CString(g_szEmptyString), this);
 
-  TView* expansionControl = ResolveControlByTag(0x65787061u); // 'expa'
+  TView* expansionControl = ResolveControlByTag(kControlTagExpa); // 'expa'
   if (expansionControl != 0) {
     g_pSimMgr->GetString(0x2738, 0x12, &displayText);
     SetControlHoverHelpText(displayText, expansionControl);
   }
 
-  TView* flagControl = ResolveControlByTag(0x666c6167u); // 'flag'
+  TView* flagControl = ResolveControlByTag(kControlTagFlag); // 'flag'
   if (flagControl != 0) {
     if (flagControl->IsActionable() != 0) {
       g_pSimMgr->GetString(0x2738, 0x13, &displayText);
@@ -115,7 +118,7 @@ void TIndustryView::DoStartup() {
     SetControlHoverHelpText(displayText, flagControl);
   }
 
-  TView* equationControl = ResolveControlByTag(0x65717561u); // 'equa'
+  TView* equationControl = ResolveControlByTag(kControlTagEqua); // 'equa'
   if (equationControl != 0) {
     g_pSimMgr->GetString(0x2738, embeddedPageIndex9E, &displayText);
     SetControlHoverHelpText(displayText, equationControl);
@@ -126,7 +129,7 @@ void TIndustryView::DoStartup() {
   CString mappedValueText(s_mcflavor_00696674);
 
   TStaticText* valueBalanceText =
-      static_cast<TStaticText*>(ResolveControlByTag(0x6c616256u)); // 'Vbal'
+      static_cast<TStaticText*>(ResolveControlByTag(kControlTagLabV)); // 'Vbal'
   if (valueBalanceText != 0) {
     valueBalanceText->InstallTextStyle(valueStyle, 0);
     valueBalanceText->SetTextAndMaybeRefresh(&mappedValueText, 0);
@@ -215,13 +218,13 @@ void TIndustryView::UpdateFields() {
       }
     }
 
-    if (child->controlTag == 0x666c6167u) { // 'flag'
+    if (child->controlTag == kControlTagFlag) { // 'flag'
       TProductionOrder* flagOrder = static_cast<TProductionOrder*>(
           city94->orderSlotsE4[static_cast<short>(embeddedPageIndex9E + 0x35)]);
       SetIndustryControlEnabledIfChanged(child, flagOrder->quantityField04 != 0);
     }
 
-    if (child->controlTag == 0x6c616256u) { // 'Vbal'
+    if (child->controlTag == kControlTagLabV) { // 'Vbal'
       SetIndustryControlEnabledIfChanged(child, city94->productionSummary1d8->strength >= 2);
     }
 
@@ -229,21 +232,21 @@ void TIndustryView::UpdateFields() {
   }
 
   if (embeddedPageIndex9E == 0xc) {
-    TView* grainControl = ResolveControlByTag(0x67726169u); // 'grai'
+    TView* grainControl = ResolveControlByTag(kControlTagGrai); // 'grai'
     grainControl->AssertValid();
     SetIndustryControlEnabledIfChanged(grainControl, city94->cityStockGrainD8 >= 2);
 
-    TView* fruitControl = ResolveControlByTag(0x70726f64u); // 'prod'
+    TView* fruitControl = ResolveControlByTag(kControlTagProd); // 'prod'
     fruitControl->AssertValid();
     SetIndustryControlEnabledIfChanged(fruitControl, city94->cityStockFruitDA >= 1);
 
-    TView* fishControl = ResolveControlByTag(0x66697368u); // 'fish'
+    TView* fishControl = ResolveControlByTag(kControlTagFish); // 'fish'
     fishControl->AssertValid();
     SetIndustryControlEnabledIfChanged(
         fishControl, static_cast<int>(city94->cityStockFishDC) + city94->cityStockLivestockDE >= 1);
   } else if (embeddedPageIndex9E == 0xf) {
-    const unsigned int controlTags[3] = {0x666f6f64u, 0x6675726eu,
-                                         0x636c6f74u}; // 'food', 'furn', 'clot'
+    const unsigned int controlTags[3] = {kSummaryTagFood, kControlTagFurn,
+                                         kControlTagClot}; // 'food', 'furn', 'clot'
     const short resourceSlots[3] = {7, 14, 13};
     for (int index = 0; index < 3; ++index) {
       TView* control = ResolveControlByTag(controlTags[index]);
@@ -253,7 +256,7 @@ void TIndustryView::UpdateFields() {
     }
   }
 
-  TView* flagControl = ResolveControlByTag(0x666c6167u); // 'flag'
+  TView* flagControl = ResolveControlByTag(kControlTagFlag); // 'flag'
   CString hoverHelp;
   if (flagControl != 0) {
     if (flagControl->IsActionable() != 0) {

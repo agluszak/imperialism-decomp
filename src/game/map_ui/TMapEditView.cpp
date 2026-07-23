@@ -1,4 +1,6 @@
 #include "game/map_ui/TMapEditView.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_map.h"
 
 #include "game/ui_screens/CString.h"
 #include "game/assets/TAssetMgr.h"
@@ -15,7 +17,6 @@
 #include "game/globals/prelude.h"
 #include "game/globals/map_ui_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 namespace {

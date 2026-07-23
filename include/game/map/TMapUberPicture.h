@@ -1,6 +1,8 @@
 #pragma once
 
 #include "game/ui_widgets/TMapUberUberPicture.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_map.h"
 #include "game/mfc.h"
 
 // Forward declarations for types referenced by generated signatures.

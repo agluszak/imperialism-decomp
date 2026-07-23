@@ -1,4 +1,5 @@
 #include "game/navy_ui/TShipView.h"
+#include "game/ui_tags_common.h"
 
 #include "game/navy/TAdmiral.h"
 #include "game/assets/TAssetMgr.h"
@@ -17,7 +18,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/navy_order.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
@@ -171,7 +171,7 @@ void TShipView::RunEngineerOrderNameEditDialogAndApply() {
   nameControl->GetCurrentText(&editedName);
   node->Close();
   node->Free();
-  if (modalResult == 0x6f6b6179 /* 'okay' */) {
+  if (modalResult == kControlTagOkay) {
     shipNode60->name = editedName;
   }
   RefreshControl();

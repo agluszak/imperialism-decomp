@@ -1,4 +1,6 @@
 #include "game/city_ui/TPurchaseCluster.h"
+#include "game/ui_tags_city.h"
+#include "game/ui_tags_common.h"
 
 #include "game/ui_widgets/TAmtBar.h"
 #include "game/city_ui/TBuildingView.h"
@@ -6,7 +8,6 @@
 #include "game/globals/prelude.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_control_tags.h"
 #include "game/gfx/ui_invalidation_guard.h"
 // SYNTHETIC: IMPERIALISM 0x004cc300
 // TPurchaseCluster::CreateObject

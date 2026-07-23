@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/ui_screens/TNewsMgr.h" // newsStory rows rendered by the advisor summary
+#include "game/ui_tags_screens.h"
 #include "game/ui_core/TPicture.h"
 #include "game/mfc.h"
 

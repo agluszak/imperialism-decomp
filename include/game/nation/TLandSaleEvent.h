@@ -1,6 +1,8 @@
 #pragma once
 
 #include "game/nation/TTurnStartEvent.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x00653290

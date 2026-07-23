@@ -1,4 +1,5 @@
 #include "game/military_ui/TSuperArmyRoster.h"
+#include "game/ui_tags_common.h"
 
 #include "game/ui_screens/TBook.h"
 #include "game/map/TMapMgr.h"
@@ -23,7 +24,7 @@ IMPLEMENT_DYNCREATE(TSuperArmyRoster, TPageView)
 void TSuperArmyRoster::PopulateArmyOrderPageEntries(TView* panel, int* offsetLayout,
                                                     int* sizeLayout) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
-  controlTag = 0x70616765; // 'page'
+  controlTag = kControlTagPage; // 'page'
   TPageView::DoPostCreate(0);
 
   short activeNation = g_pSimMgr->GetActiveNationId();

@@ -1,4 +1,5 @@
 #include "game/nation/TLandSaleEvent.h"
+#include "game/ui_tags_common.h"
 
 #include "game/gfx/TAmbitApplication.h"
 #include "game/city_ui/TCountry.h"
@@ -26,7 +27,7 @@ IMPLEMENT_DYNCREATE(TLandSaleEvent, TTurnStartEvent)
 void TLandSaleEvent::ILandSaleEvent(short tileIndex, short nationCode) {
   tileIndex08 = tileIndex;
   nationCode0a = nationCode;
-  eventTag04 = 0x6c616e64; // 'land'
+  eventTag04 = kControlTagLand; // 'land'
 }
 
 // FUNCTION: IMPERIALISM 0x004e6740

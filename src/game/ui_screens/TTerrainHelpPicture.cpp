@@ -1,4 +1,6 @@
 #include "game/ui_screens/TTerrainHelpPicture.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_screens.h"
 #include "game/ui_core/TWindow.h"
 
 #include "game/ui_widgets/TDeluxeText.h"
@@ -14,7 +16,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 #include <string.h>
@@ -139,8 +140,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   // Push the list into the 12 'i00a'..'i00l' item panes.
   InitializeUiTextStyleDescriptor(&itemStyle, 4, 0xc, 0x2b6d, 3);
   for (short i = 0; i < 12; i++) {
-    TStaticText* itemPane =
-        static_cast<TStaticText*>(ResolveControlByTag(0x69303061 /* 'i00a' */ + i));
+    TStaticText* itemPane = static_cast<TStaticText*>(ResolveControlByTag(kControlTagI00a + i));
     itemPane->InstallTextStyle(itemStyle, 1);
     short itemId = menuItemIds94[i];
     if (itemId != 0) {
@@ -155,20 +155,18 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   }
 
   // Refresh the two lonely-tile preview panes.
-  TLonelyTileView* tilePane =
-      static_cast<TLonelyTileView*>(ResolveControlByTag(0x74696c65 /* 'tile' */));
+  TLonelyTileView* tilePane = static_cast<TLonelyTileView*>(ResolveControlByTag(kControlTagTile));
   tilePane->AssertValid();
   tilePane->tileIndex60 = nTileIndex;
   tilePane->RefreshControl();
-  TLonelyTileView* tile2Pane =
-      static_cast<TLonelyTileView*>(ResolveControlByTag(0x74696c32 /* 'til2' */));
+  TLonelyTileView* tile2Pane = static_cast<TLonelyTileView*>(ResolveControlByTag(kControlTagTil2));
   tile2Pane->AssertValid();
   tile2Pane->tileIndex60 = nTileIndex;
   tile2Pane->RefreshControl();
 
   // Style the 'info' pane.
   InitializeUiTextStyleDescriptor(&itemStyle, 0, 0xc, 0x2b67, 3);
-  infoTextPane90 = static_cast<TDeluxeText*>(ResolveControlByTag(0x696e666f /* 'info' */));
+  infoTextPane90 = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagInfo));
   infoTextPane90->SetTextStyle(itemStyle, 0);
 
   // Title pane + location text.
@@ -179,7 +177,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   CString strOwnerLabel;
   CString strInfoText;
   InitializeUiTextStyleDescriptor(&titleStyle, 0, 0xc, 0x2b67, 1);
-  TStaticText* titlePane = static_cast<TStaticText*>(ResolveControlByTag(0x7469746c /* 'titl' */));
+  TStaticText* titlePane = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
   titlePane->SetEnabled(1, 1);
   titlePane->SetState(0, 1);
   titlePane->SetTextAlignmentAndMaybeRefresh(1, 0);
@@ -225,8 +223,7 @@ void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int sele
   InitializeUiTextStyleDescriptor(&highlightStyle, 4, 0xc, 0x2b69, 3);
   InitializeUiTextStyleDescriptor(&captionStyle, 0, 0xc, 0x2b67, 1);
 
-  TStaticText* captionPane =
-      static_cast<TStaticText*>(ResolveControlByTag(0x6974656d /* 'item' */));
+  TStaticText* captionPane = static_cast<TStaticText*>(ResolveControlByTag(kControlTagItem));
   captionPane->SetTextFromStringResource(0x2755, menuItemIds94[selectedIndex], 1);
   captionPane->SetEnabled(1, 1);
   captionPane->SetState(0, 1);
@@ -234,8 +231,7 @@ void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int sele
   captionPane->InstallTextStyle(captionStyle, 0);
 
   for (int i = 0; i < 12; i++) {
-    TStaticText* itemPane =
-        static_cast<TStaticText*>(ResolveControlByTag(0x69303061 /* 'i00a' */ + i));
+    TStaticText* itemPane = static_cast<TStaticText*>(ResolveControlByTag(kControlTagI00a + i));
     itemPane->InstallTextStyle((selectedIndex == i) ? highlightStyle : normalStyle, 1);
   }
 

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "game/ui_core/TCluster.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 class TTacticalUnit;
 class TArmyTacUnit;

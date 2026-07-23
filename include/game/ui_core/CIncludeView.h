@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/gfx/CDib.h"
+#include "game/ui_tags_common.h"
 #include <afxtempl.h>
 
 #include "game/mfc.h"

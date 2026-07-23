@@ -1,11 +1,12 @@
 #include "game/ui_screens/TNetGameSelectPicture.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_screens.h"
 
 #include "game/ui_core/TCluster.h"
 #include "game/ui_core/TControl.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_control_tags.h"
 
 // SYNTHETIC: IMPERIALISM 0x00576b20
 // TNetGameSelectPicture::`scalar deleting destructor'

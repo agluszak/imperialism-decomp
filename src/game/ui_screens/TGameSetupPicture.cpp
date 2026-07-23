@@ -1,4 +1,5 @@
 #include "game/gfx/TAmbitApplication.h"
+#include "game/ui_tags_common.h"
 #include "game/ui_screens/TGameSetupPicture.h"
 
 #include "game/ImperialismApp.h"
@@ -11,7 +12,6 @@
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_control_tags.h"
 
 // SYNTHETIC: IMPERIALISM 0x005757c0
 // TGameSetupPicture::CreateObject
@@ -55,7 +55,7 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   if (controlTag == kControlTagHigh) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
     postEventCode = EncodeTurnEventCode(kTurnEventHighScores);
-  } else if (controlTag == 0x636e636c /* 'cncl' */) {
+  } else if (controlTag == kControlTagCncl) {
     postEventCode = EncodeTurnEventCode(kTurnEventMainMenu);
   } else if (controlTag == kControlTagLoad) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);

@@ -1,4 +1,5 @@
 #include "game/military_ui/TMiniArmyLine.h"
+#include "game/ui_tags_common.h"
 
 #include "game/ui_screens/CString.h"
 #include "game/ui_screens/TGWorldButton.h"
@@ -38,7 +39,7 @@ void TMiniArmyLine::InstallViews(TView* panel, int* offsetLayout) {
     TGWorldButton* upgradeButton = new TGWorldButton;
     upgradeButton->InitializeWithBitmapResource(armyView, upgradeOffset, upgradeSize, 0xdae);
     upgradeButton->SetState(1, 0);
-    upgradeButton->controlTag = 0x75706772; // 'upgr'
+    upgradeButton->controlTag = kControlTagUpgr; // 'upgr'
 
     CString armsText;
     CString cashText;

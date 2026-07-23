@@ -1,4 +1,7 @@
 #include "game/navy/TNavyMgr.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
+#include "game/resource_domain_types.h"
 
 #include <stdlib.h>
 
@@ -254,7 +257,7 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
     }
     // Finalize the working pointer slot into the report-row category consumed by
     // TBatRepDetLine::InstallViews.
-    rec.detailIdentity.categoryTag = 0x6e617679; // 'navy'
+    rec.detailIdentity.categoryTag = kControlTagNavy; // 'navy'
   }
 
   if (entry != nullptr && entry->shipOrders == 5) {
@@ -1307,7 +1310,8 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
 
             CString resourceList;
             int reportIndex = 1;
-            for (int resourceType = 0; resourceType < 0x0e; ++resourceType) {
+            for (int resourceType = 0; resourceType < kIndustryActionOrderTypeCount;
+                 ++resourceType) {
               short resourceCount = drawnCounts[resourceType];
               if (resourceCount == 0) {
                 continue;
@@ -1324,7 +1328,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
                 MapOrderBattleSideChildRecord& detail = snapshot.childRecords[1][reportIndex];
                 detail.resourceType = static_cast<short>(resourceType);
                 detail.stockOrRequired = static_cast<short>((directionFlags >> 1) & 1);
-                detail.detailIdentity.categoryTag = 0x6d657263; // 'merc'
+                detail.detailIdentity.categoryTag = kControlTagMerc; // 'merc'
                 ++reportIndex;
               }
             }
@@ -1354,10 +1358,11 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
                 MapOrderBattleSideChildRecord& item = snapshot.childRecords[1][reportIndex];
                 item.resourceType = slot;
                 item.stockOrRequired = transferredWeight;
-                item.detailIdentity.categoryTag = 0x6974656d; // 'item'
+                item.detailIdentity.categoryTag = kControlTagItem; // 'item'
               }
 
-              for (int resourceType2 = 0; resourceType2 < 0x0e; ++resourceType2) {
+              for (int resourceType2 = 0; resourceType2 < kIndustryActionOrderTypeCount;
+                   ++resourceType2) {
                 if (drawnCounts[resourceType2] != 0) {
                   g_apNationStates[selection.offerNationCode]
                       ->city->orderCountByType5c[resourceType2] =
@@ -1384,7 +1389,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         interaction.resourceType = slot;
         interaction.stockOrRequired = entryValue;
         interaction.strengthBucket = entryTargetNation;
-        interaction.detailIdentity.categoryTag = 0x72757074; // 'rupt'
+        interaction.detailIdentity.categoryTag = kControlTagRupt; // 'rupt'
 
         int selectedChildCount = CountMapOrderChildren(selection.selectedEntry->shipList);
         if (selection.selectedEntry->flagship != nullptr &&
@@ -1430,7 +1435,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
           CopyCStringIntoFixedBuffer(detail.nameBuffer, 0x20,
                                      static_cast<LPCSTR>(selectedShip->name));
           detail.strengthBucket = static_cast<short>(selectedShip->experience / 100);
-          detail.detailIdentity.categoryTag = 0x6e617679; // 'navy'
+          detail.detailIdentity.categoryTag = kControlTagNavy; // 'navy'
           ++selectedChildIndex;
         }
 

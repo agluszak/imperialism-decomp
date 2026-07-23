@@ -1,7 +1,7 @@
 #include "game/ui_screens/TSidewaysArrow.h"
+#include "game/ui_tags_common.h"
 
 #include "decomp_types.h"
-#include "game/ui_control_tags.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_core/quickdraw_rendering.h"
 

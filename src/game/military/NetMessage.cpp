@@ -1,4 +1,5 @@
 #include "game/military/NetMessage.h"
+#include "game/ui_tags_common.h"
 #include <string.h>
 
 #include "game/net/TMultiplayerMgr.h"
@@ -31,7 +32,7 @@ void TimelyNetMessagePrefix::SetTimeEmitPacketGameFlowTurnId() {
 
 // FUNCTION: IMPERIALISM 0x005438e0
 TimelyMessageHeader* TimelyMessageHeader::InitializeEmitEventHeaderWithActiveNation() {
-  messageTag = 0x74696d65; // 'time'
+  messageTag = kControlTagTime; // 'time'
   activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   return this;
 }

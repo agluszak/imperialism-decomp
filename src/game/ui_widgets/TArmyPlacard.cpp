@@ -1,4 +1,5 @@
 #include "game/ui_widgets/TArmyPlacard.h"
+#include "game/ui_tags_common.h"
 #include "game/military/TArmyMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
@@ -75,7 +76,7 @@ void TArmyPlacard::Draw(RECT* rectBuffer) {
 void TArmyPlacard::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   (void)commandId;
   (void)event;
-  if (sourceHandler->controlTag == 0x706c7573) { // "plus"
+  if (sourceHandler->controlTag == kControlTagPlus) { // "plus"
     short categoryId = this->controlTag - 0x6330;
     short tileIndex = g_pMapContextActionManager->pendingMapActionIndex;
     short unitCount = g_pMapContextActionManager->ActivateFirstActiveTacticalUnitByCategoryAtTile(
@@ -83,7 +84,7 @@ void TArmyPlacard::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     this->SetValue(unitCount, 1);
     return;
   }
-  if (sourceHandler->controlTag == 0x6d696e75) { // "minu"
+  if (sourceHandler->controlTag == kControlTagMinu) { // "minu"
     short categoryId = this->controlTag - 0x6330;
     short tileIndex = g_pMapContextActionManager->pendingMapActionIndex;
     short unitCount = g_pMapContextActionManager->ActivateFirstIdleTacticalUnitByCategoryAtTile(

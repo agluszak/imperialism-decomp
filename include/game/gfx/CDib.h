@@ -12,6 +12,12 @@
 // Built by the asset cache's BuildIndexedBmpResourceById path; construct via `new CDib(w, h,
 // depth)`.
 //
+
+// How CDib::Release must dispose of m_pInfoHeader. Three states, so this is a real
+// ownership enum rather than a flag: Release (0x0047bca0) branches on the field to
+// choose between `delete[]` on a byte array and GlobalUnlock + GlobalFree on
+// m_hGlobalInfo. The field keeps its 32-bit slot at +0x18; a VC5 classic enum is
+// int-sized.
 enum eDibInfoOwnershipMode {
   kDibInfoNotOwned = 0,
   kDibInfoOwnedByteArray = 1,
@@ -27,13 +33,17 @@ public:
   BITMAPINFO* m_pInfoHeader; // 0x10  packed BITMAPINFOHEADER + RGBQUAD palette
   HGLOBAL m_hGlobalInfo;     // 0x14  GlobalAlloc handle backing m_pInfoHeader (own mode 2)
   eDibInfoOwnershipMode m_infoOwnMode; // 0x18
-  int m_dibBitsOwned;                  // 0x1c  1 when m_dibBits is byte-array storage
-  int m_pixelBytes;                    // 0x20  size of the pixel buffer in bytes
-  int m_paletteCount;                  // 0x24  number of palette entries (biClrUsed)
-  HANDLE m_hFileMapping;               // 0x28  file-mapping handle (memory-mapped bmp path)
-  HANDLE m_hFile;                      // 0x2c  file handle for the mapping
-  void* m_mappedView;                  // 0x30  MapViewOfFile base
-  HPALETTE m_hPalette;                 // 0x34  palette built from the color table (DeleteObject)
+  // 0x1c -- two-state companion to m_infoOwnMode, NOT a third ownership mode: every
+  // writer stores 0 or 1 and Release tests it once to decide whether m_dibBits is a
+  // `delete[]`-able byte array. This is the CDib lineage's BOOL m_bMyBits, so it stays
+  // a 32-bit BOOL rather than becoming an enum or a one-byte C++ bool.
+  BOOL m_dibBitsOwned;
+  int m_pixelBytes;      // 0x20  size of the pixel buffer in bytes
+  int m_paletteCount;    // 0x24  number of palette entries (biClrUsed)
+  HANDLE m_hFileMapping; // 0x28  file-mapping handle (memory-mapped bmp path)
+  HANDLE m_hFile;        // 0x2c  file handle for the mapping
+  void* m_mappedView;    // 0x30  MapViewOfFile base
+  HPALETTE m_hPalette;   // 0x34  palette built from the color table (DeleteObject)
 
   CDib();                                    // 0x00479f40
   CDib(int width, int height, int bitDepth); // 0x00479fe0

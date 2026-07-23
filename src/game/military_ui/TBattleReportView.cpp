@@ -1,4 +1,6 @@
 #include "game/military_ui/TBattleReportView.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 #include <string.h>
 
@@ -61,28 +63,28 @@ void TBattleReportView::DoPostCreate(int arg) {
   memset(crowdGrid, 0, sizeof(crowdGrid));
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xe, 0x2b67);
-  TControl* control = static_cast<TControl*>(ResolveControlByTag(0x72657375)); // 'user'
+  TControl* control = static_cast<TControl*>(ResolveControlByTag(kControlTagResu)); // 'user'
   control->AssertValid();
   control->InstallTextStyle(style.desc, 0);
 
   BuildUiTextStyleDescriptor(&style.desc, 2, 0xe, 0x2b67);
-  control = static_cast<TControl*>(ResolveControlByTag(0x6c6f6361)); // 'acol'
+  control = static_cast<TControl*>(ResolveControlByTag(kControlTagLoca)); // 'acol'
   control->AssertValid();
   control->InstallTextStyle(style.desc, 0);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b67);
-  control = static_cast<TControl*>(ResolveControlByTag(0x6661646d)); // 'mdaf'
+  control = static_cast<TControl*>(ResolveControlByTag(kControlTagFadm)); // 'mdaf'
   control->AssertValid();
   control->InstallTextStyle(style.desc, 0);
-  control = static_cast<TControl*>(ResolveControlByTag(0x6561646d)); // 'mdae'
+  control = static_cast<TControl*>(ResolveControlByTag(kControlTagEadm)); // 'mdae'
   control->AssertValid();
   control->InstallTextStyle(style.desc, 0);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b67);
-  control = static_cast<TControl*>(ResolveControlByTag(0x66736870)); // 'phsf'
+  control = static_cast<TControl*>(ResolveControlByTag(kControlTagFshp)); // 'phsf'
   control->AssertValid();
   control->InstallTextStyle(style.desc, 0);
-  control = static_cast<TControl*>(ResolveControlByTag(0x65736870)); // 'phse'
+  control = static_cast<TControl*>(ResolveControlByTag(kControlTagEshp)); // 'phse'
   control->AssertValid();
   control->InstallTextStyle(style.desc, 0);
 
@@ -218,7 +220,8 @@ void TBattleReportView::DoPostCreate(int arg) {
   animation->InitializeAnimation(this, &animationRect, 0, 0, 0, registryTag);
   g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
 
-  TInfoBarText* cursorPanel = static_cast<TInfoBarText*>(ResolveControlByTag(0x63757273)); // 'surc'
+  TInfoBarText* cursorPanel =
+      static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs)); // 'surc'
   g_pCursorControlPanel = cursorPanel;
   cursorPanel->AssertValid();
   g_pCursorControlPanel->SetTextStyle(0, 0xe, 0x2b6b);
@@ -226,20 +229,20 @@ void TBattleReportView::DoPostCreate(int arg) {
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b67, 0x2b6c);
 
   SetControlHoverHelpText(g_pBattleReportSharedText_0064dc30,
-                          ResolveControlByTag(0x6d61696e)); // 'main'
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, ResolveControlByTag(0x6661646d));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, ResolveControlByTag(0x66736870));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, ResolveControlByTag(0x66666c67));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x17, ResolveControlByTag(0x6561646d));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x17, ResolveControlByTag(0x65736870));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x17, ResolveControlByTag(0x65666c67));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x18, ResolveControlByTag(0x6c6f6361));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x19, ResolveControlByTag(0x72657375));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1a, ResolveControlByTag(0x70726576));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1b, ResolveControlByTag(0x6e657874));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1c, ResolveControlByTag(0x696e666f));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1d, ResolveControlByTag(0x6f6b6179));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1e, ResolveControlByTag(0x71756572));
+                          ResolveControlByTag(kControlTagMain)); // 'main'
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, ResolveControlByTag(kControlTagFadm));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, ResolveControlByTag(kControlTagFshp));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, ResolveControlByTag(kControlTagFflg));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x17, ResolveControlByTag(kControlTagEadm));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x17, ResolveControlByTag(kControlTagEshp));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x17, ResolveControlByTag(kControlTagEflg));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x18, ResolveControlByTag(kControlTagLoca));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x19, ResolveControlByTag(kControlTagResu));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1a, ResolveControlByTag(kControlTagPrev));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1b, ResolveControlByTag(kControlTagNext));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1c, ResolveControlByTag(kControlTagInfo));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1d, ResolveControlByTag(kControlTagOkay));
+  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1e, ResolveControlByTag(kControlTagQuer));
 
   g_pSfxPlaybackSystem->ResetDualAudioCuePools();
   g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(5);

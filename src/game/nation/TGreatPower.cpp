@@ -3,6 +3,8 @@
 // reccmp pairs bodies by the FUNCTION address markers.
 
 #include <math.h>
+#include "game/ui_tags_common.h"
+#include "game/resource_domain_types.h"
 #include <stddef.h>
 #include <string.h>
 
@@ -836,7 +838,7 @@ void TGreatPower::SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(
 // FUNCTION: IMPERIALISM 0x004dd140
 void TGreatPower::RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void) {
   int total = 0;
-  for (int resourceType = 0; resourceType < 0x0E; ++resourceType) {
+  for (int resourceType = 0; resourceType < kIndustryActionOrderTypeCount; ++resourceType) {
     short resourceWeight = GetResourceDescriptorWeightWord0ByType(static_cast<short>(resourceType));
     short orderCount = this->city->orderCountByType5c[resourceType];
     total += static_cast<short>(resourceWeight * orderCount);
@@ -1774,7 +1776,8 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
 
   TSimMgr* localizationTable = g_pSimMgr;
   if (localizationTable != 0 && localizationTable->difficultyLevel != 0) {
-    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6e616d65, this->nationSlot, 0xfffffffd);
+    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagName, this->nationSlot,
+                                                       0xfffffffd);
   }
 }
 

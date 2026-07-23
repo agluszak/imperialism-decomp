@@ -7,6 +7,8 @@
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/ui_core/TLanguageMgr.h"
 #include "game/ui_screens/TScenarioChooser.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_screens.h"
 
 #include "game/gfx/TAmbitApplication.h"
 #include "game/assets/TAssetMgr.h"
@@ -21,7 +23,6 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_screens_globals.h"
-#include "game/ui_control_tags.h"
 
 // FUNCTION: IMPERIALISM 0x0045ae60
 TScenarioChooser::TScenarioChooser() {}
@@ -94,7 +95,7 @@ void TScenarioChooser::DoPostCreate(int arg) {
   ResolveUiThemeColor(0x2b6c, &shadowColor);
 
   TDropShadowText* moreLabel =
-      static_cast<TDropShadowText*>(ResolveControlByTag(0x6d6f7265)); // 'more'
+      static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagMore)); // 'more'
   moreLabel->AssertValid();
   g_pSimMgr->GetString(0x2758, 0x20, &headingText);
   moreLabel->SetTextAndMaybeRefresh(&headingText, 0);
@@ -125,11 +126,12 @@ void TScenarioChooser::DoPostCreate(int arg) {
   cursorPanel->SetTextAlignmentAndMaybeRefresh(1, 1);
 
   LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x18, this);
-  LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x14, ResolveControlByTag(0x65786974));
-  LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x16, ResolveControlByTag(kControlTagPmap));
-  LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x19, ResolveControlByTag(0x73746172));
+  LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x14, ResolveControlByTag(kControlTagExit));
+  LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x16,
+                                             ResolveControlByTag(kControlTagPreviewMap));
+  LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x19, ResolveControlByTag(kControlTagStar));
   LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x1a, ResolveControlByTag(kControlTagList));
-  LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x1c, ResolveControlByTag(0x6d6f7265));
+  LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x1c, ResolveControlByTag(kControlTagMore));
 }
 
 // FUNCTION: IMPERIALISM 0x0057a050
@@ -144,9 +146,9 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     LoadScenarioMetadataByIndexIntoUiControlCore(
         scenarioIndexByListRow94[scenarioList->selectedIndex]);
     SetCursor(LoadCursorA(nullptr, IDC_ARROW));
-  } else if (commandId == 0x7069636b) { // 'pick'
+  } else if (commandId == kControlTagPick) { // 'pick'
     TMapPreviewView* mapPreview =
-        static_cast<TMapPreviewView*>(ResolveControlByTag(0x706d6170u)); // 'pmap'
+        static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap)); // 'pmap'
     mapPreview->AssertValid();
     if (nationStateCodesByMapSelection144[mapPreview->pendingNation6C] != -1 &&
         mapPreview->pendingNation6C != mapPreview->selectedNation68) {
@@ -155,25 +157,25 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       mapPreview->EnhancePhoto();
       mapPreview->RefreshControl();
       TDeluxeText* descControl =
-          static_cast<TDeluxeText*>(ResolveControlByTag(0x64657363u)); // 'desc'
+          static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagDesc)); // 'desc'
       descControl->SetTextEntryFromChars(
           nationDescriptionTextByMapSelection118[mapPreview->pendingNation6C],
           nationDescriptionLengthByMapSelection134[mapPreview->pendingNation6C]);
     }
   } else if (commandId == 0xa) {
-    if (sourceHandler->controlTag == 0x73746172u) { // 'star'
+    if (sourceHandler->controlTag == kControlTagStar) { // 'star'
       StartGame();
     }
   } else if (commandId == 0xd) {
-    if (sourceHandler->controlTag == 0x6d6f7265u) {                                // 'more'
-      TTextList* list = static_cast<TTextList*>(ResolveControlByTag(0x6c697374u)); // 'list'
+    if (sourceHandler->controlTag == kControlTagMore) {                                // 'more'
+      TTextList* list = static_cast<TTextList*>(ResolveControlByTag(kControlTagList)); // 'list'
       list->AssertValid();
       int newOffset = list->frameHeight38 / list->itemHeight + list->scrollOffset;
       list->scrollOffset = (newOffset > list->totalItems) ? 0 : newOffset;
       list->RefreshControl();
     }
   } else if (commandId == 0x14) {
-    if (sourceHandler->controlTag == 0x65786974u) { // 'exit'
+    if (sourceHandler->controlTag == kControlTagExit) { // 'exit'
       ExitScreen();
     }
   }
@@ -193,9 +195,9 @@ void TScenarioChooser::ExitScreen() {
 // FUNCTION: IMPERIALISM 0x0057a310
 void TScenarioChooser::DoKeyEvent(TToolboxEvent* event) {
   int commandCode = event->commandCode;
-  if (commandCode == 3 || commandCode == 0xd) {
+  if (commandCode == kUiKeyEnter || commandCode == kUiKeyReturn) {
     StartGame();
-  } else if (commandCode == 0x1b) {
+  } else if (commandCode == kUiKeyEscape) {
     ExitScreen();
   }
 }
@@ -217,7 +219,8 @@ void TScenarioChooser::StartGame() {
   }
   g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(languageTag);
 
-  TMapPreviewView* mapControl = static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPmap));
+  TMapPreviewView* mapControl =
+      static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap));
   mapControl->AssertValid();
   g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
   g_pSimMgr->RecreateActiveMapContextAndInitializeGlobalMapState(selectedScenarioIndex142);
@@ -247,7 +250,7 @@ void TScenarioChooser::StartGame() {
     g_pGameFlowState->playerNameString = g_cstrCountryNameSettingValue006A4220;
     g_pGameFlowState->activeNationTagIndex =
         static_cast<unsigned char>(mapControl->selectedNation68);
-    g_pGameFlowState->scenarioSelectionTag = 0x73636e30 + selectedScenarioIndex142; // 'scn0'
+    g_pGameFlowState->scenarioSelectionTag = kControlTagScn0 + selectedScenarioIndex142;
     g_pGlobalUiRootController->PostTurnEventCodeMessage2420(kTurnEventNetworkGameOptions);
   } else {
     g_pSimMgr->SetActiveNationSlotAndRefreshCityCapabilityUiHandles(mapControl->selectedNation68);
@@ -345,7 +348,8 @@ void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenar
     fieldBuffer[tileIndex] = tileRecords[tileIndex * 0x24 + 4];
   }
 
-  TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPmap));
+  TMapPreviewView* mapPreview =
+      static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap));
   mapPreview->AssertValid();
   mapPreview->TakeSatellitePhoto(fieldBuffer);
   mapPreview->selectedNation68 = previewNationSlot;
@@ -354,7 +358,7 @@ void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenar
   mapPreview->SetState(1, 0);
   mapPreview->RefreshControl();
 
-  TView* startButton = ResolveControlByTag(0x73746172); // 'star'
+  TView* startButton = ResolveControlByTag(kControlTagStar); // 'star'
   startButton->AssertValid();
   startButton->SetState(1, 1);
   startButton->SetEnabled(1, 0);

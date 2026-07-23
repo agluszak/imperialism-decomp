@@ -1,4 +1,6 @@
 #include "game/diplomacy_ui/TDefenseMinisterView.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_diplomacy.h"
 
 #include "game/gfx/TAmbitApplication.h"
 #include "game/military/TArmyMgr.h"
@@ -9,7 +11,6 @@
 #include "game/globals/prelude.h"
 #include "game/globals/diplomacy_ui_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_control_tags.h"
 // SYNTHETIC: IMPERIALISM 0x004f3240
 // TDefenseMinisterView::CreateObject
 

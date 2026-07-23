@@ -15,7 +15,7 @@ THandleStream::THandleStream() {
   this->growthSize10 = 1;
   this->attachedGlobalHandle = 0;
   this->streamPosition = 0;
-  this->ownsHandleOrDirty = 0;
+  this->unclassifiedByte14 = 0;
   this->attachedSizeBytes = 0;
 }
 

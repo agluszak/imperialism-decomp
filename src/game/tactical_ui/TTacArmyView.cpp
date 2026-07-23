@@ -1,4 +1,5 @@
 #include "game/tactical_ui/TTacArmyView.h"
+#include "game/ui_tags_common.h"
 #include "game/ui_core/TWindow.h"
 
 #include "game/gfx/CDib.h"
@@ -23,7 +24,6 @@
 #include "game/quickdraw_guards.h"
 #include "game/gfx/quickdraw_regions.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
 // The original repeats this DIB vertical-flip adjustment before every atlas blit;
@@ -61,6 +61,17 @@ TTacArmyView::TTacArmyView() {}
 // is missing (the loader handle then leaks, as in the original).
 // Listing 0x005a9d90 inlines the loader's exact-type non-virtual destructor.
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
+// Fort-wall edge kinds for the tactical grid: a closed file-local domain derived from
+// a tile's deploy-mark parity and that of its left neighbour. The wall-sprite column
+// is computed as (edgeKind + wallCol), and each non-zero kind selects a different
+// wall-neighbour tile offset, so the values are load-bearing, not flags.
+enum FortWallEdgeKind {
+  kFortWallEdgeNone = 0,
+  kFortWallEdgeEvenRowRight = 1,
+  kFortWallEdgeEvenRowLeft = 2,
+  kFortWallEdgeOddRow = 3
+};
+
 // FUNCTION: IMPERIALISM 0x005a9d90
 void TTacArmyView::InitializeBattlefieldView(int compositionClass, TArmyBattle* battle) {
   int savedFlags = 0;
@@ -313,36 +324,39 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
   int rowParity = (tileIndex / 0x1d) & 1;
   int sideSlot = rowParity + (tileIndex % 0x1d) * 2;
 
-  // Fort-wall edge classification for this tile (0 = none; 1/2 = even-row wall
-  // right/left of the seam; 3 = odd-row wall).
+  // Fort-wall edge classification for this tile. The four values are a closed local
+  // domain: the wall-sprite column is computed as (edgeKind + wallCol), and each
+  // non-zero kind selects a different wall-neighbour tile offset.
   TacticalTileRecord* grid = tacticalBattle60->tileGrid4;
-  short edgeKind = 0;
+  short edgeKind = kFortWallEdgeNone;
   if (rowParity == 0) {
     if (tileIndex > 0) {
       if (grid[tileIndex].deployMark8 < 2) {
         if (grid[tileIndex - 1].deployMark8 > 1) {
-          edgeKind = 2;
+          edgeKind = kFortWallEdgeEvenRowLeft;
         }
       } else {
-        edgeKind = 1;
+        edgeKind = kFortWallEdgeEvenRowRight;
       }
     }
   } else if (grid[tileIndex].deployMark8 >= 2) {
-    edgeKind = 3;
+    edgeKind = kFortWallEdgeOddRow;
   }
 
   unsigned char wallBreached = 0;
-  if ((((edgeKind == 1 || edgeKind == 3) && !tacticalBattle60->HasFortWallGarrison(tileIndex)) ||
-       (edgeKind == 2 && !tacticalBattle60->HasFortWallGarrison(tileIndex)))) {
+  if ((((edgeKind == kFortWallEdgeEvenRowRight || edgeKind == kFortWallEdgeOddRow) &&
+        !tacticalBattle60->HasFortWallGarrison(tileIndex)) ||
+       (edgeKind == kFortWallEdgeEvenRowLeft &&
+        !tacticalBattle60->HasFortWallGarrison(tileIndex)))) {
     wallBreached = 1;
   }
   unsigned char gunSlotRow = 0;
   unsigned char gunSlotOccupied = 0;
-  if (edgeKind != 0) {
+  if (edgeKind != kFortWallEdgeNone) {
     int wallNeighbor;
-    if (edgeKind == 1) {
+    if (edgeKind == kFortWallEdgeEvenRowRight) {
       wallNeighbor = tileIndex + 0x1d;
-    } else if (edgeKind == 2) {
+    } else if (edgeKind == kFortWallEdgeEvenRowLeft) {
       wallNeighbor = tileIndex + 0x1c;
     } else {
       wallNeighbor = tileIndex;
@@ -448,7 +462,8 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &fortSrc,
                                      &fortDst, 0x24, 0);
     SetQuickDrawStrokeColor(0);
-  } else if ((gunSlotOccupied || wallBreached || edgeKind == 2) && edgeKind != 0) {
+  } else if ((gunSlotOccupied || wallBreached || edgeKind == kFortWallEdgeEvenRowLeft) &&
+             edgeKind != kFortWallEdgeNone) {
     // Wall segment selected by breach/occupancy state.
     short wallCol = wallBreached ? 0xb : 5;
     short wallSpriteX = (edgeKind + wallCol) * static_cast<short>(tileWidthPx88);
@@ -525,9 +540,10 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
   }
 
   // Wall-tile decoration pass for the edge kinds not covered above.
-  if (grid[tileIndex].deployMark8 == 1 || (edgeKind != 0 && !gunSlotOccupied && edgeKind != 2)) {
+  if (grid[tileIndex].deployMark8 == 1 ||
+      (edgeKind != kFortWallEdgeNone && !gunSlotOccupied && edgeKind != kFortWallEdgeEvenRowLeft)) {
     short deckSpriteX;
-    if (edgeKind == 0) {
+    if (edgeKind == kFortWallEdgeNone) {
       deckSpriteX = static_cast<short>(unitSpriteCellWidth90) * 2;
     } else if (!wallBreached) {
       if (!gunSlotRow) {
@@ -644,7 +660,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
   }
 
   // Gun-slot wall overlay when the slot row is occupied.
-  if (edgeKind != 0 && gunSlotRow && edgeKind != 2) {
+  if (edgeKind != kFortWallEdgeNone && gunSlotRow && edgeKind != kFortWallEdgeEvenRowLeft) {
     short slotSpriteX = (edgeKind + 8) * static_cast<short>(tileWidthPx88);
     RECT slotSrc = {slotSpriteX, 0, slotSpriteX + tileWidthPx88, tileRowHeightPx8C};
     RECT slotDst = {paintLeft, paintTop + 1, paintLeft + tileWidthPx88,

@@ -3,7 +3,7 @@
 #include <afxcmn.h> // CSliderCtrl
 
 #include "game/gfx/TModalDialogBase.h" // CDialog-derived modal base
-#include "game/mfc.h"              // CListBox (afxwin.h)
+#include "game/mfc.h"                  // CListBox (afxwin.h)
 
 class CDib;
 struct GameSetup;

@@ -77,6 +77,15 @@ typedef unsigned char RiverSpriteCodeStorage;
 
 enum RiverSpriteCode {
   kRiverSpriteCodeNone = 0,
+  // Multi-direction flow families. TraceTerrainFlowToNearestSeaTile (0x00563990)
+  // folds the second family onto the first by subtracting the bias, then resolves the
+  // first family through the flow remap table; the single-direction families below
+  // carry no traceable flow and end the trace.
+  kRiverSpriteCodeFlowFirst = 0x0b,
+  kRiverSpriteCodeFlowLast = 0x1a,
+  kRiverSpriteCodeFlowVariantFirst = 0x1b,
+  kRiverSpriteCodeFlowVariantLast = 0x2a,
+  kRiverSpriteCodeFlowVariantBias = 0x10,
   kRiverSpriteCodeLandSingleDirectionFirst = 0x2b,
   kRiverSpriteCodeLandSingleDirectionLast = 0x32,
   kRiverSpriteCodeWaterSingleDirectionFirst = 0x33,

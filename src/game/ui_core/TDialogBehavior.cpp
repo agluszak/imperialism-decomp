@@ -1,4 +1,7 @@
 #include "game/ui_core/TDialogBehavior.h"
+#include "game/resource_manifest_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 #include "game/ui_core/TWindow.h"
 
 #include "game/ui_core/CIncludeView.h"
@@ -21,8 +24,9 @@ IMPLEMENT_DYNCREATE(TDialogBehavior, TBehavior)
 
 // FUNCTION: IMPERIALISM 0x00487370
 TDialogBehavior::TDialogBehavior()
-    : TBehavior(), armed(0), defaultCommandCode(0x20202020), cancelCommandCode(0x20202020),
-      armedCommandCode(0x20202020), dismissPending(1) {}
+    : TBehavior(), armed(0), defaultCommandCode(kControlTagSpSpSpSp),
+      cancelCommandCode(kControlTagSpSpSpSp), armedCommandCode(kControlTagSpSpSpSp),
+      dismissPending(1) {}
 
 // SYNTHETIC: IMPERIALISM 0x004873b0
 // TDialogBehavior::`scalar deleting destructor'
@@ -30,7 +34,7 @@ TDialogBehavior::~TDialogBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x00487400
 void TDialogBehavior::SetUiColorDescriptorGoldTriplet(unsigned char flag, int colorA, int colorB) {
-  behaviorTag = 0x646c6f67; // 'gold'
+  behaviorTag = kControlTagDlog; // 'gold'
   armed = flag;
   defaultCommandCode = colorA;
   cancelCommandCode = colorB;
@@ -64,16 +68,16 @@ void TDialogBehavior::DoKeyEvent(TToolboxEvent* event) {
 
   unsigned long commandCode;
   int fallbackCommand;
-  if (event->commandCode == 3 || event->commandCode == 0x0d) {
+  if (event->commandCode == kUiKeyEnter || event->commandCode == kUiKeyReturn) {
     commandCode = defaultCommandCode;
     fallbackCommand = 0x16;
-  } else if (event->commandCode == 0x1b) {
+  } else if (event->commandCode == kUiKeyEscape) {
     commandCode = cancelCommandCode;
     fallbackCommand = 0x15;
   } else {
     return;
   }
-  if (commandCode == 0x20202020) {
+  if (commandCode == kControlTagSpSpSpSp) {
     return;
   }
 
@@ -88,8 +92,8 @@ void TDialogBehavior::DoKeyEvent(TToolboxEvent* event) {
 // FUNCTION: IMPERIALISM 0x004875d0
 void TDialogBehavior::DoCommandKeyEvent(TToolboxEvent* event) {
   TView* ownerView = static_cast<TView*>(owner);
-  if (ownerView == 0 || ownerView->IsEnabled() == 0 || event->commandCode != 0x2e ||
-      cancelCommandCode == 0x20202020) {
+  if (ownerView == 0 || ownerView->IsEnabled() == 0 || event->commandCode != kUiKeyPeriod ||
+      cancelCommandCode == kControlTagSpSpSpSp) {
     return;
   }
 
@@ -111,7 +115,7 @@ void TDialogBehavior::PoseModally() {
   ownerPanel = owner->GetWindow();
   CWnd* nativeWindow = ownerPanel->nativeWindow50;
   dismissPending = 0;
-  armedCommandCode = 0x20202020;
+  armedCommandCode = kControlTagSpSpSpSp;
   nativeWindow->EnableWindow(1);
   nativeWindow->RunModalLoop(0);
 

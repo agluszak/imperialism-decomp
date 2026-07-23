@@ -1,4 +1,5 @@
 #include <time.h>
+#include "game/ui_tags_common.h"
 
 #include "game/ui_screens/TZone.h"
 #include "game/globals/prelude.h"
@@ -1172,7 +1173,7 @@ TZone::~TZone() {
 // FUNCTION: IMPERIALISM 0x00563220
 void RegenerateAllMapActionContextStatusCodes(void) {
   const char* tag = g_pGlobalMapState->scenarioTagText1c;
-  int seed = 0x6e616461;
+  int seed = kControlTagNada;
   while (*tag != '\0') {
     seed = (seed >> 0x10) + seed * 2 + static_cast<int>(*tag);
     tag = tag + 1;

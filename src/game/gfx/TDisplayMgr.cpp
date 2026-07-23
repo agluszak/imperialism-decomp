@@ -1,4 +1,6 @@
 #include "game/gfx/TDisplayMgr.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 #include <new>
 #include <windows.h>
@@ -18,7 +20,6 @@
 #include "game/mfc.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/gfx/ui_invalidation_guard.h"
-#include "game/ui_control_tags.h"
 
 namespace {
 
@@ -268,7 +269,7 @@ void TDisplayMgr::CloseFloaters() {
     if (window != 0) {
       if (window->IsActionable() != 0 && window->controlValue3c == kClass99WindowId) {
         if (window->IsModal() != 0) {
-          window->Dismiss(kTagOkOkOk, 1);
+          window->Dismiss(kControlTagOkok, 1);
         } else {
           window->CloseAndFree();
         }
