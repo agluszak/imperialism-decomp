@@ -64,12 +64,12 @@ the C rows are verification candidates for the orchestrator, not applied fixes.
 
 | file:line | check | function addr / match | class | rationale |
 | --- | --- | --- | --- | --- |
-| `src/game/CDib.cpp:492` | NullDereference | 0x47bde0 17.9% | **C** | C1 |
-| `src/game/CDib.cpp:495` | NullDereference | 0x47bde0 17.9% | **C** | C1 |
-| `src/game/CDib.cpp:511` | NullDereference | 0x47bde0 17.9% | **C** | C1 |
-| `src/game/CDib.cpp:511` | NullDereference | 0x47bde0 17.9% | **C** | C1 |
-| `src/game/CDib.cpp:517` | NullDereference | 0x47bde0 17.9% | **C** | C1 |
-| `src/game/CDib.cpp:517` | NullDereference | 0x47bde0 17.9% | **C** | C1 |
+| `src/game/CDib.cpp:492` | NullDereference | 0x47bde0 17.9% | **A** | C1 (verified) |
+| `src/game/CDib.cpp:495` | NullDereference | 0x47bde0 17.9% | **A** | C1 (verified) |
+| `src/game/CDib.cpp:511` | NullDereference | 0x47bde0 17.9% | **A** | C1 (verified) |
+| `src/game/CDib.cpp:511` | NullDereference | 0x47bde0 17.9% | **A** | C1 (verified) |
+| `src/game/CDib.cpp:517` | NullDereference | 0x47bde0 17.9% | **A** | C1 (verified) |
+| `src/game/CDib.cpp:517` | NullDereference | 0x47bde0 17.9% | **A** | C1 (verified) |
 | `src/game/CIncludeView.cpp:258` | CallAndMessage | 0x483750 91.2% | **A** | A2 |
 | `src/game/CMcWindow.cpp:30` | NullDereference | 0x493470 41.7% | **A** | A2 |
 | `src/game/ImperialismApp.cpp:150` | CallAndMessage | 0x412a70 100.0% | **A** | A1 |
@@ -186,7 +186,7 @@ the C rows are verification candidates for the orchestrator, not applied fixes.
 | `src/game/TMapUberPicture.cpp:515` | CallAndMessage | 0x597f80 75.9% | **A** | A2 |
 | `src/game/TMapUberPicture.cpp:705` | CallAndMessage | 0x598e10 93.1% | **A** | A2 |
 | `src/game/TMapUberPicture.cpp:784` | CallAndMessage | 0x599090 64.3% | **A** | A2 |
-| `src/game/TMilitaryPageView.cpp:86` | CallAndMessage | 0x564a60 39.4% | **C** | C3 |
+| `src/game/TMilitaryPageView.cpp:86` | CallAndMessage | 0x564a60 39.4% | **A** | C3 (verified) |
 | `src/game/TMinisterView.cpp:39` | CallAndMessage | 0x4f2d10 100.0% | **A** | A1 |
 | `src/game/TMinisterView.cpp:45` | CallAndMessage | 0x4f2d10 100.0% | **A** | A1 |
 | `src/game/TMinorRelationshipDialog.cpp:39` | CallAndMessage | 0x5b3400 52.9% | **A** | A2 |
@@ -249,7 +249,7 @@ the C rows are verification candidates for the orchestrator, not applied fixes.
 | `src/game/TRelationshipDialog.cpp:38` | CallAndMessage | 0x5b2da0 63.9% | **A** | A2 |
 | `src/game/TRelationshipDialog.cpp:42` | CallAndMessage | 0x5b2da0 63.9% | **A** | A2 |
 | `src/game/TShipAmtBar.cpp:36` | NullDereference | 0x58abf0 91.2% | **A** | A3 |
-| `src/game/TShip.cpp:553` | CallAndMessage | 0x5509c0 75.8% | **C** | C2 |
+| `src/game/TShip.cpp:553` | CallAndMessage | 0x5509c0 75.8% | **A** | C2 (verified) |
 | `src/game/TShipView.cpp:156` | CallAndMessage | 0x565a40 67.5% | **A** | A2 |
 | `src/game/TShipyardCluster.cpp:104` | CallAndMessage | 0x58a940 48.2% | **A** | A2 |
 | `src/game/TShipyardCluster.cpp:117` | CallAndMessage | 0x58a940 48.2% | **A** | A2 |
@@ -271,7 +271,7 @@ the C rows are verification candidates for the orchestrator, not applied fixes.
 | `src/game/TTaskForce.cpp:337` | NullDereference | 0x552d10 59.9% | **A** | A3 |
 | `src/game/TTaskForce.cpp:346` | NullDereference | 0x552d10 59.9% | **A** | A3 |
 | `src/game/TTaskForce.cpp:833` | CallAndMessage | 0x553bc0 65.4% | **A** | A2 |
-| `src/game/TTaskForce.cpp:973` | CallAndMessage | 0x553fe0 77.8% | **C** | C2 |
+| `src/game/TTaskForce.cpp:973` | CallAndMessage | 0x553fe0 77.8% | **A** | C2 (verified) |
 | `src/game/TToolBarCluster.cpp:570` | CallAndMessage | 0x5dc560 100.0% | **A** | A1 |
 | `src/game/TTown.cpp:234` | CallAndMessage | 0x5b7570 71.3% | **A** | A2 |
 | `src/game/TTown.cpp:242` | CallAndMessage | 0x5b7570 71.3% | **A** | A2 |
@@ -349,13 +349,24 @@ the C rows are verification candidates for the orchestrator, not applied fixes.
 
 ## Summary
 
-- Class A: 264
+- Class A: 273 (264 + 9 reclassified after listing verification)
 - Class B: 8
-- Class C: 9
+- Class C: 0 (all candidates verified listing-faithful)
 - Class D: 1
 - Total findings: 282 (282 warning lines; duplicate-line CDib rows counted individually)
 
-## C-candidate shortlist (needs Ghidra listing verification; no edits applied)
+## C-candidate shortlist — RESOLVED 2026-07-23 (Ghidra listing verification)
+
+All three candidates verified against the original listing and reclassified
+**A** (listing-faithful): C1 — retail computes the same null clip pointers and
+enters the copy loops with no guard (decompile at 0x47bde0 shows
+`pcVar = 0` joins straight into the blit loops); C2 — retail loads the
+possibly-null `next` into ECX and calls 0x404692 unguarded
+(`00550a1b MOV ECX,EBX / CALL 0x00404692`), identical in both functions;
+C3 — retail's tail reload + Release (`piVar4 = *piVar6;
+call [piVar4]+4`) sits outside the `*piVar6 != 0` branch exactly as ported.
+The class-A totals above include these reclassified rows. Original shortlist
+text kept below for the verification trail.
 
 - **C1 — `CDib::BlitSurfaceRectSkippingTransparentColor` 0x0047bde0 (17.9%),
   `src/game/CDib.cpp:492/495/511/517`.** The clip computation deliberately sets

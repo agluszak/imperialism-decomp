@@ -55,7 +55,7 @@ baseline match at audit time.
 | `src/game/TNavyMgr.cpp:917,1609` | branch-clone | A | `proceed`/`queueable` predicate chains with several zero branches, mirroring short-circuit compare sequences. |
 | `src/game/TViewMgr.cpp:2618` | branch-clone | A | Localized-string dispatch chain over session-role/action tags; two tags legitimately load the same string index. 85.0%. |
 | `src/game/ui_text_label_helpers.cpp:37` | branch-clone | A | Switch over UI color tokens: two distinct case IDs map to `PALETTEINDEX(1)`. Case set is data from the binary; merging cases would reorder the switch. |
-| `src/game/TTacArmyView.cpp:676` | branch-clone | **C** | `tileThreatLevelArray28[tileIndex] == 0` selects between two *identical* `SetForeColor(0)` calls — the guarding test is pointless as written, and the sibling branch uses a different color API. Function is at 22.5%; the original plausibly passes a different color on one side. Verify against the listing before touching. |
+| `src/game/TTacArmyView.cpp:676` | branch-clone | **C — CONFIRMED, FIXED** | Listing 0x5ac10f/0x5ac118: original pushes `0x33` (threat) / `0x34` (no threat) to `SetForeColor`, and `0x13` (not 0) to `SetQuickDrawFillColorFromPaletteIndex` in the guard branch. Port passed 0 everywhere. Fixed 2026-07-23. |
 | `src/game/TAutoGreatPower.cpp:1201`; `src/game/TMacViewMgr.cpp:840,841,845,846`; `src/game/TMapMaker.cpp:513,544,553,564`; `src/game/TMapMgr.cpp:4270`; `src/game/TNavyMgr.cpp:654`; `src/game/TTechMgr.cpp:163` | assignment-in-if | A | Comma-assignment inside short-circuit conditions (`(x = load, x < k)` / LCG advance-and-test / list-cursor advance). This is the transcribed listing shape: the side effect must occur only when the earlier terms pass. Rewriting to statement form changes branch structure. |
 | `src/game/ImperialismApp.cpp:110` | DeadStores | A | `hFinal = hProduct` init overwritten on both paths; mirrors the original's register flow through the registry-key fallback chain. Compiler discards the dead store — codegen-neutral. |
 | `src/game/TMapMgr.cpp:729,764`; `src/game/TMinor.cpp:601` | DeadStores | A | Locals (`result`, `rolledPredicate`) seeded to document the original's EAX/register value before a rewrite in every live path — transcription scaffolding, codegen-neutral. |
@@ -77,7 +77,7 @@ baseline match at audit time.
 
 | Source | Function | Match | Suspicion |
 | --- | --- | --- | --- |
-| `src/game/TTacArmyView.cpp:676` | `TTacArmyView::DrawTacticalTileInClipRect` (0x5aa900) | 22.5% | Threat-level branch selects between two identical `SetForeColor(0)` calls; original likely uses a different palette index (or the condition guards something else). Read the listing at the guide-line color setup before editing. |
+| `src/game/TTacArmyView.cpp:676` | `TTacArmyView::DrawTacticalTileInClipRect` (0x5aa900) | 22.5% | RESOLVED 2026-07-23: real transcription bug, confirmed and fixed — original pushes 0x33/0x34 per threat level and 0x13 for the fill-color branch (listing 0x5ac0ec-0x5ac11c); the port passed 0 in all three sites. |
 
 ## Ratchet recommendation
 

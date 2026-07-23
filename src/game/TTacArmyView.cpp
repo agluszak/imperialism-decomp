@@ -672,11 +672,11 @@ undefined TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, 
     if ((row < 2 && tacticalBattle60->currentSideC == 0) ||
         (row / 2 == tacticalBattle60->battlefieldColumnCount34 - 1 &&
          tacticalBattle60->currentSideC == 1)) {
-      SetQuickDrawFillColorFromPaletteIndex(0);
+      SetQuickDrawFillColorFromPaletteIndex(0x13);
     } else if (tacticalBattle60->tileThreatLevelArray28[tileIndex] == 0) {
-      g_pUiRuntimeContext->SetForeColor(0);
+      g_pUiRuntimeContext->SetForeColor(0x34);
     } else {
-      g_pUiRuntimeContext->SetForeColor(0);
+      g_pUiRuntimeContext->SetForeColor(0x33);
     }
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(tickMidX), static_cast<short>(y));
     DrawCenteredGuideLineOnMapDc(static_cast<short>(tickMidX), static_cast<short>(y));
