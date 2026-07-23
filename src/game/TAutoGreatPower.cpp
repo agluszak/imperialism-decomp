@@ -225,13 +225,12 @@ void TAutoGreatPower::ReadFrom(TStream* stream) {
   }
   missionQueue->ReadFrom(stream);
 
-  int missionContext = 0;
-  stream->ReadBytes(&missionContext, 4);
-  for (int queueIndex = 1; queueIndex < 0x71; ++queueIndex) {
-    missionContext = 0;
-    char hasMission = stream->ReadByte(&missionContext);
-    if (hasMission != 0) {
-      missionQueue->AddTailInt(missionContext);
+  int missionCount = 0;
+  stream->ReadBytes(&missionCount, 4);
+  for (int queueIndex = 1; queueIndex <= missionCount; ++queueIndex) {
+    void* mission = 0;
+    if (stream->ReadByte(&mission) != 0) {
+      missionQueue->AddTail(mission);
     }
   }
 

@@ -20,10 +20,5 @@ void TPtrList::PrependCopiedRecordToPtrList(void* record) {
   InsertAt(0, copy, 1);
 }
 
-int TPtrList::GetIntByOrdinalSlot24(int ordinal) {
-  void* entry = GetPtrListEntryByOneBasedIndex(ordinal);
-  return reinterpret_cast<int>(entry);
-}
-
 // SYNTHETIC: IMPERIALISM 0x004884c0
 // TPtrList::`scalar deleting destructor'
