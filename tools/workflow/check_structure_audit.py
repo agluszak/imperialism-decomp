@@ -4,6 +4,13 @@
 Umbrella enforcement so the source-structure cleanups don't regress. Rules enforced
 today (the tree is green behind each):
 
+  (1) annotation-only TUs — a `src/game/*.cpp` whose only content is comments
+      (including `// FUNCTION|LIBRARY|SYNTHETIC:` markers), preprocessor
+      directives, and blank lines. The 8mo.11 cleanup retired 19 such marker
+      carriers; their identity claims live in
+      `config/reviewed_library_identities.csv` and are projected into the
+      generated marker TU by stubgen. New claims go in the CSV, never in a
+      code-free manual .cpp.
   (2) compatibility-alias headers — a header whose only content is a single
       `#include` plus optional `typedef Real Alias;` lines is a pure re-export
       alias (the 8mo.12 cleanup dissolved five of these). New code must name the
@@ -17,7 +24,6 @@ today (the tree is green behind each):
 
 Deferred rules from the bead, to be enabled as their sibling cleanups land (each
 has its own gate today or is blocked on another bead):
-  (1) annotation-only TUs (needs 8mo.11);
   (5) class-method claims whose owner differs from the filename, minus an
       allowlist (needs the 8mo.13 family/TU-split allowlist + tools.source_model);
   (6) `// slot ... inherited unchanged` listing comments — already enforced by
@@ -93,10 +99,42 @@ def is_alias_header(text: str) -> bool:
     return all(target == include_stems[0] for target in typedef_targets)
 
 
-def collect_offenders(paths, repo_root: Path) -> tuple[list[str], list[str], list[str]]:
+BLOCK_COMMENT_RE = re.compile(r"/\*.*?\*/", re.DOTALL)
+
+
+def is_annotation_only_tu(text: str) -> bool:
+    """A .cpp whose only content is comments (including `// FUNCTION:` /
+    `// LIBRARY:` / `// SYNTHETIC:` markers), preprocessor directives, and blank
+    lines — no executable definitions. Such a TU compiles on every build while
+    contributing nothing; its identity/ownership claims belong in
+    `config/reviewed_library_identities.csv` (projected into the generated
+    marker TU by stubgen), never in a manual marker-carrier .cpp.
+
+    Code hidden inside `#if 0` still counts as content (conservatively not
+    flagged) — the generated `#if 0` marker TU lives in the build dir and is
+    never scanned here.
+    """
+    stripped = BLOCK_COMMENT_RE.sub("", text)
+    continuation = False
+    for line in stripped.splitlines():
+        code = line.split("//", 1)[0].strip()
+        if continuation:
+            continuation = code.endswith("\\")
+            continue
+        if not code:
+            continue
+        if code.startswith("#"):
+            continuation = code.endswith("\\")
+            continue
+        return False
+    return True
+
+
+def collect_offenders(paths, repo_root: Path) -> tuple[list[str], list[str], list[str], list[str]]:
     dup_offenders: list[str] = []
     crlf_offenders: list[str] = []
     alias_offenders: list[str] = []
+    annotation_offenders: list[str] = []
     for path in iter_files(paths):
         if path.suffix not in (".cpp", ".h"):
             continue
@@ -110,7 +148,14 @@ def collect_offenders(paths, repo_root: Path) -> tuple[list[str], list[str], lis
             dup_offenders.append(f"{rel}: {', '.join(dups)}")
         if path.suffix == ".h" and is_alias_header(text):
             alias_offenders.append(rel)
-    return sorted(dup_offenders), sorted(crlf_offenders), sorted(alias_offenders)
+        if path.suffix == ".cpp" and is_annotation_only_tu(text):
+            annotation_offenders.append(rel)
+    return (
+        sorted(dup_offenders),
+        sorted(crlf_offenders),
+        sorted(alias_offenders),
+        sorted(annotation_offenders),
+    )
 
 
 def parse_args() -> argparse.Namespace:
@@ -122,10 +167,15 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     repo_root = repo_root_from_file(__file__)
-    dup_offenders, crlf_offenders, alias_offenders = collect_offenders(args.paths, repo_root)
+    dup_offenders, crlf_offenders, alias_offenders, annotation_offenders = collect_offenders(
+        args.paths, repo_root
+    )
 
-    if not dup_offenders and not crlf_offenders and not alias_offenders:
-        print("Structure-audit gate passed (no duplicate includes, no CRLF, no alias headers).")
+    if not dup_offenders and not crlf_offenders and not alias_offenders and not annotation_offenders:
+        print(
+            "Structure-audit gate passed (no duplicate includes, no CRLF, no alias headers, "
+            "no annotation-only TUs)."
+        )
         return 0
 
     print("Structure-audit gate failed:")
@@ -143,6 +193,14 @@ def main() -> int:
         for rel in alias_offenders:
             print(f"    - {rel}")
         print("Name the real class and include its real header; do not add alias headers.")
+    if annotation_offenders:
+        print(f"  annotation-only TUs (comments/markers/preprocessor only) ({len(annotation_offenders)}):")
+        for rel in annotation_offenders:
+            print(f"    - {rel}")
+        print(
+            "Move the identity/ownership claims to config/reviewed_library_identities.csv "
+            "(stubgen projects them into the generated marker TU) and delete the code-free .cpp."
+        )
     return 1
 
 
