@@ -6,6 +6,7 @@
 #include "game/mfc.h"
 #include "game/TMapOrderChildLinkNode.h"
 #include "game/TShip.h"
+#include "game/globals/navy_globals.h"
 
 class TTaskForce;
 class TStream;

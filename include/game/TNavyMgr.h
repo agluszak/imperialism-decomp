@@ -3,6 +3,7 @@
 #include "game/TAdmiral.h"
 #include "game/TShip.h"
 #include "game/TTaskForce.h"
+#include "game/globals/shared_globals.h"
 
 class TStream;
 class TTaskForce;

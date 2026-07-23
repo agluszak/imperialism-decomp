@@ -6,15 +6,17 @@ CIncludeView.cpp|30|IncludeView.cpp|22|ui_core|23|multi_module|IncludeView.cpp:2
 CIterator.cpp|3|IncludeView.cpp|3|ui_core|3||IncludeView.cpp:3
 CMainFrame.cpp|20|IncludeView.cpp|20|ui_core|20||IncludeView.cpp:20
 CMcWindow.cpp|17|McWindow.cpp|17|ui_core|16||McWindow.cpp:17
+CPtrIterator.cpp|3|WAssetMgr.cpp|3|assets|3||WAssetMgr.cpp:3
 CStr255.cpp|1|Cross/UArmyMgr.cpp|1|military|0||Cross/UArmyMgr.cpp:1
 CString.cpp|1|Cross/USetupScreens.cpp|1|ui_screens|1||Cross/USetupScreens.cpp:1
 CTemporaryRegion.cpp|2|QuickDraw.cpp|2|gfx|0||QuickDraw.cpp:2
 CWMgrIterator.cpp|5|McAppUI.cpp|5|ui_core|5||McAppUI.cpp:5
 ImperialismApp.cpp|29|(before first module sample)|17||9|multi_module|(before first module sample):17+Ambit.cpp:10+WAssetMgr.cpp:2
 ImperialismCommandLineInfo.cpp|1|(before first module sample)|1||0||(before first module sample):1
+MciMovieWindowState.cpp|5|McAppUI.cpp|5|ui_core|5||McAppUI.cpp:5
 NetMessage.cpp|5|Cross/UMissionSubs.cpp|5|military|5||Cross/UMissionSubs.cpp:5
 ScopedMapQuickDrawContext.cpp|7|McWindow.cpp|7|ui_core|7||McWindow.cpp:7
-StrategicMapCallbackRecord.cpp|8|Cross/UCityViews.cpp|5|city_ui|8|multi_module|Cross/UCityViews.cpp:5+Ambit.cpp:3
+StrategicMapCallbackRecord.cpp|10|Cross/UCityViews.cpp|9|city_ui|10|multi_module|Cross/UCityViews.cpp:9+Ambit.cpp:1
 T2PictToggleButton.cpp|3|Cross/USmallViews.cpp|3|ui_widgets|0||Cross/USmallViews.cpp:3
 T2PictureButton.cpp|2|Cross/UOptionViews.cpp|2|ui_screens|2||Cross/UOptionViews.cpp:2
 TAdmiral.cpp|13|Cross/UNavy.cpp|13|navy|0||Cross/UNavy.cpp:13
@@ -24,7 +26,7 @@ TAmbitApplication.cpp|10|QuickDraw.cpp|8|gfx|10|multi_module|QuickDraw.cpp:8+Amb
 TAmbitFileBasedDocument.cpp|6|QuickDraw.cpp|3|gfx|3|multi_module|QuickDraw.cpp:3+Cross/UAmbit.cpp:3
 TAmtBar.cpp|7|Cross/USmallViews.cpp|7|ui_widgets|0||Cross/USmallViews.cpp:7
 TAmtBarCluster.cpp|4|Cross/USmallViews.cpp|4|ui_widgets|0||Cross/USmallViews.cpp:4
-TAnimation.cpp|8|Cross/UAmbit.cpp|6|app|8|multi_module|Cross/UAmbit.cpp:6+McWindow.cpp:2
+TAnimation.cpp|4|Cross/UAmbit.cpp|4|app|4||Cross/UAmbit.cpp:4
 TAnimator.cpp|12|Cross/UAmbit.cpp|12|app|12||Cross/UAmbit.cpp:12
 TApplication.cpp|12|IncludeView.cpp|10|ui_core|12|multi_module|IncludeView.cpp:10+Ambit.cpp:1+QuickDraw.cpp:1
 TArmoryView.cpp|5|Cross/UCityViews.cpp|5|city_ui|0||Cross/UCityViews.cpp:5
@@ -45,7 +47,7 @@ TArmyUnitView.cpp|4|Cross/UArmyMgr.cpp|2|military|2|multi_module|Cross/UArmyMgr.
 TArrowsControl.cpp|2|Cross/USetupScreens.cpp|2|ui_screens|2||Cross/USetupScreens.cpp:2
 TAssetMgr.cpp|23|WAssetMgr.cpp|18|assets|7|multi_module|WAssetMgr.cpp:18+Cross/UViewMgr.more.cpp:5
 TAttackProvinceMission.cpp|15|Cross/UMissionSubs.cpp|15|military|15||Cross/UMissionSubs.cpp:15
-TAutoGreatPower.cpp|62|Cross/UCountry.cpp|33|nation|61|multi_module|Cross/UCountry.cpp:33+Cross/UCountryAuto.cpp:28+Cross/UMapper.cpp:1
+TAutoGreatPower.cpp|63|Cross/UCountry.cpp|33|nation|62|multi_module|Cross/UCountry.cpp:33+Cross/UCountryAuto.cpp:29+Cross/UMapper.cpp:1
 TAutoGreatPower_ComputeBestNationTileDevelopmentScore.cpp|1|Cross/UMissionSubs.cpp|1|military|1||Cross/UMissionSubs.cpp:1
 TAutoResolutionDialog.cpp|3|CDib.cpp|3|gfx|3||CDib.cpp:3
 TAutomatedPlayDialog.cpp|1|Cross/UTestDialogs.cpp|1|ui_widgets|0||Cross/UTestDialogs.cpp:1
@@ -57,15 +59,18 @@ TBattleReportView.cpp|9|Cross/UBattleReportViews.cpp|6|military_ui|8|multi_modul
 TBattleUnitsView.cpp|2|Cross/UBattleReportViews.cpp|2|military_ui|2||Cross/UBattleReportViews.cpp:2
 TBeachheadMission.cpp|9|Cross/UMapper.cpp|9|map|9||Cross/UMapper.cpp:9
 TBehavior.cpp|5|IncludeView.cpp|5|ui_core|5||IncludeView.cpp:5
+TBitmapResourceLoader.cpp|4|McWindow.cpp|2|ui_core|4|multi_module|McWindow.cpp:2+Cross/UAmbit.cpp:2
+TBitmapSurfaceContextDescriptor.cpp|3|McWindow.cpp|3|ui_core|3||McWindow.cpp:3
+TBitmapSurfaceNode.cpp|1|McWindow.cpp|1|ui_core|1||McWindow.cpp:1
 TBlockadePortMission.cpp|12|Cross/UMapper.cpp|12|map|12||Cross/UMapper.cpp:12
 TBook.cpp|4|Cross/UOptionViews.cpp|3|ui_screens|4|multi_module|Cross/UOptionViews.cpp:3+Ambit.cpp:1
 TBoycottButton.cpp|2|Cross/USmallViews.cpp|2|ui_widgets|0||Cross/USmallViews.cpp:2
 TBuildingConstructionView.cpp|3|Cross/UCityViews.cpp|3|city_ui|0||Cross/UCityViews.cpp:3
 TBuildingExpansionView.cpp|2|Cross/UCityViews.cpp|2|city_ui|0||Cross/UCityViews.cpp:2
 TBuildingView.cpp|7|Cross/UCityMinister.cpp|7|city_ui|7||Cross/UCityMinister.cpp:7
-TC2TemplateDialog.cpp|61|CDib.cpp|20|gfx|58|multi_module|CDib.cpp:20+DirectPlay.cpp:15+Cross/UViewMgr.more.cpp:11+QuickDraw.cpp:6+(before first module sample):3+DiplomacyDialogs.cpp:3+IncludeView.cpp:2+Ambit.cpp:1
 TCancelGameOptionsCommand.cpp|1|Cross/UMissionSubs.cpp|1|military|1||Cross/UMissionSubs.cpp:1
 TCapacityOrder.cpp|2|Cross/UCity.cpp|2|city|2||Cross/UCity.cpp:2
+TCdAudioDevice.cpp|19|WAssetMgr.cpp|12|assets|18|multi_module|WAssetMgr.cpp:12+CDib.cpp:7
 TCheater.cpp|1|Cross/UBattleReportViews.cpp|1|military_ui|1||Cross/UBattleReportViews.cpp:1
 TCity.cpp|33|Cross/UCity.cpp|19|city|23|multi_module|Cross/UCity.cpp:19+Cross/UCheaters.cpp:14
 TCityBarCluster.cpp|2|Cross/USmallViews.cpp|2|ui_widgets|0||Cross/USmallViews.cpp:2
@@ -95,13 +100,13 @@ TCombatReportView.cpp|4|Cross/USmallViews.cpp|4|ui_widgets|0||Cross/USmallViews.
 TCommand.cpp|5|IncludeView.cpp|5|ui_core|5||IncludeView.cpp:5
 TCommandHandler.cpp|1|IncludeView.cpp|1|ui_core|1||IncludeView.cpp:1
 TCommodityLine.cpp|2|Cross/UTradeViews.cpp|2|trade_ui|2||Cross/UTradeViews.cpp:2
-TControl.cpp|18|McAppUI.cpp|11|ui_core|5|multi_module|McAppUI.cpp:11+Ambit.cpp:4+Cross/UDiplomacyViews.cpp:1+Cross/USmallViews.cpp:1+Cross/UTradeViews.cpp:1
+TControl.cpp|17|McAppUI.cpp|11|ui_core|5|multi_module|McAppUI.cpp:11+Ambit.cpp:4+Cross/UDiplomacyViews.cpp:1+Cross/USmallViews.cpp:1
 TControlSeaZoneMission.cpp|10|Cross/UMapper.cpp|10|map|10||Cross/UMapper.cpp:10
 TCouncilPanelView.cpp|1|Cross/UDiplomacyViews.cpp|1|diplomacy_ui|1||Cross/UDiplomacyViews.cpp:1
 TCouncilTickerAnimation.cpp|2|Cross/UAmbit.cpp|2|app|2||Cross/UAmbit.cpp:2
 TCouncilView.cpp|5|Cross/UDiplomacyViews.cpp|5|diplomacy_ui|5||Cross/UDiplomacyViews.cpp:5
 TCountingStream.cpp|7|McAppStream.cpp|7|core|7||McAppStream.cpp:7
-TCountry.cpp|47|Cross/UCityViews.cpp|46|city_ui|47|multi_module|Cross/UCityViews.cpp:46+Cross/USetupScreens.cpp:1
+TCountry.cpp|48|Cross/UCityViews.cpp|47|city_ui|48|multi_module|Cross/UCityViews.cpp:47+Cross/USetupScreens.cpp:1
 TCreditsPicture.cpp|4|Cross/UOptionViews.cpp|3|ui_screens|4|multi_module|Cross/UOptionViews.cpp:3+Ambit.cpp:1
 TCzechBox.cpp|9|Cross/UOptionViews.cpp|9|ui_screens|9||Cross/UOptionViews.cpp:9
 TDealBookPicture.cpp|6|Cross/UTradeViews.cpp|6|trade_ui|0||Cross/UTradeViews.cpp:6
@@ -116,7 +121,7 @@ TDeluxeText.cpp|13|Cross/UTestDialogs.cpp|12|ui_widgets|13|multi_module|Cross/UT
 TDialogBehavior.cpp|7|IncludeView.cpp|7|ui_core|7||IncludeView.cpp:7
 TDialogView.cpp|1|QuickDraw.cpp|1|gfx|1||QuickDraw.cpp:1
 TDipDlgCluster.cpp|2|Cross/USetupScreens.cpp|1|ui_screens|1|multi_module|Cross/USetupScreens.cpp:1+Cross/USmallViews.cpp:1
-TDiplomacyMapView.cpp|34|Cross/UDiplomacyViews.cpp|30|diplomacy_ui|4|multi_module|Cross/UDiplomacyViews.cpp:30+Cross/UCityViews.cpp:3+Ambit.cpp:1
+TDiplomacyMapView.cpp|32|Cross/UDiplomacyViews.cpp|30|diplomacy_ui|2|multi_module|Cross/UDiplomacyViews.cpp:30+Ambit.cpp:1+Cross/UCityViews.cpp:1
 TDiplomacyMgr.cpp|49|Cross/UDefenseMinister.cpp|47|military_ui|48|multi_module|Cross/UDefenseMinister.cpp:47+(before first module sample):1+Cross/UMissionSubs.cpp:1
 TDisappearingButton.cpp|3|Cross/UOceanViews.cpp|3|navy_ui|3||Cross/UOceanViews.cpp:3
 TDisplayMgr.cpp|19|Cross/UDisplayMgr.cpp|15|gfx|4|multi_module|Cross/UDisplayMgr.cpp:15+McWindow.cpp:2+McAppUI.cpp:1+Cross/UDiplomacyViews.cpp:1
@@ -154,11 +159,7 @@ TGameSetupPicture.cpp|3|Cross/UOptionViews.cpp|3|ui_screens|3||Cross/UOptionView
 TGameWindow.cpp|9|Cross/UDisplayMgr.cpp|9|gfx|9||Cross/UDisplayMgr.cpp:9
 TGarrisonView.cpp|3|Cross/UArmyMgr.cpp|3|military|3||Cross/UArmyMgr.cpp:3
 TGrantsView.cpp|4|Cross/UDiplomacyViews.cpp|4|diplomacy_ui|0||Cross/UDiplomacyViews.cpp:4
-TGreatPower.cpp|174|Cross/UCountry.cpp|147|nation|173|multi_module|Cross/UCountry.cpp:147+Cross/UCityViews.cpp:22+Cross/UCountryAuto.cpp:4+Cross/UTestDialogs.cpp:1
-TGreatPower_AssignTrackedEntryActions.cpp|1|Cross/UCountryAuto.cpp|1|nation|1||Cross/UCountryAuto.cpp:1
-TGreatPower_diplomacy.cpp|1|Cross/UCountry.cpp|1|nation|1||Cross/UCountry.cpp:1
-TGreatPower_ministers.cpp|1|Cross/UCityViews.cpp|1|city_ui|1||Cross/UCityViews.cpp:1
-TGreatPower_pending_action.cpp|2|Cross/UCityViews.cpp|2|city_ui|2||Cross/UCityViews.cpp:2
+TGreatPower.cpp|177|Cross/UCountry.cpp|148|nation|176|multi_module|Cross/UCountry.cpp:148+Cross/UCityViews.cpp:24+Cross/UCountryAuto.cpp:4+Cross/UTestDialogs.cpp:1
 TGreatPower_power_score.cpp|1|Cross/UMissionSubs.cpp|1|military|1||Cross/UMissionSubs.cpp:1
 THQButton.cpp|6|Cross/USmallViews.cpp|6|ui_widgets|0||Cross/USmallViews.cpp:6
 THandleStream.cpp|10|McAppStream.cpp|10|core|10||McAppStream.cpp:10
@@ -180,7 +181,7 @@ TInfoBarBehavior.cpp|3|Cross/UBattleReportViews.cpp|3|military_ui|3||Cross/UBatt
 TInfoBarPictureText.cpp|2|Cross/UTestDialogs.cpp|2|ui_widgets|2||Cross/UTestDialogs.cpp:2
 TInfoBarText.cpp|6|Cross/UTestDialogs.cpp|5|ui_widgets|6|multi_module|Cross/UTestDialogs.cpp:5+Ambit.cpp:1
 TInfoPanelView.cpp|5|Cross/UDiplomacyViews.cpp|5|diplomacy_ui|5||Cross/UDiplomacyViews.cpp:5
-TInteriorMinister.cpp|19|Cross/UCityDialogs.cpp|19|city_ui|19||Cross/UCityDialogs.cpp:19
+TInteriorMinister.cpp|18|Cross/UCityDialogs.cpp|18|city_ui|18||Cross/UCityDialogs.cpp:18
 TInteriorMinisterView.cpp|2|Cross/UDiplomacyViews.cpp|2|diplomacy_ui|0||Cross/UDiplomacyViews.cpp:2
 TInterruptusView.cpp|1|Cross/UBattleReportViews.cpp|1|military_ui|1||Cross/UBattleReportViews.cpp:1
 TInvadeMission.cpp|27|Cross/UMissionSubs.cpp|27|military|27||Cross/UMissionSubs.cpp:27
@@ -196,9 +197,9 @@ TLonelyTileView.cpp|2|Cross/UHelpMgr.cpp|2|ui_screens|2||Cross/UHelpMgr.cpp:2
 TLongintList.cpp|11|Cross/UCityMinister.cpp|9|city_ui|11|multi_module|Cross/UCityMinister.cpp:9+IncludeView.cpp:2
 TLoungeDialog.cpp|6|Cross/UMultiplayerMgr.cpp|6|net|6||Cross/UMultiplayerMgr.cpp:6
 TLowDiskWarningDialog.cpp|3|WAssetMgr.cpp|3|assets|3||WAssetMgr.cpp:3
-TMacViewMgr.cpp|44|Cross/UMacViewMgr.cpp|23|ui_core|26|multi_module|Cross/UMacViewMgr.cpp:23+Cross/UIcon.cpp:16+Cross/UCityViews.cpp:5
+TMacViewMgr.cpp|39|Cross/UMacViewMgr.cpp|23|ui_core|21|multi_module|Cross/UMacViewMgr.cpp:23+Cross/UIcon.cpp:16
 TMadnessButton.cpp|2|Cross/UMultiplayerMgr.cpp|2|net|2||Cross/UMultiplayerMgr.cpp:2
-TMapDialog.cpp|59|Cross/UMapDlog.cpp|43|map_ui|57|multi_module|Cross/UMapDlog.cpp:43+Cross/UMap.cpp:16
+TMapDialog.cpp|60|Cross/UMapDlog.cpp|43|map_ui|58|multi_module|Cross/UMapDlog.cpp:43+Cross/UMap.cpp:17
 TMapEditCluster.cpp|1|Cross/UTacViews.cpp|1|tactical_ui|1||Cross/UTacViews.cpp:1
 TMapEditView.cpp|13|Cross/UMapDlog.cpp|13|map_ui|13||Cross/UMapDlog.cpp:13
 TMapKey.cpp|6|Cross/UDiplomacyViews.cpp|6|diplomacy_ui|6||Cross/UDiplomacyViews.cpp:6
@@ -212,8 +213,9 @@ TMapMaker_RebuildRoute.cpp|1|Cross/UMapper.cpp|1|map|0||Cross/UMapper.cpp:1
 TMapMaker_ReindexRegions.cpp|1|Cross/UMapper.cpp|1|map|0||Cross/UMapper.cpp:1
 TMapMaker_RotateMapColumns.cpp|1|Cross/UMapper.cpp|1|map|0||Cross/UMapper.cpp:1
 TMapMgr.cpp|138|Cross/UMap.cpp|123|map|77|multi_module|Cross/UMap.cpp:123+Cross/UMacViewMgr.cpp:7+Cross/UNewspaper.cpp:3+Cross/UOcean.cpp:3+Cross/UArmyMgr.cpp:1+Cross/UMapDlog.cpp:1
+TMapOrderChildLinkNode.cpp|6|Cross/UNavy.cpp|5|navy|1|multi_module|Cross/UNavy.cpp:5+Cross/UMapper.cpp:1
 TMapPreviewView.cpp|7|Cross/USetupScreens.cpp|6|ui_screens|7|multi_module|Cross/USetupScreens.cpp:6+Ambit.cpp:1
-TMapUberPicture.cpp|33|Cross/USuperMap.cpp|20|map|13|multi_module|Cross/USuperMap.cpp:20+Cross/USmallViews.cpp:13
+TMapUberPicture.cpp|34|Cross/USuperMap.cpp|21|map|13|multi_module|Cross/USuperMap.cpp:21+Cross/USmallViews.cpp:13
 TMapUberUberPicture.cpp|3|Cross/USmallViews.cpp|2|ui_widgets|3|multi_module|Cross/USmallViews.cpp:2+Ambit.cpp:1
 TMegaPicture.cpp|6|Cross/UOptionViews.cpp|6|ui_screens|6||Cross/UOptionViews.cpp:6
 TMerchantBoyView.cpp|1|Cross/UBattleReportViews.cpp|1|military_ui|1||Cross/UBattleReportViews.cpp:1
@@ -259,7 +261,7 @@ TNetMgr.cpp|20|WNetMgr.cpp|15|net|10|multi_module|WNetMgr.cpp:15+WAssetMgr.cpp:5
 TNetSelectPicture.cpp|2|Cross/UOptionViews.cpp|1|ui_screens|1|multi_module|Cross/UOptionViews.cpp:1+Cross/USetupScreens.cpp:1
 TNewGameCommand.cpp|1|QuickDraw.cpp|1|gfx|1||QuickDraw.cpp:1
 TNewTownView.cpp|2|Cross/UCityDialogs.cpp|2|city_ui|0||Cross/UCityDialogs.cpp:2
-TNewsMgr.cpp|8|Cross/UNavy.cpp|5|navy|7|multi_module|Cross/UNavy.cpp:5+Cross/UNewspaper.cpp:3
+TNewsMgr.cpp|13|Cross/UNewspaper.cpp|8|ui_screens|12|multi_module|Cross/UNewspaper.cpp:8+Cross/UNavy.cpp:5
 TNewspaperView.cpp|6|Cross/UNewspaper.cpp|6|ui_screens|6||Cross/UNewspaper.cpp:6
 TNextDiplomationCommand.cpp|3|Cross/UDefenseMinister.cpp|3|military_ui|3||Cross/UDefenseMinister.cpp:3
 TNextMoveCommand.cpp|1|Cross/UTacPlayer.cpp|1|tactical|1||Cross/UTacPlayer.cpp:1
@@ -271,11 +273,9 @@ TNumberText.cpp|5|McAppUI.cpp|4|ui_core|5|multi_module|McAppUI.cpp:4+Ambit.cpp:1
 TNumberedArrowButton.cpp|6|Cross/USmallViews.cpp|6|ui_widgets|0||Cross/USmallViews.cpp:6
 TNumberedIcon.cpp|4|Cross/UIcon.cpp|4|ui_core|4||Cross/UIcon.cpp:4
 TNumberedItem.cpp|3|Cross/UIcon.cpp|3|ui_core|3||Cross/UIcon.cpp:3
-TObject.cpp|5|Ambit.cpp|3|app|5|multi_module|Ambit.cpp:3+IncludeView.cpp:2
-TObjectSerialize.cpp|1|IncludeView.cpp|1|ui_core|1||IncludeView.cpp:1
-TOcean.cpp|20|Cross/UOcean.cpp|17|navy|9|multi_module|Cross/UOcean.cpp:17+Cross/UNewspaper.cpp:2+Cross/USmallViews.cpp:1
+TObject.cpp|6|Ambit.cpp|3|app|6|multi_module|Ambit.cpp:3+IncludeView.cpp:3
+TOcean.cpp|21|Cross/UOcean.cpp|18|navy|9|multi_module|Cross/UOcean.cpp:18+Cross/UMapper.cpp:1+Cross/UNewspaper.cpp:1+Cross/USmallViews.cpp:1
 TOceanDialog.cpp|18|Cross/UOceanViews.cpp|18|navy_ui|18||Cross/UOceanViews.cpp:18
-TOcean_RouteBuffer.cpp|2|Cross/UMapper.cpp|1|map|1|multi_module|Cross/UMapper.cpp:1+Cross/UOcean.cpp:1
 TOffLimitsPicture.cpp|5|Cross/UOptionViews.cpp|5|ui_screens|5||Cross/UOptionViews.cpp:5
 TOfferDeskPicture.cpp|9|Cross/UTradeViews.cpp|9|trade_ui|0||Cross/UTradeViews.cpp:9
 TOffersPanelView.cpp|7|Cross/UDiplomacyViews.cpp|7|diplomacy_ui|0||Cross/UDiplomacyViews.cpp:7
@@ -337,7 +337,6 @@ TShipPlacard.cpp|2|Cross/UOceanViews.cpp|2|navy_ui|2||Cross/UOceanViews.cpp:2
 TShipView.cpp|3|Cross/UOceanViews.cpp|3|navy_ui|0||Cross/UOceanViews.cpp:3
 TShipyardCluster.cpp|4|Cross/USmallViews.cpp|4|ui_widgets|0||Cross/USmallViews.cpp:4
 TShipyardView.cpp|9|Cross/UCityViews.cpp|8|city_ui|1|multi_module|Cross/UCityViews.cpp:8+Cross/UCityMinister.cpp:1
-TShortintList.cpp|1|Cross/UCityMinister.cpp|1|city_ui|0||Cross/UCityMinister.cpp:1
 TSidewaysArrow.cpp|2|Cross/USetupScreens.cpp|2|ui_screens|2||Cross/USetupScreens.cpp:2
 TSimMgr.cpp|85|Cross/USetupScreens.cpp|77|ui_screens|83|multi_module|Cross/USetupScreens.cpp:77+Ambit.cpp:3+Cross/UUnit.cpp:2+Cross/UMultiplayerMgr.cpp:1+Cross/UNewspaper.cpp:1+WAssetMgr.cpp:1
 TSimMgr_AdvanceGlobalTurnStateMachine.cpp|1|Cross/USetupScreens.cpp|1|ui_screens|1||Cross/USetupScreens.cpp:1
@@ -371,7 +370,7 @@ TTacticalPlayer.cpp|14|Cross/USuperMap.cpp|14|map|14||Cross/USuperMap.cpp:14
 TTacticalToolbar.cpp|6|Cross/UTacViews.cpp|6|tactical_ui|6||Cross/UTacViews.cpp:6
 TTacticalUnit.cpp|7|Cross/UTacPlayer.cpp|7|tactical|7||Cross/UTacPlayer.cpp:7
 TTask.cpp|3|Cross/UTacViews.cpp|3|tactical_ui|3||Cross/UTacViews.cpp:3
-TTaskForce.cpp|59|Cross/UNavy.cpp|58|navy|2|multi_module|Cross/UNavy.cpp:58+Cross/UMapper.cpp:1
+TTaskForce.cpp|53|Cross/UNavy.cpp|53|navy|1||Cross/UNavy.cpp:53
 TTaskList.cpp|2|Cross/UTacViews.cpp|2|tactical_ui|2||Cross/UTacViews.cpp:2
 TTechCheater.cpp|1|Cross/UBattleReportViews.cpp|1|military_ui|1||Cross/UBattleReportViews.cpp:1
 TTechHistoryView.cpp|1|Cross/UTacViews.cpp|1|tactical_ui|1||Cross/UTacViews.cpp:1
@@ -379,6 +378,7 @@ TTechItemLine.cpp|1|Cross/UTacViews.cpp|1|tactical_ui|1||Cross/UTacViews.cpp:1
 TTechItemView.cpp|2|Cross/UTacViews.cpp|2|tactical_ui|2||Cross/UTacViews.cpp:2
 TTechMgr.cpp|19|Cross/UTacViews.cpp|18|tactical_ui|18|multi_module|Cross/UTacViews.cpp:18+Cross/UNavy.cpp:1
 TTechStorePage.cpp|2|Ambit.cpp|1|app|2|multi_module|Ambit.cpp:1+Cross/UTacViews.cpp:1
+TTemplateDialogs.cpp|61|CDib.cpp|20|gfx|58|multi_module|CDib.cpp:20+DirectPlay.cpp:15+Cross/UViewMgr.more.cpp:11+QuickDraw.cpp:6+(before first module sample):3+DiplomacyDialogs.cpp:3+IncludeView.cpp:2+Ambit.cpp:1
 TTerrainHelpPicture.cpp|3|Cross/UHelpMgr.cpp|3|ui_screens|3||Cross/UHelpMgr.cpp:3
 TTerrainHelpWindow.cpp|2|Cross/UHelpMgr.cpp|2|ui_screens|2||Cross/UHelpMgr.cpp:2
 TTerrainInfoDialog.cpp|1|Cross/UMap.cpp|1|map|1||Cross/UMap.cpp:1
@@ -391,7 +391,7 @@ TTown.cpp|10|Cross/UTestDialogs.cpp|10|ui_widgets|10||Cross/UTestDialogs.cpp:10
 TTownNameDialog.cpp|3|Cross/UMapDlog.cpp|3|map_ui|1||Cross/UMapDlog.cpp:3
 TTradeBidNationLine.cpp|1|Cross/UTradeViews.cpp|1|trade_ui|0||Cross/UTradeViews.cpp:1
 TTradeBidNationView.cpp|1|Cross/UTradeViews.cpp|1|trade_ui|0||Cross/UTradeViews.cpp:1
-TTradeBookView.cpp|3|Cross/UTradeViews.cpp|3|trade_ui|0||Cross/UTradeViews.cpp:3
+TTradeBookView.cpp|4|Cross/UTradeViews.cpp|4|trade_ui|0||Cross/UTradeViews.cpp:4
 TTradeCluster.cpp|12|Cross/USmallViews.cpp|12|ui_widgets|0||Cross/USmallViews.cpp:12
 TTradeMgr.cpp|34|Cross/UTestDialogs.cpp|34|ui_widgets|34||Cross/UTestDialogs.cpp:34
 TTradeOfferNationLine.cpp|1|Cross/UTradeViews.cpp|1|trade_ui|0||Cross/UTradeViews.cpp:1
@@ -430,19 +430,17 @@ TWarehouseView.cpp|4|Cross/UCityMinister.cpp|4|city_ui|4||Cross/UCityMinister.cp
 TWarningView.cpp|3|Cross/USmallViews.cpp|3|ui_widgets|0||Cross/USmallViews.cpp:3
 TWindow.cpp|35|McAppUI.cpp|35|ui_core|7||McAppUI.cpp:35
 TWorldView.cpp|28|Cross/USmallViews.cpp|27|ui_widgets|28|multi_module|Cross/USmallViews.cpp:27+Cross/UMap.cpp:1
-TZone.cpp|55|Cross/UNewspaper.cpp|50|ui_screens|53|multi_module|Cross/UNewspaper.cpp:50+Cross/UOcean.cpp:4+Cross/UNavy.cpp:1
-bitmap_descriptor_helpers.cpp|15|McWindow.cpp|13|ui_core|14|multi_module|McWindow.cpp:13+QuickDraw.cpp:1+Cross/UUnit.cpp:1
-cd_audio.cpp|19|WAssetMgr.cpp|12|assets|18|multi_module|WAssetMgr.cpp:12+CDib.cpp:7
+TZone.cpp|51|Cross/UNewspaper.cpp|47|ui_screens|49|multi_module|Cross/UNewspaper.cpp:47+Cross/UOcean.cpp:4
+bitmap_descriptor_helpers.cpp|11|McWindow.cpp|9|ui_core|10|multi_module|McWindow.cpp:9+QuickDraw.cpp:1+Cross/UUnit.cpp:1
 global_data_tables.cpp|3|McAppStream.cpp|3|core|3||McAppStream.cpp:3
 hex_tile_distance.cpp|1|Cross/UTacPlayer.cpp|1|tactical|1||Cross/UTacPlayer.cpp:1
 map_context_flavor_builders.cpp|26|Cross/UUnit.cpp|26|military|26||Cross/UUnit.cpp:26
 map_overlay_geometry.cpp|7|Cross/UMapper.cpp|3|map|5|multi_module|Cross/UMapper.cpp:3+Cross/UIcon.cpp:1+Cross/UMapDlog.cpp:1+Cross/UNavy.cpp:1+Cross/UOceanViews.cpp:1
-mapped_flavor_text.cpp|12|Cross/UUnit.cpp|7|military|12|multi_module|Cross/UUnit.cpp:7+Cross/USetupScreens.cpp:4+Cross/UOptionViews.cpp:1
-movie_window_library.cpp|5|McAppUI.cpp|5|ui_core|5||McAppUI.cpp:5
+mapped_flavor_text.cpp|11|Cross/UUnit.cpp|7|military|11|multi_module|Cross/UUnit.cpp:7+Cross/USetupScreens.cpp:3+Cross/UOptionViews.cpp:1
 overlay_segment_builder.cpp|1|Cross/UMapper.cpp|1|map|0||Cross/UMapper.cpp:1
 quickdraw_regions.cpp|21|QuickDraw.cpp|13|gfx|10|multi_module|QuickDraw.cpp:13+McWindow.cpp:8
 quickdraw_rendering.cpp|30|McWindow.cpp|23|ui_core|25|multi_module|McWindow.cpp:23+QuickDraw.cpp:6+Cross/UUnit.cpp:1
-sea_geometry.cpp|17|Cross/UMapper.cpp|17|map|0||Cross/UMapper.cpp:17
+sea_geometry.cpp|7|Cross/UMapper.cpp|7|map|0||Cross/UMapper.cpp:7
 timer_slots.cpp|1|WAssetMgr.cpp|1|assets|0||WAssetMgr.cpp:1
 trade_resource_lookup.cpp|8|Cross/UNavy.cpp|8|navy|0||Cross/UNavy.cpp:8
 tship_navy_order_node.cpp|1|Cross/UNavy.cpp|1|navy|0||Cross/UNavy.cpp:1
