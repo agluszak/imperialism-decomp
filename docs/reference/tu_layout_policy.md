@@ -1,7 +1,7 @@
 # TU layout policy (src/game)
 
 The default is **one class per translation unit, named after the class**:
-`src/game/<ClassName>.cpp` paired with `include/game/<ClassName>.h`, holding every
+`src/game/<subsystem>/<ClassName>.cpp` paired with `include/game/<ClassName>.h`, holding every
 method the class owns. Free-function modules use a descriptive snake_case name
 (`sea_geometry.cpp`, `quickdraw_rendering.cpp`) and must not carry a class-shaped
 `TClassName_*` name.

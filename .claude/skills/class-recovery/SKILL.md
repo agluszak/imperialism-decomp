@@ -16,7 +16,7 @@ load `mfc-collections`.
 The class recovery workflow is source-first and source-only. There are no manifests or consistency gates.
 
 To recover or modify a class:
-1. Edit class headers (`include/game/<ClassName>.h`) and source files (`src/game/<ClassName>.cpp`) directly.
+1. Edit class headers (`include/game/<ClassName>.h`) and source files (`src/game/<subsystem>/<ClassName>.cpp`) directly.
 2. Compile and link the code with `just build`.
 3. Assert and verify virtual table layout and correctness against the original binary using `just vtable [ClassName]`.
 4. Ensure no mechanical formatting or annotation policies are violated by running `just gates`.

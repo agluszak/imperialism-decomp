@@ -23,7 +23,7 @@ HEADER = REPO_ROOT / "include" / "game" / "global_data_tables.h"
 GLOBALS_DIR = REPO_ROOT / "include" / "game" / "globals"
 SELF_FILES = (
     "include/game/global_data_tables.h",
-    "src/game/global_data_tables.cpp",
+    "src/game/core/global_data_tables.cpp",
 )
 SELF_DIRS = ("include/game/globals/",)
 GENERATED_MARKERS = ("/ghidra_autogen/", "/autogen/")

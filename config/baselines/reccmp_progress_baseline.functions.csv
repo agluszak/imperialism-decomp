@@ -3591,10 +3591,10 @@ address|matching|name
 0x538900|0.45161290322580644|TControlSeaZoneMission::GetReplacementSlot48
 0x5389f0|0.29714285714285715|TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter
 0x538bf0|0.294478527607362|TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation
-0x538dd0|0.3577981651376147|TNavyMission::ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile
-0x538fe0|0.48297213622291024|TControlSeaZoneMission::SetStateByte8To2
+0x538dd0|0.3486238532110092|TNavyMission::ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile
+0x538fe0|0.47678018575851394|TControlSeaZoneMission::SetStateByte8To2
 0x539290|0.6428571428571429|TControlSeaZoneMission::CalculateImportance
-0x5393a0|0.4290909090909091|TControlSeaZoneMission::CalculateNeeds
+0x5393a0|0.41454545454545455|TControlSeaZoneMission::CalculateNeeds
 0x539600|1.0|TControlSeaZoneMission::Matches
 0x539640|0.967391304347826|TControlSeaZoneMission::GiveActionOrders
 0x539780|0.9795918367346939|TControlSeaZoneMission::RefreshMissionPortZoneContextForNation
@@ -3608,9 +3608,9 @@ address|matching|name
 0x5399d0|0.3333333333333333|WrapperFor_AFX_CLASSINIT_At005399d0
 0x539a20|0.3448275862068966|TEscortMission::TEscortMission(class TZone *)
 0x539a70|1.0|TEscortMission::Initialize
-0x539a90|0.3926940639269406|TNavyMission::ComputeOrderDistributionSimilarityScoreForZone
+0x539a90|0.3744292237442922|TNavyMission::ComputeOrderDistributionSimilarityScoreForZone
 0x539ca0|0.5714285714285714|TEscortMission::CalculateImportance
-0x539e70|0.4785553047404063|TEscortMission::CalculateNeeds
+0x539e70|0.46952595936794583|TEscortMission::CalculateNeeds
 0x53a250|1.0|TEscortMission::Matches
 0x53a290|0.5454545454545454|TEscortMission::GiveOrders
 0x53a2d0|0.45714285714285713|TBeachheadMission::CreateObject
@@ -3621,7 +3621,7 @@ address|matching|name
 0x53a420|0.5|TBeachheadMission::GetRuntimeClass
 0x53a440|0.3333333333333333|WrapperFor_AFX_CLASSINIT_At0053a440
 0x53a490|0.30303030303030304|TBeachheadMission::TBeachheadMission(class TZone *, class TInvadeMission *)
-0x53a500|0.43613707165109034|TBeachheadMission::CalculateNeeds
+0x53a500|0.4236760124610592|TBeachheadMission::CalculateNeeds
 0x53a7b0|1.0|TBeachheadMission::Matches
 0x53a800|0.9115646258503401|TBeachheadMission::GiveActionOrders
 0x53a920|1.0|TBeachheadMission::GetArmyMission
@@ -3639,7 +3639,7 @@ address|matching|name
 0x53ace0|0.7746478873239436|TBlockadePortMission::Initialize
 0x53adf0|0.6990291262135923|TBlockadePortMission::GetReplacementSlot48
 0x53ae90|1.0|TBlockadePortMission::SetStateByte8To2
-0x53aeb0|0.6631944444444444|TBlockadePortMission::CalculateNeeds
+0x53aeb0|0.6493055555555556|TBlockadePortMission::CalculateNeeds
 0x53b350|0.4027777777777778|TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
 0x53b800|0.544|ComputeNavyOrderDistributionScoreForNation
 0x53ba10|1.0|TBlockadePortMission::Matches
@@ -3652,7 +3652,7 @@ address|matching|name
 0x53bbe0|1.0|TScatteredShipsMission::GetReplacementSlot48
 0x53bc00|1.0|TScatteredShipsMission::SetStateByte8To2
 0x53bc20|1.0|TScatteredShipsMission::CalculateImportance
-0x53bc40|0.8928571428571429|TScatteredShipsMission::CalculateNeeds
+0x53bc40|0.8571428571428571|TScatteredShipsMission::CalculateNeeds
 0x53bcc0|1.0|TScatteredShipsMission::Matches
 0x53bdd0|0.472|TScatteredShipsMission::GiveOrders
 0x53bf90|1.0|TScatteredShipsMission::RefreshMissionPortZoneContextForNation
@@ -3746,7 +3746,7 @@ address|matching|name
 0x53fc10|0.9553571428571429|TInvadeMission::AccumulateLack
 0x53fdc0|1.0|TInvadeMission::TryResolveTargetTerrainClass
 0x53fe10|1.0|TInvadeMission::GetReplacementSlot48
-0x53fe30|0.3611940298507463|RecomputeNationOrderPriorityMetrics
+0x53fe30|0.3582089552238806|RecomputeNationOrderPriorityMetrics
 0x540440|0.5263157894736842|ComputeBestNationTileDevelopmentScore
 0x540810|0.25|WrapperFor_ftol_At00540810
 0x540840|1.0|TProxyGreatPower::CreateObject

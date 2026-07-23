@@ -195,7 +195,9 @@ target). They need a built binary + reccmp DB. Details in the `quality-control` 
    they may be auto-generated placeholders, even entirely random. reccmp pairs by the
    `// FUNCTION:` address marker, not by name, so drive matching and field naming from
    observed behavior in the disassembly, and keep tentative names hedged.
-7. Keep class-owned functions in `src/game/<ClassName>.cpp`. **Every file under
+7. Keep class-owned functions in `src/game/<subsystem>/<ClassName>.cpp` (subsystem
+   folders per `docs/reference/subsystem_assignment.csv`; unassigned/shared files
+   sit at the `src/game/` root). **Every file under
    `include/game/` and `src/game/` is manually owned source** — author and edit its
    declarations and bodies by hand, then verify with `just build` / `just vtable` /
    `just gates`. There are no tool-owned source trees anymore: generated inputs

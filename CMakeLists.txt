@@ -17,6 +17,7 @@ set(
 
 file(GLOB IMPERIALISM_GAME_SOURCES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/game/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/game/*/*.cpp"
 )
 
 # Lint-only builds (clang/MinGW, see cmake/clang-mingw-i686.cmake) compile the

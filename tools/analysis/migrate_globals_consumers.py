@@ -86,7 +86,7 @@ def main() -> int:
     parser.add_argument(
         "--keep",
         nargs="*",
-        default=["src/game/global_data_tables.cpp"],
+        default=["src/game/core/global_data_tables.cpp"],
         help="files that keep the umbrella include (the definitions TU)",
     )
     args = parser.parse_args()
@@ -95,7 +95,7 @@ def main() -> int:
 
     migrated = 0
     counts: dict[str, int] = {}
-    for path in sorted((repo_root / "src/game").glob("*.cpp")):
+    for path in sorted((repo_root / "src/game").rglob("*.cpp")):
         rel = path.relative_to(repo_root).as_posix()
         if rel in args.keep:
             continue

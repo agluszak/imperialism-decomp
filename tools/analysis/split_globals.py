@@ -124,7 +124,7 @@ def main() -> int:
     # One tokenize pass over manual TUs.
     users: dict[str, set[str]] = defaultdict(set)
     names = {n for n, _c, _ in externs if n}
-    for src in sorted((repo_root / "src/game").glob("*.cpp")):
+    for src in sorted((repo_root / "src/game").rglob("*.cpp")):
         if src.name == "global_data_tables.cpp":
             continue
         toks = set(re.findall(r"[A-Za-z_]\w*", src.read_text(encoding="utf-8")))
