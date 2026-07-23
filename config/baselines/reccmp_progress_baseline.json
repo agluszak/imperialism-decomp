@@ -12,8 +12,8 @@
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
   "git_branch": "claude-something",
-  "git_commit": "ccaeb3e9b65c1c69ddba72a00c61fb83f68a252b",
-  "git_commit_date": "2026-07-23T10:03:57+02:00",
+  "git_commit": "9e381b8a682d2cbf194999c7f0a7d96738b82c85",
+  "git_commit_date": "2026-07-23T10:14:54+02:00",
   "global_coverage_pct": 24.504836480884386,
   "global_orig_only_count": 8195,
   "global_recomp_only_count": 7715,
@@ -62,7 +62,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-23T08:14:47+00:00",
+  "timestamp_utc": "2026-07-23T08:14:57+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
