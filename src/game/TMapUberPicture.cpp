@@ -1084,7 +1084,7 @@ void TMapUberPicture::RemoveMiniMap() {
 }
 
 // FUNCTION: IMPERIALISM 0x0059a180
-undefined TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState) {
+void TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState) {
   TView* toolControl = this->ResolveControlByTag(0x746f6f6c); // "tool"
   if (toolControl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -1107,5 +1107,4 @@ undefined TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(bool enabled
   if (treeControl != nullptr) {
     treeControl->SetEnabled(enabledState, 1);
   }
-  return 0;
 }

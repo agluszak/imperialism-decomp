@@ -58,14 +58,14 @@ public:
   // Base is a no-op stub; TArmyBattle/TNavyBattle override with the real per-side
   // outcome processing. The old "CreateTTacticalBattleInstance" name was Ghidra junk
   // (the function finalizes an existing battle, it never constructs one).
-  virtual undefined FinalizeTacticalBattleOutcome(int sideWonFlag); // slot 0x12 0x59f730
+  virtual void FinalizeTacticalBattleOutcome(int sideWonFlag); // slot 0x12 0x59f730
   virtual void MarkTacticalTileStateQueuedAndMaybeDispatchPacket(
       TArmyTacUnit* unit,
       TacticalTileIndex targetTileIndex); // slot 0x13 0x5a3190
   virtual void AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket(
       TArmyTacUnit* unit);                                                     // slot 0x14 0x5a3210
   virtual void ClearTacticalTileStateRunByStride(TacticalTileIndex tileIndex); // slot 0x15 0x5a3320
-  virtual undefined
+  virtual void
   ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalUnit* rallyingUnit,
                                                    TArmyTacUnit* rallyTarget); // slot 0x16 0x5a3810
   virtual void

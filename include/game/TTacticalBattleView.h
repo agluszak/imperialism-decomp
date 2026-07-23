@@ -25,24 +25,24 @@ public:
   virtual void DoPostCreate(int arg) override; // slot 0x37 0x5a84d0
   virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event,
                               CPoint origin) override;              // slot 0x47 0x5a8660
-  virtual undefined TacticalBattleViewSlot68(int param_1);          // slot 0x68 0x5a8900
+  virtual void TacticalBattleViewSlot68(int param_1);               // slot 0x68 0x5a8900
   virtual void InvalidateTacticalUnitTileRect(TTacticalUnit* unit); // slot 0x69 0x5a89a0
   // Writes the on-screen RECT of a unit's tile (grown 0x18 px upward, bottom-4;
   // zero RECT when tileIndex8 == -1). Hedged name.
-  virtual undefined ComputeTacticalUnitTileScreenRect(TTacticalUnit* unit,
-                                                      RECT* rectOut); // slot 0x6a 0x5a89f0
-  virtual void Scroll(MapScrollEdgeMaskStorage scrollDirection);      // slot 0x6b 0x5a8be0
+  virtual void ComputeTacticalUnitTileScreenRect(TTacticalUnit* unit,
+                                                 RECT* rectOut); // slot 0x6a 0x5a89f0
+  virtual void Scroll(MapScrollEdgeMaskStorage scrollDirection); // slot 0x6b 0x5a8be0
   // Per-tile drawer for the rect applier's 0..0x1b2 pass (base = no-op; the army view
   // override renders the tile). Old OrphanRetStub name was junk; ret 8 = 2 args.
-  virtual undefined DrawTacticalTileInClipRect(TacticalTileIndex tileIndex,
-                                               RECT* clipRect); // slot 0x6c 0x5a83c0
-  virtual undefined
+  virtual void DrawTacticalTileInClipRect(TacticalTileIndex tileIndex,
+                                          RECT* clipRect); // slot 0x6c 0x5a83c0
+  virtual void
   RunOneTimeAnimationModalWaitAndInvalidateCityDialog(RECT* rect, int effectId, int frameCount,
                                                       TacticalTileIndex tileIndex,
                                                       int mode); // slot 0x6d 0x5a9170 (ret 0x14)
-  virtual undefined PlayTacticalTileEffect(TacticalTileIndex tileIndex, int effectId,
-                                           int frameCount); // slot 0x6e 0x5a9090
-  virtual undefined
+  virtual void PlayTacticalTileEffect(TacticalTileIndex tileIndex, int effectId,
+                                      int frameCount); // slot 0x6e 0x5a9090
+  virtual void
   AnimateTacticalUnitMoveBetweenTiles(TTacticalUnit* unit, TacticalTileIndex fromTileIndex,
                                       TacticalTileIndex toTileIndex); // slot 0x6f 0x5a9240
   // Takes no args (bare ret; the old astruct_13* param was a Ghidra artifact).

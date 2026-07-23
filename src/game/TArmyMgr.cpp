@@ -718,8 +718,8 @@ bool TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack, short
 }
 
 // FUNCTION: IMPERIALISM 0x004a35e0
-undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack* stack,
-                                                                     short tileIndex) {
+void TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack* stack,
+                                                                short tileIndex) {
   stack->cursor18 = stack->head14;
   TUnit* headUnit = (stack->head14 != nullptr) ? stack->head14->unit : nullptr;
   short headUnitTag = headUnit->field_18;
@@ -755,7 +755,7 @@ undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack*
         unit = nullptr;
       }
     }
-    return 0;
+    return;
   }
 
   short chosenRegion = candidateRegions[rand() % candidateCount];
@@ -782,7 +782,7 @@ undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack*
   node = stack->cursor18;
   unit = (node != nullptr) ? node->unit : nullptr;
   if (unit == nullptr) {
-    return 0;
+    return;
   }
   do {
     unit->VTableSlot10(unit->field_C);
@@ -796,11 +796,10 @@ undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack*
       unit = nullptr;
     }
   } while (unit != nullptr);
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a37b0
-undefined TArmyMgr::ResetAndRelocateUnitOrderQueue_004a37b0(TArmyStack* stack) {
+void TArmyMgr::ResetAndRelocateUnitOrderQueue_004a37b0(TArmyStack* stack) {
   stack->cursor18 = stack->head14;
   TArmyStackUnitNode* node = stack->cursor18;
   TUnit* unit = (node != nullptr) ? node->unit : nullptr;
@@ -818,7 +817,6 @@ undefined TArmyMgr::ResetAndRelocateUnitOrderQueue_004a37b0(TArmyStack* stack) {
       unit = nullptr;
     }
   }
-  return 0;
 }
 
 // Not ground truth's own function -- ground truth repeats this exact eligibility check
@@ -969,7 +967,7 @@ void TArmyMgr::DoOwnershipChanges() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a3d90
-undefined TArmyMgr::DispatchTileActionByKind_004a3d90(int contextArg, short actionKind) {
+void TArmyMgr::DispatchTileActionByKind_004a3d90(int contextArg, short actionKind) {
   if (actionKind == 1 || actionKind == 4) {
     this->SelectMovableUnitOnCurrentTileAndPlaySfx(contextArg);
   } else if (actionKind == 7) {
@@ -985,7 +983,6 @@ undefined TArmyMgr::DispatchTileActionByKind_004a3d90(int contextArg, short acti
       unit->SetOrders(kUnitOrderIdle, -1);
     }
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a3e50
@@ -1069,7 +1066,7 @@ int TArmyMgr::ComputeSelectedTileCityActionGateSum() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a4260
-undefined TArmyMgr::OrphanCallChain_C1_I34_004a4260(int mode) {
+void TArmyMgr::OrphanCallChain_C1_I34_004a4260(int mode) {
   TMilitaryUnit* unit = nullptr;
   if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < 0x180) {
     unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain98;
@@ -1079,7 +1076,6 @@ undefined TArmyMgr::OrphanCallChain_C1_I34_004a4260(int mode) {
       unit->SetOrders(static_cast<UnitOrder>(mode), -1);
     }
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a43f0
@@ -1217,7 +1213,7 @@ short TArmyMgr::FindNextSelectableProvinceForNation(short nationId) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a4870
-undefined TArmyMgr::HandleMapClickByComputedCursorState(short tileIndex, short mode) {
+bool TArmyMgr::HandleMapClickByComputedCursorState(short tileIndex, short mode) {
   bool handled = false;
   int cursorState = ComputeMapCursorStateIndex(tileIndex, mode);
   short cityRecordIndex = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
@@ -1231,10 +1227,10 @@ undefined TArmyMgr::HandleMapClickByComputedCursorState(short tileIndex, short m
     break;
   case 6:
     this->MarchSelectedArmies(tileIndex);
-    return 1;
+    return true;
   case 8:
     this->ShowSpyReport(cityRecordIndex);
-    return 1;
+    return true;
   }
   return handled;
 }
@@ -1284,13 +1280,13 @@ unsigned short TArmyMgr::LookupCivilianMapCursorTokenByStateIndex(short tileInde
 }
 
 // FUNCTION: IMPERIALISM 0x004a4ad0
-undefined TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short mode) {
+bool TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short mode) {
   int cursorState = this->ComputeCivilianMapCursorStateIndex(tileIndex, mode);
   short cityRecordIndex = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
   switch (cursorState) {
   case 2:
     this->SetActiveProvinceSelection(cityRecordIndex);
-    return 0;
+    return false;
   case 3:
   case 4:
     break;
@@ -1298,15 +1294,15 @@ undefined TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short m
     return this->ValidateOrderPlacementPrerequisitesForSelectedTile(cityRecordIndex);
   case 6:
     this->MarchSelectedArmies(tileIndex);
-    return 0;
+    return false;
   case 7:
     g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotEC(this->pendingMapActionIndex);
-    return 0;
+    return false;
   case 8:
     this->ShowSpyReport(cityRecordIndex);
     // fall through
   default:
-    return 0;
+    return false;
   }
 
   const Province& selectedTile = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex];

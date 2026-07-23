@@ -369,8 +369,36 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
 }
 
 // FUNCTION: IMPERIALISM 0x0050f200
-undefined TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
-  return 0;
+void TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
+  CString streamName;
+  streamName = "political.map";
+  CFile* stream = g_pUiViewManager->LoadTableResourceStreamByName(streamName);
+  unsigned char* politicalCodes = new unsigned char[0x1950];
+  int byteCount = 0x1950;
+  g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(stream, politicalCodes, &byteCount);
+  g_pUiViewManager->ReleaseResourceStreamIfNotNull(stream);
+
+  int tileIndex = 0;
+  for (int recordOffset = 0; recordOffset < 0x38f40; recordOffset += 0x24) {
+    short politicalCode = politicalCodes[tileIndex];
+    if (politicalCode >= 0x17) {
+      terrainStateTable[tileIndex].ownerNationTag04 = static_cast<signed char>(politicalCode);
+      terrainStateTable[tileIndex].formerOwnerNationTag03 = static_cast<signed char>(politicalCode);
+      terrainStateTable[tileIndex].SetTerrainKind(kStrategicTerrainWater);
+    } else {
+      terrainStateTable[tileIndex].SetTerrainKind(kStrategicTerrainPlains);
+      terrainStateTable[tileIndex].gateFlag =
+          static_cast<signed char>(ResolveRegionTileSubtypeCodeForTileIndex(tileIndex));
+      terrainStateTable[tileIndex].formerOwnerNationTag03 = static_cast<signed char>(politicalCode);
+      terrainStateTable[tileIndex].ownerNationTag04 = static_cast<signed char>(politicalCode);
+      if (politicalCode < 7) {
+        terrainStateTable[tileIndex].cityRecordIndex = static_cast<short>(politicalCode << 5);
+      } else {
+        terrainStateTable[tileIndex].cityRecordIndex = static_cast<short>(politicalCode * 8 + 0xa8);
+      }
+    }
+    ++tileIndex;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0050f6b0

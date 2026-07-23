@@ -97,7 +97,7 @@ THelpMgr::THelpMgr() : TObject() {
 // THelpMgr::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00500680
-undefined THelpMgr::InitializeHelpManagerIndexArrayAndState() {
+void THelpMgr::InitializeHelpManagerIndexArrayAndState() {
   helpIndexReady = 1;
   TSortedPtrList* list = new TSortedPtrList();
   indexList = list;
@@ -111,7 +111,6 @@ undefined THelpMgr::InitializeHelpManagerIndexArrayAndState() {
       list->InsertCopiedRecordSortedByComparator(&record);
     }
   }
-  return 0;
 }
 
 namespace {

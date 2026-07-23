@@ -13,9 +13,10 @@ public:
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
                        TEvent* event) override; // slot 0x0f 0x005ad1b0
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x5ad180
-  virtual undefined UpdateTacticalCurrentUnitControlAndDialogLabel(
-      TTacticalUnit* unit) override;                             // slot 0x73 0x5ad0d0
-  virtual undefined TacticalToolbarSlot74(int param_1) override; // slot 0x74 0x5ad0f0
+  virtual void UpdateTacticalCurrentUnitControlAndDialogLabel(
+      TTacticalUnit* unit) override; // slot 0x73 0x5ad0d0
+  virtual void UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) override; // slot 0x74
+                                                                                // 0x5ad0f0
 
   TTacNavyToolbar();
 };

@@ -8,7 +8,7 @@ class TLandSaleEvent : public TTurnStartEvent {
 public:
   DECLARE_DYNCREATE(TLandSaleEvent)
   virtual ~TLandSaleEvent() override; // slot 0x01 (scalar deleting destructor)
-  virtual undefined ApplyJoinEmpireMode2FinalizeNationNameState() override; // slot 0x0a 0x4e6740
+  virtual void ApplyJoinEmpireMode2FinalizeNationNameState() override; // slot 0x0a 0x4e6740
 
   short tileIndex08;  // +0x08 — first ILandSaleEvent argument
   short nationCode0a; // +0x0a — second ILandSaleEvent argument

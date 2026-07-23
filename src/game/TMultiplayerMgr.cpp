@@ -229,7 +229,7 @@ TMultiplayerSlotHandle::~TMultiplayerSlotHandle() {
 TMultiplayerMgr::~TMultiplayerMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00542900
-undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int sessionContext) {
+void TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int sessionContext) {
   this->InitializePacketHeaderFields_Tag20202020(0);
   field10 = sessionContext;
   diplomacyQueueContext = 0;
@@ -266,7 +266,6 @@ undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int ses
   LoadProfileStringAndAssignSharedRef(&loadedString, s_GameName_00698010,
                                       static_cast<LPCSTR>(gameNameString));
   gameNameString = loadedString;
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00542b10

@@ -246,8 +246,8 @@ public:
   // mapStreamName ("mapdata" from the idle-tick caller) is only tested for non-null
   // here: a named stream means the tile grid is already populated, so skip generation.
   virtual char BuildOrLoadGlobalMapStateForSession(const char* mapStreamName,
-                                                   char* tuningOverride);   // slot 0x0b 0x50ec90
-  virtual undefined LoadPoliticalMapRegionSubtypeTableFromResourceStream(); // slot 0x0c 0x50f200
+                                                   char* tuningOverride); // slot 0x0b 0x50ec90
+  virtual void LoadPoliticalMapRegionSubtypeTableFromResourceStream();    // slot 0x0c 0x50f200
   virtual unsigned char*
   UpdateMapTileAdjacencyMasksAndVariantForTile(StrategicTileIndex tileIndex); // slot 0x0d 0x510210
   // If tileIndex's gateFlag != 1 (not yet initialized): resets the strategic terrain kind

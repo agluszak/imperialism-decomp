@@ -100,7 +100,7 @@ void TTacticalToolbar::Draw(RECT* rectBuffer) {
 // Stores the selected unit, updates the 'curr' portrait control (bitmap
 // 0xf1e + unitType*2 + side), and writes the unit's name into the dialog label.
 // FUNCTION: IMPERIALISM 0x005acb50
-undefined TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit) {
+void TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit) {
   currentUnit8C = unit;
   TPicture* currControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagCurr));
   currControl->AssertValid();
@@ -126,12 +126,26 @@ undefined TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTact
   }
   AssignSharedStringToTaggedControlAndProcessState(static_cast<const char*>(unitName),
                                                    kControlTagDialog);
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005acc90
-undefined TTacticalToolbar::TacticalToolbarSlot74(int param_1) {
-  return 0;
+void TTacticalToolbar::UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) {
+  otherSideCurrentUnit90 = unit;
+  TPicture* tpicControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagTpic));
+  tpicControl->AssertValid();
+  if (unit != 0) {
+    tpicControl->SetPictureResourceIdAndRefresh(
+        static_cast<short>(unit->unitTypeC * 2 + 0xf1e + unit->side20), 1);
+    tpicControl->SetEnabled(1, 1);
+  } else {
+    tpicControl->SetEnabled(0, 1);
+  }
+  RECT portraitRect;
+  portraitRect.left = 2;
+  portraitRect.top = 0x159;
+  portraitRect.right = 0x39;
+  portraitRect.bottom = 0x163;
+  InvalidateCityDialogRectRegion(&portraitRect, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005acd60

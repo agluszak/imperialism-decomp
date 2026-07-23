@@ -44,8 +44,8 @@ void TRadioPictureButton::DoEvent(int commandId, TEventHandler* sourceHandler, T
 }
 
 // FUNCTION: IMPERIALISM 0x005718f0
-undefined TRadioPictureButton::OrphanCallChain_C2_I16_005718f0(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
-  return 0;
+void TRadioPictureButton::SetRadioState(unsigned char state, unsigned char refreshNow) {
+  if (IsEnabled()) {
+    HiliteState(state, refreshNow);
+  }
 }

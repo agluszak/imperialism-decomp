@@ -1442,7 +1442,7 @@ address|name|symbol|size|type|prototype|provenance
 4a0ad0|TAnimator::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a0b00|DestructTAnimatorAndMaybeFree_Impl||7|function|undefined DestructTAnimatorAndMaybeFree_Impl()|
 4a0b20|TAnimator::InitializeUiTransientObjectRegistry||175|function|undefined InitializeUiTransientObjectRegistry()|
-4a0c00|TAnimator::OrphanCallChain_C2_I13_004a0c00||31|function|undefined OrphanCallChain_C2_I13_004a0c00(void)|
+4a0c00|TAnimator::Install||31|function|undefined Install(void)|
 4a0c30|TAnimator::DoIdle||172|function|undefined 'scalar_deleting_destructor'(int param_1)|
 4a0d10|TAnimator::AddObjectToUiTransientRegistry||16|function|undefined AddObjectToUiTransientRegistry()|
 4a0d30|TAnimator::FindRegisteredAnimationByTag||102|function|undefined FindRegisteredAnimationByTag()|
@@ -2146,7 +2146,7 @@ address|name|symbol|size|type|prototype|provenance
 4cc3a0|TPurchaseCluster::GetRuntimeClass||6|function|undefined GetTPurchaseClusterClassNamePointer()|rtti
 4cc3c0|TPurchaseCluster::ConstructTPurchaseClusterBaseState||28|function|undefined ConstructTPurchaseClusterBaseState()|
 4cc3f0|TPurchaseCluster::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4cc440|TPurchaseCluster::OrphanCallChain_C1_I08_004cc440||28|function|undefined OrphanCallChain_C1_I08_004cc440(int param_1)|
+4cc440|TPurchaseCluster::SetValueControlAndSyncAmount||28|function|undefined SetValueControlAndSyncAmount(int param_1)|
 4cc470|TPurchaseCluster::DoMouseCommand||3|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 4cc490|TPurchaseCluster::DoEvent||132|function|undefined OrphanRetStub_0059add0(int param_1, void * param_2, int param_3)|
 4cc550|TPurchaseCluster::SetCityViewValueControlAmount||181|function|void __fastcall SetCityViewValueControlAmount(int * pCityViewDialog, short nValue)|
@@ -4584,7 +4584,7 @@ address|name|symbol|size|type|prototype|provenance
 5717c0|TRadioPictureButton::TRadioPictureButton||41|function|undefined TRadioPictureButton()|
 571800|TRadioPictureButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 571850|WrapperFor_HandleCityDialogToggleCommandOrForward_At00571850||124|function|undefined WrapperFor_HandleCityDialogToggleCommandOrForward_At00571850()|
-5718f0|TRadioPictureButton::OrphanCallChain_C2_I16_005718f0||36|function|undefined OrphanCallChain_C2_I16_005718f0(void)|
+5718f0|TRadioPictureButton::SetRadioState||36|function|undefined SetRadioState(void)|
 571930|TOnOffRadioButton::CreateObject|?CreateObject@TOnOffRadioButton@@SGPAVCObject@@XZ|126|function|undefined CreateObject()|rtti
 5719d0|TOnOffRadioButton::GetRuntimeClass||6|function|undefined GetTOnOffRadioButtonClassNamePointer()|rtti
 5719f0|TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState||41|function|undefined ConstructTOnOffRadioButtonBaseState()|
@@ -5540,12 +5540,12 @@ address|name|symbol|size|type|prototype|provenance
 5ac840|TTacticalToolbar::DoPostCreate||207|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5ac950|TTacticalToolbar::Draw||395|function|undefined DestructTTacticalToolbarAndMaybeFree()|
 5acb50|TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel||256|function|undefined UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel()|
-5acc90|TTacticalToolbar::TacticalToolbarSlot74||145|function|undefined WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1)|
+5acc90|TTacticalToolbar::UpdateTacticalOtherSideUnitControl||145|function|undefined WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1)|
 5acd60|TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls||446|function|undefined ConfigureTacticalTargetDoneRetreatAutoControls()|
 5acf90|TTacticalToolbar::DoEvent||123|function|undefined HandleArmyTacticalToolbarCommandTags()|
 5ad030|TTacNavyToolbar::CreateObject|?CreateObject@TTacNavyToolbar@@SGPAVCObject@@XZ|128|function|undefined CreateObject()|rtti
 5ad0d0|TTacNavyToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel||3|function|undefined UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(void)|
-5ad0f0|TTacNavyToolbar::TacticalToolbarSlot74||3|function|undefined OrphanRetStub_005ad0f0(void)|
+5ad0f0|TTacNavyToolbar::UpdateTacticalOtherSideUnitControl||3|function|undefined OrphanRetStub_005ad0f0(void)|
 5ad110|TTacNavyToolbar::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5ad160|TTacNavyToolbar::GetRuntimeClass||6|function|undefined GetTTacNavyToolbarClassNamePointer()|rtti
 5ad180|TTacNavyToolbar::DoPostCreate||32|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|

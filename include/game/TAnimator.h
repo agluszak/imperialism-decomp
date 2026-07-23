@@ -23,12 +23,14 @@ struct TQuickDrawSurfaceContext;
 class TAnimator : public TEventHandler {
 public:
   DECLARE_DYNCREATE(TAnimator)
-  virtual ~TAnimator() override;                       // slot 0x01 (scalar deleting destructor)
-  virtual void WriteTo(TStream* stream) override;      // slot 0x05 0x4a0e50
-  virtual void ReadFrom(TStream* stream) override;     // slot 0x06 0x4a0e10
-  virtual void Free() override;                        // slot 0x07 0x4a0dc0
-  virtual char DoIdle(int action) override;            // slot 0x13 0x4a0c30
-  virtual undefined OrphanCallChain_C2_I13_004a0c00(); // slot 0x25 0x4a0c00
+  virtual ~TAnimator() override;                   // slot 0x01 (scalar deleting destructor)
+  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x4a0e50
+  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x4a0e10
+  virtual void Free() override;                    // slot 0x07 0x4a0dc0
+  virtual char DoIdle(int action) override;        // slot 0x13 0x4a0c30
+  // Mac CodeWarrior identity: TAnimator::Install(). Counterpart of Free's
+  // InstallCohandler(this, 0).
+  virtual void Install(); // slot 0x25 0x4a0c00
   void RemoveUiTransientRegistryObjectByTag(int tag);
   // Creates the shared offscreen surface (bounds from the global surface dims, bit
   // depth 8) and the registry TList, and stores the idle frequency into the

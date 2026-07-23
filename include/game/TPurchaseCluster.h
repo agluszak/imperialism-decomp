@@ -12,14 +12,17 @@ public:
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
                        TEvent* event) override; // slot 0x0f 0x004cc490
   virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event,
-                              CPoint origin) override;            // slot 0x47 0x4cc470
-  virtual undefined OrphanCallChain_C1_I08_004cc440(int param_1); // slot 0x73 0x4cc440
+                              CPoint origin) override; // slot 0x47 0x4cc470
+  // Adopts the 'valu' amount control and pushes its current value into it.
+  virtual void SetValueControlAndSyncAmount(TEventHandler* control); // slot 0x73 0x4cc440
   // Real params are (short nValue, char redrawFlag) -- confirmed from the callsite
   // (0x4cc490: pushes field88's word field then 1) and the body's own stack reads
   // ([esp+0x2c]=nValue, [esp+0x30]=redrawFlag). The previous (int*, short) declaration
   // was a poison-pill guess; there is no pCityViewDialog parameter.
   virtual void SetCityViewValueControlAmount(short nValue, char redrawFlag); // slot 0x74 0x4cc550
-  virtual undefined UpdateCityViewValueControl();                            // slot 0x75 0x4cc640
+  // DoEvent applies DEC/INC to this call's result before feeding it back, so the slot
+  // returns the control's current amount rather than nothing.
+  virtual int UpdateCityViewValueControl(); // slot 0x75 0x4cc640
   // TCluster's slice ends at 0x88; RTTI oracle confirms sizeof(TPurchaseCluster) == 0x8c.
   // The ctor (0x4cc3c0) zeroes the one own field. DoEvent dispatches
   // field88->vtbl[0x2c] (TEventHandler::SetEnable) and then reads a short at

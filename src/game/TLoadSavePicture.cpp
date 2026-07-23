@@ -187,9 +187,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 }
 
 // FUNCTION: IMPERIALISM 0x0056d190
-undefined TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC() {
-  return 0;
-}
+void TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC() {}
 
 // FUNCTION: IMPERIALISM 0x0056d1e0
 void TLoadSavePicture::DoKeyEvent(TToolboxEvent* event) {
@@ -230,12 +228,13 @@ static __inline unsigned char IsMultiplayerFlowActive() {
 // multiplayer-aware or plain save driver and re-post turn-flow command 100. Both
 // completed paths reset the audio cue pools and schedule a random cue.
 // FUNCTION: IMPERIALISM 0x0056d2a0
-undefined TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
+void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
   if (selectedSlot92 == -1) {
     if (loadModeFlag90 == 0) {
-      return g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2758, 0x17, 1, 0);
+      g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2758, 0x17, 1, 0);
+      return;
     }
-    return 0;
+    return;
   }
   if (loadModeFlag90 != 0) {
     if (g_pSimMgr->mode == 1 ||
@@ -275,7 +274,6 @@ undefined TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
   g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(2);
   g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(3);
   g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0056d660

@@ -77,8 +77,7 @@ BOOL TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog(const
 
 // Loads a localized UI string by (group, index) into *out using resource id
 // FUNCTION: IMPERIALISM 0x00499440
-undefined4 TModuleLibraryCacheTableStateB::LoadUiStringResourceById(CString* out,
-                                                                    unsigned int stringId) {
+int TModuleLibraryCacheTableStateB::LoadUiStringResourceById(CString* out, unsigned int stringId) {
   LPSTR buffer = out->GetBuffer(0x1000);
   int length = LoadStringA(m_primaryModule, stringId, buffer, 0x1000);
   if (length == 0) {

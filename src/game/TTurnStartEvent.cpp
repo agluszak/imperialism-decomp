@@ -1,9 +1,7 @@
 #include "game/TTurnStartEvent.h"
 
 // FUNCTION: IMPERIALISM 0x004e6610
-undefined TTurnStartEvent::ApplyJoinEmpireMode2FinalizeNationNameState() {
-  return 0;
-}
+void TTurnStartEvent::ApplyJoinEmpireMode2FinalizeNationNameState() {}
 
 // SYNTHETIC: IMPERIALISM 0x004e6630
 // TTurnStartEvent::`scalar deleting destructor'

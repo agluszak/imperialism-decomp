@@ -18,9 +18,11 @@ public:
   // Updates the toolbar's current-unit 'curr' control from the newly selected unit
   // (stores it at +0x8c, reads its unitTypeC/side20). The old "Diplomacy" name was a
   // Ghidra mislabel.
-  virtual undefined
+  virtual void
   UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit); // slot 0x73 0x5acb50
-  virtual undefined TacticalToolbarSlot74(int param_1);                // slot 0x74 0x5acc90
+  // Mirror of slot 0x73 for the other side: stores the unit at +0x90 and drives the
+  // 'tpic' portrait control, without the dialog-label update.
+  virtual void UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit); // slot 0x74 0x5acc90
   // Toolbar slice (base TCluster ends at +0x88). battle88/unitSpriteAtlasSurface94 are
   // wired by the live-battle initializer 0x5a9d90; currentUnit8C by slot 0x73.
   class TTacticalBattle* battle88;    // +0x88

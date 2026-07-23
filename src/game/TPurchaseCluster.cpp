@@ -22,8 +22,9 @@ TPurchaseCluster::TPurchaseCluster() : TCluster(), field88(0) {}
 TPurchaseCluster::~TPurchaseCluster() {}
 
 // FUNCTION: IMPERIALISM 0x004cc440
-undefined TPurchaseCluster::OrphanCallChain_C1_I08_004cc440(int param_1) {
-  return 0;
+void TPurchaseCluster::SetValueControlAndSyncAmount(TEventHandler* control) {
+  field88 = control;
+  SetCityViewValueControlAmount(static_cast<short>(control->field04), 1);
 }
 
 // FUNCTION: IMPERIALISM 0x004cc470
@@ -76,6 +77,6 @@ void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, char redrawFl
 }
 
 // FUNCTION: IMPERIALISM 0x004cc640
-undefined TPurchaseCluster::UpdateCityViewValueControl() {
+int TPurchaseCluster::UpdateCityViewValueControl() {
   return 0;
 }

@@ -48,6 +48,4 @@ void TMinorRelationshipDialog::Close() {
 }
 
 // FUNCTION: IMPERIALISM 0x005b3570
-undefined TMinorRelationshipDialog::VTableSlot68() {
-  return 0;
-}
+void TMinorRelationshipDialog::VTableSlot68() {}

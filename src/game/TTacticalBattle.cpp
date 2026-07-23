@@ -75,9 +75,7 @@ void TTacticalBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTile
 }
 
 // FUNCTION: IMPERIALISM 0x0059f730
-undefined TTacticalBattle::FinalizeTacticalBattleOutcome(int) {
-  return 0;
-}
+void TTacticalBattle::FinalizeTacticalBattleOutcome(int) {}
 
 // SYNTHETIC: IMPERIALISM 0x0059f750
 // TTacticalBattle::GetRuntimeClass
@@ -1922,9 +1920,8 @@ void TTacticalBattle::HandleTacticalCommandTag_digg(TTacticalUnit* unit,
 // state 0 with strength/10 + 20 morale on a rand()%100 < (quality+5)*10 roll. Then the
 // 'raly' command applies/echoes it and the 0x232a end-of-action event is queued.
 // FUNCTION: IMPERIALISM 0x005a3810
-undefined
-TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalUnit* rallyingUnit,
-                                                                  TArmyTacUnit* rallyTarget) {
+void TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalUnit* rallyingUnit,
+                                                                       TArmyTacUnit* rallyTarget) {
   int newState = rallyTarget->state1c;
   int newMorale = rallyTarget->morale34;
   if (newState == 0) {
@@ -1938,7 +1935,6 @@ TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalUnit*
   }
   HandleTacticalCommandTag_raly(rallyTarget, newMorale, newState, 0);
   QueueTacticalEventPacket232A();
-  return 0;
 }
 
 // 'raly' command: multiplayer echo, sets the unit's state (rallying a broken unit) and

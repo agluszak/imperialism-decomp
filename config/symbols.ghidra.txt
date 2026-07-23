@@ -2087,7 +2087,7 @@ TAnimator::TAnimator 4A0AA0 f
 TAnimator::'scalar_deleting_destructor' 4A0AD0 f
 DestructTAnimatorAndMaybeFree_Impl 4A0B00 f
 TAnimator::InitializeUiTransientObjectRegistry 4A0B20 f
-TAnimator::OrphanCallChain_C2_I13_004a0c00 4A0C00 f
+TAnimator::Install 4A0C00 f
 TAnimator::DoIdle 4A0C30 f
 TAnimator::AddObjectToUiTransientRegistry 4A0D10 f
 TAnimator::FindRegisteredAnimationByTag 4A0D30 f
@@ -2793,7 +2793,7 @@ TPurchaseCluster::CreateObject 4CC300 f
 TPurchaseCluster::GetRuntimeClass 4CC3A0 f
 TPurchaseCluster::TPurchaseCluster 4CC3C0 f
 TPurchaseCluster::'scalar_deleting_destructor' 4CC3F0 f
-TPurchaseCluster::OrphanCallChain_C1_I08_004cc440 4CC440 f
+TPurchaseCluster::SetValueControlAndSyncAmount 4CC440 f
 TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer 4CC470 f
 TPurchaseCluster::HandleEvent 4CC490 f
 TPurchaseCluster::SetCityViewValueControlAmount 4CC550 f
@@ -5238,7 +5238,7 @@ TRadioPictureButton::GetRuntimeClass 5717A0 f
 TRadioPictureButton::TRadioPictureButton 5717C0 f
 TRadioPictureButton::'scalar_deleting_destructor' 571800 f
 TRadioPictureButton::HandleEvent 571850 f
-TRadioPictureButton::OrphanCallChain_C2_I16_005718f0 5718F0 f
+TRadioPictureButton::SetRadioState 5718F0 f
 TOnOffRadioButton::CreateObject 571930 f
 TOnOffRadioButton::GetRuntimeClass 5719D0 f
 TOnOffRadioButton::TOnOffRadioButton 5719F0 f
@@ -6216,12 +6216,12 @@ TTacticalToolbar::GetRuntimeClass 5AC820 f
 TTacticalToolbar::DoPostCreate 5AC840 f
 TTacticalToolbar::ApplyRectSlot110 5AC950 f
 TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel 5ACB50 f
-TTacticalToolbar::TacticalToolbarSlot74 5ACC90 f
+TTacticalToolbar::UpdateTacticalOtherSideUnitControl 5ACC90 f
 TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls 5ACD60 f
 TTacticalToolbar::HandleEvent 5ACF90 f
 TTacNavyToolbar::CreateObject 5AD030 f
 TTacNavyToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel 5AD0D0 f
-TTacNavyToolbar::TacticalToolbarSlot74 5AD0F0 f
+TTacNavyToolbar::UpdateTacticalOtherSideUnitControl 5AD0F0 f
 TTacNavyToolbar::'scalar_deleting_destructor' 5AD110 f
 TTacNavyToolbar::GetRuntimeClass 5AD160 f
 TTacNavyToolbar::DoPostCreate 5AD180 f

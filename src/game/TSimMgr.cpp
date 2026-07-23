@@ -421,7 +421,7 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
     }
     TAnimator* animator = new TAnimator();
     animator->InitializeUiTransientObjectRegistry(0x7fffffff);
-    animator->OrphanCallChain_C2_I13_004a0c00();
+    animator->Install();
     g_pUiAnimator = animator;
 
     if (g_pDiplomacyTurnStateManager != nullptr) {

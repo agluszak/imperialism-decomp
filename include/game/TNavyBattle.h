@@ -23,7 +23,7 @@ public:
       TacticalTileIndex targetTileIndex) override; // slot 0x10 0x5a5730
   // Simply re-resolves the navy order manager's map-order chains; the int param is
   // unused (RET 0x4 cleans the stack without reading it).
-  virtual undefined FinalizeTacticalBattleOutcome(int) override; // slot 0x12 0x5a5b70
+  virtual void FinalizeTacticalBattleOutcome(int) override; // slot 0x12 0x5a5b70
 
   TNavyBattle();
 

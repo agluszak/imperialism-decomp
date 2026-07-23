@@ -41,7 +41,6 @@ void TOffLimitsPicture::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x00573940
-undefined TOffLimitsPicture::ForwardCopyRgn(RgnHandle srcRegion) {
+void TOffLimitsPicture::ForwardCopyRgn(RgnHandle srcRegion) {
   CopyRgn(srcRegion, ownClipRegion90);
-  return 0;
 }

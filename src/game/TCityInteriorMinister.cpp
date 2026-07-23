@@ -427,7 +427,7 @@ void TCityInteriorMinister::FillOrders() {
 }
 
 // FUNCTION: IMPERIALISM 0x004bf8a0
-undefined TCityInteriorMinister::EvaluateCityShortagesAndNotifyForeignMinister(TCity* city) {
+void TCityInteriorMinister::EvaluateCityShortagesAndNotifyForeignMinister(TCity* city) {
   if (orderMetricTable40[0] != 0 || orderMetricTable40[1] != 0) {
     bool roll = (rand() % 100) >= 75;
     ownerContextAt04->foreignMinister->PleaseBuy(0, roll);
@@ -473,7 +473,6 @@ undefined TCityInteriorMinister::EvaluateCityShortagesAndNotifyForeignMinister(T
   if (resultCode != -1) {
     ownerContextAt04->foreignMinister->SetInteriorMinisterBid(resultCode, magnitude);
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004bfa50
@@ -2520,8 +2519,111 @@ short TCityInteriorMinister::RequestResource(short resourceType, short requested
 }
 
 // FUNCTION: IMPERIALISM 0x004c5240
-undefined TCityInteriorMinister::SeekResources(TShortintList*, char*) {
-  return 0;
+void TCityInteriorMinister::SeekResources(TShortintList* ownedTiles, char* primaryDistanceMap) {
+  CString terrainLabel;
+  CString developmentBudgetText;
+  CString scratch;
+
+  ownerContextAt04->FormatOverlayTerrainLabelText(&terrainLabel);
+  developmentBudgetText.Format(g_szDecimalFormat,
+                               static_cast<short>(g_pSimMgr->defenseMinisterPolicyIds[0] / 4));
+
+  // Per-resource tallies for this pass: how many workable-but-unclaimed tiles mention
+  // the resource, and how much better the city could do on the tiles it already works.
+  short unclaimedTileMentions[23];
+  short workOrderValueDelta[23];
+  int resourceType;
+  for (resourceType = 0; resourceType < 23; ++resourceType) {
+    unclaimedTileMentions[resourceType] = 0;
+  }
+  for (resourceType = 0; resourceType < 23; ++resourceType) {
+    workOrderValueDelta[resourceType] = 0;
+  }
+  for (resourceType = 0; resourceType < 23; ++resourceType) {
+    civilianOrderDemandByResourceType194[resourceType] = 0;
+    orderTypeTable12A[resourceType] = 0;
+  }
+
+  short tileCount = static_cast<short>(ownedTiles->GetSize());
+  for (short entry = 1; entry <= tileCount; ++entry) {
+    StrategicTileIndex tileIndex =
+        static_cast<StrategicTileIndex>(*ownedTiles->At(static_cast<unsigned int>(entry - 1)));
+    TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
+    if (tile.regionSubtypeTag05 != -1) {
+      // Already inside a region: score how much the two resource edges would gain from
+      // the high-nibble (developed) work order over the low-nibble (current) one.
+      short nationSlot = ownerContextAt04->nationSlot;
+      short developedCapability =
+          g_pGlobalMapState->FindMaxResourceCapabilityValueForTile(tileIndex, 1, nationSlot);
+      short developedCost =
+          g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 1);
+      short currentCapability = g_pGlobalMapState->FindMaxResourceCapabilityValueForTile(
+          tileIndex, 0, ownerContextAt04->nationSlot);
+      short currentCost = g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 0);
+      for (int edge = 0; edge < 2; ++edge) {
+        short edgeResource = tile.resourceTypeByEdge[edge];
+        if (edgeResource != -1) {
+          int gain = (g_abResourceTypeMiniCivMentionFlag[edgeResource] != 0)
+                         ? developedCapability - developedCost
+                         : currentCapability - currentCost;
+          workOrderValueDelta[edgeResource] =
+              static_cast<short>(workOrderValueDelta[edgeResource] + (gain << 2));
+        }
+      }
+    } else {
+      // Unclaimed tile: it only counts if it, or one of its six neighbours, is close
+      // enough to be worked (distance 1..8) or is a viable port site.
+      bool reachable = true;
+      char distance = primaryDistanceMap[tileIndex];
+      if (distance == 0 || distance < 9 || !g_pGlobalMapState->CanBuildPortAtTile(tileIndex)) {
+        reachable = false;
+        for (short direction = 0; direction < 6 && !reachable; ++direction) {
+          StrategicTileIndex neighbor = g_pGlobalMapState->GetNeighborTileID(
+              tileIndex, static_cast<StrategicHexDirectionStorage>(direction));
+          char neighborDistance = (neighbor != -1) ? primaryDistanceMap[neighbor] : 0;
+          if ((neighbor != -1 && neighborDistance > 0 && neighborDistance < 9) ||
+              g_pGlobalMapState->CanBuildPortAtTile(neighbor)) {
+            reachable = true;
+          }
+        }
+      }
+      if (reachable) {
+        for (int edge = 0; edge < 2; ++edge) {
+          short edgeResource = tile.resourceTypeByEdge[edge];
+          if (edgeResource != -1) {
+            ++unclaimedTileMentions[edgeResource];
+          }
+        }
+      }
+    }
+  }
+
+  for (resourceType = 0; resourceType < 23; ++resourceType) {
+    bool tradedResource =
+        (resourceType >= 0 && resourceType < 7) || (resourceType > 0x10 && resourceType < 0x17);
+    if (tradedResource && orderMetricTable40[resourceType] != 0) {
+      short demand = workOrderValueDelta[resourceType];
+      civilianOrderDemandByResourceType194[resourceType] = demand;
+      short need = orderMetricTable40[resourceType];
+      if (need - demand > 2) {
+        if (unclaimedTileMentions[resourceType] == 0) {
+          orderTypeTable12A[resourceType] =
+              static_cast<short>(orderTypeTable12A[resourceType] + need);
+        } else {
+          orderTypeTableFC[resourceType] =
+              static_cast<short>(orderTypeTableFC[resourceType] + (need - demand));
+        }
+      }
+      orderMetricTable40[resourceType] = 0;
+    }
+    if (orderTypeTable12A[resourceType] == 0) {
+      orderTypeTable158[resourceType] = 0;
+    } else {
+      ++orderTypeTable158[resourceType];
+    }
+  }
+
+  orderTypeTableFC[23] = 2;
 }
 
 // FUNCTION: IMPERIALISM 0x004c56e0

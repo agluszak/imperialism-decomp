@@ -230,7 +230,7 @@ unsigned char* GetPixBaseAddr(TBitmapSurfaceNode** pixMap) {
 }
 
 // FUNCTION: IMPERIALISM 0x00497c00
-undefined4 QDLoadResource(TBitmapResourceLoader** handle) {
+int QDLoadResource(TBitmapResourceLoader** handle) {
   (void)handle;
   return 0;
 }

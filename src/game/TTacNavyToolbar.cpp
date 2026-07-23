@@ -7,14 +7,13 @@
 #include "game/ui_control_tags.h"
 
 // FUNCTION: IMPERIALISM 0x005ad0d0
-undefined TTacNavyToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit) {
+void TTacNavyToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit) {
   (void)unit;
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005ad0f0
-undefined TTacNavyToolbar::TacticalToolbarSlot74(int param_1) {
-  return 0;
+void TTacNavyToolbar::UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) {
+  (void)unit;
 }
 
 // SYNTHETIC: IMPERIALISM 0x005ad110
