@@ -8,8 +8,8 @@ has a reviewed classification and a durable Beads owner in
 
 ## Summary
 
-- Findings: 573
-- `native_integral_boundary`: 20
+- Findings: 572
+- `native_integral_boundary`: 19
 - `nested_integral_cast`: 29
 - `predicate_storage_cast`: 23
 - `raw_discriminant_literal`: 501
@@ -24,6 +24,34 @@ has a reviewed classification and a durable Beads owner in
 - Result: 138 source-visible diagnostics (131 narrowing, 7 redundant casts); no diagnostics in generated or retail library code were included.
 - Rationale: Narrowing diagnostics expose real signature and storage-width debt but mix listing-required truncation, signed-byte preservation, predicate storage, negative hex constants, and floating-point codegen. The cppcoreguidelines check aliases the same diagnostics as bugprone under LLVM 19. Redundant casts were low-noise (7 of 7 same-type casts), but remain advisory until their .99.2-owned baseline is cleared.
 
+## Reviewed native integral boundaries
+
+Every native cast is individually reviewed. Fingerprints deliberately include the
+source expression, so a changed boundary must be reviewed again instead of inheriting
+a stale category-level approval.
+
+| Fingerprint | Source | Classification | Evidence |
+| --- | --- | --- | --- |
+| `b3ab09ab111463da` | `src/game/CDib.cpp:68` | `win32_struct_word_field` | BITMAPINFOHEADER.biBitCount is WORD; retail 0x00479fe0 writes the low argument word to header offset 0x0e. |
+| `6da656c5e709fdcb` | `src/game/CDib.cpp:268` | `win32_struct_word_field` | LOGPALETTE.palNumEntries is WORD; retail 0x0047ae90 copies the low word of the 32-bit palette count to offset 2. |
+| `742008749ab4e76b` | `src/game/CDibPal.cpp:41` | `win32_struct_word_field` | LOGPALETTE.palNumEntries is WORD; retail 0x0047e440 stores BX to offset 2 before CreatePalette. |
+| `7e423c8243556ab8` | `src/game/CDibPal.cpp:201` | `win32_struct_word_field` | GetObjectA yields a UINT entry count but LOGPALETTE.palNumEntries is WORD; retail 0x0047efa0 narrows only at the structure field. |
+| `3a7283d2ab6bd83c` | `src/game/CIncludeView.cpp:398` | `mfc_bool_callback_return` | CWnd::OnSetCursor returns BOOL while Default returns LRESULT; retail 0x00483ef0 tail-returns the full Default result through the BOOL override ABI. |
+| `2c26c47876710482` | `src/game/CMcWindow.cpp:284` | `mfc_bool_callback_return` | CWnd::OnQueryNewPalette returns BOOL while Default returns LRESULT; retail 0x00493ca0 preserves the MFC callback ABI. |
+| `ce4913a1f4420b84` | `src/game/TDisplayMgr.cpp:36` | `win32_uint_sentinel` | MessageBeep takes UINT and 0xffffffff selects the simple default sound; retail wrapper 0x004931e0 pushes -1 directly. |
+| `f18bbfbdf2ee744a` | `src/game/TModalDialogBase.cpp:38` | `win32_resource_identifier` | MFC stores integer dialog resource IDs in the pointer-shaped m_lpszTemplateName field; FindResourceA consumes the recovered low UINT identifier at 0x0049d360. |
+| `e584628d15357a69` | `src/game/TModuleLibraryCacheTableStateB.cpp:222` | `mfc_word_map_key` | m_tableA is keyed by WORD and the BMP resource identifier stays 32-bit until the CMap lookup boundary in retail 0x00499b40. |
+| `1b78fb6ded381efe` | `src/game/TModuleLibraryCacheTableStateB.cpp:229` | `mfc_word_map_key` | m_tableA is keyed by WORD and the BMP resource identifier stays 32-bit until the CMap insertion boundary in retail 0x00499b40. |
+| `8079740443b86b3a` | `src/game/TModuleLibraryCacheTableStateB.cpp:246` | `mfc_word_map_key` | retail 0x0049a0b0 explicitly loads only the low input word before hashing the CMap key. |
+| `452338b653053d46` | `src/game/TModuleLibraryCacheTableStateB.cpp:256` | `mfc_word_map_key` | retail 0x0049a190 loads and hashes the signed short argument as the WORD-key representation used by m_tableA. |
+| `cd3d85f26c3c9642` | `src/game/TNetMgr.cpp:384` | `win32_allocation_size` | VC5 GlobalAlloc takes a DWORD byte count; retail 0x005e3d40 forwards the 32-bit packet length unchanged at the API boundary. |
+| `048bbfb6235c2a02` | `src/game/TViewMgr.cpp:2483` | `win32_struct_byte_field` | RGBQUAD.rgbBlue is BYTE; retail 0x005de010 copies the low packed-color byte into the four-byte local structure. |
+| `276dcbb31c45e0bb` | `src/game/TViewMgr.cpp:2484` | `win32_struct_byte_field` | RGBQUAD.rgbGreen is BYTE; retail 0x005de010 extracts packed-color bits 8 through 15 into the structure. |
+| `f8a448b129b0a354` | `src/game/TViewMgr.cpp:2485` | `win32_struct_byte_field` | RGBQUAD.rgbRed is BYTE; retail 0x005de010 extracts packed-color bits 16 through 23 into the structure. |
+| `83fe19c4ff1bb637` | `src/game/TViewMgr.cpp:2486` | `win32_struct_byte_field` | RGBQUAD.rgbReserved is BYTE; retail 0x005de010 extracts packed-color bits 24 through 31 into the structure. |
+| `d4248763cec9fcfa` | `src/game/cd_audio.cpp:147` | `multimedia_dword_field` | MCI_PLAY_PARMS.dwFrom is DWORD; retail 0x005e1850 masks the track index to eight bits before the dword store. |
+| `af9be0d81a08664a` | `src/game/cd_audio.cpp:148` | `multimedia_dword_field` | MCI_PLAY_PARMS.dwTo is DWORD; retail 0x005e1850 increments then masks the track index before the dword store. |
+
 ## Findings
 
 | Fingerprint | Category | Source | Detail | Classification | Owner |
@@ -35,7 +63,6 @@ has a reviewed classification and a durable Beads owner in
 | `3a7283d2ab6bd83c` | `native_integral_boundary` | `src/game/CIncludeView.cpp:398` | game scalar -> BOOL | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `2c26c47876710482` | `native_integral_boundary` | `src/game/CMcWindow.cpp:284` | game scalar -> BOOL | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `ce4913a1f4420b84` | `native_integral_boundary` | `src/game/TDisplayMgr.cpp:36` | game scalar -> UINT | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `dca433941aa79f9f` | `native_integral_boundary` | `src/game/THelpPicture.cpp:75` | game scalar -> UINT | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `f18bbfbdf2ee744a` | `native_integral_boundary` | `src/game/TModalDialogBase.cpp:38` | game scalar -> UINT | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `e584628d15357a69` | `native_integral_boundary` | `src/game/TModuleLibraryCacheTableStateB.cpp:222` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `1b78fb6ded381efe` | `native_integral_boundary` | `src/game/TModuleLibraryCacheTableStateB.cpp:229` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |

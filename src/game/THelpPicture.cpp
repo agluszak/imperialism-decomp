@@ -2,6 +2,7 @@
 
 #include "game/THelpMgr.h"
 #include "game/TDeluxeText.h"
+#include "game/TDisplayMgr.h"
 #include "game/TScrollView.h"
 #include "game/TSimMgr.h"
 #include "game/TSortedPtrList.h"
@@ -72,7 +73,7 @@ void THelpPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
 
   switch (sourceHandler->controlTag) {
   case 0x6d6f7265: // 'more'
-    MessageBeep(static_cast<UINT>(-1));
+    PlayDefaultMessageBeep(1);
     return;
   case 0x6e616d31: // 'nam1'
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
