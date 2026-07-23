@@ -1523,22 +1523,7 @@ char TGreatPower::CompareMissionScoreVariantsByMode(int mode) {
     TZone* portZoneContext =
         g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(this->nationSlot);
 
-    if (portZoneContext->PrimaryZoneHeapCapacity() <= 0) {
-      void* resizedEntries = realloc(portZoneContext->PrimaryZoneHeapData(), 8);
-      if (resizedEntries == 0) {
-        resizedEntries = realloc(portZoneContext->PrimaryZoneHeapData(), 4);
-        portZoneContext->PrimaryZoneHeapData() = static_cast<TZone**>(resizedEntries);
-        portZoneContext->PrimaryZoneHeapCapacity() = 1;
-      } else {
-        portZoneContext->PrimaryZoneHeapData() = static_cast<TZone**>(resizedEntries);
-        portZoneContext->PrimaryZoneHeapCapacity() = 2;
-      }
-    }
-    if (portZoneContext->PrimaryZoneHeapSize() <= 0) {
-      portZoneContext->PrimaryZoneHeapSize() = 1;
-    }
-
-    TZone* firstEntry = portZoneContext->PrimaryZoneHeapData()[0];
+    TZone* firstEntry = portZoneContext->primaryNeighbors[0];
 
     float exactSourceScore =
         TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(this->nationSlot,

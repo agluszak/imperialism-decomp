@@ -145,8 +145,8 @@ address|name|symbol|size|type|prototype|provenance
 430690|WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl||115|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl()|
 430730|WrapperFor_FreeHeapBufferIfNotNull_At00430730||12|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00430730()|
 430750|WrapperFor_FreeHeapBlockWithAllocatorTracking_At00430750||50|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At00430750()|
-4307a0|StrategicMapOpcodeByteStretch::Add||109|function|unsigned char * __thiscall Add(unsigned char value)|
-430830|StrategicMapCursorStretch::Add||124|function|int * __thiscall Add(int value)|
+4307a0|stretch<unsigned char>::Add|?Add@?$stretch@E@@UAEPAEE@Z|109|function|unsigned char * __thiscall Add(unsigned char value)|template
+430830|stretch<int>::Add|?Add@?$stretch@H@@UAEPAHH@Z|124|function|int * __thiscall Add(int value)|template
 4308d0|ConstructPictureResourceEntry_Vtbl006404b0||27|function|undefined ConstructPictureResourceEntry_Vtbl006404b0()|
 430900|TMapKey::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 430950|ConstructUiColorTextResourceEntry||102|function|undefined ConstructUiColorTextResourceEntry()|
@@ -1994,7 +1994,7 @@ address|name|symbol|size|type|prototype|provenance
 4c0e50|TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls||697|function|short __thiscall RebuildNeedTargetsAndQueueProductionShortfalls(TCity* city, TTaskList* commandQueue)|
 4c11c0|TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore||643|function|int __thiscall SelectBestSecondaryHomeTileByFrogCityScore()|
 4c1510|TCityInteriorMinister::BuildNationTileDevelopmentScoreListForTerrainClass||706|function|undefined BuildNationTileDevelopmentScoreListForTerrainClass()|
-4c18a0|AppendInteriorMinisterValueGrowShortBuffer||131|function|undefined AppendInteriorMinisterValueGrowShortBuffer()|
+4c18a0|stretch<short>::Add|?Add@?$stretch@F@@UAEPAFF@Z|131|function|short * __thiscall Add(short value)|template
 4c1990|WrapperFor_ComputeBestNationTileDevelopmentScore_At004c1990||238|function|undefined WrapperFor_ComputeBestNationTileDevelopmentScore_At004c1990()|
 4c1ac0|TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister||1022|function|void __thiscall RebuildMapTileNeighborBucketsForInteriorMinister()|
 4c1fc0|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004c1fc0||55|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004c1fc0()|
@@ -2251,21 +2251,21 @@ address|name|symbol|size|type|prototype|provenance
 4d4b90|OrphanLeaf_NoCall_Ins15_004d4b90||48|function|undefined OrphanLeaf_NoCall_Ins15_004d4b90()|
 4d4bd0|DiscardTileTokenArgumentAndReturn||3|function|undefined DiscardTileTokenArgumentAndReturn()|
 4d4bf0|StrategicMapCallbackRecord::AppendPackedColorDword||382|function|undefined AppendPackedColorDwordToMaskBuffers()|
-4d4dd0|StrategicMapOpcodeByteStretch::OverStretch||80|function|void __thiscall OverStretch(unsigned int requestedCount)|
-4d4e40|StrategicMapOpcodeByteStretch::operator[]||102|function|unsigned char * __thiscall operator[](unsigned int index)|
-4d4ed0|StrategicMapCursorStretch::OverStretch||94|function|void __thiscall OverStretch(unsigned int requestedCount)|
-4d4f50|StrategicMapCursorStretch::operator[]||117|function|int * __thiscall operator[](unsigned int index)|
+4d4dd0|stretch<unsigned char>::OverStretch|?OverStretch@?$stretch@E@@QAEXI@Z|80|function|void __thiscall OverStretch(unsigned int requestedCount)|template
+4d4e40|stretch<unsigned char>::operator[]||102|function|unsigned char * __thiscall operator[](unsigned int index)|template
+4d4ed0|stretch<int>::OverStretch||94|function|void __thiscall OverStretch(unsigned int requestedCount)|template
+4d4f50|stretch<int>::operator[]||117|function|int * __thiscall operator[](unsigned int index)|template
 4d4ff0|StrategicMapCallbackRecord::ApplyBitmapMaskToPixelBuffer||123|function|void __thiscall ApplyBitmapMaskToPixelBuffer(unsigned char * destinationPixels)|
 4d5090|StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows||996|function|void __thiscall BuildBitmapMaskOpcodeBufferFromResourceRows(int resourceId, short width, short height, int destinationRowStride, unsigned char transparentPixel)|
 4d5580|StrategicMapCallbackRecord::AppendOpcodeByte||110|function|void __thiscall AppendOpcodeByte(int value)|
 4d5610|StrategicMapCallbackRecord::AppendOpcodeBytePair||208|function|void __thiscall AppendOpcodeBytePair(int value)|
 4d5720|StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment||449|function|void __thiscall FinalizeOpcodeBufferAlignment()|
-4d5970|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d5970||32|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d5970()|
+4d5970|stretch<unsigned char>::SetCapacity||32|function|void __thiscall SetCapacity(unsigned int requestedCapacity)|template
 4d59a0|WrapperFor_IsPointInsideHitRegion_At004d59a0||188|function|undefined WrapperFor_IsPointInsideHitRegion_At004d59a0()|
-4d5cf0|StreamOverlayHitMaskToSurfaceDib||45|function|undefined WrapperFor_thunk_BuildDiplomacyOverlayHitMaskOpcodeStream_At004d5cf0()|
-4d5d30|BuildDiplomacyOverlayHitMaskOpcodeStream||1149|function|undefined BuildDiplomacyOverlayHitMaskOpcodeStream()|
-4d62d0|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d62d0||36|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d62d0()|
-4d6310|BuildDiplomacyOverlayHitMaskOpcodeStream_Impl||99|function|undefined BuildDiplomacyOverlayHitMaskOpcodeStream_Impl()|
+4d5cf0|StrategicMapCallbackRecord::StreamOverlayHitMaskToSurfaceDib||45|function|void __thiscall StreamOverlayHitMaskToSurfaceDib(DiplomacyMaskBufferRun * run, TQuickDrawSurfaceContext * surface, int outlineOnly)|
+4d5d30|StrategicMapCallbackRecord::BuildDiplomacyOverlayHitMaskOpcodeStream||1149|function|void __thiscall BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun * run, int destinationRowStride, int outlineOnly, int surfaceHeight)|
+4d62d0|stretch<unsigned char>::Compact||36|function|void __thiscall Compact()|template
+4d6310|DiplomacyMaskBufferRun::IsMaskPixelSet||99|function|bool __thiscall IsMaskPixelSet(int x, int y) const|
 4d64d0|WrapperFor_ftol_At004d64d0||30|function|undefined WrapperFor_ftol_At004d64d0()|
 4d6500|TProvinceDesirabilityList::CreateObject|?CreateObject@TProvinceDesirabilityList@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4d6570|TProvinceDesirabilityList::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
@@ -3421,34 +3421,34 @@ address|name|symbol|size|type|prototype|provenance
 52a670|GetCityRegionIdAtTileIndex||45|function|undefined GetCityRegionIdAtTileIndex()|
 52a6e0|WrapExtendedMapXCoordinateInPlace||48|function|undefined WrapExtendedMapXCoordinateInPlace()|
 52a720|WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052a720||41|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052a720()|
-52a760|SeaSegmentStretch::Add||132|function|undefined AppendSixDwordsToDynamicRecordArray()|
+52a760|stretch<SeaSegment>::Add|?Add@?$stretch@USeaSegment@@@@UAEPAUSeaSegment@@U2@@Z|132|function|SeaSegment * __thiscall Add(SeaSegment value)|template
 52a820|WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052a820||29|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052a820()|
 52ab00|RecomputeOverlaySegmentEndpointsAndAngle||242|function|undefined RecomputeOverlaySegmentEndpointsAndAngle()|
 52b1e0|InitializeOverlaySpanRecordSorted||42|function|undefined InitializeOverlaySpanRecordSorted()|
 52b220|InitializeOverlaySegmentFromTwoMapCoords||345|function|undefined InitializeOverlaySegmentFromTwoMapCoords()|
-52b3e0|ReserveOverlaySpanRecordArray18Capacity||92|function|undefined ReserveOverlaySpanRecordArray18Capacity()|
-52b460|GetOrCreateOverlaySpanRecordArray18Entry||118|function|undefined GetOrCreateOverlaySpanRecordArray18Entry()|
-52b500|DetachAndResetOverlaySpanRecordArray18Buffer||15|function|undefined DetachAndResetOverlaySpanRecordArray18Buffer()|
+52b3e0|stretch<SeaSegment>::OverStretch|?OverStretch@?$stretch@USeaSegment@@@@QAEXI@Z|92|function|void __thiscall OverStretch(unsigned int requestedCount)|template
+52b460|stretch<SeaSegment>::operator[]|??A?$stretch@USeaSegment@@@@QAEAAUSeaSegment@@I@Z|118|function|SeaSegment * __thiscall operator[](unsigned int index)|template
+52b500|stretch<SeaSegment>::Detach||15|function|SeaSegment * __thiscall Detach()|template
 52b9b0|AssignCityRegionIdsFromOverlayScanlineIntersections||1068|function|undefined AssignCityRegionIdsFromOverlayScanlineIntersections()|
 52bef0|ExtractWrappedEndpointFromSpanRecordBySide||196|function|undefined ExtractWrappedEndpointFromSpanRecordBySide()|
 52c000|SelectSpanEndpointXByThreshold||18|function|undefined SelectSpanEndpointXByThreshold()|
-52c030|GetOverlaySpanRecordByIndex||28|function|undefined GetOverlaySpanRecordByIndex()|
+52c030|stretch<SeaSegment>::At||28|function|SeaSegment * __thiscall At(unsigned int index)|template
 52c060|WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060||41|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060()|
-52c0a0|SeapointStretch::Add||147|function|undefined AppendOverlayQuadRecord()|
+52c0a0|stretch<Seapoint>::Add|?Add@?$stretch@USeapoint@@@@UAEPAUSeapoint@@U2@@Z|147|function|Seapoint * __thiscall Add(Seapoint value)|template
 52c170|WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052c170||29|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052c170()|
 52c1a0|BuildCityRegionBorderOverlaySegments||1602|function|undefined BuildCityRegionBorderOverlaySegments()|
 52c990|ConvertTileIndexToOverlayCoord216BySide||77|function|undefined ConvertTileIndexToOverlayCoord216BySide()|
-52ca00|DetachAndResetOverlayQuadRecordArrayBuffer||15|function|undefined DetachAndResetOverlayQuadRecordArrayBuffer()|
+52ca00|stretch<Seapoint>::Detach||15|function|Seapoint * __thiscall Detach()|template
 52ca20|EmitOverlaySegmentFromTileEdgeSorted||132|function|undefined EmitOverlaySegmentFromTileEdgeSorted()|
 52cae0|TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks||1073|function|void __thiscall BuildOverlaySpanRecordsFromQuadBorderLinks()|
 52d030|ComputeWrappedOverlayCoordDeltaMetric||123|function|undefined ComputeWrappedOverlayCoordDeltaMetric()|
-52d0d0|ReserveOverlayQuadRecordArrayCapacity||90|function|undefined ReserveOverlayQuadRecordArrayCapacity()|
-52d150|GetOrCreateOverlayQuadRecordByIndex||115|function|undefined GetOrCreateOverlayQuadRecordByIndex()|
+52d0d0|stretch<Seapoint>::OverStretch|?OverStretch@?$stretch@USeapoint@@@@QAEXI@Z|90|function|void __thiscall OverStretch(unsigned int requestedCount)|template
+52d150|stretch<Seapoint>::operator[]|??A?$stretch@USeapoint@@@@QAEAAUSeapoint@@I@Z|115|function|Seapoint * __thiscall operator[](unsigned int index)|template
 52d1f0|ReindexContiguousCityRegionIds||546|function|undefined ReindexContiguousCityRegionIds()|
 52d4b0|OrphanDeadLeaf_NoRefs_0052d4b0||393|function|undefined OrphanDeadLeaf_NoRefs_0052d4b0()|
 52d6b0|OrphanDeadLeaf_NoRefs_0052d6b0||114|function|undefined OrphanDeadLeaf_NoRefs_0052d6b0()|
 52d750|MergeSmallCityRegionsAndCompactIds||2386|function|undefined MergeSmallCityRegionsAndCompactIds()|
-52e310|ReallocateRouteRecordBufferByCountStride18||38|function|undefined ReallocateRouteRecordBufferByCountStride18()|
+52e310|stretch<SeaSegment>::SetCapacity||38|function|void __thiscall SetCapacity(unsigned int requestedCapacity)|template
 52e350|RebuildUMapperRouteRecordsAndActiveMapRects||881|function|undefined RebuildUMapperRouteRecordsAndActiveMapRects()|
 52e7b0|AllocateRouteNodeStateBufferByCount||104|function|undefined AllocateRouteNodeStateBufferByCount()|
 52e840|TMapMaker::ErrorCheck||52|function|char __thiscall ErrorCheck(void)|
@@ -4202,7 +4202,7 @@ address|name|symbol|size|type|prototype|provenance
 5578a0|TNavyMgr::CarryOutOrders||1102|function|void TNavyMgr::CarryOutOrders()|
 557e10|TNavyMgr::AssignEscorts||140|function|TTaskForce* TNavyMgr::AssignEscorts(short requiredCount, short chancePercent)|
 557f10|TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext||1901|function|char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext( TMapOrderInteractionSelection* outResult, TZone* portZoneContext, short nation, short offerAmount)|
-558860|TZonePrimaryNeighborStretch::EnsureSlotAllocatedAndReturnPointer||117|function|TZone** TZonePrimaryNeighborStretch::EnsureSlotAllocatedAndReturnPointer(unsigned int index)|
+558860|stretch<TZone*>::operator[]||117|function|TZone ** __thiscall operator[](unsigned int index)|template
 558960|TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes||3485|function|void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode)|
 559a70|GetMapContextActionCode||260|function|int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags)|
 559dd0|TNavyMgr::ActionCursor||29|function|unsigned short TNavyMgr::ActionCursor(short nTileIndex, int nInputFlags)|
@@ -4261,8 +4261,8 @@ address|name|symbol|size|type|prototype|provenance
 55e8c0|TZone::HasZoneActiveChildCount||12|function|undefined HasZoneActiveChildCount()|
 55e8e0|TZonePrimaryNeighborStretch::Add||167|function|TZone** __thiscall Add(TZone* zone)|
 55e9c0|TZoneSecondaryNeighborStretch::Add||167|function|Province** __thiscall Add(Province* entry)|
-55ead0|TZonePrimaryNeighborStretch::Append||124|function|void __thiscall Append(TZone* zone)|
-55eba0|TZoneSecondaryNeighborStretch::Append||124|function|void __thiscall Append(Province* entry)|
+55ead0|stretch<TZone*>::Add|?Add@?$stretch@PAVTZone@@@@UAEPAPAVTZone@@PAV2@@Z|124|function|TZone ** __thiscall Add(TZone * zone)|template
+55eba0|stretch<Province*>::Add|?Add@?$stretch@PAUProvince@@@@UAEPAPAUProvince@@PAU2@@Z|124|function|Province ** __thiscall Add(Province * entry)|template
 55ec60|TZone::Free||65|function|undefined RemoveZoneFromGlobalListAndRelease()|
 55ed20|TZone::ReadFrom||564|function|undefined DeserializeZoneFromBinaryStream()|
 55eff0|TZone::WriteTo||88|function|undefined SerializeZoneToBinaryStream()|
@@ -4277,7 +4277,7 @@ address|name|symbol|size|type|prototype|provenance
 55f540|IsZoneMaskOrArrayEntryPresentForKey||84|function|undefined IsZoneMaskOrArrayEntryPresentForKey()|
 55f5c0|GenerateZoneStatusCodeIfUnset||340|function|undefined GenerateZoneStatusCodeIfUnset()|
 55f780|TZone::GenerateMapActionContextDisplayNameAndHeadline||678|function|undefined GenerateMapActionContextDisplayNameAndHeadline()|
-55fae0|ResizePointerArrayCapacityByRequestedCount||94|function|undefined ResizePointerArrayCapacityByRequestedCount()|
+55fae0|stretch<Province*>::OverStretch||94|function|void __thiscall OverStretch(unsigned int requestedCount)|template
 55fb60|TZone::SetMapActionContextTargetTileAndRefreshMarkers||162|function|undefined SetMapActionContextTargetTileAndRefreshMarkers()|
 55fc40|InputState::HandleKeyDown||426|function|void __thiscall HandleKeyDown(int key_id)|
 55fe60|TZone::FindNearestActiveSeaContextTileFromOffset216||100|function|undefined FindNearestActiveSeaContextTileFromOffset216()|
@@ -4295,7 +4295,7 @@ address|name|symbol|size|type|prototype|provenance
 560e70|TZone::SelectBestPrimaryNeighborForNationDiplomacyMask||197|function|undefined SelectBestPrimaryNeighborForNationDiplomacyMask()|
 560f80|TScatteredShipsMission::PropagateMapActionContextDistanceLevelsRecursive||230|function|undefined PropagateMapActionContextDistanceLevelsRecursive()|
 5610b0|TScatteredShipsMission::GetCachedMapActionContextDistanceOrRecompute||455|function|undefined GetCachedMapActionContextDistanceOrRecompute()|
-561300|ResizePointerArrayCapacityByRequestedCountAlt||94|function|undefined ResizePointerArrayCapacityByRequestedCountAlt()|
+561300|stretch<TZone*>::OverStretch||94|function|void __thiscall OverStretch(unsigned int requestedCount)|template
 561400|BuildNationBitmaskForActiveType3Or4OrdersIncludingNation||97|function|undefined BuildNationBitmaskForActiveType3Or4OrdersIncludingNation()|
 561490|BuildNationBitmaskForActiveType3Or4Orders||84|function|undefined BuildNationBitmaskForActiveType3Or4Orders()|
 561510|HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask||159|function|undefined HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask()|
@@ -4841,7 +4841,7 @@ address|name|symbol|size|type|prototype|provenance
 57fef0|scanBracketExpressions||286|function|void __cdecl scanBracketExpressions(void * ctx, void * out_or_state, const char * input_str, ...)|
 580060|BuildUiMessageTextFromBracketTemplate||424|function|undefined BuildUiMessageTextFromBracketTemplate()|
 580280|AppendInterNationEventSummaryTextEntry_Impl||335|function|undefined AppendInterNationEventSummaryTextEntry_Impl()|
-580460|TSimMgr::AppendByteToResizableBuffer||109|function|undefined AppendByteToResizableBuffer()|
+580460|stretch<char>::Add|?Add@?$stretch@D@@UAEPADD@Z|109|function|char * __thiscall Add(char value)|template
 5804f0|ExpandBracketMappedStringToSinkCallback||489|function|undefined ExpandBracketMappedStringToSinkCallback()|
 580760|TSimMgr::LoadUiStringByCodeGroupAndOffset||32|function|undefined LoadUiStringByCodeGroupAndOffset(short param_1, short param_2, undefined4 param_3)|
 580790|TSimMgr::DiplomacyNoticeString||2082|function|class CString __thiscall DiplomacyNoticeString(struct DiplomacyNotice const * notice)|

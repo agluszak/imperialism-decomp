@@ -316,21 +316,7 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
           if (nation->diplomacyEligibilityA0 != 0 && g_pSimMgr->difficultyLevel == 0) {
             TCity* cityForPort = (nation != 0) ? nation->city : 0;
             TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort);
-            if (portZone->PrimaryZoneHeapCapacity() == 0) {
-              void* grownArray = realloc(portZone->PrimaryZoneHeapData(), 8);
-              if (grownArray == 0) {
-                portZone->PrimaryZoneHeapData() =
-                    static_cast<TZone**>(realloc(portZone->PrimaryZoneHeapData(), 4));
-                portZone->PrimaryZoneHeapCapacity() = 1;
-              } else {
-                portZone->PrimaryZoneHeapData() = static_cast<TZone**>(grownArray);
-                portZone->PrimaryZoneHeapCapacity() = 2;
-              }
-            }
-            if (portZone->PrimaryZoneHeapSize() == 0) {
-              portZone->PrimaryZoneHeapSize() = 1;
-            }
-            CreateNavyPrimaryOrderNodeAndAssignDisplayName(3, portZone->PrimaryZoneHeapData()[0],
+            CreateNavyPrimaryOrderNodeAndAssignDisplayName(3, portZone->primaryNeighbors[0],
                                                            this->nationSlot, 0);
           }
         }

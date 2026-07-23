@@ -1,5 +1,3 @@
-#include <stdlib.h>
-
 #include "game/TMacViewMgr.h"
 #include "game/map_overlay_geometry.h"
 
@@ -187,7 +185,7 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
   int generatedBaseOffset = 0;
 
   opcodeAppendCursor10 = 0;
-  opcodeBytes00.Count() = 0;
+  opcodeBytes00.RemoveAll();
   opcodeAlignmentOffset14 = 0;
   hadTrailingPadding18 = 0;
 
@@ -227,28 +225,8 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
 // FUNCTION: IMPERIALISM 0x004d5580
 StrategicMapCallbackRecord* StrategicMapCallbackRecord::AppendOpcodeByte(int value) {
   unsigned int index = static_cast<unsigned int>(opcodeAppendCursor10);
-  int newCount = index + 1;
-  opcodeAppendCursor10 = newCount;
-  if (index >= static_cast<unsigned int>(opcodeBytes00.Capacity())) {
-    unsigned int grownCapacity = static_cast<unsigned int>(newCount) * 2;
-    unsigned int clampedCapacity = grownCapacity;
-    if (0x7fffffff < grownCapacity) {
-      clampedCapacity = 0x7fffffff;
-    }
-    unsigned char* grown =
-        static_cast<unsigned char*>(realloc(opcodeBytes00.Data(), grownCapacity));
-    if (grown == 0) {
-      opcodeBytes00.Data() = static_cast<unsigned char*>(realloc(opcodeBytes00.Data(), newCount));
-      opcodeBytes00.Capacity() = newCount;
-    } else {
-      opcodeBytes00.Data() = grown;
-      opcodeBytes00.Capacity() = clampedCapacity;
-    }
-  }
-  if (index >= static_cast<unsigned int>(opcodeBytes00.Count())) {
-    opcodeBytes00.Count() = newCount;
-  }
-  opcodeBytes00.Data()[index] = static_cast<unsigned char>(value);
+  opcodeAppendCursor10 = static_cast<int>(index) + 1;
+  opcodeBytes00[index] = static_cast<unsigned char>(value);
   return this;
 }
 
@@ -260,15 +238,23 @@ void StrategicMapCallbackRecord::AppendOpcodeBytePair(int value) {
 
 // FUNCTION: IMPERIALISM 0x004d5720
 void StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment() {
-  opcodeBytes00[opcodeAlignmentOffset14];
-  opcodeAlignmentOffset14 =
-      reinterpret_cast<unsigned int>(opcodeBytes00.Data() + opcodeAlignmentOffset14) & 3;
+  unsigned char* alignmentProbe = &opcodeBytes00[opcodeAlignmentOffset14];
+  opcodeAlignmentOffset14 = reinterpret_cast<unsigned int>(alignmentProbe) & 3;
   if (opcodeAlignmentOffset14 != 0) {
     opcodeBytes00.Add(0);
     opcodeBytes00.Add(0);
     opcodeBytes00.Add(0);
+    opcodeBytes00.Compact();
+    alignmentProbe = &opcodeBytes00[opcodeAlignmentOffset14];
+    opcodeAlignmentOffset14 = reinterpret_cast<unsigned int>(alignmentProbe) & 3;
   }
+
   if (opcodeAlignmentOffset14 != 0) {
+    int payloadByteCount = opcodeBytes00.GetSize() - 3;
+    for (int sourceIndex = 0; sourceIndex < payloadByteCount; ++sourceIndex) {
+      unsigned char value = opcodeBytes00[sourceIndex];
+      opcodeBytes00[sourceIndex + opcodeAlignmentOffset14] = value;
+    }
     hadTrailingPadding18 = 1;
   }
 }

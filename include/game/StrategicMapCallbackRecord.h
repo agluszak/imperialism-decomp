@@ -4,29 +4,17 @@
 #include "game/mfc.h"
 #include "game/stretch.h"
 
-struct StrategicMapOpcodeByteStretchTag {};
+struct DiplomacyMaskBufferRun;
+struct TQuickDrawSurfaceContext;
 
 // The original one-slot stretch vtables contain Add only; destruction is statically dispatched
 // as part of StrategicMapCallbackRecord's member teardown.
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 // VTABLE: IMPERIALISM 0x006404a4
-class StrategicMapOpcodeByteStretch
-    : public stretch<unsigned char, StrategicMapOpcodeByteStretchTag> {
-public:
-  unsigned char* Add(unsigned char value) override;
-  void OverStretch(unsigned int requestedCount);
-  unsigned char& operator[](unsigned int index);
-};
-
-struct StrategicMapCursorStretchTag {};
+class StrategicMapOpcodeByteStretch : public stretch<unsigned char> {};
 
 // VTABLE: IMPERIALISM 0x006404a8
-class StrategicMapCursorStretch : public stretch<int, StrategicMapCursorStretchTag> {
-public:
-  int* Add(int value) override;
-  void OverStretch(unsigned int requestedCount);
-  int& operator[](unsigned int index);
-};
+class StrategicMapCursorStretch : public stretch<int> {};
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
 ASSERT_SIZE(StrategicMapOpcodeByteStretch, 0x10);
@@ -37,6 +25,11 @@ struct StrategicMapCallbackRecord {
   ~StrategicMapCallbackRecord();
 
   void AppendPackedColorDword(unsigned char* destinationPixels, int packedColor);
+  void StreamOverlayHitMaskToSurfaceDib(DiplomacyMaskBufferRun* run,
+                                        TQuickDrawSurfaceContext* surface, int outlineOnly);
+  void BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* run,
+                                                int destinationRowStride, int outlineOnly,
+                                                int surfaceHeight);
   StrategicMapCallbackRecord* AppendOpcodeByte(int value); // returns this (original mov eax,esi)
   void AppendOpcodeBytePair(int value);
   void FinalizeOpcodeBufferAlignment();

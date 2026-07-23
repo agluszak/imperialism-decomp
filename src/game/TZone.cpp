@@ -67,33 +67,8 @@ void* TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
   return destObject;
 }
 
-// FUNCTION: IMPERIALISM 0x00558860
-TZone** TZonePrimaryNeighborStretch::EnsureSlotAllocatedAndReturnPointer(unsigned int index) {
-  // Grow-on-access. The capacity-doubling realloc block is the same stretch growth
-  // primitive as EnsureCapacityAtLeast (0x561300); the original compiler inlined it
-  // here (while keeping the standalone copy for that function's other callers), so it
-  // is reproduced inline rather than called to match the emitted code. Then bump count
-  // to cover the slot and return a pointer to it.
-  if (static_cast<unsigned int>(Capacity()) <= index) {
-    int wanted = static_cast<int>(index) + 1;
-    unsigned int doubledCapacity = static_cast<unsigned int>(wanted * 2);
-    if (doubledCapacity > 0x7fffffffU) {
-      doubledCapacity = 0x7fffffffU;
-    }
-    void* grownBuffer = realloc(Data(), wanted * 8);
-    if (grownBuffer == 0) {
-      Data() = static_cast<TZone**>(realloc(Data(), wanted * 4));
-      Capacity() = wanted;
-    } else {
-      Data() = static_cast<TZone**>(grownBuffer);
-      Capacity() = static_cast<int>(doubledCapacity);
-    }
-  }
-  if (static_cast<unsigned int>(Count()) <= index) {
-    Count() = static_cast<int>(index) + 1;
-  }
-  return Data() + index;
-}
+// TEMPLATE: IMPERIALISM 0x00558860
+// stretch::operator[]
 // SYNTHETIC: IMPERIALISM 0x0055e660
 // TZone::CreateObject
 
@@ -155,107 +130,27 @@ bool TZone::HasZoneActiveChildCount(int unused) {
 
 // FUNCTION: IMPERIALISM 0x0055e8e0
 TZone** TZonePrimaryNeighborStretch::Add(TZone* zone) {
-  int count = Count();
-  for (int index = 0; index < count; ++index) {
-    if (Data()[index] == zone) {
-      return &Data()[index];
-    }
+  TZone** existing = FindEntry(zone);
+  if (existing != 0) {
+    return existing;
   }
-  if (count >= Capacity()) {
-    unsigned int doubledCapacity = static_cast<unsigned int>((count + 1) * 2);
-    if (doubledCapacity > 0x7fffffffU) {
-      doubledCapacity = 0x7fffffffU;
-    }
-    void* grownBuffer = realloc(Data(), (count + 1) * 8);
-    if (grownBuffer == 0) {
-      Data() = static_cast<TZone**>(realloc(Data(), (count + 1) * 4));
-      Capacity() = count + 1;
-    } else {
-      Data() = static_cast<TZone**>(grownBuffer);
-      Capacity() = static_cast<int>(doubledCapacity);
-    }
-  }
-  if (Count() <= count) {
-    Count() = count + 1;
-  }
-  Data()[count] = zone;
-  return &Data()[count];
+  return stretch<TZone*>::Add(zone);
 }
 
 // FUNCTION: IMPERIALISM 0x0055e9c0
 Province** TZoneSecondaryNeighborStretch::Add(Province* entry) {
-  int count = Count();
-  for (int index = 0; index < count; ++index) {
-    if (Data()[index] == entry) {
-      return &Data()[index];
-    }
+  Province** existing = FindEntry(entry);
+  if (existing != 0) {
+    return existing;
   }
-  if (count >= Capacity()) {
-    unsigned int doubledCapacity = static_cast<unsigned int>((count + 1) * 2);
-    if (doubledCapacity > 0x7fffffffU) {
-      doubledCapacity = 0x7fffffffU;
-    }
-    void* grownBuffer = realloc(Data(), (count + 1) * 8);
-    if (grownBuffer == 0) {
-      Data() = static_cast<Province**>(realloc(Data(), (count + 1) * 4));
-      Capacity() = count + 1;
-    } else {
-      Data() = static_cast<Province**>(grownBuffer);
-      Capacity() = static_cast<int>(doubledCapacity);
-    }
-  }
-  if (Count() <= count) {
-    Count() = count + 1;
-  }
-  Data()[count] = entry;
-  return &Data()[count];
+  return stretch<Province*>::Add(entry);
 }
 
-// FUNCTION: IMPERIALISM 0x0055ead0
-void TZonePrimaryNeighborStretch::Append(TZone* zone) {
-  int index = Count();
-  if (index >= Capacity()) {
-    unsigned int doubledCapacity = static_cast<unsigned int>((index + 1) * 2);
-    if (doubledCapacity > 0x7fffffffU) {
-      doubledCapacity = 0x7fffffffU;
-    }
-    void* grownBuffer = realloc(Data(), (index + 1) * 8);
-    if (grownBuffer == 0) {
-      Data() = static_cast<TZone**>(realloc(Data(), (index + 1) * 4));
-      Capacity() = index + 1;
-    } else {
-      Data() = static_cast<TZone**>(grownBuffer);
-      Capacity() = static_cast<int>(doubledCapacity);
-    }
-  }
-  if (Count() <= index) {
-    Count() = index + 1;
-  }
-  Data()[index] = zone;
-}
+// TEMPLATE: IMPERIALISM 0x0055ead0
+// ?Add@?$stretch@PAVTZone@@@@UAEPAPAVTZone@@PAV2@@Z
 
-// FUNCTION: IMPERIALISM 0x0055eba0
-void TZoneSecondaryNeighborStretch::Append(Province* entry) {
-  int index = Count();
-  if (index >= Capacity()) {
-    unsigned int doubledCapacity = static_cast<unsigned int>((index + 1) * 2);
-    if (doubledCapacity > 0x7fffffffU) {
-      doubledCapacity = 0x7fffffffU;
-    }
-    void* grownBuffer = realloc(Data(), (index + 1) * 8);
-    if (grownBuffer == 0) {
-      Data() = static_cast<Province**>(realloc(Data(), (index + 1) * 4));
-      Capacity() = index + 1;
-    } else {
-      Data() = static_cast<Province**>(grownBuffer);
-      Capacity() = static_cast<int>(doubledCapacity);
-    }
-  }
-  if (Count() <= index) {
-    Count() = index + 1;
-  }
-  Data()[index] = entry;
-}
+// TEMPLATE: IMPERIALISM 0x0055eba0
+// ?Add@?$stretch@PAUProvince@@@@UAEPAPAUProvince@@PAU2@@Z
 
 // FUNCTION: IMPERIALISM 0x0055ec60
 void TZone::Free() {
@@ -291,18 +186,10 @@ void TZone::ReadFrom(TStream* stream) {
   distanceLevel44 = 0;
 
   if (primaryNeighbors.Data() != 0) {
-    void* oldData = primaryNeighbors.Data();
-    primaryNeighbors.Data() = 0;
-    primaryNeighbors.Capacity() = 0;
-    primaryNeighbors.Count() = 0;
-    FreeStretchEntries(oldData);
+    FreeStretchEntries(primaryNeighbors.Detach());
   }
   if (secondaryNeighbors.Data() != 0) {
-    void* oldData = secondaryNeighbors.Data();
-    secondaryNeighbors.Data() = 0;
-    secondaryNeighbors.Capacity() = 0;
-    secondaryNeighbors.Count() = 0;
-    FreeStretchEntries(oldData);
+    FreeStretchEntries(secondaryNeighbors.Detach());
   }
 
   // Pre-0xd save format stored the neighbor arrays directly; current saves rebuild them
@@ -313,13 +200,7 @@ void TZone::ReadFrom(TStream* stream) {
     for (short i = 0; i < primaryCount; ++i) {
       TZone* entry;
       stream->ReadBytes(&entry, 4);
-      if (i >= primaryNeighbors.Capacity()) {
-        primaryNeighbors.EnsureCapacityAtLeast(i + 1);
-      }
-      if (primaryNeighbors.Count() <= i) {
-        primaryNeighbors.Count() = i + 1;
-      }
-      primaryNeighbors.Data()[i] = entry;
+      primaryNeighbors[static_cast<unsigned int>(i)] = entry;
     }
 
     short secondaryCount;
@@ -327,13 +208,7 @@ void TZone::ReadFrom(TStream* stream) {
     for (short j = 0; j < secondaryCount; ++j) {
       Province* entry;
       stream->ReadBytes(&entry, 4);
-      if (j >= secondaryNeighbors.Capacity()) {
-        secondaryNeighbors.ResizePointerArrayCapacityByRequestedCount(j + 1);
-      }
-      if (secondaryNeighbors.Count() <= j) {
-        secondaryNeighbors.Count() = j + 1;
-      }
-      secondaryNeighbors.Data()[j] = entry;
+      secondaryNeighbors[static_cast<unsigned int>(j)] = entry;
     }
   }
 }
@@ -482,42 +357,13 @@ void TZone::GenerateZoneStatusCodeIfUnset() {
   } else {
     category = static_cast<short>(primaryNeighbors.Count());
     if (category == 2) {
-      // Materialize the primary-neighbor storage to hold at least 2 entries, growing
-      // its raw block (realloc-to-double, fall back to exact) exactly as the original.
-      // The original calls the cdecl allocator directly, so cast at the callsite.
-      if (static_cast<unsigned int>(primaryNeighbors.Capacity()) < 2) {
-        void* grown = realloc(primaryNeighbors.Data(), 0x10);
-        if (grown == 0) {
-          primaryNeighbors.Data() = static_cast<TZone**>(realloc(primaryNeighbors.Data(), 8));
-          primaryNeighbors.Capacity() = 2;
-        } else {
-          primaryNeighbors.Data() = static_cast<TZone**>(grown);
-          primaryNeighbors.Capacity() = 4;
-        }
-      }
-      if (static_cast<unsigned int>(primaryNeighbors.Count()) < 2) {
-        primaryNeighbors.Count() = 2;
-      }
-      if (primaryNeighbors.Capacity() == 0) {
-        void* grown = realloc(primaryNeighbors.Data(), 8);
-        if (grown == 0) {
-          primaryNeighbors.Data() = static_cast<TZone**>(realloc(primaryNeighbors.Data(), 4));
-          primaryNeighbors.Capacity() = 1;
-        } else {
-          primaryNeighbors.Data() = static_cast<TZone**>(grown);
-          primaryNeighbors.Capacity() = 2;
-        }
-      }
-      if (primaryNeighbors.Count() == 0) {
-        primaryNeighbors.Count() = 1;
-      }
       // Is the second primary neighbor also a primary neighbor of the first? If so the
       // two share an edge and the context sits inside a cluster (category 1).
-      TZone* neighbor0 = primaryNeighbors.Data()[0];
+      TZone* neighbor0 = primaryNeighbors[0];
       unsigned int neighborCount = static_cast<unsigned int>(neighbor0->primaryNeighbors.Count());
       if (neighborCount != 0) {
         TZone** scan = neighbor0->primaryNeighbors.Data();
-        TZone* target = primaryNeighbors.Data()[1];
+        TZone* target = primaryNeighbors[1];
         unsigned int i = 0;
         do {
           if (*scan == target) {
@@ -558,13 +404,7 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
       g_zoneStatusCodePrngSeed_006a5aec = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35 + 1;
       unsigned int pick = (g_zoneStatusCodePrngSeed_006a5aec >> 0xc & 0x7fff) %
                           static_cast<unsigned int>(secondaryNeighbors.Count());
-      if (static_cast<unsigned int>(secondaryNeighbors.Capacity()) <= pick) {
-        secondaryNeighbors.ResizePointerArrayCapacityByRequestedCount(pick + 1);
-      }
-      if (static_cast<unsigned int>(secondaryNeighbors.Count()) <= pick) {
-        secondaryNeighbors.Count() = pick + 1;
-      }
-      Province* cityRecord = secondaryNeighbors.Data()[pick];
+      Province* cityRecord = secondaryNeighbors[pick];
       short tile = cityRecord->linkedTileIndices42[0];
       chosenCity = g_pGlobalMapState->terrainStateTable[tile].cityRecordIndex;
       if (usedCity[chosenCity] == '\0') {
@@ -613,21 +453,8 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
   displayName = expanded;
 }
 
-// FUNCTION: IMPERIALISM 0x0055fae0
-void TZoneSecondaryNeighborStretch::ResizePointerArrayCapacityByRequestedCount(int count) {
-  unsigned int doubled = static_cast<unsigned int>(count * 2);
-  if (doubled > 0x7fffffff) {
-    doubled = 0x7fffffff;
-  }
-  void* grown = realloc(Data(), count * 8);
-  if (grown == 0) {
-    Data() = static_cast<Province**>(realloc(Data(), count * 4));
-    Capacity() = count;
-    return;
-  }
-  Data() = static_cast<Province**>(grown);
-  Capacity() = static_cast<int>(doubled);
-}
+// TEMPLATE: IMPERIALISM 0x0055fae0
+// stretch::OverStretch
 
 // FUNCTION: IMPERIALISM 0x0055fb60
 void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex) {
@@ -1056,11 +883,7 @@ void TZone::PropagateMapActionContextDistanceLevelsRecursive(short level) {
   if (level < distanceLevel44) {
     distanceLevel44 = level;
     for (int i = primaryNeighbors.Count() - 1; i >= 0; --i) {
-      primaryNeighbors.EnsureCapacityAtLeast(i + 1);
-      if (primaryNeighbors.Count() <= i) {
-        primaryNeighbors.Count() = i + 1;
-      }
-      TZone* neighbor = primaryNeighbors.GetAt(i);
+      TZone* neighbor = primaryNeighbors[static_cast<unsigned int>(i)];
       neighbor->PropagateMapActionContextDistanceLevelsRecursive(static_cast<short>(level + 1));
     }
   }
@@ -1096,11 +919,7 @@ short TZone::GetCachedMapActionContextDistanceOrRecompute(TZone* other) {
     if (distanceLevel44 > 0) {
       distanceLevel44 = 0;
       for (int i = primaryNeighbors.Count() - 1; i >= 0; --i) {
-        primaryNeighbors.EnsureCapacityAtLeast(i + 1);
-        if (primaryNeighbors.Count() <= i) {
-          primaryNeighbors.Count() = i + 1;
-        }
-        TZone* neighbor = primaryNeighbors.GetAt(i);
+        TZone* neighbor = primaryNeighbors[static_cast<unsigned int>(i)];
         neighbor->PropagateMapActionContextDistanceLevelsRecursive(1);
       }
     }
@@ -1122,21 +941,8 @@ short TZone::GetCachedMapActionContextDistanceOrRecompute(TZone* other) {
   return static_cast<unsigned char>(cachedDistance);
 }
 
-// FUNCTION: IMPERIALISM 0x00561300
-void TZonePrimaryNeighborStretch::EnsureCapacityAtLeast(int count) {
-  unsigned int doubledCapacity = static_cast<unsigned int>(count * 2);
-  if (doubledCapacity > 0x7fffffffU) {
-    doubledCapacity = 0x7fffffffU;
-  }
-  void* grownBuffer = realloc(Data(), count * 8);
-  if (grownBuffer == 0) {
-    Data() = static_cast<TZone**>(realloc(Data(), count * 4));
-    Capacity() = count;
-  } else {
-    Data() = static_cast<TZone**>(grownBuffer);
-    Capacity() = static_cast<int>(doubledCapacity);
-  }
-}
+// TEMPLATE: IMPERIALISM 0x00561300
+// stretch::OverStretch
 
 // FUNCTION: IMPERIALISM 0x00561400
 unsigned int TZone::BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(unsigned char nation) {

@@ -1042,7 +1042,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
     bool contextMatch = shipOrders == 6 && entry->target.asZone == portZoneContext;
     bool activeContextMatch = false;
     if (shipOrders == 3) {
-      TZone** slot = portZoneContext->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
+      TZone** slot = &portZoneContext->primaryNeighbors[0];
       activeContextMatch = (entry->location == *slot);
     }
 

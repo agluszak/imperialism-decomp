@@ -84,7 +84,7 @@ inline int HexNeighborInline(int tileIndex, int direction) {
 inline void AppendBorderQuad(int tileIndex, int regionA, int regionB, int sideCode) {
   Seapoint sp;
   sp.InitSorted(ConvertTileIndexToOverlayCoord216BySide(tileIndex, 1), regionA, regionB, sideCode);
-  stretch<Seapoint, SeapointTag>* quad = &g_seapointQuadTable_006a3478;
+  stretch<Seapoint>* quad = &g_seapointQuadTable_006a3478;
   quad->Add(sp);
 }
 
