@@ -1609,15 +1609,7 @@
       "nodes": [
         "Diplo.rsrc:2008@0x0048"
       ],
-      "original_modules": [
-        {
-          "functions": [
-            "0x004f3ea0"
-          ],
-          "module": "UDiplomacyViews.cpp",
-          "status": "confirmed"
-        }
-      ],
+      "original_modules": [],
       "parent_classes": {
         "TView": 1
       },
@@ -11094,7 +11086,6 @@
       "original_modules": [
         {
           "classes": [
-            "TDiplomacyMapView",
             "TOffersPanelView"
           ],
           "events": [
@@ -175815,7 +175806,6 @@
       "original_modules": [
         {
           "classes": [
-            "TDiplomacyMapView",
             "TOffersPanelView"
           ],
           "module": "UDiplomacyViews.cpp",
@@ -180010,6 +180000,25 @@
         "owner_class": "TPlaceCityDialog",
         "recovered_source": "src/game/TPlaceCityDialog.cpp"
       },
+      "0x004d6310": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UDiplomacyViews.cpp",
+                "symbol": "s_SourcePathUDiplomacyViews_00696AE0"
+              }
+            ],
+            "module": "UDiplomacyViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "DiplomacyMaskBufferRun::IsMaskPixelSet",
+        "owner_class": "DiplomacyMaskBufferRun",
+        "recovered_source": "src/game/TDiplomacyMapView.cpp"
+      },
       "0x004db7d0": {
         "modules": [
           {
@@ -180121,25 +180130,6 @@
         "name": "TMinisterView::HandleMouseUp",
         "owner_class": "TMinisterView",
         "recovered_source": "src/game/TMinisterView.cpp"
-      },
-      "0x004f3ea0": {
-        "modules": [
-          {
-            "evidence": [
-              {
-                "definition_source": "src/game/global_data_tables.cpp",
-                "kind": "source_path_global_reference",
-                "path": "D:\\Ambit\\Cross\\UDiplomacyViews.cpp",
-                "symbol": "s_SourcePathUDiplomacyViews_00696AE0"
-              }
-            ],
-            "module": "UDiplomacyViews.cpp",
-            "status": "confirmed"
-          }
-        ],
-        "name": "TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks",
-        "owner_class": "TDiplomacyMapView",
-        "recovered_source": "src/game/TDiplomacyMapView.cpp"
       },
       "0x004f9a60": {
         "modules": [
@@ -182002,13 +181992,13 @@
       },
       "UDiplomacyViews.cpp": {
         "classes": [
-          "TDiplomacyMapView",
+          "DiplomacyMaskBufferRun",
           "TMinisterView",
           "TOffersPanelView"
         ],
         "functions": [
+          "0x004d6310",
           "0x004f2d10",
-          "0x004f3ea0",
           "0x004f9a60"
         ]
       },
@@ -182287,7 +182277,7 @@
   "summary": {
     "ambiguous_tags": 153,
     "classes": 162,
-    "classes_with_source_module_evidence": 19,
+    "classes_with_source_module_evidence": 18,
     "declared_classes": 152,
     "factories_with_source_module_candidates": 10,
     "functions_with_source_module_evidence": 124,

@@ -13,44 +13,14 @@ class TStream;
 class TZone;
 class TTaskForce;
 class TAdmiral;
-struct TZonePrimaryNeighborTag;
-struct TZoneSecondaryNeighborTag;
 
 // Mac symbols expose a project-local stretch<T> family. Windows TZone embeds two
 // stretch-like secondary subobjects whose vfptrs point into the TZone vtable group.
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 // VTABLE: IMPERIALISM 0x0065c74c
-class TZonePrimaryNeighborStretch : public stretch<TZone*, TZonePrimaryNeighborTag> {
+class TZonePrimaryNeighborStretch : public stretch<TZone*> {
 public:
-  // Linear scan for `value`; returns the matching slot or null. Mirrors
-  // TZoneSecondaryNeighborStretch::FindEntry (ground truth:
-  // RefreshPortZoneNeighborContextLinksAndFallbacks, 0x00563f50, which pre-checks
-  // membership before calling Add).
-  TZone** FindEntry(TZone* value) {
-    unsigned int count = Count();
-    for (unsigned int index = 0; index < count; ++index) {
-      if (Data()[index] == value) {
-        return &Data()[index];
-      }
-    }
-    return 0;
-  }
-  bool ContainsEntry(TZone* value) {
-    return FindEntry(value) != 0;
-  }
-
   TZone** Add(TZone* zone) override; // 0x55e8e0
-  // Not a vtable slot (see stretch.h); called only on the concrete type.
-  void Append(TZone* zone); // 0x55ead0
-  // Grows `data`/`capacity` to hold at least `count` elements (doubling capacity,
-  // clamped to INT_MAX, with a same-size fallback realloc if the doubled request
-  // fails). Only this one instantiation (primary neighbors) is evidenced; do not
-  // assume TZoneSecondaryNeighborStretch shares the address.
-  void EnsureCapacityAtLeast(int count); // 0x561300
-  // 0x558860. Grow-on-access accessor: ensures `data`/`capacity` can hold `index`
-  // (same doubling/fallback realloc as EnsureCapacityAtLeast), bumps `count` to
-  // cover it, and returns a pointer to the element slot. Called on TZone::primaryNeighbors.
-  TZone** EnsureSlotAllocatedAndReturnPointer(unsigned int index);
 };
 
 // City/province records adjacent to a map-action context. Every reader treats each entry
@@ -59,34 +29,9 @@ public:
 // the PRIMARY stretch at +0x24 in both directions; writing the port into this +0x34 stretch
 // is a receiver-offset error and corrupts the city-record index calculation at 0x0055f23a.
 // VTABLE: IMPERIALISM 0x0065c748
-class TZoneSecondaryNeighborStretch : public stretch<Province*, TZoneSecondaryNeighborTag> {
-public:
-  // Linear scan for `value`; returns the matching slot or null. Always inlined
-  // (ground truth: TOcean::FindMapActionContextContainingNodeByIndex, 0x00564570,
-  // where the index/count comparisons are unsigned and the hit materializes as a
-  // slot pointer). Lives here rather than on stretch<> because MSVC500 eagerly
-  // instantiates template members for element types without operator==.
-  Province** FindEntry(Province* value) {
-    unsigned int count = Count();
-    for (unsigned int index = 0; index < count; ++index) {
-      if (Data()[index] == value) {
-        return &Data()[index];
-      }
-    }
-    return 0;
-  }
-  bool ContainsEntry(Province* value) {
-    return FindEntry(value) != 0;
-  }
-
+class TZoneSecondaryNeighborStretch : public stretch<Province*> {
 public:
   Province** Add(Province* entry) override; // 0x55e9c0
-  // Not a vtable slot (see stretch.h); called only on the concrete type. The orig
-  // vtable at 0x0065c748 is confirmed exactly 1 slot long (Add only).
-  void Append(Province* entry); // 0x55eba0
-  // Unconditionally reallocate `data` to hold `count` entries (double-or-exact grow),
-  // updating capacity. 0x55fae0.
-  void ResizePointerArrayCapacityByRequestedCount(int count);
 };
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
@@ -247,16 +192,6 @@ public:
   // `nation` == -1 resolves the active nation. Called by
   // TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh.
   TTaskForce* CreateTaskForceFromNavyOrdersForNationIfEligible(short nation);
-
-  TZone**& PrimaryZoneHeapData() {
-    return primaryNeighbors.Data();
-  }
-  int& PrimaryZoneHeapCapacity() {
-    return primaryNeighbors.Capacity();
-  }
-  int& PrimaryZoneHeapSize() {
-    return primaryNeighbors.Count();
-  }
 };
 
 ASSERT_SIZE(TZonePrimaryNeighborStretch, 0x10);
