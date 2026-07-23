@@ -133,17 +133,52 @@ def find_definition(cls: str) -> tuple[Path, int] | None:
     return None
 
 
+def find_class_public_line(cls: str) -> tuple[Path, int, str] | None:
+    """(header, 0-based index of the first `public:` inside class `cls`, indent).
+
+    Used by --add-missing for classes whose destructor is implicit: an explicit
+    inline ``~C() override {}`` emits the identical COMDAT body the implicit one
+    already does, and gives the FUNCTION marker a declaration to sit on
+    (destructor-placement gate shape ``inline_proven``).
+    """
+    class_re = re.compile(rf"^\s*class\s+{re.escape(cls)}\b[^;]*$")
+    for root in ("include/game", "src/game"):
+        for path in sorted((REPO_ROOT / root).rglob("*.h")):
+            text = path.read_text(errors="replace")
+            if f"class {cls}" not in text:
+                continue
+            lines = text.splitlines()
+            for i, line in enumerate(lines):
+                if not class_re.match(line):
+                    continue
+                for j in range(i, min(i + 40, len(lines))):
+                    stripped = lines[j].strip()
+                    if stripped == "public:":
+                        indent = lines[j][: len(lines[j]) - len(lines[j].lstrip())] + "  "
+                        return path, j, indent
+                    if j > i and stripped.startswith("class "):
+                        break
+                break
+    return None
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--apply", action="store_true", help="edit files (default: dry run)")
     ap.add_argument("--limit", type=int, default=0, help="process at most N classes")
+    ap.add_argument(
+        "--add-missing",
+        action="store_true",
+        help="for classes with no explicit destructor, insert a marked inline "
+        "`~C() override {}` declaration after the class's first `public:`",
+    )
     args = ap.parse_args()
 
     pe = Pe(parse_env_binary())
     rows = scalar_dtor_rows()
     claimed = collect_claimed_addresses()
 
-    actions: list[tuple[Path, int, int, str]] = []  # file, line-idx, target, class
+    actions: list[tuple[Path, int, int, str, bool]] = []  # file, line-idx, target, class, decl
     report: dict[str, list[str]] = {}
     seen_targets: dict[int, str] = {}
 
@@ -163,34 +198,51 @@ def main() -> int:
             )
             continue
         found = find_definition(cls)
+        insert_decl = False
         if found is None:
-            report.setdefault("no_definition", []).append(f"{cls} dtor=0x{target:08x}")
-            continue
+            if args.add_missing:
+                pub = find_class_public_line(cls)
+                if pub is None:
+                    report.setdefault("no_definition", []).append(f"{cls} dtor=0x{target:08x}")
+                    continue
+                found = (pub[0], pub[1] + 1)  # insert right after `public:`
+                insert_decl = True
+            else:
+                report.setdefault("no_definition", []).append(f"{cls} dtor=0x{target:08x}")
+                continue
         path, idx = found
         lines = path.read_text(errors="replace").splitlines()
-        if idx > 0 and MARKER_RE.search(lines[idx - 1]):
+        if not insert_decl and idx > 0 and MARKER_RE.search(lines[idx - 1]):
             report.setdefault("marker_conflict", []).append(
                 f"{cls} {path.relative_to(REPO_ROOT)}:{idx + 1} already has a marker above"
             )
             continue
         seen_targets[target] = cls
-        actions.append((path, idx, target, cls))
+        actions.append((path, idx, target, cls, insert_decl))
 
     # Apply per file, bottom-up so earlier indices stay valid.
-    by_file: dict[Path, list[tuple[int, int, str]]] = {}
-    for path, idx, target, cls in actions:
-        by_file.setdefault(path, []).append((idx, target, cls))
+    by_file: dict[Path, list[tuple[int, int, str, bool]]] = {}
+    for path, idx, target, cls, insert_decl in actions:
+        by_file.setdefault(path, []).append((idx, target, cls, insert_decl))
 
     for path, edits in sorted(by_file.items()):
-        for idx, target, cls in sorted(edits, reverse=True):
+        for idx, target, cls, insert_decl in sorted(edits, reverse=True):
             lines = path.read_text(errors="replace").splitlines(keepends=True)
-            def_line = lines[idx]
-            indent = def_line[: len(def_line) - len(def_line.lstrip())]
-            marker = f"{indent}// FUNCTION: IMPERIALISM 0x{target:08x}\n"
+            if insert_decl:
+                indent = lines[idx - 1][: len(lines[idx - 1]) - len(lines[idx - 1].lstrip())] + "  "
+                new_lines = [
+                    f"{indent}// FUNCTION: IMPERIALISM 0x{target:08x}\n",
+                    f"{indent}~{cls}() override {{}}\n",
+                ]
+            else:
+                def_line = lines[idx]
+                indent = def_line[: len(def_line) - len(def_line.lstrip())]
+                new_lines = [f"{indent}// FUNCTION: IMPERIALISM 0x{target:08x}\n"]
+            kind = "decl+marker" if insert_decl else "marker"
             print(f"{'APPLY' if args.apply else 'DRY  '} {path.relative_to(REPO_ROOT)}:{idx + 1} "
-                  f"{cls} -> 0x{target:08x}")
+                  f"{cls} -> 0x{target:08x} [{kind}]")
             if args.apply:
-                lines.insert(idx, marker)
+                lines[idx:idx] = new_lines
                 path.write_text("".join(lines))
 
     print(f"\n{len(actions)} marker(s) {'applied' if args.apply else 'planned'} "

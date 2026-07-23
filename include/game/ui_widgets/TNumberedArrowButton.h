@@ -8,6 +8,8 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x667678
 class TNumberedArrowButton : public TControl {
 public:
+  // FUNCTION: IMPERIALISM 0x0058c310
+  ~TNumberedArrowButton() override {}
   short value84;
   short value86;
 

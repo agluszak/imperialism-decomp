@@ -16,6 +16,8 @@ struct GameSetup;
 // VTABLE: IMPERIALISM 0x006461f0
 class TC2TemplateDialog : public TModalDialogBase {
 public:
+  // FUNCTION: IMPERIALISM 0x0047d0c0
+  ~TC2TemplateDialog() override {}
   TC2TemplateDialog(void* initParam); // 0x0047cfd0
 
   CSliderCtrl slider; // +0x74
@@ -35,6 +37,8 @@ ASSERT_SIZE(TC2TemplateDialog, 0xec);
 // VTABLE: IMPERIALISM 0x00646300
 class TD2TemplateDialog : public TModalDialogBase {
 public:
+  // FUNCTION: IMPERIALISM 0x0047d280
+  ~TD2TemplateDialog() override {}
   TD2TemplateDialog(void* initParam); // 0x0047d1c0
 
   CListBox listbox; // +0x74
@@ -52,6 +56,8 @@ ASSERT_SIZE(TD2TemplateDialog, 0xb0);
 // VTABLE: IMPERIALISM 0x00646410
 class TDBTemplateDialog : public TModalDialogBase {
 public:
+  // FUNCTION: IMPERIALISM 0x00413ed0
+  ~TDBTemplateDialog() override {}
   TDBTemplateDialog(void* initParam); // 0x0047d360
 
   CSliderCtrl slider; // +0x74
@@ -69,6 +75,8 @@ ASSERT_SIZE(TDBTemplateDialog, 0xb0);
 // VTABLE: IMPERIALISM 0x00646520
 class TDCTemplateDialog : public TModalDialogBase {
 public:
+  // FUNCTION: IMPERIALISM 0x00414070
+  ~TDCTemplateDialog() override {}
   TDCTemplateDialog(void* initParam); // 0x0047d470
 
   unsigned int value74; // +0x74 — DDX_Text edit value (validated 0..999)
@@ -87,6 +95,8 @@ ASSERT_SIZE(TDCTemplateDialog, 0x78);
 // VTABLE: IMPERIALISM 0x00646630
 class TDETemplateDialog : public TModalDialogBase {
 public:
+  // FUNCTION: IMPERIALISM 0x00414320
+  ~TDETemplateDialog() override {}
   TDETemplateDialog(void* initParam); // 0x0047dba0
 
   CSliderCtrl slider;                  // +0x74
@@ -109,6 +119,8 @@ ASSERT_SIZE(TDETemplateDialog, 0xb8);
 // VTABLE: IMPERIALISM 0x00646740
 class TDFTemplateDialog : public CDialog {
 public:
+  // FUNCTION: IMPERIALISM 0x004145d0
+  ~TDFTemplateDialog() override {}
   TDFTemplateDialog(void* initParam); // 0x0047dce0
 
   int editValue5c; // 0x5c — DDX_Text control 0x421
@@ -133,6 +145,8 @@ ASSERT_SIZE(TDFTemplateDialog, 0x74);
 // VTABLE: IMPERIALISM 0x00646848
 class TFATemplateDialog : public TModalDialogBase {
 public:
+  // FUNCTION: IMPERIALISM 0x0047df00
+  ~TFATemplateDialog() override {}
   TFATemplateDialog(void* initParam); // 0x0047de40
 
   CListBox listbox; // +0x74
@@ -150,6 +164,8 @@ ASSERT_SIZE(TFATemplateDialog, 0xb0);
 // VTABLE: IMPERIALISM 0x00646d68
 class TADTemplateDialog : public TModalDialogBase {
 public:
+  // FUNCTION: IMPERIALISM 0x0047f510
+  ~TADTemplateDialog() override {}
   TADTemplateDialog(void* initParam); // 0x0047f450
 
   CListBox listbox; // +0x74
@@ -168,6 +184,8 @@ ASSERT_SIZE(TADTemplateDialog, 0xb0);
 // VTABLE: IMPERIALISM 0x00646ea0
 class T104TemplateDialog : public TModalDialogBase {
 public:
+  // FUNCTION: IMPERIALISM 0x00480790
+  ~T104TemplateDialog() override {}
   T104TemplateDialog(void* initParam); // 0x00480a10
 
   CListBox listbox; // +0x74
@@ -185,6 +203,8 @@ ASSERT_SIZE(T104TemplateDialog, 0xb0);
 // VTABLE: IMPERIALISM 0x00647740
 class TA7TemplateDialog : public CDialog {
 public:
+  // FUNCTION: IMPERIALISM 0x00481830
+  ~TA7TemplateDialog() override {}
   TA7TemplateDialog(void* initParam); // 0x00481770
 
   CString text5c; // +0x5c — DDX_Text control 0x3fc
@@ -202,6 +222,8 @@ ASSERT_SIZE(TA7TemplateDialog, 0x60);
 // VTABLE: IMPERIALISM 0x00647b60
 class TABTemplateDialog : public CDialog {
 public:
+  // FUNCTION: IMPERIALISM 0x00481c20
+  ~TABTemplateDialog() override {}
   TABTemplateDialog(void* initParam); // 0x00481b30
 
   CString text5c; // +0x5c — DDX_Text control 0x3fd
@@ -220,6 +242,8 @@ ASSERT_SIZE(TABTemplateDialog, 0x64);
 // VTABLE: IMPERIALISM 0x00647d70
 class TAETemplateDialog : public CDialog {
 public:
+  // FUNCTION: IMPERIALISM 0x00481eb0
+  ~TAETemplateDialog() override {}
   TAETemplateDialog(void* initParam); // 0x00481dc0
 
   CString text5c; // +0x5c — DDX_Text control 0x400
@@ -238,6 +262,8 @@ ASSERT_SIZE(TAETemplateDialog, 0x64);
 // VTABLE: IMPERIALISM 0x00647f80
 class TB1TemplateDialog : public CDialog {
 public:
+  // FUNCTION: IMPERIALISM 0x00482110
+  ~TB1TemplateDialog() override {}
   TB1TemplateDialog(void* initParam); // 0x00482050
 
   CString text5c; // +0x5c — DDX_Text control 0x403
@@ -285,6 +311,8 @@ ASSERT_SIZE(TDDTemplateDialog, 0x94);
 // VTABLE: IMPERIALISM 0x0063e498
 class T64TemplateDialog : public CDialog {
 public:
+  // FUNCTION: IMPERIALISM 0x004136a0
+  ~T64TemplateDialog() override {}
   T64TemplateDialog() : CDialog(0x64) {}
 
   unsigned char scratch5c[0x74 - 0x5c]; // 0x5c-0x74 — template scratch written by the ctor
@@ -304,6 +332,8 @@ ASSERT_SIZE(T64TemplateDialog, 0x74);
 // VTABLE: IMPERIALISM 0x0064bac0
 class TD0TemplateDialog : public CDialog {
 public:
+  // FUNCTION: IMPERIALISM 0x0049baf0
+  ~TD0TemplateDialog() override {}
   TD0TemplateDialog(void* initParam); // 0x0049bcd0
 
   CListBox listbox; // +0x5c
@@ -357,6 +387,8 @@ void ShowBlockingWaitOverlayDialog(void); // 0x00498cc0
 // VTABLE: IMPERIALISM 0x00647428
 class TA1TemplateDialog : public CDialog {
 public:
+  // FUNCTION: IMPERIALISM 0x004814b0
+  ~TA1TemplateDialog() override {}
   TA1TemplateDialog(void* initParam);        // 0x004813a0
   void SetGameSetupValues(GameSetup* setup); // 0x004821d0
 

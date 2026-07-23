@@ -6,6 +6,8 @@
 // VTABLE: IMPERIALISM 0x663540
 class TSidewaysArrow : public TUpDownPictureButton {
 public:
+  // FUNCTION: IMPERIALISM 0x00583bb0
+  ~TSidewaysArrow() override {}
   DECLARE_DYNCREATE(TSidewaysArrow) // GetRuntimeClass slot 0x00 0x583b30
   TSidewaysArrow();
   int repeatDeadlineTick; // 0x94

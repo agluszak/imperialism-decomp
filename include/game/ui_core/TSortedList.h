@@ -17,6 +17,8 @@ typedef short(__cdecl* TSortedListCompareFunc)(void* a, void* b, void* context);
 // VTABLE: IMPERIALISM 0x00648ee0
 class TSortedList : public TObject {
 public:
+  // FUNCTION: IMPERIALISM 0x00488920
+  ~TSortedList() override {}
   DECLARE_DYNCREATE(TSortedList)
 
   void WriteTo(TStream* stream) override;

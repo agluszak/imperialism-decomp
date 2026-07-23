@@ -24,6 +24,8 @@ public:
 // VTABLE: IMPERIALISM 0x0066f5d8
 class TLowDiskWarningDialog : public TModalTemplateDialog {
 public:
+  // FUNCTION: IMPERIALISM 0x00415b70
+  ~TLowDiskWarningDialog() override {}
   explicit TLowDiskWarningDialog(void* initParam = nullptr); // 0x005e1bc0
   void SetPromptText(LPCSTR text);
 

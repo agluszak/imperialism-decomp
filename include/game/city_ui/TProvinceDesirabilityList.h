@@ -7,6 +7,8 @@
 // VTABLE: IMPERIALISM 0x00653810
 class TProvinceDesirabilityList : public TSortedPtrList {
 public:
+  // FUNCTION: IMPERIALISM 0x004d65f0
+  ~TProvinceDesirabilityList() override {}
   DECLARE_DYNCREATE(TProvinceDesirabilityList)
 
   TProvinceDesirabilityList();

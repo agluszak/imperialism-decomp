@@ -10,6 +10,8 @@ class TView;
 class TFocusAnimation : public TAnimation {
   DECLARE_DYNCREATE(TFocusAnimation)
 public:
+  // FUNCTION: IMPERIALISM 0x004a0080
+  ~TFocusAnimation() override {}
   TFocusAnimation();
   virtual void Tick() override;                       // slot 10 / 0x28 0x4a0140
   virtual void DrawNextFrame(POINT* offset) override; // slot 11 / 0x2c 0x4a0250
