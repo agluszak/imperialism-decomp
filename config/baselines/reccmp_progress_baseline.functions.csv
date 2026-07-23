@@ -2441,7 +2441,8 @@ address|matching|name
 0x4e3660|0.4444444444444444|TMinor::CreateObject
 0x4e36f0|1.0|TMinor::GetRuntimeClass
 0x4e3710|0.3333333333333333|TMinor::TMinor
-0x4e3790|0.9090909090909091|TMinor::`scalar deleting destructor'
+0x4e3790|1.0|TMinor::`scalar deleting destructor'
+0x4e37c0|0.9767441860465116|TMinor
 0x4e3830|0.9526627218934911|TMinor::InitializeSecondaryNationStateAndSelectHomeTile
 0x4e41c0|0.5615384615384615|TMinor::ReadFrom
 0x4e4390|0.81875|TMinor::WriteTo
@@ -5030,7 +5031,7 @@ address|matching|name
 0x591580|1.0|TArmyInfoView::GetRuntimeClass
 0x5915a0|1.0|TArmyInfoView::TArmyInfoView
 0x5915d0|0.9090909090909091|TArmyInfoView::`scalar deleting destructor'
-0x591620|0.004739336492890996|TArmyInfoView::IsSelected
+0x591620|0.004750593824228029|TArmyInfoView::PopulateFriendlyArmyReportContent
 0x591d90|0.5517241379310345|TTransportPicture::CreateObject
 0x591e50|1.0|TTransportPicture::GetRuntimeClass
 0x591e70|0.8333333333333334|TTransportPicture::TTransportPicture
@@ -5968,7 +5969,7 @@ address|matching|name
 0x5ddd20|0.835820895522388|TViewMgr::ShowCivilianLedgerDialogAndSelectUnit
 0x5de010|0.7357512953367875|TViewMgr::MakePlanetSeedDialog
 0x5de4f0|1.0|TViewMgr::ShowCivilianReportDialogAndReturnConfirm
-0x5de5d0|0.03225806451612903|TViewMgr::DispatchProvinceOrderOverlayConfirmDialog
+0x5de5d0|1.0|TViewMgr::DispatchProvinceOrderOverlayConfirmDialog
 0x5de8f0|1.0|TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView
 0x5de990|1.0|TViewMgr::ShowLocalizedUiPromptByGroupAndIndex
 0x5dea60|1.0|TViewMgr::CreateModalMessageCommandAndQueue

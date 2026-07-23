@@ -1,4 +1,5 @@
 #include "game/TViewMgr.h"
+#include "game/TArmyInfoView.h"
 #include "game/TC2TemplateDialog.h"
 #include "game/TEventHandler.h"
 
@@ -2548,14 +2549,24 @@ bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrder
 // FUNCTION: IMPERIALISM 0x005de5d0
 bool TViewMgr::DispatchProvinceOrderOverlayConfirmDialog(short cityRecordIndex,
                                                          int* categoryCounts) {
-  // TODO: port body @ 0x5de5d0 (181 bytes). The dialog-node resolve/SetField84(1)/
-  // ResolveControlByTag('DLOG') prefix mirrors MakePlanetSeedDialog (0x5de010), but the
-  // 'DLOG' control's own slot-0x1cc dispatch (the actual message-formatting call that
-  // forwards cityRecordIndex/categoryCounts) needs a class not yet recovered. Stubbed
-  // to the conservative "not confirmed" default.
-  (void)cityRecordIndex;
-  (void)categoryCounts;
-  return false;
+  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xc1c));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x2e1);
+  }
+  node->ShowTurnEventDialog(1);
+  // MapView.rsrc view 3100's 'DLOG' pict is a TArmyInfoView (Mac resource oracle).
+  TArmyInfoView* report =
+      static_cast<TArmyInfoView*>(static_cast<TView*>(node->ResolveControlByTag(0x444c4f47)));
+  report->PopulateFriendlyArmyReportContent(cityRecordIndex, categoryCounts);
+  POINT placement;
+  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  unsigned int resultTag = node->RefreshTurnEventDialog();
+  node->Close();
+  node->Free();
+  return resultTag == 0x6f6b6179;
 }
 
 // FUNCTION: IMPERIALISM 0x005de8f0

@@ -1,7 +1,6 @@
 #include "game/TArmyInfoView.h"
 #include "game/mfc.h"
 
-
 // SYNTHETIC: IMPERIALISM 0x00591500
 // TArmyInfoView::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00591580
@@ -19,8 +18,7 @@ TArmyInfoView::TArmyInfoView() : TPicture() {}
 TArmyInfoView::~TArmyInfoView() {}
 
 // FUNCTION: IMPERIALISM 0x00591620
-bool TArmyInfoView::IsSelected(short value, bool refreshNow) {
-  (void)value;
-  (void)refreshNow;
-  return false;
+void TArmyInfoView::PopulateFriendlyArmyReportContent(short cityRecordIndex, int* categoryCounts) {
+  (void)cityRecordIndex;
+  (void)categoryCounts;
 }
