@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/tactical/TNavyPlayer.h"
 #include "game/mfc.h"
 
@@ -13,3 +15,4 @@ public:
 
   TNavyAutoPlayer();
 };
+ASSERT_SIZE(TNavyAutoPlayer, 0x30);

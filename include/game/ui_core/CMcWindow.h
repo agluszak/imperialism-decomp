@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/mfc.h"
 
 class TWindow;
@@ -72,3 +74,4 @@ public:
 
   DECLARE_MESSAGE_MAP()
 };
+ASSERT_SIZE(CMcWindow, 0x40);

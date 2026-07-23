@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TNoHilitePicture.h"
 #include "game/mfc.h"
 
@@ -13,3 +15,4 @@ public:
 
   TTownNameDialog();
 };
+ASSERT_SIZE(TTownNameDialog, 0x94);

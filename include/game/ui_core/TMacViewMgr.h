@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TObject.h"
 #include "game/gfx/quickdraw_regions.h"
 #include "game/city_ui/StrategicMapCallbackRecord.h"
@@ -121,5 +123,6 @@ public:
   void BuildStrategicMapTileOverlayStripSurfaces800To807();
   void ReloadBitmap244AndRefreshUiCaches();
 };
+ASSERT_SIZE(TMacViewMgr, 0xd84);
 
 // g_pStrategicMapViewSystem — see game/global_data_tables.h.

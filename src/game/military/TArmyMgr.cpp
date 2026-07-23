@@ -1156,12 +1156,12 @@ bool TArmyMgr::HasEligibleStationedUnitInRegion(short regionId) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a45e0
-void TArmyMgr::SetActiveProvinceSelection(short tileIndex) {
-  this->pendingMapActionIndex = tileIndex;
-  if (tileIndex != -1) {
+void TArmyMgr::SetActiveProvinceSelection(short cityRecordIndex) {
+  this->pendingMapActionIndex = cityRecordIndex;
+  if (cityRecordIndex != -1) {
     TMilitaryUnit* unit;
-    if (tileIndex >= 0 && tileIndex < 0x180) {
-      unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain98;
+    if (cityRecordIndex >= 0 && cityRecordIndex < 0x180) {
+      unit = g_pGlobalMapState->cityScoreTable[cityRecordIndex].stationedUnitChain98;
     } else {
       unit = nullptr;
     }
@@ -1174,7 +1174,7 @@ void TArmyMgr::SetActiveProvinceSelection(short tileIndex) {
     }
     TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
     static_cast<TArmyToolbar*>(mapView->categoryPages[mapView->activeUnitCategoryIndex96])
-        ->SetProvince(tileIndex);
+        ->SetProvince(cityRecordIndex);
   }
   g_pUiRuntimeContext->mapUberPictureF0->InvalidateMap();
 }

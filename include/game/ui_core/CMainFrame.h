@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/gfx/CDib.h"
 #include "game/gfx/CDibPal.h"
 #include "game/mfc.h"
@@ -67,3 +69,4 @@ public:
   // Original object size is 0xd0 (CRuntimeClass m_nObjectSize); the source class ended at 0xcc. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
   int fieldcc;
 };
+ASSERT_SIZE(CMainFrame, 0xd0);

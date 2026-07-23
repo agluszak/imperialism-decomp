@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/gfx/TDialogView.h"
 #include "game/mfc.h"
 
@@ -13,3 +15,4 @@ public:
 
   TRelationshipDialog();
 };
+ASSERT_SIZE(TRelationshipDialog, 0x60);

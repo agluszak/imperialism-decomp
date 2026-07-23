@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TNoHilitePicture.h"
 
 struct TQuickDrawSurfaceContext;
@@ -22,3 +24,4 @@ public:
   // the picture resource and from Free(), proving the concrete pointer type.
   TQuickDrawSurfaceContext* colorKeySurface94;
 };
+ASSERT_SIZE(TColorKeyPicture, 0x98);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TView.h"
 #include "game/mfc.h"
 
@@ -21,3 +23,4 @@ public:
   short categorySlot60;
   short nationSlot62;
 };
+ASSERT_SIZE(TTradeOfferNationView, 0x64);

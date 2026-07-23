@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/tactical/TTacticalBattleView.h"
 #include "game/ui_tags_common.h"
 #include "game/mfc.h"
@@ -28,3 +30,4 @@ public:
   // 0x5a9d90, __thiscall, ret 8.
   void InitializeBattlefieldView(int compositionClass, class TArmyBattle* battle);
 };
+ASSERT_SIZE(TTacArmyView, 0xdc);

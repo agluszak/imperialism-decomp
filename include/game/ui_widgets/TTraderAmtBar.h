@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_widgets/TAmtBar.h"
 
 struct CRuntimeClass;
@@ -17,3 +19,4 @@ public:
 
   void UpdateFromScaleOrRatio(int scaleValue, int ratioValue);
 };
+ASSERT_SIZE(TTraderAmtBar, 0x68);

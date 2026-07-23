@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/gfx/TDialogView.h"
 #include "game/mfc.h"
 
@@ -13,3 +15,4 @@ public:
 
   TGameSetupDialog();
 };
+ASSERT_SIZE(TGameSetupDialog, 0x60);

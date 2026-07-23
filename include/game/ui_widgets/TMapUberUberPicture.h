@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TOffLimitsPicture.h"
 #include "game/map_domain_types.h"
 #include "game/mfc.h"
@@ -15,3 +17,4 @@ public:
 
   TMapUberUberPicture();
 };
+ASSERT_SIZE(TMapUberUberPicture, 0x94);

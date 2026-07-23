@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TLineData.h"
 #include "game/battle_report_records.h"
 #include "game/mfc.h"
@@ -17,3 +19,4 @@ public:
   BattleRecord* battleRecord10;
   BattleReportDetailRecord* battleDetail14;
 };
+ASSERT_SIZE(TBatRepDetLine, 0x18);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TStaticText.h"
 #include "game/mfc.h"
 
@@ -12,3 +14,4 @@ public:
 
   TSelectoText();
 };
+ASSERT_SIZE(TSelectoText, 0x94);

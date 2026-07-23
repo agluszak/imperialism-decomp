@@ -59,3 +59,4 @@ public:
   // saves, with a hardcoded legacy value for formats older than 0x2a).
   int languagePackId50;
 };
+ASSERT_SIZE(TAmbitApplication, 0x54);

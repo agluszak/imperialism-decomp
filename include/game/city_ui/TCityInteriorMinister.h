@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/city_ui/TInteriorMinister.h"
 
 class TCity;
@@ -173,3 +175,4 @@ public:
     return orderMetricTable40[60];
   }
 };
+ASSERT_SIZE(TCityInteriorMinister, 0x1c4);

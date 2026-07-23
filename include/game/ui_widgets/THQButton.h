@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TPicture.h"
 
 extern "C" int g_vtblTHQButton;
@@ -26,3 +28,4 @@ public:
 
   THQButton();
 };
+ASSERT_SIZE(THQButton, 0x9c);

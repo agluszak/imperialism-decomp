@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "decomp_types.h"
 #include "game/ui_screens/CString.h"
 #include "game/nation_domain_types.h"
@@ -545,3 +547,4 @@ public:
     return city;
   }
 };
+ASSERT_SIZE(TGreatPower, 0x964);

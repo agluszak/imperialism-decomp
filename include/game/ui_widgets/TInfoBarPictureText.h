@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_widgets/TInfoBarText.h"
 #include "game/mfc.h"
 
@@ -14,3 +16,4 @@ public:
 
   TInfoBarPictureText();
 };
+ASSERT_SIZE(TInfoBarPictureText, 0xb4);

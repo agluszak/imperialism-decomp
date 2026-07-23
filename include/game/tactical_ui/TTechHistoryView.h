@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TView.h"
 #include "game/mfc.h"
 
@@ -14,3 +16,4 @@ public:
   // Non-virtual (real address 0x5b22c0, called directly, not through the vtable).
   void PopulateTechHistory(short techId);
 };
+ASSERT_SIZE(TTechHistoryView, 0x60);

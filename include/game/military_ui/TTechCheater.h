@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/military_ui/TCheater.h"
 #include "game/mfc.h"
 
@@ -12,3 +14,4 @@ public:
 
   TTechCheater();
 };
+ASSERT_SIZE(TTechCheater, 0x64);

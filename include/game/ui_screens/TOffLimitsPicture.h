@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/gfx/quickdraw_regions.h"
 #include "game/ui_core/TPicture.h"
 #include "game/mfc.h"
@@ -23,3 +25,4 @@ public:
 
   TOffLimitsPicture();
 };
+ASSERT_SIZE(TOffLimitsPicture, 0x94);

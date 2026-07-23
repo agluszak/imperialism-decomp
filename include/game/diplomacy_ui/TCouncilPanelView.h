@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TPanelView.h"
 #include "game/mfc.h"
 
@@ -12,3 +14,4 @@ public:
 
   TCouncilPanelView();
 };
+ASSERT_SIZE(TCouncilPanelView, 0x64);

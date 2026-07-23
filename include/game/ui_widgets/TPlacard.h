@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TPicture.h"
 
 extern "C" int g_vtblTPlacard;
@@ -18,3 +20,4 @@ public:
   void Draw(RECT* rectBuffer) override;
   virtual bool SetValue(short value = -1, bool refreshNow = true);
 };
+ASSERT_SIZE(TPlacard, 0x94);

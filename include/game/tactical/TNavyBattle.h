@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/tactical/TTacticalBattle.h"
 #include "game/mfc.h"
 
@@ -32,6 +34,7 @@ public:
   int moveCostRotationStart78;
   int neighborMoveCostByDirection7c[6];
 };
+ASSERT_SIZE(TNavyBattle, 0x94);
 
 // 0x5a59a0: tileIndex -> (row = tileIndex/0x1d, doubled column = (row&1) + (tileIndex%0x1d)*2)
 // for the 29-wide tactical hex grid. Genuine __stdcall free function (pure arithmetic).

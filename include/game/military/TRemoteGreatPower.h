@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/nation/TGreatPower.h"
 #include "game/mfc.h"
 
@@ -33,3 +35,4 @@ public:
 
   TRemoteGreatPower() : TGreatPower() {}
 };
+ASSERT_SIZE(TRemoteGreatPower, 0x964);

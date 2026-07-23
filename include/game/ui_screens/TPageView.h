@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TView.h"
 #include "game/mfc.h"
 
@@ -31,3 +33,4 @@ public:
 
   TPageView();
 };
+ASSERT_SIZE(TPageView, 0x84);

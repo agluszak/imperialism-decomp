@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/nation/TGreatPower.h"
 #include "game/mfc.h"
 
@@ -32,3 +34,4 @@ public:
 
   TProxyGreatPower() : TGreatPower() {}
 };
+ASSERT_SIZE(TProxyGreatPower, 0x964);

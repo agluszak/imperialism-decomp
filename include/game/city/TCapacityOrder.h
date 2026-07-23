@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/city/TItemOrder.h"
 
 struct CRuntimeClass;
@@ -37,3 +39,4 @@ public:
   // shared too); requestedQuantity4c/primaryInputResourceId/secondaryInputResourceId/
   // productionSlot are TItemOrder's own fields -- use the inherited names directly.
 };
+ASSERT_SIZE(TCapacityOrder, 0x54);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TControl.h"
 #include "game/mfc.h"
 
@@ -26,3 +28,4 @@ public:
 
   TDealTabControl();
 };
+ASSERT_SIZE(TDealTabControl, 0x94);

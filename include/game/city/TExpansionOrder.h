@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/city/TItemOrder.h"
 #include "game/mfc.h"
 
@@ -19,6 +21,7 @@ public:
 
   TExpansionOrder();
 };
+ASSERT_SIZE(TExpansionOrder, 0x54);
 
 // 0x4b9340: swaps the first two bytes of the buffer (byte-order swap helper).
 void SwapFirstTwoBytesInBuffer(unsigned char* buffer);

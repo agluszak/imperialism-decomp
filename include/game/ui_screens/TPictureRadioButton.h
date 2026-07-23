@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TToggleButton.h"
 #include "game/mfc.h"
 
@@ -16,3 +18,4 @@ public:
 
   TPictureRadioButton();
 };
+ASSERT_SIZE(TPictureRadioButton, 0x90);

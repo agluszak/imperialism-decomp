@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TBehavior.h"
 #include "game/mfc.h"
 
@@ -19,3 +21,4 @@ public:
 
   TDropShadowTextBehavior();
 };
+ASSERT_SIZE(TDropShadowTextBehavior, 0x14);

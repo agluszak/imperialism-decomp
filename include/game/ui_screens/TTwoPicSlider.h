@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TControl.h"
 #include "game/mfc.h"
 
@@ -27,3 +29,4 @@ public:
 
   void InitializePictureSurfaces(int baseBitmapId); // 0x0056e200
 };
+ASSERT_SIZE(TTwoPicSlider, 0x98);

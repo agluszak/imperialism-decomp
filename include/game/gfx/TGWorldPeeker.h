@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TView.h"
 #include "game/mfc.h"
 
@@ -18,3 +20,4 @@ public:
   // (source and destination rect are the same RECT).
   TQuickDrawSurfaceContext* field60;
 };
+ASSERT_SIZE(TGWorldPeeker, 0x64);

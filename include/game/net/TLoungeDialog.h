@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TNoHilitePicture.h"
 #include "game/multiplayer_session_tags.h"
 #include "game/ui_tags_common.h"
@@ -29,3 +31,4 @@ public:
 
   int selectedNationSlot; // 0x94, initialized to -1 after the lounge controls are bound
 };
+ASSERT_SIZE(TLoungeDialog, 0x98);

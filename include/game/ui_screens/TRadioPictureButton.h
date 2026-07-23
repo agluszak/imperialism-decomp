@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TUpDownPictureButton.h"
 
 // VTABLE: IMPERIALISM 0x0065f670
@@ -17,3 +19,4 @@ public:
 
   TRadioPictureButton();
 };
+ASSERT_SIZE(TRadioPictureButton, 0x98);

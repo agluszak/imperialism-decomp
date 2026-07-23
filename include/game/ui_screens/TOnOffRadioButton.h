@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TPictureButton.h"
 #include "game/mfc.h"
 
@@ -24,6 +26,7 @@ public:
   // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x94. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
   int field94;
 };
+ASSERT_SIZE(TOnOffRadioButton, 0x98);
 
 #if defined(__clang__)
 #pragma clang diagnostic pop

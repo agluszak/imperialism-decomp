@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TUpDownPictureButton.h"
 #include "game/mfc.h"
 
@@ -35,6 +37,7 @@ public:
   unsigned char isOn94;
   unsigned char padding95[3];
 };
+ASSERT_SIZE(TCzechBox, 0x98);
 
 #if defined(__clang__)
 #pragma clang diagnostic pop

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TCommand.h"
 #include "game/mfc.h"
 
@@ -14,3 +16,4 @@ public:
   // store); defined in-class so `new TNewGameCommand()` reproduces that shape.
   TNewGameCommand() : TCommand() {}
 };
+ASSERT_SIZE(TNewGameCommand, 0x18);

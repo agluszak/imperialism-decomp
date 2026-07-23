@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TPicture.h"
 #include "game/mfc.h"
 
@@ -16,3 +18,4 @@ public:
 
   TCreditsPicture();
 };
+ASSERT_SIZE(TCreditsPicture, 0x90);

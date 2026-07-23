@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TStaticText.h"
 #include "game/mfc.h"
 
@@ -11,3 +13,4 @@ public:
 
   TNoHiliteText();
 };
+ASSERT_SIZE(TNoHiliteText, 0x94);

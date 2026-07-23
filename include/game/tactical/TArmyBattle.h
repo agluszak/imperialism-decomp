@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/tactical/TTacticalBattle.h"
 #include "game/ui_tags_common.h"
 #include "game/mfc.h"
@@ -48,3 +50,4 @@ public:
   // class + fort level. 0x005a4fc0, __thiscall, ret 8.
   void LoadBattleSetupTabDataByIndex(int compositionClass, int fortLevel);
 };
+ASSERT_SIZE(TArmyBattle, 0x78);

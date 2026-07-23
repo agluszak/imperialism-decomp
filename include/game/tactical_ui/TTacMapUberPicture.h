@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_widgets/TMapUberUberPicture.h"
 #include "game/ui_tags_common.h"
 #include "game/mfc.h"
@@ -22,3 +24,4 @@ public:
   // (TTacticalBattleView::Scroll).
   TTacticalBattleView* tacticalBattleView94;
 };
+ASSERT_SIZE(TTacMapUberPicture, 0x98);

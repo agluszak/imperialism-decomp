@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TCluster.h"
 #include "game/mfc.h"
 
@@ -13,3 +15,4 @@ public:
 
   TMapEditCluster();
 };
+ASSERT_SIZE(TMapEditCluster, 0x88);

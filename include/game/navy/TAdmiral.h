@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "decomp_types.h"
 #include "game/mfc.h"
 #include "game/ui_screens/CString.h"
@@ -56,5 +58,6 @@ public:
   short EstimateEnemyForces(short* estimatedCounts, TZone* zone, NationSlot nation) const;
   void GetFleetReport(CString* out, TZone* zone, NationSlot nation) const;
 };
+ASSERT_SIZE(TAdmiral, 0x1c);
 
 CString GetLocalizedNavalReportShipType(short category, char plural);

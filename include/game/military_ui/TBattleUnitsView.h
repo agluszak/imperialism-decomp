@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/navy/TMilitaryPageView.h"
 #include "game/battle_report_records.h"
 
@@ -17,3 +19,4 @@ public:
 
   TQuickDrawSurfaceContext* secondaryUnitAtlas88;
 };
+ASSERT_SIZE(TBattleUnitsView, 0x8c);

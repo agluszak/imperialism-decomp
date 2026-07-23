@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/tactical/TTacticalUnit.h"
 #include "game/mfc.h"
 
@@ -42,3 +44,4 @@ public:
   TNavyTacUnit();
   void InitializeFromSourceShip(TShip* sourceShip); // 0x5a6290
 };
+ASSERT_SIZE(TNavyTacUnit, 0x40);

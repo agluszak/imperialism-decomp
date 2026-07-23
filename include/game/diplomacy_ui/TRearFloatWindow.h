@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TFloatWindow.h"
 
 // VTABLE: IMPERIALISM 0x00655928
@@ -12,3 +14,4 @@ public:
 
   TRearFloatWindow();
 };
+ASSERT_SIZE(TRearFloatWindow, 0xa0);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TControl.h"
 #include "game/ui_tags_screens.h"
 #include "game/mfc.h"
@@ -53,3 +55,4 @@ public:
   // rebuild (Draw): rect = {0, word88, frameWidth34, word8a + 0x12}.
   void RefreshCityDialogScrollableViewportWithQuickDrawContext();
 };
+ASSERT_SIZE(TScrollBarView, 0x94);

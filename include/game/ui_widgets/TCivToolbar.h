@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TCluster.h"
 
 struct CRuntimeClass;
@@ -17,3 +19,4 @@ public:
   void RefreshCivilianCommandPanelForSelection(class TCivUnit* selectedCivilianOrderEntry);
   void RefreshCivilianStackButtonsForTile(short tileIndex);
 };
+ASSERT_SIZE(TCivToolbar, 0x8c);

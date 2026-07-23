@@ -211,3 +211,4 @@ public:
   // definition in TView.cpp.
   virtual ~TView() override;
 };
+ASSERT_SIZE(TView, 0x60);
