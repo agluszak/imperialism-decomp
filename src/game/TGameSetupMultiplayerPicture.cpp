@@ -129,7 +129,8 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
       if (g_pGameFlowState->ValidateAndPrepareGameFlowNameForDispatch()) {
         g_pSimMgr->multiplayerSessionRole = 1;
         g_nSaveFormatVersion = -2;
-        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5de);
+        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+            EncodeTurnEventCode(kTurnEventLoadSave));
       }
     } else if (actionTag == kControlTagJoin) {
       g_bMultiplayerScenarioSetupActive = 0;
@@ -139,7 +140,8 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
       g_pGameFlowState->scenarioSelectionTag = kControlTagRand;
       if (g_pGameFlowState->ValidateAndPrepareGameFlowNameForDispatch()) {
         g_pSimMgr->multiplayerSessionRole = 1;
-        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dd);
+        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+            EncodeTurnEventCode(kTurnEventRandomGameSetup));
       }
     } else if (actionTag == kControlTagMult) {
       g_pGameFlowState->ResetGameFlowStateAndPostTurnEvent5DC();
@@ -147,7 +149,8 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
       g_pGameFlowState->scenarioSelectionTag = 0x73636e30; // 'scn0'
       if (g_pGameFlowState->ValidateAndPrepareGameFlowNameForDispatch()) {
         g_pSimMgr->multiplayerSessionRole = 1;
-        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5df);
+        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+            EncodeTurnEventCode(kTurnEventScenarioGameSetup));
       }
     } else if (actionTag == kControlTagSpit) {
       if (g_pUiViewManager->HasPendingClientSaveFile() &&

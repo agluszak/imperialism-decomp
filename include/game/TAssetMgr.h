@@ -4,6 +4,7 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 #include "game/timer_slots.h"
+#include "game/turn_event_codes.h"
 
 class TView;
 class TMovieView;
@@ -14,7 +15,7 @@ public:
   DECLARE_DYNCREATE(TAssetMgr)
   virtual ~TAssetMgr() override; // slot 0x01 (scalar deleting destructor)
   virtual TView*
-  ResolveTurnEventDialogNodeByMessageContext(int messageContext); // slot 0x0a 0x5df3c0
+  ResolveTurnEventDialogNodeByMessageContext(TurnEventId messageContext); // slot 0x0a 0x5df3c0
   // Retail Mac identities. These are real resource-file lifecycle slots even though
   // the Windows implementations are intentional no-ops.
   virtual void OpenFilesForView(short fileSet); // slot 0x0b 0x5df780

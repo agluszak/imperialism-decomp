@@ -941,7 +941,7 @@ char TGreatPower::HasDeveloper(void) {
 
 // FUNCTION: IMPERIALISM 0x004daf00
 void TGreatPower::SorryYouLose(void) {
-  g_pUiRuntimeContext->DispatchTurnEvent(0x11f8, 0);
+  g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic), 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004daf30
@@ -1523,22 +1523,7 @@ char TGreatPower::CompareMissionScoreVariantsByMode(int mode) {
     TZone* portZoneContext =
         g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(this->nationSlot);
 
-    if (portZoneContext->PrimaryZoneHeapCapacity() <= 0) {
-      void* resizedEntries = realloc(portZoneContext->PrimaryZoneHeapData(), 8);
-      if (resizedEntries == 0) {
-        resizedEntries = realloc(portZoneContext->PrimaryZoneHeapData(), 4);
-        portZoneContext->PrimaryZoneHeapData() = static_cast<TZone**>(resizedEntries);
-        portZoneContext->PrimaryZoneHeapCapacity() = 1;
-      } else {
-        portZoneContext->PrimaryZoneHeapData() = static_cast<TZone**>(resizedEntries);
-        portZoneContext->PrimaryZoneHeapCapacity() = 2;
-      }
-    }
-    if (portZoneContext->PrimaryZoneHeapSize() <= 0) {
-      portZoneContext->PrimaryZoneHeapSize() = 1;
-    }
-
-    TZone* firstEntry = portZoneContext->PrimaryZoneHeapData()[0];
+    TZone* firstEntry = portZoneContext->primaryNeighbors[0];
 
     float exactSourceScore =
         TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(this->nationSlot,
@@ -2293,8 +2278,9 @@ void TGreatPower::AppendTrackedSlotEntry(short kind, int targetNation, short val
   packet.kind = kind;
   packet.targetNation = static_cast<short>(targetNation);
   packet.value = value;
-  if (kind == 1 ||
-      (kind == 0 && g_pDiplomacyTurnStateManager->IsMajorNationSlot(targetNation) == 0)) {
+  if (kind == kTrackedSlotOfferEntry ||
+      (kind == kTrackedSlotAcceptEntry &&
+       g_pDiplomacyTurnStateManager->IsMajorNationSlot(targetNation) == 0)) {
     packet.eligibility = 1;
   } else {
     packet.eligibility = 0;
@@ -3120,7 +3106,8 @@ void TGreatPower::DispatchTurnEvent2103WithNationFromRecord(void) {
     return;
   }
 
-  uiRuntimeContext->DispatchTurnEvent(0x2103, this->nationSlot);
+  uiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventNewspaperStatus),
+                                      this->nationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x004df5f0

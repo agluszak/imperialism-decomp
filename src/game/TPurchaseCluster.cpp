@@ -33,9 +33,9 @@ void TPurchaseCluster::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoin
 void TPurchaseCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
     if (sourceHandler->controlTag == kControlTagLaro) {
-      field88->SetEnable(static_cast<unsigned char>(UpdateCityViewValueControl() - 1));
+      field88->SetEnable(static_cast<char>(UpdateCityViewValueControl() - 1));
     } else if (sourceHandler->controlTag == kControlTagRaro) {
-      field88->SetEnable(static_cast<unsigned char>(UpdateCityViewValueControl() + 1));
+      field88->SetEnable(static_cast<char>(UpdateCityViewValueControl() + 1));
     }
     SetCityViewValueControlAmount(static_cast<short>(field88->field04), 1);
   }

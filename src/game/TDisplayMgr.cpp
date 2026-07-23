@@ -104,14 +104,15 @@ void TDisplayMgr::InitializeWindowAndMBarSize() {
   int width = rectRecord->viewportBounds.right - rectRecord->viewportBounds.left;
   int height = rectRecord->viewportBounds.bottom - rectRecord->viewportBounds.top;
   if (width < 0x281 && height < 0x1e1) {
-    eventCode0e = 0x7d1;
+    eventCode0e = kTurnEventSphereWindow;
   } else {
-    eventCode0e = 0x7d2;
+    eventCode0e = kTurnEventMoveableMainWindow;
   }
 
   SetMenuHeight(0);
 
-  TView* dialogRoot = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(eventCode0e);
+  TView* dialogRoot = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
+      DecodeTurnEventCode(eventCode0e));
   if (dialogRoot == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0xb0);

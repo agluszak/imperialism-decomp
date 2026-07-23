@@ -21,13 +21,7 @@ namespace {
 // for the comparison reads; the metric/build/invalidate sites go through operator[] instead.
 inline Seapoint* QuadEnsureAt(unsigned int index) {
   SeapointStretch& t = g_seapointQuadTable_006a3478;
-  if (index >= static_cast<unsigned int>(t.Capacity())) {
-    t.OverStretch(index + 1);
-  }
-  if (index >= static_cast<unsigned int>(t.Count())) {
-    t.Count() = index + 1;
-  }
-  return t.Data() + index;
+  return &t[index];
 }
 
 } // namespace
@@ -76,15 +70,15 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
               }
               float candidateDist = static_cast<float>(
                   sqrt(static_cast<double>(colDelta * colDelta * rowDelta * rowDelta)));
-              if (quad[bestPrimary]->WrappedDeltaMetric(quad[i]) <= candidateDist) {
+              if (quad[bestPrimary].WrappedDeltaMetric(&quad[i]) <= candidateDist) {
                 goto next;
               }
             }
             bestPrimary = j;
           } else if (bestPrimary == 0xffffffff) {
             if (bestSecondary != 0xffffffff) {
-              float candidateDist = static_cast<float>(quad[j]->WrappedDeltaMetric(quad[i]));
-              if (quad[bestSecondary]->WrappedDeltaMetric(quad[i]) <= candidateDist) {
+              float candidateDist = static_cast<float>(quad[j].WrappedDeltaMetric(&quad[i]));
+              if (quad[bestSecondary].WrappedDeltaMetric(&quad[i]) <= candidateDist) {
                 goto next;
               }
             }
@@ -99,20 +93,20 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
       bestPrimary = bestSecondary;
     }
     if (bestPrimary == 0xffffffff) {
-      Seapoint* p = quad[i];
+      Seapoint* p = &quad[i];
       p->coord00 = -1;
       p->hi08 = -1;
       p->lo04 = -1;
     } else {
       SeaSegment tmp;
-      tmp.InitFromPoints(quad[bestPrimary], quad[i]);
-      stretch<SeaSegment, SeaSegmentTag>* out = &seg;
+      tmp.InitFromPoints(&quad[bestPrimary], &quad[i]);
+      stretch<SeaSegment>* out = &seg;
       out->Add(tmp);
-      Seapoint* pi = quad[i];
+      Seapoint* pi = &quad[i];
       pi->coord00 = -1;
       pi->hi08 = -1;
       pi->lo04 = -1;
-      Seapoint* pm = quad[bestPrimary];
+      Seapoint* pm = &quad[bestPrimary];
       pm->coord00 = -1;
       pm->hi08 = -1;
       pm->lo04 = -1;

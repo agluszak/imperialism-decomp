@@ -111,8 +111,9 @@ void TTurnEventDialogFactoryRegistry::RegisterDialogFactoryCallback(
 }
 
 // FUNCTION: IMPERIALISM 0x00491c80
-TView* TTurnEventDialogFactoryRegistry::ResolveDialogNodeByMessageContext(int messageContext,
-                                                                          int contextSlot) {
+TView*
+TTurnEventDialogFactoryRegistry::ResolveDialogNodeByMessageContext(TurnEventId messageContext,
+                                                                   int contextSlot) {
   int anchor[2] = {0, 0};
   return InvokeDialogFactoryFromPacket(contextSlot, nullptr, messageContext, anchor);
 }
@@ -126,16 +127,14 @@ void EnsureTurnEventDialogFactoryRegistryInitialized() {
 }
 
 // FUNCTION: IMPERIALISM 0x00491cc0
-TView* TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode(int nContextId,
-                                                                                TView* pEventPacket,
-                                                                                int nEventCode,
-                                                                                int* pAnchorPoint) {
+TView* TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode(
+    int nContextId, TView* pEventPacket, TurnEventId nEventCode, int* pAnchorPoint) {
   (void)nContextId;
   TView* result = nullptr;
   POSITION pos = factories.GetHeadPosition();
   while (pos != 0) {
     TurnEventDialogFactoryProc factory = factories.GetNext(pos);
-    result = factory(0, nEventCode);
+    result = factory(0, static_cast<int>(nEventCode));
     if (result != nullptr) {
       break;
     }
@@ -159,7 +158,7 @@ TView* TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode(
 // FUNCTION: IMPERIALISM 0x00491d80
 TView* TTurnEventDialogFactoryRegistry::InvokeDialogFactoryFromPacket(int nContextId,
                                                                       TView* pEventPacket,
-                                                                      int nEventCode,
+                                                                      TurnEventId nEventCode,
                                                                       int* pAnchorPoint) {
   const int savedFlag = g_McAppUiActiveFlag_006950AC;
   g_McAppUiActiveFlag_006950AC = 0;

@@ -408,7 +408,8 @@ char TAutoGreatPower::TryDispatchNationActionViaUiContextOrFallback(int targetNa
                                              static_cast<short>(slotIndex));
     return 0;
   }
-  this->AppendTrackedSlotEntry(1, targetNation, 0, static_cast<short>(slotIndex), 0);
+  this->AppendTrackedSlotEntry(kTrackedSlotOfferEntry, targetNation, 0,
+                               static_cast<short>(slotIndex), 0);
   return 0;
 }
 
@@ -694,24 +695,7 @@ void TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates() {
 
   TZone* portZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(this->nationSlot);
 
-  if (portZone->PrimaryZoneHeapCapacity() == 0) {
-    void* resized = realloc(portZone->PrimaryZoneHeapData(), 8);
-    if (resized == 0) {
-      resized = realloc(portZone->PrimaryZoneHeapData(), 4);
-      portZone->PrimaryZoneHeapData() = static_cast<TZone**>(resized);
-      portZone->PrimaryZoneHeapCapacity() = 1;
-    } else {
-      portZone->PrimaryZoneHeapData() = static_cast<TZone**>(resized);
-      portZone->PrimaryZoneHeapCapacity() = 2;
-    }
-  }
-
-  if (portZone->PrimaryZoneHeapSize() == 0) {
-    portZone->PrimaryZoneHeapSize() = 1;
-  }
-
-  TZone** heapData = portZone->PrimaryZoneHeapData();
-  TZone* firstEntry = *heapData;
+  TZone* firstEntry = portZone->primaryNeighbors[0];
 
   short index = firstEntry->GetContextOrdinalOrInvalid();
   this->portZoneStateFlags[index] = 1;
@@ -1300,21 +1284,7 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
   }
   TZone* portZone =
       g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
-  if (portZone->PrimaryZoneHeapCapacity() == 0) {
-    void* grownArray = realloc(portZone->PrimaryZoneHeapData(), 8);
-    if (grownArray == 0) {
-      portZone->PrimaryZoneHeapData() =
-          static_cast<TZone**>(realloc(portZone->PrimaryZoneHeapData(), 4));
-      portZone->PrimaryZoneHeapCapacity() = 1;
-    } else {
-      portZone->PrimaryZoneHeapData() = static_cast<TZone**>(grownArray);
-      portZone->PrimaryZoneHeapCapacity() = 2;
-    }
-  }
-  if (portZone->PrimaryZoneHeapSize() == 0) {
-    portZone->PrimaryZoneHeapSize() = 1;
-  }
-  TZone* firstOrder = portZone->PrimaryZoneHeapData()[0];
+  TZone* firstOrder = portZone->primaryNeighbors[0];
   short portZoneId = g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
   this->portZoneStateFlags[portZoneId] = 1;
   this->CreateMission(kMissionTypeDefendProvince, -1, firstOrder, -1);

@@ -65,7 +65,7 @@ char TEditText::IsEnabled() {
 }
 
 // FUNCTION: IMPERIALISM 0x004906f0
-void TEditText::SetEnable(unsigned char enabled) {
+void TEditText::SetEnable(char enabled) {
   field04 = enabled;
   if (editWindow != nullptr) {
     editWindow->EnableWindow(enabled);

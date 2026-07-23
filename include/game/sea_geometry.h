@@ -19,9 +19,6 @@
 // TMapMaker::SetEnabled/SetState. They are in fact the by-value append virtual (the single
 // vtable slot, modelled here as Add to match the stretch<T> template).
 
-struct SeapointTag;
-struct SeaSegmentTag;
-
 // A 0x10-byte map point / edge record. The two middle dwords are kept sorted (lo <= hi) by
 // InitSorted. The append virtual copies all four dwords by value.
 struct Seapoint {
@@ -70,29 +67,10 @@ struct SeaSegment {
 // because it overlaps TMapMaker's vtable data region — the append is paired by its own
 // // FUNCTION: address marker instead.
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
-class SeapointStretch : public stretch<Seapoint, SeapointTag> {
-public:
-  // The single vtable slot: append `value` at the end, growing on demand. 0x0052c0a0.
-  Seapoint* Add(Seapoint value) override;
-  // Non-virtual helpers (paired by address marker, called on the concrete type).
-  void OverStretch(unsigned int newCount);  // 0x0052d0d0
-  Seapoint* operator[](unsigned int index); // 0x0052d150
-  void* Detach();                           // 0x0052ca00
-};
+class SeapointStretch : public stretch<Seapoint> {};
 
 // The SeaSegment stretch (e.g. the region-border-link table global at 0x006a3900).
-class SeaSegmentStretch : public stretch<SeaSegment, SeaSegmentTag> {
-public:
-  // The single vtable slot: append `value` at the end, growing on demand. 0x0052a760.
-  SeaSegment* Add(SeaSegment value) override;
-  // Non-virtual helpers (paired by address marker, called on the concrete type).
-  void OverStretch(unsigned int newCount);    // 0x0052b3e0
-  SeaSegment* operator[](unsigned int index); // 0x0052b460
-  void* Detach();                             // 0x0052b500
-  // Bounds-checked element pointer (no grow); null if index is out of range. 0x0052c030.
-  SeaSegment* At(unsigned int index);
-  void ReallocExact(int newCount); // 0x0052e310
-};
+class SeaSegmentStretch : public stretch<SeaSegment> {};
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
 ASSERT_SIZE(SeapointStretch, 0x10);

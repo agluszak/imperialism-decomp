@@ -1042,7 +1042,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
     bool contextMatch = shipOrders == 6 && entry->target.asZone == portZoneContext;
     bool activeContextMatch = false;
     if (shipOrders == 3) {
-      TZone** slot = portZoneContext->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
+      TZone** slot = &portZoneContext->primaryNeighbors[0];
       activeContextMatch = (entry->location == *slot);
     }
 
@@ -1210,8 +1210,8 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
           continue;
         }
 
-        short offerNation = (entryKind == 1) ? nation : entryTargetNation;
-        short acceptNation = (entryKind == 1) ? entryTargetNation : nation;
+        short offerNation = (entryKind == kTrackedSlotOfferEntry) ? nation : entryTargetNation;
+        short acceptNation = (entryKind == kTrackedSlotOfferEntry) ? entryTargetNation : nation;
 
         short contextNation = (mode == 1) ? nation : entryTargetNation;
         TZone* portZoneContext =
@@ -1266,8 +1266,8 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
                                    static_cast<LPCSTR>(interactionText));
 
         char modeIsOffer = (mode == 1);
-        char matchesOfferPass = modeIsOffer && entryKind == 1;
-        char matchesAcceptPass = mode == 2 && entryKind == 0;
+        char matchesOfferPass = modeIsOffer && entryKind == kTrackedSlotOfferEntry;
+        char matchesAcceptPass = mode == 2 && entryKind == kTrackedSlotAcceptEntry;
         char passMismatch = !matchesOfferPass && !matchesAcceptPass;
         char movedTrackedCounter = 0;
 

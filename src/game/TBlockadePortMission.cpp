@@ -52,8 +52,7 @@ TBlockadePortMission::TBlockadePortMission()
 // the context node into portZoneContext3c (+0x3c), and validates the context.
 // FUNCTION: IMPERIALISM 0x0053ab50
 TBlockadePortMission::TBlockadePortMission(TZone* context)
-    : TControlSeaZoneMission(*context->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0)),
-      portZoneContext3c(context) {
+    : TControlSeaZoneMission(context->primaryNeighbors[0]), portZoneContext3c(context) {
   context->AssertValid();
 }
 
@@ -74,7 +73,7 @@ void TBlockadePortMission::Initialize() {
   float score = static_cast<float>(targetZone14->ComputeMapActionContextNodeValueAverage());
 
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
-    TZone** ownerSlot = zone->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
+    TZone** ownerSlot = &zone->primaryNeighbors[0];
     if (*ownerSlot == targetZone14) {
       score *= (zone->GetPortZoneOwnerNationCodeFromMissionField48() == nationId04)
                    ? g_PortZoneFriendlyMissionScoreMultiplier_0065AA10

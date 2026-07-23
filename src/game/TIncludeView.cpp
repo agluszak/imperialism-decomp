@@ -60,7 +60,7 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* ma
 void TIncludeView::DoPostCreate(int arg) {
   (void)arg;
   if (turnEventCode60 != -1 && g_pTurnEventDialogFactoryRegistry != nullptr) {
-    int eventCode = static_cast<int>(turnEventCode60);
+    TurnEventId eventCode = DecodeTurnEventCode(turnEventCode60);
     if (ownerContext != nullptr) {
       CaptureLayoutF0(g_turnEventDialogAnchorPoint, 0);
       CaptureLayout(&ownerContext->frameWidth34, 0);

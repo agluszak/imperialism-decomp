@@ -1,0 +1,4297 @@
+{
+  "format_version": 1,
+  "generator": "tools/ghidra/data_function_pointers.py",
+  "inputs": {
+    "binary": "vendor/ghidra/Imperialism",
+    "message_maps": "docs/reference/message_map_audit.csv",
+    "progress": "config/baselines/reccmp_progress_baseline.functions.csv",
+    "rtti": "config/rtti_class_oracle.csv",
+    "source_model": "src/game + include/game + config/ui_factory_codegen.yml"
+  },
+  "ranked_candidates": [
+    "0x0051e110",
+    "0x0047f3e0",
+    "0x0048d240",
+    "0x0048d4a0",
+    "0x0048d4d0",
+    "0x0049baa0",
+    "0x00415e20",
+    "0x00493f90",
+    "0x005ad9e0",
+    "0x00481220",
+    "0x00493fc0",
+    "0x0049bad0",
+    "0x004a31c0",
+    "0x00415e50",
+    "0x0048d270",
+    "0x004601b0",
+    "0x004357b0",
+    "0x0043dbc0",
+    "0x004295a0",
+    "0x0046fd10",
+    "0x004749a0",
+    "0x00430c50",
+    "0x00427360",
+    "0x0044a810",
+    "0x004b95c0",
+    "0x004d4b90",
+    "0x0051e0b0",
+    "0x0051e0e0",
+    "0x00494430",
+    "0x00415050",
+    "0x004a31e0",
+    "0x00415030",
+    "0x0041b6d0",
+    "0x00415fe0",
+    "0x0044af90",
+    "0x004538a0",
+    "0x0044fbc0",
+    "0x0045b100",
+    "0x0045e0b0",
+    "0x0045d520",
+    "0x004b98b0",
+    "0x00479be0",
+    "0x005824c0",
+    "0x0049d360",
+    "0x0049cfa0",
+    "0x0049d450",
+    "0x00482760",
+    "0x0059b070",
+    "0x00593210",
+    "0x00489b60",
+    "0x00430750",
+    "0x0049d510",
+    "0x0047f810",
+    "0x00415f90",
+    "0x00479d50",
+    "0x0049cbc0",
+    "0x00415070",
+    "0x00430730",
+    "0x004b0970",
+    "0x004f3c70",
+    "0x004886d0"
+  ],
+  "summary": {
+    "candidates": 728,
+    "hits_by_classification": {
+      "candidate": 2631,
+      "cruntimeclass": 409,
+      "message_map": 96,
+      "vtable": 34296
+    },
+    "targets": 4612,
+    "ui_relevant_candidates": 61,
+    "ui_relevant_unowned_candidates": 15
+  },
+  "targets": [
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "vtable",
+          "container": "TModalDialogBase",
+          "kind": "data_pointer",
+          "location": "0x0063e62c",
+          "pointer_run_end": "0x0063e7c0",
+          "pointer_run_entries": 346,
+          "pointer_run_start": "0x0063e258",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "CIncludeView",
+          "kind": "data_pointer",
+          "location": "0x006484a4",
+          "pointer_run_end": "0x006485f0",
+          "pointer_run_entries": 146,
+          "pointer_run_start": "0x006483a8",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "CMainFrame",
+          "kind": "data_pointer",
+          "location": "0x00648964",
+          "pointer_run_end": "0x00648a08",
+          "pointer_run_entries": 108,
+          "pointer_run_start": "0x00648858",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0064b064",
+          "pointer_run_end": "0x0064b598",
+          "pointer_run_entries": 367,
+          "pointer_run_start": "0x0064afdc",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "CMcWindow",
+          "kind": "data_pointer",
+          "location": "0x0064b854",
+          "pointer_run_end": "0x0064b8b0",
+          "pointer_run_entries": 82,
+          "pointer_run_start": "0x0064b768",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0064bd34",
+          "pointer_run_end": "0x0064bd90",
+          "pointer_run_entries": 57,
+          "pointer_run_start": "0x0064bcac",
+          "raw_target": "0x00403166",
+          "readers": [
+            "CreateGlobalBackdropWindowWithDefaultBmp3B6 (0049cca0)"
+          ]
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0066fcb8",
+          "pointer_run_end": "0x0066fd04",
+          "pointer_run_entries": 54,
+          "pointer_run_start": "0x0066fc2c",
+          "raw_target": "0x00403166",
+          "readers": [
+            "CDialog (00604cc6)",
+            "CDialog (0060508e)",
+            "CDialog (006050d0)",
+            "~CDialog (00604d04)"
+          ]
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00670428",
+          "pointer_run_end": "0x00670498",
+          "pointer_run_entries": 50,
+          "pointer_run_start": "0x006703d0",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00670bd8",
+          "pointer_run_end": "0x00670c0c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00670b80",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00670ff0",
+          "pointer_run_end": "0x00671024",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00670f98",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671120",
+          "pointer_run_end": "0x00671154",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x006710c8",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x006711f8",
+          "pointer_run_end": "0x0067122c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x006711a0",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x006712d0",
+          "pointer_run_end": "0x00671304",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671278",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x006713a8",
+          "pointer_run_end": "0x006713dc",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671350",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671480",
+          "pointer_run_end": "0x006714b4",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671428",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671558",
+          "pointer_run_end": "0x0067158c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671500",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671630",
+          "pointer_run_end": "0x00671664",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x006715d8",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671700",
+          "pointer_run_end": "0x00671734",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x006716a8",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x006717d8",
+          "pointer_run_end": "0x0067180c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671780",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x006718b0",
+          "pointer_run_end": "0x006718e4",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671858",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671988",
+          "pointer_run_end": "0x006719c0",
+          "pointer_run_entries": 36,
+          "pointer_run_start": "0x00671930",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671a50",
+          "pointer_run_end": "0x00671a88",
+          "pointer_run_entries": 36,
+          "pointer_run_start": "0x006719f8",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671c08",
+          "pointer_run_end": "0x00671c3c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671bb0",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671cd8",
+          "pointer_run_end": "0x00671d0c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671c80",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671da8",
+          "pointer_run_end": "0x00671ddc",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671d50",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671e90",
+          "pointer_run_end": "0x00671ec4",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671e38",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671f70",
+          "pointer_run_end": "0x00671fa4",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671f18",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00672040",
+          "pointer_run_end": "0x00672078",
+          "pointer_run_entries": 36,
+          "pointer_run_start": "0x00671fe8",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00672958",
+          "pointer_run_end": "0x006729a4",
+          "pointer_run_entries": 41,
+          "pointer_run_start": "0x00672900",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00672a50",
+          "pointer_run_end": "0x00672aa0",
+          "pointer_run_entries": 42,
+          "pointer_run_start": "0x006729f8",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00672ce0",
+          "pointer_run_end": "0x00672d68",
+          "pointer_run_entries": 56,
+          "pointer_run_start": "0x00672c88",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00672df8",
+          "pointer_run_end": "0x00672e64",
+          "pointer_run_entries": 49,
+          "pointer_run_start": "0x00672da0",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00673368",
+          "pointer_run_end": "0x006733b8",
+          "pointer_run_entries": 42,
+          "pointer_run_start": "0x00673310",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00673618",
+          "pointer_run_end": "0x006736a8",
+          "pointer_run_entries": 58,
+          "pointer_run_start": "0x006735c0",
+          "raw_target": "0x00403166",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00674588",
+          "pointer_run_end": "0x006745bc",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00674530",
+          "raw_target": "0x00403166",
+          "readers": []
+        }
+      ],
+      "name": "CWnd::DoDataExchange",
+      "owner": "config/reviewed_library_identities.csv",
+      "registrars": [],
+      "similarity": 1.0,
+      "size": 3,
+      "target": "0x00415030",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "vtable",
+          "container": "T64TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x0063e528",
+          "pointer_run_end": "0x0063e7c0",
+          "pointer_run_entries": 346,
+          "pointer_run_start": "0x0063e258",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TModalDialogBase",
+          "kind": "data_pointer",
+          "location": "0x0063e630",
+          "pointer_run_end": "0x0063e7c0",
+          "pointer_run_entries": 346,
+          "pointer_run_start": "0x0063e258",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDDTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x0063e740",
+          "pointer_run_end": "0x0063e7c0",
+          "pointer_run_entries": 346,
+          "pointer_run_start": "0x0063e258",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TC2TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646280",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TD2TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646390",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDBTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006464a0",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDCTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006465b0",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDETemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006466c0",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDFTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006467d0",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TFATemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006468d8",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TAutoResolutionDialog",
+          "kind": "data_pointer",
+          "location": "0x006469e8",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00646be8",
+          "pointer_run_end": "0x00646e78",
+          "pointer_run_entries": 210,
+          "pointer_run_start": "0x00646b30",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00646cf0",
+          "pointer_run_end": "0x00646e78",
+          "pointer_run_entries": 210,
+          "pointer_run_start": "0x00646b30",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TADTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646df8",
+          "pointer_run_end": "0x00646e78",
+          "pointer_run_entries": 210,
+          "pointer_run_start": "0x00646b30",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "T104TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646f30",
+          "pointer_run_end": "0x00646fc8",
+          "pointer_run_entries": 82,
+          "pointer_run_start": "0x00646e80",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x006470e0",
+          "pointer_run_end": "0x00647160",
+          "pointer_run_entries": 74,
+          "pointer_run_start": "0x00647038",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TA1TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006474b8",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TA1TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006475c0",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TA1TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006476c8",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TA7TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006477d0",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TA7TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006478d8",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TA7TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006479e0",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TA7TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00647ae8",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TABTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00647bf0",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TABTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00647cf8",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TAETemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00647e00",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TAETemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00647f08",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TB1TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00648010",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TB1TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00648118",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "CIncludeView",
+          "kind": "data_pointer",
+          "location": "0x006484a8",
+          "pointer_run_end": "0x006485f0",
+          "pointer_run_entries": 146,
+          "pointer_run_start": "0x006483a8",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0064b068",
+          "pointer_run_end": "0x0064b598",
+          "pointer_run_entries": 367,
+          "pointer_run_start": "0x0064afdc",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "CMcWindow",
+          "kind": "data_pointer",
+          "location": "0x0064b858",
+          "pointer_run_end": "0x0064b8b0",
+          "pointer_run_entries": 82,
+          "pointer_run_start": "0x0064b768",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TE0TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x0064b9f0",
+          "pointer_run_end": "0x0064ba98",
+          "pointer_run_entries": 83,
+          "pointer_run_start": "0x0064b94c",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TD0TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x0064bb50",
+          "pointer_run_end": "0x0064bbc8",
+          "pointer_run_entries": 74,
+          "pointer_run_start": "0x0064baa0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0064bd38",
+          "pointer_run_end": "0x0064bd90",
+          "pointer_run_entries": 57,
+          "pointer_run_start": "0x0064bcac",
+          "raw_target": "0x0040290a",
+          "readers": [
+            "CreateGlobalBackdropWindowWithDefaultBmp3B6 (0049cca0)"
+          ]
+        },
+        {
+          "classification": "vtable",
+          "container": "TLowDiskWarningDialog",
+          "kind": "data_pointer",
+          "location": "0x0066f668",
+          "pointer_run_end": "0x0066f6e8",
+          "pointer_run_entries": 74,
+          "pointer_run_start": "0x0066f5c0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0066fcbc",
+          "pointer_run_end": "0x0066fd04",
+          "pointer_run_entries": 54,
+          "pointer_run_start": "0x0066fc2c",
+          "raw_target": "0x0040290a",
+          "readers": [
+            "CDialog (00604cc6)",
+            "CDialog (0060508e)",
+            "CDialog (006050d0)",
+            "~CDialog (00604d04)"
+          ]
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00670bdc",
+          "pointer_run_end": "0x00670c0c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00670b80",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00670ff4",
+          "pointer_run_end": "0x00671024",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00670f98",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671124",
+          "pointer_run_end": "0x00671154",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x006710c8",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x006711fc",
+          "pointer_run_end": "0x0067122c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x006711a0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x006712d4",
+          "pointer_run_end": "0x00671304",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671278",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x006713ac",
+          "pointer_run_end": "0x006713dc",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671350",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671484",
+          "pointer_run_end": "0x006714b4",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671428",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0067155c",
+          "pointer_run_end": "0x0067158c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671500",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671634",
+          "pointer_run_end": "0x00671664",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x006715d8",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671704",
+          "pointer_run_end": "0x00671734",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x006716a8",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x006717dc",
+          "pointer_run_end": "0x0067180c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671780",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x006718b4",
+          "pointer_run_end": "0x006718e4",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671858",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0067198c",
+          "pointer_run_end": "0x006719c0",
+          "pointer_run_entries": 36,
+          "pointer_run_start": "0x00671930",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671a54",
+          "pointer_run_end": "0x00671a88",
+          "pointer_run_entries": 36,
+          "pointer_run_start": "0x006719f8",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671c0c",
+          "pointer_run_end": "0x00671c3c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671bb0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671cdc",
+          "pointer_run_end": "0x00671d0c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671c80",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671dac",
+          "pointer_run_end": "0x00671ddc",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671d50",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671e94",
+          "pointer_run_end": "0x00671ec4",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671e38",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671f74",
+          "pointer_run_end": "0x00671fa4",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671f18",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00672044",
+          "pointer_run_end": "0x00672078",
+          "pointer_run_entries": 36,
+          "pointer_run_start": "0x00671fe8",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0067295c",
+          "pointer_run_end": "0x006729a4",
+          "pointer_run_entries": 41,
+          "pointer_run_start": "0x00672900",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00672a54",
+          "pointer_run_end": "0x00672aa0",
+          "pointer_run_entries": 42,
+          "pointer_run_start": "0x006729f8",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00672ce4",
+          "pointer_run_end": "0x00672d68",
+          "pointer_run_entries": 56,
+          "pointer_run_start": "0x00672c88",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00672dfc",
+          "pointer_run_end": "0x00672e64",
+          "pointer_run_entries": 49,
+          "pointer_run_start": "0x00672da0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0067336c",
+          "pointer_run_end": "0x006733b8",
+          "pointer_run_entries": 42,
+          "pointer_run_start": "0x00673310",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0067361c",
+          "pointer_run_end": "0x006736a8",
+          "pointer_run_entries": 58,
+          "pointer_run_start": "0x006735c0",
+          "raw_target": "0x0040290a",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0067458c",
+          "pointer_run_end": "0x006745bc",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00674530",
+          "raw_target": "0x0040290a",
+          "readers": []
+        }
+      ],
+      "name": "CWnd::BeginModalState",
+      "owner": "config/reviewed_library_identities.csv",
+      "registrars": [],
+      "similarity": 1.0,
+      "size": 13,
+      "target": "0x00415050",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x00404a3e in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "vtable",
+          "container": "T64TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x0063e52c",
+          "pointer_run_end": "0x0063e7c0",
+          "pointer_run_entries": 346,
+          "pointer_run_start": "0x0063e258",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TModalDialogBase",
+          "kind": "data_pointer",
+          "location": "0x0063e634",
+          "pointer_run_end": "0x0063e7c0",
+          "pointer_run_entries": 346,
+          "pointer_run_start": "0x0063e258",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDDTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x0063e744",
+          "pointer_run_end": "0x0063e7c0",
+          "pointer_run_entries": 346,
+          "pointer_run_start": "0x0063e258",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TC2TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646284",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TD2TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646394",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDBTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006464a4",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDCTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006465b4",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDETemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006466c4",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDFTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006467d4",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TFATemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006468dc",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TAutoResolutionDialog",
+          "kind": "data_pointer",
+          "location": "0x006469ec",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00646bec",
+          "pointer_run_end": "0x00646e78",
+          "pointer_run_entries": 210,
+          "pointer_run_start": "0x00646b30",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00646cf4",
+          "pointer_run_end": "0x00646e78",
+          "pointer_run_entries": 210,
+          "pointer_run_start": "0x00646b30",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TADTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646dfc",
+          "pointer_run_end": "0x00646e78",
+          "pointer_run_entries": 210,
+          "pointer_run_start": "0x00646b30",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "T104TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646f34",
+          "pointer_run_end": "0x00646fc8",
+          "pointer_run_entries": 82,
+          "pointer_run_start": "0x00646e80",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x006470e4",
+          "pointer_run_end": "0x00647160",
+          "pointer_run_entries": 74,
+          "pointer_run_start": "0x00647038",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TA1TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006474bc",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TA1TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006475c4",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TA1TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006476cc",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TA7TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006477d4",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TA7TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006478dc",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TA7TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006479e4",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TA7TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00647aec",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TABTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00647bf4",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TABTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00647cfc",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TAETemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00647e04",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TAETemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00647f0c",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TB1TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00648014",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TB1TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x0064811c",
+          "pointer_run_end": "0x00648190",
+          "pointer_run_entries": 888,
+          "pointer_run_start": "0x006473b0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "CIncludeView",
+          "kind": "data_pointer",
+          "location": "0x006484ac",
+          "pointer_run_end": "0x006485f0",
+          "pointer_run_entries": 146,
+          "pointer_run_start": "0x006483a8",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0064b06c",
+          "pointer_run_end": "0x0064b598",
+          "pointer_run_entries": 367,
+          "pointer_run_start": "0x0064afdc",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "CMcWindow",
+          "kind": "data_pointer",
+          "location": "0x0064b85c",
+          "pointer_run_end": "0x0064b8b0",
+          "pointer_run_entries": 82,
+          "pointer_run_start": "0x0064b768",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TE0TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x0064b9f4",
+          "pointer_run_end": "0x0064ba98",
+          "pointer_run_entries": 83,
+          "pointer_run_start": "0x0064b94c",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TD0TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x0064bb54",
+          "pointer_run_end": "0x0064bbc8",
+          "pointer_run_entries": 74,
+          "pointer_run_start": "0x0064baa0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0064bd3c",
+          "pointer_run_end": "0x0064bd90",
+          "pointer_run_entries": 57,
+          "pointer_run_start": "0x0064bcac",
+          "raw_target": "0x00404a3e",
+          "readers": [
+            "CreateGlobalBackdropWindowWithDefaultBmp3B6 (0049cca0)"
+          ]
+        },
+        {
+          "classification": "vtable",
+          "container": "TLowDiskWarningDialog",
+          "kind": "data_pointer",
+          "location": "0x0066f66c",
+          "pointer_run_end": "0x0066f6e8",
+          "pointer_run_entries": 74,
+          "pointer_run_start": "0x0066f5c0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0066fcc0",
+          "pointer_run_end": "0x0066fd04",
+          "pointer_run_entries": 54,
+          "pointer_run_start": "0x0066fc2c",
+          "raw_target": "0x00404a3e",
+          "readers": [
+            "CDialog (00604cc6)",
+            "CDialog (0060508e)",
+            "CDialog (006050d0)",
+            "~CDialog (00604d04)"
+          ]
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00670be0",
+          "pointer_run_end": "0x00670c0c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00670b80",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00670ff8",
+          "pointer_run_end": "0x00671024",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00670f98",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671128",
+          "pointer_run_end": "0x00671154",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x006710c8",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671200",
+          "pointer_run_end": "0x0067122c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x006711a0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x006712d8",
+          "pointer_run_end": "0x00671304",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671278",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x006713b0",
+          "pointer_run_end": "0x006713dc",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671350",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671488",
+          "pointer_run_end": "0x006714b4",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671428",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671560",
+          "pointer_run_end": "0x0067158c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671500",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671638",
+          "pointer_run_end": "0x00671664",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x006715d8",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671708",
+          "pointer_run_end": "0x00671734",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x006716a8",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x006717e0",
+          "pointer_run_end": "0x0067180c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671780",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x006718b8",
+          "pointer_run_end": "0x006718e4",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671858",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671990",
+          "pointer_run_end": "0x006719c0",
+          "pointer_run_entries": 36,
+          "pointer_run_start": "0x00671930",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671a58",
+          "pointer_run_end": "0x00671a88",
+          "pointer_run_entries": 36,
+          "pointer_run_start": "0x006719f8",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671c10",
+          "pointer_run_end": "0x00671c3c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671bb0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671ce0",
+          "pointer_run_end": "0x00671d0c",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671c80",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671db0",
+          "pointer_run_end": "0x00671ddc",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671d50",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671e98",
+          "pointer_run_end": "0x00671ec4",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671e38",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00671f78",
+          "pointer_run_end": "0x00671fa4",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00671f18",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00672048",
+          "pointer_run_end": "0x00672078",
+          "pointer_run_entries": 36,
+          "pointer_run_start": "0x00671fe8",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00672960",
+          "pointer_run_end": "0x006729a4",
+          "pointer_run_entries": 41,
+          "pointer_run_start": "0x00672900",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00672a58",
+          "pointer_run_end": "0x00672aa0",
+          "pointer_run_entries": 42,
+          "pointer_run_start": "0x006729f8",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00672ce8",
+          "pointer_run_end": "0x00672d68",
+          "pointer_run_entries": 56,
+          "pointer_run_start": "0x00672c88",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00672e00",
+          "pointer_run_end": "0x00672e64",
+          "pointer_run_entries": 49,
+          "pointer_run_start": "0x00672da0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00673370",
+          "pointer_run_end": "0x006733b8",
+          "pointer_run_entries": 42,
+          "pointer_run_start": "0x00673310",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00673620",
+          "pointer_run_end": "0x006736a8",
+          "pointer_run_entries": 58,
+          "pointer_run_start": "0x006735c0",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00674590",
+          "pointer_run_end": "0x006745bc",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00674530",
+          "raw_target": "0x00404a3e",
+          "readers": []
+        }
+      ],
+      "name": "CWnd::EndModalState",
+      "owner": "config/reviewed_library_identities.csv",
+      "registrars": [],
+      "similarity": 1.0,
+      "size": 13,
+      "target": "0x00415070",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".data",
+          "kind": "data_pointer",
+          "location": "0x00692370",
+          "pointer_run_end": "0x00692374",
+          "pointer_run_entries": 2,
+          "pointer_run_start": "0x0069236c",
+          "raw_target": "0x00415e20",
+          "readers": []
+        }
+      ],
+      "name": "InitializeUiResourcePoolStateAndRegisterAtExit",
+      "owner": "",
+      "registrars": [],
+      "similarity": 0.25,
+      "size": 24,
+      "target": "0x00415e20",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "InitializeUiResourcePoolStateAndRegisterAtExit (0x00415e20)",
+          "instruction": "PUSH 0x415e50",
+          "kind": "code_address_take",
+          "location": "0x00415e2a",
+          "raw_target": "0x00415e50"
+        }
+      ],
+      "name": "DestroyUiResourcePoolStateAtExit",
+      "owner": "",
+      "registrars": [
+        "InitializeUiResourcePoolStateAndRegisterAtExit (0x00415e20)"
+      ],
+      "similarity": 0.0,
+      "size": 5,
+      "target": "0x00415e50",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x00403d69 in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0063e89c",
+          "pointer_run_end": "0x00645ff8",
+          "pointer_run_entries": 7654,
+          "pointer_run_start": "0x0063e860",
+          "raw_target": "0x00403d69",
+          "readers": []
+        }
+      ],
+      "name": "CList<TView *,TView *>::`scalar deleting destructor'",
+      "owner": "src/game/global_data_tables.cpp",
+      "registrars": [],
+      "similarity": 1.0,
+      "size": 30,
+      "target": "0x00415f90",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x00401401 in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "CAmbitDocument (0x00479480)",
+          "instruction": "PUSH 0x401401",
+          "kind": "code_address_take",
+          "location": "0x004794fe",
+          "raw_target": "0x00401401"
+        }
+      ],
+      "name": "BuildTradeSchoolDialogControls",
+      "owner": "build-msvc500/generated/ui/turn_event_dialog_factory_00415fe0.cpp",
+      "registrars": [
+        "CAmbitDocument (0x00479480)"
+      ],
+      "similarity": 0.3165201295696437,
+      "size": 16760,
+      "target": "0x00415fe0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x004070ae in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "CAmbitDocument (0x00479480)",
+          "instruction": "PUSH 0x4070ae",
+          "kind": "code_address_take",
+          "location": "0x0047952a",
+          "raw_target": "0x004070ae"
+        }
+      ],
+      "name": "InitializeIndustryViewTradeMoveControlsAndCommodityRows",
+      "owner": "build-msvc500/generated/ui/turn_event_dialog_factory_0041b6d0.cpp",
+      "registrars": [
+        "CAmbitDocument (0x00479480)"
+      ],
+      "similarity": 0.10589735696380667,
+      "size": 37576,
+      "target": "0x0041b6d0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "CAmbitDocument (0x00479480)",
+          "instruction": "PUSH 0x403977",
+          "kind": "code_address_take",
+          "location": "0x0047951a",
+          "raw_target": "0x00403977"
+        }
+      ],
+      "name": "InitializeIndustryOverviewPlacardsAndTradeStatusTags",
+      "owner": "build-msvc500/generated/ui/turn_event_dialog_factory_00427360.cpp",
+      "registrars": [
+        "CAmbitDocument (0x00479480)"
+      ],
+      "similarity": 0.18434670116429497,
+      "size": 6510,
+      "target": "0x00427360",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "CAmbitDocument (0x00479480)",
+          "instruction": "PUSH 0x403f99",
+          "kind": "code_address_take",
+          "location": "0x0047953a",
+          "raw_target": "0x00403f99"
+        }
+      ],
+      "name": "BuildTurnEventDialogResourcesForEvent547Or7D8",
+      "owner": "build-msvc500/generated/ui/turn_event_dialog_factory_004295a0.cpp",
+      "registrars": [
+        "CAmbitDocument (0x00479480)"
+      ],
+      "similarity": 0.381859003143242,
+      "size": 18275,
+      "target": "0x004295a0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x004077bb in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl (0x00430690)",
+          "instruction": "PUSH 0x4077bb",
+          "kind": "code_address_take",
+          "location": "0x004306ca",
+          "raw_target": "0x004077bb"
+        },
+        {
+          "classification": "candidate",
+          "container": "~TBattleReportView (0x00430a60)",
+          "instruction": "PUSH 0x4077bb",
+          "kind": "code_address_take",
+          "location": "0x00430a9a",
+          "raw_target": "0x004077bb"
+        },
+        {
+          "classification": "candidate",
+          "container": "TDiplomacyMapView (0x004f3b80)",
+          "instruction": "PUSH 0x4077bb",
+          "kind": "code_address_take",
+          "location": "0x004f3ba3",
+          "raw_target": "0x004077bb"
+        },
+        {
+          "classification": "candidate",
+          "container": "~TDiplomacyMapView (0x004f3cc0)",
+          "instruction": "PUSH 0x4077bb",
+          "kind": "code_address_take",
+          "location": "0x004f3cfa",
+          "raw_target": "0x004077bb"
+        }
+      ],
+      "name": "WrapperFor_FreeHeapBufferIfNotNull_At00430730",
+      "owner": "src/game/TDiplomacyMapView.cpp",
+      "registrars": [
+        "TDiplomacyMapView (0x004f3b80)",
+        "WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl (0x00430690)",
+        "~TBattleReportView (0x00430a60)",
+        "~TDiplomacyMapView (0x004f3cc0)"
+      ],
+      "similarity": 1.0,
+      "size": 12,
+      "target": "0x00430730",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x004038a0 in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl (0x00430690)",
+          "instruction": "PUSH 0x4038a0",
+          "kind": "code_address_take",
+          "location": "0x004306ad",
+          "raw_target": "0x004038a0"
+        },
+        {
+          "classification": "candidate",
+          "container": "~TBattleReportView (0x00430a60)",
+          "instruction": "PUSH 0x4038a0",
+          "kind": "code_address_take",
+          "location": "0x00430a7d",
+          "raw_target": "0x004038a0"
+        },
+        {
+          "classification": "candidate",
+          "container": "TDiplomacyMapView (0x004f3b80)",
+          "instruction": "PUSH 0x4038a0",
+          "kind": "code_address_take",
+          "location": "0x004f3bc3",
+          "raw_target": "0x004038a0"
+        },
+        {
+          "classification": "candidate",
+          "container": "~TDiplomacyMapView (0x004f3cc0)",
+          "instruction": "PUSH 0x4038a0",
+          "kind": "code_address_take",
+          "location": "0x004f3cdd",
+          "raw_target": "0x004038a0"
+        },
+        {
+          "classification": "candidate",
+          "container": "TMacViewMgr (0x00509ca0)",
+          "instruction": "PUSH 0x4038a0",
+          "kind": "code_address_take",
+          "location": "0x00509cc5",
+          "raw_target": "0x004038a0"
+        },
+        {
+          "classification": "candidate",
+          "container": "TMacViewMgr (0x00509ca0)",
+          "instruction": "PUSH 0x4038a0",
+          "kind": "code_address_take",
+          "location": "0x00509ce5",
+          "raw_target": "0x004038a0"
+        },
+        {
+          "classification": "candidate",
+          "container": "TMacViewMgr (0x00509ca0)",
+          "instruction": "PUSH 0x4038a0",
+          "kind": "code_address_take",
+          "location": "0x00509d04",
+          "raw_target": "0x004038a0"
+        },
+        {
+          "classification": "candidate",
+          "container": "WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60 (0x00509e60)",
+          "instruction": "PUSH 0x4038a0",
+          "kind": "code_address_take",
+          "location": "0x00509e7d",
+          "raw_target": "0x004038a0"
+        },
+        {
+          "classification": "candidate",
+          "container": "WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60 (0x00509e60)",
+          "instruction": "PUSH 0x4038a0",
+          "kind": "code_address_take",
+          "location": "0x00509e9a",
+          "raw_target": "0x004038a0"
+        },
+        {
+          "classification": "candidate",
+          "container": "WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60 (0x00509e60)",
+          "instruction": "PUSH 0x4038a0",
+          "kind": "code_address_take",
+          "location": "0x00509eb4",
+          "raw_target": "0x004038a0"
+        }
+      ],
+      "name": "WrapperFor_FreeHeapBlockWithAllocatorTracking_At00430750",
+      "owner": "src/game/StrategicMapCallbackRecord.cpp",
+      "registrars": [
+        "TDiplomacyMapView (0x004f3b80)",
+        "TMacViewMgr (0x00509ca0)",
+        "WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl (0x00430690)",
+        "WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60 (0x00509e60)",
+        "~TBattleReportView (0x00430a60)",
+        "~TDiplomacyMapView (0x004f3cc0)"
+      ],
+      "similarity": 0.8888888888888888,
+      "size": 50,
+      "target": "0x00430750",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "CAmbitDocument (0x00479480)",
+          "instruction": "PUSH 0x4059cf",
+          "kind": "code_address_take",
+          "location": "0x0047954a",
+          "raw_target": "0x004059cf"
+        }
+      ],
+      "name": "InitializeDealBookScreenControlsAndCommandTags",
+      "owner": "build-msvc500/generated/ui/turn_event_dialog_factory_00430c50.cpp",
+      "registrars": [
+        "CAmbitDocument (0x00479480)"
+      ],
+      "similarity": 0.17856158721410856,
+      "size": 14917,
+      "target": "0x00430c50",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "CAmbitDocument (0x00479480)",
+          "instruction": "PUSH 0x407d65",
+          "kind": "code_address_take",
+          "location": "0x0047955a",
+          "raw_target": "0x00407d65"
+        }
+      ],
+      "name": "BuildTurnEventDialogUiByCode",
+      "owner": "build-msvc500/generated/ui/turn_event_dialog_factory_004357b0.cpp",
+      "registrars": [
+        "CAmbitDocument (0x00479480)"
+      ],
+      "similarity": 0.48957589140741703,
+      "size": 25768,
+      "target": "0x004357b0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "WrapperFor_thunk_RegisterDialogFactoryCallback_At0044a7f0 (0x0044a7f0)",
+          "instruction": "PUSH 0x407013",
+          "kind": "code_address_take",
+          "location": "0x0044a7f4",
+          "raw_target": "0x00407013"
+        },
+        {
+          "classification": "candidate",
+          "container": "CAmbitDocument (0x00479480)",
+          "instruction": "PUSH 0x407013",
+          "kind": "code_address_take",
+          "location": "0x0047956a",
+          "raw_target": "0x00407013"
+        }
+      ],
+      "name": "InitializeArmyNavyReportViewsAndCommandTags",
+      "owner": "build-msvc500/generated/ui/turn_event_dialog_factory_0043dbc0.cpp",
+      "registrars": [
+        "CAmbitDocument (0x00479480)",
+        "WrapperFor_thunk_RegisterDialogFactoryCallback_At0044a7f0 (0x0044a7f0)"
+      ],
+      "similarity": 0.416198347107438,
+      "size": 18464,
+      "target": "0x0043dbc0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "CAmbitDocument (0x00479480)",
+          "instruction": "PUSH 0x4053f8",
+          "kind": "code_address_take",
+          "location": "0x0047957a",
+          "raw_target": "0x004053f8"
+        }
+      ],
+      "name": "BuildTurnEventDialogResources_2508",
+      "owner": "build-msvc500/generated/ui/turn_event_dialog_factory_0044a810.cpp",
+      "registrars": [
+        "CAmbitDocument (0x00479480)"
+      ],
+      "similarity": 0.08956796628029505,
+      "size": 1500,
+      "target": "0x0044a810",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x004033be in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "WrapperFor_thunk_RegisterDialogFactoryCallback_At0044fba0 (0x0044fba0)",
+          "instruction": "PUSH 0x4033be",
+          "kind": "code_address_take",
+          "location": "0x0044fba4",
+          "raw_target": "0x004033be"
+        },
+        {
+          "classification": "candidate",
+          "container": "CAmbitDocument (0x00479480)",
+          "instruction": "PUSH 0x4033be",
+          "kind": "code_address_take",
+          "location": "0x0047958a",
+          "raw_target": "0x004033be"
+        }
+      ],
+      "name": "InitializeJoinSelectorDialogControlsAndNationSlots",
+      "owner": "build-msvc500/generated/ui/turn_event_dialog_factory_0044af90.cpp",
+      "registrars": [
+        "CAmbitDocument (0x00479480)",
+        "WrapperFor_thunk_RegisterDialogFactoryCallback_At0044fba0 (0x0044fba0)"
+      ],
+      "similarity": 0.2298757428417072,
+      "size": 15321,
+      "target": "0x0044af90",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x00405a10 in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "CAmbitDocument (0x00479480)",
+          "instruction": "PUSH 0x405a10",
+          "kind": "code_address_take",
+          "location": "0x0047959a",
+          "raw_target": "0x00405a10"
+        }
+      ],
+      "name": "BuildUiResourceTreeByTemplateIdAndBindScreenContext",
+      "owner": "build-msvc500/generated/ui/turn_event_dialog_factory_0044fbc0.cpp",
+      "registrars": [
+        "CAmbitDocument (0x00479480)"
+      ],
+      "similarity": 0.28725738396624473,
+      "size": 12326,
+      "target": "0x0044fbc0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x00406690 in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "CAmbitDocument (0x00479480)",
+          "instruction": "PUSH 0x406690",
+          "kind": "code_address_take",
+          "location": "0x004795aa",
+          "raw_target": "0x00406690"
+        }
+      ],
+      "name": "InitializeGameSetupScreenControlsAndModeTags",
+      "owner": "build-msvc500/generated/ui/turn_event_dialog_factory_004538a0.cpp",
+      "registrars": [
+        "CAmbitDocument (0x00479480)"
+      ],
+      "similarity": 0.21121231155778894,
+      "size": 13059,
+      "target": "0x004538a0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x004056fa in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "CAmbitDocument (0x00479480)",
+          "instruction": "PUSH 0x4056fa",
+          "kind": "code_address_take",
+          "location": "0x004795ba",
+          "raw_target": "0x004056fa"
+        }
+      ],
+      "name": "InitializeTacticalBattleViewToolbarAndDialogControls",
+      "owner": "build-msvc500/generated/ui/turn_event_dialog_factory_0045b100.cpp",
+      "registrars": [
+        "CAmbitDocument (0x00479480)"
+      ],
+      "similarity": 0.2560638624501075,
+      "size": 6845,
+      "target": "0x0045b100",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x00405402 in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "CAmbitDocument (0x00479480)",
+          "instruction": "PUSH 0x405402",
+          "kind": "code_address_take",
+          "location": "0x004795ca",
+          "raw_target": "0x00405402"
+        }
+      ],
+      "name": "BuildTurnEventDialogResourcesForEvent898",
+      "owner": "build-msvc500/generated/ui/turn_event_dialog_factory_0045d520.cpp",
+      "registrars": [
+        "CAmbitDocument (0x00479480)"
+      ],
+      "similarity": 0.2408563782337199,
+      "size": 2326,
+      "target": "0x0045d520",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x00401235 in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "CAmbitDocument (0x00479480)",
+          "instruction": "PUSH 0x401235",
+          "kind": "code_address_take",
+          "location": "0x004795da",
+          "raw_target": "0x00401235"
+        }
+      ],
+      "name": "BuildTurnEventDialogResourcesForEvent8FC",
+      "owner": "build-msvc500/generated/ui/turn_event_dialog_factory_0045e0b0.cpp",
+      "registrars": [
+        "CAmbitDocument (0x00479480)"
+      ],
+      "similarity": 0.24896265560165975,
+      "size": 6554,
+      "target": "0x0045e0b0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "CAmbitDocument (0x00479480)",
+          "instruction": "PUSH 0x409773",
+          "kind": "code_address_take",
+          "location": "0x004795ea",
+          "raw_target": "0x00409773"
+        }
+      ],
+      "name": "InitializeTradeScreenBitmapControls",
+      "owner": "build-msvc500/generated/ui/turn_event_dialog_factory_004601b0.cpp",
+      "registrars": [
+        "CAmbitDocument (0x00479480)"
+      ],
+      "similarity": 0.5522056951667454,
+      "size": 41928,
+      "target": "0x004601b0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "CAmbitDocument (0x00479480)",
+          "instruction": "PUSH 0x407531",
+          "kind": "code_address_take",
+          "location": "0x004795fa",
+          "raw_target": "0x00407531"
+        }
+      ],
+      "name": "BuildTurnEventDialogResourcesForEvent7DE",
+      "owner": "build-msvc500/generated/ui/turn_event_dialog_factory_0046fd10.cpp",
+      "registrars": [
+        "CAmbitDocument (0x00479480)"
+      ],
+      "similarity": 0.21241076331685887,
+      "size": 15634,
+      "target": "0x0046fd10",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "CAmbitDocument (0x00479480)",
+          "instruction": "PUSH 0x406410",
+          "kind": "code_address_take",
+          "location": "0x0047960a",
+          "raw_target": "0x00406410"
+        }
+      ],
+      "name": "BuildUniversityDialogShell",
+      "owner": "build-msvc500/generated/ui/turn_event_dialog_factory_004749a0.cpp",
+      "registrars": [
+        "CAmbitDocument (0x00479480)"
+      ],
+      "similarity": 0.19839433936590012,
+      "size": 15151,
+      "target": "0x004749a0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x00407266 in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0063e888",
+          "pointer_run_end": "0x00645ff8",
+          "pointer_run_entries": 7654,
+          "pointer_run_start": "0x0063e860",
+          "raw_target": "0x00407266",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0063e8a0",
+          "pointer_run_end": "0x00645ff8",
+          "pointer_run_entries": 7654,
+          "pointer_run_start": "0x0063e860",
+          "raw_target": "0x00407266",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TView",
+          "kind": "data_pointer",
+          "location": "0x00649a58",
+          "pointer_run_end": "0x0064afd8",
+          "pointer_run_entries": 1588,
+          "pointer_run_start": "0x00649708",
+          "raw_target": "0x00407266",
+          "readers": []
+        }
+      ],
+      "name": "CList<TView *,TView *>::Serialize",
+      "owner": "src/game/TView.cpp",
+      "registrars": [],
+      "similarity": 1.0,
+      "size": 280,
+      "target": "0x00479be0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x00403ac6 in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0063e884",
+          "pointer_run_end": "0x00645ff8",
+          "pointer_run_entries": 7654,
+          "pointer_run_start": "0x0063e860",
+          "raw_target": "0x00403ac6",
+          "readers": []
+        }
+      ],
+      "name": "CList<TView *,TView *>::`scalar deleting destructor'",
+      "owner": "src/game/TView.cpp",
+      "registrars": [],
+      "similarity": null,
+      "size": 30,
+      "target": "0x00479d50",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00646d38",
+          "pointer_run_end": "0x00646e78",
+          "pointer_run_entries": 210,
+          "pointer_run_start": "0x00646b30",
+          "raw_target": "0x00407207",
+          "readers": []
+        }
+      ],
+      "name": "AssertDiplomacyDialogsLine61",
+      "owner": "",
+      "registrars": [],
+      "similarity": 0.0,
+      "size": 27,
+      "target": "0x0047f3e0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x00402847 in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "RebuildRuntimeSelectionSource (0x0047fd90)",
+          "instruction": "PUSH 0x402847",
+          "kind": "code_address_take",
+          "location": "0x0047fde3",
+          "raw_target": "0x00402847"
+        },
+        {
+          "classification": "candidate",
+          "container": "OpenRuntimeSelectionSourceWithOptionalSeed (0x0047fe50)",
+          "instruction": "PUSH 0x402847",
+          "kind": "code_address_take",
+          "location": "0x0047ff9e",
+          "raw_target": "0x00402847"
+        }
+      ],
+      "name": "OrphanCallChain_C1_I12_0047f810",
+      "owner": "src/game/TWNetSessionManager.cpp",
+      "registrars": [
+        "OpenRuntimeSelectionSourceWithOptionalSeed (0x0047fe50)",
+        "RebuildRuntimeSelectionSource (0x0047fd90)"
+      ],
+      "similarity": 1.0,
+      "size": 31,
+      "target": "0x0047f810",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00647114",
+          "pointer_run_end": "0x00647160",
+          "pointer_run_entries": 74,
+          "pointer_run_start": "0x00647038",
+          "raw_target": "0x00404345",
+          "readers": []
+        }
+      ],
+      "name": "WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00481220",
+      "owner": "",
+      "registrars": [],
+      "similarity": 0.4,
+      "size": 11,
+      "target": "0x00481220",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x00405d94 in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "OnInitialUpdate (0x00483750)",
+          "instruction": "PUSH 0x405d94",
+          "kind": "code_address_take",
+          "location": "0x0048382e",
+          "raw_target": "0x00405d94"
+        }
+      ],
+      "name": "UiCursorTickTimerProc",
+      "owner": "src/game/CIncludeView.cpp",
+      "registrars": [
+        "OnInitialUpdate (0x00483750)"
+      ],
+      "similarity": 0.7804878048780488,
+      "size": 131,
+      "target": "0x00482760",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "message_map",
+      "hits": [
+        {
+          "classification": "message_map",
+          "container": "AFX_MSGMAP_ENTRY::pfn",
+          "kind": "data_pointer",
+          "location": "0x00648364",
+          "pointer_run_end": "0x00648380",
+          "pointer_run_entries": 7,
+          "pointer_run_start": "0x00648364",
+          "raw_target": "0x004087e7",
+          "readers": []
+        }
+      ],
+      "name": "OnMciNotifyMode",
+      "owner": "",
+      "registrars": [],
+      "similarity": null,
+      "size": 28,
+      "target": "0x00484230",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 5,
+      "callers": [
+        "0x004a701f in TrimExcessNavyOrderSupportAndRebuildOrderBuffer (0x004a6ef0)",
+        "0x004a7027 in TrimExcessNavyOrderSupportAndRebuildOrderBuffer (0x004a6ef0)",
+        "0x004ec7ca in AssignDefenseUnitsToHomeAndBorderRegions (0x004ec540)",
+        "0x004ec7da in AssignDefenseUnitsToHomeAndBorderRegions (0x004ec540)",
+        "0x004ec7fb in AssignDefenseUnitsToHomeAndBorderRegions (0x004ec540)"
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "TrimExcessNavyOrderSupportAndRebuildOrderBuffer (0x004a6ef0)",
+          "instruction": "MOV dword ptr [ESP + 0x1c],ESI",
+          "kind": "code_address_take",
+          "location": "0x004a7013",
+          "raw_target": "0x00407275"
+        },
+        {
+          "classification": "vtable",
+          "container": "TSortedList",
+          "kind": "data_pointer",
+          "location": "0x00648f28",
+          "pointer_run_end": "0x006490c8",
+          "pointer_run_entries": 129,
+          "pointer_run_start": "0x00648ec4",
+          "raw_target": "0x00407275",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TList",
+          "kind": "data_pointer",
+          "location": "0x00648fc0",
+          "pointer_run_end": "0x006490c8",
+          "pointer_run_entries": 129,
+          "pointer_run_start": "0x00648ec4",
+          "raw_target": "0x00407275",
+          "readers": [
+            "AssignDefenseUnitsToHomeAndBorderRegions (004ec540)",
+            "TrimExcessNavyOrderSupportAndRebuildOrderBuffer (004a6ef0)"
+          ]
+        },
+        {
+          "classification": "vtable",
+          "container": "TArmyStackList",
+          "kind": "data_pointer",
+          "location": "0x0064c9e8",
+          "pointer_run_end": "0x0064cae0",
+          "pointer_run_entries": 149,
+          "pointer_run_start": "0x0064c88c",
+          "raw_target": "0x00407275",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TTaskList",
+          "kind": "data_pointer",
+          "location": "0x0066aa90",
+          "pointer_run_end": "0x0066aaf0",
+          "pointer_run_entries": 114,
+          "pointer_run_start": "0x0066a928",
+          "raw_target": "0x00407275",
+          "readers": []
+        }
+      ],
+      "name": "TPtrList::GetCountSlot48",
+      "owner": "src/game/TSortedList.cpp",
+      "registrars": [
+        "TrimExcessNavyOrderSupportAndRebuildOrderBuffer (0x004a6ef0)"
+      ],
+      "similarity": 1.0,
+      "size": 4,
+      "target": "0x004886d0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x00409a9d in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "BeginMouseCaptureForControlAndStartRepeatTimer (0x00489bf0)",
+          "instruction": "PUSH 0x409a9d",
+          "kind": "code_address_take",
+          "location": "0x00489c54",
+          "raw_target": "0x00409a9d"
+        },
+        {
+          "classification": "candidate",
+          "container": "BeginMouseCaptureAndStartRepeatTimer (0x0048e640)",
+          "instruction": "PUSH 0x409a9d",
+          "kind": "code_address_take",
+          "location": "0x0048e6b4",
+          "raw_target": "0x00409a9d"
+        }
+      ],
+      "name": "NotifyGlobalCaptureOwnerState1WithCachedCoords",
+      "owner": "src/game/TMouseCaptureState.cpp",
+      "registrars": [
+        "BeginMouseCaptureAndStartRepeatTimer (0x0048e640)",
+        "BeginMouseCaptureForControlAndStartRepeatTimer (0x00489bf0)"
+      ],
+      "similarity": 0.2909090909090909,
+      "size": 99,
+      "target": "0x00489b60",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".data",
+          "kind": "data_pointer",
+          "location": "0x006925b8",
+          "pointer_run_end": "0x006925c8",
+          "pointer_run_entries": 6,
+          "pointer_run_start": "0x006925b0",
+          "raw_target": "0x0048d240",
+          "readers": []
+        }
+      ],
+      "name": "InitializeViewModalStateNodeBlockChainHeadAndRegisterAtExit",
+      "owner": "",
+      "registrars": [],
+      "similarity": 0.2222222222222222,
+      "size": 26,
+      "target": "0x0048d240",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "InitializeViewModalStateNodeBlockChainHeadAndRegisterAtExit (0x0048d240)",
+          "instruction": "PUSH 0x48d270",
+          "kind": "code_address_take",
+          "location": "0x0048d24c",
+          "raw_target": "0x0048d270"
+        }
+      ],
+      "name": "DestroyViewModalStateNodeBlockChainAtExit",
+      "owner": "",
+      "registrars": [
+        "InitializeViewModalStateNodeBlockChainHeadAndRegisterAtExit (0x0048d240)"
+      ],
+      "similarity": 0.0,
+      "size": 5,
+      "target": "0x0048d270",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".data",
+          "kind": "data_pointer",
+          "location": "0x006925bc",
+          "pointer_run_end": "0x006925c8",
+          "pointer_run_entries": 6,
+          "pointer_run_start": "0x006925b0",
+          "raw_target": "0x0048d4a0",
+          "readers": []
+        }
+      ],
+      "name": "InitializeTWindowUnlinkDestructState_006A1A40_AndRegisterAtExit",
+      "owner": "",
+      "registrars": [],
+      "similarity": 0.2222222222222222,
+      "size": 26,
+      "target": "0x0048d4a0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "InitializeTWindowUnlinkDestructState_006A1A40_AndRegisterAtExit (0x0048d4a0)",
+          "instruction": "PUSH 0x48d4d0",
+          "kind": "code_address_take",
+          "location": "0x0048d4ac",
+          "raw_target": "0x0048d4d0"
+        }
+      ],
+      "name": "DestroyTWindowUnlinkDestructState_006A1A40_AtExitOnce",
+      "owner": "",
+      "registrars": [
+        "InitializeTWindowUnlinkDestructState_006A1A40_AndRegisterAtExit (0x0048d4a0)"
+      ],
+      "similarity": 0.0,
+      "size": 26,
+      "target": "0x0048d4d0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".data",
+          "kind": "data_pointer",
+          "location": "0x00692644",
+          "pointer_run_end": "0x0069264c",
+          "pointer_run_entries": 2,
+          "pointer_run_start": "0x00692644",
+          "raw_target": "0x00493f90",
+          "readers": []
+        }
+      ],
+      "name": "InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit",
+      "owner": "",
+      "registrars": [],
+      "similarity": 0.25,
+      "size": 24,
+      "target": "0x00493f90",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit (0x00493f90)",
+          "instruction": "PUSH 0x493fc0",
+          "kind": "code_address_take",
+          "location": "0x00493f9a",
+          "raw_target": "0x00493fc0"
+        }
+      ],
+      "name": "DestroyDefaultQuickDrawSurfaceContextAtExit",
+      "owner": "",
+      "registrars": [
+        "InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit (0x00493f90)"
+      ],
+      "similarity": 0.0,
+      "size": 10,
+      "target": "0x00493fc0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "WrapperFor_AppendPointerToGlobalVectorAsStatus_At004943e0 (0x004943e0)",
+          "instruction": "PUSH 0x494430",
+          "kind": "code_address_take",
+          "location": "0x004943e5",
+          "raw_target": "0x00494430"
+        }
+      ],
+      "name": "ReleaseQuickDrawCachedFontHandleIfPresent_At00494430",
+      "owner": "src/game/crt_io_library.cpp",
+      "registrars": [
+        "WrapperFor_AppendPointerToGlobalVectorAsStatus_At004943e0 (0x004943e0)"
+      ],
+      "similarity": null,
+      "size": 18,
+      "target": "0x00494430",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".data",
+          "kind": "data_pointer",
+          "location": "0x00692694",
+          "pointer_run_end": "0x006926e0",
+          "pointer_run_entries": 35,
+          "pointer_run_start": "0x00692654",
+          "raw_target": "0x0049baa0",
+          "readers": []
+        }
+      ],
+      "name": "InitializeStaticDialogTemplateD0AndRegisterAtExit",
+      "owner": "",
+      "registrars": [],
+      "similarity": 0.2222222222222222,
+      "size": 26,
+      "target": "0x0049baa0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "InitializeStaticDialogTemplateD0AndRegisterAtExit (0x0049baa0)",
+          "instruction": "PUSH 0x49bad0",
+          "kind": "code_address_take",
+          "location": "0x0049baac",
+          "raw_target": "0x0049bad0"
+        }
+      ],
+      "name": "CleanupStaticDialogTemplateD0AtExit",
+      "owner": "",
+      "registrars": [
+        "InitializeStaticDialogTemplateD0AndRegisterAtExit (0x0049baa0)"
+      ],
+      "similarity": 0.0,
+      "size": 10,
+      "target": "0x0049bad0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 2,
+      "callers": [
+        "0x00406a50 in ",
+        "0x0049cd55 in CreateGlobalBackdropWindowWithDefaultBmp3B6 (0x0049cca0)"
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0064bcac",
+          "pointer_run_end": "0x0064bd90",
+          "pointer_run_entries": 57,
+          "pointer_run_start": "0x0064bcac",
+          "raw_target": "0x00406a50",
+          "readers": [
+            "CreateGlobalBackdropWindowWithDefaultBmp3B6 (0049cca0)"
+          ]
+        }
+      ],
+      "name": "TBackdropWindow::`scalar deleting destructor'",
+      "owner": "src/game/TBackdropWindow.cpp",
+      "registrars": [],
+      "similarity": 1.0,
+      "size": 30,
+      "target": "0x0049cbc0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x00404f93 in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0064bd54",
+          "pointer_run_end": "0x0064bd90",
+          "pointer_run_entries": 57,
+          "pointer_run_start": "0x0064bcac",
+          "raw_target": "0x00404f93",
+          "readers": [
+            "CreateGlobalBackdropWindowWithDefaultBmp3B6 (0049cca0)"
+          ]
+        }
+      ],
+      "name": "TBackdropWindow::ResetTopLevelWindowStateAndReleaseTempMapBuffer",
+      "owner": "src/game/TBackdropWindow.cpp",
+      "registrars": [],
+      "similarity": 0.6593406593406593,
+      "size": 178,
+      "target": "0x0049cfa0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 6,
+      "callers": [
+        "0x00413d57 in ShowNationSelectDialogAndRedispatchCurrentTurnEvent (0x00413d20)",
+        "0x00413f95 in HandleDialogResultAndPostCommand100 (0x00413f60)",
+        "0x00414127 in ApplyDialogSelectionToNationState (0x004140f0)",
+        "0x0041516f in ShowAutoResolutionDialogIfNeeded (0x00415090)",
+        "0x00480560 in SelectRuntimeProvider (0x00480500)",
+        "0x004851e7 in TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog (0x004851b0)"
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "vtable",
+          "container": "TModalDialogBase",
+          "kind": "data_pointer",
+          "location": "0x0063e678",
+          "pointer_run_end": "0x0063e7c0",
+          "pointer_run_entries": 346,
+          "pointer_run_start": "0x0063e258",
+          "raw_target": "0x004076ee",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDDTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x0063e788",
+          "pointer_run_end": "0x0063e7c0",
+          "pointer_run_entries": 346,
+          "pointer_run_start": "0x0063e258",
+          "raw_target": "0x004076ee",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TC2TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006462c8",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x004076ee",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TD2TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006463d8",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x004076ee",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDBTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006464e8",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x004076ee",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDCTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006465f8",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x004076ee",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDETemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646708",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x004076ee",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TFATemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646920",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x004076ee",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TAutoResolutionDialog",
+          "kind": "data_pointer",
+          "location": "0x00646a30",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x004076ee",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TADTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646e40",
+          "pointer_run_end": "0x00646e78",
+          "pointer_run_entries": 210,
+          "pointer_run_start": "0x00646b30",
+          "raw_target": "0x004076ee",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "T104TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646f78",
+          "pointer_run_end": "0x00646fc8",
+          "pointer_run_entries": 82,
+          "pointer_run_start": "0x00646e80",
+          "raw_target": "0x004076ee",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00647128",
+          "pointer_run_end": "0x00647160",
+          "pointer_run_entries": 74,
+          "pointer_run_start": "0x00647038",
+          "raw_target": "0x004076ee",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TLowDiskWarningDialog",
+          "kind": "data_pointer",
+          "location": "0x0066f6b0",
+          "pointer_run_end": "0x0066f6e8",
+          "pointer_run_entries": 74,
+          "pointer_run_start": "0x0066f5c0",
+          "raw_target": "0x004076ee",
+          "readers": []
+        }
+      ],
+      "name": "PrepareAndCreateDialogFromTemplateResource",
+      "owner": "src/game/TModalDialogBase.cpp",
+      "registrars": [],
+      "similarity": 0.4966442953020134,
+      "size": 184,
+      "target": "0x0049d360",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 9,
+      "callers": [
+        "0x00413aaf in ShowSelectedDibInTemplateDDDialog (0x00413a50)",
+        "0x00413d98 in ShowNationSelectDialogAndRedispatchCurrentTurnEvent (0x00413d20)",
+        "0x00413fa9 in HandleDialogResultAndPostCommand100 (0x00413f60)",
+        "0x00414168 in ApplyDialogSelectionToNationState (0x004140f0)",
+        "0x004144a4 in LoadAndPreviewDibFromDialogInput (0x004143b0)",
+        "0x00415189 in ShowAutoResolutionDialogIfNeeded (0x00415090)",
+        "0x0041594f in WarnLowDiskSpaceAndConfirmContinue (0x00415760)",
+        "0x004805bb in SelectRuntimeProvider (0x00480500)",
+        "0x004853ee in TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog (0x004851b0)"
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "vtable",
+          "container": "TModalDialogBase",
+          "kind": "data_pointer",
+          "location": "0x0063e660",
+          "pointer_run_end": "0x0063e7c0",
+          "pointer_run_entries": 346,
+          "pointer_run_start": "0x0063e258",
+          "raw_target": "0x004055f6",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDDTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x0063e770",
+          "pointer_run_end": "0x0063e7c0",
+          "pointer_run_entries": 346,
+          "pointer_run_start": "0x0063e258",
+          "raw_target": "0x004055f6",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TC2TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006462b0",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x004055f6",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TD2TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006463c0",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x004055f6",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDBTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006464d0",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x004055f6",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDCTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006465e0",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x004055f6",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDETemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006466f0",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x004055f6",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TFATemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646908",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x004055f6",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TAutoResolutionDialog",
+          "kind": "data_pointer",
+          "location": "0x00646a18",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x004055f6",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TADTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646e28",
+          "pointer_run_end": "0x00646e78",
+          "pointer_run_entries": 210,
+          "pointer_run_start": "0x00646b30",
+          "raw_target": "0x004055f6",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "T104TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646f60",
+          "pointer_run_end": "0x00646fc8",
+          "pointer_run_entries": 82,
+          "pointer_run_start": "0x00646e80",
+          "raw_target": "0x004055f6",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x00647110",
+          "pointer_run_end": "0x00647160",
+          "pointer_run_entries": 74,
+          "pointer_run_start": "0x00647038",
+          "raw_target": "0x004055f6",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TLowDiskWarningDialog",
+          "kind": "data_pointer",
+          "location": "0x0066f698",
+          "pointer_run_end": "0x0066f6e8",
+          "pointer_run_entries": 74,
+          "pointer_run_start": "0x0066f5c0",
+          "raw_target": "0x004055f6",
+          "readers": []
+        }
+      ],
+      "name": "TControl::FinalizeModalDialogAndRestoreOwnerFocus",
+      "owner": "src/game/TModalDialogBase.cpp",
+      "registrars": [],
+      "similarity": 0.4657534246575342,
+      "size": 144,
+      "target": "0x0049d450",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 24,
+      "callers": [
+        "0x00413af0 in ShowSelectedDibInTemplateDDDialog (0x00413a50)",
+        "0x00413bb2 in ~TModalDialogBase (0x00413b80)",
+        "0x00413c81 in ~TDDTemplateDialog (0x00413c30)",
+        "0x00413e38 in ShowNationSelectDialogAndRedispatchCurrentTurnEvent (0x00413d20)",
+        "0x00413f14 in WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0_Impl (0x00413ed0)",
+        "0x00414004 in HandleDialogResultAndPostCommand100 (0x00413f60)",
+        "0x004140a2 in WrapperFor_CDialog_At00414070 (0x00414070)",
+        "0x0041427c in ApplyDialogSelectionToNationState (0x004140f0)",
+        "0x00414364 in WrapperFor_FreeHeapBufferIfNotNull_At0047dc40_Impl (0x00414320)",
+        "0x004144e5 in LoadAndPreviewDibFromDialogInput (0x004143b0)",
+        "0x004151dc in ShowAutoResolutionDialogIfNeeded (0x00415090)",
+        "0x00415334 in DestroyListBoxAndHotKeyChildren (0x004152e0)",
+        "0x00415990 in WarnLowDiskSpaceAndConfirmContinue (0x00415760)",
+        "0x00415a26 in WarnLowDiskSpaceAndConfirmContinue (0x00415760)",
+        "0x00415bb4 in WrapperFor_FreeHeapBufferIfNotNull_At005e1c60_Impl (0x00415b70)",
+        "0x0047d114 in DestroyDialogWithListBoxAndHotKeyControl_Alias (0x0047d0c0)",
+        "0x0047d2c4 in WrapperFor_FreeHeapBufferIfNotNull_At0047d250_Impl (0x0047d280)",
+        "0x0047df44 in WrapperFor_FreeHeapBufferIfNotNull_At0047ded0_Impl (0x0047df00)",
+        "0x0047f554 in WrapperFor_FreeHeapBufferIfNotNull_At0047f4e0_Impl (0x0047f510)",
+        "0x0048063e in CopyListBoxItemDataStructByIndex (0x004805e6)",
+        "0x00480691 in ",
+        "0x004807d4 in WrapperFor_FreeHeapBufferIfNotNull_At00480aa0_Impl (0x00480790)",
+        "0x00481192 in WrapperFor_CDialog_At00481160 (0x00481160)",
+        "0x00485486 in TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog (0x004851b0)"
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "vtable",
+          "container": "TModalDialogBase",
+          "kind": "data_pointer",
+          "location": "0x0063e67c",
+          "pointer_run_end": "0x0063e7c0",
+          "pointer_run_entries": 346,
+          "pointer_run_start": "0x0063e258",
+          "raw_target": "0x00402ca7",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDDTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x0063e78c",
+          "pointer_run_end": "0x0063e7c0",
+          "pointer_run_entries": 346,
+          "pointer_run_start": "0x0063e258",
+          "raw_target": "0x00402ca7",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TC2TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006462cc",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x00402ca7",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TD2TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006463dc",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x00402ca7",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDBTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006464ec",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x00402ca7",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDCTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x006465fc",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x00402ca7",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TDETemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x0064670c",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x00402ca7",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TFATemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646924",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x00402ca7",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TAutoResolutionDialog",
+          "kind": "data_pointer",
+          "location": "0x00646a34",
+          "pointer_run_end": "0x00646a80",
+          "pointer_run_entries": 570,
+          "pointer_run_start": "0x00646198",
+          "raw_target": "0x00402ca7",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TADTemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646e44",
+          "pointer_run_end": "0x00646e78",
+          "pointer_run_entries": 210,
+          "pointer_run_start": "0x00646b30",
+          "raw_target": "0x00402ca7",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "T104TemplateDialog",
+          "kind": "data_pointer",
+          "location": "0x00646f7c",
+          "pointer_run_end": "0x00646fc8",
+          "pointer_run_entries": 82,
+          "pointer_run_start": "0x00646e80",
+          "raw_target": "0x00402ca7",
+          "readers": []
+        },
+        {
+          "classification": "candidate",
+          "container": ".rdata",
+          "kind": "data_pointer",
+          "location": "0x0064712c",
+          "pointer_run_end": "0x00647160",
+          "pointer_run_entries": 74,
+          "pointer_run_start": "0x00647038",
+          "raw_target": "0x00402ca7",
+          "readers": []
+        },
+        {
+          "classification": "vtable",
+          "container": "TLowDiskWarningDialog",
+          "kind": "data_pointer",
+          "location": "0x0066f6b4",
+          "pointer_run_end": "0x0066f6e8",
+          "pointer_run_entries": 74,
+          "pointer_run_start": "0x0066f5c0",
+          "raw_target": "0x00402ca7",
+          "readers": []
+        }
+      ],
+      "name": "WrapperFor_CleanupDialogModalCreateState_At0049d510",
+      "owner": "src/game/TModalDialogBase.cpp",
+      "registrars": [],
+      "similarity": 1.0,
+      "size": 45,
+      "target": "0x0049d510",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "BuildArmyContextActionRecordsAndDispatchLabel (0x004a2900)",
+          "instruction": "PUSH 0x40781f",
+          "kind": "code_address_take",
+          "location": "0x004a291f",
+          "raw_target": "0x0040781f"
+        }
+      ],
+      "name": "OrphanVtableAssignStub_004a31c0",
+      "owner": "",
+      "registrars": [
+        "BuildArmyContextActionRecordsAndDispatchLabel (0x004a2900)"
+      ],
+      "similarity": 0.4,
+      "size": 6,
+      "target": "0x004a31c0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "BuildArmyContextActionRecordsAndDispatchLabel (0x004a2900)",
+          "instruction": "PUSH 0x40722a",
+          "kind": "code_address_take",
+          "location": "0x004a2932",
+          "raw_target": "0x0040722a"
+        },
+        {
+          "classification": "candidate",
+          "container": "SelectEligibleMapOrderInteractionForNationAndContext (0x00557f10)",
+          "instruction": "PUSH 0x40722a",
+          "kind": "code_address_take",
+          "location": "0x005582f5",
+          "raw_target": "0x0040722a"
+        },
+        {
+          "classification": "candidate",
+          "container": "ProcessNationMapOrderInteractionsAndApplyOutcomes (0x00558960)",
+          "instruction": "PUSH 0x40722a",
+          "kind": "code_address_take",
+          "location": "0x00558a97",
+          "raw_target": "0x0040722a"
+        },
+        {
+          "classification": "candidate",
+          "container": "ResolveMapOrderPairConflictStep (0x0055a780)",
+          "instruction": "PUSH 0x40722a",
+          "kind": "code_address_take",
+          "location": "0x0055a7b3",
+          "raw_target": "0x0040722a"
+        }
+      ],
+      "name": "CStr255::CStr255",
+      "owner": "src/game/CStr255.cpp",
+      "registrars": [
+        "BuildArmyContextActionRecordsAndDispatchLabel (0x004a2900)",
+        "ProcessNationMapOrderInteractionsAndApplyOutcomes (0x00558960)",
+        "ResolveMapOrderPairConflictStep (0x0055a780)",
+        "SelectEligibleMapOrderInteractionForNationAndContext (0x00557f10)"
+      ],
+      "similarity": 1.0,
+      "size": 6,
+      "target": "0x004a31e0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 6,
+      "callers": [
+        "0x004fe6a5 in InitializeSharedStringRefBatch_006A3060_AndRegisterAtExit (0x004fe6a0)",
+        "0x004fe6af in InitializeSharedStringRefBatch_006A3060_AndRegisterAtExit (0x004fe6a0)",
+        "0x004fe6b9 in InitializeSharedStringRefBatch_006A3060_AndRegisterAtExit (0x004fe6a0)",
+        "0x0056dcf6 in SaveGameWithModeAndOptionalLabel (0x0056da50)",
+        "0x00576ea5 in InitializeSharedStringRef_006A4220_AndRegisterAtExit (0x00576ea0)",
+        "0x005c41f8 in ConfigureUiControlStyleValueAndCaptionFromStringResource (0x005c4180)"
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "ApplyRectSlot110 (0x004af0b0)",
+          "instruction": "PUSH 0x404642",
+          "kind": "code_address_take",
+          "location": "0x004af124",
+          "raw_target": "0x00404642"
+        },
+        {
+          "classification": "candidate",
+          "container": "TMultiplayerMgr (0x00542670)",
+          "instruction": "PUSH 0x404642",
+          "kind": "code_address_take",
+          "location": "0x005426c2",
+          "raw_target": "0x00404642"
+        },
+        {
+          "classification": "candidate",
+          "container": "TMultiplayerMgr (0x00542670)",
+          "instruction": "PUSH 0x404642",
+          "kind": "code_address_take",
+          "location": "0x005426de",
+          "raw_target": "0x00404642"
+        },
+        {
+          "classification": "candidate",
+          "container": "BuildInterNationEventSummaryRowsForAdvisorDialog (0x0055d200)",
+          "instruction": "PUSH 0x404642",
+          "kind": "code_address_take",
+          "location": "0x0055d227",
+          "raw_target": "0x00404642"
+        },
+        {
+          "classification": "candidate",
+          "container": "ApplyRectSlot110 (0x005654e0)",
+          "instruction": "PUSH 0x404642",
+          "kind": "code_address_take",
+          "location": "0x00565552",
+          "raw_target": "0x00404642"
+        },
+        {
+          "classification": "candidate",
+          "container": "TSimMgr (0x0057b9e0)",
+          "instruction": "PUSH 0x404642",
+          "kind": "code_address_take",
+          "location": "0x0057ba0d",
+          "raw_target": "0x00404642"
+        },
+        {
+          "classification": "candidate",
+          "container": "OpenMapEntryOrderDialog (0x00597f80)",
+          "instruction": "PUSH 0x404642",
+          "kind": "code_address_take",
+          "location": "0x00598345",
+          "raw_target": "0x00404642"
+        },
+        {
+          "classification": "candidate",
+          "container": "CreateObject (0x005df1d0)",
+          "instruction": "PUSH 0x404642",
+          "kind": "code_address_take",
+          "location": "0x005df20c",
+          "raw_target": "0x00404642"
+        },
+        {
+          "classification": "candidate",
+          "container": "TAssetMgr (0x005df280)",
+          "instruction": "PUSH 0x404642",
+          "kind": "code_address_take",
+          "location": "0x005df2a8",
+          "raw_target": "0x00404642"
+        }
+      ],
+      "name": "CString::CString(void)",
+      "owner": "src/game/mfc_heap_library.cpp",
+      "registrars": [
+        "ApplyRectSlot110 (0x004af0b0)",
+        "ApplyRectSlot110 (0x005654e0)",
+        "BuildInterNationEventSummaryRowsForAdvisorDialog (0x0055d200)",
+        "CreateObject (0x005df1d0)",
+        "OpenMapEntryOrderDialog (0x00597f80)",
+        "TAssetMgr (0x005df280)",
+        "TMultiplayerMgr (0x00542670)",
+        "TSimMgr (0x0057b9e0)"
+      ],
+      "similarity": null,
+      "size": 12,
+      "target": "0x004b0970",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".data",
+          "kind": "data_pointer",
+          "location": "0x006928d0",
+          "pointer_run_end": "0x006928e0",
+          "pointer_run_entries": 4,
+          "pointer_run_start": "0x006928d0",
+          "raw_target": "0x004b95c0",
+          "readers": []
+        }
+      ],
+      "name": "InitializeCityBuildingHoverSelectionRects_004b95c0",
+      "owner": "src/game/TToolBarCluster.cpp",
+      "registrars": [],
+      "similarity": 0.2542372881355932,
+      "size": 573,
+      "target": "0x004b95c0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x004b9890 in thunk_InitializeCityBuildingLayoutData (0x004b9890)"
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".data",
+          "kind": "data_pointer",
+          "location": "0x006928d4",
+          "pointer_run_end": "0x006928e0",
+          "pointer_run_entries": 4,
+          "pointer_run_start": "0x006928d0",
+          "raw_target": "0x004b9890",
+          "readers": []
+        }
+      ],
+      "name": "InitializeCityBuildingLayoutData",
+      "owner": "src/game/TToolBarCluster.cpp",
+      "registrars": [],
+      "similarity": 0.25257731958762886,
+      "size": 1951,
+      "target": "0x004b98b0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "TDiplomacyMapView (0x004f3b80)",
+          "instruction": "PUSH 0x404d5e",
+          "kind": "code_address_take",
+          "location": "0x004f3bc8",
+          "raw_target": "0x00404d5e"
+        },
+        {
+          "classification": "candidate",
+          "container": "TMacViewMgr (0x00509ca0)",
+          "instruction": "PUSH 0x404d5e",
+          "kind": "code_address_take",
+          "location": "0x00509cca",
+          "raw_target": "0x00404d5e"
+        },
+        {
+          "classification": "candidate",
+          "container": "TMacViewMgr (0x00509ca0)",
+          "instruction": "PUSH 0x404d5e",
+          "kind": "code_address_take",
+          "location": "0x00509cea",
+          "raw_target": "0x00404d5e"
+        },
+        {
+          "classification": "candidate",
+          "container": "TMacViewMgr (0x00509ca0)",
+          "instruction": "PUSH 0x404d5e",
+          "kind": "code_address_take",
+          "location": "0x00509d09",
+          "raw_target": "0x00404d5e"
+        }
+      ],
+      "name": "OrphanLeaf_NoCall_Ins15_004d4b90",
+      "owner": "src/game/StrategicMapCallbackRecord.cpp",
+      "registrars": [
+        "TDiplomacyMapView (0x004f3b80)",
+        "TMacViewMgr (0x00509ca0)"
+      ],
+      "similarity": 1.0,
+      "size": 48,
+      "target": "0x004d4b90",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x00408436 in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "TDiplomacyMapView (0x004f3b80)",
+          "instruction": "PUSH 0x408436",
+          "kind": "code_address_take",
+          "location": "0x004f3ba8",
+          "raw_target": "0x00408436"
+        }
+      ],
+      "name": "TDiplomacyMapView::`scalar deleting destructor'",
+      "owner": "src/game/TDiplomacyMapView.cpp",
+      "registrars": [
+        "TDiplomacyMapView (0x004f3b80)"
+      ],
+      "similarity": 1.0,
+      "size": 9,
+      "target": "0x004f3c70",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".data",
+          "kind": "data_pointer",
+          "location": "0x00692c20",
+          "pointer_run_end": "0x00692c2c",
+          "pointer_run_entries": 3,
+          "pointer_run_start": "0x00692c20",
+          "raw_target": "0x0051e0b0",
+          "readers": []
+        }
+      ],
+      "name": "InitializeMapInteractionPreviewScaleXDefault",
+      "owner": "src/game/TMapDialog.cpp",
+      "registrars": [],
+      "similarity": 1.0,
+      "size": 21,
+      "target": "0x0051e0b0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".data",
+          "kind": "data_pointer",
+          "location": "0x00692c24",
+          "pointer_run_end": "0x00692c2c",
+          "pointer_run_entries": 3,
+          "pointer_run_start": "0x00692c20",
+          "raw_target": "0x0051e0e0",
+          "readers": []
+        }
+      ],
+      "name": "InitializeMapInteractionPreviewScaleYDefault",
+      "owner": "src/game/TMapDialog.cpp",
+      "registrars": [],
+      "similarity": 1.0,
+      "size": 21,
+      "target": "0x0051e0e0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".data",
+          "kind": "data_pointer",
+          "location": "0x00692c28",
+          "pointer_run_end": "0x00692c2c",
+          "pointer_run_entries": 3,
+          "pointer_run_start": "0x00692c20",
+          "raw_target": "0x0051e110",
+          "readers": []
+        }
+      ],
+      "name": "RecomputeMapInteractionPreviewVerticalOffsetFromScale",
+      "owner": "",
+      "registrars": [],
+      "similarity": 0.25,
+      "size": 30,
+      "target": "0x0051e110",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x004042be in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".data",
+          "kind": "data_pointer",
+          "location": "0x00698b5c",
+          "pointer_run_end": "0x00698be0",
+          "pointer_run_entries": 36,
+          "pointer_run_start": "0x00698b50",
+          "raw_target": "0x004042be",
+          "readers": []
+        }
+      ],
+      "name": "TSimMgr::HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders",
+      "owner": "src/game/TSimMgr.cpp",
+      "registrars": [],
+      "similarity": 1.0,
+      "size": 274,
+      "target": "0x005824c0",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x00406dd4 in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "SelectAndScheduleRandomAudioCue (0x00593790)",
+          "instruction": "PUSH 0x406dd4",
+          "kind": "code_address_take",
+          "location": "0x0059388c",
+          "raw_target": "0x00406dd4"
+        },
+        {
+          "classification": "candidate",
+          "container": "RequestAudioPresetChangeWithDeferredApply (0x00593920)",
+          "instruction": "PUSH 0x406dd4",
+          "kind": "code_address_take",
+          "location": "0x00593997",
+          "raw_target": "0x00406dd4"
+        },
+        {
+          "classification": "candidate",
+          "container": "SetActiveAudioCueAndResetQueue (0x00593a10)",
+          "instruction": "PUSH 0x406dd4",
+          "kind": "code_address_take",
+          "location": "0x00593b51",
+          "raw_target": "0x00406dd4"
+        },
+        {
+          "classification": "candidate",
+          "container": "HandleBlinkStateAndScheduleTimerTick (0x00593c10)",
+          "instruction": "PUSH 0x406dd4",
+          "kind": "code_address_take",
+          "location": "0x00593c57",
+          "raw_target": "0x00406dd4"
+        },
+        {
+          "classification": "candidate",
+          "container": "Helper_Uses_thunk_GetTickCountDiv16_At00593ce0 (0x00593ce0)",
+          "instruction": "PUSH 0x406dd4",
+          "kind": "code_address_take",
+          "location": "0x00593cfc",
+          "raw_target": "0x00406dd4"
+        }
+      ],
+      "name": "UpdateDeferredCdAudioFade",
+      "owner": "src/game/TSoundPlayer.cpp",
+      "registrars": [
+        "HandleBlinkStateAndScheduleTimerTick (0x00593c10)",
+        "Helper_Uses_thunk_GetTickCountDiv16_At00593ce0 (0x00593ce0)",
+        "RequestAudioPresetChangeWithDeferredApply (0x00593920)",
+        "SelectAndScheduleRandomAudioCue (0x00593790)",
+        "SetActiveAudioCueAndResetQueue (0x00593a10)"
+      ],
+      "similarity": 0.6896551724137931,
+      "size": 113,
+      "target": "0x00593210",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 1,
+      "callers": [
+        "0x004091ab in "
+      ],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": "BuildTacticalActionPriorityBucketsWithGridGuard (0x0059bcf0)",
+          "instruction": "PUSH 0x4091ab",
+          "kind": "code_address_take",
+          "location": "0x0059bd5b",
+          "raw_target": "0x004091ab"
+        },
+        {
+          "classification": "candidate",
+          "container": "DispatchTacticalActionClassSelectionAcrossCursorList (0x0059bf20)",
+          "instruction": "PUSH 0x4091ab",
+          "kind": "code_address_take",
+          "location": "0x0059bf2c",
+          "raw_target": "0x004091ab"
+        }
+      ],
+      "name": "CompareTacticalCursorEntriesByActionClassPriority",
+      "owner": "src/game/TArmyPlayer.cpp",
+      "registrars": [
+        "BuildTacticalActionPriorityBucketsWithGridGuard (0x0059bcf0)",
+        "DispatchTacticalActionClassSelectionAcrossCursorList (0x0059bf20)"
+      ],
+      "similarity": 0.8947368421052632,
+      "size": 119,
+      "target": "0x0059b070",
+      "ui_relevant": true
+    },
+    {
+      "call_xref_count": 0,
+      "callers": [],
+      "classification": "candidate",
+      "hits": [
+        {
+          "classification": "candidate",
+          "container": ".data",
+          "kind": "data_pointer",
+          "location": "0x006930f8",
+          "pointer_run_end": "0x006930fc",
+          "pointer_run_entries": 4,
+          "pointer_run_start": "0x006930ec",
+          "raw_target": "0x005ad9e0",
+          "readers": []
+        }
+      ],
+      "name": "ResetUiFrameClipOrigin",
+      "owner": "",
+      "registrars": [],
+      "similarity": null,
+      "size": 13,
+      "target": "0x005ad9e0",
+      "ui_relevant": true
+    }
+  ],
+  "validation": {
+    "movie_notify_handler": {
+      "classification": [
+        "message_map"
+      ],
+      "found": true,
+      "note": "Current evidence identifies this as CIncludeView::OnMciNotifyMode in an AFX_MSGMAP, correcting the issue's older raw-callback hypothesis.",
+      "target": "0x00484230"
+    },
+    "startup_factories": {
+      "expected": 17,
+      "found": 17,
+      "targets": [
+        "0x00415fe0",
+        "0x0041b6d0",
+        "0x00427360",
+        "0x004295a0",
+        "0x00430c50",
+        "0x004357b0",
+        "0x0043dbc0",
+        "0x0044a810",
+        "0x0044af90",
+        "0x0044fbc0",
+        "0x004538a0",
+        "0x0045b100",
+        "0x0045d520",
+        "0x0045e0b0",
+        "0x004601b0",
+        "0x0046fd10",
+        "0x004749a0"
+      ]
+    }
+  }
+}

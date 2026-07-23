@@ -169,7 +169,9 @@ void TAmbitApplication::WriteTo(TStream* stream) {
 void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
   if (!InModalState() && edgeScrollTarget48 != nullptr) {
     short code = g_pUiRuntimeContext->currentTurnEventCode;
-    if (code == 0x7dd || code == 0x3b8 || code == 0xed8 || code == 0xf3c || code == 0x3c0) {
+    if (code == kTurnEventStrategicMap || code == kTurnEventCitySiteSelector ||
+        code == kTurnEventTacticalView || code == kTurnEventProvisional0F3C ||
+        code == kTurnEventMapEditor) {
       if (!InModalState()) {
         CPoint pt;
         pt.x = x;

@@ -8,6 +8,7 @@ module|tools.source_model|direct|The central source model (invoked by tools.gene
 module|tools.generate_symbols|direct|Symbols overlay (invoked by tools.generate; standalone via uv)
 module|tools.ui_codegen|just:ui-codegen/ui-codegen-check/ui-codegen-explain|Canonical semantic UI generator, validator, and source-map diagnostics
 module|tools.workflow.ui_view_coverage|just:ui-view-coverage/ui-view-coverage-check|Account for every committed Mac View in the Windows source model
+module|tools.workflow.turn_event_coverage|just:turn-event-coverage/turn-event-coverage-check|Generate the source-only turn-event screen and callback coverage matrix
 module|tools.workflow.mac_control_usage|just:mac-control-usage/mac-control-usage-check|File-scoped Mac control class/tag/screen semantic index and portprep hints
 module|tools.workflow.mac_payload_diff|just:mac-payload-diff/mac-payload-diff-check|Differential Mac widget payload byte correlations by effective class
 module|tools.workflow.mac_resource_xrefs|just:mac-resource-xrefs/mac-resource-xrefs-check|File-scoped Mac resource dependency graph with Windows event and handler joins
@@ -47,6 +48,7 @@ module|tools.reccmp.session_loop|just:session-loop|Top-impact session queue
 module|tools.workflow.format_cpp|just:format|Formatting helper
 module|tools.workflow.check_tooling_surface|just:tooling-check|Tooling surface validator
 module|tools.ghidra.listing_one|query:listing|Read-only pyghidra instruction listing
+module|tools.ghidra.data_function_pointers|dependency:tools.ghidra.query_registry|Classify data/code function pointers and hidden callback registrations
 module|tools.ghidra.xrefs_to|query:xrefs|Cross-references to/from an address (thunk-hopping TO, callees FROM)
 module|tools.ghidra.read_data|query:read-data|Read memory at an address as a typed value
 module|tools.ghidra.decompile_one|query:decompile|Read-only pyghidra decompile helper
@@ -121,6 +123,7 @@ module|tools.ghidra.string_refs_oracle|dependency:tools.ghidra.query_registry|st
 module|tools.workflow.check_stub_count|just:stub-count-gate|Generated stub count ratchet (un-claiming tell)
 module|tools.workflow.boundary_audit|just:boundary-audit|Manual/autogen boundary report (stub refs classified for porting)
 module|tools.workflow.check_boundary_ratchet|just:boundary-gate|Boundary ratchet: manual->stub refs + fn-ptr casts must not rise
+module|tools.workflow.scalar_type_audit|just:scalar-type-audit|Classified scalar-conversion and enum-candidate source audit with fingerprint ratchet
 module|tools.workflow.check_datacmp_baseline|just:datacmp-gate|Global-data drift ratchet over reccmp-datacmp
 module|tools.workflow.check_empty_bodies|just:noop-gate|Silent no-op detector + empty-body ratchet
 module|tools.workflow.check_typedef_ghidra_args|just:typedef-args-audit|Typedef-cast arity/convention audit vs binary RET-imm

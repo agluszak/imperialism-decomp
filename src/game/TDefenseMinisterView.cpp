@@ -53,7 +53,7 @@ void TDefenseMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, 
         g_pUiRuntimeContext->ModalMessage(message, g_ptDiplomacyNoticeModalMessage, 1, 0);
       }
     } else if (tag == kControlTagRecc) {
-      OpenBook(0x258a);
+      OpenBook(kTurnEventDefenseMinisterRecommendationBook);
     }
     return;
   }

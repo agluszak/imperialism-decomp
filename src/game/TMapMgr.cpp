@@ -268,7 +268,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
         UpdateMapTileAdjacencyMasksAndVariantForTile(tile);
         UpdateTileNeighborBorderInfluenceCounters(tile, 0);
       }
-      g_pUiRuntimeContext->DispatchTurnEvent(0x3c0, 0);
+      g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventMapEditor), 0);
     } else {
       // Scenario path: load the fixed map; bail out entirely when that fails.
       if (LoadScenarioMapStateFromTableResource(g_pSimMgr->scenarioMapIndexPlusOne - 1) == 0) {
@@ -1427,7 +1427,7 @@ void TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress() {
 void TMapMgr::DispatchTurnEvent7DDForActiveNation() {
   TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress();
   short nationId = g_pSimMgr->GetActiveNationId();
-  g_pUiRuntimeContext->DispatchTurnEvent(0x7dd, nationId);
+  g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventStrategicMap), nationId);
 }
 
 // FUNCTION: IMPERIALISM 0x00511f10

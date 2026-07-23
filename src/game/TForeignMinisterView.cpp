@@ -41,22 +41,22 @@ void TForeignMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, 
   } else if (commandId == 0x14) {
     switch (tag) {
     case kControlTagExpo:
-      OpenBook(0x2300);
+      OpenBook(kTurnEventExportsBook);
       break;
     case kControlTagDeal:
-      OpenBook(0x22f6);
+      OpenBook(kTurnEventMiniDealBook);
       break;
     case kControlTagMerc:
-      OpenBook(0x22ec);
+      OpenBook(kTurnEventMerchantMarineBook);
       break;
     case kControlTagGlob:
       ShowWorldMap();
       break;
     case kControlTagPric:
-      OpenBook(0x231e);
+      OpenBook(kTurnEventPriceHistoryBook);
       break;
     case kControlTagRecc:
-      OpenBook(0x22e2);
+      OpenBook(kTurnEventForeignMinisterRecommendationBook);
       break;
     default:
       break;

@@ -40,7 +40,8 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
       g_pSimMgr->preferenceValues[3] = static_cast<short>(originalSoundVolumePercent);
       g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[3]);
       if (g_pSimMgr->mode == 1) {
-        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+            EncodeTurnEventCode(kTurnEventMainMenu));
       } else {
         g_pSimMgr->StartNextPhase();
       }
@@ -79,7 +80,8 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
 
       g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[3]);
       if (g_pSimMgr->mode == 1 || g_pSimMgr->mode == 3) {
-        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+            EncodeTurnEventCode(kTurnEventMainMenu));
       } else {
         g_pSimMgr->StartNextPhase();
       }

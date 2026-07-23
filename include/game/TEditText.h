@@ -20,7 +20,7 @@ public:
 
   void Free() override;
   char IsEnabled() override;
-  void SetEnable(unsigned char enabled) override;
+  void SetEnable(char enabled) override;
   void TargetValidationSucceeded() override;
   char BecomeTarget() override;
   void SelectOwner(unsigned char select) override;

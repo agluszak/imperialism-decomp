@@ -5,8 +5,6 @@
 // previously mis-attributed to TMapMaker (SetEnabled/SetState) because Ghidra merged the
 // two adjacent single-slot vtables into TMapMaker's. See sea_geometry.h.
 
-#include <stdlib.h>
-
 #include "game/sea_geometry.h"
 
 #include <math.h>
@@ -15,13 +13,7 @@
 #include "game/TGlobalMapState.h"
 #include "game/global_data_tables.h"
 
-// Allocator-tracked realloc (generic stub form; typed cast at the call sites).
-
 namespace {
-
-template <typename T> inline T* ReallocElems(T* buffer, int bytes) {
-  return reinterpret_cast<T*>(realloc(buffer, bytes));
-}
 
 // Segment heading angle scale (original double at 0x006598d8): atan2(dy,dx) is scaled into
 // the 16-bit angle stored in SeaSegment::angle14. Referenced by both InitFromPoints and
@@ -33,31 +25,8 @@ const double kSeaAngleScale = 11733.857334728455;
 // Functions are emitted in ascending original-address order (decomplint requirement), so
 // the Seapoint/SeaSegment record methods interleave with the two stretch arrays' methods.
 
-// FUNCTION: IMPERIALISM 0x0052a760
-SeaSegment* SeaSegmentStretch::Add(SeaSegment value) {
-  unsigned int index = count;
-  if (index >= static_cast<unsigned int>(capacity)) {
-    int want = index + 1;
-    unsigned int newCapacity = want * 2;
-    if (newCapacity > 0x7fffffff) {
-      newCapacity = 0x7fffffff;
-    }
-    SeaSegment* grown = ReallocElems(data, want * 0x30);
-    if (grown == nullptr) {
-      data = ReallocElems(data, want * 0x18);
-      capacity = want;
-    } else {
-      data = grown;
-      capacity = newCapacity;
-    }
-  }
-  if (index >= static_cast<unsigned int>(count)) {
-    count = index + 1;
-  }
-  SeaSegment* slot = &data[index];
-  *slot = value;
-  return slot;
-}
+// TEMPLATE: IMPERIALISM 0x0052a760
+// ?Add@?$stretch@USeaSegment@@@@UAEPAUSeaSegment@@U2@@Z
 
 // FUNCTION: IMPERIALISM 0x0052ab00
 void SeaSegment::RecomputeEndpointsAndAngle() {
@@ -140,53 +109,14 @@ void SeaSegment::InitFromPoints(const Seapoint* p0, const Seapoint* p1) {
       static_cast<int>(atan2(static_cast<double>(dy), static_cast<double>(dx)) * kSeaAngleScale));
 }
 
-// FUNCTION: IMPERIALISM 0x0052b3e0
-void SeaSegmentStretch::OverStretch(unsigned int newCount) {
-  unsigned int newCapacity = newCount * 2;
-  if (newCapacity > 0x7fffffff) {
-    newCapacity = 0x7fffffff;
-  }
-  SeaSegment* grown = ReallocElems(data, newCount * 0x30);
-  if (grown == nullptr) {
-    data = ReallocElems(data, newCount * 0x18);
-    capacity = newCount;
-    return;
-  }
-  data = grown;
-  capacity = newCapacity;
-}
+// TEMPLATE: IMPERIALISM 0x0052b3e0
+// ?OverStretch@?$stretch@USeaSegment@@@@QAEXI@Z
 
-// FUNCTION: IMPERIALISM 0x0052b460
-SeaSegment* SeaSegmentStretch::operator[](unsigned int index) {
-  if (index >= static_cast<unsigned int>(capacity)) {
-    int want = index + 1;
-    unsigned int newCapacity = want * 2;
-    if (newCapacity > 0x7fffffff) {
-      newCapacity = 0x7fffffff;
-    }
-    SeaSegment* grown = ReallocElems(data, want * 0x30);
-    if (grown == nullptr) {
-      data = ReallocElems(data, want * 0x18);
-      capacity = want;
-    } else {
-      data = grown;
-      capacity = newCapacity;
-    }
-  }
-  if (index >= static_cast<unsigned int>(count)) {
-    count = index + 1;
-  }
-  return &data[index];
-}
+// TEMPLATE: IMPERIALISM 0x0052b460
+// ??A?$stretch@USeaSegment@@@@QAEAAUSeaSegment@@I@Z
 
-// FUNCTION: IMPERIALISM 0x0052b500
-void* SeaSegmentStretch::Detach() {
-  void* detached = data;
-  data = nullptr;
-  capacity = 0;
-  count = 0;
-  return detached;
-}
+// TEMPLATE: IMPERIALISM 0x0052b500
+// stretch::Detach
 
 // FUNCTION: IMPERIALISM 0x0052bef0
 void SeaSegment::ExtractWrappedEndpoint(int* out, char side) const {
@@ -230,50 +160,16 @@ unsigned short SeaSegment::SelectAttrByAngle() const {
   return static_cast<unsigned short>(attr10);
 }
 
-// FUNCTION: IMPERIALISM 0x0052c030
-SeaSegment* SeaSegmentStretch::At(unsigned int index) {
-  if (index < static_cast<unsigned int>(count)) {
-    return &data[index];
-  }
-  return nullptr;
-}
+// TEMPLATE: IMPERIALISM 0x0052c030
+// stretch::At
 
 // --- SeapointStretch (0x10-byte elements) ----------------------------------------------
 
-// FUNCTION: IMPERIALISM 0x0052c0a0
-Seapoint* SeapointStretch::Add(Seapoint value) {
-  unsigned int index = count;
-  if (index >= static_cast<unsigned int>(capacity)) {
-    int want = index + 1;
-    unsigned int newCapacity = want * 2;
-    if (newCapacity > 0x7fffffff) {
-      newCapacity = 0x7fffffff;
-    }
-    Seapoint* grown = ReallocElems(data, want * 0x20);
-    if (grown == nullptr) {
-      data = ReallocElems(data, want * 0x10);
-      capacity = want;
-    } else {
-      data = grown;
-      capacity = newCapacity;
-    }
-  }
-  if (index >= static_cast<unsigned int>(count)) {
-    count = index + 1;
-  }
-  Seapoint* slot = &data[index];
-  *slot = value;
-  return slot;
-}
+// TEMPLATE: IMPERIALISM 0x0052c0a0
+// ?Add@?$stretch@USeapoint@@@@UAEPAUSeapoint@@U2@@Z
 
-// FUNCTION: IMPERIALISM 0x0052ca00
-void* SeapointStretch::Detach() {
-  void* detached = data;
-  data = nullptr;
-  capacity = 0;
-  count = 0;
-  return detached;
-}
+// TEMPLATE: IMPERIALISM 0x0052ca00
+// stretch::Detach
 
 // FUNCTION: IMPERIALISM 0x0052ca20
 void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b, int extra) {
@@ -300,7 +196,7 @@ void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b
   pt.f0c = extra;
   // Dispatch through the stretch<Seapoint> base so the append goes through the vtable slot
   // (the original calls it indirectly), rather than being devirtualized to a direct call.
-  stretch<Seapoint, SeapointTag>* table = &g_seapointQuadTable_006a3478;
+  stretch<Seapoint>* table = &g_seapointQuadTable_006a3478;
   table->Add(pt);
 }
 
@@ -317,50 +213,11 @@ double Seapoint::WrappedDeltaMetric(const Seapoint* other) const {
   return sqrt(static_cast<double>(colDelta * colDelta * rowDelta * rowDelta));
 }
 
-// FUNCTION: IMPERIALISM 0x0052d0d0
-void SeapointStretch::OverStretch(unsigned int newCount) {
-  unsigned int newCapacity = newCount * 2;
-  if (newCapacity > 0x7fffffff) {
-    newCapacity = 0x7fffffff;
-  }
-  Seapoint* grown = ReallocElems(data, newCount * 0x20);
-  if (grown == nullptr) {
-    data = ReallocElems(data, newCount * 0x10);
-    capacity = newCount;
-    return;
-  }
-  data = grown;
-  capacity = newCapacity;
-}
+// TEMPLATE: IMPERIALISM 0x0052d0d0
+// ?OverStretch@?$stretch@USeapoint@@@@QAEXI@Z
 
-// FUNCTION: IMPERIALISM 0x0052d150
-Seapoint* SeapointStretch::operator[](unsigned int index) {
-  if (index >= static_cast<unsigned int>(capacity)) {
-    int want = index + 1;
-    unsigned int newCapacity = want * 2;
-    if (newCapacity > 0x7fffffff) {
-      newCapacity = 0x7fffffff;
-    }
-    Seapoint* grown = ReallocElems(data, want * 0x20);
-    if (grown == nullptr) {
-      data = ReallocElems(data, want * 0x10);
-      capacity = want;
-    } else {
-      data = grown;
-      capacity = newCapacity;
-    }
-  }
-  if (index >= static_cast<unsigned int>(count)) {
-    count = index + 1;
-  }
-  return &data[index];
-}
+// TEMPLATE: IMPERIALISM 0x0052d150
+// ??A?$stretch@USeapoint@@@@QAEAAUSeapoint@@I@Z
 
-// SeaSegmentStretch::ReallocExact (0x0052e310) is emitted last so this file's // FUNCTION:
-// markers stay in ascending address order (it sits above the Seapoint methods
-// 0x0052c0a0..0x0052d150).
-// FUNCTION: IMPERIALISM 0x0052e310
-void SeaSegmentStretch::ReallocExact(int newCount) {
-  data = ReallocElems(data, newCount * 0x18);
-  capacity = newCount;
-}
+// TEMPLATE: IMPERIALISM 0x0052e310
+// stretch::SetCapacity

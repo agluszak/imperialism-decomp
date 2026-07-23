@@ -17,6 +17,7 @@ struct DiplomacyMaskBufferRun {
   void BlitMonochromeMaskBytePatternToSurface(TQuickDrawBlitSurface* surface,
                                               TUiStyleRef paletteColor, const CPoint* origin,
                                               unsigned char flipVertical);
+  bool IsMaskPixelSet(int x, int y) const;
 
   unsigned char* maskBytesAt00;
   CRect boundsAt04;
@@ -61,7 +62,7 @@ public:
   virtual void PoseOffer(short sourceNation, short targetNation,
                          short offerType); // slot 0x79 0x4f7080
   // 0x4f3ea0 (1534 bytes) -- rebuilds the diplomacy-map nation overlay geometry and hit
-  // masks; body not yet ported (claimed as a manual stub so derived views can call it).
+  // masks used by this view and its derived council views.
   void BuildDiplomacyNationOverlayGeometryAndHitMasks();
 
   TDiplomacyMapView();

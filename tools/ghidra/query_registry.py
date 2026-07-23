@@ -16,6 +16,7 @@ import sys
 from collections.abc import Callable
 
 from tools.ghidra import (
+    data_function_pointers,
     decompile_one,
     portprep,
     field_xrefs,
@@ -35,6 +36,7 @@ from tools.ghidra import (
 )
 
 COMMANDS: dict[str, Callable] = {
+    "data-function-pointers": data_function_pointers.run,
     "listing": listing_one.run,
     "original-modules": original_module_map.run,
     "portprep": portprep.run,

@@ -249,6 +249,44 @@ lint flags="":
     -v "$PWD/{{lint_build_dir}}":/build \
     "{{docker_image}}"
 
+# Evaluate the scalar-focused clang-tidy checks on a stable sample of manually
+# owned TUs. Regenerating the lint database first prevents cached/no-op lint
+# builds from leaving the analysis on stale compile flags.
+[doc('Run scalar-focused clang-tidy checks on representative manual source')]
+[group('build')]
+scalar-clang-tidy:
+  just gen-compile-commands
+  docker run --rm --network none --entrypoint clang-tidy \
+    -v "$PWD":/imperialism \
+    -v "$PWD/{{lint_build_dir}}":/build \
+    "{{docker_image}}" \
+    -p /build \
+    --checks='-*,bugprone-narrowing-conversions,cppcoreguidelines-narrowing-conversions,readability-redundant-casting' \
+    --header-filter='^/imperialism/(include|src)/game/' \
+    --quiet \
+    /imperialism/src/game/TScrollBarView.cpp \
+    /imperialism/src/game/TGreatPower.cpp \
+    /imperialism/src/game/TMapMaker.cpp \
+    /imperialism/src/game/TViewMgr.cpp \
+    /imperialism/src/game/NetMessage.cpp
+
+# Run the reviewed advisory profile from .clang-tidy. The default is the stable
+# five-TU evaluation sample; pass a compile-database path regex to expand scope,
+# e.g. `just clang-tidy-audit '^/imperialism/src/game/.*[.]cpp$'`.
+[doc('Run the reviewed advisory .clang-tidy profile (optional path regex)')]
+[group('build')]
+clang-tidy-audit filter="/(TScrollBarView|TGreatPower|TMapMaker|TViewMgr|NetMessage)[.]cpp$":
+  just gen-compile-commands
+  docker run --rm --network none --entrypoint run-clang-tidy \
+    -v "$PWD":/imperialism \
+    -v "$PWD/{{lint_build_dir}}":/build \
+    "{{docker_image}}" \
+    -p /build \
+    -j 0 \
+    -quiet \
+    -config-file=/imperialism/.clang-tidy \
+    '{{filter}}'
+
 # Assert the recomp PE has .rsrc and SDI template MENU id 128 (0x80).
 [group('build')]
 resource-check:
@@ -602,6 +640,11 @@ ghidra *args: _require-ghidra-install
 assign-subsystems *args:
   uv run python -m tools.analysis.assign_subsystems {{args}}
 
+[doc('Audit data/code function pointers and hidden callback registrations')]
+[group('ghidra-inspect')]
+data-function-pointers *args: _require-ghidra-install
+  uv run python -m tools.ghidra.query data-function-pointers {{args}}
+
 # Read-only vtable evidence dump: resolve each slot of one or more vtables to its real
 # body (ILT thunks chased) as JSON on stdout — target address, Ghidra name, size,
 # listing signature, optional decompile. Inspection only; never writes source/symbols.
@@ -657,6 +700,26 @@ ui-view-coverage *args:
 [group('gates')]
 ui-view-coverage-check:
   uv run python -m tools.workflow.ui_view_coverage --check
+
+[doc('Generate the source-only turn-event screen and callback coverage matrix')]
+[group('gates')]
+turn-event-coverage *args:
+  uv run python -m tools.workflow.turn_event_coverage {{args}}
+
+[doc('Reject a stale committed turn-event coverage matrix')]
+[group('gates')]
+turn-event-coverage-check:
+  uv run python -m tools.workflow.turn_event_coverage --check
+
+[doc('Generate the classified scalar-conversion and enum-candidate audit')]
+[group('gates')]
+scalar-type-audit *args:
+  uv run python -m tools.workflow.scalar_type_audit {{args}}
+
+[doc('Reject new or stale scalar-conversion and enum-candidate findings')]
+[group('gates')]
+scalar-type-audit-check:
+  uv run python -m tools.workflow.scalar_type_audit --check
 
 [doc('Query the committed Mac control class/tag/screen semantic index')]
 [group('ghidra-inspect')]
@@ -1441,7 +1504,7 @@ source-gates:
 
 [private]
 [parallel]
-_source-gates-parallel: ui-codegen-check ui-view-coverage-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate stub-count-gate class-size-gate noop-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate
+_source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-coverage-check scalar-type-audit-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate stub-count-gate class-size-gate noop-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate
 
 [doc('Mine reccmp asm diffs for orig-address<->recomp-symbol global pairs (read-only report)')]
 [group('compare')]

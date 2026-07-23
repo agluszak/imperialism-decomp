@@ -70,12 +70,12 @@ void TEscortMission::CalculateImportance() {
   }
 
   TZone* homePortZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId04);
-  TZone** cachedOwnerSlot = homePortZone->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
+  TZone** cachedOwnerSlot = &homePortZone->primaryNeighbors[0];
   TZone* cachedOwner = *cachedOwnerSlot;
   float score = static_cast<float>(cachedOwner->ComputeMapActionContextNodeValueAverage());
 
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
-    TZone** zoneOwnerSlot = zone->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
+    TZone** zoneOwnerSlot = &zone->primaryNeighbors[0];
     if (*zoneOwnerSlot == cachedOwner) {
       short ownerNationCode = zone->GetPortZoneOwnerNationCodeFromMissionField48();
       score *= (ownerNationCode == nationId04)
@@ -94,7 +94,7 @@ void TEscortMission::CalculateImportance() {
 // (b) a direct owner-slot match otherwise (the same test as
 // TCountry::IsEncodedNationSlotMinus200Equal). For each eligible minor, resolves its home
 // port zone's cached-owner context (FindFirstPortZoneContextByNation +
-// primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0), the same idiom
+// primaryNeighbors[0], the same grow-on-access idiom
 // CalculateImportance above uses) and scores that context's tagged primary navy order-list
 // ships (gated by TDiplomacyMgr::IsNationPairAtWar) into a 4-category vector --
 // categories 0-2 scaled by strength/normalizationBase, category 3 unscaled -- via the
@@ -139,7 +139,7 @@ void TEscortMission::CalculateNeeds() {
     }
 
     TZone* homePortZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(i);
-    TZone* targetContext = *homePortZone->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
+    TZone* targetContext = homePortZone->primaryNeighbors[0];
 
     float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
     for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {

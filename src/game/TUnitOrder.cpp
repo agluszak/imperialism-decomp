@@ -64,11 +64,11 @@ void TUnitOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
     orderSheet->ForResourceCode(this->secondaryInputResourceId) =
         static_cast<short>(this->secondaryInputPerUnit * quantity);
   }
-  if (this->workforceMode == 2) {
+  if (this->workforceMode == kMediumSkillWorkforceMode) {
     orderSheet->slotByResourceCode[0x17] = quantity;
     return;
   }
-  if (this->workforceMode == 4) {
+  if (this->workforceMode == kHighSkillWorkforceMode) {
     orderSheet->slotByResourceCode[0x18] = quantity;
     return;
   }

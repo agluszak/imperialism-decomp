@@ -124,7 +124,7 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
     if (mainControl->ResolveControlByTag(kTagQuery) != 0) {
       if (g_pHelpMgr != 0) {
         GameWindowInvoke::PlayClickSfx7000();
-        if (QueryUiRuntimeEventCode() == 0x7dd) {
+        if (QueryUiRuntimeEventCode() == kTurnEventStrategicMap) {
           GameWindowInvoke::DispatchUiRuntimeMessage101AAndRefreshActiveViewGate();
           return;
         }
@@ -135,7 +135,7 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
   }
 
   if (commandCode == 3 || commandCode == 0xd || commandCode == 0x1b || commandCode == 0x20) {
-    if (QueryUiRuntimeEventCode() != 0x7dd &&
+    if (QueryUiRuntimeEventCode() != kTurnEventStrategicMap &&
         mainControl->ResolveControlByTag(0x656e6420) != 0) { // 'end '
       GameWindowInvoke::PlayClickSfx7000();
       if (g_pSimMgr->mode != 0x11) {
@@ -168,42 +168,44 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
     return;
   }
   if (g_pSimMgr->mode != 0x69 && g_pSimMgr->mode != 0x68 && g_pSimMgr->mode != 0x67 &&
-      g_pSimMgr->mode != 0x6a && g_pSimMgr->mode != 0x6d && QueryUiRuntimeEventCode() != 0x7dd) {
+      g_pSimMgr->mode != 0x6a && g_pSimMgr->mode != 0x6d &&
+      QueryUiRuntimeEventCode() != kTurnEventStrategicMap) {
     mainControl->DoKeyEvent(event);
     return;
   }
 
   switch (commandCode) {
   case 0x31:
-    if (QueryUiRuntimeEventCode() != 0x7de) {
+    if (QueryUiRuntimeEventCode() != kTurnEventTransport) {
       GameWindowInvoke::PlayClickSfx7000();
       g_pSimMgr->EnterOptionalPhase(0x69);
       return;
     }
     break;
   case 0x32:
-    if (QueryUiRuntimeEventCode() != 0x7db) {
+    if (QueryUiRuntimeEventCode() != kTurnEventCityProduction) {
       GameWindowInvoke::PlayClickSfx7000();
       g_pSimMgr->EnterOptionalPhase(0x6a);
       return;
     }
     break;
   case 0x33:
-    if (QueryUiRuntimeEventCode() != 0x7d9 && QueryUiRuntimeEventCode() != 0x7da) {
+    if (QueryUiRuntimeEventCode() != kTurnEventTradeOverview &&
+        QueryUiRuntimeEventCode() != kTurnEventIndustryOverview) {
       GameWindowInvoke::PlayClickSfx7000();
       g_pSimMgr->EnterOptionalPhase(0x67);
       return;
     }
     break;
   case 0x34:
-    if (QueryUiRuntimeEventCode() != 0x7d8) {
+    if (QueryUiRuntimeEventCode() != kTurnEventDiplomacyMap) {
       GameWindowInvoke::PlayClickSfx7000();
       g_pSimMgr->EnterOptionalPhase(0x68);
       return;
     }
     break;
   case 0x35:
-    if (QueryUiRuntimeEventCode() != 0x8fc) {
+    if (QueryUiRuntimeEventCode() != kTurnEventTechnologyStore) {
       GameWindowInvoke::PlayClickSfx7000();
       g_pSimMgr->EnterOptionalPhase(0x6d);
       return;
@@ -217,7 +219,7 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
 
 // FUNCTION: IMPERIALISM 0x00500160
 void TGameWindow::UpdateTurnOrderNavigationWindowLayout() {
-  if (g_pDisplayMgr->eventCode0e == 0x7d1) {
+  if (g_pDisplayMgr->eventCode0e == kTurnEventSphereWindow) {
     CRect boundsRect;
     QueryBounds(&boundsRect);
     GlobalViewportRectDefaultsRecord** rectDefaultsHandle =

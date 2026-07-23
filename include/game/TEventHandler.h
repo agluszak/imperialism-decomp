@@ -62,12 +62,12 @@ public:
   // to return its own CRuntimeClass descriptor. See CRuntimeClass chain
   // CObject<-TObject<-TEventHandler<-TView<-TControl<-...
   DECLARE_DYNCREATE(TEventHandler)
-  virtual ~TEventHandler() override;             // 0x01
-  void Free() override;                          // 0x07 0x48a1b0
-  TObject* ShallowClone() override;              // 0x08 0x48a7c0 base; TView override 0x48bfd0
-  virtual char IsEnabled();                      // 0x0a 0x48a240
-  virtual void SetEnable(unsigned char enabled); // 0x0b 0x48a260
-  virtual TEventHandler* GetNextHandler();       // 0x0c 0x48a2c0 GetCityDialogValueDwordC
+  virtual ~TEventHandler() override;       // 0x01
+  void Free() override;                    // 0x07 0x48a1b0
+  TObject* ShallowClone() override;        // 0x08 0x48a7c0 base; TView override 0x48bfd0
+  virtual char IsEnabled();                // 0x0a 0x48a240
+  virtual void SetEnable(char enabled);    // 0x0b 0x48a260
+  virtual TEventHandler* GetNextHandler(); // 0x0c 0x48a2c0 GetCityDialogValueDwordC
   virtual void DispatchQueuedUiCommandAndRelease(void* payload); // 0x0d 0x48a3b0
   virtual void DispatchUiSelectionToHandler(void* payload);      // 0x0e 0x48a3f0
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,

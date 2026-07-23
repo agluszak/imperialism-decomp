@@ -1555,7 +1555,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
   TextStyle styleDescriptor;
   styleDescriptor.textColor = 0;
   TurnEventDialogNode* dialog = static_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xeed));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTacticalBattleResult));
 
   TPicture* headerPicture =
       static_cast<TPicture*>(dialog->ResolveControlByTag(0x444c4f47 /* 'DLOG' */));

@@ -2,6 +2,7 @@
 
 #include "game/TObject.h"
 #include "game/mfc.h"
+#include "game/turn_event_codes.h"
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
@@ -73,8 +74,8 @@ public:
   // Periodic "another great power is beating you" advisory (turn-tick-indexed metric
   // comparison, string group 0x2753). 0x501be0, __thiscall (`this` unused).
   char ShowPeriodicNationComparisonAdvisoryIfNeeded();
-  char HandlePendingEventActivationByCode(short eventCode);
-  void HandlePostPendingEventActivationNoOp(short eventCode);
+  char HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode);
+  void HandlePostPendingEventActivationNoOp(TurnEventCodeStorage eventCode);
   void ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry);
   // 0x5010b0 — scans indexList for the pending event matching the active view's
   // currentTurnEventCode and activates one: the lowest-rank unflagged match wins;

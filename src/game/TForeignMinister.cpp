@@ -507,7 +507,8 @@ void TForeignMinister::DoDevelopmentGrants() {
   relationshipList->ReleasePtrList();
 }
 
-// TODO: port the 1359-byte SEH turn-event-hint queuer body (unported stub for now).
+// Proposes minor-nation treaties, alliance responses to stronger rivals, and peace actions
+// driven by relation freshness, comparative strength, and former-province ownership.
 // FUNCTION: IMPERIALISM 0x00530200
 void TForeignMinister::DoProposeTreaties() {
   TGreatPower* owner = ownerContextAt04;

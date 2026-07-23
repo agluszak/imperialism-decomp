@@ -305,10 +305,11 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     DispatchUiRuntimeMessage102CAndRefreshActiveView();
     break;
   case kControlTagRestartCaps:
-    ReinitializeGameFlowAndPostTurnEventCode(0);
+    ReinitializeGameFlowAndPostTurnEventCode(kTurnEventRebuildRegisteredWindows);
     break;
   case kControlTagScoreCaps:
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5eb);
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+        EncodeTurnEventCode(kTurnEventGameScore));
     break;
   case kControlTagCity:
     g_pSimMgr->EnterOptionalPhase(0x6a);
@@ -420,24 +421,24 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls() {
   if (control != 0) {
     short stringIndex = 7;
     switch (g_pUiRuntimeContext->currentTurnEventCode) {
-    case 0x7d8:
+    case kTurnEventDiplomacyMap:
       stringIndex = 0xf;
       break;
-    case 0x7d9:
-    case 0x7da:
+    case kTurnEventTradeOverview:
+    case kTurnEventIndustryOverview:
       stringIndex = 0x10;
       break;
-    case 0x7db:
+    case kTurnEventCityProduction:
       stringIndex = 0xe;
       break;
-    case 0x7dd:
+    case kTurnEventStrategicMap:
       stringIndex = 0x11;
       break;
-    case 0x7de:
-    case 0x8fc:
+    case kTurnEventTransport:
+    case kTurnEventTechnologyStore:
       stringIndex = 0xc;
       break;
-    case 0x2260:
+    case kTurnEventDealBook:
       stringIndex = 0xd;
       break;
     }
@@ -558,8 +559,8 @@ void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
   // ExecuteViewModalStateWithPushPopChain() takes zero args, matching this callsite's bare
   // `call [edi+0x1ac]` exactly, whereas the byte-coincident TControl::NoOpUiViewSlotHandler
   // takes two.
-  TWindow* node =
-      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x102c));
+  TWindow* node = static_cast<TWindow*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFlagButton));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf6c);

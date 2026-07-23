@@ -1,5 +1,3 @@
-#include <stdlib.h>
-
 #include "game/TMacViewMgr.h"
 #include "game/map_overlay_geometry.h"
 
@@ -188,7 +186,7 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
   int generatedBaseOffset = 0;
 
   opcodeAppendCursor10 = 0;
-  opcodeBytes00.Count() = 0;
+  opcodeBytes00.RemoveAll();
   opcodeAlignmentOffset14 = 0;
   hadTrailingPadding18 = 0;
 
@@ -228,28 +226,8 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
 // FUNCTION: IMPERIALISM 0x004d5580
 StrategicMapCallbackRecord* StrategicMapCallbackRecord::AppendOpcodeByte(int value) {
   unsigned int index = static_cast<unsigned int>(opcodeAppendCursor10);
-  int newCount = index + 1;
-  opcodeAppendCursor10 = newCount;
-  if (index >= static_cast<unsigned int>(opcodeBytes00.Capacity())) {
-    unsigned int grownCapacity = static_cast<unsigned int>(newCount) * 2;
-    unsigned int clampedCapacity = grownCapacity;
-    if (0x7fffffff < grownCapacity) {
-      clampedCapacity = 0x7fffffff;
-    }
-    unsigned char* grown =
-        static_cast<unsigned char*>(realloc(opcodeBytes00.Data(), grownCapacity));
-    if (grown == 0) {
-      opcodeBytes00.Data() = static_cast<unsigned char*>(realloc(opcodeBytes00.Data(), newCount));
-      opcodeBytes00.Capacity() = newCount;
-    } else {
-      opcodeBytes00.Data() = grown;
-      opcodeBytes00.Capacity() = clampedCapacity;
-    }
-  }
-  if (index >= static_cast<unsigned int>(opcodeBytes00.Count())) {
-    opcodeBytes00.Count() = newCount;
-  }
-  opcodeBytes00.Data()[index] = static_cast<unsigned char>(value);
+  opcodeAppendCursor10 = static_cast<int>(index) + 1;
+  opcodeBytes00[index] = static_cast<unsigned char>(value);
   return this;
 }
 
@@ -261,15 +239,23 @@ void StrategicMapCallbackRecord::AppendOpcodeBytePair(int value) {
 
 // FUNCTION: IMPERIALISM 0x004d5720
 void StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment() {
-  opcodeBytes00[opcodeAlignmentOffset14];
-  opcodeAlignmentOffset14 =
-      reinterpret_cast<unsigned int>(opcodeBytes00.Data() + opcodeAlignmentOffset14) & 3;
+  unsigned char* alignmentProbe = &opcodeBytes00[opcodeAlignmentOffset14];
+  opcodeAlignmentOffset14 = reinterpret_cast<unsigned int>(alignmentProbe) & 3;
   if (opcodeAlignmentOffset14 != 0) {
     opcodeBytes00.Add(0);
     opcodeBytes00.Add(0);
     opcodeBytes00.Add(0);
+    opcodeBytes00.Compact();
+    alignmentProbe = &opcodeBytes00[opcodeAlignmentOffset14];
+    opcodeAlignmentOffset14 = reinterpret_cast<unsigned int>(alignmentProbe) & 3;
   }
+
   if (opcodeAlignmentOffset14 != 0) {
+    int payloadByteCount = opcodeBytes00.GetSize() - 3;
+    for (int sourceIndex = 0; sourceIndex < payloadByteCount; ++sourceIndex) {
+      unsigned char value = opcodeBytes00[sourceIndex];
+      opcodeBytes00[sourceIndex + opcodeAlignmentOffset14] = value;
+    }
     hadTrailingPadding18 = 1;
   }
 }
@@ -1022,7 +1008,8 @@ undefined TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, sh
 
 // FUNCTION: IMPERIALISM 0x0050be30
 TView* TMacViewMgr::MakeBookDialog(int dialogId) {
-  TView* dialog = g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(dialogId, 0);
+  TView* dialog = g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
+      static_cast<TurnEventId>(dialogId), 0);
   if (dialog == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMacViewMgr.cpp", 0x917);
   }
@@ -1405,7 +1392,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
 // FUNCTION: IMPERIALISM 0x0050d310
 void TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1, int unusedArg2) {
   TView* dialog = activeCityProductionView04;
-  g_pUiRuntimeContext->DispatchTurnEvent(0x3b8, 0);
+  g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCitySiteSelector), 0);
   short completionFlag = static_cast<short>(dialog->field14);
   while (completionFlag == 0) {
     PumpUiMessagesAndBackgroundTasks(1);
@@ -1419,7 +1406,8 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
                                                unsigned char isEmbeddedPage,
                                                TCityProductionView* productionView) {
   TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(buildingSlot + 0x23f0));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
+          static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill)));
   TBuildingView* buildingView =
       static_cast<TBuildingView*>(dialog->ResolveControlByTag(0x444c4f47));
   if (buildingView == 0) {
@@ -1444,7 +1432,8 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
 undefined TMacViewMgr::OrphanCallChain_C10_I80_0050d470(int param_1, undefined4 param_2, int arg3,
                                                         int arg4, int arg5, int arg6, int arg7) {
   TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(param_1 + 0x23f0));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
+          static_cast<TurnEventId>(param_1 + kTurnEventTextileMill)));
   GoldDialogControl* goldControl =
       reinterpret_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47));
   if (goldControl == 0) {
@@ -1463,7 +1452,7 @@ undefined TMacViewMgr::OrphanCallChain_C10_I80_0050d470(int param_1, undefined4 
 void TMacViewMgr::OpenConstructionWindow(short buildingSlot, TCity* city,
                                          TCityProductionView* productionView) {
   TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2404));
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericCreator));
   TBuildingConstructionView* constructionView =
       static_cast<TBuildingConstructionView*>(dialog->ResolveControlByTag(0x444c4f47));
   if (constructionView == 0) {

@@ -3,6 +3,7 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 #include "game/quickdraw_types.h"
+#include "game/turn_event_codes.h"
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
@@ -38,7 +39,7 @@ public:
   virtual void RefreshMainViewNationIndicatorForCurrentTurnEvent();        // slot 0x12 0x5d6b70
 
   // Extended UI-runtime virtuals (same object as g_pUiRuntimeContext @ 0x006A21BC).
-  virtual void DispatchTurnEvent(short eventCode, int payload);                    // 0x4c
+  virtual void DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload);     // 0x4c
   virtual void SetCursorRangeAndRefreshMainPanel(int payload);                     // 0x50
   virtual short GetPendingTurnOverlayCode();                                       // 0x54
   virtual void RefreshStrategicMapStatusIconsForActiveNation();                    // 0x58
@@ -220,11 +221,11 @@ public:
   // provisional. Total size 0xfc, base TObject = 0x4.
   void RefreshTechnologyStorePageAndHudText(int nationSlot); // 0x005d8750
 
-  short currentTurnEventCode;         // +0x04 (turn-event dispatch code)
-  short currentTurnEventNationSlot06; // +0x06
-  POINT dialogPlacement08;            // +0x08 (seeded from g_ptCitySiteSelectionDialogPlacement)
-  unsigned char field10;              // +0x10
-  unsigned char pad11[3];             // +0x11
+  TurnEventCodeStorage currentTurnEventCode; // +0x04 (turn-event dispatch code)
+  short currentTurnEventNationSlot06;        // +0x06
+  POINT dialogPlacement08; // +0x08 (seeded from g_ptCitySiteSelectionDialogPlacement)
+  unsigned char field10;   // +0x10
+  unsigned char pad11[3];  // +0x11
   // +0x14 .. 0xeb (54 turn-event cursor handles). Indexed as
   // turnEventCursors[resourceCursorId - kCursorResourceIdBase] -- confirmed against
   // TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback's ground-truth

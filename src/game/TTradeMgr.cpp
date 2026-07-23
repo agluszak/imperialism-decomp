@@ -764,8 +764,9 @@ void TTradeMgr::DispatchProposalAmountSlot60(short ownerNation, int sourceContex
   }
   if (static_cast<short>(amount) < 1) {
     if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(ownerNation) != 0) {
-      g_apNationStates[ownerSlot]->AppendTrackedSlotEntry(
-          1, ownerNation, static_cast<short>(amount), static_cast<short>(targetNation), amount);
+      g_apNationStates[ownerSlot]->AppendTrackedSlotEntry(kTrackedSlotOfferEntry, ownerNation,
+                                                          static_cast<short>(amount),
+                                                          static_cast<short>(targetNation), amount);
     }
   } else {
     int ownerIndex = static_cast<int>(ownerSlot);
@@ -791,13 +792,13 @@ void TTradeMgr::DispatchProposalAmountSlot60(short ownerNation, int sourceContex
     short targetCode = static_cast<short>(maxAmount);
     if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(maxAmount) != 0) {
       g_apNationStates[static_cast<short>(targetNation)]->AppendTrackedSlotEntry(
-          0, ownerNation, static_cast<short>(amount), static_cast<short>(targetNation),
-          sourceContext);
+          kTrackedSlotAcceptEntry, ownerNation, static_cast<short>(amount),
+          static_cast<short>(targetNation), sourceContext);
     }
     if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(ownerNation) != 0) {
       g_apNationStates[ownerIndex]->AppendTrackedSlotEntry(
-          1, targetNation, static_cast<short>(amount), static_cast<short>(targetNation),
-          targetCode);
+          kTrackedSlotOfferEntry, targetNation, static_cast<short>(amount),
+          static_cast<short>(targetNation), targetCode);
     }
   }
 }
