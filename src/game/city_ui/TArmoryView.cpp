@@ -25,7 +25,11 @@
 
 IMPLEMENT_DYNCREATE(TArmoryView, TBuildingView)
 
-TArmoryView::TArmoryView() {}
+// No standalone ctor address exists (always inlined; see CreateObject 0x4cece0, which
+// stores dword [this+0x98] = 0 after the vptr write), so this body stays markerless.
+TArmoryView::TArmoryView() {
+  productionView98 = 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x004cedd0
 // TArmoryView::`scalar deleting destructor'

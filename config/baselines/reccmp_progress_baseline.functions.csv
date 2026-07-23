@@ -128,7 +128,7 @@ address|matching|name
 0x42e0b5|0.00625|BuildOrderStateStaticTextUiResourceEntries
 0x42e494|0.00625|BuildUiResourceTree_MultiTextOptionComposite_0042e494
 0x42e864|0.011904761904761904|BuildUiResourceTree_TextPictureCursorComposite_0042e864
-0x430250|0.8235294117647058|TBook::TBook
+0x430250|1.0|TBook::TBook
 0x430280|1.0|TBook::`scalar deleting destructor'
 0x4302b0|0.2222222222222222|TBook::~TBook
 0x4302d0|1.0|TPageCorner::`scalar deleting destructor'
@@ -1587,7 +1587,7 @@ address|matching|name
 0x4a8740|0.25|WrapperFor_ftol_At004a8740
 0x4a8770|0.48|TGarrisonView::CreateObject
 0x4a87f0|1.0|TGarrisonView::GetRuntimeClass
-0x4a8810|0.9333333333333333|TGarrisonView::TGarrisonView
+0x4a8810|1.0|TGarrisonView::TGarrisonView
 0x4a8840|1.0|TGarrisonView::`scalar deleting destructor'
 0x4a8870|0.0|TGarrisonView::~TGarrisonView
 0x4a8890|0.7931034482758621|TGarrisonView::StuffValues
@@ -2169,7 +2169,7 @@ address|matching|name
 0x4cab10|0.8852459016393442|TOverlayRadioButton::Draw
 0x4caba0|0.5714285714285714|TUniversityView::CreateObject
 0x4cac40|1.0|TUniversityView::GetRuntimeClass
-0x4cac60|0.7058823529411765|TUniversityView::TUniversityView
+0x4cac60|0.6666666666666666|TUniversityView::TUniversityView
 0x4cac90|1.0|TUniversityView::`scalar deleting destructor'
 0x4cacc0|0.0|TUniversityView::~TUniversityView
 0x4cace0|0.26778242677824265|TUniversityView::DoStartup
@@ -3087,7 +3087,7 @@ address|matching|name
 0x5076d0|0.8571428571428571|TNumberedIcon::SetValue
 0x507700|0.5714285714285714|TNumberedItem::CreateObject
 0x5077a0|1.0|TNumberedItem::GetRuntimeClass
-0x5077c0|0.8235294117647058|TNumberedItem::TNumberedItem
+0x5077c0|1.0|TNumberedItem::TNumberedItem
 0x507800|1.0|TNumberedItem::`scalar deleting destructor'
 0x507830|0.0|TNumberedItem::~TNumberedItem
 0x507850|1.0|TNumberedItem::InitializeNumberedResourceItem
@@ -4605,14 +4605,14 @@ address|matching|name
 0x5718f0|1.0|TRadioPictureButton::SetRadioState
 0x571930|0.5614035087719298|TOnOffRadioButton::CreateObject
 0x5719d0|1.0|TOnOffRadioButton::GetRuntimeClass
-0x5719f0|0.7058823529411765|TOnOffRadioButton::TOnOffRadioButton
+0x5719f0|0.8421052631578947|TOnOffRadioButton::TOnOffRadioButton
 0x571a30|1.0|TOnOffRadioButton::`scalar deleting destructor'
 0x571a60|0.0|TOnOffRadioButton::~TOnOffRadioButton
 0x571a80|1.0|TOnOffRadioButton::DoEvent
 0x571b20|1.0|TOnOffRadioButton::SetState
 0x571b60|0.5714285714285714|TCzechBox::CreateObject
 0x571c00|1.0|TCzechBox::GetRuntimeClass
-0x571c20|0.75|TCzechBox::TCzechBox
+0x571c20|0.8235294117647058|TCzechBox::TCzechBox
 0x571c60|1.0|TCzechBox::`scalar deleting destructor'
 0x571c90|0.0|TCzechBox::~TCzechBox
 0x571cb0|1.0|TCzechBox::DoEvent
@@ -4675,7 +4675,7 @@ address|matching|name
 0x573090|1.0|TColorKeyPicture::Free
 0x5730d0|0.5245901639344263|TMegaPicture::CreateObject
 0x573170|1.0|TMegaPicture::GetRuntimeClass
-0x573190|0.6666666666666666|TMegaPicture::TMegaPicture
+0x573190|0.8571428571428571|TMegaPicture::TMegaPicture
 0x5731d0|1.0|TMegaPicture::`scalar deleting destructor'
 0x573200|0.0|TMegaPicture::~TMegaPicture
 0x573270|0.38095238095238093|TMegaPicture::Draw
