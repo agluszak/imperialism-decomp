@@ -29,7 +29,10 @@ public:
   // Per-list-row scenario index, indexed by the 'list' TTextList's selectedIndex in
   // DoEvent's commandId==4 branch and passed to
   // LoadScenarioMetadataByIndexIntoUiControlCore.
-  short scenarioIndexByListRow94[(0x118 - 0x94) / 2];
+  short scenarioIndexByListRow94[(0x114 - 0x94) / 2];
+  // +0x114 -- how many rows DoPostCreate actually appended to the 'list' control.
+  short scenarioListRowCount114;
+  unsigned char padding116[2];
   // Per-nation-slot description text + length, passed to the 'desc' TDeluxeText's
   // SetTextEntryFromChars(textChars, textLength) in DoEvent's 'pick' branch, indexed
   // by TMapPreviewView::pendingNation6C.

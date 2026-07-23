@@ -874,3 +874,6 @@ public:
 
   TMapMgr();
 };
+
+// 0x005187f0 -- endian fix-up over the scenario tile-record array read from disk.
+void ByteSwapScenarioTileRecordWords(char* tileRecords);

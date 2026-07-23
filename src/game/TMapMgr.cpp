@@ -3745,6 +3745,28 @@ char TMapMgr::LoadScenarioMapStateFromTableResource(int scenarioIndex) {
   return 1;
 }
 
+// Byte-swaps the three 16-bit fields inside each of the 0x1950 scenario tile records
+// (Mac-endian on disk) and clears the dword at record+0x5.
+// FUNCTION: IMPERIALISM 0x005187f0
+void ByteSwapScenarioTileRecordWords(char* tileRecords) {
+  char* record = tileRecords + 0x1b;
+  int remaining = 0x1950;
+  do {
+    char low = record[-7];
+    record[-7] = record[-6];
+    record[-6] = low;
+    low = record[-1];
+    record[-1] = record[0];
+    record[0] = low;
+    low = record[1];
+    record[1] = record[2];
+    record[2] = low;
+    *reinterpret_cast<int*>(record + 5) = 0;
+    record += 0x24;
+    --remaining;
+  } while (remaining != 0);
+}
+
 // Byte-swaps the big-endian short fields of every city-score record after the raw table
 // load: cityTileIndex04/lastTurnTick, the paired adjacent-record id/anchor-tile arrays,
 // the secondary/primary neighbor links, all 0x20 linkedTileIndices, and the ten
