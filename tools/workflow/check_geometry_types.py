@@ -9,8 +9,11 @@ only mechanically sound parts of that policy:
 * no unannotated reinterpret/const/C-style casts to a geometry pointer type; VC5's
   ``CPoint`` and ``CRect`` inherit ``tagPOINT`` and ``tagRECT``, so modeled geometry
   crosses real library boundaries by implicit base conversion;
-* the curated TView/TControl geometry surface stays on ``CPoint``/``CRect`` after
-  recovery, preventing later overrides from drifting back to native structs.
+* the recovered TView/TControl geometry surface stays on ``CPoint``/``CRect``:
+  every method declared in the policy headers is enumerated from the header text
+  itself (self-maintaining — no pinned method list, no build artifacts) and may
+  not carry raw ``POINT``/``RECT``/``SIZE`` in its signature unless it is an
+  allowlisted, verified Win32 paint-boundary method.
 
 An irreducible packed-resource cast must carry ``GEOMETRY_RAW_BUFFER:`` on the cast
 line or one of the preceding three lines.  The explanation is deliberately local and
@@ -36,45 +39,39 @@ CPP_CAST = re.compile(
 )
 C_STYLE_CAST = re.compile(rf"\(\s*(?:const\s+)?\b{GEOMETRY_TYPE}\b\s*\*\s*\)")
 
-# These are recovered game-owned APIs, not Win32/MFC entry points.  Keep this list
-# narrow: add a method only after its ownership and geometry domain are established.
-POLICY_METHODS: dict[str, dict[str, str]] = {
-    "include/game/TView.h": {
-        "HandleMouseDown": "CPoint",
-        "HandleMouseUp": "CPoint",
-        "DoMouseCommand": "CPoint",
-        "QueryContentBounds": "CRect",
-        "QueryBounds": "CRect",
-        "TranslateRectToWindow": "CRect",
-        "TranslatePointToParentChain4D": "CPoint",
-        "TranslatePointToParentChain4E": "CPoint",
-        "LocalToSuperVRect": "CRect",
-        "SuperToLocal": "CPoint",
-        "ViewToQDPt": "CPoint",
-        "ViewToQDRect": "CRect",
-        "AddControlPosToPoint": "CPoint",
-        "OffsetRectByCachedPos": "CRect",
-        "GetAbsolutePosition": "CPoint",
-        "GetDrawableQDRect": "CRect",
-        "GetQDExtent": "CRect",
-        "ApplyBounds": "CRect",
-        "PointInBoundsAndActionable": "CPoint",
-        "ContainsMouse": "CPoint",
-        "GoAwayByUser": "CPoint",
-        "MoveByUser": "CPoint",
-        "ResizeByUser": "CPoint",
-        "ZoomByUser": "CPoint",
-        "WindowToLocal": "CPoint",
-    },
-    "include/game/TControl.h": {
-        "BuildInsetContentRect": "CRect",
-    },
+# Recovered game-owned geometry surfaces.  The method list is DERIVED from these
+# headers at gate time (no hand-maintained method table, no build artifacts): every
+# method declared in them must use CPoint/CRect/CSize, never raw Win32
+# POINT/RECT/SIZE, except for the explicitly allowlisted library-boundary methods
+# below.
+POLICY_HEADERS = ("include/game/TView.h", "include/game/TControl.h")
+
+# (header, method) pairs allowed to carry raw Win32 geometry in their signature.
+# These are verified Win32 paint-boundary surfaces (WM_PAINT clip rects flowing to
+# ValidateRect/child paint, and the raw-rect draw primitive) that the previous
+# pinned-list gate deliberately left on RECT*.  The gate errors on stale entries,
+# so promote a method to CRect by deleting its row here in the same change.
+RAW_GEOMETRY_ALLOWLIST: set[tuple[str, str]] = {
+    ("include/game/TView.h", "InvalidateCityDialogRectRegion"),
+    ("include/game/TView.h", "ValidateControlRectIfWindowActive"),
+    ("include/game/TView.h", "PaintVisibleChildrenIntersectingClipRect"),
+    ("include/game/TView.h", "Draw"),
+    ("include/game/TView.h", "DrawRectangleInCurrentUiContext"),
 }
 
-NATIVE_FOR_MFC = {
-    "CPoint": re.compile(r"\bPOINT\b"),
-    "CRect": re.compile(r"\bRECT\b"),
-}
+MFC_GEOMETRY = re.compile(r"\b(?:CPoint|CRect|CSize)\b")
+RAW_GEOMETRY = re.compile(r"\b(?:LP)?(?:POINT|RECT|SIZE)\b|\bLPCRECT\b")
+
+# One method declaration in comment-stripped, whitespace-normalized header text:
+# optional return type / qualifiers, name, non-nested parameter list, optional
+# const/override/pure-virtual suffix, terminating semicolon.  The hand-written
+# policy headers use no function-pointer or nested-paren parameters, so excluding
+# parens from prefix and args keeps macro invocations (DECLARE_DYNCREATE,
+# ASSERT_SIZE without trailing text) from swallowing neighbouring declarations.
+METHOD_DECL = re.compile(
+    r"(?P<prefix>[^;{}()]*)\b(?P<name>~?[A-Za-z_]\w*)\s*\((?P<args>[^;{}()]*)\)\s*"
+    r"(?:const\b\s*)?(?:override\b\s*)?(?:=\s*0\s*)?;"
+)
 
 
 def normalize(text: str) -> str:
@@ -102,24 +99,65 @@ def collect_geometry_casts(paths, repo_root: Path) -> set[tuple[str, str]]:
     return offenders
 
 
+def strip_comments(text: str) -> str:
+    text = re.sub(r"/\*.*?\*/", " ", text, flags=re.S)
+    return re.sub(r"//[^\n]*", "", text)
+
+
+def iter_method_declarations(text: str) -> list[tuple[str, str]]:
+    """Yield ``(name, signature)`` for each method declared in header text.
+
+    ``signature`` is the declaration's return-type prefix plus parameter list
+    (whitespace-normalized), i.e. everything type-bearing except the method name.
+    """
+    declarations: list[tuple[str, str]] = []
+    normalized = normalize(strip_comments(text))
+    for match in METHOD_DECL.finditer(normalized):
+        signature = normalize(f"{match.group('prefix')} ({match.group('args')})")
+        declarations.append((match.group("name"), signature))
+    return declarations
+
+
 def collect_policy_errors(
-    repo_root: Path, policy_methods: dict[str, dict[str, str]] = POLICY_METHODS
+    repo_root: Path,
+    policy_headers: tuple[str, ...] = POLICY_HEADERS,
+    allowlist: set[tuple[str, str]] | None = None,
 ) -> list[str]:
+    if allowlist is None:
+        allowlist = RAW_GEOMETRY_ALLOWLIST
     errors: list[str] = []
-    for rel, methods in policy_methods.items():
+    used_allowlist: set[tuple[str, str]] = set()
+    for rel in policy_headers:
         path = repo_root / rel
-        text = normalize(path.read_text(encoding="utf-8", errors="ignore"))
-        for method, expected in methods.items():
-            matches = list(re.finditer(rf"\b{re.escape(method)}\s*\(([^)]*)\)", text))
-            if len(matches) != 1:
-                errors.append(f"{rel}: expected one declaration of {method}, found {len(matches)}")
-                continue
-            signature = matches[0].group(0)
-            if expected not in signature:
-                errors.append(f"{rel}: {method} must use {expected}: {signature}")
-            native = NATIVE_FOR_MFC[expected]
-            if native.search(signature):
-                errors.append(f"{rel}: {method} drifts back to native geometry: {signature}")
+        if not path.is_file():
+            errors.append(f"{rel}: policy header missing — update POLICY_HEADERS")
+            continue
+        declarations = iter_method_declarations(
+            path.read_text(encoding="utf-8", errors="ignore")
+        )
+        mfc_seen = False
+        for name, signature in declarations:
+            if MFC_GEOMETRY.search(signature):
+                mfc_seen = True
+            if RAW_GEOMETRY.search(signature):
+                if (rel, name) in allowlist:
+                    used_allowlist.add((rel, name))
+                    continue
+                errors.append(
+                    f"{rel}: {name} uses raw Win32 geometry (POINT/RECT/SIZE): "
+                    f"{signature}"
+                )
+        if not mfc_seen:
+            errors.append(
+                f"{rel}: no CPoint/CRect/CSize method declarations found — "
+                "declaration parser or policy scope has drifted"
+            )
+    for rel, name in sorted(allowlist - used_allowlist):
+        if rel in policy_headers:
+            errors.append(
+                f"{rel}: stale RAW_GEOMETRY_ALLOWLIST entry {name} — no raw-geometry "
+                "declaration matches it; delete the allowlist row"
+            )
     return errors
 
 
