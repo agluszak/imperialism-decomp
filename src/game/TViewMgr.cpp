@@ -1,5 +1,6 @@
 #include "game/TViewMgr.h"
 #include "game/TArmyInfoView.h"
+#include "game/TBuildingExpansionView.h"
 #include "game/TCivReport.h"
 #include "game/TTown.h"
 #include "game/TOffLimitsPicture.h"
@@ -1931,7 +1932,8 @@ void TViewMgr::ConfigureActiveDialogGoldValueGridForTurnEvent3C0() {
 }
 
 // FUNCTION: IMPERIALISM 0x005dc430
-void TViewMgr::HandleTurnEventDialogFactorySlotB8(int a, int b, int c) {
+void TViewMgr::ShowBuildingExpansionDialog(short buildingSlotId, TCity* city,
+                                           TCityProductionView* productionView) {
   TWindow* node =
       static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2405));
   if (node == nullptr) {
@@ -1939,19 +1941,21 @@ void TViewMgr::HandleTurnEventDialogFactorySlotB8(int a, int b, int c) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf50);
   }
   node->SetModality(1);
-  GoldCommitControl* gold = static_cast<GoldCommitControl*>(
-      static_cast<TView*>(node->ResolveControlByTag(0x444c4f47))); // 'GOLD'
-  gold->AssertValid();
-  if (gold == nullptr) {
+  // MapView.rsrc view 9221's 'DLOG' pict is a TBuildingExpansionView (Mac resource
+  // oracle), whose slots 0x73/0x74 are StuffValues and DoClosingAction.
+  TBuildingExpansionView* expansionView =
+      static_cast<TBuildingExpansionView*>(node->ResolveControlByTag(0x444c4f47)); // 'DLOG'
+  expansionView->AssertValid();
+  if (expansionView == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf54);
   }
-  gold->ApplyGoldTradeSummaryValues(a, b, c);
+  expansionView->StuffValues(buildingSlotId, city, productionView);
   POINT placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-  int refreshResult = node->PoseModally();
-  gold->ApplyGoldTradeDialogRefreshResult(refreshResult);
+  int dialogAction = node->PoseModally();
+  expansionView->DoClosingAction(static_cast<unsigned long>(dialogAction));
   node->Close();
   node->Free();
 }

@@ -91,9 +91,8 @@ struct GoldCommitControl : public TView {
   virtual void goldSlot70();
   virtual void goldSlot71();
   virtual void goldSlot72();
-  // dialog 0x2405 'GOLD' trade-summary child (HandleTurnEventDialogFactorySlotB8).
-  virtual void ApplyGoldTradeSummaryValues(int a, int b, int c);     // slot 0x73 byte 0x1cc
-  virtual void ApplyGoldTradeDialogRefreshResult(int refreshResult); // slot 0x74 byte 0x1d0
+  virtual void goldSlot73();
+  virtual void goldSlot74();
   virtual void goldSlot75();
   // Notified with TViewMgr::currentTurnEventCode before a dialog-factory slot resolves
   // its own factory dialog node (HandleTurnEventDialogFactorySlotD8/E8, 0x5dcf20/0x5dd770).
