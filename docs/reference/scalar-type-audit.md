@@ -57,7 +57,7 @@ a stale category-level approval.
 | `ce82c4c20067c59c` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:527` | `win32_struct_byte_field` | RGBQUAD.rgbReserved is BYTE; retail 0x005de010 extracts packed-color bits 24 through 31 into the structure. |
 | `d97fbba03dae091e` | `src/game/assets/TCdAudioDevice.cpp:149` | `multimedia_dword_field` | MCI_PLAY_PARMS.dwFrom is DWORD; retail 0x005e1850 masks the track index to eight bits before the dword store. |
 | `9440836a8128678f` | `src/game/assets/TCdAudioDevice.cpp:150` | `multimedia_dword_field` | MCI_PLAY_PARMS.dwTo is DWORD; retail 0x005e1850 increments then masks the track index before the dword store. |
-| `c35544f8b821ac5f` | `src/game/ui_core/TEditText.cpp:120` | `mfc_control_identifier` | CWnd::Create takes a UINT child-control identifier; TEditText::Open forwards the full 32-bit controlTag at this MFC boundary. |
+| `c35544f8b821ac5f` | `src/game/ui_core/TEditText.cpp:125` | `mfc_control_identifier` | CWnd::Create takes a UINT child-control identifier; TEditText::Open forwards the full 32-bit controlTag at this MFC boundary. |
 
 ## Reviewed nested integral conversions
 
@@ -250,7 +250,7 @@ is classified, and a family that stops appearing must be removed.
 | `1c1d74f04479d145` | `native_integral_boundary` | `src/game/net/TNetMgr.cpp:400` | game scalar -> DWORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `8643894c63c98a37` | `native_integral_boundary` | `src/game/ui_core/CIncludeView.cpp:401` | game scalar -> BOOL | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `b442f3eac7d1c116` | `native_integral_boundary` | `src/game/ui_core/CMcWindow.cpp:286` | game scalar -> BOOL | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `c35544f8b821ac5f` | `native_integral_boundary` | `src/game/ui_core/TEditText.cpp:120` | game scalar -> UINT | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
+| `c35544f8b821ac5f` | `native_integral_boundary` | `src/game/ui_core/TEditText.cpp:125` | game scalar -> UINT | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `fdcb8f20e3a45adb` | `native_integral_boundary` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:524` | game scalar -> BYTE | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `806aaeb52fe4f325` | `native_integral_boundary` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:525` | game scalar -> BYTE | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `ed6f4dcdc439d462` | `native_integral_boundary` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:526` | game scalar -> BYTE | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
@@ -530,7 +530,7 @@ is classified, and a family that stops appearing must be removed.
 | `6fcc78451525c7ea` | `raw_discriminant_literal` | `src/game/ui_core/CMcWindow.cpp:155` | g_nMcWindowStateMsgAssertGate_006A1C74 == 0 | `open_index_count_or_bound` | `imperialism-decomp-1uj.99.8` |
 | `430bc1830ce40068` | `raw_discriminant_literal` | `src/game/ui_core/TCluster.cpp:65` | controlState64 == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `d87ba0f15909a8a6` | `raw_discriminant_literal` | `src/game/ui_core/TControl.cpp:100` | controlState64 == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
-| `99a10e7e995d1ae1` | `raw_discriminant_literal` | `src/game/ui_core/TEditText.cpp:107` | textAlignmentCode == 1 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
+| `99a10e7e995d1ae1` | `raw_discriminant_literal` | `src/game/ui_core/TEditText.cpp:110` | textAlignmentCode == 1 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
 | `c362ca894785dddb` | `raw_discriminant_literal` | `src/game/ui_core/THelpMgr.cpp:242` | flowMode != 0xf | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `d3227f7f67f07677` | `raw_discriminant_literal` | `src/game/ui_core/THelpMgr.cpp:243` | flowMode == 0x6a | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `31802574aecdd386` | `raw_discriminant_literal` | `src/game/ui_core/THelpMgr.cpp:706` | promptCode != 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
@@ -542,9 +542,9 @@ is classified, and a family that stops appearing must be removed.
 | `b78042b12a8ab8bc` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:192` | eventCode < 0x2b68 | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
 | `72137b7325079b2f` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:193` | eventCode == 0x2b67 | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
 | `a3c931af11fa9b59` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:232` | eventCode != 200 | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `bad383d2ccd30214` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:1159` | curCode < 0x2135 | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `3057d8baea938a55` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:1179` | newCode == 0 | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `2ddea2ec4c95980b` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:1788` | followupState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `bad383d2ccd30214` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:1163` | curCode < 0x2135 | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
+| `3057d8baea938a55` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:1183` | newCode == 0 | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
+| `2ddea2ec4c95980b` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:1793` | followupState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `9d5c2b0854ebdcaa` | `raw_discriminant_literal` | `src/game/ui_screens/TAlwaysPictureButton.cpp:26` | enabledState == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `54f643a28e2af6a1` | `raw_discriminant_literal` | `src/game/ui_screens/TCzechBox.cpp:44` | controlState64 != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `c3101696c199afd2` | `raw_discriminant_literal` | `src/game/ui_screens/TGWorldButton.cpp:40` | fEnabledState == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |

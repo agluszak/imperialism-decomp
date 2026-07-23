@@ -96,3 +96,6 @@ compile_commands.json
 
 # clangd index cache (per-machine, regenerated on demand)
 .cache/
+
+# Local retail-derived save fixtures for runtime tests (never committed)
+/tests/runtime/fixtures/

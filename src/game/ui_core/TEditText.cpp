@@ -5,7 +5,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include <mbstring.h>
-#include "game/ui_core/CMcWindow.h"
+#include "game/ui_core/CMcEditWindow.h"
 #include "game/app/TObject.h"
 // SYNTHETIC: IMPERIALISM 0x00490210
 // TEditText::CreateObject
@@ -92,9 +92,12 @@ void TEditText::SetEnabled(int enabledState, int refreshFlag) {
 }
 
 // FUNCTION: IMPERIALISM 0x004907a0
-CMcWindow* TEditText::Open() {
+CWnd* TEditText::Open() {
   if (editWindow == 0 && field08 != 0 && field04 != 0 && nativeWindow50 != 0) {
-    editWindow = new CMcWindow;
+    // The original allocates 0x3c bytes and stores the 0x0064afd8 vtable — the
+    // dedicated edit-host class, not CMcWindow (0x0064b7c8) and not the plain
+    // CWnd the base ctor writes.
+    editWindow = new CMcEditWindow;
     if (editWindow == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0xdee);
@@ -116,8 +119,10 @@ CMcWindow* TEditText::Open() {
     }
 
     CRect editBounds;
-    editWindow->Create("EDIT", 0, editStyle, *GetQDExtent(&editBounds), nativeWindow50,
-                       static_cast<UINT>(controlTag));
+    // Qualified: CEdit's 4-argument Create hides the generic CWnd surface, and
+    // the original makes a direct (non-virtual) call here.
+    editWindow->CWnd::Create("EDIT", 0, editStyle, *GetQDExtent(&editBounds), nativeWindow50,
+                             static_cast<UINT>(controlTag));
 
     editFont = CreateFontFromPresetAndAttachRegionHandle(&textStyle78);
     ::SendMessageA(editWindow->m_hWnd, WM_SETFONT,
