@@ -8,11 +8,11 @@ has a reviewed classification and a durable Beads owner in
 
 ## Summary
 
-- Findings: 569
+- Findings: 565
 - `native_integral_boundary`: 19
 - `nested_integral_cast`: 29
 - `predicate_storage_cast`: 23
-- `raw_discriminant_literal`: 498
+- `raw_discriminant_literal`: 494
 
 ## clang-tidy evaluation
 
@@ -130,8 +130,6 @@ a stale category-level approval.
 | `a431d57660ed9dad` | `raw_discriminant_literal` | `src/game/CMcWindow.cpp:30` | windowStyleType != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `2ff53e9c3b26c005` | `raw_discriminant_literal` | `src/game/CMcWindow.cpp:153` | g_nMcWindowStateMsgAssertGate_006A1C74 == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `0f7714fc0ea5156b` | `raw_discriminant_literal` | `src/game/TAlwaysPictureButton.cpp:25` | enabledState == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `d031c346cd06579f` | `raw_discriminant_literal` | `src/game/TArmoryView.cpp:146` | workforceMode == 1 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `9bab7e6f3d433b45` | `raw_discriminant_literal` | `src/game/TArmoryView.cpp:151` | workforceMode == 2 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `9ec17f16a6a62986` | `raw_discriminant_literal` | `src/game/TArmyBattle.cpp:64` | sessionModeActive == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `89fbd6cb85e2152b` | `raw_discriminant_literal` | `src/game/TArmyBattle.cpp:338` | terrainType0 == 4 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `499096337d64ceba` | `raw_discriminant_literal` | `src/game/TArmyCheckBox.cpp:35` | controlState64 == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
@@ -597,8 +595,6 @@ a stale category-level approval.
 | `c6c0ba2c2af44fb2` | `raw_discriminant_literal` | `src/game/TTransportView.cpp:30` | currentResourceType < 0x17 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `c0d3b984cfe42953` | `raw_discriminant_literal` | `src/game/TTransportView.cpp:43` | targetResourceType < 0x17 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `17bccad7fd6467f9` | `raw_discriminant_literal` | `src/game/TTransportView.cpp:66` | resourceType < 0x17 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `48a06ed4df1b617e` | `raw_discriminant_literal` | `src/game/TUnitOrder.cpp:67` | workforceMode == 2 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `5e02ccac97978dc7` | `raw_discriminant_literal` | `src/game/TUnitOrder.cpp:71` | workforceMode == 4 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `1ead1316b20cae20` | `raw_discriminant_literal` | `src/game/TUnitOrder.cpp:107` | ownerState != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `fdea48e59be1f969` | `raw_discriminant_literal` | `src/game/TUnitToolbarCluster.cpp:45` | screenModeAt24 == 1 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `048ef0e4223e63f1` | `raw_discriminant_literal` | `src/game/TUnitsView.cpp:32` | unitType < 14 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
