@@ -6,6 +6,7 @@
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
+class TTown;
 struct TCombatReportContext;
 class TToolBarClusterVtbl;
 class TView;
@@ -83,9 +84,11 @@ public:
   // `mov ecx,[g_pStrategicMapViewSystem]; mov eax,[ecx]; jmp [eax+0xNN]`, no
   // wrapping logic). Real orig names embed the target slot's byte offset. bd
   // imperialism-decomp-kdm.
-  virtual void RefreshCityProductionUi();                         // 0xac 0x5d7f70
-  virtual void ClearActiveCityBuildingViewSlot(short param1);     // 0xb0 0x5d7f90
-  virtual char HandleTurnEventDialogFactorySlotB4(void* payload); // 0xb4
+  virtual void RefreshCityProductionUi();                     // 0xac 0x5d7f70
+  virtual void ClearActiveCityBuildingViewSlot(short param1); // 0xb0 0x5d7f90
+  // Opens the New City dialog (event 0x3b9) and stuffs the pending town into its
+  // TPlaceCityDialog 'DLOG' child.
+  virtual char ShowNewCityDialog(TTown* town); // 0xb4 0x5dcdf0
   // Opens factory dialog 0x2405, seeds its 'GOLD' trade-summary child with the three
   // caller args, places/refreshes it, then forwards the refresh result to the child
   // (0x5dc430).

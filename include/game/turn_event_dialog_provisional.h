@@ -71,12 +71,6 @@ struct MainActionControl : public TControl {
                                 int targetNation); // slot 0x73 byte 0x1cc
 };
 
-struct GoldSinglePayloadControl : public TControl {
-  virtual void goldPayload71();
-  virtual void goldPayload72();
-  virtual void ApplyPayload(void* payload); // slot 0x73 byte 0x1cc
-};
-
 struct ThreeFlagDialogNode : public TView {
   virtual void ShowTurnEventDialog(int flag); // slot 0x68 byte 0x1a0
   virtual void dialog69();

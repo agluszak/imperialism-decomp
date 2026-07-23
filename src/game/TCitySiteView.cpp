@@ -240,7 +240,7 @@ void TCitySiteView::HandleMapClickByInteractionMode(short nTileIndex, int nInput
   CString cityName;
   g_pGlobalMapState->AssignCityRecordDisplayName(tile.cityRecordIndex, &cityName);
   pendingTown364->SetName(cityName);
-  if (!g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotB4(pendingTown364)) {
+  if (!g_pUiRuntimeContext->ShowNewCityDialog(pendingTown364)) {
     pendingTown364->tileIndex14 = 0;
     return;
   }

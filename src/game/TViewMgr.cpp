@@ -1,6 +1,9 @@
 #include "game/TViewMgr.h"
 #include "game/TArmyInfoView.h"
 #include "game/TCivReport.h"
+#include "game/TTown.h"
+#include "game/TOffLimitsPicture.h"
+#include "game/TPlaceCityDialog.h"
 #include "game/TCombatReportView.h"
 #include "game/TC2TemplateDialog.h"
 #include "game/TEventHandler.h"
@@ -1555,8 +1558,9 @@ void TViewMgr::SyncTacticalStatusPanelRegion() {
   goldControl->AssertValid();
   goldControl->SyncStatusPanelBounds();
 
-  turn_event_dialog::GoldSinglePayloadControl* owner =
-      static_cast<turn_event_dialog::GoldSinglePayloadControl*>(goldControl->ownerContext);
+  // The tactical view's owner is the tactical map picture, a TOffLimitsPicture
+  // subclass, so byte 0x1cc is its ForwardCopyRgn.
+  TOffLimitsPicture* owner = static_cast<TOffLimitsPicture*>(goldControl->ownerContext);
   owner->AssertValid();
 
   CRect bounds;
@@ -1564,7 +1568,7 @@ void TViewMgr::SyncTacticalStatusPanelRegion() {
   RECT regionBounds = bounds;
   RectRgn(temporaryRegion.tempRgn, &regionBounds);
 
-  owner->ApplyPayload(temporaryRegion.tempRgn);
+  owner->ForwardCopyRgn(temporaryRegion.tempRgn);
 }
 
 // FUNCTION: IMPERIALISM 0x005d8dd0
@@ -2053,7 +2057,7 @@ void TViewMgr::MakeGameSetupDialog() {
 }
 
 // FUNCTION: IMPERIALISM 0x005dcdf0
-char TViewMgr::HandleTurnEventDialogFactorySlotB4(void* payload) {
+char TViewMgr::ShowNewCityDialog(TTown* town) {
   turn_event_dialog::ThreeFlagDialogNode* node =
       static_cast<turn_event_dialog::ThreeFlagDialogNode*>(
           g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x3b9));
@@ -2061,14 +2065,14 @@ char TViewMgr::HandleTurnEventDialogFactorySlotB4(void* payload) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xbe);
   }
-  turn_event_dialog::GoldSinglePayloadControl* gold =
-      static_cast<turn_event_dialog::GoldSinglePayloadControl*>(
-          node->ResolveControlByTag(kControlTagDialog));
-  if (gold == 0) {
+  // MapView.rsrc view 953's 'DLOG' pict is a TPlaceCityDialog (Mac resource oracle).
+  TPlaceCityDialog* placeCity =
+      static_cast<TPlaceCityDialog*>(node->ResolveControlByTag(kControlTagDialog));
+  if (placeCity == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xc0);
   }
-  gold->ApplyPayload(payload);
+  placeCity->StuffValues(town);
   node->ConfigureDialogFlags(1, 1, 1);
   POINT placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
