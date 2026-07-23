@@ -142,7 +142,7 @@ rules:
     title: Every referenced global is a named symbol in global_data_tables
     triggers: [unlabeled_globals, raw_address_cast, new_extern_decl]
     required:
-      - declare_in_global_data_tables_pair_with_symbols_row
+      - declare_in_one_globals_subsystem_header_define_in_global_data_tables_cpp
       - read_actual_bytes_from_binary_for_initializers
     forbidden:
       - reinterpret_cast_of_raw_addresses

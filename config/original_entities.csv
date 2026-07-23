@@ -3264,7 +3264,7 @@ address|name|symbol|size|type|prototype|provenance
 518540|TMapMgr::LoadScenarioMapStateFromTableResource||536|function|char __thiscall LoadScenarioMapStateFromTableResource(int scenarioIndex)|
 5187f0|LoadScenarioMetadataByIndexIntoUiControlCore_Impl||62|function|undefined LoadScenarioMetadataByIndexIntoUiControlCore_Impl()|
 518840|ByteSwapCityScoreTableShortFields||219|function|void __cdecl ByteSwapCityScoreTableShortFields(Province * table)|
-518960|TGlobalMapState::SetRegionDevelopmentStageByte||29|function|undefined SetRegionDevelopmentStageByte()|
+518960|TMapMgr::SetRegionDevelopmentStageByte||29|function|undefined SetRegionDevelopmentStageByte()|
 518990|TMapMgr::ResetTileToBaseTransportFlag||98|function|void __thiscall ResetTileToBaseTransportFlag(short tileIndex)|
 518a20|AreAllLinkedEntriesTerrainFlagBit2Clear||85|function|undefined AreAllLinkedEntriesTerrainFlagBit2Clear()|
 518aa0|WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask_At00518aa0||115|function|undefined WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask_At00518aa0()|

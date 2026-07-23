@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/TObject.h"
+#include "game/app/TObject.h"
 #include "game/mfc.h"
 
 // Fuzzy-logic variable used by the AI minister decision code (constructed by

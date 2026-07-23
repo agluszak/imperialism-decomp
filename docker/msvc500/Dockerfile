@@ -12,6 +12,7 @@ RUN dpkg --add-architecture i386 \
     wine \
     wine32 \
     clang \
+    clang-tidy \
     lld \
     llvm \
     cmake \

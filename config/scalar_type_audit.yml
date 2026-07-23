@@ -1,0 +1,99 @@
+format_version: 1
+
+# Every emitted finding inherits a reviewed classification and durable owner from
+# this table. The committed fingerprint baseline makes newly introduced findings
+# fail the check instead of silently expanding the report.
+categories:
+  nested_integral_cast:
+    classification: width_or_bit_pattern_boundary
+    owner: imperialism-decomp-1uj.99.2
+    rationale: Preserve listing-required narrowing and sign extension; remove only redundant outer promotion.
+  predicate_storage_cast:
+    classification: predicate_boundary
+    owner: imperialism-decomp-1uj.99.7
+    rationale: Distinguish bool semantics from retail char, byte, and BOOL storage or return ABI.
+  raw_discriminant_literal:
+    classification: enum_candidate
+    owner: imperialism-decomp-1uj.99.8
+    rationale: A Type, Kind, Mode, State, or Code comparison needs a domain enum or explicit boundary classification.
+  native_integral_boundary:
+    classification: win32_mfc_boundary
+    owner: imperialism-decomp-1uj.99.9
+    rationale: Keep explicit conversion where game-owned values enter a Win32 or MFC scalar ABI.
+
+# Individually reviewed native boundaries. The audit requires this key set to match
+# every native_integral_boundary fingerprint exactly, so changing an expression
+# forces a fresh API/listing review instead of inheriting this approval silently.
+native_integral_reviews:
+  ddb6e55e5ead83ab:
+    classification: win32_struct_word_field
+    evidence: BITMAPINFOHEADER.biBitCount is WORD; retail 0x00479fe0 writes the low argument word to header offset 0x0e.
+  90ad32c2364f4c93:
+    classification: win32_struct_word_field
+    evidence: LOGPALETTE.palNumEntries is WORD; retail 0x0047ae90 copies the low word of the 32-bit palette count to offset 2.
+  4a577257115fdf30:
+    classification: win32_struct_word_field
+    evidence: LOGPALETTE.palNumEntries is WORD; retail 0x0047e440 stores BX to offset 2 before CreatePalette.
+  efb9327b8ccc01bd:
+    classification: win32_struct_word_field
+    evidence: GetObjectA yields a UINT entry count but LOGPALETTE.palNumEntries is WORD; retail 0x0047efa0 narrows only at the structure field.
+  8643894c63c98a37:
+    classification: mfc_bool_callback_return
+    evidence: CWnd::OnSetCursor returns BOOL while Default returns LRESULT; retail 0x00483ef0 tail-returns the full Default result through the BOOL override ABI.
+  b442f3eac7d1c116:
+    classification: mfc_bool_callback_return
+    evidence: CWnd::OnQueryNewPalette returns BOOL while Default returns LRESULT; retail 0x00493ca0 preserves the MFC callback ABI.
+  c2e2852e7faabcf6:
+    classification: win32_uint_sentinel
+    evidence: MessageBeep takes UINT and 0xffffffff selects the simple default sound; retail wrapper 0x004931e0 pushes -1 directly.
+  3971bc60890cc38d:
+    classification: win32_resource_identifier
+    evidence: MFC stores integer dialog resource IDs in the pointer-shaped m_lpszTemplateName field; FindResourceA consumes the recovered low UINT identifier at 0x0049d360.
+  04a2df0d87143ebc:
+    classification: mfc_word_map_key
+    evidence: m_tableA is keyed by WORD and the BMP resource identifier stays 32-bit until the CMap lookup boundary in retail 0x00499b40.
+  d09f763966efebc6:
+    classification: mfc_word_map_key
+    evidence: m_tableA is keyed by WORD and the BMP resource identifier stays 32-bit until the CMap insertion boundary in retail 0x00499b40.
+  5e99d2391a6383ab:
+    classification: mfc_word_map_key
+    evidence: retail 0x0049a0b0 explicitly loads only the low input word before hashing the CMap key.
+  531a3bdd6c6d74a9:
+    classification: mfc_word_map_key
+    evidence: retail 0x0049a190 loads and hashes the signed short argument as the WORD-key representation used by m_tableA.
+  1c1d74f04479d145:
+    classification: win32_allocation_size
+    evidence: VC5 GlobalAlloc takes a DWORD byte count; retail 0x005e3d40 forwards the 32-bit packet length unchanged at the API boundary.
+  fdcb8f20e3a45adb:
+    classification: win32_struct_byte_field
+    evidence: RGBQUAD.rgbBlue is BYTE; retail 0x005de010 copies the low packed-color byte into the four-byte local structure.
+  806aaeb52fe4f325:
+    classification: win32_struct_byte_field
+    evidence: RGBQUAD.rgbGreen is BYTE; retail 0x005de010 extracts packed-color bits 8 through 15 into the structure.
+  ed6f4dcdc439d462:
+    classification: win32_struct_byte_field
+    evidence: RGBQUAD.rgbRed is BYTE; retail 0x005de010 extracts packed-color bits 16 through 23 into the structure.
+  ce82c4c20067c59c:
+    classification: win32_struct_byte_field
+    evidence: RGBQUAD.rgbReserved is BYTE; retail 0x005de010 extracts packed-color bits 24 through 31 into the structure.
+  d97fbba03dae091e:
+    classification: multimedia_dword_field
+    evidence: MCI_PLAY_PARMS.dwFrom is DWORD; retail 0x005e1850 masks the track index to eight bits before the dword store.
+  9440836a8128678f:
+    classification: multimedia_dword_field
+    evidence: MCI_PLAY_PARMS.dwTo is DWORD; retail 0x005e1850 increments then masks the track index before the dword store.
+  c35544f8b821ac5f:
+    classification: mfc_control_identifier
+    evidence: CWnd::Create takes a UINT child-control identifier; TEditText::Open forwards the full 32-bit controlTag at this MFC boundary.
+
+clang_tidy:
+  status: evaluated_with_llvm_19
+  version: 19.1.7
+  evaluated_checks:
+    - bugprone-narrowing-conversions
+    - cppcoreguidelines-narrowing-conversions
+    - readability-redundant-casting
+  decision: advisory_only
+  sample: 5 manually owned translation units (TScrollBarView, TGreatPower, TMapMaker, TViewMgr, and NetMessage)
+  result: 138 source-visible diagnostics (131 narrowing, 7 redundant casts); no diagnostics in generated or retail library code were included.
+  rationale: Narrowing diagnostics expose real signature and storage-width debt but mix listing-required truncation, signed-byte preservation, predicate storage, negative hex constants, and floating-point codegen. The cppcoreguidelines check aliases the same diagnostics as bugprone under LLVM 19. Redundant casts were low-noise (7 of 7 same-type casts), but remain advisory until their .99.2-owned baseline is cleared.

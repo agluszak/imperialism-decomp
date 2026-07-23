@@ -2,7 +2,7 @@
 """Gate: no local `extern` redeclarations of globals already declared in
 include/game/global_data_tables.h.
 
-The type-modeling guardrail requires consumers to `#include "game/global_data_tables.h"`
+The type-modeling guardrail requires consumers to `#include "game/core/global_data_tables.h"`
 and use the single authoritative declaration. A hand-rolled local `extern` silently
 drifts (type, constness, array-ness) from the header and hides the dependency from
 refactors. This gate fails on any manual .cpp/.h (outside the global tables pair and
@@ -19,11 +19,11 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-HEADER = REPO_ROOT / "include" / "game" / "global_data_tables.h"
+HEADER = REPO_ROOT / "include" / "game" / "core" / "global_data_tables.h"
 GLOBALS_DIR = REPO_ROOT / "include" / "game" / "globals"
 SELF_FILES = (
-    "include/game/global_data_tables.h",
-    "src/game/global_data_tables.cpp",
+    "include/game/core/global_data_tables.h",
+    "src/game/core/global_data_tables.cpp",
 )
 SELF_DIRS = ("include/game/globals/",)
 GENERATED_MARKERS = ("/ghidra_autogen/", "/autogen/")

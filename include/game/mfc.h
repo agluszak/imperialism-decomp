@@ -2,7 +2,6 @@
 
 #include "compat.h"
 #include "decomp_types.h"
-#include "game/mfc_heap_library.h"
 
 // Retail MFC 4.2 from the MSVC500 toolchain (same nafxcw.lib the game linked).
 #ifndef VC_EXTRALEAN
@@ -21,6 +20,6 @@
 #undef MoveMemory
 #endif
 
-// Ghidra 0x606f73 / 0x606faf are retail MFC operator new/delete (LIBRARY — see mfc_heap_library.h).
+// Ghidra 0x606f73 / 0x606faf are retail MFC operator new/delete (LIBRARY — markers in src/game/mfc_heap_library.cpp).
 
 // CString helper functions

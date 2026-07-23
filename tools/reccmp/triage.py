@@ -287,7 +287,7 @@ def render_entity(
         lines.append("safe to ignore:")
         reasons = comparison.get("effective_reasons") or []
         lines.extend(f"  {REASON_LABELS[reason]}" for reason in reasons)
-        lines += ["", "nothing to fix"]
+        lines += ["", "effective: proved semantically harmless — no action needed"]
     elif status == "mismatch":
         difference = comparison.get("difference")
         if not isinstance(difference, dict):
@@ -305,7 +305,9 @@ def render_entity(
             "reccmp analysis inconclusive:",
             f"  {reason.replace('_', ' ')}{location_text}",
             "",
-            "reccmp did not prove that the source is wrong",
+            "inconclusive: the verifier could not prove either outcome — this is",
+            "NOT evidence of a source defect; do not contort source to chase it.",
+            "Investigate verifier/metadata/alignment instead.",
         ]
     else:
         raise ValueError(f"unknown comparison status: {status}")

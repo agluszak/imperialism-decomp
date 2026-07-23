@@ -69,6 +69,25 @@ class ParsePrototypeTest(unittest.TestCase):
         _cc, _ret, _params, kind = parse_prototype("TArmyMission::~TArmyMission(void)")
         self.assertEqual(kind, "destructor")
 
+    def test_unqualified_inclass_dtor_kind(self):
+        # In-class declaration form: no class qualifier, no return type.
+        cc, ret, params, kind = parse_prototype("virtual ~TObject()")
+        self.assertIsNone(cc)
+        self.assertEqual((ret, params, kind), ("void", [], "destructor"))
+
+    def test_unqualified_dtor_with_convention_and_void(self):
+        cc, ret, _params, kind = parse_prototype("void __thiscall ~TObject()")
+        self.assertEqual(cc, "__thiscall")
+        self.assertEqual((ret, kind), ("void", "destructor"))
+
+    def test_unqualified_bare_identifier_is_ctor(self):
+        _cc, ret, params, kind = parse_prototype("ImperialismCommandLineInfo()")
+        self.assertEqual((ret, params, kind), ("void", [], "constructor"))
+
+    def test_unqualified_with_return_type_stays_free_function(self):
+        _cc, ret, _params, kind = parse_prototype("int GetX()")
+        self.assertEqual((ret, kind), ("int", "free_function"))
+
     def test_free_function_stdcall(self):
         cc, ret, params, kind = parse_prototype(
             "unsigned short __stdcall Foo(short a, int b)")

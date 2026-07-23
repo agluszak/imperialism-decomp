@@ -21,6 +21,7 @@ from typing import Iterable
 import yaml
 
 from tools.common.repo import repo_root_from_file, resolve_repo_path
+from tools.turn_event_vocabulary import load_turn_event_vocabulary
 from tools.workflow.macos_resource_evidence import validate_view_structure
 
 
@@ -224,6 +225,23 @@ class TextResources:
 
     def __getitem__(self, key: tuple[str, int, int]) -> str:
         return self.strings[key]
+
+
+_GAME_HEADER_CACHE: dict[str, dict[str, str]] = {}
+
+
+def find_game_header(repo_root: Path, class_name: str) -> str | None:
+    """Locate a class header under include/game (subsystem folders included);
+    returns the include-path form (`game/<sub>/X.h`) or None."""
+    key = str(repo_root)
+    cache = _GAME_HEADER_CACHE.get(key)
+    if cache is None:
+        cache = {}
+        for header in (repo_root / "include" / "game").rglob("*.h"):
+            rel = header.relative_to(repo_root / "include").as_posix()
+            cache.setdefault(header.stem, rel)
+        _GAME_HEADER_CACHE[key] = cache
+    return cache.get(class_name)
 
 
 def _sha256(path: Path) -> str:
@@ -834,10 +852,9 @@ def _validate_semantic_view(
         ):
             if value not in (0, 1):
                 errors.append(f"{context}/{node.node_id}: {name} must be 0 or 1")
-        header = repo_root / "include" / "game" / f"{node.class_name}.h"
-        if not header.is_file():
+        if find_game_header(repo_root, node.class_name) is None:
             errors.append(
-                f"{context}/{node.node_id}: missing include/game/{node.class_name}.h"
+                f"{context}/{node.node_id}: missing include/game/**/{node.class_name}.h"
             )
         if not node.source:
             errors.append(f"{context}/{node.node_id}: missing semantic provenance")
@@ -1090,6 +1107,9 @@ def _render_factory_with_map(
     windows_views: dict[str, UiSemanticView],
     annotation_kind: str = "FUNCTION",
 ) -> tuple[str, dict[str, object]]:
+    vocabulary_by_event, _ = load_turn_event_vocabulary(
+        repo_root_from_file(__file__, levels_up=1)
+    )
     body: list[str] = []
     classes: set[str] = set()
     case_maps: dict[str, object] = {}
@@ -1099,7 +1119,8 @@ def _render_factory_with_map(
     if len(recipe.cases) == 1:
         body.extend(
             (
-                f"  if (static_cast<unsigned short>(nEventCode) != {_hex(recipe.cases[0].event)}) {{",
+                "  if (static_cast<unsigned short>(nEventCode) != "
+                f"{vocabulary_by_event[recipe.cases[0].event]}) {{",
                 "    return 0;",
                 "  }",
             )
@@ -1109,7 +1130,7 @@ def _render_factory_with_map(
     for case in recipe.cases:
         indent = "  " if len(recipe.cases) == 1 else "    "
         if len(recipe.cases) > 1:
-            body.append(f"  case {_hex(case.event)}: {{")
+            body.append(f"  case {vocabulary_by_event[case.event]}: {{")
         if case.evidence and not case.rejected:
             body.append(f"{indent}// FUNCTIONAL_PARITY: {case.evidence}.")
         if case.resource is not None:
@@ -1156,11 +1177,13 @@ def _render_factory_with_map(
     )
     includes = [
         '#include "game/turn_event_dialog_factory.h"',
-        '#include "game/global_data_tables.h"',
-        '#include "game/ui_resource_builder.h"',
+        '#include "game/turn_event_codes.h"',
+        '#include "game/core/global_data_tables.h"',
+        '#include "game/app/ui_resource_builder.h"',
     ]
+    _codegen_repo_root = repo_root_from_file(__file__, levels_up=1)
     includes.extend(
-        f'#include "game/{class_name}.h"'
+        f'#include "{find_game_header(_codegen_repo_root, class_name) or f"game/{class_name}.h"}"'
         for class_name in sorted(classes)
         if class_name != "TView"
     )

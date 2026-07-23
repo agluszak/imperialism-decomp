@@ -17,6 +17,7 @@ from tools.ui_codegen import (
     write_generated,
 )
 from tools.reccmp.progress_stats import ui_codegen_regressions
+from tools.turn_event_vocabulary import load_turn_event_vocabulary
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -29,6 +30,7 @@ class UiCodegenTests(unittest.TestCase):
         cls.views = load_ui_views(REPO_ROOT)
         cls.text_resources = load_text_resources(REPO_ROOT)
         cls.windows_views = load_windows_views(REPO_ROOT)
+        cls.vocabulary_by_event, _ = load_turn_event_vocabulary(REPO_ROOT)
         cls.rendered = {
             recipe.address: render_factory(
                 recipe, cls.views, cls.text_resources, cls.windows_views
@@ -133,7 +135,7 @@ class UiCodegenTests(unittest.TestCase):
         self.assertGreater(len(concrete_classes), 100)
 
         header_text = {
-            path: path.read_text() for path in (REPO_ROOT / "include" / "game").glob("*.h")
+            path: path.read_text() for path in (REPO_ROOT / "include" / "game").rglob("*.h")
         }
         class_owners: dict[str, list[Path]] = {}
         declaration = re.compile(r"\bclass\s+(T[A-Za-z0-9_]+)\b[^;{]*{")
@@ -192,7 +194,9 @@ class UiCodegenTests(unittest.TestCase):
             "TPicture.h": ("CDib* cachedBitmap;",),
         }
         for header, expected in declarations.items():
-            text = (REPO_ROOT / "include" / "game" / header).read_text()
+            matches = list((REPO_ROOT / "include" / "game").rglob(header))
+            self.assertEqual(len(matches), 1, f"expected one {header} under include/game: {matches}")
+            text = matches[0].read_text()
             for declaration in expected:
                 self.assertIn(declaration, text)
             self.assertNotRegex(
@@ -223,7 +227,7 @@ class UiCodegenTests(unittest.TestCase):
 
         recipe = next(recipe for recipe in self.recipes if recipe.address == 0x0044AF90)
         text = self.rendered[recipe.address]
-        case_text = text[text.index("case 0x5e7:") :]
+        case_text = text[text.index("case kTurnEventJoinSelectorMessage:") :]
         self.assertIn("new TFloatWindow()", case_text)
         self.assertIn("new TMultiMessagePicture()", case_text)
         self.assertEqual(case_text.count("new TCzechBox()"), 7)
@@ -248,7 +252,7 @@ class UiCodegenTests(unittest.TestCase):
             self.assertIsNotNone(case.resource)
             self.assertIn(evidence, case.evidence)
             text = self.rendered[recipe.address]
-            case_text = text[text.index(f"case 0x{event:x}:") :]
+            case_text = text[text.index(f"case {self.vocabulary_by_event[event]}:") :]
             self.assertIn("// FUNCTIONAL_PARITY:", case_text)
             self.assertIn("RegisterUiResourceEntry", case_text)
         self.assertNotIn("WINDOWS_ONLY", case_text)

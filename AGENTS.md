@@ -195,7 +195,9 @@ target). They need a built binary + reccmp DB. Details in the `quality-control` 
    they may be auto-generated placeholders, even entirely random. reccmp pairs by the
    `// FUNCTION:` address marker, not by name, so drive matching and field naming from
    observed behavior in the disassembly, and keep tentative names hedged.
-7. Keep class-owned functions in `src/game/<ClassName>.cpp`. **Every file under
+7. Keep class-owned functions in `src/game/<subsystem>/<ClassName>.cpp` (subsystem
+   folders per `docs/reference/subsystem_assignment.csv`; unassigned/shared files
+   sit at the `src/game/` root). **Every file under
    `include/game/` and `src/game/` is manually owned source** — author and edit its
    declarations and bodies by hand, then verify with `just build` / `just vtable` /
    `just gates`. There are no tool-owned source trees anymore: generated inputs
@@ -370,10 +372,13 @@ skills; the invariants:
 - **Be opportunistic in touched code.** While reading/editing any function for another
   task, fix the wrong types, stray `reinterpret_cast`s, junk names, and obvious bugs you
   see there — even if you didn't cause them. Don't go out of scope hunting elsewhere.
-- **Every global in `global_data_tables.cpp` must be declared in `global_data_tables.h`**,
-  and consumers must `#include "game/global_data_tables.h"` — never hand-roll a local
-  `extern`. Add the `extern` in the same change as a new global; migrate any local
-  re-declaration you touch (opportunistic-fix scope above).
+- **Every global in `global_data_tables.cpp` must be declared in exactly one
+  `include/game/globals/*.h` subsystem header** (the subsystem its users live in;
+  `shared_globals.h` when unsure), and consumers must `#include` that subsystem header
+  (plus `globals/prelude.h`) — never hand-roll a local `extern`, and never include the
+  umbrella `global_data_tables.h` from new code. Add the `extern` in the same change as
+  a new global; migrate any local re-declaration or umbrella include you touch
+  (opportunistic-fix scope above).
 
 ## Commit-message policy
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/CString.h"
+#include "game/ui_screens/CString.h"
 #include "game/mfc.h"
 
 class TDropShadowText;

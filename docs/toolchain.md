@@ -9,23 +9,45 @@ silently accepts (missing `override`, narrowing, wrong vtable signatures, bad
 global linkage, layout `static_assert` failures). It is **never** used for
 reccmp matching and must not influence the MSVC500 build.
 
-- Toolchain: `clang` targeting `i686-w64-mingw32` (MinGW-w64 supplies
-  `<windows.h>`, gdi32/user32, and the MSVC calling conventions). Packaged in
-  `docker/clang-mingw/`; CMake cross-toolchain in `cmake/clang-mingw-i686.cmake`.
-- Run with `just build-lint-image` (one-time) then `just lint`. It compiles all
+- Toolchain: `clang-cl` targeting `i686-pc-windows-msvc`, using the vendored
+  VC5/MFC and DirectX 5 headers. It is packaged in the shared
+  `docker/msvc500/` image; CMake cross-toolchain in `cmake/clang-cl-i686.cmake`.
+- Run `just docker-build` once, then `just lint`. It compiles all
   sources (no link, `IMPERIALISM_LINT_COMPILE_ONLY`) and keeps going past errors
   so one pass reports the whole tree.
 - The C++ standard is C++14, which activates the real `override`/`static_assert`
   that `include/compat.h` stubs out for MSVC 5.0 — this is what makes the
   missing-override checks fire.
 - `-fms-compatibility` is intentionally **omitted**: it defines `_MSC_VER`, which
-  sends MinGW's `windows.h` down an unsupported MSVC path.
-- Strictness is phased: warnings are reported but non-fatal until the backlog is
-  cleared, then flip `IMPERIALISM_LINT_WERROR=ON` (pass via
-  `just lint -DIMPERIALISM_LINT_WERROR=ON`). Initial backlog: ~300
-  inconsistent-missing-override warnings + ~42 hard errors (wrong global
-  language linkage, `CString::Header` missing `()`, two `TCivDescription`
-  layout assertions).
+  changes compatibility behavior that the explicit clang-cl target and retail
+  headers already model.
+- The same image installs version-matched `clang-tidy`. `just scalar-clang-tidy`
+  regenerates the lint compile database before evaluating scalar-focused checks
+  on a stable set of manually owned translation units.
+- `.clang-tidy` holds a separate reviewed advisory profile for bug-prone source
+  shapes, suspicious call arguments, and core analyzer findings. Run
+  `just clang-tidy-audit` for the stable five-TU sample, or pass a compilation-
+  database path regex to expand it. The profile deliberately excludes
+  `modernize-*`, broad `cppcoreguidelines-*`, easily-swappable parameters, and
+  missing-default warnings because they conflict with VC5/ABI recovery or bury
+  evidence-backed findings in expected decompilation shape.
+
+The LLVM 19 evaluation over all manually owned `src/game/*.cpp` translation
+units produced 664 source-visible diagnostics in 131 files. The largest owned
+families are signed-char conversions (136, `imperialism-decomp-1uj.99.7`),
+redundant casts (116, `imperialism-decomp-1uj.99.2`), analyzer null/call paths
+(282), suspicious call arguments (38), and enum casts outside the currently
+declared domain (28, `imperialism-decomp-1uj.99.8`). Smaller high-signal groups
+include casts through `void*` (17), branch clones (17), assignment in conditions
+(12), dead stores (9), redundant expressions (4), `sizeof` misuse (2), macro
+parenthesization (2), and implicit multiplication widening (1). These are audit
+queues, not automatic fixes: analyzer null reports often follow retail-style
+warning/assert paths that deliberately continue, while cast and expression
+changes still require listing and reccmp verification.
+- `just lint` now forces `IMPERIALISM_LINT_WERROR=ON`; CI also proves the gate
+  rejects an intentionally warning-producing translation unit. clang-tidy is
+  separate and advisory because its scalar diagnostics need listing-aware
+  classification rather than blanket suppression or cast insertion.
 
 ## DirectX 5 SDK headers (dplay.h shadowing)
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "compat.h"
-#include "game/TControl.h"
+#include "game/ui_core/TControl.h"
 
 // Control manager base class.
 // Base recovered from CRuntimeClass descriptor: TCtlMgr -> TControl -> TView -> TEventHandler -> TObject -> CObject.

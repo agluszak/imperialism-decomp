@@ -3,7 +3,7 @@
 #include "compat.h"
 #include "decomp_types.h"
 #include "game/mfc.h"
-#include "game/quickdraw_regions.h"
+#include "game/gfx/quickdraw_regions.h"
 
 class CDib;
 
