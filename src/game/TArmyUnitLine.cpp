@@ -11,6 +11,7 @@
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
 // SYNTHETIC: IMPERIALISM 0x004a8ca0
 // TArmyUnitLine::CreateObject
 
@@ -37,7 +38,7 @@ void TArmyUnitLine::InstallViews(TView* panel, int* offsetLayout) {
   TArmyCheckBox* checkbox = new TArmyCheckBox(
       armyView, checkboxOffset, checkboxSize, 4, 4,
       static_cast<TMilitaryPageView*>(panel)->primaryUnitAtlas84, militaryUnit10->orderType << 7);
-  checkbox->controlTag = 0x63686563; // 'chec'
+  checkbox->controlTag = kControlTagChec; // 'chec'
   if (militaryUnit10->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
     static_cast<TView*>(checkbox)->SetState(1, 0);
     checkbox->eventNumber60 = 4;
@@ -59,7 +60,7 @@ void TArmyUnitLine::InstallViews(TView* panel, int* offsetLayout) {
     TGWorldButton* upgradeButton = new TGWorldButton;
     upgradeButton->InitializeWithBitmapResource(armyView, upgradeOffset, upgradeSize, 0xdae);
     upgradeButton->SetState(1, 0);
-    upgradeButton->controlTag = 0x75706772; // 'upgr'
+    upgradeButton->controlTag = kControlTagUpgr; // 'upgr'
 
     CString armsText;
     CString cashText;
@@ -91,7 +92,7 @@ void TArmyUnitLine::InstallViews(TView* panel, int* offsetLayout) {
   int nameSize[2] = {0x80, 0x18};
   TClickZone* nameZone = new TClickZone;
   nameZone->InitializeUiResourceEntryFrameAndParent(0, armyView, nameOffset, nameSize, 4, 4, 0);
-  nameZone->controlTag = 0x6e616d65; // 'name'
+  nameZone->controlTag = kControlTagName; // 'name'
   CString nameHelp;
   g_pSimMgr->GetString(0x2746, 1, &nameHelp);
   SetControlHoverHelpText(nameHelp, nameZone);

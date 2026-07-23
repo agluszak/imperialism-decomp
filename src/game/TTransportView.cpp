@@ -5,6 +5,8 @@
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/resource_domain_types.h"
+#include "game/ui_tags_city.h"
+#include "game/ui_tags_common.h"
 
 // SYNTHETIC: IMPERIALISM 0x004bd370
 // TTransportView::`scalar deleting destructor'
@@ -24,7 +26,7 @@ void TTransportView::StuffValues(TGreatPower* nation) {
   CString scratch;
   nation60 = nation;
 
-  TView* supplyPanel = ResolveControlByTag(0x73757070); // 'supp'
+  TView* supplyPanel = ResolveControlByTag(kControlTagSupp); // 'supp'
   if (supplyPanel == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x783);
   }
@@ -38,7 +40,7 @@ void TTransportView::StuffValues(TGreatPower* nation) {
     amount->SetControlValue(nation->needCurrentByType[currentResourceType], 1);
   }
 
-  TView* transportPanel = ResolveControlByTag(0x7472616e); // 'tran'
+  TView* transportPanel = ResolveControlByTag(kControlTagTran); // 'tran'
   if (transportPanel == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x78d);
   }
@@ -52,7 +54,7 @@ void TTransportView::StuffValues(TGreatPower* nation) {
     amount->SetControlValue(nation->needTargetByType[targetResourceType], 1);
   }
 
-  TNumberText* total = static_cast<TNumberText*>(ResolveControlByTag(0x746f7461)); // 'tota'
+  TNumberText* total = static_cast<TNumberText*>(ResolveControlByTag(kControlTagTota)); // 'tota'
   if (total == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x797);
   }
@@ -61,7 +63,7 @@ void TTransportView::StuffValues(TGreatPower* nation) {
 
 // FUNCTION: IMPERIALISM 0x004bd690
 void TTransportView::Close() {
-  TView* transportPanel = ResolveControlByTag(0x7472616e); // 'tran'
+  TView* transportPanel = ResolveControlByTag(kControlTagTran); // 'tran'
   if (transportPanel == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x7a7);
   }

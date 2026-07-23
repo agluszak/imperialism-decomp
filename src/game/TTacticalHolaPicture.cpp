@@ -8,7 +8,8 @@
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
-#include "game/ui_control_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 // SYNTHETIC: IMPERIALISM 0x0045d4b0
 // TTacticalHolaPicture::`scalar deleting destructor'

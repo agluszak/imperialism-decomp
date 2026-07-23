@@ -7,7 +7,6 @@
 #include "game/TGreatPower.h"
 #include "game/TCity.h"
 #include "game/global_data_tables.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
 #include "game/UiRuntimeContext.h"
@@ -18,6 +17,8 @@
 #include <new>
 
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 // SYNTHETIC: IMPERIALISM 0x0058a4d0
 // TShipyardCluster::CreateObject
@@ -81,7 +82,8 @@ void TShipyardCluster::SetMoveAmount(short amount) {
   CopyRect(&invalidateRect, &moveRect);
   this->ownerContext->InvalidateCityDialogRectRegion(&invalidateRect, 1);
 
-  TAmtBar* turnControl = static_cast<TAmtBar*>(this->ownerContext->ResolveControlByTag(0x7475726e));
+  TAmtBar* turnControl =
+      static_cast<TAmtBar*>(this->ownerContext->ResolveControlByTag(kControlTagTurn));
   if (turnControl != 0) {
     turnControl->SetControlValueSlot1E4(0, 0);
     turnControl->QueryBounds(&moveRect);

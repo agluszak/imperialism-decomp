@@ -7,6 +7,8 @@
 #include "game/TView.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b4020
 // TMinorTreatyDialog::`scalar deleting destructor'
@@ -24,8 +26,8 @@ TMinorTreatyDialog::TMinorTreatyDialog() {}
 // FUNCTION: IMPERIALISM 0x005b4090
 void TMinorTreatyDialog::StuffValues() {
   CString nationName;
-  unsigned int nameTags[8] = {0x6e616d30, 0x6e616d31, 0x6e616d32, 0x6e616d33,
-                              0x6e616d34, 0x6e616d35, 0x6e616d36, 0x6e616d37};
+  unsigned int nameTags[8] = {kControlTagNam0, kControlTagNam1, kControlTagNam2, kControlTagNam3,
+                              kControlTagNam4, kControlTagNam5, kControlTagNam6, kControlTagNam7};
 
   for (short minorNationSlot = 7; minorNationSlot < 0x17; ++minorNationSlot) {
     int minorIndex = minorNationSlot - 7;
@@ -56,11 +58,11 @@ void TMinorTreatyDialog::StuffValues() {
     }
   }
 
-  TView* firstMajorNameRow = ResolveControlByTag(0x726f7731); // 'row1'
+  TView* firstMajorNameRow = ResolveControlByTag(kControlTagRow1); // 'row1'
   if (firstMajorNameRow == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x30c);
   }
-  TView* secondMajorNameRow = ResolveControlByTag(0x726f7732); // 'row2'
+  TView* secondMajorNameRow = ResolveControlByTag(kControlTagRow2); // 'row2'
   if (secondMajorNameRow == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x30e);
   }
@@ -86,11 +88,11 @@ void TMinorTreatyDialog::StuffValues() {
     secondRowName->SetTextAndMaybeRefresh(&nationName, 0);
   }
 
-  TView* firstMinorNameColumn = ResolveControlByTag(0x636f6c31); // 'col1'
+  TView* firstMinorNameColumn = ResolveControlByTag(kControlTagCol1); // 'col1'
   if (firstMinorNameColumn == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x31e);
   }
-  TView* secondMinorNameColumn = ResolveControlByTag(0x636f6c32); // 'col2'
+  TView* secondMinorNameColumn = ResolveControlByTag(kControlTagCol2); // 'col2'
   if (secondMinorNameColumn == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x320);
   }

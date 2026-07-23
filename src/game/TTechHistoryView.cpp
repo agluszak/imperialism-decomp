@@ -5,8 +5,9 @@
 #include "game/TPicture.h"
 #include "game/TScrollView.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 // SYNTHETIC: IMPERIALISM 0x00460140
 // TTechHistoryView::`scalar deleting destructor'

@@ -11,7 +11,6 @@
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/TProductionOrder.h"
 #include "game/TCity.h"
 #include "game/TGreatPower.h"
@@ -20,6 +19,8 @@
 #include <new>
 
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 // SYNTHETIC: IMPERIALISM 0x00589ed0
 // TRailAmtBar::CreateObject
@@ -43,13 +44,13 @@ void TRailAmtBar::DoPostCreate(int arg) {
   int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);
 
   short recordIndex = 0;
-  if ((unsigned int)summaryTag < 0x706f7076) {
+  if ((unsigned int)summaryTag < kControlTagPopv) {
     if (summaryTag == kSummaryTagPopu) {
       recordIndex = 0x3c;
     } else if (summaryTag == kSummaryTagFood) {
       recordIndex = 7;
     }
-  } else if ((unsigned int)summaryTag < 0x70726f67) {
+  } else if ((unsigned int)summaryTag < kControlTagProg) {
     if (summaryTag == kSummaryTagProf) {
       recordIndex = 0x18;
     } else if (summaryTag == kSummaryTagPowe) {
@@ -57,7 +58,7 @@ void TRailAmtBar::DoPostCreate(int arg) {
     }
   } else if (summaryTag == kSummaryTagRail) {
     recordIndex = 0x33;
-  } else if (summaryTag == kSummaryTagIart) {
+  } else if (summaryTag == kSummaryTagTrai) {
     recordIndex = 0x17;
   }
 

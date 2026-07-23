@@ -27,10 +27,14 @@
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 #include "game/resource_domain_types.h"
+#include "game/ui_tags_city.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
+#include "game/ui_tags_screens.h"
+#include "game/ui_tags_widgets.h"
 // SYNTHETIC: IMPERIALISM 0x005be4b0
 // TOfferDeskPicture::CreateObject
 
@@ -55,13 +59,14 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
   treasury->AssertValid();
   ApplyUiTextStyleAndThemeFlags(treasury, 0, 0xe, 0x2b6c, 0x2b6b);
 
-  TDropShadowNumberText* maximum = static_cast<TDropShadowNumberText*>(ResolveControlByTag('mCap'));
+  TDropShadowNumberText* maximum =
+      static_cast<TDropShadowNumberText*>(ResolveControlByTag(kControlTagMCap));
   maximum->AssertValid();
   ApplyUiNumberTextStyleAndThemeColor(maximum, 0, 0xc, 0x2b6c, 0x2b6b);
   LoadUiStringByGroupAndIndexToControlObject(0x2740, 1, maximum);
   maximum->SetTextAlignmentAndMaybeRefresh(0, 1);
 
-  TDealTabControl* tabs = static_cast<TDealTabControl*>(ResolveControlByTag('tabs'));
+  TDealTabControl* tabs = static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs));
   tabs->AssertValid();
   tabs->Setup(0x2264,
               g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId]);
@@ -72,7 +77,7 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
   toolbar->RefreshControl();
   toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
 
-  TView* miniPicture = ResolveControlByTag('mPic');
+  TView* miniPicture = ResolveControlByTag(kControlTagMPic);
   miniPicture->AssertValid();
 
   TView* offerCluster = ResolveControlByTag(kControlTagClus);
@@ -81,21 +86,21 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
   SetControlHoverHelpText(CString(g_szEmptyString), this);
 
   LoadUiStringByGroupAndIndexToControlObject(0x2740, 2, maximum);
-  LoadUiStringByGroupAndIndexToControlObject(0x2740, 5, ResolveControlByTag(kTagDone));
+  LoadUiStringByGroupAndIndexToControlObject(0x2740, 5, ResolveControlByTag(kControlTagDone));
   LoadUiStringByGroupAndIndexToControlObject(0x2740, 6, ResolveControlByTag(kControlTagReje));
   LoadUiStringByGroupAndIndexToControlObject(0x2740, 7, ResolveControlByTag(kControlTagAcce));
 
-  TView* sheet = ResolveControlByTag('shee');
+  TView* sheet = ResolveControlByTag(kControlTagShee);
   SetControlHoverHelpText(CString(g_szEmptyString), sheet);
-  TView* wait = ResolveControlByTag('wait');
+  TView* wait = ResolveControlByTag(kControlTagWait);
   SetControlHoverHelpText(CString(g_szEmptyString), wait);
   TTradeBookView* book = static_cast<TTradeBookView*>(ResolveControlByTag(kControlTagBook));
   SetControlHoverHelpText(CString(g_szEmptyString), book);
   LoadUiStringByGroupAndIndexToControlObject(0x2740, 1, miniPicture);
-  SetControlHoverHelpText(CString(g_szEmptyString), book->ResolveControlByTag('list'));
+  SetControlHoverHelpText(CString(g_szEmptyString), book->ResolveControlByTag(kControlTagList));
   LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, ResolveControlByTag(kControlTagQuer));
 
-  TStaticText* waitText = static_cast<TStaticText*>(wait->ResolveControlByTag('text'));
+  TStaticText* waitText = static_cast<TStaticText*>(wait->ResolveControlByTag(kControlTagText));
   waitText->AssertValid();
   TextStyle waitStyle;
   waitStyle.textColor = 0;
@@ -130,21 +135,21 @@ void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, s
   commodityType96 = commodityType;
   suppressEventFlag9a = 0;
 
-  TNumberText* purchaseControl = static_cast<TNumberText*>(ResolveControlByTag('purc'));
+  TNumberText* purchaseControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagPurc));
   purchaseControl->AssertValid();
   purchaseControl->maximumValue = maxAmount;
   purchaseControl->SetControlValue(proposedAmount, 0);
 
-  acceptButtonA0 = static_cast<TPictureButton*>(ResolveControlByTag('acce'));
+  acceptButtonA0 = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
   acceptButtonA0->AssertValid();
   acceptButtonA0->SetState(0, 0);
-  rejectButtonA4 = static_cast<TPictureButton*>(ResolveControlByTag('reje'));
+  rejectButtonA4 = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
   rejectButtonA4->AssertValid();
   rejectButtonA4->SetState(0, 0);
 
-  TView* cluster = ResolveControlByTag('clus');
+  TView* cluster = ResolveControlByTag(kControlTagClus);
   cluster->AssertValid();
-  TView* noMore = cluster->ResolveControlByTag('nomo');
+  TView* noMore = cluster->ResolveControlByTag(kControlTagNomo);
   noMore->AssertValid();
   noMore->SetEnabled(1, 0);
   noMore->SetState(0, 0);
@@ -152,7 +157,7 @@ void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, s
   selectionActive9e = false;
   detailedErrorFlag9d = proposedAmount > maxAmount;
   RefreshSelectedNationOrderCompatibilityInfo();
-  ResolveControlByTag('shee')->RefreshControl();
+  ResolveControlByTag(kControlTagShee)->RefreshControl();
 }
 
 // FUNCTION: IMPERIALISM 0x005bf740
@@ -178,7 +183,7 @@ void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       g_pHelpMgr->CycleTradeScreenMode0To2();
       RefreshSelectedNationOrderCompatibilityInfo();
     }
-  } else if (commandId == 0x14 && tag == kTagDone) {
+  } else if (commandId == 0x14 && tag == kControlTagDone) {
     UpdateTradeSelectionStateAndRefreshUiIfChanged(0);
   }
   TControl::DoEvent(commandId, sourceHandler, event);
@@ -239,7 +244,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
   CString strTypeClause;
   CString strTemplate;
 
-  TStaticText* info = static_cast<TStaticText*>(ResolveControlByTag(0x696e666f /* 'info' */));
+  TStaticText* info = static_cast<TStaticText*>(ResolveControlByTag(kControlTagInfo));
   info->AssertValid();
   info->SetTextAlignmentAndMaybeRefresh(-2, 0);
 
@@ -370,7 +375,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
   info->SetTextAndMaybeRefresh(&strFinal, 1);
 }
 
-// Reads the 'clus'->'nomo' checkbox state and the 'purc' quantity field, validates the
+// Reads the 'clus'->kControlTagNomo checkbox state and the 'purc' quantity field, validates the
 // quantity against the 'purc' control's own max, and on success dispatches the trade
 // proposal (TTradeMgr), resets the accept/reject buttons, notifies the toolbar, and queues
 // a new TNextTradeCommand. On an out-of-range quantity, shows an error and re-selects the
@@ -378,21 +383,21 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
 // forces the proposed quantity to 0 (skipping validation entirely).
 // FUNCTION: IMPERIALISM 0x005c04f0
 void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
-  TView* clusterControl = ResolveControlByTag('clus');
+  TView* clusterControl = ResolveControlByTag(kControlTagClus);
   if (clusterControl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x83b);
   }
 
   TAmtBarCluster* noMoreControl =
-      static_cast<TAmtBarCluster*>(clusterControl->ResolveControlByTag('nomo'));
+      static_cast<TAmtBarCluster*>(clusterControl->ResolveControlByTag(kControlTagNomo));
   if (noMoreControl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x83d);
   }
   suppressEventFlag9a = noMoreControl->IsTradeControlAtMinimum();
 
-  TNumberText* purchaseControl = static_cast<TNumberText*>(ResolveControlByTag('purc'));
+  TNumberText* purchaseControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagPurc));
   if (purchaseControl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x842);
@@ -400,7 +405,7 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
   proposedAmount98 = static_cast<short>(purchaseControl->UpdateControlCachedIntFromWindowText());
 
   bool quantityValid = true;
-  if (actionCode == 'reje') {
+  if (actionCode == kControlTagReje) {
     proposedAmount98 = 0;
   } else if (proposedAmount98 > purchaseControl->maximumValue || proposedAmount98 < 0) {
     quantityValid = false;
@@ -411,15 +416,15 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
         sourceNationSlot90, targetNationSlot92, proposedAmount98, maxAmount94, commodityType96,
         static_cast<char>(suppressEventFlag9a), 0);
 
-    TView* acceptButton = ResolveControlByTag('acce');
+    TView* acceptButton = ResolveControlByTag(kControlTagAcce);
     acceptButton->AssertValid();
-    TView* rejectButton = ResolveControlByTag('reje');
+    TView* rejectButton = ResolveControlByTag(kControlTagReje);
     rejectButton->AssertValid();
     acceptButton->SetState(0, 0);
     rejectButton->SetState(0, 0);
 
     if (proposedAmount98 != 0) {
-      TView* toolbar = g_pDisplayMgr->activeDialog->ResolveControlByTag('tool');
+      TView* toolbar = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTool);
       if (toolbar != nullptr) {
         static_cast<TAmtBarCluster*>(toolbar)->SetMoveAmount(
             static_cast<short>(sourceNationSlot90));

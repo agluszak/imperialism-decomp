@@ -6,6 +6,7 @@
 #include "game/TObject.h"
 #include "game/TPopulationMgr.h"
 #include "game/TProductionOrder.h"
+#include "game/ui_tags_common.h"
 
 class TSortedList;
 class TStream;

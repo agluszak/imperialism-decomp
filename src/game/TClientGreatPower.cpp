@@ -6,6 +6,8 @@
 #include "game/TNetMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 // FUNCTION: IMPERIALISM 0x005412b0
 bool TClientGreatPower::IsClient(void) {
@@ -32,7 +34,7 @@ IMPLEMENT_DYNCREATE(TClientGreatPower, TGreatPower)
 // FUNCTION: IMPERIALISM 0x005413b0
 void TClientGreatPower::AcceptOffer(short proposalIndex) {
   TurnEvent17ProposalResolutionPacket packet;
-  packet.messageTag = 0x74696d65;
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventCode = 0x17;
   packet.fromNetworkId = 0;
@@ -47,7 +49,7 @@ void TClientGreatPower::AcceptOffer(short proposalIndex) {
 // FUNCTION: IMPERIALISM 0x00541450
 void TClientGreatPower::RejectOffer(unsigned short proposalQueueIndex) {
   TurnEvent17ProposalResolutionPacket packet;
-  packet.messageTag = 0x74696d65;
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventCode = 0x17;
   packet.fromNetworkId = 0;
@@ -64,7 +66,7 @@ void TClientGreatPower::ReplyToDiplomacyOffers(void) {
   TGreatPower::ReplyToDiplomacyOffers();
 
   TurnEventFResumeAckPacket packet;
-  packet.messageTag = 0x74696d65;
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventCode = 0;
   packet.fromNetworkId = 0;
@@ -98,7 +100,7 @@ int TClientGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNa
 
   int accepted = TGreatPower::HandleWarTransitionRequest(targetNation, sourceNation);
   TurnEvent1EPacketPayload packetPayload;
-  packetPayload.messageTag = 0x74696D65;
+  packetPayload.messageTag = kControlTagTime;
   packetPayload.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packetPayload.eventCode = 0x1E;
   packetPayload.messageLength = 0x24;
@@ -116,5 +118,5 @@ int TClientGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNa
 
 // FUNCTION: IMPERIALISM 0x00541790
 void TClientGreatPower::SorryYouLose(void) {
-  g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6c6f7365, this->nationSlot, -1);
+  g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagLose, this->nationSlot, -1);
 }

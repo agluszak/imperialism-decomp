@@ -3,6 +3,7 @@
 #include "game/TCluster.h"
 #include "game/GameAssert.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 // SYNTHETIC: IMPERIALISM 0x005846e0
 // TBoycottButton::CreateObject
@@ -24,11 +25,11 @@ void TBoycottButton::Select(bool isPressed, bool notifyParent) {
   if (static_cast<char>(isPressed) != '\0') {
     // GetWindow() (slot 0x16) -> the 'clus' control via ResolveControlByTag (slot 0x25).
     TCluster* clusControl =
-        static_cast<TCluster*>(this->GetWindow()->ResolveControlByTag(0x636c7573 /* 'clus' */));
+        static_cast<TCluster*>(this->GetWindow()->ResolveControlByTag(kControlTagClus));
     if (clusControl == nullptr) {
       GAME_FAIL_NIL_POINTER();
     }
-    clusControl->SetSelectedChildTagAndRefresh(0x20202020 /* '    ' */);
+    clusControl->SetSelectedChildTagAndRefresh(kControlTagSpSpSpSp);
   }
   TToggleButton::Select(isPressed, notifyParent);
 }

@@ -4,6 +4,7 @@
 #include "game/TView.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_tags_common.h"
 
 // IMPLEMENT_DYNCREATE also emits `TIncludeView::CreateObject`; the original copy at
 // 0x48cc40 has the TIncludeView ctor fully inlined into it (same TU, inline-eligible),
@@ -37,7 +38,7 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* ma
   if (mainView != nullptr) {
     nativeWindow50 = mainView->nativeWindow50;
   }
-  controlTag = 0x20202020;
+  controlTag = kControlTagSpSpSpSp;
   field04 = 1;
   field08 = 1;
   linkedChildHandler = mainView;

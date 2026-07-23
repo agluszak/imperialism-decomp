@@ -5,7 +5,6 @@
 #include "game/TControl.h"
 #include "game/TInfoBarText.h"
 #include "game/TOneTimeAnimation.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 
 #include "game/TAnimation.h"
@@ -23,7 +22,8 @@
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 #include "game/TAmbitApplication.h"
-#include "game/ui_control_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 // No-op bracket hooks around the modal one-time-animation wait (retail build leaves these empty).
 // FUNCTION: IMPERIALISM 0x00498c60
@@ -946,7 +946,7 @@ void TTacticalBattleView::DoKeyEvent(TToolboxEvent* event) {
     break;
   case 0x44:
   case 0x64:
-    tacticalBattle60->HandleTacticalBattleCommandTag(0x646f6e65); // 'done'
+    tacticalBattle60->HandleTacticalBattleCommandTag(kControlTagDone); // 'done'
     break;
   case 0x48:
   case 0x68:
@@ -954,7 +954,7 @@ void TTacticalBattleView::DoKeyEvent(TToolboxEvent* event) {
     break;
   case 0x53:
   case 0x73:
-    tacticalBattle60->HandleTacticalBattleCommandTag(0x736b6970); // 'skip'
+    tacticalBattle60->HandleTacticalBattleCommandTag(kControlTagSkip); // 'skip'
     break;
   }
 }

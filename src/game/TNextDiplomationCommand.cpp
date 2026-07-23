@@ -4,6 +4,7 @@
 #include "game/TApplication.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/global_data_tables.h"
+#include "game/ui_tags_military.h"
 
 IMPLEMENT_DYNCREATE(TNextDiplomationCommand, TCommand)
 
@@ -27,6 +28,6 @@ TNextDiplomationCommand::~TNextDiplomationCommand() {}
 
 // FUNCTION: IMPERIALISM 0x004f2930
 void TNextDiplomationCommand::DispatchUiPacketWithTagNEXT() {
-  InitializeRangePair(0x4e655854, g_pGlobalUiRootController, 0, 0, 0);
+  InitializeRangePair(kControlTagNeXT, g_pGlobalUiRootController, 0, 0, 0);
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(this);
 }

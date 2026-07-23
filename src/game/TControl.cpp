@@ -10,6 +10,7 @@
 #include "game/TMovieView.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_tags_common.h"
 
 #include <new>
 
@@ -207,7 +208,7 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNat
   mapKey.SetPictureResourceIdAndRefresh(pictureId, 1);
 
   for (int i = 0; i < 7; i++) {
-    TView* child = mapKey.ResolveControlByTag(0x6e616d30 + i);
+    TView* child = mapKey.ResolveControlByTag(kControlTagNam0 + i);
     child->AssertValid();
     child->SetEnabled(selectedNation == i, 0);
   }

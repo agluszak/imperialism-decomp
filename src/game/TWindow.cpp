@@ -7,6 +7,7 @@
 #include "game/CWMgrIterator.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_tags_common.h"
 
 // One-shot McAppUI invalidation-flag assert. The original reaches the shared invalidation
 // helper through the incremental-link thunk; each call site is gated by its own
@@ -18,7 +19,7 @@ static __inline void AssertMcAppUiInvalidation(const char* path, int line) {
 // FUNCTION: IMPERIALISM 0x0048d500
 TWindow::TWindow() : TView(), dialogBehavior(), busyFlag98(0) {
   g_LiveViewRegistry.AddHead(this);
-  dialogBehavior.SetUiColorDescriptorGoldTriplet(1, 0x20202020, 0x20202020);
+  dialogBehavior.SetUiColorDescriptorGoldTriplet(1, kControlTagSpSpSpSp, kControlTagSpSpSpSp);
   activeLinkedWindow64 = this;
   dialogBehavior.SetOwner(this);
 }

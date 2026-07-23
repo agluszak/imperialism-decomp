@@ -7,6 +7,7 @@
 #include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_tags_screens.h"
 // SYNTHETIC: IMPERIALISM 0x00505a50
 // TLonelyTileView::CreateObject
 
@@ -31,7 +32,7 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
   TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
   RECT srcRect;
   TQuickDrawBlitSurface* srcSurface;
-  if (controlTag == 0x74696c65 /* 'tile' */ && mapUberPicture->invalidationFlag94 != 0) {
+  if (controlTag == kControlTagTile && mapUberPicture->invalidationFlag94 != 0) {
     // The tile-sprite atlas surface hangs off subview2A8+0x350 (a TQuickDrawSurfaceContext
     // that isn't a recovered TMapUberPicture member, so it's read via a raw offset).
     TQuickDrawSurfaceContext* tileAtlasCtx = *reinterpret_cast<TQuickDrawSurfaceContext**>(
@@ -47,7 +48,7 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
     srcRect.bottom = 0x40;
     SetQuickDrawFillColor(0);
     srcSurface = tileAtlasCtx->GetBlitSurface();
-  } else if (controlTag == 0x74696c32 /* 'til2' */ && mapUberPicture->invalidationFlag94 != 0) {
+  } else if (controlTag == kControlTagTil2 && mapUberPicture->invalidationFlag94 != 0) {
     short variant = g_pGlobalMapState->LookupTileSpriteVariantOffsetByTerrainAndGate(tileIndex60);
     srcRect.left = variant;
     srcRect.top = 0;

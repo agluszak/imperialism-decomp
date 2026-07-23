@@ -5,8 +5,9 @@
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 // FUNCTION: IMPERIALISM 0x0045acb0
 void TSpecialQuitPicture::Hilite() {}
@@ -40,14 +41,14 @@ void TSpecialQuitPicture::DoPostCreate(int arg) {
   saleBounds.bottom = 0x11;
   saleControl->ApplyBounds(&saleBounds, 1);
 
-  TDeluxeText* shotControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagShot));
+  TDeluxeText* shotControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTsho));
   shotControl->AssertValid();
   CString shotCaption;
   g_pSimMgr->GetString(0x274c, 0x18, &shotCaption);
   ApplyControlThemeStyleAndOptionalCaption(shotControl, 0, 0xc, 0x2b6c, 1,
                                            static_cast<const char*>(shotCaption));
 
-  TDeluxeText* equiControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagEqui));
+  TDeluxeText* equiControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTqui));
   equiControl->AssertValid();
   CString equiCaption;
   g_pSimMgr->GetString(0x2737, 9, &equiCaption);
@@ -72,8 +73,8 @@ void TSpecialQuitPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
       ResolveControlByTag(kControlTagShow)->SetState(0, 1);
       ResolveControlByTag(kControlTagSale)->SetEnabled(0, 1);
       ResolveControlByTag(kControlTagRequ)->SetEnabled(0, 1);
-      ResolveControlByTag(kControlTagShot)->SetEnabled(0, 1);
-      ResolveControlByTag(kControlTagEqui)->SetEnabled(0, 1);
+      ResolveControlByTag(kControlTagTsho)->SetEnabled(0, 1);
+      ResolveControlByTag(kControlTagTqui)->SetEnabled(0, 1);
       TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
       titlControl->AssertValid();
       titlControl->SetEnabled(1, 1);
@@ -96,8 +97,8 @@ void TSpecialQuitPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
         ResolveControlByTag(kControlTagShow)->SetState(1, 1);
         ResolveControlByTag(kControlTagSale)->SetEnabled(1, 1);
         ResolveControlByTag(kControlTagRequ)->SetEnabled(1, 1);
-        ResolveControlByTag(kControlTagShot)->SetEnabled(1, 1);
-        ResolveControlByTag(kControlTagEqui)->SetEnabled(1, 1);
+        ResolveControlByTag(kControlTagTsho)->SetEnabled(1, 1);
+        ResolveControlByTag(kControlTagTqui)->SetEnabled(1, 1);
         ResolveControlByTag(kControlTagTitl)->SetEnabled(0, 1);
       }
     }

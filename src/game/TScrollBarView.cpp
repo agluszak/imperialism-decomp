@@ -9,6 +9,7 @@
 #include "game/TSoundPlayer.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_tags_screens.h"
 
 // SYNTHETIC: IMPERIALISM 0x00573df0
 // TScrollBarView::`scalar deleting destructor'
@@ -59,7 +60,7 @@ void TScrollBarView::InitializeScrollBar(TScrollView* panel, int* offsetLayout, 
     buttonOffset[1] = 0;
     upButton->InitializePictureEntryBaseAndRefresh(this, buttonOffset, buttonSize, 5, 5, 0xbbb);
   }
-  upButton->controlTag = 0x73637570; // 'scup'
+  upButton->controlTag = kControlTagScup; // 'scup'
   upButton->SetEnabled(0, 1);
   upButton->SetState(1, 0);
 
@@ -73,7 +74,7 @@ void TScrollBarView::InitializeScrollBar(TScrollView* panel, int* offsetLayout, 
     buttonSize[1] = 0x12;
     downButton->InitializePictureEntryBaseAndRefresh(this, buttonOffset, buttonSize, 5, 5, 0xbbc);
   }
-  downButton->controlTag = 0x7363646e; // 'scdn'
+  downButton->controlTag = kControlTagScdn; // 'scdn'
   downButton->SetEnabled(0, 1);
   downButton->SetState(1, 0);
 }
@@ -108,9 +109,9 @@ void TScrollBarView::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x005747c0
 void TScrollBarView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa) {
-    if (sourceHandler->controlTag == 0x73637570) { // 'scup'
+    if (sourceHandler->controlTag == kControlTagScup) { // 'scup'
       ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(0, 0xc);
-    } else if (sourceHandler->controlTag == 0x7363646e) { // 'scdn'
+    } else if (sourceHandler->controlTag == kControlTagScdn) { // 'scdn'
       ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(0, -0xc);
     }
   }

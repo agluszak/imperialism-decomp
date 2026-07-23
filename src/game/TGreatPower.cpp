@@ -57,6 +57,7 @@
 #include "game/TZone.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/UiRuntimeContext.h"
+#include "game/ui_tags_common.h"
 
 // Real body ported at 0x005b7f50 (file end, ascending-address order). Genuine __stdcall
 // predicate: returns 1 when the resource index is in [13,16].
@@ -2790,7 +2791,8 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
 
   TSimMgr* localizationTable = g_pSimMgr;
   if (localizationTable != 0 && localizationTable->difficultyLevel != 0) {
-    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6e616d65, this->nationSlot, 0xfffffffd);
+    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagName, this->nationSlot,
+                                                       0xfffffffd);
   }
 }
 

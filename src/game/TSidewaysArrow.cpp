@@ -1,7 +1,6 @@
 #include "game/TSidewaysArrow.h"
 
 #include "decomp_types.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
 
@@ -19,6 +18,7 @@ TSidewaysArrow::TSidewaysArrow() : TUpDownPictureButton() {
 }
 
 #include "game/TAmbitApplication.h"
+#include "game/ui_tags_common.h"
 
 // FUNCTION: IMPERIALISM 0x00583bd0
 void TSidewaysArrow::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,

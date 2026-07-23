@@ -2,6 +2,8 @@
 #include "game/TControl.h"
 #include "game/TCluster.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_screens.h"
 
 // SYNTHETIC: IMPERIALISM 0x00571050
 // TToggleButton::CreateObject
@@ -31,16 +33,16 @@ void TToggleButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   if (this->IsSelected()) {
     unsigned int tag = this->controlTag;
     bool match = false;
-    if (tag < 0x656d706a) {
-      if (tag == 0x656d7069 || tag == 0x616c6c69) {
+    if (tag < kControlTagEmpj) {
+      if (tag == kControlTagEmpi || tag == kControlTagAlli) {
         match = true;
       }
-    } else if (tag < 0x6e6f6e42) {
-      if (tag == 0x6e6f6e41 || (tag >= 0x66475030 && tag <= 0x66475036)) {
+    } else if (tag < kControlTagNonB) {
+      if (tag == kControlTagNonA || (tag >= kControlTagFGP0 && tag <= kControlTagFGP6)) {
         match = true;
       }
     } else {
-      if (tag == 0x72656c61 || tag == 0x74706f6c || tag == 0x77617220) {
+      if (tag == kControlTagRela || tag == kControlTagTpol || tag == kControlTagWarSp) {
         match = true;
       }
     }
@@ -51,19 +53,19 @@ void TToggleButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 
   this->Select(0, 1);
 
-  if (this->ownerContext != nullptr && this->ownerContext->controlTag == 0x75436c75) {
+  if (this->ownerContext != nullptr && this->ownerContext->controlTag == kControlTagUClu) {
     unsigned int tag = this->controlTag;
     bool match2 = false;
-    if (tag < 0x646f6e66) {
-      if (tag == 0x646f6e65 || tag == 0x64666e64) {
+    if (tag < kControlTagDonf) {
+      if (tag == kControlTagDone || tag == kControlTagDfnd) {
         match2 = true;
       }
-    } else if (tag < 0x6d6f7666) {
-      if (tag == 0x6d6f7665 || tag == 0x6c617472) {
+    } else if (tag < kControlTagMovf) {
+      if (tag == kControlTagMove || tag == kControlTagLatr) {
         match2 = true;
       }
     } else {
-      if (tag >= 0x6f707431 && tag <= 0x6f707435) {
+      if (tag >= kControlTagOpt1 && tag <= kControlTagOpt5) {
         match2 = true;
       }
     }

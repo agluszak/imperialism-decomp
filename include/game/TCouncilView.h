@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TDiplomacyMapView.h"
+#include "game/ui_tags_common.h"
 
 // Council-of-governors scene view (peace-council / voting screen). Extends the
 // diplomacy map view with a small ticker/label tail (0x24c8..0x24e0). RTTI:

@@ -7,7 +7,8 @@
 #include "game/TViewMgr.h"
 #include "game/TWindow.h"
 #include "game/global_data_tables.h"
-#include "game/ui_control_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_diplomacy.h"
 // SYNTHETIC: IMPERIALISM 0x004f3240
 // TDefenseMinisterView::CreateObject
 

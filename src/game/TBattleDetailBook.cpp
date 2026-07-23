@@ -2,7 +2,7 @@
 #include "game/TWindow.h"
 
 #include "game/TControl.h"
-#include "game/ui_control_tags.h"
+#include "game/ui_tags_common.h"
 
 // SYNTHETIC: IMPERIALISM 0x00430b00
 // TBattleDetailBook::`scalar deleting destructor'

@@ -10,9 +10,11 @@
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_diplomacy.h"
+#include "game/ui_tags_city.h"
 // SYNTHETIC: IMPERIALISM 0x004f8ec0
 // TOffersPanelView::CreateObject
 
@@ -137,8 +139,8 @@ char TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
     g_pSimMgr->GetString(0x274a, stringIndex, &proposalText);
   }
 
-  TView* sheet = ResolveControlByTag('shee');
-  TView* wait = ResolveControlByTag('wait');
+  TView* sheet = ResolveControlByTag(kControlTagShee);
+  TView* wait = ResolveControlByTag(kControlTagWait);
   TDeluxeText* message = static_cast<TDeluxeText*>(
       ResolveControlByTag(offerType == 0x29a ? kControlTagText : kControlTagProp));
   message->AssertValid();
@@ -235,8 +237,8 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
         static_cast<LPCSTR>(enemyNationName), static_cast<LPCSTR>(minorNationName));
   }
 
-  TView* sheet = ResolveControlByTag('shee');
-  TView* wait = ResolveControlByTag('wait');
+  TView* sheet = ResolveControlByTag(kControlTagShee);
+  TView* wait = ResolveControlByTag(kControlTagWait);
   wait->CaptureLayoutF0(g_diplomacyPopupLayoutPosition_006a3020, 0);
   sheet->CaptureLayoutF0(g_diplomacyWarOfferSheetPosition_006a2fe0, 1);
   proposalText->UpdateTextEntrySharedStringAndMaybeNotify(&formattedMessage, 1);

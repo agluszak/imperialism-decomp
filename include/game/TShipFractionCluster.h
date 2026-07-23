@@ -3,6 +3,8 @@
 #include "game/TCluster.h"
 #include "game/TNumberedArrowButton.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 // VTABLE: IMPERIALISM 0x00642f88
 class TShipFractionCluster : public TCluster {

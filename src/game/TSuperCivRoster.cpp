@@ -6,6 +6,7 @@
 #include "game/TMiniCivLine.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
+#include "game/ui_tags_common.h"
 
 // SYNTHETIC: IMPERIALISM 0x004ab400
 // TSuperCivRoster::`scalar deleting destructor'
@@ -28,7 +29,7 @@ void TSuperCivRoster::InitializeLedgerRosterPages(TView* pOwnerContext, int* pBo
   // codegen-neutral pointer reinterpret, not a guessed field.
   InitializeUiResourceEntryFrameAndParent(nullptr, pOwnerContext, pBoundsRect,
                                           reinterpret_cast<int*>(pOutDialogView), 5, 5, 0);
-  controlTag = 0x70616765; // 'page'
+  controlTag = kControlTagPage; // 'page'
   // Explicit qualification forces a non-virtual call, matching the original's
   // devirtualized direct call (TSuperCivRoster doesn't override this slot).
   TPageView::DoPostCreate(0);

@@ -36,6 +36,7 @@
 #include "game/nation_stream_serialization.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/resource_domain_types.h"
+#include "game/ui_tags_city.h"
 
 short __stdcall TraceDescendingTileScoreGradientToSource(short startTile, char* scoreMap,
                                                          short* previousTileOut);
@@ -155,7 +156,8 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
   cityPolicyFuzzySet->AllocateAndAppendRecord(0xccbebc20, 0xc7c35000, 0xc69c4000, 0xc61c4000);
   cityPolicyFuzzySet->AllocateAndAppendRecord(0xc66a6000, 0xc59c4000, 0xc59c4000, 0x447a0000);
   cityPolicyFuzzySet->AllocateAndAppendRecord(0, 0x459c4000, 0x461c4000, 0x466a6000);
-  cityPolicyFuzzySet->AllocateAndAppendRecord(0x461c4000, 0x469c4000, 0x49742400, 0x4e6e6b28);
+  cityPolicyFuzzySet->AllocateAndAppendRecord(0x461c4000, 0x469c4000, 0x49742400,
+                                              kControlTagNnkParen);
 
   temporaryFurnitureSubstituteLumber1c2 = 0;
 }

@@ -50,6 +50,7 @@
 #include "game/TZone.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
+#include "game/ui_tags_screens.h"
 
 int __cdecl TouchSessionActiveNationId(void);
 void __cdecl ResetPortZoneGlobalContextCounters(void);
@@ -1467,7 +1468,7 @@ void TSimMgr::ProcessScenarioScript() {
   instruction.tokenCursor = reinterpret_cast<unsigned int*>(buffer);
   unsigned int instructionTag = 0;
   while (reinterpret_cast<unsigned char*>(instruction.tokenCursor) < buffer + resourceSize &&
-         instructionTag != 0x5445524d && g_bScenarioScriptTerminationRequested == 0) {
+         instructionTag != kControlTagTERM && g_bScenarioScriptTerminationRequested == 0) {
     instructionTag = *instruction.tokenCursor;
     int instructionCount = g_nScenarioScriptInstructionCount;
     unsigned char* raw = reinterpret_cast<unsigned char*>(&instructionTag);
@@ -1481,7 +1482,7 @@ void TSimMgr::ProcessScenarioScript() {
     ++instructionCount;
     g_nScenarioScriptInstructionCount = instructionCount;
 
-    if (instructionTag != 0x5445524d) {
+    if (instructionTag != kControlTagTERM) {
       int handlerIndex = 0;
       while (handlerIndex < 27 &&
              g_anScenarioScriptInstructionTags[handlerIndex] != instructionTag) {

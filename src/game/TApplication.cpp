@@ -8,6 +8,7 @@
 #include "game/ImperialismApp.h"
 #include "game/TEventHandler.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 // FUNCTION: IMPERIALISM 0x00414720
 void TApplication::PostTurnEventCodeMessage2420(TurnEventCodeStorage eventCode) {
@@ -181,6 +182,6 @@ void TApplication::CreateAndQueueTurnEventPacketTagGWEN() {
   // Build a TNewGameCommand, tag it 'gwen' targeting the global UI root controller,
   // and dispatch it.
   TNewGameCommand* newGameCommand = new TNewGameCommand();
-  newGameCommand->InitializeRangePair(0x6e657767 /* 'gwen' */, g_pGlobalUiRootController, 0, 0, 0);
+  newGameCommand->InitializeRangePair(kControlTagNewg, g_pGlobalUiRootController, 0, 0, 0);
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(newGameCommand);
 }

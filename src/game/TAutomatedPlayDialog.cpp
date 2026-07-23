@@ -4,6 +4,7 @@
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_tags_widgets.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b4650
 // TAutomatedPlayDialog::`scalar deleting destructor'
@@ -20,7 +21,8 @@ TAutomatedPlayDialog::TAutomatedPlayDialog() {}
 
 // FUNCTION: IMPERIALISM 0x005b46c0
 void TAutomatedPlayDialog::Close() {
-  TNumberText* turnCount = static_cast<TNumberText*>(ResolveControlByTag(0x6e756d20)); // 'num '
+  TNumberText* turnCount =
+      static_cast<TNumberText*>(ResolveControlByTag(kControlTagNumSp)); // 'num '
   if (turnCount == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x34e);
   }

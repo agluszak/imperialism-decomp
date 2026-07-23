@@ -29,9 +29,10 @@
 #include "game/mapped_flavor_text.h"
 #include "game/navy_order.h"
 #include "game/TNavyRoster.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_map.h"
 
 // 0x597020 -- composes and dispatches the turn-summary message (scenario tag line +
 // multiplayer game-name line + build version), defined below.
@@ -64,16 +65,16 @@ void TMapUberPicture::DoPostCreate(int arg) {
   subview2A8->AssertValid();
 
   TOceanDialog* alternateMapDialog =
-      static_cast<TOceanDialog*>(ResolveControlByTag(0x444f4f47)); // 'DOOG'
+      static_cast<TOceanDialog*>(ResolveControlByTag(kControlTagDOOG)); // 'DOOG'
   if (alternateMapDialog != nullptr) {
     goodGoldTagControlA4 = alternateMapDialog;
     alternateMapDialog->AssertValid();
   }
 
   subviewAc = subview2A8;
-  categoryPages[0] = ResolveControlByTag(0x75636976); // 'uciv'
-  categoryPages[1] = ResolveControlByTag(0x7561726d); // 'uarm'
-  categoryPages[2] = ResolveControlByTag(0x756e6176); // 'unav'
+  categoryPages[0] = ResolveControlByTag(kControlTagUciv); // 'uciv'
+  categoryPages[1] = ResolveControlByTag(kControlTagUarm); // 'uarm'
+  categoryPages[2] = ResolveControlByTag(kControlTagUnav); // 'unav'
   categoryPages[3] = nullptr;
 
   CRect mapBounds;
@@ -91,7 +92,7 @@ void TMapUberPicture::DoPostCreate(int arg) {
 
   unsigned char multiplayerSessionActive = g_pSimMgr->multiplayerSessionRole != 0;
   if (multiplayerSessionActive != 0) {
-    TView* sendControl = ResolveControlByTag(0x73656e64); // 'send'
+    TView* sendControl = ResolveControlByTag(kControlTagSend); // 'send'
     sendControl->AssertValid();
     sendControl->SetState(1, 0);
     sendControl->SetEnabled(1, 0);
@@ -139,12 +140,12 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
     // Mac MapView.rsrc:2013 identifies 'tbr1' as TToolBarCluster and its 'seas' child as
     // TDropShadowText. Windows reuses that child as 'forc' while army mode is active.
     TToolBarCluster* toolbar =
-        static_cast<TToolBarCluster*>(GetWindow()->ResolveControlByTag(0x74627231)); // 'tbr1'
+        static_cast<TToolBarCluster*>(GetWindow()->ResolveControlByTag(kControlTagTbr1)); // 'tbr1'
     if (toolbar != nullptr) {
       if (previousMode == 1) {
-        TView* caption = toolbar->ResolveControlByTag(0x666f7263); // 'forc'
+        TView* caption = toolbar->ResolveControlByTag(kControlTagForc); // 'forc'
         caption->AssertValid();
-        caption->controlTag = 0x73656173; // 'seas'
+        caption->controlTag = kControlTagSeas; // 'seas'
 
         CString seasonCaption;
         CString yearCaption;
@@ -154,9 +155,9 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
         SetControlHoverHelpTextAltEntry(hoverHelp, caption);
       } else if (nMode == 1) {
         CString hoverHelp;
-        TView* caption = toolbar->ResolveControlByTag(0x73656173); // 'seas'
+        TView* caption = toolbar->ResolveControlByTag(kControlTagSeas); // 'seas'
         caption->AssertValid();
-        caption->controlTag = 0x666f7263; // 'forc'
+        caption->controlTag = kControlTagForc; // 'forc'
         g_pSimMgr->GetString(0x2732, 0x11, &hoverHelp);
         SetControlHoverHelpTextAltEntry(hoverHelp, caption);
       }
@@ -319,8 +320,8 @@ void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
 
   if (pMapOrderEntry == nullptr) {
     for (int i = 0; i < 4; ++i) {
-      TShipFractionCluster* shipClass =
-          static_cast<TShipFractionCluster*>(ResolveControlByTag(0x636c7330 + i)); // 'cls0'..'cls3'
+      TShipFractionCluster* shipClass = static_cast<TShipFractionCluster*>(
+          ResolveControlByTag(kControlTagCls0 + i)); // 'cls0'..'cls3'
       shipClass->AssertValid();
       shipClass->SetAvailableAndSelectedShipCounts(0, -1);
     }
@@ -332,8 +333,8 @@ void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
   CenterOn(static_cast<short>(context->tileOrTerrainId0c));
 
   for (int i = 0; i < 4; ++i) {
-    TShipFractionCluster* shipClass =
-        static_cast<TShipFractionCluster*>(ResolveControlByTag(0x636c7330 + i)); // 'cls0'..'cls3'
+    TShipFractionCluster* shipClass = static_cast<TShipFractionCluster*>(
+        ResolveControlByTag(kControlTagCls0 + i)); // 'cls0'..'cls3'
     shipClass->AssertValid();
     shipClass->SetAvailableAndSelectedShipCounts(
         pMapOrderEntry->shipCountsByToolbarSlot[i],
@@ -341,7 +342,7 @@ void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
   }
 
   TNavyToolbarCluster* navyToolbar =
-      static_cast<TNavyToolbarCluster*>(ResolveControlByTag(0x756e6176)); // 'unav'
+      static_cast<TNavyToolbarCluster*>(ResolveControlByTag(kControlTagUnav)); // 'unav'
   navyToolbar->AssertValid();
   navyToolbar->SetSelectedChildTagAndRefresh(kControlTagAgr0 + pMapOrderEntry->aggression);
 }
@@ -517,13 +518,14 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   CString text;
   CString value;
   CString reportTemplate;
-  TStaticText* control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x7a6f6e65)); // zone
+  TStaticText* control =
+      static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagZone)); // zone
   control->AssertValid();
   taskForce->location->AssignZoneDisplayNameToOutputRef(&text);
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(bodyStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6164616d)); // adam
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagAdam)); // adam
   control->AssertValid();
   taskForce->GetAuthority(&value);
   g_pSimMgr->GetString(0x2762, 0, &reportTemplate);
@@ -532,13 +534,13 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(detailStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x77686f6d)); // whom
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagWhom)); // whom
   control->AssertValid();
   taskForce->GetCompositionDescription(&text);
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(detailStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6f726473)); // ords
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagOrds)); // ords
   control->AssertValid();
   switch (taskForce->shipOrders) {
   case 1:
@@ -569,31 +571,31 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(detailStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6167726f)); // agro
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagAgro)); // agro
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(taskForce->aggression + 4), &text);
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(attributionStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x7469746c)); // titl
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagTitl)); // titl
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, 7, &text);
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(titleStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616231)); // lab1
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab1)); // lab1
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, 8, &text);
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(detailStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616232)); // lab2
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab2)); // lab2
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, 9, &text);
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(bodyStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616233)); // lab3
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab3)); // lab3
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, 0xa, &text);
   control->SetTextAndMaybeRefresh(&text, 0);
@@ -601,13 +603,13 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
 
   TDialogBehavior* behavior = dialog->GetDialogBehavior();
   if (behavior != 0) {
-    behavior->defaultCommandCode = 0x6f6b6179; // 'okay'
+    behavior->defaultCommandCode = kControlTagOkay; // 'okay'
   }
   int result = dialog->PoseModally();
   dialog->Close();
   dialog->Free();
 
-  if (result == 0x63616e63) { // 'canc'
+  if (result == kControlTagCanc) { // 'canc'
     TZone* previousContext = taskForce->location;
     taskForce->CancelOrders(0);
     SetMapInteractionMode(2);
@@ -707,7 +709,7 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
   short index;
   for (index = 0; index < 29; ++index) {
     TStaticText* nameControl =
-        static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6e616d61u + index)); // 'nama'
+        static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagNama + index)); // 'nama'
     if (nameControl != 0) {
       nameControl->SetTextFromStringResource(0x2716, static_cast<short>(index + 1), 1);
     }
@@ -716,14 +718,14 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
   dialog->PoseModally();
 
   TNumberText* ownerControl =
-      static_cast<TNumberText*>(dialog->ResolveControlByTag(0x6f776e65u)); // 'owne'
+      static_cast<TNumberText*>(dialog->ResolveControlByTag(kControlTagOwne)); // 'owne'
   ownerControl->AssertValid();
   int ownerNation = ownerControl->UpdateControlCachedIntFromWindowText();
 
   unsigned char createdOrders = 0;
   for (index = 0; index < 14; ++index) {
     TNumberText* countControl =
-        static_cast<TNumberText*>(dialog->ResolveControlByTag(0x6e756d61u + index)); // 'numa'
+        static_cast<TNumberText*>(dialog->ResolveControlByTag(kControlTagNuma + index)); // 'numa'
     if (countControl != 0) {
       short count = static_cast<short>(countControl->UpdateControlCachedIntFromWindowText());
       if (count != 0) {
@@ -785,19 +787,20 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
 
   CString text;
   CString reportTemplate;
-  TStaticText* control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x67706565)); // gpee
+  TStaticText* control =
+      static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagGpee)); // gpee
   control->AssertValid();
   g_apTerrainTypeDescriptorTable[nation]->FormatOverlayTerrainLabelText(&text);
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(bodyStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x7a6f6e65)); // zone
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagZone)); // zone
   control->AssertValid();
   zone->AssignZoneDisplayNameToOutputRef(&text);
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(bodyStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6164616d)); // adam
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagAdam)); // adam
   control->AssertValid();
   if (cachedTaskForce != 0) {
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0x34);
@@ -809,7 +812,7 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(attributionStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x73686970)); // ship
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagShip)); // ship
   control->AssertValid();
   if (cachedTaskForce != 0) {
     cachedTaskForce->GetCompositionDescription(&text);
@@ -821,31 +824,31 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
   control->InstallTextStyle(detailStyle, 0);
 
   int stringIndex = cachedTaskForce != 0 ? 0x2e : 0x29;
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x7469746c)); // titl
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagTitl)); // titl
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(titleStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616231)); // lab1
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab1)); // lab1
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(detailStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616232)); // lab2
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab2)); // lab2
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(detailStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616233)); // lab3
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab3)); // lab3
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(bodyStyle, 0);
 
-  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x6c616234)); // lab4
+  control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab4)); // lab4
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex), &text);
   control->SetTextAndMaybeRefresh(&text, 0);
@@ -853,7 +856,7 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
 
   TDialogBehavior* behavior = dialog->GetDialogBehavior();
   if (behavior != 0) {
-    behavior->defaultCommandCode = 0x6f6b6179; // 'okay'
+    behavior->defaultCommandCode = kControlTagOkay; // 'okay'
   }
   dialog->PoseModally();
   dialog->Close();
@@ -940,10 +943,10 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
     return;
   }
   TView* zoomControl =
-      (controlOverride != nullptr) ? controlOverride : this->ResolveControlByTag(0x5a6d496e);
+      (controlOverride != nullptr) ? controlOverride : this->ResolveControlByTag(kControlTagZmIn);
   zoomControl->AssertValid();
   if (zoomControl != nullptr) {
-    zoomControl->controlTag = 0x5a6d4f74; // "ZmOt" ("Zoom Out")
+    zoomControl->controlTag = kControlTagZmOt; // "ZmOt" ("Zoom Out")
   }
   this->invalidationFlag94 = 1;
 
@@ -994,7 +997,7 @@ void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOve
 
 // FUNCTION: IMPERIALISM 0x00599cf0
 void TMapUberPicture::DisplayMiniMap() {
-  TView* toolControl = this->ResolveControlByTag(0x746f6f6c); // "tool"
+  TView* toolControl = this->ResolveControlByTag(kControlTagTool); // "tool"
   if (toolControl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0xa56);
@@ -1047,7 +1050,7 @@ void TMapUberPicture::InvalidateMiniMap() {
 
 // FUNCTION: IMPERIALISM 0x00599fd0
 void TMapUberPicture::RemoveMiniMap() {
-  TView* toolControl = ResolveControlByTag(0x746f6f6c); // 'tool'
+  TView* toolControl = ResolveControlByTag(kControlTagTool); // 'tool'
   if (toolControl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0xa97);
@@ -1073,37 +1076,37 @@ void TMapUberPicture::RemoveMiniMap() {
   miniMapViewC0 = nullptr;
 
   TPicture* miniMapButton =
-      static_cast<TPicture*>(toolControl->ResolveControlByTag(0x696e666f)); // 'info'
+      static_cast<TPicture*>(toolControl->ResolveControlByTag(kControlTagInfo)); // 'info'
   if (miniMapButton == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0xab4);
   }
   miniMapButton->SetPictureResourceIdAndRefresh(0x41a, true);
-  miniMapButton->controlTag = 0x6d6d6170; // 'mmap'
+  miniMapButton->controlTag = kControlTagMmap; // 'mmap'
   SetTradeToolSubcontrolEnabledStateByFlag(true);
 }
 
 // FUNCTION: IMPERIALISM 0x0059a180
 undefined TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState) {
-  TView* toolControl = this->ResolveControlByTag(0x746f6f6c); // "tool"
+  TView* toolControl = this->ResolveControlByTag(kControlTagTool); // "tool"
   if (toolControl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0xac7);
   }
 
-  TView* seasControl = toolControl->ResolveControlByTag(0x73656173); // "seas"
+  TView* seasControl = toolControl->ResolveControlByTag(kControlTagSeas); // "seas"
   if (seasControl != nullptr) {
     seasControl->SetEnabled(enabledState, 1);
   }
-  TView* yearControl = toolControl->ResolveControlByTag(0x79656172); // "year"
+  TView* yearControl = toolControl->ResolveControlByTag(kControlTagYear); // "year"
   if (yearControl != nullptr) {
     yearControl->SetEnabled(enabledState, 1);
   }
-  TView* treaControl = toolControl->ResolveControlByTag(0x74726561); // "trea"
+  TView* treaControl = toolControl->ResolveControlByTag(kControlTagTrea); // "trea"
   if (treaControl != nullptr) {
     treaControl->SetEnabled(enabledState, 1);
   }
-  TView* treeControl = toolControl->ResolveControlByTag(0x74726565); // "tree"
+  TView* treeControl = toolControl->ResolveControlByTag(kControlTagTree); // "tree"
   if (treeControl != nullptr) {
     treeControl->SetEnabled(enabledState, 1);
   }

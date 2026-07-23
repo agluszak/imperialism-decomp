@@ -15,8 +15,9 @@
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_screens.h"
 
 // SYNTHETIC: IMPERIALISM 0x00575e90
 // TGameSetupMultiplayerPicture::CreateObject
@@ -146,7 +147,7 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
     } else if (actionTag == kControlTagMult) {
       g_pGameFlowState->ResetGameFlowStateAndPostTurnEvent5DC();
     } else if (actionTag == kControlTagScen) {
-      g_pGameFlowState->scenarioSelectionTag = 0x73636e30; // 'scn0'
+      g_pGameFlowState->scenarioSelectionTag = kControlTagScn0; // 'scn0'
       if (g_pGameFlowState->ValidateAndPrepareGameFlowNameForDispatch()) {
         g_pSimMgr->multiplayerSessionRole = 1;
         g_pGlobalUiRootController->PostTurnEventCodeMessage2420(

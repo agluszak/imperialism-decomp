@@ -7,8 +7,8 @@
 #include "game/TIconSlider.h"
 #include "game/TItemOrder.h"
 #include "game/TPopulationMgr.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_tags_widgets.h"
 // SYNTHETIC: IMPERIALISM 0x005069d0
 // TOrderView::CreateObject
 

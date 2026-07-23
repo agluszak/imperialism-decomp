@@ -4,6 +4,10 @@
 #include "game/TEventHandler.h"
 #include "game/mfc.h"
 #include "game/news_domain_types.h"
+#include "game/multiplayer_session_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_map.h"
+#include "game/ui_tags_screens.h"
 
 class TStream;
 class TTacticalUnit;

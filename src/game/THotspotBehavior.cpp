@@ -2,6 +2,7 @@
 
 #include "game/TEvent.h"
 #include "game/TView.h"
+#include "game/ui_tags_common.h"
 // SYNTHETIC: IMPERIALISM 0x004b0af0
 // THotspotBehavior::CreateObject
 
@@ -22,7 +23,7 @@ unsigned char THotspotBehavior::DoSetCursor(CPoint* point, RgnHandle region) {
   (void)point;
   (void)region;
   TView* target = static_cast<TView*>(owner);
-  if (target->controlTag != 0x444c4f47 && target->controlTag != 0x6d61696e) {
+  if (target->controlTag != kControlTagDialog && target->controlTag != kControlTagMain) {
     target = target->ownerContext;
   }
 

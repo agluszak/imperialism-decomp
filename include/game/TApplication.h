@@ -5,6 +5,8 @@
 #include "game/mfc.h"
 #include "game/TCommandHandler.h"
 #include "game/turn_event_codes.h"
+#include "game/multiplayer_session_tags.h"
+#include "game/ui_tags_common.h"
 #include <afxtempl.h>
 
 // Application UI root controller — global modal-view gatekeeper installed at startup.

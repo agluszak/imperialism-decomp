@@ -2,6 +2,7 @@
 
 #include "game/TPicture.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 // VTABLE: IMPERIALISM 0x0063f650
 class TBook : public TPicture {

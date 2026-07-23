@@ -9,7 +9,6 @@
 #include "game/TItemOrder.h"
 #include "game/TProductionOrder.h"
 #include "game/global_data_tables.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/UiRuntimeContext.h"
 #include "game/mfc.h"
@@ -20,6 +19,7 @@
 #include <new>
 
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 const int kAssertLineRatioB = 0xb73;
 

@@ -3,6 +3,7 @@
 #include "game/TAmbitApplication.h"
 #include "game/TApplication.h"
 #include "game/global_data_tables.h"
+#include "game/multiplayer_session_tags.h"
 
 // FUNCTION: IMPERIALISM 0x0054aff0
 void TPoseMessageDialog::DoIt() {}
@@ -22,6 +23,6 @@ IMPLEMENT_DYNCREATE(TPoseMessageDialog, TCommand)
 void __cdecl QueuePoseMessageDialogForNationSlot(int nationSlot) {
   TPoseMessageDialog* command = new TPoseMessageDialog();
   command->kickedByNationSlot18 = nationSlot;
-  command->InitializeRangePair(0x706f7365, g_pGlobalUiRootController, 0, 0, 0); // 'pose'
+  command->InitializeRangePair(kSessionTagPose, g_pGlobalUiRootController, 0, 0, 0); // 'pose'
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
 }

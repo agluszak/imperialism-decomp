@@ -3,6 +3,7 @@
 #include "game/TView.h"
 #include "game/map_domain_types.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 // Forward declarations for types referenced by generated signatures.
 class astruct_13;

@@ -8,6 +8,7 @@
 #include "game/TPicture.h"
 #include "game/TWindow.h"
 #include "game/global_data_tables.h"
+#include "game/ui_tags_common.h"
 // SYNTHETIC: IMPERIALISM 0x00572d20
 // TColorKeyPicture::CreateObject
 
@@ -30,12 +31,14 @@ void TColorKeyPicture::Draw(RECT* rectBuffer) {
   g_pColorKeyCompositeDib = new CDib(*cachedBitmap);
 
   TPicture* background =
-      static_cast<TPicture*>(GetWindow()->ResolveControlByTag(0x6d61696e)); // 'main'
+      static_cast<TPicture*>(GetWindow()->ResolveControlByTag(kControlTagMain)); // 'main'
   if (background == 0) {
-    background = static_cast<TPicture*>(GetWindow()->ResolveControlByTag(0x6261636b)); // 'back'
+    background =
+        static_cast<TPicture*>(GetWindow()->ResolveControlByTag(kControlTagBack)); // 'back'
   }
   if (background == 0) {
-    background = static_cast<TPicture*>(GetWindow()->ResolveControlByTag(0x444c4f47)); // 'GOLD'
+    background =
+        static_cast<TPicture*>(GetWindow()->ResolveControlByTag(kControlTagDialog)); // 'GOLD'
   }
 
   CPoint position;

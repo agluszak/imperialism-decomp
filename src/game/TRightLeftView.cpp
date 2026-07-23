@@ -13,6 +13,7 @@ IMPLEMENT_DYNCREATE(TRightLeftView, TControl)
 TRightLeftView::~TRightLeftView() {}
 
 #include "game/TAmbitApplication.h"
+#include "game/ui_tags_common.h"
 
 // FUNCTION: IMPERIALISM 0x00583f30
 TRightLeftView::TRightLeftView() : TControl(), timingDword84(0) {}
@@ -43,7 +44,7 @@ void TRightLeftView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
     return;
   }
 
-  if (this->controlTag == 0x72676874) {
+  if (this->controlTag == kControlTagRght) {
     this->HandleEvent(100, this, nullptr);
   } else {
     this->HandleEvent(101, this, nullptr);

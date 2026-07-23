@@ -3,6 +3,8 @@
 #include "game/TSoundPlayer.h"
 #include "game/TTradeCluster.h"
 #include "game/global_data_tables.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 // SYNTHETIC: IMPERIALISM 0x005843e0
 // TTradeOrderPicture::CreateObject
 
@@ -35,7 +37,7 @@ void TTradeOrderPicture::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPo
   }
 
   TTradeCluster* tradeRow = static_cast<TTradeCluster*>(ownerContext);
-  if (controlTag == 0x63617264) { // 'card'
+  if (controlTag == kControlTagCard) { // 'card'
     if (glyphBase84 == 0x83f || glyphBase84 == 0x84d) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
       tradeRow->HandleEvent(0x67, this, 0);
@@ -50,7 +52,7 @@ void TTradeOrderPicture::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPo
     return;
   }
 
-  if (controlTag == 0x6f666672) { // 'offr'
+  if (controlTag == kControlTagOffr) { // 'offr'
     if (glyphBase84 == 0x841 || glyphBase84 == 0x84f) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
       tradeRow->HandleEvent(0x6a, this, 0);

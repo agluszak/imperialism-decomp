@@ -2,6 +2,7 @@
 
 #include "game/TCommand.h"
 #include "game/mfc.h"
+#include "game/multiplayer_session_tags.h"
 
 // VTABLE: IMPERIALISM 0x0065c0e8
 class TPoseMessageDialog : public TCommand {

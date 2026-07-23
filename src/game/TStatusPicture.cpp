@@ -11,8 +11,10 @@
 #include "game/TDiplomacyMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/multiplayer_session_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 // SYNTHETIC: IMPERIALISM 0x0043d870
 // TStatusPicture::`scalar deleting destructor'
@@ -34,7 +36,7 @@ void TStatusPicture::DoPostCreate(int arg) {
   // One TPicture child per eligible nation slot ('pic0'-'pic6'); the picture tag only
   // advances on rows that actually get a child (ineligible rows are skipped without
   // consuming a tag), matching the original's separate row/tag counters.
-  unsigned int pictureTag = 0x70696330u; // 'pic0'
+  unsigned int pictureTag = kControlTagArmyPlacardFirst; // 'pic0'
   int rowY = 0x50;
   for (unsigned int nationSlot = 0; nationSlot < 7; ++nationSlot) {
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) != 0) {
@@ -50,7 +52,7 @@ void TStatusPicture::DoPostCreate(int arg) {
   }
 
   for (unsigned int tabIndex = 0; tabIndex < 10; ++tabIndex) {
-    TView* tabControl = ResolveControlByTag(0x74616230u + tabIndex); // 'tab0'-'tab9'
+    TView* tabControl = ResolveControlByTag(kControlTagTab0 + tabIndex); // 'tab0'-'tab9'
     LoadUiStringByGroupAndIndexToControlObject(0x2757, static_cast<short>(tabIndex + 9),
                                                tabControl);
   }
@@ -85,7 +87,7 @@ void TStatusPicture::DoPostCreate(int arg) {
 
   // 'curs' is also installed as the shared cursor-hint panel, same as 'labl' in
   // TLoungeDialog::DoPostCreate.
-  TInfoBarText* cursControl = static_cast<TInfoBarText*>(ResolveControlByTag(0x63757273u));
+  TInfoBarText* cursControl = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs));
   g_pCursorControlPanel = cursControl;
   cursControl->AssertValid();
   cursControl->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
@@ -95,10 +97,10 @@ void TStatusPicture::DoPostCreate(int arg) {
 void TStatusPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
     unsigned int tag = sourceHandler->controlTag;
-    if (tag >= 0x74616230u /* 'tab0' */ && tag <= 0x74616239u /* 'tab9' */) {
-      int newIndex = static_cast<int>(tag - 0x74616230u);
+    if (tag >= kControlTagTab0 && tag <= kControlTagTab9) {
+      int newIndex = static_cast<int>(tag - kControlTagTab0);
       if (newIndex != comparisonMode90) {
-        TView* newTab = ResolveControlByTag(0x74616230u + newIndex);
+        TView* newTab = ResolveControlByTag(kControlTagTab0 + newIndex);
         newTab->AssertValid();
         newTab->SetEnabled(0, 1);
         static_cast<TView*>(sourceHandler)->AssertValid();
@@ -133,11 +135,11 @@ void TStatusPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
         // Already-selected tab, shift-held: a debug shortcut into the help-index records.
         unsigned int tag = sourceHandler->controlTag;
         int idx;
-        if (tag == 0x74616231u) { // 'tab1'
+        if (tag == kControlTagTab1) { // 'tab1'
           idx = 2;
-        } else if (tag == 0x74616232u) { // 'tab2'
+        } else if (tag == kControlTagTab2) { // 'tab2'
           idx = 0;
-        } else if (tag == 0x74616233u) { // 'tab3'
+        } else if (tag == kControlTagTab3) { // 'tab3'
           idx = 1;
         } else {
           idx = -1;
@@ -304,7 +306,8 @@ void TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets() {
   int index = 0;
   do {
     if (*idPtr != -1) {
-      TPicture* widget = static_cast<TPicture*>(ResolveControlByTag(index + 0x70696330));
+      TPicture* widget =
+          static_cast<TPicture*>(ResolveControlByTag(index + kControlTagArmyPlacardFirst));
       widget->AssertValid();
       widget->SetPictureResourceIdAndRefresh(static_cast<short>(*idPtr + 0x10d7), true);
     }

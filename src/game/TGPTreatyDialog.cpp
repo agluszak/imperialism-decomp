@@ -7,6 +7,8 @@
 #include "game/TView.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b3b70
 // TGPTreatyDialog::`scalar deleting destructor'
@@ -24,8 +26,8 @@ TGPTreatyDialog::TGPTreatyDialog() {}
 // FUNCTION: IMPERIALISM 0x005b3be0
 void TGPTreatyDialog::StuffValues() {
   CString nationName;
-  unsigned int nameTags[7] = {0x6e616d30, 0x6e616d31, 0x6e616d32, 0x6e616d33,
-                              0x6e616d34, 0x6e616d35, 0x6e616d36};
+  unsigned int nameTags[7] = {kControlTagNam0, kControlTagNam1, kControlTagNam2, kControlTagNam3,
+                              kControlTagNam4, kControlTagNam5, kControlTagNam6};
 
   for (short row = 0; row < 7; ++row) {
     if (g_apTerrainTypeDescriptorTable[row] == 0) {
@@ -58,11 +60,11 @@ void TGPTreatyDialog::StuffValues() {
     }
   }
 
-  TView* horizontalNames = ResolveControlByTag(0x686f7269); // 'hori'
+  TView* horizontalNames = ResolveControlByTag(kControlTagHori); // 'hori'
   if (horizontalNames == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x2c6);
   }
-  TView* verticalNames = ResolveControlByTag(0x76657274); // 'vert'
+  TView* verticalNames = ResolveControlByTag(kControlTagVert); // 'vert'
   if (verticalNames == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x2c8);
   }

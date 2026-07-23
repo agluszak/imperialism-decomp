@@ -21,8 +21,8 @@
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_regions.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_tags_common.h"
 
 // The original repeats this DIB vertical-flip adjustment before every atlas blit;
 // defined inline so MSVC5 (/Ob1) inlines it back to the original's straight-line form.

@@ -2,6 +2,7 @@
 
 #include "game/TTacticalBattleView.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 // VTABLE: IMPERIALISM 0x00644fd0
 class TTacArmyView : public TTacticalBattleView {

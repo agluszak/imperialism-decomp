@@ -4,6 +4,7 @@
 #include "decomp_types.h"
 #include "game/mfc.h"
 #include "game/TObject.h"
+#include "game/ui_tags_common.h"
 
 class CArchive;
 class TView;
@@ -54,7 +55,7 @@ public:
   void InitializeUiResourceEntryBaseHeaderDefaults();
 
   // __thiscall packet/event-header field initializer (0x48a180, also reached via ILT 0x40174e).
-  // Writes controlTag (0x1c) = 0x20202020, field04/field08 = 1, field0c = packetTag.
+  // Writes controlTag (0x1c) = '    ', field04/field08 = 1, field0c = packetTag.
   void InitializePacketHeaderFields_Tag20202020(int packetTag);
 
   // Slot 0x00 — MFC RTTI accessor (this is CObject::GetRuntimeClass; the whole "T"

@@ -4,8 +4,9 @@
 #include "game/TBuildingView.h"
 #include "game/TEventHandler.h"
 #include "game/global_data_tables.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_tags_city.h"
+#include "game/ui_tags_common.h"
 // SYNTHETIC: IMPERIALISM 0x004cc300
 // TPurchaseCluster::CreateObject
 

@@ -6,6 +6,7 @@
 #include "game/TMiniArmyLine.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
+#include "game/ui_tags_common.h"
 
 // SYNTHETIC: IMPERIALISM 0x004aa4d0
 // TSuperArmyRoster::`scalar deleting destructor'
@@ -22,7 +23,7 @@ IMPLEMENT_DYNCREATE(TSuperArmyRoster, TPageView)
 void TSuperArmyRoster::PopulateArmyOrderPageEntries(TView* panel, int* offsetLayout,
                                                     int* sizeLayout) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
-  controlTag = 0x70616765; // 'page'
+  controlTag = kControlTagPage; // 'page'
   TPageView::DoPostCreate(0);
 
   short activeNation = g_pSimMgr->GetActiveNationId();

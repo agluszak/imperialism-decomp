@@ -1,4 +1,5 @@
 #include "game/TFloatWindow.h"
+#include "game/ui_tags_widgets.h"
 
 // SYNTHETIC: IMPERIALISM 0x00491e00
 // TFloatWindow::CreateObject
@@ -17,7 +18,7 @@ TFloatWindow::~TFloatWindow() {}
 
 // FUNCTION: IMPERIALISM 0x00492310
 int TFloatWindow::GetWindowTypeTag() {
-  return 'fwnd';
+  return kControlTagFwnd;
 }
 
 // FUNCTION: IMPERIALISM 0x00492330

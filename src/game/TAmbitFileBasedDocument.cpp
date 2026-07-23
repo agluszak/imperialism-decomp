@@ -20,6 +20,7 @@
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_tags_widgets.h"
 // SYNTHETIC: IMPERIALISM 0x0049e5a0
 // TAmbitFileBasedDocument::CreateObject
 
@@ -56,7 +57,7 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
   stream->ReadBytes(g_ScenarioSaveNameBuffer_006A2178, 0x20);
 
   bool invalidSaveFile = false;
-  if (fileMagic != 0x414d4249) {
+  if (fileMagic != kControlTagAMBI) {
     CString message;
     g_pSimMgr->GetString(0x2737, 7, &message);
     g_pUiRuntimeContext->ModalMessage(message, g_ptSaveLoadErrorModalMessage, 2, 0);

@@ -13,6 +13,8 @@
 #include "game/TWNetSessionManager.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/multiplayer_session_tags.h"
+#include "game/ui_tags_common.h"
 
 #include <cstring>
 #include <new>
@@ -259,7 +261,7 @@ void TNetMgr::HandleError(int errorCode) {
 // FUNCTION: IMPERIALISM 0x005e39a0
 unsigned char TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider) {
   g_NetworkSessionManager006a5f60.activeProtocolControlB0 =
-      static_cast<TRadioTextCluster*>(provider->ResolveControlByTag(0x70726f74)); // 'prot'
+      static_cast<TRadioTextCluster*>(provider->ResolveControlByTag(kControlTagProt)); // 'prot'
   g_NetworkSessionManager006a5f60.activeProtocolControlB0->AssertValid();
 
   for (int index = 0; index < g_WNetSerializedPtrArrayA006a5f10.GetSize(); ++index) {
@@ -499,7 +501,7 @@ unsigned char TNetMgr::CheckConnectivityOrShowLocalizedWarningAndReturnReady() {
 int TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask() {
   int awolBitmask = 0;
   TurnEvent2BPresenceMaskPacket probe;
-  probe.messageTag = 0x74696d65;
+  probe.messageTag = kControlTagTime;
   probe.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   probe.eventCode = 0;
   probe.fromNetworkId = 0;

@@ -3,6 +3,7 @@
 #include "game/TInfoBarText.h"
 #include "game/TView.h"
 #include "game/global_data_tables.h"
+#include "game/ui_tags_military.h"
 // SYNTHETIC: IMPERIALISM 0x004b0c90
 // TInfoBarBehavior::CreateObject
 
@@ -20,7 +21,7 @@ TInfoBarBehavior::~TInfoBarBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x004b0e20
 void TInfoBarBehavior::IInfoBarBehavior(CString newText, TView* ownerView) {
-  behaviorTag = 0x696e6642;
+  behaviorTag = kControlTagInfB;
   ownerView->QueryBounds(&layoutRect);
   text = newText;
 
@@ -28,7 +29,7 @@ void TInfoBarBehavior::IInfoBarBehavior(CString newText, TView* ownerView) {
     TView* dummy = new TView();
     dummy->InitializeUiResourceEntryFrameAndParent(0, ownerView, g_InfoBarDummyOrigin_006A2410,
                                                    &ownerView->frameWidth34, 0, 0, 0);
-    dummy->controlTag = 0x64756d79;
+    dummy->controlTag = kControlTagDumy;
     dummy->SetState(1, 0);
     dummy->SetEnabled(0, 0);
   }

@@ -9,6 +9,9 @@
 #include "game/TView.h"
 #include "game/CMcWindow.h"
 #include "game/global_data_tables.h"
+#include "game/resource_manifest_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 // SYNTHETIC: IMPERIALISM 0x00487300
 // TDialogBehavior::CreateObject
@@ -20,8 +23,9 @@ IMPLEMENT_DYNCREATE(TDialogBehavior, TBehavior)
 
 // FUNCTION: IMPERIALISM 0x00487370
 TDialogBehavior::TDialogBehavior()
-    : TBehavior(), armed(0), defaultCommandCode(0x20202020), cancelCommandCode(0x20202020),
-      armedCommandCode(0x20202020), dismissPending(1) {}
+    : TBehavior(), armed(0), defaultCommandCode(kControlTagSpSpSpSp),
+      cancelCommandCode(kControlTagSpSpSpSp), armedCommandCode(kControlTagSpSpSpSp),
+      dismissPending(1) {}
 
 // SYNTHETIC: IMPERIALISM 0x004873b0
 // TDialogBehavior::`scalar deleting destructor'
@@ -29,7 +33,7 @@ TDialogBehavior::~TDialogBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x00487400
 void TDialogBehavior::SetUiColorDescriptorGoldTriplet(unsigned char flag, int colorA, int colorB) {
-  behaviorTag = 0x646c6f67; // 'gold'
+  behaviorTag = kControlTagDlog; // 'gold'
   armed = flag;
   defaultCommandCode = colorA;
   cancelCommandCode = colorB;
@@ -72,7 +76,7 @@ void TDialogBehavior::DoKeyEvent(TToolboxEvent* event) {
   } else {
     return;
   }
-  if (commandCode == 0x20202020) {
+  if (commandCode == kControlTagSpSpSpSp) {
     return;
   }
 
@@ -88,7 +92,7 @@ void TDialogBehavior::DoKeyEvent(TToolboxEvent* event) {
 void TDialogBehavior::DoCommandKeyEvent(TToolboxEvent* event) {
   TView* ownerView = static_cast<TView*>(owner);
   if (ownerView == 0 || ownerView->IsEnabled() == 0 || event->commandCode != 0x2e ||
-      cancelCommandCode == 0x20202020) {
+      cancelCommandCode == kControlTagSpSpSpSp) {
     return;
   }
 
@@ -110,7 +114,7 @@ void TDialogBehavior::PoseModally() {
   ownerPanel = owner->GetWindow();
   CWnd* nativeWindow = ownerPanel->nativeWindow50;
   dismissPending = 0;
-  armedCommandCode = 0x20202020;
+  armedCommandCode = kControlTagSpSpSpSp;
   nativeWindow->EnableWindow(1);
   nativeWindow->RunModalLoop(0);
 

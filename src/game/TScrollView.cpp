@@ -2,6 +2,7 @@
 
 #include "game/TScrollBarView.h"
 #include "game/global_data_tables.h"
+#include "game/ui_tags_common.h"
 
 // SYNTHETIC: IMPERIALISM 0x0043d7f0
 // TScrollView::`scalar deleting destructor'
@@ -25,7 +26,7 @@ void TScrollView::InitializeScrollView(TView* panel, int* offsetLayout, int* siz
 // FUNCTION: IMPERIALISM 0x00573ce0
 void TScrollView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
-  contentView60 = ResolveControlByTag(0x7363726f); // 'scro'
+  contentView60 = ResolveControlByTag(kControlTagScro); // 'scro'
   TScrollBarView* bar = new TScrollBarView();
   int barOffset[2];
   int barSize[2];

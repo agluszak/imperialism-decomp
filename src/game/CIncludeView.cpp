@@ -11,6 +11,7 @@
 #include "game/TWindow.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_tags_common.h"
 
 // MCIWNDM_NOTIFYMODE / MCI_MODE_STOP for the movie stop-notify handler. NOAVIFILE keeps
 // this to the MCIWnd control messages without pulling in the AVIFile COM interfaces.
@@ -170,7 +171,7 @@ LRESULT CIncludeView::OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam) {
     break;
   case 1:
     m_activeDialogContext->PropagateUiResourceContextRecursive(this);
-    m_activeDialogContext->ResolveControlByTag(0x6d61696e); // 'main'
+    m_activeDialogContext->ResolveControlByTag(kControlTagMain); // 'main'
     break;
   default:
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath_00694D10, 0x84);
@@ -198,7 +199,7 @@ void CIncludeView::OnDraw(CDC* pDC) {
 void CIncludeView::SetUiRuntimeContextAndActivateMain(TView* activeDialog) {
   m_activeDialogContext = activeDialog;
   m_activeDialogContext->PropagateUiResourceContextRecursive(this);
-  m_activeDialogContext->ResolveControlByTag(0x6d61696e); // 'main'
+  m_activeDialogContext->ResolveControlByTag(kControlTagMain); // 'main'
 }
 
 // The original computes the clip box and client rect but uses neither; returning

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TCommand.h"
+#include "game/ui_tags_military.h"
 
 // Diplomacy-phase 'NeXT' command, sibling of TNextTradeCommand (identical 12-slot
 // shape; RTTI descriptor 0x654ce8 proves TNextDiplomationCommand -> TCommand ->

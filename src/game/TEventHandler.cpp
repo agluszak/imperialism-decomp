@@ -16,6 +16,7 @@
 #include "game/global_data_tables.h"
 #include "game/TAmbitApplication.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_tags_common.h"
 #include <string.h>
 
 // FUNCTION: IMPERIALISM 0x00415d50
@@ -58,7 +59,7 @@ void TEventHandler::InitializePacketHeaderFields_Tag20202020(int packetTag) {
   field04 = 1;
   field08 = 1;
   field0c = packetTag;
-  controlTag = 0x20202020;
+  controlTag = kControlTagSpSpSpSp;
 }
 // Slot 0x07/0x08: base implementations (overridden by TView and AppRoot).
 // FUNCTION: IMPERIALISM 0x0048a1b0

@@ -18,6 +18,8 @@
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_city.h"
+#include "game/ui_tags_common.h"
 
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
 void SetControlHoverHelpTextAltEntry(CString sharedString, TView* control);
@@ -42,7 +44,7 @@ void TDealBookPicture::Startup(short startupValue) {
   // Toolbar cluster ('tool'): refresh the turn-order status panel and re-derive its
   // nation/treasury text for the active nation.
   TToolBarCluster* toolControl =
-      static_cast<TToolBarCluster*>(this->ResolveControlByTag(0x746f6f6c));
+      static_cast<TToolBarCluster*>(this->ResolveControlByTag(kControlTagTool));
   toolControl->AssertValid();
   toolControl->RefreshTurnOrderStatusPanelTextsAndControls();
   toolControl->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
@@ -50,33 +52,33 @@ void TDealBookPicture::Startup(short startupValue) {
 
   // Re-cache the six commodity sub-controls.
   this->boughtTradesView98 =
-      static_cast<TTradePageBuyView*>(this->ResolveControlByTag(0x626f7567)); // 'boug'
+      static_cast<TTradePageBuyView*>(this->ResolveControlByTag(kControlTagBoug)); // 'boug'
   this->soldTradesView9C =
-      static_cast<TTradePageSellView*>(this->ResolveControlByTag(0x736f6c64)); // 'sold'
+      static_cast<TTradePageSellView*>(this->ResolveControlByTag(kControlTagSold)); // 'sold'
   this->buyPageViewA0 =
-      static_cast<TTradePageBuyView*>(this->ResolveControlByTag(0x74626f75)); // 'tbou'
+      static_cast<TTradePageBuyView*>(this->ResolveControlByTag(kControlTagTbou)); // 'tbou'
   this->sellPageViewA4 =
-      static_cast<TTradePageSellView*>(this->ResolveControlByTag(0x74736f6c)); // 'tsol'
+      static_cast<TTradePageSellView*>(this->ResolveControlByTag(kControlTagTsol)); // 'tsol'
   this->buyPageViewAC = this->boughtTradesView98;
   this->sellPageViewA8 = this->soldTradesView9C;
 
   // 'mark' toggle + label reload.
-  TView* markControl = this->ResolveControlByTag(0x6d61726b); // 'mark'
+  TView* markControl = this->ResolveControlByTag(kControlTagMark); // 'mark'
   if (markControl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x129);
   }
   markControl->SetState(1, 0);
-  LoadUiStringByGroupAndIndexToControlObject(0x2741, 6, this->ResolveControlByTag(0x6d61726b));
+  LoadUiStringByGroupAndIndexToControlObject(0x2741, 6, this->ResolveControlByTag(kControlTagMark));
   markControl->SetState(0, 0);
-  LoadUiStringByGroupAndIndexToControlObject(0x2741, 7, this->ResolveControlByTag(0x74616273));
+  LoadUiStringByGroupAndIndexToControlObject(0x2741, 7, this->ResolveControlByTag(kControlTagTabs));
 
   this->alternatePageModeB1 = false;
   this->ShowPage(0, startupValue);
   g_pSfxPlaybackSystem->PlaySoundEffect(0x13ee, 0, 1);
 
   // 'titL' title label.
-  TStaticText* titLControl = static_cast<TStaticText*>(this->ResolveControlByTag(0x7469744c));
+  TStaticText* titLControl = static_cast<TStaticText*>(this->ResolveControlByTag(kControlTagTitL));
   titLControl->AssertValid();
   titLControl->SetTextFromStringResource(0x2740, 0x19, 0);
   CRect titLBounds;
@@ -87,7 +89,7 @@ void TDealBookPicture::Startup(short startupValue) {
 
   // 'rtil' subtitle label.
   TDropShadowText* rtilControl =
-      static_cast<TDropShadowText*>(this->ResolveControlByTag(0x7274696c));
+      static_cast<TDropShadowText*>(this->ResolveControlByTag(kControlTagRtil));
   rtilControl->AssertValid();
   rtilControl->SetTextFromStringResource(0x2740, 0x1a, 0);
   CRect rtilBounds;
@@ -99,8 +101,8 @@ void TDealBookPicture::Startup(short startupValue) {
   ApplyUiTextStyleAndThemeFlags(rtilControl, 0, 0x12, 0x2b6b, 0x2b6c);
 
   // 'rocl'/'rocr' resource buttons.
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730, 0xc, 0x6c636f72); // 'rocl'
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730, 0xb, 0x72636f72); // 'rocr'
+  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730, 0xc, kControlTagLcor); // 'rocl'
+  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730, 0xb, kControlTagRcor); // 'rocr'
 }
 
 // FUNCTION: IMPERIALISM 0x005baf70
@@ -132,12 +134,12 @@ void TDealBookPicture::ShowPage(int pageIndex, short nationId) {
     sellCopy->SetEnabled(1, 0);
   }
 
-  TView* leftCtrl = this->ResolveControlByTag(0x6c636f72);
+  TView* leftCtrl = this->ResolveControlByTag(kControlTagLcor);
   if (leftCtrl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x16e);
   }
-  TView* rightCtrl = this->ResolveControlByTag(0x72636f72);
+  TView* rightCtrl = this->ResolveControlByTag(kControlTagRcor);
   if (rightCtrl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x170);
@@ -234,7 +236,8 @@ void TDealBookPicture::CalculatePages() {
                         ? boughtTradesView98->pageCount - 1
                         : soldTradesView9C->pageCount - 1;
 
-  TDealTabControl* tabs = static_cast<TDealTabControl*>(ResolveControlByTag(0x74616273)); // 'tabs'
+  TDealTabControl* tabs =
+      static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs)); // 'tabs'
   tabs->AssertValid();
   tabs->Setup(0x2266,
               g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId]);
@@ -258,7 +261,7 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         SwitchPages();
       }
       TStaticText* titLControl =
-          static_cast<TStaticText*>(ResolveControlByTag(0x7469744c)); // 'titL'
+          static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitL)); // 'titL'
       titLControl->AssertValid();
       CString templateText;
       g_pSimMgr->GetString(0x2741, 3, &templateText);
@@ -271,15 +274,15 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     }
   } else if (commandId == 0xa) {
     unsigned int tag = sourceHandler->controlTag;
-    if (tag == 0x6c636f72u) { // 'lcor'
+    if (tag == kControlTagLcor) { // 'lcor'
       if (currentPageIndex94 > 0) {
         ShowPage(currentPageIndex94 - 1, selectedNationId90);
       }
-    } else if (tag == 0x72636f72u) { // 'rcor'
+    } else if (tag == kControlTagRcor) { // 'rcor'
       if (currentPageIndex94 < lastPageIndex92) {
         ShowPage(currentPageIndex94 + 1, selectedNationId90);
       }
-    } else if (tag == 0x6d61726bu) { // 'mark'
+    } else if (tag == kControlTagMark) { // 'mark'
       if (alternatePageModeB1) {
         SwitchPages();
       }
@@ -291,12 +294,11 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 // FUNCTION: IMPERIALISM 0x005bc0d0
 void TDealBookPicture::SwitchPages() {
   if (!alternatePageModeB1) {
-    TView* markControl = ResolveControlByTag(0x6d61726b /* 'mark' */);
+    TView* markControl = ResolveControlByTag(kControlTagMark);
     markControl->AssertValid();
     markControl->SetState(1, 0);
 
-    TStaticText* rtilControl =
-        static_cast<TStaticText*>(ResolveControlByTag(0x7274696c /* 'rtil' */));
+    TStaticText* rtilControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagRtil));
     rtilControl->AssertValid();
 
     CString seasonName;
@@ -310,39 +312,37 @@ void TDealBookPicture::SwitchPages() {
     rtilControl->QueryBounds(&titleBounds);
     InvalidateCityDialogRectRegion(&titleBounds, 1);
 
-    TView* tabsControl = ResolveControlByTag(0x74616273 /* 'tabs' */);
+    TView* tabsControl = ResolveControlByTag(kControlTagTabs);
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl);
   } else {
     sellPageViewA4->RebuildNationOfferRowsForCategory(-1);
     buyPageViewA0->RebuildNationBidRowsForCategory(-1);
 
-    TView* tabsControl = ResolveControlByTag(0x74616273 /* 'tabs' */);
+    TView* tabsControl = ResolveControlByTag(kControlTagTabs);
     if (tabsControl == nullptr) {
       MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x2a2);
     }
 
-    TStaticText* titLControl =
-        static_cast<TStaticText*>(ResolveControlByTag(0x7469744c /* 'titL' */));
+    TStaticText* titLControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitL));
     titLControl->AssertValid();
     titLControl->SetTextFromStringResource(0x2740, 0x19, 0);
     CRect titLBounds;
     titLControl->QueryBounds(&titLBounds);
     InvalidateCityDialogRectRegion(&titLBounds, 1);
 
-    TStaticText* rtilControl =
-        static_cast<TStaticText*>(ResolveControlByTag(0x7274696c /* 'rtil' */));
+    TStaticText* rtilControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagRtil));
     rtilControl->AssertValid();
     rtilControl->SetTextFromStringResource(0x2740, 0x1a, 0);
     CRect rtilBounds;
     rtilControl->QueryBounds(&rtilBounds);
     InvalidateCityDialogRectRegion(&rtilBounds, 1);
 
-    TView* markControl = ResolveControlByTag(0x6d61726b /* 'mark' */);
+    TView* markControl = ResolveControlByTag(kControlTagMark);
     markControl->AssertValid();
     markControl->SetState(0, 0);
 
-    TView* tabsControl2 = ResolveControlByTag(0x74616273 /* 'tabs' */);
+    TView* tabsControl2 = ResolveControlByTag(kControlTagTabs);
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl2);
   }
 

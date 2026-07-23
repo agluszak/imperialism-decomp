@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TView.h"
+#include "game/ui_tags_common.h"
 
 // Scroll-host view: same 0x60 layout as TView (adds no fields); reuses the shared
 // TEventHandler/TView slots for its placement bookkeeping. RTTI: classTScroller @

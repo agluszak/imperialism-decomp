@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TGreatPower.h"
+#include "game/ui_tags_common.h"
 
 // VTABLE: IMPERIALISM 0x00654088
 class TAutoGreatPower : public TGreatPower {

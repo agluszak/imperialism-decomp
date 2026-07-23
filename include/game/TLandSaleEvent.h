@@ -2,6 +2,8 @@
 
 #include "game/TTurnStartEvent.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 // VTABLE: IMPERIALISM 0x00653290
 class TLandSaleEvent : public TTurnStartEvent {

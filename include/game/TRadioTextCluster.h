@@ -2,6 +2,7 @@
 
 #include "game/TCluster.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 // VTABLE: IMPERIALISM 0x00662418
 class TRadioTextCluster : public TCluster {

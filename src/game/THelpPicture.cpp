@@ -11,6 +11,8 @@
 #include "game/TWindow.h"
 #include "game/global_data_tables.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_screens.h"
 
 namespace {
 
@@ -49,7 +51,8 @@ void THelpPicture::DoPostCreate(int arg) {
   InitializeUiTextStyleDescriptor(&textStyle, 0, 12, 0x2b67, 3);
 
   // Mac Linger.rsrc:3000 identifies 'swin' as the help dialog's TScrollView.
-  TScrollView* scrollView = static_cast<TScrollView*>(ResolveControlByTag(0x7377696e)); // 'swin'
+  TScrollView* scrollView =
+      static_cast<TScrollView*>(ResolveControlByTag(kControlTagSwin)); // 'swin'
   scrollView->AssertValid();
 
   TDeluxeText* topicText = new TDeluxeText();
@@ -71,38 +74,38 @@ void THelpPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   }
 
   switch (sourceHandler->controlTag) {
-  case 0x6d6f7265: // 'more'
+  case kControlTagMore: // 'more'
     PlayDefaultMessageBeep(1);
     return;
-  case 0x6e616d31: // 'nam1'
+  case kControlTagNam1: // 'nam1'
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
     ShowTopic(1);
     return;
-  case 0x6e616d32: // 'nam2'
+  case kControlTagNam2: // 'nam2'
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
     ShowTopic(2);
     return;
-  case 0x6e616d33: // 'nam3'
+  case kControlTagNam3: // 'nam3'
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
     ShowTopic(3);
     return;
-  case 0x6e616d34: // 'nam4'
+  case kControlTagNam4: // 'nam4'
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
     ShowTopic(4);
     return;
-  case 0x6e616d35: // 'nam5'
+  case kControlTagNam5: // 'nam5'
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
     ShowTopic(5);
     return;
-  case 0x6e657874: // 'next'
+  case kControlTagNext: // 'next'
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
     ShowNextHelpSet();
     return;
-  case 0x70726576: // 'prev'
+  case kControlTagPrev: // 'prev'
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
     ShowPreviousHelpSet();
     return;
-  case 0x746f676c: // 'togl'
+  case kControlTagTogl: // 'togl'
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
     ShowTopicList();
     return;
@@ -142,7 +145,7 @@ void THelpPicture::ShowTopic(short topic) {
   InitializeUiTextStyleDescriptor(&highlightStyle, 4, 12, 0x2b69, 3);
   InitializeUiTextStyleDescriptor(&captionStyle, 0, 12, 0x2b67, 1);
 
-  TStaticText* subject = static_cast<TStaticText*>(ResolveControlByTag(0x7375626a)); // 'subj'
+  TStaticText* subject = static_cast<TStaticText*>(ResolveControlByTag(kControlTagSubj)); // 'subj'
   subject->SetTextFromStringResource(currentHelpSet90->helpResourceBaseId,
                                      static_cast<short>(topic + 1), 1);
   subject->SetEnabled(1, 1);
@@ -150,19 +153,19 @@ void THelpPicture::ShowTopic(short topic) {
   subject->SetTextAlignmentAndMaybeRefresh(1, 0);
   subject->InstallTextStyle(captionStyle, 0);
 
-  TStaticText* toggle = static_cast<TStaticText*>(ResolveControlByTag(0x746f676c)); // 'togl'
+  TStaticText* toggle = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTogl)); // 'togl'
   toggle->SetEnabled(1, 1);
   toggle->SetState(1, 1);
   toggle->SetTextAlignmentAndMaybeRefresh(1, 0);
   toggle->InstallTextStyle(normalStyle, 0);
 
   for (int index = 0; index < 5; ++index) {
-    TView* topicName = ResolveControlByTag(0x6e616d31 + index); // 'nam1'..'nam5'
+    TView* topicName = ResolveControlByTag(kControlTagNam1 + index); // 'nam1'..'nam5'
     topicName->SetEnabled(0, 1);
     topicName->SetState(0, 1);
   }
 
-  TStaticText* previous = static_cast<TStaticText*>(ResolveControlByTag(0x70726576)); // 'prev'
+  TStaticText* previous = static_cast<TStaticText*>(ResolveControlByTag(kControlTagPrev)); // 'prev'
   g_pSimMgr->GetString(0x2749, 0xd, &navigationText);
   previous->SetTextAndMaybeRefresh(&navigationText, 1);
   previous->SetEnabled(0, 1);
@@ -170,7 +173,7 @@ void THelpPicture::ShowTopic(short topic) {
   previous->SetTextAlignmentAndMaybeRefresh(-1, 0);
   previous->InstallTextStyle(normalStyle, 0);
 
-  TStaticText* next = static_cast<TStaticText*>(ResolveControlByTag(0x6e657874)); // 'next'
+  TStaticText* next = static_cast<TStaticText*>(ResolveControlByTag(kControlTagNext)); // 'next'
   g_pSimMgr->GetString(0x2749, 0xe, &navigationText);
   next->SetTextAndMaybeRefresh(&navigationText, 1);
   next->SetEnabled(0, 1);
@@ -182,7 +185,8 @@ void THelpPicture::ShowTopic(short topic) {
 
   // Mac Strings.rsrc TEXT entries and the Windows GOB crosswalk both use
   // helpResourceBaseId + topic for the selected long-form help body.
-  TScrollView* scrollView = static_cast<TScrollView*>(ResolveControlByTag(0x7377696e)); // 'swin'
+  TScrollView* scrollView =
+      static_cast<TScrollView*>(ResolveControlByTag(kControlTagSwin)); // 'swin'
   scrollView->AssertValid();
   scrollView->SetEnabled(1, 0);
   topicListText94->SetTextFromUiStringResourceId(
@@ -227,14 +231,14 @@ void THelpPicture::ShowTopicList() {
   InitializeUiTextStyleDescriptor(&highlightStyle, 4, 12, 0x2b69, 3);
   InitializeUiTextStyleDescriptor(&captionStyle, 0, 12, 0x2b67, 1);
 
-  TStaticText* subject = static_cast<TStaticText*>(ResolveControlByTag(0x7375626a)); // 'subj'
+  TStaticText* subject = static_cast<TStaticText*>(ResolveControlByTag(kControlTagSubj)); // 'subj'
   subject->SetTextFromStringResource(currentHelpSet90->helpResourceBaseId, 1, 1);
   subject->SetEnabled(1, 1);
   subject->SetState(0, 1);
   subject->SetTextAlignmentAndMaybeRefresh(1, 0);
   subject->InstallTextStyle(captionStyle, 0);
 
-  TStaticText* toggle = static_cast<TStaticText*>(ResolveControlByTag(0x746f676c)); // 'togl'
+  TStaticText* toggle = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTogl)); // 'togl'
   toggle->SetEnabled(0, 1);
   toggle->SetState(0, 1);
   toggle->SetTextFromStringResource(0x2749, 9, 1);
@@ -242,7 +246,7 @@ void THelpPicture::ShowTopicList() {
   int topicIndex;
   for (topicIndex = 0; topicIndex < currentHelpSet90->topicCount; ++topicIndex) {
     TStaticText* topicName =
-        static_cast<TStaticText*>(ResolveControlByTag(0x6e616d31 + topicIndex)); // 'nam1'..
+        static_cast<TStaticText*>(ResolveControlByTag(kControlTagNam1 + topicIndex)); // 'nam1'..
     topicName->SetTextFromStringResource(currentHelpSet90->helpResourceBaseId,
                                          static_cast<short>(topicIndex + 2), 1);
     topicName->SetEnabled(1, 1);
@@ -251,15 +255,15 @@ void THelpPicture::ShowTopicList() {
     topicName->InstallTextStyle(normalStyle, 0);
   }
 
-  for (int unusedTopicTag = currentHelpSet90->topicCount + 0x6e616d31; unusedTopicTag < 0x6e616d36;
-       ++unusedTopicTag) { // 'nam1'..'nam5'
+  for (int unusedTopicTag = currentHelpSet90->topicCount + kControlTagNam1;
+       unusedTopicTag < kControlTagNam6; ++unusedTopicTag) { // 'nam1'..'nam5'
     TView* topicName = ResolveControlByTag(unusedTopicTag);
     topicName->SetEnabled(0, 1);
     topicName->SetState(0, 1);
   }
 
   char navigationAvailable = currentHelpSet90->previousHelpResourceBaseId != 0;
-  TStaticText* previous = static_cast<TStaticText*>(ResolveControlByTag(0x70726576)); // 'prev'
+  TStaticText* previous = static_cast<TStaticText*>(ResolveControlByTag(kControlTagPrev)); // 'prev'
   g_pSimMgr->GetString(0x2749, 0xd, &navigationText);
   previous->SetTextAndMaybeRefresh(&navigationText, 1);
   previous->SetEnabled(navigationAvailable, 1);
@@ -268,7 +272,7 @@ void THelpPicture::ShowTopicList() {
   previous->InstallTextStyle(normalStyle, 0);
 
   navigationAvailable = currentHelpSet90->nextHelpResourceBaseId != 0;
-  TStaticText* next = static_cast<TStaticText*>(ResolveControlByTag(0x6e657874)); // 'next'
+  TStaticText* next = static_cast<TStaticText*>(ResolveControlByTag(kControlTagNext)); // 'next'
   g_pSimMgr->GetString(0x2749, 0xe, &navigationText);
   next->SetTextAndMaybeRefresh(&navigationText, 1);
   next->SetEnabled(navigationAvailable, 1);
@@ -278,7 +282,8 @@ void THelpPicture::ShowTopicList() {
 
   topicListText94->SetEnabled(0, 1);
 
-  TScrollView* scrollView = static_cast<TScrollView*>(ResolveControlByTag(0x7377696e)); // 'swin'
+  TScrollView* scrollView =
+      static_cast<TScrollView*>(ResolveControlByTag(kControlTagSwin)); // 'swin'
   scrollView->AssertValid();
   scrollView->SetEnabled(0, 1);
   RefreshControl();

@@ -2,6 +2,7 @@
 
 #include "game/TBehavior.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 class TEvent;
 class TEventHandler;
@@ -22,7 +23,7 @@ public:
   void SetUiColorDescriptorGoldTriplet(unsigned char flag, int colorA, int colorB);
 
   // --- TDialogBehavior data members (object size 0x24; the TBehavior base ends at 0x10).
-  // field14/18 hold 4-char command codes (default 0x20202020 == "    " == unbound); the
+  // field14/18 hold 4-char command codes (default '    ' == "    " == unbound); the
   // keyboard handlers (slots 0x10/0x11) fire the default command on Enter/Return and the
   // cancel command on Escape/Delete. ---
   unsigned char armed; // 0x10 — state/flag byte

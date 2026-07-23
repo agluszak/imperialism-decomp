@@ -2,6 +2,8 @@
 
 #include "game/TNoHilitePicture.h"
 #include "game/mfc.h"
+#include "game/multiplayer_session_tags.h"
+#include "game/ui_tags_common.h"
 
 // VTABLE: IMPERIALISM 0x006433b8
 class TLoungeDialog : public TNoHilitePicture {

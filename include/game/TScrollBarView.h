@@ -2,6 +2,7 @@
 
 #include "game/TControl.h"
 #include "game/mfc.h"
+#include "game/ui_tags_screens.h"
 
 // VTABLE: IMPERIALISM 0x006614c8
 class TScrollBarView : public TControl {

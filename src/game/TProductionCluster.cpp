@@ -17,6 +17,7 @@
 #include <new>
 
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 // SYNTHETIC: IMPERIALISM 0x00586840
 // TProductionCluster::CreateObject
@@ -35,7 +36,7 @@ TProductionCluster::TProductionCluster()
 
 // FUNCTION: IMPERIALISM 0x005869c0
 void TProductionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  TAmtBar* valueControl = static_cast<TAmtBar*>(this->ResolveControlByTag(0x76616c75));
+  TAmtBar* valueControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagValu));
   if (valueControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }

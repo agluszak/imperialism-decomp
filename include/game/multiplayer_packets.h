@@ -16,6 +16,10 @@
 #include "compat.h"
 #include "game/NetMessage.h"
 #include "game/TMapMgr.h" // TTerrainStateRecordView (event 0x23 payload)
+#include "game/multiplayer_session_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
+#include "game/ui_tags_widgets.h"
 
 class TObject;
 

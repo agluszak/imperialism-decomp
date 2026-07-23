@@ -15,9 +15,9 @@
 #include "game/global_data_tables.h"
 #include "game/navy_order.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
 
 // SYNTHETIC: IMPERIALISM 0x005653b0
 // TShipView::`scalar deleting destructor'
@@ -169,7 +169,7 @@ void TShipView::RunEngineerOrderNameEditDialogAndApply() {
   nameControl->GetCurrentText(&editedName);
   node->Close();
   node->Free();
-  if (modalResult == 0x6f6b6179 /* 'okay' */) {
+  if (modalResult == kControlTagOkay) {
     shipNode60->name = editedName;
   }
   RefreshControl();

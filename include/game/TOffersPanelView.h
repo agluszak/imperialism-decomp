@@ -3,6 +3,7 @@
 #include "compat.h"
 #include "game/TPanelView.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 // VTABLE: IMPERIALISM 0x00655fb0
 class TOffersPanelView : public TPanelView {

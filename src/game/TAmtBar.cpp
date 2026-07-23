@@ -8,9 +8,9 @@
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 // FUNCTION: IMPERIALISM 0x00586e50
 short TAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {

@@ -8,6 +8,7 @@
 
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/quickdraw_rendering.h"
+#include "game/ui_tags_common.h"
 
 #include <string.h>
 
@@ -69,7 +70,7 @@ void TMapPreviewView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
         static_cast<unsigned short>(g_pUiRuntimeContext->GetColor(static_cast<short>(nation)));
     if (nationPalette == clickedPalette) {
       pendingNation6C = nation;
-      ownerContext->DoEvent(0x7069636b /* 'pick' */, this, 0);
+      ownerContext->DoEvent(kControlTagPick, this, 0);
     }
   }
 }

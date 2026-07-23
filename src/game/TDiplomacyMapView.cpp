@@ -21,7 +21,6 @@
 #include "game/TGlobalMapState.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TInfoBarText.h"
-#include "game/ui_control_tags.h"
 #include "game/TCountry.h"
 #include "game/TInfoPanelView.h"
 #include "game/ui_invalidation_guard.h"
@@ -35,6 +34,8 @@
 #include "game/TOffersPanelView.h"
 #include "game/mapped_flavor_text.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_diplomacy.h"
 
 namespace {
 const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
@@ -328,7 +329,7 @@ void TDiplomacyMapView::DoPostCreate(int arg) {
   SetControlHoverHelpText(CString(g_szEmptyString), this);
 
   if (g_pSimMgr->mode == 6) {
-    TView* endControl = ResolveControlByTag(kControlTagEndSpace);
+    TView* endControl = ResolveControlByTag(kControlTagEnd);
     if (endControl != nullptr) {
       endControl->Free();
     }

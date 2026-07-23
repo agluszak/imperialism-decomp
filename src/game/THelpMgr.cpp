@@ -24,8 +24,8 @@
 #include "game/TStream.h"
 #include "game/mapped_flavor_text.h"
 #include "game/nation_slot_eligibility.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
 
 namespace {
 

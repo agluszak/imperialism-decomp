@@ -9,7 +9,8 @@
 #include "game/TTaskForce.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
-#include "game/ui_control_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 // SYNTHETIC: IMPERIALISM 0x00569430
 // TNavyToolbarCluster::CreateObject
 
@@ -41,10 +42,10 @@ void TNavyToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
     unsigned int tag = sourceHandler->controlTag;
     switch (tag) {
     case kControlTagDfnd:
-    case kTagDone: {
+    case kControlTagDone: {
       TTaskForce* order = GetActiveMapOrderEntry();
       if (order != nullptr) {
-        order->DropShips(tag == kTagDone);
+        order->DropShips(tag == kControlTagDone);
       }
       g_pUiRuntimeContext->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
       break;
@@ -88,7 +89,7 @@ void TNavyToolbarCluster::SetSelectedChildTagAndRefresh(int childTag) {
 
   selectedChildTag = childTag;
   if (selectedChild != 0) {
-    TView* oceanDialog = GetWindow()->ResolveControlByTag(0x444f4f47); // 'DOOG'
+    TView* oceanDialog = GetWindow()->ResolveControlByTag(kControlTagDOOG); // 'DOOG'
     oceanDialog->AssertValid();
     oceanDialog->HandleEvent(0xc, selectedChild, 0);
   }

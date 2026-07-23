@@ -1,6 +1,7 @@
 #include "game/TScroller.h"
 
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 // SYNTHETIC: IMPERIALISM 0x0048ca60
 // TScroller::CreateObject
@@ -25,7 +26,7 @@ void TScroller::InitializeScrollerPlacement(TView* owner, int* offsetLayout, int
       nativeWindow50 = owner->nativeWindow50;
     }
   }
-  controlTag = 0x20202020; // '    '
+  controlTag = kControlTagSpSpSpSp; // '    '
   field04 = 1;
   field08 = 1;
   linkedChildHandler = owner;

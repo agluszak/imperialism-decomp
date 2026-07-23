@@ -24,10 +24,10 @@
 #include "game/global_data_tables.h"
 #include "game/quickdraw_regions.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 #include "game/resource_domain_types.h"
+#include "game/ui_tags_common.h"
 
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 
@@ -604,7 +604,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
   CString nameText;
   CString cityName;
 
-  TView* titleControl = ResolveControlByTag(0x7469746c); // 'titl'
+  TView* titleControl = ResolveControlByTag(kControlTagTitl); // 'titl'
   if (titleControl == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x459);
@@ -615,7 +615,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
   mainText += " (#" + numberText + g_szUiCloseParen_006973C8;
   static_cast<TStaticText*>(titleControl)->SetTextAndMaybeRefresh(&mainText, 1);
 
-  TView* infoControl = ResolveControlByTag(0x696e666f); // 'info'
+  TView* infoControl = ResolveControlByTag(kControlTagInfo); // 'info'
   if (infoControl == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x463);
@@ -681,7 +681,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
       }
       mainText = mainText + " (formerly of " + nameText + g_szUiCloseParen_006973C8;
     }
-    locationControl = ResolveControlByTag(0x6c6f6361); // 'loca'
+    locationControl = ResolveControlByTag(kControlTagLoca); // 'loca'
     if (locationControl == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x4a3);
@@ -690,7 +690,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
     TZone* zone = g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(
         g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
     zone->AssignZoneDisplayNameToOutputRef(&mainText);
-    locationControl = ResolveControlByTag(0x6c6f6361); // 'loca'
+    locationControl = ResolveControlByTag(kControlTagLoca); // 'loca'
     if (locationControl == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x4ab);

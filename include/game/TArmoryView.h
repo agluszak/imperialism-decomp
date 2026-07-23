@@ -2,6 +2,7 @@
 
 #include "game/TBuildingView.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 class TUnitOrder;
 

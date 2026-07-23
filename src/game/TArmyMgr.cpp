@@ -36,6 +36,7 @@
 #include "game/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
 
 // SYNTHETIC: IMPERIALISM 0x004a1810
 // TArmyMgr::CreateObject
@@ -2039,7 +2040,7 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
             }
             // Final battle-report row category; the working unit pointer is no longer
             // needed once the evicted unit has been copied into the record.
-            rec.detailIdentity.categoryTag = 0x61726d79; // 'army'
+            rec.detailIdentity.categoryTag = kControlTagArmy; // 'army'
             rec.strengthBucket = static_cast<short>(unit->field_38 / 100);
             unit->DetachUnitOrderFromOwnerAndReset();
             unit->Free();

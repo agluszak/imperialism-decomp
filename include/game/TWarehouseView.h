@@ -2,6 +2,8 @@
 
 #include "game/TBuildingView.h"
 #include "game/mfc.h"
+#include "game/resource_manifest_tags.h"
+#include "game/ui_tags_common.h"
 
 class TPictureNumberText;
 

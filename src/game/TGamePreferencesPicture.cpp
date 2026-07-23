@@ -13,7 +13,8 @@
 #include "game/TTwoPicSlider.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
-#include "game/ui_control_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 // SYNTHETIC: IMPERIALISM 0x0043da70
 // TGamePreferencesPicture::`scalar deleting destructor'
 TGamePreferencesPicture::~TGamePreferencesPicture() {}
@@ -89,7 +90,7 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
       TRadioTextCluster* autoResolutionCluster =
           static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagOpca));
       autoResolutionCluster->AssertValid();
-      bool autoResolve = autoResolutionCluster->selectedTag88 == 0x79657373; // 'yess'
+      bool autoResolve = autoResolutionCluster->selectedTag88 == kControlTagYess; // 'yess'
       if (!g_pImperialismApp->ApplyAutoResolutionModeAndPersist(autoResolve)) {
         g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2763, 7, 2, 0);
       }

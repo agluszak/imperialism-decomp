@@ -7,6 +7,7 @@
 #include "game/TZone.h"
 #include "game/global_data_tables.h"
 #include "game/navy_order.h"
+#include "game/ui_tags_common.h"
 
 // SYNTHETIC: IMPERIALISM 0x00569870
 // TSuperNavyRoster::`scalar deleting destructor'
@@ -23,7 +24,7 @@ IMPLEMENT_DYNCREATE(TSuperNavyRoster, TPageView)
 void TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext(TView* panel, int* offsetLayout,
                                                                 int* sizeLayout) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
-  controlTag = 0x70616765; // 'page'
+  controlTag = kControlTagPage; // 'page'
   TPageView::DoPostCreate(0);
 
   short activeNation = g_pSimMgr->GetActiveNationId();

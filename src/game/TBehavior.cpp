@@ -3,6 +3,7 @@
 #include "game/TEventHandler.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 // SYNTHETIC: IMPERIALISM 0x00487180
 // TBehavior::CreateObject
@@ -13,7 +14,7 @@
 IMPLEMENT_DYNCREATE(TBehavior, TObject)
 
 // FUNCTION: IMPERIALISM 0x004871e0
-TBehavior::TBehavior() : TObject(), behaviorTag(0x20202020), owner(0), enabled(1) {}
+TBehavior::TBehavior() : TObject(), behaviorTag(kControlTagSpSpSpSp), owner(0), enabled(1) {}
 
 // SYNTHETIC: IMPERIALISM 0x00487210
 // TBehavior::`scalar deleting destructor'

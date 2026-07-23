@@ -16,8 +16,11 @@
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/multiplayer_session_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_map.h"
+#include "game/ui_tags_screens.h"
 
 // SYNTHETIC: IMPERIALISM 0x0044fae0
 // TLoungeDialog::`scalar deleting destructor'
@@ -34,7 +37,7 @@ TLoungeDialog::TLoungeDialog() {}
 
 // FUNCTION: IMPERIALISM 0x0054d6f0
 void TLoungeDialog::Free() {
-  if (g_nSaveFormatVersion != 0x4d6f696c) { // 'Moil'
+  if (g_nSaveFormatVersion != kControlTagMoil) { // 'Moil'
     g_pGameFlowState->EnableDiplomacyQueueRoutingAndSetContextField44(this, 0);
   }
   TView::Free();
@@ -49,7 +52,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
   // 'labl' is a TInfoBarText control (vtable slot 0x204 matches
   // TInfoBarText::InitializeMapHintTextStyleAndThemeFlags exactly). The original also
   // installs it as the shared cursor-hint panel.
-  TInfoBarText* lablControl = static_cast<TInfoBarText*>(ResolveControlByTag(0x6c61626c));
+  TInfoBarText* lablControl = static_cast<TInfoBarText*>(ResolveControlByTag(kSessionTagLabl));
   g_pCursorControlPanel = lablControl;
   lablControl->AssertValid();
   lablControl->SetTextStyle(0, 0xe, 0x2b6b);
@@ -61,26 +64,26 @@ void TLoungeDialog::DoPostCreate(int arg) {
   // blank caption via the same restyle idiom as RefreshMapAndMessageControlsForCurrentContext.
   for (int i = 0; i < 7; ++i) {
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 6,
-                                                          0x72616430u + i); // 'rad0'-'rad6'
+                                                          kSessionTagRad0 + i); // 'rad0'-'rad6'
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 7,
-                                                          0x70696b30u + i); // 'pik0'-'pik6'
+                                                          kSessionTagPik0 + i); // 'pik0'-'pik6'
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 8,
-                                                          0x6e616d30u + i); // 'nam0'-'nam6'
+                                                          kControlTagNam0 + i); // 'nam0'-'nam6'
     // 0x6980c8 is an unlabeled data address Ghidra never recognized as a string (no
     // string-oracle entry, single xref) -- treated as the empty placeholder caption it
     // reads as.
-    TStaticText* nameControl =
-        RefreshActiveControlThenApplyThemeStyleAndCaption(0x6e616d30u + i, 0, 0xe, 0x2b6b, -2, "");
+    TStaticText* nameControl = RefreshActiveControlThenApplyThemeStyleAndCaption(
+        kControlTagNam0 + i, 0, 0xe, 0x2b6b, -2, "");
     nameControl->AssertValid();
     ApplyUiTextStyleAndThemeFlags((TDropShadowText*)nameControl, 0, 0xe, 0x2b6b, 0x2b6c);
   }
 
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xb, 0x6d617020u); // 'map '
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xd, 0x746e616du); // 'tnam'
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xe, 0x73656e64u); // 'send'
+  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xb, kControlTagMapP); // 'map '
+  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xd, kControlTagTnam); // 'tnam'
+  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xe, kControlTagSend); // 'send'
 
   if (!g_pGameFlowState->IsSpecialNationDialogModeActive()) {
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 9, 0x636e636cu); // 'clnc'
+    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 9, kControlTagCncl); // 'clnc'
     g_pGameFlowState->ResetNationStatusSlotsAndInitializeNameControls(this);
     if (g_pSimMgr->multiplayerSessionRole == 1) {
       g_pGameFlowState->SetDialogModeTagInitAndInvokeNoOpHook();
@@ -96,7 +99,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
     // decoded.
   }
 
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xc, 0x6d657373u); // 'mess'
+  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xc, kSessionTagMess); // 'mess'
   selectedNationSlot = -1;
   DoIdle(1);
 
@@ -138,7 +141,7 @@ void TLoungeDialog::TryReplaceRemoteNationSlot(int nationSlot) {
                          static_cast<LPCSTR>(nationName));
   if (g_pUiRuntimeContext->ModalMessage(formattedText, g_ptLoungeNationReplacementModalMessage, 0,
                                         1)) {
-    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x61636564, nationSlot, -2); // 'deca'
+    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kSessionTagAced, nationSlot, -2); // 'deca'
     g_pGameFlowState->ReplaceNationStateForSlotAndRefreshStatus(nationSlot);
   }
 }
@@ -152,19 +155,19 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     okayControl->SetEnabled(0, 0);
   }
 
-  if (commandId == 0x7069636b) { // 'pick'
+  if (commandId == kControlTagPick) { // 'pick'
     sourceHandler->AssertValid();
     TryReplaceRemoteNationSlot(static_cast<TMapPreviewView*>(sourceHandler)->pendingNation6C);
   }
 
   if (commandId == 0x14 || commandId == 0x0a || commandId == 0x22 || commandId == 0x0d) {
     unsigned int controlTag = sourceHandler->controlTag;
-    if (controlTag == 0x636e636c || controlTag == 0x63616e63) { // 'cncl' / 'canc'
+    if (controlTag == kControlTagCncl || controlTag == kControlTagCanc) { // 'cncl' / 'canc'
       if (g_pGameFlowState->IsSpecialNationDialogModeActive()) {
-        if (g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) == 0x62757379) {
+        if (g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) == kSessionTagBusy) {
           g_pSimMgr->StartNextPhase(); // 'busy'
         } else if (g_pUiRuntimeContext->DispatchGameStateEventIfLocalizedPromptAccepted(
-                       0x6e657767)) { // 'gwen'
+                       kControlTagNewg)) { // 'gwen'
           g_pGlobalUiRootController->CreateAndQueueTurnEventPacketTagGWEN();
         }
       } else {
@@ -177,24 +180,24 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
         }
         if (g_pSimMgr->multiplayerSessionRole != 1 || hasOtherSession == 0 ||
             g_pUiRuntimeContext->DispatchGameStateEventIfLocalizedPromptAccepted(
-                0x6367616d)) { // 'magc'
+                kControlTagCgam)) { // 'magc'
           if (g_pSimMgr->multiplayerSessionRole == 1) {
-            g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6367616d, -1, -2);
+            g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagCgam, -1, -2);
           }
           g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
         }
       }
-    } else if (controlTag >= 0x72616430 && controlTag <= 0x72616436) { // 'rad0'..'rad6'
-      TryReplaceRemoteNationSlot(static_cast<int>(controlTag - 0x72616430));
-    } else if (controlTag >= 0x6e616d30 && controlTag <= 0x6e616d36) { // 'nam0'..'nam6'
-      TryReplaceRemoteNationSlot(static_cast<int>(controlTag - 0x6e616d30));
-    } else if (controlTag >= 0x70696b30 && controlTag <= 0x70696b36) { // 'pik0'..'pik6'
-      TryReplaceRemoteNationSlot(static_cast<int>(controlTag - 0x70696b30));
-    } else if (controlTag == 0x73656e64) { // 'send'
+    } else if (controlTag >= kSessionTagRad0 && controlTag <= kSessionTagRad6) { // 'rad0'..'rad6'
+      TryReplaceRemoteNationSlot(static_cast<int>(controlTag - kSessionTagRad0));
+    } else if (controlTag >= kControlTagNam0 && controlTag <= kControlTagNam6) { // 'nam0'..'nam6'
+      TryReplaceRemoteNationSlot(static_cast<int>(controlTag - kControlTagNam0));
+    } else if (controlTag >= kSessionTagPik0 && controlTag <= kSessionTagPik6) { // 'pik0'..'pik6'
+      TryReplaceRemoteNationSlot(static_cast<int>(controlTag - kSessionTagPik0));
+    } else if (controlTag == kControlTagSend) { // 'send'
       QueuePoseMessageDialogForNationSlot(-1);
-    } else if (controlTag == 0x6f6b6179) { // 'okay'
+    } else if (controlTag == kControlTagOkay) { // 'okay'
       g_pGameFlowState->CloseLobbyDialogAndEmitTurnEvent3();
-    } else if (controlTag == 0x6a656469) { // 'jedi'
+    } else if (controlTag == kSessionTagJedi) { // 'jedi'
       g_pGameFlowState->EmitTurnEvent10ForFlaggedNationSlots();
     }
   }
@@ -225,12 +228,11 @@ struct TScopedWaitCursor {
 void TLoungeDialog::RefreshMapAndMessageControlsForCurrentContext() {
   TScopedWaitCursor waitCursor;
   TStaticText* nameControl = RefreshActiveControlThenApplyThemeStyleAndCaption(
-      0x746e616d /* 'tnam' */, 0, 0xe, 0x2b6b, 1,
+      kControlTagTnam, 0, 0xe, 0x2b6b, 1,
       static_cast<const char*>(g_pGameFlowState->gameNameString));
   nameControl->AssertValid();
   ApplyUiTextStyleAndThemeFlags((TDropShadowText*)nameControl, 0, 0xc, 0x2b6b, 0x2b6c);
-  TMapPreviewView* mapControl =
-      static_cast<TMapPreviewView*>(ResolveControlByTag(0x6d617020 /* 'map ' */));
+  TMapPreviewView* mapControl = static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
   mapControl->AssertValid();
   mapControl->TakeSatellitePhoto(0);
   mapControl->EnhancePhoto();
@@ -238,7 +240,7 @@ void TLoungeDialog::RefreshMapAndMessageControlsForCurrentContext() {
   mapControl->QueryBounds(&mapBounds);
   RECT invalidBounds = mapBounds;
   InvalidateCityDialogRectRegion(&invalidBounds, 1);
-  TStaticText* messControl = (TStaticText*)ResolveControlByTag(0x6d657373 /* 'mess' */);
+  TStaticText* messControl = (TStaticText*)ResolveControlByTag(kSessionTagMess);
   messControl->AssertValid();
   CString messageText;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageText, 0x2742, 0x10);

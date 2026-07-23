@@ -10,6 +10,7 @@
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_rendering.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 #include <new>
 // FUNCTION: IMPERIALISM 0x004294d0
 void TStaticText::CopyTextTo(CString* out) {
@@ -84,7 +85,7 @@ void TStaticText::InitializeTextEntryBaseAndOptionalStringResource(
   if (panel != 0) {
     nativeWindow50 = panel->nativeWindow50;
   }
-  controlTag = 0x20202020;
+  controlTag = kControlTagSpSpSpSp;
   field04 = 1;
   field08 = 1;
   linkedChildHandler = panel;

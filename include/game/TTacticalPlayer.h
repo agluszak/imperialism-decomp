@@ -3,6 +3,7 @@
 #include "game/TObject.h"
 #include "game/TList.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 // VTABLE: IMPERIALISM 0x00669598
 class TTacticalPlayer : public TObject {

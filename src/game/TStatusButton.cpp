@@ -2,6 +2,8 @@
 #include "game/TWindow.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 // SYNTHETIC: IMPERIALISM 0x00586280
 // TStatusButton::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00586310
@@ -15,10 +17,6 @@ TStatusButton::TStatusButton() : TButton() {}
 // Destructor is compiler-generated (implicit) from real TButton inheritance.
 // SYNTHETIC: IMPERIALISM 0x005863b0
 // TStatusButton::`scalar deleting destructor'
-
-const int kControlTagBack = 0x6261636b; // 'back'
-const int kControlTagArms = 0x41726d73; // 'arms'
-const int kControlTagClos = 0x436c6f73; // 'Clos'
 
 // FUNCTION: IMPERIALISM 0x00586400
 void TStatusButton::DoEvent(int selectedIndex, TEventHandler* sourceHandler, TEvent* event) {

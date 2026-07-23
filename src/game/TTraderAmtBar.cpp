@@ -7,7 +7,6 @@
 #include "game/TAmtBar.h"
 #include "game/TPicture.h"
 #include "game/global_data_tables.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/TGreatPower.h"
 
@@ -20,14 +19,17 @@
 #include "game/mfc.h"
 #include <new>
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 namespace {
 extern "C" char g_vtblTTraderAmtBar = 0;
 
 const int kScenarioRecordTags[] = {
-    0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520,
-    0x72733620, 0x6d613020, 0x6d613120, 0x6d613220, 0x6d613320, 0x6d613420,
-    0x6d613520, 0x67643020, 0x67643120, 0x67643220, 0x67643320,
+    kControlTagRs0Sp, kControlTagRs1Sp, kControlTagRs2Sp, kControlTagRs3Sp, kControlTagRs4Sp,
+    kControlTagRs5Sp, kControlTagRs6Sp, kControlTagMa0Sp, kControlTagMa1Sp, kControlTagMa2Sp,
+    kControlTagMa3Sp, kControlTagMa4Sp, kControlTagMa5Sp, kControlTagGd0Sp, kControlTagGd1Sp,
+    kControlTagGd2Sp, kControlTagGd3Sp,
 };
 
 } // namespace

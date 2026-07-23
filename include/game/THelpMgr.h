@@ -3,6 +3,7 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 #include "game/turn_event_codes.h"
+#include "game/ui_tags_widgets.h"
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;

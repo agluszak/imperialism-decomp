@@ -5,8 +5,8 @@
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_tags_common.h"
 
 #include <stdlib.h>
 // SYNTHETIC: IMPERIALISM 0x0051ba70

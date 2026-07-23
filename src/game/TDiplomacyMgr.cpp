@@ -21,11 +21,12 @@
 #include "game/TApplication.h"
 #include "game/TStream.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/ui_tags_military.h"
 #include <new>
 #include <stdlib.h>
 
 namespace {
-const unsigned int kTurnEventTagNext = 0x4E655854;
+const unsigned int kTurnEventTagNext = kControlTagNeXT;
 struct ScratchSharedString {
   CString str;
   ScratchSharedString() {}

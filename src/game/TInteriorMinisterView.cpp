@@ -5,7 +5,7 @@
 #include "game/TSimMgr.h"
 #include "game/TWindow.h"
 #include "game/global_data_tables.h"
-#include "game/ui_control_tags.h"
+#include "game/ui_tags_common.h"
 // SYNTHETIC: IMPERIALISM 0x004f35e0
 // TInteriorMinisterView::CreateObject
 

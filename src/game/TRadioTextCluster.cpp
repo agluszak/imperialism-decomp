@@ -6,7 +6,7 @@
 #include "game/global_data_tables.h"
 #include "game/quickdraw_regions.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
+#include "game/ui_tags_common.h"
 // SYNTHETIC: IMPERIALISM 0x005795b0
 // TRadioTextCluster::CreateObject
 
@@ -31,7 +31,7 @@ TRadioTextCluster::~TRadioTextCluster() {}
 // FUNCTION: IMPERIALISM 0x00579740
 void TRadioTextCluster::DoPostCreate(int arg) {
   TCluster::DoPostCreate(arg);
-  selectedTag88 = kTagNada;
+  selectedTag88 = kControlTagNada;
 }
 
 // FUNCTION: IMPERIALISM 0x00579770
@@ -50,7 +50,7 @@ void TRadioTextCluster::SetSelectedTextOptionByTag(int tag, bool refreshOnChange
   if (selectedTag88 == tag) {
     return;
   }
-  if (tag != static_cast<int>(kTagNada) && ResolveControlByTag(tag) == 0) {
+  if (tag != static_cast<int>(kControlTagNada) && ResolveControlByTag(tag) == 0) {
     return;
   }
   selectedTag88 = tag;

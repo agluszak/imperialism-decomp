@@ -10,8 +10,8 @@
 #include "game/TTown.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
 
 // SYNTHETIC: IMPERIALISM 0x0051bd60
 // TCitySiteView::CreateObject
@@ -45,7 +45,7 @@ void TCitySiteView::DoPostCreate(int arg) {
 
   g_pCitySiteCachedPrimaryRenderSurfaceContext = g_pPrimaryRenderSurfaceContext;
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
-  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagDialog /* 'DLOG' */);
+  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagDialog);
 
   // TCitySiteView is always hosted as TMapUberPicture's 'DLOG' child (see
   // TMapUberPicture.h's "event 0x3b8 constructs a TCitySiteView" note and the real
@@ -93,7 +93,7 @@ void TCitySiteView::DoPostCreate(int arg) {
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x273f, 9, kControlTagCanc);
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730, 3, kControlTagQuer);
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
-  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagDialog /* 'DLOG' */);
+  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagDialog);
 }
 
 // FUNCTION: IMPERIALISM 0x0051c2a0

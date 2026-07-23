@@ -4,6 +4,7 @@
 #include "game/TMultiplayerMgr.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
+#include "game/ui_tags_common.h"
 
 // FUNCTION: IMPERIALISM 0x005420a0
 void NetMessage::DestinateToGP(int nationSlot) {
@@ -30,7 +31,7 @@ void TimelyNetMessagePrefix::SetTimeEmitPacketGameFlowTurnId() {
 
 // FUNCTION: IMPERIALISM 0x005438e0
 TimelyMessageHeader* TimelyMessageHeader::InitializeEmitEventHeaderWithActiveNation() {
-  messageTag = 0x74696d65; // 'time'
+  messageTag = kControlTagTime; // 'time'
   activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   return this;
 }

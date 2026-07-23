@@ -4,6 +4,8 @@
 #include "game/nation_domain_types.h"
 #include "game/TObject.h"
 #include "game/turn_event_codes.h"
+#include "game/multiplayer_session_tags.h"
+#include "game/ui_tags_screens.h"
 
 class TStream;
 

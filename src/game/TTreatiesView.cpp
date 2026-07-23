@@ -6,8 +6,9 @@
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_diplomacy.h"
 
 // SYNTHETIC: IMPERIALISM 0x00430350
 // TTreatiesView::`scalar deleting destructor'
@@ -89,9 +90,9 @@ void TTreatiesView::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x004f7f10
 void TTreatiesView::Setup() {
-  TCluster* scrollCluster = static_cast<TCluster*>(ResolveControlByTag(0x7363726f)); // 'scro'
+  TCluster* scrollCluster = static_cast<TCluster*>(ResolveControlByTag(kControlTagScro)); // 'scro'
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), scrollCluster);
-  scrollCluster->SetSelectedChildTagAndRefresh(0x73637235); // 'scr5'
+  scrollCluster->SetSelectedChildTagAndRefresh(kControlTagScr5); // 'scr5'
   diplomacyMapView60->actionCodeBC = kDipActionBuildConsulate;
 }
 

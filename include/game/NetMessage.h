@@ -2,6 +2,7 @@
 
 #include "decomp_types.h"
 #include "game/nation_domain_types.h"
+#include "game/ui_tags_common.h"
 
 // Windows counterpart of the Mac build's network message header (Mac oracle names the
 // class NetMessage with methods DestinateTo(int)/DestinateToGP(int); on Mac the header
@@ -33,7 +34,7 @@ struct TurnEventQueuePacket : NetMessage {
   TurnEventQueuePacket* nextQueuePacket;
 };
 
-// 'time'-tagged (0x74696d65) timely-message variant whose turn-token word sits at +0x18
+// 'time'-tagged ('time') timely-message variant whose turn-token word sits at +0x18
 // (three-byte pad after the active-nation byte). Used by the advisory/diplomacy emitters
 // (0x540cf0..0x5416b0 band); 0x542120 writes word [this+0x18] from
 // TMultiplayerMgr::pendingNationSlotIndex.

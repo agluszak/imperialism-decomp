@@ -18,6 +18,7 @@
 #include "game/global_data_tables.h"
 #include "game/turn_event_dialog_provisional.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_tags_common.h"
 
 using turn_event_dialog::TurnEventDialogNode;
 
@@ -281,7 +282,7 @@ void TArmyPlayer::StartBattle() {
       FailNilPointerWithAssert(s_SourcePathUTacPlayer_00699D84, 0x18d);
     }
     TTacticalHolaPicture* holaPicture =
-        static_cast<TTacticalHolaPicture*>(dialog->ResolveControlByTag(0x444c4f47 /* 'DLOG' */));
+        static_cast<TTacticalHolaPicture*>(dialog->ResolveControlByTag(kControlTagDialog));
     holaPicture->AssertValid();
     if (isOurSideFlagC != 0) {
       holaPicture->ConfigureBattleIntroCoatsAndSiteLabels(
@@ -294,7 +295,7 @@ void TArmyPlayer::StartBattle() {
     int resultTag = dialog->RefreshTurnEventDialog();
     dialog->Close();
     dialog->Free();
-    if (resultTag == 0x6f6b6179 /* 'okay' */) {
+    if (resultTag == kControlTagOkay) {
       ProceedAfterBattleIntroAccepted();
     }
   }

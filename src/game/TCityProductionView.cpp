@@ -29,6 +29,8 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_tags_city.h"
+#include "game/ui_tags_common.h"
 
 extern "C" short g_Render_Nation_Header_Value_006961E0[12] = {0, 1,  2,  2,  2,  1,
                                                               0, -2, -2, -2, -2, -1};
@@ -158,28 +160,28 @@ void TCityProductionView::UpdateUnits() {
   g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
   TPopulationMgr* population = city94->productionSummary1d8;
 
-  TPlacard* placard = static_cast<TPlacard*>(ResolveControlByTag(0x756e7472)); // 'rtnu'
+  TPlacard* placard = static_cast<TPlacard*>(ResolveControlByTag(kControlTagUntr)); // 'rtnu'
   if (placard == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4b9);
   }
   placard->SetValue(population->baselineSlots10->lowSkillCount04, true);
 
-  placard = static_cast<TPlacard*>(ResolveControlByTag(0x74617269)); // 'iart'
+  placard = static_cast<TPlacard*>(ResolveControlByTag(kControlTagTari)); // 'iart'
   if (placard == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4bc);
   }
   placard->SetValue(population->baselineSlots10->mediumSkillCount06, true);
 
-  placard = static_cast<TPlacard*>(ResolveControlByTag(0x70726f66)); // 'forp'
+  placard = static_cast<TPlacard*>(ResolveControlByTag(kSummaryTagProf)); // 'forp'
   if (placard == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4bf);
   }
   placard->SetValue(population->baselineSlots10->highSkillCount08, true);
 
-  placard = static_cast<TPlacard*>(ResolveControlByTag(0x706f7765)); // 'ewop'
+  placard = static_cast<TPlacard*>(ResolveControlByTag(kSummaryTagPowe)); // 'ewop'
   if (placard == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4c2);
@@ -187,8 +189,8 @@ void TCityProductionView::UpdateUnits() {
   placard->SetValue(city94->powerAvailableB4, true);
 
   short* predictedNeeds = population->PredictedNeeds();
-  const unsigned int tags[6] = {0x67726169, 0x70726f64, 0x6d656174,
-                                0x68617264, 0x636c6f74, 0x6675726e};
+  const unsigned int tags[6] = {kControlTagGrai, kControlTagProd, kControlTagMeat,
+                                kControlTagHard, kControlTagClot, kControlTagFurn};
   const short resourceIds[6] = {17, 18, 20, 15, 13, 14};
   const int assertionLines[6] = {0x4c8, 0x4cc, 0x4d0, 0x4d5, 0x4d8, 0x4db};
   for (int i = 0; i < 6; ++i) {
@@ -201,7 +203,7 @@ void TCityProductionView::UpdateUnits() {
     placard->SetValue(predictedNeeds[resourceIds[i]], true);
   }
 
-  placard = static_cast<TPlacard*>(ResolveControlByTag(0x6c616250)); // 'Pbal'
+  placard = static_cast<TPlacard*>(ResolveControlByTag(kControlTagLabP)); // 'Pbal'
   if (placard == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4e0);
@@ -377,7 +379,7 @@ void TCityProductionView::UpdateFields() {
   numberText.Format(g_szDecimalFormat, total);
   summaryText = g_szCityProductionShipyardPrefix + numberText;
   TStaticText* summary =
-      static_cast<TStaticText*>(ResolveControlByTag(0x75736869)); // shipyard summary
+      static_cast<TStaticText*>(ResolveControlByTag(kControlTagUshi)); // shipyard summary
   if (summary == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x5ea);
@@ -395,7 +397,7 @@ void TCityProductionView::UpdateFields() {
   }
   numberText.Format(g_szDecimalFormat, total);
   summaryText = g_szCityProductionArmoryPrefix + numberText;
-  summary = static_cast<TStaticText*>(ResolveControlByTag(0x7561726d)); // armory summary
+  summary = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUarm)); // armory summary
   if (summary == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x5f8);
@@ -413,7 +415,7 @@ void TCityProductionView::UpdateFields() {
   }
   numberText.Format(g_szDecimalFormat, total);
   summaryText = g_szCityProductionUniversityPrefix + numberText;
-  summary = static_cast<TStaticText*>(ResolveControlByTag(0x75756e69)); // university summary
+  summary = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUuni)); // university summary
   if (summary == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x606);

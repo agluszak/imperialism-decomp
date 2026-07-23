@@ -13,6 +13,7 @@
 #include "game/TCluster.h"
 #include "game/TControl.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 #include "decomp_types.h"
 
@@ -27,7 +28,7 @@ IMPLEMENT_DYNCREATE(TCluster, TControl)
 // FUNCTION: IMPERIALISM 0x00491400
 TCluster::TCluster() {
   this->eventNumber60 = 5;
-  this->selectedChildTag = 0x20202020;
+  this->selectedChildTag = kControlTagSpSpSpSp;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00491480

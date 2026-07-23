@@ -5,6 +5,8 @@
 class TTacticalUnit;
 class TArmyTacUnit;
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 // VTABLE: IMPERIALISM 0x00644d98
 class TTacticalToolbar : public TCluster {

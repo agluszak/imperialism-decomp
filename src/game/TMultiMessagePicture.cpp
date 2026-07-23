@@ -7,6 +7,8 @@
 #include "game/TMultiplayerMgr.h"
 #include "game/TWindow.h"
 #include "game/global_data_tables.h"
+#include "game/multiplayer_session_tags.h"
+#include "game/ui_tags_common.h"
 
 // SYNTHETIC: IMPERIALISM 0x0044fb10
 // TMultiMessagePicture::`scalar deleting destructor'
@@ -28,13 +30,14 @@ void TMultiMessagePicture::DoEvent(int commandId, TEventHandler* sourceHandler, 
   }
 
   unsigned int tag = sourceHandler->controlTag;
-  if (tag != 0x63616e63 && tag != 0x636e636c) { // 'canc', 'cncl'
-    if (tag != 0x6f6b6179) {                    // 'okay'
+  if (tag != kControlTagCanc && tag != kControlTagCncl) { // 'canc', 'cncl'
+    if (tag != kControlTagOkay) {                         // 'okay'
       TControl::DoEvent(commandId, sourceHandler, event);
       return;
     }
 
-    TEditText* messageControl = static_cast<TEditText*>(ResolveControlByTag(0x6d657367)); // 'mesg'
+    TEditText* messageControl =
+        static_cast<TEditText*>(ResolveControlByTag(kSessionTagMesg)); // 'mesg'
     messageControl->AssertValid();
     CString message;
     messageControl->GetCurrentText(&message);
@@ -42,7 +45,7 @@ void TMultiMessagePicture::DoEvent(int commandId, TEventHandler* sourceHandler, 
     unsigned int recipientMask = 0;
     for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
       TCzechBox* nationBox =
-          static_cast<TCzechBox*>(ResolveControlByTag(0x626f7830 + nationSlot)); // 'box0'..
+          static_cast<TCzechBox*>(ResolveControlByTag(kSessionTagBox0 + nationSlot)); // 'box0'..
       nationBox->AssertValid();
       if (nationBox->IsEnabled() != 0 && nationBox->IsOn() != 0) {
         recipientMask |= 1 << nationSlot;

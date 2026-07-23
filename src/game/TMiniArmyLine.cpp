@@ -8,6 +8,7 @@
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
 
 // SYNTHETIC: IMPERIALISM 0x004aa840
 // TMiniArmyLine::`scalar deleting destructor'
@@ -36,7 +37,7 @@ void TMiniArmyLine::InstallViews(TView* panel, int* offsetLayout) {
     TGWorldButton* upgradeButton = new TGWorldButton;
     upgradeButton->InitializeWithBitmapResource(armyView, upgradeOffset, upgradeSize, 0xdae);
     upgradeButton->SetState(1, 0);
-    upgradeButton->controlTag = 0x75706772; // 'upgr'
+    upgradeButton->controlTag = kControlTagUpgr; // 'upgr'
 
     CString armsText;
     CString cashText;

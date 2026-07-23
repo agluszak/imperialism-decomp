@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TWorldView.h"
+#include "game/ui_tags_common.h"
 
 struct TQuickDrawSurfaceContext;
 

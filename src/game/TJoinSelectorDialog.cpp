@@ -10,8 +10,10 @@
 #include "game/TWNetSessionManager.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/multiplayer_session_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_screens.h"
 
 // SYNTHETIC: IMPERIALISM 0x0044fab0
 // TJoinSelectorDialog::`scalar deleting destructor'

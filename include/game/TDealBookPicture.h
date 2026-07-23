@@ -3,6 +3,8 @@
 #include "compat.h"
 #include "game/TPicture.h"
 #include "game/mfc.h"
+#include "game/ui_tags_city.h"
+#include "game/ui_tags_common.h"
 
 class TTradePageBuyView;
 class TTradePageSellView;

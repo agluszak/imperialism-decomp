@@ -39,6 +39,8 @@
 #include "game/TMultiplayerMgr.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/resource_domain_types.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_map.h"
 
 StrategicTileIndex TraceTerrainFlowToNearestSeaTile(StrategicTileIndex tileIndex);
 char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(StrategicTileIndex tileIndex);
@@ -390,7 +392,7 @@ void TMapMgr::SetMapRecordFlagA3AndPropagateToChildren(int recordIndex, int clas
 void TMapMgr::GenerateProvinceNames() {
   // Hash the scenario tag string to seed the zone status-code PRNG.
   const char* tag = scenarioTagText1c;
-  int seed = 0x6e616461; // "adan"
+  int seed = kControlTagNada; // "adan"
   while (*tag != '\0') {
     seed = (seed >> 16) + seed * 2 + static_cast<int>(*tag);
     tag++;
@@ -2384,7 +2386,7 @@ int TMapMgr::QueueDepotConstructionOrder(StrategicTileIndex nTileIndex, short nN
   terrainStateTable[nTileIndex].activeFlags1c |= 0x10;
 
   if (g_nSaveFormatVersion != -3 && g_pSimMgr->multiplayerSessionRole != 0) {
-    g_pGameFlowState->DispatchTurnEvent31TaggedPayload(0x746f776e, town, -2);
+    g_pGameFlowState->DispatchTurnEvent31TaggedPayload(kControlTagTown, town, -2);
     g_pGameFlowState->DispatchCityRedrawInvalidateEvent(
         terrainStateTable[nTileIndex].cityRecordIndex);
     DispatchTileRedrawInvalidateEvent(nTileIndex);
@@ -2419,7 +2421,7 @@ void TMapMgr::QueuePortConstructionOrder(StrategicTileIndex nTileIndex, short nN
   g_pActiveMapOrderContext->EnsurePortZoneForTile(nTileIndex);
 
   if (g_nSaveFormatVersion != -3 && g_pSimMgr->multiplayerSessionRole != 0) {
-    g_pGameFlowState->DispatchTurnEvent31TaggedPayload(0x746f776e, town, -2);
+    g_pGameFlowState->DispatchTurnEvent31TaggedPayload(kControlTagTown, town, -2);
     g_pGameFlowState->DispatchCityRedrawInvalidateEvent(
         terrainStateTable[nTileIndex].cityRecordIndex);
     DispatchTileRedrawInvalidateEvent(nTileIndex);

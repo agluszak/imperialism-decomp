@@ -7,6 +7,7 @@
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 // Scratch (width, height) pair the SetPictureResourceIdAndRefresh fallback path builds
 // and immediately discards (the original never reads it back either -- confirmed via
@@ -61,7 +62,7 @@ void TPicture::InitializePictureEntryBaseAndRefresh(TView* panel, int* offsetLay
   if (panel != 0) {
     nativeWindow50 = panel->nativeWindow50;
   }
-  controlTag = 0x20202020; // '    '
+  controlTag = kControlTagSpSpSpSp; // '    '
   field04 = 1;
   field08 = 1;
   linkedChildHandler = panel;

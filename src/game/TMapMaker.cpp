@@ -9,6 +9,7 @@
 #include "game/TSetupRandomMapPicture.h"
 #include "game/global_data_tables.h"
 #include "game/sea_geometry.h"
+#include "game/ui_tags_common.h"
 
 // Same hex-neighbor math as TMapMgr::GetNeighborTileIDArray, but over
 // TMapMaker's own full-resolution generation grid (mapTileGrid08, 108x60, stride
@@ -152,7 +153,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
   // Hash the tuning string into the map-gen PRNG seed (falling back to wall clock),
   // and derive the zone status-code seed from one LCG advance.
   const char* h = static_cast<LPCSTR>(*tuningString);
-  int seed = 0x6e616461;
+  int seed = kControlTagNada;
   for (char hc = *h; hc != 0; hc = *++h) {
     seed = (seed >> 16) + seed * 2 + hc;
   }

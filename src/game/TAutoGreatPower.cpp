@@ -40,6 +40,7 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TProvinceDesirabilityList.h"
+#include "game/ui_tags_common.h"
 
 // kNationSlotCount (0x17) comes from TDiplomacyMgr.h.
 static const int kAidAllocationRowCount = 0x10;
@@ -267,7 +268,7 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004e7510
 void TAutoGreatPower::SorryYouLose(void) {
   if (g_pSimMgr->difficultyLevel != 0) {
-    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6c6f7374, this->nationSlot, -3);
+    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagLost, this->nationSlot, -3);
   }
 }
 

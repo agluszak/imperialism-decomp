@@ -9,6 +9,7 @@
 #include "game/mapped_flavor_text.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
 
 // SYNTHETIC: IMPERIALISM 0x00430900
 // TMapKey::`scalar deleting destructor'
@@ -68,7 +69,7 @@ void TMapKey::DoPostCreate(int arg) {
     legendText->InitializeDeluxeText(this, offsetXY, sizeXY, &zeroRect, &style, -2);
     legendText->UpdateTextEntrySharedStringAndMaybeNotify(&label, 0);
     legendText->SetEnabled(0, 0);
-    legendText->controlTag = 0x6e616d30 + i; // 'nam0'-'nam6'
+    legendText->controlTag = kControlTagNam0 + i; // 'nam0'-'nam6'
     legendText->CenterVertically(0);
     legendText->shadowTextColor9C = shadowStyleFlags;
     legendText->dropShadowEnabledA0 = true;

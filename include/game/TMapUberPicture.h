@@ -2,6 +2,8 @@
 
 #include "game/TMapUberUberPicture.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_map.h"
 
 // Forward declarations for types referenced by generated signatures.
 class TTaskForce;

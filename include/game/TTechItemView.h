@@ -2,6 +2,8 @@
 
 #include "game/TView.h"
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 // VTABLE: IMPERIALISM 0x0066af08
 class TTechItemView : public TView {

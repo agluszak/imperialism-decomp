@@ -3,6 +3,7 @@
 #include "game/TNewsMgr.h" // newsStory rows rendered by the advisor summary
 #include "game/TPicture.h"
 #include "game/mfc.h"
+#include "game/ui_tags_screens.h"
 
 // VTABLE: IMPERIALISM 0x00641390
 class TNewspaperView : public TPicture {

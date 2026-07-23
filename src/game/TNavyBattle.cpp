@@ -8,7 +8,7 @@
 #include "game/TTacticalToolbar.h"
 #include "game/TTacticalUnit.h"
 #include "game/global_data_tables.h"
-#include "game/ui_control_tags.h"
+#include "game/ui_tags_common.h"
 
 #include <stdlib.h>
 // SYNTHETIC: IMPERIALISM 0x005a5480

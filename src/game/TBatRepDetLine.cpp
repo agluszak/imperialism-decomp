@@ -7,6 +7,8 @@
 #include "game/TItemBoyView.h"
 #include "game/TMerchantBoyView.h"
 #include "game/TNavyBoyView.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 // SYNTHETIC: IMPERIALISM 0x004affd0
 // TBatRepDetLine::`scalar deleting destructor'
@@ -27,7 +29,7 @@ void TBatRepDetLine::InstallViews(TView* panel, int* offsetLayout) {
   TBattleUnitsView* battleUnitsView = static_cast<TBattleUnitsView*>(panel);
 
   switch (battleDetail14->categoryTag28) {
-  case 0x61726d79: { // 'army'
+  case kControlTagArmy: { // 'army'
     TArmyBoyView* armyView = new TArmyBoyView;
     armyView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &field08, 5, 5, 0);
     armyView->battleDetail60 = battleDetail14;
@@ -41,20 +43,20 @@ void TBatRepDetLine::InstallViews(TView* panel, int* offsetLayout) {
     checkbox->SetState(1, 0);
     break;
   }
-  case 0x6974656d: { // 'item'
+  case kControlTagItem: { // 'item'
     TItemBoyView* itemView = new TItemBoyView;
     itemView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &field08, 5, 5, 0);
     itemView->battleDetail60 = battleDetail14;
     break;
   }
-  case 0x72757074: { // 'rupt'
+  case kControlTagRupt: { // 'rupt'
     TInterruptusView* interruptView = new TInterruptusView;
     interruptView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &field08, 5, 5,
                                                            0);
     interruptView->battleDetail60 = battleDetail14;
     break;
   }
-  case 0x6e617679: { // 'navy'
+  case kControlTagNavy: { // 'navy'
     TNavyBoyView* navyView = new TNavyBoyView;
     navyView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &field08, 5, 5, 0);
     navyView->battleDetail60 = battleDetail14;
@@ -70,7 +72,7 @@ void TBatRepDetLine::InstallViews(TView* panel, int* offsetLayout) {
     checkbox->SetState(1, 0);
     break;
   }
-  case 0x6d657263: { // 'merc'
+  case kControlTagMerc: { // 'merc'
     TMerchantBoyView* merchantView = new TMerchantBoyView;
     merchantView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &field08, 5, 5,
                                                           0);

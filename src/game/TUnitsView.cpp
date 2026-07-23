@@ -2,6 +2,7 @@
 #include "game/CSubViewIterator.h"
 #include "game/TCity.h"
 #include "game/TColorKeyPicture.h"
+#include "game/ui_tags_city.h"
 // SYNTHETIC: IMPERIALISM 0x004c7f10
 // TUnitsView::CreateObject
 
@@ -22,7 +23,7 @@ void TUnitsView::DoStartup() {
   CSubViewIterator iterator(this);
   TView* child = iterator.FirstSubView();
   while (iterator.MoreSubViews()) {
-    if (child->controlTag == 0x69636f6e) { // 'icon'
+    if (child->controlTag == kControlTagIcon) { // 'icon'
       child->Free();
     }
     child = iterator.NextSubView();
@@ -36,7 +37,7 @@ void TUnitsView::DoStartup() {
       int offsetLayout[2] = {0x20, y};
       int sizeLayout[2] = {0x20, 0x18};
       icon->InitializePictureEntryBaseAndRefresh(this, offsetLayout, sizeLayout, 5, 5, 0x222e);
-      icon->controlTag = 0x69636f6e; // 'icon'
+      icon->controlTag = kControlTagIcon; // 'icon'
       y = static_cast<short>(y + 0x18);
     }
   }

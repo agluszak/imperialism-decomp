@@ -13,6 +13,7 @@
 #include "game/TAmtBar.h"
 #include "game/TCityBarCluster.h"
 #include "game/GameAssert.h"
+#include "game/ui_tags_common.h"
 #include <new>
 
 const int kAssertLineTradeSummaryRtnu = 0x67d;
@@ -40,25 +41,26 @@ void TCityBarCluster::ApplyMoveValue(int value) {
   int metricContext = *reinterpret_cast<int*>(recordContext + 0x1d8);
   int metrics = *reinterpret_cast<int*>(metricContext + 0x10);
 
-  TNumberText* areaControl = static_cast<TNumberText*>(this->ResolveControlByTag(0x74726561));
+  TNumberText* areaControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagTrea));
   if (areaControl != 0) {
     areaControl->SetControlValue(*reinterpret_cast<int*>(recordNode + 0x10), 1);
     areaControl->SetEnabled(0, 1);
   }
 
-  TNumberText* returnControl = static_cast<TNumberText*>(this->ResolveControlByTag(0x756e7472));
+  TNumberText* returnControl =
+      static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagUntr));
   if (returnControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryRtnu);
   }
   returnControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 4), 1);
 
-  TNumberText* airControl = static_cast<TNumberText*>(this->ResolveControlByTag(0x74726169));
+  TNumberText* airControl = static_cast<TNumberText*>(this->ResolveControlByTag(kSummaryTagTrai));
   if (airControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryIart);
   }
   airControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 6), 1);
 
-  TNumberText* profControl = static_cast<TNumberText*>(this->ResolveControlByTag(0x70726f66));
+  TNumberText* profControl = static_cast<TNumberText*>(this->ResolveControlByTag(kSummaryTagProf));
   if (profControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryProf);
   }

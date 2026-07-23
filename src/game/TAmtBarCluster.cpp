@@ -4,11 +4,12 @@
 #include "game/GameAssert.h"
 #include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
-#include "game/ui_control_tags.h"
 #include "game/quickdraw_rendering.h"
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 const int kAssertLineTradeSellIncSell = 0x816;
 const int kAssertLineTradeSellIncCap = 0x81d;

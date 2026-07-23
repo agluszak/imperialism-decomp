@@ -11,6 +11,8 @@
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/multiplayer_session_tags.h"
+#include "game/ui_tags_common.h"
 
 #include <cstring>
 
@@ -340,7 +342,7 @@ BOOL TWNetSessionManager::OnEnumerateServiceProvider(LPGUID providerGuid, LPSTR 
     g_WNetSerializedPtrArrayA006a5f10[index] = record;
 
     TRadioText* item =
-        activeProtocolControlB0->AddItem(0x70726f30 + index, index, record->label, 0xf, -1);
+        activeProtocolControlB0->AddItem(kControlTagPro0 + index, index, record->label, 0xf, -1);
     ApplyUiTextStyleAndThemeFlags(item, 0, 0xc, 0x2b6b, 0x2b6c);
   }
   return TRUE;
@@ -359,7 +361,7 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
   dialog->SetModality(1);
   TDialogBehavior* behavior = dialog->GetDialogBehavior();
   if (behavior != 0) {
-    behavior->defaultCommandCode = 0x6f6b6179; // 'okay'
+    behavior->defaultCommandCode = kControlTagOkay; // 'okay'
   }
 
   POINT placement;
@@ -367,7 +369,7 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
   dialog->CaptureLayout((int*)&placement, 0);
 
   TJoinSelectorDialog* selector =
-      static_cast<TJoinSelectorDialog*>(dialog->ResolveControlByTag(0x444c4f47)); // 'GOLD'
+      static_cast<TJoinSelectorDialog*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'GOLD'
   selector->AssertValid();
   for (int index = 0; index < g_WNetSerializedPtrArrayB006a5f28.GetSize(); ++index) {
     RuntimeSelectionRecord* record = g_WNetSerializedPtrArrayB006a5f28[index];
@@ -375,13 +377,13 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
   }
 
   TEditText* nameControl =
-      static_cast<TEditText*>(selector->ResolveControlByTag(0x6e616d65)); // 'name'
+      static_cast<TEditText*>(selector->ResolveControlByTag(kControlTagName)); // 'name'
   nameControl->AssertValid();
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&joinGamePlayerNameA8, 0);
 
   int command = dialog->PoseModally();
   RuntimeSelectionRecord* selected = selector->GetSelectedJoinableGame();
-  if (command == 0x6f6b6179) {
+  if (command == kControlTagOkay) {
     *selectedSessionGuid = selected->providerGuid;
     nameControl->GetCurrentText(&joinGamePlayerNameA8);
   }
@@ -393,7 +395,7 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
   g_WNetSerializedPtrArrayB006a5f28.RemoveAll();
   dialog->Close();
   dialog->Free();
-  return command == 0x6f6b6179;
+  return command == kControlTagOkay;
 }
 
 // FUNCTION: IMPERIALISM 0x005e3310

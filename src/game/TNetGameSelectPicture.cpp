@@ -4,7 +4,8 @@
 #include "game/TControl.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/global_data_tables.h"
-#include "game/ui_control_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_screens.h"
 
 // SYNTHETIC: IMPERIALISM 0x00576b20
 // TNetGameSelectPicture::`scalar deleting destructor'

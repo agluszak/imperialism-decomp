@@ -26,6 +26,8 @@
 #include "game/mapped_flavor_text.h"
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_tags_city.h"
+#include "game/ui_tags_common.h"
 
 // 0x005d4890. 'D' (0x44) is the only currently-known remapped shortcut code (keyCode 2);
 // other codes pass through as literal virtual-key codes.
@@ -539,7 +541,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
 
   if (nTileIndex == pCiv->tileIndex06) {
     int choice = g_pUiRuntimeContext->ShowConstructionOptionsDialog();
-    if (choice == 0x666f7274) { // 'fort'
+    if (choice == kControlTagFort) { // 'fort'
       short cityIndex = g_pGlobalMapState->terrainStateTable[nTileIndex].cityRecordIndex;
       int fortLevel = g_pGlobalMapState->cityScoreTable[cityIndex].fortLevel03;
       short cost = g_awEngineerFortBuildCostByLevel[fortLevel];
@@ -567,7 +569,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         g_pSfxPlaybackSystem->PlaySoundEffect(0x232c, 0, 1);
         actionFinalized = true;
       }
-    } else if (choice == 0x706f7274) { // 'port'
+    } else if (choice == kControlTagPort) { // 'port'
       short nationId = g_pSimMgr->GetActiveNationId();
       int cash = g_apNationStates[nationId]->diplomacyBudgetBase / 100 +
                  g_apNationStates[nationId]->treasuryValue10;
@@ -594,7 +596,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         g_pSfxPlaybackSystem->PlaySoundEffect(0x232b, 0, 1);
         actionFinalized = true;
       }
-    } else if (choice == 0x7261696c) { // 'rail'
+    } else if (choice == kSummaryTagRail) { // 'rail'
       short nationId = g_pSimMgr->GetActiveNationId();
       int cash = g_apNationStates[nationId]->diplomacyBudgetBase / 100 +
                  g_apNationStates[nationId]->treasuryValue10;

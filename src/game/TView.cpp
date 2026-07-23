@@ -12,6 +12,7 @@
 #include "game/quickdraw_rendering.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_regions.h"
+#include "game/ui_tags_common.h"
 
 // Shared thunks/hooks whose callers interpret the arguments differently are kept in
 // generic repo form (rule 9) with a typed cast at the callsite.
@@ -195,7 +196,7 @@ void TView::InitializeUiResourceEntryFrameAndParent(TView* resourceContext, TVie
   if (panel != 0) {
     nativeWindow50 = panel->nativeWindow50;
   }
-  controlTag = 0x20202020;
+  controlTag = kControlTagSpSpSpSp;
   field04 = 1;
   field08 = 1;
   linkedChildHandler = panel;

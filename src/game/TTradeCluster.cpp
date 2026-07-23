@@ -20,12 +20,13 @@
 #include "game/TPicture.h"
 #include "game/TGreatPower.h"
 #include "game/global_data_tables.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
 #include "game/mfc.h"
 #include "game/TEvent.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 // Bid/Offer picture-button bitmap states (enabled / row-selected variants).
 const short kTradeBitmapBidStateA = 0x083f;
@@ -36,7 +37,7 @@ const short kTradeBitmapOfferStateA = 0x0841;
 const short kTradeBitmapOfferStateB = 0x084f;
 const short kTradeBitmapOfferSecondaryStateA = 0x0842;
 const short kTradeBitmapOfferSecondaryStateB = 0x0850;
-const int kTradeRowStateTag_67643020 = 0x67643020;
+const int kTradeRowStateTag_67643020 = kControlTagGd0Sp;
 
 // Assert source-line numbers in USmallViews.cpp / USuperMap.cpp.
 const int kAssertLineBidSecondary = 0x907;
@@ -175,7 +176,7 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       }
 
       TAmtBar* capacityControl =
-          reinterpret_cast<TAmtBar*>(ownerPanel->ResolveControlByTag(0x6d436170));
+          reinterpret_cast<TAmtBar*>(ownerPanel->ResolveControlByTag(kControlTagMCap));
       if (capacityControl == 0) {
         FailNilPointerInUSmallViews(kAssertLineTradeSellIncCap);
       }
@@ -244,7 +245,7 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     }
 
     TAmtBar* capacityControl =
-        reinterpret_cast<TAmtBar*>(ownerPanel->ResolveControlByTag(0x6d436170));
+        reinterpret_cast<TAmtBar*>(ownerPanel->ResolveControlByTag(kControlTagMCap));
     if (capacityControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineTradeSellMoveSell);
     }

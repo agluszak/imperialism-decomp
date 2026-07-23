@@ -4,6 +4,8 @@
 #include "game/mfc.h"
 #include "game/quickdraw_types.h"
 #include "game/turn_event_codes.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
@@ -203,7 +205,7 @@ public:
   // marks it via TWindow::SetField84(1) (same idiom as MakePlanetSeedDialog),
   // resolves its 'DLOG'-tagged child control, and forwards cityRecordIndex/
   // categoryCounts into that control's own (unrecovered) slot-0x1cc dispatch, finally
-  // comparing the dialog's result tag to kControlTagOkay. TODO(port): the 'DLOG'
+  // comparing the dialog's result tag to 'okay'. TODO(port): the 'DLOG'
   // control's own class/vtable (slot 0x1cc onward) isn't recovered yet; stubbed to the
   // conservative "not confirmed" default, same posture as
   // ShowCivilianReportDialogAndReturnConfirm (bd imperialism-decomp-1uj.61).

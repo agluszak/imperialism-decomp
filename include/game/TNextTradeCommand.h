@@ -1,9 +1,10 @@
 #pragma once
 
 #include "game/TCommand.h"
+#include "game/ui_tags_military.h"
 #include <stddef.h>
 
-// The 'NeXT' (0x4E655854) turn-event command enqueued onto the UI root
+// The 'NeXT' ('NeXT') turn-event command enqueued onto the UI root
 // controller. Real inheritance from TCommand: the base constructor installs the
 // 0x648e28 vtable, then this class's constructor installs 0x0066da90 — reproducing
 // the original two-stage vptr write without any manual vtable store. It overrides

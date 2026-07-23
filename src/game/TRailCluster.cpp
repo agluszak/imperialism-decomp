@@ -13,13 +13,14 @@
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include <new>
 
 #include "game/TRailCluster.h"
 #include "game/TView.h"
 
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 const int kAssertLineRatioA = 0xd1d;
 
@@ -62,7 +63,7 @@ void TRailCluster::DoPostCreate(int styleSeed) {
 
   unsigned int summaryTag = (unsigned int)this->controlTag;
   TPopulationMgr* population = city->productionSummary1d8;
-  if (summaryTag < 0x706f7076) {
+  if (summaryTag < kControlTagPopv) {
     if (summaryTag == kSummaryTagPopu) {
       recordIndex = 0x3c;
       this->selectedMetricStep = 1;
@@ -79,7 +80,7 @@ void TRailCluster::DoPostCreate(int styleSeed) {
                              2);
       goto LABEL_12;
     }
-  } else if (summaryTag < 0x70726f67) {
+  } else if (summaryTag < kControlTagProg) {
     if (summaryTag == kSummaryTagProf) {
       recordIndex = 0x18;
       this->selectedMetricStep = 1;
@@ -103,7 +104,7 @@ void TRailCluster::DoPostCreate(int styleSeed) {
                              2);
       goto LABEL_12;
     }
-    if (summaryTag == kSummaryTagIart) {
+    if (summaryTag == kSummaryTagTrai) {
       recordIndex = 0x17;
       this->selectedMetricStep = 1;
       this->selectedMetricValue = population->baselineSlots10->lowSkillCount04;

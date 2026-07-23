@@ -19,7 +19,6 @@
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include <new>
 
 #include "game/mfc.h"

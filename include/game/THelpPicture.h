@@ -5,6 +5,7 @@
 class TDeluxeText;
 struct HelpSetRecord;
 #include "game/mfc.h"
+#include "game/ui_tags_screens.h"
 
 // VTABLE: IMPERIALISM 0x00657080
 class THelpPicture : public TPicture {

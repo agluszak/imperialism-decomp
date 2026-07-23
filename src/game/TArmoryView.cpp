@@ -13,6 +13,8 @@
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_city.h"
+#include "game/ui_tags_common.h"
 // SYNTHETIC: IMPERIALISM 0x004cece0
 // TArmoryView::CreateObject
 
@@ -47,25 +49,26 @@ void TArmoryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
         RefreshCityViewProductionDetails(index);
 
         // 'sele' is a TCluster (see TUniversityView::DoEvent's identical tail).
-        TCluster* sele = static_cast<TCluster*>(ResolveControlByTag(0x73656c65u)); // 'sele'
+        TCluster* sele = static_cast<TCluster*>(ResolveControlByTag(kControlTagSele)); // 'sele'
         sele->AssertValid();
-        sele->SetSelectedChildTagAndRefresh(0x63697630 + index); // 'civ0'+index
+        sele->SetSelectedChildTagAndRefresh(kControlTagCiv0 + index); // 'civ0'+index
       }
 
       short newValue = selectedUnitOrderA8->quantityField04;
-      if (sourceHandler->controlTag == 0x706c7573) { // 'plus'
+      if (sourceHandler->controlTag == kControlTagPlus) { // 'plus'
         newValue++;
       } else {
         newValue--;
       }
       if (selectedUnitOrderA8->SetQuantity(newValue)) {
-        TView* numXControl = ResolveControlByTag(0x6e756d30 + selectedRowIndexA4); // 'num0'+idx
+        TView* numXControl =
+            ResolveControlByTag(kControlTagNum0 + selectedRowIndexA4); // 'num0'+idx
         if (numXControl == nullptr) {
           MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
           TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0xb87);
         }
         TNumberText* numbControl =
-            static_cast<TNumberText*>(numXControl->ResolveControlByTag(0x6e756d62)); // 'numb'
+            static_cast<TNumberText*>(numXControl->ResolveControlByTag(kControlTagNumb)); // 'numb'
         if (numbControl == nullptr) {
           MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
           TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0xb88);
@@ -88,7 +91,7 @@ void TArmoryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
 // FUNCTION: IMPERIALISM 0x004cf5c0
 void TArmoryView::UpdateFields() {
   CString treasuryText;
-  TView* availabilityPanel = ResolveControlByTag(0x706c6171u); // 'plaq'
+  TView* availabilityPanel = ResolveControlByTag(kControlTagPlaq); // 'plaq'
   availabilityPanel->AssertValid();
 
   COLORREF normalTextColor;
@@ -101,7 +104,7 @@ void TArmoryView::UpdateFields() {
   }
 
   TNumberText* primaryAvailable =
-      static_cast<TNumberText*>(ResolveControlByTag(0x61766131u)); // 'ava1'
+      static_cast<TNumberText*>(ResolveControlByTag(kControlTagAva1)); // 'ava1'
   primaryAvailable->AssertValid();
   short primaryResource = selectedUnitOrderA8->primaryInputResourceId;
   if (primaryResource != -1) {
@@ -116,7 +119,7 @@ void TArmoryView::UpdateFields() {
   availabilityPanel->InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   TNumberText* secondaryAvailable =
-      static_cast<TNumberText*>(ResolveControlByTag(0x61766132u)); // 'ava2'
+      static_cast<TNumberText*>(ResolveControlByTag(kControlTagAva2)); // 'ava2'
   secondaryAvailable->AssertValid();
   short secondaryResource = selectedUnitOrderA8->secondaryInputResourceId;
   if (secondaryResource != -1) {
@@ -132,7 +135,7 @@ void TArmoryView::UpdateFields() {
   int treasury = city94->ownerNationAc->treasuryValue10;
   g_pSimMgr->NumToCurrency(treasury, &treasuryText);
   TStaticText* treasuryAvailable =
-      static_cast<TStaticText*>(ResolveControlByTag(0x61766133u)); // 'ava3'
+      static_cast<TStaticText*>(ResolveControlByTag(kControlTagAva3)); // 'ava3'
   treasuryAvailable->AssertValid();
   treasuryAvailable->SetTextAndMaybeRefresh(&treasuryText, 0);
   treasuryAvailable->SetTextColorAndMaybeRefresh(
@@ -161,7 +164,7 @@ void TArmoryView::UpdateFields() {
   }
 
   TNumberText* workforceControl =
-      static_cast<TNumberText*>(ResolveControlByTag(0x61766130u)); // 'ava0'
+      static_cast<TNumberText*>(ResolveControlByTag(kControlTagAva0)); // 'ava0'
   workforceControl->AssertValid();
   workforceControl->SetControlValue(workforceAvailable, 0);
   workforceControl->SetTextColorAndMaybeRefresh(
@@ -178,7 +181,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {}
 // FUNCTION: IMPERIALISM 0x004d0470
 void TArmoryView::Free() {
   TView::Free();
-  if (g_nSaveFormatVersion != 0x4d6f696c) { // 'Moil'
+  if (g_nSaveFormatVersion != kControlTagMoil) { // 'Moil'
     g_pUiViewManager->CloseFilesFor(0x23f8);
   }
 }

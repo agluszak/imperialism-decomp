@@ -14,6 +14,7 @@
 #include "game/mapped_flavor_text.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_screens.h"
 
 #include <string.h>
 
@@ -64,7 +65,8 @@ void TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog(int pageNa
   InitializeUiTextStyleDescriptor(&featureStyle, 1, 0xe, 0x2b67, 2);
   InitializeUiTextStyleDescriptor(&plainStyle, 0, 0xe, 0x2b67, 2);
 
-  TStaticText* dateControl = static_cast<TStaticText*>(ResolveControlByTag(0x64617465)); // 'date'
+  TStaticText* dateControl =
+      static_cast<TStaticText*>(ResolveControlByTag(kControlTagDate)); // 'date'
   dateControl->AssertValid();
   g_pSimMgr->GetSeason(&dateText);
   formatText.Format(g_szDecimalFormat, static_cast<short>(g_pSimMgr->economicTurn / 4) + 0x717);
@@ -73,7 +75,7 @@ void TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog(int pageNa
   dateControl->InstallTextStyle(titleStyle, 1);
 
   TStaticText* specialControl =
-      static_cast<TStaticText*>(ResolveControlByTag(0x73706563)); // 'spec'
+      static_cast<TStaticText*>(ResolveControlByTag(kControlTagSpec)); // 'spec'
   specialControl->AssertValid();
   if (g_apNationStates[g_pSimMgr->GetActiveNationId()] == 0) {
     panelText = CString(g_szEmptyString);

@@ -4,6 +4,7 @@
 
 class TTaskForce;
 #include "game/mfc.h"
+#include "game/ui_tags_common.h"
 
 // VTABLE: IMPERIALISM 0x0065cbd0
 class TNavyRoster : public TMilitaryPageView {

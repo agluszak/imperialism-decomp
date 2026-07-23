@@ -7,8 +7,8 @@
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_tags_common.h"
 // SYNTHETIC: IMPERIALISM 0x004fe240
 // TScoreGraph::`scalar deleting destructor'
 TScoreGraph::~TScoreGraph() {}
