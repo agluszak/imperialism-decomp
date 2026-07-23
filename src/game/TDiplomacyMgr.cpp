@@ -1,3 +1,4 @@
+#include "game/diplomacy_domain_types.h"
 #include "game/TAmbitApplication.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/global_data_tables.h"
@@ -42,11 +43,6 @@ static __inline TDiplomacyMgr* ReadGlobalTDiplomacyTurnStateManager() {
 struct WarTransitionPair {
   short sourceNationSlot;
   short targetNationSlot;
-};
-
-struct RelationshipRankEntry {
-  short nationSlot;
-  short standingScore;
 };
 
 namespace {

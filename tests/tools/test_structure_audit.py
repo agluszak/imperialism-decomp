@@ -9,6 +9,7 @@ from tools.workflow.check_structure_audit import (
     duplicate_top_level_includes,
     is_alias_header,
     is_annotation_only_tu,
+    tu_struct_definitions,
 )
 
 
@@ -115,6 +116,23 @@ class AnnotationOnlyTuTest(unittest.TestCase):
 
     def test_empty_file_flagged(self):
         self.assertTrue(is_annotation_only_tu(""))
+
+
+class TuStructDefinitionTest(unittest.TestCase):
+    def test_definition_found(self):
+        text = "struct WirePacket {\n  short a;\n};\n"
+        self.assertEqual(tu_struct_definitions(text), ["WirePacket"])
+
+    def test_typedef_struct_and_base_clause(self):
+        text = "typedef struct Rec {\n int x;\n} Rec;\nstruct Derived : public Base {\n int y;\n};\n"
+        self.assertEqual(tu_struct_definitions(text), ["Rec", "Derived"])
+
+    def test_forward_declaration_not_counted(self):
+        self.assertEqual(tu_struct_definitions("struct Province;\n"), [])
+
+    def test_commented_definition_not_counted(self):
+        text = "// struct Ghost {\n/* struct Ghost2 { */\nstruct Real {\n int x;\n};\n"
+        self.assertEqual(tu_struct_definitions(text), ["Real"])
 
 
 if __name__ == "__main__":

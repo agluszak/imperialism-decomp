@@ -22,14 +22,18 @@ today (the tree is green behind each):
   (4) line endings — no CR (`\\r`): manual source is LF-only. A CRLF/mixed file
       churns diffs and trips whitespace tooling.
 
+  (7) duplicate struct definitions — the same `struct Name {` defined in more
+      than one manual TU is the wire-layout divergence class the type-modeling
+      guardrail exists to prevent (two declarations silently drift; the 8mo.16
+      packet unification and the RelationshipRankEntry/TScopedWaitCursor twins
+      are the precedent). Define the record once in a header.
+
 Deferred rules from the bead, to be enabled as their sibling cleanups land (each
 has its own gate today or is blocked on another bead):
   (5) class-method claims whose owner differs from the filename, minus an
       allowlist (needs the 8mo.13 family/TU-split allowlist + tools.source_model);
   (6) `// slot ... inherited unchanged` listing comments — already enforced by
-      `just generated-marker-gate`, so not duplicated here;
-  (7) duplicate struct/packet-layout declarations (landed via
-      include/game/multiplayer_packets.h; a general detector is still open).
+      `just generated-marker-gate`, so not duplicated here.
 
 File-size limits, per the bead, would be WARNINGS only and never hard failures.
 """
@@ -130,11 +134,24 @@ def is_annotation_only_tu(text: str) -> bool:
     return True
 
 
-def collect_offenders(paths, repo_root: Path) -> tuple[list[str], list[str], list[str], list[str]]:
+STRUCT_DEF_RE = re.compile(r"^(?:typedef\s+)?struct\s+(\w+)\s*(?::[^{;]*)?\{", re.M)
+
+
+def tu_struct_definitions(text: str) -> list[str]:
+    """Names of structs DEFINED (with a body) in a TU, comments stripped."""
+    stripped = re.sub(r"/\*.*?\*/", " ", text, flags=re.S)
+    stripped = re.sub(r"//[^\n]*", "", stripped)
+    return [m.group(1) for m in STRUCT_DEF_RE.finditer(stripped)]
+
+
+def collect_offenders(
+    paths, repo_root: Path
+) -> tuple[list[str], list[str], list[str], list[str], list[str]]:
     dup_offenders: list[str] = []
     crlf_offenders: list[str] = []
     alias_offenders: list[str] = []
     annotation_offenders: list[str] = []
+    struct_files: dict[str, list[str]] = {}
     for path in iter_files(paths):
         if path.suffix not in (".cpp", ".h"):
             continue
@@ -148,13 +165,22 @@ def collect_offenders(paths, repo_root: Path) -> tuple[list[str], list[str], lis
             dup_offenders.append(f"{rel}: {', '.join(dups)}")
         if path.suffix == ".h" and is_alias_header(text):
             alias_offenders.append(rel)
-        if path.suffix == ".cpp" and is_annotation_only_tu(text):
-            annotation_offenders.append(rel)
+        if path.suffix == ".cpp":
+            if is_annotation_only_tu(text):
+                annotation_offenders.append(rel)
+            for name in tu_struct_definitions(text):
+                struct_files.setdefault(name, []).append(rel)
+    twin_offenders = [
+        f"{name}: {', '.join(sorted(files))}"
+        for name, files in sorted(struct_files.items())
+        if len(set(files)) > 1
+    ]
     return (
         sorted(dup_offenders),
         sorted(crlf_offenders),
         sorted(alias_offenders),
         sorted(annotation_offenders),
+        twin_offenders,
     )
 
 
@@ -167,14 +193,20 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     repo_root = repo_root_from_file(__file__)
-    dup_offenders, crlf_offenders, alias_offenders, annotation_offenders = collect_offenders(
-        args.paths, repo_root
-    )
+    (
+        dup_offenders,
+        crlf_offenders,
+        alias_offenders,
+        annotation_offenders,
+        twin_offenders,
+    ) = collect_offenders(args.paths, repo_root)
 
-    if not dup_offenders and not crlf_offenders and not alias_offenders and not annotation_offenders:
+    if not any(
+        (dup_offenders, crlf_offenders, alias_offenders, annotation_offenders, twin_offenders)
+    ):
         print(
             "Structure-audit gate passed (no duplicate includes, no CRLF, no alias headers, "
-            "no annotation-only TUs)."
+            "no annotation-only TUs, no cross-TU struct twins)."
         )
         return 0
 
@@ -201,6 +233,11 @@ def main() -> int:
             "Move the identity/ownership claims to config/reviewed_library_identities.csv "
             "(stubgen projects them into the generated marker TU) and delete the code-free .cpp."
         )
+    if twin_offenders:
+        print(f"  struct defined in more than one manual TU ({len(twin_offenders)}):")
+        for line in twin_offenders:
+            print(f"    - {line}")
+        print("Define the record once in a shared header; twin declarations silently drift.")
     return 1
 
 

@@ -1,3 +1,4 @@
+#include "game/TScopedWaitCursor.h"
 #include "game/TAssetMgr.h"
 
 #include "game/CAmbitDocument.h"
@@ -178,15 +179,6 @@ namespace {
 // a fully inlined AfxGetApp()->BeginWaitCursor() and unwinds with the matching inlined
 // EndWaitCursor() — an inline-ctor/dtor guard object, unlike MFC's out-of-line
 // CWaitCursor.
-struct TScopedWaitCursor {
-  TScopedWaitCursor() {
-    AfxGetApp()->BeginWaitCursor();
-  }
-  ~TScopedWaitCursor() {
-    AfxGetApp()->EndWaitCursor();
-  }
-};
-
 } // namespace
 
 // Saves the active MFC document to `savePath`, then restamps the document path with the

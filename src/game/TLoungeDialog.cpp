@@ -1,3 +1,4 @@
+#include "game/TScopedWaitCursor.h"
 #include "game/TLoungeDialog.h"
 
 #include "game/CString.h"
@@ -207,15 +208,6 @@ namespace {
 // RAII wait-cursor guard, same reconstruction as TAssetMgr.cpp's 0x5e0030: EH state 0
 // opens with an inlined AfxGetApp()->BeginWaitCursor() and unwinds with the matching
 // EndWaitCursor().
-struct TScopedWaitCursor {
-  TScopedWaitCursor() {
-    AfxGetApp()->BeginWaitCursor();
-  }
-  ~TScopedWaitCursor() {
-    AfxGetApp()->EndWaitCursor();
-  }
-};
-
 } // namespace
 
 // Under a wait cursor: restamp the 'tnam' caption from the host game name, re-rasterize

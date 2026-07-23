@@ -1,3 +1,4 @@
+#include "game/diplomacy_domain_types.h"
 #include "game/TForeignMinister.h"
 
 #include "game/TTradeMgr.h"
@@ -26,11 +27,6 @@ struct MinisterPriorityEntry {
   short resourceCode;
   short priority;
   short rank;
-};
-
-struct RelationshipRankEntry {
-  short nationSlot;
-  short standing;
 };
 
 static __inline int SelectDevelopmentGrantAmount(int availableBudget) {
@@ -454,8 +450,9 @@ void TForeignMinister::DoDevelopmentGrants() {
     RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
         relationshipList->GetPtrListEntryByOneBasedIndex(entryIndex));
     short nationSlot = entry->nationSlot;
-    if (entry->standing < 0xff && g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
-                                      owner->nationSlot, nationSlot) == 2) {
+    if (entry->standingScore < 0xff &&
+        g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(owner->nationSlot,
+                                                                          nationSlot) == 2) {
       int grantAmount = SelectDevelopmentGrantAmount(availableBudget);
       availableBudget -= static_cast<short>(grantAmount);
       owner->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(nationSlot, grantAmount);
@@ -492,7 +489,7 @@ void TForeignMinister::DoDevelopmentGrants() {
     while (entryIndex >= 1 && availableBudget > 1000) {
       RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
           relationshipList->GetPtrListEntryByOneBasedIndex(entryIndex));
-      if (entry->standing < 0xff &&
+      if (entry->standingScore < 0xff &&
           g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
               owner->nationSlot, entry->nationSlot) == 0) {
         owner->ApplyDiplomacyPolicyStateForTargetWithCostChecks(entry->nationSlot, 0x133);
@@ -727,7 +724,7 @@ void TForeignMinister::SetEmpirePolicies() {
       int selectedMajor =
           g_pDiplomacyTurnStateManager->SelectBestMajorNationForMinorByStandingAndNeed(
               entry->nationSlot);
-      if (selectedMajor != owner->nationSlot && entry->standing > 0x31 &&
+      if (selectedMajor != owner->nationSlot && entry->standingScore > 0x31 &&
           owner->needLevelByNation[entry->nationSlot] != 300) {
         owner->DecrementNeedLevelByNationStep(entry->nationSlot);
         keepSearching = false;
