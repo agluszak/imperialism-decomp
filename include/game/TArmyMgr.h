@@ -108,7 +108,7 @@ public:
                                                    short tileIndex); // slot 0x0f 0x4a35e0
   // Ground truth doesn't touch `this` at all -- stack is the same TArmyStack shape,
   // relocating every unit on its embedded chain to stack->tileIndex10 unless already there.
-  virtual void ResetAndRelocateUnitOrderQueue_004a37b0(TArmyStack* stack); // slot 0x10 0x4a37b0
+  virtual void RelocateStackUnitsToStackTile(TArmyStack* stack); // slot 0x10 0x4a37b0
   // Ground truth (RET 0x8, 2 stack args) proves the previous 0-arg declaration was a
   // poison-pill arity mismatch. Snapshots each stack's units' field_34 into field_3C and
   // resets their blink-mask bits, then repeatedly finds an eligible pair (one unit per
@@ -122,8 +122,8 @@ public:
   // poison-pill arity mismatch. actionKind selects between the slot-0x14/0x15 dispatch
   // (1/4 -> SelectMovableUnitOnCurrentTileAndPlaySfx, 7 -> CommitCityActionGateCostIfAffordable)
   // before the shared tile-unit tail runs.
-  virtual void DispatchTileActionByKind_004a3d90(int contextArg,
-                                                 short actionKind); // slot 0x13 0x4a3d90
+  virtual void DispatchTileActionByKind(int contextArg,
+                                        short actionKind); // slot 0x13 0x4a3d90
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill arity
   // mismatch; contextArg is forwarded as TUnit::SetOrders's payload. Returns
   // whether a movable unit was found and commanded (BL in the ground truth, matching
@@ -134,7 +134,7 @@ public:
   // mismatch. Returns whether the tile's unit-move cost was affordable and committed
   // (AL in the ground truth) -- not a meaningless `undefined` stub value.
   virtual bool CommitCityActionGateCostIfAffordable(int contextArg); // slot 0x15 0x4a3f30
-  virtual void OrphanCallChain_C1_I34_004a4260(int mode);            // slot 0x16 0x4a4260
+  virtual void SetOrdersForIdleUnitsOnPendingTile(int mode);         // slot 0x16 0x4a4260
   // Ground truth (RET 0x8, 2 stack args) proves the previous 0-arg declaration was a
   // poison-pill arity mismatch. Dispatches on the free-function ComputeMapCursorStateIndex
   // classification: 2 -> map-interaction-mode switch + SetActiveProvinceSelection, 6 -> a
@@ -382,7 +382,7 @@ public:
   // winning stack's units settle into their tile (VTableSlot10 + SetOrders)
   // while the losing stack is redistributed to a random adjacent region (sideWonFlag
   // != 0) or relocated back to its origin tile (sideWonFlag == 0, via
-  // ResetAndRelocateUnitOrderQueue_004a37b0); both stacks then grow unit quality
+  // RelocateStackUnitsToStackTile); both stacks then grow unit quality
   // (field_38, capped at 400) -- +35 for the winner, +20 for the loser -- before
   // re-running the pending-army-stack pass (slot 0x0c). 0x004a5ca0, __thiscall, ret 0x10.
   void ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack, TArmyStack* enemyStack,

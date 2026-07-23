@@ -1489,7 +1489,7 @@ address|name|symbol|size|type|prototype|provenance
 4a3f30|TArmyMgr::CommitCityActionGateCostIfAffordable||476|function|undefined CommitCityActionGateCostIfAffordable()|
 4a4190|ValidateGridIndexRange0To17F||47|function|undefined ValidateGridIndexRange0To17F()|
 4a41d0|ComputeSelectedTileCityActionGateSum||102|function|undefined ComputeSelectedTileCityActionGateSum()|
-4a4260|TArmyMgr::OrphanCallChain_C1_I34_004a4260||90|function|undefined OrphanCallChain_C1_I34_004a4260(void)|
+4a4260|TArmyMgr::SetOrdersForIdleUnitsOnPendingTile||90|function|undefined SetOrdersForIdleUnitsOnPendingTile(void)|
 4a43f0|TArmyMgr::ActivateFirstIdleTacticalUnitByCategoryAtTile||122|function|short __thiscall ActivateFirstIdleTacticalUnitByCategoryAtTile(short categoryId,short tileIndex)|
 4a4490|TArmyMgr::ActivateFirstActiveTacticalUnitByCategoryAtTile||135|function|short __thiscall ActivateFirstActiveTacticalUnitByCategoryAtTile(short categoryId,short tileIndex)|
 4a4550|ForwardGetCategory_At004a4550||104|function|undefined ForwardGetCategory_At004a4550()|
@@ -3095,16 +3095,16 @@ address|name|symbol|size|type|prototype|provenance
 50b640|TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress||730|function|void RenderTurnEventPalettePreviewSurfaceAndProgress()|listing
 50b9e0|TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles||179|function|void RebuildMapTileNeighborHighlightPolygonsForAllTiles()|listing
 50bad0|TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent||187|function|undefined RebuildNationClipRegionsAndDispatchMapEvent()|
-50bbc0|TMacViewMgr::OrphanCallChain_C4_I35_0050bbc0||102|function|undefined OrphanCallChain_C4_I35_0050bbc0(int * param_1, undefined4 param_2, short param_3)|
+50bbc0|TMacViewMgr::ApplySellOrderRowToNationState||102|function|undefined ApplySellOrderRowToNationState(int * param_1, undefined4 param_2, short param_3)|
 50bc50|TMacViewMgr::SyncSellTaggedChildControlWithNationState||369|function|undefined SyncSellTaggedChildControlWithNationState()|
 50be30|TMacViewMgr::MakeBookDialog||78|function|TView * __thiscall MakeBookDialog(int dialogId)|
 50bea0|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets||4080|function|undefined RefreshCityProductionDetailPanelAndArrowWidgets()|
 50d310|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag||57|function|undefined DispatchTurnEvent3B8AndWaitForCompletionFlag()|
 50d360|TMacViewMgr::OpenBuildingWindow||200|function|TBuildingView * __thiscall OpenBuildingWindow(short buildingSlot, TCity * city, unsigned char closeAfterOpen, unsigned char isEmbeddedPage, TCityProductionView * productionView)|mac_oracle
-50d470|TMacViewMgr::OrphanCallChain_C10_I80_0050d470||243|function|undefined OrphanCallChain_C10_I80_0050d470(int param_1, undefined4 param_2, int arg3, int arg4, int arg5, int arg6, int arg7)|
+50d470|TMacViewMgr::ShowGoldDialogForTurnEventContext||243|function|undefined ShowGoldDialogForTurnEventContext(int param_1, undefined4 param_2, int arg3, int arg4, int arg5, int arg6, int arg7)|
 50d5b0|TMacViewMgr::OpenConstructionWindow||160|function|void __thiscall OpenConstructionWindow(short buildingSlot, TCity * city, TCityProductionView * productionView)|mac_oracle
 50d680|TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion||45|function|undefined EnsureClipRegionWrapperAtSlotAndMergeSourceRegion()|
-50d6c0|TMacViewMgr::MacViewMgrSlot24||35|function|undefined WrapperFor_IsPointInsideHitRegion_At0050d6c0(CPoint* point, short regionIndex)|
+50d6c0|TMacViewMgr::IsPointInsideClipRegionSlot||35|function|undefined WrapperFor_IsPointInsideHitRegion_At0050d6c0(CPoint* point, short regionIndex)|
 50d700|TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext||364|function|undefined RenderOffscreenBitmapTileSpanAndRestoreContext()|
 50d8d0|TMacViewMgr::RefreshActiveCityBuildingActionAvailabilityIndicators||16|function|undefined RefreshActiveCityBuildingActionAvailabilityIndicators(void)|
 50d8f0|TMacViewMgr::ClearActiveCityBuildingViewSlot||26|function|undefined ClearActiveCityBuildingViewSlot(short param_1)|
@@ -5737,7 +5737,7 @@ address|name|symbol|size|type|prototype|provenance
 5b6690|TInfoBarText::GetRuntimeClass||6|function|undefined GetTInfoBarTextClassNamePointer()|rtti
 5b66b0|TInfoBarText::SetTextAndLayoutRect||140|function|undefined __thiscall SetTextAndLayoutRect(CString text, RECT* layoutRect)|
 5b6770|TInfoBarText::ClearTextAndLayoutRect||117|function|undefined ClearTextAndLayoutRect(void)|
-5b6810|TInfoBarText::Dump||19|function|undefined OrphanCallChain_C1_I05_005b6810(void)|
+5b6810|TInfoBarText::Dump||19|function|undefined ApplyDefaultMapHintTextStyle(void)|
 5b6840|TInfoBarText::InitializeMapHintTextStyleAndThemeFlags||183|function|undefined __thiscall InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int styleSecondary)|
 5b6930|TInfoBarText::Free||23|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5b6960|TNoHiliteText::CreateObject|?CreateObject@TNoHiliteText@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti

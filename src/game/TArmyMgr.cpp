@@ -675,7 +675,7 @@ bool TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack, short
       // Relation is current: no battle -- dispatch the peaceful army-context path and
       // relocate our own stack instead.
       BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, 0, ownerNationCodeInt, 0);
-      this->ResetAndRelocateUnitOrderQueue_004a37b0(ourStack);
+      this->RelocateStackUnitsToStackTile(ourStack);
     } else if (enemyStack->fieldA != 0) {
       // Ground truth also loops over g_apNationStates here (advancing a pointer with no
       // observable side effect -- the result is never read); not reproduced.
@@ -799,7 +799,7 @@ void TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack* stac
 }
 
 // FUNCTION: IMPERIALISM 0x004a37b0
-void TArmyMgr::ResetAndRelocateUnitOrderQueue_004a37b0(TArmyStack* stack) {
+void TArmyMgr::RelocateStackUnitsToStackTile(TArmyStack* stack) {
   stack->cursor18 = stack->head14;
   TArmyStackUnitNode* node = stack->cursor18;
   TUnit* unit = (node != nullptr) ? node->unit : nullptr;
@@ -967,7 +967,7 @@ void TArmyMgr::DoOwnershipChanges() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a3d90
-void TArmyMgr::DispatchTileActionByKind_004a3d90(int contextArg, short actionKind) {
+void TArmyMgr::DispatchTileActionByKind(int contextArg, short actionKind) {
   if (actionKind == 1 || actionKind == 4) {
     this->SelectMovableUnitOnCurrentTileAndPlaySfx(contextArg);
   } else if (actionKind == 7) {
@@ -1066,7 +1066,7 @@ int TArmyMgr::ComputeSelectedTileCityActionGateSum() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a4260
-void TArmyMgr::OrphanCallChain_C1_I34_004a4260(int mode) {
+void TArmyMgr::SetOrdersForIdleUnitsOnPendingTile(int mode) {
   TMilitaryUnit* unit = nullptr;
   if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < 0x180) {
     unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain98;
@@ -1660,7 +1660,7 @@ void TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack
 
     this->ResolveNextMove();
   } else {
-    this->ResetAndRelocateUnitOrderQueue_004a37b0(ourStack);
+    this->RelocateStackUnitsToStackTile(ourStack);
 
     // Non-boosted quality growth for the loser (ourStack), via the real accessors --
     // ground truth emits real calls for this walk (only the growth loops above inline).

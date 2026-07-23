@@ -823,8 +823,8 @@ void TViewMgr::RefreshStrategicMapStatusIconsForActiveNation() {
     TControl* control = static_cast<TControl*>(mainView->ResolveControlByTag(tag));
     if (control != nullptr) {
       control->AssertValid();
-      g_pStrategicMapViewSystem->OrphanCallChain_C4_I35_0050bbc0(reinterpret_cast<int*>(control),
-                                                                 iconIndex, nationId);
+      g_pStrategicMapViewSystem->ApplySellOrderRowToNationState(reinterpret_cast<int*>(control),
+                                                                iconIndex, nationId);
     }
   }
   TGreatPower* nation = g_apNationStates[nationId];

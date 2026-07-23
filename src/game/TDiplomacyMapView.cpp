@@ -821,8 +821,8 @@ eDipAction TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPo
   int terrainIndex = 0;
   do {
     if (g_apTerrainTypeDescriptorTable[terrainIndex] != 0) {
-      char hit = g_pStrategicMapViewSystem->MacViewMgrSlot24(&localPoint,
-                                                             static_cast<short>(terrainIndex));
+      char hit = g_pStrategicMapViewSystem->IsPointInsideClipRegionSlot(
+          &localPoint, static_cast<short>(terrainIndex));
       if (hit != 0) {
         break;
       }
@@ -878,8 +878,8 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
   bool hit = false;
   do {
     if (g_apTerrainTypeDescriptorTable[static_cast<short>(hitIndex)] != 0) {
-      char regionHit =
-          g_pStrategicMapViewSystem->MacViewMgrSlot24(&localPoint, static_cast<short>(hitIndex));
+      char regionHit = g_pStrategicMapViewSystem->IsPointInsideClipRegionSlot(
+          &localPoint, static_cast<short>(hitIndex));
       if (regionHit != 0) {
         hit = true;
         break;

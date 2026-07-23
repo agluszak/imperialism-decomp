@@ -28,8 +28,8 @@ public:
   virtual void LoadStrategicMapUnitOverlayAtlas751();             // slot 0x0c 0x50a3e0
   virtual void LoadStrategicMapOverlayAtlas8699();                // slot 0x0d 0x50a410
   virtual void LoadStrategicMapMarkerAtlas1372();                 // slot 0x0e 0x50a440
-  virtual void OrphanCallChain_C4_I35_0050bbc0(int* param_1, int param_2,
-                                               short param_3); // slot 0x0f 0x50bbc0
+  virtual void ApplySellOrderRowToNationState(int* param_1, int param_2,
+                                              short param_3); // slot 0x0f 0x50bbc0
   virtual void SyncSellTaggedChildControlWithNationState(TView* view, short orderSlot,
                                                          short nationIndex);  // slot 0x10 0x50bc50
   virtual void RefreshCityProductionDetailPanelAndArrowWidgets(word param_1); // slot 0x11 0x50bea0
@@ -38,9 +38,9 @@ public:
   virtual void DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1,
                                                             int unusedArg2); // slot 0x13 0x50d310
   // RET 0x1c = 7 dwords (Ghidra recovered only 2); trailing args RET-derived, body partial.
-  virtual void OrphanCallChain_C10_I80_0050d470(int param_1, int param_2, int arg3, int arg4,
-                                                int arg5, int arg6,
-                                                int arg7); // slot 0x14 0x50d470
+  virtual void ShowGoldDialogForTurnEventContext(int param_1, int param_2, int arg3, int arg4,
+                                                 int arg5, int arg6,
+                                                 int arg7); // slot 0x14 0x50d470
   // Mac CodeWarrior oracle signatures. `closeAfterOpen` selects the modal path,
   // which consumes the dialog and therefore returns null.
   virtual TBuildingView*
@@ -74,8 +74,8 @@ public:
   // RET 0x8 = 2 dwords. arg1 is the (transformed) hit-test point, arg2 the region-slot
   // index — the previous 1-arg `(short)` form mis-attributed the region index to arg1 and
   // dropped the point (caller 0x4f5e00 dispatches slot 0x90 with (&localPoint, index)).
-  virtual bool MacViewMgrSlot24(CPoint* point,
-                                short regionIndex); // slot 0x24 0x50d6c0
+  virtual bool IsPointInsideClipRegionSlot(CPoint* point,
+                                           short regionIndex); // slot 0x24 0x50d6c0
   virtual void
   EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(RgnHandle sourceRegion,
                                                     short slotIndex); // slot 0x25 0x50d680

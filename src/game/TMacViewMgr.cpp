@@ -942,7 +942,7 @@ void TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent() {
 }
 
 // FUNCTION: IMPERIALISM 0x0050bbc0
-void TMacViewMgr::OrphanCallChain_C4_I35_0050bbc0(int* param_1, int param_2, short param_3) {
+void TMacViewMgr::ApplySellOrderRowToNationState(int* param_1, int param_2, short param_3) {
   CityOrderSource* orderSource = reinterpret_cast<CityOrderSource*>(param_1);
   if (orderSource->QuerySellModeFlag1D8() != 0) {
     g_apNationStates[param_3]->SetDiplomacyState1c6ClampedToCounterA4(static_cast<short>(param_2),
@@ -1420,8 +1420,8 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
 }
 
 // FUNCTION: IMPERIALISM 0x0050d470
-void TMacViewMgr::OrphanCallChain_C10_I80_0050d470(int param_1, int param_2, int arg3, int arg4,
-                                                   int arg5, int arg6, int arg7) {
+void TMacViewMgr::ShowGoldDialogForTurnEventContext(int param_1, int param_2, int arg3, int arg4,
+                                                    int arg5, int arg6, int arg7) {
   TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(param_1 + 0x23f0));
   GoldDialogControl* goldControl =
@@ -1466,7 +1466,7 @@ void TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(RgnHandle so
 }
 
 // FUNCTION: IMPERIALISM 0x0050d6c0
-bool TMacViewMgr::MacViewMgrSlot24(CPoint* point, short regionIndex) {
+bool TMacViewMgr::IsPointInsideClipRegionSlot(CPoint* point, short regionIndex) {
   if (regionSlots[regionIndex] != 0) {
     return QueryPointInsideHitRegion(point->x, point->y, regionSlots[regionIndex]);
   }

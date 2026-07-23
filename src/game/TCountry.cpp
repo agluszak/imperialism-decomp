@@ -788,7 +788,7 @@ char TCountry::IsDiplomacyPolicyAllowedForTargetClassState(short policyCode,
   return 0;
 }
 
-char OrphanCallChain_C2_I27_004e4f50(int arg1, int arg2, int arg3, int arg4) {
+char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3, int arg4) {
   (void)arg1;
   (void)arg2;
   (void)arg3;
@@ -819,7 +819,7 @@ void TCountry::ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot) {
                              targetNationSlot, 0);
 }
 
-void OrphanCallChain_C2_I28_004e59d0(void) {}
+void ApplyJoinEmpireMode2FinalizeNationNameState_004e59d0(void) {}
 
 // FUNCTION: IMPERIALISM 0x0057f0e0
 bool TCountry::IsNationProfileInMinorRange100To199() {
