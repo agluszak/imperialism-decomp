@@ -14,7 +14,7 @@
 #include "game/TTacticalBattle.h"
 #include "game/TTacticalHolaPicture.h"
 #include "game/TSimMgr.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/turn_event_dialog_provisional.h"
 #include "game/ui_invalidation_guard.h"

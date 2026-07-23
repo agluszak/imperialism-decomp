@@ -23,7 +23,6 @@
 #include "game/TTechMgr.h"
 #include "game/TStream.h"
 #include "game/mapped_flavor_text.h"
-#include "game/nation_slot_eligibility.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 

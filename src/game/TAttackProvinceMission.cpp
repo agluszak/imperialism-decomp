@@ -6,7 +6,6 @@
 #include "game/CIterator.h"
 #include "game/TAutoGreatPower.h"
 #include "game/TDiplomacyMgr.h"
-#include "game/TGlobalMapState.h"
 #include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
 #include "game/TMilitaryUnit.h"

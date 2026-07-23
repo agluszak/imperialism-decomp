@@ -3,7 +3,6 @@
 #include "game/TDefendProvinceMission.h"
 #include "game/TAutoGreatPower.h"
 #include "game/TDiplomacyMgr.h"
-#include "game/TGlobalMapState.h"
 #include "game/TMapMgr.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TNavyMgr.h"

@@ -11,7 +11,7 @@
 #include "game/TControl.h"
 #include "game/global_data_tables.h"
 #include "game/TGreatPower.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/TView.h"
 #include "game/TMinor.h"
 #include "game/TMacViewMgr.h"

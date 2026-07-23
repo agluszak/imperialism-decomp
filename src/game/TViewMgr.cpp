@@ -28,7 +28,7 @@
 #include "game/TGreatPower.h"
 #include "game/TSortedByRelationshipList.h"
 #include "game/TGarrisonView.h"
-#include "game/TGlobalMapState.h"
+#include "game/TMapMgr.h"
 #include "game/TDisplayMgr.h" // g_pDisplayMgr, g_szUiNilPointerMessage, g_szUiFailureMessage
 #include "game/THelpMgr.h"
 #include "game/TWindow.h"
@@ -39,7 +39,6 @@
 #include "game/CTemporaryRegion.h"
 #include "game/TNewspaperView.h"
 #include "game/TPicture.h"
-#include "game/nation_slot_eligibility.h"
 #include "game/turn_flow_cooldown.h" // IsTurnFlowCooldownActiveAndResetExpiredState
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_message_pump.h"

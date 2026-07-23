@@ -5,7 +5,7 @@
 #include "game/TAmtBar.h"
 #include "game/TAmtBarCluster.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"

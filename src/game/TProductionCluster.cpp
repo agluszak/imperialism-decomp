@@ -4,7 +4,7 @@
 #include "game/TTradeCluster.h"
 #include "game/TGreatPower.h"
 #include "game/mfc.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/quickdraw_guards.h"
 
 #include "game/TAmtBar.h"
@@ -15,7 +15,6 @@
 #include "game/quickdraw_rendering.h"
 
 #include <new>
-
 
 // SYNTHETIC: IMPERIALISM 0x00586840
 // TProductionCluster::CreateObject

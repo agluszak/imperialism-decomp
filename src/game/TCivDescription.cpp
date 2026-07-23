@@ -6,7 +6,7 @@
 #include "game/CString.h"
 #include "game/TCivUnit.h"
 #include "game/TAmbitApplication.h"
-#include "game/TGlobalMapState.h"
+#include "game/TMapMgr.h"
 #include "game/TMacViewMgr.h"
 #include "game/TMapUberPicture.h"
 #include "game/TQuickDrawSurfaceContext.h"

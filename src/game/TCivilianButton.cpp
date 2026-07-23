@@ -8,7 +8,7 @@
 #include "game/TControl.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/mfc.h"
 const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
 

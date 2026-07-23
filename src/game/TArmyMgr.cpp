@@ -31,8 +31,7 @@
 #include "game/TZone.h"
 #include "game/global_data_tables.h" // g_pSimMgr, g_pGlobalMapState, g_apTerrainTypeDescriptorTable, g_pSfxPlaybackSystem, g_apNationStates, g_pUiRuntimeContext
 #include "game/mapped_flavor_text.h" // scanBracketExpressions
-#include "game/nation_slot_eligibility.h" // IsNationSlotEligibleForEventProcessing
-#include "game/navy_order.h" // g_pNavyPrimaryOrderListHead, FindCumulativeWeightBucketIndex
+#include "game/navy_order.h"         // g_pNavyPrimaryOrderListHead, FindCumulativeWeightBucketIndex
 #include "game/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"

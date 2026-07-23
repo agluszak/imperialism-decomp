@@ -4,7 +4,7 @@
 #include "game/mfc.h"
 #include "game/TGreatPower.h"
 #include "game/TCity.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 
 #include <new>
 

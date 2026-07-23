@@ -9,7 +9,7 @@ class TTown;
 class TCitySiteView : public TMapDialog {
 public:
   // HandleMapClickByInteractionMode writes the selected region id at TTown::tileIndex14,
-  // names the marker, and submits it through UiRuntimeContext.
+  // names the marker, and submits it through TViewMgr.
   TTown* pendingTown364;
   // Viewport clamp box consumed by SetMapDialogCellCoordinatesAndRefresh (0x51c320).
   // Not initialized by the ctor (0x51beb0); initialized to an inverted (empty) box

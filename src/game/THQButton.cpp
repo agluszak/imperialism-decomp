@@ -3,7 +3,7 @@
 // UI wrapper class quads extracted from trade_screen.
 
 #include "game/THQButton.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/quickdraw_guards.h"
 #include "game/mfc.h"
 #include <new>

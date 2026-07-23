@@ -4,7 +4,7 @@
 #include "game/TAmbitApplication.h"
 #include "game/TArmyMgr.h"
 #include "game/TAssetMgr.h"
-#include "game/TGlobalMapState.h"
+#include "game/TMapMgr.h"
 #include "game/THelpMgr.h"
 #include "game/TMapUberPicture.h"
 #include "game/TNavyMgr.h"

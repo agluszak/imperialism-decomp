@@ -7,7 +7,7 @@
 #include "game/TNumberText.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/mfc.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/quickdraw_guards.h"
 
 #include "game/TAmtBar.h"

@@ -6,7 +6,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/quickdraw_guards.h"
 #include "game/ui_text_label_helpers_decls.h"
 #include <new>

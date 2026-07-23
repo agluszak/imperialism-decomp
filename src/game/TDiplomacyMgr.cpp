@@ -1,7 +1,6 @@
 #include "game/TAmbitApplication.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/global_data_tables.h"
-#include "game/nation_slot_eligibility.h"
 #include "game/TSimMgr.h"
 #include "game/NetMessage.h"
 #include "game/TMultiplayerMgr.h"

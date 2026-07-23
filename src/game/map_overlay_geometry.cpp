@@ -3,7 +3,6 @@
 
 #include "game/map_overlay_geometry.h"
 
-#include "game/TGlobalMapState.h"
 #include "game/TMapMgr.h"
 #include "game/quickdraw_regions.h"
 #include "game/TMapUberPicture.h"

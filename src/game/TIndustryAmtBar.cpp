@@ -10,7 +10,7 @@
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/TItemOrder.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/quickdraw_guards.h"
 #include "game/mfc.h"
 #include <new>
@@ -18,7 +18,6 @@
 #include "game/TCity.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
-
 
 // SYNTHETIC: IMPERIALISM 0x00589110
 // TIndustryAmtBar::CreateObject

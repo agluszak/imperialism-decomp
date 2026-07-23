@@ -8,7 +8,6 @@
 #include "game/TAutoGreatPower.h"
 #include "game/TBeachheadMission.h"
 #include "game/TCountry.h"
-#include "game/TGlobalMapState.h"
 #include "game/TMapMgr.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TStream.h"

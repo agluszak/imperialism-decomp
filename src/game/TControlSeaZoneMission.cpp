@@ -15,7 +15,7 @@
 #include "game/TControlSeaZoneMission.h"
 #include "game/TAutoGreatPower.h"
 #include "game/TDiplomacyMgr.h"
-#include "game/TGlobalMapState.h"
+#include "game/TMapMgr.h"
 #include "game/TGreatPower.h"
 #include "game/TOcean.h"
 #include "game/TShip.h"

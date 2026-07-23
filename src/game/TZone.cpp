@@ -8,7 +8,6 @@
 
 #include "game/mapped_flavor_text.h"
 #include "game/mfc.h"
-#include "game/TGlobalMapState.h"
 #include "game/TAdmiral.h"
 #include "game/TMapMgr.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
@@ -19,7 +18,7 @@
 #include "game/navy_order.h"
 #include "game/TSimMgr.h"
 #include "game/TTaskForce.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 
 namespace {
 

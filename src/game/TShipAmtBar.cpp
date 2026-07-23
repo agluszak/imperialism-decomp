@@ -4,7 +4,7 @@
 #include "game/TShipOrder.h"
 #include "game/TCity.h"
 #include "game/TGreatPower.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_rendering.h"

@@ -5,7 +5,7 @@
 #include "game/TCivUnit.h"
 #include "game/TAdmiral.h"
 #include "game/TCity.h"
-#include "game/TGlobalMapState.h"
+#include "game/TMapMgr.h"
 #include "game/TZone.h"
 #include "game/TMinor.h"
 #include "game/TShip.h"

@@ -7,7 +7,7 @@
 #include "game/quickdraw_rendering.h"
 #include "game/TGreatPower.h"
 #include "game/mfc.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/quickdraw_guards.h"
 
 #include "game/TAmtBar.h"

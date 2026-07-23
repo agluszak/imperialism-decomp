@@ -10,7 +10,7 @@
 #include "game/TGreatPower.h"
 #include "game/TProductionOrder.h"
 #include "game/mfc.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
@@ -18,7 +18,6 @@
 
 #include "game/TRailCluster.h"
 #include "game/TView.h"
-
 
 const int kAssertLineRatioA = 0xd1d;
 

@@ -9,7 +9,6 @@
 #include "game/TViewMgr.h"
 #include "game/TSoundPlayer.h"
 #include "game/TMovieView.h"
-#include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/TApplication.h"

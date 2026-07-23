@@ -11,14 +11,13 @@
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/mfc.h"
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_rendering.h"
 #include "game/GameAssert.h"
 
 #include <new>
-
 
 const int kAssertLineRatioB = 0xb73;
 

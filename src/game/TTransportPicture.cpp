@@ -4,7 +4,7 @@
 #include "game/TControl.h"
 #include "game/TGreatPower.h"
 #include "game/TStaticText.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 
 // SYNTHETIC: IMPERIALISM 0x00591d90

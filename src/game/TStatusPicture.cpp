@@ -7,7 +7,6 @@
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
 #include "game/TViewMgr.h"
-#include "game/UiRuntimeContext.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"

@@ -5,8 +5,7 @@
 #include "game/TSimMgr.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TTurnStartEvent.h"
-#include "game/TUiRuntimeContext.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 
 // FUNCTION: IMPERIALISM 0x005408c0
 bool TProxyGreatPower::IsClient() {

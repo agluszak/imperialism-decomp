@@ -17,7 +17,7 @@
 #include <math.h>
 
 #include "decomp_types.h"
-#include "game/TGlobalMapState.h"
+#include "game/TMapMgr.h"
 #include "game/global_data_tables.h"
 #include "game/sea_geometry.h"
 #include "game/mfc.h"

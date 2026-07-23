@@ -1,7 +1,6 @@
 #include "game/TClientGreatPower.h"
 #include "game/global_data_tables.h"
-#include "game/TUiRuntimeContext.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/NetMessage.h"
 #include "game/TNetMgr.h"
 #include "game/TSimMgr.h"

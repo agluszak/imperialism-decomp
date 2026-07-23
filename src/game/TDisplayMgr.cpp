@@ -12,7 +12,6 @@
 #include "game/CWMgrIterator.h"
 #include "game/TViewMgr.h"
 #include "game/TWindow.h"
-#include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/quickdraw_rendering.h"

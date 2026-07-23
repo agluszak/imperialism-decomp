@@ -18,7 +18,7 @@
 #include "game/navy_order.h"
 #include "game/TSimMgr.h"
 #include "game/TZone.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/ui_invalidation_guard.h"

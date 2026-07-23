@@ -18,8 +18,6 @@
 
 #include <stdlib.h>
 
-#include "game/nation_slot_eligibility.h"
-
 static const short kNoInteriorBidResource = static_cast<short>(0xfff6);
 
 namespace {

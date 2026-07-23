@@ -5,7 +5,6 @@
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 
-#include "game/UiRuntimeContext.h"
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_rendering.h"

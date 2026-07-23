@@ -11,7 +11,6 @@
 #include "game/TMinor.h"
 #include "game/TForeignMinister.h"
 #include "game/TCountry.h"
-#include "game/nation_slot_eligibility.h"
 #include "game/TStream.h"
 #include "game/TLongintList.h"
 #include "game/TMultiplayerMgr.h"

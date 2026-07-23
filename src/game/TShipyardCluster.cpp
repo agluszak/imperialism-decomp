@@ -10,13 +10,12 @@
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/mfc.h"
 #include "game/quickdraw_guards.h"
 #include "game/GameAssert.h"
 
 #include <new>
-
 
 // SYNTHETIC: IMPERIALISM 0x0058a4d0
 // TShipyardCluster::CreateObject

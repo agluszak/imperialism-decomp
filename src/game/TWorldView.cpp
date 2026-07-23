@@ -9,7 +9,6 @@
 #include "game/mfc.h"
 #include "game/CTemporaryRegion.h"
 #include "game/TEvent.h"
-#include "game/TGlobalMapState.h"
 #include "game/TMapMgr.h"
 #include "game/TMapUberPicture.h"
 #include "game/mapped_flavor_text.h"

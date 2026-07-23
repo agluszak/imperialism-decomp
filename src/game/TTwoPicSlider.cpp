@@ -2,7 +2,7 @@
 
 #include "decomp_types.h"
 #include "game/TTwoPicSlider.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/TDisplayMgr.h"
 #include "game/TSimMgr.h"

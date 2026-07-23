@@ -4,7 +4,7 @@
 #include "game/TMapMgr.h"
 #include "game/TMapUberPicture.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 // SYNTHETIC: IMPERIALISM 0x00505a50

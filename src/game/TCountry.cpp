@@ -11,7 +11,6 @@
 #include "game/TLanguageMgr.h" // NormalizeRuntimeCredentialNameToken (display-name load)
 #include "game/TNewsMgr.h"
 #include "game/TCity.h"
-#include "game/TGlobalMapState.h"
 #include "game/TSimMgr.h"
 #include "game/TOcean.h"
 #include "game/CIterator.h"
@@ -21,7 +20,6 @@
 #include "game/navy_order.h"
 #include "game/TUnit.h"
 #include "game/TZone.h"
-#include "game/nation_slot_eligibility.h"
 #include "game/nation_stream_serialization.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/mapped_flavor_text.h"

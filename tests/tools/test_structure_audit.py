@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Tests for the structure-audit gate's duplicate-include detection."""
+"""Tests for the structure-audit gate's duplicate-include and alias-header detection."""
 
 from __future__ import annotations
 
 import unittest
 
-from tools.workflow.check_structure_audit import duplicate_top_level_includes
+from tools.workflow.check_structure_audit import duplicate_top_level_includes, is_alias_header
 
 
 class DuplicateIncludeTest(unittest.TestCase):
@@ -34,6 +34,29 @@ class DuplicateIncludeTest(unittest.TestCase):
         # Two includes both inside (possibly nested) #if blocks are never top-level.
         text = '#if A\n#if B\n#include "a.h"\n#endif\n#include "a.h"\n#endif\n'
         self.assertEqual(duplicate_top_level_includes(text), [])
+
+
+class AliasHeaderTest(unittest.TestCase):
+    def test_class_reexport_alias_flagged(self):
+        text = '#pragma once\n\n#include "game/TViewMgr.h"\n\ntypedef TViewMgr TUiRuntimeContext;\n'
+        self.assertTrue(is_alias_header(text))
+
+    def test_pure_single_include_wrapper_flagged(self):
+        text = '#pragma once\n\n// Descriptive-name wrapper; the real class is TSimMgr.\n#include "game/TSimMgr.h"\n'
+        self.assertTrue(is_alias_header(text))
+
+    def test_domain_vocabulary_typedefs_not_flagged(self):
+        # Scalar domain typedefs over one include are a vocabulary header, not an alias.
+        text = '#pragma once\n\n#include "game/diplomacy_domain_types.h"\n\ntypedef short NationSlot;\ntypedef short NeedType;\n'
+        self.assertFalse(is_alias_header(text))
+
+    def test_umbrella_multi_include_not_flagged(self):
+        text = '#pragma once\n#include "game/globals/a.h"\n#include "game/globals/b.h"\n'
+        self.assertFalse(is_alias_header(text))
+
+    def test_real_declarations_not_flagged(self):
+        text = '#pragma once\n#include "game/TObject.h"\n\nclass TThing : public TObject {};\n'
+        self.assertFalse(is_alias_header(text))
 
 
 if __name__ == "__main__":

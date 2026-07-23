@@ -17,7 +17,6 @@
 #include "game/TSimMgr.h"
 #include "game/TStaticText.h"
 #include "game/CTemporaryRegion.h"
-#include "game/TGlobalMapState.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TView.h"
 #include "game/TViewMgr.h"

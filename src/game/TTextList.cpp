@@ -2,7 +2,7 @@
 #include "game/global_data_tables.h"
 #include "game/CString.h"
 #include "game/TControl.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
 #include "game/mfc.h"

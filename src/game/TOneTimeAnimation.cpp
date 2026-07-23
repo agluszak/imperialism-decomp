@@ -5,7 +5,7 @@
 
 #include "decomp_types.h"
 #include "game/TView.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/mfc.h"
 #include "game/quickdraw_guards.h"
 #include <new>

@@ -15,10 +15,9 @@
 #include "game/TProductionOrder.h"
 #include "game/TCity.h"
 #include "game/TGreatPower.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/quickdraw_guards.h"
 #include <new>
-
 
 // SYNTHETIC: IMPERIALISM 0x00589ed0
 // TRailAmtBar::CreateObject

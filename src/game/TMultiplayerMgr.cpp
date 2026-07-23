@@ -10,7 +10,6 @@
 #include "game/mapped_flavor_text.h"
 #include "game/NetMessage.h"
 #include "game/multiplayer_packets.h"
-#include "game/nation_slot_eligibility.h"
 #include "game/ImperialismApp.h"
 
 // Event-9 lobby-chat packet sent when a nation drops during session init: the AWOL

@@ -4,7 +4,7 @@
 
 #include "game/TView.h"
 #include "game/mfc.h"
-#include "game/UiRuntimeContext.h"
+#include "game/TViewMgr.h"
 #include "game/quickdraw_guards.h"
 #include "game/global_data_tables.h"
 #include "game/CDib.h"
