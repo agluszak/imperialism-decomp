@@ -1,17 +1,20 @@
-# Local original game files
-orig/
-assets/
+# Local original game files.
+# Leading slash matters: unanchored `assets/` also swallowed the manual source
+# dirs include/game/assets/ and src/game/assets/, so new files there were
+# silently unaddable.
+/orig/
+/assets/
 
 # Build artifacts
-build/
-build-*/
+/build/
+/build-*/
 # Stubs/indexes are generated into the build dir; a stale committed-era copy here
 # would double-register reccmp markers.
 src/autogen/
 src/ghidra_autogen/
 include/ghidra_autogen/
-out/
-tmp_decomp/
+/out/
+/tmp_decomp/
 *.obj
 *.pdb
 *.ilk
@@ -64,14 +67,17 @@ vendor/msvc500/headers/
 vendor/directx/include/
 vendor/directx/lib/
 
-scratch
+/scratch
 
 # reccmp detect output at repo root (build artifact)
-detect.log
+/detect.log
 
-# Beads / Dolt files (added by bd init)
+# Beads / Dolt files (added by bd init).
+# `*.db` stays root-anchored: unanchored it matched the vendored Ghidra FID
+# database *directories* (vendor/msvc500/fid-generation/.../~0000????.db/),
+# hiding 759 tracked files. Beads' own .beads/.gitignore covers .beads/*.db.
 .dolt/
-*.db
+/*.db
 .beads-credential-key
 .beads/proxieddb/
 .beads/interactions.jsonl
@@ -85,3 +91,8 @@ compile_commands.json
 
 # Session-specific agent memory — never commit (stale conclusions poison future agents)
 .claude/projects/
+# Per-machine Claude Code overrides (permissions etc.); .claude/settings.json is shared
+.claude/settings.local.json
+
+# clangd index cache (per-machine, regenerated on demand)
+.cache/
