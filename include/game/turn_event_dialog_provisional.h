@@ -1,7 +1,7 @@
 #pragma once
 
-#include "game/TControl.h"
-#include "game/TView.h"
+#include "game/ui_core/TControl.h"
+#include "game/ui_core/TView.h"
 
 class TCivUnit;
 class TViewMgr;

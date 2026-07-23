@@ -1,0 +1,129 @@
+#include "game/city/TExpansionOrder.h"
+
+#include "game/city/TCity.h"
+#include "game/nation/TGreatPower.h"
+#include "game/core/TStream.h"
+
+// SYNTHETIC: IMPERIALISM 0x004b8f50
+// TExpansionOrder::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004b8f80
+// TExpansionOrder::GetRuntimeClass
+
+IMPLEMENT_DYNCREATE(TExpansionOrder, TItemOrder)
+
+TExpansionOrder::TExpansionOrder() {}
+
+// SYNTHETIC: IMPERIALISM 0x004b8fc0
+// TExpansionOrder::`scalar deleting destructor'
+TExpansionOrder::~TExpansionOrder() {}
+
+// FUNCTION: IMPERIALISM 0x004b9010
+void TExpansionOrder::IExpansionOrder(TCity* city, short resourceType, short primaryInputResource,
+                                      short secondaryInputResource, short productionSlotValue) {
+  cityField08 = city;
+  summaryField0c = city->productionSummary1d8;
+  resourceTypeIndex48 = resourceType;
+  quantityField04 = 0;
+  for (int resource = 0; resource < 0x17; ++resource) {
+    trackingSlots10[resource] = 0;
+  }
+  accumulatedValue = 0;
+  primaryInputResourceId = primaryInputResource;
+  field40 = 0;
+  field3e = 0;
+  requestedQuantity4c = 0;
+  secondaryInputResourceId = secondaryInputResource;
+  productionSlot = productionSlotValue;
+}
+
+// FUNCTION: IMPERIALISM 0x004b9090
+void TExpansionOrder::Produce() {
+  short zero = 0;
+  if (quantityField04 == zero) {
+    return;
+  }
+
+  TCity* city = cityField08;
+  short newValue;
+  if (resourceTypeIndex48 == 0x0f) {
+    TGreatPower* owner = city->ownerNationAc;
+    signed char usesThreeRegionsPerLevel = owner->field8d1 >= '3';
+    if (usesThreeRegionsPerLevel != zero) {
+      int regionCount = owner->ownedRegionList->GetSize();
+      if (regionCount / 3 > 1) {
+        newValue = static_cast<short>(city->ownerNationAc->ownedRegionList->GetSize() / 3);
+      } else {
+        newValue = 1;
+      }
+    } else {
+      int regionCount = owner->ownedRegionList->GetSize();
+      if (regionCount / 4 > 1) {
+        newValue = static_cast<short>(city->ownerNationAc->ownedRegionList->GetSize() / 4);
+      } else {
+        newValue = 1;
+      }
+    }
+  } else {
+    newValue = city->productionOrderTable1dc[resourceTypeIndex48];
+  }
+
+  newValue = static_cast<short>(newValue + quantityField04);
+  short delta = static_cast<short>(newValue - city->productionOrderTable1dc[resourceTypeIndex48]);
+  city->productionAccum1fc[resourceTypeIndex48] =
+      static_cast<short>(city->productionAccum1fc[resourceTypeIndex48] + delta);
+  city->productionOrderTable1dc[resourceTypeIndex48] = newValue;
+  requestedQuantity4c = zero;
+  quantityField04 = zero;
+  trackingSlots10[primaryInputResourceId] = zero;
+  trackingSlots10[secondaryInputResourceId] = zero;
+}
+
+// FUNCTION: IMPERIALISM 0x004b91f0
+short TExpansionOrder::MaxOrder() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004b9260
+bool TExpansionOrder::SetQuantity(short param_1) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004b9340
+void SwapFirstTwoBytesInBuffer(unsigned char* buffer) {
+  unsigned char tmp = buffer[0];
+  buffer[0] = buffer[1];
+  buffer[1] = tmp;
+}
+
+// FUNCTION: IMPERIALISM 0x004b9360
+void TExpansionOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
+  this->ResetOrderSheet(orderSheet);
+  orderSheet->ForResourceCode(this->primaryInputResourceId) = quantity;
+  if (orderSheet->ForResourceCode(this->primaryInputResourceId) < 0) {
+    orderSheet->ForResourceCode(this->primaryInputResourceId) = 0;
+  }
+  orderSheet->ForResourceCode(this->secondaryInputResourceId) = quantity;
+  if (orderSheet->ForResourceCode(this->secondaryInputResourceId) < 0) {
+    orderSheet->ForResourceCode(this->secondaryInputResourceId) = 0;
+  }
+}
+
+// Writes a `count`-element array of shorts to the stream in swapped byte order: each
+// word is copied into a 2-byte scratch, byte-swapped via SwapFirstTwoBytesInBuffer
+// (inlined), and pushed through the stream's WriteBytesSlot78 primitive (vtable slot
+// 0x78). Callers: TCity::WriteTo (0x4b38b6) and SerializeThreeWordPlanesToOutputCallback
+// (0x4ef493).
+// FUNCTION: IMPERIALISM 0x004b94a0
+void WriteWordArrayToOutputCallbackLE(TStream* stream, short* words, int count) {
+  for (; count > 0; --count) {
+    unsigned short buffer = static_cast<unsigned short>(*words);
+    // SwapFirstTwoBytesInBuffer inlined at this site in the original.
+    unsigned char* bytes = reinterpret_cast<unsigned char*>(&buffer);
+    unsigned char tmp = bytes[0];
+    bytes[0] = bytes[1];
+    bytes[1] = tmp;
+    stream->WriteBytesSlot78(&buffer, 2);
+    ++words;
+  }
+}

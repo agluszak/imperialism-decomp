@@ -25,61 +25,61 @@ categories:
 # every native_integral_boundary fingerprint exactly, so changing an expression
 # forces a fresh API/listing review instead of inheriting this approval silently.
 native_integral_reviews:
-  b3ab09ab111463da:
+  ddb6e55e5ead83ab:
     classification: win32_struct_word_field
     evidence: BITMAPINFOHEADER.biBitCount is WORD; retail 0x00479fe0 writes the low argument word to header offset 0x0e.
-  6da656c5e709fdcb:
+  90ad32c2364f4c93:
     classification: win32_struct_word_field
     evidence: LOGPALETTE.palNumEntries is WORD; retail 0x0047ae90 copies the low word of the 32-bit palette count to offset 2.
-  742008749ab4e76b:
+  4a577257115fdf30:
     classification: win32_struct_word_field
     evidence: LOGPALETTE.palNumEntries is WORD; retail 0x0047e440 stores BX to offset 2 before CreatePalette.
-  7e423c8243556ab8:
+  efb9327b8ccc01bd:
     classification: win32_struct_word_field
     evidence: GetObjectA yields a UINT entry count but LOGPALETTE.palNumEntries is WORD; retail 0x0047efa0 narrows only at the structure field.
-  3a7283d2ab6bd83c:
+  8643894c63c98a37:
     classification: mfc_bool_callback_return
     evidence: CWnd::OnSetCursor returns BOOL while Default returns LRESULT; retail 0x00483ef0 tail-returns the full Default result through the BOOL override ABI.
-  2c26c47876710482:
+  b442f3eac7d1c116:
     classification: mfc_bool_callback_return
     evidence: CWnd::OnQueryNewPalette returns BOOL while Default returns LRESULT; retail 0x00493ca0 preserves the MFC callback ABI.
-  ce4913a1f4420b84:
+  c2e2852e7faabcf6:
     classification: win32_uint_sentinel
     evidence: MessageBeep takes UINT and 0xffffffff selects the simple default sound; retail wrapper 0x004931e0 pushes -1 directly.
-  f18bbfbdf2ee744a:
+  3971bc60890cc38d:
     classification: win32_resource_identifier
     evidence: MFC stores integer dialog resource IDs in the pointer-shaped m_lpszTemplateName field; FindResourceA consumes the recovered low UINT identifier at 0x0049d360.
-  e584628d15357a69:
+  04a2df0d87143ebc:
     classification: mfc_word_map_key
     evidence: m_tableA is keyed by WORD and the BMP resource identifier stays 32-bit until the CMap lookup boundary in retail 0x00499b40.
-  1b78fb6ded381efe:
+  d09f763966efebc6:
     classification: mfc_word_map_key
     evidence: m_tableA is keyed by WORD and the BMP resource identifier stays 32-bit until the CMap insertion boundary in retail 0x00499b40.
-  8079740443b86b3a:
+  5e99d2391a6383ab:
     classification: mfc_word_map_key
     evidence: retail 0x0049a0b0 explicitly loads only the low input word before hashing the CMap key.
-  452338b653053d46:
+  531a3bdd6c6d74a9:
     classification: mfc_word_map_key
     evidence: retail 0x0049a190 loads and hashes the signed short argument as the WORD-key representation used by m_tableA.
-  cd3d85f26c3c9642:
+  1c1d74f04479d145:
     classification: win32_allocation_size
     evidence: VC5 GlobalAlloc takes a DWORD byte count; retail 0x005e3d40 forwards the 32-bit packet length unchanged at the API boundary.
-  048bbfb6235c2a02:
+  fdcb8f20e3a45adb:
     classification: win32_struct_byte_field
     evidence: RGBQUAD.rgbBlue is BYTE; retail 0x005de010 copies the low packed-color byte into the four-byte local structure.
-  276dcbb31c45e0bb:
+  806aaeb52fe4f325:
     classification: win32_struct_byte_field
     evidence: RGBQUAD.rgbGreen is BYTE; retail 0x005de010 extracts packed-color bits 8 through 15 into the structure.
-  f8a448b129b0a354:
+  ed6f4dcdc439d462:
     classification: win32_struct_byte_field
     evidence: RGBQUAD.rgbRed is BYTE; retail 0x005de010 extracts packed-color bits 16 through 23 into the structure.
-  83fe19c4ff1bb637:
+  ce82c4c20067c59c:
     classification: win32_struct_byte_field
     evidence: RGBQUAD.rgbReserved is BYTE; retail 0x005de010 extracts packed-color bits 24 through 31 into the structure.
-  d4248763cec9fcfa:
+  d97fbba03dae091e:
     classification: multimedia_dword_field
     evidence: MCI_PLAY_PARMS.dwFrom is DWORD; retail 0x005e1850 masks the track index to eight bits before the dword store.
-  af9be0d81a08664a:
+  9440836a8128678f:
     classification: multimedia_dword_field
     evidence: MCI_PLAY_PARMS.dwTo is DWORD; retail 0x005e1850 increments then masks the track index before the dword store.
 

@@ -1,4 +1,4 @@
 #pragma once
 
-#include "game/CTemporaryRegion.h"
-#include "game/ScopedMapQuickDrawContext.h"
+#include "game/gfx/CTemporaryRegion.h"
+#include "game/ui_core/ScopedMapQuickDrawContext.h"

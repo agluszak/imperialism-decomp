@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/TObject.h"
+#include "game/app/TObject.h"
 
 // Thin TObject wrapper that carries a CArchive* for TFileStream serialization.
 // Layout: TObject vptr (+0), CArchive* archive (+4).

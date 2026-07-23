@@ -71,3 +71,10 @@ enum DiplomaticMissionLevel {
   kDiplomaticMissionTradeConsulate = 1,
   kDiplomaticMissionEmbassy = 2
 };
+
+// Per-nation relationship ranking record shared by the diplomacy manager and the
+// foreign-minister AI (identical 4-byte layout was previously declared twice).
+struct RelationshipRankEntry {
+  short nationSlot;
+  short standingScore;
+};

@@ -4,7 +4,7 @@
 // assignment evidence: docs/reference/subsystem_assignment.csv.
 #pragma once
 
-#include "game/CString.h"
+#include "game/ui_screens/CString.h"
 
 // reccmp `// GLOBAL:` address markers for symbols declared here live in
 // src/game/global_data_tables.cpp only (one marker per address).
@@ -17,17 +17,17 @@
 #include "game/military_domain_types.h"
 #include <afxtempl.h>
 #include "game/app_init_globals.h"
-#include "game/TCountry.h"
-#include "game/TDisplayMgr.h"
-#include "game/quickdraw_regions.h"
+#include "game/city_ui/TCountry.h"
+#include "game/gfx/TDisplayMgr.h"
+#include "game/gfx/quickdraw_regions.h"
 #include "game/strategic_terrain.h"
-#include "game/TGreatPower.h"
-#include "game/TMacViewMgr.h"
-#include "game/TMinor.h"
-#include "game/TView.h"
-#include "game/TMouseCaptureState.h"
-#include "game/TWNetSessionManager.h"
-#include "game/timer_slots.h"
+#include "game/nation/TGreatPower.h"
+#include "game/ui_core/TMacViewMgr.h"
+#include "game/nation/TMinor.h"
+#include "game/ui_core/TView.h"
+#include "game/core/TMouseCaptureState.h"
+#include "game/net/TWNetSessionManager.h"
+#include "game/assets/timer_slots.h"
 
 TGreatPower* GetNationStateBySlot(short slotId);
 short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot);

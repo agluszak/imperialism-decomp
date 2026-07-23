@@ -256,11 +256,25 @@ def parse_prototype(proto: str):
         else:
             entity_kind = "instance_method"
     else:
-        name_m = re.search(r"[A-Za-z_][A-Za-z0-9_]*\s*$", head)
-        ret = head[:name_m.start()].strip() if name_m else "void"
-        if not ret:
+        head_stripped = head.strip()
+        if "~" in head_stripped:
+            # In-class destructor declaration (`virtual ~TObject()`, or an
+            # inventory row like `void ~TObject`): unqualified, dtors have no
+            # return type. Without this the dtor fell through to free_function
+            # and the audit fabricated an exp[__cdecl,this=False] expectation.
+            entity_kind = "destructor"
             ret = "void"
-        entity_kind = "static_method" if has_static else "free_function"
+        elif re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", head_stripped):
+            # A bare identifier head has no return type — C++ only allows that for
+            # a constructor (in-class declaration form `TFoo(args)`).
+            entity_kind = "constructor"
+            ret = "void"
+        else:
+            name_m = re.search(r"[A-Za-z_][A-Za-z0-9_]*\s*$", head)
+            ret = head[:name_m.start()].strip() if name_m else "void"
+            if not ret:
+                ret = "void"
+            entity_kind = "static_method" if has_static else "free_function"
     if argstr in ("", "void"):
         params: list[str] = []
     else:
@@ -963,6 +977,18 @@ def classify_convergence(exp, db, worst_quality, ret_quality):
         result["logical"] = "this_presence_mismatch"
         return result
     if db["n_params"] != exp["n_params"]:
+        # A by-value struct return (> 4 bytes) uses a hidden sret pointer on
+        # MSVC x86. A DB that models that pointer as an explicit first param
+        # (sret flag unset) is ABI-equivalent to the source's by-value-return
+        # declaration — a known modeling gap the sret-excluded projector never
+        # rewrites, not a divergence.
+        if (
+            (exp.get("ret_size") or 0) > 4
+            and not db["has_sret"]
+            and db["n_params"] == exp["n_params"] + 1
+        ):
+            result["logical"] = "sret_as_explicit_param"
+            return result
         result["logical"] = "param_count_mismatch"
         return result
     if bool(db.get("has_varargs")) != bool(exp.get("has_varargs")):

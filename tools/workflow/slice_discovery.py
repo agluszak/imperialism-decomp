@@ -427,7 +427,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--source",
-        default="src/game/TGreatPower.cpp",
+        default="src/game/nation/TGreatPower.cpp",
         help="Manual source file to inspect.",
     )
     parser.add_argument(
