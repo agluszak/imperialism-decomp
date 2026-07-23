@@ -1,7 +1,8 @@
 #include "game/gfx/TAutoResolutionDialog.h"
 
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
-#include "game/core/global_data_tables.h" // g_pModuleLibraryCacheState
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 
 #include <stddef.h>
 

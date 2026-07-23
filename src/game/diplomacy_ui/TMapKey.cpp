@@ -5,7 +5,8 @@
 #include "game/ui_widgets/TDeluxeText.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TView.h"
-#include "game/core/global_data_tables.h" // g_pSimMgr, g_apTerrainTypeDescriptorTable
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"

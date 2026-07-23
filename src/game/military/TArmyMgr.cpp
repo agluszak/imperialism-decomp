@@ -29,7 +29,9 @@
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_screens/TZone.h"
-#include "game/core/global_data_tables.h" // g_pSimMgr, g_pGlobalMapState, g_apTerrainTypeDescriptorTable, g_pSfxPlaybackSystem, g_apNationStates, g_pUiRuntimeContext
+#include "game/globals/prelude.h"
+#include "game/globals/military_globals.h"
+#include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h" // scanBracketExpressions
 #include "game/navy_order.h"         // g_pNavyPrimaryOrderListHead, FindCumulativeWeightBucketIndex
 #include "game/ui_core/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
