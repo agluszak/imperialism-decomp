@@ -30,6 +30,7 @@
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/resource_domain_types.h"
 // SYNTHETIC: IMPERIALISM 0x005be4b0
 // TOfferDeskPicture::CreateObject
 
@@ -259,7 +260,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
             sourceNationSlot90) == 0) {
       notAligned = 1;
     }
-    if (commodityType96 != 0 && commodityType96 != 1) {
+    if (commodityType96 != kResourceCotton && commodityType96 != kResourceWool) {
       avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(commodityType96));
       relDelta = gp->relationDeltaSnapshot[commodityType96];
       // TCity models the 23 per-commodity stock shorts as named fields; index off the first.
@@ -301,7 +302,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
   } else {
     CString strStatsIntro;
     CString strVerdict;
-    if (commodityType96 != 0 && commodityType96 != 1) {
+    if (commodityType96 != kResourceCotton && commodityType96 != kResourceWool) {
       avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(commodityType96));
       relDelta = gp->relationDeltaSnapshot[commodityType96];
       stock = (&city->cityStockCottonB6)[commodityType96];

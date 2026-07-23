@@ -5,6 +5,7 @@
 #include "game/TControl.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/resource_domain_types.h"
 
 // SYNTHETIC: IMPERIALISM 0x004bcfd0
 // TRailheadDialog::`scalar deleting destructor'
@@ -70,7 +71,7 @@ void TRailheadDialog::DoClosingAction(unsigned long dialogActionTag) {
 
     int selectedTag = choice->GetSelectedChildTag();
     short selectedResourceType = 0;
-    while (selectedResourceType < 0x17 &&
+    while (selectedResourceType < kResourceKindCount &&
            g_pTradeSummarySelectionMap[selectedResourceType] != selectedTag) {
       ++selectedResourceType;
     }

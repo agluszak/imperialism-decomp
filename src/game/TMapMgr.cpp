@@ -38,6 +38,7 @@
 #include "game/TDiplomacyMgr.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/resource_domain_types.h"
 
 StrategicTileIndex TraceTerrainFlowToNearestSeaTile(StrategicTileIndex tileIndex);
 char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(StrategicTileIndex tileIndex);
@@ -2458,7 +2459,7 @@ void TMapMgr::SetTileTransportFlagsTo0x37AndRefreshNeighbors(StrategicTileIndex 
     bool eligible = false;
     for (int edge = 0; edge < 2; ++edge) {
       signed char resourceType = neighbor->resourceTypeByEdge[edge];
-      if ((resourceType == 0x11 || resourceType == 0x12) &&
+      if ((resourceType == kResourceGrain || resourceType == kResourceFruit) &&
           g_abGateFlagQualifies[neighbor->gateFlag] != 0) {
         eligible = true;
       }
@@ -2758,15 +2759,16 @@ void TMapMgr::MapMgrSlot24(TCivUnit* pCivilianOrderEntry) {
     bool found = false;
     for (int edge = 0; edge < 2; ++edge) {
       signed char resourceType = tile->resourceTypeByEdge[edge];
-      if (resourceType == 0 || resourceType == 1 || resourceType == 2) {
+      if (resourceType == kResourceCotton || resourceType == kResourceWool ||
+          resourceType == kResourceTimber) {
         found = true;
         continue;
       }
       if (tile->pendingDevelopmentFlag0d & nationBit) {
-        if (resourceType == 3 || resourceType == 4 || resourceType == 0x15 ||
-            resourceType == 0x16) {
+        if (resourceType == kResourceCoal || resourceType == kResourceIron ||
+            resourceType == kResourceGems || resourceType == kResourceGold) {
           found = true;
-        } else if (recruitTierFlagIsTwo && resourceType == 6) {
+        } else if (recruitTierFlagIsTwo && resourceType == kResourceOil) {
           found = true;
         }
       }
@@ -3798,12 +3800,12 @@ int TMapMgr::CalculateDeveloperTilePurchaseCost(StrategicTileIndex nTileIndex) {
   do {
     short resourceType = terrainStateTable[nTileIndex].resourceTypeByEdge[edge];
     if (resourceType != -1) {
-      if (resourceType < 0x11) {
+      if (resourceType < kResourceManufacturedEnd) {
         total = total +
                 g_pNationInteractionStateManager->QueryProposalWeightSlot4C(resourceType) * 0x14;
-      } else if (resourceType == 0x15) {
+      } else if (resourceType == kResourceGems) {
         total = total + 10000;
-      } else if (resourceType == 0x16) {
+      } else if (resourceType == kResourceGold) {
         total = total + 4000;
       }
     }

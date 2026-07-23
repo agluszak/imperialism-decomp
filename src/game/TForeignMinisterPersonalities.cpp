@@ -13,6 +13,7 @@
 #include "game/TTradeMgr.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
+#include "game/resource_domain_types.h"
 
 namespace {
 
@@ -165,7 +166,7 @@ void TTedForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
     return;
   }
   TGreatPower* owner = ownerContextAt04;
-  if (resourceCode == 3) {
+  if (resourceCode == kResourceCoal) {
     if (tradePartnerEnabled49[3] != 0) {
       capabilityFlag16 = static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(3) / 2);
       tradePartnerEnabled49[3] = 0;
@@ -181,7 +182,8 @@ void TTedForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
     }
     return;
   }
-  if (resourceCode == 2 || resourceCode == 4 || resourceCode == 6) {
+  if (resourceCode == kResourceTimber || resourceCode == kResourceIron ||
+      resourceCode == kResourceOil) {
     short available =
         static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
     short amount =
@@ -192,7 +194,7 @@ void TTedForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
                                                                    arg3, resourceCode, 0, 0);
     return;
   }
-  if (resourceCode == 0 || resourceCode == 1) {
+  if (resourceCode == kResourceCotton || resourceCode == kResourceWool) {
     short amount = owner->tradeCapacity < 15 ? 1 : (owner->tradeCapacity >= 30 ? 3 : 2);
     amount = MinShort(amount, arg2);
     short available =
@@ -339,7 +341,7 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
   TGreatPower* owner = ownerContextAt04;
   short available;
   short amount;
-  if (resourceCode == 2) {
+  if (resourceCode == kResourceTimber) {
     if (g_pNationInteractionStateManager->QueryProposalWeightSlot4C(3) >= 105 &&
         g_pNationInteractionStateManager->QueryProposalWeightSlot4C(4) >= 105) {
       if (tradePartnerEnabled49[2] != 0) {
@@ -371,7 +373,7 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
     }
     return;
   }
-  if (resourceCode == 3) {
+  if (resourceCode == kResourceCoal) {
     if (tradePartnerEnabled49[3] != 0) {
       capabilityFlag16 = static_cast<short>(owner->GetDiplomacyCounterA2() / 2);
       tradePartnerEnabled49[3] = 0;
@@ -392,19 +394,19 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
     }
     return;
   }
-  if (resourceCode == 4 || resourceCode == 6) {
+  if (resourceCode == kResourceIron || resourceCode == kResourceOil) {
     available = owner->GetDiplomacyCounterA2();
     if (available >= arg2) {
       g_pNationInteractionStateManager->DispatchProposalAmountSlot60(owner->nationSlot, arg1, arg2,
                                                                      arg3, resourceCode, 0, 0);
-      if (resourceCode == 4) {
+      if (resourceCode == kResourceIron) {
         capabilityFlag16 = static_cast<short>(capabilityFlag16 - arg2);
       }
     } else {
       g_pNationInteractionStateManager->DispatchProposalAmountSlot60(
           owner->nationSlot, arg1, owner->GetDiplomacyCounterA2(), arg3, resourceCode,
-          resourceCode == 4, 0);
-      if (resourceCode == 4) {
+          resourceCode == kResourceIron, 0);
+      if (resourceCode == kResourceIron) {
         capabilityFlag16 = 0;
       }
     }
@@ -743,11 +745,11 @@ TTraderForeignMinister::TTraderForeignMinister() : TForeignMinister() {}
 void TTraderForeignMinister::SetBuyPriorities() {
   TMinisterBaseOrderArray* priorities = new TMinisterBaseOrderArray();
   priorities->recordSize14 = sizeof(ResourcePriorityEntry);
-  for (short resourceCode = 0; resourceCode <= 4; ++resourceCode) {
+  for (short resourceCode = 0; resourceCode <= kResourceIron; ++resourceCode) {
     ResourcePriorityEntry entry;
     entry.resourceCode = resourceCode;
     entry.priority = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(resourceCode);
-    if (resourceCode == 3 || resourceCode == 4) {
+    if (resourceCode == kResourceCoal || resourceCode == kResourceIron) {
       entry.priority = static_cast<short>(entry.priority - 15);
     }
     priorities->InsertCopiedRecordSortedByComparator(&entry);
@@ -929,10 +931,11 @@ void TArmsForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
   bool eligibleForSplit;
   short* splitCount;
   if (HasAdvancedTradeResource(this)) {
-    eligibleForSplit = resourceCode == 2 || resourceCode == 3 || resourceCode == 4;
+    eligibleForSplit = resourceCode == kResourceTimber || resourceCode == kResourceCoal ||
+                       resourceCode == kResourceIron;
     splitCount = &g_nArmsAdvancedResourceOfferSplitCount_006a3a58;
   } else {
-    eligibleForSplit = resourceCode >= 0 && resourceCode <= 3;
+    eligibleForSplit = resourceCode >= kResourceCotton && resourceCode <= kResourceCoal;
     splitCount = &g_nArmsBasicResourceOfferSplitCount_006a3a54;
   }
   if (eligibleForSplit) {

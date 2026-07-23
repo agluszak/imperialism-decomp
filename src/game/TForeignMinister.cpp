@@ -19,6 +19,7 @@
 #include <stdlib.h>
 
 #include "game/nation_slot_eligibility.h"
+#include "game/resource_domain_types.h"
 
 static const short kNoInteriorBidResource = static_cast<short>(0xfff6);
 
@@ -167,7 +168,7 @@ void TForeignMinister::SetInteriorMinisterBid(short primary, short secondary) {
 void TForeignMinister::SetBuyPriorities() {
   TMinisterBaseOrderArray* priorities = new TMinisterBaseOrderArray();
 
-  for (short resourceCode = 0; resourceCode < 0x11; ++resourceCode) {
+  for (short resourceCode = 0; resourceCode < kResourceManufacturedEnd; ++resourceCode) {
     if (purchasePriorityByResource1e[resourceCode] != 0) {
       MinisterPriorityEntry entry;
       entry.resourceCode = resourceCode;

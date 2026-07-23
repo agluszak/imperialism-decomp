@@ -6,6 +6,7 @@
 #include "game/TTown.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/resource_domain_types.h"
 
 // SYNTHETIC: IMPERIALISM 0x004bd810
 // TNewTownView::`scalar deleting destructor'
@@ -27,7 +28,8 @@ void TNewTownView::StuffValues(TTown* town) {
   town->CalculateRawResources();
 
   int visibleResourceCount = 0;
-  for (int countedResourceType = 0; countedResourceType < 0x17; ++countedResourceType) {
+  for (int countedResourceType = 0; countedResourceType < kResourceKindCount;
+       ++countedResourceType) {
     if (town->resourceYieldByType[countedResourceType] != 0) {
       ++visibleResourceCount;
     }
@@ -64,7 +66,7 @@ void TNewTownView::StuffValues(TTown* town) {
   okay->ApplyBounds(&bounds, 1);
 
   int y = 0x40;
-  for (short iconResourceType = 0; iconResourceType < 0x17; ++iconResourceType) {
+  for (short iconResourceType = 0; iconResourceType < kResourceKindCount; ++iconResourceType) {
     short amount = town->resourceYieldByType[iconResourceType];
     if (amount != 0) {
       TIconBar* iconBar = new TIconBar();

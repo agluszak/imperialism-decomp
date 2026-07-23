@@ -27,6 +27,7 @@
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/resource_domain_types.h"
 
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 
@@ -630,7 +631,8 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
       } else {
         mainText += "Province Capitol\n";
       }
-      for (short resourceType = 7; resourceType <= 0x10; resourceType++) {
+      for (short resourceType = kResourceManufacturedFirst;
+           resourceType <= kResourceManufacturedLast; resourceType++) {
         short count = g_pGlobalMapState->cityScoreTable[cityIndex]
                           .resourceDevelopmentCounts82[resourceType - 7];
         if (count != 0) {
@@ -1167,7 +1169,7 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
 
     for (int edge = 0; edge < 2; ++edge) {
       const signed char resourceType = terrain.resourceTypeByEdge[edge];
-      if (resourceType < 0) {
+      if (resourceType < 0) { // kResourceKindNone sentinel
         continue;
       }
       const short destinationX = static_cast<short>(screenX + (edge == 0 ? 2 : 0x1c));

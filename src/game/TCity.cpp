@@ -29,6 +29,7 @@
 #include "game/TStream.h"
 #include "game/TTechMgr.h"
 #include "game/nation_stream_serialization.h"
+#include "game/resource_domain_types.h"
 
 static const char kUCityCppPath[] = "D:\\Ambit\\Cross\\UCity.cpp";
 static const unsigned int kAddrClassDescTCity = 0x0064f338;
@@ -753,12 +754,12 @@ int TCity::AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short
 // FUNCTION: IMPERIALISM 0x004b44d0
 short* TCity::GetCitySummaryRecordSlot74() {
   short* summary = this->productionSummary1d8->PredictedNeeds();
-  for (short resourceType = 0; resourceType < 0x17; ++resourceType) {
+  for (short resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
     short remaining = summary[resourceType];
     if (remaining != 0) {
       remaining = static_cast<short>(remaining - this->reservedByType7e[resourceType]);
       summary[resourceType] = remaining;
-      if (resourceType == 0x14) {
+      if (resourceType == kResourceLivestock) {
         summary[0x14] = static_cast<short>(remaining - this->reservedByType7e[0x13]);
       }
       if (summary[resourceType] < 0) {
