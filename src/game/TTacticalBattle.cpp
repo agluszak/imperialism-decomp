@@ -1,4 +1,5 @@
 #include "game/TAmbitApplication.h"
+#include "game/TWindow.h"
 #include "game/TTacticalBattle.h"
 
 #include <stdlib.h>
@@ -33,8 +34,6 @@
 #include "game/ui_control_tags.h"
 #include "game/global_data_tables.h"
 #include "game/ui_text_label_helpers_decls.h"
-
-using turn_event_dialog::TurnEventDialogNode;
 
 // Non-virtual action helpers dispatched above.
 
@@ -1553,8 +1552,8 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
 
   TextStyle styleDescriptor;
   styleDescriptor.textColor = 0;
-  TurnEventDialogNode* dialog = static_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xeed));
+  TWindow* dialog =
+      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xeed));
 
   TPicture* headerPicture =
       static_cast<TPicture*>(dialog->ResolveControlByTag(0x444c4f47 /* 'DLOG' */));
@@ -1670,12 +1669,12 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
     infoControl->CenterVertically(0);
   }
 
-  dialog->ShowTurnEventDialog(1);
-  void* content = dialog->QueryTurnEventContentObject();
+  dialog->SetModality(1);
+  void* content = dialog->GetDialogBehavior();
   if (content != 0) {
     *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = 0x6f6b6179; // 'okay'
   }
-  dialog->RefreshTurnEventDialog();
+  dialog->PoseModally();
   dialog->Close();
   dialog->Free();
   battleView8->ForceRedraw();

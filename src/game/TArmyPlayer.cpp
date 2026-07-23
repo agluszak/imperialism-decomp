@@ -1,4 +1,5 @@
 #include "game/TArmyPlayer.h"
+#include "game/TWindow.h"
 
 #include <stdlib.h>
 
@@ -18,8 +19,6 @@
 #include "game/global_data_tables.h"
 #include "game/turn_event_dialog_provisional.h"
 #include "game/ui_invalidation_guard.h"
-
-using turn_event_dialog::TurnEventDialogNode;
 
 // FUNCTION: IMPERIALISM 0x005362c0
 float __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
@@ -274,8 +273,8 @@ void TArmyPlayer::StartBattle() {
     int opposingNationIndex = opponent->nationIndex1C;
 
     // Battle-intro ("hola") dialog, id 0xf19.
-    TurnEventDialogNode* dialog = static_cast<TurnEventDialogNode*>(
-        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xf19));
+    TWindow* dialog =
+        static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xf19));
     if (dialog == 0) {
       FailNilPointerWithAssert(s_SourcePathUTacPlayer_00699D84, 0x18d);
     }
@@ -290,7 +289,7 @@ void TArmyPlayer::StartBattle() {
       holaPicture->ConfigureBattleIntroCoatsAndSiteLabels(
           static_cast<short>(opposingNationIndex), nationIndex1C, 0, battle14->battleSiteIndex38);
     }
-    int resultTag = dialog->RefreshTurnEventDialog();
+    int resultTag = dialog->PoseModally();
     dialog->Close();
     dialog->Free();
     if (resultTag == 0x6f6b6179 /* 'okay' */) {

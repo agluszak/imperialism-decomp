@@ -7,13 +7,20 @@
 class TCivUnit;
 class TViewMgr;
 
-// Provisional interfaces for the runtime-resolved turn-event dialog and its 'GOLD'
-// child control. These are never constructed here — they only give names to the
-// vtable slots dispatched on the concrete (not-yet-recovered) dialog/control classes
-// returned by TAssetMgr::ResolveTurnEventDialogNodeByMessageContext and
-// TView::ResolveControlByTag(0x444c4f47 == 'GOLD'). Both TViewMgr.cpp and
-// TMacViewMgr.cpp resolve the identical runtime objects, so a single shared
-// definition prevents the two copies from drifting (bd imperialism-decomp-hpd.7).
+// Provisional interfaces for the runtime-resolved 'DLOG'-tagged dialog children that
+// are still without a concrete class. These are never constructed here -- they only
+// name the vtable slots dispatched on the runtime object.
+//
+// The dialog *node* is no longer one of them: everything
+// TAssetMgr::ResolveTurnEventDialogNodeByMessageContext returns is a TWindow, and its
+// three "provisional" slots are TWindow's own SetModality (0x68), PoseModally (0x6b)
+// and GetDialogBehavior (0x6e); Center (0x71) is the three-flag call. Where the child
+// control's dialog id is fixed, the Mac resource oracle
+// (vendor/macos_codewarrior/evidence/resources/widgets.csv) names it outright -- that
+// is how TCivReport, TArmyInfoView, TCombatReportView and TPlaceCityDialog replaced
+// their facades. What is left below is only the receivers resolved against whatever
+// dialog happens to be open, which need a recovered shared base rather than a
+// per-view lookup.
 //
 // The turn-event slots 0x68..0x6e and the GOLD control's 0x71/0x72 are consistent
 // across every call site. Slots that correspond to real, already-recovered TView
@@ -23,33 +30,19 @@ class TViewMgr;
 // the concrete dialog/control classes.
 namespace turn_event_dialog {
 
-// The city order object queried by the city-order dialog population path. A view over
-// some other real class's vtable (reinterpret_cast'd in TMacViewMgr.cpp); adding a
-// destructor slot here would shift these two slots off the real object's layout.
+// The status-icon control TViewMgr hands to TMacViewMgr::ApplySellOrderRowToNationState.
+// Its two queried slots sit at bytes 0x1d4/0x1d8, past TPicture's own 0x72, so it is a
+// TPicture subclass whose concrete identity is not recovered yet -- the two slots between
+// are the only padding left here, and deriving from TPicture is what lets the call site
+// use a plain downcast instead of the old reinterpret_cast bridge.
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
-struct CityOrderSource {
-  virtual char QuerySellModeFlag1D8() = 0;
-  virtual short QuerySellQuantity1D4() = 0;
+struct CityOrderSource : public TPicture {
+  virtual void cityOrderSlot73();
+  virtual void cityOrderSlot74();
+  virtual short QuerySellQuantity1D4(); // slot 0x75 byte 0x1d4
+  virtual char QuerySellModeFlag1D8();  // slot 0x76 byte 0x1d8
 };
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
-
-struct TurnEventDialogNode : public TView {
-  virtual void ShowTurnEventDialog(int flag); // slot 0x68 byte 0x1a0
-  virtual void node69();                      // slot 0x69
-  virtual void node6a();                      // slot 0x6a
-  // Returns a status/tag value that some callers forward to the 'GOLD' child (see
-  // HandleTurnEventDialogFactorySlotB8); most callers ignore it (codegen-neutral).
-  virtual int RefreshTurnEventDialog();        // slot 0x6b byte 0x1ac
-  virtual void node6c();                       // slot 0x6c
-  virtual void node6d();                       // slot 0x6d
-  virtual void* QueryTurnEventContentObject(); // slot 0x6e byte 0x1b8
-  virtual void DispatchSlot9C();
-  virtual void SetDialogModeSlotF0(int mode);
-  virtual void InvokeSlotF0WithPair(short a, short b);
-  virtual void SetDialogActiveFlag(int flag);
-  virtual void InvokeSlotA0();
-  virtual void InvokeSlot1C();
-};
 
 // Slots 0x71/0x72 are NOT declared here: they are TPicture::ResetPictureResourceEntry
 // and TPicture::SetPictureResourceIdAndRefresh, and every caller now uses TPicture
@@ -69,19 +62,6 @@ struct MainActionControl : public TControl {
   virtual void mainAction72();
   virtual void InvokeMainAction(int sourceNation, int arg1, int arg2, int arg3,
                                 int targetNation); // slot 0x73 byte 0x1cc
-};
-
-struct ThreeFlagDialogNode : public TView {
-  virtual void ShowTurnEventDialog(int flag); // slot 0x68 byte 0x1a0
-  virtual void dialog69();
-  virtual void dialog6a();
-  virtual int RefreshTurnEventDialog(); // slot 0x6b byte 0x1ac
-  virtual void dialog6c();
-  virtual void dialog6d();
-  virtual void dialog6e();
-  virtual void dialog6f();
-  virtual void dialog70();
-  virtual void ConfigureDialogFlags(int a, int b, int c); // slot 0x71 byte 0x1c4
 };
 
 struct GoldDialogValueControl : public TView {

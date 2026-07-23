@@ -1,7 +1,12 @@
+
 #pragma once
 
 #include "game/TObject.h"
 #include "game/quickdraw_regions.h"
+
+namespace turn_event_dialog {
+struct CityOrderSource;
+}
 #include "game/StrategicMapCallbackRecord.h"
 #include "game/mfc.h"
 
@@ -28,7 +33,8 @@ public:
   virtual void LoadStrategicMapUnitOverlayAtlas751();             // slot 0x0c 0x50a3e0
   virtual void LoadStrategicMapOverlayAtlas8699();                // slot 0x0d 0x50a410
   virtual void LoadStrategicMapMarkerAtlas1372();                 // slot 0x0e 0x50a440
-  virtual void ApplySellOrderRowToNationState(int* param_1, int param_2,
+  virtual void ApplySellOrderRowToNationState(turn_event_dialog::CityOrderSource* orderSource,
+                                              int param_2,
                                               short param_3); // slot 0x0f 0x50bbc0
   virtual void SyncSellTaggedChildControlWithNationState(TView* view, short orderSlot,
                                                          short nationIndex);  // slot 0x10 0x50bc50

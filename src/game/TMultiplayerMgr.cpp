@@ -1,4 +1,5 @@
 #include "game/TAmbitApplication.h"
+#include "game/TWindow.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TMadnessButton.h"
 #include "game/TStaticText.h"
@@ -173,8 +174,6 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/ui_text_label_helpers_decls.h"
 #include <cstdlib>
 #include <cstring>
-
-using turn_event_dialog::TurnEventDialogNode;
 
 // Forward decl: real definition (with its // FUNCTION: marker) sits address-ordered
 // further down this file, near TMultiplayerMgr's other 0x5exxxx-adjacent members.
@@ -1252,13 +1251,13 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TextStyle styleDescriptor;
     styleDescriptor.textColor = 0;
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
-    TurnEventDialogNode* dialog = static_cast<TurnEventDialogNode*>(
-        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x7e4));
+    TWindow* dialog =
+        static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x7e4));
     if (dialog == 0) {
       FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr_00698040, 0x7ef);
     }
-    dialog->ShowTurnEventDialog(1);
-    void* content = dialog->QueryTurnEventContentObject();
+    dialog->SetModality(1);
+    void* content = dialog->GetDialogBehavior();
     if (content != 0) {
       *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = 0x6f6b6179; // 'okay'
     }
@@ -1300,7 +1299,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       cancelButton->SetState(1, 0);
       cancelButton->SetPictureResourceIdAndRefresh(0x53a, 0);
     }
-    int responseTag = dialog->RefreshTurnEventDialog();
+    int responseTag = dialog->PoseModally();
     dialog->Close();
     dialog->Free();
     if (responseTag == 0x72737670) { // 'rsvp'

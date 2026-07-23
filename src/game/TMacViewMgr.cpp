@@ -1,4 +1,5 @@
 #include "game/TMacViewMgr.h"
+#include "game/TWindow.h"
 #include "game/map_overlay_geometry.h"
 
 #include "game/turn_event_dialog_provisional.h"
@@ -124,7 +125,6 @@ void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstRect) {
 // via one header so the two copies can't drift (bd imperialism-decomp-hpd.7).
 using turn_event_dialog::CityOrderSource;
 using turn_event_dialog::GoldDialogControl;
-using turn_event_dialog::TurnEventDialogNode;
 
 } // namespace
 
@@ -942,8 +942,8 @@ void TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent() {
 }
 
 // FUNCTION: IMPERIALISM 0x0050bbc0
-void TMacViewMgr::ApplySellOrderRowToNationState(int* param_1, int param_2, short param_3) {
-  CityOrderSource* orderSource = reinterpret_cast<CityOrderSource*>(param_1);
+void TMacViewMgr::ApplySellOrderRowToNationState(CityOrderSource* orderSource, int param_2,
+                                                 short param_3) {
   if (orderSource->QuerySellModeFlag1D8() != 0) {
     g_apNationStates[param_3]->SetDiplomacyState1c6ClampedToCounterA4(static_cast<short>(param_2),
                                                                       -1);
@@ -1397,7 +1397,7 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
                                                unsigned char closeAfterOpen,
                                                unsigned char isEmbeddedPage,
                                                TCityProductionView* productionView) {
-  TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
+  TWindow* dialog = reinterpret_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(buildingSlot + 0x23f0));
   TBuildingView* buildingView =
       static_cast<TBuildingView*>(dialog->ResolveControlByTag(0x444c4f47));
@@ -1409,8 +1409,8 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
                                                                 productionView, buildingSlot);
   dialog->controlValue3c = 0x65;
   if (closeAfterOpen != 0) {
-    dialog->ShowTurnEventDialog(1);
-    dialog->RefreshTurnEventDialog();
+    dialog->SetModality(1);
+    dialog->PoseModally();
     dialog->Close();
     dialog->Free();
     return 0;
@@ -1422,7 +1422,7 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
 // FUNCTION: IMPERIALISM 0x0050d470
 void TMacViewMgr::ShowGoldDialogForTurnEventContext(int param_1, int param_2, int arg3, int arg4,
                                                     int arg5, int arg6, int arg7) {
-  TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
+  TWindow* dialog = reinterpret_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(param_1 + 0x23f0));
   GoldDialogControl* goldControl =
       reinterpret_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47));
@@ -1431,16 +1431,18 @@ void TMacViewMgr::ShowGoldDialogForTurnEventContext(int param_1, int param_2, in
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   goldControl->InvokeSlot1D0FourParam(reinterpret_cast<int>(this), param_2, param_1, param_1);
+  POINT placement;
+  placement.x = static_cast<short>(param_2);
+  placement.y = static_cast<short>(arg3);
   dialog->controlValue3c = 0x65;
-  dialog->InvokeSlotF0WithPair(static_cast<short>(reinterpret_cast<int>(this)),
-                               static_cast<short>(param_1));
-  dialog->DispatchSlot9C();
+  dialog->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  dialog->Open();
 }
 
 // FUNCTION: IMPERIALISM 0x0050d5b0
 void TMacViewMgr::OpenConstructionWindow(short buildingSlot, TCity* city,
                                          TCityProductionView* productionView) {
-  TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
+  TWindow* dialog = reinterpret_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2404));
   TBuildingConstructionView* constructionView =
       static_cast<TBuildingConstructionView*>(dialog->ResolveControlByTag(0x444c4f47));
@@ -1449,8 +1451,8 @@ void TMacViewMgr::OpenConstructionWindow(short buildingSlot, TCity* city,
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMacViewMgr_00696D68, 0xb98);
   }
   constructionView->StuffValues(buildingSlot, city, productionView);
-  dialog->ShowTurnEventDialog(1);
-  unsigned long dialogAction = dialog->RefreshTurnEventDialog();
+  dialog->SetModality(1);
+  unsigned long dialogAction = dialog->PoseModally();
   dialog->Close();
   constructionView->DoClosingAction(dialogAction);
   dialog->Free();

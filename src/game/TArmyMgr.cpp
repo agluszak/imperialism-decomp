@@ -1,10 +1,10 @@
 #include "game/TArmyMgr.h"
+#include "game/TDialogBehavior.h"
+#include "game/TWindow.h"
 #include "game/TAssetMgr.h"
 #include "game/TEvent.h"
 #include "game/TStaticText.h"
 #include "game/turn_event_dialog_provisional.h"
-
-using turn_event_dialog::TurnEventDialogNode;
 
 #include <stdlib.h>
 #include <string.h>
@@ -1899,13 +1899,13 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
     return;
   }
 
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2503));
+  TWindow* node =
+      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2503));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0xa4d);
   }
-  node->ShowTurnEventDialog(1);
+  node->SetModality(1);
 
   // MapView.rsrc view 9475's children, in the order the original fills them.
   CString scratchText;
@@ -1967,11 +1967,11 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
   label4->SetTextFromStringResource(0x2744, 8, 0);
   label4->InstallTextStyle(styleD, 0);
 
-  TEvent* content = static_cast<TEvent*>(node->QueryTurnEventContentObject());
-  if (content != nullptr) {
-    content->dispatchMessage = 0x6f6b6179; // 'okay'
+  TDialogBehavior* behavior = node->GetDialogBehavior();
+  if (behavior != nullptr) {
+    behavior->defaultCommandCode = 0x6f6b6179; // 'okay'
   }
-  node->RefreshTurnEventDialog();
+  node->PoseModally();
   node->Close();
   node->Free();
 }

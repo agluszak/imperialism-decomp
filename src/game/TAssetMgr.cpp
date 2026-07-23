@@ -1,4 +1,5 @@
 #include "game/TAssetMgr.h"
+#include "game/TWindow.h"
 
 #include "game/CAmbitDocument.h"
 #include "game/ImperialismApp.h"
