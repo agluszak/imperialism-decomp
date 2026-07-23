@@ -33,6 +33,7 @@ TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00575f60
 // TGameSetupMultiplayerPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00575f90
 TGameSetupMultiplayerPicture::~TGameSetupMultiplayerPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00575fb0

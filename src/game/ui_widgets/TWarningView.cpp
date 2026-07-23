@@ -18,6 +18,7 @@ TWarningView::TWarningView() : TPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00592930
 // TWarningView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00592960
 TWarningView::~TWarningView() {}
 
 // FUNCTION: IMPERIALISM 0x00592980

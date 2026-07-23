@@ -22,6 +22,7 @@ TLonelyTileView::TLonelyTileView() : TView() {}
 
 // SYNTHETIC: IMPERIALISM 0x00505b10
 // TLonelyTileView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00505b40
 TLonelyTileView::~TLonelyTileView() {}
 
 // FUNCTION: IMPERIALISM 0x00505b60

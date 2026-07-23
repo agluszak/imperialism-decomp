@@ -14,6 +14,7 @@ TArrowsControl::TArrowsControl() : TPicture(), timingDword90(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x005839a0
 // TArrowsControl::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005839d0
 TArrowsControl::~TArrowsControl() {}
 
 // FUNCTION: IMPERIALISM 0x005839f0

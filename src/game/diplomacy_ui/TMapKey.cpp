@@ -14,6 +14,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x00430900
 // TMapKey::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00430930
 TMapKey::~TMapKey() {}
 // SYNTHETIC: IMPERIALISM 0x004fc9c0
 // TMapKey::CreateObject

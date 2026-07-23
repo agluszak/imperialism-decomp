@@ -9,6 +9,7 @@ TCtlMgr::TCtlMgr() {}
 
 // SYNTHETIC: IMPERIALISM 0x00492de0
 // TCtlMgr::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00492ea0
 TCtlMgr::~TCtlMgr() {}
 
 // SYNTHETIC: IMPERIALISM 0x0048ea00

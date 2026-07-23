@@ -8,6 +8,8 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x666110
 class TIndustryAmtBar : public TAmtBar {
 public:
+  // FUNCTION: IMPERIALISM 0x00589240
+  ~TIndustryAmtBar() override {}
   // The city commodity/production-order slot currently driving this bar's
   // display (see TCity::tradeCommodityRecordPtrs / trailingOrderSlots).
   TProductionOrder* selectedMetricRecord;

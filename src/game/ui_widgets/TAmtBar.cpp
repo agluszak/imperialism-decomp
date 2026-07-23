@@ -40,6 +40,9 @@ TAmtBar::TAmtBar()
 // SYNTHETIC: IMPERIALISM 0x005885c0
 // TAmtBar::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x005885f0
+TAmtBar::~TAmtBar() {}
+
 // FUNCTION: IMPERIALISM 0x00588610
 void TAmtBar::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
@@ -202,5 +205,3 @@ void TAmtBar::SetStyleState(int stateValue, int modeFlag) {
   (void)stateValue;
   (void)modeFlag;
 }
-
-TAmtBar::~TAmtBar() {}

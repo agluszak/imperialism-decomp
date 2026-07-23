@@ -101,6 +101,9 @@ TCityInteriorMinister::TCityInteriorMinister() : TInteriorMinister(), orderList1
 // SYNTHETIC: IMPERIALISM 0x004be880
 // TCityInteriorMinister::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x004be8b0
+TCityInteriorMinister::~TCityInteriorMinister() {}
+
 // FUNCTION: IMPERIALISM 0x004be8d0
 void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
   InitializeBaseOrderArray(owner);
@@ -2683,5 +2686,3 @@ bool TCityInteriorMinister::TryApplyCityOrderCapabilitySelectionBySlot(short cap
   }
   return false;
 }
-
-TCityInteriorMinister::~TCityInteriorMinister() {}

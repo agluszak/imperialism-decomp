@@ -16,6 +16,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x00435690
 // TTradeBookView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004356c0
 TTradeBookView::~TTradeBookView() {}
 // SYNTHETIC: IMPERIALISM 0x005bde30
 // TTradeBookView::CreateObject

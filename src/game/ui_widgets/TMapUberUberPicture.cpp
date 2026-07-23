@@ -11,6 +11,7 @@ void TMapUberUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {
 
 // SYNTHETIC: IMPERIALISM 0x0045d2c0
 // TMapUberUberPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0045d2f0
 TMapUberUberPicture::~TMapUberUberPicture() {}
 // SYNTHETIC: IMPERIALISM 0x00596770
 // TMapUberUberPicture::CreateObject

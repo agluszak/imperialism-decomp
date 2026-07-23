@@ -12,4 +12,5 @@ TPictureText::TPictureText() : TStaticText() {}
 
 // SYNTHETIC: IMPERIALISM 0x005b5330
 // TPictureText::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005b5360
 TPictureText::~TPictureText() {}

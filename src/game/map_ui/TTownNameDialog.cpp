@@ -24,6 +24,7 @@ TTownNameDialog::TTownNameDialog() : TNoHilitePicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x0051bb40
 // TTownNameDialog::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0051bb70
 TTownNameDialog::~TTownNameDialog() {}
 
 // FUNCTION: IMPERIALISM 0x0051bb90

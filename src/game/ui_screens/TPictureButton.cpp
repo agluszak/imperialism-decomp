@@ -20,6 +20,7 @@ TPictureButton::TPictureButton() : TPicture(), timingWord92(7000) {}
 // SYNTHETIC: IMPERIALISM 0x00570820
 // TPictureButton::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x00570850
 TPictureButton::~TPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570870

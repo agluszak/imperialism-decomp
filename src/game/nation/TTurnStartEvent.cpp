@@ -5,6 +5,7 @@ void TTurnStartEvent::ApplyJoinEmpireMode2FinalizeNationNameState() {}
 
 // SYNTHETIC: IMPERIALISM 0x004e6630
 // TTurnStartEvent::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004e6660
 TTurnStartEvent::~TTurnStartEvent() {}
 // SYNTHETIC: IMPERIALISM 0x004e65e0
 // TTurnStartEvent::CreateObject

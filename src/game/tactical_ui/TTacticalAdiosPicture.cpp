@@ -12,6 +12,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x0045d430
 // TTacticalAdiosPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0045d460
 TTacticalAdiosPicture::~TTacticalAdiosPicture() {}
 // SYNTHETIC: IMPERIALISM 0x005ad430
 // TTacticalAdiosPicture::CreateObject

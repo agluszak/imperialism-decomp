@@ -17,6 +17,7 @@ TNextTradeCommand::TNextTradeCommand() : TCommand() {}
 
 // SYNTHETIC: IMPERIALISM 0x005ba430
 // TNextTradeCommand::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005ba460
 TNextTradeCommand::~TNextTradeCommand() {}
 // SYNTHETIC: IMPERIALISM 0x005ba370
 // TNextTradeCommand::CreateObject

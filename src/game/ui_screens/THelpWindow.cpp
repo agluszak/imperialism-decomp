@@ -18,6 +18,7 @@ THelpWindow::THelpWindow() : TFloatWindow() {}
 
 // SYNTHETIC: IMPERIALISM 0x00504c20
 // THelpWindow::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00504c50
 THelpWindow::~THelpWindow() {}
 
 // slot 0x28 — TFloatWindow::Close override: base close/reset, then drop the

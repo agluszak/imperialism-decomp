@@ -7,7 +7,7 @@ build_dir := "build-msvc500"
 runtime_test_build_dir := "build-runtime-tests"
 docker_image := "imperialism-msvc500"
 lint_build_dir := "build-clang"
-cmake_flags := "-DCMAKE_BUILD_TYPE=RelWithDebInfo -DIMPERIALISM_LINK_MFC=ON -DIMPERIALISM_MATCH_FLAGS_CSV=/Oy,/Ob1"
+cmake_flags := "-DCMAKE_BUILD_TYPE=RelWithDebInfo -DIMPERIALISM_LINK_MFC=ON -DIMPERIALISM_MATCH_FLAGS_CSV=/Oy,/Ob1 -DIMPERIALISM_MATCH_LINK_FLAGS_CSV=/OPT:NOREF,/OPT:NOICF"
 class_discovery_classes := "TGreatPower,TAutoGreatPower"
 
 # The Ghidra project is vendored in-repo; only GHIDRA_INSTALL_DIR is machine-specific (.env).

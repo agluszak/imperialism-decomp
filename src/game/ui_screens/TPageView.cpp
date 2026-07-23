@@ -38,6 +38,7 @@ TPageView::TPageView() {
 
 // SYNTHETIC: IMPERIALISM 0x0056fa00
 // TPageView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0056fa30
 TPageView::~TPageView() {}
 
 // FUNCTION: IMPERIALISM 0x0056fa50

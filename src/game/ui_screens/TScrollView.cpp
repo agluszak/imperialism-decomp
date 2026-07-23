@@ -7,6 +7,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x0043d7f0
 // TScrollView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0043d820
 TScrollView::~TScrollView() {}
 // SYNTHETIC: IMPERIALISM 0x00573c20
 // TScrollView::CreateObject

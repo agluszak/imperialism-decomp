@@ -6,6 +6,8 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x666558
 class TRailAmtBar : public TIndustryAmtBar {
 public:
+  // FUNCTION: IMPERIALISM 0x0058a000
+  ~TRailAmtBar() override {}
   TRailAmtBar();
   DECLARE_DYNCREATE(TRailAmtBar)
 

@@ -113,6 +113,7 @@ short TSortedPtrList::Compare(void* a, void* b) {
 
 // SYNTHETIC: IMPERIALISM 0x00488390
 // TSortedPtrList::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004883c0
 TSortedPtrList::~TSortedPtrList() {}
 
 TSortedPtrList::TSortedPtrList() {}

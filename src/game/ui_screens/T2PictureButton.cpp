@@ -16,6 +16,7 @@ T2PictureButton::T2PictureButton() : TPictureButton() {}
 // SYNTHETIC: IMPERIALISM 0x00570be0
 // T2PictureButton::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x00570c10
 T2PictureButton::~T2PictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570c30

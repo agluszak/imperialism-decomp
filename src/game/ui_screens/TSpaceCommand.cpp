@@ -8,6 +8,7 @@ void TSpaceCommand::DoIt() {
 
 // SYNTHETIC: IMPERIALISM 0x00575210
 // TSpaceCommand::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00575240
 TSpaceCommand::~TSpaceCommand() {}
 // SYNTHETIC: IMPERIALISM 0x00575180
 // TSpaceCommand::CreateObject

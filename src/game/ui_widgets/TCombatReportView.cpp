@@ -52,6 +52,9 @@ TCombatReportView::TCombatReportView() : TPicture() {}
 // SYNTHETIC: IMPERIALISM 0x0058c900
 // TCombatReportView::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x0058c930
+TCombatReportView::~TCombatReportView() {}
+
 // FUNCTION: IMPERIALISM 0x0058c950
 void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   CString reportText;
@@ -408,5 +411,3 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
 
   TControl::DoEvent(commandId, sourceHandler, event);
 }
-
-TCombatReportView::~TCombatReportView() {}

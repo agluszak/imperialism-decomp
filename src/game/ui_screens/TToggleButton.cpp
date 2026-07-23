@@ -20,6 +20,9 @@ TToggleButton::TToggleButton() : TPicture() {}
 // SYNTHETIC: IMPERIALISM 0x00571120
 // TToggleButton::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x00571150
+TToggleButton::~TToggleButton() {}
+
 // FUNCTION: IMPERIALISM 0x00571170
 void TToggleButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId != kControlCommandHiliteOff) {
@@ -100,8 +103,6 @@ char TToggleButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event, C
 bool TToggleButton::IsSelected() {
   return this->IsActionable();
 }
-
-TToggleButton::~TToggleButton() {}
 
 // FUNCTION: IMPERIALISM 0x00571350
 void TToggleButton::Select(bool isPressed, bool notifyParent) {

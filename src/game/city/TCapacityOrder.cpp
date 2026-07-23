@@ -219,6 +219,7 @@ IMPLEMENT_DYNCREATE(TCapacityOrder, TItemOrder)
 // SYNTHETIC: IMPERIALISM 0x004b8d00
 // TCapacityOrder::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x004b8d30
 TCapacityOrder::~TCapacityOrder() {}
 // FUNCTION: IMPERIALISM 0x004b8d50
 void TCapacityOrder::ICapacityOrder(TCity* city, short resourceType, short primaryInputResource,

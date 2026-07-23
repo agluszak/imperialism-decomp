@@ -149,6 +149,7 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
 
 // SYNTHETIC: IMPERIALISM 0x0057bb50
 // TSimMgr::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0057bb80
 TSimMgr::~TSimMgr() {}
 
 // FUNCTION: IMPERIALISM 0x0057bbf0

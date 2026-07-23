@@ -75,8 +75,6 @@ static const int kHelpSetIndexBootstrapRecordCount =
 
 IMPLEMENT_DYNCREATE(THelpMgr, TObject)
 
-THelpMgr::~THelpMgr() {}
-
 // FUNCTION: IMPERIALISM 0x005005e0
 THelpMgr::THelpMgr() : TObject() {
   pendingDialogView8 = 0;
@@ -96,6 +94,9 @@ THelpMgr::THelpMgr() : TObject() {
 
 // SYNTHETIC: IMPERIALISM 0x00500630
 // THelpMgr::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00500660
+THelpMgr::~THelpMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00500680
 void THelpMgr::InitializeHelpManagerIndexArrayAndState() {

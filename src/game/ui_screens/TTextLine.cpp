@@ -23,6 +23,7 @@ TTextLine::TTextLine() : TLineData() {
 
 // SYNTHETIC: IMPERIALISM 0x00570310
 // TTextLine::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00570340
 TTextLine::~TTextLine() {}
 
 // FUNCTION: IMPERIALISM 0x00570390

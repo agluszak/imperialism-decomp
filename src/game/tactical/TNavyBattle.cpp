@@ -17,6 +17,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x005a54d0
 // TNavyBattle::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005a5500
 TNavyBattle::~TNavyBattle() {}
 
 // SYNTHETIC: IMPERIALISM 0x005a5520

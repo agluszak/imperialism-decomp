@@ -19,6 +19,7 @@ void TMiniCivView::Hilite() {}
 
 // SYNTHETIC: IMPERIALISM 0x004ab820
 // TMiniCivView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004ab850
 TMiniCivView::~TMiniCivView() {}
 // SYNTHETIC: IMPERIALISM 0x004ab8c0
 // TMiniCivView::CreateObject

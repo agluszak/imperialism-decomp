@@ -909,6 +909,7 @@ void TTacticalBattleView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex
 
 // SYNTHETIC: IMPERIALISM 0x005a83e0
 // TTacticalBattleView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005a8410
 TTacticalBattleView::~TTacticalBattleView() {}
 
 // FUNCTION: IMPERIALISM 0x005a8430

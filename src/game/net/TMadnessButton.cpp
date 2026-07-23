@@ -3,6 +3,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x0043d720
 // TMadnessButton::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0043d750
 TMadnessButton::~TMadnessButton() {}
 // SYNTHETIC: IMPERIALISM 0x0054ea30
 // TMadnessButton::CreateObject

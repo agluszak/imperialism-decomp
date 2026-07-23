@@ -16,6 +16,7 @@ TUnitsView::TUnitsView() : TBuildingView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004c8000
 // TUnitsView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004c8030
 TUnitsView::~TUnitsView() {}
 
 // FUNCTION: IMPERIALISM 0x004c8050

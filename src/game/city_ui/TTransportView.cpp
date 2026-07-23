@@ -12,6 +12,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004bd370
 // TTransportView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004bd3a0
 TTransportView::~TTransportView() {}
 // SYNTHETIC: IMPERIALISM 0x004bd300
 // TTransportView::CreateObject

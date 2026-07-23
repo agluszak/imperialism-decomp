@@ -6,6 +6,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x0049f480
 // TCivAnimation::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0049f4b0
 TCivAnimation::~TCivAnimation() {}
 // SYNTHETIC: IMPERIALISM 0x0049f450
 // TCivAnimation::CreateObject

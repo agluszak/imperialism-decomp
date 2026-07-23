@@ -135,6 +135,78 @@ Interpretation:
   `config/template_aliases.csv` (validated by `just template-alias-check`; discover
   candidates with `just mfc-collection-audit <Class|0xCTOR>`).
 
+### ICF matrix (2026-07-23) — /OPT:NOREF,/OPT:NOICF pinned as the matching baseline
+
+- **LINK 5.00.7022 supports ICF.** Its usage string advertises
+  `/OPT:{REF|NOREF|ICF[,iterations]|NOICF}` — ICF is not a VC6 novelty. Combined with
+  the retail image's incremental-link evidence (the 0x401000–0x409ab5 ILT plus stale
+  5-byte `jmp` islands with nop padding at functions' pre-relink addresses), this fully
+  explains the original's folded/aliased leaf destructors: 228 scalar-deleting-dtor
+  call chains resolve through islands into just 10 shared bodies (most leaf views end
+  at `TView::~TView` 0x48a9d0). The islands encode the original developers' relink
+  history, so **no clean link — ours or theirs — can reproduce those addresses**;
+  per-function pairing with named island claims is the attainable maximum (see the
+  ctors-dtors-eh skill note of the same date).
+- Four isolated configs, `/Oy /Ob1 /OPT:NOREF` constant (scratch harness: per-config
+  `build-icf-X` dir, `just build_dir=X cmake_flags=... _build-msvc500-unlocked`):
+
+  | config | extra flags | exact | original-only | vtables 100% | .text |
+  |---|---|---|---|---|---|
+  | A | `/OPT:NOICF` | 3778 (+0) | 214 (+0) | 444/444 | byte-identical to baseline |
+  | B | `/OPT:ICF` | 3205 (−573) | 1400 (+1186) | 4/444 | — |
+  | C | `/Gy /OPT:NOICF` | 3778 (+0) | 214 (+0) | 444/444 | byte-identical to baseline |
+  | D | `/Gy /OPT:ICF` | 3205 (−573) | 1400 (+1186) | 4/444 | — |
+
+- Conclusions: the effective default of our link was already NOREF+NOICF (A's `.text`
+  is byte-identical); it is now pinned explicitly in the justfile `cmake_flags`
+  (`IMPERIALISM_MATCH_LINK_FLAGS_CSV=/OPT:NOREF,/OPT:NOICF`) so a toolchain or CMake
+  default change can never silently alter folding. `/Gy` is a no-op for this codebase
+  (class members and inlines are already COMDATs). Enabling ICF on our side is
+  catastrophic for the comparison surface — hundreds of markers collapse onto folded
+  bodies and 440/444 vtables lose slot pairings — while the *average similarity* rises
+  (+4.13 pp) because honest low-scoring tiny pairings disappear: never judge a linker
+  experiment by the unweighted average. Fold-awareness belongs in reccmp equivalence
+  metadata (bd 5jjn), never in our link flags; the VC5 service-pack axis is bd fh2r.
+
+### VC5 service-pack probe (2026-07-23) — RTM confirmed on three independent axes
+
+Toolchains from github.com/archaic-msvc (`msvc500`, `msvc500sp1`, `msvc500sp2`,
+`msvc500sp3`), probed by bind-mounting each over `C:\msvc` in the stock docker image
+(no image rebuild needed).
+
+- Binary differential: `cl.exe` (driver) is identical in all four; **SP1 and SP2 ship
+  byte-identical compilers/linkers** (c1xx 11.00.7149, LINK 5.02.7132, PE stamps
+  1997-05/06); SP3 is c1xx 11.00.7307 + LINK 5.10.7303 (PE stamps 1997-11-04). RTM is
+  c1xx 11.00.0000-family + LINK 5.00.7022 (1997-01-23).
+- **The retail exe rules out every SP without building anything**: its PE linker-version
+  stamp is 5.0 (SP1/2 stamp 5.2, SP3 stamps 5.10) and its link timestamp is
+  **1997-10-31 — four days before SP3's binaries were even built**.
+- Full-build measurements (pinned `/Oy /Ob1 /OPT:NOREF /OPT:NOICF`) confirm empirically:
+  SP1: exact 3778 -> 3520 (−258), avg −2.26 pp; SP3: exact 3778 -> 3516 (−262),
+  avg −2.26 pp; vtables stay 444/444 in both. The SP compilers change codegen broadly
+  and match strictly worse.
+- Conclusion: **the retail toolchain is VC5 RTM (cl 11.00.7022 / LINK 5.00.7022); keep
+  it.** The "standalone body + inlined users" emission cases are not compiler-version
+  artifacts — they are inherent /Ob1 behavior, to be handled by source placement and
+  equivalence metadata, not by switching toolchains.
+- Per-function anatomy of the SP1 delta (rules out "we overfit to RTM and SP1 is the
+  real toolchain"): 817 functions regress (190 game-range lost 100%; a further 62
+  lost-exact rows sit in the MFC/CRT range and are **library contamination** — the SP
+  repos ship a different `nafxcw.lib`, so a pure compiler probe would mount only
+  `bin/`). Size-weighted similarity drops 53.08% -> 49.94% (−3.13 pp, worse than the
+  −2.26 pp unweighted drop) because the breakage concentrates in big mechanical
+  bodies whose source has essentially one plausible form — e.g. `TCity::WriteTo`
+  (915B, 100% -> 20.9%): retail/RTM cache a repeated virtual-call pointer in EDI and
+  reuse `call edi`; SP1 re-reads the vtable and re-loads `call [eax+0x78]` per call.
+  Serializers like that cannot be "overfit", so retail bytes = RTM output. On the
+  other side, 168 functions improve under SP1 but they are almost entirely our
+  worst-modeled bodies (raw 20-40%, inconclusive/mismatch) drifting closer by
+  optimizer accident; the only two that reach 100% under SP1
+  (`ComputeMinisterSkillFloatSlot89` 0x4e05d0, `ComputeNationRuntimeAdvisoryMetricCase6`
+  0x4e0770) are **already proven `effective` under RTM** (commutative operand order /
+  load folding) — SP1 merely emits the byte order the proof already declared
+  equivalent. Verdict: zero genuine SP1-only matches; the hypothesis is dead.
+
 ## Experiment: template-emission compiler matrix
 
 Harness: `just template-emission-matrix` (tools/workflow/template_emission_matrix.py

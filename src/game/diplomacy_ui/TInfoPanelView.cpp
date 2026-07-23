@@ -21,6 +21,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004304d0
 // TInfoPanelView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00430500
 TInfoPanelView::~TInfoPanelView() {}
 // SYNTHETIC: IMPERIALISM 0x004f9f60
 // TInfoPanelView::CreateObject

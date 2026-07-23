@@ -182,6 +182,7 @@ RgnHandle TMacViewMgr::GetClipRegionSlotByIndex(short index) {
 
 // SYNTHETIC: IMPERIALISM 0x00509e30
 // TMacViewMgr::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00509e60
 TMacViewMgr::~TMacViewMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00509f20

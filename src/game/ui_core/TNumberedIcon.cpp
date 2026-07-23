@@ -13,6 +13,7 @@ TNumberedIcon::TNumberedIcon() : TMegaPicture(), numberTextAc(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x005073d0
 // TNumberedIcon::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00507400
 TNumberedIcon::~TNumberedIcon() {}
 
 // FUNCTION: IMPERIALISM 0x005074e0

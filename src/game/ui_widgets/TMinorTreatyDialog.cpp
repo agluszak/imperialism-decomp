@@ -14,6 +14,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x005b4020
 // TMinorTreatyDialog::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005b4050
 TMinorTreatyDialog::~TMinorTreatyDialog() {}
 // SYNTHETIC: IMPERIALISM 0x005b3f90
 // TMinorTreatyDialog::CreateObject

@@ -143,6 +143,7 @@ extern int g_regionSeedGridCols_006a38f0;
 
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
+extern char s_szTurnSummaryIndent_00696790[]; // "      " @ 0x696790
 
 extern char s_szTurnHistorySeparator_00699320[];
 

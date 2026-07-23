@@ -14,6 +14,8 @@ class TStream;
 // VTABLE: IMPERIALISM 0x00649068
 class TPtrList : public TSortedPtrList {
 public:
+  // FUNCTION: IMPERIALISM 0x004884f0
+  ~TPtrList() override {}
   DECLARE_DYNCREATE(TPtrList)
   TPtrList();
 

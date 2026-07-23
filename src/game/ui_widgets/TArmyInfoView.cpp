@@ -19,6 +19,7 @@ TArmyInfoView::TArmyInfoView() : TPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x005915d0
 // TArmyInfoView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00591600
 TArmyInfoView::~TArmyInfoView() {}
 
 // PARTIAL PORT of 0x591620 (1,506 bytes). Everything below is read off the listing:

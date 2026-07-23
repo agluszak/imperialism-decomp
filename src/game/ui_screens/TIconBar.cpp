@@ -17,6 +17,7 @@ TIconBar::TIconBar() : TNoHilitePicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00506020
 // TIconBar::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00506050
 TIconBar::~TIconBar() {}
 
 // FUNCTION: IMPERIALISM 0x00506070

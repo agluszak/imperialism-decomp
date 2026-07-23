@@ -7,6 +7,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004ff280
 // TGWorldPeeker::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004ff2b0
 TGWorldPeeker::~TGWorldPeeker() {}
 // SYNTHETIC: IMPERIALISM 0x004ff1f0
 // TGWorldPeeker::CreateObject

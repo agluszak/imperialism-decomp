@@ -34,13 +34,15 @@ void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 short TWorldView::QueryMinusOneWordSlot77() {
   return -1;
 }
+// FUNCTION: IMPERIALISM 0x00519b10
+TWorldView::~TWorldView() {}
+// SYNTHETIC: IMPERIALISM 0x00594f20
+// TWorldView::CreateObject
 
 // FUNCTION: IMPERIALISM 0x00594fc0
 void TWorldView::CenterOn(int tileIndex) {
   (void)tileIndex;
 }
-// SYNTHETIC: IMPERIALISM 0x00594f20
-// TWorldView::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x00594fe0
 // TWorldView::GetRuntimeClass
@@ -58,7 +60,6 @@ TWorldView::TWorldView() {
 
 // SYNTHETIC: IMPERIALISM 0x00595040
 // TWorldView::`scalar deleting destructor'
-TWorldView::~TWorldView() {}
 
 // FUNCTION: IMPERIALISM 0x00595090
 void TWorldView::DoPostCreate(int arg) {

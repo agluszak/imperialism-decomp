@@ -20,6 +20,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x005b1200
 // TTechItemView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005b1230
 TTechItemView::~TTechItemView() {}
 // SYNTHETIC: IMPERIALISM 0x005b1250
 // TTechItemView::CreateObject

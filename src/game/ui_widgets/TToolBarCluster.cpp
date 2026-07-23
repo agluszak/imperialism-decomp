@@ -282,6 +282,7 @@ TToolBarCluster::TToolBarCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x00584e50
 // TToolBarCluster::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00584e80
 TToolBarCluster::~TToolBarCluster() {}
 
 // Resolves the turn-event dialog node for message context 0x102c (the "capabilities" dialog),

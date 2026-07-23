@@ -14,6 +14,7 @@ TLaborPool::TLaborPool()
 
 // SYNTHETIC: IMPERIALISM 0x004b2160
 // TLaborPool::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004b2190
 TLaborPool::~TLaborPool() {}
 
 // FUNCTION: IMPERIALISM 0x004b21d0

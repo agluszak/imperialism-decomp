@@ -34,6 +34,7 @@ TArmyUnitView::TArmyUnitView() : TView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004a9510
 // TArmyUnitView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004a9540
 TArmyUnitView::~TArmyUnitView() {}
 
 // FUNCTION: IMPERIALISM 0x004a95b0

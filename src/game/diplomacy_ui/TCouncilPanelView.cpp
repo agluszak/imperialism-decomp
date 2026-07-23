@@ -11,6 +11,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x00430570
 // TCouncilPanelView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004305a0
 TCouncilPanelView::~TCouncilPanelView() {}
 // SYNTHETIC: IMPERIALISM 0x004faf80
 // TCouncilPanelView::CreateObject

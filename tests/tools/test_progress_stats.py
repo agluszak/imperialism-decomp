@@ -114,8 +114,24 @@ class ProgressStatsTests(unittest.TestCase):
                 "exact_fun_count": 1,
                 "not_exact_compared_count": 1,
                 "avg_matching_pct": 62.5,
+                "size_weighted_matching_pct": 62.5,
             },
         )
+
+    def test_size_weighted_similarity_weights_by_original_size(self) -> None:
+        self.write_report(
+            [
+                make_match("tiny_exact", 0x401000, 1.0),
+                make_match("big_mismatch", 0x402000, 0.25),
+            ]
+        )
+        counts = parse_report_counts(
+            self.report_path, sizes={0x401000: 100, 0x402000: 300}
+        )
+        # (1.0*100 + 0.25*300) / 400 = 43.75 — the big weak body dominates,
+        # unlike the unweighted mean (62.5).
+        self.assertEqual(counts["avg_matching_pct"], 62.5)
+        self.assertAlmostEqual(counts["size_weighted_matching_pct"], 43.75)
 
     def test_counts_only_functions_and_excludes_stubs(self) -> None:
         self.write_report(
@@ -139,6 +155,7 @@ class ProgressStatsTests(unittest.TestCase):
                 "exact_fun_count": 1,
                 "not_exact_compared_count": 1,
                 "avg_matching_pct": 62.5,
+                "size_weighted_matching_pct": 62.5,
             },
         )
         self.assertEqual(

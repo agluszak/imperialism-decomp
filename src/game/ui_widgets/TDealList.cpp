@@ -17,6 +17,7 @@ TDealList::TDealList() : TSortedPtrList() {}
 
 // SYNTHETIC: IMPERIALISM 0x005ba1f0
 // TDealList::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005ba220
 TDealList::~TDealList() {}
 
 // FUNCTION: IMPERIALISM 0x005ba260

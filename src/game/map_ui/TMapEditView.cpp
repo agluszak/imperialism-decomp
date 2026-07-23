@@ -47,6 +47,7 @@ void ClearTileBorderMasks(TTerrainStateRecordView& tile) {
 
 // SYNTHETIC: IMPERIALISM 0x0051cbf0
 // TMapEditView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0051cc20
 TMapEditView::~TMapEditView() {}
 // SYNTHETIC: IMPERIALISM 0x0051cab0
 // TMapEditView::CreateObject

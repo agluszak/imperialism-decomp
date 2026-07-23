@@ -12,4 +12,5 @@ TTerrainInfoDialog::TTerrainInfoDialog() : TNoHilitePicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x0051b170
 // TTerrainInfoDialog::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0051b1a0
 TTerrainInfoDialog::~TTerrainInfoDialog() {}

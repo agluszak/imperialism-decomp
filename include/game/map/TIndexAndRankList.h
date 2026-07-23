@@ -6,6 +6,8 @@
 // VTABLE: IMPERIALISM 0x00659c58
 class TIndexAndRankList : public TSortedPtrList {
 public:
+  // FUNCTION: IMPERIALISM 0x005348d0
+  ~TIndexAndRankList() override {}
   DECLARE_DYNCREATE(TIndexAndRankList)
 
   TIndexAndRankList();

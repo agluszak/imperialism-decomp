@@ -6,6 +6,8 @@
 // VTABLE: IMPERIALISM 0x00650808
 class TInteriorMinister : public TMinister {
 public:
+  // FUNCTION: IMPERIALISM 0x004be230
+  ~TInteriorMinister() override {}
   // In-class so VC5 can inline the immediate TMinister construction into concrete
   // city-minister constructors; it also emits the original standalone copy.
   // FUNCTION: IMPERIALISM 0x004be1d0

@@ -2373,6 +2373,9 @@ int g_mapActionContextDisplayNameCacheStep_006984bc = 7;
 // Empty content: reccmp pairs by the // GLOBAL address marker, not by value. ===
 // GLOBAL: IMPERIALISM 0x00695794
 char s_szSpaceSeparator_00695794[] = " ";
+// Six-space indent prefixed to each great-power turn-summary line (0x4e2b70).
+// GLOBAL: IMPERIALISM 0x00696790
+char s_szTurnSummaryIndent_00696790[] = "      ";
 // Retail garrison-close easter-egg names. The three-byte gap after "Frog" is alignment
 // padding before the adjacent "Snidely" string.
 // GLOBAL: IMPERIALISM 0x00695844

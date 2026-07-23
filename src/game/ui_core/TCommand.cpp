@@ -24,6 +24,7 @@ TCommand::TCommand() : targetContext(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00487850
 // TCommand::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00487880
 TCommand::~TCommand() {}
 
 // FUNCTION: IMPERIALISM 0x004878a0

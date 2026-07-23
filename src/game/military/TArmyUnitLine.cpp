@@ -26,6 +26,7 @@ TArmyUnitLine::TArmyUnitLine() : TLineData() {}
 
 // SYNTHETIC: IMPERIALISM 0x004a8d60
 // TArmyUnitLine::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004a8d90
 TArmyUnitLine::~TArmyUnitLine() {}
 
 // FUNCTION: IMPERIALISM 0x004a8df0

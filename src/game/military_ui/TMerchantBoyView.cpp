@@ -9,6 +9,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004af710
 // TMerchantBoyView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004af740
 TMerchantBoyView::~TMerchantBoyView() {}
 // SYNTHETIC: IMPERIALISM 0x004af6a0
 // TMerchantBoyView::CreateObject

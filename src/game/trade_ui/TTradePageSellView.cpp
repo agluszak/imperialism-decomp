@@ -12,6 +12,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004355c0
 // TTradePageSellView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004355f0
 TTradePageSellView::~TTradePageSellView() {}
 // SYNTHETIC: IMPERIALISM 0x005bcb90
 // TTradePageSellView::CreateObject

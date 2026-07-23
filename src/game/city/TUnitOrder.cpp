@@ -22,6 +22,7 @@ TUnitOrder::TUnitOrder() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b6f90
 // TUnitOrder::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004b6fc0
 TUnitOrder::~TUnitOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b6fe0

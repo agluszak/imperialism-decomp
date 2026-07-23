@@ -2,6 +2,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x005b27d0
 // TGameSetupDialog::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005b2800
 TGameSetupDialog::~TGameSetupDialog() {}
 // SYNTHETIC: IMPERIALISM 0x005b2740
 // TGameSetupDialog::CreateObject

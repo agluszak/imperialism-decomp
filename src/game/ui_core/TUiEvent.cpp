@@ -1,11 +1,12 @@
 #include "game/ui_core/TUiEvent.h"
-
-// FUNCTION: IMPERIALISM 0x004845a0
-TUiEvent::TUiEvent() : TEvent() {}
+// FUNCTION: IMPERIALISM 0x00483ab0
+TUiEvent::~TUiEvent() {}
 
 // SYNTHETIC: IMPERIALISM 0x00483ad0
 // TUiEvent::`scalar deleting destructor'
-TUiEvent::~TUiEvent() {}
+
+// FUNCTION: IMPERIALISM 0x004845a0
+TUiEvent::TUiEvent() : TEvent() {}
 
 // Pops the head node off a singly-linked cell (advancing the cell to node->next) and returns
 // the node's data slot (node+8). Same shape as PopSinglyLinkedListHeadPointer (0x4924c0).

@@ -18,6 +18,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x0043d870
 // TStatusPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0043d8a0
 TStatusPicture::~TStatusPicture() {}
 // SYNTHETIC: IMPERIALISM 0x00593e80
 // TStatusPicture::CreateObject

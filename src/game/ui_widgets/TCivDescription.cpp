@@ -44,6 +44,12 @@ typedef void(__cdecl* LocalizationFormatFn)(int tokenId, int arg, void* outTextR
 
 } // namespace
 
+// FUNCTION: IMPERIALISM 0x0044a770
+TCivDescription::TCivDescription() : TView() {
+  selectedCivilianClass = -1;
+  legendInitialized = 0;
+}
+
 // The ordinary destructor and the scalar deleting destructor below are both
 // compiler-generated (implicit) from real inheritance — never hand-written. The real
 // 30-byte body is at 0x0044a7a0; 0x00407f4a is its 5-byte ILT jmp thunk (the vtable slot
@@ -53,14 +59,11 @@ typedef void(__cdecl* LocalizationFormatFn)(int tokenId, int arg, void* outTextR
 // SYNTHETIC: IMPERIALISM 0x0044a7a0
 // TCivDescription::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x0044a7d0
+TCivDescription::~TCivDescription() {}
+
 // SYNTHETIC: IMPERIALISM 0x0058f050
 // TCivDescription::CreateObject
-
-// FUNCTION: IMPERIALISM 0x0044a770
-TCivDescription::TCivDescription() : TView() {
-  selectedCivilianClass = -1;
-  legendInitialized = 0;
-}
 // SYNTHETIC: IMPERIALISM 0x0058f0f0
 // TCivDescription::GetRuntimeClass
 
@@ -433,5 +436,3 @@ void TCivDescription::DrawProspector(RECT* bounds) {
 void TCivDescription::DrawDeveloper(RECT* bounds) {
   (void)bounds;
 }
-
-TCivDescription::~TCivDescription() {}

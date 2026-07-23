@@ -31,6 +31,7 @@ TOffersPanelView::TOffersPanelView() : TPanelView(), acceptButton(0), rejectButt
 
 // SYNTHETIC: IMPERIALISM 0x004f8fa0
 // TOffersPanelView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004f8fd0
 TOffersPanelView::~TOffersPanelView() {}
 
 // FUNCTION: IMPERIALISM 0x004f8ff0

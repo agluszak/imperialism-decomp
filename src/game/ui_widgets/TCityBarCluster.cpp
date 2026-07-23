@@ -32,6 +32,7 @@ TCityBarCluster::TCityBarCluster() : TUberCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x00586660
 // TCityBarCluster::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00586690
 TCityBarCluster::~TCityBarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x005866b0

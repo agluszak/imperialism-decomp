@@ -6,17 +6,6 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// FUNCTION: IMPERIALISM 0x005077c0
-TNumberedItem::TNumberedItem() : TMegaPicture() {}
-
-// FUNCTION: IMPERIALISM 0x00507850
-void TNumberedItem::InitializeNumberedResourceItem(TView* panel, int* position, int* size,
-                                                   short resourceIconIndex, short count) {
-  InitializeUiResourceEntryFrameAndParent(panel->resourceContext, panel, position, size, 5, 5, 0);
-  iconRowIndexAc = resourceIconIndex;
-  badgeCountAe = count;
-}
-
 // SYNTHETIC: IMPERIALISM 0x00507700
 // TNumberedItem::CreateObject
 
@@ -26,9 +15,21 @@ void TNumberedItem::InitializeNumberedResourceItem(TView* panel, int* position, 
 // Binary descriptor base is TView (0x6495a0), not TMegaPicture — original macro arg.
 IMPLEMENT_DYNCREATE(TNumberedItem, TView)
 
+// FUNCTION: IMPERIALISM 0x005077c0
+TNumberedItem::TNumberedItem() : TMegaPicture() {}
+
 // SYNTHETIC: IMPERIALISM 0x00507800
 // TNumberedItem::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00507830
 TNumberedItem::~TNumberedItem() {}
+
+// FUNCTION: IMPERIALISM 0x00507850
+void TNumberedItem::InitializeNumberedResourceItem(TView* panel, int* position, int* size,
+                                                   short resourceIconIndex, short count) {
+  InitializeUiResourceEntryFrameAndParent(panel->resourceContext, panel, position, size, 5, 5, 0);
+  iconRowIndexAc = resourceIconIndex;
+  badgeCountAe = count;
+}
 
 // Draws the numbered badge background (row iconRowIndexAc of a shared icon strip)
 // then the badge count as decimal text, positioned to clear more digits' worth of

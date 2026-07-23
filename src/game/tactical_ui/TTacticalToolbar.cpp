@@ -21,6 +21,7 @@ void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView
 
 // SYNTHETIC: IMPERIALISM 0x0045d360
 // TTacticalToolbar::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0045d390
 TTacticalToolbar::~TTacticalToolbar() {}
 // SYNTHETIC: IMPERIALISM 0x005ac780
 // TTacticalToolbar::CreateObject

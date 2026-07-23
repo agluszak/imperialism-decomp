@@ -25,6 +25,7 @@ TEngineerDialog::TEngineerDialog() {
 // SYNTHETIC: IMPERIALISM 0x004d0590
 // TEngineerDialog::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x004d05c0
 TEngineerDialog::~TEngineerDialog() {}
 
 // FUNCTION: IMPERIALISM 0x004d05e0

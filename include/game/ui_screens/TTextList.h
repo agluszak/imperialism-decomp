@@ -12,6 +12,8 @@ struct TTextListItem {
 // VTABLE: IMPERIALISM 0x00644778
 class TTextList : public TView {
 public:
+  // FUNCTION: IMPERIALISM 0x0045af60
+  ~TTextList() override {}
   DECLARE_DYNCREATE(TTextList)
   TTextListItem items[64];
   int totalItems;

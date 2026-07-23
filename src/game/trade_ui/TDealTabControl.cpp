@@ -9,6 +9,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x00435540
 // TDealTabControl::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00435570
 TDealTabControl::~TDealTabControl() {}
 // SYNTHETIC: IMPERIALISM 0x005bc690
 // TDealTabControl::CreateObject

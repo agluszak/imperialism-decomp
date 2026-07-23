@@ -158,6 +158,7 @@ TArmyMgr::TArmyMgr() {
 
 // SYNTHETIC: IMPERIALISM 0x004a18a0
 // TArmyMgr::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004a18d0
 TArmyMgr::~TArmyMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004a18f0

@@ -21,6 +21,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x00435710
 // TNewspaperView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00435740
 TNewspaperView::~TNewspaperView() {}
 // SYNTHETIC: IMPERIALISM 0x0055d160
 // TNewspaperView::CreateObject
