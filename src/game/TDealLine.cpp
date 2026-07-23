@@ -59,12 +59,12 @@ void TDealLine::InstallViews(TView* panel, int* offsetLayout) {
         g_pNationInteractionStateManager->QueryProposalWeightSlot4C(commoditySlot10);
     if (unitPriceOrStatus != currentMarketPrice) {
       g_pSimMgr->NumToCurrency(unitPriceOrStatus, &priceText);
-      g_pSimMgr->GetString(0x2740, dealKind == 1 ? 0x12 : 0x13, &templateText);
+      g_pSimMgr->GetString(0x2740, dealKind == kTrackedSlotOfferEntry ? 0x12 : 0x13, &templateText);
       scanBracketExpressions(g_pSimMgr, &displayText, static_cast<LPCSTR>(templateText),
                              static_cast<LPCSTR>(amountText), static_cast<LPCSTR>(commodityName),
                              static_cast<LPCSTR>(counterpartyName), static_cast<LPCSTR>(priceText));
     } else {
-      g_pSimMgr->GetString(0x2740, dealKind == 1 ? 0x14 : 0x15, &templateText);
+      g_pSimMgr->GetString(0x2740, dealKind == kTrackedSlotOfferEntry ? 0x14 : 0x15, &templateText);
       scanBracketExpressions(g_pSimMgr, &displayText, static_cast<LPCSTR>(templateText),
                              static_cast<LPCSTR>(amountText), static_cast<LPCSTR>(commodityName),
                              static_cast<LPCSTR>(counterpartyName));

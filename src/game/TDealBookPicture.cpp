@@ -192,7 +192,7 @@ void TDealBookPicture::CalculatePages() {
 
     TPageView* page;
     int* row;
-    if (kind == 1) {
+    if (kind == kTrackedSlotOfferEntry) {
       page = boughtTradesView98;
       row = &buyRow;
     } else {

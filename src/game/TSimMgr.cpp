@@ -955,7 +955,8 @@ void TSimMgr::DoMilitary() {
 
 // FUNCTION: IMPERIALISM 0x0057f3c0
 void TSimMgr::DoTrade() {
-  g_pUiRuntimeContext->DispatchTurnEvent(0x2134, activeNationSlot);
+  g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOfferSheet),
+                                         activeNationSlot);
 
   for (int nationSlot = 6; nationSlot >= 0; --nationSlot) {
     if (g_apNationStates[nationSlot] != 0) {
@@ -1357,22 +1358,22 @@ void TSimMgr::UpdatePersistentTopTenNationScores() {
 
 // The "Done/advance" turn-flow bootstrap primitive (free __cdecl in the TSimMgr TU): the
 // single writer of g_bTurnFlowBootstrapComplete and the funnel every menu/score-screen advance routes
-// through. eventCode 0x5dd is the "start new game" scenario-setup path: it soft-resets
+// through. eventCode kTurnEventRandomGameSetup is the "start new game" scenario-setup path: it soft-resets
 // the EXISTING TSimMgr (the reset block is the original's header-inline prefix of
 // InitializeTurnFlowStateDefaults, expanded in place at 0x58191a) and jumps the turn
 // state machine to state 3. Every other code tears the manager down and rebuilds it
 // from scratch.
 // FUNCTION: IMPERIALISM 0x00581870
-void ReinitializeGameFlowAndPostTurnEventCode(int eventCode) {
+void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
   if (g_pHelpMgr != 0) {
-    g_pHelpMgr->HandlePendingEventActivationByCode(0x5dc);
+    g_pHelpMgr->HandlePendingEventActivationByCode(kTurnEventMainMenu);
   }
   if (g_pSimMgr->multiplayerSessionRole != 0) {
     g_pGameFlowState->Free();
     g_pGameFlowState = new TMultiplayerMgr();
     g_pGameFlowState->InitializeMultiplayerManagerForSessionContext(0);
   }
-  if (eventCode == 0x5dd) {
+  if (eventCode == kTurnEventRandomGameSetup) {
     TSimMgr* simMgr = g_pSimMgr;
     simMgr->economicTurn = 0;
     simMgr->activeNationSlot = -1;
@@ -1389,14 +1390,14 @@ void ReinitializeGameFlowAndPostTurnEventCode(int eventCode) {
     g_bRandomMapDeveloperCheatFlag = 0;
     simMgr->ReinitializeRandomSeed();
     g_pSimMgr->turnStateCode = 3;
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(static_cast<short>(eventCode));
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(EncodeTurnEventCode(eventCode));
   } else {
     g_pSimMgr->Free();
     g_pSimMgr = new TSimMgr();
     g_pSimMgr->InitializeTurnFlowStateDefaults();
     g_pSimMgr->StartNextPhase();
     if (eventCode != 0) {
-      g_pGlobalUiRootController->PostTurnEventCodeMessage2420(static_cast<short>(eventCode));
+      g_pGlobalUiRootController->PostTurnEventCodeMessage2420(EncodeTurnEventCode(eventCode));
     }
   }
   g_bTurnFlowBootstrapComplete = 1;

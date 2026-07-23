@@ -49,17 +49,17 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   }
 
   unsigned int controlTag = static_cast<unsigned int>(sourceHandler->controlTag);
-  short postEventCode = -1;
+  TurnEventCodeStorage postEventCode = -1;
 
   if (controlTag == kControlTagHigh) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
-    postEventCode = 0x5e0;
+    postEventCode = EncodeTurnEventCode(kTurnEventHighScores);
   } else if (controlTag == 0x636e636c /* 'cncl' */) {
-    postEventCode = 0x5dc;
+    postEventCode = EncodeTurnEventCode(kTurnEventMainMenu);
   } else if (controlTag == kControlTagLoad) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
     g_nSaveFormatVersion = -2;
-    postEventCode = 0x5de;
+    postEventCode = EncodeTurnEventCode(kTurnEventLoadSave);
   } else if (controlTag == kControlTagMult) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
     // TMultiplayerMgr::EnsureGameFlowStateAndPostTurnEvent5E5 already posts turn
@@ -72,7 +72,7 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     PostWmCloseToMainThreadWindow();
     // no PostTurnEventCodeMessage2420 on this path (matches the original).
   } else if (controlTag == kControlTagPref) {
-    postEventCode = 0x1036;
+    postEventCode = EncodeTurnEventCode(kTurnEventGamePreferences);
   } else if (controlTag == kControlTagRand) {
     short shiftState = static_cast<short>(GetAsyncKeyState(VK_SHIFT));
     if ((shiftState & 0x8000) != 0 && g_bRandomMapDeveloperCheatFlag != 0) {
@@ -103,16 +103,16 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         g_pGlobalMapState->UpdateMapTileAdjacencyMasksAndVariantForTile(tileIndex);
         g_pGlobalMapState->UpdateTileNeighborBorderInfluenceCounters(tileIndex, 0);
       }
-      postEventCode = 0x3c0;
+      postEventCode = EncodeTurnEventCode(kTurnEventMapEditor);
     } else {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
       g_pSimMgr->SetSelectedIndex6AAndTriggerRefresh(0);
       g_pUiViewManager->OpenFilesFor(1);
-      postEventCode = 0x5dd;
+      postEventCode = EncodeTurnEventCode(kTurnEventRandomGameSetup);
     }
   } else if (controlTag == kControlTagScen) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
-    postEventCode = 0x5df;
+    postEventCode = EncodeTurnEventCode(kTurnEventScenarioGameSetup);
   } else {
     TNoHilitePicture::DoEvent(commandId, sourceHandler, event);
     return;

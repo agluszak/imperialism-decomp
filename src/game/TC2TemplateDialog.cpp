@@ -526,16 +526,16 @@ void TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void) {
   ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694d80);
   ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694d68);
 
-  ::SendMessageA(hList, LB_SETITEMDATA, 0, 0x3b8);
-  ::SendMessageA(hList, LB_SETITEMDATA, 1, 0x3b8);
-  ::SendMessageA(hList, LB_SETITEMDATA, 2, 0x7d8);
-  ::SendMessageA(hList, LB_SETITEMDATA, 3, 0x2134);
-  ::SendMessageA(hList, LB_SETITEMDATA, 4, 0x7d9);
-  ::SendMessageA(hList, LB_SETITEMDATA, 5, 0x7d8);
-  ::SendMessageA(hList, LB_SETITEMDATA, 6, 0x7db);
-  ::SendMessageA(hList, LB_SETITEMDATA, 7, 0x2260);
-  ::SendMessageA(hList, LB_SETITEMDATA, 8, 0x7dd);
-  ::SendMessageA(hList, LB_SETITEMDATA, 9, 0x7de);
+  ::SendMessageA(hList, LB_SETITEMDATA, 0, kTurnEventCitySiteSelector);
+  ::SendMessageA(hList, LB_SETITEMDATA, 1, kTurnEventCitySiteSelector);
+  ::SendMessageA(hList, LB_SETITEMDATA, 2, kTurnEventDiplomacyMap);
+  ::SendMessageA(hList, LB_SETITEMDATA, 3, kTurnEventOfferSheet);
+  ::SendMessageA(hList, LB_SETITEMDATA, 4, kTurnEventTradeOverview);
+  ::SendMessageA(hList, LB_SETITEMDATA, 5, kTurnEventDiplomacyMap);
+  ::SendMessageA(hList, LB_SETITEMDATA, 6, kTurnEventCityProduction);
+  ::SendMessageA(hList, LB_SETITEMDATA, 7, kTurnEventDealBook);
+  ::SendMessageA(hList, LB_SETITEMDATA, 8, kTurnEventStrategicMap);
+  ::SendMessageA(hList, LB_SETITEMDATA, 9, kTurnEventTransport);
 
   ::SendMessageA(hList, LB_SETCURSEL, 4, 0);
 

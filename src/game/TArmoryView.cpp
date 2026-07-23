@@ -143,12 +143,12 @@ void TArmoryView::UpdateFields() {
 
   TPopulationMgr* population = city94->productionSummary1d8;
   short workforceAvailable;
-  if (selectedUnitOrderA8->workforceMode == 1) {
+  if (selectedUnitOrderA8->workforceMode == kLowSkillWorkforceMode) {
     workforceAvailable = population->strength;
     if (population->productionSlots14->lowSkillCount04 < workforceAvailable) {
       workforceAvailable = population->productionSlots14->lowSkillCount04;
     }
-  } else if (selectedUnitOrderA8->workforceMode == 2) {
+  } else if (selectedUnitOrderA8->workforceMode == kMediumSkillWorkforceMode) {
     workforceAvailable = static_cast<short>(population->strength / 2);
     if (population->productionSlots14->mediumSkillCount06 < workforceAvailable) {
       workforceAvailable = population->productionSlots14->mediumSkillCount06;

@@ -26,7 +26,7 @@ TTradeScreenPicture::TTradeScreenPicture() {}
 // TTradeScreenPicture::`scalar deleting destructor'
 TTradeScreenPicture::~TTradeScreenPicture() {}
 
-// Repaints the trade-screen commodity summary block. In map-blit mode (0x7d9/0x7da) it just
+// Repaints the trade-screen commodity summary block. In map-blit mode (kTurnEventTradeOverview/kTurnEventIndustryOverview) it just
 // blits the passed rect; otherwise it draws, for each of the 17 commodity rows, the current
 // diplomacy value (right cell) and the proposal weight (middle cell) via the cached
 // QuickDraw text state.
@@ -39,7 +39,7 @@ void TTradeScreenPicture::Draw(RECT* rectBuffer) {
   localRect.bottom = rectBuffer->bottom;
 
   short screenMode = g_pDisplayMgr->clipSnapshotEvent;
-  if (screenMode == 0x7d9 || screenMode == 0x7da) {
+  if (screenMode == kTurnEventTradeOverview || screenMode == kTurnEventIndustryOverview) {
     BlitRectWithOptionalTransparency(&g_pPrimaryRenderSurfaceContext->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &localRect,
                                      &localRect, 0, 0);

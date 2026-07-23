@@ -409,7 +409,8 @@ char TAutoGreatPower::TryDispatchNationActionViaUiContextOrFallback(int targetNa
                                              static_cast<short>(slotIndex));
     return 0;
   }
-  this->AppendTrackedSlotEntry(1, targetNation, 0, static_cast<short>(slotIndex), 0);
+  this->AppendTrackedSlotEntry(kTrackedSlotOfferEntry, targetNation, 0,
+                               static_cast<short>(slotIndex), 0);
   return 0;
 }
 

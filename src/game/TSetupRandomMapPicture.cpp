@@ -344,7 +344,8 @@ void TSetupRandomMapPicture::StartGame() {
 
   g_nRandomMapSelectedNationSlot00698AB0 = selectedNationSlot9A;
   if (g_pSimMgr->multiplayerSessionRole != 0) {
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5e4);
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+        EncodeTurnEventCode(kTurnEventNetworkGameOptions));
     g_pGameFlowState->playerNameMirror = g_cstrCountryNameSettingValue006A4220;
     g_pGameFlowState->playerNameString = g_cstrCountryNameSettingValue006A4220;
     g_pGameFlowState->activeNationTagIndex = static_cast<unsigned char>(selectedNationSlot9A);
@@ -371,7 +372,7 @@ void TSetupRandomMapPicture::ExitScreen() {
     g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
     return;
   }
-  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
 }
 
 // FUNCTION: IMPERIALISM 0x00578230

@@ -366,8 +366,8 @@ void TMapEditView::PlaceCountySeat(short tileIndex) {
   short previousCountySeat = g_pGlobalMapState->cityScoreTable[provinceId].cityTileIndex04;
   g_pGlobalMapState->SetRegionTileSubtypeAndRefreshNeighborFlags(provinceId, tileIndex);
 
-  TWindow* dialog =
-      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x3c5));
+  TWindow* dialog = static_cast<TWindow*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventProvinceEditor));
   TEditText* nameControl = static_cast<TEditText*>(dialog->ResolveControlByTag(kControlTagName));
   nameControl->AssertValid();
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&cityName, 0);

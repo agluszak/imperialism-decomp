@@ -19,6 +19,9 @@ class TCity;
 class TZone;
 class TTurnStartEvent;
 
+// 16-bit discriminator stored in each diplomacy tracked-slot record.
+enum eTrackedSlotEntryKind { kTrackedSlotAcceptEntry = 0, kTrackedSlotOfferEntry = 1 };
+
 // Nation object: inherits the intermediate base TCountry (identity strings, nation-slot
 // metrics, military-unit + owned-region lists), itself a TObject.
 // VTABLE: IMPERIALISM 0x00653938
@@ -213,7 +216,7 @@ public:
   virtual void ClearDiplomacyState1c6ForTarget(short targetSlot);
   // slot 0x6c — body 0x004ddd90: packs {kind, targetNation, value, eligibility,
   // payload} and appends it to diplomacyTrackedSlots[slotIndex] via [vt+0x38];
-  // eligibility = kind==1, or kind==0 and manager slot 0x84 reports no flag.
+  // Offer entries are always eligible; accept entries are eligible for minor nations.
   virtual void AppendTrackedSlotEntry(short kind, int targetNation, short value, short slotIndex,
                                       int payload);
   virtual short GetTrackedSlotEntryCountLow(short targetSlot);     // slot 0x6d

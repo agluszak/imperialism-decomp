@@ -87,7 +87,8 @@ void TScenarioChooser::ExitScreen() {
   if (g_pSimMgr->multiplayerSessionRole != 0) {
     g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
   } else {
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+        EncodeTurnEventCode(kTurnEventMainMenu));
   }
 }
 

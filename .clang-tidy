@@ -1,0 +1,29 @@
+---
+# Advisory checks with demonstrated signal on the VC5-shaped source model.
+# Keep modernize, broad core-guidelines, easily-swappable-parameters, and
+# switch-missing-default-case disabled: they conflict with recovered ABI/source
+# shape or overwhelm findings that can be acted on with binary evidence.
+Checks: >-
+  -*,
+  bugprone-assignment-in-if-condition,
+  bugprone-branch-clone,
+  bugprone-casting-through-void,
+  bugprone-implicit-widening-of-multiplication-result,
+  bugprone-macro-parentheses,
+  bugprone-misplaced-widening-cast,
+  bugprone-signed-char-misuse,
+  bugprone-sizeof-expression,
+  bugprone-suspicious-enum-usage,
+  clang-analyzer-core.CallAndMessage,
+  clang-analyzer-core.NullDereference,
+  clang-analyzer-deadcode.DeadStores,
+  clang-analyzer-optin.core.EnumCastOutOfRange,
+  misc-definitions-in-headers,
+  misc-redundant-expression,
+  readability-redundant-casting,
+  readability-suspicious-call-argument
+WarningsAsErrors: ''
+HeaderFilterRegex: '^/imperialism/(include|src)/game/'
+SystemHeaders: false
+FormatStyle: none
+...

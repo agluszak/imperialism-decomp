@@ -367,7 +367,8 @@ void TMultiplayerMgr::EnsureGameFlowStateAndPostTurnEvent5E5() {
 
   ReturnTrueRuntimeCredentialInitStub();
   g_pGlobalUiRootController->InstallCohandler(self, 1);
-  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5e5);
+  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+      EncodeTurnEventCode(kTurnEventMultiplayerGameSetup));
   self->sessionPhaseTag = 0x70726570; // 'prep'
 }
 
@@ -657,7 +658,7 @@ unsigned char TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DC() {
   }
   sessionPhaseTag = 0x6e616461; // 'nada'
   lobbyDialogView40 = 0;
-  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
   return 1;
 }
 
@@ -720,7 +721,7 @@ unsigned char TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DCAlt() {
   }
   sessionPhaseTag = 0x6e616461; // 'nada'
   lobbyDialogView40 = 0;
-  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
   return 1;
 }
 
@@ -733,7 +734,8 @@ unsigned char TMultiplayerMgr::ApplyJoinGameSelectionAndPostTurnEvent5E4(int sel
     playerNameMirror = playerNameString;
     lobbyDialogView40 = 0;
     g_pSimMgr->multiplayerSessionRole = 2;
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5e4);
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+        EncodeTurnEventCode(kTurnEventNetworkGameOptions));
     return 1;
   }
   playerNameString = playerNameMirror;
@@ -785,7 +787,8 @@ unsigned char TMultiplayerMgr::ResetNationStatusSlotsAndInitializeNameControls(T
 unsigned char TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5() {
   lobbyDialogView40 = 0;
   ResetNationStatusArraysAndTurnEventContext();
-  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5e5);
+  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+      EncodeTurnEventCode(kTurnEventMultiplayerGameSetup));
   queueSyncDword = 0;
   return 1;
 }
@@ -1251,7 +1254,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     styleDescriptor.textColor = 0;
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
     TurnEventDialogNode* dialog = static_cast<TurnEventDialogNode*>(
-        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x7e4));
+        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterMessage));
     if (dialog == 0) {
       FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr_00698040, 0x7ef);
     }
@@ -2883,7 +2886,8 @@ void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused
     return;
   }
 
-  TView* dialog = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x5e7);
+  TView* dialog =
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventJoinSelectorMessage);
   dialog->AssertValid();
 
   int mySlotIndex = FindActiveNationSlotIndexInGameFlowList();

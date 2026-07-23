@@ -10,7 +10,7 @@
 #include "game/mfc.h"
 
 // FUNCTION: IMPERIALISM 0x00414720
-void TApplication::PostTurnEventCodeMessage2420(short eventCode) {
+void TApplication::PostTurnEventCodeMessage2420(TurnEventCodeStorage eventCode) {
   ::PostMessage(AfxGetMainWnd()->m_hWnd, 0x2420, eventCode, 0);
 }
 

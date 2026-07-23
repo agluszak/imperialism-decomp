@@ -88,8 +88,8 @@ char TEventHandler::IsEnabled() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048a260
-void TEventHandler::SetEnable(unsigned char enabled) {
-  field04 = (signed char)enabled;
+void TEventHandler::SetEnable(char enabled) {
+  field04 = enabled;
 }
 
 // Forward a UI command triplet to the child returned by slot 0x0c (GetNextHandler), if any.

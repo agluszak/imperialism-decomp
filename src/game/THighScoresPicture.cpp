@@ -55,7 +55,8 @@ void THighScoresPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TE
   (void)sourceHandler;
   (void)event;
   if (commandId == 0xa) {
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+        EncodeTurnEventCode(kTurnEventMainMenu));
     g_pSfxPlaybackSystem->ResetDualAudioCuePools();
     g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(0xb);
     g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();

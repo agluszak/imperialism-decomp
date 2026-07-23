@@ -6,6 +6,7 @@
 // Full TView definition required: MSVC500 instantiates DestructElements for the
 // factory-pointer CList and demands the pointee type be complete.
 #include "game/TView.h"
+#include "game/turn_event_codes.h"
 
 // Each factory receives the host window to bind into the built control tree (the tail
 // PropagateUiResourceContextRecursive(pHostWindow) call in each builder); the registry
@@ -20,12 +21,13 @@ public:
   virtual ~TTurnEventDialogFactoryRegistry()
       override; // slot 0x01 0x491b10 (scalar deleting destructor)
 
-  virtual TView* ResolveDialogNodeByMessageContext(int messageContext,
+  virtual TView* ResolveDialogNodeByMessageContext(TurnEventId messageContext,
                                                    int contextSlot); // slot 0x0a 0x491c80
-  virtual TView* InvokeDialogFactoryFromPacket(int nContextId, TView* pEventPacket, int nEventCode,
+  virtual TView* InvokeDialogFactoryFromPacket(int nContextId, TView* pEventPacket,
+                                               TurnEventId nEventCode,
                                                int* pAnchorPoint); // slot 0x0b 0x491d80
   virtual TView* RunRegisteredDialogFactoriesByEventCode(int nContextId, TView* pEventPacket,
-                                                         int nEventCode,
+                                                         TurnEventId nEventCode,
                                                          int* pAnchorPoint); // slot 0x0c 0x491cc0
 
   TTurnEventDialogFactoryRegistry();

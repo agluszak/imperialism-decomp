@@ -3,6 +3,12 @@
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 
+namespace {
+
+const WORD kBitmapFileSignature = 0x4d42;
+
+} // namespace
+
 // SYNTHETIC: IMPERIALISM 0x00479e40
 // CDib::CreateObject
 
@@ -14,7 +20,7 @@ IMPLEMENT_SERIAL(CDib, CObject, 0)
 // FUNCTION: IMPERIALISM 0x00479f40
 CDib::CDib() : CObject() {
   m_hBitmap = NULL;
-  m_infoOwnMode = 0;
+  m_infoOwnMode = kDibInfoNotOwned;
   m_dibBitsOwned = 0;
   m_hFileMapping = NULL;
   m_hPalette = NULL;
@@ -28,7 +34,7 @@ CDib::CDib() : CObject() {
 // FUNCTION: IMPERIALISM 0x00479fe0
 CDib::CDib(int width, int height, int bitDepth) : CObject() {
   m_hBitmap = NULL;
-  m_infoOwnMode = 0;
+  m_infoOwnMode = kDibInfoNotOwned;
   m_dibBitsOwned = 0;
   m_hFileMapping = NULL;
   m_hPalette = NULL;
@@ -57,7 +63,7 @@ CDib::CDib(int width, int height, int bitDepth) : CObject() {
 
   int infoBytes = width * height + sizeof(BITMAPINFOHEADER) + m_paletteCount * sizeof(RGBQUAD);
   m_pInfoHeader = static_cast<BITMAPINFO*>(static_cast<void*>(new unsigned char[infoBytes]));
-  m_infoOwnMode = 1;
+  m_infoOwnMode = kDibInfoOwnedByteArray;
   m_pInfoHeader->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
   m_pInfoHeader->bmiHeader.biWidth = width;
   if (g_nDibOrientationFlag_006A1890 > 0) {
@@ -99,15 +105,15 @@ CDib::CDib(int width, int height, int bitDepth) : CObject() {
 // FUNCTION: IMPERIALISM 0x0047a200
 CDib::CDib(const CDib& source)
     : CObject(), m_colorTablePixels(0), m_hBitmap(NULL), m_dibBits(0), m_pInfoHeader(0),
-      m_hGlobalInfo(NULL), m_infoOwnMode(1), m_dibBitsOwned(1), m_pixelBytes(source.m_pixelBytes),
-      m_paletteCount(source.m_paletteCount), m_hFileMapping(NULL), m_hFile(NULL), m_mappedView(0),
-      m_hPalette(NULL) {
+      m_hGlobalInfo(NULL), m_infoOwnMode(kDibInfoOwnedByteArray), m_dibBitsOwned(1),
+      m_pixelBytes(source.m_pixelBytes), m_paletteCount(source.m_paletteCount),
+      m_hFileMapping(NULL), m_hFile(NULL), m_mappedView(0), m_hPalette(NULL) {
   unsigned int infoBytes =
       static_cast<unsigned int>(m_paletteCount) * sizeof(RGBQUAD) + sizeof(BITMAPINFOHEADER);
   m_pInfoHeader = static_cast<BITMAPINFO*>(static_cast<void*>(new unsigned char[infoBytes]));
   memcpy(m_pInfoHeader, source.m_pInfoHeader, infoBytes);
 
-  m_infoOwnMode = 1;
+  m_infoOwnMode = kDibInfoOwnedByteArray;
   m_pixelBytes = m_pInfoHeader->bmiHeader.biSizeImage;
   if (m_pixelBytes == 0) {
     unsigned int rowBits = static_cast<unsigned int>(m_pInfoHeader->bmiHeader.biBitCount) *
@@ -309,7 +315,7 @@ int CDib::Read(CFile* file) {
     AfxMessageBox("read error 1", MB_OK, 0);
     return 0;
   }
-  if (fileHeader.bfType != 0x4d42) {
+  if (fileHeader.bfType != kBitmapFileSignature) {
     AfxMessageBox("Invalid bitmap file", MB_OK, 0);
     return 0;
   }
@@ -317,7 +323,7 @@ int CDib::Read(CFile* file) {
   int infoBytes = fileHeader.bfOffBits - sizeof(BITMAPFILEHEADER);
   m_pInfoHeader = static_cast<BITMAPINFO*>(static_cast<void*>(new unsigned char[infoBytes]));
   m_dibBitsOwned = 1;
-  m_infoOwnMode = 1;
+  m_infoOwnMode = kDibInfoOwnedByteArray;
   file->Read(m_pInfoHeader, infoBytes);
 
   m_pixelBytes = m_pInfoHeader->bmiHeader.biSizeImage;
@@ -367,7 +373,7 @@ int CDib::Read(CFile* file) {
 // FUNCTION: IMPERIALISM 0x0047b9f0
 void CDib::Write(CFile* file) {
   BITMAPFILEHEADER fileHeader;
-  fileHeader.bfType = 0x4d42;
+  fileHeader.bfType = kBitmapFileSignature;
   fileHeader.bfReserved1 = 0;
   fileHeader.bfReserved2 = 0;
   int payloadBytes = m_pixelBytes + sizeof(BITMAPINFOHEADER) + m_paletteCount * 4;
@@ -395,9 +401,9 @@ void CDib::Release() {
     CloseHandle(m_hFileMapping);
     m_hFileMapping = NULL;
   }
-  if (m_infoOwnMode == 1) {
+  if (m_infoOwnMode == kDibInfoOwnedByteArray) {
     delete[] static_cast<unsigned char*>(static_cast<void*>(m_pInfoHeader));
-  } else if (m_infoOwnMode == 2) {
+  } else if (m_infoOwnMode == kDibInfoOwnedGlobalHandle) {
     GlobalUnlock(m_hGlobalInfo);
     GlobalFree(m_hGlobalInfo);
   }
@@ -411,7 +417,7 @@ void CDib::Release() {
     DeleteObject(m_hBitmap);
   }
   m_dibBitsOwned = 0;
-  m_infoOwnMode = 0;
+  m_infoOwnMode = kDibInfoNotOwned;
   m_hGlobalInfo = NULL;
   m_pInfoHeader = NULL;
   m_dibBits = NULL;
@@ -527,7 +533,7 @@ int CDib::LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODU
   HGLOBAL resource = LoadResource(module, resourceInfo);
   Release();
   m_hGlobalInfo = NULL;
-  m_infoOwnMode = 0;
+  m_infoOwnMode = kDibInfoNotOwned;
   m_pInfoHeader = reinterpret_cast<BITMAPINFO*>(resource);
 
   if (m_pInfoHeader->bmiHeader.biClrUsed == 0) {
