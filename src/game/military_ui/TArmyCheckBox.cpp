@@ -1,10 +1,10 @@
-#include "game/TArmyCheckBox.h"
-#include "game/TWindow.h"
+#include "game/military_ui/TArmyCheckBox.h"
+#include "game/ui_core/TWindow.h"
 
-#include "game/CDib.h"
+#include "game/gfx/CDib.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 
 // SYNTHETIC: IMPERIALISM 0x004a9400
 // TArmyCheckBox::`scalar deleting destructor'

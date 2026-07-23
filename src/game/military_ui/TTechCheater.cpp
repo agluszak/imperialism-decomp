@@ -1,4 +1,4 @@
-#include "game/TTechCheater.h"
+#include "game/military_ui/TTechCheater.h"
 
 // SYNTHETIC: IMPERIALISM 0x004b18f0
 // TTechCheater::`scalar deleting destructor'

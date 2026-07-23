@@ -1,4 +1,4 @@
-#include "game/T2PictureButton.h"
+#include "game/ui_screens/T2PictureButton.h"
 #include "game/mfc.h"
 
 // SYNTHETIC: IMPERIALISM 0x00570b10

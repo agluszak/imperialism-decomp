@@ -1,10 +1,10 @@
-#include "game/TSuperCivRoster.h"
+#include "game/military_ui/TSuperCivRoster.h"
 
-#include "game/CIterator.h"
-#include "game/TBook.h"
-#include "game/TGreatPower.h"
-#include "game/TMiniCivLine.h"
-#include "game/TSimMgr.h"
+#include "game/ui_core/CIterator.h"
+#include "game/ui_screens/TBook.h"
+#include "game/nation/TGreatPower.h"
+#include "game/military_ui/TMiniCivLine.h"
+#include "game/ui_screens/TSimMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

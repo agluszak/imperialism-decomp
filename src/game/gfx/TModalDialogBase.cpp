@@ -1,6 +1,6 @@
 // Manual decompilation file.
 
-#include "game/TModalDialogBase.h"
+#include "game/gfx/TModalDialogBase.h"
 
 #include "game/mfc.h"
 

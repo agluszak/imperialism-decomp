@@ -1,7 +1,7 @@
-#include "game/TAmbitApplication.h"
-#include "game/TNextTradeCommand.h"
+#include "game/gfx/TAmbitApplication.h"
+#include "game/ui_widgets/TNextTradeCommand.h"
 
-#include "game/TApplication.h"
+#include "game/ui_core/TApplication.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

@@ -1,4 +1,4 @@
-#include "game/TDefenseMinister.h"
+#include "game/military_ui/TDefenseMinister.h"
 
 #include <string.h>
 
@@ -6,20 +6,20 @@
 #include "game/globals/military_ui_globals.h"
 #include "game/globals/shared_globals.h"
 
-#include "game/CIterator.h"
+#include "game/ui_core/CIterator.h"
 #include "game/mfc.h"
-#include "game/TAutoGreatPower.h"
-#include "game/TCity.h"
-#include "game/TGreatPower.h"
+#include "game/nation/TAutoGreatPower.h"
+#include "game/city/TCity.h"
+#include "game/nation/TGreatPower.h"
 #include "game/TList.h"
-#include "game/TDiplomacyMgr.h"
-#include "game/TLongintList.h"
-#include "game/TMapMgr.h"
-#include "game/TMilitaryUnit.h"
-#include "game/TStream.h"
-#include "game/TMission.h"
-#include "game/TUnit.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/military_ui/TDiplomacyMgr.h"
+#include "game/city_ui/TLongintList.h"
+#include "game/map/TMapMgr.h"
+#include "game/military/TMilitaryUnit.h"
+#include "game/core/TStream.h"
+#include "game/map/TMission.h"
+#include "game/military/TUnit.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // Slot 24 (0x60) — body 0x4ec0a0; placed first because it is the lowest address.
 

@@ -1,12 +1,12 @@
-#include "game/TRadioText.h"
-#include "game/TWindow.h"
+#include "game/ui_screens/TRadioText.h"
+#include "game/ui_core/TWindow.h"
 
-#include "game/TRadioTextCluster.h"
+#include "game/ui_screens/TRadioTextCluster.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/TViewMgr.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 
 // SYNTHETIC: IMPERIALISM 0x0043daa0
 // TRadioText::`scalar deleting destructor'

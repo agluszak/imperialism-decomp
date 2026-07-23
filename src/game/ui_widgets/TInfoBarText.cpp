@@ -1,10 +1,10 @@
-#include "game/TInfoBarText.h"
+#include "game/ui_widgets/TInfoBarText.h"
 
 #include <cstring>
 
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x004293c0

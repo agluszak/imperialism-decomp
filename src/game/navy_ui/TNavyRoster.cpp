@@ -1,17 +1,17 @@
-#include "game/TNavyRoster.h"
+#include "game/navy_ui/TNavyRoster.h"
 
-#include "game/TMapDialog.h"
-#include "game/TDisplayMgr.h"
-#include "game/TMapOrderChildLinkNode.h"
-#include "game/TMapUberPicture.h"
-#include "game/TShip.h"
-#include "game/TShipLine.h"
-#include "game/TTaskForce.h"
-#include "game/TViewMgr.h"
+#include "game/map_ui/TMapDialog.h"
+#include "game/gfx/TDisplayMgr.h"
+#include "game/navy/TMapOrderChildLinkNode.h"
+#include "game/map/TMapUberPicture.h"
+#include "game/navy/TShip.h"
+#include "game/navy_ui/TShipLine.h"
+#include "game/navy/TTaskForce.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/navy_ui_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 // SYNTHETIC: IMPERIALISM 0x00564c30
 // TNavyRoster::CreateObject
 

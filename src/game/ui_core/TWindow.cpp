@@ -1,14 +1,14 @@
-#include "game/TWindow.h"
+#include "game/ui_core/TWindow.h"
 
 #include "game/ImperialismApp.h"
-#include "game/CMcWindow.h"
-#include "game/TApplication.h"
-#include "game/TDialogBehavior.h"
-#include "game/CWMgrIterator.h"
+#include "game/ui_core/CMcWindow.h"
+#include "game/ui_core/TApplication.h"
+#include "game/ui_core/TDialogBehavior.h"
+#include "game/ui_core/CWMgrIterator.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // One-shot McAppUI invalidation-flag assert. The original reaches the shared invalidation
 // helper through the incremental-link thunk; each call site is gated by its own

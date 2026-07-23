@@ -1,15 +1,15 @@
-#include "game/TLanguageMgr.h"
+#include "game/ui_core/TLanguageMgr.h"
 
 #include "game/ImperialismApp.h"
-#include "game/TAssetMgr.h"
-#include "game/TRadioText.h"
-#include "game/TRadioTextCluster.h"
-#include "game/TSimMgr.h"
-#include "game/TStaticText.h"
-#include "game/TWindow.h"
+#include "game/assets/TAssetMgr.h"
+#include "game/ui_screens/TRadioText.h"
+#include "game/ui_screens/TRadioTextCluster.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/ui_core/TStaticText.h"
+#include "game/ui_core/TWindow.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 #include <stdio.h>
 #include <stdlib.h>

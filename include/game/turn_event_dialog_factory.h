@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/TView.h"
+#include "game/ui_core/TView.h"
 #include "game/mfc.h"
 #include "game/turn_event_codes.h"
 

@@ -1,4 +1,4 @@
-#include "game/TInfoBarPictureText.h"
+#include "game/ui_widgets/TInfoBarPictureText.h"
 // SYNTHETIC: IMPERIALISM 0x005b5ac0
 // TInfoBarPictureText::CreateObject
 

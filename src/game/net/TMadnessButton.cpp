@@ -1,5 +1,5 @@
-#include "game/TMadnessButton.h"
-#include "game/ScopedMapQuickDrawContext.h"
+#include "game/net/TMadnessButton.h"
+#include "game/ui_core/ScopedMapQuickDrawContext.h"
 
 // SYNTHETIC: IMPERIALISM 0x0043d720
 // TMadnessButton::`scalar deleting destructor'

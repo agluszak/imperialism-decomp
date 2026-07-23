@@ -1,4 +1,4 @@
-#include "game/TPictureNumberText.h"
+#include "game/ui_widgets/TPictureNumberText.h"
 #include "game/mfc.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b5120

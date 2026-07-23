@@ -1,9 +1,9 @@
-#include "game/TNextMoveCommand.h"
+#include "game/tactical/TNextMoveCommand.h"
 
-#include "game/TArmyBattle.h"
-#include "game/TArmyMgr.h"
-#include "game/TTacticalBattle.h"
-#include "game/TTacticalPlayer.h"
+#include "game/tactical/TArmyBattle.h"
+#include "game/military/TArmyMgr.h"
+#include "game/tactical/TTacticalBattle.h"
+#include "game/map/TTacticalPlayer.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

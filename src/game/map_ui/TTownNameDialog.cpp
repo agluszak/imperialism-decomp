@@ -1,14 +1,14 @@
-#include "game/TTownNameDialog.h"
+#include "game/map_ui/TTownNameDialog.h"
 
-#include "game/TEditText.h"
-#include "game/TPicture.h"
-#include "game/TViewMgr.h"
+#include "game/ui_core/TEditText.h"
+#include "game/ui_core/TPicture.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/map_ui_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 #include <stdlib.h>
 // SYNTHETIC: IMPERIALISM 0x0051ba70

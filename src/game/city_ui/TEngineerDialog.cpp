@@ -1,9 +1,9 @@
-#include "game/TEngineerDialog.h"
+#include "game/city_ui/TEngineerDialog.h"
 
 #include "decomp_types.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/TDisplayMgr.h"
+#include "game/gfx/TDisplayMgr.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
 

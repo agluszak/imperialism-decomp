@@ -1,10 +1,10 @@
-#include "game/TDefenseMinisterPersonalities.h"
+#include "game/military_ui/TDefenseMinisterPersonalities.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 
-#include "game/TCity.h"
-#include "game/TGreatPower.h"
-#include "game/TMilitaryUnit.h"
+#include "game/city/TCity.h"
+#include "game/nation/TGreatPower.h"
+#include "game/military/TMilitaryUnit.h"
 #include "game/mfc.h"
 
 // Each MakeNewCity override seeds the personality's opening population, production stock,

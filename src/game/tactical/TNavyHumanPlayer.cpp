@@ -1,8 +1,8 @@
-#include "game/TNavyHumanPlayer.h"
+#include "game/tactical/TNavyHumanPlayer.h"
 
 #include "game/TList.h"
-#include "game/TTacticalBattle.h"
-#include "game/TTacticalUnit.h"
+#include "game/tactical/TTacticalBattle.h"
+#include "game/tactical/TTacticalUnit.h"
 
 // SYNTHETIC: IMPERIALISM 0x0059ef20
 // TNavyHumanPlayer::`scalar deleting destructor'

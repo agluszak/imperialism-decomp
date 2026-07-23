@@ -1,6 +1,6 @@
-#include "game/TPopGrowthOrder.h"
-#include "game/TCity.h"
-#include "game/TGreatPower.h"
+#include "game/city/TPopGrowthOrder.h"
+#include "game/city/TCity.h"
+#include "game/nation/TGreatPower.h"
 
 // Matches TCapacityOrder's own ZeroTrackingSlots helper: zeroes the 0x2e-byte
 // trackingSlots10 array (0x17 shorts) via the same 11x-4-byte-then-1x-2-byte write

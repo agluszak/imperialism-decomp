@@ -1,11 +1,11 @@
 #include <string.h>
 
-#include "game/TStream.h"
-#include "game/CString.h"
+#include "game/core/TStream.h"
+#include "game/ui_screens/CString.h"
 #include "game/globals/prelude.h"
 #include "game/globals/core_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 #if defined(_MSC_VER)
 #pragma intrinsic(strlen)

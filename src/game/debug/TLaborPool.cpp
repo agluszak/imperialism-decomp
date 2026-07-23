@@ -1,6 +1,6 @@
-#include "game/TLaborPool.h"
+#include "game/debug/TLaborPool.h"
 
-#include "game/TStream.h"
+#include "game/core/TStream.h"
 // SYNTHETIC: IMPERIALISM 0x004b20d0
 // TLaborPool::CreateObject
 

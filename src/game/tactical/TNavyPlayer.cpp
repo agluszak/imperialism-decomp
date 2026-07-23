@@ -1,9 +1,9 @@
-#include "game/TNavyPlayer.h"
-#include "game/TShip.h"
+#include "game/tactical/TNavyPlayer.h"
+#include "game/navy/TShip.h"
 
-#include "game/CIterator.h"
-#include "game/TNavyTacUnit.h"
-#include "game/TTaskForce.h"
+#include "game/ui_core/CIterator.h"
+#include "game/tactical/TNavyTacUnit.h"
+#include "game/navy/TTaskForce.h"
 
 // SYNTHETIC: IMPERIALISM 0x0059ebb0
 // TNavyPlayer::`scalar deleting destructor'

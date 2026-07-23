@@ -1,6 +1,6 @@
-#include "game/TMiniCivLine.h"
+#include "game/military_ui/TMiniCivLine.h"
 
-#include "game/TMiniCivView.h"
+#include "game/military_ui/TMiniCivView.h"
 
 // SYNTHETIC: IMPERIALISM 0x004ab620
 // TMiniCivLine::`scalar deleting destructor'

@@ -1,10 +1,10 @@
-#include "game/TTechHistoryView.h"
+#include "game/tactical_ui/TTechHistoryView.h"
 
-#include "game/TDeluxeText.h"
-#include "game/TDropShadowText.h"
-#include "game/TPicture.h"
-#include "game/TScrollView.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_widgets/TDeluxeText.h"
+#include "game/ui_widgets/TDropShadowText.h"
+#include "game/ui_core/TPicture.h"
+#include "game/ui_screens/TScrollView.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 

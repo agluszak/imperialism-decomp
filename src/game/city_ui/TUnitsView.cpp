@@ -1,7 +1,7 @@
-#include "game/TUnitsView.h"
+#include "game/city_ui/TUnitsView.h"
 #include "game/CSubViewIterator.h"
-#include "game/TCity.h"
-#include "game/TColorKeyPicture.h"
+#include "game/city/TCity.h"
+#include "game/ui_screens/TColorKeyPicture.h"
 // SYNTHETIC: IMPERIALISM 0x004c7f10
 // TUnitsView::CreateObject
 

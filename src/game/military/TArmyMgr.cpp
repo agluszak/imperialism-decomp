@@ -1,39 +1,39 @@
-#include "game/TArmyMgr.h"
+#include "game/military/TArmyMgr.h"
 
 #include <stdlib.h>
 #include <string.h>
 
 #include "game/TList.h"
-#include "game/TSortedPtrList.h"
+#include "game/ui_core/TSortedPtrList.h"
 #include "game/map_order_battle_snapshot.h"
 
-#include "game/CIterator.h"
-#include "game/CString.h"
-#include "game/TArmyBattle.h"
-#include "game/TArmyToolbar.h"
-#include "game/TArmyStack.h"
-#include "game/TControl.h"
-#include "game/TCountry.h"
-#include "game/TDiplomacyMgr.h"
-#include "game/TGreatPower.h"
-#include "game/TMapMgr.h"
-#include "game/TMapUberPicture.h"
-#include "game/TMilitaryUnit.h"
-#include "game/TAdmiral.h"
-#include "game/TMultiplayerMgr.h"
-#include "game/TNavyMgr.h"
-#include "game/TShip.h"
-#include "game/TSimMgr.h"
-#include "game/TStream.h"
-#include "game/TSortedList.h"
-#include "game/TSoundPlayer.h"
-#include "game/TViewMgr.h"
-#include "game/TZone.h"
-#include "game/global_data_tables.h" // g_pSimMgr, g_pGlobalMapState, g_apTerrainTypeDescriptorTable, g_pSfxPlaybackSystem, g_apNationStates, g_pUiRuntimeContext
-#include "game/mapped_flavor_text.h" // scanBracketExpressions
+#include "game/ui_core/CIterator.h"
+#include "game/ui_screens/CString.h"
+#include "game/tactical/TArmyBattle.h"
+#include "game/ui_widgets/TArmyToolbar.h"
+#include "game/military/TArmyStack.h"
+#include "game/ui_core/TControl.h"
+#include "game/city_ui/TCountry.h"
+#include "game/military_ui/TDiplomacyMgr.h"
+#include "game/nation/TGreatPower.h"
+#include "game/map/TMapMgr.h"
+#include "game/map/TMapUberPicture.h"
+#include "game/military/TMilitaryUnit.h"
+#include "game/navy/TAdmiral.h"
+#include "game/net/TMultiplayerMgr.h"
+#include "game/navy/TNavyMgr.h"
+#include "game/navy/TShip.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/core/TStream.h"
+#include "game/ui_core/TSortedList.h"
+#include "game/ui_widgets/TSoundPlayer.h"
+#include "game/ui_core/TViewMgr.h"
+#include "game/ui_screens/TZone.h"
+#include "game/core/global_data_tables.h" // g_pSimMgr, g_pGlobalMapState, g_apTerrainTypeDescriptorTable, g_pSfxPlaybackSystem, g_apNationStates, g_pUiRuntimeContext
+#include "game/military/mapped_flavor_text.h" // scanBracketExpressions
 #include "game/navy_order.h"         // g_pNavyPrimaryOrderListHead, FindCumulativeWeightBucketIndex
-#include "game/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
-#include "game/ui_invalidation_guard.h"
+#include "game/ui_core/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
+#include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x004a1810

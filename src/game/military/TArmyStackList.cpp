@@ -1,4 +1,4 @@
-#include "game/TArmyStackList.h"
+#include "game/military/TArmyStackList.h"
 // SYNTHETIC: IMPERIALISM 0x004a83b0
 // TArmyStackList::CreateObject
 

@@ -10,15 +10,15 @@
 // heavily register-aliased decompile and are the least-certain part; the scanline crossing test
 // and the fill/advance loop are faithful.
 
-#include "game/TMapMaker.h"
+#include "game/map_ui/TMapMaker.h"
 
 #include "decomp_types.h"
 #include "game/globals/prelude.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/map_overlay_geometry.h"
-#include "game/sea_geometry.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/map/map_overlay_geometry.h"
+#include "game/map/sea_geometry.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 namespace {
 const char kUMapperPath[] = "D:\\Ambit\\Cross\\UMapper.cpp";

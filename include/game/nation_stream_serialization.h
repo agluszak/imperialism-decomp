@@ -1,10 +1,10 @@
 #pragma once
 
-#include "game/TLongintList.h"
+#include "game/city_ui/TLongintList.h"
 
-#include "game/TSortedList.h"
-#include "game/TStream.h"
-#include "game/TUnit.h"
+#include "game/ui_core/TSortedList.h"
+#include "game/core/TStream.h"
+#include "game/military/TUnit.h"
 
 // Write-side serialization helpers shared by the nation classes (TCountry / TGreatPower).
 // The original copies each array element into a stack temp, byte-swaps it to the stream's

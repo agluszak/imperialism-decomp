@@ -1,7 +1,7 @@
-#include "game/TDropShadowText.h"
+#include "game/ui_widgets/TDropShadowText.h"
 
-#include "game/ScopedMapQuickDrawContext.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/ScopedMapQuickDrawContext.h"
+#include "game/ui_core/quickdraw_rendering.h"
 // SYNTHETIC: IMPERIALISM 0x005b54a0
 // TDropShadowText::CreateObject
 

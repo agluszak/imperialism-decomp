@@ -1,4 +1,4 @@
-#include "game/TDropShadowTextBehavior.h"
+#include "game/military_ui/TDropShadowTextBehavior.h"
 // SYNTHETIC: IMPERIALISM 0x004b0fe0
 // TDropShadowTextBehavior::CreateObject
 

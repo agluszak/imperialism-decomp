@@ -6,13 +6,13 @@
 // into a scratch buffer and writes it back column-rotated by that amount. Own translation
 // unit (like the other UMapper routines).
 
-#include "game/TMapMaker.h"
+#include "game/map_ui/TMapMaker.h"
 
 #include "decomp_types.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 namespace {
 

@@ -1,15 +1,15 @@
-#include "game/TUnit.h"
+#include "game/military/TUnit.h"
 #include "decomp_types.h"
 #include "game/GameAssert.h"
 
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/TCountry.h"
-#include "game/TGreatPower.h"
-#include "game/TSimMgr.h"
-#include "game/TSortedList.h"
-#include "game/TStream.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/city_ui/TCountry.h"
+#include "game/nation/TGreatPower.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/ui_core/TSortedList.h"
+#include "game/core/TStream.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // 0x00402eeb is an ILT jmp thunk to TUnit::RegisterUnitOrderWithOwnerManager (0x5c2530);
 // per the ILT hard rule it is never hand-written -- it is tracked in config/thunk_map.csv

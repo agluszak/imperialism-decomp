@@ -1,13 +1,13 @@
-#include "game/TTradePanelView.h"
+#include "game/diplomacy_ui/TTradePanelView.h"
 
-#include "game/CString.h"
-#include "game/TCluster.h"
-#include "game/TDiplomacyMapView.h"
-#include "game/TSimMgr.h"
+#include "game/ui_screens/CString.h"
+#include "game/ui_core/TCluster.h"
+#include "game/diplomacy_ui/TDiplomacyMapView.h"
+#include "game/ui_screens/TSimMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/diplomacy_ui_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x00430450

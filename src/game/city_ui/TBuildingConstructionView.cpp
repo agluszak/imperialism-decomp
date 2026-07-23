@@ -1,12 +1,12 @@
-#include "game/TBuildingConstructionView.h"
+#include "game/city_ui/TBuildingConstructionView.h"
 
-#include "game/TCity.h"
-#include "game/TCityProductionView.h"
-#include "game/TProductionOrder.h"
+#include "game/city/TCity.h"
+#include "game/city_ui/TCityProductionView.h"
+#include "game/city/TProductionOrder.h"
 #include "game/globals/prelude.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 // SYNTHETIC: IMPERIALISM 0x004c9d70
 // TBuildingConstructionView::CreateObject
 

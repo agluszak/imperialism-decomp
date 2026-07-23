@@ -1,8 +1,8 @@
-#include "game/TTradeOfferNationLine.h"
+#include "game/trade_ui/TTradeOfferNationLine.h"
 
-#include "game/TSimMgr.h"
-#include "game/TTradeMgr.h"
-#include "game/TTradeOfferNationView.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/ui_widgets/TTradeMgr.h"
+#include "game/trade_ui/TTradeOfferNationView.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"

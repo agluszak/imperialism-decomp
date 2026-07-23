@@ -1,10 +1,10 @@
-#include "game/TRemoteMinor.h"
+#include "game/military/TRemoteMinor.h"
 
 #include <new>
 
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/TMapMgr.h"
+#include "game/map/TMapMgr.h"
 
 // SYNTHETIC: IMPERIALISM 0x00541c10
 // TRemoteMinor::CreateObject

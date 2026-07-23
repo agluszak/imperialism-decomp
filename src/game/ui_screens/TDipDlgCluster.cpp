@@ -1,4 +1,4 @@
-#include "game/TDipDlgCluster.h"
+#include "game/ui_screens/TDipDlgCluster.h"
 // SYNTHETIC: IMPERIALISM 0x00584040
 // TDipDlgCluster::CreateObject
 

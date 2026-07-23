@@ -2,17 +2,17 @@
 
 #include <math.h>
 
-#include "game/TArmyMission.h"
+#include "game/military/TArmyMission.h"
 #include "game/TList.h"
-#include "game/TGreatPower.h"
-#include "game/TStream.h"
-#include "game/TMapMgr.h"
-#include "game/TMilitaryUnit.h"
+#include "game/nation/TGreatPower.h"
+#include "game/core/TStream.h"
+#include "game/map/TMapMgr.h"
+#include "game/military/TMilitaryUnit.h"
 #include "game/globals/prelude.h"
 #include "game/globals/military_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_invalidation_guard.h"
-#include "game/CIterator.h"
+#include "game/gfx/ui_invalidation_guard.h"
+#include "game/ui_core/CIterator.h"
 
 IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
 

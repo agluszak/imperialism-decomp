@@ -1,4 +1,4 @@
-#include "game/T2PictToggleButton.h"
+#include "game/ui_widgets/T2PictToggleButton.h"
 #include "game/mfc.h"
 
 // SYNTHETIC: IMPERIALISM 0x00584890

@@ -1,7 +1,7 @@
-#include "game/TTradeOrderPicture.h"
+#include "game/ui_widgets/TTradeOrderPicture.h"
 
-#include "game/TSoundPlayer.h"
-#include "game/TTradeCluster.h"
+#include "game/ui_widgets/TSoundPlayer.h"
+#include "game/ui_widgets/TTradeCluster.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 // SYNTHETIC: IMPERIALISM 0x005843e0

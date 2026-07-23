@@ -1,6 +1,6 @@
-#include "game/TBook.h"
+#include "game/ui_screens/TBook.h"
 
-#include "game/TPageView.h"
+#include "game/ui_screens/TPageView.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 

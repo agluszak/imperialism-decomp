@@ -1,17 +1,17 @@
 #include <new>
-#include "game/TWindow.h"
+#include "game/ui_core/TWindow.h"
 
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
-#include "game/TAmtBar.h"
-#include "game/TAmtBarCluster.h"
+#include "game/ui_widgets/TAmtBar.h"
+#include "game/ui_widgets/TAmtBarCluster.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/TViewMgr.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/quickdraw_guards.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 #include "game/mfc.h"
 
 // FUNCTION: IMPERIALISM 0x00586e50

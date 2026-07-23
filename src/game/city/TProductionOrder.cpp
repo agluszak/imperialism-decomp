@@ -1,7 +1,7 @@
-#include "game/TProductionOrder.h"
+#include "game/city/TProductionOrder.h"
 
-#include "game/TCity.h"
-#include "game/TStream.h"
+#include "game/city/TCity.h"
+#include "game/core/TStream.h"
 
 TProductionOrder::TProductionOrder()
     : quantityField04(0), cityField08(0), summaryField0c(0), field3e(0), field40(0),

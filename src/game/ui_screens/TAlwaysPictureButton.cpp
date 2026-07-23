@@ -1,4 +1,4 @@
-#include "game/TAlwaysPictureButton.h"
+#include "game/ui_screens/TAlwaysPictureButton.h"
 #include "game/mfc.h"
 
 // SYNTHETIC: IMPERIALISM 0x00570950

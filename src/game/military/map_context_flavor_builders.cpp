@@ -3,9 +3,9 @@
 // the template and, for each token letter (K/V/k/v/w/l), draw a weighted syllable and append it.
 // The syllable/template strings live in the map-context flavor string pool (global_data_tables).
 
-#include "game/mapped_flavor_text.h"
+#include "game/military/mapped_flavor_text.h"
 
-#include "game/CString.h"
+#include "game/ui_screens/CString.h"
 #include "game/globals/prelude.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/map_globals.h"

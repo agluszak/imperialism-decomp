@@ -1,13 +1,13 @@
-#include "game/TNetSelectPicture.h"
+#include "game/ui_screens/TNetSelectPicture.h"
 
-#include "game/TCluster.h"
-#include "game/TControl.h"
-#include "game/TMultiplayerMgr.h"
+#include "game/ui_core/TCluster.h"
+#include "game/ui_core/TControl.h"
+#include "game/net/TMultiplayerMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_screens_globals.h"
 #include "game/ui_control_tags.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x0045ae10
 // TNetSelectPicture::`scalar deleting destructor'

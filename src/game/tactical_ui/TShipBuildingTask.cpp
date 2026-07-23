@@ -1,11 +1,11 @@
-#include "game/TShipBuildingTask.h"
+#include "game/tactical_ui/TShipBuildingTask.h"
 
 #include <string.h>
 
-#include "game/TCity.h"
-#include "game/TShipOrder.h"
-#include "game/TSortedList.h"
-#include "game/TStream.h"
+#include "game/city/TCity.h"
+#include "game/city/TShipOrder.h"
+#include "game/ui_core/TSortedList.h"
+#include "game/core/TStream.h"
 #include "game/globals/prelude.h"
 #include "game/globals/nation_globals.h"
 #include "game/globals/shared_globals.h"

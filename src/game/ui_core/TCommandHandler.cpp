@@ -1,5 +1,5 @@
-#include "game/TCommandHandler.h"
-#include "game/TCommand.h"
+#include "game/ui_core/TCommandHandler.h"
+#include "game/ui_core/TCommand.h"
 
 TCommandHandler::TCommandHandler() : TEventHandler() {}
 

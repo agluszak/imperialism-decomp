@@ -1,8 +1,8 @@
-#include "game/TTechStorePage.h"
+#include "game/app/TTechStorePage.h"
 
-#include "game/TBook.h"
-#include "game/TTechItemLine.h"
-#include "game/TTechMgr.h"
+#include "game/ui_screens/TBook.h"
+#include "game/tactical_ui/TTechItemLine.h"
+#include "game/tactical_ui/TTechMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"

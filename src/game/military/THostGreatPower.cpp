@@ -1,11 +1,11 @@
-#include "game/THostGreatPower.h"
+#include "game/military/THostGreatPower.h"
 
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/TMultiplayerMgr.h"
-#include "game/TSimMgr.h"
-#include "game/TStream.h"
-#include "game/TViewMgr.h"
+#include "game/net/TMultiplayerMgr.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/core/TStream.h"
+#include "game/ui_core/TViewMgr.h"
 
 // FUNCTION: IMPERIALISM 0x00540f20
 bool THostGreatPower::IsHost(void) {

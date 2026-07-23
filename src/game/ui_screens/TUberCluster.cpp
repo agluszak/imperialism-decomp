@@ -1,4 +1,4 @@
-#include "game/TUberCluster.h"
+#include "game/ui_screens/TUberCluster.h"
 
 // SYNTHETIC: IMPERIALISM 0x005713c0
 // TUberCluster::CreateObject

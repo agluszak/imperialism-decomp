@@ -1,7 +1,7 @@
-#include "game/TOcean.h"
-#include "game/TNavyMgr.h"
-#include "game/TMapMgr.h"
-#include "game/TSimMgr.h"
+#include "game/navy/TOcean.h"
+#include "game/navy/TNavyMgr.h"
+#include "game/map/TMapMgr.h"
+#include "game/ui_screens/TSimMgr.h"
 
 #include <cstdlib>
 #include <cstring>
@@ -9,20 +9,20 @@
 
 #include "game/mfc.h"
 #include "game/GameAssert.h"
-#include "game/ui_invalidation_guard.h"
-#include "game/TCity.h"
-#include "game/TZone.h"
-#include "game/TPortZone.h"
-#include "game/TGreatPower.h"
+#include "game/gfx/ui_invalidation_guard.h"
+#include "game/city/TCity.h"
+#include "game/ui_screens/TZone.h"
+#include "game/ui_screens/TPortZone.h"
+#include "game/nation/TGreatPower.h"
 #include "game/globals/prelude.h"
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/TMapUberPicture.h"
-#include "game/TViewMgr.h"
-#include "game/TStream.h"
-#include "game/TShip.h"
+#include "game/map/TMapUberPicture.h"
+#include "game/ui_core/TViewMgr.h"
+#include "game/core/TStream.h"
+#include "game/navy/TShip.h"
 #include "game/navy_order.h"
-#include "game/TTaskForce.h"
+#include "game/navy/TTaskForce.h"
 
 namespace {
 // Retain TOcean::`vftable' in the link until save/load paths virtual-dispatch through

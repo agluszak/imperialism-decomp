@@ -1,6 +1,6 @@
-#include "game/TTradeTotalsLine.h"
+#include "game/trade_ui/TTradeTotalsLine.h"
 
-#include "game/TTradeTotalsView.h"
+#include "game/trade_ui/TTradeTotalsView.h"
 // SYNTHETIC: IMPERIALISM 0x005c1870
 // TTradeTotalsLine::CreateObject
 

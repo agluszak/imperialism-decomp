@@ -1,18 +1,18 @@
-#include "game/TShip.h"
+#include "game/navy/TShip.h"
 #include "game/navy_order.h"
 
-#include "game/TAdmiral.h"
-#include "game/TGreatPower.h"
-#include "game/TTaskForce.h"
-#include "game/TTechMgr.h"
-#include "game/TZone.h"
-#include "game/TStream.h"
+#include "game/navy/TAdmiral.h"
+#include "game/nation/TGreatPower.h"
+#include "game/navy/TTaskForce.h"
+#include "game/tactical_ui/TTechMgr.h"
+#include "game/ui_screens/TZone.h"
+#include "game/core/TStream.h"
 #include "game/GameAssert.h"
 #include "game/globals/prelude.h"
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_invalidation_guard.h"
-#include "game/CString.h"
+#include "game/gfx/ui_invalidation_guard.h"
+#include "game/ui_screens/CString.h"
 
 #include <new>
 

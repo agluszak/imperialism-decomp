@@ -1,4 +1,4 @@
-#include "game/TRearFloatWindow.h"
+#include "game/diplomacy_ui/TRearFloatWindow.h"
 #include "game/mfc.h"
 
 // SYNTHETIC: IMPERIALISM 0x004f3840

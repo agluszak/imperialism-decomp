@@ -1,7 +1,7 @@
-#include "game/THotspotBehavior.h"
+#include "game/military_ui/THotspotBehavior.h"
 
 #include "game/TEvent.h"
-#include "game/TView.h"
+#include "game/ui_core/TView.h"
 // SYNTHETIC: IMPERIALISM 0x004b0af0
 // THotspotBehavior::CreateObject
 

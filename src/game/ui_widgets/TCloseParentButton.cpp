@@ -1,5 +1,5 @@
-#include "game/TCloseParentButton.h"
-#include "game/TWindow.h"
+#include "game/ui_widgets/TCloseParentButton.h"
+#include "game/ui_core/TWindow.h"
 // SYNTHETIC: IMPERIALISM 0x00584bb0
 // TCloseParentButton::CreateObject
 

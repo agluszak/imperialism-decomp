@@ -1,13 +1,13 @@
-#include "game/TAmbitApplication.h"
-#include "game/TApplication.h"
+#include "game/gfx/TAmbitApplication.h"
+#include "game/ui_core/TApplication.h"
 
-#include "game/TNewGameCommand.h"
+#include "game/gfx/TNewGameCommand.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 
-#include "game/CIncludeView.h"
+#include "game/ui_core/CIncludeView.h"
 #include "game/ImperialismApp.h"
-#include "game/TEventHandler.h"
+#include "game/ui_core/TEventHandler.h"
 #include "game/mfc.h"
 
 // FUNCTION: IMPERIALISM 0x00414720

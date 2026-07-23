@@ -1,10 +1,10 @@
-#include "game/TUpDownPictureButton.h"
-#include "game/TWindow.h"
-#include "game/TAmtBar.h"
-#include "game/TView.h"
+#include "game/ui_screens/TUpDownPictureButton.h"
+#include "game/ui_core/TWindow.h"
+#include "game/ui_widgets/TAmtBar.h"
+#include "game/ui_core/TView.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/TSoundPlayer.h"
+#include "game/ui_widgets/TSoundPlayer.h"
 // SYNTHETIC: IMPERIALISM 0x00571500
 // TUpDownPictureButton::CreateObject
 

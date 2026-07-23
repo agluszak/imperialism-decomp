@@ -1,12 +1,12 @@
-#include "game/TCreditsPicture.h"
+#include "game/ui_screens/TCreditsPicture.h"
 
-#include "game/TControl.h"
-#include "game/TDeluxeText.h"
-#include "game/TSimMgr.h"
-#include "game/TSoundPlayer.h"
+#include "game/ui_core/TControl.h"
+#include "game/ui_widgets/TDeluxeText.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/ui_widgets/TSoundPlayer.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 

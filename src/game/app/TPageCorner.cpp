@@ -1,4 +1,4 @@
-#include "game/TPageCorner.h"
+#include "game/app/TPageCorner.h"
 
 // SYNTHETIC: IMPERIALISM 0x004302d0
 // TPageCorner::`scalar deleting destructor'

@@ -1,13 +1,13 @@
-#include "game/TPortZone.h"
+#include "game/ui_screens/TPortZone.h"
 
 #include <new.h>
 
-#include "game/TMapMgr.h"
-#include "game/TSimMgr.h"
-#include "game/TStream.h"
+#include "game/map/TMapMgr.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/core/TStream.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/mapped_flavor_text.h"
+#include "game/military/mapped_flavor_text.h"
 #include "game/mfc.h"
 
 // SYNTHETIC: IMPERIALISM 0x005615e0

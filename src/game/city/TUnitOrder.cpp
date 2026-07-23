@@ -1,12 +1,12 @@
-#include "game/TUnitOrder.h"
+#include "game/city/TUnitOrder.h"
 
 #include <string.h>
 
-#include "game/CString.h"
-#include "game/TCity.h"
-#include "game/TCivUnit.h"
-#include "game/TSimMgr.h"
-#include "game/TStream.h"
+#include "game/ui_screens/CString.h"
+#include "game/city/TCity.h"
+#include "game/military/TCivUnit.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/core/TStream.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

@@ -1,7 +1,7 @@
-#include "game/TPowerPlantOrder.h"
+#include "game/city/TPowerPlantOrder.h"
 
-#include "game/TCity.h"
-#include "game/TStream.h"
+#include "game/city/TCity.h"
+#include "game/core/TStream.h"
 
 // SYNTHETIC: IMPERIALISM 0x004b79f0
 // TPowerPlantOrder::CreateObject

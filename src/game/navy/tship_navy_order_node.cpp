@@ -1,13 +1,13 @@
-#include "game/TShip.h"
+#include "game/navy/TShip.h"
 #include "game/navy_order.h"
 
-#include "game/TZone.h"
+#include "game/ui_screens/TZone.h"
 #include "game/GameAssert.h"
 #include "game/globals/prelude.h"
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_invalidation_guard.h"
-#include "game/CString.h"
+#include "game/gfx/ui_invalidation_guard.h"
+#include "game/ui_screens/CString.h"
 
 void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode);
 

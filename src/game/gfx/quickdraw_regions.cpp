@@ -1,14 +1,14 @@
 // Windows reimplementation of the Mac QuickDraw region API (original TU:
 // D:\Ambit\QuickDraw.cpp). See quickdraw_regions.h for the Region/RgnHandle model.
 
-#include "game/quickdraw_regions.h"
+#include "game/gfx/quickdraw_regions.h"
 
-#include "game/CDib.h"
+#include "game/gfx/CDib.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/globals/prelude.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 
 // FUNCTION: IMPERIALISM 0x00495520
 Region::~Region() {

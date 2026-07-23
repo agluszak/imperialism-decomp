@@ -1,14 +1,14 @@
-#include "game/TTradeSchoolView.h"
+#include "game/city_ui/TTradeSchoolView.h"
 
-#include "game/TCity.h"
-#include "game/TGreatPower.h"
-#include "game/TPopulationMgr.h"
-#include "game/TSimMgr.h"
-#include "game/TStaticText.h"
+#include "game/city/TCity.h"
+#include "game/nation/TGreatPower.h"
+#include "game/city/TPopulationMgr.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/ui_core/TStaticText.h"
 #include "game/globals/prelude.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 static __inline void SetTradeSchoolControlEnabledIfChanged(TView* control, bool enabled) {

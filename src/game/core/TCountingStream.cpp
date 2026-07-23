@@ -1,4 +1,4 @@
-#include "game/TCountingStream.h"
+#include "game/core/TCountingStream.h"
 
 // SYNTHETIC: IMPERIALISM 0x004893c0
 // TCountingStream::CreateObject

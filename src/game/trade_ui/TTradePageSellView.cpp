@@ -1,13 +1,13 @@
-#include "game/TTradePageSellView.h"
+#include "game/trade_ui/TTradePageSellView.h"
 
 #include "game/TList.h"
-#include "game/TSimMgr.h"
-#include "game/TTextLine.h"
-#include "game/TTradeMgr.h"
-#include "game/TTradeOfferNationLine.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/ui_screens/TTextLine.h"
+#include "game/ui_widgets/TTradeMgr.h"
+#include "game/trade_ui/TTradeOfferNationLine.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
+#include "game/ui_core/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x004355c0

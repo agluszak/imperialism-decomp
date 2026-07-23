@@ -1,22 +1,22 @@
 // TDefendProvinceMission implementations.
 
-#include "game/TDefendProvinceMission.h"
-#include "game/TAutoGreatPower.h"
-#include "game/TDiplomacyMgr.h"
-#include "game/TMapMgr.h"
-#include "game/TMilitaryUnit.h"
-#include "game/TNavyMgr.h"
+#include "game/military/TDefendProvinceMission.h"
+#include "game/nation/TAutoGreatPower.h"
+#include "game/military_ui/TDiplomacyMgr.h"
+#include "game/map/TMapMgr.h"
+#include "game/military/TMilitaryUnit.h"
+#include "game/navy/TNavyMgr.h"
 #include "game/TList.h"
-#include "game/TGreatPower.h"
-#include "game/TZone.h"
+#include "game/nation/TGreatPower.h"
+#include "game/ui_screens/TZone.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_globals.h"
-#include "game/TTechMgr.h"
+#include "game/tactical_ui/TTechMgr.h"
 
 IMPLEMENT_SERIAL(TDefendProvinceMission, TArmyMission, 1)
 
-#include "game/CIterator.h"
+#include "game/ui_core/CIterator.h"
 
 // FUNCTION: IMPERIALISM 0x00535770
 void TDefendProvinceMission::GiveOrders() {

@@ -1,11 +1,11 @@
-#include "game/TDealTabControl.h"
+#include "game/trade_ui/TDealTabControl.h"
 
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/TDisplayMgr.h"
-#include "game/bitmap_descriptor_helpers.h"
+#include "game/gfx/TDisplayMgr.h"
+#include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 
 // SYNTHETIC: IMPERIALISM 0x00435540
 // TDealTabControl::`scalar deleting destructor'

@@ -1,12 +1,12 @@
-#include "game/TBatRepDetLine.h"
+#include "game/military_ui/TBatRepDetLine.h"
 
-#include "game/TArmyBoyView.h"
-#include "game/TArmyCheckBox.h"
-#include "game/TBattleUnitsView.h"
-#include "game/TInterruptusView.h"
-#include "game/TItemBoyView.h"
-#include "game/TMerchantBoyView.h"
-#include "game/TNavyBoyView.h"
+#include "game/military_ui/TArmyBoyView.h"
+#include "game/military_ui/TArmyCheckBox.h"
+#include "game/military_ui/TBattleUnitsView.h"
+#include "game/military_ui/TInterruptusView.h"
+#include "game/military_ui/TItemBoyView.h"
+#include "game/military_ui/TMerchantBoyView.h"
+#include "game/military_ui/TNavyBoyView.h"
 
 // SYNTHETIC: IMPERIALISM 0x004affd0
 // TBatRepDetLine::`scalar deleting destructor'

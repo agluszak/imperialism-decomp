@@ -1,4 +1,4 @@
-#include "game/ScopedMapQuickDrawContext.h"
+#include "game/ui_core/ScopedMapQuickDrawContext.h"
 #include "decomp_types.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/globals/prelude.h"

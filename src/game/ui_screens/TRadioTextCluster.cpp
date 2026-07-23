@@ -1,12 +1,12 @@
-#include "game/TRadioTextCluster.h"
+#include "game/ui_screens/TRadioTextCluster.h"
 
-#include "game/TRadioText.h"
+#include "game/ui_screens/TRadioText.h"
 #include "game/CSubViewIterator.h"
-#include "game/TViewMgr.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/quickdraw_regions.h"
-#include "game/quickdraw_rendering.h"
+#include "game/gfx/quickdraw_regions.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
 // SYNTHETIC: IMPERIALISM 0x005795b0
 // TRadioTextCluster::CreateObject

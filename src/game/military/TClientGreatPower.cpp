@@ -1,11 +1,11 @@
-#include "game/TClientGreatPower.h"
+#include "game/military/TClientGreatPower.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/TViewMgr.h"
-#include "game/NetMessage.h"
-#include "game/TNetMgr.h"
-#include "game/TSimMgr.h"
-#include "game/TMultiplayerMgr.h"
+#include "game/ui_core/TViewMgr.h"
+#include "game/military/NetMessage.h"
+#include "game/net/TNetMgr.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/net/TMultiplayerMgr.h"
 
 // FUNCTION: IMPERIALISM 0x005412b0
 bool TClientGreatPower::IsClient(void) {

@@ -1,77 +1,77 @@
-#include "game/TViewMgr.h"
-#include "game/TTemplateDialogs.h"
-#include "game/TEventHandler.h"
+#include "game/ui_core/TViewMgr.h"
+#include "game/gfx/TTemplateDialogs.h"
+#include "game/ui_core/TEventHandler.h"
 
-#include "game/TDealBookPicture.h"
-#include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/trade_ui/TDealBookPicture.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
 
 #include "game/turn_event_dialog_provisional.h"
 
 #include "game/ImperialismApp.h"
-#include "game/TAmbitApplication.h"
-#include "game/TArmyMgr.h"
-#include "game/TArmyToolbar.h"
-#include "game/TAssetMgr.h"
-#include "game/TSoundPlayer.h"        // g_pSfxPlaybackSystem
-#include "game/TMacViewMgr.h"         // g_pStrategicMapViewSystem
-#include "game/TIncludeView.h"        // turn-event UI entry packet ('Incl')
-#include "game/CWMgrIterator.h"       // window-registry traversal for the full (code-0) refresh
-#include "game/quickdraw_rendering.h" // SetQuickDrawFillColor / SetQuickDrawStrokeColor
-#include "game/TToolBarCluster.h"     // pulls TView/TControl/TCluster chain for main-view dispatch
-#include "game/TMovieView.h"
+#include "game/gfx/TAmbitApplication.h"
+#include "game/military/TArmyMgr.h"
+#include "game/ui_widgets/TArmyToolbar.h"
+#include "game/assets/TAssetMgr.h"
+#include "game/ui_widgets/TSoundPlayer.h"        // g_pSfxPlaybackSystem
+#include "game/ui_core/TMacViewMgr.h"         // g_pStrategicMapViewSystem
+#include "game/ui_core/TIncludeView.h"        // turn-event UI entry packet ('Incl')
+#include "game/ui_core/CWMgrIterator.h"       // window-registry traversal for the full (code-0) refresh
+#include "game/ui_core/quickdraw_rendering.h" // SetQuickDrawFillColor / SetQuickDrawStrokeColor
+#include "game/ui_widgets/TToolBarCluster.h"     // pulls TView/TControl/TCluster chain for main-view dispatch
+#include "game/assets/TMovieView.h"
 
-#include "game/TSimMgr.h"
-#include "game/TTechMgr.h"
-#include "game/TCivToolbar.h"
-#include "game/global_data_tables.h" // g_pGameFlowState, g_pSimMgr, g_apNationStates
-#include "game/TCountry.h"           // FormatOverlayTerrainLabelText (terrain overlay case)
-#include "game/TGreatPower.h"
-#include "game/TSortedByRelationshipList.h"
-#include "game/TGarrisonView.h"
-#include "game/TMapMgr.h"
-#include "game/TDisplayMgr.h" // g_pDisplayMgr, g_szUiNilPointerMessage, g_szUiFailureMessage
-#include "game/THelpMgr.h"
-#include "game/TWindow.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/tactical_ui/TTechMgr.h"
+#include "game/ui_widgets/TCivToolbar.h"
+#include "game/core/global_data_tables.h" // g_pGameFlowState, g_pSimMgr, g_apNationStates
+#include "game/city_ui/TCountry.h"           // FormatOverlayTerrainLabelText (terrain overlay case)
+#include "game/nation/TGreatPower.h"
+#include "game/military_ui/TSortedByRelationshipList.h"
+#include "game/military/TGarrisonView.h"
+#include "game/map/TMapMgr.h"
+#include "game/gfx/TDisplayMgr.h" // g_pDisplayMgr, g_szUiNilPointerMessage, g_szUiFailureMessage
+#include "game/ui_core/THelpMgr.h"
+#include "game/ui_core/TWindow.h"
 #include "game/ui_control_tags.h"
-#include "game/TInfoBarText.h"
-#include "game/TCouncilTickerAnimation.h"
-#include "game/TCouncilView.h"
-#include "game/CTemporaryRegion.h"
-#include "game/TNewspaperView.h"
-#include "game/TPicture.h"
-#include "game/turn_flow_cooldown.h" // IsTurnFlowCooldownActiveAndResetExpiredState
-#include "game/ui_invalidation_guard.h"
-#include "game/ui_message_pump.h"
-#include "game/TMultiplayerMgr.h"
-#include "game/TCluster.h"
-#include "game/TDiplomacyMapView.h"
-#include "game/TModalMessageCommand.h"
-#include "game/TApplication.h"
-#include "game/TSuperCivRoster.h"
-#include "game/TSuperArmyRoster.h"
-#include "game/TSuperNavyRoster.h"
-#include "game/TNavyRoster.h"
-#include "game/TTaskForce.h"
+#include "game/ui_widgets/TInfoBarText.h"
+#include "game/app/TCouncilTickerAnimation.h"
+#include "game/diplomacy_ui/TCouncilView.h"
+#include "game/gfx/CTemporaryRegion.h"
+#include "game/ui_screens/TNewspaperView.h"
+#include "game/ui_core/TPicture.h"
+#include "game/ui_screens/turn_flow_cooldown.h" // IsTurnFlowCooldownActiveAndResetExpiredState
+#include "game/gfx/ui_invalidation_guard.h"
+#include "game/ui_core/ui_message_pump.h"
+#include "game/net/TMultiplayerMgr.h"
+#include "game/ui_core/TCluster.h"
+#include "game/diplomacy_ui/TDiplomacyMapView.h"
+#include "game/ui_core/TModalMessageCommand.h"
+#include "game/ui_core/TApplication.h"
+#include "game/military_ui/TSuperCivRoster.h"
+#include "game/military_ui/TSuperArmyRoster.h"
+#include "game/navy_ui/TSuperNavyRoster.h"
+#include "game/navy_ui/TNavyRoster.h"
+#include "game/navy/TTaskForce.h"
 
 #ifdef IMPERIALISM_RUNTIME_TESTS
 #include "RuntimeTestDriver.h"
 #endif
-#include "game/TTacticalBattleView.h"
-#include "game/TScrollView.h" // nation-info modal overflow scroll wrapper
-#include "game/TStaticText.h"
-#include "game/TDropShadowText.h"
-#include "game/TTechStorePage.h"
-#include "game/mapped_flavor_text.h" // BuildUiMessageTextFromBracketTemplate / scanBracketExpressions
-#include "game/TEditText.h"
-#include "game/TRadioText.h"
-#include "game/TRadioTextCluster.h"
-#include "game/TDeluxeText.h"
-#include "game/TCivMgr.h"
-#include "game/TCivUnit.h"
-#include "game/TCity.h"
-#include "game/TCitySiteView.h"
-#include "game/TMapUberPicture.h"
-#include "game/TTurnEventDialogFactoryRegistry.h"
+#include "game/tactical/TTacticalBattleView.h"
+#include "game/ui_screens/TScrollView.h" // nation-info modal overflow scroll wrapper
+#include "game/ui_core/TStaticText.h"
+#include "game/ui_widgets/TDropShadowText.h"
+#include "game/app/TTechStorePage.h"
+#include "game/military/mapped_flavor_text.h" // BuildUiMessageTextFromBracketTemplate / scanBracketExpressions
+#include "game/ui_core/TEditText.h"
+#include "game/ui_screens/TRadioText.h"
+#include "game/ui_screens/TRadioTextCluster.h"
+#include "game/ui_widgets/TDeluxeText.h"
+#include "game/city_ui/TCivMgr.h"
+#include "game/military/TCivUnit.h"
+#include "game/city/TCity.h"
+#include "game/map_ui/TCitySiteView.h"
+#include "game/map/TMapUberPicture.h"
+#include "game/ui_core/TTurnEventDialogFactoryRegistry.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 #include <new>
@@ -82,7 +82,7 @@
 // The display/GWorld manager (g_pDisplayMgr @ 0x6a2158); its activeDialog (+0x04) field
 // holds the active main TView used as the dispatch root for turn-event UI refreshes.
 
-#include "game/CIncludeView.h"
+#include "game/ui_core/CIncludeView.h"
 
 // The former RunNationInfoModalAndReturnNonCancel / NoOpUiRuntimeCallback_005db2f0 /
 // NoOpRuntimeCallback_005d5d10 extern bridges are gone: the modal is a real TViewMgr

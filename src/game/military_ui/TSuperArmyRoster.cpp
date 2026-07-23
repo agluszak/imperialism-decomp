@@ -1,10 +1,10 @@
-#include "game/TSuperArmyRoster.h"
+#include "game/military_ui/TSuperArmyRoster.h"
 
-#include "game/TBook.h"
-#include "game/TMapMgr.h"
-#include "game/TMilitaryUnit.h"
-#include "game/TMiniArmyLine.h"
-#include "game/TSimMgr.h"
+#include "game/ui_screens/TBook.h"
+#include "game/map/TMapMgr.h"
+#include "game/military/TMilitaryUnit.h"
+#include "game/military_ui/TMiniArmyLine.h"
+#include "game/ui_screens/TSimMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

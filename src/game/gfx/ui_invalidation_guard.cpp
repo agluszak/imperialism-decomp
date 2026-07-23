@@ -1,4 +1,4 @@
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 #include "game/mfc.h"
 #include "game/globals/prelude.h"

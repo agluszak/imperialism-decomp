@@ -1,6 +1,6 @@
-#include "game/TTechItemLine.h"
+#include "game/tactical_ui/TTechItemLine.h"
 
-#include "game/TTechItemView.h"
+#include "game/tactical_ui/TTechItemView.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b1040
 // TTechItemLine::`scalar deleting destructor'

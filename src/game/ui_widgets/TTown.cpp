@@ -1,11 +1,11 @@
-#include "game/TTown.h"
+#include "game/ui_widgets/TTown.h"
 
-#include "game/TMapMgr.h"
-#include "game/TSimMgr.h"
-#include "game/TStream.h"
-#include "game/TCity.h"
-#include "game/TGreatPower.h"
-#include "game/TTechMgr.h"
+#include "game/map/TMapMgr.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/core/TStream.h"
+#include "game/city/TCity.h"
+#include "game/nation/TGreatPower.h"
+#include "game/tactical_ui/TTechMgr.h"
 #include <string.h>
 
 #include "game/globals/prelude.h"

@@ -1,16 +1,16 @@
 #include <string.h>
 #include <time.h>
 
-#include "game/TMapMaker.h"
-#include "game/CString.h"
-#include "game/TObject.h"
-#include "game/TControl.h"
-#include "game/TMapMgr.h"
-#include "game/TSetupRandomMapPicture.h"
+#include "game/map_ui/TMapMaker.h"
+#include "game/ui_screens/CString.h"
+#include "game/app/TObject.h"
+#include "game/ui_core/TControl.h"
+#include "game/map/TMapMgr.h"
+#include "game/ui_screens/TSetupRandomMapPicture.h"
 #include "game/globals/prelude.h"
 #include "game/globals/map_ui_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/sea_geometry.h"
+#include "game/map/sea_geometry.h"
 
 // Same hex-neighbor math as TMapMgr::GetNeighborTileIDArray, but over
 // TMapMaker's own full-resolution generation grid (mapTileGrid08, 108x60, stride

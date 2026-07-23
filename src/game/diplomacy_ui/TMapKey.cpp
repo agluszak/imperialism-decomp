@@ -1,13 +1,13 @@
-#include "game/TMapKey.h"
+#include "game/diplomacy_ui/TMapKey.h"
 
-#include "game/CString.h"
-#include "game/TCountry.h"
-#include "game/TDeluxeText.h"
-#include "game/TSimMgr.h"
-#include "game/TView.h"
-#include "game/global_data_tables.h" // g_pSimMgr, g_apTerrainTypeDescriptorTable
-#include "game/mapped_flavor_text.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_screens/CString.h"
+#include "game/city_ui/TCountry.h"
+#include "game/ui_widgets/TDeluxeText.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/ui_core/TView.h"
+#include "game/core/global_data_tables.h" // g_pSimMgr, g_apTerrainTypeDescriptorTable
+#include "game/military/mapped_flavor_text.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x00430900

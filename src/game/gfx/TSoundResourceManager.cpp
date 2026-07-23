@@ -1,4 +1,4 @@
-#include "game/TSoundResourceManager.h"
+#include "game/gfx/TSoundResourceManager.h"
 
 // TSoundResourceManager.h pulls <windowsx.h> (for GlobalFreePtr in WaveLoadDescriptor),
 // which defines UnionRgn/CopyRgn as GDI helper macros. Those would mangle the identically
@@ -10,7 +10,7 @@
 #include "game/ImperialismApp.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/wave_helpers.h"
+#include "game/assets/wave_helpers.h"
 
 #include <string.h>
 

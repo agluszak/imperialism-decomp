@@ -1,15 +1,15 @@
 // Free geometry helpers for the UMapper overlay grid (a 0xd8=216-wide doubled-column grid laid
 // over the 0x6c=108-wide hex tile map).
 
-#include "game/map_overlay_geometry.h"
+#include "game/map/map_overlay_geometry.h"
 
-#include "game/TMapMgr.h"
-#include "game/quickdraw_regions.h"
-#include "game/TMapUberPicture.h"
-#include "game/TNavyMgr.h"
-#include "game/TOcean.h"
-#include "game/TTaskForce.h"
-#include "game/TViewMgr.h"
+#include "game/map/TMapMgr.h"
+#include "game/gfx/quickdraw_regions.h"
+#include "game/map/TMapUberPicture.h"
+#include "game/navy/TNavyMgr.h"
+#include "game/navy/TOcean.h"
+#include "game/navy/TTaskForce.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"

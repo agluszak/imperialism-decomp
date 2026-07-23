@@ -1,18 +1,18 @@
-#include "game/CIncludeView.h"
+#include "game/ui_core/CIncludeView.h"
 
-#include "game/CMcWindow.h"
-#include "game/TAmbitApplication.h"
-#include "game/TControl.h"
+#include "game/ui_core/CMcWindow.h"
+#include "game/gfx/TAmbitApplication.h"
+#include "game/ui_core/TControl.h"
 #include "game/TEvent.h"
-#include "game/TModuleLibraryCacheTableStateB.h"
-#include "game/TUiEvent.h"
-#include "game/TView.h"
-#include "game/TViewMgr.h"
-#include "game/TWindow.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/ui_core/TUiEvent.h"
+#include "game/ui_core/TView.h"
+#include "game/ui_core/TViewMgr.h"
+#include "game/ui_core/TWindow.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // MCIWNDM_NOTIFYMODE / MCI_MODE_STOP for the movie stop-notify handler. NOAVIFILE keeps
 // this to the MCIWnd control messages without pulling in the AVIFile COM interfaces.

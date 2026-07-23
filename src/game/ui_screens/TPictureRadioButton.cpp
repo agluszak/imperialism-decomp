@@ -1,7 +1,7 @@
-#include "game/TPictureRadioButton.h"
+#include "game/ui_screens/TPictureRadioButton.h"
 
-#include "game/CDib.h"
-#include "game/TCluster.h"
+#include "game/gfx/CDib.h"
+#include "game/ui_core/TCluster.h"
 // SYNTHETIC: IMPERIALISM 0x00570cc0
 // TPictureRadioButton::CreateObject
 

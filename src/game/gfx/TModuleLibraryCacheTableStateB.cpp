@@ -1,4 +1,4 @@
-#include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
 
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"

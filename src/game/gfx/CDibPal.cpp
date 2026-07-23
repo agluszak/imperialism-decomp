@@ -1,4 +1,4 @@
-#include "game/CDibPal.h"
+#include "game/gfx/CDibPal.h"
 
 #include <afxdlgs.h>
 #include <stdlib.h>

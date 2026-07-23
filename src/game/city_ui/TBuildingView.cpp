@@ -1,8 +1,8 @@
-#include "game/TBuildingView.h"
-#include "game/TWindow.h"
-#include "game/TCity.h"
-#include "game/TCityProductionView.h"
-#include "game/TViewMgr.h"
+#include "game/city_ui/TBuildingView.h"
+#include "game/ui_core/TWindow.h"
+#include "game/city/TCity.h"
+#include "game/city_ui/TCityProductionView.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 // SYNTHETIC: IMPERIALISM 0x004c6df0

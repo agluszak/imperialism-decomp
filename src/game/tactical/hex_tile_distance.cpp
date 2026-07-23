@@ -1,4 +1,4 @@
-#include "game/hex_tile_distance.h"
+#include "game/tactical/hex_tile_distance.h"
 
 // FUNCTION: IMPERIALISM 0x005A39A0
 int ComputeHexTileDistanceFromIndices(int tileIndexA, int tileIndexB) {

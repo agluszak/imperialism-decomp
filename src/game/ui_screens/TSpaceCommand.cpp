@@ -1,5 +1,5 @@
-#include "game/TSpaceCommand.h"
-#include "game/TSetupRandomMapPicture.h"
+#include "game/ui_screens/TSpaceCommand.h"
+#include "game/ui_screens/TSetupRandomMapPicture.h"
 
 // FUNCTION: IMPERIALISM 0x005751f0
 void TSpaceCommand::DoIt() {

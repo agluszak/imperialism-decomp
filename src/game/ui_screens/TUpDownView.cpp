@@ -1,4 +1,4 @@
-#include "game/TUpDownView.h"
+#include "game/ui_screens/TUpDownView.h"
 // SYNTHETIC: IMPERIALISM 0x00583c90
 // TUpDownView::CreateObject
 
@@ -7,7 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TUpDownView, TControl)
 
-#include "game/TAmbitApplication.h"
+#include "game/gfx/TAmbitApplication.h"
 
 // FUNCTION: IMPERIALISM 0x00583d50
 TUpDownView::TUpDownView() : TControl(), timingDword84(0) {}

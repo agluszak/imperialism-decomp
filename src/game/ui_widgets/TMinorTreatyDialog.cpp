@@ -1,14 +1,14 @@
-#include "game/TMinorTreatyDialog.h"
+#include "game/ui_widgets/TMinorTreatyDialog.h"
 
-#include "game/TCountry.h"
-#include "game/TDiplomacyMgr.h"
-#include "game/TNumberText.h"
-#include "game/TStaticText.h"
-#include "game/TView.h"
+#include "game/city_ui/TCountry.h"
+#include "game/military_ui/TDiplomacyMgr.h"
+#include "game/ui_core/TNumberText.h"
+#include "game/ui_core/TStaticText.h"
+#include "game/ui_core/TView.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b4020
 // TMinorTreatyDialog::`scalar deleting destructor'

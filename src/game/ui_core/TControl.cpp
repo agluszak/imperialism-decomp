@@ -1,17 +1,17 @@
 // Manual decompilation file.
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
-#include "game/TControl.h"
+#include "game/ui_core/TControl.h"
 #include "game/mfc.h"
-#include "game/TMapKey.h"
-#include "game/quickdraw_regions.h"
-#include "game/TMouseCaptureState.h"
-#include "game/TTEView.h"
-#include "game/TMovieView.h"
+#include "game/diplomacy_ui/TMapKey.h"
+#include "game/gfx/quickdraw_regions.h"
+#include "game/core/TMouseCaptureState.h"
+#include "game/ui_core/TTEView.h"
+#include "game/assets/TMovieView.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 #include <new>
 

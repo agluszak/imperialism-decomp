@@ -1,6 +1,6 @@
-#include "game/TFoodProcessingOrder.h"
+#include "game/city/TFoodProcessingOrder.h"
 
-#include "game/TCity.h"
+#include "game/city/TCity.h"
 
 // SYNTHETIC: IMPERIALISM 0x004b7dc0
 // TFoodProcessingOrder::CreateObject

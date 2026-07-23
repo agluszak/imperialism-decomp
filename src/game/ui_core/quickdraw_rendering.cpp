@@ -1,15 +1,15 @@
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 
-#include "game/bitmap_descriptor_helpers.h"
-#include "game/CDib.h"
-#include "game/CDibPal.h"
+#include "game/ui_core/bitmap_descriptor_helpers.h"
+#include "game/gfx/CDib.h"
+#include "game/gfx/CDibPal.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
-#include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/TStaticText.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/ui_core/TStaticText.h"
+#include "game/gfx/ui_invalidation_guard.h"
 #include <cstring>
 
 // The QuickDraw clip/surface module state is seeded by a file-scope C++ object

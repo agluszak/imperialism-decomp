@@ -1,4 +1,4 @@
-#include "game/TTerrainInfoDialog.h"
+#include "game/map/TTerrainInfoDialog.h"
 // SYNTHETIC: IMPERIALISM 0x0051b0a0
 // TTerrainInfoDialog::CreateObject
 

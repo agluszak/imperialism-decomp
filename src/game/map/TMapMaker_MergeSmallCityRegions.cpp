@@ -12,18 +12,18 @@
 //    connects (uint16 at +0x10/+0x12), which is how this pass reinterprets the segment slot;
 //  - per-region tile-count / merged-flag scratch arrays (function locals).
 
-#include "game/TMapMaker.h"
+#include "game/map_ui/TMapMaker.h"
 
 #include <math.h>
 
 #include "decomp_types.h"
-#include "game/TMapMgr.h"
+#include "game/map/TMapMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/sea_geometry.h"
+#include "game/map/sea_geometry.h"
 #include "game/mfc.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // One 0x18-byte region-border-link record (the overlay-span record this pass stores).
 struct RegionBorderLink {

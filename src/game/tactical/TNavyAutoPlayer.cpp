@@ -1,10 +1,10 @@
-#include "game/TNavyAutoPlayer.h"
+#include "game/tactical/TNavyAutoPlayer.h"
 
-#include "game/CIterator.h"
+#include "game/ui_core/CIterator.h"
 #include "game/TList.h"
-#include "game/TTacticalBattle.h"
-#include "game/TTacticalUnit.h"
-#include "game/map_overlay_geometry.h"
+#include "game/tactical/TTacticalBattle.h"
+#include "game/tactical/TTacticalUnit.h"
+#include "game/map/map_overlay_geometry.h"
 
 // SYNTHETIC: IMPERIALISM 0x0059f070
 // TNavyAutoPlayer::`scalar deleting destructor'

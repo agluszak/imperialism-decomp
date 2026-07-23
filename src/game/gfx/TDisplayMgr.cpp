@@ -1,23 +1,23 @@
-#include "game/TDisplayMgr.h"
+#include "game/gfx/TDisplayMgr.h"
 
 #include <new>
 #include <windows.h>
 
-#include "game/bitmap_descriptor_helpers.h"
-#include "game/CTemporaryRegion.h"
-#include "game/TAssetMgr.h"
-#include "game/TPtrList.h"
+#include "game/ui_core/bitmap_descriptor_helpers.h"
+#include "game/gfx/CTemporaryRegion.h"
+#include "game/assets/TAssetMgr.h"
+#include "game/ui_core/TPtrList.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/TView.h"
-#include "game/CWMgrIterator.h"
-#include "game/TViewMgr.h"
-#include "game/TWindow.h"
+#include "game/ui_core/TView.h"
+#include "game/ui_core/CWMgrIterator.h"
+#include "game/ui_core/TViewMgr.h"
+#include "game/ui_core/TWindow.h"
 #include "game/globals/prelude.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
-#include "game/quickdraw_rendering.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/ui_core/quickdraw_rendering.h"
+#include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_control_tags.h"
 
 namespace {

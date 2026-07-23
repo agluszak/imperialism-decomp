@@ -1,8 +1,8 @@
-#include "game/TBattleUnitsView.h"
-#include "game/CString.h"
-#include "game/TBatRepDetLine.h"
-#include "game/TDisplayMgr.h"
-#include "game/bitmap_descriptor_helpers.h"
+#include "game/military_ui/TBattleUnitsView.h"
+#include "game/ui_screens/CString.h"
+#include "game/military_ui/TBatRepDetLine.h"
+#include "game/gfx/TDisplayMgr.h"
+#include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

@@ -1,17 +1,17 @@
 #include "game/TScopedWaitCursor.h"
-#include "game/TAssetMgr.h"
+#include "game/assets/TAssetMgr.h"
 
-#include "game/CAmbitDocument.h"
+#include "game/app/CAmbitDocument.h"
 #include "game/ImperialismApp.h"
-#include "game/TModuleLibraryCacheTableStateB.h"
-#include "game/TMovieView.h"
-#include "game/TSoundPlayer.h"
-#include "game/TTurnEventDialogFactoryRegistry.h"
-#include "game/TViewMgr.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/assets/TMovieView.h"
+#include "game/ui_widgets/TSoundPlayer.h"
+#include "game/ui_core/TTurnEventDialogFactoryRegistry.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/assets_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 #include <io.h>
 // SYNTHETIC: IMPERIALISM 0x005df1d0

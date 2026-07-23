@@ -1,12 +1,12 @@
-#include "game/TRailheadDialog.h"
+#include "game/city_ui/TRailheadDialog.h"
 
-#include "game/TCity.h"
-#include "game/TCluster.h"
-#include "game/TControl.h"
+#include "game/city/TCity.h"
+#include "game/ui_core/TCluster.h"
+#include "game/ui_core/TControl.h"
 #include "game/globals/prelude.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x004bcfd0
 // TRailheadDialog::`scalar deleting destructor'

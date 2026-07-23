@@ -1,14 +1,14 @@
 // TStratReportView wrapper class quad extracted from Ghidra autogen.
 
 #include "decomp_types.h"
-#include "game/TStratReportView.h"
+#include "game/ui_widgets/TStratReportView.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 
-#include "game/TCountry.h"
-#include "game/TMapMgr.h"
-#include "game/TSimMgr.h"
-#include "game/quickdraw_rendering.h"
+#include "game/city_ui/TCountry.h"
+#include "game/map/TMapMgr.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/ui_core/quickdraw_rendering.h"
 
 #include <new>
 

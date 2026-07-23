@@ -1,4 +1,4 @@
-#include "game/TLandSaleEvent.h"
+#include "game/nation/TLandSaleEvent.h"
 
 // SYNTHETIC: IMPERIALISM 0x004d49a0
 // TLandSaleEvent::`scalar deleting destructor'

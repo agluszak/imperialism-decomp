@@ -1,4 +1,4 @@
-#include "game/TTurnStartEvent.h"
+#include "game/nation/TTurnStartEvent.h"
 
 // FUNCTION: IMPERIALISM 0x004e6610
 undefined TTurnStartEvent::ApplyJoinEmpireMode2FinalizeNationNameState() {

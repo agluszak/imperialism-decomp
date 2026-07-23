@@ -1,7 +1,7 @@
-#include "game/TSortedList.h"
+#include "game/ui_core/TSortedList.h"
 
 #include <stdlib.h>
-#include "game/TMission.h"
+#include "game/map/TMission.h"
 
 // Default-compare trampoline whose address Sort() passes as the comparator: adapts the
 // three-arg __cdecl comparator shape onto the virtual Compare of the list supplied as

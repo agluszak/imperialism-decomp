@@ -1,8 +1,8 @@
-#include "game/TGWorldPeeker.h"
+#include "game/gfx/TGWorldPeeker.h"
 
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/TQuickDrawSurfaceContext.h"
 
 // SYNTHETIC: IMPERIALISM 0x004ff280

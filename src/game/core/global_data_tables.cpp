@@ -14,33 +14,33 @@ class TControl;
 class TView;
 class TInfoBarText;
 
-#include "game/TArmyPlayer.h"
-#include "game/TAmbitApplication.h"
+#include "game/tactical/TArmyPlayer.h"
+#include "game/gfx/TAmbitApplication.h"
 #include "game/mfc.h"
-#include "game/global_data_tables.h"
-#include "game/sea_geometry.h"
+#include "game/core/global_data_tables.h"
+#include "game/map/sea_geometry.h"
 #include "game/app_init_globals.h"
-#include "game/TViewMgr.h"
-#include "game/TNetMgr.h"
-#include "game/TTurnEventDialogFactoryRegistry.h"
-#include "game/TCountry.h"
-#include "game/TDiplomacyMgr.h"
-#include "game/TDisplayMgr.h"
-#include "game/TGreatPower.h"
-#include "game/TNewsMgr.h"
-#include "game/TNavyMgr.h"
-#include "game/TSimMgr.h"
-#include "game/TAssetMgr.h"
-#include "game/TMacViewMgr.h"
-#include "game/TLanguageMgr.h"
-#include "game/THelpMgr.h"
-#include "game/TControl.h"
-#include "game/TInfoBarText.h"
-#include "game/TAnimator.h"
+#include "game/ui_core/TViewMgr.h"
+#include "game/net/TNetMgr.h"
+#include "game/ui_core/TTurnEventDialogFactoryRegistry.h"
+#include "game/city_ui/TCountry.h"
+#include "game/military_ui/TDiplomacyMgr.h"
+#include "game/gfx/TDisplayMgr.h"
+#include "game/nation/TGreatPower.h"
+#include "game/ui_screens/TNewsMgr.h"
+#include "game/navy/TNavyMgr.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/assets/TAssetMgr.h"
+#include "game/ui_core/TMacViewMgr.h"
+#include "game/ui_core/TLanguageMgr.h"
+#include "game/ui_core/THelpMgr.h"
+#include "game/ui_core/TControl.h"
+#include "game/ui_widgets/TInfoBarText.h"
+#include "game/app/TAnimator.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/TModuleLibraryCacheTableStateB.h"
-#include "game/TBackdropWindow.h"
-#include "game/TSetupRandomMapPicture.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TBackdropWindow.h"
+#include "game/ui_screens/TSetupRandomMapPicture.h"
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 // GLOBAL: IMPERIALISM 0x006a4310
@@ -1330,13 +1330,13 @@ double DAT_0066fad0 = 0.092;
 
 } // extern "C"
 
-#include "game/TZone.h"
-#include "game/TOcean.h"
-#include "game/TTaskForce.h"
-#include "game/TMapMgr.h"
-#include "game/TMinor.h"
-#include "game/TCivMgr.h"
-#include "game/TSoundPlayer.h"
+#include "game/ui_screens/TZone.h"
+#include "game/navy/TOcean.h"
+#include "game/navy/TTaskForce.h"
+#include "game/map/TMapMgr.h"
+#include "game/nation/TMinor.h"
+#include "game/city_ui/TCivMgr.h"
+#include "game/ui_widgets/TSoundPlayer.h"
 
 // Named global pointers read with a direct absolute load in the original (vs the
 // ReadGlobalPointer(imm) shortcut, which emits an extra indirection that cannot pair).
@@ -1657,7 +1657,7 @@ TextStyle g_UiResourceEntryDefaultTextStyle = {0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x0066db50
 const char* g_cstrTradeTotalsBalanceSubstitution0066DB50 = g_szEmptyString;
 
-#include "game/TWNetSessionManager.h"
+#include "game/net/TWNetSessionManager.h"
 
 // UGameWindow/dialog-factory widget build stack. The list element type is TView*: its
 // vtable family uses the CList<TView*,TView*> serializer/destructors, not the WNet
@@ -1751,7 +1751,7 @@ CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecor
 // GLOBAL: IMPERIALISM 0x006a6014
 TNetMgr* g_pNetMgr006a6014 = 0;
 
-#include "game/TApplication.h"
+#include "game/ui_core/TApplication.h"
 
 // GLOBAL: IMPERIALISM 0x006a18e0
 TApplication* g_pApplicationUiRootController = 0;

@@ -8,13 +8,13 @@
 // Its own translation unit (like the other UMapper routines) so the inline neighbour accessor
 // folds into the one body.
 
-#include "game/TMapMaker.h"
+#include "game/map_ui/TMapMaker.h"
 
 #include "decomp_types.h"
-#include "game/TMapMgr.h"
+#include "game/map/TMapMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/map_overlay_geometry.h"
+#include "game/map/map_overlay_geometry.h"
 
 namespace {
 

@@ -1,5 +1,5 @@
-#include "game/TColorKeyButton.h"
-#include "game/TWindow.h"
+#include "game/ui_screens/TColorKeyButton.h"
+#include "game/ui_core/TWindow.h"
 // SYNTHETIC: IMPERIALISM 0x00571ed0
 // TColorKeyButton::CreateObject
 

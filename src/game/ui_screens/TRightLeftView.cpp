@@ -1,5 +1,5 @@
-#include "game/TRightLeftView.h"
-#include "game/TControl.h"
+#include "game/ui_screens/TRightLeftView.h"
+#include "game/ui_core/TControl.h"
 // SYNTHETIC: IMPERIALISM 0x00583e70
 // TRightLeftView::CreateObject
 
@@ -12,7 +12,7 @@ IMPLEMENT_DYNCREATE(TRightLeftView, TControl)
 // TRightLeftView::`scalar deleting destructor'
 TRightLeftView::~TRightLeftView() {}
 
-#include "game/TAmbitApplication.h"
+#include "game/gfx/TAmbitApplication.h"
 
 // FUNCTION: IMPERIALISM 0x00583f30
 TRightLeftView::TRightLeftView() : TControl(), timingDword84(0) {}

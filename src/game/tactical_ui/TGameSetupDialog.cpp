@@ -1,4 +1,4 @@
-#include "game/TGameSetupDialog.h"
+#include "game/tactical_ui/TGameSetupDialog.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b27d0
 // TGameSetupDialog::`scalar deleting destructor'

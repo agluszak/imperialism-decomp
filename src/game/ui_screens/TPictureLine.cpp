@@ -1,5 +1,5 @@
-#include "game/TPictureLine.h"
-#include "game/TPicture.h"
+#include "game/ui_screens/TPictureLine.h"
+#include "game/ui_core/TPicture.h"
 // SYNTHETIC: IMPERIALISM 0x00570030
 // TPictureLine::CreateObject
 

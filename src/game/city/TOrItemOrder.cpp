@@ -1,6 +1,6 @@
-#include "game/TOrItemOrder.h"
+#include "game/city/TOrItemOrder.h"
 
-#include "game/TCity.h"
+#include "game/city/TCity.h"
 // SYNTHETIC: IMPERIALISM 0x004b57b0
 // TOrItemOrder::CreateObject
 

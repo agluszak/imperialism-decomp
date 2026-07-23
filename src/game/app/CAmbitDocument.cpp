@@ -1,9 +1,9 @@
-#include "game/CAmbitDocument.h"
+#include "game/app/CAmbitDocument.h"
 
 #include "game/ArchiveStreamAdapter.h"
-#include "game/TAmbitFileBasedDocument.h"
-#include "game/TTurnEventDialogFactoryRegistry.h"
-#include "game/TView.h"
+#include "game/gfx/TAmbitFileBasedDocument.h"
+#include "game/ui_core/TTurnEventDialogFactoryRegistry.h"
+#include "game/ui_core/TView.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

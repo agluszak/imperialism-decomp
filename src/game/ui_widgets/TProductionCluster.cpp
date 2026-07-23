@@ -1,18 +1,18 @@
-#include "game/TIndustryCluster.h"
-#include "game/TRailCluster.h"
-#include "game/TShipyardCluster.h"
-#include "game/TTradeCluster.h"
-#include "game/TGreatPower.h"
+#include "game/ui_widgets/TIndustryCluster.h"
+#include "game/ui_widgets/TRailCluster.h"
+#include "game/ui_widgets/TShipyardCluster.h"
+#include "game/ui_widgets/TTradeCluster.h"
+#include "game/nation/TGreatPower.h"
 #include "game/mfc.h"
-#include "game/TViewMgr.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/quickdraw_guards.h"
 
-#include "game/TAmtBar.h"
-#include "game/TProductionCluster.h"
+#include "game/ui_widgets/TAmtBar.h"
+#include "game/ui_widgets/TProductionCluster.h"
 
 #include "game/GameAssert.h"
-#include "game/ui_invalidation_guard.h"
-#include "game/quickdraw_rendering.h"
+#include "game/gfx/ui_invalidation_guard.h"
+#include "game/ui_core/quickdraw_rendering.h"
 
 #include <new>
 

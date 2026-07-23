@@ -1,13 +1,13 @@
-#include "game/TMinister.h"
+#include "game/map/TMinister.h"
 
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
-#include "game/TCountry.h"
-#include "game/TGreatPower.h"
+#include "game/city_ui/TCountry.h"
+#include "game/nation/TGreatPower.h"
 #include "game/TMinisterBaseOrderArray.h"
-#include "game/TShip.h"
-#include "game/TStream.h"
+#include "game/navy/TShip.h"
+#include "game/core/TStream.h"
 
 #include <new>
 

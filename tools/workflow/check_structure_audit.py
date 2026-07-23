@@ -84,7 +84,7 @@ LINE_COMMENT_RE = re.compile(r"^\s*//")
 def is_alias_header(text: str) -> bool:
     """A pure re-export header: one `#include` plus optional `typedef X Y;` lines
     whose target X is the included header's own class (e.g. `typedef TViewMgr
-    TUiRuntimeContext;` over `#include "game/TViewMgr.h"`).
+    TUiRuntimeContext;` over `#include "game/ui_core/TViewMgr.h"`).
 
     Multi-include umbrella headers and domain-vocabulary headers (typedefs of
     scalar types like `typedef short NationSlot;`) are deliberate and not flagged.

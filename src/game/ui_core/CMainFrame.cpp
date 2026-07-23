@@ -1,11 +1,11 @@
-#include "game/CMainFrame.h"
+#include "game/ui_core/CMainFrame.h"
 
-#include "game/CIncludeView.h" // GetMainViewHostFromActiveThread()->m_hWnd
+#include "game/ui_core/CIncludeView.h" // GetMainViewHostFromActiveThread()->m_hWnd
 #include "game/ImperialismApp.h"
-#include "game/TBackdropWindow.h"
-#include "game/TModuleLibraryCacheTableStateB.h"
-#include "game/TSimMgr.h"
-#include "game/TViewMgr.h"
+#include "game/gfx/TBackdropWindow.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

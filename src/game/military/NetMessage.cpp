@@ -1,8 +1,8 @@
-#include "game/NetMessage.h"
+#include "game/military/NetMessage.h"
 #include <string.h>
 
-#include "game/TMultiplayerMgr.h"
-#include "game/TSimMgr.h"
+#include "game/net/TMultiplayerMgr.h"
+#include "game/ui_screens/TSimMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

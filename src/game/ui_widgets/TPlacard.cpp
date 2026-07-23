@@ -1,8 +1,8 @@
-#include "game/TPlacard.h"
+#include "game/ui_widgets/TPlacard.h"
 #include "game/mfc.h"
-#include "game/TControl.h"
-#include "game/ui_invalidation_guard.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/TControl.h"
+#include "game/gfx/ui_invalidation_guard.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x0058b960
 // TPlacard::CreateObject

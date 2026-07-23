@@ -1,4 +1,4 @@
-#include "game/TScroller.h"
+#include "game/ui_core/TScroller.h"
 
 #include "game/mfc.h"
 

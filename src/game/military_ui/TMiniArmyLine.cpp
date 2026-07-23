@@ -1,14 +1,14 @@
-#include "game/TMiniArmyLine.h"
+#include "game/military_ui/TMiniArmyLine.h"
 
-#include "game/CString.h"
-#include "game/TGWorldButton.h"
-#include "game/TMilitaryUnit.h"
-#include "game/TMiniArmyView.h"
-#include "game/TSimMgr.h"
+#include "game/ui_screens/CString.h"
+#include "game/ui_screens/TGWorldButton.h"
+#include "game/military/TMilitaryUnit.h"
+#include "game/military_ui/TMiniArmyView.h"
+#include "game/ui_screens/TSimMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/military_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/mapped_flavor_text.h"
+#include "game/military/mapped_flavor_text.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x004aa840

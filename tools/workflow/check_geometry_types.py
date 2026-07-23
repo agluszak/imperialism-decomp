@@ -44,7 +44,7 @@ C_STYLE_CAST = re.compile(rf"\(\s*(?:const\s+)?\b{GEOMETRY_TYPE}\b\s*\*\s*\)")
 # method declared in them must use CPoint/CRect/CSize, never raw Win32
 # POINT/RECT/SIZE, except for the explicitly allowlisted library-boundary methods
 # below.
-POLICY_HEADERS = ("include/game/TView.h", "include/game/TControl.h")
+POLICY_HEADERS = ("include/game/ui_core/TView.h", "include/game/ui_core/TControl.h")
 
 # (header, method) pairs allowed to carry raw Win32 geometry in their signature.
 # These are verified Win32 paint-boundary surfaces (WM_PAINT clip rects flowing to
@@ -52,11 +52,11 @@ POLICY_HEADERS = ("include/game/TView.h", "include/game/TControl.h")
 # pinned-list gate deliberately left on RECT*.  The gate errors on stale entries,
 # so promote a method to CRect by deleting its row here in the same change.
 RAW_GEOMETRY_ALLOWLIST: set[tuple[str, str]] = {
-    ("include/game/TView.h", "InvalidateCityDialogRectRegion"),
-    ("include/game/TView.h", "ValidateControlRectIfWindowActive"),
-    ("include/game/TView.h", "PaintVisibleChildrenIntersectingClipRect"),
-    ("include/game/TView.h", "Draw"),
-    ("include/game/TView.h", "DrawRectangleInCurrentUiContext"),
+    ("include/game/ui_core/TView.h", "InvalidateCityDialogRectRegion"),
+    ("include/game/ui_core/TView.h", "ValidateControlRectIfWindowActive"),
+    ("include/game/ui_core/TView.h", "PaintVisibleChildrenIntersectingClipRect"),
+    ("include/game/ui_core/TView.h", "Draw"),
+    ("include/game/ui_core/TView.h", "DrawRectangleInCurrentUiContext"),
 }
 
 MFC_GEOMETRY = re.compile(r"\b(?:CPoint|CRect|CSize)\b")

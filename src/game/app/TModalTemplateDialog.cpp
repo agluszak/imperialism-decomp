@@ -1,4 +1,4 @@
-#include "game/TModalTemplateDialog.h"
+#include "game/app/TModalTemplateDialog.h"
 
 TModalTemplateDialog::~TModalTemplateDialog() {
   DestroyListBoxAndHotKeyChildren();

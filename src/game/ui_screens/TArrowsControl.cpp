@@ -1,4 +1,4 @@
-#include "game/TArrowsControl.h"
+#include "game/ui_screens/TArrowsControl.h"
 // SYNTHETIC: IMPERIALISM 0x005838b0
 // TArrowsControl::CreateObject
 
@@ -7,7 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TArrowsControl, TPicture)
 
-#include "game/TAmbitApplication.h"
+#include "game/gfx/TAmbitApplication.h"
 
 // FUNCTION: IMPERIALISM 0x00583970
 TArrowsControl::TArrowsControl() : TPicture(), timingDword90(0) {}

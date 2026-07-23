@@ -1,4 +1,4 @@
-#include "game/TSortedByRelationshipList.h"
+#include "game/military_ui/TSortedByRelationshipList.h"
 #include "game/mfc.h"
 
 #include <stdlib.h>

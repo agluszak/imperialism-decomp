@@ -1,7 +1,7 @@
-#include "game/TBackdropWindow.h"
+#include "game/gfx/TBackdropWindow.h"
 
-#include "game/CMainFrame.h"
-#include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/ui_core/CMainFrame.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/app_init_globals.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"

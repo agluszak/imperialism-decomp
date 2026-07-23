@@ -1,9 +1,9 @@
-#include "game/TTacticalPlayer.h"
+#include "game/map/TTacticalPlayer.h"
 
-#include "game/CIterator.h"
-#include "game/TSimMgr.h"
-#include "game/TTacticalBattle.h"
-#include "game/TTacticalUnit.h"
+#include "game/ui_core/CIterator.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/tactical/TTacticalBattle.h"
+#include "game/tactical/TTacticalUnit.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

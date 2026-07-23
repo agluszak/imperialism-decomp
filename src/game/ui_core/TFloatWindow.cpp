@@ -1,4 +1,4 @@
-#include "game/TFloatWindow.h"
+#include "game/ui_core/TFloatWindow.h"
 
 // SYNTHETIC: IMPERIALISM 0x00491e00
 // TFloatWindow::CreateObject

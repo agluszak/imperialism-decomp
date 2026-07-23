@@ -1,7 +1,7 @@
-#include "game/TWarehouseView.h"
-#include "game/TCity.h"
-#include "game/TPictureNumberText.h"
-#include "game/TPopulationMgr.h"
+#include "game/city_ui/TWarehouseView.h"
+#include "game/city/TCity.h"
+#include "game/ui_widgets/TPictureNumberText.h"
+#include "game/city/TPopulationMgr.h"
 // SYNTHETIC: IMPERIALISM 0x004c71f0
 // TWarehouseView::CreateObject
 

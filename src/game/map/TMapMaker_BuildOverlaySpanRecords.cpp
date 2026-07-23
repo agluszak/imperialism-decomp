@@ -5,13 +5,13 @@
 // Isolated in its own translation unit so its size/codegen does not perturb the register
 // allocation of the neighbouring stretch methods in sea_geometry.cpp.
 
-#include "game/sea_geometry.h"
+#include "game/map/sea_geometry.h"
 
 #include <math.h>
 #include <stdlib.h>
 
 #include "decomp_types.h"
-#include "game/TMapMaker.h"
+#include "game/map_ui/TMapMaker.h"
 #include "game/globals/prelude.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"

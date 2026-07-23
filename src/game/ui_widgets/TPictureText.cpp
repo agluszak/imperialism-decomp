@@ -1,4 +1,4 @@
-#include "game/TPictureText.h"
+#include "game/ui_widgets/TPictureText.h"
 // SYNTHETIC: IMPERIALISM 0x005b5260
 // TPictureText::CreateObject
 

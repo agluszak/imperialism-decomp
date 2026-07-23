@@ -1,32 +1,32 @@
 #include <stdlib.h>
 
-#include "game/TCountry.h"
+#include "game/city_ui/TCountry.h"
 
-#include "game/TMapMgr.h"
-#include "game/CString.h"
+#include "game/map/TMapMgr.h"
+#include "game/ui_screens/CString.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/TGreatPower.h"
+#include "game/nation/TGreatPower.h"
 
-#include "game/TArmyMgr.h"
-#include "game/TLanguageMgr.h" // NormalizeRuntimeCredentialNameToken (display-name load)
-#include "game/TNewsMgr.h"
-#include "game/TCity.h"
-#include "game/TSimMgr.h"
-#include "game/TTechMgr.h"
-#include "game/TOcean.h"
-#include "game/CIterator.h"
-#include "game/TMilitaryUnit.h"
-#include "game/TStream.h"
-#include "game/TShip.h"
+#include "game/military/TArmyMgr.h"
+#include "game/ui_core/TLanguageMgr.h" // NormalizeRuntimeCredentialNameToken (display-name load)
+#include "game/ui_screens/TNewsMgr.h"
+#include "game/city/TCity.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/tactical_ui/TTechMgr.h"
+#include "game/navy/TOcean.h"
+#include "game/ui_core/CIterator.h"
+#include "game/military/TMilitaryUnit.h"
+#include "game/core/TStream.h"
+#include "game/navy/TShip.h"
 #include "game/navy_order.h"
-#include "game/TUnit.h"
-#include "game/TZone.h"
+#include "game/military/TUnit.h"
+#include "game/ui_screens/TZone.h"
 #include "game/nation_stream_serialization.h"
-#include "game/TMultiplayerMgr.h"
-#include "game/mapped_flavor_text.h"
+#include "game/net/TMultiplayerMgr.h"
+#include "game/military/mapped_flavor_text.h"
 
-#include "game/TDiplomacyMgr.h"
+#include "game/military_ui/TDiplomacyMgr.h"
 
 #include <new>
 

@@ -1,6 +1,6 @@
-#include "game/TDropShadowNumberText.h"
+#include "game/ui_widgets/TDropShadowNumberText.h"
 
-#include "game/TEditText.h"
+#include "game/ui_core/TEditText.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"

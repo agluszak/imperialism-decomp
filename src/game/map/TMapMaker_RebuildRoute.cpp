@@ -6,17 +6,17 @@
 // the two region contexts a link connects; then refreshes port-zone adjacency and zone status
 // codes. Own translation unit (TMapMaker map-generation split).
 
-#include "game/TMapMaker.h"
+#include "game/map_ui/TMapMaker.h"
 
 #include "decomp_types.h"
-#include "game/TOcean.h"
-#include "game/TZone.h"
+#include "game/navy/TOcean.h"
+#include "game/ui_screens/TZone.h"
 #include "game/globals/prelude.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
-#include "game/sea_geometry.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/map/sea_geometry.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 namespace {
 const char kUMapperPath[] = "D:\\Ambit\\Cross\\UMapper.cpp";

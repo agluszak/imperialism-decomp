@@ -1,4 +1,4 @@
-#include "game/TDocument.h"
+#include "game/ui_core/TDocument.h"
 
 // SYNTHETIC: IMPERIALISM 0x00486350
 // TDocument::`scalar deleting destructor'

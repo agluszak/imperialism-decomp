@@ -1,11 +1,11 @@
-#include "game/TRelationshipDialog.h"
+#include "game/ui_widgets/TRelationshipDialog.h"
 
-#include "game/TDiplomacyMgr.h"
-#include "game/TNumberText.h"
+#include "game/military_ui/TDiplomacyMgr.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b2d30
 // TRelationshipDialog::`scalar deleting destructor'

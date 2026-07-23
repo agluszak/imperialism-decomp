@@ -1,7 +1,7 @@
-#include "game/TInfoBarBehavior.h"
+#include "game/military_ui/TInfoBarBehavior.h"
 
-#include "game/TInfoBarText.h"
-#include "game/TView.h"
+#include "game/ui_widgets/TInfoBarText.h"
+#include "game/ui_core/TView.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 // SYNTHETIC: IMPERIALISM 0x004b0c90

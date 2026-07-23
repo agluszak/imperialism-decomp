@@ -1,6 +1,6 @@
-#include "game/TPanelView.h"
+#include "game/app/TPanelView.h"
 
-#include "game/TDiplomacyMapView.h"
+#include "game/diplomacy_ui/TDiplomacyMapView.h"
 
 // FUNCTION: IMPERIALISM 0x00430550
 void TPanelView::Setup() {}

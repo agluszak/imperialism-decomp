@@ -1,7 +1,7 @@
-#include "game/TPoseMessageDialog.h"
+#include "game/net/TPoseMessageDialog.h"
 
-#include "game/TAmbitApplication.h"
-#include "game/TApplication.h"
+#include "game/gfx/TAmbitApplication.h"
+#include "game/ui_core/TApplication.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

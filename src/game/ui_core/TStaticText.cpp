@@ -1,15 +1,15 @@
 // Manual decompilation file.
 
-#include "game/TStaticText.h"
-#include "game/TModuleLibraryCacheTableStateB.h"
-#include "game/TViewMgr.h"
+#include "game/ui_core/TStaticText.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 
-#include "game/ScopedMapQuickDrawContext.h"
+#include "game/ui_core/ScopedMapQuickDrawContext.h"
 #include "game/quickdraw_guards.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/mfc.h"
 #include <new>
 // FUNCTION: IMPERIALISM 0x004294d0

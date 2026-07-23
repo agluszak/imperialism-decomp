@@ -1,17 +1,17 @@
 // TFocusAnimation scoped QuickDraw render/tick slice.
 
-#include "game/TFocusAnimation.h"
+#include "game/app/TFocusAnimation.h"
 
-#include "game/TView.h"
+#include "game/ui_core/TView.h"
 #include "game/mfc.h"
-#include "game/TViewMgr.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/quickdraw_guards.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/CDib.h"
+#include "game/gfx/CDib.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/quickdraw_rendering.h"
-#include "game/TAnimator.h"
+#include "game/ui_core/quickdraw_rendering.h"
+#include "game/app/TAnimator.h"
 
 // SYNTHETIC: IMPERIALISM 0x004a0020
 // TFocusAnimation::CreateObject

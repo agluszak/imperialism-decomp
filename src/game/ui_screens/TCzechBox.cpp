@@ -1,4 +1,4 @@
-#include "game/TCzechBox.h"
+#include "game/ui_screens/TCzechBox.h"
 // SYNTHETIC: IMPERIALISM 0x00571b60
 // TCzechBox::CreateObject
 

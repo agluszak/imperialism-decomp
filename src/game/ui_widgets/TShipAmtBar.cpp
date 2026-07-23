@@ -1,15 +1,15 @@
-#include "game/TAmtBar.h"
-#include "game/TWindow.h"
-#include "game/TShipAmtBar.h"
-#include "game/TShipOrder.h"
-#include "game/TCity.h"
-#include "game/TGreatPower.h"
-#include "game/TViewMgr.h"
+#include "game/ui_widgets/TAmtBar.h"
+#include "game/ui_core/TWindow.h"
+#include "game/ui_widgets/TShipAmtBar.h"
+#include "game/city/TShipOrder.h"
+#include "game/city/TCity.h"
+#include "game/nation/TGreatPower.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/quickdraw_guards.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 
 // SYNTHETIC: IMPERIALISM 0x0058ab40
 // TShipAmtBar::GetRuntimeClass

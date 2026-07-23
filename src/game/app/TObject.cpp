@@ -1,7 +1,7 @@
-#include "game/TObject.h"
+#include "game/app/TObject.h"
 
 #include "game/ArchiveStreamAdapter.h"
-#include "game/TFileStream.h"
+#include "game/core/TFileStream.h"
 
 #include <string.h>
 

@@ -1,4 +1,4 @@
-#include "game/TSelectoText.h"
+#include "game/ui_screens/TSelectoText.h"
 
 // SYNTHETIC: IMPERIALISM 0x0057b6f0
 // TSelectoText::`scalar deleting destructor'

@@ -1,11 +1,11 @@
-#include "game/TIncludeView.h"
-#include "game/CString.h"
-#include "game/TTurnEventDialogFactoryRegistry.h"
-#include "game/TView.h"
+#include "game/ui_core/TIncludeView.h"
+#include "game/ui_screens/CString.h"
+#include "game/ui_core/TTurnEventDialogFactoryRegistry.h"
+#include "game/ui_core/TView.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // IMPLEMENT_DYNCREATE also emits `TIncludeView::CreateObject`; the original copy at
 // 0x48cc40 has the TIncludeView ctor fully inlined into it (same TU, inline-eligible),

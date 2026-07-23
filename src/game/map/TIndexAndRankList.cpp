@@ -1,4 +1,4 @@
-#include "game/TIndexAndRankList.h"
+#include "game/map/TIndexAndRankList.h"
 
 #include "game/mfc.h"
 

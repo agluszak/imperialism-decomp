@@ -1,12 +1,12 @@
-#include "game/TAnimation.h"
+#include "game/app/TAnimation.h"
 
-#include "game/TAnimator.h"
+#include "game/app/TAnimator.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/bitmap_descriptor_helpers.h"
+#include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/TView.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/TView.h"
+#include "game/ui_core/quickdraw_rendering.h"
 
 // SYNTHETIC: IMPERIALISM 0x0049f020
 // TAnimation::CreateObject

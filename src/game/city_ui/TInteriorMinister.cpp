@@ -1,9 +1,9 @@
-#include "game/TInteriorMinister.h"
+#include "game/city_ui/TInteriorMinister.h"
 
 #include <string.h>
 
-#include "game/TGreatPower.h"
-#include "game/TStream.h"
+#include "game/nation/TGreatPower.h"
+#include "game/core/TStream.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

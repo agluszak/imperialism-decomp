@@ -1,8 +1,8 @@
-#include "game/TNetGameSelectPicture.h"
+#include "game/ui_screens/TNetGameSelectPicture.h"
 
-#include "game/TCluster.h"
-#include "game/TControl.h"
-#include "game/TMultiplayerMgr.h"
+#include "game/ui_core/TCluster.h"
+#include "game/ui_core/TControl.h"
+#include "game/net/TMultiplayerMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_control_tags.h"

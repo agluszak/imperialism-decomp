@@ -1,4 +1,4 @@
-#include "game/wave_helpers.h"
+#include "game/assets/wave_helpers.h"
 
 #include <stdio.h>
 

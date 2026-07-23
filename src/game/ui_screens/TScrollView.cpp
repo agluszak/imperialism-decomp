@@ -1,6 +1,6 @@
-#include "game/TScrollView.h"
+#include "game/ui_screens/TScrollView.h"
 
-#include "game/TScrollBarView.h"
+#include "game/ui_screens/TScrollBarView.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

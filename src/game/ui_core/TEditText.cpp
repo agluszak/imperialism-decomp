@@ -1,6 +1,6 @@
-#include "game/TEditText.h"
-#include "game/CMcWindow.h"
-#include "game/TObject.h"
+#include "game/ui_core/TEditText.h"
+#include "game/ui_core/CMcWindow.h"
+#include "game/app/TObject.h"
 // SYNTHETIC: IMPERIALISM 0x00490210
 // TEditText::CreateObject
 

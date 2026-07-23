@@ -1,6 +1,6 @@
-#include "game/TOnOffRadioButton.h"
+#include "game/ui_screens/TOnOffRadioButton.h"
 
-#include "game/TControl.h"
+#include "game/ui_core/TControl.h"
 // SYNTHETIC: IMPERIALISM 0x00571930
 // TOnOffRadioButton::CreateObject
 

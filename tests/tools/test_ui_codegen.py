@@ -135,7 +135,7 @@ class UiCodegenTests(unittest.TestCase):
         self.assertGreater(len(concrete_classes), 100)
 
         header_text = {
-            path: path.read_text() for path in (REPO_ROOT / "include" / "game").glob("*.h")
+            path: path.read_text() for path in (REPO_ROOT / "include" / "game").rglob("*.h")
         }
         class_owners: dict[str, list[Path]] = {}
         declaration = re.compile(r"\bclass\s+(T[A-Za-z0-9_]+)\b[^;{]*{")
@@ -194,7 +194,9 @@ class UiCodegenTests(unittest.TestCase):
             "TPicture.h": ("CDib* cachedBitmap;",),
         }
         for header, expected in declarations.items():
-            text = (REPO_ROOT / "include" / "game" / header).read_text()
+            matches = list((REPO_ROOT / "include" / "game").rglob(header))
+            self.assertEqual(len(matches), 1, f"expected one {header} under include/game: {matches}")
+            text = matches[0].read_text()
             for declaration in expected:
                 self.assertIn(declaration, text)
             self.assertNotRegex(

@@ -1,4 +1,4 @@
-#include "game/TArmyInfoView.h"
+#include "game/ui_widgets/TArmyInfoView.h"
 #include "game/mfc.h"
 
 

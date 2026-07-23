@@ -1,7 +1,7 @@
-#include "game/TTrainingOrder.h"
+#include "game/city/TTrainingOrder.h"
 
-#include "game/TCity.h"
-#include "game/TGreatPower.h"
+#include "game/city/TCity.h"
+#include "game/nation/TGreatPower.h"
 
 // SYNTHETIC: IMPERIALISM 0x004b6a60
 // TTrainingOrder::CreateObject

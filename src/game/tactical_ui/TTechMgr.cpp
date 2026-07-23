@@ -1,34 +1,34 @@
 #include <time.h>
 
-#include "game/TTechMgr.h"
+#include "game/tactical_ui/TTechMgr.h"
 
 #include "decomp_types.h"
-#include "game/TGreatPower.h"
-#include "game/TSimMgr.h"
-#include "game/TMultiplayerMgr.h"
-#include "game/TNewsMgr.h"
+#include "game/nation/TGreatPower.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/net/TMultiplayerMgr.h"
+#include "game/ui_screens/TNewsMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_ui_globals.h"
 
 #include <string.h>
 
-#include "game/CIterator.h"
-#include "game/CString.h"
-#include "game/TAdmiral.h"
-#include "game/TCity.h"
-#include "game/TCountry.h"
-#include "game/TMacViewMgr.h"
-#include "game/TMapMgr.h"
-#include "game/TMilitaryUnit.h"
-#include "game/TShip.h"
-#include "game/TStream.h"
+#include "game/ui_core/CIterator.h"
+#include "game/ui_screens/CString.h"
+#include "game/navy/TAdmiral.h"
+#include "game/city/TCity.h"
+#include "game/city_ui/TCountry.h"
+#include "game/ui_core/TMacViewMgr.h"
+#include "game/map/TMapMgr.h"
+#include "game/military/TMilitaryUnit.h"
+#include "game/navy/TShip.h"
+#include "game/core/TStream.h"
 #include "game/navy_order.h"
 #include "game/nation_stream_serialization.h"
-#include "game/TTaskForce.h"
-#include "game/TUnitOrder.h"
-#include "game/TViewMgr.h"
-#include "game/mapped_flavor_text.h"
+#include "game/navy/TTaskForce.h"
+#include "game/city/TUnitOrder.h"
+#include "game/ui_core/TViewMgr.h"
+#include "game/military/mapped_flavor_text.h"
 
 TTechMgr* g_pCityOrderCapabilityState = 0;
 

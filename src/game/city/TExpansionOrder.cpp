@@ -1,8 +1,8 @@
-#include "game/TExpansionOrder.h"
+#include "game/city/TExpansionOrder.h"
 
-#include "game/TCity.h"
-#include "game/TGreatPower.h"
-#include "game/TStream.h"
+#include "game/city/TCity.h"
+#include "game/nation/TGreatPower.h"
+#include "game/core/TStream.h"
 
 // SYNTHETIC: IMPERIALISM 0x004b8f50
 // TExpansionOrder::CreateObject

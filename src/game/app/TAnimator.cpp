@@ -1,15 +1,15 @@
-#include "game/TAmbitApplication.h"
-#include "game/TAnimator.h"
+#include "game/gfx/TAmbitApplication.h"
+#include "game/app/TAnimator.h"
 
-#include "game/CIterator.h"
-#include "game/TAnimation.h"
-#include "game/TApplication.h"
-#include "game/TDisplayMgr.h"
+#include "game/ui_core/CIterator.h"
+#include "game/app/TAnimation.h"
+#include "game/ui_core/TApplication.h"
+#include "game/gfx/TDisplayMgr.h"
 #include "game/TList.h"
-#include "game/TStream.h"
+#include "game/core/TStream.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/quickdraw_regions.h"
+#include "game/gfx/quickdraw_regions.h"
 // SYNTHETIC: IMPERIALISM 0x004a09f0
 // TAnimator::CreateObject
 

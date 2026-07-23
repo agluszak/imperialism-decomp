@@ -1,11 +1,11 @@
-#include "game/StrategicMapCallbackRecord.h"
+#include "game/city_ui/StrategicMapCallbackRecord.h"
 
 #include <cstdlib>
 #include <cstring>
 
-#include "game/CDib.h"
-#include "game/TDiplomacyMapView.h"
-#include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/CDib.h"
+#include "game/diplomacy_ui/TDiplomacyMapView.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"

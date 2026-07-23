@@ -1,13 +1,13 @@
-#include "game/TMinorTradeBidsDialog.h"
+#include "game/ui_widgets/TMinorTradeBidsDialog.h"
 
-#include "game/TMinor.h"
-#include "game/TNumberText.h"
-#include "game/TTradeMgr.h"
-#include "game/TView.h"
+#include "game/nation/TMinor.h"
+#include "game/ui_core/TNumberText.h"
+#include "game/ui_widgets/TTradeMgr.h"
+#include "game/ui_core/TView.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b2a30
 // TMinorTradeBidsDialog::`scalar deleting destructor'

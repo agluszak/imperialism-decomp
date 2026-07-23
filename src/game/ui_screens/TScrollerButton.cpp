@@ -1,4 +1,4 @@
-#include "game/TScrollerButton.h"
+#include "game/ui_screens/TScrollerButton.h"
 // SYNTHETIC: IMPERIALISM 0x00574ea0
 // TScrollerButton::CreateObject
 

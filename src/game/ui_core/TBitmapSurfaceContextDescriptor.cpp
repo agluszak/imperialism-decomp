@@ -1,6 +1,6 @@
 #include "game/TQuickDrawSurfaceContext.h"
 
-#include "game/CDib.h"
+#include "game/gfx/CDib.h"
 #include "game/mfc.h"
 
 namespace {

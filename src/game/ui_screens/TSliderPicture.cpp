@@ -1,6 +1,6 @@
-#include "game/TSliderPicture.h"
+#include "game/ui_screens/TSliderPicture.h"
 
-#include "game/TPicture.h"
+#include "game/ui_core/TPicture.h"
 // SYNTHETIC: IMPERIALISM 0x00573970
 // TSliderPicture::CreateObject
 

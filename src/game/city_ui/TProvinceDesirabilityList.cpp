@@ -1,4 +1,4 @@
-#include "game/TProvinceDesirabilityList.h"
+#include "game/city_ui/TProvinceDesirabilityList.h"
 #include "game/mfc.h"
 
 #include <stdlib.h>

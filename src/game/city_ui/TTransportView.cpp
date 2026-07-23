@@ -1,11 +1,11 @@
-#include "game/TTransportView.h"
+#include "game/city_ui/TTransportView.h"
 
-#include "game/TGreatPower.h"
-#include "game/TNumberText.h"
+#include "game/nation/TGreatPower.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/globals/prelude.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x004bd370
 // TTransportView::`scalar deleting destructor'

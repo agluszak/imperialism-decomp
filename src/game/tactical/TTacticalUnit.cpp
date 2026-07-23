@@ -1,4 +1,4 @@
-#include "game/TTacticalUnit.h"
+#include "game/tactical/TTacticalUnit.h"
 
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"

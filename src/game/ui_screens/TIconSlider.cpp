@@ -1,7 +1,7 @@
-#include "game/TIconSlider.h"
+#include "game/ui_screens/TIconSlider.h"
 
-#include "game/bitmap_descriptor_helpers.h"
-#include "game/quickdraw_regions.h"
+#include "game/ui_core/bitmap_descriptor_helpers.h"
+#include "game/gfx/quickdraw_regions.h"
 // SYNTHETIC: IMPERIALISM 0x005062d0
 // TIconSlider::CreateObject
 

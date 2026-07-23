@@ -1,9 +1,9 @@
-#include "game/TRemoteGreatPower.h"
+#include "game/military/TRemoteGreatPower.h"
 
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/TMapMgr.h"
-#include "game/TSimMgr.h"
+#include "game/map/TMapMgr.h"
+#include "game/ui_screens/TSimMgr.h"
 
 // FUNCTION: IMPERIALISM 0x00541840
 bool TRemoteGreatPower::IsRemote(void) {

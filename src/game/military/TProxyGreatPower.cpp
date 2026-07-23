@@ -1,12 +1,12 @@
-#include "game/TProxyGreatPower.h"
+#include "game/military/TProxyGreatPower.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/NetMessage.h"
-#include "game/TNetMgr.h"
-#include "game/TSimMgr.h"
-#include "game/TMultiplayerMgr.h"
-#include "game/TTurnStartEvent.h"
-#include "game/TViewMgr.h"
+#include "game/military/NetMessage.h"
+#include "game/net/TNetMgr.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/net/TMultiplayerMgr.h"
+#include "game/nation/TTurnStartEvent.h"
+#include "game/ui_core/TViewMgr.h"
 
 // FUNCTION: IMPERIALISM 0x005408c0
 bool TProxyGreatPower::IsClient() {

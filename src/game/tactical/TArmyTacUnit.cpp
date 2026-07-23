@@ -1,6 +1,6 @@
-#include "game/TArmyTacUnit.h"
+#include "game/tactical/TArmyTacUnit.h"
 
-#include "game/TMilitaryUnit.h"
+#include "game/military/TMilitaryUnit.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

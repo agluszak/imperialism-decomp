@@ -1,17 +1,17 @@
-#include "game/CMcWindow.h"
+#include "game/ui_core/CMcWindow.h"
 
-#include "game/CIncludeView.h"
+#include "game/ui_core/CIncludeView.h"
 #include "game/ImperialismApp.h"
-#include "game/TAmbitApplication.h"
-#include "game/TControl.h"
-#include "game/TModuleLibraryCacheTableStateB.h"
-#include "game/TUiEvent.h"
-#include "game/TView.h"
-#include "game/TWindow.h"
+#include "game/gfx/TAmbitApplication.h"
+#include "game/ui_core/TControl.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/ui_core/TUiEvent.h"
+#include "game/ui_core/TView.h"
+#include "game/ui_core/TWindow.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x004933d0
 // CMcWindow::CreateObject

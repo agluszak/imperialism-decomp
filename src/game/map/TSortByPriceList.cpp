@@ -1,4 +1,4 @@
-#include "game/TSortByPriceList.h"
+#include "game/map/TSortByPriceList.h"
 #include "game/mfc.h"
 
 // SYNTHETIC: IMPERIALISM 0x005346f0

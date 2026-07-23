@@ -1,6 +1,6 @@
-#include "game/TModalTemplateDialog.h"
+#include "game/app/TModalTemplateDialog.h"
 
-#include "game/TModuleLibraryCacheTableStateB.h" // g_pModuleLibraryCacheState
+#include "game/gfx/TModuleLibraryCacheTableStateB.h" // g_pModuleLibraryCacheState
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

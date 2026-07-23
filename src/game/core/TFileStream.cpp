@@ -1,9 +1,9 @@
-#include "game/TFileStream.h"
+#include "game/core/TFileStream.h"
 #include "game/ArchiveStreamAdapter.h"
 #include "game/GameAssert.h"
 #include "game/mfc.h"
-#include "game/CString.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/ui_screens/CString.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 typedef void* hwnd_t;
 

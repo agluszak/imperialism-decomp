@@ -1,10 +1,10 @@
-#include "game/mapped_flavor_text.h"
+#include "game/military/mapped_flavor_text.h"
 
-#include "game/CString.h"
+#include "game/ui_screens/CString.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/TLanguageMgr.h"
-#include "game/TSimMgr.h"
+#include "game/ui_core/TLanguageMgr.h"
+#include "game/ui_screens/TSimMgr.h"
 
 #include <stdlib.h>
 #include <string.h>

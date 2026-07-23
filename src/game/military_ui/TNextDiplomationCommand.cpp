@@ -1,8 +1,8 @@
-#include "game/TAmbitApplication.h"
-#include "game/TNextDiplomationCommand.h"
+#include "game/gfx/TAmbitApplication.h"
+#include "game/military_ui/TNextDiplomationCommand.h"
 
-#include "game/TApplication.h"
-#include "game/TDiplomacyMgr.h"
+#include "game/ui_core/TApplication.h"
+#include "game/military_ui/TDiplomacyMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

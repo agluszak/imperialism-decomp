@@ -227,6 +227,23 @@ class TextResources:
         return self.strings[key]
 
 
+_GAME_HEADER_CACHE: dict[str, dict[str, str]] = {}
+
+
+def find_game_header(repo_root: Path, class_name: str) -> str | None:
+    """Locate a class header under include/game (subsystem folders included);
+    returns the include-path form (`game/<sub>/X.h`) or None."""
+    key = str(repo_root)
+    cache = _GAME_HEADER_CACHE.get(key)
+    if cache is None:
+        cache = {}
+        for header in (repo_root / "include" / "game").rglob("*.h"):
+            rel = header.relative_to(repo_root / "include").as_posix()
+            cache.setdefault(header.stem, rel)
+        _GAME_HEADER_CACHE[key] = cache
+    return cache.get(class_name)
+
+
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -835,10 +852,9 @@ def _validate_semantic_view(
         ):
             if value not in (0, 1):
                 errors.append(f"{context}/{node.node_id}: {name} must be 0 or 1")
-        header = repo_root / "include" / "game" / f"{node.class_name}.h"
-        if not header.is_file():
+        if find_game_header(repo_root, node.class_name) is None:
             errors.append(
-                f"{context}/{node.node_id}: missing include/game/{node.class_name}.h"
+                f"{context}/{node.node_id}: missing include/game/**/{node.class_name}.h"
             )
         if not node.source:
             errors.append(f"{context}/{node.node_id}: missing semantic provenance")
@@ -1162,11 +1178,12 @@ def _render_factory_with_map(
     includes = [
         '#include "game/turn_event_dialog_factory.h"',
         '#include "game/turn_event_codes.h"',
-        '#include "game/global_data_tables.h"',
-        '#include "game/ui_resource_builder.h"',
+        '#include "game/core/global_data_tables.h"',
+        '#include "game/app/ui_resource_builder.h"',
     ]
+    _codegen_repo_root = repo_root_from_file(__file__, levels_up=1)
     includes.extend(
-        f'#include "game/{class_name}.h"'
+        f'#include "{find_game_header(_codegen_repo_root, class_name) or f"game/{class_name}.h"}"'
         for class_name in sorted(classes)
         if class_name != "TView"
     )

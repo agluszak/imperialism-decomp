@@ -1,14 +1,14 @@
-#include "game/TTradeOfferNationView.h"
+#include "game/trade_ui/TTradeOfferNationView.h"
 
-#include "game/CString.h"
-#include "game/TLongintList.h"
+#include "game/ui_screens/CString.h"
+#include "game/city_ui/TLongintList.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/TSimMgr.h"
-#include "game/TTradeMgr.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/ui_widgets/TTradeMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/mapped_flavor_text.h"
-#include "game/quickdraw_rendering.h"
+#include "game/military/mapped_flavor_text.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x005bd1a0

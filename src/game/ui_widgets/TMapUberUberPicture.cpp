@@ -1,6 +1,6 @@
-#include "game/TMapUberUberPicture.h"
+#include "game/ui_widgets/TMapUberUberPicture.h"
 
-#include "game/TAmbitApplication.h"
+#include "game/gfx/TAmbitApplication.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

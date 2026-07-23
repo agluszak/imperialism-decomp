@@ -1,4 +1,4 @@
-#include "game/TDisappearingButton.h"
+#include "game/navy_ui/TDisappearingButton.h"
 // SYNTHETIC: IMPERIALISM 0x00568b20
 // TDisappearingButton::CreateObject
 

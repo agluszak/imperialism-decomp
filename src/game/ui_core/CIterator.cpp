@@ -1,5 +1,5 @@
-#include "game/CIterator.h"
-#include "game/TSortedList.h"
+#include "game/ui_core/CIterator.h"
+#include "game/ui_core/TSortedList.h"
 
 // FUNCTION: IMPERIALISM 0x00487ef0
 void* CIterator::Reset() {

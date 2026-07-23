@@ -1,11 +1,11 @@
-#include "game/TMinorRelationshipDialog.h"
+#include "game/ui_widgets/TMinorRelationshipDialog.h"
 
-#include "game/TDiplomacyMgr.h"
-#include "game/TNumberText.h"
+#include "game/military_ui/TDiplomacyMgr.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b3390
 // TMinorRelationshipDialog::`scalar deleting destructor'

@@ -2,15 +2,15 @@
 
 #include <string.h>
 
-#include "game/TInvadeMission.h"
+#include "game/military/TInvadeMission.h"
 
-#include "game/CIterator.h"
-#include "game/TAutoGreatPower.h"
-#include "game/TBeachheadMission.h"
-#include "game/TCountry.h"
-#include "game/TMapMgr.h"
-#include "game/TMilitaryUnit.h"
-#include "game/TStream.h"
+#include "game/ui_core/CIterator.h"
+#include "game/nation/TAutoGreatPower.h"
+#include "game/map/TBeachheadMission.h"
+#include "game/city_ui/TCountry.h"
+#include "game/map/TMapMgr.h"
+#include "game/military/TMilitaryUnit.h"
+#include "game/core/TStream.h"
 #include "game/globals/prelude.h"
 #include "game/globals/military_globals.h"
 #include "game/globals/shared_globals.h"

@@ -1,4 +1,4 @@
-#include "game/TNoHiliteText.h"
+#include "game/ui_widgets/TNoHiliteText.h"
 // SYNTHETIC: IMPERIALISM 0x005b6960
 // TNoHiliteText::CreateObject
 

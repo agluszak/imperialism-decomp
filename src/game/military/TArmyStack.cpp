@@ -1,16 +1,16 @@
-#include "game/TArmyStack.h"
+#include "game/military/TArmyStack.h"
 
 #include <stdlib.h>
 
-#include "game/CIterator.h"
-#include "game/TCountry.h"
-#include "game/TMilitaryUnit.h"
-#include "game/TSortedList.h"
-#include "game/TStream.h"
+#include "game/ui_core/CIterator.h"
+#include "game/city_ui/TCountry.h"
+#include "game/military/TMilitaryUnit.h"
+#include "game/ui_core/TSortedList.h"
+#include "game/core/TStream.h"
 #include "game/globals/prelude.h"
 #include "game/globals/military_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // Duplicates TArmyMgr.cpp's own (file-static) IsUnitMeterEligible check -- ground truth
 // repeats this same inline test across every meter-related function in this family

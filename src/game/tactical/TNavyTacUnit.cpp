@@ -1,8 +1,8 @@
-#include "game/TNavyTacUnit.h"
+#include "game/tactical/TNavyTacUnit.h"
 
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/TShip.h"
+#include "game/navy/TShip.h"
 
 #include <stdlib.h>
 

@@ -1,4 +1,4 @@
-#include "game/TCivReport.h"
+#include "game/ui_widgets/TCivReport.h"
 #include "game/mfc.h"
 
 

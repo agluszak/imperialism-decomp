@@ -1,4 +1,4 @@
-#include "game/TLineData.h"
+#include "game/ui_screens/TLineData.h"
 // SYNTHETIC: IMPERIALISM 0x0056f360
 // TLineData::CreateObject
 

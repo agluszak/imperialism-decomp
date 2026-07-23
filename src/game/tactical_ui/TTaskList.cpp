@@ -1,5 +1,5 @@
-#include "game/TTaskList.h"
-#include "game/TTask.h"
+#include "game/tactical_ui/TTaskList.h"
+#include "game/tactical_ui/TTask.h"
 // SYNTHETIC: IMPERIALISM 0x005aeaf0
 // TTaskList::CreateObject
 

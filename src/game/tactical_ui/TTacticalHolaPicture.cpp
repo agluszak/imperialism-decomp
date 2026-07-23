@@ -1,14 +1,14 @@
-#include "game/TTacticalHolaPicture.h"
+#include "game/tactical_ui/TTacticalHolaPicture.h"
 
-#include "game/CString.h"
-#include "game/TCountry.h"
-#include "game/TDeluxeText.h"
-#include "game/TMapPreviewView.h"
-#include "game/TMapMgr.h"
-#include "game/TSimMgr.h"
+#include "game/ui_screens/CString.h"
+#include "game/city_ui/TCountry.h"
+#include "game/ui_widgets/TDeluxeText.h"
+#include "game/ui_screens/TMapPreviewView.h"
+#include "game/map/TMapMgr.h"
+#include "game/ui_screens/TSimMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/mapped_flavor_text.h"
+#include "game/military/mapped_flavor_text.h"
 #include "game/ui_control_tags.h"
 
 // SYNTHETIC: IMPERIALISM 0x0045d4b0

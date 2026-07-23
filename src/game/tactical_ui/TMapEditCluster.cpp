@@ -1,6 +1,6 @@
-#include "game/TMapEditCluster.h"
+#include "game/tactical_ui/TMapEditCluster.h"
 
-#include "game/TCluster.h"
+#include "game/ui_core/TCluster.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b2900
 // TMapEditCluster::`scalar deleting destructor'

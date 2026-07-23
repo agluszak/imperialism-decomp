@@ -1,5 +1,5 @@
-#include "game/TNumberText.h"
-#include "game/CMcWindow.h"
+#include "game/ui_core/TNumberText.h"
+#include "game/ui_core/CMcWindow.h"
 #include "game/mfc.h"
 #include <stdlib.h>
 

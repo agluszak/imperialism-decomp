@@ -1,8 +1,8 @@
-#include "game/TSortedPtrList.h"
+#include "game/ui_core/TSortedPtrList.h"
 
 #include <string.h>
 
-#include "game/TStream.h"
+#include "game/core/TStream.h"
 #include "game/mfc.h"
 
 // SYNTHETIC: IMPERIALISM 0x00488030

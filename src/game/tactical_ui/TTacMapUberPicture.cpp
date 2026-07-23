@@ -1,6 +1,6 @@
-#include "game/TTacMapUberPicture.h"
+#include "game/tactical_ui/TTacMapUberPicture.h"
 
-#include "game/TTacticalBattleView.h"
+#include "game/tactical/TTacticalBattleView.h"
 #include "game/ui_control_tags.h"
 
 // FUNCTION: IMPERIALISM 0x0045d3b0

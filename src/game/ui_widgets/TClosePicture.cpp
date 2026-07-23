@@ -1,6 +1,6 @@
-#include "game/TAmtBar.h"
-#include "game/TWindow.h"
-#include "game/TClosePicture.h"
+#include "game/ui_widgets/TAmtBar.h"
+#include "game/ui_core/TWindow.h"
+#include "game/ui_widgets/TClosePicture.h"
 
 // SYNTHETIC: IMPERIALISM 0x00586ad0
 // TClosePicture::CreateObject

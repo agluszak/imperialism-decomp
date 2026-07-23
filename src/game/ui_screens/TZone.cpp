@@ -1,6 +1,6 @@
 #include <time.h>
 
-#include "game/TZone.h"
+#include "game/ui_screens/TZone.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_screens_globals.h"
@@ -8,19 +8,19 @@
 #include <cstdlib>
 #include <new>
 
-#include "game/mapped_flavor_text.h"
+#include "game/military/mapped_flavor_text.h"
 #include "game/mfc.h"
-#include "game/TAdmiral.h"
-#include "game/TMapMgr.h"
-#include "game/TModuleLibraryCacheTableStateB.h"
-#include "game/TOcean.h"
-#include "game/TDiplomacyMgr.h"
-#include "game/TPortZone.h"
-#include "game/TShip.h"
+#include "game/navy/TAdmiral.h"
+#include "game/map/TMapMgr.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/navy/TOcean.h"
+#include "game/military_ui/TDiplomacyMgr.h"
+#include "game/ui_screens/TPortZone.h"
+#include "game/navy/TShip.h"
 #include "game/navy_order.h"
-#include "game/TSimMgr.h"
-#include "game/TTaskForce.h"
-#include "game/TViewMgr.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/navy/TTaskForce.h"
+#include "game/ui_core/TViewMgr.h"
 
 namespace {
 

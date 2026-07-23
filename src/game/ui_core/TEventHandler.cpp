@@ -3,21 +3,21 @@
 // Bodies here are the original shared implementations referenced by both derived vtables;
 // TView/AppRoot override only the few slots where their vtable bodies differ.
 
-#include "game/TEventHandler.h"
-#include "game/TWindow.h"
+#include "game/ui_core/TEventHandler.h"
+#include "game/ui_core/TWindow.h"
 
-#include "game/TBehavior.h"
+#include "game/ui_core/TBehavior.h"
 #include "game/TEvent.h"
-#include "game/TCommand.h"
-#include "game/TFileStream.h"
-#include "game/TUiEvent.h"
-#include "game/TView.h"
-#include "game/TApplication.h"
+#include "game/ui_core/TCommand.h"
+#include "game/core/TFileStream.h"
+#include "game/ui_core/TUiEvent.h"
+#include "game/ui_core/TView.h"
+#include "game/ui_core/TApplication.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
-#include "game/TAmbitApplication.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/TAmbitApplication.h"
+#include "game/gfx/ui_invalidation_guard.h"
 #include <string.h>
 
 // FUNCTION: IMPERIALISM 0x00415d50

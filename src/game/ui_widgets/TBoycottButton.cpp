@@ -1,6 +1,6 @@
-#include "game/TBoycottButton.h"
-#include "game/TWindow.h"
-#include "game/TCluster.h"
+#include "game/ui_widgets/TBoycottButton.h"
+#include "game/ui_core/TWindow.h"
+#include "game/ui_core/TCluster.h"
 #include "game/GameAssert.h"
 #include "game/mfc.h"
 

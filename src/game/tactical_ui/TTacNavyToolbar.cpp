@@ -1,8 +1,8 @@
-#include "game/TTacNavyToolbar.h"
+#include "game/tactical_ui/TTacNavyToolbar.h"
 
-#include "game/TAmbitApplication.h"
-#include "game/THelpMgr.h"
-#include "game/TTacticalBattle.h"
+#include "game/gfx/TAmbitApplication.h"
+#include "game/ui_core/THelpMgr.h"
+#include "game/tactical/TTacticalBattle.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_control_tags.h"

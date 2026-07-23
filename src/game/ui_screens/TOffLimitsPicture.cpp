@@ -1,6 +1,6 @@
-#include "game/TOffLimitsPicture.h"
+#include "game/ui_screens/TOffLimitsPicture.h"
 
-#include "game/ScopedMapQuickDrawContext.h"
+#include "game/ui_core/ScopedMapQuickDrawContext.h"
 
 // SYNTHETIC: IMPERIALISM 0x00573710
 // TOffLimitsPicture::CreateObject

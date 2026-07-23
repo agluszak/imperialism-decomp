@@ -1,6 +1,6 @@
-#include "game/TRadioPictureButton.h"
-#include "game/TAmtBar.h"
-#include "game/TControl.h"
+#include "game/ui_screens/TRadioPictureButton.h"
+#include "game/ui_widgets/TAmtBar.h"
+#include "game/ui_core/TControl.h"
 // SYNTHETIC: IMPERIALISM 0x00571700
 // TRadioPictureButton::CreateObject
 

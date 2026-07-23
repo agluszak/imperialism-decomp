@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/TView.h"
+#include "game/ui_core/TView.h"
 
 // MacApp CSubViewIterator (Mac CodeWarrior oracle: constructors (TView*, unsigned char) and
 // (const TView*), FirstSubView(), NextSubView(), ~CSubViewIterator()). A stack cursor over a

@@ -1,4 +1,4 @@
-#include "game/THandleStream.h"
+#include "game/core/THandleStream.h"
 
 #include <string.h>
 

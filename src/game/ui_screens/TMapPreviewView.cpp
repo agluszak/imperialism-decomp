@@ -1,15 +1,15 @@
-#include "game/TMapPreviewView.h"
-#include "game/TDisplayMgr.h"
-#include "game/TMacViewMgr.h"
-#include "game/TMapMgr.h"
+#include "game/ui_screens/TMapPreviewView.h"
+#include "game/gfx/TDisplayMgr.h"
+#include "game/ui_core/TMacViewMgr.h"
+#include "game/map/TMapMgr.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/TViewMgr.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 
-#include "game/bitmap_descriptor_helpers.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/bitmap_descriptor_helpers.h"
+#include "game/ui_core/quickdraw_rendering.h"
 
 #include <string.h>
 

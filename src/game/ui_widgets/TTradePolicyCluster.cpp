@@ -1,9 +1,9 @@
-#include "game/TTradePolicyCluster.h"
-#include "game/TWindow.h"
+#include "game/ui_widgets/TTradePolicyCluster.h"
+#include "game/ui_core/TWindow.h"
 
-#include "game/TCluster.h"
+#include "game/ui_core/TCluster.h"
 #include "game/ui_control_tags.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 // SYNTHETIC: IMPERIALISM 0x00584200
 // TTradePolicyCluster::CreateObject
 

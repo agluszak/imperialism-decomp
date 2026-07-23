@@ -1,9 +1,9 @@
-#include "game/TColorFill.h"
+#include "game/gfx/TColorFill.h"
 
 #include "game/globals/prelude.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x004ff150
 // TColorFill::`scalar deleting destructor'

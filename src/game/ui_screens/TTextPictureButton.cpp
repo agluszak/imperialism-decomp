@@ -1,7 +1,7 @@
-#include "game/TTextPictureButton.h"
+#include "game/ui_screens/TTextPictureButton.h"
 
-#include "game/ScopedMapQuickDrawContext.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/ScopedMapQuickDrawContext.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x005724e0
 // TTextPictureButton::CreateObject

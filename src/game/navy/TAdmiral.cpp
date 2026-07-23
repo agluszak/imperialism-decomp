@@ -1,21 +1,21 @@
-#include "game/TAdmiral.h"
+#include "game/navy/TAdmiral.h"
 
 #include <stdlib.h>
 
-#include "game/mapped_flavor_text.h"
-#include "game/TShip.h"
-#include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/military/mapped_flavor_text.h"
+#include "game/navy/TShip.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/navy_order.h"
-#include "game/TSimMgr.h"
-#include "game/TTaskForce.h"
-#include "game/TTechMgr.h"
-#include "game/TZone.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/navy/TTaskForce.h"
+#include "game/tactical_ui/TTechMgr.h"
+#include "game/ui_screens/TZone.h"
 #include "game/globals/prelude.h"
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/TStream.h"
-#include "game/CString.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/core/TStream.h"
+#include "game/ui_screens/CString.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x005512d0
 // TAdmiral::CreateObject

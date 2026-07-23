@@ -1,9 +1,9 @@
-#include "game/TAmbitApplication.h"
-#include "game/THighScoresPicture.h"
+#include "game/gfx/TAmbitApplication.h"
+#include "game/ui_screens/THighScoresPicture.h"
 
-#include "game/TApplication.h"
-#include "game/TAssetMgr.h"
-#include "game/TSoundPlayer.h"
+#include "game/ui_core/TApplication.h"
+#include "game/assets/TAssetMgr.h"
+#include "game/ui_widgets/TSoundPlayer.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

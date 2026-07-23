@@ -1,8 +1,8 @@
-#include "game/TCivAnimation2.h"
+#include "game/app/TCivAnimation2.h"
 
 #include <stdlib.h>
 
-#include "game/TView.h"
+#include "game/ui_core/TView.h"
 
 // SYNTHETIC: IMPERIALISM 0x0049f630
 // TCivAnimation2::`scalar deleting destructor'

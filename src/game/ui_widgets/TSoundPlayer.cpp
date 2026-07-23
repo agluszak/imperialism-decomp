@@ -1,18 +1,18 @@
-#include "game/TSoundPlayer.h"
+#include "game/ui_widgets/TSoundPlayer.h"
 
-#include "game/TAmbitApplication.h"
+#include "game/gfx/TAmbitApplication.h"
 #include "game/mfc.h"
 #include "game/globals/prelude.h"
 #include "game/globals/assets_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/TSimMgr.h"
-#include "game/TApplication.h"
-#include "game/TLongintList.h"
-#include "game/TSoundResourceManager.h"
-#include "game/TAssetMgr.h"
-#include "game/TCdAudioDevice.h"
-#include "game/timer_slots.h"
-#include "game/turn_flow_cooldown.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/ui_core/TApplication.h"
+#include "game/city_ui/TLongintList.h"
+#include "game/gfx/TSoundResourceManager.h"
+#include "game/assets/TAssetMgr.h"
+#include "game/assets/TCdAudioDevice.h"
+#include "game/assets/timer_slots.h"
+#include "game/ui_screens/turn_flow_cooldown.h"
 
 #include <math.h>
 #include <new>

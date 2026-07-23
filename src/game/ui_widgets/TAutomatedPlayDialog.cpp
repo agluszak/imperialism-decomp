@@ -1,11 +1,11 @@
-#include "game/TAutomatedPlayDialog.h"
+#include "game/ui_widgets/TAutomatedPlayDialog.h"
 
-#include "game/TNumberText.h"
-#include "game/TSimMgr.h"
+#include "game/ui_core/TNumberText.h"
+#include "game/ui_screens/TSimMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b4650
 // TAutomatedPlayDialog::`scalar deleting destructor'

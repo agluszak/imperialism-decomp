@@ -1,6 +1,6 @@
-#include "game/TTradeBidNationLine.h"
+#include "game/trade_ui/TTradeBidNationLine.h"
 
-#include "game/TTradeBidNationView.h"
+#include "game/trade_ui/TTradeBidNationView.h"
 
 // SYNTHETIC: IMPERIALISM 0x005bd900
 // TTradeBidNationLine::`scalar deleting destructor'

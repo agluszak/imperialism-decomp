@@ -1,6 +1,6 @@
-#include "game/TMyNumberText.h"
+#include "game/ui_widgets/TMyNumberText.h"
 
-#include "game/CString.h"
+#include "game/ui_screens/CString.h"
 #include "game/mfc.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b4f10

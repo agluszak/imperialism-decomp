@@ -1,14 +1,14 @@
-#include "game/TOrderView.h"
+#include "game/ui_core/TOrderView.h"
 
-#include "game/TCity.h"
-#include "game/TEventHandler.h"
-#include "game/TGreatPower.h"
-#include "game/TIconBar.h"
-#include "game/TIconSlider.h"
-#include "game/TItemOrder.h"
-#include "game/TPopulationMgr.h"
+#include "game/city/TCity.h"
+#include "game/ui_core/TEventHandler.h"
+#include "game/nation/TGreatPower.h"
+#include "game/ui_screens/TIconBar.h"
+#include "game/ui_screens/TIconSlider.h"
+#include "game/city/TItemOrder.h"
+#include "game/city/TPopulationMgr.h"
 #include "game/ui_control_tags.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 // SYNTHETIC: IMPERIALISM 0x005069d0
 // TOrderView::CreateObject
 

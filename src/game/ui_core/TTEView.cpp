@@ -1,6 +1,6 @@
-#include "game/TTEView.h"
+#include "game/ui_core/TTEView.h"
 
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 
 // SYNTHETIC: IMPERIALISM 0x0045ad70
 // TTEView::`scalar deleting destructor'

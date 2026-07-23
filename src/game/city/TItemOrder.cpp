@@ -1,7 +1,7 @@
-#include "game/TItemOrder.h"
+#include "game/city/TItemOrder.h"
 
-#include "game/TCity.h"
-#include "game/TStream.h"
+#include "game/city/TCity.h"
+#include "game/core/TStream.h"
 
 TItemOrder::TItemOrder() {}
 // SYNTHETIC: IMPERIALISM 0x004b51d0

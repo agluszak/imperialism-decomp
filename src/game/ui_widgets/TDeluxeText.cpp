@@ -1,10 +1,10 @@
-#include "game/TDeluxeText.h"
+#include "game/ui_widgets/TDeluxeText.h"
 
-#include "game/TModuleLibraryCacheTableStateB.h"
-#include "game/TSimMgr.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/ui_screens/TSimMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // FUNCTION: IMPERIALISM 0x00430950

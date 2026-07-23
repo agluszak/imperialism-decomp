@@ -1,8 +1,8 @@
-#include "game/TPageView.h"
+#include "game/ui_screens/TPageView.h"
 
 #include "game/CSubViewIterator.h"
 #include "game/TList.h"
-#include "game/TLongintList.h"
+#include "game/city_ui/TLongintList.h"
 
 // Option-entry item held in TPageView's optionEntries/orderedEntries lists. It carries the
 // tag used to look up the actual renderable entry and the short metrics used by

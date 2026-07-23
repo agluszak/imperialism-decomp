@@ -1,16 +1,16 @@
-#include "game/TMiniShipView.h"
+#include "game/navy_ui/TMiniShipView.h"
 
-#include "game/TAdmiral.h"
+#include "game/navy/TAdmiral.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/TShip.h"
-#include "game/TSimMgr.h"
-#include "game/TTaskForce.h"
-#include "game/TSuperNavyRoster.h"
+#include "game/navy/TShip.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/navy/TTaskForce.h"
+#include "game/navy_ui/TSuperNavyRoster.h"
 #include "game/globals/prelude.h"
 #include "game/globals/navy_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/navy_order.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // FUNCTION: IMPERIALISM 0x00569d50

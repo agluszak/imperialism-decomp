@@ -2,14 +2,14 @@
 
 #include <math.h>
 
-#include "game/TNavyMission.h"
-#include "game/TStream.h"
+#include "game/map/TNavyMission.h"
+#include "game/core/TStream.h"
 #include "game/TList.h"
-#include "game/TZone.h"
-#include "game/TShip.h"
+#include "game/ui_screens/TZone.h"
+#include "game/navy/TShip.h"
 #include "game/navy_order.h"
-#include "game/TDiplomacyMgr.h"
-#include "game/TTaskForce.h"
+#include "game/military_ui/TDiplomacyMgr.h"
+#include "game/navy/TTaskForce.h"
 #include "game/globals/prelude.h"
 #include "game/globals/military_globals.h"
 #include "game/globals/navy_globals.h"

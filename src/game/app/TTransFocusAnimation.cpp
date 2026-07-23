@@ -1,18 +1,18 @@
 // TTransFocusAnimation vertical-slice implementations.
 
-#include "game/TTransFocusAnimation.h"
+#include "game/app/TTransFocusAnimation.h"
 
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/CDib.h"
+#include "game/gfx/CDib.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/TView.h"
-#include "game/TAnimator.h"
-#include "game/TObject.h"
+#include "game/ui_core/TView.h"
+#include "game/app/TAnimator.h"
+#include "game/app/TObject.h"
 #include "game/mfc.h"
-#include "game/quickdraw_rendering.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/quickdraw_guards.h"
-#include "game/bitmap_descriptor_helpers.h"
+#include "game/ui_core/bitmap_descriptor_helpers.h"
 
 // SYNTHETIC: IMPERIALISM 0x004a03f0
 // TTransFocusAnimation::CreateObject

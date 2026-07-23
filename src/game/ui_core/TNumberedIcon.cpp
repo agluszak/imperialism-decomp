@@ -1,5 +1,5 @@
-#include "game/TNumberedIcon.h"
-#include "game/TMyNumberText.h"
+#include "game/ui_core/TNumberedIcon.h"
+#include "game/ui_widgets/TMyNumberText.h"
 // SYNTHETIC: IMPERIALISM 0x005072e0
 // TNumberedIcon::CreateObject
 

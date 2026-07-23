@@ -43,11 +43,11 @@ class DuplicateIncludeTest(unittest.TestCase):
 
 class AliasHeaderTest(unittest.TestCase):
     def test_class_reexport_alias_flagged(self):
-        text = '#pragma once\n\n#include "game/TViewMgr.h"\n\ntypedef TViewMgr TUiRuntimeContext;\n'
+        text = '#pragma once\n\n#include "game/ui_core/TViewMgr.h"\n\ntypedef TViewMgr TUiRuntimeContext;\n'
         self.assertTrue(is_alias_header(text))
 
     def test_pure_single_include_wrapper_flagged(self):
-        text = '#pragma once\n\n// Descriptive-name wrapper; the real class is TSimMgr.\n#include "game/TSimMgr.h"\n'
+        text = '#pragma once\n\n// Descriptive-name wrapper; the real class is TSimMgr.\n#include "game/ui_screens/TSimMgr.h"\n'
         self.assertTrue(is_alias_header(text))
 
     def test_domain_vocabulary_typedefs_not_flagged(self):
@@ -60,7 +60,7 @@ class AliasHeaderTest(unittest.TestCase):
         self.assertFalse(is_alias_header(text))
 
     def test_real_declarations_not_flagged(self):
-        text = '#pragma once\n#include "game/TObject.h"\n\nclass TThing : public TObject {};\n'
+        text = '#pragma once\n#include "game/app/TObject.h"\n\nclass TThing : public TObject {};\n'
         self.assertFalse(is_alias_header(text))
 
 
@@ -79,7 +79,7 @@ class AnnotationOnlyTuTest(unittest.TestCase):
 
     def test_markers_with_includes_and_pragmas_flagged(self):
         text = (
-            '#include "game/global_data_tables.h"\n'
+            '#include "game/core/global_data_tables.h"\n'
             "#pragma once\n"
             "// LIBRARY: IMPERIALISM 0x005c1234\n"
             "// _rand\n"
@@ -101,7 +101,7 @@ class AnnotationOnlyTuTest(unittest.TestCase):
         self.assertFalse(is_annotation_only_tu(text))
 
     def test_global_definition_not_flagged(self):
-        text = '#include "game/global_data_tables.h"\n\nint g_thing = 5;\n'
+        text = '#include "game/core/global_data_tables.h"\n\nint g_thing = 5;\n'
         self.assertFalse(is_annotation_only_tu(text))
 
     def test_if0_code_conservatively_not_flagged(self):

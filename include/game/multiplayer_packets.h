@@ -14,8 +14,8 @@
 // byte, and the pending-nation slot via TimelyMessageHeader/TimelyNetMessagePrefix.
 
 #include "compat.h"
-#include "game/NetMessage.h"
-#include "game/TMapMgr.h" // TTerrainStateRecordView (event 0x23 payload)
+#include "game/military/NetMessage.h"
+#include "game/map/TMapMgr.h" // TTerrainStateRecordView (event 0x23 payload)
 
 class TObject;
 

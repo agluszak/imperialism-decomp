@@ -1,13 +1,13 @@
-#include "game/TNewTownView.h"
-#include "game/TWindow.h"
+#include "game/city_ui/TNewTownView.h"
+#include "game/ui_core/TWindow.h"
 
-#include "game/TEditText.h"
-#include "game/TIconBar.h"
-#include "game/TTown.h"
+#include "game/ui_core/TEditText.h"
+#include "game/ui_screens/TIconBar.h"
+#include "game/ui_widgets/TTown.h"
 #include "game/globals/prelude.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x004bd810
 // TNewTownView::`scalar deleting destructor'

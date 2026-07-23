@@ -1,4 +1,4 @@
-#include "game/TCheater.h"
+#include "game/military_ui/TCheater.h"
 
 // FUNCTION: IMPERIALISM 0x004b1410
 void TCheater::ApplyCheats() {}

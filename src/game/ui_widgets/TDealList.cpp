@@ -1,8 +1,8 @@
 #include "decomp_types.h"
-#include "game/TDealList.h"
+#include "game/ui_widgets/TDealList.h"
 
 #include "game/mfc.h"
-#include "game/TSortedPtrList.h"
+#include "game/ui_core/TSortedPtrList.h"
 
 // SYNTHETIC: IMPERIALISM 0x005ba130
 // TDealList::CreateObject

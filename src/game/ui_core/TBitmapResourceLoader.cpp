@@ -1,9 +1,9 @@
-#include "game/TBitmapResourceLoader.h"
+#include "game/ui_core/TBitmapResourceLoader.h"
 
-#include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // FUNCTION: IMPERIALISM 0x00495b70
 void TBitmapResourceLoader::EnsureBitmapResourceLoadedAndCopyRectSize() {

@@ -1,6 +1,6 @@
-#include "game/TBackgroundPicture.h"
+#include "game/ui_screens/TBackgroundPicture.h"
 
-#include "game/TPicture.h"
+#include "game/ui_core/TPicture.h"
 // SYNTHETIC: IMPERIALISM 0x00572bd0
 // TBackgroundPicture::CreateObject
 

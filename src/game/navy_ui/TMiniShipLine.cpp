@@ -1,6 +1,6 @@
-#include "game/TMiniShipLine.h"
+#include "game/navy_ui/TMiniShipLine.h"
 
-#include "game/TMiniShipView.h"
+#include "game/navy_ui/TMiniShipView.h"
 
 // SYNTHETIC: IMPERIALISM 0x00569b60
 // TMiniShipLine::`scalar deleting destructor'

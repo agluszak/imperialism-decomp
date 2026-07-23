@@ -1,9 +1,9 @@
-#include "game/TMyStaticText.h"
+#include "game/ui_widgets/TMyStaticText.h"
 
-#include "game/CString.h"
-#include "game/TControl.h"
-#include "game/TStaticText.h"
-#include "game/TViewMgr.h"
+#include "game/ui_screens/CString.h"
+#include "game/ui_core/TControl.h"
+#include "game/ui_core/TStaticText.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b5380

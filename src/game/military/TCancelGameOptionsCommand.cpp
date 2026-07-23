@@ -1,4 +1,4 @@
-#include "game/TCancelGameOptionsCommand.h"
+#include "game/military/TCancelGameOptionsCommand.h"
 
 // FUNCTION: IMPERIALISM 0x00542520
 void TCancelGameOptionsCommand::DoIt() {}

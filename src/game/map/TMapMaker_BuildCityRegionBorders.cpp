@@ -11,17 +11,17 @@
 // Its own translation unit (like the merge pass) so the inline accessors fold into the one
 // body without perturbing neighbouring methods.
 
-#include "game/TMapMaker.h"
+#include "game/map_ui/TMapMaker.h"
 
 #include <stdlib.h>
 
 #include "decomp_types.h"
-#include "game/TMapMgr.h"
+#include "game/map/TMapMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/map_overlay_geometry.h"
-#include "game/sea_geometry.h"
+#include "game/map/map_overlay_geometry.h"
+#include "game/map/sea_geometry.h"
 
 namespace {
 

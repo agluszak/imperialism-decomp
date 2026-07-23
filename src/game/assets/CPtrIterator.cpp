@@ -1,6 +1,6 @@
-#include "game/CPtrIterator.h"
+#include "game/assets/CPtrIterator.h"
 
-#include "game/TSortedPtrList.h"
+#include "game/ui_core/TSortedPtrList.h"
 
 // FUNCTION: IMPERIALISM 0x005e1fa0
 void* CPtrIterator::FirstPtr() {

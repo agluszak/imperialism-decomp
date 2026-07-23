@@ -1,6 +1,6 @@
-#include "game/TCityMinisterPersonalities.h"
+#include "game/city_ui/TCityMinisterPersonalities.h"
 
-#include "game/TLongintList.h"
+#include "game/city_ui/TLongintList.h"
 #include "game/mfc.h"
 
 // Each derived city minister overrides only GetRuntimeClass, the scalar deleting

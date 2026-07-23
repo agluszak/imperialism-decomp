@@ -1,8 +1,8 @@
-#include "game/TCivUnit.h"
-#include "game/TCivMgr.h"
-#include "game/TUnit.h"
-#include "game/TMapMgr.h"
-#include "game/TStream.h"
+#include "game/military/TCivUnit.h"
+#include "game/city_ui/TCivMgr.h"
+#include "game/military/TUnit.h"
+#include "game/map/TMapMgr.h"
+#include "game/core/TStream.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 

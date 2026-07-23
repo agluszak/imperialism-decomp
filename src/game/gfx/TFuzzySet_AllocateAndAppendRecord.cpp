@@ -1,4 +1,4 @@
-#include "game/TFuzzySet.h"
+#include "game/gfx/TFuzzySet.h"
 
 #include "game/TFuzzyVar.h"
 

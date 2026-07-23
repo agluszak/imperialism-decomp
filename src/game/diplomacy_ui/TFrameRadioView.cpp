@@ -1,7 +1,7 @@
-#include "game/TFrameRadioView.h"
+#include "game/diplomacy_ui/TFrameRadioView.h"
 
-#include "game/quickdraw_regions.h"
-#include "game/quickdraw_rendering.h"
+#include "game/gfx/quickdraw_regions.h"
+#include "game/ui_core/quickdraw_rendering.h"
 
 // SYNTHETIC: IMPERIALISM 0x004fdf50
 // TFrameRadioView::`scalar deleting destructor'

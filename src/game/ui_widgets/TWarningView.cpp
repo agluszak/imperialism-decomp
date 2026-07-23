@@ -1,6 +1,6 @@
-#include "game/TWarningView.h"
+#include "game/ui_widgets/TWarningView.h"
 #include "game/mfc.h"
-#include "game/TControl.h"
+#include "game/ui_core/TControl.h"
 
 // SYNTHETIC: IMPERIALISM 0x00592860
 // TWarningView::CreateObject

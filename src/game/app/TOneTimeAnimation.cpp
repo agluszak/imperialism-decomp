@@ -1,11 +1,11 @@
 // TOneTimeAnimation: a TAnimation subclass driving a one-shot tile effect through a scoped
 // QuickDraw render/tick slice.
 
-#include "game/TOneTimeAnimation.h"
+#include "game/app/TOneTimeAnimation.h"
 
 #include "decomp_types.h"
-#include "game/TView.h"
-#include "game/TViewMgr.h"
+#include "game/ui_core/TView.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/mfc.h"
 #include "game/quickdraw_guards.h"
 #include <new>

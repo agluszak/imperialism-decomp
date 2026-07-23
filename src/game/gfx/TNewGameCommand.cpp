@@ -1,4 +1,4 @@
-#include "game/TNewGameCommand.h"
+#include "game/gfx/TNewGameCommand.h"
 
 // FUNCTION: IMPERIALISM 0x0049ddb0
 void TNewGameCommand::DoIt() {}

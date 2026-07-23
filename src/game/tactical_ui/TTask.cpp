@@ -1,5 +1,5 @@
-#include "game/TTask.h"
-#include "game/TStream.h"
+#include "game/tactical_ui/TTask.h"
+#include "game/core/TStream.h"
 // SYNTHETIC: IMPERIALISM 0x005adb40
 // TTask::CreateObject
 
