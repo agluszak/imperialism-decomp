@@ -5,7 +5,7 @@ Every one-shot `just ghidra-*` invocation spends ~60-90s starting pyghidra/the J
 and opening the vendored project before running a query that itself takes
 milliseconds. Research sessions issue dozens of such queries; this daemon keeps one
 JVM + read-only program handle alive behind a unix socket so `tools.ghidra.query`
-(and therefore the `just ghidra-listing`/`xrefs`/`ghidra-search`/... targets)
+(and therefore the `just ghidra listing`/`xrefs`/`ghidra-search`/... targets)
 answer instantly while it runs.
 
 Protocol: newline-delimited JSON over a unix socket in the repo root.

@@ -345,10 +345,10 @@ def cmd_start(args: argparse.Namespace) -> int:
     stub_callees: dict[str, list[str]] = {}
     if args.no_portprep:
         print("[agent-start] portprep skipped by flag — you are working blind; "
-              "run `just ghidra-portprep ADDR` before editing")
+              "run `just ghidra portprep ADDR` before editing")
     elif not os.environ.get("GHIDRA_INSTALL_DIR"):
         print("[agent-start] REFUSED: GHIDRA_INSTALL_DIR is not set, so "
-              "ghidra-portprep cannot run. Export it (see AGENTS.md environment "
+              "ghidra portprep cannot run. Export it (see AGENTS.md environment "
               "notes) or pass --no-portprep to explicitly accept working blind.")
         return 2
     else:

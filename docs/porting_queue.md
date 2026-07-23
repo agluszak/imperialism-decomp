@@ -233,7 +233,7 @@ each with the evidence needed to start (address, size, current score if any, blo
   branchless `cdq/xor/sub` idiom; using `abs()` scored only 50%, the explicit branch
   hit 100%). Moved from the autogen stub to `CDib.cpp`/`CDib.h`.
   `ApplyRectSlot110` itself (0x574970, 724B) landed 2026-07-18 (0% -> 22.37%) using
-  `just ghidra-decompile 0x574970` to resolve the stack-slot ambiguity the raw
+  `just ghidra decompile 0x574970` to resolve the stack-slot ambiguity the raw
   listing alone left open — the decompile showed there are only TWO local `RECT`s
   (`srcRect`/`dstRect`), reused and re-mutated across all three "band" blocks, not
   three separate pairs as the listing's overlapping-looking offsets suggested.

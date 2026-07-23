@@ -145,7 +145,7 @@ it is usually one of: (a) a **disguise** of a real polymorphic class that should
 whose vtable(s) belong to **members it holds**, not itself.
 
 Decision procedure (all from Ghidra, fast):
-1. `just ghidra-xrefs 0xMETHOD` on the class's method. If the xref is `from 0xNNNN [DATA
+1. `just ghidra xrefs 0xMETHOD` on the class's method. If the xref is `from 0xNNNN [DATA
    address-taken]` in the vtable region, the method is a **virtual slot** → the object is
    polymorphic. Then find the owning vtable: list the neighbours of the method address in
    symbols.csv (functions in the same 0xNNNxxx TU) and match a nearby `// VTABLE:` base

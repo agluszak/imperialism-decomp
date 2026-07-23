@@ -159,7 +159,7 @@ public:
   // this+0x96 (activeUnitCategoryIndex96, MOV BL,byte[ESI+0x96]) and both real call sites
   // (TCivMgr::OrderAndCycle's thunk 0x408b93, and
   // TArmyToolbar.cpp's own call) load ECX from g_pUiRuntimeContext->mapUberPictureF0
-  // directly -- ground-truth-confirmed via `just ghidra-listing`, not a categoryPages[]
+  // directly -- ground-truth-confirmed via `just ghidra listing`, not a categoryPages[]
   // dispatch.
   void CycleMapInteractionSelectionAfterHandledClick();
   // Mac oracle: NavalIntelligenceDialog(TZone*, short, TTaskForce*). Opens the

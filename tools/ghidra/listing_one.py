@@ -24,7 +24,7 @@ def _print_nearest_functions(fm, af, addr_int: int) -> None:
     print(f"  nearest function before: {before.getName()} entry={before.getEntryPoint()} end={end}")
   if after is not None:
     print(f"  nearest function after:  {after.getName()} entry={after.getEntryPoint()}")
-  print(f"  hint: `just ghidra-raw-disasm 0x{addr_int:08x}` shows what is really in the gap")
+  print(f"  hint: `just ghidra raw-disasm 0x{addr_int:08x}` shows what is really in the gap")
 
 
 def run(program, argv: list[str]) -> int:

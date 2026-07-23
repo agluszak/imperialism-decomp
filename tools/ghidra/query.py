@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """One front door for read-only Ghidra queries: daemon when available, one-shot else.
 
-The `just ghidra-listing` / `just xrefs` / `just ghidra-search` / ... targets all
+The `just ghidra listing` / `just ghidra xrefs` / `just ghidra search` / ... targets all
 route through here. When the persistent daemon (tools.ghidra.daemon, started with
 `just ghidra-daemon`) is listening, the query is answered over its socket in
 milliseconds; otherwise this falls back to the classic one-shot path (start

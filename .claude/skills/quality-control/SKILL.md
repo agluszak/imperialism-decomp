@@ -182,7 +182,7 @@ warning instead of presenting it as a generic class-size defect:
   inheritance or an extra override.
 
 These diagnostics are emitted on both cold analysis and prepared-cache hits. Use
-the named boundary plus `just ghidra-vtable-dump`/`just ghidra-read-data` before
+the named boundary plus `just ghidra vtable-dump`/`just ghidra read-data` before
 changing inheritance or deleting an annotation.
 
 ### Structured semantic diagnosis

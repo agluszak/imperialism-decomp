@@ -90,9 +90,9 @@ Two standing behavioral rules the topical skills exist to enforce:
    each has a skill that turns it into mechanical transcription. Deferred/TODO bodies
    are not an outcome; a structurally-faithful port at 40–60% is.
 2. **Ground truth comes from the Ghidra tooling, not from memory or the decompile.**
-   Before porting: `just ghidra-listing 0xADDR` for the real instructions, resolve
+   Before porting: `just ghidra listing 0xADDR` for the real instructions, resolve
    every ILT thunk to its target, verify conventions per `calling-conventions`, and
-   read constants/strings from the binary (`just string-oracle`, datacmp). If you
+   read constants/strings from the binary (`just ghidra string-oracle`, datacmp). If you
    have not run the listing, you do not know what the function does.
 
 ## IMPORTANT

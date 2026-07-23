@@ -4,7 +4,7 @@
 Ghidra sometimes mis-bounds large/irregular functions in this binary (confirmed
 several times: mega-dispatchers like BuildTurnEventDialogUiByCode/
 InitializeGameSetupScreenControlsAndModeTags continue well past the function size
-Ghidra reports). `just ghidra-listing` only dumps whichever function *contains* an
+Ghidra reports). `just ghidra listing` only dumps whichever function *contains* an
 address, which is useless once you're past Ghidra's (wrong) end. This walks
 instructions strictly by address, independent of function attribution, so you can
 follow a tail-jump chain or a mis-bounded function's continuation.
