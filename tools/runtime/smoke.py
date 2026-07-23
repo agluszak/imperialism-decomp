@@ -9,6 +9,7 @@ from pathlib import Path
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 
@@ -16,6 +17,11 @@ import time
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BUILD_DIR = REPO_ROOT / "build-msvc500"
 DEFAULT_PORT = 47632
+
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from tools.runtime.runtime_tests import ensure_template_prefix, prefix_environment
 
 STARTUP_MILESTONES = [
     ("dispatch-4c", 0x5D7240, "turn-event dispatch alive"),
@@ -37,7 +43,9 @@ def game_dir() -> Path:
     return Path(original).resolve().parent
 
 
-def resolve_recomp_addr(original_address: int) -> int:
+def resolve_recomp_addr(original_address: int) -> int | None:
+    """Original -> recomp address, or None when reccmp's report drops the
+    pairing (known report-pairing gap; see the addr_translate fallback bead)."""
     completed = subprocess.run(
         ["just", "addr", f"0x{original_address:08x}"],
         cwd=REPO_ROOT,
@@ -47,49 +55,27 @@ def resolve_recomp_addr(original_address: int) -> int:
     )
     match = re.search(r"recomp (0x[0-9a-f]+)", completed.stdout)
     if not match:
-        raise SystemExit(
-            f"just addr 0x{original_address:08x} produced no recomp address:\n"
-            f"{completed.stdout}{completed.stderr}"
-        )
+        print(f"WARNING: no recomp pairing for 0x{original_address:08x}; milestone untracked")
+        return None
     return int(match.group(1), 16)
 
 
 def create_wine_prefix() -> tuple[Path, dict[str, str]]:
-    """Per-invocation WINEPREFIX so concurrent runs never share a wineserver."""
-    prefix = Path(tempfile.mkdtemp(prefix="imperialism-smoke-wine-"))
-    environment = dict(os.environ, WINEDEBUG=os.environ.get("WINEDEBUG", "-all"))
-    environment["WINEPREFIX"] = str(prefix)
-    # Skip the Mono/Gecko installers in the fresh prefix.
-    environment.setdefault("WINEDLLOVERRIDES", "mscoree,mshtml=")
+    """Per-invocation WINEPREFIX so concurrent runs never share a wineserver.
+
+    Cloned from the seeded per-Wine-version template (see runtime_tests) —
+    ~0.6s instead of a ~6.5s wineboot.
+    """
+    parent = Path(tempfile.mkdtemp(prefix="imperialism-smoke-wine-"))
+    prefix = parent / "prefix"
+    template = ensure_template_prefix()
     subprocess.run(
-        ["wineboot", "--init"],
-        env=environment,
+        ["cp", "-a", "--reflink=auto", str(template), str(prefix)],
         check=True,
         capture_output=True,
         timeout=180,
     )
-    # First-run settings the game otherwise prompts for: without a saved AutoRes,
-    # ShowAutoResolutionDialogIfNeeded (ImperialismApp.cpp) blocks startup on a
-    # modal resolution dialog; Language pins deterministic .irg selection.
-    settings_key = "HKCU\\Software\\SSI\\Imperialism\\Settings"
-    for value_args in (
-        ["/v", "AutoRes", "/t", "REG_DWORD", "/d", "0"],
-        ["/v", "Language", "/d", "ENGLISH"],
-    ):
-        subprocess.run(
-            ["wine", "reg", "add", settings_key, *value_args, "/f"],
-            env=environment,
-            check=True,
-            capture_output=True,
-            timeout=60,
-        )
-    subprocess.run(
-        ["wineserver", "--wait"],
-        env=environment,
-        capture_output=True,
-        timeout=180,
-    )
-    return prefix, environment
+    return parent, prefix_environment(prefix)
 
 
 def shut_down_wine_prefix(prefix: Path, environment: dict[str, str]) -> None:
@@ -101,8 +87,11 @@ def shut_down_wine_prefix(prefix: Path, environment: dict[str, str]) -> None:
     shutil.rmtree(prefix, ignore_errors=True)
 
 
-def launch_proxy(port: int, environment: dict[str, str]) -> subprocess.Popen[bytes]:
-    executable = BUILD_DIR / "Imperialism.exe"
+def launch_proxy(
+    port: int, environment: dict[str, str], executable: Path | None = None
+) -> subprocess.Popen[bytes]:
+    if executable is None:
+        executable = BUILD_DIR / "Imperialism.exe"
     if not executable.exists():
         raise SystemExit(f"Missing {executable}; run `just build` first")
     process = subprocess.Popen(
@@ -167,7 +156,8 @@ def run_gdb(port: int, script: str, seconds: float) -> str:
 
 def ladder_script(addresses: dict[str, int]) -> str:
     lines: list[str] = []
-    for index, (name, _, _) in enumerate(STARTUP_MILESTONES, start=1):
+    tracked = [entry for entry in STARTUP_MILESTONES if entry[0] in addresses]
+    for index, (name, _, _) in enumerate(tracked, start=1):
         lines.extend(
             [
                 f"break *0x{addresses[name]:x}",
@@ -183,30 +173,85 @@ def ladder_script(addresses: dict[str, int]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def cmd_run(args: argparse.Namespace) -> int:
-    addresses = {
-        name: resolve_recomp_addr(original) for name, original, _ in STARTUP_MILESTONES
-    }
+def run_milestone_ladder(
+    binary: str, port: int, seconds: float
+) -> tuple[set[str], set[str], str]:
+    """Run the startup ladder against one binary.
+
+    Returns (reached, tracked, gdb_output): milestones whose breakpoints
+    fired, the ones that could be armed at all, and the raw session output.
+    `binary` is "recomp" (build-msvc500, addresses translated through reccmp)
+    or "original" (the retail exe, milestone addresses used verbatim).
+    """
+    if binary == "original":
+        executable = Path(os.environ["ORIGINAL_BINARY"]).resolve()
+        addresses = {name: original for name, original, _ in STARTUP_MILESTONES}
+    else:
+        executable = None
+        addresses = {
+            name: resolved
+            for name, original, _ in STARTUP_MILESTONES
+            if (resolved := resolve_recomp_addr(original)) is not None
+        }
     for name, original, _ in STARTUP_MILESTONES:
-        print(f"{name:14s} orig 0x{original:08x} -> recomp 0x{addresses[name]:08x}")
+        target = f"0x{addresses[name]:08x}" if name in addresses else "(untracked)"
+        print(f"{name:14s} orig 0x{original:08x} -> {binary} {target}")
 
     prefix, environment = create_wine_prefix()
-    proxy = launch_proxy(args.port, environment)
+    proxy = launch_proxy(port, environment, executable)
     try:
-        output = run_gdb(args.port, ladder_script(addresses), args.seconds)
+        output = run_gdb(port, ladder_script(addresses), seconds)
     finally:
         proxy.kill()
         shut_down_wine_prefix(prefix, environment)
+    reached = {name for name in addresses if f"MILESTONE {name}" in output}
+    return reached, set(addresses), output
 
-    reached = {
-        name for name, _, _ in STARTUP_MILESTONES if f"MILESTONE {name}" in output
-    }
+
+def cmd_diff(args: argparse.Namespace) -> int:
+    """Differential startup oracle: the retail binary's reached milestones are
+    the expectation; the recomp must reach every one of them."""
+    original, _, _ = run_milestone_ladder("original", args.port, args.seconds)
+    recomp, recomp_tracked, _ = run_milestone_ladder(
+        "recomp", args.port + 1, args.seconds
+    )
+    print("\n=== differential startup milestones (original vs recomp) ===")
+    regressions = []
+    for name, _, meaning in STARTUP_MILESTONES:
+        orig_mark = "REACHED" if name in original else "missing"
+        if name not in recomp_tracked:
+            recomp_mark = "untrackd"
+        elif name in recomp:
+            recomp_mark = "REACHED"
+        else:
+            recomp_mark = "missing"
+        print(f"  orig[{orig_mark:7s}] recomp[{recomp_mark:8s}] {name:14s} {meaning}")
+        if name in original and name in recomp_tracked and name not in recomp:
+            regressions.append(name)
+    if regressions:
+        print(f"recomp missing milestone(s) the original reaches: {', '.join(regressions)}")
+        return 1
+    return 0
+
+
+def cmd_run(args: argparse.Namespace) -> int:
+    reached, tracked, output = run_milestone_ladder("recomp", args.port, args.seconds)
     print("\n=== startup smoke milestones ===")
     for name, _, meaning in STARTUP_MILESTONES:
-        print(f"  [{'REACHED' if name in reached else 'missing'}] {name:14s} {meaning}")
+        if name not in tracked:
+            mark = "untrackd"
+        else:
+            mark = "REACHED" if name in reached else "missing"
+        print(f"  [{mark:8s}] {name:14s} {meaning}")
 
     expected = [name for name in args.expect.split(",") if name]
-    missing = [name for name in expected if name not in reached]
+    untracked = [name for name in expected if name not in tracked]
+    if untracked:
+        print(
+            "untracked expected milestone(s) (no reccmp pairing, not enforced): "
+            + ", ".join(untracked)
+        )
+    missing = [name for name in expected if name in tracked and name not in reached]
     crash_lines = [
         line
         for line in output.splitlines()
@@ -235,7 +280,10 @@ def cmd_gdb(args: argparse.Namespace) -> int:
     finally:
         proxy.kill()
         if args.keep_running:
-            print(f"leaving Wine session running in WINEPREFIX={prefix}")
+            print(
+                "leaving Wine session running in "
+                f"WINEPREFIX={environment['WINEPREFIX']}"
+            )
         else:
             shut_down_wine_prefix(prefix, environment)
     return 0
@@ -258,6 +306,13 @@ def main() -> int:
     gdb.add_argument("--port", type=int, default=DEFAULT_PORT)
     gdb.add_argument("--keep-running", action="store_true")
     gdb.set_defaults(func=cmd_gdb)
+
+    diff = commands.add_parser(
+        "diff", help="differential startup oracle: original vs recomp milestones"
+    )
+    diff.add_argument("--seconds", type=float, default=45)
+    diff.add_argument("--port", type=int, default=DEFAULT_PORT)
+    diff.set_defaults(func=cmd_diff)
 
     args = parser.parse_args()
     return args.func(args)

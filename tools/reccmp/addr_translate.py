@@ -53,13 +53,22 @@ def main() -> int:
     entities = load_entities(args.target, args.build_dir, queries)
     by_orig: dict[int, dict] = {}
     by_recomp: dict[int, dict] = {}
-    for ent in entities:
-        orig = norm_hex(ent.get("address"))
-        recomp = norm_hex(ent.get("recomp"))
-        if orig is not None:
-            by_orig[orig] = ent
-        if recomp is not None:
-            by_recomp[recomp] = ent
+
+    def index(rows: list[dict]) -> None:
+        for ent in rows:
+            orig = norm_hex(ent.get("address"))
+            recomp = norm_hex(ent.get("recomp"))
+            if orig is not None:
+                by_orig[orig] = ent
+            if recomp is not None:
+                by_recomp[recomp] = ent
+
+    index(entities)
+    if any(query not in by_orig and query not in by_recomp for query in queries):
+        # The address-filtered run only loads PDB object modules reccmp can
+        # prove; functions in unprovable modules silently drop out. Fall back
+        # to one unfiltered (full-corpus) report for the stragglers.
+        index(run_report(args.target, args.build_dir, diet=True))
 
     rc = 0
     for query in queries:

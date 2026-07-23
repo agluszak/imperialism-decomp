@@ -5,10 +5,15 @@ from __future__ import annotations
 
 import unittest
 
+import tempfile
+from pathlib import Path
+
 from tools.runtime.runtime_tests import (
     classify_exit,
     classify_poll,
+    compare_map_state,
     no_progress_budget_seconds,
+    prune_old_run_dirs,
 )
 
 
@@ -58,6 +63,14 @@ class ClassifyPollTests(unittest.TestCase):
     def test_no_progress_budget_is_inclusive_at_the_boundary(self) -> None:
         self.assertIsNone(classify_poll(heartbeat(91_000, 1_000), 0.5, 90.0))
 
+    def test_held_session_is_exempt_from_the_no_progress_check(self) -> None:
+        held = dict(heartbeat(500_000, 0), hold=True)
+        self.assertIsNone(classify_poll(held, 0.5, 90.0))
+
+    def test_held_session_still_fails_on_stale_heartbeat(self) -> None:
+        held = dict(heartbeat(500_000, 0), hold=True)
+        self.assertEqual(classify_poll(held, 16.0, 90.0), "heartbeat_stopped")
+
     def test_malformed_heartbeat_fields_are_tolerated(self) -> None:
         self.assertIsNone(classify_poll({"phase": "boot"}, 0.5, 90.0))
         self.assertIsNone(
@@ -75,6 +88,45 @@ class ClassifyExitTests(unittest.TestCase):
 
     def test_clean_exit_without_result_is_exited_without_result(self) -> None:
         self.assertEqual(classify_exit(0, False), "exited_without_result")
+
+
+class CompareMapStateTests(unittest.TestCase):
+    def test_matching_snapshot_passes(self) -> None:
+        state = {"terrain_counts": [1, 2], "owned_tiles": [3], "wrap": 1}
+        self.assertEqual(compare_map_state(dict(state), dict(state))["status"], "passed")
+
+    def test_extra_actual_fields_are_ignored(self) -> None:
+        expected = {"wrap": 1}
+        actual = {"wrap": 1, "economic_turn": 4}
+        self.assertEqual(compare_map_state(actual, expected)["status"], "passed")
+
+    def test_mismatch_reports_expected_and_actual(self) -> None:
+        comparison = compare_map_state({"wrap": 0}, {"wrap": 1, "missing": [1]})
+        self.assertEqual(comparison["status"], "failed")
+        self.assertEqual(
+            comparison["differences"]["wrap"], {"expected": 1, "actual": 0}
+        )
+        self.assertEqual(
+            comparison["differences"]["missing"], {"expected": [1], "actual": None}
+        )
+
+
+class PruneOldRunDirsTests(unittest.TestCase):
+    def test_keeps_newest_bundles_and_other_tests_untouched(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            result_dir = Path(tmp)
+            for day in range(1, 13):
+                (result_dir / f"boot_managers-202607{day:02d}T000000Z-1").mkdir()
+            (result_dir / "random_game_enters_map-20260701T000000Z-1").mkdir()
+            (result_dir / "boot_managers.json").write_text("{}")
+            prune_old_run_dirs(result_dir, "boot_managers", keep=10)
+            kept = sorted(p.name for p in result_dir.iterdir())
+            self.assertEqual(len([n for n in kept if n.startswith("boot_managers-")]), 10)
+            self.assertNotIn("boot_managers-20260701T000000Z-1", kept)
+            self.assertNotIn("boot_managers-20260702T000000Z-1", kept)
+            self.assertIn("boot_managers-20260703T000000Z-1", kept)
+            self.assertIn("random_game_enters_map-20260701T000000Z-1", kept)
+            self.assertIn("boot_managers.json", kept)
 
 
 class NoProgressBudgetTests(unittest.TestCase):

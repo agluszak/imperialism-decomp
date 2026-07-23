@@ -2,6 +2,7 @@
 
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/ui_core/CIncludeView.h"
+#include "game/assets/TAssetMgr.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_core/TControl.h"
 #include "game/map_ui/TCitySiteView.h"
@@ -26,9 +27,11 @@
 #include "game/core/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/ui_tags_common.h"
+#include "game/ui_tags_map.h"
 #include "game/ui_tags_screens.h"
 
 #include <stdlib.h>
+#include <string.h>
 #include <windows.h>
 
 namespace {
@@ -37,7 +40,9 @@ enum RuntimeTestKind {
   kRuntimeTestNone,
   kRuntimeTestBootManagers,
   kRuntimeTestRandomGame,
-  kRuntimeTestEasyRandomGame
+  kRuntimeTestEasyRandomGame,
+  kRuntimeTestEasyTurnAdvance,
+  kRuntimeTestLoadSavedGame
 };
 
 enum RuntimeTestPhase {
@@ -64,6 +69,11 @@ enum RuntimeTestPhase {
   kRuntimeTestWaitingForCitySiteConfirmation,
   kRuntimeTestWaitingForCombinedMap,
   kRuntimeTestVerifyingCombinedMapExtents,
+  kRuntimeTestActivatingEndTurn,
+  kRuntimeTestWaitingForEndTurnConfirm,
+  kRuntimeTestWaitingForTurnProcessed,
+  kRuntimeTestLoadingSavedGame,
+  kRuntimeTestWaitingForLoadedMap,
   kRuntimeTestFinished
 };
 
@@ -78,15 +88,34 @@ struct RuntimeTestState {
   unsigned long progressCounter;
   unsigned long lastProgressMs;
   short selectedNationSlot;
+  short baselineEconomicTurn;
+  int turnsCompleted;
   HWND mainWindowHandle;
   bool newspaperAdvanced;
   char resultPath[MAX_PATH];
   char heartbeatPath[MAX_PATH];
+  char fixturePath[MAX_PATH];
   char lastAction[64];
 };
 
-RuntimeTestState g_runtimeTestState = {
-    kRuntimeTestNone, kRuntimeTestNotStarted, 0, 0, 0, 0, 0, 0, 0, -1, 0, false, "", "", ""};
+RuntimeTestState g_runtimeTestState = {kRuntimeTestNone,
+                                       kRuntimeTestNotStarted,
+                                       0,
+                                       0,
+                                       0,
+                                       0,
+                                       0,
+                                       0,
+                                       0,
+                                       -1,
+                                       -1,
+                                       0,
+                                       0,
+                                       false,
+                                       "",
+                                       "",
+                                       "",
+                                       ""};
 CString g_randomSetupUiSnapshot;
 CString g_strategicMapUiSnapshot;
 CString g_capitalConfirmationUiSnapshot;
@@ -96,13 +125,31 @@ CString g_unexpectedModals("[");
 CString g_faults("[");
 CString g_actionLog("[");
 CString g_lastFingerprint;
+CString g_mapStateJson;
+
+// Easy-difficulty kinds share the setup flow (dif1 click, no capital pick).
+bool IsEasyStyleTest() {
+  return g_runtimeTestState.kind == kRuntimeTestEasyRandomGame ||
+         g_runtimeTestState.kind == kRuntimeTestEasyTurnAdvance;
+}
 
 bool IsRandomGameTest() {
-  return g_runtimeTestState.kind == kRuntimeTestRandomGame ||
-         g_runtimeTestState.kind == kRuntimeTestEasyRandomGame;
+  return g_runtimeTestState.kind == kRuntimeTestRandomGame || IsEasyStyleTest();
+}
+
+// Kinds whose runs end on a live map and want the normalized simulation
+// snapshot + activated-event sequence in the result.
+bool RecordsGameFlow() {
+  return IsRandomGameTest() || g_runtimeTestState.kind == kRuntimeTestLoadSavedGame;
 }
 
 const char* TestName() {
+  if (g_runtimeTestState.kind == kRuntimeTestLoadSavedGame) {
+    return "load_saved_game";
+  }
+  if (g_runtimeTestState.kind == kRuntimeTestEasyTurnAdvance) {
+    return "easy_turns_advance";
+  }
   if (g_runtimeTestState.kind == kRuntimeTestEasyRandomGame) {
     return "random_game_easy_skips_capital";
   }
@@ -160,6 +207,16 @@ const char* PhaseName(RuntimeTestPhase phase) {
     return "waiting_for_combined_map";
   case kRuntimeTestVerifyingCombinedMapExtents:
     return "verifying_combined_map_extents";
+  case kRuntimeTestActivatingEndTurn:
+    return "activating_end_turn";
+  case kRuntimeTestWaitingForEndTurnConfirm:
+    return "waiting_for_end_turn_confirm";
+  case kRuntimeTestWaitingForTurnProcessed:
+    return "waiting_for_turn_processed";
+  case kRuntimeTestLoadingSavedGame:
+    return "loading_saved_game";
+  case kRuntimeTestWaitingForLoadedMap:
+    return "waiting_for_loaded_map";
   case kRuntimeTestFinished:
     return "finished";
   default:
@@ -392,6 +449,33 @@ CString CaptureUiSnapshot(int eventCode, TView* root) {
   return json;
 }
 
+bool HoldRequested() {
+  static bool resolved = false;
+  static bool hold = false;
+  if (!resolved) {
+    resolved = true;
+    char value[16];
+    hold = GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_HOLD", value, sizeof(value)) != 0;
+  }
+  return hold;
+}
+
+// Debug hook for the host runner's liveness classification: name a phase in
+// IMPERIALISM_RUNTIME_TEST_SPIN and the driver keeps pumping/heartbeating in
+// that phase without making semantic progress or enforcing its own deadline.
+bool SpinRequestedForCurrentPhase() {
+  static bool resolved = false;
+  static char spinPhase[48];
+  if (!resolved) {
+    resolved = true;
+    if (GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_SPIN", spinPhase, sizeof(spinPhase)) ==
+        0) {
+      spinPhase[0] = 0;
+    }
+  }
+  return spinPhase[0] != 0 && lstrcmpiA(spinPhase, PhaseName(g_runtimeTestState.phase)) == 0;
+}
+
 bool WriteResultFile(const char* status, const char* failure) {
   TView* mainView = MainView();
   CString eventSequence(g_activatedEventSequence);
@@ -429,6 +513,10 @@ bool WriteResultFile(const char* status, const char* failure) {
   if (!g_capitalConfirmationUiSnapshot.IsEmpty()) {
     capitalConfirmationSnapshot = g_capitalConfirmationUiSnapshot;
   }
+  CString mapState("null");
+  if (!g_mapStateJson.IsEmpty()) {
+    mapState = g_mapStateJson;
+  }
   CString json;
   json.Format("{\n"
               "  \"format_version\": 1,\n"
@@ -443,6 +531,7 @@ bool WriteResultFile(const char* status, const char* failure) {
               "  \"actions\": %s,\n"
               "  \"ui_snapshots\": %s,\n"
               "  \"capital_confirmation_snapshot\": %s,\n"
+              "  \"map_state\": %s,\n"
               "  \"state\": {\n"
               "    \"turn_event\": %d,\n"
               "    \"root_class\": \"%s\",\n"
@@ -470,7 +559,7 @@ bool WriteResultFile(const char* status, const char* failure) {
               GetTickCount() - g_runtimeTestState.startMs, PhaseName(g_runtimeTestState.phase),
               g_runtimeTestState.lastAction, static_cast<LPCSTR>(eventSequence),
               static_cast<LPCSTR>(actionLog), static_cast<LPCSTR>(uiSnapshots),
-              static_cast<LPCSTR>(capitalConfirmationSnapshot),
+              static_cast<LPCSTR>(capitalConfirmationSnapshot), static_cast<LPCSTR>(mapState),
               g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
               RuntimeClassName(mainView), g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1,
               g_runtimeTestState.selectedNationSlot,
@@ -486,13 +575,17 @@ bool WriteResultFile(const char* status, const char* failure) {
   return WriteFileAtomically(g_runtimeTestState.resultPath, json);
 }
 
+void CaptureMapStateSnapshot();
+
 void Finish(const char* status, const char* failure) {
   g_runtimeTestState.phase = kRuntimeTestFinished;
+  if (RecordsGameFlow() && lstrcmpA(status, "passed") == 0) {
+    CaptureMapStateSnapshot();
+  }
   if (!WriteResultFile(status, failure)) {
     OutputDebugStringA("Imperialism runtime test could not write its result file.\n");
   }
-  char holdOpen[2];
-  if (GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_HOLD", holdOpen, sizeof(holdOpen)) != 0) {
+  if (HoldRequested()) {
     return;
   }
   RequestGameClose();
@@ -570,13 +663,60 @@ void MaybeWriteHeartbeat() {
   CString json;
   json.Format("{\"phase\": \"%s\", \"last_action\": \"%s\", \"idle_ticks\": %lu, "
               "\"elapsed_ms\": %lu, \"turn_event\": %d, \"root_class\": \"%s\", "
-              "\"modal_depth\": %d, \"progress_counter\": %lu, \"last_progress_ms\": %lu}\n",
+              "\"modal_depth\": %d, \"progress_counter\": %lu, \"last_progress_ms\": %lu, "
+              "\"hold\": %s}\n",
               PhaseName(g_runtimeTestState.phase), g_runtimeTestState.lastAction,
               g_runtimeTestState.idleTicks, now - g_runtimeTestState.startMs,
               g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
               RuntimeClassName(MainView()), g_ModalViewStack.GetCount(),
-              g_runtimeTestState.progressCounter, g_runtimeTestState.lastProgressMs);
+              g_runtimeTestState.progressCounter, g_runtimeTestState.lastProgressMs,
+              HoldRequested() ? "true" : "false");
   WriteFileAtomically(g_runtimeTestState.heartbeatPath, json);
+}
+
+// Seed-stable normalized simulation snapshot for the host-side map oracle:
+// per-terrain-kind tile counts, per-nation owned-tile counts, and a few
+// derived scalars. Captured at Finish for the random-game family.
+void CaptureMapStateSnapshot() {
+  if (g_pGlobalMapState == 0) {
+    return;
+  }
+  long terrainCounts[kStrategicTerrainCount + 1]; // [+1] = unassigned/other
+  long ownedTiles[7];
+  memset(terrainCounts, 0, sizeof(terrainCounts));
+  memset(ownedTiles, 0, sizeof(ownedTiles));
+  for (short tile = 0; tile < 0x1950; ++tile) {
+    const TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tile];
+    int kind = static_cast<int>(terrain.GetTerrainKind());
+    if (kind < 0 || kind >= kStrategicTerrainCount) {
+      kind = kStrategicTerrainCount;
+    }
+    ++terrainCounts[kind];
+    short owner = terrain.ownerNationTag04;
+    if (owner >= 0 && owner < 7) {
+      ++ownedTiles[owner];
+    }
+  }
+  CString terrainJson("[");
+  CString item;
+  for (int kindIndex = 0; kindIndex <= kStrategicTerrainCount; ++kindIndex) {
+    item.Format("%s%ld", kindIndex == 0 ? "" : ", ", terrainCounts[kindIndex]);
+    terrainJson += item;
+  }
+  terrainJson += "]";
+  CString ownedJson("[");
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    item.Format("%s%ld", nationSlot == 0 ? "" : ", ", ownedTiles[nationSlot]);
+    ownedJson += item;
+  }
+  ownedJson += "]";
+  g_mapStateJson.Format("{\"terrain_counts\": %s, \"owned_tiles\": %s, \"wrap\": %d, "
+                        "\"representative_tile\": %d, \"economic_turn\": %d}",
+                        static_cast<LPCSTR>(terrainJson), static_cast<LPCSTR>(ownedJson),
+                        g_pGlobalMapState->hexNeighborWrapHorizontally20,
+                        g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(
+                            g_runtimeTestState.selectedNationSlot),
+                        g_pSimMgr != 0 ? static_cast<int>(g_pSimMgr->economicTurn) : -1);
 }
 
 LONG WINAPI RuntimeTestUnhandledExceptionFilter(EXCEPTION_POINTERS* info) {
@@ -626,6 +766,17 @@ void InitializeDriver() {
     g_runtimeTestState.kind = kRuntimeTestRandomGame;
   } else if (lstrcmpA(testName, "random_game_easy_skips_capital") == 0) {
     g_runtimeTestState.kind = kRuntimeTestEasyRandomGame;
+  } else if (lstrcmpA(testName, "easy_turns_advance") == 0) {
+    g_runtimeTestState.kind = kRuntimeTestEasyTurnAdvance;
+  } else if (lstrcmpA(testName, "load_saved_game") == 0) {
+    g_runtimeTestState.kind = kRuntimeTestLoadSavedGame;
+    DWORD fixtureLength =
+        GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_FIXTURE", g_runtimeTestState.fixturePath,
+                                sizeof(g_runtimeTestState.fixturePath));
+    if (fixtureLength == 0 || fixtureLength >= sizeof(g_runtimeTestState.fixturePath)) {
+      Finish("failed", "\"IMPERIALISM_RUNTIME_TEST_FIXTURE is not set for load_saved_game\"");
+      return;
+    }
   } else {
     Finish("failed", "\"unknown compiled runtime test\"");
     return;
@@ -653,9 +804,72 @@ void RunWaitingForManagers() {
   }
   g_runtimeTestState.mainWindowHandle = mainWindow->m_hWnd;
 
+  if (g_runtimeTestState.kind == kRuntimeTestLoadSavedGame) {
+    SetPhase(kRuntimeTestLoadingSavedGame, "open_saved_game_fixture");
+    RequestAnotherDriverTick();
+    return;
+  }
+
   g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
   SetPhase(kRuntimeTestWaitingForMainMenu, "post_turn_event_0x05dc");
   RequestAnotherDriverTick();
+}
+
+bool AdvanceInitialNewspaperIfNeeded();
+
+void RunLoadingSavedGame() {
+  CString fixturePath(g_runtimeTestState.fixturePath);
+  if (g_pUiViewManager->OpenMainDocumentFromPathAndMarkLoaded(fixturePath) == 0) {
+    Fail("\"saved-game fixture failed to open through the document path\"");
+    return;
+  }
+  SetPhase(kRuntimeTestWaitingForLoadedMap, "opened_saved_game_fixture");
+  RequestAnotherDriverTick();
+}
+
+void RunWaitingForLoadedMap() {
+  if (AdvanceInitialNewspaperIfNeeded()) {
+    return;
+  }
+  TView* mainView = MainView();
+  if (g_pUiRuntimeContext->currentTurnEventCode != 0x7dd ||
+      !IsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture)) || !g_ModalViewStack.IsEmpty()) {
+    WaitForNextTickOrTimeout("\"loaded game did not reach the combined strategic map\"");
+    return;
+  }
+  if (g_pGlobalMapState == 0) {
+    Fail("\"loaded game has no global map state\"");
+    return;
+  }
+  short activeNation = g_pSimMgr->activeNationSlot;
+  if (activeNation < 0 || activeNation >= 7) {
+    Fail("\"loaded game has no valid active nation\"");
+    return;
+  }
+  g_runtimeTestState.selectedNationSlot = activeNation;
+  if (g_pSimMgr->economicTurn < 0) {
+    Fail("\"loaded game has a negative economic turn\"");
+    return;
+  }
+  TMapUberPicture* mapView = static_cast<TMapUberPicture*>(mainView);
+  if (mapView->miniMapViewC0 == 0 || mapView->ResolveControlByTag(kControlTagSend) == 0) {
+    Fail("\"loaded strategic map is missing its mini-map or end-turn control\"");
+    return;
+  }
+  TMapDialog* mapDialog = mapView->subview2A8;
+  if (mapDialog == 0) {
+    Fail("\"loaded strategic map has no scrollable map dialog\"");
+    return;
+  }
+  // One real semantic action on the loaded state: reposition the viewport and
+  // require the origin to move to a tile-aligned, in-range position.
+  mapDialog->SetMapDialogCellCoordinatesAndRefresh(2, 2, 0);
+  if (mapDialog->viewportOrigin60.x < 0 || mapDialog->viewportOrigin60.y < 0 ||
+      (mapDialog->viewportOrigin60.x & 0x3f) != 0) {
+    Fail("\"loaded map viewport did not land on a tile-aligned position\"");
+    return;
+  }
+  Finish("passed", "null");
 }
 
 bool ClickViewThroughNativeHost(TView* view) {
@@ -735,15 +949,14 @@ void RunSelectingDifficulty() {
       mainView != 0
           ? static_cast<TRadioTextCluster*>(mainView->ResolveControlByTag(kControlTagDiff))
           : 0;
-  const unsigned long expectedTag =
-      g_runtimeTestState.kind == kRuntimeTestEasyRandomGame ? kControlTagDif1 : kControlTagDif2;
+  const unsigned long expectedTag = IsEasyStyleTest() ? kControlTagDif1 : kControlTagDif2;
   TControl* option =
       difficulty != 0 ? static_cast<TControl*>(difficulty->ResolveControlByTag(expectedTag)) : 0;
   if (difficulty == 0 || option == 0) {
     Fail("\"requested difficulty control is missing\"");
     return;
   }
-  if (g_runtimeTestState.kind == kRuntimeTestEasyRandomGame) {
+  if (IsEasyStyleTest()) {
     if (!ClickViewThroughNativeHost(option)) {
       Fail("\"easy difficulty control or native host is missing\"");
       return;
@@ -755,9 +968,7 @@ void RunSelectingDifficulty() {
     Fail("\"requested difficulty event was not applied\"");
     return;
   }
-  SetPhase(kRuntimeTestActivatingOkay, g_runtimeTestState.kind == kRuntimeTestEasyRandomGame
-                                           ? "click_diff_dif1"
-                                           : "select_diff_dif2");
+  SetPhase(kRuntimeTestActivatingOkay, IsEasyStyleTest() ? "click_diff_dif1" : "select_diff_dif2");
   RequestAnotherDriverTick();
 }
 
@@ -769,7 +980,7 @@ void RunActivatingOkay() {
     Fail("\"okay control is missing\"");
     return;
   }
-  if (g_runtimeTestState.kind == kRuntimeTestEasyRandomGame) {
+  if (IsEasyStyleTest()) {
     if (!ClickViewThroughNativeHost(okay)) {
       Fail("\"okay control or native host is missing\"");
       return;
@@ -850,6 +1061,72 @@ void RunWaitingForEasyStrategicMap() {
   }
   if (!NationModesMatchSelectedNation()) {
     Fail("\"nation control modes do not match the Easy setup selection\"");
+    return;
+  }
+  if (g_runtimeTestState.kind == kRuntimeTestEasyTurnAdvance) {
+    SetPhase(kRuntimeTestActivatingEndTurn, "reach_combined_map");
+    RequestAnotherDriverTick();
+    return;
+  }
+  Finish("passed", "null");
+}
+
+const int kEndTurnCycles = 3;
+
+void RunActivatingEndTurn() {
+  TView* mainView = MainView();
+  if (!IsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture)) || !g_ModalViewStack.IsEmpty()) {
+    WaitForNextTickOrTimeout("\"combined map was not idle before ending the turn\"");
+    return;
+  }
+  g_runtimeTestState.baselineEconomicTurn = g_pSimMgr->economicTurn;
+  g_runtimeTestState.newspaperAdvanced = false;
+  TView* sendControl = mainView->ResolveControlByTag(kControlTagSend);
+  if (!ClickViewThroughNativeHost(sendControl)) {
+    Fail("\"end-turn (send) control or native host is missing\"");
+    return;
+  }
+  SetPhase(kRuntimeTestWaitingForEndTurnConfirm, "click_map_send");
+  RequestAnotherDriverTick();
+}
+
+void RunWaitingForEndTurnConfirm() {
+  if (g_ModalViewStack.IsEmpty()) {
+    WaitForNextTickOrTimeout("\"end-turn confirmation did not become active\"");
+    return;
+  }
+  TWindow* modal = static_cast<TWindow*>(g_ModalViewStack.GetHead());
+  TControl* okay = static_cast<TControl*>(modal->ResolveControlByTag(kControlTagOkay));
+  if (okay == 0) {
+    RecordUnexpectedModal(modal);
+    Fail("\"end-turn confirmation has no okay control\"");
+    return;
+  }
+  RecordHandledModal("end_turn_confirmation");
+  SetPhase(kRuntimeTestWaitingForTurnProcessed, "accept_end_turn_confirmation");
+  okay->HandleEvent(okay->GetEventNumber(), okay, 0);
+  RequestAnotherDriverTick();
+}
+
+void RunWaitingForTurnProcessed() {
+  if (AdvanceInitialNewspaperIfNeeded()) {
+    return;
+  }
+  TView* mainView = MainView();
+  if (g_pUiRuntimeContext->currentTurnEventCode != 0x7dd ||
+      !IsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture)) || !g_ModalViewStack.IsEmpty() ||
+      g_pSimMgr->economicTurn == g_runtimeTestState.baselineEconomicTurn) {
+    WaitForNextTickOrTimeout("\"ended turn did not advance back to the combined map\"");
+    return;
+  }
+  if (g_pSimMgr->economicTurn != g_runtimeTestState.baselineEconomicTurn + 1) {
+    Fail("\"economic turn advanced by more than one\"");
+    return;
+  }
+  ++g_runtimeTestState.turnsCompleted;
+  if (g_runtimeTestState.turnsCompleted < kEndTurnCycles) {
+    SetPhase(kRuntimeTestActivatingEndTurn, "turn_processed");
+    RequestAnotherDriverTick();
     return;
   }
   Finish("passed", "null");
@@ -1282,12 +1559,22 @@ void RuntimeTestDriver::OnIdle() {
     InitializeDriver();
   }
   if (g_runtimeTestState.phase == kRuntimeTestFinished) {
+    if (HoldRequested()) {
+      // Keep the held session visibly alive so the host runner does not
+      // classify it as heartbeat_stopped while someone debugs it.
+      MaybeWriteHeartbeat();
+      RequestAnotherDriverTick();
+    }
     return;
   }
 
   ++g_runtimeTestState.idleTicks;
   ++g_runtimeTestState.phaseTicks;
   MaybeWriteHeartbeat();
+  if (SpinRequestedForCurrentPhase()) {
+    RequestAnotherDriverTick();
+    return;
+  }
   switch (g_runtimeTestState.phase) {
   case kRuntimeTestWaitingForManagers:
     RunWaitingForManagers();
@@ -1355,6 +1642,21 @@ void RuntimeTestDriver::OnIdle() {
   case kRuntimeTestVerifyingCombinedMapExtents:
     RunVerifyingCombinedMapExtents();
     break;
+  case kRuntimeTestActivatingEndTurn:
+    RunActivatingEndTurn();
+    break;
+  case kRuntimeTestWaitingForEndTurnConfirm:
+    RunWaitingForEndTurnConfirm();
+    break;
+  case kRuntimeTestWaitingForTurnProcessed:
+    RunWaitingForTurnProcessed();
+    break;
+  case kRuntimeTestLoadingSavedGame:
+    RunLoadingSavedGame();
+    break;
+  case kRuntimeTestWaitingForLoadedMap:
+    RunWaitingForLoadedMap();
+    break;
   default:
     Fail("\"runtime-test driver entered an invalid phase\"");
     break;
@@ -1367,25 +1669,28 @@ void RuntimeTestDriver::ObserveBuiltUiTree(int eventCode, TView* root) {
   }
   if (eventCode == 0x5dd) {
     g_randomSetupUiSnapshot = CaptureUiSnapshot(eventCode, root);
-  } else if (eventCode == 0x3b8 ||
-             (g_runtimeTestState.kind == kRuntimeTestEasyRandomGame && eventCode == 0x7dd)) {
-    g_strategicMapUiSnapshot = CaptureUiSnapshot(eventCode, root);
+  } else if (eventCode == 0x3b8 || (IsEasyStyleTest() && eventCode == 0x7dd)) {
+    // Capture only the first arrival: later 0x7dd trees (turn-advance cycles)
+    // legitimately diverge from the factory expectation as the game evolves.
+    if (g_strategicMapUiSnapshot.IsEmpty()) {
+      g_strategicMapUiSnapshot = CaptureUiSnapshot(eventCode, root);
+    }
   }
 }
 
 void RuntimeTestDriver::ObserveActivatedTurnEvent(int eventCode) {
-  if (IsRandomGameTest()) {
+  if (RecordsGameFlow()) {
     CString event;
     event.Format("%s\"0x%04x\"", g_activatedEventSequence.GetLength() == 1 ? "" : ", ",
                  static_cast<unsigned short>(eventCode));
     g_activatedEventSequence += event;
   }
-  if (IsRandomGameTest() && g_pSimMgr != 0 && g_pSimMgr->multiplayerSessionRole == 0 &&
+  if (RecordsGameFlow() && g_pSimMgr != 0 && g_pSimMgr->multiplayerSessionRole == 0 &&
       eventCode == 0x5e4) {
     Fail("\"single-player game entered multiplayer synchronization event 0x5e4\"");
     return;
   }
-  if (g_runtimeTestState.kind == kRuntimeTestEasyRandomGame && eventCode == 0x3b8) {
+  if (IsEasyStyleTest() && eventCode == 0x3b8) {
     Fail("\"Easy difficulty entered capital-site selection event 0x3b8\"");
     return;
   }

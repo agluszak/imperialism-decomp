@@ -28,6 +28,18 @@ from tools.workflow.ui_platform_diff import build_report
 HEARTBEAT_STALE_SECONDS = 15.0
 FIRST_HEARTBEAT_SECONDS = 60.0
 POLL_INTERVAL_SECONDS = 0.5
+BUNDLE_RETENTION = 10
+
+# Logical fixture names per test. The files themselves are retail-derived local
+# saves and stay out of git; missing fixtures skip the test explicitly.
+FIXTURES = {"load_saved_game": "beginning_of_game.imp"}
+
+
+def fixture_directory() -> Path:
+    override = os.environ.get("IMPERIALISM_SAVE_FIXTURES")
+    if override:
+        return Path(override)
+    return REPO_ROOT / "tests" / "runtime" / "fixtures"
 
 
 def retail_game_dir() -> Path:
@@ -185,6 +197,44 @@ def apply_ui_oracle(result: dict) -> None:
         result["failure"] = "Mac-derived UI oracle mismatch"
 
 
+def compare_map_state(map_state: dict, expected: dict) -> dict:
+    """Field-wise comparison of the driver's normalized simulation snapshot."""
+    differences = {
+        key: {"expected": value, "actual": map_state.get(key)}
+        for key, value in expected.items()
+        if map_state.get(key) != value
+    }
+    return {
+        "status": "passed" if not differences else "failed",
+        "differences": differences,
+    }
+
+
+def apply_map_oracle(result: dict, name: str, seed: int) -> None:
+    """Compare map_state against the committed seed-specific expectation.
+
+    Missing expectation files skip explicitly (new tests/seeds); to record one,
+    copy the passing run's map_state block into the expectation path.
+    """
+    map_state = result.get("map_state")
+    if not map_state:
+        return
+    expectation_path = (
+        REPO_ROOT / "tests" / "runtime" / "expectations" / f"{name}.seed{seed}.json"
+    )
+    relative = expectation_path.relative_to(REPO_ROOT)
+    expected = read_json_file(expectation_path)
+    if expected is None:
+        result["map_oracle"] = {"status": "skipped", "reason": f"missing {relative}"}
+        return
+    comparison = compare_map_state(map_state, expected)
+    comparison["expectation"] = str(relative)
+    result["map_oracle"] = comparison
+    if comparison["status"] == "failed":
+        result["status"] = "failed"
+        result["failure"] = "map-state oracle mismatch"
+
+
 def classify_poll(
     heartbeat: dict | None,
     heartbeat_age_seconds: float | None,
@@ -209,6 +259,10 @@ def classify_poll(
         return None
     if heartbeat_age_seconds > stale_budget_seconds:
         return "heartbeat_stopped"
+    if heartbeat.get("hold"):
+        # Held-open debugging session: fresh heartbeats intentionally make no
+        # semantic progress; only staleness and the wall deadline apply.
+        return None
     elapsed_ms = heartbeat.get("elapsed_ms")
     last_progress_ms = heartbeat.get("last_progress_ms")
     if (
@@ -353,6 +407,13 @@ def capture_failure_screenshot(destination: Path) -> None:
         pass
 
 
+def prune_old_run_dirs(result_dir: Path, name: str, keep: int = BUNDLE_RETENTION) -> None:
+    """Keep only the newest `keep` run bundles for a test (run-ids sort by time)."""
+    runs = sorted(path for path in result_dir.glob(f"{name}-2*") if path.is_dir())
+    for stale in runs[:-keep] if keep > 0 else runs:
+        shutil.rmtree(stale, ignore_errors=True)
+
+
 def prefix_environment(prefix: Path) -> dict[str, str]:
     environment = dict(os.environ)
     environment["WINEPREFIX"] = str(prefix)
@@ -370,6 +431,7 @@ def execute_run(
     phase_timeout_ms: int,
     winedebug: str | None,
     wine_log_name: str,
+    fixture: Path | None = None,
 ) -> dict:
     """One isolated game run; returns host metadata including classification."""
     executable = BUILD_DIR / "Imperialism.exe"
@@ -402,6 +464,10 @@ def execute_run(
         )
         environment["IMPERIALISM_RUNTIME_TEST_SEED"] = str(seed)
         environment["IMPERIALISM_RUNTIME_TEST_PHASE_TIMEOUT_MS"] = str(phase_timeout_ms)
+        if fixture is not None:
+            environment["IMPERIALISM_RUNTIME_TEST_FIXTURE"] = windows_path(
+                fixture, environment
+            )
 
         with (run_dir / wine_log_name).open("wb") as wine_log:
             process = subprocess.Popen(
@@ -455,6 +521,24 @@ def run_test(args: argparse.Namespace) -> int:
     name = args.name
     result_dir = BUILD_DIR / "runtime-results"
     result_dir.mkdir(parents=True, exist_ok=True)
+
+    fixture: Path | None = None
+    if name in FIXTURES:
+        fixture = fixture_directory() / FIXTURES[name]
+        if not fixture.is_file():
+            skipped = {
+                "format_version": 1,
+                "name": name,
+                "status": "skipped",
+                "failure": (
+                    f"missing local save fixture {fixture}; place a retail-derived "
+                    "save there (never committed) to enable this test"
+                ),
+            }
+            serialized = json.dumps(skipped, indent=2, sort_keys=True) + "\n"
+            (result_dir / f"{name}.json").write_text(serialized, encoding="utf-8")
+            print(serialized, end="")
+            return 0
     run_id = f"{name}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}-{os.getpid()}"
     run_dir = result_dir / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
@@ -467,6 +551,7 @@ def run_test(args: argparse.Namespace) -> int:
         phase_timeout_ms=args.phase_timeout_ms,
         winedebug=None,
         wine_log_name="wine.log",
+        fixture=fixture,
     )
     host.update(
         {
@@ -496,6 +581,7 @@ def run_test(args: argparse.Namespace) -> int:
             apply_ui_oracle(result)
         except ValueError as error:
             raise SystemExit(str(error)) from error
+        apply_map_oracle(result, name, args.seed)
 
     failed = result.get("status") != "passed" or host["classification"] is not None
     if failed and args.rerun_seh:
@@ -507,6 +593,7 @@ def run_test(args: argparse.Namespace) -> int:
             phase_timeout_ms=args.phase_timeout_ms,
             winedebug="+seh",
             wine_log_name="wine-seh.log",
+            fixture=fixture,
         )
 
     result["host"] = host
@@ -517,6 +604,7 @@ def run_test(args: argparse.Namespace) -> int:
     result_path.write_text(serialized, encoding="utf-8")
     # Canonical latest-result location, kept for existing consumers.
     (result_dir / f"{name}.json").write_text(serialized, encoding="utf-8")
+    prune_old_run_dirs(result_dir, name)
     print(serialized, end="")
     if host["classification"] is not None:
         print(f"runtime test classified as {host['classification']}", file=sys.stderr)
