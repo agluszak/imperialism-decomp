@@ -6,7 +6,6 @@
 #include "game/mfc.h"
 #include "game/TMapOrderChildLinkNode.h"
 #include "game/TShip.h"
-#include "game/global_data_tables.h"
 
 class TTaskForce;
 class TStream;
