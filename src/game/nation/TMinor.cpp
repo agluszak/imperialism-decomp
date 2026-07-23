@@ -422,7 +422,7 @@ char TMinor::ReturnFalseNationStateCapabilityFlag90(short arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e4630
-int TMinor::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
+short TMinor::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
   short sum = static_cast<short>(this->needCurrentByType[nationSlot] +
                                  this->diplomacyGrantByNation[nationSlot]);
   if (sum < 0) {

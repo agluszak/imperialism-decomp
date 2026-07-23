@@ -27,7 +27,7 @@ public:
   void ApplyJoinEmpireMode2FinalizeNationNameState(void) override;
   void RemoveRegionIdFromNationOwnedRegionList(int regionId) override;
   void AddRegionIdToNationOwnedRegionList(int regionId) override;
-  int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) override;
+  short SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) override;
   short GetDiplomacyExternalStateByTarget(short nationSlot) override;
   short QueryNationMetricBySlot7C(short metricSlot) override;
   void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,

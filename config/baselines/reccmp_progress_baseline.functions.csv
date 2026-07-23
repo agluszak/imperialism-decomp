@@ -2317,7 +2317,7 @@ address|matching|name
 0x4d7dd0|0.30985915492957744|TCountry::SetNationPercentFieldByModeAndDescriptorLinks
 0x4d7e90|1.0|TCountry::DecrementDiplomacyCounterA2ByValue
 0x4d7eb0|1.0|TCountry::GenerateEthnicName
-0x4d7ee0|0.5|TCountry::SumDiplomacyState1c6AndRelationDeltaSnapshot
+0x4d7ee0|1.0|TCountry::SumDiplomacyState1c6AndRelationDeltaSnapshot
 0x4d7f00|1.0|TCountry::GetDiplomacyCounterA2
 0x4d7f20|1.0|TCountry::GetDiplomacyExternalStateByTarget
 0x4d7f40|1.0|TCountry::QueryNationMetricBySlot7C
@@ -2518,7 +2518,7 @@ address|matching|name
 0x4e41c0|0.5615384615384615|TMinor::ReadFrom
 0x4e4390|0.81875|TMinor::WriteTo
 0x4e45f0|1.0|TMinor::ReturnFalseNationStateCapabilityFlag90
-0x4e4630|0.6666666666666666|TMinor::SumDiplomacyState1c6AndRelationDeltaSnapshot
+0x4e4630|1.0|TMinor::SumDiplomacyState1c6AndRelationDeltaSnapshot
 0x4e4660|1.0|TMinor::GetDiplomacyExternalStateByTarget
 0x4e4680|1.0|TMinor::QueryNationMetricBySlot7C
 0x4e46a0|0.949438202247191|TMinor::RebuildDiplomacyEconomicPressureFromMapState
@@ -5841,9 +5841,9 @@ address|matching|name
 0x5b8fb0|1.0|TTradeMgr::GetNationMetricRosterWordAtOffset0C
 0x5b8fe0|0.6428571428571429|TTradeMgr::QueryProposalWeightSlot4C
 0x5b9030|1.0|TTradeMgr::GetNationMetricBucketValueByIndex
-0x5b9060|0.6363636363636364|TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster
+0x5b9060|0.6233766233766234|TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster
 0x5b9190|0.2777777777777778|TTradeMgr::InitializePendingDiplomacyTransferCursorAndProcess
-0x5b91e0|0.38|TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked
+0x5b91e0|0.37|TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked
 0x5b9370|0.8571428571428571|TTradeMgr::RefreshNationStateAndEmitTurnEvent3Mode18
 0x5b9410|0.6486486486486487|TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline
 0x5b94d0|0.49591280653950953|TTradeMgr::DispatchProposalAmountSlot60
