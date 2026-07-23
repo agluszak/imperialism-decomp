@@ -61,18 +61,6 @@ struct GoldDialogControl : public TControl {
   virtual void InvokeSlot1D0OneParam(void* content);
 };
 
-// A distinct 'GOLD' concrete class from GoldDialogControl: dialog 0x546's 'GOLD' child
-// (HandleTurnEventDialogFactorySlotD8, 0x5dcf20) dispatches byte 0x1cc with a single
-// TViewMgr* argument, whereas GoldDialogControl's own 0x1cc override (verified at
-// TMacViewMgr::OpenConstructionWindow, dialog 0x2404) takes three arguments -- proof
-// these are two different runtime classes sharing the 'GOLD' tag and this byte offset,
-// not one type (see the Type-modeling guardrail's "never borrow a type" rule).
-struct GoldFactoryPanel : public TControl {
-  virtual void goldPanel71();                                    // slot 0x71 byte 0x1c4
-  virtual void goldPanelSetControlStateByResource(int a, int b); // slot 0x72 byte 0x1c8
-  virtual void NotifyDialogOwner(TViewMgr* viewMgr);             // slot 0x73 byte 0x1cc
-};
-
 // Concrete siblings used by TViewMgr's modal-dispatch slots. They share the
 // TView/TControl prefix but interpret later slots differently, so keeping them
 // separate avoids assigning one caller's signature to every 'GOLD' control.

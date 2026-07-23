@@ -6,6 +6,7 @@
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
+struct TCombatReportContext;
 class TToolBarClusterVtbl;
 class TView;
 class TEventHandler;
@@ -99,8 +100,10 @@ public:
   // Resolves the active dialog's 'GOLD' panel, notifies it of the current turn-event
   // code, then resolves+shows+refreshes the 0x546 factory dialog's own 'GOLD' child
   // (0x5dcf20).
-  virtual void HandleTurnEventDialogFactorySlotD8(int eventCode);                     // 0xd8
-  virtual int ShowConstructionOptionsDialog(int dialogValue = 0);                     // 0xdc
+  // Opens the CombatReport 2 dialog (event 0x546) and stuffs the report context into
+  // its TCombatReportView 'DLOG' child; the argument is that context, not an event code.
+  virtual void ShowCombatReportDialog(TCombatReportContext* reportContext); // 0xd8 0x5dcf20
+  virtual int ShowConstructionOptionsDialog(int dialogValue = 0);           // 0xdc
   virtual void HandleGlobalMapNationContextSelection(int nationSlot, int unused = 0); // 0xe0
   // Opens factory dialog 0x1c52, places it, and sets the 'GOLD'->'name' text from a
   // localized string code (0x5dd220).

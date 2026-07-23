@@ -1,6 +1,7 @@
 #include "game/TViewMgr.h"
 #include "game/TArmyInfoView.h"
 #include "game/TCivReport.h"
+#include "game/TCombatReportView.h"
 #include "game/TC2TemplateDialog.h"
 #include "game/TEventHandler.h"
 
@@ -102,7 +103,6 @@
 namespace {
 using turn_event_dialog::GoldCommitControl;
 using turn_event_dialog::GoldDialogControl;
-using turn_event_dialog::GoldFactoryPanel;
 using turn_event_dialog::TurnEventDialogNode;
 // g_pUiViewManager (TAssetMgr) @ 0x6a2148 — the UI/view asset registry that resolves
 // turn-event dialog nodes by message context.
@@ -2084,7 +2084,7 @@ char TViewMgr::HandleTurnEventDialogFactorySlotB4(void* payload) {
 }
 
 // FUNCTION: IMPERIALISM 0x005dcf20
-void TViewMgr::HandleTurnEventDialogFactorySlotD8(int) {
+void TViewMgr::ShowCombatReportDialog(TCombatReportContext* reportContext) {
   GoldCommitControl* rootGold = static_cast<GoldCommitControl*>(
       static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog)));
   if (rootGold == nullptr) {
@@ -2099,13 +2099,14 @@ void TViewMgr::HandleTurnEventDialogFactorySlotD8(int) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xe5);
   }
-  GoldFactoryPanel* gold = static_cast<GoldFactoryPanel*>(
+  // MapView.rsrc view 1350's 'DLOG' pict is a TCombatReportView (Mac resource oracle).
+  TCombatReportView* report = static_cast<TCombatReportView*>(
       static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog)));
-  if (gold == nullptr) {
+  if (report == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xe6);
   }
-  gold->NotifyDialogOwner(this);
+  report->StuffValues(reportContext);
 
   POINT placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
