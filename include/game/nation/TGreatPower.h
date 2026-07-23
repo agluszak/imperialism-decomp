@@ -185,9 +185,9 @@ public:
   // per-order-type priority table at 0x6966d0.
   virtual void SortTrackedOrdersByTypePriority(void);
   // slot 0x56 — body 0x004e03a0: runs slot 0x4c then the slot 0x55 sort.
-  virtual void RunSlot4CThenSortTrackedOrders(void);
+  virtual void MoveCivilians(void); // Mac oracle
   // slot 0x57 — body 0x004e03d0: field900 = needCapA6 / 5.
-  virtual void ResetField900FromNeedCapA6(void);
+  virtual void MoveArmy(void); // Mac oracle
   virtual void SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(int targetNationSlot,
                                                                             int isBoycottEnabled);
   virtual void RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void);

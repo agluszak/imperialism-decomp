@@ -159,28 +159,28 @@ void TAutoGreatPower::InitializeNationMinisterSubsystemsByPolicyIds(int nationSl
     TSteelCityMinister* minister = new TSteelCityMinister();
     minister->InitializeCityInteriorState(this);
     interiorMinister = minister;
-    minister->MinisterSlot12(1, 2);
+    minister->SetParameters(1, 2);
     break;
   }
   case 1: {
     TRailCityMinister* minister = new TRailCityMinister();
     minister->InitializeCityInteriorState(this);
     interiorMinister = minister;
-    minister->MinisterSlot12(1, 2);
+    minister->SetParameters(1, 2);
     break;
   }
   case 2: {
     TShipBuilderCityMinister* minister = new TShipBuilderCityMinister();
     minister->InitializeCityInteriorState(this);
     interiorMinister = minister;
-    minister->MinisterSlot12(1, 2);
+    minister->SetParameters(1, 2);
     break;
   }
   case 3: {
     TEvenCityMinister* minister = new TEvenCityMinister();
     minister->InitializeCityInteriorState(this);
     interiorMinister = minister;
-    minister->MinisterSlot12(1, 2);
+    minister->SetParameters(1, 2);
     break;
   }
   }
@@ -366,13 +366,13 @@ void TAutoGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void) 
 }
 
 // FUNCTION: IMPERIALISM 0x004e78d0
-void TAutoGreatPower::RunSlot4CThenSortTrackedOrders(void) {
+void TAutoGreatPower::MoveCivilians(void) {
   static_cast<TCityInteriorMinister*>(this->interiorMinister)->ProcessUnitOrders();
 }
 
 // FUNCTION: IMPERIALISM 0x004e78f0
-void TAutoGreatPower::ResetField900FromNeedCapA6(void) {
-  this->defenseMinister->Call4C();
+void TAutoGreatPower::MoveArmy(void) {
+  defenseMinister->DoArmyMovement();
 }
 
 // FUNCTION: IMPERIALISM 0x004e7910
@@ -1700,7 +1700,7 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
       }
     } else {
       if (applyAction) {
-        interiorMinister->InteriorSlot1C(static_cast<short>(selectedSlot));
+        interiorMinister->PleaseBuildLandUnit(static_cast<short>(selectedSlot));
       }
       developmentBudget -=
           ComputeAiCityActionCostFromSlotAndMode(static_cast<short>(selectedSlot), 0);
