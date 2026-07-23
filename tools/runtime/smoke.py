@@ -7,8 +7,8 @@ import argparse
 import os
 from pathlib import Path
 import re
+import shutil
 import subprocess
-import sys
 import tempfile
 import time
 
@@ -54,18 +54,57 @@ def resolve_recomp_addr(original_address: int) -> int:
     return int(match.group(1), 16)
 
 
-def kill_stale() -> None:
-    subprocess.run(["pkill", "-9", "-f", "Imperialism.exe"], capture_output=True)
-    time.sleep(1)
-    subprocess.run(["wineserver", "-k"], capture_output=True)
-    time.sleep(2)
+def create_wine_prefix() -> tuple[Path, dict[str, str]]:
+    """Per-invocation WINEPREFIX so concurrent runs never share a wineserver."""
+    prefix = Path(tempfile.mkdtemp(prefix="imperialism-smoke-wine-"))
+    environment = dict(os.environ, WINEDEBUG=os.environ.get("WINEDEBUG", "-all"))
+    environment["WINEPREFIX"] = str(prefix)
+    # Skip the Mono/Gecko installers in the fresh prefix.
+    environment.setdefault("WINEDLLOVERRIDES", "mscoree,mshtml=")
+    subprocess.run(
+        ["wineboot", "--init"],
+        env=environment,
+        check=True,
+        capture_output=True,
+        timeout=180,
+    )
+    # First-run settings the game otherwise prompts for: without a saved AutoRes,
+    # ShowAutoResolutionDialogIfNeeded (ImperialismApp.cpp) blocks startup on a
+    # modal resolution dialog; Language pins deterministic .irg selection.
+    settings_key = "HKCU\\Software\\SSI\\Imperialism\\Settings"
+    for value_args in (
+        ["/v", "AutoRes", "/t", "REG_DWORD", "/d", "0"],
+        ["/v", "Language", "/d", "ENGLISH"],
+    ):
+        subprocess.run(
+            ["wine", "reg", "add", settings_key, *value_args, "/f"],
+            env=environment,
+            check=True,
+            capture_output=True,
+            timeout=60,
+        )
+    subprocess.run(
+        ["wineserver", "--wait"],
+        env=environment,
+        capture_output=True,
+        timeout=180,
+    )
+    return prefix, environment
 
 
-def launch_proxy(port: int) -> subprocess.Popen[bytes]:
+def shut_down_wine_prefix(prefix: Path, environment: dict[str, str]) -> None:
+    """Scoped cleanup: kill only this run's wineserver, then drop the prefix."""
+    subprocess.run(["wineserver", "-k"], env=environment, capture_output=True)
+    subprocess.run(
+        ["wineserver", "--wait"], env=environment, capture_output=True, timeout=60
+    )
+    shutil.rmtree(prefix, ignore_errors=True)
+
+
+def launch_proxy(port: int, environment: dict[str, str]) -> subprocess.Popen[bytes]:
     executable = BUILD_DIR / "Imperialism.exe"
     if not executable.exists():
         raise SystemExit(f"Missing {executable}; run `just build` first")
-    environment = dict(os.environ, WINEDEBUG=os.environ.get("WINEDEBUG", "-all"))
     process = subprocess.Popen(
         ["winedbg", "--gdb", "--no-start", "--port", str(port), str(executable)],
         cwd=game_dir(),
@@ -151,13 +190,13 @@ def cmd_run(args: argparse.Namespace) -> int:
     for name, original, _ in STARTUP_MILESTONES:
         print(f"{name:14s} orig 0x{original:08x} -> recomp 0x{addresses[name]:08x}")
 
-    kill_stale()
-    proxy = launch_proxy(args.port)
+    prefix, environment = create_wine_prefix()
+    proxy = launch_proxy(args.port, environment)
     try:
         output = run_gdb(args.port, ladder_script(addresses), args.seconds)
     finally:
         proxy.kill()
-        kill_stale()
+        shut_down_wine_prefix(prefix, environment)
 
     reached = {
         name for name, _, _ in STARTUP_MILESTONES if f"MILESTONE {name}" in output
@@ -189,14 +228,16 @@ def cmd_gdb(args: argparse.Namespace) -> int:
         script = "\n".join(args.ex) + "\n"
     else:
         raise SystemExit("pass --script FILE or one or more --ex commands")
-    kill_stale()
-    proxy = launch_proxy(args.port)
+    prefix, environment = create_wine_prefix()
+    proxy = launch_proxy(args.port, environment)
     try:
         print(run_gdb(args.port, script, args.seconds))
     finally:
         proxy.kill()
-        if not args.keep_running:
-            kill_stale()
+        if args.keep_running:
+            print(f"leaving Wine session running in WINEPREFIX={prefix}")
+        else:
+            shut_down_wine_prefix(prefix, environment)
     return 0
 
 

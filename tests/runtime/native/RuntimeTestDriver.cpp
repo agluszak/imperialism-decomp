@@ -7,6 +7,7 @@
 #include "game/map_ui/TCitySiteView.h"
 #include "game/gfx/TDisplayMgr.h"
 #include "game/ui_core/TDialogBehavior.h"
+#include "game/ui_core/CMcEditWindow.h"
 #include "game/ui_core/TEditText.h"
 #include "game/ui_screens/TGameSetupPicture.h"
 #include "game/ImperialismApp.h"
@@ -24,7 +25,8 @@
 #include "game/ui_core/TWindow.h"
 #include "game/core/global_data_tables.h"
 #include "game/mfc.h"
-#include "game/ui_control_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_screens.h"
 
 #include <stdlib.h>
 #include <windows.h>
@@ -70,19 +72,30 @@ struct RuntimeTestState {
   RuntimeTestPhase phase;
   unsigned long idleTicks;
   unsigned long phaseTicks;
+  unsigned long startMs;
+  unsigned long phaseStartMs;
+  unsigned long lastHeartbeatMs;
+  unsigned long progressCounter;
+  unsigned long lastProgressMs;
   short selectedNationSlot;
   HWND mainWindowHandle;
   bool newspaperAdvanced;
   char resultPath[MAX_PATH];
+  char heartbeatPath[MAX_PATH];
   char lastAction[64];
 };
 
 RuntimeTestState g_runtimeTestState = {
-    kRuntimeTestNone, kRuntimeTestNotStarted, 0, 0, -1, 0, false, "", ""};
+    kRuntimeTestNone, kRuntimeTestNotStarted, 0, 0, 0, 0, 0, 0, 0, -1, 0, false, "", "", ""};
 CString g_randomSetupUiSnapshot;
 CString g_strategicMapUiSnapshot;
 CString g_capitalConfirmationUiSnapshot;
 CString g_activatedEventSequence("[");
+CString g_handledModals("[");
+CString g_unexpectedModals("[");
+CString g_faults("[");
+CString g_actionLog("[");
+CString g_lastFingerprint;
 
 bool IsRandomGameTest() {
   return g_runtimeTestState.kind == kRuntimeTestRandomGame ||
@@ -99,10 +112,82 @@ const char* TestName() {
   return "boot_managers";
 }
 
+const char* PhaseName(RuntimeTestPhase phase) {
+  switch (phase) {
+  case kRuntimeTestNotStarted:
+    return "not_started";
+  case kRuntimeTestWaitingForManagers:
+    return "waiting_for_managers";
+  case kRuntimeTestWaitingForMainMenu:
+    return "waiting_for_main_menu";
+  case kRuntimeTestWaitingForRandomSetup:
+    return "waiting_for_random_setup";
+  case kRuntimeTestSettingCountryName:
+    return "setting_country_name";
+  case kRuntimeTestSelectingDifficulty:
+    return "selecting_difficulty";
+  case kRuntimeTestActivatingOkay:
+    return "activating_okay";
+  case kRuntimeTestWaitingForEasyStrategicMap:
+    return "waiting_for_easy_strategic_map";
+  case kRuntimeTestWaitingForStrategicMap:
+    return "waiting_for_strategic_map";
+  case kRuntimeTestVerifyingStrategicMap:
+    return "verifying_strategic_map";
+  case kRuntimeTestWaitingForModalDismissal:
+    return "waiting_for_modal_dismissal";
+  case kRuntimeTestPrimingMapHover:
+    return "priming_map_hover";
+  case kRuntimeTestDispatchingMapHotkey:
+    return "dispatching_map_hotkey";
+  case kRuntimeTestExercisingMapHover:
+    return "exercising_map_hover";
+  case kRuntimeTestReturningToRandomSetup:
+    return "returning_to_random_setup";
+  case kRuntimeTestReturningToMainMenu:
+    return "returning_to_main_menu";
+  case kRuntimeTestReenteringRandomSetup:
+    return "reentering_random_setup";
+  case kRuntimeTestVerifyingReturnedRandomSetup:
+    return "verifying_returned_random_setup";
+  case kRuntimeTestWaitingForSecondCitySite:
+    return "waiting_for_second_city_site";
+  case kRuntimeTestWaitingForSecondPromptDismissal:
+    return "waiting_for_second_prompt_dismissal";
+  case kRuntimeTestWaitingForCitySiteConfirmation:
+    return "waiting_for_city_site_confirmation";
+  case kRuntimeTestWaitingForCombinedMap:
+    return "waiting_for_combined_map";
+  case kRuntimeTestVerifyingCombinedMapExtents:
+    return "verifying_combined_map_extents";
+  case kRuntimeTestFinished:
+    return "finished";
+  default:
+    return "unknown";
+  }
+}
+
+void AppendJsonArrayItem(CString& array, const CString& item) {
+  if (array.GetLength() > 1) {
+    array += ", ";
+  }
+  array += item;
+}
+
+void RecordAction(const char* action) {
+  lstrcpynA(g_runtimeTestState.lastAction, action, sizeof(g_runtimeTestState.lastAction));
+  CString entry;
+  entry.Format("{\"t_ms\": %lu, \"phase\": \"%s\", \"action\": \"%s\"}",
+               GetTickCount() - g_runtimeTestState.startMs, PhaseName(g_runtimeTestState.phase),
+               action);
+  AppendJsonArrayItem(g_actionLog, entry);
+}
+
 void SetPhase(RuntimeTestPhase phase, const char* action) {
   g_runtimeTestState.phase = phase;
   g_runtimeTestState.phaseTicks = 0;
-  lstrcpynA(g_runtimeTestState.lastAction, action, sizeof(g_runtimeTestState.lastAction));
+  g_runtimeTestState.phaseStartMs = GetTickCount();
+  RecordAction(action);
 }
 
 bool RequiredManagersAreInitialized() {
@@ -147,6 +232,31 @@ void RequestGameClose() {
 bool WriteAll(HANDLE file, const char* bytes, DWORD size) {
   DWORD written = 0;
   return WriteFile(file, bytes, size, &written, 0) != 0 && written == size;
+}
+
+bool WriteFileAtomically(const char* path, const CString& json) {
+  CString temporaryPath(path);
+  temporaryPath += ".tmp";
+  HANDLE file =
+      CreateFileA(temporaryPath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+  if (file == INVALID_HANDLE_VALUE) {
+    return false;
+  }
+  const char* bytes = static_cast<LPCSTR>(json);
+  bool wrote = WriteAll(file, bytes, static_cast<DWORD>(json.GetLength()));
+  if (wrote) {
+    wrote = FlushFileBuffers(file) != 0;
+  }
+  CloseHandle(file);
+  if (!wrote) {
+    DeleteFileA(temporaryPath);
+    return false;
+  }
+  if (MoveFileExA(temporaryPath, path, MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH) == 0) {
+    DeleteFileA(temporaryPath);
+    return false;
+  }
+  return true;
 }
 
 void AppendJsonString(CString& json, const char* value) {
@@ -286,10 +396,14 @@ bool WriteResultFile(const char* status, const char* failure) {
   TView* mainView = MainView();
   CString eventSequence(g_activatedEventSequence);
   eventSequence += ']';
-  const char* handledModals =
-      g_runtimeTestState.kind == kRuntimeTestRandomGame
-          ? "[\"city_site_prompt\", \"city_site_prompt\", \"city_site_confirmation\"]"
-          : "[]";
+  CString handledModals(g_handledModals);
+  handledModals += ']';
+  CString unexpectedModals(g_unexpectedModals);
+  unexpectedModals += ']';
+  CString faults(g_faults);
+  faults += ']';
+  CString actionLog(g_actionLog);
+  actionLog += ']';
   if (IsRandomGameTest() &&
       (g_randomSetupUiSnapshot.IsEmpty() || g_strategicMapUiSnapshot.IsEmpty())) {
     status = "failed";
@@ -320,9 +434,13 @@ bool WriteResultFile(const char* status, const char* failure) {
               "  \"format_version\": 1,\n"
               "  \"name\": \"%s\",\n"
               "  \"status\": \"%s\",\n"
+              "  \"seed\": %u,\n"
               "  \"idle_ticks\": %lu,\n"
+              "  \"elapsed_ms\": %lu,\n"
+              "  \"phase\": \"%s\",\n"
               "  \"last_action\": \"%s\",\n"
               "  \"event_sequence\": %s,\n"
+              "  \"actions\": %s,\n"
               "  \"ui_snapshots\": %s,\n"
               "  \"capital_confirmation_snapshot\": %s,\n"
               "  \"state\": {\n"
@@ -342,14 +460,16 @@ bool WriteResultFile(const char* status, const char* failure) {
               "    \"ui_view_manager\": %s\n"
               "  },\n"
               "  \"runtime\": {\n"
-              "    \"faults\": [],\n"
+              "    \"faults\": %s,\n"
               "    \"handled_modals\": %s,\n"
-              "    \"unexpected_modals\": []\n"
+              "    \"unexpected_modals\": %s\n"
               "  },\n"
               "  \"failure\": %s\n"
               "}\n",
-              TestName(), status, g_runtimeTestState.idleTicks, g_runtimeTestState.lastAction,
-              static_cast<LPCSTR>(eventSequence), static_cast<LPCSTR>(uiSnapshots),
+              TestName(), status, RuntimeTestDriver::RandomSeed(), g_runtimeTestState.idleTicks,
+              GetTickCount() - g_runtimeTestState.startMs, PhaseName(g_runtimeTestState.phase),
+              g_runtimeTestState.lastAction, static_cast<LPCSTR>(eventSequence),
+              static_cast<LPCSTR>(actionLog), static_cast<LPCSTR>(uiSnapshots),
               static_cast<LPCSTR>(capitalConfirmationSnapshot),
               g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
               RuntimeClassName(mainView), g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1,
@@ -360,32 +480,10 @@ bool WriteResultFile(const char* status, const char* failure) {
               g_pGlobalMapState != 0 ? "true" : "false", g_pDisplayMgr != 0 ? "true" : "false",
               g_pGlobalUiRootController != 0 ? "true" : "false", g_pSimMgr != 0 ? "true" : "false",
               g_pUiRuntimeContext != 0 ? "true" : "false", g_pUiViewManager != 0 ? "true" : "false",
-              handledModals, failure);
+              static_cast<LPCSTR>(faults), static_cast<LPCSTR>(handledModals),
+              static_cast<LPCSTR>(unexpectedModals), failure);
 
-  CString temporaryPath(g_runtimeTestState.resultPath);
-  temporaryPath += ".tmp";
-  HANDLE file =
-      CreateFileA(temporaryPath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
-  if (file == INVALID_HANDLE_VALUE) {
-    return false;
-  }
-
-  const char* bytes = static_cast<LPCSTR>(json);
-  bool wrote = WriteAll(file, bytes, static_cast<DWORD>(json.GetLength()));
-  if (wrote) {
-    wrote = FlushFileBuffers(file) != 0;
-  }
-  CloseHandle(file);
-  if (!wrote) {
-    DeleteFileA(temporaryPath);
-    return false;
-  }
-  if (MoveFileExA(temporaryPath, g_runtimeTestState.resultPath,
-                  MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH) == 0) {
-    DeleteFileA(temporaryPath);
-    return false;
-  }
-  return true;
+  return WriteFileAtomically(g_runtimeTestState.resultPath, json);
 }
 
 void Finish(const char* status, const char* failure) {
@@ -404,13 +502,95 @@ void Fail(const char* failure) {
   Finish("failed", failure);
 }
 
+unsigned long PhaseTimeoutMs() {
+  static unsigned long timeoutMs = 0;
+  if (timeoutMs == 0) {
+    timeoutMs = 60000;
+    char text[16];
+    if (GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_PHASE_TIMEOUT_MS", text, sizeof(text)) !=
+        0) {
+      unsigned long parsed = strtoul(text, 0, 10);
+      if (parsed != 0) {
+        timeoutMs = parsed;
+      }
+    }
+  }
+  return timeoutMs;
+}
+
 bool WaitForNextTickOrTimeout(const char* failure) {
-  if (g_runtimeTestState.phaseTicks >= 10000) {
+  if (GetTickCount() - g_runtimeTestState.phaseStartMs >= PhaseTimeoutMs()) {
     Fail(failure);
     return false;
   }
   RequestAnotherDriverTick();
   return true;
+}
+
+void RecordHandledModal(const char* label) {
+  CString entry;
+  entry.Format("\"%s\"", label);
+  AppendJsonArrayItem(g_handledModals, entry);
+}
+
+void RecordUnexpectedModal(TView* modal) {
+  char tag[5];
+  FourCcText(static_cast<unsigned int>(modal->controlTag), tag);
+  CString entry;
+  entry.Format("{\"class\": \"%s\", \"tag\": \"%s\", \"phase\": \"%s\", \"t_ms\": %lu}",
+               RuntimeClassName(modal), tag, PhaseName(g_runtimeTestState.phase),
+               GetTickCount() - g_runtimeTestState.startMs);
+  AppendJsonArrayItem(g_unexpectedModals, entry);
+}
+
+CString SemanticFingerprint() {
+  CString fingerprint;
+  fingerprint.Format("%d|%s|%d|%s",
+                     g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
+                     RuntimeClassName(MainView()), g_ModalViewStack.GetCount(),
+                     PhaseName(g_runtimeTestState.phase));
+  return fingerprint;
+}
+
+void MaybeWriteHeartbeat() {
+  if (g_runtimeTestState.heartbeatPath[0] == 0) {
+    return;
+  }
+  unsigned long now = GetTickCount();
+  CString fingerprint = SemanticFingerprint();
+  if (fingerprint != g_lastFingerprint) {
+    g_lastFingerprint = fingerprint;
+    ++g_runtimeTestState.progressCounter;
+    g_runtimeTestState.lastProgressMs = now - g_runtimeTestState.startMs;
+  }
+  if (g_runtimeTestState.lastHeartbeatMs != 0 && now - g_runtimeTestState.lastHeartbeatMs < 250) {
+    return;
+  }
+  g_runtimeTestState.lastHeartbeatMs = now;
+  CString json;
+  json.Format("{\"phase\": \"%s\", \"last_action\": \"%s\", \"idle_ticks\": %lu, "
+              "\"elapsed_ms\": %lu, \"turn_event\": %d, \"root_class\": \"%s\", "
+              "\"modal_depth\": %d, \"progress_counter\": %lu, \"last_progress_ms\": %lu}\n",
+              PhaseName(g_runtimeTestState.phase), g_runtimeTestState.lastAction,
+              g_runtimeTestState.idleTicks, now - g_runtimeTestState.startMs,
+              g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
+              RuntimeClassName(MainView()), g_ModalViewStack.GetCount(),
+              g_runtimeTestState.progressCounter, g_runtimeTestState.lastProgressMs);
+  WriteFileAtomically(g_runtimeTestState.heartbeatPath, json);
+}
+
+LONG WINAPI RuntimeTestUnhandledExceptionFilter(EXCEPTION_POINTERS* info) {
+  if (g_runtimeTestState.phase != kRuntimeTestFinished && info != 0 && info->ExceptionRecord != 0) {
+    CString fault;
+    fault.Format("{\"code\": \"0x%08lx\", \"address\": \"%p\", \"phase\": \"%s\", "
+                 "\"last_action\": \"%s\"}",
+                 info->ExceptionRecord->ExceptionCode, info->ExceptionRecord->ExceptionAddress,
+                 PhaseName(g_runtimeTestState.phase), g_runtimeTestState.lastAction);
+    AppendJsonArrayItem(g_faults, fault);
+    g_runtimeTestState.phase = kRuntimeTestFinished;
+    WriteResultFile("failed", "\"unhandled exception\"");
+  }
+  return EXCEPTION_CONTINUE_SEARCH;
 }
 
 void InitializeDriver() {
@@ -422,11 +602,22 @@ void InitializeDriver() {
     return;
   }
 
+  g_runtimeTestState.startMs = GetTickCount();
+  g_runtimeTestState.phaseStartMs = g_runtimeTestState.startMs;
+  SetUnhandledExceptionFilter(RuntimeTestUnhandledExceptionFilter);
+
   DWORD resultPathLength =
       GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_RESULT", g_runtimeTestState.resultPath,
                               sizeof(g_runtimeTestState.resultPath));
   if (resultPathLength == 0 || resultPathLength >= sizeof(g_runtimeTestState.resultPath)) {
     lstrcpyA(g_runtimeTestState.resultPath, "runtime-test-result.json");
+  }
+
+  DWORD heartbeatPathLength = GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_HEARTBEAT",
+                                                      g_runtimeTestState.heartbeatPath,
+                                                      sizeof(g_runtimeTestState.heartbeatPath));
+  if (heartbeatPathLength >= sizeof(g_runtimeTestState.heartbeatPath)) {
+    g_runtimeTestState.heartbeatPath[0] = 0;
   }
 
   if (lstrcmpA(testName, "boot_managers") == 0) {
@@ -526,12 +717,14 @@ void RunSettingCountryName() {
     Fail("\"country-name control is missing\"");
     return;
   }
-  if (country->editWindow != 0) {
-    Fail("\"country-name control has a live edit window; real synchronization is required\"");
-    return;
-  }
   CString countryName("Testland");
-  country->SetTextAndMaybeRefresh(&countryName, 1);
+  if (country->editWindow != 0) {
+    // Real synchronization with the live EDIT host: the window text is
+    // authoritative while it exists (TEditText::GetCurrentText reads it back).
+    country->editWindow->SetWindowText(countryName);
+  } else {
+    country->SetTextAndMaybeRefresh(&countryName, 1);
+  }
   SetPhase(kRuntimeTestSelectingDifficulty, "set_text_coun");
   RequestAnotherDriverTick();
 }
@@ -618,8 +811,7 @@ bool AdvanceInitialNewspaperIfNeeded() {
     return true;
   }
   g_runtimeTestState.newspaperAdvanced = true;
-  lstrcpynA(g_runtimeTestState.lastAction, "activate_newspaper_end",
-            sizeof(g_runtimeTestState.lastAction));
+  RecordAction("activate_newspaper_end");
   endControl->HandleEvent(endControl->GetEventNumber(), endControl, 0);
   RequestAnotherDriverTick();
   return true;
@@ -644,6 +836,7 @@ void RunWaitingForEasyStrategicMap() {
     return;
   }
   if (!g_ModalViewStack.IsEmpty()) {
+    RecordUnexpectedModal(static_cast<TView*>(g_ModalViewStack.GetHead()));
     Fail("\"Easy random game unexpectedly displayed a modal capital prompt\"");
     return;
   }
@@ -689,9 +882,11 @@ void RunVerifyingStrategicMap() {
   TDialogBehavior* behavior = modal->GetDialogBehavior();
   TControl* okay = static_cast<TControl*>(modal->ResolveControlByTag(kControlTagOkay));
   if (behavior == 0 || behavior->defaultCommandCode != kControlTagOkay || okay == 0) {
+    RecordUnexpectedModal(modal);
     Fail("\"unexpected modal while entering the strategic map\"");
     return;
   }
+  RecordHandledModal("city_site_prompt");
   okay->HandleEvent(okay->GetEventNumber(), okay, 0);
   SetPhase(kRuntimeTestWaitingForModalDismissal, "activate_city_site_prompt_okay");
   RequestAnotherDriverTick();
@@ -942,9 +1137,11 @@ void RunWaitingForSecondCitySite() {
   TWindow* modal = static_cast<TWindow*>(g_ModalViewStack.GetHead());
   TControl* okay = static_cast<TControl*>(modal->ResolveControlByTag(kControlTagOkay));
   if (okay == 0) {
+    RecordUnexpectedModal(modal);
     Fail("\"second city-site prompt has no okay control\"");
     return;
   }
+  RecordHandledModal("city_site_prompt");
   okay->HandleEvent(okay->GetEventNumber(), okay, 0);
   SetPhase(kRuntimeTestWaitingForSecondPromptDismissal, "activate_second_city_site_prompt_okay");
   RequestAnotherDriverTick();
@@ -1018,6 +1215,7 @@ void RunWaitingForCitySiteConfirmation() {
     Finish("passed", "null");
     return;
   }
+  RecordHandledModal("city_site_confirmation");
   SetPhase(kRuntimeTestWaitingForCombinedMap, "accept_city_site_confirmation");
   okay->HandleEvent(okay->GetEventNumber(), okay, 0);
   RequestAnotherDriverTick();
@@ -1089,6 +1287,7 @@ void RuntimeTestDriver::OnIdle() {
 
   ++g_runtimeTestState.idleTicks;
   ++g_runtimeTestState.phaseTicks;
+  MaybeWriteHeartbeat();
   switch (g_runtimeTestState.phase) {
   case kRuntimeTestWaitingForManagers:
     RunWaitingForManagers();
@@ -1203,7 +1402,20 @@ void RuntimeTestDriver::ObserveActivatedTurnEvent(int eventCode) {
 }
 
 unsigned int RuntimeTestDriver::RandomSeed() {
-  return 1;
+  static unsigned int seed = 0;
+  static bool resolved = false;
+  if (!resolved) {
+    resolved = true;
+    seed = 1;
+    char text[16];
+    if (GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_SEED", text, sizeof(text)) != 0) {
+      unsigned long parsed = strtoul(text, 0, 10);
+      if (parsed != 0) {
+        seed = static_cast<unsigned int>(parsed);
+      }
+    }
+  }
+  return seed;
 }
 
 void RuntimeTestObserveBuiltUiTree(int eventCode, TView* root) {
