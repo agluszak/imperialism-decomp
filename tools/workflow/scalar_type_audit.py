@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 import re
@@ -61,6 +62,8 @@ _NATIVE_CAST_RE = re.compile(
 
 
 DISCRIMINANT_REVIEWS_KEY = "discriminant_reviews"
+PREDICATE_REVIEWS_KEY = "predicate_storage_reviews"
+BOOL_INVENTORY_PATH = "docs/reference/bool-boundary-inventory.csv"
 
 
 @dataclass(frozen=True)
@@ -243,6 +246,49 @@ def _baseline_payload(findings: list[Finding]) -> dict:
     }
 
 
+def _marker_addresses(repo_root: Path) -> set[str]:
+    """Every reccmp address marker manual source claims."""
+    addresses: set[str] = set()
+    marker = re.compile(r"//\s*(?:FUNCTION|SYNTHETIC|VTABLE|GLOBAL|STRING|LIBRARY):\s*IMPERIALISM\s+(0x[0-9a-fA-F]+)")
+    for path in _manual_paths(repo_root):
+        for match in marker.finditer(path.read_text(encoding="utf-8", errors="replace")):
+            addresses.add(match.group(1).lower())
+    return addresses
+
+
+def check_bool_inventory(repo_root: Path) -> list[str]:
+    """The predicate inventory must stay anchored to real source.
+
+    Every row names the retail address whose listing supplied the classification. A
+    row whose address no longer appears in manual source is stale evidence, which is
+    worse than no row at all.
+    """
+    path = repo_root / BOOL_INVENTORY_PATH
+    if not path.exists():
+        return [f"{BOOL_INVENTORY_PATH}: missing"]
+    rows = list(csv.DictReader(path.read_text(encoding="utf-8").splitlines()))
+    required = {"domain", "location", "address", "canonical_type", "classification", "evidence"}
+    errors: list[str] = []
+    if not rows:
+        return [f"{BOOL_INVENTORY_PATH}: no rows"]
+    missing_columns = required - set(rows[0])
+    if missing_columns:
+        return [f"{BOOL_INVENTORY_PATH}: missing column(s) {sorted(missing_columns)}"]
+    known = _marker_addresses(repo_root)
+    for index, row in enumerate(rows, 2):
+        for column in sorted(required):
+            if not (row.get(column) or "").strip():
+                errors.append(f"{BOOL_INVENTORY_PATH}:{index}: empty {column}")
+        # A row may cover a whole virtual family, listing its addresses separated by "/".
+        for address in (row.get("address") or "").strip().lower().split("/"):
+            address = address.strip()
+            if address.startswith("0x") and address not in known:
+                errors.append(
+                    f"{BOOL_INVENTORY_PATH}:{index}: {address} is not claimed by any manual marker"
+                )
+    return errors
+
+
 def render_report(findings: list[Finding], config: dict) -> str:
     counts = Counter(finding.category for finding in findings)
     clang_tidy = config["clang_tidy"]
@@ -268,6 +314,31 @@ def render_report(findings: list[Finding], config: dict) -> str:
     for family, review in discriminant_reviews.items():
         if not review.get("classification") or not review.get("evidence"):
             raise ValueError(f"incomplete discriminant review for {family}")
+    predicate_findings = {
+        finding.fingerprint: finding
+        for finding in findings
+        if finding.category == "predicate_storage_cast"
+    }
+    predicate_reviews = config.get(PREDICATE_REVIEWS_KEY, {})
+    missing_predicates = sorted(set(predicate_findings) - set(predicate_reviews))
+    stale_predicates = sorted(set(predicate_reviews) - set(predicate_findings))
+    if missing_predicates or stale_predicates:
+        details = []
+        if missing_predicates:
+            details.append(
+                "unreviewed="
+                + ",".join(
+                    f"{fingerprint}@{predicate_findings[fingerprint].path}:"
+                    f"{predicate_findings[fingerprint].line}"
+                    for fingerprint in missing_predicates
+                )
+            )
+        if stale_predicates:
+            details.append(f"stale={','.join(stale_predicates)}")
+        raise ValueError(f"predicate storage reviews do not match findings ({'; '.join(details)})")
+    for fingerprint, review in predicate_reviews.items():
+        if not review.get("classification") or not review.get("evidence"):
+            raise ValueError(f"incomplete predicate storage review for {fingerprint}")
     missing_reviews = sorted(set(native_findings) - set(native_reviews))
     stale_reviews = sorted(set(native_reviews) - set(native_findings))
     if missing_reviews or stale_reviews:
@@ -333,6 +404,28 @@ def render_report(findings: list[Finding], config: dict) -> str:
                 for fingerprint, review in native_reviews.items()
             ),
             "",
+            "## Reviewed predicate storage boundaries",
+            "",
+            "Each `predicate_storage_cast` is reviewed at its own site, because whether a",
+            "predicate may become `bool` depends on that site's storage width and return",
+            "ABI, not on the class. The fingerprint covers the source expression, so an",
+            "edited boundary must be reviewed again. The durable prose record of these",
+            f"decisions -- including the ones that were measured and reverted -- is",
+            f"`{BOOL_INVENTORY_PATH}`.",
+            "",
+            "| Source | Detail | Classification | Evidence |",
+            "| --- | --- | --- | --- |",
+            *(
+                f"| `{predicate_findings[fingerprint].path}:{predicate_findings[fingerprint].line}`"
+                f" | {predicate_findings[fingerprint].detail} | "
+                f"`{predicate_reviews[fingerprint]['classification']}` | "
+                f"{predicate_reviews[fingerprint]['evidence']} |"
+                for fingerprint in sorted(
+                    predicate_findings,
+                    key=lambda key: (predicate_findings[key].path, predicate_findings[key].line),
+                )
+            ),
+            "",
             "## Reviewed discriminant families",
             "",
             "Every identifier a `raw_discriminant_literal` finding compares carries its own",
@@ -363,6 +456,10 @@ def render_report(findings: list[Finding], config: dict) -> str:
             review = discriminant_reviews[finding.family]
             classification = str(review["classification"])
             owner = str(review.get("owner", owner))
+        elif finding.category == "predicate_storage_cast":
+            review = predicate_reviews[finding.fingerprint]
+            classification = str(review["classification"])
+            owner = str(review.get("owner", owner))
         lines.append(
             f"| `{finding.fingerprint}` | `{finding.category}` | "
             f"`{finding.path}:{finding.line}` | {detail} | "
@@ -381,6 +478,9 @@ def main() -> int:
     repo_root = repo_root_from_file(__file__, levels_up=2)
     try:
         config = _load_config(repo_root)
+        inventory_errors = check_bool_inventory(repo_root)
+        if inventory_errors:
+            raise ValueError("; ".join(inventory_errors))
         findings = collect_findings(repo_root, config)
         report = render_report(findings, config)
     except (KeyError, TypeError, ValueError) as exc:

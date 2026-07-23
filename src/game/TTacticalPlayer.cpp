@@ -101,8 +101,8 @@ void TTacticalPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
 }
 
 // FUNCTION: IMPERIALISM 0x0059b010
-unsigned char TTacticalPlayer::IsTacticalControllerOwnedByActiveNation() {
-  return static_cast<unsigned char>(nationIndex1C == g_pSimMgr->GetActiveNationId());
+bool TTacticalPlayer::IsTacticalControllerOwnedByActiveNation() {
+  return nationIndex1C == g_pSimMgr->GetActiveNationId();
 }
 
 // "skip" tactical command: unless the selected unit's type category is 8, mark this side and

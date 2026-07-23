@@ -1028,24 +1028,23 @@ int TTacticalBattle::BuildPathToTargetByDistanceField(TacticalTileIndex walkTile
       for (int innerRemaining = candidateCount - 1; innerRemaining > 0; --innerRemaining) {
         TacticalTileIndex nextTile = *nextSlot;
         TacticalTileIndex curTile = *curSlot;
-        unsigned char swapFlag = static_cast<unsigned char>(tileMoveCostArray24[nextTile] <
-                                                            tileMoveCostArray24[curTile]);
-        if (swapFlag == 0 && tileMoveCostArray24[nextTile] == tileMoveCostArray24[curTile]) {
+        bool swapFlag = tileMoveCostArray24[nextTile] < tileMoveCostArray24[curTile];
+        if (!swapFlag && tileMoveCostArray24[nextTile] == tileMoveCostArray24[curTile]) {
           char nextThreat = tileThreatLevelArray28[nextTile];
           char curThreat = tileThreatLevelArray28[curTile];
           // Tiebreak (truth table verified against the listing): exactly one zero-threat
           // side -> it sorts first; both zero / both nonzero -> coin flip.
           if (nextThreat == 0) {
             if (curThreat != 0) {
-              swapFlag = 1;
+              swapFlag = true;
             } else {
-              swapFlag = static_cast<unsigned char>(rand() & 1);
+              swapFlag = (rand() & 1) != 0;
             }
           } else if (curThreat != 0) {
-            swapFlag = static_cast<unsigned char>(rand() & 1);
+            swapFlag = (rand() & 1) != 0;
           }
         }
-        if (swapFlag != 0) {
+        if (swapFlag) {
           *curSlot = nextTile;
           *nextSlot = curTile;
         }

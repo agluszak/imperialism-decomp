@@ -409,7 +409,7 @@ address|matching|name
 0x47fd30|1.0|TWNetSessionManager::DestroyPlayerAndStoreResult
 0x47fd70|1.0|TDirectPlaySessionManagerBase::GetRuntimeSelectionAuxStatus
 0x47fd90|0.9523809523809523|TWNetSessionManager::RebuildRuntimeSelectionSource
-0x47fe50|0.3252032520325203|OpenRuntimeSelectionSourceWithOptionalSeed
+0x47fe50|0.3252032520325203|TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed
 0x480030|0.3275862068965517|TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext
 0x480150|0.011363636363636364|TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice
 0x4803d0|1.0|TWNetSessionManager::OpenCurrentSessionDescriptionForJoin
@@ -3344,7 +3344,7 @@ address|matching|name
 0x52c990|1.0|ConvertTileIndexToOverlayCoord216BySide
 0x52ca20|0.20202020202020202|EmitOverlaySegmentFromTileEdgeSorted
 0x52cae0|0.18005540166204986|TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks
-0x52d030|0.7766990291262136|Seapoint::WrappedDeltaMetric
+0x52d030|1.0|Seapoint::WrappedDeltaMetric
 0x52d0d0|0.6666666666666666|stretch<Seapoint>::OverStretch
 0x52d150|1.0|stretch<Seapoint>::operator[]
 0x52d1f0|0.2621082621082621|TMapMaker::ReindexContiguousCityRegionIds
@@ -5285,7 +5285,7 @@ address|matching|name
 0x5a1bd0|1.0|TTacticalBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget
 0x5a1ca0|1.0|TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget
 0x5a1d70|0.5662100456621004|TTacticalBattle::HasValidTacticalFollowupTargetForCurrentAction
-0x5a1ee0|0.6763925729442971|TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
+0x5a1ee0|0.6737400530503979|TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
 0x5a24a0|1.0|TTacticalBattle::ApplyTacticalActionEffectsAndMaybeRemoveUnit
 0x5a2630|0.0|Helper_Uses_thunk_AdvanceLinkedListCursor_At005a2630
 0x5a2700|1.0|TTacticalBattle::TransferTacticalUnitToOpposingSide
@@ -5303,7 +5303,7 @@ address|matching|name
 0x5a39a0|0.9393939393939394|ComputeHexTileDistanceFromIndices
 0x5a3a70|0.4|TTacticalBattle::FindFortWallTileCrossedByFiringLine
 0x5a3c20|1.0|TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted
-0x5a3d30|0.8104956268221575|IsTacticalTargetTileReachableForAction
+0x5a3d30|0.8163265306122449|IsTacticalTargetTileReachableForAction
 0x5a3f10|0.3154929577464789|TTacticalBattle::HandleTacticalCommandTag_targ
 0x5a41c0|0.6|TTacticalBattle::ApplyGridColumnSelectionGuard
 0x5a4240|0.48695652173913045|TTacticalBattle::CountFreeDeploymentZoneTilesForCurrentSide

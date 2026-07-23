@@ -565,9 +565,8 @@ void TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* str
   // Stream leads with a nation letter ('a' + slot); everything below - including the
   // count read - is skipped when it doesn't match the requested slot.
   int terrainSlot = stream->ReadInteger() - 0x61; // - 'a'
-  unsigned char terrainSelected =
-      static_cast<unsigned char>(nationSlot == -1 || nationSlot == terrainSlot);
-  if (terrainSelected != 0) {
+  const bool terrainSelected = nationSlot == -1 || nationSlot == terrainSlot;
+  if (terrainSelected) {
     if (g_apTerrainTypeDescriptorTable[terrainSlot] != 0) {
       CIterator recruitIter(g_apTerrainTypeDescriptorTable[terrainSlot]->militaryUnitList44);
       for (TUnit* pendingRecruit = static_cast<TUnit*>(recruitIter.Reset()); recruitIter.More();
@@ -594,9 +593,8 @@ void TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations(TStream* stream
   // stream, discarding freshly-read orders for non-selected nations to keep the
   // stream cursor in sync.
   for (int nationIdx = 0; nationIdx < 7; ++nationIdx) {
-    unsigned char nationSelected =
-        static_cast<unsigned char>(nationSlot == -1 || nationSlot == nationIdx);
-    if (g_apNationStates[nationIdx] != 0 && nationSelected != 0) {
+    const bool nationSelected = nationSlot == -1 || nationSlot == nationIdx;
+    if (g_apNationStates[nationIdx] != 0 && nationSelected) {
       CIterator workOrderIter(g_apNationStates[nationIdx]->trackedObjectList);
       for (TUnit* pendingWorkOrder = static_cast<TUnit*>(workOrderIter.Reset());
            workOrderIter.More(); pendingWorkOrder = static_cast<TUnit*>(workOrderIter.Advance())) {
@@ -610,7 +608,7 @@ void TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations(TStream* stream
       workOrder->ICivUnit(kCivilianUnitMiner, -1, nationIdx);
       workOrder->ReadFrom(stream);
       workOrder->AssertValid();
-      if (nationSelected == 0) {
+      if (!nationSelected) {
         workOrder->DetachUnitOrderFromOwnerAndReset();
         workOrder->Free();
       }

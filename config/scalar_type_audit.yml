@@ -87,6 +87,51 @@ native_integral_reviews:
 # compares is classified here, so a new identifier fails the check until someone
 # reviews it and a family that stops appearing must be removed. Owners default to
 # the raw_discriminant_literal category owner.
+# Reviewed predicate storage boundaries, keyed by fingerprint so an edited boundary
+# must be reviewed again. Whether a predicate may become bool depends on the site's
+# storage width and return ABI, not on the class; the prose record of these decisions
+# (including measured-and-reverted ones) is docs/reference/bool-boundary-inventory.csv.
+predicate_storage_reviews:
+  9acef476d422b3b5:
+    classification: byte_abi_argument
+    evidence: "TArmyCheckBox::SetState is a virtual taking `unsigned char on` at slot 0x72 (0x004aa360); the toggle passes the inverted IsOn() predicate through that byte parameter, so the conversion belongs at the ABI boundary and the parameter must not become bool."
+  d6365812c3694202:
+    classification: byte_abi_argument
+    evidence: "the same slot-0x72 byte parameter, reached from ToggleIf(unsigned char expectedState, unsigned char drawImmediate)."
+  810882822ea1cae8:
+    classification: predicate_arithmetic_into_byte_return
+    evidence: "the value is not a predicate: the comparison result is an addend (`(0x0f < capacity) + 3`) producing building tier 3 or 4, narrowed once at the char return. bool would force an extra normalization and lose the arithmetic shape."
+  920d4e72f7af8631:
+    classification: predicate_arithmetic_into_byte_return
+    evidence: "the sibling tier computation `(0x1f < capacity) + 3` on the next capacity band, with the same char return."
+  ca6117841361b65f:
+    classification: byte_abi_argument
+    evidence: "TCzechBox::SetState is a virtual taking `unsigned char isOn` at slot 0x75 (0x00571e00); same byte ABI as the TArmyCheckBox family."
+  a5638c77f3744cc7:
+    classification: byte_abi_argument
+    evidence: "the same slot-0x75 byte parameter, reached from ToggleIf(unsigned char expectedState, unsigned char refreshNow)."
+  2170445472a75ba6:
+    classification: predicate_arithmetic_into_byte_storage
+    evidence: "`(town->enabledFlag4d != 0) + 1` yields influence weight 1 or 2 written into the byte influence map; the comparison is an addend, not a logical value."
+  4568a18979b01bb3:
+    classification: byte_return_abi
+    evidence: "the enclosing affordability query returns char and its callers consume AL; converting the local alone would only move the normalization."
+  664e2dbf432ad658:
+    classification: byte_return_abi
+    evidence: "the sibling affordability query with the same char return contract."
+  e4e26d14486930f2:
+    classification: byte_field_storage
+    evidence: "the value is stored into TRadioText::isSelectedOption98, a one-byte object field the retail code compares directly (cmp al,cl) with no `!= 0` normalization; the cast keeps the store byte-wide."
+  7d105340c2bdd2ad:
+    classification: byte_comparison_of_packed_state
+    evidence: "both sides are normalized to bytes so the retail byte compare is reproduced: one side is the caller's flag, the other the sign bit of the packed tileActionState16 byte."
+  8fc03a85eb720e06:
+    classification: byte_comparison_of_packed_state
+    evidence: "the second operand of the same byte compare -- the sign test on the packed map-tile action state byte."
+  de14d8df2453c135:
+    classification: predicate_arithmetic_into_byte_storage
+    evidence: "`(-(int)(flag != 0) & 2) - 1` maps the flag onto the step values +1 and -1; the comparison feeds arithmetic, not a branch."
+
 discriminant_reviews:
   actionCode:
     classification: byte_or_int_predicate_not_a_domain

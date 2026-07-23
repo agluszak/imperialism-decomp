@@ -98,19 +98,18 @@ BOOL TDirectPlaySessionManagerBase::GetRuntimeSelectionAuxStatus(void* value) {
 }
 
 // FUNCTION: IMPERIALISM 0x0047fd90
-unsigned char TWNetSessionManager::RebuildRuntimeSelectionSource() {
+bool TWNetSessionManager::RebuildRuntimeSelectionSource() {
   for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
     delete g_RuntimeSelectionRecords006a15e0[index];
   }
   g_RuntimeSelectionRecords006a15e0.RemoveAll();
   lastErrorCode0c = DirectPlayEnumerate(ForwardEnumSessionToCallbackTable, this);
-  return static_cast<unsigned char>(lastErrorCode0c == 0);
+  return lastErrorCode0c == 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0047fe50
-unsigned char
-TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry,
-                                                                int flag) {
+bool TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry,
+                                                                     int flag) {
   (void)flag;
   if (sessionEntry != 0) {
     if (directPlayInterface04 != 0) {
@@ -135,7 +134,7 @@ TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sess
     if (lastErrorCode0c >= 0 && SelectRuntimeProvider(&selectedGuid)) {
       lastErrorCode0c = DirectPlayCreate(&selectedGuid, &createdInterface, 0);
     } else {
-      return static_cast<unsigned char>(lastErrorCode0c >= 0);
+      return lastErrorCode0c >= 0;
     }
   }
 
@@ -148,11 +147,11 @@ TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sess
   }
 
   ClearRuntimeSelectionRecordArray();
-  return static_cast<unsigned char>(lastErrorCode0c >= 0);
+  return lastErrorCode0c >= 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00480030
-unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext() {
+bool TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext() {
   OpenRuntimeSelectionSourceWithOptionalSeed(0, 0);
   memset(&sessionDescription10, 0, sizeof(sessionDescription10));
   sessionDescription10.dwSize = sizeof(sessionDescription10);
@@ -162,7 +161,7 @@ unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext(
   if (lastErrorCode0c < 0) {
     ResetRuntimeSelectionRecordBuffer();
   }
-  return static_cast<unsigned char>(lastErrorCode0c >= 0);
+  return lastErrorCode0c >= 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00480150

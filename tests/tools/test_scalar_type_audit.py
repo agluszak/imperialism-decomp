@@ -4,7 +4,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tools.workflow.scalar_type_audit import collect_findings, render_report
+from tools.workflow.scalar_type_audit import (
+    BOOL_INVENTORY_PATH,
+    check_bool_inventory,
+    collect_findings,
+    render_report,
+)
 
 
 class ScalarTypeAuditTests(unittest.TestCase):
@@ -39,6 +44,11 @@ class ScalarTypeAuditTests(unittest.TestCase):
             }
 
             findings = collect_findings(root, config)
+            config["predicate_storage_reviews"] = {
+                finding.fingerprint: {"classification": "byte_abi", "evidence": "test evidence"}
+                for finding in findings
+                if finding.category == "predicate_storage_cast"
+            }
 
             self.assertEqual(
                 {finding.category for finding in findings},
@@ -124,6 +134,28 @@ class ScalarTypeAuditTests(unittest.TestCase):
             }
             with self.assertRaisesRegex(ValueError, "stale=staleFamilyCode"):
                 render_report(findings, config)
+
+    def test_bool_inventory_rows_must_be_anchored_to_manual_markers(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "src/game").mkdir(parents=True)
+            (root / "include/game").mkdir(parents=True)
+            (root / "docs/reference").mkdir(parents=True)
+            (root / "src/game/Test.cpp").write_text(
+                "// FUNCTION: IMPERIALISM 0x00401000\nvoid f() {}\n"
+            )
+            header = "domain,location,address,canonical_type,representation_or_boundary,classification,evidence,status,bead\n"
+            (root / BOOL_INVENTORY_PATH).write_text(
+                header + "d,f,0x00401000,bool,logical,logical source bool,listing,adopted,bd-a\n"
+            )
+            self.assertEqual(check_bool_inventory(root), [])
+
+            (root / BOOL_INVENTORY_PATH).write_text(
+                header + "d,f,0x00499999,bool,logical,logical source bool,listing,adopted,bd-a\n"
+            )
+            errors = check_bool_inventory(root)
+            self.assertEqual(len(errors), 1)
+            self.assertIn("0x00499999", errors[0])
 
     def test_native_boundaries_require_fingerprint_specific_reviews(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
