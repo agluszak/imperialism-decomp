@@ -32,6 +32,9 @@ TAmtBarCluster::TAmtBarCluster() : TUberCluster() {}
 // SYNTHETIC: IMPERIALISM 0x00586d10
 // TAmtBarCluster::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x00586d40
+TAmtBarCluster::~TAmtBarCluster() {}
+
 // FUNCTION: IMPERIALISM 0x00586d60
 void TAmtBarCluster::DoPostCreate(int styleSeed) {
   TAmtBar* moveControl = static_cast<TAmtBar*>(ResolveControlByTag(kControlTagMove));
@@ -85,5 +88,3 @@ void TAmtBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
 void TAmtBarCluster::SetMoveAmount(short amount) {
   (void)amount;
 }
-
-TAmtBarCluster::~TAmtBarCluster() {}

@@ -27,6 +27,7 @@ TRadioTextCluster::TRadioTextCluster() : TCluster() {
 
 // SYNTHETIC: IMPERIALISM 0x005796f0
 // TRadioTextCluster::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00579720
 TRadioTextCluster::~TRadioTextCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00579740

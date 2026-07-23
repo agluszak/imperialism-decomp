@@ -14,6 +14,7 @@ TNoHilitePicture::TNoHilitePicture() : TPicture() {
 
 // SYNTHETIC: IMPERIALISM 0x00572b60
 // TNoHilitePicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00572b90
 TNoHilitePicture::~TNoHilitePicture() {}
 
 // FUNCTION: IMPERIALISM 0x00572bb0

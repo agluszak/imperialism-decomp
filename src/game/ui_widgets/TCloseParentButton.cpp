@@ -13,6 +13,7 @@ TCloseParentButton::TCloseParentButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00584ce0
 // TCloseParentButton::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00584d10
 TCloseParentButton::~TCloseParentButton() {}
 
 // FUNCTION: IMPERIALISM 0x00584d30

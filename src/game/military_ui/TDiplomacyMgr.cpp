@@ -111,6 +111,7 @@ TDiplomacyMgr::TDiplomacyMgr()
 
 // SYNTHETIC: IMPERIALISM 0x004ee700
 // TDiplomacyMgr::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004ee730
 TDiplomacyMgr::~TDiplomacyMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004ee7a0

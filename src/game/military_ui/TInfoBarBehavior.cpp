@@ -18,6 +18,7 @@ TInfoBarBehavior::TInfoBarBehavior() : TBehavior() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b0da0
 // TInfoBarBehavior::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004b0dd0
 TInfoBarBehavior::~TInfoBarBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x004b0e20

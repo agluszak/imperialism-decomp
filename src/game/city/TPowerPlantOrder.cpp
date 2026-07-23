@@ -15,6 +15,7 @@ TPowerPlantOrder::TPowerPlantOrder() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b7a60
 // TPowerPlantOrder::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004b7a90
 TPowerPlantOrder::~TPowerPlantOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b7ab0

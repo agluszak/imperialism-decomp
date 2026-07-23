@@ -195,6 +195,9 @@ void TControl::NoOpControlAction(int) {}
 
 // KNOWN ILT (retired): 0x004087fb is a 5-byte `jmp TControl::TControl` linker stub — not ported.
 
+// FUNCTION: IMPERIALISM 0x00492e10
+TControl::~TControl() {}
+
 // FUNCTION: IMPERIALISM 0x004fcea0
 void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNation) {
   short pictureId;
@@ -221,5 +224,3 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNat
 void TControl::SetEventNumber(int value) {
   eventNumber60 = value;
 }
-
-TControl::~TControl() {}

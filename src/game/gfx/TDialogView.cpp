@@ -22,4 +22,5 @@ void TDialogView::EnsureField48Buffer() {
 
 // SYNTHETIC: IMPERIALISM 0x0049d8b0
 // TDialogView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0049d8e0
 TDialogView::~TDialogView() {}

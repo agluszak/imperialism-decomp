@@ -13,6 +13,7 @@ TTaskList::TTaskList() : TList() {}
 
 // SYNTHETIC: IMPERIALISM 0x005aec00
 // TTaskList::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005aec30
 TTaskList::~TTaskList() {}
 
 // FUNCTION: IMPERIALISM 0x005aec80

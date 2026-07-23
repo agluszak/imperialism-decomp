@@ -12,6 +12,7 @@ TDipDlgCluster::TDipDlgCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x00584110
 // TDipDlgCluster::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00584140
 TDipDlgCluster::~TDipDlgCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00584160

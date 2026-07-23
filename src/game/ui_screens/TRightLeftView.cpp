@@ -9,14 +9,15 @@
 
 IMPLEMENT_DYNCREATE(TRightLeftView, TControl)
 
+// FUNCTION: IMPERIALISM 0x00583f30
+TRightLeftView::TRightLeftView() : TControl(), timingDword84(0) {}
+
 // SYNTHETIC: IMPERIALISM 0x00583f60
 // TRightLeftView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00583f90
 TRightLeftView::~TRightLeftView() {}
 
 #include "game/gfx/TAmbitApplication.h"
-
-// FUNCTION: IMPERIALISM 0x00583f30
-TRightLeftView::TRightLeftView() : TControl(), timingDword84(0) {}
 
 // FUNCTION: IMPERIALISM 0x00583fb0
 void TRightLeftView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,

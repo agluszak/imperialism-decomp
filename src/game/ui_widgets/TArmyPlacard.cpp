@@ -28,6 +28,9 @@ TArmyPlacard::TArmyPlacard() : TPicture() {
 // SYNTHETIC: IMPERIALISM 0x0058bf00
 // TArmyPlacard::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x0058bf30
+TArmyPlacard::~TArmyPlacard() {}
+
 // FUNCTION: IMPERIALISM 0x0058bf50
 void TArmyPlacard::SetValue(short value, unsigned char refreshNow) {
   short activeNationId = g_pSimMgr->GetActiveNationId();
@@ -92,5 +95,3 @@ void TArmyPlacard::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     this->SetValue(unitCount, 1);
   }
 }
-
-TArmyPlacard::~TArmyPlacard() {}

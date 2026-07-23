@@ -36,6 +36,7 @@ TAmbitFileBasedDocument::TAmbitFileBasedDocument() {}
 
 // SYNTHETIC: IMPERIALISM 0x0049e610
 // TAmbitFileBasedDocument::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0049e640
 TAmbitFileBasedDocument::~TAmbitFileBasedDocument() {}
 
 // FUNCTION: IMPERIALISM 0x0049e660

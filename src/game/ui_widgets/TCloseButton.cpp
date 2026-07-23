@@ -12,6 +12,7 @@ TCloseButton::TCloseButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00584b20
 // TCloseButton::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00584b50
 TCloseButton::~TCloseButton() {}
 
 // FUNCTION: IMPERIALISM 0x00584b70

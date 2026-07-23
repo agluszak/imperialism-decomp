@@ -28,6 +28,7 @@ TAssetMgr::TAssetMgr() : TObject(), sharedTextSlots() {}
 
 // SYNTHETIC: IMPERIALISM 0x005df300
 // TAssetMgr::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005df330
 TAssetMgr::~TAssetMgr() {}
 
 // FUNCTION: IMPERIALISM 0x005df3a0

@@ -7,6 +7,9 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 
+// FUNCTION: IMPERIALISM 0x004600c0
+TTechStorePage::TTechStorePage() {}
+
 // TTechStorePage's vtable (0x645ca8) is a TPageView clone: only slot 0x00
 // (GetRuntimeClass, via IMPLEMENT_DYNCREATE) and the scalar deleting destructor
 // differ; every other slot is inherited unchanged from TPageView. The functions
@@ -16,6 +19,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004600f0
 // TTechStorePage::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00460120
 TTechStorePage::~TTechStorePage() {}
 
 // SYNTHETIC: IMPERIALISM 0x005b0e70
@@ -25,9 +29,6 @@ TTechStorePage::~TTechStorePage() {}
 // TTechStorePage::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTechStorePage, TPageView)
-
-// FUNCTION: IMPERIALISM 0x004600c0
-TTechStorePage::TTechStorePage() {}
 
 // FUNCTION: IMPERIALISM 0x005b0f10
 void TTechStorePage::PopulateUnlockedTechnologyRows(int nationSlot) {

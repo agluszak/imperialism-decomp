@@ -23,6 +23,7 @@ TColorKeyPicture::TColorKeyPicture() : TNoHilitePicture(), colorKeySurface94(0) 
 
 // SYNTHETIC: IMPERIALISM 0x00572e10
 // TColorKeyPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00572e40
 TColorKeyPicture::~TColorKeyPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00572e60

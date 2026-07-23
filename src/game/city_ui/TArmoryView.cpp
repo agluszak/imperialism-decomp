@@ -29,6 +29,7 @@ TArmoryView::TArmoryView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004cedd0
 // TArmoryView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004cee00
 TArmoryView::~TArmoryView() {}
 
 // FUNCTION: IMPERIALISM 0x004cee20

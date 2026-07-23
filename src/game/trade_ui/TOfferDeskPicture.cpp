@@ -51,6 +51,7 @@ TOfferDeskPicture::TOfferDeskPicture()
 
 // SYNTHETIC: IMPERIALISM 0x005be5b0
 // TOfferDeskPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005be5e0
 TOfferDeskPicture::~TOfferDeskPicture() {}
 
 // FUNCTION: IMPERIALISM 0x005be600

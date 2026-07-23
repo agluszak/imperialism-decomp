@@ -18,6 +18,7 @@ TTerrainHelpWindow::TTerrainHelpWindow() : TFloatWindow() {}
 
 // SYNTHETIC: IMPERIALISM 0x00504d70
 // TTerrainHelpWindow::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00504da0
 TTerrainHelpWindow::~TTerrainHelpWindow() {}
 
 // slot 0x28 — TFloatWindow::Close override: base close/reset, then drop the

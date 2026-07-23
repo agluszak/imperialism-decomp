@@ -40,6 +40,7 @@ static inline void OffsetRectForSurfaceDibFlip(TQuickDrawSurfaceContext* ctx, RE
 
 // SYNTHETIC: IMPERIALISM 0x0045d310
 // TTacArmyView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0045d340
 TTacArmyView::~TTacArmyView() {}
 // SYNTHETIC: IMPERIALISM 0x005a9cf0
 // TTacArmyView::CreateObject

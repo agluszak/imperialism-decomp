@@ -17,6 +17,7 @@ TTradePolicyCluster::TTradePolicyCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x005842d0
 // TTradePolicyCluster::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00584300
 TTradePolicyCluster::~TTradePolicyCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00584320

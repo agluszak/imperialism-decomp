@@ -53,6 +53,7 @@ TArmyStack::TArmyStack() {
 
 // SYNTHETIC: IMPERIALISM 0x004a7720
 // TArmyStack::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004a7750
 TArmyStack::~TArmyStack() {}
 
 // FUNCTION: IMPERIALISM 0x004a7770

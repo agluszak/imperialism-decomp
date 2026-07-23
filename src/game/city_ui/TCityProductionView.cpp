@@ -54,6 +54,7 @@ TCityProductionView::TCityProductionView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004ba360
 // TCityProductionView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004ba390
 TCityProductionView::~TCityProductionView() {}
 
 // FUNCTION: IMPERIALISM 0x004ba3b0

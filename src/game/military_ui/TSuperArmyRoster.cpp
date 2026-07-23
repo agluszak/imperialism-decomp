@@ -11,6 +11,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004aa4d0
 // TSuperArmyRoster::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004aa500
 TSuperArmyRoster::~TSuperArmyRoster() {}
 // SYNTHETIC: IMPERIALISM 0x004aa450
 // TSuperArmyRoster::CreateObject

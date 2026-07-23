@@ -39,6 +39,9 @@ TUnitToolbarCluster::TUnitToolbarCluster() : TUberCluster() {}
 // SYNTHETIC: IMPERIALISM 0x00586040
 // TUnitToolbarCluster::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x00586070
+TUnitToolbarCluster::~TUnitToolbarCluster() {}
+
 // FUNCTION: IMPERIALISM 0x00586090
 void TUnitToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   this->TCluster::DoEvent(commandId, sourceHandler, event);
@@ -76,5 +79,3 @@ void TUnitToolbarCluster::SetSelectedChildTagAndRefresh(int childTag) {
 
   resourceControl->DoEvent(0, 0, 0);
 }
-
-TUnitToolbarCluster::~TUnitToolbarCluster() {}

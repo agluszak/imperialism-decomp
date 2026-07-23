@@ -15,6 +15,7 @@ TScroller::TScroller() : TView() {}
 
 // SYNTHETIC: IMPERIALISM 0x0048cad0
 // TScroller::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0048cb00
 TScroller::~TScroller() {}
 
 // FUNCTION: IMPERIALISM 0x0048cbb0

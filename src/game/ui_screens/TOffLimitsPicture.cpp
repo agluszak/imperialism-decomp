@@ -15,6 +15,7 @@ TOffLimitsPicture::TOffLimitsPicture() : TPicture(), ownClipRegion90(nullptr) {}
 
 // SYNTHETIC: IMPERIALISM 0x00573800
 // TOffLimitsPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00573830
 TOffLimitsPicture::~TOffLimitsPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00573850

@@ -21,6 +21,7 @@ TIconSlider::TIconSlider()
 
 // SYNTHETIC: IMPERIALISM 0x00506430
 // TIconSlider::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00506460
 TIconSlider::~TIconSlider() {}
 
 // FUNCTION: IMPERIALISM 0x00506480

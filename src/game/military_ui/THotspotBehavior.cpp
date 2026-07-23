@@ -16,6 +16,7 @@ THotspotBehavior::THotspotBehavior() : TBehavior() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b0bb0
 // THotspotBehavior::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004b0be0
 THotspotBehavior::~THotspotBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x004b0c00

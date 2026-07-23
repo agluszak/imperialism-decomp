@@ -20,6 +20,7 @@ TBuildingExpansionView::TBuildingExpansionView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004ce550
 // TBuildingExpansionView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004ce580
 TBuildingExpansionView::~TBuildingExpansionView() {}
 
 // FUNCTION: IMPERIALISM 0x004ce5a0

@@ -21,6 +21,7 @@ TBuildingView::TBuildingView() : TNoHilitePicture() {
 
 // SYNTHETIC: IMPERIALISM 0x004c6ee0
 // TBuildingView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004c6f10
 TBuildingView::~TBuildingView() {}
 
 // FUNCTION: IMPERIALISM 0x004c6f30

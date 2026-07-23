@@ -20,6 +20,9 @@ TPlacard::TPlacard() : TPicture() {
 // SYNTHETIC: IMPERIALISM 0x0058ba40
 // TPlacard::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x0058ba90
+TPlacard::~TPlacard() {}
+
 // FUNCTION: IMPERIALISM 0x0058bab0
 void TPlacard::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
@@ -65,5 +68,3 @@ void TPlacard::Draw(RECT* rectBuffer) {
   }
   RefreshControl();
 }
-
-TPlacard::~TPlacard() {}

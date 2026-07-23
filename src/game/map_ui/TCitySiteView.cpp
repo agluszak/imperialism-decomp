@@ -28,6 +28,7 @@ TCitySiteView::TCitySiteView() {}
 
 // SYNTHETIC: IMPERIALISM 0x0051bfa0
 // TCitySiteView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0051bfd0
 TCitySiteView::~TCitySiteView() {}
 
 // FUNCTION: IMPERIALISM 0x0051bff0

@@ -72,3 +72,11 @@ mac-resource-evidence-check:
   uv run python -m tools.workflow.macos_resource_evidence \
     --workspace "{{macos_workspace}}" \
     --check
+
+# Attach FUNCTION markers to the ordinary destructors that below-100% scalar
+# deleting destructors call (decoded from the original binary, ILT hop chased).
+# Dry-run by default; pass --apply to edit source.
+[doc('Claim ordinary-destructor addresses on their manual definitions')]
+[group('recovery')]
+add-destructor-markers *args:
+  uv run python -m tools.workflow.add_destructor_markers {{args}}

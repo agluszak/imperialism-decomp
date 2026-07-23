@@ -38,6 +38,12 @@ IMPLEMENT_DYNCREATE(TTown, TObject)
 // FUNCTION: IMPERIALISM 0x005b6c60
 TTown::TTown() {}
 
+// SYNTHETIC: IMPERIALISM 0x005b6c80
+// TTown::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x005b6cb0
+TTown::~TTown() {}
+
 // FUNCTION: IMPERIALISM 0x005b6cd0
 void TTown::InitializeTownMarker(const char* markerName, short tileIndex, char enabledFlag,
                                  short ownerNation) {
@@ -290,8 +296,6 @@ void TTown::SetName(const char* townName) {
   }
 }
 
-TTown::~TTown() {}
-
 // FUNCTION: IMPERIALISM 0x005b7830
 int TTown::IsUnblockedPort(void) const {
   if (this->enabledFlag4d != 0) {
@@ -302,6 +306,3 @@ int TTown::IsUnblockedPort(void) const {
   }
   return 0;
 }
-
-// SYNTHETIC: IMPERIALISM 0x005b6c80
-// TTown::`scalar deleting destructor'

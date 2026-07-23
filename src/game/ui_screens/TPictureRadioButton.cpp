@@ -15,6 +15,7 @@ TPictureRadioButton::TPictureRadioButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00570d90
 // TPictureRadioButton::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00570dc0
 TPictureRadioButton::~TPictureRadioButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570de0

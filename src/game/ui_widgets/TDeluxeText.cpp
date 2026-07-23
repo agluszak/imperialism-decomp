@@ -13,6 +13,7 @@ TDeluxeText::TDeluxeText()
 
 // SYNTHETIC: IMPERIALISM 0x004309e0
 // TDeluxeText::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00430a10
 TDeluxeText::~TDeluxeText() {}
 // SYNTHETIC: IMPERIALISM 0x005b5ee0
 // TDeluxeText::CreateObject

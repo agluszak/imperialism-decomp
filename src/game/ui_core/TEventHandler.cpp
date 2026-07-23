@@ -54,6 +54,7 @@ void TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults() {
 // SYNTHETIC: IMPERIALISM 0x0048a130
 // TEventHandler::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x0048a160
 TEventHandler::~TEventHandler() {}
 
 // FUNCTION: IMPERIALISM 0x0048a180

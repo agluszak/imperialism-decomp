@@ -13,6 +13,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x0044fb10
 // TMultiMessagePicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0044fb80
 TMultiMessagePicture::~TMultiMessagePicture() {}
 // SYNTHETIC: IMPERIALISM 0x0054ec20
 // TMultiMessagePicture::CreateObject

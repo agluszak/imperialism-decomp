@@ -33,6 +33,7 @@ TUniversityView::TUniversityView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004cac90
 // TUniversityView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004cacc0
 TUniversityView::~TUniversityView() {}
 
 // FUNCTION: IMPERIALISM 0x004cace0

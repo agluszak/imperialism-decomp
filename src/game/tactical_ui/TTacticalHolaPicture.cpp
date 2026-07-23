@@ -14,6 +14,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x0045d4b0
 // TTacticalHolaPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0045d4e0
 TTacticalHolaPicture::~TTacticalHolaPicture() {}
 // SYNTHETIC: IMPERIALISM 0x005ad6c0
 // TTacticalHolaPicture::CreateObject

@@ -20,6 +20,11 @@ IMPLEMENT_DYNCREATE(TGarrisonView, TMilitaryPageView)
 // FUNCTION: IMPERIALISM 0x004a8810
 TGarrisonView::TGarrisonView() {}
 
+// SYNTHETIC: IMPERIALISM 0x004a8840
+// TGarrisonView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004a8870
+TGarrisonView::~TGarrisonView() {}
+
 // FUNCTION: IMPERIALISM 0x004a8890
 void TGarrisonView::StuffValues(short tileIndex) {
   PrepareUnitCache(0xdb8, 0xeff, 0x30);
@@ -46,10 +51,6 @@ void TGarrisonView::StuffValues(short tileIndex) {
 
   AfterStuffValues();
 }
-
-// SYNTHETIC: IMPERIALISM 0x004a8840
-// TGarrisonView::`scalar deleting destructor'
-TGarrisonView::~TGarrisonView() {}
 
 // FUNCTION: IMPERIALISM 0x004a8a20
 void TGarrisonView::Close() {

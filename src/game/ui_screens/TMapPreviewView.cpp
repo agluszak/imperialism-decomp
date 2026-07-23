@@ -14,8 +14,14 @@
 
 #include <string.h>
 
+// FUNCTION: IMPERIALISM 0x0043d590
+TMapPreviewView::TMapPreviewView() : TView() {
+  selectedRegion64 = -1;
+}
+
 // SYNTHETIC: IMPERIALISM 0x0043d5c0
 // TMapPreviewView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0043d5f0
 TMapPreviewView::~TMapPreviewView() {}
 // SYNTHETIC: IMPERIALISM 0x005787b0
 // TMapPreviewView::CreateObject
@@ -24,11 +30,6 @@ TMapPreviewView::~TMapPreviewView() {}
 // TMapPreviewView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMapPreviewView, TView)
-
-// FUNCTION: IMPERIALISM 0x0043d590
-TMapPreviewView::TMapPreviewView() : TView() {
-  selectedRegion64 = -1;
-}
 
 // FUNCTION: IMPERIALISM 0x00578850
 void TMapPreviewView::DoPostCreate(int arg) {

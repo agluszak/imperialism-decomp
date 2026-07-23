@@ -4,6 +4,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x00569b60
 // TMiniShipLine::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00569b90
 TMiniShipLine::~TMiniShipLine() {}
 // SYNTHETIC: IMPERIALISM 0x00569bb0
 // TMiniShipLine::CreateObject

@@ -9,6 +9,7 @@ IMPLEMENT_DYNCREATE(TArmyStackList, TSortedList)
 
 // SYNTHETIC: IMPERIALISM 0x004a84c0
 // TArmyStackList::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004a84f0
 TArmyStackList::~TArmyStackList() {}
 
 // FUNCTION: IMPERIALISM 0x004a8560

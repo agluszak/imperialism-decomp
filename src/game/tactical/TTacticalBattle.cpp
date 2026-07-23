@@ -99,6 +99,7 @@ TTacticalBattle::TTacticalBattle() {
 
 // SYNTHETIC: IMPERIALISM 0x0059f7a0
 // TTacticalBattle::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0059f7d0
 TTacticalBattle::~TTacticalBattle() {}
 
 // Battle-state assembly (Mac oracle: InitTacticalBattle): links both players to the

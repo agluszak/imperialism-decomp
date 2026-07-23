@@ -14,6 +14,7 @@ TBackgroundPicture::TBackgroundPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00572cb0
 // TBackgroundPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00572ce0
 TBackgroundPicture::~TBackgroundPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00572d00

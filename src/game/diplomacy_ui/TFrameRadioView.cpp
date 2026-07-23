@@ -5,6 +5,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004fdf50
 // TFrameRadioView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004fdf80
 TFrameRadioView::~TFrameRadioView() {}
 // SYNTHETIC: IMPERIALISM 0x004fded0
 // TFrameRadioView::CreateObject

@@ -150,6 +150,7 @@ TMapDialog::TMapDialog() : TWorldView() {
 
 // SYNTHETIC: IMPERIALISM 0x00519C40
 // TMapDialog::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00519c70
 TMapDialog::~TMapDialog() {}
 
 // FUNCTION: IMPERIALISM 0x00519c90

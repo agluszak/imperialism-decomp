@@ -37,6 +37,14 @@ TTransFocusAnimation::TTransFocusAnimation() : TFocusAnimation() {
   insetBitmapSurface = 0;
 }
 
+// SYNTHETIC: IMPERIALISM 0x004a0430
+// TTransFocusAnimation::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004a0460
+TTransFocusAnimation::~TTransFocusAnimation() {}
+
+// SYNTHETIC: IMPERIALISM 0x004a0480
+// TTransFocusAnimation::GetRuntimeClass
+
 // FUNCTION: IMPERIALISM 0x004a04a0
 TTransFocusAnimation::TTransFocusAnimation(TView* target, RECT* bounds, short f0a, short f0c,
                                            int tickLimit, int f18)
@@ -60,10 +68,6 @@ TTransFocusAnimation::TTransFocusAnimation(TView* target, RECT* bounds, short f0
   g_pDisplayMgr->MakeNewGWorld(transientSurfaceContext, 8, local_bounds);
   insetBitmapSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(f0c);
 }
-
-// SYNTHETIC: IMPERIALISM 0x004a0430
-// TTransFocusAnimation::`scalar deleting destructor'
-TTransFocusAnimation::~TTransFocusAnimation() {}
 
 // FUNCTION: IMPERIALISM 0x004a0570
 void TTransFocusAnimation::Free() {
@@ -180,6 +184,3 @@ void TTransFocusAnimation::DrawNextFrame(POINT* offset) {
   ClipAndPaste();
   SetGWorld(activeContext, activeFlags);
 }
-
-// SYNTHETIC: IMPERIALISM 0x004a0480
-// TTransFocusAnimation::GetRuntimeClass

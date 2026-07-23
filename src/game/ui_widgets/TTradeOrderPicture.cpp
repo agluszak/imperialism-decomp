@@ -19,6 +19,7 @@ TTradeOrderPicture::TTradeOrderPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x005844b0
 // TTradeOrderPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005844e0
 TTradeOrderPicture::~TTradeOrderPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00584500

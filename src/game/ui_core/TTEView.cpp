@@ -2,9 +2,13 @@
 
 #include "game/ui_core/quickdraw_rendering.h"
 
+// FUNCTION: IMPERIALISM 0x0045ad20
+TTEView::TTEView() {}
+// FUNCTION: IMPERIALISM 0x0045ad50
+TTEView::~TTEView() {}
+
 // SYNTHETIC: IMPERIALISM 0x0045ad70
 // TTEView::`scalar deleting destructor'
-TTEView::~TTEView() {}
 // SYNTHETIC: IMPERIALISM 0x00485fb0
 // TTEView::CreateObject
 
@@ -12,9 +16,6 @@ TTEView::~TTEView() {}
 // TTEView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTEView, TStaticText)
-
-// FUNCTION: IMPERIALISM 0x0045ad20
-TTEView::TTEView() {}
 
 // FUNCTION: IMPERIALISM 0x00486050
 void TTEView::InitializeTextEntryView(int unusedA, TView* panel, int* offsetLayout, int* sizeLayout,

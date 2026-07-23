@@ -39,6 +39,7 @@ TDealBookPicture::TDealBookPicture() : TPicture(), selectedNationId90(8), unreso
 
 // SYNTHETIC: IMPERIALISM 0x005bac00
 // TDealBookPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005bac30
 TDealBookPicture::~TDealBookPicture() {}
 
 // FUNCTION: IMPERIALISM 0x005bac50

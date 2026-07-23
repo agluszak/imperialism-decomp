@@ -12,6 +12,7 @@ TLineData::TLineData() : TObject() {}
 
 // SYNTHETIC: IMPERIALISM 0x0056f3d0
 // TLineData::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0056f400
 TLineData::~TLineData() {}
 
 // FUNCTION: IMPERIALISM 0x0056f420

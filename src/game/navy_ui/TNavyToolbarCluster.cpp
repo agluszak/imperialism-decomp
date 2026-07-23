@@ -25,6 +25,7 @@ TNavyToolbarCluster::TNavyToolbarCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x00569500
 // TNavyToolbarCluster::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00569530
 TNavyToolbarCluster::~TNavyToolbarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00569550

@@ -15,6 +15,7 @@ TAlwaysPictureButton::TAlwaysPictureButton() : TPictureButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00570a20
 // TAlwaysPictureButton::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00570a50
 TAlwaysPictureButton::~TAlwaysPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570a70

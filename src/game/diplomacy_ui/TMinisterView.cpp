@@ -24,6 +24,7 @@ TMinisterView::TMinisterView() : TView(), field60(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x004f2c90
 // TMinisterView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004f2cc0
 TMinisterView::~TMinisterView() {}
 
 // FUNCTION: IMPERIALISM 0x004f2ce0

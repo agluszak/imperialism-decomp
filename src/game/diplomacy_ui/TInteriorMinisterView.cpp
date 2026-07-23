@@ -22,6 +22,7 @@ TInteriorMinisterView::TInteriorMinisterView() : TMinisterView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004f36c0
 // TInteriorMinisterView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004f36f0
 TInteriorMinisterView::~TInteriorMinisterView() {}
 
 // FUNCTION: IMPERIALISM 0x004f3710

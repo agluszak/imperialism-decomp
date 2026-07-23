@@ -10,6 +10,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x00576b20
 // TNetGameSelectPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00576b50
 TNetGameSelectPicture::~TNetGameSelectPicture() {}
 // SYNTHETIC: IMPERIALISM 0x00576aa0
 // TNetGameSelectPicture::CreateObject

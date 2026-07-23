@@ -8,8 +8,12 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 
+// FUNCTION: IMPERIALISM 0x0043d990
+TRadioText::TRadioText() : TDropShadowText() {}
+
 // SYNTHETIC: IMPERIALISM 0x0043daa0
 // TRadioText::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0043db60
 TRadioText::~TRadioText() {}
 // SYNTHETIC: IMPERIALISM 0x005793f0
 // TRadioText::CreateObject
@@ -18,9 +22,6 @@ TRadioText::~TRadioText() {}
 // TRadioText::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TRadioText, TDropShadowText)
-
-// FUNCTION: IMPERIALISM 0x0043d990
-TRadioText::TRadioText() : TDropShadowText() {}
 
 // FUNCTION: IMPERIALISM 0x00579490
 void TRadioText::DoPostCreate(int arg) {

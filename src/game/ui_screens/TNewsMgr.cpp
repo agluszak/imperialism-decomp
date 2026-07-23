@@ -21,6 +21,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x0055b6a0
 // TNewsMgr::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0055b6d0
 TNewsMgr::~TNewsMgr() {}
 
 // SYNTHETIC: IMPERIALISM 0x0055b6f0

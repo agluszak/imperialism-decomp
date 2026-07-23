@@ -30,6 +30,7 @@ TArmyToolbar::TArmyToolbar() : TUnitToolbarCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x0058df10
 // TArmyToolbar::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0058df40
 TArmyToolbar::~TArmyToolbar() {}
 
 // FUNCTION: IMPERIALISM 0x0058df60

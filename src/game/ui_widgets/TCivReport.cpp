@@ -17,6 +17,7 @@ TCivReport::TCivReport() : TPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00590c60
 // TCivReport::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00590c90
 TCivReport::~TCivReport() {}
 
 // PARTIAL PORT of 0x590cb0 (1,652 bytes): the six CString locals the label pass

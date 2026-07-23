@@ -16,6 +16,7 @@ TExpansionOrder::TExpansionOrder() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b8fc0
 // TExpansionOrder::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004b8ff0
 TExpansionOrder::~TExpansionOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b9010

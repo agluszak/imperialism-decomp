@@ -21,6 +21,7 @@ TRadioPictureButton::TRadioPictureButton() : TUpDownPictureButton() {
 // SYNTHETIC: IMPERIALISM 0x00571800
 // TRadioPictureButton::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x00571830
 TRadioPictureButton::~TRadioPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00571850

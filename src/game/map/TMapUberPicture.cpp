@@ -55,6 +55,7 @@ TMapUberPicture::TMapUberPicture()
 
 // SYNTHETIC: IMPERIALISM 0x00596a30
 // TMapUberPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00596a60
 TMapUberPicture::~TMapUberPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00596a80

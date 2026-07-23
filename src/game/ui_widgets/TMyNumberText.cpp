@@ -24,6 +24,7 @@ TMyNumberText::TMyNumberText() : TNumberText() {}
 
 // SYNTHETIC: IMPERIALISM 0x005b5000
 // TMyNumberText::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005b5030
 TMyNumberText::~TMyNumberText() {}
 
 // slot 0x7a — TNumberText::UpdateControlCachedIntFromWindowText override. Unlike the

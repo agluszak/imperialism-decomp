@@ -31,6 +31,7 @@ TTradeSchoolView::TTradeSchoolView() : TIndustryView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004cd880
 // TTradeSchoolView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004cd8b0
 TTradeSchoolView::~TTradeSchoolView() {}
 
 // FUNCTION: IMPERIALISM 0x004cd8d0

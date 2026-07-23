@@ -42,6 +42,7 @@ TIndustryView::TIndustryView()
 
 // SYNTHETIC: IMPERIALISM 0x004cc7d0
 // TIndustryView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004cc800
 TIndustryView::~TIndustryView() {}
 
 // FUNCTION: IMPERIALISM 0x004cc820

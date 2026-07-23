@@ -38,6 +38,9 @@ TCivToolbar::TCivToolbar() {}
 // SYNTHETIC: IMPERIALISM 0x0058ead0
 // TCivToolbar::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x0058eb00
+TCivToolbar::~TCivToolbar() {}
+
 // FUNCTION: IMPERIALISM 0x0058eb20
 void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivUnit* selectedOrder) {
   this->civilianClassId = selectedOrder ? selectedOrder->orderType : -1;
@@ -201,5 +204,3 @@ void TCivToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
   }
   this->TCluster::DoEvent(commandId, sourceHandler, event);
 }
-
-TCivToolbar::~TCivToolbar() {}

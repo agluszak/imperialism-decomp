@@ -15,6 +15,7 @@ TWarehouseView::TWarehouseView() : TBuildingView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004c72e0
 // TWarehouseView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004c7310
 TWarehouseView::~TWarehouseView() {}
 
 // FUNCTION: IMPERIALISM 0x004c7330

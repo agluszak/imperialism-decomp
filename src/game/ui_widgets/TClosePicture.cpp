@@ -19,6 +19,7 @@ TClosePicture::TClosePicture() : TPictureButton() {}
 // SYNTHETIC: IMPERIALISM 0x00586ba0
 // TClosePicture::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x00586bd0
 TClosePicture::~TClosePicture() {}
 
 // FUNCTION: IMPERIALISM 0x00586bf0

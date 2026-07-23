@@ -12,6 +12,7 @@ TDisappearingButton::TDisappearingButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00568bf0
 // TDisappearingButton::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00568c20
 TDisappearingButton::~TDisappearingButton() {}
 
 // FUNCTION: IMPERIALISM 0x00568c40

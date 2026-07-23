@@ -19,4 +19,5 @@ TMyStaticText::TMyStaticText() : TStaticText() {}
 
 // SYNTHETIC: IMPERIALISM 0x005b5450
 // TMyStaticText::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005b5480
 TMyStaticText::~TMyStaticText() {}

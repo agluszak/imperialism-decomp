@@ -12,6 +12,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x005b2a30
 // TMinorTradeBidsDialog::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005b2a60
 TMinorTradeBidsDialog::~TMinorTradeBidsDialog() {}
 // SYNTHETIC: IMPERIALISM 0x005b29a0
 // TMinorTradeBidsDialog::CreateObject

@@ -11,6 +11,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004af980
 // TItemBoyView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004af9b0
 TItemBoyView::~TItemBoyView() {}
 // SYNTHETIC: IMPERIALISM 0x004af910
 // TItemBoyView::CreateObject

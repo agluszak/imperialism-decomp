@@ -33,6 +33,7 @@ TCluster::TCluster() {
 
 // SYNTHETIC: IMPERIALISM 0x00491480
 // TCluster::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004914b0
 TCluster::~TCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00491650

@@ -165,6 +165,7 @@ TOceanDialog::TOceanDialog() : scrollRowOffset7c(0), scrollColOffset7e(0) {
 
 // SYNTHETIC: IMPERIALISM 0x00565ee0
 // TOceanDialog::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00565f10
 TOceanDialog::~TOceanDialog() {}
 
 // FUNCTION: IMPERIALISM 0x00565f50

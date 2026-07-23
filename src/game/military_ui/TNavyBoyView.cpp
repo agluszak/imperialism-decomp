@@ -10,6 +10,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004af040
 // TNavyBoyView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004af070
 TNavyBoyView::~TNavyBoyView() {}
 // SYNTHETIC: IMPERIALISM 0x004aefd0
 // TNavyBoyView::CreateObject

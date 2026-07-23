@@ -20,6 +20,9 @@ TBoycottButton::TBoycottButton() : TToggleButton() {}
 // SYNTHETIC: IMPERIALISM 0x005847b0
 // TBoycottButton::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x005847e0
+TBoycottButton::~TBoycottButton() {}
+
 // FUNCTION: IMPERIALISM 0x00584800
 void TBoycottButton::Select(bool isPressed, bool notifyParent) {
   if (static_cast<char>(isPressed) != '\0') {
@@ -33,5 +36,3 @@ void TBoycottButton::Select(bool isPressed, bool notifyParent) {
   }
   TToggleButton::Select(isPressed, notifyParent);
 }
-
-TBoycottButton::~TBoycottButton() {}

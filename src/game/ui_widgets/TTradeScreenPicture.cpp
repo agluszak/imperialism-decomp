@@ -26,6 +26,7 @@ TTradeScreenPicture::TTradeScreenPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x005ba750
 // TTradeScreenPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005ba780
 TTradeScreenPicture::~TTradeScreenPicture() {}
 
 // Repaints the trade-screen commodity summary block. In map-blit mode (kTurnEventTradeOverview/kTurnEventIndustryOverview) it just

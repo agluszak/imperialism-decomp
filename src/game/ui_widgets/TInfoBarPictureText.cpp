@@ -11,6 +11,7 @@ TInfoBarPictureText::TInfoBarPictureText() {}
 
 // SYNTHETIC: IMPERIALISM 0x005b5c60
 // TInfoBarPictureText::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005b5c90
 TInfoBarPictureText::~TInfoBarPictureText() {}
 
 // FUNCTION: IMPERIALISM 0x005b5cb0

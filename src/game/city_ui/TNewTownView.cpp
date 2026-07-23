@@ -13,6 +13,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004bd810
 // TNewTownView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004bd840
 TNewTownView::~TNewTownView() {}
 // SYNTHETIC: IMPERIALISM 0x004bd7a0
 // TNewTownView::CreateObject
