@@ -3316,8 +3316,8 @@ address|matching|name
 0x528e50|0.1515650741350906|TMapMaker::SmoothCityRegionOwnershipByNeighborSampling
 0x5292f0|1.0|TMapMaker::MapGenPassSlot1E
 0x5293d0|0.10309278350515463|TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
-0x5296a0|0.8333333333333334|TMapMaker::CopyRegionTemplateBankWithRandomVariant
-0x5297e0|0.8505747126436781|TMapMaker::CopyRegionTemplateBankToNeighborCell
+0x5296a0|0.8484848484848485|TMapMaker::CopyRegionTemplateBankWithRandomVariant
+0x5297e0|0.8735632183908046|TMapMaker::CopyRegionTemplateBankToNeighborCell
 0x5298a0|0.5172413793103449|TMapMaker::GetFineGridCellBasePointerFromCoarseIndex
 0x529960|0.24161073825503357|TMapMaker::RotateMapColumnsByPeakCityTileDensity
 0x529d90|0.0|OrphanDeadLeaf_NoRefs_00529d90
