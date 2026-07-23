@@ -121,7 +121,7 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
   commandEvent->handledMarker = kUiCommandHandledMarker;
 
   short commandCode = commandEvent->commandCode;
-  if (commandCode == 0x68 || commandCode == 0x48) {
+  if (commandCode == kUiKeyHelpLowerCase || commandCode == kUiKeyHelpUpperCase) {
     if (mainControl->ResolveControlByTag(kControlTagQuer) != 0) {
       if (g_pHelpMgr != 0) {
         GameWindowInvoke::PlayClickSfx7000();
@@ -135,7 +135,8 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
     }
   }
 
-  if (commandCode == 3 || commandCode == 0xd || commandCode == 0x1b || commandCode == 0x20) {
+  if (commandCode == kUiKeyEnter || commandCode == kUiKeyReturn || commandCode == kUiKeyEscape ||
+      commandCode == kUiKeySpace) {
     if (QueryUiRuntimeEventCode() != kTurnEventStrategicMap &&
         mainControl->ResolveControlByTag(kControlTagEnd) != 0) { // 'end '
       GameWindowInvoke::PlayClickSfx7000();

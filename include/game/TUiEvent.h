@@ -44,3 +44,21 @@ ASSERT_SIZE(TToolboxEvent, 0x2c);
 
 // Transitional source alias for the already-ported Windows keyboard handlers.
 typedef TToolboxEvent TKeyCommandEvent;
+
+// The key codes the dialog/window handlers test TToolboxEvent::commandCode against.
+//
+// This slot is filled by two producers: CIncludeView::OnKeyDown (0x00484260) forwards
+// WM_KEYDOWN's virtual-key code, and the CMcWindow WM_CHAR handler (0x00493ce0)
+// forwards a character code. The accept/cancel values are inherited verbatim from the
+// Mac build, where the slot held the Toolbox event's ASCII character -- which is why
+// the accept test still includes 3 (Mac Enter, a code no Windows key produces) beside
+// carriage return, and why the help test accepts both letter cases.
+enum UiKeyCode {
+  kUiKeyEnter = 3,     // Mac Enter (ETX); VK_CANCEL on Windows, never produced here
+  kUiKeyReturn = 0x0d, // VK_RETURN
+  kUiKeyEscape = 0x1b, // VK_ESCAPE
+  kUiKeySpace = 0x20,  // VK_SPACE
+  kUiKeyPeriod = 0x2e, // Mac Command-period cancel; VK_DELETE on Windows
+  kUiKeyHelpUpperCase = 'H',
+  kUiKeyHelpLowerCase = 'h'
+};

@@ -60,6 +60,9 @@ _NATIVE_CAST_RE = re.compile(
 )
 
 
+DISCRIMINANT_REVIEWS_KEY = "discriminant_reviews"
+
+
 @dataclass(frozen=True)
 class Finding:
     category: str
@@ -70,6 +73,15 @@ class Finding:
     classification: str
     owner: str
     occurrence: int
+
+    @property
+    def family(self) -> str:
+        """The identifier a raw_discriminant_literal finding compares.
+
+        Findings are reviewed per identifier family, not per site: one comparison of
+        `resourceType` against a literal is the same modelling question as the next.
+        """
+        return self.detail.split(" ", 1)[0]
 
     @property
     def fingerprint(self) -> str:
@@ -240,6 +252,22 @@ def render_report(findings: list[Finding], config: dict) -> str:
         if finding.category == "native_integral_boundary"
     }
     native_reviews = config.get("native_integral_reviews", {})
+    discriminant_reviews = config.get(DISCRIMINANT_REVIEWS_KEY, {})
+    discriminant_families = sorted(
+        {finding.family for finding in findings if finding.category == "raw_discriminant_literal"}
+    )
+    missing_families = [name for name in discriminant_families if name not in discriminant_reviews]
+    stale_families = sorted(set(discriminant_reviews) - set(discriminant_families))
+    if missing_families or stale_families:
+        details = []
+        if missing_families:
+            details.append(f"unreviewed={','.join(missing_families)}")
+        if stale_families:
+            details.append(f"stale={','.join(stale_families)}")
+        raise ValueError(f"discriminant reviews do not match findings ({'; '.join(details)})")
+    for family, review in discriminant_reviews.items():
+        if not review.get("classification") or not review.get("evidence"):
+            raise ValueError(f"incomplete discriminant review for {family}")
     missing_reviews = sorted(set(native_findings) - set(native_reviews))
     stale_reviews = sorted(set(native_reviews) - set(native_findings))
     if missing_reviews or stale_reviews:
@@ -305,6 +333,22 @@ def render_report(findings: list[Finding], config: dict) -> str:
                 for fingerprint, review in native_reviews.items()
             ),
             "",
+            "## Reviewed discriminant families",
+            "",
+            "Every identifier a `raw_discriminant_literal` finding compares carries its own",
+            "reviewed classification and evidence. A new identifier fails the check until it",
+            "is classified, and a family that stops appearing must be removed.",
+            "",
+            "| Family | Sites | Classification | Evidence |",
+            "| --- | --- | --- | --- |",
+            *(
+                f"| `{family}` | "
+                f"{sum(1 for row in findings if row.category == 'raw_discriminant_literal' and row.family == family)}"
+                f" | `{discriminant_reviews[family]['classification']}` | "
+                f"{discriminant_reviews[family]['evidence']} |"
+                for family in discriminant_families
+            ),
+            "",
             "## Findings",
             "",
             "| Fingerprint | Category | Source | Detail | Classification | Owner |",
@@ -313,10 +357,16 @@ def render_report(findings: list[Finding], config: dict) -> str:
     )
     for finding in findings:
         detail = finding.detail.replace("|", "\\|")
+        classification = finding.classification
+        owner = finding.owner
+        if finding.category == "raw_discriminant_literal":
+            review = discriminant_reviews[finding.family]
+            classification = str(review["classification"])
+            owner = str(review.get("owner", owner))
         lines.append(
             f"| `{finding.fingerprint}` | `{finding.category}` | "
             f"`{finding.path}:{finding.line}` | {detail} | "
-            f"`{finding.classification}` | `{finding.owner}` |"
+            f"`{classification}` | `{owner}` |"
         )
     lines.append("")
     return "\n".join(lines)

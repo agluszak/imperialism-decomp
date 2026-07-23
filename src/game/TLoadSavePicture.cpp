@@ -196,13 +196,13 @@ undefined TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC() {
 // FUNCTION: IMPERIALISM 0x0056d1e0
 void TLoadSavePicture::DoKeyEvent(TToolboxEvent* event) {
   int commandCode = event->commandCode;
-  if (commandCode == 3 || commandCode == 0xd) {
+  if (commandCode == kUiKeyEnter || commandCode == kUiKeyReturn) {
     TPictureButton* okayButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagOkay));
     if (okayButton != 0) {
       g_pSfxPlaybackSystem->PlaySoundEffect(okayButton->timingWord92, 0, 1);
       QueueDeferredUiEventPacket(this, 0xa, okayButton);
     }
-  } else if (commandCode == 0x1b && ResolveControlByTag(kControlTagCncl) != 0) {
+  } else if (commandCode == kUiKeyEscape && ResolveControlByTag(kControlTagCncl) != 0) {
     QueueDeferredUiEventPacket(this, 0x14, ResolveControlByTag(kControlTagCncl));
   }
 }

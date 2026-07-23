@@ -51,6 +51,7 @@
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 #include "game/ui_tags_screens.h"
+#include "game/resource_domain_types.h"
 
 int __cdecl TouchSessionActiveNationId(void);
 void __cdecl ResetPortZoneGlobalContextCounters(void);
@@ -1820,10 +1821,11 @@ void TSimMgr::HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void* pInstruc
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
 
-  int terrainCode = g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[0];
+  int tileResourceKind = g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[0];
   char selectHighNibble = 0;
-  if (terrainCode == 0x16 || terrainCode == 0x15 || terrainCode == 0x04 || terrainCode == 0x03 ||
-      terrainCode == 0x06) {
+  if (tileResourceKind == kResourceGold || tileResourceKind == kResourceGems ||
+      tileResourceKind == kResourceIron || tileResourceKind == kResourceCoal ||
+      tileResourceKind == kResourceOil) {
     selectHighNibble = 1;
   }
   unsigned char value = reinterpret_cast<unsigned char*>(&valueToken)[3];

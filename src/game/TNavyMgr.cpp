@@ -29,6 +29,7 @@
 #include "game/map_order_battle_snapshot.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_military.h"
+#include "game/resource_domain_types.h"
 
 // 0x00563360 -- __stdcall free resolver (defined in TMapMgr.cpp); used by the
 // reattributed DoTileClick below.
@@ -1307,7 +1308,8 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
 
             CString resourceList;
             int reportIndex = 1;
-            for (int resourceType = 0; resourceType < 0x0e; ++resourceType) {
+            for (int resourceType = 0; resourceType < kIndustryActionOrderTypeCount;
+                 ++resourceType) {
               short resourceCount = drawnCounts[resourceType];
               if (resourceCount == 0) {
                 continue;
@@ -1357,7 +1359,8 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
                 item.detailIdentity.categoryTag = kControlTagItem; // 'item'
               }
 
-              for (int resourceType2 = 0; resourceType2 < 0x0e; ++resourceType2) {
+              for (int resourceType2 = 0; resourceType2 < kIndustryActionOrderTypeCount;
+                   ++resourceType2) {
                 if (drawnCounts[resourceType2] != 0) {
                   g_apNationStates[selection.offerNationCode]
                       ->city->orderCountByType5c[resourceType2] =

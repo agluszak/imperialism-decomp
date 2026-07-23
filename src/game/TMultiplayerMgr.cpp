@@ -17,6 +17,7 @@
 #include "game/ui_tags_military.h"
 #include "game/ui_tags_screens.h"
 #include "game/ui_tags_widgets.h"
+#include "game/resource_domain_types.h"
 
 // Event-9 lobby-chat packet sent when a nation drops during session init: the AWOL
 // slot byte plus empty sender/message strings (0x64 bytes total).
@@ -1541,7 +1542,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TurnEvent1DWarTransitionPacket* warTransition =
         static_cast<TurnEvent1DWarTransitionPacket*>(packet);
     TGreatPower* nation1D = g_apNationStates[g_pSimMgr->GetActiveNationId()];
-    if (warTransition->actionCode1C == 0x69 /* 'i' */) {
+    if (warTransition->actionCode1C == 'i') {
       nation1D->HandleWarTransitionRequest(warTransition->nationA1D, warTransition->nationB1E);
     } else {
       nation1D->HandleWarTransitionRequestWithRoleSwap(
@@ -1555,7 +1556,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // always finishes by posting the 'NeXT' diplomacy command.
     TurnEvent1EDiplomacyActionPacket* action =
         static_cast<TurnEvent1EDiplomacyActionPacket*>(packet);
-    if (action->actionCode1F == 0x61 /* 'a' */) {
+    if (action->actionCode1F == 'a') {
       if (action->flag21 != 0) {
         TGreatPower* nation1E = g_apNationStates[action->nation1C];
         if (action->flag20 == 0) {
@@ -1574,7 +1575,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
               action->nation1C, action->nationB1E, 0);
         }
       }
-    } else if (action->actionCode1F == 0x69 /* 'i' */ && action->flag21 != 0) {
+    } else if (action->actionCode1F == 'i' && action->flag21 != 0) {
       if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(action->nation1C, action->nationB1E) ==
           0) {
         g_apNationStates[action->nation1C]->QueueWarTransitionAndNotifyThirdPartyIfNeeded(
@@ -1659,7 +1660,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TGreatPower* nation15 = g_apNationStates[needState->nationSlot];
     nation15->treasuryValue10 = needState->treasuryValue;
     nation15->grantTotalCost = needState->grantTotalCost;
-    for (int needType = 0; needType < 0x17; ++needType) {
+    for (int needType = 0; needType < kResourceKindCount; ++needType) {
       nation15->needCurrentByType[needType] = needState->needCurrentByType[needType];
       nation15->needTargetByType[needType] = needState->needTargetByType[needType];
       nation15->relationDeltaCurrent[needType] = needState->relationDeltaCurrent[needType];
@@ -1687,7 +1688,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     TGreatPower* nation19 = g_apNationStates[nationSlot19];
     nation19->needCapA6 = stateArrays->needCapA6;
-    for (int orderType19 = 0; orderType19 < 0x0e; ++orderType19) {
+    for (int orderType19 = 0; orderType19 < kIndustryActionOrderTypeCount; ++orderType19) {
       nation19->city->orderCountByType5c[orderType19] = stateArrays->orderCountByType[orderType19];
     }
     nation19->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
@@ -1729,14 +1730,14 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     for (int metric4A = 0; metric4A < 9; ++metric4A) {
       city2C->cityMetricsBlock4A[metric4A] = composite->cityMetricsBlock4A[metric4A];
     }
-    for (int orderType2C = 0; orderType2C < 0x0e; ++orderType2C) {
+    for (int orderType2C = 0; orderType2C < kIndustryActionOrderTypeCount; ++orderType2C) {
       city2C->orderCountByType5c[orderType2C] = composite->orderCountByType[orderType2C];
     }
     g_apNationStates[nationSlot2C]->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
     city2C->rollingItemProductionScore78 = composite->cityRollingItemProductionScore;
     city2C->powerAvailableB4 = composite->cityFieldB4;
     short* stock2C = &city2C->cityStockCottonB6;
-    for (int stockType = 0; stockType < 0x17; ++stockType) {
+    for (int stockType = 0; stockType < kResourceKindCount; ++stockType) {
       stock2C[stockType] = composite->cityStock[stockType];
     }
     for (int orderSlot2C = 0; orderSlot2C < 0x10; ++orderSlot2C) {
@@ -1747,7 +1748,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     city2C->populationGrowthPenaltyTicks26c = composite->populationGrowthPenaltyTicks;
     // Second, duplicate copy of the city stock block - original behavior, kept as-is.
-    for (int stockType2 = 0; stockType2 < 0x17; ++stockType2) {
+    for (int stockType2 = 0; stockType2 < kResourceKindCount; ++stockType2) {
       stock2C[stockType2] = composite->cityStock[stockType2];
     }
     for (int record2C = 0; record2C < 0x17; ++record2C) {
@@ -3363,7 +3364,7 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
     packet.cityRollingItemProductionScore = city->rollingItemProductionScore78;
     packet.cityFieldB4 = city->powerAvailableB4;
     short* stock = &city->cityStockCottonB6;
-    for (int stockType = 0; stockType < 0x17; ++stockType) {
+    for (int stockType = 0; stockType < kResourceKindCount; ++stockType) {
       packet.cityStock[stockType] = stock[stockType];
     }
     for (int slot = 0; slot < 0x10; ++slot) {

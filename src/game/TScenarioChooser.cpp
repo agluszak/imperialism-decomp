@@ -96,9 +96,9 @@ void TScenarioChooser::ExitScreen() {
 // FUNCTION: IMPERIALISM 0x0057a310
 void TScenarioChooser::DoKeyEvent(TToolboxEvent* event) {
   int commandCode = event->commandCode;
-  if (commandCode == 3 || commandCode == 0xd) {
+  if (commandCode == kUiKeyEnter || commandCode == kUiKeyReturn) {
     StartGame();
-  } else if (commandCode == 0x1b) {
+  } else if (commandCode == kUiKeyEscape) {
     ExitScreen();
   }
 }

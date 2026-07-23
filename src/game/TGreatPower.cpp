@@ -58,6 +58,7 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/UiRuntimeContext.h"
 #include "game/ui_tags_common.h"
+#include "game/resource_domain_types.h"
 
 // Real body ported at 0x005b7f50 (file end, ascending-address order). Genuine __stdcall
 // predicate: returns 1 when the resource index is in [13,16].
@@ -1853,7 +1854,7 @@ void TGreatPower::SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(
 // FUNCTION: IMPERIALISM 0x004dd140
 void TGreatPower::RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void) {
   int total = 0;
-  for (int resourceType = 0; resourceType < 0x0E; ++resourceType) {
+  for (int resourceType = 0; resourceType < kIndustryActionOrderTypeCount; ++resourceType) {
     short resourceWeight = GetResourceDescriptorWeightWord0ByType(static_cast<short>(resourceType));
     short orderCount = this->city->orderCountByType5c[resourceType];
     total += static_cast<short>(resourceWeight * orderCount);

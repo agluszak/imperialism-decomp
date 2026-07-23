@@ -67,10 +67,10 @@ void TDialogBehavior::DoKeyEvent(TToolboxEvent* event) {
 
   unsigned long commandCode;
   int fallbackCommand;
-  if (event->commandCode == 3 || event->commandCode == 0x0d) {
+  if (event->commandCode == kUiKeyEnter || event->commandCode == kUiKeyReturn) {
     commandCode = defaultCommandCode;
     fallbackCommand = 0x16;
-  } else if (event->commandCode == 0x1b) {
+  } else if (event->commandCode == kUiKeyEscape) {
     commandCode = cancelCommandCode;
     fallbackCommand = 0x15;
   } else {
@@ -91,7 +91,7 @@ void TDialogBehavior::DoKeyEvent(TToolboxEvent* event) {
 // FUNCTION: IMPERIALISM 0x004875d0
 void TDialogBehavior::DoCommandKeyEvent(TToolboxEvent* event) {
   TView* ownerView = static_cast<TView*>(owner);
-  if (ownerView == 0 || ownerView->IsEnabled() == 0 || event->commandCode != 0x2e ||
+  if (ownerView == 0 || ownerView->IsEnabled() == 0 || event->commandCode != kUiKeyPeriod ||
       cancelCommandCode == kControlTagSpSpSpSp) {
     return;
   }

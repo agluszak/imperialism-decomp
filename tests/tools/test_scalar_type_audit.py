@@ -33,6 +33,9 @@ class ScalarTypeAuditTests(unittest.TestCase):
                     "evaluated_checks": [],
                     "rationale": "test",
                 },
+                "discriminant_reviews": {
+                    "modeCode": {"classification": "closed_domain", "evidence": "test evidence"}
+                },
             }
 
             findings = collect_findings(root, config)
@@ -82,6 +85,45 @@ class ScalarTypeAuditTests(unittest.TestCase):
             # The header-declared member pointer and the .cpp-local pointer are both
             # null checks; only the genuine scalar discriminant is reported.
             self.assertEqual(details, {"modeCode != 0"})
+
+    def test_discriminant_families_require_reviews(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "src/game").mkdir(parents=True)
+            (root / "include/game").mkdir(parents=True)
+            (root / "src/game/Test.cpp").write_text("int f(int modeCode) { return modeCode == 3; }\n")
+            config = {
+                "categories": {
+                    "nested_integral_cast": {"classification": "width", "owner": "bd-a"},
+                    "predicate_storage_cast": {"classification": "predicate", "owner": "bd-b"},
+                    "raw_discriminant_literal": {"classification": "enum", "owner": "bd-c"},
+                    "native_integral_boundary": {"classification": "native", "owner": "bd-d"},
+                },
+                "clang_tidy": {
+                    "status": "test",
+                    "decision": "advisory_only",
+                    "evaluated_checks": [],
+                    "rationale": "test",
+                },
+            }
+            findings = collect_findings(root, config)
+
+            with self.assertRaisesRegex(ValueError, "unreviewed=modeCode"):
+                render_report(findings, config)
+
+            config["discriminant_reviews"] = {
+                "modeCode": {"classification": "closed_domain", "evidence": "test evidence"}
+            }
+            report = render_report(findings, config)
+            self.assertIn("closed_domain", report)
+            self.assertIn("test evidence", report)
+
+            config["discriminant_reviews"]["staleFamilyCode"] = {
+                "classification": "stale",
+                "evidence": "stale",
+            }
+            with self.assertRaisesRegex(ValueError, "stale=staleFamilyCode"):
+                render_report(findings, config)
 
     def test_native_boundaries_require_fingerprint_specific_reviews(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

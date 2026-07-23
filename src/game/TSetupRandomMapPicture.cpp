@@ -389,9 +389,9 @@ void TSetupRandomMapPicture::GroundControlToMajorTom(unsigned char mode) {
 void TSetupRandomMapPicture::DoKeyEvent(TToolboxEvent* event) {
   TToolboxEvent* commandEvent = event;
   int commandCode = commandEvent->commandCode;
-  if (commandCode == 3 || commandCode == 0xd) {
+  if (commandCode == kUiKeyEnter || commandCode == kUiKeyReturn) {
     StartGame();
-  } else if (commandCode == 0x1b) {
+  } else if (commandCode == kUiKeyEscape) {
     ExitScreen();
   }
 }

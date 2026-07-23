@@ -83,6 +83,291 @@ native_integral_reviews:
     classification: multimedia_dword_field
     evidence: MCI_PLAY_PARMS.dwTo is DWORD; retail 0x005e1850 increments then masks the track index before the dword store.
 
+# Reviewed discriminant families. Every identifier a raw_discriminant_literal finding
+# compares is classified here, so a new identifier fails the check until someone
+# reviews it and a family that stops appearing must be removed. Owners default to
+# the raw_discriminant_literal category owner.
+discriminant_reviews:
+  actionCode:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TNavyMgr tests whether ResolveCivilianTileOrderActionCode produced an action at all; the equality sites on the same domain already use the recovered tag and proposal enumerators.
+  actionKind:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TCivMgr and TArmyMgr select on 1, 2, 4, 7 and 10 with gaps, which is a sparse command domain rather than a contiguous enum; the producing dispatcher must be decoded first.
+  actionType04:
+    classification: closed_domain_needs_listing_evidence
+    evidence: MapContextActionRecord::actionType04 selects five battle/news report shapes (0..4) across TArmyMgr, TBattleReportView and TNewsMgr and is serialized as four bytes by TArmyMgr 0x004a1c40; naming the five needs each report body decoded.
+  aiState:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TArmyPlayer tests 2, 5 and 0xe against the same field aiStateCode2c reads; recovering the state machine is army-AI work, not a mechanical rename.
+  aiStateCode2c:
+    classification: closed_domain_needs_listing_evidence
+    evidence: same TArmyPlayer state machine as aiState, tested against 2, 4, 5 and 0xc.
+  alignmentCode:
+    classification: external_api_or_resource_constant
+    evidence: TStaticText maps the value onto Win32 DrawText alignment flags.
+  battleOutcomeCode44:
+    classification: closed_domain_needs_listing_evidence
+    evidence: three outcome codes 0/1/2 shared by TNavyBattle, TTacticalBattle and TNextMoveCommand; the producer that assigns them has not been decoded, so the names are not yet evidence-backed.
+  buildingType:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TCity bands building types at 8, 0x10 and 0x20, which is a three-tier building-class layout; the tier names come from the city construction tables, which are not yet recovered.
+  categoryCode:
+    classification: army_unit_category_domain
+    evidence: 'ArmyUnitCategory is recovered (imperialism-decomp-1uj.99.1.4) and this is that domain: TTacticalBattle reads g_awTacticalUnitCategoryCodeBySlot[unitTypeC] into it and indexes the move-cost table by it; the residual literals are category numbers the recovered enum already names, pending a rename sweep.'
+  citySlotType:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TCityTask and TShipBuildingTask both test city production slot 5; the slot table is TCity work.
+  controlState64:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TControl's mode byte is only ever tested zero/non-zero at these sites (hilite on or off); the multi-valued THQButton use is tracked separately as selectionState and modeState.
+  curCode:
+    classification: turn_event_code_domain
+    evidence: TViewMgr 0x2135 is the low bound of the turn-event code window; the equality tests on the same local already use kTurnEvent* enumerators.
+  currentState:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TPictureRadioButton tests its selected byte zero/non-zero.
+  currentTacticalActionCode4c:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TTacticalBattle excludes tactical action 7; the tactical action codes come from the command-tag dispatcher.
+  cursorMode:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TArmyPlayer selects cursor mode 1; the cursor mode table is TViewMgr work.
+  deviceKind:
+    classification: external_api_or_resource_constant
+    evidence: cd_audio compares MCI device-type constants returned by the multimedia API.
+  editorActionMode368:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TMapEditView's editor action modes 1 and 5; the map editor's mode table is not recovered.
+  enabledState:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TAlwaysPictureButton's enabled predicate.
+  eventCode:
+    classification: turn_event_code_domain
+    evidence: TurnEventCode is recovered (imperialism-decomp-1uj.99.5); the residual literals here are the numeric event-code window bounds (0x2b67/0x2b68) and the 200 sentinel, which the recovered enum does not name because they are range edges rather than events.
+  eventKind:
+    classification: inter_nation_event_kind_domain
+    evidence: InterNationEventKind is recovered (imperialism-decomp-1uj.99.1.5); the residual 0x15/0x16 literals are the domain's upper bound, which the enum does not yet name.
+  fEnabledState:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TDisappearingButton and TGWorldButton test their enabled predicate.
+  featureType:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TMapMaker derives it as `% 6`, so the domain is exactly 0..5 map-generation feature families; naming them requires reading each generation branch.
+  finalizeState:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TModalDialogBase tests whether finalization has run.
+  flowMode:
+    classification: closed_domain_needs_listing_evidence
+    evidence: THelpMgr gates on 0xf and 0x6a, which are help-flow step codes from the not-yet-recovered help script table.
+  followupState:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TViewMgr tests whether a follow-up event is pending.
+  forceOrMode:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TDiplomacyMgr derives a bool (`forceFullClear = mode == 2`) from a two-valued argument.
+  formerOwnerNationCode01:
+    classification: nation_slot_domain
+    evidence: signed-char nation tag compared against the seven major-power slot count.
+  g_nMcWindowStateMsgAssertGate_006A1C74:
+    classification: open_index_count_or_bound
+    evidence: a debug assert gate counter tested for zero.
+  g_zoneStatusCodePrngSeed_006a5aec:
+    classification: open_index_count_or_bound
+    evidence: a PRNG seed tested for zero before being initialized; not a discriminant.
+  groupCode:
+    classification: string_group_or_resource_identifier
+    evidence: TLanguageMgr's string-group selector; 0 is the no-group sentinel.
+  hoverState:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TTacticalBattle tests whether a tile is hovered.
+  interactionMode:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TWorldView's three world-view interaction modes 0/1/2.
+  interactionModeAt94:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TDiplomacyMapView selects five sparse interaction modes 1, 2, 4 and 5; the gap at 3 means the domain is not contiguous and needs the producer decoded.
+  keyCode:
+    classification: character_or_virtual_key_code
+    evidence: TCivMgr remaps key code 2 onto virtual key 0x44 before dispatch.
+  lastErrorCode0c:
+    classification: external_api_or_resource_constant
+    evidence: TWNetSessionManager stores a DirectPlay HRESULT; the comparisons are the standard < 0 / == 0 / >= 0 success tests, not a domain.
+  legendSurfaceModeAt524:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TDiplomacyMapView legend-surface mode tested against 0, 1 and 4; same producer as interactionModeAt94.
+  loadModeFlag90:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TLoadSavePicture's byte flag distinguishes the load screen from the save screen; the name already says flag.
+  localizationMode:
+    classification: string_group_or_resource_identifier
+    evidence: TCouncilView 0x16/0x17 select localized end-turn control tags; they are resource selectors, not a game-domain enum.
+  modeState:
+    classification: closed_domain_needs_listing_evidence
+    evidence: THQButton's second two-value mode selector, distinct from selectionState.
+  nClickMode:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TCivMgr distinguishes click mode 2; same producer as keyCode.
+  nMode:
+    classification: closed_domain_needs_listing_evidence
+    evidence: the same TMapUberPicture three-mode domain as previousMode, on the incoming argument.
+  nShortcutCode:
+    classification: character_or_virtual_key_code
+    evidence: mapped_flavor_text passes the value straight to GetAsyncKeyState, so it is a Win32 virtual-key code; 2 selects the substituted key.
+  nationCode:
+    classification: nation_slot_domain
+    evidence: NationSlot is recovered (imperialism-decomp-1uj.99.2); the residual 0x17 bound is the 23-entry diplomacy nation domain and > 6 separates the seven major-power slots.
+  navyState28:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TNavyMission selects three mission phases 0/1/2; the phase transitions have not been decoded.
+  newCode:
+    classification: turn_event_code_domain
+    evidence: TurnEventCodeStorage compared to 0 is the recovered no-event sentinel.
+  newState:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TTacticalBattle two-value state assignment; the same domain as the tactical hover/selection phase.
+  offerType:
+    classification: diplomacy_proposal_code_domain
+    evidence: TOffersPanelView selects on the single proposal code 0x29a to choose between the text and proposal controls.
+  orderKind:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TCityInteriorMinister returns order kind 2 from a switch default; the order-kind domain is TUnitOrder work.
+  orderType:
+    classification: mixed_domain_needs_per_site_split
+    evidence: 'the sites mix three proven domains under one parameter name: ResourceKind bands (< 23, <= 22, >= 17, <= 6) in TCityInteriorMinister, the 14-entry industry domain (< 0x0e) in TMultiplayerMgr, and TUnit::orderType civilian/military kinds in TTerrainHelpPicture. Splitting them requires renaming the parameters per owner class first.'
+  ownerNationCode:
+    classification: nation_slot_domain
+    evidence: the 0x180 and 6 bounds are the encoded-nation-tag bands already documented on NationSlot/EncodedNationSlot; the >= 0 test is the unassigned -1 sentinel.
+  ownerState:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TUnitOrder tests whether an owner is set.
+  patternMode:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TModuleLibraryCacheTableStateB distinguishes pattern mode 0 when resolving a palette entry.
+  pendingShipType32:
+    classification: open_index_count_or_bound
+    evidence: TCityInteriorMinister tests the pending ship slot for zero/non-zero occupancy, not for a particular ship type.
+  policyCode:
+    classification: diplomacy_proposal_code_domain
+    evidence: DiplomacyProposalKind is recovered (imperialism-decomp-1uj.99.1.5); TCountry and TMinor still spell its 0xc/0x11 band edges and the 200/500 encoded-slot biases numerically.
+  postEventCode:
+    classification: turn_event_code_domain
+    evidence: TurnEventCodeStorage >= 0 is the recovered validity test on the event-code storage width.
+  previousMode:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TMapUberPicture's three map-panel modes (< 3); the mode producer is the not-yet-ported panel switch.
+  primaryMetricCode:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TAutoGreatPower's AI profile metric selector; 5 is one metric in the profile table, whose entries are not yet named.
+  profileCode:
+    classification: nation_slot_domain
+    evidence: TSimMgr's 100/200 bounds are the encoded-nation-slot bias bands already documented on EncodedNationSlot.
+  profileType:
+    classification: nation_slot_domain
+    evidence: the same 100/200 encoded-nation-slot bias bands, on the sibling accessor.
+  promptCode:
+    classification: closed_domain_needs_listing_evidence
+    evidence: THelpMgr and TOffersPanelView select prompts 0x0a, 0x0b and 0x14; the prompt table has not been recovered.
+  proposalCode:
+    classification: diplomacy_proposal_code_domain
+    evidence: the recovered DiplomacyProposalKind domain, compared against proposal 1.
+  relationCode:
+    classification: diplomacy_proposal_code_domain
+    evidence: TDiplomacyMgr 0x133/0x134 are two adjacent codes in the recovered diplomacy proposal/relation domain.
+  reloadPoliticalMapState:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: three call sites test the political-map reload request byte for zero.
+  renderMode:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TC2TemplateDialog tests non-zero to choose the alternate render path.
+  resetOrderMode:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TMinor tests non-zero to decide whether to reset the order tables.
+  resourceType:
+    classification: industry_action_order_type_domain
+    evidence: the residual sites are the 14-entry industry/navy-order domain (TGreatPower 0x004dd140 walks orderCountByType5c[0x0e], TNavyMgr its 14-entry report table) plus one signed -1 sentinel test and TTechMgr's slotMap index; none are ResourceKind.
+  resourceTypeIndex48:
+    classification: unresolved_narrower_subdomain
+    evidence: TUnitOrder::resourceTypeIndex48 takes 0, 1, 5, 6, 8 and 0x0f across TTrainingOrder, TExpansionOrder, TShipOrder, TCapacityOrder and TTechMgr; 0x0f exceeds the 14-entry industry domain and no listing yet proves the extent, so the slot stays explicitly unresolved rather than being forced into ResourceKind.
+  ringState:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TMapMaker walks a three-state coastline ring scanner (0/1/2) against kStrategicTerrainWater; the states are a local scan phase, nameable once the ring walk is described.
+  saveMode:
+    classification: external_api_or_resource_constant
+    evidence: TLoadSavePicture 0xa1 is a save-file format marker, not a mode enum.
+  screenModeAt24:
+    classification: closed_domain_needs_listing_evidence
+    evidence: four call sites band a shared screen mode at 1 and 2 across TLoadSavePicture, TToolBarCluster, TUnitToolbarCluster and TWorldView; the mode owner has not been attributed.
+  secondaryMetricCode:
+    classification: closed_domain_needs_listing_evidence
+    evidence: the same AI profile metric selector, tested against 5 and 0xc.
+  selectedIndustryUnitTypeA4:
+    classification: open_index_count_or_bound
+    evidence: TIndustryView tests > 0 for `a selection exists`, not for a particular kind.
+  selectedOrderType:
+    classification: open_index_count_or_bound
+    evidence: TCityInteriorMinister tests < 0 for the `no order selected` sentinel.
+  selectionState:
+    classification: closed_domain_needs_listing_evidence
+    evidence: THQButton drives a three-value selection state 0/1/2 through TControl's mode byte.
+  serializedState0a:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TRailheadDialog tests its serialized state word for zero.
+  sessionModeActive:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TArmyBattle tests whether a session is active.
+  setupMode:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TSimMgr dispatches four game-setup paths 1..4; the four entry points are known but their retail names are not.
+  sfxCode:
+    classification: open_index_count_or_bound
+    evidence: TCivMgr tests for a non-zero sound-effect id before playing it.
+  taskKind:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TCity distinguishes task kind 1 from the rest; the task-kind table is not recovered.
+  terrainCode:
+    classification: nation_slot_domain
+    evidence: TMacViewMgr reads terrainStateTable[].ownerNationTag04 and bounds it by the 23-entry nation domain; despite the name this is not terrain.
+  terrainType:
+    classification: tactical_terrain_kind_domain
+    evidence: the same five-kind tactical domain read by TArmyPlayer.
+  terrainType0:
+    classification: tactical_terrain_kind_domain
+    evidence: TacticalTileRecord::terrainType0 indexes g_awTacticalMoveCostByCategoryAndTerrain with stride 5, so the tactical domain has exactly five kinds and is independent of the eight-value StrategicTerrainKind; value 4 is the impassable kind every caller excludes.
+  textAlignmentCode:
+    classification: external_api_or_resource_constant
+    evidence: the same TStaticText Win32 alignment selector.
+  tileActionState16:
+    classification: map_tile_action_state_domain
+    evidence: MapTileActionStateStorage is recovered (imperialism-decomp-1uj.99.1.4); the residual comparisons are its signed >= 0 validity test and the >= 2 band edge.
+  turnStateCode:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TSimMgr's global turn state machine tests step 0x10; the step table is being recovered under the turn-event work.
+  unitCategoryCode0:
+    classification: army_unit_category_domain
+    evidence: the same ArmyUnitCategory values 8 and 9 read from the tactical category table.
+  unitType:
+    classification: mixed_domain_needs_per_site_split
+    evidence: TUnitsView bounds the 30-entry MilitaryUnitKind domain while TAutoGreatPower bounds the 14-entry industry/navy-order domain through the same parameter name.
+  unitTypeC:
+    classification: military_unit_kind_domain
+    evidence: MilitaryUnitKind is recovered (imperialism-decomp-1uj.99.1.4); unitTypeC indexes g_awTacticalUnitCategoryCodeBySlot, so 0x15 and 0x1b are kind numbers the recovered enum already names.
+  unitTypeCode:
+    classification: military_unit_kind_domain
+    evidence: TArmyUnitView compares a MilitaryUnitKind value (0xe) read from the unit record.
+  useType4:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TTaskForce selects between two ship-order counts from a zero/non-zero flag.
+  visitedModes:
+    classification: bit_flag_mask_not_a_domain
+    evidence: TMapUberPicture accumulates three visited-panel bits and loops until all three are set, so 7 is the full mask, not an enumerator.
+  visualState:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TNumberedArrowButton tests a local pressed predicate.
+  windowStyleType:
+    classification: external_api_or_resource_constant
+    evidence: CMcWindow forwards the value into Win32 window-style flags; zero means `no extra style`.
+
 clang_tidy:
   status: evaluated_with_llvm_19
   version: 19.1.7

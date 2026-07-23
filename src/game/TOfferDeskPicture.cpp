@@ -192,14 +192,14 @@ void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
 // FUNCTION: IMPERIALISM 0x005bf860
 void TOfferDeskPicture::DoKeyEvent(TToolboxEvent* event) {
   int commandCode = event->commandCode;
-  if (commandCode == 3 || commandCode == 0xd) {
+  if (commandCode == kUiKeyEnter || commandCode == kUiKeyReturn) {
     TPictureButton* button = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
     if (button == 0) {
       return;
     }
     g_pSfxPlaybackSystem->PlaySoundEffect(button->timingWord92, 0, 1);
     QueueDeferredUiEventPacket(this, 0xa, button);
-  } else if (commandCode == 0x1b) {
+  } else if (commandCode == kUiKeyEscape) {
     TPictureButton* button = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
     if (button == 0) {
       return;
