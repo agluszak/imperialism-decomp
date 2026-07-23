@@ -45,6 +45,10 @@ public:
   virtual BOOL SelectRuntimeProvider(GUID* providerGuid);
   virtual BOOL ShowJoinGameSelectionDialogAndCaptureChoice(GUID* selectedSessionGuid);
 
+  // Reads a player's per-player data block, recording the HRESULT in lastErrorCode0c
+  // and returning whether it succeeded. 0x4809d0.
+  BOOL GetPlayerData(DPID playerId, void* buffer, DWORD* sizeInOut);
+
   IDirectPlay2* directPlayInterface04;
   IUnknown* directPlayLobby08;
   int lastErrorCode0c;
