@@ -1537,14 +1537,13 @@ void TMacViewMgr::ClearActiveCityProductionViewAndDiscardRegion() {
 // FUNCTION: IMPERIALISM 0x0050d950
 void TMacViewMgr::RefreshActiveGoldControlAndUiRuntimeState() {
   TView* hostView = g_pDisplayMgr->activeDialog;
-  GoldDialogControl* goldControl =
-      static_cast<GoldDialogControl*>(hostView->ResolveControlByTag(0x444c4f47));
+  TPicture* goldControl = static_cast<TPicture*>(hostView->ResolveControlByTag(0x444c4f47));
   if (goldControl == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  goldControl->gold71();
-  goldControl->SetGoldControlStateByResource(0, 0);
+  goldControl->ResetPictureResourceEntry();
+  goldControl->SetPictureResourceIdAndRefresh(0, 0);
   g_pUiAnimator->FreeUiTransientRegistryPayloads();
 }
 

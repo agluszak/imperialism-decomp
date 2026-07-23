@@ -388,9 +388,9 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
 
-  GoldDialogControl* gold = static_cast<GoldDialogControl*>(node->ResolveControlByTag(0x444c4f47));
+  TPicture* gold = static_cast<TPicture*>(node->ResolveControlByTag(0x444c4f47)); // 'DLOG'
   gold->AssertValid();
-  gold->SetGoldControlStateByResource(0x24cd, 0);
+  gold->SetPictureResourceIdAndRefresh(static_cast<short>(0x24cd), 0);
 
   // Mask the game-flow flag while committing the refresh when localization mode is active.
   unsigned char savedFlag = 0;
@@ -502,8 +502,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   this->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
   dialog->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
 
-  GoldDialogControl* gold =
-      static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47)); // 'GOLD'
+  TPicture* gold = static_cast<TPicture*>(dialog->ResolveControlByTag(0x444c4f47)); // 'DLOG'
   gold->AssertValid();
   if (gold == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -514,30 +513,28 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   if (static_cast<short>(contextTag) == 2 && g_nationInfoGoldResourceOverride_006a5bac != 0) {
     goldResource = g_nationInfoGoldResourceOverride_006a5bac;
   }
-  gold->SetGoldControlStateByResource(goldResource, 0);
+  gold->SetPictureResourceIdAndRefresh(static_cast<short>(goldResource), 0);
 
-  GoldDialogControl* coat =
-      static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x636f6174)); // 'coat'
+  TPicture* coat = static_cast<TPicture*>(dialog->ResolveControlByTag(0x636f6174)); // 'coat'
   coat->AssertValid();
   if (coat == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x301);
   }
   if (g_pSimMgr->GetActiveNationId() >= 0 && g_pSimMgr->GetActiveNationId() < 7) {
-    coat->SetGoldControlStateByResource(g_pSimMgr->GetActiveNationId() + 0x251c, 0);
+    coat->SetPictureResourceIdAndRefresh(
+        static_cast<short>(g_pSimMgr->GetActiveNationId() + 0x251c), 0);
   } else {
     coat->SetEnabled(0, 0);
   }
 
   if (static_cast<short>(payloadResource) != 0) {
-    GoldDialogControl* goldValue =
-        static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47)); // 'GOLD'
+    TPicture* goldValue = static_cast<TPicture*>(dialog->ResolveControlByTag(0x444c4f47)); // 'DLOG'
     goldValue->AssertValid();
-    goldValue->SetGoldControlStateByResource(contextTag + 0x252a, 0);
-    GoldDialogControl* award =
-        static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x72657761)); // 'awer'
+    goldValue->SetPictureResourceIdAndRefresh(static_cast<short>(contextTag + 0x252a), 0);
+    TPicture* award = static_cast<TPicture*>(dialog->ResolveControlByTag(0x72657761)); // 'awer'
     award->AssertValid();
-    award->SetGoldControlStateByResource(payloadResource, 0);
+    award->SetPictureResourceIdAndRefresh(static_cast<short>(payloadResource), 0);
   } else {
     TStaticText* title =
         static_cast<TStaticText*>(dialog->ResolveControlByTag(0x7469746c)); // 'titl'

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TControl.h"
+#include "game/TPicture.h"
 #include "game/TView.h"
 
 class TCivUnit;
@@ -50,12 +51,11 @@ struct TurnEventDialogNode : public TView {
   virtual void InvokeSlot1C();
 };
 
-struct GoldDialogControl : public TControl {
-  virtual void gold71(); // slot 0x71 byte 0x1c4
-  // The resource parameter is short-typed: 0x5d5f19..0x5d5f34 passes
-  // GetActiveNationId()+0x251c with no movsx (garbage upper word), which only
-  // compiles when the receiving parameter is a short.
-  virtual void SetGoldControlStateByResource(short resourceId, int b); // slot 0x72 byte 0x1c8
+// Slots 0x71/0x72 are NOT declared here: they are TPicture::ResetPictureResourceEntry
+// and TPicture::SetPictureResourceIdAndRefresh, and every caller now uses TPicture
+// directly. What remains are the per-dialog overrides at 0x1cc/0x1d0 whose concrete
+// classes still need the Mac resource oracle applied per dialog id.
+struct GoldDialogControl : public TPicture {
   virtual void InvokeSlot1CC(int a, int b, int c);
   virtual void InvokeSlot1D0FourParam(int a, int b, int c, int slot);
   virtual void InvokeSlot1D0OneParam(void* content);
