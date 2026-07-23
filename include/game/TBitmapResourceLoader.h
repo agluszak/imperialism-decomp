@@ -40,5 +40,8 @@ public:
 };
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
+// 0x4a1130 -- allocates the loader handle-slot plus a loader for `resourceId`.
+TBitmapResourceLoader** CreateBitmapResourceLoaderHandle(unsigned short resourceId);
+
 ASSERT_SIZE(TBitmapResourceLoaderState, 0x1c);
 ASSERT_SIZE(TBitmapResourceLoader, 0x20);

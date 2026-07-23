@@ -76,10 +76,10 @@ native_integral_reviews:
   83fe19c4ff1bb637:
     classification: win32_struct_byte_field
     evidence: RGBQUAD.rgbReserved is BYTE; retail 0x005de010 extracts packed-color bits 24 through 31 into the structure.
-  d4248763cec9fcfa:
+  82228fbda86359fc:
     classification: multimedia_dword_field
     evidence: MCI_PLAY_PARMS.dwFrom is DWORD; retail 0x005e1850 masks the track index to eight bits before the dword store.
-  af9be0d81a08664a:
+  981ca37e1bfd4adf:
     classification: multimedia_dword_field
     evidence: MCI_PLAY_PARMS.dwTo is DWORD; retail 0x005e1850 increments then masks the track index before the dword store.
 

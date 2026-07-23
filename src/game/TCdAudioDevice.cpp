@@ -1,4 +1,4 @@
-#include "game/cd_audio.h"
+#include "game/TCdAudioDevice.h"
 
 #include "game/global_data_tables.h"
 

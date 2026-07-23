@@ -17,7 +17,7 @@
 #include "game/CMainFrame.h"
 #include "game/TMacViewMgr.h"
 #include "game/TAssetMgr.h"
-#include "game/TC2TemplateDialog.h"
+#include "game/TTemplateDialogs.h"
 #include "game/TCity.h"
 #include "game/CDib.h"
 #include "game/TGreatPower.h"

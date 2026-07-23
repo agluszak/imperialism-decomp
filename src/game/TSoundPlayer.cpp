@@ -8,7 +8,7 @@
 #include "game/TLongintList.h"
 #include "game/TSoundResourceManager.h"
 #include "game/TAssetMgr.h"
-#include "game/cd_audio.h"
+#include "game/TCdAudioDevice.h"
 #include "game/timer_slots.h"
 #include "game/turn_flow_cooldown.h"
 

@@ -4,7 +4,7 @@
 #include "game/CMainFrame.h"
 #include "game/TSoundPlayer.h"
 #include "game/global_data_tables.h"
-#include "game/movie_window_library.h"
+#include "game/MciMovieWindowState.h"
 
 // SYNTHETIC: IMPERIALISM 0x005e2100
 // TMovieView::CreateObject

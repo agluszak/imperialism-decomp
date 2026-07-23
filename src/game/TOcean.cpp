@@ -34,85 +34,20 @@ void NotifyMapUberPictureTileMarker(short tileIndex) {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x0055fc40
-void TZone::HandleKeyDown(int key_id) {
-  short sVarSlotId;
-  short sVarActiveSlot;
-  TShip* pvNode;
-  int nSlotsRemaining;
-  bool bSlotIsActive;
-  unsigned int uSlotIndex;
-  unsigned int uSlotCountLocal;
-  Province** piSlotEntry;
-  Province** slotTable = secondaryNeighbors.Data();
-  unsigned int slotCount = static_cast<unsigned int>(secondaryNeighbors.GetSize());
-
-  if ((nationKeyMask10 & (1U << ((unsigned char)key_id & 0x1f))) == 0) {
-    nationKeyMask10 =
-        static_cast<unsigned short>(nationKeyMask10 | (1U << ((unsigned char)key_id & 0x1f)));
-    sVarSlotId = g_pSimMgr->GetActiveNationId();
-
-    if ((nationKeyMask10 & (1U << ((unsigned char)sVarSlotId & 0x1f))) == 0) {
-      uSlotCountLocal = slotCount;
-      uSlotIndex = 0;
-      if (uSlotCountLocal != 0) {
-        do {
-          if (uSlotIndex < uSlotCountLocal) {
-            piSlotEntry = slotTable + static_cast<int>(uSlotIndex);
-          } else {
-            piSlotEntry = 0;
-          }
-          if ((*piSlotEntry)->ownerNationCode00 == static_cast<char>(sVarSlotId)) {
-            goto LAB_0055fcae;
-          }
-          uSlotIndex = uSlotIndex + 1;
-        } while (uSlotIndex < uSlotCountLocal);
-      }
-      bSlotIsActive = false;
-    } else {
-    LAB_0055fcae:
-      bSlotIsActive = true;
-    }
-
-    if (bSlotIsActive) {
-      if (sVarSlotId == static_cast<short>(key_id)) {
-        SetMapOrderUiFlag(1);
-        key_id = sVarSlotId + 1;
-        nSlotsRemaining = 6;
-        do {
-          if ((nationKeyMask10 & (1U << ((unsigned char)(key_id % 7) & 0x1f))) != 0) {
-            sVarSlotId = GetActiveNationSlotTile();
-            SetMapTileStateByteAndNotifyObserver(sVarSlotId,
-                                                 key_id % 7 + kMapTileActionStateNationOrderFirst);
-            g_pGlobalMapState->terrainStateTable[sVarSlotId].tileActionOrdinal1a = -1;
-          }
-          key_id = key_id + 1;
-          nSlotsRemaining = nSlotsRemaining - 1;
-        } while (nSlotsRemaining != 0);
-      } else {
-        sVarSlotId = GetActiveNationSlotTile();
-        SetMapTileStateByteAndNotifyObserver(sVarSlotId, kMapTileActionStateNationOrderFirst);
-        g_pGlobalMapState->terrainStateTable[sVarSlotId].tileActionOrdinal1a = -1;
-      }
-    }
+// FUNCTION: IMPERIALISM 0x0052e7b0
+void TOcean::AllocateRouteNodeStateBufferByCount(short count) {
+  routeNodeCount = count;
+  delete[] routeSegments;
+  routeSegments = new CRect[count];
+  if (routeSegments == nullptr) {
+    routeSegments = nullptr;
   }
-
-  sVarActiveSlot = g_pSimMgr->GetActiveNationId();
-  if (sVarActiveSlot == -1) {
-    sVarActiveSlot = g_pSimMgr->GetActiveNationId();
+  if (routeSegments == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UOcean.h", 0x1e7);
   }
-
-  if ((nationKeyMask10 & (1U << ((unsigned char)sVarActiveSlot & 0x1f))) != 0) {
-    for (pvNode = TShip::GetFirst(); pvNode != 0; pvNode = pvNode->next) {
-      if (((pvNode->location == this) && (pvNode->nation == sVarActiveSlot)) &&
-          (pvNode->taskForce == 0)) {
-        SetMapOrderUiFlag(1);
-        return;
-      }
-    }
-  }
-  SetMapOrderUiFlag(0);
 }
+
 // SYNTHETIC: IMPERIALISM 0x00562100
 // TOcean::CreateObject
 
@@ -551,6 +486,11 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
 // FUNCTION: IMPERIALISM 0x00563300
 TZone* TOcean::GetMapActionContextEntryByNationCodeOffset17(short nationCode) {
   return &contextArray[nationCode - 0x17];
+}
+
+// FUNCTION: IMPERIALISM 0x00563330
+TZone* TOcean::GetMapActionContextEntryByIndex(short index) {
+  return contextArray + index;
 }
 
 // FUNCTION: IMPERIALISM 0x005633b0

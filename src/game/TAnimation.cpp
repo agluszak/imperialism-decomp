@@ -1,39 +1,12 @@
 #include "game/TAnimation.h"
 
-#include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TAnimator.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/global_data_tables.h"
 #include "game/TView.h"
-#include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
 
-// FUNCTION: IMPERIALISM 0x00495b70
-void TBitmapResourceLoader::EnsureBitmapResourceLoadedAndCopyRectSize() {
-  if (bitmapResource == NULL) {
-    bitmapResource = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(bitmapResourceId);
-    if (bitmapResource == NULL) {
-      bitmapResource =
-          g_pModuleLibraryCacheState->BuildIndexedBmpResourceById(bitmapResourceId, 0x42, 0x42, 0);
-    }
-  }
-
-  CPoint bitmapSize;
-  CPoint* copiedSize = bitmapResource->CopyBitmapDimensionsToPoint(&bitmapSize);
-  bitmapRect.left = 0;
-  bitmapRect.top = 0;
-  bitmapRect.right = copiedSize->x;
-  bitmapRect.bottom = copiedSize->y;
-}
-
-// FUNCTION: IMPERIALISM 0x00495c00
-void TBitmapResourceLoader::ReleaseBitmapResource() {
-  if (bitmapResource != NULL) {
-    g_pModuleLibraryCacheState->ReleaseRecordById(bitmapResourceId);
-  }
-  bitmapResource = NULL;
-}
 // SYNTHETIC: IMPERIALISM 0x0049f020
 // TAnimation::CreateObject
 
@@ -138,20 +111,3 @@ void TAnimation::LoadFrameIntoBuffer() {
   }
 }
 IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
-
-// Base slot-0x02 stub: reports an assert (D:\Ambit\QuickDraw.h:417) and returns 0. Its
-// real semantics are unknown, so the name is provisional -- it was previously borrowed
-// from the unrelated free assert/flag function at 0x49d620.
-// FUNCTION: IMPERIALISM 0x004a1100
-undefined4 TBitmapResourceLoader::ReportUnimplementedResourceVirtualSlot02() {
-  TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\QuickDraw.h", 0x1a1);
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x004a1130
-TBitmapResourceLoader** CreateBitmapResourceLoaderHandle(unsigned short resourceId) {
-  TBitmapResourceLoader** handleSlot = new TBitmapResourceLoader*;
-  TBitmapResourceLoader* loader = new TBitmapResourceLoader(resourceId);
-  *handleSlot = loader;
-  return handleSlot;
-}

@@ -1,4 +1,4 @@
-#include "game/movie_window_library.h"
+#include "game/MciMovieWindowState.h"
 
 #include "game/mfc.h"
 

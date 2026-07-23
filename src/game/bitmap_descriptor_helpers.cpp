@@ -1,7 +1,7 @@
 #include "game/bitmap_descriptor_helpers.h"
 
 #include "game/CDib.h"
-#include "game/TAnimation.h"
+#include "game/TBitmapResourceLoader.h"
 #include "game/TDisplayMgr.h"
 #include "game/global_data_tables.h"
 #include "game/TQuickDrawSurfaceContext.h"
@@ -10,8 +10,6 @@
 #include "game/mfc.h"
 
 namespace {
-
-const char kQuickDrawDebugSourcePath[] = "D:\\Ambit\\QuickDraw.cpp";
 
 // The loader's original vtable has no destructor slot; every caller owns this exact type.
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
@@ -46,98 +44,6 @@ void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader** handle, RECT* bo
     targetDc = g_pScopedMapQuickDrawDcHandleObject;
   }
   (*handle)->bitmapResource->StretchDibitsFromStoredBitmapToHdc(targetDc, &destination);
-}
-
-// Constructor of the QuickDraw bitmap-surface node: `new`s a backing CDib(width, height,
-// bitDepth), seeds its color table from the module cache's shared default LOGPALETTE, builds
-// the palette + DIB section, and caches the pixel bits / dword-aligned stride / dimensions.
-// Real __thiscall ctor (returns `this`); reached as `new TBitmapSurfaceNode(...)` from
-// TBitmapSurfaceContextDescriptor::InitializeSurfaceNode (0x495eb0). The +0x18 field stores
-// the low 16 bits of `bitDepth` (a 16-bit write), not a height.
-// FUNCTION: IMPERIALISM 0x00495d00
-TBitmapSurfaceNode::TBitmapSurfaceNode(int width, int height, int bitDepth) {
-  dib = new CDib(width, height, bitDepth);
-  dib->CopyRgbQuadTableFrom(g_pModuleLibraryCacheState->ResolveDefaultLogPalette());
-  dib->BuildPaletteFromRgbQuadBuffer();
-  dib->EnsureDibSectionCreated(nullptr);
-  pixelBits = static_cast<unsigned char*>(dib->m_dibBits);
-  stride = static_cast<short>((dib->m_pInfoHeader->bmiHeader.biWidth + 3) & ~3);
-  CPoint dims;
-  CPoint* d = dib->CopyBitmapDimensionsToPoint(&dims);
-  field08 = 0;
-  bitDepth18 = static_cast<short>(bitDepth);
-  field0c = 0;
-  pixelWidth10 = d->x;
-  pixelHeight14 = d->y;
-}
-
-// The original is the real descriptor constructor: NewGWorld allocates 0x34 bytes and
-// invokes this entry under an EH construction state before publishing the GWorld.
-// FUNCTION: IMPERIALISM 0x00495e20
-TBitmapSurfaceContextDescriptor::TBitmapSurfaceContextDescriptor() {
-  field00 = 0;
-  blitSurface.pixelBits = 0;
-  blitSurface.stride = 0;
-  blitSurface.clipRect.left = 0;
-  blitSurface.clipRect.top = 0;
-  blitSurface.clipRect.right = 0;
-  blitSurface.clipRect.bottom = 0;
-  blitSurface.field18 = 0;
-  blitSurface.surfaceDib = 0;
-  blitSurface.surfaceObject = 0;
-  blitSurface.foregroundColor = 0;
-  blitSurface.backgroundColor = 0;
-
-  // The Windows QuickDraw constructor repeats the CGrafPort-facing defaults after
-  // initializing its PixMap-handle and color state.
-  blitSurface.clipRect.left = 0;
-  blitSurface.clipRect.top = 0;
-  blitSurface.clipRect.right = 0;
-  blitSurface.clipRect.bottom = 0;
-  blitSurface.pixelBits = 0;
-  blitSurface.stride = 0;
-  blitSurface.surfaceDib = 0;
-  debugSourcePath = kQuickDrawDebugSourcePath;
-}
-
-// FUNCTION: IMPERIALISM 0x00495eb0
-bool TBitmapSurfaceContextDescriptor::InitializeSurfaceNode(int width, int height, int bitDepth) {
-  SetPixMapHandle(new TBitmapSurfaceNode*);
-  *GetPixMapHandle() = new TBitmapSurfaceNode(width, height, bitDepth);
-
-  // Original (0x495eb0): +0x4 = dib bits pointer, +0x8 = (biWidth + 3) & ~3 as a 16-bit
-  // stride, clip rect = the CDib's own width/height (re-read through
-  // CopyBitmapDimensionsToPoint, not the cached node fields), +0x20 = the CDib itself. The
-  // node is re-read through the slot each time (no cached local), matching the original.
-  blitSurface.pixelBits = static_cast<unsigned char*>((*GetPixMapHandle())->dib->m_dibBits);
-  blitSurface.stride =
-      static_cast<short>(((*GetPixMapHandle())->dib->m_pInfoHeader->bmiHeader.biWidth + 3) & ~3);
-  CPoint dims;
-  CPoint* d = (*GetPixMapHandle())->dib->CopyBitmapDimensionsToPoint(&dims);
-  blitSurface.clipRect.left = 0;
-  blitSurface.clipRect.top = 0;
-  blitSurface.clipRect.right = d->x;
-  blitSurface.clipRect.bottom = d->y;
-  blitSurface.surfaceDib = (*GetPixMapHandle())->dib;
-  return *GetPixMapHandle() != nullptr;
-}
-
-// FUNCTION: IMPERIALISM 0x00495fd0
-void TBitmapSurfaceContextDescriptor::ReleaseSurfaceNode() {
-  TBitmapSurfaceNode** slot = GetPixMapHandle();
-  if (slot != nullptr) {
-    TBitmapSurfaceNode* node = *slot;
-    if (node != nullptr) {
-      delete node->dib;
-      delete node;
-    }
-    delete slot;
-  }
-  SetPixMapHandle(nullptr);
-  blitSurface.pixelBits = 0;
-  blitSurface.stride = 0;
-  blitSurface.pad06 = 0;
-  blitSurface.surfaceDib = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00496090

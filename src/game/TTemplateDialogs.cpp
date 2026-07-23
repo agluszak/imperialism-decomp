@@ -1,4 +1,4 @@
-#include "game/TC2TemplateDialog.h"
+#include "game/TTemplateDialogs.h"
 
 #include "game/CDib.h"
 #include "game/CDibPal.h"

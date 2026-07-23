@@ -2,7 +2,7 @@
 
 #include "game/TRadioTextCluster.h"
 #include "game/TRadioText.h"
-#include "game/TC2TemplateDialog.h"
+#include "game/TTemplateDialogs.h"
 #include "game/TAssetMgr.h"
 #include "game/TEditText.h"
 #include "game/TJoinSelectorDialog.h"

@@ -1,5 +1,5 @@
 #include "game/TViewMgr.h"
-#include "game/TC2TemplateDialog.h"
+#include "game/TTemplateDialogs.h"
 #include "game/TEventHandler.h"
 
 #include "game/TDealBookPicture.h"

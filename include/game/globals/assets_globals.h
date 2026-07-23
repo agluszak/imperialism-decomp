@@ -4,7 +4,7 @@
 // assignment evidence: docs/reference/subsystem_assignment.csv.
 #include "game/globals/prelude.h"
 
-// CD-audio MCI device singleton (see game/cd_audio.h).
+// CD-audio MCI device singleton (see game/TCdAudioDevice.h).
 extern TCdAudioDevice g_cdAudioDevice; // 0x006a60bc
 
 // Audio timer-slot registry (see game/timer_slots.h): 10 callbacks + 10 live timer ids.

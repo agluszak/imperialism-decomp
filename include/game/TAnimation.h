@@ -34,6 +34,4 @@ public:
                            int ticksPerFrame, int tag);
 };
 
-TBitmapResourceLoader** CreateBitmapResourceLoaderHandle(unsigned short resourceId);
-
 ASSERT_SIZE(TAnimation, 0x2c);

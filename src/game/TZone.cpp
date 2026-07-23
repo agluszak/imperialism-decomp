@@ -483,6 +483,89 @@ void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int
                                        -kMapTileActionStateZoneNorthEastMarkerFrame);
 }
 
+// 0x00564570 (FindMapActionContextContainingNodeByIndex) is a real TOcean __thiscall
+// method; body lives in TOcean.cpp.
+
+// FUNCTION: IMPERIALISM 0x0055fc40
+void TZone::HandleKeyDown(int key_id) {
+  short sVarSlotId;
+  short sVarActiveSlot;
+  TShip* pvNode;
+  int nSlotsRemaining;
+  bool bSlotIsActive;
+  unsigned int uSlotIndex;
+  unsigned int uSlotCountLocal;
+  Province** piSlotEntry;
+  Province** slotTable = secondaryNeighbors.Data();
+  unsigned int slotCount = static_cast<unsigned int>(secondaryNeighbors.GetSize());
+
+  if ((nationKeyMask10 & (1U << ((unsigned char)key_id & 0x1f))) == 0) {
+    nationKeyMask10 =
+        static_cast<unsigned short>(nationKeyMask10 | (1U << ((unsigned char)key_id & 0x1f)));
+    sVarSlotId = g_pSimMgr->GetActiveNationId();
+
+    if ((nationKeyMask10 & (1U << ((unsigned char)sVarSlotId & 0x1f))) == 0) {
+      uSlotCountLocal = slotCount;
+      uSlotIndex = 0;
+      if (uSlotCountLocal != 0) {
+        do {
+          if (uSlotIndex < uSlotCountLocal) {
+            piSlotEntry = slotTable + static_cast<int>(uSlotIndex);
+          } else {
+            piSlotEntry = 0;
+          }
+          if ((*piSlotEntry)->ownerNationCode00 == static_cast<char>(sVarSlotId)) {
+            goto LAB_0055fcae;
+          }
+          uSlotIndex = uSlotIndex + 1;
+        } while (uSlotIndex < uSlotCountLocal);
+      }
+      bSlotIsActive = false;
+    } else {
+    LAB_0055fcae:
+      bSlotIsActive = true;
+    }
+
+    if (bSlotIsActive) {
+      if (sVarSlotId == static_cast<short>(key_id)) {
+        SetMapOrderUiFlag(1);
+        key_id = sVarSlotId + 1;
+        nSlotsRemaining = 6;
+        do {
+          if ((nationKeyMask10 & (1U << ((unsigned char)(key_id % 7) & 0x1f))) != 0) {
+            sVarSlotId = GetActiveNationSlotTile();
+            SetMapTileStateByteAndNotifyObserver(sVarSlotId,
+                                                 key_id % 7 + kMapTileActionStateNationOrderFirst);
+            g_pGlobalMapState->terrainStateTable[sVarSlotId].tileActionOrdinal1a = -1;
+          }
+          key_id = key_id + 1;
+          nSlotsRemaining = nSlotsRemaining - 1;
+        } while (nSlotsRemaining != 0);
+      } else {
+        sVarSlotId = GetActiveNationSlotTile();
+        SetMapTileStateByteAndNotifyObserver(sVarSlotId, kMapTileActionStateNationOrderFirst);
+        g_pGlobalMapState->terrainStateTable[sVarSlotId].tileActionOrdinal1a = -1;
+      }
+    }
+  }
+
+  sVarActiveSlot = g_pSimMgr->GetActiveNationId();
+  if (sVarActiveSlot == -1) {
+    sVarActiveSlot = g_pSimMgr->GetActiveNationId();
+  }
+
+  if ((nationKeyMask10 & (1U << ((unsigned char)sVarActiveSlot & 0x1f))) != 0) {
+    for (pvNode = TShip::GetFirst(); pvNode != 0; pvNode = pvNode->next) {
+      if (((pvNode->location == this) && (pvNode->nation == sVarActiveSlot)) &&
+          (pvNode->taskForce == 0)) {
+        SetMapOrderUiFlag(1);
+        return;
+      }
+    }
+  }
+  SetMapOrderUiFlag(0);
+}
+
 // FUNCTION: IMPERIALISM 0x0055fe60
 short TZone::FindNearestActiveSeaContextTileFromOffset216() {
   short stepSign = 1;
@@ -1055,11 +1138,6 @@ TZone* TZone::GetNextPortZone() {
   return cursor;
 }
 
-// PortZone vtable bodies (0x005616c0..0x00561e40) live in TPortZone.cpp.
-
-// SYNTHETIC: IMPERIALISM 0x00562880
-// TZone::`vector deleting destructor'
-
 // Unlinks this zone from g_pMapActionContextListHead (via prev18/next1c); member
 // teardown (secondaryNeighbors, primaryNeighbors, displayName) happens automatically in
 // reverse declaration order. Ground truth for this function is reached via the vector
@@ -1080,6 +1158,11 @@ TZone::~TZone() {
   next1c = 0;
   prev18 = 0;
 }
+
+// PortZone vtable bodies (0x005616c0..0x00561e40) live in TPortZone.cpp.
+
+// SYNTHETIC: IMPERIALISM 0x00562880
+// TZone::`vector deleting destructor'
 
 // Reseeds the zone status-code PRNG from a hash of the scenario tag string (falling back
 // to the wall clock when the tag hashes to zero), then walks the whole map-action-context
@@ -1267,6 +1350,3 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
     }
   }
 }
-
-// 0x00564570 (FindMapActionContextContainingNodeByIndex) is a real TOcean __thiscall
-// method; body lives in TOcean.cpp.
