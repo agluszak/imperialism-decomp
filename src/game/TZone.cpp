@@ -690,14 +690,14 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
 }
 
 // FUNCTION: IMPERIALISM 0x00560580
-void TZone::SetMapOrderUiFlag(int flag) {
+void TZone::SetMapOrderUiFlag(bool flag) {
   unsigned char tileStateByte =
       g_pGlobalMapState->terrainStateTable[activeTileIndex20].tileActionState16;
-  if (((static_cast<unsigned char>(flag != 0) !=
+  if (((static_cast<unsigned char>(flag) !=
         static_cast<unsigned char>(static_cast<signed char>(tileStateByte) < 0 ? 1 : 0)) &&
        (g_pUiRuntimeContext != 0)) &&
       (g_pUiRuntimeContext->mapUberPictureF0 != 0)) {
-    char sign = static_cast<char>((-(static_cast<int>(flag != 0)) & 2) - 1);
+    char sign = static_cast<char>((-(static_cast<int>(flag)) & 2) - 1);
     if (QueryPortZoneCapability() != 0) {
       SetMapTileStateByteAndNotifyObserver(
           activeTileIndex20, static_cast<int>(sign) * kMapTileActionStatePortZoneMarkerFrame);

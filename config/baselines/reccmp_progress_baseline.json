@@ -1,5 +1,5 @@
 {
-  "avg_matching_pct": 74.62301815873194,
+  "avg_matching_pct": 74.62737261913702,
   "compared_fun_count": 7574,
   "coverage_pct": 97.1025641025641,
   "dat_orig_only_count": 1600,
@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
-  "git_branch": "agent/source-debt-batch-97d",
-  "git_commit": "b95e567c2004d7a571b1f54752e82923e8c4e39e",
-  "git_commit_date": "2026-07-23T01:48:33+02:00",
+  "git_branch": "main",
+  "git_commit": "d1bb5c7135cba96b7a19913b8fe216df0f99e8cc",
+  "git_commit_date": "2026-07-23T02:38:58+02:00",
   "global_coverage_pct": 24.46082949308756,
   "global_orig_only_count": 8196,
   "global_recomp_only_count": 7631,
@@ -58,11 +58,11 @@
   "recompiled_wid_count": 2,
   "str_orig_only_count": 208,
   "str_recomp_only_count": 162,
-  "stub_count": 753,
+  "stub_count": 750,
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-23T00:34:07+00:00",
+  "timestamp_utc": "2026-07-23T01:03:26+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }

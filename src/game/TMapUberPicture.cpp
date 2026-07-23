@@ -680,7 +680,7 @@ void TMapUberPicture::SetUpperLeft(int tileX, int tileY) {
 
 // FUNCTION: IMPERIALISM 0x00598a20
 void TMapUberPicture::NoticeTile(int tileIndex) {
-  this->subviewAc->OrphanCallChain_C6_I29_00596700(tileIndex);
+  this->subviewAc->NoticeTile(tileIndex);
 }
 
 // Windows uses the Mac MapView.rsrc:9462 "Navy Maker II" tree for this dialog.

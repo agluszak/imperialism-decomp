@@ -776,8 +776,8 @@ void TOcean::RemovePortZoneByTile(short nTileIndex) {
 // tile, and clears this manager's cached selected task force if it pointed at the entry.
 // FUNCTION: IMPERIALISM 0x005642e0
 void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
-  // entry->nation (+0x1c) holds this entry's owner-nation slot here.
-  if (g_pSimMgr->GetActiveNationId() != entry->nation) {
+  short entryNation = entry->nation;
+  if (entryNation != g_pSimMgr->GetActiveNationId()) {
     return;
   }
   entry->CreateIngot();
@@ -785,15 +785,15 @@ void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
   // location (+0x18) is the entry's owning map-order zone (see the TZone casts in
   // TNavyMgr/TToolBarCluster); slot 0x58 is TZone::SetMapOrderUiFlag.
   TZone* zone = entry->location;
-  short nation = g_pSimMgr->GetActiveNationId();
+  int nation = g_pSimMgr->GetActiveNationId();
   if (nation == -1) {
     nation = g_pSimMgr->GetActiveNationId();
   }
-  int hasPendingNode = 0;
-  if ((zone->nationKeyMask10 & static_cast<unsigned char>(1 << (nation & 0x1f))) != 0) {
+  bool hasPendingNode = false;
+  if ((zone->nationKeyMask10 & static_cast<unsigned char>(1 << nation)) != 0) {
     for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
       if (node->location == zone && node->nation == nation && node->taskForce == nullptr) {
-        hasPendingNode = 1;
+        hasPendingNode = true;
         break;
       }
     }

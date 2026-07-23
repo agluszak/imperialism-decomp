@@ -5896,7 +5896,7 @@ TWorldView::SetMapViewCellCoordinates 596680 f
 TWorldView::SetMapViewTileIndex 5966A0 f
 TWorldView::OrphanRetStub_005966c0 5966C0 f
 TWorldView::OrphanLeaf_NoCall_Ins02_005966e0 5966E0 f
-TWorldView::OrphanCallChain_C6_I29_00596700 596700 f
+TWorldView::NoticeTile 596700 f
 TMapUberUberPicture::CreateObject 596770 f
 TMapUberUberPicture::GetRuntimeClass 5967F0 f
 TMapUberUberPicture::DoPostCreate 596810 f

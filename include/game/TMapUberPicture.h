@@ -33,7 +33,7 @@ public:
   // Mac CodeWarrior identities for the navigation/redraw virtuals. Each forwards to the
   // active land/ocean map view and keeps the land cache or mini-map in sync.
   virtual void RedrawTile(short tileIndex); // slot 0x77 0x5988c0
-  // Windows consumes promoted stack dwords at these virtual boundaries.
+  // CenterOn/SetUpperLeft consume promoted stack dwords at these virtual boundaries.
   virtual void CenterOn(int tileIndex);                                   // slot 0x78 0x598990
   virtual void SetUpperLeft(int tileX, int tileY);                        // slot 0x79 0x5989d0
   virtual void NoticeTile(int tileIndex);                                 // slot 0x7a 0x598a20

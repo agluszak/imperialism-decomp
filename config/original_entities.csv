@@ -5221,7 +5221,7 @@ address|name|symbol|size|type|prototype|provenance
 5966a0|TWorldView::SetMapViewTileIndex||3|function|undefined OrphanRetStub_005966a0(void)|
 5966c0|TWorldView::RefreshMapTile||3|function|void __thiscall RefreshMapTile(short tileIndex)|
 5966e0|TWorldView::IsTileVisible||5|function|unsigned char __thiscall IsTileVisible(short tileIndex)|
-596700|TWorldView::OrphanCallChain_C6_I29_00596700||74|function|undefined OrphanCallChain_C6_I29_00596700(void)|
+596700|TWorldView::NoticeTile||74|function|undefined NoticeTile(void)|
 596770|TMapUberUberPicture::CreateObject|?CreateObject@TMapUberUberPicture@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 5967f0|TMapUberUberPicture::GetRuntimeClass||6|function|undefined GetTMapUberUberPictureClassNamePointer()|rtti
 596810|TMapUberUberPicture::DoPostCreate||25|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|

@@ -4166,7 +4166,7 @@ address|matching|name
 0x55ff70|0.39655172413793105|TZone::ScoreCoastalTileForContextAndCityStateAffinity
 0x560150|0.5263157894736842|TZone::FindBestCoastalTileForContextAndCityStateByHeuristic
 0x560470|0.5373134328358209|TMapMgr::AdvanceSpiralSearchStateAndStepHexCoordinates
-0x560580|0.3|TZone::SetMapOrderUiFlag
+0x560580|0.40404040404040403|TZone::SetMapOrderUiFlag
 0x5606f0|0.44776119402985076|TZone::BuildNavalIntelligenceSourceDescription
 0x560970|0.8|TZone::FindReportingAdmiralForNation
 0x5609e0|0.9863013698630136|TZone::CreateTaskForceFromNavyOrdersForNationIfEligible
@@ -4213,7 +4213,7 @@ address|matching|name
 0x562af0|0.738255033557047|RelaxMapTileCostFieldByNeighborTerrain
 0x562c00|0.5803108808290155|SelectBestSeedTileForNationFromCostField
 0x562d90|0.7623762376237624|TOcean::InitializeMapActionContextsForNationCountUsingCostField
-0x562f20|0.514745308310992|TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks
+0x562f20|0.512|TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks
 0x563220|1.0|RegenerateAllMapActionContextStatusCodes
 0x563300|1.0|TOcean::GetMapActionContextEntryByNationCodeOffset17
 0x563330|1.0|TOcean::GetMapActionContextEntryByIndex
@@ -4227,8 +4227,8 @@ address|matching|name
 0x563da0|0.5152838427947598|PopulatePortZoneAdjacencyToNearbyCityContexts
 0x563f50|0.5491183879093199|RefreshPortZoneNeighborContextLinksAndFallbacks
 0x564240|0.6136363636363636|TOcean::RemovePortZoneByTile
-0x5642e0|0.6277372262773723|TOcean::FinalizeQueuedMapOrderEntry
-0x564400|0.46774193548387094|TOcean::ForgetForce
+0x5642e0|0.8115942028985508|TOcean::FinalizeQueuedMapOrderEntry
+0x564400|0.512396694214876|TOcean::ForgetForce
 0x564530|1.0|TOcean::ComputeGlobalMapActionContextNodeValueAverage
 0x564570|1.0|TOcean::FindMapActionContextContainingNodeByIndex
 0x564600|1.0|TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh
@@ -5101,7 +5101,7 @@ address|matching|name
 0x5966a0|1.0|TWorldView::SetMapViewTileIndex
 0x5966c0|1.0|TWorldView::RefreshMapTile
 0x5966e0|1.0|TWorldView::IsTileVisible
-0x596700|1.0|TWorldView::OrphanCallChain_C6_I29_00596700
+0x596700|1.0|TWorldView::NoticeTile
 0x596770|0.4897959183673469|TMapUberUberPicture::CreateObject
 0x5967f0|1.0|TMapUberUberPicture::GetRuntimeClass
 0x596810|1.0|TMapUberUberPicture::DoPostCreate

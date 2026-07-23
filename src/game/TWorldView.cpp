@@ -658,11 +658,11 @@ unsigned char TWorldView::IsTileVisible(short tileIndex) {
 // base, filled by derived views); the static_cast down to TWorldView selects that slot
 // and compiles to the identical `call [vtable+0x1d8]`.
 // FUNCTION: IMPERIALISM 0x00596700
-void TWorldView::OrphanCallChain_C6_I29_00596700(int arg1) {
-  if (IsTileVisible(static_cast<short>(arg1)) == 0) {
-    CenterOn(arg1);
+void TWorldView::NoticeTile(int tileIndex) {
+  if (IsTileVisible(static_cast<short>(tileIndex)) == 0) {
+    CenterOn(tileIndex);
   }
-  static_cast<TWorldView*>(ownerContext)->CenterOn(arg1);
+  static_cast<TWorldView*>(ownerContext)->CenterOn(tileIndex);
   GetWindow()->ForceRedraw();
   WaitForSixteenthSecondTicks(0x1e);
 }
