@@ -35,7 +35,9 @@ has its own gate today or is blocked on another bead):
   (6) `// slot ... inherited unchanged` listing comments — already enforced by
       `just generated-marker-gate`, so not duplicated here.
 
-File-size limits, per the bead, would be WARNINGS only and never hard failures.
+File-size limits are WARNINGS only and never hard failures: TUs over
+SIZE_WARN_LINES lines are listed informationally (split candidates tracked in
+8mo.15), with no effect on the exit code.
 """
 
 from __future__ import annotations
@@ -134,6 +136,8 @@ def is_annotation_only_tu(text: str) -> bool:
     return True
 
 
+SIZE_WARN_LINES = 2000
+
 STRUCT_DEF_RE = re.compile(r"^(?:typedef\s+)?struct\s+(\w+)\s*(?::[^{;]*)?\{", re.M)
 
 
@@ -200,6 +204,18 @@ def main() -> int:
         annotation_offenders,
         twin_offenders,
     ) = collect_offenders(args.paths, repo_root)
+
+    # Size WARNINGS (never affect the exit code; split candidates live in 8mo.15).
+    oversized = []
+    for path in iter_files(args.paths):
+        if path.suffix == ".cpp":
+            lines = path.read_bytes().count(b"\n")
+            if lines > SIZE_WARN_LINES:
+                oversized.append((lines, normalize_repo_relative_path(path, repo_root)))
+    if oversized:
+        print(f"warning: {len(oversized)} TUs exceed {SIZE_WARN_LINES} lines (informational):")
+        for lines, rel in sorted(oversized, reverse=True):
+            print(f"    {lines:6d}  {rel}")
 
     if not any(
         (dup_offenders, crlf_offenders, alias_offenders, annotation_offenders, twin_offenders)
