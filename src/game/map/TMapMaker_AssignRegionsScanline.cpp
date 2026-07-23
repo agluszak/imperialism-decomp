@@ -98,7 +98,7 @@ void TMapMaker::AssignCityRegionIdsFromOverlayScanlineIntersections() {
               best->ExtractWrappedEndpoint(endpoint, '\0');
               MapEdgePoint bestEnd = {endpoint[0], endpoint[1]};
               if (curEnd.Equals(&bestEnd) == 0) {
-                if (DAT_006a3910 == 0) {
+                if (g_bOverlayScanlineFillAssertSuppressed == 0) {
                   TemporarilyClearAndRestoreUiInvalidationFlag(kUMapperPath, 0xda1);
                 }
               } else if (static_cast<unsigned short>(best->angle14) <

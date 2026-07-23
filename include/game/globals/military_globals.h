@@ -6,7 +6,8 @@
 
 // Per-subsystem VPoint equivalents passed to the ModalMessage overloads. The Mac
 // signatures provide the semantic type; Windows stores them as zero-initialized POINTs.
-extern POINT g_ptArmyOrderModalMessage; // @ 0x6a2318
+extern POINT g_ptArmyOrderModalMessage;      // @ 0x6a2318
+extern POINT g_ptArmyValidationModalMessage; // @ 0x6a2288
 
 extern short g_MapOrderResourceRollWeightTable_0064c5d8[6][6];
 

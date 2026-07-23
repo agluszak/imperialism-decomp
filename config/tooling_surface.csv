@@ -21,6 +21,7 @@ module|tools.workflow.check_geometry_types|just:geometry-type-gate|Enforce recov
 module|tools.workflow.check_vtable_annotations|just:vtable-annotation-gate|Vtable annotation adjacency gate
 module|tools.workflow.check_vtable_address_collisions|just:vtable-collision-gate|Vtable/data address collision gate
 module|tools.workflow.check_synthetic_names|just:synthetic-gate|Synthetic symbol/source name agreement gate
+module|tools.workflow.check_destructor_placement|just:destructor-placement-gate|Destructor declaration/definition placement gate
 module|tools.workflow.check_symbols_anchors|just:symbols-anchor-gate|Sanity-check reccmp-critical original_entities.csv rows after an inventory refresh
 module|tools.workflow.normalize_reccmp_markers|just:normalize-markers|Marker normalization utility
 module|tools.workflow.check_marker_hygiene|just:marker-gate|Marker hygiene gate (Hard Rules 3 and 4)

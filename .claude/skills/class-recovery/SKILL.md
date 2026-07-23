@@ -137,3 +137,47 @@ DATA symbol the C++ vtable resolves to, and re-verify the whole family +
 `just stats` (it touches ~20 already-100% functions). See decomp-loop/heuristics.md
 (vtable pairing infrastructure) and `ctors-dtors-eh` (scalar deleting destructors)
 for the ctor vtable-pairing and scalar-deleting-destructor recipes.
+
+## Naming a runtime-resolved dialog control: the Mac resource oracle
+
+A very common blocker looks like this in source: a control is fetched at runtime
+(`node->ResolveControlByTag('DLOG')`, `activeDialog->ResolveControlByTag('main')`),
+the caller dispatches one of its vtable slots, and nobody knows the concrete class —
+so a provisional façade struct gets invented with `slotNN()` padding methods just to
+reach the right byte offset.
+
+`vendor/macos_codewarrior/evidence/resources/widgets.csv` answers this directly. It
+lists, per dialog view, every child widget with its **tag** and its **CodeWarrior class
+name**:
+
+```sh
+# columns: resource_file,view_id,view_id_hex,view_name,offset,depth,
+#          parent_offset,parent_tag,type_code,class_name,tag
+awk -F, '$3=="0x0bc4" && $11=="DLOG"' vendor/macos_codewarrior/evidence/resources/widgets.csv
+# -> MapView.rsrc,3012,0x0bc4,Civilian info,...,pict,TCivReport,DLOG
+```
+
+The `view_id_hex` column is the same event code the Windows side passes to
+`ResolveTurnEventDialogNodeByMessageContext`, so a call site's dialog id maps straight
+to the control class. `config/ui_factory_codegen.yml` records the event→resource pairs
+the Windows factories use when the ids differ.
+
+In practice the named class is usually **already recovered** in `include/game/`, and its
+slot at the dispatched byte offset is already declared — the façade was never needed.
+Recoveries done this way: `TCivReport` (3012), `TArmyInfoView` (3100),
+`TCombatReportView` (1350), `TPlaceCityDialog` (953), `TMadnessButton` (1510 box0..box6).
+
+Two cautions:
+
+- **One façade often conflates several classes.** The same tag in different dialogs is a
+  different class (`GoldSinglePayloadControl` was `TPlaceCityDialog::StuffValues(TTown*)`
+  at one call site and `TOffLimitsPicture::ForwardCopyRgn(RgnHandle)` at another). Resolve
+  per call site, by that site's dialog id — never assign one caller's class to all of them.
+- **Slots below the subclass's own range belong to the base.** Before inventing
+  `slot0x71`/`slot0x72` padding, check the base: bytes 0x1c4/0x1c8 on a picture control are
+  `TPicture::ResetPictureResourceEntry` / `SetPictureResourceIdAndRefresh`, and 0x1d4/0x1d8
+  on a check-box control are `TCzechBox::SetState` / `CheckTheLook`. Matching the arguments
+  at the call site against the base's real signature confirms it.
+
+Receivers resolved from `g_pDisplayMgr->activeDialog` (whatever dialog is open) are the
+genuine exception: those need a recovered shared base, not a per-view lookup.

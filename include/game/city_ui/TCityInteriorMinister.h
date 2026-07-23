@@ -34,8 +34,8 @@ public:
   // PretendToEat substitution/starvation pair, else cityStockSteelCC/cityStockLumberC8/
   // cityStockCannedFoodC4 vs TPopulationMgr::populationCount08) and reports it via
   // SetInteriorMinisterBid, unless no condition qualified.
-  virtual undefined EvaluateCityShortagesAndNotifyForeignMinister(TCity* city); // slot 0x21
-                                                                                // 0x4bf8a0
+  virtual void EvaluateCityShortagesAndNotifyForeignMinister(TCity* city); // slot 0x21
+                                                                           // 0x4bf8a0
   // Dispatches production-order-queueing helpers for `city`: exactly one of
   // QueueCityProductionCommand17Or18FromSupportRatio (lowProductionFlag7c set,
   // lowStockFlag7d clear) / DistributeCityProductionCommandBudgetAndQueueOrders
@@ -114,9 +114,9 @@ public:
   virtual void FillRemainingNeedCapacityAndReducePowerPlantOrder();        // slot 0x45 0x4c4e60
   virtual short RequestResource(short resourceType, short requestedAmount,
                                 short flags); // slot 0x46 0x4c4fe0; Mac oracle
-  virtual undefined SeekResources(TShortintList* ownedTiles,
-                                  char* primaryDistanceMap); // slot 0x47 0x4c5240
-  void DispatchBuilders();                                   // 0x4c1990
+  virtual void SeekResources(TShortintList* ownedTiles,
+                             char* primaryDistanceMap); // slot 0x47 0x4c5240
+  void DispatchBuilders();                              // 0x4c1990
   TCityInteriorMinister();
   // 0x4be8d0: allocate and reset this minister's city-policy state -- the interior-minister
   // analogue of TForeignMinister::InitializeStateAndCounters(owner). Links the base order

@@ -67,9 +67,8 @@ void TItemBoyView::DrawItemHeaderAndIconRows(CString* header) {
       UpdatePaletteIndexWithDefaultFallback(0x10);
       // Item icon strip is cached at a different TMacViewMgr slot (+0x674) than the
       // Army/Navy boy views' level-icon strip (+0x694).
-      TQuickDrawBlitSurface* iconStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
-          *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x674) +
-          4);
+      TQuickDrawBlitSurface* iconStripSurface =
+          g_pStrategicMapViewSystem->atlas674->GetBlitSurface();
       BlitRectWithOptionalTransparency(iconStripSurface,
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                        &dstRect, 0x24, 0);

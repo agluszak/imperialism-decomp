@@ -4,7 +4,8 @@
 // assignment evidence: docs/reference/subsystem_assignment.csv.
 #include "game/globals/prelude.h"
 
-extern POINT g_ptDiplomacyNoticeModalMessage; // @ 0x6a2fc0
+extern POINT g_ptDiplomacyNoticeModalMessage;                    // @ 0x6a2fc0
+extern "C" const unsigned int g_aDiplomacyActionTopicTabTags[6]; // @ 0x696978
 
 extern short g_awDiplomacyTradePolicyIconValueTable[7];
 

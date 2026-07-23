@@ -1,4 +1,10 @@
 #include "game/ui_core/TEditText.h"
+#include "game/ui_core/quickdraw_rendering.h"
+#include "game/gfx/ui_invalidation_guard.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
+#include "game/globals/ui_core_globals.h"
+#include <mbstring.h>
 #include "game/ui_core/CMcWindow.h"
 #include "game/app/TObject.h"
 // SYNTHETIC: IMPERIALISM 0x00490210
@@ -48,12 +54,8 @@ void TEditText::Close() {
 
 // FUNCTION: IMPERIALISM 0x004906a0
 void TEditText::Draw(RECT* rectBuffer) {
-  // The retail body calls Open() (which lazily constructs the
-  // live-edit CWnd into editWindow the first time this control paints) and falls back to
-  // the static text draw only while that CWnd doesn't exist yet. Open
-  // itself is still a stub (pending the real CWnd/dialog-template machinery), so editWindow
-  // never gets constructed here -- this always takes the static-text fallback for now, which
-  // is still strictly better than drawing nothing.
+  // Open() lazily creates the live edit control the first time this paints; the static
+  // text draw is only the fallback for a control that cannot host one.
   if (Open() == nullptr) {
     TStaticText::Draw(rectBuffer);
   }
@@ -91,9 +93,43 @@ void TEditText::SetEnabled(int enabledState, int refreshFlag) {
 
 // FUNCTION: IMPERIALISM 0x004907a0
 CMcWindow* TEditText::Open() {
-  // The retail body constructs the live edit CWnd (editWindow) on demand through a
-  // modal-dialog-style CreateWindowEx path when nativeWindow50, field04, and controlTag/field50
-  // preconditions hold. It remains unported pending the real CWnd/dialog-template machinery.
+  if (editWindow == 0 && field08 != 0 && field04 != 0 && nativeWindow50 != 0) {
+    editWindow = new CMcWindow;
+    if (editWindow == 0) {
+      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0xdee);
+    }
+
+    // ES_LEFT / ES_CENTER / ES_RIGHT follow the static text's own alignment code.
+    DWORD editStyle = 0x44010004;
+    if (textAlignmentCode == -1) {
+      editStyle = 0x44010006;
+    } else if (textAlignmentCode == 1) {
+      editStyle = 0x44010005;
+    }
+    editStyle |= WS_BORDER;
+    if (IsActionable()) {
+      editStyle |= WS_VISIBLE;
+    }
+    if (IsEnabled() == 0) {
+      editStyle |= WS_DISABLED;
+    }
+
+    CRect editBounds;
+    editWindow->Create("EDIT", 0, editStyle, *GetQDExtent(&editBounds), nativeWindow50,
+                       static_cast<UINT>(controlTag));
+
+    editFont = CreateFontFromPresetAndAttachRegionHandle(&textStyle78);
+    ::SendMessageA(editWindow->m_hWnd, WM_SETFONT,
+                   reinterpret_cast<WPARAM>(editFont != 0 ? editFont->m_hObject : 0), 0);
+    if (text != 0 && text->GetLength() != 0) {
+      editWindow->SetWindowText(*text);
+    }
+    editWindow->ModifyStyleEx(0, WS_EX_CLIENTEDGE, 0);
+    nativeWindow50->ModifyStyle(WS_CLIPCHILDREN, 0, 0);
+    ::SetWindowLongA(editWindow->m_hWnd, GWL_USERDATA, reinterpret_cast<LONG>(this));
+    ::SendMessageA(editWindow->m_hWnd, EM_LIMITTEXT, maxCharacterCount, 0);
+  }
   return editWindow;
 }
 
@@ -132,13 +168,11 @@ void TEditText::Free() {
 
 // FUNCTION: IMPERIALISM 0x00490bc0
 char TEditText::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
-  // The retail body forwards to the base TView mouse-down dispatch and, on success, fires a
-  // command event through a receiver/slot that is not yet recovered. This fallback remains an
-  // incomplete stub rather than guessing that dispatch.
-  (void)point;
-  (void)event;
-  (void)origin;
-  return 0;
+  if (TView::HandleMouseDown(point, event, origin) == 0) {
+    return 0;
+  }
+  HandleEvent(eventNumber60, this, 0);
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00490c10
@@ -175,12 +209,21 @@ void TEditText::SetTextAlignmentAndMaybeRefresh(short alignmentCode, char refres
 
 // FUNCTION: IMPERIALISM 0x00490cf0
 void TEditText::InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refreshFlag) {
-  // The retail body truncates *newText to maxCharacterCount, then either updates the live edit
-  // window or
-  // compares against the cached text and refreshes on change. The live/cached branch depends on
-  // Open(), so this body remains incomplete.
-  (void)newText;
-  (void)refreshFlag;
+  CString clampedText(*newText);
+  if (clampedText.GetLength() > maxCharacterCount) {
+    clampedText = clampedText.Left(maxCharacterCount);
+  }
+  if (Open() != 0) {
+    editWindow->SetWindowText(clampedText);
+    return;
+  }
+  if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(*text)),
+              reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(clampedText))) != 0) {
+    *text = clampedText;
+    if (static_cast<char>(refreshFlag) != 0) {
+      RefreshControl();
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00490e50

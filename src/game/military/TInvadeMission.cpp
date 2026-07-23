@@ -172,12 +172,9 @@ void TInvadeMission::GiveOrders() {
   if (beachhead34 != nullptr) {
     beachhead34->GiveOrders();
   }
-  // Per-region, per-nation dispatch-dirty bitmask gate (byte at record+0xa1,
-  // bit index nationId04) -- pending exact Province field
-  // recovery for that byte; approximated via raw offset access for now.
-  const unsigned char* recordBytes =
-      reinterpret_cast<const unsigned char*>(&g_pGlobalMapState->cityScoreTable[targetProvince30]);
-  if (recordBytes[0xa1] & (1 << (nationId04 & 0x1f))) {
+  // Per-region, per-nation dispatch-dirty bitmask gate.
+  if (g_pGlobalMapState->cityScoreTable[targetProvince30].exploredByNationMaskA1 &
+      (1 << (nationId04 & 0x1f))) {
     TAttackProvinceMission::GiveOrders();
   }
 }

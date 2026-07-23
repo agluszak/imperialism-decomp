@@ -373,8 +373,36 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
 }
 
 // FUNCTION: IMPERIALISM 0x0050f200
-undefined TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
-  return 0;
+void TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
+  CString streamName;
+  streamName = "political.map";
+  CFile* stream = g_pUiViewManager->LoadTableResourceStreamByName(streamName);
+  unsigned char* politicalCodes = new unsigned char[0x1950];
+  int byteCount = 0x1950;
+  g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(stream, politicalCodes, &byteCount);
+  g_pUiViewManager->ReleaseResourceStreamIfNotNull(stream);
+
+  int tileIndex = 0;
+  for (int recordOffset = 0; recordOffset < 0x38f40; recordOffset += 0x24) {
+    short politicalCode = politicalCodes[tileIndex];
+    if (politicalCode >= 0x17) {
+      terrainStateTable[tileIndex].ownerNationTag04 = static_cast<signed char>(politicalCode);
+      terrainStateTable[tileIndex].formerOwnerNationTag03 = static_cast<signed char>(politicalCode);
+      terrainStateTable[tileIndex].SetTerrainKind(kStrategicTerrainWater);
+    } else {
+      terrainStateTable[tileIndex].SetTerrainKind(kStrategicTerrainPlains);
+      terrainStateTable[tileIndex].gateFlag =
+          static_cast<signed char>(ResolveRegionTileSubtypeCodeForTileIndex(tileIndex));
+      terrainStateTable[tileIndex].formerOwnerNationTag03 = static_cast<signed char>(politicalCode);
+      terrainStateTable[tileIndex].ownerNationTag04 = static_cast<signed char>(politicalCode);
+      if (politicalCode < 7) {
+        terrainStateTable[tileIndex].cityRecordIndex = static_cast<short>(politicalCode << 5);
+      } else {
+        terrainStateTable[tileIndex].cityRecordIndex = static_cast<short>(politicalCode * 8 + 0xa8);
+      }
+    }
+    ++tileIndex;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0050f6b0
@@ -3635,12 +3663,12 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
 
 // FUNCTION: IMPERIALISM 0x00518470
 void TMapMgr::ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot) {
-  signed char* tileBase = tileOwnershipTable;
-  signed char* tagCursor = tileBase + 4;
+  signed char* tagCursor = &terrainStateTable->ownerNationTag04;
   int tileIndex = 0;
   do {
     if (*tagCursor >= 7 && *tagCursor <= 0x16) {
-      signed char* ownerByte = tileOwnershipTable + static_cast<short>(tileIndex) * 0x24 + 0x18;
+      signed char* ownerByte =
+          &terrainStateTable[static_cast<short>(tileIndex)].secondaryOwnerNationTag18;
       if (*ownerByte == nationSlot) {
         *ownerByte = -1;
       }
@@ -3720,6 +3748,28 @@ char TMapMgr::LoadScenarioMapStateFromTableResource(int scenarioIndex) {
     }
   }
   return 1;
+}
+
+// Byte-swaps the three 16-bit fields inside each of the 0x1950 scenario tile records
+// (Mac-endian on disk) and clears the dword at record+0x5.
+// FUNCTION: IMPERIALISM 0x005187f0
+void ByteSwapScenarioTileRecordWords(char* tileRecords) {
+  char* record = tileRecords + 0x1b;
+  int remaining = 0x1950;
+  do {
+    char low = record[-7];
+    record[-7] = record[-6];
+    record[-6] = low;
+    low = record[-1];
+    record[-1] = record[0];
+    record[0] = low;
+    low = record[1];
+    record[1] = record[2];
+    record[2] = low;
+    *reinterpret_cast<int*>(record + 5) = 0;
+    record += 0x24;
+    --remaining;
+  } while (remaining != 0);
 }
 
 // Byte-swaps the big-endian short fields of every city-score record after the raw table

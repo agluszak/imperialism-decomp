@@ -9,7 +9,7 @@ public:
   DECLARE_DYNCREATE(TMinorRelationshipDialog)
   virtual ~TMinorRelationshipDialog() override; // slot 0x01 (scalar deleting destructor)
   virtual void Close() override;                // slot 0x28 0x5b3400
-  virtual undefined VTableSlot68();             // slot 0x68 0x5b3570
+  virtual void VTableSlot68();                  // slot 0x68 0x5b3570
 
   TMinorRelationshipDialog();
 };

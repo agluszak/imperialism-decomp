@@ -127,7 +127,7 @@ public:
   // Ground truth (0x542923): the argument is stored raw into the inherited int
   // TEventHandler::field10; every observed caller (0x5818ee, TAmbitApplication init)
   // pushes literal 0 — not a by-value CString as Ghidra guessed.
-  virtual undefined
+  virtual void
   InitializeMultiplayerManagerForSessionContext(int sessionContext); // slot 0x25 0x542900
 
   TMultiplayerMgr();

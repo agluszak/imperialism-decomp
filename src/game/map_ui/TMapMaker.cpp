@@ -1457,12 +1457,13 @@ void TMapMaker::MapGenPassSlot1E() {
 }
 
 // FUNCTION: IMPERIALISM 0x005296a0
-void TMapMaker::CopyRegionTemplateBankWithRandomVariant(int coarseIndex, int arg2, int arg3,
-                                                        int arg4, int arg5) {
-  (void)arg3;
+void TMapMaker::CopyRegionTemplateBankWithRandomVariant(int coarseIndex, short regionClass,
+                                                        short unusedClass, short northClass,
+                                                        short southClass) {
+  (void)unusedClass;
   char* cell = reinterpret_cast<char*>(GetFineGridCellBasePointerFromCoarseIndex(coarseIndex));
 
-  if (static_cast<short>(arg4) == static_cast<short>(arg2)) {
+  if (northClass == regionClass) {
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     if ((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0) {
       memcpy(cell - 0xee8, cell, 0x24);
@@ -1485,23 +1486,24 @@ void TMapMaker::CopyRegionTemplateBankWithRandomVariant(int coarseIndex, int arg
     }
   }
 
-  if (static_cast<short>(arg5) != static_cast<short>(arg2)) {
+  if (southClass != regionClass) {
     memcpy(cell + 0x6c, cell - 0xee8, 0x24);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005297e0
-void TMapMaker::CopyRegionTemplateBankToNeighborCell(int coarseIndex, int arg2, int arg3, int arg4,
-                                                     int arg5) {
-  (void)arg3;
-  (void)arg5;
+void TMapMaker::CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regionClass,
+                                                     short unusedClass, short northClass,
+                                                     short unusedClass2) {
+  (void)unusedClass;
+  (void)unusedClass2;
   int neighbor = GetAdjacentRegionGridCell(coarseIndex, 2);
   char* cell = reinterpret_cast<char*>(GetFineGridCellBasePointerFromCoarseIndex(neighbor));
   char* source = cell - 0xf30;
 
-  if (static_cast<short>(arg4) == static_cast<short>(arg2)) {
+  if (northClass == regionClass) {
     memcpy(cell, source, 0x24);
-  } else if (static_cast<short>(arg2) != 1) {
+  } else if (regionClass != 1) {
     memcpy(cell - 0x24, source, 0x24);
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     if ((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) == 0) {

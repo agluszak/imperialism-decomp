@@ -90,9 +90,11 @@ public:
   // 0x005634a0 — walks g_pMapActionContextListHead for TPortZone tile-id match.
   TZone* FindPortZoneBySelectedTile(TCity* city);
 
-  // bd 1uj.16: final step of TTaskForce::OrderEvade /
-  // OrderSailTowards (0x552f80 / 0x5533f0). Not yet recovered --
-  // body is a documented placeholder; see bd 1uj.16 follow-up notes.
+  // Final step of TTaskForce::OrderEvade / OrderSailTowards (0x552f80 / 0x5533f0):
+  // for an entry owned by the active nation it re-marks the entry's map tile,
+  // lights the owning zone's map-order UI flag iff that nation still has an
+  // unassigned navy-order node on the zone, notifies the map picture's subview of
+  // the tile, and drops the cached selection if it pointed at the entry.
   void FinalizeQueuedMapOrderEntry(TTaskForce* entry); // 0x5642e0
 
   // Mac oracle: TOcean::ForgetForce(TTaskForce*). Clears the selected force and

@@ -1,4 +1,5 @@
 #include "game/tactical/TArmyPlayer.h"
+#include "game/ui_core/TWindow.h"
 #include "game/ui_tags_common.h"
 
 #include <stdlib.h>
@@ -21,8 +22,6 @@
 #include "game/globals/tactical_globals.h"
 #include "game/turn_event_dialog_provisional.h"
 #include "game/gfx/ui_invalidation_guard.h"
-
-using turn_event_dialog::TurnEventDialogNode;
 
 // FUNCTION: IMPERIALISM 0x005362c0
 float __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
@@ -277,8 +276,8 @@ void TArmyPlayer::StartBattle() {
     int opposingNationIndex = opponent->nationIndex1C;
 
     // Battle-intro ("hola") dialog, id 0xf19.
-    TurnEventDialogNode* dialog = static_cast<TurnEventDialogNode*>(
-        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
+    TWindow* dialog =
+        static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
             kTurnEventTacticalDeployChoice));
     if (dialog == 0) {
       FailNilPointerWithAssert(s_SourcePathUTacPlayer_00699D84, 0x18d);
@@ -294,7 +293,7 @@ void TArmyPlayer::StartBattle() {
       holaPicture->ConfigureBattleIntroCoatsAndSiteLabels(
           static_cast<short>(opposingNationIndex), nationIndex1C, 0, battle14->battleSiteIndex38);
     }
-    int resultTag = dialog->RefreshTurnEventDialog();
+    int resultTag = dialog->PoseModally();
     dialog->Close();
     dialog->Free();
     if (resultTag == kControlTagOkay) {
@@ -488,7 +487,7 @@ void TArmyPlayer::DispatchTacticalActionClassSelectionAcrossCursorList() {
 // column distance from the playable-column edge (odd rows shifted half a cell), plus
 // distance from the near board edge, plus 100 when any hex neighbor already holds an
 // artillery-class unit (either side); writes each candidate's score into
-// battle14->tileIntArray2c.
+// battle14->tileCandidateScorePlane2c.
 // FUNCTION: IMPERIALISM 0x0059bfe0
 int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantA() {
   int bestScore = 0;
@@ -523,7 +522,7 @@ int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantA() {
         }
       }
       score += adjacentArtilleryBonus;
-      battle14->tileIntArray2c[tileIndex] = score;
+      battle14->tileCandidateScorePlane2c[tileIndex] = score;
       if (score > bestScore) {
         bestScore = score;
         bestTileIndex = tileIndex;
@@ -1199,7 +1198,7 @@ unsigned char TArmyPlayer::OpponentHasDeployedActiveArtilleryUnit() {
 // Weighted tile chooser for the auto-turn controller: builds the distance field when
 // the advance heuristic (column 8) is weighted, then scores every reachable tile as
 // sum(weight[i] * heuristic[i](unit, tile)), tie-breaking on lower move cost, and
-// writes the per-tile score into battle14->tileIntArray2c.
+// writes the per-tile score into battle14->tileCandidateScorePlane2c.
 // FUNCTION: IMPERIALISM 0x0059d530
 int TArmyPlayer::SelectBestTacticalTileByWeightedHeuristics(TTacticalUnit* unit,
                                                             int* heuristicWeights15) {
@@ -1213,13 +1212,13 @@ int TArmyPlayer::SelectBestTacticalTileByWeightedHeuristics(TTacticalUnit* unit,
   for (TacticalTileIndex tileIndex = 0; tileIndex < battle14->tacticalTileCount3c; ++tileIndex) {
     int column = tileIndex % 29;
     if (battle14->tileMoveCostArray24[tileIndex] == -1) {
-      battle14->tileIntArray2c[tileIndex] = 0;
+      battle14->tileCandidateScorePlane2c[tileIndex] = 0;
       continue;
     }
     if (distanceFieldBuilt == 0) {
       // Without the distance field, never pick the outer edge columns.
       if (column == 0 || column == battle14->battlefieldColumnCount34 - 1) {
-        battle14->tileIntArray2c[tileIndex] = 0;
+        battle14->tileCandidateScorePlane2c[tileIndex] = 0;
         continue;
       }
     }
@@ -1239,7 +1238,7 @@ int TArmyPlayer::SelectBestTacticalTileByWeightedHeuristics(TTacticalUnit* unit,
       bestTileIndex = tileIndex;
       bestScore = score;
     }
-    battle14->tileIntArray2c[tileIndex] = score;
+    battle14->tileCandidateScorePlane2c[tileIndex] = score;
   }
   return bestTileIndex;
 }

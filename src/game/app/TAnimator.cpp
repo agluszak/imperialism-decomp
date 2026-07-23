@@ -44,8 +44,9 @@ void TAnimator::InitializeUiTransientObjectRegistry(int idleFrequency) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a0c00
-undefined TAnimator::OrphanCallChain_C2_I13_004a0c00() {
-  return 0;
+void TAnimator::Install() {
+  g_pGlobalUiRootController->InstallCohandler(this, 1);
+  SetIdleFreq(2);
 }
 
 // FUNCTION: IMPERIALISM 0x004a0c30

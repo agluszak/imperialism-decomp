@@ -207,9 +207,8 @@ void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit*
 }
 
 // FUNCTION: IMPERIALISM 0x005a5b70
-undefined TNavyBattle::FinalizeTacticalBattleOutcome(int) {
+void TNavyBattle::FinalizeTacticalBattleOutcome(int) {
   g_pNavyOrderManager->CarryOutOrders();
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005a5bc0

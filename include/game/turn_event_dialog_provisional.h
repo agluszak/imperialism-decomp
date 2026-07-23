@@ -1,19 +1,27 @@
 #pragma once
 
 #include "game/ui_core/TControl.h"
+#include "game/ui_core/TPicture.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_core/TView.h"
 
 class TCivUnit;
 class TViewMgr;
 
-// Provisional interfaces for the runtime-resolved turn-event dialog and its 'GOLD'
-// child control. These are never constructed here — they only give names to the
-// vtable slots dispatched on the concrete (not-yet-recovered) dialog/control classes
-// returned by TAssetMgr::ResolveTurnEventDialogNodeByMessageContext and
-// TView::ResolveControlByTag('DLOG' == 'GOLD'). Both TViewMgr.cpp and
-// TMacViewMgr.cpp resolve the identical runtime objects, so a single shared
-// definition prevents the two copies from drifting (bd imperialism-decomp-hpd.7).
+// Provisional interfaces for the runtime-resolved 'DLOG'-tagged dialog children that
+// are still without a concrete class. These are never constructed here -- they only
+// name the vtable slots dispatched on the runtime object.
+//
+// The dialog *node* is no longer one of them: everything
+// TAssetMgr::ResolveTurnEventDialogNodeByMessageContext returns is a TWindow, and its
+// three "provisional" slots are TWindow's own SetModality (0x68), PoseModally (0x6b)
+// and GetDialogBehavior (0x6e); Center (0x71) is the three-flag call. Where the child
+// control's dialog id is fixed, the Mac resource oracle
+// (vendor/macos_codewarrior/evidence/resources/widgets.csv) names it outright -- that
+// is how TCivReport, TArmyInfoView, TCombatReportView and TPlaceCityDialog replaced
+// their facades. What is left below is only the receivers resolved against whatever
+// dialog happens to be open, which need a recovered shared base rather than a
+// per-view lookup.
 //
 // The turn-event slots 0x68..0x6e and the GOLD control's 0x71/0x72 are consistent
 // across every call site. Slots that correspond to real, already-recovered TView
@@ -23,60 +31,34 @@ class TViewMgr;
 // the concrete dialog/control classes.
 namespace turn_event_dialog {
 
-// The city order object queried by the city-order dialog population path. A view over
-// some other real class's vtable (reinterpret_cast'd in TMacViewMgr.cpp); adding a
-// destructor slot here would shift these two slots off the real object's layout.
+// The status-icon control TViewMgr hands to TMacViewMgr::ApplySellOrderRowToNationState.
+// Its two queried slots sit at bytes 0x1d4/0x1d8, past TPicture's own 0x72, so it is a
+// TPicture subclass whose concrete identity is not recovered yet -- the two slots between
+// are the only padding left here, and deriving from TPicture is what lets the call site
+// use a plain downcast instead of the old reinterpret_cast bridge.
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
-struct CityOrderSource {
-  virtual char QuerySellModeFlag1D8() = 0;
-  virtual short QuerySellQuantity1D4() = 0;
+struct CityOrderSource : public TPicture {
+  virtual void cityOrderSlot73();
+  virtual void cityOrderSlot74();
+  virtual short QuerySellQuantity1D4(); // slot 0x75 byte 0x1d4
+  virtual char QuerySellModeFlag1D8();  // slot 0x76 byte 0x1d8
 };
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
-struct TurnEventDialogNode : public TView {
-  virtual void ShowTurnEventDialog(int flag); // slot 0x68 byte 0x1a0
-  virtual void node69();                      // slot 0x69
-  virtual void node6a();                      // slot 0x6a
-  // Returns a status/tag value that some callers forward to the 'GOLD' child (see
-  // HandleTurnEventDialogFactorySlotB8); most callers ignore it (codegen-neutral).
-  virtual int RefreshTurnEventDialog();        // slot 0x6b byte 0x1ac
-  virtual void node6c();                       // slot 0x6c
-  virtual void node6d();                       // slot 0x6d
-  virtual void* QueryTurnEventContentObject(); // slot 0x6e byte 0x1b8
-  virtual void DispatchSlot9C();
-  virtual void SetDialogModeSlotF0(int mode);
-  virtual void InvokeSlotF0WithPair(short a, short b);
-  virtual void SetDialogActiveFlag(int flag);
-  virtual void InvokeSlotA0();
-  virtual void InvokeSlot1C();
-};
-
-struct GoldDialogControl : public TControl {
-  virtual void gold71(); // slot 0x71 byte 0x1c4
-  // The resource parameter is short-typed: 0x5d5f19..0x5d5f34 passes
-  // GetActiveNationId()+0x251c with no movsx (garbage upper word), which only
-  // compiles when the receiving parameter is a short.
-  virtual void SetGoldControlStateByResource(short resourceId, int b); // slot 0x72 byte 0x1c8
+// Slots 0x71/0x72 are NOT declared here: they are TPicture::ResetPictureResourceEntry
+// and TPicture::SetPictureResourceIdAndRefresh, and every caller now uses TPicture
+// directly. What remains are the per-dialog overrides at 0x1cc/0x1d0 whose concrete
+// classes still need the Mac resource oracle applied per dialog id.
+struct GoldDialogControl : public TPicture {
   virtual void InvokeSlot1CC(int a, int b, int c);
   virtual void InvokeSlot1D0FourParam(int a, int b, int c, int slot);
   virtual void InvokeSlot1D0OneParam(void* content);
 };
 
-// A distinct 'GOLD' concrete class from GoldDialogControl: dialog 0x546's 'GOLD' child
-// (HandleTurnEventDialogFactorySlotD8, 0x5dcf20) dispatches byte 0x1cc with a single
-// TViewMgr* argument, whereas GoldDialogControl's own 0x1cc override (verified at
-// TMacViewMgr::OpenConstructionWindow, dialog 0x2404) takes three arguments -- proof
-// these are two different runtime classes sharing the 'GOLD' tag and this byte offset,
-// not one type (see the Type-modeling guardrail's "never borrow a type" rule).
-struct GoldFactoryPanel : public TControl {
-  virtual void goldPanel71();                                    // slot 0x71 byte 0x1c4
-  virtual void goldPanelSetControlStateByResource(int a, int b); // slot 0x72 byte 0x1c8
-  virtual void NotifyDialogOwner(TViewMgr* viewMgr);             // slot 0x73 byte 0x1cc
-};
-
-// Concrete siblings used by TViewMgr's modal-dispatch slots. They share the
-// TView/TControl prefix but interpret later slots differently, so keeping them
-// separate avoids assigning one caller's signature to every 'GOLD' control.
+// Resolved against g_pDisplayMgr->activeDialog's 'main' child -- i.e. whatever dialog
+// happens to be open -- so there is no single concrete class to look up. Kept separate
+// from the 'DLOG' interfaces so one caller's signature is never assigned to another's
+// control (the "never borrow a type" guardrail).
 struct MainActionControl : public TControl {
   virtual void mainAction71();
   virtual void mainAction72();
@@ -84,27 +66,12 @@ struct MainActionControl : public TControl {
                                 int targetNation); // slot 0x73 byte 0x1cc
 };
 
-struct GoldSinglePayloadControl : public TControl {
-  virtual void goldPayload71();
-  virtual void goldPayload72();
-  virtual void ApplyPayload(void* payload); // slot 0x73 byte 0x1cc
-};
-
-struct ThreeFlagDialogNode : public TView {
-  virtual void ShowTurnEventDialog(int flag); // slot 0x68 byte 0x1a0
-  virtual void dialog69();
-  virtual void dialog6a();
-  virtual int RefreshTurnEventDialog(); // slot 0x6b byte 0x1ac
-  virtual void dialog6c();
-  virtual void dialog6d();
-  virtual void dialog6e();
-  virtual void dialog6f();
-  virtual void dialog70();
-  virtual void ConfigureDialogFlags(int a, int b, int c); // slot 0x71 byte 0x1c4
-};
-
-struct GoldDialogValueControl : public TView {
-  virtual void ApplyDialogValue(void* value); // slot 0x68 byte 0x1a0
+// The 'DLOG' child of event 0xf0a's dialog. Its slot 0x68 is the class's first new
+// virtual (TView ends at 0x67) and takes one argument, exactly like TEngineerDialog's
+// BuildCityViewProductionControls at the same index -- but the Mac resource oracle has
+// no view for 0xf0a, so the concrete class is genuinely unknown here.
+struct TDialogValueControl : public TView {
+  virtual void StuffValues(void* value); // slot 0x68 byte 0x1a0
 };
 
 // The 'GOLD' child of the factory dialogs opened by HandleTurnEventDialogFactorySlot78
@@ -126,9 +93,8 @@ struct GoldCommitControl : public TView {
   virtual void goldSlot70();
   virtual void goldSlot71();
   virtual void goldSlot72();
-  // dialog 0x2405 'GOLD' trade-summary child (HandleTurnEventDialogFactorySlotB8).
-  virtual void ApplyGoldTradeSummaryValues(int a, int b, int c);     // slot 0x73 byte 0x1cc
-  virtual void ApplyGoldTradeDialogRefreshResult(int refreshResult); // slot 0x74 byte 0x1d0
+  virtual void goldSlot73();
+  virtual void goldSlot74();
   virtual void goldSlot75();
   // Notified with TViewMgr::currentTurnEventCode before a dialog-factory slot resolves
   // its own factory dialog node (HandleTurnEventDialogFactorySlotD8/E8, 0x5dcf20/0x5dd770).
@@ -136,27 +102,6 @@ struct GoldCommitControl : public TView {
   virtual void goldSlot77();
   virtual void goldSlot78();
   virtual void ConfigureGoldValueCells(int cellWidth, int cellHeight); // slot 0x79 byte 0x1e4
-};
-
-// The 'GOLD' child of the Civilian Report dialog (resource 0xbc4, opened by
-// TViewMgr::ShowCivilianReportDialogAndReturnConfirm 0x5de4f0). Dispatches a ONE-arg
-// override at the SAME byte 0x1cc GoldCommitControl uses for its 3-arg
-// ApplyGoldTradeSummaryValues — a different concrete control subclass, not
-// GoldCommitControl itself (same slot-divergence pattern documented above).
-struct TCivilianReportGoldControl : public TView {
-  virtual void reportGoldSlot68();
-  virtual void reportGoldSlot69();
-  virtual void reportGoldSlot6a();
-  virtual void reportGoldSlot6b();
-  virtual void reportGoldSlot6c();
-  virtual void reportGoldSlot6d();
-  virtual void reportGoldSlot6e();
-  virtual void reportGoldSlot6f();
-  virtual void reportGoldSlot70();
-  virtual void reportGoldSlot71();
-  virtual void reportGoldSlot72();
-  // Populates the report text/fields from the civilian order entry. slot 0x73 byte 0x1cc
-  virtual void PopulateCivilianReportContent(TCivUnit* civilianOrderEntry);
 };
 
 // The per-order-slot city-production row container passed to

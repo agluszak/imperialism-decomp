@@ -1,4 +1,5 @@
 #include "game/military_ui/TMiniArmyView.h"
+#include "game/military_ui/TSuperArmyRoster.h"
 #include "game/ui_tags_common.h"
 
 #include "game/gfx/TDisplayMgr.h"
@@ -60,8 +61,8 @@ void TMiniArmyView::Draw(RECT* rectBuffer) {
   // Level-bucket row within the icon strip: <5 -> row 0x1a, 5-14 -> row 18, >14 -> row 10.
   short sVar2 = (sVar1 < 5) ? 0x1a : ((sVar1 > 0xe) ? 10 : 18);
 
-  TQuickDrawBlitSurface* iconStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
-      *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x694) + 4);
+  TQuickDrawBlitSurface* iconStripSurface =
+      g_pStrategicMapViewSystem->atlas694[0]->GetBlitSurface();
   RECT srcRect = {0, sVar2, sVar1 * 4 - 1, sVar2 + 7};
   RECT dstRect = {0x8c, 4, sVar1 * 4 + 0x8b, 0xb};
   UpdatePaletteIndexWithDefaultFallback(0x10);
@@ -93,9 +94,9 @@ void TMiniArmyView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       g_pUiRuntimeContext->ModalMessage(msg, g_ptArmyOrderModalMessage, 2, 0);
     }
   } else if (sourceHandler == this) {
-    ownerContext->GetNextHandler();
-    // The original writes militaryUnit84->tileIndex06 into a short field at +0x84 on
-    // ownerContext's concrete (unrecovered) class. That owner class remains to be recovered.
+    TSuperArmyRoster* roster = static_cast<TSuperArmyRoster*>(ownerContext);
+    roster->AssertValid();
+    roster->selectedIndex84 = militaryUnit84->tileIndex06;
   }
   TControl::DoEvent(commandId, sourceHandler, event);
 }

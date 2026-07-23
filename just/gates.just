@@ -229,6 +229,15 @@ vtable-collision-gate:
 synthetic-gate:
   uv run python -m tools.workflow.check_synthetic_names --paths src include
 
+# Every explicit destructor is placed where its original evidence puts it: a standalone
+# ~Class body out of line (or inline with its // FUNCTION: marker), a listing-proven
+# inline body in the header, or an empty body backing a scalar deleting destructor.
+# Empty destructors with none of those three justifications are source noise.
+[doc('Explicit destructors match their original evidence (standalone / inline-proven / compiler-generated)')]
+[group('gates')]
+destructor-placement-gate:
+  uv run python -m tools.workflow.check_destructor_placement --paths src include
+
 # Structural integrity of config/original_entities.csv: header row exactly at line 1, no
 # duplicate headers, parseable hex addresses, no duplicate addresses, no two
 # function rows claiming overlapping byte ranges. (Every consumer is a DictReader
@@ -321,7 +330,7 @@ source-gates:
 
 [private]
 [parallel]
-_source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-coverage-check scalar-type-audit-check fourcc-audit-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate stub-count-gate class-size-gate noop-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate
+_source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-coverage-check scalar-type-audit-check fourcc-audit-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate destructor-placement-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate stub-count-gate class-size-gate noop-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate
 
 # Cross-check modeled class sizes (ASSERT_SIZE) against the RTTI oracle's
 # m_nObjectSize. Report-only; pass --strict to fail on mismatches, or

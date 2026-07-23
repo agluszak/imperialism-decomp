@@ -43,9 +43,12 @@ public:
   // slot 0x2a (+0xa8), TMinor's first new virtual — vtable 0x653c90+0xa8 -> 0x4e46a0,
   // dispatched virtually by HandleTurnResumeStateTelemetry (0x5434 0e region).
   virtual void RebuildDiplomacyEconomicPressureFromMapState(void);
-  void SeedRandomDiplomacyPolicyThresholds(void);
-  char CanInitiateJoinEmpireProposalToTarget(NationSlot targetNationSlot,
-                                             DiplomacyProposalCodeStorage proposalCode);
+  virtual void SeedRandomDiplomacyPolicyThresholds(void); // slot 0x2b 0x4e4bd0
+  // Slot 0x2c: TForeignMinister::DoProposeTreaties dispatches it through the vtable
+  // (CALL [vtbl+0xb0]) on the minor-nation array element, not as a direct call.
+  virtual char
+  CanInitiateJoinEmpireProposalToTarget(NationSlot targetNationSlot,
+                                        DiplomacyProposalCodeStorage proposalCode); // 0x4e4ff0
   void HandleNetworkPortConstructionOrder(int nationId);
   void SetNationRowDisplayValueByDiplomacyPredicate(NationSlot targetNationSlot);
   void ClearTileActivityOverlayByProvinceId(int provinceId);

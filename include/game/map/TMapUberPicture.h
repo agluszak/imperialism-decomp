@@ -35,7 +35,7 @@ public:
   // Mac CodeWarrior identities for the navigation/redraw virtuals. Each forwards to the
   // active land/ocean map view and keeps the land cache or mini-map in sync.
   virtual void RedrawTile(short tileIndex); // slot 0x77 0x5988c0
-  // Windows consumes promoted stack dwords at these virtual boundaries.
+  // CenterOn/SetUpperLeft consume promoted stack dwords at these virtual boundaries.
   virtual void CenterOn(int tileIndex);                                   // slot 0x78 0x598990
   virtual void SetUpperLeft(int tileX, int tileY);                        // slot 0x79 0x5989d0
   virtual void NoticeTile(int tileIndex);                                 // slot 0x7a 0x598a20
@@ -51,8 +51,7 @@ public:
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill: real
   // signature takes the enabled-state flag applied to the 'seas'/'year'/'trea'/'tree'
   // trade-tool subcontrols.
-  virtual undefined
-  SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState); // slot 0x7f 0x59a180
+  virtual void SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState); // slot 0x7f 0x59a180
 
   // Own slice (TMapUberUberPicture ends at 0x94; this object is 0xc4). Layout/roles from
   // ConstructTMapUberPictureBaseState (0x5969e0) and DoPostCreate (0x596a80).

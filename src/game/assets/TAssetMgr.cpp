@@ -1,5 +1,6 @@
 #include "game/TScopedWaitCursor.h"
 #include "game/assets/TAssetMgr.h"
+#include "game/ui_core/TWindow.h"
 
 #include "game/app/CAmbitDocument.h"
 #include "game/ImperialismApp.h"

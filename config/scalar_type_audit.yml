@@ -82,6 +82,9 @@ native_integral_reviews:
   9440836a8128678f:
     classification: multimedia_dword_field
     evidence: MCI_PLAY_PARMS.dwTo is DWORD; retail 0x005e1850 increments then masks the track index before the dword store.
+  c35544f8b821ac5f:
+    classification: mfc_control_identifier
+    evidence: CWnd::Create takes a UINT child-control identifier; TEditText::Open forwards the full 32-bit controlTag at this MFC boundary.
 
 # Reviewed discriminant families. Every identifier a raw_discriminant_literal finding
 # compares is classified here, so a new identifier fails the check until someone
@@ -201,6 +204,12 @@ nested_conversion_reviews:
     evidence: "the packed map-tile action state byte is read signed so the < 0 sign test is correct, then normalized to a byte for the retail byte compare."
 
 predicate_storage_reviews:
+  1a972fb69f5925f0:
+    classification: byte_field_storage
+    evidence: "TLoadSavePicture::loadModeFlag90 is a one-byte object field initialized from the save-format predicate; the explicit conversion preserves the recovered byte layout."
+  233bd892eaec1e7f:
+    classification: byte_abi_argument
+    evidence: "TCzechBox::SetState takes unsigned char at recovered slot 0x75; the selected-slot predicate crosses that byte ABI boundary."
   ef3d88e3b5456166:
     classification: byte_abi_argument
     evidence: "TArmyCheckBox::SetState is a virtual taking `unsigned char on` at slot 0x72 (0x004aa360); the toggle passes the inverted IsOn() predicate through that byte parameter, so the conversion belongs at the ABI boundary and the parameter must not become bool."
@@ -231,15 +240,9 @@ predicate_storage_reviews:
   2d4eed00b9f919c8:
     classification: byte_field_storage
     evidence: "the value is stored into TRadioText::isSelectedOption98, a one-byte object field the retail code compares directly (cmp al,cl) with no `!= 0` normalization; the cast keeps the store byte-wide."
-  34a837be7b4dea58:
-    classification: byte_comparison_of_packed_state
-    evidence: "both sides are normalized to bytes so the retail byte compare is reproduced: one side is the caller's flag, the other the sign bit of the packed tileActionState16 byte."
   11c53f3377e58ca5:
     classification: byte_comparison_of_packed_state
     evidence: "the second operand of the same byte compare -- the sign test on the packed map-tile action state byte."
-  4a28643f8440a5f6:
-    classification: predicate_arithmetic_into_byte_storage
-    evidence: "`(-(int)(flag != 0) & 2) - 1` maps the flag onto the step values +1 and -1; the comparison feeds arithmetic, not a branch."
 
 discriminant_reviews:
   actionCode:
@@ -404,12 +407,18 @@ discriminant_reviews:
   policyCode:
     classification: diplomacy_proposal_code_domain
     evidence: DiplomacyProposalKind is recovered (imperialism-decomp-1uj.99.1.5); TCountry and TMinor still spell its 0xc/0x11 band edges and the 200/500 encoded-slot biases numerically.
+  politicalCode:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TMapMgr maps the imported political-map code across nation slots, encoded city records, and the 0x17 terrain band; naming the complete imported-map domain requires the loader table evidence.
   postEventCode:
     classification: turn_event_code_domain
     evidence: TurnEventCodeStorage >= 0 is the recovered validity test on the event-code storage width.
   previousMode:
     classification: closed_domain_needs_listing_evidence
     evidence: TMapUberPicture's three map-panel modes (< 3); the mode producer is the not-yet-ported panel switch.
+  previousTurnStateCode:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TSimMgr serializes this turn-state code as two bytes and TLoadSavePicture distinguishes state 1; the remaining state producer and values need recovery before naming the domain.
   primaryMetricCode:
     classification: closed_domain_needs_listing_evidence
     evidence: TAutoGreatPower's AI profile metric selector; 5 is one metric in the profile table, whose entries are not yet named.
@@ -437,6 +446,9 @@ discriminant_reviews:
   resetOrderMode:
     classification: byte_or_int_predicate_not_a_domain
     evidence: TMinor tests non-zero to decide whether to reset the order tables.
+  resourceCode:
+    classification: open_index_count_or_bound
+    evidence: TCityOrderItem uses resourceCode only as the induction variable that clears the 0x3f-entry order-sheet resource table, so the literal is an array extent rather than a discriminant value.
   resourceType:
     classification: industry_action_order_type_domain
     evidence: the residual sites are the 14-entry industry/navy-order domain (TGreatPower 0x004dd140 walks orderCountByType5c[0x0e], TNavyMgr its 14-entry report table) plus one signed -1 sentinel test and TTechMgr's slotMap index; none are ResourceKind.

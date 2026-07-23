@@ -45,6 +45,10 @@ public:
   virtual BOOL SelectRuntimeProvider(GUID* providerGuid);
   virtual BOOL ShowJoinGameSelectionDialogAndCaptureChoice(GUID* selectedSessionGuid);
 
+  // Reads a player's per-player data block, recording the HRESULT in lastErrorCode0c
+  // and returning whether it succeeded. 0x4809d0.
+  BOOL GetPlayerData(DPID playerId, void* buffer, DWORD* sizeInOut);
+
   IDirectPlay2* directPlayInterface04;
   IUnknown* directPlayLobby08;
   int lastErrorCode0c;
@@ -93,8 +97,7 @@ public:
   // (DirectPlayEnumerateA, ordinal 2) through this object's virtual provider callback.
   // Either way the resulting IDirectPlay is QueryInterface'd up to
   // IDirectPlay2 into directPlayInterface04 and the runtime-selection list is reset.
-  bool OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry,
-                                                  int flag); // 0x47fe50
+  bool OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry); // 0x47fe50
   // Reopens the session with no seed (OpenRuntimeSelectionSourceWithOptionalSeed(null,0)),
   // then rebuilds sessionDescription10, lets the derived slot populate its application
   // identity, and opens it as a newly created DirectPlay session.

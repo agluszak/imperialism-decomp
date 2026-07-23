@@ -78,15 +78,15 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x004bac50
 void TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette(
-    RECT* sourceRect, int surface, short offsetY, short offsetX, undefined4 context,
-    undefined4 flags, undefined4 palette) {
-  (void)sourceRect;
-  (void)surface;
+    RECT* destRect, TQuickDrawSurfaceContext* destContext, short offsetY, short offsetX,
+    short resourceId, TQuickDrawSurfaceContext* restoreContext, int restoreFlags) {
+  (void)destRect;
+  (void)destContext;
   (void)offsetY;
   (void)offsetX;
-  (void)context;
-  (void)flags;
-  (void)palette;
+  (void)resourceId;
+  (void)restoreContext;
+  (void)restoreFlags;
 }
 
 // FUNCTION: IMPERIALISM 0x004badd0

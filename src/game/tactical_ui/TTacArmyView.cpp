@@ -290,7 +290,7 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x005aa900
-undefined TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT* clipRect) {
+void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT* clipRect) {
   int row = tileIndex / tileColumnsPerRow80;
   int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
   if (row & 1) {
@@ -300,7 +300,7 @@ undefined TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, 
   RECT tileScreenRect = {x, y, x + tileWidthPx88, y + tileRowHeightPx8C};
   RECT scratchRect;
   if (!SectRect(&tileScreenRect, clipRect, &scratchRect)) {
-    return 0;
+    return;
   }
 
   // Painted tile corners: the right half is dropped when the tile pokes past the view
@@ -702,5 +702,4 @@ undefined TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, 
                                             static_cast<short>(y));
     DrawCenteredGuideLineOnMapDc(static_cast<short>(tickMidX - 1), static_cast<short>(y));
   }
-  return 0;
 }

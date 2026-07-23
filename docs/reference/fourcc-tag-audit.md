@@ -8,17 +8,17 @@ policy (Mac resource order, read big-endian).
 
 ## Summary
 
-- Tags: 540
+- Tags: 541
 - `generated_resource_manifest_tag`: 67
 - `multiplayer_session_or_message_tag`: 33
 - `ui_tag_app_and_setup_screens`: 57
 - `ui_tag_city_and_trade`: 62
 - `ui_tag_diplomacy`: 18
-- `ui_tag_military_navy_tactical`: 42
+- `ui_tag_military_navy_tactical`: 43
 - `ui_tag_shared`: 144
 - `ui_tag_strategic_map`: 21
 - `ui_tag_widget_plumbing`: 96
-- Corroborated by the Mac control-tag index: 402 of 540
+- Corroborated by the Mac control-tag index: 403 of 541
 - Violations: 0
 
 ## Violations
@@ -310,6 +310,7 @@ build does not ship.
 | `kControlTagScvw` | `scvw` | `0x73637677` | `ui_tag_military_navy_tactical` | 1 |
 | `kControlTagSkip` | `skip` | `0x736b6970` | `ui_tag_military_navy_tactical` |  |
 | `kControlTagSoun` | `soun` | `0x736f756e` | `ui_tag_military_navy_tactical` | 1 |
+| `kControlTagTpic` | `tpic` | `0x74706963` | `ui_tag_military_navy_tactical` | 1 |
 | `kControlTagTxt0` | `txt0` | `0x74787430` | `ui_tag_military_navy_tactical` | 2 |
 | `kControlTagTxta` | `txta` | `0x74787461` | `ui_tag_military_navy_tactical` | 1 |
 | `kControlTagYess` | `yess` | `0x79657373` | `ui_tag_military_navy_tactical` | 1 |

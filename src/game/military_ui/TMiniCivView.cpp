@@ -1,4 +1,5 @@
 #include "game/military_ui/TMiniCivView.h"
+#include "game/military_ui/TSuperCivRoster.h"
 
 #include "game/ui_screens/CString.h"
 #include "game/military/TCivUnit.h"
@@ -150,8 +151,7 @@ void TMiniCivView::Draw(RECT* rectBuffer) {
   // (0-indexed sprite column, each 0x40px wide) from a third icon strip cached on
   // TMacViewMgr at +0x66c (distinct from the +0x694/+0x68c strips used elsewhere).
   short iconColumn = g_pGlobalMapState->ApplyMapImprovementSelectionState(civUnit84);
-  TQuickDrawBlitSurface* iconStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
-      *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x66c) + 4);
+  TQuickDrawBlitSurface* iconStripSurface = g_pStrategicMapViewSystem->atlas66c->GetBlitSurface();
   RECT srcRect = {iconColumn, 0, iconColumn + 0x40, 0x40};
   RECT dstRect = {0, 0, 0x40, 0x40};
   UpdatePaletteIndexWithDefaultFallback(0x10);
@@ -164,12 +164,9 @@ void TMiniCivView::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x004ac320
 void TMiniCivView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (sourceHandler == this) {
-    ownerContext->GetNextHandler();
-    // The original also writes civUnit84->tileIndex06 into a short field at the same
-    // +0x84 offset on ownerContext's concrete (unrecovered) class -- distinct from this
-    // class's own field84 (unitText88, a CString) despite the matching offset. Left
-    // unresolved pending that class's recovery rather than guessing its layout (same
-    // pattern as TMiniArmyView::DoEvent's own ownerContext->field84 write).
+    TSuperCivRoster* roster = static_cast<TSuperCivRoster*>(ownerContext);
+    roster->AssertValid();
+    roster->selectedTileIndex84 = civUnit84->tileIndex06;
   }
   TControl::DoEvent(commandId, sourceHandler, event);
 }

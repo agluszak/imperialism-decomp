@@ -1,4 +1,5 @@
 #include "game/city_ui/TIndustryView.h"
+#include "game/city_ui/TCityProductionView.h"
 #include "game/ui_tags_city.h"
 #include "game/ui_tags_common.h"
 
@@ -163,8 +164,8 @@ void TIndustryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x84c);
     }
 
-    g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotB8(embeddedPageIndex9E, (int)city94,
-                                                            (int)mainControl);
+    g_pUiRuntimeContext->ShowBuildingExpansionDialog(
+        embeddedPageIndex9E, city94, static_cast<TCityProductionView*>(mainControl));
 
     TView* owner2 = GetWindow();
     static_cast<TWindow*>(owner2)->nativeWindow50->EnableWindow(wasDisabled);

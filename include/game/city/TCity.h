@@ -9,6 +9,7 @@
 #include "game/city/TProductionOrder.h"
 
 class TSortedList;
+class TTaskList;
 class TStream;
 class TShipOrder;
 class TUnitOrder;
@@ -195,7 +196,7 @@ public:
   short production24c[0x10];              // 0x24C — GetBuildingWindowState outAccum
   short populationGrowthPenaltyTicks26c;  // 0x26C — GrowthRate penalty counter
   short pad26e;
-  TSortedList* trackedOrderList270; // 0x270 — released via FreePayloadsAndDestroy
+  TTaskList* trackedOrderList270; // 0x270 — released via FreePayloadsAndDestroy
   // 0x274 — TPtrList (vtable 0x649068, recordSize14 4; allocated in
   // InitializeCityProductionState 0x4b2dca); released via ReleasePtrList.
   class TPtrList* eventQueue274;

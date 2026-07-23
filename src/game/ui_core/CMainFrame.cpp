@@ -37,8 +37,6 @@ void* GetValueAtOffset98(CWnd* wnd) {
 
 } // namespace
 
-CMainFrameRefTarget::~CMainFrameRefTarget() {}
-
 // The MCI stop-notify handler (0x00484230) is CIncludeView's MCIWNDM_NOTIFYMODE (msg 0x4c8)
 // message-map entry — see CIncludeView::OnMciNotifyMode.
 

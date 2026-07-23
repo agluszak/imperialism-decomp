@@ -68,8 +68,8 @@ public:
   virtual short FindNearestActiveSeaContextTileFromOffset216();           // slot 0x13 0x55fe60
   virtual short GetActiveNationSlotTile();                                // slot 0x14 0x55fef0
   virtual short FindBestCoastalTileForContextAndCityStateByHeuristic(
-      Province* contextProvince);           // slot 0x15 0x560150
-  virtual void SetMapOrderUiFlag(int flag); // slot 0x16 0x560580
+      Province* contextProvince);            // slot 0x15 0x560150
+  virtual void SetMapOrderUiFlag(bool flag); // slot 0x16 0x560580
   // --- vtable ends at slot 0x16 (orig 0x17..0x1b are NULL; see note above) ---
 
   // The original table group continues with two embedded stretch<TZone*> member vtables

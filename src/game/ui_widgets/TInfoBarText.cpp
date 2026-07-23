@@ -48,7 +48,7 @@ void TInfoBarText::ClearTextAndLayoutRect(int) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b6810
-void TInfoBarText::OrphanCallChain_C1_I05_005b6810() {
+void TInfoBarText::ApplyDefaultMapHintTextStyle() {
   InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 }
 

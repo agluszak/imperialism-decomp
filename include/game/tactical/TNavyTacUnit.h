@@ -28,8 +28,10 @@ public:
   // crewStrength38 drops to <= 0. 0x5a63c0, __thiscall, RET 0x8.
   void ApplyTacticalDamageAndDeathState(float damageAmount, int damageMode);
 
-  // Navy slice (+0x34..): mostly unrecovered; +0x3c is the per-ship action-point
-  // store read back by GetBaseActionPoints (0x5a6310).
+  // Navy slice (+0x34..+0x40): fully covered. A field-xref sweep finds every access --
+  // +0x34 in GetSourceShip/InitializeFromSourceShip/GetUnitRange, +0x38 in
+  // InitializeFromSourceShip and ApplyTacticalDamageAndDeathState, +0x3c in
+  // GetBaseActionPoints (0x5a6310) -- and nothing touches +0x40 or beyond.
   TShip* sourceShip34; // +0x34 source strategic ship (range delegate, 0x5a6330)
   // Second combat-resource pool alongside strength4 (TTacticalUnit); provisional name from
   // ApplyTacticalDamageAndDeathState's damage-mode split (see above) -- not yet cross-checked

@@ -21,6 +21,31 @@
 #include <cstring>
 #include <new>
 
+// IDirectPlay2::EnumPlayers callback for OpenJoinGameRuntimeSelectionAndStartSession
+// (0x5e2900): each enumerated player's 4-byte per-player data block is its role; role 1
+// is the host, whose DPID is recorded before enumeration stops. A failed read reports
+// the session's last error instead.
+// FUNCTION: IMPERIALISM 0x005e2900
+static BOOL FAR PASCAL RecordHostPlayerIdDuringEnumeration(DPID dpId, DWORD dwPlayerType,
+                                                           LPCDPNAME lpName, DWORD dwFlags,
+                                                           LPVOID lpContext) {
+  (void)dwPlayerType;
+  (void)lpName;
+  (void)dwFlags;
+  TDirectPlaySessionManagerBase* session = static_cast<TDirectPlaySessionManagerBase*>(lpContext);
+  DWORD playerRole = 0;
+  DWORD playerRoleSize = 4;
+  if (session->GetPlayerData(dpId, &playerRole, &playerRoleSize) == 0) {
+    g_pNetMgr006a6014->HandleError(session->lastErrorCode0c);
+    return FALSE;
+  }
+  if (playerRole == 1) {
+    session->broadcastPlayerId64 = dpId;
+    return FALSE;
+  }
+  return TRUE;
+}
+
 // SYNTHETIC: IMPERIALISM 0x005e3390
 // TNetMgr::CreateObject
 
@@ -282,7 +307,7 @@ unsigned char TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, i
   strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed88, seed, 0x20);
   const GUID* sessionGuid = static_cast<const GUID*>(g_WNetSerializedPtrArrayA006a5f10[index]);
   unsigned char result =
-      g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceWithOptionalSeed(sessionGuid, 0);
+      g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceWithOptionalSeed(sessionGuid);
   if (result == 0) {
     HandleError(g_NetworkSessionManager006a5f60.lastErrorCode0c);
   }
@@ -316,21 +341,6 @@ unsigned char TNetMgr::OpenRuntimeSelectionSourceAndApplyActiveNationState(
   }
   HandleError(g_NetworkSessionManager006a5f60.lastErrorCode0c);
   return result;
-}
-
-// Real IDirectPlay2::EnumPlayers callback for OpenJoinGameRuntimeSelectionAndStartSession:
-// the retail body resolves each enumerated player's role via an unmodeled helper and,
-// for the host player, records its DPID; otherwise poses the localized error dialog.
-// TODO(class-recovery): the role-resolution helper isn't recovered yet.
-static BOOL FAR PASCAL RecordHostPlayerIdDuringEnumeration(DPID dpId, DWORD dwPlayerType,
-                                                           LPCDPNAME lpName, DWORD dwFlags,
-                                                           LPVOID lpContext) {
-  (void)dpId;
-  (void)dwPlayerType;
-  (void)lpName;
-  (void)dwFlags;
-  (void)lpContext;
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e3c00

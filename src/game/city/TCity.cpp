@@ -17,6 +17,7 @@
 #include "game/city/TShipOrder.h"
 #include "game/tactical_ui/TShipBuildingTask.h"
 #include "game/ui_core/TSortedList.h"
+#include "game/tactical_ui/TTaskList.h"
 #include "game/city/TTrainingOrder.h"
 #include "game/ui_widgets/TTown.h"
 #include "game/city/TUnitOrder.h"
@@ -206,7 +207,8 @@ void TCity::InitializeCityProductionState(TGreatPower* ownerNation) {
   populationGrowthOrder->IPopGrowthOrder(this);
   orderSlotsE4[0x3c] = populationGrowthOrder;
 
-  trackedOrderList270 = new TSortedList();
+  trackedOrderList270 = new TTaskList();
+  trackedOrderList270->ITaskList();
   eventQueue274 = new TPtrList();
   eventQueue274->recordSize14 = 4;
 
@@ -299,7 +301,7 @@ void TCity::ReadFrom(TStream* stream) {
       shipTask->ReadFrom(stream);
       task = shipTask;
     }
-    trackedOrderList270->AddTail(task);
+    trackedOrderList270->Insert(task);
   }
   eventQueue274->ReadFrom(stream);
 }

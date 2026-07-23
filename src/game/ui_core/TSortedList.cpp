@@ -131,30 +131,23 @@ POSITION TSortedList::AddTailEx(void* item, int unused1, int unused2) {
 }
 
 // FUNCTION: IMPERIALISM 0x00488650
-POSITION TSortedList::AddTailSlot38(void* item) {
+POSITION TSortedList::Push(void* item) {
   return this->listState.AddTail(item);
 }
 
 // FUNCTION: IMPERIALISM 0x00488670
-void* TSortedList::RemoveTail() {
+void* TSortedList::Pop() {
   return this->listState.RemoveTail();
 }
 
 // FUNCTION: IMPERIALISM 0x00488690
-POSITION TSortedList::AddTailSlot40(void* item) {
+POSITION TSortedList::Queue(void* item) {
   return this->listState.AddTail(item);
 }
 
 // FUNCTION: IMPERIALISM 0x004886b0
-void* TSortedList::RemoveHead() {
+void* TSortedList::Dequeue() {
   return this->listState.RemoveHead();
-}
-
-// Repo convenience only (no address claim): callers store ordinals/ints in the
-// payload slots, so this narrows GetEntryByOrdinal's pointer to int.
-int TSortedList::GetIntByOrdinal(int ordinal) {
-  void* entry = GetEntryByOrdinal(ordinal);
-  return reinterpret_cast<int>(entry);
 }
 
 // FUNCTION: IMPERIALISM 0x004886d0

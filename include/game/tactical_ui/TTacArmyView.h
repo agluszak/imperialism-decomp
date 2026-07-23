@@ -10,8 +10,8 @@ public:
   DECLARE_DYNCREATE(TTacArmyView)
   virtual ~TTacArmyView() override;             // slot 0x01 (scalar deleting destructor)
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x5aa2e0
-  virtual undefined DrawTacticalTileInClipRect(TacticalTileIndex tileIndex,
-                                               RECT* clipRect) override; // slot 0x6c 0x5aa900
+  virtual void DrawTacticalTileInClipRect(TacticalTileIndex tileIndex,
+                                          RECT* clipRect) override; // slot 0x6c 0x5aa900
   // Base TTacticalBattleView actually ends at +0xd8 -- toolbarD0/battlefieldOriginOffsetXD4
   // (written by the live-battle initializer 0x5a9d90; battlefieldOriginOffsetXD4 is
   // re-derived as the backdrop source-x origin in the rect applier 0x5aa2e0) are

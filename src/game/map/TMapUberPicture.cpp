@@ -684,7 +684,7 @@ void TMapUberPicture::SetUpperLeft(int tileX, int tileY) {
 
 // FUNCTION: IMPERIALISM 0x00598a20
 void TMapUberPicture::NoticeTile(int tileIndex) {
-  this->subviewAc->OrphanCallChain_C6_I29_00596700(tileIndex);
+  this->subviewAc->NoticeTile(tileIndex);
 }
 
 // Windows uses the Mac MapView.rsrc:9462 "Navy Maker II" tree for this dialog.
@@ -1089,7 +1089,7 @@ void TMapUberPicture::RemoveMiniMap() {
 }
 
 // FUNCTION: IMPERIALISM 0x0059a180
-undefined TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState) {
+void TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState) {
   TView* toolControl = this->ResolveControlByTag(kControlTagTool); // "tool"
   if (toolControl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -1112,5 +1112,4 @@ undefined TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(bool enabled
   if (treeControl != nullptr) {
     treeControl->SetEnabled(enabledState, 1);
   }
-  return 0;
 }

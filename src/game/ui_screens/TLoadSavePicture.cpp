@@ -1,7 +1,11 @@
+#include "game/ui_text_label_helpers_decls.h"
 #include "game/ui_screens/TLoadSavePicture.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_screens.h"
 #include "game/ui_core/TWindow.h"
+#include "game/ui_core/TStaticText.h"
+#include "game/ui_widgets/TInfoBarText.h"
+#include "game/gfx/TAmbitApplication.h"
 
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
@@ -38,9 +42,89 @@ TLoadSavePicture::TLoadSavePicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056bcc0
 void TLoadSavePicture::DoPostCreate(int arg) {
+  loadModeFlag90 = static_cast<unsigned char>(g_nSaveFormatVersion == -2);
+  selectedSlot92 = -1;
   TPicture::DoPostCreate(arg);
-  // The original then sets up the load/save dialog's slot-list controls (2136 bytes) --
-  // not yet ported.
+  BuildUiTextStyleDescriptor(&styleAt94, 1, 0xc, 0x2b68);
+  BuildUiTextStyleDescriptor(&styleAt9e, 0, 0xc, 0x2b6c);
+
+  TInfoBarText* cursorPanel = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs));
+  g_pCursorControlPanel = cursorPanel;
+  cursorPanel->AssertValid();
+  cursorPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b6b);
+  cursorPanel->SetTextAlignmentAndMaybeRefresh(1, 1);
+
+  CString slotPath;
+  CString slotCaption;
+  for (int slot = 0; slot < 8; ++slot) {
+    TStaticText* slotControl =
+        static_cast<TStaticText*>(ResolveControlByTag(kControlTagSlt0 + slot)); // 'slt0'
+    slotControl->AssertValid();
+    const char* savePrefix = (g_pSimMgr->multiplayerSessionRole != 0)
+                                 ? g_pszMultiplayerSavePrefix_0065DDD4
+                                 : g_pszSingleSlotSavePrefix_0065DDD0;
+    CString slotNumberText;
+    slotNumberText.Format(g_szDecimalFormat, slot);
+    slotPath = CString(g_szSaveDirectoryPrefix_00698724) + savePrefix + slotNumberText +
+               g_pszImpSaveExtension_0065DDD8;
+
+    if (TryGetFileMetadataForPath(&slotPath) == 0) {
+      // Empty slot: the save picture offers it, the load picture greys it out.
+      if (loadModeFlag90 != 0) {
+        slotControl->SetEnabled(0, 1);
+        slotControl->SetState(0, 0);
+      } else {
+        slotControl->SetTextFromStringResource(0x2737, 0xd, 1);
+      }
+    } else {
+      slotControl->SetTextAndMaybeRefresh(&slotCaption, 1);
+    }
+    slotControl->InstallTextStyle(styleAt9e, 0);
+  }
+
+  if (loadModeFlag90 != 0) {
+    TPicture* okayControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagOkay));
+    okayControl->AssertValid();
+    okayControl->SetPictureResourceIdAndRefresh(static_cast<short>(okayControl->glyphBase84 + 2),
+                                                0);
+  } else {
+    TView* plateControl = ResolveControlByTag(0x706c6174); // 'plat'
+    plateControl->AssertValid();
+    plateControl->SetEnabled(1, 1);
+    TMapPreviewView* preview =
+        static_cast<TMapPreviewView*>(plateControl->ResolveControlByTag(kControlTagMapP));
+    preview->AssertValid();
+    preview->TakeSatellitePhoto(0);
+    preview->selectedNation68 = g_pSimMgr->GetActiveNationId();
+    preview->EnhancePhoto();
+  }
+
+  RefreshActiveControlThenApplyThemeStyleAndCaption(kControlTagInfo, 0, 0xc, 0x2b6a, 0, 0);
+
+  // Hover-help strings differ between the load and the save picture.
+  if (loadModeFlag90 != 0) {
+    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0xc, this);
+    LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x11, ResolveControlByTag(kControlTagOtto));
+    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x14, ResolveControlByTag(kControlTagCncl));
+    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x16, ResolveControlByTag(kControlTagMapP));
+    LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x14, ResolveControlByTag(kControlTagOkay));
+    for (int slot = 0; slot < 8; ++slot) {
+      TView* slotControl = ResolveControlByTag(kControlTagSlt0 + slot);
+      slotControl->AssertValid();
+      LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x12, slotControl);
+    }
+  } else {
+    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0xb, this);
+    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0xb, ResolveControlByTag(kControlTagOtto));
+    LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x15, ResolveControlByTag(kControlTagCncl));
+    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x16, ResolveControlByTag(kControlTagMapP));
+    LoadUiStringByGroupAndIndexToControlObject(0x2743, 2, ResolveControlByTag(kControlTagOkay));
+    for (int slot = 0; slot < 8; ++slot) {
+      TView* slotControl = ResolveControlByTag(kControlTagSlt0 + slot);
+      slotControl->AssertValid();
+      LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x16, slotControl);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0056c740
@@ -191,8 +275,16 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 }
 
 // FUNCTION: IMPERIALISM 0x0056d190
-undefined TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC() {
-  return 0;
+void TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC() {
+  if (g_pSimMgr->previousTurnStateCode != 1) {
+    g_pSimMgr->StartNextPhase();
+    return;
+  }
+  if (g_pSimMgr->multiplayerSessionRole != 0) {
+    g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
+    return;
+  }
+  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(kTurnEventMainMenu);
 }
 
 // FUNCTION: IMPERIALISM 0x0056d1e0
@@ -234,12 +326,13 @@ static __inline unsigned char IsMultiplayerFlowActive() {
 // multiplayer-aware or plain save driver and re-post turn-flow command 100. Both
 // completed paths reset the audio cue pools and schedule a random cue.
 // FUNCTION: IMPERIALISM 0x0056d2a0
-undefined TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
+void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
   if (selectedSlot92 == -1) {
     if (loadModeFlag90 == 0) {
-      return g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2758, 0x17, 1, 0);
+      g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2758, 0x17, 1, 0);
+      return;
     }
-    return 0;
+    return;
   }
   if (loadModeFlag90 != 0) {
     if (g_pSimMgr->mode == 1 ||
@@ -280,7 +373,6 @@ undefined TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
   g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(2);
   g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(3);
   g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0056d660

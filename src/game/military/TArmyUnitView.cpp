@@ -71,8 +71,8 @@ void TArmyUnitView::Draw(RECT* rectBuffer) {
   // Level-bucket row within the icon strip: <5 -> row 0x1a, 5-14 -> row 18, >14 -> row 10.
   short sVar2 = (sVar1 < 5) ? 0x1a : ((sVar1 > 0xe) ? 10 : 18);
 
-  TQuickDrawBlitSurface* iconStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
-      *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x694) + 4);
+  TQuickDrawBlitSurface* iconStripSurface =
+      g_pStrategicMapViewSystem->atlas694[0]->GetBlitSurface();
 
   {
     RECT srcRect = {0, sVar2, sVar1 * 4 - 1, sVar2 + 7};

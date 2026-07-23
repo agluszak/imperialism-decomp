@@ -21,8 +21,6 @@ public:
   // own final virtual slot.
   virtual void PrependCopiedRecordToPtrList(void* record); // slot 0x48 0x488470
 
-  int GetIntByOrdinalSlot24(int ordinal);
-
   static void* GetTPtrListClassNamePointer();
 };
 

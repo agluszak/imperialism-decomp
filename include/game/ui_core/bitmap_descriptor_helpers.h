@@ -21,6 +21,6 @@ void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader** handle, RECT* bo
 // Windows "handles" are always resident. Callers invoke it before dereferencing a
 // resource-loader handle, exactly where the Mac source called LoadResource(Handle).
 // (QD prefix: Win32 LoadResource collides.)
-undefined4 QDLoadResource(TBitmapResourceLoader** handle);
+int QDLoadResource(TBitmapResourceLoader** handle);
 TQuickDrawSurfaceContext*
 LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId);

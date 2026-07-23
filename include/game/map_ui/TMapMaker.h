@@ -103,12 +103,12 @@ public:
   // slot 22 / 0x58
   virtual int PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget, char markerVariant);
   virtual void CreateRivers(); // slot 23 / 0x5c
-  // Region-template state transform over the tile record at `coarseIndex` (branches on
-  // terrain-state bytes 2/3/5 and mirrors a 36-byte template block). Verified RET 0x14
-  // (5 stack dwords) -- the previous 0-arg `char WillingToResignTarget()` was templated
-  // off TEventHandler's real slot-24 virtual and does not describe this slot. Arg types
-  // beyond the dword count are Ghidra-inferred and provisional (body still a stub).
-  // slot 24 / 0x60
+  // Recursively grows one river segment from `tileIndex` toward water, refusing tiles
+  // that already carry a river byte, mountains below the surface and hills unless the
+  // run began on hills; on reaching water at depth >= 5 it stamps the outgoing direction
+  // and unwinds, writing each tile's connection type from
+  // g_riverConnectionTypeByDirectionPair. The parameter names below come from the ported
+  // body, not from Ghidra. slot 24 / 0x60
   virtual char GrowRiver(long tileIndex, long incomingDirection, long outgoingDirection, long depth,
                          unsigned char startedOnHills);
   // Map-gen finalize pass (was junk-named ResignedTarget; takes one mode arg the
@@ -132,19 +132,20 @@ public:
   // DispatchCityProductionAction1B; 0-arg __thiscall). slot 30 / 0x78
   virtual void MapGenPassSlot1E();
   // Copies a 36-byte (9-dword) region-template bank between fine-grid cells (resolved
-  // via slot 0x21), selecting the source variant by LCG randomness. Verified RET 0x14
-  // (5 stack dwords) -- the previous 0-arg `char BecomeTarget()`
-  // was templated off TView's real slot-31 virtual and does not describe this slot. Arg
-  // types beyond the dword count are Ghidra-inferred and provisional. slot 31 / 0x7c
-  virtual void CopyRegionTemplateBankWithRandomVariant(int coarseIndex, int arg2, int arg3,
-                                                       int arg4, int arg5);
+  // via slot 0x21), selecting the source variant by LCG randomness. RET 0x14 = 5 stack
+  // dwords, and the body reads the trailing four as words (MOV DX,word ptr [ESP+0x10] /
+  // CMP word ptr [ESP+0x18],DX), so they are shorts, not dwords. slot 31 / 0x7c
+  virtual void CopyRegionTemplateBankWithRandomVariant(int coarseIndex, short regionClass,
+                                                       short unusedClass, short northClass,
+                                                       short southClass);
   // Copies a 36-byte region-template bank to a neighbouring cell (slots 0x1d/0x21) with
   // an LCG-gated second copy. Verified RET 0x14 (5 stack dwords) -- the previous 0-arg
   // `char ResignTarget()` was templated off TView's real slot-32 virtual and
   // does not describe this slot. Arg types beyond the dword count are provisional.
   // slot 32 / 0x80
-  virtual void CopyRegionTemplateBankToNeighborCell(int coarseIndex, int arg2, int arg3, int arg4,
-                                                    int arg5);
+  virtual void CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regionClass,
+                                                    short unusedClass, short northClass,
+                                                    short unusedClass2);
   virtual int GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex); // slot 33 / 0x84
 
   // TMapMaker's real vtable (0x006598f8) ends at its last reachable slot (0x21 /
@@ -243,7 +244,13 @@ public:
   // (-1 slots get ++cityRegionNextId1fc).
   int cityRegionNextId1fc;
   int cityRegionIds200[0x17];
-  char pad_25c[0x29c - 0x25c]; // +0x25c
+  // +0x25c..+0x29c: a 0x40-byte hole with no observed access. RunMapGenerationAttempt's
+  // three inits stop exactly at +0x25c (regionClassGrid10 is 0x65 dwords + 1 byte from
+  // +0x10, groupMemberLists1a8 is 7x3 dwords, and cityRegionIds200 is 7 + 16 dwords from
+  // +0x200), a field-xref sweep at every dword offset in the range returns zero
+  // accesses, and no indexed access reaches past cityRegionIds200[0x17]. Kept opaque
+  // rather than overlaid with invented fields.
+  char unusedHole25c[0x29c - 0x25c];
   // Reset to -1 by RunMapGenerationAttempt alongside the other per-attempt scratch
   // state; not yet observed read anywhere. 0x0052712c.
   int lastMinorSeedCandidate29c;

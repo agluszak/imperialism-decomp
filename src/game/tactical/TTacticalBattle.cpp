@@ -1,4 +1,5 @@
 #include "game/gfx/TAmbitApplication.h"
+#include "game/ui_core/TWindow.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_military.h"
 #include "game/tactical/TTacticalBattle.h"
@@ -36,8 +37,6 @@
 #include "game/globals/net_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
-
-using turn_event_dialog::TurnEventDialogNode;
 
 // Non-virtual action helpers dispatched above.
 
@@ -78,9 +77,7 @@ void TTacticalBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTile
 }
 
 // FUNCTION: IMPERIALISM 0x0059f730
-undefined TTacticalBattle::FinalizeTacticalBattleOutcome(int) {
-  return 0;
-}
+void TTacticalBattle::FinalizeTacticalBattleOutcome(int) {}
 
 // SYNTHETIC: IMPERIALISM 0x0059f750
 // TTacticalBattle::GetRuntimeClass
@@ -163,9 +160,9 @@ void TTacticalBattle::BuildTacticalBattleStateFromBothSides(TTacticalPlayer* our
   for (int threatIdx = 0; threatIdx < tacticalTileCount3c; ++threatIdx) {
     tileThreatLevelArray28[threatIdx] = 0;
   }
-  tileIntArray2c = new int[tacticalTileCount3c];
+  tileCandidateScorePlane2c = new int[tacticalTileCount3c];
   for (int workIdxA = 0; workIdxA < tacticalTileCount3c; ++workIdxA) {
-    tileIntArray2c[workIdxA] = 0;
+    tileCandidateScorePlane2c[workIdxA] = 0;
   }
   tileIntArray30 = new int[tacticalTileCount3c];
   for (int workIdxB = 0; workIdxB < tacticalTileCount3c; ++workIdxB) {
@@ -213,8 +210,8 @@ void TTacticalBattle::Free() {
   if (tileThreatLevelArray28 != 0) {
     delete[] tileThreatLevelArray28;
   }
-  if (tileIntArray2c != 0) {
-    delete[] tileIntArray2c;
+  if (tileCandidateScorePlane2c != 0) {
+    delete[] tileCandidateScorePlane2c;
   }
   if (tileIntArray30 != 0) {
     delete[] tileIntArray30;
@@ -1557,7 +1554,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
 
   TextStyle styleDescriptor;
   styleDescriptor.textColor = 0;
-  TurnEventDialogNode* dialog = static_cast<TurnEventDialogNode*>(
+  TWindow* dialog = static_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTacticalBattleResult));
 
   TPicture* headerPicture = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog));
@@ -1673,12 +1670,12 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
     infoControl->CenterVertically(0);
   }
 
-  dialog->ShowTurnEventDialog(1);
-  void* content = dialog->QueryTurnEventContentObject();
+  dialog->SetModality(1);
+  void* content = dialog->GetDialogBehavior();
   if (content != 0) {
     *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = kControlTagOkay; // 'okay'
   }
-  dialog->RefreshTurnEventDialog();
+  dialog->PoseModally();
   dialog->Close();
   dialog->Free();
   battleView8->ForceRedraw();
@@ -1922,9 +1919,8 @@ void TTacticalBattle::HandleTacticalCommandTag_digg(TTacticalUnit* unit,
 // state 0 with strength/10 + 20 morale on a rand()%100 < (quality+5)*10 roll. Then the
 // 'raly' command applies/echoes it and the 0x232a end-of-action event is queued.
 // FUNCTION: IMPERIALISM 0x005a3810
-undefined
-TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalUnit* rallyingUnit,
-                                                                  TArmyTacUnit* rallyTarget) {
+void TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalUnit* rallyingUnit,
+                                                                       TArmyTacUnit* rallyTarget) {
   int newState = rallyTarget->state1c;
   int newMorale = rallyTarget->morale34;
   if (newState == 0) {
@@ -1938,7 +1934,6 @@ TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalUnit*
   }
   HandleTacticalCommandTag_raly(rallyTarget, newMorale, newState, 0);
   QueueTacticalEventPacket232A();
-  return 0;
 }
 
 // 'raly' command: multiplayer echo, sets the unit's state (rallying a broken unit) and

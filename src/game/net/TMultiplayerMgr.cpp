@@ -6,6 +6,8 @@
 #include "game/ui_tags_widgets.h"
 #include "game/resource_domain_types.h"
 #include "game/net/TMultiplayerMgr.h"
+#include "game/ui_core/TWindow.h"
+#include "game/net/TMadnessButton.h"
 
 #include <string.h>
 #include <time.h>
@@ -176,8 +178,6 @@ struct TurnEvent15Packet : NetMessage {
 #include <cstdlib>
 #include <cstring>
 
-using turn_event_dialog::TurnEventDialogNode;
-
 // Forward decl: real definition (with its // FUNCTION: marker) sits address-ordered
 // further down this file, near TMultiplayerMgr's other 0x5exxxx-adjacent members.
 static char ReturnTrueRuntimeCredentialInitStub();
@@ -234,7 +234,7 @@ TMultiplayerSlotHandle::~TMultiplayerSlotHandle() {
 TMultiplayerMgr::~TMultiplayerMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00542900
-undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int sessionContext) {
+void TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int sessionContext) {
   this->InitializePacketHeaderFields_Tag20202020(0);
   field10 = sessionContext;
   diplomacyQueueContext = 0;
@@ -271,7 +271,6 @@ undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int ses
   LoadProfileStringAndAssignSharedRef(&loadedString, s_GameName_00698010,
                                       static_cast<LPCSTR>(gameNameString));
   gameNameString = loadedString;
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00542b10
@@ -1257,13 +1256,13 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TextStyle styleDescriptor;
     styleDescriptor.textColor = 0;
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
-    TurnEventDialogNode* dialog = static_cast<TurnEventDialogNode*>(
+    TWindow* dialog = static_cast<TWindow*>(
         g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterMessage));
     if (dialog == 0) {
       FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr_00698040, 0x7ef);
     }
-    dialog->ShowTurnEventDialog(1);
-    void* content = dialog->QueryTurnEventContentObject();
+    dialog->SetModality(1);
+    void* content = dialog->GetDialogBehavior();
     if (content != 0) {
       *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = kControlTagOkay; // 'okay'
     }
@@ -1307,7 +1306,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       cancelButton->SetState(1, 0);
       cancelButton->SetPictureResourceIdAndRefresh(0x53a, 0);
     }
-    int responseTag = dialog->RefreshTurnEventDialog();
+    int responseTag = dialog->PoseModally();
     dialog->Close();
     dialog->Free();
     if (responseTag == kSessionTagRsvp) { // 'rsvp'
@@ -2878,7 +2877,8 @@ NationStateRecordA8& NationStateRecordA8::operator=(const NationStateRecordA8& s
 // FUNCTION: IMPERIALISM 0x0054b1b0
 void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused) {
   (void)unused;
-  if (FindActiveNationSlotIndexInGameFlowList() == -1) {
+  int mySlotIndex = FindActiveNationSlotIndexInGameFlowList();
+  if (mySlotIndex == -1) {
     CString notSeatedMessage;
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&notSeatedMessage, 0x2742,
                                                                     0x16);
@@ -2888,23 +2888,39 @@ void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused
 
   TView* dialog =
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventJoinSelectorMessage);
-  dialog->AssertValid();
+  if (dialog == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMultiplayerMgr_00698040, 0x1061);
+  }
 
-  int mySlotIndex = FindActiveNationSlotIndexInGameFlowList();
+  // MapView.rsrc view 1510's box0..box6 picts are TMadnessButtons (Mac resource oracle),
+  // so the per-box tail is TCzechBox::SetState + CheckTheLook, not an unresolved slot pair.
   for (int i = 0; i < 7; ++i) {
-    TView* boxControl = dialog->ResolveControlByTag(kSessionTagBxb0 + i); // 'box0'-'box6'
+    TMadnessButton* boxControl =
+        static_cast<TMadnessButton*>(dialog->ResolveControlByTag(kSessionTagBxb0 + i));
     boxControl->AssertValid();
     int sessionId = g_pGameFlowState->nationSessionIds[i];
     bool occupied = sessionId != 0 && sessionId != -2;
-    bool occupiedByMe = occupied && (i == mySlotIndex);
-    boxControl->SetState(occupied && !occupiedByMe, 0);
-    // The original then calls the box control's own slot-0x75/0x76 virtuals (isMine flag,
-    // then a bare refresh) -- the 'box' receiver class is unresolved, so left unmodeled.
+    bool isMine =
+        g_pNetMgr006a6014->GetSessionActiveNationId() == g_pGameFlowState->nationSessionIds[i];
+    bool occupiedByOther = occupied && !isMine;
+    boxControl->SetState(static_cast<int>(occupiedByOther), 0);
+    if (mySlotIndex != -1) {
+      boxControl->TCzechBox::SetState(static_cast<unsigned char>(i == mySlotIndex), 0);
+    } else {
+      boxControl->TCzechBox::SetState(static_cast<unsigned char>(occupiedByOther), 0);
+    }
+    boxControl->CheckTheLook(0);
   }
 
-  // The original then restyles and resolves a 'mesg' control, calls its own slot-0x1f
-  // virtual, and dispatches the built style buffer to the dialog's linked children (slot
-  // 0x27) -- not yet decoded.
+  TextStyle messageStyle;
+  BuildUiTextStyleDescriptor(&messageStyle, 0, 0xc, 0);
+  TStaticText* messageControl =
+      static_cast<TStaticText*>(dialog->ResolveControlByTag(kSessionTagMesg)); // 'mesg'
+  messageControl->AssertValid();
+  messageControl->InstallTextStyle(messageStyle, 0);
+  messageControl->BecomeTarget();
+  dialog->Open();
 }
 
 // FUNCTION: IMPERIALISM 0x0054b4c0

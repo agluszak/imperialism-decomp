@@ -37,7 +37,6 @@
 #include "game/military/mapped_flavor_text.h"
 
 namespace {
-const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
 const unsigned int kAddrDiplomacyTurnStateManager = 0x006A43D0;
 
 // The Windows port brackets minor-nation label drawing with the palette built from
@@ -644,8 +643,8 @@ eDipAction TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPo
   int terrainIndex = 0;
   do {
     if (g_apTerrainTypeDescriptorTable[terrainIndex] != 0) {
-      char hit = g_pStrategicMapViewSystem->MacViewMgrSlot24(&localPoint,
-                                                             static_cast<short>(terrainIndex));
+      char hit = g_pStrategicMapViewSystem->IsPointInsideClipRegionSlot(
+          &localPoint, static_cast<short>(terrainIndex));
       if (hit != 0) {
         break;
       }
@@ -701,8 +700,8 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
   bool hit = false;
   do {
     if (g_apTerrainTypeDescriptorTable[static_cast<short>(hitIndex)] != 0) {
-      char regionHit =
-          g_pStrategicMapViewSystem->MacViewMgrSlot24(&localPoint, static_cast<short>(hitIndex));
+      char regionHit = g_pStrategicMapViewSystem->IsPointInsideClipRegionSlot(
+          &localPoint, static_cast<short>(hitIndex));
       if (regionHit != 0) {
         hit = true;
         break;
@@ -768,7 +767,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
     // not a null rect.
     Draw(presentRect);
 
-    void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
+    TCountry** terrainDescriptors = g_apTerrainTypeDescriptorTable;
     short terrainIndex = 0;
     do {
       if (*terrainDescriptors != 0) {
@@ -781,7 +780,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
     g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x3f);
 
     terrainIndex = 7;
-    terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable) + 7;
+    terrainDescriptors = g_apTerrainTypeDescriptorTable + 7;
     do {
       if (*terrainDescriptors != 0) {
         this->BlitDiplomacyMapEventPaletteMaskToSurface(terrainIndex, 0x2bb);
@@ -824,7 +823,7 @@ void TDiplomacyMapView::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
   RgnHandle region = NewRgn();
 
   short terrainIndex = 0;
-  void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
+  TCountry** terrainDescriptors = g_apTerrainTypeDescriptorTable;
   do {
     if (*terrainDescriptors != 0) {
       RgnHandle frameRegion =
@@ -992,7 +991,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
     LockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
 
     int terrainIndex = 0;
-    void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
+    TCountry** terrainDescriptors = g_apTerrainTypeDescriptorTable;
     do {
       if (*terrainDescriptors != 0) {
         DiplomacyRelationshipNotch relationshipNotch =
@@ -1219,14 +1218,14 @@ void TDiplomacyMapView::PoseOffer(short sourceNation, short targetNation, short 
 void TDiplomacyMapView::DoEvent(int commandId, TEventHandler* panelEvent, TEvent* extra) {
   if (commandId == 0x14) {
     int tabIndex = 0;
-    int* tagTable = reinterpret_cast<int*>(0x00696978);
+    const unsigned int* tagTable = g_aDiplomacyActionTopicTabTags;
     do {
-      if (panelEvent->controlTag == *tagTable) {
+      if (static_cast<unsigned int>(panelEvent->controlTag) == *tagTable) {
         break;
       }
       tagTable += 1;
       tabIndex += 1;
-    } while (reinterpret_cast<unsigned int>(tagTable) < 0x696990);
+    } while (tagTable < g_aDiplomacyActionTopicTabTags + 6);
     if (tabIndex < 6) {
       ChangeSelectedActionTopic(tabIndex);
       return;

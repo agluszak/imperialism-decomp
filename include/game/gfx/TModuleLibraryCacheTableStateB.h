@@ -64,7 +64,7 @@ public:
 
   // Load a localized UI string by raw resource id into `out` (falls back to the shared
   // empty string). Reached via ILT 0x406933; sibling of the (group, index) loader.
-  undefined4 LoadUiStringResourceById(CString* out, unsigned int stringId); // 0x00499440
+  int LoadUiStringResourceById(CString* out, unsigned int stringId); // 0x00499440
 
   // Cached bitmap-surface lookup/load by resource id (primary + slot modules). 0x004997e0
   CDib* LoadBmpResourceByIdCached(unsigned short bmpId);

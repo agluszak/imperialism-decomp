@@ -52,11 +52,8 @@ void TArmyBoyView::Draw(RECT* rectBuffer) {
     SetQuickDrawTextOriginWithContextOffset(0x6a - trainingWidth / 2, 0x26);
     DrawTextWithCachedQuickDrawStyleState(&trainingText);
   } else {
-    // The blit source surface is a per-level icon strip cached on TMacViewMgr; that
-    // field isn't recovered yet, so it's read via a raw offset like the rest of this
-    // function's still-untyped context object.
-    TQuickDrawBlitSurface* iconStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
-        *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x694) + 4);
+    TQuickDrawBlitSurface* iconStripSurface =
+        g_pStrategicMapViewSystem->atlas694[0]->GetBlitSurface();
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency(iconStripSurface,
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
@@ -76,8 +73,8 @@ void TArmyBoyView::Draw(RECT* rectBuffer) {
     barWidth += 5;
   }
   if (barWidth != 0) {
-    TQuickDrawBlitSurface* iconStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
-        *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x694) + 4);
+    TQuickDrawBlitSurface* iconStripSurface =
+        g_pStrategicMapViewSystem->atlas694[0]->GetBlitSurface();
     RECT srcRect = {0, 0, barWidth, 10};
     RECT dstRect = {0x94, 0x1f, barWidth + 0x94, 0x29};
     UpdatePaletteIndexWithDefaultFallback(0x10);

@@ -83,8 +83,8 @@ void TShipView::Draw(RECT* rectBuffer) {
   // The blit source surface is a per-level icon strip cached on TMacViewMgr; that
   // field isn't recovered yet, so it's read via a raw offset like the sibling
   // roster-row views (TArmyBoyView, TArmyUnitView, TMiniArmyView).
-  TQuickDrawBlitSurface* iconStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
-      *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x694) + 4);
+  TQuickDrawBlitSurface* iconStripSurface =
+      g_pStrategicMapViewSystem->atlas694[0]->GetBlitSurface();
   RECT srcRect = {0, rowBucket, levelBucket * 4 - 1, rowBucket + 7};
   RECT dstRect = {0x52, 0x1e, levelBucket * 4 + 0x51, 0x25};
   UpdatePaletteIndexWithDefaultFallback(0x10);

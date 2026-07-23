@@ -49,6 +49,4 @@ void TRelationshipDialog::Close() {
 }
 
 // FUNCTION: IMPERIALISM 0x005b2f10
-undefined TRelationshipDialog::VTableSlot68() {
-  return 0;
-}
+void TRelationshipDialog::VTableSlot68() {}

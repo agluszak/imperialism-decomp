@@ -128,19 +128,19 @@ void TArmyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   }
 
   if (controlTag == kControlTagDfnd) {
-    g_pMapContextActionManager->OrphanCallChain_C1_I34_004a4260(2);
+    g_pMapContextActionManager->SetOrdersForIdleUnitsOnPendingTile(2);
     g_pUiRuntimeContext->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
     return;
   }
 
   if (controlTag == kControlTagLatr) {
-    g_pMapContextActionManager->OrphanCallChain_C1_I34_004a4260(3);
+    g_pMapContextActionManager->SetOrdersForIdleUnitsOnPendingTile(3);
     g_pUiRuntimeContext->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
     return;
   }
 
   if (controlTag == kControlTagDone) {
-    g_pMapContextActionManager->OrphanCallChain_C1_I34_004a4260(4);
+    g_pMapContextActionManager->SetOrdersForIdleUnitsOnPendingTile(4);
     g_pUiRuntimeContext->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
   }
 }

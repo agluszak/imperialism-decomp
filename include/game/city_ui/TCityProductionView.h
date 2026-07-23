@@ -5,6 +5,7 @@
 #include "game/gfx/quickdraw_regions.h"
 
 class TBuildingView;
+struct TQuickDrawSurfaceContext;
 class TCity;
 class TTransFocusAnimation;
 
@@ -27,13 +28,12 @@ public:
                   unsigned char commandFlag) override; // slot 0x68 0x4bc870
   // slots 0x02..0x06, 0x08..0x0e, 0x10..0x34, 0x36, 0x38..0x43, and
   // 0x45..0x67 and 0x69..0x73 inherited from TNoHilitePicture.
-  // RET 0x1c = 7 stack dwords; Ghidra recovered only 6. The trailing dword is the
-  // palette the name promises (body still a stub). slot 0x74 0x4bac50
-  virtual void BlitBitmapResourceRectWithScreenOffsetAndPalette(RECT* sourceRect, int surface,
-                                                                short offsetY, short offsetX,
-                                                                undefined4 context,
-                                                                undefined4 flags,
-                                                                undefined4 palette);
+  // RET 0x1c = 7 stack dwords. Types read off 0x4bac50: arg5 feeds
+  // CreateBitmapResourceLoaderHandle, and args 6/7 are the SetGWorld(context, flags)
+  // pair restored at the end. Body is still unported. slot 0x74 0x4bac50
+  virtual void BlitBitmapResourceRectWithScreenOffsetAndPalette(
+      RECT* destRect, TQuickDrawSurfaceContext* destContext, short offsetY, short offsetX,
+      short resourceId, TQuickDrawSurfaceContext* restoreContext, int restoreFlags);
   virtual void RenderNationHeaderDateLabelWithPeriodicRefresh(); // slot 0x75 0x4badd0
   // RET 0x8 = 2 stack dwords (int + int*), not 0. slot 0x76 0x4bb7a0
   virtual void InitializeCityProductionDialog(TCity* city, TView* dialogRoot);

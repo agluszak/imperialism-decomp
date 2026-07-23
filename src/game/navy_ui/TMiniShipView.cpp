@@ -61,8 +61,8 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
   // The blit source surface is a per-level icon strip cached on TMacViewMgr; that
   // field isn't recovered yet, so it's read via a raw offset like the sibling
   // roster-row views (TShipView, TArmyBoyView, TArmyUnitView, TMiniArmyView).
-  TQuickDrawBlitSurface* iconStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
-      *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x694) + 4);
+  TQuickDrawBlitSurface* iconStripSurface =
+      g_pStrategicMapViewSystem->atlas694[0]->GetBlitSurface();
   RECT srcRect = {0, rowBucket, levelBucket * 4 - 1, rowBucket + 7};
   RECT dstRect = {0x8c, 4, levelBucket * 4 + 0x8b, 0xb};
   UpdatePaletteIndexWithDefaultFallback(0x10);
@@ -84,8 +84,8 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
   if (shipNode84->admiral != 0) {
     // An admiral is assigned: draw the per-nation admiral-rank badge from the badge
     // strip's (nationId + 7)-th 16px row.
-    TQuickDrawBlitSurface* badgeStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
-        *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x68c) + 4);
+    TQuickDrawBlitSurface* badgeStripSurface =
+        g_pStrategicMapViewSystem->atlas68c->GetBlitSurface();
     short nationId = g_pSimMgr->GetActiveNationId();
     short badgeRow = (nationId + 7) * 0x10;
     RECT badgeSrcRect = {0, badgeRow, 0x10, badgeRow + 0x10};
@@ -104,9 +104,8 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
     short orderKind = static_cast<short>(shipNode84->taskForce->shipOrders);
     short badgeRow = orderTypeBadgeRowTable[orderKind];
     if (badgeRow != 0) {
-      TQuickDrawBlitSurface* badgeStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
-          *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x68c) +
-          4);
+      TQuickDrawBlitSurface* badgeStripSurface =
+          g_pStrategicMapViewSystem->atlas68c->GetBlitSurface();
       short badgeTop = badgeRow * 0x10;
       RECT badgeSrcRect = {0, badgeTop, 0x10, badgeTop + 0x10};
       RECT badgeDstRect = {0x78, 0, 0x88, 0x10};

@@ -15,6 +15,14 @@ TTaskList::TTaskList() : TList() {}
 // TTaskList::`scalar deleting destructor'
 TTaskList::~TTaskList() {}
 
+// FUNCTION: IMPERIALISM 0x005aec80
+void TTaskList::ITaskList() {}
+
+// FUNCTION: IMPERIALISM 0x005aeca0
+POSITION TTaskList::Insert(TTask* task) {
+  return AddTail(task);
+}
+
 // FUNCTION: IMPERIALISM 0x005aed50
 unsigned char TTaskList::ContainsTask(short citySlotIndex) {
   for (int ordinal = 1; ordinal <= GetCount(); ++ordinal) {

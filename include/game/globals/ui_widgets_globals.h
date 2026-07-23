@@ -33,13 +33,14 @@ extern short g_anCityBuildingSlotCoords[36];
 // InitializeCityBuildingHoverSelectionRects_004b95c0. 0x6a2998.
 extern CRect g_aCityBuildingHoverSelectionRects[16];
 
-// Packed int table consumed by the city-building screen layout (icon/highlight coordinates
-// and 0/1 flags; per-field semantics not yet recovered). Populated by
-// InitializeCityBuildingLayoutData. 0x6a24e8.
-extern int g_anCityBuildingLayoutValues[164];
+// 41 layout rects for the city-building screen, written component-by-component in
+// left/top/right/bottom order by InitializeCityBuildingLayoutData: thirteen groups of
+// three rects (the trailing rects of a group are zero when that building has fewer
+// hotspots) plus a final pair. 0x6a24e8.
+extern CRect g_aCityBuildingLayoutRects[41];
 
 // 31 action-button rects for the city-building screen, placement-constructed by
-// InitializeCityBuildingLayoutData (immediately after g_anCityBuildingLayoutValues). 0x6a2778.
+// InitializeCityBuildingLayoutData (immediately after g_aCityBuildingLayoutRects). 0x6a2778.
 extern CRect g_aCityBuildingActionRects[31];
 
 extern "C" const unsigned int g_tradeCommodityRowTagTable[17];

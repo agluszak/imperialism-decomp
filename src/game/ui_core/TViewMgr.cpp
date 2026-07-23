@@ -3,6 +3,13 @@
 #include "game/ui_tags_widgets.h"
 #include "game/gfx/TTemplateDialogs.h"
 #include "game/ui_core/TEventHandler.h"
+#include "game/ui_widgets/TArmyInfoView.h"
+#include "game/city_ui/TBuildingExpansionView.h"
+#include "game/ui_widgets/TCivReport.h"
+#include "game/ui_widgets/TTown.h"
+#include "game/ui_screens/TOffLimitsPicture.h"
+#include "game/city_ui/TPlaceCityDialog.h"
+#include "game/ui_widgets/TCombatReportView.h"
 
 #include "game/trade_ui/TDealBookPicture.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
@@ -101,9 +108,6 @@
 namespace {
 using turn_event_dialog::GoldCommitControl;
 using turn_event_dialog::GoldDialogControl;
-using turn_event_dialog::GoldFactoryPanel;
-using turn_event_dialog::TCivilianReportGoldControl;
-using turn_event_dialog::TurnEventDialogNode;
 // g_pUiViewManager (TAssetMgr) @ 0x6a2148 — the UI/view asset registry that resolves
 // turn-event dialog nodes by message context.
 const unsigned int kAddrDefaultGameSetupPolicies = 0x00698b1a;
@@ -368,18 +372,18 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
   if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
     return;
   }
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+  TWindow* node = static_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventConfirmEndTurn));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x223);
   }
-  node->ShowTurnEventDialog(1);
+  node->SetModality(1);
   if (node->ResolveControlByTag(kControlTagDialog) == nullptr) { // 'GOLD'
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x227);
   }
-  void* content = node->QueryTurnEventContentObject();
+  void* content = node->GetDialogBehavior();
   if (content != nullptr) {
     *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = kControlTagPic5; // 'cip5'
   }
@@ -388,10 +392,9 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
 
-  GoldDialogControl* gold =
-      static_cast<GoldDialogControl*>(node->ResolveControlByTag(kControlTagDialog));
+  TPicture* gold = static_cast<TPicture*>(node->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
   gold->AssertValid();
-  gold->SetGoldControlStateByResource(0x24cd, 0);
+  gold->SetPictureResourceIdAndRefresh(static_cast<short>(0x24cd), 0);
 
   // Mask the game-flow flag while committing the refresh when localization mode is active.
   unsigned char savedFlag = 0;
@@ -400,7 +403,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
     savedFlag = g_pGameFlowState->processPrimaryEventQueue;
     g_pGameFlowState->processPrimaryEventQueue = 0;
   }
-  node->RefreshTurnEventDialog();
+  node->PoseModally();
   node->Close();
   node->Free();
   if (g_pSimMgr->multiplayerSessionRole != 0) {
@@ -480,21 +483,21 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   }
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
 
-  TurnEventDialogNode* dialog;
+  TWindow* dialog;
   if (static_cast<short>(payloadResource) == 0) {
-    dialog = static_cast<TurnEventDialogNode*>(
+    dialog = static_cast<TWindow*>(
         g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterMessage));
   } else {
     g_pUiViewManager->OpenFilesFor(0xb);
-    dialog = static_cast<TurnEventDialogNode*>(
+    dialog = static_cast<TWindow*>(
         g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterReward));
   }
   if (dialog == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x2e9);
   }
-  dialog->ShowTurnEventDialog(1);
-  void* content = dialog->QueryTurnEventContentObject();
+  dialog->SetModality(1);
+  void* content = dialog->GetDialogBehavior();
   if (content != 0) {
     *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = kControlTagOkay; // 'okay'
   }
@@ -503,8 +506,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   this->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
   dialog->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
 
-  GoldDialogControl* gold =
-      static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'GOLD'
+  TPicture* gold = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
   gold->AssertValid();
   if (gold == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -515,30 +517,30 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   if (static_cast<short>(contextTag) == 2 && g_nationInfoGoldResourceOverride_006a5bac != 0) {
     goldResource = g_nationInfoGoldResourceOverride_006a5bac;
   }
-  gold->SetGoldControlStateByResource(goldResource, 0);
+  gold->SetPictureResourceIdAndRefresh(static_cast<short>(goldResource), 0);
 
-  GoldDialogControl* coat =
-      static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(kControlTagCoat)); // 'coat'
+  TPicture* coat = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagCoat)); // 'coat'
   coat->AssertValid();
   if (coat == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x301);
   }
   if (g_pSimMgr->GetActiveNationId() >= 0 && g_pSimMgr->GetActiveNationId() < 7) {
-    coat->SetGoldControlStateByResource(g_pSimMgr->GetActiveNationId() + 0x251c, 0);
+    coat->SetPictureResourceIdAndRefresh(
+        static_cast<short>(g_pSimMgr->GetActiveNationId() + 0x251c), 0);
   } else {
     coat->SetEnabled(0, 0);
   }
 
   if (static_cast<short>(payloadResource) != 0) {
-    GoldDialogControl* goldValue =
-        static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'GOLD'
+    TPicture* goldValue =
+        static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
     goldValue->AssertValid();
-    goldValue->SetGoldControlStateByResource(contextTag + 0x252a, 0);
-    GoldDialogControl* award =
-        static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(kControlTagRewa)); // 'awer'
+    goldValue->SetPictureResourceIdAndRefresh(static_cast<short>(contextTag + 0x252a), 0);
+    TPicture* award =
+        static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagRewa)); // 'awer'
     award->AssertValid();
-    award->SetGoldControlStateByResource(payloadResource, 0);
+    award->SetPictureResourceIdAndRefresh(static_cast<short>(payloadResource), 0);
   } else {
     TStaticText* title =
         static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagTitl)); // 'titl'
@@ -617,7 +619,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     g_pSfxPlaybackSystem->PlaySoundEffect(overlaySfxIds[messageKind], 0, 1);
   }
 
-  int modalResult = dialog->RefreshTurnEventDialog();
+  int modalResult = dialog->PoseModally();
   dialog->Close();
   dialog->Free();
   simSuppressed = g_pSimMgr->multiplayerSessionRole != 0;
@@ -828,8 +830,8 @@ void TViewMgr::RefreshStrategicMapStatusIconsForActiveNation() {
     TControl* control = static_cast<TControl*>(mainView->ResolveControlByTag(tag));
     if (control != nullptr) {
       control->AssertValid();
-      g_pStrategicMapViewSystem->OrphanCallChain_C4_I35_0050bbc0(reinterpret_cast<int*>(control),
-                                                                 iconIndex, nationId);
+      g_pStrategicMapViewSystem->ApplySellOrderRowToNationState(
+          static_cast<turn_event_dialog::CityOrderSource*>(control), iconIndex, nationId);
     }
   }
   TGreatPower* nation = g_apNationStates[nationId];
@@ -840,8 +842,8 @@ void TViewMgr::RefreshStrategicMapStatusIconsForActiveNation() {
 
 // FUNCTION: IMPERIALISM 0x005d6cd0
 void TViewMgr::HandleTurnEventDialogFactorySlot70(int eventCode) {
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
+  TWindow* node =
+      static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(eventCode), 0));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -858,8 +860,8 @@ void TViewMgr::HandleTurnEventDialogFactorySlot70(int eventCode) {
 
 // FUNCTION: IMPERIALISM 0x005d6d70
 void TViewMgr::HandleTurnEventDialogFactorySlot74(int eventCode) {
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
+  TWindow* node =
+      static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(eventCode), 0));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -871,8 +873,8 @@ void TViewMgr::HandleTurnEventDialogFactorySlot74(int eventCode) {
   if (gold != nullptr) {
     gold->CommitGoldDialogContent();
   }
-  node->ShowTurnEventDialog(1);
-  node->RefreshTurnEventDialog();
+  node->SetModality(1);
+  node->PoseModally();
   node->Close();
   node->Free();
 }
@@ -884,8 +886,8 @@ void TViewMgr::NoOpTurnEventStateVtableSlot8C(int arg) {
 
 // FUNCTION: IMPERIALISM 0x005d6e50
 void TViewMgr::HandleTurnEventDialogFactorySlot78(int eventCode) {
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
+  TWindow* node =
+      static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(eventCode), 0));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -897,16 +899,16 @@ void TViewMgr::HandleTurnEventDialogFactorySlot78(int eventCode) {
   if (gold != nullptr) {
     gold->CommitGoldDialogContent();
   }
-  node->ShowTurnEventDialog(1);
-  node->RefreshTurnEventDialog();
+  node->SetModality(1);
+  node->PoseModally();
   node->Close();
   node->Free();
 }
 
 // FUNCTION: IMPERIALISM 0x005d6f10
 void TViewMgr::HandleTurnEventDialogFactorySlot7C(int eventCode) {
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
+  TWindow* node =
+      static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(eventCode), 0));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -918,16 +920,16 @@ void TViewMgr::HandleTurnEventDialogFactorySlot7C(int eventCode) {
   if (gold != nullptr) {
     gold->CommitGoldDialogContent();
   }
-  node->ShowTurnEventDialog(1);
-  node->RefreshTurnEventDialog();
+  node->SetModality(1);
+  node->PoseModally();
   node->Close();
   node->Free();
 }
 
 // FUNCTION: IMPERIALISM 0x005d6fd0
 void TViewMgr::HandleTurnEventDialogFactorySlot80(int eventCode) {
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
-      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
+  TWindow* node =
+      static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(eventCode), 0));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -939,8 +941,8 @@ void TViewMgr::HandleTurnEventDialogFactorySlot80(int eventCode) {
   if (gold != nullptr) {
     gold->CommitGoldDialogContent();
   }
-  node->ShowTurnEventDialog(1);
-  node->RefreshTurnEventDialog();
+  node->SetModality(1);
+  node->PoseModally();
   node->Close();
   node->Free();
 }
@@ -1567,8 +1569,9 @@ void TViewMgr::SyncTacticalStatusPanelRegion() {
   goldControl->AssertValid();
   goldControl->SyncStatusPanelBounds();
 
-  turn_event_dialog::GoldSinglePayloadControl* owner =
-      static_cast<turn_event_dialog::GoldSinglePayloadControl*>(goldControl->ownerContext);
+  // The tactical view's owner is the tactical map picture, a TOffLimitsPicture
+  // subclass, so byte 0x1cc is its ForwardCopyRgn.
+  TOffLimitsPicture* owner = static_cast<TOffLimitsPicture*>(goldControl->ownerContext);
   owner->AssertValid();
 
   CRect bounds;
@@ -1576,7 +1579,7 @@ void TViewMgr::SyncTacticalStatusPanelRegion() {
   RECT regionBounds = bounds;
   RectRgn(temporaryRegion.tempRgn, &regionBounds);
 
-  owner->ApplyPayload(temporaryRegion.tempRgn);
+  owner->ForwardCopyRgn(temporaryRegion.tempRgn);
 }
 
 // FUNCTION: IMPERIALISM 0x005d8dd0
@@ -1944,27 +1947,30 @@ void TViewMgr::ConfigureActiveDialogGoldValueGridForTurnEvent3C0() {
 }
 
 // FUNCTION: IMPERIALISM 0x005dc430
-void TViewMgr::HandleTurnEventDialogFactorySlotB8(int a, int b, int c) {
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+void TViewMgr::ShowBuildingExpansionDialog(short buildingSlotId, TCity* city,
+                                           TCityProductionView* productionView) {
+  TWindow* node = static_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericExpander));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf50);
   }
-  node->ShowTurnEventDialog(1);
-  GoldCommitControl* gold = static_cast<GoldCommitControl*>(
-      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'GOLD'
-  gold->AssertValid();
-  if (gold == nullptr) {
+  node->SetModality(1);
+  // MapView.rsrc view 9221's 'DLOG' pict is a TBuildingExpansionView (Mac resource
+  // oracle), whose slots 0x73/0x74 are StuffValues and DoClosingAction.
+  TBuildingExpansionView* expansionView =
+      static_cast<TBuildingExpansionView*>(node->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
+  expansionView->AssertValid();
+  if (expansionView == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf54);
   }
-  gold->ApplyGoldTradeSummaryValues(a, b, c);
+  expansionView->StuffValues(buildingSlotId, city, productionView);
   POINT placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-  int refreshResult = node->RefreshTurnEventDialog();
-  gold->ApplyGoldTradeDialogRefreshResult(refreshResult);
+  int dialogAction = node->PoseModally();
+  expansionView->DoClosingAction(static_cast<unsigned long>(dialogAction));
   node->Close();
   node->Free();
 }

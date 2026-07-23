@@ -1,4 +1,5 @@
 #include "game/city_ui/TBuildingView.h"
+#include "game/ui_core/TStaticText.h"
 #include "game/ui_core/TWindow.h"
 #include "game/city/TCity.h"
 #include "game/city_ui/TCityProductionView.h"
@@ -42,13 +43,25 @@ void TBuildingView::UpdateFields() {}
 void TBuildingView::DoStartup() {}
 
 // FUNCTION: IMPERIALISM 0x004c6ff0
-undefined TBuildingView::SetUniversityDialogTextAndRefresh(int*, CString) {
-  return 0;
+void TBuildingView::SetUniversityDialogTextAndRefresh(TStaticText* label, CString text) {
+  label->SetTextAndMaybeRefresh(&text, 0);
+  CRect labelBounds;
+  label->QueryBounds(&labelBounds);
+  RECT invalidateRect;
+  CopyRect(&invalidateRect, &labelBounds);
+  InvalidateCityDialogRectRegion(&invalidateRect, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x004c70e0
-undefined TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(int*, int, int) {
-  return 0;
+void TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(TStaticText* label,
+                                                               short stringGroup,
+                                                               short stringIndex) {
+  label->SetTextFromStringResource(stringGroup, stringIndex, 0);
+  CRect labelBounds;
+  label->QueryBounds(&labelBounds);
+  RECT invalidateRect;
+  CopyRect(&invalidateRect, &labelBounds);
+  InvalidateCityDialogRectRegion(&invalidateRect, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x004c7180

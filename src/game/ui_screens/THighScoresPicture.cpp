@@ -42,7 +42,7 @@ void THighScoresPicture::DoPostCreate(int arg) {
       if (fread(&scoreValues94[i], 4, 1, file) == 0) {
         scoreValues94[i] = 0;
       }
-      fread(scoreRecordsBc[i], 0x20, 1, file);
+      fread(scoreNamesBc[i], 0x20, 1, file);
     }
     fclose(file);
   }

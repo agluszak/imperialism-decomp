@@ -79,11 +79,8 @@ void TNavyBoyView::Draw(RECT* rectBuffer) {
   RECT dstRect = {0x52, 0x1e, sVar2 * 4 + 0x51, 0x25};
 
   if (level > 0) {
-    // The blit source surface is a per-level icon strip cached on TMacViewMgr; that
-    // field isn't recovered yet, so it's read via a raw offset like the rest of this
-    // function's still-untyped context object.
-    TQuickDrawBlitSurface* iconStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
-        *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x694) + 4);
+    TQuickDrawBlitSurface* iconStripSurface =
+        g_pStrategicMapViewSystem->atlas694[0]->GetBlitSurface();
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency(iconStripSurface,
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,

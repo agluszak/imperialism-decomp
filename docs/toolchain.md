@@ -180,6 +180,42 @@ Conclusions:
    inside the pragma region, so wrapping an owner ctor does not stop template bodies
    defined in `afxtempl.h` from inlining — not a production fix.
 
+### Uncalled out-of-line copies of fully-inlined constructors
+
+Some original constructors exist twice: inlined into every user *and* as a
+standalone body with zero xrefs. `TInteriorMinister::TInteriorMinister` is the
+worked example — 0x4be1d0 is a 31-byte standalone copy nothing calls, while
+`TInteriorMinister::CreateObject` (0x4be0d0) and
+`TCityInteriorMinister::TCityInteriorMinister` (0x4be840) both carry the same
+body inlined.
+
+That combination needs an out-of-line definition (so the body is emitted
+unconditionally) *plus* automatic inlining of a non-`inline` function (so both
+users still inline it) *plus* both users living in one TU. The original binary
+has all three: the two classes interleave in one address range
+(0x4be0d0 … 0x4be1d0 … 0x4be840).
+
+Our build cannot reproduce it, and the three arrangements are mutually
+exclusive (measured 2026-07-23, `/Oy /Ob1`):
+
+| Ctor definition | 0x4be1d0 | 0x4be0d0 | 0x4be840 |
+| --- | --- | --- | --- |
+| in-class in the header (current) | not emitted | 100% | 100% |
+| out-of-line in `TInteriorMinister.cpp` | 100% | 46.15% | 73.68% |
+
+The middle column is the whole prize (a 31-byte ctor) and the other two columns
+are the price, so the in-class form stays. Under `/Ob1` a non-`inline`
+definition is never auto-inlined, so the same-TU user (`CreateObject`) emits a
+call instead of the body; and VC5 emits no COMDAT at all for an inline function
+whose every call site was inlined, so no linker setting can bring 0x4be1d0 back
+(`reccmp-roadmap` reports it as "the compiler has probably inlined this
+function", i.e. absent from the PDB, not discarded at link time).
+
+Reproducing it would take `/Ob2` on a TU holding both classes — a toolchain
+axis change plus a merge that Hard Rule 7 forbids. Treat this shape as
+recognised-and-accepted: keep the `// FUNCTION:` marker on the in-class
+definition so the address stays owned, and expect it to stay unpaired.
+
 ## Python/Ghidra Environment Notes
 
 - The repo syncs with `uv` using `pyghidra==3.1.0` and `jpype1==1.5.2` (see `pyproject.toml`). The stale `java-stubs-converted-strings` dependency conflicted with that `jpype1` pin and was removed.

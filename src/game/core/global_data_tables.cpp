@@ -738,10 +738,10 @@ CRect g_aCityBuildingHoverSelectionRects[16];
 // and 0/1 flags; per-field semantics not yet recovered). Populated by
 // InitializeCityBuildingLayoutData.
 // GLOBAL: IMPERIALISM 0x006a24e8
-int g_anCityBuildingLayoutValues[164] = {0};
+CRect g_aCityBuildingLayoutRects[41];
 
 // 31 action-button rects for the city-building screen, placement-constructed by
-// InitializeCityBuildingLayoutData (immediately after g_anCityBuildingLayoutValues).
+// InitializeCityBuildingLayoutData (immediately after g_aCityBuildingLayoutRects).
 // GLOBAL: IMPERIALISM 0x006a2778
 CRect g_aCityBuildingActionRects[31];
 
@@ -1579,6 +1579,8 @@ extern "C" const char g_szCityProductionArmoryPrefix[16] = {
     'A', 'r', 'm', 'o', 'r', 'y', ':', ' ', '\0', '\0', '\0', '\0', 'S', 'h', 'i', 'p'};
 // GLOBAL: IMPERIALISM 0x0069632c
 extern "C" const char g_szCityProductionShipyardPrefix[] = "Shipyard: ";
+// GLOBAL: IMPERIALISM 0x00695798
+extern "C" const char g_szDoubleQuote[] = "\"";
 // GLOBAL: IMPERIALISM 0x0069a7f8
 extern "C" const char s_SourcePathUTestDialogs_0069A7F8[] = "D:\\Ambit\\Cross\\UTestDialogs.cpp";
 extern "C" const char s_SourcePathUCityViews_00696650[] = "D:\\Ambit\\Cross\\UCityViews.cpp";
@@ -1589,6 +1591,12 @@ extern "C" const char s_SourcePathUDiplomacyViews_00696AE0[] =
     "D:\\Ambit\\Cross\\UDiplomacyViews.cpp";
 // GLOBAL: IMPERIALISM 0x006964b0
 extern "C" const char s_SourcePathUCityMinister_006964B0[] = "D:\\Ambit\\Cross\\UCityMinister.cpp";
+// Diplomacy action-topic tab tags, scanned in order by TDiplomacyMapView::DoEvent's
+// commandId == 0x14 branch to turn a clicked tab into a topic index.
+// GLOBAL: IMPERIALISM 0x00696978
+extern "C" const unsigned int g_aDiplomacyActionTopicTabTags[6] = {
+    kControlTagInft, kControlTagTrtt, kControlTagGrat,
+    kControlTagTrat, kControlTagCout, kControlTagOffr};
 // GLOBAL: IMPERIALISM 0x0069943c
 extern "C" const char s_SourcePathUSuperMap_0069943C[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
 // GLOBAL: IMPERIALISM 0x0069aa94
@@ -1907,6 +1915,8 @@ extern "C" const int g_anNationStartingTreasuryByLocale[6] = {50000, 10000, 1000
 
 // GLOBAL: IMPERIALISM 0x006a2318
 POINT g_ptArmyOrderModalMessage = {0, 0};
+// GLOBAL: IMPERIALISM 0x006a2288
+POINT g_ptArmyValidationModalMessage = {0, 0};
 // Modal-message placement used when no eligible secondary home-city tile exists.
 // GLOBAL: IMPERIALISM 0x006a2c18
 POINT g_ptCityInteriorMinisterModalMessage = {0, 0};
@@ -2337,8 +2347,8 @@ int g_mapGenSwampQuota_006a38e0 = 0;
 int g_mapGenRiverCount_006a38e4 = 0;
 
 // One-shot assert-suppression flags for the UMapper overlay passes (0x006a3910/0x006a3914).
-int DAT_006a3910 = 0;
-int DAT_006a3914 = 0;
+int g_bOverlayScanlineFillAssertSuppressed = 0;
+int g_bOverlayRouteRebuildAssertSuppressed = 0;
 
 // Private retail assert guards read by TStream's two diagnostic virtuals. No writer is
 // present in the executable; a zero value takes the McAppStream.cpp assert path.
@@ -3705,3 +3715,8 @@ double g_dNavyHitChanceRangeScale_00669ef8 = 0.5;
 float g_fNavyHitChanceCubeOffset_00669f00 = -1.0f;
 // GLOBAL: IMPERIALISM 0x00669f04
 float g_fNavyHitChanceNumerator_00669f04 = 80.0f;
+
+// Lounge per-nation status lamp glyphs, indexed by the status code DoIdle derives
+// from the session id / four-cc status tag (busy, redy, unas, awol, dead).
+// GLOBAL: IMPERIALISM 0x0065c168
+extern "C" const int kLoungeStatusGlyphIds[5] = {0x11fe, 0x11ff, 0x1200, 0x1201, 0x1202};

@@ -1,5 +1,13 @@
 #include "game/military/TArmyMgr.h"
+#include "game/military/TArmyStackList.h"
+#include "game/ui_core/TDialogBehavior.h"
+#include "game/ui_core/TWindow.h"
+#include "game/assets/TAssetMgr.h"
+#include "game/TEvent.h"
+#include "game/ui_core/TStaticText.h"
+#include "game/turn_event_dialog_provisional.h"
 #include "game/ui_tags_common.h"
+#include "game/ui_tags_map.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -32,6 +40,7 @@
 #include "game/ui_screens/TZone.h"
 #include "game/globals/prelude.h"
 #include "game/globals/military_globals.h"
+#include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h" // scanBracketExpressions
 #include "game/navy_order.h" // g_pNavyPrimaryOrderListHead, FindCumulativeWeightBucketIndex
@@ -153,7 +162,7 @@ TArmyMgr::~TArmyMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004a18f0
 void TArmyMgr::InitializeMapContextActionManager() {
-  pendingUnitPool0c = new TList();
+  pendingUnitPool0c = new TArmyStackList();
   staticTable14 = g_MapContextStaticTable_00695448;
   staticTable18 = g_MapContextStaticTable_00695428;
   needsTerrainRefreshFlag39a = 0;
@@ -677,7 +686,7 @@ bool TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack, short
       // Relation is current: no battle -- dispatch the peaceful army-context path and
       // relocate our own stack instead.
       BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, 0, ownerNationCodeInt, 0);
-      this->ResetAndRelocateUnitOrderQueue_004a37b0(ourStack);
+      this->RelocateStackUnitsToStackTile(ourStack);
     } else if (enemyStack->fieldA != 0) {
       // Ground truth also loops over g_apNationStates here (advancing a pointer with no
       // observable side effect -- the result is never read); not reproduced.
@@ -720,8 +729,8 @@ bool TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack, short
 }
 
 // FUNCTION: IMPERIALISM 0x004a35e0
-undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack* stack,
-                                                                     short tileIndex) {
+void TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack* stack,
+                                                                short tileIndex) {
   stack->cursor18 = stack->head14;
   TUnit* headUnit = (stack->head14 != nullptr) ? stack->head14->unit : nullptr;
   short headUnitTag = headUnit->field_18;
@@ -757,7 +766,7 @@ undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack*
         unit = nullptr;
       }
     }
-    return 0;
+    return;
   }
 
   short chosenRegion = candidateRegions[rand() % candidateCount];
@@ -784,7 +793,7 @@ undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack*
   node = stack->cursor18;
   unit = (node != nullptr) ? node->unit : nullptr;
   if (unit == nullptr) {
-    return 0;
+    return;
   }
   do {
     unit->VTableSlot10(unit->field_C);
@@ -798,11 +807,10 @@ undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack*
       unit = nullptr;
     }
   } while (unit != nullptr);
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a37b0
-undefined TArmyMgr::ResetAndRelocateUnitOrderQueue_004a37b0(TArmyStack* stack) {
+void TArmyMgr::RelocateStackUnitsToStackTile(TArmyStack* stack) {
   stack->cursor18 = stack->head14;
   TArmyStackUnitNode* node = stack->cursor18;
   TUnit* unit = (node != nullptr) ? node->unit : nullptr;
@@ -820,7 +828,6 @@ undefined TArmyMgr::ResetAndRelocateUnitOrderQueue_004a37b0(TArmyStack* stack) {
       unit = nullptr;
     }
   }
-  return 0;
 }
 
 // Not ground truth's own function -- ground truth repeats this exact eligibility check
@@ -971,7 +978,7 @@ void TArmyMgr::DoOwnershipChanges() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a3d90
-undefined TArmyMgr::DispatchTileActionByKind_004a3d90(int contextArg, short actionKind) {
+void TArmyMgr::DispatchTileActionByKind(int contextArg, short actionKind) {
   if (actionKind == 1 || actionKind == 4) {
     this->SelectMovableUnitOnCurrentTileAndPlaySfx(contextArg);
   } else if (actionKind == 7) {
@@ -987,7 +994,6 @@ undefined TArmyMgr::DispatchTileActionByKind_004a3d90(int contextArg, short acti
       unit->SetOrders(kUnitOrderIdle, -1);
     }
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a3e50
@@ -1071,7 +1077,7 @@ int TArmyMgr::ComputeSelectedTileCityActionGateSum() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a4260
-undefined TArmyMgr::OrphanCallChain_C1_I34_004a4260(int mode) {
+void TArmyMgr::SetOrdersForIdleUnitsOnPendingTile(int mode) {
   TMilitaryUnit* unit = nullptr;
   if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < 0x180) {
     unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain98;
@@ -1081,7 +1087,6 @@ undefined TArmyMgr::OrphanCallChain_C1_I34_004a4260(int mode) {
       unit->SetOrders(static_cast<UnitOrder>(mode), -1);
     }
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a43f0
@@ -1219,7 +1224,7 @@ short TArmyMgr::FindNextSelectableProvinceForNation(short nationId) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a4870
-undefined TArmyMgr::HandleMapClickByComputedCursorState(short tileIndex, short mode) {
+bool TArmyMgr::HandleMapClickByComputedCursorState(short tileIndex, short mode) {
   bool handled = false;
   int cursorState = ComputeMapCursorStateIndex(tileIndex, mode);
   short cityRecordIndex = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
@@ -1233,10 +1238,10 @@ undefined TArmyMgr::HandleMapClickByComputedCursorState(short tileIndex, short m
     break;
   case 6:
     this->MarchSelectedArmies(tileIndex);
-    return 1;
+    return true;
   case 8:
     this->ShowSpyReport(cityRecordIndex);
-    return 1;
+    return true;
   }
   return handled;
 }
@@ -1286,13 +1291,13 @@ unsigned short TArmyMgr::LookupCivilianMapCursorTokenByStateIndex(short tileInde
 }
 
 // FUNCTION: IMPERIALISM 0x004a4ad0
-undefined TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short mode) {
+bool TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short mode) {
   int cursorState = this->ComputeCivilianMapCursorStateIndex(tileIndex, mode);
   short cityRecordIndex = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
   switch (cursorState) {
   case 2:
     this->SetActiveProvinceSelection(cityRecordIndex);
-    return 0;
+    return false;
   case 3:
   case 4:
     break;
@@ -1300,15 +1305,15 @@ undefined TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short m
     return this->ValidateOrderPlacementPrerequisitesForSelectedTile(cityRecordIndex);
   case 6:
     this->MarchSelectedArmies(tileIndex);
-    return 0;
+    return false;
   case 7:
     g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotEC(this->pendingMapActionIndex);
-    return 0;
+    return false;
   case 8:
     this->ShowSpyReport(cityRecordIndex);
     // fall through
   default:
-    return 0;
+    return false;
   }
 
   const Province& selectedTile = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex];
@@ -1414,19 +1419,22 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
   }
 
   if (!g_pGlobalMapState->TileHasMovementClassId(this->pendingMapActionIndex, cityRecordIndex)) {
-    // Ground truth builds and dispatches a "not adjacent" localized message here
-    // (TSimMgr::GetString group 0x2745 offsets 4/5, then
-    // TViewMgr::ModalMessage(5)). That dispatch's own real
-    // arity (3 explicit stack args per its own disassembly at 0x5d5c40) contradicts this
-    // callsite's 0 explicit args -- the same class of contradiction already documented on
-    // TMapUberPicture::TrackMouse -- so it's left undone rather than
-    // faked.
+    CString notAdjacentBody;
+    CString notAdjacentTitle;
+    g_pSimMgr->GetString(0x2745, 4, &notAdjacentBody);
+    g_pSimMgr->GetString(0x2745, 5, &notAdjacentTitle);
+    g_pUiRuntimeContext->ModalMessage(5, notAdjacentTitle, notAdjacentBody,
+                                      g_ptArmyValidationModalMessage, 1, 0);
     return false;
   }
 
   if (!g_pGlobalMapState->AreAllLinkedEntriesTerrainFlagBit2Clear(this->pendingMapActionIndex)) {
-    // Ground truth builds and dispatches a similar "at war" localized message here; same
-    // ModalMessage arity caveat as above.
+    CString atWarBody;
+    CString atWarTitle;
+    g_pSimMgr->GetString(0x2745, 6, &atWarBody);
+    g_pSimMgr->GetString(0x2745, 7, &atWarTitle);
+    g_pUiRuntimeContext->ModalMessage(5, atWarTitle, atWarBody, g_ptArmyValidationModalMessage, 1,
+                                      0);
     return false;
   }
 
@@ -1445,9 +1453,28 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
   int seaValue = g_pNavyOrderManager->GetInvasionCapacity(
       activeNationId, &g_pGlobalMapState->cityScoreTable[cityRecordIndex], 0);
   if (totalCost + reinforcementCost > seaValue) {
-    // Ground truth builds and dispatches an "insufficient capacity" localized message
-    // here (scanBracketExpressions-templated, embedding totalCost/reinforcementCost/
-    // seaValue); same ModalMessage arity caveat as above.
+    CString capacityMessage;
+    CString capacityTemplate;
+    CString seaValueText;
+    CString totalCostText;
+    CString reinforcementText;
+    if (reinforcementCost == 0) {
+      g_pSimMgr->GetString(0x2745, 1, &capacityTemplate);
+      seaValueText.Format(g_szDecimalFormat, seaValue);
+      totalCostText.Format(g_szDecimalFormat, totalCost);
+      scanBracketExpressions(g_pSimMgr, &capacityMessage, static_cast<LPCSTR>(capacityTemplate),
+                             static_cast<LPCSTR>(seaValueText), static_cast<LPCSTR>(totalCostText));
+    } else {
+      g_pSimMgr->GetString(0x2745, 2, &capacityTemplate);
+      seaValueText.Format(g_szDecimalFormat, seaValue);
+      reinforcementText.Format(g_szDecimalFormat, reinforcementCost);
+      totalCostText.Format(g_szDecimalFormat, totalCost);
+      scanBracketExpressions(g_pSimMgr, &capacityMessage, static_cast<LPCSTR>(capacityTemplate),
+                             static_cast<LPCSTR>(seaValueText),
+                             static_cast<LPCSTR>(reinforcementText),
+                             static_cast<LPCSTR>(totalCostText));
+    }
+    g_pUiRuntimeContext->ModalMessage(capacityMessage, g_ptArmyValidationModalMessage, 2, 0);
     return false;
   }
 
@@ -1666,7 +1693,7 @@ void TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack
 
     this->ResolveNextMove();
   } else {
-    this->ResetAndRelocateUnitOrderQueue_004a37b0(ourStack);
+    this->RelocateStackUnitsToStackTile(ourStack);
 
     // Non-boosted quality growth for the loser (ourStack), via the real accessors --
     // ground truth emits real calls for this walk (only the growth loops above inline).
@@ -1866,31 +1893,92 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
   InitializeUiTextStyleDescriptor(&styleC, 0, 0xa, 0x2b67, 3);
 
   TextStyle styleD;
-  InitializeUiTextStyleDescriptor(&styleD, 0, 0xa, 0x2b67, 3);
+  InitializeUiTextStyleDescriptor(&styleD, 2, 0xa, 0x2b67, 3);
 
   CString defenderSummary;
   CString garrisonSummary;
   if (!this->GenerateSpyReport(cityRecordIndex, defenderSummary, garrisonSummary)) {
     CString noSummaryMessage;
     g_pSimMgr->GetString(0x2744, 8, &noSummaryMessage);
-    // Ground truth also dispatches noSummaryMessage via
-    // TViewMgr::ModalMessage here -- that dispatch's own
-    // real arity (per its disassembly at 0x5d5b00) contradicts this callsite's 0
-    // explicit args, the same class of contradiction already documented on
-    // TMapUberPicture::TrackMouse and
-    // ValidateOrderPlacementPrerequisitesForSelectedTile, so it's left undone rather
-    // than faked.
+    g_pUiRuntimeContext->ModalMessage(noSummaryMessage, g_ptArmyValidationModalMessage, 1, 0);
     return;
   }
 
-  // Ground truth also resolves g_pUiViewManager->ResolveTurnEventDialogNodeByMessage-
-  // Context(0x2503) here (asserting non-null via the established MessageBox+assert
-  // pattern), then dispatches through that node's own slot-0x1a0 virtual (the same
-  // TrackMouse-shaped slot, and the same arity contradiction, as
-  // above) and a further ResolveControlByTag('geep')-based chain. Left undone rather
-  // than faked; styleA/styleB/styleC/styleD's real consumption in that path (and the
-  // per-owner-nation theme-code lookup at cityScoreTable[cityRecordIndex].ownerNation-
-  // Code00 feeding one of them) isn't recovered either.
+  TWindow* node = static_cast<TWindow*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEnemyFleetReport));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0xa4d);
+  }
+  node->SetModality(1);
+
+  // MapView.rsrc view 9475's children, in the order the original fills them.
+  CString scratchText;
+  TStaticText* ownerLabel =
+      static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagGpee)); // 'gpee'
+  ownerLabel->AssertValid();
+  g_apTerrainTypeDescriptorTable[g_pGlobalMapState->cityScoreTable[cityRecordIndex]
+                                     .ownerNationCode00]
+      ->FormatOverlayTerrainLabelText(&scratchText);
+  ownerLabel->SetTextAndMaybeRefresh(&scratchText, 0);
+  ownerLabel->InstallTextStyle(styleB, 0);
+
+  TStaticText* zoneLabel =
+      static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagZone)); // 'zone'
+  zoneLabel->AssertValid();
+  CString cityDisplayName;
+  g_pGlobalMapState->AssignCityRecordDisplayName(static_cast<ProvinceIndex>(cityRecordIndex),
+                                                 &cityDisplayName);
+  scratchText = cityDisplayName;
+  zoneLabel->SetTextAndMaybeRefresh(&scratchText, 0);
+  zoneLabel->InstallTextStyle(styleB, 0);
+
+  TStaticText* defenderLabel =
+      static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagAdam)); // 'adam'
+  defenderLabel->AssertValid();
+  defenderLabel->SetTextAndMaybeRefresh(&defenderSummary, 0);
+  defenderLabel->InstallTextStyle(styleC, 0);
+
+  TStaticText* garrisonLabel =
+      static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagShip)); // 'ship'
+  garrisonLabel->AssertValid();
+  CString quotedGarrison = CString(g_szDoubleQuote) + garrisonSummary + g_szDoubleQuote;
+  garrisonLabel->SetTextAndMaybeRefresh(&quotedGarrison, 0);
+  garrisonLabel->InstallTextStyle(styleC, 0);
+
+  TStaticText* titleLabel =
+      static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl)); // 'titl'
+  titleLabel->AssertValid();
+  titleLabel->SetTextFromStringResource(0x2744, 5, 0);
+  titleLabel->InstallTextStyle(styleA, 0);
+
+  TStaticText* label1 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab1));
+  label1->AssertValid();
+  label1->SetTextFromStringResource(0x2744, 6, 0);
+  label1->InstallTextStyle(styleC, 0);
+
+  TStaticText* label2 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab2));
+  label2->AssertValid();
+  label2->SetTextFromStringResource(0x2744, 7, 0);
+  label2->InstallTextStyle(styleC, 0);
+
+  TStaticText* label3 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab3));
+  label3->AssertValid();
+  label3->SetEnabled(0, 0);
+  label3->InstallTextStyle(styleB, 0);
+
+  TStaticText* label4 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab4));
+  label4->AssertValid();
+  label4->SetTextFromStringResource(0x2744, 8, 0);
+  label4->InstallTextStyle(styleD, 0);
+
+  TDialogBehavior* behavior = node->GetDialogBehavior();
+  if (behavior != nullptr) {
+    behavior->defaultCommandCode = kControlTagOkay; // 'okay'
+  }
+  node->PoseModally();
+  node->Close();
+  node->Free();
 }
 
 // FUNCTION: IMPERIALISM 0x004a6d40

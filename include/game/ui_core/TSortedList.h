@@ -23,44 +23,25 @@ public:
   void ReadFrom(TStream* stream) override;
   void Free() override;
 
-  int GetIntByOrdinal(int ordinal);
   int FindOneBasedOrdinalOf(void* item);
 
-  // Several lists store plain integer ids as payloads (ownedRegionList region ids,
-  // TAutoGreatPower missionQueue stream markers); GetIntByOrdinal is the existing
-  // read-side accessor. These shims confine the one int<->pointer pun.
-  POSITION AddHeadInt(int value) {
-    return AddHead(reinterpret_cast<void*>(value));
-  }
-  POSITION AddTailInt(int value) {
-    return AddTail(reinterpret_cast<void*>(value));
-  }
-  POSITION AddTailIntEx(int value) {
-    return AddTailEx(reinterpret_cast<void*>(value));
-  }
-
-  // Slots 0x28/0x2c and 0x30/0x34 can't be real C++ overloads of one name: both
-  // parameters of the *Ex forms are always-unused/defaulted, so a same-named overload
-  // would be ambiguous against the plain form at every 1-arg call site (confirmed by a
-  // real compile error when tried). The original source must have used distinct names;
-  // "Ex" marks the extra-args sibling until real evidence recovers its actual name.
-  // AddHeadEx (slot 0x2c) has no manual caller yet; AddTailEx (slot 0x34) is called from
-  // the *_RemoveRegionIdFromNationOwnedRegionList family (TCountry/TGreatPower/TMinor)
-  // despite the "AddTail" name -- worth revisiting once that mismatch is understood.
+  // AddHead/AddTail are MacApp TList::InsertFirst/InsertLast. The 0x2c and 0x34 slots
+  // have the same bodies but RET 0xc (three stack dwords) instead of RET 0x4; only the
+  // first is read. Nothing in the recovered tree calls them, so which MacApp entry point
+  // they are (the three-argument TDynArray insert family is the obvious candidate) stays
+  // unproven -- "Ex" marks the extra-argument sibling until a caller settles it.
   virtual POSITION AddHead(void* item);
   virtual POSITION AddHeadEx(void* item, int unused1 = 0, int unused2 = 0);
   virtual POSITION AddTail(void* item);
   virtual POSITION AddTailEx(void* item, int unused1 = 0, int unused2 = 0);
-  // Slots 0x38 and 0x40 have IDENTICAL signatures and bodies at this base level, so they
-  // can't share one overload name without evidence of a real distinction; kept numbered.
-  // Confirmed callers of slot 0x38 (TCountry::Free, TCountry::ReadFrom,
-  // TGreatPower::Free) always invoke it with zero args right before discarding the list
-  // pointer -- possibly vestigial/dead code in the original. Slot 0x40 has no manual
-  // caller yet.
-  virtual POSITION AddTailSlot38(void* item = 0);
-  virtual void* RemoveTail();
-  virtual POSITION AddTailSlot40(void* item = 0);
-  virtual void* RemoveHead();
+  // Slots 0x38..0x44 are MacApp TList's two stack/queue pairs over the same storage:
+  // Push/Pop work the tail, Queue/Dequeue enqueue at the tail and dequeue from the head.
+  // That is why 0x38 and 0x40 have identical bodies -- they are distinct MacApp entry
+  // points, not one method duplicated.
+  virtual POSITION Push(void* item = 0);
+  virtual void* Pop(); // MacApp TList::Pop -- removes the tail
+  virtual POSITION Queue(void* item = 0);
+  virtual void* Dequeue(); // MacApp TList::Dequeue -- removes the head
   virtual int GetCount();
   virtual void* GetEntryByOrdinal(int ordinal = 0);
   virtual void RemoveAtOrdinal(int ordinal);

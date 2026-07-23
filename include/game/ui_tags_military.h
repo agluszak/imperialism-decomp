@@ -73,6 +73,7 @@ const int kControlTagSkip =
     IMPERIALISM_FOURCC('s', 'k', 'i', 'p'); // TTacticalBattle.cpp, TTacticalBattleView.cpp
 const int kControlTagSoun =
     IMPERIALISM_FOURCC('s', 'o', 'u', 'n'); // sound-effects-volume scrollbar
+const int kControlTagTpic = IMPERIALISM_FOURCC('t', 'p', 'i', 'c'); // tactical target-unit portrait
 const int kControlTagTxt0 =
     IMPERIALISM_FOURCC('t', 'x', 't', '0'); // first of 8 sequential option text lines (txt0-txt7)
 const int kControlTagTxta = IMPERIALISM_FOURCC(

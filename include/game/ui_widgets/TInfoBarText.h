@@ -13,7 +13,8 @@ public:
   virtual void SetTextAndLayoutRect(CString text, RECT* layoutRect); // slot 0x80 0x5b66b0
   virtual void InitializeMapHintTextStyleAndThemeFlags(int stylePrimary,
                                                        int styleSecondary); // slot 0x81 0x5b6840
-  virtual void OrphanCallChain_C1_I05_005b6810();                           // slot 0x82 0x5b6810
+  // Applies the default map-hint style pair (0x2b6c/0x2b67) through slot 0x81.
+  virtual void ApplyDefaultMapHintTextStyle(); // slot 0x82 0x5b6810
 
   RECT layoutRectA4; // +0xa4
 

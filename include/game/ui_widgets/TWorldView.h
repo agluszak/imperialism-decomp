@@ -91,7 +91,8 @@ public:
                                                                int dispatchContext);
   virtual void HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags);
   // Mac CodeWarrior identity: TWorldView::CenterOn(short). Windows consumes the promoted
-  // stack dword at this virtual boundary.
+  // stack dword at this virtual boundary (TMapDialog::CenterOn reads its own argument
+  // slot back as a dword after using its low word as a short* out-param).
   virtual void CenterOn(int tileIndex);
   virtual short QueryMinusOneWordSlot77();
   virtual void SetMapViewTileIndex(int arg1);
@@ -102,5 +103,7 @@ public:
   // Mac CodeWarrior identity: TWorldView::IsTileVisible(short). Concrete map dialogs
   // test the tile against their projected viewport; the abstract base has no viewport.
   virtual unsigned char IsTileVisible(short tileIndex);
-  virtual void OrphanCallChain_C6_I29_00596700(int arg1);
+  // Mac CodeWarrior identity: TWorldView::NoticeTile(short) -- brings the tile into
+  // view on this and the owner view, forces a redraw and holds it briefly.
+  virtual void NoticeTile(int tileIndex);
 };

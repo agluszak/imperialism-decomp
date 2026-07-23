@@ -379,7 +379,7 @@ void TArmyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileInde
 }
 
 // FUNCTION: IMPERIALISM 0x005a5320
-undefined TArmyBattle::FinalizeTacticalBattleOutcome(int sideWonFlag) {
+void TArmyBattle::FinalizeTacticalBattleOutcome(int sideWonFlag) {
   battleOutcomeCode44 = 1;
   tacticalPlayer14->AssertValid();
   tacticalPlayer18->AssertValid();
@@ -389,12 +389,11 @@ undefined TArmyBattle::FinalizeTacticalBattleOutcome(int sideWonFlag) {
     TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
         battleView8->ownerContext->ResolveControlByTag(kControlTagTool));
     toolbar->AssertValid();
-    toolbar->TacticalToolbarSlot74(0);
+    toolbar->UpdateTacticalOtherSideUnitControl(0);
     toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(0);
   }
 
   g_pMapContextActionManager->ApplyPostBattleStackOutcomeAndGrowUnitMeters(
       static_cast<TArmyPlayer*>(tacticalPlayer14)->armyStack28,
       static_cast<TArmyPlayer*>(tacticalPlayer18)->armyStack28, sideWonFlag, battleSiteIndex38);
-  return 0;
 }

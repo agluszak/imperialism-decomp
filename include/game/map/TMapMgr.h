@@ -246,8 +246,8 @@ public:
   // mapStreamName ("mapdata" from the idle-tick caller) is only tested for non-null
   // here: a named stream means the tile grid is already populated, so skip generation.
   virtual char BuildOrLoadGlobalMapStateForSession(const char* mapStreamName,
-                                                   char* tuningOverride);   // slot 0x0b 0x50ec90
-  virtual undefined LoadPoliticalMapRegionSubtypeTableFromResourceStream(); // slot 0x0c 0x50f200
+                                                   char* tuningOverride); // slot 0x0b 0x50ec90
+  virtual void LoadPoliticalMapRegionSubtypeTableFromResourceStream();    // slot 0x0c 0x50f200
   virtual unsigned char*
   UpdateMapTileAdjacencyMasksAndVariantForTile(StrategicTileIndex tileIndex); // slot 0x0d 0x510210
   // If tileIndex's gateFlag != 1 (not yet initialized): resets the strategic terrain kind
@@ -661,11 +661,11 @@ public:
   unsigned char pad0a[2];                     // +0x0a -- alignment gap before the +0x0c pointer
   TTerrainStateRecordView* terrainStateTable; // +0x0c
   Province* cityScoreTable;                   // +0x10
-  // Per-tile ownership/region table (0x24-byte records, one per map tile: terrain/region
-  // tag at +0x04 valid in [7,22], owner-nation byte at +0x18). Full record layout is
-  // unknown, so accessed via byte offsets.
-  signed char* tileOwnershipTable; // +0x14
-  int cityScoreTotal;              // +0x18
+  // +0x14 -- no access anywhere in the binary (whole-image field-xref sweep returns
+  // zero). The "per-tile ownership table" this used to be called was a mis-attribution:
+  // ApplyJoinEmpireMode0GlobalDiplomacyReset reads [this+0x0c], i.e. terrainStateTable.
+  void* unused14;
+  int cityScoreTotal; // +0x18
   // Real CString, not a raw char* -- ~TMapMgr's own decompile (0x50e490) shows an explicit
   // CString::~CString() call on this field (LEA ECX,[this+0x1c]; CALL 0x6058e2), the sole
   // action the base destructor performs.
@@ -874,3 +874,6 @@ public:
 
   TMapMgr();
 };
+
+// 0x005187f0 -- endian fix-up over the scenario tile-record array read from disk.
+void ByteSwapScenarioTileRecordWords(char* tileRecords);

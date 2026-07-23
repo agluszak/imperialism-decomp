@@ -35,7 +35,7 @@ void TBitmapResourceLoader::ReleaseBitmapResource() {
 // real semantics are unknown, so the name is provisional -- it was previously borrowed
 // from the unrelated free assert/flag function at 0x49d620.
 // FUNCTION: IMPERIALISM 0x004a1100
-undefined4 TBitmapResourceLoader::ReportUnimplementedResourceVirtualSlot02() {
+int TBitmapResourceLoader::ReportUnimplementedResourceVirtualSlot02() {
   TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\QuickDraw.h", 0x1a1);
   return 0;
 }

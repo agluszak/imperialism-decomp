@@ -16,6 +16,9 @@
 #include "game/gfx/TAmbitApplication.h"
 #include "game/military/TArmyMgr.h"
 #include "game/ui_widgets/TArmyToolbar.h"
+#include "game/ui_widgets/TArmyInfoView.h"
+#include "game/ui_widgets/TCivReport.h"
+#include "game/ui_widgets/TCombatReportView.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/ui_widgets/TSoundPlayer.h" // g_pSfxPlaybackSystem
 #include "game/ui_core/TMacViewMgr.h"     // g_pStrategicMapViewSystem
@@ -75,6 +78,7 @@
 #include "game/ui_screens/TRadioTextCluster.h"
 #include "game/ui_widgets/TDeluxeText.h"
 #include "game/city_ui/TCivMgr.h"
+#include "game/city_ui/TPlaceCityDialog.h"
 #include "game/military/TCivUnit.h"
 #include "game/city/TCity.h"
 #include "game/map_ui/TCitySiteView.h"
@@ -95,41 +99,37 @@
 namespace {
 using turn_event_dialog::GoldCommitControl;
 using turn_event_dialog::GoldDialogControl;
-using turn_event_dialog::GoldFactoryPanel;
-using turn_event_dialog::TCivilianReportGoldControl;
-using turn_event_dialog::TurnEventDialogNode;
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x005dcdf0
-char TViewMgr::HandleTurnEventDialogFactorySlotB4(void* payload) {
-  turn_event_dialog::ThreeFlagDialogNode* node =
-      static_cast<turn_event_dialog::ThreeFlagDialogNode*>(
-          g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNewCityDialog));
+char TViewMgr::ShowNewCityDialog(TTown* town) {
+  TWindow* node = static_cast<TWindow*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNewCityDialog));
   if (node == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xbe);
   }
-  turn_event_dialog::GoldSinglePayloadControl* gold =
-      static_cast<turn_event_dialog::GoldSinglePayloadControl*>(
-          node->ResolveControlByTag(kControlTagDialog));
-  if (gold == 0) {
+  // MapView.rsrc view 953's 'DLOG' pict is a TPlaceCityDialog (Mac resource oracle).
+  TPlaceCityDialog* placeCity =
+      static_cast<TPlaceCityDialog*>(node->ResolveControlByTag(kControlTagDialog));
+  if (placeCity == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xc0);
   }
-  gold->ApplyPayload(payload);
-  node->ConfigureDialogFlags(1, 1, 1);
+  placeCity->StuffValues(town);
+  node->Center(1, 1, 1);
   POINT placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-  node->ShowTurnEventDialog(1);
-  int result = node->RefreshTurnEventDialog();
+  node->SetModality(1);
+  int result = node->PoseModally();
   node->Close();
   node->Free();
   return result == static_cast<int>(kControlTagCncl) ? static_cast<char>(0) : static_cast<char>(1);
 }
 
 // FUNCTION: IMPERIALISM 0x005dcf20
-void TViewMgr::HandleTurnEventDialogFactorySlotD8(int) {
+void TViewMgr::ShowCombatReportDialog(TCombatReportContext* reportContext) {
   GoldCommitControl* rootGold = static_cast<GoldCommitControl*>(
       static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog)));
   if (rootGold == nullptr) {
@@ -138,46 +138,50 @@ void TViewMgr::HandleTurnEventDialogFactorySlotD8(int) {
   }
   rootGold->NotifyGoldControlOfTurnEventCode(currentTurnEventCode);
 
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+  TWindow* node = static_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventCombatReport));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xe5);
   }
-  GoldFactoryPanel* gold = static_cast<GoldFactoryPanel*>(
+  // MapView.rsrc view 1350's 'DLOG' pict is a TCombatReportView (Mac resource oracle).
+  TCombatReportView* report = static_cast<TCombatReportView*>(
       static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog)));
-  if (gold == nullptr) {
+  if (report == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xe6);
   }
-  gold->NotifyDialogOwner(this);
+  report->StuffValues(reportContext);
 
   POINT placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-  node->ShowTurnEventDialog(1);
-  node->RefreshTurnEventDialog();
+  node->SetModality(1);
+  node->PoseModally();
   node->Close();
   node->Free();
 }
 
 // FUNCTION: IMPERIALISM 0x005dd0a0
 int TViewMgr::ShowConstructionOptionsDialog(int dialogValue) {
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+  TWindow* node = static_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEngineerBuildMenu));
   if (node == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x100);
   }
-  turn_event_dialog::GoldDialogValueControl* gold =
-      static_cast<turn_event_dialog::GoldDialogValueControl*>(
+  // MapView.rsrc view 7200's 'DLOG' pict is a TEngineerDialog (Mac resource oracle), and
+  // slot 0x68 is its first new virtual -- but that body (0x4d0810, 3,136 bytes) is still
+  // autogen-owned, so declaring the virtual here would cross the manual/autogen boundary.
+  turn_event_dialog::TDialogValueControl* engineerDialog =
+      static_cast<turn_event_dialog::TDialogValueControl*>(
           node->ResolveControlByTag(kControlTagDialog));
-  gold->ApplyDialogValue(reinterpret_cast<void*>(dialogValue));
+  engineerDialog->StuffValues(reinterpret_cast<void*>(dialogValue));
   POINT placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-  node->ShowTurnEventDialog(1);
-  int result = node->RefreshTurnEventDialog();
+  node->SetModality(1);
+  int result = node->PoseModally();
   node->Close();
   node->Free();
   return result;
@@ -187,13 +191,13 @@ int TViewMgr::ShowConstructionOptionsDialog(int dialogValue) {
 void TViewMgr::HandleGlobalMapNationContextSelection(int nationSlot, int unused) {
   (void)unused;
   if (static_cast<short>(nationSlot) == g_pGlobalMapState->pendingRiverMouthTile22) {
-    TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+    TWindow* node = static_cast<TWindow*>(
         g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTerrainInfo));
     if (node == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x11e);
     }
-    node->RefreshTurnEventDialog();
+    node->PoseModally();
     node->Close();
     node->Free();
     return;
@@ -203,7 +207,7 @@ void TViewMgr::HandleGlobalMapNationContextSelection(int nationSlot, int unused)
 
 // FUNCTION: IMPERIALISM 0x005dd220
 void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+  TWindow* node = static_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventProvisional1C52));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -213,7 +217,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
   POINT placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-  node->RefreshTurnEventDialog();
+  node->PoseModally();
   TDeluxeText* nameText =
       static_cast<TDeluxeText*>(static_cast<TView*>(gold->ResolveControlByTag(kControlTagName)));
   if (nameText == nullptr) {
@@ -227,7 +231,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
 
 // FUNCTION: IMPERIALISM 0x005dd340
 TNavyRoster* TViewMgr::MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry) {
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+  TWindow* node = static_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNavyRoster));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -244,7 +248,7 @@ TNavyRoster* TViewMgr::MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry) {
   POINT placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-  node->RefreshTurnEventDialog();
+  node->PoseModally();
   node->Close();
   node->Free();
   return page;
@@ -255,7 +259,7 @@ TNavyRoster* TViewMgr::MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry) {
 // strategic map only after the modal dialog has released its view tree.
 // FUNCTION: IMPERIALISM 0x005dd450
 void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+  TWindow* node = static_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNavyRoster));
   if (node == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -285,8 +289,8 @@ void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
   POINT placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-  node->ShowTurnEventDialog(1);
-  node->RefreshTurnEventDialog();
+  node->SetModality(1);
+  node->PoseModally();
   TZone* selectedZone = roster->selectedZone84;
   TTaskForce* selectedTaskForce = roster->selectedTaskForce88;
   node->Close();
@@ -324,32 +328,32 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE8(void* selection) {
   activeGold->NotifyGoldControlOfTurnEventCode(
       g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex04);
 
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+  TWindow* node = static_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventProvisional0F0A));
   if (node == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1c9);
   }
-  turn_event_dialog::GoldDialogValueControl* gold =
-      static_cast<turn_event_dialog::GoldDialogValueControl*>(
+  turn_event_dialog::TDialogValueControl* gold =
+      static_cast<turn_event_dialog::TDialogValueControl*>(
           node->ResolveControlByTag(kControlTagDialog));
   if (gold == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1ca);
   }
-  gold->ApplyDialogValue(selection);
+  gold->StuffValues(selection);
   POINT placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-  node->ShowTurnEventDialog(1);
-  node->RefreshTurnEventDialog();
+  node->SetModality(1);
+  node->PoseModally();
   node->Close();
   node->Free();
 }
 
 // FUNCTION: IMPERIALISM 0x005dd900
 void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+  TWindow* node = static_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -367,8 +371,8 @@ void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
   POINT placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-  node->ShowTurnEventDialog(1);
-  node->RefreshTurnEventDialog();
+  node->SetModality(1);
+  node->PoseModally();
   node->Close();
   node->Free();
 
@@ -382,7 +386,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
 // the army manager's active province and center the strategic map on that record's tile.
 // FUNCTION: IMPERIALISM 0x005dda30
 void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+  TWindow* node = static_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -412,8 +416,8 @@ void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
   POINT placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-  node->ShowTurnEventDialog(1);
-  node->RefreshTurnEventDialog();
+  node->SetModality(1);
+  node->PoseModally();
   short selectedIndex = roster->selectedIndex84;
   node->Close();
   node->Free();
@@ -427,7 +431,7 @@ void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
 
 // FUNCTION: IMPERIALISM 0x005ddd20
 void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+  TWindow* node = static_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -457,9 +461,9 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   POINT placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-  node->ShowTurnEventDialog(1);
-  node->RefreshTurnEventDialog();
-  short selectedIndex = roster->selectedIndex84;
+  node->SetModality(1);
+  node->PoseModally();
+  short selectedIndex = roster->selectedTileIndex84;
   node->Close();
   node->Free();
 
@@ -572,20 +576,21 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
 
 // FUNCTION: IMPERIALISM 0x005de4f0
 bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrderEntry) {
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+  TWindow* node = static_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventCivilianInfo));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x2c1);
   }
-  node->ShowTurnEventDialog(1);
-  TCivilianReportGoldControl* gold = static_cast<TCivilianReportGoldControl*>(
-      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
-  gold->PopulateCivilianReportContent(pCivilianOrderEntry);
+  node->SetModality(1);
+  // MapView.rsrc view 3012's 'DLOG' pict is a TCivReport (Mac resource oracle).
+  TCivReport* report =
+      static_cast<TCivReport*>(static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog)));
+  report->PopulateCivilianReportContent(pCivilianOrderEntry);
   POINT placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-  unsigned int resultTag = node->RefreshTurnEventDialog();
+  unsigned int resultTag = node->PoseModally();
   node->Close();
   node->Free();
   return resultTag == kControlTagOkay;
@@ -594,19 +599,29 @@ bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrder
 // FUNCTION: IMPERIALISM 0x005de5d0
 bool TViewMgr::DispatchProvinceOrderOverlayConfirmDialog(short cityRecordIndex,
                                                          int* categoryCounts) {
-  // TODO: port body @ 0x5de5d0 (181 bytes). The dialog-node resolve/SetField84(1)/
-  // ResolveControlByTag('DLOG') prefix mirrors MakePlanetSeedDialog (0x5de010), but the
-  // 'DLOG' control's own slot-0x1cc dispatch (the actual message-formatting call that
-  // forwards cityRecordIndex/categoryCounts) needs a class not yet recovered. Stubbed
-  // to the conservative "not confirmed" default.
-  (void)cityRecordIndex;
-  (void)categoryCounts;
-  return false;
+  TWindow* node = static_cast<TWindow*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFriendlyArmyReport));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x2e1);
+  }
+  node->SetModality(1);
+  // MapView.rsrc view 3100's 'DLOG' pict is a TArmyInfoView (Mac resource oracle).
+  TArmyInfoView* report = static_cast<TArmyInfoView*>(
+      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog)));
+  report->PopulateFriendlyArmyReportContent(cityRecordIndex, categoryCounts);
+  POINT placement;
+  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  unsigned int resultTag = node->PoseModally();
+  node->Close();
+  node->Free();
+  return resultTag == kControlTagOkay;
 }
 
 // FUNCTION: IMPERIALISM 0x005de8f0
 void TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView() {
-  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+  TWindow* node = static_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventQueryFloater));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -615,7 +630,7 @@ void TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView() {
   POINT placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-  node->RefreshTurnEventDialog();
+  node->PoseModally();
   node->Close();
   node->Free();
 }

@@ -21,9 +21,9 @@ extern const unsigned short g_hexDirectionBitMasksAlt_00696ea8[7];
 
 // One-shot assert-suppression flags for the UMapper overlay-segment passes (0x006a3910 for the
 // scanline fill, 0x006a3914 for the route rebuild).
-extern int DAT_006a3910;
+extern int g_bOverlayScanlineFillAssertSuppressed;
 
-extern int DAT_006a3914;
+extern int g_bOverlayRouteRebuildAssertSuppressed;
 
 extern char s_mcflavor_00697238[];
 
@@ -59,6 +59,8 @@ extern short g_anMapImprovementSpriteClassByOrderType[9];
 extern "C" const char s_szDoubleNewline_00699438[];
 
 // Assert source-path string for the USuperMap TU (TMapUberPicture family).
+extern "C" const char g_szDoubleQuote[];
+extern "C" const int kLoungeStatusGlyphIds[5];
 extern "C" const char s_SourcePathUSuperMap_0069943C[];
 
 // Default viewport-marker-box width, shared by TMiniMapView/TacticalBattleView's own

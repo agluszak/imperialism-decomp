@@ -9,6 +9,8 @@
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
+class TTown;
+struct TCombatReportContext;
 class TToolBarClusterVtbl;
 class TView;
 class TEventHandler;
@@ -85,25 +87,32 @@ public:
   // `mov ecx,[g_pStrategicMapViewSystem]; mov eax,[ecx]; jmp [eax+0xNN]`, no
   // wrapping logic). Real orig names embed the target slot's byte offset. bd
   // imperialism-decomp-kdm.
-  virtual void RefreshCityProductionUi();                         // 0xac 0x5d7f70
-  virtual void ClearActiveCityBuildingViewSlot(short param1);     // 0xb0 0x5d7f90
-  virtual char HandleTurnEventDialogFactorySlotB4(void* payload); // 0xb4
+  virtual void RefreshCityProductionUi();                     // 0xac 0x5d7f70
+  virtual void ClearActiveCityBuildingViewSlot(short param1); // 0xb0 0x5d7f90
+  // Opens the New City dialog (event 0x3b9) and stuffs the pending town into its
+  // TPlaceCityDialog 'DLOG' child.
+  virtual char ShowNewCityDialog(TTown* town); // 0xb4 0x5dcdf0
   // Opens factory dialog 0x2405, seeds its 'GOLD' trade-summary child with the three
   // caller args, places/refreshes it, then forwards the refresh result to the child
   // (0x5dc430).
-  virtual void HandleTurnEventDialogFactorySlotB8(int a, int b, int c);            // 0xb8 0x5dc430
-  virtual void HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int eventCode); // 0xbc
-  virtual void ForwardBuildStrategicMapRenderAtlasesAndTileMaskCaches();           // 0xc0 0x5dc180
-  virtual void RenderTurnEventPalettePreviewSurfaceAndProgress();                  // 0xc4 0x5dc1c0
-  virtual void RebuildMapTileNeighborHighlightPolygonsForAllTiles();               // 0xc8 0x5dc1a0
-  virtual void RefreshActiveGoldControlAndUiRuntimeState();                        // 0xcc 0x5dc160
-  virtual void InitializeCitySiteSelectionScreenForNation(int nationSlot);         // 0xd0
-  virtual void NoOpTurnEventStateVtableSlotD4(int arg);                            // 0xd4
+  // Opens the Generic-expander dialog (event 0x2405) and stuffs the building slot,
+  // city and production view into its TBuildingExpansionView 'DLOG' child.
+  virtual void ShowBuildingExpansionDialog(short buildingSlotId, class TCity* city,
+                                           class TCityProductionView* productionView); // 0xb8
+  virtual void HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int eventCode);     // 0xbc
+  virtual void ForwardBuildStrategicMapRenderAtlasesAndTileMaskCaches();   // 0xc0 0x5dc180
+  virtual void RenderTurnEventPalettePreviewSurfaceAndProgress();          // 0xc4 0x5dc1c0
+  virtual void RebuildMapTileNeighborHighlightPolygonsForAllTiles();       // 0xc8 0x5dc1a0
+  virtual void RefreshActiveGoldControlAndUiRuntimeState();                // 0xcc 0x5dc160
+  virtual void InitializeCitySiteSelectionScreenForNation(int nationSlot); // 0xd0
+  virtual void NoOpTurnEventStateVtableSlotD4(int arg);                    // 0xd4
   // Resolves the active dialog's 'GOLD' panel, notifies it of the current turn-event
   // code, then resolves+shows+refreshes the 0x546 factory dialog's own 'GOLD' child
   // (0x5dcf20).
-  virtual void HandleTurnEventDialogFactorySlotD8(int eventCode);                     // 0xd8
-  virtual int ShowConstructionOptionsDialog(int dialogValue = 0);                     // 0xdc
+  // Opens the CombatReport 2 dialog (event 0x546) and stuffs the report context into
+  // its TCombatReportView 'DLOG' child; the argument is that context, not an event code.
+  virtual void ShowCombatReportDialog(TCombatReportContext* reportContext); // 0xd8 0x5dcf20
+  virtual int ShowConstructionOptionsDialog(int dialogValue = 0);           // 0xdc
   virtual void HandleGlobalMapNationContextSelection(int nationSlot, int unused = 0); // 0xe0
   // Opens factory dialog 0x1c52, places it, and sets the 'GOLD'->'name' text from a
   // localized string code (0x5dd220).
