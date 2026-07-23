@@ -12,8 +12,9 @@ groups them by target name, and reports:
   * CONFLICT  — one target name declared with more than one (return, args) signature
   * CONVENTION— one target name declared with more than one calling convention
 
-Exit code 1 when conflicts exist. Wired into `just gates` as `typedef-cast-gate`
-(via `_source-gates-parallel`); `just typedef-cast-audit` is the report-only variant.
+Exit code 1 when conflicts exist. This is a manual audit (`just typedef-cast-audit`):
+0 typedef-cast instances remain in the tree and new ones are already hard-banned by
+antipattern-gate + boundary-gate, so it no longer runs per-commit in `just gates`.
 """
 
 from __future__ import annotations

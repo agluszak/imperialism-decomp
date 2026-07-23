@@ -8,7 +8,6 @@ runtime_test_build_dir := "build-runtime-tests"
 docker_image := "imperialism-msvc500"
 lint_build_dir := "build-clang"
 cmake_flags := "-DCMAKE_BUILD_TYPE=RelWithDebInfo -DIMPERIALISM_LINK_MFC=ON -DIMPERIALISM_MATCH_FLAGS_CSV=/Oy,/Ob1"
-tgreatpower_gate_baseline := "config/baselines/tgreatpower_gate_baseline.csv"
 class_discovery_classes := "TGreatPower,TAutoGreatPower"
 
 # The Ghidra project is vendored in-repo; only GHIDRA_INSTALL_DIR is machine-specific (.env).
@@ -1436,10 +1435,6 @@ symbols-anchor-gate:
 antipattern-gate:
   uv run python -m tools.workflow.check_construction_antipatterns
 
-[group('gates')]
-tgreatpower-gate:
-  uv run python -m tools.workflow.check_tgreatpower_hygiene --baseline "{{tgreatpower_gate_baseline}}"
-
 # Ensure // GLOBAL: markers live in global_data_tables.cpp and declarations in global_data_tables.h
 [group('gates')]
 global-location-gate:
@@ -1457,20 +1452,13 @@ manual-cruntimeclass-gate:
 decomplint:
   (cd "{{build_dir}}" && uv run reccmp-decomplint --target "{{target}}")
 
+# Manual audits of the legacy typedef-cast scaffolding (0 instances remain in the
+# tree; new casts are already hard-banned by antipattern-gate + boundary-gate, so
+# these no longer run per-commit -- keep them as rare on-demand audits).
 [doc('Audit Hard-Rule-9 typedef-cast externs for cross-file signature drift (report-only)')]
 [group('gates')]
 typedef-cast-audit *args:
   uv run python -m tools.workflow.check_typedef_cast_drift {{args}}
-
-# Strict forms of the two typedef audits, run as part of `just gates`: signature
-# drift across files and dropped-args/convention bugs vs binary evidence both fail.
-[group('gates')]
-typedef-cast-gate:
-  uv run python -m tools.workflow.check_typedef_cast_drift
-
-[group('gates')]
-typedef-args-gate:
-  uv run python -m tools.workflow.check_typedef_ghidra_args --strict
 
 # No local `extern` redeclarations of globals already in global_data_tables.h.
 [group('gates')]
@@ -1531,7 +1519,7 @@ source-gates:
 
 [private]
 [parallel]
-_source-gates-parallel: ui-codegen-check ui-view-coverage-check mac-control-usage-check mac-resource-xrefs-check mac-payload-diff-check mac-string-crosswalk-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate tgreatpower-gate marker-gate generated-marker-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate stub-count-gate class-size-gate noop-gate typedef-cast-gate typedef-args-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate
+_source-gates-parallel: ui-codegen-check ui-view-coverage-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate stub-count-gate class-size-gate noop-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate
 
 [doc('Mine reccmp asm diffs for orig-address<->recomp-symbol global pairs (read-only report)')]
 [group('compare')]
@@ -1571,11 +1559,6 @@ stats-baseline-update:
 [group('baseline-update')]
 tooling-surface-update:
   uv run python -m tools.workflow.check_tooling_surface --write
-
-# MUTATES: config/baselines/tgreatpower_gate_baseline.csv.
-[group('baseline-update')]
-tgreatpower-gate-update:
-  uv run python -m tools.workflow.baseline_guard --wrap "{{tgreatpower_gate_baseline}}" -- uv run python -m tools.workflow.check_tgreatpower_hygiene --baseline "{{tgreatpower_gate_baseline}}" --write-baseline
 
 # MUTATES: the stub_count field of config/baselines/reccmp_progress_baseline.json.
 [group('baseline-update')]

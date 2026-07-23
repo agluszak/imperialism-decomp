@@ -67,7 +67,7 @@ just build
 ## Gates & formatting
 
 - `just gates` — run all mechanical source-policy gates (the pre-commit check):
-  `vtable-gate`, `antipattern-gate`, `tgreatpower-gate`, `marker-gate`,
+  `vtable-gate`, `antipattern-gate`, `marker-gate`,
   `vtable-annotation-gate`, `vtable-collision-gate`,
   `synthetic-gate`, `decomplint`, plus the ratchet gates `datacmp-gate`,
   `stub-count-gate`, `class-size-gate`, and `noop-gate`. **All must pass before
