@@ -1662,6 +1662,9 @@ extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[45] = {
 
 // GLOBAL: IMPERIALISM 0x00698ab0
 int g_nRandomMapSelectedNationSlot00698AB0 = -1;
+// Rank separator drawn between the high-score rank number and the player name.
+// GLOBAL: IMPERIALISM 0x00698ab4
+char s_szRankDotSeparator_00698ab4[] = ". ";
 // GLOBAL: IMPERIALISM 0x00698ae0
 char g_szCountryNameProfileKey00698AE0[] = "CountryName";
 

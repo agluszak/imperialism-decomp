@@ -5,6 +5,8 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
+#include "game/ui_core/TBitmapResourceLoader.h"
+#include "game/ui_core/bitmap_descriptor_helpers.h"
 // SYNTHETIC: IMPERIALISM 0x005730d0
 // TMegaPicture::CreateObject
 
@@ -63,8 +65,55 @@ void TMegaPicture::Draw(RECT* rectBuffer) {
   UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
+// Rebuilds the picture's private offscreen surface from bitmap resource `nPictureId`:
+// dispose any previous surface, create a fresh 8-bit GWorld sized to the resource
+// bounds, blit the resource into it, then run the base TPicture refresh.
 // FUNCTION: IMPERIALISM 0x00573430
-void TMegaPicture::SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fRefreshNow) {}
+void TMegaPicture::SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fRefreshNow) {
+  if (surfaceContext94 != 0) {
+    g_pDisplayMgr->RemoveGWorld(surfaceContext94);
+  }
+  surfaceContext94 = 0;
+  ResetPictureResourceEntry();
+
+  // The original parks the loader handle in the +0x88 slot (TPicture::bitmapId/
+  // resourceNamespaceId) until the trailing base call overwrites it with the real
+  // packed id; modeled as a local instead of punning the shorts.
+  TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(nPictureId);
+  QDLoadResource(loaderHandle);
+  TBitmapResourceLoader* loader = *loaderHandle;
+  if (loader == 0) {
+    return;
+  }
+  RECT resourceBounds;
+  CopyRect(&resourceBounds, &loader->bitmapRect);
+  contentSubRect9c = resourceBounds;
+
+  TQuickDrawSurfaceContext* savedContext = 0;
+  int savedFlags = 0;
+  GetGWorld(&savedContext, &savedFlags);
+  g_pDisplayMgr->MakeNewGWorld(surfaceContext94, 8, resourceBounds);
+  SetGWorld(surfaceContext94, savedFlags);
+  TBitmapSurfaceNode** pixMap = GetGWorldPixMap(surfaceContext94);
+  LockPixels(pixMap);
+
+  QDLoadResource(loaderHandle);
+  loader = *loaderHandle;
+  if (loader != 0) {
+    loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+    loader->flags |= 1;
+    ResetQuickDrawStrokeState();
+    BlitBitmapResourceLoaderToActiveDc(loaderHandle, &resourceBounds);
+    loader = *loaderHandle;
+    loader->ReleaseBitmapResource();
+    loader->flags &= 0xfe;
+    delete *loaderHandle;
+    delete loaderHandle;
+    UnlockPixels(GetGWorldPixMap(surfaceContext94));
+    SetGWorld(savedContext, savedFlags);
+    TPicture::SetPictureResourceIdAndRefresh(nPictureId, fRefreshNow);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00573650
 void TMegaPicture::Free() {
