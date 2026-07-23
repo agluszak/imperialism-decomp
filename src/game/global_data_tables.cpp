@@ -743,7 +743,7 @@ BOOL g_cachedShowSplashFlag = FALSE;
 
 } // extern "C"
 
-// Diplomacy helper functions (formerly in diplomacy_globals.cpp).
+// Diplomacy helper functions.
 TGreatPower* GetNationStateBySlot(short slotId) {
   return g_apNationStates[slotId];
 }

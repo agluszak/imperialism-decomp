@@ -1,5 +1,5 @@
 {
-  "avg_matching_pct": 74.53540499496863,
+  "avg_matching_pct": 74.53317921617311,
   "compared_fun_count": 7586,
   "coverage_pct": 97.25641025641025,
   "dat_orig_only_count": 1600,
@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
-  "git_branch": "agent/fix-singleplayer-turn-flow",
-  "git_commit": "11c3748b3a871c9c9a26064544fe0b69e9047296",
-  "git_commit_date": "2026-07-23T01:46:33+02:00",
+  "git_branch": "agent/8mo-cleanup-cont",
+  "git_commit": "013358d8d5f3aa08a2cede8bd06123e6061180b9",
+  "git_commit_date": "2026-07-23T02:44:19+02:00",
   "global_coverage_pct": 24.46082949308756,
   "global_orig_only_count": 8196,
   "global_recomp_only_count": 7630,
@@ -62,7 +62,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-22T23:47:09+00:00",
+  "timestamp_utc": "2026-07-23T00:49:20+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }

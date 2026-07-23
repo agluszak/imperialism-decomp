@@ -86,9 +86,7 @@ TTurnEventDialogFactoryRegistry::TTurnEventDialogFactoryRegistry() : TObject(), 
 // TTurnEventDialogFactoryRegistry::`scalar deleting destructor'
 
 // The complete-object destructor companion to the scalar deleting destructor above; both
-// are compiler-emitted from the same `~TTurnEventDialogFactoryRegistry() {}` body below
-// (bd 1uj.44: previously misattributed to the junk placeholder class
-// TTurnEventDialogFactoryRegistryState_0064B328).
+// are compiler-emitted from the same `~TTurnEventDialogFactoryRegistry() {}` body below.
 // SYNTHETIC: IMPERIALISM 0x00491b40
 // TTurnEventDialogFactoryRegistry::~TTurnEventDialogFactoryRegistry
 

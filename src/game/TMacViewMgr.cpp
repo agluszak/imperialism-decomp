@@ -37,6 +37,7 @@
 #include "game/mapped_flavor_text.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_message_pump.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/mfc.h"
 #include "game/turn_flow_cooldown.h"

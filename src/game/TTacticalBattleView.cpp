@@ -7,6 +7,7 @@
 #include "game/TOneTimeAnimation.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_message_pump.h"
 
 #include "game/TAnimation.h"
 #include "game/TAnimator.h"

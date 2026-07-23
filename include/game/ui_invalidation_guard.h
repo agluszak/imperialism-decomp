@@ -9,7 +9,6 @@
 // f(path, line) call 0x49d620 directly instead of routing arg-passing calls through
 // a separate forwarder (which broke pairing at those call sites).
 int TemporarilyClearAndRestoreUiInvalidationFlag(...);
-int __stdcall PumpUiMessagesAndBackgroundTasks(int nTaskPumpMode);
 
 // Nil-pointer assert helper for USmallViews
 void FailNilPointerInUSmallViews(int line);

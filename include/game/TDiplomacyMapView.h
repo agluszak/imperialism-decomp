@@ -88,8 +88,7 @@ public:
 
   // 0x4f4620 -- resolves the 6 minister action-topic buttons (info/trty/gran/trad/
   // coun/offr), refreshes the info button's nation-slot selection, and (re)assigns
-  // each button's hover-help text; called from DoPostCreate. Real body,
-  // previously misattributed to TToolBarCluster in the generated symbol table.
+  // each button's hover-help text; called from DoPostCreate.
   void InitializeDiplomacyMinisterActionControlsAndLabels();
 
   // Mac CodeWarrior: TDiplomacyMapView::CheckEntanglements(int, eDipAction).

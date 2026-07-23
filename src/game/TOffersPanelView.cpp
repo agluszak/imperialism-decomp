@@ -12,6 +12,7 @@
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_message_pump.h"
 #include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x004f8ec0
 // TOffersPanelView::CreateObject

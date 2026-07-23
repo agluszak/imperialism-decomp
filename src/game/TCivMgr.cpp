@@ -26,6 +26,7 @@
 #include "game/mapped_flavor_text.h"
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_message_pump.h"
 
 // 0x005d4890. 'D' (0x44) is the only currently-known remapped shortcut code (keyCode 2);
 // other codes pass through as literal virtual-key codes.
@@ -209,9 +210,8 @@ int TCivMgr::ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHi
   return this->CanAssignCivilianOrderToTile(nTileIndex) ? 3 : 1;
 }
 
-// Selection helpers merged from the retired duplicate class
-// "TSelectedCivilianOrderState" (the global g_pSelectedCivilianOrderState @0x6a43dc is
-// this TCivMgr instance).
+// Selection helpers. The global g_pSelectedCivilianOrderState @0x6a43dc is this
+// TCivMgr instance.
 
 // FUNCTION: IMPERIALISM 0x004d2c60
 void TCivMgr::SetActiveCivilianSelection(TCivUnit* entryContext, char refreshCommandPanel) {

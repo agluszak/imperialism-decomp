@@ -42,6 +42,7 @@
 #include "game/nation_slot_eligibility.h"
 #include "game/turn_flow_cooldown.h" // IsTurnFlowCooldownActiveAndResetExpiredState
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_message_pump.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TCluster.h"
 #include "game/TDiplomacyMapView.h"
