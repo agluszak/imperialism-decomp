@@ -1873,6 +1873,8 @@ extern "C" const int g_anNationStartingTreasuryByLocale[6] = {50000, 10000, 1000
 
 // GLOBAL: IMPERIALISM 0x006a2318
 POINT g_ptArmyOrderModalMessage = {0, 0};
+// GLOBAL: IMPERIALISM 0x006a2288
+POINT g_ptArmyValidationModalMessage = {0, 0};
 // Modal-message placement used when no eligible secondary home-city tile exists.
 // GLOBAL: IMPERIALISM 0x006a2c18
 POINT g_ptCityInteriorMinisterModalMessage = {0, 0};

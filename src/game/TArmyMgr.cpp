@@ -1408,19 +1408,22 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
   }
 
   if (!g_pGlobalMapState->TileHasMovementClassId(this->pendingMapActionIndex, cityRecordIndex)) {
-    // Ground truth builds and dispatches a "not adjacent" localized message here
-    // (TSimMgr::GetString group 0x2745 offsets 4/5, then
-    // TViewMgr::ModalMessage(5)). That dispatch's own real
-    // arity (3 explicit stack args per its own disassembly at 0x5d5c40) contradicts this
-    // callsite's 0 explicit args -- the same class of contradiction already documented on
-    // TMapUberPicture::TrackMouse -- so it's left undone rather than
-    // faked.
+    CString notAdjacentBody;
+    CString notAdjacentTitle;
+    g_pSimMgr->GetString(0x2745, 4, &notAdjacentBody);
+    g_pSimMgr->GetString(0x2745, 5, &notAdjacentTitle);
+    g_pUiRuntimeContext->ModalMessage(5, notAdjacentTitle, notAdjacentBody,
+                                      g_ptArmyValidationModalMessage, 1, 0);
     return false;
   }
 
   if (!g_pGlobalMapState->AreAllLinkedEntriesTerrainFlagBit2Clear(this->pendingMapActionIndex)) {
-    // Ground truth builds and dispatches a similar "at war" localized message here; same
-    // ModalMessage arity caveat as above.
+    CString atWarBody;
+    CString atWarTitle;
+    g_pSimMgr->GetString(0x2745, 6, &atWarBody);
+    g_pSimMgr->GetString(0x2745, 7, &atWarTitle);
+    g_pUiRuntimeContext->ModalMessage(5, atWarTitle, atWarBody, g_ptArmyValidationModalMessage, 1,
+                                      0);
     return false;
   }
 
@@ -1439,9 +1442,28 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
   int seaValue = g_pNavyOrderManager->GetInvasionCapacity(
       activeNationId, &g_pGlobalMapState->cityScoreTable[cityRecordIndex], 0);
   if (totalCost + reinforcementCost > seaValue) {
-    // Ground truth builds and dispatches an "insufficient capacity" localized message
-    // here (scanBracketExpressions-templated, embedding totalCost/reinforcementCost/
-    // seaValue); same ModalMessage arity caveat as above.
+    CString capacityMessage;
+    CString capacityTemplate;
+    CString seaValueText;
+    CString totalCostText;
+    CString reinforcementText;
+    if (reinforcementCost == 0) {
+      g_pSimMgr->GetString(0x2745, 1, &capacityTemplate);
+      seaValueText.Format(g_szDecimalFormat, seaValue);
+      totalCostText.Format(g_szDecimalFormat, totalCost);
+      scanBracketExpressions(g_pSimMgr, &capacityMessage, static_cast<LPCSTR>(capacityTemplate),
+                             static_cast<LPCSTR>(seaValueText), static_cast<LPCSTR>(totalCostText));
+    } else {
+      g_pSimMgr->GetString(0x2745, 2, &capacityTemplate);
+      seaValueText.Format(g_szDecimalFormat, seaValue);
+      reinforcementText.Format(g_szDecimalFormat, reinforcementCost);
+      totalCostText.Format(g_szDecimalFormat, totalCost);
+      scanBracketExpressions(g_pSimMgr, &capacityMessage, static_cast<LPCSTR>(capacityTemplate),
+                             static_cast<LPCSTR>(seaValueText),
+                             static_cast<LPCSTR>(reinforcementText),
+                             static_cast<LPCSTR>(totalCostText));
+    }
+    g_pUiRuntimeContext->ModalMessage(capacityMessage, g_ptArmyValidationModalMessage, 2, 0);
     return false;
   }
 
@@ -1867,24 +1889,23 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
   if (!this->GenerateSpyReport(cityRecordIndex, defenderSummary, garrisonSummary)) {
     CString noSummaryMessage;
     g_pSimMgr->GetString(0x2744, 8, &noSummaryMessage);
-    // Ground truth also dispatches noSummaryMessage via
-    // TViewMgr::ModalMessage here -- that dispatch's own
-    // real arity (per its disassembly at 0x5d5b00) contradicts this callsite's 0
-    // explicit args, the same class of contradiction already documented on
-    // TMapUberPicture::TrackMouse and
-    // ValidateOrderPlacementPrerequisitesForSelectedTile, so it's left undone rather
-    // than faked.
+    g_pUiRuntimeContext->ModalMessage(noSummaryMessage, g_ptArmyValidationModalMessage, 2, 0);
     return;
   }
 
-  // Ground truth also resolves g_pUiViewManager->ResolveTurnEventDialogNodeByMessage-
-  // Context(0x2503) here (asserting non-null via the established MessageBox+assert
-  // pattern), then dispatches through that node's own slot-0x1a0 virtual (the same
-  // TrackMouse-shaped slot, and the same arity contradiction, as
-  // above) and a further ResolveControlByTag('geep')-based chain. Left undone rather
-  // than faked; styleA/styleB/styleC/styleD's real consumption in that path (and the
-  // per-owner-nation theme-code lookup at cityScoreTable[cityRecordIndex].ownerNation-
-  // Code00 feeding one of them) isn't recovered either.
+  // TODO: the 0x2503 report dialog tail. Decoded from 0x4a684b-0x4a6b89 but not yet
+  // transcribed: resolve the node for context 0x2503, ShowTurnEventDialog(1), then for
+  // each 'stat' child of MapView.rsrc view 9475 --
+  //   'gpee' <- g_apTerrainTypeDescriptorTable[owner]->FormatOverlayTerrainLabelText
+  //   'zone' <- TMapMgr::AssignCityRecordDisplayName(cityRecordIndex)
+  //   'adam' <- one GenerateSpyReport summary
+  //   'ship' <- '"' + the other summary + '"' (CString operator+ with 0x695798)
+  //   'titl'/'lab1'/'lab2'/'lab4' <- SetTextFromStringResource(0x2744, 5/6/7/8, 0)
+  //   'lab3' <- SetEnabled(0, 0)
+  // -- each followed by InstallTextStyle with one of the four descriptors above, then
+  // QueryTurnEventContentObject()->+0x14 = 'okay', RefreshTurnEventDialog, Close, Free.
+  // Blocked on mapping the four stack style slots ([ESP+0x2c/0x38/0x44/0x50]) onto
+  // styleA..styleD, and on which summary feeds 'adam' vs 'ship'.
 }
 
 // FUNCTION: IMPERIALISM 0x004a6d40
