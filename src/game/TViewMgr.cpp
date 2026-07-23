@@ -38,7 +38,6 @@
 #include "game/TCouncilView.h"
 #include "game/CTemporaryRegion.h"
 #include "game/TNewspaperView.h"
-#include "game/TToolBarCluster.h"
 #include "game/TPicture.h"
 #include "game/nation_slot_eligibility.h"
 #include "game/turn_flow_cooldown.h" // IsTurnFlowCooldownActiveAndResetExpiredState
@@ -73,7 +72,6 @@
 #include "game/TCitySiteView.h"
 #include "game/TMapUberPicture.h"
 #include "game/TTurnEventDialogFactoryRegistry.h"
-#include "game/quickdraw_rendering.h" // ApplyControlThemeStyleAndOptionalCaption
 #include "game/ui_text_label_helpers_decls.h"
 
 #include <new>

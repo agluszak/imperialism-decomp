@@ -18,7 +18,6 @@
 #include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
 #include "game/TGreatPower_internal.h"
-#include "game/THelpMgr.h"
 #include "game/TMapMgr.h"
 #include "game/TMinor.h"
 #include "game/TMultiplayerMgr.h"

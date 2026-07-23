@@ -35,7 +35,6 @@
 #include "game/TTechMgr.h"
 #include "game/TGreatPower.h"
 #include "game/TTown.h"
-#include "game/TDiplomacyMgr.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/ui_invalidation_guard.h"
 

@@ -36,7 +36,6 @@
 #include "game/TNewsMgr.h"
 #include "game/TNetMgr.h"
 #include "game/TNavyMgr.h"
-#include "game/TNewsMgr.h"
 #include "game/TMinor.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TAutoGreatPower.h"

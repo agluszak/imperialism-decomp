@@ -19,7 +19,6 @@
 #include "game/TRailCluster.h"
 #include "game/TView.h"
 
-#include "game/mfc.h"
 
 const int kAssertLineRatioA = 0xd1d;
 

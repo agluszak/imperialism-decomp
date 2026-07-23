@@ -31,7 +31,6 @@
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
-#include "game/global_data_tables.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 using turn_event_dialog::TurnEventDialogNode;

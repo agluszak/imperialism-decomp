@@ -8,7 +8,6 @@
 #include "game/quickdraw_rendering.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
-#include "game/mfc.h"
 #include "game/ui_text_label_helpers_decls.h"
 #include <new>
 

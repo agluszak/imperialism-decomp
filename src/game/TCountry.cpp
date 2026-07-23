@@ -27,7 +27,6 @@
 #include "game/mapped_flavor_text.h"
 
 #include "game/TDiplomacyMgr.h"
-#include "game/TNewsMgr.h"
 
 #include <new>
 

@@ -19,11 +19,9 @@
 #include "game/TAmtBar.h"
 #include "game/TPicture.h"
 #include "game/TGreatPower.h"
-#include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
-#include "game/mfc.h"
 #include "game/TEvent.h"
 #include "game/ui_text_label_helpers_decls.h"
 

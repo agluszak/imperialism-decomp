@@ -17,7 +17,6 @@
 
 #include <new>
 
-#include "game/mfc.h"
 
 // SYNTHETIC: IMPERIALISM 0x0058a4d0
 // TShipyardCluster::CreateObject

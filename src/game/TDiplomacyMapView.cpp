@@ -11,7 +11,6 @@
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/quickdraw_rendering.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/mfc.h"
 #include "game/quickdraw_regions.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TStrategicMapViewSystem.h"
@@ -34,7 +33,6 @@
 #include "game/TPanelView.h"
 #include "game/TOffersPanelView.h"
 #include "game/mapped_flavor_text.h"
-#include "game/ui_text_label_helpers_decls.h"
 
 // Defined below in address order (0x4d5d30).
 void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* run,

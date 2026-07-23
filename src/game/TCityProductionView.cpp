@@ -22,7 +22,6 @@
 #include "game/TTechMgr.h"
 #include "game/TTransFocusAnimation.h"
 #include "game/TWindow.h"
-#include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/quickdraw_rendering.h"

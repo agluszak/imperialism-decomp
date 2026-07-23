@@ -19,7 +19,6 @@
 #include "game/quickdraw_guards.h"
 #include <new>
 
-#include "game/mfc.h"
 
 // SYNTHETIC: IMPERIALISM 0x00589ed0
 // TRailAmtBar::CreateObject

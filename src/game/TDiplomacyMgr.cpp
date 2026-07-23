@@ -20,7 +20,6 @@
 #include "game/TNewsMgr.h"
 #include "game/TApplication.h"
 #include "game/TStream.h"
-#include "game/TMultiplayerMgr.h"
 #include <new>
 #include <stdlib.h>
 

@@ -4,7 +4,6 @@
 #include "game/THelpMgr.h"
 #include "game/TTechMgr.h"
 #include "game/TControl.h"
-#include "game/TSimMgr.h"
 #include "game/TUiEvent.h"
 #include "game/TView.h"
 #include "game/TViewMgr.h"

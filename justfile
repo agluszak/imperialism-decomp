@@ -1361,6 +1361,12 @@ global-location-gate:
 manual-cruntimeclass-gate:
   uv run python -m tools.workflow.check_manual_cruntimeclass --source-dir src
 
+# Structure-audit gate (8mo.18): no duplicate top-level #include, no CRLF in manual
+# source. Umbrella home for the source-structure cleanups; more rules land with 8mo.11-16.
+[group('gates')]
+structure-audit-gate:
+  uv run python -m tools.workflow.check_structure_audit
+
 # Check the decompilation annotations (// FUNCTION / // VTABLE / // GLOBAL etc.)
 # for syntax errors, duplicate addresses, and stray markers.
 [doc('reccmp annotation lint: marker syntax, duplicate addresses, stray markers')]
@@ -1435,7 +1441,7 @@ source-gates:
 
 [private]
 [parallel]
-_source-gates-parallel: ui-codegen-check ui-view-coverage-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate stub-count-gate class-size-gate noop-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate
+_source-gates-parallel: ui-codegen-check ui-view-coverage-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate stub-count-gate class-size-gate noop-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate
 
 [doc('Mine reccmp asm diffs for orig-address<->recomp-symbol global pairs (read-only report)')]
 [group('compare')]

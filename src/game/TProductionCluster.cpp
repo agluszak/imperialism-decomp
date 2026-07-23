@@ -16,7 +16,6 @@
 
 #include <new>
 
-#include "game/mfc.h"
 
 // SYNTHETIC: IMPERIALISM 0x00586840
 // TProductionCluster::CreateObject

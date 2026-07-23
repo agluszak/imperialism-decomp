@@ -19,7 +19,6 @@
 
 #include <new>
 
-#include "game/mfc.h"
 
 const int kAssertLineRatioB = 0xb73;
 

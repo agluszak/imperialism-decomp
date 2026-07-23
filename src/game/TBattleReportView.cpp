@@ -18,8 +18,6 @@
 #include "game/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-#include "game/global_data_tables.h"
-#include "game/TAnimator.h"
 
 TBattleReportView::TBattleReportView()
     : TDiplomacyMapView(), selectedReportIndex24c8(1), transientRegistryObject24cc(0) {}

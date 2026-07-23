@@ -16,7 +16,6 @@
 #include "game/TAdmiral.h"
 #include "game/TCity.h"
 #include "game/TCountry.h"
-#include "game/TGreatPower.h"
 #include "game/TMacViewMgr.h"
 #include "game/TMapMgr.h"
 #include "game/TMilitaryUnit.h"
@@ -29,9 +28,6 @@
 #include "game/TViewMgr.h"
 #include "game/mapped_flavor_text.h"
 
-#include "game/TMultiplayerMgr.h"
-#include "game/TSimMgr.h"
-#include "game/global_data_tables.h"
 
 TTechMgr* g_pCityOrderCapabilityState = 0;
 

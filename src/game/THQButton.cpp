@@ -7,7 +7,6 @@
 #include "game/quickdraw_guards.h"
 #include "game/mfc.h"
 #include <new>
-#include "game/mfc.h"
 // SYNTHETIC: IMPERIALISM 0x0058b5c0
 // THQButton::CreateObject
 // SYNTHETIC: IMPERIALISM 0x0058b640

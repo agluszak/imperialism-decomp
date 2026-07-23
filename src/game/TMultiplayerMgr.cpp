@@ -142,7 +142,6 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/TMapPreviewView.h"
 #include "game/TViewMgr.h"
 #include "game/TApplication.h"
-#include "game/TAssetMgr.h"
 #include "game/TRadioTextCluster.h"
 #include "game/TMacViewMgr.h"
 #include "game/TCountry.h"

@@ -28,7 +28,6 @@
 #include "game/TStream.h"
 #include "game/TMission.h"
 #include "game/TMinor.h"
-#include "game/TSortedList.h"
 #include "game/TCity.h"
 #include "game/global_data_tables.h"
 #include "game/TZone.h"

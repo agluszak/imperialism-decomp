@@ -13,12 +13,10 @@
 #include "game/TAmtBar.h"
 #include "game/TUnitToolbarCluster.h"
 #include "game/GameAssert.h"
-#include "game/UiRuntimeContext.h"
 
 #include <new>
 
 #include "game/TApplication.h"
-#include "game/mfc.h"
 #include "game/global_data_tables.h"
 
 extern "C" {
