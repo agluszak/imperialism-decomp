@@ -1,4 +1,5 @@
 #include "game/TEditText.h"
+#include <mbstring.h>
 #include "game/CMcWindow.h"
 #include "game/TObject.h"
 // SYNTHETIC: IMPERIALISM 0x00490210
@@ -132,13 +133,11 @@ void TEditText::Free() {
 
 // FUNCTION: IMPERIALISM 0x00490bc0
 char TEditText::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
-  // The retail body forwards to the base TView mouse-down dispatch and, on success, fires a
-  // command event through a receiver/slot that is not yet recovered. This fallback remains an
-  // incomplete stub rather than guessing that dispatch.
-  (void)point;
-  (void)event;
-  (void)origin;
-  return 0;
+  if (TView::HandleMouseDown(point, event, origin) == 0) {
+    return 0;
+  }
+  HandleEvent(eventNumber60, this, 0);
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00490c10
@@ -175,12 +174,21 @@ void TEditText::SetTextAlignmentAndMaybeRefresh(short alignmentCode, char refres
 
 // FUNCTION: IMPERIALISM 0x00490cf0
 void TEditText::InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refreshFlag) {
-  // The retail body truncates *newText to maxCharacterCount, then either updates the live edit
-  // window or
-  // compares against the cached text and refreshes on change. The live/cached branch depends on
-  // Open(), so this body remains incomplete.
-  (void)newText;
-  (void)refreshFlag;
+  CString clampedText(*newText);
+  if (clampedText.GetLength() > maxCharacterCount) {
+    clampedText = clampedText.Left(maxCharacterCount);
+  }
+  if (Open() != 0) {
+    editWindow->SetWindowText(clampedText);
+    return;
+  }
+  if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(*text)),
+              reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(clampedText))) != 0) {
+    *text = clampedText;
+    if (static_cast<char>(refreshFlag) != 0) {
+      RefreshControl();
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00490e50

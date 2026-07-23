@@ -1022,12 +1022,12 @@ address|matching|name
 0x490a50|0.5|TEditText::SetEditSelectionAndScrollCaret
 0x490aa0|1.0|TEditText::BecomeTarget
 0x490ad0|0.3076923076923077|TEditText::Free
-0x490bc0|0.06896551724137931|TEditText::HandleMouseDown
+0x490bc0|0.8679245283018868|TEditText::HandleMouseDown
 0x490c10|1.0|TEditText::TargetValidationSucceeded
 0x490c30|0.967741935483871|TEditText::SelectOwner
 0x490c70|1.0|TEditText::GetCurrentText
 0x490cb0|1.0|TEditText::SetTextAlignmentAndMaybeRefresh
-0x490cf0|0.02531645569620253|TEditText::InitDialogWindowAndSyncTitleIfChanged
+0x490cf0|0.45517241379310347|TEditText::InitDialogWindowAndSyncTitleIfChanged
 0x490e50|0.625|TEditText::UpdateCoordinates
 0x490ed0|0.28865979381443296|TNumberText::CreateObject
 0x491040|1.0|TNumberText::GetRuntimeClass
