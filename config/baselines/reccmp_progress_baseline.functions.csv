@@ -3170,7 +3170,7 @@ address|matching|name
 0x517f80|0.21794871794871795|TMapMgr::CollectSecondDegreeLinksMatchingNodeType
 0x518090|0.6213592233009708|TMapMgr::CollectSecondDegreeLinksWithMinorNationFallback
 0x518130|0.33714285714285713|TMapMgr::RecomputeTileStrategicScoreHeatmap
-0x518470|0.8928571428571429|TMapMgr::ApplyJoinEmpireMode0GlobalDiplomacyReset
+0x518470|0.9285714285714286|TMapMgr::ApplyJoinEmpireMode0GlobalDiplomacyReset
 0x5184e0|1.0|TMapMgr::GetProvinceUnitOrderWeight
 0x518540|1.0|TMapMgr::LoadScenarioMapStateFromTableResource
 0x5187f0|0.07407407407407407|LoadScenarioMetadataByIndexIntoUiControlCore_Impl

@@ -3658,12 +3658,12 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
 
 // FUNCTION: IMPERIALISM 0x00518470
 void TMapMgr::ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot) {
-  signed char* tileBase = tileOwnershipTable;
-  signed char* tagCursor = tileBase + 4;
+  signed char* tagCursor = &terrainStateTable->ownerNationTag04;
   int tileIndex = 0;
   do {
     if (*tagCursor >= 7 && *tagCursor <= 0x16) {
-      signed char* ownerByte = tileOwnershipTable + static_cast<short>(tileIndex) * 0x24 + 0x18;
+      signed char* ownerByte =
+          &terrainStateTable[static_cast<short>(tileIndex)].secondaryOwnerNationTag18;
       if (*ownerByte == nationSlot) {
         *ownerByte = -1;
       }

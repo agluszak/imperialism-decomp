@@ -11986,7 +11986,7 @@ g_nUiAnimatorSurfaceBoundsHeight 6A222C l
 g_ptArmyOrderModalMessage 6A2318 l
 g_InfoBarDummyOrigin_006A2410 6A2410 l
 g_Sanitize_City_Counter_Value_006A24D4 6A24D4 l
-g_anCityBuildingLayoutValues 6A24E8 l
+g_aCityBuildingLayoutRects 6A24E8 l
 g_aCityBuildingActionRects 6A2778 l
 g_aCityBuildingHoverSelectionRects 6A2998 l
 g_nCityBuildingSlotXOffsetIndex 6A2ABC l

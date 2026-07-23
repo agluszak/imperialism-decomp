@@ -661,11 +661,11 @@ public:
   unsigned char pad0a[2];                     // +0x0a -- alignment gap before the +0x0c pointer
   TTerrainStateRecordView* terrainStateTable; // +0x0c
   Province* cityScoreTable;                   // +0x10
-  // Per-tile ownership/region table (0x24-byte records, one per map tile: terrain/region
-  // tag at +0x04 valid in [7,22], owner-nation byte at +0x18). Full record layout is
-  // unknown, so accessed via byte offsets.
-  signed char* tileOwnershipTable; // +0x14
-  int cityScoreTotal;              // +0x18
+  // +0x14 -- no access anywhere in the binary (whole-image field-xref sweep returns
+  // zero). The "per-tile ownership table" this used to be called was a mis-attribution:
+  // ApplyJoinEmpireMode0GlobalDiplomacyReset reads [this+0x0c], i.e. terrainStateTable.
+  void* unused14;
+  int cityScoreTotal; // +0x18
   // Real CString, not a raw char* -- ~TMapMgr's own decompile (0x50e490) shows an explicit
   // CString::~CString() call on this field (LEA ECX,[this+0x1c]; CALL 0x6058e2), the sole
   // action the base destructor performs.

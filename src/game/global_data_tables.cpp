@@ -705,10 +705,10 @@ CRect g_aCityBuildingHoverSelectionRects[16];
 // and 0/1 flags; per-field semantics not yet recovered). Populated by
 // InitializeCityBuildingLayoutData.
 // GLOBAL: IMPERIALISM 0x006a24e8
-int g_anCityBuildingLayoutValues[164] = {0};
+CRect g_aCityBuildingLayoutRects[41];
 
 // 31 action-button rects for the city-building screen, placement-constructed by
-// InitializeCityBuildingLayoutData (immediately after g_anCityBuildingLayoutValues).
+// InitializeCityBuildingLayoutData (immediately after g_aCityBuildingLayoutRects).
 // GLOBAL: IMPERIALISM 0x006a2778
 CRect g_aCityBuildingActionRects[31];
 

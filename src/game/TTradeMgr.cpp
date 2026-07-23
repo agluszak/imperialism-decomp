@@ -205,10 +205,9 @@ struct DiplomacyRelationEvent {
   short relationScore;
 };
 
-// TDiplomacyMgr relation-standing-score matrix (+0x79c), row stride 0x17 shorts.
+// TDiplomacyMgr relation-standing-score matrix, row stride 0x17 shorts.
 inline short RelationStanding(TDiplomacyMgr* mgr, int source, int target) {
-  return *reinterpret_cast<short*>(reinterpret_cast<char*>(mgr) + 0x79c +
-                                   (source * 0x17 + target) * 2);
+  return mgr->relationStandingScoreMatrix79c[source * 0x17 + target];
 }
 } // namespace
 
@@ -482,37 +481,32 @@ int TTradeMgr::ComputeNationMetricDispatchScoreAndResolveScale(short sourceSlot,
     return -1;
   }
 
-  short prefTarget = *reinterpret_cast<short*>(
-      reinterpret_cast<char*>(g_apTerrainTypeDescriptorTable[targetSlot]) + 0xe);
+  short prefTarget = g_apTerrainTypeDescriptorTable[targetSlot]->encodedNationSlot;
   if (prefTarget >= 200) {
     prefTarget = static_cast<short>(prefTarget - 200);
   } else if (prefTarget >= 100) {
     prefTarget = static_cast<short>(prefTarget - 100);
   } else {
-    prefTarget = *reinterpret_cast<short*>(
-        reinterpret_cast<char*>(g_apTerrainTypeDescriptorTable[targetSlot]) + 0xc);
+    prefTarget = g_apTerrainTypeDescriptorTable[targetSlot]->nationSlot;
   }
   if (prefTarget == sourceSlot) {
     return (scoreA < scoreB) ? scoreA : scoreB;
   }
 
-  short prefSource = *reinterpret_cast<short*>(
-      reinterpret_cast<char*>(g_apTerrainTypeDescriptorTable[sourceSlot]) + 0xe);
+  short prefSource = g_apTerrainTypeDescriptorTable[sourceSlot]->encodedNationSlot;
   if (prefSource >= 200) {
     prefSource = static_cast<short>(prefSource - 200);
   } else if (prefSource >= 100) {
     prefSource = static_cast<short>(prefSource - 100);
   } else {
-    prefSource = *reinterpret_cast<short*>(
-        reinterpret_cast<char*>(g_apTerrainTypeDescriptorTable[sourceSlot]) + 0xc);
+    prefSource = g_apTerrainTypeDescriptorTable[sourceSlot]->nationSlot;
   }
   if (prefSource == targetSlot) {
     return (scoreA > scoreB) ? scoreA : scoreB;
   }
 
   if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(targetSlot) != 0) {
-    int relation = *reinterpret_cast<short*>(reinterpret_cast<char*>(g_apNationStates[targetSlot]) +
-                                             0x14 + sourceSlot * 2);
+    int relation = g_apNationStates[targetSlot]->needLevelByNation[sourceSlot];
     if (relation == 100) {
       return scoreA;
     }
