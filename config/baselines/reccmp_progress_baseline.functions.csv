@@ -3027,7 +3027,7 @@ address|matching|name
 0x50bbc0|0.8888888888888888|TMacViewMgr::OrphanCallChain_C4_I35_0050bbc0
 0x50bc50|0.6026200873362445|TMacViewMgr::SyncSellTaggedChildControlWithNationState
 0x50be30|0.96|TMacViewMgr::MakeBookDialog
-0x50bea0|0.20990458882326216|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
+0x50bea0|0.21081326669695594|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 0x50d310|0.5625|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 0x50d360|0.6857142857142857|TMacViewMgr::OpenBuildingWindow
 0x50d470|0.3880597014925373|TMacViewMgr::OrphanCallChain_C10_I80_0050d470
@@ -3040,7 +3040,7 @@ address|matching|name
 0x50d920|0.7619047619047619|TMacViewMgr::ClearActiveCityProductionViewAndDiscardRegion
 0x50d950|0.8070175438596491|TMacViewMgr::RefreshActiveGoldControlAndUiRuntimeState
 0x50d9e0|0.6105263157894737|TMacViewMgr::CopySpriteSurfaceToStrideBuffer
-0x50da80|0.28507795100222716|TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10
+0x50da80|0.30666666666666664|TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10
 0x50dd40|0.32679738562091504|TMacViewMgr::DrawStrategicMapUnitIcon
 0x50df40|0.2727272727272727|TMacViewMgr::DrawStrategicMapUnitIconOverlay
 0x50e070|0.656934306569343|TMacViewMgr::BlitStrategicMapUnitActivityOverlayFrame
@@ -3309,7 +3309,7 @@ address|matching|name
 0x5274d0|0.37593984962406013|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.3783783783783784|TMapMaker::MapGenPassSlot0E
 0x527730|0.29577464788732394|TMapMaker::MapGenPassSlot0F
-0x527d00|0.4268774703557312|TMapMaker::CreateRivers
+0x527d00|0.43478260869565216|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
@@ -3875,7 +3875,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.46480914801095186|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.4538573039136737|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags
@@ -4012,7 +4012,7 @@ address|matching|name
 0x551700|0.7005649717514124|TAdmiral::ReadFrom
 0x551850|0.7291666666666666|TAdmiral::ReassignThyself
 0x5519d0|1.0|FindCumulativeWeightBucketIndex
-0x551a00|0.4219409282700422|TAdmiral::EstimateEnemyForces
+0x551a00|0.39662447257383965|TAdmiral::EstimateEnemyForces
 0x551be0|0.40484429065743943|TAdmiral::GetFleetReport
 0x552250|0.8543689320388349|TAdmiral::AssignToShip
 0x552310|0.7165775401069518|TAdmiral::ReassignToZone
@@ -4064,7 +4064,7 @@ address|matching|name
 0x554e70|0.5514018691588785|TTaskForce::GetGeneralDescription
 0x555090|0.4647887323943662|TTaskForce::RemoveStragglers
 0x5551d0|0.37104072398190047|TTaskForce::GetAuthority
-0x555420|0.5638297872340425|TTaskForce::Encounter
+0x555420|0.5531914893617021|TTaskForce::Encounter
 0x555720|0.248|TTaskForce::TryToSpot
 0x555920|0.39628482972136225|TTaskForce::ResolveEncounterWith
 0x555c20|0.5945945945945946|TTaskForce::AttemptToEvade
@@ -5399,13 +5399,13 @@ address|matching|name
 0x5a8900|0.0425531914893617|TTacticalBattleView::TacticalBattleViewSlot68
 0x5a89a0|1.0|TTacticalBattleView::InvalidateTacticalUnitTileRect
 0x5a89f0|0.42105263157894735|TTacticalBattleView::ComputeTacticalUnitTileScreenRect
-0x5a8ac0|0.6086956521739131|TTacticalBattleView::CenterViewportAroundGridIndexAndSnap
+0x5a8ac0|0.6867469879518072|TTacticalBattleView::CenterViewportAroundGridIndexAndSnap
 0x5a8be0|1.0|TTacticalBattleView::Scroll
 0x5a8ca0|1.0|TTacticalBattleView::DoSetCursor
 0x5a8d40|0.009950248756218905|TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x5a9090|0.8805970149253731|TTacticalBattleView::PlayTacticalTileEffect
 0x5a9170|0.9454545454545454|TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog
-0x5a9240|0.5304136253041363|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
+0x5a9240|0.563855421686747|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
 0x5a9550|0.23429541595925296|TTacticalBattleView::DrawUiTilesAndOverlay
 0x5a99e0|1.0|DrawHexSelectionOutlineSegments
 0x5a9b40|0.92|TTacticalBattleView::UpdateTacticalActionControlBitmapForCurrentUnit

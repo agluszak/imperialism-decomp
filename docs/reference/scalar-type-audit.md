@@ -8,11 +8,11 @@ has a reviewed classification and a durable Beads owner in
 
 ## Summary
 
-- Findings: 572
+- Findings: 569
 - `native_integral_boundary`: 19
 - `nested_integral_cast`: 29
 - `predicate_storage_cast`: 23
-- `raw_discriminant_literal`: 501
+- `raw_discriminant_literal`: 498
 
 ## clang-tidy evaluation
 
@@ -32,8 +32,8 @@ a stale category-level approval.
 
 | Fingerprint | Source | Classification | Evidence |
 | --- | --- | --- | --- |
-| `b3ab09ab111463da` | `src/game/CDib.cpp:68` | `win32_struct_word_field` | BITMAPINFOHEADER.biBitCount is WORD; retail 0x00479fe0 writes the low argument word to header offset 0x0e. |
-| `6da656c5e709fdcb` | `src/game/CDib.cpp:268` | `win32_struct_word_field` | LOGPALETTE.palNumEntries is WORD; retail 0x0047ae90 copies the low word of the 32-bit palette count to offset 2. |
+| `b3ab09ab111463da` | `src/game/CDib.cpp:74` | `win32_struct_word_field` | BITMAPINFOHEADER.biBitCount is WORD; retail 0x00479fe0 writes the low argument word to header offset 0x0e. |
+| `6da656c5e709fdcb` | `src/game/CDib.cpp:274` | `win32_struct_word_field` | LOGPALETTE.palNumEntries is WORD; retail 0x0047ae90 copies the low word of the 32-bit palette count to offset 2. |
 | `742008749ab4e76b` | `src/game/CDibPal.cpp:41` | `win32_struct_word_field` | LOGPALETTE.palNumEntries is WORD; retail 0x0047e440 stores BX to offset 2 before CreatePalette. |
 | `7e423c8243556ab8` | `src/game/CDibPal.cpp:201` | `win32_struct_word_field` | GetObjectA yields a UINT entry count but LOGPALETTE.palNumEntries is WORD; retail 0x0047efa0 narrows only at the structure field. |
 | `3a7283d2ab6bd83c` | `src/game/CIncludeView.cpp:398` | `mfc_bool_callback_return` | CWnd::OnSetCursor returns BOOL while Default returns LRESULT; retail 0x00483ef0 tail-returns the full Default result through the BOOL override ABI. |
@@ -56,8 +56,8 @@ a stale category-level approval.
 
 | Fingerprint | Category | Source | Detail | Classification | Owner |
 | --- | --- | --- | --- | --- | --- |
-| `b3ab09ab111463da` | `native_integral_boundary` | `src/game/CDib.cpp:68` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `6da656c5e709fdcb` | `native_integral_boundary` | `src/game/CDib.cpp:268` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
+| `b3ab09ab111463da` | `native_integral_boundary` | `src/game/CDib.cpp:74` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
+| `6da656c5e709fdcb` | `native_integral_boundary` | `src/game/CDib.cpp:274` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `742008749ab4e76b` | `native_integral_boundary` | `src/game/CDibPal.cpp:41` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `7e423c8243556ab8` | `native_integral_boundary` | `src/game/CDibPal.cpp:201` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `3a7283d2ab6bd83c` | `native_integral_boundary` | `src/game/CIncludeView.cpp:398` | game scalar -> BOOL | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
@@ -127,9 +127,6 @@ a stale category-level approval.
 | `de14d8df2453c135` | `predicate_storage_cast` | `src/game/TZone.cpp:873` | predicate -> char | `predicate_boundary` | `imperialism-decomp-1uj.99.7` |
 | `8def9c63f8a4f43d` | `predicate_storage_cast` | `src/game/sea_geometry.cpp:77` | predicate -> unsigned char | `predicate_boundary` | `imperialism-decomp-1uj.99.7` |
 | `df11c74922779957` | `predicate_storage_cast` | `src/game/sea_geometry.cpp:129` | predicate -> unsigned char | `predicate_boundary` | `imperialism-decomp-1uj.99.7` |
-| `2bbc476eae870033` | `raw_discriminant_literal` | `src/game/CDib.cpp:312` | bfType != 0x4d42 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `1b751b59908ba401` | `raw_discriminant_literal` | `src/game/CDib.cpp:398` | m_infoOwnMode == 1 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
-| `e00aee1592d77bd8` | `raw_discriminant_literal` | `src/game/CDib.cpp:400` | m_infoOwnMode == 2 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `a431d57660ed9dad` | `raw_discriminant_literal` | `src/game/CMcWindow.cpp:30` | windowStyleType != 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `2ff53e9c3b26c005` | `raw_discriminant_literal` | `src/game/CMcWindow.cpp:153` | g_nMcWindowStateMsgAssertGate_006A1C74 == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |
 | `0f7714fc0ea5156b` | `raw_discriminant_literal` | `src/game/TAlwaysPictureButton.cpp:25` | enabledState == 0 | `enum_candidate` | `imperialism-decomp-1uj.99.8` |

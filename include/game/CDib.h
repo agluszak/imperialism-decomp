@@ -12,6 +12,12 @@
 // Built by the asset cache's BuildIndexedBmpResourceById path; construct via `new CDib(w, h,
 // depth)`.
 //
+enum eDibInfoOwnershipMode {
+  kDibInfoNotOwned = 0,
+  kDibInfoOwnedByteArray = 1,
+  kDibInfoOwnedGlobalHandle = 2,
+};
+
 // VTABLE: IMPERIALISM 0x00645fc8
 class CDib : public CObject {
 public:
@@ -20,14 +26,14 @@ public:
   void* m_dibBits;           // 0x0c  DIB section bits (owned when m_dibBitsOwned == 1)
   BITMAPINFO* m_pInfoHeader; // 0x10  packed BITMAPINFOHEADER + RGBQUAD palette
   HGLOBAL m_hGlobalInfo;     // 0x14  GlobalAlloc handle backing m_pInfoHeader (own mode 2)
-  int m_infoOwnMode;         // 0x18  0=not owned, 1=byte-array storage, 2=GlobalFree
-  int m_dibBitsOwned;        // 0x1c  1 when m_dibBits is byte-array storage
-  int m_pixelBytes;          // 0x20  size of the pixel buffer in bytes
-  int m_paletteCount;        // 0x24  number of palette entries (biClrUsed)
-  HANDLE m_hFileMapping;     // 0x28  file-mapping handle (memory-mapped bmp path)
-  HANDLE m_hFile;            // 0x2c  file handle for the mapping
-  void* m_mappedView;        // 0x30  MapViewOfFile base
-  HPALETTE m_hPalette;       // 0x34  palette built from the color table (DeleteObject)
+  eDibInfoOwnershipMode m_infoOwnMode; // 0x18
+  int m_dibBitsOwned;                  // 0x1c  1 when m_dibBits is byte-array storage
+  int m_pixelBytes;                    // 0x20  size of the pixel buffer in bytes
+  int m_paletteCount;                  // 0x24  number of palette entries (biClrUsed)
+  HANDLE m_hFileMapping;               // 0x28  file-mapping handle (memory-mapped bmp path)
+  HANDLE m_hFile;                      // 0x2c  file handle for the mapping
+  void* m_mappedView;                  // 0x30  MapViewOfFile base
+  HPALETTE m_hPalette;                 // 0x34  palette built from the color table (DeleteObject)
 
   CDib();                                    // 0x00479f40
   CDib(int width, int height, int bitDepth); // 0x00479fe0
