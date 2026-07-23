@@ -5031,7 +5031,7 @@ address|matching|name
 0x591580|1.0|TArmyInfoView::GetRuntimeClass
 0x5915a0|1.0|TArmyInfoView::TArmyInfoView
 0x5915d0|0.9090909090909091|TArmyInfoView::`scalar deleting destructor'
-0x591620|0.004750593824228029|TArmyInfoView::PopulateFriendlyArmyReportContent
+0x591620|0.17515274949083504|TArmyInfoView::PopulateFriendlyArmyReportContent
 0x591d90|0.5517241379310345|TTransportPicture::CreateObject
 0x591e50|1.0|TTransportPicture::GetRuntimeClass
 0x591e70|0.8333333333333334|TTransportPicture::TTransportPicture
