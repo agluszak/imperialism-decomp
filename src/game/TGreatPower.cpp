@@ -2293,8 +2293,9 @@ void TGreatPower::AppendTrackedSlotEntry(short kind, int targetNation, short val
   packet.kind = kind;
   packet.targetNation = static_cast<short>(targetNation);
   packet.value = value;
-  if (kind == 1 ||
-      (kind == 0 && g_pDiplomacyTurnStateManager->IsMajorNationSlot(targetNation) == 0)) {
+  if (kind == kTrackedSlotOfferEntry ||
+      (kind == kTrackedSlotAcceptEntry &&
+       g_pDiplomacyTurnStateManager->IsMajorNationSlot(targetNation) == 0)) {
     packet.eligibility = 1;
   } else {
     packet.eligibility = 0;
