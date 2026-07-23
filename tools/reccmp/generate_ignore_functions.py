@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Generate and optionally apply reccmp ignore lists from symbol buckets.
+"""Generate and optionally apply reccmp ignore lists from library EVIDENCE.
+
+An address is ignored only when it carries library evidence (a reviewed row in
+config/reviewed_library_identities.csv or MSVC500 oracle provenance in
+config/original_entities.csv, minus the gamecode allowlist) — never because its
+provisional name looks library-shaped (Hard Rule 6). Name-regex selection hid
+461 real game functions (~29KB) from the report and the core-impact ranking.
 
 This writes a patchable YAML block for `report.ignore_functions` (names) and
 optionally `ghidra.ignore_functions` (addresses).
@@ -12,10 +18,12 @@ import json
 from pathlib import Path
 
 from tools.common.repo import repo_root_from_file
-from tools.reccmp.symbol_buckets import classify_name, parse_function_symbols, parse_reccmp_report
-
-
-DEFAULT_BUCKETS = ["crt_likely", "mfc_likely", "directx_audio_net_likely", "wrapper_likely"]
+from tools.reccmp.symbol_buckets import (
+    classify_name,
+    load_library_evidence,
+    parse_function_symbols,
+    parse_reccmp_report,
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -29,21 +37,9 @@ def parse_args() -> argparse.Namespace:
         help="Optional reccmp report to filter by similarity threshold.",
     )
     parser.add_argument(
-        "--include-bucket",
-        action="append",
-        default=[],
-        help="Bucket name to include (repeatable). Defaults to CRT/MFC/DirectX-audio-net/wrapper buckets.",
-    )
-    parser.add_argument(
-        "--exclude-bucket",
-        action="append",
-        default=[],
-        help="Bucket name to exclude (repeatable).",
-    )
-    parser.add_argument(
         "--include-thunks",
         action="store_true",
-        help="Include the 'thunk' bucket in ignore candidates.",
+        help="Also ignore functions in the name-based 'thunk' bucket.",
     )
     parser.add_argument(
         "--max-similarity",
@@ -85,14 +81,6 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def select_buckets(args: argparse.Namespace) -> set[str]:
-    buckets = set(args.include_bucket or DEFAULT_BUCKETS)
-    if args.include_thunks:
-        buckets.add("thunk")
-    buckets -= set(args.exclude_bucket)
-    return buckets
-
-
 def format_patch_block(target: str, names: list[str], addrs: list[int], include_ghidra: bool) -> str:
     lines: list[str] = []
     lines.append("targets:")
@@ -126,16 +114,19 @@ def apply_to_project(
 
 def main() -> int:
     args = parse_args()
-    buckets = select_buckets(args)
+    repo_root = repo_root_from_file(__file__)
+    evidence = load_library_evidence(repo_root)
 
     symbols = parse_function_symbols(Path(args.symbols_csv))
     score_by_addr = parse_reccmp_report(Path(args.report_json))
 
     candidates: list[dict] = []
     for symbol in symbols:
-        bucket = classify_name(symbol.name)
-        if bucket not in buckets:
-            continue
+        bucket = evidence.get(symbol.address)
+        if bucket is None:
+            if not (args.include_thunks and classify_name(symbol.name) == "thunk"):
+                continue
+            bucket = "thunk"
         if symbol.size is not None and symbol.size < args.min_size:
             continue
         similarity = score_by_addr.get(symbol.address)
@@ -160,7 +151,8 @@ def main() -> int:
     out_json.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "target": args.target,
-        "selected_buckets": sorted(buckets),
+        "selection": "library_evidence" + ("+thunk" if args.include_thunks else ""),
+        "evidence_address_count": len(evidence),
         "max_similarity": args.max_similarity,
         "min_size": args.min_size,
         "candidate_count": len(candidates),
@@ -182,7 +174,7 @@ def main() -> int:
         encoding="utf-8",
     )
 
-    print(f"Selected buckets: {', '.join(sorted(buckets))}")
+    print(f"Library-evidence addresses: {len(evidence)}")
     print(f"Candidates: {len(candidates)}")
     print(f"report.ignore_functions names: {len(ignore_names)}")
     print(f"ghidra.ignore_functions addrs: {len(ignore_addrs)}")

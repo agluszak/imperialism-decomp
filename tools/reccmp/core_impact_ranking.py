@@ -14,14 +14,19 @@ from ruamel.yaml import YAML
 
 from tools.common.repo import repo_root_from_file
 from tools.common.template_aliases import load_aliases
-from tools.reccmp.symbol_buckets import classify_name, parse_function_symbols, parse_reccmp_report
+from tools.reccmp.symbol_buckets import (
+    classify_name,
+    load_library_evidence,
+    parse_function_symbols,
+    parse_reccmp_report,
+)
 
 
+# Library code is excluded by EVIDENCE (load_library_evidence), never by name
+# shape (Hard Rule 6) — the old crt/mfc/dx/wrapper name buckets hid 461 real
+# game functions from the ranking. Only name-identified thunk trampolines stay
+# excluded by name; pass --exclude-bucket to opt into name-based exclusion.
 DEFAULT_EXCLUDED_BUCKETS = {
-    "crt_likely",
-    "mfc_likely",
-    "directx_audio_net_likely",
-    "wrapper_likely",
     "thunk",
 }
 
@@ -153,6 +158,7 @@ def main() -> int:
     similarity_by_addr = parse_reccmp_report(Path(args.report_json))
     ignore_names = load_ignore_names(Path(args.project_yml), args.target)
     roadmap_rows = load_roadmap_rows(Path(args.roadmap_csv))
+    library_evidence = load_library_evidence(repo_root_from_file(__file__))
 
     # Per-TU duplicate template COMDATs (config/template_aliases.csv, rule
     # MFC-TWIN-030) are never independent porting targets: the canonical body is
@@ -179,7 +185,8 @@ def main() -> int:
 
         sym = symbol_by_addr.get(addr)
         name = sym.name if sym else row_name
-        bucket = classify_name(name)
+        evidence_label = library_evidence.get(addr)
+        bucket = evidence_label or classify_name(name)
         size = 0
         size_text = (row.get("size") or "").strip()
         if size_text:
@@ -203,7 +210,7 @@ def main() -> int:
 
         ignored_by_name = name in ignore_names or row_name in ignore_names
 
-        if bucket in excluded_buckets:
+        if evidence_label is not None or bucket in excluded_buckets:
             skipped_by_bucket += 1
             if bucket in {"wrapper_likely", "thunk"}:
                 prefix = hint_prefix(name)
@@ -246,7 +253,11 @@ def main() -> int:
     wrapper_candidates.sort(key=lambda x: (x.size, x.impact), reverse=True)
 
     print(f"Target: {args.target}")
-    print(f"Core scope buckets excluded: {', '.join(sorted(excluded_buckets))}")
+    print(
+        "Core scope excluded: {} library-evidence addresses + name buckets [{}]".format(
+            len(library_evidence), ", ".join(sorted(excluded_buckets))
+        )
+    )
     print(
         "Rows considered: {} | core candidates: {} | "
         "skipped(size/bucket/ignored/missing_score/template_alias): "

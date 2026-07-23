@@ -8,9 +8,9 @@ policy (Mac resource order, read big-endian).
 
 ## Summary
 
-- Tags: 541
+- Tags: 540
 - `generated_resource_manifest_tag`: 67
-- `multiplayer_session_or_message_tag`: 33
+- `multiplayer_session_or_message_tag`: 32
 - `ui_tag_app_and_setup_screens`: 57
 - `ui_tag_city_and_trade`: 62
 - `ui_tag_diplomacy`: 18
@@ -18,7 +18,7 @@ policy (Mac resource order, read big-endian).
 - `ui_tag_shared`: 144
 - `ui_tag_strategic_map`: 21
 - `ui_tag_widget_plumbing`: 96
-- Corroborated by the Mac control-tag index: 403 of 541
+- Corroborated by the Mac control-tag index: 403 of 540
 - Violations: 0
 
 ## Violations
@@ -108,7 +108,6 @@ build does not ship.
 | `kSessionTagAwol` | `awol` | `0x61776f6c` | `multiplayer_session_or_message_tag` |  |
 | `kSessionTagBox0` | `box0` | `0x626f7830` | `multiplayer_session_or_message_tag` | 1 |
 | `kSessionTagBusy` | `busy` | `0x62757379` | `multiplayer_session_or_message_tag` |  |
-| `kSessionTagBxb0` | `bxb0` | `0x62786230` | `multiplayer_session_or_message_tag` |  |
 | `kSessionTagCgop` | `cgop` | `0x63676f70` | `multiplayer_session_or_message_tag` |  |
 | `kSessionTagDead` | `dead` | `0x64656164` | `multiplayer_session_or_message_tag` | 1 |
 | `kSessionTagDeca` | `deca` | `0x64656361` | `multiplayer_session_or_message_tag` |  |
