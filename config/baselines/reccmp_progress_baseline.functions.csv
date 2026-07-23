@@ -2441,8 +2441,7 @@ address|matching|name
 0x4e3660|0.4444444444444444|TMinor::CreateObject
 0x4e36f0|1.0|TMinor::GetRuntimeClass
 0x4e3710|0.3333333333333333|TMinor::TMinor
-0x4e3790|1.0|TMinor::`scalar deleting destructor'
-0x4e37c0|0.9767441860465116|TMinor
+0x4e3790|0.9090909090909091|TMinor::`scalar deleting destructor'
 0x4e3830|0.9526627218934911|TMinor::InitializeSecondaryNationStateAndSelectHomeTile
 0x4e41c0|0.5615384615384615|TMinor::ReadFrom
 0x4e4390|0.81875|TMinor::WriteTo
@@ -2457,7 +2456,7 @@ address|matching|name
 0x4e4f50|0.9629629629629629|TMinor::TryDispatchNationActionViaUiContextOrFallback
 0x4e4fa0|0.7096774193548387|TMinor::SetTradePolicyTo
 0x4e4ff0|0.3008849557522124|TMinor::CanInitiateJoinEmpireProposalToTarget
-0x4e50d0|0.18855218855218855|TMinor::QueueDiplomacyProposalCodeForTargetNation
+0x4e50d0|0.18791946308724833|TMinor::QueueDiplomacyProposalCodeForTargetNation
 0x4e5300|0.46153846153846156|TMinor::NotifyActionSlot94
 0x4e5340|0.4166666666666667|TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers
 0x4e5730|0.7317073170731707|TMinor::HandleNetworkPortConstructionOrder
@@ -3400,7 +3399,7 @@ address|matching|name
 0x52fda0|1.0|TForeignMinister::DoSecondTurnDiplomacy
 0x52fdc0|0.512396694214876|TForeignMinister::GoodsMatchShipping
 0x52fe90|0.32211538461538464|TForeignMinister::DoDevelopmentGrants
-0x530200|0.3381995133819951|TForeignMinister::DoProposeTreaties
+0x530200|0.4857142857142857|TForeignMinister::DoProposeTreaties
 0x5308b0|0.3125|TForeignMinister::DeservesToBeEnemy
 0x530b30|1.0|TForeignMinister::DoSelectEnemy
 0x530bb0|0.2809917355371901|TForeignMinister::SetEmpirePolicies
@@ -5659,7 +5658,7 @@ address|matching|name
 0x5b94d0|0.49591280653950953|TTradeMgr::DispatchProposalAmountSlot60
 0x5b9790|1.0|TTradeMgr::SetNationMetricCellValueByIndex
 0x5b97c0|1.0|TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags
-0x5b9890|0.7317073170731707|TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations
+0x5b9890|1.0|TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations
 0x5b98d0|0.34558823529411764|TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores
 0x5b9b30|0.2151029748283753|TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores
 0x5b9f30|1.0|TTradeMgr::Power
