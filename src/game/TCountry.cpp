@@ -12,6 +12,7 @@
 #include "game/TNewsMgr.h"
 #include "game/TCity.h"
 #include "game/TSimMgr.h"
+#include "game/TTechMgr.h"
 #include "game/TOcean.h"
 #include "game/CIterator.h"
 #include "game/TMilitaryUnit.h"
@@ -337,6 +338,24 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
     } while (ordinal <= this->ownedRegionList->GetSize());
   }
   this->AssignDisplayNamesToUnnamedMilitaryUnits();
+}
+
+// FUNCTION: IMPERIALISM 0x004d7770
+void TCountry::CreateMilitaryRecruitOrderForNode(int nodeContext) {
+  int capabilityBonus = 0;
+  if (static_cast<unsigned short>(this->nationSlot) < 7) {
+    const TTechMgr::MilitaryCapRow& capabilityRow =
+        g_pCityOrderCapabilityState->abilityActiveRows395[this->nationSlot];
+    if (capabilityRow.abilityActiveById[0x10] != 0) {
+      capabilityBonus = 0x10;
+    } else {
+      char capabilityFlag = static_cast<char>(capabilityRow.abilityActiveById[8]);
+      capabilityBonus = (static_cast<int>(-capabilityFlag) >> 0x1f) & 8;
+    }
+  }
+  TMilitaryUnit* militaryOrder = new TMilitaryUnit();
+  militaryOrder->IMilitaryUnit(static_cast<short>(capabilityBonus), nodeContext, this->nationSlot);
+  militaryOrder->SetOrders(static_cast<UnitOrder>(2), -1);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7860

@@ -1,14 +1,9 @@
 #include "game/TObject.h"
 
+#include "game/ArchiveStreamAdapter.h"
+#include "game/TFileStream.h"
+
 #include <string.h>
-
-// SYNTHETIC: IMPERIALISM 0x00485e20
-// TObject::GetRuntimeClass
-
-// SYNTHETIC: IMPERIALISM 0x00485df0
-// TObject::CreateObject
-
-IMPLEMENT_SERIAL(TObject, CObject, 1)
 
 IMPERIALISM_BEGIN_RETAIL_POLYMORPHIC_BYTE_COPY
 // FUNCTION: IMPERIALISM 0x00415ce0
@@ -40,6 +35,27 @@ TObject* TObject::ShallowClone() {
 
 // SYNTHETIC: IMPERIALISM 0x00484990
 // TObject::`scalar deleting destructor'
+
+// SYNTHETIC: IMPERIALISM 0x00485df0
+// TObject::CreateObject
+
+IMPLEMENT_SERIAL(TObject, CObject, 1)
+
+// SYNTHETIC: IMPERIALISM 0x00485e20
+// TObject::GetRuntimeClass
+
+// FUNCTION: IMPERIALISM 0x00485e90
+void TObject::Serialize(CArchive& archive) {
+  ArchiveStreamAdapter adapter(&archive);
+  TFileStream stream;
+  stream.SetBackingArchive(&adapter);
+
+  if (archive.IsLoading()) {
+    ReadFrom(&stream);
+  } else {
+    WriteTo(&stream);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00485f70
 void TObject::WriteTo(TStream* stream) {
