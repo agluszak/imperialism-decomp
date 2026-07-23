@@ -1,4 +1,5 @@
 #include "game/TLoadSavePicture.h"
+#include "game/TAmbitApplication.h"
 #include "game/TWindow.h"
 
 #include "game/global_data_tables.h"
@@ -187,7 +188,17 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 }
 
 // FUNCTION: IMPERIALISM 0x0056d190
-void TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC() {}
+void TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC() {
+  if (g_pSimMgr->previousTurnStateCode != 1) {
+    g_pSimMgr->StartNextPhase();
+    return;
+  }
+  if (g_pSimMgr->multiplayerSessionRole != 0) {
+    g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
+    return;
+  }
+  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+}
 
 // FUNCTION: IMPERIALISM 0x0056d1e0
 void TLoadSavePicture::DoKeyEvent(TToolboxEvent* event) {
