@@ -942,7 +942,7 @@ void TView::AssertMcAppUiLine1922() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c820
-CMcWindow* TView::Open() {
+CWnd* TView::Open() {
   if (childList44 != 0) {
     POSITION pos = childList44->GetHeadPosition();
     while (pos != NULL) {

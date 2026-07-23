@@ -4,7 +4,7 @@
 #include "game/ui_tags_screens.h"
 #include "game/ui_core/TWindow.h"
 
-#include "game/ui_core/CMcWindow.h"
+#include "game/ui_core/CMcEditWindow.h"
 #include "game/ui_core/TEditText.h"
 #include "game/ui_core/TLanguageMgr.h"
 #include "game/net/TMultiplayerMgr.h"
