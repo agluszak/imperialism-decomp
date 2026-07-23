@@ -1091,19 +1091,21 @@ void RunActivatingEndTurn() {
 }
 
 void RunWaitingForEndTurnConfirm() {
-  if (g_ModalViewStack.IsEmpty()) {
-    WaitForNextTickOrTimeout("\"end-turn confirmation did not become active\"");
-    return;
+  // The end-turn dialog (message context 0x5e7, the nation-readiness boxes) is
+  // opened with TWindow::Open, not posed modally — watch the dialog node, not
+  // the modal stack.
+  TWindow* dialogNode = static_cast<TWindow*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventJoinSelectorMessage));
+  TControl* okay = 0;
+  if (dialogNode != 0 && dialogNode->nativeWindow50 != 0) {
+    okay = static_cast<TControl*>(dialogNode->ResolveControlByTag(kControlTagOkay));
   }
-  TWindow* modal = static_cast<TWindow*>(g_ModalViewStack.GetHead());
-  TControl* okay = static_cast<TControl*>(modal->ResolveControlByTag(kControlTagOkay));
   if (okay == 0) {
-    RecordUnexpectedModal(modal);
-    Fail("\"end-turn confirmation has no okay control\"");
+    WaitForNextTickOrTimeout("\"end-turn dialog did not open\"");
     return;
   }
-  RecordHandledModal("end_turn_confirmation");
-  SetPhase(kRuntimeTestWaitingForTurnProcessed, "accept_end_turn_confirmation");
+  RecordHandledModal("end_turn_dialog");
+  SetPhase(kRuntimeTestWaitingForTurnProcessed, "accept_end_turn_dialog_okay");
   okay->HandleEvent(okay->GetEventNumber(), okay, 0);
   RequestAnotherDriverTick();
 }

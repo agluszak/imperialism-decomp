@@ -1008,12 +1008,16 @@ void BindCursorPanelAndSetTurnEventCodeRange() {
   }
 }
 
-void RefreshMainCouncilTickerPanel() {
+// The original (0x5d83b0) dispatches vtable slot 0x39 (RefreshControl) on the
+// 'main' panel — a generic refresh that is safe for any screen's main panel.
+// It must NOT be the direct TCouncilView ticker init (0x4fc2e0): on non-council
+// screens (e.g. the combined map, whose 'main' has no can0/can1 children) that
+// misdispatch dereferences a null control and crashes.
+void RefreshMainPanelControl() {
   TControl* mainPanel = ResolveMainTaggedControl(kControlTagMain);
   if (mainPanel != nullptr) {
     mainPanel->AssertValid();
-    TCouncilView* councilPanel = static_cast<TCouncilView*>(static_cast<void*>(mainPanel));
-    councilPanel->InitializeDiplomacyCouncilViewControlsAndTicker();
+    mainPanel->RefreshControl();
   }
 }
 
@@ -1434,7 +1438,8 @@ void TViewMgr::HandleTurnEvent7D8_ActivateDiplomacyMapView(int) {
 
 // FUNCTION: IMPERIALISM 0x005d83b0
 void TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(int) {
-  turn_event_ui_refresh::RefreshMainCouncilTickerPanel();
+  turn_event_ui_refresh::RefreshMainPanelControl();
+  g_pSimMgr->SetFlags(0x1000);
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
 
   TControl* tranControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagTran);
