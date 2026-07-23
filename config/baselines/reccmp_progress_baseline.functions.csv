@@ -1574,7 +1574,7 @@ address|matching|name
 0x4aad90|0.4897959183673469|TMiniArmyView::CreateObject
 0x4aae10|1.0|TMiniArmyView::GetRuntimeClass
 0x4aaeb0|0.7365269461077845|TMiniArmyView::Draw
-0x4ab1d0|0.8253968253968254|TMiniArmyView::DoEvent
+0x4ab1d0|0.9533678756476683|TMiniArmyView::DoEvent
 0x4ab380|1.0|TSuperCivRoster::CreateObject
 0x4ab400|0.9090909090909091|TSuperCivRoster::`scalar deleting destructor'
 0x4ab450|1.0|TSuperCivRoster::GetRuntimeClass
@@ -1591,7 +1591,7 @@ address|matching|name
 0x4ab950|1.0|TMiniCivView::GetRuntimeClass
 0x4ab970|0.4843304843304843|TMiniCivView::InitializeForCivilianUnit
 0x4ac000|0.7423312883435583|TMiniCivView::Draw
-0x4ac320|0.3181818181818182|TMiniCivView::DoEvent
+0x4ac320|1.0|TMiniCivView::DoEvent
 0x4ac3a0|0.0|AssignSharedStringFromMidSubstring
 0x4ac570|0.25|WrapperFor_ftol_At004ac570
 0x4ac5c0|0.5818181818181818|TSwapperDaddyView::CreateObject

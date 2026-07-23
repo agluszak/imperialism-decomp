@@ -11,8 +11,14 @@ public:
   virtual void PopulateArmyOrderPageEntries(TView* panel, int* offsetLayout,
                                             int* sizeLayout); // slot 0x6e 0x4aa540
 
-  // Selected city/province record from the roster; the dialog driver uses it to activate
-  // that province and center the strategic map. -1 means no selection.
+  // UNRESOLVED_FIELD_ATTRIBUTION: +0x84 has two conflicting readings.
+  //  - writer  0x4ab2e8 (TMiniArmyView::DoEvent) stores militaryUnit84->tileIndex06,
+  //    which TUnit documents as a map tile index;
+  //  - reader  0x5dda30 (TViewMgr's army-ledger driver) uses it as a province row:
+  //    SetActiveProvinceSelection(v) and cityScoreTable[v].cityTileIndex04.
+  // The sibling TSuperCivRoster's +0x84 is unambiguously a tile index at both ends, so
+  // this is not simply the same field. Kept provisionally named after the reader until
+  // the two domains are reconciled. -1 means no selection.
   short selectedIndex84;
   short pad86;
 

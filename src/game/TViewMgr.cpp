@@ -2415,7 +2415,7 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
   node->ShowTurnEventDialog(1);
   node->RefreshTurnEventDialog();
-  short selectedIndex = roster->selectedIndex84;
+  short selectedIndex = roster->selectedTileIndex84;
   node->Close();
   node->Free();
 
