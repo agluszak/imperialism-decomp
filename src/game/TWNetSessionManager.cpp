@@ -25,6 +25,19 @@ static BOOL FAR PASCAL ForwardEnumSessionToCallbackTable(LPGUID sessionGuid, LPS
   return mgr->OnEnumerateServiceProvider(sessionGuid, sessionName, majorVersion, minorVersion);
 }
 
+// IDirectPlay2::EnumSessions callback: DPESC_TIMEDOUT asks the manager whether to keep
+// waiting, anything else is a real session offer.
+// FUNCTION: IMPERIALISM 0x0047f870
+static BOOL FAR PASCAL ForwardEnumSessionsToSessionManager(const DPSESSIONDESC2* sessionDescription,
+                                                           DWORD* timeout, DWORD flags,
+                                                           LPVOID context) {
+  TDirectPlaySessionManagerBase* manager = static_cast<TDirectPlaySessionManagerBase*>(context);
+  if ((flags & DPESC_TIMEDOUT) != 0) {
+    return manager->GetRuntimeSelectionAuxStatus(timeout);
+  }
+  return manager->OnEnumerateJoinableSession(sessionDescription, timeout, flags);
+}
+
 // FUNCTION: IMPERIALISM 0x0047f8b0
 BOOL TDirectPlaySessionManagerBase::OnEnumerateServiceProvider(LPGUID providerGuid,
                                                                LPSTR providerName,
@@ -107,9 +120,7 @@ unsigned char TWNetSessionManager::RebuildRuntimeSelectionSource() {
 
 // FUNCTION: IMPERIALISM 0x0047fe50
 unsigned char
-TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry,
-                                                                int flag) {
-  (void)flag;
+TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry) {
   if (sessionEntry != 0) {
     if (directPlayInterface04 != 0) {
       directPlayInterface04->Close();
@@ -151,7 +162,7 @@ TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sess
 
 // FUNCTION: IMPERIALISM 0x00480030
 unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext() {
-  OpenRuntimeSelectionSourceWithOptionalSeed(0, 0);
+  OpenRuntimeSelectionSourceWithOptionalSeed(0);
   memset(&sessionDescription10, 0, sizeof(sessionDescription10));
   sessionDescription10.dwSize = sizeof(sessionDescription10);
   sessionDescription10.dwFlags = 0x40;
@@ -165,10 +176,34 @@ unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext(
 
 // FUNCTION: IMPERIALISM 0x00480150
 unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
-  // TODO(class-recovery): the retail body drives the remaining recovered virtual slots plus
-  // AfxGetMainWnd()-backed message-box
-  // progress UI and IDirectPlay2::EnumSessions. Ported as an honest stub rather
-  // than guessed until that table's owner is recovered.
+  OpenRuntimeSelectionSourceWithOptionalSeed(0);
+
+  memset(&sessionDescription10, 0, sizeof(sessionDescription10));
+  sessionDescription10.dwSize = sizeof(DPSESSIONDESC2);
+  InitializeSessionDescription();
+
+  AfxGetMainWnd()->BeginWaitCursor();
+  // Holding Ctrl during discovery stretches the enumeration window from 1s to 5s.
+  DWORD enumerationTimeout = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0 ? 5000 : 1000;
+  lastErrorCode0c = directPlayInterface04->EnumSessions(&sessionDescription10, enumerationTimeout,
+                                                        ForwardEnumSessionsToSessionManager, this,
+                                                        DPENUMSESSIONS_AVAILABLE);
+  AfxGetMainWnd()->EndWaitCursor();
+
+  if (lastErrorCode0c >= 0) {
+    GUID selectedSessionGuid;
+    if (ShowJoinGameSelectionDialogAndCaptureChoice(&selectedSessionGuid) != 0) {
+      memset(&sessionDescription10, 0, sizeof(sessionDescription10));
+      sessionDescription10.dwSize = sizeof(DPSESSIONDESC2);
+      sessionDescription10.guidInstance = selectedSessionGuid;
+      lastErrorCode0c = directPlayInterface04->Open(&sessionDescription10, DPOPEN_JOIN);
+      if (lastErrorCode0c >= 0) {
+        return 1;
+      }
+    }
+  }
+
+  ResetRuntimeSelectionRecordBuffer();
   return 0;
 }
 

@@ -97,8 +97,7 @@ public:
   // (DirectPlayEnumerateA, ordinal 2) through this object's virtual provider callback.
   // Either way the resulting IDirectPlay is QueryInterface'd up to
   // IDirectPlay2 into directPlayInterface04 and the runtime-selection list is reset.
-  unsigned char OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry,
-                                                           int flag); // 0x47fe50
+  unsigned char OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry); // 0x47fe50
   // Reopens the session with no seed (OpenRuntimeSelectionSourceWithOptionalSeed(null,0)),
   // then rebuilds sessionDescription10, lets the derived slot populate its application
   // identity, and opens it as a newly created DirectPlay session.
