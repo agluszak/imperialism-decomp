@@ -3,7 +3,8 @@
 #include "game/TBatRepDetLine.h"
 #include "game/TDisplayMgr.h"
 #include "game/bitmap_descriptor_helpers.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 
 // SYNTHETIC: IMPERIALISM 0x00430b80
 // TBattleUnitsView::`scalar deleting destructor'

@@ -7,7 +7,9 @@
 #include "game/TSimMgr.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TNewsMgr.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
+#include "game/globals/tactical_ui_globals.h"
 
 #include <string.h>
 
@@ -27,7 +29,6 @@
 #include "game/TUnitOrder.h"
 #include "game/TViewMgr.h"
 #include "game/mapped_flavor_text.h"
-
 
 TTechMgr* g_pCityOrderCapabilityState = 0;
 

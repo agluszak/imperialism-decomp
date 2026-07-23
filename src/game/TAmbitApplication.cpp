@@ -15,7 +15,8 @@
 #include "game/TViewMgr.h"
 #include "game/TWindow.h"
 #include "game/app_init_globals.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 
 // SYNTHETIC: IMPERIALISM 0x004135f0
 // TAmbitApplication::`scalar deleting destructor'

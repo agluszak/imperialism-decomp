@@ -5,7 +5,8 @@
 #include "game/TGreatPower.h"
 #include "game/TMiniCivLine.h"
 #include "game/TSimMgr.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 
 // SYNTHETIC: IMPERIALISM 0x004ab400
 // TSuperCivRoster::`scalar deleting destructor'

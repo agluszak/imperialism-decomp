@@ -1,6 +1,7 @@
 #include "game/TCommand.h"
 #include "game/TApplication.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 
 // SYNTHETIC: IMPERIALISM 0x004877c0
 // TCommand::CreateObject

@@ -2,7 +2,8 @@
 
 #include <new>
 
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 #include "game/TMapMgr.h"
 
 // SYNTHETIC: IMPERIALISM 0x00541c10

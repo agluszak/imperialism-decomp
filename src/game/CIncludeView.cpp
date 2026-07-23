@@ -9,7 +9,9 @@
 #include "game/TView.h"
 #include "game/TViewMgr.h"
 #include "game/TWindow.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
+#include "game/globals/ui_core_globals.h"
 #include "game/ui_invalidation_guard.h"
 
 // MCIWNDM_NOTIFYMODE / MCI_MODE_STOP for the movie stop-notify handler. NOAVIFILE keeps

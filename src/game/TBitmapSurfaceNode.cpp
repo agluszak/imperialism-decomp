@@ -2,7 +2,8 @@
 
 #include "game/CDib.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 
 // Constructor of the QuickDraw bitmap-surface node: `new`s a backing CDib(width, height,

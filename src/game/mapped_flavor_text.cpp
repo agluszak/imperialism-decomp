@@ -1,7 +1,8 @@
 #include "game/mapped_flavor_text.h"
 
 #include "game/CString.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 #include "game/TLanguageMgr.h"
 #include "game/TSimMgr.h"
 

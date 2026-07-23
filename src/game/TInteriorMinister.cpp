@@ -4,7 +4,8 @@
 
 #include "game/TGreatPower.h"
 #include "game/TStream.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 
 // Slots 0x16-0x1f own bodies (honest stubs; slot ownership drives vtable matching).
 // FUNCTION: IMPERIALISM 0x004be150

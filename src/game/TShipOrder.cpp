@@ -6,7 +6,9 @@
 #include "game/TShip.h"
 #include "game/navy_order.h"
 #include "game/TZone.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/nation_globals.h"
+#include "game/globals/shared_globals.h"
 
 static __inline short ReadWeight(const short* tableBase, short index) {
   return tableBase[static_cast<unsigned int>(index)];

@@ -4,7 +4,8 @@
 #include "game/TArmyMgr.h"
 #include "game/TTacticalBattle.h"
 #include "game/TTacticalPlayer.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 
 // SYNTHETIC: IMPERIALISM 0x005a64d0
 // TNextMoveCommand::CreateObject

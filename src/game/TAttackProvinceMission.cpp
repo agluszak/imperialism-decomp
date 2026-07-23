@@ -11,7 +11,10 @@
 #include "game/TMilitaryUnit.h"
 #include "game/TSimMgr.h"
 #include "game/TStream.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/military_globals.h"
+#include "game/globals/shared_globals.h"
+#include "game/globals/tactical_globals.h"
 
 IMPLEMENT_SERIAL(TAttackProvinceMission, TArmyMission, 1)
 

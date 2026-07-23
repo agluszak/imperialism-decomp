@@ -8,7 +8,9 @@
 #include "game/TTechMgr.h"
 #include <string.h>
 
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/map_globals.h"
+#include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 
 static void SwapAdjacentBytePairs(unsigned char* bytes, int pairCount) {

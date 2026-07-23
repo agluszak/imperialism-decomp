@@ -5,7 +5,9 @@
 
 #include "game/CDib.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/gfx_globals.h"
+#include "game/globals/shared_globals.h"
 #include "game/quickdraw_rendering.h"
 
 // FUNCTION: IMPERIALISM 0x00495520

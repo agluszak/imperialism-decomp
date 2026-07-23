@@ -1,7 +1,9 @@
 #include "game/TMouseCaptureState.h"
 
 #include "game/TControl.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
+#include "game/globals/ui_core_globals.h"
 
 // FUNCTION: IMPERIALISM 0x00489b60
 VOID CALLBACK NotifyGlobalCaptureOwnerState1WithCachedCoords(HWND hwnd, UINT message, UINT timerId,

@@ -4,7 +4,8 @@
 #include "game/TApplication.h"
 #include "game/TAssetMgr.h"
 #include "game/TSoundPlayer.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 
 #include <stdio.h>
 #include <string.h>

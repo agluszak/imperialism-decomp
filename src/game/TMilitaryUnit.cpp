@@ -7,7 +7,9 @@
 #include "game/TMission.h"
 #include "game/TTechMgr.h"
 #include "game/TStream.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/military_globals.h"
+#include "game/globals/shared_globals.h"
 
 // FUNCTION: IMPERIALISM 0x004a3b30
 void TMilitaryUnit::SetOrClearWordMaskBits3a(short mask, bool setFlag) {

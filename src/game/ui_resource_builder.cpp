@@ -6,7 +6,9 @@
 #include "game/TNumberText.h"
 #include "game/TPicture.h"
 #include "game/TStaticText.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
+#include "game/globals/ui_core_globals.h"
 
 // FUNCTION: IMPERIALISM 0x0041b210
 void __cdecl RegisterUiResourceEntry(unsigned int nameTag, unsigned int controlTag, TView* widget,

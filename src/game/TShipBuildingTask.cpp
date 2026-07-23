@@ -6,7 +6,9 @@
 #include "game/TShipOrder.h"
 #include "game/TSortedList.h"
 #include "game/TStream.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/nation_globals.h"
+#include "game/globals/shared_globals.h"
 // SYNTHETIC: IMPERIALISM 0x005ae650
 // TShipBuildingTask::CreateObject
 

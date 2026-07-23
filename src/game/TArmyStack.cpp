@@ -7,7 +7,9 @@
 #include "game/TMilitaryUnit.h"
 #include "game/TSortedList.h"
 #include "game/TStream.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/military_globals.h"
+#include "game/globals/shared_globals.h"
 #include "game/ui_invalidation_guard.h"
 
 // Duplicates TArmyMgr.cpp's own (file-static) IsUnitMeterEligible check -- ground truth

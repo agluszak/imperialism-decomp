@@ -8,7 +8,8 @@
 #undef CopyRgn
 
 #include "game/ImperialismApp.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 #include "game/wave_helpers.h"
 
 #include <string.h>

@@ -3,7 +3,9 @@
 #include "game/TCity.h"
 #include "game/TCluster.h"
 #include "game/TControl.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/city_ui_globals.h"
+#include "game/globals/shared_globals.h"
 #include "game/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x004bcfd0

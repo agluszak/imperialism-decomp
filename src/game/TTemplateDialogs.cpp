@@ -7,7 +7,9 @@
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TSimMgr.h"
 #include "game/TViewMgr.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/gfx_globals.h"
+#include "game/globals/shared_globals.h"
 
 // Fixed format strings in the binary's read-only data (referenced by address so the
 // compiled code passes the exact original pointer, matching the codebase's kAddr idiom).

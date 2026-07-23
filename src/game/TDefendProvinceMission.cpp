@@ -9,7 +9,9 @@
 #include "game/TList.h"
 #include "game/TGreatPower.h"
 #include "game/TZone.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
+#include "game/globals/tactical_globals.h"
 #include "game/TTechMgr.h"
 
 IMPLEMENT_SERIAL(TDefendProvinceMission, TArmyMission, 1)

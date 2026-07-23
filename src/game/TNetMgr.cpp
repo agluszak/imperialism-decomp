@@ -11,7 +11,9 @@
 #include "game/TView.h"
 #include "game/TViewMgr.h"
 #include "game/TWNetSessionManager.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/net_globals.h"
+#include "game/globals/shared_globals.h"
 #include "game/ui_invalidation_guard.h"
 
 #include <cstring>

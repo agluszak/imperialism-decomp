@@ -3,7 +3,8 @@
 #include "game/TCluster.h"
 #include "game/TControl.h"
 #include "game/TMultiplayerMgr.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 #include "game/ui_control_tags.h"
 
 // SYNTHETIC: IMPERIALISM 0x00576b20

@@ -5,7 +5,8 @@
 #include "game/TMapUberPicture.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TViewMgr.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 #include "game/quickdraw_rendering.h"
 // SYNTHETIC: IMPERIALISM 0x00505a50
 // TLonelyTileView::CreateObject

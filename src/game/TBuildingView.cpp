@@ -3,7 +3,8 @@
 #include "game/TCity.h"
 #include "game/TCityProductionView.h"
 #include "game/TViewMgr.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 // SYNTHETIC: IMPERIALISM 0x004c6df0
 // TBuildingView::CreateObject
 

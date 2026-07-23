@@ -8,7 +8,11 @@
 #include "game/TSimMgr.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TSortedList.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/nation_globals.h"
+#include "game/globals/navy_globals.h"
+#include "game/globals/shared_globals.h"
+#include "game/globals/tactical_globals.h"
 
 int SumMilitaryUnitPowerWeights(TSortedList* unitList) {
   int powerSum = 0;

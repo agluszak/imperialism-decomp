@@ -2,7 +2,8 @@
 #include "game/TWindow.h"
 #include "game/TAmtBar.h"
 #include "game/TView.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 #include "game/TSoundPlayer.h"
 // SYNTHETIC: IMPERIALISM 0x00571500
 // TUpDownPictureButton::CreateObject

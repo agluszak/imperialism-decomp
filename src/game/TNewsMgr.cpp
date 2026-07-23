@@ -10,7 +10,9 @@
 #include "game/TSimMgr.h"
 #include "game/TSortedPtrList.h"
 #include "game/TZone.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/navy_globals.h"
+#include "game/globals/shared_globals.h"
 #include "game/ui_invalidation_guard.h"
 
 #include <string.h>

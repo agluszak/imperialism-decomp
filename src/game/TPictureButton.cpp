@@ -1,6 +1,7 @@
 #include "game/TPictureButton.h"
 #include "game/mfc.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 #include "game/TSoundPlayer.h"
 
 // SYNTHETIC: IMPERIALISM 0x00570750

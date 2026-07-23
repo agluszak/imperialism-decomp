@@ -1,6 +1,8 @@
 #include "game/TLongintList.h"
 
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/navy_globals.h"
+#include "game/globals/shared_globals.h"
 
 // FUNCTION: IMPERIALISM 0x00487f70
 void TLongintList::NoOpWriteTo(TStream* stream) {

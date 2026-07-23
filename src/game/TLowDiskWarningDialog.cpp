@@ -1,7 +1,8 @@
 #include "game/TModalTemplateDialog.h"
 
 #include "game/TModuleLibraryCacheTableStateB.h" // g_pModuleLibraryCacheState
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 
 // FUNCTION: IMPERIALISM 0x005e1bc0
 TLowDiskWarningDialog::TLowDiskWarningDialog(void* initParam)

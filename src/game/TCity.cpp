@@ -22,7 +22,9 @@
 #include "game/TViewMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TPtrList.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/city_globals.h"
+#include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/TShip.h" // GetResourceDescriptorWeightWord0ByType

@@ -7,7 +7,8 @@
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TPicture.h"
 #include "game/TWindow.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 // SYNTHETIC: IMPERIALISM 0x00572d20
 // TColorKeyPicture::CreateObject
 

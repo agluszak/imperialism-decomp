@@ -18,7 +18,9 @@
 #include "game/TStream.h"
 #include "game/TTaskForce.h"
 #include "game/TZone.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/navy_globals.h"
+#include "game/globals/shared_globals.h"
 
 IMPLEMENT_SERIAL(TBeachheadMission, TControlSeaZoneMission, 1)
 

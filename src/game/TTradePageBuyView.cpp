@@ -5,7 +5,8 @@
 #include "game/TTextLine.h"
 #include "game/TTradeBidNationLine.h"
 #include "game/TTradeMgr.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 #include "game/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
 #include "game/ui_text_label_helpers_decls.h"
 

@@ -2,7 +2,8 @@
 #include "game/TNextTradeCommand.h"
 
 #include "game/TApplication.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 
 // The base TCommand constructor installs vtable 0x648e28; this constructor then
 // installs 0x66da90 (compiler-emitted from the // VTABLE: annotation). No manual

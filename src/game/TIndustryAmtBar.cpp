@@ -7,7 +7,9 @@
 
 #include "game/TAmtBar.h"
 #include "game/TIndustryAmtBar.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
+#include "game/globals/ui_widgets_globals.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/TItemOrder.h"
 #include "game/TViewMgr.h"

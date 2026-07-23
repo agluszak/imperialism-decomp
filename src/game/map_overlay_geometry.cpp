@@ -10,7 +10,9 @@
 #include "game/TOcean.h"
 #include "game/TTaskForce.h"
 #include "game/TViewMgr.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/map_globals.h"
+#include "game/globals/shared_globals.h"
 
 // Draws the hex-cell border-highlight polygon for a tile: computes the tile's isometric
 // screen position, then emits a QDFrameRect segment for each hex edge whose neighbor either

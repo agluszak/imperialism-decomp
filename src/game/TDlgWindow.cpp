@@ -1,5 +1,7 @@
 #include "game/TDlgWindow.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/gfx_globals.h"
+#include "game/globals/shared_globals.h"
 #include "game/ui_invalidation_guard.h"
 
 // Application/document-root pointer @ 0x6a2158; its +0x0a field gates the line-0x27f assert.

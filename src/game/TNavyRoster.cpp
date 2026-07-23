@@ -8,7 +8,9 @@
 #include "game/TShipLine.h"
 #include "game/TTaskForce.h"
 #include "game/TViewMgr.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/navy_ui_globals.h"
+#include "game/globals/shared_globals.h"
 #include "game/ui_invalidation_guard.h"
 // SYNTHETIC: IMPERIALISM 0x00564c30
 // TNavyRoster::CreateObject

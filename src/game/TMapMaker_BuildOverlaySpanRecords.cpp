@@ -12,7 +12,9 @@
 
 #include "decomp_types.h"
 #include "game/TMapMaker.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/map_globals.h"
+#include "game/globals/shared_globals.h"
 
 namespace {
 

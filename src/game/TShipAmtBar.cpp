@@ -5,7 +5,9 @@
 #include "game/TCity.h"
 #include "game/TGreatPower.h"
 #include "game/TViewMgr.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
+#include "game/globals/ui_widgets_globals.h"
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_rendering.h"
 

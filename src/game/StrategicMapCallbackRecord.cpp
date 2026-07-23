@@ -7,7 +7,8 @@
 #include "game/TDiplomacyMapView.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 
 // FUNCTION: IMPERIALISM 0x00430750
 StrategicMapCallbackRecord::~StrategicMapCallbackRecord() {}

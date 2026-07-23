@@ -1,6 +1,8 @@
 #include "game/timer_slots.h"
 
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/assets_globals.h"
+#include "game/globals/shared_globals.h"
 #include "game/ui_invalidation_guard.h"
 
 TimerSlotCallback g_timerSlotCallbacks[10]; // 0x006a5cf8

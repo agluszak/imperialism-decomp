@@ -1,6 +1,8 @@
 #include "game/turn_flow_cooldown.h"
 
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
+#include "game/globals/ui_widgets_globals.h"
 
 // FUNCTION: IMPERIALISM 0x0057b900
 bool IsTurnFlowCooldownActiveAndResetExpiredState(void) {

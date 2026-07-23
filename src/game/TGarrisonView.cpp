@@ -6,7 +6,9 @@
 #include "game/TSimMgr.h"
 #include "game/TCountry.h"
 #include "game/TViewMgr.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
+#include "game/globals/ui_core_globals.h"
 // SYNTHETIC: IMPERIALISM 0x004a8770
 // TGarrisonView::CreateObject
 

@@ -3,7 +3,8 @@
 #include "game/TBook.h"
 #include "game/TTechItemLine.h"
 #include "game/TTechMgr.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // TTechStorePage's vtable (0x645ca8) is a TPageView clone: only slot 0x00

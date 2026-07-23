@@ -18,7 +18,9 @@
 
 #include "decomp_types.h"
 #include "game/TMapMgr.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/map_globals.h"
+#include "game/globals/shared_globals.h"
 #include "game/sea_geometry.h"
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"

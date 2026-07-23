@@ -11,7 +11,9 @@
 #include "game/TMapMgr.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TStream.h"
-#include "game/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/military_globals.h"
+#include "game/globals/shared_globals.h"
 
 IMPLEMENT_SERIAL(TInvadeMission, TAttackProvinceMission, 1)
 
