@@ -63,8 +63,8 @@ a modeling error, and the fix removes casts rather than relocating them.
   flat region; (4) one identifier domain (e.g. a tile index feeding parallel tables) given
   two different prose descriptions; (5) two distinct concrete classes merged into one; only
   (6) a genuine variant field controlled by a discriminator or per-instance role. Rule out
-  1–5 from the raw listing (`just ghidra-listing`), the writer/reader inventory (`just
-  xrefs`, `just field-xrefs`), and the layout oracle before ever concluding (6). While
+  1–5 from the raw listing (`just ghidra listing`), the writer/reader inventory (`just
+  xrefs`, `just ghidra field-xrefs`), and the layout oracle before ever concluding (6). While
   unresolved, keep the slot raw and mark it `// UNRESOLVED_FIELD_ATTRIBUTION:` with both
   readings + evidence addresses — **do not** write "dual-use"/"dual-purpose" prose and do not
   leave `reinterpret_cast<int>(ptr)` in a member store as the model. A *proven* variant

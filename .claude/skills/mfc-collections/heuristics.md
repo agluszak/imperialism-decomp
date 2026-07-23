@@ -36,7 +36,7 @@ against them.
   `GetHeadPosition()` + `GetNext(pos)`/`GetPrev(pos)` over a `CPtrList`.
 - **Generic-named callees are real functions, not "missing".** `FUN_00xxxxxx` is a defined
   function (just unnamed); a 5-byte `JMP` at `0x40xxxx` is an ILT thunk to a named target
-  (`just ghidra-listing` the addr to resolve it). Forward-declare + call — minding the
+  (`just ghidra listing` the addr to resolve it). Forward-declare + call — minding the
   legacy typedef-cast thunk-signature trap (§12c).
 - **Don't fake these two shapes — recover the class instead:** (1) a free callee invoked with
   `ECX=this` is a `__thiscall` *method* on that receiver; (2) `buf = operator new(sz);

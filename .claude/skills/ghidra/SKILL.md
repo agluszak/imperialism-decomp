@@ -61,49 +61,49 @@ Rules of thumb:
   their real target; on a Ghidra gap it prints the nearest functions before/after
   instead of dead-ending):
   ```sh
-  just ghidra-listing 0x004dd1b0 [0xADDR ...]
+  just ghidra listing 0x004dd1b0 [0xADDR ...]
   ```
 - **Cross-references** — direction `to` (default) lists callers, jumps, and
   address-taken/data refs, hopping through ILT thunks automatically (a body address
   answers "who calls this" in one query; address-taken hits are how data-registered
   callbacks hide). Direction `from` lists the containing function's callees + global
-  data reads without decompiling; `both` prints both. (`just ghidra-xrefs` is an
+  data reads without decompiling; `both` prints both. (`just ghidra xrefs` is an
   alias.)
   ```sh
-  just xrefs 0x581870 [0xADDR ...] [--no-thunk-hop] [--limit N]
-  just xrefs from 0x0052d750           # a function's callees + data reads
-  just xrefs both 0x0052a760
+  just ghidra xrefs 0x581870 [0xADDR ...] [--no-thunk-hop] [--limit N]
+  just ghidra xrefs from 0x0052d750           # a function's callees + data reads
+  just ghidra xrefs both 0x0052a760
   ```
 - **Read a typed value / constant** at an address — `byte word dword qword float double ptr
   str bytes` (default `dword`), with an optional count for tables. Use this instead of hacking
   a vtable dump or hand-unpacking bytes when you need a *value* (an FP scale, a jump-table
   entry, a vtable slot pointer, a string):
   ```sh
-  just ghidra-read-data 0x006598d8 double     # -> 11733.857334728455
-  just ghidra-read-data 0x0065999c ptr 2       # two vtable slot pointers
-  just ghidra-read-data 0x00697450 dword 6     # a 6-entry int table
+  just ghidra read-data 0x006598d8 double     # -> 11733.857334728455
+  just ghidra read-data 0x0065999c ptr 2       # two vtable slot pointers
+  just ghidra read-data 0x00697450 dword 6     # a 6-entry int table
   ```
 - **Decode a switch jump table** (MSVC500 two-level pattern; works inside Ghidra
   code gaps — reads raw bytes, prints case→target with owning functions):
   ```sh
-  just ghidra-jumptable 0x5db695            # address of the indirect jmp
-  just ghidra-jumptable --table 0x459548 --cases 10   # explicit-table form
+  just ghidra jumptable 0x5db695            # address of the indirect jmp
+  just ghidra jumptable --table 0x459548 --cases 10   # explicit-table form
   ```
 - **Whole-binary search** — instruction text, raw data dwords, or exact immediate
   operands. `imm` is the precise one: `imm 0x11f8` finds every `PUSH 0x11f8` /
   `CMP EAX,0x11f8` (event-code dispatch sites, callback address-taken sites)
   without false positives from addresses containing the digits:
   ```sh
-  just ghidra-search text|dword|imm <value> [limit]
+  just ghidra search text|dword|imm <value> [limit]
   ```
 - **Gap disassembly** — when Ghidra has no instruction at an address:
-  `just ghidra-linear-disasm 0xADDR [count]` walks Ghidra's instruction DB past
-  wrong function bounds; `just ghidra-raw-disasm 0xADDR [bytes]` disassembles raw
+  `just ghidra linear-disasm 0xADDR [count]` walks Ghidra's instruction DB past
+  wrong function bounds; `just ghidra raw-disasm 0xADDR [bytes]` disassembles raw
   bytes with capstone for regions Ghidra never analyzed at all.
-- **Decompile** a single function: `just ghidra-decompile 0xADDR [0x...]`.
+- **Decompile** a single function: `just ghidra decompile 0xADDR [0x...]`.
 - **Dump a class vtable** (slot → function map):
   ```sh
-  just ghidra-vtable-dump TGreatPower 0x00653938
+  just ghidra vtable-dump TGreatPower 0x00653938
   ```
 - **RTTI class oracle** — every MFC `CRuntimeClass` descriptor in the binary
   (true class name, object size, base-class edge, resolved `CreateObject` address);
@@ -123,21 +123,21 @@ Rules of thumb:
   the `RET imm` purge bytes (binary ground truth: 4 bytes per stack dword for a
   callee-cleaned convention):
   ```sh
-  just func-sig 0x4d3a60 [0xADDR ...]
+  just ghidra func-sig 0x4d3a60 [0xADDR ...]
   ```
 - **Field cross-references** — which member functions of a class read/write
   `this+offset` (register-taint scan over the class's attributed methods; a lead
   generator — it misses stack-spilled `this` and inlined helpers). Without an
   offset it prints the class's full offset histogram (layout-recovery view):
   ```sh
-  just field-xrefs TCivMgr           # offset histogram
-  just field-xrefs TCivMgr 0x4       # every access of this+0x4, R/W + instruction
+  just ghidra field-xrefs TCivMgr           # offset histogram
+  just ghidra field-xrefs TCivMgr 0x4       # every access of this+0x4, R/W + instruction
   ```
 - **String-literal oracle** — unported functions referencing (near-)unique string
   literals; they largely name themselves and the strings double as `// STRING:`
   annotations once ported:
   ```sh
-  just string-oracle [--min-len N] [--max-refs N] [--limit N] [--all]
+  just ghidra string-oracle [--min-len N] [--max-refs N] [--limit N] [--all]
   ```
 
 ## Pointing at a different project (rare)

@@ -169,7 +169,7 @@ one non-trivial instruction is `call <destructor>`; reccmp resolves the orig cal
 whatever name owns that address, so a Ghidra placeholder there surfaces as a name mismatch.
 
 Fix: identify the address (grep the placeholder name → symbols.csv/index.csv), confirm it is
-a trivial destructor (`just ghidra-decompile` shows a ~7-byte `this->vftable = &PTR_...;
+a trivial destructor (`just ghidra decompile` shows a ~7-byte `this->vftable = &PTR_...;
 return;`), then (1) add `// FUNCTION: IMPERIALISM 0xADDR` to the manual `~Class()` body,
 (2) rename the symbols.csv row `ADDR|Class::~Class|??1Class@@UAE@XZ|...`, (3) give the scalar
 deleting destructor its own `??_GClass@@UAEPAXI@Z` mangled name in the same file, (4)

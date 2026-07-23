@@ -36,8 +36,7 @@ verdict; a slot whose source has DRIFTED from its override is a conflict.
 Modes:
   report (default)   human-readable ranked report for the named classes (or all)
   --json             machine-readable findings
-  --gate             exit 1 on proven conflicts absent from the ratchet baseline
-  --write-baseline   refresh config/baselines/vtable_abi_gate_baseline.csv
+  --gate             exit 1 on ANY proven conflict (baseline-free hard ban)
   --doc FILE         write the ranked markdown report
 """
 
@@ -55,7 +54,6 @@ from tools.common.repo import repo_root_from_file
 
 EVIDENCE_PATH = "config/vtable_abi_evidence.json"
 OVERRIDES_PATH = "config/vtable_signature_overrides.csv"
-BASELINE_PATH = "config/baselines/vtable_abi_gate_baseline.csv"
 
 # ------------------------------------------------------------------------- #
 # Declaration harvesting (source ground truth for the CURRENT C++ model)
@@ -531,20 +529,6 @@ def load_overrides(path: Path) -> dict[int, dict[str, str]]:
     return out
 
 
-def load_baseline(path: Path) -> set[tuple[int, str]]:
-    if not path.exists():
-        return set()
-    out: set[tuple[int, str]] = set()
-    for row in read_pipe_rows(path):
-        addr_s = (row.get("address") or "").strip().lower().removeprefix("0x")
-        cls = (row.get("class") or "").strip()
-        try:
-            out.add((int(addr_s, 16), cls))
-        except ValueError:
-            continue
-    return out
-
-
 def audit_classes(
     evidence: dict,
     decls: dict[int, Decl],
@@ -707,8 +691,7 @@ def main() -> int:
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--verbose", "-v", action="store_true")
     parser.add_argument("--gate", action="store_true",
-                        help="exit 1 on proven conflicts not in the ratchet baseline")
-    parser.add_argument("--write-baseline", action="store_true")
+                        help="exit 1 on ANY proven conflict (baseline-free hard ban)")
     parser.add_argument("--doc", default="", help="write the ranked markdown report here")
     args = parser.parse_args()
 
@@ -761,34 +744,20 @@ def main() -> int:
         if f.verdict == "proven_conflict"
     ]
 
-    baseline_path = repo_root / BASELINE_PATH
-    if args.write_baseline:
-        rows = ["address|class|slot|summary"]
-        for addr, cls, f in sorted(conflicts):
-            summary = (f.reasons[0] if f.reasons else "").replace("|", "/")
-            rows.append(f"0x{addr:08x}|{cls}|0x{f.byte_offset:02x}|{summary}")
-        baseline_path.write_text("\n".join(rows) + "\n", encoding="utf-8")
-        print(f"wrote baseline: {BASELINE_PATH} ({len(conflicts)} conflict(s))")
-        return 0
-
     if args.gate:
-        baseline = load_baseline(baseline_path)
-        new = [(a, c, f) for a, c, f in conflicts if (a, c) not in baseline]
-        if new:
+        if conflicts:
             print(
-                f"\nvtable-abi-gate: {len(new)} NEW proven conflict(s) not in "
-                f"{BASELINE_PATH}:"
+                f"\nvtable-abi-gate: {len(conflicts)} proven ABI conflict(s) "
+                "(hard ban -- zero allowed):"
             )
-            for addr, cls, f in new:
+            for addr, cls, f in sorted(conflicts):
                 print(f"  {cls} slot 0x{f.byte_offset:02x} -> 0x{addr:08x}: {f.reasons[:1]}")
             print(
                 "Fix the declaration (or add a reviewed row to "
                 f"{OVERRIDES_PATH}; never silence real evidence)."
             )
             return 1
-        print(
-            f"vtable-abi-gate: OK ({len(conflicts)} baseline conflict(s) tracked, 0 new)"
-        )
+        print("vtable-abi-gate: OK (hard ban -- 0 proven conflicts)")
     return 0
 
 

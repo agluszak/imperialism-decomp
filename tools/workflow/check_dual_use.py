@@ -21,22 +21,20 @@ with both readings and the evidence addresses. This gate makes the escape hatch 
     ``reinterpret_cast<unsigned int>(...)``) and int-member->class-pointer casts
     (``reinterpret_cast<T*>(x->fieldNN)`` / ``x.fieldNN``).
 
-Existing debt is grandfathered in ``config/baselines/dual_use_baseline.csv`` (keyed by
-file + normalized offender text, so line moves do not churn it) as a strictly-decreasing
-migration queue. NEW offenders fail the gate. ``--write-baseline`` shrinks the queue after a
-real fix; never run it to bless a new offender. Check-only otherwise; it never edits files.
+This is a baseline-free HARD BAN: the debt was fully eradicated, so ANY offender fails.
+There is no baseline file and no update escape hatch -- a new offender is always a source
+defect to fix (a real model or an ``UNRESOLVED_FIELD_ATTRIBUTION`` note), never to bless.
+Check-only; it never edits files.
 """
 
 from __future__ import annotations
 
 import argparse
 import re
-from pathlib import Path
 
 from tools.common.file_scan import iter_files
 from tools.common.repo import normalize_repo_relative_path, repo_root_from_file
 
-DEFAULT_BASELINE = "config/baselines/dual_use_baseline.csv"
 DEFAULT_PATHS = ("include/game", "src/game")
 
 # Banned prose (case-insensitive). "reused as" is deliberately broad: describing one slot as
@@ -95,62 +93,27 @@ def collect_offenders(paths, repo_root) -> set[tuple[str, str]]:
     return offenders
 
 
-def read_baseline(path: Path) -> set[tuple[str, str]]:
-    if not path.exists():
-        return set()
-    out: set[tuple[str, str]] = set()
-    for raw in path.read_text(encoding="utf-8").splitlines():
-        raw = raw.rstrip("\n")
-        if not raw or raw == "path|offender":
-            continue
-        rel, _, sig = raw.partition("|")
-        if sig:
-            out.add((rel, sig))
-    return out
-
-
-def write_baseline(path: Path, offenders: set[tuple[str, str]]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    lines = ["path|offender"] + [f"{rel}|{sig}" for rel, sig in sorted(offenders)]
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
-
-
 def parse_args() -> argparse.Namespace:
-    repo_root = repo_root_from_file(__file__)
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--paths", nargs="+", default=list(DEFAULT_PATHS))
-    parser.add_argument("--baseline", default=str(repo_root / DEFAULT_BASELINE))
-    parser.add_argument("--write-baseline", action="store_true")
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
     repo_root = repo_root_from_file(__file__)
-    offenders = collect_offenders(args.paths, repo_root)
-    baseline_path = Path(args.baseline)
+    offenders = sorted(collect_offenders(args.paths, repo_root))
 
-    if args.write_baseline:
-        write_baseline(baseline_path, offenders)
-        print(f"Wrote dual-use baseline: {baseline_path} ({len(offenders)} offender(s))")
-        return 0
-
-    baseline = read_baseline(baseline_path)
-    new = sorted(offenders - baseline)
-    resolved = sorted(baseline - offenders)
-
-    print(f"Dual-use offenders: {len(offenders)} (baseline {len(baseline)})")
-    if resolved:
-        print(f"  {len(resolved)} baselined offender(s) resolved -- run --write-baseline to shrink.")
-    if new:
-        print("Dual-use gate FAILED: new 'dual-use' prose or raw pointer<->int member cast.")
+    if offenders:
+        print("Dual-use gate FAILED (hard ban): 'dual-use' prose or raw pointer<->int member cast.")
         print("A field is not 'dual-use': prove one model (union/record/accessors) or mark it")
         print("// UNRESOLVED_FIELD_ATTRIBUTION: with both readings + evidence addresses.")
-        for rel, sig in new:
+        print("This is a hard ban with no baseline: fix the source, do not bless it.")
+        for rel, sig in offenders:
             print(f"    - {rel}: {sig}")
         return 1
 
-    print("Dual-use gate passed.")
+    print("Dual-use gate passed (hard ban -- zero offenders).")
     return 0
 
 

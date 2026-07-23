@@ -116,8 +116,8 @@ const unsigned int kAddrClassDescTViewMgr = 0x0066f0b8;
 HCURSOR LoadTurnEventCursorByResourceIdOffset1000(int cursorResourceId);
 
 // The RTTI/CRuntimeClass oracle previously assigned TViewMgr::CreateObject to
-// 0x005d4c60, but that address's real body (verified via `just ghidra-listing`
-// and `just ghidra-decompile`) is a CString truncate-with-ellipsis text helper --
+// 0x005d4c60, but that address's real body (verified via `just ghidra listing`
+// and `just ghidra decompile`) is a CString truncate-with-ellipsis text helper --
 // no `operator new` call, no vtable store, just MeasureTextExtentWithCachedQuick-
 // DrawStyle + CString::Mid + string concatenation. It is now ported for real as
 // TruncateTextToFitWidthWithEllipsis (quickdraw_rendering.cpp, 0x5d4c60). TViewMgr's

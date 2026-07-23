@@ -27,7 +27,7 @@ Never fake a convention with `reinterpret_cast` (thiscall-as-fastcall-with-dummy
 is the most-repeated correction in this repo; see the MSVC500 calling-convention
 guardrail in AGENTS.md). If it's thiscall, find the class and declare a real method.
 
-Verification commands: `just ghidra-listing 0xADDR` (entry + `ret`),
+Verification commands: `just ghidra listing 0xADDR` (entry + `ret`),
 `just scan-cdecl-thiscall`, and disassemble one caller around the `CALL`.
 
 ## Reading structured reccmp call and return diagnosis
@@ -206,7 +206,7 @@ caller cleanup).
   *(ex decomp-loop list-note 66)*
 
 - **A `func_0x` callee with an apparently different arg count at each call site is
-    the ILT-thunk-ambiguity smell, not evidence of two functions.** `just ghidra-listing
+    the ILT-thunk-ambiguity smell, not evidence of two functions.** `just ghidra listing
     0xTHUNK` resolves the single real jmp target; if the decompiled param count still
     varies by call site (one shows zero args, another shows two), that's the
     decompiler failing calling-convention attribution at that specific site, not a

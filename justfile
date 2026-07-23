@@ -8,9 +8,6 @@ runtime_test_build_dir := "build-runtime-tests"
 docker_image := "imperialism-msvc500"
 lint_build_dir := "build-clang"
 cmake_flags := "-DCMAKE_BUILD_TYPE=RelWithDebInfo -DIMPERIALISM_LINK_MFC=ON -DIMPERIALISM_MATCH_FLAGS_CSV=/Oy,/Ob1"
-vtable_gate_baseline := "config/baselines/vtable_gate_baseline.csv"
-construction_gate_baseline := "config/baselines/construction_gate_baseline.csv"
-tgreatpower_gate_baseline := "config/baselines/tgreatpower_gate_baseline.csv"
 class_discovery_classes := "TGreatPower,TAutoGreatPower"
 
 # The Ghidra project is vendored in-repo; only GHIDRA_INSTALL_DIR is machine-specific (.env).
@@ -625,17 +622,18 @@ ghidra-daemon-stop:
 ghidra-daemon-status:
   uv run python -m tools.ghidra.daemon status
 
+# Unified read-only Ghidra query dispatcher (tools.ghidra.query). Replaces the old
+# per-command ghidra-listing / ghidra-decompile / xrefs / string-oracle / ... wrappers:
+#   just ghidra listing 0xADDR          just ghidra decompile 0xADDR
+#   just ghidra xrefs 0xADDR            just ghidra vtable-dump Class=0xVT
+#   just ghidra                          (lists all sub-commands)
+# Sub-commands: listing, decompile, xrefs, func-sig, field-xrefs, string-oracle,
+# read-data, jumptable, function-slice, linear-disasm, raw-disasm, search,
+# original-modules, portprep, vtable-dump, vtable-abi-evidence.
+[doc('Read-only Ghidra query dispatcher: just ghidra <cmd> <args> (no cmd lists them)')]
 [group('ghidra-inspect')]
-ghidra-listing *args: _require-ghidra-install
-  uv run python -m tools.ghidra.query listing {{args}}
-
-# Recovers the retail binary's original .cpp module segmentation from embedded
-# assert-path strings (see tools/ghidra/original_module_map.py). Regenerate the
-# committed map with:  just original-module-map > docs/reference/original_module_map.csv
-[doc('Original module (source-file) segmentation of the retail binary')]
-[group('ghidra-inspect')]
-original-module-map *args: _require-ghidra-install
-  uv run python -m tools.ghidra.query original-modules {{args}}
+ghidra *args: _require-ghidra-install
+  uv run python -m tools.ghidra.query {{args}}
 
 [doc('Assign src/game files to subsystems via the original module map')]
 [group('analysis')]
@@ -656,14 +654,6 @@ data-function-pointers *args: _require-ghidra-install
 [group('ghidra-inspect')]
 class-vtable-dump *args: _require-ghidra-install
   uv run python -m tools.ghidra.vtable_slots {{args}}
-
-# One-shot porting dossier for a stub: identity+owner, callers, direct calls with
-# ILT thunks chased (and each target's owner), vtable-slot/IAT calls, named globals,
-# jump tables, and the decompile. `just ghidra-portprep 0xADDR [--no-decompile]`.
-[group('ghidra-inspect')]
-ghidra-portprep *args: _require-ghidra-install
-  uv run python -m tools.ghidra.query portprep {{args}}
-
 # Ordered (address -> constant) store map of an unrolled table-initializer function,
 # read straight from the original binary via capstone (no Ghidra round-trip).
 # `just const-stores 0xADDR [--len N] [--cpp NAME:BASE:STRIDE:f0,f1]`.
@@ -837,58 +827,6 @@ gen-builder-binary *args:
 [group('ghidra-inspect')]
 alloc-audit:
   uv run python -m tools.binary.alloc_audit
-
-# Cross-references for an address. Direction `to` (default): callers, jumps,
-# address-taken/data refs, hopping through ILT `jmp` thunks automatically so body
-# addresses answer "who calls this" in one query. Direction `from`: the containing
-# function's callees + data reads without decompiling. `both` prints both.
-# `just xrefs [to|from|both] 0xADDR [0xADDR ...] [--no-thunk-hop] [--limit N]`.
-[group('ghidra-inspect')]
-xrefs *args: _require-ghidra-install
-  uv run python -m tools.ghidra.query xrefs {{args}}
-
-# Signature facts per function: Ghidra cc/params (hypothesis) + RET-imm purge bytes
-# (ground truth). `just func-sig 0xADDR [0xADDR ...]`.
-[group('ghidra-inspect')]
-func-sig *args: _require-ghidra-install
-  uv run python -m tools.ghidra.query func-sig {{args}}
-
-# Which member functions touch `this+offset`? `just field-xrefs <Class> [0xOFF] [--limit N]`
-# (no offset = histogram of all this-relative offsets the class touches).
-[group('ghidra-inspect')]
-field-xrefs *args: _require-ghidra-install
-  uv run python -m tools.ghidra.query field-xrefs {{args}}
-
-# Unported functions that reference (near-)unique string literals — self-naming
-# port targets. `just string-oracle [--min-len N] [--max-refs N] [--limit N] [--all]`.
-[group('ghidra-inspect')]
-string-oracle *args: _require-ghidra-install
-  uv run python -m tools.ghidra.query string-oracle {{args}}
-
-alias ghidra-xrefs := xrefs
-
-# Read memory at an address as a typed value (float/double/dword/ptr/str/bytes/...).
-# `just ghidra-read-data 0xADDR [type] [count]`.
-[group('ghidra-inspect')]
-ghidra-read-data *args: _require-ghidra-install
-  uv run python -m tools.ghidra.query read-data {{args}}
-
-# Decode an MSVC500 switch jump table (works inside Ghidra code gaps).
-# `just ghidra-jumptable 0xJMPADDR` or `--table 0xADDR [--cases N]`.
-[group('ghidra-inspect')]
-ghidra-jumptable *args: _require-ghidra-install
-  uv run python -m tools.ghidra.query jumptable {{args}}
-
-# Call/offset slice of a function: callers, callees, this+offset field accesses.
-# `just ghidra-function-slice 0xADDR [0xADDR ...]`.
-[group('ghidra-inspect')]
-ghidra-function-slice *args: _require-ghidra-install
-  uv run python -m tools.ghidra.query function-slice {{args}}
-
-[group('ghidra-inspect')]
-ghidra-decompile *args: _require-ghidra-install
-  uv run python -m tools.ghidra.query decompile {{args}}
-
 # Read-only porting seed: decompile the target into an evidence draft the agent
 # copies/repairs from by hand. Writes {{build_dir}}/evidence/decomp/<addr>.cpp and
 # never touches source or ownership metadata (the replacement for the retired
@@ -915,31 +853,6 @@ func-status *args:
 [group('ghidra-inspect')]
 port-candidates *args:
   uv run python -m tools.workflow.port_candidates {{args}}
-
-# Linear disassembly by address, ignoring Ghidra's (sometimes wrong) function
-# boundaries. `just ghidra-linear-disasm 0xADDR [count]`.
-[group('ghidra-inspect')]
-ghidra-linear-disasm *args: _require-ghidra-install
-  uv run python -m tools.ghidra.query linear-disasm {{args}}
-
-# Whole-binary search for a value in disassembled instruction text, raw data, or
-# instruction immediates (message-map/handler/event-code hunting).
-# `just ghidra-search text|dword|imm <value> [limit]`.
-[group('ghidra-inspect')]
-ghidra-search *args: _require-ghidra-install
-  uv run python -m tools.ghidra.query search {{args}}
-
-# Disassemble raw bytes with capstone, bypassing Ghidra's instruction database
-# entirely (for regions Ghidra hasn't disassembled at all).
-# `just ghidra-raw-disasm 0xADDR [byte_count]`.
-[group('ghidra-inspect')]
-ghidra-raw-disasm *args: _require-ghidra-install
-  uv run python -m tools.ghidra.query raw-disasm {{args}}
-
-[group('ghidra-inspect')]
-ghidra-vtable-dump class vtable *args: _require-ghidra-install
-  uv run python -m tools.ghidra.query vtable-dump "{{class}}" "{{vtable}}" {{args}}
-
 # Extract the immutable per-slot ABI evidence snapshot the vtable ABI audit
 # consumes. Default: every `// VTABLE:`-annotated class in the tree, written to
 # config/vtable_abi_evidence.json (slow; one-time — the binary never changes).
@@ -1394,7 +1307,7 @@ test:
 # Raw-vtable source gate (Hard Rule 13); also runs as the first step of `just build`.
 [group('gates')]
 vtable-gate:
-  uv run python -m tools.workflow.check_no_raw_vtable_calls --baseline "{{vtable_gate_baseline}}"
+  uv run python -m tools.workflow.check_no_raw_vtable_calls
 
 # Vtable ABI audit: current source declarations vs the binary's immutable
 # calling-convention evidence (config/vtable_abi_evidence.json). Catches wrong
@@ -1406,18 +1319,12 @@ vtable-gate:
 vtable-abi-audit *args:
   uv run python -m tools.workflow.vtable_abi_audit {{args}}
 
-# Ratchet gate over the ABI audit: fails on NEW proven declaration conflicts
-# (address+class not in config/baselines/vtable_abi_gate_baseline.csv and not covered by a
-# reviewed config/vtable_signature_overrides.csv row). Pure source + static
-# evidence; no Ghidra needed.
+# Hard-ban gate over the ABI audit: fails on ANY proven declaration conflict not
+# covered by a reviewed config/vtable_signature_overrides.csv row. Baseline-free.
+# Pure source + static evidence; no Ghidra needed.
 [group('gates')]
 vtable-abi-gate:
   uv run python -m tools.workflow.vtable_abi_audit --gate
-
-# MUTATES: config/baselines/vtable_abi_gate_baseline.csv. Refresh after fixing conflicts.
-[group('gates')]
-vtable-abi-gate-update:
-  uv run python -m tools.workflow.vtable_abi_audit --write-baseline
 
 [group('gates')]
 marker-gate:
@@ -1431,15 +1338,11 @@ marker-gate:
 generated-marker-gate:
   uv run python -m tools.workflow.check_generated_markers
 
-# Ratchet gate against ILT/thunk-name ossification in manual source: rejects NEW
-# identifiers that start with thunk_/ILT_/WrapperFor_ or end with _At<8hex> (calls
-# via linker thunks; history-encoded body names). Existing debt is grandfathered in
-# config/baselines/ilt_ossification_baseline.csv — a finite, shrink-only migration queue.
-# Rejects "dual-use"/"dual-purpose"/"reused as" hand-waving and raw pointer<->int member
-# storage (reinterpret_cast<int>(ptr), int-member->class-pointer casts). A purported dual-use
-# field is an unresolved modelling defect: prove one model (union/record/accessors) or mark it
-# // UNRESOLVED_FIELD_ATTRIBUTION: with both readings + evidence. Existing debt grandfathered in
-# config/baselines/dual_use_baseline.csv (shrink-only migration queue).
+# Hard-ban gate: "dual-use"/"dual-purpose"/"reused as" hand-waving and raw
+# pointer<->int member storage (reinterpret_cast<int>(ptr), int-member->class-pointer
+# casts). A purported dual-use field is an unresolved modelling defect: prove one model
+# (union/record/accessors) or mark it // UNRESOLVED_FIELD_ATTRIBUTION: with both readings
+# + evidence. Baseline-free: zero occurrences allowed.
 [group('gates')]
 dual-use-gate:
   uv run python -m tools.workflow.check_dual_use
@@ -1451,21 +1354,12 @@ dual-use-gate:
 geometry-type-gate:
   uv run python -m tools.workflow.check_geometry_types
 
-# MUTATES: config/baselines/dual_use_baseline.csv. Ratchet down after resolving a field's
-# attribution. Never run to silence a new offender.
-[group('gates')]
-dual-use-gate-update:
-  uv run python -m tools.workflow.check_dual_use --write-baseline
-
+# Hard-ban gate against ILT/thunk-name ossification in manual source: rejects ANY
+# identifier that starts with thunk_/ILT_/WrapperFor_ or ends with _At<8hex> (calls via
+# linker thunks; history-encoded body names). Baseline-free: zero occurrences allowed.
 [group('gates')]
 ilt-ossification-gate:
   uv run python -m tools.workflow.check_ilt_ossification
-
-# MUTATES: config/baselines/ilt_ossification_baseline.csv. Ratchet down after migrating a thunk
-# or renaming a WrapperFor_/_At body. Never run to silence a new offender.
-[group('gates')]
-ilt-ossification-gate-update:
-  uv run python -m tools.workflow.check_ilt_ossification --write-baseline
 
 # Ensure every `// VTABLE:` annotation is immediately followed by its class/struct
 # (not a forward declaration, comment, or blank line).
@@ -1518,11 +1412,7 @@ symbols-anchor-gate:
 
 [group('gates')]
 antipattern-gate:
-  uv run python -m tools.workflow.check_construction_antipatterns --baseline "{{construction_gate_baseline}}"
-
-[group('gates')]
-tgreatpower-gate:
-  uv run python -m tools.workflow.check_tgreatpower_hygiene --baseline "{{tgreatpower_gate_baseline}}"
+  uv run python -m tools.workflow.check_construction_antipatterns
 
 # Ensure // GLOBAL: markers live in global_data_tables.cpp and declarations in global_data_tables.h
 [group('gates')]
@@ -1541,20 +1431,13 @@ manual-cruntimeclass-gate:
 decomplint:
   (cd "{{build_dir}}" && uv run reccmp-decomplint --target "{{target}}")
 
+# Manual audits of the legacy typedef-cast scaffolding (0 instances remain in the
+# tree; new casts are already hard-banned by antipattern-gate + boundary-gate, so
+# these no longer run per-commit -- keep them as rare on-demand audits).
 [doc('Audit Hard-Rule-9 typedef-cast externs for cross-file signature drift (report-only)')]
 [group('gates')]
 typedef-cast-audit *args:
   uv run python -m tools.workflow.check_typedef_cast_drift {{args}}
-
-# Strict forms of the two typedef audits, run as part of `just gates`: signature
-# drift across files and dropped-args/convention bugs vs binary evidence both fail.
-[group('gates')]
-typedef-cast-gate:
-  uv run python -m tools.workflow.check_typedef_cast_drift
-
-[group('gates')]
-typedef-args-gate:
-  uv run python -m tools.workflow.check_typedef_ghidra_args --strict
 
 # No local `extern` redeclarations of globals already in global_data_tables.h.
 [group('gates')]
@@ -1593,8 +1476,8 @@ template-emission-matrix *args:
 template-alias-check:
   uv run python -m tools.workflow.template_alias_check
 
-# Ratchet gate over the boundary report: no new manual->stub call/cast references
-# and no new function-pointer casts of named symbols (both counts must not rise).
+# Hard-ban gate over the boundary report: zero manual->stub call/cast references
+# and zero function-pointer casts of named symbols (both counts must stay at 0).
 [group('gates')]
 boundary-gate:
   uv run python -m tools.workflow.check_boundary_ratchet
@@ -1615,7 +1498,7 @@ source-gates:
 
 [private]
 [parallel]
-_source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-coverage-check scalar-type-audit-check mac-control-usage-check mac-resource-xrefs-check mac-payload-diff-check mac-string-crosswalk-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate tgreatpower-gate marker-gate generated-marker-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate stub-count-gate class-size-gate noop-gate typedef-cast-gate typedef-args-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate
+_source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-coverage-check scalar-type-audit-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate stub-count-gate class-size-gate noop-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate
 
 [doc('Mine reccmp asm diffs for orig-address<->recomp-symbol global pairs (read-only report)')]
 [group('compare')]
@@ -1642,59 +1525,10 @@ vtable-coverage *args:
 format-check *paths:
   uv run python -m tools.workflow.format_cpp --check {{paths}}
 
-# ---------------------------------------------------------------------------
-# baseline-update — targets that REWRITE committed baselines/configs.
-# ---------------------------------------------------------------------------
-
-# MUTATES: the aggregate JSON and per-function CSV reccmp progress baselines.
-[group('baseline-update')]
-stats-baseline-update:
-  uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled --commit-baseline
-
-[doc('MUTATES: config/tooling_surface.csv. Appends placeholder rows for justfile modules missing from the manifest (fill in each note); never removes stale rows')]
-[group('baseline-update')]
-tooling-surface-update:
-  uv run python -m tools.workflow.check_tooling_surface --write
-
-# MUTATES: config/baselines/vtable_gate_baseline.csv.
-[group('baseline-update')]
-vtable-gate-update:
-  uv run python -m tools.workflow.baseline_guard --wrap "{{vtable_gate_baseline}}" -- uv run python -m tools.workflow.check_no_raw_vtable_calls --baseline "{{vtable_gate_baseline}}" --write-baseline
-
-# MUTATES: config/baselines/construction_gate_baseline.csv.
-[group('baseline-update')]
-antipattern-gate-update:
-  uv run python -m tools.workflow.baseline_guard --wrap "{{construction_gate_baseline}}" -- uv run python -m tools.workflow.check_construction_antipatterns --baseline "{{construction_gate_baseline}}" --write-baseline
-
-# MUTATES: config/baselines/tgreatpower_gate_baseline.csv.
-[group('baseline-update')]
-tgreatpower-gate-update:
-  uv run python -m tools.workflow.baseline_guard --wrap "{{tgreatpower_gate_baseline}}" -- uv run python -m tools.workflow.check_tgreatpower_hygiene --baseline "{{tgreatpower_gate_baseline}}" --write-baseline
-
-# MUTATES: config/baselines/stub_count_baseline.json.
-[group('baseline-update')]
-stub-count-gate-update:
-  uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/stub_count_baseline.json" -- uv run python -m tools.workflow.check_stub_count --write-baseline
-
-# MUTATES: config/baselines/boundary_baseline.json.
-[group('baseline-update')]
-boundary-gate-update:
-  uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/boundary_baseline.json" -- uv run python -m tools.workflow.check_boundary_ratchet --write-baseline
-
-# MUTATES: config/baselines/datacmp_baseline.csv.
-[group('baseline-update')]
-datacmp-gate-update:
-  uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/datacmp_baseline.csv" -- uv run python -m tools.workflow.check_datacmp_baseline --target "{{target}}" --build-dir "{{build_dir}}" --write-baseline
-
-# MUTATES: config/baselines/empty_body_baseline.csv.
-[group('baseline-update')]
-noop-gate-update:
-  uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/empty_body_baseline.csv" -- uv run python -m tools.workflow.check_empty_bodies --write-baseline config/baselines/empty_body_baseline.csv
-
-# MUTATES: reccmp-project.yml ignore lists (Hard Rule 14).
-[group('baseline-update')]
-generate-ignores:
-  uv run python -m tools.reccmp.generate_ignore_functions --target "{{target}}" --apply
+# baseline-update group — targets that REWRITE committed baselines/configs.
+# Extracted into a module to start the justfile-modularization (8mo.19); just's
+# `import` shares scope, so the surface (`just --list`) is unchanged.
+import 'just/baseline-update.just'
 
 # ---------------------------------------------------------------------------
 # rewrite — targets that rewrite source/config from symbols or policy.

@@ -51,8 +51,8 @@ call after the first is sub-second.
 
 ```bash
 just ghidra-daemon          # warm it explicitly (optional; each call also tries the daemon)
-just ghidra-listing 0xADDR  # sub-second once warm
-just xrefs [to|from|both] 0xADDR   # cross-references (default: to, thunk-hopping)
+just ghidra listing 0xADDR  # sub-second once warm
+just ghidra xrefs [to|from|both] 0xADDR   # cross-references (default: to, thunk-hopping)
 just ghidra-daemon-stop     # stop it and release the project lock
 ```
 

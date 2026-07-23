@@ -131,8 +131,8 @@ Primary local evidence:
 Useful checks:
 
 ```sh
-just ghidra-listing 0x005e4e70 0x005e4f80 0x005e50c0 0x005e536e 0x005e5386
-just ghidra-decompile 0x005e18f0 0x00707081 0x0049c970 0x0049c430
+just ghidra listing 0x005e4e70 0x005e4f80 0x005e50c0 0x005e536e 0x005e5386
+just ghidra decompile 0x005e18f0 0x00707081 0x0049c970 0x0049c430
 rg -n "DirectSoundCreate|MCIWndCreateA|mciSendCommandA|auxGet" \
   config src include tmp_decomp/w32dasm/imports.csv
 ```

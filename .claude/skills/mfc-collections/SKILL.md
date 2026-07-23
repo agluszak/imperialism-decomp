@@ -115,7 +115,7 @@ not force a stable per-site decision. Policy:
 1. Inspect the suspect vtable and extent:
 
 ```sh
-just ghidra-vtable-dump Name 0xVFTABLE
+just ghidra vtable-dump Name 0xVFTABLE
 uv run python -m tools.ghidra.vtable_slots Name=0xVFTABLE:8
 uv run python -m tools.ghidra.vtable_extent 0xVFTABLE 80
 uv run python -m tools.ghidra.xrefs_to 0xVFTABLE
@@ -134,8 +134,8 @@ inherits `CObject::GetRuntimeClass` unchanged.
 3. Read constructor/destructor listings around every xref:
 
 ```sh
-just ghidra-listing 0xCTOR 0xEND
-just ghidra-listing 0xDTOR 0xEND
+just ghidra listing 0xCTOR 0xEND
+just ghidra listing 0xDTOR 0xEND
 ```
 
 Look for the collection subobject offset, vptr writes, `m_pNodeHead`,

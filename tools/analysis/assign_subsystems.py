@@ -5,7 +5,7 @@ Joins two facts:
 
 1. ``docs/reference/original_module_map.csv`` — the original .cpp module segments
    of the retail binary, recovered from embedded assert-path strings by
-   ``just original-module-map`` (tools/ghidra/original_module_map.py).
+   ``just ghidra original-modules`` (tools/ghidra/original_module_map.py).
 2. The ``// FUNCTION: IMPERIALISM 0xADDR`` markers in ``src/game/*.cpp`` — each
    owned address falls in exactly one original module segment.
 

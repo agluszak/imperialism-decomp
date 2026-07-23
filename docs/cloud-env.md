@@ -42,4 +42,4 @@ per-session refresh stays just `uv sync`.
   `just ghidra-*` target: `export GHIDRA_INSTALL_DIR=/opt/ghidra_12.1.2_PUBLIC` (or
   `set -a; . ./.env; set +a`). Run `just restore-project` once per session to load the
   program into the Ghidra project (`Program already present` means it's ready); then
-  `just ghidra-decompile 0xADDR`, `just ghidra-listing`, etc. all work.
+  `just ghidra decompile 0xADDR`, `just ghidra listing`, etc. all work.

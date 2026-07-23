@@ -67,7 +67,7 @@ just build
 ## Gates & formatting
 
 - `just gates` — run all mechanical source-policy gates (the pre-commit check):
-  `vtable-gate`, `antipattern-gate`, `tgreatpower-gate`, `marker-gate`,
+  `vtable-gate`, `antipattern-gate`, `marker-gate`,
   `vtable-annotation-gate`, `vtable-collision-gate`,
   `synthetic-gate`, `decomplint`, plus the ratchet gates `datacmp-gate`,
   `stub-count-gate`, `class-size-gate`, and `noop-gate`. **All must pass before
@@ -88,14 +88,13 @@ just build
     NOOP annotation contradicted by the original size always fails.
     `just noop-audit [--kind empty_but_big]` lists the current findings — it is
     also a port-target menu (empty bodies whose originals are big).
-- `just vtable-gate` — must pass; do not introduce new raw `vftable[...]` patterns in
-  files not already baseline-tracked. `just vtable-gate-update` rewrites the baseline
-  after an intentional refactor.
-- `just antipattern-gate` — enforces the mechanically-checkable real-C++-construction
-  Hard Rules (no inline asm, no `new (this)`, no manual vptr writes, no `__thiscall`
-  reinterpret_cast; temporary bridge-helper names are baseline-tracked so they ratchet
-  down). `just antipattern-gate-update` rewrites the baseline after an intentional,
-  reviewed change (e.g. retiring bridges — counts should only go down).
+- `just vtable-gate` — baseline-free **hard ban**: any raw `vftable[...]` / `VCall_*` /
+  Fn-typedef-cast pattern fails. Zero occurrences allowed; there is no `-update` target.
+- `just antipattern-gate` — baseline-free **hard ban** on the mechanically-checkable
+  real-C++-construction Hard Rules (no inline asm, no `new (this)`, no manual vptr writes,
+  no `__thiscall` reinterpret_cast, no operator-new factories, no temporary bridge-helper
+  names, no raw `this+offset` casts). Any hit is a source defect to fix, never to bless;
+  there is no `-update` target.
 - `just marker-gate` — enforces marker Hard Rules 3 (marker immediately precedes the
   declaration) and 4 (one owned implementation per address across manual files + stubs).
 - `just format` / `just format-check <paths>` — clang-format C++. The tree is not fully
@@ -183,7 +182,7 @@ warning instead of presenting it as a generic class-size defect:
   inheritance or an extra override.
 
 These diagnostics are emitted on both cold analysis and prepared-cache hits. Use
-the named boundary plus `just ghidra-vtable-dump`/`just ghidra-read-data` before
+the named boundary plus `just ghidra vtable-dump`/`just ghidra read-data` before
 changing inheritance or deleting an annotation.
 
 ### Structured semantic diagnosis
