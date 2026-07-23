@@ -21,6 +21,17 @@ For each below-100% `Class::`scalar deleting destructor'` baseline row this tool
 Classes with no manual definition (MFC/library or unrecovered) and duplicate
 call targets (COMDAT-folded bodies) are reported, never guessed at.
 
+A claimed address whose original bytes are a bare ``jmp`` (an incremental-link
+"moved function" island, chaining ILT -> island -> ILT -> body) is CORRECT and
+must not be re-homed to the chain's final body: the shipped binary was linked
+incrementally by LINK 5.0 and folded/aliased dozens of leaf destructors into a
+few shared base bodies (e.g. many leaf views -> TView::~TView at 0x48a9d0).
+The island is the symbol's canonical address; claiming it under the class's
+own name is what lets reccmp resolve the ??_G caller's call operand per class
+(chasing stops at the first named node). Such rows score ~0% individually —
+that is the honest per-address comparison of our real body against a 5-byte
+stub, and the reason the repo-average dips while exact counts rise.
+
 Dry-run by default; pass --apply to edit files.
 """
 

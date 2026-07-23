@@ -268,3 +268,22 @@ inline (note 116), and merging them mismatches both.
      costs ~2 lines — accept it.
 
   *(ex decomp-loop list-note 110)*
+
+### Scalar-dtor call chains end in incremental-link islands — claim the island, never re-home
+*(2026-07-23, bd qmhn)*
+
+The retail exe is an **incremental LINK 5.0 image**: a ??_G's `call` typically chains
+`ILT thunk -> stale 5-byte jmp island (+ nop padding) -> ILT thunk -> real body`, and the
+linker folded/aliased dozens of leaf-class destructor symbols into a few shared base
+bodies (many leaf views end at TView::~TView 0x48a9d0; TBook/TPageCorner at TPicture's
+0x48f250). The island at the class's old address IS the symbol's canonical location:
+claim it with the class's own `~C()` marker (`just add-destructor-markers`). reccmp's
+thunk-chasing stops at the first *named* node, so the island claim is exactly what makes
+the ??_G caller's `call` operand pair per class (90.91% -> 100%). Do NOT "fix" these
+claims by moving them to the chain's final body — the final is shared and already claimed
+by the base class, so re-homing removes the per-class name and drops the ??_G back to
+90.91%. Cost of the correct model: each island row scores ~0% (our real dtor body vs a
+5-byte jmp), which drags the unweighted average-similarity metric while exact counts
+rise — that delta is bookkeeping, not regression. Corollary: the stale islands encode
+the original developers' relink history, so no clean re-link (ours or theirs) can ever
+reproduce them; per-function pairing with named island claims is the attainable maximum.
