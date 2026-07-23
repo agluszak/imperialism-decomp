@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/app/TObject.h"
+#include "game/ui_tags_common.h"
 #include "game/TList.h"
 #include "game/mfc.h"
 
@@ -52,7 +53,7 @@ public:
   void RetireUndeployedUnitsToReserveList();
 
   // Whether this side belongs to the local active nation. 0x0059b010, __thiscall.
-  unsigned char IsTacticalControllerOwnedByActiveNation();
+  bool IsTacticalControllerOwnedByActiveNation();
 
   // Derived construction sites inline the whole ctor chain as a bare vptr store, so
   // this must stay empty and in-class.

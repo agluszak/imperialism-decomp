@@ -1,4 +1,5 @@
 #include "game/military/TArmyMgr.h"
+#include "game/ui_tags_common.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -33,7 +34,7 @@
 #include "game/globals/military_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h" // scanBracketExpressions
-#include "game/navy_order.h"         // g_pNavyPrimaryOrderListHead, FindCumulativeWeightBucketIndex
+#include "game/navy_order.h" // g_pNavyPrimaryOrderListHead, FindCumulativeWeightBucketIndex
 #include "game/ui_core/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -2040,7 +2041,7 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
             }
             // Final battle-report row category; the working unit pointer is no longer
             // needed once the evicted unit has been copied into the record.
-            rec.detailIdentity.categoryTag = 0x61726d79; // 'army'
+            rec.detailIdentity.categoryTag = kControlTagArmy; // 'army'
             rec.strengthBucket = static_cast<short>(unit->field_38 / 100);
             unit->DetachUnitOrderFromOwnerAndReset();
             unit->Free();

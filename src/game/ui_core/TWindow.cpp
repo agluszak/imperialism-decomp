@@ -1,4 +1,5 @@
 #include "game/ui_core/TWindow.h"
+#include "game/ui_tags_common.h"
 
 #include "game/ImperialismApp.h"
 #include "game/ui_core/CMcWindow.h"
@@ -20,7 +21,7 @@ static __inline void AssertMcAppUiInvalidation(const char* path, int line) {
 // FUNCTION: IMPERIALISM 0x0048d500
 TWindow::TWindow() : TView(), dialogBehavior(), busyFlag98(0) {
   g_LiveViewRegistry.AddHead(this);
-  dialogBehavior.SetUiColorDescriptorGoldTriplet(1, 0x20202020, 0x20202020);
+  dialogBehavior.SetUiColorDescriptorGoldTriplet(1, kControlTagSpSpSpSp, kControlTagSpSpSpSp);
   activeLinkedWindow64 = this;
   dialogBehavior.SetOwner(this);
 }

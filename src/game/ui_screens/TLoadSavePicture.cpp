@@ -1,4 +1,6 @@
 #include "game/ui_screens/TLoadSavePicture.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_screens.h"
 #include "game/ui_core/TWindow.h"
 
 #include "game/globals/prelude.h"
@@ -20,7 +22,6 @@
 #include "game/ui_core/TUiEvent.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/net/TMultiplayerMgr.h"
-#include "game/ui_control_tags.h"
 
 // SYNTHETIC: IMPERIALISM 0x0043da40
 // TLoadSavePicture::`scalar deleting destructor'
@@ -79,7 +80,8 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
   mapControl->EnhancePhoto();
   mapControl->RefreshControl();
 
-  TStaticText* infoControl = static_cast<TStaticText*>(ResolveControlByTag(0x696e666fu)); // 'info'
+  TStaticText* infoControl =
+      static_cast<TStaticText*>(ResolveControlByTag(kControlTagInfo)); // 'info'
   infoControl->AssertValid();
 
   CString yearText;
@@ -113,12 +115,12 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
   // either.
   bool reachedCommonTail = false;
   if (commandId == 0xd) {
-    short newSlot = static_cast<short>(sourceHandler->controlTag - 0x736c7430u /* 'slt0' */);
+    short newSlot = static_cast<short>(sourceHandler->controlTag - kControlTagSlt0);
     if (newSlot != selectedSlot92) {
       if (loadModeFlag90 != 0) {
         if (selectedSlot92 != -1 && selectedSlot92 != 0xa1) {
           TControl* oldSlotControl =
-              static_cast<TControl*>(ResolveControlByTag(0x736c7430u + selectedSlot92));
+              static_cast<TControl*>(ResolveControlByTag(kControlTagSlt0 + selectedSlot92));
           oldSlotControl->AssertValid();
           oldSlotControl->InstallTextStyle(styleAt9e, 0);
           CRect oldBounds;
@@ -154,19 +156,19 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         editControl->PrepareForDrawing();
         editControl->BecomeTarget();
         editControl->SetEditSelectionAndScrollCaret(0, static_cast<short>(slotText.GetLength()), 0);
-        editControl->controlTag = 0x736c6f74u; // 'slot'
+        editControl->controlTag = kControlTagSlot; // 'slot'
         g_pUiRuntimeContext->SetBackColor(0x10);
       }
     }
     reachedCommonTail = true;
   } else if (commandId == 0x14) {
-    if (sourceHandler->controlTag == 0x636e636cu) { // 'clnc'
+    if (sourceHandler->controlTag == kControlTagCncl) { // 'clnc'
       HandleTurnFlowStateTickOrPostTurnEvent5DC();
     }
-    if (loadModeFlag90 != 0 && sourceHandler->controlTag == 0x6f74746fu /* 'otto' */) {
+    if (loadModeFlag90 != 0 && sourceHandler->controlTag == kControlTagOtto) {
       if (selectedSlot92 != -1 && selectedSlot92 != 0xa1) {
         TControl* oldSlotControl =
-            static_cast<TControl*>(ResolveControlByTag(0x736c7430u + selectedSlot92));
+            static_cast<TControl*>(ResolveControlByTag(kControlTagSlt0 + selectedSlot92));
         oldSlotControl->AssertValid();
         oldSlotControl->InstallTextStyle(styleAt9e, 0);
         CRect oldBounds;
@@ -196,13 +198,13 @@ undefined TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC() {
 // FUNCTION: IMPERIALISM 0x0056d1e0
 void TLoadSavePicture::DoKeyEvent(TToolboxEvent* event) {
   int commandCode = event->commandCode;
-  if (commandCode == 3 || commandCode == 0xd) {
+  if (commandCode == kUiKeyEnter || commandCode == kUiKeyReturn) {
     TPictureButton* okayButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagOkay));
     if (okayButton != 0) {
       g_pSfxPlaybackSystem->PlaySoundEffect(okayButton->timingWord92, 0, 1);
       QueueDeferredUiEventPacket(this, 0xa, okayButton);
     }
-  } else if (commandCode == 0x1b && ResolveControlByTag(kControlTagCncl) != 0) {
+  } else if (commandCode == kUiKeyEscape && ResolveControlByTag(kControlTagCncl) != 0) {
     QueueDeferredUiEventPacket(this, 0x14, ResolveControlByTag(kControlTagCncl));
   }
 }
@@ -241,7 +243,8 @@ undefined TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
   }
   if (loadModeFlag90 != 0) {
     if (g_pSimMgr->mode == 1 ||
-        g_pUiRuntimeContext->DispatchGameStateEventIfLocalizedPromptAccepted(0x6c6f6164) != 0) {
+        g_pUiRuntimeContext->DispatchGameStateEventIfLocalizedPromptAccepted(kControlTagLoad) !=
+            0) {
       GetWindow()->ForceRedraw();
       char* prefix = (char*)g_pszMultiplayerSavePrefix_0065DDD4;
       if (!IsMultiplayerFlowActive()) {
@@ -256,7 +259,7 @@ undefined TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
     }
   } else {
     CString enteredName;
-    TEditText* slotNameControl = static_cast<TEditText*>(ResolveControlByTag(0x736c6f74));
+    TEditText* slotNameControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagSlot));
     slotNameControl->AssertValid();
     slotNameControl->GetCurrentText(&enteredName);
     if (strcmp(enteredName, g_szEmptyString) == 0) {
@@ -378,7 +381,7 @@ void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
   if (g_pUiViewManager->SaveMainDocumentToPathAndMarkSaved(savePath)) {
     if (IsMultiplayerFlowHosting()) {
       g_pGameFlowState->fieldF4 = markSaved;
-      g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x73617665, markSaved, -2);
+      g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagSave, markSaved, -2);
     }
     if (IsMultiplayerFlowHosting() && mode != 0xa1) {
       const char* autosavePrefix = g_pszMultiplayerSavePrefix_0065DDD4;

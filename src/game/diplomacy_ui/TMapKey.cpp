@@ -1,4 +1,5 @@
 #include "game/diplomacy_ui/TMapKey.h"
+#include "game/ui_tags_common.h"
 
 #include "game/ui_screens/CString.h"
 #include "game/city_ui/TCountry.h"
@@ -69,7 +70,7 @@ void TMapKey::DoPostCreate(int arg) {
     legendText->InitializeDeluxeText(this, offsetXY, sizeXY, &zeroRect, &style, -2);
     legendText->UpdateTextEntrySharedStringAndMaybeNotify(&label, 0);
     legendText->SetEnabled(0, 0);
-    legendText->controlTag = 0x6e616d30 + i; // 'nam0'-'nam6'
+    legendText->controlTag = kControlTagNam0 + i; // 'nam0'-'nam6'
     legendText->CenterVertically(0);
     legendText->shadowTextColor9C = shadowStyleFlags;
     legendText->dropShadowEnabledA0 = true;

@@ -1,4 +1,5 @@
 #include "game/military/TArmyUnitView.h"
+#include "game/ui_tags_common.h"
 
 #include "game/assets/TAssetMgr.h"
 #include "game/military_ui/TArmyCheckBox.h"
@@ -18,7 +19,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x004a9450
@@ -132,7 +132,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     TView* activeToolbar = mapPicture->categoryPages[mapPicture->activeUnitCategoryIndex96];
     if (activeToolbar != nullptr) {
       unsigned int arrowTag =
-          kTagArmyRatioMin + g_awTacticalUnitCategoryCodeBySlot[militaryUnit60->orderType];
+          kControlTagArmyRatioFirst + g_awTacticalUnitCategoryCodeBySlot[militaryUnit60->orderType];
       TNumberedArrowButton* arrow =
           static_cast<TNumberedArrowButton*>(activeToolbar->ResolveControlByTag(arrowTag));
       arrow->SetValue(static_cast<short>(arrow->value84 + availableCountDelta), 1);
@@ -199,11 +199,11 @@ void TArmyUnitView::HandleCrossUArmyViewsNameCommand() {
   node->SetModality(1);
   TDialogBehavior* behavior = node->GetDialogBehavior();
   if (behavior != nullptr) {
-    behavior->defaultCommandCode = 0x6f6b6179; // 'okay'
+    behavior->defaultCommandCode = kControlTagOkay; // 'okay'
   }
   int modalResult = node->PoseModally();
   nameControl->GetCurrentText(&editedName);
-  if (modalResult != 0x636e636c /* 'cncl' */) {
+  if (modalResult != kControlTagCncl) {
     militaryUnit60->name24 = editedName;
   }
   RefreshControl();

@@ -1,4 +1,6 @@
 #include "game/ui_widgets/TArmyToolbar.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 #include <string.h>
 
@@ -15,7 +17,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/mfc.h"
-#include "game/ui_control_tags.h"
 
 // SYNTHETIC: IMPERIALISM 0x0058de40
 // TArmyToolbar::CreateObject
@@ -69,11 +70,11 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
 
   for (int category = 0; category < 10; ++category) {
     TArmyPlacard* placard =
-        static_cast<TArmyPlacard*>(ResolveControlByTag(kTagArmyPlacardMin + category));
+        static_cast<TArmyPlacard*>(ResolveControlByTag(kControlTagArmyPlacardFirst + category));
     placard->SetValue(static_cast<short>(totalUnitCounts[category]), 1);
 
-    TNumberedArrowButton* arrow =
-        static_cast<TNumberedArrowButton*>(ResolveControlByTag(kTagArmyRatioMin + category));
+    TNumberedArrowButton* arrow = static_cast<TNumberedArrowButton*>(
+        ResolveControlByTag(kControlTagArmyRatioFirst + category));
     if (totalUnitCounts[category] != 0 && category != 0) {
       arrow->SetValue(static_cast<short>(availableUnitCounts[category]), 1);
       arrow->SetEnabled(1, 1);
@@ -83,7 +84,7 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
   }
 
   short upgradePictureId = hasUpgradeableUnit ? 0x24d5 : 0x04b5;
-  TPicture* upgradePicture = static_cast<TPicture*>(ResolveControlByTag(kTagArmyModeGarrison));
+  TPicture* upgradePicture = static_cast<TPicture*>(ResolveControlByTag(kControlTagGarr));
   upgradePicture->AssertValid();
   upgradePicture->SetPictureResourceIdAndRefresh(upgradePictureId, true);
   g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
@@ -94,7 +95,7 @@ void TArmyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   (void)event;
   unsigned int controlTag = sourceHandler->controlTag;
 
-  if ((kTagArmyRatioMin <= controlTag) && (controlTag <= kTagArmyRatioMax)) {
+  if ((kControlTagArmyRatioFirst <= controlTag) && (controlTag <= kControlTagArmyRatioLast)) {
     short categoryId = static_cast<short>(sourceHandler->controlTag);
     categoryId -= 0x7230;
     short selectedRatioOrMode = 0;
@@ -112,7 +113,7 @@ void TArmyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     return;
   }
 
-  if (controlTag == kTagArmyModeGarrison) {
+  if (controlTag == kControlTagGarr) {
     unsigned short ctrlState = (unsigned short)GetAsyncKeyState(0x11);
     if ((ctrlState & 0x8000) != 0) {
       g_pUiRuntimeContext->ShowArmyRosterDialogAndActivateProvinceSelection();
@@ -126,19 +127,19 @@ void TArmyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     return;
   }
 
-  if (controlTag == kTagArmyModeDefend) {
+  if (controlTag == kControlTagDfnd) {
     g_pMapContextActionManager->OrphanCallChain_C1_I34_004a4260(2);
     g_pUiRuntimeContext->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
     return;
   }
 
-  if (controlTag == kTagArmyModeLater) {
+  if (controlTag == kControlTagLatr) {
     g_pMapContextActionManager->OrphanCallChain_C1_I34_004a4260(3);
     g_pUiRuntimeContext->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
     return;
   }
 
-  if (controlTag == kTagArmyModeDone) {
+  if (controlTag == kControlTagDone) {
     g_pMapContextActionManager->OrphanCallChain_C1_I34_004a4260(4);
     g_pUiRuntimeContext->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
   }

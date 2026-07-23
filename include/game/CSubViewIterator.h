@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/ui_core/TView.h"
+#include "game/ui_tags_common.h"
 
 // MacApp CSubViewIterator (Mac CodeWarrior oracle: constructors (TView*, unsigned char) and
 // (const TView*), FirstSubView(), NextSubView(), ~CSubViewIterator()). A stack cursor over a
@@ -21,6 +22,6 @@ public:
   POSITION position00;      // +0x00 current CList position (node)
   const TView* ownerView04; // +0x04 view whose childList44 is walked
   int direction08;          // +0x08 1 = forward from head, 0 = reverse from tail
-  int identTag0c;           // +0x0c subview identifier filter, "    " (0x20202020) = no filter
+  int identTag0c;           // +0x0c subview identifier filter, "    " ('    ') = no filter
   TView* currentChild10;    // +0x10 payload of the current node (validity field)
 };

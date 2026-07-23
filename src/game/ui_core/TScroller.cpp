@@ -1,4 +1,5 @@
 #include "game/ui_core/TScroller.h"
+#include "game/ui_tags_common.h"
 
 #include "game/mfc.h"
 
@@ -25,7 +26,7 @@ void TScroller::InitializeScrollerPlacement(TView* owner, int* offsetLayout, int
       nativeWindow50 = owner->nativeWindow50;
     }
   }
-  controlTag = 0x20202020; // '    '
+  controlTag = kControlTagSpSpSpSp; // '    '
   field04 = 1;
   field08 = 1;
   linkedChildHandler = owner;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/navy/TMilitaryPageView.h"
+#include "game/ui_tags_common.h"
 
 class TTaskForce;
 #include "game/mfc.h"

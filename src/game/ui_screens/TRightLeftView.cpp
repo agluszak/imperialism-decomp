@@ -1,4 +1,5 @@
 #include "game/ui_screens/TRightLeftView.h"
+#include "game/ui_tags_common.h"
 #include "game/ui_core/TControl.h"
 // SYNTHETIC: IMPERIALISM 0x00583e70
 // TRightLeftView::CreateObject
@@ -43,7 +44,7 @@ void TRightLeftView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
     return;
   }
 
-  if (this->controlTag == 0x72676874) {
+  if (this->controlTag == kControlTagRght) {
     this->HandleEvent(100, this, nullptr);
   } else {
     this->HandleEvent(101, this, nullptr);

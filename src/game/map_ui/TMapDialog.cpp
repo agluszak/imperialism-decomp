@@ -1,4 +1,6 @@
 #include "game/map_ui/TMapDialog.h"
+#include "game/resource_domain_types.h"
+#include "game/ui_tags_common.h"
 
 #include <stdlib.h>
 #include "game/app/TAnimator.h"
@@ -25,7 +27,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/gfx/quickdraw_regions.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
@@ -604,7 +605,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
   CString nameText;
   CString cityName;
 
-  TView* titleControl = ResolveControlByTag(0x7469746c); // 'titl'
+  TView* titleControl = ResolveControlByTag(kControlTagTitl); // 'titl'
   if (titleControl == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x459);
@@ -615,7 +616,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
   mainText += " (#" + numberText + g_szUiCloseParen_006973C8;
   static_cast<TStaticText*>(titleControl)->SetTextAndMaybeRefresh(&mainText, 1);
 
-  TView* infoControl = ResolveControlByTag(0x696e666f); // 'info'
+  TView* infoControl = ResolveControlByTag(kControlTagInfo); // 'info'
   if (infoControl == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x463);
@@ -631,7 +632,8 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
       } else {
         mainText += "Province Capitol\n";
       }
-      for (short resourceType = 7; resourceType <= 0x10; resourceType++) {
+      for (short resourceType = kResourceManufacturedFirst;
+           resourceType <= kResourceManufacturedLast; resourceType++) {
         short count = g_pGlobalMapState->cityScoreTable[cityIndex]
                           .resourceDevelopmentCounts82[resourceType - 7];
         if (count != 0) {
@@ -680,7 +682,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
       }
       mainText = mainText + " (formerly of " + nameText + g_szUiCloseParen_006973C8;
     }
-    locationControl = ResolveControlByTag(0x6c6f6361); // 'loca'
+    locationControl = ResolveControlByTag(kControlTagLoca); // 'loca'
     if (locationControl == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x4a3);
@@ -689,7 +691,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
     TZone* zone = g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(
         g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
     zone->AssignZoneDisplayNameToOutputRef(&mainText);
-    locationControl = ResolveControlByTag(0x6c6f6361); // 'loca'
+    locationControl = ResolveControlByTag(kControlTagLoca); // 'loca'
     if (locationControl == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x4ab);
@@ -1168,7 +1170,7 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
 
     for (int edge = 0; edge < 2; ++edge) {
       const signed char resourceType = terrain.resourceTypeByEdge[edge];
-      if (resourceType < 0) {
+      if (resourceType < 0) { // kResourceKindNone sentinel
         continue;
       }
       const short destinationX = static_cast<short>(screenX + (edge == 0 ? 2 : 0x1c));

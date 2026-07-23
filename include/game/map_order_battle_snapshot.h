@@ -1,6 +1,8 @@
 #pragma once
 
 #include "decomp_types.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 struct CStr32 {
   char data[0x20];

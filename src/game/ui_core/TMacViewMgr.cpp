@@ -1,4 +1,6 @@
 #include "game/ui_core/TMacViewMgr.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 #include "game/map/map_overlay_geometry.h"
 
 #include "game/turn_event_dialog_provisional.h"
@@ -29,7 +31,6 @@
 #include "game/ui_core/TTurnEventDialogFactoryRegistry.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/ui_core/TView.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
@@ -788,7 +789,7 @@ void TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
 // FUNCTION: IMPERIALISM 0x0050bad0
 undefined TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent() {
   if (g_pSimMgr->numGreatPowers == 1) {
-    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x72656765, 0, 0xfffffffd);
+    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagRege, 0, 0xfffffffd);
   }
   if (tileStateSlots[0] != 0) {
     RgnHandle regionWrapper = NewRgn();
@@ -895,7 +896,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   CString scratch38;
 
   if (nationSlot == static_cast<word>(-1)) {
-    TControl* panel = ResolveTaggedPanelOrFail(hostView, kTagCityProductionTotal);
+    TControl* panel = ResolveTaggedPanelOrFail(hostView, kControlTagTota);
     g_pSimMgr->GetString(0x2735, 0, &scratch38);
     panel->SetHoverHelpText(scratch38);
 
@@ -913,7 +914,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
     textEntry->InstallTextStyle(styleDescriptor, 0);
     textEntry->SetTextAlignmentAndMaybeRefresh(0, 0);
-    textEntry->controlTag = kTagDetailText;
+    textEntry->controlTag = kControlTagText;
 
     g_pSimMgr->GetString(0x2735, 1, &scratch38);
     textEntry->SetHoverHelpText(scratch38);
@@ -1194,14 +1195,14 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
 
   if (needCurrent == 0) {
     panel->SetEnabled(0, 0);
-    TControl* leftArrow = ResolveTaggedChildOrFail(panel, kTagArrowLeft);
+    TControl* leftArrow = ResolveTaggedChildOrFail(panel, kControlTagLeft);
     leftArrow->BecameWindowTarget();
-    TControl* rightArrow = ResolveTaggedChildOrFail(panel, kTagArrowRight);
+    TControl* rightArrow = ResolveTaggedChildOrFail(panel, kControlTagRght);
     rightArrow->BecameWindowTarget();
     return 0;
   }
 
-  TControl* leftSource = ResolveTaggedChildOrFail(panel, kTagArrowLeft);
+  TControl* leftSource = ResolveTaggedChildOrFail(panel, kControlTagLeft);
   int leftLayout0[2];
   int leftLayout1[2];
   CopyViewLayoutFieldsToStack(leftLayout0, leftLayout1, leftSource);
@@ -1209,9 +1210,9 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
 
   TRightLeftView* leftView = new TRightLeftView();
   leftView->InitializeUiResourceEntryFrameAndParent(0, panel, leftLayout1, leftLayout0, 5, 5, 0);
-  leftView->controlTag = kTagArrowLeft;
+  leftView->controlTag = kControlTagLeft;
 
-  TControl* rightSource = ResolveTaggedChildOrFail(panel, kTagArrowRight);
+  TControl* rightSource = ResolveTaggedChildOrFail(panel, kControlTagRght);
   int rightLayout0[2];
   int rightLayout1[2];
   CopyViewLayoutFieldsToStack(rightLayout0, rightLayout1, rightSource);
@@ -1219,7 +1220,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
 
   TRightLeftView* rightView = new TRightLeftView();
   rightView->InitializeUiResourceEntryFrameAndParent(0, panel, rightLayout1, rightLayout0, 5, 5, 0);
-  rightView->controlTag = kTagArrowRight;
+  rightView->controlTag = kControlTagRght;
 
   TMyStaticText* textEntry = new TMyStaticText();
 
@@ -1235,7 +1236,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
   textEntry->InstallTextStyle(styleDescriptor, 0);
   textEntry->SetTextAlignmentAndMaybeRefresh(0, 0);
-  textEntry->controlTag = kTagDetailText;
+  textEntry->controlTag = kControlTagText;
 
   g_pSimMgr->GetString(0x2735, 4, &scratch38);
   textEntry->SetHoverHelpText(scratch38);
@@ -1251,7 +1252,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
                                                                  5, -1, 0);
     valueEntry->InstallTextStyle(styleDescriptor, 0);
     valueEntry->SetTextAlignmentAndMaybeRefresh(0, 0);
-    valueEntry->controlTag = kTagDetailValue;
+    valueEntry->controlTag = kControlTagValu;
   }
 
   SetPanelShortField(panel, 0x92, static_cast<short>(nationSlot));
@@ -1280,7 +1281,7 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
           static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill)));
   TBuildingView* buildingView =
-      static_cast<TBuildingView*>(dialog->ResolveControlByTag(0x444c4f47));
+      static_cast<TBuildingView*>(dialog->ResolveControlByTag(kControlTagDialog));
   if (buildingView == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMacViewMgr_00696D68, 0xb4f);
@@ -1306,7 +1307,7 @@ undefined TMacViewMgr::OrphanCallChain_C10_I80_0050d470(int param_1, undefined4 
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
           static_cast<TurnEventId>(param_1 + kTurnEventTextileMill)));
   GoldDialogControl* goldControl =
-      reinterpret_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47));
+      reinterpret_cast<GoldDialogControl*>(dialog->ResolveControlByTag(kControlTagDialog));
   if (goldControl == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -1325,7 +1326,7 @@ void TMacViewMgr::OpenConstructionWindow(short buildingSlot, TCity* city,
   TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericCreator));
   TBuildingConstructionView* constructionView =
-      static_cast<TBuildingConstructionView*>(dialog->ResolveControlByTag(0x444c4f47));
+      static_cast<TBuildingConstructionView*>(dialog->ResolveControlByTag(kControlTagDialog));
   if (constructionView == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMacViewMgr_00696D68, 0xb98);
@@ -1421,7 +1422,7 @@ void TMacViewMgr::ClearActiveCityProductionViewAndDiscardRegion() {
 void TMacViewMgr::RefreshActiveGoldControlAndUiRuntimeState() {
   TView* hostView = g_pDisplayMgr->activeDialog;
   GoldDialogControl* goldControl =
-      static_cast<GoldDialogControl*>(hostView->ResolveControlByTag(0x444c4f47));
+      static_cast<GoldDialogControl*>(hostView->ResolveControlByTag(kControlTagDialog));
   if (goldControl == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();

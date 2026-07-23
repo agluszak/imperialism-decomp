@@ -1,4 +1,5 @@
 #include "game/ui_widgets/TIndustryCluster.h"
+#include "game/ui_tags_common.h"
 #include "game/ui_screens/TSimMgr.h"
 
 #include "game/ui_widgets/TAmtBar.h"
@@ -10,7 +11,6 @@
 #include "game/city/TProductionOrder.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_control_tags.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/mfc.h"

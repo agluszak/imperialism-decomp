@@ -1,4 +1,7 @@
 #include "game/diplomacy_ui/TOffersPanelView.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_diplomacy.h"
+#include "game/ui_tags_city.h"
 
 #include "game/ui_widgets/TDeluxeText.h"
 #include "game/ui_screens/TPictureButton.h"
@@ -12,7 +15,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_core/ui_message_pump.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -87,14 +89,14 @@ void TOffersPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 // FUNCTION: IMPERIALISM 0x004f9350
 void TOffersPanelView::DoKeyEvent(TToolboxEvent* event) {
   int commandCode = event->commandCode;
-  if (commandCode == 3 || commandCode == 0xd) {
+  if (commandCode == kUiKeyEnter || commandCode == kUiKeyReturn) {
     TPictureButton* button = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
     if (button == 0) {
       return;
     }
     g_pSfxPlaybackSystem->PlaySoundEffect(button->timingWord92, 0, 1);
     QueueDeferredUiEventPacket(this, 0xa, button);
-  } else if (commandCode == 0x1b) {
+  } else if (commandCode == kUiKeyEscape) {
     TPictureButton* button = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
     if (button == 0) {
       return;
@@ -140,8 +142,8 @@ char TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
     g_pSimMgr->GetString(0x274a, stringIndex, &proposalText);
   }
 
-  TView* sheet = ResolveControlByTag('shee');
-  TView* wait = ResolveControlByTag('wait');
+  TView* sheet = ResolveControlByTag(kControlTagShee);
+  TView* wait = ResolveControlByTag(kControlTagWait);
   TDeluxeText* message = static_cast<TDeluxeText*>(
       ResolveControlByTag(offerType == 0x29a ? kControlTagText : kControlTagProp));
   message->AssertValid();
@@ -238,8 +240,8 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
         static_cast<LPCSTR>(enemyNationName), static_cast<LPCSTR>(minorNationName));
   }
 
-  TView* sheet = ResolveControlByTag('shee');
-  TView* wait = ResolveControlByTag('wait');
+  TView* sheet = ResolveControlByTag(kControlTagShee);
+  TView* wait = ResolveControlByTag(kControlTagWait);
   wait->CaptureLayoutF0(g_diplomacyPopupLayoutPosition_006a3020, 0);
   sheet->CaptureLayoutF0(g_diplomacyWarOfferSheetPosition_006a2fe0, 1);
   proposalText->UpdateTextEntrySharedStringAndMaybeNotify(&formattedMessage, 1);

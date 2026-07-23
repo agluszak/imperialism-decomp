@@ -1,4 +1,6 @@
 #include "game/gfx/TAmbitApplication.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_screens.h"
 #include "game/ui_core/TWindow.h"
 #include "game/ui_screens/TSetupRandomMapPicture.h"
 
@@ -28,7 +30,6 @@
 #include "game/globals/ui_screens_globals.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/ScopedMapQuickDrawContext.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 #include <stdlib.h>
@@ -226,7 +227,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x005779c0
 void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  if (commandId == 0x7069636b /* 'pick' */) {
+  if (commandId == kControlTagPick) {
     TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(sourceHandler);
     mapPreview->AssertValid();
     mapPreview->selectedNation68 = mapPreview->pendingNation6C;
@@ -255,7 +256,7 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
   unsigned int controlTag = static_cast<unsigned int>(sourceHandler->controlTag);
   if (controlTag == kControlTagGlob &&
       (static_cast<unsigned short>(GetAsyncKeyState(VK_CONTROL)) & 0x8000) != 0) {
-    controlTag = 0x706c616e; // 'plan'
+    controlTag = kControlTagPlan; // 'plan'
   }
 
   if (commandId == 0x14 || commandId == 0xa || commandId == 0x22 || commandId == 0xd) {
@@ -264,7 +265,7 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
     } else if (controlTag == kControlTagGlob) {
       GenerateDifferentRandomMapSeed(&planetSeed94);
       MajorTomToGroundControl(1);
-    } else if (controlTag == kControlTagKeyP || controlTag == 0x706c616e /* 'plan' */) {
+    } else if (controlTag == kControlTagKeyP || controlTag == kControlTagPlan) {
       CString planetSeed(planetSeed94);
       CString instruction;
       CString unusedOptionText;
@@ -276,7 +277,7 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
                                                                       11);
       int resultTag = g_pUiRuntimeContext->MakePlanetSeedDialog(static_cast<LPCSTR>(instruction),
                                                                 planetSeed, 0, 0, 0, 0);
-      wrapHorizontally98 = resultTag == 0x6f6e6531 /* 'one1' */;
+      wrapHorizontally98 = resultTag == kControlTagOne1;
 
       if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(planetSeed)),
                   reinterpret_cast<const unsigned char*>(g_szEmptyString)) != 0 &&
@@ -379,7 +380,7 @@ void TSetupRandomMapPicture::ExitScreen() {
 // FUNCTION: IMPERIALISM 0x00578230
 void TSetupRandomMapPicture::GroundControlToMajorTom(unsigned char mode) {
   TSpaceCommand* command = new TSpaceCommand();
-  command->InitializeRangePair(0x4e415341 /* 'NASA' */, g_pGlobalUiRootController, 0, 0, 0);
+  command->InitializeRangePair(kControlTagNASA, g_pGlobalUiRootController, 0, 0, 0);
   command->setupPicture18 = this;
   command->mode1c = mode;
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
@@ -389,9 +390,9 @@ void TSetupRandomMapPicture::GroundControlToMajorTom(unsigned char mode) {
 void TSetupRandomMapPicture::DoKeyEvent(TToolboxEvent* event) {
   TToolboxEvent* commandEvent = event;
   int commandCode = commandEvent->commandCode;
-  if (commandCode == 3 || commandCode == 0xd) {
+  if (commandCode == kUiKeyEnter || commandCode == kUiKeyReturn) {
     StartGame();
-  } else if (commandCode == 0x1b) {
+  } else if (commandCode == kUiKeyEscape) {
     ExitScreen();
   }
 }

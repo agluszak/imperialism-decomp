@@ -1,4 +1,5 @@
 #include "game/gfx/TAmbitApplication.h"
+#include "game/ui_tags_military.h"
 #include "game/military_ui/TNextDiplomationCommand.h"
 
 #include "game/ui_core/TApplication.h"
@@ -28,6 +29,6 @@ TNextDiplomationCommand::~TNextDiplomationCommand() {}
 
 // FUNCTION: IMPERIALISM 0x004f2930
 void TNextDiplomationCommand::DispatchUiPacketWithTagNEXT() {
-  InitializeRangePair(0x4e655854, g_pGlobalUiRootController, 0, 0, 0);
+  InitializeRangePair(kControlTagNeXT, g_pGlobalUiRootController, 0, 0, 0);
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(this);
 }

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "game/ui_screens/CString.h"
+#include "game/multiplayer_session_tags.h"
+#include "game/ui_tags_screens.h"
 #include "game/nation_domain_types.h"
 #include "game/app/TObject.h"
 #include "game/turn_event_codes.h"

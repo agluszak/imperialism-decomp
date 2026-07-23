@@ -1,4 +1,5 @@
 #include "game/navy_ui/TShipLine.h"
+#include "game/ui_tags_common.h"
 
 #include "game/ui_screens/CString.h"
 #include "game/military_ui/TArmyCheckBox.h"
@@ -39,7 +40,7 @@ void TShipLine::InstallViews(TView* panel, int* offsetLayout) {
   TArmyCheckBox* checkbox =
       new TArmyCheckBox(shipView, checkboxOffset, checkboxSize, 5, 5,
                         static_cast<TMilitaryPageView*>(panel)->primaryUnitAtlas84, atlasOffset);
-  checkbox->controlTag = 0x63686563; // 'chec'
+  checkbox->controlTag = kControlTagChec; // 'chec'
   checkbox->eventNumber60 = 4;
   checkbox->SetState(childLink14->active, 0);
 
@@ -47,7 +48,7 @@ void TShipLine::InstallViews(TView* panel, int* offsetLayout) {
   int nameSize[2] = {0x80, 0x18};
   TClickZone* nameZone = new TClickZone();
   nameZone->InitializeUiResourceEntryFrameAndParent(0, shipView, nameOffset, nameSize, 4, 4, 0);
-  nameZone->controlTag = 0x6e616d65; // 'name'
+  nameZone->controlTag = kControlTagName; // 'name'
 
   CString nameHelp;
   g_pSimMgr->GetString(0x2746, 4, &nameHelp);

@@ -1,6 +1,7 @@
 // Manual decompilation file.
 
 #include "game/ui_core/TStaticText.h"
+#include "game/ui_tags_common.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
@@ -85,7 +86,7 @@ void TStaticText::InitializeTextEntryBaseAndOptionalStringResource(
   if (panel != 0) {
     nativeWindow50 = panel->nativeWindow50;
   }
-  controlTag = 0x20202020;
+  controlTag = kControlTagSpSpSpSp;
   field04 = 1;
   field08 = 1;
   linkedChildHandler = panel;

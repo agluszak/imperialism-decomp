@@ -1,11 +1,12 @@
 #include "game/tactical/TTacticalBattleView.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 #include "game/ui_core/TWindow.h"
 
 #include "game/app/TCivAnimation2.h"
 #include "game/ui_core/TControl.h"
 #include "game/ui_widgets/TInfoBarText.h"
 #include "game/app/TOneTimeAnimation.h"
-#include "game/ui_control_tags.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_core/ui_message_pump.h"
 
@@ -947,7 +948,7 @@ void TTacticalBattleView::DoKeyEvent(TToolboxEvent* event) {
     break;
   case 0x44:
   case 0x64:
-    tacticalBattle60->HandleTacticalBattleCommandTag(0x646f6e65); // 'done'
+    tacticalBattle60->HandleTacticalBattleCommandTag(kControlTagDone); // 'done'
     break;
   case 0x48:
   case 0x68:
@@ -955,7 +956,7 @@ void TTacticalBattleView::DoKeyEvent(TToolboxEvent* event) {
     break;
   case 0x53:
   case 0x73:
-    tacticalBattle60->HandleTacticalBattleCommandTag(0x736b6970); // 'skip'
+    tacticalBattle60->HandleTacticalBattleCommandTag(kControlTagSkip); // 'skip'
     break;
   }
 }

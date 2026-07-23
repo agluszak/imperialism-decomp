@@ -1,4 +1,5 @@
 #include "game/nation/TMinor.h"
+#include "game/resource_domain_types.h"
 
 #include <stdlib.h>
 
@@ -696,7 +697,7 @@ char TMinor::HasStandingPropagationBridgeSlot90(int targetNation) {
   if (targetNation < 0 || targetNation >= 7) {
     return 0;
   }
-  for (int resourceType = 0; resourceType < 7; ++resourceType) {
+  for (int resourceType = 0; resourceType < kResourceIndustrialRawCount; ++resourceType) {
     if (this->statusRows[resourceType].fields[targetNation] != 0) {
       return 1;
     }
@@ -705,7 +706,7 @@ char TMinor::HasStandingPropagationBridgeSlot90(int targetNation) {
 }
 
 void TMinor::NotifyNationAuxRuntimeFinalizeSlotC0(void) {
-  for (int resourceType = 0; resourceType < 7; ++resourceType) {
+  for (int resourceType = 0; resourceType < kResourceIndustrialRawCount; ++resourceType) {
     for (int majorNationSlot = 0; majorNationSlot < 7; ++majorNationSlot) {
       this->statusRows[resourceType].fields[majorNationSlot] = 0;
     }
@@ -714,7 +715,7 @@ void TMinor::NotifyNationAuxRuntimeFinalizeSlotC0(void) {
 
 void TMinor::ClearNationAuxRuntimeGrantSlotC4(int grantValue) {
   if (grantValue == -1) {
-    for (int resourceType = 0; resourceType < 0x17; ++resourceType) {
+    for (int resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
       this->recurringGrantByResource[resourceType] = 0;
     }
     return;

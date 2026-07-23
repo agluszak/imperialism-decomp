@@ -1,6 +1,8 @@
 #pragma once
 
 #include "game/ui_core/TCluster.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 #include "game/ui_widgets/TNumberedArrowButton.h"
 #include "game/mfc.h"
 

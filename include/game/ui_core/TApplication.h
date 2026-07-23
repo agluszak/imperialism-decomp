@@ -1,6 +1,8 @@
 #pragma once
 
 #include "compat.h"
+#include "game/multiplayer_session_tags.h"
+#include "game/ui_tags_common.h"
 #include "decomp_types.h"
 #include "game/mfc.h"
 #include "game/ui_core/TCommandHandler.h"

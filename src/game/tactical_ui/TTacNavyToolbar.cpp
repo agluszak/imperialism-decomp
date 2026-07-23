@@ -1,11 +1,12 @@
 #include "game/tactical_ui/TTacNavyToolbar.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_core/THelpMgr.h"
 #include "game/tactical/TTacticalBattle.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_control_tags.h"
 
 // FUNCTION: IMPERIALISM 0x005ad0d0
 undefined TTacNavyToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit) {
@@ -34,7 +35,7 @@ TTacNavyToolbar::TTacNavyToolbar() {}
 // FUNCTION: IMPERIALISM 0x005ad180
 void TTacNavyToolbar::DoPostCreate(int arg) {
   TTacticalToolbar::DoPostCreate(arg);
-  SetSelectedChildTagAndRefresh(0x68756c6c); // 'hull'
+  SetSelectedChildTagAndRefresh(kControlTagHull); // 'hull'
 }
 
 // FUNCTION: IMPERIALISM 0x005ad1b0
@@ -58,7 +59,7 @@ void TTacNavyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
   if (commandId == 0xa) {
     unsigned int tag = sourceHandler->controlTag;
     switch (tag) {
-    case kTagDone:
+    case kControlTagDone:
     case kControlTagAuto:
     case kControlTagRetr:
     case kControlTagTarg:

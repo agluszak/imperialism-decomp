@@ -1,4 +1,6 @@
 #include "game/ui_screens/TScenarioChooser.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_screens.h"
 
 #include "game/gfx/TAmbitApplication.h"
 #include "game/assets/TAssetMgr.h"
@@ -12,7 +14,6 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_control_tags.h"
 
 // FUNCTION: IMPERIALISM 0x0045ae60
 TScenarioChooser::TScenarioChooser() {}
@@ -47,9 +48,9 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     LoadScenarioMetadataByIndexIntoUiControlCore(
         scenarioIndexByListRow94[scenarioList->selectedIndex]);
     SetCursor(LoadCursorA(nullptr, IDC_ARROW));
-  } else if (commandId == 0x7069636b) { // 'pick'
+  } else if (commandId == kControlTagPick) { // 'pick'
     TMapPreviewView* mapPreview =
-        static_cast<TMapPreviewView*>(ResolveControlByTag(0x706d6170u)); // 'pmap'
+        static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap)); // 'pmap'
     mapPreview->AssertValid();
     if (nationStateCodesByMapSelection144[mapPreview->pendingNation6C] != -1 &&
         mapPreview->pendingNation6C != mapPreview->selectedNation68) {
@@ -58,25 +59,25 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       mapPreview->EnhancePhoto();
       mapPreview->RefreshControl();
       TDeluxeText* descControl =
-          static_cast<TDeluxeText*>(ResolveControlByTag(0x64657363u)); // 'desc'
+          static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagDesc)); // 'desc'
       descControl->SetTextEntryFromChars(
           nationDescriptionTextByMapSelection118[mapPreview->pendingNation6C],
           nationDescriptionLengthByMapSelection134[mapPreview->pendingNation6C]);
     }
   } else if (commandId == 0xa) {
-    if (sourceHandler->controlTag == 0x73746172u) { // 'star'
+    if (sourceHandler->controlTag == kControlTagStar) { // 'star'
       StartGame();
     }
   } else if (commandId == 0xd) {
-    if (sourceHandler->controlTag == 0x6d6f7265u) {                                // 'more'
-      TTextList* list = static_cast<TTextList*>(ResolveControlByTag(0x6c697374u)); // 'list'
+    if (sourceHandler->controlTag == kControlTagMore) {                                // 'more'
+      TTextList* list = static_cast<TTextList*>(ResolveControlByTag(kControlTagList)); // 'list'
       list->AssertValid();
       int newOffset = list->frameHeight38 / list->itemHeight + list->scrollOffset;
       list->scrollOffset = (newOffset > list->totalItems) ? 0 : newOffset;
       list->RefreshControl();
     }
   } else if (commandId == 0x14) {
-    if (sourceHandler->controlTag == 0x65786974u) { // 'exit'
+    if (sourceHandler->controlTag == kControlTagExit) { // 'exit'
       ExitScreen();
     }
   }
@@ -96,9 +97,9 @@ void TScenarioChooser::ExitScreen() {
 // FUNCTION: IMPERIALISM 0x0057a310
 void TScenarioChooser::DoKeyEvent(TToolboxEvent* event) {
   int commandCode = event->commandCode;
-  if (commandCode == 3 || commandCode == 0xd) {
+  if (commandCode == kUiKeyEnter || commandCode == kUiKeyReturn) {
     StartGame();
-  } else if (commandCode == 0x1b) {
+  } else if (commandCode == kUiKeyEscape) {
     ExitScreen();
   }
 }

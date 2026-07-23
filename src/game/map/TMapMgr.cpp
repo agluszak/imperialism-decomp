@@ -1,4 +1,7 @@
 #include <time.h>
+#include "game/resource_domain_types.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_map.h"
 
 #include "game/map/TMapMgr.h"
 
@@ -390,7 +393,7 @@ void TMapMgr::SetMapRecordFlagA3AndPropagateToChildren(int recordIndex, int clas
 void TMapMgr::GenerateProvinceNames() {
   // Hash the scenario tag string to seed the zone status-code PRNG.
   const char* tag = scenarioTagText1c;
-  int seed = 0x6e616461; // "adan"
+  int seed = kControlTagNada; // "adan"
   while (*tag != '\0') {
     seed = (seed >> 16) + seed * 2 + static_cast<int>(*tag);
     tag++;
@@ -2384,7 +2387,7 @@ int TMapMgr::QueueDepotConstructionOrder(StrategicTileIndex nTileIndex, short nN
   terrainStateTable[nTileIndex].activeFlags1c |= 0x10;
 
   if (g_nSaveFormatVersion != -3 && g_pSimMgr->multiplayerSessionRole != 0) {
-    g_pGameFlowState->DispatchTurnEvent31TaggedPayload(0x746f776e, town, -2);
+    g_pGameFlowState->DispatchTurnEvent31TaggedPayload(kControlTagTown, town, -2);
     g_pGameFlowState->DispatchCityRedrawInvalidateEvent(
         terrainStateTable[nTileIndex].cityRecordIndex);
     DispatchTileRedrawInvalidateEvent(nTileIndex);
@@ -2419,7 +2422,7 @@ void TMapMgr::QueuePortConstructionOrder(StrategicTileIndex nTileIndex, short nN
   g_pActiveMapOrderContext->EnsurePortZoneForTile(nTileIndex);
 
   if (g_nSaveFormatVersion != -3 && g_pSimMgr->multiplayerSessionRole != 0) {
-    g_pGameFlowState->DispatchTurnEvent31TaggedPayload(0x746f776e, town, -2);
+    g_pGameFlowState->DispatchTurnEvent31TaggedPayload(kControlTagTown, town, -2);
     g_pGameFlowState->DispatchCityRedrawInvalidateEvent(
         terrainStateTable[nTileIndex].cityRecordIndex);
     DispatchTileRedrawInvalidateEvent(nTileIndex);
@@ -2459,7 +2462,7 @@ void TMapMgr::SetTileTransportFlagsTo0x37AndRefreshNeighbors(StrategicTileIndex 
     bool eligible = false;
     for (int edge = 0; edge < 2; ++edge) {
       signed char resourceType = neighbor->resourceTypeByEdge[edge];
-      if ((resourceType == 0x11 || resourceType == 0x12) &&
+      if ((resourceType == kResourceGrain || resourceType == kResourceFruit) &&
           g_abGateFlagQualifies[neighbor->gateFlag] != 0) {
         eligible = true;
       }
@@ -2759,15 +2762,16 @@ void TMapMgr::MapMgrSlot24(TCivUnit* pCivilianOrderEntry) {
     bool found = false;
     for (int edge = 0; edge < 2; ++edge) {
       signed char resourceType = tile->resourceTypeByEdge[edge];
-      if (resourceType == 0 || resourceType == 1 || resourceType == 2) {
+      if (resourceType == kResourceCotton || resourceType == kResourceWool ||
+          resourceType == kResourceTimber) {
         found = true;
         continue;
       }
       if (tile->pendingDevelopmentFlag0d & nationBit) {
-        if (resourceType == 3 || resourceType == 4 || resourceType == 0x15 ||
-            resourceType == 0x16) {
+        if (resourceType == kResourceCoal || resourceType == kResourceIron ||
+            resourceType == kResourceGems || resourceType == kResourceGold) {
           found = true;
-        } else if (recruitTierFlagIsTwo && resourceType == 6) {
+        } else if (recruitTierFlagIsTwo && resourceType == kResourceOil) {
           found = true;
         }
       }
@@ -3550,7 +3554,7 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
   // and order (the FPU diffusion + vtable calls are exact). Left documented, not forced.
   // Per-resource-type weight, pulled from the nation-interaction metric buckets.
   int resourceWeights[17];
-  for (int resType = 0; resType < 0x11; ++resType) {
+  for (int resType = 0; resType < kResourceManufacturedEnd; ++resType) {
     resourceWeights[resType] = g_pNationInteractionStateManager->GetNationMetricBucketValueByIndex(
         static_cast<short>(resType));
   }
@@ -3568,7 +3572,7 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
         TTerrainStateRecordView* tile = &terrainStateTable[*linkedTile];
         for (edge = 0; edge < 2; ++edge) {
           int resType = tile->resourceTypeByEdge[edge];
-          if ((resType != 6 ||
+          if ((resType != kResourceOil ||
                g_pCityOrderCapabilityState
                        ->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) &&
               resType != -1) {
@@ -3799,12 +3803,12 @@ int TMapMgr::CalculateDeveloperTilePurchaseCost(StrategicTileIndex nTileIndex) {
   do {
     short resourceType = terrainStateTable[nTileIndex].resourceTypeByEdge[edge];
     if (resourceType != -1) {
-      if (resourceType < 0x11) {
+      if (resourceType < kResourceManufacturedEnd) {
         total = total +
                 g_pNationInteractionStateManager->QueryProposalWeightSlot4C(resourceType) * 0x14;
-      } else if (resourceType == 0x15) {
+      } else if (resourceType == kResourceGems) {
         total = total + 10000;
-      } else if (resourceType == 0x16) {
+      } else if (resourceType == kResourceGold) {
         total = total + 4000;
       }
     }
@@ -4359,15 +4363,17 @@ StrategicTileIndex TraceTerrainFlowToNearestSeaTile(StrategicTileIndex tileIndex
   TTerrainStateRecordView* terrainTable = g_pGlobalMapState->terrainStateTable;
   for (int flowVariant = 0; flowVariant < 2; ++flowVariant) {
     short flowType = static_cast<short>(terrainTable[tileIndex].riverSpriteCode);
-    if (flowType == 0) {
+    if (flowType == kRiverSpriteCodeNone) {
       return -1;
     }
-    if (flowType > 0x1a && flowType < 0x2b) {
-      flowType = static_cast<short>(flowType - 0x10);
+    if (flowType > kRiverSpriteCodeFlowLast &&
+        flowType < kRiverSpriteCodeLandSingleDirectionFirst) {
+      flowType = static_cast<short>(flowType - kRiverSpriteCodeFlowVariantBias);
     }
-    if (flowType >= 0xb && flowType <= 0x1a) {
+    if (flowType >= kRiverSpriteCodeFlowFirst && flowType <= kRiverSpriteCodeFlowLast) {
       flowType = *reinterpret_cast<const short*>(kAddrTerrainFlowTypeRemapTable + flowType * 2);
-    } else if (flowType >= 0x2b && flowType <= 0x3a) {
+    } else if (flowType >= kRiverSpriteCodeLandSingleDirectionFirst &&
+               flowType <= kRiverSpriteCodeWaterSingleDirectionLast) {
       return -1;
     }
 
@@ -4382,16 +4388,18 @@ StrategicTileIndex TraceTerrainFlowToNearestSeaTile(StrategicTileIndex tileIndex
       }
 
       short nextFlowType = static_cast<short>(walkRecord.riverSpriteCode);
-      if (nextFlowType == 0) {
+      if (nextFlowType == kRiverSpriteCodeNone) {
         break;
       }
-      if (nextFlowType > 0x1a && nextFlowType < 0x2b) {
-        nextFlowType = static_cast<short>(nextFlowType - 0x10);
+      if (nextFlowType > kRiverSpriteCodeFlowLast &&
+          nextFlowType < kRiverSpriteCodeLandSingleDirectionFirst) {
+        nextFlowType = static_cast<short>(nextFlowType - kRiverSpriteCodeFlowVariantBias);
       }
-      if (nextFlowType >= 0xb && nextFlowType <= 0x1a) {
+      if (nextFlowType >= kRiverSpriteCodeFlowFirst && nextFlowType <= kRiverSpriteCodeFlowLast) {
         nextFlowType =
             *reinterpret_cast<const short*>(kAddrTerrainFlowTypeRemapTable + nextFlowType * 2);
-      } else if (nextFlowType >= 0x2b && nextFlowType <= 0x3a) {
+      } else if (nextFlowType >= kRiverSpriteCodeLandSingleDirectionFirst &&
+                 nextFlowType <= kRiverSpriteCodeWaterSingleDirectionLast) {
         break;
       }
 
@@ -4425,15 +4433,17 @@ char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(StrategicTileIndex ti
   for (int attempt = 0; attempt < 2; ++attempt) {
     short flowType = static_cast<short>(terrainTable[tileIndex].riverSpriteCode);
     char crossedBoundary = 0;
-    if (flowType == 0) {
+    if (flowType == kRiverSpriteCodeNone) {
       return static_cast<char>(0xff);
     }
-    if (flowType > 0x1a && flowType < 0x2b) {
-      flowType = static_cast<short>(flowType - 0x10);
+    if (flowType > kRiverSpriteCodeFlowLast &&
+        flowType < kRiverSpriteCodeLandSingleDirectionFirst) {
+      flowType = static_cast<short>(flowType - kRiverSpriteCodeFlowVariantBias);
     }
-    if (flowType >= 0xb && flowType <= 0x1a) {
+    if (flowType >= kRiverSpriteCodeFlowFirst && flowType <= kRiverSpriteCodeFlowLast) {
       flowType = *reinterpret_cast<const short*>(kAddrTerrainFlowTypeRemapTable + flowType * 2);
-    } else if (flowType >= 0x2b && flowType <= 0x3a) {
+    } else if (flowType >= kRiverSpriteCodeLandSingleDirectionFirst &&
+               flowType <= kRiverSpriteCodeWaterSingleDirectionLast) {
       return static_cast<char>(0xff);
     }
 
@@ -4451,16 +4461,18 @@ char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(StrategicTileIndex ti
       }
 
       short nextFlowType = static_cast<short>(walkRecord.riverSpriteCode);
-      if (nextFlowType == 0) {
+      if (nextFlowType == kRiverSpriteCodeNone) {
         break;
       }
-      if (nextFlowType > 0x1a && nextFlowType < 0x2b) {
-        nextFlowType = static_cast<short>(nextFlowType - 0x10);
+      if (nextFlowType > kRiverSpriteCodeFlowLast &&
+          nextFlowType < kRiverSpriteCodeLandSingleDirectionFirst) {
+        nextFlowType = static_cast<short>(nextFlowType - kRiverSpriteCodeFlowVariantBias);
       }
-      if (nextFlowType >= 0xb && nextFlowType <= 0x1a) {
+      if (nextFlowType >= kRiverSpriteCodeFlowFirst && nextFlowType <= kRiverSpriteCodeFlowLast) {
         nextFlowType =
             *reinterpret_cast<const short*>(kAddrTerrainFlowTypeRemapTable + nextFlowType * 2);
-      } else if (nextFlowType >= 0x2b && nextFlowType <= 0x3a) {
+      } else if (nextFlowType >= kRiverSpriteCodeLandSingleDirectionFirst &&
+                 nextFlowType <= kRiverSpriteCodeWaterSingleDirectionLast) {
         break;
       }
 

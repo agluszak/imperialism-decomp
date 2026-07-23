@@ -1,7 +1,6 @@
 #include "game/ui_widgets/TArmyInfoView.h"
 #include "game/mfc.h"
 
-
 // SYNTHETIC: IMPERIALISM 0x00591500
 // TArmyInfoView::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00591580

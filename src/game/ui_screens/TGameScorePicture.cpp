@@ -1,4 +1,6 @@
 #include "game/ui_screens/TGameScorePicture.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_screens.h"
 
 #include "game/ui_core/TControl.h"
 #include "game/city_ui/TCountry.h"
@@ -9,7 +11,6 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x0045afb0
@@ -47,7 +48,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
 
   for (int row = 0; row < 12; ++row) {
     TDropShadowText* label =
-        static_cast<TDropShadowText*>(ResolveControlByTag(0x73637261u + row)); // 'scra'..
+        static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagScra + row)); // 'scra'..
     label->AssertValid();
     if (row == 11) {
       BuildUiTextStyleDescriptor(&scoreStyle, 0, 18, 0x2b68);
@@ -66,7 +67,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
     label->SetTextAndMaybeRefresh(&displayText, 1);
 
     TDropShadowText* value =
-        static_cast<TDropShadowText*>(ResolveControlByTag(0x6e756d61u + row)); // 'numa'..
+        static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagNuma + row)); // 'numa'..
     value->AssertValid();
     value->InstallTextStyle(scoreStyle, 1);
     value->shadowColor94 = shadowColor;
@@ -89,7 +90,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
   }
 
   TDropShadowText* victory =
-      static_cast<TDropShadowText*>(ResolveControlByTag(0x76696374u)); // 'vict'
+      static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagVict)); // 'vict'
   victory->AssertValid();
   g_pSimMgr->GetString(0x2761, 0, &templateText);
   g_apNationStates[g_pSimMgr->GetActiveNationId()]->FormatOverlayTerrainLabelText(&argumentText);
@@ -101,7 +102,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
   victory->shadowColor94 = shadowColor;
 
   TDropShadowText* pointsFor =
-      static_cast<TDropShadowText*>(ResolveControlByTag(0x70746672u)); // 'ptfr'
+      static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagPtfr)); // 'ptfr'
   pointsFor->AssertValid();
   g_pSimMgr->GetString(0x2761, 1, &displayText);
   pointsFor->SetTextAndMaybeRefresh(&displayText, 1);
@@ -113,7 +114,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x0057b620
 void TGameScorePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   TControl::DoEvent(commandId, sourceHandler, event);
-  if (commandId == 0xa && sourceHandler->controlTag == kTagDone) {
+  if (commandId == 0xa && sourceHandler->controlTag == kControlTagDone) {
     ReinitializeGameFlowAndPostTurnEventCode(kTurnEventHighScores);
   }
 }

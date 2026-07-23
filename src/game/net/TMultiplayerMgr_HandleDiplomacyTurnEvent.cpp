@@ -6,6 +6,10 @@
 // EmitNationDiplomacyNeedStateSnapshotEvent15's store scheduling).
 
 #include "game/net/TMultiplayerMgr.h"
+#include "game/multiplayer_session_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_map.h"
+#include "game/ui_tags_military.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -55,7 +59,7 @@ struct TurnEvent24CityRecordHeader : TimelyNetMessagePrefix {
 // EmitTurnEvent3Mode18WithActiveNation (0x5446a0) serves the cross-TU callers.
 static __inline void EmitTurnEvent3TickCompleteLoopback() {
   TimelyMessageHeader packet;
-  packet.messageTag = 0x74696d65;
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventCode = 0;
   packet.eventCode = 3;
@@ -110,7 +114,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       EmitTurnEvent19NationStateArraysForSlot(g_pSimMgr->GetActiveNationId(), -1);
       EmitTurnEvent2CNationStateCompositeForSlot(g_pSimMgr->GetActiveNationId(), -1);
       TurnEventACityAnnouncePacket packet;
-      packet.messageTag = 0x74696d65;
+      packet.messageTag = kControlTagTime;
       packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
       packet.eventCode = 0;
       packet.fromNetworkId = 0;
@@ -148,7 +152,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       EmitTurnEvent19NationStateArraysForSlot(g_pSimMgr->GetActiveNationId(), -1);
       EmitTurnEvent2CNationStateCompositeForSlot(g_pSimMgr->GetActiveNationId(), -1);
       TurnEventFResumeAckPacket packet;
-      packet.messageTag = 0x74696d65;
+      packet.messageTag = kControlTagTime;
       packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
       packet.eventCode = 0;
       packet.eventCode = 0xf;
@@ -165,7 +169,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
     case 8: {
       EmitTurnEvent2CNationStateCompositeForSlot(g_pSimMgr->GetActiveNationId(), -1);
       TurnEventFResumeAckPacket packet;
-      packet.messageTag = 0x74696d65;
+      packet.messageTag = kControlTagTime;
       packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
       packet.eventCode = 0;
       packet.eventCode = 0xf;
@@ -182,7 +186,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
     case 0x14:
     case 0x15: {
       TurnEventFResumeAckPacket packet;
-      packet.messageTag = 0x74696d65;
+      packet.messageTag = kControlTagTime;
       packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
       packet.eventCode = 0;
       packet.eventCode = 0xf;
@@ -205,9 +209,9 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
   if (readySlot == -1) {
     readySlot = static_cast<signed char>(activeNationTagIndex);
   }
-  nationStatusTags[readySlot] = 0x72656479; // 'redy'
+  nationStatusTags[readySlot] = kSessionTagRedy; // 'redy'
   NationStatusEvent25Packet packet;
-  packet.messageTag = 0x74696d65;
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventCode = 0;
   packet.fromNetworkId = 0;
@@ -215,11 +219,11 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
   packet.eventCode = 0x25;
   packet.messageLength = 0;
   for (int i = 0; i < 7; ++i) {
-    packet.statusTags[i] = 0x756e6b6e; // 'unkn'
+    packet.statusTags[i] = kSessionTagUnkn; // 'unkn'
   }
   packet.messageLength = 0x34;
   packet.toNetworkId = 0;
-  packet.statusTags[readySlot] = 0x72656479; // 'redy'
+  packet.statusTags[readySlot] = kSessionTagRedy; // 'redy'
   g_pNetMgr006a6014->Send(&packet, 0);
 }
 
@@ -246,7 +250,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
 
     {
       TurnEventBNationDirectoryPacket packet;
-      packet.packetTag = 0x74696d65;
+      packet.packetTag = kControlTagTime;
       packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
       packet.eventCode = 0;
       packet.fromNetworkId = 0;
@@ -283,7 +287,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
         short tileIndex = neighborTiles[k];
         if (tileIndex != -1) {
           TurnEvent23TileStatePacket packet;
-          packet.packetTag = 0x74696d65;
+          packet.packetTag = kControlTagTime;
           packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
           packet.eventCode = 0;
           packet.fromNetworkId = 0;
@@ -370,7 +374,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
       SaveGameWithModeAndOptionalLabel(0xa2, 0);
     }
     TurnEvent18DiplomacyArraysPacket packet;
-    packet.packetTag = 0x74696d65;
+    packet.packetTag = kControlTagTime;
     packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
     packet.eventCode = 0;
     packet.eventCode = 0x18;
@@ -456,7 +460,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
     delete[] static_cast<unsigned char*>(static_cast<void*>(syncPacket));
 
     TaggedSerializablePayload armyPayload;
-    armyPayload.tag = 0x61726d79;
+    armyPayload.tag = kControlTagArmy;
     armyPayload.object = static_cast<TObject*>(g_pMapContextActionManager);
     DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x31, -2, &armyPayload);
 
@@ -484,7 +488,7 @@ IMPERIALISM_BEGIN_RETAIL_POLYMORPHIC_BYTE_COPY
 // FUNCTION: IMPERIALISM 0x00549ff0
 void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
   TimelyNetMessagePrefix header;
-  header.messageTag = 0x74696d65;
+  header.messageTag = kControlTagTime;
   header.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   stream->ReadBytes(&header, 0x1c);
   unsigned char isClientSession = g_pSimMgr->multiplayerSessionRole == 2;
@@ -509,9 +513,9 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
     // The inverted-inequality nesting reproduces the original body layout: the 'town'
     // handler falls through inline, 'star' and 'army' bodies are emitted after it.
     int payloadTag = stream->streamSlot50();
-    if (payloadTag != 0x61726d79) {     // 'army'
-      if (payloadTag != 0x73746172) {   // 'star'
-        if (payloadTag == 0x746f776e) { // 'town'
+    if (payloadTag != kControlTagArmy) {     // 'army'
+      if (payloadTag != kControlTagStar) {   // 'star'
+        if (payloadTag == kControlTagTown) { // 'town'
           TTown* town = new TTown();
           town->InitializeTownMarker(g_szEmptyString, 0, 0, g_pSimMgr->GetActiveNationId());
           town->ReadFrom(stream);
@@ -525,7 +529,7 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
           }
         }
       } else {
-        if (stream->streamSlot50() == 0x6c616e64) { // 'land'
+        if (stream->streamSlot50() == kControlTagLand) { // 'land'
           short tileIndex = stream->ReadShort();
           short nationCode = stream->ReadShort();
           TLandSaleEvent* saleEvent = new TLandSaleEvent();
@@ -562,9 +566,8 @@ void TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* str
   // Stream leads with a nation letter ('a' + slot); everything below - including the
   // count read - is skipped when it doesn't match the requested slot.
   int terrainSlot = stream->ReadInteger() - 0x61; // - 'a'
-  unsigned char terrainSelected =
-      static_cast<unsigned char>(nationSlot == -1 || nationSlot == terrainSlot);
-  if (terrainSelected != 0) {
+  const bool terrainSelected = nationSlot == -1 || nationSlot == terrainSlot;
+  if (terrainSelected) {
     if (g_apTerrainTypeDescriptorTable[terrainSlot] != 0) {
       CIterator recruitIter(g_apTerrainTypeDescriptorTable[terrainSlot]->militaryUnitList44);
       for (TUnit* pendingRecruit = static_cast<TUnit*>(recruitIter.Reset()); recruitIter.More();
@@ -591,9 +594,8 @@ void TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations(TStream* stream
   // stream, discarding freshly-read orders for non-selected nations to keep the
   // stream cursor in sync.
   for (int nationIdx = 0; nationIdx < 7; ++nationIdx) {
-    unsigned char nationSelected =
-        static_cast<unsigned char>(nationSlot == -1 || nationSlot == nationIdx);
-    if (g_apNationStates[nationIdx] != 0 && nationSelected != 0) {
+    const bool nationSelected = nationSlot == -1 || nationSlot == nationIdx;
+    if (g_apNationStates[nationIdx] != 0 && nationSelected) {
       CIterator workOrderIter(g_apNationStates[nationIdx]->trackedObjectList);
       for (TUnit* pendingWorkOrder = static_cast<TUnit*>(workOrderIter.Reset());
            workOrderIter.More(); pendingWorkOrder = static_cast<TUnit*>(workOrderIter.Advance())) {
@@ -607,7 +609,7 @@ void TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations(TStream* stream
       workOrder->ICivUnit(kCivilianUnitMiner, -1, nationIdx);
       workOrder->ReadFrom(stream);
       workOrder->AssertValid();
-      if (nationSelected == 0) {
+      if (!nationSelected) {
         workOrder->DetachUnitOrderFromOwnerAndReset();
         workOrder->Free();
       }
@@ -631,7 +633,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
     unsigned char hosting = sessionRole == 1;
     if (hosting != 0) {
       TurnEvent1FStatusPacket packet;
-      packet.messageTag = 0x74696d65;
+      packet.messageTag = kControlTagTime;
       packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
       packet.eventCode = 0;
       packet.fromNetworkId = 0;
@@ -640,7 +642,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       packet.messageLength = 0;
       packet.messageLength = 0x20;
       packet.DestinateTo(-2);
-      packet.statusTag18 = 0x64656875; // 'uhed'
+      packet.statusTag18 = kSessionTagDehu; // 'uhed'
       packet.value1C = nationSlot;
       g_pNetMgr006a6014->Send(&packet, 0);
     }
@@ -759,7 +761,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
     }
   }
   nationSessionIds[nationSlot] = 0;
-  nationStatusTags[nationSlot] = 0x756e6173; // 'suna'
+  nationStatusTags[nationSlot] = kSessionTagUnas; // 'suna'
   RefreshNationStatusLabelsAndCodesForSlotOrAll(nationSlot);
   unsigned char hostingMask = g_pSimMgr->multiplayerSessionRole == 1;
   if (hostingMask != 0) {
@@ -767,7 +769,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
     unsigned char hostingBroadcast = g_pSimMgr->multiplayerSessionRole == 1;
     if (hostingBroadcast != 0) {
       TurnEvent1PendingMaskPacket packet;
-      packet.messageTag = 0x74696d65;
+      packet.messageTag = kControlTagTime;
       packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
       packet.eventCode = 0;
       packet.fromNetworkId = 0;

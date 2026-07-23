@@ -1,4 +1,5 @@
 #include "game/ui_widgets/TMinorTradeBidsDialog.h"
+#include "game/ui_tags_widgets.h"
 
 #include "game/nation/TMinor.h"
 #include "game/ui_core/TNumberText.h"
@@ -24,7 +25,7 @@ TMinorTradeBidsDialog::TMinorTradeBidsDialog() {}
 
 // FUNCTION: IMPERIALISM 0x005b2aa0
 void TMinorTradeBidsDialog::StuffValues() {
-  TView* costPanel = ResolveControlByTag(0x436f7374); // 'Cost'
+  TView* costPanel = ResolveControlByTag(kControlTagCost); // 'Cost'
   if (costPanel == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x179);
   }

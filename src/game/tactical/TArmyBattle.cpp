@@ -1,4 +1,6 @@
 #include "game/tactical/TArmyBattle.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,7 +20,6 @@
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/tactical/TTacticalBattleView.h"
 #include "game/tactical_ui/TTacticalToolbar.h"
-#include "game/ui_control_tags.h"
 #include "game/core/TStream.h"
 #include "game/tactical_ui/TTacArmyView.h"
 #include "game/ui_core/TView.h"
@@ -94,7 +95,7 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
         static_cast<int>(rand()) % 3 + 6, 0); // battle cue 6..8
     g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventTacticalView), 0);
     TTacArmyView* battleView = static_cast<TTacArmyView*>(
-        g_pDisplayMgr->activeDialog->ResolveControlByTag(0x444c4f47 /* 'DLOG' */));
+        g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog));
     battleView->AssertValid();
     battleView8 = battleView;
     battleView->InitializeBattlefieldView(compositionClass, this);
@@ -371,7 +372,7 @@ void TArmyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileInde
   }
   if (battleView8 != 0) {
     TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
-        battleView8->ownerContext->ResolveControlByTag(0x746f6f6c /* 'tool' */));
+        battleView8->ownerContext->ResolveControlByTag(kControlTagTool));
     toolbar->AssertValid();
     toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(selectedUnit1c);
   }
@@ -386,7 +387,7 @@ undefined TArmyBattle::FinalizeTacticalBattleOutcome(int sideWonFlag) {
 
   if (battleView8 != 0) {
     TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
-        battleView8->ownerContext->ResolveControlByTag(0x746f6f6c /* 'tool' */));
+        battleView8->ownerContext->ResolveControlByTag(kControlTagTool));
     toolbar->AssertValid();
     toolbar->TacticalToolbarSlot74(0);
     toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(0);

@@ -1,4 +1,6 @@
 #include "game/ui_screens/TPageView.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_screens.h"
 
 #include "game/CSubViewIterator.h"
 #include "game/TList.h"
@@ -63,10 +65,10 @@ POSITION TPageView::AddOptionEntry(void* item) {
 // FUNCTION: IMPERIALISM 0x0056fbf0
 void TPageView::ResetSelectableOptionEntriesExceptColorAndOkay() {
   // Skip "rocl"/"rocr" (color) and "yako" (okay) option-entry tags, plus "tond" resource IDs.
-  static const unsigned int kColorTagA = 0x6c636f72; // "rocl"
-  static const unsigned int kColorTagB = 0x72636f72; // "rocr"
-  static const unsigned int kOkayTag = 0x6f6b6179;   // "yako"
-  static const unsigned int kSkipId = 0x646f6e74;    // "tond"
+  static const unsigned int kColorTagA = kControlTagLcor; // "rocl"
+  static const unsigned int kColorTagB = kControlTagRcor; // "rocr"
+  static const unsigned int kOkayTag = kControlTagOkay;   // "yako"
+  static const unsigned int kSkipId = kControlTagDont;    // "tond"
 
   // The original walks the option entries with the shared CSubViewIterator, not a raw
   // GetHeadPosition/GetNext loop.

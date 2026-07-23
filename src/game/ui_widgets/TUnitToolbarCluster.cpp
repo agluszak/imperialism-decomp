@@ -1,4 +1,6 @@
 #include "game/ui_widgets/TIndustryCluster.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 #include "game/ui_core/TWindow.h"
 #include "game/ui_widgets/TRailCluster.h"
 #include "game/ui_widgets/TShipyardCluster.h"
@@ -47,7 +49,7 @@ void TUnitToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
   }
 
   void* ownerPanel = this->GetWindow();
-  TView* mainControl = reinterpret_cast<TView*>(ownerPanel)->ResolveControlByTag(0x6d61696e);
+  TView* mainControl = reinterpret_cast<TView*>(ownerPanel)->ResolveControlByTag(kControlTagMain);
   if (mainControl == 0) {
     GAME_FAIL_NIL_POINTER();
     return;
@@ -66,7 +68,7 @@ void TUnitToolbarCluster::SetSelectedChildTagAndRefresh(int childTag) {
   selectedChildTag = childTag;
 
   TView* resourceControl =
-      reinterpret_cast<TView*>(this)->ResolveControlByTag(0x7265736f + childTag);
+      reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagReso + childTag);
   if (resourceControl == 0) {
     GAME_FAIL_NIL_POINTER();
     return;

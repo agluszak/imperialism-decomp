@@ -1,4 +1,5 @@
 #include "game/ui_core/TPicture.h"
+#include "game/ui_tags_common.h"
 
 #include "game/gfx/CDib.h"
 #include "game/gfx/CDibPal.h"
@@ -62,7 +63,7 @@ void TPicture::InitializePictureEntryBaseAndRefresh(TView* panel, int* offsetLay
   if (panel != 0) {
     nativeWindow50 = panel->nativeWindow50;
   }
-  controlTag = 0x20202020; // '    '
+  controlTag = kControlTagSpSpSpSp; // '    '
   field04 = 1;
   field08 = 1;
   linkedChildHandler = panel;

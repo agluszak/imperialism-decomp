@@ -1,8 +1,8 @@
 #include "game/ui_widgets/TTradePolicyCluster.h"
+#include "game/ui_tags_common.h"
 #include "game/ui_core/TWindow.h"
 
 #include "game/ui_core/TCluster.h"
-#include "game/ui_control_tags.h"
 #include "game/gfx/ui_invalidation_guard.h"
 // SYNTHETIC: IMPERIALISM 0x00584200
 // TTradePolicyCluster::CreateObject
@@ -26,10 +26,10 @@ void TTradePolicyCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
     return;
   }
   TView* owner = GetWindow();
-  SetSelectedChildTagAndRefresh(0x20202020);
+  SetSelectedChildTagAndRefresh(kControlTagSpSpSpSp);
   TView* clusControl = owner->ResolveControlByTag(kControlTagClus);
   if (clusControl == nullptr) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x203);
   }
-  static_cast<TCluster*>(clusControl)->SetSelectedChildTagAndRefresh(0x20202020);
+  static_cast<TCluster*>(clusControl)->SetSelectedChildTagAndRefresh(kControlTagSpSpSpSp);
 }

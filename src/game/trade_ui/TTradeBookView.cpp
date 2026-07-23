@@ -1,4 +1,6 @@
 #include "game/trade_ui/TTradeBookView.h"
+#include "game/ui_tags_city.h"
+#include "game/ui_tags_common.h"
 
 #include "game/ui_widgets/TDropShadowText.h"
 #include "game/ui_core/TEventHandler.h"
@@ -10,7 +12,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x00435690

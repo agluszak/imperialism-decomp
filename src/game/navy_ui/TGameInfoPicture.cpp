@@ -1,4 +1,6 @@
 #include "game/navy_ui/TGameInfoPicture.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 #include "game/ui_screens/CString.h"
 #include "game/military/TArmyMgr.h"
@@ -7,7 +9,6 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x0056b800
 // TGameInfoPicture::`scalar deleting destructor'
@@ -49,7 +50,7 @@ void TGameInfoPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
   }
 
   unsigned int tag = sourceHandler->controlTag;
-  if (tag == 0x6275746e) { // 'butn' — newspaper
+  if (tag == kControlTagButn) { // 'butn' — newspaper
     if (g_pNewsMgr->perNationStoryLastUsedTick[0] != 0) {
       g_pSimMgr->EnterOptionalPhase(0x66);
     } else {
@@ -57,7 +58,7 @@ void TGameInfoPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     }
     return;
   }
-  if (tag == 0x6275746d) { // 'butm' — military/battle report
+  if (tag == kControlTagButm) { // 'butm' — military/battle report
     short activeNationId = g_pSimMgr->GetActiveNationId();
     if (g_pMapContextActionManager->ScanMapContextActionEntriesForCodeMatch(activeNationId)) {
       g_pSimMgr->EnterOptionalPhase(0x65);
@@ -67,7 +68,7 @@ void TGameInfoPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     }
     return;
   }
-  if (tag == 0x6275746c) { // 'butl' — trade/deals
+  if (tag == kControlTagButl) { // 'butl' — trade/deals
     if (g_pSimMgr->GetEconomicTurn() == 1) {
       g_pSimMgr->GetString(0x2741, 9, &message);
       g_pUiRuntimeContext->ModalMessage(message, g_ptQueryFloaterModalMessage, 0, 0);
@@ -76,7 +77,7 @@ void TGameInfoPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     }
     return;
   }
-  if (tag == 0x6f6b6179) { // 'okay'
+  if (tag == kControlTagOkay) { // 'okay'
     g_pSimMgr->StartNextPhase();
     return;
   }

@@ -1,4 +1,5 @@
 #include "game/navy_ui/TNavyRoster.h"
+#include "game/ui_tags_common.h"
 
 #include "game/map_ui/TMapDialog.h"
 #include "game/gfx/TDisplayMgr.h"
@@ -40,7 +41,7 @@ void TNavyRoster::StuffValues(TTaskForce* taskForce) {
   PrepareUnitCache(0xdba, 0x500, 0x2d);
   taskForce88 = taskForce;
 
-  unsigned int classTag = 0x636c7330; // 'cls0'
+  unsigned int classTag = kControlTagCls0; // 'cls0'
   for (int i = 0; i < 4; ++i, ++classTag) {
     TView* classControl = g_pDisplayMgr->activeDialog->ResolveControlByTag(classTag);
     if (classControl == 0) {

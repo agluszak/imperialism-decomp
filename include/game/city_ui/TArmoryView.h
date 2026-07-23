@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/city_ui/TBuildingView.h"
+#include "game/ui_tags_common.h"
 #include "game/mfc.h"
 
 class TUnitOrder;

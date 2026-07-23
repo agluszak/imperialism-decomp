@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/ui_core/TPicture.h"
+#include "game/ui_tags_screens.h"
 
 class TDeluxeText;
 struct HelpSetRecord;

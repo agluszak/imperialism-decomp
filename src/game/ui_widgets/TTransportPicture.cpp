@@ -1,4 +1,5 @@
 #include "game/ui_widgets/TTransportPicture.h"
+#include "game/ui_tags_common.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/mfc.h"
 #include "game/ui_core/TControl.h"
@@ -91,7 +92,7 @@ void TTransportPicture::Refresh() {
   totalText.Format(g_szDecimalFormat, static_cast<int>(splitValue96));
   gaugeText = currentText + CString(s_szSpaceSeparator_00695794) + totalText;
 
-  TStaticText* text = static_cast<TStaticText*>(ResolveControlByTag('text'));
+  TStaticText* text = static_cast<TStaticText*>(ResolveControlByTag(kControlTagText));
   text->AssertValid();
   text->SetTextAndMaybeRefresh(&gaugeText, 1);
 
@@ -99,7 +100,7 @@ void TTransportPicture::Refresh() {
     int multiplier = resourceMetricSlot92 == 0x16 ? 200 : 500;
     CString valueText;
     valueText.Format(g_szDecimalFormat, static_cast<int>(splitValue94) * multiplier);
-    TStaticText* value = static_cast<TStaticText*>(ResolveControlByTag('valu'));
+    TStaticText* value = static_cast<TStaticText*>(ResolveControlByTag(kControlTagValu));
     value->AssertValid();
     value->SetTextAndMaybeRefresh(&valueText, 1);
   }
@@ -108,11 +109,11 @@ void TTransportPicture::Refresh() {
     SetState(splitValue94 < splitLimit98 ? 0 : 1, 0);
   }
 
-  if (controlTag != static_cast<int>('tota')) {
+  if (controlTag != static_cast<int>(kControlTagTota)) {
     short activeNation = g_pSimMgr->GetActiveNationId();
     TGreatPower* nation = g_apNationStates[activeNation];
     TTransportPicture* totalPicture =
-        static_cast<TTransportPicture*>(ownerContext->ResolveControlByTag('tota'));
+        static_cast<TTransportPicture*>(ownerContext->ResolveControlByTag(kControlTagTota));
     totalPicture->AssertValid();
     totalPicture->splitValue94 = nation != 0 ? nation->needsOverCapFlag : 0;
     totalPicture->RefreshControl();

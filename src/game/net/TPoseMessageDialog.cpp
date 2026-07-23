@@ -1,4 +1,5 @@
 #include "game/net/TPoseMessageDialog.h"
+#include "game/multiplayer_session_tags.h"
 
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_core/TApplication.h"
@@ -23,6 +24,6 @@ IMPLEMENT_DYNCREATE(TPoseMessageDialog, TCommand)
 void __cdecl QueuePoseMessageDialogForNationSlot(int nationSlot) {
   TPoseMessageDialog* command = new TPoseMessageDialog();
   command->kickedByNationSlot18 = nationSlot;
-  command->InitializeRangePair(0x706f7365, g_pGlobalUiRootController, 0, 0, 0); // 'pose'
+  command->InitializeRangePair(kSessionTagPose, g_pGlobalUiRootController, 0, 0, 0); // 'pose'
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
 }

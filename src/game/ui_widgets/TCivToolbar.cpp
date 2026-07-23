@@ -1,6 +1,8 @@
 // TCivToolbar wrapper class quad extracted from Ghidra autogen.
 
 #include "decomp_types.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 #include "game/ui_widgets/TCivToolbar.h"
 #include "game/ui_screens/TUberCluster.h"
 #include "game/ui_widgets/TTradeCluster.h"
@@ -15,7 +17,6 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/nation/TGreatPower.h"
 #include "game/map/TMapUberPicture.h"
@@ -41,7 +42,7 @@ TCivToolbar::TCivToolbar() {}
 void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivUnit* selectedOrder) {
   this->civilianClassId = selectedOrder ? selectedOrder->orderType : -1;
 
-  TControl* unitControl = static_cast<TControl*>(this->ResolveControlByTag(0x756e6974));
+  TControl* unitControl = static_cast<TControl*>(this->ResolveControlByTag(kControlTagUnit));
   if (unitControl == 0) {
     return;
   }
@@ -54,8 +55,8 @@ void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivUnit* selectedOrde
     unitControl->SetEnabled(1, 1);
   }
 
-  TCivDescription* backControl =
-      static_cast<TCivDescription*>(static_cast<TView*>(this->ResolveControlByTag(0x6261636b)));
+  TCivDescription* backControl = static_cast<TCivDescription*>(
+      static_cast<TView*>(this->ResolveControlByTag(kControlTagBack)));
   if (backControl == 0) {
     return;
   }
@@ -103,7 +104,8 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   selectedCivilianState = g_pSelectedCivilianOrderState;
 
   for (slotIndex = 0; (selectedTileEntry != 0) && (slotIndex < 6); slotIndex = slotIndex + 1) {
-    stackButton = static_cast<TControl*>(this->ResolveControlByTag(0x73746b30 + slotIndex));
+    stackButton =
+        static_cast<TControl*>(this->ResolveControlByTag(kControlTagStackSlotFirst + slotIndex));
     if (stackButton == 0) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x15d1);
     }
@@ -116,7 +118,8 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
     selectedTileEntry = static_cast<TCivUnit*>(selectedTileEntry->nextOnTile);
   }
   while (slotIndex < 6) {
-    stackButton = static_cast<TControl*>(this->ResolveControlByTag(0x73746b30 + slotIndex));
+    stackButton =
+        static_cast<TControl*>(this->ResolveControlByTag(kControlTagStackSlotFirst + slotIndex));
     if (stackButton == 0) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x15df);
     }
@@ -124,24 +127,24 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
     slotIndex = slotIndex + 1;
   }
 
-  selectedSlotTag = 0x6e616461;
+  selectedSlotTag = kControlTagNada;
   if (selectedStackButton != 0) {
     selectedSlotTag = selectedStackButton->controlTag;
   }
   this->SetSelectedChildTagAndRefresh(selectedSlotTag);
 
   commandEnabled = (selectedStackButton != 0) ? 1 : 0;
-  stackButton = static_cast<TControl*>(this->ResolveControlByTag(0x64666e64));
+  stackButton = static_cast<TControl*>(this->ResolveControlByTag(kControlTagDfnd));
   if (stackButton == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x15eb);
   }
   stackButton->SetState(commandEnabled, 1);
-  stackButton = static_cast<TControl*>(this->ResolveControlByTag(0x6c617472));
+  stackButton = static_cast<TControl*>(this->ResolveControlByTag(kControlTagLatr));
   if (stackButton == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x15ed);
   }
   stackButton->SetState(commandEnabled, 1);
-  stackButton = static_cast<TControl*>(this->ResolveControlByTag(0x646f6e65));
+  stackButton = static_cast<TControl*>(this->ResolveControlByTag(kControlTagDone));
   if (stackButton == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x15ef);
   }
@@ -155,7 +158,7 @@ void TCivToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
   TCivMgr* selectedCivilianOrderState = g_pSelectedCivilianOrderState;
   if (commandId == 0xc) {
     unsigned int controlTag = static_cast<unsigned int>(sourceHandler->controlTag);
-    if ((kTagStackSlotMin <= controlTag) && (controlTag <= kTagStackSlotMax)) {
+    if ((kControlTagStackSlotFirst <= controlTag) && (controlTag <= kControlTagStackSlotLast)) {
       // The stack-slot button's bound civilian entry lives at +0x9c on the raw sourceHandler
       // pointer. That offset is past TTradeCluster's own end (real object size 0x8c, confirmed
       // via TTradeCluster::CreateObject's allocation constant at 0x587027), so the button is a
@@ -169,19 +172,19 @@ void TCivToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
     }
   } else if (commandId == 10) {
     unsigned int controlTag = sourceHandler->controlTag;
-    if (controlTag < 0x646f6e6f) {
-      if (controlTag == kTagDone) {
+    if (controlTag < kControlTagDono) {
+      if (controlTag == kControlTagDone) {
         selectedCivilianOrderState->OrderAndCycle(static_cast<UnitOrder>(4));
         this->TCluster::DoEvent(10, sourceHandler, event);
         return;
       }
-      if (controlTag == kTagDefend) {
+      if (controlTag == kControlTagDfnd) {
         selectedCivilianOrderState->OrderAndCycle(static_cast<UnitOrder>(2));
         this->TCluster::DoEvent(10, sourceHandler, event);
         return;
       }
     } else {
-      if (controlTag == kTagGarrison) {
+      if (controlTag == kControlTagGarr) {
         unsigned short ctrlState = (unsigned short)GetAsyncKeyState(0x11);
         if ((ctrlState & 0x8000) != 0) {
           g_pUiRuntimeContext->ShowCivilianLedgerDialogAndSelectUnit();
@@ -189,7 +192,7 @@ void TCivToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
           return;
         }
         selectedCivilianOrderState->ShowDisbandCivilianConfirmationDialog();
-      } else if (controlTag == kTagLater) {
+      } else if (controlTag == kControlTagLatr) {
         selectedCivilianOrderState->OrderAndCycle(static_cast<UnitOrder>(3));
         this->TCluster::DoEvent(10, sourceHandler, event);
         return;

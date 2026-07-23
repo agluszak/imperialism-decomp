@@ -1,4 +1,6 @@
 #include "game/city_ui/TTradeSchoolView.h"
+#include "game/ui_tags_city.h"
+#include "game/ui_tags_common.h"
 
 #include "game/city/TCity.h"
 #include "game/nation/TGreatPower.h"
@@ -39,7 +41,7 @@ void TTradeSchoolView::DoStartup() {
   BuildUiTextStyleDescriptor(&titleStyle, 0, 0x18, 0x2b67);
 
   CString text;
-  TStaticText* nameText = static_cast<TStaticText*>(ResolveControlByTag(0x6e616d65u)); // 'name'
+  TStaticText* nameText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagName)); // 'name'
   if (nameText != 0) {
     g_pSimMgr->GetString(0x2719, embeddedPageIndex9E, &text);
     nameText->InstallTextStyle(titleStyle, 0);
@@ -49,7 +51,8 @@ void TTradeSchoolView::DoStartup() {
 
   SetControlHoverHelpText(CString(g_szEmptyString), this);
 
-  const unsigned int equationHelpTags[3] = {0x65717531u, 0x65717532u, 0x65717533u}; // 'equ1'-'equ3'
+  const unsigned int equationHelpTags[3] = {kControlTagEqu1, kControlTagEqu2,
+                                            kControlTagEqu3}; // 'equ1'-'equ3'
   for (short equation = 0; equation < 3; ++equation) {
     TView* equationControl = ResolveControlByTag(equationHelpTags[equation]);
     if (equationControl != 0) {
@@ -59,17 +62,16 @@ void TTradeSchoolView::DoStartup() {
   }
 
   LoadUiStringByGroupAndIndexToControlObject(0x2738, 0x1f,
-                                             ResolveControlByTag(0x65717534u)); // 'equ4'
+                                             ResolveControlByTag(kControlTagEqu4)); // 'equ4'
   LoadUiStringByGroupAndIndexToControlObject(0x2738, 0x20,
-                                             ResolveControlByTag(0x65717535u)); // 'equ5'
+                                             ResolveControlByTag(kControlTagEqu5)); // 'equ5'
 
   TextStyle valueStyle;
   BuildUiTextStyleDescriptor(&valueStyle, 0, 9, 0x2b69);
   CString mappedValueText(s_mcflavor_00696674);
   const unsigned int valueTags[6] = {
-      0x70617031u, 0x70617032u, 0x6d6f6e31u, // 'pap1', 'pap2', 'mon1'
-      0x6d6f6e32u, 0x756e7456u, 0x74726156u  // 'mon2', 'untV', 'traV'
-  };
+      kControlTagPap1, kControlTagPap2, kControlTagMon1, // 'pap1', 'pap2', 'mon1'
+      kControlTagMon2, kControlTagUntV, kControlTagTraV};
   for (int valueIndex = 0; valueIndex < 6; ++valueIndex) {
     TStaticText* valueText = static_cast<TStaticText*>(ResolveControlByTag(valueTags[valueIndex]));
     if (valueText == 0) {
@@ -83,7 +85,7 @@ void TTradeSchoolView::DoStartup() {
 
   TextStyle costStyle;
   BuildUiTextStyleDescriptor(&costStyle, 0, 0xe, 0x2b67);
-  const unsigned int costTags[2] = {0x636f7331u, 0x636f7332u}; // 'cos1', 'cos2'
+  const unsigned int costTags[2] = {kControlTagCos1, kControlTagCos2}; // 'cos1', 'cos2'
   const int costs[2] = {100, 1000};
   for (int costIndex = 0; costIndex < 2; ++costIndex) {
     TStaticText* costText = static_cast<TStaticText*>(ResolveControlByTag(costTags[costIndex]));
@@ -104,9 +106,8 @@ void TTradeSchoolView::UpdateFields() {
   }
 
   const unsigned int controlTags[6] = {
-      0x70617031u, 0x70617032u, 0x6d6f6e31u, // 'pap1', 'pap2', 'mon1'
-      0x6d6f6e32u, 0x756e7456u, 0x74726156u  // 'mon2', 'untV', 'traV'
-  };
+      kControlTagPap1, kControlTagPap2, kControlTagMon1, // 'pap1', 'pap2', 'mon1'
+      kControlTagMon2, kControlTagUntV, kControlTagTraV};
   const int assertLines[6] = {0x9df, 0x9ef, 0xa00, 0xa11, 0xa23, 0xa34};
   bool shouldEnable[6];
   shouldEnable[0] = city94->cityStockPaperCA >= 1;

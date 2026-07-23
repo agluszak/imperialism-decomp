@@ -39,7 +39,8 @@
 #include "game/gfx/TDisplayMgr.h" // g_pDisplayMgr, g_szUiNilPointerMessage, g_szUiFailureMessage
 #include "game/ui_core/THelpMgr.h"
 #include "game/ui_core/TWindow.h"
-#include "game/ui_control_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 #include "game/ui_widgets/TInfoBarText.h"
 #include "game/app/TCouncilTickerAnimation.h"
 #include "game/diplomacy_ui/TCouncilView.h"
@@ -208,13 +209,13 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x14a);
   }
-  TControl* gold = static_cast<TControl*>(node->ResolveControlByTag(0x444c4f47)); // 'GOLD'
+  TControl* gold = static_cast<TControl*>(node->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
   POINT placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
   node->RefreshTurnEventDialog();
   TDeluxeText* nameText =
-      static_cast<TDeluxeText*>(static_cast<TView*>(gold->ResolveControlByTag(0x6e616d65)));
+      static_cast<TDeluxeText*>(static_cast<TView*>(gold->ResolveControlByTag(kControlTagName)));
   if (nameText == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x156);
@@ -232,7 +233,8 @@ TNavyRoster* TViewMgr::MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x167);
   }
-  TNavyRoster* page = static_cast<TNavyRoster*>(node->ResolveControlByTag(0x70616765)); // 'page'
+  TNavyRoster* page =
+      static_cast<TNavyRoster*>(node->ResolveControlByTag(kControlTagPage)); // 'page'
   if (page == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x169);
@@ -259,7 +261,7 @@ void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x183);
   }
-  TControl* page = static_cast<TControl*>(node->ResolveControlByTag(0x70616765)); // 'page'
+  TControl* page = static_cast<TControl*>(node->ResolveControlByTag(kControlTagPage)); // 'page'
   if (page == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x187);
@@ -271,7 +273,7 @@ void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
   int rosterOffset[2] = {0x1ca, 0x136};
   int rosterSize[2] = {0xd, 0x2e};
   roster->PopulateNavyOrderPageEntriesByMapContext(pageOwner, rosterOffset, rosterSize);
-  roster->controlTag = 0x70616765; // 'page'
+  roster->controlTag = kControlTagPage; // 'page'
 
   TStaticText* textEntry = ::new TStaticText();
   int textOffset[2] = {0x4d, 0x11};
@@ -353,7 +355,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1e2);
   }
-  TView* page = node->ResolveControlByTag(0x70616765); // 'page'
+  TView* page = node->ResolveControlByTag(kControlTagPage); // 'page'
   if (page == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1e3);
@@ -386,7 +388,7 @@ void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x202);
   }
-  TControl* page = static_cast<TControl*>(node->ResolveControlByTag(0x70616765)); // 'page'
+  TControl* page = static_cast<TControl*>(node->ResolveControlByTag(kControlTagPage)); // 'page'
   if (page == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x203);
@@ -398,7 +400,7 @@ void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
   int rosterOffset[2] = {0x1ca, 0x136};
   int rosterSize[2] = {0xd, 0x2e};
   roster->PopulateArmyOrderPageEntries(pageOwner, rosterOffset, rosterSize);
-  roster->controlTag = 0x70616765; // 'page'
+  roster->controlTag = kControlTagPage; // 'page'
 
   TStaticText* textEntry = ::new TStaticText();
   int textOffset[2] = {0x4d, 0x11};
@@ -431,7 +433,7 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x232);
   }
-  TControl* page = static_cast<TControl*>(node->ResolveControlByTag(0x70616765)); // 'page'
+  TControl* page = static_cast<TControl*>(node->ResolveControlByTag(kControlTagPage)); // 'page'
   if (page == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x233);
@@ -443,7 +445,7 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   int rosterBounds[4] = {0x1ca, 0x136, 0xd, 0x2e};
   TView* runningDialog = roster;
   roster->InitializeLedgerRosterPages(pageOwner, rosterBounds, &runningDialog);
-  roster->controlTag = 0x70616765; // 'page'
+  roster->controlTag = kControlTagPage; // 'page'
 
   TStaticText* textEntry = ::new TStaticText();
   int textOffset[2] = {0x4d, 0x11};
@@ -490,7 +492,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   }
 
   TStaticText* instructionText =
-      static_cast<TStaticText*>(dialog->ResolveControlByTag(0x696e7374 /* 'inst' */));
+      static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagInst));
   instructionText->AssertValid();
   TextStyle instructionStyle;
   instructionStyle.textColor = 0;
@@ -499,8 +501,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   CString instructionString(instruction);
   instructionText->SetTextAndMaybeRefresh(&instructionString, 0);
 
-  TEditText* planetEdit =
-      static_cast<TEditText*>(dialog->ResolveControlByTag(0x706c616e /* 'plan' */));
+  TEditText* planetEdit = static_cast<TEditText*>(dialog->ResolveControlByTag(kControlTagPlan));
   planetEdit->AssertValid();
   CString editText(planetSeed);
   TextStyle editStyle;
@@ -523,7 +524,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   UpdatePaletteIndexWithDefaultFallback(0x3b);
 
   TRadioTextCluster* choiceCluster =
-      static_cast<TRadioTextCluster*>(dialog->ResolveControlByTag(0x316f7232 /* '1or2' */));
+      static_cast<TRadioTextCluster*>(dialog->ResolveControlByTag(kControlTag1or2));
   choiceCluster->AssertValid();
   if (firstChoice != 0) {
     choiceCluster->SetEnabled(1, 0);
@@ -531,7 +532,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
     choiceCluster->itemInset92 = 2;
 
     TRadioText* first =
-        static_cast<TRadioText*>(choiceCluster->ResolveControlByTag(0x6f6e6531 /* 'one1' */));
+        static_cast<TRadioText*>(choiceCluster->ResolveControlByTag(kControlTagOne1));
     first->AssertValid();
     CString firstText(firstChoice);
     first->SetTextAndMaybeRefresh(&firstText, 0);
@@ -539,7 +540,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
     first->SetTextAlignmentAndMaybeRefresh(1, 0);
 
     TRadioText* second =
-        static_cast<TRadioText*>(choiceCluster->ResolveControlByTag(0x74776f32 /* 'two2' */));
+        static_cast<TRadioText*>(choiceCluster->ResolveControlByTag(kControlTagTwo2));
     second->AssertValid();
     CString secondText(secondChoice);
     second->SetTextAndMaybeRefresh(&secondText, 0);
@@ -547,7 +548,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
     second->SetTextAlignmentAndMaybeRefresh(1, 0);
 
     choiceCluster->SetSelectedTextOptionByTag(
-        initialChoice == 0 ? 0x6f6e6531 /* 'one1' */ : 0x74776f32 /* 'two2' */, false);
+        initialChoice == 0 ? kControlTagOne1 : kControlTagTwo2, false);
   }
 
   if (showCancel != 0) {
@@ -579,7 +580,7 @@ bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrder
   }
   node->ShowTurnEventDialog(1);
   TCivilianReportGoldControl* gold = static_cast<TCivilianReportGoldControl*>(
-      static_cast<TView*>(node->ResolveControlByTag(0x444c4f47))); // 'GOLD'
+      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
   gold->PopulateCivilianReportContent(pCivilianOrderEntry);
   POINT placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
@@ -587,7 +588,7 @@ bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrder
   unsigned int resultTag = node->RefreshTurnEventDialog();
   node->Close();
   node->Free();
-  return resultTag == 0x6f6b6179;
+  return resultTag == kControlTagOkay;
 }
 
 // FUNCTION: IMPERIALISM 0x005de5d0
@@ -633,7 +634,7 @@ void TViewMgr::CreateModalMessageCommandAndQueue(CString* message, int payload) 
   TModalMessageCommand* command = new TModalMessageCommand();
   command->message = *message;
   command->payload = payload;
-  command->InitializeRangePair(0x48657921 /* 'Hey!' */, g_pGlobalUiRootController, 0, 0, 0);
+  command->InitializeRangePair(kControlTagHeyBang, g_pGlobalUiRootController, 0, 0, 0);
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
 }
 
@@ -647,16 +648,16 @@ char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
   } else {
     unsigned char hosting = sessionRole == 1;
     if (hosting != 0) {
-      if (actionTag == 0x6367616d) { // 'magc'
+      if (actionTag == kControlTagCgam) { // 'cgam'
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x37);
       } else {
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2f);
       }
-    } else if (actionTag == 0x6e657767) { // 'gwen'
+    } else if (actionTag == kControlTagNewg) { // 'newg'
       g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2b);
-    } else if (actionTag == 0x71756974) { // 'quit'
+    } else if (actionTag == kControlTagQuit) { // 'quit'
       g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2a);
-    } else if (actionTag == 0x6c6f6164) { // 'load'
+    } else if (actionTag == kControlTagLoad) { // 'load'
       g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x33);
     } else {
       g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2b);
@@ -666,7 +667,7 @@ char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
   if (accepted != 0) {
     unsigned char isClientSession = g_pSimMgr->multiplayerSessionRole == 2;
     if (isClientSession != 0) {
-      g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x61626469, // 'abdi'
+      g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagAbdi,
                                                          g_pSimMgr->GetActiveNationId(), -2);
     }
   }

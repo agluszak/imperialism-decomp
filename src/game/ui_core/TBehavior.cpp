@@ -1,4 +1,5 @@
 #include "game/ui_core/TBehavior.h"
+#include "game/ui_tags_common.h"
 
 #include "game/ui_core/TEventHandler.h"
 #include "game/globals/prelude.h"
@@ -14,7 +15,7 @@
 IMPLEMENT_DYNCREATE(TBehavior, TObject)
 
 // FUNCTION: IMPERIALISM 0x004871e0
-TBehavior::TBehavior() : TObject(), behaviorTag(0x20202020), owner(0), enabled(1) {}
+TBehavior::TBehavior() : TObject(), behaviorTag(kControlTagSpSpSpSp), owner(0), enabled(1) {}
 
 // SYNTHETIC: IMPERIALISM 0x00487210
 // TBehavior::`scalar deleting destructor'

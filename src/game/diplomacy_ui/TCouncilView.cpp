@@ -1,4 +1,7 @@
 #include "game/diplomacy_ui/TCouncilView.h"
+#include "game/ui_tags_city.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_diplomacy.h"
 
 #include "game/app/TAnimator.h"
 #include "game/ui_core/TControl.h"
@@ -23,14 +26,13 @@
 #include "game/mfc.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_core/ScopedMapQuickDrawContext.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 namespace {
 const short kCouncilCoatOfArmsPictureBase = 0x1105;
 const short kCouncilTickerIntervalMapMode = 0x2710;
-const unsigned int kEndControlTagReselect = 0x52655374u;    // mode 0x17
-const unsigned int kEndControlTagReselectAlt = 0x53636f72u; // mode 0x16
+const unsigned int kEndControlTagReselect = kControlTagRestartCaps;  // mode 0x17
+const unsigned int kEndControlTagReselectAlt = kControlTagScoreCaps; // mode 0x16
 
 } // namespace
 
@@ -117,7 +119,7 @@ void TCouncilView::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x004fbd60
 void TCouncilView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
-    if (sourceHandler->controlTag == 0x73746172) { // "star"
+    if (sourceHandler->controlTag == kControlTagStar) { // "star"
       // Rebuild council controls + restart the vote ticker. 0x4fc2e0's receiver is a
       // TCouncilView (verified: it writes councilNationCount24c8/visibleVoteTier528 and resolves its
       // own controls via the TView vtable), so it is owned by this class, not the small
@@ -262,7 +264,7 @@ void TCouncilView::AdvanceCivilianTerrainSelectionStep() {
 
   if (visibleVoteTier528 == councilNationCount24c8 + 2) {
     SetCursor(LoadCursorA(nullptr, IDC_ARROW));
-    TView* endControlTarget = ResolveControlByTag(0x656e6420);
+    TView* endControlTarget = ResolveControlByTag(kControlTagEnd);
     endControlTarget->AssertValid();
     endControlTarget->SetState(1, 0);
 

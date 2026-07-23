@@ -1,4 +1,6 @@
 #include "game/ui_widgets/TCombatReportView.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
@@ -98,7 +100,8 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   g_pSimMgr->GetString(0x271d, static_cast<short>(reportTitleIndex), &reportText);
   reportText += " Report";
 
-  TStaticText* titleControl = static_cast<TStaticText*>(ResolveControlByTag(0x7469746c)); // 'titl'
+  TStaticText* titleControl =
+      static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
   if (titleControl == NULL) {
     MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x1349);
@@ -144,7 +147,8 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   g_pSimMgr->GetString(0x2720, static_cast<short>(rand() % 6), &scratchText);
   reportText += scratchText;
 
-  TStaticText* reportControl = static_cast<TStaticText*>(ResolveControlByTag(0x7265706f)); // 'repo'
+  TStaticText* reportControl =
+      static_cast<TStaticText*>(ResolveControlByTag(kControlTagRepo)); // 'repo'
   if (reportControl == NULL) {
     MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x137c);
@@ -169,7 +173,8 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   scratchText += '\n';
   reportText += scratchText;
 
-  TStaticText* lossControl = static_cast<TStaticText*>(ResolveControlByTag(0x6c6f7373)); // 'loss'
+  TStaticText* lossControl =
+      static_cast<TStaticText*>(ResolveControlByTag(kControlTagLoss)); // 'loss'
   if (lossControl == NULL) {
     MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x1394);
@@ -177,7 +182,8 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   lossControl->SetTextAndMaybeRefresh(&reportText, 1);
 
   reportValue = 0;
-  TStaticText* pageControl = static_cast<TStaticText*>(ResolveControlByTag(0x70616765)); // 'page'
+  TStaticText* pageControl =
+      static_cast<TStaticText*>(ResolveControlByTag(kControlTagPage)); // 'page'
   if (pageControl != NULL) {
     CString pageText;
     CString pageNumber;
@@ -316,24 +322,24 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   if (commandId == 10) {
     unsigned int controlTag = static_cast<unsigned int>(sourceHandler->controlTag);
 
-    if (controlTag == 0x70677570) { // 'pgup'
+    if (controlTag == kControlTagPgup) { // 'pgup'
       if (reportValue < 2) {
         reportValue = 0;
-        const unsigned int kPageTags[4] = {0x70677570, 0x7067646e, 0x70616765,
-                                           0x70696374}; // pgup,pgdn,page,pict
+        const unsigned int kPageTags[4] = {kControlTagPgup, kControlTagPgdn, kControlTagPage,
+                                           kControlTagPict}; // pgup,pgdn,page,pict
         for (int i = 0; i < 4; i++) {
           TView* widget = ResolveControlByTag(kPageTags[i]);
           if (widget != NULL) {
             widget->SetEnabled(1, 1);
           }
         }
-        TView* pgUp = ResolveControlByTag(0x70677570);
+        TView* pgUp = ResolveControlByTag(kControlTagPgup);
         if (pgUp == NULL) {
           MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
           TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x145d);
         }
         pgUp->SetEnabled(0, 1);
-        TView* pgDown = ResolveControlByTag(0x7067646e);
+        TView* pgDown = ResolveControlByTag(kControlTagPgdn);
         if (pgDown == NULL) {
           MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
           TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x1460);
@@ -342,7 +348,7 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       } else {
         reportValue--;
       }
-      TView* pgDown = ResolveControlByTag(0x7067646e);
+      TView* pgDown = ResolveControlByTag(kControlTagPgdn);
       if (pgDown == NULL) {
         MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
         TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x1460);
@@ -350,24 +356,24 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       pgDown->SetEnabled(1, 1);
       RECT rect = {4, 0x9f, 0xe1, 0x149};
       InvalidateCityDialogRectRegion(&rect, 1);
-    } else if (controlTag == 0x7067646e) { // 'pgdn'
+    } else if (controlTag == kControlTagPgdn) { // 'pgdn'
       if (reportValue == 0) {
         reportValue = 1;
-        const unsigned int kPageTags[4] = {0x70677570, 0x7067646e, 0x70616765,
-                                           0x70696374}; // pgup,pgdn,page,pict
+        const unsigned int kPageTags[4] = {kControlTagPgup, kControlTagPgdn, kControlTagPage,
+                                           kControlTagPict}; // pgup,pgdn,page,pict
         for (int i = 0; i < 4; i++) {
           TView* widget = ResolveControlByTag(kPageTags[i]);
           if (widget != NULL) {
             widget->SetEnabled(1, 1);
           }
         }
-        TView* pgUp = ResolveControlByTag(0x70677570);
+        TView* pgUp = ResolveControlByTag(kControlTagPgup);
         if (pgUp == NULL) {
           MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
           TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x1470);
         }
         pgUp->SetEnabled(1, 1);
-        TView* pgDown = ResolveControlByTag(0x7067646e);
+        TView* pgDown = ResolveControlByTag(kControlTagPgdn);
         if (pgDown == NULL) {
           MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
           TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x1477);
@@ -377,7 +383,7 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         reportValue++;
       }
       if (reportValue == totalPages) {
-        TView* pgDown = ResolveControlByTag(0x7067646e);
+        TView* pgDown = ResolveControlByTag(kControlTagPgdn);
         if (pgDown == NULL) {
           MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
           TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x1477);
@@ -388,7 +394,7 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       InvalidateCityDialogRectRegion(&rect, 1);
     }
 
-    TView* page = ResolveControlByTag(0x70616765); // 'page'
+    TView* page = ResolveControlByTag(kControlTagPage); // 'page'
     if (page != NULL) {
       CString pageNumber;
       pageNumber.Format(g_szDecimalFormat, reportValue + 1);

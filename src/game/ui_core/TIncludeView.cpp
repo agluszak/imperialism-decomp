@@ -1,4 +1,5 @@
 #include "game/ui_core/TIncludeView.h"
+#include "game/ui_tags_common.h"
 #include "game/ui_screens/CString.h"
 #include "game/ui_core/TTurnEventDialogFactoryRegistry.h"
 #include "game/ui_core/TView.h"
@@ -39,7 +40,7 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* ma
   if (mainView != nullptr) {
     nativeWindow50 = mainView->nativeWindow50;
   }
-  controlTag = 0x20202020;
+  controlTag = kControlTagSpSpSpSp;
   field04 = 1;
   field08 = 1;
   linkedChildHandler = mainView;

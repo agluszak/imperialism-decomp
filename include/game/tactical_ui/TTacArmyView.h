@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/tactical/TTacticalBattleView.h"
+#include "game/ui_tags_common.h"
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x00644fd0

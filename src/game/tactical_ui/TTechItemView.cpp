@@ -1,4 +1,6 @@
 #include "game/tactical_ui/TTechItemView.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 #include "game/assets/TAssetMgr.h"
 #include "game/ui_widgets/TDeluxeText.h"
@@ -14,7 +16,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b1200
@@ -50,7 +51,7 @@ void TTechItemView::InitializeTechItem(TView* panel, int* offsetLayout, int* siz
     descButton->InitializePictureEntryBaseAndRefresh(this, picOffset, picSize, 5, 5,
                                                      static_cast<short>(techId * 2 + 0x8ff));
     descButton->SetState(1, 0);
-    descButton->controlTag = 0x64657363; // 'desc'
+    descButton->controlTag = kControlTagDesc; // 'desc'
     LoadUiStringByGroupAndIndexToControlObject(0x274f, 8, descButton);
   }
 
@@ -125,7 +126,7 @@ void TTechItemView::InitializeTechItem(TView* panel, int* offsetLayout, int* siz
     buyButton->InitializeTextPictureButtonAndTextStyle(this, buyOffset, buySize, 0x8ff, &labelText,
                                                        0xc, 0x2b6a, 0x2b68);
     buyButton->SetState(1, 0);
-    buyButton->controlTag = 0x70757263; // 'purc'
+    buyButton->controlTag = kControlTagPurc; // 'purc'
     LoadUiStringByGroupAndIndexToControlObject(0x274f, labelIndex, buyButton);
   } else {
     int missing1;
@@ -196,7 +197,7 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
           static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
               kTurnEventTechnologyHistory));
       TTechHistoryView* historyView =
-          static_cast<TTechHistoryView*>(node->ResolveControlByTag(kControlTagDialog /* 'DLOG' */));
+          static_cast<TTechHistoryView*>(node->ResolveControlByTag(kControlTagDialog));
       historyView->AssertValid();
       historyView->PopulateTechHistory(static_cast<short>(techId64));
 
@@ -206,7 +207,7 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       node->SetModality(1);
       TDialogBehavior* behavior = node->GetDialogBehavior();
       if (behavior != nullptr) {
-        behavior->defaultCommandCode = 0x6f6b6179; // 'okay'
+        behavior->defaultCommandCode = kControlTagOkay; // 'okay'
       }
       node->PoseModally();
       node->Close();

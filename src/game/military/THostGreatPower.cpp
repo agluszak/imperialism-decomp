@@ -1,4 +1,5 @@
 #include "game/military/THostGreatPower.h"
+#include "game/ui_tags_common.h"
 
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
@@ -70,7 +71,7 @@ void THostGreatPower::ReplyToDiplomacyOffers(void) {
 // FUNCTION: IMPERIALISM 0x00541170
 void THostGreatPower::SorryYouLose(void) {
   if (nationLostEventDispatched == 0) {
-    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x6c6f7374, nationSlot | 0xff00, -3);
+    g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagLost, nationSlot | 0xff00, -3);
     nationLostEventDispatched = 1;
   }
 

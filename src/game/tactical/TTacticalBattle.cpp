@@ -1,4 +1,6 @@
 #include "game/gfx/TAmbitApplication.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 #include "game/tactical/TTacticalBattle.h"
 
 #include <stdlib.h>
@@ -33,7 +35,6 @@
 #include "game/globals/map_globals.h"
 #include "game/globals/net_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 using turn_event_dialog::TurnEventDialogNode;
@@ -687,17 +688,17 @@ void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
     return;
   }
   switch (commandTag) {
-  case 0x646f6e65: // 'done'
+  case kControlTagDone: // 'done'
     if (battleLive10 == 1) {
       QueueTacticalEventPacket232A();
       return;
     }
     ApplyTacticalDoneSelectionAndRefreshUi(player->SelectNextTacticalUnitForDoneCommand());
     return;
-  case 0x6175746f: // 'auto'
+  case kControlTagAuto: // 'auto'
     player->ProceedAfterBattleIntroAccepted();
     return;
-  case 0x72657472: // 'retr'
+  case kControlTagRetr: // 'retr'
     if (battleLive10 == 0) {
       HandleTacticalCommandTag_retr();
       return;
@@ -708,10 +709,10 @@ void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
       player->ProceedAfterBattleIntroAccepted();
     }
     return;
-  case 0x736b6970: // 'skip'
+  case kControlTagSkip: // 'skip'
     player->HandleTacticalCommandTag_skip();
     return;
-  case 0x74617267: // 'targ'
+  case kControlTagTarg: // 'targ'
     HandleTacticalCommandTag_targ();
     return;
   }
@@ -794,7 +795,7 @@ void TTacticalBattle::SetCurrentTacticalUnitSelection(TTacticalUnit* unit, char 
   if (remoteFlag == 0) {
     unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
     if (multiplayerActive != 0) {
-      g_pGameFlowState->EmitTacticalCommandPacket(0x73656c65 /* 'sele' */, unit, 0, 0);
+      g_pGameFlowState->EmitTacticalCommandPacket(kControlTagSele, unit, 0, 0);
     }
   }
   if (unit->side20 != currentSideC) {
@@ -1029,24 +1030,23 @@ int TTacticalBattle::BuildPathToTargetByDistanceField(TacticalTileIndex walkTile
       for (int innerRemaining = candidateCount - 1; innerRemaining > 0; --innerRemaining) {
         TacticalTileIndex nextTile = *nextSlot;
         TacticalTileIndex curTile = *curSlot;
-        unsigned char swapFlag = static_cast<unsigned char>(tileMoveCostArray24[nextTile] <
-                                                            tileMoveCostArray24[curTile]);
-        if (swapFlag == 0 && tileMoveCostArray24[nextTile] == tileMoveCostArray24[curTile]) {
+        bool swapFlag = tileMoveCostArray24[nextTile] < tileMoveCostArray24[curTile];
+        if (!swapFlag && tileMoveCostArray24[nextTile] == tileMoveCostArray24[curTile]) {
           char nextThreat = tileThreatLevelArray28[nextTile];
           char curThreat = tileThreatLevelArray28[curTile];
           // Tiebreak (truth table verified against the listing): exactly one zero-threat
           // side -> it sorts first; both zero / both nonzero -> coin flip.
           if (nextThreat == 0) {
             if (curThreat != 0) {
-              swapFlag = 1;
+              swapFlag = true;
             } else {
-              swapFlag = static_cast<unsigned char>(rand() & 1);
+              swapFlag = (rand() & 1) != 0;
             }
           } else if (curThreat != 0) {
-            swapFlag = static_cast<unsigned char>(rand() & 1);
+            swapFlag = (rand() & 1) != 0;
           }
         }
-        if (swapFlag != 0) {
+        if (swapFlag) {
           *curSlot = nextTile;
           *nextSlot = curTile;
         }
@@ -1082,7 +1082,7 @@ void TTacticalBattle::MoveTacticalUnitBetweenTiles(TTacticalUnit* unit,
   if (remoteFlag == 0) {
     unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
     if (multiplayerActive != 0) {
-      g_pGameFlowState->EmitTacticalCommandPacket(0x6d6f7665 /* 'move' */, unit, fromTileIndex,
+      g_pGameFlowState->EmitTacticalCommandPacket(kControlTagMove, unit, fromTileIndex,
                                                   toTileIndex);
     }
   }
@@ -1450,8 +1450,8 @@ void TTacticalBattle::ApplyTacticalActionEffectsAndMaybeRemoveUnit(
   if (remoteFlag == 0) {
     unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
     if (multiplayerActive != 0) {
-      g_pGameFlowState->EmitTacticalFireCommandPacket(0x66697265 /* 'fire' */, attackerUnit,
-                                                      targetUnit, damageA, damageB, effectCode2C);
+      g_pGameFlowState->EmitTacticalFireCommandPacket(kControlTagFire, attackerUnit, targetUnit,
+                                                      damageA, damageB, effectCode2C);
     }
   }
   targetUnit->ApplyTacticalDamage(damageA, damageB);
@@ -1560,14 +1560,13 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
   TurnEventDialogNode* dialog = static_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTacticalBattleResult));
 
-  TPicture* headerPicture =
-      static_cast<TPicture*>(dialog->ResolveControlByTag(0x444c4f47 /* 'DLOG' */));
+  TPicture* headerPicture = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog));
   headerPicture->AssertValid();
   headerPicture->SetPictureResourceIdAndRefresh(
       g_pSimMgr->GetActiveNationId() + (localSideWon != 0 ? 0xeed : 0xefb), 0);
 
   TStaticText* titleControl =
-      static_cast<TStaticText*>(headerPicture->ResolveControlByTag(0x7469746c /* 'titl' */));
+      static_cast<TStaticText*>(headerPicture->ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
   {
     int titleMessageIndex;
@@ -1584,7 +1583,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
   }
 
   TStaticText* locationControl =
-      static_cast<TStaticText*>(headerPicture->ResolveControlByTag(0x6c6f6361 /* 'loca' */));
+      static_cast<TStaticText*>(headerPicture->ResolveControlByTag(kControlTagLoca));
   locationControl->AssertValid();
   {
     CString cityName;
@@ -1605,7 +1604,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
   }
 
   TDeluxeText* infoControl =
-      static_cast<TDeluxeText*>(headerPicture->ResolveControlByTag(0x696e666f /* 'info' */));
+      static_cast<TDeluxeText*>(headerPicture->ResolveControlByTag(kControlTagInfo));
   infoControl->AssertValid();
   {
     CString infoText;
@@ -1677,7 +1676,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
   dialog->ShowTurnEventDialog(1);
   void* content = dialog->QueryTurnEventContentObject();
   if (content != 0) {
-    *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = 0x6f6b6179; // 'okay'
+    *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = kControlTagOkay; // 'okay'
   }
   dialog->RefreshTurnEventDialog();
   dialog->Close();
@@ -1826,7 +1825,7 @@ void TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* uni
   int amount = static_cast<int>(rand()) % 400 + unitType * 250 - 5600;
   unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
   if (multiplayerActive != 0) {
-    g_pGameFlowState->EmitTacticalCommandPacket(0x6d696e65 /* 'mine' */, 0, tileIndex, amount);
+    g_pGameFlowState->EmitTacticalCommandPacket(kControlTagMine, 0, tileIndex, amount);
   }
   ConsumeFortStrengthPointsAndInvalidateIfDepleted(tileIndex, amount);
   if (battleView8 != 0) {
@@ -1844,7 +1843,7 @@ void TTacticalBattle::HandleTacticalCommandTag_mine(TacticalTileIndex tileIndex,
   if (remoteFlag == 0) {
     unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
     if (multiplayerActive != 0) {
-      g_pGameFlowState->EmitTacticalCommandPacket(0x6d696e65 /* 'mine' */, 0, tileIndex, amount);
+      g_pGameFlowState->EmitTacticalCommandPacket(kControlTagMine, 0, tileIndex, amount);
     }
   }
   ConsumeFortStrengthPointsAndInvalidateIfDepleted(tileIndex, amount);
@@ -1884,8 +1883,7 @@ void TTacticalBattle::HandleTacticalCommandTag_digg(TTacticalUnit* unit,
   if (remoteFlag == 0) {
     unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
     if (multiplayerActive != 0) {
-      g_pGameFlowState->EmitTacticalCommandPacket(0x64696767 /* 'digg' */, unit, targetTileIndex,
-                                                  0);
+      g_pGameFlowState->EmitTacticalCommandPacket(kControlTagDigg, unit, targetTileIndex, 0);
     }
   }
   TacticalTileIndex unitTileIndex = unit->tileIndex8;
@@ -1952,8 +1950,7 @@ void TTacticalBattle::HandleTacticalCommandTag_raly(TArmyTacUnit* unit, int newM
   if (remoteFlag == 0) {
     unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
     if (multiplayerActive != 0) {
-      g_pGameFlowState->EmitTacticalCommandPacket(0x72616c79 /* 'raly' */, unit, newMorale,
-                                                  newState);
+      g_pGameFlowState->EmitTacticalCommandPacket(kControlTagRaly, unit, newMorale, newState);
     }
   }
   int strength = unit->strength4;
@@ -2292,7 +2289,7 @@ void TTacticalBattle::HandleTacticalCommandTag_depl(TArmyTacUnit* unit, Tactical
   if (remoteFlag == 0) {
     unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
     if (multiplayerActive != 0) {
-      g_pGameFlowState->EmitTacticalCommandPacket(0x6465706c /* 'depl' */, unit, tileIndex, 0);
+      g_pGameFlowState->EmitTacticalCommandPacket(kControlTagDepl, unit, tileIndex, 0);
     }
   }
   unit->tileIndex8 = tileIndex;

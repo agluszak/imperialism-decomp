@@ -1,4 +1,6 @@
 #include "game/navy_ui/TFlagOptionsPicture.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 #include "game/ui_screens/CString.h"
 #include "game/ImperialismApp.h"
@@ -12,7 +14,6 @@
 #include "game/ui_core/TWindow.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x0043da10

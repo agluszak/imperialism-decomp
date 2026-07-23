@@ -1,6 +1,8 @@
 #pragma once
 
 #include "compat.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 // One 0x2c-byte entry in BattleRecord's per-participant detail arrays. The tag at
 // +0x28 is the discriminator used by TBatRepDetLine::InstallViews. The payloads

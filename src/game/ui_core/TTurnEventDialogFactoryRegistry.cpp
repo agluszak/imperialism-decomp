@@ -1,4 +1,5 @@
 #include "game/ui_core/TTurnEventDialogFactoryRegistry.h"
+#include "game/ui_tags_common.h"
 
 #include "game/CSubViewIterator.h"
 #include "game/ui_core/TView.h"
@@ -14,7 +15,7 @@ CSubViewIterator::CSubViewIterator(const TView* owner) {
   // uninitialised until FirstSubView(), matching the original (which never writes +0 here).
   ownerView04 = owner;
   direction08 = 1;
-  identTag0c = 0x20202020;
+  identTag0c = kControlTagSpSpSpSp;
   currentChild10 = nullptr;
 }
 

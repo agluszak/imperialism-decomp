@@ -1,4 +1,6 @@
 #include "game/city_ui/TShipyardView.h"
+#include "game/ui_tags_city.h"
+#include "game/ui_tags_common.h"
 
 #include "game/assets/TAssetMgr.h"
 #include "game/ui_core/TCluster.h"
@@ -45,7 +47,7 @@ TShipyardView::~TShipyardView() {}
 void TShipyardView::Free() {
   g_pDisplayMgr->RemoveGWorld(iconSurfaceB8);
   TView::Free();
-  if (g_nSaveFormatVersion != 0x4d6f696c) { // 'Moil'
+  if (g_nSaveFormatVersion != kControlTagMoil) { // 'Moil'
     g_pUiViewManager->CloseFilesFor(0x23f7);
   }
 }
@@ -62,18 +64,18 @@ void TShipyardView::DoStartup() {
 
   for (int slotIndex = 0; slotIndex < 8; ++slotIndex) {
     TControl* slotButton =
-        static_cast<TControl*>(ResolveControlByTag(0x62757430u + slotIndex)); // 'but0'-'but7'
+        static_cast<TControl*>(ResolveControlByTag(kControlTagBut0 + slotIndex)); // 'but0'-'but7'
     slotButton->SetEnabled(0, 1);
     slotButton->SetState(0, 1);
     buildQueueSlotValues[slotIndex] = 0;
 
     TControl* plusButton =
-        static_cast<TControl*>(slotButton->ResolveControlByTag(0x706c7573u)); // 'plus'
+        static_cast<TControl*>(slotButton->ResolveControlByTag(kControlTagPlus)); // 'plus'
     plusButton->AssertValid();
     plusButton->SetState(0, 0);
 
     TControl* minusButton =
-        static_cast<TControl*>(slotButton->ResolveControlByTag(0x6d696e75u)); // 'minu'
+        static_cast<TControl*>(slotButton->ResolveControlByTag(kControlTagMinu)); // 'minu'
     minusButton->AssertValid();
     minusButton->SetState(0, 0);
   }
@@ -91,7 +93,7 @@ void TShipyardView::DoStartup() {
   style.tail[3] = 0;
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
-  TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(0x7469746cu)); // 'titl'
+  TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
   title->AssertValid();
   title->InstallTextStyle(style.desc, 1);
   title->SetTextFromStringResource(0x2736, 0xe, 1);
@@ -99,19 +101,19 @@ void TShipyardView::DoStartup() {
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
   for (int i = 0; i < 2; ++i) {
     TStaticText* fixedLabel =
-        static_cast<TStaticText*>(ResolveControlByTag(0x66697830u + i)); // 'fix0'/'fix1'
+        static_cast<TStaticText*>(ResolveControlByTag(kControlTagFix0 + i)); // 'fix0'/'fix1'
     fixedLabel->AssertValid();
     fixedLabel->InstallTextStyle(style.desc, 1);
     fixedLabel->SetTextFromStringResource(0x2736, static_cast<short>(i + 0xf), 1);
   }
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
-  TControl* shipName = static_cast<TControl*>(ResolveControlByTag(0x736e616du)); // 'snam'
+  TControl* shipName = static_cast<TControl*>(ResolveControlByTag(kControlTagSnam)); // 'snam'
   shipName->AssertValid();
   shipName->InstallTextStyle(style.desc, 1);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
-  TControl* description = static_cast<TControl*>(ResolveControlByTag(0x64657363u)); // 'desc'
+  TControl* description = static_cast<TControl*>(ResolveControlByTag(kControlTagDesc)); // 'desc'
   description->AssertValid();
   description->InstallTextStyle(style.desc, 1);
 
@@ -122,9 +124,9 @@ void TShipyardView::DoStartup() {
   // 'sele' is a TCluster (confirmed by cross-referencing turn_event_dialog_factory.cpp,
   // which builds a real TCluster with controlTag 'sele'); byte 0x1c8 matches
   // TCluster::SetSelectedChildTagAndRefresh(int) exactly (1 arg, RET 4).
-  TCluster* sele = static_cast<TCluster*>(ResolveControlByTag(0x73656c65u)); // 'sele'
+  TCluster* sele = static_cast<TCluster*>(ResolveControlByTag(kControlTagSele)); // 'sele'
   sele->AssertValid();
-  sele->SetSelectedChildTagAndRefresh(0x62757430); // 'but0'
+  sele->SetSelectedChildTagAndRefresh(kControlTagBut0); // 'but0'
   UpdateFields();
 }
 
@@ -150,22 +152,22 @@ void TShipyardView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       selectedRequirementRow = index;
       SetShip(buildQueueSlotValues[index]);
 
-      TCluster* selection = static_cast<TCluster*>(ResolveControlByTag(0x73656c65u)); // 'sele'
+      TCluster* selection = static_cast<TCluster*>(ResolveControlByTag(kControlTagSele)); // 'sele'
       selection->AssertValid();
-      selection->SetSelectedChildTagAndRefresh(0x62757430 + index); // 'but0'+index
+      selection->SetSelectedChildTagAndRefresh(kControlTagBut0 + index); // 'but0'+index
 
       TShipOrder* order = city94->shipOrderSlots[index];
       short quantity = order->quantityField04;
-      if (sourceHandler->controlTag == 0x706c7573) { // 'plus'
+      if (sourceHandler->controlTag == kControlTagPlus) { // 'plus'
         ++quantity;
       } else {
         --quantity;
       }
       if (order->SetQuantity(quantity)) {
-        TView* queueSlot = ResolveControlByTag(0x636c7530 + index); // 'clu0'+index
+        TView* queueSlot = ResolveControlByTag(kControlTagClu0 + index); // 'clu0'+index
         queueSlot->AssertValid();
         TNumberText* quantityText =
-            static_cast<TNumberText*>(queueSlot->ResolveControlByTag(0x6e756d62)); // 'numb'
+            static_cast<TNumberText*>(queueSlot->ResolveControlByTag(kControlTagNumb)); // 'numb'
         quantityText->AssertValid();
         quantityText->SetControlValue(order->quantityField04, 0);
 
@@ -174,7 +176,7 @@ void TShipyardView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
         OffsetRect(&invalidRect, queueSlot->ownerLocalX, queueSlot->ownerLocalY);
         queueSlot->InvalidateCityDialogRectRegion(&invalidRect, 1);
 
-        TView* queueButton = ResolveControlByTag(0x62757430 + index); // 'but0'+index
+        TView* queueButton = ResolveControlByTag(kControlTagBut0 + index); // 'but0'+index
         queueButton->AssertValid();
         queueButton->RefreshControl();
         SetStats(buildQueueSlotValues[selectedRequirementRow]);
@@ -192,19 +194,20 @@ void TShipyardView::SetShip(short shipType) {
 
   COLORREF savedBackgroundColor = g_pActiveQuickDrawSurfaceContext->blitSurface.backgroundColor;
 
-  TPicture* shipPicture = static_cast<TPicture*>(ResolveControlByTag(0x73706963u)); // 'spic'
+  TPicture* shipPicture = static_cast<TPicture*>(ResolveControlByTag(kControlTagSpic)); // 'spic'
   shipPicture->AssertValid();
   shipPicture->SetPictureResourceIdAndRefresh(static_cast<short>(shipType + 0x266a), 1);
   g_pUiRuntimeContext->SetBackColor(0x38);
 
   CRect invalidRect;
-  TStaticText* shipName = static_cast<TStaticText*>(ResolveControlByTag(0x736e616du)); // 'snam'
+  TStaticText* shipName = static_cast<TStaticText*>(ResolveControlByTag(kControlTagSnam)); // 'snam'
   shipName->AssertValid();
   shipName->SetTextFromStringResource(0x2716, static_cast<short>(shipType + 1), 0);
   shipName->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
-  TStaticText* description = static_cast<TStaticText*>(ResolveControlByTag(0x64657363u)); // 'desc'
+  TStaticText* description =
+      static_cast<TStaticText*>(ResolveControlByTag(kControlTagDesc)); // 'desc'
   description->AssertValid();
   description->SetTextFromStringResource(0x2752, shipType, 0);
   description->QueryBounds(&invalidRect);
@@ -398,14 +401,14 @@ void TShipyardView::SetStats(short shipType) {
   CString shipNameText;
   CRect invalidRect;
 
-  TStaticText* shipName = static_cast<TStaticText*>(ResolveControlByTag(0x736e616du)); // 'snam'
+  TStaticText* shipName = static_cast<TStaticText*>(ResolveControlByTag(kControlTagSnam)); // 'snam'
   shipName->AssertValid();
   g_pSimMgr->GetString(0x2716, shipType, &shipNameText);
   shipName->SetTextAndMaybeRefresh(&shipNameText, 0);
   shipName->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
-  TStaticText* history = static_cast<TStaticText*>(ResolveControlByTag(0x68697374u)); // 'hist'
+  TStaticText* history = static_cast<TStaticText*>(ResolveControlByTag(kControlTagHist)); // 'hist'
   history->AssertValid();
   history->SetTextFromStringResource(0x23f7, shipType, 0);
   history->QueryBounds(&invalidRect);
@@ -413,7 +416,7 @@ void TShipyardView::SetStats(short shipType) {
 
   for (short statIndex = 0; statIndex < 6; ++statIndex) {
     TNumberText* stat =
-        static_cast<TNumberText*>(ResolveControlByTag(0x73746130u + statIndex)); // 'sta0'+index
+        static_cast<TNumberText*>(ResolveControlByTag(kControlTagSta0 + statIndex)); // 'sta0'+index
     stat->AssertValid();
     stat->SetControlValue(GetResourceDescriptorWord08ByTypeOffset(shipType, statIndex), 0);
     stat->QueryBounds(&invalidRect);

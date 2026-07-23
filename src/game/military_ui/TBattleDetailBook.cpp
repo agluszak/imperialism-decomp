@@ -1,8 +1,8 @@
 #include "game/military_ui/TBattleDetailBook.h"
+#include "game/ui_tags_common.h"
 #include "game/ui_core/TWindow.h"
 
 #include "game/ui_core/TControl.h"
-#include "game/ui_control_tags.h"
 
 // SYNTHETIC: IMPERIALISM 0x00430b00
 // TBattleDetailBook::`scalar deleting destructor'

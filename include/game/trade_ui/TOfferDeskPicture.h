@@ -1,6 +1,8 @@
 #pragma once
 
 #include "compat.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 #include "game/ui_core/TPicture.h"
 #include "game/mfc.h"
 

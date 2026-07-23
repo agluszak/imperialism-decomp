@@ -1,4 +1,5 @@
 #include "game/gfx/TGameWindow.h"
+#include "game/ui_tags_common.h"
 
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/THelpMgr.h"
@@ -14,7 +15,6 @@
 #include "game/mfc.h"
 #include "game/ui_core/TApplication.h"
 #include "game/gfx/TDisplayMgr.h"
-#include "game/ui_control_tags.h"
 
 namespace {
 
@@ -107,7 +107,7 @@ char TGameWindow::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoin
 // FUNCTION: IMPERIALISM 0x004ffd70
 void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
   TToolboxEvent* commandEvent = event;
-  TControl* mainControl = static_cast<TControl*>(ResolveControlByTag(kTagMain));
+  TControl* mainControl = static_cast<TControl*>(ResolveControlByTag(kControlTagMain));
   if (mainControl == 0) {
     return;
   }
@@ -120,8 +120,8 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
   commandEvent->handledMarker = kUiCommandHandledMarker;
 
   short commandCode = commandEvent->commandCode;
-  if (commandCode == 0x68 || commandCode == 0x48) {
-    if (mainControl->ResolveControlByTag(kTagQuery) != 0) {
+  if (commandCode == kUiKeyHelpLowerCase || commandCode == kUiKeyHelpUpperCase) {
+    if (mainControl->ResolveControlByTag(kControlTagQuer) != 0) {
       if (g_pHelpMgr != 0) {
         GameWindowInvoke::PlayClickSfx7000();
         if (QueryUiRuntimeEventCode() == kTurnEventStrategicMap) {
@@ -134,9 +134,10 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
     }
   }
 
-  if (commandCode == 3 || commandCode == 0xd || commandCode == 0x1b || commandCode == 0x20) {
+  if (commandCode == kUiKeyEnter || commandCode == kUiKeyReturn || commandCode == kUiKeyEscape ||
+      commandCode == kUiKeySpace) {
     if (QueryUiRuntimeEventCode() != kTurnEventStrategicMap &&
-        mainControl->ResolveControlByTag(0x656e6420) != 0) { // 'end '
+        mainControl->ResolveControlByTag(kControlTagEnd) != 0) { // 'end '
       GameWindowInvoke::PlayClickSfx7000();
       if (g_pSimMgr->mode != 0x11) {
         g_pSimMgr->StartNextPhase();

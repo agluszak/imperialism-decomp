@@ -1,7 +1,8 @@
 #include "game/ui_screens/TBook.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_screens.h"
 
 #include "game/ui_screens/TPageView.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x00430280
@@ -34,7 +35,7 @@ void TBook::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) 
     // handled independently -- the row-count refresh below runs once per tag (up to
     // twice), seeded from THAT tag's own control, not a single re-resolved 'page'
     // control after the loop.
-    for (unsigned int tag = 0x70616765u; tag <= 0x70616766u; ++tag) {
+    for (int tag = kControlTagPage; tag <= kControlTagPagf; ++tag) {
       TPageView* pageControl = static_cast<TPageView*>(ResolveControlByTag(tag));
       if (pageControl != nullptr) {
         pageControl->AssertValid();
@@ -55,7 +56,7 @@ void TBook::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) 
 
 // FUNCTION: IMPERIALISM 0x0056f6c0
 void TBook::ShowPage(int currentPage) {
-  TPageView* pageControl = static_cast<TPageView*>(ResolveControlByTag(0x70616765u /* 'page' */));
+  TPageView* pageControl = static_cast<TPageView*>(ResolveControlByTag(kControlTagPage));
   pageControl->AssertValid();
 
   if (currentPage == 1) {

@@ -1,4 +1,6 @@
 #include "game/tactical_ui/TTacticalToolbar.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 
 #include "game/ui_screens/CString.h"
 #include "game/gfx/TAmbitApplication.h"
@@ -12,7 +14,6 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // 0x5c4910, ported in ui_text_label_helpers.cpp.
@@ -39,7 +40,7 @@ void TTacticalToolbar::DoPostCreate(int arg) {
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x20, helpControl);
   TView* targControl = ResolveControlByTag(kControlTagTarg);
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x21, targControl);
-  TView* doneControl = ResolveControlByTag(kTagDone);
+  TView* doneControl = ResolveControlByTag(kControlTagDone);
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x22, doneControl);
   TView* retrControl = ResolveControlByTag(kControlTagRetr);
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x23, retrControl);
@@ -144,7 +145,7 @@ void TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls(int mode) 
     targControl->AssertValid();
     targControl->SetEnabled(0, 1);
     targControl->SetState(0, 1);
-    TPicture* doneControl = static_cast<TPicture*>(ResolveControlByTag(kTagDone));
+    TPicture* doneControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagDone));
     doneControl->AssertValid();
     doneControl->SetPictureResourceIdAndRefresh(0xed4, 1);
     TPicture* retrControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagRetr));
@@ -154,7 +155,7 @@ void TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls(int mode) 
     autoControl->AssertValid();
     autoControl->SetEnabled(0, 1);
     autoControl->SetState(0, 1);
-    LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x2e, ResolveControlByTag(kTagDone));
+    LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x2e, ResolveControlByTag(kControlTagDone));
     LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x2f, ResolveControlByTag(kControlTagRetr));
   } else {
     // Live battle: 'targ'/'auto' armed, 'done'/'retr' show the battle bitmaps and the
@@ -163,7 +164,7 @@ void TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls(int mode) 
     targControl->AssertValid();
     targControl->SetEnabled(1, 1);
     targControl->SetState(1, 1);
-    TPicture* doneControl = static_cast<TPicture*>(ResolveControlByTag(kTagDone));
+    TPicture* doneControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagDone));
     doneControl->AssertValid();
     doneControl->SetPictureResourceIdAndRefresh(0xece, 1);
     TPicture* retrControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagRetr));
@@ -173,7 +174,7 @@ void TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls(int mode) 
     autoControl->AssertValid();
     autoControl->SetEnabled(1, 1);
     autoControl->SetState(1, 1);
-    LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x22, ResolveControlByTag(kTagDone));
+    LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x22, ResolveControlByTag(kControlTagDone));
     LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x23, ResolveControlByTag(kControlTagRetr));
   }
 }
@@ -183,7 +184,7 @@ void TTacticalToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
   if (commandId == 0xa) {
     unsigned int tag = sourceHandler->controlTag;
     switch (tag) {
-    case kTagDone:
+    case kControlTagDone:
     case kControlTagAuto:
     case kControlTagRetr:
     case kControlTagTarg:

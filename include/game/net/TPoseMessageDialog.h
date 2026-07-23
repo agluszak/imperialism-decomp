@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/ui_core/TCommand.h"
+#include "game/multiplayer_session_tags.h"
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x0065c0e8

@@ -1,7 +1,6 @@
 #include "game/ui_widgets/TCivReport.h"
 #include "game/mfc.h"
 
-
 // SYNTHETIC: IMPERIALISM 0x00590b90
 // TCivReport::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00590c10

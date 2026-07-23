@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/ui_core/TControl.h"
+#include "game/ui_tags_common.h"
 #include "game/ui_core/TView.h"
 
 class TCivUnit;
@@ -10,7 +11,7 @@ class TViewMgr;
 // child control. These are never constructed here — they only give names to the
 // vtable slots dispatched on the concrete (not-yet-recovered) dialog/control classes
 // returned by TAssetMgr::ResolveTurnEventDialogNodeByMessageContext and
-// TView::ResolveControlByTag(0x444c4f47 == 'GOLD'). Both TViewMgr.cpp and
+// TView::ResolveControlByTag('DLOG' == 'GOLD'). Both TViewMgr.cpp and
 // TMacViewMgr.cpp resolve the identical runtime objects, so a single shared
 // definition prevents the two copies from drifting (bd imperialism-decomp-hpd.7).
 //

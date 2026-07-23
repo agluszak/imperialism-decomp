@@ -1,4 +1,6 @@
 #include "game/ui_core/TViewMgr.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 #include "game/gfx/TTemplateDialogs.h"
 #include "game/ui_core/TEventHandler.h"
 
@@ -34,7 +36,6 @@
 #include "game/gfx/TDisplayMgr.h" // g_pDisplayMgr, g_szUiNilPointerMessage, g_szUiFailureMessage
 #include "game/ui_core/THelpMgr.h"
 #include "game/ui_core/TWindow.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_widgets/TInfoBarText.h"
 #include "game/app/TCouncilTickerAnimation.h"
 #include "game/diplomacy_ui/TCouncilView.h"
@@ -374,20 +375,21 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x223);
   }
   node->ShowTurnEventDialog(1);
-  if (node->ResolveControlByTag(0x444c4f47) == nullptr) { // 'GOLD'
+  if (node->ResolveControlByTag(kControlTagDialog) == nullptr) { // 'GOLD'
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x227);
   }
   void* content = node->QueryTurnEventContentObject();
   if (content != nullptr) {
-    *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = 0x70696335; // 'cip5'
+    *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = kControlTagPic5; // 'cip5'
   }
 
   POINT placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
 
-  GoldDialogControl* gold = static_cast<GoldDialogControl*>(node->ResolveControlByTag(0x444c4f47));
+  GoldDialogControl* gold =
+      static_cast<GoldDialogControl*>(node->ResolveControlByTag(kControlTagDialog));
   gold->AssertValid();
   gold->SetGoldControlStateByResource(0x24cd, 0);
 
@@ -494,7 +496,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   dialog->ShowTurnEventDialog(1);
   void* content = dialog->QueryTurnEventContentObject();
   if (content != 0) {
-    *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = 0x6f6b6179; // 'okay'
+    *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = kControlTagOkay; // 'okay'
   }
 
   POINT placement;
@@ -502,7 +504,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   dialog->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
 
   GoldDialogControl* gold =
-      static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47)); // 'GOLD'
+      static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'GOLD'
   gold->AssertValid();
   if (gold == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -516,7 +518,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   gold->SetGoldControlStateByResource(goldResource, 0);
 
   GoldDialogControl* coat =
-      static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x636f6174)); // 'coat'
+      static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(kControlTagCoat)); // 'coat'
   coat->AssertValid();
   if (coat == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -530,16 +532,16 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
 
   if (static_cast<short>(payloadResource) != 0) {
     GoldDialogControl* goldValue =
-        static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47)); // 'GOLD'
+        static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'GOLD'
     goldValue->AssertValid();
     goldValue->SetGoldControlStateByResource(contextTag + 0x252a, 0);
     GoldDialogControl* award =
-        static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x72657761)); // 'awer'
+        static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(kControlTagRewa)); // 'awer'
     award->AssertValid();
     award->SetGoldControlStateByResource(payloadResource, 0);
   } else {
     TStaticText* title =
-        static_cast<TStaticText*>(dialog->ResolveControlByTag(0x7469746c)); // 'titl'
+        static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagTitl)); // 'titl'
     title->AssertValid();
     if (title == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -555,7 +557,8 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     title->SetTextAndMaybeRefresh(&titleText, 0);
   }
 
-  TDeluxeText* info = static_cast<TDeluxeText*>(dialog->ResolveControlByTag(0x696e666f)); // 'info'
+  TDeluxeText* info =
+      static_cast<TDeluxeText*>(dialog->ResolveControlByTag(kControlTagInfo)); // 'info'
   info->AssertValid();
   info->SetTextEntryFromChars(messageChars, messageLength);
   info->SetTextStyle(styleDescriptor, 0);
@@ -581,7 +584,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   }
 
   if (showCancel != 0) {
-    TView* cancel = dialog->ResolveControlByTag(0x636e636c); // 'cncl'
+    TView* cancel = dialog->ResolveControlByTag(kControlTagCncl); // 'cncl'
     cancel->AssertValid();
     cancel->SetEnabled(1, 1);
     cancel->SetState(1, 0);
@@ -621,7 +624,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   if (simSuppressed) {
     g_pGameFlowState->processPrimaryEventQueue = savedProcessFlag;
   }
-  if (modalResult == 0x636e636c) { // 'cncl'
+  if (modalResult == kControlTagCncl) { // 'cncl'
     return false;
   }
   return true;
@@ -793,9 +796,9 @@ void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   // Turn-event 0x7DD targets the 'trb1' toolbar tag; everything else the 'tool' tag.
   TControl* control;
   if (this->currentTurnEventCode == kTurnEventStrategicMap) {
-    control = static_cast<TControl*>(mainView->ResolveControlByTag(0x74627231));
+    control = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagTbr1));
   } else {
-    control = static_cast<TControl*>(mainView->ResolveControlByTag(0x746f6f6c));
+    control = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagTool));
   }
   if (control != nullptr) {
     static_cast<TToolBarCluster*>(control)->UpdateControlTagTreaTextFromNationAndMapContext(
@@ -845,7 +848,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlot70(int eventCode) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x4ff);
   }
   GoldCommitControl* gold = static_cast<GoldCommitControl*>(
-      static_cast<TView*>(node->ResolveControlByTag(0x444c4f47))); // 'GOLD'
+      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'GOLD'
   gold->AssertValid();
   if (gold != nullptr) {
     gold->CommitGoldDialogContent();
@@ -863,7 +866,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlot74(int eventCode) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x514);
   }
   GoldCommitControl* gold = static_cast<GoldCommitControl*>(
-      static_cast<TView*>(node->ResolveControlByTag(0x444c4f47))); // 'GOLD'
+      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'GOLD'
   gold->AssertValid();
   if (gold != nullptr) {
     gold->CommitGoldDialogContent();
@@ -889,7 +892,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlot78(int eventCode) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x535);
   }
   GoldCommitControl* gold = static_cast<GoldCommitControl*>(
-      static_cast<TView*>(node->ResolveControlByTag(0x444c4f47))); // 'GOLD'
+      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'GOLD'
   gold->AssertValid();
   if (gold != nullptr) {
     gold->CommitGoldDialogContent();
@@ -910,7 +913,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlot7C(int eventCode) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x54e);
   }
   GoldCommitControl* gold = static_cast<GoldCommitControl*>(
-      static_cast<TView*>(node->ResolveControlByTag(0x444c4f47))); // 'GOLD'
+      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'GOLD'
   gold->AssertValid();
   if (gold != nullptr) {
     gold->CommitGoldDialogContent();
@@ -931,7 +934,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlot80(int eventCode) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x566);
   }
   GoldCommitControl* gold = static_cast<GoldCommitControl*>(
-      static_cast<TView*>(node->ResolveControlByTag(0x444c4f47))); // 'GOLD'
+      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'GOLD'
   gold->AssertValid();
   if (gold != nullptr) {
     gold->CommitGoldDialogContent();
@@ -1181,7 +1184,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
     TWindow* window = static_cast<TWindow*>(iter.FirstWindow());
     while (iter.More() != 0) {
       const unsigned int tag = static_cast<unsigned int>(window->controlTag);
-      if (tag == kControlTagWpam || tag == kControlTagWnrt) {
+      if (tag == kControlTagMapW || tag == kControlTagTrnW) {
         window->CloseAndFree();
       }
       window = static_cast<TWindow*>(iter.NextWindow());
@@ -1237,7 +1240,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
     this->field10 = 0;
   }
   TControl* inclControl =
-      static_cast<TControl*>(mainView->ResolveControlByTag(0x496e636c)); // 'Incl'
+      static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagIncl)); // 'Incl'
   if (inclControl != nullptr) {
     inclControl->AssertValid();
     inclControl->RefreshControl();
@@ -1252,7 +1255,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   int anchorPoint[2] = {0, 0};
   packet->BuildTurnEventFactoryPacket(nullptr, mainView, newCode, anchorPoint, &emptyText, 1);
   packet->DoPostCreate(0);
-  packet->controlTag = 0x496e636c; // 'Incl'
+  packet->controlTag = kControlTagIncl; // 'Incl'
   packet->RefreshControl();
   g_pDisplayMgr->UpdateTheGWorld(newCode);
   if (this->field10 != 0) {
@@ -1363,7 +1366,7 @@ void TViewMgr::HandleTurnEvent7DB_SelectCityAndRefreshView(int) {
     cityControl->SetHoverHelpText(g_szEmptyString);
   }
 
-  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagBpot);
+  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTopB);
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTool);
 
   TControl* querControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagQuer));
@@ -1413,7 +1416,7 @@ void TViewMgr::HandleTurnEvent7D8_ActivateDiplomacyMapView(int) {
     diplControl->SetHoverHelpText(g_szEmptyString);
   }
 
-  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagBpot);
+  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTopB);
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTool);
 
   TControl* querControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagQuer));
@@ -1440,7 +1443,7 @@ void TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(int)
     tranControl->SetHoverHelpText(g_szEmptyString);
   }
 
-  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagBpot);
+  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTopB);
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTool);
 
   TControl* querControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagQuer);
@@ -1477,7 +1480,7 @@ void TViewMgr::RefreshTechnologyStorePageAndHudText(int nationSlot) {
   for (int titleIndex = 0; titleIndex < 3; ++titleIndex) {
     CString title;
     TDropShadowText* titleControl = static_cast<TDropShadowText*>(
-        mainView->ResolveControlByTag(0x74746c31u + titleIndex)); // 'ttl1'..'ttl3'
+        mainView->ResolveControlByTag(kControlTagTtl1 + titleIndex)); // 'ttl1'..'ttl3'
     titleControl->AssertValid();
     ApplyUiTextStyleAndThemeFlags(titleControl, 0, 0xe, 0x2b6a, 0x2b68);
     g_pSimMgr->GetString(0x274f, static_cast<short>(titleIndex + 4), &title);
@@ -1580,9 +1583,9 @@ void TViewMgr::SyncTacticalStatusPanelRegion() {
 void TViewMgr::HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(int) {
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
   turn_event_ui_refresh::RefreshTradClusterPictureAndHintText();
-  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagBpot);
+  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTopB);
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTool);
-  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagBpot, 0x2730, 0);
+  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagTopB, 0x2730, 0);
 
   TControl* textControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagText);
   if (textControl != nullptr) {
@@ -1601,9 +1604,9 @@ void TViewMgr::HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(int) {
 
   turn_event_ui_refresh::ApplyThemeToTaggedTextControl(kControlTagText, 0xc, 0x2b67, 0x2b6c);
   turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagText, 0x2730, 0);
-  turn_event_ui_refresh::ApplyThemeToTaggedTextControl(kControlTagFood, 0xc, 0x2b67, 0x2b6c);
-  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2730, 0);
-  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2731, 0);
+  turn_event_ui_refresh::ApplyThemeToTaggedTextControl(kControlTagDoof, 0xc, 0x2b67, 0x2b6c);
+  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagDoof, 0x2730, 0);
+  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagDoof, 0x2731, 0);
 
   TextStyle foodStyle;
   foodStyle.fontFamily = 0;
@@ -1611,15 +1614,15 @@ void TViewMgr::HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(int) {
   foodStyle.fontSize = 0;
   foodStyle.textColor = 0;
   BuildUiTextStyleDescriptor(&foodStyle, 0, 0xc, 0x2b6b);
-  TControl* foodControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagFood);
+  TControl* foodControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagDoof);
   if (foodControl != nullptr) {
     foodControl->AssertValid();
     foodControl->InstallTextStyle(foodStyle, 0);
-    turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2730, 0);
+    turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagDoof, 0x2730, 0);
     foodControl->InstallTextStyle(foodStyle, 0);
-    turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2730, 0);
+    turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagDoof, 0x2730, 0);
     foodControl->InstallTextStyle(foodStyle, 0);
-    turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2730, 0);
+    turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagDoof, 0x2730, 0);
   }
 
   turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagQuer, 0x2730, 0);
@@ -1661,7 +1664,7 @@ void TViewMgr::HandleTurnEvent2260_RefreshMainHudTitles(int) {
   LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, queryControl);
 
   TControl* titleControl =
-      static_cast<TControl*>(mainControl->ResolveControlByTag(0x7469744c)); // 'titL'
+      static_cast<TControl*>(mainControl->ResolveControlByTag(kControlTagTitL)); // 'titL'
   if (titleControl != nullptr) {
     titleControl->AssertValid();
     titleControl->RefreshControl();
@@ -1683,7 +1686,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int) {
   }
 
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
-  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTrb1);
+  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTbr1);
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTool);
 
   turn_event_ui_refresh::RefreshOrderStatusPicture(kControlTagDipl, 1, 0x24d9, 0x24e1);
@@ -1718,7 +1721,8 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int) {
 // FUNCTION: IMPERIALISM 0x005db3b0
 void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
-  TMovieView* movieView = static_cast<TMovieView*>(activeDialog->ResolveControlByTag(0x6d6f7669));
+  TMovieView* movieView =
+      static_cast<TMovieView*>(activeDialog->ResolveControlByTag(kControlTagMovi));
   movieView->AssertValid();
   movieView->SetState(1, 0);
   movieView->ForceRedraw();
@@ -1933,8 +1937,8 @@ void TViewMgr::InitializeCitySiteSelectionScreenForNation(int nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x005dc3f0
 void TViewMgr::ConfigureActiveDialogGoldValueGridForTurnEvent3C0() {
-  GoldCommitControl* gold = static_cast<GoldCommitControl*>(
-      static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(0x444c4f47))); // 'GOLD'
+  GoldCommitControl* gold = static_cast<GoldCommitControl*>(static_cast<TView*>(
+      g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog))); // 'GOLD'
   gold->AssertValid();
   gold->ConfigureGoldValueCells(0x14, 0x14);
 }
@@ -1949,7 +1953,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotB8(int a, int b, int c) {
   }
   node->ShowTurnEventDialog(1);
   GoldCommitControl* gold = static_cast<GoldCommitControl*>(
-      static_cast<TView*>(node->ResolveControlByTag(0x444c4f47))); // 'GOLD'
+      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'GOLD'
   gold->AssertValid();
   if (gold == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -2036,8 +2040,8 @@ void TViewMgr::ShowUnitHistory(short nationSlot) {
 
     // Mac Transport.rsrc:3901 identifies the twenty history labels as the
     // consecutive FourCC tags `txtA`..`txtT`.
-    TStaticText* textControl =
-        static_cast<TStaticText*>(activeDialog->ResolveControlByTag(0x74787440u + entryOrdinal));
+    TStaticText* textControl = static_cast<TStaticText*>(
+        activeDialog->ResolveControlByTag(kControlTagTxtAt + entryOrdinal));
     if (textControl != 0) {
       textControl->SetEnabled(1, 1);
       textControl->SetTextAndMaybeRefresh(&lineText, 1);

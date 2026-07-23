@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/ui_core/TView.h"
+#include "game/ui_tags_common.h"
 #include "game/mfc.h"
 
 // VTABLE: IMPERIALISM 0x0064d100

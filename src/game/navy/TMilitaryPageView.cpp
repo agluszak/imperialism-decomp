@@ -1,4 +1,5 @@
 #include "game/navy/TMilitaryPageView.h"
+#include "game/ui_tags_common.h"
 
 #include "game/ui_screens/CString.h"
 #include "game/app/TAnimation.h"
@@ -11,7 +12,6 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x00564860
 // TMilitaryPageView::CreateObject

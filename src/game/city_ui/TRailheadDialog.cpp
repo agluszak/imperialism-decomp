@@ -1,4 +1,7 @@
 #include "game/city_ui/TRailheadDialog.h"
+#include "game/resource_domain_types.h"
+#include "game/ui_tags_city.h"
+#include "game/ui_tags_common.h"
 
 #include "game/city/TCity.h"
 #include "game/ui_core/TCluster.h"
@@ -25,7 +28,7 @@ TRailheadDialog::TRailheadDialog() {}
 void TRailheadDialog::StuffValues(TCity* city) {
   city60 = city;
 
-  TCluster* choice = static_cast<TCluster*>(ResolveControlByTag(0x63686f69)); // 'choi'
+  TCluster* choice = static_cast<TCluster*>(ResolveControlByTag(kControlTagChoi)); // 'choi'
   if (choice == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x732);
   }
@@ -64,15 +67,15 @@ void TRailheadDialog::StuffValues(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x004bd260
 void TRailheadDialog::DoClosingAction(unsigned long dialogActionTag) {
-  if (dialogActionTag == 0x6f6b6179) {                                          // 'okay'
-    TCluster* choice = static_cast<TCluster*>(ResolveControlByTag(0x63686f69)); // 'choi'
+  if (dialogActionTag == kControlTagOkay) {                                          // 'okay'
+    TCluster* choice = static_cast<TCluster*>(ResolveControlByTag(kControlTagChoi)); // 'choi'
     if (choice == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x75e);
     }
 
     int selectedTag = choice->GetSelectedChildTag();
     short selectedResourceType = 0;
-    while (selectedResourceType < 0x17 &&
+    while (selectedResourceType < kResourceKindCount &&
            g_pTradeSummarySelectionMap[selectedResourceType] != selectedTag) {
       ++selectedResourceType;
     }

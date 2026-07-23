@@ -1,4 +1,10 @@
 #include "game/gfx/TAmbitApplication.h"
+#include "game/multiplayer_session_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
+#include "game/ui_tags_screens.h"
+#include "game/ui_tags_widgets.h"
+#include "game/resource_domain_types.h"
 #include "game/net/TMultiplayerMgr.h"
 
 #include <string.h>
@@ -165,7 +171,6 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/ui_screens/TTextPictureButton.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/turn_event_dialog_provisional.h"
-#include "game/ui_control_tags.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 #include <cstdlib>
@@ -208,7 +213,7 @@ TMultiplayerMgr::TMultiplayerMgr()
   lobbyDialogView40 = 0;
   primaryTurnEventQueueHead = 0;
   secondaryTurnEventQueueHead = 0;
-  sessionPhaseTag = 0x6e616461;
+  sessionPhaseTag = kControlTagNada;
   fieldF4 = 0;
 }
 
@@ -246,7 +251,7 @@ undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int ses
 
   for (int i = 0; i < kMajorNationSessionSlotCount; ++i) {
     nationSessionIds[i] = 0;
-    nationStatusTags[i] = 0x756e6173;
+    nationStatusTags[i] = kSessionTagUnas;
     nationDisplayNameSlots[i] = loadedString;
     defaultNationTextSlots[i] = nationDisplayNameSlots[i];
   }
@@ -333,7 +338,7 @@ void TMultiplayerMgr::ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(int 
   unsigned char hosting = g_pSimMgr->multiplayerSessionRole == 1;
   if (hosting != 0) {
     TurnEvent1PendingMaskPacket packet;
-    packet.messageTag = 0x74696d65;
+    packet.messageTag = kControlTagTime;
     packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
     packet.eventCode = 0;
     packet.fromNetworkId = 0;
@@ -369,7 +374,7 @@ void TMultiplayerMgr::EnsureGameFlowStateAndPostTurnEvent5E5() {
   g_pGlobalUiRootController->InstallCohandler(self, 1);
   g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
       EncodeTurnEventCode(kTurnEventMultiplayerGameSetup));
-  self->sessionPhaseTag = 0x70726570; // 'prep'
+  self->sessionPhaseTag = kSessionTagPrep; // 'prep'
 }
 
 // FUNCTION: IMPERIALISM 0x00544630
@@ -379,14 +384,14 @@ void TMultiplayerMgr::ResetDiplomacyRuntimeSelectionAndSetModeNada() {
   if (g_pNetMgr006a6014 != 0) {
     g_pNetMgr006a6014->ResetRuntimeSelectionRecordBufferAndReturnTrue();
   }
-  sessionPhaseTag = 0x6e616461; // 'nada'
+  sessionPhaseTag = kControlTagNada; // 'nada'
   lobbyDialogView40 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005446a0
 void TMultiplayerMgr::EmitTurnEvent3Mode18WithActiveNation() {
   TurnEvent3Mode18Packet packet;
-  packet.packetTag = 0x74696d65;
+  packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventCode = 0;
   packet.fromNetworkId = 0;
@@ -404,7 +409,7 @@ void TMultiplayerMgr::EmitTurnEvent10ForFlaggedNationSlots() {
   for (int slot = 0; slot < kMajorNationSessionSlotCount; ++slot) {
     if (nationSessionIds[slot] != 0 && (pendingNationBitmask & (1 << slot)) != 0) {
       TurnEvent3Mode18Packet packet;
-      packet.packetTag = 0x74696d65;
+      packet.packetTag = kControlTagTime;
       packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
       packet.eventCode = 0;
       packet.fromNetworkId = 0;
@@ -634,7 +639,7 @@ unsigned char TMultiplayerMgr::InitializeProtocolOptionControlFromProvider(TView
   }
 
   int defaultProtocolTag = 0;
-  g_pUiViewManager->LoadSettingValueByKeyIntoOut("DefaultProtocol", 0x70726f30 /* 'pro0' */,
+  g_pUiViewManager->LoadSettingValueByKeyIntoOut("DefaultProtocol", kControlTagPro0,
                                                  &defaultProtocolTag);
   TRadioTextCluster* protControl =
       static_cast<TRadioTextCluster*>(provider->ResolveControlByTag(kControlTagProt));
@@ -643,7 +648,7 @@ unsigned char TMultiplayerMgr::InitializeProtocolOptionControlFromProvider(TView
   if (defaultOption != 0) {
     protControl->SetSelectedTextOptionByTag(defaultProtocolTag, true);
   } else {
-    protControl->SetSelectedTextOptionByTag(0x70726f30 /* 'pro0' */, true);
+    protControl->SetSelectedTextOptionByTag(kControlTagPro0, true);
   }
   return 1;
 }
@@ -656,7 +661,7 @@ unsigned char TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DC() {
   if (g_pNetMgr006a6014 != 0) {
     g_pNetMgr006a6014->ResetRuntimeSelectionRecordBufferAndReturnTrue();
   }
-  sessionPhaseTag = 0x6e616461; // 'nada'
+  sessionPhaseTag = kControlTagNada; // 'nada'
   lobbyDialogView40 = 0;
   g_pGlobalUiRootController->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
   return 1;
@@ -719,7 +724,7 @@ unsigned char TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DCAlt() {
   if (g_pNetMgr006a6014 != 0) {
     g_pNetMgr006a6014->ResetRuntimeSelectionRecordBufferAndReturnTrue();
   }
-  sessionPhaseTag = 0x6e616461; // 'nada'
+  sessionPhaseTag = kControlTagNada; // 'nada'
   lobbyDialogView40 = 0;
   g_pGlobalUiRootController->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
   return 1;
@@ -755,21 +760,21 @@ unsigned char TMultiplayerMgr::ResetNationStatusSlotsAndInitializeNameControls(T
   CString loadedString;
   for (int i = 0; i < kMajorNationSessionSlotCount; ++i) {
     nationSessionIds[i] = 0;
-    nationStatusTags[i] = 0x756e6173; // 'unas'
+    nationStatusTags[i] = kSessionTagUnas; // 'unas'
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&loadedString, 0x2759, 1);
     TStaticText* nameControl =
-        static_cast<TStaticText*>(panel->ResolveControlByTag(0x6e616d30u + i)); // 'nam0'-'nam6'
+        static_cast<TStaticText*>(panel->ResolveControlByTag(kControlTagNam0 + i)); // 'nam0'-'nam6'
     nameControl->AssertValid();
     nameControl->SetTextAndMaybeRefresh(&loadedString, 1);
   }
 
-  TView* okayControl = panel->ResolveControlByTag(0x6f6b6179u); // 'okay'
+  TView* okayControl = panel->ResolveControlByTag(kControlTagOkay); // 'okay'
   okayControl->AssertValid();
   okayControl->SetEnabled(0, 0);
 
   if (g_pSimMgr->multiplayerSessionRole == 2) {
     TurnEvent3Mode18Packet packet;
-    packet.packetTag = 0x74696d65; // 'time'
+    packet.packetTag = kControlTagTime; // 'time'
     packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
     packet.eventCode = 0;
     packet.fromNetworkId = 0;
@@ -798,7 +803,7 @@ unsigned char TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3() {
   lobbyDialogView40 = 0;
 
   TurnEvent3Mode18Packet packet;
-  packet.packetTag = 0x74696d65; // 'time'
+  packet.packetTag = kControlTagTime; // 'time'
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventCode = 0;
   packet.fromNetworkId = 0;
@@ -1011,7 +1016,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         return 1;
       } else {
         TurnEventCKickMessagePacket kick;
-        kick.messageTag = 0x74696d65; // 'time'
+        kick.messageTag = kControlTagTime; // 'time'
         short activeNation8 = g_pSimMgr->GetActiveNationId();
         kick.eventCode = 0;
         kick.activeNationId = (unsigned char)activeNation8;
@@ -1036,7 +1041,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     for (int scanSlot = 0; scanSlot < 7; ++scanSlot) {
       if (nationSessionIds[scanSlot] == announce8->fromNetworkId) {
         nationSessionIds[scanSlot] = 0;
-        nationStatusTags[scanSlot] = 0x756e6173; // 'suna'
+        nationStatusTags[scanSlot] = kSessionTagUnas; // 'suna'
         const char* emptyName = g_szEmptyString;
         LobbyChatEvent9Packet vacate;
         vacate.InitializeEmitEventHeaderWithActiveNation();
@@ -1102,17 +1107,17 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       CString statusText;
       if (sessionId == 0) {
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&statusText, 0x2759, 1);
-        nationStatusTags[slot9] = 0x756e6173; // 'suna'
+        nationStatusTags[slot9] = kSessionTagUnas; // 'suna'
       } else {
         statusText = nationDisplayNameSlots[slot9];
         unsigned char sessionBusy;
-        if (sessionPhaseTag == 0x676f696e /* 'goin' */ && g_pSimMgr->GetActiveNationId() != -1) {
+        if (sessionPhaseTag == kSessionTagGoin && g_pSimMgr->GetActiveNationId() != -1) {
           sessionBusy = 1;
         } else {
           sessionBusy = 0;
         }
         nationStatusTags[slot9] =
-            (-(unsigned int)sessionBusy & 0xf0100f00) + 0x72656479; // 'busy' : 'redy'
+            (-(unsigned int)sessionBusy & 0xf0100f00) + kSessionTagRedy; // 'busy' : 'redy'
       }
       nationDisplayNameSlots[slot9] = statusText;
       defaultNationTextSlots[slot9] = nationDisplayNameSlots[slot9];
@@ -1124,8 +1129,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         lounge = 0;
       }
       if (lounge != 0) {
-        TStaticText* nameLabel =
-            (TStaticText*)lounge->ResolveControlByTag(0x6e616d30 /* 'nam0' */ + slot9);
+        TStaticText* nameLabel = (TStaticText*)lounge->ResolveControlByTag(kControlTagNam0 + slot9);
         nameLabel->AssertValid();
         CString normalizedName = g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&statusText);
         nameLabel->SetTextAndMaybeRefresh(&normalizedName, 1);
@@ -1140,7 +1144,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
             --mySlot;
           }
           TMapPreviewView* mapControl =
-              static_cast<TMapPreviewView*>(lounge->ResolveControlByTag(0x6d617020 /* 'map ' */));
+              static_cast<TMapPreviewView*>(lounge->ResolveControlByTag(kControlTagMapP));
           mapControl->AssertValid();
           mapControl->selectedNation68 = mySlot;
           mapControl->EnhancePhoto();
@@ -1150,7 +1154,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
             ScopedMapQuickDrawContext quickDraw(mapControl);
             mapControl->Draw(&mapRect);
           }
-          TPicture* coatControl = (TPicture*)lounge->ResolveControlByTag(0x636f6174 /* 'coat' */);
+          TPicture* coatControl = (TPicture*)lounge->ResolveControlByTag(kControlTagCoat);
           coatControl->AssertValid();
           if (mySlot >= 0) {
             coatControl->SetPictureResourceIdAndRefresh((short)(mySlot + 0x120a), 1);
@@ -1175,7 +1179,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
             canStart = 1;
           }
           TTextPictureButton* okayButton =
-              (TTextPictureButton*)lounge->ResolveControlByTag(0x6f6b6179 /* 'okay' */);
+              (TTextPictureButton*)lounge->ResolveControlByTag(kControlTagOkay);
           okayButton->AssertValid();
           CString startText;
           g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&startText, 0x2759, 3);
@@ -1188,7 +1192,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           okayButton->themeCode9A = 0x2b6c;
           okayButton->themeCode9C = 0x2b6b;
           okayButton->pointSize98 = 0xc;
-          TView* messControl = lounge->ResolveControlByTag(0x6d657373 /* 'mess' */);
+          TView* messControl = lounge->ResolveControlByTag(kSessionTagMess);
           messControl->AssertValid();
           messControl->SetEnabled(canStart == 0, 1);
           LoadUiStringAndDispatchSharedMessageCommand(0x2742, canStart != 0 ? 0xa : 0xc,
@@ -1261,24 +1265,25 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     dialog->ShowTurnEventDialog(1);
     void* content = dialog->QueryTurnEventContentObject();
     if (content != 0) {
-      *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = 0x6f6b6179; // 'okay'
+      *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = kControlTagOkay; // 'okay'
     }
     POINT placement;
     g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
     dialog->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
-    TPicture* goldPicture = static_cast<TPicture*>(dialog->ResolveControlByTag(0x444c4f47));
+    TPicture* goldPicture = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog));
     goldPicture->AssertValid();
     if (goldPicture == 0) {
       FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr_00698040, 0x7fd);
     }
     goldPicture->SetPictureResourceIdAndRefresh(0x24cd, 0);
-    TPicture* coatPicture = static_cast<TPicture*>(dialog->ResolveControlByTag(0x636f6174));
+    TPicture* coatPicture = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagCoat));
     coatPicture->AssertValid();
     if (coatPicture == 0) {
       FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr_00698040, 0x802);
     }
     coatPicture->SetPictureResourceIdAndRefresh(static_cast<short>(kickerNation + 0x251c), 0);
-    TStaticText* titleControl = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x7469746c));
+    TStaticText* titleControl =
+        static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagTitl));
     titleControl->AssertValid();
     if (titleControl == 0) {
       FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr_00698040, 0x807);
@@ -1286,7 +1291,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     titleControl->InstallTextStyle(styleDescriptor, 0);
     titleControl->SetTextAlignmentAndMaybeRefresh(1, 0);
     titleControl->SetTextAndMaybeRefresh(&titleText, 0);
-    TDeluxeText* infoControl = static_cast<TDeluxeText*>(dialog->ResolveControlByTag(0x696e666f));
+    TDeluxeText* infoControl =
+        static_cast<TDeluxeText*>(dialog->ResolveControlByTag(kControlTagInfo));
     infoControl->AssertValid();
     infoControl->SetTextEntryFromChars(static_cast<const char*>(messageTextC),
                                        messageTextC.GetLength());
@@ -1294,9 +1300,9 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     unsigned char savedProcessPrimary = g_pGameFlowState->processPrimaryEventQueue;
     g_pGameFlowState->processPrimaryEventQueue = 0;
     if (kickerNation != -1 || localSlot != -1) {
-      TPicture* cancelButton = static_cast<TPicture*>(dialog->ResolveControlByTag(0x636e636c));
+      TPicture* cancelButton = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagCncl));
       cancelButton->AssertValid();
-      cancelButton->controlTag = 0x72737670; // 'rsvp'
+      cancelButton->controlTag = kSessionTagRsvp; // 'rsvp'
       cancelButton->SetEnabled(1, 0);
       cancelButton->SetState(1, 0);
       cancelButton->SetPictureResourceIdAndRefresh(0x53a, 0);
@@ -1304,10 +1310,10 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     int responseTag = dialog->RefreshTurnEventDialog();
     dialog->Close();
     dialog->Free();
-    if (responseTag == 0x72737670) { // 'rsvp'
+    if (responseTag == kSessionTagRsvp) { // 'rsvp'
       TPoseMessageDialog* poseCommand = new TPoseMessageDialog();
       poseCommand->kickedByNationSlot18 = kickerNation;
-      poseCommand->InitializeRangePair(0x706f7365 /* 'pose' */, g_pGlobalUiRootController, 0, 0, 0);
+      poseCommand->InitializeRangePair(kSessionTagPose, g_pGlobalUiRootController, 0, 0, 0);
       g_pGlobalUiRootController->DispatchUiSelectionToHandler(poseCommand);
     }
     g_pGameFlowState->processPrimaryEventQueue = savedProcessPrimary;
@@ -1343,8 +1349,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     scenarioSelectionTag = sessionInit->scenarioTag60;
     queueSyncDword = sessionInit->saveSlotDword5C;
-    sessionPhaseTag = 0x696e6974; // 'init'
-    if (scenarioSelectionTag == 0x6c6f6164 /* 'load' */) {
+    sessionPhaseTag = kSessionTagInit; // 'init'
+    if (scenarioSelectionTag == kControlTagLoad) {
       unsigned char probed =
           BuildSaveSlotPathAndProbeMetadata(queueSyncDword, g_pszClientSavePrefix_0065BF5C);
       if (probed == 0) {
@@ -1353,31 +1359,28 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
                                                                         0x14);
         g_pUiRuntimeContext->ModalMessage(messageTextE, g_ptNationAwolModalMessage, 0, 0);
         TCancelGameOptionsCommand* cancelCommand = new TCancelGameOptionsCommand();
-        cancelCommand->InitializeRangePair(0x63676f70 /* 'cgop' */, g_pGlobalUiRootController, 0, 0,
-                                           0);
+        cancelCommand->InitializeRangePair(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
         g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommand);
         return 1;
       }
       g_pGameFlowState->lobbyDialogView40 = 0;
-      g_pGameFlowState->sessionPhaseTag = 0x676f696e; // 'goin'
+      g_pGameFlowState->sessionPhaseTag = kSessionTagGoin; // 'goin'
       g_pGameFlowState->RefreshNationStatusLabelsAndCodesForSlotOrAll(-1);
       return 1;
-    } else if (scenarioSelectionTag == 0x72616e64 /* 'rand' */) {
+    } else if (scenarioSelectionTag == kControlTagRand) {
       g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
       g_pSimMgr->RebuildMapContextAndGlobalMapState(1, sessionInit->mapSeedText18,
                                                     sessionInit->mapParamByte39);
-    } else if (scenarioSelectionTag >= 0x73636e30 /* 'scn0' */ &&
-               scenarioSelectionTag <= 0x73637a39 /* 'scz9' */) {
+    } else if (scenarioSelectionTag >= kControlTagScn0 && scenarioSelectionTag <= kSessionTagScz9) {
       g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
       unsigned char rebuilt = g_pSimMgr->RecreateActiveMapContextAndInitializeGlobalMapState(
-          scenarioSelectionTag - 0x73636e30);
+          scenarioSelectionTag - kControlTagScn0);
       if (rebuilt == 0) {
         CString messageTextE2;
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageTextE2, 0x2742, 2);
         g_pUiRuntimeContext->ModalMessage(messageTextE2, g_ptNationAwolModalMessage, 0, 0);
         TCancelGameOptionsCommand* cancelCommand2 = new TCancelGameOptionsCommand();
-        cancelCommand2->InitializeRangePair(0x63676f70 /* 'cgop' */, g_pGlobalUiRootController, 0,
-                                            0, 0);
+        cancelCommand2->InitializeRangePair(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
         g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommand2);
         return 1;
       }
@@ -1398,7 +1401,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   case 3: {
     // Enter the 'goin' phase; a session with no nation slot posts the cancel command,
     // otherwise the local nation goes 'busy' and the event-0x25 status board goes out.
-    sessionPhaseTag = 0x676f696e; // 'goin'
+    sessionPhaseTag = kSessionTagGoin; // 'goin'
     activeNationSlotIndex = -1;
     pendingNationSlotIndex = -1;
     int sessionId3 = g_pNetMgr006a6014->GetSessionActiveNationId();
@@ -1416,8 +1419,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     if (matchSlot == -1) {
       TCancelGameOptionsCommand* cancelCommand3 = new TCancelGameOptionsCommand();
-      cancelCommand3->InitializeRangePair(0x63676f70 /* 'cgop' */, g_pGlobalUiRootController, 0, 0,
-                                          0);
+      cancelCommand3->InitializeRangePair(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
       g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommand3);
       return 1;
     }
@@ -1425,9 +1427,9 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     if (tagSlot == -1) {
       tagSlot = (char)activeNationTagIndex;
     }
-    nationStatusTags[tagSlot] = 0x62757379; // 'busy'
+    nationStatusTags[tagSlot] = kSessionTagBusy; // 'busy'
     NationStatusEvent25Packet statusPacket;
-    statusPacket.messageTag = 0x74696d65; // 'time'
+    statusPacket.messageTag = kControlTagTime; // 'time'
     statusPacket.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
     statusPacket.eventCode = 0;
     statusPacket.fromNetworkId = 0;
@@ -1435,10 +1437,10 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     statusPacket.messageLength = 0;
     statusPacket.messageLength = 0x34;
     for (int tagInit = 0; tagInit < 7; ++tagInit) {
-      statusPacket.statusTags[tagInit] = 0x756e6b6e; // 'unkn'
+      statusPacket.statusTags[tagInit] = kSessionTagUnkn; // 'unkn'
     }
     statusPacket.toNetworkId = 0;
-    statusPacket.statusTags[tagSlot] = 0x62757379; // 'busy'
+    statusPacket.statusTags[tagSlot] = kSessionTagBusy; // 'busy'
     g_pNetMgr006a6014->Send(&statusPacket, 0);
     g_pSimMgr->StartNextPhase();
     break;
@@ -1540,7 +1542,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TurnEvent1DWarTransitionPacket* warTransition =
         static_cast<TurnEvent1DWarTransitionPacket*>(packet);
     TGreatPower* nation1D = g_apNationStates[g_pSimMgr->GetActiveNationId()];
-    if (warTransition->actionCode1C == 0x69 /* 'i' */) {
+    if (warTransition->actionCode1C == 'i') {
       nation1D->HandleWarTransitionRequest(warTransition->nationA1D, warTransition->nationB1E);
     } else {
       nation1D->HandleWarTransitionRequestWithRoleSwap(
@@ -1554,7 +1556,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // always finishes by posting the 'NeXT' diplomacy command.
     TurnEvent1EDiplomacyActionPacket* action =
         static_cast<TurnEvent1EDiplomacyActionPacket*>(packet);
-    if (action->actionCode1F == 0x61 /* 'a' */) {
+    if (action->actionCode1F == 'a') {
       if (action->flag21 != 0) {
         TGreatPower* nation1E = g_apNationStates[action->nation1C];
         if (action->flag20 == 0) {
@@ -1573,7 +1575,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
               action->nation1C, action->nationB1E, 0);
         }
       }
-    } else if (action->actionCode1F == 0x69 /* 'i' */ && action->flag21 != 0) {
+    } else if (action->actionCode1F == 'i' && action->flag21 != 0) {
       if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(action->nation1C, action->nationB1E) ==
           0) {
         g_apNationStates[action->nation1C]->QueueWarTransitionAndNotifyThirdPartyIfNeeded(
@@ -1658,7 +1660,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TGreatPower* nation15 = g_apNationStates[needState->nationSlot];
     nation15->treasuryValue10 = needState->treasuryValue;
     nation15->grantTotalCost = needState->grantTotalCost;
-    for (int needType = 0; needType < 0x17; ++needType) {
+    for (int needType = 0; needType < kResourceKindCount; ++needType) {
       nation15->needCurrentByType[needType] = needState->needCurrentByType[needType];
       nation15->needTargetByType[needType] = needState->needTargetByType[needType];
       nation15->relationDeltaCurrent[needType] = needState->relationDeltaCurrent[needType];
@@ -1686,7 +1688,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     TGreatPower* nation19 = g_apNationStates[nationSlot19];
     nation19->needCapA6 = stateArrays->needCapA6;
-    for (int orderType19 = 0; orderType19 < 0x0e; ++orderType19) {
+    for (int orderType19 = 0; orderType19 < kIndustryActionOrderTypeCount; ++orderType19) {
       nation19->city->orderCountByType5c[orderType19] = stateArrays->orderCountByType[orderType19];
     }
     nation19->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
@@ -1728,14 +1730,14 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     for (int metric4A = 0; metric4A < 9; ++metric4A) {
       city2C->cityMetricsBlock4A[metric4A] = composite->cityMetricsBlock4A[metric4A];
     }
-    for (int orderType2C = 0; orderType2C < 0x0e; ++orderType2C) {
+    for (int orderType2C = 0; orderType2C < kIndustryActionOrderTypeCount; ++orderType2C) {
       city2C->orderCountByType5c[orderType2C] = composite->orderCountByType[orderType2C];
     }
     g_apNationStates[nationSlot2C]->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
     city2C->rollingItemProductionScore78 = composite->cityRollingItemProductionScore;
     city2C->powerAvailableB4 = composite->cityFieldB4;
     short* stock2C = &city2C->cityStockCottonB6;
-    for (int stockType = 0; stockType < 0x17; ++stockType) {
+    for (int stockType = 0; stockType < kResourceKindCount; ++stockType) {
       stock2C[stockType] = composite->cityStock[stockType];
     }
     for (int orderSlot2C = 0; orderSlot2C < 0x10; ++orderSlot2C) {
@@ -1746,7 +1748,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     city2C->populationGrowthPenaltyTicks26c = composite->populationGrowthPenaltyTicks;
     // Second, duplicate copy of the city stock block - original behavior, kept as-is.
-    for (int stockType2 = 0; stockType2 < 0x17; ++stockType2) {
+    for (int stockType2 = 0; stockType2 < kResourceKindCount; ++stockType2) {
       stock2C[stockType2] = composite->cityStock[stockType2];
     }
     for (int record2C = 0; record2C < 0x17; ++record2C) {
@@ -1828,7 +1830,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // Streamed-payload family: copy the raw packet into a global-memory block, wrap it
     // in a THandleStream, and hand it to the code-switched stream reader. The
     // save-format version global is stamped 'netX' for the deserialization.
-    g_nSaveFormatVersion = 0x6e657458; // 'netX'
+    g_nSaveFormatVersion = kSessionTagNetX; // 'netX'
     int packetBytes = packet->messageLength;
     HGLOBAL packetMemory = GlobalAlloc(GMEM_MOVEABLE, packetBytes);
     void* streamBuffer = GlobalLock(packetMemory);
@@ -1845,7 +1847,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // Session/game-flow four-cc status dispatcher.
     TurnEvent1FStatusPacket* gameState = reinterpret_cast<TurnEvent1FStatusPacket*>(packet);
     switch (gameState->statusTag18) {
-    case 0x61626469: { // 'abdi' - nation abdicated: notice; host replaces the slot with an AI
+    case kControlTagAbdi: { // 'abdi' - nation abdicated: notice; host replaces the slot with an AI
       CString templateTextAbdi;
       CString formattedAbdi;
       CString nationNameAbdi;
@@ -1862,7 +1864,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       }
       return 1;
     }
-    case 0x61636564: { // 'aced' - accession notice; the affected local player posts 'gwen'
+    case kSessionTagAced: { // 'aced' - accession notice; the affected local player posts 'gwen'
       unsigned char isLocalNationAced = g_pSimMgr->GetActiveNationId() == gameState->value1C;
       CString templateTextAced;
       CString formattedAced;
@@ -1879,37 +1881,35 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       }
       return 1;
     }
-    case 0x75686564: // 'uhed' - nation left unheaded: replace with AI locally
+    case kSessionTagUhed: // 'uhed' - nation left unheaded: replace with AI locally
       ReplaceNationStateForSlotAndRefreshStatus(gameState->value1C);
       return 1;
-    case 0x6367616d: { // 'cgam' - cancel game
+    case kControlTagCgam: { // 'cgam' - cancel game
       TCancelGameOptionsCommand* cancelCommandCgam = new TCancelGameOptionsCommand();
-      cancelCommandCgam->InitializeRangePair(0x63676f70 /* 'cgop' */, g_pGlobalUiRootController, 0,
-                                             0, 0);
+      cancelCommandCgam->InitializeRangePair(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
       g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommandCgam);
       CString messageCgam;
       g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageCgam, 0x2742, 0x27);
       g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&messageCgam, 0);
       return 1;
     }
-    case 0x6c6f7365: // 'lose' - the named nation lost
+    case kControlTagLose: // 'lose' - the named nation lost
       g_apNationStates[gameState->value1C]->SorryYouLose();
       return 1;
-    case 0x666f6666: { // 'foff' - seat refused: show string[value1C], post the cancel command
+    case kSessionTagFoff: { // 'foff' - seat refused: show string[value1C], post the cancel command
       CString messageFoff;
       g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageFoff, 0x2742,
                                                                       gameState->value1C);
       g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&messageFoff, 0);
       TCancelGameOptionsCommand* cancelCommandFoff = new TCancelGameOptionsCommand();
-      cancelCommandFoff->InitializeRangePair(0x63676f70 /* 'cgop' */, g_pGlobalUiRootController, 0,
-                                             0, 0);
+      cancelCommandFoff->InitializeRangePair(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
       g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommandFoff);
       return 1;
     }
-    case 0x6e616d65: // 'name' - refresh the status board row (global manager receiver)
+    case kControlTagName: // 'name' - refresh the status board row (global manager receiver)
       g_pGameFlowState->RefreshNationStatusLabelsAndCodesForSlotOrAll(gameState->value1C);
       return 1;
-    case 0x6c6f7374: { // 'lost' - connection to a nation lost
+    case kControlTagLost: { // 'lost' - connection to a nation lost
       int lostCode = gameState->value1C;
       unsigned char droppedFlag = (lostCode & 0xff00) != 0;
       int lostNationSlot = lostCode & 0xff;
@@ -1933,8 +1933,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       }
       return 1;
     }
-    case 0x71756974:   // 'quit'
-    case 0x6e657767: { // 'newg' - session ending: optional notice, then close or restart
+    case kControlTagQuit:   // 'quit'
+    case kControlTagNewg: { // 'newg' - session ending: optional notice, then close or restart
       unsigned char restartFlag = static_cast<unsigned char>(gameState->value1C);
       unsigned char clientSessionQuit = g_pSimMgr->multiplayerSessionRole == 2;
       if (clientSessionQuit != 0) {
@@ -1949,21 +1949,21 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&messageQuit, 0);
       }
       unsigned char stillClientSessionQuit = g_pSimMgr->multiplayerSessionRole == 2;
-      if (stillClientSessionQuit == 0 && gameState->statusTag18 != 0x6e657767 /* 'newg' */) {
+      if (stillClientSessionQuit == 0 && gameState->statusTag18 != kControlTagNewg) {
         PostWmCloseToMainThreadWindow();
         return 1;
       }
       g_pGlobalUiRootController->CreateAndQueueTurnEventPacketTagGWEN();
       return 1;
     }
-    case 0x72656765: { // 'rege' - regenerate client map clip regions
+    case kControlTagRege: { // 'rege' - regenerate client map clip regions
       unsigned char clientSessionRege = g_pSimMgr->multiplayerSessionRole == 2;
       if (clientSessionRege != 0) {
         g_pStrategicMapViewSystem->RebuildNationClipRegionsAndDispatchMapEvent();
       }
       return 1;
     }
-    case 0x7265706f: { // 'repo' - a session reports for a nation slot: seat it or refuse
+    case kControlTagRepo: { // 'repo' - a session reports for a nation slot: seat it or refuse
       int repoSlot = gameState->value1C & 7;
       unsigned char hostCanSeatEmptySlot = 0;
       if (g_apNationStates[repoSlot] == 0 &&
@@ -1977,7 +1977,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
             (packet->fromNetworkId == g_pNetMgr006a6014->GetSessionActiveNationId() ||
              g_apNationStates[repoSlot]->IsRemote() != 0)))) {
         LobbyChatEvent9Packet seatAnnounce;
-        seatAnnounce.messageTag = 0x74696d65; // 'time'
+        seatAnnounce.messageTag = kControlTagTime; // 'time'
         seatAnnounce.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
         seatAnnounce.eventCode = 0;
         seatAnnounce.field1C = packet->fromNetworkId;
@@ -2000,7 +2000,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
                                static_cast<const char*>(templateTextRepo),
                                static_cast<const char*>(nationNameRepo));
         TurnEventCKickMessagePacket joinBroadcast;
-        joinBroadcast.messageTag = 0x74696d65; // 'time'
+        joinBroadcast.messageTag = kControlTagTime; // 'time'
         joinBroadcast.eventCode = 0;
         joinBroadcast.fromNetworkId = 0;
         joinBroadcast.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
@@ -2018,7 +2018,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         g_pNetMgr006a6014->Send(&joinBroadcast, 1);
       } else {
         TurnEvent1FStatusPacket refuse;
-        refuse.messageTag = 0x74696d65; // 'time'
+        refuse.messageTag = kControlTagTime; // 'time'
         refuse.eventCode = 0;
         refuse.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
         refuse.fromNetworkId = 0;
@@ -2027,24 +2027,24 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         refuse.messageLength = 0;
         refuse.messageLength = 0x20;
         refuse.toNetworkId = packet->fromNetworkId;
-        refuse.statusTag18 = 0x666f6666; // 'foff'
+        refuse.statusTag18 = kSessionTagFoff; // 'foff'
         refuse.value1C = 0x29;
         g_pNetMgr006a6014->Send(&refuse, 0);
       }
       return 1;
     }
-    case 0x73617665: // 'save' - latch the save flag and save with the network label
+    case kControlTagSave: // 'save' - latch the save flag and save with the network label
       fieldF4 = static_cast<unsigned char>(gameState->value1C);
       SaveGameWithModeAndOptionalLabel(queueSyncDword, (char*)g_pszClientSavePrefix_0065BF5C);
       return 1;
-    case 0x74726164: { // 'trad' - reset diplomacy level: packed (nationSlot << 16 | level)
+    case kControlTagTrad: { // 'trad' - reset diplomacy level: packed (nationSlot << 16 | level)
       int tradeCode = gameState->value1C;
       g_apNationStates[g_pSimMgr->GetActiveNationId()]->SetTradePolicyTo(
           static_cast<short>(static_cast<unsigned int>(tradeCode) >> 0x10),
           static_cast<short>(tradeCode));
       return 1;
     }
-    case 0x74726173: // 'tras' - rebuild + discard the transport-influence map
+    case kSessionTagTras: // 'tras' - rebuild + discard the transport-influence map
       g_apNationStates[g_pSimMgr->GetActiveNationId()]->BuildTransportLinkedInfluenceMap(0);
       return 1;
     default:
@@ -2096,12 +2096,12 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       int* ownTagCursor = nationStatusTags;
       int tagCountdown = 7;
       do {
-        if (*incomingTagCursor != 0x756e6b6e /* 'unkn' */) {
+        if (*incomingTagCursor != kSessionTagUnkn) {
           *ownTagCursor = *incomingTagCursor;
         }
-        if (*ownTagCursor == 0x72656479 /* 'redy' */) {
+        if (*ownTagCursor == kSessionTagRedy) {
           ++readyCount;
-        } else if (*ownTagCursor == 0x62757379 /* 'busy' */) {
+        } else if (*ownTagCursor == kSessionTagBusy) {
           ++busyCount;
         }
         ++incomingTagCursor;
@@ -2127,7 +2127,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
                          // out-of-bounds behavior, kept as-is
         }
       }
-      if (nationStatusTags[busySlot] == 0x62757379 /* 'busy' */ && fieldF4 != 0) {
+      if (nationStatusTags[busySlot] == kSessionTagBusy && fieldF4 != 0) {
         g_pSfxPlaybackSystem->PlaySoundEffect(0x13f2, 0, 1);
       }
     }
@@ -2166,22 +2166,22 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     battle->AssertValid();
     TArmyTacUnit* unit = battle->SeekLinkedListCursorByNestedId(tactical->unitId1C);
     switch (tactical->commandTag18) {
-    case 0x6465706c: // 'depl'
+    case kControlTagDepl: // 'depl'
       battle->HandleTacticalCommandTag_depl(unit, tactical->arg20, 1);
       return 1;
-    case 0x64696767: // 'digg'
+    case kControlTagDigg: // 'digg'
       battle->HandleTacticalCommandTag_digg(unit, tactical->arg20, 1);
       return 1;
-    case 0x6d696e65: // 'mine' - the resolved unit cursor is NOT passed here
+    case kControlTagMine: // 'mine' - the resolved unit cursor is NOT passed here
       battle->HandleTacticalCommandTag_mine(tactical->arg20, tactical->arg24, 1);
       return 1;
-    case 0x6d6f7665: // 'move'
+    case kControlTagMove: // 'move'
       battle->MoveTacticalUnitBetweenTiles(unit, tactical->arg20, tactical->arg24, 1);
       return 1;
-    case 0x72616c79: // 'raly'
+    case kControlTagRaly: // 'raly'
       battle->HandleTacticalCommandTag_raly(unit, tactical->arg20, tactical->arg24, 1);
       return 1;
-    case 0x73656c65: // 'sele'
+    case kControlTagSele: // 'sele'
       battle->SetCurrentTacticalUnitSelection(unit, 1);
       return 1;
     default:
@@ -2194,7 +2194,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     fireBattle->AssertValid();
     TArmyTacUnit* attacker = fireBattle->SeekLinkedListCursorByNestedId(fireCommand->unitId1C);
     TArmyTacUnit* target = fireBattle->SeekLinkedListCursorByNestedId(fireCommand->arg20);
-    if (fireCommand->commandTag18 != 0x66697265 /* 'fire' */) {
+    if (fireCommand->commandTag18 != kControlTagFire) {
       return 1;
     }
     fireBattle->ApplyTacticalActionEffectsAndMaybeRemoveUnit(
@@ -2210,7 +2210,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       TurnEvent2BPresenceMaskPacket reply;
       // Inline header stamp (tag + nation), NOT the 0x5438e0 helper - keep the exact
       // interleaved store order, including both double-writes below.
-      reply.messageTag = 0x74696d65; // 'time'
+      reply.messageTag = kControlTagTime; // 'time'
       reply.activeNationId = (unsigned char)g_pSimMgr->GetActiveNationId();
       reply.eventCode = 0;
       reply.eventCode = 0x2b;
@@ -2264,7 +2264,7 @@ void TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char f
   packet.fromNetworkId = 0;
   packet.toNetworkId = (g_pSimMgr->multiplayerSessionRole == 1) ? 0 : -1;
   packet.messageLength = 0x28;
-  packet.packetTag = 0x74696d65;
+  packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.flagByte = flagByte;
   packet.mapOffsetSelector = mapOffsetSelector;
@@ -2287,7 +2287,7 @@ void TMultiplayerMgr::CreateAndSendTurnEvent12_TwoShorts(short shortA, short sho
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
   packet.messageLength = 0x1c;
-  packet.packetTag = 0x74696d65;
+  packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.shortA = shortA;
   packet.shortB = shortB;
@@ -2301,7 +2301,7 @@ void TMultiplayerMgr::SendNewsEvent(int nationSlot, NewsEvent* event) {
   packet.fromNetworkId = 0;
   packet.toNetworkId = g_pGameFlowState->nationSessionIds[nationSlot];
   packet.messageLength = 0x40;
-  packet.messageTag = 0x74696d65;
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.nationSlot18 = static_cast<short>(nationSlot);
   packet.newsEvent1C = *event;
@@ -2326,7 +2326,7 @@ void TMultiplayerMgr::CreateAndSendTurnEvent20_ShortAndTwoBytes(short eventParam
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
   packet.messageLength = 0x1c;
-  packet.packetTag = 0x74696d65;
+  packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventParam18 = eventParam;
   packet.byteA = byteA;
@@ -2351,7 +2351,7 @@ void TMultiplayerMgr::CreateAndSendTurnEvent21_ThreeBytes(unsigned char byte0, u
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
   packet.messageLength = 0x1c;
-  packet.packetTag = 0x74696d65;
+  packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.byte0 = byte0;
   packet.byte1 = byte1;
@@ -2375,7 +2375,7 @@ void TMultiplayerMgr::CreateAndSendTurnEvent22_ByteAndShort(unsigned char byteVa
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
   packet.messageLength = 0x1c;
-  packet.packetTag = 0x74696d65;
+  packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.byteVal = byteVal;
   packet.shortVal = shortVal;
@@ -2405,7 +2405,7 @@ void TMultiplayerMgr::DispatchTurnEvent1AWithNationActionPayload(short param0, s
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
   packet.messageLength = 0x34;
-  packet.packetTag = 0x74696d65;
+  packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
   packet.field18 = param0;
@@ -2446,7 +2446,7 @@ void TMultiplayerMgr::CreateAndSendTurnEvent1B_FiveShortsAndDword(short shortA, 
                                                                   short shortC, short shortD,
                                                                   short shortE, int trailingValue) {
   TurnEvent1BPacket packet;
-  packet.packetTag = 0x74696d65;
+  packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventCode = 0;
   packet.fromNetworkId = 0;
@@ -2490,7 +2490,7 @@ void TMultiplayerMgr::CreateAndSendTurnEvent1C_BoolAndSixShorts(bool broadcastFl
   packet.fromNetworkId = 0;
   packet.toNetworkId = broadcastFlag ? -1 : 0;
   packet.messageLength = 0x28;
-  packet.packetTag = 0x74696d65;
+  packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.pendingNationSlotIndexLow = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
   packet.shortA = shortA;
@@ -2536,7 +2536,7 @@ void TMultiplayerMgr::DispatchTurnEventPacketWithCodeAndPayloadBuffer(short even
 void TMultiplayerMgr::SerializeOrderDataIntoTurnEventByTag(TStream* stream, short eventTag,
                                                            short destinationSlot, void* payload) {
   TimelyNetMessagePrefix header;
-  header.messageTag = 0x74696d65;
+  header.messageTag = kControlTagTime;
   header.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   int tag = eventTag;
   header.eventCode = 0;
@@ -2570,14 +2570,14 @@ void TMultiplayerMgr::SerializeOrderDataIntoTurnEventByTag(TStream* stream, shor
   case 0x31: {
     TaggedSerializablePayload* record = static_cast<TaggedSerializablePayload*>(payload);
     stream->streamSlot8c(record->tag);
-    if (record->tag != 0x73746172) { // 'star'
+    if (record->tag != kControlTagStar) { // 'star'
       record->object->WriteTo(stream);
       return;
     }
     StarOrderObjectView* view = reinterpret_cast<StarOrderObjectView*>(record->object);
     record->object->AssertValid();
     stream->streamSlot8c(view->subTag);
-    if (view->subTag == 0x6c616e64) { // 'land'
+    if (view->subTag == kControlTagLand) { // 'land'
       record->object->AssertValid();
       stream->WriteCountSlot88(view->word8);
       stream->WriteCountSlot88(view->wordA);
@@ -2606,7 +2606,7 @@ void TMultiplayerMgr::DispatchTaggedGameStateEvent1F20(int packetTag, int param2
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
   packet.messageLength = 0x20;
-  packet.packetTag = 0x74696d65;
+  packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.tagParam = packetTag;
   packet.valueParam = param2;
@@ -2623,7 +2623,7 @@ void TMultiplayerMgr::DispatchTaggedGameStateEvent1F20(int packetTag, int param2
 // FUNCTION: IMPERIALISM 0x0054a410
 void TMultiplayerMgr::DispatchLobbyTextPairEvent8(unsigned char sourceNationSlot) {
   LobbyTextPairEvent8Packet packet;
-  packet.messageTag = 0x74696d65; // 'time'
+  packet.messageTag = kControlTagTime; // 'time'
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventCode = 0;
   packet.fromNetworkId = 0;
@@ -2719,7 +2719,7 @@ void TMultiplayerMgr::PublishNationDescriptorAndNotifyOrderListeners(TStream* st
 
 // FUNCTION: IMPERIALISM 0x0054a9d0
 int TMultiplayerMgr::IsSpecialNationDialogModeActive() {
-  if (sessionPhaseTag == 0x676f696e) {
+  if (sessionPhaseTag == kSessionTagGoin) {
     if (g_pSimMgr->GetActiveNationId() != -1) {
       return 1;
     }
@@ -2739,7 +2739,7 @@ void TMultiplayerMgr::CreateAndSendTurnEvent0C_Text256AndTwoFlags(CString* text,
                                                                   unsigned char firstFlag,
                                                                   unsigned char secondFlag) {
   TurnEvent0CTextPacket packet;
-  packet.messageTag = 0x74696d65;
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventCode = 0;
   packet.fromNetworkId = 0;
@@ -2764,7 +2764,7 @@ extern "C" void __stdcall DispatchTileRedrawInvalidateEvent(short tileIndex) {
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
   packet.messageLength = 0x44;
-  packet.packetTag = 0x74696d65;
+  packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
   packet.tileIndex = tileIndex;
@@ -2789,7 +2789,7 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
   packet.messageLength = 200;
-  packet.packetTag = 0x74696d65;
+  packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
   packet.cityId = cityId;
@@ -2892,7 +2892,7 @@ void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused
 
   int mySlotIndex = FindActiveNationSlotIndexInGameFlowList();
   for (int i = 0; i < 7; ++i) {
-    TView* boxControl = dialog->ResolveControlByTag(0x62786230u + i); // 'box0'-'box6'
+    TView* boxControl = dialog->ResolveControlByTag(kSessionTagBxb0 + i); // 'box0'-'box6'
     boxControl->AssertValid();
     int sessionId = g_pGameFlowState->nationSessionIds[i];
     bool occupied = sessionId != 0 && sessionId != -2;
@@ -2933,7 +2933,7 @@ void TMultiplayerMgr::SendTradeBook() {
 void TMultiplayerMgr::EmitNationDiplomacyNeedStateSnapshotEvent15(char broadcastFlag,
                                                                   int nationSlot) {
   TurnEvent15Packet packet;
-  packet.packetTag = 0x74696d65;
+  packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventCode = 0;
   packet.eventCode = 0x15;
@@ -2980,7 +2980,7 @@ void TMultiplayerMgr::SetNationStatusCodeAndEmitEvent25(int statusTag, int natio
   nationStatusTags[nationSlot] = statusTag;
 
   NationStatusEvent25Packet packet;
-  packet.messageTag = 0x74696d65; // 'time'
+  packet.messageTag = kControlTagTime; // 'time'
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventCode = 0;
   packet.fromNetworkId = 0;
@@ -2989,7 +2989,7 @@ void TMultiplayerMgr::SetNationStatusCodeAndEmitEvent25(int statusTag, int natio
   packet.messageLength = 0;
   packet.messageLength = 0x34;
   for (int slot = 0; slot < kMajorNationSessionSlotCount; ++slot) {
-    packet.statusTags[slot] = 0x756e6b6e; // 'unkn'
+    packet.statusTags[slot] = kSessionTagUnkn; // 'unkn'
   }
   packet.toNetworkId = 0;
   packet.statusTags[nationSlot] = statusTag;
@@ -3029,16 +3029,16 @@ void TMultiplayerMgr::SetNationStatusAwolByNationIdAndDispatchNotices(int networ
       if (tagSlot == -1) {
         tagSlot = activeNationTagIndex;
       }
-      nationStatusTags[tagSlot] = 0x61776f6c; // 'awol'
+      nationStatusTags[tagSlot] = kSessionTagAwol; // 'awol'
       NationStatusEvent25Packet statusPacket;
       statusPacket.InitializeEmitEventHeaderWithActiveNation();
       statusPacket.InitializeNationStatusEvent25PayloadDefaults();
       statusPacket.toNetworkId = 0;
-      statusPacket.statusTags[tagSlot] = 0x61776f6c;
+      statusPacket.statusTags[tagSlot] = kSessionTagAwol;
       g_pNetMgr006a6014->Send(&statusPacket, 0);
       nationSessionIds[slot] = -2;
       pendingNationBitmask |= 1 << slot;
-      if (sessionPhaseTag == 0x696e6974 && g_pSimMgr->multiplayerSessionRole == 1) { // 'init'
+      if (sessionPhaseTag == kSessionTagInit && g_pSimMgr->multiplayerSessionRole == 1) { // 'init'
         LobbyChatEvent9Packet chat;
         chat.InitializeEmitEventHeaderWithActiveNation();
         chat.eventCode = 0;
@@ -3063,7 +3063,7 @@ void TMultiplayerMgr::SetNationStatusAwolByNationIdAndDispatchNotices(int networ
         g_pUiRuntimeContext->ModalMessage(formatted, g_ptNationAwolModalMessage, 0, 0);
         if (g_pGameFlowState != this || fieldF4 == 0) {
           TCancelGameOptionsCommand* cancelCommand = new TCancelGameOptionsCommand();
-          cancelCommand->InitializeRangePair(0x63676f70, g_pGlobalUiRootController, 0, 0,
+          cancelCommand->InitializeRangePair(kSessionTagCgop, g_pGlobalUiRootController, 0, 0,
                                              0); // 'pogc'
           g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommand);
         }
@@ -3084,7 +3084,7 @@ void NationStatusEvent25Packet::InitializeNationStatusEvent25PayloadDefaults() {
   messageLength = 0x34;
   eventCode = 0x25;
   for (int slot = 0; slot < 7; ++slot) {
-    statusTags[slot] = 0x756e6b6e; // 'unkn'
+    statusTags[slot] = kSessionTagUnkn; // 'unkn'
   }
 }
 
@@ -3094,7 +3094,7 @@ void NationStatusEvent25Packet::InitializeNationStatusEvent25PayloadDefaults() {
 // FUNCTION: IMPERIALISM 0x0054c480
 void TMultiplayerMgr::EmitTurnEvent26DiplomacyMatrixSnapshot() {
   TurnEvent26DiplomacyMatrixPacket packet;
-  packet.messageTag = 0x74696d65; // 'time'
+  packet.messageTag = kControlTagTime; // 'time'
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
@@ -3120,7 +3120,7 @@ void TMultiplayerMgr::EmitTurnEvent26DiplomacyMatrixSnapshot() {
 void TMultiplayerMgr::DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
                                                              int mode) {
   TJoinEmpireTurnEventPacket packet;
-  packet.packetTag = 0x74696D65;
+  packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventCode = 0;
   packet.fromNetworkId = 0;
@@ -3136,7 +3136,7 @@ void TMultiplayerMgr::DispatchJoinEmpireModeEventPacket24_27(int sourceNation, i
 
 // FUNCTION: IMPERIALISM 0x0054c630
 void TMultiplayerMgr::SetDialogModeTagInitAndInvokeNoOpHook() {
-  sessionPhaseTag = 0x696e6974; // 'init'
+  sessionPhaseTag = kSessionTagInit; // 'init'
   g_pNetMgr006a6014->NoOpDialogModeTagChangedHook(1);
 }
 
@@ -3176,7 +3176,7 @@ void TMultiplayerMgr::ResetNationStatusArraysAndTurnEventContext() {
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&statusText, 0x2759, 1);
   for (int nationSlot = 0; nationSlot < kMajorNationSessionSlotCount; ++nationSlot) {
     nationSessionIds[nationSlot] = 0;
-    nationStatusTags[nationSlot] = 0x756e6173; // 'suna'
+    nationStatusTags[nationSlot] = kSessionTagUnas; // 'suna'
     nationDisplayNameSlots[nationSlot] = statusText;
     defaultNationTextSlots[nationSlot] = nationDisplayNameSlots[nationSlot];
   }
@@ -3198,8 +3198,8 @@ unsigned char TMultiplayerMgr::HandleActiveNationAwolTransitionOrRecovery() {
   }
 
   activeNation = g_pSimMgr->GetActiveNationId();
-  nationStatusTags[activeNation] = 0x61776f6c;                                 // 'awol'
-  if (sessionPhaseTag == 0x676f696e && g_pSimMgr->GetActiveNationId() != -1) { // 'goin'
+  nationStatusTags[activeNation] = kSessionTagAwol;                                 // 'awol'
+  if (sessionPhaseTag == kSessionTagGoin && g_pSimMgr->GetActiveNationId() != -1) { // 'goin'
     g_pGlobalUiRootController->CreateAndQueueTurnEventPacketTagGWEN();
     return 0;
   }
@@ -3213,12 +3213,12 @@ unsigned char TMultiplayerMgr::HandleActiveNationAwolTransitionOrRecovery() {
 // Skipped entirely before the map exists or while still in the 'prep' phase.
 // FUNCTION: IMPERIALISM 0x0054c8e0
 void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet) {
-  if (g_pGlobalMapState == 0 || sessionPhaseTag == 0x70726570 /* 'prep' */) {
+  if (g_pGlobalMapState == 0 || sessionPhaseTag == kSessionTagPrep) {
     return;
   }
   {
     TurnEventESessionInitPacket sessionInit;
-    sessionInit.messageTag = 0x74696d65; // 'time'
+    sessionInit.messageTag = kControlTagTime; // 'time'
     sessionInit.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
     sessionInit.eventCode = 0;
     sessionInit.eventCode = 0xe;
@@ -3233,13 +3233,13 @@ void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet
     }
     sessionInit.scenarioTag60 = scenarioSelectionTag;
     unsigned char resumingSavedGame;
-    if (sessionPhaseTag == 0x676f696e /* 'goin' */ && g_pSimMgr->GetActiveNationId() != -1) {
+    if (sessionPhaseTag == kSessionTagGoin && g_pSimMgr->GetActiveNationId() != -1) {
       resumingSavedGame = 1;
     } else {
       resumingSavedGame = 0;
     }
     if (resumingSavedGame != 0) {
-      sessionInit.scenarioTag60 = 0x6c6f6164; // 'load'
+      sessionInit.scenarioTag60 = kControlTagLoad; // 'load'
     }
     strcpy(sessionInit.hostGameName3A, gameNameString);
     strcpy(sessionInit.mapSeedText18, g_pGlobalMapState->scenarioTagText1c);
@@ -3253,7 +3253,7 @@ void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet
   }
   {
     LobbyChatEvent9Packet seatClaim;
-    seatClaim.messageTag = 0x74696d65; // 'time'
+    seatClaim.messageTag = kControlTagTime; // 'time'
     seatClaim.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
     seatClaim.eventCode = 0;
     seatClaim.eventCode = 9;
@@ -3287,7 +3287,7 @@ void TMultiplayerMgr::RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSl
       CString emptyName(g_szEmptyString);
       defaultNationTextSlots[nationSlot] = emptyName;
     }
-    nationStatusTags[nationSlot] = 0x64656164; // 'dead'
+    nationStatusTags[nationSlot] = kSessionTagDead; // 'dead'
   } else {
     bool wrapInParens;
     if (g_apNationStates[nationSlot]->diplomacyEligibilityA0 == 0 ||
@@ -3312,7 +3312,7 @@ void TMultiplayerMgr::RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSl
     defaultNationTextSlots[nationSlot] += suffix;
     nationDisplayNameSlots[nationSlot] = defaultNationTextSlots[nationSlot];
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) == 0) {
-      nationStatusTags[nationSlot] = 0x64656361; // 'deca'
+      nationStatusTags[nationSlot] = kSessionTagDeca; // 'deca'
     }
   }
 }
@@ -3320,7 +3320,7 @@ void TMultiplayerMgr::RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSl
 // FUNCTION: IMPERIALISM 0x0054cde0
 void TMultiplayerMgr::CreateAndQueueTurnEventPacketTagPOGC() {
   TCancelGameOptionsCommand* command = new TCancelGameOptionsCommand();
-  command->InitializeRangePair(0x63676f70, g_pGlobalUiRootController, 0, 0, 0); // 'pogc'
+  command->InitializeRangePair(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0); // 'pogc'
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
 }
 
@@ -3328,7 +3328,7 @@ void TMultiplayerMgr::CreateAndQueueTurnEventPacketTagPOGC() {
 void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
                                                                  int destinationSlot) {
   TurnEvent2CPacket packet;
-  packet.packetTag = 0x74696d65;
+  packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.fromNetworkId = 0;
   packet.messageLength = 0x18c;
@@ -3364,7 +3364,7 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
     packet.cityRollingItemProductionScore = city->rollingItemProductionScore78;
     packet.cityFieldB4 = city->powerAvailableB4;
     short* stock = &city->cityStockCottonB6;
-    for (int stockType = 0; stockType < 0x17; ++stockType) {
+    for (int stockType = 0; stockType < kResourceKindCount; ++stockType) {
       packet.cityStock[stockType] = stock[stockType];
     }
     for (int slot = 0; slot < 0x10; ++slot) {
@@ -3405,7 +3405,7 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
 void TMultiplayerMgr::EmitTurnEvent19NationStateArraysForSlot(short nationSlot,
                                                               int destinationSlot) {
   TurnEvent19Packet packet;
-  packet.packetTag = 0x74696d65;
+  packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventCode = 0;
   packet.eventCode = 0x19;
@@ -3449,7 +3449,7 @@ void TMultiplayerMgr::EmitTurnEvent19NationStateArraysForSlot(short nationSlot,
 void TMultiplayerMgr::CreateAndSendTurnEvent2D_TableRowShortArray(short nationSlot,
                                                                   int destinationSlot) {
   TurnEvent2DMinorNeedPacket packet;
-  packet.messageTag = 0x74696d65;
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventCode = 0;
   packet.fromNetworkId = 0;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/app/TObject.h"
+#include "game/ui_tags_common.h"
 #include "game/mfc.h"
 
 struct NetMessage;

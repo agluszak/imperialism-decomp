@@ -1,4 +1,6 @@
 #include "game/navy_ui/TShipFractionCluster.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 #include "game/ui_core/TWindow.h"
 
 #include "game/navy/TOcean.h"
@@ -8,7 +10,6 @@
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // FUNCTION: IMPERIALISM 0x0044a6f0
@@ -76,7 +77,7 @@ void TShipFractionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, 
 }
 
 // The original names this via a stale/reused symbol ("TToolBarCluster::..."); confirmed as
-// a real TShipFractionCluster method by receiver evidence (ResolveControlByTag(kControlTagShip),
+// a real TShipFractionCluster method by receiver evidence (ResolveControlByTag('ship'),
 // availableShipCount88/shipCountButton90 matching this class's own layout). The Mac
 // symbol oracle calls this method Set(int, int); Windows callers pass the available and
 // selected ship counts respectively.

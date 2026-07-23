@@ -1,4 +1,6 @@
 #include "game/ui_widgets/TIndustryCluster.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 #include "game/ui_core/TWindow.h"
 #include "game/ui_widgets/TRailCluster.h"
 #include "game/ui_widgets/TShipyardCluster.h"
@@ -9,7 +11,6 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
-#include "game/ui_control_tags.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/nation/TGreatPower.h"
 
@@ -25,9 +26,10 @@ namespace {
 extern "C" char g_vtblTTraderAmtBar = 0;
 
 const int kScenarioRecordTags[] = {
-    0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520,
-    0x72733620, 0x6d613020, 0x6d613120, 0x6d613220, 0x6d613320, 0x6d613420,
-    0x6d613520, 0x67643020, 0x67643120, 0x67643220, 0x67643320,
+    kControlTagRs0Sp, kControlTagRs1Sp, kControlTagRs2Sp, kControlTagRs3Sp, kControlTagRs4Sp,
+    kControlTagRs5Sp, kControlTagRs6Sp, kControlTagMa0Sp, kControlTagMa1Sp, kControlTagMa2Sp,
+    kControlTagMa3Sp, kControlTagMa4Sp, kControlTagMa5Sp, kControlTagGd0Sp, kControlTagGd1Sp,
+    kControlTagGd2Sp, kControlTagGd3Sp,
 };
 
 } // namespace

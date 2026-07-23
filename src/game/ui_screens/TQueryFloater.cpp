@@ -1,4 +1,6 @@
 #include "game/ui_screens/TQueryFloater.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_screens.h"
 
 #include "game/ui_screens/CString.h"
 #include "game/military/TArmyMgr.h"
@@ -11,7 +13,6 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/ui_control_tags.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x0043d6a0
@@ -101,7 +102,7 @@ void TQueryFloater::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     } else {
       g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x275e, 6, 2, 0);
     }
-  } else if (tag == kControlTagFore) {
+  } else if (tag == kControlTagOref) {
     TWindow* owner = GetWindow();
     owner->Dismiss(kControlTagOkay, 0);
     g_pHelpMgr->SelectAndActivatePendingEventType1A0A();

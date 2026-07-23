@@ -1,4 +1,6 @@
 #include "game/net/TWNetSessionManager.h"
+#include "game/multiplayer_session_tags.h"
+#include "game/ui_tags_common.h"
 
 #include "game/ui_screens/TRadioTextCluster.h"
 #include "game/ui_screens/TRadioText.h"
@@ -98,19 +100,18 @@ BOOL TDirectPlaySessionManagerBase::GetRuntimeSelectionAuxStatus(void* value) {
 }
 
 // FUNCTION: IMPERIALISM 0x0047fd90
-unsigned char TWNetSessionManager::RebuildRuntimeSelectionSource() {
+bool TWNetSessionManager::RebuildRuntimeSelectionSource() {
   for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
     delete g_RuntimeSelectionRecords006a15e0[index];
   }
   g_RuntimeSelectionRecords006a15e0.RemoveAll();
   lastErrorCode0c = DirectPlayEnumerate(ForwardEnumSessionToCallbackTable, this);
-  return static_cast<unsigned char>(lastErrorCode0c == 0);
+  return lastErrorCode0c == 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0047fe50
-unsigned char
-TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry,
-                                                                int flag) {
+bool TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry,
+                                                                     int flag) {
   (void)flag;
   if (sessionEntry != 0) {
     if (directPlayInterface04 != 0) {
@@ -135,7 +136,7 @@ TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sess
     if (lastErrorCode0c >= 0 && SelectRuntimeProvider(&selectedGuid)) {
       lastErrorCode0c = DirectPlayCreate(&selectedGuid, &createdInterface, 0);
     } else {
-      return static_cast<unsigned char>(lastErrorCode0c >= 0);
+      return lastErrorCode0c >= 0;
     }
   }
 
@@ -148,11 +149,11 @@ TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sess
   }
 
   ClearRuntimeSelectionRecordArray();
-  return static_cast<unsigned char>(lastErrorCode0c >= 0);
+  return lastErrorCode0c >= 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00480030
-unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext() {
+bool TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext() {
   OpenRuntimeSelectionSourceWithOptionalSeed(0, 0);
   memset(&sessionDescription10, 0, sizeof(sessionDescription10));
   sessionDescription10.dwSize = sizeof(sessionDescription10);
@@ -162,7 +163,7 @@ unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext(
   if (lastErrorCode0c < 0) {
     ResetRuntimeSelectionRecordBuffer();
   }
-  return static_cast<unsigned char>(lastErrorCode0c >= 0);
+  return lastErrorCode0c >= 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00480150
@@ -342,7 +343,7 @@ BOOL TWNetSessionManager::OnEnumerateServiceProvider(LPGUID providerGuid, LPSTR 
     g_WNetSerializedPtrArrayA006a5f10[index] = record;
 
     TRadioText* item =
-        activeProtocolControlB0->AddItem(0x70726f30 + index, index, record->label, 0xf, -1);
+        activeProtocolControlB0->AddItem(kControlTagPro0 + index, index, record->label, 0xf, -1);
     ApplyUiTextStyleAndThemeFlags(item, 0, 0xc, 0x2b6b, 0x2b6c);
   }
   return TRUE;
@@ -361,7 +362,7 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
   dialog->SetModality(1);
   TDialogBehavior* behavior = dialog->GetDialogBehavior();
   if (behavior != 0) {
-    behavior->defaultCommandCode = 0x6f6b6179; // 'okay'
+    behavior->defaultCommandCode = kControlTagOkay; // 'okay'
   }
 
   POINT placement;
@@ -369,7 +370,7 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
   dialog->CaptureLayout((int*)&placement, 0);
 
   TJoinSelectorDialog* selector =
-      static_cast<TJoinSelectorDialog*>(dialog->ResolveControlByTag(0x444c4f47)); // 'GOLD'
+      static_cast<TJoinSelectorDialog*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'GOLD'
   selector->AssertValid();
   for (int index = 0; index < g_WNetSerializedPtrArrayB006a5f28.GetSize(); ++index) {
     RuntimeSelectionRecord* record = g_WNetSerializedPtrArrayB006a5f28[index];
@@ -377,13 +378,13 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
   }
 
   TEditText* nameControl =
-      static_cast<TEditText*>(selector->ResolveControlByTag(0x6e616d65)); // 'name'
+      static_cast<TEditText*>(selector->ResolveControlByTag(kControlTagName)); // 'name'
   nameControl->AssertValid();
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&joinGamePlayerNameA8, 0);
 
   int command = dialog->PoseModally();
   RuntimeSelectionRecord* selected = selector->GetSelectedJoinableGame();
-  if (command == 0x6f6b6179) {
+  if (command == kControlTagOkay) {
     *selectedSessionGuid = selected->providerGuid;
     nameControl->GetCurrentText(&joinGamePlayerNameA8);
   }
@@ -395,7 +396,7 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
   g_WNetSerializedPtrArrayB006a5f28.RemoveAll();
   dialog->Close();
   dialog->Free();
-  return command == 0x6f6b6179;
+  return command == kControlTagOkay;
 }
 
 // FUNCTION: IMPERIALISM 0x005e3310

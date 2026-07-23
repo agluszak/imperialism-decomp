@@ -4,7 +4,25 @@
 
 // Mac CodeWarrior names the shared capture callback TrackMouse and gives its first
 // argument this phase type. Windows passes the same 0/1/2 begin/update/end values.
+//
+// This is one domain shared by every control, not a per-class vocabulary: the two
+// capture drivers (TMouseCaptureState 0x0058d4b0/0x0058d520/0x0058d5a0 and
+// CIncludeView's capture pump) call the same slot 0x68 with begin, update, and end,
+// and every override in the tree keeps this parameter type.
 enum TrackPhase { kTrackPhaseBegin = 0, kTrackPhaseUpdate = 1, kTrackPhaseEnd = 2 };
+
+// The three contiguous hilite commands the control tree exchanges through
+// TEventHandler::HandleEvent. TControl::DoEvent (0x0048e710) decodes them with a
+// SUB 0x1f / DEC / DEC chain and dispatches slot 0x1c0 (HiliteState): 0x1f pushes
+// (1, 1), 0x20 pushes (0, 1), and 0x21 pushes (SETZ on controlState64, 1).
+//
+// These are control *commands*, deliberately not TrackPhase values and not the
+// open per-screen notification codes a control publishes through eventNumber60.
+enum ControlHiliteCommand {
+  kControlCommandHiliteOn = 0x1f,
+  kControlCommandHiliteOff = 0x20,
+  kControlCommandHiliteToggle = 0x21
+};
 
 // 10-byte packed text-style descriptor: three shorts plus a COLORREF-bearing text-color
 // field at offset 6, as built by BuildUiTextStyleDescriptor (0x5c3e80) and

@@ -15,6 +15,9 @@ class TView;
 class TInfoBarText;
 
 #include "game/tactical/TArmyPlayer.h"
+#include "game/resource_manifest_tags.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/mfc.h"
 #include "game/core/global_data_tables.h"
@@ -57,7 +60,7 @@ int g_nUiAnimatorSurfaceBoundsHeight = 0;
 // byte pattern "0TUA" (multichar 'AUT0'); the class-name string "TIdleMeAnimation"
 // follows at 0x695938, which Ghidra folds into one s_0TUATIdleMeAnimation label.
 // GLOBAL: IMPERIALISM 0x00695934
-int g_nIdleMeAnimationNextRegistryTag = 0x41555430;
+int g_nIdleMeAnimationNextRegistryTag = kManifestTagAUT0;
 // GLOBAL: IMPERIALISM 0x006a21a8
 TMacViewMgr* g_pStrategicMapViewSystem = 0;
 // GLOBAL: IMPERIALISM 0x006a21bc
@@ -144,7 +147,7 @@ int g_lastEdgeAutoScrollTick16 = 0;
 int g_nSaveFormatVersion = -1;
 // File header emitted by TAmbitFileBasedDocument::DoWrite and validated by DoRead.
 // GLOBAL: IMPERIALISM 0x0064c094
-extern const int g_nAmbitSaveFileMagic = 0x414d4249;
+extern const int g_nAmbitSaveFileMagic = kControlTagAMBI;
 // GLOBAL: IMPERIALISM 0x0064c098
 extern const int g_nCurrentAmbitSaveFormatVersion = 0x3e;
 // GLOBAL: IMPERIALISM 0x0069527c
@@ -157,10 +160,12 @@ extern const short g_aDiplomacyPlanningQuarterPhaseByNation[7] = {0, 3, 1, 2, 1,
 // pointers, matching the original 27-entry dispatch table.
 // GLOBAL: IMPERIALISM 0x00662978
 extern const unsigned int g_anScenarioScriptInstructionTags[27] = {
-    0x6c61626f, 0x63617061, 0x77617265, 0x61726d79, 0x63697669, 0x73686970, 0x7472616e,
-    0x64657665, 0x7261696c, 0x706f7274, 0x74656368, 0x70726963, 0x656d6261, 0x73756273,
-    0x74726561, 0x79656172, 0x70726f76, 0x7a6f6e65, 0x636e616d, 0x72656c61, 0x706e616d,
-    0x63617368, 0x666c6167, 0x74796572, 0x74626172, 0x74636c72, 0x636f756e,
+    kManifestTagLabo, kManifestTagCapa, kManifestTagWare, kControlTagArmy,  kManifestTagCivi,
+    kControlTagShip,  kControlTagTran,  kManifestTagDeve, kSummaryTagRail,  kControlTagPort,
+    kManifestTagTech, kControlTagPric,  kManifestTagEmba, kManifestTagSubs, kControlTagTrea,
+    kControlTagYear,  kControlTagProv,  kControlTagZone,  kManifestTagCnam, kControlTagRela,
+    kManifestTagPnam, kControlTagCash,  kControlTagFlag,  kManifestTagTyer, kManifestTagTbar,
+    kManifestTagTclr, kControlTagCoun,
 };
 // GLOBAL: IMPERIALISM 0x00698b50
 void (TSimMgr::* g_apfnScenarioScriptInstructionHandlers[27])(void*) = {
@@ -439,13 +444,14 @@ char g_szUCountrySourcePath_00696728[] = "D:\\Ambit\\Cross\\UCountry.cpp";
 // InitializeDiplomacyMinisterActionControlsAndLabels' (0x4f4620) 6 action-button tags,
 // in construction order: info/trty/gran/trad/coun/offr.
 // GLOBAL: IMPERIALISM 0x00696960
-int g_diplomacyActionButtonTagTable_00696960[6] = {0x696e666f, 0x74727479, 0x6772616e,
-                                                   0x74726164, 0x636f756e, 0x6f666672};
+int g_diplomacyActionButtonTagTable_00696960[6] = {kControlTagInfo, kControlTagTrty,
+                                                   kControlTagGran, kControlTagTrad,
+                                                   kControlTagCoun, kControlTagOffr};
 // TCouncilView::DoEvent's council-control 4-char tag table ("tfni", "ttrt", "targ",
 // "tart", "tuoc", "rffo" as stored); also the same function's hover-text tag variants.
 // GLOBAL: IMPERIALISM 0x00696978
-unsigned int g_councilControlTagTable[6] = {0x696e6674, 0x74727474, 0x67726174,
-                                            0x74726174, 0x636f7574, 0x6f666672};
+unsigned int g_councilControlTagTable[6] = {kControlTagInft, kControlTagTrtt, kControlTagGrat,
+                                            kControlTagTrat, kControlTagCout, kControlTagOffr};
 // Relation-tier to QuickDraw palette color-code map used by the diplomacy legend.
 // The caller at 0x004f6568 uses a signed relation tier and a two-byte stride.
 // GLOBAL: IMPERIALISM 0x00696990
@@ -596,38 +602,65 @@ int g_nOverlayClipCacheParamY = 0;
 // the real table at 0x696108 is const-initialized, not runtime-populated.
 // GLOBAL: IMPERIALISM 0x00696108
 const int g_pTradeSummarySelectionMap[23] = {
-    0x636f7474, 0x776f6f6c, 0x74696d62, 0x636f616c, 0x69726f6e, 0x686f7273, 0x6f696c20, 0x666f6f64,
-    0x66616272, 0x6c756d62, 0x70617065, 0x73746565, 0x6675656c, 0x636c6f74, 0x6675726e, 0x68617264,
-    0x61726d61, 0x67726169, 0x70726f64, 0x66697368, 0x6c697665, 0x67656d73, 0x676f6c64,
+    kManifestTagCott, kManifestTagWool,  kManifestTagTimb, kManifestTagCoal, kManifestTagIron,
+    kManifestTagHors, kManifestTagOilSp, kSummaryTagFood,  kManifestTagFabr, kManifestTagLumb,
+    kManifestTagPape, kManifestTagStee,  kManifestTagFuel, kControlTagClot,  kControlTagFurn,
+    kControlTagHard,  kManifestTagArma,  kControlTagGrai,  kControlTagProd,  kControlTagFish,
+    kManifestTagLive, kManifestTagGems,  kManifestTagGold,
 };
 
 // Trade sell propagation tags.
 const int kTradeSellPropagationTags[17] = {
-    0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520,
-    0x72733620, 0x6d613020, 0x6d613120, 0x6d613220, 0x6d613320, 0x6d613420,
-    0x6d613520, 0x67643020, 0x67643120, 0x67643220, 0x67643320,
+    kControlTagRs0Sp, kControlTagRs1Sp, kControlTagRs2Sp, kControlTagRs3Sp, kControlTagRs4Sp,
+    kControlTagRs5Sp, kControlTagRs6Sp, kControlTagMa0Sp, kControlTagMa1Sp, kControlTagMa2Sp,
+    kControlTagMa3Sp, kControlTagMa4Sp, kControlTagMa5Sp, kControlTagGd0Sp, kControlTagGd1Sp,
+    kControlTagGd2Sp, kControlTagGd3Sp,
 };
 
 // TMinorTradeBidsDialog's typed view of the control-tag run. The first 17 entries are
 // the commodity controls; the trailing values are the exact sentinel words adjacent to
 // the 23 slots read by the retail loop (the 24th word pins the original data extent).
 // GLOBAL: IMPERIALISM 0x0066b1a0
-const int g_tradeBidNationMetricControlTags[24] = {
-    0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520, 0x72733620, 0x6d613020,
-    0x6d613120, 0x6d613220, 0x6d613320, 0x6d613420, 0x6d613520, 0x67643020, 0x67643120, 0x67643220,
-    0x67643320, 0,          -1,         -1,         -1,         0,          1,          -1};
+const int g_tradeBidNationMetricControlTags[24] = {kControlTagRs0Sp,
+                                                   kControlTagRs1Sp,
+                                                   kControlTagRs2Sp,
+                                                   kControlTagRs3Sp,
+                                                   kControlTagRs4Sp,
+                                                   kControlTagRs5Sp,
+                                                   kControlTagRs6Sp,
+                                                   kControlTagMa0Sp,
+                                                   kControlTagMa1Sp,
+                                                   kControlTagMa2Sp,
+                                                   kControlTagMa3Sp,
+                                                   kControlTagMa4Sp,
+                                                   kControlTagMa5Sp,
+                                                   kControlTagGd0Sp,
+                                                   kControlTagGd1Sp,
+                                                   kControlTagGd2Sp,
+                                                   kControlTagGd3Sp,
+                                                   0,
+                                                   -1,
+                                                   -1,
+                                                   -1,
+                                                   0,
+                                                   1,
+                                                   -1};
 
 // Treaty-dialog panel and cell tags, stored as packed four-character control IDs.
 // GLOBAL: IMPERIALISM 0x0066b100
-const unsigned int g_majorTreatyPanelTags[7] = {0x47503020, 0x47503120, 0x47503220, 0x47503320,
-                                                0x47503420, 0x47503520, 0x47503620};
+const unsigned int g_majorTreatyPanelTags[7] = {
+    kManifestTagGP0Sp, kManifestTagGP1Sp, kManifestTagGP2Sp, kManifestTagGP3Sp,
+    kManifestTagGP4Sp, kManifestTagGP5Sp, kManifestTagGP6Sp};
 // GLOBAL: IMPERIALISM 0x0066b13c
 const unsigned int g_minorTreatyPanelTags[16] = {
-    0x6d372020, 0x6d382020, 0x6d392020, 0x6d313020, 0x6d313120, 0x6d313220, 0x6d313320, 0x6d313420,
-    0x6d313520, 0x6d313620, 0x6d313720, 0x6d313820, 0x6d313920, 0x6d323020, 0x6d323120, 0x6d323220};
+    kManifestTagM7SpSp, kManifestTagM8SpSp, kManifestTagM9SpSp, kManifestTagM10Sp,
+    kManifestTagM11Sp,  kManifestTagM12Sp,  kManifestTagM13Sp,  kManifestTagM14Sp,
+    kManifestTagM15Sp,  kManifestTagM16Sp,  kManifestTagM17Sp,  kManifestTagM18Sp,
+    kManifestTagM19Sp,  kManifestTagM20Sp,  kManifestTagM21Sp,  kManifestTagM22Sp};
 // GLOBAL: IMPERIALISM 0x0066b180
-const unsigned int g_majorTreatyCellTags[7] = {0x72475030, 0x72475031, 0x72475032, 0x72475033,
-                                               0x72475034, 0x72475035, 0x72475036};
+const unsigned int g_majorTreatyCellTags[7] = {kManifestTagRGP0, kManifestTagRGP1, kManifestTagRGP2,
+                                               kManifestTagRGP3, kManifestTagRGP4, kManifestTagRGP5,
+                                               kManifestTagRGP6};
 
 // Industry action cost weight tables
 // GLOBAL: IMPERIALISM 0x00650758
@@ -1466,9 +1499,10 @@ extern const short g_aTradeItemBasePriceByCategory_0069A910[0x11] = {
 // resolve each commodity summary-row control. Stored little-endian as the in-memory bytes.
 // GLOBAL: IMPERIALISM 0x0066dad0
 const unsigned int g_tradeCommodityRowTagTable[17] = {
-    0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520,
-    0x72733620, 0x6d613020, 0x6d613120, 0x6d613220, 0x6d613320, 0x6d613420,
-    0x6d613520, 0x67643020, 0x67643120, 0x67643220, 0x67643320};
+    kControlTagRs0Sp, kControlTagRs1Sp, kControlTagRs2Sp, kControlTagRs3Sp, kControlTagRs4Sp,
+    kControlTagRs5Sp, kControlTagRs6Sp, kControlTagMa0Sp, kControlTagMa1Sp, kControlTagMa2Sp,
+    kControlTagMa3Sp, kControlTagMa4Sp, kControlTagMa5Sp, kControlTagGd0Sp, kControlTagGd1Sp,
+    kControlTagGd2Sp, kControlTagGd3Sp};
 
 // GLOBAL: IMPERIALISM 0x006a58c8
 COLORREF g_defaultDropShadowTextColor = 0;

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "compat.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_diplomacy.h"
 #include "game/diplomacy_domain_types.h"
 #include "game/city_ui/StrategicMapCallbackRecord.h"
 #include "game/ui_core/TPicture.h"

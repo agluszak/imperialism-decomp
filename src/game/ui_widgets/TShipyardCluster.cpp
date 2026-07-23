@@ -1,4 +1,6 @@
 #include "game/ui_screens/TSimMgr.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 #include "game/ui_widgets/TShipyardCluster.h"
 
 #include "game/ui_widgets/TAmtBar.h"
@@ -8,7 +10,6 @@
 #include "game/city/TCity.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_control_tags.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_core/TViewMgr.h"
@@ -80,7 +81,8 @@ void TShipyardCluster::SetMoveAmount(short amount) {
   CopyRect(&invalidateRect, &moveRect);
   this->ownerContext->InvalidateCityDialogRectRegion(&invalidateRect, 1);
 
-  TAmtBar* turnControl = static_cast<TAmtBar*>(this->ownerContext->ResolveControlByTag(0x7475726e));
+  TAmtBar* turnControl =
+      static_cast<TAmtBar*>(this->ownerContext->ResolveControlByTag(kControlTagTurn));
   if (turnControl != 0) {
     turnControl->SetControlValueSlot1E4(0, 0);
     turnControl->QueryBounds(&moveRect);
