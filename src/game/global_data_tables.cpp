@@ -1557,6 +1557,11 @@ extern "C" const char s_SourcePathUDiplomacyViews_00696AE0[] =
     "D:\\Ambit\\Cross\\UDiplomacyViews.cpp";
 // GLOBAL: IMPERIALISM 0x006964b0
 extern "C" const char s_SourcePathUCityMinister_006964B0[] = "D:\\Ambit\\Cross\\UCityMinister.cpp";
+// Diplomacy action-topic tab tags, scanned in order by TDiplomacyMapView::DoEvent's
+// commandId == 0x14 branch to turn a clicked tab into a topic index.
+// GLOBAL: IMPERIALISM 0x00696978
+extern "C" const unsigned int g_aDiplomacyActionTopicTabTags[6] = {
+    0x696e6674u, 0x74727474u, 0x67726174u, 0x74726174u, 0x636f7574u, 0x6f666672u};
 // GLOBAL: IMPERIALISM 0x0069943c
 extern "C" const char s_SourcePathUSuperMap_0069943C[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
 // GLOBAL: IMPERIALISM 0x0069aa94
