@@ -12,8 +12,8 @@
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
   "git_branch": "agent/scalar-audit",
-  "git_commit": "d98e9e18b4aab1bd2e147f8b765c944150bf0525",
-  "git_commit_date": "2026-07-23T03:44:34+02:00",
+  "git_commit": "90aefcfe2cc328675ef012cf89b4fc14fce14f77",
+  "git_commit_date": "2026-07-23T10:01:40+02:00",
   "global_coverage_pct": 24.4563214154073,
   "global_orig_only_count": 8198,
   "global_recomp_only_count": 7631,
@@ -62,7 +62,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-23T08:00:46+00:00",
+  "timestamp_utc": "2026-07-23T08:02:02+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
