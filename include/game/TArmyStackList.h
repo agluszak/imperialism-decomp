@@ -13,7 +13,9 @@ public:
   // (0x64c9a0 at 0x4a193a) and whose readers cast every entry to TArmyStack*.
   short Compare(void* a, void* b) override; // slot 0x1b byte 0x6c 0x4a8560
 
-  // Defined inline (like TSortedList's own): every construction site inlines the base
-  // TObject-vtbl + CPtrList(10) sequence and then stores this class's vtable.
+  // Defined inline, like TSortedList's own ctor: the construction site inlines the base
+  // TObject-vtbl + CPtrList(10) sequence and then stores this class's vtable (0x4a193a).
+  // The marker claims the COMDAT copy the binary also carries.
+  // FUNCTION: IMPERIALISM 0x004a8450
   TArmyStackList() : TSortedList() {}
 };
