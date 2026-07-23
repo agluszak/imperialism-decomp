@@ -1141,7 +1141,7 @@ address|name|symbol|size|type|prototype|provenance
 493f90|InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit||24|function|undefined InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit()|
 493fc0|DestroyDefaultQuickDrawSurfaceContextAtExit||10|function|undefined DestroyDefaultQuickDrawSurfaceContextAtExit()|
 493fe0|InitStub_thunk_InitializeGlobalClipRegionHandleState_At00493fe0||24|function|undefined InitStub_thunk_InitializeGlobalClipRegionHandleState_At00493fe0()|
-494010|WrapperFor_DeleteRegionHandleFromClipState_At00494010||29|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At00494010()|
+494010|TQuickDrawClipStateInitializer::`dynamic atexit destructor'||29|function|undefined DynamicAtexitDestructor()|
 494040|CBrush::InitializeGlobalClipRegionHandleState||77|function|undefined InitializeGlobalClipRegionHandleState()|
 494130|CreateFontFromPresetAndAttachRegionHandle||406|function|undefined CreateFontFromPresetAndAttachRegionHandle()|
 494370|WrapperFor_DeleteRegionHandleFromClipState_At00494370||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At00494370()|

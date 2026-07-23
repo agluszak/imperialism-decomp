@@ -19,14 +19,20 @@
 // null-guard, exactly as the original does, so this initializer must run first.
 // Declaring a real file-scope instance reproduces that CRT-init entry; its +0x8
 // member is g_pActiveQuickDrawSurfaceContext (0x6a1d60) in the original layout.
-// FIXME(0x494010): the atexit destructor (DeleteObject + delete the CRgn) is left
-// unmarked because MSVC500 inlines this trivial dtor into the atexit thunk, so no
-// standalone symbol exists at 0x494010 for reccmp to pair. If a non-inlined shape
-// is found, restore the `// FUNCTION: IMPERIALISM 0x00494010` marker here.
+// 0x494010 is the atexit destructor thunk MSVC500 generates for that file-scope object,
+// with this trivial destructor inlined into it -- 29 bytes of
+//   MOV ECX,[0x6a1da8] / CALL CGdiObject::DeleteObject
+//   MOV ECX,[0x6a1da8] / TEST ECX,ECX / JZ .ret
+//   MOV EAX,[ECX] / PUSH 1 / CALL [EAX+4]      ; scalar deleting dtor, free = 1
+// which the destructor below reproduces byte for byte (VC5 emits the same 29-byte
+// thunk for this TU, named `$E130` off its per-TU ordinal counter). There is no
+// source-level name to claim it by, so it is claimed as SYNTHETIC.
 class TQuickDrawClipStateInitializer {
 public:
   TQuickDrawClipStateInitializer();
 
+  // SYNTHETIC: IMPERIALISM 0x00494010
+  // TQuickDrawClipStateInitializer::`dynamic atexit destructor'
   ~TQuickDrawClipStateInitializer() {
     g_pGlobalClipRegionHandleObject->DeleteObject();
     delete g_pGlobalClipRegionHandleObject;
