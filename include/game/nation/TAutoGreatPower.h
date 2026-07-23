@@ -38,8 +38,8 @@ public:
   // slot 0x4d — 0x004ea470: rebuild yields and roll field 0x134 into 0x136.
   void RebuildNationResourceYieldCountersAndDevelopmentTargets(void) override;
   // slots 0x56/0x57 — 0x004e78d0/0x004e78f0: minister callbacks when city exists.
-  void RunSlot4CThenSortTrackedOrders(void) override;
-  void ResetField900FromNeedCapA6(void) override;
+  void MoveCivilians(void) override;
+  void MoveArmy(void) override;
   // slot 0x5a — 0x004e7810: recompute aid budget and clear need matrix.
   void ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void) override;
   // slot 0x61 — 0x004e7990: foreign-minister slots 0x90/0x94.

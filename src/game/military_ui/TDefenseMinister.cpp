@@ -1,5 +1,6 @@
 #include "game/military_ui/TDefenseMinister.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 #include "game/globals/prelude.h"
@@ -13,6 +14,7 @@
 #include "game/nation/TGreatPower.h"
 #include "game/TList.h"
 #include "game/military_ui/TDiplomacyMgr.h"
+#include "game/city_ui/TCityInteriorMinister.h"
 #include "game/city_ui/TLongintList.h"
 #include "game/map/TMapMgr.h"
 #include "game/military/TMilitaryUnit.h"
@@ -20,6 +22,7 @@
 #include "game/map/TMission.h"
 #include "game/military/TUnit.h"
 #include "game/gfx/ui_invalidation_guard.h"
+#include "game/ui_screens/TSimMgr.h"
 
 // Slot 24 (0x60) — body 0x4ec0a0; placed first because it is the lowest address.
 
@@ -139,12 +142,16 @@ short TDefenseMinister::GetRankingCriterionForGP(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ec450
-void TDefenseMinister::MinisterSlot12() {}
+void TDefenseMinister::GoShopping() {
+  if (g_pSimMgr->GetEconomicTurn() > 6 && rand() % 100 < 33) {
+    ownerContextAt04->interiorMinister->PleaseBuildLandUnit(static_cast<short>(rand() % 7 + 1));
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004ec4c0
-void TDefenseMinister::Call4C() {
+void TDefenseMinister::DoArmyMovement() {
   // See TAttackProvinceMission::Free: the tail AI state block is TAutoGreatPower-only.
-  TAutoGreatPower* owner = reinterpret_cast<TAutoGreatPower*>(this->ownerContextAt04);
+  TAutoGreatPower* owner = static_cast<TAutoGreatPower*>(ownerContextAt04);
   owner->AssertValid();
   CIterator missionCursor(owner->missionQueue);
   TMission* mission = static_cast<TMission*>(missionCursor.Reset());
@@ -157,7 +164,7 @@ void TDefenseMinister::Call4C() {
 // Slot 20 override (0x4ec540).
 
 // FUNCTION: IMPERIALISM 0x004ec540
-void TDefenseMinister::AssignDefenseUnitsToHomeAndBorderRegions() {
+void TDefenseMinister::DoPeacetimeDeployment() {
   TGreatPower* owner = ownerContextAt04;
   int totalUnitCount = owner->militaryUnitList44->GetCount();
 

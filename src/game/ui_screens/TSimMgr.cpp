@@ -921,7 +921,7 @@ void TSimMgr::DoCivilians() {
   g_pSelectedCivilianOrderState->ResolveCivilianDisputes();
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
     if (IsNationEligibleForOptionalPhase(static_cast<short>(nationSlot))) {
-      g_apNationStates[nationSlot]->RunSlot4CThenSortTrackedOrders();
+      g_apNationStates[nationSlot]->MoveCivilians();
     }
   }
 }
@@ -946,7 +946,7 @@ void TSimMgr::DoMilitary() {
     TGreatPower* nation = g_apNationStates[nationSlot];
     nation->PayForMilitary();
     nation->SelectAndQueueAdvisoryMapMissionsCase16();
-    nation->ResetField900FromNeedCapA6();
+    nation->MoveArmy();
   }
 
   g_pMapContextActionManager->CleanUpStacks();

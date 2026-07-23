@@ -1947,8 +1947,8 @@ address|name|symbol|size|type|prototype|provenance
 4be3c0|TInteriorMinister::DispatchNationStateEventCode10||31|function|undefined DispatchNationStateEventCode10(void)|
 4be3f0|TInteriorMinister::SetForeignMinisterReadyFlag14_1a||3|function|undefined SetForeignMinisterReadyFlag14(void)|
 4be410|TInteriorMinister::VTableSlot1B||3|function|undefined 'scalar_deleting_destructor'(void)|
-4be430|TInteriorMinister::GetTEventHandlerClassNamePointer_1c||3|function|undefined GetTEventHandlerClassNamePointer(void)|
-4be450|TInteriorMinister::OrphanCallChain_C11_I88_004874b0_12||21|function|undefined OrphanCallChain_C11_I88_004874b0(void)|
+4be430|TInteriorMinister::PleaseBuildLandUnit||3|function|void PleaseBuildLandUnit(short unitType)|
+4be450|TInteriorMinister::SetParameters||21|function|void SetParameters(short firstParameter, short secondParameter)|
 4be480|OrphanLeaf_NoCall_Ins11_004be480||35|function|undefined OrphanLeaf_NoCall_Ins11_004be480()|
 4be4c0|OrphanLeaf_NoCall_Ins06_004be4c0||24|function|undefined OrphanLeaf_NoCall_Ins06_004be4c0()|
 4be4f0|TInteriorMinister::VTableSlot13||18|function|undefined 'scalar_deleting_destructor'(void)|
@@ -1975,7 +1975,7 @@ address|name|symbol|size|type|prototype|provenance
 4beeb0|TCityInteriorMinister::SetForeignMinisterReadyFlag14||26|function|undefined OrphanCallChain_C11_I88_004874b0(void)|
 4beee0|TCityInteriorMinister::VTableSlot1B||23|function|undefined OrphanCallChain_C7_I57_004be5b0(void)|
 4bef10|TCityInteriorMinister::VTableSlot2D||12|function|undefined 'scalar_deleting_destructor'(void)|
-4bef30|TCityInteriorMinister::GetTEventHandlerClassNamePointer||20|function|undefined SetForeignMinisterReadyFlag14(void)|
+4bef30|TCityInteriorMinister::PleaseBuildLandUnit||20|function|void PleaseBuildLandUnit(short unitType)|
 4bef60|TCityInteriorMinister::WriteTo||846|function|undefined 'scalar_deleting_destructor'(void)|
 4bf390|TCityInteriorMinister::ReadFrom||771|function|undefined SetForeignMinisterReadyFlag14(void)|
 4bf770|TCityInteriorMinister::OrphanCallChain_C7_I57_004be5b0||240|function|undefined 'scalar_deleting_destructor'(void)|
@@ -2454,8 +2454,8 @@ address|name|symbol|size|type|prototype|provenance
 4e01b0|TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0||65|function|undefined DispatchGreatPowerQuarterlyStatusMessageLevel0()|
 4e0220|TGreatPower::IterateLinkedListCursorEntries_004e0220||74|function|undefined IterateLinkedListCursorEntries_004e0220()|
 4e0290|TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_55||207|function|undefined OrphanLeaf_NoCall_Ins02_004d7fc0(void)|
-4e03a0|TGreatPower::ReturnFalseNationStateActionStub_56||23|function|undefined ReturnFalseNationStateActionStub(void)|
-4e03d0|TGreatPower::OrphanRetStub_004d7fe0_57||30|function|undefined OrphanRetStub_004d7fe0(void)|
+4e03a0|TGreatPower::MoveCivilians||23|function|void MoveCivilians(void)|
+4e03d0|TGreatPower::MoveArmy||30|function|void MoveArmy(void)|
 4e0400|TGreatPower::HasActiveCandidateNationSlots||3|function|undefined HasActiveCandidateNationSlots()|
 4e0420|TGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0_84||3|function|undefined OrphanLeaf_NoCall_Ins02_004d7ee0(void)|
 4e0440|TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f00_85||3|function|undefined OrphanLeaf_NoCall_Ins02_004d7f00(void)|
@@ -2572,8 +2572,8 @@ address|name|symbol|size|type|prototype|provenance
 4e7630|TGreatPower::ApplyIndexedResourceDeltaWithNeedClamp||60|function|undefined ApplyIndexedResourceDeltaWithNeedClamp()|
 4e7680|TAutoGreatPower::SetTradeOffersFor||308|function|void __thiscall SetTradeOffersFor(short resourceKind,short offerContext)|
 4e7810|TAutoGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix||131|function|undefined RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix()|
-4e78d0|TAutoGreatPower::DispatchNationField98CallbackD4||14|function|undefined DispatchNationField98CallbackD4()|
-4e78f0|TAutoGreatPower::DispatchNationField9CCallback4C||11|function|undefined DispatchNationField9CCallback4C()|
+4e78d0|TAutoGreatPower::MoveCivilians||14|function|void MoveCivilians(void)|
+4e78f0|TAutoGreatPower::MoveArmy||11|function|void MoveArmy(void)|
 4e7910|TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2||3|function|undefined OrphanRetStub_004e7910(void)|
 4e7930|TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1||3|function|undefined OrphanRetStub_004e7930(void)|
 4e7950|TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0||3|function|undefined OrphanRetStub_004e7950(void)|
@@ -2637,9 +2637,9 @@ address|name|symbol|size|type|prototype|provenance
 4ec1d0|TDefenseMinister::WriteTo||210|function|void __thiscall WriteTo(TStream* stream)|
 4ec2f0|TDefenseMinister::ReadFrom||166|function|void __thiscall ReadFrom(TStream* stream)|
 4ec3d0|TDefenseMinister::DispatchNationStateEventCode10||94|function|undefined GetTEventHandlerClassNamePointer(void)|
-4ec450|TDefenseMinister::MinisterSlot12||80|function|undefined MinisterSlot12()|
-4ec4c0|TDefenseMinister::Call4C||84|function|undefined Call4C()|
-4ec540|TDefenseMinister::MinisterSlot14||1302|function|undefined MinisterSlot14()|
+4ec450|TDefenseMinister::GoShopping||80|function|void GoShopping(void)|
+4ec4c0|TDefenseMinister::DoArmyMovement||84|function|void DoArmyMovement(void)|
+4ec540|TDefenseMinister::DoPeacetimeDeployment||1302|function|void DoPeacetimeDeployment(void)|
 4ecbb0|TDefenseMinister::BuildTileRingPriorityMapForNationTileList||700|function|undefined BuildTileRingPriorityMapForNationTileList()|
 4ecf20|TDefenseMinister::BuildStrategicTilePriorityHeatmap||228|function|undefined BuildStrategicTilePriorityHeatmap()|
 4ed050|TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer||737|function|undefined BuildHexAreaTileIndexListIntoAllocatedBuffer()|
