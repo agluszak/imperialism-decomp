@@ -20,7 +20,8 @@ public:
                            unsigned char fRefreshNow) override; // slot 0x70 0x571d10
   // Mac CodeWarrior identifies these five state operations as IsOn, SetState,
   // CheckTheLook, Toggle, and ToggleIf; the Windows slot order and byte widths agree.
-  virtual unsigned char IsOn();                                        // slot 0x74 0x571de0
+  virtual unsigned char IsOn(); // slot 0x74 0x571de0
+  using TUpDownPictureButton::SetState;
   virtual void SetState(unsigned char isOn, unsigned char refreshNow); // slot 0x75 0x571e00
   virtual void CheckTheLook(unsigned char refreshNow);                 // slot 0x76 0x571d40
   virtual void Toggle(unsigned char refreshNow);                       // slot 0x77 0x571e40

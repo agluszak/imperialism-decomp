@@ -90,13 +90,13 @@ void TRailAmtBar::DoPostCreate(int arg) {
                               (int)productionOrCapValue);
   }
   auxValueB = 0x3a;
-  reinterpret_cast<TView*>(this)->TView::DoPostCreate(arg);
+  TView::DoPostCreate(arg);
 }
 
 // FUNCTION: IMPERIALISM 0x0058a1b0
 void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   CTemporaryRegion surface;
-  TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
+  TAmtBar* control = this;
   GetClip(surface.tempRgn);
 
   if (control != 0 && control->IsActionable() != 0) {

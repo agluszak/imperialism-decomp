@@ -2906,9 +2906,11 @@ void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused
     bool occupiedByOther = occupied && !isMine;
     boxControl->SetState(static_cast<int>(occupiedByOther), 0);
     if (mySlotIndex != -1) {
-      boxControl->TCzechBox::SetState(static_cast<unsigned char>(i == mySlotIndex), 0);
+      boxControl->TCzechBox::SetState(static_cast<unsigned char>(i == mySlotIndex),
+                                      static_cast<unsigned char>(0));
     } else {
-      boxControl->TCzechBox::SetState(static_cast<unsigned char>(occupiedByOther), 0);
+      boxControl->TCzechBox::SetState(static_cast<unsigned char>(occupiedByOther),
+                                      static_cast<unsigned char>(0));
     }
     boxControl->CheckTheLook(0);
   }

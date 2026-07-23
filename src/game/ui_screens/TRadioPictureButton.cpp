@@ -1,5 +1,4 @@
 #include "game/ui_screens/TRadioPictureButton.h"
-#include "game/ui_widgets/TAmtBar.h"
 #include "game/ui_core/TControl.h"
 // SYNTHETIC: IMPERIALISM 0x00571700
 // TRadioPictureButton::CreateObject
@@ -28,7 +27,7 @@ TRadioPictureButton::~TRadioPictureButton() {}
 void TRadioPictureButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     if (controlState64 == 0) {
-      reinterpret_cast<TAmtBar*>(this)->InvokeSlot1CC(1, 0);
+      SetRadioState(1, 0);
     }
     TControl::DoEvent(commandId, sourceHandler, event);
     return;
@@ -38,10 +37,10 @@ void TRadioPictureButton::DoEvent(int commandId, TEventHandler* sourceHandler, T
       TControl::DoEvent(commandId, sourceHandler, event);
       return;
     }
-    reinterpret_cast<TAmtBar*>(this)->InvokeSlot1CC(0, 0);
+    SetRadioState(0, 0);
     return;
   }
-  reinterpret_cast<TAmtBar*>(this)->InvokeSlot1CC(1, 0);
+  SetRadioState(1, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005718f0

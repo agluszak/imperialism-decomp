@@ -1597,7 +1597,7 @@ address|matching|name
 0x4a8d30|1.0|TArmyUnitLine::TArmyUnitLine
 0x4a8d60|1.0|TArmyUnitLine::`scalar deleting destructor'
 0x4a8d90|0.0|TArmyUnitLine::~TArmyUnitLine
-0x4a8df0|0.56973293768546|TArmyUnitLine::InstallViews
+0x4a8df0|0.551622418879056|TArmyUnitLine::InstallViews
 0x4a9400|1.0|TArmyCheckBox::`scalar deleting destructor'
 0x4a9430|0.0|TArmyCheckBox::~TArmyCheckBox
 0x4a9450|0.4897959183673469|TArmyUnitView::CreateObject
@@ -1718,7 +1718,7 @@ address|matching|name
 0x4affd0|1.0|TBatRepDetLine::`scalar deleting destructor'
 0x4b0000|0.0|TBatRepDetLine::~TBatRepDetLine
 0x4b0020|1.0|TBatRepDetLine::GetRuntimeClass
-0x4b0040|0.26517571884984026|TBatRepDetLine::InstallViews
+0x4b0040|0.21019108280254778|TBatRepDetLine::InstallViews
 0x4b0630|0.5818181818181818|TBattleUnitsView::CreateObject
 0x4b06d0|1.0|TBattleUnitsView::GetRuntimeClass
 0x4b06f0|0.5660377358490566|TBattleUnitsView::StuffValues
@@ -4018,7 +4018,7 @@ address|matching|name
 0x54b060|1.0|TPoseMessageDialog::CreateObject
 0x54b0d0|1.0|TPoseMessageDialog::GetRuntimeClass
 0x54b0f0|1.0|QueuePoseMessageDialogForNationSlot
-0x54b1b0|0.5384615384615384|TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls
+0x54b1b0|0.56047197640118|TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls
 0x54b4c0|0.6788990825688074|TMultiplayerMgr::DispatchTurnEventCode9WithTwoTextTokens
 0x54b5b0|1.0|TMultiplayerMgr::SendTradeBook
 0x54b5d0|0.9101123595505618|TMultiplayerMgr::EmitNationDiplomacyNeedStateSnapshotEvent15
@@ -4593,7 +4593,7 @@ address|matching|name
 0x5715a0|1.0|TUpDownPictureButton::TUpDownPictureButton
 0x5715d0|1.0|TUpDownPictureButton::`scalar deleting destructor'
 0x571600|0.2222222222222222|TUpDownPictureButton::~TUpDownPictureButton
-0x571620|0.38596491228070173|TUpDownPictureButton::HiliteState
+0x571620|0.7037037037037037|TUpDownPictureButton::HiliteState
 0x571690|1.0|TUpDownPictureButton::DrawImmediate
 0x5716b0|1.0|TUpDownPictureButton::DoMouseCommand
 0x571700|0.5614035087719298|TRadioPictureButton::CreateObject
@@ -4601,7 +4601,7 @@ address|matching|name
 0x5717c0|0.7|TRadioPictureButton::TRadioPictureButton
 0x571800|1.0|TRadioPictureButton::`scalar deleting destructor'
 0x571830|0.0|TRadioPictureButton::~TRadioPictureButton
-0x571850|0.21052631578947367|TRadioPictureButton::DoEvent
+0x571850|0.46938775510204084|TRadioPictureButton::DoEvent
 0x5718f0|1.0|TRadioPictureButton::SetRadioState
 0x571930|0.5614035087719298|TOnOffRadioButton::CreateObject
 0x5719d0|1.0|TOnOffRadioButton::GetRuntimeClass
@@ -5056,10 +5056,10 @@ address|matching|name
 0x587950|0.6666666666666666|TTradeCluster::NotifyControlSelectionChange
 0x587980|0.5263157894736842|TTradeCluster::IsSelectionAllowed
 0x587a10|0.4745762711864407|TTradeCluster::GetBoolSlot1DC
-0x587aa0|0.8688524590163934|TTradeCluster::DoControlAction
-0x587bb0|0.46473029045643155|TTradeCluster::SetTradeBidControlBitmap
-0x587dd0|0.6875|TTradeCluster::SetTradeOfferControlBitmap
-0x588030|0.5418060200668896|TTradeCluster::SetTradeOfferSecondaryBitmap
+0x587aa0|0.9016393442622951|TTradeCluster::DoControlAction
+0x587bb0|0.4083333333333333|TTradeCluster::SetTradeBidControlBitmap
+0x587dd0|0.65625|TTradeCluster::SetTradeOfferControlBitmap
+0x588030|0.5484949832775919|TTradeCluster::SetTradeOfferSecondaryBitmap
 0x5882f0|0.2882882882882883|TTradeCluster::SetMoveAmount
 0x5884c0|0.5161290322580645|TAmtBar::CreateObject
 0x588560|1.0|TAmtBar::GetRuntimeClass
@@ -5068,7 +5068,7 @@ address|matching|name
 0x5885f0|0.2222222222222222|TAmtBar::~TAmtBar
 0x588610|1.0|TAmtBar::DoPostCreate
 0x588630|0.8666666666666667|TAmtBar::UpdateBarValuesAndRefresh
-0x588670|0.4|TAmtBar::Draw
+0x588670|1.0|TAmtBar::Draw
 0x588690|0.5349544072948328|TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 0x588950|0.058823529411764705|TAmtBar::DoMouseCommand
 0x588a30|0.5818181818181818|TIndustryCluster::CreateObject
@@ -5094,9 +5094,9 @@ address|matching|name
 0x589720|0.9|TRailCluster::TRailCluster
 0x589760|1.0|TRailCluster::`scalar deleting destructor'
 0x589790|0.0|TRailCluster::~TRailCluster
-0x5897b0|0.375|TRailCluster::DoPostCreate
+0x5897b0|0.32|TRailCluster::DoPostCreate
 0x5899c0|1.0|TRailCluster::SetMoveAmount(short)
-0x5899f0|0.3485714285714286|TRailCluster::SetMoveAmount(short, unsigned char)
+0x5899f0|0.34285714285714286|TRailCluster::SetMoveAmount(short, unsigned char)
 0x589d10|0.7301587301587301|TRailCluster::UpdateMax
 0x589da0|0.2962962962962963|TRailCluster::DoEvent
 0x589ed0|0.5161290322580645|TRailAmtBar::CreateObject
@@ -5104,7 +5104,7 @@ address|matching|name
 0x589f90|0.631578947368421|TRailAmtBar::TRailAmtBar
 0x589fd0|1.0|TRailAmtBar::`scalar deleting destructor'
 0x58a000|0.0|TRailAmtBar::~TRailAmtBar
-0x58a020|0.47715736040609136|TRailAmtBar::DoPostCreate
+0x58a020|0.45685279187817257|TRailAmtBar::DoPostCreate
 0x58a1b0|0.4845814977973568|TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 0x58a3b0|0.4838709677419355|TRailAmtBar::RenderQuickDrawOverlayWithHitRegion
 0x58a4d0|0.5818181818181818|TShipyardCluster::CreateObject
@@ -5144,8 +5144,8 @@ address|matching|name
 0x58b690|1.0|THQButton::`scalar deleting destructor'
 0x58b6c0|0.2222222222222222|THQButton::~THQButton
 0x58b6e0|0.6111111111111112|THQButton::DoPostCreate
-0x58b750|0.35294117647058826|THQButton::HiliteState
-0x58b7f0|0.21052631578947367|THQButton::DoEvent
+0x58b750|0.625|THQButton::HiliteState
+0x58b7f0|0.46938775510204084|THQButton::DoEvent
 0x58b890|0.7368421052631579|THQButton::IsSelected
 0x58b8d0|0.5507246376811594|THQButton::SetSelectionStateAndRefreshBitmap
 0x58b960|0.5818181818181818|TPlacard::CreateObject

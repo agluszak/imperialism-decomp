@@ -426,7 +426,7 @@ def load_function_sizes(build_dir: Path) -> dict[int, int]:
         if not path.exists():
             continue
         with path.open("r", encoding="utf-8", errors="replace") as fd:
-            header = fd.readline().rstrip("\n").split("|")
+            header = fd.readline().rstrip("\n").split("|")  # pipe-split-ok: streaming scan of whichever of generated symbols.csv / original_entities.csv exists, with header-driven column indexing
             try:
                 addr_i, size_i, type_i = (
                     header.index("address"),
@@ -436,7 +436,7 @@ def load_function_sizes(build_dir: Path) -> dict[int, int]:
             except ValueError:
                 continue
             for line in fd:
-                parts = line.rstrip("\n").split("|")
+                parts = line.rstrip("\n").split("|")  # pipe-split-ok: same streaming scan; rows validated by column count below
                 if len(parts) <= max(addr_i, size_i, type_i):
                     continue
                 if parts[type_i].strip().lower() != "function":

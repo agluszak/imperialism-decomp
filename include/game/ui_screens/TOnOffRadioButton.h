@@ -15,6 +15,7 @@ public:
   virtual ~TOnOffRadioButton() override; // slot 0x01 (scalar deleting destructor)
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
                        TEvent* event) override; // slot 0x0f 0x00571a80
+  using TPictureButton::SetState;
   virtual void SetState(unsigned char on,
                         unsigned char drawImmediate); // slot 0x74 0x571b20
 
