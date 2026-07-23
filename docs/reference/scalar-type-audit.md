@@ -58,6 +58,50 @@ a stale category-level approval.
 | `d4248763cec9fcfa` | `src/game/cd_audio.cpp:147` | `multimedia_dword_field` | MCI_PLAY_PARMS.dwFrom is DWORD; retail 0x005e1850 masks the track index to eight bits before the dword store. |
 | `af9be0d81a08664a` | `src/game/cd_audio.cpp:148` | `multimedia_dword_field` | MCI_PLAY_PARMS.dwTo is DWORD; retail 0x005e1850 increments then masks the track index before the dword store. |
 
+## Reviewed nested integral conversions
+
+A two-step conversion is not redundancy by default. Each is reviewed at its own
+site: most are a required representation step -- sign preservation, a logical
+shift, packed-word assembly -- followed by the destination's storage width. The
+canonical types these boundaries convert between live in `docs/reference/scalar-boundary-inventory.csv`.
+
+| Source | Detail | Classification | Evidence |
+| --- | --- | --- | --- |
+| `include/game/ui_fourcc.h:31` | unsigned char -> unsigned int | `encoding_policy_widening` | IMPERIALISM_FOURCC promotes each character through unsigned char before shifting so a signed char never sign-extends into the tag; the two steps are the encoding policy, not redundancy. |
+| `include/game/ui_fourcc.h:32` | unsigned char -> unsigned int | `encoding_policy_widening` | the same per-character promotion for byte 2 of the tag. |
+| `include/game/ui_fourcc.h:33` | unsigned char -> unsigned int | `encoding_policy_widening` | the same per-character promotion for byte 3 of the tag. |
+| `include/game/ui_fourcc.h:34` | unsigned char -> unsigned int | `encoding_policy_widening` | the same per-character promotion for byte 4 of the tag. |
+| `src/game/TArmyMgr.cpp:1794` | int -> short | `prng_extract_then_narrow` | the map-generation LCG state is unsigned so the >> 0xc extraction is logical; the int step keeps the modulus signed and the short step is the caller's word storage. |
+| `src/game/TArmyMgr.cpp:1800` | int -> short | `prng_extract_then_narrow` | the sibling extraction with a modulus of 100, same three-step shape. |
+| `src/game/TArmyMgr.cpp:1810` | unsigned int -> int | `prng_extract_then_narrow` | the same LCG extraction consumed directly as an int. |
+| `src/game/TArmyPlayer.cpp:1270` | int -> char | `float_table_read_then_byte_store` | g_afTacticalDirectFireFlagByCategoryCode is a float table; the int step performs the retail truncation and the char step is the byte the caller stores. |
+| `src/game/TArmyPlayer.cpp:1347` | int -> char | `float_table_read_then_byte_store` | the same float-table truncation for a second category lookup. |
+| `src/game/TArmyPlayer.cpp:1494` | int -> char | `float_table_read_then_byte_store` | the same float-table truncation. |
+| `src/game/TArmyPlayer.cpp:1520` | int -> char | `float_table_read_then_byte_store` | the same float-table truncation. |
+| `src/game/TArmyPlayer.cpp:1534` | int -> char | `float_table_read_then_byte_store` | the same float-table truncation. |
+| `src/game/TArmyPlayer.cpp:1563` | int -> char | `float_table_read_then_byte_store` | the same float-table truncation. |
+| `src/game/TArmyPlayer.cpp:1612` | int -> char | `float_table_read_then_byte_store` | the same float-table truncation. |
+| `src/game/TDealTabControl.cpp:88` | short -> short | `narrow_operand_then_narrow_result` | CPoint::y and CRect::top are LONG, so the inner casts are real narrowings to the retail word arithmetic; the outer cast stores the row index as a short. Same-width cast names in the report describe the cast types, not the operand types. |
+| `src/game/TGreatPower.cpp:885` | char -> unsigned char | `signed_byte_then_unsigned_byte_store` | field8d6 holds a signed difficulty byte; the signed step preserves sign extension before the +0x33 bias and the unsigned step is the byte written into the flags array. |
+| `src/game/TGreatPower.cpp:888` | char -> unsigned char | `signed_byte_then_unsigned_byte_store` | the sibling flag byte, same two-step bias. |
+| `src/game/TGreatPower.cpp:1335` | int -> unsigned int | `signed_difference_then_unsigned_use` | the economic-turn difference is computed signed and consumed as an unsigned quantity; both steps are required to reproduce the retail compare. |
+| `src/game/TGreatPower.cpp:2827` | unsigned short -> int | `packed_word_pair` | the low word is isolated before being shifted into the high half of a packed 32-bit code; the int step keeps the shift signed. |
+| `src/game/TLanguageMgr.cpp:169` | unsigned int -> int | `unsigned_char_then_signed_compare` | the format character is widened without sign extension, then compared as a signed count. |
+| `src/game/TMapMaker.cpp:1431` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the region-class grid stores signed bytes; the signed step preserves the -1 sentinel and the unsigned short step is the word key the neighbour tally uses. |
+| `src/game/TMapMaker.cpp:1438` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the same signed-byte grid read for the first neighbour. |
+| `src/game/TMapMaker.cpp:1441` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the same signed-byte grid read for the second neighbour. |
+| `src/game/TMapMaker.cpp:1444` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the same signed-byte grid read for the third neighbour. |
+| `src/game/TMultiplayerMgr.cpp:2043` | unsigned int -> short | `packet_word_extract` | the trade code is shifted logically as unsigned before the high word is stored into a signed word packet field. |
+| `src/game/TPicture.cpp:173` | unsigned short -> unsigned int | `packed_word_pair` | the resource namespace id is isolated as a word before being shifted into the high half of the packed resource id. |
+| `src/game/TPicture.cpp:174` | unsigned short -> unsigned int | `packed_word_pair` | the glyph base occupies the low half of the same packed resource id. |
+| `src/game/TScrollBarView.cpp:194` | short -> short | `narrow_operand_then_narrow_result` | TView::frameHeight38 is an int, so the inner cast is a real narrowing to the retail word arithmetic. |
+| `src/game/TSimMgr.cpp:2409` | short -> short | `narrow_operand_then_narrow_result` | slotToken is an unsigned int read from the save stream, so the inner cast is a real narrowing before the *10 + 0x717 word computation. |
+| `src/game/TTacArmyView.cpp:620` | short -> char | `word_arithmetic_then_character` | the AI state code is biased in word arithmetic and stored as the ASCII character the debug overlay draws. |
+| `src/game/TTechMgr.cpp:188` | int -> short | `prng_extract_then_narrow` | the same LCG extraction shape as TArmyMgr, with a caller-supplied range span. |
+| `src/game/TUniversityView.cpp:370` | signed char -> int | `signed_table_byte_then_int` | the university requirement table stores signed bytes; the signed step preserves negative levels and the int step is the arithmetic width. |
+| `src/game/TZone.cpp:634` | short -> unsigned short | `narrow_operand_then_narrow_result` | tileOrTerrainId0c is widened arithmetic; the signed step performs the retail word addition and the unsigned step is the tile-id key. |
+| `src/game/TZone.cpp:698` | signed char -> unsigned char | `signed_byte_sign_test` | the packed map-tile action state byte is read signed so the < 0 sign test is correct, then normalized to a byte for the retail byte compare. |
+
 ## Reviewed predicate storage boundaries
 
 Each `predicate_storage_cast` is reviewed at its own site, because whether a
@@ -208,40 +252,40 @@ is classified, and a family that stops appearing must be removed.
 | `83fe19c4ff1bb637` | `native_integral_boundary` | `src/game/TViewMgr.cpp:2490` | game scalar -> BYTE | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `d4248763cec9fcfa` | `native_integral_boundary` | `src/game/cd_audio.cpp:147` | game scalar -> DWORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `af9be0d81a08664a` | `native_integral_boundary` | `src/game/cd_audio.cpp:148` | game scalar -> DWORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `cb4593f41b01cff8` | `nested_integral_cast` | `include/game/ui_fourcc.h:31` | unsigned char -> unsigned int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `ddbd994a05628784` | `nested_integral_cast` | `include/game/ui_fourcc.h:32` | unsigned char -> unsigned int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `08a127d9814aa2e3` | `nested_integral_cast` | `include/game/ui_fourcc.h:33` | unsigned char -> unsigned int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `239a01f6e5d42d4e` | `nested_integral_cast` | `include/game/ui_fourcc.h:34` | unsigned char -> unsigned int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `2c66f15411d99647` | `nested_integral_cast` | `src/game/TArmyMgr.cpp:1794` | int -> short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `40395d89c7121e4e` | `nested_integral_cast` | `src/game/TArmyMgr.cpp:1800` | int -> short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `08fb4d91dd8b2d05` | `nested_integral_cast` | `src/game/TArmyMgr.cpp:1810` | unsigned int -> int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `a7a29c448d499cad` | `nested_integral_cast` | `src/game/TArmyPlayer.cpp:1270` | int -> char | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `1a8f8d000935caa9` | `nested_integral_cast` | `src/game/TArmyPlayer.cpp:1347` | int -> char | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `8ab0eb004798be5d` | `nested_integral_cast` | `src/game/TArmyPlayer.cpp:1494` | int -> char | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `efa3f2aa6e2bb355` | `nested_integral_cast` | `src/game/TArmyPlayer.cpp:1520` | int -> char | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `c06a79e5ba94db78` | `nested_integral_cast` | `src/game/TArmyPlayer.cpp:1534` | int -> char | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `27bf51d9cd700e75` | `nested_integral_cast` | `src/game/TArmyPlayer.cpp:1563` | int -> char | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `a6eb91703e6c148a` | `nested_integral_cast` | `src/game/TArmyPlayer.cpp:1612` | int -> char | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `7106595522a85549` | `nested_integral_cast` | `src/game/TDealTabControl.cpp:88` | short -> short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `773541c2b0bfd013` | `nested_integral_cast` | `src/game/TGreatPower.cpp:885` | char -> unsigned char | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `ccf3a3967d14bc5c` | `nested_integral_cast` | `src/game/TGreatPower.cpp:888` | char -> unsigned char | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `ffadeabe388d08d2` | `nested_integral_cast` | `src/game/TGreatPower.cpp:1335` | int -> unsigned int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `d0ce2b11490ba129` | `nested_integral_cast` | `src/game/TGreatPower.cpp:2827` | unsigned short -> int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `946c7460987b1da8` | `nested_integral_cast` | `src/game/TLanguageMgr.cpp:169` | unsigned int -> int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `4f95a6400ec7d86c` | `nested_integral_cast` | `src/game/TMapMaker.cpp:1431` | signed char -> unsigned short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `93e749632dff698a` | `nested_integral_cast` | `src/game/TMapMaker.cpp:1438` | signed char -> unsigned short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `22740ed0ed4c4d09` | `nested_integral_cast` | `src/game/TMapMaker.cpp:1441` | signed char -> unsigned short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `cf6c8a2e562d8609` | `nested_integral_cast` | `src/game/TMapMaker.cpp:1444` | signed char -> unsigned short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `3330a3dece0d26a5` | `nested_integral_cast` | `src/game/TMultiplayerMgr.cpp:2043` | unsigned int -> short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `afec895919629393` | `nested_integral_cast` | `src/game/TPicture.cpp:173` | unsigned short -> unsigned int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `27dc4954c014568b` | `nested_integral_cast` | `src/game/TPicture.cpp:174` | unsigned short -> unsigned int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `4bf1ce594926cfea` | `nested_integral_cast` | `src/game/TScrollBarView.cpp:194` | short -> short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `66067c9434579d61` | `nested_integral_cast` | `src/game/TSimMgr.cpp:2409` | short -> short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `dd96ac4718b10b4a` | `nested_integral_cast` | `src/game/TTacArmyView.cpp:620` | short -> char | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `94713317f8cb9e37` | `nested_integral_cast` | `src/game/TTechMgr.cpp:188` | int -> short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `381d413649406830` | `nested_integral_cast` | `src/game/TUniversityView.cpp:370` | signed char -> int | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `a7c7b798d2a24725` | `nested_integral_cast` | `src/game/TZone.cpp:634` | short -> unsigned short | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
-| `845e1b29ab7d6b17` | `nested_integral_cast` | `src/game/TZone.cpp:698` | signed char -> unsigned char | `width_or_bit_pattern_boundary` | `imperialism-decomp-1uj.99.2` |
+| `cb4593f41b01cff8` | `nested_integral_cast` | `include/game/ui_fourcc.h:31` | unsigned char -> unsigned int | `encoding_policy_widening` | `imperialism-decomp-1uj.99.2` |
+| `ddbd994a05628784` | `nested_integral_cast` | `include/game/ui_fourcc.h:32` | unsigned char -> unsigned int | `encoding_policy_widening` | `imperialism-decomp-1uj.99.2` |
+| `08a127d9814aa2e3` | `nested_integral_cast` | `include/game/ui_fourcc.h:33` | unsigned char -> unsigned int | `encoding_policy_widening` | `imperialism-decomp-1uj.99.2` |
+| `239a01f6e5d42d4e` | `nested_integral_cast` | `include/game/ui_fourcc.h:34` | unsigned char -> unsigned int | `encoding_policy_widening` | `imperialism-decomp-1uj.99.2` |
+| `2c66f15411d99647` | `nested_integral_cast` | `src/game/TArmyMgr.cpp:1794` | int -> short | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
+| `40395d89c7121e4e` | `nested_integral_cast` | `src/game/TArmyMgr.cpp:1800` | int -> short | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
+| `08fb4d91dd8b2d05` | `nested_integral_cast` | `src/game/TArmyMgr.cpp:1810` | unsigned int -> int | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
+| `a7a29c448d499cad` | `nested_integral_cast` | `src/game/TArmyPlayer.cpp:1270` | int -> char | `float_table_read_then_byte_store` | `imperialism-decomp-1uj.99.2` |
+| `1a8f8d000935caa9` | `nested_integral_cast` | `src/game/TArmyPlayer.cpp:1347` | int -> char | `float_table_read_then_byte_store` | `imperialism-decomp-1uj.99.2` |
+| `8ab0eb004798be5d` | `nested_integral_cast` | `src/game/TArmyPlayer.cpp:1494` | int -> char | `float_table_read_then_byte_store` | `imperialism-decomp-1uj.99.2` |
+| `efa3f2aa6e2bb355` | `nested_integral_cast` | `src/game/TArmyPlayer.cpp:1520` | int -> char | `float_table_read_then_byte_store` | `imperialism-decomp-1uj.99.2` |
+| `c06a79e5ba94db78` | `nested_integral_cast` | `src/game/TArmyPlayer.cpp:1534` | int -> char | `float_table_read_then_byte_store` | `imperialism-decomp-1uj.99.2` |
+| `27bf51d9cd700e75` | `nested_integral_cast` | `src/game/TArmyPlayer.cpp:1563` | int -> char | `float_table_read_then_byte_store` | `imperialism-decomp-1uj.99.2` |
+| `a6eb91703e6c148a` | `nested_integral_cast` | `src/game/TArmyPlayer.cpp:1612` | int -> char | `float_table_read_then_byte_store` | `imperialism-decomp-1uj.99.2` |
+| `7106595522a85549` | `nested_integral_cast` | `src/game/TDealTabControl.cpp:88` | short -> short | `narrow_operand_then_narrow_result` | `imperialism-decomp-1uj.99.2` |
+| `773541c2b0bfd013` | `nested_integral_cast` | `src/game/TGreatPower.cpp:885` | char -> unsigned char | `signed_byte_then_unsigned_byte_store` | `imperialism-decomp-1uj.99.2` |
+| `ccf3a3967d14bc5c` | `nested_integral_cast` | `src/game/TGreatPower.cpp:888` | char -> unsigned char | `signed_byte_then_unsigned_byte_store` | `imperialism-decomp-1uj.99.2` |
+| `ffadeabe388d08d2` | `nested_integral_cast` | `src/game/TGreatPower.cpp:1335` | int -> unsigned int | `signed_difference_then_unsigned_use` | `imperialism-decomp-1uj.99.2` |
+| `d0ce2b11490ba129` | `nested_integral_cast` | `src/game/TGreatPower.cpp:2827` | unsigned short -> int | `packed_word_pair` | `imperialism-decomp-1uj.99.2` |
+| `946c7460987b1da8` | `nested_integral_cast` | `src/game/TLanguageMgr.cpp:169` | unsigned int -> int | `unsigned_char_then_signed_compare` | `imperialism-decomp-1uj.99.2` |
+| `4f95a6400ec7d86c` | `nested_integral_cast` | `src/game/TMapMaker.cpp:1431` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
+| `93e749632dff698a` | `nested_integral_cast` | `src/game/TMapMaker.cpp:1438` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
+| `22740ed0ed4c4d09` | `nested_integral_cast` | `src/game/TMapMaker.cpp:1441` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
+| `cf6c8a2e562d8609` | `nested_integral_cast` | `src/game/TMapMaker.cpp:1444` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
+| `3330a3dece0d26a5` | `nested_integral_cast` | `src/game/TMultiplayerMgr.cpp:2043` | unsigned int -> short | `packet_word_extract` | `imperialism-decomp-1uj.99.2` |
+| `afec895919629393` | `nested_integral_cast` | `src/game/TPicture.cpp:173` | unsigned short -> unsigned int | `packed_word_pair` | `imperialism-decomp-1uj.99.2` |
+| `27dc4954c014568b` | `nested_integral_cast` | `src/game/TPicture.cpp:174` | unsigned short -> unsigned int | `packed_word_pair` | `imperialism-decomp-1uj.99.2` |
+| `4bf1ce594926cfea` | `nested_integral_cast` | `src/game/TScrollBarView.cpp:194` | short -> short | `narrow_operand_then_narrow_result` | `imperialism-decomp-1uj.99.2` |
+| `66067c9434579d61` | `nested_integral_cast` | `src/game/TSimMgr.cpp:2409` | short -> short | `narrow_operand_then_narrow_result` | `imperialism-decomp-1uj.99.2` |
+| `dd96ac4718b10b4a` | `nested_integral_cast` | `src/game/TTacArmyView.cpp:620` | short -> char | `word_arithmetic_then_character` | `imperialism-decomp-1uj.99.2` |
+| `94713317f8cb9e37` | `nested_integral_cast` | `src/game/TTechMgr.cpp:188` | int -> short | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
+| `381d413649406830` | `nested_integral_cast` | `src/game/TUniversityView.cpp:370` | signed char -> int | `signed_table_byte_then_int` | `imperialism-decomp-1uj.99.2` |
+| `a7c7b798d2a24725` | `nested_integral_cast` | `src/game/TZone.cpp:634` | short -> unsigned short | `narrow_operand_then_narrow_result` | `imperialism-decomp-1uj.99.2` |
+| `845e1b29ab7d6b17` | `nested_integral_cast` | `src/game/TZone.cpp:698` | signed char -> unsigned char | `signed_byte_sign_test` | `imperialism-decomp-1uj.99.2` |
 | `9acef476d422b3b5` | `predicate_storage_cast` | `src/game/TArmyCheckBox.cpp:139` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `d6365812c3694202` | `predicate_storage_cast` | `src/game/TArmyCheckBox.cpp:145` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `810882822ea1cae8` | `predicate_storage_cast` | `src/game/TCity.cpp:860` | predicate -> char | `predicate_arithmetic_into_byte_return` | `imperialism-decomp-1uj.99.7` |

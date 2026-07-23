@@ -63,6 +63,8 @@ _NATIVE_CAST_RE = re.compile(
 
 DISCRIMINANT_REVIEWS_KEY = "discriminant_reviews"
 PREDICATE_REVIEWS_KEY = "predicate_storage_reviews"
+NESTED_REVIEWS_KEY = "nested_conversion_reviews"
+SCALAR_INVENTORY_PATH = "docs/reference/scalar-boundary-inventory.csv"
 BOOL_INVENTORY_PATH = "docs/reference/bool-boundary-inventory.csv"
 
 
@@ -263,28 +265,55 @@ def check_bool_inventory(repo_root: Path) -> list[str]:
     row whose address no longer appears in manual source is stale evidence, which is
     worse than no row at all.
     """
-    path = repo_root / BOOL_INVENTORY_PATH
+    return _check_inventory(
+        repo_root,
+        BOOL_INVENTORY_PATH,
+        {"domain", "location", "address", "canonical_type", "classification", "evidence"},
+    )
+
+
+def check_scalar_inventory(repo_root: Path) -> list[str]:
+    """The canonical-scalar-type inventory must stay complete and evidenced.
+
+    Each row fixes one semantic domain's canonical game type, the representation it
+    converts to at a proven boundary, and the rule for where that conversion belongs.
+    """
+    return _check_inventory(
+        repo_root,
+        SCALAR_INVENTORY_PATH,
+        {
+            "domain",
+            "canonical_game_type",
+            "representation_type",
+            "boundary_rule",
+            "evidence",
+            "owner_bead",
+        },
+    )
+
+
+def _check_inventory(repo_root: Path, relative: str, required: set[str]) -> list[str]:
+    path = repo_root / relative
     if not path.exists():
-        return [f"{BOOL_INVENTORY_PATH}: missing"]
+        return [f"{relative}: missing"]
     rows = list(csv.DictReader(path.read_text(encoding="utf-8").splitlines()))
-    required = {"domain", "location", "address", "canonical_type", "classification", "evidence"}
     errors: list[str] = []
     if not rows:
-        return [f"{BOOL_INVENTORY_PATH}: no rows"]
+        return [f"{relative}: no rows"]
     missing_columns = required - set(rows[0])
     if missing_columns:
-        return [f"{BOOL_INVENTORY_PATH}: missing column(s) {sorted(missing_columns)}"]
+        return [f"{relative}: missing column(s) {sorted(missing_columns)}"]
     known = _marker_addresses(repo_root)
     for index, row in enumerate(rows, 2):
         for column in sorted(required):
             if not (row.get(column) or "").strip():
-                errors.append(f"{BOOL_INVENTORY_PATH}:{index}: empty {column}")
+                errors.append(f"{relative}:{index}: empty {column}")
         # A row may cover a whole virtual family, listing its addresses separated by "/".
         for address in (row.get("address") or "").strip().lower().split("/"):
             address = address.strip()
             if address.startswith("0x") and address not in known:
                 errors.append(
-                    f"{BOOL_INVENTORY_PATH}:{index}: {address} is not claimed by any manual marker"
+                    f"{relative}:{index}: {address} is not claimed by any manual marker"
                 )
     return errors
 
@@ -339,6 +368,31 @@ def render_report(findings: list[Finding], config: dict) -> str:
     for fingerprint, review in predicate_reviews.items():
         if not review.get("classification") or not review.get("evidence"):
             raise ValueError(f"incomplete predicate storage review for {fingerprint}")
+    nested_findings = {
+        finding.fingerprint: finding
+        for finding in findings
+        if finding.category == "nested_integral_cast"
+    }
+    nested_reviews = config.get(NESTED_REVIEWS_KEY, {})
+    missing_nested = sorted(set(nested_findings) - set(nested_reviews))
+    stale_nested = sorted(set(nested_reviews) - set(nested_findings))
+    if missing_nested or stale_nested:
+        details = []
+        if missing_nested:
+            details.append(
+                "unreviewed="
+                + ",".join(
+                    f"{fingerprint}@{nested_findings[fingerprint].path}:"
+                    f"{nested_findings[fingerprint].line}"
+                    for fingerprint in missing_nested
+                )
+            )
+        if stale_nested:
+            details.append(f"stale={','.join(stale_nested)}")
+        raise ValueError(f"nested conversion reviews do not match findings ({'; '.join(details)})")
+    for fingerprint, review in nested_reviews.items():
+        if not review.get("classification") or not review.get("evidence"):
+            raise ValueError(f"incomplete nested conversion review for {fingerprint}")
     missing_reviews = sorted(set(native_findings) - set(native_reviews))
     stale_reviews = sorted(set(native_reviews) - set(native_findings))
     if missing_reviews or stale_reviews:
@@ -404,6 +458,26 @@ def render_report(findings: list[Finding], config: dict) -> str:
                 for fingerprint, review in native_reviews.items()
             ),
             "",
+            "## Reviewed nested integral conversions",
+            "",
+            "A two-step conversion is not redundancy by default. Each is reviewed at its own",
+            "site: most are a required representation step -- sign preservation, a logical",
+            "shift, packed-word assembly -- followed by the destination's storage width. The",
+            f"canonical types these boundaries convert between live in `{SCALAR_INVENTORY_PATH}`.",
+            "",
+            "| Source | Detail | Classification | Evidence |",
+            "| --- | --- | --- | --- |",
+            *(
+                f"| `{nested_findings[fingerprint].path}:{nested_findings[fingerprint].line}`"
+                f" | {nested_findings[fingerprint].detail} | "
+                f"`{nested_reviews[fingerprint]['classification']}` | "
+                f"{nested_reviews[fingerprint]['evidence']} |"
+                for fingerprint in sorted(
+                    nested_findings,
+                    key=lambda key: (nested_findings[key].path, nested_findings[key].line),
+                )
+            ),
+            "",
             "## Reviewed predicate storage boundaries",
             "",
             "Each `predicate_storage_cast` is reviewed at its own site, because whether a",
@@ -460,6 +534,10 @@ def render_report(findings: list[Finding], config: dict) -> str:
             review = predicate_reviews[finding.fingerprint]
             classification = str(review["classification"])
             owner = str(review.get("owner", owner))
+        elif finding.category == "nested_integral_cast":
+            review = nested_reviews[finding.fingerprint]
+            classification = str(review["classification"])
+            owner = str(review.get("owner", owner))
         lines.append(
             f"| `{finding.fingerprint}` | `{finding.category}` | "
             f"`{finding.path}:{finding.line}` | {detail} | "
@@ -478,7 +556,7 @@ def main() -> int:
     repo_root = repo_root_from_file(__file__, levels_up=2)
     try:
         config = _load_config(repo_root)
-        inventory_errors = check_bool_inventory(repo_root)
+        inventory_errors = check_bool_inventory(repo_root) + check_scalar_inventory(repo_root)
         if inventory_errors:
             raise ValueError("; ".join(inventory_errors))
         findings = collect_findings(repo_root, config)

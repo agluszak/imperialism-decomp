@@ -6,7 +6,9 @@ from pathlib import Path
 
 from tools.workflow.scalar_type_audit import (
     BOOL_INVENTORY_PATH,
+    SCALAR_INVENTORY_PATH,
     check_bool_inventory,
+    check_scalar_inventory,
     collect_findings,
     render_report,
 )
@@ -48,6 +50,11 @@ class ScalarTypeAuditTests(unittest.TestCase):
                 finding.fingerprint: {"classification": "byte_abi", "evidence": "test evidence"}
                 for finding in findings
                 if finding.category == "predicate_storage_cast"
+            }
+            config["nested_conversion_reviews"] = {
+                finding.fingerprint: {"classification": "width_step", "evidence": "test evidence"}
+                for finding in findings
+                if finding.category == "nested_integral_cast"
             }
 
             self.assertEqual(
@@ -134,6 +141,28 @@ class ScalarTypeAuditTests(unittest.TestCase):
             }
             with self.assertRaisesRegex(ValueError, "stale=staleFamilyCode"):
                 render_report(findings, config)
+
+    def test_scalar_inventory_requires_every_column(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "src/game").mkdir(parents=True)
+            (root / "include/game").mkdir(parents=True)
+            (root / "docs/reference").mkdir(parents=True)
+            header = (
+                "domain,canonical_game_type,representation_type,boundary_rule,evidence,"
+                "status,owner_bead\n"
+            )
+            (root / SCALAR_INVENTORY_PATH).write_text(
+                header + "nation identity,NationSlot,short,narrow at the call,listing,adopted,bd-a\n"
+            )
+            self.assertEqual(check_scalar_inventory(root), [])
+
+            (root / SCALAR_INVENTORY_PATH).write_text(
+                header + "nation identity,NationSlot,short,,listing,adopted,bd-a\n"
+            )
+            errors = check_scalar_inventory(root)
+            self.assertEqual(len(errors), 1)
+            self.assertIn("boundary_rule", errors[0])
 
     def test_bool_inventory_rows_must_be_anchored_to_manual_markers(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

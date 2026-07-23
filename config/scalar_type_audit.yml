@@ -91,6 +91,115 @@ native_integral_reviews:
 # must be reviewed again. Whether a predicate may become bool depends on the site's
 # storage width and return ABI, not on the class; the prose record of these decisions
 # (including measured-and-reverted ones) is docs/reference/bool-boundary-inventory.csv.
+# Reviewed nested integral conversions, keyed by fingerprint so an edited conversion
+# must be reviewed again. A two-step conversion is not redundancy by default: most
+# are a required representation step (sign preservation, logical shift, packed-word
+# assembly) followed by the destination's storage width. The canonical types these
+# boundaries convert between are recorded in docs/reference/scalar-boundary-inventory.csv.
+nested_conversion_reviews:
+  cb4593f41b01cff8:
+    classification: encoding_policy_widening
+    evidence: "IMPERIALISM_FOURCC promotes each character through unsigned char before shifting so a signed char never sign-extends into the tag; the two steps are the encoding policy, not redundancy."
+  ddbd994a05628784:
+    classification: encoding_policy_widening
+    evidence: "the same per-character promotion for byte 2 of the tag."
+  08a127d9814aa2e3:
+    classification: encoding_policy_widening
+    evidence: "the same per-character promotion for byte 3 of the tag."
+  239a01f6e5d42d4e:
+    classification: encoding_policy_widening
+    evidence: "the same per-character promotion for byte 4 of the tag."
+  2c66f15411d99647:
+    classification: prng_extract_then_narrow
+    evidence: "the map-generation LCG state is unsigned so the >> 0xc extraction is logical; the int step keeps the modulus signed and the short step is the caller's word storage."
+  40395d89c7121e4e:
+    classification: prng_extract_then_narrow
+    evidence: "the sibling extraction with a modulus of 100, same three-step shape."
+  08fb4d91dd8b2d05:
+    classification: prng_extract_then_narrow
+    evidence: "the same LCG extraction consumed directly as an int."
+  a7a29c448d499cad:
+    classification: float_table_read_then_byte_store
+    evidence: "g_afTacticalDirectFireFlagByCategoryCode is a float table; the int step performs the retail truncation and the char step is the byte the caller stores."
+  1a8f8d000935caa9:
+    classification: float_table_read_then_byte_store
+    evidence: "the same float-table truncation for a second category lookup."
+  8ab0eb004798be5d:
+    classification: float_table_read_then_byte_store
+    evidence: "the same float-table truncation."
+  efa3f2aa6e2bb355:
+    classification: float_table_read_then_byte_store
+    evidence: "the same float-table truncation."
+  c06a79e5ba94db78:
+    classification: float_table_read_then_byte_store
+    evidence: "the same float-table truncation."
+  27bf51d9cd700e75:
+    classification: float_table_read_then_byte_store
+    evidence: "the same float-table truncation."
+  a6eb91703e6c148a:
+    classification: float_table_read_then_byte_store
+    evidence: "the same float-table truncation."
+  7106595522a85549:
+    classification: narrow_operand_then_narrow_result
+    evidence: "CPoint::y and CRect::top are LONG, so the inner casts are real narrowings to the retail word arithmetic; the outer cast stores the row index as a short. Same-width cast names in the report describe the cast types, not the operand types."
+  773541c2b0bfd013:
+    classification: signed_byte_then_unsigned_byte_store
+    evidence: "field8d6 holds a signed difficulty byte; the signed step preserves sign extension before the +0x33 bias and the unsigned step is the byte written into the flags array."
+  ccf3a3967d14bc5c:
+    classification: signed_byte_then_unsigned_byte_store
+    evidence: "the sibling flag byte, same two-step bias."
+  ffadeabe388d08d2:
+    classification: signed_difference_then_unsigned_use
+    evidence: "the economic-turn difference is computed signed and consumed as an unsigned quantity; both steps are required to reproduce the retail compare."
+  d0ce2b11490ba129:
+    classification: packed_word_pair
+    evidence: "the low word is isolated before being shifted into the high half of a packed 32-bit code; the int step keeps the shift signed."
+  946c7460987b1da8:
+    classification: unsigned_char_then_signed_compare
+    evidence: "the format character is widened without sign extension, then compared as a signed count."
+  4f95a6400ec7d86c:
+    classification: signed_grid_cell_then_word_key
+    evidence: "the region-class grid stores signed bytes; the signed step preserves the -1 sentinel and the unsigned short step is the word key the neighbour tally uses."
+  93e749632dff698a:
+    classification: signed_grid_cell_then_word_key
+    evidence: "the same signed-byte grid read for the first neighbour."
+  22740ed0ed4c4d09:
+    classification: signed_grid_cell_then_word_key
+    evidence: "the same signed-byte grid read for the second neighbour."
+  cf6c8a2e562d8609:
+    classification: signed_grid_cell_then_word_key
+    evidence: "the same signed-byte grid read for the third neighbour."
+  3330a3dece0d26a5:
+    classification: packet_word_extract
+    evidence: "the trade code is shifted logically as unsigned before the high word is stored into a signed word packet field."
+  afec895919629393:
+    classification: packed_word_pair
+    evidence: "the resource namespace id is isolated as a word before being shifted into the high half of the packed resource id."
+  27dc4954c014568b:
+    classification: packed_word_pair
+    evidence: "the glyph base occupies the low half of the same packed resource id."
+  4bf1ce594926cfea:
+    classification: narrow_operand_then_narrow_result
+    evidence: "TView::frameHeight38 is an int, so the inner cast is a real narrowing to the retail word arithmetic."
+  66067c9434579d61:
+    classification: narrow_operand_then_narrow_result
+    evidence: "slotToken is an unsigned int read from the save stream, so the inner cast is a real narrowing before the *10 + 0x717 word computation."
+  dd96ac4718b10b4a:
+    classification: word_arithmetic_then_character
+    evidence: "the AI state code is biased in word arithmetic and stored as the ASCII character the debug overlay draws."
+  94713317f8cb9e37:
+    classification: prng_extract_then_narrow
+    evidence: "the same LCG extraction shape as TArmyMgr, with a caller-supplied range span."
+  381d413649406830:
+    classification: signed_table_byte_then_int
+    evidence: "the university requirement table stores signed bytes; the signed step preserves negative levels and the int step is the arithmetic width."
+  a7c7b798d2a24725:
+    classification: narrow_operand_then_narrow_result
+    evidence: "tileOrTerrainId0c is widened arithmetic; the signed step performs the retail word addition and the unsigned step is the tile-id key."
+  845e1b29ab7d6b17:
+    classification: signed_byte_sign_test
+    evidence: "the packed map-tile action state byte is read signed so the < 0 sign test is correct, then normalized to a byte for the retail byte compare."
+
 predicate_storage_reviews:
   9acef476d422b3b5:
     classification: byte_abi_argument
