@@ -1,7 +1,7 @@
 #pragma once
 
 #include "game/mfc.h"
-#include "game/global_data_tables.h"
+#include "game/globals/shared_globals.h"
 
 // The original passes the shared UI message globals (not inline string literals) to
 // the nil-pointer message box.

@@ -126,7 +126,7 @@ def main() -> int:
     segments = read_module_map(Path(args.module_map))
     rows = []
     multi_module = 0
-    for src in sorted((repo_root / "src/game").glob("*.cpp")):
+    for src in sorted((repo_root / "src/game").rglob("*.cpp")):
         addrs = [int(a, 16) for a in MARKER_RE.findall(src.read_text(encoding="utf-8"))]
         if not addrs:
             continue

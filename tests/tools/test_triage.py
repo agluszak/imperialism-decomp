@@ -67,7 +67,7 @@ class TriageRenderTests(unittest.TestCase):
             "register allocation\n  commutative operand order\n  alignment padding",
             several,
         )
-        self.assertTrue(several.endswith("nothing to fix"))
+        self.assertTrue(several.endswith("no action needed"))
 
     def test_memory_address_refined_to_field_offset(self) -> None:
         output = render(
@@ -197,7 +197,7 @@ class TriageRenderTests(unittest.TestCase):
         output = render(value)
         self.assertIn("unsupported control flow at original 0x00401278", output)
         self.assertTrue(
-            output.endswith("reccmp did not prove that the source is wrong")
+            output.endswith("Investigate verifier/metadata/alignment instead.")
         )
 
     def test_rendering_is_deterministic(self) -> None:

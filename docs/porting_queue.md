@@ -143,7 +143,7 @@ each with the evidence needed to start (address, size, current score if any, blo
   call sites, not an actual swapped constant (verified the source has 50 in the
   loop1 fallback paths and 15 in the loop3 fill, matching the raw listing).
 - `0x4eb8b0` TGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits (landed
-  2026-07-17, 65.50%, own TU `TGreatPower_AssignTrackedEntryActions.cpp`, structure
+  2026-07-17, 65.50%, now in `TAutoGreatPower.cpp` (tiny TU merged 2026-07-23), structure
   verified — all real call targets pair correctly: CIterator Reset/More/Advance,
   GetNavyPrimaryOrderListHead/nextOlder24 manual walk, every vtable slot dispatch
   (0x2c/0x58/0x5c/0x68/0x6c/0x78/0x7c/0x80/0x84/0x98) against the correct TMission

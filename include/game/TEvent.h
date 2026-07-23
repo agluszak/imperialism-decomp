@@ -1,7 +1,7 @@
 #pragma once
 
 #include "compat.h"
-#include "game/TObject.h"
+#include "game/app/TObject.h"
 #include "game/mfc.h"
 
 class TEventHandler;

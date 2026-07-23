@@ -58,6 +58,9 @@ _DEFAULT_OUT = "build-msvc500/evidence/signature_evidence_union.csv"
 
 _QUEUE_KEYS = ("in_stack_queue", "divergent_queue", "packed_queue")
 _LOGICAL_CONVERGED = "logical_converged"
+# Named non-divergence states: the audit understood the gap (ABI-equivalent DB
+# modeling), so nothing is unexplained even with no queue/hygiene trace.
+_LOGICAL_EXPLAINED = {_LOGICAL_CONVERGED, "sret_as_explicit_param"}
 
 
 def _norm_addr(text: str) -> int:
@@ -124,7 +127,7 @@ def build_union_rows(evidence: dict[str, dict[int, dict]]) -> list[dict]:
             (*_QUEUE_KEYS, "datatype_hygiene", "in_stack_audit"))
         explained = (
             structural is None
-            or logical_cat == _LOGICAL_CONVERGED
+            or logical_cat in _LOGICAL_EXPLAINED
             or has_other_evidence
         )
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/TView.h"
+#include "game/ui_core/TView.h"
 #include "game/ui_tags_common.h"
 
 // MacApp CSubViewIterator (Mac CodeWarrior oracle: constructors (TView*, unsigned char) and

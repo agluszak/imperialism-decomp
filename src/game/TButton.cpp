@@ -1,6 +1,6 @@
 #include "game/TButton.h"
 #include "game/mfc.h"
-#include "game/ui_invalidation_guard.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 // SYNTHETIC: IMPERIALISM 0x0048eb10
 // TButton::CreateObject

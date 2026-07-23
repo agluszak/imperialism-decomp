@@ -1,0 +1,23 @@
+#pragma once
+
+#include "compat.h"
+#include "game/ui_screens/TLineData.h"
+#include "game/mfc.h"
+
+// VTABLE: IMPERIALISM 0x0066e4f0
+class TTradeBidNationLine : public TLineData {
+public:
+  DECLARE_DYNCREATE(TTradeBidNationLine)
+  virtual ~TTradeBidNationLine() override; // slot 0x01 (scalar deleting destructor)
+  virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x5bda20
+
+  // Set directly (not via a method) by TTradePageBuyView::RebuildNationBidRowsForCategory
+  // right after construction: categorySlot10 is the row-building category argument (constant
+  // across every row built in one rebuild pass), nationSlot12 is the per-row nation index.
+  short categorySlot10; // 0x10
+  short nationSlot12;   // 0x12
+
+  TTradeBidNationLine();
+};
+
+ASSERT_SIZE(TTradeBidNationLine, 0x14);

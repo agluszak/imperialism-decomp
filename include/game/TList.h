@@ -1,7 +1,7 @@
 #pragma once
 
 #include "compat.h"
-#include "game/TSortedList.h"
+#include "game/ui_core/TSortedList.h"
 
 // Concrete game list leaf; vtable 0x648f78.
 // Base recovered from CRuntimeClass descriptor: TList -> TSortedList -> TObject -> CObject.

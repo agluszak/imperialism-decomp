@@ -25,61 +25,61 @@ categories:
 # every native_integral_boundary fingerprint exactly, so changing an expression
 # forces a fresh API/listing review instead of inheriting this approval silently.
 native_integral_reviews:
-  b3ab09ab111463da:
+  ddb6e55e5ead83ab:
     classification: win32_struct_word_field
     evidence: BITMAPINFOHEADER.biBitCount is WORD; retail 0x00479fe0 writes the low argument word to header offset 0x0e.
-  6da656c5e709fdcb:
+  90ad32c2364f4c93:
     classification: win32_struct_word_field
     evidence: LOGPALETTE.palNumEntries is WORD; retail 0x0047ae90 copies the low word of the 32-bit palette count to offset 2.
-  742008749ab4e76b:
+  4a577257115fdf30:
     classification: win32_struct_word_field
     evidence: LOGPALETTE.palNumEntries is WORD; retail 0x0047e440 stores BX to offset 2 before CreatePalette.
-  7e423c8243556ab8:
+  efb9327b8ccc01bd:
     classification: win32_struct_word_field
     evidence: GetObjectA yields a UINT entry count but LOGPALETTE.palNumEntries is WORD; retail 0x0047efa0 narrows only at the structure field.
-  3a7283d2ab6bd83c:
+  8643894c63c98a37:
     classification: mfc_bool_callback_return
     evidence: CWnd::OnSetCursor returns BOOL while Default returns LRESULT; retail 0x00483ef0 tail-returns the full Default result through the BOOL override ABI.
-  2c26c47876710482:
+  b442f3eac7d1c116:
     classification: mfc_bool_callback_return
     evidence: CWnd::OnQueryNewPalette returns BOOL while Default returns LRESULT; retail 0x00493ca0 preserves the MFC callback ABI.
-  ce4913a1f4420b84:
+  c2e2852e7faabcf6:
     classification: win32_uint_sentinel
     evidence: MessageBeep takes UINT and 0xffffffff selects the simple default sound; retail wrapper 0x004931e0 pushes -1 directly.
-  f18bbfbdf2ee744a:
+  3971bc60890cc38d:
     classification: win32_resource_identifier
     evidence: MFC stores integer dialog resource IDs in the pointer-shaped m_lpszTemplateName field; FindResourceA consumes the recovered low UINT identifier at 0x0049d360.
-  e584628d15357a69:
+  04a2df0d87143ebc:
     classification: mfc_word_map_key
     evidence: m_tableA is keyed by WORD and the BMP resource identifier stays 32-bit until the CMap lookup boundary in retail 0x00499b40.
-  1b78fb6ded381efe:
+  d09f763966efebc6:
     classification: mfc_word_map_key
     evidence: m_tableA is keyed by WORD and the BMP resource identifier stays 32-bit until the CMap insertion boundary in retail 0x00499b40.
-  8079740443b86b3a:
+  5e99d2391a6383ab:
     classification: mfc_word_map_key
     evidence: retail 0x0049a0b0 explicitly loads only the low input word before hashing the CMap key.
-  452338b653053d46:
+  531a3bdd6c6d74a9:
     classification: mfc_word_map_key
     evidence: retail 0x0049a190 loads and hashes the signed short argument as the WORD-key representation used by m_tableA.
-  cd3d85f26c3c9642:
+  1c1d74f04479d145:
     classification: win32_allocation_size
     evidence: VC5 GlobalAlloc takes a DWORD byte count; retail 0x005e3d40 forwards the 32-bit packet length unchanged at the API boundary.
-  048bbfb6235c2a02:
+  fdcb8f20e3a45adb:
     classification: win32_struct_byte_field
     evidence: RGBQUAD.rgbBlue is BYTE; retail 0x005de010 copies the low packed-color byte into the four-byte local structure.
-  276dcbb31c45e0bb:
+  806aaeb52fe4f325:
     classification: win32_struct_byte_field
     evidence: RGBQUAD.rgbGreen is BYTE; retail 0x005de010 extracts packed-color bits 8 through 15 into the structure.
-  f8a448b129b0a354:
+  ed6f4dcdc439d462:
     classification: win32_struct_byte_field
     evidence: RGBQUAD.rgbRed is BYTE; retail 0x005de010 extracts packed-color bits 16 through 23 into the structure.
-  83fe19c4ff1bb637:
+  ce82c4c20067c59c:
     classification: win32_struct_byte_field
     evidence: RGBQUAD.rgbReserved is BYTE; retail 0x005de010 extracts packed-color bits 24 through 31 into the structure.
-  d4248763cec9fcfa:
+  d97fbba03dae091e:
     classification: multimedia_dword_field
     evidence: MCI_PLAY_PARMS.dwFrom is DWORD; retail 0x005e1850 masks the track index to eight bits before the dword store.
-  af9be0d81a08664a:
+  9440836a8128678f:
     classification: multimedia_dword_field
     evidence: MCI_PLAY_PARMS.dwTo is DWORD; retail 0x005e1850 increments then masks the track index before the dword store.
 
@@ -109,135 +109,135 @@ nested_conversion_reviews:
   239a01f6e5d42d4e:
     classification: encoding_policy_widening
     evidence: "the same per-character promotion for byte 4 of the tag."
-  2c66f15411d99647:
+  d04e53616a68e0c4:
     classification: prng_extract_then_narrow
     evidence: "the map-generation LCG state is unsigned so the >> 0xc extraction is logical; the int step keeps the modulus signed and the short step is the caller's word storage."
-  40395d89c7121e4e:
+  5d24093db60dff4e:
     classification: prng_extract_then_narrow
     evidence: "the sibling extraction with a modulus of 100, same three-step shape."
-  08fb4d91dd8b2d05:
+  991e04b36a1b6e0f:
     classification: prng_extract_then_narrow
     evidence: "the same LCG extraction consumed directly as an int."
-  a7a29c448d499cad:
+  d255e88d15a541ef:
     classification: float_table_read_then_byte_store
     evidence: "g_afTacticalDirectFireFlagByCategoryCode is a float table; the int step performs the retail truncation and the char step is the byte the caller stores."
-  1a8f8d000935caa9:
+  de75db3d85d58b05:
     classification: float_table_read_then_byte_store
     evidence: "the same float-table truncation for a second category lookup."
-  8ab0eb004798be5d:
+  824a25dd60447ccc:
     classification: float_table_read_then_byte_store
     evidence: "the same float-table truncation."
-  efa3f2aa6e2bb355:
+  6621fb42a8fec75a:
     classification: float_table_read_then_byte_store
     evidence: "the same float-table truncation."
-  c06a79e5ba94db78:
+  b97c45855ac1db98:
     classification: float_table_read_then_byte_store
     evidence: "the same float-table truncation."
-  27bf51d9cd700e75:
+  18cab6f36c866700:
     classification: float_table_read_then_byte_store
     evidence: "the same float-table truncation."
-  a6eb91703e6c148a:
+  65d0afcdf6299bbd:
     classification: float_table_read_then_byte_store
     evidence: "the same float-table truncation."
-  7106595522a85549:
+  6c7e30e81b08a3f7:
     classification: narrow_operand_then_narrow_result
     evidence: "CPoint::y and CRect::top are LONG, so the inner casts are real narrowings to the retail word arithmetic; the outer cast stores the row index as a short. Same-width cast names in the report describe the cast types, not the operand types."
-  773541c2b0bfd013:
+  853f788ff413bf8c:
     classification: signed_byte_then_unsigned_byte_store
     evidence: "field8d6 holds a signed difficulty byte; the signed step preserves sign extension before the +0x33 bias and the unsigned step is the byte written into the flags array."
-  ccf3a3967d14bc5c:
+  f53ae4b65489ba45:
     classification: signed_byte_then_unsigned_byte_store
     evidence: "the sibling flag byte, same two-step bias."
-  ffadeabe388d08d2:
+  762276b4ea380e3b:
     classification: signed_difference_then_unsigned_use
     evidence: "the economic-turn difference is computed signed and consumed as an unsigned quantity; both steps are required to reproduce the retail compare."
-  d0ce2b11490ba129:
+  68e7a90c5513ee66:
     classification: packed_word_pair
     evidence: "the low word is isolated before being shifted into the high half of a packed 32-bit code; the int step keeps the shift signed."
-  946c7460987b1da8:
+  eb220da528b853bc:
     classification: unsigned_char_then_signed_compare
     evidence: "the format character is widened without sign extension, then compared as a signed count."
-  4f95a6400ec7d86c:
+  caa87a07f2146dbb:
     classification: signed_grid_cell_then_word_key
     evidence: "the region-class grid stores signed bytes; the signed step preserves the -1 sentinel and the unsigned short step is the word key the neighbour tally uses."
-  93e749632dff698a:
+  7fcc0893d2017e1f:
     classification: signed_grid_cell_then_word_key
     evidence: "the same signed-byte grid read for the first neighbour."
-  22740ed0ed4c4d09:
+  b60ed63416b4f980:
     classification: signed_grid_cell_then_word_key
     evidence: "the same signed-byte grid read for the second neighbour."
-  cf6c8a2e562d8609:
+  3f41f67892a6fd59:
     classification: signed_grid_cell_then_word_key
     evidence: "the same signed-byte grid read for the third neighbour."
-  3330a3dece0d26a5:
+  eb265394ddb5605a:
     classification: packet_word_extract
     evidence: "the trade code is shifted logically as unsigned before the high word is stored into a signed word packet field."
-  afec895919629393:
+  3072d3a3b7d11de2:
     classification: packed_word_pair
     evidence: "the resource namespace id is isolated as a word before being shifted into the high half of the packed resource id."
-  27dc4954c014568b:
+  0322e75e8c60fe53:
     classification: packed_word_pair
     evidence: "the glyph base occupies the low half of the same packed resource id."
-  4bf1ce594926cfea:
+  070987d9276298aa:
     classification: narrow_operand_then_narrow_result
     evidence: "TView::frameHeight38 is an int, so the inner cast is a real narrowing to the retail word arithmetic."
-  66067c9434579d61:
+  bd0a5d6bf28d042b:
     classification: narrow_operand_then_narrow_result
     evidence: "slotToken is an unsigned int read from the save stream, so the inner cast is a real narrowing before the *10 + 0x717 word computation."
-  dd96ac4718b10b4a:
+  a4d0dcc60098301c:
     classification: word_arithmetic_then_character
     evidence: "the AI state code is biased in word arithmetic and stored as the ASCII character the debug overlay draws."
-  94713317f8cb9e37:
+  9f9caf8fda50fb94:
     classification: prng_extract_then_narrow
     evidence: "the same LCG extraction shape as TArmyMgr, with a caller-supplied range span."
-  381d413649406830:
+  fb4cc0429d2807ae:
     classification: signed_table_byte_then_int
     evidence: "the university requirement table stores signed bytes; the signed step preserves negative levels and the int step is the arithmetic width."
-  a7c7b798d2a24725:
+  d6c4811bfba0d8c3:
     classification: narrow_operand_then_narrow_result
     evidence: "tileOrTerrainId0c is widened arithmetic; the signed step performs the retail word addition and the unsigned step is the tile-id key."
-  845e1b29ab7d6b17:
+  455e7f2ca9d668cc:
     classification: signed_byte_sign_test
     evidence: "the packed map-tile action state byte is read signed so the < 0 sign test is correct, then normalized to a byte for the retail byte compare."
 
 predicate_storage_reviews:
-  9acef476d422b3b5:
+  ef3d88e3b5456166:
     classification: byte_abi_argument
     evidence: "TArmyCheckBox::SetState is a virtual taking `unsigned char on` at slot 0x72 (0x004aa360); the toggle passes the inverted IsOn() predicate through that byte parameter, so the conversion belongs at the ABI boundary and the parameter must not become bool."
-  d6365812c3694202:
+  1b59484a1b41425a:
     classification: byte_abi_argument
     evidence: "the same slot-0x72 byte parameter, reached from ToggleIf(unsigned char expectedState, unsigned char drawImmediate)."
-  810882822ea1cae8:
+  d144e1a86956838b:
     classification: predicate_arithmetic_into_byte_return
     evidence: "the value is not a predicate: the comparison result is an addend (`(0x0f < capacity) + 3`) producing building tier 3 or 4, narrowed once at the char return. bool would force an extra normalization and lose the arithmetic shape."
-  920d4e72f7af8631:
+  853e86ea99ed7cf3:
     classification: predicate_arithmetic_into_byte_return
     evidence: "the sibling tier computation `(0x1f < capacity) + 3` on the next capacity band, with the same char return."
-  ca6117841361b65f:
+  d525f39e47be4ea5:
     classification: byte_abi_argument
     evidence: "TCzechBox::SetState is a virtual taking `unsigned char isOn` at slot 0x75 (0x00571e00); same byte ABI as the TArmyCheckBox family."
-  a5638c77f3744cc7:
+  65f76dbb872a689f:
     classification: byte_abi_argument
     evidence: "the same slot-0x75 byte parameter, reached from ToggleIf(unsigned char expectedState, unsigned char refreshNow)."
-  2170445472a75ba6:
+  b441b8502f10ecf2:
     classification: predicate_arithmetic_into_byte_storage
     evidence: "`(town->enabledFlag4d != 0) + 1` yields influence weight 1 or 2 written into the byte influence map; the comparison is an addend, not a logical value."
-  4568a18979b01bb3:
+  f25ec5fb631b91f5:
     classification: byte_return_abi
     evidence: "the enclosing affordability query returns char and its callers consume AL; converting the local alone would only move the normalization."
-  664e2dbf432ad658:
+  40aca8b0eb14fbab:
     classification: byte_return_abi
     evidence: "the sibling affordability query with the same char return contract."
-  e4e26d14486930f2:
+  2d4eed00b9f919c8:
     classification: byte_field_storage
     evidence: "the value is stored into TRadioText::isSelectedOption98, a one-byte object field the retail code compares directly (cmp al,cl) with no `!= 0` normalization; the cast keeps the store byte-wide."
-  7d105340c2bdd2ad:
+  34a837be7b4dea58:
     classification: byte_comparison_of_packed_state
     evidence: "both sides are normalized to bytes so the retail byte compare is reproduced: one side is the caller's flag, the other the sign bit of the packed tileActionState16 byte."
-  8fc03a85eb720e06:
+  11c53f3377e58ca5:
     classification: byte_comparison_of_packed_state
     evidence: "the second operand of the same byte compare -- the sign test on the packed map-tile action state byte."
-  de14d8df2453c135:
+  4a28643f8440a5f6:
     classification: predicate_arithmetic_into_byte_storage
     evidence: "`(-(int)(flag != 0) & 2) - 1` maps the flag onto the step values +1 and -1; the comparison feeds arithmetic, not a branch."
 

@@ -12,7 +12,7 @@ g_apTerrainTypeDescriptorTable|0x006a4310|TCountry|23||Terrain/minor descriptor 
 g_pNewsMgr|0x006a43e8|TNewsMgr|1|0xf10|Evidence: RebuildGlobalOrderManagersAndCapabilityState allocates 0xf10, constructs TNewsMgr, calls Mac-oracle TNewsMgr::INewsMgr, and stores the result here.
 g_pSfxPlaybackSystem|0x006a43ec|TSoundPlayer|1|0x84|Evidence: CMainFrame::OnEndPrintPreview allocates 0x84 and assigns TSoundPlayer::ConstructTSoundPlayerBaseState.
 g_pSimMgr|0x006a20f8|TSimMgr|1|0x118|Evidence: InitializeGlobalRuntimeSystemsFromConfig allocates 0x118 and assigns TSimMgr::ConstructTurnFlowStateManagerVtable00662a58. Manual port names the same object TSimMgr.
-g_pUiRuntimeContext|0x006a21bc|UiRuntimeContext|1|0xfc|Evidence: InitializeGlobalRuntimeSystemsFromConfig allocates 0xfc via TViewMgr::ConstructGlobalTurnEventState and stores in g_pUiRuntimeContext.
+g_pUiRuntimeContext|0x006a21bc|TViewMgr|1|0xfc|Evidence: InitializeGlobalRuntimeSystemsFromConfig allocates 0xfc via TViewMgr::ConstructGlobalTurnEventState and stores in g_pUiRuntimeContext.
 g_pApplicationUiRootController|0x006a18e0|TApplication|1|0x48|Evidence: CreateTApplicationInstance / TApplication::ConstructGlobalUiRootControllerState assign this to g_pApplicationUiRootController (TApplication RTTI size 0x48).
 g_pGlobalUiRootController|0x006a1344|TApplication|1|0x48|Evidence: CMainFrame::OnEndPrintPreview constructs TApplication::ConstructGlobalUiRootControllerState and assigns g_pGlobalUiRootController.
 g_pActiveMapOrderContext|0x006a3fbc|TOcean|1|0x18|Evidence: RebuildMapContextAndGlobalMapState allocates 0x18, writes TOceanVtbl_0065c7c8. Manual port: TOcean.

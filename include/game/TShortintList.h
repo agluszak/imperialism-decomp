@@ -17,3 +17,7 @@ public:
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
 ASSERT_SIZE(TShortintList, 0x10);
+
+// The stretch<short>::Add instantiation emitted for this class.
+// TEMPLATE: IMPERIALISM 0x004c18a0
+// ?Add@?$stretch@F@@UAEPAFF@Z
