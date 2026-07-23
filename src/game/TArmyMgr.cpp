@@ -1,4 +1,10 @@
 #include "game/TArmyMgr.h"
+#include "game/TAssetMgr.h"
+#include "game/TEvent.h"
+#include "game/TStaticText.h"
+#include "game/turn_event_dialog_provisional.h"
+
+using turn_event_dialog::TurnEventDialogNode;
 
 #include <stdlib.h>
 #include <string.h>
@@ -1882,30 +1888,92 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
   InitializeUiTextStyleDescriptor(&styleC, 0, 0xa, 0x2b67, 3);
 
   TextStyle styleD;
-  InitializeUiTextStyleDescriptor(&styleD, 0, 0xa, 0x2b67, 3);
+  InitializeUiTextStyleDescriptor(&styleD, 2, 0xa, 0x2b67, 3);
 
   CString defenderSummary;
   CString garrisonSummary;
   if (!this->GenerateSpyReport(cityRecordIndex, defenderSummary, garrisonSummary)) {
     CString noSummaryMessage;
     g_pSimMgr->GetString(0x2744, 8, &noSummaryMessage);
-    g_pUiRuntimeContext->ModalMessage(noSummaryMessage, g_ptArmyValidationModalMessage, 2, 0);
+    g_pUiRuntimeContext->ModalMessage(noSummaryMessage, g_ptArmyValidationModalMessage, 1, 0);
     return;
   }
 
-  // TODO: the 0x2503 report dialog tail. Decoded from 0x4a684b-0x4a6b89 but not yet
-  // transcribed: resolve the node for context 0x2503, ShowTurnEventDialog(1), then for
-  // each 'stat' child of MapView.rsrc view 9475 --
-  //   'gpee' <- g_apTerrainTypeDescriptorTable[owner]->FormatOverlayTerrainLabelText
-  //   'zone' <- TMapMgr::AssignCityRecordDisplayName(cityRecordIndex)
-  //   'adam' <- one GenerateSpyReport summary
-  //   'ship' <- '"' + the other summary + '"' (CString operator+ with 0x695798)
-  //   'titl'/'lab1'/'lab2'/'lab4' <- SetTextFromStringResource(0x2744, 5/6/7/8, 0)
-  //   'lab3' <- SetEnabled(0, 0)
-  // -- each followed by InstallTextStyle with one of the four descriptors above, then
-  // QueryTurnEventContentObject()->+0x14 = 'okay', RefreshTurnEventDialog, Close, Free.
-  // Blocked on mapping the four stack style slots ([ESP+0x2c/0x38/0x44/0x50]) onto
-  // styleA..styleD, and on which summary feeds 'adam' vs 'ship'.
+  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2503));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0xa4d);
+  }
+  node->ShowTurnEventDialog(1);
+
+  // MapView.rsrc view 9475's children, in the order the original fills them.
+  CString scratchText;
+  TStaticText* ownerLabel =
+      static_cast<TStaticText*>(node->ResolveControlByTag(0x67706565)); // 'gpee'
+  ownerLabel->AssertValid();
+  g_apTerrainTypeDescriptorTable[g_pGlobalMapState->cityScoreTable[cityRecordIndex]
+                                     .ownerNationCode00]
+      ->FormatOverlayTerrainLabelText(&scratchText);
+  ownerLabel->SetTextAndMaybeRefresh(&scratchText, 0);
+  ownerLabel->InstallTextStyle(styleB, 0);
+
+  TStaticText* zoneLabel =
+      static_cast<TStaticText*>(node->ResolveControlByTag(0x7a6f6e65)); // 'zone'
+  zoneLabel->AssertValid();
+  CString cityDisplayName;
+  g_pGlobalMapState->AssignCityRecordDisplayName(static_cast<ProvinceIndex>(cityRecordIndex),
+                                                 &cityDisplayName);
+  scratchText = cityDisplayName;
+  zoneLabel->SetTextAndMaybeRefresh(&scratchText, 0);
+  zoneLabel->InstallTextStyle(styleB, 0);
+
+  TStaticText* defenderLabel =
+      static_cast<TStaticText*>(node->ResolveControlByTag(0x6164616d)); // 'adam'
+  defenderLabel->AssertValid();
+  defenderLabel->SetTextAndMaybeRefresh(&defenderSummary, 0);
+  defenderLabel->InstallTextStyle(styleC, 0);
+
+  TStaticText* garrisonLabel =
+      static_cast<TStaticText*>(node->ResolveControlByTag(0x73686970)); // 'ship'
+  garrisonLabel->AssertValid();
+  CString quotedGarrison = CString(g_szDoubleQuote) + garrisonSummary + g_szDoubleQuote;
+  garrisonLabel->SetTextAndMaybeRefresh(&quotedGarrison, 0);
+  garrisonLabel->InstallTextStyle(styleC, 0);
+
+  TStaticText* titleLabel =
+      static_cast<TStaticText*>(node->ResolveControlByTag(0x7469746c)); // 'titl'
+  titleLabel->AssertValid();
+  titleLabel->SetTextFromStringResource(0x2744, 5, 0);
+  titleLabel->InstallTextStyle(styleA, 0);
+
+  TStaticText* label1 = static_cast<TStaticText*>(node->ResolveControlByTag(0x6c616231));
+  label1->AssertValid();
+  label1->SetTextFromStringResource(0x2744, 6, 0);
+  label1->InstallTextStyle(styleC, 0);
+
+  TStaticText* label2 = static_cast<TStaticText*>(node->ResolveControlByTag(0x6c616232));
+  label2->AssertValid();
+  label2->SetTextFromStringResource(0x2744, 7, 0);
+  label2->InstallTextStyle(styleC, 0);
+
+  TStaticText* label3 = static_cast<TStaticText*>(node->ResolveControlByTag(0x6c616233));
+  label3->AssertValid();
+  label3->SetEnabled(0, 0);
+  label3->InstallTextStyle(styleB, 0);
+
+  TStaticText* label4 = static_cast<TStaticText*>(node->ResolveControlByTag(0x6c616234));
+  label4->AssertValid();
+  label4->SetTextFromStringResource(0x2744, 8, 0);
+  label4->InstallTextStyle(styleD, 0);
+
+  TEvent* content = static_cast<TEvent*>(node->QueryTurnEventContentObject());
+  if (content != nullptr) {
+    content->dispatchMessage = 0x6f6b6179; // 'okay'
+  }
+  node->RefreshTurnEventDialog();
+  node->Close();
+  node->Free();
 }
 
 // FUNCTION: IMPERIALISM 0x004a6d40

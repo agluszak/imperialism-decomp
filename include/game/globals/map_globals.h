@@ -59,6 +59,7 @@ extern short g_anMapImprovementSpriteClassByOrderType[9];
 extern "C" const char s_szDoubleNewline_00699438[];
 
 // Assert source-path string for the USuperMap TU (TMapUberPicture family).
+extern "C" const char g_szDoubleQuote[];
 extern "C" const int kLoungeStatusGlyphIds[5];
 extern "C" const char s_SourcePathUSuperMap_0069943C[];
 

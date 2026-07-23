@@ -1545,6 +1545,8 @@ extern "C" const char g_szCityProductionArmoryPrefix[16] = {
     'A', 'r', 'm', 'o', 'r', 'y', ':', ' ', '\0', '\0', '\0', '\0', 'S', 'h', 'i', 'p'};
 // GLOBAL: IMPERIALISM 0x0069632c
 extern "C" const char g_szCityProductionShipyardPrefix[] = "Shipyard: ";
+// GLOBAL: IMPERIALISM 0x00695798
+extern "C" const char g_szDoubleQuote[] = "\"";
 // GLOBAL: IMPERIALISM 0x0069a7f8
 extern "C" const char s_SourcePathUTestDialogs_0069A7F8[] = "D:\\Ambit\\Cross\\UTestDialogs.cpp";
 extern "C" const char s_SourcePathUCityViews_00696650[] = "D:\\Ambit\\Cross\\UCityViews.cpp";
