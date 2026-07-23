@@ -25,6 +25,9 @@ TTransportPicture::TTransportPicture()
 // SYNTHETIC: IMPERIALISM 0x00591ec0
 // TTransportPicture::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x00591ef0
+TTransportPicture::~TTransportPicture() {}
+
 // FUNCTION: IMPERIALISM 0x00591f10
 void TTransportPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId >= 100 && commandId <= 0x65) {
@@ -128,5 +131,3 @@ void TTransportPicture::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
   ForceRedraw();
 }
-
-TTransportPicture::~TTransportPicture() {}

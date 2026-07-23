@@ -26,6 +26,7 @@ TMilitaryPageView::TMilitaryPageView() : TPageView(), primaryUnitAtlas84(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00564950
 // TMilitaryPageView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00564980
 TMilitaryPageView::~TMilitaryPageView() {}
 
 // FUNCTION: IMPERIALISM 0x005649a0

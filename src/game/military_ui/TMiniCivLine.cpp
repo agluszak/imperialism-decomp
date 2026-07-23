@@ -4,6 +4,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004ab620
 // TMiniCivLine::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004ab650
 TMiniCivLine::~TMiniCivLine() {}
 // SYNTHETIC: IMPERIALISM 0x004ab670
 // TMiniCivLine::CreateObject

@@ -25,6 +25,7 @@ TDlgWindow::TDlgWindow() : TWindow() {}
 
 // SYNTHETIC: IMPERIALISM 0x00500350
 // TDlgWindow::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00500380
 TDlgWindow::~TDlgWindow() {}
 
 // Run the base TWindow assert hook, then fire the UGameWindow line-634 invalidation assert;

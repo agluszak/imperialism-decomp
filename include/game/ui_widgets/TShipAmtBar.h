@@ -8,6 +8,8 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x666998
 class TShipAmtBar : public TAmtBar {
 public:
+  // FUNCTION: IMPERIALISM 0x0058abd0
+  ~TShipAmtBar() override {}
   // The navy order currently driving the bar's display.
   TShipOrder* selectedMetricRecord; // 0x68
 

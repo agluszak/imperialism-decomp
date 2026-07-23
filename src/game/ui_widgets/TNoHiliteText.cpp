@@ -12,4 +12,5 @@ TNoHiliteText::TNoHiliteText() {}
 
 // SYNTHETIC: IMPERIALISM 0x005b6a30
 // TNoHiliteText::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005b6a60
 TNoHiliteText::~TNoHiliteText() {}

@@ -22,6 +22,7 @@ TPurchaseCluster::TPurchaseCluster() : TCluster(), field88(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x004cc3f0
 // TPurchaseCluster::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004cc420
 TPurchaseCluster::~TPurchaseCluster() {}
 
 // FUNCTION: IMPERIALISM 0x004cc440

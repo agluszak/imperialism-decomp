@@ -53,6 +53,9 @@ TRailCluster::TRailCluster() : TAmtBarCluster() {
 // SYNTHETIC: IMPERIALISM 0x00589760
 // TRailCluster::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x00589790
+TRailCluster::~TRailCluster() {}
+
 // FUNCTION: IMPERIALISM 0x005897b0
 void TRailCluster::DoPostCreate(int styleSeed) {
   short recordIndex = static_cast<short>(styleSeed);
@@ -210,5 +213,3 @@ void TRailCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   int moveValue = moveControl->QueryValue();
   this->SetMoveAmount(static_cast<short>(moveValue - 1));
 }
-
-TRailCluster::~TRailCluster() {}

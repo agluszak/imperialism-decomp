@@ -8,6 +8,8 @@
 // VTABLE: IMPERIALISM 0x00648f78
 class TList : public TSortedList {
 public:
+  // FUNCTION: IMPERIALISM 0x004888a0
+  ~TList() override {}
   DECLARE_DYNCREATE(TList)
   // NOOP: verified empty in original (the ctor chain is just TSortedList's; inline so
   // construction sites match the original's fully inlined new-expressions).

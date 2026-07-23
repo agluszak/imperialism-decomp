@@ -56,7 +56,8 @@ METRICS: tuple[tuple[str, str, str, str], ...] = (
     ("coverage_pct", "function coverage", "pct", "higher"),
     ("exact_vs_original_pct", "exact/original", "pct", "higher"),
     ("exact_vs_paired_pct", "exact/paired", "pct", "higher"),
-    ("avg_matching_pct", "average similarity", "pct", "higher"),
+    ("size_weighted_matching_pct", "size-weighted similarity", "pct", "higher"),
+    ("avg_matching_pct", "average similarity (unweighted)", "pct", "higher"),
     ("paired_global_count", "paired globals", "int", "higher"),
     ("global_orig_only_count", "global original-only", "int", "lower"),
     ("global_recomp_only_count", "global recomp-only", "int", "lower"),
@@ -410,7 +411,46 @@ def print_function_changes(
     print(f"  ({improved} improved, {newly_paired} newly paired)")
 
 
-def parse_report_counts(path: Path) -> dict[str, float | int]:
+def load_function_sizes(build_dir: Path) -> dict[int, int]:
+    """address -> original byte size, from the generated symbol table.
+
+    Falls back to config/original_entities.csv when the build dir has no
+    generated table yet (e.g. --no-run on a fresh checkout).
+    """
+    candidates = [
+        build_dir / "generated" / "symbols.csv",
+        repo_root_from_file(__file__) / "config" / "original_entities.csv",
+    ]
+    sizes: dict[int, int] = {}
+    for path in candidates:
+        if not path.exists():
+            continue
+        with path.open("r", encoding="utf-8", errors="replace") as fd:
+            header = fd.readline().rstrip("\n").split("|")  # pipe-split-ok: header-indexed streaming read of the entity table
+            try:
+                addr_i, size_i, type_i = (
+                    header.index("address"),
+                    header.index("size"),
+                    header.index("type"),
+                )
+            except ValueError:
+                continue
+            for line in fd:
+                parts = line.rstrip("\n").split("|")  # pipe-split-ok: header-indexed streaming read of the entity table
+                if len(parts) <= max(addr_i, size_i, type_i):
+                    continue
+                if parts[type_i].strip().lower() != "function":
+                    continue
+                try:
+                    sizes[int(parts[addr_i], 16)] = int(parts[size_i])
+                except ValueError:
+                    continue
+        if sizes:
+            break
+    return sizes
+
+
+def parse_report_counts(path: Path, sizes: dict[int, int] | None = None) -> dict[str, float | int]:
     if not path.exists():
         raise FileNotFoundError(f"Missing reccmp JSON report: {path}")
 
@@ -423,16 +463,31 @@ def parse_report_counts(path: Path) -> dict[str, float | int]:
     compared = len(rows)
     total_matching = 0.0
     exact = 0
+    # Size-weighted similarity: sum(matching * original size) / sum(original size).
+    # The unweighted mean over-counts tiny bodies (a 12-byte thunk moves it as much
+    # as a 5KB dispatcher); the weighted form tracks matched code volume. Rows with
+    # no known original size fall back to weight 1 so they still participate.
+    weighted_sum = 0.0
+    weight_total = 0.0
     for row in rows:
         matching = effective_matching(row)
         total_matching += matching
         exact += int(matching >= 1.0)
+        weight = 1
+        if sizes is not None:
+            try:
+                weight = max(sizes.get(int(str(row.get("address")), 16), 1), 1)
+            except (TypeError, ValueError):
+                weight = 1
+        weighted_sum += matching * weight
+        weight_total += weight
 
     return {
         "compared_fun_count": compared,
         "exact_fun_count": exact,
         "not_exact_compared_count": max(compared - exact, 0),
         "avg_matching_pct": (total_matching / compared) * 100.0 if compared else 0.0,
+        "size_weighted_matching_pct": (weighted_sum / weight_total) * 100.0 if weight_total else 0.0,
     }
 
 
@@ -603,7 +658,7 @@ def build_entry(args: argparse.Namespace, build_dir: Path) -> dict[str, Any]:
         "target": args.target,
         **git_info(),
         **parse_roadmap_counts(roadmap_csv),
-        **parse_report_counts(report_json),
+        **parse_report_counts(report_json, load_function_sizes(build_dir)),
         **parse_noise_counts(noise_log),
     }
     # Generated-stub count (formerly config/baselines/stub_count_baseline.json): the
@@ -704,7 +759,8 @@ def print_summary(entry: dict[str, Any], baseline: dict[str, Any] | None, baseli
     print_pct_line("function coverage", entry, baseline, "coverage_pct")
     print_pct_line("exact/original", entry, baseline, "exact_vs_original_pct")
     print_pct_line("exact/paired", entry, baseline, "exact_vs_paired_pct")
-    print_pct_line("average similarity", entry, baseline, "avg_matching_pct")
+    print_pct_line("size-weighted similarity", entry, baseline, "size_weighted_matching_pct")
+    print_pct_line("average similarity (unweighted)", entry, baseline, "avg_matching_pct")
     print("")
 
     print("Globals / non-functions")

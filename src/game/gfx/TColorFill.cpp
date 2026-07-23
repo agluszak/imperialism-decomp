@@ -7,6 +7,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004ff150
 // TColorFill::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004ff180
 TColorFill::~TColorFill() {}
 // SYNTHETIC: IMPERIALISM 0x004ff0c0
 // TColorFill::CreateObject

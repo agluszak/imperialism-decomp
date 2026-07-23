@@ -14,6 +14,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x00430350
 // TTreatiesView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00430380
 TTreatiesView::~TTreatiesView() {}
 // SYNTHETIC: IMPERIALISM 0x004f7a10
 // TTreatiesView::CreateObject

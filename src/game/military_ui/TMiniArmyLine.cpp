@@ -14,6 +14,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004aa840
 // TMiniArmyLine::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004aa870
 TMiniArmyLine::~TMiniArmyLine() {}
 // SYNTHETIC: IMPERIALISM 0x004aa890
 // TMiniArmyLine::CreateObject

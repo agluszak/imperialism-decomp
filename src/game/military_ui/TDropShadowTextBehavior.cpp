@@ -13,6 +13,7 @@ TDropShadowTextBehavior::TDropShadowTextBehavior()
 
 // SYNTHETIC: IMPERIALISM 0x004b10d0
 // TDropShadowTextBehavior::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004b1100
 TDropShadowTextBehavior::~TDropShadowTextBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x004b1150

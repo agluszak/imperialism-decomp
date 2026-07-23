@@ -2,6 +2,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004b18f0
 // TTechCheater::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004b1920
 TTechCheater::~TTechCheater() {}
 // SYNTHETIC: IMPERIALISM 0x004b1880
 // TTechCheater::CreateObject

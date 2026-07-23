@@ -8,6 +8,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004afd30
 // TInterruptusView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004afd60
 TInterruptusView::~TInterruptusView() {}
 // SYNTHETIC: IMPERIALISM 0x004afcc0
 // TInterruptusView::CreateObject

@@ -12,6 +12,7 @@
 #include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x004fe240
 // TScoreGraph::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004fe270
 TScoreGraph::~TScoreGraph() {}
 // SYNTHETIC: IMPERIALISM 0x004fe1d0
 // TScoreGraph::CreateObject

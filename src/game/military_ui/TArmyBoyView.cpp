@@ -10,6 +10,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004aeb50
 // TArmyBoyView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004aeb80
 TArmyBoyView::~TArmyBoyView() {}
 // SYNTHETIC: IMPERIALISM 0x004aeae0
 // TArmyBoyView::CreateObject

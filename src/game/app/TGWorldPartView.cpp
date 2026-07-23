@@ -5,8 +5,14 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/TQuickDrawSurfaceContext.h"
 
+// FUNCTION: IMPERIALISM 0x0045b000
+TGWorldPartView::TGWorldPartView() : TView() {
+  sourceSurface60 = 0;
+}
+
 // SYNTHETIC: IMPERIALISM 0x0045b030
 // TGWorldPartView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0045b060
 TGWorldPartView::~TGWorldPartView() {}
 // SYNTHETIC: IMPERIALISM 0x004ac7d0
 // TGWorldPartView::CreateObject
@@ -15,11 +21,6 @@ TGWorldPartView::~TGWorldPartView() {}
 // TGWorldPartView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TGWorldPartView, TView)
-
-// FUNCTION: IMPERIALISM 0x0045b000
-TGWorldPartView::TGWorldPartView() : TView() {
-  sourceSurface60 = 0;
-}
 
 // FUNCTION: IMPERIALISM 0x004ac880
 void TGWorldPartView::Draw(RECT* rectBuffer) {

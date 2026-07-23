@@ -9,6 +9,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x005b2d30
 // TRelationshipDialog::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005b2d60
 TRelationshipDialog::~TRelationshipDialog() {}
 // SYNTHETIC: IMPERIALISM 0x005b2ca0
 // TRelationshipDialog::CreateObject

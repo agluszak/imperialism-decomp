@@ -18,6 +18,7 @@ TClickZone::TClickZone() : TControl(), clickSoundId84(0x1b58) {}
 
 // SYNTHETIC: IMPERIALISM 0x00572440
 // TClickZone::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00572470
 TClickZone::~TClickZone() {}
 
 // FUNCTION: IMPERIALISM 0x00572490

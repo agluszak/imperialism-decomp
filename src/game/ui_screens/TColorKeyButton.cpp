@@ -13,6 +13,7 @@ TColorKeyButton::TColorKeyButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00571fa0
 // TColorKeyButton::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00571fd0
 TColorKeyButton::~TColorKeyButton() {}
 
 // FUNCTION: IMPERIALISM 0x00571ff0

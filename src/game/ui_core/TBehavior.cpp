@@ -19,6 +19,7 @@ TBehavior::TBehavior() : TObject(), behaviorTag(kControlTagSpSpSpSp), owner(0), 
 
 // SYNTHETIC: IMPERIALISM 0x00487210
 // TBehavior::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00487240
 TBehavior::~TBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x00487280

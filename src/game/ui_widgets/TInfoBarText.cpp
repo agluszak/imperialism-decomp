@@ -7,8 +7,12 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
+// FUNCTION: IMPERIALISM 0x00429330
+TInfoBarText::TInfoBarText() : TDeluxeText() {}
+
 // SYNTHETIC: IMPERIALISM 0x004293c0
 // TInfoBarText::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004293f0
 TInfoBarText::~TInfoBarText() {}
 // SYNTHETIC: IMPERIALISM 0x005b65a0
 // TInfoBarText::CreateObject
@@ -17,9 +21,6 @@ TInfoBarText::~TInfoBarText() {}
 // TInfoBarText::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TInfoBarText, TDeluxeText)
-
-// FUNCTION: IMPERIALISM 0x00429330
-TInfoBarText::TInfoBarText() : TDeluxeText() {}
 
 // FUNCTION: IMPERIALISM 0x005b66b0
 void TInfoBarText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {

@@ -15,9 +15,10 @@ TUberCluster::TUberCluster() : TCluster() {}
 // SYNTHETIC: IMPERIALISM 0x00571490
 // TUberCluster::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x005714c0
+TUberCluster::~TUberCluster() {}
+
 // FUNCTION: IMPERIALISM 0x005714e0
 int TUberCluster::IsTradeControlAtMinimum() {
   return 1;
 }
-
-TUberCluster::~TUberCluster() {}

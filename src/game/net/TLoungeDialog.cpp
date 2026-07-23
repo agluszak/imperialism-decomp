@@ -29,6 +29,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x0044fae0
 // TLoungeDialog::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0044fb60
 TLoungeDialog::~TLoungeDialog() {}
 // SYNTHETIC: IMPERIALISM 0x0054d650
 // TLoungeDialog::CreateObject

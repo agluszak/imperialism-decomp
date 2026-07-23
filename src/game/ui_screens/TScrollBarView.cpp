@@ -14,6 +14,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x00573df0
 // TScrollBarView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00573e20
 TScrollBarView::~TScrollBarView() {}
 
 // FUNCTION: IMPERIALISM 0x005740a0

@@ -18,6 +18,7 @@
 #include "game/globals/shared_globals.h"
 // SYNTHETIC: IMPERIALISM 0x0043da70
 // TGamePreferencesPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0043db40
 TGamePreferencesPicture::~TGamePreferencesPicture() {}
 // SYNTHETIC: IMPERIALISM 0x0056a510
 // TGamePreferencesPicture::CreateObject

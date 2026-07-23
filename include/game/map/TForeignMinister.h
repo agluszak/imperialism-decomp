@@ -9,6 +9,8 @@ class TCity;
 // VTABLE: IMPERIALISM 0x00659cb0
 class TForeignMinister : public TMinister {
 public:
+  // FUNCTION: IMPERIALISM 0x0052f110
+  ~TForeignMinister() override {}
   TForeignMinister();
   void InitializeStateAndCounters(TGreatPower* owner);
 

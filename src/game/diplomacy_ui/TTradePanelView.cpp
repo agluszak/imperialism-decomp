@@ -14,6 +14,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x00430450
 // TTradePanelView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00430480
 TTradePanelView::~TTradePanelView() {}
 // SYNTHETIC: IMPERIALISM 0x004f86d0
 // TTradePanelView::CreateObject

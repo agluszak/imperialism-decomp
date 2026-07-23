@@ -21,6 +21,7 @@ TOverlayRadioButton::TOverlayRadioButton() : TRadioPictureButton() {
 
 // SYNTHETIC: IMPERIALISM 0x00453830
 // TOverlayRadioButton::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00453860
 TOverlayRadioButton::~TOverlayRadioButton() {}
 
 // slot 0x44 — Draw override: base picture render, then blit the attached

@@ -16,6 +16,9 @@ T2PictToggleButton::T2PictToggleButton() : TToggleButton() {}
 // SYNTHETIC: IMPERIALISM 0x00584960
 // T2PictToggleButton::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x00584990
+T2PictToggleButton::~T2PictToggleButton() {}
+
 // FUNCTION: IMPERIALISM 0x005849b0
 bool T2PictToggleButton::IsSelected() {
   if (this->glyphBase84 >= this->controlValue3c) {
@@ -38,5 +41,3 @@ void T2PictToggleButton::Select(bool isPressed, bool notifyParent) {
   PrepareForDrawing();
   PaintOrInvalidateControl(0);
 }
-
-T2PictToggleButton::~T2PictToggleButton() {}

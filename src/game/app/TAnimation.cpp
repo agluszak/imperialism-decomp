@@ -13,6 +13,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x0049f050
 // TAnimation::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0049f080
 TAnimation::~TAnimation() {}
 
 // SYNTHETIC: IMPERIALISM 0x0049f0a0

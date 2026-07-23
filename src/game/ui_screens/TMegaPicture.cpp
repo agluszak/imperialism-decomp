@@ -18,6 +18,7 @@ TMegaPicture::TMegaPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x005731d0
 // TMegaPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00573200
 TMegaPicture::~TMegaPicture() {}
 
 // Blits the picture's own bitmap to its transformed (screen-space) rect. Normally

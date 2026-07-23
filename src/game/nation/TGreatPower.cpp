@@ -37,6 +37,7 @@
 #include "game/ui_screens/TNewsMgr.h"
 #include "game/map/TMinister.h"
 #include "game/military/TMilitaryUnit.h"
+#include "game/military/mapped_flavor_text.h"
 #include "game/city_ui/TProvinceDesirabilityList.h"
 #include "game/nation/TMinor.h"
 #include "game/map/TMission.h"
@@ -52,6 +53,7 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/military_ui/TSortedByRelationshipList.h"
 #include "game/ui_core/TSortedList.h"
+#include "game/ui_widgets/TSoundPlayer.h"
 #include "game/core/TStream.h"
 #include "game/ui_widgets/TTown.h"
 #include "game/military/TUnit.h"
@@ -3262,13 +3264,6 @@ int TGreatPower::ClassifyNationProductionTierVsPeers(void) {
 
 // FUNCTION: IMPERIALISM 0x004e2b00
 void TGreatPower::DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags) {
-  struct TurnOrderDispatchPacket {
-    short turnTick;
-    short orderKind;
-    short payload;
-    short flags;
-  };
-
   short turnTick = 0;
   TSimMgr* localizationRuntime = g_pSimMgr;
   if (localizationRuntime != 0) {
@@ -3287,42 +3282,93 @@ void TGreatPower::DispatchTurnOrderActionSlotB0(short orderKind, short payload, 
   }
 }
 
+// Build the end-of-turn great-power summary: one line per turnSummaryQueue record from
+// the previous economic turn ("<count> <entry text>"), an aid-total tail when resource
+// grants accumulated a value, then the modal message with a chime.
 // FUNCTION: IMPERIALISM 0x004e2b70
 void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
-  if (this->turnSummaryQueue == 0) {
-    return;
-  }
+  CString countText;
+  CString messageText;
+  CString entryText;
+  short totalGrantValue = 0;
+  char anyPreviousTurnEntry = 0;
+  short previousTurn = g_pSimMgr->GetEconomicTurn() - 1;
 
-  TSortedByRelationshipList* summaryQueue = this->turnSummaryQueue;
-  int queueCount = summaryQueue->GetSize();
-  if (queueCount <= 0) {
-    return;
-  }
-
-  short activeTurn = 0;
-  TSimMgr* localizationRuntime = g_pSimMgr;
-  if (localizationRuntime != 0) {
-    activeTurn = static_cast<short>(localizationRuntime->GetEconomicTurn() - 1);
-  }
-
-  int mergedNationMask = 0;
-  bool foundCurrentTurnEntry = false;
-
-  for (int queueIndex = 1; queueIndex <= queueCount; ++queueIndex) {
-    short* entry = static_cast<short*>(summaryQueue->GetPtrListEntryByOneBasedIndex(queueIndex));
-    if (entry == 0 || entry[0] != activeTurn) {
-      continue;
+  if (this->turnSummaryQueue->GetSize() > 0) {
+    g_pSimMgr->GetString(0x2749, 9, &messageText);
+    for (int index = 1; index <= this->turnSummaryQueue->GetSize(); ++index) {
+      TurnOrderDispatchPacket* entry = static_cast<TurnOrderDispatchPacket*>(
+          this->turnSummaryQueue->GetPtrListEntryByOneBasedIndex(index));
+      if (entry->turnTick != previousTurn) {
+        continue;
+      }
+      anyPreviousTurnEntry = 1;
+      messageText += '\r';
+      messageText += s_szTurnSummaryIndent_00696790;
+      countText.Format(g_szDecimalFormat, entry->flags);
+      switch (entry->orderKind) {
+      case 1: {
+        short grantCount = entry->flags;
+        totalGrantValue += GetResourceDescriptorWeightWord0ByType(entry->payload) * grantCount;
+        if (grantCount > 1) {
+          g_pSimMgr->GetString(0x271a, entry->payload, &entryText);
+        } else {
+          g_pSimMgr->GetString(0x2716, entry->payload, &entryText);
+        }
+        break;
+      }
+      case 0:
+        if (entry->flags > 1) {
+          g_pSimMgr->GetString(0x271a, entry->payload, &entryText);
+        } else {
+          g_pSimMgr->GetString(0x2716, entry->payload, &entryText);
+        }
+        break;
+      case 2:
+        if (entry->flags > 1) {
+          g_pSimMgr->GetString(0x2748, entry->payload, &entryText);
+        } else {
+          g_pSimMgr->GetString(0x2718, entry->payload, &entryText);
+        }
+        break;
+      case 3:
+        if (entry->flags > 1) {
+          BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &entryText, 0x2747, 1, 0x2717,
+                                                entry->payload);
+        } else {
+          short payload = entry->payload;
+          if (payload == 0x2508) {
+            g_pSimMgr->GetString(0x2744, 2, &entryText);
+          } else if (payload == 0x1b || payload == 0x1c || payload == 0x1d) {
+            g_pSimMgr->GetString(0x2744, 0, &entryText);
+          } else {
+            BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &entryText, 0x2747, 0, 0x2717,
+                                                  payload);
+          }
+        }
+        break;
+      }
+      messageText += countText + s_szSpaceSeparator_00695794 + entryText;
     }
 
-    foundCurrentTurnEntry = true;
-    mergedNationMask |= 1 << (static_cast<int>(entry[1]) & 0x1F);
-  }
+    if (totalGrantValue != 0) {
+      CString aidText;
+      CString capacityText;
+      CString aidTemplate;
+      capacityText.Format(g_szDecimalFormat, this->tradeCapacity);
+      g_pSimMgr->GetString(0x2739, 1, &aidTemplate);
+      scanBracketExpressions(g_pSimMgr, &aidText, static_cast<LPCSTR>(aidTemplate),
+                             static_cast<LPCSTR>(capacityText));
+      messageText += '\r';
+      messageText += '\r';
+      messageText += aidText;
+    }
 
-  if (!foundCurrentTurnEntry) {
-    return;
+    if (anyPreviousTurnEntry != 0) {
+      g_pSfxPlaybackSystem->PlaySoundEffect(0xbcb, 0, 1);
+      g_pUiRuntimeContext->ModalMessage(messageText, g_ptGreatPowerModalMessage, 2, 0);
+    }
   }
-
-  (void)mergedNationMask;
 }
 
 // Army-plus-navy power score: land units weighted by the per-type table scaled by

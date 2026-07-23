@@ -18,6 +18,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x0044fab0
 // TJoinSelectorDialog::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0044fb40
 TJoinSelectorDialog::~TJoinSelectorDialog() {}
 // SYNTHETIC: IMPERIALISM 0x0054e690
 // TJoinSelectorDialog::CreateObject

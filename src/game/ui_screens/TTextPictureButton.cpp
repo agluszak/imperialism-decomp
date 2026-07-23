@@ -17,6 +17,7 @@ TTextPictureButton::TTextPictureButton()
 
 // SYNTHETIC: IMPERIALISM 0x00572670
 // TTextPictureButton::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005726a0
 TTextPictureButton::~TTextPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00572710

@@ -84,6 +84,7 @@ TGameWindow::TGameWindow() {
 // TGameWindow::`scalar deleting destructor'
 // The teardown runs through the real TWindow base destructor (registry/modal unlink) via
 // inheritance; TGameWindow adds no destruction of its own.
+// FUNCTION: IMPERIALISM 0x004ffc90
 TGameWindow::~TGameWindow() {}
 
 // FUNCTION: IMPERIALISM 0x004ffcb0

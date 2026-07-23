@@ -22,6 +22,7 @@ TOrderView::TOrderView() : TView(), city60(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00506ab0
 // TOrderView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00506ae0
 TOrderView::~TOrderView() {}
 
 // FUNCTION: IMPERIALISM 0x00506b00

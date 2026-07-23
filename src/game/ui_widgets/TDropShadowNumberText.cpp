@@ -24,6 +24,7 @@ TDropShadowNumberText::TDropShadowNumberText() : TPictureNumberText() {
 
 // SYNTHETIC: IMPERIALISM 0x005b5960
 // TDropShadowNumberText::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005b5990
 TDropShadowNumberText::~TDropShadowNumberText() {}
 
 // slot 0x44 — Draw override: shadow pass in shadowColorAc, then the regular

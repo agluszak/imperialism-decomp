@@ -20,6 +20,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004135f0
 // TAmbitApplication::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00413620
 TAmbitApplication::~TAmbitApplication() {}
 
 // Mac-oracle name TAmbitApplication::DoSetupMenus() — a no-op on Windows (there is no

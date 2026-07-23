@@ -59,6 +59,7 @@ TNetMgr::TNetMgr() : TObject() {}
 
 // SYNTHETIC: IMPERIALISM 0x005e3400
 // TNetMgr::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005e3430
 TNetMgr::~TNetMgr() {}
 
 // FUNCTION: IMPERIALISM 0x005e3450

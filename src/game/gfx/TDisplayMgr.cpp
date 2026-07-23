@@ -80,6 +80,7 @@ TDisplayMgr::TDisplayMgr()
 
 // SYNTHETIC: IMPERIALISM 0x004fe7f0
 // TDisplayMgr::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004fe820
 TDisplayMgr::~TDisplayMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004fe840

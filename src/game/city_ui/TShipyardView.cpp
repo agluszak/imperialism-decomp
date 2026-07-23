@@ -41,6 +41,7 @@ TShipyardView::TShipyardView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004c82f0
 // TShipyardView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004c8320
 TShipyardView::~TShipyardView() {}
 
 // FUNCTION: IMPERIALISM 0x004c8340

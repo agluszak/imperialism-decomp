@@ -32,8 +32,6 @@ const char kReadTextMode[] = "rt";
 
 IMPLEMENT_DYNCREATE(TLanguageMgr, TObject)
 
-TLanguageMgr::~TLanguageMgr() {}
-
 // FUNCTION: IMPERIALISM 0x00507c60
 TLanguageMgr::TLanguageMgr() : TObject() {
   columnCount = 0;
@@ -49,6 +47,9 @@ TLanguageMgr::TLanguageMgr() : TObject() {
 
 // SYNTHETIC: IMPERIALISM 0x00507d80
 // TLanguageMgr::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00507db0
+TLanguageMgr::~TLanguageMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00507e20
 void TLanguageMgr::Free() {

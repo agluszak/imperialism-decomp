@@ -23,6 +23,7 @@ TTradeTotalsView::TTradeTotalsView() : TView() {}
 
 // SYNTHETIC: IMPERIALISM 0x005c1b40
 // TTradeTotalsView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005c1b70
 TTradeTotalsView::~TTradeTotalsView() {}
 
 // FUNCTION: IMPERIALISM 0x005c1bd0

@@ -27,6 +27,7 @@ IMPLEMENT_DYNCREATE(TStream, TObject)
 // concrete stream subclasses — can be instantiated.
 // ---------------------------------------------------------------------------
 TStream::TStream() {}
+// FUNCTION: IMPERIALISM 0x00488a40
 TStream::~TStream() {}
 
 // FUNCTION: IMPERIALISM 0x00488a80

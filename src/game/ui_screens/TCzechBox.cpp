@@ -12,6 +12,7 @@ TCzechBox::TCzechBox() {}
 
 // SYNTHETIC: IMPERIALISM 0x00571c60
 // TCzechBox::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00571c90
 TCzechBox::~TCzechBox() {}
 
 // FUNCTION: IMPERIALISM 0x00571cb0

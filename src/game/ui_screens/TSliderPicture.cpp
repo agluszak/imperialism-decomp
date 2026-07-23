@@ -14,6 +14,7 @@ TSliderPicture::TSliderPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00573a50
 // TSliderPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00573a80
 TSliderPicture::~TSliderPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00573aa0

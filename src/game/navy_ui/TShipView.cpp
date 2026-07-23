@@ -23,6 +23,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x005653b0
 // TShipView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005653e0
 TShipView::~TShipView() {}
 // SYNTHETIC: IMPERIALISM 0x00565400
 // TShipView::CreateObject

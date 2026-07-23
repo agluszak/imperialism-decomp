@@ -28,6 +28,7 @@ TPlaceCityDialog::TPlaceCityDialog() {}
 
 // SYNTHETIC: IMPERIALISM 0x004d1830
 // TPlaceCityDialog::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004d1860
 TPlaceCityDialog::~TPlaceCityDialog() {}
 
 // FUNCTION: IMPERIALISM 0x004d1880

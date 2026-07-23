@@ -14,6 +14,7 @@ TUpDownView::TUpDownView() : TControl(), timingDword84(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00583d80
 // TUpDownView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00583db0
 TUpDownView::~TUpDownView() {}
 
 // FUNCTION: IMPERIALISM 0x00583dd0

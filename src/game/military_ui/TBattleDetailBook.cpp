@@ -6,6 +6,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x00430b00
 // TBattleDetailBook::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00430b30
 TBattleDetailBook::~TBattleDetailBook() {}
 // SYNTHETIC: IMPERIALISM 0x004ae9d0
 // TBattleDetailBook::CreateObject

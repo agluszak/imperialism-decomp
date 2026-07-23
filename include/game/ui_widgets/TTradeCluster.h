@@ -11,6 +11,8 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x665a70
 class TTradeCluster : public TAmtBarCluster {
 public:
+  // FUNCTION: IMPERIALISM 0x00587110
+  ~TTradeCluster() override {}
   short tradeMetricSlot; // 0x88
 
   DECLARE_DYNCREATE(TTradeCluster)

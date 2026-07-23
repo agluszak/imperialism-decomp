@@ -16,4 +16,5 @@ TPictureNumberText::TPictureNumberText() : TNumberText() {
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x005b5210
 // TPictureNumberText::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005b5240
 TPictureNumberText::~TPictureNumberText() {}

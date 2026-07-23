@@ -22,6 +22,7 @@ TStratReportView::TStratReportView() : TView() {}
 
 // SYNTHETIC: IMPERIALISM 0x0058e3f0
 // TStratReportView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0058e420
 TStratReportView::~TStratReportView() {}
 
 // Draws the battle-outcome header: fills the background, then "Battle of <location>",

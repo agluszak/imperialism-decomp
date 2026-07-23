@@ -20,6 +20,7 @@ void TMiniArmyView::Hilite() {}
 
 // SYNTHETIC: IMPERIALISM 0x004aad40
 // TMiniArmyView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004aad70
 TMiniArmyView::~TMiniArmyView() {}
 // SYNTHETIC: IMPERIALISM 0x004aad90
 // TMiniArmyView::CreateObject

@@ -13,12 +13,13 @@
 
 IMPLEMENT_DYNCREATE(TUpDownPictureButton, TPicture)
 
-// SYNTHETIC: IMPERIALISM 0x005715d0
-// TUpDownPictureButton::`scalar deleting destructor'
-TUpDownPictureButton::~TUpDownPictureButton() {}
-
 // FUNCTION: IMPERIALISM 0x005715a0
 TUpDownPictureButton::TUpDownPictureButton() : TPicture(), timingWord92(7000) {}
+
+// SYNTHETIC: IMPERIALISM 0x005715d0
+// TUpDownPictureButton::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00571600
+TUpDownPictureButton::~TUpDownPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00571620
 void TUpDownPictureButton::HiliteState(unsigned char enabledState, unsigned char refreshNow) {

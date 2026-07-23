@@ -11,6 +11,7 @@ void TPoseMessageDialog::DoIt() {}
 
 // SYNTHETIC: IMPERIALISM 0x0054b010
 // TPoseMessageDialog::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0054b040
 TPoseMessageDialog::~TPoseMessageDialog() {}
 // SYNTHETIC: IMPERIALISM 0x0054b060
 // TPoseMessageDialog::CreateObject

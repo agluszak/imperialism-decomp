@@ -7,6 +7,8 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x00654d38
 class TSortedByRelationshipList : public TSortedPtrList {
 public:
+  // FUNCTION: IMPERIALISM 0x004ee5a0
+  ~TSortedByRelationshipList() override {}
   TSortedByRelationshipList();
   DECLARE_DYNCREATE(TSortedByRelationshipList)
   // Descending by the relationship short at record+2; ties broken pseudo-randomly.

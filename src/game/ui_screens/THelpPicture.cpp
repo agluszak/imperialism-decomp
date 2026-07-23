@@ -42,6 +42,7 @@ THelpPicture::THelpPicture() : TPicture(), currentHelpSet90(0), topicListText94(
 
 // SYNTHETIC: IMPERIALISM 0x00503cc0
 // THelpPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00503cf0
 THelpPicture::~THelpPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00503d10

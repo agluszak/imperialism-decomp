@@ -5,8 +5,12 @@
 #include "game/ui_screens/TPageView.h"
 #include "game/ui_text_label_helpers_decls.h"
 
+// FUNCTION: IMPERIALISM 0x00430250
+TBook::TBook() {}
+
 // SYNTHETIC: IMPERIALISM 0x00430280
 // TBook::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004302b0
 TBook::~TBook() {}
 // SYNTHETIC: IMPERIALISM 0x0056f4a0
 // TBook::CreateObject
@@ -15,9 +19,6 @@ TBook::~TBook() {}
 // TBook::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TBook, TPicture)
-
-// FUNCTION: IMPERIALISM 0x00430250
-TBook::TBook() {}
 
 // FUNCTION: IMPERIALISM 0x0056f560
 void TBook::DoPostCreate(int arg) {

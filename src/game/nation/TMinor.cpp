@@ -443,22 +443,86 @@ short TMinor::QueryNationMetricBySlot7C(short metricSlot) {
 
 // FUNCTION: IMPERIALISM 0x004e46a0
 void TMinor::RebuildDiplomacyEconomicPressureFromMapState(void) {
-  TGreatPower* nation = reinterpret_cast<TGreatPower*>(this);
-  nation->needTargetByType[0x13] = -10;
-  nation->needTargetByType[0x14] = 0;
-  nation->needTargetByType[0x15] = 0;
-  for (int i = 0; i < 0x17; ++i) {
-    nation->needCurrentByType[i] = 0;
-    nation->diplomacyPolicyByNation[i] = 0;
-    nation->diplomacyGrantByNation[i] = 0;
-    nation->relationDeltaCurrent[i] = 0;
-    nation->relationDeltaSnapshot[i] = 0;
-    nation->diplomacyState1c6[i] = 0;
-    nation->diplomacyState1f4[i] = 0;
-    nation->diplomacyState222[i] = 0;
-    nation->diplomacyState250[i] = 0;
+  diplomacyPolicyPredicateCode12e = -10;
+  diplomacyPolicyGate130 = 0;
+  diplomacyPolicyGate132 = 0;
+  int i;
+  for (i = 0; i < 0x17; ++i) {
+    diplomacyPolicyByNation[i] = 0;
+    diplomacyGrantByNation[i] = 0;
+    diplomacySaveExt13c[i] = 0;
+    recurringGrantByResource[i] = 0;
+    needCurrentByType[i] = 0;
+    memset(&statusRows[i], 0, sizeof(TMinorRuntimeStatusEntry));
   }
-  nation->diplomacyCounterA2 = 2;
+  needCurrentByType[7] = 2;
+
+  // Recount from the map: every resource edge on a tile this nation owns feeds the
+  // need counters; when a great power also holds the tile (secondaryOwnerNationTag18)
+  // the capability-requirement level accrues as recurring grants and per-power rows.
+  int tileIndex;
+  for (tileIndex = 0; static_cast<short>(tileIndex) < 0x1950; ++tileIndex) {
+    if (g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04 == this->nationSlot) {
+      short tileGreatPower =
+          g_pGlobalMapState->terrainStateTable[tileIndex].secondaryOwnerNationTag18;
+      if (tileGreatPower == -1) {
+        int edgeCount;
+        int edge = 0;
+        for (edgeCount = 2; edgeCount != 0; --edgeCount) {
+          char resourceType =
+              g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[edge];
+          if (g_pGlobalMapState->terrainStateTable[tileIndex].gateFlag != 0xf &&
+              resourceType != -1) {
+            ++needCurrentByType[static_cast<int>(resourceType)];
+            ++diplomacySaveExt13c[static_cast<int>(resourceType)];
+          }
+          ++edge;
+        }
+      } else {
+        int edgeCount;
+        int edge = 0;
+        for (edgeCount = 2; edgeCount != 0; --edgeCount) {
+          char resourceType =
+              g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[edge];
+          if (resourceType != -1) {
+            short yieldLevel =
+                static_cast<char>(g_pGlobalMapState->FindResourceCapabilityRequirementLevelByType(
+                    static_cast<short>(tileIndex), resourceType));
+            recurringGrantByResource[static_cast<int>(resourceType)] += yieldLevel;
+            statusRows[static_cast<int>(resourceType)].fields[tileGreatPower] += yieldLevel;
+            needCurrentByType[static_cast<int>(resourceType)] += yieldLevel;
+          }
+          ++edge;
+        }
+      }
+    }
+  }
+
+  // Convert the last two status rows into aid pressure on each great power, scaled by
+  // the standing-score matrix and normalized by 255.
+  int powerCount;
+  int power = 0;
+  for (powerCount = 7; powerCount != 0; --powerCount) {
+    if (g_apTerrainTypeDescriptorTable[power] != 0) {
+      short pressure16 = statusRows[0x16].fields[power];
+      if (pressure16 != 0) {
+        g_apNationStates[power]->AddAmountToAidAllocationMatrixCellAndTotal(
+            g_pDiplomacyTurnStateManager
+                    ->relationStandingScoreMatrix79c[this->nationSlot * 0x17 + power] *
+                pressure16 * 200 / 255,
+            0x16, this->nationSlot);
+      }
+      short pressure15 = statusRows[0x15].fields[power];
+      if (pressure15 != 0) {
+        g_apNationStates[power]->AddAmountToAidAllocationMatrixCellAndTotal(
+            g_pDiplomacyTurnStateManager
+                    ->relationStandingScoreMatrix79c[this->nationSlot * 0x17 + power] *
+                pressure15 * 500 / 255,
+            0x15, this->nationSlot);
+      }
+    }
+    ++power;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004e49b0

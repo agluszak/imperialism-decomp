@@ -5,6 +5,7 @@ TCommandHandler::TCommandHandler() : TEventHandler() {}
 
 // SYNTHETIC: IMPERIALISM 0x004865e0
 // TCommandHandler::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00486610
 TCommandHandler::~TCommandHandler() {}
 // SYNTHETIC: IMPERIALISM 0x00486570
 // TCommandHandler::CreateObject

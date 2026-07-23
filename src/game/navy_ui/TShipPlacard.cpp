@@ -21,6 +21,7 @@ TShipPlacard::TShipPlacard() {}
 
 // SYNTHETIC: IMPERIALISM 0x005692a0
 // TShipPlacard::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005692d0
 TShipPlacard::~TShipPlacard() {}
 
 // FUNCTION: IMPERIALISM 0x005692f0

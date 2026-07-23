@@ -10,6 +10,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x005b4650
 // TAutomatedPlayDialog::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005b4680
 TAutomatedPlayDialog::~TAutomatedPlayDialog() {}
 // SYNTHETIC: IMPERIALISM 0x005b45c0
 // TAutomatedPlayDialog::CreateObject

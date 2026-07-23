@@ -14,6 +14,7 @@ TOnOffRadioButton::TOnOffRadioButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00571a30
 // TOnOffRadioButton::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00571a60
 TOnOffRadioButton::~TOnOffRadioButton() {}
 
 // FUNCTION: IMPERIALISM 0x00571a80

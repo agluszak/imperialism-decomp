@@ -31,6 +31,7 @@ TIncludeView::TIncludeView()
 
 // SYNTHETIC: IMPERIALISM 0x0048ce40
 // TIncludeView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0048ce70
 TIncludeView::~TIncludeView() {}
 
 // FUNCTION: IMPERIALISM 0x0048cf10

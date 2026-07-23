@@ -51,6 +51,9 @@ TIndustryCluster::TIndustryCluster()
 // SYNTHETIC: IMPERIALISM 0x00588b20
 // TIndustryCluster::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x00588b50
+TIndustryCluster::~TIndustryCluster() {}
+
 // FUNCTION: IMPERIALISM 0x00588b70
 void TIndustryCluster::DoPostCreate(int styleSeed) {
   short tagIndex = 0;
@@ -169,5 +172,3 @@ void TIndustryCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
   int moveValue = moveControl->QueryValue();
   this->SetMoveAmount(static_cast<short>(moveValue - 1));
 }
-
-TIndustryCluster::~TIndustryCluster() {}

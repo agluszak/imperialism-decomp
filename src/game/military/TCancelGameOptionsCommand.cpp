@@ -5,6 +5,7 @@ void TCancelGameOptionsCommand::DoIt() {}
 
 // SYNTHETIC: IMPERIALISM 0x00542560
 // TCancelGameOptionsCommand::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00542590
 TCancelGameOptionsCommand::~TCancelGameOptionsCommand() {}
 // SYNTHETIC: IMPERIALISM 0x005424b0
 // TCancelGameOptionsCommand::CreateObject

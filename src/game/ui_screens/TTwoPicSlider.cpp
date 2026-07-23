@@ -34,6 +34,7 @@ TTwoPicSlider::TTwoPicSlider()
 
 // SYNTHETIC: IMPERIALISM 0x0043d650
 // TTwoPicSlider::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0043d680
 TTwoPicSlider::~TTwoPicSlider() {}
 
 // FUNCTION: IMPERIALISM 0x0056e200

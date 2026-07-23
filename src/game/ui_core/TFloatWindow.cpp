@@ -14,6 +14,7 @@ TFloatWindow::TFloatWindow() : TWindow() {}
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x00492110
 // TFloatWindow::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00492140
 TFloatWindow::~TFloatWindow() {}
 
 // FUNCTION: IMPERIALISM 0x00492310

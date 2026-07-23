@@ -34,6 +34,9 @@ TShipyardCluster::TShipyardCluster()
 // SYNTHETIC: IMPERIALISM 0x0058a5c0
 // TShipyardCluster::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x0058a5f0
+TShipyardCluster::~TShipyardCluster() {}
+
 // FUNCTION: IMPERIALISM 0x0058a610
 void TShipyardCluster::DoPostCreate(int styleSeed) {
   TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
@@ -127,5 +130,3 @@ void TShipyardCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
                             reinterpret_cast<TEvent*>(eventExtra));
   }
 }
-
-TShipyardCluster::~TShipyardCluster() {}

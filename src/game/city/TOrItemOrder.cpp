@@ -13,6 +13,7 @@ TOrItemOrder::TOrItemOrder() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b5820
 // TOrItemOrder::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004b5850
 TOrItemOrder::~TOrItemOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b5870

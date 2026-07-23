@@ -26,6 +26,7 @@ TGameSetupPicture::TGameSetupPicture() : TNoHilitePicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00575890
 // TGameSetupPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005758c0
 TGameSetupPicture::~TGameSetupPicture() {}
 
 // FUNCTION: IMPERIALISM 0x005758e0

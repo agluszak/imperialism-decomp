@@ -2,6 +2,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x004302d0
 // TPageCorner::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00430300
 TPageCorner::~TPageCorner() {}
 // SYNTHETIC: IMPERIALISM 0x0056f7b0
 // TPageCorner::CreateObject

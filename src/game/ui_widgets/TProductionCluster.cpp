@@ -32,6 +32,9 @@ TProductionCluster::TProductionCluster()
 // SYNTHETIC: IMPERIALISM 0x00586970
 // TProductionCluster::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x005869a0
+TProductionCluster::~TProductionCluster() {}
+
 // FUNCTION: IMPERIALISM 0x005869c0
 void TProductionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   TAmtBar* valueControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagValu));
@@ -56,5 +59,3 @@ void TProductionCluster::SetStockpiles(short* current, short* maximum) {
 void TProductionCluster::SetStockpileRate(short stockpileRate) {
   stockpileRate8e = stockpileRate;
 }
-
-TProductionCluster::~TProductionCluster() {}

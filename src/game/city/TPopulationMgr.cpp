@@ -19,6 +19,7 @@ TPopulationMgr::TPopulationMgr() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b5bb0
 // TPopulationMgr::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004b5be0
 TPopulationMgr::~TPopulationMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004b5c00

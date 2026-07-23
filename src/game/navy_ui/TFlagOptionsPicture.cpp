@@ -18,6 +18,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x0043da10
 // TFlagOptionsPicture::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0043db00
 TFlagOptionsPicture::~TFlagOptionsPicture() {}
 // SYNTHETIC: IMPERIALISM 0x0056b210
 // TFlagOptionsPicture::CreateObject

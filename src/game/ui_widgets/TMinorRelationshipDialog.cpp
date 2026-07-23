@@ -9,6 +9,7 @@
 
 // SYNTHETIC: IMPERIALISM 0x005b3390
 // TMinorRelationshipDialog::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005b33c0
 TMinorRelationshipDialog::~TMinorRelationshipDialog() {}
 // SYNTHETIC: IMPERIALISM 0x005b3300
 // TMinorRelationshipDialog::CreateObject

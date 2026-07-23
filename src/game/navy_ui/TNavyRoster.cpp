@@ -34,6 +34,7 @@ TNavyRoster::TNavyRoster() {
 
 // SYNTHETIC: IMPERIALISM 0x00564d70
 // TNavyRoster::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00564da0
 TNavyRoster::~TNavyRoster() {}
 
 // FUNCTION: IMPERIALISM 0x00564dc0

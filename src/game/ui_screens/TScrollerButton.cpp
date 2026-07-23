@@ -12,6 +12,7 @@ TScrollerButton::TScrollerButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00574f70
 // TScrollerButton::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00574fa0
 TScrollerButton::~TScrollerButton() {}
 
 // FUNCTION: IMPERIALISM 0x00574fc0

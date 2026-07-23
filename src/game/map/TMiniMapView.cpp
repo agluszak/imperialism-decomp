@@ -26,6 +26,7 @@ TMiniMapView::TMiniMapView()
 
 // SYNTHETIC: IMPERIALISM 0x0059a3f0
 // TMiniMapView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0059a420
 TMiniMapView::~TMiniMapView() {}
 
 // FUNCTION: IMPERIALISM 0x0059a540

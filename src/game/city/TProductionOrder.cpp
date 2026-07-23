@@ -20,6 +20,7 @@ IMPLEMENT_DYNCREATE(TProductionOrder, TObject)
 
 // SYNTHETIC: IMPERIALISM 0x004b4f20
 // TProductionOrder::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004b4f50
 TProductionOrder::~TProductionOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b4f70

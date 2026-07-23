@@ -22,6 +22,7 @@ TBuildingConstructionView::TBuildingConstructionView()
 
 // SYNTHETIC: IMPERIALISM 0x004c9e60
 // TBuildingConstructionView::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004c9e90
 TBuildingConstructionView::~TBuildingConstructionView() {}
 
 // FUNCTION: IMPERIALISM 0x004c9eb0

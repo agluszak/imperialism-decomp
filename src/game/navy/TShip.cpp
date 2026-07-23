@@ -93,6 +93,7 @@ TShip::TShip()
 
 // SYNTHETIC: IMPERIALISM 0x0054f5c0
 // TShip::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0054f5f0
 TShip::~TShip() {}
 
 // FUNCTION: IMPERIALISM 0x0054f640

@@ -29,6 +29,7 @@ TCivilianButton::TCivilianButton() : TRadioPictureButton() {
 
 // SYNTHETIC: IMPERIALISM 0x0058b410
 // TCivilianButton::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x0058b440
 TCivilianButton::~TCivilianButton() {}
 
 // FUNCTION: IMPERIALISM 0x0058b460

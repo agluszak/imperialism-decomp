@@ -35,6 +35,7 @@ REASON_LABELS = {
     "condition_inversion": "equivalent comparison/condition inversion",
     "dead_operation": "dead register-only operation",
     "padding": "alignment padding",
+    "load_folding": "memory-load folding into the consuming instruction",
 }
 
 
@@ -286,7 +287,9 @@ def render_entity(
     elif status == "effective":
         lines.append("safe to ignore:")
         reasons = comparison.get("effective_reasons") or []
-        lines.extend(f"  {REASON_LABELS[reason]}" for reason in reasons)
+        # Unknown reason keys must never crash triage: the verifier's reason
+        # vocabulary can grow ahead of this label table (e.g. load_folding).
+        lines.extend(f"  {REASON_LABELS.get(reason, reason)}" for reason in reasons)
         lines += ["", "effective: proved semantically harmless — no action needed"]
     elif status == "mismatch":
         difference = comparison.get("difference")

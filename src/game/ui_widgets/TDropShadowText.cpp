@@ -15,6 +15,7 @@ TDropShadowText::TDropShadowText() : TPictureText(), shadowColor94(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x005b5600
 // TDropShadowText::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x005b5630
 TDropShadowText::~TDropShadowText() {}
 
 // Widen the paint clip by 1px on the top-left (room for the shadow's -1,-1 offset),
