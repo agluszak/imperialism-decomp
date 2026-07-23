@@ -121,10 +121,35 @@ def _balanced_argument(text: str, open_paren: int) -> str:
     return text[open_paren + 1 :]
 
 
+def _pointer_names(text: str) -> set[str]:
+    """Names this text declares as pointers.
+
+    A `Type|Kind|Mode|State|Code`-suffixed identifier compared against 0 is a null
+    check, not a raw discriminant, whenever the identifier is a pointer. The retail
+    source model deliberately names pointer members and locals after the state object
+    they reach (`nationState`, `g_pGlobalMapState`, `terrainStateTable`), so the
+    name-shaped detector cannot tell them apart without the declaration.
+    """
+    return {match.group("name") for match in _POINTER_DECL_RE.finditer(text)}
+
+
+_POINTER_DECL_RE = re.compile(r"[\w>\]]\s*\*\s*(?:const\s+)?(?P<name>[A-Za-z_]\w*)\b\s*(?:=|;|\)|,|\[)")
+
+
+def _header_pointer_names(repo_root: Path) -> set[str]:
+    names: set[str] = set()
+    for path in _manual_paths(repo_root):
+        if path.suffix != ".h":
+            continue
+        names |= _pointer_names(path.read_text(encoding="utf-8", errors="replace"))
+    return names
+
+
 def collect_findings(repo_root: Path, config: dict) -> list[Finding]:
     findings: list[Finding] = []
     categories = config["categories"]
     occurrences: Counter[tuple[str, str, str, str]] = Counter()
+    header_pointers = _header_pointer_names(repo_root)
 
     def add(category: str, path: Path, line: int, detail: str, source: str) -> None:
         policy = categories[category]
@@ -147,9 +172,9 @@ def collect_findings(repo_root: Path, config: dict) -> list[Finding]:
         )
 
     for path in _manual_paths(repo_root):
-        for line_number, source in enumerate(
-            path.read_text(encoding="utf-8", errors="replace").splitlines(), 1
-        ):
+        text = path.read_text(encoding="utf-8", errors="replace")
+        pointer_names = header_pointers | _pointer_names(text)
+        for line_number, source in enumerate(text.splitlines(), 1):
             code = source.split("//", 1)[0]
             if not code.strip():
                 continue
@@ -174,6 +199,13 @@ def collect_findings(repo_root: Path, config: dict) -> list[Finding]:
                     source,
                 )
             for match in _DISCRIMINANT_RE.finditer(code):
+                if (
+                    match.group("literal") == "0"
+                    and match.group("operator") in ("==", "!=")
+                    and match.group("name") in pointer_names
+                ):
+                    # Null check on a pointer, not a discriminant comparison.
+                    continue
                 add(
                     "raw_discriminant_literal",
                     path,
@@ -228,6 +260,12 @@ def render_report(findings: list[Finding], config: dict) -> str:
         "generated translation units and retail library source are excluded. Every finding",
         "has a reviewed classification and a durable Beads owner in",
         f"`{CONFIG_PATH}`. The fingerprint baseline rejects newly introduced patterns.",
+        "",
+        "`raw_discriminant_literal` deliberately does not report `== 0` / `!= 0` on an",
+        "identifier the manual source declares as a pointer: the recovered model names",
+        "pointer members and locals after the state object they reach (`nationState`,",
+        "`g_pGlobalMapState`, `terrainStateTable`), so those comparisons are null checks",
+        "rather than domain discriminants.",
         "",
         "## Summary",
         "",

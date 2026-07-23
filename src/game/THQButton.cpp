@@ -73,8 +73,8 @@ void THQButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
     TControl::DoEvent(commandId, sourceHandler, event);
     return;
   }
-  if (commandId != 0x1f) {
-    if (commandId != 0x20) {
+  if (commandId != kControlCommandHiliteOn) {
+    if (commandId != kControlCommandHiliteOff) {
       TControl::DoEvent(commandId, sourceHandler, event);
       return;
     }

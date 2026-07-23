@@ -78,10 +78,10 @@ void TNavyToolbarCluster::SetSelectedChildTagAndRefresh(int childTag) {
   TView* child = iterator.FirstSubView();
   while (iterator.MoreSubViews()) {
     if (child->controlTag == childTag) {
-      child->HandleEvent(0x1f, this, 0);
+      child->HandleEvent(kControlCommandHiliteOn, this, 0);
       selectedChild = child;
     } else {
-      child->HandleEvent(0x20, this, 0);
+      child->HandleEvent(kControlCommandHiliteOff, this, 0);
     }
     child = iterator.NextSubView();
   }

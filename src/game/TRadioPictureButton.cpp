@@ -32,8 +32,8 @@ void TRadioPictureButton::DoEvent(int commandId, TEventHandler* sourceHandler, T
     TControl::DoEvent(commandId, sourceHandler, event);
     return;
   }
-  if (commandId != 0x1f) {
-    if (commandId != 0x20) {
+  if (commandId != kControlCommandHiliteOn) {
+    if (commandId != kControlCommandHiliteOff) {
       TControl::DoEvent(commandId, sourceHandler, event);
       return;
     }

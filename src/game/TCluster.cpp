@@ -45,21 +45,21 @@ void TCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* even
         break;
       }
       if (reinterpret_cast<TEventHandler*>(sibling) != sourceHandler) {
-        sibling->HandleEvent(0x20, this, 0);
+        sibling->HandleEvent(kControlCommandHiliteOff, this, 0);
       }
     }
     selectedChildTag = sourceHandler->controlTag;
   }
 
-  if (commandId == 0x1f) {
+  if (commandId == kControlCommandHiliteOn) {
     HiliteState(true, true);
     return;
   }
-  if (commandId == 0x20) {
+  if (commandId == kControlCommandHiliteOff) {
     HiliteState(false, true);
     return;
   }
-  if (commandId == 0x21) {
+  if (commandId == kControlCommandHiliteToggle) {
     HiliteState(controlState64 == 0, true);
     return;
   }
@@ -85,9 +85,9 @@ void TCluster::SetSelectedChildTagAndRefresh(int childTag) {
     TControl* child = reinterpret_cast<TControl*>(childList44->GetNext(pos));
     if (child != 0) {
       if (child->controlTag == childTag) {
-        child->DoEvent(0x1f, this, 0);
+        child->DoEvent(kControlCommandHiliteOn, this, 0);
       } else {
-        child->DoEvent(0x20, this, 0);
+        child->DoEvent(kControlCommandHiliteOff, this, 0);
       }
     }
   }

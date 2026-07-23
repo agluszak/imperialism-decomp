@@ -85,15 +85,15 @@ void TControl::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin
 
 // FUNCTION: IMPERIALISM 0x0048e710
 void TControl::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  if (commandId == 0x1f) {
+  if (commandId == kControlCommandHiliteOn) {
     HiliteState(1, 1);
     return;
   }
-  if (commandId == 0x20) {
+  if (commandId == kControlCommandHiliteOff) {
     HiliteState(0, 1);
     return;
   }
-  if (commandId == 0x21) {
+  if (commandId == kControlCommandHiliteToggle) {
     HiliteState(controlState64 == 0, 1);
     return;
   }
@@ -145,16 +145,16 @@ void TControl::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previous
   }
   if (phase == kTrackPhaseEnd && PointInBoundsAndActionable(&currentPoint) != 0) {
     if (eventNumber60 == 4) {
-      HandleEvent(0x21, this, 0);
+      HandleEvent(kControlCommandHiliteToggle, this, 0);
       HandleEvent(eventNumber60, this, 0);
       return;
     }
     if (eventNumber60 != 0xc) {
-      HandleEvent(0x20, this, 0);
+      HandleEvent(kControlCommandHiliteOff, this, 0);
       HandleEvent(eventNumber60, this, 0);
       return;
     }
-    HandleEvent(0x1f, this, 0);
+    HandleEvent(kControlCommandHiliteOn, this, 0);
     HandleEvent(eventNumber60, this, 0);
   }
 }

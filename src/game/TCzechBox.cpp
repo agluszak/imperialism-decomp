@@ -16,7 +16,7 @@ TCzechBox::~TCzechBox() {}
 
 // FUNCTION: IMPERIALISM 0x00571cb0
 void TCzechBox::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  if (commandId == 0x21) {
+  if (commandId == kControlCommandHiliteToggle) {
     Toggle(1);
   }
   TUpDownPictureButton::DoEvent(commandId, sourceHandler, event);

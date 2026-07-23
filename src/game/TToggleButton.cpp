@@ -20,8 +20,8 @@ TToggleButton::TToggleButton() : TPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00571170
 void TToggleButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  if (commandId != 0x20) {
-    if (commandId == 0x1f) {
+  if (commandId != kControlCommandHiliteOff) {
+    if (commandId == kControlCommandHiliteOn) {
       return;
     }
     TControl::DoEvent(commandId, sourceHandler, event);
@@ -45,7 +45,7 @@ void TToggleButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       }
     }
     if (match) {
-      this->ownerContext->HandleEvent(0x20, nullptr, nullptr);
+      this->ownerContext->HandleEvent(kControlCommandHiliteOff, nullptr, nullptr);
     }
   }
 
