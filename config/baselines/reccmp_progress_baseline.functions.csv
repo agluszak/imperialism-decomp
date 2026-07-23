@@ -1499,7 +1499,7 @@ address|matching|name
 0x4a1100|1.0|TBitmapResourceLoader::ReportUnimplementedResourceVirtualSlot02
 0x4a1130|1.0|CreateBitmapResourceLoaderHandle
 0x4a1260|0.25|WrapperFor_ftol_At004a1260
-0x4a13c0|0.8823529411764706|MapContextActionRecord::ReadFrom
+0x4a13c0|1.0|MapContextActionRecord::ReadFrom
 0x4a1640|1.0|MapContextActionRecord::WriteTo
 0x4a1810|0.4|TArmyMgr::CreateObject
 0x4a1850|1.0|TArmyMgr::GetRuntimeClass
@@ -1508,7 +1508,7 @@ address|matching|name
 0x4a18d0|1.0|TArmyMgr::~TArmyMgr
 0x4a18f0|0.8421052631578947|TArmyMgr::InitializeMapContextActionManager
 0x4a1a00|1.0|TArmyMgr::Free
-0x4a1b80|0.5096153846153846|TArmyMgr::ReadFrom
+0x4a1b80|0.5585585585585585|TArmyMgr::ReadFrom
 0x4a1d90|0.14285714285714285|WrapperFor_FreeHeapBufferIfNotNull_At004a1d90
 0x4a1dd0|0.8484848484848485|TArmyMgr::WriteTo
 0x4a1e40|0.8163265306122449|TArmyMgr::DoCombatMoves
@@ -1516,9 +1516,9 @@ address|matching|name
 0x4a1f80|0.5675146771037182|TArmyMgr::FormStacks
 0x4a2390|0.8266666666666667|TArmyMgr::ResolveNextMove
 0x4a2500|0.984375|TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits
-0x4a2610|0.011976047904191617|BuildArmyActionLabelFromLocalizationAndCounts
-0x4a2900|0.13063763608087092|BuildArmyContextActionRecordsAndDispatchLabel
-0x4a31c0|0.4|OrphanVtableAssignStub_004a31c0
+0x4a2610|0.4264264264264264|BuildArmyActionLabelFromLocalizationAndCounts
+0x4a2900|0.6061814556331007|BuildArmyContextActionRecordsAndDispatchLabel
+0x4a31c0|1.0|CStr32::CStr32
 0x4a31e0|1.0|CStr255::CStr255
 0x4a3200|0.7047244094488189|TArmyMgr::TryCreateTacticalBattleViewForTileArmies
 0x4a35e0|0.6006825938566553|TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion
@@ -1554,13 +1554,13 @@ address|matching|name
 0x4a5c50|1.0|TArmyBattle::`scalar deleting destructor'
 0x4a5c80|0.0|TArmyBattle::~TArmyBattle
 0x4a5ca0|0.5432098765432098|TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters
-0x4a5ec0|0.5328947368421053|TArmyMgr::GenerateSpyReport
+0x4a5ec0|0.5307017543859649|TArmyMgr::GenerateSpyReport
 0x4a6680|0.7107652399481194|TArmyMgr::ShowSpyReport
 0x4a6d40|0.38202247191011235|TArmyMgr::ScanMapContextActionEntriesForCodeMatch
 0x4a6dd0|1.0|TArmyMgr::GetByteFlagAtOffset8
 0x4a6df0|1.0|TArmyMgr::CleanUpStacks
 0x4a6e80|1.0|TArmyMgr::AppendMapContextActionRecordAndResetWorkingFields
-0x4a6ef0|0.4|TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer
+0x4a6ef0|0.4335154826958106|TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer
 0x4a7370|0.0|ValidateOrderSupportDeltaAndMarkDirectionalOverlays
 0x4a7590|0.5128205128205128|TArmyMgr::ClearNationArmyActionModesAndCycleSelection
 0x4a76a0|0.3333333333333333|TArmyStack::CreateObject
@@ -4067,7 +4067,7 @@ address|matching|name
 0x54eca0|1.0|TMultiMessagePicture::GetRuntimeClass
 0x54ecc0|1.0|TMultiMessagePicture::DoEvent
 0x54efb0|0.25|WrapperFor_ftol_At0054efb0
-0x54f110|0.35074626865671643|BuildMapOrderBattleSideSnapshot
+0x54f110|0.40875912408759124|BuildMapOrderBattleSideSnapshot
 0x54f340|0.35714285714285715|RefreshMapOrderBattleSideSnapshot
 0x54f460|1.0|TShip::CreateObject
 0x54f4e0|1.0|TShip::GetRuntimeClass
@@ -4214,14 +4214,14 @@ address|matching|name
 0x557870|1.0|TTaskForce::RechargeAll
 0x5578a0|0.4507422402159244|TNavyMgr::CarryOutOrders
 0x557e10|0.6464646464646465|TNavyMgr::AssignEscorts
-0x557f10|0.34049586776859503|TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext
-0x558960|0.3595505617977528|TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes
+0x557f10|0.32450331125827814|TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext
+0x558960|0.38232161874334397|TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes
 0x559a70|0.3867403314917127|GetMapContextActionCode
 0x559dd0|0.6666666666666666|TNavyMgr::ActionCursor
 0x559e00|0.39464882943143814|TNavyMgr::SelectionCursor
 0x55a020|0.6847826086956522|TNavyMgr::SelectionClick
 0x55a160|0.4221105527638191|TNavyMgr::DoTileClick
-0x55a780|0.34954954954954953|TNavyMgr::ResolveStrategicBattle
+0x55a780|0.3329326923076923|TNavyMgr::ResolveStrategicBattle
 0x55b640|0.25|WrapperFor_ftol_At0055b640
 0x55b670|1.0|TNewsMgr::CreateObject
 0x55b6a0|1.0|TNewsMgr::`scalar deleting destructor'
