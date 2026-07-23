@@ -3,6 +3,11 @@
 #include "game/ui_screens/CString.h"
 #include "game/mfc.h"
 
+#include <stdlib.h>
+
+// Defined below, in the original's address order.
+void ParseIntFromControlText(CString text, int* outValue);
+
 // SYNTHETIC: IMPERIALISM 0x005b4f10
 // TMyNumberText::CreateObject
 
@@ -21,13 +26,24 @@ TMyNumberText::TMyNumberText() : TNumberText() {}
 // TMyNumberText::`scalar deleting destructor'
 TMyNumberText::~TMyNumberText() {}
 
-// slot 0x7a — TNumberText::UpdateControlCachedIntFromWindowText override.
+// slot 0x7a — TNumberText::UpdateControlCachedIntFromWindowText override. Unlike the
+// base, an empty control reads as 0 rather than being parsed.
 // FUNCTION: IMPERIALISM 0x005b5050
 int TMyNumberText::UpdateControlCachedIntFromWindowText() {
-  // TODO(partial 0x5b5050): the original fetches the control's text into a CString via
-  // the text-query virtual and, when non-empty, routes it through the shared-string
-  // town-value helpers (0x49eb00 / 0x5b6a80) instead of the base int parse. Ported as an
-  // honest partial pending recovery of those helpers' owning classes.
+  int value = 0;
   CString text;
-  return 0;
+  GetCurrentText(&text);
+  if (text.GetLength() != 0) {
+    ParseIntFromControlText(text, &value);
+  }
+  return value;
+}
+
+// Takes its CString by value and destroys it on the way out (the original tail-jumps
+// into ~CString), which is why the caller only reserves four bytes for the argument and
+// lets the compiler's copy helper at 0x49eb00 build it. Ghidra's "TTown::
+// CreateTTownInstance" name is a placeholder: the body is a plain atoi.
+// FUNCTION: IMPERIALISM 0x005b6a80
+void ParseIntFromControlText(CString text, int* outValue) {
+  *outValue = atoi(text);
 }

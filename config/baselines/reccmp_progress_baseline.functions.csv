@@ -5558,7 +5558,7 @@ address|matching|name
 0x5b4fb0|1.0|TMyNumberText::GetRuntimeClass
 0x5b4fd0|0.8|TMyNumberText::TMyNumberText
 0x5b5000|0.9090909090909091|TMyNumberText::`scalar deleting destructor'
-0x5b5050|0.12244897959183673|TMyNumberText::UpdateControlCachedIntFromWindowText
+0x5b5050|1.0|TMyNumberText::UpdateControlCachedIntFromWindowText
 0x5b5120|0.5818181818181818|TPictureNumberText::CreateObject
 0x5b51c0|1.0|TPictureNumberText::GetRuntimeClass
 0x5b51e0|0.75|TPictureNumberText::TPictureNumberText
@@ -5580,7 +5580,7 @@ address|matching|name
 0x5b58f0|1.0|TDropShadowNumberText::GetRuntimeClass
 0x5b5910|0.6666666666666666|TDropShadowNumberText::TDropShadowNumberText
 0x5b5960|0.9090909090909091|TDropShadowNumberText::`scalar deleting destructor'
-0x5b59b0|0.09523809523809523|TDropShadowNumberText::Draw
+0x5b59b0|1.0|TDropShadowNumberText::Draw
 0x5b5ac0|0.4383561643835616|TInfoBarPictureText::CreateObject
 0x5b5bb0|1.0|TInfoBarPictureText::GetRuntimeClass
 0x5b5c60|0.9090909090909091|TInfoBarPictureText::`scalar deleting destructor'
@@ -5612,7 +5612,7 @@ address|matching|name
 0x5b69e0|1.0|TNoHiliteText::GetRuntimeClass
 0x5b6a00|1.0|TNoHiliteText::TNoHiliteText
 0x5b6a30|0.9090909090909091|TNoHiliteText::`scalar deleting destructor'
-0x5b6a80|0.0|TTown::CreateTTownInstance
+0x5b6a80|1.0|ParseIntFromControlText
 0x5b6be0|0.25|WrapperFor_ftol_At005b6be0
 0x5b6c10|0.42424242424242425|TTown::CreateObject
 0x5b6c40|1.0|TTown::GetRuntimeClass
