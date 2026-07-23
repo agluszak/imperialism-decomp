@@ -189,6 +189,23 @@ Toolchains from github.com/archaic-msvc (`msvc500`, `msvc500sp1`, `msvc500sp2`,
   it.** The "standalone body + inlined users" emission cases are not compiler-version
   artifacts — they are inherent /Ob1 behavior, to be handled by source placement and
   equivalence metadata, not by switching toolchains.
+- Per-function anatomy of the SP1 delta (rules out "we overfit to RTM and SP1 is the
+  real toolchain"): 817 functions regress (190 game-range lost 100%; a further 62
+  lost-exact rows sit in the MFC/CRT range and are **library contamination** — the SP
+  repos ship a different `nafxcw.lib`, so a pure compiler probe would mount only
+  `bin/`). Size-weighted similarity drops 53.08% -> 49.94% (−3.13 pp, worse than the
+  −2.26 pp unweighted drop) because the breakage concentrates in big mechanical
+  bodies whose source has essentially one plausible form — e.g. `TCity::WriteTo`
+  (915B, 100% -> 20.9%): retail/RTM cache a repeated virtual-call pointer in EDI and
+  reuse `call edi`; SP1 re-reads the vtable and re-loads `call [eax+0x78]` per call.
+  Serializers like that cannot be "overfit", so retail bytes = RTM output. On the
+  other side, 168 functions improve under SP1 but they are almost entirely our
+  worst-modeled bodies (raw 20-40%, inconclusive/mismatch) drifting closer by
+  optimizer accident; the only two that reach 100% under SP1
+  (`ComputeMinisterSkillFloatSlot89` 0x4e05d0, `ComputeNationRuntimeAdvisoryMetricCase6`
+  0x4e0770) are **already proven `effective` under RTM** (commutative operand order /
+  load folding) — SP1 merely emits the byte order the proof already declared
+  equivalent. Verdict: zero genuine SP1-only matches; the hypothesis is dead.
 
 ## Experiment: template-emission compiler matrix
 
