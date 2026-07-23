@@ -61,7 +61,7 @@ For a suspect class name, use a synthetic label with explicit anchors:
 
 ```sh
 uv run python -m tools.workflow.slice_discovery Candidate_666998 \
-  --address 0x0058aaa0 --source src/game/TShipAmtBar.cpp \
+  --address 0x0058aaa0 --source src/game/ui_widgets/TShipAmtBar.cpp \
   --vtable 0x00666998 --classdesc 0x00663010 --name-source synthetic
 ```
 
