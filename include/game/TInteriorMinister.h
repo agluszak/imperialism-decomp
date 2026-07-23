@@ -61,5 +61,6 @@ public:
   // +0x18..0x25 — 7-entry short table, byte-swapped per-pair on ReadFrom (0x4be290);
   // semantic contents not yet recovered.
   short trailingTable[7];
-  unsigned char pad26[0x28 - 0x26];
+  // +0x26..+0x28: zero field-xrefs; genuinely untouched, not an unrecovered field.
+  unsigned char unused26[0x28 - 0x26];
 };

@@ -18,9 +18,10 @@ public:
   // expansion site emits only the base ctor call + vtbl install)
   THighScoresPicture() {}
 
-  // Loaded from Data\scores.dat by DoPostCreate: 10 leading 4-byte score values,
-  // then 10 32-byte score-entry records (name + associated fields; layout beyond raw
-  // bytes not yet recovered).
+  // Loaded from Data\scores.dat by DoPostCreate: 10 leading 4-byte score values, then
+  // 10 32-byte score-entry records. The record layout stays raw on purpose: the only
+  // access is the bulk file read, so nothing in the binary reveals its fields (see the
+  // focused follow-up bead).
   int scoreValues94[10];                  // +0x94
   unsigned char scoreRecordsBc[10][0x20]; // +0xbc
 };

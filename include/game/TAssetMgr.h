@@ -52,7 +52,10 @@ public:
   // trailing word; sizeof(TAssetMgr) per RTTI is 0x58. The ctor default-constructs all 13
   // entries via the EH array-construct helper; the scalar deleting dtor (0x5df300) tears
   // them down with the matching array-destroy helper.
-  int unknownRegion04[7];       // +0x04 .. 0x20 (purpose not yet recovered)
+  // +0x04..+0x20: no access anywhere. A field-xref sweep at each of the seven dword
+  // offsets returns zero reads and zero writes, so this is not an unrecovered layout --
+  // nothing in the shipped binary touches it.
+  int unusedRegion04[7];
   CString sharedTextSlots[0xd]; // +0x20 .. 0x54
   int unknown54;                // +0x54
 
