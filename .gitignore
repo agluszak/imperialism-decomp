@@ -85,3 +85,6 @@ compile_commands.json
 
 # Session-specific agent memory — never commit (stale conclusions poison future agents)
 .claude/projects/
+
+# clangd index cache (per-machine, regenerated on demand)
+.cache/
