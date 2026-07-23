@@ -176,6 +176,9 @@ const unsigned int kTagNada = 0x6e616461; // 'nada' — sentinel: no option sele
 const unsigned int kControlTagTarg = 0x74617267u; // 'targ' — tactical target button
 const unsigned int kControlTagRetr = 0x72657472u; // 'retr' — tactical retreat button
 const unsigned int kControlTagCurr = 0x63757272u; // 'curr' — tactical current-unit portrait
+const unsigned int kControlTagRad0 = 0x72616430u; // 'rad0' — lounge per-nation status lamp
+const unsigned int kControlTagNam0 = 0x6e616d30u; // 'nam0' — lounge per-nation name label
+const unsigned int kControlTagMess = 0x6d657373u; // 'mess' — lounge status message text
 const unsigned int kControlTagTpic = 0x74706963u; // 'tpic' — tactical target-unit portrait
 const unsigned int kControlTagHelp = 0x68656c70u; // 'help' — tactical toolbar help button
 

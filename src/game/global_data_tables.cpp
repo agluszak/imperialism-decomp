@@ -3671,3 +3671,8 @@ double g_dNavyHitChanceRangeScale_00669ef8 = 0.5;
 float g_fNavyHitChanceCubeOffset_00669f00 = -1.0f;
 // GLOBAL: IMPERIALISM 0x00669f04
 float g_fNavyHitChanceNumerator_00669f04 = 80.0f;
+
+// Lounge per-nation status lamp glyphs, indexed by the status code DoIdle derives
+// from the session id / four-cc status tag (busy, redy, unas, awol, dead).
+// GLOBAL: IMPERIALISM 0x0065c168
+extern "C" const int kLoungeStatusGlyphIds[5] = {0x11fe, 0x11ff, 0x1200, 0x1201, 0x1202};

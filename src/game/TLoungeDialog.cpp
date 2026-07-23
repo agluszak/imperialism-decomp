@@ -1,4 +1,6 @@
 #include "game/TLoungeDialog.h"
+#include <mbstring.h>
+#include "game/TLanguageMgr.h"
 
 #include "game/CString.h"
 #include "game/TAmbitApplication.h"
@@ -91,21 +93,140 @@ void TLoungeDialog::DoPostCreate(int arg) {
       g_pGameFlowState->EmitTurnEventEAnd9SessionContextPackets(nullptr);
     }
   } else {
-    // The special-nation-dialog path loads 'clnc'/'busy' conditionally on
-    // GetNationStatusCodeForSlotOrActiveNation(-1) and posts more chat lines -- not yet
-    // decoded.
+    g_pGameFlowState->RefreshNationStatusLabelsAndCodesForSlotOrAll(-1);
+    // The cancel button reads "leave" (0x12) while the local seat is still busy and
+    // "disconnect" (0x11) once it is not.
+    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(
+        0x2742,
+        g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) == 0x62757379 ? 0x12 : 0x11,
+        kControlTagCncl);
+    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xc, kControlTagMess);
+
+    TPicture* coatControl = static_cast<TPicture*>(ResolveControlByTag(0x636f6174)); // 'coat'
+    coatControl->AssertValid();
+    coatControl->SetPictureResourceIdAndRefresh(
+        static_cast<short>(g_pSimMgr->GetActiveNationId() + 0x120a), 0);
+    coatControl->SetEnabled(1, 0);
+    if (g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) != 0x62757379) {
+      SetPictureResourceIdAndRefresh(0x11f9, 0);
+    }
+    RefreshMapAndMessageControlsForCurrentContext();
   }
 
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xc, 0x6d657373u); // 'mess'
   selectedNationSlot = -1;
   DoIdle(1);
 
-  // The original then re-checks IsSpecialNationDialogModeActive() and does further
-  // nation-status-code-derived control setup -- not yet decoded.
+  short messageStringIndex;
+  if (g_pGameFlowState->IsSpecialNationDialogModeActive()) {
+    messageStringIndex =
+        g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) == 0x62757379 ? 0x24 : 0x10;
+  } else {
+    messageStringIndex = static_cast<short>(g_pSimMgr->mode == 1 ? 0x10 : 0x18);
+  }
+  ConfigureUiControlStyleValueAndCaptionFromStringResource(
+      static_cast<TStaticText*>(ResolveControlByTag(kControlTagMess)), 0, 0xe, 0x2b6c, 1, 0x2742,
+      messageStringIndex);
+  TNoHilitePicture::DoPostCreate(arg);
 }
 
 // FUNCTION: IMPERIALISM 0x0054db40
 char TLoungeDialog::DoIdle(int action) {
+  (void)action;
+  // Per-nation status lamp ('rad0'..'rad6', TNoHilitePicture) and name label
+  // ('nam0'..'nam6', TDropShadowText) -- both from MapView.rsrc view 1508.
+  bool anyLocalSeat = false;
+  for (int nationSlot = 0; nationSlot < TMultiplayerMgr::kMajorNationSessionSlotCount;
+       ++nationSlot) {
+    int sessionId = g_pGameFlowState->nationSessionIds[nationSlot];
+    int statusIndex = 0;
+    if (sessionId == 0) {
+      statusIndex = 2;
+    } else if (sessionId == -2) {
+      statusIndex = 3;
+    } else {
+      switch (g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(nationSlot)) {
+      case 0x62757379: // 'busy'
+        statusIndex = 0;
+        break;
+      case 0x72656479: // 'redy'
+        statusIndex = 1;
+        break;
+      case 0x756e6173: // 'unas'
+        statusIndex = 2;
+        break;
+      case 0x61776f6c: // 'awol'
+        statusIndex = 3;
+        break;
+      case 0x64656164: // 'dead'
+      case 0x64656361: // 'deca'
+        statusIndex = 4;
+        break;
+      default:
+        break;
+      }
+    }
+
+    TPicture* statusLamp =
+        static_cast<TPicture*>(ResolveControlByTag(kControlTagRad0 + nationSlot));
+    statusLamp->AssertValid();
+    if (statusLamp->glyphBase84 != kLoungeStatusGlyphIds[statusIndex]) {
+      statusLamp->SetPictureResourceIdAndRefresh(kLoungeStatusGlyphIds[statusIndex], 1);
+    }
+
+    bool isLocalSeat =
+        g_pGameFlowState->nationSessionIds[nationSlot] == TouchSessionActiveNationId() &&
+        g_pGameFlowState->nationSessionIds[nationSlot] != 0;
+    if (isLocalSeat) {
+      anyLocalSeat = true;
+    }
+
+    TDropShadowText* nameLabel =
+        static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagNam0 + nationSlot));
+    nameLabel->AssertValid();
+    CString desiredName;
+    CString currentName;
+    nameLabel->CopyTextTo(&currentName);
+    desiredName = g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(
+        &g_pGameFlowState->defaultNationTextSlots[nationSlot]);
+    if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(currentName)),
+                reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(desiredName))) != 0) {
+      nameLabel->SetTextAndMaybeRefresh(&desiredName, 1);
+      if (statusIndex == 4) {
+        ApplyUiTextStyleAndThemeFlags(nameLabel, 0, 0xe, 0x2b67, 0x2b6a);
+      } else if (isLocalSeat) {
+        ApplyUiTextStyleAndThemeFlags(nameLabel, 0, 0xe, 0x2b6c, 0x2b6b);
+      } else {
+        ApplyUiTextStyleAndThemeFlags(nameLabel, 0, 0xe, 0x2b6b, 0x2b6c);
+      }
+    }
+  }
+
+  short messageStringIndex;
+  if (g_pGameFlowState->IsSpecialNationDialogModeActive()) {
+    if (g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) == 0x62757379 && // 'busy'
+        g_pGameFlowState->fieldF4 != 0) {
+      messageStringIndex = 0x24;
+      if (glyphBase84 != 0x11f8) {
+        SetPictureResourceIdAndRefresh(0x11f8, 1);
+      }
+    } else {
+      messageStringIndex = 0x10;
+      if (glyphBase84 != 0x11f9) {
+        SetPictureResourceIdAndRefresh(0x11f9, 1);
+      }
+    }
+  } else if (g_pSimMgr->mode == 1 || anyLocalSeat) {
+    messageStringIndex = 0x10;
+  } else {
+    messageStringIndex = static_cast<short>(g_pGlobalMapState != 0 ? 0x2c : 0x18);
+  }
+
+  CString messageText;
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageText, 0x2742,
+                                                                  messageStringIndex);
+  TStaticText* messageControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagMess));
+  messageControl->AssertValid();
+  messageControl->SetTextAndMaybeRefresh(&messageText, 1);
   return 0;
 }
 
