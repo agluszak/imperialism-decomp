@@ -20,8 +20,11 @@ public:
 
   TOnOffRadioButton();
 
-  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x94. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field94;
+  // Original object size is 0x98 (CRuntimeClass m_nObjectSize). The ctor stores a
+  // single BYTE 0 at +0x94 (mirrors TCzechBox::isOn94); the remaining three bytes
+  // are layout padding.
+  unsigned char state94;
+  unsigned char padding95[3];
 };
 
 #if defined(__clang__)

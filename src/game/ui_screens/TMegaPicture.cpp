@@ -14,7 +14,10 @@
 IMPLEMENT_DYNCREATE(TMegaPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00573190
-TMegaPicture::TMegaPicture() {}
+TMegaPicture::TMegaPicture() {
+  surfaceContext94 = 0;
+  flags98 = 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x005731d0
 // TMegaPicture::`scalar deleting destructor'

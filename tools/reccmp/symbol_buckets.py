@@ -65,6 +65,62 @@ class FunctionSymbol:
     size: int | None
 
 
+# Provenance values in config/original_entities.csv that assert a library
+# identity established by the MSVC500 object-matcher oracle (byte evidence),
+# as opposed to a name-shape guess.
+LIBRARY_ORACLE_PROVENANCES = frozenset({
+    "msvc500_library_oracle",
+    "msvc500_library_override",
+})
+
+
+def load_library_evidence(
+    repo_root: Path,
+    reviewed_csv: Path | None = None,
+    symbols_csv: Path | None = None,
+    allowlist_csv: Path | None = None,
+) -> dict[int, str]:
+    """Address -> evidence label for every function with LIBRARY evidence.
+
+    Evidence means byte/provenance proof, never name shape (Hard Rule 6):
+    - a row in config/reviewed_library_identities.csv (agent-reviewed identity,
+      projected to `// LIBRARY:`/`// SYNTHETIC:` markers by stubgen);
+    - an original_entities.csv row whose provenance is one of
+      LIBRARY_ORACLE_PROVENANCES (MSVC500 object-matcher byte evidence);
+    - minus config/library_oracle_gamecode_allowlist.csv (oracle false
+      positives confirmed to be game code).
+    """
+    from tools.mfc.reviewed_identities import DEFAULT_REVIEWED, load_reviewed_identities
+
+    reviewed_csv = reviewed_csv or repo_root / DEFAULT_REVIEWED
+    symbols_csv = symbols_csv or repo_root / "config" / "original_entities.csv"
+    allowlist_csv = allowlist_csv or repo_root / "config" / "library_oracle_gamecode_allowlist.csv"
+
+    evidence: dict[int, str] = {}
+    for row in read_pipe_rows(symbols_csv):
+        provenance = (row.get("provenance") or "").strip()
+        if provenance not in LIBRARY_ORACLE_PROVENANCES:
+            continue
+        try:
+            evidence[int((row.get("address") or "").strip(), 16)] = f"oracle:{provenance}"
+        except ValueError:
+            continue
+
+    for identity in load_reviewed_identities(reviewed_csv):
+        label = identity.library_family or identity.kind.lower()
+        evidence[identity.address] = f"reviewed:{label}"
+
+    if allowlist_csv.is_file():
+        for row in read_pipe_rows(allowlist_csv):
+            addr_text = (row.get("address") or "").strip()
+            try:
+                evidence.pop(int(addr_text, 16), None)
+            except ValueError:
+                continue
+
+    return evidence
+
+
 def classify_name(name: str) -> str:
     for bucket, rx in BUCKET_PATTERNS:
         if rx.search(name):
