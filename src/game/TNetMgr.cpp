@@ -7,6 +7,7 @@
 
 #include "game/CString.h"
 #include "game/NetMessage.h"
+#include "game/multiplayer_packets.h"
 #include "game/TView.h"
 #include "game/TViewMgr.h"
 #include "game/TWNetSessionManager.h"
@@ -494,17 +495,10 @@ unsigned char TNetMgr::CheckConnectivityOrShowLocalizedWarningAndReturnReady() {
   return 0;
 }
 
-// Event-0x2b reachability probe header: two per-nation bytes reuse the +0x18 area.
-struct ReachabilityProbeEvent2BPacket : TimelyMessageHeader {
-  unsigned char pendingByte18;  // +0x18 - zeroed
-  unsigned char activeNation19; // +0x19
-  unsigned char pad1a[2];       // total 0x1c
-};
-
 // FUNCTION: IMPERIALISM 0x005e43e0
 int TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask() {
   int awolBitmask = 0;
-  ReachabilityProbeEvent2BPacket probe;
+  TurnEvent2BPresenceMaskPacket probe;
   probe.messageTag = 0x74696d65;
   probe.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   probe.eventCode = 0;
@@ -513,8 +507,8 @@ int TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask() {
   probe.toNetworkId = 0;
   probe.messageLength = 0;
   probe.messageLength = 0x1c;
-  probe.pendingByte18 = 0;
-  probe.activeNation19 = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  probe.replyRequestFlag18 = 0;
+  probe.nationMask19 = static_cast<signed char>(g_pSimMgr->GetActiveNationId());
   int slot = 0;
   for (TGreatPower** cell = g_apNationStates; cell < g_apNationStates + 7; ++cell, ++slot) {
     TGreatPower* nation = *cell;

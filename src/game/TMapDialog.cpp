@@ -997,10 +997,10 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
       unsigned char adjacencyMask = terrain.adjacencyMaskB0b;
       unsigned char variantMask = terrain.spriteVariantIndex01;
       short riverSpriteCode = terrain.riverSpriteCode;
-      // River mouths carry an explicit coastline shape in roadFlag. Ordinary random-map
-      // coast tiles leave it zero and already store the six-direction shoreline shape in
-      // adjacencyMaskB0b, in the atlas order consumed below.
-      if (riverSpriteCode == kRiverSpriteCodeNone) {
+      const bool synthesizedCoast = riverSpriteCode == kRiverSpriteCodeNone;
+      if (synthesizedCoast) {
+        adjacencyMask = ReflectHexDirectionMaskForBottomUpSurface(adjacencyMask);
+        variantMask = ReflectHexDirectionMaskForBottomUpSurface(variantMask);
         riverSpriteCode = adjacencyMask;
       }
       for (int corner = 0; corner < 6; ++corner) {
@@ -1011,7 +1011,7 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
         }
 
         bool useTripleOffset = false;
-        switch (corner) {
+        switch (synthesizedCoast ? -1 : corner) {
         case 1:
           useTripleOffset = riverSpriteCode == kRiverSpriteCodeWaterSingleDirectionFirst ||
                             riverSpriteCode == kRiverSpriteCodeWaterSingleDirectionFirst + 1;
@@ -1076,10 +1076,18 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
       }
     }
 
-    if (!isOcean && terrain.ownerBorderMask07 != 0) {
+    if (terrain.ownerBorderMask07 != 0) {
       SetQuickDrawFillColor(0);
-      SetQuickDrawPenSizeAndMarkDirty(2, 2);
-      DrawNationBorderSegmentsByMask(terrain.ownerBorderMask07, screenX, screenY, tileIndex);
+      if (!isOcean) {
+        SetQuickDrawPenSizeAndMarkDirty(2, 2);
+        DrawNationBorderSegmentsByMask(terrain.ownerBorderMask07, screenX, screenY, tileIndex);
+      } else {
+        SetQuickDrawPenSizeAndMarkDirty(1, 1);
+        if (terrain.adjacencyMaskB0b != 0) {
+          SetQuickDrawPenSizeAndMarkDirty(2, 2);
+          DrawSeaZoneBorders(screenX, screenY, tileIndex);
+        }
+      }
       SetQuickDrawPenSizeAndMarkDirty(1, 1);
       SetQuickDrawFillColor(0);
     }
@@ -1858,8 +1866,44 @@ void TMapDialog::DrawWrappedMapRouteSegment(short col1, int row1, short col2, in
   } else if (static_cast<short>(row1) > 8 && static_cast<short>(row2) > 8) {
     return;
   }
-  SetQuickDrawTextOriginWithContextOffset((col1 * 0x40) / 2 + 0x40, (row1 + 1) * 0x40);
-  DrawCenteredGuideLineOnMapDc((col2 * 0x40) / 2 + 0x40, (row2 + 1) * 0x40);
+
+  const int firstX = (col1 * 0x40) / 2 + 0x40;
+  const int firstY = (row1 + 1) * 0x40;
+  const int secondX = (col2 * 0x40) / 2 + 0x40;
+  const int secondY = (row2 + 1) * 0x40;
+  const int dx = secondX - firstX;
+  const int dy = secondY - firstY;
+  int span = abs(dx);
+  if (span < abs(dy)) {
+    span = abs(dy);
+  }
+  int steps = span / 4;
+  if (steps < 1) {
+    steps = 1;
+  }
+
+  bool drawingWater = false;
+  for (int step = 0; step <= steps; ++step) {
+    int x = firstX + dx * step / steps;
+    int y = firstY + dy * step / steps;
+    CPoint mapPoint(x - 0x40, y - 0x40);
+    short column;
+    short row;
+    short band;
+    ConvertPoint(mapPoint, column, row, band);
+    int tileIndex = static_cast<int>(row) * 0x6c + column;
+    bool isWater =
+        tileIndex >= 0 && tileIndex < 0x1950 &&
+        g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind() == kStrategicTerrainWater;
+    if (!isWater) {
+      drawingWater = false;
+    } else if (!drawingWater) {
+      SetQuickDrawTextOriginWithContextOffset(x, y);
+      drawingWater = true;
+    } else {
+      DrawCenteredGuideLineOnMapDc(x, y);
+    }
+  }
 }
 
 // Draws the coastline "connection" line pattern linking this ocean tile to its ocean
@@ -1955,14 +1999,17 @@ void TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor() {
 
   for (int i = 0; i < g_pActiveMapOrderContext->routeNodeCount; ++i) {
     const CRect& segment = g_pActiveMapOrderContext->routeSegments[i];
-    short firstColumn = (segment.left - viewportHalfColumn + 0xd8) % 0xd8;
+    // Keep the generated sea-zone overlay attached to the reconstructed scrolling surface.
+    // Applying the viewport displacement with the opposite sign makes these routes visibly
+    // counter-scroll while the terrain moves beneath them.
+    short firstColumn = (segment.left + viewportHalfColumn) % 0xd8;
     // CRect stores Win32 long coordinates; DrawWrappedMapRouteSegment intentionally consumes
-    // the low word of each vertical endpoint, matching the retail MOV/SUB word sequence.
+    // the low word of each vertical endpoint.
     short firstRow = static_cast<short>(segment.top);
-    firstRow -= viewportRow;
-    short secondColumn = (segment.right - viewportHalfColumn + 0xd8) % 0xd8;
+    firstRow += viewportRow;
+    short secondColumn = (segment.right + viewportHalfColumn) % 0xd8;
     short secondRow = static_cast<short>(segment.bottom);
-    secondRow -= viewportRow;
+    secondRow += viewportRow;
     DrawWrappedMapRouteSegment(firstColumn, firstRow, secondColumn, secondRow);
   }
 

@@ -14,7 +14,7 @@ import csv
 import hashlib
 import json
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Iterable
 
@@ -100,6 +100,14 @@ class UiCaseRecipe:
     resource: UiResourceKey | None
     windows_view: str | None
     rejected: str
+    evidence: str
+    windows_overrides: tuple["UiNodeOverride", ...]
+
+
+@dataclass(frozen=True)
+class UiNodeOverride:
+    node_id: str
+    enabled: int
     evidence: str
 
 
@@ -279,6 +287,29 @@ def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
             windows_view = str(windows_view_raw) if windows_view_raw else None
             rejected = str(case_row.get("rejected", ""))
             evidence = str(case_row.get("evidence", ""))
+            overrides: list[UiNodeOverride] = []
+            raw_overrides = _mapping(
+                case_row.get("windows_overrides", {}),
+                f"{MANIFEST_PATH}: 0x{address:08x}/0x{event:x}/windows_overrides",
+            )
+            for raw_node_id, raw_override in raw_overrides.items():
+                override_context = (
+                    f"{MANIFEST_PATH}: 0x{address:08x}/0x{event:x}/{raw_node_id}"
+                )
+                override = _mapping(raw_override, override_context)
+                if set(override) != {"enabled", "evidence"}:
+                    raise ValueError(
+                        f"{override_context}: expected enabled and evidence"
+                    )
+                override_evidence = str(override["evidence"])
+                enabled = int(override["enabled"])
+                if not override_evidence:
+                    raise ValueError(f"{override_context}: evidence is required")
+                if enabled not in (0, 1):
+                    raise ValueError(f"{override_context}: enabled must be 0 or 1")
+                overrides.append(
+                    UiNodeOverride(f"0x{int(raw_node_id):04x}", enabled, override_evidence)
+                )
             if sum((resource is not None, windows_view is not None, bool(rejected))) != 1:
                 raise ValueError(
                     f"{MANIFEST_PATH}: 0x{address:08x}/0x{event:x} must have exactly "
@@ -289,7 +320,11 @@ def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
                     f"{MANIFEST_PATH}: rejected 0x{address:08x}/0x{event:x} "
                     "requires evidence"
                 )
-            cases.append(UiCaseRecipe(event, resource, windows_view, rejected, evidence))
+            cases.append(
+                UiCaseRecipe(
+                    event, resource, windows_view, rejected, evidence, tuple(overrides)
+                )
+            )
         if not cases:
             raise ValueError(f"{MANIFEST_PATH}: 0x{address:08x} has no cases")
         recipes.append(
@@ -721,9 +756,8 @@ def normalize_resource_view(
                     int(geometry["height"]),
                 ),
                 state=int(row["state"]),
-                # Mac picture buttons remain visibly drawn while disabled. The Windows
-                # view traversal uses this bit as a paint gate too, so stateful resource
-                # buttons must stay renderable even when the Mac enabled byte is clear.
+                # Windows traversal also uses enabled as a paint gate, so keep stateful
+                # picture buttons renderable unless a case has binary-backed overrides.
                 enabled=(
                     1
                     if class_name in ("TPictureButton", "T2PictureButton")
@@ -739,6 +773,34 @@ def normalize_resource_view(
             )
         )
     return UiSemanticView(key.text(), key.view_id, tuple(nodes), f"Mac: {key.text()}")
+
+
+def apply_case_windows_overrides(
+    recipe: UiFactoryRecipe, case: UiCaseRecipe, view: UiSemanticView
+) -> UiSemanticView:
+    if not case.windows_overrides:
+        return view
+    overrides = {override.node_id: override for override in case.windows_overrides}
+    known_nodes = {node.node_id for node in view.nodes}
+    unknown_nodes = sorted(set(overrides) - known_nodes)
+    if unknown_nodes:
+        raise ValueError(
+            f"{MANIFEST_PATH}: 0x{recipe.address:08x}/0x{case.event:x} "
+            f"overrides unknown nodes {', '.join(unknown_nodes)}"
+        )
+    return replace(
+        view,
+        nodes=tuple(
+            replace(
+                node,
+                enabled=overrides[node.node_id].enabled,
+                source=f"{node.source}; Windows: {overrides[node.node_id].evidence}",
+            )
+            if node.node_id in overrides
+            else node
+            for node in view.nodes
+        ),
+    )
 
 
 def _validate_semantic_view(
@@ -1070,6 +1132,7 @@ def _render_factory_with_map(
             )
             view = None
         if view is not None:
+            view = apply_case_windows_overrides(recipe, case, view)
             case_classes, node_map = _emit_semantic_view(body, view, indent)
             classes.update(case_classes)
             case_maps[f"0x{case.event:04x}"] = {

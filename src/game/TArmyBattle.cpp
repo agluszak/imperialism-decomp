@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "game/CFile_Virtuals.h"
 #include "game/CIterator.h"
 #include "game/CString.h"
 #include "game/TAssetMgr.h"
@@ -95,7 +94,7 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
         g_pDisplayMgr->activeDialog->ResolveControlByTag(0x444c4f47 /* 'DLOG' */));
     battleView->AssertValid();
     battleView8 = battleView;
-    battleView->ConstructTTacArmyViewBaseState(compositionClass, this);
+    battleView->InitializeBattlefieldView(compositionClass, this);
   }
 }
 
@@ -274,7 +273,7 @@ void TArmyBattle::LoadBattleSetupTabDataByIndex(int compositionClass, int fortLe
   tabFileName = CString(nameBuf);
 
   char* tabData = new char[byteCount];
-  CFile_Virtuals* stream = g_pUiViewManager->LoadTableResourceStreamByName(tabFileName);
+  CFile* stream = g_pUiViewManager->LoadTableResourceStreamByName(tabFileName);
   g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(stream, tabData, &byteCount);
   g_pUiViewManager->ReleaseResourceStreamIfNotNull(stream);
 

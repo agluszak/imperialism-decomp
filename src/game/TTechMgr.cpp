@@ -101,12 +101,13 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
     memset(&capRowsE4a6[n], 0, sizeof(CapRowE));
     memset(&capRowsB333[n], 0, sizeof(CapRowB));
     memset(&abilityActiveRows395[n], 0, sizeof(MilitaryCapRow));
-    memset(&capRowsD467[n], 0, sizeof(CapRowD));
-    capRowsD467[n].flags[0] = 1;
-    capRowsD467[n].flags[1] = 1;
-    capRowsD467[n].flags[4] = 1;
-    capRowsD467[n].flags[2] = 1;
-    capRowsD467[n].flags[7] = 1;
+    memset(&universityRecruitmentAvailabilityByNation467[n], 0,
+           sizeof(UniversityRecruitmentAvailabilityRow));
+    universityRecruitmentAvailabilityByNation467[n].availableByCategory[0] = 1;
+    universityRecruitmentAvailabilityByNation467[n].availableByCategory[1] = 1;
+    universityRecruitmentAvailabilityByNation467[n].availableByCategory[4] = 1;
+    universityRecruitmentAvailabilityByNation467[n].availableByCategory[2] = 1;
+    universityRecruitmentAvailabilityByNation467[n].availableByCategory[7] = 1;
   }
   for (n = 0; n < 7; ++n) {
     // capabilityValueByNationAndResource: clear the row, set the default-unlocked columns.
@@ -118,13 +119,15 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
     capabilityValueByNationAndResource[n][3] = 1;
     capabilityValueByNationAndResource[n][0x16] = 1;
 
-    // capRowsD is re-cleared and re-filled a second time here, matching the original.
-    memset(&capRowsD467[n], 0, sizeof(CapRowD));
-    capRowsD467[n].flags[0] = 1;
-    capRowsD467[n].flags[1] = 1;
-    capRowsD467[n].flags[4] = 1;
-    capRowsD467[n].flags[2] = 1;
-    capRowsD467[n].flags[7] = 1;
+    // The recruitment availability row is re-cleared and re-filled in the original's
+    // second nation pass as well.
+    memset(&universityRecruitmentAvailabilityByNation467[n], 0,
+           sizeof(UniversityRecruitmentAvailabilityRow));
+    universityRecruitmentAvailabilityByNation467[n].availableByCategory[0] = 1;
+    universityRecruitmentAvailabilityByNation467[n].availableByCategory[1] = 1;
+    universityRecruitmentAvailabilityByNation467[n].availableByCategory[4] = 1;
+    universityRecruitmentAvailabilityByNation467[n].availableByCategory[2] = 1;
+    universityRecruitmentAvailabilityByNation467[n].availableByCategory[7] = 1;
 
     // Ability rows: ids 0..7 active by default plus 0x18/0x1b; the recruit/elite gate
     // ids (8/0x10) stay cleared.
@@ -237,7 +240,8 @@ void TTechMgr::ReadFrom(TStream* stream) {
     stream->ReadBytes(orderCapRows277, sizeof(orderCapRows277));
     stream->ReadBytes(capRowsB333, sizeof(capRowsB333));
     stream->ReadBytes(abilityActiveRows395, sizeof(abilityActiveRows395));
-    stream->ReadBytes(capRowsD467, sizeof(capRowsD467));
+    stream->ReadBytes(universityRecruitmentAvailabilityByNation467,
+                      sizeof(universityRecruitmentAvailabilityByNation467));
     stream->ReadBytes(capRowsE4a6, sizeof(capRowsE4a6));
     SwapShortArrayBytes(capRowsE4a6, 0xcb);
   }
@@ -268,7 +272,8 @@ void TTechMgr::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(orderCapRows277, sizeof(orderCapRows277));
   stream->WriteBytesSlot78(capRowsB333, sizeof(capRowsB333));
   stream->WriteBytesSlot78(abilityActiveRows395, sizeof(abilityActiveRows395));
-  stream->WriteBytesSlot78(capRowsD467, sizeof(capRowsD467));
+  stream->WriteBytesSlot78(universityRecruitmentAvailabilityByNation467,
+                           sizeof(universityRecruitmentAvailabilityByNation467));
   WriteShortArrayElems(stream, capRowsE4a6[0].completionYearOffsetByTechId, 0xcb);
   WriteShortArrayElems(stream, &capabilityValueByNationAndResource[0][0], 0xa1);
   stream->WriteBytesSlot78(&marker262, sizeof(marker262));
@@ -398,7 +403,7 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
     break;
   case 6:
     capabilityValueByNationAndResource[nationSlot][2] = 1;
-    capRowsD467[nationSlot].flags[3] = 1;
+    universityRecruitmentAvailabilityByNation467[nationSlot].availableByCategory[3] = 1;
     break;
   case 4:
     UpdateSelectionAndRecalculateScores(6, nationSlot);
@@ -410,7 +415,7 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
   case 7:
     capabilityValueByNationAndResource[nationSlot][0x14] = 1;
     capabilityValueByNationAndResource[nationSlot][1] = 1;
-    capRowsD467[nationSlot].flags[5] = 1;
+    universityRecruitmentAvailabilityByNation467[nationSlot].availableByCategory[5] = 1;
     break;
   case 8:
     capabilityValueByNationAndResource[nationSlot][0] = 2;
@@ -466,7 +471,7 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
     break;
   case 0x13:
     capabilityValueByNationAndResource[nationSlot][6] = 1;
-    capRowsD467[nationSlot].flags[8] = 1;
+    universityRecruitmentAvailabilityByNation467[nationSlot].availableByCategory[8] = 1;
     break;
   case 0xe:
     ActivateSlotAndUpdateUI(8, nationSlot);

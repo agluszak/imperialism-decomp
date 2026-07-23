@@ -12,7 +12,7 @@ class TView;
 // slice unchanged and overrides only the per-tick frame advance (slot 0x0a), adding a
 // completion flag at +0x2c (object size 0x30 vs TAnimation's 0x2c). The inherited fields
 // carry effect-specific meaning here: field0C is the effect sprite id and ticksPerFrame14
-// the per-effect tick limit (see ConstructTOneTimeAnimationBaseState).
+// the per-effect tick limit (see InitializeOneTimeAnimation).
 //
 // (Previously mismodeled as a flat `: public CObject` with duplicated fields and no vtable
 // annotation; the ctor's write of the shared CObject vtable 0x0066fec4 is just the base-most
@@ -33,8 +33,8 @@ public:
 
   // Field initializer invoked right after `new` (0x49fd60, __thiscall, ret 0x18); fills the
   // inherited TAnimation slice for the one-shot effect.
-  void ConstructTOneTimeAnimationBaseState(TView* view, RECT* rect, short frameCountArg,
-                                           short effectId, int tickLimit, int registryTag);
+  void InitializeOneTimeAnimation(TView* view, RECT* rect, short frameCountArg, short effectId,
+                                  int tickLimit, int registryTag);
 };
 
 ASSERT_SIZE(TOneTimeAnimation, 0x30);

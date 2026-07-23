@@ -566,7 +566,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     info->ApplyBounds(&bounds, 0);
     if (measuredHeight > info->frameHeight38) {
       TScrollView* scrollView = new TScrollView();
-      scrollView->ConstructTScrollViewBaseState(gold, &info->ownerLocalX, &info->frameWidth34);
+      scrollView->InitializeScrollView(gold, &info->ownerLocalX, &info->frameWidth34);
       scrollView->DoPostCreate(0);
       gold->DetachChildFromOwnerList(info);
       scrollView->AttachChildControl(info, 0);
@@ -1296,11 +1296,11 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       } else if (newCode == kTurnEventUnitHistory) {
         this->ShowUnitHistory(secondary);
       } else if (newCode == kTurnEventNewspaperStatus) {
-        this->HandleTurnEvent2260_RefreshMainHudTitles(newCode);
+        this->HandleTurnEvent2103_RunNationStatusReportUpdate(secondary);
       } else if (newCode == kTurnEventOfferSheet) {
         this->RefreshMainDialogAndCursorHelp(newCode);
       } else if (newCode == kTurnEventDealBook) {
-        this->HandleTurnEvent2103_RunNationStatusReportUpdate();
+        this->HandleTurnEvent2260_RefreshMainHudTitles(newCode);
       }
     } else if (newCode == kTurnEventTechnologyAdvance) {
       this->ShowAbilityStatusReport(secondary);

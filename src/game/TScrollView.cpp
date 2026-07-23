@@ -15,7 +15,7 @@ TScrollView::~TScrollView() {}
 IMPLEMENT_DYNCREATE(TScrollView, TView)
 
 // FUNCTION: IMPERIALISM 0x00573cb0
-void TScrollView::ConstructTScrollViewBaseState(TView* panel, int* offsetLayout, int* sizeLayout) {
+void TScrollView::InitializeScrollView(TView* panel, int* offsetLayout, int* sizeLayout) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
 }
 
@@ -33,7 +33,7 @@ void TScrollView::DoPostCreate(int arg) {
   barOffset[0] = frameWidth34 - 0x19;
   barSize[0] = 0x19;
   barOffset[1] = 0;
-  bar->ConstructTScrollBarViewBaseState(this, barOffset, barSize);
+  bar->InitializeScrollBar(this, barOffset, barSize);
   scrollBar64 = bar;
 }
 

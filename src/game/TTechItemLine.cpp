@@ -20,5 +20,5 @@ TTechItemLine::TTechItemLine() {}
 // FUNCTION: IMPERIALISM 0x005b1160
 void TTechItemLine::InstallViews(TView* panel, int* offsetLayout) {
   TTechItemView* view = new TTechItemView();
-  view->ConstructTTechItemViewBaseState(panel, offsetLayout, &field08, nationSlot10, techId14);
+  view->InitializeTechItem(panel, offsetLayout, &field08, nationSlot10, techId14);
 }

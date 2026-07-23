@@ -9,19 +9,9 @@
 #include "game/TAssetMgr.h"
 #include "game/mapped_flavor_text.h"
 #include "game/NetMessage.h"
+#include "game/multiplayer_packets.h"
 #include "game/nation_slot_eligibility.h"
 #include "game/ImperialismApp.h"
-
-// Turn-event-0x25 nation-status payload: header + seven per-nation status tags,
-// defaulted to 'unkn'; the 'time' tag and active-nation byte are stamped separately via
-// InitializeEmitEventHeaderWithActiveNation before sending.
-struct NationStatusEvent25Packet : TimelyMessageHeader {
-  int statusTags[7]; // +0x18 - four-cc per-nation status ('unkn' default)
-
-  // 0x54bce0: zero the NetMessage header, set eventCode 0x25 / length 0x34, default all
-  // seven status tags to 'unkn'.
-  void InitializeNationStatusEvent25PayloadDefaults();
-};
 
 // Event-9 lobby-chat packet sent when a nation drops during session init: the AWOL
 // slot byte plus empty sender/message strings (0x64 bytes total).
@@ -43,13 +33,6 @@ struct LobbyTextPairEvent8Packet : TimelyMessageHeader {
 
 ASSERT_SIZE(LobbyTextPairEvent8Packet, 0x5c);
 
-// Case-0x31 payload of SerializeOrderDataIntoTurnEventByTag: a {tag, object} pair whose
-// 'star'-tagged object carries a sub-tag plus two shorts on the 'land' route. Minimal
-// typed view until the real order class is recovered.
-struct TaggedSerializablePayload {
-  int tag;
-  TObject* object;
-};
 struct StarOrderObjectView {
   void* vftable;
   int subTag;  // +0x04 - 'land' selects the two-short route
@@ -341,11 +324,6 @@ struct TurnEvent3Mode18Packet : NetMessage {
   unsigned char pad15[3];
 };
 
-// Turn-event-1 payload: the remaining turn-resume pending-nation bitmask.
-struct TurnEvent1PendingMaskPacket : TimelyMessageHeader {
-  int pendingMask; // +0x18, total 0x1c
-};
-
 // Clear the slot's turn-resume pending bit; when hosting, broadcast the remaining mask
 // as an event-1 packet, and once the mask drains (with a pending event code latched)
 // flush it through the diplomacy turn-event dispatcher.
@@ -520,30 +498,6 @@ struct TurnEventESessionInitPacket : TimelyMessageHeader {
   unsigned char pad66[2];        // total 0x68
 };
 
-// Event-0xA city announce (same shape as the dispatcher TU copy).
-struct TurnEventACityAnnouncePacketM : TimelyNetMessagePrefix {
-  unsigned char nationId1C; // +0x1c
-  unsigned char pad1d;
-  short homeTile1E;      // +0x1e
-  char cityName20[0x24]; // +0x20, total 0x44
-};
-
-// Event-0xB nation directory (same shape as the dispatcher TU copy).
-struct TurnEventBNationDirectoryPacketM : NetMessage {
-  int packetTag;                // +0x10 'time'
-  unsigned char activeNationId; // +0x14
-  unsigned char pad15[3];
-  short pendingNationSlot; // +0x18
-  unsigned char pad1a[2];
-  short homeTileBySlot[0x17];        // +0x1c
-  char cityNameBySlot[0x17][0x17];   // +0x4a
-  unsigned char pad25b[0xe6];        // reserve to 0x17 * 0x21
-  char nationNameBySlot[0x17][0x17]; // +0x341
-  unsigned char pad552[0xe6];        // reserve to 0x17 * 0x21
-  short portZoneOrdinalBySlot[0x17]; // +0x638
-  unsigned char pad666[2];           // total 0x668
-};
-
 // Event-0x11 masked byte/word/dword poke into one of the two global map tables.
 struct TurnEvent11MapPokePacket : TimelyMessageHeader {
   signed char pokeWidthCode18; // +0x18 - 1 byte / 2 word / 4 dword
@@ -561,20 +515,6 @@ struct TurnEvent13NewsPacket : TimelyMessageHeader {
   NewsEvent newsEvent1C; // +0x1c, total 0x40
 };
 ASSERT_SIZE(TurnEvent13NewsPacket, 0x40);
-
-// Event-0x18 host broadcast of all seven great powers' diplomacy arrays (same shape as
-// the dispatcher TU emit-side copy).
-struct TurnEvent18DiplomacyArraysPacketM : NetMessage {
-  int packetTag;                // +0x10 'time'
-  unsigned char activeNationId; // +0x14
-  unsigned char pad15[3];
-  short pendingNationSlot; // +0x18
-  unsigned char pad1a[2];
-  short diplomacyPolicyByNation[7][0x17]; // +0x1c
-  short diplomacyGrantByNation[7][0x17];  // +0x15e
-  short needLevelByNation[7][0x17];       // +0x2a0
-  unsigned char pad3e2[2];                // total 0x3e4
-};
 
 // Events 0x20/0x21/0x22 receive views (the emit-side structs later in this TU pack
 // their payload at different offsets; the receive side reads +0x18..).
@@ -646,24 +586,6 @@ struct TurnEvent1EDiplomacyActionPacket : TimelyNetMessagePrefix {
   unsigned char pad22[2]; // total 0x24
 };
 
-// Event-0x1F game-state four-cc tag + one dword payload.
-struct TurnEvent1FGameStateTagPacket : TimelyMessageHeader {
-  int statusTag18; // +0x18 - 'aced'/'abdi'/'uhed'/'cgam'/'lose'/'foff'/...
-  int value1C;     // +0x1c, total 0x20
-};
-
-// Event-0x23 one map tile's terrain-state record (same shape as the dispatcher TU copy).
-struct TurnEvent23TileStatePacketM : NetMessage {
-  int packetTag;                // +0x10 'time'
-  unsigned char activeNationId; // +0x14
-  unsigned char pad15[3];
-  short pendingNationSlot; // +0x18
-  unsigned char pad1a[2];
-  short tileIndex; // +0x1c
-  unsigned char pad1e[2];
-  TTerrainStateRecordView record; // +0x20, total 0x44
-};
-
 // Event-0x24 one city-score record (receive side: the 0xa8-byte record is contiguous).
 struct TurnEvent24CityRecordPacket : TimelyNetMessagePrefix {
   short cityRecordIndex; // +0x1c
@@ -692,12 +614,6 @@ struct TurnEvent27JoinEmpirePacket : TimelyMessageHeader {
   int mode20;             // +0x20, total 0x24
 };
 
-// Event-0x2D minor need levels (same shape as the dispatcher TU copy).
-struct TurnEvent2DMinorNeedPacketM : TimelyNetMessagePrefix {
-  short nationSlot;              // +0x1c
-  short needLevelByNation[0x17]; // +0x1e, total 0x4c
-};
-
 // Events 0x29/0x2A tactical battle commands by fourcc tag.
 struct TacticalCommandPacket : TimelyMessageHeader {
   int commandTag18; // +0x18 'sele'/'move'/'mine'/'digg'/'depl'/'raly' (0x29), 'fire' (0x2a)
@@ -706,13 +622,6 @@ struct TacticalCommandPacket : TimelyMessageHeader {
   int arg24;        // +0x24
   int arg28;        // +0x28 ('fire' only)
   int arg2C;        // +0x2c ('fire' only), total 0x30
-};
-
-// Event-0x2B presence/ack mask exchange.
-struct TurnEvent2BPresenceMaskPacket : TimelyMessageHeader {
-  unsigned char replyRequestFlag18; // +0x18 - nonzero requests the echo reply
-  signed char nationMask19;         // +0x19 - OR'd (signed) into the accumulator
-  unsigned char pad1a[2];           // total 0x1c
 };
 
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
@@ -1012,7 +921,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   }
   case 0xa: {
     // A resuming nation announces its home region and city name.
-    TurnEventACityAnnouncePacketM* announce = static_cast<TurnEventACityAnnouncePacketM*>(packet);
+    TurnEventACityAnnouncePacket* announce = static_cast<TurnEventACityAnnouncePacket*>(packet);
     if (g_pSimMgr->scenarioMapIndexPlusOne == 0) {
       int announcedNation = static_cast<char>(announce->nationId1C);
       g_pGlobalMapState->SetTileTransportFlagsTo0x37AndRefreshNeighbors(announce->homeTile1E,
@@ -1045,8 +954,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   case 0xb: {
     // Full nation directory: refresh each minor's home tile, city/nation names, and
     // port-zone ordinal, then rebuild all status labels.
-    TurnEventBNationDirectoryPacketM* directory =
-        static_cast<TurnEventBNationDirectoryPacketM*>(packet);
+    TurnEventBNationDirectoryPacket* directory =
+        static_cast<TurnEventBNationDirectoryPacket*>(packet);
     for (int dirSlot = 0; dirSlot < 0x17; ++dirSlot) {
       if (dirSlot != g_pSimMgr->GetActiveNationId() &&
           g_apTerrainTypeDescriptorTable[dirSlot]->IsRemote() != 0) {
@@ -1865,7 +1774,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   }
   case 0x2d: {
     // Minor-nation need snapshot.
-    TurnEvent2DMinorNeedPacketM* minorNeed = static_cast<TurnEvent2DMinorNeedPacketM*>(packet);
+    TurnEvent2DMinorNeedPacket* minorNeed = static_cast<TurnEvent2DMinorNeedPacket*>(packet);
     TMinor* minor2D = g_apSecondaryNationStateSlots[minorNeed->nationSlot];
     for (int needSlot2D = 0; needSlot2D < 0x17; ++needSlot2D) {
       minor2D->needLevelByNation[needSlot2D] = minorNeed->needLevelByNation[needSlot2D];
@@ -1893,8 +1802,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   }
   case 0x18: {
     // Host broadcast of all seven great powers' diplomacy arrays.
-    TurnEvent18DiplomacyArraysPacketM* arrays =
-        static_cast<TurnEvent18DiplomacyArraysPacketM*>(packet);
+    TurnEvent18DiplomacyArraysPacket* arrays =
+        static_cast<TurnEvent18DiplomacyArraysPacket*>(packet);
     for (int arraySlot = 0; arraySlot < 7; ++arraySlot) {
       TGreatPower* arrayNation = g_apNationStates[arraySlot];
       if (arrayNation != 0) {
@@ -1934,8 +1843,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   }
   case 0x1f: {
     // Session/game-flow four-cc status dispatcher.
-    TurnEvent1FGameStateTagPacket* gameState =
-        reinterpret_cast<TurnEvent1FGameStateTagPacket*>(packet);
+    TurnEvent1FStatusPacket* gameState = reinterpret_cast<TurnEvent1FStatusPacket*>(packet);
     switch (gameState->statusTag18) {
     case 0x61626469: { // 'abdi' - nation abdicated: notice; host replaces the slot with an AI
       CString templateTextAbdi;
@@ -2109,7 +2017,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         joinBroadcast.targetNationBitmask118 = static_cast<unsigned char>(0xff - (1 << repoSlot));
         g_pNetMgr006a6014->Send(&joinBroadcast, 1);
       } else {
-        TurnEvent1FGameStateTagPacket refuse;
+        TurnEvent1FStatusPacket refuse;
         refuse.messageTag = 0x74696d65; // 'time'
         refuse.eventCode = 0;
         refuse.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
@@ -2144,7 +2052,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
   }
   case 0x23: { // patch selected fields of one map tile's terrain-state record
-    TurnEvent23TileStatePacketM* tileState = static_cast<TurnEvent23TileStatePacketM*>(packet);
+    TurnEvent23TileStatePacket* tileState = static_cast<TurnEvent23TileStatePacket*>(packet);
     TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileState->tileIndex];
     tile->ownerNationTag04 = tileState->record.ownerNationTag04;
     tile->regionSubtypeTag05 = tileState->record.regionSubtypeTag05;
@@ -3540,7 +3448,7 @@ void TMultiplayerMgr::EmitTurnEvent19NationStateArraysForSlot(short nationSlot,
 // FUNCTION: IMPERIALISM 0x0054d3d0
 void TMultiplayerMgr::CreateAndSendTurnEvent2D_TableRowShortArray(short nationSlot,
                                                                   int destinationSlot) {
-  TurnEvent2DMinorNeedPacketM packet;
+  TurnEvent2DMinorNeedPacket packet;
   packet.messageTag = 0x74696d65;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.eventCode = 0;

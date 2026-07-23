@@ -264,7 +264,7 @@ void TTacticalBattle::FinalizeTacticalTurnStateAndQueueEvent232A() {
   QueueTacticalEventPacket232A();
 }
 
-// Selection/UI helpers dispatched by the command family; bodies not yet ported.
+// Selection/UI helpers dispatched by the tactical command family.
 
 // Applies a completed selection: records the unit, recomputes its reachable-tile cost
 // map, pushes the unit into the 'tool' toolbar cluster, recenters the viewport on the

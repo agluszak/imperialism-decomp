@@ -113,7 +113,7 @@ void TArmyPlayer::InitializeTacticalSideFromArmyUnitList(TArmyStack* stack, int 
   }
   while (unit != 0) {
     TArmyTacUnit* record = new TArmyTacUnit();
-    record->ConstructTArmyTacUnitBaseState(static_cast<TMilitaryUnit*>(unit));
+    record->InitializeFromMilitaryUnit(static_cast<TMilitaryUnit*>(unit));
     unitList4->AddTail(record);
     if (static_cast<char>(isOurSide) == 0) {
       record->selectedFlag18 = 1; // set only for the enemy side (isOurSide == 0)

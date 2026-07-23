@@ -53,10 +53,10 @@ static inline int GetNationTrackedOrderCount(TGreatPower* nation) {
 }
 
 static inline bool ShouldDispatchNextTradePacket(TSimMgr* simMgr) {
-  if (simMgr->difficultyLevel == 0) {
+  if (simMgr->multiplayerSessionRole == 0) {
     return true;
   }
-  if (simMgr->difficultyLevel == 1 && !IsNationTerrainEligible(simMgr->activeNationSlot)) {
+  if (simMgr->multiplayerSessionRole == 1 && !IsNationTerrainEligible(simMgr->activeNationSlot)) {
     return true;
   }
   return false;
@@ -82,11 +82,11 @@ static inline short ReadCityOrderCapabilityField262(void) {
 }
 
 static inline void HandleTurnEndSavePaths(TSimMgr* simMgr) {
-  if (simMgr->difficultyLevel == 0) {
+  if (simMgr->multiplayerSessionRole == 0) {
     SaveGameWithModeAndOptionalLabel(0xa1, 0);
     return;
   }
-  if (simMgr->difficultyLevel == 1) {
+  if (simMgr->multiplayerSessionRole == 1) {
     g_pGameFlowState->TrySaveGameAndMaybeShowFailureDialog(0xa1, 0, 1);
   }
 }
@@ -104,7 +104,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   if (turnStateCode == 0x10 && g_nTurnCooldownDeferCounter006A43C4 > 0) {
     --g_nTurnCooldownDeferCounter006A43C4;
   }
-  previousTurnStateCode = turnStateCode;
+  mode = turnStateCode;
 
   switch (turnStateCode) {
   case 1:
@@ -132,7 +132,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     }
     if (g_bMultiplayerScenarioSetupActive == 0) {
       if (scenarioMapIndexPlusOne == 0) {
-        if (difficultyLevel == 0) {
+        if (multiplayerSessionRole == 0) {
           NameCapitals();
         }
       } else {
@@ -143,8 +143,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     activeNation->ResetDiplomacyNeedScoresAndClearAidAllocationMatrix();
     activeNation->ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches();
     g_pHelpMgr->ResetHelpSetRanksAndFlags();
-    if (difficultyLevel != 0) {
-      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(previousTurnStateCode, turnStateCode);
+    if (multiplayerSessionRole != 0) {
+      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
       turnStateCode = 0x13;
       StartNextPhase();
       break;
@@ -183,7 +183,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     turnStateCode = 5;
     g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventStrategicMap),
                                            g_pSimMgr->activeNationSlot);
-    if (difficultyLevel != 0) {
+    if (multiplayerSessionRole != 0) {
       if (activeNationSlot == -1 || g_apTerrainTypeDescriptorTable[activeNationSlot] == nullptr ||
           (activeNationSlot <= 6 &&
            g_apTerrainTypeDescriptorTable[activeNationSlot]->encodedNationSlot >= 100 &&
@@ -200,8 +200,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       break;
     }
     turnStateCode = 6;
-    if (difficultyLevel != 0) {
-      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(previousTurnStateCode, turnStateCode);
+    if (multiplayerSessionRole != 0) {
+      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
       turnStateCode = 0x13;
     }
     StartNextPhase();
@@ -210,13 +210,13 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 6: {
     turnStateCode = 7;
-    if (difficultyLevel != 0) {
-      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(previousTurnStateCode, turnStateCode);
+    if (multiplayerSessionRole != 0) {
+      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
     }
-    if (difficultyLevel != 1) {
+    if (multiplayerSessionRole != 1) {
       g_pDiplomacyTurnStateManager->ApplyDiplomacyInterNationStatesForTurn();
     }
-    if (difficultyLevel == 0) {
+    if (multiplayerSessionRole == 0) {
       TGreatPower** nationCursor = g_apNationStates;
       TGreatPower** nationEnd = &g_apNationStates_End;
       while (nationCursor < nationEnd) {
@@ -252,14 +252,14 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case 7: {
     turnStateCode = 9;
     g_pDiplomacyTurnStateManager->ApplyDiplomacyInterNationStatesForTurn();
-    if (difficultyLevel != 0) {
-      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(previousTurnStateCode, turnStateCode);
+    if (multiplayerSessionRole != 0) {
+      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
       g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
       g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOfferSheet),
                                              activeNationSlot);
       g_pUiRuntimeContext->DispatchNationActionToMainControl(-1, 0, 0, 0, 0x16);
     }
-    if (difficultyLevel != 2) {
+    if (multiplayerSessionRole != 2) {
       DoTrade();
     }
     break;
@@ -268,8 +268,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case 8: {
     turnStateCode = 0xb;
     DoMilitary();
-    if (difficultyLevel != 0) {
-      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(previousTurnStateCode, turnStateCode);
+    if (multiplayerSessionRole != 0) {
+      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
       turnStateCode = 0x13;
       StartNextPhase();
       break;
@@ -280,7 +280,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 9: {
     turnStateCode = 10;
-    if (difficultyLevel != 2) {
+    if (multiplayerSessionRole != 2) {
       DoCivilians();
       StartNextPhase();
       break;
@@ -389,7 +389,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         HandleTurnEndSavePaths(this);
       }
     }
-    if (difficultyLevel != 0) {
+    if (multiplayerSessionRole != 0) {
       if (!IsNationTerrainEligible(activeNationSlot)) {
         StartNextPhase();
       }
@@ -401,7 +401,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     turnStateCode = 0x11;
     alertsPendingFlag38 = 0;
     turnFlowStatusFlags = 0;
-    EnterOptionalPhase(0);
+    AdvanceSeason();
     StartNextPhase();
     break;
   }
@@ -482,8 +482,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     if (g_pMapContextActionManager != nullptr) {
       g_pMapContextActionManager->DoCombatMoves();
     }
-    if (difficultyLevel != 0) {
-      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(previousTurnStateCode, turnStateCode);
+    if (multiplayerSessionRole != 0) {
+      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
       turnStateCode = 0x13;
     }
     break;
@@ -492,7 +492,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case 0x15: {
     turnStateCode = 0xd;
     g_pNavyOrderManager->ClearAllTransientOrders();
-    if (difficultyLevel != 2) {
+    if (multiplayerSessionRole != 2) {
       g_pGlobalMapState->RecomputeTileStrategicScoreHeatmap();
       RecomputeNationOrderPriorityMetrics();
       for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
@@ -522,12 +522,12 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     }
     const short tickA = GetEconomicTurn();
     const short tickB = GetEconomicTurn();
-    if (((tickB % 0x28) == 0) && (phaseStateByDecade[tickA / 0x28] != 0) && difficultyLevel != 2 &&
-        g_pDiplomacyTurnStateManager != nullptr) {
+    if (((tickB % 0x28) == 0) && (phaseStateByDecade[tickA / 0x28] != 0) &&
+        multiplayerSessionRole != 2 && g_pDiplomacyTurnStateManager != nullptr) {
       g_pDiplomacyTurnStateManager->SelectPriorityNationIndicesForMinorCapabilityRows();
     }
-    if (difficultyLevel != 0) {
-      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(previousTurnStateCode, turnStateCode);
+    if (multiplayerSessionRole != 0) {
+      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
       turnStateCode = 0x13;
     }
     StartNextPhase();

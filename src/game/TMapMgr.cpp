@@ -3661,7 +3661,7 @@ char TMapMgr::LoadScenarioMapStateFromTableResource(int scenarioIndex) {
     return 0;
   }
 
-  CFile_Virtuals* stream = g_pUiViewManager->LoadTableResourceStreamByName(scenarioPath);
+  CFile* stream = g_pUiViewManager->LoadTableResourceStreamByName(scenarioPath);
 
   // Raw terrain table: 0x1950 records x 0x24 bytes.
   int byteCount = 0x38f40;

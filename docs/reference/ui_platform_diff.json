@@ -35646,8 +35646,14 @@
               "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
             },
             "0x01fc": {
-              "classification": "same_semantics",
-              "delta": null,
+              "classification": "expected_windows_field_override",
+              "delta": {
+                "evidence": "original builder 0x0043e5c3-0x0043e624",
+                "field": "enabled",
+                "mac": 1,
+                "reason": "original Windows builder differs from the Mac resource",
+                "windows": 0
+              },
               "generated_lines": [
                 193,
                 200
@@ -35657,7 +35663,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 1,
+                "enabled": 0,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -35689,7 +35695,7 @@
                 "type_code": "pict"
               },
               "tag": "Flag",
-              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+              "windows_binary_evidence": "original builder 0x0043e5c3-0x0043e624"
             },
             "0x026a": {
               "classification": "same_semantics",
@@ -35738,8 +35744,14 @@
               "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
             },
             "0x02de": {
-              "classification": "same_semantics",
-              "delta": null,
+              "classification": "expected_windows_field_override",
+              "delta": {
+                "evidence": "original builder 0x0043e6d3-0x0043e734",
+                "field": "enabled",
+                "mac": 1,
+                "reason": "original Windows builder differs from the Mac resource",
+                "windows": 0
+              },
               "generated_lines": [
                 211,
                 218
@@ -35749,7 +35761,7 @@
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 1,
+                "enabled": 0,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -35781,7 +35793,7 @@
                 "type_code": "pict"
               },
               "tag": "quer",
-              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+              "windows_binary_evidence": "original builder 0x0043e6d3-0x0043e734"
             },
             "0x034c": {
               "classification": "same_semantics",
@@ -48188,7 +48200,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0043dbc0.cpp",
-      "generated_sha256": "5ebc1b8a1c86f6c06e059d886cecad64952090bd1b0af0f8043c6a8f9fb6405c",
+      "generated_sha256": "b7f63baba291c0bef233ddff45c0c2145ec939531c7c2d377735debbe5e8c21e",
       "name": "InitializeArmyNavyReportViewsAndCommandTags"
     },
     "0x0044a810": {
@@ -92176,11 +92188,12 @@
   "summary": {
     "cases": 94,
     "expected_windows_class_substitution": 9,
+    "expected_windows_field_override": 2,
     "functional_parity_cases": 12,
     "functions": 17,
     "mapped_mac_cases": 93,
     "nodes": 1853,
-    "same_semantics": 1832,
+    "same_semantics": 1830,
     "unexplained_deltas": 0,
     "windows_only_cases": 1,
     "windows_only_nodes": 12

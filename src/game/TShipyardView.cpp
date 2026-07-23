@@ -6,11 +6,16 @@
 #include "game/TCityProductionView.h"
 #include "game/TControl.h"
 #include "game/TDisplayMgr.h"
+#include "game/TNumberText.h"
+#include "game/TPicture.h"
 #include "game/TQuickDrawSurfaceContext.h"
+#include "game/TShipOrder.h"
 #include "game/TSimMgr.h"
 #include "game/TStaticText.h"
+#include "game/TViewMgr.h"
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/global_data_tables.h"
+#include "game/mapped_flavor_text.h"
 #include "game/navy_order.h"
 #include "game/quickdraw_regions.h"
 #include "game/quickdraw_rendering.h"
@@ -130,48 +135,166 @@ void TShipyardView::UpdateFields() {
 
 // FUNCTION: IMPERIALISM 0x004c8ac0
 void TShipyardView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  // The original dispatches on city94's order receiver via a lookup keyed by
-  // city94+0xe4+idx*4 -- its only assignment site, RefreshCityViewProductionDetails
-  // (0x4cfbd0, 1748 bytes), is itself unported, so the receiver class is unresolved here
-  // too -- not yet ported.
+  if (commandId == 0xc) {
+    short index = static_cast<short>(sourceHandler->controlTag) - 0x7430; // 'but0'..'but7'
+    if (index >= 0 && index < 8) {
+      selectedRequirementRow = index;
+      SetShip(buildQueueSlotValues[index]);
+    }
+  } else if (commandId == 0xa) {
+    TView* slotControl = static_cast<TView*>(sourceHandler)->ownerContext;
+    short index = static_cast<short>(slotControl->controlTag) - 0x7530;
+    if (index >= 0 && index < 8) {
+      selectedRequirementRow = index;
+      SetShip(buildQueueSlotValues[index]);
+
+      TCluster* selection = static_cast<TCluster*>(ResolveControlByTag(0x73656c65u)); // 'sele'
+      selection->AssertValid();
+      selection->SetSelectedChildTagAndRefresh(0x62757430 + index); // 'but0'+index
+
+      TShipOrder* order = city94->shipOrderSlots[index];
+      short quantity = order->quantityField04;
+      if (sourceHandler->controlTag == 0x706c7573) { // 'plus'
+        ++quantity;
+      } else {
+        --quantity;
+      }
+      if (order->SetQuantity(quantity)) {
+        TView* queueSlot = ResolveControlByTag(0x636c7530 + index); // 'clu0'+index
+        queueSlot->AssertValid();
+        TNumberText* quantityText =
+            static_cast<TNumberText*>(queueSlot->ResolveControlByTag(0x6e756d62)); // 'numb'
+        quantityText->AssertValid();
+        quantityText->SetControlValue(order->quantityField04, 0);
+
+        CRect invalidRect;
+        quantityText->QueryBounds(&invalidRect);
+        OffsetRect(&invalidRect, queueSlot->ownerLocalX, queueSlot->ownerLocalY);
+        queueSlot->InvalidateCityDialogRectRegion(&invalidRect, 1);
+
+        TView* queueButton = ResolveControlByTag(0x62757430 + index); // 'but0'+index
+        queueButton->AssertValid();
+        queueButton->RefreshControl();
+        SetStats(buildQueueSlotValues[selectedRequirementRow]);
+      }
+    }
+  }
   TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004c8d70
-void TShipyardView::SetShip(short shipType) {}
+void TShipyardView::SetShip(short shipType) {
+  CString unusedText1;
+  CString unusedText2;
+  CString unusedText3;
+
+  COLORREF savedBackgroundColor = g_pActiveQuickDrawSurfaceContext->blitSurface.backgroundColor;
+
+  TPicture* shipPicture = static_cast<TPicture*>(ResolveControlByTag(0x73706963u)); // 'spic'
+  shipPicture->AssertValid();
+  shipPicture->SetPictureResourceIdAndRefresh(static_cast<short>(shipType + 0x266a), 1);
+  g_pUiRuntimeContext->SetBackColor(0x38);
+
+  CRect invalidRect;
+  TStaticText* shipName = static_cast<TStaticText*>(ResolveControlByTag(0x736e616du)); // 'snam'
+  shipName->AssertValid();
+  shipName->SetTextFromStringResource(0x2716, static_cast<short>(shipType + 1), 0);
+  shipName->QueryBounds(&invalidRect);
+  InvalidateCityDialogRectRegion(&invalidRect, 1);
+
+  TStaticText* description = static_cast<TStaticText*>(ResolveControlByTag(0x64657363u)); // 'desc'
+  description->AssertValid();
+  description->SetTextFromStringResource(0x2752, shipType, 0);
+  description->QueryBounds(&invalidRect);
+  InvalidateCityDialogRectRegion(&invalidRect, 1);
+
+  static const short kCommodityTypes[6] = {8, 9, 0x10, 0xb, 3, 0xc};
+  short* costTables[6] = {g_industryActionCostWeightResCode08, g_industryActionCostWeightResCode09,
+                          g_industryActionCostWeightResCode10, g_industryActionCostWeightResCode0B,
+                          g_industryActionCostWeightResCode03, g_industryActionCostWeightResCode0C};
+  int commodityCount = 0;
+  for (int i = 0; i < 6; ++i) {
+    short amount = costTables[i][shipType];
+    if (amount != 0) {
+      commodityRequiredAmounts[commodityCount] = amount;
+      commoditySpriteIds[commodityCount] = kCommodityTypes[i];
+      ++commodityCount;
+    }
+  }
+  while (commodityCount < 4) {
+    commoditySpriteIds[commodityCount++] = -1;
+  }
+
+  RECT commodityRegion = {0x19, 0x4b, 0xc4, 0xe6};
+  InvalidateCityDialogRectRegion(&commodityRegion, 1);
+  SetGlobalBlitTransparentColorRaw(savedBackgroundColor);
+}
 
 // Draws two dialog sections, each gated by whether it intersects the passed-in
 // paint rect (SectRect): (1) the "commodities in production" icon strip -- up to 4
 // commoditySpriteIds slots, each blitting the resource icon twice (rows at y=0x98 and
 // y=0xcc) plus the required amount and the current stock (colored red when short); and
 // (2) the selected resource's 6-column requirement metrics grid, each column a
-// GetString(0x2736) header over a resource-descriptor-derived value. Position/lookup
-// tables below are transcribed verbatim from the original's immediate-value stack
-// stores; their last few entries land in gaps the original never explicitly
-// initializes (an apparent original-binary quirk), ported as 0 rather than guessed.
+// GetString(0x2736) header over a resource-descriptor-derived value. The original only
+// initializes header-Y slots 2-5 and metric-3 values for the thirteen valid ship-type
+// ids below; this source preserves that literal stack shape instead of inventing values
+// for the three unused ids.
 // FUNCTION: IMPERIALISM 0x004c9150
 void TShipyardView::Draw(RECT* rectBuffer) {
   CString text;
+  short columnHeaderY[6];
+  columnHeaderY[2] = 0x56;
+  columnHeaderY[3] = 0x66;
+  columnHeaderY[4] = 0x76;
+  columnHeaderY[5] = 0x56;
+  short columnHeaderX[6] = {0x66, 0x76, 0x1c, 0x1c, 0x1c, 0x78};
+  short caseThreeMetricByShipType[16];
+  caseThreeMetricByShipType[1] = 0x19;
+  caseThreeMetricByShipType[2] = 0;
+  caseThreeMetricByShipType[4] = 0x28;
+  caseThreeMetricByShipType[5] = 0x23;
+  caseThreeMetricByShipType[6] = 0x41;
+  caseThreeMetricByShipType[7] = 0x23;
+  caseThreeMetricByShipType[9] = 0x1e;
+  caseThreeMetricByShipType[10] = 0x32;
+  caseThreeMetricByShipType[11] = 0x46;
+  caseThreeMetricByShipType[12] = 0x2d;
+  caseThreeMetricByShipType[13] = 0x28;
+  caseThreeMetricByShipType[14] = 0x73;
+  caseThreeMetricByShipType[15] = 0x5a;
+  RECT paintRect = *rectBuffer;
+  RECT drawRect;
+  RECT sourceRect;
+  RECT intersectionRect;
   TPicture::Draw(rectBuffer);
   UpdatePaletteIndexWithDefaultFallback(0x10);
 
-  RECT commodityStripRegion = {0x16, 0x82, 0xe5, 0xc4};
-  RECT scratchClip;
-  if (SectRect(&commodityStripRegion, rectBuffer, &scratchClip)) {
+  drawRect.left = 0x16;
+  drawRect.top = 0x82;
+  drawRect.right = 0xe5;
+  drawRect.bottom = 0xc4;
+  if (SectRect(&drawRect, &paintRect, &intersectionRect)) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6b);
     int x = 0x3a;
     for (int slot = 0; slot < 4; ++slot) {
       short spriteId = commoditySpriteIds[slot];
       if (spriteId != -1) {
-        RECT srcRect = {spriteId * 0x20, 0, (spriteId + 1) * 0x20, 0x18};
-        RECT dstRectTop = {x - 0x20, 0x98, x, 0xb0};
+        sourceRect.left = spriteId * 0x20;
+        sourceRect.top = 0;
+        sourceRect.right = (spriteId + 1) * 0x20;
+        sourceRect.bottom = 0x18;
+        drawRect.left = x - 0x20;
+        drawRect.top = 0x98;
+        drawRect.right = x;
+        drawRect.bottom = 0xb0;
         BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas674->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
-                                         &srcRect, &dstRectTop, 0x24, 0);
-        RECT dstRectBottom = {x - 0x20, 0xcc, x, 0xe4};
+                                         &sourceRect, &drawRect, 0x24, 0);
+        drawRect.top = 0xcc;
+        drawRect.bottom = 0xe4;
         BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas674->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
-                                         &srcRect, &dstRectBottom, 0x24, 0);
+                                         &sourceRect, &drawRect, 0x24, 0);
 
         SetQuickDrawTextOriginWithContextOffset(static_cast<short>(x), 0xb2);
         text.Format(g_szDecimalFormat, static_cast<int>(commodityRequiredAmounts[slot]));
@@ -194,24 +317,18 @@ void TShipyardView::Draw(RECT* rectBuffer) {
     }
   }
 
-  RECT requirementGridRegion = {0x19, 0x4b, 0xc4, 0x80};
-  if (SectRect(&requirementGridRegion, rectBuffer, &scratchClip)) {
+  drawRect.left = 0x19;
+  drawRect.top = 0x4b;
+  drawRect.right = 0xc4;
+  drawRect.bottom = 0x80;
+  if (SectRect(&drawRect, &paintRect, &intersectionRect)) {
     short nCommoditySpriteId = buildQueueSlotValues[selectedRequirementRow];
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6b);
 
-    // Column header Y/X positions (6 columns); the last X entry is never explicitly
-    // stored in the original (reads adjacent stack data there) -- ported as 0.
-    static const short kColumnHeaderY[6] = {0x2d, 0x46, 0x32, 0x1e, 0x19, 0x23};
-    static const short kColumnHeaderX[6] = {0x41, 0x23, 0x28, 0x19, 0, 0};
-    // Case-3 per-resource-type metric table (resource types 0-10), transcribed
-    // verbatim; semantics not otherwise recovered.
-    static const short kCaseThreeMetricByResourceType[11] = {0x78, 0x78, 0x1c, 0x1c, 0x1c, 0x76,
-                                                             0x66, 0x56, 0x76, 0x66, 0x56};
-
     for (int column = 0; column < 6; ++column) {
       g_pSimMgr->GetString(0x2736, static_cast<short>(column + 0x10), &text);
-      short headerY = kColumnHeaderY[column];
-      short headerX = kColumnHeaderX[column];
+      short headerY = columnHeaderY[column];
+      short headerX = columnHeaderX[column];
       SetQuickDrawTextOriginWithContextOffset(headerX, headerY);
       DrawTextWithCachedQuickDrawStyleState(&text);
 
@@ -228,7 +345,7 @@ void TShipyardView::Draw(RECT* rectBuffer) {
         metricValue = 100 - GetResourceDescriptorWord10ByType(nCommoditySpriteId);
         break;
       case 3:
-        metricValue = kCaseThreeMetricByResourceType[nCommoditySpriteId];
+        metricValue = caseThreeMetricByShipType[nCommoditySpriteId];
         break;
       case 4:
         metricValue = GetResourceDescriptorWord18ByType(nCommoditySpriteId);
@@ -252,10 +369,55 @@ void TShipyardView::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004c97c0
-void TShipyardView::GetCostString(CString* output, short actionIndex) {}
+void TShipyardView::GetCostString(CString* output, short actionIndex) {
+  CString formattedAmount;
+  CString resourceName;
+  CString formatTemplate;
+  *output = CString(g_szEmptyString);
+
+  static const short kResourceTypes[3] = {9, 8, 0x10};
+  short* costTables[3] = {g_industryActionCostWeightResCode09, g_industryActionCostWeightResCode08,
+                          g_industryActionCostWeightResCode10};
+  for (int i = 0; i < 3; ++i) {
+    short amount = costTables[i][actionIndex];
+    if (amount != 0) {
+      formattedAmount.Format(g_szDecimalFormat, static_cast<int>(amount));
+      g_pSimMgr->GetStringPrelude(kResourceTypes[i], &resourceName);
+      g_pSimMgr->GetString(0x2738, 0x1c, &formatTemplate);
+      scanBracketExpressions(g_pSimMgr, output, static_cast<LPCSTR>(formatTemplate),
+                             static_cast<LPCSTR>(formattedAmount),
+                             static_cast<LPCSTR>(resourceName));
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004c9a60
-void TShipyardView::SetStats(short shipType) {}
+void TShipyardView::SetStats(short shipType) {
+  CString shipNameText;
+  CRect invalidRect;
+
+  TStaticText* shipName = static_cast<TStaticText*>(ResolveControlByTag(0x736e616du)); // 'snam'
+  shipName->AssertValid();
+  g_pSimMgr->GetString(0x2716, shipType, &shipNameText);
+  shipName->SetTextAndMaybeRefresh(&shipNameText, 0);
+  shipName->QueryBounds(&invalidRect);
+  InvalidateCityDialogRectRegion(&invalidRect, 1);
+
+  TStaticText* history = static_cast<TStaticText*>(ResolveControlByTag(0x68697374u)); // 'hist'
+  history->AssertValid();
+  history->SetTextFromStringResource(0x23f7, shipType, 0);
+  history->QueryBounds(&invalidRect);
+  InvalidateCityDialogRectRegion(&invalidRect, 1);
+
+  for (short statIndex = 0; statIndex < 6; ++statIndex) {
+    TNumberText* stat =
+        static_cast<TNumberText*>(ResolveControlByTag(0x73746130u + statIndex)); // 'sta0'+index
+    stat->AssertValid();
+    stat->SetControlValue(GetResourceDescriptorWord08ByTypeOffset(shipType, statIndex), 0);
+    stat->QueryBounds(&invalidRect);
+    InvalidateCityDialogRectRegion(&invalidRect, 1);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004c9d20
 void TShipyardView::SetStats(TView* sourceControl) {

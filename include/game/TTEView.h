@@ -24,9 +24,9 @@ public:
   // and seeds textAlignmentCode. Args 1, 10 and 11 are never read (TDeluxeText passes
   // 0, 0, 1).
   // 0x486050, __thiscall, RET 0x2c.
-  void ConstructTTEViewBaseState(int unusedA, TView* panel, int* offsetLayout, int* sizeLayout,
-                                 int layoutParam5, int layoutParam6, RECT* insetRect,
-                                 TextStyle* style, short styleWord90, int unusedB, int unusedC);
+  void InitializeTextEntryView(int unusedA, TView* panel, int* offsetLayout, int* sizeLayout,
+                               int layoutParam5, int layoutParam6, RECT* insetRect,
+                               TextStyle* style, short styleWord90, int unusedB, int unusedC);
 
   // Original object size is 0x98 (CRuntimeClass m_nObjectSize). These three
   // members previously sat at the head of TDeluxeText, but the RTTI sizes prove

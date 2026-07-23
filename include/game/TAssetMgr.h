@@ -36,18 +36,17 @@ public:
   // Finds "name" as a TABLE resource in the app's own module; if present, loads it and
   // returns a CMemFile attached to the locked resource bytes. If absent, falls back to
   // opening "name" as a real disk file via a plain CFile (asserting on failure unless
-  // the file's own suppress flag is set). Either concrete object is viewed through the
-  // CFile_Virtuals interface. 0x5df430.
-  class CFile_Virtuals* LoadTableResourceStreamByName(CString name);
+  // the file's own suppress flag is set). Both concrete objects use the real MFC CFile
+  // virtual interface. 0x5df430.
+  CFile* LoadTableResourceStreamByName(CString name);
   // Reads *countInOut bytes from the stream into buffer, writes bytes-read back
   // through countInOut. 0x5df700.
-  int ReadResourceStreamIntoBufferAndAdvance(class CFile_Virtuals* stream, void* buffer,
-                                             int* countInOut);
-  void ReleaseResourceStreamIfNotNull(class CFile_Virtuals* stream); // 0x5df6d0
-  // Reseek the stream from the start (SeekSlot30(offset, 0)); this unused. 0x5df730.
-  void InvokeVtableSlot30OnTargetObject(class CFile_Virtuals* stream, int offset);
-  // Thiscall member that ignores `this` and returns the stream's length (slot 0x38).
-  int GetResourceStreamSize(class CFile_Virtuals* stream); // 0x5df760
+  int ReadResourceStreamIntoBufferAndAdvance(CFile* stream, void* buffer, int* countInOut);
+  void ReleaseResourceStreamIfNotNull(CFile* stream); // 0x5df6d0
+  // Reseek the stream from the start; `this` is unused. 0x5df730.
+  void SeekResourceStreamFromBeginning(CFile* stream, int offset);
+  // Thiscall member that ignores `this` and returns the stream's length.
+  int GetResourceStreamSize(CFile* stream); // 0x5df760
 
   // Layout recovered from ctor 0x5df280: the 13 shared UI string-reference slots live at
   // offset 0x20, preceded by an as-yet-unidentified 0x1c-byte region and followed by one

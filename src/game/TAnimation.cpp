@@ -47,8 +47,8 @@ TAnimation::~TAnimation() {}
 IMPLEMENT_DYNCREATE(TAnimation, TObject)
 
 // FUNCTION: IMPERIALISM 0x0049f0c0
-void TAnimation::ConstructTAnimationBaseState(TView* ownerView, RECT* rect, short frameCount,
-                                              short param4, int ticksPerFrame, int tag) {
+void TAnimation::InitializeAnimation(TView* ownerView, RECT* rect, short frameCount, short param4,
+                                     int ticksPerFrame, int tag) {
   ownerView04 = ownerView;
   screenRect1C = *rect;
   frameCount0A = frameCount;
