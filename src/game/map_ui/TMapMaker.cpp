@@ -1614,4 +1614,22 @@ void TMapMaker::EraseZones(long coarseIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0052e900
-void TMapMaker::TargetValidationSucceeded() {}
+void TMapMaker::TargetValidationSucceeded() {
+  // For every grid cell holding the sentinel class 0x64, walk direction-4 neighbours,
+  // pulling each neighbour's class into the current cell until an unassigned (-1)
+  // neighbour terminates the chain.
+  signed char* grid = &regionClassGrid10[0][0];
+  for (int cell = 0; cell < 0x195; ++cell) {
+    if (grid[cell] == 0x64) {
+      int cur = cell;
+      for (;;) {
+        int next = GetAdjacentRegionGridCell(cur, 4);
+        grid[cur] = grid[next];
+        if (grid[next] == -1) {
+          break;
+        }
+        cur = next;
+      }
+    }
+  }
+}

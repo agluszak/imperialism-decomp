@@ -1044,7 +1044,20 @@ void TTacticalBattleView::InvalidateTacticalHexTileRect(TacticalTileIndex tileIn
 }
 
 // FUNCTION: IMPERIALISM 0x005a8900
-void TTacticalBattleView::TacticalBattleViewSlot68(int param_1) {}
+void TTacticalBattleView::TacticalBattleViewSlot68(int tileIndex) {
+  int row = tileIndex / tileColumnsPerRow80;
+  int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
+  RECT tileRect;
+  tileRect.left = x;
+  if (row & 1) {
+    x += tileWidthPx88 / 2;
+    tileRect.left = x;
+  }
+  tileRect.top = row * tileRowHeightPx8C;
+  tileRect.right = x + tileWidthPx88;
+  tileRect.bottom = tileRect.top + tileRowHeightPx8C;
+  InvalidateCityDialogRectRegion(&tileRect, 1);
+}
 
 // FUNCTION: IMPERIALISM 0x005a89a0
 void TTacticalBattleView::InvalidateTacticalUnitTileRect(TTacticalUnit* unit) {

@@ -1465,7 +1465,7 @@ address|matching|name
 0x4a04a0|0.3089430894308943|TTransFocusAnimation::TTransFocusAnimation(class TView *, struct tagRECT *, short, short, int, int)
 0x4a0570|1.0|TTransFocusAnimation::Free
 0x4a05c0|0.6445497630331753|TTransFocusAnimation::UpdateBackground
-0x4a0770|0.0625|TTransFocusAnimation::IdleDraw
+0x4a0770|1.0|TTransFocusAnimation::IdleDraw
 0x4a0810|0.5349794238683128|TTransFocusAnimation::DrawNextFrame
 0x4a09f0|0.5245901639344263|TAnimator::CreateObject
 0x4a0a80|1.0|TAnimator::GetRuntimeClass
@@ -2839,7 +2839,7 @@ address|matching|name
 0x4f8650|1.0|TGrantsView::DoEvent
 0x4f86d0|0.5818181818181818|TTradePanelView::CreateObject
 0x4f8760|1.0|TTradePanelView::GetRuntimeClass
-0x4f8780|0.018518518518518517|TTradePanelView::DoPostCreate
+0x4f8780|0.5314009661835749|TTradePanelView::DoPostCreate
 0x4f8940|0.6878048780487804|TTradePanelView::Draw
 0x4f8d50|1.0|TTradePanelView::Setup
 0x4f8dd0|0.7678571428571429|TTradePanelView::DoEvent
@@ -3453,7 +3453,7 @@ address|matching|name
 0x52e7b0|0.8947368421052632|TOcean::AllocateRouteNodeStateBufferByCount
 0x52e840|0.46808510638297873|TMapMaker::ErrorCheck
 0x52e890|0.75|TMapMaker::EraseZones
-0x52e900|0.046511627906976744|TMapMaker::TargetValidationSucceeded
+0x52e900|0.27848101265822783|TMapMaker::TargetValidationSucceeded
 0x52e990|1.0|MapEdgePoint::Equals
 0x52eb00|0.25|WrapperFor_ftol_At0052eb00
 0x52eb30|0.4117647058823529|TMinister::CreateObject
@@ -3924,7 +3924,7 @@ address|matching|name
 0x542120|1.0|TimelyNetMessagePrefix::SetTimeEmitPacketGameFlowTurnId
 0x5421a0|0.3448275862068966|FindActiveNationSlotIndexInGameFlowList
 0x5424b0|1.0|TCancelGameOptionsCommand::CreateObject
-0x542520|0.16666666666666666|TCancelGameOptionsCommand::DoIt
+0x542520|1.0|TCancelGameOptionsCommand::DoIt
 0x542560|1.0|TCancelGameOptionsCommand::`scalar deleting destructor'
 0x542590|0.0|TCancelGameOptionsCommand::~TCancelGameOptionsCommand
 0x5425b0|1.0|TCancelGameOptionsCommand::GetRuntimeClass
@@ -5558,16 +5558,16 @@ address|matching|name
 0x5a8790|1.0|TTacticalBattleView::SyncStatusPanelBounds
 0x5a87d0|1.0|TTacticalBattleView::ComputeTacticalHexTileScreenRect
 0x5a8860|0.8791208791208791|TTacticalBattleView::InvalidateTacticalHexTileRect
-0x5a8900|0.043478260869565216|TTacticalBattleView::TacticalBattleViewSlot68
+0x5a8900|1.0|TTacticalBattleView::TacticalBattleViewSlot68
 0x5a89a0|1.0|TTacticalBattleView::InvalidateTacticalUnitTileRect
 0x5a89f0|0.42857142857142855|TTacticalBattleView::ComputeTacticalUnitTileScreenRect
-0x5a8ac0|0.6086956521739131|TTacticalBattleView::CenterViewportAroundGridIndexAndSnap
+0x5a8ac0|0.6867469879518072|TTacticalBattleView::CenterViewportAroundGridIndexAndSnap
 0x5a8be0|1.0|TTacticalBattleView::Scroll
 0x5a8ca0|1.0|TTacticalBattleView::DoSetCursor
 0x5a8d40|0.009950248756218905|TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x5a9090|0.8805970149253731|TTacticalBattleView::PlayTacticalTileEffect
 0x5a9170|0.9541284403669725|TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog
-0x5a9240|0.5601965601965602|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
+0x5a9240|0.5463414634146342|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
 0x5a9550|0.23429541595925296|TTacticalBattleView::DrawUiTilesAndOverlay
 0x5a99e0|1.0|DrawHexSelectionOutlineSegments
 0x5a9b40|0.92|TTacticalBattleView::UpdateTacticalActionControlBitmapForCurrentUnit
