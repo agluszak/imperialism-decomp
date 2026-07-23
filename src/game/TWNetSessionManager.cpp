@@ -284,6 +284,12 @@ unsigned char TWNetSessionManager::SetLocalPlayerDataAndStoreResult(LPVOID data,
   return setResult >= 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004809d0
+BOOL TDirectPlaySessionManagerBase::GetPlayerData(DPID playerId, void* buffer, DWORD* sizeInOut) {
+  lastErrorCode0c = directPlayInterface04->GetPlayerData(playerId, buffer, sizeInOut, 0);
+  return lastErrorCode0c >= 0;
+}
+
 // FUNCTION: IMPERIALISM 0x005e2b50
 void TDirectPlaySessionManagerBase::InitializeSessionDescription() {}
 
@@ -398,9 +404,3 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
 
 // FUNCTION: IMPERIALISM 0x005e3310
 TWNetSessionManager::TWNetSessionManager() : TDirectPlaySessionManagerBase() {}
-
-// FUNCTION: IMPERIALISM 0x004809d0
-BOOL TDirectPlaySessionManagerBase::GetPlayerData(DPID playerId, void* buffer, DWORD* sizeInOut) {
-  lastErrorCode0c = directPlayInterface04->GetPlayerData(playerId, buffer, sizeInOut, 0);
-  return lastErrorCode0c >= 0;
-}

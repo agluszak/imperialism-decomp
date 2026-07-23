@@ -17,6 +17,31 @@
 #include <cstring>
 #include <new>
 
+// IDirectPlay2::EnumPlayers callback for OpenJoinGameRuntimeSelectionAndStartSession
+// (0x5e2900): each enumerated player's 4-byte per-player data block is its role; role 1
+// is the host, whose DPID is recorded before enumeration stops. A failed read reports
+// the session's last error instead.
+// FUNCTION: IMPERIALISM 0x005e2900
+static BOOL FAR PASCAL RecordHostPlayerIdDuringEnumeration(DPID dpId, DWORD dwPlayerType,
+                                                           LPCDPNAME lpName, DWORD dwFlags,
+                                                           LPVOID lpContext) {
+  (void)dwPlayerType;
+  (void)lpName;
+  (void)dwFlags;
+  TDirectPlaySessionManagerBase* session = static_cast<TDirectPlaySessionManagerBase*>(lpContext);
+  DWORD playerRole = 0;
+  DWORD playerRoleSize = 4;
+  if (session->GetPlayerData(dpId, &playerRole, &playerRoleSize) == 0) {
+    g_pNetMgr006a6014->HandleError(session->lastErrorCode0c);
+    return FALSE;
+  }
+  if (playerRole == 1) {
+    session->broadcastPlayerId64 = dpId;
+    return FALSE;
+  }
+  return TRUE;
+}
+
 // SYNTHETIC: IMPERIALISM 0x005e3390
 // TNetMgr::CreateObject
 
@@ -312,31 +337,6 @@ unsigned char TNetMgr::OpenRuntimeSelectionSourceAndApplyActiveNationState(
   }
   HandleError(g_NetworkSessionManager006a5f60.lastErrorCode0c);
   return result;
-}
-
-// IDirectPlay2::EnumPlayers callback for OpenJoinGameRuntimeSelectionAndStartSession
-// (0x5e2900): each enumerated player's 4-byte per-player data block is its role; role 1
-// is the host, whose DPID is recorded before enumeration stops. A failed read reports
-// the session's last error instead.
-// FUNCTION: IMPERIALISM 0x005e2900
-static BOOL FAR PASCAL RecordHostPlayerIdDuringEnumeration(DPID dpId, DWORD dwPlayerType,
-                                                           LPCDPNAME lpName, DWORD dwFlags,
-                                                           LPVOID lpContext) {
-  (void)dwPlayerType;
-  (void)lpName;
-  (void)dwFlags;
-  TDirectPlaySessionManagerBase* session = static_cast<TDirectPlaySessionManagerBase*>(lpContext);
-  DWORD playerRole = 0;
-  DWORD playerRoleSize = 4;
-  if (session->GetPlayerData(dpId, &playerRole, &playerRoleSize) == 0) {
-    g_pNetMgr006a6014->HandleError(session->lastErrorCode0c);
-    return FALSE;
-  }
-  if (playerRole == 1) {
-    session->broadcastPlayerId64 = dpId;
-    return FALSE;
-  }
-  return TRUE;
 }
 
 // FUNCTION: IMPERIALISM 0x005e3c00
