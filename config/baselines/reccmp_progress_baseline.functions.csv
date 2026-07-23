@@ -4603,7 +4603,7 @@ address|matching|name
 0x5717c0|0.7|TRadioPictureButton::TRadioPictureButton
 0x571800|1.0|TRadioPictureButton::`scalar deleting destructor'
 0x571830|0.0|TRadioPictureButton::~TRadioPictureButton
-0x571850|0.21052631578947367|TRadioPictureButton::DoEvent
+0x571850|1.0|TRadioPictureButton::DoEvent
 0x5718f0|1.0|TRadioPictureButton::SetRadioState
 0x571930|0.5614035087719298|TOnOffRadioButton::CreateObject
 0x5719d0|1.0|TOnOffRadioButton::GetRuntimeClass
