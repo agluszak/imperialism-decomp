@@ -26,7 +26,7 @@ this repo installs them for you:
 - `git` + [`git-lfs`](https://git-lfs.com/) — the vendored Ghidra archive
   (`vendor/ghidra/exports/*.gzf`) ships via LFS.
 - [`just`](https://github.com/casey/just) — every workflow in this repo is a
-  `just` target; see `just --list`.
+  `just` target; see `just --list` (grouped, with mutating targets flagged).
 - [`uv`](https://docs.astral.sh/uv/) — all Python tooling runs through it
   (`uv run ...`); never invoke a bare `python`.
 - `docker` — the MSVC500 build/lint toolchain runs in a container (see
@@ -54,15 +54,38 @@ install.
 
 ## Primary Workflow (`just`)
 
+Porting and fixing work goes through the stateful task commands — they run the
+correct process (claim checks, investigation, verification) so you don't have to
+reconstruct it:
+
+```sh
+just agent-start port 0xADDR   # investigate + claim the target, write the task receipt
+just advice 0xADDR             # the most relevant active rules for this target
+                               # (`just advice --diff` selects by the working diff)
+just agent-check               # verify the diff: regen, format, build, compare, triage, gates, tests, stats
+just agent-finish              # render the receipt into a PR-ready summary
+just agent-release             # free the claim refs once the work lands
+```
+
+The underlying measurement and verification targets, usable on their own:
+
 ```sh
 just tooling-check
 just build && just detect && just stats   # rebuild + measure
-just compare 0x004E73F0                    # targeted verbose compare
-just compare-canaries                      # regression check
+just compare 0x004E73F0                    # targeted verbose compare (asm diff)
+just triage 0x004E73F0                     # structured semantic result — read this before a raw diff
+just vtable TCity                          # vtable layout vs original
+just precommit                             # build + gates + tooling tests + stats, in one command
 ```
 
-The full per-workflow guidance lives in `AGENTS.md` and the skills under
-`.claude/skills/` (`decomp-loop`, `ghidra`, `quality-control`, `class-recovery`).
+The full per-workflow guidance lives in `AGENTS.md` (the contract; `CLAUDE.md` is
+a symlink to it) and the skills under `.claude/skills/`:
+
+- **Workflow skills** — `decomp-loop`, `ghidra`, `quality-control`,
+  `sync-pipeline`, `class-recovery`, `vtable-matching`, `run-debug`.
+- **Topical skills**, loaded by what the target function contains —
+  `calling-conventions`, `string-handling`, `ctors-dtors-eh`, `fp-matching`,
+  `codegen-shapes`, `data-modeling`, `big-functions`, `mfc-collections`.
 
 ## Environment
 
@@ -87,6 +110,11 @@ just build && just detect && just stats   # first build + reccmp pairing; stats 
 - `ORIGINAL_BINARY=.../Imperialism.exe` — your own legally obtained copy (for the
   reccmp original side / `just bootstrap-reccmp`).
 
+`.env.example` documents two further optional knobs: `MACOS_IMPERIALISM_DUMP`
+(only to *regenerate* the vendored Mac CodeWarrior evidence) and
+`GHIDRA_PROJECT_DIR` (only for a worktree living under a dot-directory, which
+Ghidra refuses to open).
+
 The Ghidra project itself is vendored at `vendor/ghidra` and is wired into the `just`
 targets — you do **not** set `GHIDRA_PROJECT_DIR`/`GHIDRA_PROJECT_NAME`. After making
 Ghidra-side changes, refresh the committed archive with `just export-project` and
@@ -100,20 +128,37 @@ Docker images are machine-global, so `docker-build` isn't needed again).
 
 ## Repo Layout
 
-- `src/game/` manual-owned gameplay code
-- `src/ghidra_autogen/` regenerated decompiler output (not hand-edited)
-- `src/autogen/stubs/` regenerated unresolved stubs
-- `include/game/` manual/shared headers
-- `include/ghidra_autogen/` regenerated datatype headers
-- `config/` symbols, ownership, vtable slot registry, workflow manifests
-- `tools/` Python tooling (`ghidra`, `workflow`, `reccmp`, shared helpers)
-- `vendor/` vendored binary assets (Ghidra `.gzf` archive via LFS, Mac CodeWarrior evidence)
-- `.claude/skills/` per-workflow guides (`decomp-loop`, `ghidra`, `quality-control`, `class-recovery`)
-- Git commit messages are the durable change log; `docs/toolchain.md` toolchain forensics; `docs/reference/` layout + game-domain references
+Everything under `src/` and `include/` is **manually owned source** — there are no
+tool-owned source trees. Generated build inputs live in the build directory.
+
+- `src/game/`, `include/game/` — hand-written gameplay code and headers, split into
+  subsystem folders per `docs/reference/subsystem_assignment.csv`
+- `config/` — curated CSV/YAML state: the entity inventory, ownership and name
+  overrides, recovered globals, gate allowlists, agent rules, and the reccmp
+  progress baselines under `config/baselines/`
+- `tools/` — Python tooling (`ghidra`, `workflow`, `reccmp`, `analysis`, `binary`,
+  `mfc`, `runtime`, shared helpers)
+- `just/` — the justfile modules behind `just --list` (`build`, `compare`, `gates`,
+  `agent`, `sync`, `ghidra`, …)
+- `tests/` — tooling unit tests (`just test`)
+- `vendor/` — vendored inputs: the Ghidra `.gzf` archive (via LFS), the MSVC500
+  library/FID data, Mac CodeWarrior evidence, DirectX headers
+- `build-msvc500/generated/` — **generated**, not in git: the linkable stubs and
+  source index, rebuilt by `just generate` / `just build`. The old
+  `src/autogen/`, `src/ghidra_autogen/` and `include/ghidra_autogen/` trees are
+  gone; `just build` hard-errors if a stale copy reappears.
+- `build-msvc500/evidence/` — generated Ghidra reference exports
+- Git commit messages are the durable change log; `docs/workflows.md` has the
+  command playbooks, `docs/toolchain.md` the toolchain forensics, and
+  `docs/reference/` the layout and game-domain references
 
 ## Policy
 
 - Follow `AGENTS.md` (the contract) and the relevant skill under `.claude/skills/`.
-- Use `just` targets for standard operations.
-- Keep `// FUNCTION: IMPERIALISM 0x...` marker immediately above declaration.
-- Do not hand-edit generated files under `src/ghidra_autogen/`, `src/autogen/stubs/`, or `include/ghidra_autogen/`.
+- Use `just` targets for standard operations; don't run raw `docker` or
+  `uv run reccmp-*` when a target exists.
+- Keep `// FUNCTION: IMPERIALISM 0x...` marker immediately above the declaration.
+- Only files carrying an `AUTO-GENERATED by tools/…` banner are tool output — do
+  not hand-edit those, or anything under `build-msvc500/generated/`.
+- Run `just precommit` before committing, and commit the refreshed
+  `config/baselines/` stats baseline alongside source changes that move it.
