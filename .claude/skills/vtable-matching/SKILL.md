@@ -178,3 +178,17 @@ Run `just correct-scalar-dtors` and `just synthetic-gate` (in `just gates`) afte
 
 Remove claimed ILT thunk rows from `config/original_entities.csv` and repoint callsites to the real method
 so reccmp can resolve `jmp` thunks in vtable slots (see [[imported-thunks-block-vtable-resolution]]).
+
+### Overload name-hiding silently rebinds a virtual call to the wrong slot
+
+When a derived class redeclares a virtual by NAME with a different signature
+(TCzechBox::SetState(uchar,uchar) slot 0x75 vs TView::SetState(int,int) slot 0x2a),
+C++ name hiding makes every unqualified `derived->SetState(...)` call resolve to the
+derived slot — even when the original dispatches the BASE slot ([vtbl+0xa8] vs
+[vtbl+0x1d4] in the diff). Diagnose by dividing the vtable byte offset by 4 and
+checking which header slot it lands on. Fix with an upcast receiver
+(`static_cast<TView*>(obj)->SetState(...)`) — still a real virtual dispatch, just
+resolved against the base's overload set. The reverse smell: a qualified
+`obj->TBase::Method(...)` call emits a DIRECT call; if the original shows an indirect
+`call [reg+slot]`, drop the qualification. Both defects found together at 0x54b1b0
+(53.9%→66.1%).
