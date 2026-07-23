@@ -137,27 +137,6 @@ struct GoldCommitControl : public TView {
   virtual void ConfigureGoldValueCells(int cellWidth, int cellHeight); // slot 0x79 byte 0x1e4
 };
 
-// The 'GOLD' child of the Civilian Report dialog (resource 0xbc4, opened by
-// TViewMgr::ShowCivilianReportDialogAndReturnConfirm 0x5de4f0). Dispatches a ONE-arg
-// override at the SAME byte 0x1cc GoldCommitControl uses for its 3-arg
-// ApplyGoldTradeSummaryValues — a different concrete control subclass, not
-// GoldCommitControl itself (same slot-divergence pattern documented above).
-struct TCivilianReportGoldControl : public TView {
-  virtual void reportGoldSlot68();
-  virtual void reportGoldSlot69();
-  virtual void reportGoldSlot6a();
-  virtual void reportGoldSlot6b();
-  virtual void reportGoldSlot6c();
-  virtual void reportGoldSlot6d();
-  virtual void reportGoldSlot6e();
-  virtual void reportGoldSlot6f();
-  virtual void reportGoldSlot70();
-  virtual void reportGoldSlot71();
-  virtual void reportGoldSlot72();
-  // Populates the report text/fields from the civilian order entry. slot 0x73 byte 0x1cc
-  virtual void PopulateCivilianReportContent(TCivUnit* civilianOrderEntry);
-};
-
 // The per-order-slot city-production row container passed to
 // TMacViewMgr::SyncSellTaggedChildControlWithNationState (0x50bc50) — the row that owns
 // the 'Sell'-tagged GoldCommitControl-family child. Concrete class not yet recovered.

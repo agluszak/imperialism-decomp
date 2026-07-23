@@ -1,5 +1,6 @@
 #include "game/TViewMgr.h"
 #include "game/TArmyInfoView.h"
+#include "game/TCivReport.h"
 #include "game/TC2TemplateDialog.h"
 #include "game/TEventHandler.h"
 
@@ -102,7 +103,6 @@ namespace {
 using turn_event_dialog::GoldCommitControl;
 using turn_event_dialog::GoldDialogControl;
 using turn_event_dialog::GoldFactoryPanel;
-using turn_event_dialog::TCivilianReportGoldControl;
 using turn_event_dialog::TurnEventDialogNode;
 // g_pUiViewManager (TAssetMgr) @ 0x6a2148 — the UI/view asset registry that resolves
 // turn-event dialog nodes by message context.
@@ -2534,9 +2534,10 @@ bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrder
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x2c1);
   }
   node->ShowTurnEventDialog(1);
-  TCivilianReportGoldControl* gold = static_cast<TCivilianReportGoldControl*>(
-      static_cast<TView*>(node->ResolveControlByTag(0x444c4f47))); // 'GOLD'
-  gold->PopulateCivilianReportContent(pCivilianOrderEntry);
+  // MapView.rsrc view 3012's 'DLOG' pict is a TCivReport (Mac resource oracle).
+  TCivReport* report =
+      static_cast<TCivReport*>(static_cast<TView*>(node->ResolveControlByTag(0x444c4f47)));
+  report->PopulateCivilianReportContent(pCivilianOrderEntry);
   POINT placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
