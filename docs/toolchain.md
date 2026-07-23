@@ -135,6 +135,39 @@ Interpretation:
   `config/template_aliases.csv` (validated by `just template-alias-check`; discover
   candidates with `just mfc-collection-audit <Class|0xCTOR>`).
 
+### ICF matrix (2026-07-23) — /OPT:NOREF,/OPT:NOICF pinned as the matching baseline
+
+- **LINK 5.00.7022 supports ICF.** Its usage string advertises
+  `/OPT:{REF|NOREF|ICF[,iterations]|NOICF}` — ICF is not a VC6 novelty. Combined with
+  the retail image's incremental-link evidence (the 0x401000–0x409ab5 ILT plus stale
+  5-byte `jmp` islands with nop padding at functions' pre-relink addresses), this fully
+  explains the original's folded/aliased leaf destructors: 228 scalar-deleting-dtor
+  call chains resolve through islands into just 10 shared bodies (most leaf views end
+  at `TView::~TView` 0x48a9d0). The islands encode the original developers' relink
+  history, so **no clean link — ours or theirs — can reproduce those addresses**;
+  per-function pairing with named island claims is the attainable maximum (see the
+  ctors-dtors-eh skill note of the same date).
+- Four isolated configs, `/Oy /Ob1 /OPT:NOREF` constant (scratch harness: per-config
+  `build-icf-X` dir, `just build_dir=X cmake_flags=... _build-msvc500-unlocked`):
+
+  | config | extra flags | exact | original-only | vtables 100% | .text |
+  |---|---|---|---|---|---|
+  | A | `/OPT:NOICF` | 3778 (+0) | 214 (+0) | 444/444 | byte-identical to baseline |
+  | B | `/OPT:ICF` | 3205 (−573) | 1400 (+1186) | 4/444 | — |
+  | C | `/Gy /OPT:NOICF` | 3778 (+0) | 214 (+0) | 444/444 | byte-identical to baseline |
+  | D | `/Gy /OPT:ICF` | 3205 (−573) | 1400 (+1186) | 4/444 | — |
+
+- Conclusions: the effective default of our link was already NOREF+NOICF (A's `.text`
+  is byte-identical); it is now pinned explicitly in the justfile `cmake_flags`
+  (`IMPERIALISM_MATCH_LINK_FLAGS_CSV=/OPT:NOREF,/OPT:NOICF`) so a toolchain or CMake
+  default change can never silently alter folding. `/Gy` is a no-op for this codebase
+  (class members and inlines are already COMDATs). Enabling ICF on our side is
+  catastrophic for the comparison surface — hundreds of markers collapse onto folded
+  bodies and 440/444 vtables lose slot pairings — while the *average similarity* rises
+  (+4.13 pp) because honest low-scoring tiny pairings disappear: never judge a linker
+  experiment by the unweighted average. Fold-awareness belongs in reccmp equivalence
+  metadata (bd 5jjn), never in our link flags; the VC5 service-pack axis is bd fh2r.
+
 ## Experiment: template-emission compiler matrix
 
 Harness: `just template-emission-matrix` (tools/workflow/template_emission_matrix.py
