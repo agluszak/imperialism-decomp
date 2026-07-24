@@ -1,5 +1,5 @@
 # key|bead — shadow-stub known offenders (tools.workflow.check_shadow_stubs).
 # Each is a real defect awaiting the cited bead; NEW offenders are a hard error.
 # Do not add rows by hand to silence a finding — fix the shadow or claim the slot.
-TAmtBar::ApplyStyleDescriptor|imperialism-decomp-12k2
-TAmtBar::SetStyleState|imperialism-decomp-12k2
+# EMPTY: the family is fully eradicated (the TAmtBar/TNumberText shadows were fixed in
+# bead imperialism-decomp-12k2). Any new row here is a regression, not a bless.

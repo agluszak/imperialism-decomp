@@ -173,23 +173,9 @@ void TAmtBar::SetBarMetricRatio(int value) {
   RefreshControl();
 }
 
-void TAmtBar::SetControlValueSlot1E4(int value, int updateFlag) {
-  stepOrCurrentValue = (short)value;
-  if (updateFlag != 0) {
-    RefreshControl();
-  }
-}
 
 int TAmtBar::QueryValue() {
   return (int)stepOrCurrentValue;
 }
 
-void TAmtBar::ApplyStyleDescriptor(void* descriptorBuffer, int modeFlag) {
-  (void)descriptorBuffer;
-  (void)modeFlag;
-}
 
-void TAmtBar::SetStyleState(int stateValue, int modeFlag) {
-  (void)stateValue;
-  (void)modeFlag;
-}
