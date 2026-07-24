@@ -427,9 +427,99 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
   } while (slot < 4);
 }
 
+// Renders the Prospector's "Can Find" legend: one column per prospectable terrain
+// (hills, mountains, then the three oil terrains once tech 4 is researched), each with
+// the terrain header icon, the per-column target-tile count, and the mineral icons that
+// terrain can yield. Registers each header icon rect into legendRects for hit testing
+// until legendInitialized is set by Draw().
 // FUNCTION: IMPERIALISM 0x0058fec0
 void TCivDescription::DrawProspector(RECT* bounds) {
   (void)bounds;
+
+  CString text;
+  unsigned long themeColor = 0;
+
+  bool oilUnlocked = g_pCityOrderCapabilityState->orderCapRows277[g_pSimMgr->GetActiveNationId()]
+                         .techStatusByTechId[4] == 2;
+
+  // Per-column mineral-icon lists drawn under each terrain header
+  // (coal/iron; coal/iron/gems/gold; oil; oil; oil).
+  short columnResourceIcons[5][4] = {
+      {3, 4, -1, -1}, {3, 4, 0x16, 0x15}, {6, -1, -1, -1}, {6, -1, -1, -1}, {6, -1, -1, -1}};
+
+  ResolveUiThemeColor(0x2b6c, &themeColor);
+  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 10, 0x2b6c, 3);
+
+  g_pSimMgr->GetString(0x272d, 5, &text); // Can Find
+  SetQuickDrawTextOriginWithContextOffset(5, 96);
+  DrawTextWithCachedQuickDrawStyleState(&text);
+
+  int columnCount = oilUnlocked ? 5 : 2;
+  ResetQuickDrawStrokeState();
+  SetQuickDrawStrokeColor(0xffffff);
+
+  short columnTop = 0x68;
+  for (int column = 0; column < columnCount; ++column) {
+    short terrainIcon = g_anTargetTileProfileByCivilianClassAndSlot[5 + column];
+    RECT sourceRect = {terrainIcon * 20, 0, (terrainIcon + 1) * 20, 20};
+    RECT destinationRect = {12, columnTop, 0x20, columnTop + 0x14};
+    if (column == 1) {
+      destinationRect.top += 0xc;
+      destinationRect.bottom += 0xc;
+    }
+    SetQuickDrawFillColor(0);
+    BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[1]->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                     &sourceRect, &destinationRect, 0, 0);
+
+    if (legendInitialized == 0) {
+      legendRects[terrainIcon] = destinationRect;
+      field04 = 1;
+    }
+
+    SetQuickDrawColorAndSyncGlobals(themeColor);
+    SetQuickDrawTextOriginWithContextOffset(static_cast<short>(destinationRect.right + 2),
+                                            static_cast<short>(destinationRect.bottom));
+    text.Format(g_szDecimalFormat, targetTileCountsBySlot[column]);
+    DrawTextWithCachedQuickDrawStyleState(&text);
+
+    UpdatePaletteIndexWithDefaultFallback(0x10);
+    SetQuickDrawFillColor(0);
+
+    int firstRowRight = 0x3c;
+    int secondRowX = 0;
+    for (int slot = 0; slot < 4; ++slot) {
+      short resourceIcon = columnResourceIcons[column][slot];
+      if (resourceIcon != -1) {
+        sourceRect.left = resourceIcon * 20;
+        sourceRect.top = 0;
+        sourceRect.right = (resourceIcon + 1) * 20;
+        sourceRect.bottom = 0x18;
+        if (firstRowRight < 0x78) {
+          destinationRect.left = firstRowRight - 0x14;
+          destinationRect.top = columnTop - 4;
+          destinationRect.right = firstRowRight;
+          destinationRect.bottom = columnTop + 0x14;
+        } else {
+          destinationRect.left = secondRowX - 0x18;
+          destinationRect.top = columnTop + 0x18;
+          destinationRect.right = secondRowX - 4;
+          destinationRect.bottom = columnTop + 0x30;
+        }
+        BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->unitIconAtlas->GetBlitSurface(),
+                                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                         &sourceRect, &destinationRect, 0x24, 0);
+      }
+      firstRowRight += 0x1e;
+      secondRowX += 0x20;
+    }
+    SetQuickDrawStrokeColor(0xffffff);
+
+    columnTop += 0x1c;
+    if (column == 1) {
+      columnTop += 0x18;
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005903c0

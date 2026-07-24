@@ -5182,7 +5182,7 @@ address|matching|name
 0x58f3c0|1.0|TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation
 0x58f550|0.5664335664335665|TCivDescription::Draw
 0x58f7b0|0.6032171581769437|TCivDescription::DrawEngineer
-0x58fec0|0.007067137809187279|TCivDescription::DrawProspector
+0x58fec0|0.4918032786885246|TCivDescription::DrawProspector
 0x5903c0|0.004514672686230248|TCivDescription::DrawDeveloper
 0x590b90|0.4897959183673469|TCivReport::CreateObject
 0x590c10|1.0|TCivReport::GetRuntimeClass
