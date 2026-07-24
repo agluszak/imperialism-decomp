@@ -2,6 +2,7 @@
 
 #include "game/map/TMapMgr.h"
 #include "game/ui_screens/TSimMgr.h"
+#include "game/core/stream_byteswap.h"
 #include "game/core/TStream.h"
 #include "game/city/TCity.h"
 #include "game/nation/TGreatPower.h"
@@ -12,17 +13,6 @@
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
-
-static void SwapAdjacentBytePairs(unsigned char* bytes, int pairCount) {
-  int remaining = pairCount;
-  while (remaining > 0) {
-    unsigned char first = bytes[0];
-    bytes[0] = bytes[1];
-    bytes[1] = first;
-    bytes += 2;
-    remaining--;
-  }
-}
 
 // MFC-style GetRuntimeClass (slot 0): returns the class descriptor that precedes
 // the vtable at 0x0066d7c8.
@@ -51,10 +41,8 @@ void TTown::ITown(const char* markerName, short tileIndex, char enabledFlag, sho
   this->tileIndex14 = tileIndex;
   this->enabledFlag4d = enabledFlag;
   this->activeFlag4f = enabledFlag == 0;
-  this->flags16[0] = 0;
-  this->flags16[1] = 0;
-  this->flags16[2] = 0;
-  this->flags16[3] = 0;
+  this->field16 = 0;
+  this->field18 = 0;
   this->createdTurnTick1a = g_pSimMgr->GetEconomicTurn();
   this->transportLinkedFlag4c = 0;
   memset(this->resourceYieldByType, 0, sizeof(this->resourceYieldByType));
@@ -65,15 +53,22 @@ void TTown::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   stream->ReadBytes(name, sizeof(name));
   stream->ReadBytes(&tileIndex14, 2);
-  stream->ReadBytes(flags16, sizeof(flags16));
+  stream->ReadBytes(&field16, 2);
+  stream->ReadBytes(&field18, 2);
   stream->ReadBytes(&createdTurnTick1a, 2);
   stream->ReadBytes(&ownerNation1c, 2);
   stream->ReadBytes(resourceYieldByType, sizeof(resourceYieldByType));
-  SwapAdjacentBytePairs(reinterpret_cast<unsigned char*>(resourceYieldByType), 0x17);
+  SwapShortArrayBytes(resourceYieldByType, 0x17);
   stream->ReadBytes(&transportLinkedFlag4c, 1);
   stream->ReadBytes(&enabledFlag4d, 1);
   stream->ReadBytes(&hasAdjacentCity4e, 1);
-  stream->ReadByte(&activeFlag4f);
+  // Saves older than 0xa predate the flag and default it on; newer ones carry it as a
+  // plain 1-byte read (slot 0x44), not the polymorphic object read at slot 0xb0.
+  if (g_nSaveFormatVersion < 0xa) {
+    activeFlag4f = 1;
+  } else {
+    activeFlag4f = stream->streamSlot44() != 0;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005b6e60
@@ -81,10 +76,13 @@ void TTown::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   stream->WriteBytesSlot78(name, sizeof(name));
   stream->WriteBytesSlot78(&tileIndex14, 2);
-  stream->WriteBytesSlot78(flags16, sizeof(flags16));
+  stream->WriteBytesSlot78(&field16, 2);
+  stream->WriteBytesSlot78(&field18, 2);
   stream->WriteBytesSlot78(&createdTurnTick1a, 2);
   stream->WriteBytesSlot78(&ownerNation1c, 2);
-  stream->WriteBytesSlot78(resourceYieldByType, sizeof(resourceYieldByType));
+  // Element-wise with a byte swap, mirroring ReadFrom: a raw block write here emitted
+  // host-order shorts that the reader then swapped, corrupting every yield on reload.
+  WriteShortArrayElems(stream, resourceYieldByType, 0x17);
   stream->WriteBytesSlot78(&transportLinkedFlag4c, 1);
   stream->WriteBytesSlot78(&enabledFlag4d, 1);
   stream->WriteBytesSlot78(&hasAdjacentCity4e, 1);

@@ -170,6 +170,22 @@ class BinaryExtractionTest(unittest.TestCase):
         ops, _ = binary_stream_ops(0x1000)
         self.assertEqual(ops[0]["count"], 0x211)
 
+    def test_vtable_pointer_spilled_and_reloaded_still_resolves(self):
+        # TTown::ReadFrom parks the stream's vtable at entry and reloads it for its tail
+        # call; without tracking vtable spills that trailing read looks like a missing op.
+        self.patch_listing(
+            [
+                "00001000  MOV EDI,dword ptr [ESP + 0x4]",
+                "00001004  MOV EAX,dword ptr [EDI]",
+                "00001006  SUB ESP,0x4",
+                "00001009  MOV dword ptr [ESP + 0x0],EAX",
+                "0000100d  MOV ECX,dword ptr [ESP + 0x0]",
+                "00001011  CALL dword ptr [ECX + 0x44]",
+            ]
+        )
+        ops, _ = binary_stream_ops(0x1000)
+        self.assertEqual([(op["dir"], op["bytes"]) for op in ops], [("read", 1)])
+
     def test_dispatch_on_another_objects_vtable_is_not_a_stream_call(self):
         # this->vtable[0x84] collides with TStream's streamSlot84; only a slot loaded
         # from the *stream's* vtable may count. Regression: TNavyMission::ReadFrom.

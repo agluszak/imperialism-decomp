@@ -25,9 +25,7 @@ public:
   // slot 1 — scalar deleting destructor @ 0x0052eba0 (SYNTHETIC)
   void WriteTo(TStream* stream) override;  // 5 (0x14)
   void ReadFrom(TStream* stream) override; // 6 (0x18)
-  void
-  SerializeTMinisterBaseOrderArrayHeader(TStream* stream); // Ghidra alias for WriteTo @ 0x52ecf0
-  void Free() override;                                    // 7 (0x1c)
+  void Free() override;                    // 7 (0x1c)
   // Mac oracle: TMinister::GetRankingCriterionForGP(short).
   virtual short GetRankingCriterionForGP(short nationSlot);        // 10 (0x28)
   virtual void RebuildTerrainPreferenceEntriesAndAssignRanks();    // 11 (0x2c)

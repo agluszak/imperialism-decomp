@@ -224,6 +224,10 @@ def _scan(address: int, strict: bool) -> tuple[list[dict], list[str]]:
     # perfectly good TStream write slot.
     stream_regs: set[str] = set()
     vtable_regs: set[str] = set()
+    # The stream's vtable pointer also gets spilled and reloaded (TTown::ReadFrom parks
+    # it at entry and reloads it for the tail call), so stack slots have to be tracked
+    # for vtables as well as for hoisted slot pointers.
+    stack_vtable: set[int] = set()
     esp = 0
     pushed_since_call = 0
     pending_imm: int | None = None
@@ -248,10 +252,16 @@ def _scan(address: int, strict: bool) -> tuple[list[dict], list[str]]:
         where = line.split()[0]
 
         stack_load = LOAD_STACK_REG.match(line)
-        if stack_load and esp + int(stack_load.group(2), 16) == 4:
-            stream_regs.add(stack_load.group(1))
-            vtable_regs.discard(stack_load.group(1))
-            continue
+        if stack_load:
+            key = esp + int(stack_load.group(2), 16)
+            if key == 4:
+                stream_regs.add(stack_load.group(1))
+                vtable_regs.discard(stack_load.group(1))
+                continue
+            if key in stack_vtable:
+                vtable_regs.add(stack_load.group(1))
+                stream_regs.discard(stack_load.group(1))
+                continue
 
         deref = DEREF_REG.match(line)
         if deref:
@@ -286,11 +296,17 @@ def _scan(address: int, strict: bool) -> tuple[list[dict], list[str]]:
                 stack_slot[key] = slot
             else:
                 stack_slot.pop(key, None)
+            if spill.group(2) in vtable_regs:
+                stack_vtable.add(key)
+            else:
+                stack_vtable.discard(key)
             continue
 
         store_imm = STORE_STACK_IMM.match(line)
         if store_imm:
-            stack_slot.pop(esp + int(store_imm.group(1), 16), None)
+            key = esp + int(store_imm.group(1), 16)
+            stack_slot.pop(key, None)
+            stack_vtable.discard(key)
             continue
 
         push = PUSH_IMM.match(line)

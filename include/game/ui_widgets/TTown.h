@@ -19,9 +19,14 @@ public:
   virtual void Grow();                        // slot 0x0d 0x5b7570
   virtual void SetName(const char* townName); // slot 0x0e 0x5b77e0
 
-  char name[0x10];                 // 0x04 — strcpy'd marker name
-  short tileIndex14;               // 0x14
-  unsigned char flags16[4];        // 0x16..0x19 — cleared on init
+  char name[0x10];   // 0x04 — strcpy'd marker name
+  short tileIndex14; // 0x14
+  // Two 16-bit slots, not a byte array: ITown zeroes them with `MOV word ptr
+  // [EBP+0x16],0` / `[EBP+0x18],0` (0x5b6d1c/0x5b6d22) and both serializers move them
+  // as separate 2-byte fields. Purpose unknown -- no reader exists anywhere in the
+  // image beyond init and round-trip -- so they stay opaque but correctly sized.
+  short field16;                   // 0x16
+  short field18;                   // 0x18
   short createdTurnTick1a;         // 0x1a — localization tick at creation
   short ownerNation1c;             // 0x1c
   short resourceYieldByType[0x17]; // 0x1e..0x4b — one yield count per resource type
