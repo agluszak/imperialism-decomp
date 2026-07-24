@@ -22,6 +22,13 @@ TGWorldPartView::~TGWorldPartView() {}
 
 IMPLEMENT_DYNCREATE(TGWorldPartView, TView)
 
+// Returns the tail substring of `source` starting at 1-based position `startPos` (i.e.
+// CString::Mid(startPos - 1)). The source is taken by value, matching the original.
+// FUNCTION: IMPERIALISM 0x004ac3a0
+CString AssignSharedStringFromMidSubstring(int startPos, CString source) {
+  return source.Mid(startPos - 1);
+}
+
 // FUNCTION: IMPERIALISM 0x004ac880
 void TGWorldPartView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;

@@ -45,6 +45,36 @@ int PtInRgn(CPoint* point, RgnHandle rgn) {
   return ::PtInRegion(static_cast<HRGN>((*rgn)->rgn.m_hObject), point->x, point->y);
 }
 
+// QuickDraw MapPt: rescale a point from `srcRect`'s coordinate space into `dstRect`'s,
+// independently on each axis. The original copies each rect into a local before reading
+// its extent (and swaps which local holds which rect between the two axes); that shape is
+// kept so the two CopyRect pairs line up with the original.
+// FUNCTION: IMPERIALISM 0x004956e0
+void MapPt(int* point, RECT* srcRect, RECT* dstRect) {
+  RECT scratchA;
+  RECT scratchB;
+  ::CopyRect(&scratchA, dstRect);
+  ::CopyRect(&scratchB, srcRect);
+  point[0] = ((scratchA.right - scratchA.left) * point[0]) / (scratchB.right - scratchB.left);
+  ::CopyRect(&scratchB, dstRect);
+  ::CopyRect(&scratchA, srcRect);
+  point[1] = ((scratchB.bottom - scratchB.top) * point[1]) / (scratchA.bottom - scratchA.top);
+}
+
+// Byte-identical second copy of MapPt that the linker did not fold (the retail image keeps
+// both). Same contract as MapPt above.
+// FUNCTION: IMPERIALISM 0x00495780
+void MapPtSecondCopy(int* point, RECT* srcRect, RECT* dstRect) {
+  RECT scratchA;
+  RECT scratchB;
+  ::CopyRect(&scratchA, dstRect);
+  ::CopyRect(&scratchB, srcRect);
+  point[0] = ((scratchA.right - scratchA.left) * point[0]) / (scratchB.right - scratchB.left);
+  ::CopyRect(&scratchB, dstRect);
+  ::CopyRect(&scratchA, srcRect);
+  point[1] = ((scratchB.bottom - scratchB.top) * point[1]) / (scratchA.bottom - scratchA.top);
+}
+
 // FUNCTION: IMPERIALISM 0x00495820
 RgnHandle NewRgn(void) {
   RgnHandle handle = new Region*;
@@ -123,6 +153,119 @@ void DisposeTemporaryRegionCache(void) {
   g_pTemporaryRegionCache = 0;
 }
 
+// Combine two source clip regions into `dst`: when both are empty `dst` becomes an empty
+// region; when exactly one is empty the other is copied (RGN_COPY); when both are non-empty
+// they are combined with RGN_DIFF. The bounding box of `dst` is refreshed afterwards. The
+// per-region emptiness test (GetRgnBox -> CopyRect -> IsRectEmpty) is inlined at each site, as
+// in the original.
+// FUNCTION: IMPERIALISM 0x00497540
+void CombineClipRegionsWithEmptyHandling(RgnHandle srcA, RgnHandle srcB, RgnHandle dst) {
+  RECT boundsScratch;
+
+  char emptyA;
+  if (srcA == NULL) {
+    emptyA = 1;
+  } else {
+    Region* ra = *srcA;
+    HRGN ha = static_cast<HRGN>(static_cast<HGDIOBJ>(ra->rgn));
+    if (ha == NULL) {
+      emptyA = 1;
+    } else {
+      ::GetRgnBox(ha, &ra->rgnBBox);
+      ::CopyRect(&boundsScratch, &ra->rgnBBox);
+      emptyA = static_cast<char>(::IsRectEmpty(&boundsScratch));
+    }
+  }
+
+  if (emptyA != 0) {
+    char emptyB;
+    if (srcB == NULL) {
+      emptyB = 1;
+    } else {
+      Region* rb = *srcB;
+      HRGN hb = static_cast<HRGN>(static_cast<HGDIOBJ>(rb->rgn));
+      if (hb == NULL) {
+        emptyB = 1;
+      } else {
+        ::GetRgnBox(hb, &rb->rgnBBox);
+        ::CopyRect(&boundsScratch, &rb->rgnBBox);
+        emptyB = static_cast<char>(::IsRectEmpty(&boundsScratch));
+      }
+    }
+    if (emptyB != 0) {
+      (*dst)->rgn.DeleteObject();
+      (*dst)->rgn.Attach(::CreateRectRgn(0, 0, 0, 0));
+      ::GetRgnBox(static_cast<HRGN>((*dst)->rgn.m_hObject), &(*dst)->rgnBBox);
+      return;
+    }
+  }
+
+  char emptyA2;
+  if (srcA == NULL) {
+    emptyA2 = 1;
+  } else {
+    Region* ra = *srcA;
+    HRGN ha = static_cast<HRGN>(static_cast<HGDIOBJ>(ra->rgn));
+    if (ha == NULL) {
+      emptyA2 = 1;
+    } else {
+      ::GetRgnBox(ha, &ra->rgnBBox);
+      ::CopyRect(&boundsScratch, &ra->rgnBBox);
+      emptyA2 = static_cast<char>(::IsRectEmpty(&boundsScratch));
+    }
+  }
+
+  HRGN hrgnSrc1;
+  HRGN hrgnSrc2;
+  HRGN hrgnDst;
+  int mode;
+  if (emptyA2 == 0) {
+    char emptyB2;
+    if (srcB == NULL) {
+      emptyB2 = 1;
+    } else {
+      Region* rb = *srcB;
+      HRGN hb = static_cast<HRGN>(static_cast<HGDIOBJ>(rb->rgn));
+      if (hb == NULL) {
+        emptyB2 = 1;
+      } else {
+        ::GetRgnBox(hb, &rb->rgnBBox);
+        ::CopyRect(&boundsScratch, &rb->rgnBBox);
+        emptyB2 = static_cast<char>(::IsRectEmpty(&boundsScratch));
+      }
+    }
+    if (emptyB2 == 0) {
+      hrgnSrc2 = static_cast<HRGN>(static_cast<HGDIOBJ>((*srcB)->rgn));
+      hrgnSrc1 = static_cast<HRGN>(static_cast<HGDIOBJ>((*srcA)->rgn));
+      mode = RGN_DIFF;
+      hrgnDst = static_cast<HRGN>((*dst)->rgn.m_hObject);
+    } else if (static_cast<HGDIOBJ>((*srcA)->rgn) == NULL) {
+      mode = RGN_COPY;
+      hrgnDst = static_cast<HRGN>((*dst)->rgn.m_hObject);
+      hrgnSrc1 = NULL;
+      hrgnSrc2 = NULL;
+    } else {
+      hrgnSrc1 = static_cast<HRGN>((*srcA)->rgn.m_hObject);
+      mode = RGN_COPY;
+      hrgnSrc2 = NULL;
+      hrgnDst = static_cast<HRGN>((*dst)->rgn.m_hObject);
+    }
+  } else if (static_cast<HGDIOBJ>((*srcB)->rgn) == NULL) {
+    hrgnDst = static_cast<HRGN>((*dst)->rgn.m_hObject);
+    mode = RGN_COPY;
+    hrgnSrc1 = NULL;
+    hrgnSrc2 = NULL;
+  } else {
+    hrgnSrc1 = static_cast<HRGN>((*srcB)->rgn.m_hObject);
+    hrgnDst = static_cast<HRGN>((*dst)->rgn.m_hObject);
+    mode = RGN_COPY;
+    hrgnSrc2 = NULL;
+  }
+
+  ::CombineRgn(hrgnDst, hrgnSrc1, hrgnSrc2, mode);
+  ::GetRgnBox(static_cast<HRGN>((*dst)->rgn.m_hObject), &(*dst)->rgnBBox);
+}
+
 // FUNCTION: IMPERIALISM 0x004977a0
 void UnionRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst) {
   CRgn* rgnB = &(*srcB)->rgn;
@@ -151,6 +294,38 @@ void QDFrameRgn(RgnHandle rgn) {
     ::FrameRgn(dc->m_hDC, static_cast<HRGN>((*rgn)->rgn.m_hObject), static_cast<HBRUSH>(brush), 1,
                1);
   }
+}
+
+// FUNCTION: IMPERIALISM 0x00497940
+void FillClipRegionWithForegroundBrush(RgnHandle rgn) {
+  CBrush fillBrush(g_QuickDrawForegroundColor);
+  CDC* dc =
+      g_pQuickDrawMemoryDc != NULL ? g_pQuickDrawMemoryDc : g_pScopedMapQuickDrawDcHandleObject;
+  if (dc != NULL) {
+    ::FillRgn(dc->m_hDC, static_cast<HRGN>((*rgn)->rgn.m_hObject),
+              static_cast<HBRUSH>(fillBrush.m_hObject));
+  }
+  fillBrush.DeleteObject();
+}
+
+// FUNCTION: IMPERIALISM 0x00497a10
+void QDPaintRgn(RgnHandle rgn) {
+  CBrush fillBrush;
+  fillBrush.Attach(::CreateSolidBrush(g_QuickDrawForegroundColor));
+  CDC* dc =
+      g_pQuickDrawMemoryDc != NULL ? g_pQuickDrawMemoryDc : g_pScopedMapQuickDrawDcHandleObject;
+  if (dc != NULL) {
+    ::FillRgn(dc->m_hDC, static_cast<HRGN>((*rgn)->rgn.m_hObject),
+              static_cast<HBRUSH>(fillBrush.m_hObject));
+  }
+  fillBrush.DeleteObject();
+}
+
+// FUNCTION: IMPERIALISM 0x00497b30
+void InitializeCityBuildingControlRegions_Impl(RgnHandle region, int x, int y) {
+  (void)x;
+  (void)y;
+  ::GetRgnBox(static_cast<HRGN>((*region)->rgn), &(*region)->rgnBBox);
 }
 
 // FUNCTION: IMPERIALISM 0x00497bb0
@@ -189,6 +364,17 @@ void CloseRgn(RgnHandle dst) {
   ::CombineRgn(static_cast<HRGN>((*dst)->rgn.m_hObject), accumulated, 0, RGN_COPY);
   ::DeleteObject(g_hOpenRgnAccumulator);
   g_hOpenRgnAccumulator = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00498070
+void IntersectClipRegionWithRectAndUpdateBounds(RgnHandle clipRgn, RECT* rect) {
+  CRgn rectRegion;
+  rectRegion.Attach(::CreateRectRgn(rect->left, rect->top, rect->right, rect->bottom));
+  ::CombineRgn(static_cast<HRGN>((*clipRgn)->rgn.m_hObject),
+               static_cast<HRGN>(rectRegion.m_hObject),
+               static_cast<HRGN>((*clipRgn)->rgn.m_hObject), RGN_AND);
+  ::GetRgnBox(static_cast<HRGN>((*clipRgn)->rgn.m_hObject), &(*clipRgn)->rgnBBox);
+  rectRegion.DeleteObject();
 }
 
 // FUNCTION: IMPERIALISM 0x00498180

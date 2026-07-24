@@ -629,6 +629,11 @@ public:
   // used by turn-AI order planning, then updates cityScoreTotal with the mean. 0x00518130.
   void RecomputeTileStrategicScoreHeatmap();
 
+  // Debug map-data validation pass: walks all 0x1950 terrain tiles writing terrain/
+  // sea-zone/country/province anomalies to "maperr.txt", then reports provinces holding
+  // more than 32 tiles. 0x0050f3c0.
+  void VerifyMapDataAndWriteReport();
+
   // Global map session state (g_pGlobalMapState @ 0x006A43D4). RTTI object size 0x28
   // covers the TObject head; tile/city tables are heap-backed pointers below.
   //

@@ -13,6 +13,7 @@
 #include "game/ui_core/TControl.h"
 #include "game/globals/prelude.h"
 #include "game/globals/city_ui_globals.h"
+#include "game/globals/ui_widgets_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/nation/TGreatPower.h"
 #include "game/ui_core/TViewMgr.h"
@@ -27,6 +28,13 @@
 #include "game/app/TTransFocusAnimation.h"
 #include "game/ui_core/TWindow.h"
 #include "game/quickdraw_guards.h"
+#include "game/gfx/CTemporaryRegion.h"
+#include "game/gfx/quickdraw_regions.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/CDib.h"
+#include "game/military/mapped_flavor_text.h"
+#include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_core/TBitmapResourceLoader.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/TQuickDrawSurfaceContext.h"
@@ -59,7 +67,56 @@ TCityProductionView::~TCityProductionView() {}
 
 // FUNCTION: IMPERIALISM 0x004ba3b0
 void TCityProductionView::DoPostCreate(int arg) {
-  (void)arg;
+  TPicture::DoPostCreate(arg);
+  g_pGlobalUiRootController->cursorRegionInvalid = 1;
+
+  // Per building slot: build a mouse clip region from the slot bitmap's outline polygon.
+  for (int slot = 0; slot < 16; ++slot) {
+    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    TCity* city = (nation != 0) ? nation->city : 0;
+    short level = city->GetNextBuildingType(slot);
+    CDib* bitmap = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(
+        static_cast<unsigned short>(level * 0x10 + 0x1bbc + slot));
+    int* outlinePolygon = bitmap->BuildNonTransparentOutlinePolygon(0xffffffff);
+    // GEOMETRY_RAW_BUFFER: two-int header followed by packed POINT records.
+    buildingClipRegionsEC[slot] = NewRgn();
+    (*buildingClipRegionsEC[slot])->rgn.DeleteObject();
+    HRGN polygonRegion = ::CreatePolygonRgn(reinterpret_cast<POINT*>(outlinePolygon + 2),
+                                            outlinePolygon[0], WINDING);
+    (*buildingClipRegionsEC[slot])->rgn.Attach(polygonRegion);
+    delete[] outlinePolygon;
+    g_pModuleLibraryCacheState->ReleaseRecordByHandle(this);
+
+    short x = g_anCityBuildingSlotCoords[g_nCityBuildingSlotXOffsetIndex + slot * 2];
+    short y = g_anCityBuildingSlotCoords[g_anCityBuildingSlotCoords[32] + slot * 2];
+    InitializeCityBuildingControlRegions_Impl(buildingClipRegionsEC[slot], x, y);
+  }
+
+  // Build the per-slot action-focus animations from the layout/resource tables.
+  for (int actionSlot = 0; actionSlot < 0x15; ++actionSlot) {
+    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    TCity* city = (nation != 0) ? nation->city : 0;
+    short actionCount =
+        city->GetNextBuildingType(static_cast<short>(actionSlot < 0x15 ? actionSlot : 0xb));
+    if (actionCount <= 0) {
+      continue;
+    }
+    int row = (actionCount - 1) + actionSlot;
+    for (int action = 0; action < 3; ++action) {
+      RECT bounds = g_anCityBuildingLayoutValues[row * 3 + action];
+      if (bounds.right < 1) {
+        continue;
+      }
+      OffsetRect(&bounds, 0x32, 0x23);
+      short resourceId = g_awCityBuildingActionResourceIds[row * 3 + action];
+      int animationId = (actionCount - 1) * 3 + action + (actionSlot + 0x5dc) * 10;
+      TTransFocusAnimation* animation = new TTransFocusAnimation(dialogRoot98, &bounds, resourceId,
+                                                                 static_cast<short>(animationId),
+                                                                 (actionSlot != 7 ? 2 : 0) + 5, 0);
+      g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
+      needsRefreshAtA6 = 1;
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004ba740
@@ -72,23 +129,147 @@ void TCityProductionView::Free() {
   TView::Free();
 }
 
+IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x004ba7b0
 void TCityProductionView::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
-}
+  // Turn-event snapshot mode: blit the cached surface straight through and finish.
+  if (g_pDisplayMgr->clipSnapshotEvent == 0x7db && this->needsRefreshAtA6 == 0) {
+    RECT snapshot = *rectBuffer;
+    BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &snapshot,
+                                     &snapshot, 0, 0);
+    RenderNationHeaderDateLabelWithPeriodicRefresh();
+    return;
+  }
+  this->needsRefreshAtA6 = 0;
+  TPicture::Draw(rectBuffer);
 
+  TQuickDrawSurfaceContext* savedContext;
+  int savedFlags;
+  GetGWorld(&savedContext, &savedFlags);
+
+  // Build an offscreen GWorld sized to the city backdrop bitmap (7000).
+  TBitmapResourceLoader** backdropHandle = CreateBitmapResourceLoaderHandle(7000);
+  RECT scratchBounds;
+  CopyRect(&scratchBounds, &(*backdropHandle)->bitmapRect);
+  TQuickDrawSurfaceContext* scratchContext = 0;
+  g_pDisplayMgr->MakeNewGWorld(scratchContext, 8, scratchBounds);
+  TBitmapResourceLoader* backdrop = *backdropHandle;
+  backdrop->ReleaseBitmapResource();
+  backdrop->flags &= 0xfe;
+  delete backdrop;
+  delete backdropHandle;
+
+  SetGWorld(scratchContext, savedFlags);
+  LockPixels(GetGWorldPixMap(scratchContext));
+
+  for (int orderIndex = 0; orderIndex < 16; ++orderIndex) {
+    SetGWorld(scratchContext, savedFlags);
+    short slot = g_anCityBuildingSlotOrder[orderIndex];
+    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    TCity* city = (nation != 0) ? nation->city : 0;
+    short level = city->GetNextBuildingType(slot);
+
+    bool shouldDraw = level >= 1;
+    if (!shouldDraw) {
+      if (slot < 0 || slot > 6) {
+        if (slot == 0xb && city->powerPlantUpgradeQueuedFlag04 != 0) {
+          shouldDraw = true;
+        }
+      } else if (city->orderSlotsE4[slot + 0x35]->quantityField04 > 0) {
+        shouldDraw = true;
+      }
+    }
+    if (!shouldDraw) {
+      continue;
+    }
+
+    short pictureId;
+    if (slot == 0xb) {
+      pictureId = static_cast<short>((city->powerPlantUpgradeQueuedFlag04 != 0 ? 0x1b63 : 0x1b73));
+    } else if (level == 0 || slot < 0 || slot > 5 ||
+               city->orderSlotsE4[slot + 0x35]->quantityField04 < 1 ||
+               city->IsCapacityCenter(slot) == 0) {
+      pictureId = static_cast<short>(slot + level * 4 + 0x6d6);
+    } else {
+      pictureId = static_cast<short>(slot + level * 4 + 0x721);
+    }
+
+    short drawX = g_anCityBuildingSlotCoords[g_anCityBuildingSlotCoords[34] + slot * 2];
+    short drawY = g_anCityBuildingSlotCoords[g_nCityBuildingDrawYOffsetIndex + slot * 2];
+    BlitBitmapResourceRectWithScreenOffsetAndPalette(&scratchBounds, scratchContext, drawX, drawY,
+                                                     pictureId, savedContext, savedFlags);
+
+    if (slot == 0xf && city->ownerNationAc->field8d2 > '2') {
+      SetGWorld(scratchContext, savedFlags);
+      BlitBitmapResourceRectWithScreenOffsetAndPalette(&scratchBounds, scratchContext, 0xa6, 0x3c,
+                                                       0x1b9e, savedContext, savedFlags);
+    } else if (slot == 0xe && city->ownerNationAc->field8d3 >= '3') {
+      SetGWorld(scratchContext, savedFlags);
+      BlitBitmapResourceRectWithScreenOffsetAndPalette(&scratchBounds, scratchContext, 0x6d, 0x143,
+                                                       0x1b9f, savedContext, savedFlags);
+    }
+  }
+
+  for (int group = 0; group < 8; ++group) {
+    for (int phase = 0; phase < 3; ++phase) {
+      TTransFocusAnimation* animation = buildingActionAnimations12C[group][phase];
+      if (animation != 0) {
+        animation->UpdateBackground();
+      }
+    }
+  }
+
+  SetGWorld(savedContext, savedFlags);
+  UnlockPixels(GetGWorldPixMap(scratchContext));
+  g_pDisplayMgr->RemoveGWorld(scratchContext);
+  RenderNationHeaderDateLabelWithPeriodicRefresh();
+}
+IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
+
+IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x004bac50
 void TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette(
     RECT* destRect, TQuickDrawSurfaceContext* destContext, short offsetY, short offsetX,
     short resourceId, TQuickDrawSurfaceContext* restoreContext, int restoreFlags) {
-  (void)destRect;
-  (void)destContext;
-  (void)offsetY;
-  (void)offsetX;
-  (void)resourceId;
-  (void)restoreContext;
-  (void)restoreFlags;
+  TBitmapResourceLoader** loaderHandle =
+      CreateBitmapResourceLoaderHandle(static_cast<unsigned short>(resourceId));
+  TBitmapResourceLoader* loader = *loaderHandle;
+  if (loader != nullptr) {
+    loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+    loader->flags |= 1;
+    ResetQuickDrawStrokeState();
+    BlitBitmapResourceLoaderToActiveDc(loaderHandle, destRect);
+  }
+  loader = *loaderHandle;
+  loader->ReleaseBitmapResource();
+  loader->flags &= 0xfe;
+  delete loader;
+  delete loaderHandle;
+
+  RECT dest;
+  dest.left = destRect->left;
+  dest.top = destRect->top;
+  dest.right = destRect->right;
+  dest.bottom = destRect->bottom;
+  OffsetRect(&dest, offsetX, offsetY);
+  SetGWorld(restoreContext, restoreFlags);
+  UpdatePaletteIndexWithDefaultFallback(0x10);
+  if (g_pPrimaryRenderSurfaceContext->blitSurface.surfaceObject != nullptr) {
+    TBitmapSurfaceNode** primaryNodes = static_cast<TBitmapSurfaceNode**>(
+        g_pPrimaryRenderSurfaceContext->blitSurface.surfaceObject);
+    int surfaceHeight = primaryNodes[4]->field08;
+    if (surfaceHeight < 1) {
+      surfaceHeight = -surfaceHeight;
+    }
+    OffsetRect(&dest, 0, (surfaceHeight - dest.top) - dest.bottom);
+  }
+  BlitRectWithOptionalTransparency(destContext->GetBlitSurface(),
+                                   g_pPrimaryRenderSurfaceContext->GetBlitSurface(), destRect,
+                                   &dest, 0x24, 0);
+  UpdatePaletteIndexWithDefaultFallback(0x13);
 }
+IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
 // FUNCTION: IMPERIALISM 0x004badd0
 void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
@@ -147,14 +328,134 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
 // FUNCTION: IMPERIALISM 0x004bafa0
 void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                               RgnHandle hitArg) {
-  (void)point;
-  (void)hitArg;
+  CTemporaryRegion scopedRegion;
+  CString hoverText;
+  CString scratch;
+
+  // Outside the city-backdrop hit area: fall back to the base child hit-test.
+  if (point->y < 0x24 || point->y > 0x1e2 || point->x < 0x33 || point->x > 0x24d) {
+    TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
+    return;
+  }
+
+  // Hit-test the building clip regions in reverse draw order (topmost first).
+  bool handled = false;
+  for (int slotIndex = 15; slotIndex >= 0; --slotIndex) {
+    if (handled) {
+      break;
+    }
+    short slot = g_anCityBuildingSlotOrder[slotIndex];
+    if (PtInRgn(point, buildingClipRegionsEC[slot]) == 0) {
+      continue;
+    }
+
+    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    TCity* city = (nation != 0) ? nation->city : 0;
+    city->GetNextBuildingType(slot);
+    bool available = city->IsCapacityCenter(slot) != 0;
+
+    if (slot == 6 || slot == 0xb) {
+      short activeNation = g_pSimMgr->GetActiveNationId();
+      if (g_pCityOrderCapabilityState->orderCapRows277[activeNation].techStatusByTechId[0x13] !=
+          2) {
+        available = false;
+      }
+    }
+
+    if (available) {
+      g_pSimMgr->GetString(0x2734, slot, &hoverText);
+    }
+    handled = true;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004bb7a0
 void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dialogRoot) {
-  (void)city;
-  (void)dialogRoot;
+  CString template1;
+  CString value1;
+  CString value2;
+  CString value3;
+  CString assembled;
+
+  TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+
+  this->city94 = city;
+  this->dialogRoot98 = dialogRoot;
+  UpdateToolbar();
+
+  // Query each of the 16 building slots' window state (populates production22c/24c).
+  // The strategic-map building-page factory (slot 0x14) that stores buildingViewsAC[slot]
+  // is elided pending resolution of that mislabeled vtable slot.
+  for (short slot = 0; slot < 16; ++slot) {
+    short current;
+    short accum;
+    city->GetBuildingWindowState(slot, &current, &accum);
+  }
+
+  short* summary = city->GetCitySummaryRecordSlot74();
+
+  // Value blocks: bracket-expand a template with a summary count and the owner's need targets.
+  static const struct {
+    unsigned int tag;
+    short assertLine;
+    short summaryIndex;
+    short needIndexA;
+    short needIndexB;
+    short templateIndex;
+    short preludeIndex;
+  } kValueBlocks[] = {
+      {IMPERIALISM_FOURCC('m', 'e', 'a', 't'), 0x440, 0x14, 0x14, 0x13, 0x1e, 0x12},
+      {IMPERIALISM_FOURCC('p', 'r', 'o', 'd'), 0x44e, 0x12, 0x12, -1, 0x1f, 0x12},
+      {IMPERIALISM_FOURCC('g', 'r', 'a', 'i'), 0x459, 0x11, 0x11, -1, 0x1f, 0x11},
+  };
+  for (int i = 0; i < 3; ++i) {
+    TStaticText* control =
+        static_cast<TStaticText*>(dialogRoot->ResolveControlByTag(kValueBlocks[i].tag));
+    if (control == nullptr) {
+      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8,
+                                                   kValueBlocks[i].assertLine);
+    }
+    value1.Format(g_szDecimalFormat, summary[kValueBlocks[i].summaryIndex]);
+    int needTotal = nation->GetNeedTargetByType(kValueBlocks[i].needIndexA);
+    if (kValueBlocks[i].needIndexB != -1) {
+      needTotal += nation->GetNeedTargetByType(kValueBlocks[i].needIndexB);
+    }
+    value2.Format(g_szDecimalFormat, needTotal);
+    g_pSimMgr->GetStringPrelude(kValueBlocks[i].preludeIndex, &value3);
+    g_pSimMgr->GetString(0x2734, kValueBlocks[i].templateIndex, &template1);
+    scanBracketExpressions(g_pSimMgr, &assembled, static_cast<LPCSTR>(template1),
+                           static_cast<LPCSTR>(value1), static_cast<LPCSTR>(value2),
+                           static_cast<LPCSTR>(value3));
+    SetControlHoverHelpText(assembled, control);
+  }
+
+  // Flag blocks: pick one of two localized strings by the control's actionable state.
+  static const struct {
+    unsigned int tag;
+    short assertLine;
+    short trueIndex;
+    short falseIndex;
+  } kFlagBlocks[] = {
+      {IMPERIALISM_FOURCC('u', 'n', 't', 'r'), 0x465, 0xd, 0xe},
+      {IMPERIALISM_FOURCC('t', 'r', 'a', 'i'), 0x46d, 0xf, 0x10},
+      {IMPERIALISM_FOURCC('p', 'r', 'o', 'f'), 0x475, 0x11, 0x12},
+      {IMPERIALISM_FOURCC('p', 'o', 'w', 'e'), 0x47d, 0x13, 0x14},
+      {IMPERIALISM_FOURCC('s', 'i', 'c', 'k'), 0x489, 0x1, 0x2},
+      {IMPERIALISM_FOURCC('d', 'e', 'a', 'd'), 0x492, 0x15, 0x16},
+      {IMPERIALISM_FOURCC('l', 'a', 'b', 'P'), 0x49e, 0x17, 0x18},
+  };
+  for (int j = 0; j < 7; ++j) {
+    TView* control = dialogRoot->ResolveControlByTag(kFlagBlocks[j].tag);
+    if (control == nullptr) {
+      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8,
+                                                   kFlagBlocks[j].assertLine);
+    }
+    short index = control->IsActionable() ? kFlagBlocks[j].trueIndex : kFlagBlocks[j].falseIndex;
+    g_pSimMgr->GetString(0x2734, index, &template1);
+    SetControlHoverHelpText(template1, control);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004bc0b0

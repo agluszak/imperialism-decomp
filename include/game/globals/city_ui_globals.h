@@ -17,6 +17,12 @@ extern short g_cityActionCapabilityGroupBySlot_00650670[32];
 // Reverse hit-test priority for the 16 city-production building regions.
 extern short g_cityBuildingHitTestOrder[16];
 
+// Resource/order-type -> armory recruit-button icon class (TArmoryView::DoStartup 0x4cee20).
+extern short g_resourceTypeToUnitClass_00695528[32];
+
+// FourCC tags of the 23 warehouse commodity value controls (TWarehouseView::DoStartup).
+extern unsigned int g_awCommodityValueControlTags_00696108[23];
+
 // Per-building offset added to the city-building sound-effect base (3000).
 extern short g_cityBuildingSoundCueOffsets[16];
 

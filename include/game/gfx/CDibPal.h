@@ -25,6 +25,10 @@ public:
   // Select this palette into the DC (MFC CDC::SelectPalette) and realize it. 0x0047e930
   UINT SelectIntoDcAndRealize(CDC* dc, BOOL background);
 
+  // Debug helper: fills a 16x16 grid of PALETTEINDEX-colored rectangles across `bounds`,
+  // one cell per palette entry (capped at the palette's actual entry count). 0x0047e590
+  void DrawPalettePreviewGridRectangles(CDC* dc, RECT* bounds, BOOL bForceBackground);
+
   // Load a RIFF PAL palette, prompting for a file when fileName is null or empty. 0x0047e960
   int LoadPaletteFile(LPCSTR fileName);
   int LoadPalette(CFile* file);      // 0x0047ec70

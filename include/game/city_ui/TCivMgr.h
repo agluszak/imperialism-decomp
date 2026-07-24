@@ -29,6 +29,10 @@ public:
   // TCivMgr instance (same 0xc-byte object, same selectedEntry slot, and its vtable
   // dispatches match the slots declared above).
   void SetActiveCivilianSelection(class TCivUnit* entryContext, char refreshCommandPanel);
+
+  // Issues a prospecting order on the selected civilian, relinks its map tile, plays the
+  // confirmation sound, and spins a short UI-pumped feedback delay. 0x004d39d0.
+  char QueueProspectingOrderAndPlayFeedback(short nTileIndex);
   // Clear highlighted (mode 3) civilian entries in the nation's tracked-object list.
   // 0x004d20e0, __thiscall.
   void ClearCivilianSelectionHighlightsForNation(short nationId);

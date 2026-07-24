@@ -50,6 +50,34 @@ int CDibPal::BuildPaletteFromBitmapColorTable(CDib* dib) {
   return Attach(::CreatePalette(m_pLogPalette));
 }
 
+// FUNCTION: IMPERIALISM 0x0047e590
+void CDibPal::DrawPalettePreviewGridRectangles(CDC* dc, RECT* bounds, BOOL bForceBackground) {
+  int entryCount = 0;
+  ::GetObject(m_hObject, 4, &entryCount);
+
+  CPalette* oldPalette = dc->SelectPalette(this, bForceBackground);
+  ::RealizePalette(dc->m_hDC);
+
+  int remaining = entryCount;
+  int prevBottom = 0;
+  for (int row = 0; row < 0x10 && remaining != 0; row++) {
+    int bottom = bounds->bottom * (row + 1) / 16 + 1;
+    int prevRight = 0;
+    for (int col = 0; col < 0x10 && remaining != 0; col++) {
+      int right = bounds->right * (col + 1) / 16 + 1;
+      CBrush brush(PALETTEINDEX(row * 16 + col));
+      CBrush* oldBrush = dc->SelectObject(&brush);
+      ::Rectangle(dc->m_hDC, prevRight - 1, prevBottom - 1, right, bottom);
+      dc->SelectObject(oldBrush);
+      remaining--;
+      prevRight = right;
+    }
+    prevBottom = bottom;
+  }
+
+  dc->SelectPalette(oldPalette, FALSE);
+}
+
 // FUNCTION: IMPERIALISM 0x0047e930
 UINT CDibPal::SelectIntoDcAndRealize(CDC* dc, BOOL background) {
   // LIBRARY: CDC::SelectPalette (0x00612a78)

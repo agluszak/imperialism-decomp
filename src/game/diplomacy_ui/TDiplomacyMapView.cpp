@@ -1309,6 +1309,16 @@ void TDiplomacyMapView::DrawVoteNuggets() {
   UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
+// Presents the "diplomacy action rejected" modal: resolves the rejection-reason string for the
+// current proposal mode (GetString group 0x2754, index proposalArrayMode18d8 - 1) and shows it.
+// FUNCTION: IMPERIALISM 0x004f7400
+void ShowDiplomacyActionRejectedNotice() {
+  CString message;
+  g_pSimMgr->GetString(0x2754, g_pDiplomacyTurnStateManager->proposalArrayMode18d8 - 1, &message);
+  g_pUiRuntimeContext->ModalMessage(3, CString(g_szEmptyString), message,
+                                    g_ptDiplomacyNoticeModalMessage, 0, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x004f74f0
 char TDiplomacyMapView::CheckEntanglements(int targetNationSlot, eDipAction action) {
   if (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(targetNationSlot,

@@ -67,6 +67,8 @@ extern TView* g_pUiResourceHead;
 
 extern POINT g_ptTechItemModalMessage; // @ 0x6a5820
 
+extern POINT g_ptFormattedErrorModalMessage; // @ 0x6a5ab0
+
 extern POINT g_ptLoungeNationReplacementModalMessage; // @ 0x6a3d98
 
 extern POINT g_ptQueryFloaterModalMessage; // @ 0x6a4048
@@ -106,6 +108,7 @@ extern TOcean* g_pActiveMapOrderContext;
 extern TTaskForce* g_pCachedMapActionContext;
 
 extern TMapMgr* g_pGlobalMapState;
+extern POINT g_orderSupportModalPosition_006a2288;
 
 extern TCivMgr* g_pSelectedCivilianOrderState; // 0x6a43dc — the TCivMgr instance
 

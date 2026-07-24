@@ -43,6 +43,11 @@ public:
   int GetSize() const {
     return count;
   }
+  // Raw backing buffer. Used where the original hands out the accumulated storage
+  // pointer directly (e.g. a stretch<char> string-builder returning its buffer).
+  T* RawData() const {
+    return data;
+  }
   T GetAt(int index) const {
     return data[index];
   }

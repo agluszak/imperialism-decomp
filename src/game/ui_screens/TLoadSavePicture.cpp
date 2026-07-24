@@ -413,6 +413,34 @@ int __cdecl ReadScenarioIndexFromSaveHeader(const char* path) {
   return result;
 }
 
+// FUNCTION: IMPERIALISM 0x0056d840
+void LoadAndFormatMappedFlavorTextRecordsFromStream(int* outSlot, int targetGameId) {
+  CString scratch;
+  for (int slot = 0; slot < 8; ++slot) {
+    const char* prefix = (g_pSimMgr->multiplayerSessionRole == 0)
+                             ? g_szSingleSlotSavePrefix_00698718
+                             : g_szMultiplayerSavePrefix_00698710;
+    CString slotStr;
+    slotStr.Format(g_szDecimalFormat, slot);
+    CString path(g_szSaveDirectoryPrefix_00698724);
+    path += prefix;
+    path += slotStr;
+    path += g_szImpSaveExtension_00698708;
+    if (TryGetFileMetadataForPath(&path)) {
+      FILE* file = fopen(static_cast<const char*>(path), g_szLiteralRb_00698720);
+      int header[3];
+      int gameId = -3;
+      if (fread(header, 1, 0xc, file) == 0xc) {
+        gameId = header[2];
+      }
+      fclose(file);
+      if (gameId == targetGameId) {
+        *outSlot = slot;
+      }
+    }
+  }
+}
+
 // Top-level save-game driver. mode 0xa1 = autosave slot "A"; 0xa2 = autosave without
 // marking the document saved; 0..7 = numbered slot. When hosting
 // (multiplayerSessionRole == 1) an

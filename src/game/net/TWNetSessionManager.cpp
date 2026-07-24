@@ -328,6 +328,18 @@ BOOL TDirectPlaySessionManagerBase::GetPlayerData(DPID playerId, void* buffer, D
   return lastErrorCode0c >= 0;
 }
 
+// FUNCTION: IMPERIALISM 0x005e2a20
+TWNetSessionManager::~TWNetSessionManager() {
+  for (int i = 0; i < g_WNetSerializedPtrArrayB006a5f28.GetSize(); ++i) {
+    delete g_WNetSerializedPtrArrayB006a5f28[i];
+  }
+  g_WNetSerializedPtrArrayB006a5f28.RemoveAll();
+  for (int j = 0; j < g_WNetSerializedPtrArrayA006a5f10.GetSize(); ++j) {
+    delete static_cast<RuntimeSelectionRecord*>(g_WNetSerializedPtrArrayA006a5f10[j]);
+  }
+  g_WNetSerializedPtrArrayA006a5f10.RemoveAll();
+}
+
 // FUNCTION: IMPERIALISM 0x005e2b50
 void TDirectPlaySessionManagerBase::InitializeSessionDescription() {}
 

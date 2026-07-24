@@ -853,7 +853,92 @@ void TDiplomacyMgr::SyncNationField790FromLocalizationStateId() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f05c0
-void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {}
+void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
+  for (int i = 0; i < 7; i++) {
+    if (g_apNationStates[i] != NULL) {
+      g_apNationStates[i]->ApplyJoinEmpireMode2FinalizeNationNameState();
+    }
+  }
+
+  if (g_pSimMgr && g_pSimMgr->multiplayerSessionRole == 2) {
+    if (pendingWarTransitionQueue18d4) {
+      pendingWarTransitionQueue18d4->ClearAndFreeAllPtrListRecords();
+    }
+    return;
+  }
+
+  for (int minorSlot = 7; minorSlot < 23; minorSlot++) {
+    short bestOfferScore = 0x8b;
+    int bestOfferNation = -1;
+    bool isOfferTie = true;
+
+    int bestRelationScore = 9000;
+    int bestRelationNation = -1;
+    bool isRelationTie = true;
+    (void)isOfferTie;
+    (void)isRelationTie;
+
+    unsigned int randSeed1 = 0;
+    unsigned int randSeed2 = 0;
+
+    for (int gpSlot = 0; gpSlot < 7; gpSlot++) {
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<NationSlot>(gpSlot))) {
+        short relationVal = relationStandingScoreMatrix79c[minorSlot * 23 + gpSlot];
+        if (bestOfferScore < relationVal) {
+          isOfferTie = false;
+          bestOfferNation = gpSlot;
+          bestOfferScore = relationVal;
+        } else if (relationVal == bestOfferScore) {
+          isOfferTie = true;
+          if (!g_apTerrainTypeDescriptorTable[gpSlot]->IsEncodedNationSlotMinus200Equal(gpSlot)) {
+            unsigned int rnd = (unsigned int)relationVal + 0x31 +
+                               (unsigned int)g_pSimMgr->GetEconomicTurn() + gpSlot;
+            if (rnd == 0)
+              rnd = randSeed1;
+            randSeed1 = rnd * 0x15a4e35 + 1;
+            if ((randSeed1 >> 12) & 1) {
+              bestOfferNation = gpSlot;
+              bestOfferScore = relationVal;
+            }
+          } else {
+            bestOfferNation = gpSlot;
+            bestOfferScore = relationVal;
+          }
+        }
+
+        int score = (200 - relationSideEffectMatrix1402[minorSlot * 23 + gpSlot]) * relationVal;
+        if (bestRelationScore < score) {
+          isRelationTie = false;
+          bestRelationNation = gpSlot;
+          bestRelationScore = score;
+        } else if (score == bestRelationScore) {
+          isRelationTie = true;
+          if (!g_apTerrainTypeDescriptorTable[gpSlot]->IsEncodedNationSlotMinus200Equal(gpSlot)) {
+            unsigned int rnd = (unsigned int)relationVal + 0x31 +
+                               (unsigned int)g_pSimMgr->GetEconomicTurn() + gpSlot;
+            if (rnd == 0)
+              rnd = randSeed2;
+            randSeed2 = rnd * 0x15a4e35 + 1;
+            if ((randSeed2 >> 12) & 1) {
+              bestRelationNation = gpSlot;
+              bestRelationScore = score;
+            }
+          } else {
+            bestRelationNation = gpSlot;
+            bestRelationScore = score;
+          }
+        }
+      }
+    }
+
+    if (bestOfferNation != -1) {
+      specialRelationSourceSlots1894[minorSlot - 7] = static_cast<NationSlot>(bestOfferNation);
+    }
+    if (bestRelationNation != -1) {
+      specialRelationTargetSlots18b4[minorSlot - 7] = static_cast<NationSlot>(bestRelationNation);
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004f09c0
 void TDiplomacyMgr::QueueNationPairWarTransition(int sourceNationSlot, int targetNationSlot) {

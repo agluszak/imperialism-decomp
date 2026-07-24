@@ -22,6 +22,11 @@ public:
   // council nation-overlay geometry and labels (0x4fba70, 578 bytes).
   void DoPostCreate(int arg) override;
 
+  // Census the map's pending-policy records into relationship-category counts (major/minor
+  // × in-vote/out-of-vote) for the selected nation pair, then push those counts as styled
+  // text onto the 'num0'-'num3' / 'sco0'-'sco3' overlay labels. 0x4fbdf0, __thiscall.
+  void BuildDiplomacyMapHintOverlayTextAndMetrics();
+
   // Rebuilds the council candidate name/coat-of-arms controls and (re)starts the vote
   // ticker. Non-virtual; called from DoEvent's "star" branch with ecx = this. Its
   // receiver is confirmed to be a TCouncilView (writes councilNationCount24c8 / visibleVoteTier528).

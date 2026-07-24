@@ -12,6 +12,10 @@ public:
 
   TCheater();
 
+  // Two-phase init (MacApp IViewClass idiom): frame this cheater panel into `panel`, then
+  // build its "Done" TStaticText caption and TButton child. 0x004b14a0, __thiscall.
+  void ConstructTCheaterBaseState(TView* panel, int unusedArg);
+
   // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended at 0x60. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
   int field60;
 };

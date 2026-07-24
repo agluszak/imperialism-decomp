@@ -95,11 +95,57 @@
 // holds the active main TView used as the dispatch root for turn-event UI refreshes.
 
 #include "game/ui_core/CIncludeView.h"
+#include "game/GameAssert.h"
 
 namespace {
 using turn_event_dialog::GoldCommitControl;
 using turn_event_dialog::GoldDialogControl;
 } // namespace
+
+// Rebuild the "peace conference" turn-state screen's styled text: apply a bracketed
+// text style + centred alignment to the 'labl' caption, then push localized strings
+// (group 0x2737) and the fixed "These books are for show" placeholder onto the
+// main/host/join/nada controls as their hover-help text.
+// FUNCTION: IMPERIALISM 0x005dbe50
+void BuildTurnStateStyledTextAndDispatchMainRoutine() {
+  TView* activeDialog = g_pDisplayMgr->activeDialog;
+  CString text;
+
+  TView* mainControl = activeDialog->ResolveControlByTag(kControlTagMain); // 'main'
+  mainControl->AssertValid();
+
+  TStaticText* labelControl = static_cast<TStaticText*>(
+      activeDialog->ResolveControlByTag(IMPERIALISM_FOURCC('l', 'a', 'b', 'l')));
+  if (labelControl == 0) {
+    GAME_FAIL_NIL_POINTER();
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UViewMgr.cpp", 0xeb3);
+  }
+  TextStyle style;
+  BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b6b);
+  labelControl->InstallTextStyle(style, 0);
+  labelControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+  g_pSimMgr->GetString(0x2737, 2, &text);
+  labelControl->SetTextAndMaybeRefresh(&text, 0);
+  g_pSimMgr->GetString(0x2737, 2, &text);
+  SetControlHoverHelpText(text, mainControl);
+
+  TView* hostControl = activeDialog->ResolveControlByTag(IMPERIALISM_FOURCC('h', 'o', 's', 't'));
+  hostControl->AssertValid();
+  g_pSimMgr->GetString(0x2737, 5, &text);
+  SetControlHoverHelpText(text, hostControl);
+
+  TView* hostControl2 = activeDialog->ResolveControlByTag(IMPERIALISM_FOURCC('h', 'o', 's', 't'));
+  g_pSimMgr->GetString(0x2737, 5, &text);
+  SetControlHoverHelpText(text, hostControl2);
+
+  TView* joinControl = activeDialog->ResolveControlByTag(IMPERIALISM_FOURCC('j', 'o', 'i', 'n'));
+  g_pSimMgr->GetString(0x2737, 6, &text);
+  SetControlHoverHelpText(text, joinControl);
+
+  TView* nadaControl = activeDialog->ResolveControlByTag(kControlTagNada); // 'nada'
+  text = CString("These books are for show");
+  SetControlHoverHelpText(text, nadaControl);
+}
 
 // FUNCTION: IMPERIALISM 0x005dcdf0
 char TViewMgr::ShowNewCityDialog(TTown* town) {

@@ -1183,8 +1183,8 @@ address|name|symbol|size|type|prototype|provenance
 4955f0|BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl||12|function|undefined BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl()|
 495610|DisposeRgn||46|function|RgnHandle __cdecl DisposeRgn(RgnHandle region)|
 495650|PtInRgn||107|function|int __cdecl IsPointInsideHitRegion(CPoint* point, int hitArg)|
-4956e0|OrphanCallChain_C4_I50_004956e0||121|function|undefined OrphanCallChain_C4_I50_004956e0()|
-495780|OrphanCallChain_C4_I50_00495780||121|function|undefined OrphanCallChain_C4_I50_00495780()|
+4956e0|MapPt||121|function|undefined MapPt()|
+495780|MapPtSecondCopy||121|function|undefined MapPtSecondCopy()|
 495820|NewRgn||130|function|undefined CreateClipStateRegionWrapperObject()|
 4958e0|RectRgn||47|function|undefined ReplaceClipStateRegionHandleFromRect()|
 495920|GetClip||207|function|undefined ApplyHitRegionToClipState()|

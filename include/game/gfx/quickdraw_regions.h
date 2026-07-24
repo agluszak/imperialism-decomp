@@ -28,24 +28,37 @@ typedef Region** RgnHandle;
 
 // Mac QuickDraw API surface (names follow Inside Macintosh; QD prefix only where
 // a Win32 name collides).
-RgnHandle NewRgn(void);                                       // 0x00495820
-RgnHandle DisposeRgn(RgnHandle rgn);                          // 0x00495610
-void RectRgn(RgnHandle rgn, RECT* rect);                      // 0x004958e0
-void GetClip(RgnHandle rgn);                                  // 0x00495920
-void SetClip(RgnHandle rgn);                                  // 0x00495a30
-void ClipRect(RECT* rect);                                    // 0x00495a80
-void UnionRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst); // 0x004977a0
-void SetEmptyRgn(RgnHandle rgn);                              // 0x00497810
-void QDFrameRgn(RgnHandle rgn);                               // 0x00497860
+void InitializeCityBuildingControlRegions_Impl(RgnHandle region, int x, int y); // 0x00497b30
+RgnHandle NewRgn(void);                                                         // 0x00495820
+RgnHandle DisposeRgn(RgnHandle rgn);                                            // 0x00495610
+void RectRgn(RgnHandle rgn, RECT* rect);                                        // 0x004958e0
+void GetClip(RgnHandle rgn);                                                    // 0x00495920
+void SetClip(RgnHandle rgn);                                                    // 0x00495a30
+void ClipRect(RECT* rect);                                                      // 0x00495a80
+void UnionRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst);                   // 0x004977a0
+void SetEmptyRgn(RgnHandle rgn);                                                // 0x00497810
+void QDFrameRgn(RgnHandle rgn);                                                 // 0x00497860
+// Combine two clip regions into dst (empty/copy/RGN_DIFF cases) and refresh its box. 0x00497540
+void CombineClipRegionsWithEmptyHandling(RgnHandle srcA, RgnHandle srcB, RgnHandle dst);
+// Fill the region with a solid foreground-color brush (CBrush(COLORREF) form). 0x00497940
+void FillClipRegionWithForegroundBrush(RgnHandle rgn);
+// Fill the region's interior with the current QuickDraw foreground color. 0x00497a10
+void QDPaintRgn(RgnHandle rgn);
+// Intersect the clip region with `rect` (RGN_AND) and refresh its bounding box. 0x00498070
+void IntersectClipRegionWithRectAndUpdateBounds(RgnHandle clipRgn, RECT* rect);
 void SetRectRgn(RgnHandle rgn, short left, short top, short right,
-                short bottom);                   // 0x00498be0
-void CopyRgn(RgnHandle src, RgnHandle dst);      // 0x00497bb0
-void OpenRgn(void);                              // 0x00497f60
-void CloseRgn(RgnHandle dst);                    // 0x00497f90
-void QDFrameRect(RECT* rect);                    // 0x00498180 (Win32 ::FrameRect collides)
-unsigned char EmptyRgn(RgnHandle rgn);           // 0x00498aa0
-int PtInRgn(CPoint* point, RgnHandle rgn);       // 0x00495650
-int SectRect(RECT* src1, RECT* src2, RECT* dst); // 0x00498bb0
+                short bottom);              // 0x00498be0
+void CopyRgn(RgnHandle src, RgnHandle dst); // 0x00497bb0
+void OpenRgn(void);                         // 0x00497f60
+void CloseRgn(RgnHandle dst);               // 0x00497f90
+void QDFrameRect(RECT* rect);               // 0x00498180 (Win32 ::FrameRect collides)
+unsigned char EmptyRgn(RgnHandle rgn);      // 0x00498aa0
+int PtInRgn(CPoint* point, RgnHandle rgn);  // 0x00495650
+// QuickDraw MapPt: rescale a point from srcRect's space into dstRect's, per axis.
+void MapPt(int* point, RECT* srcRect, RECT* dstRect); // 0x004956e0
+// Byte-identical unfolded second copy kept by the retail image.
+void MapPtSecondCopy(int* point, RECT* srcRect, RECT* dstRect); // 0x00495780
+int SectRect(RECT* src1, RECT* src2, RECT* dst);                // 0x00498bb0
 int BitMapToRegion(RgnHandle rgn, TBitmapSurfaceNode* surface); // 0x00497ef0
 void DisposeTemporaryRegionCache(void);                         // 0x004974f0
 

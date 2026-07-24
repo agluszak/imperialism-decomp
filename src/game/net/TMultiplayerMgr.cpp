@@ -289,12 +289,87 @@ void TMultiplayerMgr::Free() {
 
 // FUNCTION: IMPERIALISM 0x00542be0
 void TMultiplayerMgr::ReadFrom(TStream* stream) {
-  (void)stream;
+  TEventHandler::ReadFrom(stream);
+
+  for (int i = 0; i < kMajorNationSessionSlotCount; ++i) {
+    stream->ReadBytes(&nationSessionIds[i], 4);
+    if (nationSessionIds[i] != 0) {
+      nationSessionIds[i] = -2;
+      nationStatusTags[i] = IMPERIALISM_FOURCC('l', 'w', 'o', 'a');
+    } else {
+      nationStatusTags[i] = IMPERIALISM_FOURCC('s', 'u', 'n', 'a');
+    }
+
+    if (g_apTerrainTypeDescriptorTable[i] == nullptr) {
+      nationStatusTags[i] = IMPERIALISM_FOURCC('d', 'e', 'a', 'd');
+    } else {
+      if (!g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<NationSlot>(i))) {
+        nationStatusTags[i] = IMPERIALISM_FOURCC('a', 'c', 'e', 'd');
+      }
+    }
+
+    stream->streamSlot70(&defaultNationTextSlots[i], 0x20);
+    stream->streamSlot70(&nationDisplayNameSlots[i], 0x20);
+  }
+
+  stream->streamSlot70(&playerNameString, 0x20);
+  CString tempStr;
+  stream->streamSlot70(&tempStr, 0x20);
+  stream->ReadBytes(&queueSyncDword, 4);
+  stream->ReadBytes(&sessionReadyFlag, 1);
+
+  if (g_pNetMgr006a6014 != nullptr) {
+    g_pNetMgr006a6014->ReadFrom(stream);
+  }
+
+  int activeId = g_pNetMgr006a6014->GetSessionActiveNationId();
+  short netSlot = g_pNetMgr006a6014->CheckConnectivityOrShowLocalizedWarningAndReturnReady();
+  nationSessionIds[netSlot] = activeId;
+  g_pNetMgr006a6014->CheckConnectivityOrShowLocalizedWarningAndReturnReady();
+  g_pSimMgr->DiplomacyNoticeString(nullptr);
+  g_pNetMgr006a6014->CheckConnectivityOrShowLocalizedWarningAndReturnReady();
+
+  if (g_pSimMgr->multiplayerSessionRole == 1) {
+    sessionPhaseTag = IMPERIALISM_FOURCC('i', 'n', 'i', 't');
+    g_pNetMgr006a6014->NoOpDialogModeTagChangedHook(1);
+  }
+
+  short activeIdx = g_pNetMgr006a6014->CheckConnectivityOrShowLocalizedWarningAndReturnReady();
+  int currentIdx = activeIdx;
+  if (currentIdx == -1) {
+    currentIdx = activeNationTagIndex;
+  }
+  nationStatusTags[currentIdx] = IMPERIALISM_FOURCC('b', 'u', 's', 'y');
+
+  g_pNetMgr006a6014->CheckConnectivityOrShowLocalizedWarningAndReturnReady();
+
+  int targetStatus[7];
+  for (int k = 0; k < 7; ++k) {
+    targetStatus[k] = IMPERIALISM_FOURCC('u', 'n', 'k', 'n');
+  }
+  targetStatus[currentIdx] = IMPERIALISM_FOURCC('b', 'u', 's', 'y');
+
+  sessionPhaseTag = IMPERIALISM_FOURCC('g', 'o', 'i', 'n');
+
+  g_pNetMgr006a6014->CheckConnectivityOrShowLocalizedWarningAndReturnReady();
+  g_pNetMgr006a6014->CheckConnectivityOrShowLocalizedWarningAndReturnReady();
 }
 
 // FUNCTION: IMPERIALISM 0x00542ff0
 void TMultiplayerMgr::WriteTo(TStream* stream) {
-  (void)stream;
+  TEventHandler::WriteTo(stream);
+  for (int i = 0; i < kMajorNationSessionSlotCount; ++i) {
+    stream->WriteBytesSlot78(&nationSessionIds[i], 4);
+    stream->streamSlotAc(&defaultNationTextSlots[i]);
+    stream->streamSlotAc(&nationDisplayNameSlots[i]);
+  }
+  stream->streamSlotAc(&playerNameString);
+  stream->streamSlotAc(&gameNameString);
+  stream->WriteBytesSlot78(&queueSyncDword, 4);
+  stream->WriteBytesSlot78(&sessionReadyFlag, 1);
+  if (g_pNetMgr006a6014 != nullptr) {
+    g_pNetMgr006a6014->WriteTo(stream);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005430c0

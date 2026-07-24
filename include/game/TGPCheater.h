@@ -10,4 +10,16 @@ public:
   virtual ~TGPCheater() override; // slot 0x01 (scalar deleting destructor)
 
   TGPCheater();
+
+  // Build one numeric-entry row of the GP-cheater dialog: a TNumberText value field (range
+  // -30000..3000) plus a TStaticText caption offset 0xac to its right. 0x004b1710.
+  void ConstructNumericEntryDialogCoreAndValueLabel(int* offsetLayout, int param2, short value,
+                                                    int param4);
+
+  // Two-phase init: chain to TCheater's base frame, add the 'name' caption, then build the
+  // five treasury/mercenary/pact/sale/purchase numeric-entry rows. 0x004b1a90.
+  void ConstructTGPCheaterBaseState(TView* panel);
+
+  // 0x4b1cb0 -- refresh the GP-cheater dialog's nation value fields from g_apNationStates.
+  void RefreshGPCheaterNationValues(int nationSlot);
 };
