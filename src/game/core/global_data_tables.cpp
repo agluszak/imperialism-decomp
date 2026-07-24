@@ -1667,6 +1667,18 @@ extern "C" const char* const g_pRegistrySettingsSectionAlt_0063E044 =
     s_ProfileSectionSettings_006941D0;
 // GLOBAL: IMPERIALISM 0x0063e048
 extern "C" const char* const g_pRegistryAutoResKey_0063E048 = s_ProfileKeyAutoRes_006941C4;
+// Game-preferences dialog data block (TGamePreferencesPicture::DoPostCreate 0x56a5b0).
+// Shared text seeded into the 'main' ticker control on entry.
+// GLOBAL: IMPERIALISM 0x0065ddc8
+char* g_pGamePreferencesSharedText_0065DDC8 = g_szEmptyString;
+// Second pointer to the "AutoRes" profile key (the 0x63e048 twin), used for the
+// auto-resolution radio preload.
+// GLOBAL: IMPERIALISM 0x0065ddcc
+extern "C" const char* const g_pGamePreferencesAutoResKey_0065DDCC = s_ProfileKeyAutoRes_006941C4;
+// Per-preference-row index into TSimMgr::preferenceValues (-1 = row has no backing
+// preference; rows are the 'opta'..'opte' checkboxes).
+// GLOBAL: IMPERIALISM 0x0065dde0
+extern const int g_anGamePreferenceIndexByRow[5] = {3, 2, 8, 10, 0};
 // GLOBAL: IMPERIALISM 0x0063e04c
 extern "C" const char* const g_pRegistryLanguageKey_0063E04C = s_ProfileKeyLanguage_006941B8;
 // GLOBAL: IMPERIALISM 0x0063e050
@@ -1684,6 +1696,27 @@ extern "C" unsigned short g_awCivilianLegendSelectionCountsBySlot[16] = {0};
 // GLOBAL: IMPERIALISM 0x00698ee0
 extern "C" int g_anArmyToolbarCategoryByUnitType[30] = {
     0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 9, 9, 9};
+
+// Developable resource types per civilian class (4 slots, -1 = unused): Miner
+// coal/iron/gems/gold, Farmer cotton/grain/fruit, Forester timber, Rancher
+// wool/livestock, Fisherman fish, Driller oil. TCivDescription::DrawDeveloper
+// (0x5903c0) walks a class's row to pick the development level and the per-resource
+// yield icons; Prospector/Engineer/Developer rows are empty (they have their own
+// legends).
+// GLOBAL: IMPERIALISM 0x00662b98
+const int g_anDevelopableResourceTypesByCivilianClass[9][4] = {
+    {3, 4, 0x15, 0x16}, {-1, -1, -1, -1},   {0, 0x11, 0x12, -1}, {2, -1, -1, -1}, {-1, -1, -1, -1},
+    {1, 0x14, -1, -1},  {0x13, -1, -1, -1}, {-1, -1, -1, -1},    {6, -1, -1, -1}};
+
+// 2x2 (x, y) anchor grid for TCivDescription::DrawDeveloper's per-resource yield
+// icons, panel-local, offset by the view origin at draw time.
+// GLOBAL: IMPERIALISM 0x00698fc8
+short g_aDeveloperYieldIconAnchors[4][2] = {{540, 353}, {588, 353}, {540, 378}, {588, 378}};
+
+// Per-civilian-class base source-x into the development-level icon strip (38px per
+// level frame; -1 = the class has no development strip). TCivDescription::DrawDeveloper.
+// GLOBAL: IMPERIALISM 0x00698fe0
+short g_anDevelopmentIconStripBaseXByCivilianClass[9] = {228, -1, 0, 114, -1, 798, 912, 1064, 684};
 
 // GLOBAL: IMPERIALISM 0x698f58
 extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[45] = {

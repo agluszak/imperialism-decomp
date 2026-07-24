@@ -59,6 +59,9 @@ extern int g_bCityDialogLegendSelectionInitialized;
 
 // TCivDescription.cpp — per-civilian-class tile profile / legend selection counts.
 extern short g_anTargetTileProfileByCivilianClassAndSlot[];
+extern const int g_anDevelopableResourceTypesByCivilianClass[9][4]; // @ 0x662b98
+extern short g_aDeveloperYieldIconAnchors[4][2];                    // @ 0x698fc8
+extern short g_anDevelopmentIconStripBaseXByCivilianClass[9];       // @ 0x698fe0
 
 extern unsigned short g_awCivilianLegendSelectionCountsBySlot[16];
 
