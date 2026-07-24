@@ -16,4 +16,5 @@ public:
 
   TDropShadowTextBehavior();
 };
+
 ASSERT_SIZE(TDropShadowTextBehavior, 0x14);

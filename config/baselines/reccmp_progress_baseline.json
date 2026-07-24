@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
-  "git_branch": "fable-beads",
-  "git_commit": "19f138f8527ade13e07be3649a5ab9d8f72db4d8",
-  "git_commit_date": "2026-07-24T10:17:35+02:00",
+  "git_branch": "porting",
+  "git_commit": "2ecfa085808e2a12d5df7542487b364fc8305438",
+  "git_commit_date": "2026-07-24T10:40:40+02:00",
   "global_coverage_pct": 24.440982404692082,
   "global_orig_only_count": 8245,
   "global_recomp_only_count": 7777,
@@ -63,7 +63,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 4,
   "template_canonical_paired_count": 4,
-  "timestamp_utc": "2026-07-24T08:18:09+00:00",
+  "timestamp_utc": "2026-07-24T08:41:19+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
