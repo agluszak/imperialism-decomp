@@ -11660,7 +11660,7 @@ g_aInitialCityRecruitmentOrderProfiles 695C50 l
 g_aUnitOrderCostProfileByAbilityId 695CD0 l
 g_aiCityActionCostProfiles 695CD2 l
 g_pTradeSummarySelectionMap 696108 l
-g_cityBuildingHitTestOrder 696178 l
+g_anCityBuildingSlotOrder 696178 l
 g_nCityBuildingSlotOrderLast 696196 l
 g_anCityBuildingSlotCoords 696198 l
 g_nCityBuildingSlotYOffsetIndex 6961D8 l
@@ -11686,7 +11686,7 @@ g_cachedAiCityActionTurnTick_006967d8 6967D8 l
 s_SourcePathUDefenseMinister_00696860 696860 l
 g_awDiplomacyTradePolicyIconValueTable 696950 l
 g_diplomacyActionButtonTagTable_00696960 696960 l
-g_councilControlTagTable 696978 l
+g_aDiplomacyActionTopicTabTags 696978 l
 g_aDiplomacyRelationPaletteColorCodes 696990 l
 g_infoPanelLabelXByRow_006969b0 6969B0 l
 g_infoPanelLabelYByRow_006969c0 6969C0 l
@@ -12510,8 +12510,7 @@ g_nUiAnimatorSurfaceBoundsHeight 6A222C l
 g_ptArmyOrderModalMessage 6A2318 l
 g_InfoBarDummyOrigin_006A2410 6A2410 l
 g_Sanitize_City_Counter_Value_006A24D4 6A24D4 l
-g_anCityBuildingLayoutValues 6A24E8 l
-g_aCityBuildingActionRects 6A2778 l
+g_aCityBuildingLayoutRects 6A24E8 l
 g_aCityBuildingHoverSelectionRects 6A2998 l
 g_nCityBuildingSlotXOffsetIndex 6A2ABC l
 g_nCityBuildingDrawYOffsetIndex 6A2AC0 l

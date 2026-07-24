@@ -2329,7 +2329,7 @@ void ValidateOrderSupportDeltaAndMarkDirectionalOverlays(int nationSlot, short z
   if (totalArms != capacity && totalArms - capacity > -1) {
     CString message;
     g_pSimMgr->GetString(0x2745, 10, &message);
-    g_pUiRuntimeContext->ModalMessage(message, g_orderSupportModalPosition_006a2288);
+    g_pUiRuntimeContext->ModalMessage(message, g_ptArmyValidationModalMessage);
     g_pGlobalMapState->MarkDirectionalMapOverlayFlagsForNationOrders();
   }
 }

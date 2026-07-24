@@ -31,22 +31,17 @@ extern short g_anCityBuildingSlotCoords[36];
 extern int g_nCityBuildingSlotXOffsetIndex;
 extern int g_nCityBuildingDrawYOffsetIndex;
 extern short g_awCityBuildingActionResourceIds[72];
-extern RECT g_anCityBuildingLayoutValues[72];
 
 // Per-building-slot hover/hit-test rects (indexed by slotId, see
 // TToolBarCluster::HandleCityBuildingHoverSelection), built by
 // InitializeCityBuildingHoverSelectionRects_004b95c0. 0x6a2998.
 extern CRect g_aCityBuildingHoverSelectionRects[16];
 
-// 41 layout rects for the city-building screen, written component-by-component in
-// left/top/right/bottom order by InitializeCityBuildingLayoutData: thirteen groups of
-// three rects (the trailing rects of a group are zero when that building has fewer
-// hotspots) plus a final pair. 0x6a24e8.
-extern CRect g_aCityBuildingLayoutRects[41];
-
-// 31 action-button rects for the city-building screen, placement-constructed by
-// InitializeCityBuildingLayoutData (immediately after g_aCityBuildingLayoutRects). 0x6a2778.
-extern CRect g_aCityBuildingActionRects[31];
+// City-building screen control rects: one 72-rect table (3 rects per building/action
+// row) populated by InitializeCityBuildingLayoutData -- elements 0..40 by per-field
+// stores, elements 41..71 by inlined CRect constructor calls -- and read with a
+// row*3+action stride by TCityProductionView::DoPostCreate. 0x6a24e8.
+extern CRect g_aCityBuildingLayoutRects[72];
 
 extern "C" const unsigned int g_tradeCommodityRowTagTable[17];
 

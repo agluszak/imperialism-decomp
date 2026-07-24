@@ -115,7 +115,6 @@ extern TOcean* g_pActiveMapOrderContext;
 extern TTaskForce* g_pCachedMapActionContext;
 
 extern TMapMgr* g_pGlobalMapState;
-extern POINT g_orderSupportModalPosition_006a2288;
 
 extern TCivMgr* g_pSelectedCivilianOrderState; // 0x6a43dc — the TCivMgr instance
 
@@ -153,7 +152,8 @@ extern int g_regionSeedGridCols_006a38f0;
 
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
-extern "C" char s_szRankDotSeparator_00698ab4[]; // ". " between high-score rank and name (defined in the extern "C" table block)
+extern "C" char s_szRankDotSeparator_00698ab4
+    []; // ". " between high-score rank and name (defined in the extern "C" table block)
 extern char s_szTurnSummaryIndent_00696790[]; // "      " @ 0x696790
 
 extern char s_szTurnHistorySeparator_00699320[];

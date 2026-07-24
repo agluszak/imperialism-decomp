@@ -132,14 +132,14 @@ void TCouncilView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   } else if (commandId == 0x14) {
     unsigned int tag = sourceHandler->controlTag;
     int tagIndex = 0;
-    unsigned int* tagTable = g_councilControlTagTable;
+    unsigned int* tagTable = g_aDiplomacyActionTopicTabTags;
     do {
       if (tag == *tagTable) {
         break;
       }
       tagTable += 1;
       tagIndex += 1;
-    } while (tagTable < g_councilControlTagTable + 6);
+    } while (tagTable < g_aDiplomacyActionTopicTabTags + 6);
     if (tagIndex < 6) {
       this->ChangeSelectedActionTopic(tagIndex);
       return;

@@ -8803,7 +8803,7 @@ address|name|symbol|size|type|prototype|provenance
 696860|s_SourcePathUDefenseMinister_00696860|||global||
 696950|g_awDiplomacyTradePolicyIconValueTable|||global||
 696960|g_diplomacyActionButtonTagTable_00696960|||global||
-696978|g_councilControlTagTable|||global||
+696978|g_aDiplomacyActionTopicTabTags|||global||
 696990|g_aDiplomacyRelationPaletteColorCodes|||global||
 6969b0|g_infoPanelLabelXByRow_006969b0|||global||
 6969c0|g_infoPanelLabelYByRow_006969c0|||global||
@@ -9628,7 +9628,6 @@ address|name|symbol|size|type|prototype|provenance
 6a2410|g_InfoBarDummyOrigin_006A2410|||global||
 6a24d4|g_Sanitize_City_Counter_Value_006A24D4|||global||
 6a24e8|g_aCityBuildingLayoutRects|||global||
-6a2778|g_aCityBuildingActionRects|||global||
 6a2998|g_aCityBuildingHoverSelectionRects|||global||
 6a2abc|g_nCityBuildingSlotXOffsetIndex|||global||
 6a2ac0|g_nCityBuildingDrawYOffsetIndex|||global||

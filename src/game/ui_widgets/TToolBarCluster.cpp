@@ -65,11 +65,11 @@ void InitializeCityBuildingHoverSelectionRects_004b95c0() {
   new (&rects[15]) CRect(coords[32], coords[33], coords[32] + 10, coords[33] + 10);
 }
 
-// Populates the city-building screen's layout data: a 164-int packed table
-// (g_aCityBuildingLayoutRects) immediately
-// followed by 31 action-button rects (g_aCityBuildingActionRects), each
-// placement-constructed directly into the pre-existing global array via the real
-// CRect(int,int,int,int) constructor, matching the original's direct constructor calls.
+// Populates the city-building screen's 72-rect layout table
+// (g_aCityBuildingLayoutRects): elements 0..40 by per-field stores, elements 41..71
+// (the action-button rects at 0x6a2778) placement-constructed into the pre-existing
+// global array via the real CRect(int,int,int,int) constructor, matching the
+// original's direct constructor calls.
 // FUNCTION: IMPERIALISM 0x004b98b0
 void InitializeCityBuildingLayoutData() {
   g_aCityBuildingLayoutRects[0].bottom = 0x10a;
@@ -236,37 +236,37 @@ void InitializeCityBuildingLayoutData() {
   g_aCityBuildingLayoutRects[40].top = 0x157;
   g_aCityBuildingLayoutRects[40].right = 0xda;
   g_aCityBuildingLayoutRects[40].bottom = 0x169;
-  new (&g_aCityBuildingActionRects[0]) CRect(121, 325, 160, 338);
-  new (&g_aCityBuildingActionRects[1]) CRect(185, 345, 224, 381);
-  new (&g_aCityBuildingActionRects[2]) CRect(94, 326, 146, 368);
-  new (&g_aCityBuildingActionRects[3]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[4]) CRect(284, 374, 299, 388);
-  new (&g_aCityBuildingActionRects[5]) CRect(273, 402, 322, 439);
-  new (&g_aCityBuildingActionRects[6]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[7]) CRect(303, 328, 327, 351);
-  new (&g_aCityBuildingActionRects[8]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[9]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[10]) CRect(273, 327, 294, 348);
-  new (&g_aCityBuildingActionRects[11]) CRect(304, 324, 328, 347);
-  new (&g_aCityBuildingActionRects[12]) CRect(340, 362, 360, 381);
-  new (&g_aCityBuildingActionRects[13]) CRect(441, 152, 463, 170);
-  new (&g_aCityBuildingActionRects[14]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[15]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[16]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[17]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[18]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[19]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[20]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[21]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[22]) CRect(464, 130, 488, 153);
-  new (&g_aCityBuildingActionRects[23]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[24]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[25]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[26]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[27]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[28]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[29]) CRect(0, 0, 0, 0);
-  new (&g_aCityBuildingActionRects[30]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[41]) CRect(121, 325, 160, 338);
+  new (&g_aCityBuildingLayoutRects[42]) CRect(185, 345, 224, 381);
+  new (&g_aCityBuildingLayoutRects[43]) CRect(94, 326, 146, 368);
+  new (&g_aCityBuildingLayoutRects[44]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[45]) CRect(284, 374, 299, 388);
+  new (&g_aCityBuildingLayoutRects[46]) CRect(273, 402, 322, 439);
+  new (&g_aCityBuildingLayoutRects[47]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[48]) CRect(303, 328, 327, 351);
+  new (&g_aCityBuildingLayoutRects[49]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[50]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[51]) CRect(273, 327, 294, 348);
+  new (&g_aCityBuildingLayoutRects[52]) CRect(304, 324, 328, 347);
+  new (&g_aCityBuildingLayoutRects[53]) CRect(340, 362, 360, 381);
+  new (&g_aCityBuildingLayoutRects[54]) CRect(441, 152, 463, 170);
+  new (&g_aCityBuildingLayoutRects[55]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[56]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[57]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[58]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[59]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[60]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[61]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[62]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[63]) CRect(464, 130, 488, 153);
+  new (&g_aCityBuildingLayoutRects[64]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[65]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[66]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[67]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[68]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[69]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[70]) CRect(0, 0, 0, 0);
+  new (&g_aCityBuildingLayoutRects[71]) CRect(0, 0, 0, 0);
 }
 
 // SYNTHETIC: IMPERIALISM 0x00584d80
