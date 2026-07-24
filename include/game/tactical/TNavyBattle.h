@@ -27,7 +27,8 @@ public:
   // unused (RET 0x4 cleans the stack without reading it).
   virtual void FinalizeTacticalBattleOutcome(int) override; // slot 0x12 0x5a5b70
 
-  TNavyBattle();
+  // NOOP: verified empty in original 0x005a5485 (no standalone TNavyBattle::TNavyBattle body exists: construction is fully inlined into CreateObject 0x005a5480; that address is its operator-new call site)
+  TNavyBattle() {}
 
   // The navy battle initializer rotates the six base movement costs into this
   // direction-indexed table from a random starting direction.

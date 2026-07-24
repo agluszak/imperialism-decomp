@@ -84,7 +84,7 @@ TDisplayMgr::TDisplayMgr()
 TDisplayMgr::~TDisplayMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004fe840
-void TDisplayMgr::InitializeWindowAndMBarSize() {
+void TDisplayMgr::IDisplayMgr() {
   TPtrList* list = new TPtrList();
   if (list == 0) {
     turnOrderList = 0;

@@ -74,6 +74,10 @@ int TNavyToolbarCluster::IsTradeControlAtMinimum() {
   return 0;
 }
 
+// All three dispatches here go through byte 0x3c = slot 0x0f = DoEvent
+// (0x0056972f/0x0056973f/0x0056978a), not slot 0x10 = HandleEvent at byte 0x40.
+// The two are one hop apart: HandleEvent forwards to DoEvent on the same object,
+// while DoEvent forwards to HandleEvent on the next handler.
 // FUNCTION: IMPERIALISM 0x005696f0
 void TNavyToolbarCluster::SetSelectedChildTagAndRefresh(int childTag) {
   CSubViewIterator iterator(this);
@@ -81,10 +85,10 @@ void TNavyToolbarCluster::SetSelectedChildTagAndRefresh(int childTag) {
   TView* child = iterator.FirstSubView();
   while (iterator.MoreSubViews()) {
     if (child->controlTag == childTag) {
-      child->HandleEvent(kControlCommandHiliteOn, this, 0);
+      child->DoEvent(kControlCommandHiliteOn, this, 0);
       selectedChild = child;
     } else {
-      child->HandleEvent(kControlCommandHiliteOff, this, 0);
+      child->DoEvent(kControlCommandHiliteOff, this, 0);
     }
     child = iterator.NextSubView();
   }
@@ -93,6 +97,6 @@ void TNavyToolbarCluster::SetSelectedChildTagAndRefresh(int childTag) {
   if (selectedChild != 0) {
     TView* oceanDialog = GetWindow()->ResolveControlByTag(kControlTagDOOG); // 'DOOG'
     oceanDialog->AssertValid();
-    oceanDialog->HandleEvent(0xc, selectedChild, 0);
+    oceanDialog->DoEvent(0xc, selectedChild, 0);
   }
 }

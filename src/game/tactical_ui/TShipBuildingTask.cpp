@@ -26,8 +26,8 @@ TShipBuildingTask::TShipBuildingTask() : TCityTask() {}
 TShipBuildingTask::~TShipBuildingTask() {}
 
 // FUNCTION: IMPERIALISM 0x005ae710
-void TShipBuildingTask::InitializeShipProductionQueueTask(short citySlotType, TCity* owner,
-                                                          short requestedShipType) {
+void TShipBuildingTask::IShipBuildingTask(short citySlotType, TCity* owner,
+                                          short requestedShipType) {
   ownerCity = owner;
   citySlotIndex = citySlotType;
   remainingAttempts = 4;

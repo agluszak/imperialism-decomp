@@ -20,9 +20,6 @@ TArmyBoyView::~TArmyBoyView() {}
 
 IMPLEMENT_DYNCREATE(TArmyBoyView, TView)
 
-// NOOP: verified empty in original 0x004aeb13 (no standalone TArmyBoyView::TArmyBoyView body exists: CreateObject 0x004aeae0 inlines this default ctor, calling the TView base ctor directly at that site)
-TArmyBoyView::TArmyBoyView() {}
-
 // FUNCTION: IMPERIALISM 0x004aebc0
 void TArmyBoyView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws

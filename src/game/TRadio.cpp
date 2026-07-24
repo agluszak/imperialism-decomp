@@ -9,9 +9,6 @@
 // TRadio::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TRadio, TCtlMgr)
-
-TRadio::TRadio() : TCtlMgr() {}
-
 // SYNTHETIC: IMPERIALISM 0x0048edd0
 // TRadio::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0048ee00

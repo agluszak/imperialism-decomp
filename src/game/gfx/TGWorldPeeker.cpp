@@ -16,9 +16,6 @@ TGWorldPeeker::~TGWorldPeeker() {}
 // TGWorldPeeker::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TGWorldPeeker, TView)
-
-TGWorldPeeker::TGWorldPeeker() : field60(nullptr) {}
-
 // FUNCTION: IMPERIALISM 0x004ff2f0
 void TGWorldPeeker::Draw(RECT* rectBuffer) {
   if (field60 != nullptr) {

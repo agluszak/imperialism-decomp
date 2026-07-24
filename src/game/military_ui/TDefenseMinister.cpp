@@ -50,7 +50,7 @@ TDefenseMinister::~TDefenseMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004ec160
 void TDefenseMinister::InitializeBaseOrderArrayMetrics(TGreatPower* owner) {
-  this->InitializeBaseOrderArray(owner);
+  this->IMinister(owner);
   field10 = 0;
   field12 = 0;
   thresholdA = 0;
@@ -505,7 +505,7 @@ int* TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer(char exclude
 
 // FUNCTION: IMPERIALISM 0x004ed560
 void TDefenseMinister::InitializeOrderArrayPreset50_0_10_50(TGreatPower* owner) {
-  this->InitializeBaseOrderArray(owner);
+  this->IMinister(owner);
   field10 = 0;
   field12 = 0;
   thresholdA = 0;
@@ -527,7 +527,7 @@ void TDefenseMinister::InitializeOrderArrayPreset50_0_10_50(TGreatPower* owner) 
 
 // FUNCTION: IMPERIALISM 0x004ed890
 void TDefenseMinister::InitializeOrderArrayPreset10_10_10_50(TGreatPower* owner) {
-  this->InitializeBaseOrderArray(owner);
+  this->IMinister(owner);
   field10 = 0;
   field12 = 0;
   thresholdA = 0;
@@ -549,7 +549,7 @@ void TDefenseMinister::InitializeOrderArrayPreset10_10_10_50(TGreatPower* owner)
 
 // FUNCTION: IMPERIALISM 0x004edb80
 void TDefenseMinister::InitializeOrderArrayPreset15_20_50_75(TGreatPower* owner) {
-  this->InitializeBaseOrderArray(owner);
+  this->IMinister(owner);
   field10 = 0;
   field12 = 0;
   thresholdA = 0;
@@ -571,7 +571,7 @@ void TDefenseMinister::InitializeOrderArrayPreset15_20_50_75(TGreatPower* owner)
 
 // FUNCTION: IMPERIALISM 0x004ede60
 void TDefenseMinister::InitializeOrderArrayPreset20_10_10_50(TGreatPower* owner) {
-  this->InitializeBaseOrderArray(owner);
+  this->IMinister(owner);
   field10 = 0;
   field12 = 0;
   thresholdA = 0;
@@ -593,7 +593,7 @@ void TDefenseMinister::InitializeOrderArrayPreset20_10_10_50(TGreatPower* owner)
 
 // FUNCTION: IMPERIALISM 0x004ee150
 void TDefenseMinister::InitializeOrderArrayPreset25_10_20_50(TGreatPower* owner) {
-  this->InitializeBaseOrderArray(owner);
+  this->IMinister(owner);
   field10 = 0;
   field12 = 0;
   thresholdA = 0;

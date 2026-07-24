@@ -478,7 +478,7 @@ public:
   // real methods/virtuals directly; reccmp auto-detects the orig-side thunks.)
 
   // Semantic C++ wrappers:
-  // - constructor behavior maps to 0x004D8CC0 InitializeNationStateRuntimeSubsystems
+  // - constructor behavior maps to 0x004D8CC0 IGreatPower
   // - TObject::Free override at 0x004D9160 releases owned members then deletes self
   // 0x4e0770 — city population summary metric: productionSlots14 bucket words folded
   // ((w8*2+w6)*2+w4) plus extraAt1e; 0 when the nation has no city. Curated name kept
@@ -493,7 +493,6 @@ public:
   int ClassifyNationMilitaryPowerBandAgainstGlobalMean();
 
   TGreatPower();
-  TGreatPower(int arg1, int arg2);
 
   void CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
   void ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass);
@@ -531,7 +530,7 @@ public:
   // owner tag against [this+0xc] (ret 4 / ret).
   int SumNavyOrderPriorityForNationAndNodeType(TZone* zone);
   int SumNavyOrderPriorityForNation();
-  void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
+  void IGreatPower(int arg1, int arg2);
 
   // Mac oracle: GenerateGameScore. Rebuilds the gameScoreRows930 snapshot wholesale:
   // population

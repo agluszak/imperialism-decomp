@@ -17,6 +17,7 @@ public:
   unsigned char mode1c;                   // +0x1c
   unsigned char pad1d[3];
 
-  TSpaceCommand();
+  // NOOP: verified empty in original 0x005751b3 (no standalone TSpaceCommand::TSpaceCommand body exists: CreateObject 0x00575180 inlines this default ctor, calling the TCommand base ctor directly at that site)
+  TSpaceCommand() {}
 };
 ASSERT_SIZE(TSpaceCommand, 0x20);

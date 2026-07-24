@@ -234,7 +234,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
     TUpDownPictureButton* fortBtn = new TUpDownPictureButton();
     int fortOff[2] = {0x11, 0x29};
     int fortSize[2] = {0x26, 0xec};
-    fortBtn->InitializePictureEntryBaseAndRefresh(this, fortOff, fortSize, 5, 5, 0x1c2a);
+    fortBtn->IPicture(this, fortOff, fortSize, 5, 5, 0x1c2a);
     fortBtn->controlTag = IMPERIALISM_FOURCC('f', 'o', 'r', 't');
     fortBtn->SetState(1, 0);
     fortBtn->eventNumber60 = 0x22;
@@ -244,8 +244,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
     int fortLabelSize[2] = {0, 0};
     RECT fortLabelInset = {0, 0, 0, 0};
     TextStyle fortLabelStyle;
-    fortLabel->InitializeDeluxeText(this, fortLabelOff, fortLabelSize, &fortLabelInset,
-                                    &fortLabelStyle, -2);
+    fortLabel->IDeluxeText(this, fortLabelOff, fortLabelSize, &fortLabelInset, &fortLabelStyle, -2);
     fortLabel->BuildCityViewProductionControls_Impl(0x1c20, static_cast<short>(layoutY + 3));
     fortLabel->CenterVertically(0);
   }
@@ -256,7 +255,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
     TUpDownPictureButton* railBtn = new TUpDownPictureButton();
     int railOff[2] = {0x11, layoutY + 1};
     int railSize[2] = {0, 0};
-    railBtn->InitializePictureEntryBaseAndRefresh(this, railOff, railSize, 5, 5, 0x1c2c);
+    railBtn->IPicture(this, railOff, railSize, 5, 5, 0x1c2c);
     railBtn->controlTag = IMPERIALISM_FOURCC('r', 'a', 'i', 'l');
     railBtn->SetState(1, 0);
     railBtn->eventNumber60 = 0x22;
@@ -266,8 +265,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
     int railLabelSize[2] = {0, 0};
     RECT railLabelInset = {0, 0, 0, 0};
     TextStyle railLabelStyle;
-    railLabel->InitializeDeluxeText(this, railLabelOff, railLabelSize, &railLabelInset,
-                                    &railLabelStyle, -2);
+    railLabel->IDeluxeText(this, railLabelOff, railLabelSize, &railLabelInset, &railLabelStyle, -2);
     railLabel->BuildCityViewProductionControls_Impl(0x1c20, layoutY);
     railLabel->CenterVertically(0);
 
@@ -290,7 +288,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
     TUpDownPictureButton* portBtn = new TUpDownPictureButton();
     int portOff[2] = {0x11, layoutY + 1};
     int portSize[2] = {0, 0};
-    portBtn->InitializePictureEntryBaseAndRefresh(this, portOff, portSize, 5, 5, 0x1c2e);
+    portBtn->IPicture(this, portOff, portSize, 5, 5, 0x1c2e);
     portBtn->controlTag = IMPERIALISM_FOURCC('p', 'o', 'r', 't');
     portBtn->SetState(1, 0);
     portBtn->eventNumber60 = 0x22;
@@ -300,8 +298,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
     int portLabelSize[2] = {0, 0};
     RECT portLabelInset = {0, 0, 0, 0};
     TextStyle portLabelStyle;
-    portLabel->InitializeDeluxeText(this, portLabelOff, portLabelSize, &portLabelInset,
-                                    &portLabelStyle, -2);
+    portLabel->IDeluxeText(this, portLabelOff, portLabelSize, &portLabelInset, &portLabelStyle, -2);
     portLabel->BuildCityViewProductionControls_Impl(0x1c20, layoutY);
     portLabel->CenterVertically(0);
 
@@ -322,7 +319,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   TUpDownPictureButton* cancelBtn = new TUpDownPictureButton();
   int cancelOff[2] = {0x3d, 0x18};
   int cancelSize[2] = {0x11, layoutY - 2};
-  cancelBtn->InitializePictureEntryBaseAndRefresh(this, cancelOff, cancelSize, 5, 5, 0x24c4);
+  cancelBtn->IPicture(this, cancelOff, cancelSize, 5, 5, 0x24c4);
   cancelBtn->controlTag = IMPERIALISM_FOURCC('c', 'n', 'c', 'l');
   cancelBtn->eventNumber60 = 0x22;
   cancelBtn->SetState(1, 0);

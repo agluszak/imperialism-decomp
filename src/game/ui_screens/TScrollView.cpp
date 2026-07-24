@@ -18,7 +18,7 @@ TScrollView::~TScrollView() {}
 IMPLEMENT_DYNCREATE(TScrollView, TView)
 
 // FUNCTION: IMPERIALISM 0x00573cb0
-void TScrollView::InitializeScrollView(TView* panel, int* offsetLayout, int* sizeLayout) {
+void TScrollView::IScrollView(TView* panel, int* offsetLayout, int* sizeLayout) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
 }
 

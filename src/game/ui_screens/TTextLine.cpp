@@ -58,8 +58,7 @@ void TTextLine::SetField1E(short value) {
 // FUNCTION: IMPERIALISM 0x00570500
 void TTextLine::InstallViews(TView* panel, int* offsetLayout) {
   TStaticText* text = new TStaticText();
-  text->InitializeTextEntryBaseAndOptionalStringResource(panel, offsetLayout, &field08, 5, 5, -1,
-                                                         0);
+  text->IStaticText(panel, offsetLayout, &field08, 5, 5, -1, 0);
   text->SetTextAndMaybeRefresh(&captionText10, 0);
   text->InstallTextStyle(styleDescriptor14, 0);
   text->SetTextAlignmentAndMaybeRefresh(field1e, 0);

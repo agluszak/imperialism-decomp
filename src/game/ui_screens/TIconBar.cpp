@@ -23,8 +23,7 @@ TIconBar::~TIconBar() {}
 // FUNCTION: IMPERIALISM 0x00506070
 void TIconBar::IIconBar(TView* panel, int* position, int* size, int layoutParam4, int layoutParam5,
                         short pictureId, int numIcons) {
-  InitializePictureEntryBaseAndRefresh(panel, position, size, layoutParam4, layoutParam5,
-                                       pictureId);
+  IPicture(panel, position, size, layoutParam4, layoutParam5, pictureId);
   SetNumIcons(static_cast<short>(numIcons));
 }
 

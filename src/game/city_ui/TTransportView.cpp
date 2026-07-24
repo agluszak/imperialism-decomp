@@ -22,9 +22,6 @@ TTransportView::~TTransportView() {}
 
 IMPLEMENT_DYNCREATE(TTransportView, TView)
 
-// NOOP: verified empty in original 0x004bd333 (no standalone TTransportView::TTransportView body exists: CreateObject 0x004bd300 inlines this default ctor, calling the TView base ctor directly at that site)
-TTransportView::TTransportView() {}
-
 // FUNCTION: IMPERIALISM 0x004bd3e0
 void TTransportView::StuffValues(TGreatPower* nation) {
   CString scratch;

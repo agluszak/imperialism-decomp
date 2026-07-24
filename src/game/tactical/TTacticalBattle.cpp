@@ -1,4 +1,5 @@
 #include "game/gfx/TAmbitApplication.h"
+#include "game/ui_core/TDialogBehavior.h"
 #include "game/ui_core/TWindow.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_military.h"
@@ -1698,9 +1699,9 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
   }
 
   dialog->SetModality(1);
-  void* content = dialog->GetDialogBehavior();
+  TDialogBehavior* content = dialog->GetDialogBehavior();
   if (content != 0) {
-    *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = kControlTagOkay; // 'okay'
+    content->defaultCommandCode = kControlTagOkay; // 'okay'
   }
   dialog->PoseModally();
   dialog->Close();

@@ -99,7 +99,7 @@ THelpMgr::THelpMgr() : TObject() {
 THelpMgr::~THelpMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00500680
-void THelpMgr::InitializeHelpManagerIndexArrayAndState() {
+void THelpMgr::IHelpMgr() {
   helpIndexReady = 1;
   TSortedPtrList* list = new TSortedPtrList();
   indexList = list;

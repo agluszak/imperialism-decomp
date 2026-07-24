@@ -45,12 +45,12 @@ public:
   // RET 0x8 = 2 dwords; body waits on this->activeCityProductionView04, args vestigial.
   virtual void DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1,
                                                             int unusedArg2); // slot 0x13 0x50d310
-  virtual TBuildingView*
-  RestoreBuildingWindowAtSavedPosition(short buildingSlot, TCity* city,
-                                       unsigned char closeAfterOpen,
-                                       unsigned char isEmbeddedPage,
-                                       TCityProductionView* productionView, short savedX,
-                                       short savedY); // slot 0x14 0x50d470
+  virtual TBuildingView* RestoreBuildingWindowAtSavedPosition(short buildingSlot, TCity* city,
+                                                              unsigned char closeAfterOpen,
+                                                              unsigned char isEmbeddedPage,
+                                                              TCityProductionView* productionView,
+                                                              short savedX,
+                                                              short savedY); // slot 0x14 0x50d470
   // Mac CodeWarrior oracle signatures. `closeAfterOpen` selects the modal path,
   // which consumes the dialog and therefore returns null.
   virtual TBuildingView*
@@ -116,7 +116,7 @@ public:
   int fieldD80;
 
   TMacViewMgr();
-  void InitializeStrategicMapViewSystem();
+  void IMacViewMgr();
   void BlitStrategicMapUnitActivityOverlayFrame(TBitmapSurfaceNode** destinationSurface,
                                                 short overlayFrameIndex, short destinationX,
                                                 short destinationYFromBottom);

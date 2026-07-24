@@ -30,9 +30,6 @@ TTacNavyToolbar::~TTacNavyToolbar() {}
 
 IMPLEMENT_DYNCREATE(TTacNavyToolbar, TTacticalToolbar)
 
-// NOOP: verified empty in original 0x005ad067 (no standalone TTacNavyToolbar::TTacNavyToolbar body exists: CreateObject 0x005ad030 inlines this default ctor, calling the TCluster base ctor directly at that site)
-TTacNavyToolbar::TTacNavyToolbar() {}
-
 // FUNCTION: IMPERIALISM 0x005ad180
 void TTacNavyToolbar::DoPostCreate(int arg) {
   TTacticalToolbar::DoPostCreate(arg);

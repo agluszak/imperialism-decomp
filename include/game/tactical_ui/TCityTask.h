@@ -13,7 +13,7 @@ class TSortedList;
 // A queued city production/order command: references the owning city and an amount
 // still to be sourced, dispatching to a type-specific queueing helper based on the
 // base TTask::citySlotIndex. Constructed via `new TCityTask()` +
-// InitializeCityProductionQueueCommand(city, type, amount) (0x5add90), then handed to a
+// ICityTask(city, type, amount) (0x5add90), then handed to a
 // command queue.
 // VTABLE: IMPERIALISM 0x0066a9a8
 class TCityTask : public TTask {
@@ -44,8 +44,8 @@ public:
 
   // Sets up a freshly-`new`'d TCityTask before it's handed to a command queue: default
   // remainingAttempts is 4, except citySlotType 5 (steel) gets only 3.
-  void InitializeCityProductionQueueCommand(short citySlotType, TCity* owner,
-                                            short amount); // 0x005add90
+  void ICityTask(short citySlotType, TCity* owner,
+                 short amount); // 0x005add90
 
   TCity* ownerCity;          // +0x08
   short requestedAmount;     // +0x0c — quantity still needed

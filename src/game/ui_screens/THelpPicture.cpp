@@ -62,7 +62,7 @@ void THelpPicture::DoPostCreate(int arg) {
   int textOffset[2] = {0, 0};
   int textSize[2] = {scrollView->frameWidth34 - 0x1c, scrollView->frameHeight38};
   RECT textInsets = {0, 0, 0, 0};
-  topicText->InitializeDeluxeText(scrollView, textOffset, textSize, &textInsets, &textStyle, -2);
+  topicText->IDeluxeText(scrollView, textOffset, textSize, &textInsets, &textStyle, -2);
 
   topicListText94 = topicText;
   scrollView->contentView60 = topicText;

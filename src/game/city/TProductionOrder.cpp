@@ -3,8 +3,6 @@
 #include "game/city/TCity.h"
 #include "game/core/TStream.h"
 
-// FUNCTION: IMPERIALISM 0x004b4f00
-TProductionOrder::TProductionOrder() : TObject() {}
 // SYNTHETIC: IMPERIALISM 0x004b4eb0
 // TProductionOrder::CreateObject
 

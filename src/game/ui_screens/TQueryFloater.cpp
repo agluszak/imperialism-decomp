@@ -27,9 +27,6 @@ TQueryFloater::~TQueryFloater() {}
 
 IMPLEMENT_DYNCREATE(TQueryFloater, TPicture)
 
-// NOOP: verified empty in original 0x0056e876 (no standalone TQueryFloater::TQueryFloater body exists: CreateObject 0x0056e840 inlines this default ctor, calling the TPicture base ctor directly at that site)
-TQueryFloater::TQueryFloater() {}
-
 // FUNCTION: IMPERIALISM 0x0056e8e0
 void TQueryFloater::DoPostCreate(int arg) {
   TPicture::DoPostCreate(arg);

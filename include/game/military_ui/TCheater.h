@@ -12,7 +12,11 @@ public:
   virtual ~TCheater() override; // slot 0x01 (scalar deleting destructor)
   virtual void ApplyCheats();   // slot 0x68 0x4b1410; Mac symbol oracle
 
-  TCheater();
+  // In-class inline: the original has no out-of-line TCheater::TCheater -- every
+  // caller absorbs it, so an out-of-line definition pessimizes them into a call.
+  // NOOP: verified empty in original 0x004b13d3 (no standalone TCheater::TCheater body exists: CreateObject 0x004b13a0 inlines this default ctor, calling the TView base ctor directly at that site)
+  TCheater() {}
+
   void CenterWindowUsingSize(const CPoint* size); // 0x004b1670
 
   // Two-phase init (MacApp IViewClass idiom): frame this cheater panel into `panel`, then

@@ -16,8 +16,9 @@ class TPtrList : public TSortedPtrList {
 public:
   // FUNCTION: IMPERIALISM 0x004884f0
   ~TPtrList() override {}
+  // NOOP: verified empty in original 0x00488433 (no standalone TPtrList::TPtrList body exists: CreateObject 0x00488400 inlines this default ctor, calling the CPtrArray base ctor directly at that site)
+  TPtrList() {}
   DECLARE_DYNCREATE(TPtrList)
-  TPtrList();
 
   // Same copy-to-front behavior as inherited slot 0x40, exposed by TPtrList as its
   // own final virtual slot.

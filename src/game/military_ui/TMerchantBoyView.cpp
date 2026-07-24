@@ -19,9 +19,6 @@ TMerchantBoyView::~TMerchantBoyView() {}
 
 IMPLEMENT_DYNCREATE(TMerchantBoyView, TView)
 
-// NOOP: verified empty in original 0x004af6d3 (no standalone TMerchantBoyView::TMerchantBoyView body exists: CreateObject 0x004af6a0 inlines this default ctor, calling the TView base ctor directly at that site)
-TMerchantBoyView::TMerchantBoyView() {}
-
 // FUNCTION: IMPERIALISM 0x004af780
 void TMerchantBoyView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws

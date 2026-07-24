@@ -22,9 +22,6 @@ TMinorTradeBidsDialog::~TMinorTradeBidsDialog() {}
 
 IMPLEMENT_DYNCREATE(TMinorTradeBidsDialog, TDialogView)
 
-// NOOP: verified empty in original 0x005b29d3 (no standalone TMinorTradeBidsDialog::TMinorTradeBidsDialog body exists: CreateObject 0x005b29a0 inlines this default ctor, calling the TView base ctor directly at that site)
-TMinorTradeBidsDialog::TMinorTradeBidsDialog() {}
-
 // FUNCTION: IMPERIALISM 0x005b2aa0
 void TMinorTradeBidsDialog::StuffValues() {
   TView* costPanel = ResolveControlByTag(kControlTagCost); // 'Cost'

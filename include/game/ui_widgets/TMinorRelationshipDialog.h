@@ -14,6 +14,7 @@ public:
   // Mac oracle: StuffValues().
   virtual void StuffValues(); // slot 0x68 0x5b3570
 
-  TMinorRelationshipDialog();
+  // NOOP: verified empty in original 0x005b3333 (no standalone TMinorRelationshipDialog::TMinorRelationshipDialog body exists: CreateObject 0x005b3300 inlines this default ctor, calling the TView base ctor directly at that site)
+  TMinorRelationshipDialog() {}
 };
 ASSERT_SIZE(TMinorRelationshipDialog, 0x60);

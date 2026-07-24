@@ -56,10 +56,6 @@ TMapEditView::~TMapEditView() {}
 // TMapEditView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMapEditView, TMapDialog)
-
-TMapEditView::TMapEditView()
-    : reservedFlag364(0), editorActionMode368(0), editorActionValue36c(0) {}
-
 // FUNCTION: IMPERIALISM 0x0051cc60
 void TMapEditView::DoPostCreate(int arg) {
   TWorldView::DoPostCreate(arg);

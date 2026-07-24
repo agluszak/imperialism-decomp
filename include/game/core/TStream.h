@@ -22,7 +22,10 @@ class CString;
 class TStream : public TObject {
 public:
   DECLARE_DYNCREATE(TStream)
-  TStream();
+  // In-class inline: the original has no out-of-line TStream::TStream -- every
+  // caller absorbs it, so an out-of-line definition pessimizes them into a call.
+  // NOOP: verified empty in original 0x004889a1 (no standalone TStream::TStream body exists: construction is fully inlined into CreateObject 0x004889a0; that address is its operator-new call site)
+  TStream() {}
 
 public:
   virtual ~TStream() override;

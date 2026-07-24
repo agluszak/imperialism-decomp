@@ -15,7 +15,8 @@ public:
   virtual void Close() override;                 // slot 0x28 0x4bd690
   virtual void StuffValues(TGreatPower* nation); // slot 0x68 0x4bd3e0
 
-  TTransportView();
+  // NOOP: verified empty in original 0x004bd333 (no standalone TTransportView::TTransportView body exists: CreateObject 0x004bd300 inlines this default ctor, calling the TView base ctor directly at that site)
+  TTransportView() {}
 
   // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended at 0x60. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
   TGreatPower* nation60;

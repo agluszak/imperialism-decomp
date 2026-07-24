@@ -64,8 +64,8 @@ TForeignMinister::TForeignMinister() : TMinister() {
 // TForeignMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0052f130
-void TForeignMinister::InitializeStateAndCounters(TGreatPower* owner) {
-  this->InitializeBaseOrderArray(owner);
+void TForeignMinister::IForeignMinister(TGreatPower* owner) {
+  this->IMinister(owner);
   interiorBidResource10 = kNoInteriorBidResource;
   interiorBidAmount12 = 0;
   capabilityFlag14 = 0;
@@ -444,7 +444,7 @@ void TForeignMinister::DoDevelopmentGrants() {
   }
 
   TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList();
-  relationshipList->InitializeRelationshipRecordSize();
+  relationshipList->ISortedByRelationshipList();
   g_pDiplomacyTurnStateManager->BuildRelationshipListSlot88(owner->nationSlot, 0, relationshipList);
 
   short entryIndex = static_cast<short>(relationshipList->GetSize());
@@ -590,7 +590,7 @@ void TForeignMinister::DoProposeTreaties() {
   if (strongerTargetExists) {
     int selectedNation = -1;
     TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList();
-    relationshipList->InitializeRelationshipRecordSize();
+    relationshipList->ISortedByRelationshipList();
     g_pDiplomacyTurnStateManager->BuildRelationshipListSlot88(ownerContextAt04->nationSlot, 1,
                                                               relationshipList);
     for (int entryIndex = relationshipList->GetSize(); entryIndex >= 1 && selectedNation == -1;
@@ -720,7 +720,7 @@ void TForeignMinister::SetEmpirePolicies() {
       owner->AreDiplomacyState1c6Slots13To16AllNonPositive() == 0) {
     bool keepSearching = true;
     TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList();
-    relationshipList->InitializeRelationshipRecordSize();
+    relationshipList->ISortedByRelationshipList();
     g_pDiplomacyTurnStateManager->BuildRelationshipListSlot88(owner->nationSlot, 0,
                                                               relationshipList);
     short entryIndex = static_cast<short>(relationshipList->GetSize());
@@ -751,7 +751,7 @@ void TForeignMinister::SetEmpirePolicies() {
     if (policyCategory != -1) {
       int selectedMinor = -1;
       TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList();
-      relationshipList->InitializeRelationshipRecordSize();
+      relationshipList->ISortedByRelationshipList();
       g_pDiplomacyTurnStateManager->BuildRelationshipListSlot88(owner->nationSlot, 0,
                                                                 relationshipList);
       int entryIndex = relationshipList->GetSize();

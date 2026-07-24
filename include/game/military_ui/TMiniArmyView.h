@@ -19,6 +19,7 @@ public:
   // The displayed unit: name24 (CString) and tileIndex06 read by Draw/DoEvent.
   TMilitaryUnit* militaryUnit84; // +0x84
 
-  TMiniArmyView();
+  // NOOP: verified empty in original 0x004aadc6 (no standalone TMiniArmyView::TMiniArmyView body exists: CreateObject 0x004aad90 inlines this default ctor, calling the TControl base ctor directly at that site)
+  TMiniArmyView() {}
 };
 ASSERT_SIZE(TMiniArmyView, 0x88);

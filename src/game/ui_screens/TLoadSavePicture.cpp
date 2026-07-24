@@ -235,8 +235,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         TEditText* editControl = new TEditText();
         int offsetLayout[2] = {slotControl->ownerLocalX, slotControl->ownerLocalY};
         int sizeLayout[2] = {slotControl->frameWidth34, slotControl->frameHeight38};
-        editControl->InitializeTextEntryBaseAndOptionalStringResource(this, offsetLayout,
-                                                                      sizeLayout, 5, 5, -1, 0);
+        editControl->IStaticText(this, offsetLayout, sizeLayout, 5, 5, -1, 0);
         editControl->maxCharacterCount = 0x1f;
         editControl->SetEnable(1);
 

@@ -22,7 +22,8 @@ public:
   // placeholder OrphanLeaf_NoCall_Ins04_005adc30.
   virtual bool Tick(TSortedList* commandQueue); // slot 0x0a 0x5adc30
 
-  TTask();
+  // NOOP: verified empty in original 0x005adb42 (no standalone TTask::TTask body exists: construction is fully inlined into CreateObject 0x005adb40; that address is its operator-new call site)
+  TTask() {}
 
   // Fields recovered from TCityTask's Tick/WriteTo/ReadFrom overrides (0x5adde0/0x5ae570/
   // 0x5ae5e0): both halves of the original single `field04` are accessed and serialized

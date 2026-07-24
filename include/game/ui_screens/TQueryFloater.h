@@ -14,6 +14,7 @@ public:
                        TEvent* event) override; // slot 0x0f 0x0056ea20
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x56e8e0
 
-  TQueryFloater();
+  // NOOP: verified empty in original 0x0056e876 (no standalone TQueryFloater::TQueryFloater body exists: CreateObject 0x0056e840 inlines this default ctor, calling the TPicture base ctor directly at that site)
+  TQueryFloater() {}
 };
 ASSERT_SIZE(TQueryFloater, 0x90);

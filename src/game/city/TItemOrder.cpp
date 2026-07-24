@@ -3,8 +3,6 @@
 #include "game/city/TCity.h"
 #include "game/core/TStream.h"
 
-// NOOP: verified empty in original 0x004b51d2 (no standalone TItemOrder::TItemOrder body exists: construction is fully inlined into CreateObject 0x004b51d0; that address is its operator-new call site)
-TItemOrder::TItemOrder() {}
 // SYNTHETIC: IMPERIALISM 0x004b51d0
 // TItemOrder::CreateObject
 
@@ -19,10 +17,8 @@ IMPLEMENT_DYNCREATE(TItemOrder, TProductionOrder)
 TItemOrder::~TItemOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b5290
-void TItemOrder::InitializeItemOrderContext(TCity* city, short outputResourceType,
-                                            short primaryInputResource,
-                                            short secondaryInputResource,
-                                            short productionSlotIndex) {
+void TItemOrder::IItemOrder(TCity* city, short outputResourceType, short primaryInputResource,
+                            short secondaryInputResource, short productionSlotIndex) {
   cityField08 = city;
   summaryField0c = city->productionSummary1d8;
   resourceTypeIndex48 = outputResourceType;

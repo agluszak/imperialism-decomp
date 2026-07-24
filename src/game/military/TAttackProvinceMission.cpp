@@ -30,12 +30,6 @@ IMPLEMENT_SERIAL(TAttackProvinceMission, TArmyMission, 1)
 bool TAttackProvinceMission::IsHospitalMission() const {
   return false;
 }
-
-TAttackProvinceMission::TAttackProvinceMission() : TArmyMission(0xffff) {
-  targetProvince30 = static_cast<short>(0xffff);
-  amassingProvince32 = static_cast<short>(0xffff);
-}
-
 // FUNCTION: IMPERIALISM 0x0053d780
 TAttackProvinceMission::TAttackProvinceMission(short targetProvince, short amassingProvince)
     : TArmyMission(0xffff) {

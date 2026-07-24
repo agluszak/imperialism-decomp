@@ -13,7 +13,8 @@ public:
   virtual ~TBatRepDetLine() override; // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x4b0040
 
-  TBatRepDetLine();
+  // NOOP: verified empty in original 0x004aff93 (no standalone TBatRepDetLine::TBatRepDetLine body exists: CreateObject 0x004aff60 inlines this default ctor, calling the TLineData base ctor directly at that site)
+  TBatRepDetLine() {}
 
   // Original object size is 0x18 (CRuntimeClass m_nObjectSize); the source class ended at 0x10. Trailing 8 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
   BattleRecord* battleRecord10;

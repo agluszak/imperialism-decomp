@@ -11,7 +11,11 @@ public:
   short targetProvince30;   // +0x30 target province/region index (ctor = 0xffff)
   short amassingProvince32; // +0x32 amassing province/region index (ctor = 0xffff)
 
-  TAttackProvinceMission();
+  TAttackProvinceMission() : TArmyMission(0xffff) {
+    targetProvince30 = static_cast<short>(0xffff);
+    amassingProvince32 = static_cast<short>(0xffff);
+  }
+
   TAttackProvinceMission(short targetProvince, short amassingProvince);
   // Inline so TInvadeMission emits the original direct CObject teardown.
   // FUNCTION: IMPERIALISM 0x0053d7f0

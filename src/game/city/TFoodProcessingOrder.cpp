@@ -10,9 +10,6 @@
 
 IMPLEMENT_DYNCREATE(TFoodProcessingOrder, TProductionOrder)
 
-// NOOP: verified empty in original 0x004b7dc2 (no standalone TFoodProcessingOrder::TFoodProcessingOrder body exists: construction is fully inlined into CreateObject 0x004b7dc0; that address is its operator-new call site)
-TFoodProcessingOrder::TFoodProcessingOrder() {}
-
 // SYNTHETIC: IMPERIALISM 0x004b7e30
 // TFoodProcessingOrder::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004b7e60

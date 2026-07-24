@@ -18,19 +18,16 @@
 
 IMPLEMENT_DYNCREATE(TUnitOrder, TProductionOrder)
 
-// NOOP: verified empty in original 0x004b6f22 (no standalone TUnitOrder::TUnitOrder body exists: construction is fully inlined into CreateObject 0x004b6f20; that address is its operator-new call site)
-TUnitOrder::TUnitOrder() {}
-
 // SYNTHETIC: IMPERIALISM 0x004b6f90
 // TUnitOrder::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004b6fc0
 TUnitOrder::~TUnitOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b6fe0
-void TUnitOrder::InitializeCityRecruitmentOrderContext(
-    TCity* city, short nEntryId, short nPrimaryInputResourceId, short nPrimaryInputPerUnit,
-    short nSecondaryInputResourceId, short nSecondaryInputPerUnit, short nCashCostPerUnit,
-    short nWorkforceMode, byte bSpecialistMode) {
+void TUnitOrder::IUnitOrder(TCity* city, short nEntryId, short nPrimaryInputResourceId,
+                            short nPrimaryInputPerUnit, short nSecondaryInputResourceId,
+                            short nSecondaryInputPerUnit, short nCashCostPerUnit,
+                            short nWorkforceMode, byte bSpecialistMode) {
   cityField08 = city;
   summaryField0c = city->productionSummary1d8;
   resourceTypeIndex48 = nEntryId;

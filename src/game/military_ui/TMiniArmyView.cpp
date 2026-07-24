@@ -30,9 +30,6 @@ TMiniArmyView::~TMiniArmyView() {}
 
 IMPLEMENT_DYNCREATE(TMiniArmyView, TControl)
 
-// NOOP: verified empty in original 0x004aadc6 (no standalone TMiniArmyView::TMiniArmyView body exists: CreateObject 0x004aad90 inlines this default ctor, calling the TControl base ctor directly at that site)
-TMiniArmyView::TMiniArmyView() {}
-
 // FUNCTION: IMPERIALISM 0x004aaeb0
 void TMiniArmyView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws

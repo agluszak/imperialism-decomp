@@ -39,14 +39,6 @@
 // TTaskForce::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTaskForce, TObject)
-
-TTaskForce::TTaskForce()
-    : aggression(1), shipOrders(0), target(), shipList(nullptr), flagship(nullptr),
-      location(nullptr), nation(-1), previousForce(nullptr), nextForce(nullptr),
-      ingotTileIndex(-1) {
-  memset(shipCountsByToolbarSlot, 0, sizeof(shipCountsByToolbarSlot));
-}
-
 // FUNCTION: IMPERIALISM 0x00552800
 TTaskForce::TTaskForce(TZone* locationArg, short nationArg)
     : aggression(1), shipOrders(0), target(), shipList(nullptr), flagship(nullptr),

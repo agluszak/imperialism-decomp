@@ -27,12 +27,13 @@ public:
   short kindIndex2c; // +0x2c
   short pad2e;       // +0x2e
 
-  TCivAnimation2();
+  // NOOP: verified empty in original 0x0049f602 (no standalone TCivAnimation2::TCivAnimation2 body exists: construction is fully inlined into CreateObject 0x0049f600; that address is its operator-new call site)
+  TCivAnimation2() {}
 
   // Real ctor (0x49f6a0): looks up a per-kind (stringId, ticksPerFrame) pair from two
   // 9-entry tables baked into the original as immediate stores (kind 0..8 -- battle
   // report civ animation variants) and forwards them to the already-ported
-  // TAnimation::InitializeAnimation with frameCount pinned to 0 (this class
+  // TAnimation::IAnimation with frameCount pinned to 0 (this class
   // overrides Tick itself, so the inherited
   // frame-index scheme is unused). Confirmed against both call sites
   // (OrphanTiny_ReturnZero_0048a730 and Draw): param_1 is the enclosing

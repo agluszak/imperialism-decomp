@@ -19,7 +19,7 @@ TArmyTacUnit::~TArmyTacUnit() {}
 IMPLEMENT_DYNCREATE(TArmyTacUnit, TTacticalUnit)
 
 // FUNCTION: IMPERIALISM 0x005a5f20
-void TArmyTacUnit::InitializeFromMilitaryUnit(TMilitaryUnit* source) {
+void TArmyTacUnit::IArmyTacUnit(TMilitaryUnit* source) {
   unitTypeC = source->orderType;
   tileIndex8 = -2;
   selectedFlag18 = 0;

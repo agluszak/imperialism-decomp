@@ -19,7 +19,11 @@ public:
   virtual bool CanFillOrderSheet();                                     // slot 0x12 0x4b8630
   virtual void CommitQueuedNavyOrdersAndUpdateTierByCapability();       // slot 0x13 0x4b89a0
 
-  TShipOrder();
+  // CreateObject (0x004b8470) allocates 0x4c bytes and stores the vptr, nothing else --
+  // the original does NOT clear the tracking slots at construction, and TProductionOrder's
+  // ctor (0x004b4f00, 9 bytes) only stores a vptr, so the previous body's claim that the
+  // base zero-inits these fields was wrong. The clear survives in the reset path below.
+  TShipOrder() : TProductionOrder() {}
 
   // TShipOrder adds no fields of its own: `config/rtti_class_oracle.csv` gives
   // it the identical 0x4c object size as TProductionOrder, so every field

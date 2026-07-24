@@ -37,7 +37,9 @@ static BOOL FAR PASCAL ForwardEnumSessionsToSessionManager(const DPSESSIONDESC2*
                                                            LPVOID context) {
   TDirectPlaySessionManagerBase* manager = static_cast<TDirectPlaySessionManagerBase*>(context);
   if ((flags & DPESC_TIMEDOUT) != 0) {
-    return manager->GetRuntimeSelectionAuxStatus(timeout);
+    // 0x0047f883 dispatches slot 6 (byte 0x18), not slot 5 (byte 0x14): on timeout the
+    // callback extends the wait while Ctrl is held rather than returning FALSE outright.
+    return manager->ExtendEnumSessionsTimeoutWhileCtrlHeld(timeout);
   }
   return manager->OnEnumerateJoinableSession(sessionDescription, timeout, flags);
 }
@@ -236,9 +238,9 @@ void TWNetSessionManager::ResetRuntimeSelectionRecordBuffer() {
 }
 
 // FUNCTION: IMPERIALISM 0x004804c0
-BOOL TDirectPlaySessionManagerBase::ApplyCtrlScrollAcceleration(int* value) {
+BOOL TDirectPlaySessionManagerBase::ExtendEnumSessionsTimeoutWhileCtrlHeld(DWORD* timeoutMs) {
   if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0) {
-    *value += 500;
+    *timeoutMs += 500;
     return TRUE;
   }
   return FALSE;

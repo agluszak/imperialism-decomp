@@ -23,9 +23,6 @@ TRelationshipDialog::~TRelationshipDialog() {}
 
 IMPLEMENT_DYNCREATE(TRelationshipDialog, TDialogView)
 
-// NOOP: verified empty in original 0x005b2cd3 (no standalone TRelationshipDialog::TRelationshipDialog body exists: CreateObject 0x005b2ca0 inlines this default ctor, calling the TView base ctor directly at that site)
-TRelationshipDialog::TRelationshipDialog() {}
-
 // FUNCTION: IMPERIALISM 0x005b2da0
 void TRelationshipDialog::Close() {
   for (short targetNation = 0; targetNation < 7; ++targetNation) {

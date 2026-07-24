@@ -42,7 +42,7 @@ public:
   virtual void InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refreshFlag);
 
   TEditText();
-  void InitializeEditText(TView* panel, int* offsetLayout, int* sizeLayout,
-                          short maximumCharacterCount); // 0x004905e0
+  void IEditText(TView* panel, int* offsetLayout, int* sizeLayout,
+                 short maximumCharacterCount); // 0x004905e0
 };
 ASSERT_SIZE(TEditText, 0xa0);

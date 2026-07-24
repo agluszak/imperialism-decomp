@@ -8,10 +8,6 @@
 // TLaborPool::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TLaborPool, TObject)
-
-TLaborPool::TLaborPool()
-    : lowSkillCount04(0), mediumSkillCount06(0), highSkillCount08(0), pad0a(0) {}
-
 // SYNTHETIC: IMPERIALISM 0x004b2160
 // TLaborPool::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004b2190

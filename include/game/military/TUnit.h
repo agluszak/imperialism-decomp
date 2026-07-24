@@ -58,7 +58,15 @@ public:
   // header-inline so MSVC folds it into each subclass ctor and dead-store-
   // eliminates the base vptr write, leaving the single derived vptr write the
   // originals emit.
-  TUnit();
+  // In-class inline: the original has no out-of-line TUnit::TUnit -- every
+  // caller absorbs it, so an out-of-line definition pessimizes them into a call.
+  TUnit() {
+    field_10 = 0;
+    nextOnTile = 0;
+    tileIndex06 = static_cast<short>(0xffff);
+    unitOrder = kUnitOrderIdle;
+    field_1C = 0;
+  }
 
   void RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
                                          short nOrderOwnerNationId, short arg3);

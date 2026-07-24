@@ -12,7 +12,8 @@ class TBackdropWindow : public CWnd {
   DECLARE_MESSAGE_MAP()
 
 public:
-  TBackdropWindow();
+  TBackdropWindow() : CWnd(), m_backdropBmp(NULL) {}
+
   virtual ~TBackdropWindow() override;
 
   void InitializeDefaultBackdropWindowFromBmp3B6(CWnd* parent);

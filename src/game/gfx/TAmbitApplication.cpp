@@ -42,13 +42,6 @@ unsigned int GetTickCountDiv16() {
 void SetCachedShowSplashFlag(BOOL showSplash) {
   g_cachedShowSplashFlag = showSplash;
 }
-
-TAmbitApplication::TAmbitApplication() : TApplication() {
-  edgeScrollTarget48 = 0;
-  dispatchBusyFlag4c = 0;
-  languagePackId50 = 0;
-}
-
 // SYNTHETIC: IMPERIALISM 0x0049de40
 // TAmbitApplication::CreateObject
 
@@ -58,7 +51,7 @@ TAmbitApplication::TAmbitApplication() : TApplication() {
 IMPLEMENT_DYNCREATE(TAmbitApplication, TApplication)
 
 // FUNCTION: IMPERIALISM 0x0049ded0
-void TAmbitApplication::InitializeGlobalRuntimeSystems() {
+void TAmbitApplication::IAmbitApplication() {
   edgeScrollTarget48 = 0;
   languagePackId50 = theApp.languagePackIdE4;
 
@@ -70,7 +63,7 @@ void TAmbitApplication::InitializeGlobalRuntimeSystems() {
 
   TSimMgr* simMgr = new TSimMgr();
   if (simMgr != nullptr) {
-    simMgr->InitializeTurnFlowStateDefaults();
+    simMgr->ISimMgr();
   }
   g_pSimMgr = simMgr;
 
@@ -88,13 +81,13 @@ void TAmbitApplication::InitializeGlobalRuntimeSystems() {
 
   TDisplayMgr* displayMgr = new TDisplayMgr();
   if (displayMgr != nullptr) {
-    displayMgr->InitializeWindowAndMBarSize();
+    displayMgr->IDisplayMgr();
   }
   g_pDisplayMgr = displayMgr;
 
   TMacViewMgr* mapView = new TMacViewMgr();
   if (mapView != nullptr) {
-    mapView->InitializeStrategicMapViewSystem();
+    mapView->IMacViewMgr();
   }
   g_pStrategicMapViewSystem = mapView;
 
@@ -102,7 +95,7 @@ void TAmbitApplication::InitializeGlobalRuntimeSystems() {
     g_pHelpMgr = new THelpMgr();
   }
   if (g_pHelpMgr != nullptr) {
-    g_pHelpMgr->InitializeHelpManagerIndexArrayAndState();
+    g_pHelpMgr->IHelpMgr();
   }
 
   if (g_pGameFlowState != nullptr) {

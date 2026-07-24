@@ -46,7 +46,7 @@ extern short g_aDefaultNationSetupPolicyProfiles[7][4];
 
 extern "C" char g_bTurnFlowBootstrapComplete;
 
-// "Conan" — developer-cheat probe filename statted by TSimMgr::InitializeTurnFlowStateDefaults.
+// "Conan" — developer-cheat probe filename statted by TSimMgr::ISimMgr.
 extern char g_szConanCheatFileName_00698BEC[];
 
 } // extern "C"

@@ -1550,7 +1550,7 @@ void TTacticalBattleView::SpawnTacticalUiMarkerAtUnitTile() {
   tileRect.bottom = tileRect.top + rowHeight;
   TAnimation* marker = new TAnimation;
   // Original calls the init body unconditionally on the new-result (no null guard).
-  marker->InitializeAnimation(this, &tileRect, 2, 0, 0xa, 0x2711);
+  marker->IAnimation(this, &tileRect, 2, 0, 0xa, 0x2711);
   g_pUiAnimator->AddObjectToUiTransientRegistry(marker);
 }
 

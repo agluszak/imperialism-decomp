@@ -186,7 +186,7 @@ RgnHandle TMacViewMgr::GetClipRegionSlotByIndex(short index) {
 TMacViewMgr::~TMacViewMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00509f20
-void TMacViewMgr::InitializeStrategicMapViewSystem() {
+void TMacViewMgr::IMacViewMgr() {
   g_pUiViewManager->OpenFilesFor(3);
   BuildStrategicMapCommodityIconAtlasFrom700To722();
   LoadStrategicMapUnitIconAtlas750();
@@ -903,8 +903,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
     int layoutPos = 0x3c;
     int layoutAnchor = 0xa2;
     int layoutOuter = 0x12;
-    textEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &layoutAnchor, &layoutHeight,
-                                                                5, 5, -1, 0);
+    textEntry->IStaticText(panel, &layoutAnchor, &layoutHeight, 5, 5, -1, 0);
 
     TextStyle styleDescriptor;
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
@@ -1225,8 +1224,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   int textPos = 0x98;
   int textAnchor = 0x46;
   int textOuter = 0x12;
-  textEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &textPos, &textHeight, 5, 5,
-                                                              -1, 0);
+  textEntry->IStaticText(panel, &textPos, &textHeight, 5, 5, -1, 0);
 
   TextStyle styleDescriptor;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
@@ -1244,8 +1242,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
     int valueWidth = 0x14;
     int valuePos = 0x3c;
     int valueAnchor = 0x32;
-    valueEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &valuePos, &valueHeight, 5,
-                                                                 5, -1, 0);
+    valueEntry->IStaticText(panel, &valuePos, &valueHeight, 5, 5, -1, 0);
     valueEntry->InstallTextStyle(styleDescriptor, 0);
     valueEntry->SetTextAlignmentAndMaybeRefresh(0, 0);
     valueEntry->controlTag = kControlTagValu;
@@ -1297,9 +1294,8 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
 
 // FUNCTION: IMPERIALISM 0x0050d470
 TBuildingView* TMacViewMgr::RestoreBuildingWindowAtSavedPosition(
-    short buildingSlot, TCity* city, unsigned char closeAfterOpen,
-    unsigned char isEmbeddedPage, TCityProductionView* productionView, short savedX,
-    short savedY) {
+    short buildingSlot, TCity* city, unsigned char closeAfterOpen, unsigned char isEmbeddedPage,
+    TCityProductionView* productionView, short savedX, short savedY) {
   TWindow* dialog =
       reinterpret_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
           static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill)));

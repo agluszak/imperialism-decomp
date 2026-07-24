@@ -57,8 +57,7 @@ TArmyStack::TArmyStack() {
 TArmyStack::~TArmyStack() {}
 
 // FUNCTION: IMPERIALISM 0x004a7770
-void TArmyStack::InitializeSideAndTile(char ownerNationIndex, short ownerNationCode,
-                                       short tileIndex) {
+void TArmyStack::IArmyStack(char ownerNationIndex, short ownerNationCode, short tileIndex) {
   fieldA = 0;
   field6 = 0;
   field4 = 0;

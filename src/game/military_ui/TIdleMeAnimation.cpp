@@ -18,7 +18,7 @@ TIdleMeAnimation::~TIdleMeAnimation() {}
 IMPLEMENT_DYNCREATE(TIdleMeAnimation, TAnimation)
 
 // FUNCTION: IMPERIALISM 0x004ac9c0
-void TIdleMeAnimation::InitializeIdleAnimation(TView* ownerView) {
+void TIdleMeAnimation::IIdleMeAnimation(TView* ownerView) {
   int tag = g_nIdleMeAnimationNextRegistryTag;
   g_nIdleMeAnimationNextRegistryTag = tag + 1;
   RECT rect;
@@ -26,7 +26,7 @@ void TIdleMeAnimation::InitializeIdleAnimation(TView* ownerView) {
   rect.top = 0;
   rect.right = 0;
   rect.bottom = 0;
-  InitializeAnimation(ownerView, &rect, 0, 0, 0, tag);
+  IAnimation(ownerView, &rect, 0, 0, 0, tag);
   g_pUiAnimator->AddObjectToUiTransientRegistry(this);
 }
 

@@ -17,6 +17,7 @@ public:
   virtual void DoRead(ArchiveStreamAdapter* file, unsigned char flags);  // slot 0x0a 0x486530
   virtual void DoWrite(ArchiveStreamAdapter* file, unsigned char flags); // slot 0x0b 0x486550
 
-  TDocument();
+  // NOOP: verified empty in original 0x00486322 (no standalone TDocument::TDocument body exists: construction is fully inlined into CreateObject 0x00486320; that address is its operator-new call site)
+  TDocument() {}
 };
 ASSERT_SIZE(TDocument, 0x4);

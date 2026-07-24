@@ -17,7 +17,8 @@ public:
   short categorySlot10; // 0x10
   short nationSlot12;   // 0x12
 
-  TTradeOfferNationLine();
+  // NOOP: verified empty in original 0x005bcff3 (no standalone TTradeOfferNationLine::TTradeOfferNationLine body exists: CreateObject 0x005bcfc0 inlines this default ctor, calling the TLineData base ctor directly at that site)
+  TTradeOfferNationLine() {}
 };
 
 ASSERT_SIZE(TTradeOfferNationLine, 0x14);
