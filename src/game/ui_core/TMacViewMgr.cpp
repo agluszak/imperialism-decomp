@@ -1296,24 +1296,35 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
 }
 
 // FUNCTION: IMPERIALISM 0x0050d470
-void TMacViewMgr::ShowGoldDialogForTurnEventContext(int param_1, int param_2, int arg3, int arg4,
-                                                    int arg5, int arg6, int arg7) {
+TBuildingView* TMacViewMgr::RestoreBuildingWindowAtSavedPosition(
+    short buildingSlot, TCity* city, unsigned char closeAfterOpen,
+    unsigned char isEmbeddedPage, TCityProductionView* productionView, short savedX,
+    short savedY) {
   TWindow* dialog =
       reinterpret_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
-          static_cast<TurnEventId>(param_1 + kTurnEventTextileMill)));
-  GoldDialogControl* goldControl =
-      reinterpret_cast<GoldDialogControl*>(dialog->ResolveControlByTag(kControlTagDialog));
-  if (goldControl == 0) {
+          static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill)));
+  TBuildingView* buildingView =
+      static_cast<TBuildingView*>(dialog->ResolveControlByTag(kControlTagDialog));
+  if (buildingView == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMacViewMgr_00696D68, 0xb62);
   }
-  goldControl->InvokeSlot1D0FourParam(reinterpret_cast<int>(this), param_2, param_1, param_1);
-  POINT placement;
-  placement.x = static_cast<short>(param_2);
-  placement.y = static_cast<short>(arg3);
+  buildingView->ApplyCityViewSelectionPayloadAndRefreshControls(city, isEmbeddedPage != 0,
+                                                                productionView, buildingSlot);
   dialog->controlValue3c = 0x65;
-  dialog->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  int placement[2];
+  placement[0] = savedX;
+  placement[1] = savedY;
+  dialog->CaptureLayoutF0(placement, 0);
+  if (closeAfterOpen != 0) {
+    dialog->SetModality(1);
+    dialog->PoseModally();
+    dialog->Close();
+    dialog->Free();
+    return 0;
+  }
   dialog->Open();
+  return buildingView;
 }
 
 // FUNCTION: IMPERIALISM 0x0050d5b0
@@ -1408,7 +1419,7 @@ void TMacViewMgr::ClearActiveCityBuildingViewSlot(short buildingSlot) {
 // FUNCTION: IMPERIALISM 0x0050d920
 void TMacViewMgr::ClearActiveCityProductionViewAndDiscardRegion() {
   if (activeCityProductionView04 != 0) {
-    activeCityProductionView04->GetDrawableRegion(0);
+    activeCityProductionView04->CloseAndSaveWindows();
   }
   activeCityProductionView04 = 0;
 }

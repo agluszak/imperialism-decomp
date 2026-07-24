@@ -1484,8 +1484,9 @@ extern const int g_pTradeSummarySelectionMap[23];
 // (military unit list at +0x44 summed by 0x004e0fe0/0x004e1300).
 extern TMinor* g_apSecondaryNationStateSlots[36];
 
-// Parallel to g_apMinorNationCapabilityObjects[16] — aux runtime terrain rows.
-extern TMinor* g_apNationAuxRuntimeStateSlots[16];
+// Original address 0x006a429c is g_apSecondaryNationStateSlots + 7: the 16 minor
+// rows are an interior slice, not independent storage.
+#define g_apNationAuxRuntimeStateSlots (g_apSecondaryNationStateSlots + 7)
 
 extern TMinor* g_apMinorNationCapabilityObjects[16];
 

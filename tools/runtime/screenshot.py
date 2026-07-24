@@ -7,7 +7,8 @@ re-typed by hand each session (xwininfo | grep, then an inline python-xlib
 snippet). This automates it: find the largest visible window whose class matches
 the game, grab its ZPixmap, save.
 
-Run via `just screenshot [out.png]` — the recipe supplies the python-xlib/pillow
+Used internally by the semantic runtime runner for best-effort failure artifacts; callers supply
+python-xlib/pillow
 deps with `uv run --with`; they are deliberately not project dependencies.
 
 usage: screenshot.py [out.png] [--win 0xWINDOWID] [--match imperialism]

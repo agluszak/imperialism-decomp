@@ -1751,7 +1751,7 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
 
   this->NotifyWarResetSlotA5();
 
-  for (nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
+  for (nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     if (nationSlot != this->nationSlot &&
         g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) != 0) {
       g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCode(this->nationSlot, nationSlot,

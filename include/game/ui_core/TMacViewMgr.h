@@ -45,10 +45,12 @@ public:
   // RET 0x8 = 2 dwords; body waits on this->activeCityProductionView04, args vestigial.
   virtual void DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1,
                                                             int unusedArg2); // slot 0x13 0x50d310
-  // RET 0x1c = 7 dwords (Ghidra recovered only 2); trailing args RET-derived, body partial.
-  virtual void ShowGoldDialogForTurnEventContext(int param_1, int param_2, int arg3, int arg4,
-                                                 int arg5, int arg6,
-                                                 int arg7); // slot 0x14 0x50d470
+  virtual TBuildingView*
+  RestoreBuildingWindowAtSavedPosition(short buildingSlot, TCity* city,
+                                       unsigned char closeAfterOpen,
+                                       unsigned char isEmbeddedPage,
+                                       TCityProductionView* productionView, short savedX,
+                                       short savedY); // slot 0x14 0x50d470
   // Mac CodeWarrior oracle signatures. `closeAfterOpen` selects the modal path,
   // which consumes the dialog and therefore returns null.
   virtual TBuildingView*
