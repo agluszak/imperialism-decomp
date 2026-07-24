@@ -45,7 +45,8 @@ TTown::TTown() {}
 TTown::~TTown() {}
 
 // FUNCTION: IMPERIALISM 0x005b6cd0
-void TTown::ITown(const char* markerName, short tileIndex, char enabledFlag, short ownerNation) {
+void TTown::ITown(const char* markerName, short tileIndex, unsigned char enabledFlag,
+                  short ownerNation) {
   strcpy(this->name, markerName);
   this->ownerNation1c = ownerNation;
   this->tileIndex14 = tileIndex;

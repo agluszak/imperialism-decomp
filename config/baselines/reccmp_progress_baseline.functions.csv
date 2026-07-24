@@ -2367,7 +2367,7 @@ address|matching|name
 0x4d8c00|1.0|TGreatPower::GetDiplomacyCounterA2
 0x4d8c20|1.0|TGreatPower::`scalar deleting destructor'
 0x4d8c50|0.9767441860465116|TGreatPower
-0x4d8cc0|0.4525862068965517|TGreatPower::IGreatPower
+0x4d8cc0|0.47844827586206895|TGreatPower::IGreatPower
 0x4d9160|1.0|TGreatPower::Free
 0x4d92e0|0.4366412213740458|TGreatPower::ReadFrom
 0x4d9c70|0.8169014084507042|TGreatPower::WriteTo
@@ -2428,7 +2428,7 @@ address|matching|name
 0x4dd740|1.0|TGreatPower::GetDiplomacyExternalStateByTarget
 0x4dd770|1.0|TGreatPower::SetCityStockCounterAndRefresh
 0x4dd7b0|1.0|TGreatPower::AddToCityStockCounterAndRefresh
-0x4dd7f0|0.6987951807228916|TGreatPower::ComputeProductionMetricForOrderKind
+0x4dd7f0|0.7228915662650602|TGreatPower::ComputeProductionMetricForOrderKind
 0x4dda20|1.0|TGreatPower::DecrementDiplomacyCounterA2ByValue
 0x4dda40|1.0|TGreatPower::DecrementDiplomacyCounterA2Slot66
 0x4dda60|0.6|TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot
