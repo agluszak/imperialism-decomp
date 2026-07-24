@@ -300,3 +300,45 @@ address and the row vanishes from the report), and stubgen skips alias members s
 twin is counted as a recognized duplicate instead of stub-paired at a junk score. A
 ??_G whose chain folds DIRECTLY onto a shared base body with no per-class island
 (TFileStream, TLongintList) has no claimable address; its 90.91% is the ceiling.
+
+## Constructor PLACEMENT is part of the model (header vs .cpp)
+
+A constructor with no `// FUNCTION` marker has **no claimed address in the original**.
+If its definition sits in a .cpp it cannot be inlined into subclass constructors or
+`CreateObject` bodies in other TUs, so VC5 emits a `CALL` where the original absorbed
+the body — and every caller mismatches on it. `TObject.h` and `TPanelView.h` show the
+fix: define it in-class. Moving `TPanelView`'s four-line ctor was +7 exact functions.
+
+**But "no marker" has four causes, and only the caller tells them apart.** Read
+`just ghidra listing` on the class's `CreateObject` (or one derived ctor) FIRST:
+
+| What the caller does | Cause | Fix |
+| --- | --- | --- |
+| allocation + field stores + vptr, **no call** | genuinely always inlined | move the definition in-class |
+| `CALL <addr>` with **arguments pushed** | the ctor model is wrong | a phantom no-arg ctor sits beside the real one; `new T()` reaches it via a **default argument** |
+| `CALL` to an address that **is** marked | correct as-is | leave it out-of-line |
+| stores a field your body does not set | the body is wrong | restore the missing init |
+
+Worked examples, all measured:
+- `TArmyMission`: `CreateObject` 0x0053bfb0 allocates 0x30 then `CALL 0x0053c0a0` with
+  `-1` pushed. A phantom no-arg ctor sat beside the real `TArmyMission(int)`. Collapsing
+  to `TArmyMission(int nodeKey = -1)` took it 89.80% → 100%. Inlining would have made it
+  *worse* — and did, by 42pp, before the listing was read.
+- `TItemOrder`: ctor was annotated `// NOOP: verified empty in original` and was empty.
+  `CreateObject` 0x004b51d0 ends `MOV word ptr [eax+4],0` = `TProductionOrder::
+  quantityField04`, a **base** member, so it must be a body assignment rather than a
+  member-init entry. Restoring it (plus inlining the base ctor) took it 41.18% → 100%.
+  **Distrust "verified empty" annotations that were never checked against the caller.**
+
+Cost to know about: inlining a base ctor can make VC5 stop emitting its out-of-line copy,
+unpairing an address the original *does* have (`TProductionOrder::TProductionOrder`
+0x004b4f00 — one real caller via `just ghidra xrefs`). Weigh the trade; do not assume
+inlining is free.
+
+`just ctor-placement-gate` ratchets this: no NEW unmarked out-of-line ctor. The baseline
+is a backlog to shrink one evidenced class at a time (bd nwdn), never to grow.
+
+Mechanical hazards when moving a definition into a header: carry any `// NOOP:`
+annotation across, add includes the body needs (`TButton` needed
+`ui_invalidation_guard.h`), and keep the phrase "operator new" out of header comments —
+`just antipattern-gate` matches it as prose.

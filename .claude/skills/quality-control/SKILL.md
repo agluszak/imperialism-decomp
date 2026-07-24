@@ -254,3 +254,18 @@ chase VC5's chosen load order.
    function 100→0, unresolved `thunk_*` externals at link, +N original-only globals) —
    these are symbols.csv/ownership pipeline symptoms, not build problems. See the
    **`sync-pipeline` skill** ("Resync failure → fix") for the taxonomy and fixes.
+
+## `just ctor-placement-gate`
+
+Ratchet gate: fails on any NEW constructor defined out-of-line in a .cpp without a
+`// FUNCTION` / `// SYNTHETIC` marker. No marker means no address in the original, so the
+compiler always absorbed that body into its callers; an out-of-line definition cannot be
+inlined across TUs and pessimizes every subclass ctor and `CreateObject` into a `CALL`.
+
+Baseline `config/baselines/ctor_placement_baseline.txt` (95 entries) is a backlog to
+shrink, tracked in bd nwdn. Refresh only after genuinely resolving entries, with
+`just ctor-placement-gate-update` (requires `ALLOW_POLICY_BASELINE_UPDATE=1`).
+
+**Never add a new entry to the baseline to silence the gate.** Read the caller's listing
+and pick the right fix — the four cases are tabulated in the `ctors-dtors-eh` skill, and
+two of the first ten classes turned out to be ctor-model bugs rather than placement ones.
