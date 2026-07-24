@@ -323,18 +323,31 @@ That is the whole explanation for constructors that "regress when inlined". It i
 source patterns and not a size heuristic — body complexity does not discriminate at all
 (202 of the ctors that DO have an address are trivial, 0 statements).
 
-### The decision rule (deterministic, no guessing)
+### THE DECISION (settled — do not re-litigate per class)
+
+> **A constructor is defined in-class in its header if and only if the original has no
+> standalone body for it. A constructor that owns an address stays out-of-line in its
+> .cpp, so that body pairs.**
 
 Ask one question: **does the original have a standalone body for this constructor?**
 
-- **No address** (nothing to claim) -> in-class is strictly correct and free. All of
-  `TPanelView`, `TDialogView`, `TStream`, `TCheater`, `TNavyPlayer`, `TCtlMgr` are this
-  case; `TPanelView` alone was +7 exact.
-- **Address exists** -> you must trade. Keep it out-of-line so the body pairs, unless the
-  inlined call sites are worth more; then go in-class, keep the `// FUNCTION:` marker so
-  the address stays owned, and **expect it to stay unpaired**. `TProductionOrder`
-  (0x004b4f00) is exactly this: we took `TItemOrder::CreateObject` 41.18% -> 100% and paid
-  one pairing. `docs/toolchain.md` records the same call on `TInteriorMinister`.
+- **No address** (no `// FUNCTION:` marker, nothing to claim) -> in-class. Free: there is
+  no body to lose and every caller gains the inlined form. `TPanelView`, `TDialogView`,
+  `TStream`, `TCheater`, `TNavyPlayer`, `TCtlMgr` are all this case; `TPanelView` alone
+  was +7 exact.
+- **Address exists** -> out-of-line. Keeps a certain 100% pairing of a real body instead
+  of trading it for uncertain partial gains on callers.
+
+**Exception, and it must be earned by measurement:** go in-class anyway when the inlined
+call sites are worth more than the lost pairing. Keep the `// FUNCTION:` marker so the
+address stays owned, expect it to stay unpaired, and record the gain and the cost in
+`config/ctor_placement_exceptions.csv`. `TProductionOrder` (0x004b4f00) is the worked
+example — `TItemOrder::CreateObject` 41.18% -> 100% for one lost pairing —
+and `docs/toolchain.md` records the same call on `TInteriorMinister`.
+
+`just ctor-placement-gate` enforces both directions: an unmarked ctor left out-of-line is
+backlog (baseline, shrink it), and an in-class ctor that still owns an address fails
+unless it has an exceptions row.
 
 Two failure modes that look like placement problems but are not:
 

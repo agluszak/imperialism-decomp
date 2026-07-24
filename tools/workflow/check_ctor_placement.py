@@ -1,30 +1,37 @@
-"""Report constructors defined out-of-line that the original never emits standalone.
+"""Enforce the constructor-placement decision.
 
-A constructor carrying no ``// FUNCTION`` / ``// SYNTHETIC`` marker has no claimed
-address in the original binary. When such a definition sits in a .cpp it cannot be
-inlined into subclass constructors or ``CreateObject`` bodies in other translation
-units, so VC5 emits a CALL where the original absorbed the body and every caller
-mismatches on it.
+THE DECISION
+------------
+A constructor is defined **in-class in its header if and only if the original binary has
+no standalone body for it**. A constructor that owns an address (carries a
+``// FUNCTION:`` marker) stays **out-of-line in its .cpp**, so that body pairs.
 
-This is a *report*, not a hard ban. The original had a uniform model -- ordinary
-out-of-line definitions compiled at ``/Ob1``, where VC5 emits the standalone body AND
-auto-inlines it into callers in the SAME TU. Our one-class-per-file layout (Hard Rule 7)
-has no same-TU callers, so the two halves are mutually exclusive for us and each class is
-a trade (see docs/toolchain.md and the ctors-dtors-eh skill).
+WHY
+---
+The original had one uniform model: ordinary out-of-line definitions compiled by VC5 RTM
+at ``/Oy /Ob1``. Under ``/Ob1`` VC5 emits the standalone body AND auto-inlines it into
+callers living in the SAME TU, and the original interleaved several classes per TU. Our
+tree is one class per file (Hard Rule 7), so no caller is ever a same-TU user and the two
+halves are mutually exclusive for us:
 
-The rule is: does the original have a standalone body for this ctor?
+* out-of-line -> the standalone body pairs; every caller emits a CALL
+* in-class    -> callers inline the body; the standalone body is NEVER emitted, and no
+                 linker setting recovers it
 
-* no address  -> in-class is strictly correct and free (TPanelView: +7 exact)
-* address     -> keep it out-of-line so the body pairs, unless the inlined call sites are
-                 worth more; then go in-class, keep the marker, and expect the address to
-                 stay unpaired (TProductionOrder 0x004b4f00)
+So when the original has no body there is nothing to lose and in-class is free
+(TPanelView: +7 exact). When it does have one, out-of-line keeps a certain pairing.
+Details in docs/toolchain.md and the ctors-dtors-eh skill.
 
-Watch for two look-alikes that are real bugs rather than placement: a phantom no-arg ctor
-shadowing a default-argument ctor (TArmyMission), and a body annotated "verified empty"
-that the caller proves is not (TItemOrder).
+WHAT THIS GATE CHECKS (both directions)
+---------------------------------------
+1. out-of-line in a .cpp with NO marker -> should be in-class. Ratcheted against
+   ``config/baselines/ctor_placement_baseline.txt``; that list is a backlog to shrink.
+2. in-class in a header WITH a marker -> a deliberate exception to the decision, and must
+   be justified in ``config/ctor_placement_exceptions.csv`` with what it bought and cost.
 
-Blessing the current set as a baseline keeps it from growing while the backlog is
-worked down one evidenced class at a time.
+Two look-alikes are real bugs rather than placement, and neither is fixed by moving a
+definition: a phantom no-arg ctor shadowing a default-argument ctor (TArmyMission), and a
+body annotated "verified empty" that the caller disproves (TItemOrder).
 """
 
 from __future__ import annotations
@@ -36,10 +43,41 @@ import sys
 
 REPO = pathlib.Path(__file__).resolve().parents[2]
 BASELINE = REPO / "config" / "baselines" / "ctor_placement_baseline.txt"
+EXCEPTIONS = REPO / "config" / "ctor_placement_exceptions.csv"
 
 # ClassName::ClassName( ... ) at column 0 -- an out-of-line definition.
 CTOR = re.compile(r"^([A-Z]\w+)::\1\s*\(")
 MARKERS = ("FUNCTION: IMPERIALISM", "SYNTHETIC: IMPERIALISM")
+
+# A // FUNCTION marker immediately followed by an in-class ctor definition (body, not `;`).
+INCLASS_MARKED = re.compile(
+    r"//\s*FUNCTION: IMPERIALISM (0x[0-9a-fA-F]+)\s*\n\s*([A-Z]\w+)\s*\([^;)]*\)\s*(?::[^;{]*)?\{"
+)
+
+
+def scan_inclass_marked() -> list[tuple[str, str, str]]:
+    """In-class ctor definitions that still own an address (address, class, header)."""
+    out: list[tuple[str, str, str]] = []
+    for path in sorted((REPO / "include" / "game").rglob("*.h")):
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for m in INCLASS_MARKED.finditer(text):
+            cls = m.group(2)
+            # the name must be the enclosing class, i.e. a constructor
+            if re.search(r"\bclass\s+" + cls + r"\b", text):
+                out.append((m.group(1).lower(), cls, path.relative_to(REPO).as_posix()))
+    return out
+
+
+def load_exceptions() -> set[str]:
+    if not EXCEPTIONS.exists():
+        return set()
+    addrs: set[str] = set()
+    for line in EXCEPTIONS.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or line.startswith("address|"):
+            continue
+        addrs.add(line.split("|", 1)[0].strip().lower())
+    return addrs
 
 
 def scan(root: pathlib.Path) -> list[str]:
@@ -92,6 +130,26 @@ def main() -> int:
         print(f"ctor-placement baseline written: {len(found_set)} entries")
         return 0
 
+    # Direction 2: an in-class definition that still owns an address breaks the decision
+    # unless it is a justified exception.
+    exceptions = load_exceptions()
+    unjustified = [t for t in scan_inclass_marked() if t[0] not in exceptions]
+    if unjustified:
+        print(
+            "Constructor-placement gate failed: in-class constructor(s) that still own an\n"
+            "address, with no entry in config/ctor_placement_exceptions.csv:"
+        )
+        for addr, cls, hdr in unjustified:
+            print(f"  - {cls} {addr}  {hdr}")
+        print(
+            "\nThe decision is: a ctor is defined in-class IF AND ONLY IF the original has no\n"
+            "standalone body for it. This one owns an address, so it belongs out-of-line in\n"
+            "its .cpp where that body can pair. Move it back, or -- if you measured that the\n"
+            "inlined call sites are worth more than the lost pairing -- add a row recording\n"
+            "the gain and the cost."
+        )
+        return 1
+
     baseline = load_baseline()
     new = sorted(found_set - baseline)
     fixed = sorted(baseline - found_set)
@@ -116,7 +174,10 @@ def main() -> int:
             print(f"  - {f}")
         return 1
 
-    print(f"Constructor-placement gate passed ({len(found_set)} baselined, 0 new).")
+    print(
+        f"Constructor-placement gate passed "
+        f"({len(found_set)} baselined, 0 new; {len(exceptions)} justified in-class exception(s))."
+    )
     return 0
 
 

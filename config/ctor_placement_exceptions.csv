@@ -1,0 +1,18 @@
+address|class|header|outcome|justification
+# Constructors defined IN-CLASS in a header while carrying a // FUNCTION marker.
+#
+# The standing decision (tools/workflow/check_ctor_placement.py, ctors-dtors-eh skill):
+# a constructor is defined in-class IF AND ONLY IF the original has no standalone body
+# for it. A ctor that owns an address stays out-of-line so that body pairs.
+#
+# Every in-class definition that still owns an address is therefore a deliberate
+# exception and must be listed here with what it bought and what it cost. `outcome`
+# is `traded` when the address went unpaired as a result, `free` when VC5 still emits
+# the out-of-line copy and nothing was lost.
+0x004b4f00|TProductionOrder|include/game/city/TProductionOrder.h|traded|TItemOrder::CreateObject 41.18% -> 100.00% (its CreateObject absorbs the base ctor: no call, no EH frame). Cost: 0x004b4f00 unpaired, one real caller in the original (InitializeCityProductionState 0x004b2a00). Net +7 exact for the batch.
+0x004be1d0|TInteriorMinister|include/game/city_ui/TInteriorMinister.h|traded|Measured 2026-07-23 in docs/toolchain.md: in-class keeps 0x4be0d0 and 0x4be840 at 100% (a 31-byte ctor is the prize); out-of-line drops them to 46.15% and 73.68% to recover 0x4be1d0. The three arrangements are mutually exclusive.
+0x004a8450|TArmyStackList|include/game/military/TArmyStackList.h|traded|Pre-existing in-class definition; address currently unpaired. Not re-measured in this pass -- if it is revisited, record the gain/loss numbers here.
+0x004a8640|TSortedList|include/game/ui_core/TSortedList.h|traded|Pre-existing in-class definition; address currently unpaired. Not re-measured in this pass -- if it is revisited, record the gain/loss numbers here.
+0x00572b30|TNoHilitePicture|include/game/ui_screens/TNoHilitePicture.h|free|In-class and still emitted out-of-line: 0x00572b30 pairs at 100.00%. No trade was made.
+0x005707f0|TPictureButton|include/game/ui_screens/TPictureButton.h|free|In-class and still emitted out-of-line: 0x005707f0 pairs at 87.50% (effective). No trade was made.
+0x005715a0|TUpDownPictureButton|include/game/ui_screens/TUpDownPictureButton.h|free|In-class and still emitted out-of-line: 0x005715a0 pairs at 87.50% (effective). No trade was made.
