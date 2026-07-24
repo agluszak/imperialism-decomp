@@ -108,6 +108,7 @@ module|tools.reccmp.addr_translate|just:addr|orig<->recomp address lookup via ca
 module|tools.ghidra.jumptable|query:jumptable|MSVC500 switch jump-table decoder (works in Ghidra code gaps)
 module|tools.ghidra.query_registry|dependency:tools.ghidra.query|Shared command registry for query client + daemon
 module|tools.runtime.screenshot|script:screenshot|Game-window screenshot by auto-discovered X11 window ID
+module|tools.runtime.cli|just:runtime-test|Semantic runtime test discovery, execution, suites, and result display
 module|tools.workflow.vendor_directx_headers|just:vendor-directx-headers|Mirror the DirectX 5 SDK inc/lib from the build image for reference
 module|tools.workflow.func_status|just:func-status|One-stop function status from config CSVs + reccmp baseline
 module|tools.workflow.agent_task|just:agent-start|Stateful agent workflow entrypoints (start/check/finish)

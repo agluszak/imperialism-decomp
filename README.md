@@ -35,7 +35,8 @@ this repo installs them for you:
   toolchain and the DirectX 5 SDK automatically.
 - `wine` (host-side, separate from the Wine installed *inside* the Docker
   image) — only needed to run/debug the recompiled `.exe` (`just run`,
-  `just debug`, `just screenshot`); not required for build/gates/compare.
+  `just debug`); not required for build/gates/compare. Runtime-test failures capture
+  screenshots internally as optional diagnostic artifacts.
 - [Ghidra `12.1.2 PUBLIC`](https://ghidra-sre.org/) — external install; the
   project database itself is vendored (see `GHIDRA_INSTALL_DIR` below).
 - [`bd` (Beads)](https://github.com/steveyegge/beads) — issue tracking used

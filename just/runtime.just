@@ -1,0 +1,39 @@
+# Instrumented semantic runtime tests. Runtime actions execute inside the game
+# process on its UI thread; no external coordinate automation belongs here.
+
+[doc('Build the native semantic runtime-test executable into build-runtime-tests/')]
+[group('runtime-test')]
+runtime-test-build:
+  mkdir -p "{{runtime_test_build_dir}}"
+  uv run python -m tools.workflow.msvc_build_lock \
+    --lock "{{build_dir}}/.msvc-build.lock" -- just _build-runtime-tests-unlocked
+
+[private]
+_build-runtime-tests-unlocked:
+  just vtable-gate
+  uv run python -m tools.generate --gen-dir "{{runtime_test_build_dir}}/generated"
+  docker run --rm --network none \
+    -e CMAKE_FLAGS="{{cmake_flags}} -DIMPERIALISM_RUNTIME_TESTS=ON" \
+    -v "$PWD":/imperialism \
+    -v "$PWD/{{runtime_test_build_dir}}":/build \
+    "{{docker_image}}"
+
+[doc('List registered native semantic runtime tests')]
+[group('runtime-test')]
+runtime-test-list:
+  uv run python -m tools.runtime.cli list
+
+[doc('Run one named native semantic runtime test')]
+[group('runtime-test')]
+runtime-test name *args:
+  uv run python -m tools.runtime.cli run "{{name}}" {{args}}
+
+[doc('Run a catalog runtime suite (pr or full)')]
+[group('runtime-test')]
+runtime-test-suite suite='pr' *args:
+  uv run python -m tools.runtime.cli suite "{{suite}}" {{args}}
+
+[doc('Show the latest canonical result for a runtime test')]
+[group('runtime-test')]
+runtime-test-show name:
+  uv run python -m tools.runtime.cli show "{{name}}"

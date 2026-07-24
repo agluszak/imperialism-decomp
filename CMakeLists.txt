@@ -44,7 +44,12 @@ endif()
 # definition below is absent from the byte-matching build.
 if(IMPERIALISM_RUNTIME_TESTS)
     target_sources(Imperialism PRIVATE
+        tests/runtime/native/RuntimeContext.cpp
+        tests/runtime/native/RuntimeHarness.cpp
+        tests/runtime/native/RuntimeRegistry.cpp
         tests/runtime/native/RuntimeTestDriver.cpp
+        tests/runtime/native/RuntimeUiDriver.cpp
+        tests/runtime/native/scenarios/LegacyJourneyTest.cpp
     )
     target_include_directories(Imperialism PRIVATE tests/runtime/native)
     target_compile_definitions(Imperialism PRIVATE IMPERIALISM_RUNTIME_TESTS=1)

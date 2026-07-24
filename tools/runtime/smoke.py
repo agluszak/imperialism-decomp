@@ -21,7 +21,7 @@ DEFAULT_PORT = 47632
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from tools.runtime.runtime_tests import ensure_template_prefix, prefix_environment
+from tools.runtime.wine import ensure_template_prefix, prefix_environment
 
 STARTUP_MILESTONES = [
     ("dispatch-4c", 0x5D7240, "turn-event dispatch alive"),
