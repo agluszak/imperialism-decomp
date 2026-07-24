@@ -244,6 +244,28 @@ void TArmyStack::ComputeStackCompositionClassCode() {
   field6 = static_cast<short>((field4 << 8) + (roll & 0xff));
 }
 
+// Walk the stack's unit chain from the head, handing each unit its own field_C through
+// VTableSlot10 and then clearing its orders with SetOrders(0, -1). The cursor is advanced
+// through cursor18 exactly as the original does, re-reading it each iteration.
+// FUNCTION: IMPERIALISM 0x004a7d20
+void TArmyStack::ReseatChainUnitsAndClearOrders() {
+  cursor18 = head14;
+  TArmyStackUnitNode* node = cursor18;
+  TUnit* unit = (node != nullptr) ? node->unit : nullptr;
+  while (unit != nullptr) {
+    unit->VTableSlot10(unit->field_C);
+    unit->SetOrders(static_cast<UnitOrder>(0), -1);
+    node = cursor18;
+    if (node != nullptr) {
+      node = node->next;
+      cursor18 = node;
+      unit = (node != nullptr) ? node->unit : nullptr;
+    } else {
+      unit = nullptr;
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004a7e70
 void TArmyStack::AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(int* outWeightedSum,
                                                                           int* outCount,

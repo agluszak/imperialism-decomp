@@ -42,6 +42,11 @@ public:
   TArmyStackUnitNode* head14;   // +0x14 -- head of an embedded {TUnit*, next} node chain
   TArmyStackUnitNode* cursor18; // +0x18 -- traversal cursor over the chain
 
+  // Walk the unit chain re-seating every unit: hand each one its own field_C through
+  // VTableSlot10 (slot 0x28) and then clear its orders via SetOrders(0, -1).
+  // 0x004a7d20, __thiscall.
+  void ReseatChainUnitsAndClearOrders();
+
   // Derive this stack's composition code from its unit chain: take the min and max
   // per-unit combat class over the chain (seeded 3 / 1), look the pair up in
   // g_abStackCompositionClassTable, store it in field4, and pack field6 as

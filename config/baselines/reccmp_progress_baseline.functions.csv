@@ -1515,7 +1515,7 @@ address|matching|name
 0x4a2390|0.8266666666666667|TArmyMgr::ResolveNextMove
 0x4a2500|0.984375|TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits
 0x4a2610|0.6646341463414634|BuildArmyActionLabelFromLocalizationAndCounts
-0x4a2900|0.13374805598755832|BuildArmyContextActionRecordsAndDispatchLabel
+0x4a2900|0.12752721617418353|BuildArmyContextActionRecordsAndDispatchLabel
 0x4a31c0|0.4|OrphanVtableAssignStub_004a31c0
 0x4a31e0|1.0|CStr255::CStr255
 0x4a3200|0.7047244094488189|TArmyMgr::TryCreateTacticalBattleViewForTileArmies
@@ -1552,7 +1552,7 @@ address|matching|name
 0x4a5c50|1.0|TArmyBattle::`scalar deleting destructor'
 0x4a5c80|0.0|TArmyBattle::~TArmyBattle
 0x4a5ca0|0.5432098765432098|TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters
-0x4a5ec0|0.5328947368421053|TArmyMgr::GenerateSpyReport
+0x4a5ec0|0.5307017543859649|TArmyMgr::GenerateSpyReport
 0x4a6680|0.708171206225681|TArmyMgr::ShowSpyReport
 0x4a6d40|0.38202247191011235|TArmyMgr::ScanMapContextActionEntriesForCodeMatch
 0x4a6dd0|1.0|TArmyMgr::GetByteFlagAtOffset8
@@ -1574,7 +1574,7 @@ address|matching|name
 0x4a7ba0|0.8|TArmyStack::RemoveUnitFromChain
 0x4a7c20|1.0|TArmyStack::Free
 0x4a7c60|0.9333333333333333|TArmyStack::ComputeStackCompositionClassCode
-0x4a7d20|0.05|OrphanCallChain_C2_I38_004a7d20
+0x4a7d20|0.9736842105263158|TArmyStack::ReseatChainUnitsAndClearOrders
 0x4a7e70|0.3978494623655914|TArmyStack::AccumulateWeightedMeterAndCountFromEligibleLinkedEntries
 0x4a8040|0.17886178861788618|TArmyStack::ApplyRandomizedMeterDecayToEligibleLinkedEntries
 0x4a82b0|0.25|TArmyStack::ApplyMeterGrowthToEligibleUnits
