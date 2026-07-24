@@ -23,12 +23,19 @@
 // Pick the shape the listing shows for the call site being ported. Forcing an inlined
 // site through the out-of-line helper (or vice versa) changes codegen and costs match.
 
-// FUNCTION-adjacent: the real image symbol lives in src/game/core/stream_byteswap.cpp.
-void ByteSwapShortInPlace(unsigned char* bytes);
+// Swap one 16-bit field in place. The image carries two byte-identical bodies (the
+// original emits a copy per module); the read path calls 0x004f2970 and the write path
+// calls 0x004b9340, so both keep a definition and a name.
+void ByteSwapShortInPlace(unsigned char* bytes);       // 0x004f2970
+void SwapFirstTwoBytesInBuffer(unsigned char* buffer); // 0x004b9340
 
 // Reads `shortCount` big-endian shorts through the stream's ReadBytes primitive and
 // swaps each pair in place, leaving the caller with host-order shorts.
 void ReadByteSwappedShortArrayFromStream(TStream* stream, unsigned char* buffer, int shortCount);
+
+// Writes `count` shorts through the stream's WriteBytesSlot78 primitive, each swapped
+// into the stream's big-endian order.
+void WriteByteSwappedShortArrayToStream(TStream* stream, short* words, int count);
 
 // ---------------------------------------------------------------------------
 // Inlined shapes (no emitted symbol).

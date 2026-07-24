@@ -3,8 +3,44 @@
 #include "game/core/TStream.h"
 
 // Shared byte-order helpers for the big-endian TStream serialization format. These are
-// the two shapes the original emits out of line; the inlined shapes live in the header.
+// the shapes the original emits out of line; the inlined shapes live in the header.
 // See include/game/core/stream_byteswap.h for which shape to use at a given call site.
+//
+// Bodies are ordered by address (decomplint requires ascending markers), which
+// interleaves the read-side and write-side pairs:
+//   0x004b9340 SwapFirstTwoBytesInBuffer            (write-side swap)
+//   0x004b94a0 WriteByteSwappedShortArrayToStream   (write-side array)
+//   0x004f2970 ByteSwapShortInPlace                 (read-side swap; twin of 0x4b9340)
+//   0x004f2a60 ReadByteSwappedShortArrayFromStream  (read-side array)
+
+// Byte-identical twin of ByteSwapShortInPlace at a second address: the original emits one
+// copy per module that uses the helper, so the image carries two bodies for one source
+// function. Kept as two separately-named definitions because a marker binds to exactly
+// one address; the write path calls this one.
+// FUNCTION: IMPERIALISM 0x004b9340
+void SwapFirstTwoBytesInBuffer(unsigned char* buffer) {
+  unsigned char tmp = buffer[0];
+  buffer[0] = buffer[1];
+  buffer[1] = tmp;
+}
+
+// Copy each short into a 2-byte scratch, swap it to the stream's big-endian order, and
+// push it through the WriteBytesSlot78 primitive (slot 0x78). The swap is inlined at this
+// site in the original even though SwapFirstTwoBytesInBuffer exists.
+// (Previously named WriteWordArrayToOutputCallbackLE -- the stream order is big-endian,
+// so the "LE" in that name was backwards.)
+// FUNCTION: IMPERIALISM 0x004b94a0
+void WriteByteSwappedShortArrayToStream(TStream* stream, short* words, int count) {
+  for (; count > 0; --count) {
+    unsigned short buffer = static_cast<unsigned short>(*words);
+    unsigned char* bytes = reinterpret_cast<unsigned char*>(&buffer);
+    unsigned char tmp = bytes[0];
+    bytes[0] = bytes[1];
+    bytes[1] = tmp;
+    stream->WriteBytesSlot78(&buffer, 2);
+    ++words;
+  }
+}
 
 // Swap the two bytes of one 16-bit field in place.
 // FUNCTION: IMPERIALISM 0x004f2970

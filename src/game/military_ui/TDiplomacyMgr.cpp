@@ -21,6 +21,7 @@
 #include "game/ui_widgets/TNextTradeCommand.h"
 #include "game/ui_screens/TNewsMgr.h"
 #include "game/ui_core/TApplication.h"
+#include "game/core/stream_byteswap.h"
 #include "game/core/TStream.h"
 #include <new>
 #include <stdlib.h>
@@ -330,20 +331,94 @@ void TDiplomacyMgr::Free() {
   }
 }
 
+// Restores the diplomacy state from a save. The stream is big-endian, so every short
+// block read is followed by an in-place swap pass; the byte blocks
+// (pendingPolicyCodeMatrix304) and the single short at proposalDispatchCounter790 are
+// read raw. Field groups added after the initial format are guarded by their
+// introducing save version -- an older save simply leaves them at their constructed
+// value, which is why the gates must be transcribed exactly even though the current
+// format (0x3e) takes every branch.
+//
+// pendingPolicyTierMatrix484, relationMatrixBaselineCopy794/798 and
+// comparativePowerRows1824 are deliberately absent: they are runtime-derived and
+// rebuilt after the load, not persisted.
 // FUNCTION: IMPERIALISM 0x004ef080
 void TDiplomacyMgr::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
+
   stream->ReadBytes(relationStandingScoreMatrix79c, sizeof(relationStandingScoreMatrix79c));
+  SwapShortArrayBytes(relationStandingScoreMatrix79c, kNationPairMatrixEntries);
+
   stream->ReadBytes(relationPropagationMatrixBbe, sizeof(relationPropagationMatrixBbe));
-  stream->ReadBytes(relationTurnStampMatrixFe0, sizeof(relationTurnStampMatrixFe0));
+  SwapShortArrayBytes(relationPropagationMatrixBbe, kNationPairMatrixEntries);
+
+  if (g_nSaveFormatVersion > 0x2e) {
+    stream->ReadBytes(relationTurnStampMatrixFe0, sizeof(relationTurnStampMatrixFe0));
+    SwapShortArrayBytes(relationTurnStampMatrixFe0, kNationPairMatrixEntries);
+  }
+
+  stream->ReadBytes(relationCodeMatrix04, sizeof(relationCodeMatrix04));
+  SwapShortArrayBytes(relationCodeMatrix04, kDiplomacyPairMatrixEntries);
+
+  stream->ReadBytes(pendingPolicyCodeMatrix304, sizeof(pendingPolicyCodeMatrix304));
+  stream->ReadBytes(&proposalDispatchCounter790, 2);
+
+  if (g_nSaveFormatVersion > 0xb) {
+    stream->ReadBytes(relationSideEffectMatrix1402, sizeof(relationSideEffectMatrix1402));
+    SwapShortArrayBytes(relationSideEffectMatrix1402, kNationPairMatrixEntries);
+  }
+
+  if (g_nSaveFormatVersion > 0xd) {
+    // One 4-byte read covering selectedSourceNationSlot784 + selectedTargetNationSlot786,
+    // then one 6-byte read covering selectionFlagsA788/B78a/C78c.
+    stream->ReadBytes(&selectedSourceNationSlot784, 4);
+    SwapShortArrayBytes(&selectedSourceNationSlot784, 2);
+    stream->ReadBytes(&selectionFlagsA788, 6);
+    SwapShortArrayBytes(&selectionFlagsA788, 3);
+  }
+
+  if (g_nSaveFormatVersion > 0x1a) {
+    stream->ReadBytes(specialRelationSourceSlots1894, sizeof(specialRelationSourceSlots1894));
+    NationSlot* slot = specialRelationSourceSlots1894;
+    for (int remaining = 0x10; remaining != 0; --remaining) {
+      ByteSwapShortInPlace(reinterpret_cast<unsigned char*>(slot));
+      ++slot;
+    }
+  }
+
+  if (g_nSaveFormatVersion > 0x1b) {
+    ReadByteSwappedShortArrayFromStream(
+        stream, reinterpret_cast<unsigned char*>(specialRelationTargetSlots18b4), 0x10);
+  }
 }
 
+// Mirror of ReadFrom in the current save format: the writer has no version gates, it
+// always emits every field group.
 // FUNCTION: IMPERIALISM 0x004ef2a0
 void TDiplomacyMgr::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(relationStandingScoreMatrix79c, sizeof(relationStandingScoreMatrix79c));
-  stream->WriteBytesSlot78(relationPropagationMatrixBbe, sizeof(relationPropagationMatrixBbe));
-  stream->WriteBytesSlot78(relationTurnStampMatrixFe0, sizeof(relationTurnStampMatrixFe0));
+
+  WriteShortArrayElems(stream, relationStandingScoreMatrix79c, kNationPairMatrixEntries);
+  WriteShortArrayElems(stream, relationPropagationMatrixBbe, kNationPairMatrixEntries);
+  WriteShortArrayElems(stream, relationTurnStampMatrixFe0, kNationPairMatrixEntries);
+  WriteShortArrayElems(stream, relationCodeMatrix04, kDiplomacyPairMatrixEntries);
+
+  stream->WriteBytesSlot78(pendingPolicyCodeMatrix304, sizeof(pendingPolicyCodeMatrix304));
+  stream->WriteBytesSlot78(&proposalDispatchCounter790, 2);
+
+  WriteShortArrayElems(stream, relationSideEffectMatrix1402, kNationPairMatrixEntries);
+  WriteShortArrayElems(stream, &selectedSourceNationSlot784, 2);
+  WriteShortArrayElems(stream, &selectionFlagsA788, 3);
+
+  NationSlot* slot = specialRelationSourceSlots1894;
+  for (int remaining = 0x10; remaining != 0; --remaining) {
+    short value = *slot;
+    SwapFirstTwoBytesInBuffer(reinterpret_cast<unsigned char*>(&value));
+    stream->WriteBytesSlot78(&value, 2);
+    ++slot;
+  }
+
+  WriteByteSwappedShortArrayToStream(stream, specialRelationTargetSlots18b4, 0x10);
 }
 
 // FUNCTION: IMPERIALISM 0x004ef540
