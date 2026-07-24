@@ -52,8 +52,7 @@ void TFocusAnimation::DrawNextFrame(POINT* offset) {
 
 // FUNCTION: IMPERIALISM 0x004a0280
 void TFocusAnimation::ClipAndPaste() {
-  TQuickDrawSurfaceContext* srcContext =
-      *reinterpret_cast<TQuickDrawSurfaceContext**>(g_pUiAnimator + 0x20);
+  TQuickDrawSurfaceContext* srcContext = g_pUiAnimator->renderSurfaceContext;
 
   CPoint pt(screenRect1C.left, screenRect1C.top);
   CPoint transformedPt = ownerView04->ViewToQDPt(&pt);

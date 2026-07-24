@@ -1478,3 +1478,5 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x00624123||??1CProcessLocalObject@@QAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00624dda||?SetRegKey@@YGHPBD00@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00626bb3||??1CWinThread@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x004845f0||||mfc_template|afxtempl.h|listing_0x004845f0_exact_release_CList_GetNext_POSITION_ref_shape; xrefs from TUiEvent-list traversal at 0x00482fc0|LIBRARY
+0x004924c0||||mfc_template|afxtempl.h|listing_0x004924c0_exact_release_CList_GetNext_POSITION_ref_shape; xrefs from TView child-list traversal at 0x0048b2d0 and 0x0048de00|LIBRARY

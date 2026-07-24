@@ -703,9 +703,7 @@ void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
     if ((regionId < 0) || (0x17f < regionId)) {
       unitChain = 0;
     } else {
-      unitChain = *reinterpret_cast<TMilitaryUnit**>(
-          reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + 0x98 +
-          static_cast<int>(regionId) * 0xa8);
+      unitChain = g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain98;
     }
     for (; unitChain != 0; unitChain = static_cast<TMilitaryUnit*>(unitChain->nextOnTile)) {
       if (unitChain->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {

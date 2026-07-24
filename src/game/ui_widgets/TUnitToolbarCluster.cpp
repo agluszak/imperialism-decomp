@@ -47,14 +47,14 @@ void TUnitToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
     return;
   }
 
-  void* ownerPanel = this->GetWindow();
-  TView* mainControl = reinterpret_cast<TView*>(ownerPanel)->ResolveControlByTag(kControlTagMain);
+  TWindow* ownerPanel = GetWindow();
+  TView* mainControl = ownerPanel->ResolveControlByTag(kControlTagMain);
   if (mainControl == 0) {
     GAME_FAIL_NIL_POINTER();
     return;
   }
 
-  mainControl->DoEvent(0, 0, 0);
+  mainControl->DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x00586150
@@ -66,8 +66,7 @@ int TUnitToolbarCluster::IsTradeControlAtMinimum() {
 void TUnitToolbarCluster::SetSelectedChildTagAndRefresh(int childTag) {
   selectedChildTag = childTag;
 
-  TView* resourceControl =
-      reinterpret_cast<TView*>(this)->ResolveControlByTag(kControlTagReso + childTag);
+  TView* resourceControl = ResolveControlByTag(kControlTagReso + childTag);
   if (resourceControl == 0) {
     GAME_FAIL_NIL_POINTER();
     return;

@@ -18,7 +18,6 @@
 #include "game/nation/TGreatPower.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TView.h"
-#include "game/nation/TMinor.h"
 #include "game/ui_core/TMacViewMgr.h"
 #include "game/ui_widgets/TPlacard.h"
 #include "game/city/TPopulationMgr.h"
@@ -301,10 +300,10 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
   if (nationState != 0) {
     subObject = nationState->city; // +0x894
   }
-  short sVar2_val = reinterpret_cast<TMinor*>(subObject)->HasMinorStandingLinkSlot5C(0xe);
+  short nextBuildingType = subObject->GetNextBuildingType(0xe);
 
-  int mask1 = -static_cast<int>(sVar2_val == 2);
-  int mask2 = -static_cast<int>(sVar2_val == 2);
+  int mask1 = -static_cast<int>(nextBuildingType == 2);
+  int mask2 = -static_cast<int>(nextBuildingType == 2);
   short originX = (mask1 & 0xffe9) + 0x213;
   short sVar2 = (mask2 & 0x14) + 0x6b;
 

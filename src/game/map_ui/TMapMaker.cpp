@@ -1467,7 +1467,7 @@ void TMapMaker::CopyRegionTemplateBankWithRandomVariant(int coarseIndex, short r
                                                         short unusedClass, short northClass,
                                                         short southClass) {
   (void)unusedClass;
-  char* cell = reinterpret_cast<char*>(GetFineGridCellBasePointerFromCoarseIndex(coarseIndex));
+  char* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
 
   if (northClass == regionClass) {
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
@@ -1504,7 +1504,7 @@ void TMapMaker::CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regi
   (void)unusedClass;
   (void)unusedClass2;
   int neighbor = GetAdjacentRegionGridCell(coarseIndex, 2);
-  char* cell = reinterpret_cast<char*>(GetFineGridCellBasePointerFromCoarseIndex(neighbor));
+  char* cell = GetFineGridCellBasePointerFromCoarseIndex(neighbor);
   char* source = cell - 0xf30;
 
   if (northClass == regionClass) {
@@ -1519,13 +1519,13 @@ void TMapMaker::CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regi
 }
 
 // FUNCTION: IMPERIALISM 0x005298a0
-int TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex) {
-  int cell =
+char* TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex) {
+  char* cell =
       (static_cast<short>(coarseIndex % 0x1b) + static_cast<short>(coarseIndex / 0x1b) * 0x6c) *
           0x90 +
-      reinterpret_cast<int>(mapTileGrid08);
+      mapTileGrid08;
   if ((coarseIndex / 0x1b & 1U) != 0) {
-    cell = cell + -0x48;
+    cell -= 0x48;
   }
   return cell;
 }

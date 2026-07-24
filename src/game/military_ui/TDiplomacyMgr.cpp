@@ -49,21 +49,6 @@ struct WarTransitionPair {
   short targetNationSlot;
 };
 
-namespace {
-
-short DecodeTerrainDescriptorNationSlotForAdjacency(int terrainRecord) {
-  short encodedSlot = *reinterpret_cast<short*>(terrainRecord + 0xe);
-  if (encodedSlot < 200) {
-    if (encodedSlot < 100) {
-      return *reinterpret_cast<short*>(terrainRecord + 0xc);
-    }
-    return encodedSlot - 100;
-  }
-  return encodedSlot - 200;
-}
-
-} // namespace
-
 // FUNCTION: IMPERIALISM 0x00413250
 int TDiplomacyMgr::SelectBestMajorNationForMinorByStandingAndNeed(int minorNationSlot) {
   int bestScore = 0;
@@ -322,18 +307,18 @@ void TDiplomacyMgr::ResetTerrainAdjacencyMatrixRowAndSymmetricLink(NationSlot na
     --remaining;
   } while (remaining != 0);
 
-  int terrainRecord = reinterpret_cast<int>(g_apTerrainTypeDescriptorTable[row]);
-  if (terrainRecord == 0) {
+  TCountry* terrain = g_apTerrainTypeDescriptorTable[row];
+  if (terrain == 0) {
     return;
   }
-  if (*reinterpret_cast<short*>(terrainRecord + 0xe) <= 199) {
+  if (terrain->encodedNationSlot <= 199) {
     return;
   }
 
-  short decodedSlot = DecodeTerrainDescriptorNationSlotForAdjacency(terrainRecord);
+  short decodedSlot = terrain->DecodeOwnerNationSlot();
   relationSideEffectMatrix1402[row * kNationSlotCount + decodedSlot] = 2;
 
-  decodedSlot = DecodeTerrainDescriptorNationSlotForAdjacency(terrainRecord);
+  decodedSlot = terrain->DecodeOwnerNationSlot();
   relationSideEffectMatrix1402[decodedSlot * kNationSlotCount + row] = 2;
 }
 
@@ -624,8 +609,7 @@ void TDiplomacyMgr::SetStandingScoreSlot28(int sourceNationSlot, int targetNatio
       }
       terrainCursor++;
       minorNationSlot++;
-    } while (reinterpret_cast<int>(terrainCursor) <
-             reinterpret_cast<int>(&g_apTerrainTypeDescriptorTable[23]));
+    } while (terrainCursor < &g_apTerrainTypeDescriptorTable[23]);
   }
 
   if (IsMajorNationSlot(targetNationSlot) != 0) {
@@ -638,8 +622,7 @@ void TDiplomacyMgr::SetStandingScoreSlot28(int sourceNationSlot, int targetNatio
       }
       terrainCursor++;
       minorNationSlot++;
-    } while (reinterpret_cast<int>(terrainCursor) <
-             reinterpret_cast<int>(&g_apTerrainTypeDescriptorTable[23]));
+    } while (terrainCursor < &g_apTerrainTypeDescriptorTable[23]);
   }
 }
 
@@ -1099,8 +1082,7 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
   int maxResidual = 0;
   for (int tileIndex = 0; tileIndex < kDiplomacyPairMatrixEntries; ++tileIndex) {
     pendingPolicyTierMatrix484[tileIndex] = -1;
-    Province* cityRecord = reinterpret_cast<Province*>(
-        reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + tileIndex * 0xa8);
+    Province* cityRecord = &g_pGlobalMapState->cityScoreTable[tileIndex];
     int ownerNationCode = cityRecord->ownerNationCode00;
     if (ownerNationCode == -1) {
       continue;

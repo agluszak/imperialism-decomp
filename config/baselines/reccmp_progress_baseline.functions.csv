@@ -613,7 +613,6 @@ address|matching|name
 0x484230|1.0|CIncludeView::OnMciNotifyMode
 0x484260|0.2198581560283688|CIncludeView::OnKeyDown
 0x4845a0|0.875|TUiEvent::TUiEvent
-0x4845f0|1.0|DereferencePointerCellInPlace
 0x484610|1.0|CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::Serialize
 0x484860|0.0|WrapperFor_FreeLinkedBlockChain_At00484860
 0x484970|0.4|InitializeRefCountedObjectBaseVtable
@@ -1151,7 +1150,6 @@ address|matching|name
 0x492440|1.0|CWMgrIterator::FirstWindow
 0x492470|1.0|CWMgrIterator::NextWindow
 0x4924a0|1.0|CWMgrIterator::More
-0x4924c0|1.0|PopSinglyLinkedListHeadPointer
 0x4924e0|0.0|EnsureChildResourceWindowAndNotify_Impl
 0x492510|0.0|InitializeViewModalStateNodeBlockChainRuntimeClassFields
 0x492550|0.0|UnlinkNodeFromDoublyLinkedListAndRecycle
@@ -1978,7 +1976,7 @@ address|matching|name
 0x4ba740|1.0|TCityProductionView::Free
 0x4ba7b0|0.7878787878787878|TCityProductionView::Draw
 0x4bac50|0.4666666666666667|TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette
-0x4badd0|0.8285714285714286|TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh
+0x4badd0|0.8571428571428571|TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh
 0x4bafa0|0.15734265734265734|TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x4bb7a0|0.2537313432835821|TCityProductionView::InitializeCityProductionDialog
 0x4bc0b0|0.36681222707423583|TCityProductionView::UpdateUnits
@@ -2725,7 +2723,7 @@ address|matching|name
 0x4ee7a0|0.6942148760330579|TDiplomacyMgr::InitializeTDiplomacyTurnStateManagerDefaults
 0x4ee8c0|0.2777777777777778|TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices
 0x4eee60|1.0|TDiplomacyMgr::RemoveNationSlotAndNotifyPeers_Impl
-0x4eef50|0.24489795918367346|TDiplomacyMgr::ResetTerrainAdjacencyMatrixRowAndSymmetricLink
+0x4eef50|0.5321100917431193|TDiplomacyMgr::ResetTerrainAdjacencyMatrixRowAndSymmetricLink
 0x4ef040|0.6923076923076923|TDiplomacyMgr::Free
 0x4ef080|0.12290502793296089|TDiplomacyMgr::ReadFrom
 0x4ef2a0|0.06060606060606061|TDiplomacyMgr::WriteTo
@@ -3213,7 +3211,7 @@ address|matching|name
 0x513050|0.85|NormalizeWrappedMapCoord108x60
 0x513120|0.95|NormalizeWrappedMapCoord217x60
 0x513170|0.4444444444444444|TMapMgr::FindTownMarkerForTileByOwnerNation
-0x513200|0.5074626865671642|TMapMgr::SetTileTransportFlags
+0x513200|0.5230769230769231|TMapMgr::SetTileTransportFlags
 0x513290|0.4146341463414634|TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12
 0x5133f0|0.4818181818181818|TMapMgr::SetTileOwnerAndInvalidateNeighborState
 0x5135a0|0.45614035087719296|TMapMgr::FindResourceCapabilityRequirementLevelByType
@@ -3281,7 +3279,7 @@ address|matching|name
 0x5177d0|1.0|TMapMgr::GetMapImprovementTileOffsetFromClass
 0x5177f0|0.25806451612903225|TMapMgr::GetMapImprovementTileSpriteOffset
 0x5178c0|0.75|TMapMgr::ResetAllTileMarkerSlotIndicesToSentinel
-0x5178f0|0.3389830508474576|TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias
+0x5178f0|0.32038834951456313|TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias
 0x517c30|0.358974358974359|TMapMgr::AreNationsBorderLinked
 0x517d40|0.5416666666666666|TMapMgr::HasAdjacentProvinceOwnedByNation
 0x517dd0|0.40963855421686746|TMapMgr::HasDirectOrFallbackLinkedNodeType
@@ -3428,7 +3426,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords
 0x527730|0.29577464788732394|TMapMaker::PlaceTerrainFeatureQuotas
-0x527d00|0.4268774703557312|TMapMaker::CreateRivers
+0x527d00|0.43478260869565216|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
@@ -3800,9 +3798,9 @@ address|matching|name
 0x53cb50|0.9032258064516129|TArmyMission::AccumulateMissionUnitPriorityContributionWithScaleMode
 0x53cc10|0.4731182795698925|AccumulateUnitOrderPriorityVectorContribution
 0x53cda0|0.562962962962963|TArmyMission::GetWeightedEquipage
-0x53ceb0|0.4631578947368421|TArmyMission::GetWeightedSatisfaction
+0x53ceb0|0.4607329842931937|TArmyMission::GetWeightedSatisfaction
 0x53d020|0.4444444444444444|TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit
-0x53d200|0.4330708661417323|TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit
+0x53d200|0.43137254901960786|TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit
 0x53d3e0|0.7272727272727273|TArmyMission::IndustrialCostOfNeeds
 0x53d420|1.0|TArmyMission::ValueOf
 0x53d4a0|0.6985645933014354|TArmyMission::FitnessOf
@@ -3899,7 +3897,7 @@ address|matching|name
 0x541000|1.0|THostGreatPower::ReadFrom
 0x541040|1.0|THostGreatPower::WriteTo
 0x541080|0.05128205128205128|THostGreatPower::TryDispatchNationActionViaUiContextOrFallback
-0x5410f0|1.0|THostGreatPower::ReplyToDiplomacyOffers
+0x5410f0|0.96875|THostGreatPower::ReplyToDiplomacyOffers
 0x541170|0.9811320754716981|THostGreatPower::SorryYouLose
 0x541230|1.0|TClientGreatPower::CreateObject
 0x5412b0|1.0|TClientGreatPower::IsClient
@@ -5009,7 +5007,7 @@ address|matching|name
 0x586010|1.0|TUnitToolbarCluster::TUnitToolbarCluster
 0x586040|1.0|TUnitToolbarCluster::`scalar deleting destructor'
 0x586070|1.0|TUnitToolbarCluster::~TUnitToolbarCluster
-0x586090|0.49504950495049505|TUnitToolbarCluster::DoEvent
+0x586090|0.7358490566037735|TUnitToolbarCluster::DoEvent
 0x586150|0.5|TUnitToolbarCluster::IsTradeControlAtMinimum
 0x586170|0.16666666666666666|TUnitToolbarCluster::SetSelectedChildTagAndRefresh
 0x586280|0.43636363636363634|TStatusButton::CreateObject
@@ -5140,7 +5138,7 @@ address|matching|name
 0x58b410|1.0|TCivilianButton::`scalar deleting destructor'
 0x58b440|1.0|TCivilianButton::~TCivilianButton
 0x58b460|1.0|TCivilianButton::SetSelectedCivilianOrderAndEnableButton
-0x58b4f0|0.5|TCivilianButton::Draw
+0x58b4f0|0.43478260869565216|TCivilianButton::Draw
 0x58b5c0|0.4897959183673469|THQButton::CreateObject
 0x58b640|1.0|THQButton::GetRuntimeClass
 0x58b660|1.0|THQButton::THQButton
@@ -5174,7 +5172,7 @@ address|matching|name
 0x58c310|1.0|TNumberedArrowButton::~TNumberedArrowButton
 0x58c330|1.0|TNumberedArrowButton::SetValue
 0x58c360|1.0|TNumberedArrowButton::SetState
-0x58c3d0|0.23008849557522124|TNumberedArrowButton::Draw
+0x58c3d0|0.24778761061946902|TNumberedArrowButton::Draw
 0x58c640|0.14285714285714285|TNumberedArrowButton::TrackMouse
 0x58c7c0|1.0|TNumberedArrowButton::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x58c830|0.4897959183673469|TCombatReportView::CreateObject

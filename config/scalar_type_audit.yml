@@ -272,6 +272,9 @@ discriminant_reviews:
   buildingType:
     classification: closed_domain_needs_listing_evidence
     evidence: TCity bands building types at 8, 0x10 and 0x20, which is a three-tier building-class layout; the tier names come from the city construction tables, which are not yet recovered.
+  nextBuildingType:
+    classification: closed_domain_needs_listing_evidence
+    evidence: TCity::GetNextBuildingType returns the city building-type domain; TCityProductionView compares its slot-0xe result with raw type 2, whose resource-backed name is not yet recovered.
   categoryCode:
     classification: army_unit_category_domain
     evidence: 'ArmyUnitCategory is recovered (imperialism-decomp-1uj.99.1.4) and this is that domain: TTacticalBattle reads g_awTacticalUnitCategoryCodeBySlot[unitTypeC] into it and indexes the move-cost table by it; the residual literals are category numbers the recovered enum already names, pending a rename sweep.'

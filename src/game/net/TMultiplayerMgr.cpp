@@ -1270,7 +1270,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   }
   case 0x1f: {
     // Session/game-flow four-cc status dispatcher.
-    TurnEvent1FStatusPacket* gameState = reinterpret_cast<TurnEvent1FStatusPacket*>(packet);
+    TurnEvent1FStatusPacket* gameState = static_cast<TurnEvent1FStatusPacket*>(packet);
     switch (gameState->statusTag18) {
     case kControlTagAbdi: { // 'abdi' - nation abdicated: notice; host replaces the slot with an AI
       CString templateTextAbdi;

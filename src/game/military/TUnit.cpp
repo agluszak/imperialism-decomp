@@ -99,8 +99,8 @@ void TUnit::Free() {
   if (this->field_1C == 0) {
     manager = g_apNationStates[this->field_18]->trackedObjectList; // +0x89c
   } else {
-    void* terrain = g_apTerrainTypeDescriptorTable[this->field_18];
-    manager = *reinterpret_cast<TSortedList**>(reinterpret_cast<char*>(terrain) + 0x44);
+    TCountry* terrain = g_apTerrainTypeDescriptorTable[this->field_18];
+    manager = terrain->militaryUnitList44;
   }
   if (manager != nullptr) {
     POSITION pos = manager->listState.Find(this);

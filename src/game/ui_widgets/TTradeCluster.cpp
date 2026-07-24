@@ -74,15 +74,6 @@ const int kAssertLineTradeSellZeroBar = 0x896;
 
 const char kUSuperMapCppPath[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
 
-// Layout view of the Bar child control: barRange/barSteps drive the fill ratio.
-struct TradeBarControlLayout {
-  void* vftable;
-  char pad_04[0x30];
-  short barRange;
-  char pad_36[0x2e];
-  short barSteps;
-};
-
 static __inline short QueryNationTradeCapacity(TGreatPower* nationState) {
   return nationState->tradeCapacity;
 }
@@ -215,11 +206,10 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       for (int i = 0;
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
            ++i) {
-        TControl* rowControl =
-            static_cast<TControl*>(ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]));
-        if (rowControl != 0 &&
-            reinterpret_cast<TTradeCluster*>(rowControl)->IsSelectionAllowed() == '\0') {
-          reinterpret_cast<TTradeCluster*>(rowControl)->DoControlAction();
+        TTradeCluster* rowControl = static_cast<TTradeCluster*>(
+            ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]));
+        if (rowControl != 0 && rowControl->IsSelectionAllowed() == '\0') {
+          rowControl->DoControlAction();
         }
       }
       return;
@@ -231,11 +221,10 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       for (int i = 0;
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
            ++i) {
-        TControl* rowControl =
-            static_cast<TControl*>(ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]));
-        if (rowControl != 0 &&
-            reinterpret_cast<TTradeCluster*>(rowControl)->IsSelectionAllowed() == '\0') {
-          reinterpret_cast<TTradeCluster*>(rowControl)->DoControlAction();
+        TTradeCluster* rowControl = static_cast<TTradeCluster*>(
+            ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]));
+        if (rowControl != 0 && rowControl->IsSelectionAllowed() == '\0') {
+          rowControl->DoControlAction();
         }
       }
       return;
@@ -556,10 +545,9 @@ void TTradeCluster::SetMoveAmount(short metricClampMax) {
   }
 
   if (barControl != 0) {
-    TradeBarControlLayout* barLayout = reinterpret_cast<TradeBarControlLayout*>(barControl);
-    int barRange = (int)barLayout->barRange;
+    int barRange = barControl->frameWidth34;
     if (tradeMetricValue != 0) {
-      int barSteps = (int)barLayout->barSteps;
+      int barSteps = barControl->auxValueA;
       float barScale = 9999.0f;
       if (barSteps != 0) {
         barScale = (float)barRange / (float)barSteps;

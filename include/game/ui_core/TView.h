@@ -128,7 +128,7 @@ public:
   virtual void GetDrawableRegion(RgnHandle region);                        // 0x2e 0x48c1e0
   virtual int GetEventNumber();                                            // 0x2f
   virtual void InvalidateOffsetRegionUsingChildClipRect(RgnHandle region); // 0x30 0x48b4b0
-  virtual void ForwardMapViewVirtualC4IfPresent(int param);                // 0x31 0x48ab90
+  virtual void ForwardMapViewVirtualC4IfPresent(RgnHandle region);         // 0x31 0x48ab90
   virtual void ValidateControlRectIfWindowActive(RECT* rect);              // 0x32 0x48b690
   virtual char EvaluateControlInputGate();                                 // 0x33 0x48c000
   virtual char HasRenderableParentAndContent();                            // 0x34 0x48c050

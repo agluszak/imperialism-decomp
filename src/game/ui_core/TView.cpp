@@ -227,9 +227,9 @@ void TView::DoPostCreate(int arg) {
   (void)arg;
 }
 // FUNCTION: IMPERIALISM 0x0048ab90
-void TView::ForwardMapViewVirtualC4IfPresent(int param) {
+void TView::ForwardMapViewVirtualC4IfPresent(RgnHandle region) {
   if (ownerContext != 0) {
-    ownerContext->ForwardMapViewVirtualC4IfPresent(param);
+    ownerContext->ForwardMapViewVirtualC4IfPresent(region);
   }
 }
 // FUNCTION: IMPERIALISM 0x0048abc0
