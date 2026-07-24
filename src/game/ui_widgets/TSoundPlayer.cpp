@@ -373,7 +373,7 @@ void TSoundPlayer::StartDeferredAudioFadeTimerIfIdle() {
 
 // FUNCTION: IMPERIALISM 0x005e4e70
 void TSoundPlayer::ISoundPlayer(int param_1) {
-  this->IEventHandler(0);
+  this->IEventHandler(nullptr);
   char ok = static_cast<char>(g_soundResourceManager.InitializeDirectSoundDeviceAndChannels());
   this->directSoundInitOkAt20 = static_cast<unsigned char>(ok);
   if (ok == 0) {

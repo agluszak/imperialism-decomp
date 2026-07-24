@@ -56,10 +56,12 @@ TEventHandler::TEventHandler() : field0c(0), field10(0x7fffffff), field14(0), fi
 TEventHandler::~TEventHandler() {}
 
 // FUNCTION: IMPERIALISM 0x0048a180
-void TEventHandler::IEventHandler(int packetTag) {
+void TEventHandler::IEventHandler(TEventHandler* nextHandler) {
   field04 = 1;
   field08 = 1;
-  field0c = packetTag;
+  // +0xc is the linkedChildHandler pointer, not an int payload: the Mac oracle types
+  // this parameter TEventHandler* and 0x0048a196 stores it straight into that slot.
+  linkedChildHandler = nextHandler;
   controlTag = kControlTagSpSpSpSp;
 }
 // Slot 0x07/0x08: base implementations (overridden by TView and AppRoot).

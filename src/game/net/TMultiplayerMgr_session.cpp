@@ -113,7 +113,7 @@ TMultiplayerMgr::~TMultiplayerMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00542900
 void TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int sessionContext) {
-  this->IEventHandler(0);
+  this->IEventHandler(nullptr);
   field10 = sessionContext;
   diplomacyQueueContext = 0;
   sessionReadyFlag = 0;
