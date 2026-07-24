@@ -3298,7 +3298,7 @@ address|matching|name
 0x518bd0|0.6|TMapMgr::MarkAdjacentHexOrderDirectionAndSelectTile
 0x518d90|0.43843843843843844|TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders
 0x519010|0.3821656050955414|TMapMgr::ClassifyCityGateTerrainComposition
-0x519140|0.5671140939597316|TMapMgr::DumpAndResetMapScriptState
+0x519140|0.5704697986577181|TMapMgr::DumpAndResetMapScriptState
 0x519610|0.4939759036144578|TMapMgr::ChooseNationSetupProfilesForOpenSlots
 0x519970|1.0|InitializeMapDialogViewportTileSpan
 0x5199c0|0.2988505747126437|TMapDialog::CreateObject

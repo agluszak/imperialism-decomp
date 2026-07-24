@@ -4188,74 +4188,69 @@ void TMapMgr::DumpAndResetMapScriptState() {
   }
 
   int recordIndex = 0;
-  int byteOffset = 0;
   int i;
   do {
-    unsigned char* rec = reinterpret_cast<unsigned char*>(cityScoreTable) + byteOffset;
-    rec[8] = 0;
-    rec[0x3b] = 0;
-    rec[0x3c] = 0;
-    *reinterpret_cast<unsigned short*>(rec + 0x3e) = 0xffff;
-    *reinterpret_cast<unsigned short*>(rec + 0x40) = 0xffff;
+    Province& record = cityScoreTable[recordIndex];
+    record.adjacentRegionCount08 = 0;
+    record.byte3B = 0;
+    record.byte3C = 0;
+    record.secondaryNeighborTileIndex3e = -1;
+    record.primaryNeighborTileIndex40 = -1;
     for (i = 0; i < 12; ++i) {
-      *reinterpret_cast<unsigned short*>(rec + 0x0a + i * 2) = 0xffff;
-      *reinterpret_cast<unsigned short*>(rec + 0x22 + i * 2) = 0xffff;
+      record.adjacentRegionIds0A[i] = -1;
+      record.adjacentRegionAnchorTiles22[i] = -1;
     }
-    rec[0x3a] = 0;
+    record.linkedRegionCount = 0;
     for (i = 0; i < 32; ++i) {
-      *reinterpret_cast<unsigned short*>(rec + 0x42 + i * 2) = 0xffff;
+      record.linkedTileIndices42[i] = -1;
     }
-    int unitNode = *reinterpret_cast<int*>(rec + 0x98);
-    if (unitNode != 0) {
-      short armyCountByOwner[30];
+    TMilitaryUnit* unit = record.stationedUnitChain98;
+    if (unit != 0) {
+      short armyCountByType[30];
       for (i = 0; i < 30; ++i) {
-        armyCountByOwner[i] = 0;
+        armyCountByType[i] = 0;
       }
       do {
-        armyCountByOwner[*reinterpret_cast<short*>(unitNode + 4)]++;
-        unitNode = *reinterpret_cast<int*>(unitNode + 0x14);
-      } while (unitNode != 0);
+        armyCountByType[unit->orderType]++;
+        unit = static_cast<TMilitaryUnit*>(unit->nextOnTile);
+      } while (unit != 0);
       for (i = 0; i < 30; ++i) {
-        if (armyCountByOwner[i] > 0) {
-          fprintf(logFile, g_szFmtArmy_006972bc, recordIndex, i, armyCountByOwner[i]);
+        if (armyCountByType[i] > 0) {
+          fprintf(logFile, g_szFmtArmy_006972bc, recordIndex, i, armyCountByType[i]);
         }
       }
     }
-    *reinterpret_cast<int*>(rec + 0x98) = 0;
-    rec[0xa3] = 0xff;
-    byteOffset += 0xa8;
+    record.stationedUnitChain98 = 0;
+    record.regionClassA3 = -1;
     recordIndex++;
-  } while (byteOffset < 0xfc00);
+  } while (recordIndex < 0x180);
 
   int tileIndex = 0;
-  int tileOffset = 0;
   do {
-    unsigned char* tile = reinterpret_cast<unsigned char*>(terrainStateTable) + tileOffset;
-    int civilianOrder = *reinterpret_cast<int*>(tile + 0x20);
+    TTerrainStateRecordView& tile = terrainStateTable[tileIndex];
+    TCivUnit* civilianOrder = tile.firstCivilianOrder20;
     if (civilianOrder != 0) {
-      fprintf(logFile, g_szFmtCivi_006972ac, *reinterpret_cast<short*>(civilianOrder + 4),
-              tileIndex);
-      *reinterpret_cast<int*>(tile + 0x20) = 0;
+      fprintf(logFile, g_szFmtCivi_006972ac, civilianOrder->orderType, tileIndex);
+      tile.firstCivilianOrder20 = 0;
     }
-    unsigned short flags = *reinterpret_cast<unsigned short*>(tile + 0x1c);
+    unsigned short flags = tile.activeFlags1c;
     if ((flags & 4) != 0) {
       if ((flags & 1) == 0) {
         fprintf(logFile, g_szFmtPort_006972a0, tileIndex);
       }
-      tile[0x1c] &= 0xfb;
+      tile.activeFlags1c &= 0xfffb;
     }
-    flags = *reinterpret_cast<unsigned short*>(tile + 0x1c);
+    flags = tile.activeFlags1c;
     if ((flags & 0x10) != 0) {
       if ((flags & 1) == 0) {
         fprintf(logFile, g_szFmtRail_00697294, tileIndex);
       }
-      tile[0x1c] &= 0xef;
+      tile.activeFlags1c &= 0xffef;
     }
-    tile[5] = 0xff;
-    tile[0x16] = 0xff;
-    tileOffset += 0x24;
+    tile.regionSubtypeTag05 = -1;
+    tile.tileActionState16 = -1;
     tileIndex++;
-  } while (tileOffset < 0x38f40);
+  } while (tileIndex < 0x1950);
 
   TGreatPower** nationSlot = g_apNationStates;
   int nationIndex = 0;
@@ -4273,18 +4268,9 @@ void TMapMgr::DumpAndResetMapScriptState() {
     TCity* laborCity2 = (nation != nullptr) ? nation->city : nullptr;
     TCity* laborCity3 = (nation != nullptr) ? nation->city : nullptr;
     fprintf(logFile, g_szFmtLabo_00697268, nationIndex,
-            *reinterpret_cast<short*>(
-                *reinterpret_cast<int*>(reinterpret_cast<char*>(laborCity1->productionSummary1d8) +
-                                        0x10) +
-                4),
-            *reinterpret_cast<short*>(
-                *reinterpret_cast<int*>(reinterpret_cast<char*>(laborCity2->productionSummary1d8) +
-                                        0x10) +
-                6),
-            *reinterpret_cast<short*>(
-                *reinterpret_cast<int*>(reinterpret_cast<char*>(laborCity3->productionSummary1d8) +
-                                        0x10) +
-                8));
+            laborCity1->productionSummary1d8->baselineSlots10->lowSkillCount04,
+            laborCity2->productionSummary1d8->baselineSlots10->mediumSkillCount06,
+            laborCity3->productionSummary1d8->baselineSlots10->highSkillCount08);
     for (slot = 0; slot < 0x17; ++slot) {
       short embargo =
           g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(nationIndex, slot);
@@ -4298,8 +4284,7 @@ void TMapMgr::DumpAndResetMapScriptState() {
     nationIndex++;
   } while (nationSlot < g_apNationStates + 7);
 
-  fprintf(logFile, g_szFmtYear_00697248,
-          *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pSimMgr) + 0x2c) / 4);
+  fprintf(logFile, g_szFmtYear_00697248, g_pSimMgr->economicTurn / 4);
   fclose(logFile);
   g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
 }
