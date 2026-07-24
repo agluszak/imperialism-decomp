@@ -2120,7 +2120,7 @@ IltTarget_0049c8a0 49C8A0 f
 TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels 49C8E0 f
 thunk_InitializeDirectSoundDeviceAndChannels 49C950 l
 TSoundResourceManager::InitializeDirectSoundDeviceAndChannels 49C970 f
-TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels_SecondTuCopy 49CA50 f
+TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels 49CA50 f
 ResetGlobalPair6A1FD0And6A1FD4 49CAC0 f
 ResetGlobalPair6A2000And6A2004 49CAE0 f
 ResetGlobalQuad6A1FD8To6A1FE4 49CB00 f

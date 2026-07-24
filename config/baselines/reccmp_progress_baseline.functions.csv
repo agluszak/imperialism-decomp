@@ -1348,9 +1348,8 @@ address|matching|name
 0x49c430|0.2743362831858407|TSoundResourceManager::LoadWaveResourceByNumericIdAndBuildBuffer
 0x49c720|1.0|TSoundResourceManager::ReadWaveDataAndFormatViaLoaderWithRetry
 0x49c850|1.0|TSoundResourceManager::SetChannelVolumesUntilAccepted
-0x49c8e0|1.0|TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels
+0x49c8e0|1.0|TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels(void)
 0x49c970|0.6870229007633588|TSoundResourceManager::InitializeDirectSoundDeviceAndChannels
-0x49ca50|0.05714285714285714|TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels_SecondTuCopy
 0x49cac0|0.6666666666666666|ResetGlobalPair6A1FD0And6A1FD4
 0x49cae0|0.6666666666666666|ResetGlobalPair6A2000And6A2004
 0x49cb00|0.5|ResetGlobalQuad6A1FD8To6A1FE4
@@ -6316,7 +6315,7 @@ address|matching|name
 0x5e5170|0.5|TSoundPlayer::ReturnConstantZero_005e5170
 0x5e5190|0.5|TSoundPlayer::ReturnConstantZero_005e5190
 0x5e51b0|0.3333333333333333|TSoundPlayer::VTableSlot31
-0x5e51d0|0.9545454545454546|TSoundPlayer::Free
+0x5e51d0|1.0|TSoundPlayer::Free
 0x5e539c|1.0|AfxGetMainWnd
 0x5e53d8|1.0|CThreadLocal<AFX_MODULE_THREAD_STATE>::CreateObject
 0x5e540c|1.0|CThreadLocal<_AFX_THREAD_STATE>::CreateObject

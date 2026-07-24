@@ -11,14 +11,13 @@ are not covered here.
 - Original portable table: 184 rows
 - Removed after current ownership check: 161 landed rows
 - Reclassified from the stale portable table: 12 reviewed library routines and
-  9 interior fragments/non-entry labels
-- Live PORTABLE targets: 2 MODERATE rows
+  10 compiler duplicates, interior fragments, or non-entry labels
+- Live PORTABLE targets: 1 MODERATE row
 
-## PORTABLE — MODERATE (2)
+## PORTABLE — MODERATE (1)
 
 | addr | size | name | class | approach |
 |------|------|------|-------|----------|
-| `0x0049ca50` | 80 | ReleaseRuntimeSelectionPeersAndResetOwner_Impl | — | Byte-identical to 0x49c8e0 (different Ghidra guess-name): releases 6 slot objects via vtable+8 + FreeLibrary; vtable dispatch on unmodeled struct. |
 | `0x004835e0` | 92 | SelectPaletteAndResolveHandleMapEntry_004835e0 | — | GetDC on [ecx+0x1c], FromHandle to a CDC, blit via func_0x00409890 using rect from unaff_EBX[0..3], ReleaseDC. Unresolved blit/select calls and DC-map |
 
 ## SKIP_LIBRARY (40) — do not port
@@ -34,9 +33,13 @@ Current ownership also classifies these former PORTABLE rows as library code:
 The cache-table copies `0x0049b6a0` and `0x0049b7f0` are VC5
 `CMap<...>::InitHashTable` template instantiations emitted from `afxtempl.h`.
 
-## SKIP_COMPILER_OR_FRAGMENT (11) — do not port as standalone functions
+## SKIP_COMPILER_OR_FRAGMENT (12) — do not port as standalone functions
 
 `0x0048cb00` TView::~TView, `0x0048ec30` TView::~TView
+
+`0x0049ca50` is a per-TU duplicate of
+`TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels` at `0x0049c8e0`;
+both callers pass the same `g_soundResourceManager` object at `0x006a60c0`.
 
 The following former PORTABLE rows are labels inside larger function bodies, not
 independent callable entries: `0x004ccfa2`, `0x004ce0be`, `0x004ce12c`,

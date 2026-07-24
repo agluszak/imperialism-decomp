@@ -1309,7 +1309,7 @@ address|name|symbol|size|type|prototype|provenance
 49c850|TSoundResourceManager::SetChannelVolumesUntilAccepted||61|function|int SetChannelVolumesUntilAccepted(int volume)|
 49c8e0|TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels||80|function|void __thiscall ReleaseDirectSoundDeviceAndChannels(void)|
 49c970|TSoundResourceManager::InitializeDirectSoundDeviceAndChannels||161|function|int __thiscall InitializeDirectSoundDeviceAndChannels(void)|
-49ca50|TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels_SecondTuCopy||80|function|void __thiscall ReleaseDirectSoundDeviceAndChannels_SecondTuCopy(void)|
+49ca50|TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels|?ReleaseDirectSoundDeviceAndChannels@TSoundResourceManager@@QAEXXZ|80|function|void __thiscall ReleaseDirectSoundDeviceAndChannels(void)|curated
 49cac0|ResetGlobalPair6A1FD0And6A1FD4||13|function|undefined ResetGlobalPair6A1FD0And6A1FD4()|
 49cae0|ResetGlobalPair6A2000And6A2004||13|function|undefined ResetGlobalPair6A2000And6A2004()|
 49cb00|ResetGlobalQuad6A1FD8To6A1FE4||23|function|undefined ResetGlobalQuad6A1FD8To6A1FE4()|
