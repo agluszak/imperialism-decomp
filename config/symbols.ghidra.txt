@@ -1125,7 +1125,7 @@ TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext 480030 f
 TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice 480150 f
 TWNetSessionManager::OpenCurrentSessionDescriptionForJoin 4803D0 f
 TWNetSessionManager::ResetRuntimeSelectionRecordBuffer 480400 f
-TDirectPlaySessionManagerBase::ApplyCtrlScrollAcceleration 4804C0 f
+TDirectPlaySessionManagerBase::ExtendEnumSessionsTimeoutWhileCtrlHeld 4804C0 f
 TDirectPlaySessionManagerBase::SelectRuntimeProvider 480500 f
 CopyListBoxItemDataStructByIndex 4805E6 l
 InitializeDialogTemplateBaseState 480750 f

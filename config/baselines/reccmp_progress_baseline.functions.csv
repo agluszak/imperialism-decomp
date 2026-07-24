@@ -453,7 +453,7 @@ address|matching|name
 0x47f740|0.0|DestroyRuntimeSelectionRecordArrayStateAtExit
 0x47f7f0|1.0|RuntimeSelectionRecord::~RuntimeSelectionRecord
 0x47f810|1.0|ForwardEnumSessionToCallbackTable
-0x47f870|0.9411764705882353|ForwardEnumSessionsToSessionManager
+0x47f870|1.0|ForwardEnumSessionsToSessionManager
 0x47f8b0|0.7123287671232876|TDirectPlaySessionManagerBase::OnEnumerateServiceProvider
 0x47fb20|1.0|TDirectPlaySessionManagerBase::OnDirectPlayAssertion111
 0x47fb50|1.0|TDirectPlaySessionManagerBase::OnEnumerateJoinableSession
@@ -467,7 +467,7 @@ address|matching|name
 0x480150|0.3781818181818182|TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice
 0x4803d0|1.0|TWNetSessionManager::OpenCurrentSessionDescriptionForJoin
 0x480400|1.0|TWNetSessionManager::ResetRuntimeSelectionRecordBuffer
-0x4804c0|1.0|TDirectPlaySessionManagerBase::ApplyCtrlScrollAcceleration
+0x4804c0|1.0|TDirectPlaySessionManagerBase::ExtendEnumSessionsTimeoutWhileCtrlHeld
 0x480500|0.375|TDirectPlaySessionManagerBase::SelectRuntimeProvider
 0x480750|1.0|TModalDialogBase::TModalDialogBase
 0x480790|0.4782608695652174|T104TemplateDialog
@@ -1539,7 +1539,7 @@ address|matching|name
 0x4a2390|0.8266666666666667|TArmyMgr::ResolveNextMove
 0x4a2500|0.984375|TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits
 0x4a2610|0.4264264264264264|BuildArmyActionLabelFromLocalizationAndCounts
-0x4a2900|0.6001994017946162|BuildArmyContextActionRecordsAndDispatchLabel
+0x4a2900|0.6041874376869392|BuildArmyContextActionRecordsAndDispatchLabel
 0x4a31c0|1.0|CStr32::CStr32
 0x4a31e0|1.0|CStr255::CStr255
 0x4a3200|0.7047244094488189|TArmyMgr::TryCreateTacticalBattleViewForTileArmies
@@ -1576,7 +1576,7 @@ address|matching|name
 0x4a5c50|1.0|TArmyBattle::`scalar deleting destructor'
 0x4a5c80|0.0|TArmyBattle::~TArmyBattle
 0x4a5ca0|0.5432098765432098|TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters
-0x4a5ec0|0.5307017543859649|TArmyMgr::GenerateSpyReport
+0x4a5ec0|0.5328947368421053|TArmyMgr::GenerateSpyReport
 0x4a6680|0.7107652399481194|TArmyMgr::ShowSpyReport
 0x4a6d40|0.38202247191011235|TArmyMgr::ScanMapContextActionEntriesForCodeMatch
 0x4a6dd0|1.0|TArmyMgr::GetByteFlagAtOffset8
@@ -2425,7 +2425,7 @@ address|matching|name
 0x4dd340|0.6222222222222222|TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal
 0x4dd3b0|1.0|TGreatPower::SumAidAllocationMatrixColumnForTarget
 0x4dd3f0|1.0|TGreatPower::SumAidAllocationMatrixAllCells
-0x4dd430|0.5142857142857142|TGreatPower::ComputeRemainingDiplomacyAidBudget
+0x4dd430|0.5714285714285714|TGreatPower::ComputeRemainingDiplomacyAidBudget
 0x4dd470|1.0|TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches
 0x4dd4e0|0.4585987261146497|TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots
 0x4dd740|1.0|TGreatPower::GetDiplomacyExternalStateByTarget
@@ -3990,7 +3990,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.4669887278582931|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.46570048309178746|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags
@@ -4156,7 +4156,7 @@ address|matching|name
 0x553840|0.6697247706422018|TTaskForce::OrderSendInTheMarines
 0x5539c0|1.0|TTaskForce::MaxOut
 0x553a50|1.0|TTaskForce::DropShips
-0x553b10|0.3448275862068966|TTaskForce::IsEmpty
+0x553b10|0.41379310344827586|TTaskForce::IsEmpty
 0x553b50|0.4727272727272727|TTaskForce::NoSelection
 0x553bc0|0.6536585365853659|TTaskForce::Add
 0x553e30|1.0|TTaskForce::ElectFlagship
@@ -4438,7 +4438,7 @@ address|matching|name
 0x569530|1.0|TNavyToolbarCluster::~TNavyToolbarCluster
 0x569550|0.44970414201183434|TNavyToolbarCluster::DoEvent
 0x5696d0|0.5|TNavyToolbarCluster::IsTradeControlAtMinimum
-0x5696f0|0.9545454545454546|TNavyToolbarCluster::SetSelectedChildTagAndRefresh
+0x5696f0|1.0|TNavyToolbarCluster::SetSelectedChildTagAndRefresh
 0x5697d0|1.0|TSuperNavyRoster::CreateObject
 0x569870|1.0|TSuperNavyRoster::`scalar deleting destructor'
 0x5698a0|1.0|TSuperNavyRoster::~TSuperNavyRoster

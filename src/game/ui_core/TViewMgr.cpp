@@ -1,4 +1,5 @@
 #include "game/ui_core/TViewMgr.h"
+#include "game/ui_core/TDialogBehavior.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_widgets.h"
 #include "game/gfx/TTemplateDialogs.h"
@@ -384,9 +385,9 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x227);
   }
-  void* content = node->GetDialogBehavior();
+  TDialogBehavior* content = node->GetDialogBehavior();
   if (content != nullptr) {
-    *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = kControlTagPic5; // 'cip5'
+    content->defaultCommandCode = kControlTagPic5; // 'cip5'
   }
 
   POINT placement;
@@ -498,9 +499,9 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x2e9);
   }
   dialog->SetModality(1);
-  void* content = dialog->GetDialogBehavior();
+  TDialogBehavior* content = dialog->GetDialogBehavior();
   if (content != 0) {
-    *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = kControlTagOkay; // 'okay'
+    content->defaultCommandCode = kControlTagOkay; // 'okay'
   }
 
   POINT placement;
