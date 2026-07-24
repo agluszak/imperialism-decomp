@@ -128,7 +128,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
 
   if (g_pHelpMgr == 0) {
     g_pHelpMgr = new THelpMgr();
-    g_pHelpMgr->InitializeHelpManagerIndexArrayAndState();
+    g_pHelpMgr->IHelpMgr();
   }
 
   TView* autoResPrompt = ResolveControlByTag(kControlTagTpca);

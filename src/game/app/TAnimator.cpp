@@ -31,8 +31,8 @@ TAnimator::TAnimator()
 TAnimator::~TAnimator() {}
 
 // FUNCTION: IMPERIALISM 0x004a0b20
-void TAnimator::InitializeUiTransientObjectRegistry(int idleFrequency) {
-  InitializePacketHeaderFields_Tag20202020(0);
+void TAnimator::IAnimator(int idleFrequency) {
+  IEventHandler(0);
   field10 = idleFrequency;
   RECT bounds;
   bounds.left = 0;

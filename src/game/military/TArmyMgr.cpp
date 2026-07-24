@@ -159,7 +159,7 @@ TArmyMgr::TArmyMgr() {
 TArmyMgr::~TArmyMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004a18f0
-void TArmyMgr::InitializeMapContextActionManager() {
+void TArmyMgr::IArmyMgr() {
   pendingUnitPool0c = new TArmyStackList();
   staticTable14 = g_MapContextStaticTable_00695448;
   staticTable18 = g_MapContextStaticTable_00695428;

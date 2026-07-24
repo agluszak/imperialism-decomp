@@ -29,8 +29,7 @@ void TCheater::ConstructTCheaterBaseState(TView* panel, int unusedArg) {
   InitializeUiResourceEntryFrameAndParent(0, panel, frameOffset, frameSize, 5, 5, 0);
 
   TStaticText* caption = new TStaticText();
-  caption->InitializeTextEntryBaseAndOptionalStringResource(this, frameSize, captionLayout, 5, 5,
-                                                            0x80, 1);
+  caption->IStaticText(this, frameSize, captionLayout, 5, 5, 0x80, 1);
 
   TButton* doneButton = new TButton();
   CString doneLabel("Done");

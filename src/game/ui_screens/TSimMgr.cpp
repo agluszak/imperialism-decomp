@@ -153,7 +153,7 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
 TSimMgr::~TSimMgr() {}
 
 // FUNCTION: IMPERIALISM 0x0057bbf0
-void TSimMgr::InitializeTurnFlowStateDefaults() {
+void TSimMgr::ISimMgr() {
   economicTurn = 0;
   activeNationSlot = -1;
   field14 = 0;
@@ -424,7 +424,7 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
       g_pUiAnimator = nullptr;
     }
     TAnimator* animator = new TAnimator();
-    animator->InitializeUiTransientObjectRegistry(0x7fffffff);
+    animator->IAnimator(0x7fffffff);
     animator->Install();
     g_pUiAnimator = animator;
 
@@ -457,7 +457,7 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
       g_pMapContextActionManager = nullptr;
     }
     TArmyMgr* armyManager = new TArmyMgr();
-    armyManager->InitializeMapContextActionManager();
+    armyManager->IArmyMgr();
     g_pMapContextActionManager = armyManager;
 
     if (g_pSelectedCivilianOrderState != nullptr) {
@@ -511,7 +511,7 @@ void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int
     }
 
     g_pGlobalMapState = new TMapMgr();
-    g_pGlobalMapState->InitializeGlobalMapState();
+    g_pGlobalMapState->IMapMgr();
 
     if (g_bMultiplayerScenarioSetupActive == 0) {
       g_pGlobalMapState->hexNeighborWrapHorizontally20 = static_cast<char>(arg3);
@@ -538,7 +538,7 @@ unsigned char TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState(int s
     g_pGlobalMapState = nullptr;
   }
   g_pGlobalMapState = new TMapMgr();
-  g_pGlobalMapState->InitializeGlobalMapState();
+  g_pGlobalMapState->IMapMgr();
   g_pGlobalMapState->hexNeighborWrapHorizontally20 = 1;
   return static_cast<unsigned char>(
       g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(g_szEmptyString, g_szEmptyString));
@@ -638,7 +638,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
         g_apNationStates[nationIndex] = pTVar5;
       }
     }
-    g_apNationStates[nationIndex]->InitializeNationStateRuntimeSubsystems(slotIndex, 1);
+    g_apNationStates[nationIndex]->IGreatPower(slotIndex, 1);
     g_apTerrainTypeDescriptorTable[nationIndex] = g_apNationStates[nationIndex];
     if (g_bMultiplayerScenarioSetupActive == 0) {
       activeNationSlot = nationSlot;
@@ -662,8 +662,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
   } else if (setupMode == 4) {
     TGreatPower* pTVar5 = (TGreatPower*)new TRemoteGreatPower();
     g_apNationStates[nationIndex] = pTVar5;
-    pTVar5->InitializeNationStateRuntimeSubsystems(
-        slotIndex, g_pGameFlowState->nationSessionIds[nationIndex] != 0);
+    pTVar5->IGreatPower(slotIndex, g_pGameFlowState->nationSessionIds[nationIndex] != 0);
     g_apTerrainTypeDescriptorTable[nationIndex] = pTVar5;
 
     {
@@ -682,7 +681,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
     }
   } else if (setupMode == 3) {
     TGreatPower* pTVar5 = (TGreatPower*)new TProxyGreatPower();
-    pTVar5->InitializeNationStateRuntimeSubsystems(slotIndex, 1);
+    pTVar5->IGreatPower(slotIndex, 1);
     g_apNationStates[nationIndex] = pTVar5;
     g_apTerrainTypeDescriptorTable[nationIndex] = pTVar5;
 
@@ -769,7 +768,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
     g_apSecondaryNationStateSlots[nationIndex] = nullptr;
     g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
     minor = new TRemoteMinor();
-    minor->InitializeSecondaryNationStateAndSelectHomeTile(static_cast<NationSlot>(slotIndex));
+    minor->IMinor(static_cast<NationSlot>(slotIndex));
   } else if (nationIndex < numMinorCountries + 7) {
     if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
       g_apSecondaryNationStateSlots[nationIndex]->Free();
@@ -778,7 +777,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
     g_apTerrainTypeDescriptorTable[nationIndex] = nullptr;
 
     minor = new TMinor();
-    minor->InitializeSecondaryNationStateAndSelectHomeTile(static_cast<NationSlot>(slotIndex));
+    minor->IMinor(static_cast<NationSlot>(slotIndex));
 
     g_apSecondaryNationStateSlots[nationIndex] = minor;
     g_apTerrainTypeDescriptorTable[nationIndex] = minor;
@@ -1373,7 +1372,7 @@ void TSimMgr::UpdatePersistentTopTenNationScores() {
 // single writer of g_bTurnFlowBootstrapComplete and the funnel every menu/score-screen advance routes
 // through. eventCode kTurnEventRandomGameSetup is the "start new game" scenario-setup path: it soft-resets
 // the EXISTING TSimMgr (the reset block is the original's header-inline prefix of
-// InitializeTurnFlowStateDefaults, expanded in place at 0x58191a) and jumps the turn
+// ISimMgr, expanded in place at 0x58191a) and jumps the turn
 // state machine to state 3. Every other code tears the manager down and rebuilds it
 // from scratch.
 // FUNCTION: IMPERIALISM 0x00581870
@@ -1407,7 +1406,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
   } else {
     g_pSimMgr->Free();
     g_pSimMgr = new TSimMgr();
-    g_pSimMgr->InitializeTurnFlowStateDefaults();
+    g_pSimMgr->ISimMgr();
     g_pSimMgr->StartNextPhase();
     if (eventCode != 0) {
       g_pGlobalUiRootController->PostTurnEventCodeMessage2420(EncodeTurnEventCode(eventCode));

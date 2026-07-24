@@ -78,7 +78,7 @@ void TAutoGreatPower::InitializeNationMinisterSubsystemsByPolicyIds(int nationSl
                                                                     short cityMinisterPolicyId,
                                                                     short foreignMinisterPolicyId,
                                                                     short defenseMinisterPolicyId) {
-  InitializeNationStateRuntimeSubsystems(nationSlot, nationInitializationMode);
+  IGreatPower(nationSlot, nationInitializationMode);
   treasuryValue10 = 10000;
   memset(actionMetricByQuarter, 0, sizeof(actionMetricByQuarter));
 
@@ -118,37 +118,37 @@ void TAutoGreatPower::InitializeNationMinisterSubsystemsByPolicyIds(int nationSl
   switch (foreignMinisterPolicyId) {
   case 0: {
     TArmsForeignMinister* minister = new TArmsForeignMinister();
-    minister->InitializeStateAndCounters(this);
+    minister->IForeignMinister(this);
     foreignMinister = minister;
     break;
   }
   case 1: {
     TTraderForeignMinister* minister = new TTraderForeignMinister();
-    minister->InitializeStateAndCounters(this);
+    minister->IForeignMinister(this);
     foreignMinister = minister;
     break;
   }
   case 2: {
     TTextileForeignMinister* minister = new TTextileForeignMinister();
-    minister->InitializeStateAndCounters(this);
+    minister->IForeignMinister(this);
     foreignMinister = minister;
     break;
   }
   case 3: {
     TDiplomatForeignMinister* minister = new TDiplomatForeignMinister();
-    minister->InitializeStateAndCounters(this);
+    minister->IForeignMinister(this);
     foreignMinister = minister;
     break;
   }
   case 4: {
     TBillForeignMinister* minister = new TBillForeignMinister();
-    minister->InitializeStateAndCounters(this);
+    minister->IForeignMinister(this);
     foreignMinister = minister;
     break;
   }
   case 5: {
     TTedForeignMinister* minister = new TTedForeignMinister();
-    minister->InitializeStateAndCounters(this);
+    minister->IForeignMinister(this);
     foreignMinister = minister;
     break;
   }
@@ -886,7 +886,7 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
     g_pSimMgr->GetStringPrelude(static_cast<short>(orderTypes[t]), &preludeText);
     if (interiorMinister->GetHistoricalNeedFor(orderTypes[t]) >= 5) {
       TProvinceDesirabilityList* candidates = new TProvinceDesirabilityList();
-      candidates->InitializeProvinceRecordSize();
+      candidates->IProvinceDesirabilityList();
 
       int rec;
       for (rec = 0; rec < 0x180; ++rec) {

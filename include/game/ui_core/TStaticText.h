@@ -28,10 +28,8 @@ public:
 
   void CopyViewStateFromSource(TView* source);
 
-  void InitializeTextEntryBaseAndOptionalStringResource(TView* panel, int* offsetLayout,
-                                                        int* sizeLayout, int layoutParam6,
-                                                        int layoutParam7, short stringResourceGroup,
-                                                        short stringResourceIndex);
+  void IStaticText(TView* panel, int* offsetLayout, int* sizeLayout, int layoutParam6,
+                   int layoutParam7, short stringResourceGroup, short stringResourceIndex);
 
   DECLARE_DYNCREATE(TStaticText)
 

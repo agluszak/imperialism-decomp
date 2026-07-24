@@ -216,7 +216,7 @@ void TBattleReportView::DoPostCreate(int arg) {
   animationRect.bottom = 0;
   int registryTag = g_nIdleMeAnimationNextRegistryTag;
   g_nIdleMeAnimationNextRegistryTag++;
-  animation->InitializeAnimation(this, &animationRect, 0, 0, 0, registryTag);
+  animation->IAnimation(this, &animationRect, 0, 0, 0, registryTag);
   g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
 
   TInfoBarText* cursorPanel =

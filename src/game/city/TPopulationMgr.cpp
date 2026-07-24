@@ -21,7 +21,7 @@ IMPLEMENT_DYNCREATE(TPopulationMgr, TObject)
 TPopulationMgr::~TPopulationMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004b5c00
-void TPopulationMgr::InitializePopulationState(TCity* city) {
+void TPopulationMgr::IPopulationMgr(TCity* city) {
   city04 = city;
   baselineSlots10 = new TLaborPool();
   productionSlots14 = new TLaborPool();

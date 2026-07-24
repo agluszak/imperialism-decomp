@@ -19,10 +19,9 @@ public:
   virtual void Restock() override;                  // slot 0x0e 0x4b5620
   virtual void FillOrderSheet(OrderSheet* orderSheet,
                               short quantity) override; // slot 0x10 0x4b5510
-  virtual void InitializeItemOrderContext(TCity* city, short outputResourceType,
-                                          short primaryInputResourceId,
-                                          short secondaryInputResourceId,
-                                          short productionSlot); // slot 0x11 0x4b5290
+  virtual void IItemOrder(TCity* city, short outputResourceType, short primaryInputResourceId,
+                          short secondaryInputResourceId,
+                          short productionSlot); // slot 0x11 0x4b5290
   // TItemOrder is 0x54 bytes vs. TProductionOrder's 0x4c (RTTI). The slot-0x11
   // initializer and resource-indexed city-stock accesses recover all four added shorts.
   short requestedQuantity4c;      // desired quantity retained across availability clamps

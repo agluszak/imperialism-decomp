@@ -24,7 +24,7 @@ public:
 
   // Seed the command payload with dispatch message 0x232b targeting the global UI
   // root controller (0x5ba480; diplomacy turn-event code 0x1c path).
-  void InitializeRangePairFromDiplomacyConstants();
+  void INextTradeCommand();
   virtual ~TNextTradeCommand() override;
 };
 

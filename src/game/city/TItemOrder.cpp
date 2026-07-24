@@ -17,10 +17,8 @@ IMPLEMENT_DYNCREATE(TItemOrder, TProductionOrder)
 TItemOrder::~TItemOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b5290
-void TItemOrder::InitializeItemOrderContext(TCity* city, short outputResourceType,
-                                            short primaryInputResource,
-                                            short secondaryInputResource,
-                                            short productionSlotIndex) {
+void TItemOrder::IItemOrder(TCity* city, short outputResourceType, short primaryInputResource,
+                            short secondaryInputResource, short productionSlotIndex) {
   cityField08 = city;
   summaryField0c = city->productionSummary1d8;
   resourceTypeIndex48 = outputResourceType;

@@ -15,7 +15,7 @@ unsigned int GetTickCountDiv16();
 // Ambit-specific application subclass (size 0x54, base TApplication = 0x48) — the
 // game-side UI root controller (g_pGlobalUiRootController), created by
 // ImperialismApp::InitInstance. Mirrors MacApp's TAmbitApplication: it owns the manager
-// singleton graph (InitializeGlobalRuntimeSystems) and adds cursor/window virtuals in
+// singleton graph (IAmbitApplication) and adds cursor/window virtuals in
 // slots 0x2b-0x2d beyond the TApplication vtable.
 // VTABLE: IMPERIALISM 0x0063e398
 class TAmbitApplication : public TApplication {
@@ -47,10 +47,10 @@ public:
   // TViewMgr/TDisplayMgr/TMacViewMgr/THelpMgr/TMultiplayerMgr). __thiscall on the
   // fresh TAmbitApplication (writes this+0x48/+0x50); previously mis-modeled as the
   // free function InitializeGlobalRuntimeSystemsFromConfig.
-  void InitializeGlobalRuntimeSystems(); // 0x49ded0
+  void IAmbitApplication(); // 0x49ded0
 
   // 0x48 — receiver of HandleCursor's viewport-edge auto-scroll dispatch
-  // (Scroll, slot 0x74). Cleared by InitializeGlobalRuntimeSystems and the
+  // (Scroll, slot 0x74). Cleared by IAmbitApplication and the
   // map pictures' Free; set to the active map picture by the slot-0x37 lifecycle hook
   // (TMapUberUberPicture::DoPostCreate 0x596810 and the TMapUberPicture override).
   TMapUberUberPicture* edgeScrollTarget48;

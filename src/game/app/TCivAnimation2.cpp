@@ -21,7 +21,7 @@ TCivAnimation2::TCivAnimation2(TView* ownerView, RECT* rect, int kind, int tag) 
   static const short kStringIds[9] = {14000, 14005, 14011, 14015, 14021,
                                       14026, 14030, 14035, 14040};
   static const int kTicksPerFrame[9] = {5, 15, 10, 7, 15, 15, 7, 10, 10};
-  InitializeAnimation(ownerView, rect, 0, kStringIds[kind], kTicksPerFrame[kind], tag);
+  IAnimation(ownerView, rect, 0, kStringIds[kind], kTicksPerFrame[kind], tag);
   kindIndex2c = static_cast<short>(kind);
 }
 

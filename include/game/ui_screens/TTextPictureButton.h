@@ -17,9 +17,8 @@ public:
   // Second-phase init: runs the TPicture base init (5, 5 layout filler), copies the
   // button label, and stores the text point size / theme codes consumed by
   // Draw. 0x572710, __thiscall, RET 0x20.
-  void InitializeTextPictureButtonAndTextStyle(TView* panel, int* offsetLayout, int* sizeLayout,
-                                               short pictureId, CString* text, short pointSize,
-                                               short themeCodeA, short themeCodeC);
+  void ITextPictureButton(TView* panel, int* offsetLayout, int* sizeLayout, short pictureId,
+                          CString* text, short pointSize, short themeCodeA, short themeCodeC);
 
   TTextPictureButton();
 };

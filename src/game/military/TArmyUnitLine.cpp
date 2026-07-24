@@ -60,7 +60,7 @@ void TArmyUnitLine::InstallViews(TView* panel, int* offsetLayout) {
     int upgradeOffset[2] = {armyView->frameWidth34 - 0x28, 0};
     int upgradeSize[2] = {0x13, 0x12};
     TGWorldButton* upgradeButton = new TGWorldButton;
-    upgradeButton->InitializeWithBitmapResource(armyView, upgradeOffset, upgradeSize, 0xdae);
+    upgradeButton->IGWorldButton(armyView, upgradeOffset, upgradeSize, 0xdae);
     upgradeButton->SetState(1, 0);
     upgradeButton->controlTag = kControlTagUpgr; // 'upgr'
 

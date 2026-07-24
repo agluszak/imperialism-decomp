@@ -328,8 +328,8 @@ void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
   TStaticText* textEntry = ::new TStaticText();
   int textOffset[2] = {0x4d, 0x11};
   int textSize[2] = {0x80, 0x12};
-  textEntry->InitializeTextEntryBaseAndOptionalStringResource(
-      static_cast<TControl*>(pageOwner), textOffset, textSize, 5, 5, 0x2746, 0xc);
+  textEntry->IStaticText(static_cast<TControl*>(pageOwner), textOffset, textSize, 5, 5, 0x2746,
+                         0xc);
   ApplyControlThemeStyleAndOptionalCaption(textEntry, 0, 0xe, 0x2b6a, -2, 0);
 
   POINT placement;
@@ -456,8 +456,8 @@ void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
   TStaticText* textEntry = ::new TStaticText();
   int textOffset[2] = {0x4d, 0x11};
   int textSize[2] = {0x80, 0x12};
-  textEntry->InitializeTextEntryBaseAndOptionalStringResource(
-      static_cast<TControl*>(pageOwner), textOffset, textSize, 5, 5, 0x2746, 0xb);
+  textEntry->IStaticText(static_cast<TControl*>(pageOwner), textOffset, textSize, 5, 5, 0x2746,
+                         0xb);
   ApplyControlThemeStyleAndOptionalCaption(textEntry, 0, 0xe, 0x2b6a, -2, 0);
 
   POINT placement;
@@ -501,8 +501,8 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   TStaticText* textEntry = ::new TStaticText();
   int textOffset[2] = {0x4d, 0x11};
   int textSize[2] = {0x80, 0x12};
-  textEntry->InitializeTextEntryBaseAndOptionalStringResource(
-      static_cast<TControl*>(pageOwner), textOffset, textSize, 5, 5, 0x2746, 0xa);
+  textEntry->IStaticText(static_cast<TControl*>(pageOwner), textOffset, textSize, 5, 5, 0x2746,
+                         0xa);
   ApplyControlThemeStyleAndOptionalCaption(textEntry, 0, 0xe, 0x2b6a, -2, 0);
 
   POINT placement;

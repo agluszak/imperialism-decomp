@@ -36,7 +36,7 @@ TTacticalUnit::~TTacticalUnit() {}
 IMPLEMENT_DYNCREATE(TTacticalUnit, TObject)
 
 // FUNCTION: IMPERIALISM 0x005a5e30
-void TTacticalUnit::InitializeTacticalUnitState() {
+void TTacticalUnit::ITacticalUnit() {
   tileIndex8 = -2;
   selectedFlag18 = 0;
   state1c = 0;

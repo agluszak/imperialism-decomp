@@ -51,7 +51,7 @@ TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0}
 // GLOBAL: IMPERIALISM 0x006a2158
 TDisplayMgr* g_pDisplayMgr = 0;
 // Bounds of the TAnimator offscreen surface (only known live reader:
-// TAnimator::InitializeUiTransientObjectRegistry at 0x4a0b20).
+// TAnimator::IAnimator at 0x4a0b20).
 // GLOBAL: IMPERIALISM 0x006a2228
 int g_nUiAnimatorSurfaceBoundsWidth = 0;
 // GLOBAL: IMPERIALISM 0x006a222c
@@ -1553,7 +1553,7 @@ int g_nMapActionContextDistanceCacheSizedFor = -1;
 
 // GLOBAL: IMPERIALISM 0x006a42dc
 unsigned char g_bRandomMapDeveloperCheatFlag = 0;
-// Developer-cheat probe filename: TSimMgr::InitializeTurnFlowStateDefaults (0x57bc2d)
+// Developer-cheat probe filename: TSimMgr::ISimMgr (0x57bc2d)
 // stats a file literally named "Conan" via CFile::GetStatus.
 // GLOBAL: IMPERIALISM 0x00698bec
 char g_szConanCheatFileName_00698BEC[] = "Conan";

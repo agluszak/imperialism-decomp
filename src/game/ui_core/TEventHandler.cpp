@@ -56,7 +56,7 @@ TEventHandler::TEventHandler() : field0c(0), field10(0x7fffffff), field14(0), fi
 TEventHandler::~TEventHandler() {}
 
 // FUNCTION: IMPERIALISM 0x0048a180
-void TEventHandler::InitializePacketHeaderFields_Tag20202020(int packetTag) {
+void TEventHandler::IEventHandler(int packetTag) {
   field04 = 1;
   field08 = 1;
   field0c = packetTag;

@@ -38,7 +38,7 @@ void TDealLine::InstallViews(TView* panel, int* offsetLayout) {
   TMyStaticText* text = new TMyStaticText();
   int textSize[2] = {field08 - 0x28, field0c};
   int textOffset[2] = {offsetLayout[0] + 0x28, offsetLayout[1]};
-  text->InitializeTextEntryBaseAndOptionalStringResource(panel, textOffset, textSize, 5, 5, -1, 0);
+  text->IStaticText(panel, textOffset, textSize, 5, 5, -1, 0);
 
   TextStyle textStyle;
   BuildUiTextStyleDescriptor(&textStyle, 0, 0xa, 0x2b6a);

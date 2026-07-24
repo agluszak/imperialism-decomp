@@ -24,7 +24,7 @@ public:
   virtual int UpdateControlCachedIntFromWindowText(); // slot 0x7a (0x4911c0)
 
   TNumberText(); // constructor (0x429500)
-  void InitializeNumberText(TView* panel, int* offsetLayout, int* sizeLayout, int value,
-                            int minimumValue, int maximumValue);
+  void INumberText(TView* panel, int* offsetLayout, int* sizeLayout, int value, int minimumValue,
+                   int maximumValue);
 };
 ASSERT_SIZE(TNumberText, 0xac);

@@ -66,7 +66,7 @@ TCity::TCity() {
 TCity::~TCity() {}
 
 // FUNCTION: IMPERIALISM 0x004b2570
-void TCity::InitializeCityProductionState(TGreatPower* ownerNation) {
+void TCity::ICity(TGreatPower* ownerNation) {
   ownerNationAc = ownerNation;
   powerPlantUpgradeQueuedFlag04 = 0;
   memset(reservedByType7e, 0, sizeof(reservedByType7e));
@@ -105,39 +105,39 @@ void TCity::InitializeCityProductionState(TGreatPower* ownerNation) {
   powerAvailableB4 = 0;
 
   productionSummary1d8 = new TPopulationMgr();
-  productionSummary1d8->InitializePopulationState(this);
+  productionSummary1d8->IPopulationMgr(this);
   memset(orderSlotsE4, 0, sizeof(orderSlotsE4));
 
   TItemOrder* itemOrder = new TItemOrder();
-  itemOrder->InitializeItemOrderContext(this, 0x0b, 4, 3, 2);
+  itemOrder->IItemOrder(this, 0x0b, 4, 3, 2);
   orderSlotsE4[0x0b] = itemOrder;
 
   itemOrder = new TItemOrder();
-  itemOrder->InitializeItemOrderContext(this, 0x0f, 0x0b, -1, 3);
+  itemOrder->IItemOrder(this, 0x0f, 0x0b, -1, 3);
   orderSlotsE4[0x0f] = itemOrder;
 
   itemOrder = new TItemOrder();
-  itemOrder->InitializeItemOrderContext(this, 0x10, 0x0b, -1, 3);
+  itemOrder->IItemOrder(this, 0x10, 0x0b, -1, 3);
   orderSlotsE4[0x10] = itemOrder;
 
   itemOrder = new TItemOrder();
-  itemOrder->InitializeItemOrderContext(this, 9, 2, -1, 4);
+  itemOrder->IItemOrder(this, 9, 2, -1, 4);
   orderSlotsE4[9] = itemOrder;
 
   itemOrder = new TItemOrder();
-  itemOrder->InitializeItemOrderContext(this, 10, 2, -1, 4);
+  itemOrder->IItemOrder(this, 10, 2, -1, 4);
   orderSlotsE4[10] = itemOrder;
 
   itemOrder = new TItemOrder();
-  itemOrder->InitializeItemOrderContext(this, 0x0c, 6, -1, 6);
+  itemOrder->IItemOrder(this, 0x0c, 6, -1, 6);
   orderSlotsE4[0x0c] = itemOrder;
 
   itemOrder = new TItemOrder();
-  itemOrder->InitializeItemOrderContext(this, 0x0d, 8, -1, 1);
+  itemOrder->IItemOrder(this, 0x0d, 8, -1, 1);
   orderSlotsE4[0x0d] = itemOrder;
 
   itemOrder = new TItemOrder();
-  itemOrder->InitializeItemOrderContext(this, 0x0e, 9, -1, 5);
+  itemOrder->IItemOrder(this, 0x0e, 9, -1, 5);
   orderSlotsE4[0x0e] = itemOrder;
 
   TOrItemOrder* orItemOrder = new TOrItemOrder();
@@ -148,22 +148,20 @@ void TCity::InitializeCityProductionState(TGreatPower* ownerNation) {
   for (profileIndex = 0; profileIndex < 9; ++profileIndex) {
     short* profile = g_aInitialCityRecruitmentOrderProfiles[profileIndex];
     TUnitOrder* unitOrder = new TUnitOrder();
-    unitOrder->InitializeCityRecruitmentOrderContext(this, profile[0], profile[1], profile[2],
-                                                     profile[3], profile[4], profile[5], profile[6],
-                                                     0);
+    unitOrder->IUnitOrder(this, profile[0], profile[1], profile[2], profile[3], profile[4],
+                          profile[5], profile[6], 0);
     orderSlotsE4[0x22 + profileIndex] = unitOrder;
   }
 
   TUnitOrder* unitOrder = new TUnitOrder();
-  unitOrder->InitializeCityRecruitmentOrderContext(this, 0x18, 0x10, 2, -1, 0, 5000, 4, 1);
+  unitOrder->IUnitOrder(this, 0x18, 0x10, 2, -1, 0, 5000, 4, 1);
   orderSlotsE4[0x20] = unitOrder;
 
   for (profileIndex = 1; profileIndex <= 7; ++profileIndex) {
     short* profile = g_aUnitOrderCostProfileByAbilityId[profileIndex];
     unitOrder = new TUnitOrder();
-    unitOrder->InitializeCityRecruitmentOrderContext(this, profile[0], profile[1], profile[2],
-                                                     profile[3], profile[4], profile[5], profile[6],
-                                                     1);
+    unitOrder->IUnitOrder(this, profile[0], profile[1], profile[2], profile[3], profile[4],
+                          profile[5], profile[6], 1);
     orderSlotsE4[0x18 + profileIndex] = unitOrder;
   }
 
@@ -293,11 +291,11 @@ void TCity::ReadFrom(TStream* stream) {
     TCityTask* task;
     if (taskKind == 1) {
       task = new TCityTask();
-      task->InitializeCityProductionQueueCommand(0, this, 0);
+      task->ICityTask(0, this, 0);
       task->ReadFrom(stream);
     } else {
       TShipBuildingTask* shipTask = new TShipBuildingTask();
-      shipTask->InitializeShipProductionQueueTask(0, this, 0);
+      shipTask->IShipBuildingTask(0, this, 0);
       shipTask->ReadFrom(stream);
       task = shipTask;
     }
@@ -791,7 +789,7 @@ void TCity::MakeTown(short selectedResourceType) {
   if (town == 0) {
     FailNilPointerWithAssert(kUCityCppPath, 0x53c);
   }
-  town->InitializeTownMarker("Altown", 0, 0, ownerNationAc->nationSlot);
+  town->ITown("Altown", 0, 0, ownerNationAc->nationSlot);
   town->Free();
   ownerNationAc->RebuildNationResourceYieldCountersAndDevelopmentTargets();
   ownerNationAc->treasuryValue10 = ownerNationAc->treasuryValue10;

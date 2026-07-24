@@ -19,7 +19,7 @@ TProvinceDesirabilityList::TProvinceDesirabilityList() {}
 // TProvinceDesirabilityList::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004d6610
-void TProvinceDesirabilityList::InitializeProvinceRecordSize() {
+void TProvinceDesirabilityList::IProvinceDesirabilityList() {
   recordSize14 = 4;
 }
 

@@ -17,7 +17,7 @@ public:
 
   // Sets recordSize14 = 4 ({short regionIndex, short score} records). Out-of-line in
   // the original; called right after construction by the case-16 advisory scan.
-  void InitializeProvinceRecordSize(); // 0x4d6610
+  void IProvinceDesirabilityList(); // 0x4d6610
 };
 
 ASSERT_SIZE(TProvinceDesirabilityList, 0x18);

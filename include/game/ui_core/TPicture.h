@@ -31,8 +31,8 @@ public:
   // frame/parent base fields, attaches to the panel, and loads the picture resource via
   // the SetPictureResourceIdAndRefresh virtual. layoutParam4/5 are never read.
   // 0x48f330, __thiscall, RET 0x18.
-  void InitializePictureEntryBaseAndRefresh(TView* panel, int* offsetLayout, int* sizeLayout,
-                                            int layoutParam4, int layoutParam5, short pictureId);
+  void IPicture(TView* panel, int* offsetLayout, int* sizeLayout, int layoutParam4,
+                int layoutParam5, short pictureId);
 };
 
 ASSERT_SIZE(TPicture, 0x90);

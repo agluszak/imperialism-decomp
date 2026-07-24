@@ -573,7 +573,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     info->ApplyBounds(&bounds, 0);
     if (measuredHeight > info->frameHeight38) {
       TScrollView* scrollView = new TScrollView();
-      scrollView->InitializeScrollView(gold, &info->ownerLocalX, &info->frameWidth34);
+      scrollView->IScrollView(gold, &info->ownerLocalX, &info->frameWidth34);
       scrollView->DoPostCreate(0);
       gold->DetachChildFromOwnerList(info);
       scrollView->AttachChildControl(info, 0);

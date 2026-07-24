@@ -1075,7 +1075,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       return 1;
     }
     TNextTradeCommand* tradeCommand = new TNextTradeCommand();
-    tradeCommand->InitializeRangePairFromDiplomacyConstants();
+    tradeCommand->INextTradeCommand();
     g_pGlobalUiRootController->DispatchUiSelectionToHandler(tradeCommand);
     break;
   }

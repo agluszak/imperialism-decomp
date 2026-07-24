@@ -47,7 +47,7 @@ void TTechHistoryView::PopulateTechHistory(short techId) {
   int offset[2] = {0, 0};
   int size[2] = {scrollView->frameWidth34 - 0x19, frameHeight38};
   CRect zeroRect(0, 0, 0, 0);
-  descText->InitializeDeluxeText(scrollView, offset, size, &zeroRect, &style, -2);
+  descText->IDeluxeText(scrollView, offset, size, &zeroRect, &style, -2);
   descText->textColor98 = mainStyle;
   descText->SetTextFromUiStringResourceId(static_cast<short>(techId + 0x8fc));
 

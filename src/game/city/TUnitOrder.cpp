@@ -24,10 +24,10 @@ IMPLEMENT_DYNCREATE(TUnitOrder, TProductionOrder)
 TUnitOrder::~TUnitOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b6fe0
-void TUnitOrder::InitializeCityRecruitmentOrderContext(
-    TCity* city, short nEntryId, short nPrimaryInputResourceId, short nPrimaryInputPerUnit,
-    short nSecondaryInputResourceId, short nSecondaryInputPerUnit, short nCashCostPerUnit,
-    short nWorkforceMode, byte bSpecialistMode) {
+void TUnitOrder::IUnitOrder(TCity* city, short nEntryId, short nPrimaryInputResourceId,
+                            short nPrimaryInputPerUnit, short nSecondaryInputResourceId,
+                            short nSecondaryInputPerUnit, short nCashCostPerUnit,
+                            short nWorkforceMode, byte bSpecialistMode) {
   cityField08 = city;
   summaryField0c = city->productionSummary1d8;
   resourceTypeIndex48 = nEntryId;

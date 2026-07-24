@@ -372,8 +372,8 @@ void TSoundPlayer::StartDeferredAudioFadeTimerIfIdle() {
 // Slot 0x25 — allocate the two sound-channel peer objects and bring up DirectSound.
 
 // FUNCTION: IMPERIALISM 0x005e4e70
-void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(int param_1) {
-  this->InitializePacketHeaderFields_Tag20202020(0);
+void TSoundPlayer::ISoundPlayer(int param_1) {
+  this->IEventHandler(0);
   char ok = static_cast<char>(g_soundResourceManager.InitializeDirectSoundDeviceAndChannels());
   this->directSoundInitOkAt20 = static_cast<unsigned char>(ok);
   if (ok == 0) {

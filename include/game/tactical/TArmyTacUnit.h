@@ -40,7 +40,7 @@ public:
   // Post-construction init from the source army unit (called unconditionally after
   // `new TArmyTacUnit()`, even on alloc failure -- a real init method, not the ctor).
   // TArmyBattle::ReadFrom duplicates this fill inline. 0x005a5f20, __thiscall.
-  void InitializeFromMilitaryUnit(TMilitaryUnit* source);
+  void IArmyTacUnit(TMilitaryUnit* source);
 
   // Fills the float projection vector (+0x44..+0x54) from the source unit's five
   // per-type stat percentages scaled by strength. 0x5a5fe0, __thiscall.

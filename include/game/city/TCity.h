@@ -166,7 +166,7 @@ public:
   short cityStockGemsE0;
   short cityStockGoldE2;
   // +0xe4..+0x1d8 — mixed city payload table (0x3d pointer slots).
-  // Band boundaries traced from InitializeCityProductionState (0x004b2570):
+  // Band boundaries traced from ICity (0x004b2570):
   //   0x00..0x18 heterogeneous TItemOrder/TOrItemOrder (idx 0x08) plus
   //              TTrainingOrder (idx 0x07/0x17/0x18); all TProductionOrder-derived.
   //   0x19..0x2a TUnitOrder (build orders)
@@ -198,7 +198,7 @@ public:
   short pad26e;
   TTaskList* trackedOrderList270; // 0x270 — released via FreePayloadsAndDestroy
   // 0x274 — TPtrList (vtable 0x649068, recordSize14 4; allocated in
-  // InitializeCityProductionState 0x4b2dca); released via ReleasePtrList.
+  // ICity 0x4b2dca); released via ReleasePtrList.
   class TPtrList* eventQueue274;
   // +0x278 — per-resource failed-request counters maintained by the interior
   // minister when a production sheet cannot be fully transported.
@@ -227,7 +227,7 @@ public:
   int GetBuildingType(short buildingSlot);
 
   // 0x004b2570: initialize production arrays and build the city entry-object tables.
-  void InitializeCityProductionState(TGreatPower* ownerNation);
+  void ICity(TGreatPower* ownerNation);
 };
 
 ASSERT_SIZE(TCity, 0x2d4);
