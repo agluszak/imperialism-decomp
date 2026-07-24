@@ -426,7 +426,7 @@ def load_function_sizes(build_dir: Path) -> dict[int, int]:
         if not path.exists():
             continue
         with path.open("r", encoding="utf-8", errors="replace") as fd:
-            header = fd.readline().rstrip("\n").split("|")
+            header = fd.readline().rstrip("\n").split("|")  # pipe-split-ok: reading pipe-delimited csv
             try:
                 addr_i, size_i, type_i = (
                     header.index("address"),
@@ -436,7 +436,7 @@ def load_function_sizes(build_dir: Path) -> dict[int, int]:
             except ValueError:
                 continue
             for line in fd:
-                parts = line.rstrip("\n").split("|")
+                parts = line.rstrip("\n").split("|")  # pipe-split-ok: reading pipe-delimited csv
                 if len(parts) <= max(addr_i, size_i, type_i):
                     continue
                 if parts[type_i].strip().lower() != "function":
