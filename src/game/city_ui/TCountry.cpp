@@ -265,7 +265,7 @@ short TCountry::GetOrComputeOverlayAnchorTileIndex() {
 void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
   TSimMgr* localization = g_pSimMgr;
   if (localization->scenarioMapIndexPlusOne > 0) {
-    g_pGlobalMapState->NotifyCityRecordSlot12C(
+    g_pGlobalMapState->SetProvinceCapitalTileFlagBit08(
         g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeTileIndex)]
             .cityRecordIndex);
     return;
@@ -291,7 +291,7 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
         if (g_pSimMgr->difficultyLevel < 2) {
           order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
-        g_pGlobalMapState->NotifyCityRecordSlot12C(regionId);
+        g_pGlobalMapState->SetProvinceCapitalTileFlagBit08(regionId);
         if (this->nationSlot < 7 &&
             g_apNationStates[this->nationSlot]->diplomacyEligibilityA0 == 0 &&
             g_pSimMgr->difficultyLevel == 4) {

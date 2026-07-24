@@ -452,9 +452,6 @@ discriminant_reviews:
   resetOrderMode:
     classification: byte_or_int_predicate_not_a_domain
     evidence: TMinor tests non-zero to decide whether to reset the order tables.
-  resourceCode:
-    classification: open_index_count_or_bound
-    evidence: TCityOrderItem uses resourceCode only as the induction variable that clears the 0x3f-entry order-sheet resource table, so the literal is an array extent rather than a discriminant value.
   resourceType:
     classification: industry_action_order_type_domain
     evidence: the residual sites are the 14-entry industry/navy-order domain (TGreatPower 0x004dd140 walks orderCountByType5c[0x0e], TNavyMgr its 14-entry report table) plus one signed -1 sentinel test and TTechMgr's slotMap index; none are ResourceKind.

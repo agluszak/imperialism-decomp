@@ -259,7 +259,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
           for (int edgeIndex = 0; edgeIndex < 2; ++edgeIndex) {
             short resourceType = static_cast<short>(terrainRecord->resourceTypeByEdge[edgeIndex]);
             if (resourceType != -1) {
-              char contribution = globalMapState->CallMetricSlotC4(regionIndex, edgeIndex);
+              char contribution = globalMapState->FindResourceCapabilityRequirementLevel(regionIndex, edgeIndex);
               currentNeedByType[resourceType] = static_cast<short>(
                   currentNeedByType[resourceType] + static_cast<short>(contribution));
             }
@@ -338,7 +338,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
               signed char resourceType = terrainTable[linkedRegion].resourceTypeByEdge[edge];
               if (resourceType != -1) {
                 resourceSums[resourceType] +=
-                    static_cast<int>(globalMapState->CallMetricSlotC4(linkedRegion, edge));
+                    static_cast<int>(globalMapState->FindResourceCapabilityRequirementLevel(linkedRegion, edge));
               }
               ++edge;
             }

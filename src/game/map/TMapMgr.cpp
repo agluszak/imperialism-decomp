@@ -4633,18 +4633,3 @@ char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(StrategicTileIndex ti
   }
   return static_cast<char>(0xff);
 }
-
-char TMapMgr::CallMetricSlotC4(int regionIndex, int edgeIndex) {
-  (void)regionIndex;
-  (void)edgeIndex;
-  return 0;
-}
-
-short TMapMgr::QueryIconStripXSlot110(int iconCode) {
-  (void)iconCode;
-  return 0;
-}
-
-void TMapMgr::NotifyCityRecordSlot12C(ProvinceIndex cityRecordIndex) {
-  (void)cityRecordIndex;
-}
