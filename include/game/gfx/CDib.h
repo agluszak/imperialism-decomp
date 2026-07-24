@@ -24,6 +24,8 @@ enum eDibInfoOwnershipMode {
   kDibInfoOwnedGlobalHandle = 2,
 };
 
+class CDibPal;
+
 // VTABLE: IMPERIALISM 0x00645fc8
 class CDib : public CObject {
 public:
@@ -75,6 +77,10 @@ public:
   int RemapSurfaceToMemoryMappedBmpFile(LPCSTR fileName);
   // Convert a LOGPALETTE's entries into the surface's RGBQUAD color table. 0x0047b0c0
   void CopyRgbQuadTableFrom(const LOGPALETTE* source);
+
+  // Adopt `palette`'s HPALETTE into m_hPalette and refill the DIB colour table from its
+  // LOGPALETTE entries. 0x0047b130, __thiscall.
+  void AdoptPaletteAndCopyRgbQuadTable(CDibPal* palette);
   // Copy bitmap width/height into a point, or zero it if no header is attached. 0x0047a3e0
   CPoint* CopyBitmapDimensionsToPoint(CPoint* out);
   // Realize the DIB palette into a DC before blitting. 0x0047aa00

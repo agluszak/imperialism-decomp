@@ -1,4 +1,5 @@
 #include "game/gfx/CDib.h"
+#include "game/gfx/CDibPal.h"
 
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/globals/prelude.h"
@@ -569,6 +570,32 @@ void CDib::CopyRgbQuadTableFrom(const LOGPALETTE* source) {
 
 // Build a device-dependent bitmap (CreateDIBitmap + CBM_INIT) from the stored header and
 // bits, compatible with the given DC. Returns NULL when there is no pixel buffer.
+// Adopt the palette object's HPALETTE and refill this DIB's colour table from its
+// LOGPALETTE entries, reordering each PALETTEENTRY into RGBQUAD form. A null palette
+// clears m_hPalette and leaves the table untouched when there are no entries.
+// Adopt the palette object's HPALETTE and refill this DIB's colour table from its
+// LOGPALETTE entries, reordering each PALETTEENTRY into RGBQUAD form. A null palette
+// clears m_hPalette; an empty table skips the copy entirely.
+// FUNCTION: IMPERIALISM 0x0047b130
+void CDib::AdoptPaletteAndCopyRgbQuadTable(CDibPal* palette) {
+  m_hPalette =
+      (palette != nullptr) ? static_cast<HPALETTE>(palette->m_hObject) : static_cast<HPALETTE>(0);
+  RGBQUAD* dest = static_cast<RGBQUAD*>(m_colorTablePixels);
+  int index = 0;
+  if (0 < m_paletteCount) {
+    PALETTEENTRY* entry = palette->m_pLogPalette->palPalEntry;
+    do {
+      dest->rgbRed = entry->peRed;
+      dest->rgbGreen = entry->peGreen;
+      dest->rgbBlue = entry->peBlue;
+      dest->rgbReserved = entry->peFlags;
+      dest = dest + 1;
+      index = index + 1;
+      entry = entry + 1;
+    } while (index < m_paletteCount);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0047b280
 HBITMAP CDib::CreateDibBitmapFromStoredInfo(CDC* dc) {
   if (m_pixelBytes == 0) {

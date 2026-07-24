@@ -336,11 +336,11 @@ address|matching|name
 0x479e40|0.43636363636363634|CDib::CreateObject
 0x479ed0|1.0|CDib::GetRuntimeClass
 0x479ef0|0.3333333333333333|WrapperFor_AFX_CLASSINIT_At00479ef0
-0x479f40|1.0|CDib::CDib(void)
+0x479f40|0.9583333333333334|CDib::CDib(void)
 0x479fb0|1.0|CDib::`scalar deleting destructor'
-0x479fe0|0.662020905923345|CDib::CDib(int, int, int)
-0x47a200|0.8601036269430051|CDib::CDib(class CDib const &)
-0x47a370|1.0|CDib::~CDib
+0x479fe0|0.6550522648083623|CDib::CDib(int, int, int)
+0x47a200|0.8497409326424871|CDib::CDib(class CDib const &)
+0x47a370|0.9444444444444444|CDib::~CDib
 0x47a3e0|0.8148148148148148|CDib::CopyBitmapDimensionsToPoint
 0x47a420|0.704225352112676|CDib::LoadFromMemoryMappedBmpFile
 0x47a630|0.13953488372093023|CDib::RemapSurfaceToMemoryMappedBmpFile
@@ -355,7 +355,7 @@ address|matching|name
 0x47ae90|1.0|CDib::BuildPaletteFromRgbQuadBuffer
 0x47af60|0.9838709677419355|CDib::CreatePaletteObjectFromColorTable
 0x47b0c0|0.4727272727272727|CDib::CopyRgbQuadTableFrom
-0x47b130|0.05555555555555555|OrphanDeadLeaf_NoRefs_0047b130
+0x47b130|0.38235294117647056|CDib::AdoptPaletteAndCopyRgbQuadTable
 0x47b280|1.0|CDib::CreateDibBitmapFromStoredInfo
 0x47b6d0|0.3663663663663664|CDib::Read
 0x47b9f0|0.37777777777777777|CDib::Write
@@ -425,9 +425,9 @@ address|matching|name
 0x47e0c0|1.0|TAutoResolutionDialog::DoDataExchange
 0x47e100|0.5|TAutoResolutionDialog::GetMessageMap
 0x47e120|1.0|TAutoResolutionDialog::OnInitDialog
-0x47e360|1.0|CDibPal::CDibPal
+0x47e360|0.8333333333333334|CDibPal::CDibPal
 0x47e390|1.0|CDibPal::`scalar deleting destructor'
-0x47e3c0|0.9615384615384616|CDibPal::~CDibPal
+0x47e3c0|0.9230769230769231|CDibPal::~CDibPal
 0x47e440|0.6111111111111112|CDibPal::BuildPaletteFromBitmapColorTable
 0x47e590|0.4701195219123506|CDibPal::DrawPalettePreviewGridRectangles
 0x47e930|1.0|CDibPal::SelectIntoDcAndRealize
@@ -3129,7 +3129,7 @@ address|matching|name
 0x50bbc0|1.0|TMacViewMgr::ApplySellOrderRowToNationState
 0x50bc50|0.6167400881057269|TMacViewMgr::SyncSellTaggedChildControlWithNationState
 0x50be30|0.96|TMacViewMgr::MakeBookDialog
-0x50bea0|0.2110050022737608|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
+0x50bea0|0.2019099590723056|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 0x50d310|0.5625|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 0x50d360|0.6857142857142857|TMacViewMgr::OpenBuildingWindow
 0x50d470|0.40875912408759124|TMacViewMgr::ShowGoldDialogForTurnEventContext
@@ -4142,7 +4142,7 @@ address|matching|name
 0x553840|0.6697247706422018|TTaskForce::OrderSendInTheMarines
 0x5539c0|1.0|TTaskForce::MaxOut
 0x553a50|1.0|TTaskForce::DropShips
-0x553b10|0.3448275862068966|TTaskForce::IsEmpty
+0x553b10|0.41379310344827586|TTaskForce::IsEmpty
 0x553b50|0.4727272727272727|TTaskForce::NoSelection
 0x553bc0|0.6536585365853659|TTaskForce::Add
 0x553e30|1.0|TTaskForce::ElectFlagship
@@ -5574,13 +5574,13 @@ address|matching|name
 0x5a8900|0.043478260869565216|TTacticalBattleView::TacticalBattleViewSlot68
 0x5a89a0|1.0|TTacticalBattleView::InvalidateTacticalUnitTileRect
 0x5a89f0|0.42857142857142855|TTacticalBattleView::ComputeTacticalUnitTileScreenRect
-0x5a8ac0|0.6867469879518072|TTacticalBattleView::CenterViewportAroundGridIndexAndSnap
+0x5a8ac0|0.6086956521739131|TTacticalBattleView::CenterViewportAroundGridIndexAndSnap
 0x5a8be0|1.0|TTacticalBattleView::Scroll
 0x5a8ca0|1.0|TTacticalBattleView::DoSetCursor
 0x5a8d40|0.009950248756218905|TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x5a9090|0.8208955223880597|TTacticalBattleView::PlayTacticalTileEffect
 0x5a9170|0.9541284403669725|TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog
-0x5a9240|0.5463414634146342|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
+0x5a9240|0.5601965601965602|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
 0x5a9550|0.23429541595925296|TTacticalBattleView::DrawUiTilesAndOverlay
 0x5a99e0|1.0|DrawHexSelectionOutlineSegments
 0x5a9b40|0.92|TTacticalBattleView::UpdateTacticalActionControlBitmapForCurrentUnit

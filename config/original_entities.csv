@@ -320,7 +320,7 @@ address|name|symbol|size|type|prototype|provenance
 47ae90|BuildPaletteFromRgbQuadBuffer||145|function|undefined BuildPaletteFromRgbQuadBuffer()|
 47af60|ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl||157|function|undefined ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl()|
 47b0c0|CopyRgbQuadTableToBitmapSurfacePalette||65|function|undefined CopyRgbQuadTableToBitmapSurfacePalette()|
-47b130|OrphanDeadLeaf_NoRefs_0047b130||82|function|undefined OrphanDeadLeaf_NoRefs_0047b130()|
+47b130|CDib::AdoptPaletteAndCopyRgbQuadTable||82|function|undefined AdoptPaletteAndCopyRgbQuadTable()|
 47b280|CreateDibBitmapFromStoredInfo||50|function|undefined CreateDibBitmapFromStoredInfo()|
 47b6d0|ReadBitmapStreamIntoSurfaceState||517|function|undefined ReadBitmapStreamIntoSurfaceState()|
 47b9f0|WriteBmpHeaderAndDataOffsetToStreamWithSehGuard||160|function|undefined WriteBmpHeaderAndDataOffsetToStreamWithSehGuard()|
