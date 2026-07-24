@@ -123,7 +123,7 @@ address|matching|name
 0x429500|1.0|TNumberText::TNumberText
 0x429530|1.0|TNumberText::`scalar deleting destructor'
 0x429560|0.2222222222222222|TNumberText::~TNumberText
-0x4295a0|0.38311629995509655|BuildTurnEventDialogResourcesForEvent547Or7D8
+0x4295a0|0.3832959137853615|BuildTurnEventDialogResourcesForEvent547Or7D8
 0x42d240|0.006711409395973154|InitializeCityTradeDiplomacyUiEntries
 0x42e0b5|0.00625|BuildOrderStateStaticTextUiResourceEntries
 0x42e494|0.00625|BuildUiResourceTree_MultiTextOptionComposite_0042e494
@@ -159,7 +159,7 @@ address|matching|name
 0x430750|0.8888888888888888|StrategicMapCallbackRecord::~StrategicMapCallbackRecord
 0x4307a0|1.0|stretch<unsigned char>::Add
 0x430830|1.0|stretch<int>::Add
-0x4308d0|0.2|ConstructPictureResourceEntry_Vtbl006404b0
+0x4308d0|1.0|TMapKey::TMapKey
 0x430900|1.0|TMapKey::`scalar deleting destructor'
 0x430930|0.2222222222222222|TMapKey::~TMapKey
 0x430950|0.3333333333333333|TDeluxeText::TDeluxeText
@@ -190,7 +190,7 @@ address|matching|name
 0x435710|1.0|TNewspaperView::`scalar deleting destructor'
 0x435740|0.2222222222222222|TNewspaperView::~TNewspaperView
 0x435760|1.0|TControl::ShallowClone
-0x4357b0|0.489835682275768|BuildTurnEventDialogUiByCode
+0x4357b0|0.490095473144119|BuildTurnEventDialogUiByCode
 0x43d590|1.0|TMapPreviewView::TMapPreviewView
 0x43d5c0|1.0|TMapPreviewView::`scalar deleting destructor'
 0x43d5f0|0.2222222222222222|TMapPreviewView::~TMapPreviewView
@@ -212,9 +212,9 @@ address|matching|name
 0x43d8a0|0.2222222222222222|TStatusPicture::~TStatusPicture
 0x43d8c0|0.2222222222222222|WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0
 0x43d8f0|0.1111111111111111|ConstructUiBaseBackdropPictureEntry
-0x43d960|0.2222222222222222|ConstructTurnEventMainPictureEntry_1036
+0x43d960|1.0|TGamePreferencesPicture::TGamePreferencesPicture
 0x43d990|1.0|TRadioText::TRadioText
-0x43d9c0|0.2222222222222222|ConstructTurnEventMainPictureEntry_104F
+0x43d9c0|1.0|TCreditsPicture::TCreditsPicture
 0x43d9f0|1.0|TCreditsPicture::Hilite
 0x43da10|1.0|TFlagOptionsPicture::`scalar deleting destructor'
 0x43da40|1.0|TLoadSavePicture::`scalar deleting destructor'
@@ -285,7 +285,7 @@ address|matching|name
 0x45b080|0.2222222222222222|ClearColorRgbaBytes
 0x45b0a0|0.0|SetColorRgbAndClearAlphaByte
 0x45b100|0.2560638624501075|InitializeTacticalBattleViewToolbarAndDialogControls
-0x45d270|0.2222222222222222|TOffLimitsPicture::WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270
+0x45d270|1.0|TMapUberUberPicture::TMapUberUberPicture
 0x45d2a0|1.0|TMapUberUberPicture::Scroll
 0x45d2c0|1.0|TMapUberUberPicture::`scalar deleting destructor'
 0x45d2f0|0.0|TMapUberUberPicture::~TMapUberUberPicture
@@ -2204,7 +2204,7 @@ address|matching|name
 0x4ce070|0.10606060606060606|TTradeSchoolView::UpdateFields
 0x4ce480|0.4897959183673469|TBuildingExpansionView::CreateObject
 0x4ce500|1.0|TBuildingExpansionView::GetRuntimeClass
-0x4ce520|0.2222222222222222|ConstructBuildingExpansionView
+0x4ce520|1.0|TBuildingExpansionView::TBuildingExpansionView
 0x4ce550|1.0|TBuildingExpansionView::`scalar deleting destructor'
 0x4ce580|0.2222222222222222|TBuildingExpansionView::~TBuildingExpansionView
 0x4ce5a0|0.6171428571428571|TBuildingExpansionView::StuffValues

@@ -12,6 +12,11 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
+// FUNCTION: IMPERIALISM 0x004308d0
+TMapKey::TMapKey() {
+  viewMode90 = 0;
+}
+
 // SYNTHETIC: IMPERIALISM 0x00430900
 // TMapKey::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00430930
@@ -23,8 +28,6 @@ TMapKey::~TMapKey() {}
 // TMapKey::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMapKey, TPicture)
-
-TMapKey::TMapKey() {}
 
 // FUNCTION: IMPERIALISM 0x004fcac0
 void TMapKey::DoPostCreate(int arg) {

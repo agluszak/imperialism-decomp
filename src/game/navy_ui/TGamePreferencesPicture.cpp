@@ -16,6 +16,9 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
+
+// FUNCTION: IMPERIALISM 0x0043d960
+TGamePreferencesPicture::TGamePreferencesPicture() {}
 // SYNTHETIC: IMPERIALISM 0x0043da70
 // TGamePreferencesPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0043db40
@@ -27,8 +30,6 @@ TGamePreferencesPicture::~TGamePreferencesPicture() {}
 // TGamePreferencesPicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TGamePreferencesPicture, TPicture)
-
-TGamePreferencesPicture::TGamePreferencesPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056a5b0
 void TGamePreferencesPicture::DoPostCreate(int arg) {}

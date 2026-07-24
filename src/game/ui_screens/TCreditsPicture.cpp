@@ -11,6 +11,9 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
+// FUNCTION: IMPERIALISM 0x0043d9c0
+TCreditsPicture::TCreditsPicture() {}
+
 // FUNCTION: IMPERIALISM 0x0043d9f0
 void TCreditsPicture::Hilite() {}
 
@@ -25,8 +28,6 @@ TCreditsPicture::~TCreditsPicture() {}
 // TCreditsPicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TCreditsPicture, TPicture)
-
-TCreditsPicture::TCreditsPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056ee50
 void TCreditsPicture::DoPostCreate(int arg) {

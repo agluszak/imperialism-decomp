@@ -22,6 +22,7 @@
 
 IMPLEMENT_DYNCREATE(TBuildingExpansionView, TPicture)
 
+// FUNCTION: IMPERIALISM 0x004ce520
 TBuildingExpansionView::TBuildingExpansionView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004ce550

@@ -147,7 +147,7 @@ address|name|symbol|size|type|prototype|provenance
 430750|WrapperFor_FreeHeapBlockWithAllocatorTracking_At00430750||50|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At00430750()|
 4307a0|stretch<unsigned char>::Add|?Add@?$stretch@E@@UAEPAEE@Z|109|function|unsigned char * __thiscall Add(unsigned char value)|template
 430830|stretch<int>::Add|?Add@?$stretch@H@@UAEPAHH@Z|124|function|int * __thiscall Add(int value)|template
-4308d0|ConstructPictureResourceEntry_Vtbl006404b0||27|function|undefined ConstructPictureResourceEntry_Vtbl006404b0()|
+4308d0|TMapKey::TMapKey||27|function|undefined TMapKey()|
 430900|TMapKey::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 430950|ConstructUiColorTextResourceEntry||102|function|undefined ConstructUiColorTextResourceEntry()|
 4309e0|TDeluxeText::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -184,9 +184,9 @@ address|name|symbol|size|type|prototype|provenance
 43d870|TStatusPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 43d8c0|WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0||18|function|undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0()|
 43d8f0|ConstructUiBaseBackdropPictureEntry||68|function|undefined ConstructUiBaseBackdropPictureEntry()|
-43d960|ConstructTurnEventMainPictureEntry_1036||18|function|int * __fastcall ConstructTurnEventMainPictureEntry_1036(int * pEntry)|
+43d960|TGamePreferencesPicture::TGamePreferencesPicture||18|function|int * __fastcall TGamePreferencesPicture(int * pEntry)|
 43d990|ConstructSelectableTextOptionEntry||18|function|undefined ConstructSelectableTextOptionEntry()|
-43d9c0|ConstructTurnEventMainPictureEntry_104F||18|function|int * __fastcall ConstructTurnEventMainPictureEntry_104F(int * pEntry)|
+43d9c0|TCreditsPicture::TCreditsPicture||18|function|int * __fastcall TCreditsPicture(int * pEntry)|
 43d9f0|TCreditsPicture::Hilite||1|function|void Hilite(void)|mac_oracle
 43da10|TFlagOptionsPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 43da40|TLoadSavePicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -243,7 +243,7 @@ address|name|symbol|size|type|prototype|provenance
 45b080|ClearColorRgbaBytes||16|function|undefined ClearColorRgbaBytes()|
 45b0a0|SetColorRgbAndClearAlphaByte||35|function|undefined SetColorRgbAndClearAlphaByte()|
 45b100|InitializeTacticalBattleViewToolbarAndDialogControls||6845|function|undefined InitializeTacticalBattleViewToolbarAndDialogControls()|
-45d270|TOffLimitsPicture::WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270||18|function|undefined WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270()|
+45d270|TMapUberUberPicture::TMapUberUberPicture||18|function|undefined WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270()|
 45d2a0|TMapUberUberPicture::Scroll||3|function|void __thiscall Scroll(MapScrollEdgeMaskStorage edgeMask)|mac_oracle
 45d2c0|TMapUberUberPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 45d310|TTacArmyView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -2163,7 +2163,7 @@ address|name|symbol|size|type|prototype|provenance
 4ce070|TTradeSchoolView::UpdateFields||825|function|void UpdateFields()|
 4ce480|TBuildingExpansionView::CreateObject|?CreateObject@TBuildingExpansionView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 4ce500|TBuildingExpansionView::GetRuntimeClass||6|function|undefined GetTBuildingExpansionViewClassNamePointer()|rtti
-4ce520|ConstructBuildingExpansionView||18|function|undefined ConstructBuildingExpansionView()|
+4ce520|TBuildingExpansionView::TBuildingExpansionView||18|function|undefined TBuildingExpansionView()|
 4ce550|TBuildingExpansionView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ce5a0|TBuildingExpansionView::StuffValues||1228|function|void __thiscall StuffValues(short buildingSlotId, TCity * city, TCityProductionView * productionView)|
 4ce82d|handle_missing_building_entry|||global||
