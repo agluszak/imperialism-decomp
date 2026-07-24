@@ -5,6 +5,8 @@
 #include "game/ui_core/TStaticText.h"
 #include "game/mfc.h"
 
+class TDocument;
+
 // VTABLE: IMPERIALISM 0x00644308
 class TTEView : public TStaticText {
 public:
@@ -26,9 +28,15 @@ public:
   // and seeds textAlignmentCode. Args 1, 10 and 11 are never read (TDeluxeText passes
   // 0, 0, 1).
   // 0x486050, __thiscall, RET 0x2c.
-  void ITEView(int unusedA, TView* panel, int* offsetLayout, int* sizeLayout, int layoutParam5,
-               int layoutParam6, RECT* insetRect, TextStyle* style, short styleWord90, int unusedB,
-               int unusedC);
+  // Mac oracle signature: ITEView(TDocument*, TView*, const VPoint&, const VPoint&,
+  // SizeDeterminer, SizeDeterminer, const VRect&, const TextStyle&, short,
+  // unsigned char, unsigned char). The owning document and the two trailing byte flags
+  // are recovered here; the VPoint/VRect/SizeDeterminer parameters still carry their
+  // flattened int*/RECT*/int forms (bd nwld class 3 -- those types are ABI-identical and
+  // want recovering as real types across the whole view hierarchy, not one method).
+  void ITEView(TDocument* document, TView* panel, int* offsetLayout, int* sizeLayout,
+               int layoutParam5, int layoutParam6, RECT* insetRect, TextStyle* style,
+               short styleWord90, unsigned char unusedB, unsigned char unusedC);
 
   // Original object size is 0x98 (CRuntimeClass m_nObjectSize). These three
   // members previously sat at the head of TDeluxeText, but the RTTI sizes prove

@@ -8,11 +8,13 @@ class TSuperCivRoster : public TPageView {
 public:
   DECLARE_DYNCREATE(TSuperCivRoster)
   virtual ~TSuperCivRoster() override; // slot 0x01 (scalar deleting destructor)
-  // Builds the ledger roster pages into the owning view context and tracks the
-  // running dialog through pOutDialogView (verified 3-arg thiscall, RET 0xC; the
-  // old ConstructTSuperCivRosterBaseState name was a misread — this is not a ctor).
-  virtual void InitializeLedgerRosterPages(TView* pOwnerContext, int* pBoundsRect,
-                                           TView** pOutDialogView); // slot 0x6e 0x4ab470
+  // Builds the ledger roster pages into the owning view context. Args 2 and 3 are the
+  // frame OFFSET and SIZE, forwarded straight to InitializeUiResourceEntryFrameAndParent;
+  // the caller (0x005dde05/0x005dde06) pushes &size then &offset out of one adjacent
+  // 4-int block, so right-to-left arg2 = {0xd,0x2e} and arg3 = {0x1ca,0x136}. An earlier
+  // model read arg3 as a TView** out-parameter, which the call site does not support.
+  virtual void InitializeLedgerRosterPages(TView* pOwnerContext, int* pOffsetLayout,
+                                           int* pSizeLayout); // slot 0x6e 0x4ab470
 
   // Object slice from the inline-expanded ctor at 0x5ddde1 (inside
   // TViewMgr::ShowCivilianLedgerDialogAndSelectUnit): base TPageView ctor, own vptr,

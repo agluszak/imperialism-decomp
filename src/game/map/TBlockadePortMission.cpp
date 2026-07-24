@@ -41,9 +41,6 @@ bool TBlockadePortMission::IsDefensiveSeaZoneMission() const {
 // FUNCTION: IMPERIALISM 0x0053aac0
 TBlockadePortMission::~TBlockadePortMission() {}
 
-TBlockadePortMission::TBlockadePortMission()
-    : TControlSeaZoneMission(), portZoneContext3c(nullptr) {}
-
 // SYNTHETIC: IMPERIALISM 0x0053aae0
 // TBlockadePortMission::GetRuntimeClass
 

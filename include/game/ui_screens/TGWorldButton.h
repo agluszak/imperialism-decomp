@@ -18,7 +18,7 @@ public:
 
   TGWorldButton();
   void IGWorldButton(TView* panel, int* offsetLayout, int* sizeLayout,
-                     unsigned short bitmapResourceId);
+                     short bitmapResourceId); // Mac oracle: IGWorldButton(..., short)
 
   // Source-strip column offset (in pixels): shifted by +/-frameWidth34 on each
   // HiliteState toggle to select the enabled/disabled frame

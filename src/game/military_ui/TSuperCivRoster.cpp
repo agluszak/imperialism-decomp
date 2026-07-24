@@ -22,15 +22,10 @@ TSuperCivRoster::~TSuperCivRoster() {}
 IMPLEMENT_DYNCREATE(TSuperCivRoster, TPageView)
 
 // FUNCTION: IMPERIALISM 0x004ab470
-void TSuperCivRoster::InitializeLedgerRosterPages(TView* pOwnerContext, int* pBoundsRect,
-                                                  TView** pOutDialogView) {
-  // sizeLayout is genuinely the caller's &runningDialog (a TView**) passed straight
-  // through as the stack arg -- verified against the raw call site
-  // (TViewMgr::ShowCivilianLedgerDialogAndSelectUnit passes &runningDialog as
-  // pOutDialogView, which lands in EAX and is pushed unmodified as sizeLayout). A
-  // codegen-neutral pointer reinterpret, not a guessed field.
-  InitializeUiResourceEntryFrameAndParent(nullptr, pOwnerContext, pBoundsRect,
-                                          reinterpret_cast<int*>(pOutDialogView), 5, 5, 0);
+void TSuperCivRoster::InitializeLedgerRosterPages(TView* pOwnerContext, int* pOffsetLayout,
+                                                  int* pSizeLayout) {
+  InitializeUiResourceEntryFrameAndParent(nullptr, pOwnerContext, pOffsetLayout, pSizeLayout, 5, 5,
+                                          0);
   controlTag = kControlTagPage; // 'page'
   // Explicit qualification forces a non-virtual call, matching the original's
   // devirtualized direct call (TSuperCivRoster doesn't override this slot).

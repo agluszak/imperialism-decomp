@@ -116,9 +116,6 @@ short TSortedPtrList::Compare(void* a, void* b) {
 // FUNCTION: IMPERIALISM 0x004883c0
 TSortedPtrList::~TSortedPtrList() {}
 
-// NOOP: verified empty in original 0x00488063 (no standalone TSortedPtrList::TSortedPtrList body exists: CreateObject 0x00488030 inlines this default ctor, calling the CPtrArray base ctor directly at that site)
-TSortedPtrList::TSortedPtrList() {}
-
 // SYNTHETIC: IMPERIALISM 0x00488400
 // TPtrList::CreateObject
 

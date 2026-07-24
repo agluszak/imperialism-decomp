@@ -530,7 +530,9 @@ public:
   // owner tag against [this+0xc] (ret 4 / ret).
   int SumNavyOrderPriorityForNationAndNodeType(TZone* zone);
   int SumNavyOrderPriorityForNation();
-  void IGreatPower(int arg1, int arg2);
+  // Mac oracle: IGreatPower(short, short). 0x004d8ceb reads the second argument with
+  // CMP word ptr [esp+0x24],1, confirming the 16-bit width.
+  void IGreatPower(short nationSlotIndex, short humanControlledFlag);
 
   // Mac oracle: GenerateGameScore. Rebuilds the gameScoreRows930 snapshot wholesale:
   // population

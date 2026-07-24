@@ -16,7 +16,8 @@ public:
 
   TBeachheadMission* beachhead34; // +0x34 owned amphibious-landing child mission
 
-  TInvadeMission();
+  TInvadeMission() : TAttackProvinceMission(), beachhead34(nullptr) {}
+
   // Mac: TInvadeMission(TZone*, short).
   TInvadeMission(TZone* beachheadZone, short targetProvince);
   virtual ~TInvadeMission() override;

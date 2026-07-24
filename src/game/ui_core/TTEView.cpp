@@ -18,10 +18,10 @@ TTEView::~TTEView() {}
 IMPLEMENT_DYNCREATE(TTEView, TStaticText)
 
 // FUNCTION: IMPERIALISM 0x00486050
-void TTEView::ITEView(int unusedA, TView* panel, int* offsetLayout, int* sizeLayout,
+void TTEView::ITEView(TDocument* document, TView* panel, int* offsetLayout, int* sizeLayout,
                       int layoutParam5, int layoutParam6, RECT* insetRect, TextStyle* style,
-                      short styleWord90, int unusedB, int unusedC) {
-  (void)unusedA;
+                      short styleWord90, unsigned char unusedB, unsigned char unusedC) {
+  (void)document;
   (void)unusedB;
   (void)unusedC;
   IStaticText(panel, offsetLayout, sizeLayout, layoutParam5, layoutParam6, -1, 0);
