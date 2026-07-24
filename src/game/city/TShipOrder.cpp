@@ -222,17 +222,16 @@ void TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability() {
   this->quantityField04 = 0;
 
   TGreatPower* owner = city->ownerNationAc;
-  if (*reinterpret_cast<char*>(reinterpret_cast<unsigned char*>(owner) + 0x8c8) == '2') {
+  if (owner->serializedStatusFlags[0] == '2') {
     return;
   }
 
   short currentCapability = owner->GetCityBuildingProductionSlot8D(2);
   short desiredCapability;
-  if (*reinterpret_cast<char*>(reinterpret_cast<unsigned char*>(owner) + 0x8c8) == '\0') {
+  if (owner->serializedStatusFlags[0] == '\0') {
     desiredCapability = 0;
   } else {
-    desiredCapability = static_cast<short>(
-        *reinterpret_cast<char*>(reinterpret_cast<unsigned char*>(owner) + 0x8c8) - 0x33);
+    desiredCapability = static_cast<short>(owner->serializedStatusFlags[0] - 0x33);
   }
 
   if (currentCapability < 0x19) {

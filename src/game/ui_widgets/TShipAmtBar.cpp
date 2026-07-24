@@ -4,6 +4,7 @@
 #include "game/city/TShipOrder.h"
 #include "game/city/TCity.h"
 #include "game/nation/TGreatPower.h"
+#include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
@@ -33,7 +34,7 @@ TShipAmtBar::TShipAmtBar() : TAmtBar() {
 
 // FUNCTION: IMPERIALISM 0x0058abf0
 void TShipAmtBar::DoPostCreate(int arg) {
-  TGreatPower* nationState = GetActiveNationState();
+  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
   TCity* province = nationState != 0 ? nationState->GetCityState() : 0;
   selectedMetricRecord = province->shipOrderSlots[0];
   short productionCap = province->productionSummary1d8->strength;

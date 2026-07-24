@@ -7,6 +7,7 @@
 #include "game/ui_widgets/TTradeCluster.h"
 
 #include "game/ui_widgets/TAmtBar.h"
+#include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TPicture.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
@@ -50,8 +51,8 @@ IMPLEMENT_DYNCREATE(TTraderAmtBar, TAmtBar)
 // FUNCTION: IMPERIALISM 0x0058af80
 void TTraderAmtBar::DoPostCreate(int arg) {
   (void)arg;
-  TGreatPower* nationState = GetActiveNationState();
-  int scenarioTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);
+  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  int scenarioTag = this->ownerContext->controlTag;
 
   short recordIndex = 0;
   while (recordIndex < 0x11) {
@@ -92,21 +93,17 @@ void TTraderAmtBar::UpdateFromScaleOrRatio(int scaleValue, int ratioValue) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b070
-short TTraderAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
-  short priorResult = static_cast<short>(baseValue);
-  short requested = static_cast<short>(requestedValue);
-  short result = priorResult;
+short TTraderAmtBar::ApplyMoveClamp(int baseValue, short requestedValue) {
+  short result = static_cast<short>(baseValue);
   if (requestedValue > 0) {
-    TGreatPower* nationState = GetActiveNationState();
+    // 0x0058b083-0x0058b091 inlines the active-nation lookup; 0x0058b09f divides
+    // frameWidth34 (+0x34), not frameHeight38, and the original guards the IDIV with
+    // nothing -- there is no tradeCapacity != 0 test in the binary.
+    TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
     short tradeCapacity = nationState->tradeCapacity;
-    if (tradeCapacity != 0) {
-      if ((int)requestedValue < (this->frameHeight38 / (int)tradeCapacity)) {
-        TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(
-            reinterpret_cast<TView*>(reinterpret_cast<void*>(this->ownerContext))
-                ->ResolveControlByTag(kControlTagSell));
-        if (sellControl != 0) {
-          result = 1;
-        }
+    if ((int)requestedValue < (static_cast<int>(this->frameWidth34) / (int)tradeCapacity)) {
+      if (this->ownerContext->ResolveControlByTag(kControlTagSell) != 0) {
+        result = 1;
       }
     }
   }

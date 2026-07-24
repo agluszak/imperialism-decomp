@@ -18,6 +18,7 @@
 #include "game/city/TProductionOrder.h"
 #include "game/city/TCity.h"
 #include "game/nation/TGreatPower.h"
+#include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/quickdraw_guards.h"
 #include <new>
@@ -42,9 +43,9 @@ TRailAmtBar::TRailAmtBar() : TIndustryAmtBar() {}
 
 // FUNCTION: IMPERIALISM 0x0058a020
 void TRailAmtBar::DoPostCreate(int arg) {
-  TGreatPower* nationState = GetActiveNationState();
+  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
   TCity* province = nationState != 0 ? nationState->GetCityState() : 0;
-  int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);
+  int summaryTag = this->ownerContext->controlTag;
 
   short recordIndex = 0;
   if ((unsigned int)summaryTag < kControlTagPopv) {
@@ -112,7 +113,7 @@ void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
       control->TranslatePointToParentChain4E(&translatedOrigin);
 
-      short styleValueAt60 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x60);
+      short styleValueAt60 = control->rangeOrMaxValue;
       if (styleValueAt60 > 0) {
         SetQuickDrawTextOriginWithContextOffset(0, 1);
         g_pUiRuntimeContext->ApplyLegendSplitSlot34(0);
@@ -121,8 +122,8 @@ void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
         ResetQuickDrawStrokeState();
       }
 
-      short overlayOffsetX = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62);
-      short overlayOffsetY = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
+      short overlayOffsetX = control->stepOrCurrentValue;
+      short overlayOffsetY = static_cast<short>(control->frameHeight38);
       SetQuickDrawTextOriginWithContextOffset(overlayOffsetX, 0);
       SetQuickDrawFillColor(0);
       ResetQuickDrawStrokeState();

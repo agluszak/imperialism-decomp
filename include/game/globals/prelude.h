@@ -31,7 +31,6 @@
 
 TGreatPower* GetNationStateBySlot(short slotId);
 short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot);
-TGreatPower* GetActiveNationState(void);
 int GetTradeSummarySelectionTagByIndex(short index);
 
 struct NationState;

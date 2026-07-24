@@ -740,10 +740,9 @@ float g_cachedAiCityActionContextBias[3] = {0.0f, 0.0f, 0.0f};
 // GLOBAL: IMPERIALISM 0x00696178
 short g_anCityBuildingSlotOrder[16] = {12, 13, 7, 10, 14, 15, 9, 6, 11, 2, 3, 8, 0, 1, 4, 5};
 // GLOBAL: IMPERIALISM 0x00696198
-short g_anCityBuildingSlotCoords[32] = {200, 235, 340, 300, 281, 184, 340, 266,
-                                        87,  286, 230, 310, 340, 139, 240, 35,
-                                        50,  220, 50,  107, 50,  35,  340, 139,
-                                        82,  35,  300, 35,  340, 44,  150, 95};
+short g_anCityBuildingSlotCoords[32] = {200, 235, 340, 300, 281, 184, 340, 266, 87,  286, 230,
+                                        310, 340, 139, 240, 35,  50,  220, 50,  107, 50,  35,
+                                        340, 139, 82,  35,  300, 35,  340, 44,  150, 95};
 // GLOBAL: IMPERIALISM 0x006961d8
 short g_nCityBuildingSlotYOffsetIndex = 1;
 // GLOBAL: IMPERIALISM 0x006961dc
@@ -811,10 +810,6 @@ TGreatPower* GetNationStateBySlot(short slotId) {
 
 short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot) {
   return nationState->GetDiplomacyExternalStateByTarget(metricSlot);
-}
-
-TGreatPower* GetActiveNationState(void) {
-  return g_apNationStates[g_pSimMgr->GetActiveNationId()];
 }
 
 int GetTradeSummarySelectionTagByIndex(short index) {

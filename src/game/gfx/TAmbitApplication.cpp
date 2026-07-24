@@ -18,6 +18,8 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 
+#include <mmsystem.h>
+
 // SYNTHETIC: IMPERIALISM 0x004135f0
 // TAmbitApplication::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00413620
@@ -30,7 +32,10 @@ void TAmbitApplication::DoSetupMenus() {}
 
 // FUNCTION: IMPERIALISM 0x00493250
 unsigned int GetTickCountDiv16() {
-  return GetTickCount() >> 4;
+  // 0x00493250 calls through the WINMM timeGetTime import at 0x006ab5fc, not KERNEL32
+  // GetTickCount: timeGetTime resolves to 1ms under timeBeginPeriod, GetTickCount only to
+  // the scheduler tick, and the >> 4 turns this into the game's ~16ms tick counter.
+  return timeGetTime() >> 4;
 }
 
 // FUNCTION: IMPERIALISM 0x0049cc40

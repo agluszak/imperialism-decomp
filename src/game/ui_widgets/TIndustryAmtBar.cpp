@@ -17,6 +17,7 @@
 #include "game/mfc.h"
 #include <new>
 #include "game/nation/TGreatPower.h"
+#include "game/ui_screens/TSimMgr.h"
 #include "game/city/TCity.h"
 #include "game/ui_core/quickdraw_rendering.h"
 
@@ -37,11 +38,11 @@ TIndustryAmtBar::TIndustryAmtBar() : TAmtBar(), selectedMetricRecord(0) {}
 // FUNCTION: IMPERIALISM 0x00589260
 void TIndustryAmtBar::DoPostCreate(int arg) {
   // ORIG_CALLCONV: __thiscall
-  TGreatPower* nationState = GetActiveNationState();
+  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
   TCity* province = nationState != 0 ? nationState->GetCityState() : 0;
   short summaryTagIndex = 0;
   int mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
-  int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);
+  int summaryTag = this->ownerContext->controlTag;
   while (mappedTag != summaryTag) {
     summaryTagIndex = (short)(summaryTagIndex + 1);
     mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
@@ -85,7 +86,7 @@ void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
       control->TranslatePointToParentChain4E(&translatedOrigin);
 
-      short styleValueAt60 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x60);
+      short styleValueAt60 = control->rangeOrMaxValue;
       if (styleValueAt60 > 0) {
         g_pUiRuntimeContext->ApplyLegendSplitSlot34(0);
         SetQuickDrawPenSizeAndMarkDirty(1, 4);
@@ -94,8 +95,8 @@ void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
         ResetQuickDrawStrokeState();
       }
 
-      short overlayOffsetX = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62);
-      short overlayOffsetY = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
+      short overlayOffsetX = control->stepOrCurrentValue;
+      short overlayOffsetY = static_cast<short>(control->frameHeight38);
       SetQuickDrawTextOriginWithContextOffset(overlayOffsetX, 0);
       SetQuickDrawFillColor(0);
       ResetQuickDrawStrokeState();

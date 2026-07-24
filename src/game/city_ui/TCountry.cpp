@@ -734,11 +734,15 @@ void TCountry::SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) {
 void TCountry::DeserializeDiplomacyNationStateFromStream(TStream* stream) {
   TGreatPower* nation = static_cast<TGreatPower*>(this);
   this->ReadFrom(stream);
-  stream->ReadBytes(reinterpret_cast<char*>(nation) + 0x94, 0x2e);
+  // Read and byte-swap must name the same array. The previous raw offsets (0x94/0xc2/
+  // 0xf0) were each 0x1e low against the current TGreatPower layout -- 0x94 is
+  // foreignMinister, so the first read overwrote all three minister pointers -- and were
+  // paired with byte-swaps of three different arrays. Order follows the write twin below.
+  stream->ReadBytes(nation->needCurrentByType, 0x2e);
   SwapAdjacentBytesInShortArray(nation->needCurrentByType, 0x17);
-  stream->ReadBytes(reinterpret_cast<char*>(nation) + 0xc2, 0x2e);
+  stream->ReadBytes(nation->diplomacyPolicyByNation, 0x2e);
   SwapAdjacentBytesInShortArray(nation->diplomacyPolicyByNation, 0x17);
-  stream->ReadBytes(reinterpret_cast<char*>(nation) + 0xf0, 0x2e);
+  stream->ReadBytes(nation->diplomacyGrantByNation, 0x2e);
   SwapAdjacentBytesInShortArray(nation->diplomacyGrantByNation, 0x17);
   stream->ReadBytes(&nation->diplomacyCounterA2, 2);
   stream->ReadBytes(&nation->tradeCapacity, 2);

@@ -97,8 +97,7 @@ void TUnit::Free() {
   // member's real API rather than casting the raw offset.
   TSortedList* manager = nullptr;
   if (this->field_1C == 0) {
-    void* nation = g_apNationStates[this->field_18];
-    manager = *reinterpret_cast<TSortedList**>(reinterpret_cast<char*>(nation) + 0x89c);
+    manager = g_apNationStates[this->field_18]->trackedObjectList; // +0x89c
   } else {
     void* terrain = g_apTerrainTypeDescriptorTable[this->field_18];
     manager = *reinterpret_cast<TSortedList**>(reinterpret_cast<char*>(terrain) + 0x44);

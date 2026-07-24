@@ -8,7 +8,7 @@ class TMapUberUberPicture;
 class TStream;
 class TWindow;
 
-// 0x00493250 — GetTickCount() / 16; the game's coarse UI tick unit, used broadly across
+// 0x00493250 — timeGetTime() / 16; the game's coarse UI tick unit, used broadly across
 // unrelated view classes for edge-scroll and animation timing.
 unsigned int GetTickCountDiv16();
 

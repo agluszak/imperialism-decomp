@@ -123,7 +123,7 @@ void TTradeCluster::DoPostCreate(int styleSeed) {
     sellControl->SetState(-1, 0);
   }
 
-  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
+  TAmtBar* barControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineInitBar);
   }
@@ -165,12 +165,13 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   switch (commandId) {
   case 100: {
     if (this->GetBoolSlot1DC() != '\0') {
-      TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
+      TNumberText* sellControl =
+          static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
       if (sellControl == 0) {
         FailNilPointerInUSmallViews(kAssertLineTradeSellIncSell);
       }
 
-      int sellValue = sellControl->QueryValue();
+      int sellValue = sellControl->UpdateControlCachedIntFromWindowText();
       short activeNationSlot = g_pSimMgr->GetActiveNationId();
       TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
       short maxByNationMetric = 0;
@@ -178,14 +179,14 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
         maxByNationMetric = QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
       }
 
-      TAmtBar* capacityControl =
-          reinterpret_cast<TAmtBar*>(ownerPanel->ResolveControlByTag(kControlTagMCap));
+      TNumberText* capacityControl =
+          static_cast<TNumberText*>(ownerPanel->ResolveControlByTag(kControlTagMCap));
       if (capacityControl == 0) {
         FailNilPointerInUSmallViews(kAssertLineTradeSellIncCap);
       }
 
       if ((int)maxByNationMetric < sellValue) {
-        int capacityValue = capacityControl->QueryValue();
+        int capacityValue = capacityControl->UpdateControlCachedIntFromWindowText();
         if ((int)maxByNationMetric < capacityValue) {
           sellControl->SetEnabled(maxByNationMetric + 1 != 0, 1);
           this->SetMoveAmount(static_cast<short>(maxByNationMetric + 1));
@@ -196,11 +197,12 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     break;
   }
   case 0x65: {
-    TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
+    TNumberText* sellControl =
+        static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
     if (sellControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineTradeSellDecSell);
     }
-    int sellValue = sellControl->QueryValue();
+    int sellValue = sellControl->UpdateControlCachedIntFromWindowText();
     if (1 < sellValue) {
       this->SetMoveAmount(static_cast<short>(sellValue - 1));
       return;
@@ -247,12 +249,12 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       maxByNationMetric = QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
     }
 
-    TAmtBar* capacityControl =
-        reinterpret_cast<TAmtBar*>(ownerPanel->ResolveControlByTag(kControlTagMCap));
+    TNumberText* capacityControl =
+        static_cast<TNumberText*>(ownerPanel->ResolveControlByTag(kControlTagMCap));
     if (capacityControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineTradeSellMoveSell);
     }
-    short cappedValue = (short)capacityControl->QueryValue();
+    short cappedValue = (short)capacityControl->UpdateControlCachedIntFromWindowText();
     int applyValue = (int)maxByNationMetric;
     if ((int)cappedValue <= (int)maxByNationMetric) {
       applyValue = (int)cappedValue;
@@ -296,15 +298,15 @@ int TTradeCluster::IsTradeControlAtMinimum() {
   if (g_pUiRuntimeContext->GetPendingTurnOverlayCode() > 3) {
     return 0;
   }
-  TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
-  return sellControl->QueryValue() <= 0 ? 1 : 0;
+  TNumberText* sellControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
+  return sellControl->UpdateControlCachedIntFromWindowText() <= 0 ? 1 : 0;
 }
 
 // Returns the current Sell control quantity.
 // FUNCTION: IMPERIALISM 0x00587950
 int TTradeCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) {
-  TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
-  return sellControl->QueryValue();
+  TNumberText* sellControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
+  return sellControl->UpdateControlCachedIntFromWindowText();
 }
 
 // Bid control is actionable when its 'card' bitmap is in a Bid state and the
@@ -536,8 +538,7 @@ void TTradeCluster::SetMoveAmount(short metricClampMax) {
     tradeMetricValue = metricClampMax;
   }
 
-  TNumberText* sellControl =
-      static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
+  TNumberText* sellControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
   if (sellControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineUpdateSell);
   }
@@ -545,7 +546,7 @@ void TTradeCluster::SetMoveAmount(short metricClampMax) {
     sellControl->SetControlValue(tradeMetricValue, 1);
   }
 
-  TAmtBar* barControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
+  TAmtBar* barControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineUpdateBar);
   }

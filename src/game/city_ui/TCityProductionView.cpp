@@ -117,8 +117,8 @@ void TCityProductionView::DoPostCreate(int arg) {
   // Build eight groups of three action-focus animations from the layout/resource tables.
   int tableOffset = 0;
   for (int buildingSlot = 0; tableOffset < 0x18; ++buildingSlot, tableOffset += 3) {
-    short actionCount = city->GetNextBuildingType(
-        static_cast<short>(tableOffset < 0x15 ? buildingSlot : 0xb));
+    short actionCount =
+        city->GetNextBuildingType(static_cast<short>(tableOffset < 0x15 ? buildingSlot : 0xb));
     if (actionCount <= 0) {
       continue;
     }
@@ -132,9 +132,9 @@ void TCityProductionView::DoPostCreate(int arg) {
       OffsetRect(&bounds, 0x32, 0x23);
       short resourceId = g_awCityBuildingActionResourceIds[row * 3 + action];
       int animationId = (actionCount - 1) * 3 + action + (buildingSlot + 0x5dc) * 10;
-      TTransFocusAnimation* animation = new TTransFocusAnimation(this, &bounds, resourceId,
-                                                                 static_cast<short>(animationId),
-                                                                 (buildingSlot != 7 ? 2 : 0) + 5, 0);
+      TTransFocusAnimation* animation =
+          new TTransFocusAnimation(this, &bounds, resourceId, static_cast<short>(animationId),
+                                   (buildingSlot != 7 ? 2 : 0) + 5, 0);
       g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
       buildingActionAnimations12C[buildingSlot][action] = animation;
       InvalidateCityDialogRectRegion(&bounds, 1);
@@ -297,11 +297,11 @@ IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x004badd0
 void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
   TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
-  void* subObject = 0;
+  TCity* subObject = 0;
   if (nationState != 0) {
-    subObject = *reinterpret_cast<void**>(reinterpret_cast<char*>(nationState) + 0x894);
+    subObject = nationState->city; // +0x894
   }
-  short sVar2_val = static_cast<TMinor*>(subObject)->HasMinorStandingLinkSlot5C(0xe);
+  short sVar2_val = reinterpret_cast<TMinor*>(subObject)->HasMinorStandingLinkSlot5C(0xe);
 
   int mask1 = -static_cast<int>(sVar2_val == 2);
   int mask2 = -static_cast<int>(sVar2_val == 2);

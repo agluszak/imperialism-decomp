@@ -5,6 +5,7 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/ui_widgets/TAmtBar.h"
 #include "game/ui_widgets/TAmtBarCluster.h"
 #include "game/TQuickDrawSurfaceContext.h"
@@ -15,7 +16,7 @@
 #include "game/mfc.h"
 
 // FUNCTION: IMPERIALISM 0x00586e50
-short TAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
+short TAmtBar::ApplyMoveClamp(int baseValue, short requestedValue) {
   (void)requestedValue;
   return baseValue;
 }
@@ -50,8 +51,10 @@ void TAmtBar::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x00588630
 void TAmtBar::UpdateBarValuesAndRefresh(short valueAt60, short valueAt62) {
-  this->stepOrCurrentValue = valueAt60;
-  this->rangeOrMaxValue = valueAt62;
+  // arg1 -> +0x60, arg2 -> +0x62 (0x00588640/0x00588646). VC5 batches both parameter
+  // loads before either store, so the source order only decides which load comes first.
+  this->rangeOrMaxValue = valueAt60;
+  this->stepOrCurrentValue = valueAt62;
   this->RefreshControl();
   this->ForceRedraw();
 }
@@ -130,19 +133,15 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 void TAmtBar::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)event;
   (void)origin;
-  ClampAndApplyTradeMoveValue(point.x);
-}
-
-void TAmtBar::ClampAndApplyTradeMoveValue(int requestedValue) {
   int baseValue;
-  if (auxValueA < 1 ||
-      static_cast<int>(frameWidth34) / (static_cast<int>(auxValueA) << 1) <= requestedValue) {
-    int fildRequested = requestedValue;
-    int fildField34 = static_cast<int>(frameWidth34);
-    int fildAux = static_cast<int>(auxValueA);
-    double ratio = static_cast<double>(fildRequested) /
-                   (static_cast<double>(fildField34) * static_cast<double>(fildAux));
-    ratio = ratio - *reinterpret_cast<double*>(0x006631a0);
+  if (auxValueA <= 0 ||
+      static_cast<int>(frameWidth34) / (static_cast<int>(auxValueA) << 1) <= point.x) {
+    // Segment index of the click: point.x * segments / width + 1. The FILD/FMULP/FDIVP
+    // chain at 0x00588975-0x00588987 multiplies by auxValueA and divides by frameWidth34;
+    // it does not divide by their product.
+    double ratio = static_cast<double>(point.x) * static_cast<double>(auxValueA) /
+                       static_cast<double>(static_cast<int>(frameWidth34)) +
+                   1.0;
     // The (double)->int truncation below is a real MSVC5 CRT call (_ftol, libcmt
     // ftol.obj, 0x005e73d0) whose argument is passed on the FPU stack, not as a normal
     // C parameter -- static_cast lets the compiler emit that call itself instead of
@@ -152,30 +151,27 @@ void TAmtBar::ClampAndApplyTradeMoveValue(int requestedValue) {
     baseValue = 0;
   }
 
-  short appliedValue = ApplyMoveClamp(baseValue, requestedValue);
-  TView* owner = GetWindow();
-  if ((appliedValue == 0) && requestedValue != 0) {
-    TAmtBar* fallbackControl =
-        reinterpret_cast<TAmtBar*>(owner->ResolveControlByTag(kControlTagMove));
+  short appliedValue = ApplyMoveClamp(baseValue, static_cast<short>(point.x));
+  TView* owner = this->ownerContext;
+  if ((appliedValue == 0) && point.x != 0) {
+    // Slot 0x1e8 on the resolved control is TNumberText::UpdateControlCachedIntFromWindowText
+    // (slot 0x7a); TAmtBar's own vtable ends at byte 0x1a8, so these tags are number
+    // controls, not amount bars.
+    TNumberText* fallbackControl =
+        static_cast<TNumberText*>(owner->ResolveControlByTag(kControlTagMove));
     if (fallbackControl == 0) {
-      fallbackControl = reinterpret_cast<TAmtBar*>(owner->ResolveControlByTag(kControlTagSell));
+      fallbackControl = static_cast<TNumberText*>(owner->ResolveControlByTag(kControlTagSell));
     }
-    if (fallbackControl != 0 && fallbackControl->QueryValue() == 0) {
+    if (fallbackControl != 0 &&
+        static_cast<short>(fallbackControl->UpdateControlCachedIntFromWindowText()) == 0) {
       appliedValue = 1;
     }
   }
 
-  static_cast<TAmtBarCluster*>(owner)->SetMoveAmount(static_cast<short>(appliedValue));
+  static_cast<TAmtBarCluster*>(owner)->SetMoveAmount(appliedValue);
 }
 
 void TAmtBar::SetBarMetricRatio(int value) {
   stepOrCurrentValue = (short)value;
   RefreshControl();
 }
-
-
-int TAmtBar::QueryValue() {
-  return (int)stepOrCurrentValue;
-}
-
-

@@ -33,7 +33,11 @@ TStream::~TStream() {}
 
 // FUNCTION: IMPERIALISM 0x00488a80
 char TStream::IsAtEnd() {
-  return GetPosition() >= GetLength();
+  // The original calls GetPosition (slot 0x28) before GetLength (slot 0x30) at
+  // 0x00488a87/0x00488a8e. Operand evaluation order is unspecified and VC5 will emit the
+  // calls the other way round unless the first result is sequenced into a local.
+  int position = GetPosition();
+  return position >= GetLength();
 }
 
 // FUNCTION: IMPERIALISM 0x00488ab0

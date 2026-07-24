@@ -699,15 +699,18 @@ void TGreatPower::ApplyDiplomacyState222ToCityStockAndClear(void) {
 
 // FUNCTION: IMPERIALISM 0x004dcca0
 void TGreatPower::ApplyRelationDeltaToCityStockAndUpdateState1f4(void) {
+  // The loop walks ESI = this + 0x1f4 + 2*i and reads [ESI - 0x5c], i.e. +0x198 =
+  // relationDeltaSnapshot -- not relationDeltaCurrent at +0x16a (0x004dccb6/0x004dccc7/
+  // 0x004dccd8).
   for (short nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
-    this->AddToCityStockCounterAndRefresh(nationSlot, this->relationDeltaCurrent[nationSlot]);
-    if (this->diplomacyState250[nationSlot] == -1 && this->relationDeltaCurrent[nationSlot] == 0) {
+    this->AddToCityStockCounterAndRefresh(nationSlot, this->relationDeltaSnapshot[nationSlot]);
+    if (this->diplomacyState250[nationSlot] == -1 && this->relationDeltaSnapshot[nationSlot] == 0) {
       this->diplomacyState1f4[nationSlot] =
           static_cast<short>(this->diplomacyState1f4[nationSlot] + 1);
     } else {
       this->diplomacyState1f4[nationSlot] = 0;
     }
-    this->relationDeltaCurrent[nationSlot] = 0;
+    this->relationDeltaSnapshot[nationSlot] = 0;
   }
 }
 
@@ -2102,17 +2105,17 @@ char TGreatPower::IsDiplomacyProposalAllowedForRelationship(
   return allowed;
 }
 
+// Both bodies are an unconditional tail-call through slot 0x1c of a queue member; they
+// differ only in which member. 0x004df580 loads +0x84c (proposalQueue), 0x004df5a0 loads
+// +0x848 (turnEventQueue) -- neither tests the pointer for null first.
 // FUNCTION: IMPERIALISM 0x004df580
 void TGreatPower::ResetNationDiplomacyProposalQueue(void) {
-  TSortedByRelationshipList* proposalQueue = this->proposalQueue;
-  if (proposalQueue != 0) {
-    proposalQueue->ClearAndFreeAllPtrListRecords();
-  }
+  this->proposalQueue->ClearAndFreeAllPtrListRecords();
 }
 
 // FUNCTION: IMPERIALISM 0x004df5a0
 void TGreatPower::ReleaseProposalQueueSlot7F(void) {
-  this->proposalQueue->ClearAndFreeAllPtrListRecords();
+  this->turnEventQueue->ClearAndFreeAllPtrListRecords();
 }
 
 // FUNCTION: IMPERIALISM 0x004df5c0
@@ -3742,8 +3745,16 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(TZone* zone) {
       ++selectedCandidateIndex;
     }
     if (selectedCandidateIndex >= 0x17) {
-      // Original artifact: an exhausted scan falls back to the raw argument bits
-      // (dead in practice -- activeCandidateCount == 1 guarantees a hit).
+      // UNRESOLVED_FIELD_ATTRIBUTION: 0x004e912a reloads the index from [esp+0x38], which
+      // is also the incoming `zone` parameter slot; 0x004e917c does the same in the
+      // multi-candidate path below. Two readings remain open and are NOT settled here:
+      //   (a) VC5 coalesced the dead `zone` parameter slot with this local, so the value
+      //       is whatever the local last spilled and the reload carries no pointer meaning;
+      //   (b) the original really does seed the index from the argument bits.
+      // Nothing writes [esp+0x38] on this path, which favours (b), but (b) makes a
+      // TZone* the initial value of a 0..0x16 nation index, which no caller can want.
+      // Kept bit-faithful until the slot's liveness is resolved at codegen level; do not
+      // promote either reading into prose or a type without that evidence.
       selectedCandidateIndex = reinterpret_cast<int>(zone);
     }
   } else {
