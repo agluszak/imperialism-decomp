@@ -66,9 +66,9 @@ TMacViewMgr* g_pStrategicMapViewSystem = 0;
 // GLOBAL: IMPERIALISM 0x006a21bc
 TViewMgr* g_pUiRuntimeContext = 0;
 // GLOBAL: IMPERIALISM 0x006a2050
-TBackdropWindow* DAT_006a2050 = 0;
+TBackdropWindow* g_pActiveBackdropWindow = 0;
 // GLOBAL: IMPERIALISM 0x006a2054
-void* DAT_006a2054 = 0;
+char* g_pBackdropWaitCursorGuardToken = 0;
 // GLOBAL: IMPERIALISM 0x006a2148
 TAssetMgr* g_pUiViewManager = 0;
 // GLOBAL: IMPERIALISM 0x006a327c
@@ -219,7 +219,7 @@ char g_szCmdSwitchLangQuit_00694254[] = "L!";
 // GLOBAL: IMPERIALISM 0x006a1348
 class ImperialismApp* g_pImperialismApp = 0;
 // GLOBAL: IMPERIALISM 0x006a1350
-int DAT_006a1350 = 0;
+int g_nStartupAutoResolutionMode = 0;
 // Previous CRT new-handler returned by _set_new_handler at startup (write-only).
 // GLOBAL: IMPERIALISM 0x006a1354
 _PNH g_pfnPreviousNewHandler = 0;
@@ -1399,7 +1399,7 @@ char g_szPlusPrefix_00698494[] = "+";
 char g_szListConjunction_00698498[] = " and ";
 
 // GLOBAL: IMPERIALISM 0x0066fad0
-double DAT_0066fad0 = 0.092;
+double g_dMasterVolumeExponentScale = 0.092;
 
 } // extern "C"
 
@@ -2124,7 +2124,8 @@ double g_dTacticalCursorRetreatRatioThreshold_00669538 = 0.8;
 // can't resolve the bare address to a clean symbol here). This named-global form is the
 // only one of the three giving a 100% exact match on all four affected functions
 // (TTacticalUnit/TArmyTacUnit/TNavyTacUnit x2); the residual is isolated to
-// just datacmp-gate, which needs a maintainer-approved baseline update to clear.
+// just datacmp-gate, which records this value-equivalent section-placement residue
+// as WARN with the initialized_zero_vs_bss_zero_same_runtime_value note.
 // GLOBAL: IMPERIALISM 0x00669ec0
 float g_fTacticalRetreatQualityWeightDefault_00669EC0 = 0.0f;
 // GLOBAL: IMPERIALISM 0x00669ec8

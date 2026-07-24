@@ -5,6 +5,7 @@
 #include "game/globals/prelude.h"
 #include "game/globals/assets_globals.h"
 #include "game/globals/shared_globals.h"
+#include "game/globals/ui_widgets_globals.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TApplication.h"
 #include "game/city_ui/TLongintList.h"
@@ -433,7 +434,7 @@ void TSoundPlayer::StopAllSoundChannels() {
 // FUNCTION: IMPERIALISM 0x005e5020
 void TSoundPlayer::SetMasterVolumeFromPercent(short percent) {
   if (this->directSoundInitPendingAt21 != 0) {
-    double val = -pow(2.0, (100 - percent) * DAT_0066fad0);
+    double val = -pow(2.0, (100 - percent) * g_dMasterVolumeExponentScale);
     int volume = static_cast<int>(val);
     if (volume > 0) {
       volume = 0;

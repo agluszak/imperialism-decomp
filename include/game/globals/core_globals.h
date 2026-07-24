@@ -4,6 +4,8 @@
 // assignment evidence: docs/reference/subsystem_assignment.csv.
 #include "game/globals/prelude.h"
 
+extern "C" int g_nStartupAutoResolutionMode;
+
 // Private retail assert guards for TStream's McAppStream.cpp diagnostics.
 extern int g_streamLine304AssertGuard;
 

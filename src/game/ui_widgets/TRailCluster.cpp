@@ -139,8 +139,7 @@ void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
     return;
   }
 
-  TNumberText* moveControl =
-      static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagMove));
+  TNumberText* moveControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagMove));
   if (moveControl == 0) {
     FailNilPointerInUSmallViews(0xcf2);
   }
@@ -196,11 +195,12 @@ void TRailCluster::UpdateMax() {
 // FUNCTION: IMPERIALISM 0x00589da0
 void TRailCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 100) {
-    TAmtBar* moveControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+    TNumberText* moveControl =
+        static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagMove));
     if (moveControl == 0) {
       FailNilPointerInUSmallViews(0xcf2);
     }
-    int moveValue = moveControl->QueryValue();
+    int moveValue = moveControl->UpdateControlCachedIntFromWindowText();
     this->SetMoveAmount(static_cast<short>(moveValue + 1));
     return;
   }
@@ -208,10 +208,10 @@ void TRailCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
     return;
   }
-  TAmtBar* moveControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+  TNumberText* moveControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagMove));
   if (moveControl == 0) {
     FailNilPointerInUSmallViews(0xcf2);
   }
-  int moveValue = moveControl->QueryValue();
+  int moveValue = moveControl->UpdateControlCachedIntFromWindowText();
   this->SetMoveAmount(static_cast<short>(moveValue - 1));
 }

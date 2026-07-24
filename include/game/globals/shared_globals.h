@@ -1590,8 +1590,6 @@ extern char g_szCmdSwitchLangQuit_00694254[];
 
 extern ImperialismApp* g_pImperialismApp;
 
-extern int DAT_006a1350;
-
 extern _PNH g_pfnPreviousNewHandler;
 
 // Read only by ImperialismApp's developer assert command; no writer exists in the retail
@@ -1601,8 +1599,6 @@ extern void* g_pAmbitDeveloperAssertProbe_006A1358;
 extern short g_industryActionCostWeightResCode10[16];
 
 extern AiCityActionCostProfile g_aiCityActionCostProfiles[30];
-
-extern double DAT_0066fad0;
 
 extern char g_szListSeparator_00695760[];
 
@@ -1614,10 +1610,6 @@ extern TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;
 
 // Cached CCommandLineInfo::m_bShowSplash (cmdInfo+0x04), not m_nShellCommand.
 extern BOOL g_cachedShowSplashFlag;
-
-extern TBackdropWindow* DAT_006a2050;
-
-extern void* DAT_006a2054;
 
 extern LPCSTR g_apFontFiles[];
 

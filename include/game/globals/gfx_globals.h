@@ -4,6 +4,12 @@
 // assignment evidence: docs/reference/subsystem_assignment.csv.
 #include "game/globals/prelude.h"
 
+extern "C" TBackdropWindow* g_pActiveBackdropWindow;
+
+// Heap-owned lifetime marker paired with BeginWaitCursor/EndWaitCursor while the
+// startup backdrop is visible.
+extern "C" char* g_pBackdropWaitCursorGuardToken;
+
 extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
 
 extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;

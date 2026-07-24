@@ -165,12 +165,13 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   switch (commandId) {
   case 100: {
     if (this->GetBoolSlot1DC() != '\0') {
-      TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
+      TNumberText* sellControl =
+          static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
       if (sellControl == 0) {
         FailNilPointerInUSmallViews(kAssertLineTradeSellIncSell);
       }
 
-      int sellValue = sellControl->QueryValue();
+      int sellValue = sellControl->UpdateControlCachedIntFromWindowText();
       short activeNationSlot = g_pSimMgr->GetActiveNationId();
       TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
       short maxByNationMetric = 0;
@@ -196,11 +197,12 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     break;
   }
   case 0x65: {
-    TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
+    TNumberText* sellControl =
+        static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
     if (sellControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineTradeSellDecSell);
     }
-    int sellValue = sellControl->QueryValue();
+    int sellValue = sellControl->UpdateControlCachedIntFromWindowText();
     if (1 < sellValue) {
       this->SetMoveAmount(static_cast<short>(sellValue - 1));
       return;
@@ -296,15 +298,15 @@ int TTradeCluster::IsTradeControlAtMinimum() {
   if (g_pUiRuntimeContext->GetPendingTurnOverlayCode() > 3) {
     return 0;
   }
-  TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
-  return sellControl->QueryValue() <= 0 ? 1 : 0;
+  TNumberText* sellControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
+  return sellControl->UpdateControlCachedIntFromWindowText() <= 0 ? 1 : 0;
 }
 
 // Returns the current Sell control quantity.
 // FUNCTION: IMPERIALISM 0x00587950
 int TTradeCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) {
-  TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
-  return sellControl->QueryValue();
+  TNumberText* sellControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
+  return sellControl->UpdateControlCachedIntFromWindowText();
 }
 
 // Bid control is actionable when its 'card' bitmap is in a Bid state and the
@@ -536,8 +538,7 @@ void TTradeCluster::SetMoveAmount(short metricClampMax) {
     tradeMetricValue = metricClampMax;
   }
 
-  TNumberText* sellControl =
-      static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
+  TNumberText* sellControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
   if (sellControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineUpdateSell);
   }

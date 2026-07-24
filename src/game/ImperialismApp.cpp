@@ -6,6 +6,7 @@
 #include "game/ImperialismCommandLineInfo.h"
 #include "game/app_init_globals.h"
 #include "game/globals/prelude.h"
+#include "game/globals/core_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -241,8 +242,8 @@ BOOL ImperialismApp::InitInstance() {
       return FALSE;
     }
 
-    DAT_006a1350 = ShowAutoResolutionDialogIfNeeded();
-    ApplyAutoResolutionModeAndPersist(DAT_006a1350);
+    g_nStartupAutoResolutionMode = ShowAutoResolutionDialogIfNeeded();
+    ApplyAutoResolutionModeAndPersist(g_nStartupAutoResolutionMode);
 
     if (!g_pModuleLibraryCacheState->LoadModuleLibrarySlotWithErrorDialog(localizedPictGobNameD0,
                                                                           0)) {

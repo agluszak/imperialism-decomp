@@ -98,8 +98,7 @@ void TIndustryCluster::SetMoveAmount(short dragValue, unsigned char updateContro
     return;
   }
 
-  TNumberText* moveControl =
-      static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagMove));
+  TNumberText* moveControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagMove));
   if (moveControl == 0) {
     FailNilPointerInUSmallViews(0xb42);
   }
@@ -155,11 +154,12 @@ void TIndustryCluster::UpdateMax() {
 // FUNCTION: IMPERIALISM 0x00588ff0
 void TIndustryCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 100) {
-    TAmtBar* moveControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+    TNumberText* moveControl =
+        static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagMove));
     if (moveControl == 0) {
       GAME_FAIL_NIL_POINTER();
     }
-    int moveValue = moveControl->QueryValue();
+    int moveValue = moveControl->UpdateControlCachedIntFromWindowText();
     this->SetMoveAmount(static_cast<short>(moveValue + 1));
     return;
   }
@@ -167,10 +167,10 @@ void TIndustryCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
     return;
   }
-  TAmtBar* moveControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+  TNumberText* moveControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagMove));
   if (moveControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }
-  int moveValue = moveControl->QueryValue();
+  int moveValue = moveControl->UpdateControlCachedIntFromWindowText();
   this->SetMoveAmount(static_cast<short>(moveValue - 1));
 }

@@ -1,3 +1,3 @@
-name|address|status|diffs
-afxDataNil|0x69be08|WARN|3
-g_fTacticalRetreatQualityWeightDefault_00669EC0|0x669ec0|DIFF|1
+name|address|status|diffs|note
+afxDataNil|0x69be08|WARN|3|
+g_fTacticalRetreatQualityWeightDefault_00669EC0|0x669ec0|WARN|1|initialized_zero_vs_bss_zero_same_runtime_value

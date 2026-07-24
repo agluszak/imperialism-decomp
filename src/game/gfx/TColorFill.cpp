@@ -17,6 +17,8 @@ TColorFill::~TColorFill() {}
 
 IMPLEMENT_DYNCREATE(TColorFill, TAdorner)
 
+// NOOP: verified empty in original 0x004ff10b (after the inlined TAdorner base
+// guard, the derived ctor adds only the compiler-generated TColorFill vptr store)
 TColorFill::TColorFill() {}
 
 // FUNCTION: IMPERIALISM 0x004ff1c0

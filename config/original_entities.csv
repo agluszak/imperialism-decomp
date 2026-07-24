@@ -4560,14 +4560,14 @@ address|name|symbol|size|type|prototype|provenance
 573cb0|TScrollView::InitializeScrollView||31|function|void InitializeScrollView(TView* panel, int* offsetLayout, int* sizeLayout)|
 573ce0|TScrollView::DoPostCreate||195|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 573df0|TScrollBarView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-573e55|WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573e55||16|function|undefined WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573e55()|
-573e65|WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573e65||16|function|undefined WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573e65()|
-573e75|WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573e75||16|function|undefined WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573e75()|
-573e85|WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573e85||16|function|undefined WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573e85()|
-573ee5|WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573ee5||18|function|undefined WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573ee5()|
-573ef7|WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573ef7||15|function|undefined WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573ef7()|
-573f06|WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573f06||16|function|undefined WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573f06()|
-573f16|WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573f16||16|function|undefined WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573f16()|
+573e55|AdjustCityDialogScrollByEaxXAndPositiveStepYCallback||16|function|undefined AdjustCityDialogScrollByEaxXAndPositiveStepYCallback()|
+573e65|AdjustCityDialogScrollByEaxXAndNegativeStepYCallback||16|function|undefined AdjustCityDialogScrollByEaxXAndNegativeStepYCallback()|
+573e75|AdjustCityDialogScrollByPositiveStepXAndEdxYCallback||16|function|undefined AdjustCityDialogScrollByPositiveStepXAndEdxYCallback()|
+573e85|AdjustCityDialogScrollByNegativeStepXAndEdxYCallback||16|function|undefined AdjustCityDialogScrollByNegativeStepXAndEdxYCallback()|
+573ee5|AdjustCityDialogScrollByEdxXAndNegativePageYCallback||18|function|undefined AdjustCityDialogScrollByEdxXAndNegativePageYCallback()|
+573ef7|AdjustCityDialogScrollByEdxXAndPositivePageYCallback||15|function|undefined AdjustCityDialogScrollByEdxXAndPositivePageYCallback()|
+573f06|AdjustCityDialogScrollByPositiveStepXAndEaxYCallback||16|function|undefined AdjustCityDialogScrollByPositiveStepXAndEaxYCallback()|
+573f16|AdjustCityDialogScrollByNegativeStepXAndEaxYCallback||16|function|undefined AdjustCityDialogScrollByNegativeStepXAndEaxYCallback()|
 573f60|AdjustCityDialogScrollRangeByDeltaAndClamp||251|function|undefined AdjustCityDialogScrollRangeByDeltaAndClamp()|
 5740a0|RefreshCityDialogScrollableViewportWithQuickDrawContext||143|function|undefined RefreshCityDialogScrollableViewportWithQuickDrawContext()|
 5741e0|TScrollView::SyncBoundedValueAndToggleControlStates||153|function|void SyncBoundedValueAndToggleControlStates()|
@@ -8544,7 +8544,7 @@ address|name|symbol|size|type|prototype|provenance
 66f6e8|TMovieView::classTMovieView|||global||
 66f968|g_ImperialismDirectPlayApplicationGuid0066f968|||global||
 66f978|TNetMgr::classTNetMgr|||global||
-66fad0|DAT_0066fad0|||global|double DAT_0066fad0|
+66fad0|g_dMasterVolumeExponentScale|||global|double g_dMasterVolumeExponentScale|
 66fc00|CDialog::classRuntimeClass|||global||
 66fdc8|CWinApp::classRuntimeClass|||global||
 66fec4|CObject::`vftable'|??_7CObject@@6B@||global||
@@ -9524,7 +9524,7 @@ address|name|symbol|size|type|prototype|provenance
 6a1344|g_pGlobalUiRootController|||global||
 6a1348|g_pImperialismApp|||global||
 6a134c|g_pModuleLibraryCacheState|||global||
-6a1350|DAT_006a1350|||global||
+6a1350|g_nStartupAutoResolutionMode|||global||
 6a1354|g_pfnPreviousNewHandler|||global||
 6a1358|g_pAmbitDeveloperAssertProbe_006A1358|||global||
 6a13a0|g_szEmptyString|||global||
@@ -9607,8 +9607,8 @@ address|name|symbol|size|type|prototype|provenance
 6a1fc0|g_ScaleDefault6A1FC0|||global||
 6a1fe8|g_ScaleDefault6A1FE8|||global||
 6a2018|g_cachedShowSplashFlag|||global||
-6a2050|DAT_006a2050|||global||
-6a2054|DAT_006a2054|||global||
+6a2050|g_pActiveBackdropWindow|||global||
+6a2054|g_pBackdropWaitCursorGuardToken|||global||
 6a20f8|g_pSimMgr|||global||
 6a2128|g_ptSaveLoadErrorModalMessage|||global||
 6a2148|g_pUiViewManager|||global||
