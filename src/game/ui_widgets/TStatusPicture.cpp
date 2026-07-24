@@ -16,6 +16,11 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
+// FUNCTION: IMPERIALISM 0x0043d840
+TStatusPicture::TStatusPicture() {
+  comparisonMode90 = -1;
+}
+
 // SYNTHETIC: IMPERIALISM 0x0043d870
 // TStatusPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0043d8a0
@@ -27,8 +32,6 @@ TStatusPicture::~TStatusPicture() {}
 // TStatusPicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TStatusPicture, TPicture)
-
-TStatusPicture::TStatusPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00593f20
 void TStatusPicture::DoPostCreate(int arg) {

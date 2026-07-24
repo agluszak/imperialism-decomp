@@ -161,9 +161,9 @@ address|name|symbol|size|type|prototype|provenance
 430c10|TView::DoMouseCommand||3|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 430c50|InitializeDealBookScreenControlsAndCommandTags||14917|function|undefined InitializeDealBookScreenControlsAndCommandTags()|
 435540|TDealTabControl::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-435590|TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590||27|function|undefined WrapperFor_ConstructTPageViewBaseState_At00435590()|
+435590|TTradePageSellView::TTradePageSellView||27|function|undefined WrapperFor_ConstructTPageViewBaseState_At00435590()|
 4355c0|TTradePageSellView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-435610|TPageView::WrapperFor_ConstructTPageViewBaseState_At00435610||27|function|undefined WrapperFor_ConstructTPageViewBaseState_At00435610()|
+435610|TTradePageBuyView::TTradePageBuyView||27|function|undefined WrapperFor_ConstructTPageViewBaseState_At00435610()|
 435640|TTradePageBuyView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 435690|TTradeBookView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4356e0|WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0||18|function|undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0()|
@@ -175,12 +175,12 @@ address|name|symbol|size|type|prototype|provenance
 43d610|TControl::WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610||45|function|undefined WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610()|
 43d650|TTwoPicSlider::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 43d6a0|TQueryFloater::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-43d6f0|TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0||28|function|undefined WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0()|
+43d6f0|TMadnessButton::TMadnessButton||28|function|undefined WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0()|
 43d720|TMadnessButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 43d770|WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d770||18|function|undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d770()|
 43d7a0|TTerrainHelpPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 43d7f0|TScrollView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-43d840|ConstructTurnEventMainPictureEntry_10CC||28|function|int * __fastcall ConstructTurnEventMainPictureEntry_10CC(int * pEntry)|
+43d840|TStatusPicture::TStatusPicture||28|function|int * __fastcall TStatusPicture(int * pEntry)|
 43d870|TStatusPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 43d8c0|WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0||18|function|undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0()|
 43d8f0|ConstructUiBaseBackdropPictureEntry||68|function|undefined ConstructUiBaseBackdropPictureEntry()|
@@ -2087,7 +2087,7 @@ address|name|symbol|size|type|prototype|provenance
 4c8050|TUnitsView::DoStartup||323|function|void DoStartup()|
 4c8200|TShipyardView::CreateObject|?CreateObject@TShipyardView@@SGPAVCObject@@XZ|123|function|undefined CreateObject()|rtti
 4c82a0|TShipyardView::GetRuntimeClass||6|function|undefined GetTShipyardViewClassNamePointer()|rtti
-4c82c0|TShipyardView::ConstructTShipyardViewBaseState||32|function|undefined ConstructTShipyardViewBaseState()|
+4c82c0|TShipyardView::TShipyardView||32|function|undefined ConstructTShipyardViewBaseState()|
 4c82f0|TShipyardView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4c8340|TShipyardView::Free||58|function|undefined 'scalar_deleting_destructor'(void)|
 4c8390|TShipyardView::DoStartup||1337|function|void DoStartup()|
@@ -2173,7 +2173,7 @@ address|name|symbol|size|type|prototype|provenance
 4cebb0|TBuildingExpansionView::DoClosingAction||236|function|void __thiscall DoClosingAction(unsigned long dialogActionTag)|
 4cece0|TArmoryView::CreateObject|?CreateObject@TArmoryView@@SGPAVCObject@@XZ|123|function|undefined CreateObject()|rtti
 4ced80|TArmoryView::GetRuntimeClass||6|function|undefined GetTArmoryViewClassNamePointer()|rtti
-4ceda0|ConstructArmoryView||32|function|undefined ConstructArmoryView()|
+4ceda0|TArmoryView::TArmoryView||32|function|undefined TArmoryView()|
 4cedd0|TArmoryView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4cee20|TArmoryView::DoStartup||1048|function|void DoStartup()|
 4cee7d|advanced_recruit_count_loop_head|||global||

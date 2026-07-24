@@ -27,7 +27,11 @@
 
 IMPLEMENT_DYNCREATE(TArmoryView, TBuildingView)
 
-TArmoryView::TArmoryView() {}
+// FUNCTION: IMPERIALISM 0x004ceda0
+TArmoryView::TArmoryView() {
+  city94 = 0;
+  productionView98 = 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x004cedd0
 // TArmoryView::`scalar deleting destructor'

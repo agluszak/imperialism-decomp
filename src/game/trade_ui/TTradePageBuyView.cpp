@@ -10,6 +10,11 @@
 #include "game/ui_core/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
 #include "game/ui_text_label_helpers_decls.h"
 
+// FUNCTION: IMPERIALISM 0x00435610
+TTradePageBuyView::TTradePageBuyView() {
+  lastBuiltCategorySlot84 = -1;
+}
+
 // SYNTHETIC: IMPERIALISM 0x00435640
 // TTradePageBuyView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00435670
@@ -21,8 +26,6 @@ TTradePageBuyView::~TTradePageBuyView() {}
 // TTradePageBuyView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTradePageBuyView, TPageView)
-
-TTradePageBuyView::TTradePageBuyView() {}
 
 // FUNCTION: IMPERIALISM 0x005bd690
 void TTradePageBuyView::RebuildNationBidRowsForCategory(short categorySlot) {

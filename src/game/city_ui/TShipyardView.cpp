@@ -37,7 +37,11 @@ IMPLEMENT_DYNCREATE(TShipyardView, TBuildingView)
 // unlike its TBuildingView siblings, our toolchain does not emit a uniquely-pairable
 // out-of-line copy for it, so reccmp hard-fails to match the address. Left markerless
 // rather than faking the match.
-TShipyardView::TShipyardView() {}
+// FUNCTION: IMPERIALISM 0x004c82c0
+TShipyardView::TShipyardView() {
+  city94 = 0;
+  productionView98 = 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x004c82f0
 // TShipyardView::`scalar deleting destructor'

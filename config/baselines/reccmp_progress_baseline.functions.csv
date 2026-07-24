@@ -83,7 +83,7 @@ address|matching|name
 0x415f00|1.0|CObject::`scalar deleting destructor'
 0x415f50|0.16666666666666666|InitializeUiResourcePoolRuntimeClassFields
 0x415f90|1.0|CList<TView *,TView *>::`scalar deleting destructor'(unsigned int)
-0x415fe0|0.3165201295696437|BuildTradeSchoolDialogControls
+0x415fe0|0.3167515039333642|BuildTradeSchoolDialogControls
 0x41b210|0.29743589743589743|RegisterUiResourceEntry
 0x41b3a0|1.0|SetUiResourceStateFlags
 0x41b3d0|1.0|SetUiResourceContextPictureId
@@ -175,13 +175,13 @@ address|matching|name
 0x430bd0|1.0|TView::GetEventNumber
 0x430bf0|1.0|TView::Draw
 0x430c10|1.0|TView::DoMouseCommand
-0x430c50|0.17856158721410856|InitializeDealBookScreenControlsAndCommandTags
+0x430c50|0.17911270322402867|InitializeDealBookScreenControlsAndCommandTags
 0x435540|1.0|TDealTabControl::`scalar deleting destructor'
 0x435570|0.0|TDealTabControl::~TDealTabControl
-0x435590|0.2|TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590
+0x435590|1.0|TTradePageSellView::TTradePageSellView
 0x4355c0|1.0|TTradePageSellView::`scalar deleting destructor'
 0x4355f0|0.0|TTradePageSellView::~TTradePageSellView
-0x435610|0.2|TPageView::WrapperFor_ConstructTPageViewBaseState_At00435610
+0x435610|1.0|TTradePageBuyView::TTradePageBuyView
 0x435640|1.0|TTradePageBuyView::`scalar deleting destructor'
 0x435670|0.0|TTradePageBuyView::~TTradePageBuyView
 0x435690|1.0|TTradeBookView::`scalar deleting destructor'
@@ -190,7 +190,7 @@ address|matching|name
 0x435710|1.0|TNewspaperView::`scalar deleting destructor'
 0x435740|0.2222222222222222|TNewspaperView::~TNewspaperView
 0x435760|1.0|TControl::ShallowClone
-0x4357b0|0.48957589140741703|BuildTurnEventDialogUiByCode
+0x4357b0|0.489835682275768|BuildTurnEventDialogUiByCode
 0x43d590|1.0|TMapPreviewView::TMapPreviewView
 0x43d5c0|1.0|TMapPreviewView::`scalar deleting destructor'
 0x43d5f0|0.2222222222222222|TMapPreviewView::~TMapPreviewView
@@ -199,7 +199,7 @@ address|matching|name
 0x43d680|0.0|TTwoPicSlider::~TTwoPicSlider
 0x43d6a0|1.0|TQueryFloater::`scalar deleting destructor'
 0x43d6d0|0.2222222222222222|TQueryFloater::~TQueryFloater
-0x43d6f0|0.2|TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0
+0x43d6f0|1.0|TMadnessButton::TMadnessButton
 0x43d720|1.0|TMadnessButton::`scalar deleting destructor'
 0x43d750|0.0|TMadnessButton::~TMadnessButton
 0x43d770|0.2222222222222222|WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d770
@@ -207,7 +207,7 @@ address|matching|name
 0x43d7d0|0.2222222222222222|TTerrainHelpPicture::~TTerrainHelpPicture
 0x43d7f0|1.0|TScrollView::`scalar deleting destructor'
 0x43d820|0.2222222222222222|TScrollView::~TScrollView
-0x43d840|0.2|ConstructTurnEventMainPictureEntry_10CC
+0x43d840|1.0|TStatusPicture::TStatusPicture
 0x43d870|1.0|TStatusPicture::`scalar deleting destructor'
 0x43d8a0|0.2222222222222222|TStatusPicture::~TStatusPicture
 0x43d8c0|0.2222222222222222|WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0
@@ -247,7 +247,7 @@ address|matching|name
 0x44fb60|0.0|TLoungeDialog::~TLoungeDialog
 0x44fb80|0.2222222222222222|TMultiMessagePicture::~TMultiMessagePicture
 0x44fba0|0.3333333333333333|WrapperFor_thunk_RegisterDialogFactoryCallback_At0044fba0
-0x44fbc0|0.28725738396624473|BuildUiResourceTreeByTemplateIdAndBindScreenContext
+0x44fbc0|0.28759493670886077|BuildUiResourceTreeByTemplateIdAndBindScreenContext
 0x453800|1.0|TOverlayRadioButton::TOverlayRadioButton
 0x453830|1.0|TOverlayRadioButton::`scalar deleting destructor'
 0x453860|0.0|TOverlayRadioButton::~TOverlayRadioButton
@@ -2142,7 +2142,7 @@ address|matching|name
 0x4c8050|0.7868852459016393|TUnitsView::DoStartup
 0x4c8200|0.5714285714285714|TShipyardView::CreateObject
 0x4c82a0|1.0|TShipyardView::GetRuntimeClass
-0x4c82c0|0.3333333333333333|TShipyardView::ConstructTShipyardViewBaseState
+0x4c82c0|0.9|TShipyardView::TShipyardView
 0x4c82f0|1.0|TShipyardView::`scalar deleting destructor'
 0x4c8320|0.0|TShipyardView::~TShipyardView
 0x4c8340|1.0|TShipyardView::Free
@@ -2211,7 +2211,7 @@ address|matching|name
 0x4cebb0|0.6268656716417911|TBuildingExpansionView::DoClosingAction
 0x4cece0|0.5714285714285714|TArmoryView::CreateObject
 0x4ced80|1.0|TArmoryView::GetRuntimeClass
-0x4ceda0|0.3333333333333333|ConstructArmoryView
+0x4ceda0|0.9|TArmoryView::TArmoryView
 0x4cedd0|1.0|TArmoryView::`scalar deleting destructor'
 0x4cee00|0.0|TArmoryView::~TArmoryView
 0x4cee20|0.7228177641653905|TArmoryView::DoStartup
