@@ -8,13 +8,9 @@ import unittest
 import tempfile
 from pathlib import Path
 
-from tools.runtime.runtime_tests import (
-    classify_exit,
-    classify_poll,
-    compare_map_state,
-    no_progress_budget_seconds,
-    prune_old_run_dirs,
-)
+from tools.runtime.artifacts import prune_old_run_dirs
+from tools.runtime.classification import classify_exit, classify_poll, no_progress_budget_seconds
+from tools.runtime.oracles.map import compare_map_state
 
 
 def heartbeat(elapsed_ms: int, last_progress_ms: int) -> dict:

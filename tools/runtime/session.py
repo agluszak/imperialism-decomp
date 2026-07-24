@@ -45,6 +45,7 @@ def execute_run(
     debug_record_path = run_dir / "debug-record.json"
     result_path.unlink(missing_ok=True)
     heartbeat_path.unlink(missing_ok=True)
+    debug_record_path.unlink(missing_ok=True)
 
     environment = prefix_environment(prefix)
     if winedebug is not None:
@@ -116,6 +117,7 @@ def execute_run(
                     except DebuggerTransportError as error:
                         debugger_error = str(error)
                         classification = "debugger_transport_failure"
+                        break
                 returncode = process.poll()
                 if returncode is not None:
                     if debugger_signal is not None and not result_path.is_file():

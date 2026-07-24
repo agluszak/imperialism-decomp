@@ -78,13 +78,14 @@ ui-platform-diff-check:
 # gates — mechanical checks (all read-only).
 # ---------------------------------------------------------------------------
 
-# The full pre-commit sequence in one command: build (includes vtable-gate),
+# The full pre-commit sequence in one command: matching build, runtime-test build,
 # all gates, then stats vs baseline. Review the stats delta, then run
 # `just stats-baseline-update` if accepted and commit the baseline with the change.
-[doc('Pre-commit in one command: build + gates + stats (then review, stats-baseline-update, commit)')]
+[doc('Pre-commit: matching build + runtime-test build + gates + tests + stats')]
 [group('gates')]
 precommit:
   just build
+  just runtime-test-build
   just gates
   just test
 

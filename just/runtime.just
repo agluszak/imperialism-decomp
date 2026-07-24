@@ -33,6 +33,14 @@ runtime-test name *args:
 runtime-test-suite suite='pr' *args:
   uv run python -m tools.runtime.cli suite "{{suite}}" {{args}}
 
+[doc('Build and run a required runtime suite using local retail assets')]
+[group('runtime-test')]
+runtime-check suite='pr' *args:
+  : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY to your legally obtained Imperialism.exe}"
+  test -f "$ORIGINAL_BINARY"
+  just runtime-test-build
+  just runtime-test-suite "{{suite}}" --require-fixtures {{args}}
+
 [doc('Show the latest canonical result for a runtime test')]
 [group('runtime-test')]
 runtime-test-show name:
