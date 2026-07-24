@@ -2,6 +2,7 @@
 #include "game/map/TMapMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
+#include "game/globals/map_ui_globals.h"
 
 namespace {
 
@@ -109,6 +110,40 @@ int TMapMaker::OrphanDeadLeaf_NoRefs_00529d90(int nationCode, char useWrapOffset
   return -1;
 }
 
+// Compact the city-region ids stored in each grid record's owner byte: every distinct
+// region class (record[4] - 0x17) is assigned the next free ordinal via the shared remap
+// table, the record is rewritten with the remapped id, and the number of distinct regions
+// is left in cityRegionCount2a4.
+// FUNCTION: IMPERIALISM 0x0052a0a0
+void TMapMaker::OrphanDeadLeaf_NoRefs_0052a0a0() {
+  cityRegionCount2a4 = 0;
+
+  int* remapCursor = g_cityRegionIdRemapTable_006a3498;
+  for (int remaining = 0x100; remaining != 0; remaining = remaining - 1) {
+    *remapCursor = -1;
+    remapCursor = remapCursor + 1;
+  }
+
+  int byteOffset = 0;
+  do {
+    int regionClass;
+    if (byteOffset < 0 || mapTileGrid08[byteOffset] != '\x05') {
+      regionClass = -1;
+    } else {
+      regionClass = mapTileGrid08[byteOffset + 4] - 0x17;
+    }
+    if (-1 < regionClass) {
+      if (g_cityRegionIdRemapTable_006a3498[regionClass] == -1) {
+        g_cityRegionIdRemapTable_006a3498[regionClass] = cityRegionCount2a4;
+        cityRegionCount2a4 = cityRegionCount2a4 + 1;
+      }
+      mapTileGrid08[byteOffset + 4] =
+          static_cast<char>(g_cityRegionIdRemapTable_006a3498[regionClass]) + '\x17';
+    }
+    byteOffset = byteOffset + 0x24;
+  } while (byteOffset < 0x38f40);
+}
+
 // Repair pass over the whole 6480-tile grid: every entry whose value is below -1 is an
 // orphaned leaf, and adopts the value of the first hex neighbour that both holds a valid
 // (>= 0) value and shares its terrain class. The class key is -1 unless the tile record's
@@ -157,4 +192,35 @@ int TMapMaker::OrphanDeadLeaf_NoRefs_0052d4b0(short* tileValues) {
   } while (byteOffset <= 0x38f3f);
 
   return repairedCount;
+}
+
+// Hand each active city region the next sequential value: for region ordinal i the entries
+// still carrying placeholder -(i + 2) are searched from the start of the grid, and the
+// first match takes *nextValue (which is then advanced). Returns the number assigned.
+// FUNCTION: IMPERIALISM 0x0052d6b0
+int TMapMaker::OrphanDeadLeaf_NoRefs_0052d6b0(short* tileValues, int* nextValue) {
+  int regionOrdinal = 0;
+  int assignedCount = 0;
+
+  if (0 < cityRegionCount2a4) {
+    int placeholder = -2;
+    do {
+      int tileIndex = 0;
+      short* cursor = tileValues;
+      do {
+        if (placeholder == *cursor) {
+          tileValues[tileIndex] = static_cast<short>(*nextValue);
+          assignedCount = assignedCount + 1;
+          *nextValue = *nextValue + 1;
+          break;
+        }
+        tileIndex = tileIndex + 1;
+        cursor = cursor + 1;
+      } while (tileIndex < 0x1950);
+      regionOrdinal = regionOrdinal + 1;
+      placeholder = placeholder + -1;
+    } while (regionOrdinal < cityRegionCount2a4);
+  }
+
+  return assignedCount;
 }

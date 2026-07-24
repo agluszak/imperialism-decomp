@@ -227,6 +227,17 @@ public:
 
   // --- data fields (raw pad except the ones the ported passes read) ---
   char pad_04[0x08 - 0x04]; // +0x04
+  // Compact the city-region ids in place: walk every grid record, map each distinct
+  // region class (record[4] - 0x17) to the next free ordinal through
+  // g_cityRegionIdRemapTable_006a3498, write the remapped id back, and leave the final
+  // ordinal count in cityRegionCount2a4. 0x0052a0a0, __thiscall.
+  void OrphanDeadLeaf_NoRefs_0052a0a0();
+
+  // For each active city region, find the first entry still carrying its negative
+  // placeholder (-2, -3, ...) and hand it the next sequential value from *nextValue.
+  // Returns how many entries were assigned. 0x0052d6b0, __thiscall.
+  int OrphanDeadLeaf_NoRefs_0052d6b0(short* tileValues, int* nextValue);
+
   // Centroid tile of every grid record owned by `nationCode` (record[4]). Tiles hugging
   // both the left (col < 0x19) and right (col > 0x53) edges mean the territory wraps: with
   // useWrapOffset the column sum is biased by leftEdgeCount * 0x6c, otherwise the sweep is
