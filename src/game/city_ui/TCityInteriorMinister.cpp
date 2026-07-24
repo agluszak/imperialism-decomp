@@ -76,17 +76,17 @@ float TCityInteriorMinister::GetAiDevelopmentResourceBudgetScale(int* resourcePo
 // TCityInteriorMinister::CreateObject
 
 // FUNCTION: IMPERIALISM 0x004be7b0
-short TCityInteriorMinister::InteriorSlot1D(int arg) {
+short TCityInteriorMinister::GetAccumulatedResourceNeed(int arg) {
   return orderTypeTable12A[arg];
 }
 
 // FUNCTION: IMPERIALISM 0x004be7d0
-short TCityInteriorMinister::InteriorSlot1E(int arg) {
+short TCityInteriorMinister::GetUnmetDemandPressure(int arg) {
   return orderTypeTable158[arg];
 }
 
 // FUNCTION: IMPERIALISM 0x004be7f0
-void TCityInteriorMinister::InteriorSlot1F(int arg) {
+void TCityInteriorMinister::ClearUnmetDemandPressure(int arg) {
   orderTypeTable158[arg] = 0;
 }
 
@@ -215,7 +215,7 @@ short TCityInteriorMinister::GetRankingCriterionForGP(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004beeb0
-void TCityInteriorMinister::InteriorSlot1A(short orderKind) {
+void TCityInteriorMinister::LatchPendingShipTypeForOrderKind(short orderKind) {
   if (pendingShipType32 == 0) {
     pendingShipType32 = static_cast<short>((orderKind == 2) + 1);
   }
@@ -1213,7 +1213,7 @@ void TCityInteriorMinister::DispatchBuilders() {
       if ((tileOrder == 0 || tileOrder == builderOrder) &&
           g_awEngineerFortBuildCostByLevel[cityRecord->fortLevel03] <=
               ownerContextAt04->treasuryValue10) {
-        builderOrder->VTableSlot10(cityTileIndex);
+        builderOrder->RelinkIntoAnchorOccupantChain(cityTileIndex);
         builderOrder->SetOrders(kUnitOrderBuildFort, cityTileIndex);
       }
     }
@@ -1296,7 +1296,7 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
           char currentClass =
               g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, useHighNibble);
           if (availableClass > currentClass) {
-            order->VTableSlot10(tileIndex);
+            order->RelinkIntoAnchorOccupantChain(tileIndex);
             order->SetOrders(kUnitOrderDevelopResource, tileIndex);
             int cost = currentClass == 0 ? 0 : g_adwCivilianWorkOrderCostByClass[currentClass - 1];
             ownerContextAt04->AddToTreasury(-cost);
@@ -1491,12 +1491,12 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
         prospectingIndex < prospectingOrderCount && prospectingScores[prospectingIndex] != 0.0f) {
       short tileIndex = prospectingTiles[prospectingIndex++];
       order->SetOrders(kUnitOrderProspect, tileIndex);
-      order->VTableSlot10(tileIndex);
+      order->RelinkIntoAnchorOccupantChain(tileIndex);
     } else if (order->orderType == EncodeCivilianUnitKind(kCivilianUnitDeveloper) &&
                developerIndex < developerOrderCount && developerScores[developerIndex] != 0.0f) {
       short tileIndex = developerTiles[developerIndex++];
       order->SetOrders(kUnitOrderPurchaseLand, tileIndex);
-      order->VTableSlot10(tileIndex);
+      order->RelinkIntoAnchorOccupantChain(tileIndex);
       ownerContextAt04->treasuryValue10 -=
           g_pGlobalMapState->CalculateDeveloperTilePurchaseCost(tileIndex);
     }
@@ -1559,7 +1559,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() {
       }
 
       if (idleProspector != 0) {
-        idleProspector->VTableSlot10(tileIndex);
+        idleProspector->RelinkIntoAnchorOccupantChain(tileIndex);
         idleProspector->SetOrders(kUnitOrderDevelopResource, tileIndex);
       } else if (!hasProspector) {
         TCity* city = ownerContextAt04->city;
@@ -1613,7 +1613,7 @@ void TCityInteriorMinister::ContinueRailheadProject(TUnit* builderOrder, char* p
     short sourceTile =
         TraceDescendingTileScoreGradientToSource(field3c, secondaryDistanceMap, &previousTile);
     if (g_pGlobalMapState->GetTileUnitEntryByOwner(sourceTile, ownerContextAt04->nationSlot) == 0) {
-      builderOrder->VTableSlot10(sourceTile);
+      builderOrder->RelinkIntoAnchorOccupantChain(sourceTile);
       builderOrder->SetOrders(kUnitOrderBuildPort, sourceTile);
     }
     return;
@@ -1626,16 +1626,16 @@ void TCityInteriorMinister::ContinueRailheadProject(TUnit* builderOrder, char* p
         TraceDescendingTileScoreGradientToSource(field3c, primaryDistanceMap, &previousTile);
     unsigned short sourceFlags = g_pGlobalMapState->terrainStateTable[sourceTile].activeFlags1c;
     if ((sourceFlags & 4) != 0 && (sourceFlags & 0x10) == 0) {
-      builderOrder->VTableSlot10(sourceTile);
+      builderOrder->RelinkIntoAnchorOccupantChain(sourceTile);
       builderOrder->SetOrders(kUnitOrderBuildDepot, sourceTile);
     } else {
-      builderOrder->VTableSlot10(previousTile);
+      builderOrder->RelinkIntoAnchorOccupantChain(previousTile);
       builderOrder->SetOrders(kUnitOrderLayRail, sourceTile);
     }
     return;
   }
 
-  builderOrder->VTableSlot10(field3c);
+  builderOrder->RelinkIntoAnchorOccupantChain(field3c);
   builderOrder->SetOrders(primaryDistance == 1 ? kUnitOrderBuildDepot : kUnitOrderBuildPort,
                           field3c);
 

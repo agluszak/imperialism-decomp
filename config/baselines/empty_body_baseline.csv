@@ -10,7 +10,6 @@ include/game/tactical/TArmyPlayer.h|0|0|1|0
 include/game/tactical/TArmyTacUnit.h|0|0|1|0
 include/game/tactical/TTacticalUnit.h|0|0|1|0
 include/game/tactical_ui/TTechItemView.h|0|0|1|0
-src/game/TCityOrderItem.cpp|0|0|3|0
 src/game/TCtlMgr.cpp|0|0|1|0
 src/game/TFileBasedDocument.cpp|0|0|1|0
 src/game/TGPCheater.cpp|0|0|1|0

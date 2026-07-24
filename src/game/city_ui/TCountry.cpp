@@ -265,7 +265,7 @@ short TCountry::GetOrComputeOverlayAnchorTileIndex() {
 void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
   TSimMgr* localization = g_pSimMgr;
   if (localization->scenarioMapIndexPlusOne > 0) {
-    g_pGlobalMapState->NotifyCityRecordSlot12C(
+    g_pGlobalMapState->SetProvinceCapitalTileFlagBit08(
         g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeTileIndex)]
             .cityRecordIndex);
     return;
@@ -291,7 +291,7 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
         if (g_pSimMgr->difficultyLevel < 2) {
           order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
-        g_pGlobalMapState->NotifyCityRecordSlot12C(regionId);
+        g_pGlobalMapState->SetProvinceCapitalTileFlagBit08(regionId);
         if (this->nationSlot < 7 &&
             g_apNationStates[this->nationSlot]->diplomacyEligibilityA0 == 0 &&
             g_pSimMgr->difficultyLevel == 4) {
@@ -777,40 +777,6 @@ void TCountry::SerializeDiplomacyNationStateToStream(TStream* stream) {
 
 char IsPolicyCodeInSpecialNationPolicySet(short policyCode) {
   return (policyCode > 0xc && policyCode < 0x11) ? 1 : 0;
-}
-
-void OrphanLeaf_NoCall_Ins07_004e4630(void) {}
-
-int OrphanLeaf_NoCall_Ins03_004e4660(void) {
-  return 0;
-}
-
-int OrphanLeaf_NoCall_Ins03_004e4680(void) {
-  return 0;
-}
-
-char TCountry::IsDiplomacyPolicyAllowedForTargetClassState(short policyCode,
-                                                           short targetNationSlot) {
-  (void)targetNationSlot;
-  if (policyCode <= 0xc || policyCode >= 0x11) {
-    return 0;
-  }
-  TGreatPower* nation = reinterpret_cast<TGreatPower*>(this);
-  if (policyCode == nation->field8d6[0]) {
-    return nation->field8d6[1] == 0;
-  }
-  if (policyCode == nation->field8d6[2]) {
-    return nation->field8d6[3] == 0;
-  }
-  return 0;
-}
-
-char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3, int arg4) {
-  (void)arg1;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
-  return 0;
 }
 
 void TCountry::SetNationTradePolicyValueForTargetAndNotify(NationSlot targetNationSlot,

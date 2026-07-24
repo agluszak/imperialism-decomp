@@ -359,18 +359,18 @@ void TCouncilView::AdvanceCivilianTerrainSelectionStep() {
       }
       if (!allowAdvance) {
         g_pSimMgr->StartNextPhase();
-      } else {
-        g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e = -1;
-        g_pSimMgr->turnStateCode = 0x10;
-        g_pSfxPlaybackSystem->PlaySoundEffect(0x1f42, 0, 1);
+        // 0x4fc836 jumps straight to the shared epilogue, skipping the overlay rebuild
+        // below; with the function-scope CString forcing a single epilogue, that is a
+        // plain early return.
+        return;
       }
+      g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e = -1;
+      g_pSimMgr->turnStateCode = 0x10;
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x1f42, 0, 1);
     }
-    // 0x4fbdf0 (1005 bytes) -- rebuilds the diplomacy-map hint-overlay text: classifies
-    // every diplomacy-matrix entry against the two selected nations into 8 buckets over a
-    // TMapMgr-side per-region table, then formats 5 named number controls ('num0'..'num4')
-    // plus a conditional 'scr0' summary control via CString::Format. Return value unused.
-    // Deliberately not ported here (UI hint-text/formatting construction, not game logic);
-    // the matrix/state mutations above are unaffected by this omission.
+    // Both surviving paths (slot78e == -1 at 0x4fc86b, and the allow-advance branch at
+    // 0x4fc869) fall through to the single call at 0x4fc882.
+    BuildDiplomacyMapHintOverlayTextAndMetrics();
   }
 }
 

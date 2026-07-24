@@ -49,10 +49,10 @@ public:
   virtual char TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex, int classIndex);
   // Map-gen pass dispatched right after city-region ids are assigned (was junk-named
   // DispatchUiSelectionToHandler; 0-arg __thiscall, verified RET 0). slot 14 / 0x38
-  virtual void MapGenPassSlot0E();
+  virtual void ExpandRegionGridIntoTilesAndAllocateCityRecords();
   // Map-gen pass (was junk-named DoEvent with 3 phantom args; 0-arg __thiscall).
   // slot 15 / 0x3c
-  virtual void MapGenPassSlot0F();
+  virtual void PlaceTerrainFeatureQuotas();
   // Verified 2 stack int args + char return, same call site/args as slot 0x34 above
   // (tried for every class, not just majors) -- the header's previous 3-arg
   // TEventHandler-shaped HandleEvent signature does not describe this class's real
@@ -113,7 +113,7 @@ public:
                          unsigned char startedOnHills);
   // Map-gen finalize pass (was junk-named ResignedTarget; takes one mode arg the
   // driver passes as 0 -- verified RET 4). slot 25 / 0x64
-  virtual void MapGenFinalizePassSlot19(int mode);
+  virtual void AssignOrCompactCityRegionIdsAndRebuildBorders(int mode);
   // Post-attempt validity probe: nonzero means the attempt failed and the driver
   // regenerates (was junk-named TargetValidationFailed(int); really a 0-arg __thiscall
   // returning AL). slot 26 / 0x68
@@ -128,9 +128,9 @@ public:
   // junk-named ResignedWindowTarget; verified two-arg __thiscall returning
   // the neighbour cell index). slot 29 / 0x74
   virtual int GetAdjacentRegionGridCell(int cell, int direction);
-  // Map-gen pass run between MapGenPassSlot0E and MapGenPassSlot0F (was junk-named
+  // Map-gen pass run between ExpandRegionGridIntoTilesAndAllocateCityRecords and PlaceTerrainFeatureQuotas (was junk-named
   // DispatchCityProductionAction1B; 0-arg __thiscall). slot 30 / 0x78
-  virtual void MapGenPassSlot1E();
+  virtual void RandomizeRegionTemplatesAndSmoothOwnership();
   // Copies a 36-byte (9-dword) region-template bank between fine-grid cells (resolved
   // via slot 0x21), selecting the source variant by LCG randomness. RET 0x14 = 5 stack
   // dwords, and the body reads the trailing four as words (MOV DX,word ptr [ESP+0x10] /

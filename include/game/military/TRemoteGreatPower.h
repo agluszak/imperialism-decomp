@@ -25,7 +25,7 @@ public:
   void ReleaseProposalQueueSlot7F(void) override;
   void ReplyToDiplomacyOffers(void) override;
   void SetCandidateNationFlagAndPortZoneState(int targetNation) override;
-  void CallSlotA8(int targetNation) override;
+  void DeclareWarOnTargetForAlignedMinors(int targetNation) override;
   void SorryYouLose(void) override;
   void RecomputeAiExpansionAndMissionPressureScores(void) override;
   void RefreshTrackedEntriesAndReplanAiDevelopment(int unused) override;

@@ -217,14 +217,14 @@ void TDefenseMinister::DoPeacetimeDeployment() {
   for (; trimCount > 0; --trimCount) {
     int idx = bucket1->GetCount();
     TUnit* unit = static_cast<TUnit*>(bucket1->GetEntryByOrdinal(idx));
-    unit->VTableSlot10(homeTileId);
+    unit->RelinkIntoAnchorOccupantChain(homeTileId);
     bucket1->RemoveAtOrdinal(idx);
   }
 
   if (bucket2->GetCount() != 0) {
     int idx = bucket2->GetCount();
     TUnit* unit = static_cast<TUnit*>(bucket2->GetEntryByOrdinal(idx));
-    unit->VTableSlot10(homeTileId);
+    unit->RelinkIntoAnchorOccupantChain(homeTileId);
     bucket2->RemoveAtOrdinal(idx);
   }
 
@@ -259,13 +259,13 @@ void TDefenseMinister::DoPeacetimeDeployment() {
       for (int u = 0; u < 2; ++u) {
         int idx = bucket1->GetCount();
         TUnit* unit = static_cast<TUnit*>(bucket1->GetEntryByOrdinal(idx));
-        unit->VTableSlot10(regionId);
+        unit->RelinkIntoAnchorOccupantChain(regionId);
         bucket1->RemoveAtOrdinal(idx);
       }
       if (bucket2->GetCount() != 0) {
         int idx = bucket2->GetCount();
         TUnit* unit = static_cast<TUnit*>(bucket2->GetEntryByOrdinal(idx));
-        unit->VTableSlot10(regionId);
+        unit->RelinkIntoAnchorOccupantChain(regionId);
         bucket2->RemoveAtOrdinal(idx);
       }
     }

@@ -65,7 +65,7 @@ public:
   // --- TObject/TUnit overrides ---
   void ReadFrom(TStream* stream) override;
   void WriteTo(TStream* stream) override;
-  void VTableSlot10(int pOwnerContext) override;
+  void RelinkIntoAnchorOccupantChain(int anchorIndex) override;
   void DetachUnitOrderFromOwnerAndReset() override;
 
   // --- TMilitaryUnit virtual functions ---

@@ -19,6 +19,8 @@
 #include "game/ui_text_label_helpers_decls.h"
 
 #include <string.h>
+// FUNCTION: IMPERIALISM 0x0043d770
+TTerrainHelpPicture::TTerrainHelpPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x0043d7a0
 // TTerrainHelpPicture::`scalar deleting destructor'
@@ -32,7 +34,8 @@ TTerrainHelpPicture::~TTerrainHelpPicture() {}
 
 IMPLEMENT_DYNCREATE(TTerrainHelpPicture, TPicture)
 
-TTerrainHelpPicture::TTerrainHelpPicture() {}
+// Base ctor call + vptr store only; the original body is 18 bytes ending in
+// `mov eax,esi` return-this.
 
 // FUNCTION: IMPERIALISM 0x00504e90
 void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {

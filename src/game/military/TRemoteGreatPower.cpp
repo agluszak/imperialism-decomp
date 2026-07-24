@@ -61,7 +61,7 @@ void TRemoteGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation)
 }
 
 // FUNCTION: IMPERIALISM 0x00541a20
-void TRemoteGreatPower::CallSlotA8(int targetNation) {
+void TRemoteGreatPower::DeclareWarOnTargetForAlignedMinors(int targetNation) {
   (void)targetNation;
 }
 
