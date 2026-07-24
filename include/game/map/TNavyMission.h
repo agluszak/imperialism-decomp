@@ -20,7 +20,20 @@ public:
   int navyState28; // +0x28 target-selection state (0 -> zone18 active, 1..2 -> zone14)
   float requiredShipEquipageByCategory[4]; // +0x2c
 
-  TNavyMission();
+  // In-class inline: the original has no out-of-line TNavyMission::TNavyMission -- every
+  // caller absorbs it, so an out-of-line definition pessimizes them into a call.
+  TNavyMission() : TMission() {
+    targetZone14 = nullptr;
+    targetZone18 = nullptr;
+    selectedOrder1c = nullptr;
+    taskForce20 = nullptr;
+    orderList24 = nullptr;
+    navyState28 = 0;
+    for (int i = 0; i < 4; ++i) {
+      requiredShipEquipageByCategory[i] = 0.0f;
+    }
+  }
+
   TNavyMission(TZone* targetZone);
 
   // Inline so concrete navy-mission destructors collapse through the empty base chain.

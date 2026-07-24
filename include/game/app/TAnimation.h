@@ -31,8 +31,8 @@ public:
   // Post-construction init used by the tactical selection marker (0x5a9bb0): owner
   // view, screen rect, frame count, mode word, tick interval, registry tag.
   // 0x0049f0c0, __thiscall.
-  void InitializeAnimation(class TView* ownerView, RECT* rect, short frameCount, short param4,
-                           int ticksPerFrame, int tag);
+  void IAnimation(class TView* ownerView, RECT* rect, short frameCount, short param4,
+                  int ticksPerFrame, int tag);
 };
 
 ASSERT_SIZE(TAnimation, 0x2c);

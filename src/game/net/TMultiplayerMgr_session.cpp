@@ -98,7 +98,6 @@ IMPLEMENT_DYNCREATE(TMultiplayerMgr, TObject)
 TMultiplayerMgr::TMultiplayerMgr()
     : TEventHandler(), gameNameString(), defaultNationTextSlots(), nationDisplayNameSlots(),
       playerNameString(), playerNameMirror(), fieldb8() {
-  InitializeUiResourceEntryBaseHeaderDefaults();
   lobbyDialogView40 = 0;
   primaryTurnEventQueueHead = 0;
   secondaryTurnEventQueueHead = 0;
@@ -114,7 +113,7 @@ TMultiplayerMgr::~TMultiplayerMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00542900
 void TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int sessionContext) {
-  this->InitializePacketHeaderFields_Tag20202020(0);
+  this->IEventHandler(nullptr);
   field10 = sessionContext;
   diplomacyQueueContext = 0;
   sessionReadyFlag = 0;

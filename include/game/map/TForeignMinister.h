@@ -12,7 +12,7 @@ public:
   // FUNCTION: IMPERIALISM 0x0052f110
   ~TForeignMinister() override {}
   TForeignMinister();
-  void InitializeStateAndCounters(TGreatPower* owner);
+  void IForeignMinister(TGreatPower* owner);
 
   DECLARE_DYNCREATE(TForeignMinister)
   void WriteTo(TStream* stream) override;

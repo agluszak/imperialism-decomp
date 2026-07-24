@@ -15,9 +15,6 @@ TFrameRadioView::~TFrameRadioView() {}
 
 IMPLEMENT_DYNCREATE(TFrameRadioView, TControl)
 
-// NOOP: verified empty in original 0x004fdf06 (no standalone TFrameRadioView::TFrameRadioView body exists: CreateObject 0x004fded0 inlines this default ctor, calling the TControl base ctor directly at that site)
-TFrameRadioView::TFrameRadioView() {}
-
 // FUNCTION: IMPERIALISM 0x004fdfc0
 void TFrameRadioView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;

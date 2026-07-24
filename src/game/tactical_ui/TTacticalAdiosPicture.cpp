@@ -22,9 +22,6 @@ TTacticalAdiosPicture::~TTacticalAdiosPicture() {}
 
 IMPLEMENT_DYNCREATE(TTacticalAdiosPicture, TPicture)
 
-// NOOP: verified empty in original 0x005ad466 (no standalone TTacticalAdiosPicture::TTacticalAdiosPicture body exists: CreateObject 0x005ad430 inlines this default ctor, calling the TPicture base ctor directly at that site)
-TTacticalAdiosPicture::TTacticalAdiosPicture() {}
-
 // FUNCTION: IMPERIALISM 0x005ad4d0
 void TTacticalAdiosPicture::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);

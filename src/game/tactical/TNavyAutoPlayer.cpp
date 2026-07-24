@@ -20,9 +20,6 @@ TNavyAutoPlayer::~TNavyAutoPlayer() {}
 
 IMPLEMENT_DYNCREATE(TNavyAutoPlayer, TNavyPlayer)
 
-// NOOP: verified empty in original 0x0059f042 (no standalone TNavyAutoPlayer::TNavyAutoPlayer body exists: construction is fully inlined into CreateObject 0x0059f040; that address is its operator-new call site)
-TNavyAutoPlayer::TNavyAutoPlayer() {}
-
 // FUNCTION: IMPERIALISM 0x0059f110
 void TNavyAutoPlayer::StartBattle() {
   // Auto-deploys the whole side: our side deploys from row battlefieldColumnCount34*6

@@ -17,9 +17,6 @@
 // TFocusAnimation::CreateObject
 
 IMPLEMENT_DYNCREATE(TFocusAnimation, TAnimation)
-
-TFocusAnimation::TFocusAnimation() : TAnimation(), enabledFlag(1) {}
-
 // FUNCTION: IMPERIALISM 0x004a0140
 void TFocusAnimation::Tick() {
   tickCounter10++;

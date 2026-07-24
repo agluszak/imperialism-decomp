@@ -28,7 +28,7 @@ TNextTradeCommand::~TNextTradeCommand() {}
 IMPLEMENT_DYNCREATE(TNextTradeCommand, TCommand)
 
 // FUNCTION: IMPERIALISM 0x005ba480
-void TNextTradeCommand::InitializeRangePairFromDiplomacyConstants() {
+void TNextTradeCommand::INextTradeCommand() {
   InitializeRangePair(0x232b, g_pGlobalUiRootController, 0, 0, 0);
 }
 

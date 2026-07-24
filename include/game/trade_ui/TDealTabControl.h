@@ -26,6 +26,7 @@ public:
   struct TQuickDrawSurfaceContext* filledRowStrip8c; // +0x8c highlighted-row strip
   struct TQuickDrawSurfaceContext* emptyRowStrip90;  // +0x90 background strip
 
-  TDealTabControl();
+  // NOOP: verified empty in original 0x005bc6c8 (no standalone TDealTabControl::TDealTabControl body exists: CreateObject 0x005bc690 inlines this default ctor, calling the TControl base ctor directly at that site)
+  TDealTabControl() {}
 };
 ASSERT_SIZE(TDealTabControl, 0x94);

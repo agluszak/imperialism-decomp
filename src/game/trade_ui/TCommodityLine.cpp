@@ -40,12 +40,11 @@ void TCommodityLine::InstallViews(TView* panel, int* offsetLayout) {
   int textSize[2] = {field08 - 0x28, field0c};
   int textOffset[2] = {offsetLayout[0] + 0x28, offsetLayout[1]};
   TMyStaticText* text = new TMyStaticText();
-  text->InitializeTextEntryBaseAndOptionalStringResource(panel, textOffset, textSize, 5, 5, -1, 1);
+  text->IStaticText(panel, textOffset, textSize, 5, 5, -1, 1);
   text->InstallTextStyle(textStyle, 0);
   text->SetTextAndMaybeRefresh(&displayText, 1);
 
   int iconSize[2] = {0x20, 0x18};
   TColorKeyPicture* icon = new TColorKeyPicture();
-  icon->InitializePictureEntryBaseAndRefresh(panel, offsetLayout, iconSize, 5, 5,
-                                             static_cast<short>(commoditySlot10 + 0x2bc));
+  icon->IPicture(panel, offsetLayout, iconSize, 5, 5, static_cast<short>(commoditySlot10 + 0x2bc));
 }

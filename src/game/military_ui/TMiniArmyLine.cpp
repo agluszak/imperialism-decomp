@@ -24,9 +24,6 @@ TMiniArmyLine::~TMiniArmyLine() {}
 
 IMPLEMENT_DYNCREATE(TMiniArmyLine, TLineData)
 
-// NOOP: verified empty in original 0x004aa8c3 (no standalone TMiniArmyLine::TMiniArmyLine body exists: CreateObject 0x004aa890 inlines this default ctor, calling the TLineData base ctor directly at that site)
-TMiniArmyLine::TMiniArmyLine() {}
-
 // FUNCTION: IMPERIALISM 0x004aa960
 void TMiniArmyLine::InstallViews(TView* panel, int* offsetLayout) {
   TMiniArmyView* armyView = new TMiniArmyView;
@@ -39,7 +36,7 @@ void TMiniArmyLine::InstallViews(TView* panel, int* offsetLayout) {
     int upgradeOffset[2] = {0x73, 0};
     int upgradeSize[2] = {0x13, 0x12};
     TGWorldButton* upgradeButton = new TGWorldButton;
-    upgradeButton->InitializeWithBitmapResource(armyView, upgradeOffset, upgradeSize, 0xdae);
+    upgradeButton->IGWorldButton(armyView, upgradeOffset, upgradeSize, 0xdae);
     upgradeButton->SetState(1, 0);
     upgradeButton->controlTag = kControlTagUpgr; // 'upgr'
 

@@ -14,6 +14,7 @@ public:
                        TEvent* event) override; // slot 0x0f 0x0056b9b0
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x56b870
 
-  TGameInfoPicture();
+  // NOOP: verified empty in original 0x0056b7b6 (no standalone TGameInfoPicture::TGameInfoPicture body exists: CreateObject 0x0056b780 inlines this default ctor, calling the TPicture base ctor directly at that site)
+  TGameInfoPicture() {}
 };
 ASSERT_SIZE(TGameInfoPicture, 0x90);

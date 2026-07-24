@@ -18,7 +18,8 @@ public:
   virtual char DoIdle(int action) override;     // slot 0x13 0x54db40
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x54d730
 
-  TLoungeDialog();
+  // NOOP: verified empty in original 0x0054d686 (no standalone TLoungeDialog::TLoungeDialog body exists: CreateObject 0x0054d650 inlines this default ctor, calling the TNoHilitePicture base ctor directly at that site)
+  TLoungeDialog() {}
 
   // 0x54e4c0: refresh the lounge's 'map '/'mess'/'okay' controls for the current
   // scenario/session context (turn-event 0xE receive tail; the original tolerates a

@@ -106,7 +106,7 @@ TCityInteriorMinister::~TCityInteriorMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004be8d0
 void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
-  InitializeBaseOrderArray(owner);
+  IMinister(owner);
 
   field10 = 0;
   field12 = 0;
@@ -520,7 +520,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
         city->GetBuildingType(0));
     if (amount > 0 && commandQueue->ContainsTask(0x35) == 0) {
       task = new TCityTask();
-      task->InitializeCityProductionQueueCommand(0x35, city, amount);
+      task->ICityTask(0x35, city, amount);
       commandQueue->Insert(task);
     }
   }
@@ -529,7 +529,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
     amount = static_cast<short>(ownerContextAt04->needCurrentByType[3] - city->GetBuildingType(2));
     if (amount > 0 && commandQueue->ContainsTask(0x37) == 0) {
       task = new TCityTask();
-      task->InitializeCityProductionQueueCommand(0x37, city, amount);
+      task->ICityTask(0x37, city, amount);
       commandQueue->Insert(task);
     }
   }
@@ -539,7 +539,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
         static_cast<short>(ownerContextAt04->needCurrentByType[2] / 2 - city->GetBuildingType(4));
     if (amount > 0 && commandQueue->ContainsTask(0x39) == 0) {
       task = new TCityTask();
-      task->InitializeCityProductionQueueCommand(0x39, city, amount);
+      task->ICityTask(0x39, city, amount);
       commandQueue->Insert(task);
     }
   }
@@ -548,7 +548,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
     amount = static_cast<short>(city->GetBuildingType(0) / 2 - city->GetBuildingType(1));
     if (amount > 0 && commandQueue->ContainsTask(0x36) == 0) {
       task = new TCityTask();
-      task->InitializeCityProductionQueueCommand(0x36, city, amount);
+      task->ICityTask(0x36, city, amount);
       commandQueue->Insert(task);
     }
   }
@@ -557,7 +557,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
     amount = static_cast<short>(city->GetBuildingType(2) / 2 - city->GetBuildingType(3));
     if (amount > 0 && commandQueue->ContainsTask(0x38) == 0) {
       task = new TCityTask();
-      task->InitializeCityProductionQueueCommand(0x38, city, amount);
+      task->ICityTask(0x38, city, amount);
       commandQueue->Insert(task);
     }
   }
@@ -566,7 +566,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
     amount = static_cast<short>(city->GetBuildingType(4) / 2 - city->GetBuildingType(5));
     if (amount > 0 && commandQueue->ContainsTask(0x3a) == 0) {
       task = new TCityTask();
-      task->InitializeCityProductionQueueCommand(0x3a, city, amount);
+      task->ICityTask(0x3a, city, amount);
       commandQueue->Insert(task);
     }
   }
@@ -595,7 +595,7 @@ void TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit(
   }
   if (amount > 0) {
     TCityTask* task = new TCityTask();
-    task->InitializeCityProductionQueueCommand(0x33, city, amount);
+    task->ICityTask(0x33, city, amount);
     commandQueue->Insert(task);
   }
 }
@@ -641,8 +641,8 @@ void TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders(
   for (short queuedBuildingSlot = 0; queuedBuildingSlot <= 6; ++queuedBuildingSlot) {
     if (commandCounts[queuedBuildingSlot] != 0) {
       TCityTask* task = new TCityTask();
-      task->InitializeCityProductionQueueCommand(static_cast<short>(queuedBuildingSlot + 0x35),
-                                                 city, commandCounts[queuedBuildingSlot]);
+      task->ICityTask(static_cast<short>(queuedBuildingSlot + 0x35), city,
+                      commandCounts[queuedBuildingSlot]);
       commandQueue->Insert(task);
     }
   }
@@ -689,7 +689,7 @@ void TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio(
   }
 
   TCityTask* task = new TCityTask();
-  task->InitializeCityProductionQueueCommand(command, city, amount);
+  task->ICityTask(command, city, amount);
   commandQueue->Insert(task);
 }
 
@@ -698,7 +698,7 @@ void TCityInteriorMinister::QueueRandomCityProductionCommand19To1C(TCity* city,
                                                                    TTaskList* commandQueue) {
   short command = static_cast<short>(rand() % 4 + 0x19);
   TCityTask* task = new TCityTask();
-  task->InitializeCityProductionQueueCommand(command, city, 1);
+  task->ICityTask(command, city, 1);
   commandQueue->Insert(task);
 }
 
@@ -713,7 +713,7 @@ void TCityInteriorMinister::QueueShipProductionCommandIfMissing(TCity* city,
   }
 
   TShipBuildingTask* task = new TShipBuildingTask();
-  task->InitializeShipProductionQueueTask(0x2b, city, pendingShipType32);
+  task->IShipBuildingTask(0x2b, city, pendingShipType32);
   commandQueue->Insert(task);
   pendingShipType32 = 0;
 }
@@ -723,7 +723,7 @@ void TCityInteriorMinister::QueuePendingRecruitmentProductionCommand(TCity* city
                                                                      TTaskList* commandQueue) {
   short command = static_cast<short>(pendingRecruitmentCommandIndex36 + 0x22);
   TCityTask* task = new TCityTask();
-  task->InitializeCityProductionQueueCommand(command, city, 1);
+  task->ICityTask(command, city, 1);
   commandQueue->Insert(task);
   pendingRecruitmentCommandIndex36 = -1;
 }
@@ -733,7 +733,7 @@ void TCityInteriorMinister::QueuePendingUnitProductionCommand(TCity* city,
                                                               TTaskList* commandQueue) {
   short command = static_cast<short>(pendingUnitCommandIndex38 + 0x19);
   TCityTask* task = new TCityTask();
-  task->InitializeCityProductionQueueCommand(command, city, 1);
+  task->ICityTask(command, city, 1);
   commandQueue->Insert(task);
   pendingUnitCommandIndex38 = -1;
 }
@@ -977,10 +977,9 @@ short TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls(
     }
     if (city->CityStockByType(inputResourceType) < citySummary[inputResourceType]) {
       TCityTask* task = new TCityTask();
-      task->InitializeCityProductionQueueCommand(
-          inputResourceType, city,
-          static_cast<short>(citySummary[inputResourceType] -
-                             city->CityStockByType(inputResourceType)));
+      task->ICityTask(inputResourceType, city,
+                      static_cast<short>(citySummary[inputResourceType] -
+                                         city->CityStockByType(inputResourceType)));
       commandQueue->Insert(task);
     }
     city->CityStockByType(inputResourceType) =
@@ -1017,7 +1016,7 @@ short TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls(
 int TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore() {
   short nationSlot = ownerContextAt04->nationSlot;
   TTown* candidateTown = new TTown();
-  candidateTown->InitializeTownMarker("Bleah", 0, 1, nationSlot);
+  candidateTown->ITown("Bleah", 0, 1, nationSlot);
 
   int bestScore = -1;
   int bestTileIndex = -1;
@@ -1640,8 +1639,8 @@ void TCityInteriorMinister::ContinueRailheadProject(TUnit* builderOrder, char* p
                           field3c);
 
   TTown* projectedTown = new TTown();
-  projectedTown->InitializeTownMarker(g_szEmptyString, field3c, primaryDistance != 1,
-                                      ownerContextAt04->nationSlot);
+  projectedTown->ITown(g_szEmptyString, field3c, primaryDistance != 1,
+                       ownerContextAt04->nationSlot);
   projectedTown->CalculateCityResources();
   for (short resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
     if (((resourceType >= kResourceCotton && resourceType <= kResourceOil) ||
@@ -1686,7 +1685,7 @@ void TCityInteriorMinister::StartRailheadProject(short resourceType, TShortintLi
                                                  char* primaryDistanceMap,
                                                  char* secondaryDistanceMap) {
   TTown* projectedTown = new TTown();
-  projectedTown->InitializeTownMarker("Bleah", 0, 1, ownerContextAt04->nationSlot);
+  projectedTown->ITown("Bleah", 0, 1, ownerContextAt04->nationSlot);
   TLongintList* candidateTiles = new TLongintList();
 
   for (int ownedTileOrdinal = 0; ownedTileOrdinal < ownedTiles->GetSize(); ++ownedTileOrdinal) {
@@ -1740,7 +1739,7 @@ void TCityInteriorMinister::StartRailheadProject(short resourceType, TShortintLi
 short TCityInteriorMinister::EvaluateResources(short tileIndex) {
   TCity* city = ownerContextAt04 == 0 ? 0 : ownerContextAt04->city;
   TTown* candidateTown = new TTown();
-  candidateTown->InitializeTownMarker("Bleah", tileIndex, 1, ownerContextAt04->nationSlot);
+  candidateTown->ITown("Bleah", tileIndex, 1, ownerContextAt04->nationSlot);
   short* citySummary = city->GetCitySummaryRecordSlot74();
   candidateTown->CalculateCityResources();
 

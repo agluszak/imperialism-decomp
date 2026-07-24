@@ -14,6 +14,7 @@ public:
                        TEvent* event) override; // slot 0x0f 0x005ad650
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x5ad4d0
 
-  TTacticalAdiosPicture();
+  // NOOP: verified empty in original 0x005ad466 (no standalone TTacticalAdiosPicture::TTacticalAdiosPicture body exists: CreateObject 0x005ad430 inlines this default ctor, calling the TPicture base ctor directly at that site)
+  TTacticalAdiosPicture() {}
 };
 ASSERT_SIZE(TTacticalAdiosPicture, 0x90);

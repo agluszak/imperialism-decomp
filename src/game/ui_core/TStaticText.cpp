@@ -86,9 +86,9 @@ TObject* TStaticText::ShallowClone() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048fd00
-void TStaticText::InitializeTextEntryBaseAndOptionalStringResource(
-    TView* panel, int* offsetLayout, int* sizeLayout, int layoutParam6, int layoutParam7,
-    short stringResourceGroup, short stringResourceIndex) {
+void TStaticText::IStaticText(TView* panel, int* offsetLayout, int* sizeLayout, int layoutParam6,
+                              int layoutParam7, short stringResourceGroup,
+                              short stringResourceIndex) {
   (void)layoutParam6;
   (void)layoutParam7;
   if (panel != 0) {

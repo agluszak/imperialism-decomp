@@ -131,7 +131,7 @@ public:
   // into +0x40 and set the +0x5c short flag only for the zero-valued level; values 1..4
   // and out-of-range values clear it. Windows 0x57d870.
   void SetDifficultyLevel(int difficulty);
-  void InitializeTurnFlowStateDefaults();
+  void ISimMgr();
   void InitializeOrLoadEntryArray14AndClampLimits(bool writeBack);
   // 0x581510. Loads the 10-entry {score, name} table from scores.dat (defaulting each
   // slot to {0, this nation's own name} when the file/entry is missing), recomputes the

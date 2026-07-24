@@ -37,7 +37,7 @@ void TUnitsView::DoStartup() {
       TColorKeyPicture* icon = new TColorKeyPicture;
       int offsetLayout[2] = {0x20, y};
       int sizeLayout[2] = {0x20, 0x18};
-      icon->InitializePictureEntryBaseAndRefresh(this, offsetLayout, sizeLayout, 5, 5, 0x222e);
+      icon->IPicture(this, offsetLayout, sizeLayout, 5, 5, 0x222e);
       icon->controlTag = kControlTagIcon; // 'icon'
       y = static_cast<short>(y + 0x18);
     }

@@ -16,9 +16,6 @@ TBattleDetailBook::~TBattleDetailBook() {}
 
 IMPLEMENT_DYNCREATE(TBattleDetailBook, TBook)
 
-// NOOP: verified empty in original 0x004aea08 (no standalone TBattleDetailBook::TBattleDetailBook body exists: CreateObject 0x004ae9d0 inlines this default ctor, calling the TPicture base ctor directly at that site)
-TBattleDetailBook::TBattleDetailBook() {}
-
 // FUNCTION: IMPERIALISM 0x004aea90
 void TBattleDetailBook::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa && sourceHandler->controlTag == kControlTagOkay) {

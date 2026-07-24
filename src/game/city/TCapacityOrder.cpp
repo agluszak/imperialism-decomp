@@ -23,38 +23,6 @@ enum {
   kResourceWeightIndex10 = 16,
 };
 
-static void ZeroTrackingSlots(TCapacityOrder* order) {
-  int remaining;
-  int* blockCursor = reinterpret_cast<int*>(order->trackingSlots10);
-
-  remaining = 0xb;
-  while (remaining != 0) {
-    *blockCursor = 0;
-    blockCursor = blockCursor + 1;
-    remaining = remaining + -1;
-  }
-  *reinterpret_cast<short*>(blockCursor) = 0;
-}
-
-TCapacityOrder::TCapacityOrder(TCity* city) : TItemOrder() {
-  quantityField04 = 0;
-  cityField08 = city;
-  summaryField0c = city != 0 ? city->productionSummary1d8 : 0;
-  field3e = 0;
-  field40 = 0;
-  accumulatedValue = 0;
-  resourceTypeIndex48 = 0;
-  requestedQuantity4c = 0;
-  primaryInputResourceId = 0;
-  secondaryInputResourceId = 0;
-  productionSlot = 0;
-  ZeroTrackingSlots(this);
-}
-
-TCapacityOrder* TCapacityOrder::NewForCity(TCity* city) {
-  return new TCapacityOrder(city);
-}
-
 bool TCapacityOrder::CanMakeFromCityStock() {
   TCity* city = this->cityField08;
 
@@ -205,9 +173,6 @@ void TCapacityOrder::CommitCapacityOrderIfPending() {
     this->Produce();
   }
 }
-
-// NOOP: verified empty in original 0x004b8c92 (no standalone TCapacityOrder::TCapacityOrder body exists: construction is fully inlined into CreateObject 0x004b8c90; that address is its operator-new call site)
-TCapacityOrder::TCapacityOrder() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b8c90
 // TCapacityOrder::CreateObject

@@ -24,8 +24,6 @@ IMPLEMENT_SERIAL(TScatteredShipsMission, TNavyMission, 1)
 
 TScatteredShipsMission::TScatteredShipsMission() : TNavyMission() {}
 
-TScatteredShipsMission::TScatteredShipsMission(TZone* targetZone) : TNavyMission(targetZone) {}
-
 // FUNCTION: IMPERIALISM 0x00535640
 bool TScatteredShipsMission::IsHospitalMission() const {
   return true;

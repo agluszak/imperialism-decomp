@@ -12,7 +12,8 @@ public:
   virtual ~TMerchantBoyView() override;         // slot 0x01 (scalar deleting destructor)
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4af780
 
-  TMerchantBoyView();
+  // NOOP: verified empty in original 0x004af6d3 (no standalone TMerchantBoyView::TMerchantBoyView body exists: CreateObject 0x004af6a0 inlines this default ctor, calling the TView base ctor directly at that site)
+  TMerchantBoyView() {}
 
   struct BattleReportDetailRecord* battleDetail60; // +0x60
 };

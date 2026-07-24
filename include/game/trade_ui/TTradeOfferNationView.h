@@ -12,7 +12,8 @@ public:
   virtual ~TTradeOfferNationView() override;    // slot 0x01 (scalar deleting destructor)
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x5bd2d0
 
-  TTradeOfferNationView();
+  // NOOP: verified empty in original 0x005bd223 (no standalone TTradeOfferNationView::TTradeOfferNationView body exists: CreateObject 0x005bd1f0 inlines this default ctor, calling the TView base ctor directly at that site)
+  TTradeOfferNationView() {}
 
   // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended
   // at 0x60. The trailing 4 bytes split into two shorts, both read by Draw:

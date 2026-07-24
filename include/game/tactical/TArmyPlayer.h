@@ -25,7 +25,7 @@ public:
   virtual unsigned char SwitchToAutoPlay(); // slot 0x15 0x59ea60
 
   // Partial slice (object is 0x54): only the side's combatant stack is recovered so
-  // far; stored by InitializeTacticalSideFromArmyUnitList and read back by
+  // far; stored by IArmyPlayer and read back by
   // TArmyBattle::WriteTo.
   TArmyStack* armyStack28; // +0x28
   // Aggregated projection metrics for the side, rebuilt by
@@ -136,8 +136,7 @@ public:
 
   // Builds the side's tactical unit records from the stack's army unit chain and
   // stores the stack into armyStack28. 0x0059b1b0, __thiscall, ret 0x10.
-  void InitializeTacticalSideFromArmyUnitList(TArmyStack* stack, int isOurSide, char watchFlag,
-                                              int nationIndex);
+  void IArmyPlayer(TArmyStack* stack, int isOurSide, char watchFlag, int nationIndex);
 };
 
 ASSERT_SIZE(TArmyPlayer, 0x54);

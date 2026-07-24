@@ -11,6 +11,7 @@ public:
   DECLARE_DYNCREATE(TFileBasedDocument)
   virtual ~TFileBasedDocument() override; // slot 0x01 (scalar deleting destructor)
 
-  TFileBasedDocument();
+  // NOOP: verified empty in original 0x004863c2 (no standalone TFileBasedDocument::TFileBasedDocument body exists: construction is fully inlined into CreateObject 0x004863c0; that address is its operator-new call site)
+  TFileBasedDocument() {}
 };
 ASSERT_SIZE(TFileBasedDocument, 0x4);

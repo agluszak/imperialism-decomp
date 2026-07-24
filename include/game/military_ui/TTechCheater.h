@@ -12,6 +12,7 @@ public:
   virtual ~TTechCheater() override; // slot 0x01 (scalar deleting destructor)
   void ApplyCheats() override;      // slot 0x68 0x4b1990; Mac symbol oracle
 
-  TTechCheater();
+  // NOOP: verified empty in original 0x004b18b3 (no standalone TTechCheater::TTechCheater body exists: CreateObject 0x004b1880 inlines this default ctor, calling the TView base ctor directly at that site)
+  TTechCheater() {}
 };
 ASSERT_SIZE(TTechCheater, 0x64);

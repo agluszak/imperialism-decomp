@@ -24,15 +24,6 @@ void TUnit::DetachUnitOrderFromOwnerAndReset() {}
 // TUnit::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TUnit, TObject)
-
-TUnit::TUnit() {
-  field_10 = 0;
-  nextOnTile = 0;
-  tileIndex06 = static_cast<short>(0xffff);
-  unitOrder = kUnitOrderIdle;
-  field_1C = 0;
-}
-
 // SYNTHETIC: IMPERIALISM 0x005c24e0
 // TUnit::`scalar deleting destructor'
 

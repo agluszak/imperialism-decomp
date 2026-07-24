@@ -21,7 +21,8 @@ public:
                        TEvent* event) override; // slot 0x0f 0x005be370
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x5bdef0
 
-  TTradeBookView();
+  // NOOP: verified empty in original 0x005bde65 (no standalone TTradeBookView::TTradeBookView body exists: CreateObject 0x005bde30 inlines this default ctor, calling the TView base ctor directly at that site)
+  TTradeBookView() {}
 
   TControl* previousPageButton;  // 0x60, tag 'lcor'
   TControl* nextPageButton;      // 0x64, tag 'rcor'

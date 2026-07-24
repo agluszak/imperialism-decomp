@@ -54,7 +54,7 @@ extern float g_afPercentEfficiencyByOrderType[32]; // 0x64c6a0
 extern int g_anCountWeightByOrderType[32]; // 0x695578
 
 // Two 0x20-byte flag tables installed into TArmyMgr+0x14/+0x18 by
-// InitializeMapContextActionManager (0x4a18f0); 8 rows x 4 flag bytes.
+// IArmyMgr (0x4a18f0); 8 rows x 4 flag bytes.
 extern const unsigned char g_MapContextStaticTable_00695448[0x20];
 
 extern const unsigned char g_MapContextStaticTable_00695428[0x20];

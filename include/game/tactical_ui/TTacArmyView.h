@@ -22,7 +22,8 @@ public:
   short battlefieldColumnCountD8; // +0xd8 copy of battle battlefieldColumnCount34
   unsigned char padDA[2];         // +0xda
 
-  TTacArmyView();
+  // NOOP: verified empty in original 0x005a9d26 (no standalone TTacArmyView::TTacArmyView body exists: CreateObject 0x005a9cf0 inlines this default ctor, calling the TTacticalBattleView base ctor directly at that site)
+  TTacArmyView() {}
 
   // Initializes the live battle-view state from the freshly set-up TArmyBattle
   // (called by InitializeBattleSetupAndMaybeDispatchTurnEventED8 after resolving the

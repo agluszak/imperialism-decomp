@@ -48,11 +48,11 @@ public:
 
   TDeluxeText();
 
-  // Mac-style second-phase init: forwards to TTEView::InitializeTextEntryView with the
+  // Mac-style second-phase init: forwards to TTEView::ITEView with the
   // fixed (0, ..., 5, 5, ..., 0, 1) filler args, copies style->textColor into
   // textColor98, and clears the selected flag via the slot-0x76 virtual.
   // 0x5b5ff0, __thiscall, RET 0x18.
-  void InitializeDeluxeText(TView* panel, int* offsetLayout, int* sizeLayout, RECT* insetRect,
-                            TextStyle* style, short styleWord90);
+  void IDeluxeText(TView* panel, int* offsetLayout, int* sizeLayout, RECT* insetRect,
+                   TextStyle* style, short styleWord90);
 };
 ASSERT_SIZE(TDeluxeText, 0xa4);

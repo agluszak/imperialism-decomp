@@ -31,7 +31,8 @@ public:
   // stack arg threaded through by the caller (Draw).
   void RenderMapContextActionMarkers(RECT* rectBuffer);
 
-  TBattleReportView();
+  TBattleReportView()
+      : TDiplomacyMapView(), selectedReportIndex24c8(1), transientRegistryObject24cc(0) {}
 
 private:
   int selectedReportIndex24c8;

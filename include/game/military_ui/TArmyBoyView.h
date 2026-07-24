@@ -13,6 +13,7 @@ public:
   virtual void Draw(RECT* rectBuffer) override;    // slot 0x44 0x4aebc0
   struct BattleReportDetailRecord* battleDetail60; // +0x60
 
-  TArmyBoyView();
+  // NOOP: verified empty in original 0x004aeb13 (no standalone TArmyBoyView::TArmyBoyView body exists: CreateObject 0x004aeae0 inlines this default ctor, calling the TView base ctor directly at that site)
+  TArmyBoyView() {}
 };
 ASSERT_SIZE(TArmyBoyView, 0x64);

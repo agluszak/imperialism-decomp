@@ -18,9 +18,6 @@ TNavyHumanPlayer::~TNavyHumanPlayer() {}
 
 IMPLEMENT_DYNCREATE(TNavyHumanPlayer, TNavyPlayer)
 
-// NOOP: verified empty in original 0x0059eef2 (no standalone TNavyHumanPlayer::TNavyHumanPlayer body exists: construction is fully inlined into CreateObject 0x0059eef0; that address is its operator-new call site)
-TNavyHumanPlayer::TNavyHumanPlayer() {}
-
 // FUNCTION: IMPERIALISM 0x0059efc0
 void TNavyHumanPlayer::DeploymentClick(TacticalTileIndex tileIndex) {
   int ordinal = 1;

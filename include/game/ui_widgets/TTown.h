@@ -31,8 +31,7 @@ public:
   bool activeFlag4f;               // 0x4f
 
   TTown();
-  void InitializeTownMarker(const char* markerName, short tileIndex, char enabledFlag,
-                            short ownerNation);
+  void ITown(const char* markerName, short tileIndex, char enabledFlag, short ownerNation);
   int IsUnblockedPort(void) const; // 0x5b7830: Mac name; full-EAX 0/1 return
 
   ~TTown() override;

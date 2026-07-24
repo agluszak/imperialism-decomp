@@ -9,10 +9,6 @@
 // TDialogView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TDialogView, TView)
-
-// NOOP: verified empty in original 0x0049d725 (no standalone TDialogView::TDialogView body exists: CreateObject 0x0049d6f0 inlines this default ctor, calling the TView base ctor directly at that site)
-TDialogView::TDialogView() {}
-
 // Slot 0x42 override: pulse the global UI-invalidation flag off and back to its prior
 // value (a no-op refresh barrier), rather than TView's stylePayload48-buffer allocation.
 // FUNCTION: IMPERIALISM 0x0049d880

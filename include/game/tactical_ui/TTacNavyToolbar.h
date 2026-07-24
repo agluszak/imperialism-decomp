@@ -20,6 +20,7 @@ public:
   virtual void UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) override; // slot 0x74
                                                                                 // 0x5ad0f0
 
-  TTacNavyToolbar();
+  // NOOP: verified empty in original 0x005ad067 (no standalone TTacNavyToolbar::TTacNavyToolbar body exists: CreateObject 0x005ad030 inlines this default ctor, calling the TCluster base ctor directly at that site)
+  TTacNavyToolbar() {}
 };
 ASSERT_SIZE(TTacNavyToolbar, 0x98);

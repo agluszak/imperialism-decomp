@@ -300,3 +300,76 @@ address and the row vanishes from the report), and stubgen skips alias members s
 twin is counted as a recognized duplicate instead of stub-paired at a junk score. A
 ??_G whose chain folds DIRECTLY onto a shared base body with no per-class island
 (TFileStream, TLongintList) has no claimable address; its 90.91% is the ceiling.
+
+## Constructor PLACEMENT is a /Ob1 + TU-granularity artifact, not a source variant
+
+**The original had ONE uniform model**: ordinary out-of-line constructor definitions in
+.cpp files, compiled by VC5 RTM at `/Oy /Ob1` (see `docs/toolchain.md`, "standalone body
++ inlined users"). Under `/Ob1` VC5 emits the out-of-line body AND auto-inlines that same
+body into callers **that live in the same TU**. The original interleaved several classes
+per TU (their address ranges alternate, e.g. 0x4be0d0 / 0x4be1d0 / 0x4be840), so a class's
+`CreateObject` and its derived ctors were frequently same-TU users and got the body
+inlined, while other TUs called it.
+
+Our tree is one class per file (Hard Rule 7), so no caller is ever a same-TU user. That
+makes the two halves **mutually exclusive for us**, and every class becomes an either/or:
+
+| Where we define the ctor | standalone body | callers |
+| --- | --- | --- |
+| out-of-line in the .cpp | emitted, pairs | emit a CALL |
+| in-class in the header | **never emitted** — no linker setting recovers it | inline the body |
+
+That is the whole explanation for constructors that "regress when inlined". It is not four
+source patterns and not a size heuristic — body complexity does not discriminate at all
+(202 of the ctors that DO have an address are trivial, 0 statements).
+
+### THE DECISION (settled — do not re-litigate per class)
+
+> **A constructor is defined in-class in its header if and only if the original has no
+> standalone body for it. A constructor that owns an address stays out-of-line in its
+> .cpp, so that body pairs.**
+
+Ask one question: **does the original have a standalone body for THIS constructor?**
+
+Read `CreateObject` (or a derived ctor) and resolve any ILT thunk it calls. A call to a
+**base** constructor is expected and means this class's own body WAS inlined — it does not
+disqualify the in-class move. Only a call to the class's own ctor does. Getting this wrong
+misclassified 13 classes in one batch.
+
+- **No address** (no `// FUNCTION:` marker, nothing to claim) -> in-class. Free: there is
+  no body to lose and every caller gains the inlined form. `TPanelView`, `TDialogView`,
+  `TStream`, `TCheater`, `TNavyPlayer`, `TCtlMgr` are all this case; `TPanelView` alone
+  was +7 exact.
+- **Address exists** -> out-of-line. Keeps a certain 100% pairing of a real body instead
+  of trading it for uncertain partial gains on callers.
+
+**Exception, and it must be earned by measurement:** go in-class anyway when the inlined
+call sites are worth more than the lost pairing. Keep the `// FUNCTION:` marker so the
+address stays owned, expect it to stay unpaired, and record the gain and the cost in
+`config/ctor_placement_exceptions.csv`. `TProductionOrder` (0x004b4f00) is the worked
+example — `TItemOrder::CreateObject` 41.18% -> 100% for one lost pairing —
+and `docs/toolchain.md` records the same call on `TInteriorMinister`.
+
+`just ctor-placement-gate` enforces both directions: an unmarked ctor left out-of-line is
+backlog (baseline, shrink it), and an in-class ctor that still owns an address fails
+unless it has an exceptions row.
+
+Two failure modes that look like placement problems but are not:
+
+- **A phantom ctor.** `TArmyMission` had a no-arg ctor beside the real `TArmyMission(int)`
+  at 0x0053c0a0; `CreateObject` pushes `-1`, so `new T()` binds through a **default
+  argument**. Inlining the phantom cost 42pp; the fix was `TArmyMission(int nodeKey = -1)`
+  and deleting the phantom. 89.80% -> 100%.
+- **A wrong body.** `TItemOrder` was annotated `// NOOP: verified empty in original` and
+  was empty, but `CreateObject` ends `MOV word ptr [eax+4],0` = `TProductionOrder::
+  quantityField04`, a *base* member (so a body assignment, not a member-init entry).
+  Distrust "verified empty" annotations that were never checked against the caller.
+
+So: read the caller's listing first, then apply the rule. `just ctor-placement-gate`
+ratchets the backlog (bd nwdn); its baseline is not a licence to inline blind.
+
+Mechanical hazards when moving a definition: carry any `// NOOP:` annotation across, add
+includes the body needs (`TButton` needed `ui_invalidation_guard.h`; `TArmyMission`'s body
+cannot go in a header at all without dragging in `TList` and two globals — itself a signal
+the original kept it out-of-line), and keep the phrase "operator new" out of header prose
+because `just antipattern-gate` matches it.

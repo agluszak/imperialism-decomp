@@ -14,7 +14,8 @@ public:
   virtual ~TShipLine() override; // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x565100
 
-  TShipLine();
+  // NOOP: verified empty in original 0x00565063 (no standalone TShipLine::TShipLine body exists: CreateObject 0x00565030 inlines this default ctor, calling the TLineData base ctor directly at that site)
+  TShipLine() {}
 
   // Source ship, its task-force child-link cell (for checkbox state), and the owning
   // task force used by the row's TShipView event path.

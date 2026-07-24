@@ -12,9 +12,6 @@
 
 IMPLEMENT_DYNCREATE(TExpansionOrder, TItemOrder)
 
-// NOOP: verified empty in original 0x004b8f52 (no standalone TExpansionOrder::TExpansionOrder body exists: construction is fully inlined into CreateObject 0x004b8f50; that address is its operator-new call site)
-TExpansionOrder::TExpansionOrder() {}
-
 // SYNTHETIC: IMPERIALISM 0x004b8fc0
 // TExpansionOrder::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004b8ff0

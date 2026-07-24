@@ -106,7 +106,7 @@ TRadioText* TRadioTextCluster::AddItem(unsigned long tag, int value, const char*
   offset[1] = bottom;
   size[0] = frameWidth34 - itemInset92 * 2;
   size[1] = height;
-  item->InitializeTextEntryBaseAndOptionalStringResource(this, offset, size, 5, 5, -1, 1);
+  item->IStaticText(this, offset, size, 5, 5, -1, 1);
   item->controlTag = static_cast<int>(tag);
   item->controlValue3c = value;
   CString itemText(text);

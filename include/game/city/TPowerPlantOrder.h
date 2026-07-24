@@ -28,6 +28,7 @@ public:
   // quantity re-clamp (0x4b7c40). Name hedged by offset. Parallels TItemOrder::field4c.
   short field4c; // 0x4c
 
-  TPowerPlantOrder();
+  // NOOP: verified empty in original 0x004b79f2 (no standalone TPowerPlantOrder::TPowerPlantOrder body exists: construction is fully inlined into CreateObject 0x004b79f0; that address is its operator-new call site)
+  TPowerPlantOrder() {}
 };
 ASSERT_SIZE(TPowerPlantOrder, 0x50);

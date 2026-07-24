@@ -46,7 +46,7 @@ public:
 
   // 0x004b5c00: attach this population state to a city and allocate its three
   // labor pools.
-  void InitializePopulationState(TCity* city);
+  void IPopulationMgr(TCity* city);
   // Mac CodeWarrior oracle: AddExpert(short) -- 0x004b6a30.
   void AddExpert(short count);
 
@@ -67,6 +67,7 @@ public:
   // serialize all 23 shorts as a single persistent block.
   short predictedNeedByResource22[0x17];
 
-  TPopulationMgr();
+  // NOOP: verified empty in original 0x004b5b42 (no standalone TPopulationMgr::TPopulationMgr body exists: construction is fully inlined into CreateObject 0x004b5b40; that address is its operator-new call site)
+  TPopulationMgr() {}
 };
 ASSERT_SIZE(TPopulationMgr, 0x50);

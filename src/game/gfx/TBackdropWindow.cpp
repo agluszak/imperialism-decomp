@@ -50,9 +50,6 @@ END_MESSAGE_MAP()
 TBackdropWindow::~TBackdropWindow() {
   g_pActiveBackdropWindow = NULL;
 }
-
-TBackdropWindow::TBackdropWindow() : CWnd(), m_backdropBmp(NULL) {}
-
 // FUNCTION: IMPERIALISM 0x0049cc60
 void Function_0049cc60(CWnd* parent) {
   if (!g_cachedShowSplashFlag || g_pActiveBackdropWindow != NULL) {

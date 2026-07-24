@@ -27,9 +27,6 @@ TNominationView::~TNominationView() {}
 
 IMPLEMENT_DYNCREATE(TNominationView, TPicture)
 
-// NOOP: verified empty in original 0x004fb716 (no standalone TNominationView::TNominationView body exists: CreateObject 0x004fb6e0 inlines this default ctor, calling the TPicture base ctor directly at that site)
-TNominationView::TNominationView() {}
-
 // FUNCTION: IMPERIALISM 0x004fb780
 void TNominationView::DoPostCreate(int arg) {
   (void)arg;

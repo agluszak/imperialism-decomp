@@ -17,7 +17,8 @@ public:
                               CPoint origin) override; // slot 0x47 0x56a330
   virtual void Hilite();                               // slot 0x71 0x569d50
 
-  TMiniShipView();
+  // NOOP: verified empty in original 0x00569df6 (no standalone TMiniShipView::TMiniShipView body exists: CreateObject 0x00569dc0 inlines this default ctor, calling the TControl base ctor directly at that site)
+  TMiniShipView() {}
 
   // Original object size is 0x88 (CRuntimeClass m_nObjectSize); the source class ended at 0x84. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
   // The order node this row represents: Draw (0x569eb0) reads

@@ -31,7 +31,7 @@ public:
 
   // 0x00573cb0 — forward to InitializeUiResourceEntryFrameAndParent with the fixed
   // (5, 5) layout margins and no attach.
-  void InitializeScrollView(TView* panel, int* offsetLayout, int* sizeLayout);
+  void IScrollView(TView* panel, int* offsetLayout, int* sizeLayout);
   // 0x005741e0 — re-capture the content view's layout, clamp the scrollbar's word8c
   // to min(word88, word8a), and enable/disable the bar by content overflow.
   void SyncBoundedValueAndToggleControlStates();

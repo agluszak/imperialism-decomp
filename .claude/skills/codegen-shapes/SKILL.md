@@ -270,3 +270,26 @@ match the pass structure before chasing store order (24.9% -> 69.3%).
      init placed BETWEEN the load and the compare, exactly where the orig schedules `or ebx,-1`.
 
   *(ex decomp-loop list-note 114)*
+
+- **A "same base, different displacement" diff on two fields of one object is usually
+     UNSPECIFIED EVALUATION ORDER, not a wrong field.** When the original loads `[r+A]`
+     before `[r+B]` and the recomp loads `[r+B]` first, and both offsets are correct
+     members, the source is handing both fields to one expression whose operand order
+     C++ leaves unspecified. VC5 then picks the other order. Fix by sequencing the
+     first-loaded field into a local, which is a legal, natural source form — not a
+     contortion:
+       `return GetPosition() >= GetLength();`  -> loads slot 0x30 before 0x28
+       `int position = GetPosition(); return position >= GetLength();` -> matches
+     Confirmed twice: TStream::IsAtEnd 0x00488a80 (now effective) and
+     TNumberedIcon::DoPostCreate 0x005074e0 (82.35% -> 100%), the latter a `CRect(a-16,
+     b-16, a, b)` constructor whose arguments MSVC evaluates right-to-left.
+     Diagnose before editing: confirm BOTH displacements name real members of the same
+     class. If each function uses both offsets and only the order differs, it is this;
+     if one displacement has no member behind it, it is a real layout bug.
+     Counter-example worth knowing: it does not always yield.
+     TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode 0x00491cc0
+     keeps loading +0x28 before +0x24 under both operand reordering and local
+     sequencing (both measured, both 92.59%) — when two forms fail, stop and leave the
+     residual rather than inventing a third.
+     Corollary for triage: `memory address at original` is NOT a synonym for
+     "wrong field". A bulk offset-fix pass over that bucket will corrupt correct source.

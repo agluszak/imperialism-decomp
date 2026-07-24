@@ -47,7 +47,11 @@ public:
   short resourceTypeIndex48; // 0x48 — resource/entry type index
   short field4a;             // 0x4a
 
-  TProductionOrder();
+  // In-class inline. 0x004b4f00 is the out-of-line copy MSVC still emits, but derived
+  // CreateObject bodies absorb it instead of calling it: TItemOrder::CreateObject
+  // (0x004b51d0) has no call and no EH frame, just new + the derived vptr store.
+  // FUNCTION: IMPERIALISM 0x004b4f00
+  TProductionOrder() : TObject() {}
 };
 
 ASSERT_SIZE(TProductionOrder, 0x4c);

@@ -16,7 +16,7 @@ struct TQuickDrawSurfaceContext;
 // transient-animation registry -- a TList of TAnimation-shaped objects keyed by
 // their +0x18 registry tag -- plus the shared offscreen surface the animations
 // blit into. field10 (the inherited TEventHandler idle-frequency slot) is set by
-// InitializeUiTransientObjectRegistry and serialized in WriteTo/ReadFrom.
+// IAnimator and serialized in WriteTo/ReadFrom.
 // Base edge (TEventHandler) recovered from RTTI CRuntimeClass chain:
 // TAnimator -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064c4e8
@@ -35,7 +35,7 @@ public:
   // Creates the shared offscreen surface (bounds from the global surface dims, bit
   // depth 8) and the registry TList, and stores the idle frequency into the
   // inherited field10 slot. 0x4a0b20.
-  void InitializeUiTransientObjectRegistry(int idleFrequency);
+  void IAnimator(int idleFrequency);
   // Appends an animation object to the registry list. The registry stores
   // heterogeneous animation-shaped objects (tag at +0x18, Free at vtable slot 7);
   // TAnimation* keeps the common call sites cast-free. 0x4a0d10.
@@ -55,7 +55,7 @@ public:
   // Object size 0x30 (base TEventHandler ends at 0x20). +0x20 is the offscreen
   // surface the focus animations blit into (read as `*(g_pUiAnimator) + 0x20` at
   // 0x4a0810 and 0x4a05c0). field28 is not touched by the ctor (only zeroed in
-  // InitializeUiTransientObjectRegistry); its reader is not yet identified.
+  // IAnimator); its reader is not yet identified.
   TQuickDrawSurfaceContext* renderSurfaceContext; // +0x20
   TList* registryList24;                          // +0x24 transient-animation registry
   int field28;                                    // +0x28

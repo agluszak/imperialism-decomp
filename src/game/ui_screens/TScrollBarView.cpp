@@ -60,7 +60,7 @@ void TScrollBarView::InitializeScrollBar(TScrollView* panel, int* offsetLayout, 
     buttonSize[1] = 0x12;
     buttonOffset[0] = 3;
     buttonOffset[1] = 0;
-    upButton->InitializePictureEntryBaseAndRefresh(this, buttonOffset, buttonSize, 5, 5, 0xbbb);
+    upButton->IPicture(this, buttonOffset, buttonSize, 5, 5, 0xbbb);
   }
   upButton->controlTag = kControlTagScup; // 'scup'
   upButton->SetEnabled(0, 1);
@@ -74,7 +74,7 @@ void TScrollBarView::InitializeScrollBar(TScrollView* panel, int* offsetLayout, 
     buttonOffset[1] = frameHeight38 - 0x12;
     buttonSize[0] = 0x12;
     buttonSize[1] = 0x12;
-    downButton->InitializePictureEntryBaseAndRefresh(this, buttonOffset, buttonSize, 5, 5, 0xbbc);
+    downButton->IPicture(this, buttonOffset, buttonSize, 5, 5, 0xbbc);
   }
   downButton->controlTag = kControlTagScdn; // 'scdn'
   downButton->SetEnabled(0, 1);

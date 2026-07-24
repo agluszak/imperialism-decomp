@@ -41,7 +41,10 @@ public:
   virtual void InitializeSessionDescription();
   virtual void ResetSessionDescription();
   virtual BOOL GetRuntimeSelectionAuxStatus(void* value);
-  virtual BOOL ApplyCtrlScrollAcceleration(int* value);
+  // DirectPlay DPESC_TIMEDOUT branch of the EnumSessions callback: while Ctrl is held,
+  // extend the enumeration timeout by 500ms and return TRUE to keep enumerating.
+  // (Ghidra's "ApplyCtrlScrollAcceleration" was a provisional name -- Hard Rule 6.)
+  virtual BOOL ExtendEnumSessionsTimeoutWhileCtrlHeld(DWORD* timeoutMs);
   virtual BOOL SelectRuntimeProvider(GUID* providerGuid);
   virtual BOOL ShowJoinGameSelectionDialogAndCaptureChoice(GUID* selectedSessionGuid);
 
