@@ -21,6 +21,9 @@ public:
   int shipDisplayMode2c;         // +0x2c ship-panel display mode set by the navy toolbar
                                  // (hull=0, crew=1, sail=2)
 
-  TNavyPlayer();
+  // In-class inline: the original has no out-of-line TNavyPlayer::TNavyPlayer -- every
+  // caller absorbs it, so an out-of-line definition pessimizes them into a call.
+  // NOOP: verified empty in original 0x0059eb82 (no standalone TNavyPlayer::TNavyPlayer body exists: construction is fully inlined into CreateObject 0x0059eb80; that address is its operator-new call site)
+  TNavyPlayer() {}
 };
 ASSERT_SIZE(TNavyPlayer, 0x30);

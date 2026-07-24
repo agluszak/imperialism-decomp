@@ -18,16 +18,6 @@
 // TStream::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TStream, TObject)
-
-// MFC-style serialization foundation: compiled favor-size in the original.
-
-// ---------------------------------------------------------------------------
-// Genuine no-op bodies in the original (the base class is never streamed through
-// directly). These make TStream concrete so the typed accessors below — and the
-// concrete stream subclasses — can be instantiated.
-// ---------------------------------------------------------------------------
-// NOOP: verified empty in original 0x004889a1 (no standalone TStream::TStream body exists: construction is fully inlined into CreateObject 0x004889a0; that address is its operator-new call site)
-TStream::TStream() {}
 // FUNCTION: IMPERIALISM 0x00488a40
 TStream::~TStream() {}
 

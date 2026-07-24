@@ -15,8 +15,11 @@ public:
   TSortedList* orderListAt18;
   float requiredEquipageByClass[5]; // offset 0x1c
 
-  TArmyMission();
-  TArmyMission(int nodeKey);
+  // One constructor, not two. CreateObject (0x0053bfb0) allocates 0x30 bytes then
+  // CALL 0x0053c0a0 with -1 pushed, i.e. `new TArmyMission()` resolves to this ctor via
+  // a default argument. The separate no-arg ctor that used to sit beside this one had no
+  // address in the original and made CreateObject call a body that does not exist.
+  TArmyMission(int nodeKey = -1);
   // Inline so concrete army-mission destructors collapse through the empty base chain.
   // FUNCTION: IMPERIALISM 0x0053c200
   virtual ~TArmyMission() override {}

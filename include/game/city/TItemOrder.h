@@ -30,7 +30,13 @@ public:
   short secondaryInputResourceId; // second resource index, or -1 for two units of primary
   short productionSlot;           // city productionAccum1fc index
 
-  TItemOrder();
+  // In-class inline: TItemOrder has no standalone ctor body -- CreateObject (0x004b51d0)
+  // allocates 0x54 bytes, stores the derived vptr, then MOV word ptr [eax+4],0. That +4
+  // store is quantityField04 (a TProductionOrder member, so it must be assigned in the
+  // body, not a member-init-list entry); the previous empty body dropped it entirely.
+  TItemOrder() {
+    quantityField04 = 0;
+  }
 };
 
 ASSERT_SIZE(TItemOrder, 0x54);

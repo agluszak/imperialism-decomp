@@ -3,8 +3,6 @@
 #include "game/city/TCity.h"
 #include "game/core/TStream.h"
 
-// NOOP: verified empty in original 0x004b51d2 (no standalone TItemOrder::TItemOrder body exists: construction is fully inlined into CreateObject 0x004b51d0; that address is its operator-new call site)
-TItemOrder::TItemOrder() {}
 // SYNTHETIC: IMPERIALISM 0x004b51d0
 // TItemOrder::CreateObject
 

@@ -1010,20 +1010,6 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfil
   return total * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
                   diffSum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
 }
-
-// Default constructor
-TNavyMission::TNavyMission() : TMission() {
-  targetZone14 = nullptr;
-  targetZone18 = nullptr;
-  selectedOrder1c = nullptr;
-  taskForce20 = nullptr;
-  orderList24 = nullptr;
-  navyState28 = 0;
-  for (int i = 0; i < 4; ++i) {
-    requiredShipEquipageByCategory[i] = 0.0f;
-  }
-}
-
 // Instance form of ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter: sources
 // the diplomacy filter's source nation from nationId04 (inherited from TMission) rather
 // than an explicit argument, uses the fixed-category (0..3) accumulation shape (matching
