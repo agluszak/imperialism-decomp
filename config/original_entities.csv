@@ -183,7 +183,7 @@ address|name|symbol|size|type|prototype|provenance
 43d840|TStatusPicture::TStatusPicture||28|function|int * __fastcall TStatusPicture(int * pEntry)|
 43d870|TStatusPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 43d8c0|WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0||18|function|undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0()|
-43d8f0|ConstructUiBaseBackdropPictureEntry||68|function|undefined ConstructUiBaseBackdropPictureEntry()|
+43d8f0|TLoadSavePicture::TLoadSavePicture||68|function|undefined TLoadSavePicture()|
 43d960|TGamePreferencesPicture::TGamePreferencesPicture||18|function|int * __fastcall TGamePreferencesPicture(int * pEntry)|
 43d990|ConstructSelectableTextOptionEntry||18|function|undefined ConstructSelectableTextOptionEntry()|
 43d9c0|TCreditsPicture::TCreditsPicture||18|function|int * __fastcall TCreditsPicture(int * pEntry)|

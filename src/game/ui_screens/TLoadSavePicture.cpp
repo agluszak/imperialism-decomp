@@ -27,6 +27,12 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/net/TMultiplayerMgr.h"
 
+// FUNCTION: IMPERIALISM 0x0043d8f0
+TLoadSavePicture::TLoadSavePicture() {
+  styleAt94.textColor = 0;
+  styleAt9e.textColor = 0;
+}
+
 // SYNTHETIC: IMPERIALISM 0x0043da40
 // TLoadSavePicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0043db20
@@ -38,8 +44,6 @@ TLoadSavePicture::~TLoadSavePicture() {}
 // TLoadSavePicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TLoadSavePicture, TPicture)
-
-TLoadSavePicture::TLoadSavePicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056bcc0
 void TLoadSavePicture::DoPostCreate(int arg) {
