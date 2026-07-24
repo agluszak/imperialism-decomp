@@ -53,6 +53,7 @@ def execute_run(
 
     classification: str | None = None
     debugger_error: str | None = None
+    debugger_invariant: str | None = None
     debugger_signal: str | None = None
     captured_stops: set[str] = set()
     debugger: GdbSession | None = None
@@ -106,6 +107,13 @@ def execute_run(
                         while stop is not None:
                             if is_terminal_stop(stop):
                                 break
+                            debugger_invariant = debugger.consume_runtime_invariant()
+                            if debugger_invariant is not None:
+                                label = "invariant-" + debugger_invariant.replace("_", "-")
+                                debugger.capture_stop(label, stop)
+                                captured_stops.add(stop.raw)
+                                classification = "runtime_invariant_violation"
+                                break
                             if stop.signal_name not in {None, "SIGTRAP"}:
                                 debugger_signal = stop.signal_name
                             label = (stop.signal_name or stop.reason).lower().replace("_", "-")
@@ -118,6 +126,12 @@ def execute_run(
                         debugger_error = str(error)
                         classification = "debugger_transport_failure"
                         break
+                if classification == "runtime_invariant_violation":
+                    capture_failure_screenshot(run_dir / "failure-screenshot.png")
+                    process.kill()
+                    process.wait(timeout=30)
+                    returncode = process.returncode
+                    break
                 returncode = process.poll()
                 if returncode is not None:
                     if debugger_signal is not None and not result_path.is_file():
@@ -171,5 +185,6 @@ def execute_run(
         "debugger": "gdb" if use_gdb else "none",
         "debugger_stop_count": debugger.stop_count if debugger is not None else 0,
         "debugger_transport_error": debugger_error,
+        "debugger_invariant": debugger_invariant,
         "debugger_signal": debugger_signal,
     }

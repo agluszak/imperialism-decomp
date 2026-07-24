@@ -23,6 +23,11 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 PROXY_START_TIMEOUT_SECONDS = 45.0
 T = TypeVar("T")
 
+RUNTIME_INVARIANTS = {
+    1: "stationed_military_unit_destructor",
+    2: "nation_state_military_unit_overwrite",
+}
+
 
 @dataclass(frozen=True)
 class StopEvent:
@@ -247,6 +252,17 @@ class GdbSession:
 
     def assign(self, expression: str, value: int | str) -> None:
         self.evaluate(f"({expression})=({value})")
+
+    def consume_runtime_invariant(self) -> str | None:
+        value = self.evaluate("$imperialism_runtime_invariant")
+        try:
+            code = int(value, 0)
+        except ValueError:
+            return None
+        if code == 0:
+            return None
+        self.assign("$imperialism_runtime_invariant", 0)
+        return RUNTIME_INVARIANTS.get(code, f"unknown_{code}")
 
     def wait_for_stop(self, timeout: float) -> StopEvent | None:
         event = self.poll_stop()

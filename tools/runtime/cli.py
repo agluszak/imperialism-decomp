@@ -20,7 +20,7 @@ RESULT_DIR = REPO_ROOT / "build-runtime-tests" / "runtime-results"
 
 def add_run_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("name")
-    parser.add_argument("--timeout", type=float, default=300)
+    parser.add_argument("--timeout", type=float)
     parser.add_argument("--seed", type=int, default=1)
     parser.add_argument("--phase-timeout-ms", type=int, default=60000)
     parser.add_argument("--rerun-seh", action="store_true")
@@ -37,10 +37,13 @@ def add_run_arguments(parser: argparse.ArgumentParser) -> None:
 
 
 def run_one(args: argparse.Namespace) -> int:
-    if find_test(args.name) is None:
+    test = find_test(args.name)
+    if test is None:
         raise SystemExit(f"unknown runtime test {args.name!r}; run `just runtime-test-list`")
     if args.seed < 1:
         raise SystemExit("--seed must be a positive integer")
+    if args.timeout is None:
+        args.timeout = test.default_timeout
     from tools.runtime.runtime_tests import run_test
 
     return run_test(args)
@@ -54,6 +57,10 @@ def list_tests(_: argparse.Namespace) -> int:
 
 
 def _suite_command(test_name: str, args: argparse.Namespace) -> list[str]:
+    test = find_test(test_name)
+    if test is None:
+        raise ValueError(f"suite contains unknown runtime test {test_name!r}")
+    timeout = test.default_timeout if args.timeout is None else args.timeout
     command = [
         sys.executable,
         "-m",
@@ -63,7 +70,7 @@ def _suite_command(test_name: str, args: argparse.Namespace) -> list[str]:
         "--seed",
         str(args.seed),
         "--timeout",
-        str(args.timeout),
+        str(timeout),
         "--phase-timeout-ms",
         str(args.phase_timeout_ms),
     ]
@@ -165,7 +172,7 @@ def build_parser() -> argparse.ArgumentParser:
     suite = commands.add_parser("suite", help="run a catalog suite")
     suite.add_argument("suite", choices=suite_names())
     suite.add_argument("--jobs", type=int, default=1)
-    suite.add_argument("--timeout", type=float, default=300)
+    suite.add_argument("--timeout", type=float)
     suite.add_argument("--seed", type=int, default=1)
     suite.add_argument("--phase-timeout-ms", type=int, default=60000)
     suite.add_argument("--rerun-seh", action="store_true")

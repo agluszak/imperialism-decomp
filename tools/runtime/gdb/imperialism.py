@@ -214,6 +214,11 @@ def capture_runtime_snapshot(address, sim_mgr_global=0, nation_aux_array=0):
 import os
 
 
+RUNTIME_INVARIANT_STATIONED_MILITARY_UNIT_DESTRUCTOR = 1
+RUNTIME_INVARIANT_NATION_STATE_MILITARY_UNIT_OVERWRITE = 2
+gdb.set_convenience_variable("imperialism_runtime_invariant", gdb.Value(0))
+
+
 def _linker_map_symbol_address(mangled_name):
     executable = gdb.current_progspace().filename
     if not executable:
@@ -247,6 +252,10 @@ class StationedMilitaryUnitDestructorBreakpoint(gdb.Breakpoint):
         gdb.write(
             "Imperialism runtime invariant: destroying stationed TMilitaryUnit "
             "0x%08x at tile %d\n" % (this_pointer, tile_index)
+        )
+        gdb.set_convenience_variable(
+            "imperialism_runtime_invariant",
+            gdb.Value(RUNTIME_INVARIANT_STATIONED_MILITARY_UNIT_DESTRUCTOR),
         )
         return True
 
@@ -286,6 +295,10 @@ class NationStateMilitaryUnitOverwriteWatchpoint(gdb.Breakpoint):
         gdb.write(
             "Imperialism runtime invariant: g_apNationStates[0] overwritten "
             "with TMilitaryUnit 0x%08x\n" % nation_state
+        )
+        gdb.set_convenience_variable(
+            "imperialism_runtime_invariant",
+            gdb.Value(RUNTIME_INVARIANT_NATION_STATE_MILITARY_UNIT_OVERWRITE),
         )
         return True
 

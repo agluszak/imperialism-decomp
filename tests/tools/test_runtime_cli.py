@@ -12,7 +12,8 @@ import unittest
 from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
-from tools.runtime.cli import run_suite
+from tools.runtime.catalog import RuntimeTestSpec
+from tools.runtime.cli import _suite_command, run_one, run_suite
 from tools.runtime.runtime_tests import run_test
 
 
@@ -31,6 +32,27 @@ def suite_args(junit: Path, require_fixtures: bool = False) -> argparse.Namespac
 
 
 class RuntimeSuiteTests(unittest.TestCase):
+    def test_single_run_uses_catalog_timeout_when_not_overridden(self) -> None:
+        args = argparse.Namespace(name="custom", seed=1, timeout=None)
+        spec = RuntimeTestSpec("custom", ("full",), default_timeout=42.5)
+        with (
+            patch("tools.runtime.cli.find_test", return_value=spec),
+            patch("tools.runtime.runtime_tests.run_test", return_value=0) as run_test_mock,
+        ):
+            self.assertEqual(run_one(args), 0)
+        self.assertEqual(run_test_mock.call_args.args[0].timeout, 42.5)
+
+    def test_suite_command_uses_catalog_timeout_unless_cli_overrides_it(self) -> None:
+        args = suite_args(Path("runtime.xml"))
+        args.timeout = None
+        spec = RuntimeTestSpec("custom", ("full",), default_timeout=42.5)
+        with patch("tools.runtime.cli.find_test", return_value=spec):
+            command = _suite_command("custom", args)
+            self.assertEqual(command[command.index("--timeout") + 1], "42.5")
+            args.timeout = 17.0
+            command = _suite_command("custom", args)
+            self.assertEqual(command[command.index("--timeout") + 1], "17.0")
+
     def test_skipped_canonical_result_is_not_counted_as_passed(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

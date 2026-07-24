@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from tools.runtime.debug.session import DebuggerTransportError
+from tools.runtime.debug.session import DebuggerTransportError, StopEvent
 from tools.runtime.session import execute_run
 
 
@@ -58,6 +58,30 @@ class FailingPollGdbSession:
         raise DebuggerTransportError("GDB transport disappeared")
 
 
+class InvariantGdbSession(FailingPollGdbSession):
+    def __init__(self, *_args: object) -> None:
+        super().__init__(*_args)
+        self.stop = StopEvent(
+            reason="breakpoint-hit",
+            signal_name="SIGTRAP",
+            breakpoint_number="1",
+            raw='*stopped,reason="breakpoint-hit",bkptno="1"',
+        )
+        self.captured_labels = []
+
+    def poll_stop(self) -> StopEvent | None:
+        stop = self.stop
+        self.stop = None
+        return stop
+
+    def consume_runtime_invariant(self) -> str:
+        return "stationed_military_unit_destructor"
+
+    def capture_stop(self, label: str, _stop: StopEvent) -> None:
+        self.stop_count += 1
+        self.captured_labels.append(label)
+
+
 class RuntimeSessionTests(unittest.TestCase):
     def test_transport_failure_cannot_be_overwritten_by_healthy_heartbeat(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -101,6 +125,48 @@ class RuntimeSessionTests(unittest.TestCase):
         self.assertTrue(session.closed)
         self.assertEqual(session.process.poll_calls, 0)
         self.assertFalse((run_dir / "debug-record.json").exists())
+
+    def test_invariant_stop_is_captured_and_fails_the_run(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "Imperialism.exe").write_bytes(b"")
+            run_dir = root / "run"
+            run_dir.mkdir()
+
+            with (
+                patch("tools.runtime.session.BUILD_DIR", root),
+                patch("tools.runtime.session.GdbSession", InvariantGdbSession),
+                patch("tools.runtime.session.initialize_wine_prefix"),
+                patch("tools.runtime.session.prefix_environment", return_value={}),
+                patch(
+                    "tools.runtime.session.windows_path",
+                    side_effect=lambda path, _environment: str(path),
+                ),
+                patch("tools.runtime.session.retail_game_dir", return_value=root),
+                patch("tools.runtime.session.shut_down_wine_prefix"),
+                patch("tools.runtime.session.capture_failure_screenshot"),
+            ):
+                result = execute_run(
+                    name="boot_managers",
+                    run_dir=run_dir,
+                    seed=1,
+                    timeout=30.0,
+                    phase_timeout_ms=15_000,
+                    winedebug=None,
+                    wine_log_name="wine.log",
+                )
+
+        self.assertEqual(result["classification"], "runtime_invariant_violation")
+        self.assertEqual(
+            result["debugger_invariant"], "stationed_military_unit_destructor"
+        )
+        session = InvariantGdbSession.instance
+        self.assertIsNotNone(session)
+        self.assertEqual(
+            session.captured_labels,
+            ["invariant-stationed-military-unit-destructor"],
+        )
+        self.assertEqual(session.process.returncode, -9)
 
 
 if __name__ == "__main__":
