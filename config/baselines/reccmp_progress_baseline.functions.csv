@@ -2885,7 +2885,7 @@ address|matching|name
 0x4fa190|0.5274900398406375|TInfoPanelView::Draw
 0x4facc0|1.0|TInfoPanelView::Setup
 0x4fad60|0.5581395348837209|TInfoPanelView::DoEvent
-0x4fae00|0.06818181818181818|TInfoPanelView::SetInfoCountry
+0x4fae00|0.5668449197860963|TInfoPanelView::SetInfoCountry
 0x4faf80|0.5818181818181818|TCouncilPanelView::CreateObject
 0x4fb010|1.0|TCouncilPanelView::GetRuntimeClass
 0x4fb030|0.6926829268292682|TCouncilPanelView::Draw
