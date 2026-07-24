@@ -181,3 +181,38 @@ Two cautions:
 
 Receivers resolved from `g_pDisplayMgr->activeDialog` (whatever dialog is open) are the
 genuine exception: those need a recovered shared base, not a per-view lookup.
+
+## Mac geometry types are TRANSPOSED — translate them, never copy the name
+
+The Mac CodeWarrior oracle is reliable for arity, pointer-vs-value and *names of
+classes*, but its **geometry type names must be translated**, because the layouts are
+transposed:
+
+| Win32 / MFC | MacApp |
+| --- | --- |
+| `POINT {LONG x, y}` | `VPoint {VCoordinate v, h}` — vertical first |
+| `RECT {LONG left, top, right, bottom}` | `VRect {VCoordinate top, left, bottom, right}` |
+| `CRect` derives from `RECT`, same layout | — |
+
+Same byte sizes (`VCoordinate` is a 32-bit `long`; MacApp introduced VPoint/VRect
+precisely because Mac's native 16-bit `Point`/`Rect` capped views at 32K), so a
+mismatch will NOT show up as a size or ABI error — only as swapped coordinates.
+
+**This port transposed to Win32 order.** Settled from `TView::LocalToSuperVRect`
+(0x0048bb00): it calls `OffsetRect(LPRECT, int dx, int dy)` pushing `[this+0x28]`
+then `[this+0x24]` then the rect, so right-to-left the arguments are
+`(rect, [+0x24], [+0x28])` and `dx` — the *horizontal* delta — is `+0x24`.
+`TView::SuperToLocal` (0x00427330) agrees: it subtracts `+0x24` from `POINT.x` at
+`[eax+0]` and `+0x28` from `POINT.y` at `[eax+4]`.
+
+So when the oracle says `const VPoint&`, model **`POINT`/`CPoint`**, and when it says
+`const VRect&`, the existing `RECT`/`CRect` typing is already correct — do **not**
+invent `VPoint`/`VRect` types.
+
+Two traps this closes:
+- A flattened `int* layout` pair reads as "unknown 2 ints" and looks type-agnostic. It
+  is a `POINT`; `[0]` is `x`, `[1]` is `y`.
+- A memberwise 16-byte rect copy (`[edx+0..0xc] = [eax+0..0xc]`) proves *nothing* about
+  field order — it copies either layout identically. Only a site that reads an
+  individual component, or passes one to a Win32 API with a defined argument order,
+  settles orientation.
