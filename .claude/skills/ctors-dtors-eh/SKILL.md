@@ -329,7 +329,12 @@ source patterns and not a size heuristic — body complexity does not discrimina
 > standalone body for it. A constructor that owns an address stays out-of-line in its
 > .cpp, so that body pairs.**
 
-Ask one question: **does the original have a standalone body for this constructor?**
+Ask one question: **does the original have a standalone body for THIS constructor?**
+
+Read `CreateObject` (or a derived ctor) and resolve any ILT thunk it calls. A call to a
+**base** constructor is expected and means this class's own body WAS inlined — it does not
+disqualify the in-class move. Only a call to the class's own ctor does. Getting this wrong
+misclassified 13 classes in one batch.
 
 - **No address** (no `// FUNCTION:` marker, nothing to claim) -> in-class. Free: there is
   no body to lose and every caller gains the inlined form. `TPanelView`, `TDialogView`,
