@@ -5,6 +5,7 @@
 #include "game/ui_screens/CString.h"
 #include "game/city/TCity.h"
 #include "game/military/TCivUnit.h"
+#include "game/nation/TGreatPower.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/core/TStream.h"
 #include "game/globals/prelude.h"
@@ -98,15 +99,13 @@ void TUnitOrder::Produce() {
                             &sharedRefB);
   }
 
-  unsigned char* cityRaw = reinterpret_cast<unsigned char*>(cityContext);
-  short* cityQueueBase = reinterpret_cast<short*>(cityRaw + 0x4A);
-  cityQueueBase[entryId] = static_cast<short>(cityQueueBase[entryId] + pendingDelta);
+  cityContext->cityMetricsBlock4A[entryId] =
+      static_cast<short>(cityContext->cityMetricsBlock4A[entryId] + pendingDelta);
 
-  int ownerState = *reinterpret_cast<int*>(cityRaw + 0xAC);
+  TGreatPower* ownerNation = cityContext->ownerNationAc;
   short ownerNationSlot = 0;
-  if (ownerState != 0) {
-    ownerNationSlot =
-        *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(ownerState) + 0x0C);
+  if (ownerNation != 0) {
+    ownerNationSlot = ownerNation->nationSlot;
   }
 
   for (short i = 0; i < pendingDelta; ++i) {
