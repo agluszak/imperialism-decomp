@@ -47,12 +47,15 @@ public:
   // belong to two DIFFERENT established groups, or a group's member list is full;
   // otherwise merges/allocates group ids as a side effect and returns true. slot 13 / 0x34
   virtual char TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex, int classIndex);
-  // Map-gen pass dispatched right after city-region ids are assigned (was junk-named
-  // DispatchUiSelectionToHandler; 0-arg __thiscall, verified RET 0). slot 14 / 0x38
-  virtual void MapGenPassSlot0E();
-  // Map-gen pass (was junk-named DoEvent with 3 phantom args; 0-arg __thiscall).
-  // slot 15 / 0x3c
-  virtual void MapGenPassSlot0F();
+  // Expands the coarse 27x15 region-class grid onto the fine tile grid: per coarse
+  // cell writes owner nation, water/plains terrain kind, and the linked city-record
+  // index into its 4-tile blocks (was junk-named DispatchUiSelectionToHandler;
+  // 0-arg __thiscall, verified RET 0). slot 14 / 0x38
+  virtual void ExpandRegionClassGridToTileBlocks();
+  // Places terrain features by quota with the map-gen LCG: mountain ranges, then
+  // hill fringes around mountains, then forest clusters and swamp fill (was
+  // junk-named DoEvent with 3 phantom args; 0-arg __thiscall). slot 15 / 0x3c
+  virtual void PlaceTerrainFeatureQuotas();
   // Verified 2 stack int args + char return, same call site/args as slot 0x34 above
   // (tried for every class, not just majors) -- the header's previous 3-arg
   // TEventHandler-shaped HandleEvent signature does not describe this class's real
@@ -111,9 +114,11 @@ public:
   // body, not from Ghidra. slot 24 / 0x60
   virtual char GrowRiver(long tileIndex, long incomingDirection, long outgoingDirection, long depth,
                          unsigned char startedOnHills);
-  // Map-gen finalize pass (was junk-named ResignedTarget; takes one mode arg the
-  // driver passes as 0 -- verified RET 4). slot 25 / 0x64
-  virtual void MapGenFinalizePassSlot19(int mode);
+  // Finalize pass: mode 0 generates city-region ids by seed propagation, nonzero
+  // mode renumbers/compacts existing ids from the tile grid; both then rebuild the
+  // region border overlay segments/spans and merge small regions (was junk-named
+  // ResignedTarget; verified RET 4). slot 25 / 0x64
+  virtual void RebuildCityRegionIdsAndBorderOverlays(int mode);
   // Post-attempt validity probe: nonzero means the attempt failed and the driver
   // regenerates (was junk-named TargetValidationFailed(int); really a 0-arg __thiscall
   // returning AL). slot 26 / 0x68
@@ -128,9 +133,11 @@ public:
   // junk-named ResignedWindowTarget; verified two-arg __thiscall returning
   // the neighbour cell index). slot 29 / 0x74
   virtual int GetAdjacentRegionGridCell(int cell, int direction);
-  // Map-gen pass run between MapGenPassSlot0E and MapGenPassSlot0F (was junk-named
-  // DispatchCityProductionAction1B; 0-arg __thiscall). slot 30 / 0x78
-  virtual void MapGenPassSlot1E();
+  // Run between ExpandRegionClassGridToTileBlocks and PlaceTerrainFeatureQuotas:
+  // per coarse cell randomizes the region template banks where neighbor classes
+  // mismatch, then smooths city-region ownership by neighbor sampling (was
+  // junk-named DispatchCityProductionAction1B; 0-arg __thiscall). slot 30 / 0x78
+  virtual void ApplyRegionTemplateBanksAndSmoothOwnership();
   // Copies a 36-byte (9-dword) region-template bank between fine-grid cells (resolved
   // via slot 0x21), selecting the source variant by LCG randomness. RET 0x14 = 5 stack
   // dwords, and the body reads the trailing four as words (MOV DX,word ptr [ESP+0x10] /

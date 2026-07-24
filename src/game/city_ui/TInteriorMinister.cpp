@@ -9,17 +9,17 @@
 
 // Slots 0x16-0x1f own bodies (honest stubs; slot ownership drives vtable matching).
 // FUNCTION: IMPERIALISM 0x004be150
-short TInteriorMinister::InteriorSlot1D(int arg) {
+short TInteriorMinister::GetExteriorNeedFor(int arg) {
   return static_cast<short>(arg);
 }
 
 // FUNCTION: IMPERIALISM 0x004be170
-short TInteriorMinister::InteriorSlot1E(int arg) {
+short TInteriorMinister::GetHistoricalNeedFor(int arg) {
   return static_cast<short>(arg);
 }
 
 // FUNCTION: IMPERIALISM 0x004be190
-void TInteriorMinister::InteriorSlot1F(int) {}
+void TInteriorMinister::ResetHistoricalNeedFor(int) {}
 // SYNTHETIC: IMPERIALISM 0x004be0d0
 // TInteriorMinister::CreateObject
 
@@ -59,7 +59,7 @@ short TInteriorMinister::GetRankingCriterionForGP(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004be3f0
-void TInteriorMinister::InteriorSlot1A(short) {}
+void TInteriorMinister::PleaseBuildShip(short) {}
 
 // FUNCTION: IMPERIALISM 0x004be410
 void TInteriorMinister::IndustryOrder(short) {}
@@ -74,7 +74,7 @@ void TInteriorMinister::SetParameters(short firstParameter, short secondParamete
 }
 
 // FUNCTION: IMPERIALISM 0x004be480
-short TInteriorMinister::InteriorSlot16() {
+short TInteriorMinister::GetNumShipsToBuild() {
   short needCap;
   if (ownerContextAt04 != 0) {
     needCap = ownerContextAt04->needCapA6;
@@ -88,7 +88,7 @@ short TInteriorMinister::InteriorSlot16() {
 }
 
 // FUNCTION: IMPERIALISM 0x004be4c0
-short TInteriorMinister::InteriorSlot17() {
+short TInteriorMinister::GetNumCarsToBuild() {
   if (ownerContextAt04->tradeCapacity > 0x31) {
     capabilityFlag14 = 0;
   }
@@ -100,13 +100,12 @@ void TInteriorMinister::Call4C() {
   memset(trailingTable, 0, sizeof(trailingTable));
 }
 
-// Tops up up to 10 of the nation's needs (in the fixed priority order
-// g_aInteriorMinisterNeedPriorityOrder_00696408) toward their current reading, stopping as
-// soon as the nation's need-cap headroom (needCapA6 - needsOverCapFlag) hits zero.
-// (TDefenseMinister::DoPeacetimeDeployment, this slot's sibling override
-// at 0x4ec540, has since been ported.)
+// Mac oracle name (on both TInteriorMinister and TCityInteriorMinister). Tops up up
+// to 10 of the nation's needs (in the fixed priority order
+// g_aInteriorMinisterNeedPriorityOrder_00696408) toward their current reading, stopping
+// as soon as the nation's need-cap headroom (needCapA6 - needsOverCapFlag) hits zero.
 // FUNCTION: IMPERIALISM 0x004be520
-void TInteriorMinister::MinisterSlot14() {
+void TInteriorMinister::SetCityPolicies() {
   short i = 0;
   do {
     short capRemaining =
@@ -126,18 +125,18 @@ void TInteriorMinister::MinisterSlot14() {
 void TInteriorMinister::FillOrders() {
   int accumulated = 0;
   int i = 0;
-  short count = InteriorSlot17();
+  short count = GetNumCarsToBuild();
   if (count > 0) {
     do {
-      InteriorSlot18();
+      DoIncreasedTransport();
       ++i;
-      count = InteriorSlot17();
+      count = GetNumCarsToBuild();
     } while (i < count);
     accumulated = 0;
   }
 
   if (ownerContextAt04->IsNationResourceNeedCurrentSumExceedingCapA6()) {
-    short count2 = InteriorSlot16();
+    short count2 = GetNumShipsToBuild();
     if (count2 > 0) {
       int remaining = count2;
       do {
@@ -148,7 +147,7 @@ void TInteriorMinister::FillOrders() {
     if (accumulated > 0) {
       int remaining = accumulated;
       do {
-        InteriorSlot19();
+        AdvanceNeedTargetRoundRobin();
         --remaining;
       } while (remaining != 0);
     }
@@ -156,7 +155,7 @@ void TInteriorMinister::FillOrders() {
 }
 
 // FUNCTION: IMPERIALISM 0x004be650
-bool TInteriorMinister::InteriorSlot18() {
+bool TInteriorMinister::DoIncreasedTransport() {
   bool result = false;
   if (ownerContextAt04->GetDiplomacyCounterA2() == 0) {
     result = ownerContextAt04->TryDecayRelationNeedScores9And8() != 0;
@@ -165,7 +164,7 @@ bool TInteriorMinister::InteriorSlot18() {
 }
 
 // FUNCTION: IMPERIALISM 0x004be690
-void TInteriorMinister::InteriorSlot19() {
+void TInteriorMinister::AdvanceNeedTargetRoundRobin() {
   ownerContextAt04->TryIncrementNationResourceNeedTargetTowardCurrent(field10);
   ++field10;
   if (field10 > 4) {

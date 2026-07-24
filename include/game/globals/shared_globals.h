@@ -1379,7 +1379,7 @@ extern short g_creditsPlaybackActive_006a4084;
 extern int g_InfoBarDummyOrigin_006A2410[2];
 
 // Need-type indices (into TGreatPower::needCurrentByType/needTargetByType), in priority
-// order, that TInteriorMinister::MinisterSlot14 (0x4be520) tops up each turn while the
+// order, that TInteriorMinister::SetCityPolicies (0x4be520) tops up each turn while the
 // nation still has need-cap headroom (needCapA6 - needsOverCapFlag).
 extern short g_aInteriorMinisterNeedPriorityOrder_00696408[10];
 

@@ -2289,7 +2289,7 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityN
   this->RebuildNationResourceYieldCountersAndDevelopmentTargets();
 
   if (this->interiorMinister) {
-    this->interiorMinister->MinisterSlot14();
+    this->interiorMinister->SetCityPolicies();
   }
 
   if (g_pSimMgr->scenarioMapIndexPlusOne == 0) {

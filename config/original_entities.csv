@@ -7807,9 +7807,8 @@ address|name|symbol|size|type|prototype|provenance
 46ca9c|restore_exception_context|||global||
 46caae|return_resource_head|||global||
 474ac5|BuildUniversityDialogControls|||global||
-475f80|thunk_BuildUniversityRecruitmentRows|||global||
-475f82|BuildUniversityRecruitControls|||global||
-475f84|BuildUniversityRecruitmentRows|||global||
+475f82|UniversityRecruitRadioButtonAllocNullPath|||global||
+475f84|PushUniversityRecruitRadioButtonUiNode|||global||
 47f745|thunk_DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass|||global||
 4805e6|CopyListBoxItemDataStructByIndex|||global||
 48542a|HandleDialogSelectionAndDispatchTurnEventCode|||global||
@@ -7929,14 +7928,13 @@ address|name|symbol|size|type|prototype|provenance
 587110|TTradeCluster::~TTradeCluster||5|function|undefined ~TTradeCluster()|
 5974a4|Helper_Uses_thunk_AssignStringSharedRefAndReturnThis_At005974a4|||global||
 5974eb|ReinitializeGameFlowAndPostTurnEvent5DD|||global||
-59c98d|WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d|||global||
+59c98d|ApplyDefenderHoldLineStanceCursorMode0|||global||
 59c999|SetLinkedListEntryState2CForTacticalCategory0|||global||
-59c9d7|IterateLinkedListCursorAndAdvanceToEnd_0059c9d7|||global||
-59c9f6|WrapperFor_thunk_ApplyTacticalCursorModeProfile2_ByActionClassCounts_At0059c9f6|||global||
-59ca02|WrapperFor_thunk_ApplyTacticalCursorModeProfile3_ClassAware_At0059ca02|||global||
-59ca0e|WrapperFor_thunk_ApplyTacticalCursorModeProfile4_ClassAware_At0059ca0e|||global||
-59ca1a|WrapperFor_thunk_ApplyTacticalCursorModeProfile5_ClassAware_At0059ca1a|||global||
-59ca26|WrapperFor_thunk_ApplyTacticalCursorModeProfile6_DefaultByActionClass_At0059ca26|||global||
+59c9f6|ApplyDefenderBombardStanceCursorMode2|||global||
+59ca02|ApplyAttackerSiegeStanceCursorMode3|||global||
+59ca0e|ApplyAttackerAssaultStanceCursorMode4|||global||
+59ca1a|ApplyAttackerStandoffStanceCursorMode5|||global||
+59ca26|ApplyUnopposedAdvanceStanceCursorMode6|||global||
 59ca32|SetLinkedListEntryState2CTo13ForAllNodes|||global||
 5af38a|loop_over_priority_range_pairs|||global||
 5af3af|generate_unique_candidate_slot|||global||

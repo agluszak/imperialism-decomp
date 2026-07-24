@@ -368,13 +368,19 @@ public:
   virtual void SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
       class TMilitaryUnit* const candidates[6],
       short orderTargetSlot); // slot 0x22 0x5150e0
-  // Seeds recruitSearchVisited0e like the SeedRecruitSearchVisitedState* family: eligible
-  // only for water tiles (always) or tiles owned by pCivilianOrderEntry->field_18 (nationTag)
-  // or diplomatically compatible (TDiplomacyMgr::LookupOrderCompatibilityMatrixValue == 2),
-  // further gated on gateFlag being in {8,9} (or {10,11,12} when
-  // g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x13] == 2), and
-  // finally on this nation's bit not already being set in pendingDevelopmentFlag0d.
-  virtual void MapMgrSlot23(class TCivUnit* pCivilianOrderEntry); // slot 0x23 0x515330
+  // Dims (marks recruitSearchVisited0e ineligible) every tile a Miner/Driller order
+  // cannot target -- TCivMgr dispatches order types 0 (Miner) and 8 (Driller) here.
+  // Eligible only for water tiles (always) or tiles owned by
+  // pCivilianOrderEntry->field_18 (nationTag) or diplomatically compatible
+  // (TDiplomacyMgr::LookupOrderCompatibilityMatrixValue == 2), further gated on
+  // gateFlag being in {8,9} (or {10,11,12} when
+  // g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x13]
+  // == 2), and finally on this nation's bit not already being set in
+  // pendingDevelopmentFlag0d. Behaviour-derived name in the Mac oracle's DimBy*
+  // family (the oracle lists only DimByDevelopment/DimByProspecting for TMapMgr).
+  virtual void DimByMining(class TCivUnit* pCivilianOrderEntry); // slot 0x23 0x515330
+  // Mac oracle: TMapMgr::DimByDevelopment(TUnit*). TCivMgr dispatches order types 2
+  // (Farmer), 3 (Forester), and 5 (Rancher) here.
   // Seeds recruitSearchVisited0e (defaults to 1/ineligible, unlike the sibling slot above):
   // requires the tile be diplomatically compatible
   // (TDiplomacyMgr::LookupOrderCompatibilityMatrixValue == 2, ownerNationTag04 >= 7),
@@ -382,7 +388,7 @@ public:
   // of its two edge resourceTypes qualifying (0/1/2 always; 3/4/0x15/0x16, or 6 when
   // techStatusByTechId[0x13] == 2, only when this nation's bit is already set in
   // pendingDevelopmentFlag0d).
-  virtual void MapMgrSlot24(class TCivUnit* pCivilianOrderEntry); // slot 0x24 0x515460
+  virtual void DimByDevelopment(class TCivUnit* pCivilianOrderEntry); // slot 0x24 0x515460
   // Seeds recruitSearchVisited0e like the SeedRecruitSearchVisitedState* family, but each
   // tile is eligible only if it's owned by pCivilianOrderEntry->field_18 (via
   // ownerNationTag04 or secondaryOwnerNationTag18) and pendingDevelopmentFlag0d != 0, and

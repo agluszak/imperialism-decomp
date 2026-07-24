@@ -9,7 +9,7 @@
 extern int g_wMapDialogViewportTileSpan; // 0x6a33b0
 
 // Scratch remap from pre-existing city-region id to compact id. The load-map form of
-// TMapMaker::MapGenFinalizePassSlot19 clears all 256 entries to -1 before populating it.
+// TMapMaker::RebuildCityRegionIdsAndBorderOverlays clears all 256 entries to -1 before populating it.
 extern int g_cityRegionIdRemapTable_006a3498[0x100];
 
 // Coarse 27x15 region-grid neighbour deltas. These are a second set of the same

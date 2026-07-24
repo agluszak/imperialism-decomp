@@ -207,18 +207,18 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
-    MapGenPassSlot0E();
+    ExpandRegionClassGridToTileBlocks();
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
-    MapGenPassSlot1E();
+    ApplyRegionTemplateBanksAndSmoothOwnership();
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
-    MapGenPassSlot0F();
+    PlaceTerrainFeatureQuotas();
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
@@ -226,7 +226,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
-    MapGenFinalizePassSlot19(0);
+    RebuildCityRegionIdsAndBorderOverlays(0);
 
     // Easter-egg keyword overrides: each mutates matching land tiles (water
     // is always skipped) with a per-tile LCG draw.
@@ -841,7 +841,7 @@ char TMapMaker::TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex) 
 }
 
 // FUNCTION: IMPERIALISM 0x005275a0
-void TMapMaker::MapGenPassSlot0E() {
+void TMapMaker::ExpandRegionClassGridToTileBlocks() {
   int cityRecordIndex = 0;
   int coarseIndex;
   for (coarseIndex = 0; coarseIndex < 0x195; ++coarseIndex) {
@@ -917,7 +917,7 @@ void TMapMaker::MapGenPassSlot0E() {
 // exhausted -- random-walks mountain-range extensions (via slot 0x58)
 // from tiles adjacent to exactly one already-placed marker tile.
 // FUNCTION: IMPERIALISM 0x00527730
-void TMapMaker::MapGenPassSlot0F() {
+void TMapMaker::PlaceTerrainFeatureQuotas() {
   int forestQuota = g_mapGenForestQuota_006a38f8;
   int swampQuota = g_mapGenSwampQuota_006a38e0;
   int hillsQuota = g_mapGenHillsQuota_006a38c0;
@@ -1429,7 +1429,7 @@ void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
 }
 
 // FUNCTION: IMPERIALISM 0x005292f0
-void TMapMaker::MapGenPassSlot1E() {
+void TMapMaker::ApplyRegionTemplateBanksAndSmoothOwnership() {
   int coarseIndex;
   for (coarseIndex = 0; coarseIndex < 0x17a; ++coarseIndex) {
     unsigned short baseClass =
@@ -1528,7 +1528,7 @@ int TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00529f60
-void TMapMaker::MapGenFinalizePassSlot19(int mode) {
+void TMapMaker::RebuildCityRegionIdsAndBorderOverlays(int mode) {
   if (static_cast<unsigned char>(mode) != 0) {
     int i;
     cityRegionCount2a4 = 0;

@@ -286,7 +286,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
       }
     }
     mapMaker->mapTileGrid08 = reinterpret_cast<char*>(terrainStateTable);
-    mapMaker->MapGenFinalizePassSlot19(1);
+    mapMaker->RebuildCityRegionIdsAndBorderOverlays(1);
   } else if (mapStreamName == 0) {
     if (tuningOverride != 0) {
       CString overrideText(tuningOverride);
@@ -2784,7 +2784,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
 }
 
 // FUNCTION: IMPERIALISM 0x00515330
-void TMapMgr::MapMgrSlot23(TCivUnit* pCivilianOrderEntry) {
+void TMapMgr::DimByMining(TCivUnit* pCivilianOrderEntry) {
   field9 = 1;
   short nationTag = pCivilianOrderEntry->field_18;
   unsigned char eligibleGateFlags[24] = {0};
@@ -2822,7 +2822,7 @@ void TMapMgr::MapMgrSlot23(TCivUnit* pCivilianOrderEntry) {
 }
 
 // FUNCTION: IMPERIALISM 0x00515460
-void TMapMgr::MapMgrSlot24(TCivUnit* pCivilianOrderEntry) {
+void TMapMgr::DimByDevelopment(TCivUnit* pCivilianOrderEntry) {
   short nationTag = pCivilianOrderEntry->field_18;
   bool recruitTierFlagIsTwo =
       (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x13] == 2);

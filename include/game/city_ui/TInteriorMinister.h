@@ -24,34 +24,53 @@ public:
   virtual void SetParameters(short firstParameter, short secondParameter); // slot 0x12 0x4be450
   // Zeroes trailingTable (+0x18..0x25, 7 shorts). 0x4be4f0, __thiscall, no args.
   virtual void Call4C();
-  virtual void MinisterSlot14();
-  // Runs InteriorSlot18() once per InteriorSlot17() (re-read each iteration); then,
+  // Tops up up to 10 of the nation's needs (fixed priority order
+  // g_aInteriorMinisterNeedPriorityOrder_00696408) toward their current reading,
+  // stopping when need-cap headroom hits zero. Mac oracle name (present on both
+  // TInteriorMinister and TCityInteriorMinister); both call sites run it right after
+  // RebuildNationResourceYieldCountersAndDevelopmentTargets on city creation /
+  // population change. slot 0x14 0x4be520
+  virtual void SetCityPolicies();
+  // Runs DoIncreasedTransport() once per GetNumCarsToBuild() (re-read each iteration); then,
   // once the owner's IsNationResourceNeedCurrentSumExceedingCapA6() is true, decays
   // relation-need scores via the owner's TryDecayRelationNeedScores9AndB() once per
-  // InteriorSlot16(), accumulating the results; finally runs InteriorSlot19() that
+  // GetNumShipsToBuild(), accumulating the results; finally runs AdvanceNeedTargetRoundRobin() that
   // many times. 0x4be5b0, __thiscall, no args.
   virtual void FillOrders();
   // Slots 0x16-0x1f: TInteriorMinister's own new virtuals (real vtable 0x650808 is
   // 32 slots, 0x00-0x1f). TCityInteriorMinister inherits 0x16-0x19 and overrides
   // 0x1a-0x1f.
-  // Clamps/returns capabilityFlag16: clears it once needCapA6 exceeds 49.
-  virtual short InteriorSlot16(); // 0x16 0x4be480
-  // Clamps/returns capabilityFlag14: clears it once tradeCapacity exceeds 49.
-  virtual short InteriorSlot17(); // 0x17 0x4be4c0
-  // True unless GetDiplomacyCounterA2() is nonzero, in which case it falls back to
-  // TryDecayRelationNeedScores9And8().
-  virtual bool InteriorSlot18(); // 0x18 0x4be650
-  // Notifies the owner nation of round-robin slot field10 (TGreatPower slot 0x48),
-  // then advances field10 through 0..4.
-  virtual void InteriorSlot19(); // 0x19 0x4be690
-  // One stack arg each (base bodies are bare RET 0x4 no-ops; the
-  // TCityInteriorMinister overrides read it as a short).
-  virtual void InteriorSlot1A(short arg);           // 0x1a 0x4be3f0
+  // Count of merchant ships to build this pass (used as FillOrders' second loop
+  // bound): clamps/returns capabilityFlag16, cleared once needCapA6 exceeds 49.
+  // Mac oracle candidate GetNumShipsToBuild (the class's only other ()->count
+  // virtual besides GetNumCarsToBuild, whose tradeCapacity gate pins it to 0x17).
+  virtual short GetNumShipsToBuild(); // 0x16 0x4be480
+  // Count of transport (rail) cars to build this pass (FillOrders' first loop
+  // bound): clamps/returns capabilityFlag14, cleared once tradeCapacity exceeds 49.
+  // Mac oracle: GetNumCarsToBuild.
+  virtual short GetNumCarsToBuild(); // 0x17 0x4be4c0
+  // Per-car build step run once per GetNumCarsToBuild: no-op while
+  // GetDiplomacyCounterA2() is nonzero, otherwise TryDecayRelationNeedScores9And8().
+  // Mac oracle candidate DoIncreasedTransport (hedged: the owner-side callee's
+  // semantics are still provisional).
+  virtual bool DoIncreasedTransport(); // 0x18 0x4be650
+  // Behaviour-derived name (no confident Mac match): notifies the owner nation of
+  // round-robin need slot field10 (TGreatPower slot 0x48,
+  // TryIncrementNationResourceNeedTargetTowardCurrent), then advances field10
+  // through 0..4.
+  virtual void AdvanceNeedTargetRoundRobin(); // 0x19 0x4be690
+  // Base body is a bare RET 0x4 no-op; the TCityInteriorMinister override latches
+  // pendingShipType32 = (orderKind == 2) + 1. Mac oracle: PleaseBuildShip(short).
+  virtual void PleaseBuildShip(short orderKind);    // 0x1a 0x4be3f0
   virtual void IndustryOrder(short industrySlot);   // 0x1b 0x4be410
   virtual void PleaseBuildLandUnit(short unitType); // 0x1c 0x4be430, Mac oracle
-  virtual short InteriorSlot1D(int arg);            // 0x1d 0x4be150 — returns arg
-  virtual short InteriorSlot1E(int arg);            // 0x1e 0x4be170 — returns arg
-  virtual void InteriorSlot1F(int arg);             // 0x1f 0x4be190 — no-op
+  // 0x1d/0x1e/0x1f: Mac oracle Get/Get/ResetHistoricalNeedFor(long) family. The
+  // TCityInteriorMinister overrides pin the mapping: 0x1e reads and 0x1f clears the
+  // same short[23] table (historical need), 0x1d reads the parallel table
+  // (exterior need). Base bodies just return the argument / no-op.
+  virtual short GetExteriorNeedFor(int orderType);    // 0x1d 0x4be150
+  virtual short GetHistoricalNeedFor(int orderType);  // 0x1e 0x4be170
+  virtual void ResetHistoricalNeedFor(int orderType); // 0x1f 0x4be190
 
   // Own fields at +0x10..+0x28 (RTTI m_nObjectSize proves this block is
   // TInteriorMinister-only, distinct from TForeignMinister's own +0x10..+0x48 block --

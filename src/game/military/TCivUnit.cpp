@@ -87,7 +87,7 @@ void TCivUnit::WriteTo(TStream* stream) {
 // current tile (if any) unlinking via field_10's prev-pointer role, then prepends to
 // the new tile's chain (if pOwnerContext isn't -1 = none).
 // FUNCTION: IMPERIALISM 0x005c2b70
-void TCivUnit::VTableSlot10(int pOwnerContext) {
+void TCivUnit::MoveTo(int pOwnerContext) {
   short newTileIndex = static_cast<short>(pOwnerContext);
 
   if (tileIndex06 != -1) {
