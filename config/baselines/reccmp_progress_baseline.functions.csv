@@ -5020,7 +5020,7 @@ address|matching|name
 0x586630|1.0|TCityBarCluster::TCityBarCluster
 0x586660|1.0|TCityBarCluster::`scalar deleting destructor'
 0x586690|1.0|TCityBarCluster::~TCityBarCluster
-0x5866b0|0.42328042328042326|TCityBarCluster::ApplyMoveValue
+0x5866b0|0.418848167539267|TCityBarCluster::ApplyMoveValue
 0x586840|0.5079365079365079|TProductionCluster::CreateObject
 0x586900|1.0|TProductionCluster::GetRuntimeClass
 0x586920|1.0|TProductionCluster::TProductionCluster
