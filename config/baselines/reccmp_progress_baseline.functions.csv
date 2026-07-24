@@ -5238,7 +5238,7 @@ address|matching|name
 0x592900|1.0|TWarningView::TWarningView
 0x592930|1.0|TWarningView::`scalar deleting destructor'
 0x592960|1.0|TWarningView::~TWarningView
-0x592980|0.11235955056179775|TWarningView::DoEvent
+0x592980|0.6567164179104478|TWarningView::DoEvent
 0x592a70|0.013953488372093023|TWarningView::DoPostCreate
 0x5931e0|0.25|`dynamic initializer for 'g_scaledShortConst_6A4518''
 0x593210|0.6896551724137931|UpdateDeferredCdAudioFade
