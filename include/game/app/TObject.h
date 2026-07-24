@@ -18,6 +18,10 @@ public:
   TObject() {}
   // Inline so every derived game-object destructor can reproduce the original direct
   // CObject vtable reset instead of calling an out-of-line TObject destructor.
+  // 0x4849c0 is the per-TU duplicate COMDAT copy the linker kept beside the
+  // canonical 0x485f50 (byte-identical; per_tu_duplicate row in
+  // config/template_aliases.csv recognizes it — do not claim it separately,
+  // reccmp drops a second marker on the same body as a duplicate address).
   // FUNCTION: IMPERIALISM 0x00485f50
   virtual ~TObject() override {}
 

@@ -30,7 +30,7 @@ from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file
 from tools.common.report_score import effective_matching
 from tools.stubgen import compute_stub_rows
-from tools.common.template_aliases import CLASS_DUPLICATE_EMISSION, load_aliases
+from tools.common.template_aliases import load_aliases
 
 FUNCTION_ROW_TYPE = "fun"
 REPORT_CACHE_VERSION = 1
@@ -230,16 +230,15 @@ def parse_roadmap_counts(path: Path) -> dict[str, int]:
                 if orig_addr is not None and recomp_addr is not None:
                     entry["paired"].add(orig_addr)
 
-    # Per-TU duplicate template COMDATs (config/template_aliases.csv, rule
-    # MFC-TWIN-030): an unpaired alias original whose canonical IS paired is a
-    # recognized duplicate body, not unported work -- the recomp legitimately
-    # emits one copy of the instantiation. Aliases whose canonical is still
-    # unpaired keep counting as original-only (the canonical is the work item).
-    # Restricted to the duplicate_emission class: a folded_symbol_group island
-    # still needs its own claim (the leaf-class dtor marker), so it stays
-    # original-only until claimed.
-    aliases, alias_errors = load_aliases(
-        equivalence_class=CLASS_DUPLICATE_EMISSION)
+    # Equivalence-alias members (config/template_aliases.csv): an unpaired
+    # alias original whose canonical IS paired is a recognized duplicate/folded
+    # body, not unported work -- the recomp legitimately emits one copy
+    # (duplicate_emission), or the island is the same symbol's stale pre-move
+    # address (folded_symbol_group; unclaimable when the body's current address
+    # already carries the marker). Aliases whose canonical is still unpaired
+    # keep counting as original-only (the canonical is the work item). Claimed
+    # islands are paired (effective) and never reach this reclassification.
+    aliases, alias_errors = load_aliases()
     for err in alias_errors:
         print(f"WARNING template_aliases.csv: {err}")
     recognized = {

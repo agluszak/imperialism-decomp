@@ -533,7 +533,7 @@ address|name|symbol|size|type|prototype|provenance
 484860|WrapperFor_FreeLinkedBlockChain_At00484860||68|function|undefined WrapperFor_FreeLinkedBlockChain_At00484860()|
 484970|InitializeRefCountedObjectBaseVtable||9|function|undefined InitializeRefCountedObjectBaseVtable()|
 484990|TObject::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4849c0|WrapperFor_FreeHeapBufferIfNotNull_At00484990_Impl||7|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00484990_Impl()|
+4849c0|TObject::~TObject||7|function|void __thiscall ~TObject()|
 4849e0|ForwardBlitSurfaceRectSkippingTransparentColor||50|function|undefined ForwardBlitSurfaceRectSkippingTransparentColor()|
 484ac0|WrapperFor_ftol_At00484ac0||30|function|undefined WrapperFor_ftol_At00484ac0()|
 484af0|CMainFrame::CreateObject|?CreateObject@CMainFrame@@SGPAVCObject@@XZ|143|function|CMainFrame * __cdecl CreateObject(void)|rtti
