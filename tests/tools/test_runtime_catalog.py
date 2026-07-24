@@ -30,7 +30,11 @@ class RuntimeCatalogTests(unittest.TestCase):
         full_names = {test.name for test in tests_in_suite("full")}
         self.assertEqual(
             repro_names,
-            {"easy_turns_advance", "map_zoom_toggle_remains_responsive"},
+            {
+                "city_screen_opens",
+                "easy_turns_advance",
+                "map_zoom_toggle_remains_responsive",
+            },
         )
         self.assertFalse(repro_names & full_names)
 

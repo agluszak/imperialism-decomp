@@ -37,6 +37,8 @@
 #include "game/ui_core/TWindow.h"
 #include "game/core/global_data_tables.h"
 #include "game/mfc.h"
+#include "game/turn_event_codes.h"
+#include "game/ui_tags_city.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_map.h"
 #include "game/ui_tags_screens.h"
@@ -109,6 +111,7 @@ RuntimeTestState g_runtimeTestState = {
     0, 0, "not_started", false, 1, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0, 0, false, "", "", "", "", ""};
 CString g_randomSetupUiSnapshot;
 CString g_strategicMapUiSnapshot;
+CString g_cityUiSnapshot;
 CString g_capitalConfirmationUiSnapshot;
 short g_mapZoomToggleCycles;
 CString g_activatedEventSequence("[");
@@ -415,6 +418,10 @@ bool WriteResultFile(const char* status, const char* failure) {
     status = "failed";
     failure = "\"generated UI factory snapshot is missing\"";
   }
+  if (Config().completion == kCompleteOnCityScreen && g_cityUiSnapshot.IsEmpty()) {
+    status = "failed";
+    failure = "\"city production UI snapshot is missing\"";
+  }
   CString uiSnapshots("[");
   if (IsRandomGameTest()) {
     if (!g_randomSetupUiSnapshot.IsEmpty()) {
@@ -427,6 +434,13 @@ bool WriteResultFile(const char* status, const char* failure) {
       }
       uiSnapshots += "\n";
       uiSnapshots += g_strategicMapUiSnapshot;
+    }
+    if (!g_cityUiSnapshot.IsEmpty()) {
+      if (!g_randomSetupUiSnapshot.IsEmpty() || !g_strategicMapUiSnapshot.IsEmpty()) {
+        uiSnapshots += ",";
+      }
+      uiSnapshots += "\n";
+      uiSnapshots += g_cityUiSnapshot;
     }
     uiSnapshots += "\n  ";
   }
@@ -1610,14 +1624,24 @@ void RunActivatingCityScreen() {
 
 void RunWaitingForCityScreen() {
   TView* mainView = MainView();
-  if (g_pUiRuntimeContext->currentTurnEventCode == 0x7dd ||
-      IsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture))) {
-    WaitForNextTickOrTimeout("\"city toolbar action did not leave the combined map\"");
+  if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventCityProduction ||
+      !IsViewKindOf(mainView, RUNTIME_CLASS(TCityProductionView))) {
+    WaitForNextTickOrTimeout("\"city toolbar action did not activate the city production view\"");
     return;
   }
   if (!g_ModalViewStack.IsEmpty()) {
     RecordUnexpectedModal(static_cast<TView*>(g_ModalViewStack.GetHead()));
     Fail("\"city toolbar action opened an unexpected modal\"");
+    return;
+  }
+  TCityProductionView* cityView = static_cast<TCityProductionView*>(mainView);
+  if (cityView->ResolveControlByTag(kControlTagLabP) == 0 ||
+      cityView->ResolveControlByTag(kControlTagMeat) == 0) {
+    Fail("\"city production view is missing required production controls\"");
+    return;
+  }
+  if (g_cityUiSnapshot.IsEmpty()) {
+    WaitForNextTickOrTimeout("\"city production UI tree was not captured\"");
     return;
   }
   if (g_runtimeTestState.phaseTicks < 20) {
@@ -1678,6 +1702,9 @@ void RuntimeScenario::ObserveBuiltUiTree(RuntimeContext&, int eventCode, TView* 
     if (g_strategicMapUiSnapshot.IsEmpty()) {
       g_strategicMapUiSnapshot = CaptureUiSnapshot(eventCode, root);
     }
+  } else if (Config().completion == kCompleteOnCityScreen &&
+             eventCode == kTurnEventCityProduction) {
+    g_cityUiSnapshot = CaptureUiSnapshot(eventCode, root);
   }
 }
 

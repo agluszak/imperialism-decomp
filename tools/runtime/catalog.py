@@ -19,7 +19,7 @@ TESTS = (
     RuntimeTestSpec("random_game_easy_skips_capital", ("pr", "full"), required_oracles=("ui", "map")),
     RuntimeTestSpec("random_game_enters_map", ("full",), required_oracles=("ui", "map")),
     RuntimeTestSpec("easy_turns_advance", ("repro",), required_oracles=("ui", "map")),
-    RuntimeTestSpec("city_screen_opens", ("full",), required_oracles=("ui",)),
+    RuntimeTestSpec("city_screen_opens", ("repro",), required_oracles=("ui",)),
     RuntimeTestSpec(
         "map_zoom_toggle_remains_responsive",
         ("repro",),
