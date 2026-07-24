@@ -17,10 +17,6 @@ TPanelView::~TPanelView() {}
 
 IMPLEMENT_DYNCREATE(TPanelView, TView)
 
-// Always inlined by the compiler (no standalone out-of-line address), so no // FUNCTION
-// marker: TView base construction then diplomacyMapView60 = 0.
-TPanelView::TPanelView() : TView(), diplomacyMapView60(0) {}
-
 // FUNCTION: IMPERIALISM 0x004f79e0
 void TPanelView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);

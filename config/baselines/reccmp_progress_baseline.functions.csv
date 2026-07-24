@@ -130,19 +130,19 @@ address|matching|name
 0x4302b0|1.0|TBook::~TBook
 0x4302d0|1.0|TPageCorner::`scalar deleting destructor'
 0x430300|1.0|TPageCorner::~TPageCorner
-0x430320|0.75|TTreatiesView::TTreatiesView
+0x430320|1.0|TTreatiesView::TTreatiesView
 0x430350|1.0|TTreatiesView::`scalar deleting destructor'
 0x430380|1.0|TTreatiesView::~TTreatiesView
-0x4303a0|0.75|TGrantsView::TGrantsView
+0x4303a0|1.0|TGrantsView::TGrantsView
 0x4303d0|1.0|TGrantsView::`scalar deleting destructor'
 0x430400|1.0|TGrantsView::~TGrantsView
-0x430420|0.75|TTradePanelView::TTradePanelView
+0x430420|1.0|TTradePanelView::TTradePanelView
 0x430450|1.0|TTradePanelView::`scalar deleting destructor'
 0x430480|1.0|TTradePanelView::~TTradePanelView
-0x4304a0|0.75|TInfoPanelView::TInfoPanelView
+0x4304a0|1.0|TInfoPanelView::TInfoPanelView
 0x4304d0|1.0|TInfoPanelView::`scalar deleting destructor'
 0x430500|1.0|TInfoPanelView::~TInfoPanelView
-0x430520|0.75|TCouncilPanelView::TCouncilPanelView
+0x430520|1.0|TCouncilPanelView::TCouncilPanelView
 0x430550|1.0|TPanelView::Setup
 0x430570|1.0|TCouncilPanelView::`scalar deleting destructor'
 0x4305a0|1.0|TCouncilPanelView::~TCouncilPanelView
@@ -2848,7 +2848,7 @@ address|matching|name
 0x4f71a0|0.6170212765957447|TDiplomacyMapView::DrawVoteNuggets
 0x4f7400|1.0|ShowDiplomacyActionRejectedNotice
 0x4f74f0|0.5207373271889401|TDiplomacyMapView::CheckEntanglements
-0x4f78e0|0.5818181818181818|TPanelView::CreateObject
+0x4f78e0|1.0|TPanelView::CreateObject
 0x4f7970|1.0|TPanelView::`scalar deleting destructor'
 0x4f79a0|1.0|TPanelView::~TPanelView
 0x4f79c0|1.0|TPanelView::GetRuntimeClass
@@ -2873,7 +2873,7 @@ address|matching|name
 0x4f8dd0|0.7678571428571429|TTradePanelView::DoEvent
 0x4f8ec0|0.5245901639344263|TOffersPanelView::CreateObject
 0x4f8f50|1.0|TOffersPanelView::GetRuntimeClass
-0x4f8f70|0.8571428571428571|TOffersPanelView::TOffersPanelView
+0x4f8f70|1.0|TOffersPanelView::TOffersPanelView
 0x4f8fa0|1.0|TOffersPanelView::`scalar deleting destructor'
 0x4f8fd0|1.0|TOffersPanelView::~TOffersPanelView
 0x4f8ff0|0.4506172839506173|TOffersPanelView::DoPostCreate
@@ -3428,7 +3428,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords
 0x527730|0.29577464788732394|TMapMaker::PlaceTerrainFeatureQuotas
-0x527d00|0.43478260869565216|TMapMaker::CreateRivers
+0x527d00|0.4268774703557312|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
