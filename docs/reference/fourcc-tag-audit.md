@@ -8,13 +8,7 @@ policy (Mac resource order, read big-endian).
 
 ## Summary
 
-<<<<<<< HEAD
-- Tags: 541
-||||||| cf992ec5a
-- Tags: 542
-=======
-- Tags: 547
->>>>>>> origin/main
+- Tags: 546
 - `generated_resource_manifest_tag`: 67
 - `multiplayer_session_or_message_tag`: 32
 - `ui_tag_app_and_setup_screens`: 57
@@ -24,13 +18,7 @@ policy (Mac resource order, read big-endian).
 - `ui_tag_shared`: 145
 - `ui_tag_strategic_map`: 22
 - `ui_tag_widget_plumbing`: 98
-<<<<<<< HEAD
-- Corroborated by the Mac control-tag index: 404 of 541
-||||||| cf992ec5a
-- Corroborated by the Mac control-tag index: 404 of 542
-=======
-- Corroborated by the Mac control-tag index: 406 of 547
->>>>>>> origin/main
+- Corroborated by the Mac control-tag index: 406 of 546
 - Violations: 0
 
 ## Violations

@@ -3,14 +3,12 @@
 #include "RuntimeContext.h"
 #include "RuntimeRegistry.h"
 #include "RuntimeTestCase.h"
-#include "scenarios/LegacyJourneyTest.h"
+#include "scenarios/RuntimeScenarios.h"
 
 namespace {
 
 RuntimeContext g_context;
 RuntimeTestCase* g_testCase = 0;
-bool g_started = false;
-LegacyJourneyTest g_unknownTestFallback;
 const int kPendingTurnEventCapacity = 32;
 int g_pendingTurnEvents[kPendingTurnEventCapacity];
 int g_pendingTurnEventHead = 0;
@@ -24,15 +22,12 @@ void RuntimeHarness::EnsureSelected() {
   }
   g_context.InitializeFromEnvironment();
   const RuntimeTestDescriptor* descriptor = RuntimeRegistry::Find(g_context.TestName());
-  g_testCase = descriptor != 0 ? descriptor->testCase : &g_unknownTestFallback;
+  g_testCase = descriptor != 0 ? descriptor->testCase : UnknownRuntimeTest();
+  g_testCase->Start(g_context);
 }
 
 void RuntimeHarness::OnIdle() {
   EnsureSelected();
-  if (!g_started) {
-    g_testCase->Start(g_context);
-    g_started = true;
-  }
   while (g_pendingTurnEventCount > 0) {
     int eventCode = g_pendingTurnEvents[g_pendingTurnEventHead];
     g_pendingTurnEventHead = (g_pendingTurnEventHead + 1) % kPendingTurnEventCapacity;

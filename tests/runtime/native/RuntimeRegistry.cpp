@@ -1,20 +1,18 @@
 #include "RuntimeRegistry.h"
 
-#include "scenarios/LegacyJourneyTest.h"
+#include "scenarios/RuntimeScenarios.h"
 
 #include <windows.h>
 
 namespace {
 
-LegacyJourneyTest g_legacyJourneyTest;
-
 RuntimeTestDescriptor g_descriptors[] = {
-    {"boot_managers", &g_legacyJourneyTest},
-    {"random_game_enters_map", &g_legacyJourneyTest},
-    {"random_game_easy_skips_capital", &g_legacyJourneyTest},
-    {"easy_turns_advance", &g_legacyJourneyTest},
-    {"city_screen_opens", &g_legacyJourneyTest},
-    {"load_saved_game", &g_legacyJourneyTest},
+    {"boot_managers", BootManagersTest()},
+    {"random_game_enters_map", RandomGameJourneyTest()},
+    {"random_game_easy_skips_capital", EasyRandomGameTest()},
+    {"easy_turns_advance", EndTurnTest()},
+    {"city_screen_opens", CityScreenTest()},
+    {"load_saved_game", LoadSavedGameTest()},
 };
 
 } // namespace

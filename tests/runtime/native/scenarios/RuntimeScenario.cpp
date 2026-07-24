@@ -1,6 +1,10 @@
-#include "LegacyJourneyTest.h"
+#include "RuntimeScenario.h"
 #include "RuntimeHarness.h"
+#include "RuntimeContext.h"
 #include "RuntimeUiDriver.h"
+#include "screens/MainMenuDriver.h"
+#include "screens/RandomSetupDriver.h"
+#include "screens/StrategicMapDriver.h"
 
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/city_ui/TCityProductionView.h"
@@ -42,53 +46,44 @@
 
 namespace {
 
-enum RuntimeTestKind {
-  kRuntimeTestNone,
-  kRuntimeTestBootManagers,
-  kRuntimeTestRandomGame,
-  kRuntimeTestEasyRandomGame,
-  kRuntimeTestEasyTurnAdvance,
-  kRuntimeTestCityScreen,
-  kRuntimeTestLoadSavedGame
-};
+typedef void (*RuntimeStep)();
 
-enum RuntimeTestPhase {
-  kRuntimeTestNotStarted,
-  kRuntimeTestWaitingForManagers,
-  kRuntimeTestWaitingForMainMenu,
-  kRuntimeTestWaitingForRandomSetup,
-  kRuntimeTestSettingCountryName,
-  kRuntimeTestSelectingDifficulty,
-  kRuntimeTestActivatingOkay,
-  kRuntimeTestWaitingForEasyStrategicMap,
-  kRuntimeTestWaitingForStrategicMap,
-  kRuntimeTestVerifyingStrategicMap,
-  kRuntimeTestWaitingForModalDismissal,
-  kRuntimeTestPrimingMapHover,
-  kRuntimeTestDispatchingMapHotkey,
-  kRuntimeTestExercisingMapHover,
-  kRuntimeTestReturningToRandomSetup,
-  kRuntimeTestReturningToMainMenu,
-  kRuntimeTestReenteringRandomSetup,
-  kRuntimeTestVerifyingReturnedRandomSetup,
-  kRuntimeTestWaitingForSecondCitySite,
-  kRuntimeTestWaitingForSecondPromptDismissal,
-  kRuntimeTestWaitingForCitySiteConfirmation,
-  kRuntimeTestWaitingForCombinedMap,
-  kRuntimeTestVerifyingCombinedMapExtents,
-  kRuntimeTestActivatingCityScreen,
-  kRuntimeTestWaitingForCityScreen,
-  kRuntimeTestActivatingEndTurn,
-  kRuntimeTestWaitingForEndTurnConfirm,
-  kRuntimeTestWaitingForTurnProcessed,
-  kRuntimeTestLoadingSavedGame,
-  kRuntimeTestWaitingForLoadedMap,
-  kRuntimeTestFinished
-};
+void RunWaitingForManagers();
+void RunWaitingForMainMenu();
+void RunWaitingForRandomSetup();
+void RunSettingCountryName();
+void RunSelectingDifficulty();
+void RunActivatingOkay();
+void RunWaitingForEasyStrategicMap();
+void RunWaitingForStrategicMap();
+void RunVerifyingStrategicMap();
+void RunWaitingForModalDismissal();
+void RunPrimingMapHover();
+void RunDispatchingMapHotkey();
+void RunExercisingMapHover();
+void RunReturningToRandomSetup();
+void RunReturningToMainMenu();
+void RunReenteringRandomSetup();
+void RunVerifyingReturnedRandomSetup();
+void RunWaitingForSecondCitySite();
+void RunWaitingForSecondPromptDismissal();
+void RunWaitingForCitySiteConfirmation();
+void RunWaitingForCombinedMap();
+void RunVerifyingCombinedMapExtents();
+void RunActivatingCityScreen();
+void RunWaitingForCityScreen();
+void RunActivatingEndTurn();
+void RunWaitingForEndTurnConfirm();
+void RunWaitingForTurnProcessed();
+void RunLoadingSavedGame();
+void RunWaitingForLoadedMap();
 
 struct RuntimeTestState {
-  RuntimeTestKind kind;
-  RuntimeTestPhase phase;
+  const RuntimeScenarioConfig* config;
+  RuntimeStep step;
+  const char* phaseName;
+  bool finished;
+  unsigned int seed;
   unsigned long idleTicks;
   unsigned long phaseTicks;
   unsigned long startMs;
@@ -107,24 +102,8 @@ struct RuntimeTestState {
   char lastAction[64];
 };
 
-RuntimeTestState g_runtimeTestState = {kRuntimeTestNone,
-                                       kRuntimeTestNotStarted,
-                                       0,
-                                       0,
-                                       0,
-                                       0,
-                                       0,
-                                       0,
-                                       0,
-                                       -1,
-                                       -1,
-                                       0,
-                                       0,
-                                       false,
-                                       "",
-                                       "",
-                                       "",
-                                       ""};
+RuntimeTestState g_runtimeTestState = {0, 0, "not_started", false, 1,  0,  0, 0, 0, 0, 0, 0, -1, -1,
+                                       0, 0, false,         "",    "", "", ""};
 CString g_randomSetupUiSnapshot;
 CString g_strategicMapUiSnapshot;
 CString g_capitalConfirmationUiSnapshot;
@@ -137,109 +116,30 @@ CString g_lastFingerprint;
 CString g_mapStateJson;
 
 // Easy-difficulty kinds share the setup flow (dif1 click, no capital pick).
+const RuntimeScenarioConfig& Config() {
+  return *g_runtimeTestState.config;
+}
+
 bool IsEasyStyleTest() {
-  return g_runtimeTestState.kind == kRuntimeTestEasyRandomGame ||
-         g_runtimeTestState.kind == kRuntimeTestEasyTurnAdvance ||
-         g_runtimeTestState.kind == kRuntimeTestCityScreen;
+  return Config().easyDifficulty;
 }
 
 bool IsRandomGameTest() {
-  return g_runtimeTestState.kind == kRuntimeTestRandomGame ||
-         g_runtimeTestState.kind == kRuntimeTestCityScreen || IsEasyStyleTest();
+  return Config().randomGame;
 }
 
 // Kinds whose runs end on a live map and want the normalized simulation
 // snapshot + activated-event sequence in the result.
 bool RecordsGameFlow() {
-  return IsRandomGameTest() || g_runtimeTestState.kind == kRuntimeTestLoadSavedGame;
+  return Config().recordGameFlow;
 }
 
 const char* TestName() {
-  if (g_runtimeTestState.kind == kRuntimeTestCityScreen) {
-    return "city_screen_opens";
-  }
-  if (g_runtimeTestState.kind == kRuntimeTestLoadSavedGame) {
-    return "load_saved_game";
-  }
-  if (g_runtimeTestState.kind == kRuntimeTestEasyTurnAdvance) {
-    return "easy_turns_advance";
-  }
-  if (g_runtimeTestState.kind == kRuntimeTestEasyRandomGame) {
-    return "random_game_easy_skips_capital";
-  }
-  if (g_runtimeTestState.kind == kRuntimeTestRandomGame) {
-    return "random_game_enters_map";
-  }
-  return "boot_managers";
+  return Config().name;
 }
 
-const char* PhaseName(RuntimeTestPhase phase) {
-  switch (phase) {
-  case kRuntimeTestNotStarted:
-    return "not_started";
-  case kRuntimeTestWaitingForManagers:
-    return "waiting_for_managers";
-  case kRuntimeTestWaitingForMainMenu:
-    return "waiting_for_main_menu";
-  case kRuntimeTestWaitingForRandomSetup:
-    return "waiting_for_random_setup";
-  case kRuntimeTestSettingCountryName:
-    return "setting_country_name";
-  case kRuntimeTestSelectingDifficulty:
-    return "selecting_difficulty";
-  case kRuntimeTestActivatingOkay:
-    return "activating_okay";
-  case kRuntimeTestWaitingForEasyStrategicMap:
-    return "waiting_for_easy_strategic_map";
-  case kRuntimeTestWaitingForStrategicMap:
-    return "waiting_for_strategic_map";
-  case kRuntimeTestVerifyingStrategicMap:
-    return "verifying_strategic_map";
-  case kRuntimeTestWaitingForModalDismissal:
-    return "waiting_for_modal_dismissal";
-  case kRuntimeTestPrimingMapHover:
-    return "priming_map_hover";
-  case kRuntimeTestDispatchingMapHotkey:
-    return "dispatching_map_hotkey";
-  case kRuntimeTestExercisingMapHover:
-    return "exercising_map_hover";
-  case kRuntimeTestReturningToRandomSetup:
-    return "returning_to_random_setup";
-  case kRuntimeTestReturningToMainMenu:
-    return "returning_to_main_menu";
-  case kRuntimeTestReenteringRandomSetup:
-    return "reentering_random_setup";
-  case kRuntimeTestVerifyingReturnedRandomSetup:
-    return "verifying_returned_random_setup";
-  case kRuntimeTestWaitingForSecondCitySite:
-    return "waiting_for_second_city_site";
-  case kRuntimeTestWaitingForSecondPromptDismissal:
-    return "waiting_for_second_prompt_dismissal";
-  case kRuntimeTestWaitingForCitySiteConfirmation:
-    return "waiting_for_city_site_confirmation";
-  case kRuntimeTestWaitingForCombinedMap:
-    return "waiting_for_combined_map";
-  case kRuntimeTestVerifyingCombinedMapExtents:
-    return "verifying_combined_map_extents";
-  case kRuntimeTestActivatingCityScreen:
-    return "activating_city_screen";
-  case kRuntimeTestWaitingForCityScreen:
-    return "waiting_for_city_screen";
-  case kRuntimeTestActivatingEndTurn:
-    return "activating_end_turn";
-  case kRuntimeTestWaitingForEndTurnConfirm:
-    return "waiting_for_end_turn_confirm";
-  case kRuntimeTestWaitingForTurnProcessed:
-    return "waiting_for_turn_processed";
-  case kRuntimeTestLoadingSavedGame:
-    return "loading_saved_game";
-  case kRuntimeTestWaitingForLoadedMap:
-    return "waiting_for_loaded_map";
-  case kRuntimeTestFinished:
-    return "finished";
-  default:
-    return "unknown";
-  }
+const char* PhaseName() {
+  return g_runtimeTestState.phaseName;
 }
 
 void AppendJsonArrayItem(CString& array, const CString& item) {
@@ -253,13 +153,13 @@ void RecordAction(const char* action) {
   lstrcpynA(g_runtimeTestState.lastAction, action, sizeof(g_runtimeTestState.lastAction));
   CString entry;
   entry.Format("{\"t_ms\": %lu, \"phase\": \"%s\", \"action\": \"%s\"}",
-               GetTickCount() - g_runtimeTestState.startMs, PhaseName(g_runtimeTestState.phase),
-               action);
+               GetTickCount() - g_runtimeTestState.startMs, PhaseName(), action);
   AppendJsonArrayItem(g_actionLog, entry);
 }
 
-void SetPhase(RuntimeTestPhase phase, const char* action) {
-  g_runtimeTestState.phase = phase;
+void SetStep(RuntimeStep step, const char* phaseName, const char* action) {
+  g_runtimeTestState.step = step;
+  g_runtimeTestState.phaseName = phaseName;
   g_runtimeTestState.phaseTicks = 0;
   g_runtimeTestState.phaseStartMs = GetTickCount();
   RecordAction(action);
@@ -491,7 +391,7 @@ bool SpinRequestedForCurrentPhase() {
       spinPhase[0] = 0;
     }
   }
-  return spinPhase[0] != 0 && lstrcmpiA(spinPhase, PhaseName(g_runtimeTestState.phase)) == 0;
+  return spinPhase[0] != 0 && lstrcmpiA(spinPhase, PhaseName()) == 0;
 }
 
 bool WriteResultFile(const char* status, const char* failure) {
@@ -573,8 +473,8 @@ bool WriteResultFile(const char* status, const char* failure) {
               "  },\n"
               "  \"failure\": %s\n"
               "}\n",
-              TestName(), status, LegacyJourneyTest::RandomSeed(), g_runtimeTestState.idleTicks,
-              GetTickCount() - g_runtimeTestState.startMs, PhaseName(g_runtimeTestState.phase),
+              TestName(), status, g_runtimeTestState.seed, g_runtimeTestState.idleTicks,
+              GetTickCount() - g_runtimeTestState.startMs, PhaseName(),
               g_runtimeTestState.lastAction, static_cast<LPCSTR>(eventSequence),
               static_cast<LPCSTR>(actionLog), static_cast<LPCSTR>(uiSnapshots),
               static_cast<LPCSTR>(capitalConfirmationSnapshot), static_cast<LPCSTR>(mapState),
@@ -596,7 +496,9 @@ bool WriteResultFile(const char* status, const char* failure) {
 void CaptureMapStateSnapshot();
 
 void Finish(const char* status, const char* failure) {
-  g_runtimeTestState.phase = kRuntimeTestFinished;
+  g_runtimeTestState.finished = true;
+  g_runtimeTestState.step = 0;
+  g_runtimeTestState.phaseName = "finished";
   if (RecordsGameFlow() && lstrcmpA(status, "passed") == 0) {
     CaptureMapStateSnapshot();
   }
@@ -649,7 +551,7 @@ void RecordUnexpectedModal(TView* modal) {
   FourCcText(static_cast<unsigned int>(modal->controlTag), tag);
   CString entry;
   entry.Format("{\"class\": \"%s\", \"tag\": \"%s\", \"phase\": \"%s\", \"t_ms\": %lu}",
-               RuntimeClassName(modal), tag, PhaseName(g_runtimeTestState.phase),
+               RuntimeClassName(modal), tag, PhaseName(),
                GetTickCount() - g_runtimeTestState.startMs);
   AppendJsonArrayItem(g_unexpectedModals, entry);
 }
@@ -658,8 +560,7 @@ CString SemanticFingerprint() {
   CString fingerprint;
   fingerprint.Format("%d|%s|%d|%s",
                      g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
-                     RuntimeClassName(MainView()), g_ModalViewStack.GetCount(),
-                     PhaseName(g_runtimeTestState.phase));
+                     RuntimeClassName(MainView()), g_ModalViewStack.GetCount(), PhaseName());
   return fingerprint;
 }
 
@@ -683,8 +584,8 @@ void MaybeWriteHeartbeat() {
               "\"elapsed_ms\": %lu, \"turn_event\": %d, \"root_class\": \"%s\", "
               "\"modal_depth\": %d, \"progress_counter\": %lu, \"last_progress_ms\": %lu, "
               "\"hold\": %s}\n",
-              PhaseName(g_runtimeTestState.phase), g_runtimeTestState.lastAction,
-              g_runtimeTestState.idleTicks, now - g_runtimeTestState.startMs,
+              PhaseName(), g_runtimeTestState.lastAction, g_runtimeTestState.idleTicks,
+              now - g_runtimeTestState.startMs,
               g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
               RuntimeClassName(MainView()), g_ModalViewStack.GetCount(),
               g_runtimeTestState.progressCounter, g_runtimeTestState.lastProgressMs,
@@ -738,28 +639,24 @@ void CaptureMapStateSnapshot() {
 }
 
 LONG WINAPI RuntimeTestUnhandledExceptionFilter(EXCEPTION_POINTERS* info) {
-  if (g_runtimeTestState.phase != kRuntimeTestFinished && info != 0 && info->ExceptionRecord != 0) {
+  if (!g_runtimeTestState.finished && info != 0 && info->ExceptionRecord != 0) {
     CString fault;
     fault.Format("{\"code\": \"0x%08lx\", \"address\": \"%p\", \"phase\": \"%s\", "
                  "\"last_action\": \"%s\"}",
                  info->ExceptionRecord->ExceptionCode, info->ExceptionRecord->ExceptionAddress,
-                 PhaseName(g_runtimeTestState.phase), g_runtimeTestState.lastAction);
+                 PhaseName(), g_runtimeTestState.lastAction);
     AppendJsonArrayItem(g_faults, fault);
-    g_runtimeTestState.phase = kRuntimeTestFinished;
+    g_runtimeTestState.finished = true;
+    g_runtimeTestState.step = 0;
+    g_runtimeTestState.phaseName = "finished";
     WriteResultFile("failed", "\"unhandled exception\"");
   }
   return EXCEPTION_CONTINUE_SEARCH;
 }
 
-void InitializeDriver() {
-  char testName[64];
-  DWORD testNameLength =
-      GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST", testName, sizeof(testName));
-  if (testNameLength == 0) {
-    g_runtimeTestState.phase = kRuntimeTestFinished;
-    return;
-  }
-
+void InitializeDriver(const RuntimeScenarioConfig& config, unsigned int seed) {
+  g_runtimeTestState.config = &config;
+  g_runtimeTestState.seed = seed;
   g_runtimeTestState.startMs = GetTickCount();
   g_runtimeTestState.phaseStartMs = g_runtimeTestState.startMs;
   SetUnhandledExceptionFilter(RuntimeTestUnhandledExceptionFilter);
@@ -778,18 +675,7 @@ void InitializeDriver() {
     g_runtimeTestState.heartbeatPath[0] = 0;
   }
 
-  if (lstrcmpA(testName, "boot_managers") == 0) {
-    g_runtimeTestState.kind = kRuntimeTestBootManagers;
-  } else if (lstrcmpA(testName, "random_game_enters_map") == 0) {
-    g_runtimeTestState.kind = kRuntimeTestRandomGame;
-  } else if (lstrcmpA(testName, "random_game_easy_skips_capital") == 0) {
-    g_runtimeTestState.kind = kRuntimeTestEasyRandomGame;
-  } else if (lstrcmpA(testName, "easy_turns_advance") == 0) {
-    g_runtimeTestState.kind = kRuntimeTestEasyTurnAdvance;
-  } else if (lstrcmpA(testName, "city_screen_opens") == 0) {
-    g_runtimeTestState.kind = kRuntimeTestCityScreen;
-  } else if (lstrcmpA(testName, "load_saved_game") == 0) {
-    g_runtimeTestState.kind = kRuntimeTestLoadSavedGame;
+  if (config.completion == kCompleteAfterLoadedMap) {
     DWORD fixtureLength =
         GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_FIXTURE", g_runtimeTestState.fixturePath,
                                 sizeof(g_runtimeTestState.fixturePath));
@@ -797,11 +683,11 @@ void InitializeDriver() {
       Finish("failed", "\"IMPERIALISM_RUNTIME_TEST_FIXTURE is not set for load_saved_game\"");
       return;
     }
-  } else {
+  } else if (lstrcmpA(config.name, "unknown") == 0) {
     Finish("failed", "\"unknown compiled runtime test\"");
     return;
   }
-  SetPhase(kRuntimeTestWaitingForManagers, "wait_for_managers");
+  SetStep(RunWaitingForManagers, "waiting_for_managers", "wait_for_managers");
 }
 
 void RunWaitingForManagers() {
@@ -809,7 +695,7 @@ void RunWaitingForManagers() {
     WaitForNextTickOrTimeout("\"manager initialization timed out\"");
     return;
   }
-  if (g_runtimeTestState.kind == kRuntimeTestBootManagers) {
+  if (Config().completion == kCompleteOnManagers) {
     Finish("passed", "null");
     return;
   }
@@ -824,14 +710,14 @@ void RunWaitingForManagers() {
   }
   g_runtimeTestState.mainWindowHandle = mainWindow->m_hWnd;
 
-  if (g_runtimeTestState.kind == kRuntimeTestLoadSavedGame) {
-    SetPhase(kRuntimeTestLoadingSavedGame, "open_saved_game_fixture");
+  if (Config().completion == kCompleteAfterLoadedMap) {
+    SetStep(RunLoadingSavedGame, "loading_saved_game", "open_saved_game_fixture");
     RequestAnotherDriverTick();
     return;
   }
 
   g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
-  SetPhase(kRuntimeTestWaitingForMainMenu, "post_turn_event_0x05dc");
+  SetStep(RunWaitingForMainMenu, "waiting_for_main_menu", "post_turn_event_0x05dc");
   RequestAnotherDriverTick();
 }
 
@@ -843,7 +729,7 @@ void RunLoadingSavedGame() {
     Fail("\"saved-game fixture failed to open through the document path\"");
     return;
   }
-  SetPhase(kRuntimeTestWaitingForLoadedMap, "opened_saved_game_fixture");
+  SetStep(RunWaitingForLoadedMap, "waiting_for_loaded_map", "opened_saved_game_fixture");
   RequestAnotherDriverTick();
 }
 
@@ -900,13 +786,13 @@ void RunWaitingForMainMenu() {
     return;
   }
 
-  srand(LegacyJourneyTest::RandomSeed());
-  TView* randomButton = mainView->ResolveControlByTag(kControlTagRand);
-  if (!RuntimeUiDriver::ClickView(randomButton)) {
+  srand(g_runtimeTestState.seed);
+  MainMenuDriver menu(mainView);
+  if (!menu.StartRandomGame()) {
     Fail("\"main-menu random-game button or native host is missing\"");
     return;
   }
-  SetPhase(kRuntimeTestWaitingForRandomSetup, "click_main_menu_rand");
+  SetStep(RunWaitingForRandomSetup, "waiting_for_random_setup", "click_main_menu_rand");
   RequestAnotherDriverTick();
 }
 
@@ -918,9 +804,9 @@ void RunWaitingForRandomSetup() {
     return;
   }
 
-  TSetupRandomMapPicture* setup = static_cast<TSetupRandomMapPicture*>(mainView);
-  g_runtimeTestState.selectedNationSlot = setup->selectedNationSlot9A;
-  SetPhase(kRuntimeTestSettingCountryName, "wait_for_event_0x05dd");
+  RandomSetupDriver setup(mainView);
+  g_runtimeTestState.selectedNationSlot = setup.SelectedNationSlot();
+  SetStep(RunSettingCountryName, "setting_country_name", "wait_for_event_0x05dd");
   RequestAnotherDriverTick();
 }
 
@@ -930,69 +816,39 @@ void RunSettingCountryName() {
     Fail("\"random-map setup disappeared before set_text\"");
     return;
   }
-  TEditText* country = static_cast<TEditText*>(mainView->ResolveControlByTag(kControlTagCoun));
-  if (country == 0) {
+  RandomSetupDriver setup(mainView);
+  if (!setup.SetCountryName("Testland")) {
     Fail("\"country-name control is missing\"");
     return;
   }
-  CString countryName("Testland");
-  if (country->editWindow != 0) {
-    // Real synchronization with the live EDIT host: the window text is
-    // authoritative while it exists (TEditText::GetCurrentText reads it back).
-    country->editWindow->SetWindowText(countryName);
-  } else {
-    country->SetTextAndMaybeRefresh(&countryName, 1);
-  }
-  SetPhase(kRuntimeTestSelectingDifficulty, "set_text_coun");
+  SetStep(RunSelectingDifficulty, "selecting_difficulty", "set_text_coun");
   RequestAnotherDriverTick();
 }
 
 void RunSelectingDifficulty() {
   TView* mainView = MainView();
-  TRadioTextCluster* difficulty =
-      mainView != 0
-          ? static_cast<TRadioTextCluster*>(mainView->ResolveControlByTag(kControlTagDiff))
-          : 0;
   const unsigned long expectedTag = IsEasyStyleTest() ? kControlTagDif1 : kControlTagDif2;
-  TControl* option =
-      difficulty != 0 ? static_cast<TControl*>(difficulty->ResolveControlByTag(expectedTag)) : 0;
-  if (difficulty == 0 || option == 0) {
+  RandomSetupDriver setup(mainView);
+  if (!setup.SelectDifficulty(expectedTag, IsEasyStyleTest())) {
     Fail("\"requested difficulty control is missing\"");
     return;
   }
-  if (IsEasyStyleTest()) {
-    if (!RuntimeUiDriver::ClickView(option)) {
-      Fail("\"easy difficulty control or native host is missing\"");
-      return;
-    }
-  } else {
-    option->HandleEvent(option->GetEventNumber(), option, 0);
-  }
-  if (difficulty->selectedTag88 != static_cast<int>(expectedTag)) {
-    Fail("\"requested difficulty event was not applied\"");
-    return;
-  }
-  SetPhase(kRuntimeTestActivatingOkay, IsEasyStyleTest() ? "click_diff_dif1" : "select_diff_dif2");
+  SetStep(RunActivatingOkay, "activating_okay",
+          IsEasyStyleTest() ? "click_diff_dif1" : "select_diff_dif2");
   RequestAnotherDriverTick();
 }
 
 void RunActivatingOkay() {
   TView* mainView = MainView();
-  TControl* okay =
-      mainView != 0 ? static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagOkay)) : 0;
-  if (okay == 0) {
-    Fail("\"okay control is missing\"");
+  RandomSetupDriver setup(mainView);
+  if (!setup.Accept(IsEasyStyleTest())) {
+    Fail("\"okay control or requested input path is missing\"");
     return;
   }
   if (IsEasyStyleTest()) {
-    if (!RuntimeUiDriver::ClickView(okay)) {
-      Fail("\"okay control or native host is missing\"");
-      return;
-    }
-    SetPhase(kRuntimeTestWaitingForEasyStrategicMap, "click_okay");
+    SetStep(RunWaitingForEasyStrategicMap, "waiting_for_easy_strategic_map", "click_okay");
   } else {
-    okay->HandleEvent(okay->GetEventNumber(), okay, 0);
-    SetPhase(kRuntimeTestWaitingForStrategicMap, "activate_okay");
+    SetStep(RunWaitingForStrategicMap, "waiting_for_strategic_map", "activate_okay");
   }
   RequestAnotherDriverTick();
 }
@@ -1067,13 +923,14 @@ void RunWaitingForEasyStrategicMap() {
     Fail("\"nation control modes do not match the Easy setup selection\"");
     return;
   }
-  if (g_runtimeTestState.kind == kRuntimeTestEasyTurnAdvance) {
-    SetPhase(kRuntimeTestActivatingEndTurn, "reach_combined_map");
+  if (Config().completion == kCompleteAfterTurns) {
+    SetStep(RunActivatingEndTurn, "activating_end_turn", "reach_combined_map");
     RequestAnotherDriverTick();
     return;
   }
-  if (g_runtimeTestState.kind == kRuntimeTestCityScreen) {
-    SetPhase(kRuntimeTestActivatingCityScreen, "easy_combined_map_ready_for_city_screen");
+  if (Config().completion == kCompleteOnCityScreen) {
+    SetStep(RunActivatingCityScreen, "activating_city_screen",
+            "easy_combined_map_ready_for_city_screen");
     RequestAnotherDriverTick();
     return;
   }
@@ -1090,12 +947,12 @@ void RunActivatingEndTurn() {
   }
   g_runtimeTestState.baselineEconomicTurn = g_pSimMgr->economicTurn;
   g_runtimeTestState.newspaperAdvanced = false;
-  TView* sendControl = mainView->ResolveControlByTag(kControlTagSend);
-  if (!RuntimeUiDriver::ClickView(sendControl)) {
+  StrategicMapDriver map(mainView);
+  if (!map.EndTurn()) {
     Fail("\"end-turn (send) control or native host is missing\"");
     return;
   }
-  SetPhase(kRuntimeTestWaitingForEndTurnConfirm, "click_map_send");
+  SetStep(RunWaitingForEndTurnConfirm, "waiting_for_end_turn_confirm", "click_map_send");
   RequestAnotherDriverTick();
 }
 
@@ -1114,7 +971,7 @@ void RunWaitingForEndTurnConfirm() {
     return;
   }
   RecordHandledModal("end_turn_dialog");
-  SetPhase(kRuntimeTestWaitingForTurnProcessed, "accept_end_turn_dialog_okay");
+  SetStep(RunWaitingForTurnProcessed, "waiting_for_turn_processed", "accept_end_turn_dialog_okay");
   okay->HandleEvent(okay->GetEventNumber(), okay, 0);
   RequestAnotherDriverTick();
 }
@@ -1136,7 +993,7 @@ void RunWaitingForTurnProcessed() {
   }
   ++g_runtimeTestState.turnsCompleted;
   if (g_runtimeTestState.turnsCompleted < kEndTurnCycles) {
-    SetPhase(kRuntimeTestActivatingEndTurn, "turn_processed");
+    SetStep(RunActivatingEndTurn, "activating_end_turn", "turn_processed");
     RequestAnotherDriverTick();
     return;
   }
@@ -1150,7 +1007,7 @@ void RunWaitingForStrategicMap() {
     WaitForNextTickOrTimeout("\"strategic map did not become active\"");
     return;
   }
-  SetPhase(kRuntimeTestVerifyingStrategicMap, "observe_event_0x03b8");
+  SetStep(RunVerifyingStrategicMap, "verifying_strategic_map", "observe_event_0x03b8");
   RequestAnotherDriverTick();
 }
 
@@ -1176,7 +1033,8 @@ void RunVerifyingStrategicMap() {
   }
   RecordHandledModal("city_site_prompt");
   okay->HandleEvent(okay->GetEventNumber(), okay, 0);
-  SetPhase(kRuntimeTestWaitingForModalDismissal, "activate_city_site_prompt_okay");
+  SetStep(RunWaitingForModalDismissal, "waiting_for_modal_dismissal",
+          "activate_city_site_prompt_okay");
   RequestAnotherDriverTick();
 }
 
@@ -1224,7 +1082,7 @@ void RunWaitingForModalDismissal() {
     Finish("passed", "null");
     return;
   }
-  SetPhase(kRuntimeTestPrimingMapHover, "prime_city_site_hover");
+  SetStep(RunPrimingMapHover, "priming_map_hover", "prime_city_site_hover");
   RequestAnotherDriverTick();
 }
 
@@ -1246,7 +1104,7 @@ void RunPrimingMapHover() {
     Fail("\"primed city-site hover tile is not present in the render cache\"");
     return;
   }
-  SetPhase(kRuntimeTestDispatchingMapHotkey, "forward_map_hotkey_x");
+  SetStep(RunDispatchingMapHotkey, "dispatching_map_hotkey", "forward_map_hotkey_x");
   RequestAnotherDriverTick();
 }
 
@@ -1311,7 +1169,7 @@ void RunDispatchingMapHotkey() {
     Fail("\"map hotkey forwarding left the strategic map\"");
     return;
   }
-  if (g_runtimeTestState.kind == kRuntimeTestCityScreen) {
+  if (Config().completion == kCompleteOnCityScreen) {
     short citySite = -1;
     for (short tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
       const TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
@@ -1330,12 +1188,13 @@ void RunDispatchingMapHotkey() {
       return;
     }
     citySiteView->SetMapViewTileIndex(citySite);
-    SetPhase(kRuntimeTestWaitingForCitySiteConfirmation, "submit_initial_city_site");
+    SetStep(RunWaitingForCitySiteConfirmation, "waiting_for_city_site_confirmation",
+            "submit_initial_city_site");
     citySiteView->HandleMapClickByInteractionMode(citySite, 0);
     RequestAnotherDriverTick();
     return;
   }
-  SetPhase(kRuntimeTestExercisingMapHover, "exercise_city_site_hover");
+  SetStep(RunExercisingMapHover, "exercising_map_hover", "exercise_city_site_hover");
   RequestAnotherDriverTick();
 }
 
@@ -1347,7 +1206,7 @@ void RunExercisingMapHover() {
     return;
   }
 
-  if (g_runtimeTestState.kind != kRuntimeTestCityScreen) {
+  if (Config().completion != kCompleteOnCityScreen) {
     TQuickDrawSurfaceContext* savedSurface;
     int savedSurfaceFlags;
     GetGWorld(&savedSurface, &savedSurfaceFlags);
@@ -1359,14 +1218,14 @@ void RunExercisingMapHover() {
     mapView->ForceRedraw();
   }
   TView* cancel = mapView->ResolveControlByTag(kControlTagCanc);
-  if (g_runtimeTestState.kind == kRuntimeTestCityScreen && cancel != 0) {
+  if (Config().completion == kCompleteOnCityScreen && cancel != 0) {
     TControl* cancelControl = static_cast<TControl*>(cancel);
     cancelControl->HandleEvent(cancelControl->GetEventNumber(), cancelControl, 0);
   } else if (!RuntimeUiDriver::ClickView(cancel)) {
     Fail("\"strategic-map return button or native host is missing\"");
     return;
   }
-  SetPhase(kRuntimeTestReturningToRandomSetup, "click_strategic_map_canc");
+  SetStep(RunReturningToRandomSetup, "returning_to_random_setup", "click_strategic_map_canc");
   RequestAnotherDriverTick();
 }
 
@@ -1383,7 +1242,7 @@ void RunReturningToRandomSetup() {
     Fail("\"returned random setup main-menu button or native host is missing\"");
     return;
   }
-  SetPhase(kRuntimeTestReturningToMainMenu, "click_returned_setup_cncl");
+  SetStep(RunReturningToMainMenu, "returning_to_main_menu", "click_returned_setup_cncl");
   RequestAnotherDriverTick();
 }
 
@@ -1400,7 +1259,7 @@ void RunReturningToMainMenu() {
     Fail("\"returned main-menu random-game button or native host is missing\"");
     return;
   }
-  SetPhase(kRuntimeTestReenteringRandomSetup, "click_returned_main_menu_rand");
+  SetStep(RunReenteringRandomSetup, "reentering_random_setup", "click_returned_main_menu_rand");
   RequestAnotherDriverTick();
 }
 
@@ -1417,7 +1276,8 @@ void RunReenteringRandomSetup() {
     Fail("\"reopened random setup difficulty control or native host is missing\"");
     return;
   }
-  SetPhase(kRuntimeTestVerifyingReturnedRandomSetup, "click_reopened_setup_dif3");
+  SetStep(RunVerifyingReturnedRandomSetup, "verifying_returned_random_setup",
+          "click_reopened_setup_dif3");
   RequestAnotherDriverTick();
 }
 
@@ -1439,7 +1299,8 @@ void RunVerifyingReturnedRandomSetup() {
     return;
   }
   okay->HandleEvent(okay->GetEventNumber(), okay, 0);
-  SetPhase(kRuntimeTestWaitingForSecondCitySite, "activate_reopened_setup_okay");
+  SetStep(RunWaitingForSecondCitySite, "waiting_for_second_city_site",
+          "activate_reopened_setup_okay");
   RequestAnotherDriverTick();
 }
 
@@ -1460,7 +1321,8 @@ void RunWaitingForSecondCitySite() {
   }
   RecordHandledModal("city_site_prompt");
   okay->HandleEvent(okay->GetEventNumber(), okay, 0);
-  SetPhase(kRuntimeTestWaitingForSecondPromptDismissal, "activate_second_city_site_prompt_okay");
+  SetStep(RunWaitingForSecondPromptDismissal, "waiting_for_second_prompt_dismissal",
+          "activate_second_city_site_prompt_okay");
   RequestAnotherDriverTick();
 }
 
@@ -1495,7 +1357,8 @@ void RunWaitingForSecondPromptDismissal() {
     return;
   }
 
-  SetPhase(kRuntimeTestWaitingForCitySiteConfirmation, "submit_valid_city_site");
+  SetStep(RunWaitingForCitySiteConfirmation, "waiting_for_city_site_confirmation",
+          "submit_valid_city_site");
   static_cast<TCitySiteView*>(mapDialog)->HandleMapClickByInteractionMode(citySite, 0);
   RequestAnotherDriverTick();
 }
@@ -1533,7 +1396,7 @@ void RunWaitingForCitySiteConfirmation() {
     return;
   }
   RecordHandledModal("city_site_confirmation");
-  SetPhase(kRuntimeTestWaitingForCombinedMap, "accept_city_site_confirmation");
+  SetStep(RunWaitingForCombinedMap, "waiting_for_combined_map", "accept_city_site_confirmation");
   okay->HandleEvent(okay->GetEventNumber(), okay, 0);
   RequestAnotherDriverTick();
 }
@@ -1589,8 +1452,9 @@ void RunVerifyingCombinedMapExtents() {
     Fail("\"combined-map scrolling stopped before the full top edge\"");
     return;
   }
-  if (g_runtimeTestState.kind == kRuntimeTestCityScreen) {
-    SetPhase(kRuntimeTestActivatingCityScreen, "combined_map_ready_for_city_screen");
+  if (Config().completion == kCompleteOnCityScreen) {
+    SetStep(RunActivatingCityScreen, "activating_city_screen",
+            "combined_map_ready_for_city_screen");
     RequestAnotherDriverTick();
     return;
   }
@@ -1609,13 +1473,6 @@ void RunActivatingCityScreen() {
     WaitForNextTickOrTimeout("\"combined map was not idle before opening the city screen\"");
     return;
   }
-  TView* toolbar = mainView->ResolveControlByTag(kControlTagTool);
-  TControl* city =
-      toolbar != 0 ? static_cast<TControl*>(toolbar->ResolveControlByTag(kControlTagCity)) : 0;
-  if (city == 0 || city->IsActionable() == 0) {
-    Fail("\"city toolbar control is missing or disabled\"");
-    return;
-  }
   TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
   if (activeNation == 0 || activeNation->city == 0) {
     Fail("\"active nation has no city state before opening the city screen\"");
@@ -1624,8 +1481,12 @@ void RunActivatingCityScreen() {
   for (short buildingSlot = 0; buildingSlot < 16; ++buildingSlot) {
     activeNation->city->productionOrderTable1dc[buildingSlot] = 1;
   }
-  SetPhase(kRuntimeTestWaitingForCityScreen, "activate_city_toolbar_control");
-  city->HandleEvent(city->GetEventNumber(), city, 0);
+  SetStep(RunWaitingForCityScreen, "waiting_for_city_screen", "activate_city_toolbar_control");
+  StrategicMapDriver map(mainView);
+  if (!map.ActivateCity()) {
+    Fail("\"city toolbar control is missing or disabled\"");
+    return;
+  }
   RequestAnotherDriverTick();
 }
 
@@ -1650,14 +1511,16 @@ void RunWaitingForCityScreen() {
 
 } // namespace
 
-void LegacyJourneyTest::OnIdle() {
-  if (g_runtimeTestState.phase == kRuntimeTestNotStarted) {
-    InitializeDriver();
-  }
-  if (g_runtimeTestState.phase == kRuntimeTestFinished) {
+RuntimeScenario::RuntimeScenario(const RuntimeScenarioConfig& scenarioConfig)
+    : config(scenarioConfig) {}
+
+void RuntimeScenario::Start(RuntimeContext& context) {
+  InitializeDriver(config, context.Seed());
+}
+
+void RuntimeScenario::Tick(RuntimeContext&) {
+  if (g_runtimeTestState.finished) {
     if (HoldRequested()) {
-      // Keep the held session visibly alive so the host runner does not
-      // classify it as heartbeat_stopped while someone debugs it.
       MaybeWriteHeartbeat();
       RequestAnotherDriverTick();
     }
@@ -1671,101 +1534,14 @@ void LegacyJourneyTest::OnIdle() {
     RequestAnotherDriverTick();
     return;
   }
-  switch (g_runtimeTestState.phase) {
-  case kRuntimeTestWaitingForManagers:
-    RunWaitingForManagers();
-    break;
-  case kRuntimeTestWaitingForMainMenu:
-    RunWaitingForMainMenu();
-    break;
-  case kRuntimeTestWaitingForRandomSetup:
-    RunWaitingForRandomSetup();
-    break;
-  case kRuntimeTestSettingCountryName:
-    RunSettingCountryName();
-    break;
-  case kRuntimeTestSelectingDifficulty:
-    RunSelectingDifficulty();
-    break;
-  case kRuntimeTestActivatingOkay:
-    RunActivatingOkay();
-    break;
-  case kRuntimeTestWaitingForEasyStrategicMap:
-    RunWaitingForEasyStrategicMap();
-    break;
-  case kRuntimeTestWaitingForStrategicMap:
-    RunWaitingForStrategicMap();
-    break;
-  case kRuntimeTestVerifyingStrategicMap:
-    RunVerifyingStrategicMap();
-    break;
-  case kRuntimeTestWaitingForModalDismissal:
-    RunWaitingForModalDismissal();
-    break;
-  case kRuntimeTestPrimingMapHover:
-    RunPrimingMapHover();
-    break;
-  case kRuntimeTestDispatchingMapHotkey:
-    RunDispatchingMapHotkey();
-    break;
-  case kRuntimeTestExercisingMapHover:
-    RunExercisingMapHover();
-    break;
-  case kRuntimeTestReturningToRandomSetup:
-    RunReturningToRandomSetup();
-    break;
-  case kRuntimeTestReturningToMainMenu:
-    RunReturningToMainMenu();
-    break;
-  case kRuntimeTestReenteringRandomSetup:
-    RunReenteringRandomSetup();
-    break;
-  case kRuntimeTestVerifyingReturnedRandomSetup:
-    RunVerifyingReturnedRandomSetup();
-    break;
-  case kRuntimeTestWaitingForSecondCitySite:
-    RunWaitingForSecondCitySite();
-    break;
-  case kRuntimeTestWaitingForSecondPromptDismissal:
-    RunWaitingForSecondPromptDismissal();
-    break;
-  case kRuntimeTestWaitingForCitySiteConfirmation:
-    RunWaitingForCitySiteConfirmation();
-    break;
-  case kRuntimeTestWaitingForCombinedMap:
-    RunWaitingForCombinedMap();
-    break;
-  case kRuntimeTestVerifyingCombinedMapExtents:
-    RunVerifyingCombinedMapExtents();
-    break;
-  case kRuntimeTestActivatingCityScreen:
-    RunActivatingCityScreen();
-    break;
-  case kRuntimeTestWaitingForCityScreen:
-    RunWaitingForCityScreen();
-    break;
-  case kRuntimeTestActivatingEndTurn:
-    RunActivatingEndTurn();
-    break;
-  case kRuntimeTestWaitingForEndTurnConfirm:
-    RunWaitingForEndTurnConfirm();
-    break;
-  case kRuntimeTestWaitingForTurnProcessed:
-    RunWaitingForTurnProcessed();
-    break;
-  case kRuntimeTestLoadingSavedGame:
-    RunLoadingSavedGame();
-    break;
-  case kRuntimeTestWaitingForLoadedMap:
-    RunWaitingForLoadedMap();
-    break;
-  default:
+  if (g_runtimeTestState.step == 0) {
     Fail("\"runtime-test driver entered an invalid phase\"");
-    break;
+    return;
   }
+  g_runtimeTestState.step();
 }
 
-void LegacyJourneyTest::ObserveBuiltUiTree(int eventCode, TView* root) {
+void RuntimeScenario::ObserveBuiltUiTree(RuntimeContext&, int eventCode, TView* root) {
   if (!IsRandomGameTest()) {
     return;
   }
@@ -1780,7 +1556,7 @@ void LegacyJourneyTest::ObserveBuiltUiTree(int eventCode, TView* root) {
   }
 }
 
-void LegacyJourneyTest::ObserveActivatedTurnEvent(int eventCode) {
+void RuntimeScenario::ObserveTurnEvent(RuntimeContext&, int eventCode) {
   if (RecordsGameFlow()) {
     CString event;
     event.Format("%s\"0x%04x\"", g_activatedEventSequence.GetLength() == 1 ? "" : ", ",
@@ -1796,34 +1572,20 @@ void LegacyJourneyTest::ObserveActivatedTurnEvent(int eventCode) {
     Fail("\"Easy difficulty entered capital-site selection event 0x3b8\"");
     return;
   }
-  if ((g_runtimeTestState.kind != kRuntimeTestRandomGame &&
-       g_runtimeTestState.kind != kRuntimeTestCityScreen) ||
-      (g_runtimeTestState.phase != kRuntimeTestWaitingForCitySiteConfirmation &&
-       g_runtimeTestState.phase != kRuntimeTestWaitingForCombinedMap)) {
+  if (Config().completion != kCompleteAfterNormalJourney ||
+      (g_runtimeTestState.step != RunWaitingForCitySiteConfirmation &&
+       g_runtimeTestState.step != RunWaitingForCombinedMap)) {
     return;
   }
   if (eventCode != 0x7dd) {
     return;
   }
-  SetPhase(kRuntimeTestVerifyingCombinedMapExtents, "observe_event_0x07dd");
+  SetStep(RunVerifyingCombinedMapExtents, "verifying_combined_map_extents", "observe_event_0x07dd");
   RunVerifyingCombinedMapExtents();
 }
 
-unsigned int LegacyJourneyTest::RandomSeed() {
-  static unsigned int seed = 0;
-  static bool resolved = false;
-  if (!resolved) {
-    resolved = true;
-    seed = 1;
-    char text[16];
-    if (GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_SEED", text, sizeof(text)) != 0) {
-      unsigned long parsed = strtoul(text, 0, 10);
-      if (parsed != 0) {
-        seed = static_cast<unsigned int>(parsed);
-      }
-    }
-  }
-  return seed;
+unsigned int RuntimeScenario::RandomSeed(RuntimeContext& context) {
+  return context.Seed();
 }
 
 void RuntimeTestObserveBuiltUiTree(int eventCode, TView* root) {
