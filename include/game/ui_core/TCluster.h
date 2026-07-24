@@ -17,4 +17,10 @@ public:
   int selectedChildTag;
 
   TCluster();
+
+  // Frame this cluster into `parent`: adopt the parent's host window, blank the control
+  // tag, mark it enabled/visible, record the parent link, copy the offset and size point
+  // pairs into the frame fields, register as a child of the parent, and clear the
+  // resource context. 0x004915d0, __thiscall.
+  void InitializeClusterFrameAndAttachToParent(TView* parent, POINT* offset, POINT* size);
 };

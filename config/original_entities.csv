@@ -1052,7 +1052,7 @@ address|name|symbol|size|type|prototype|provenance
 491400|TCluster::ConstructUiResourceEntryType4B0C0||91|function|undefined ConstructUiResourceEntryType4B0C0()|
 491480|TCluster::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4914b0|DestructTClusterAndMaybeFree_Impl||104|function|undefined DestructTClusterAndMaybeFree_Impl()|
-4915d0|OrphanCallChain_C1_I31_004915d0||94|function|undefined OrphanCallChain_C1_I31_004915d0()|
+4915d0|TCluster::InitializeClusterFrameAndAttachToParent||94|function|undefined InitializeClusterFrameAndAttachToParent()|
 491650|TCluster::DoEvent||222|function|void __thiscall DoEvent(int commandId, void * sourceHandler, int event)|
 491770|TCluster::OrphanTiny_GetDwordEcxOffset_84_00491770||7|function|undefined OrphanTiny_GetDwordEcxOffset_84_00491770(void)|
 491790|TCluster::OrphanCallChain_C2_I51_00491790||108|function|undefined OrphanCallChain_C2_I51_00491790(void)|
