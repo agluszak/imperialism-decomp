@@ -11,7 +11,8 @@ class TScroller : public TView {
 public:
   DECLARE_DYNCREATE(TScroller)
 
-  TScroller();
+  TScroller() : TView() {}
+
   virtual ~TScroller() override; // slot 0x01 (scalar deleting destructor 0x48cad0)
 
   // Non-virtual placement initializer (0x48cbb0): tags the control ('    '), links the

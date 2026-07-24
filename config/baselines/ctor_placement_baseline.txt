@@ -1,26 +1,14 @@
 # Unmarked out-of-line constructors (see tools/workflow/check_ctor_placement.py,
 # bd nwdn). Each line is a class whose ctor has no claimed address yet still
 # lives in a .cpp. Shrink this list; do not grow it.
-src/game/TMinisterBaseOrderArray.cpp:TMinisterBaseOrderArray
-src/game/TRadio.cpp:TRadio
-src/game/app/TFocusAnimation.cpp:TFocusAnimation
-src/game/app/TTransFocusAnimation.cpp:TTransFocusAnimation
 src/game/city/TCapacityOrder.cpp:TCapacityOrder
 src/game/city/TShipOrder.cpp:TShipOrder
 src/game/debug/TLaborPool.cpp:TLaborPool
-src/game/gfx/TAmbitApplication.cpp:TAmbitApplication
-src/game/gfx/TBackdropWindow.cpp:TBackdropWindow
-src/game/gfx/TColorFill.cpp:TColorFill
-src/game/gfx/TGWorldPeeker.cpp:TGWorldPeeker
 src/game/map/TControlSeaZoneMission.cpp:TControlSeaZoneMission
 src/game/map/TScatteredShipsMission.cpp:TScatteredShipsMission
 src/game/map_ui/TMapEditView.cpp:TMapEditView
-src/game/military/TAttackProvinceMission.cpp:TAttackProvinceMission
 src/game/military/TDefendProvinceMission.cpp:TDefendProvinceMission
 src/game/military_ui/TBattleReportView.cpp:TBattleReportView
 src/game/nation/TGreatPower_lifecycle.cpp:TGreatPower
 src/game/navy/TTaskForce.cpp:TTaskForce
-src/game/tactical_ui/TTacMapUberPicture.cpp:TTacMapUberPicture
-src/game/ui_core/TCommandHandler.cpp:TCommandHandler
 src/game/ui_core/TEventHandler.cpp:TEventHandler
-src/game/ui_core/TScroller.cpp:TScroller

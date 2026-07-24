@@ -14,6 +14,6 @@ public:
   virtual ~TCommandHandler() override;            // slot 0x01 (scalar deleting destructor)
   virtual void PerformCommand(TCommand* command); // slot 0x25 0x486650
 
-  TCommandHandler();
+  TCommandHandler() : TEventHandler() {}
 };
 ASSERT_SIZE(TCommandHandler, 0x20);

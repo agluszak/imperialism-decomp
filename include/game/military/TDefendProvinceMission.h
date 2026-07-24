@@ -9,7 +9,9 @@ class TDefendProvinceMission : public TArmyMission {
 public:
   virtual ~TDefendProvinceMission() override; // slot 0x01 dtor 0x00535800 / ??_G 0x005357d0
 public:
-  TDefendProvinceMission();
+  // Default constructor
+  TDefendProvinceMission() : TArmyMission() {}
+
   TDefendProvinceMission(int nodeKey);
 
   virtual void Initialize() override; // slot 0x0c (TMission) 0x53eff0

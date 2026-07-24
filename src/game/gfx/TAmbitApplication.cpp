@@ -42,13 +42,6 @@ unsigned int GetTickCountDiv16() {
 void SetCachedShowSplashFlag(BOOL showSplash) {
   g_cachedShowSplashFlag = showSplash;
 }
-
-TAmbitApplication::TAmbitApplication() : TApplication() {
-  edgeScrollTarget48 = 0;
-  dispatchBusyFlag4c = 0;
-  languagePackId50 = 0;
-}
-
 // SYNTHETIC: IMPERIALISM 0x0049de40
 // TAmbitApplication::CreateObject
 

@@ -212,9 +212,6 @@ float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
                                               g_awTacticalCompositionReferenceProfiles_00697870);
 }
 
-// Default constructor
-TDefendProvinceMission::TDefendProvinceMission() : TArmyMission() {}
-
 // Node-key constructor: delegates to TArmyMission(nodeKey) and stamps this class's
 // vtable. Inlined into the mission factory (TMission::CreateMission,
 // case 3, param_4 == 0); has no standalone address of its own.

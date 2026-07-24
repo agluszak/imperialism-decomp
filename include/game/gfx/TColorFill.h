@@ -15,6 +15,8 @@ public:
   // apply here.
   virtual void Draw(TView* view, const RECT& bounds) override; // slot 0x0c 0x4ff1c0
 
-  TColorFill();
+  // NOOP: verified empty in original 0x004ff10b (after the inlined TAdorner base
+  // guard, the derived ctor adds only the compiler-generated TColorFill vptr store)
+  TColorFill() {}
 };
 ASSERT_SIZE(TColorFill, 0xc);

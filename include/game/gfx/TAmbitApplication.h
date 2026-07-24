@@ -20,7 +20,12 @@ unsigned int GetTickCountDiv16();
 // VTABLE: IMPERIALISM 0x0063e398
 class TAmbitApplication : public TApplication {
 public:
-  TAmbitApplication();
+  TAmbitApplication() : TApplication() {
+    edgeScrollTarget48 = 0;
+    dispatchBusyFlag4c = 0;
+    languagePackId50 = 0;
+  }
+
   virtual ~TAmbitApplication() override;
 
   DECLARE_DYNCREATE(TAmbitApplication)
