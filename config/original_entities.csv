@@ -260,7 +260,7 @@ address|name|symbol|size|type|prototype|provenance
 479960|CAmbitDocument::OnOpenDocument|?OnOpenDocument@CAmbitDocument@@UAEHPBD@Z|26|function|public: virtual int __thiscall CAmbitDocument::OnOpenDocument(char const *)|
 479990|CAmbitDocument::OnSaveDocument|?OnSaveDocument@CAmbitDocument@@UAEHPBD@Z|188|function|public: virtual int __thiscall CAmbitDocument::OnSaveDocument(char const *)|
 479a80|PopUiResourcePoolNode_00479A80||89|function|undefined PopUiResourcePoolNode_00479A80()|
-479b00|PushUiResourcePoolNode||125|function|undefined PushUiResourcePoolNode()|
+479b00|CList<TView *,TView *>::AddTail|?AddTail@?$CList@PAVTView@@PAV1@@@QAEPAU__POSITION@@PAVTView@@@Z|125|function|POSITION __thiscall AddTail(TView *)|template
 479ba0|InitializeJoinSelectorDialogControlsAndNationSlots_Impl||4|function|undefined InitializeJoinSelectorDialogControlsAndNationSlots_Impl()|
 479bc0|InitializeJoinSelectorDialogControlsAndNationSlots_Impl_At00479bc0||10|function|undefined InitializeJoinSelectorDialogControlsAndNationSlots_Impl_At00479bc0()|
 479be0|CList<TView *,TView *>::Serialize|?Serialize@?$CList@PAVTView@@PAV1@@@UAEXAAVCArchive@@@Z|280|function|undefined Serialize(CArchive &)|template

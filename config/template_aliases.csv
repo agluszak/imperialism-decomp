@@ -1,16 +1,28 @@
-# Duplicate original MFC-template COMDAT bodies recorded as aliases of one
-# canonical body (mfc-collections skill, rule MFC-TWIN-030). VC5 emits one copy
-# of an instantiation's out-of-line members per referencing TU; the copies differ
-# only by relocations (call targets to twin helper copies, EH refs, data
-# addresses). An alias is comparison metadata -- never a reason to invent a
-# source class, duplicate an instantiation, or re-model the embedded member.
+# Fold-aware equivalence metadata (bd 5jjn) in two classes, keyed by the
+# classification column. An alias row is comparison metadata -- never a reason
+# to invent a source class, duplicate an instantiation, or re-model a member.
+# Every row is re-verified by `just template-alias-check`.
 #
-# Every row is re-verified by `just template-alias-check`:
+# per_tu_duplicate (class duplicate_emission; mfc-collections skill,
+# MFC-TWIN-030): VC5 emits one copy of an MFC-template instantiation's
+# out-of-line members per referencing TU; the copies differ only by relocations
+# (call targets to twin helper copies, EH refs, data addresses). Verified:
 #   - both addresses are sized functions in config/symbols.csv;
 #   - curated names agree (same instantiation, not merely same shape);
 #   - normalized instruction structure identical modulo relocations, with
 #     paired call targets recursively equivalent (tools.binary.body_hash).
 # Discover candidates with `just mfc-collection-audit <Class|0xCTOR>`.
+#
+# folded_symbol_group (ctors-dtors-eh skill, 2026-07-23): incremental LINK 5.0
+# folded/aliased symbols -- the original address holds only a stale 5-byte jmp
+# island whose chain (through ILT hops) lands on one shared final body owned by
+# another symbol (e.g. many leaf-view dtors end at TView's 0x48a9d0). The
+# island IS the folded symbol's canonical location; curated names within a
+# group intentionally differ. Verified:
+#   - alias bytes are a bare `jmp rel32` (+ nop/int3 padding when sized);
+#   - the fold chain resolves exactly to the canonical address;
+#   - the canonical is a sized function in config/symbols.csv.
+# Discover candidates with `just stale-jmp-islands [--emit]`.
 #
 # original_address|canonical_address|decorated_name|classification
 0x00426ec0|0x00479b00|?AddTail@?$CList@PAVTView@@PAV1@@@QAEPAU__POSITION@@PAVTView@@@Z|per_tu_duplicate
@@ -18,3 +30,239 @@
 0x004847d0|0x00482a20|??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ|per_tu_duplicate
 0x005e4a30|0x00486f60|??_G?$CList@PAXPAX@@UAEPAXI@Z|per_tu_duplicate
 0x005e4610|0x00486df0|?Serialize@?$CList@PAXPAX@@UAEXAAVCArchive@@@Z|per_tu_duplicate
+0x00413620|0x004867e0|TAmbitApplication::~TAmbitApplication|folded_symbol_group
+0x004136a0|0x00604d04|T64TemplateDialog::~T64TemplateDialog|folded_symbol_group
+0x004145d0|0x00604d04|TDFTemplateDialog::~TDFTemplateDialog|folded_symbol_group
+0x004293f0|0x0048fc30|TInfoBarText::~TInfoBarText|folded_symbol_group
+0x00429560|0x004904d0|TNumberText::~TNumberText|folded_symbol_group
+0x004302b0|0x0048f250|TBook::~TBook|folded_symbol_group
+0x00430300|0x0048f250|TPageCorner::~TPageCorner|folded_symbol_group
+0x00430380|0x0048a9d0|TTreatiesView::~TTreatiesView|folded_symbol_group
+0x00430400|0x0048a9d0|TGrantsView::~TGrantsView|folded_symbol_group
+0x00430480|0x0048a9d0|TTradePanelView::~TTradePanelView|folded_symbol_group
+0x00430500|0x0048a9d0|TInfoPanelView::~TInfoPanelView|folded_symbol_group
+0x004305a0|0x0048a9d0|TCouncilPanelView::~TCouncilPanelView|folded_symbol_group
+0x00430610|0x0048f250|TNominationView::~TNominationView|folded_symbol_group
+0x00430930|0x0048f250|TMapKey::~TMapKey|folded_symbol_group
+0x00430a10|0x0048fc30|TDeluxeText::~TDeluxeText|folded_symbol_group
+0x00430b30|0x0048f250|TBattleDetailBook::~TBattleDetailBook|folded_symbol_group
+0x00430bb0|0x0048a9d0|TBattleUnitsView::~TBattleUnitsView|folded_symbol_group
+0x00435570|0x0048a9d0|TDealTabControl::~TDealTabControl|folded_symbol_group
+0x004355f0|0x0048a9d0|TTradePageSellView::~TTradePageSellView|folded_symbol_group
+0x00435670|0x0048a9d0|TTradePageBuyView::~TTradePageBuyView|folded_symbol_group
+0x004356c0|0x0048a9d0|TTradeBookView::~TTradeBookView|folded_symbol_group
+0x00435740|0x0048f250|TNewspaperView::~TNewspaperView|folded_symbol_group
+0x0043d5f0|0x0048a9d0|TMapPreviewView::~TMapPreviewView|folded_symbol_group
+0x0043d680|0x0048a9d0|TTwoPicSlider::~TTwoPicSlider|folded_symbol_group
+0x0043d6d0|0x0048f250|TQueryFloater::~TQueryFloater|folded_symbol_group
+0x0043d750|0x0048f250|TMadnessButton::~TMadnessButton|folded_symbol_group
+0x0043d7d0|0x0048f250|TTerrainHelpPicture::~TTerrainHelpPicture|folded_symbol_group
+0x0043d820|0x0048a9d0|TScrollView::~TScrollView|folded_symbol_group
+0x0043d8a0|0x0048f250|TStatusPicture::~TStatusPicture|folded_symbol_group
+0x0043db00|0x0048f250|TFlagOptionsPicture::~TFlagOptionsPicture|folded_symbol_group
+0x0043db20|0x0048f250|TLoadSavePicture::~TLoadSavePicture|folded_symbol_group
+0x0043db40|0x0048f250|TGamePreferencesPicture::~TGamePreferencesPicture|folded_symbol_group
+0x0043db60|0x0048fc30|TRadioText::~TRadioText|folded_symbol_group
+0x0043db80|0x0048f250|TCreditsPicture::~TCreditsPicture|folded_symbol_group
+0x0044a750|0x0048a9d0|TShipFractionCluster::~TShipFractionCluster|folded_symbol_group
+0x0044a7d0|0x0048a9d0|TCivDescription::~TCivDescription|folded_symbol_group
+0x0044fb40|0x0048f250|TJoinSelectorDialog::~TJoinSelectorDialog|folded_symbol_group
+0x0044fb60|0x0048f250|TLoungeDialog::~TLoungeDialog|folded_symbol_group
+0x0044fb80|0x0048f250|TMultiMessagePicture::~TMultiMessagePicture|folded_symbol_group
+0x00453860|0x0048f250|TOverlayRadioButton::~TOverlayRadioButton|folded_symbol_group
+0x0045ad00|0x0048f250|TSpecialQuitPicture::~TSpecialQuitPicture|folded_symbol_group
+0x0045ad50|0x0048fc30|TTEView::~TTEView|folded_symbol_group
+0x0045adf0|0x0048f250|THighScoresPicture::~THighScoresPicture|folded_symbol_group
+0x0045ae40|0x0048f250|TNetSelectPicture::~TNetSelectPicture|folded_symbol_group
+0x0045aec0|0x0048f250|TScenarioChooser::~TScenarioChooser|folded_symbol_group
+0x0045af60|0x0048a9d0|TTextList::~TTextList|folded_symbol_group
+0x0045afe0|0x0048f250|TGameScorePicture::~TGameScorePicture|folded_symbol_group
+0x0045b060|0x0048a9d0|TGWorldPartView::~TGWorldPartView|folded_symbol_group
+0x0045d2f0|0x0048f250|TMapUberUberPicture::~TMapUberUberPicture|folded_symbol_group
+0x0045d340|0x0048a9d0|TTacArmyView::~TTacArmyView|folded_symbol_group
+0x0045d390|0x0048a9d0|TTacticalToolbar::~TTacticalToolbar|folded_symbol_group
+0x0045d410|0x0048f250|TTacMapUberPicture::~TTacMapUberPicture|folded_symbol_group
+0x0045d460|0x0048f250|TTacticalAdiosPicture::~TTacticalAdiosPicture|folded_symbol_group
+0x0045d4e0|0x0048f250|TTacticalHolaPicture::~TTacticalHolaPicture|folded_symbol_group
+0x00460120|0x0048a9d0|TTechStorePage::~TTechStorePage|folded_symbol_group
+0x00460170|0x0048a9d0|TTechHistoryView::~TTechHistoryView|folded_symbol_group
+0x004883c0|0x00601bdd|CObArray::thunk_DestructCObArray|folded_symbol_group
+0x004884f0|0x00601bdd|thunk_DestructCObArray|folded_symbol_group
+0x00490a30|0x0061eb67|CMcEditWindow::~CMcEditWindow|folded_symbol_group
+0x00493ca0|0x00607a84|CMcWindow::OnQueryNewPalette|folded_symbol_group
+0x0049d8e0|0x0048a9d0|TDialogView::~TDialogView|folded_symbol_group
+0x004a8870|0x0048a9d0|TGarrisonView::~TGarrisonView|folded_symbol_group
+0x004a9430|0x0048a9d0|TArmyCheckBox::~TArmyCheckBox|folded_symbol_group
+0x004a9540|0x0048a9d0|TArmyUnitView::~TArmyUnitView|folded_symbol_group
+0x004aa500|0x0048a9d0|TSuperArmyRoster::~TSuperArmyRoster|folded_symbol_group
+0x004aad70|0x0048a9d0|TMiniArmyView::~TMiniArmyView|folded_symbol_group
+0x004ab430|0x0048a9d0|TSuperCivRoster::~TSuperCivRoster|folded_symbol_group
+0x004ac680|0x0048a9d0|TSwapperDaddyView::~TSwapperDaddyView|folded_symbol_group
+0x004aeb80|0x0048a9d0|TArmyBoyView::~TArmyBoyView|folded_symbol_group
+0x004af070|0x0048a9d0|TNavyBoyView::~TNavyBoyView|folded_symbol_group
+0x004af740|0x0048a9d0|TMerchantBoyView::~TMerchantBoyView|folded_symbol_group
+0x004af9b0|0x0048a9d0|TItemBoyView::~TItemBoyView|folded_symbol_group
+0x004afd60|0x0048a9d0|TInterruptusView::~TInterruptusView|folded_symbol_group
+0x004b1460|0x0048a9d0|TCheater::~TCheater|folded_symbol_group
+0x004b1920|0x0048a9d0|TTechCheater::~TTechCheater|folded_symbol_group
+0x004b1a50|0x0048a9d0|TGPCheater::~TGPCheater|folded_symbol_group
+0x004ba390|0x0048f250|TCityProductionView::~TCityProductionView|folded_symbol_group
+0x004bd000|0x0048a9d0|TRailheadDialog::~TRailheadDialog|folded_symbol_group
+0x004bd3a0|0x0048a9d0|TTransportView::~TTransportView|folded_symbol_group
+0x004bd840|0x0048a9d0|TNewTownView::~TNewTownView|folded_symbol_group
+0x004c6f10|0x0048f250|TBuildingView::~TBuildingView|folded_symbol_group
+0x004c7310|0x0048f250|TWarehouseView::~TWarehouseView|folded_symbol_group
+0x004c8030|0x0048f250|TUnitsView::~TUnitsView|folded_symbol_group
+0x004c8320|0x0048f250|TShipyardView::~TShipyardView|folded_symbol_group
+0x004c9e90|0x0048f250|TBuildingConstructionView::~TBuildingConstructionView|folded_symbol_group
+0x004cacc0|0x0048f250|TUniversityView::~TUniversityView|folded_symbol_group
+0x004cc420|0x0048a9d0|TPurchaseCluster::~TPurchaseCluster|folded_symbol_group
+0x004cc800|0x0048f250|TIndustryView::~TIndustryView|folded_symbol_group
+0x004cd8b0|0x0048f250|TTradeSchoolView::~TTradeSchoolView|folded_symbol_group
+0x004ce580|0x0048f250|TBuildingExpansionView::~TBuildingExpansionView|folded_symbol_group
+0x004cee00|0x0048f250|TArmoryView::~TArmoryView|folded_symbol_group
+0x004d05c0|0x0048a9d0|TEngineerDialog::~TEngineerDialog|folded_symbol_group
+0x004d1860|0x0048f250|TPlaceCityDialog::~TPlaceCityDialog|folded_symbol_group
+0x004d1e60|0x0048c890|TControl::thunk_thunk_DispatchVfuncA0ToLinkedChildListSlot44|folded_symbol_group
+0x004d65f0|0x00601bdd|thunk_DestructCObArray|folded_symbol_group
+0x004ee5a0|0x00601bdd|thunk_DestructCObArray|folded_symbol_group
+0x004f2cc0|0x0048a9d0|TMinisterView::~TMinisterView|folded_symbol_group
+0x004f3030|0x0048a9d0|TForeignMinisterView::~TForeignMinisterView|folded_symbol_group
+0x004f3350|0x0048a9d0|TDefenseMinisterView::~TDefenseMinisterView|folded_symbol_group
+0x004f36f0|0x0048a9d0|TInteriorMinisterView::~TInteriorMinisterView|folded_symbol_group
+0x004f3940|0x0048d670|TRearFloatWindow::~TRearFloatWindow|folded_symbol_group
+0x004f79a0|0x0048a9d0|TPanelView::~TPanelView|folded_symbol_group
+0x004f8fd0|0x0048a9d0|TOffersPanelView::~TOffersPanelView|folded_symbol_group
+0x004fdf80|0x0048a9d0|TFrameRadioView::~TFrameRadioView|folded_symbol_group
+0x004fe270|0x0048a9d0|TScoreGraph::~TScoreGraph|folded_symbol_group
+0x004ff2b0|0x0048a9d0|TGWorldPeeker::~TGWorldPeeker|folded_symbol_group
+0x004ffc90|0x0048d670|TGameWindow::~TGameWindow|folded_symbol_group
+0x00500380|0x0048d670|TDlgWindow::~TDlgWindow|folded_symbol_group
+0x00503cf0|0x0048f250|THelpPicture::~THelpPicture|folded_symbol_group
+0x00504c50|0x0048d670|THelpWindow::~THelpWindow|folded_symbol_group
+0x00504da0|0x0048d670|TTerrainHelpWindow::~TTerrainHelpWindow|folded_symbol_group
+0x00505b40|0x0048a9d0|TLonelyTileView::~TLonelyTileView|folded_symbol_group
+0x00506050|0x0048f250|TIconBar::~TIconBar|folded_symbol_group
+0x00506460|0x0048f250|TIconSlider::~TIconSlider|folded_symbol_group
+0x00506ae0|0x0048a9d0|TOrderView::~TOrderView|folded_symbol_group
+0x00507400|0x0048f250|TNumberedIcon::~TNumberedIcon|folded_symbol_group
+0x00507830|0x0048f250|TNumberedItem::~TNumberedItem|folded_symbol_group
+0x00519b10|0x0048a9d0|TWorldView::~TWorldView|folded_symbol_group
+0x00519c70|0x0048a9d0|TMapDialog::~TMapDialog|folded_symbol_group
+0x0051b1a0|0x0048f250|TTerrainInfoDialog::~TTerrainInfoDialog|folded_symbol_group
+0x0051bb70|0x0048f250|TTownNameDialog::~TTownNameDialog|folded_symbol_group
+0x0051bfd0|0x0048a9d0|TCitySiteView::~TCitySiteView|folded_symbol_group
+0x0051cc20|0x0048a9d0|TMapEditView::~TMapEditView|folded_symbol_group
+0x00534770|0x00601bdd|TSortByPriceList::~TSortByPriceList|folded_symbol_group
+0x005348d0|0x00601bdd|TIndexAndRankList::DestructTIndexAndRankList|folded_symbol_group
+0x00564980|0x0048a9d0|TMilitaryPageView::~TMilitaryPageView|folded_symbol_group
+0x00564da0|0x0048a9d0|TNavyRoster::~TNavyRoster|folded_symbol_group
+0x005653e0|0x0048a9d0|TShipView::~TShipView|folded_symbol_group
+0x00565f10|0x0048a9d0|TOceanDialog::~TOceanDialog|folded_symbol_group
+0x00568c20|0x0048f250|TDisappearingButton::~TDisappearingButton|folded_symbol_group
+0x005692d0|0x0048f250|TShipPlacard::~TShipPlacard|folded_symbol_group
+0x00569530|0x0048a9d0|TNavyToolbarCluster::~TNavyToolbarCluster|folded_symbol_group
+0x005698a0|0x0048a9d0|TSuperNavyRoster::~TSuperNavyRoster|folded_symbol_group
+0x00569da0|0x0048a9d0|TMiniShipView::~TMiniShipView|folded_symbol_group
+0x0056b830|0x0048f250|TGameInfoPicture::~TGameInfoPicture|folded_symbol_group
+0x0056fa30|0x0048a9d0|TPageView::~TPageView|folded_symbol_group
+0x00570850|0x0048f250|TPictureButton::~TPictureButton|folded_symbol_group
+0x00570a50|0x0048f250|TAlwaysPictureButton::~TAlwaysPictureButton|folded_symbol_group
+0x00570c10|0x0048f250|T2PictureButton::~T2PictureButton|folded_symbol_group
+0x00570dc0|0x0048f250|TPictureRadioButton::~TPictureRadioButton|folded_symbol_group
+0x00571150|0x0048f250|TToggleButton::~TToggleButton|folded_symbol_group
+0x005714c0|0x0048a9d0|TUberCluster::~TUberCluster|folded_symbol_group
+0x00571600|0x0048f250|TUpDownPictureButton::~TUpDownPictureButton|folded_symbol_group
+0x00571830|0x0048f250|TRadioPictureButton::~TRadioPictureButton|folded_symbol_group
+0x00571a60|0x0048f250|TOnOffRadioButton::~TOnOffRadioButton|folded_symbol_group
+0x00571c90|0x0048f250|TCzechBox::~TCzechBox|folded_symbol_group
+0x00571fd0|0x0048f250|TColorKeyButton::~TColorKeyButton|folded_symbol_group
+0x00572190|0x0048a9d0|TGWorldButton::~TGWorldButton|folded_symbol_group
+0x00572470|0x0048a9d0|TClickZone::~TClickZone|folded_symbol_group
+0x00572b90|0x0048f250|TNoHilitePicture::~TNoHilitePicture|folded_symbol_group
+0x00572ce0|0x0048f250|TBackgroundPicture::~TBackgroundPicture|folded_symbol_group
+0x00572e40|0x0048f250|TColorKeyPicture::~TColorKeyPicture|folded_symbol_group
+0x00573200|0x0048f250|TMegaPicture::~TMegaPicture|folded_symbol_group
+0x00573830|0x0048f250|TOffLimitsPicture::~TOffLimitsPicture|folded_symbol_group
+0x00573a80|0x0048f250|TSliderPicture::~TSliderPicture|folded_symbol_group
+0x00573e20|0x0048a9d0|TScrollBarView::~TScrollBarView|folded_symbol_group
+0x00574fa0|0x0048f250|TScrollerButton::~TScrollerButton|folded_symbol_group
+0x005758c0|0x0048f250|TGameSetupPicture::~TGameSetupPicture|folded_symbol_group
+0x00575f90|0x0048f250|TGameSetupMultiplayerPicture::~TGameSetupMultiplayerPicture|folded_symbol_group
+0x00576b50|0x0048f250|TNetGameSelectPicture::~TNetGameSelectPicture|folded_symbol_group
+0x00579720|0x0048a9d0|TRadioTextCluster::~TRadioTextCluster|folded_symbol_group
+0x0057b720|0x0048fc30|TSelectoText::CreateTSelectoTextInstance|folded_symbol_group
+0x005839d0|0x0048f250|TArrowsControl::~TArrowsControl|folded_symbol_group
+0x00583bb0|0x0048f250|TSidewaysArrow::~TSidewaysArrow|folded_symbol_group
+0x00583db0|0x0048a9d0|thunk_DestructTViewBaseState|folded_symbol_group
+0x00583f90|0x0048a9d0|thunk_DestructTViewBaseState|folded_symbol_group
+0x00584140|0x0048a9d0|thunk_DestructTViewBaseState|folded_symbol_group
+0x00584300|0x0048a9d0|thunk_DestructTViewBaseState|folded_symbol_group
+0x005844e0|0x0048f250|TTradeOrderPicture::~TTradeOrderPicture|folded_symbol_group
+0x005847e0|0x0048f250|TBoycottButton::~TBoycottButton|folded_symbol_group
+0x00584990|0x0048f250|T2PictToggleButton::~T2PictToggleButton|folded_symbol_group
+0x00584b50|0x0048f250|TCloseButton::~TCloseButton|folded_symbol_group
+0x00584d10|0x0048a9d0|thunk_DestructTViewBaseState|folded_symbol_group
+0x00584e80|0x0048a9d0|thunk_DestructTViewBaseState|folded_symbol_group
+0x00586070|0x0048a9d0|thunk_DestructTViewBaseState|folded_symbol_group
+0x005863e0|0x0048a9d0|thunk_DestructTViewBaseState|folded_symbol_group
+0x00586690|0x0048a9d0|thunk_DestructTViewBaseState|folded_symbol_group
+0x005869a0|0x0048a9d0|thunk_DestructTViewBaseState|folded_symbol_group
+0x00586bd0|0x0048f250|TClosePicture::~TClosePicture|folded_symbol_group
+0x00586d40|0x0048a9d0|thunk_DestructTViewBaseState|folded_symbol_group
+0x00587110|0x0048a9d0|TTradeCluster::~TTradeCluster|folded_symbol_group
+0x005885f0|0x0048a9d0|thunk_DestructTViewBaseState_005885F0|folded_symbol_group
+0x00588b50|0x0048a9d0|thunk_DestructTViewBaseState|folded_symbol_group
+0x00589240|0x0048a9d0|thunk_DestructTViewBaseState|folded_symbol_group
+0x00589790|0x0048a9d0|thunk_DestructTViewBaseState|folded_symbol_group
+0x0058a000|0x0048a9d0|thunk_DestructTViewBaseState|folded_symbol_group
+0x0058a5f0|0x0048a9d0|thunk_DestructTViewBaseState|folded_symbol_group
+0x0058abd0|0x0048a9d0|thunk_DestructTViewBaseState|folded_symbol_group
+0x0058af60|0x0048a9d0|thunk_DestructTViewBaseState_0058AF60|folded_symbol_group
+0x0058b440|0x0048f250|TCivilianButton::~TCivilianButton|folded_symbol_group
+0x0058b6c0|0x0048f250|THQButton::~THQButton|folded_symbol_group
+0x0058ba90|0x0048f250|TPlacard::~TPlacard|folded_symbol_group
+0x0058bf30|0x0048f250|TArmyPlacard::~TArmyPlacard|folded_symbol_group
+0x0058c310|0x0048a9d0|TNumberedArrowButton::~TNumberedArrowButton|folded_symbol_group
+0x0058c930|0x0048f250|TCombatReportView::~TCombatReportView|folded_symbol_group
+0x0058df40|0x0048a9d0|TArmyToolbar::~TArmyToolbar|folded_symbol_group
+0x0058e420|0x0048a9d0|TStratReportView::~TStratReportView|folded_symbol_group
+0x0058eb00|0x0048a9d0|TCivToolbar::~TCivToolbar|folded_symbol_group
+0x00590c90|0x0048f250|TCivReport::~TCivReport|folded_symbol_group
+0x00591600|0x0048f250|TArmyInfoView::~TArmyInfoView|folded_symbol_group
+0x00591ef0|0x0048f250|TTransportPicture::~TTransportPicture|folded_symbol_group
+0x00592960|0x0048f250|TWarningView::~TWarningView|folded_symbol_group
+0x00596a60|0x0048f250|TMapUberPicture::~TMapUberPicture|folded_symbol_group
+0x0059a420|0x0048a9d0|TMiniMapView::~TMiniMapView|folded_symbol_group
+0x005a4770|0x0059f7f0|TArmyBattle::ConstructTArmyBattleBaseState|folded_symbol_group
+0x005a8410|0x0048a9d0|TTacticalBattleView::~TTacticalBattleView|folded_symbol_group
+0x005ad140|0x0048a9d0|TTacNavyToolbar::~TTacNavyToolbar|folded_symbol_group
+0x005b1230|0x0048a9d0|TTechItemView::~TTechItemView|folded_symbol_group
+0x005b2800|0x0048a9d0|TGameSetupDialog::~TGameSetupDialog|folded_symbol_group
+0x005b2930|0x0048a9d0|TMapEditCluster::~TMapEditCluster|folded_symbol_group
+0x005b2a60|0x0048a9d0|TMinorTradeBidsDialog::~TMinorTradeBidsDialog|folded_symbol_group
+0x005b2d60|0x0048a9d0|TRelationshipDialog::~TRelationshipDialog|folded_symbol_group
+0x005b33c0|0x0048a9d0|TMinorRelationshipDialog::~TMinorRelationshipDialog|folded_symbol_group
+0x005b3ba0|0x0048a9d0|TGPTreatyDialog::~TGPTreatyDialog|folded_symbol_group
+0x005b4050|0x0048a9d0|TMinorTreatyDialog::~TMinorTreatyDialog|folded_symbol_group
+0x005b4680|0x0048a9d0|TAutomatedPlayDialog::~TAutomatedPlayDialog|folded_symbol_group
+0x005b5030|0x004904d0|TMyNumberText::~TMyNumberText|folded_symbol_group
+0x005b5240|0x004904d0|TPictureNumberText::~TPictureNumberText|folded_symbol_group
+0x005b5360|0x0048fc30|TPictureText::~TPictureText|folded_symbol_group
+0x005b5480|0x0048fc30|TMyStaticText::~TMyStaticText|folded_symbol_group
+0x005b5630|0x0048fc30|TDropShadowText::~TDropShadowText|folded_symbol_group
+0x005b5990|0x004904d0|TDropShadowNumberText::~TDropShadowNumberText|folded_symbol_group
+0x005b5c90|0x0048fc30|TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree|folded_symbol_group
+0x005b6a60|0x0048fc30|TNoHiliteText::~TNoHiliteText|folded_symbol_group
+0x005ba220|0x00601bdd|thunk_DestructCObArray|folded_symbol_group
+0x005ba780|0x0048f250|TTradeScreenPicture::~TTradeScreenPicture|folded_symbol_group
+0x005bac30|0x0048f250|TDealBookPicture::~TDealBookPicture|folded_symbol_group
+0x005bd1d0|0x0048a9d0|TTradeOfferNationView::~TTradeOfferNationView|folded_symbol_group
+0x005bdb20|0x0048a9d0|TTradeBidNationView::~TTradeBidNationView|folded_symbol_group
+0x005be5e0|0x0048f250|TOfferDeskPicture::~TOfferDeskPicture|folded_symbol_group
+0x005c1b70|0x0048a9d0|TTradeTotalsView::~TTradeTotalsView|folded_symbol_group
+0x00607706|0x00608257|CWnd::CWnd|folded_symbol_group
+0x00607744|0x00608257|CWnd::CWnd_00607744|folded_symbol_group
+0x00607782|0x00608257|CWnd::CWnd_00607782|folded_symbol_group
+0x006077c0|0x00608257|CWnd::CWnd_006077C0|folded_symbol_group
+0x006244a3|0x0062409a|CThreadLocalObject|folded_symbol_group

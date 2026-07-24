@@ -29,7 +29,7 @@ from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file
 from tools.common.report_score import effective_matching
 from tools.stubgen import compute_stub_rows
-from tools.common.template_aliases import load_aliases
+from tools.common.template_aliases import CLASS_DUPLICATE_EMISSION, load_aliases
 
 FUNCTION_ROW_TYPE = "fun"
 REPORT_CACHE_VERSION = 1
@@ -234,7 +234,11 @@ def parse_roadmap_counts(path: Path) -> dict[str, int]:
     # recognized duplicate body, not unported work -- the recomp legitimately
     # emits one copy of the instantiation. Aliases whose canonical is still
     # unpaired keep counting as original-only (the canonical is the work item).
-    aliases, alias_errors = load_aliases()
+    # Restricted to the duplicate_emission class: a folded_symbol_group island
+    # still needs its own claim (the leaf-class dtor marker), so it stays
+    # original-only until claimed.
+    aliases, alias_errors = load_aliases(
+        equivalence_class=CLASS_DUPLICATE_EMISSION)
     for err in alias_errors:
         print(f"WARNING template_aliases.csv: {err}")
     recognized = {
