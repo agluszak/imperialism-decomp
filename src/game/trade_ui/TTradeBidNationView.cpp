@@ -19,9 +19,6 @@ TTradeBidNationView::~TTradeBidNationView() {}
 
 IMPLEMENT_DYNCREATE(TTradeBidNationView, TView)
 
-// NOOP: verified empty in original 0x005bdb73 (no standalone TTradeBidNationView::TTradeBidNationView body exists: CreateObject 0x005bdb40 inlines this default ctor, calling the TView base ctor directly at that site)
-TTradeBidNationView::TTradeBidNationView() {}
-
 // FUNCTION: IMPERIALISM 0x005bdc20
 void TTradeBidNationView::Draw(RECT* rectBuffer) {
   UpdatePaletteIndexWithDefaultFallback(0x10);

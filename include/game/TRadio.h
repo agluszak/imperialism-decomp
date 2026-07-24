@@ -9,7 +9,8 @@ class TRadio : public TCtlMgr {
 public:
   DECLARE_DYNCREATE(TRadio)
 
-  TRadio();
+  TRadio() : TCtlMgr() {}
+
   virtual ~TRadio() override; // slot 0x01 (scalar deleting destructor 0x48edd0)
 };
 

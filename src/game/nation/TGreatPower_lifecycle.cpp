@@ -192,10 +192,6 @@ TGreatPower::TGreatPower()
   }
 }
 
-TGreatPower::TGreatPower(int arg1, int arg2) {
-  InitializeNationStateRuntimeSubsystems(arg1, arg2);
-}
-
 // FUNCTION: IMPERIALISM 0x004d8bc0
 void TGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {}
 
@@ -213,7 +209,7 @@ short TGreatPower::GetDiplomacyCounterA2(void) {
 // TGreatPower::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004d8cc0
-void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
+void TGreatPower::IGreatPower(int arg1, int arg2) {
   this->InitializeNationStateIdentityAndOwnedRegionList(static_cast<NationSlot>(arg1));
 
   TSimMgr* localizationRuntime = g_pSimMgr;
@@ -228,7 +224,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
 
   TCity* cityModel = new TCity();
   if (cityModel != 0) {
-    cityModel->InitializeCityProductionState(this);
+    cityModel->ICity(this);
   }
   this->city = cityModel;
 
@@ -252,7 +248,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
 
   if (this->diplomacyEligibilityA0 != 0) {
     TForeignMinister* foreignMinister = new TForeignMinister();
-    foreignMinister->InitializeStateAndCounters(this);
+    foreignMinister->IForeignMinister(this);
     this->foreignMinister = foreignMinister;
 
     TCityInteriorMinister* interiorMinister = new TCityInteriorMinister();
@@ -464,7 +460,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
       TMinister* foreignMinister = this->foreignMinister;
       if (foreignMinister == 0) {
         TForeignMinister* created = new TForeignMinister();
-        created->InitializeStateAndCounters(this);
+        created->IForeignMinister(this);
         this->foreignMinister = created;
         foreignMinister = created;
       }

@@ -17,7 +17,7 @@ public:
   virtual void DoPostCreate(int arg) override;            // slot 0x37 0x5ad3a0
   virtual void Scroll(MapScrollEdgeMaskStorage edgeMask) override; // slot 0x74 0x45d3b0
 
-  TTacMapUberPicture();
+  TTacMapUberPicture() : tacticalBattleView94(nullptr) {}
 
   // Tactical 'DLOG' child resolved by DoPostCreate. Scroll forwards
   // the edge mask to its slot 0x6b

@@ -891,7 +891,7 @@ public:
   // Marks field6 ready and, on first call (g_pStrategicMapViewSystem->atlas668 still
   // null), tail-calls TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches to
   // build it. 0x0050e4e0, __thiscall.
-  void InitializeGlobalMapState();
+  void IMapMgr();
 
   TMapMgr();
 };

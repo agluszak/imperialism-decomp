@@ -21,9 +21,6 @@ TTechHistoryView::~TTechHistoryView() {}
 
 IMPLEMENT_DYNCREATE(TTechHistoryView, TView)
 
-// NOOP: verified empty in original 0x005b2263 (no standalone TTechHistoryView::TTechHistoryView body exists: CreateObject 0x005b2230 inlines this default ctor, calling the TView base ctor directly at that site)
-TTechHistoryView::TTechHistoryView() {}
-
 // FUNCTION: IMPERIALISM 0x005b22c0
 void TTechHistoryView::PopulateTechHistory(short techId) {
   COLORREF mainStyle = 0;
@@ -50,7 +47,7 @@ void TTechHistoryView::PopulateTechHistory(short techId) {
   int offset[2] = {0, 0};
   int size[2] = {scrollView->frameWidth34 - 0x19, frameHeight38};
   CRect zeroRect(0, 0, 0, 0);
-  descText->InitializeDeluxeText(scrollView, offset, size, &zeroRect, &style, -2);
+  descText->IDeluxeText(scrollView, offset, size, &zeroRect, &style, -2);
   descText->textColor98 = mainStyle;
   descText->SetTextFromUiStringResourceId(static_cast<short>(techId + 0x8fc));
 

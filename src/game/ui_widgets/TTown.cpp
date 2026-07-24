@@ -34,7 +34,7 @@ static void SwapAdjacentBytePairs(unsigned char* bytes, int pairCount) {
 
 IMPLEMENT_DYNCREATE(TTown, TObject)
 
-// Bare vptr-write constructor; all field state comes from InitializeTownMarker.
+// Bare vptr-write constructor; all field state comes from ITown.
 // FUNCTION: IMPERIALISM 0x005b6c60
 TTown::TTown() {}
 
@@ -45,8 +45,7 @@ TTown::TTown() {}
 TTown::~TTown() {}
 
 // FUNCTION: IMPERIALISM 0x005b6cd0
-void TTown::InitializeTownMarker(const char* markerName, short tileIndex, char enabledFlag,
-                                 short ownerNation) {
+void TTown::ITown(const char* markerName, short tileIndex, char enabledFlag, short ownerNation) {
   strcpy(this->name, markerName);
   this->ownerNation1c = ownerNation;
   this->tileIndex14 = tileIndex;

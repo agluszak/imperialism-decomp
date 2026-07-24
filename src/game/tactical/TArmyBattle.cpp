@@ -92,11 +92,9 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
   }
 
   TArmyPlayer* ourPlayer = new TArmyPlayer();
-  ourPlayer->InitializeTacticalSideFromArmyUnitList(ourStack, 1, ourSideWatchFlag,
-                                                    ourStack->categoryFlag8);
+  ourPlayer->IArmyPlayer(ourStack, 1, ourSideWatchFlag, ourStack->categoryFlag8);
   TArmyPlayer* enemyPlayer = new TArmyPlayer();
-  enemyPlayer->InitializeTacticalSideFromArmyUnitList(enemyStack, 0, enemySideWatchFlag,
-                                                      enemyStack->categoryFlag8);
+  enemyPlayer->IArmyPlayer(enemyStack, 0, enemySideWatchFlag, enemyStack->categoryFlag8);
   BuildTacticalBattleStateFromBothSides(ourPlayer, enemyPlayer);
 
   battleSiteIndex38 = battleSiteIndex;
@@ -205,13 +203,12 @@ void TArmyBattle::ReadFrom(TStream* stream) {
 
   // Rebuild the two combatant stacks and re-add every source unit to its side.
   TArmyStack* ourBattleStack = new TArmyStack();
-  ourBattleStack->InitializeSideAndTile(static_cast<char>(ourNationIndex),
-                                        static_cast<short>(ourNationCode),
-                                        static_cast<short>(ourTileIndex));
+  ourBattleStack->IArmyStack(static_cast<char>(ourNationIndex), static_cast<short>(ourNationCode),
+                             static_cast<short>(ourTileIndex));
   TArmyStack* enemyBattleStack = new TArmyStack();
-  enemyBattleStack->InitializeSideAndTile(static_cast<char>(enemyNationIndex),
-                                          static_cast<short>(enemyNationCode),
-                                          static_cast<short>(enemyTileIndex));
+  enemyBattleStack->IArmyStack(static_cast<char>(enemyNationIndex),
+                               static_cast<short>(enemyNationCode),
+                               static_cast<short>(enemyTileIndex));
   CIterator recordIter(recordList20);
   for (TArmyTacUnit* deployRecord = static_cast<TArmyTacUnit*>(recordIter.Reset());
        recordIter.More(); deployRecord = static_cast<TArmyTacUnit*>(recordIter.Advance())) {

@@ -9,9 +9,6 @@
 
 IMPLEMENT_DYNCREATE(TOrItemOrder, TItemOrder)
 
-// NOOP: verified empty in original 0x004b57b2 (no standalone TOrItemOrder::TOrItemOrder body exists: construction is fully inlined into CreateObject 0x004b57b0; that address is its operator-new call site)
-TOrItemOrder::TOrItemOrder() {}
-
 // SYNTHETIC: IMPERIALISM 0x004b5820
 // TOrItemOrder::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004b5850

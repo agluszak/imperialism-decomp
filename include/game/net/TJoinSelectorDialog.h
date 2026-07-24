@@ -16,7 +16,9 @@ public:
                        TEvent* event) override; // slot 0x0f 0x0054e9a0
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x54e730
 
-  TJoinSelectorDialog();
+  // NOOP: verified empty in original 0x0054e6c6 (no standalone TJoinSelectorDialog::TJoinSelectorDialog body exists: CreateObject 0x0054e690 inlines this default ctor, calling the TNoHilitePicture base ctor directly at that site)
+  TJoinSelectorDialog() {}
+
   void AddJoinableGameOptionEntry(const char* label, RuntimeSelectionRecord* record);
   RuntimeSelectionRecord* GetSelectedJoinableGame();
 };

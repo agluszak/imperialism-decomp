@@ -25,8 +25,7 @@ TCityTask::TCityTask() {}
 TCityTask::~TCityTask() {}
 
 // FUNCTION: IMPERIALISM 0x005add90
-void TCityTask::InitializeCityProductionQueueCommand(short citySlotType, TCity* owner,
-                                                     short amount) {
+void TCityTask::ICityTask(short citySlotType, TCity* owner, short amount) {
   ownerCity = owner;
   citySlotIndex = citySlotType;
   remainingAttempts = 4;

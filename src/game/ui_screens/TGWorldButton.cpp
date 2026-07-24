@@ -25,8 +25,8 @@ TGWorldButton::TGWorldButton() {
 TGWorldButton::~TGWorldButton() {}
 
 // FUNCTION: IMPERIALISM 0x005721b0
-void TGWorldButton::InitializeWithBitmapResource(TView* panel, int* offsetLayout, int* sizeLayout,
-                                                 unsigned short bitmapResourceId) {
+void TGWorldButton::IGWorldButton(TView* panel, int* offsetLayout, int* sizeLayout,
+                                  unsigned short bitmapResourceId) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 4, 4, 0);
   field88 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(bitmapResourceId);
 }

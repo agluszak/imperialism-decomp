@@ -436,7 +436,7 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
 
     if (g_pSimMgr->multiplayerSessionRole != 2) {
       TNextTradeCommand* command = new TNextTradeCommand();
-      command->InitializeRangePairFromDiplomacyConstants();
+      command->INextTradeCommand();
       g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
     }
   } else {

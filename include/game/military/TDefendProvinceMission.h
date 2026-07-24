@@ -9,8 +9,12 @@ class TDefendProvinceMission : public TArmyMission {
 public:
   virtual ~TDefendProvinceMission() override; // slot 0x01 dtor 0x00535800 / ??_G 0x005357d0
 public:
-  TDefendProvinceMission();
-  TDefendProvinceMission(int nodeKey);
+  // Default constructor
+  TDefendProvinceMission() : TArmyMission() {}
+
+  // Delegates to TArmyMission(nodeKey) and stamps this class's vtable; inlined into the
+  // mission factory (TMission::CreateMission case 3, param_4 == 0), no standalone address.
+  TDefendProvinceMission(int nodeKey) : TArmyMission(nodeKey) {}
 
   virtual void Initialize() override; // slot 0x0c (TMission) 0x53eff0
   virtual void

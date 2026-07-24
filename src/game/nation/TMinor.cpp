@@ -71,7 +71,7 @@ TMinor::TMinor() {}
 // TMinor::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004e3830
-void TMinor::InitializeSecondaryNationStateAndSelectHomeTile(NationSlot nationSlot) {
+void TMinor::IMinor(NationSlot nationSlot) {
   // Constructed and destroyed unused in the original (EH state 0) -- kept for the
   // matching EH frame.
   CString unusedText;
@@ -1031,7 +1031,7 @@ void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
   }
 
   TTown* marker = new TTown();
-  marker->InitializeTownMarker("", this->homeTileIndex, 1, static_cast<short>(nationId));
+  marker->ITown("", this->homeTileIndex, 1, static_cast<short>(nationId));
   marker->activeFlag4f = 1;
   g_pGlobalMapState->SetTileTransportFlags(static_cast<short>(this->homeTileIndex), 0x15);
   TGreatPower* targetNation = g_apNationStates[nationId];

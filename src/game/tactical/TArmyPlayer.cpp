@@ -86,8 +86,7 @@ TArmyPlayer::~TArmyPlayer() {}
 IMPLEMENT_DYNCREATE(TArmyPlayer, TTacticalPlayer)
 
 // FUNCTION: IMPERIALISM 0x0059b1b0
-void TArmyPlayer::InitializeTacticalSideFromArmyUnitList(TArmyStack* stack, int isOurSide,
-                                                         char watchFlag, int nationIndex) {
+void TArmyPlayer::IArmyPlayer(TArmyStack* stack, int isOurSide, char watchFlag, int nationIndex) {
   // Scatter-init of the side state, in the original store order.
   // The original only reads the low byte of `isOurSide` (a char/BOOL param).
   isOurSideFlagC = static_cast<char>(isOurSide);
@@ -115,7 +114,7 @@ void TArmyPlayer::InitializeTacticalSideFromArmyUnitList(TArmyStack* stack, int 
   }
   while (unit != 0) {
     TArmyTacUnit* record = new TArmyTacUnit();
-    record->InitializeFromMilitaryUnit(static_cast<TMilitaryUnit*>(unit));
+    record->IArmyTacUnit(static_cast<TMilitaryUnit*>(unit));
     unitList4->AddTail(record);
     if (static_cast<char>(isOurSide) == 0) {
       record->selectedFlag18 = 1; // set only for the enemy side (isOurSide == 0)

@@ -81,7 +81,7 @@ public:
   // Re-initializes the stack for one tactical-battle side: zeroes field4/field6/fieldA/
   // fieldC and stores the owner nation index, owner nation code, and originating tile.
   // 0x004a7770, __thiscall, ret 0xc.
-  void InitializeSideAndTile(char ownerNationIndex, short ownerNationCode, short tileIndex);
+  void IArmyStack(char ownerNationIndex, short ownerNationCode, short tileIndex);
   // Pushes a unit node at the head of the embedded chain (alloc-failure assert via
   // UArmyMgr.cpp line 0xbeb) and bumps the fieldA unit count. 0x004a7b20.
   void AddUnitToChainHead(TUnit* unit);

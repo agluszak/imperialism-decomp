@@ -17,8 +17,8 @@ public:
                            unsigned char fRefreshNow) override; // slot 0x70 0x572200
 
   TGWorldButton();
-  void InitializeWithBitmapResource(TView* panel, int* offsetLayout, int* sizeLayout,
-                                    unsigned short bitmapResourceId);
+  void IGWorldButton(TView* panel, int* offsetLayout, int* sizeLayout,
+                     unsigned short bitmapResourceId);
 
   // Source-strip column offset (in pixels): shifted by +/-frameWidth34 on each
   // HiliteState toggle to select the enabled/disabled frame

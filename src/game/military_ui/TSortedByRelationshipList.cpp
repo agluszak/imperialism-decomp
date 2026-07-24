@@ -14,7 +14,7 @@ IMPLEMENT_DYNCREATE(TSortedByRelationshipList, TSortedPtrList)
 TSortedByRelationshipList::TSortedByRelationshipList() : TSortedPtrList() {}
 
 // FUNCTION: IMPERIALISM 0x004ee5c0
-void TSortedByRelationshipList::InitializeRelationshipRecordSize() {
+void TSortedByRelationshipList::ISortedByRelationshipList() {
   recordSize14 = 4;
 }
 

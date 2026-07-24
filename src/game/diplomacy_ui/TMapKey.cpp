@@ -71,7 +71,7 @@ void TMapKey::DoPostCreate(int arg) {
     RECT emptyRect = {0, 0, 0, 0};
     CRect zeroRect(&emptyRect);
     int offsetXY[2] = {legendX[i] - baseX, static_cast<short>(legendY[i] - baseY - 0xf)};
-    legendText->InitializeDeluxeText(this, offsetXY, sizeXY, &zeroRect, &style, -2);
+    legendText->IDeluxeText(this, offsetXY, sizeXY, &zeroRect, &style, -2);
     legendText->UpdateTextEntrySharedStringAndMaybeNotify(&label, 0);
     legendText->SetEnabled(0, 0);
     legendText->controlTag = kControlTagNam0 + i; // 'nam0'-'nam6'

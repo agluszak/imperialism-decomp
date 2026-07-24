@@ -18,9 +18,6 @@ TArmyCheckBox::~TArmyCheckBox() {}
 
 IMPLEMENT_DYNCREATE(TArmyCheckBox, TControl)
 
-// NOOP: verified empty in original 0x004a9f57 (no standalone TArmyCheckBox::TArmyCheckBox body exists: CreateObject 0x004a9f20 inlines this default ctor, calling the TControl base ctor directly at that site)
-TArmyCheckBox::TArmyCheckBox() {}
-
 // FUNCTION: IMPERIALISM 0x004a9fe0
 TArmyCheckBox::TArmyCheckBox(TView* panel, int* offsetLayout, int* sizeLayout, int unused1,
                              int unused2, TQuickDrawSurfaceContext* surfaceContext90Value,

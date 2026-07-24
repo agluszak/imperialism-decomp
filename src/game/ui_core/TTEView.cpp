@@ -18,15 +18,13 @@ TTEView::~TTEView() {}
 IMPLEMENT_DYNCREATE(TTEView, TStaticText)
 
 // FUNCTION: IMPERIALISM 0x00486050
-void TTEView::InitializeTextEntryView(int unusedA, TView* panel, int* offsetLayout, int* sizeLayout,
-                                      int layoutParam5, int layoutParam6, RECT* insetRect,
-                                      TextStyle* style, short styleWord90, int unusedB,
-                                      int unusedC) {
+void TTEView::ITEView(int unusedA, TView* panel, int* offsetLayout, int* sizeLayout,
+                      int layoutParam5, int layoutParam6, RECT* insetRect, TextStyle* style,
+                      short styleWord90, int unusedB, int unusedC) {
   (void)unusedA;
   (void)unusedB;
   (void)unusedC;
-  InitializeTextEntryBaseAndOptionalStringResource(panel, offsetLayout, sizeLayout, layoutParam5,
-                                                   layoutParam6, -1, 0);
+  IStaticText(panel, offsetLayout, sizeLayout, layoutParam5, layoutParam6, -1, 0);
   contentInsets68.left = insetRect->left;
   contentInsets68.top = insetRect->top;
   contentInsets68.right = insetRect->right;

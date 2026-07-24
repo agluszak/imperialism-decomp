@@ -2239,7 +2239,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
 // FUNCTION: IMPERIALISM 0x004dfa20
 void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
   TTown* marker = new TTown();
-  marker->InitializeTownMarker("Frog City", 0, 1, this->nationSlot);
+  marker->ITown("Frog City", 0, 1, this->nationSlot);
   static_cast<TCity*>(receiver)->SetSelectedTownMarker(marker);
   marker->activeFlag4f = 1;
   this->townMarkerList->AddTail(marker);
@@ -2273,7 +2273,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   }
   this->homeTileIndex = static_cast<short>(homeTileIndex);
   TTown* marker = new TTown();
-  marker->InitializeTownMarker("FrogCity", homeTileIndex, 1, this->nationSlot);
+  marker->ITown("FrogCity", homeTileIndex, 1, this->nationSlot);
   static_cast<TCity*>(receiver)->SetSelectedTownMarker(marker);
   marker->activeFlag4f = 1;
   this->townMarkerList->AddTail(marker);
@@ -3729,7 +3729,7 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(TZone* zone) {
 
   if (activeCandidateCount == 0) {
     TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList();
-    relationshipList->InitializeRelationshipRecordSize();
+    relationshipList->ISortedByRelationshipList();
     g_pDiplomacyTurnStateManager->BuildRelationshipListSlot88(this->nationSlot, 1,
                                                               relationshipList);
     selectedCandidateIndex =

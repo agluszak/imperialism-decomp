@@ -283,10 +283,10 @@ BOOL ImperialismApp::InitInstance() {
     g_pImperialismApp = &theApp;
 
     g_pGlobalUiRootController = new TAmbitApplication();
-    g_pGlobalUiRootController->InitializeGlobalRuntimeSystems();
+    g_pGlobalUiRootController->IAmbitApplication();
 
     g_pSfxPlaybackSystem = new TSoundPlayer();
-    g_pSfxPlaybackSystem->InitializeSoundSubsystemAndAllocateChannelLists(0xf);
+    g_pSfxPlaybackSystem->ISoundPlayer(0xf);
 
     CIncludeView* mainView = GetMainViewHostFromActiveThread();
     mainView->SetUiRuntimeContextAndActivateMain(g_pDisplayMgr->activeDialog);

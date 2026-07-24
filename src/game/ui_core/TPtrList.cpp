@@ -7,9 +7,6 @@
 
 IMPLEMENT_DYNCREATE(TPtrList, TSortedPtrList)
 
-// NOOP: verified empty in original 0x00488433 (no standalone TPtrList::TPtrList body exists: CreateObject 0x00488400 inlines this default ctor, calling the CPtrArray base ctor directly at that site)
-TPtrList::TPtrList() {}
-
 void* TPtrList::GetTPtrListClassNamePointer() {
   return RUNTIME_CLASS(TPtrList);
 }

@@ -13,13 +13,12 @@ void TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel(int* offsetLayout,
                                                               short value, int param4) {
   int valueFieldSize[2] = {0x20, 0x16};
   TNumberText* valueField = new TNumberText();
-  valueField->InitializeNumberText(this, offsetLayout, valueFieldSize, value, 0xffff8ad0, 3000);
+  valueField->INumberText(this, offsetLayout, valueFieldSize, value, 0xffff8ad0, 3000);
 
   int captionSize[2] = {0x80, 0x18};
   int captionOffset[2] = {offsetLayout[0] + 0xac, offsetLayout[1]};
   TStaticText* caption = new TStaticText();
-  caption->InitializeTextEntryBaseAndOptionalStringResource(this, captionOffset, captionSize, 5, 5,
-                                                            static_cast<short>(field60), 0x18);
+  caption->IStaticText(this, captionOffset, captionSize, 5, 5, static_cast<short>(field60), 0x18);
 }
 // SYNTHETIC: IMPERIALISM 0x004b19b0
 // TGPCheater::CreateObject
@@ -34,9 +33,6 @@ TGPCheater::~TGPCheater() {}
 
 IMPLEMENT_DYNCREATE(TGPCheater, TCheater)
 
-// NOOP: verified empty in original 0x004b19e3 (no standalone TGPCheater::TGPCheater body exists: CreateObject 0x004b19b0 inlines this default ctor, calling the TView base ctor directly at that site)
-TGPCheater::TGPCheater() {}
-
 // FUNCTION: IMPERIALISM 0x004b1a90
 void TGPCheater::ConstructTGPCheaterBaseState(TView* panel) {
   ConstructTCheaterBaseState(panel, 0x2728);
@@ -44,8 +40,7 @@ void TGPCheater::ConstructTGPCheaterBaseState(TView* panel) {
   int nameOffset[2] = {0, 0};
   int nameSize[2] = {4, 0x20};
   TStaticText* nameCaption = new TStaticText();
-  nameCaption->InitializeTextEntryBaseAndOptionalStringResource(this, nameOffset, nameSize, 5, 5,
-                                                                -1, 0);
+  nameCaption->IStaticText(this, nameOffset, nameSize, 5, 5, -1, 0);
 
   int rowLayout[2];
   rowLayout[0] = 0;

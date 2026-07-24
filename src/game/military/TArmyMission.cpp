@@ -36,16 +36,6 @@ short TArmyMission::GetPresentLocation() const {
   return presentLocation14;
 }
 
-// Default constructor
-TArmyMission::TArmyMission() : TMission() {
-  presentLocation14 = 0;
-  padding_16 = 0;
-  orderListAt18 = nullptr;
-  for (int i = 0; i < 5; ++i) {
-    requiredEquipageByClass[i] = 0.0f;
-  }
-}
-
 // SYNTHETIC: IMPERIALISM 0x0053bfb0
 // TArmyMission::CreateObject
 

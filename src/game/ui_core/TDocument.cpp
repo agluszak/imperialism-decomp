@@ -12,9 +12,6 @@ TDocument::~TDocument() {}
 
 IMPLEMENT_DYNCREATE(TDocument, TObject)
 
-// NOOP: verified empty in original 0x00486322 (no standalone TDocument::TDocument body exists: construction is fully inlined into CreateObject 0x00486320; that address is its operator-new call site)
-TDocument::TDocument() {}
-
 // FUNCTION: IMPERIALISM 0x00486530
 void TDocument::DoRead(ArchiveStreamAdapter*, unsigned char) {}
 

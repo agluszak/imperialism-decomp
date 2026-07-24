@@ -36,12 +36,6 @@ static void ZeroShipOrderTrackingSlots(TShipOrder* order) {
   *reinterpret_cast<short*>(cursor) = 0;
 }
 
-TShipOrder::TShipOrder() : TProductionOrder() {
-  // Fields are inherited from TProductionOrder, whose ctor already zero-inits
-  // them; this extra clear matches the original's belt-and-suspenders reset
-  // of the tracking-slot array at construction.
-  ZeroShipOrderTrackingSlots(this);
-}
 // SYNTHETIC: IMPERIALISM 0x004b8470
 // TShipOrder::CreateObject
 

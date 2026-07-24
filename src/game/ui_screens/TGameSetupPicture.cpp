@@ -96,7 +96,7 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
           g_pGameFlowState = 0;
         }
         g_pGlobalMapState = new TMapMgr();
-        g_pGlobalMapState->InitializeGlobalMapState();
+        g_pGlobalMapState->IMapMgr();
       }
       g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
       g_pGlobalMapState->AllocateAndResetTerrainAndCityScoreTables();

@@ -113,7 +113,13 @@ public:
   s16 ingotTileIndex;
   char pad_32[0x02];
 
-  TTaskForce();
+  TTaskForce()
+      : aggression(1), shipOrders(0), target(), shipList(nullptr), flagship(nullptr),
+        location(nullptr), nation(-1), previousForce(nullptr), nextForce(nullptr),
+        ingotTileIndex(-1) {
+    memset(shipCountsByToolbarSlot, 0, sizeof(shipCountsByToolbarSlot));
+  }
+
   // Real constructor used when a task-force order entry is created for a specific
   // context/nation slot (CreateTaskForceFromNavyOrdersForNationIfEligible 0x560a78,
   // TNavyMission::CombineForce 0x536dce). `nationArg` seeds nation.

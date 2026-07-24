@@ -21,9 +21,6 @@ TItemBoyView::~TItemBoyView() {}
 
 IMPLEMENT_DYNCREATE(TItemBoyView, TView)
 
-// NOOP: verified empty in original 0x004af943 (no standalone TItemBoyView::TItemBoyView body exists: CreateObject 0x004af910 inlines this default ctor, calling the TView base ctor directly at that site)
-TItemBoyView::TItemBoyView() {}
-
 // FUNCTION: IMPERIALISM 0x004af9f0
 void TItemBoyView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws

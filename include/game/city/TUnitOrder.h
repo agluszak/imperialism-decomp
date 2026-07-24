@@ -34,12 +34,12 @@ public:
   virtual void Produce() override; // slot 0x0d 0x4b73b0
   virtual void FillOrderSheet(OrderSheet* orderSheet,
                               short quantity) override; // slot 0x10 0x4b7320
-  virtual void InitializeCityRecruitmentOrderContext(
-      TCity* city, short nEntryId, short nPrimaryInputResourceId, short nPrimaryInputPerUnit,
-      short nSecondaryInputResourceId, short nSecondaryInputPerUnit, short nCashCostPerUnit,
-      short nWorkforceMode, byte bSpecialistMode); // slot 0x11 0x4b6fe0
+  virtual void IUnitOrder(TCity* city, short nEntryId, short nPrimaryInputResourceId,
+                          short nPrimaryInputPerUnit, short nSecondaryInputResourceId,
+                          short nSecondaryInputPerUnit, short nCashCostPerUnit,
+                          short nWorkforceMode, byte bSpecialistMode); // slot 0x11 0x4b6fe0
   // TUnitOrder adds 0x10 bytes (0x4c..0x5c) over TProductionOrder's 0x4c base. All are
-  // written by the slot-0x11 init InitializeCityRecruitmentOrderContext (0x004b6fe0),
+  // written by the slot-0x11 init IUnitOrder (0x004b6fe0),
   // so the roles are that init's own named parameters (recruit/training recipe: two
   // input resources with per-unit rates, a cash cost, a workforce mode and a
   // specialist flag).
@@ -52,7 +52,8 @@ public:
   unsigned char specialistMode;   // 0x58 — bSpecialistMode
   unsigned char pad59[0x5c - 0x59];
 
-  TUnitOrder();
+  // NOOP: verified empty in original 0x004b6f22 (no standalone TUnitOrder::TUnitOrder body exists: construction is fully inlined into CreateObject 0x004b6f20; that address is its operator-new call site)
+  TUnitOrder() {}
 };
 
 ASSERT_SIZE(TUnitOrder, 0x5c);

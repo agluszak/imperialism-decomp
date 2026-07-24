@@ -21,10 +21,6 @@ TCheater::~TCheater() {}
 // TCheater::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TCheater, TView)
-
-// NOOP: verified empty in original 0x004b13d3 (no standalone TCheater::TCheater body exists: CreateObject 0x004b13a0 inlines this default ctor, calling the TView base ctor directly at that site)
-TCheater::TCheater() {}
-
 // FUNCTION: IMPERIALISM 0x004b14a0
 void TCheater::ConstructTCheaterBaseState(TView* panel, int unusedArg) {
   int frameOffset[2] = {0, 0};
@@ -33,8 +29,7 @@ void TCheater::ConstructTCheaterBaseState(TView* panel, int unusedArg) {
   InitializeUiResourceEntryFrameAndParent(0, panel, frameOffset, frameSize, 5, 5, 0);
 
   TStaticText* caption = new TStaticText();
-  caption->InitializeTextEntryBaseAndOptionalStringResource(this, frameSize, captionLayout, 5, 5,
-                                                            0x80, 1);
+  caption->IStaticText(this, frameSize, captionLayout, 5, 5, 0x80, 1);
 
   TButton* doneButton = new TButton();
   CString doneLabel("Done");

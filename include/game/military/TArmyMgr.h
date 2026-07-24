@@ -172,7 +172,7 @@ public:
   // pad must be 4 bytes short of its target to land the next field correctly.
   // +0x04 -- pointer to a TSortedPtrList of copied map-context action records (battle
   // markers etc.). Its recordSize14 is set to sizeof(MapContextActionRecord) == 0x268 by
-  // InitializeMapContextActionManager. Walked ordinally by the battle-report layout hook
+  // IArmyMgr. Walked ordinally by the battle-report layout hook
   // (0x4acb60).
   class TSortedPtrList* mapContextActionRecordList04;
   // +0x08 -- read by GetByteFlagAtOffset8 (0x4a6dd0, a bare `this+8` thiscall getter);
@@ -190,7 +190,7 @@ public:
   // ResolveNextMove as it walks pendingUnitPool0c.
   int nextStackOrdinal10;
   // +0x14/+0x18 -- static lookup-table pointers installed by
-  // InitializeMapContextActionManager (0x695448 / 0x695428); consumers not yet mapped.
+  // IArmyMgr (0x695448 / 0x695428); consumers not yet mapped.
   const void* staticTable14;
   const void* staticTable18;
   // +0x1c..+0x31b -- one entry per map tile (0x180 = 384 tiles, confirmed by
@@ -405,7 +405,7 @@ public:
   // body never reads it. 0x4a6e80, __thiscall.
   void AppendMapContextActionRecordAndResetWorkingFields(struct MapOrderBattleSnapshot* record,
                                                          int unusedArg2);
-  void InitializeMapContextActionManager();
+  void IArmyMgr();
 
   // Scans mapContextActionRecordList04 from its last entry down to the first for a
   // record whose nationIds[0] or nationIds[1] matches activeNationId; returns true on the

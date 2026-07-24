@@ -509,7 +509,7 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
       if (payloadTag != kControlTagStar) {   // 'star'
         if (payloadTag == kControlTagTown) { // 'town'
           TTown* town = new TTown();
-          town->InitializeTownMarker(g_szEmptyString, 0, 0, g_pSimMgr->GetActiveNationId());
+          town->ITown(g_szEmptyString, 0, 0, g_pSimMgr->GetActiveNationId());
           town->ReadFrom(stream);
           TTown* existing =
               g_pGlobalMapState->FindTownMarkerForTileByOwnerNation(town->tileIndex14);

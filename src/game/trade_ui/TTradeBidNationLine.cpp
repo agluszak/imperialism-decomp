@@ -14,9 +14,6 @@ TTradeBidNationLine::~TTradeBidNationLine() {}
 
 IMPLEMENT_DYNCREATE(TTradeBidNationLine, TLineData)
 
-// NOOP: verified empty in original 0x005bd983 (no standalone TTradeBidNationLine::TTradeBidNationLine body exists: CreateObject 0x005bd950 inlines this default ctor, calling the TLineData base ctor directly at that site)
-TTradeBidNationLine::TTradeBidNationLine() {}
-
 // FUNCTION: IMPERIALISM 0x005bda20
 void TTradeBidNationLine::InstallViews(TView* panel, int* offsetLayout) {
   TTradeBidNationView* view = new TTradeBidNationView();

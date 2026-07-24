@@ -31,9 +31,6 @@ TTacticalToolbar::~TTacticalToolbar() {}
 
 IMPLEMENT_DYNCREATE(TTacticalToolbar, TCluster)
 
-// NOOP: verified empty in original 0x005ac7b7 (no standalone TTacticalToolbar::TTacticalToolbar body exists: CreateObject 0x005ac780 inlines this default ctor, calling the TCluster base ctor directly at that site)
-TTacticalToolbar::TTacticalToolbar() {}
-
 // FUNCTION: IMPERIALISM 0x005ac840
 void TTacticalToolbar::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);

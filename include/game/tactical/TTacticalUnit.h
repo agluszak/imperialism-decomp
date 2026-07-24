@@ -67,7 +67,7 @@ public:
   // actionPoints28 from the virtual GetBaseActionPoints()) after a concrete derived
   // class (TArmyTacUnit/TNavyTacUnit) has already installed its own vtable. No
   // confirmed caller found yet (not reached via a direct xref). 0x5a5e30.
-  void InitializeTacticalUnitState();
+  void ITacticalUnit();
 };
 
 ASSERT_SIZE(TTacticalUnit, 0x34);

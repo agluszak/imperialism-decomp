@@ -15,9 +15,9 @@ struct TQuickDrawSurfaceContext;
 class TDisplayMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TDisplayMgr)
-  virtual ~TDisplayMgr() override;            // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override;               // slot 0x07 0x4fea60
-  virtual void InitializeWindowAndMBarSize(); // slot 0x0a 0x4fe840
+  virtual ~TDisplayMgr() override; // slot 0x01 (scalar deleting destructor)
+  virtual void Free() override;    // slot 0x07 0x4fea60
+  virtual void IDisplayMgr();      // slot 0x0a 0x4fe840
   virtual void MakeNewGWorld(TQuickDrawSurfaceContext*& outContext, short bitDepth,
                              const RECT& bounds);                           // slot 0x0b 0x4feab0
   virtual void ExamineGWorld();                                             // slot 0x0c 0x4feb80
@@ -48,7 +48,7 @@ public:
   short clipSnapshotEvent;  // +0x1c
   unsigned short field1e;   // +0x1e
   // Turn-order-navigation-dialog scratch list, constructed in
-  // InitializeWindowAndMBarSize as a real TPtrList -- not a TView
+  // IDisplayMgr as a real TPtrList -- not a TView
   // (bd d9p: the port previously typed this TView* and reinterpret_cast'd a bare
   // TSortedPtrList onto it, which made TDisplayMgr::Free's call resolve to TView's
   // 0x28-slot vtable entry instead of the list's; fixed to call the real list method).

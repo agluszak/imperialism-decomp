@@ -31,8 +31,8 @@ TTechItemView::~TTechItemView() {}
 IMPLEMENT_DYNCREATE(TTechItemView, TView)
 
 // FUNCTION: IMPERIALISM 0x005b12e0
-void TTechItemView::InitializeTechItem(TView* panel, int* offsetLayout, int* sizeLayout,
-                                       int nationSlot, int techId) {
+void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayout, int nationSlot,
+                                  int techId) {
   CString techName;
   CString yearText;
   CString labelText;
@@ -49,8 +49,7 @@ void TTechItemView::InitializeTechItem(TView* panel, int* offsetLayout, int* siz
     TUpDownPictureButton* descButton = new TUpDownPictureButton();
     int picOffset[2] = {0, 0};
     int picSize[2] = {0x40, 0x3f};
-    descButton->InitializePictureEntryBaseAndRefresh(this, picOffset, picSize, 5, 5,
-                                                     static_cast<short>(techId * 2 + 0x8ff));
+    descButton->IPicture(this, picOffset, picSize, 5, 5, static_cast<short>(techId * 2 + 0x8ff));
     descButton->SetState(1, 0);
     descButton->controlTag = kControlTagDesc; // 'desc'
     LoadUiStringByGroupAndIndexToControlObject(0x274f, 8, descButton);
@@ -69,7 +68,7 @@ void TTechItemView::InitializeTechItem(TView* panel, int* offsetLayout, int* siz
     TDeluxeText* titleControl = new TDeluxeText();
     int titleOffset[2] = {0x4d, 0};
     int titleSize[2] = {0x69, 0x3f};
-    titleControl->InitializeDeluxeText(this, titleOffset, titleSize, &zeroRect, &textStyle, -2);
+    titleControl->IDeluxeText(this, titleOffset, titleSize, &zeroRect, &textStyle, -2);
     titleControl->textColor98 = titleStyleFlags;
     titleControl->shadowTextColor9C = shadowStyleFlags;
     titleControl->dropShadowEnabledA0 = true;
@@ -86,7 +85,7 @@ void TTechItemView::InitializeTechItem(TView* panel, int* offsetLayout, int* siz
     TDeluxeText* descText = new TDeluxeText();
     int descOffset[2] = {0x127, 0};
     int descSize[2] = {0x10d, 0x3f};
-    descText->InitializeDeluxeText(this, descOffset, descSize, &zeroRect, &textStyle, -2);
+    descText->IDeluxeText(this, descOffset, descSize, &zeroRect, &textStyle, -2);
     descText->textColor98 = titleStyleFlags;
     descText->shadowTextColor9C = shadowStyleFlags;
     descText->dropShadowEnabledA0 = true;
@@ -101,7 +100,7 @@ void TTechItemView::InitializeTechItem(TView* panel, int* offsetLayout, int* siz
     TDeluxeText* dateControl = new TDeluxeText();
     int dateOffset[2] = {0xba, 0};
     int dateSize[2] = {0x53, 0x3f};
-    dateControl->InitializeDeluxeText(this, dateOffset, dateSize, &zeroRect, &textStyle, 1);
+    dateControl->IDeluxeText(this, dateOffset, dateSize, &zeroRect, &textStyle, 1);
     dateControl->textColor98 = titleStyleFlags;
     dateControl->shadowTextColor9C = shadowStyleFlags;
     dateControl->dropShadowEnabledA0 = true;
@@ -124,8 +123,7 @@ void TTechItemView::InitializeTechItem(TView* panel, int* offsetLayout, int* siz
     TTextPictureButton* buyButton = new TTextPictureButton();
     int buyOffset[2] = {0xba, 0x12};
     int buySize[2] = {0x53, 0x18};
-    buyButton->InitializeTextPictureButtonAndTextStyle(this, buyOffset, buySize, 0x8ff, &labelText,
-                                                       0xc, 0x2b6a, 0x2b68);
+    buyButton->ITextPictureButton(this, buyOffset, buySize, 0x8ff, &labelText, 0xc, 0x2b6a, 0x2b68);
     buyButton->SetState(1, 0);
     buyButton->controlTag = kControlTagPurc; // 'purc'
     LoadUiStringByGroupAndIndexToControlObject(0x274f, labelIndex, buyButton);
@@ -136,7 +134,7 @@ void TTechItemView::InitializeTechItem(TView* panel, int* offsetLayout, int* siz
     TDeluxeText* prereqControl = new TDeluxeText();
     int prereqOffset[2] = {0xbd, 0};
     int prereqSize[2] = {0x53, 0x3f};
-    prereqControl->InitializeDeluxeText(this, prereqOffset, prereqSize, &zeroRect, &textStyle, 1);
+    prereqControl->IDeluxeText(this, prereqOffset, prereqSize, &zeroRect, &textStyle, 1);
     prereqControl->textColor98 = titleStyleFlags;
     prereqControl->shadowTextColor9C = shadowStyleFlags;
     prereqControl->dropShadowEnabledA0 = true;

@@ -17,7 +17,7 @@ public:
                                                        int dispatchContext) override;
   virtual void HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) override;
 
-  TMapEditView();
+  TMapEditView() : reservedFlag364(0), editorActionMode368(0), editorActionValue36c(0) {}
 
   // Mac CodeWarrior identities. These are deliberately non-virtual helpers selected by
   // NormalClick/HandleMapClickByInteractionMode's editor-action switch.

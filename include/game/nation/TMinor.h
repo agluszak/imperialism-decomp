@@ -75,7 +75,7 @@ public:
   // map tiles, home tile selected (flagged tile, else a random valid candidate) with
   // its port zone ensured, and the per-slot diplomacy random thresholds and save
   // fields set from the 16-way nation-slot table. 0x4e3830, __thiscall, RET 4.
-  void InitializeSecondaryNationStateAndSelectHomeTile(NationSlot nationSlot);
+  void IMinor(NationSlot nationSlot);
 
 private:
   short needCurrentByType[0x17];

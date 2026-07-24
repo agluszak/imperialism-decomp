@@ -14,9 +14,6 @@ TSwapperDaddyView::~TSwapperDaddyView() {}
 
 IMPLEMENT_DYNCREATE(TSwapperDaddyView, TView)
 
-// NOOP: verified empty in original 0x004ac5f5 (no standalone TSwapperDaddyView::TSwapperDaddyView body exists: CreateObject 0x004ac5c0 inlines this default ctor, calling the TView base ctor directly at that site)
-TSwapperDaddyView::TSwapperDaddyView() {}
-
 // FUNCTION: IMPERIALISM 0x004ac6c0
 TView* TSwapperDaddyView::SelectSwapperItemByTag(int tag) {
   if (tag != selectedTag60) {

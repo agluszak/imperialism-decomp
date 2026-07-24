@@ -136,6 +136,13 @@ datacmp-gate:
 noop-gate:
   uv run python -m tools.workflow.check_empty_bodies --baseline config/baselines/empty_body_baseline.csv
 
+# Ratchet: no NEW constructor defined out-of-line without a claimed address. Such a ctor
+# cannot be inlined into subclass ctors / CreateObject bodies in other TUs, so VC5 emits a
+# CALL where the original absorbed the body. Read the caller before fixing -- bd nwdn.
+[group('gates')]
+ctor-placement-gate:
+  uv run python -m tools.workflow.check_ctor_placement
+
 # Report every empty-body finding (audit mode of the noop gate).
 # `just noop-audit [--kind empty_but_big|empty_unmarked|empty_unresolved]`
 [group('gates')]
@@ -349,7 +356,7 @@ source-gates:
 
 [private]
 [parallel]
-_source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-coverage-check scalar-type-audit-check fourcc-audit-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate cstring-gate cstring-ownership-audit-check dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate destructor-placement-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate stub-count-gate class-size-gate noop-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate shadow-stub-gate
+_source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-coverage-check scalar-type-audit-check fourcc-audit-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate cstring-gate cstring-ownership-audit-check dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate destructor-placement-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate stub-count-gate class-size-gate noop-gate ctor-placement-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate shadow-stub-gate
 
 # Cross-check modeled class sizes (ASSERT_SIZE) against the RTTI oracle's
 # m_nObjectSize. Report-only; pass --strict to fail on mismatches, or

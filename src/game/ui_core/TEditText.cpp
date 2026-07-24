@@ -40,9 +40,9 @@ TEditText::~TEditText() {
 }
 
 // FUNCTION: IMPERIALISM 0x004905e0
-void TEditText::InitializeEditText(TView* panel, int* offsetLayout, int* sizeLayout,
-                                   short maximumCharacterCount) {
-  InitializeTextEntryBaseAndOptionalStringResource(panel, offsetLayout, sizeLayout, 5, 5, -1, 0);
+void TEditText::IEditText(TView* panel, int* offsetLayout, int* sizeLayout,
+                          short maximumCharacterCount) {
+  IStaticText(panel, offsetLayout, sizeLayout, 5, 5, -1, 0);
   maxCharacterCount = maximumCharacterCount;
   SetEnable(1);
 }

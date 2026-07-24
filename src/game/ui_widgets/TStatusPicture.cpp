@@ -47,8 +47,8 @@ void TStatusPicture::DoPostCreate(int arg) {
       TPicture* picture = new TPicture();
       int offsetLayout[2] = {0x71, rowY};
       int sizeLayout[2] = {0x23, 0x34};
-      picture->InitializePictureEntryBaseAndRefresh(this, offsetLayout, sizeLayout, 5, 5,
-                                                    static_cast<short>(nationSlot + 0x10d7));
+      picture->IPicture(this, offsetLayout, sizeLayout, 5, 5,
+                        static_cast<short>(nationSlot + 0x10d7));
       picture->controlTag = pictureTag;
       rowY += 0x37;
       ++pictureTag;

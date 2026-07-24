@@ -87,7 +87,7 @@ TMapMgr::TMapMgr() : TObject(), cityScoreTable(0), scenarioTagText1c() {
 TMapMgr::~TMapMgr() {}
 
 // FUNCTION: IMPERIALISM 0x0050e4e0
-void TMapMgr::InitializeGlobalMapState() {
+void TMapMgr::IMapMgr() {
   field6 = 1;
   if (g_pStrategicMapViewSystem->atlas668 == 0) {
     g_pStrategicMapViewSystem->BuildStrategicMapRenderAtlasesAndTileMaskCaches();
@@ -2476,7 +2476,7 @@ int TMapMgr::QueueDepotConstructionOrder(StrategicTileIndex nTileIndex, short nN
     town->activeFlag4f = true;
   } else {
     town = new TTown();
-    town->InitializeTownMarker(static_cast<LPCSTR>(emptyName), nTileIndex, 0, nNationId);
+    town->ITown(static_cast<LPCSTR>(emptyName), nTileIndex, 0, nNationId);
 
     TSortedList* townMarkers = g_apNationStates[nNationId]->townMarkerList;
     if (townMarkers == 0) {
@@ -2510,7 +2510,7 @@ void TMapMgr::QueuePortConstructionOrder(StrategicTileIndex nTileIndex, short nN
     town->enabledFlag4d = true;
   } else {
     town = new TTown();
-    town->InitializeTownMarker(g_szEmptyString, nTileIndex, 1, nNationId);
+    town->ITown(g_szEmptyString, nTileIndex, 1, nNationId);
 
     TSortedList* townMarkers = g_apNationStates[nNationId]->townMarkerList;
     if (townMarkers == 0) {

@@ -11,7 +11,8 @@ public:
   DECLARE_DYNCREATE(TSwapperDaddyView)
   virtual ~TSwapperDaddyView() override; // slot 0x01 (scalar deleting destructor)
 
-  TSwapperDaddyView();
+  // NOOP: verified empty in original 0x004ac5f5 (no standalone TSwapperDaddyView::TSwapperDaddyView body exists: CreateObject 0x004ac5c0 inlines this default ctor, calling the TView base ctor directly at that site)
+  TSwapperDaddyView() {}
 
   // Selects the child control whose controlTag matches `tag`: lays the match at the origin
   // (visible) and every other child off-screen at (1000,1000), caches the tag, and returns

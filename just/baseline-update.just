@@ -25,6 +25,11 @@ stub-count-gate-update:
 datacmp-gate-update:
   uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/datacmp_baseline.csv" -- uv run python -m tools.workflow.check_datacmp_baseline --target "{{target}}" --build-dir "{{build_dir}}" --write-baseline
 
+# MUTATES: config/baselines/ctor_placement_baseline.txt (architecture-rule exception).
+[group('baseline-update')]
+ctor-placement-gate-update:
+  uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/ctor_placement_baseline.txt" -- uv run python -m tools.workflow.check_ctor_placement --write-baseline
+
 # MUTATES: config/baselines/empty_body_baseline.csv.
 [group('baseline-update')]
 noop-gate-update:

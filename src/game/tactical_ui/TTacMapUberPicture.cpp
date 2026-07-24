@@ -21,9 +21,6 @@ TTacMapUberPicture::~TTacMapUberPicture() {}
 // TTacMapUberPicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTacMapUberPicture, TMapUberUberPicture)
-
-TTacMapUberPicture::TTacMapUberPicture() : tacticalBattleView94(nullptr) {}
-
 // FUNCTION: IMPERIALISM 0x005ad3a0
 void TTacMapUberPicture::DoPostCreate(int arg) {
   TMapUberUberPicture::DoPostCreate(arg);

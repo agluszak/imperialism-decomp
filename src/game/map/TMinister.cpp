@@ -37,7 +37,7 @@ TMinister::TMinister() : ownerContextAt04(nullptr), field_8(0), skillIndexC(0) {
 TMinister::~TMinister() {}
 
 // FUNCTION: IMPERIALISM 0x0052ebf0
-void TMinister::InitializeBaseOrderArray(TGreatPower* ownerContext) {
+void TMinister::IMinister(TGreatPower* ownerContext) {
   this->ownerContextAt04 = ownerContext;
   this->field_8 = new TMinisterBaseOrderArray();
 }

@@ -48,7 +48,9 @@ public:
   // g_pActiveQuickDrawSurfaceContext elsewhere in Draw.
   TQuickDrawSurfaceContext* surfaceContext90;
 
-  TArmyCheckBox();
+  // NOOP: verified empty in original 0x004a9f57 (no standalone TArmyCheckBox::TArmyCheckBox body exists: CreateObject 0x004a9f20 inlines this default ctor, calling the TControl base ctor directly at that site)
+  TArmyCheckBox() {}
+
   // Real ctor (0x4a9fe0): forwards panel/offsetLayout/sizeLayout to the already-ported
   // TView::InitializeUiResourceEntryFrameAndParent (resourceContext=null,
   // layoutParam6/7=4, attachFlag=0), then stores its own two trailing args into
