@@ -121,6 +121,11 @@ public:
                                                unsigned int width, unsigned int height, int destX,
                                                int destY, int transparentColor);
 
+  // Return the address of an 8-bit pixel, translating top-origin coordinates into the
+  // DIB's bottom-up scanline storage. Returns NULL when x or y exceeds the bitmap bounds.
+  // 0x0047bf90
+  void* GetPixelAddress(int x, int y);
+
   // Thin thiscall forwarder that unpacks POINT-pair arguments into the flat
   // BlitSurfaceRectSkippingTransparentColor parameter list. 0x004849e0
   void ForwardBlitSurfaceRectSkippingTransparentColor(CDib* destDib, POINT* srcPoint,

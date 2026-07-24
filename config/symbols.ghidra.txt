@@ -995,7 +995,7 @@ IltTarget_0047bc30 47BC30 f
 CDib::Release 47BCA0 f
 OrphanCallChain_C3_I20_0047bd90 47BD90 f
 CDib::BlitSurfaceRectSkippingTransparentColor 47BDE0 f
-LoadBmpResourceByIdCached_Impl 47BF90 f
+CDib::GetPixelAddress 47BF90 f
 IltTarget_0047c000 47C000 f
 CDib::LoadBitmapResourceAndInitializeSurfaceState 47C080 f
 CDib::BuildMonochromeOutlineMaskInPlace 47C1F0 f

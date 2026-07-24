@@ -9,16 +9,15 @@ are not covered here.
 ## Summary
 
 - Original portable table: 184 rows
-- Removed after current ownership check: 160 landed rows
+- Removed after current ownership check: 161 landed rows
 - Reclassified from the stale portable table: 10 reviewed library routines and
   9 interior fragments/non-entry labels
-- Live PORTABLE targets: 5 MODERATE rows
+- Live PORTABLE targets: 4 MODERATE rows
 
-## PORTABLE — MODERATE (5)
+## PORTABLE — MODERATE (4)
 
 | addr | size | name | class | approach |
 |------|------|------|-------|----------|
-| `0x0047bf90` | 73 | LoadBmpResourceByIdCached_Impl | — | Bitmap pixel-row address computation: bounds-checks param_1<width(hdr+4), param_2<abs(height)(hdr+8) where hdr=this+0x10, returns bits(this+0xc)+row*( |
 | `0x0049ca50` | 80 | ReleaseRuntimeSelectionPeersAndResetOwner_Impl | — | Byte-identical to 0x49c8e0 (different Ghidra guess-name): releases 6 slot objects via vtable+8 + FreeLibrary; vtable dispatch on unmodeled struct. |
 | `0x0049b6a0` | 90 | ResizePointerArrayAndZeroEntries_Simple | — | Resize+zero a pointer array member ([ecx+4] buffer, [ecx+8] count) via operator new/delete; simple logic but owning array class unknown, so no faithfu |
 | `0x0049b7f0` | 90 | ResizePointerArrayAndZeroEntries | — | Byte-identical twin of 0x0049b6a0 (resize+zero pointer array via new/delete on [ecx+4]/[ecx+8]); owning class unknown, cannot draft faithfully. |

@@ -301,7 +301,7 @@ address|name|symbol|size|type|prototype|provenance
 47bca0|ReleaseBitmapSurfaceResourcesAndResetState||177|function|undefined ReleaseBitmapSurfaceResourcesAndResetState()|
 47bd90|OrphanCallChain_C3_I20_0047bd90||49|function|undefined OrphanCallChain_C3_I20_0047bd90()|
 47bde0|BlitSurfaceRectSkippingTransparentColor||331|function|undefined BlitSurfaceRectSkippingTransparentColor()|
-47bf90|LoadBmpResourceByIdCached_Impl||73|function|undefined LoadBmpResourceByIdCached_Impl()|
+47bf90|CDib::GetPixelAddress||73|function|void * __thiscall GetPixelAddress(int x, int y)|
 47c080|CDib::LoadBitmapResourceAndInitializeSurfaceState||224|function|int LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module)|
 47c1f0|CDib::BuildMonochromeOutlineMaskInPlace||384|function|int BuildMonochromeOutlineMaskInPlace()|
 47c3d0|CDib::BuildNonTransparentOutlinePolygon||898|function|int * __thiscall Sprite__CollectNonTransparentPixels(uint this_ptr)|
