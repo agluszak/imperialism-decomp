@@ -11,5 +11,6 @@ public:
   static void OnIdle();
   static void ObserveBuiltUiTree(int eventCode, TView* root);
   static void ObserveActivatedTurnEvent(int eventCode);
+  static void Pulse();
   static unsigned int RandomSeed();
 };

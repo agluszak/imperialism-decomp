@@ -47,6 +47,7 @@ public:
 
 #if defined(IMPERIALISM_RUNTIME_TESTS)
   bool ActivateBuildingSlotForRuntimeTest(short buildingSlot);
+  TBuildingView* BuildingViewForRuntimeTest(short buildingSlot);
 #endif
 
   TCityProductionView();

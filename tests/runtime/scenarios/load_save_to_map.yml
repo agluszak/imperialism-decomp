@@ -1,4 +1,4 @@
-format_version: 1
+format_version: 2
 name: load_save_to_map
 
 start:
@@ -15,7 +15,12 @@ probes:
   - id: turn_event.dispatch
     original_address: 0x005d7240
     capture:
-      event: "*(short*)($esp+4)"
+      event:
+        expression: "*(short*)($esp+4)"
+        normalize: u16
+      payload:
+        expression: "*(int*)($esp+8)"
+        normalize: u32
 
 stop:
   probe: turn_event.dispatch

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 
-HEARTBEAT_STALE_SECONDS = 15.0
+HEARTBEAT_STALE_SECONDS = 5.0
 FIRST_HEARTBEAT_SECONDS = 60.0
 
 
@@ -38,6 +38,21 @@ def classify_exit(returncode: int, result_exists: bool) -> str | None:
     if result_exists:
         return None
     return "crash" if returncode != 0 else "exited_without_result"
+
+
+def classify_inferior_exit(
+    terminal_reason: str,
+    exit_code: int | None,
+    signal_name: str | None,
+    result_exists: bool,
+) -> str | None:
+    if terminal_reason == "exited-signalled" or signal_name is not None:
+        return "crash"
+    if result_exists:
+        return None
+    if exit_code not in {None, 0}:
+        return "crash"
+    return "exited_without_result"
 
 
 def no_progress_budget_seconds(phase_timeout_ms: int) -> float:

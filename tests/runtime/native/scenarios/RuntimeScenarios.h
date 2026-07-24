@@ -9,4 +9,5 @@ RuntimeTestCase* EndTurnTest();
 RuntimeTestCase* CityScreenTest();
 RuntimeTestCase* MapZoomToggleTest();
 RuntimeTestCase* LoadSavedGameTest();
+RuntimeTestCase* TurnEventQueueBoundsTest();
 RuntimeTestCase* UnknownRuntimeTest();

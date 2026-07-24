@@ -31,7 +31,7 @@ class ClassifyPollTests(unittest.TestCase):
 
     def test_old_process_without_heartbeat_is_hung_boot(self) -> None:
         self.assertEqual(
-            classify_poll(None, None, 90.0, process_age_seconds=61.0),
+            classify_poll(None, None, 90.0, process_age_seconds=60.1),
             "heartbeat_stopped",
         )
 
@@ -40,13 +40,13 @@ class ClassifyPollTests(unittest.TestCase):
 
     def test_stale_heartbeat_is_heartbeat_stopped(self) -> None:
         self.assertEqual(
-            classify_poll(heartbeat(30_000, 29_000), 16.0, 90.0),
+            classify_poll(heartbeat(30_000, 29_000), 5.1, 90.0),
             "heartbeat_stopped",
         )
 
     def test_stale_check_precedes_no_progress_check(self) -> None:
         self.assertEqual(
-            classify_poll(heartbeat(500_000, 0), 20.0, 90.0),
+            classify_poll(heartbeat(500_000, 0), 5.1, 90.0),
             "heartbeat_stopped",
         )
 
@@ -65,7 +65,7 @@ class ClassifyPollTests(unittest.TestCase):
 
     def test_held_session_still_fails_on_stale_heartbeat(self) -> None:
         held = dict(heartbeat(500_000, 0), hold=True)
-        self.assertEqual(classify_poll(held, 16.0, 90.0), "heartbeat_stopped")
+        self.assertEqual(classify_poll(held, 5.1, 90.0), "heartbeat_stopped")
 
     def test_malformed_heartbeat_fields_are_tolerated(self) -> None:
         self.assertIsNone(classify_poll({"phase": "boot"}, 0.5, 90.0))

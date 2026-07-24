@@ -17,6 +17,7 @@ usage: screenshot.py [out.png] [--win 0xWINDOWID] [--match imperialism]
 from __future__ import annotations
 
 import argparse
+from pathlib import Path
 import re
 import subprocess
 import sys
@@ -28,25 +29,71 @@ WININFO_LINE_RE = re.compile(
 )
 
 
-def find_window(match: str) -> tuple[int, int, int] | None:
-    """Return (window_id, width, height) of the largest matching X11 window."""
+def window_owner_pid(window_id: int) -> int | None:
+    completed = subprocess.run(
+        ["xprop", "-id", f"0x{window_id:x}", "_NET_WM_PID"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    match = re.search(r"=\s*(\d+)\s*$", completed.stdout)
+    return int(match.group(1)) if match is not None else None
+
+
+def process_wineprefix(pid: int) -> Path | None:
+    try:
+        entries = Path(f"/proc/{pid}/environ").read_bytes().split(b"\0")
+    except OSError:
+        return None
+    for entry in entries:
+        if entry.startswith(b"WINEPREFIX="):
+            return Path(entry.split(b"=", 1)[1].decode(errors="replace")).resolve()
+    return None
+
+
+def select_window(
+    rows: str,
+    match: str,
+    *,
+    owner_pid: int | None,
+    wineprefix: Path | None,
+) -> tuple[int, int, int] | None:
+    """Choose the largest matching window whose process ownership is proven."""
+    expected_prefix = wineprefix.resolve() if wineprefix is not None else None
+    if owner_pid is None and expected_prefix is None:
+        return None
+    best: tuple[int, int, int] | None = None
+    for line in rows.splitlines():
+        parsed = WININFO_LINE_RE.match(line)
+        if not parsed:
+            continue
+        win_id_text, wm_class, width, height = parsed.groups()
+        if match.lower() not in wm_class.lower():
+            continue
+        window_id = int(win_id_text, 16)
+        pid = window_owner_pid(window_id)
+        if pid is None:
+            continue
+        if owner_pid is not None and pid != owner_pid:
+            continue
+        if expected_prefix is not None and process_wineprefix(pid) != expected_prefix:
+            continue
+        w, h = int(width), int(height)
+        if w * h < 4:
+            continue
+        if best is None or w * h > best[1] * best[2]:
+            best = (window_id, w, h)
+    return best
+
+
+def find_window(
+    match: str, *, owner_pid: int | None = None, wineprefix: Path | None = None
+) -> tuple[int, int, int] | None:
+    """Return the largest matching X11 window owned by this runtime run."""
     out = subprocess.run(
         ["xwininfo", "-root", "-tree"], capture_output=True, text=True, check=True
     ).stdout
-    best: tuple[int, int, int] | None = None
-    for line in out.splitlines():
-        m = WININFO_LINE_RE.match(line)
-        if not m:
-            continue
-        win_id, wm_class, width, height = m.groups()
-        if match.lower() not in wm_class.lower():
-            continue
-        w, h = int(width), int(height)
-        if w * h < 4:  # skip 1x1 helper/IME windows
-            continue
-        if best is None or w * h > best[1] * best[2]:
-            best = (int(win_id, 16), w, h)
-    return best
+    return select_window(out, match, owner_pid=owner_pid, wineprefix=wineprefix)
 
 
 def capture(win_id: int, out_path: str) -> tuple[int, int]:
@@ -67,14 +114,16 @@ def main() -> int:
     ap.add_argument("out", nargs="?", default="/tmp/imperialism.png")
     ap.add_argument("--win", help="explicit window ID (hex), skips discovery")
     ap.add_argument("--match", default="imperialism", help="window-class substring")
+    ap.add_argument("--pid", type=int, help="require the X11 window to belong to this PID")
+    ap.add_argument("--wineprefix", type=Path, help="require the owner process to use this WINEPREFIX")
     args = ap.parse_args()
 
     if args.win:
         win_id = int(args.win, 16)
     else:
-        found = find_window(args.match)
+        found = find_window(args.match, owner_pid=args.pid, wineprefix=args.wineprefix)
         if found is None:
-            print(f"no visible window matching '{args.match}' — is the game running?",
+            print(f"no owned visible window matching '{args.match}' — is the game running?",
                   file=sys.stderr)
             return 1
         win_id, w, h = found

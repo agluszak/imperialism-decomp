@@ -16,6 +16,7 @@ class RuntimeTestSpec:
 
 TESTS = (
     RuntimeTestSpec("boot_managers", ("pr", "full"), required_oracles=()),
+    RuntimeTestSpec("turn_event_queue_bounds", ("pr", "full"), required_oracles=()),
     RuntimeTestSpec("random_game_easy_skips_capital", ("pr", "full"), required_oracles=("ui", "map")),
     RuntimeTestSpec("random_game_enters_map", ("full",), required_oracles=("ui", "map")),
     RuntimeTestSpec("easy_turns_advance", ("repro",), required_oracles=("ui", "map")),

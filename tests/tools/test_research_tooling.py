@@ -8,13 +8,14 @@ import os
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from tools.common import ghidra_env
 from tools.ghidra import daemon
 from tools.ghidra.jumptable import looks_like_code_address, parse_jmp_table_operand
 from tools.ghidra.query_registry import COMMANDS
 from tools.ghidra.xrefs_to import parse_query
-from tools.runtime.screenshot import WININFO_LINE_RE
+from tools.runtime.screenshot import WININFO_LINE_RE, select_window
 
 
 class DotenvTests(unittest.TestCase):
@@ -166,6 +167,41 @@ class ScreenshotDiscoveryTests(unittest.TestCase):
 
     def test_ignores_rows_without_geometry(self) -> None:
         self.assertIsNone(WININFO_LINE_RE.match("  0x4a00002 (has no name): ()  "))
+
+    def test_selects_only_window_owned_by_current_wineprefix(self) -> None:
+        rows = "\n".join(
+            (
+                ' 0x4a00001 (has no name): ("imperialism.exe" "imperialism.exe") 2560x1440+0+0 +0+0',
+                ' 0x4a00002 (has no name): ("imperialism.exe" "imperialism.exe") 800x600+0+0 +0+0',
+            )
+        )
+        prefixes = {101: Path("/tmp/other"), 202: Path("/tmp/current")}
+        with (
+            patch(
+                "tools.runtime.screenshot.window_owner_pid",
+                side_effect=lambda window: {0x4A00001: 101, 0x4A00002: 202}[window],
+            ),
+            patch(
+                "tools.runtime.screenshot.process_wineprefix",
+                side_effect=lambda pid: prefixes[pid],
+            ),
+        ):
+            selected = select_window(
+                rows,
+                "imperialism",
+                owner_pid=None,
+                wineprefix=Path("/tmp/current"),
+            )
+        self.assertEqual(selected, (0x4A00002, 800, 600))
+
+    def test_refuses_unscoped_global_window_selection(self) -> None:
+        rows = (
+            ' 0x4a00001 (has no name): ("imperialism.exe" "imperialism.exe") '
+            "2560x1440+0+0 +0+0"
+        )
+        self.assertIsNone(
+            select_window(rows, "imperialism", owner_pid=None, wineprefix=None)
+        )
 
 
 if __name__ == "__main__":

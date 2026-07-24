@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 from dataclasses import dataclass
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -36,7 +37,34 @@ RESULT_DIR = BUILD_DIR / "differential-results"
 class Probe:
     probe_id: str
     original_address: int
-    fields: dict[str, str]
+    fields: dict[str, "FieldCapture"]
+
+
+@dataclass(frozen=True)
+class FieldCapture:
+    expression: str
+    normalize: str = "int"
+
+
+@dataclass(frozen=True)
+class ProbeWait:
+    probe: str
+    field: str
+    equals: int
+
+
+@dataclass(frozen=True)
+class DeferredShellAction:
+    owner_address: int
+    after_call_to: int
+    replay_after: ProbeWait
+
+
+@dataclass(frozen=True)
+class Checkpoint:
+    probe: str
+    field: str
+    equals: int
 
 
 @dataclass(frozen=True)
@@ -44,15 +72,15 @@ class Scenario:
     name: str
     fixture: Path
     probes: tuple[Probe, ...]
-    stop_probe: str
-    stop_field: str
-    stop_value: int
+    terminal_checkpoint: Checkpoint
     timeout_seconds: float
-    initialization_owner_address: int
-    before_shell_callee_address: int
-    replay_probe: str
-    replay_field: str
-    replay_value: int
+    start_action: DeferredShellAction
+
+
+@dataclass(frozen=True)
+class Trace:
+    metadata: dict
+    records: list[dict]
 
 
 def load_scenario(name: str) -> Scenario:
@@ -60,71 +88,135 @@ def load_scenario(name: str) -> Scenario:
     if not path.is_file():
         raise SystemExit(f"unknown differential scenario {name!r}: missing {path}")
     parsed = yaml.safe_load(path.read_text(encoding="utf-8"))
-    if not isinstance(parsed, dict) or parsed.get("format_version") != 1:
+    if not isinstance(parsed, dict) or parsed.get("format_version") not in {1, 2}:
         raise SystemExit(f"unsupported differential scenario format in {path}")
     fixture_name = parsed.get("start", {}).get("fixture")
     fixture_root = Path(os.environ.get("IMPERIALISM_SAVE_FIXTURES", FIXTURE_DIR))
     fixture = fixture_root / fixture_name
     if not fixture.is_file():
         raise SystemExit(f"missing differential fixture {fixture}")
-    probes = tuple(
-        Probe(
-            probe_id=entry["id"],
-            original_address=int(entry["original_address"], 0)
-            if isinstance(entry["original_address"], str)
-            else int(entry["original_address"]),
-            fields=dict(entry.get("capture", {})),
+    probes = []
+    for entry in parsed.get("probes", []):
+        fields = {}
+        for field_name, field_value in entry.get("capture", {}).items():
+            if isinstance(field_value, str):
+                fields[field_name] = FieldCapture(field_value)
+            else:
+                fields[field_name] = FieldCapture(
+                    expression=str(field_value["expression"]),
+                    normalize=str(field_value.get("normalize", "int")),
+                )
+        probes.append(
+            Probe(
+                probe_id=entry["id"],
+                original_address=int(entry["original_address"], 0)
+                if isinstance(entry["original_address"], str)
+                else int(entry["original_address"]),
+                fields=fields,
+            )
         )
-        for entry in parsed.get("probes", [])
-    )
     stop = parsed.get("stop", {})
     deferred = parsed.get("start", {}).get("defer_shell_command_until", {})
     replay = deferred.get("after_probe", {})
     return Scenario(
         name=str(parsed.get("name", name)),
         fixture=fixture,
-        probes=probes,
-        stop_probe=str(stop["probe"]),
-        stop_field=str(stop["field"]),
-        stop_value=int(stop["equals"], 0)
-        if isinstance(stop["equals"], str)
-        else int(stop["equals"]),
+        probes=tuple(probes),
+        terminal_checkpoint=Checkpoint(
+            probe=str(stop["probe"]),
+            field=str(stop["field"]),
+            equals=int(stop["equals"], 0)
+            if isinstance(stop["equals"], str)
+            else int(stop["equals"]),
+        ),
         timeout_seconds=float(parsed.get("timeout_seconds", 90)),
-        initialization_owner_address=int(deferred["owner_address"], 0),
-        before_shell_callee_address=int(deferred["after_call_to"], 0),
-        replay_probe=str(replay["probe"]),
-        replay_field=str(replay["field"]),
-        replay_value=int(replay["equals"], 0)
-        if isinstance(replay["equals"], str)
-        else int(replay["equals"]),
+        start_action=DeferredShellAction(
+            owner_address=int(deferred["owner_address"], 0),
+            after_call_to=int(deferred["after_call_to"], 0),
+            replay_after=ProbeWait(
+                probe=str(replay["probe"]),
+                field=str(replay["field"]),
+                equals=int(replay["equals"], 0)
+                if isinstance(replay["equals"], str)
+                else int(replay["equals"]),
+            ),
+        ),
     )
 
 
 def first_divergence(original: list[dict], recomp: list[dict]) -> dict | None:
-    count = max(len(original), len(recomp))
-    for index in range(count):
-        left = original[index] if index < len(original) else None
-        right = recomp[index] if index < len(recomp) else None
-        if left != right:
-            return {"index": index, "original": left, "recomp": right}
+    def key(record: dict) -> tuple[str, int]:
+        return str(record["probe"]), int(record["occurrence"])
+
+    original_by_key = {key(record): record for record in original}
+    recomp_by_key = {key(record): record for record in recomp}
+    keys = list(original_by_key)
+    keys.extend(key_value for key_value in recomp_by_key if key_value not in original_by_key)
+    last_equal: dict | None = None
+    for probe, occurrence in keys:
+        semantic_key = {"probe": probe, "occurrence": occurrence}
+        left = original_by_key.get((probe, occurrence))
+        right = recomp_by_key.get((probe, occurrence))
+        left_fields = left.get("fields") if left is not None else None
+        right_fields = right.get("fields") if right is not None else None
+        if left_fields != right_fields:
+            if left is None:
+                mismatch_kind = "missing_original"
+            elif right is None:
+                mismatch_kind = "missing_recomp"
+            else:
+                mismatch_kind = "field_mismatch"
+            return {
+                "semantic_key": semantic_key,
+                "kind": mismatch_kind,
+                "original": left,
+                "recomp": right,
+                "last_equal_checkpoint": last_equal,
+            }
+        last_equal = semantic_key
     return None
 
 
-def _write_trace(path: Path, records: list[dict]) -> None:
+def _write_trace(path: Path, metadata: dict, records: list[dict]) -> None:
     path.write_text(
-        "".join(json.dumps(record, sort_keys=True) + "\n" for record in records),
+        json.dumps({"type": "trace_metadata", **metadata}, sort_keys=True)
+        + "\n"
+        + "".join(json.dumps(record, sort_keys=True) + "\n" for record in records),
         encoding="utf-8",
     )
 
 
+def _file_identity(path: Path) -> dict:
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        while chunk := source.read(1024 * 1024):
+            digest.update(chunk)
+    return {"path": str(path.resolve()), "sha256": digest.hexdigest(), "size": path.stat().st_size}
+
+
+def _normalize_value(raw: str, normalization: str) -> int | str:
+    try:
+        value = int(raw, 0)
+    except ValueError:
+        return raw.strip() if normalization == "string" else raw
+    if normalization == "u16":
+        return value & 0xFFFF
+    if normalization == "s16":
+        value &= 0xFFFF
+        return value - 0x10000 if value & 0x8000 else value
+    if normalization == "u32":
+        return value & 0xFFFFFFFF
+    if normalization not in {"int", "pointer"}:
+        raise ValueError(f"unknown differential field normalization {normalization!r}")
+    return value
+
+
 def _capture_fields(session: GdbSession, probe: Probe) -> dict[str, int | str]:
     fields: dict[str, int | str] = {}
-    for name, expression in probe.fields.items():
-        value = session.evaluate(expression)
-        try:
-            fields[name] = int(value, 0)
-        except ValueError:
-            fields[name] = value
+    for name, capture in probe.fields.items():
+        fields[name] = _normalize_value(
+            session.evaluate(capture.expression), capture.normalize
+        )
     return fields
 
 
@@ -136,7 +228,7 @@ def run_binary(
     control_addresses: dict[str, int],
     run_dir: Path,
     timeout_seconds: float,
-) -> list[dict]:
+) -> Trace:
     artifact_dir = run_dir / kind
     artifact_dir.mkdir(parents=True, exist_ok=True)
     prefix = artifact_dir / "prefix"
@@ -153,6 +245,14 @@ def run_binary(
         arguments=(fixture_argument,),
     )
     records: list[dict] = []
+    metadata = {
+        "format_version": 2,
+        "scenario": scenario.name,
+        "binary_kind": kind,
+        "binary": _file_identity(executable),
+        "fixture": _file_identity(scenario.fixture),
+        "status": "running",
+    }
     occurrences: dict[str, int] = {}
     shell_command_address = direct_call_target_after(
         executable,
@@ -241,6 +341,7 @@ def run_binary(
             occurrences[probe.probe_id] = occurrence
             fields = _capture_fields(session, probe)
             record = {
+                "type": "checkpoint",
                 "seq": len(records),
                 "probe": probe.probe_id,
                 "occurrence": occurrence,
@@ -250,8 +351,9 @@ def run_binary(
             if (
                 deferred_context is not None
                 and replay_number is None
-                and probe.probe_id == scenario.replay_probe
-                and fields.get(scenario.replay_field) == scenario.replay_value
+                and probe.probe_id == scenario.start_action.replay_after.probe
+                and fields.get(scenario.start_action.replay_after.field)
+                == scenario.start_action.replay_after.equals
             ):
                 replay_address = int(
                     session.evaluate("*(unsigned int*)$esp"), 0
@@ -259,20 +361,28 @@ def run_binary(
                 replay_number = session.set_breakpoint(replay_address)
                 breakpoint_roles[replay_number] = ("replay_shell_command", None)
             if (
-                probe.probe_id == scenario.stop_probe
-                and fields.get(scenario.stop_field) == scenario.stop_value
+                probe.probe_id == scenario.terminal_checkpoint.probe
+                and fields.get(scenario.terminal_checkpoint.field)
+                == scenario.terminal_checkpoint.equals
             ):
+                metadata["status"] = "completed"
                 break
             session.continue_inferior()
         else:
             session.interrupt_and_capture("differential-timeout")
             raise RuntimeError(f"{kind} timed out before the stop checkpoint")
+    except Exception as error:
+        metadata["status"] = "partial"
+        metadata["error"] = f"{type(error).__name__}: {error}"
+        raise
     finally:
+        if metadata["status"] == "running":
+            metadata["status"] = "partial"
+        _write_trace(artifact_dir / "trace.ndjson", metadata, records)
         session.close()
         shut_down_wine_prefix(environment)
         shutil.rmtree(prefix, ignore_errors=True)
-    _write_trace(artifact_dir / "trace.ndjson", records)
-    return records
+    return Trace(metadata, records)
 
 
 def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
@@ -283,15 +393,15 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
     recomp_executable = BUILD_DIR / "Imperialism.exe"
     original_addresses = tuple(probe.original_address for probe in scenario.probes)
     control_original = {
-        "initialization_owner": scenario.initialization_owner_address,
-        "before_shell_callee": scenario.before_shell_callee_address,
+        "initialization_owner": scenario.start_action.owner_address,
+        "before_shell_callee": scenario.start_action.after_call_to,
     }
     all_original_addresses = original_addresses + tuple(control_original.values())
     recomp_map = matching_addresses("IMPERIALISM", BUILD_DIR, all_original_addresses)
     run_id = f"{scenario.name}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}-{os.getpid()}"
     run_dir = RESULT_DIR / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
-    original = run_binary(
+    original_trace = run_binary(
         scenario,
         "original",
         original_executable,
@@ -300,7 +410,7 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         run_dir,
         timeout_seconds,
     )
-    recomp = run_binary(
+    recomp_trace = run_binary(
         scenario,
         "recomp",
         recomp_executable,
@@ -309,6 +419,8 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         run_dir,
         timeout_seconds,
     )
+    original = original_trace.records
+    recomp = recomp_trace.records
     divergence = first_divergence(original, recomp)
     result = {
         "format_version": 1,
@@ -317,6 +429,11 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
         "original_records": len(original),
         "recomp_records": len(recomp),
         "first_divergence": divergence,
+        "binary_identities": {
+            "original": original_trace.metadata["binary"],
+            "recomp": recomp_trace.metadata["binary"],
+        },
+        "fixture_identity": original_trace.metadata["fixture"],
         "run_dir": str(run_dir),
     }
     serialized = json.dumps(result, indent=2, sort_keys=True) + "\n"

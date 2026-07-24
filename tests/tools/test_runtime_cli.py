@@ -125,7 +125,11 @@ class RuntimeSuiteTests(unittest.TestCase):
                 (run_dir / "result.json").write_text(
                     json.dumps(result), encoding="utf-8"
                 )
-                return {"classification": "crash", "wine_exit": -1}
+                return {
+                    "classification": "crash",
+                    "wine_exit": -1,
+                    "inferior_exit_code": -1,
+                }
 
             args = argparse.Namespace(
                 name="boot_managers",

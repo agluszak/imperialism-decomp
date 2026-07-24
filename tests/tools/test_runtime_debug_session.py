@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import sys
 import unittest
 from unittest.mock import patch
 
@@ -10,7 +11,14 @@ import tempfile
 from pathlib import Path
 
 from tools.runtime.debug.mi_protocol import parse_mi_record, stream_text
-from tools.runtime.debug.session import is_terminal_stop, stop_event_from_record
+from tools.runtime.debug.mi_process import DebuggerTransportError, GdbMiProcess
+from tools.runtime.debug.session import (
+    GdbSession,
+    StopEvent,
+    _parse_exit_code,
+    is_terminal_stop,
+    stop_event_from_record,
+)
 from tools.runtime.debug.symbols import LinkerMap, symbolize_gdb_report
 
 
@@ -42,6 +50,35 @@ class StopEventTests(unittest.TestCase):
         self.assertEqual(record.message, "done")
         self.assertEqual(record.token, 17)
 
+    def test_remote_octal_exit_code_is_parsed(self) -> None:
+        self.assertEqual(_parse_exit_code("0177"), 0o177)
+
+
+class GdbSessionTests(unittest.TestCase):
+    def test_interrupt_and_capture_uses_mi_interrupt_and_captures_stop(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            executable = root / "Imperialism.exe"
+            executable.write_bytes(b"")
+            session = GdbSession(executable, root, {}, root)
+            event = StopEvent(
+                reason="signal-received",
+                signal_name="SIGINT",
+                breakpoint_number=None,
+                raw='*stopped,reason="signal-received",signal-name="SIGINT"',
+            )
+            report = root / "debugger-stop-01-timeout.txt"
+            with (
+                patch.object(session, "poll_stop", return_value=None),
+                patch.object(session, "_command") as command,
+                patch.object(session, "_wait_for_stop", return_value=event),
+                patch.object(session, "capture_stop", return_value=report) as capture,
+            ):
+                result = session.interrupt_and_capture("timeout")
+            command.assert_called_once_with("-exec-interrupt --all", timeout=5)
+            capture.assert_called_once_with("timeout", event)
+            self.assertEqual(result, (report, event))
+
 
 class LinkerMapTests(unittest.TestCase):
     def test_nearest_public_symbol_is_selected(self) -> None:
@@ -67,6 +104,28 @@ class LinkerMapTests(unittest.TestCase):
             self.assertIsNotNone(symbol)
             self.assertEqual(symbol.address, 0x005CB938)
 
+    def test_data_symbol_is_not_used_as_a_stack_function(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            map_path = Path(temporary) / "Imperialism.map"
+            map_path.write_text(
+                " 0003:00005938       _g_runtimeDebugRecord 005cb938   RuntimeDebuggerTrap.cpp.obj\n",
+                encoding="ascii",
+            )
+            resolution = LinkerMap.read(map_path).resolve(0x005CB940)
+            self.assertIsNone(resolution.symbol)
+            self.assertEqual(resolution.reason, "nearest public is data")
+
+    def test_unbounded_gap_is_reported_as_low_confidence(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            map_path = Path(temporary) / "Imperialism.map"
+            map_path.write_text(
+                " 0001:00015340       ?Render@TView@@UAEXXZ 00416340 f TView.cpp.obj\n",
+                encoding="ascii",
+            )
+            resolution = LinkerMap.read(map_path).resolve(0x00418340)
+            self.assertIsNone(resolution.symbol)
+            self.assertEqual(resolution.confidence, "low")
+
     def test_report_produces_symbolized_stack(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -80,6 +139,52 @@ class LinkerMapTests(unittest.TestCase):
             output = symbolize_gdb_report(report_path, map_path)
             self.assertIsNotNone(output)
             self.assertIn("TView::Render", output.read_text(encoding="utf-8"))
+
+
+class GdbMiProcessTests(unittest.IsolatedAsyncioTestCase):
+    def fake_command(self) -> tuple[str, ...]:
+        script = Path(__file__).parent / "fixtures" / "fake_gdb_mi.py"
+        return (sys.executable, str(script))
+
+    async def test_correlates_result_while_queueing_async_stop(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            transport = GdbMiProcess(
+                root, root / "gdb.log", command=self.fake_command()
+            )
+            await transport.start(root / "inferior.exe")
+            try:
+                result = await transport.command("-emit-interleaved")
+                events = await transport.drain_events()
+            finally:
+                await transport.close()
+            self.assertEqual(result.result.message, "done")
+            self.assertEqual(result.output, ("command output\n",))
+            self.assertTrue(any(event.message == "stopped" for event in events))
+
+    async def test_command_timeout_is_a_transport_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            transport = GdbMiProcess(
+                root, root / "gdb.log", command=self.fake_command()
+            )
+            await transport.start(root / "inferior.exe")
+            try:
+                with self.assertRaisesRegex(DebuggerTransportError, "timed out"):
+                    await transport.command("-timeout", timeout=0.01)
+            finally:
+                await transport.close()
+
+    async def test_exit_fails_pending_command(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            transport = GdbMiProcess(
+                root, root / "gdb.log", command=self.fake_command()
+            )
+            await transport.start(root / "inferior.exe")
+            with self.assertRaisesRegex(DebuggerTransportError, "GDB exited with 7"):
+                await transport.command("-exit-before-result")
+            await transport.close()
 
     def test_report_uses_vendored_demangler_when_llvm_undname_is_missing(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

@@ -8,7 +8,11 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from tools.runtime.debug.session import DebuggerTransportError, StopEvent
+from tools.runtime.debug.session import (
+    DebuggerLifecycle,
+    DebuggerTransportError,
+    StopEvent,
+)
 from tools.runtime.session import execute_run
 
 
@@ -57,6 +61,22 @@ class FailingPollGdbSession:
     def interrupt_and_capture(self, _classification: str) -> None:
         raise DebuggerTransportError("GDB transport disappeared")
 
+    def lifecycle(self) -> DebuggerLifecycle:
+        return DebuggerLifecycle(
+            proxy_pid=self.process.pid,
+            proxy_exit_code=self.process.returncode,
+            gdb_pid=5678,
+            gdb_exit_code=None,
+            inferior_pid=9012,
+            inferior_exit_code=None,
+            inferior_terminal_reason=None,
+            inferior_signal=None,
+            inferior_active=True,
+        )
+
+    def terminate_inferior(self) -> None:
+        self.process.kill()
+
 
 class InvariantGdbSession(FailingPollGdbSession):
     def __init__(self, *_args: object) -> None:
@@ -80,6 +100,49 @@ class InvariantGdbSession(FailingPollGdbSession):
     def capture_stop(self, label: str, _stop: StopEvent) -> None:
         self.stop_count += 1
         self.captured_labels.append(label)
+
+
+class InferiorExitGdbSession(FailingPollGdbSession):
+    def __init__(self, *_args: object) -> None:
+        super().__init__(*_args)
+        self.terminal = False
+
+    def poll_stop(self) -> StopEvent | None:
+        if self.terminal:
+            return None
+        self.terminal = True
+        return StopEvent("exited-normally", None, None, '*stopped,reason="exited-normally"')
+
+    def lifecycle(self) -> DebuggerLifecycle:
+        return DebuggerLifecycle(
+            proxy_pid=self.process.pid,
+            proxy_exit_code=None,
+            gdb_pid=5678,
+            gdb_exit_code=None,
+            inferior_pid=9012,
+            inferior_exit_code=0,
+            inferior_terminal_reason="exited-normally" if self.terminal else None,
+            inferior_signal=None,
+            inferior_active=not self.terminal,
+        )
+
+
+class ProxyExitGdbSession(FailingPollGdbSession):
+    def poll_stop(self) -> None:
+        return None
+
+    def lifecycle(self) -> DebuggerLifecycle:
+        return DebuggerLifecycle(
+            proxy_pid=self.process.pid,
+            proxy_exit_code=3,
+            gdb_pid=5678,
+            gdb_exit_code=None,
+            inferior_pid=9012,
+            inferior_exit_code=None,
+            inferior_terminal_reason=None,
+            inferior_signal=None,
+            inferior_active=True,
+        )
 
 
 class RuntimeSessionTests(unittest.TestCase):
@@ -167,6 +230,69 @@ class RuntimeSessionTests(unittest.TestCase):
             ["invariant-stationed-military-unit-destructor"],
         )
         self.assertEqual(session.process.returncode, -9)
+
+    def test_clean_inferior_exit_is_authoritative_over_live_proxy(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "Imperialism.exe").write_bytes(b"")
+            run_dir = root / "run"
+            run_dir.mkdir()
+            with (
+                patch("tools.runtime.session.BUILD_DIR", root),
+                patch("tools.runtime.session.GdbSession", InferiorExitGdbSession),
+                patch("tools.runtime.session.initialize_wine_prefix"),
+                patch("tools.runtime.session.prefix_environment", return_value={}),
+                patch(
+                    "tools.runtime.session.windows_path",
+                    side_effect=lambda path, _environment: str(path),
+                ),
+                patch("tools.runtime.session.retail_game_dir", return_value=root),
+                patch("tools.runtime.session.shut_down_wine_prefix"),
+            ):
+                result = execute_run(
+                    name="boot_managers",
+                    run_dir=run_dir,
+                    seed=1,
+                    timeout=30.0,
+                    phase_timeout_ms=15_000,
+                    winedebug=None,
+                    wine_log_name="wine.log",
+                )
+        self.assertEqual(result["classification"], "exited_without_result")
+        self.assertEqual(result["inferior_exit_code"], 0)
+        self.assertEqual(result["inferior_terminal_reason"], "exited-normally")
+        self.assertIsNone(result["proxy_exit_code"])
+
+    def test_proxy_exit_while_inferior_active_is_transport_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "Imperialism.exe").write_bytes(b"")
+            run_dir = root / "run"
+            run_dir.mkdir()
+            with (
+                patch("tools.runtime.session.BUILD_DIR", root),
+                patch("tools.runtime.session.GdbSession", ProxyExitGdbSession),
+                patch("tools.runtime.session.initialize_wine_prefix"),
+                patch("tools.runtime.session.prefix_environment", return_value={}),
+                patch(
+                    "tools.runtime.session.windows_path",
+                    side_effect=lambda path, _environment: str(path),
+                ),
+                patch("tools.runtime.session.retail_game_dir", return_value=root),
+                patch("tools.runtime.session.shut_down_wine_prefix"),
+            ):
+                result = execute_run(
+                    name="boot_managers",
+                    run_dir=run_dir,
+                    seed=1,
+                    timeout=30.0,
+                    phase_timeout_ms=15_000,
+                    winedebug=None,
+                    wine_log_name="wine.log",
+                )
+        self.assertEqual(result["classification"], "debugger_transport_failure")
+        self.assertEqual(result["proxy_exit_code"], 3)
+        self.assertIsNone(result["inferior_exit_code"])
 
 
 if __name__ == "__main__":

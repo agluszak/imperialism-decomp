@@ -40,6 +40,9 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
 #include "game/gfx/ui_invalidation_guard.h"
+#ifdef IMPERIALISM_RUNTIME_TESTS
+#include "RuntimeTestDriver.h"
+#endif
 
 extern "C" short g_Render_Nation_Header_Value_006961E0[12] = {0, 1,  2,  2,  2,  1,
                                                               0, -2, -2, -2, -2, -1};
@@ -167,6 +170,9 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
   }
   this->needsRefreshAtA6 = 0;
   TPicture::Draw(rectBuffer);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  RuntimeTestDriver::Pulse();
+#endif
 
   TQuickDrawSurfaceContext* savedContext;
   int savedFlags;
@@ -223,6 +229,12 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
     short drawY = g_anCityBuildingSlotCoords[g_nCityBuildingDrawYOffsetIndex + slot * 2];
     BlitBitmapResourceRectWithScreenOffsetAndPalette(&scratchBounds, scratchContext, drawX, drawY,
                                                      pictureId, savedContext, savedFlags);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    // A full city rebuild performs many independent resource blits. Report only
+    // between completed blits; one blocked GDI/resource operation still trips the
+    // five-second stale-heartbeat watchdog.
+    RuntimeTestDriver::Pulse();
+#endif
 
     if (slot == 0xf && city->ownerNationAc->field8d2 > '2') {
       SetGWorld(scratchContext, savedFlags);
@@ -593,6 +605,13 @@ bool TCityProductionView::ActivateBuildingSlotForRuntimeTest(short buildingSlot)
     }
   }
   return false;
+}
+
+TBuildingView* TCityProductionView::BuildingViewForRuntimeTest(short buildingSlot) {
+  if (buildingSlot < 0 || buildingSlot >= 16) {
+    return 0;
+  }
+  return buildingViewsAC[buildingSlot];
 }
 #endif
 

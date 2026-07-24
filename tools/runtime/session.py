@@ -8,7 +8,12 @@ import subprocess
 import time
 
 from tools.runtime.artifacts import capture_failure_screenshot
-from tools.runtime.classification import classify_exit, classify_poll, no_progress_budget_seconds
+from tools.runtime.classification import (
+    classify_exit,
+    classify_inferior_exit,
+    classify_poll,
+    no_progress_budget_seconds,
+)
 from tools.runtime.debug.session import DebuggerTransportError, GdbSession, is_terminal_stop
 from tools.runtime.protocol import read_json_file
 from tools.runtime.wine import (
@@ -57,8 +62,15 @@ def execute_run(
     debugger_signal: str | None = None
     captured_stops: set[str] = set()
     debugger: GdbSession | None = None
-    process = None
-    returncode = None
+    direct_process: subprocess.Popen[bytes] | None = None
+    proxy_pid: int | None = None
+    proxy_exit_code: int | None = None
+    gdb_pid: int | None = None
+    gdb_exit_code: int | None = None
+    inferior_pid: int | None = None
+    inferior_exit_code: int | None = None
+    inferior_terminal_reason: str | None = None
+    inferior_signal: str | None = None
     budget_seconds = no_progress_budget_seconds(phase_timeout_ms)
     pid_path = run_dir / "pid"
     started = time.monotonic()
@@ -88,18 +100,24 @@ def execute_run(
                 executable, retail_game_dir(), environment, run_dir
             )
             try:
-                process = debugger.start()
+                debugger.start()
+                lifecycle = debugger.lifecycle()
+                proxy_pid = lifecycle.proxy_pid
+                gdb_pid = lifecycle.gdb_pid
+                inferior_pid = lifecycle.inferior_pid
             except DebuggerTransportError as error:
                 debugger_error = str(error)
                 classification = "debugger_transport_failure"
         else:
             wine_log = (run_dir / wine_log_name).open("wb")
-            process = subprocess.Popen(
+            direct_process = subprocess.Popen(
                 ["wine", str(executable)], cwd=retail_game_dir(), env=environment,
                 stdout=wine_log, stderr=subprocess.STDOUT,
             )
-        if process is not None:
-            pid_path.write_text(f"{process.pid}\n", encoding="utf-8")
+            inferior_pid = direct_process.pid
+        if inferior_pid is not None:
+            pid_path.write_text(f"{inferior_pid}\n", encoding="utf-8")
+        if classification is None and (debugger is not None or direct_process is not None):
             while True:
                 if debugger is not None:
                     try:
@@ -122,22 +140,55 @@ def execute_run(
                                 captured_stops.add(stop.raw)
                             debugger.continue_inferior()
                             stop = debugger.poll_stop()
+                        lifecycle = debugger.lifecycle()
+                        proxy_pid = lifecycle.proxy_pid
+                        proxy_exit_code = lifecycle.proxy_exit_code
+                        gdb_pid = lifecycle.gdb_pid
+                        gdb_exit_code = lifecycle.gdb_exit_code
+                        inferior_pid = lifecycle.inferior_pid
+                        inferior_exit_code = lifecycle.inferior_exit_code
+                        inferior_terminal_reason = lifecycle.inferior_terminal_reason
+                        inferior_signal = lifecycle.inferior_signal
                     except DebuggerTransportError as error:
                         debugger_error = str(error)
                         classification = "debugger_transport_failure"
                         break
+                    if inferior_pid is not None and not pid_path.is_file():
+                        pid_path.write_text(f"{inferior_pid}\n", encoding="utf-8")
+                    if inferior_terminal_reason is not None:
+                        classification = classify_inferior_exit(
+                            inferior_terminal_reason,
+                            inferior_exit_code,
+                            inferior_signal,
+                            result_path.is_file(),
+                        )
+                        break
+                    if proxy_exit_code is not None or gdb_exit_code is not None:
+                        classification = "debugger_transport_failure"
+                        debugger_error = (
+                            f"debugger transport exited while inferior was active: "
+                            f"proxy={proxy_exit_code}, gdb={gdb_exit_code}"
+                        )
+                        break
                 if classification == "runtime_invariant_violation":
-                    capture_failure_screenshot(run_dir / "failure-screenshot.png")
-                    process.kill()
-                    process.wait(timeout=30)
-                    returncode = process.returncode
+                    capture_failure_screenshot(
+                        run_dir / "failure-screenshot.png", wineprefix=prefix
+                    )
+                    if debugger is not None:
+                        debugger.terminate_inferior()
                     break
-                returncode = process.poll()
-                if returncode is not None:
+                direct_returncode = (
+                    direct_process.poll() if direct_process is not None else None
+                )
+                if direct_process is not None and direct_returncode is not None:
+                    inferior_exit_code = direct_returncode
+                    inferior_terminal_reason = "process-exited"
                     if debugger_signal is not None and not result_path.is_file():
                         classification = "crash"
                     else:
-                        classification = classify_exit(returncode, result_path.is_file())
+                        classification = classify_exit(
+                            direct_returncode, result_path.is_file()
+                        )
                     break
                 heartbeat = read_json_file(heartbeat_path)
                 heartbeat_age = None
@@ -155,7 +206,11 @@ def execute_run(
                 if classification is None and time.monotonic() - started > timeout:
                     classification = "action_timeout"
                 if classification is not None:
-                    capture_failure_screenshot(run_dir / "failure-screenshot.png")
+                    capture_failure_screenshot(
+                        run_dir / "failure-screenshot.png",
+                        owner_pid=direct_process.pid if direct_process is not None else None,
+                        wineprefix=prefix,
+                    )
                     if debugger is not None:
                         try:
                             _, stop = debugger.interrupt_and_capture(classification)
@@ -164,13 +219,28 @@ def execute_run(
                                 classification = "crash"
                         except DebuggerTransportError as error:
                             debugger_error = str(error)
-                    process.kill()
-                    process.wait(timeout=30)
-                    returncode = process.returncode
+                        debugger.terminate_inferior()
+                    elif direct_process is not None:
+                        direct_process.kill()
+                        direct_process.wait(timeout=30)
+                        inferior_exit_code = direct_process.returncode
+                        inferior_terminal_reason = "host-terminated"
                     break
                 time.sleep(POLL_INTERVAL_SECONDS)
     finally:
         if debugger is not None:
+            try:
+                lifecycle = debugger.lifecycle()
+                proxy_pid = lifecycle.proxy_pid
+                proxy_exit_code = lifecycle.proxy_exit_code
+                gdb_pid = lifecycle.gdb_pid
+                gdb_exit_code = lifecycle.gdb_exit_code
+                inferior_pid = lifecycle.inferior_pid
+                inferior_exit_code = lifecycle.inferior_exit_code
+                inferior_terminal_reason = lifecycle.inferior_terminal_reason
+                inferior_signal = lifecycle.inferior_signal
+            except DebuggerTransportError:
+                pass
             debugger.close()
         if not use_gdb and 'wine_log' in locals():
             wine_log.close()
@@ -180,7 +250,15 @@ def execute_run(
 
     return {
         "classification": classification,
-        "wine_exit": returncode,
+        "wine_exit": inferior_exit_code,
+        "proxy_pid": proxy_pid,
+        "proxy_exit_code": proxy_exit_code,
+        "gdb_pid": gdb_pid,
+        "gdb_exit_code": gdb_exit_code,
+        "inferior_pid": inferior_pid,
+        "inferior_exit_code": inferior_exit_code,
+        "inferior_terminal_reason": inferior_terminal_reason,
+        "inferior_signal": inferior_signal,
         "duration_seconds": round(time.monotonic() - started, 3),
         "debugger": "gdb" if use_gdb else "none",
         "debugger_stop_count": debugger.stop_count if debugger is not None else 0,

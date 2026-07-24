@@ -255,13 +255,18 @@ def cmd_gdb(args: argparse.Namespace) -> int:
     try:
         print(run_gdb(args.port, script, args.seconds))
     finally:
-        proxy.close()
         if args.keep_running:
+            proxy_pid = proxy.process.pid if proxy.process is not None else "unknown"
             print(
-                "leaving Wine session running in "
-                f"WINEPREFIX={environment['WINEPREFIX']}"
+                "leaving reconnectable Wine debug target running:\n"
+                f"  proxy PID: {proxy_pid}\n"
+                f"  reconnect: gdb -ex 'target remote localhost:{args.port}'\n"
+                f"  WINEPREFIX={environment['WINEPREFIX']}\n"
+                f"  cleanup: WINEPREFIX={environment['WINEPREFIX']} wineserver -k; "
+                f"kill {proxy_pid}"
             )
         else:
+            proxy.close()
             shut_down_wine_prefix(prefix, environment)
     return 0
 

@@ -139,8 +139,10 @@ def run_test(args: argparse.Namespace) -> int:
     if host["classification"] is not None:
         print(f"runtime test classified as {host['classification']}", file=sys.stderr)
         return 1
-    if host["wine_exit"] != 0:
-        print(f"Wine process exited with code {host['wine_exit']}", file=sys.stderr)
+    if host["inferior_exit_code"] not in {None, 0}:
+        print(
+            f"Inferior exited with code {host['inferior_exit_code']}", file=sys.stderr
+        )
         return 1
     return 0 if result.get("status") == "passed" else 1
 

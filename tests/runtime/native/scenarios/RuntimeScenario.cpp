@@ -1373,6 +1373,10 @@ void RuntimeScenario::Tick(RuntimeContext&) {
   g_runtimeTestState.step();
 }
 
+void RuntimeScenario::Pulse(RuntimeContext&) {
+  MaybeWriteHeartbeat();
+}
+
 void RuntimeScenario::ObserveBuiltUiTree(RuntimeContext&, int eventCode, TView* root) {
   if (!IsRandomGameTest()) {
     return;
@@ -1418,6 +1422,10 @@ void RuntimeScenario::ObserveTurnEvent(RuntimeContext&, int eventCode) {
 
 unsigned int RuntimeScenario::RandomSeed(RuntimeContext& context) {
   return context.Seed();
+}
+
+void RuntimeScenario::FailHarness(RuntimeContext&, const char* failure) {
+  Fail(failure);
 }
 
 bool RuntimeScenario::RequiresMainWindow() const {

@@ -11,11 +11,12 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 BUNDLE_RETENTION = 10
 
 
-def capture_failure_screenshot(destination: Path) -> None:
+def capture_failure_screenshot(
+    destination: Path, *, owner_pid: int | None = None, wineprefix: Path | None = None
+) -> None:
     """Best-effort diagnostic artifact; screenshots never affect pass/fail."""
     try:
-        subprocess.run(
-            [
+        command = [
                 "uv",
                 "run",
                 "--with",
@@ -25,7 +26,13 @@ def capture_failure_screenshot(destination: Path) -> None:
                 "python",
                 "tools/runtime/screenshot.py",
                 str(destination),
-            ],
+            ]
+        if owner_pid is not None:
+            command.extend(["--pid", str(owner_pid)])
+        if wineprefix is not None:
+            command.extend(["--wineprefix", str(wineprefix.resolve())])
+        subprocess.run(
+            command,
             cwd=REPO_ROOT,
             capture_output=True,
             timeout=60,

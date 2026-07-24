@@ -14,6 +14,7 @@ RuntimeTestDescriptor g_descriptors[] = {
     {"city_screen_opens", CityScreenTest()},
     {"map_zoom_toggle_remains_responsive", MapZoomToggleTest()},
     {"load_saved_game", LoadSavedGameTest()},
+    {"turn_event_queue_bounds", TurnEventQueueBoundsTest()},
 };
 
 } // namespace

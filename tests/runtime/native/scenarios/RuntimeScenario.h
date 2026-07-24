@@ -14,7 +14,9 @@ public:
   void Tick(RuntimeContext& context) override;
   void ObserveTurnEvent(RuntimeContext& context, int eventCode) override;
   void ObserveBuiltUiTree(RuntimeContext& context, int eventCode, TView* root) override;
+  void Pulse(RuntimeContext& context) override;
   unsigned int RandomSeed(RuntimeContext& context) override;
+  void FailHarness(RuntimeContext& context, const char* failure) override;
 
   virtual const char* Name() const = 0;
   virtual bool RequiresMainWindow() const;

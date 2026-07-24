@@ -37,6 +37,19 @@ class StopEvent:
     raw: str
 
 
+@dataclass(frozen=True)
+class DebuggerLifecycle:
+    proxy_pid: int | None
+    proxy_exit_code: int | None
+    gdb_pid: int | None
+    gdb_exit_code: int | None
+    inferior_pid: int | None
+    inferior_exit_code: int | None
+    inferior_terminal_reason: str | None
+    inferior_signal: str | None
+    inferior_active: bool
+
+
 def stop_event_from_record(record: MiRecord) -> StopEvent | None:
     if record.message != "stopped" or not isinstance(record.payload, dict):
         return None
@@ -53,6 +66,20 @@ def stop_event_from_record(record: MiRecord) -> StopEvent | None:
 
 def is_terminal_stop(event: StopEvent) -> bool:
     return event.reason in {"exited", "exited-normally", "exited-signalled"}
+
+
+def _parse_exit_code(value: object) -> int | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        return int(value, 0)
+    except ValueError:
+        # GDB/MI reports remote exit codes in C-style octal (for example
+        # ``0177``), which Python 3 deliberately does not accept with base 0.
+        try:
+            return int(value, 8) if value.startswith("0") else int(value, 10)
+        except ValueError:
+            return None
 
 
 def allocate_port() -> int:
@@ -190,6 +217,11 @@ class GdbSession:
         self._controller: _AsyncController | None = None
         self._mi: GdbMiProcess | None = None
         self._stops: deque[StopEvent] = deque()
+        self._inferior_pid: int | None = None
+        self._inferior_exit_code: int | None = None
+        self._inferior_terminal_reason: str | None = None
+        self._inferior_signal: str | None = None
+        self._inferior_active = False
         self.stop_count = 0
 
     @property
@@ -220,6 +252,22 @@ class GdbSession:
             self.close()
             raise
         return self.process
+
+    def lifecycle(self) -> DebuggerLifecycle:
+        self._drain_events()
+        proxy_process = self.proxy.process
+        mi = self._mi
+        return DebuggerLifecycle(
+            proxy_pid=proxy_process.pid if proxy_process is not None else None,
+            proxy_exit_code=proxy_process.poll() if proxy_process is not None else None,
+            gdb_pid=mi.pid if mi is not None else None,
+            gdb_exit_code=mi.returncode if mi is not None else None,
+            inferior_pid=self._inferior_pid,
+            inferior_exit_code=self._inferior_exit_code,
+            inferior_terminal_reason=self._inferior_terminal_reason,
+            inferior_signal=self._inferior_signal,
+            inferior_active=self._inferior_active,
+        )
 
     def continue_inferior(self) -> None:
         self._command("-exec-continue --all")
@@ -353,6 +401,15 @@ class GdbSession:
             capture_label = event.signal_name.lower()
         return self.capture_stop(capture_label, event), event
 
+    def terminate_inferior(self) -> None:
+        if not self._inferior_active:
+            return
+        try:
+            self._console("kill", timeout=10)
+        except DebuggerTransportError:
+            pass
+        self._drain_events()
+
     def close(self) -> None:
         if self._controller is not None and self._mi is not None:
             try:
@@ -397,7 +454,21 @@ class GdbSession:
     def _record_event(self, record: MiRecord) -> None:
         event = stop_event_from_record(record)
         if event is not None:
+            if is_terminal_stop(event):
+                self._inferior_active = False
+                self._inferior_terminal_reason = event.reason
+                self._inferior_signal = event.signal_name
+                payload = record.payload if isinstance(record.payload, dict) else {}
+                self._inferior_exit_code = _parse_exit_code(payload.get("exit-code"))
             self._stops.append(event)
+        elif record.record_type == "notify" and isinstance(record.payload, dict):
+            if record.message == "thread-group-started":
+                self._inferior_pid = _parse_exit_code(record.payload.get("pid"))
+                self._inferior_active = True
+            elif record.message == "thread-group-exited":
+                self._inferior_active = False
+                self._inferior_terminal_reason = "thread-group-exited"
+                self._inferior_exit_code = _parse_exit_code(record.payload.get("exit-code"))
         elif record.record_type == "debugger-exit":
             payload = record.payload if isinstance(record.payload, dict) else {}
             raise DebuggerTransportError(
