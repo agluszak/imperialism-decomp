@@ -201,9 +201,9 @@ predicate_storage_reviews:
   1a972fb69f5925f0:
     classification: byte_field_storage
     evidence: "TLoadSavePicture::loadModeFlag90 is a one-byte object field initialized from the save-format predicate; the explicit conversion preserves the recovered byte layout."
-  8c953c58e87b8c7e:
+  b5fa1d97e89a5eb5:
     classification: byte_abi_argument
-    evidence: "TCzechBox::SetState takes unsigned char at recovered slot 0x75; the selected-slot predicate crosses that byte ABI boundary."
+    evidence: "TCzechBox::SetState takes unsigned char at recovered slot 0x75; the selected-slot predicate crosses that byte ABI boundary (both byte args cast explicitly to pick the slot-0x75 overload over the visible TView::SetState(int, int))."
   ef3d88e3b5456166:
     classification: byte_abi_argument
     evidence: "TArmyCheckBox::SetState is a virtual taking `unsigned char on` at slot 0x72 (0x004aa360); the toggle passes the inverted IsOn() predicate through that byte parameter, so the conversion belongs at the ABI boundary and the parameter must not become bool."
