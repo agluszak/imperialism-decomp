@@ -16,7 +16,7 @@ TObject* TObject::ShallowFree() {
     return 0;
   }
   memcpy(destObject, this, payloadSize);
-  return reinterpret_cast<TObject*>(destObject);
+  return static_cast<TObject*>(destObject);
 }
 IMPERIALISM_END_RETAIL_POLYMORPHIC_BYTE_COPY
 

@@ -745,7 +745,7 @@ public:
   // body comment.
   char AreAllLinkedEntriesTerrainFlagBit2Clear(int regionIndex);
   void SetRegionDevelopmentStageByte(short regionId, unsigned char stage);
-  int SetTileTransportFlags(StrategicTileIndex nTileIndex, unsigned short wTileTransportFlags);
+  void SetTileTransportFlags(StrategicTileIndex nTileIndex, unsigned short wTileTransportFlags);
   void ApplyRailSectionEndpointDirectionFlags(StrategicTileIndex sourceTile,
                                               StrategicTileIndex destTile, short ownerNation);
   // 0x514080. Rescind counterpart -- see the .cpp body comment.

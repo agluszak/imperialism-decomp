@@ -5,6 +5,7 @@ string-level checks on the generated oracle TU. The MSVC500 compile itself is
 covered by running the real oracle (build evidence), not unit-testable here.
 """
 
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -15,6 +16,7 @@ from tools.class_model import (
     _array_count,
     _walk_records,
 )
+from tools.clang_ast_index import game_header_include_paths
 from tools.layout_oracle import generate_oracle_tu, parse_oracle_output
 
 
@@ -129,6 +131,19 @@ class OracleGenerationTest(unittest.TestCase):
     def test_access_widening_precedes_includes(self):
         cpp, _ = generate_oracle_tu(self._model(), Path("/nonexistent"))
         self.assertLess(cpp.index("#define private public"), cpp.index("#include <stdio.h>"))
+
+    def test_nested_game_headers_use_canonical_include_spelling(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            nested = root / "include" / "game" / "ui_core" / "TView.h"
+            nested.parent.mkdir(parents=True)
+            nested.write_text("#pragma once\n", encoding="utf-8")
+            top = root / "include" / "game" / "TObject.h"
+            top.write_text("#pragma once\n", encoding="utf-8")
+            self.assertEqual(
+                game_header_include_paths(root),
+                ["game/TObject.h", "game/ui_core/TView.h"],
+            )
 
 
 class OracleParseTest(unittest.TestCase):

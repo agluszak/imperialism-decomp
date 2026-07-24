@@ -832,7 +832,7 @@ void TDiplomacyMapView::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
     terrainDescriptors = terrainDescriptors + 1;
   } while (terrainIndex < 0x17);
 
-  this->ForwardMapViewVirtualC4IfPresent(reinterpret_cast<int>(region));
+  ForwardMapViewVirtualC4IfPresent(region);
   DisposeRgn(region);
 }
 

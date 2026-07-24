@@ -19,6 +19,7 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/ScopedMapQuickDrawContext.h"
 #include "game/ui_screens/TSimMgr.h"
+#include "game/ui_screens/TZone.h"
 #include "game/navy/TTaskForce.h"
 #include "game/globals/prelude.h"
 #include "game/globals/map_globals.h"
@@ -355,12 +356,12 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
       previewTile = g_pGlobalMapState->cityScoreTable[actionIndex].cityTileIndex04;
     }
   } else if (interactionMode == 2) {
-    int attachedEntity = 0;
+    TZone* attachedEntity = 0;
     if (mapUberPicture->activeUnitCategoryIndex96 == 2) {
-      attachedEntity = reinterpret_cast<int>(mapUberPicture->orderEntryContext98);
+      attachedEntity = mapUberPicture->orderEntryContext98;
     }
     if (attachedEntity != 0) {
-      previewTile = *reinterpret_cast<short*>(attachedEntity + 0x20);
+      previewTile = attachedEntity->activeTileIndex20;
     }
   }
 

@@ -27,9 +27,9 @@ artifact that consumers load instead of re-parsing.
 from __future__ import annotations
 
 import argparse
-import glob
 import json
 import os
+import shutil
 import subprocess
 import tempfile
 from dataclasses import dataclass, asdict
@@ -37,6 +37,15 @@ from pathlib import Path
 
 _METHOD_KINDS = {"CXXMethodDecl", "CXXConstructorDecl", "CXXDestructorDecl", "FunctionDecl"}
 _SCOPE_KINDS = {"NamespaceDecl", "CXXRecordDecl", "ClassTemplateDecl"}
+
+
+def game_header_include_paths(repo_root: Path) -> list[str]:
+    """Return every game header using the canonical include-root spelling."""
+    include_root = repo_root / "include"
+    return sorted(
+        path.relative_to(include_root).as_posix()
+        for path in (include_root / "game").rglob("*.h")
+    )
 
 
 @dataclass(frozen=True)
@@ -60,11 +69,19 @@ def _vendored_include_flags(repo_root: Path) -> list[str]:
 
 def _emit_ast_json(repo_root: Path, clang: str = "clang++") -> Path:
     """Parse an umbrella TU of every game header; return the AST JSON temp path."""
-    headers = sorted(glob.glob(str(repo_root / "include" / "game" / "*.h")))
+    if shutil.which(clang) is None and clang == "clang++":
+        versioned = sorted(
+            Path("/usr/bin").glob("clang++-[0-9]*"),
+            key=lambda path: tuple(int(part) for part in path.name.split("-")[1:]),
+            reverse=True,
+        )
+        if versioned:
+            clang = str(versioned[0])
+    headers = game_header_include_paths(repo_root)
     umbrella = tempfile.NamedTemporaryFile(
         "w", suffix=".cpp", delete=False, dir=tempfile.gettempdir())
-    for h in headers:
-        umbrella.write(f'#include "{os.path.basename(h)}"\n')
+    for header in headers:
+        umbrella.write(f'#include "{header}"\n')
     umbrella.close()
     ast_path = Path(tempfile.mkstemp(suffix=".ast.json")[1])
     cmd = [clang, "--driver-mode=cl", "/TP", "-fsyntax-only",

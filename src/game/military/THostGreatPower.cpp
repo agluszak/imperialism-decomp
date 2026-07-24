@@ -61,7 +61,7 @@ void THostGreatPower::ReplyToDiplomacyOffers(void) {
     }
     ++nation;
     ++nationSlot;
-  } while (reinterpret_cast<int>(nation) < reinterpret_cast<int>(&g_apNationStates_End));
+  } while (nation < &g_apNationStates_End);
 
   TViewMgr* uiRuntimeContext = g_pUiRuntimeContext;
   short ownerNationSlot = this->nationSlot;

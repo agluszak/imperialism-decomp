@@ -49,7 +49,6 @@ void TNumberedArrowButton::SetState(short value86Arg, unsigned char refreshFlag)
 // FUNCTION: IMPERIALISM 0x0058c3d0
 void TNumberedArrowButton::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
-  const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
   UpdatePaletteIndexWithDefaultFallback(0x10);
   RECT srcRect;
   srcRect.left = (value86 != 2) ? 0xa : 0;
@@ -57,9 +56,7 @@ void TNumberedArrowButton::Draw(RECT* rectBuffer) {
   srcRect.right = srcRect.left + 0xb;
   srcRect.bottom = 0x10;
   RECT dstRect = {0, 0, 0xb, 0x10};
-  int strategicMapViewSystem = *reinterpret_cast<int*>(kAddrStrategicMapViewSystem);
-  TQuickDrawSurfaceContext* hintSource = reinterpret_cast<TQuickDrawSurfaceContext*>(
-      *reinterpret_cast<int*>(strategicMapViewSystem + 0x6a4));
+  TQuickDrawSurfaceContext* hintSource = g_pStrategicMapViewSystem->atlas694[4];
   BlitQuickDrawSurfaces(hintSource->GetBlitSurface(),
                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &dstRect,
                         0x24);

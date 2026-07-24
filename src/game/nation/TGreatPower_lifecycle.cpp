@@ -673,7 +673,7 @@ void TGreatPower::WriteTo(TStream* stream) {
     int entryCount = this->townMarkerList->GetCount();
     stream->WriteBytesSlot78(&entryCount, 4);
     for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
-      TUnit* entry = reinterpret_cast<TUnit*>(this->townMarkerList->GetEntryByOrdinal(ordinal));
+      TUnit* entry = static_cast<TUnit*>(this->townMarkerList->GetEntryByOrdinal(ordinal));
       entry->WriteTo(stream);
     }
   }
@@ -682,7 +682,7 @@ void TGreatPower::WriteTo(TStream* stream) {
     int entryCount = this->trackedObjectList->GetCount();
     stream->WriteBytesSlot78(&entryCount, 4);
     for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
-      TUnit* entry = reinterpret_cast<TUnit*>(this->trackedObjectList->GetEntryByOrdinal(ordinal));
+      TUnit* entry = static_cast<TUnit*>(this->trackedObjectList->GetEntryByOrdinal(ordinal));
       entry->WriteTo(stream);
     }
   }

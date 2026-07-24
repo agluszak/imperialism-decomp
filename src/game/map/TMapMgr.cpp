@@ -1923,8 +1923,8 @@ TTown* TMapMgr::FindTownMarkerForTileByOwnerNation(StrategicTileIndex tileIndex)
 }
 
 // FUNCTION: IMPERIALISM 0x00513200
-int TMapMgr::SetTileTransportFlags(StrategicTileIndex nTileIndex,
-                                   unsigned short wTileTransportFlags) {
+void TMapMgr::SetTileTransportFlags(StrategicTileIndex nTileIndex,
+                                    unsigned short wTileTransportFlags) {
   TTerrainStateRecordView* tile = &terrainStateTable[nTileIndex];
   if (((tile->activeFlags1c & 4) != 0) && ((wTileTransportFlags & 4) == 0)) {
     g_pActiveMapOrderContext->RemovePortZoneByTile(nTileIndex);
@@ -1936,7 +1936,6 @@ int TMapMgr::SetTileTransportFlags(StrategicTileIndex nTileIndex,
   if ((wTileTransportFlags & 3) != 0) {
     tile->activeFlags1c |= 0x20;
   }
-  return reinterpret_cast<int>(&tile->activeFlags1c);
 }
 
 const int kGlobalMapTileCount = 0x1950;
@@ -2494,7 +2493,7 @@ int TMapMgr::QueueDepotConstructionOrder(StrategicTileIndex nTileIndex, short nN
   terrainStateTable[nTileIndex].activeFlags1c |= 0x10;
 
   if (g_nSaveFormatVersion != -3 && g_pSimMgr->multiplayerSessionRole != 0) {
-    g_pGameFlowState->DispatchTurnEvent31TaggedPayload(kControlTagTown, town, -2);
+    g_pGameFlowState->SendStreamObject(kControlTagTown, town, -2);
     g_pGameFlowState->DispatchCityRedrawInvalidateEvent(
         terrainStateTable[nTileIndex].cityRecordIndex);
     DispatchTileRedrawInvalidateEvent(nTileIndex);
@@ -2529,7 +2528,7 @@ void TMapMgr::QueuePortConstructionOrder(StrategicTileIndex nTileIndex, short nN
   g_pActiveMapOrderContext->EnsurePortZoneForTile(nTileIndex);
 
   if (g_nSaveFormatVersion != -3 && g_pSimMgr->multiplayerSessionRole != 0) {
-    g_pGameFlowState->DispatchTurnEvent31TaggedPayload(kControlTagTown, town, -2);
+    g_pGameFlowState->SendStreamObject(kControlTagTown, town, -2);
     g_pGameFlowState->DispatchCityRedrawInvalidateEvent(
         terrainStateTable[nTileIndex].cityRecordIndex);
     DispatchTileRedrawInvalidateEvent(nTileIndex);
@@ -3716,7 +3715,7 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
       } while (--linkedCount != 0);
     }
     regionScores[r] = score;
-    region = reinterpret_cast<Province*>(reinterpret_cast<char*>(region) + 0xa8);
+    ++region;
   }
 
   // Pass 2: development-stage bonus.
@@ -3752,7 +3751,7 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
       region->cityScoreValue = static_cast<int>(
           regionScores[adjIdx] * g_TileHeatmapNeighborDiffusionFactor + region->cityScoreValue);
     }
-    region = reinterpret_cast<Province*>(reinterpret_cast<char*>(region) + 0xa8);
+    ++region;
   }
 
   // Pass 5: cityScoreTotal = mean region score.
@@ -3760,7 +3759,7 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
   region = cityScoreTable;
   for (r = 0; r < 0x180; ++r) {
     cityScoreTotal += region->cityScoreValue;
-    region = reinterpret_cast<Province*>(reinterpret_cast<char*>(region) + 0xa8);
+    ++region;
   }
   cityScoreTotal = cityScoreTotal / 0x180;
 }

@@ -90,7 +90,7 @@ static __inline void WriteTrackedListToStream(TStream* stream, TSortedList* list
   int entryCount = list->GetCount();
   stream->WriteBytesSlot78(&entryCount, 4);
   for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
-    TUnit* entry = reinterpret_cast<TUnit*>(list->GetEntryByOrdinal(ordinal));
+    TUnit* entry = static_cast<TUnit*>(list->GetEntryByOrdinal(ordinal));
     entry->WriteTo(stream);
   }
 }

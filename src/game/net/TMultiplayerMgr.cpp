@@ -19,14 +19,9 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/military/NetMessage.h"
 #include "game/multiplayer_packets.h"
+#include "game/nation/TLandSaleEvent.h"
+#include "game/nation/TTurnStartEvent.h"
 #include "game/ImperialismApp.h"
-
-struct StarOrderObjectView {
-  void* vftable;
-  int subTag;  // +0x04 - 'land' selects the two-short route
-  short word8; // +0x08
-  short wordA; // +0x0a
-};
 
 // Turn-event-0x2c payload: composite snapshot of a nation's city production state
 // plus the population-summary scalars and metric buckets.
@@ -187,13 +182,6 @@ typedef unsigned char code;
 typedef unsigned char CObject_slot_0x04_0x04;
 typedef unsigned int undefined3;
 typedef signed char sbyte;
-
-// Minimal stand-in for the CString locals that the raw decompile touches only via
-// their leading char* buffer (m_pchData at offset 0). Real string semantics are not
-// required to reproduce this state machine's control flow.
-struct GhStr {
-  char* m_pchData;
-};
 
 // Ghidra bit-concatenation intrinsics (compile-only; exact widths are not load-bearing
 // here). CONCAT31(hi,lo) packs a 3-byte high value with a 1-byte low value, etc.
@@ -1278,7 +1266,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   }
   case 0x1f: {
     // Session/game-flow four-cc status dispatcher.
-    TurnEvent1FStatusPacket* gameState = reinterpret_cast<TurnEvent1FStatusPacket*>(packet);
+    TurnEvent1FStatusPacket* gameState = static_cast<TurnEvent1FStatusPacket*>(packet);
     switch (gameState->statusTag18) {
     case kControlTagAbdi: { // 'abdi' - nation abdicated: notice; host replaces the slot with an AI
       CString templateTextAbdi;
@@ -1688,10 +1676,9 @@ void TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C(TurnEventQueuePacket* 
 }
 
 // FUNCTION: IMPERIALISM 0x005493c0
-void TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte,
-                                                                 int mapOffsetSelector,
-                                                                 int absoluteOffset, short shortA,
-                                                                 short shortB) {
+void TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags(
+    unsigned char flagByte, TurnEvent11MapOffsetBase mapOffsetBase, const void* mapEntry,
+    short shortA, short shortB) {
   TurnEvent11Packet packet;
   packet.eventCode = 0x11;
   packet.fromNetworkId = 0;
@@ -1700,14 +1687,14 @@ void TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char f
   packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.flagByte = flagByte;
-  packet.mapOffsetSelector = mapOffsetSelector;
-  int base = 0;
-  if (mapOffsetSelector == 0) {
-    base = reinterpret_cast<int>(g_pGlobalMapState->terrainStateTable);
-  } else if (mapOffsetSelector == 1) {
-    base = reinterpret_cast<int>(g_pGlobalMapState->cityScoreTable);
+  packet.mapOffsetSelector = mapOffsetBase;
+  const void* mapBase = 0;
+  if (mapOffsetBase == kTurnEvent11TerrainStateBase) {
+    mapBase = g_pGlobalMapState->terrainStateTable;
+  } else if (mapOffsetBase == kTurnEvent11CityScoreBase) {
+    mapBase = g_pGlobalMapState->cityScoreTable;
   }
-  packet.mapOffset = absoluteOffset - base;
+  packet.mapOffset = static_cast<const char*>(mapEntry) - static_cast<const char*>(mapBase);
   packet.shortA = shortA;
   packet.shortB = shortB;
   g_pNetMgr006a6014->Send(&packet, 0);
@@ -1936,28 +1923,27 @@ void TMultiplayerMgr::CreateAndSendTurnEvent1C_BoolAndSixShorts(bool broadcastFl
 }
 
 // FUNCTION: IMPERIALISM 0x00549a90
-void TMultiplayerMgr::DispatchTurnEvent31TaggedPayload(int payloadTag, TObject* payloadObject,
-                                                       int destinationSlot) {
+void TMultiplayerMgr::SendStreamObject(unsigned long payloadTag, TObject* payloadObject,
+                                       int destinationSlot) {
   TaggedSerializablePayload payload;
   payload.tag = payloadTag;
   payload.object = payloadObject;
-  DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x31, static_cast<short>(destinationSlot),
-                                                  &payload);
+  StreamMessagePayload32 payloadBits;
+  payloadBits.taggedObject = &payload;
+  SendStreamMessage(0x31, static_cast<short>(destinationSlot), payloadBits.scalarValue);
 }
 
 // FUNCTION: IMPERIALISM 0x00549ad0
-void TMultiplayerMgr::DispatchTurnEventPacketWithCodeAndPayloadBuffer(short eventTag,
-                                                                      short destinationSlot,
-                                                                      void* payload) {
+void TMultiplayerMgr::SendStreamMessage(short eventTag, short destinationSlot, long payload) {
   TCountingStream* counter = new TCountingStream();
   counter->PrepareForUse();
-  SerializeOrderDataIntoTurnEventByTag(counter, eventTag, destinationSlot, payload);
+  WriteMessageTo(counter, eventTag, destinationSlot, payload);
   int packetBytes = counter->GetPosition();
   counter->Free();
   HGLOBAL packetMemory = GlobalAlloc(GMEM_MOVEABLE, packetBytes);
   THandleStream* writer = new THandleStream();
   writer->AttachGlobalMemoryHandleAndResetPosition(packetMemory, 0x10);
-  SerializeOrderDataIntoTurnEventByTag(writer, eventTag, destinationSlot, payload);
+  WriteMessageTo(writer, eventTag, destinationSlot, payload);
   NetMessage* packet = static_cast<NetMessage*>(GlobalLock(packetMemory));
   packet->messageLength = writer->GetPosition();
   writer->Free();
@@ -1966,8 +1952,8 @@ void TMultiplayerMgr::DispatchTurnEventPacketWithCodeAndPayloadBuffer(short even
 }
 
 // FUNCTION: IMPERIALISM 0x00549c60
-void TMultiplayerMgr::SerializeOrderDataIntoTurnEventByTag(TStream* stream, short eventTag,
-                                                           short destinationSlot, void* payload) {
+void TMultiplayerMgr::WriteMessageTo(TStream* stream, short eventTag, short destinationSlot,
+                                     long payload) {
   TimelyNetMessagePrefix header;
   header.messageTag = kControlTagTime;
   header.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
@@ -1986,37 +1972,39 @@ void TMultiplayerMgr::SerializeOrderDataIntoTurnEventByTag(TStream* stream, shor
     header.toNetworkId = g_pGameFlowState->nationSessionIds[dest];
   }
   stream->WriteBytesSlot78(&header, 0x1c);
+  StreamMessagePayload32 payloadValue;
+  payloadValue.scalarValue = payload;
   switch (tag) {
-  case 0x28:
-    static_cast<TObject*>(payload)->WriteTo(stream);
-    return;
   case 0x2e:
-    g_pNavyOrderManager->WriteToFilterously(stream,
-                                            static_cast<short>(reinterpret_cast<int>(payload)));
+    g_pNavyOrderManager->WriteToFilterously(stream, static_cast<short>(payloadValue.scalarValue));
     return;
   case 0x2f:
-    PublishTerrainDescriptorAndNotifyOrderListeners(stream, reinterpret_cast<int>(payload));
+    PublishTerrainDescriptorAndNotifyOrderListeners(stream, payloadValue.scalarValue);
     return;
   case 0x30:
-    PublishNationDescriptorAndNotifyOrderListeners(stream, reinterpret_cast<int>(payload));
+    PublishNationDescriptorAndNotifyOrderListeners(stream, payloadValue.scalarValue);
     return;
   case 0x31: {
-    TaggedSerializablePayload* record = static_cast<TaggedSerializablePayload*>(payload);
+    TaggedSerializablePayload* record = payloadValue.taggedObject;
     stream->streamSlot8c(record->tag);
     if (record->tag != kControlTagStar) { // 'star'
       record->object->WriteTo(stream);
       return;
     }
-    StarOrderObjectView* view = reinterpret_cast<StarOrderObjectView*>(record->object);
-    record->object->AssertValid();
-    stream->streamSlot8c(view->subTag);
-    if (view->subTag == kControlTagLand) { // 'land'
-      record->object->AssertValid();
-      stream->WriteCountSlot88(view->word8);
-      stream->WriteCountSlot88(view->wordA);
+    TTurnStartEvent* event = static_cast<TTurnStartEvent*>(record->object);
+    event->AssertValid();
+    stream->streamSlot8c(event->eventTag04);
+    if (event->eventTag04 == kControlTagLand) { // 'land'
+      TLandSaleEvent* landSale = static_cast<TLandSaleEvent*>(event);
+      landSale->AssertValid();
+      stream->WriteCountSlot88(landSale->tileIndex08);
+      stream->WriteCountSlot88(landSale->nationCode0a);
       return;
     }
   } break;
+  case 0x28:
+    payloadValue.object->WriteTo(stream);
+    return;
   case 0x32:
     g_pNationInteractionStateManager->WriteTo(stream);
   }
@@ -2403,7 +2391,7 @@ void TMultiplayerMgr::DispatchTurnEventCode9WithTwoTextTokens(int reasonCode, in
 
 // FUNCTION: IMPERIALISM 0x0054b5b0
 void TMultiplayerMgr::SendTradeBook() {
-  DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x32, -2, 0);
+  SendStreamMessage(0x32, -2, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0054b5d0

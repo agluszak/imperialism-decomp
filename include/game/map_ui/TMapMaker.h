@@ -146,7 +146,7 @@ public:
   virtual void CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regionClass,
                                                     short unusedClass, short northClass,
                                                     short unusedClass2);
-  virtual int GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex); // slot 33 / 0x84
+  virtual char* GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex); // slot 33 / 0x84
 
   // TMapMaker's real vtable (0x006598f8) ends at its last reachable slot (0x21 /
   // SelectOwner above); slots 0x22..0x28 are a literal NULL tail (matching the

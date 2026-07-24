@@ -5,7 +5,7 @@
 #include "game/ui_tags_widgets.h"
 #include "game/ui_widgets/TCivToolbar.h"
 #include "game/ui_screens/TUberCluster.h"
-#include "game/ui_widgets/TTradeCluster.h"
+#include "game/ui_widgets/TCivilianButton.h"
 #include "game/ui_widgets/TCivDescription.h"
 #include "game/military/TCivUnit.h"
 #include "game/city_ui/TCivMgr.h"
@@ -112,7 +112,8 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
     if (stackButton == 0) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x15d1);
     }
-    static_cast<TTradeCluster*>(stackButton)->NotifyControlSelectionChange(selectedTileEntry);
+    static_cast<TCivilianButton*>(stackButton)
+        ->SetSelectedCivilianOrderAndEnableButton(selectedTileEntry);
     stackButton->SetState(selectedTileEntry->IsInIdleSelectionState(), 1);
     if ((selectedCivilianState != 0) &&
         (selectedTileEntry == selectedCivilianState->selectedEntry)) {
@@ -126,7 +127,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
     if (stackButton == 0) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x15df);
     }
-    static_cast<TTradeCluster*>(stackButton)->NotifyControlSelectionChange(0);
+    static_cast<TCivilianButton*>(stackButton)->SetSelectedCivilianOrderAndEnableButton(0);
     slotIndex = slotIndex + 1;
   }
 
@@ -162,13 +163,8 @@ void TCivToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
   if (commandId == 0xc) {
     unsigned int controlTag = static_cast<unsigned int>(sourceHandler->controlTag);
     if ((kControlTagStackSlotFirst <= controlTag) && (controlTag <= kControlTagStackSlotLast)) {
-      // The stack-slot button's bound civilian entry lives at +0x9c on the raw sourceHandler
-      // pointer. That offset is past TTradeCluster's own end (real object size 0x8c, confirmed
-      // via TTradeCluster::CreateObject's allocation constant at 0x587027), so the button is a
-      // more-derived, not-yet-recovered TTradeCluster subclass; kept as a documented raw offset
-      // (Hard Rule 8) rather than a field on the wrong class.
-      TCivUnit* boundStackEntry =
-          *reinterpret_cast<TCivUnit**>(reinterpret_cast<unsigned char*>(sourceHandler) + 0x9c);
+      TCivilianButton* stackButton = static_cast<TCivilianButton*>(sourceHandler);
+      TCivUnit* boundStackEntry = stackButton->selectedCivilianOrder9c;
       selectedCivilianOrderState->SetActiveCivilianSelection(boundStackEntry, 0);
       this->TCluster::DoEvent(0xc, sourceHandler, event);
       return;

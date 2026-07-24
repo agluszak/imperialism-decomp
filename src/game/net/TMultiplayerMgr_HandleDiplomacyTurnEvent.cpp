@@ -135,12 +135,9 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       break;
     }
     case 5: {
-      DispatchTurnEventPacketWithCodeAndPayloadBuffer(
-          0x2e, -1, reinterpret_cast<void*>(g_pSimMgr->GetActiveNationId()));
-      DispatchTurnEventPacketWithCodeAndPayloadBuffer(
-          0x2f, -1, reinterpret_cast<void*>(g_pSimMgr->GetActiveNationId()));
-      DispatchTurnEventPacketWithCodeAndPayloadBuffer(
-          0x30, -1, reinterpret_cast<void*>(g_pSimMgr->GetActiveNationId()));
+      SendStreamMessage(0x2e, -1, g_pSimMgr->GetActiveNationId());
+      SendStreamMessage(0x2f, -1, g_pSimMgr->GetActiveNationId());
+      SendStreamMessage(0x30, -1, g_pSimMgr->GetActiveNationId());
       for (int slot = 0; slot < 0x17; ++slot) {
         TMinor* minor = g_apSecondaryNationStateSlots[slot];
         if (minor != 0) {
@@ -325,14 +322,13 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
       g_pNetMgr006a6014->Send(&packetHeader, 0);
     }
 
-    DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x2e, -2, reinterpret_cast<void*>(-1));
+    SendStreamMessage(0x2e, -2, -1);
     for (int descriptorSlot = 0; descriptorSlot < 0x17; ++descriptorSlot) {
       if (g_apTerrainTypeDescriptorTable[descriptorSlot] != 0) {
-        DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x2f, -2,
-                                                        reinterpret_cast<void*>(descriptorSlot));
+        SendStreamMessage(0x2f, -2, descriptorSlot);
       }
     }
-    DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x30, -2, reinterpret_cast<void*>(-1));
+    SendStreamMessage(0x30, -2, -1);
 
     for (int stateSlot = 0; stateSlot < 7; ++stateSlot) {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(stateSlot)) != 0) {
@@ -443,14 +439,13 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
     break;
 
   case 0x15: {
-    DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x2e, -2, reinterpret_cast<void*>(-1));
+    SendStreamMessage(0x2e, -2, -1);
     for (int descriptorSlot = 0; descriptorSlot < 0x17; ++descriptorSlot) {
       if (g_apTerrainTypeDescriptorTable[descriptorSlot] != 0) {
-        DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x2f, -2,
-                                                        reinterpret_cast<void*>(descriptorSlot));
+        SendStreamMessage(0x2f, -2, descriptorSlot);
       }
     }
-    DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x30, -2, reinterpret_cast<void*>(-1));
+    SendStreamMessage(0x30, -2, -1);
 
     TurnEvent2SyncPacket* syncPacket =
         g_pDiplomacyTurnStateManager
@@ -459,10 +454,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
     g_pNetMgr006a6014->Send(syncPacket, 0);
     delete[] static_cast<unsigned char*>(static_cast<void*>(syncPacket));
 
-    TaggedSerializablePayload armyPayload;
-    armyPayload.tag = kControlTagArmy;
-    armyPayload.object = static_cast<TObject*>(g_pMapContextActionManager);
-    DispatchTurnEventPacketWithCodeAndPayloadBuffer(0x31, -2, &armyPayload);
+    SendStreamObject(kControlTagArmy, static_cast<TObject*>(g_pMapContextActionManager), -2);
 
     for (int snapshotSlot = 0; snapshotSlot < 7; ++snapshotSlot) {
       TGreatPower* nation = g_apNationStates[snapshotSlot];

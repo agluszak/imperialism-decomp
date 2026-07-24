@@ -33,6 +33,7 @@ import tempfile
 from pathlib import Path
 
 from tools.class_model import load_record_model
+from tools.clang_ast_index import game_header_include_paths
 
 _DOCKER_IMAGE = "imperialism-msvc500:latest"
 # Layout-relevant flags mirror the game's CMake baseline: /GX (EH), /GR- (no RTTI);
@@ -61,7 +62,7 @@ def generate_oracle_tu(model: dict, repo_root: Path) -> tuple[str, dict]:
     `skipped` maps qualified_name -> [reason strings] for members the oracle cannot
     measure; the apply pass must treat those as layout gaps, not zero-offset facts.
     """
-    headers = sorted(p.name for p in (repo_root / "include" / "game").glob("*.h"))
+    headers = game_header_include_paths(repo_root)
     lines = [
         "// GENERATED layout oracle — compiled by the real MSVC500 container.",
         "// Access is widened so private/protected members stay addressable; MSVC",
@@ -73,7 +74,7 @@ def generate_oracle_tu(model: dict, repo_root: Path) -> tuple[str, dict]:
     # Include via the SAME `game/...` spelling the codebase itself uses: VC5's
     # `#pragma once` dedupes by include spelling, so reaching a header both as
     # "TFoo.h" and "game/TFoo.h" would redefine every type in it (C2011 storm).
-    lines += [f'#include "game/{h}"' for h in headers]
+    lines += [f'#include "{h}"' for h in headers]
     lines.append("")
 
     skipped: dict = {}
