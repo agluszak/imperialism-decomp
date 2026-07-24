@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TControl.h"
 #include "game/mfc.h"
 
@@ -16,3 +18,4 @@ public:
 
   TFrameRadioView();
 };
+ASSERT_SIZE(TFrameRadioView, 0x84);

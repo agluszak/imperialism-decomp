@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TView.h"
 #include "game/ui_tags_common.h"
 #include "game/map_domain_types.h"
@@ -112,6 +114,7 @@ public:
   short battlefieldOriginOffsetXD4;
   unsigned char padD6[2];
 };
+ASSERT_SIZE(TTacticalBattleView, 0xd8);
 
 // Clips srcRect to bounds, shifting dstRect by the same per-edge delta so the two
 // stay in sync (the standard blit-clip prologue before a QuickDraw surface blit).

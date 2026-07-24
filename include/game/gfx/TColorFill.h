@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/gfx/TAdorner.h"
 #include "game/mfc.h"
 
@@ -15,3 +17,4 @@ public:
 
   TColorFill();
 };
+ASSERT_SIZE(TColorFill, 0xc);

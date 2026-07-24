@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_widgets/TAmtBar.h"
 
 class TProductionOrder;
@@ -23,3 +25,4 @@ public:
   // repaint the overlay's invalidated rect. TRailAmtBar overrides it.
   virtual void RenderQuickDrawOverlayWithHitRegion(short selectedValue); // 0x00589540
 };
+ASSERT_SIZE(TIndustryAmtBar, 0x6c);

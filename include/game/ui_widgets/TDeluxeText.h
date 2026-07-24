@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TTEView.h"
 #include "game/mfc.h"
 
@@ -53,3 +55,4 @@ public:
   void InitializeDeluxeText(TView* panel, int* offsetLayout, int* sizeLayout, RECT* insetRect,
                             TextStyle* style, short styleWord90);
 };
+ASSERT_SIZE(TDeluxeText, 0xa4);

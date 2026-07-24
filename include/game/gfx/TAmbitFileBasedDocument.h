@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/TFileBasedDocument.h"
 #include "game/mfc.h"
 
@@ -20,3 +22,4 @@ public:
 
   TAmbitFileBasedDocument();
 };
+ASSERT_SIZE(TAmbitFileBasedDocument, 0x4);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "decomp_types.h"
 #include "game/ui_screens/CString.h"
 #include "game/nation_domain_types.h"
@@ -59,7 +61,7 @@ public:
   void AddRegionIdToNationOwnedRegionList(int regionId) override;
   void SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlot, int policyCode) override;
   void DecrementDiplomacyCounterA2ByValue(int delta) override;
-  int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) override; // slot 0x1c
+  short SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) override; // slot 0x1c
   short GetDiplomacyCounterA2(void) override;                                  // slot 0x1d
   short GetDiplomacyExternalStateByTarget(short nationSlot) override;          // slot 0x1e
   short QueryNationMetricBySlot7C(short metricSlot) override;                  // slot 0x1f
@@ -545,3 +547,4 @@ public:
     return city;
   }
 };
+ASSERT_SIZE(TGreatPower, 0x964);

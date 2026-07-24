@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TUberCluster.h"
 #include "game/mfc.h"
 
@@ -13,3 +15,4 @@ public:
 
   TTradePolicyCluster();
 };
+ASSERT_SIZE(TTradePolicyCluster, 0x88);

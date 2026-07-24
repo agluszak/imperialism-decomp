@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/military_ui/TItemBoyView.h"
 #include "game/mfc.h"
 
@@ -12,3 +14,4 @@ public:
 
   TInterruptusView();
 };
+ASSERT_SIZE(TInterruptusView, 0x64);

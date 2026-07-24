@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TObject.h"
 #include "game/ui_tags_common.h"
 #include "game/TList.h"
@@ -59,3 +61,4 @@ public:
   // this must stay empty and in-class.
   TTacticalPlayer() {}
 };
+ASSERT_SIZE(TTacticalPlayer, 0x28);

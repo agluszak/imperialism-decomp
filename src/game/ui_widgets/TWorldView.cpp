@@ -509,7 +509,7 @@ void TWorldView::InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchConte
   (void)stridedRecord;
   (void)dispatchContext;
   CenterOn(0);
-  reinterpret_cast<TView*>(this)->TView::RefreshControl();
+  TView::RefreshControl();
 }
 
 // FUNCTION: IMPERIALISM 0x005962a0

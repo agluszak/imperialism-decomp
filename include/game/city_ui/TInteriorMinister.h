@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/map/TMinister.h"
 
 // AI interior minister branch.
@@ -66,3 +68,4 @@ public:
   // +0x26..+0x28: zero field-xrefs; genuinely untouched, not an unrecovered field.
   unsigned char unused26[0x28 - 0x26];
 };
+ASSERT_SIZE(TInteriorMinister, 0x28);

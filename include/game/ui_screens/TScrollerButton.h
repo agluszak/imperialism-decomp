@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TPictureButton.h"
 #include "game/mfc.h"
 
@@ -14,3 +16,4 @@ public:
 
   TScrollerButton();
 };
+ASSERT_SIZE(TScrollerButton, 0x94);

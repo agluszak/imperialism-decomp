@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TObject.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_diplomacy.h"
@@ -250,7 +252,7 @@ public:
   // __thiscall, 1 arg. Called both by TArmyMgr's own map-click dispatchers and by other
   // classes on the g_pMapContextActionManager singleton (e.g. the map-interaction-mode
   // and province-cycling handlers).
-  void SetActiveProvinceSelection(short tileIndex);
+  void SetActiveProvinceSelection(short cityRecordIndex);
   // Clear pending military highlights for one nation and reset the province cursor.
   // The nation's militaryUnitList44 contains the same TUnit-derived entries walked by
   // SetActiveProvinceSelection. 0x004a46d0, __thiscall.
@@ -409,3 +411,4 @@ public:
 
   TArmyMgr();
 };
+ASSERT_SIZE(TArmyMgr, 0x3a8);

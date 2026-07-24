@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TLineData.h"
 #include "game/mfc.h"
 
@@ -16,3 +18,4 @@ public:
   short pictureResourceId10;
   short reserved12;
 };
+ASSERT_SIZE(TPictureLine, 0x14);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/nation/TGreatPower.h"
 #include "game/mfc.h"
 
@@ -29,3 +31,4 @@ public:
 
   TClientGreatPower() : TGreatPower() {}
 };
+ASSERT_SIZE(TClientGreatPower, 0x964);

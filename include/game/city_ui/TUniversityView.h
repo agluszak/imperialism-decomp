@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/city_ui/TBuildingView.h"
 #include "game/mfc.h"
 
@@ -32,3 +34,4 @@ public:
   // reads their per-unit paper and cash costs.
   TUnitOrder* selectedRecruitmentOrderA8;
 };
+ASSERT_SIZE(TUniversityView, 0xac);

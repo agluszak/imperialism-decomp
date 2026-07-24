@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TObject.h"
 #include "game/mfc.h"
 
@@ -28,3 +30,4 @@ public:
   short citySlotIndex;     // +0x04 — index into the owning TCity's order-slot table
   short remainingAttempts; // +0x06 — retry countdown; Tick() forces completion at 0
 };
+ASSERT_SIZE(TTask, 0x8);

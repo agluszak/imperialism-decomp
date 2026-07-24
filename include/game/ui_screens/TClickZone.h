@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TControl.h"
 #include "game/mfc.h"
 
@@ -19,3 +21,4 @@ public:
   short clickSoundId84;
   unsigned char padding86[2];
 };
+ASSERT_SIZE(TClickZone, 0x88);

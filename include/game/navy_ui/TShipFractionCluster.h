@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TCluster.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_military.h"
@@ -33,3 +35,4 @@ public:
   short selectedShipCount94;
   short pad96;
 };
+ASSERT_SIZE(TShipFractionCluster, 0x98);

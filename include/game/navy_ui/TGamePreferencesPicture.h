@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TPicture.h"
 #include "game/mfc.h"
 
@@ -16,3 +18,4 @@ public:
 
   int originalSoundVolumePercent; // 0x90, restored when the preferences dialog is cancelled
 };
+ASSERT_SIZE(TGamePreferencesPicture, 0x94);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TPicture.h"
 #include "game/mfc.h"
 
@@ -12,3 +14,4 @@ public:
 
   TTradeScreenPicture();
 };
+ASSERT_SIZE(TTradeScreenPicture, 0x90);

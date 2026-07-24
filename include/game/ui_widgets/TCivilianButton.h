@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TRadioPictureButton.h"
 
 extern "C" int g_vtblTCivilianButton;
@@ -20,3 +22,4 @@ public:
 
   void SetSelectedCivilianOrderAndEnableButton(TCivUnit* selectedOrder);
 };
+ASSERT_SIZE(TCivilianButton, 0xa0);

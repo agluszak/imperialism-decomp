@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TView.h"
 #include "game/mfc.h"
 
@@ -18,3 +20,4 @@ public:
 
   int selectedTag60; // 0x60 — currently displayed child's controlTag
 };
+ASSERT_SIZE(TSwapperDaddyView, 0x64);

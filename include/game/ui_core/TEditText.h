@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TStaticText.h"
 #include "game/mfc.h"
 
@@ -41,3 +43,4 @@ public:
 
   TEditText();
 };
+ASSERT_SIZE(TEditText, 0xa0);

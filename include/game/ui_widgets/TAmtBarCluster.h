@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TUberCluster.h"
 
 struct CRuntimeClass;
@@ -16,3 +18,4 @@ public:
   TAmtBarCluster();
   DECLARE_DYNCREATE(TAmtBarCluster)
 };
+ASSERT_SIZE(TAmtBarCluster, 0x88);

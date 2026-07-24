@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/tactical/TNavyPlayer.h"
 #include "game/map_domain_types.h"
 #include "game/mfc.h"
@@ -13,3 +15,4 @@ public:
 
   TNavyHumanPlayer();
 };
+ASSERT_SIZE(TNavyHumanPlayer, 0x30);

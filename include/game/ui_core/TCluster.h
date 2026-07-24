@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TControl.h"
 
 struct CRuntimeClass;
@@ -18,3 +20,4 @@ public:
 
   TCluster();
 };
+ASSERT_SIZE(TCluster, 0x88);

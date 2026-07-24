@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TNumberText.h"
 
 // VTABLE: IMPERIALISM 0x0066c740
@@ -10,3 +12,4 @@ public:
 
   TPictureNumberText(); // constructor (0x5b51e0)
 };
+ASSERT_SIZE(TPictureNumberText, 0xac);

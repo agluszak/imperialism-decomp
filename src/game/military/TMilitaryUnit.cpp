@@ -26,7 +26,10 @@ void TMilitaryUnit::SetOrClearWordMaskBits3a(short mask, bool setFlag) {
 // SYNTHETIC: IMPERIALISM 0x005c2dd0
 // TMilitaryUnit::GetRuntimeClass
 
-IMPLEMENT_DYNCREATE(TMilitaryUnit, TUnit)
+// The original descriptor's m_pBaseClass (0x66ed80) points at TObject's CRuntimeClass —
+// the retail macro skipped the real C++ base TUnit (the ctor at 0x5c2df0 constructs the
+// TUnit prefix layout). Reproduce the retail macro argument.
+IMPLEMENT_DYNCREATE(TMilitaryUnit, TObject)
 
 // FUNCTION: IMPERIALISM 0x005c2df0
 TMilitaryUnit::TMilitaryUnit()

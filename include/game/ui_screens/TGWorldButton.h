@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TControl.h"
 #include "game/mfc.h"
 
@@ -27,3 +29,4 @@ public:
   // {field84, 0, field84+frameWidth34, frameHeight38} slice from it.
   TQuickDrawSurfaceContext* field88;
 };
+ASSERT_SIZE(TGWorldButton, 0x8c);

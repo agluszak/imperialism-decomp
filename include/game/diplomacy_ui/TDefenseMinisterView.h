@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/diplomacy_ui/TMinisterView.h"
 #include "game/mfc.h"
 
@@ -13,3 +15,4 @@ public:
 
   TDefenseMinisterView();
 };
+ASSERT_SIZE(TDefenseMinisterView, 0x68);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/city_ui/TBuildingView.h"
 #include "game/ui_tags_common.h"
 #include "game/mfc.h"
@@ -30,3 +32,4 @@ public:
   // city94->orderSlotsE4 at selectedRowIndexA4 + 0x19, the TUnitOrder band.
   TUnitOrder* selectedUnitOrderA8;
 };
+ASSERT_SIZE(TArmoryView, 0xac);

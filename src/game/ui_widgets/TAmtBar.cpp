@@ -59,7 +59,7 @@ void TAmtBar::UpdateBarValuesAndRefresh(short valueAt60, short valueAt62) {
 // FUNCTION: IMPERIALISM 0x00588670
 void TAmtBar::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
-  InvokeSlot1A8();
+  RenderPrimarySurfaceOverlayPanelWithClipCache();
 }
 
 // FUNCTION: IMPERIALISM 0x00588690
@@ -187,18 +187,6 @@ int TAmtBar::QueryValue() {
 void TAmtBar::ApplyStyleDescriptor(void* descriptorBuffer, int modeFlag) {
   (void)descriptorBuffer;
   (void)modeFlag;
-}
-
-void TAmtBar::InvokeSlot1A8() {}
-
-void TAmtBar::InvokeSlot1CC(int value, int modeFlag) {
-  (void)value;
-  (void)modeFlag;
-}
-
-void TAmtBar::SetBitmap(int bitmapIdValue, int unknownFlag) {
-  (void)bitmapIdValue;
-  (void)unknownFlag;
 }
 
 void TAmtBar::SetStyleState(int stateValue, int modeFlag) {

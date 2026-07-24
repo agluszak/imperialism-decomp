@@ -107,3 +107,4 @@ public:
   // view on this and the owner view, forces a redraw and holds it briefly.
   virtual void NoticeTile(int tileIndex);
 };
+ASSERT_SIZE(TWorldView, 0x7c);

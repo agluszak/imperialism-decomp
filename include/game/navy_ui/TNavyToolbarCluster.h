@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TUberCluster.h"
 #include "game/mfc.h"
 
@@ -15,3 +17,4 @@ public:
 
   TNavyToolbarCluster();
 };
+ASSERT_SIZE(TNavyToolbarCluster, 0x88);

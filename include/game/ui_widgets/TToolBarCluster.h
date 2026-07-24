@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TCluster.h"
 #include "game/mfc.h"
 
@@ -34,3 +36,4 @@ public:
 
   TToolBarCluster();
 };
+ASSERT_SIZE(TToolBarCluster, 0x88);

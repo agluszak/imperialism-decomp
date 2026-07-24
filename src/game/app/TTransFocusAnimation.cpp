@@ -7,6 +7,7 @@
 #include "game/gfx/CDib.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_core/TView.h"
+#include "game/ui_core/ScopedMapQuickDrawContext.h"
 #include "game/app/TAnimator.h"
 #include "game/app/TObject.h"
 #include "game/mfc.h"
@@ -129,7 +130,12 @@ void TTransFocusAnimation::UpdateBackground() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a0770
-void TTransFocusAnimation::IdleDraw() {}
+void TTransFocusAnimation::IdleDraw() {
+  ScopedMapQuickDrawContext guard(ownerView04);
+  ownerView04->PrepareForDrawing();
+  POINT offset = {0, 0};
+  DrawNextFrame(&offset);
+}
 
 // FUNCTION: IMPERIALISM 0x004a0810
 void TTransFocusAnimation::DrawNextFrame(POINT* offset) {

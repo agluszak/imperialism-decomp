@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TNoHilitePicture.h"
 #include "game/mfc.h"
 
@@ -25,3 +27,4 @@ public:
   int scoreValues94[10];       // +0x94
   char scoreNamesBc[10][0x20]; // +0xbc
 };
+ASSERT_SIZE(THighScoresPicture, 0x1fc);

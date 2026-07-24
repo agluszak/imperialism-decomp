@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/gfx/TDisplayMgr.h"
 #include "game/ui_core/TWindow.h"
 #include "game/mfc.h"
@@ -30,3 +32,4 @@ public:
 
   TGameWindow();
 };
+ASSERT_SIZE(TGameWindow, 0xb0);

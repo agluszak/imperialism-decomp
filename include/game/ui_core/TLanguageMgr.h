@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TObject.h"
 #include "game/mfc.h"
 
@@ -50,3 +52,4 @@ public:
   CString NormalizeRuntimeCredentialNameToken(CString* name);
   bool ReloadPreplutNewsTableAndResources(int languageTag);
 };
+ASSERT_SIZE(TLanguageMgr, 0x34);

@@ -27,7 +27,22 @@ IMPLEMENT_DYNCREATE(TTradePanelView, TPanelView)
 TTradePanelView::TTradePanelView() {}
 
 // FUNCTION: IMPERIALISM 0x004f8780
-void TTradePanelView::DoPostCreate(int arg) {}
+void TTradePanelView::DoPostCreate(int arg) {
+  CString text;
+  TView::DoPostCreate(arg);
+  diplomacyMapView60 = static_cast<TDiplomacyMapView*>(ownerContext);
+  TView* cluster = ResolveControlByTag(kControlTagClus);
+  for (int row = 0; row < 7; ++row) {
+    TView* rowControl = cluster->ResolveControlByTag(kControlTagTraa + row);
+    g_pSimMgr->GetString(0x2733, static_cast<short>(row + 0x46), &text);
+    SetControlHoverHelpText(text, rowControl);
+  }
+  TView* linkControl = ResolveControlByTag(kControlTagLink);
+  g_pSimMgr->GetString(0x2733, 0x4d, &text);
+  SetControlHoverHelpText(text, linkControl);
+  text += s_szSpaceSeparator_00695794;
+  SetControlHoverHelpText(text, this);
+}
 
 // Row-label geometry (6 commodity rows) and column-header geometry (3 headers), read
 // from raw stack literals in the original (0x4f8940). The exact per-slot stack layout

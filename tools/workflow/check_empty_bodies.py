@@ -53,6 +53,19 @@ SLOT_COMMENT_RE = re.compile(r"//\s*0x[0-9a-fA-F]{1,3}\s+0x(?P<addr>[0-9a-fA-F]{
 
 VIOLATION_KINDS = ("empty_but_big", "empty_unmarked", "empty_unresolved", "noop_contradicted")
 
+# Audit-only kinds (bd kwee): reported by the audit and `--kind`, but excluded from
+# the ratchet baseline so introducing the detector does not require a policy-baseline
+# update. Promote a kind into VIOLATION_KINDS together with a human-approved
+# `just noop-gate-update` once its findings are triaged.
+#
+#   trivial_return_but_big    body is a bare `return <literal>;` while the original is
+#                             real code — the same silent-no-op failure mode as
+#                             empty_but_big, just spelled deceptively.
+#   ctor_missing_derived_init an empty, init-list-free ctor whose original stores to
+#                             offsets beyond the base-class size — the derived fields
+#                             are seeded in the retail binary but not by our port.
+AUDIT_KINDS = ("trivial_return_but_big", "ctor_missing_derived_init")
+
 
 def sizes_by_address(symbols: dict[str, tuple[int, int]]) -> dict[int, int]:
     return {addr: size for addr, size in symbols.values()}
@@ -95,6 +108,119 @@ def classify_finding(
     return "empty_unmarked"
 
 
+def is_trivial_return_body(body) -> bool:
+    """True when a compound_statement is exactly `return <literal>;` (+ comments)."""
+    returns = 0
+    for child in body.named_children:
+        if child.type == "comment":
+            continue
+        if child.type == "expression_statement" and VOID_CAST_RE.match(
+            re.sub(rb"\s+", b" ", child.text or b"")
+        ):
+            continue
+        if child.type != "return_statement":
+            return False
+        expr = [c for c in child.named_children if c.type != "comment"]
+        if len(expr) != 1:
+            return False
+        node = expr[0]
+        if node.type == "unary_expression":
+            inner = node.child_by_field_name("argument")
+            node = inner if inner is not None else node
+        if node.type not in ("number_literal", "true", "false", "null"):
+            return False
+        returns += 1
+    return returns == 1
+
+
+class OriginalBinaryContext:
+    """Lazy access to the retail .text bytes plus the header class/base/size maps
+    needed for the ctor derived-store audit. Construction never raises: when the
+    original binary is unavailable the audit silently skips (audit-only kind)."""
+
+    CLASS_BASE_RE = re.compile(r"\bclass\s+(\w+)\s*:\s*public\s+(\w+)")
+    ASSERT_SIZE_RE = re.compile(r"ASSERT_SIZE\(\s*(\w+)\s*,\s*(0x[0-9a-fA-F]+|\d+)\s*\)")
+
+    def __init__(self, repo_root: Path):
+        self.text = None
+        try:
+            from tools.workflow.prune_ilt_thunks import TextSection, original_exe_from_user_yml
+
+            exe = original_exe_from_user_yml(repo_root)
+            self.text = TextSection(exe.read_bytes())
+        except Exception:
+            return
+        self.base_of: dict[str, str] = {}
+        self.size_of: dict[str, int] = {}
+        for path in sorted((repo_root / "include").rglob("*.h")):
+            try:
+                text = path.read_text(encoding="utf-8", errors="replace")
+            except OSError:
+                continue
+            for m in self.CLASS_BASE_RE.finditer(text):
+                self.base_of.setdefault(m.group(1), m.group(2))
+            for m in self.ASSERT_SIZE_RE.finditer(text):
+                self.size_of.setdefault(m.group(1), int(m.group(2), 0))
+
+    def base_size(self, class_name: str) -> int | None:
+        base = self.base_of.get(class_name)
+        return self.size_of.get(base) if base else None
+
+    def code_bytes(self, addr: int, size: int) -> bytes | None:
+        if self.text is None:
+            return None
+        try:
+            start = self.text.raw + addr - self.text.va
+            if not (self.text.va <= addr < self.text.va + self.text.vsize):
+                return None
+            return self.text.exe[start : start + size]
+        except Exception:
+            return None
+
+
+def derived_store_offsets(code: bytes, addr: int, base_size: int) -> list[int]:
+    """Displacements of `mov [this+disp], ...` stores at/beyond base_size.
+
+    Tracks which registers alias `this` (ECX at entry) through simple reg-reg
+    moves; calls clobber the volatile aliases. Linear scan to the first RET —
+    MSVC500 ctors are single-exit, so this covers the whole body.
+    """
+    import capstone
+
+    md = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)
+    md.detail = True
+    this_regs = {"ecx"}
+    out: list[int] = []
+    for insn in md.disasm(code, addr):
+        mnem = insn.mnemonic
+        if mnem.startswith("ret"):
+            break
+        if mnem == "call":
+            this_regs -= {"eax", "ecx", "edx"}
+            continue
+        ops = insn.operands
+        if mnem == "mov" and len(ops) == 2:
+            dst, src = ops
+            if (
+                dst.type == capstone.x86.X86_OP_REG
+                and src.type == capstone.x86.X86_OP_REG
+            ):
+                dst_name = insn.reg_name(dst.reg)
+                if insn.reg_name(src.reg) in this_regs:
+                    this_regs.add(dst_name)
+                else:
+                    this_regs.discard(dst_name)
+                continue
+            if dst.type == capstone.x86.X86_OP_MEM and dst.mem.index == 0:
+                base_name = insn.reg_name(dst.mem.base) if dst.mem.base else None
+                if base_name in this_regs and dst.mem.disp >= base_size:
+                    out.append(dst.mem.disp)
+                continue
+        if ops and ops[0].type == capstone.x86.X86_OP_REG:
+            this_regs.discard(insn.reg_name(ops[0].reg))
+    return sorted(set(out))
+
+
 def is_empty_body(body) -> bool:
     """True when a compound_statement holds only comments / `(void)x;` casts."""
     for child in body.named_children:
@@ -130,7 +256,11 @@ def enclosing_class(def_node) -> str:
 
 
 def scan_file(
-    path: Path, symbols: dict[str, tuple[int, int]], addr_sizes: dict[int, int], max_noop_size: int
+    path: Path,
+    symbols: dict[str, tuple[int, int]],
+    addr_sizes: dict[int, int],
+    max_noop_size: int,
+    ctx: "OriginalBinaryContext | None" = None,
 ) -> list[dict]:
     raw = path.read_bytes()
     tree = Parser(_CPP).parse(raw)
@@ -143,9 +273,14 @@ def scan_file(
         if node.type != "function_definition":
             continue
         body = node.child_by_field_name("body")
-        if body is None or body.type != "compound_statement" or not is_empty_body(body):
+        if body is None or body.type != "compound_statement":
             continue
-        if any(c.type == "field_initializer_list" for c in node.children):
+        empty = is_empty_body(body)
+        trivial_return = not empty and is_trivial_return_body(body)
+        if not empty and not trivial_return:
+            continue
+        has_init_list = any(c.type == "field_initializer_list" for c in node.children)
+        if empty and has_init_list:
             continue  # member-initializer list — the compiler emits construction
         spelled = declarator_name(node)
         if spelled is None:
@@ -189,15 +324,69 @@ def scan_file(
         resolved = marker_addr or noop_addr or slot_addr or (sym[0] if sym else None)
         size = addr_sizes.get(resolved) if resolved is not None else None
 
+        marker_kind = marker.group("kind") if marker else None
+        ctor_dtor = is_ctor_or_dtor(qual, name)
+
+        if trivial_return:
+            # bd kwee blind spot 2: `return 0;` over a big original is the same
+            # silent no-op as an empty body, spelled deceptively.
+            if (
+                marker_kind not in ("STUB", "LIBRARY")
+                and noop_addr is None
+                and size is not None
+                and size > max_noop_size
+            ):
+                findings.append(
+                    {
+                        "file": path,
+                        "line": line_no,
+                        "name": qualified,
+                        "kind": "trivial_return_but_big",
+                        "address": f"0x{resolved:x}" if resolved is not None else "",
+                        "size": size,
+                    }
+                )
+            continue
+
         kind = classify_finding(
-            marker_kind=marker.group("kind") if marker else None,
+            marker_kind=marker_kind,
             marker_addr=marker_addr,
             noop_addr=noop_addr,
             resolved_addr=resolved,
             size=size,
-            ctor_dtor=is_ctor_or_dtor(qual, name),
+            ctor_dtor=ctor_dtor,
             max_noop_size=max_noop_size,
         )
+        # bd kwee blind spot 1: the ctor exemption only holds when the original
+        # ctor adds no derived-field stores of its own. Decode the original and
+        # flag stores landing at/beyond the base-class size.
+        if (
+            ctor_dtor
+            and not name.startswith("~")
+            and not has_init_list
+            and marker_addr is not None
+            and size is not None
+            and ctx is not None
+            and ctx.text is not None
+        ):
+            base_size = ctx.base_size(name)
+            code = ctx.code_bytes(marker_addr, size)
+            if base_size is not None and code:
+                offsets = derived_store_offsets(code, marker_addr, base_size)
+                if offsets:
+                    findings.append(
+                        {
+                            "file": path,
+                            "line": line_no,
+                            "name": qualified
+                            + " [derived stores: "
+                            + ", ".join(f"+0x{o:x}" for o in offsets)
+                            + "]",
+                            "kind": "ctor_missing_derived_init",
+                            "address": f"0x{marker_addr:x}",
+                            "size": size,
+                        }
+                    )
         if kind is None or kind == "EMPTY-VERIFIED":
             continue
         findings.append(
@@ -216,6 +405,7 @@ def scan_file(
 def collect_findings(repo_root: Path, roots: list[str], max_noop_size: int) -> list[dict]:
     symbols = functions_by_name(repo_root)
     addr_sizes = sizes_by_address(symbols)
+    ctx = OriginalBinaryContext(repo_root)
     findings: list[dict] = []
     for root_value in roots:
         root = resolve_repo_path(repo_root, root_value)
@@ -227,13 +417,15 @@ def collect_findings(repo_root: Path, roots: list[str], max_noop_size: int) -> l
                 continue
             if path.suffix.lower() not in (".cpp", ".h", ".hpp", ".cc"):
                 continue
-            findings.extend(scan_file(path, symbols, addr_sizes, max_noop_size))
+            findings.extend(scan_file(path, symbols, addr_sizes, max_noop_size, ctx))
     return findings
 
 
 def counts_per_file(findings: list[dict], repo_root: Path) -> dict[str, dict[str, int]]:
     out: dict[str, dict[str, int]] = {}
     for f in findings:
+        if f["kind"] not in VIOLATION_KINDS:
+            continue  # audit-only kinds stay outside the ratchet baseline
         rel = normalize_repo_relative_path(f["file"], repo_root)
         row = out.setdefault(rel, {k: 0 for k in VIOLATION_KINDS})
         row[f["kind"]] += 1
@@ -250,7 +442,7 @@ def main() -> int:
                         help="Gate mode: compare per-file counts against this CSV")
     parser.add_argument("--write-baseline", default="",
                         help="Write current per-file counts to this CSV and exit")
-    parser.add_argument("--kind", choices=VIOLATION_KINDS, default="",
+    parser.add_argument("--kind", choices=VIOLATION_KINDS + AUDIT_KINDS, default="",
                         help="Audit mode: only print this violation kind")
     args = parser.parse_args()
 
@@ -305,7 +497,7 @@ def main() -> int:
         return 0
 
     # Audit mode.
-    by_kind: dict[str, int] = {k: 0 for k in VIOLATION_KINDS}
+    by_kind: dict[str, int] = {k: 0 for k in VIOLATION_KINDS + AUDIT_KINDS}
     for f in findings:
         by_kind[f["kind"]] += 1
     for f in sorted(findings, key=lambda x: (x["kind"], -(x["size"] or 0) if isinstance(x["size"], int) else 0)):

@@ -126,11 +126,11 @@ void TTradeCluster::DoPostCreate(int styleSeed) {
   }
   barControl->SetState(0, 0);
 
-  TAmtBar* leftControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagLeft));
+  TView* leftControl = this->ResolveControlByTag(kControlTagLeft);
   if (leftControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineInitLeft);
   }
-  TAmtBar* rightControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagRght));
+  TView* rightControl = this->ResolveControlByTag(kControlTagRght);
   if (rightControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineInitRight);
   }
@@ -143,7 +143,7 @@ void TTradeCluster::DoPostCreate(int styleSeed) {
     leftControl->SetEnabled(0, 0);
     rightControl->SetEnabled(0, 0);
     barControl->SetEnabled(0, 0);
-    TAmtBar* greenControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagGree));
+    TView* greenControl = this->ResolveControlByTag(kControlTagGree);
     if (greenControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineInitGree);
     }
@@ -308,7 +308,7 @@ int TTradeCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) {
 // control reports actionable.
 // FUNCTION: IMPERIALISM 0x00587980
 unsigned char TTradeCluster::IsSelectionAllowed() {
-  TPicture* bidControl = reinterpret_cast<TPicture*>(this->ResolveControlByTag(kControlTagCard));
+  TPicture* bidControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagCard));
   if (bidControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidActionable);
   }
@@ -329,7 +329,7 @@ unsigned char TTradeCluster::IsSelectionAllowed() {
 // the control reports actionable.
 // FUNCTION: IMPERIALISM 0x00587a10
 int TTradeCluster::GetBoolSlot1DC() {
-  TPicture* offerControl = reinterpret_cast<TPicture*>(this->ResolveControlByTag(kControlTagOffr));
+  TPicture* offerControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagOffr));
   if (offerControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferActionable);
   }
@@ -350,7 +350,7 @@ int TTradeCluster::GetBoolSlot1DC() {
 // dependent) when the screen mode gate passes, else disables the control.
 // FUNCTION: IMPERIALISM 0x00587aa0
 void TTradeCluster::DoControlAction() {
-  TAmtBar* bidControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagCard));
+  TPicture* bidControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagCard));
   if (bidControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidSecondary);
   }
@@ -363,9 +363,9 @@ void TTradeCluster::DoControlAction() {
   if (g_pUiRuntimeContext->GetPendingTurnOverlayCode() < 4) {
     bidControl->SetEnabled(1, 1);
     if (controlTag == kTradeRowStateTag_67643020) {
-      bidControl->SetBitmap(kTradeBitmapBidSecondaryStateB, 0);
+      bidControl->SetPictureResourceIdAndRefresh(kTradeBitmapBidSecondaryStateB, 0);
     } else {
-      bidControl->SetBitmap(kTradeBitmapBidSecondaryStateA, 0);
+      bidControl->SetPictureResourceIdAndRefresh(kTradeBitmapBidSecondaryStateA, 0);
     }
     bidControl->PrepareForDrawing();
     bidControl->PaintOrInvalidateControl();
@@ -379,30 +379,30 @@ void TTradeCluster::DoControlAction() {
 // the gree/left/rght companion controls.
 // FUNCTION: IMPERIALISM 0x00587bb0
 void TTradeCluster::SetTradeBidControlBitmap() {
-  TAmtBar* bidControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagCard));
+  TPicture* bidControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagCard));
   if (bidControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidControl);
   }
 
   bidControl->SetEnabled(1, 0);
   if (controlTag == kTradeRowStateTag_67643020) {
-    bidControl->SetBitmap(kTradeBitmapBidStateB, 0);
+    bidControl->SetPictureResourceIdAndRefresh(kTradeBitmapBidStateB, 0);
   } else {
-    bidControl->SetBitmap(kTradeBitmapBidStateA, 0);
+    bidControl->SetPictureResourceIdAndRefresh(kTradeBitmapBidStateA, 0);
   }
 
   int layoutCapture[2] = {0x41, 0x14};
   bidControl->CaptureLayout(layoutCapture, 1);
 
-  TAmtBar* greenControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagGree));
+  TView* greenControl = this->ResolveControlByTag(kControlTagGree);
   if (greenControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidGree);
   }
-  TAmtBar* leftControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagLeft));
+  TView* leftControl = this->ResolveControlByTag(kControlTagLeft);
   if (leftControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidLeft);
   }
-  TAmtBar* rightControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagRght));
+  TView* rightControl = this->ResolveControlByTag(kControlTagRght);
   if (rightControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidRight);
   }
@@ -422,16 +422,16 @@ void TTradeCluster::SetTradeBidControlBitmap() {
 // enables the gree/left/rght companion controls.
 // FUNCTION: IMPERIALISM 0x00587dd0
 void TTradeCluster::SetTradeOfferControlBitmap() {
-  TAmtBar* offerControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagOffr));
+  TPicture* offerControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagOffr));
   if (offerControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferControl);
   }
 
   offerControl->SetEnabled(1, 0);
   if (controlTag == kTradeRowStateTag_67643020) {
-    offerControl->SetBitmap(kTradeBitmapOfferStateB, 0);
+    offerControl->SetPictureResourceIdAndRefresh(kTradeBitmapOfferStateB, 0);
   } else {
-    offerControl->SetBitmap(kTradeBitmapOfferStateA, 0);
+    offerControl->SetPictureResourceIdAndRefresh(kTradeBitmapOfferStateA, 0);
   }
 
   int layoutCaptureF4[2] = {0x41, 0x14};
@@ -439,15 +439,15 @@ void TTradeCluster::SetTradeOfferControlBitmap() {
   int layoutCaptureF0[2] = {0x73, 0};
   offerControl->CaptureLayoutF0(layoutCaptureF0, 1);
 
-  TAmtBar* greenControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagGree));
+  TView* greenControl = this->ResolveControlByTag(kControlTagGree);
   if (greenControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferGree);
   }
-  TAmtBar* leftControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagLeft));
+  TView* leftControl = this->ResolveControlByTag(kControlTagLeft);
   if (leftControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferLeft);
   }
-  TAmtBar* rightControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagRght));
+  TView* rightControl = this->ResolveControlByTag(kControlTagRght);
   if (rightControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferRight);
   }
@@ -467,7 +467,7 @@ void TTradeCluster::SetTradeOfferControlBitmap() {
 // nation availability/capacity gates pass, else disables the control.
 // FUNCTION: IMPERIALISM 0x00588030
 void TTradeCluster::SetTradeOfferSecondaryBitmap() {
-  TAmtBar* offerControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagOffr));
+  TPicture* offerControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagOffr));
   if (offerControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferSecondaryOffr);
   }
@@ -485,9 +485,9 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
     if (QueryNationTradeCapacity(activeNationStateAgain) != 0) {
       offerControl->SetEnabled(1, 0);
       if (controlTag == kTradeRowStateTag_67643020) {
-        offerControl->SetBitmap(kTradeBitmapOfferSecondaryStateB, 0);
+        offerControl->SetPictureResourceIdAndRefresh(kTradeBitmapOfferSecondaryStateB, 0);
       } else {
-        offerControl->SetBitmap(kTradeBitmapOfferSecondaryStateA, 0);
+        offerControl->SetPictureResourceIdAndRefresh(kTradeBitmapOfferSecondaryStateA, 0);
       }
       int layoutCaptureF0[2] = {0xa3, 0};
       offerControl->CaptureLayoutF0(layoutCaptureF0, 1);
@@ -498,15 +498,15 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
     offerControl->SetEnabled(0, 1);
   }
 
-  TAmtBar* greenControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagGree));
+  TView* greenControl = this->ResolveControlByTag(kControlTagGree);
   if (greenControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferSecondaryGree);
   }
-  TAmtBar* leftControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagLeft));
+  TView* leftControl = this->ResolveControlByTag(kControlTagLeft);
   if (leftControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferSecondaryLeft);
   }
-  TAmtBar* rightControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagRght));
+  TView* rightControl = this->ResolveControlByTag(kControlTagRght);
   if (rightControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferSecondaryRight);
   }
@@ -545,7 +545,7 @@ void TTradeCluster::SetMoveAmount(short metricClampMax) {
   if (barControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineUpdateBar);
   }
-  TAmtBar* greenControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagGree));
+  TView* greenControl = this->ResolveControlByTag(kControlTagGree);
   if (greenControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineUpdateGree);
   }

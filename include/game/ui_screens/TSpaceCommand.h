@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TCommand.h"
 #include "game/mfc.h"
 
@@ -17,3 +19,4 @@ public:
 
   TSpaceCommand();
 };
+ASSERT_SIZE(TSpaceCommand, 0x20);

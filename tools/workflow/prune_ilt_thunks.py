@@ -153,7 +153,12 @@ def ilt_keep_reason(
     extern-thunk-cast callsite pattern still needs the autogen stub to link)."""
     if addr in claimed:
         return "claimed"
-    ident = re.sub(r"[^A-Za-z0-9_]", "_", name.split("::")[-1])
+    # Match the FULL symbol as a source identifier. Splitting off the namespace here
+    # (name.split("::")[-1]) once kept `thunk_TPictureButton::TPictureButton` because the
+    # plain class name "TPictureButton" appears everywhere in manual source — and one such
+    # surviving ILT-range row degrades reccmp call rendering image-wide (bd ztdv:
+    # 192 functions dropped ~10 pp each until the row was pruned).
+    ident = re.sub(r"[^A-Za-z0-9_]", "_", name)
     # Ghidra disambiguates duplicate names with an address suffix
     # (thunk_Foo_004061D1); manual source references the bare name.
     bare = re.sub(r"_[0-9A-Fa-f]{8}$", "", ident)

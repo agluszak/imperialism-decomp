@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TPageView.h"
 #include "game/mfc.h"
 
@@ -20,3 +22,4 @@ public:
   // left cleared.
   void RebuildNationBidRowsForCategory(short categorySlot);
 };
+ASSERT_SIZE(TTradePageBuyView, 0x88);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TMegaPicture.h"
 #include "game/mfc.h"
 
@@ -23,3 +25,4 @@ public:
   void InitializeNumberedResourceItem(TView* panel, int* position, int* size,
                                       short resourceIconIndex, short count);
 };
+ASSERT_SIZE(TNumberedItem, 0xb0);

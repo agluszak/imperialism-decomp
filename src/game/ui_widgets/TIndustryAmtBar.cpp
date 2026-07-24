@@ -66,13 +66,13 @@ void TIndustryAmtBar::DoPostCreate(int arg) {
   auxValueB = 0x3a;
   rangeOrMaxValue = (short)((selectedMetricRecord->quantityField04 * rangeRaw) / productionCap);
 
-  reinterpret_cast<TView*>(this)->TView::DoPostCreate(arg);
+  TView::DoPostCreate(arg);
 }
 
 // FUNCTION: IMPERIALISM 0x00589340
 void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   CTemporaryRegion surface;
-  TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
+  TAmtBar* control = this;
   GetClip(surface.tempRgn);
 
   if (control != 0 && control->IsActionable() != 0) {

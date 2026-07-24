@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/city/TProductionOrder.h"
 #include "game/mfc.h"
 
@@ -18,3 +20,4 @@ public:
 
   TFoodProcessingOrder();
 };
+ASSERT_SIZE(TFoodProcessingOrder, 0x4c);

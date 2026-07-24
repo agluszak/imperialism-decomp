@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TPicture.h"
 
 class TTown;
@@ -18,3 +20,4 @@ public:
 
   TTown* town90;
 };
+ASSERT_SIZE(TPlaceCityDialog, 0x94);

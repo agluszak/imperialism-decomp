@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TDialogBehavior.h"
 #include "game/ui_core/TView.h"
 #include "game/mfc.h"
@@ -86,3 +88,4 @@ public:
 
   TWindow();
 };
+ASSERT_SIZE(TWindow, 0xa0);

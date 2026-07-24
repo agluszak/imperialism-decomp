@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "decomp_types.h"
 #include "game/nation_domain_types.h"
 #include "game/app/TObject.h"
@@ -157,3 +159,4 @@ public:
   // finally notifies every eligible major power via SetTradePolicyTo.
   void RebuildMinorNationDispositionLookupTables(int nationCode);
 };
+ASSERT_SIZE(TDiplomacyMgr, 0x18dc);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TAnimation.h"
 #include "game/mfc.h"
 
@@ -19,3 +21,4 @@ public:
 
   TCouncilTickerAnimation();
 };
+ASSERT_SIZE(TCouncilTickerAnimation, 0x2c);

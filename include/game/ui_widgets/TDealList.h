@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "decomp_types.h"
 #include "game/mfc.h"
 #include "game/ui_core/TSortedPtrList.h"
@@ -20,3 +22,4 @@ public:
 
   TDealList();
 };
+ASSERT_SIZE(TDealList, 0x18);
