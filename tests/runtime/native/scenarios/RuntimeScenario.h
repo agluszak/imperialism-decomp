@@ -42,6 +42,7 @@ protected:
 
   TView* CurrentMainView() const;
   unsigned long ScenarioPhaseTicks() const;
+  unsigned long ScenarioPhaseElapsedMs() const;
   const char* FixturePath() const;
   void SetSelectedNation(short nationSlot);
   bool AdvanceNewspaperIfNeeded();

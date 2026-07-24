@@ -1504,6 +1504,10 @@ unsigned long RuntimeScenario::ScenarioPhaseTicks() const {
   return g_runtimeTestState.phaseTicks;
 }
 
+unsigned long RuntimeScenario::ScenarioPhaseElapsedMs() const {
+  return GetTickCount() - g_runtimeTestState.phaseStartMs;
+}
+
 const char* RuntimeScenario::FixturePath() const {
   return g_runtimeTestState.fixturePath;
 }
