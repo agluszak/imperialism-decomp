@@ -279,10 +279,9 @@ void TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette(
   OffsetRect(&dest, offsetX, offsetY);
   SetGWorld(restoreContext, restoreFlags);
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  if (g_pPrimaryRenderSurfaceContext->blitSurface.surfaceObject != nullptr) {
-    TBitmapSurfaceNode** primaryNodes = static_cast<TBitmapSurfaceNode**>(
-        g_pPrimaryRenderSurfaceContext->blitSurface.surfaceObject);
-    int surfaceHeight = primaryNodes[4]->field08;
+  if (g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib != nullptr) {
+    int surfaceHeight =
+        g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
     if (surfaceHeight < 1) {
       surfaceHeight = -surfaceHeight;
     }

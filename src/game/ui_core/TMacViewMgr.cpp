@@ -1419,7 +1419,7 @@ void TMacViewMgr::ClearActiveCityBuildingViewSlot(short buildingSlot) {
 // FUNCTION: IMPERIALISM 0x0050d920
 void TMacViewMgr::ClearActiveCityProductionViewAndDiscardRegion() {
   if (activeCityProductionView04 != 0) {
-    activeCityProductionView04->GetDrawableRegion(0);
+    activeCityProductionView04->CloseAndSaveWindows();
   }
   activeCityProductionView04 = 0;
 }

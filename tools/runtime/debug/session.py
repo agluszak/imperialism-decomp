@@ -262,12 +262,35 @@ class GdbSession:
         snapshot_path = self.artifact_dir / f"runtime-snapshot-{self.stop_count:02d}.json"
         map_path = self.executable.with_suffix(".map")
         if map_path.is_file():
-            symbol = LinkerMap.read(map_path).find_decorated("_g_runtimeDebugRecord")
+            linker_map = LinkerMap.read(map_path)
+            symbol = linker_map.find_decorated("_g_runtimeDebugRecord")
             if symbol is not None:
                 try:
+                    arguments = [f"0x{symbol.address:08x}"]
+                    sim_mgr_symbol = linker_map.find_decorated("_g_pSimMgr")
+                    arguments.append(
+                        f"0x{sim_mgr_symbol.address:08x}"
+                        if sim_mgr_symbol is not None
+                        else "0"
+                    )
+                    nation_aux_symbol = linker_map.find_decorated(
+                        "_g_apNationAuxRuntimeStateSlots"
+                    )
+                    if nation_aux_symbol is None:
+                        secondary_symbol = linker_map.find_decorated(
+                            "_g_apSecondaryNationStateSlots"
+                        )
+                        nation_aux_address = (
+                            secondary_symbol.address + 7 * 4
+                            if secondary_symbol is not None
+                            else 0
+                        )
+                    else:
+                        nation_aux_address = nation_aux_symbol.address
+                    arguments.append(f"0x{nation_aux_address:08x}")
                     self._console(
                         f'imperialism-runtime-snapshot "{snapshot_path}" '
-                        f"0x{symbol.address:08x}"
+                        + " ".join(arguments)
                     )
                 except DebuggerTransportError:
                     pass

@@ -5,11 +5,17 @@
 #include "game/ui_core/TView.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_map.h"
+#include "game/ui_tags_widgets.h"
 
 StrategicMapDriver::StrategicMapDriver(TView* view) : root(view) {}
 
 bool StrategicMapDriver::EndTurn() {
-  return RuntimeUiDriver::ClickControl(root, kControlTagSend);
+  TControl* done =
+      root != 0 ? static_cast<TControl*>(root->ResolveControlByTag(kControlTagDoneCaps)) : 0;
+  if (done == 0) {
+    return false;
+  }
+  return RuntimeUiDriver::ClickView(done);
 }
 
 bool StrategicMapDriver::ActivateCity() {

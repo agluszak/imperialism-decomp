@@ -995,25 +995,24 @@ void RunActivatingEndTurn() {
   g_runtimeTestState.newspaperAdvanced = false;
   StrategicMapDriver map(mainView);
   if (!map.EndTurn()) {
-    Fail("\"end-turn (send) control or native host is missing\"");
+    Fail("\"end-turn (send) control is missing\"");
     return;
   }
-  SetStep(RunWaitingForEndTurnConfirm, "waiting_for_end_turn_confirm", "click_map_send");
+  SetStep(RunWaitingForTurnProcessed, "waiting_for_turn_processed", "activate_map_done");
   RequestAnotherDriverTick();
 }
 
 void RunWaitingForEndTurnConfirm() {
-  // The end-turn dialog (message context 0x5e7, the nation-readiness boxes) is
-  // opened with TWindow::Open, not posed modally — watch the dialog node, not
-  // the modal stack.
-  TWindow* dialogNode = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventJoinSelectorMessage));
-  TControl* okay = 0;
-  if (dialogNode != 0 && dialogNode->nativeWindow50 != 0) {
-    okay = static_cast<TControl*>(dialogNode->ResolveControlByTag(kControlTagOkay));
-  }
-  if (okay == 0) {
+  if (g_ModalViewStack.IsEmpty()) {
     WaitForNextTickOrTimeout("\"end-turn dialog did not open\"");
+    return;
+  }
+
+  TWindow* dialogNode = static_cast<TWindow*>(g_ModalViewStack.GetHead());
+  TControl* okay = static_cast<TControl*>(dialogNode->ResolveControlByTag(kControlTagOkay));
+  if (okay == 0) {
+    RecordUnexpectedModal(dialogNode);
+    Fail("\"end-turn dialog has no okay control\"");
     return;
   }
   RecordHandledModal("end_turn_dialog");
