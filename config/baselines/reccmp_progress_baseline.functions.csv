@@ -2275,7 +2275,7 @@ address|matching|name
 0x4d5580|1.0|StrategicMapCallbackRecord::AppendOpcodeByte
 0x4d5610|0.16842105263157894|StrategicMapCallbackRecord::AppendOpcodeBytePair
 0x4d5720|0.34104046242774566|StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment
-0x4d59a0|0.0273972602739726|WrapperFor_IsPointInsideHitRegion_At004d59a0
+0x4d59a0|0.4|IsPointOnHitRegionEdge
 0x4d5cf0|1.0|StrategicMapCallbackRecord::StreamOverlayHitMaskToSurfaceDib
 0x4d5d30|0.28733997155049784|StrategicMapCallbackRecord::BuildDiplomacyOverlayHitMaskOpcodeStream
 0x4d6310|0.7391304347826086|DiplomacyMaskBufferRun::IsMaskPixelSet
@@ -3414,7 +3414,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::MapGenPassSlot0E
 0x527730|0.29577464788732394|TMapMaker::MapGenPassSlot0F
-0x527d00|0.4268774703557312|TMapMaker::CreateRivers
+0x527d00|0.43478260869565216|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam

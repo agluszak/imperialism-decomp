@@ -2255,7 +2255,7 @@ address|name|symbol|size|type|prototype|provenance
 4d5610|StrategicMapCallbackRecord::AppendOpcodeBytePair||208|function|void __thiscall AppendOpcodeBytePair(int value)|
 4d5720|StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment||449|function|void __thiscall FinalizeOpcodeBufferAlignment()|
 4d5970|stretch<unsigned char>::SetCapacity||32|function|void __thiscall SetCapacity(unsigned int requestedCapacity)|template
-4d59a0|WrapperFor_IsPointInsideHitRegion_At004d59a0||188|function|undefined WrapperFor_IsPointInsideHitRegion_At004d59a0()|
+4d59a0|IsPointOnHitRegionEdge||188|function|undefined IsPointOnHitRegionEdge()|
 4d5cf0|StrategicMapCallbackRecord::StreamOverlayHitMaskToSurfaceDib||45|function|void __thiscall StreamOverlayHitMaskToSurfaceDib(DiplomacyMaskBufferRun * run, TQuickDrawSurfaceContext * surface, int outlineOnly)|
 4d5d30|StrategicMapCallbackRecord::BuildDiplomacyOverlayHitMaskOpcodeStream||1149|function|void __thiscall BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun * run, int destinationRowStride, int outlineOnly, int surfaceHeight)|
 4d62d0|stretch<unsigned char>::Compact||36|function|void __thiscall Compact()|template
