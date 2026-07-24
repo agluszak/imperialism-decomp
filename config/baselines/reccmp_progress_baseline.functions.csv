@@ -2134,7 +2134,8 @@ address|matching|name
 0x4c8200|0.5714285714285714|TShipyardView::CreateObject
 0x4c82a0|1.0|TShipyardView::GetRuntimeClass
 0x4c82c0|0.9|TShipyardView::TShipyardView
-0x4c82f0|0.9090909090909091|TShipyardView::`scalar deleting destructor'
+0x4c82f0|1.0|TShipyardView::`scalar deleting destructor'
+0x4c8320|0.0|TShipyardView::~TShipyardView
 0x4c8340|1.0|TShipyardView::Free
 0x4c8390|0.16387959866220736|TShipyardView::DoStartup
 0x4c8a20|0.2|WrapperFor_thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext_At004c8a20
