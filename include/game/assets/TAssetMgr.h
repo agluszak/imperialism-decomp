@@ -84,7 +84,9 @@ public:
   void SaveSettingValueFromPointerByKey(CString* value, const char* key);
   // CWinApp::GetProfileInt(key, defaultValue) under the "Settings" section, stored
   // into *out. `this` is unused; callers dispatch through g_pUiViewManager. 0x5e0290.
-  void LoadSettingValueByKeyIntoOut(LPCSTR key, int defaultValue, int* out);
+  // Parameter order verified from the 0x5e0290 listing: the OUT pointer is the first
+  // argument ([esp+4] receives the GetProfileInt result), then key, then default.
+  void LoadSettingValueByKeyIntoOut(int* out, LPCSTR key, int defaultValue);
   // Checks for a pending "save/cli_*.imp" client save file (resumable multiplayer
   // session). `this` is unused; callers dispatch through g_pUiViewManager. 0x5e02f0.
   unsigned char HasPendingClientSaveFile();

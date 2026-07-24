@@ -427,12 +427,248 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
   } while (slot < 4);
 }
 
+// Renders the Prospector's "Can Find" legend: one column per prospectable terrain
+// (hills, mountains, then the three oil terrains once tech 4 is researched), each with
+// the terrain header icon, the per-column target-tile count, and the mineral icons that
+// terrain can yield. Registers each header icon rect into legendRects for hit testing
+// until legendInitialized is set by Draw().
 // FUNCTION: IMPERIALISM 0x0058fec0
 void TCivDescription::DrawProspector(RECT* bounds) {
   (void)bounds;
+
+  CString text;
+  unsigned long themeColor = 0;
+
+  bool oilUnlocked = g_pCityOrderCapabilityState->orderCapRows277[g_pSimMgr->GetActiveNationId()]
+                         .techStatusByTechId[4] == 2;
+
+  // Per-column mineral-icon lists drawn under each terrain header
+  // (coal/iron; coal/iron/gems/gold; oil; oil; oil).
+  short columnResourceIcons[5][4] = {
+      {3, 4, -1, -1}, {3, 4, 0x16, 0x15}, {6, -1, -1, -1}, {6, -1, -1, -1}, {6, -1, -1, -1}};
+
+  ResolveUiThemeColor(0x2b6c, &themeColor);
+  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 10, 0x2b6c, 3);
+
+  g_pSimMgr->GetString(0x272d, 5, &text); // Can Find
+  SetQuickDrawTextOriginWithContextOffset(5, 96);
+  DrawTextWithCachedQuickDrawStyleState(&text);
+
+  int columnCount = oilUnlocked ? 5 : 2;
+  ResetQuickDrawStrokeState();
+  SetQuickDrawStrokeColor(0xffffff);
+
+  short columnTop = 0x68;
+  for (int column = 0; column < columnCount; ++column) {
+    short terrainIcon = g_anTargetTileProfileByCivilianClassAndSlot[5 + column];
+    RECT sourceRect = {terrainIcon * 20, 0, (terrainIcon + 1) * 20, 20};
+    RECT destinationRect = {12, columnTop, 0x20, columnTop + 0x14};
+    if (column == 1) {
+      destinationRect.top += 0xc;
+      destinationRect.bottom += 0xc;
+    }
+    SetQuickDrawFillColor(0);
+    BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[1]->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                     &sourceRect, &destinationRect, 0, 0);
+
+    if (legendInitialized == 0) {
+      legendRects[terrainIcon] = destinationRect;
+      field04 = 1;
+    }
+
+    SetQuickDrawColorAndSyncGlobals(themeColor);
+    SetQuickDrawTextOriginWithContextOffset(static_cast<short>(destinationRect.right + 2),
+                                            static_cast<short>(destinationRect.bottom));
+    text.Format(g_szDecimalFormat, targetTileCountsBySlot[column]);
+    DrawTextWithCachedQuickDrawStyleState(&text);
+
+    UpdatePaletteIndexWithDefaultFallback(0x10);
+    SetQuickDrawFillColor(0);
+
+    int firstRowRight = 0x3c;
+    int secondRowX = 0;
+    for (int slot = 0; slot < 4; ++slot) {
+      short resourceIcon = columnResourceIcons[column][slot];
+      if (resourceIcon != -1) {
+        sourceRect.left = resourceIcon * 20;
+        sourceRect.top = 0;
+        sourceRect.right = (resourceIcon + 1) * 20;
+        sourceRect.bottom = 0x18;
+        if (firstRowRight < 0x78) {
+          destinationRect.left = firstRowRight - 0x14;
+          destinationRect.top = columnTop - 4;
+          destinationRect.right = firstRowRight;
+          destinationRect.bottom = columnTop + 0x14;
+        } else {
+          destinationRect.left = secondRowX - 0x18;
+          destinationRect.top = columnTop + 0x18;
+          destinationRect.right = secondRowX - 4;
+          destinationRect.bottom = columnTop + 0x30;
+        }
+        BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->unitIconAtlas->GetBlitSurface(),
+                                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                         &sourceRect, &destinationRect, 0x24, 0);
+      }
+      firstRowRight += 0x1e;
+      secondRowX += 0x20;
+    }
+    SetQuickDrawStrokeColor(0xffffff);
+
+    columnTop += 0x1c;
+    if (column == 1) {
+      columnTop += 0x18;
+    }
+  }
 }
 
+// Renders the developer-classes legend (Miner/Farmer/Forester/Rancher/Fisherman/
+// Driller): the class's current development-level frame from the 38px strip in
+// unitOverlayAtlas under a centered "Development" title, a centered "Output" title
+// over one yield icon + number per developable resource
+// (g_anDevelopableResourceTypesByCivilianClass row, values from
+// g_abUniversityRequirementLevelById[resource][capabilityValue]), and finally the
+// class's target-terrain rows from g_anTargetTileProfileByCivilianClassAndSlot with
+// their targetTileCountsBySlot counts, registering legendRects like DrawProspector.
+// Prospector and Engineer bail out immediately (strip base -1) — they have their own
+// Draw* legends.
 // FUNCTION: IMPERIALISM 0x005903c0
 void TCivDescription::DrawDeveloper(RECT* bounds) {
   (void)bounds;
+
+  CPoint origin(0, 0);
+  WindowToLocal(&origin);
+  int originX = origin.x;
+  int originY = origin.y;
+
+  short maxRowsByClass[9] = {2, 0, 3, 1, 0, 2, 0, 0, 3};
+  // Count-text x anchors, indexed row + 3 * maxRowsByClass[class].
+  short rowIconXTable[12] = {0, 0, 0, 0x237, 0, 0, 0x21c, 0x24c, 0, 0x216, 0x237, 0x258};
+
+  CString text;
+
+  short civilianClass = selectedCivilianClass;
+  if (g_anDevelopmentIconStripBaseXByCivilianClass[civilianClass] >= 0) {
+    // Centered "Development" title.
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
+    g_pSimMgr->GetString(0x272d, 1, &text);
+    short titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&text);
+    SetQuickDrawTextOriginWithContextOffset(
+        static_cast<short>(this->frameWidth34 / 2 - titleWidth / 2), 0x6a);
+    DrawTextWithCachedQuickDrawStyleState(&text);
+
+    // Current development level = max capability value over the class's developable
+    // resources, minus one.
+    short stripBase = g_anDevelopmentIconStripBaseXByCivilianClass[civilianClass];
+    int level = 0;
+    for (int slot = 0; slot < 4; ++slot) {
+      int resourceType = g_anDevelopableResourceTypesByCivilianClass[civilianClass][slot];
+      if (resourceType == -1) {
+        continue;
+      }
+      int reached =
+          g_pCityOrderCapabilityState
+              ->capabilityValueByNationAndResource[g_pSimMgr->GetActiveNationId()][resourceType] -
+          1;
+      if (level <= reached) {
+        level = reached;
+      }
+    }
+
+    RECT sourceRect = {stripBase + level * 38, 0, stripBase + level * 38 + 38, 0x1a};
+    RECT destinationRect = {this->frameWidth34 / 2 - 0xb, originY + 0x12c,
+                            this->frameWidth34 / 2 + 0x1b, originY + 0x146};
+    ResetQuickDrawStrokeState();
+    UpdatePaletteIndexWithDefaultFallback(0x10);
+    BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->unitOverlayAtlas->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                     &sourceRect, &destinationRect, 0x24, 0);
+    SetQuickDrawStrokeColor(0xffffff);
+
+    // Centered "Output" title.
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
+    g_pSimMgr->GetString(0x272d, 2, &text);
+    titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&text);
+    SetQuickDrawTextOriginWithContextOffset(
+        static_cast<short>(this->frameWidth34 / 2 - titleWidth / 2), 0xa2);
+    DrawTextWithCachedQuickDrawStyleState(&text);
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
+
+    // One yield icon + per-level output number per developable resource, on the 2x2
+    // anchor grid (Forester/Driller shift right by 0x1b).
+    for (int yieldSlot = 0; yieldSlot < 4; ++yieldSlot) {
+      short resourceType =
+          static_cast<short>(g_anDevelopableResourceTypesByCivilianClass[civilianClass][yieldSlot]);
+      if (resourceType == -1) {
+        continue;
+      }
+      sourceRect.left = resourceType * 20;
+      sourceRect.top = 0;
+      sourceRect.right = (resourceType + 1) * 20;
+      sourceRect.bottom = 0x18;
+      destinationRect.left = g_aDeveloperYieldIconAnchors[yieldSlot][0] + originX;
+      destinationRect.top = originY + g_aDeveloperYieldIconAnchors[yieldSlot][1];
+      destinationRect.right = destinationRect.left + 0x14;
+      destinationRect.bottom = destinationRect.top + 0x18;
+      if (selectedCivilianClass == 3 || selectedCivilianClass == 8) {
+        destinationRect.left += 0x1b;
+        destinationRect.right += 0x1b;
+      }
+      UpdatePaletteIndexWithDefaultFallback(0x10);
+      BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->unitIconAtlas->GetBlitSurface(),
+                                       g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                       &sourceRect, &destinationRect, 0x24, 0);
+      SetQuickDrawStrokeColor(0xffffff);
+      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(destinationRect.right + 4),
+                                              static_cast<short>(destinationRect.bottom - 4));
+      short capabilityValue =
+          g_pCityOrderCapabilityState
+              ->capabilityValueByNationAndResource[g_pSimMgr->GetActiveNationId()][resourceType];
+      text.Format(
+          g_szDecimalFormat,
+          static_cast<int>(g_abUniversityRequirementLevelById[resourceType][capabilityValue]));
+      DrawTextWithCachedQuickDrawStyleState(&text);
+    }
+
+    // Target-terrain rows with their tile counts. A Farmer without any cotton
+    // capability loses its last row.
+    short rowLimit = maxRowsByClass[civilianClass];
+    if (civilianClass == 2 &&
+        g_pCityOrderCapabilityState
+                ->capabilityValueByNationAndResource[g_pSimMgr->GetActiveNationId()][0] == 0) {
+      --rowLimit;
+    }
+    if (rowLimit > 0) {
+      short* countPtr = &targetTileCountsBySlot[0];
+      for (int row = 0; row < rowLimit; ++row, ++countPtr) {
+        short terrainIcon = g_anTargetTileProfileByCivilianClassAndSlot[civilianClass * 5 + row];
+        if (terrainIcon == -1) {
+          continue;
+        }
+        sourceRect.left = terrainIcon * 20;
+        sourceRect.top = 0;
+        sourceRect.right = (terrainIcon + 1) * 20;
+        sourceRect.bottom = 0x14;
+        short iconX = rowIconXTable[row + 3 * rowLimit];
+        destinationRect.bottom = originY + 0x1ba;
+        destinationRect.left = iconX + originX;
+        destinationRect.top = originY + 0x1a6;
+        destinationRect.right = destinationRect.left + 0x14;
+        ResetQuickDrawStrokeState();
+        SetQuickDrawStrokeColor(0xffffff);
+        SetQuickDrawFillColor(0);
+        BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[1]->GetBlitSurface(),
+                                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                         &sourceRect, &destinationRect, 0, 0);
+        if (legendInitialized == 0) {
+          legendRects[terrainIcon] = destinationRect;
+          field04 = 1;
+        }
+        ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
+        SetQuickDrawTextOriginWithContextOffset(static_cast<short>(originX + iconX + 0x18), 0x100);
+        text.Format(g_szDecimalFormat, *countPtr);
+        DrawTextWithCachedQuickDrawStyleState(&text);
+      }
+    }
+  }
 }

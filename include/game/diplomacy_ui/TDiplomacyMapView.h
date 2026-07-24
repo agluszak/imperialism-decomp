@@ -38,7 +38,7 @@ public:
   DECLARE_DYNCREATE(TDiplomacyMapView)
   // Empty in source but 115 bytes at 0x004f3cc0: every instruction there is compiler
   // output -- the vector destructors for maskRuns/packedColorRuns plus the base call.
-  // The address is claimed as SYNTHETIC in TDiplomacyMapView.cpp.
+  // FUNCTION: IMPERIALISM 0x004f3cc0
   virtual ~TDiplomacyMapView() override {}
   void Free() override; // slot 0x07 0x4f3e60
   void DoEvent(int commandId, TEventHandler* sourceHandler,

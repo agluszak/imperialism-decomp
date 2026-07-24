@@ -4,8 +4,8 @@
 // assignment evidence: docs/reference/subsystem_assignment.csv.
 #include "game/globals/prelude.h"
 
-extern POINT g_ptDiplomacyNoticeModalMessage;                    // @ 0x6a2fc0
-extern "C" const unsigned int g_aDiplomacyActionTopicTabTags[6]; // @ 0x696978
+extern POINT g_ptDiplomacyNoticeModalMessage;              // @ 0x6a2fc0
+extern "C" unsigned int g_aDiplomacyActionTopicTabTags[6]; // @ 0x696978
 
 extern short g_awDiplomacyTradePolicyIconValueTable[7];
 
@@ -21,8 +21,6 @@ extern "C" {
 extern char* g_pDiplomacyPanelEmptyText_00654ec8;
 
 extern "C" int g_diplomacyActionButtonTagTable_00696960[6];
-
-extern "C" unsigned int g_councilControlTagTable[6];
 
 extern "C" short g_aDiplomacyRelationPaletteColorCodes[7];
 

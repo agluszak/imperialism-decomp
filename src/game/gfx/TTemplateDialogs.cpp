@@ -626,12 +626,41 @@ TE0TemplateDialog::~TE0TemplateDialog() {
 // SYNTHETIC: IMPERIALISM 0x00498dd0
 // TE0TemplateDialog::`scalar deleting destructor'
 
+// 0x0049bd19 zeroes +0x98 after the CListBox ctor and before the derived vptr store, i.e.
+// exactly where a member-initializer in declaration order lands.
 // FUNCTION: IMPERIALISM 0x0049bcd0
 TD0TemplateDialog::TD0TemplateDialog(void* initParam)
-    : CDialog(0xd0, static_cast<CWnd*>(initParam)), listbox() {}
+    : CDialog(0xd0, static_cast<CWnd*>(initParam)), listbox(), dialogCreated98(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x0049bd60
 // TD0TemplateDialog::`scalar deleting destructor'
+
+// Trace sink for the printf-style entry points at 0x0049bb60 / 0x0049bbb0, both of which
+// vsprintf into a stack buffer and call this on the global dialog at 0x006a1e78. Text
+// arrives in arbitrary chunks, so the tail that has no line break yet is held in a static
+// accumulator until a later call completes it. The function-local static is what emits the
+// 0x006a1fb0 init-guard byte and the atexit destructor registration at 0x0049bf40.
+// FUNCTION: IMPERIALISM 0x0049bd90
+void TD0TemplateDialog::AppendTraceTextAndFlushCompleteLines(const char* text) {
+  static CString s_pendingTraceText;
+
+  // The dialog is created lazily on the first trace line rather than at construction.
+  if (dialogCreated98 == 0) {
+    Create(0xd0, nullptr);
+    dialogCreated98 = 1;
+  }
+
+  s_pendingTraceText += text;
+
+  int breakIndex = s_pendingTraceText.FindOneOf(g_szTraceLineBreakChars_00695200);
+  while (breakIndex > -1) {
+    CString line = s_pendingTraceText.Left(breakIndex);
+    s_pendingTraceText = s_pendingTraceText.Mid(breakIndex + 1);
+    listbox.AddString(line);
+    listbox.SetTopIndex(listbox.GetCount() - 1);
+    breakIndex = s_pendingTraceText.FindOneOf(g_szTraceLineBreakChars_00695200);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0049bf60
 void TD0TemplateDialog::DoDataExchange(CDataExchange* pDX) {

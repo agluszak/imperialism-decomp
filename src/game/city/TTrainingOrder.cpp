@@ -11,6 +11,7 @@
 
 IMPLEMENT_DYNCREATE(TTrainingOrder, TProductionOrder)
 
+// NOOP: verified empty in original 0x004b6a62 (no standalone TTrainingOrder::TTrainingOrder body exists: construction is fully inlined into CreateObject 0x004b6a60; that address is its operator-new call site)
 TTrainingOrder::TTrainingOrder() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b6ad0

@@ -59,6 +59,7 @@ public:
 
   // Derived construction sites inline the whole ctor chain as a bare vptr store, so
   // this must stay empty and in-class.
+  // NOOP: verified empty in original 0x0059ad42 (no standalone TTacticalPlayer::TTacticalPlayer body exists: construction is fully inlined into CreateObject 0x0059ad40; that address is its operator-new call site)
   TTacticalPlayer() {}
 };
 ASSERT_SIZE(TTacticalPlayer, 0x28);

@@ -22,10 +22,6 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 
-extern "C" {
-char g_vtblTUnitToolbarCluster = 0;
-}
-
 // SYNTHETIC: IMPERIALISM 0x00585f70
 // TUnitToolbarCluster::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00585ff0

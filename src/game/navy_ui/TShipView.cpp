@@ -33,6 +33,7 @@ TShipView::~TShipView() {}
 
 IMPLEMENT_DYNCREATE(TShipView, TView)
 
+// NOOP: verified empty in original 0x00565433 (no standalone TShipView::TShipView body exists: CreateObject 0x00565400 inlines this default ctor, calling the TView base ctor directly at that site)
 TShipView::TShipView() {}
 
 // FUNCTION: IMPERIALISM 0x005654e0

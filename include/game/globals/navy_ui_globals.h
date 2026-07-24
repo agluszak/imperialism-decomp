@@ -17,3 +17,9 @@ extern "C" {
 extern "C" const char s_SourcePathUOceanViews_00698650[];
 
 } // extern "C"
+
+extern "C" {
+extern char* g_pGamePreferencesSharedText_0065DDC8;                 // @ 0x65ddc8
+extern const char* const g_pGamePreferencesAutoResKey_0065DDCC;     // @ 0x65ddcc
+extern const int g_anGamePreferenceIndexByRow[5];                   // @ 0x65dde0
+}

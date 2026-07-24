@@ -15,6 +15,7 @@
 
 IMPLEMENT_DYNCREATE(TPopulationMgr, TObject)
 
+// NOOP: verified empty in original 0x004b5b42 (no standalone TPopulationMgr::TPopulationMgr body exists: construction is fully inlined into CreateObject 0x004b5b40; that address is its operator-new call site)
 TPopulationMgr::TPopulationMgr() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b5bb0
@@ -513,4 +514,16 @@ void TPopulationMgr::Free() {
   }
   pendingDeltaSlots18 = 0;
   delete this;
+}
+
+// Mac CodeWarrior oracle: AddExpert(short). Adds `count` workers to the high-skill
+// band of both the baseline and working labor pools, to the aggregate population
+// count, and 4x to strength. Sole caller is TCivUnit::ResetCivWorkOrderAndRefreshCounters
+// (disbanding a civilian specialist returns an expert).
+// FUNCTION: IMPERIALISM 0x004b6a30
+void TPopulationMgr::AddExpert(short count) {
+  baselineSlots10->highSkillCount08 = baselineSlots10->highSkillCount08 + count;
+  productionSlots14->highSkillCount08 = productionSlots14->highSkillCount08 + count;
+  populationCount08 = populationCount08 + count;
+  strength = static_cast<short>(strength + count * 4);
 }

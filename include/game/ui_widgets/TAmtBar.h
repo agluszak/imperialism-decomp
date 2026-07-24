@@ -33,9 +33,6 @@ public:
   // for a virtual on the not-yet-reconstructed 184-slot TControl-branch vtable of the
   // real receivers (TTradeCluster/TAmtBarCluster controls). Retire each by recovering
   // the receiver class and calling the real virtual (see TAmtBar/TradeControl notes).
-  void ApplyStyleDescriptor(void* descriptorBuffer, int modeFlag);
-  void SetStyleState(int stateValue, int modeFlag);
-  void SetControlValueSlot1E4(int value, int updateFlag);
   int QueryValue();
 };
 

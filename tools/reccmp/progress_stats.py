@@ -785,7 +785,14 @@ def print_summary(entry: dict[str, Any], baseline: dict[str, Any] | None, baseli
         original_key = f"original_{row_type}_count"
         paired_key = f"paired_{row_type}_count"
         coverage = pct(entry[paired_key], entry[original_key])
-        print(f"  {row_type} ({label}): original {entry[original_key]}, paired {entry[paired_key]}, coverage {coverage:.2f}%")
+        # flo/lab pair at exactly 0% by reccmp design, not by project omission:
+        # LABEL is a function-interior "passenger" entity (jump targets,
+        # __ehhandler/__Unwind markers) never matched standalone, and float-
+        # constant matching is unimplemented upstream (create_analysis_floats:
+        # "not matching anything right now"). Operand comparison resolves float
+        # values by name on both sides, so the zeros do not depress scores.
+        note = " (never matched by reccmp; expected 0%)" if row_type in ("flo", "lab") else ""
+        print(f"  {row_type} ({label}): original {entry[original_key]}, paired {entry[paired_key]}, coverage {coverage:.2f}%{note}")
     print("")
 
     print("Noise")

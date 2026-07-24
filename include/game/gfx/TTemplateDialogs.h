@@ -338,6 +338,14 @@ public:
 
   CListBox listbox; // +0x5c
 
+  // +0x98 -- set once the modeless dialog has been created. 0x0049bd90 reads it, calls
+  // CDialog::Create(0xd0, nullptr) on the first trace line only, then latches it to 1.
+  int dialogCreated98;
+
+  // 0x0049bd90 -- appends printf-formatted trace text to a shared static accumulator and
+  // flushes every complete line into the listbox, scrolling to the newest entry.
+  void AppendTraceTextAndFlushCompleteLines(const char* text);
+
 protected:
   void OnOK() override;                             // 0x0049bfb0 (empty)
   void OnCancel() override;                         // 0x0049bfd0 (SW_MINIMIZE)
@@ -345,7 +353,7 @@ protected:
   DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x0049bf90 (vtable index 12)
 };
 
-ASSERT_SIZE(TD0TemplateDialog, 0x98);
+ASSERT_SIZE(TD0TemplateDialog, 0x9c);
 
 // Sibling "E0" full-screen overlay template dialog (template id 0xe0, own vtable 0x64b960): a
 // PLAIN CDialog subclass with no DDX members. Overrides PreCreateWindow (forces a huge window)

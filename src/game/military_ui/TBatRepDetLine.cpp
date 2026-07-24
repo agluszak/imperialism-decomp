@@ -22,6 +22,7 @@ TBatRepDetLine::~TBatRepDetLine() {}
 
 IMPLEMENT_DYNCREATE(TBatRepDetLine, TLineData)
 
+// NOOP: verified empty in original 0x004aff93 (no standalone TBatRepDetLine::TBatRepDetLine body exists: CreateObject 0x004aff60 inlines this default ctor, calling the TLineData base ctor directly at that site)
 TBatRepDetLine::TBatRepDetLine() {}
 
 // FUNCTION: IMPERIALISM 0x004b0040

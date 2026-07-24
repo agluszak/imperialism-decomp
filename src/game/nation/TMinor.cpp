@@ -1079,12 +1079,12 @@ void DispatchCivilianOrderRelationMaskSlots(TUnit* orderNode) {
     TGreatPower* ownerNation = g_apNationStates[orderNode->field_18];
     if (ownerNation != 0) {
       short payload = static_cast<short>(ownerNation->homeTileIndex);
-      orderNode->VTableSlot10(static_cast<int>(payload));
+      orderNode->MoveTo(static_cast<int>(payload));
     }
     return;
   }
   orderNode->DetachUnitOrderFromOwnerAndReset();
-  orderNode->VTableSlot10(-1);
+  orderNode->MoveTo(-1);
 }
 
 void WalkTileCivilianOrdersForRelationMask(TTerrainStateRecordView* terrainTiles, short tileId,
@@ -1289,7 +1289,7 @@ void RetargetUnitOrderForAllowedNation(TUnit* orderNode) {
     orderNode->Free();
     return;
   }
-  orderNode->VTableSlot10(static_cast<int>(spawnTile));
+  orderNode->MoveTo(static_cast<int>(spawnTile));
 }
 
 void RetargetUnitOrderForAllowedNationWithModeReset(TUnit* orderNode) {
@@ -1307,7 +1307,7 @@ void RetargetUnitOrderForAllowedNationWithModeReset(TUnit* orderNode) {
     return;
   }
   orderNode->SetOrders(kUnitOrderIdle, -1);
-  orderNode->VTableSlot10(static_cast<int>(spawnTile));
+  orderNode->MoveTo(static_cast<int>(spawnTile));
 }
 
 void WalkTileUnitOrdersForRelationMask(TTerrainStateRecordView* terrainTiles, short tileId,

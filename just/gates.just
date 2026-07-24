@@ -314,6 +314,15 @@ global-redeclaration-gate:
 boundary-gate:
   uv run python -m tools.workflow.check_boundary_ratchet
 
+# Shadow-stub gate (bead rcb6): non-virtual degenerate methods that hide a real vtable
+# slot -- direct calls into do-nothing bodies where the original dispatches virtually.
+# Ratchets against config/baselines/shadow_stub_baseline.csv (known offenders tracked to
+# their beads); any NEW offender is a hard error. Refresh with `--write-baseline` only
+# when a tracked offender is genuinely fixed.
+[group('gates')]
+shadow-stub-gate:
+  uv run python -m tools.workflow.check_shadow_stubs
+
 # Lint the structured agent rule KB (config/agent_rules.yml): ids, supersedes,
 # required/forbidden contradictions, just-only tools, derivable triggers.
 [group('gates')]
@@ -330,7 +339,7 @@ source-gates:
 
 [private]
 [parallel]
-_source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-coverage-check scalar-type-audit-check fourcc-audit-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate destructor-placement-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate stub-count-gate class-size-gate noop-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate
+_source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-coverage-check scalar-type-audit-check fourcc-audit-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate destructor-placement-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate stub-count-gate class-size-gate noop-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate shadow-stub-gate
 
 # Cross-check modeled class sizes (ASSERT_SIZE) against the RTTI oracle's
 # m_nObjectSize. Report-only; pass --strict to fail on mismatches, or

@@ -29,6 +29,7 @@ TCouncilTickerAnimation::~TCouncilTickerAnimation() {}
 
 IMPLEMENT_DYNCREATE(TCouncilTickerAnimation, TAnimation)
 
+// NOOP: verified empty in original 0x0049fef2 (no standalone TCouncilTickerAnimation::TCouncilTickerAnimation body exists: construction is fully inlined into CreateObject 0x0049fef0; that address is its operator-new call site)
 TCouncilTickerAnimation::TCouncilTickerAnimation() {}
 
 // FUNCTION: IMPERIALISM 0x0049ff90

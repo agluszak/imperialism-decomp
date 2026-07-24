@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TInfoBarPictureText, TInfoBarText)
 
+// NOOP: verified empty in original 0x005b5af7 (no standalone TInfoBarPictureText::TInfoBarPictureText body exists: CreateObject 0x005b5ac0 inlines this default ctor, calling the TStaticText base ctor directly at that site)
 TInfoBarPictureText::TInfoBarPictureText() {}
 
 // SYNTHETIC: IMPERIALISM 0x005b5c60

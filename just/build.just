@@ -89,7 +89,19 @@ lint flags="":
 [doc('Run scalar-focused clang-tidy checks on representative manual source')]
 [group('build')]
 scalar-clang-tidy:
+  #!/usr/bin/env bash
+  set -euo pipefail
   just gen-compile-commands
+  files=()
+  for name in TScrollBarView TGreatPower TMapMaker TViewMgr NetMessage; do
+    matches=$(find src/game -name "${name}.cpp")
+    count=$(printf '%s' "$matches" | grep -c . || true)
+    if [ "$count" -ne 1 ]; then
+      echo "scalar-clang-tidy: expected exactly one src/game/**/${name}.cpp, found ${count}" >&2
+      exit 1
+    fi
+    files+=("/imperialism/${matches}")
+  done
   docker run --rm --network none --entrypoint clang-tidy \
     -v "$PWD":/imperialism \
     -v "$PWD/{{lint_build_dir}}":/build \
@@ -98,11 +110,7 @@ scalar-clang-tidy:
     --checks='-*,bugprone-narrowing-conversions,cppcoreguidelines-narrowing-conversions,readability-redundant-casting' \
     --header-filter='^/imperialism/(include|src)/game/' \
     --quiet \
-    /imperialism/src/game/TScrollBarView.cpp \
-    /imperialism/src/game/TGreatPower.cpp \
-    /imperialism/src/game/TMapMaker.cpp \
-    /imperialism/src/game/TViewMgr.cpp \
-    /imperialism/src/game/NetMessage.cpp
+    "${files[@]}"
 
 # Run the reviewed advisory profile from .clang-tidy. The default is the stable
 # five-TU evaluation sample; pass a compile-database path regex to expand scope,

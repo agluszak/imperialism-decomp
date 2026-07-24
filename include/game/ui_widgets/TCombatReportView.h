@@ -2,7 +2,6 @@
 
 #include "game/ui_core/TPicture.h"
 
-extern "C" int g_vtblTCombatReportView;
 struct CRuntimeClass;
 
 // One row of a combat report's participant unit list (Draw, 0x0058d2b0):

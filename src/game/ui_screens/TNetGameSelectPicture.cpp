@@ -20,6 +20,7 @@ TNetGameSelectPicture::~TNetGameSelectPicture() {}
 
 IMPLEMENT_DYNCREATE(TNetGameSelectPicture, TNoHilitePicture)
 
+// NOOP: verified empty in original 0x00576ad6 (no standalone TNetGameSelectPicture::TNetGameSelectPicture body exists: CreateObject 0x00576aa0 inlines this default ctor, calling the TNoHilitePicture base ctor directly at that site)
 TNetGameSelectPicture::TNetGameSelectPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00576b90

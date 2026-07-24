@@ -4,7 +4,6 @@
 
 #include "game/ui_core/TPicture.h"
 
-extern "C" int g_vtblTHQButton;
 struct CRuntimeClass;
 
 // VTABLE: IMPERIALISM 0x666fe0

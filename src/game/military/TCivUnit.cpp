@@ -2,6 +2,9 @@
 #include "game/city_ui/TCivMgr.h"
 #include "game/military/TUnit.h"
 #include "game/map/TMapMgr.h"
+#include "game/city/TCity.h"
+#include "game/city/TPopulationMgr.h"
+#include "game/nation/TGreatPower.h"
 #include "game/core/TStream.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
@@ -24,8 +27,8 @@ TCivUnit::TCivUnit() {}
 TCivUnit::~TCivUnit() {}
 
 // FUNCTION: IMPERIALISM 0x005c2940
-void TCivUnit::ICivUnit(CivilianUnitKind unitKind, int pOwnerContext, int nOrderOwnerNationId) {
-  this->RegisterUnitOrderWithOwnerManager(EncodeCivilianUnitKind(unitKind), pOwnerContext,
+void TCivUnit::ICivUnit(CivilianUnitKind unitKind, int anchorIndex, int nOrderOwnerNationId) {
+  this->RegisterUnitOrderWithOwnerManager(EncodeCivilianUnitKind(unitKind), anchorIndex,
                                           static_cast<short>(nOrderOwnerNationId), 0);
   this->remainingTurns24 = 0;
   this->completionMarker26 = static_cast<short>(-1);
@@ -85,10 +88,10 @@ void TCivUnit::WriteTo(TStream* stream) {
 // Moves this unit between two tiles' civilian-order chains (terrainStateTable[tile-
 // Index06].firstCivilianOrder20, threaded via nextOnTile/field_10): detaches from the
 // current tile (if any) unlinking via field_10's prev-pointer role, then prepends to
-// the new tile's chain (if pOwnerContext isn't -1 = none).
+// the new tile's chain (if anchorIndex isn't -1 = none).
 // FUNCTION: IMPERIALISM 0x005c2b70
-void TCivUnit::VTableSlot10(int pOwnerContext) {
-  short newTileIndex = static_cast<short>(pOwnerContext);
+void TCivUnit::MoveTo(int anchorIndex) {
+  short newTileIndex = static_cast<short>(anchorIndex);
 
   if (tileIndex06 != -1) {
     if (field_10 == 0) {
@@ -122,4 +125,13 @@ void TCivUnit::VTableSlot10(int pOwnerContext) {
 void TCivUnit::DetachUnitOrderFromOwnerAndReset() {}
 
 // FUNCTION: IMPERIALISM 0x005c2c60
-void TCivUnit::ResetCivWorkOrderAndRefreshCounters() {}
+void TCivUnit::ResetCivWorkOrderAndRefreshCounters() {
+  DetachUnitOrderFromOwnerAndReset();
+  if (orderType != kCivilianUnitDeveloper) {
+    TGreatPower* nation = g_apNationStates[field_18];
+    TCity* city = (nation != 0) ? nation->city : 0;
+    // The original reads city unconditionally here (no null check), so keep the shape.
+    city->productionSummary1d8->AddExpert(1);
+  }
+  Free();
+}

@@ -26,6 +26,7 @@ TTradeBookView::~TTradeBookView() {}
 
 IMPLEMENT_DYNCREATE(TTradeBookView, TView)
 
+// NOOP: verified empty in original 0x005bde65 (no standalone TTradeBookView::TTradeBookView body exists: CreateObject 0x005bde30 inlines this default ctor, calling the TView base ctor directly at that site)
 TTradeBookView::TTradeBookView() {}
 
 // FUNCTION: IMPERIALISM 0x005bdef0

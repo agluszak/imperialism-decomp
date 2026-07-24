@@ -22,6 +22,7 @@ TGameInfoPicture::~TGameInfoPicture() {}
 
 IMPLEMENT_DYNCREATE(TGameInfoPicture, TPicture)
 
+// NOOP: verified empty in original 0x0056b7b6 (no standalone TGameInfoPicture::TGameInfoPicture body exists: CreateObject 0x0056b780 inlines this default ctor, calling the TPicture base ctor directly at that site)
 TGameInfoPicture::TGameInfoPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056b870

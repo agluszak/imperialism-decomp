@@ -60,7 +60,7 @@ void TArmoryView::DoStartup() {
     TUnitOrder* order = static_cast<TUnitOrder*>(city94->orderSlotsE4[row + 0x19]);
     short resourceType = order->resourceTypeIndex48;
     short pictureVariant;
-    if (g_resourceTypeToUnitClass_00695528[resourceType] == 8) {
+    if (g_awTacticalUnitCategoryCodeBySlot[resourceType] == 8) {
       if (resourceType == 0x18) {
         pictureVariant = 8;
       } else {

@@ -62,9 +62,9 @@ public:
   void SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlot, int policyCode) override;
   void DecrementDiplomacyCounterA2ByValue(int delta) override;
   short SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) override; // slot 0x1c
-  short GetDiplomacyCounterA2(void) override;                                  // slot 0x1d
-  short GetDiplomacyExternalStateByTarget(short nationSlot) override;          // slot 0x1e
-  short QueryNationMetricBySlot7C(short metricSlot) override;                  // slot 0x1f
+  short GetDiplomacyCounterA2(void) override;                                    // slot 0x1d
+  short GetDiplomacyExternalStateByTarget(short nationSlot) override;            // slot 0x1e
+  short QueryNationMetricBySlot7C(short metricSlot) override;                    // slot 0x1f
   // index 0x20 / vtable+0x080. Evidence: base TGreatPower vtable entry
   // 0x00407392 thunks to body 0x004ddc30; TAutoGreatPower overrides this slot.
   void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
@@ -77,6 +77,10 @@ public:
                                                      int arg4) override;
   void QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode,
                                                  NationSlot targetNationSlot) override;
+  // Reads the pending-policy pairs in field8d6, so it belongs here and not on TCountry:
+  // TMinor also derives from TCountry and is only 0x2dc bytes, while field8d6 sits at
+  // +0x8d6 inside TGreatPower's 0x964.
+  char IsDiplomacyPolicyAllowedForTargetClassState(short policyCode, short targetNationSlot);
   void NotifyActionSlot94(int sourceNation, int actionCode) override; // slot 0x94
   virtual void NoOpNationPendingActionHook(void);
 
@@ -328,8 +332,8 @@ public:
   // slot 0x29c — body 0x004e25c0: reset diplomacy level/grants for targetNation and
   // fire slot 0x2a0 for every nation with an active policy link.
   virtual void ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation);
-  virtual void CallSlotA8(int targetNation);
-  virtual void CallSlotA9(int targetNation);
+  virtual void DeclareWarOnTargetForAlignedMinors(int targetNation);
+  virtual void MakePeaceWithTargetForAlignedMinors(int targetNation);
   // slot 0x2a8 — body 0x004e27b0: mode-dispatched diplomacy slot action (mode 6 ->
   // slot 0xa8, etc.). TDiplomacyMgr notifies relation-code changes here.
   virtual void DispatchNationDiplomacySlotActionByMode(int targetNationSlot,
