@@ -1,9 +1,11 @@
 #include "game/ui_widgets/TToolBarCluster.h"
 #include "game/ui_tags_common.h"
+#include "game/resource_manifest_tags.h"
 #include "game/ui_tags_widgets.h"
 
 #include "game/ui_core/TApplication.h"
 #include "game/gfx/TAmbitApplication.h"
+#include "game/gfx/TDisplayMgr.h"
 #include "game/military/TArmyMgr.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/map/TMapMgr.h"
@@ -367,8 +369,45 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
 // FUNCTION: IMPERIALISM 0x005851c0
 void TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                           RgnHandle hitArg) {
-  (void)point;
-  (void)hitArg;
+  if (ResolveControlByTag(kManifestTagCivi) != 0) {
+    CString label(g_pSmallViewsEmptyText_00662B90);
+
+    TView* mainControl = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
+    if (mainControl == 0) {
+      FailNilPointerInUSmallViews(0x406);
+    }
+    if (mainControl->ResolveControlByTag(kControlTagGOLD) == 0) {
+      FailNilPointerInUSmallViews(0x409);
+    }
+
+    // Hover bucket over the toolbar's 3x2 civilian-panel grid: rows at y in
+    // (0xbe,0x100)/(0x100,0x141)/(0x141,0x183), columns split at x == 0x3f. The
+    // bucket only gates the hover-help lookup; the string is the same for all six.
+    int y = point->y;
+    if (y > 0xbe && y < 0x183) {
+      int x = point->x;
+      if (x > 0 && x < 0x7e) {
+        short bucket = -1;
+        if (y < 0x100) {
+          bucket = static_cast<short>(x >= 0x3f);
+        } else if (y > 0x100 && y < 0x141) {
+          bucket = static_cast<short>((x >= 0x3f) + 2);
+        } else if (y > 0x141) {
+          bucket = static_cast<short>((x >= 0x3f) + 4);
+        }
+        if (bucket > -1 && bucket < 6) {
+          g_pSimMgr->GetString(0x272d, 0xb, &label);
+        }
+      }
+    }
+
+    TView* cursControl = mainControl->ResolveControlByTag(kControlTagCurs);
+    if (cursControl == 0) {
+      FailNilPointerInUSmallViews(0x448);
+    }
+    static_cast<TStaticText*>(cursControl)->SetTextAndMaybeRefresh(&label, 1);
+  }
+  TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
 }
 
 // FUNCTION: IMPERIALISM 0x005853f0

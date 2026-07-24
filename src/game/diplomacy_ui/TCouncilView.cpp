@@ -92,6 +92,7 @@ void TCouncilView::DoPostCreate(int arg) {
     scanBracketExpressions(g_pSimMgr, &finalTitle, static_cast<LPCSTR>(titleTemplate),
                            static_cast<LPCSTR>(terrainLabel));
     titleControl->SetTextAndMaybeRefresh(&finalTitle, 0);
+    BuildDiplomacyMapHintOverlayTextAndMetrics();
 
     if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e ==
         g_pSimMgr->GetActiveNationId()) {
@@ -358,19 +359,16 @@ void TCouncilView::AdvanceCivilianTerrainSelectionStep() {
         }
       }
       if (!allowAdvance) {
+        // The original jumps straight to the shared epilogue here, bypassing the
+        // hint-overlay rebuild below.
         g_pSimMgr->StartNextPhase();
-      } else {
-        g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e = -1;
-        g_pSimMgr->turnStateCode = 0x10;
-        g_pSfxPlaybackSystem->PlaySoundEffect(0x1f42, 0, 1);
+        return;
       }
+      g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e = -1;
+      g_pSimMgr->turnStateCode = 0x10;
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x1f42, 0, 1);
     }
-    // 0x4fbdf0 (1005 bytes) -- rebuilds the diplomacy-map hint-overlay text: classifies
-    // every diplomacy-matrix entry against the two selected nations into 8 buckets over a
-    // TMapMgr-side per-region table, then formats 5 named number controls ('num0'..'num4')
-    // plus a conditional 'scr0' summary control via CString::Format. Return value unused.
-    // Deliberately not ported here (UI hint-text/formatting construction, not game logic);
-    // the matrix/state mutations above are unaffected by this omission.
+    BuildDiplomacyMapHintOverlayTextAndMetrics();
   }
 }
 

@@ -2,6 +2,9 @@
 #include "game/city_ui/TCivMgr.h"
 #include "game/military/TUnit.h"
 #include "game/map/TMapMgr.h"
+#include "game/city/TCity.h"
+#include "game/city/TPopulationMgr.h"
+#include "game/nation/TGreatPower.h"
 #include "game/core/TStream.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
@@ -122,4 +125,13 @@ void TCivUnit::MoveTo(int pOwnerContext) {
 void TCivUnit::DetachUnitOrderFromOwnerAndReset() {}
 
 // FUNCTION: IMPERIALISM 0x005c2c60
-void TCivUnit::ResetCivWorkOrderAndRefreshCounters() {}
+void TCivUnit::ResetCivWorkOrderAndRefreshCounters() {
+  DetachUnitOrderFromOwnerAndReset();
+  if (orderType != kCivilianUnitDeveloper) {
+    TGreatPower* nation = g_apNationStates[field_18];
+    TCity* city = (nation != 0) ? nation->city : 0;
+    // The original reads city unconditionally here (no null check), so keep the shape.
+    city->productionSummary1d8->AddExpert(1);
+  }
+  Free();
+}
