@@ -22,8 +22,6 @@ IMPLEMENT_SERIAL(TScatteredShipsMission, TNavyMission, 1)
 // SYNTHETIC: IMPERIALISM 0x005356a0
 // TScatteredShipsMission::`scalar deleting destructor'
 
-TScatteredShipsMission::TScatteredShipsMission() : TNavyMission() {}
-
 // FUNCTION: IMPERIALISM 0x00535640
 bool TScatteredShipsMission::IsHospitalMission() const {
   return true;

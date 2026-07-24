@@ -9,7 +9,8 @@ class TEscortMission : public TNavyMission {
 public:
   virtual ~TEscortMission() override; // slot 0x01 dtor 0x00539990 / ??_G 0x00539960
 public:
-  TEscortMission();
+  TEscortMission() : TNavyMission() {}
+
   TEscortMission(TZone* targetZone);
 
   // Slots 0x0c, 0x0e, 0x0f: TMission's own virtuals, overridden here.
