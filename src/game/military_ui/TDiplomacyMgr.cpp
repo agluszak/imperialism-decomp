@@ -1033,8 +1033,8 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
       g_pGlobalUiRootController->DispatchUiSelectionToHandler(packet);
     }
   } else {
-    bool isLocalizationOne = (g_pSimMgr->difficultyLevel == 1);
-    if (isLocalizationOne) {
+    bool isMultiplayerHost = (g_pSimMgr->multiplayerSessionRole == 1);
+    if (isMultiplayerHost) {
       g_pGameFlowState->EmitTurnEvent3Mode18WithActiveNation();
     } else {
       g_pSimMgr->StartNextPhase();

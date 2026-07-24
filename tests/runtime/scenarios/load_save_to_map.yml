@@ -1,0 +1,25 @@
+format_version: 1
+name: load_save_to_map
+
+start:
+  fixture: beginning_of_game.imp
+  defer_shell_command_until:
+    owner_address: "0x00412dc0"
+    after_call_to: "0x00415760"
+    after_probe:
+      probe: turn_event.dispatch
+      field: event
+      equals: 0x05dc
+
+probes:
+  - id: turn_event.dispatch
+    original_address: 0x005d7240
+    capture:
+      event: "*(short*)($esp+4)"
+
+stop:
+  probe: turn_event.dispatch
+  field: event
+  equals: 0x07dd
+
+timeout_seconds: 90

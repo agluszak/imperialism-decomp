@@ -10,18 +10,8 @@ holds `Data/` and the other assets; `just build` first.
 
 ## Launch
 
-- `just run-fresh` — the default way to (re)launch: kills stale game/wineserver
-  state, settles, launches detached, and confirms the process is alive (log:
-  `build-msvc500/run.log`). Do NOT hand-roll `pkill` + launch in one compound
-  command — that silently races about half the time; this target sequences it
-  correctly.
 - `just run` — foreground run without the hygiene (`WINEDEBUG=-all` by default;
   override in the environment).
-- `just run-trace [timeout]` — timed run with `+seh,+debugstr` tracing that then
-  greps the log for unhandled exceptions/page faults. **Use this whenever the
-  window is blank or behavior silently stops**: crashes swallowed by an exception
-  handler (process alive, UI dead — e.g. a call through a null function pointer)
-  are invisible under plain `just run` and show up here.
 
 ## Debug
 
@@ -43,21 +33,10 @@ holds `Data/` and the other assets; `just build` first.
   once inside), and named-parameter printing at a function's first instruction is
   unreliable — cross-check with a raw stack read (`print *(short*)($esp+4)`).
 
-## Screenshot the game window
-
-```sh
-just screenshot [out.png]        # default /tmp/imperialism.png
-```
-
-Auto-discovers the game window by class (largest match wins; window IDs go stale
-on every relaunch, so discovery beats hardcoding) and captures it by ID —
-root-window grabs fail with `BadMatch` under nested/Wayland X servers. Pass
-`--win 0xID` to force a specific window. Read the PNG back to inspect it
-visually.
-
 ## Verifying a change end-to-end
 
-Build → `just run-fresh` → `just screenshot` → compare against the expectation
-(e.g. title bitmap present, no stray popup, window not blank). A blank-but-alive
-window can be an init/paint blocker **or a silently-swallowed crash** — run
-`just run-trace` to tell the two apart before digging.
+Use `just runtime-test <name>` for assertions and isolated Wine execution. Failed
+or timed-out semantic runs capture a screenshot internally when possible, but pixels
+are diagnostic only and never influence pass/fail. Use `just smoke`, `just smoke-diff`,
+or `just gdb-script` for startup and debugger observation independent of native test
+instrumentation.

@@ -81,7 +81,7 @@ public:
   virtual void SyncTacticalStatusPanelRegion();                                    // 0xa0
   virtual void DispatchTurnEvent3B8AndWaitForCompletion(int payload,
                                                         TEventHandler* waitTarget); // 0xa4
-  virtual void HandleTurnEvent7DB_SelectCityAndRefreshView(int eventCode);          // 0xa8
+  virtual void HandleTurnEvent7DB_SelectCityAndRefreshView(int nationSlot);         // 0xa8
   // Forwards to g_pStrategicMapViewSystem's own vtable slot 0x5c/0x60/0x68/0x6c/
   // 0x70/0x74 (TMacViewMgr) -- verified via disassembly (0057db14-style pattern:
   // `mov ecx,[g_pStrategicMapViewSystem]; mov eax,[ecx]; jmp [eax+0xNN]`, no

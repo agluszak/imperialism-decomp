@@ -294,7 +294,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case 10: {
     turnStateCode = 0x14;
     if (g_pSimMgr != nullptr) {
-      g_pSimMgr->RebuildPrimaryNationStateForSlot(0, 0);
+      g_pSimMgr->DoMilitary();
     }
     StartNextPhase();
     break;

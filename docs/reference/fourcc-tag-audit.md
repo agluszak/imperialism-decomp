@@ -8,17 +8,17 @@ policy (Mac resource order, read big-endian).
 
 ## Summary
 
-- Tags: 547
+- Tags: 546
 - `generated_resource_manifest_tag`: 67
 - `multiplayer_session_or_message_tag`: 32
 - `ui_tag_app_and_setup_screens`: 57
-- `ui_tag_city_and_trade`: 63
+- `ui_tag_city_and_trade`: 62
 - `ui_tag_diplomacy`: 18
 - `ui_tag_military_navy_tactical`: 45
 - `ui_tag_shared`: 145
 - `ui_tag_strategic_map`: 22
 - `ui_tag_widget_plumbing`: 98
-- Corroborated by the Mac control-tag index: 406 of 547
+- Corroborated by the Mac control-tag index: 406 of 546
 - Violations: 0
 
 ## Violations
@@ -245,7 +245,6 @@ build does not ship.
 | `kControlTagSupp` | `supp` | `0x73757070` | `ui_tag_city_and_trade` |  |
 | `kControlTagSust` | `sust` | `0x73757374` | `ui_tag_city_and_trade` | 1 |
 | `kControlTagTabs` | `tabs` | `0x74616273` | `ui_tag_city_and_trade` | 2 |
-| `kControlTagTari` | `tari` | `0x74617269` | `ui_tag_city_and_trade` |  |
 | `kControlTagTbou` | `tbou` | `0x74626f75` | `ui_tag_city_and_trade` | 2 |
 | `kControlTagTraV` | `traV` | `0x74726156` | `ui_tag_city_and_trade` | 1 |
 | `kControlTagTsol` | `tsol` | `0x74736f6c` | `ui_tag_city_and_trade` | 2 |

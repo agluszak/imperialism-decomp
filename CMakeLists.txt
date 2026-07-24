@@ -2,18 +2,11 @@ cmake_minimum_required(VERSION 3.20)
 
 project(imperialism LANGUAGES CXX)
 
-set(
-    IMPERIALISM_MATCH_FLAGS_CSV
-    ""
-    CACHE STRING
-    "Comma-separated extra MSVC compile flags for RelWithDebInfo matching experiments"
-)
-set(
-    IMPERIALISM_MATCH_LINK_FLAGS_CSV
-    ""
-    CACHE STRING
-    "Comma-separated extra MSVC linker flags for RelWithDebInfo matching experiments"
-)
+# This single-config project has two static CMake-owned profiles. The default
+# production profile is byte matching; enabling the test-only source boundary
+# selects the debugger-friendly runtime profile. Build recipes never compose
+# compiler or linker flags.
+set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Imperialism build type" FORCE)
 
 file(GLOB IMPERIALISM_GAME_SOURCES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/game/*.cpp"
@@ -43,9 +36,9 @@ endif()
 # tests/runtime/native is part of the production source glob, and the compile
 # definition below is absent from the byte-matching build.
 if(IMPERIALISM_RUNTIME_TESTS)
-    target_sources(Imperialism PRIVATE
-        tests/runtime/native/RuntimeTestDriver.cpp
-    )
+    file(GLOB_RECURSE IMPERIALISM_RUNTIME_TEST_SOURCES CONFIGURE_DEPENDS
+        tests/runtime/native/*.cpp)
+    target_sources(Imperialism PRIVATE ${IMPERIALISM_RUNTIME_TEST_SOURCES})
     target_include_directories(Imperialism PRIVATE tests/runtime/native)
     target_compile_definitions(Imperialism PRIVATE IMPERIALISM_RUNTIME_TESTS=1)
 endif()
@@ -122,6 +115,13 @@ if(IMPERIALISM_LINT_COMPILE_ONLY)
 
     target_compile_definitions(Imperialism PRIVATE IMPERIALISM_LINT)
 
+    # MFC 4.2 release headers enable optional inline bodies whose CMenu
+    # definitions rely on VC5's implicit-int extension. Force one lint-only
+    # compatibility boundary before any source header can include MFC directly.
+    target_compile_options(Imperialism PRIVATE
+        "/FI${CMAKE_CURRENT_SOURCE_DIR}/tools/lint/msvc500_mfc_compat.h"
+    )
+
     target_compile_options(Imperialism PRIVATE
         # Core diagnostics. NOTE: this compiler is clang-cl (see cmake/clang-cl-i686.cmake),
         # where bare "-Wall"/"-Wextra" are parsed as the MSVC /Wall/​/Wextra spelling — i.e.
@@ -197,38 +197,18 @@ else()
             string(REPLACE "/Zi" "/Z7" ${_imp_flags_var} "${${_imp_flags_var}}")
         endforeach()
 
-        if(IMPERIALISM_MATCH_FLAGS_CSV)
-            # Matching default is global frame-pointer omission (/Oy): recovered game
-            # code overwhelmingly matches frameless output, while CRT/MFC bodies are
-            # treated as LIBRARY annotations instead of forcing /Oy- globally.
-            set(IMPERIALISM_MATCH_FLAGS_RAW "${IMPERIALISM_MATCH_FLAGS_CSV}")
-            if(IMPERIALISM_MATCH_FLAGS_RAW MATCHES ",")
-                string(REPLACE "," ";" IMPERIALISM_MATCH_FLAGS "${IMPERIALISM_MATCH_FLAGS_RAW}")
-            else()
-                # Backward-compat with slash-concatenated form like "/Oy-/Ob1".
-                string(REGEX REPLACE "(/[^/]+)" ";\\1" IMPERIALISM_MATCH_FLAGS "${IMPERIALISM_MATCH_FLAGS_RAW}")
-                string(REGEX REPLACE "^;" "" IMPERIALISM_MATCH_FLAGS "${IMPERIALISM_MATCH_FLAGS}")
-            endif()
-            target_compile_options(
-                Imperialism
-                PRIVATE
-                $<$<CONFIG:RelWithDebInfo>:${IMPERIALISM_MATCH_FLAGS}>
-            )
-        endif()
-
-        if(IMPERIALISM_MATCH_LINK_FLAGS_CSV)
-            set(IMPERIALISM_MATCH_LINK_FLAGS_RAW "${IMPERIALISM_MATCH_LINK_FLAGS_CSV}")
-            if(IMPERIALISM_MATCH_LINK_FLAGS_RAW MATCHES ",")
-                string(REPLACE "," ";" IMPERIALISM_MATCH_LINK_FLAGS "${IMPERIALISM_MATCH_LINK_FLAGS_RAW}")
-            else()
-                string(REGEX REPLACE "(/[^/]+)" ";\\1" IMPERIALISM_MATCH_LINK_FLAGS "${IMPERIALISM_MATCH_LINK_FLAGS_RAW}")
-                string(REGEX REPLACE "^;" "" IMPERIALISM_MATCH_LINK_FLAGS "${IMPERIALISM_MATCH_LINK_FLAGS}")
-            endif()
-            target_link_options(
-                Imperialism
-                PRIVATE
-                $<$<CONFIG:RelWithDebInfo>:${IMPERIALISM_MATCH_LINK_FLAGS}>
-            )
+        if(IMPERIALISM_RUNTIME_TESTS)
+            # Runtime tests optimize for debugger fidelity rather than byte
+            # matching. Apply this to every game frame so GDB can follow
+            # conventional EBP chains.
+            target_compile_options(Imperialism PRIVATE /Oy-)
+            # VC5 PDBs predate the format understood by current LLVM tools.
+            # Emit a linker map as the build-specific symbolization sidecar.
+            target_link_options(Imperialism PRIVATE /MAP:Imperialism.map)
+        else()
+            # Production builds are always matching-oriented.
+            target_compile_options(Imperialism PRIVATE /Oy /Ob1)
+            target_link_options(Imperialism PRIVATE /OPT:NOREF /OPT:NOICF)
         endif()
     else()
         target_compile_options(Imperialism PRIVATE -Wall -Wextra -Wpedantic)

@@ -101,35 +101,43 @@ void TCityProductionView::DoPostCreate(int arg) {
                                             outlinePolygon[0], WINDING);
     (*buildingClipRegionsEC[slot])->rgn.Attach(polygonRegion);
     delete[] outlinePolygon;
-    g_pModuleLibraryCacheState->ReleaseRecordByHandle(this);
+    g_pModuleLibraryCacheState->ReleaseRecordByHandle(bitmap);
 
     short x = g_anCityBuildingSlotCoords[g_nCityBuildingSlotXOffsetIndex + slot * 2];
-    short y = g_anCityBuildingSlotCoords[g_anCityBuildingSlotCoords[32] + slot * 2];
+    short y = g_anCityBuildingSlotCoords[g_nCityBuildingSlotYOffsetIndex + slot * 2];
     InitializeCityBuildingControlRegions_Impl(buildingClipRegionsEC[slot], x, y);
   }
 
-  // Build the per-slot action-focus animations from the layout/resource tables.
-  for (int actionSlot = 0; actionSlot < 0x15; ++actionSlot) {
-    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
-    TCity* city = (nation != 0) ? nation->city : 0;
-    short actionCount =
-        city->GetNextBuildingType(static_cast<short>(actionSlot < 0x15 ? actionSlot : 0xb));
+  TWindow* window = GetWindow();
+  window->nativeWindow50->ModifyStyle(0, 0x02000000, 0);
+
+  TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  TCity* city = (nation != 0) ? nation->city : 0;
+
+  // Build eight groups of three action-focus animations from the layout/resource tables.
+  int tableOffset = 0;
+  for (int buildingSlot = 0; tableOffset < 0x18; ++buildingSlot, tableOffset += 3) {
+    short actionCount = city->GetNextBuildingType(
+        static_cast<short>(tableOffset < 0x15 ? buildingSlot : 0xb));
     if (actionCount <= 0) {
       continue;
     }
-    int row = (actionCount - 1) + actionSlot;
+    int row = (actionCount - 1) + tableOffset;
     for (int action = 0; action < 3; ++action) {
       RECT bounds = g_aCityBuildingLayoutRects[row * 3 + action];
       if (bounds.right < 1) {
+        buildingActionAnimations12C[buildingSlot][action] = 0;
         continue;
       }
       OffsetRect(&bounds, 0x32, 0x23);
       short resourceId = g_awCityBuildingActionResourceIds[row * 3 + action];
-      int animationId = (actionCount - 1) * 3 + action + (actionSlot + 0x5dc) * 10;
-      TTransFocusAnimation* animation = new TTransFocusAnimation(dialogRoot98, &bounds, resourceId,
+      int animationId = (actionCount - 1) * 3 + action + (buildingSlot + 0x5dc) * 10;
+      TTransFocusAnimation* animation = new TTransFocusAnimation(this, &bounds, resourceId,
                                                                  static_cast<short>(animationId),
-                                                                 (actionSlot != 7 ? 2 : 0) + 5, 0);
+                                                                 (buildingSlot != 7 ? 2 : 0) + 5, 0);
       g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
+      buildingActionAnimations12C[buildingSlot][action] = animation;
+      InvalidateCityDialogRectRegion(&bounds, 1);
       needsRefreshAtA6 = 1;
     }
   }
@@ -206,12 +214,12 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
     } else if (level == 0 || slot < 0 || slot > 5 ||
                city->orderSlotsE4[slot + 0x35]->quantityField04 < 1 ||
                city->IsCapacityCenter(slot) == 0) {
-      pictureId = static_cast<short>(slot + level * 4 + 0x6d6);
+      pictureId = static_cast<short>(slot + level * 0x10 + 0x1b58);
     } else {
-      pictureId = static_cast<short>(slot + level * 4 + 0x721);
+      pictureId = static_cast<short>(slot + level * 0x10 + 0x1c84);
     }
 
-    short drawX = g_anCityBuildingSlotCoords[g_anCityBuildingSlotCoords[34] + slot * 2];
+    short drawX = g_anCityBuildingSlotCoords[g_nCityBuildingDrawXOffsetIndex + slot * 2];
     short drawY = g_anCityBuildingSlotCoords[g_nCityBuildingDrawYOffsetIndex + slot * 2];
     BlitBitmapResourceRectWithScreenOffsetAndPalette(&scratchBounds, scratchContext, drawX, drawY,
                                                      pictureId, savedContext, savedFlags);
@@ -271,10 +279,9 @@ void TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette(
   OffsetRect(&dest, offsetX, offsetY);
   SetGWorld(restoreContext, restoreFlags);
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  if (g_pPrimaryRenderSurfaceContext->blitSurface.surfaceObject != nullptr) {
-    TBitmapSurfaceNode** primaryNodes = static_cast<TBitmapSurfaceNode**>(
-        g_pPrimaryRenderSurfaceContext->blitSurface.surfaceObject);
-    int surfaceHeight = primaryNodes[4]->field08;
+  if (g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib != nullptr) {
+    int surfaceHeight =
+        g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
     if (surfaceHeight < 1) {
       surfaceHeight = -surfaceHeight;
     }
@@ -399,13 +406,14 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
   this->dialogRoot98 = dialogRoot;
   UpdateToolbar();
 
-  // Query each of the 16 building slots' window state (populates production22c/24c).
-  // The strategic-map building-page factory (slot 0x14) that stores buildingViewsAC[slot]
-  // is elided pending resolution of that mislabeled vtable slot.
+  // Restore any building windows that were open when this city view was last active.
   for (short slot = 0; slot < 16; ++slot) {
     short current;
     short accum;
-    city->GetBuildingWindowState(slot, &current, &accum);
+    if (city->GetBuildingWindowState(slot, &current, &accum)) {
+      buildingViewsAC[slot] = g_pStrategicMapViewSystem->RestoreBuildingWindowAtSavedPosition(
+          slot, city, 0, 0, 0, current, accum);
+    }
   }
 
   short* summary = city->GetCitySummaryRecordSlot74();
@@ -486,7 +494,7 @@ void TCityProductionView::UpdateUnits() {
   }
   placard->SetValue(population->baselineSlots10->lowSkillCount04, true);
 
-  placard = static_cast<TPlacard*>(ResolveControlByTag(kControlTagTari)); // 'iart'
+  placard = static_cast<TPlacard*>(ResolveControlByTag(kSummaryTagTrai)); // 'iart'
   if (placard == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4bc);
@@ -569,6 +577,25 @@ void TCityProductionView::DoEvent(int commandId, TEventHandler* sourceHandler, T
 }
 
 // FUNCTION: IMPERIALISM 0x004bc660
+#if defined(IMPERIALISM_RUNTIME_TESTS)
+bool TCityProductionView::ActivateBuildingSlotForRuntimeTest(short buildingSlot) {
+  if (buildingSlot < 0 || buildingSlot >= 16 || buildingClipRegionsEC[buildingSlot] == 0) {
+    return false;
+  }
+
+  CPoint point;
+  for (point.y = 0; point.y < 768; ++point.y) {
+    for (point.x = 0; point.x < 1024; ++point.x) {
+      if (PtInRgn(&point, buildingClipRegionsEC[buildingSlot]) != 0) {
+        DoMouseCommand(point, 0, CPoint(0, 0));
+        return true;
+      }
+    }
+  }
+  return false;
+}
+#endif
+
 void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)event;
   (void)origin;

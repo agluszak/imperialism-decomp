@@ -86,9 +86,6 @@ TMinor* g_apSecondaryNationStateSlots[36] = {0};
 // scans entries [0..15] inclusive (`cmp edx, 0x6a4368` == &table[15]); sizing the array to
 // 16 lets MSVC emit the sentinel as `g_apMinorNationCapabilityObjects + 0x3c`.
 TMinor* g_apMinorNationCapabilityObjects[16] = {0};
-// GLOBAL: IMPERIALISM 0x006a429c
-// Scanned with g_apMinorNationCapabilityObjects[16].
-TMinor* g_apNationAuxRuntimeStateSlots[16] = {0};
 // GLOBAL: IMPERIALISM 0x006a4370
 TGreatPower* g_apNationStates[7] = {0};
 // GLOBAL: IMPERIALISM 0x006a438c
@@ -743,9 +740,14 @@ float g_cachedAiCityActionContextBias[3] = {0.0f, 0.0f, 0.0f};
 // GLOBAL: IMPERIALISM 0x00696178
 short g_anCityBuildingSlotOrder[16] = {12, 13, 7, 10, 14, 15, 9, 6, 11, 2, 3, 8, 0, 1, 4, 5};
 // GLOBAL: IMPERIALISM 0x00696198
-short g_anCityBuildingSlotCoords[36] = {200, 235, 340, 300, 281, 184, 340, 266, 87, 286, 230, 310,
-                                        340, 139, 240, 35,  50,  220, 50,  107, 50, 35,  340, 139,
-                                        82,  35,  300, 35,  340, 44,  150, 95,  1,  0,   1,   0};
+short g_anCityBuildingSlotCoords[32] = {200, 235, 340, 300, 281, 184, 340, 266,
+                                        87,  286, 230, 310, 340, 139, 240, 35,
+                                        50,  220, 50,  107, 50,  35,  340, 139,
+                                        82,  35,  300, 35,  340, 44,  150, 95};
+// GLOBAL: IMPERIALISM 0x006961d8
+short g_nCityBuildingSlotYOffsetIndex = 1;
+// GLOBAL: IMPERIALISM 0x006961dc
+short g_nCityBuildingDrawXOffsetIndex = 1;
 // Per-(building-slot,action) resource/picture ids, 3 shorts per table row (TCityProductionView
 // DoPostCreate action-control builder). Row index = (level-1) + slot loop counter.
 // GLOBAL: IMPERIALISM 0x0064fad0
@@ -755,9 +757,9 @@ short g_awCityBuildingActionResourceIds[72] = {
     13, 0,  0,  12, 13, 11, 7,  0,  0, 0,  0,  0, 0,  0,  0, 13, 0,  0,  0,  0,  0, 0,  0,  0};
 // Runtime column-selector indices into g_anCityBuildingSlotCoords pairs (BSS, 0 at load).
 // GLOBAL: IMPERIALISM 0x006a2abc
-int g_nCityBuildingSlotXOffsetIndex = 0;
+short g_nCityBuildingSlotXOffsetIndex = 0;
 // GLOBAL: IMPERIALISM 0x006a2ac0
-int g_nCityBuildingDrawYOffsetIndex = 0;
+short g_nCityBuildingDrawYOffsetIndex = 0;
 
 // GLOBAL: IMPERIALISM 0x006a2998
 CRect g_aCityBuildingHoverSelectionRects[16];
@@ -1027,8 +1029,41 @@ float g_ApplyIndexedResourceDeltaScale_00653728 = -1.0f / 255.0f;
 
 // Per-unit-type stat table (7 shorts per type; rows for unit types 0x00-0x1d) and
 // per-stat divisor baseline used by TMilitaryUnit::GetAttribute (0x5c3530).
-short g_UnitTypeStatTable_0066EB88[30][7] = {0};
-short g_UnitTypeStatDivisorTable_0066ED30[7] = {0};
+// GLOBAL: IMPERIALISM 0x0066eb88
+short g_UnitTypeStatTable_0066EB88[30][7] = {
+    {0x0026, 0x0014, 0x0001, 0x0001, 0x000a, 0x0000, 0x003c},
+    {0x0032, 0x0019, 0x0001, 0x0001, 0x0023, 0x004b, 0x006e},
+    {0x004b, 0x001e, 0x0001, 0x0001, 0x000a, 0x0000, 0x0078},
+    {0x005e, 0x002d, 0x0001, 0x0001, 0x000a, 0x0000, 0x009a},
+    {0x0023, 0x0028, 0x0001, 0x0001, 0x0046, 0x0032, 0x0094},
+    {0x0028, 0x005a, 0x0001, 0x0001, 0x003c, 0x0000, 0x00ce},
+    {0x000a, 0x0091, 0x001e, 0x0032, 0x0005, 0x0000, 0x00d2},
+    {0x001e, 0x0014, 0x003c, 0x0046, 0x0005, 0x0000, 0x0104},
+    {0x005c, 0x0030, 0x0001, 0x0001, 0x0021, 0x0000, 0x00b4},
+    {0x0082, 0x0046, 0x0001, 0x0001, 0x006e, 0x0087, 0x019a},
+    {0x00dc, 0x0050, 0x0001, 0x0001, 0x0021, 0x0000, 0x01b8},
+    {0x00fa, 0x0064, 0x0001, 0x0001, 0x0021, 0x0000, 0x0208},
+    {0x004d, 0x0064, 0x0001, 0x0001, 0x00dc, 0x006e, 0x01e0},
+    {0x007d, 0x00c8, 0x0001, 0x0001, 0x00b9, 0x0000, 0x0258},
+    {0x0016, 0x00fa, 0x006e, 0x00f0, 0x000a, 0x0000, 0x028a},
+    {0x006e, 0x0021, 0x00b9, 0x0113, 0x000a, 0x0000, 0x0348},
+    {0x00ff, 0x0082, 0x0001, 0x0001, 0x005f, 0x0000, 0x02a8},
+    {0x015e, 0x00be, 0x0001, 0x0001, 0x0140, 0x00f0, 0x0708},
+    {0x0258, 0x00dc, 0x0001, 0x0001, 0x0064, 0x0000, 0x075c},
+    {0x02a3, 0x010e, 0x0001, 0x0001, 0x0064, 0x0000, 0x07bc},
+    {0x015e, 0x00fa, 0x0001, 0x0001, 0x02bc, 0x0000, 0x07b4},
+    {0x02bc, 0x0352, 0x0001, 0x0001, 0x0226, 0x0000, 0x0fc8},
+    {0x0064, 0x0226, 0x01f4, 0x028a, 0x0096, 0x0000, 0x0b2c},
+    {0x0258, 0x00a0, 0x0271, 0x03c0, 0x0028, 0x0000, 0x0e44},
+    {0x000d, 0x000a, 0x009b, 0x0001, 0x000a, 0x0000, 0x00c1},
+    {0x0030, 0x0020, 0x01c2, 0x0001, 0x001e, 0x0000, 0x0208},
+    {0x00f0, 0x0078, 0x04b0, 0x0001, 0x0050, 0x0000, 0x05a0},
+    {0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0},
+};
+// GLOBAL: IMPERIALISM 0x0066ed30
+short g_UnitTypeStatDivisorTable_0066ED30[7] = {150, 150, 65, 75, 100, 250, 0};
 
 // Per-order-type sort priority (short table at 0x6966d0), used by the TGreatPower
 // slot 0x55 tracked-order selection sort (0x004e0290). The following string begins at

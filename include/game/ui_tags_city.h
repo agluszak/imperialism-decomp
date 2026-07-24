@@ -104,7 +104,6 @@ const int kControlTagSust =
     IMPERIALISM_FOURCC('s', 'u', 's', 't'); // TPlaceCityDialog.cpp; 1 Mac screen(s)
 const int kControlTagTabs =
     IMPERIALISM_FOURCC('t', 'a', 'b', 's'); // TDealBookPicture.cpp; 2 Mac screen(s)
-const int kControlTagTari = IMPERIALISM_FOURCC('t', 'a', 'r', 'i'); // TCityProductionView.cpp
 const int kControlTagTbou = IMPERIALISM_FOURCC('t', 'b', 'o', 'u'); // trade-book control region
 const int kControlTagTraV =
     IMPERIALISM_FOURCC('t', 'r', 'a', 'V'); // TTradeSchoolView.cpp; 1 Mac screen(s)

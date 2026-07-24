@@ -5,6 +5,7 @@
 #include "game/ui_core/TEventHandler.h"
 #include "game/ui_widgets/TArmyInfoView.h"
 #include "game/city_ui/TBuildingExpansionView.h"
+#include "game/city_ui/TCityProductionView.h"
 #include "game/ui_widgets/TCivReport.h"
 #include "game/ui_widgets/TTown.h"
 #include "game/ui_screens/TOffLimitsPicture.h"
@@ -1221,7 +1222,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       this->HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(newCode);
     } else if (newCode == kTurnEventCityProduction) {
       mainView->RefreshControl();
-      this->HandleTurnEvent7DB_SelectCityAndRefreshView(newCode);
+      this->HandleTurnEvent7DB_SelectCityAndRefreshView(secondary);
     } else if (newCode == kTurnEventStrategicMap) {
       mainView->RefreshControl();
       this->HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(newCode);
@@ -1320,7 +1321,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
         this->HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(newCode);
         break;
       case kTurnEventCityProduction:
-        this->HandleTurnEvent7DB_SelectCityAndRefreshView(newCode);
+        this->HandleTurnEvent7DB_SelectCityAndRefreshView(secondary);
         break;
       case kTurnEventStrategicMap:
         this->HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(newCode);
@@ -1357,7 +1358,7 @@ void TViewMgr::DispatchTurnEvent3B8AndWaitForCompletion(int payload, TEventHandl
 }
 
 // FUNCTION: IMPERIALISM 0x005d7cb0
-void TViewMgr::HandleTurnEvent7DB_SelectCityAndRefreshView(int) {
+void TViewMgr::HandleTurnEvent7DB_SelectCityAndRefreshView(int nationSlot) {
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
   TView* mainView = turn_event_ui_refresh::ActiveMainView();
   if (mainView == nullptr) {
@@ -1380,6 +1381,16 @@ void TViewMgr::HandleTurnEvent7DB_SelectCityAndRefreshView(int) {
     querControl->AssertValid();
     querControl->SetHoverHelpText(g_szEmptyString);
   }
+
+  TCityProductionView* productionView =
+      static_cast<TCityProductionView*>(mainView->ResolveControlByTag(kControlTagMain));
+  productionView->AssertValid();
+  productionView->SetHoverHelpText(g_szEmptyString);
+  g_pStrategicMapViewSystem->activeCityProductionView04 = productionView;
+
+  TGreatPower* nation = g_apNationStates[static_cast<short>(nationSlot)];
+  TCity* city = nation != nullptr ? nation->city : nullptr;
+  productionView->InitializeCityProductionDialog(city, mainView);
 }
 
 // FUNCTION: IMPERIALISM 0x005d7f70
