@@ -981,6 +981,8 @@ int* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
   int row_idx;
   int pair_count;
   byte* row_ptr;
+  byte* bit_pixels;
+  byte* bit_scan_row;
 
   if (m_pInfoHeader->bmiHeader.biBitCount == 1) {
     // 1-bpp path: two phases over bit-packed rows (a set bit = opaque).
@@ -989,9 +991,9 @@ int* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
     bit_row = 0;
     transparentIndex = 0;
     scan_offset = (int)(width + 0x1f + ((width + 0x1f) >> 0x1f & 0x1fU)) >> 5;
-    row_stride = reinterpret_cast<int>(m_dibBits);
+    bit_pixels = static_cast<byte*>(m_dibBits);
     col_idx = scan_offset * 0x20;
-    row_idx = row_stride;
+    bit_scan_row = bit_pixels;
     while (true) {
       byte_idx = height;
       if (height < 1) {
@@ -1005,17 +1007,17 @@ int* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
       if (byte_idx < 1) {
       LAB_0047c453:
         bit_row = bit_row + 8;
-        row_idx = row_idx + col_idx;
+        bit_scan_row = bit_scan_row + col_idx;
       } else {
         do {
-          if (*(char*)(byte_scan + row_idx) != '\0') {
+          if (bit_scan_row[byte_scan] != 0) {
             transparentIndex = transparentIndex + 1;
             goto LAB_0047c453;
           }
           byte_scan = byte_scan + 1;
         } while (byte_scan < byte_idx);
         bit_row = bit_row + 8;
-        row_idx = row_idx + col_idx;
+        bit_scan_row = bit_scan_row + col_idx;
       }
     }
     points = new int[(transparentIndex + 1) * 4];
@@ -1041,12 +1043,11 @@ int* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
             row_idx = ((int)(row_idx + (row_idx >> 0x1f & 7U)) >> 3) + -1;
             if (-1 < row_idx) {
             LAB_0047c55c:
-              if (*(char*)(row_idx + row_stride + height) == '\0') {
+              if (bit_pixels[row_idx + height] == 0) {
                 goto code_r0x0047c562;
               }
               cVar10 = '\0';
-              for (cVar9 = *(char*)(row_idx + row_stride + height); cVar9 != '\0';
-                   cVar9 = cVar9 << 1) {
+              for (cVar9 = bit_pixels[row_idx + height]; cVar9 != '\0'; cVar9 = cVar9 << 1) {
                 cVar10 = cVar10 + '\x01';
               }
               col_idx = m_pInfoHeader->bmiHeader.biHeight;
@@ -1072,11 +1073,11 @@ int* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
       bit_row = (int)(bit_row + (bit_row >> 0x1f & 7U)) >> 3;
       if (0 < bit_row) {
       LAB_0047c4be:
-        if (*(char*)(byte_idx + row_stride + height) == '\0') {
+        if (bit_pixels[byte_idx + height] == 0) {
           goto code_r0x0047c4c4;
         }
         cVar9 = '\0';
-        for (bVar1 = *(byte*)(byte_idx + row_stride + height); bVar1 != 0; bVar1 = bVar1 >> 1) {
+        for (bVar1 = bit_pixels[byte_idx + height]; bVar1 != 0; bVar1 = bVar1 >> 1) {
           cVar9 = cVar9 + '\x01';
         }
         if (row_idx < 1) {

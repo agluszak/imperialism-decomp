@@ -12,8 +12,8 @@
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
   "git_branch": "fix/cstring-audit-findings",
-  "git_commit": "2bcd4598fe2011e4c37401e71383e030f9157f4c",
-  "git_commit_date": "2026-07-24T23:34:30+02:00",
+  "git_commit": "c88265ae5ab9257b0c23dea918b74fce3a002b43",
+  "git_commit_date": "2026-07-24T23:40:59+02:00",
   "global_coverage_pct": 24.784837941768906,
   "global_orig_only_count": 8215,
   "global_recomp_only_count": 7979,
@@ -63,7 +63,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 12,
   "template_canonical_paired_count": 19,
-  "timestamp_utc": "2026-07-24T21:40:49+00:00",
+  "timestamp_utc": "2026-07-24T21:44:09+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
