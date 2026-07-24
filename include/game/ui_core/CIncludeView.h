@@ -27,6 +27,9 @@ struct IncludeViewOverlayRectRecord {
   RECT rect;           // +0x00 — client-area rect awaiting repaint
   int processedFlag10; // +0x10 — set once the repaint pass has consumed the rect
   int field14;
+
+  // Writes the rect's (width, height) span into `out`. 0x00483220.
+  void ComputeSpan(POINT* out) const;
 };
 ASSERT_SIZE(IncludeViewOverlayRectRecord, 0x18);
 
@@ -64,6 +67,16 @@ protected:
   void OnActivateView(BOOL bActivate, CView* pActivateView,
                       CView* pDeactiveView) override; // 0x00483720
   void OnDraw(CDC* pDC) override;                     // 0x00482c90
+
+  // Blit the offscreen map surface (m_field44's bitmap) to `dc` (or a fresh window DC
+  // when null), clipped to the intersection of the caller clip / client rect / the
+  // offscreen DIB's natural bounds. 0x00482d00.
+  void BlitMapDialogSurfaceToHdcWithClipBounds(CDC* dc, RECT* clipRect);
+
+  // Drain the overlay dirty-rect queue in three passes: blit each unprocessed hint rect
+  // into the offscreen surface, repaint the hosted dialog tree over it, then flush every
+  // finished (flag 2) rect to the screen DC and remove it. 0x00482fc0.
+  void UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRect);
 
   afx_msg BOOL OnEraseBkgnd(CDC* pDC); // 0x004835a0
   // WM_CTLCOLOR: bind the shared indexed palette for native edit controls and apply the
@@ -110,9 +123,17 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 public:
+  // Tear down the hosted dialog tree, re-resolve the 'main' pane picture, blit its bitmap
+  // into the offscreen surface and force a full window repaint. Returns the (now cleared)
+  // dialog context. One stack argument is accepted and never read. 0x004833b0, __thiscall.
+  TView* ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedArg);
+
   TView* m_activeDialogContext; // 0x40 — g_pDisplayMgr->activeDialog tree hosted here
-  int m_field44;                // 0x44 — cleared together with the context by msg 0x4ef
-  CDib* m_pOffscreenDib;        // 0x48 — 640x480x8 surface created in OnInitialUpdate
+  // 0x44 — the offscreen map surface DIB, cleared (to 0) together with the context by
+  // msg 0x4ef. Blitted to the window DC by BlitMapDialogSurfaceToHdcWithClipBounds; the
+  // writer that installs a live surface here is in still-unported paint setup.
+  CDib* m_field44;
+  CDib* m_pOffscreenDib; // 0x48 — 640x480x8 surface created in OnInitialUpdate
   // 0x4c — overlay dirty-rect queue. The original emitted the CList<Rec,Rec&>
   // instantiation twice (ctor TU vtable 0x648560, dtor/Serialize TU vtable 0x648578) —
   // the twin-copy template pattern; both are the same class.
