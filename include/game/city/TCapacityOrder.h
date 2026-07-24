@@ -13,7 +13,9 @@ class TCity;
 class TCapacityOrder : public TItemOrder {
 public:
   DECLARE_DYNCREATE(TCapacityOrder)
-  TCapacityOrder(); // trivial; inlined into CreateObject in the binary
+  // NOOP: verified empty in original 0x004b8c92 (no standalone TCapacityOrder::TCapacityOrder body exists: construction is fully inlined into CreateObject 0x004b8c90; that address is its operator-new call site)
+  TCapacityOrder() {}
+
   ~TCapacityOrder() override;
 
   void Produce() override; // slot 0x0d 0x4b8dd0

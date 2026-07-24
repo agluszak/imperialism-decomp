@@ -52,7 +52,6 @@ public:
   void HandleIdle(int idlePhase);
 
   // Standalone binary helper @ 0x48a100 (also reached via ILT 0x403049).
-  void InitializeUiResourceEntryBaseHeaderDefaults();
 
   // __thiscall packet/event-header field initializer (0x48a180, also reached via ILT 0x40174e).
   // Writes controlTag (0x1c) = '    ', field04/field08 = 1, field0c = packetTag.

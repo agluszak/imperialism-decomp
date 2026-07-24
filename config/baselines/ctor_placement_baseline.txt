@@ -2,13 +2,3 @@
 # bd nwdn). Each line is a class whose ctor has no claimed address yet still
 # lives in a .cpp. Shrink this list; do not grow it.
 src/game/city/TCapacityOrder.cpp:TCapacityOrder
-src/game/city/TShipOrder.cpp:TShipOrder
-src/game/debug/TLaborPool.cpp:TLaborPool
-src/game/map/TControlSeaZoneMission.cpp:TControlSeaZoneMission
-src/game/map/TScatteredShipsMission.cpp:TScatteredShipsMission
-src/game/map_ui/TMapEditView.cpp:TMapEditView
-src/game/military/TDefendProvinceMission.cpp:TDefendProvinceMission
-src/game/military_ui/TBattleReportView.cpp:TBattleReportView
-src/game/nation/TGreatPower_lifecycle.cpp:TGreatPower
-src/game/navy/TTaskForce.cpp:TTaskForce
-src/game/ui_core/TEventHandler.cpp:TEventHandler

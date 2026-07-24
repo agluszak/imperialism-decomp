@@ -148,7 +148,7 @@ thunk_CanAssignCivilianOrderToTile 402EF5 l
 thunk_HandleNetworkPortConstructionOrder 402F0E l
 thunk_PrepareMapOrdersForExecutionPhase 402FEF l
 thunk_ConstructFrogCityMarker 403044 l
-thunk_InitializeUiResourceEntryBaseHeaderDefaults 403049 l
+thunk_TEventHandler_ctor 403049 l
 thunk_DestroyTurnEventState 403053 l
 thunk_ApplyRectClipRegionToGlobalClipState 4030E9 l
 thunk_MoveTacticalUnitBetweenTiles 403134 l
@@ -1558,7 +1558,7 @@ TViewChildList::RemoveByTag 489F90 f
 TViewChildList::FreeAll 48A070 f
 TEventHandler::CreateObject 48A0A0 f
 TEventHandler::GetRuntimeClass 48A0E0 f
-TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults 48A100 f
+TEventHandler::TEventHandler 48A100 f
 TEventHandler::'scalar_deleting_destructor' 48A130 f
 DestructTEventHandlerAndMaybeFree_Impl 48A160 f
 TEventHandler::InitializePacketHeaderFields_Tag20202020 48A180 f

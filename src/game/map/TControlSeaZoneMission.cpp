@@ -38,8 +38,6 @@ IMPLEMENT_SERIAL(TControlSeaZoneMission, TNavyMission, 1)
 
 TControlSeaZoneMission::TControlSeaZoneMission() : TNavyMission() {}
 
-TControlSeaZoneMission::TControlSeaZoneMission(TZone* targetZone) : TNavyMission(targetZone) {}
-
 // FUNCTION: IMPERIALISM 0x005355b0
 bool TControlSeaZoneMission::IsHospitalMission() const {
   return true;

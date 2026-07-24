@@ -206,9 +206,6 @@ void TCapacityOrder::CommitCapacityOrderIfPending() {
   }
 }
 
-// NOOP: verified empty in original 0x004b8c92 (no standalone TCapacityOrder::TCapacityOrder body exists: construction is fully inlined into CreateObject 0x004b8c90; that address is its operator-new call site)
-TCapacityOrder::TCapacityOrder() {}
-
 // SYNTHETIC: IMPERIALISM 0x004b8c90
 // TCapacityOrder::CreateObject
 

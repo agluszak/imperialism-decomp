@@ -493,7 +493,6 @@ public:
   int ClassifyNationMilitaryPowerBandAgainstGlobalMean();
 
   TGreatPower();
-  TGreatPower(int arg1, int arg2);
 
   void CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
   void ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass);

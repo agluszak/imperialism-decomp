@@ -39,15 +39,13 @@ void TEventHandler::SetIdleFreq(int value) {
 
 IMPLEMENT_DYNCREATE(TEventHandler, TObject)
 
-TEventHandler::TEventHandler() : field0c(0), field10(0x7fffffff), field14(0), firstBehavior(0) {}
-
-// Binary helper @ 0x48a100: same header field defaults as TEventHandler().
+// 0x0048a100 is the constructor, not a "defaults helper": besides +0xc/+0x10/+0x14/+0x18
+// it stores the vptr (MOV [eax],0x6497a0), which only a ctor does. Ghidra's
+// InitializeUiResourceEntryBaseHeaderDefaults name was provisional (Hard Rule 6) and the
+// method it named has been deleted -- derived ctors reach this as their base ctor.
+// It owns an address, so per the constructor-placement decision it stays out-of-line.
 // FUNCTION: IMPERIALISM 0x0048a100
-void TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults() {
-  field0c = 0;
-  field10 = 0x7fffffff;
-  field14 = 0;
-}
+TEventHandler::TEventHandler() : field0c(0), field10(0x7fffffff), field14(0), firstBehavior(0) {}
 
 // Destructor is compiler-generated (implicit virtual dtor); the scalar deleting
 // destructor at 0x0048a130 is emitted by the compiler from real inheritance.

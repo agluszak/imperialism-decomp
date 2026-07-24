@@ -192,10 +192,6 @@ TGreatPower::TGreatPower()
   }
 }
 
-TGreatPower::TGreatPower(int arg1, int arg2) {
-  InitializeNationStateRuntimeSubsystems(arg1, arg2);
-}
-
 // FUNCTION: IMPERIALISM 0x004d8bc0
 void TGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {}
 

@@ -98,7 +98,6 @@ IMPLEMENT_DYNCREATE(TMultiplayerMgr, TObject)
 TMultiplayerMgr::TMultiplayerMgr()
     : TEventHandler(), gameNameString(), defaultNationTextSlots(), nationDisplayNameSlots(),
       playerNameString(), playerNameMirror(), fieldb8() {
-  InitializeUiResourceEntryBaseHeaderDefaults();
   lobbyDialogView40 = 0;
   primaryTurnEventQueueHead = 0;
   secondaryTurnEventQueueHead = 0;

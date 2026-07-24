@@ -24,10 +24,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
-
-TBattleReportView::TBattleReportView()
-    : TDiplomacyMapView(), selectedReportIndex24c8(1), transientRegistryObject24cc(0) {}
-
 // SYNTHETIC: IMPERIALISM 0x00430a30
 // TBattleReportView::`scalar deleting destructor'
 // SYNTHETIC: IMPERIALISM 0x00430a60

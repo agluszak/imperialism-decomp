@@ -12,7 +12,9 @@ public:
   // Default constructor
   TDefendProvinceMission() : TArmyMission() {}
 
-  TDefendProvinceMission(int nodeKey);
+  // Delegates to TArmyMission(nodeKey) and stamps this class's vtable; inlined into the
+  // mission factory (TMission::CreateMission case 3, param_4 == 0), no standalone address.
+  TDefendProvinceMission(int nodeKey) : TArmyMission(nodeKey) {}
 
   virtual void Initialize() override; // slot 0x0c (TMission) 0x53eff0
   virtual void
