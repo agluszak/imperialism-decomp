@@ -23,6 +23,11 @@ def add_run_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--seed", type=int, default=1)
     parser.add_argument("--phase-timeout-ms", type=int, default=60000)
     parser.add_argument("--rerun-seh", action="store_true")
+    parser.add_argument(
+        "--no-gdb",
+        action="store_true",
+        help="run directly under Wine as a debugger-sensitivity control",
+    )
 
 
 def run_one(args: argparse.Namespace) -> int:
@@ -58,6 +63,8 @@ def _suite_command(test_name: str, args: argparse.Namespace) -> list[str]:
     ]
     if args.rerun_seh:
         command.append("--rerun-seh")
+    if args.no_gdb:
+        command.append("--no-gdb")
     return command
 
 
@@ -118,6 +125,7 @@ def build_parser() -> argparse.ArgumentParser:
     suite.add_argument("--seed", type=int, default=1)
     suite.add_argument("--phase-timeout-ms", type=int, default=60000)
     suite.add_argument("--rerun-seh", action="store_true")
+    suite.add_argument("--no-gdb", action="store_true")
     suite.add_argument("--junit", type=Path)
     suite.set_defaults(func=run_suite)
     show = commands.add_parser("show", help="show the latest canonical result")

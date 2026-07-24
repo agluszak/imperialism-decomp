@@ -13,7 +13,7 @@ _build-runtime-tests-unlocked:
   just vtable-gate
   uv run python -m tools.generate --gen-dir "{{runtime_test_build_dir}}/generated"
   docker run --rm --network none \
-    -e CMAKE_FLAGS="{{cmake_flags}} -DIMPERIALISM_RUNTIME_TESTS=ON" \
+    -e CMAKE_FLAGS="-DIMPERIALISM_RUNTIME_TESTS=ON" \
     -v "$PWD":/imperialism \
     -v "$PWD/{{runtime_test_build_dir}}":/build \
     "{{docker_image}}"

@@ -1,6 +1,7 @@
 #include "RuntimeScenario.h"
 #include "RuntimeHarness.h"
 #include "RuntimeContext.h"
+#include "RuntimeDebuggerTrap.h"
 #include "RuntimeUiDriver.h"
 #include "screens/MainMenuDriver.h"
 #include "screens/RandomSetupDriver.h"
@@ -98,12 +99,13 @@ struct RuntimeTestState {
   bool newspaperAdvanced;
   char resultPath[MAX_PATH];
   char heartbeatPath[MAX_PATH];
+  char debugRecordPath[MAX_PATH];
   char fixturePath[MAX_PATH];
   char lastAction[64];
 };
 
-RuntimeTestState g_runtimeTestState = {0, 0, "not_started", false, 1,  0,  0, 0, 0, 0, 0, 0, -1, -1,
-                                       0, 0, false,         "",    "", "", ""};
+RuntimeTestState g_runtimeTestState = {
+    0, 0, "not_started", false, 1, 0, 0, 0, 0, 0, 0, 0, -1, -1, 0, 0, false, "", "", "", "", ""};
 CString g_randomSetupUiSnapshot;
 CString g_strategicMapUiSnapshot;
 CString g_capitalConfirmationUiSnapshot;
@@ -495,6 +497,41 @@ bool WriteResultFile(const char* status, const char* failure) {
 
 void CaptureMapStateSnapshot();
 
+void TrapDebugger(RuntimeDebugReason reason, const char* failure, EXCEPTION_POINTERS* exception) {
+  TView* activeModal =
+      g_ModalViewStack.IsEmpty() ? 0 : static_cast<TView*>(g_ModalViewStack.GetHead());
+  RuntimeDebugRecord record;
+  record.reason = reason;
+  record.elapsedMs = GetTickCount() - g_runtimeTestState.startMs;
+  record.testName = TestName();
+  record.phase = PhaseName();
+  record.lastAction = g_runtimeTestState.lastAction;
+  record.turnEvent = g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1;
+  record.modalDepth = g_ModalViewStack.GetCount();
+  record.mainView = MainView();
+  record.activeModal = activeModal;
+  record.simMgr = g_pSimMgr;
+  record.exceptionPointers = exception;
+
+  if (g_runtimeTestState.debugRecordPath[0] != 0) {
+    CString exceptionJson("null");
+    if (exception != 0 && exception->ExceptionRecord != 0) {
+      exceptionJson.Format("{\"code\": \"0x%08lx\", \"address\": \"%p\"}",
+                           exception->ExceptionRecord->ExceptionCode,
+                           exception->ExceptionRecord->ExceptionAddress);
+    }
+    CString json;
+    json.Format("{\"reason\": %d, \"test\": \"%s\", \"phase\": \"%s\", "
+                "\"last_action\": \"%s\", \"elapsed_ms\": %lu, \"turn_event\": %d, "
+                "\"modal_depth\": %d, \"failure\": %s, \"exception\": %s}\n",
+                static_cast<int>(reason), TestName(), PhaseName(), g_runtimeTestState.lastAction,
+                record.elapsedMs, record.turnEvent, record.modalDepth, failure,
+                static_cast<LPCSTR>(exceptionJson));
+    WriteFileAtomically(g_runtimeTestState.debugRecordPath, json);
+  }
+  ImperialismRuntimeDebuggerTrap(&record);
+}
+
 void Finish(const char* status, const char* failure) {
   g_runtimeTestState.finished = true;
   g_runtimeTestState.step = 0;
@@ -512,6 +549,7 @@ void Finish(const char* status, const char* failure) {
 }
 
 void Fail(const char* failure) {
+  TrapDebugger(kRuntimeDebugSemanticFailure, failure, 0);
   Finish("failed", failure);
 }
 
@@ -640,6 +678,7 @@ void CaptureMapStateSnapshot() {
 
 LONG WINAPI RuntimeTestUnhandledExceptionFilter(EXCEPTION_POINTERS* info) {
   if (!g_runtimeTestState.finished && info != 0 && info->ExceptionRecord != 0) {
+    TrapDebugger(kRuntimeDebugUnhandledException, "\"unhandled exception\"", info);
     CString fault;
     fault.Format("{\"code\": \"0x%08lx\", \"address\": \"%p\", \"phase\": \"%s\", "
                  "\"last_action\": \"%s\"}",
@@ -673,6 +712,13 @@ void InitializeDriver(const RuntimeScenarioConfig& config, unsigned int seed) {
                                                       sizeof(g_runtimeTestState.heartbeatPath));
   if (heartbeatPathLength >= sizeof(g_runtimeTestState.heartbeatPath)) {
     g_runtimeTestState.heartbeatPath[0] = 0;
+  }
+
+  DWORD debugRecordPathLength = GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_DEBUG_RECORD",
+                                                        g_runtimeTestState.debugRecordPath,
+                                                        sizeof(g_runtimeTestState.debugRecordPath));
+  if (debugRecordPathLength >= sizeof(g_runtimeTestState.debugRecordPath)) {
+    g_runtimeTestState.debugRecordPath[0] = 0;
   }
 
   if (config.completion == kCompleteAfterLoadedMap) {
@@ -1530,6 +1576,12 @@ void RuntimeScenario::Tick(RuntimeContext&) {
   ++g_runtimeTestState.idleTicks;
   ++g_runtimeTestState.phaseTicks;
   MaybeWriteHeartbeat();
+  char forcedFailure[2];
+  if (GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_FORCE_FAILURE", forcedFailure,
+                              sizeof(forcedFailure)) != 0) {
+    Fail("\"forced runtime debugger failure\"");
+    return;
+  }
   if (SpinRequestedForCurrentPhase()) {
     RequestAnotherDriverTick();
     return;

@@ -58,6 +58,13 @@ smoke *args:
 smoke-diff *args:
   uv run python tools/runtime/smoke.py diff {{args}}
 
+# Run one external semantic scenario against the retail binary and the matching
+# recomp in separate prefixes, then report the first normalized trace divergence.
+[doc('Compare one semantic trace tape against OG and matching recomp')]
+[group('debug')]
+diff-run scenario *args:
+  uv run python -m tools.runtime.differential "{{scenario}}" {{args}}
+
 # Scripted gdb session against the recomp (winedbg --gdb proxy; real gdb front
 # end: conditional breakpoints, set var, inferior calls, raw memory reads).
 # gdb sees no PDB symbols — use recomp VAs from `just addr 0xORIG`.
@@ -104,4 +111,3 @@ debug-timeout *args:
   set -euo pipefail
   export WINEDEBUG="${WINEDEBUG-err+all,+debugstr,+loaddll}"
   exec timeout --kill-after=2s "${DEBUG_TIMEOUT:-5s}" just debug "$@"
-

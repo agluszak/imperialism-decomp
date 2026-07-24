@@ -81,6 +81,7 @@ def run_test(args: argparse.Namespace) -> int:
         winedebug=None,
         wine_log_name="wine.log",
         fixture=fixture,
+        use_gdb=not args.no_gdb,
     )
     host.update(
         {
@@ -129,6 +130,7 @@ def run_test(args: argparse.Namespace) -> int:
             winedebug="+seh",
             wine_log_name="wine-seh.log",
             fixture=fixture,
+            use_gdb=not args.no_gdb,
         )
 
     result["host"] = host

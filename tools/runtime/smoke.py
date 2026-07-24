@@ -11,7 +11,6 @@ import shutil
 import subprocess
 import sys
 import tempfile
-import time
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -22,6 +21,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from tools.runtime.wine import ensure_template_prefix, prefix_environment
+from tools.runtime.debug.session import WineGdbProxy
 
 STARTUP_MILESTONES = [
     ("dispatch-4c", 0x5D7240, "turn-event dispatch alive"),
@@ -89,37 +89,14 @@ def shut_down_wine_prefix(prefix: Path, environment: dict[str, str]) -> None:
 
 def launch_proxy(
     port: int, environment: dict[str, str], executable: Path | None = None
-) -> subprocess.Popen[bytes]:
+) -> WineGdbProxy:
     if executable is None:
         executable = BUILD_DIR / "Imperialism.exe"
     if not executable.exists():
         raise SystemExit(f"Missing {executable}; run `just build` first")
-    process = subprocess.Popen(
-        ["winedbg", "--gdb", "--no-start", "--port", str(port), str(executable)],
-        cwd=game_dir(),
-        env=environment,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
-    port_suffix = f":{port:04X}"
-    deadline = time.monotonic() + 45
-    while time.monotonic() < deadline:
-        if process.poll() is not None:
-            raise SystemExit(f"winedbg --gdb exited early with {process.returncode}")
-        for table in (Path("/proc/net/tcp"), Path("/proc/net/tcp6")):
-            try:
-                lines = table.read_text(encoding="ascii").splitlines()[1:]
-            except OSError:
-                continue
-            if any(
-                fields[1].endswith(port_suffix) and fields[3] == "0A"
-                for line in lines
-                if len(fields := line.split()) >= 4
-            ):
-                return process
-        time.sleep(0.5)
-    process.kill()
-    raise SystemExit("winedbg --gdb did not open its port")
+    proxy = WineGdbProxy(executable, game_dir(), environment, port=port)
+    proxy.start()
+    return proxy
 
 
 def run_gdb(port: int, script: str, seconds: float) -> str:
@@ -202,7 +179,7 @@ def run_milestone_ladder(
     try:
         output = run_gdb(port, ladder_script(addresses), seconds)
     finally:
-        proxy.kill()
+        proxy.close()
         shut_down_wine_prefix(prefix, environment)
     reached = {name for name in addresses if f"MILESTONE {name}" in output}
     return reached, set(addresses), output
@@ -278,7 +255,7 @@ def cmd_gdb(args: argparse.Namespace) -> int:
     try:
         print(run_gdb(args.port, script, args.seconds))
     finally:
-        proxy.kill()
+        proxy.close()
         if args.keep_running:
             print(
                 "leaving Wine session running in "

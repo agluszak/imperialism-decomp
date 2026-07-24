@@ -12,8 +12,8 @@
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
   "git_branch": "codex/imperialism-decomp-4km-runtime",
-  "git_commit": "88ac7d256c9e1a4f85942947e6fffa6f6bd452f8",
-  "git_commit_date": "2026-07-24T17:04:39+02:00",
+  "git_commit": "239270ef5d8ec6cdfa06d7dc4154c7dcd9479502",
+  "git_commit_date": "2026-07-24T17:20:18+02:00",
   "global_coverage_pct": 24.75501419543914,
   "global_orig_only_count": 8216,
   "global_recomp_only_count": 7946,
@@ -63,7 +63,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 13,
   "template_canonical_paired_count": 20,
-  "timestamp_utc": "2026-07-24T15:19:39+00:00",
+  "timestamp_utc": "2026-07-24T17:16:37+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }

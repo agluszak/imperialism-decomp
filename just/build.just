@@ -34,7 +34,7 @@ _build-msvc500-unlocked jobs:
   just vtable-gate
   just generate
   docker run --rm --network none \
-    -e CMAKE_FLAGS="{{cmake_flags}}" \
+    -e CMAKE_FLAGS="" \
     -e CMAKE_GENERATOR="{{ if jobs == '1' { 'NMake Makefiles' } else { 'NMake Makefiles JOM' } }}" \
     -e BUILD_JOBS="{{ if jobs == '1' { '' } else { jobs } }}" \
     -v "$PWD":/imperialism \
