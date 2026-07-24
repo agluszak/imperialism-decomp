@@ -59,7 +59,7 @@ address|name|symbol|size|type|prototype|provenance
 415050|CWnd::BeginModalState|?BeginModalState@CWnd@@UAEXXZ|13|function|public: virtual void __thiscall CWnd::BeginModalState(void)|msvc500_library_override
 415070|CWnd::EndModalState|?EndModalState@CWnd@@UAEXXZ|13|function|public: virtual void __thiscall CWnd::EndModalState(void)|msvc500_library_override
 415090|ShowAutoResolutionDialogIfNeeded||455|function|undefined ShowAutoResolutionDialogIfNeeded()|
-4152e0|DestroyDialogWithListBoxAndHotKeyControl||120|function|undefined DestroyDialogWithListBoxAndHotKeyControl()|
+4152e0|TAutoResolutionDialog::~TAutoResolutionDialog||120|function|void __thiscall ~TAutoResolutionDialog()|
 415380|WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380||11|function|undefined WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380()|
 4153a0|ReadSettingsPrefIntByIndex||128|function|undefined ReadSettingsPrefIntByIndex()|
 415440|WriteSettingsPrefIntByIndex||124|function|undefined WriteSettingsPrefIntByIndex()|

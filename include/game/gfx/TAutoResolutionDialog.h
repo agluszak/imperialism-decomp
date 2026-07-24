@@ -10,6 +10,7 @@
 class TAutoResolutionDialog : public TModalDialogBase {
 public:
   explicit TAutoResolutionDialog(void* initParam = nullptr); // 0x0047dfd0
+  ~TAutoResolutionDialog() override;                         // 0x004152e0
 
   int DialogResult() const {
     return m_nModalResult;

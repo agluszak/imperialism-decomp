@@ -61,8 +61,8 @@ address|matching|name
 0x415030|1.0|CWnd::DoDataExchange
 0x415050|1.0|CWnd::BeginModalState
 0x415070|1.0|CWnd::EndModalState
-0x415090|0.900990099009901|ImperialismApp::ShowAutoResolutionDialogIfNeeded
-0x4152e0|0.1111111111111111|TModalTemplateDialog::DestroyListBoxAndHotKeyChildren
+0x415090|0.8877551020408163|ImperialismApp::ShowAutoResolutionDialogIfNeeded
+0x4152e0|0.7407407407407407|TAutoResolutionDialog::~TAutoResolutionDialog
 0x415380|1.0|T64TemplateDialog::OnInitDialog
 0x4153a0|0.8857142857142857|ReadSettingsPrefIntByIndex
 0x415440|0.5625|WriteSettingsPrefIntByIndex
@@ -412,7 +412,7 @@ address|matching|name
 0x47df90|1.0|TFATemplateDialog::DoDataExchange
 0x47dfb0|0.5|TFATemplateDialog::GetMessageMap
 0x47dfd0|0.5945945945945946|TAutoResolutionDialog::TAutoResolutionDialog
-0x47e090|0.9090909090909091|TAutoResolutionDialog::`scalar deleting destructor'
+0x47e090|1.0|TAutoResolutionDialog::`scalar deleting destructor'
 0x47e0c0|1.0|TAutoResolutionDialog::DoDataExchange
 0x47e100|0.5|TAutoResolutionDialog::GetMessageMap
 0x47e120|1.0|TAutoResolutionDialog::OnInitDialog
@@ -3396,7 +3396,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::MapGenPassSlot0E
 0x527730|0.29577464788732394|TMapMaker::MapGenPassSlot0F
-0x527d00|0.4268774703557312|TMapMaker::CreateRivers
+0x527d00|0.43478260869565216|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
