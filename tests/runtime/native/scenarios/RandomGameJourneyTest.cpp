@@ -2,9 +2,20 @@
 
 namespace {
 
-const RuntimeScenarioConfig kConfig = {"random_game_enters_map", kCompleteAfterNormalJourney, true,
-                                       false, true};
-RuntimeScenario g_test(kConfig);
+class RandomGameJourneyTestCase : public RuntimeScenario {
+public:
+  const char* Name() const override {
+    return "random_game_enters_map";
+  }
+  bool UsesRandomGameFlow() const override {
+    return true;
+  }
+  bool RecordsGameFlow() const override {
+    return true;
+  }
+};
+
+RandomGameJourneyTestCase g_test;
 
 } // namespace
 

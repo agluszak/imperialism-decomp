@@ -57,22 +57,34 @@ class RuntimeCatalogTests(unittest.TestCase):
         )
 
     def test_ui_oracle_requirements_have_native_snapshot_policy(self) -> None:
-        config_pattern = re.compile(
-            r'RuntimeScenarioConfig\s+\w+\s*=\s*\{\s*"([a-z0-9_]+)"\s*,'
-            r"\s*\w+\s*,\s*(true|false)\s*,",
-            re.MULTILINE,
-        )
         snapshot_capable = set()
         for source_path in (
             REPO_ROOT / "tests/runtime/native/scenarios"
         ).glob("*Test.cpp"):
             source = source_path.read_text(encoding="utf-8")
-            for name, random_game in config_pattern.findall(source):
-                if random_game == "true":
-                    snapshot_capable.add(name)
+            name = re.search(r'return "([a-z0-9_]+)";', source)
+            random_flow = re.search(
+                r"bool UsesRandomGameFlow\(\) const override\s*\{\s*return true;\s*\}",
+                source,
+            )
+            if name is not None and random_flow is not None:
+                snapshot_capable.add(name.group(1))
 
         ui_required = {test.name for test in TESTS if "ui" in test.required_oracles}
         self.assertLessEqual(ui_required, snapshot_capable)
+
+    def test_native_scenarios_own_behavior_in_concrete_classes(self) -> None:
+        header = (
+            REPO_ROOT / "tests/runtime/native/scenarios/RuntimeScenario.h"
+        ).read_text(encoding="utf-8")
+        self.assertNotIn("RuntimeScenarioConfig", header)
+        self.assertNotIn("RuntimeScenarioCompletion", header)
+
+        for source_path in (
+            REPO_ROOT / "tests/runtime/native/scenarios"
+        ).glob("*Test.cpp"):
+            source = source_path.read_text(encoding="utf-8")
+            self.assertRegex(source, r"class \w+TestCase : public RuntimeScenario")
 
 
 class RuntimeProtocolTests(unittest.TestCase):
