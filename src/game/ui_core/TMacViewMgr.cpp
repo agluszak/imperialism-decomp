@@ -754,33 +754,30 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
 
 // FUNCTION: IMPERIALISM 0x0050b9e0
 void TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
-  int tileIndex = 0;
-  int tileByteOffset = 0;
+  int cityRecordIndex = 0;
   RgnHandle* tileSlot = tileStateSlots;
-  while (tileByteOffset < 0xfc00) {
-    if (reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable)[tileByteOffset] != -1) {
+  while (cityRecordIndex < 0x180) {
+    Province& cityRecord = g_pGlobalMapState->cityScoreTable[cityRecordIndex];
+    if (cityRecord.ownerNationCode00 != -1) {
       if (*tileSlot != 0) {
         DisposeRgn(*tileSlot);
         *tileSlot = 0;
       }
       *tileSlot = NewRgn();
       OpenRgn();
-      char neighborCount =
-          reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable)[tileByteOffset + 0x3a];
+      char neighborCount = cityRecord.linkedRegionCount;
       int neighborIndex = 0;
       if (neighborCount > 0) {
-        short* neighborCursor = reinterpret_cast<short*>(
-            reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) + tileByteOffset + 0x42);
+        StrategicTileIndex* neighborCursor = cityRecord.linkedTileIndices42;
         while (neighborIndex < neighborCount) {
-          InvokeBuildHexNeighborHighlightPolygonForTile(neighborCursor[0], tileIndex);
+          InvokeBuildHexNeighborHighlightPolygonForTile(neighborCursor[0], cityRecordIndex);
           neighborIndex = neighborIndex + 1;
           neighborCursor = neighborCursor + 1;
         }
       }
       CloseRgn(*tileSlot);
     }
-    tileByteOffset = tileByteOffset + 0xa8;
-    tileIndex = tileIndex + 1;
+    cityRecordIndex = cityRecordIndex + 1;
     tileSlot = tileSlot + 1;
   }
   RebuildNationClipRegionsAndDispatchMapEvent();
@@ -796,14 +793,13 @@ void TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent() {
     int nationIndex = 0;
     while (nationIndex < 0x17) {
       SetEmptyRgn(regionWrapper);
-      int tileByteOffset = 0;
+      int cityRecordIndex = 0;
       RgnHandle* tileSlot = tileStateSlots;
-      while (tileByteOffset < 0xfc00) {
-        if (reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable)[tileByteOffset] ==
-            nationIndex) {
+      while (cityRecordIndex < 0x180) {
+        if (g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode00 == nationIndex) {
           UnionRgn(regionWrapper, *tileSlot, regionWrapper);
         }
-        tileByteOffset = tileByteOffset + 0xa8;
+        cityRecordIndex = cityRecordIndex + 1;
         tileSlot = tileSlot + 1;
       }
       EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(regionWrapper,

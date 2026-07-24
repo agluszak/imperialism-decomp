@@ -3135,12 +3135,12 @@ address|matching|name
 0x50a9f0|0.22532894736842105|TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches
 0x50b5b0|0.9354838709677419|TMacViewMgr::ReloadBitmap244AndRefreshUiCaches
 0x50b640|0.45727482678983833|TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress
-0x50b9e0|0.3464566929133858|TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles
+0x50b9e0|0.42857142857142855|TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles
 0x50bad0|0.6666666666666666|TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent
 0x50bbc0|1.0|TMacViewMgr::ApplySellOrderRowToNationState
 0x50bc50|0.6167400881057269|TMacViewMgr::SyncSellTaggedChildControlWithNationState
 0x50be30|0.96|TMacViewMgr::MakeBookDialog
-0x50bea0|0.20827648931332424|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
+0x50bea0|0.2110050022737608|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 0x50d310|0.5625|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 0x50d360|0.6857142857142857|TMacViewMgr::OpenBuildingWindow
 0x50d470|0.7195121951219512|TMacViewMgr::RestoreBuildingWindowAtSavedPosition
@@ -3425,7 +3425,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords
 0x527730|0.29577464788732394|TMapMaker::PlaceTerrainFeatureQuotas
-0x527d00|0.43478260869565216|TMapMaker::CreateRivers
+0x527d00|0.4268774703557312|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
