@@ -127,15 +127,15 @@ address|name|symbol|size|type|prototype|provenance
 430250|ConstructPictureResourceEntry_Vtbl0063f650||32|function|undefined ConstructPictureResourceEntry_Vtbl0063f650()|
 430280|TBook::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4302d0|TPageCorner::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-430320|ConstructUiResourceEntry_Vtbl0063f878||25|function|undefined ConstructUiResourceEntry_Vtbl0063f878()|
+430320|TTreatiesView::TTreatiesView||25|function|undefined TTreatiesView()|
 430350|TTreatiesView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4303a0|ConstructUiResourceEntry_Vtbl0063fa70||25|function|undefined ConstructUiResourceEntry_Vtbl0063fa70()|
+4303a0|TGrantsView::TGrantsView||25|function|undefined TGrantsView()|
 4303d0|TGrantsView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-430420|ConstructUiResourceEntry_Vtbl0063fc68||25|function|undefined ConstructUiResourceEntry_Vtbl0063fc68()|
+430420|TTradePanelView::TTradePanelView||25|function|undefined TTradePanelView()|
 430450|TTradePanelView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4304a0|ConstructUiResourceEntry_Vtbl0063fe60||25|function|undefined ConstructUiResourceEntry_Vtbl0063fe60()|
+4304a0|TInfoPanelView::TInfoPanelView||25|function|undefined TInfoPanelView()|
 4304d0|TInfoPanelView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-430520|ConstructUiResourceEntry_Vtbl00640060||25|function|undefined ConstructUiResourceEntry_Vtbl00640060()|
+430520|TCouncilPanelView::TCouncilPanelView||25|function|undefined TCouncilPanelView()|
 430550|TPanelView::Setup||1|function|void Setup()|macos-name-oracle:Setup()
 430570|TCouncilPanelView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4305c0|TNominationView::Hilite||1|function|void Hilite(void)|mac_oracle
@@ -154,7 +154,7 @@ address|name|symbol|size|type|prototype|provenance
 430a30|TBattleReportView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 430a60|TBattleReportView::~TBattleReportView||115|function|undefined ~TBattleReportView()|
 430b00|TBattleDetailBook::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-430b50|ConstructUiResourceEntry_Vtbl00640940||28|function|undefined ConstructUiResourceEntry_Vtbl00640940()|
+430b50|TBattleUnitsView::TBattleUnitsView||28|function|undefined TBattleUnitsView()|
 430b80|TBattleUnitsView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 430bd0|TView::GetEventNumber||3|function|int GetEventNumber()|
 430bf0|TView::Draw||3|function|void __thiscall Draw(RECT * rectBuffer)|

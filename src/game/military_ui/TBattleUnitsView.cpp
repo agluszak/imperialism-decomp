@@ -6,6 +6,11 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 
+// FUNCTION: IMPERIALISM 0x00430b50
+TBattleUnitsView::TBattleUnitsView() {
+  secondaryUnitAtlas88 = 0;
+}
+
 // SYNTHETIC: IMPERIALISM 0x00430b80
 // TBattleUnitsView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00430bb0
@@ -17,8 +22,6 @@ TBattleUnitsView::~TBattleUnitsView() {}
 // TBattleUnitsView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TBattleUnitsView, TMilitaryPageView)
-
-TBattleUnitsView::TBattleUnitsView() {}
 
 // FUNCTION: IMPERIALISM 0x004b06f0
 void TBattleUnitsView::StuffValues(BattleRecord* battleRecord, int participantIndex) {
