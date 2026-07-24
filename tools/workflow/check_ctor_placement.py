@@ -6,15 +6,22 @@ inlined into subclass constructors or ``CreateObject`` bodies in other translati
 units, so VC5 emits a CALL where the original absorbed the body and every caller
 mismatches on it.
 
-This is a *report*, not a hard ban, and deliberately so: an unmarked out-of-line
-constructor has at least four causes and only the caller's disassembly tells them
-apart (see bd nwdn):
+This is a *report*, not a hard ban. The original had a uniform model -- ordinary
+out-of-line definitions compiled at ``/Ob1``, where VC5 emits the standalone body AND
+auto-inlines it into callers in the SAME TU. Our one-class-per-file layout (Hard Rule 7)
+has no same-TU callers, so the two halves are mutually exclusive for us and each class is
+a trade (see docs/toolchain.md and the ctors-dtors-eh skill).
 
-1. genuinely always inlined      -> move the definition in-class
-2. the ctor model is wrong       -> a phantom no-arg ctor beside a real one that
-                                    ``new T()`` reaches through a default argument
-3. the body is wrong             -> annotated empty but the caller stores fields
-4. the address exists, unclaimed -> add the marker; keep it out-of-line
+The rule is: does the original have a standalone body for this ctor?
+
+* no address  -> in-class is strictly correct and free (TPanelView: +7 exact)
+* address     -> keep it out-of-line so the body pairs, unless the inlined call sites are
+                 worth more; then go in-class, keep the marker, and expect the address to
+                 stay unpaired (TProductionOrder 0x004b4f00)
+
+Watch for two look-alikes that are real bugs rather than placement: a phantom no-arg ctor
+shadowing a default-argument ctor (TArmyMission), and a body annotated "verified empty"
+that the caller proves is not (TItemOrder).
 
 Blessing the current set as a baseline keeps it from growing while the backlog is
 worked down one evidenced class at a time.
@@ -94,9 +101,11 @@ def main() -> int:
         for n in new:
             print(f"  - {n}")
         print(
-            "\nAn unmarked ctor has no address in the original. Read the caller\n"
-            "(CreateObject / a derived ctor) before choosing a fix -- see bd nwdn for the\n"
-            "four cases. Do not add it to the baseline to silence this."
+            "\nAn unmarked ctor has no claimed address. Read the caller (CreateObject /\n"
+            "a derived ctor) first: if the original has NO standalone body, move the\n"
+            "definition in-class (free win); if it HAS one, keep it out-of-line unless the\n"
+            "inlined sites are worth more. See bd nwdn / the ctors-dtors-eh skill.\n"
+            "Do not add it to the baseline to silence this."
         )
         return 1
 

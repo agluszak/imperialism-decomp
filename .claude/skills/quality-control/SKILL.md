@@ -267,5 +267,7 @@ shrink, tracked in bd nwdn. Refresh only after genuinely resolving entries, with
 `just ctor-placement-gate-update` (requires `ALLOW_POLICY_BASELINE_UPDATE=1`).
 
 **Never add a new entry to the baseline to silence the gate.** Read the caller's listing
-and pick the right fix — the four cases are tabulated in the `ctors-dtors-eh` skill, and
-two of the first ten classes turned out to be ctor-model bugs rather than placement ones.
+first. The rule is one question — does the original have a standalone body for this ctor?
+No address means in-class is free; an existing address means it is a trade, because our
+one-class-per-file layout cannot reproduce `/Ob1`'s "standalone body + same-TU inlined
+users" shape. Full reasoning in the `ctors-dtors-eh` skill and `docs/toolchain.md`.

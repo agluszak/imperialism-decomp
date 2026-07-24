@@ -301,44 +301,57 @@ twin is counted as a recognized duplicate instead of stub-paired at a junk score
 ??_G whose chain folds DIRECTLY onto a shared base body with no per-class island
 (TFileStream, TLongintList) has no claimable address; its 90.91% is the ceiling.
 
-## Constructor PLACEMENT is part of the model (header vs .cpp)
+## Constructor PLACEMENT is a /Ob1 + TU-granularity artifact, not a source variant
 
-A constructor with no `// FUNCTION` marker has **no claimed address in the original**.
-If its definition sits in a .cpp it cannot be inlined into subclass constructors or
-`CreateObject` bodies in other TUs, so VC5 emits a `CALL` where the original absorbed
-the body — and every caller mismatches on it. `TObject.h` and `TPanelView.h` show the
-fix: define it in-class. Moving `TPanelView`'s four-line ctor was +7 exact functions.
+**The original had ONE uniform model**: ordinary out-of-line constructor definitions in
+.cpp files, compiled by VC5 RTM at `/Oy /Ob1` (see `docs/toolchain.md`, "standalone body
++ inlined users"). Under `/Ob1` VC5 emits the out-of-line body AND auto-inlines that same
+body into callers **that live in the same TU**. The original interleaved several classes
+per TU (their address ranges alternate, e.g. 0x4be0d0 / 0x4be1d0 / 0x4be840), so a class's
+`CreateObject` and its derived ctors were frequently same-TU users and got the body
+inlined, while other TUs called it.
 
-**But "no marker" has four causes, and only the caller tells them apart.** Read
-`just ghidra listing` on the class's `CreateObject` (or one derived ctor) FIRST:
+Our tree is one class per file (Hard Rule 7), so no caller is ever a same-TU user. That
+makes the two halves **mutually exclusive for us**, and every class becomes an either/or:
 
-| What the caller does | Cause | Fix |
+| Where we define the ctor | standalone body | callers |
 | --- | --- | --- |
-| allocation + field stores + vptr, **no call** | genuinely always inlined | move the definition in-class |
-| `CALL <addr>` with **arguments pushed** | the ctor model is wrong | a phantom no-arg ctor sits beside the real one; `new T()` reaches it via a **default argument** |
-| `CALL` to an address that **is** marked | correct as-is | leave it out-of-line |
-| stores a field your body does not set | the body is wrong | restore the missing init |
+| out-of-line in the .cpp | emitted, pairs | emit a CALL |
+| in-class in the header | **never emitted** — no linker setting recovers it | inline the body |
 
-Worked examples, all measured:
-- `TArmyMission`: `CreateObject` 0x0053bfb0 allocates 0x30 then `CALL 0x0053c0a0` with
-  `-1` pushed. A phantom no-arg ctor sat beside the real `TArmyMission(int)`. Collapsing
-  to `TArmyMission(int nodeKey = -1)` took it 89.80% → 100%. Inlining would have made it
-  *worse* — and did, by 42pp, before the listing was read.
-- `TItemOrder`: ctor was annotated `// NOOP: verified empty in original` and was empty.
-  `CreateObject` 0x004b51d0 ends `MOV word ptr [eax+4],0` = `TProductionOrder::
-  quantityField04`, a **base** member, so it must be a body assignment rather than a
-  member-init entry. Restoring it (plus inlining the base ctor) took it 41.18% → 100%.
-  **Distrust "verified empty" annotations that were never checked against the caller.**
+That is the whole explanation for constructors that "regress when inlined". It is not four
+source patterns and not a size heuristic — body complexity does not discriminate at all
+(202 of the ctors that DO have an address are trivial, 0 statements).
 
-Cost to know about: inlining a base ctor can make VC5 stop emitting its out-of-line copy,
-unpairing an address the original *does* have (`TProductionOrder::TProductionOrder`
-0x004b4f00 — one real caller via `just ghidra xrefs`). Weigh the trade; do not assume
-inlining is free.
+### The decision rule (deterministic, no guessing)
 
-`just ctor-placement-gate` ratchets this: no NEW unmarked out-of-line ctor. The baseline
-is a backlog to shrink one evidenced class at a time (bd nwdn), never to grow.
+Ask one question: **does the original have a standalone body for this constructor?**
 
-Mechanical hazards when moving a definition into a header: carry any `// NOOP:`
-annotation across, add includes the body needs (`TButton` needed
-`ui_invalidation_guard.h`), and keep the phrase "operator new" out of header comments —
-`just antipattern-gate` matches it as prose.
+- **No address** (nothing to claim) -> in-class is strictly correct and free. All of
+  `TPanelView`, `TDialogView`, `TStream`, `TCheater`, `TNavyPlayer`, `TCtlMgr` are this
+  case; `TPanelView` alone was +7 exact.
+- **Address exists** -> you must trade. Keep it out-of-line so the body pairs, unless the
+  inlined call sites are worth more; then go in-class, keep the `// FUNCTION:` marker so
+  the address stays owned, and **expect it to stay unpaired**. `TProductionOrder`
+  (0x004b4f00) is exactly this: we took `TItemOrder::CreateObject` 41.18% -> 100% and paid
+  one pairing. `docs/toolchain.md` records the same call on `TInteriorMinister`.
+
+Two failure modes that look like placement problems but are not:
+
+- **A phantom ctor.** `TArmyMission` had a no-arg ctor beside the real `TArmyMission(int)`
+  at 0x0053c0a0; `CreateObject` pushes `-1`, so `new T()` binds through a **default
+  argument**. Inlining the phantom cost 42pp; the fix was `TArmyMission(int nodeKey = -1)`
+  and deleting the phantom. 89.80% -> 100%.
+- **A wrong body.** `TItemOrder` was annotated `// NOOP: verified empty in original` and
+  was empty, but `CreateObject` ends `MOV word ptr [eax+4],0` = `TProductionOrder::
+  quantityField04`, a *base* member (so a body assignment, not a member-init entry).
+  Distrust "verified empty" annotations that were never checked against the caller.
+
+So: read the caller's listing first, then apply the rule. `just ctor-placement-gate`
+ratchets the backlog (bd nwdn); its baseline is not a licence to inline blind.
+
+Mechanical hazards when moving a definition: carry any `// NOOP:` annotation across, add
+includes the body needs (`TButton` needed `ui_invalidation_guard.h`; `TArmyMission`'s body
+cannot go in a header at all without dragging in `TList` and two globals — itself a signal
+the original kept it out-of-line), and keep the phrase "operator new" out of header prose
+because `just antipattern-gate` matches it.
