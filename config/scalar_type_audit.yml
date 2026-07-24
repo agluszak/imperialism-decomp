@@ -404,9 +404,6 @@ discriminant_reviews:
   ownerNationCode:
     classification: nation_slot_domain
     evidence: the 0x180 and 6 bounds are the encoded-nation-tag bands already documented on NationSlot/EncodedNationSlot; the >= 0 test is the unassigned -1 sentinel.
-  ownerState:
-    classification: byte_or_int_predicate_not_a_domain
-    evidence: TUnitOrder tests whether an owner is set.
   patternMode:
     classification: closed_domain_needs_listing_evidence
     evidence: TModuleLibraryCacheTableStateB distinguishes pattern mode 0 when resolving a palette entry.

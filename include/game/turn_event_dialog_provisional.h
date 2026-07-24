@@ -113,6 +113,9 @@ struct GoldCommitControl : public TView {
 // is a sibling class, not GoldCommitControl itself (same pattern as the TControl-vs-
 // GoldCommitControl slot-0x68 divergence noted above).
 struct TSellOrderRowControl : public TView {
+  unsigned char padding60To88[0x28];
+  short orderSlot88; // +0x88 — city production order slot synchronized into this row
+
   virtual void rowSlot68();
   virtual void rowSlot69();
   virtual void rowSlot6a();

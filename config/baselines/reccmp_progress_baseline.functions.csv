@@ -2555,7 +2555,7 @@ address|matching|name
 0x4e4ff0|0.3008849557522124|TMinor::CanInitiateJoinEmpireProposalToTarget
 0x4e50d0|0.18791946308724833|TMinor::QueueDiplomacyProposalCodeForTargetNation
 0x4e5300|0.46153846153846156|TMinor::NotifyActionSlot94
-0x4e5340|0.4166666666666667|TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers
+0x4e5340|0.42391304347826086|TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers
 0x4e5730|0.7317073170731707|TMinor::HandleNetworkPortConstructionOrder
 0x4e5840|0.17543859649122806|TMinor::ApplyJoinEmpireMode1TargetTransition
 0x4e59d0|0.5263157894736842|TMinor::ApplyJoinEmpireMode2FinalizeNationNameState
@@ -2621,7 +2621,7 @@ address|matching|name
 0x4e8bf0|1.0|TAutoGreatPower::SetByteFlagAtOffsetAF0ByIndex
 0x4e8c20|1.0|TGreatPower::ComputeAdvisoryMapNodeCompositeScore
 0x4e8c50|0.8744326777609682|TGreatPower::ComputeAdvisoryMapNodeCompositeScoreByMode
-0x4e9060|0.5032679738562091|TGreatPower::ComputeMapActionContextCompositeScoreForNation
+0x4e9060|0.5082508250825083|TGreatPower::ComputeMapActionContextCompositeScoreForNation
 0x4e92b0|0.4961580680570801|TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState
 0x4e9a50|0.8576104746317512|TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16
 0x4e9ed0|1.0|TAutoGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded
@@ -3140,7 +3140,7 @@ address|matching|name
 0x50bbc0|1.0|TMacViewMgr::ApplySellOrderRowToNationState
 0x50bc50|0.6167400881057269|TMacViewMgr::SyncSellTaggedChildControlWithNationState
 0x50be30|0.96|TMacViewMgr::MakeBookDialog
-0x50bea0|0.2146430195543429|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
+0x50bea0|0.20827648931332424|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 0x50d310|0.5625|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 0x50d360|0.6857142857142857|TMacViewMgr::OpenBuildingWindow
 0x50d470|0.7195121951219512|TMacViewMgr::RestoreBuildingWindowAtSavedPosition
@@ -5238,7 +5238,7 @@ address|matching|name
 0x592900|1.0|TWarningView::TWarningView
 0x592930|1.0|TWarningView::`scalar deleting destructor'
 0x592960|1.0|TWarningView::~TWarningView
-0x592980|0.11235955056179775|TWarningView::DoEvent
+0x592980|0.6567164179104478|TWarningView::DoEvent
 0x592a70|0.013953488372093023|TWarningView::DoPostCreate
 0x5931e0|0.25|`dynamic initializer for 'g_scaledShortConst_6A4518''
 0x593210|0.6896551724137931|UpdateDeferredCdAudioFade
@@ -5264,7 +5264,7 @@ address|matching|name
 0x5942f0|0.2857142857142857|TStatusPicture::DoEvent
 0x594540|0.7003891050583657|TStatusPicture::Draw
 0x594790|0.3235294117647059|TStatusPicture::DrawBar
-0x594900|0.47058823529411764|TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale
+0x594900|0.4539877300613497|TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale
 0x594c00|0.7948717948717948|TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets
 0x594ed0|0.25|`dynamic initializer for 'g_scaledShortConst_6A460C''
 0x594f20|0.5079365079365079|TWorldView::CreateObject
