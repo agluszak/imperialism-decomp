@@ -23,6 +23,7 @@ TMultiMessagePicture::~TMultiMessagePicture() {}
 
 IMPLEMENT_DYNCREATE(TMultiMessagePicture, TPicture)
 
+// NOOP: verified empty in original 0x0054ec56 (no standalone TMultiMessagePicture::TMultiMessagePicture body exists: CreateObject 0x0054ec20 inlines this default ctor, calling the TPicture base ctor directly at that site)
 TMultiMessagePicture::TMultiMessagePicture() {}
 
 // FUNCTION: IMPERIALISM 0x0054ecc0

@@ -25,6 +25,7 @@ TNavyTacUnit::~TNavyTacUnit() {}
 
 IMPLEMENT_DYNCREATE(TNavyTacUnit, TTacticalUnit)
 
+// NOOP: verified empty in original 0x005a6242 (no standalone TNavyTacUnit::TNavyTacUnit body exists: construction is fully inlined into CreateObject 0x005a6240; that address is its operator-new call site)
 TNavyTacUnit::TNavyTacUnit() {}
 
 // FUNCTION: IMPERIALISM 0x005a6290

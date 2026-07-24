@@ -28,6 +28,7 @@ TFlagOptionsPicture::~TFlagOptionsPicture() {}
 
 IMPLEMENT_DYNCREATE(TFlagOptionsPicture, TPicture)
 
+// NOOP: verified empty in original 0x0056b246 (no standalone TFlagOptionsPicture::TFlagOptionsPicture body exists: CreateObject 0x0056b210 inlines this default ctor, calling the TPicture base ctor directly at that site)
 TFlagOptionsPicture::TFlagOptionsPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056b2b0

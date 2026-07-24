@@ -31,6 +31,7 @@ TNewspaperView::~TNewspaperView() {}
 
 IMPLEMENT_DYNCREATE(TNewspaperView, TPicture)
 
+// NOOP: verified empty in original 0x0055d196 (no standalone TNewspaperView::TNewspaperView body exists: CreateObject 0x0055d160 inlines this default ctor, calling the TPicture base ctor directly at that site)
 TNewspaperView::TNewspaperView() {}
 
 // Populate the nation-status advisor page: date + special-metric headline children,

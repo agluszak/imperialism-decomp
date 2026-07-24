@@ -24,6 +24,7 @@ TMinorTreatyDialog::~TMinorTreatyDialog() {}
 
 IMPLEMENT_DYNCREATE(TMinorTreatyDialog, TDialogView)
 
+// NOOP: verified empty in original 0x005b3fc3 (no standalone TMinorTreatyDialog::TMinorTreatyDialog body exists: CreateObject 0x005b3f90 inlines this default ctor, calling the TView base ctor directly at that site)
 TMinorTreatyDialog::TMinorTreatyDialog() {}
 
 // FUNCTION: IMPERIALISM 0x005b4090

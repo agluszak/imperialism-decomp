@@ -11,6 +11,7 @@
 
 IMPLEMENT_DYNCREATE(TPowerPlantOrder, TProductionOrder)
 
+// NOOP: verified empty in original 0x004b79f2 (no standalone TPowerPlantOrder::TPowerPlantOrder body exists: construction is fully inlined into CreateObject 0x004b79f0; that address is its operator-new call site)
 TPowerPlantOrder::TPowerPlantOrder() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b7a60

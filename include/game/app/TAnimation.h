@@ -25,6 +25,7 @@ public:
   int registryTag18;        // +0x18 animator-registry tag (0x2711 = selection marker)
   RECT screenRect1C;        // +0x1c on-screen rect invalidated per flip
 
+  // NOOP: verified empty in original 0x0049f022 (no standalone TAnimation::TAnimation body exists: construction is fully inlined into CreateObject 0x0049f020; that address is its operator-new call site)
   TAnimation() {}
 
   // Post-construction init used by the tactical selection marker (0x5a9bb0): owner

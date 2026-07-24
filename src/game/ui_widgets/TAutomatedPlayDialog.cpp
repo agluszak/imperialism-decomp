@@ -20,6 +20,7 @@ TAutomatedPlayDialog::~TAutomatedPlayDialog() {}
 
 IMPLEMENT_DYNCREATE(TAutomatedPlayDialog, TDialogView)
 
+// NOOP: verified empty in original 0x005b45f3 (no standalone TAutomatedPlayDialog::TAutomatedPlayDialog body exists: CreateObject 0x005b45c0 inlines this default ctor, calling the TView base ctor directly at that site)
 TAutomatedPlayDialog::TAutomatedPlayDialog() {}
 
 // FUNCTION: IMPERIALISM 0x005b46c0

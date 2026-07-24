@@ -24,6 +24,7 @@ TTacticalHolaPicture::~TTacticalHolaPicture() {}
 
 IMPLEMENT_DYNCREATE(TTacticalHolaPicture, TPicture)
 
+// NOOP: verified empty in original 0x005ad6f6 (no standalone TTacticalHolaPicture::TTacticalHolaPicture body exists: CreateObject 0x005ad6c0 inlines this default ctor, calling the TPicture base ctor directly at that site)
 TTacticalHolaPicture::TTacticalHolaPicture() {}
 
 // Battle-intro ('hola', dialog 0xf19) setup: sets the attacker/defender coat-of-arms

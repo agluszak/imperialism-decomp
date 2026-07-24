@@ -1506,7 +1506,7 @@ address|matching|name
 0x4a2390|0.8266666666666667|TArmyMgr::ResolveNextMove
 0x4a2500|0.984375|TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits
 0x4a2610|0.4264264264264264|BuildArmyActionLabelFromLocalizationAndCounts
-0x4a2900|0.6061814556331007|BuildArmyContextActionRecordsAndDispatchLabel
+0x4a2900|0.6001994017946162|BuildArmyContextActionRecordsAndDispatchLabel
 0x4a31c0|1.0|CStr32::CStr32
 0x4a31e0|1.0|CStr255::CStr255
 0x4a3200|0.7047244094488189|TArmyMgr::TryCreateTacticalBattleViewForTileArmies
@@ -1543,7 +1543,7 @@ address|matching|name
 0x4a5c50|1.0|TArmyBattle::`scalar deleting destructor'
 0x4a5c80|0.0|TArmyBattle::~TArmyBattle
 0x4a5ca0|0.5432098765432098|TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters
-0x4a5ec0|0.5328947368421053|TArmyMgr::GenerateSpyReport
+0x4a5ec0|0.5307017543859649|TArmyMgr::GenerateSpyReport
 0x4a6680|0.7107652399481194|TArmyMgr::ShowSpyReport
 0x4a6d40|0.38202247191011235|TArmyMgr::ScanMapContextActionEntriesForCodeMatch
 0x4a6dd0|1.0|TArmyMgr::GetByteFlagAtOffset8
@@ -3111,7 +3111,7 @@ address|matching|name
 0x50bbc0|1.0|TMacViewMgr::ApplySellOrderRowToNationState
 0x50bc50|0.6167400881057269|TMacViewMgr::SyncSellTaggedChildControlWithNationState
 0x50be30|0.96|TMacViewMgr::MakeBookDialog
-0x50bea0|0.2028194633924511|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
+0x50bea0|0.2146430195543429|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 0x50d310|0.5625|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 0x50d360|0.6857142857142857|TMacViewMgr::OpenBuildingWindow
 0x50d470|0.40875912408759124|TMacViewMgr::ShowGoldDialogForTurnEventContext
@@ -3396,7 +3396,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::ExpandRegionClassGridToTileBlocks
 0x527730|0.29577464788732394|TMapMaker::PlaceTerrainFeatureQuotas
-0x527d00|0.43478260869565216|TMapMaker::CreateRivers
+0x527d00|0.4268774703557312|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
@@ -3769,8 +3769,8 @@ address|matching|name
 0x53cc10|0.4731182795698925|AccumulateUnitOrderPriorityVectorContribution
 0x53cda0|0.562962962962963|TArmyMission::GetWeightedEquipage
 0x53ceb0|0.4607329842931937|TArmyMission::GetWeightedSatisfaction
-0x53d020|0.4444444444444444|TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit
-0x53d200|0.4330708661417323|TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit
+0x53d020|0.44621513944223107|TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit
+0x53d200|0.43137254901960786|TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit
 0x53d3e0|0.7272727272727273|TArmyMission::IndustrialCostOfNeeds
 0x53d420|1.0|TArmyMission::ValueOf
 0x53d4a0|0.6985645933014354|TArmyMission::FitnessOf
@@ -5555,13 +5555,13 @@ address|matching|name
 0x5a8900|1.0|TTacticalBattleView::TacticalBattleViewSlot68
 0x5a89a0|1.0|TTacticalBattleView::InvalidateTacticalUnitTileRect
 0x5a89f0|0.42857142857142855|TTacticalBattleView::ComputeTacticalUnitTileScreenRect
-0x5a8ac0|0.6086956521739131|TTacticalBattleView::CenterViewportAroundGridIndexAndSnap
+0x5a8ac0|0.6867469879518072|TTacticalBattleView::CenterViewportAroundGridIndexAndSnap
 0x5a8be0|1.0|TTacticalBattleView::Scroll
 0x5a8ca0|1.0|TTacticalBattleView::DoSetCursor
 0x5a8d40|0.5252525252525253|TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x5a9090|0.8208955223880597|TTacticalBattleView::PlayTacticalTileEffect
 0x5a9170|0.9541284403669725|TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog
-0x5a9240|0.5601965601965602|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
+0x5a9240|0.5463414634146342|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
 0x5a9550|0.23429541595925296|TTacticalBattleView::DrawUiTilesAndOverlay
 0x5a99e0|1.0|DrawHexSelectionOutlineSegments
 0x5a9b40|0.92|TTacticalBattleView::UpdateTacticalActionControlBitmapForCurrentUnit

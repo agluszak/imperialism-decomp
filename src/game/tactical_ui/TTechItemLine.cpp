@@ -14,6 +14,7 @@ TTechItemLine::~TTechItemLine() {}
 
 IMPLEMENT_DYNCREATE(TTechItemLine, TLineData)
 
+// NOOP: verified empty in original 0x005b10c3 (no standalone TTechItemLine::TTechItemLine body exists: CreateObject 0x005b1090 inlines this default ctor, calling the TLineData base ctor directly at that site)
 TTechItemLine::TTechItemLine() {}
 
 // Virtual line factory: builds this tech line's TTechItemView, sized by the inherited

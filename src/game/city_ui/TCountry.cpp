@@ -779,8 +779,6 @@ char IsPolicyCodeInSpecialNationPolicySet(short policyCode) {
   return (policyCode > 0xc && policyCode < 0x11) ? 1 : 0;
 }
 
-void OrphanLeaf_NoCall_Ins07_004e4630(void) {}
-
 int OrphanLeaf_NoCall_Ins03_004e4660(void) {
   return 0;
 }
@@ -825,18 +823,11 @@ void TCountry::SetNationTradePolicyValueForTargetAndNotify(NationSlot targetNati
   }
 }
 
-void TriggerNationWarTransitionHandlersIfNeeded(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
-}
-
 void TCountry::ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot) {
   this->ApplyJoinEmpireMode1TargetTransition(targetNationSlot);
   g_pNewsMgr->AddTreatyEvent(kInterNationEventNationJoinedEmpire, this->nationSlot,
                              targetNationSlot, 0);
 }
-
-void ApplyJoinEmpireMode2FinalizeNationNameState_004e59d0(void) {}
 
 // FUNCTION: IMPERIALISM 0x0057f0e0
 bool TCountry::IsNationProfileInMinorRange100To199() {

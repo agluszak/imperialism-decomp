@@ -19,6 +19,7 @@ TNavyPlayer::~TNavyPlayer() {}
 
 IMPLEMENT_DYNCREATE(TNavyPlayer, TTacticalPlayer)
 
+// NOOP: verified empty in original 0x0059eb82 (no standalone TNavyPlayer::TNavyPlayer body exists: construction is fully inlined into CreateObject 0x0059eb80; that address is its operator-new call site)
 TNavyPlayer::TNavyPlayer() {}
 
 // Writes each surviving ship's losses back to its source fleet (nation drops

@@ -23,6 +23,7 @@ TMinorRelationshipDialog::~TMinorRelationshipDialog() {}
 
 IMPLEMENT_DYNCREATE(TMinorRelationshipDialog, TDialogView)
 
+// NOOP: verified empty in original 0x005b3333 (no standalone TMinorRelationshipDialog::TMinorRelationshipDialog body exists: CreateObject 0x005b3300 inlines this default ctor, calling the TView base ctor directly at that site)
 TMinorRelationshipDialog::TMinorRelationshipDialog() {}
 
 // FUNCTION: IMPERIALISM 0x005b3400

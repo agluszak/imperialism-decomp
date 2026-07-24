@@ -26,6 +26,7 @@ public:
   // Trivial in-class ctor (heuristic 116): the factory's `new TMiniCivView()`
   // (TMiniCivLine::InstallViews 0x4ab740) inline-expands the TControl base
   // ctor call, the unitText88 CString ctor, and the vptr store.
+  // NOOP: verified empty in original 0x004ab8f6 (no standalone TMiniCivView::TMiniCivView body exists: CreateObject 0x004ab8c0 inlines this default ctor, calling the TControl base ctor directly at that site)
   TMiniCivView() {}
 
   // MacApp second-phase init (0x4ab970): frames the control, binds the civ unit,

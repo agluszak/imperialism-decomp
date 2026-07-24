@@ -2448,7 +2448,7 @@ address|name|symbol|size|type|prototype|provenance
 4e41c0|TMinor::ReadFrom||360|function|undefined DeserializeDiplomacyNationStateFromStream()|
 4e4390|TMinor::WriteTo||476|function|undefined SerializeDiplomacyNationStateToStream()|
 4e45f0|TMinor::ReturnFalseNationStateCapabilityFlag90||48|function|undefined IsPolicyCodeInSpecialNationPolicySet()|
-4e4630|TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0||31|function|undefined OrphanLeaf_NoCall_Ins02_004d7ee0(void)|
+4e4630|TMinor::SumDiplomacyState1c6AndRelationDeltaSnapshot||31|function|short __thiscall SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot)|curated
 4e4660|TMinor::GetDiplomacyExternalStateByTarget||16|function|short GetDiplomacyExternalStateByTarget(short nationSlot)|
 4e4680|TMinor::OrphanLeaf_NoCall_Ins02_004d7f40||16|function|undefined OrphanLeaf_NoCall_Ins02_004d7f40(void)|
 4e46a0|TMinor::RebuildDiplomacyEconomicPressureFromMapState||619|function|undefined RebuildDiplomacyEconomicPressureFromMapState()|

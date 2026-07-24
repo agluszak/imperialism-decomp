@@ -32,6 +32,7 @@ TTerrainHelpPicture::~TTerrainHelpPicture() {}
 
 IMPLEMENT_DYNCREATE(TTerrainHelpPicture, TPicture)
 
+// NOOP: verified empty in original 0x00504e26 (no standalone TTerrainHelpPicture::TTerrainHelpPicture body exists: CreateObject 0x00504df0 inlines this default ctor, calling the TPicture base ctor directly at that site)
 TTerrainHelpPicture::TTerrainHelpPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00504e90

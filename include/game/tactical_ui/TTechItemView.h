@@ -18,6 +18,7 @@ public:
 
   // Inline in the original: the TTechItemLine factory (0x5b1160) expands it as the
   // TView base ctor call plus the vptr store.
+  // NOOP: verified empty in original 0x005b1283 (no standalone TTechItemView::TTechItemView body exists: CreateObject 0x005b1250 inlines this default ctor, calling the TView base ctor directly at that site)
   TTechItemView() {}
 
   // Second-phase init (single caller: the TTechItemLine factory at 0x5b1160): builds the

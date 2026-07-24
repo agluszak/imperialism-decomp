@@ -50,6 +50,7 @@ TTacArmyView::~TTacArmyView() {}
 
 IMPLEMENT_DYNCREATE(TTacArmyView, TTacticalBattleView)
 
+// NOOP: verified empty in original 0x005a9d26 (no standalone TTacArmyView::TTacArmyView body exists: CreateObject 0x005a9cf0 inlines this default ctor, calling the TTacticalBattleView base ctor directly at that site)
 TTacArmyView::TTacArmyView() {}
 
 // Live battle-view initializer (not a real constructor despite the symbols.csv name):

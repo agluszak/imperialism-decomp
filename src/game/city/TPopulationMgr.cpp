@@ -15,6 +15,7 @@
 
 IMPLEMENT_DYNCREATE(TPopulationMgr, TObject)
 
+// NOOP: verified empty in original 0x004b5b42 (no standalone TPopulationMgr::TPopulationMgr body exists: construction is fully inlined into CreateObject 0x004b5b40; that address is its operator-new call site)
 TPopulationMgr::TPopulationMgr() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b5bb0

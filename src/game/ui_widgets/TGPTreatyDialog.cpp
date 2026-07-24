@@ -24,6 +24,7 @@ TGPTreatyDialog::~TGPTreatyDialog() {}
 
 IMPLEMENT_DYNCREATE(TGPTreatyDialog, TDialogView)
 
+// NOOP: verified empty in original 0x005b3b13 (no standalone TGPTreatyDialog::TGPTreatyDialog body exists: CreateObject 0x005b3ae0 inlines this default ctor, calling the TView base ctor directly at that site)
 TGPTreatyDialog::TGPTreatyDialog() {}
 
 // FUNCTION: IMPERIALISM 0x005b3be0

@@ -23,6 +23,7 @@ TTradeOfferNationView::~TTradeOfferNationView() {}
 
 IMPLEMENT_DYNCREATE(TTradeOfferNationView, TView)
 
+// NOOP: verified empty in original 0x005bd223 (no standalone TTradeOfferNationView::TTradeOfferNationView body exists: CreateObject 0x005bd1f0 inlines this default ctor, calling the TView base ctor directly at that site)
 TTradeOfferNationView::TTradeOfferNationView() {}
 
 // FUNCTION: IMPERIALISM 0x005bd2d0
