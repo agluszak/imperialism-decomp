@@ -1502,7 +1502,7 @@ address|name|symbol|size|type|prototype|provenance
 4a4aa0|LookupCivilianMapCursorTokenByStateIndex||26|function|undefined LookupCivilianMapCursorTokenByStateIndex()|
 4a4ad0|TArmyMgr::HandleMapClickByCivilianCursorState||296|function|undefined HandleMapClickByCivilianCursorState()|
 4a4c80|ComputeCivilianMapCursorStateIndex||641|function|undefined ComputeCivilianMapCursorStateIndex()|
-4a4fc0|TArmyMgr::OrphanCallChain_C2_I54_004a4fc0||144|function|undefined OrphanCallChain_C2_I54_004a4fc0()|
+4a4fc0|TArmyMgr::DispatchMapActionForRegionByAdjacency||144|function|undefined DispatchMapActionForRegionByAdjacency()|
 4a5080|ValidateOrderPlacementPrerequisitesForSelectedTile||1407|function|undefined ValidateOrderPlacementPrerequisitesForSelectedTile()|
 4a5760|TArmyMgr::MarchSelectedArmies||656|function|undefined MarchSelectedArmies()|
 4a5aa0|TArmyMgr::ComputeWeightedNeighborLinkScoreForNodeIndex||75|function|int __thiscall ComputeWeightedNeighborLinkScoreForNodeIndex(int nodeIndex)|

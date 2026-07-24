@@ -47,24 +47,6 @@
 #include "game/ui_core/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
-
-// SYNTHETIC: IMPERIALISM 0x004a1810
-// TArmyMgr::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004a1850
-// TArmyMgr::GetRuntimeClass
-
-IMPLEMENT_DYNCREATE(TArmyMgr, TObject)
-
-// Own-source function (not a TArmyMgr method -- ground truth doesn't touch `this`).
-// Classifies a map-click as: 6 (already visited this pass), 0 (blocked -- dialog/order
-// context active, or tile already has a pending civilian order), 8 (blocked -- active
-// nation not eligible, or a diplomacy-target mismatch with the tile's owner), or 2
-// (click accepted). Defined below (0x4a4960) in address order; forward-declared here
-// for HandleMapClickByComputedCursorState's use.
-static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode);
-
-// Reads one action-record from `stream`: the fixed header fields (nationIds[0] and
 // reservedByte03/actionType04/tileOrObject08 read up front; nationIds[1] is read later,
 // interleaved into the per-side loop below alongside nationIds[0]), resolving
 // tileOrObject08 either as a raw tile/record index (actionType04 in {0,3,4}) or, via
@@ -149,6 +131,24 @@ void MapContextActionRecord::WriteTo(TStream* stream) {
     }
   }
 }
+
+// SYNTHETIC: IMPERIALISM 0x004a1810
+// TArmyMgr::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004a1850
+// TArmyMgr::GetRuntimeClass
+
+IMPLEMENT_DYNCREATE(TArmyMgr, TObject)
+
+// Own-source function (not a TArmyMgr method -- ground truth doesn't touch `this`).
+// Classifies a map-click as: 6 (already visited this pass), 0 (blocked -- dialog/order
+// context active, or tile already has a pending civilian order), 8 (blocked -- active
+// nation not eligible, or a diplomacy-target mismatch with the tile's owner), or 2
+// (click accepted). Defined below (0x4a4960) in address order; forward-declared here
+// for HandleMapClickByComputedCursorState's use.
+static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode);
+
+// Reads one action-record from `stream`: the fixed header fields (nationIds[0] and
 
 // FUNCTION: IMPERIALISM 0x004a1870
 TArmyMgr::TArmyMgr() {
@@ -1404,6 +1404,33 @@ int TArmyMgr::ComputeCivilianMapCursorStateIndex(short tileIndex, short mode) {
   return 1;
 }
 
+// Route a map action for the region named by contextArg's low short: walk the pending
+// province's adjacent-record list, and if that region is one of them select the movable
+// unit on the current tile, otherwise charge the city-action gate cost.
+// FUNCTION: IMPERIALISM 0x004a4fc0
+void TArmyMgr::DispatchMapActionForRegionByAdjacency(int contextArg) {
+  bool isAdjacent = false;
+  short index = 0;
+  Province* province = &g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex];
+  short adjacentCount = province->adjacentRegionCount08;
+  if (0 < adjacentCount) {
+    do {
+      if (isAdjacent) {
+        break;
+      }
+      if (province->adjacentRegionIds0A[index] == static_cast<short>(contextArg)) {
+        isAdjacent = true;
+      }
+      index = index + 1;
+    } while (index < adjacentCount);
+  }
+  if (!isAdjacent) {
+    CommitCityActionGateCostIfAffordable(contextArg);
+    return;
+  }
+  SelectMovableUnitOnCurrentTileAndPlaySfx(contextArg);
+}
+
 // FUNCTION: IMPERIALISM 0x004a5080
 bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityRecordIndex) {
   TMilitaryUnit* unit =
@@ -2142,6 +2169,29 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
 
   scratchList->RemoveAll();
   scratchList->Free();
+}
+
+// FUNCTION: IMPERIALISM 0x004a7370
+void ValidateOrderSupportDeltaAndMarkDirectionalOverlays(int nationSlot, short zone) {
+  TGreatPower* nation = g_apNationStates[nationSlot];
+  int totalArms = 0;
+  CIterator cursor(nation->militaryUnitList44);
+  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset()); cursor.More();
+       unit = static_cast<TMilitaryUnit*>(cursor.Advance())) {
+    if (unit->field_C == zone) {
+      if (g_pGlobalMapState->TileHasMovementClassId(unit->tileIndex06, zone) == 0) {
+        totalArms += unit->GetArmsCarried();
+      }
+    }
+  }
+  short capacity = g_pNavyOrderManager->GetInvasionCapacity(
+      static_cast<short>(nationSlot), &g_pGlobalMapState->cityScoreTable[zone], 0);
+  if (totalArms != capacity && totalArms - capacity > -1) {
+    CString message;
+    g_pSimMgr->GetString(0x2745, 10, &message);
+    g_pUiRuntimeContext->ModalMessage(message, g_orderSupportModalPosition_006a2288);
+    g_pGlobalMapState->MarkDirectionalMapOverlayFlagsForNationOrders();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004a7590
