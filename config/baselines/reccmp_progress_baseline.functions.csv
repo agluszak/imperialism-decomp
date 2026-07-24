@@ -4206,7 +4206,7 @@ address|matching|name
 0x557080|0.7058823529411765|TNavyMgr::CommitForce
 0x557170|0.35789473684210527|TNavyMgr::GetInvasionCapacity
 0x557210|0.2826086956521739|TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists
-0x5572d0|0.8837209302325582|GetEnabledIndustryCapabilitySlotByClass
+0x5572d0|0.9302325581395349|GetEnabledIndustryCapabilitySlotByClass
 0x557320|0.5106382978723404|GetLocalizedNavalReportShipType
 0x5573f0|0.359375|TAdmiral::CreateForTerrainType
 0x557560|0.9866666666666667|TNavyMgr::MakeSureAllShipsHaveOrders
