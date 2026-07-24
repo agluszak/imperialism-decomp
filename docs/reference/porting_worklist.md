@@ -10,20 +10,18 @@ are not covered here.
 
 - Original portable table: 184 rows
 - Removed after current ownership check: 161 landed rows
-- Reclassified from the stale portable table: 10 reviewed library routines and
+- Reclassified from the stale portable table: 12 reviewed library routines and
   9 interior fragments/non-entry labels
-- Live PORTABLE targets: 4 MODERATE rows
+- Live PORTABLE targets: 2 MODERATE rows
 
-## PORTABLE — MODERATE (4)
+## PORTABLE — MODERATE (2)
 
 | addr | size | name | class | approach |
 |------|------|------|-------|----------|
 | `0x0049ca50` | 80 | ReleaseRuntimeSelectionPeersAndResetOwner_Impl | — | Byte-identical to 0x49c8e0 (different Ghidra guess-name): releases 6 slot objects via vtable+8 + FreeLibrary; vtable dispatch on unmodeled struct. |
-| `0x0049b6a0` | 90 | ResizePointerArrayAndZeroEntries_Simple | — | Resize+zero a pointer array member ([ecx+4] buffer, [ecx+8] count) via operator new/delete; simple logic but owning array class unknown, so no faithfu |
-| `0x0049b7f0` | 90 | ResizePointerArrayAndZeroEntries | — | Byte-identical twin of 0x0049b6a0 (resize+zero pointer array via new/delete on [ecx+4]/[ecx+8]); owning class unknown, cannot draft faithfully. |
 | `0x004835e0` | 92 | SelectPaletteAndResolveHandleMapEntry_004835e0 | — | GetDC on [ecx+0x1c], FromHandle to a CDC, blit via func_0x00409890 using rect from unaff_EBX[0..3], ReleaseDC. Unresolved blit/select calls and DC-map |
 
-## SKIP_LIBRARY (38) — do not port
+## SKIP_LIBRARY (40) — do not port
 
 `0x005eadfd` ReallocateHeapBlockWithAllocatorTrim, `0x00614ca9` SetForeignMinisterReadyFlag14, `0x006192a1` DDX_Control, `0x0049b630` ResolveBmpResourceHandleWithDefault3, `0x00618d0f` DDX_Check, `0x005facd6` FillInToolInfo, `0x00613de1` AdjustWindowRectForClientAndScrollSt, `0x0061c581` RegisterMouseWheelRollMessageForLega, `0x005ec760` RotateNumericStringAtExponentAndInse, `0x005ed930` AbortWithThreadAbortHookIfPresent, `0x0049b8f0` DestructModuleLibraryCacheAndHashTab, `0x0061096b` CDocument, `0x004925e0` DestructViewModalStateNodeBlockChain, `0x00605b21` operator+(CString,CString), `0x005eca30` FormatNumericStringAndAppend, `0x00613e49` GetTEventHandlerClassNamePointer, `0x0060396e` GetNextAssoc, `0x00492550` UnlinkNodeFromDoublyLinkedListAndRec, `0x00622690` CCommandLineInfo, `0x00607abf` afxMapHWND, `0x0060d058` afxMapHMENU, `0x006126c6` afxMapHDC, `0x0060852e` AssignSharedStringFromField84, `0x005ec8b0` FormatNumericStringAndAppendWithFlag, `0x00605b87` operator+(CString,char*), `0x00605bfb` operator+(char*,CString), `0x005f6827` ReinitializeLocaleDateTimeFormatting, `0x005eddeb` RunLocalExceptionFilterChainAndUnwin
 
@@ -33,6 +31,8 @@ Current ownership also classifies these former PORTABLE rows as library code:
 `0x005f7860` `__add_12`, `0x00609c37` `CWnd::OnChildNotify`, `0x00611334`
 `CDocument::GetFile`, `0x0061404d` `CView::GetScrollBarCtrl`, `0x00614b12`
 `CDocTemplate::CreateNewFrame`, and `0x006159b9` `CScrollView::OnVScroll`.
+The cache-table copies `0x0049b6a0` and `0x0049b7f0` are VC5
+`CMap<...>::InitHashTable` template instantiations emitted from `afxtempl.h`.
 
 ## SKIP_COMPILER_OR_FRAGMENT (11) — do not port as standalone functions
 

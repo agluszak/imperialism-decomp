@@ -1266,10 +1266,10 @@ address|name|symbol|size|type|prototype|provenance
 49b5d0|WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0()|
 49b600|WrapperFor_FreeHeapBufferIfNotNull_At0049b600||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0049b600()|
 49b630|ResolveBmpResourceHandleWithDefault3B6_Impl||76|function|undefined ResolveBmpResourceHandleWithDefault3B6_Impl()|
-49b6a0|ResizePointerArrayAndZeroEntries_Simple||90|function|undefined ResizePointerArrayAndZeroEntries_Simple()|
+49b6a0|CMap<WORD,WORD,CacheRecord*,CacheRecord*>::InitHashTable|?InitHashTable@?$CMap@GGPAUCacheRecord@@PAU1@@@QAEXIH@Z|90|function|void InitHashTable(unsigned int hashSize, int bAllocNow)|curated
 49b720|WrapperFor_AllocateAndLinkBlockHead_At0049b720||87|function|undefined WrapperFor_AllocateAndLinkBlockHead_At0049b720()|
 49b7a0|FindShortKeyHashNodeAndOutputBucketIndex||55|function|undefined FindShortKeyHashNodeAndOutputBucketIndex()|
-49b7f0|ResizePointerArrayAndZeroEntries||90|function|undefined ResizePointerArrayAndZeroEntries()|
+49b7f0|CMap<void*,void*,CacheRecord*,CacheRecord*>::InitHashTable|?InitHashTable@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@QAEXIH@Z|90|function|void InitHashTable(unsigned int hashSize, int bAllocNow)|curated
 49b870|WrapperFor_AllocateAndLinkBlockHead_At0049b870||88|function|undefined WrapperFor_AllocateAndLinkBlockHead_At0049b870()|
 49b8f0|DestructModuleLibraryCacheAndHashTables_Impl||99|function|undefined DestructModuleLibraryCacheAndHashTables_Impl()|
 49b980|ComputeBucketIndexAndScanNodeByKey||52|function|undefined ComputeBucketIndexAndScanNodeByKey()|

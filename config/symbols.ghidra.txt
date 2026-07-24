@@ -2071,10 +2071,10 @@ TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive 49B330 f
 WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0 49B5D0 f
 WrapperFor_FreeHeapBufferIfNotNull_At0049b600 49B600 f
 ResolveBmpResourceHandleWithDefault3B6_Impl 49B630 f
-ResizePointerArrayAndZeroEntries_Simple 49B6A0 f
+CMap<WORD,WORD,CacheRecord*,CacheRecord*>::InitHashTable 49B6A0 f
 WrapperFor_AllocateAndLinkBlockHead_At0049b720 49B720 f
 FindShortKeyHashNodeAndOutputBucketIndex 49B7A0 f
-ResizePointerArrayAndZeroEntries 49B7F0 f
+CMap<void*,void*,CacheRecord*,CacheRecord*>::InitHashTable 49B7F0 f
 WrapperFor_AllocateAndLinkBlockHead_At0049b870 49B870 f
 DestructModuleLibraryCacheAndHashTables_Impl 49B8F0 f
 ComputeBucketIndexAndScanNodeByKey 49B980 f

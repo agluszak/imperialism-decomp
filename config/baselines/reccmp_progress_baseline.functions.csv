@@ -1287,7 +1287,7 @@ address|matching|name
 0x4994c0|0.8297872340425532|TModuleLibraryCacheTableStateB::LoadUiStringResourceByGroupAndIndex
 0x4995a0|1.0|TModuleLibraryCacheTableStateB::ResolveDefaultLogPalette
 0x4995c0|0.23076923076923078|TModuleLibraryCacheTableStateB::EnsureDefaultDibPalette
-0x4997e0|0.31721470019342357|TModuleLibraryCacheTableStateB::LoadBmpResourceByIdCached
+0x4997e0|0.3404255319148936|TModuleLibraryCacheTableStateB::LoadBmpResourceByIdCached
 0x499b40|0.2857142857142857|TModuleLibraryCacheTableStateB::BuildIndexedBmpResourceById
 0x499e80|0.012422360248447204|AllocateAndLinkBlockHeadPair_00499e80
 0x49a0b0|0.7931034482758621|TModuleLibraryCacheTableStateB::IncrementDialogResourceRefCountByShortIdInRegistry
@@ -1307,10 +1307,10 @@ address|matching|name
 0x49b5d0|0.0|WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0
 0x49b600|0.0|WrapperFor_FreeHeapBufferIfNotNull_At0049b600
 0x49b630|0.05405405405405406|ResolveBmpResourceHandleWithDefault3B6_Impl
-0x49b6a0|0.05263157894736842|ResizePointerArrayAndZeroEntries_Simple
+0x49b6a0|1.0|CMap<unsigned short,unsigned short,CacheRecord *,CacheRecord *>::InitHashTable
 0x49b720|0.05405405405405406|WrapperFor_AllocateAndLinkBlockHead_At0049b720
 0x49b7a0|0.08333333333333333|FindShortKeyHashNodeAndOutputBucketIndex
-0x49b7f0|0.05263157894736842|ResizePointerArrayAndZeroEntries
+0x49b7f0|1.0|CMap<void *,void *,CacheRecord *,CacheRecord *>::InitHashTable
 0x49b870|0.05405405405405406|WrapperFor_AllocateAndLinkBlockHead_At0049b870
 0x49b8f0|0.0|DestructModuleLibraryCacheAndHashTables_Impl
 0x49b980|0.08333333333333333|ComputeBucketIndexAndScanNodeByKey
