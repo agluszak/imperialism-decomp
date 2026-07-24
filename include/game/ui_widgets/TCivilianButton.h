@@ -4,7 +4,6 @@
 
 #include "game/ui_screens/TRadioPictureButton.h"
 
-extern "C" int g_vtblTCivilianButton;
 class TCivUnit;
 struct CRuntimeClass;
 

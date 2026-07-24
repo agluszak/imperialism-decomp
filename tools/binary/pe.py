@@ -85,6 +85,33 @@ class OriginalImage:
             addr = addr + 5 + struct.unpack_from("<i", self.data, fo + 1)[0]
         return addr
 
+    def jmp_target(self, addr: int) -> int | None:
+        """Target of a `jmp rel32` at addr, or None if the byte isn't 0xE9."""
+        fo = self.va_to_file_offset(addr)
+        if fo is None or self.data[fo] != 0xE9:
+            return None
+        return addr + 5 + struct.unpack_from("<i", self.data, fo + 1)[0]
+
+    def resolve_fold_chain(self, addr: int, max_hops: int = 8) -> int:
+        """Follow a stale-island fold chain to its final body.
+
+        Incremental LINK 5.0 leaves `jmp rel32` islands at a moved/folded
+        symbol's old address, chaining island -> ILT thunk -> island -> ... ->
+        real body (ctors-dtors-eh skill, 2026-07-23). Unlike resolve_thunk,
+        this follows `jmp` hops outside the ILT band too.
+        """
+        seen: set[int] = set()
+        for _ in range(max_hops):
+            addr = self.resolve_thunk(addr)
+            if addr in seen:
+                break
+            seen.add(addr)
+            target = self.jmp_target(addr)
+            if target is None:
+                break
+            addr = target
+        return self.resolve_thunk(addr)
+
 
 def load_symbol_names() -> dict[int, str]:
     """addr -> curated name from config/original_entities.csv."""

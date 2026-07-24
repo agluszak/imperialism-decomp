@@ -15,6 +15,11 @@
 class CMcEditWindow : public CEdit {
 public:
   CMcEditWindow() : CEdit() {} // inlined into TEditText::Open in the original
+  // The ordinary destructor's canonical address is an incremental-link fold
+  // island (jmp chain onto CProgressCtrl::~CProgressCtrl in the MFC region);
+  // the folded_symbol_group row in config/template_aliases.csv proves it.
+  // FUNCTION: IMPERIALISM 0x00490a30
+  ~CMcEditWindow() override {}
 
 protected:
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags); // 0x00489e70

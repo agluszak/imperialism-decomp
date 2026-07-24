@@ -60,7 +60,11 @@ const int kControlTagNavy =
 const int kControlTagOpca = IMPERIALISM_FOURCC('o', 'p', 'c', 'a'); // auto-resolution-mode checkbox
 const int kControlTagOpta = IMPERIALISM_FOURCC(
     'o', 'p', 't', 'a'); // first of 26 sequential game-preferences checkboxes (opta-opt+0x19)
+const int kControlTagNooo =
+    IMPERIALISM_FOURCC('n', 'o', 'o', 'o'); // auto-resolution "No" radio option
 const int kControlTagPurc = IMPERIALISM_FOURCC('p', 'u', 'r', 'c'); // tech-item purchase button
+const int kControlTagTpca =
+    IMPERIALISM_FOURCC('t', 'p', 'c', 'a'); // auto-resolution prompt text (game preferences)
 const int kControlTagRaly =
     IMPERIALISM_FOURCC('r', 'a', 'l', 'y'); // TMultiplayerMgr.cpp, TTacticalBattle.cpp
 const int kControlTagResu =

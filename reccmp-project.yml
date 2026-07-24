@@ -10,6 +10,8 @@ targets:
       sha256: 6afab8495db715fd9e719cffa74abe5ede4dd763428ff65d73be4edf16c9e691
     data_sources:
     - build-msvc500/generated/symbols.csv
+    equivalence_groups:
+    - config/template_aliases.csv
     encoding:
     ghidra:
       ignore_types: []

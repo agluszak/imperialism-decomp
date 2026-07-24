@@ -282,8 +282,21 @@ thunk-chasing stops at the first *named* node, so the island claim is exactly wh
 the ??_G caller's `call` operand pair per class (90.91% -> 100%). Do NOT "fix" these
 claims by moving them to the chain's final body — the final is shared and already claimed
 by the base class, so re-homing removes the per-class name and drops the ??_G back to
-90.91%. Cost of the correct model: each island row scores ~0% (our real dtor body vs a
-5-byte jmp), which drags the unweighted average-similarity metric while exact counts
-rise — that delta is bookkeeping, not regression. Corollary: the stale islands encode
-the original developers' relink history, so no clean re-link (ours or theirs) can ever
-reproduce them; per-function pairing with named island claims is the attainable maximum.
+90.91%. Corollary: the stale islands encode the original developers' relink history, so
+no clean re-link (ours or theirs) can ever reproduce them; per-function pairing with
+named island claims is the attainable maximum.
+
+*(Update 2026-07-24, bd 5jjn)*: island rows no longer cost anything. Every island is a
+`folded_symbol_group` row in `config/template_aliases.csv` (discover new ones with
+`just stale-jmp-islands --emit`; `just template-alias-check` re-proves the chain), and
+reccmp consumes those groups: a claimed island row scores as an EFFECTIVE match
+(reason `folded_symbol_alias`), call/jmp operands into any group member pair with the
+canonical, and folded vtable slots pair through the group. When claiming a new island,
+add its `folded_symbol_group` row in the same change so it scores effective immediately.
+Two corollaries (bd iftm): a byte-identical per-TU duplicate COMDAT (e.g. TObject's
+0x4849c0 twin of 0x485f50) is recognized via a `per_tu_duplicate` alias row — do NOT
+stack a second `// FUNCTION` marker on the definition (reccmp drops the duplicate
+address and the row vanishes from the report), and stubgen skips alias members so the
+twin is counted as a recognized duplicate instead of stub-paired at a junk score. A
+??_G whose chain folds DIRECTLY onto a shared base body with no per-class island
+(TFileStream, TLongintList) has no claimable address; its 90.91% is the ceiling.

@@ -139,8 +139,6 @@ DiplomacyMaskBufferRun::DiplomacyMaskBufferRun() {
 
 // SYNTHETIC: IMPERIALISM 0x004f3c90
 // TDiplomacyMapView::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x004f3cc0
-// TDiplomacyMapView::~TDiplomacyMapView
 
 // FUNCTION: IMPERIALISM 0x004f3d60
 void TDiplomacyMapView::DoPostCreate(int arg) {
@@ -362,23 +360,23 @@ void TDiplomacyMapView::InitializeDiplomacyMinisterActionControlsAndLabels() {
   infoActionButton->Setup();
 
   for (short i = 0; i < 6; ++i) {
-    TView* hoverControl = ResolveControlByTag(g_councilControlTagTable[i]);
+    TView* hoverControl = ResolveControlByTag(g_aDiplomacyActionTopicTabTags[i]);
     g_pSimMgr->GetString(0x2733, static_cast<short>(i + 0x52), &text);
     SetControlHoverHelpText(text, hoverControl);
   }
 
   if (g_pSimMgr->mode == 6) {
-    TView* trtyHover = ResolveControlByTag(g_councilControlTagTable[1]);
+    TView* trtyHover = ResolveControlByTag(g_aDiplomacyActionTopicTabTags[1]);
     g_pSimMgr->GetString(0x274a, 5, &text);
     SetControlHoverHelpTextAltEntry(text, trtyHover);
 
-    TView* granHover = ResolveControlByTag(g_councilControlTagTable[2]);
+    TView* granHover = ResolveControlByTag(g_aDiplomacyActionTopicTabTags[2]);
     SetControlHoverHelpTextAltEntry(CString(g_szEmptyString), granHover);
 
-    TView* tradHover = ResolveControlByTag(g_councilControlTagTable[3]);
+    TView* tradHover = ResolveControlByTag(g_aDiplomacyActionTopicTabTags[3]);
     SetControlHoverHelpTextAltEntry(CString(g_szEmptyString), tradHover);
   } else {
-    TView* offrControl = ResolveControlByTag(g_councilControlTagTable[5]);
+    TView* offrControl = ResolveControlByTag(g_aDiplomacyActionTopicTabTags[5]);
     SetControlHoverHelpText(CString(g_szEmptyString), offrControl);
     offrControl->CaptureLayoutF0(g_diplomacyPopupLayoutPosition_006a3020, 0);
   }
@@ -1258,7 +1256,7 @@ void TDiplomacyMapView::DrawVoteNuggets() {
     int iconCode = g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix304[policyIndex];
     if (tileHasOwnerFlags52C[policyIndex] && iconCode != -1 && tierValue <= selectedTier) {
       RECT* iconRect = &tileMarkerRects6AC[policyIndex];
-      short iconX = g_pGlobalMapState->QueryIconStripXSlot110(iconCode);
+      short iconX = g_pGlobalMapState->GetMapImprovementTierBucketOffset(iconCode);
 
       RECT srcRect;
       srcRect.left = iconX;

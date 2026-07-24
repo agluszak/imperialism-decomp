@@ -16,6 +16,7 @@ precedence when a numeric address exists in both images.
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
 
 from tools.common.reccmp_report import run_report
@@ -64,11 +65,24 @@ def main() -> int:
                 by_recomp[recomp] = ent
 
     index(entities)
-    if any(query not in by_orig and query not in by_recomp for query in queries):
+    missing = [q for q in queries if q not in by_orig and q not in by_recomp]
+    if missing:
         # The address-filtered run only loads PDB object modules reccmp can
         # prove; functions in unprovable modules silently drop out. Fall back
         # to one unfiltered (full-corpus) report for the stragglers.
         index(run_report(args.target, args.build_dir, diet=True))
+        rescued = [q for q in missing if q in by_orig or q in by_recomp]
+        if rescued:
+            # bd t401 regression tell: the filtered report dropped a pairable
+            # address. Diagnose with `reccmp-reccmp --orig-address 0x... --json`
+            # and compare the selected module ids against the TU's obj path in
+            # the PDB module table (reccmp.cvdump.targeted.select_modules).
+            print(
+                "WARNING: address-filtered reccmp report dropped "
+                + ", ".join(f"0x{q:08x}" for q in rescued)
+                + "; the full-corpus fallback found them (bd t401 recurrence)",
+                file=sys.stderr,
+            )
 
     rc = 0
     for query in queries:

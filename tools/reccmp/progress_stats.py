@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import importlib.metadata
 import json
 import logging
 import subprocess
@@ -229,11 +230,14 @@ def parse_roadmap_counts(path: Path) -> dict[str, int]:
                 if orig_addr is not None and recomp_addr is not None:
                     entry["paired"].add(orig_addr)
 
-    # Per-TU duplicate template COMDATs (config/template_aliases.csv, rule
-    # MFC-TWIN-030): an unpaired alias original whose canonical IS paired is a
-    # recognized duplicate body, not unported work -- the recomp legitimately
-    # emits one copy of the instantiation. Aliases whose canonical is still
-    # unpaired keep counting as original-only (the canonical is the work item).
+    # Equivalence-alias members (config/template_aliases.csv): an unpaired
+    # alias original whose canonical IS paired is a recognized duplicate/folded
+    # body, not unported work -- the recomp legitimately emits one copy
+    # (duplicate_emission), or the island is the same symbol's stale pre-move
+    # address (folded_symbol_group; unclaimable when the body's current address
+    # already carries the marker). Aliases whose canonical is still unpaired
+    # keep counting as original-only (the canonical is the work item). Claimed
+    # islands are paired (effective) and never reach this reclassification.
     aliases, alias_errors = load_aliases()
     for err in alias_errors:
         print(f"WARNING template_aliases.csv: {err}")
@@ -550,13 +554,31 @@ def report_input_hashes(
         target.recompiled_path,
         target.recompiled_pdb,
         *target.data_sources,
+        *target.equivalence_groups,
     }
     for source_root in target.source_paths:
         paths.update(path for path in source_root.rglob("*") if path.is_file())
-    return {
+    hashes = {
         _cache_path_label(repo_root, path): _file_sha256(path)
         for path in sorted(paths, key=lambda item: str(item.resolve()))
     }
+    # pyproject/uv.lock cover pin bumps, but not what is actually installed
+    # (e.g. a temporary `uv pip install -e` of the reccmp fork). Stamp the
+    # installed distribution so switching pinned <-> editable invalidates.
+    hashes["installed:reccmp"] = hashlib.sha256(
+        _reccmp_dist_stamp().encode("utf-8")
+    ).hexdigest()
+    return hashes
+
+
+def _reccmp_dist_stamp() -> str:
+    """Identity of the installed reccmp distribution (version + install origin)."""
+    try:
+        dist = importlib.metadata.distribution("reccmp")
+    except importlib.metadata.PackageNotFoundError:
+        return "absent"
+    direct_url = dist.read_text("direct_url.json") or ""
+    return f"{dist.version}|{direct_url}"
 
 
 def report_cache_is_current(
@@ -763,7 +785,14 @@ def print_summary(entry: dict[str, Any], baseline: dict[str, Any] | None, baseli
         original_key = f"original_{row_type}_count"
         paired_key = f"paired_{row_type}_count"
         coverage = pct(entry[paired_key], entry[original_key])
-        print(f"  {row_type} ({label}): original {entry[original_key]}, paired {entry[paired_key]}, coverage {coverage:.2f}%")
+        # flo/lab pair at exactly 0% by reccmp design, not by project omission:
+        # LABEL is a function-interior "passenger" entity (jump targets,
+        # __ehhandler/__Unwind markers) never matched standalone, and float-
+        # constant matching is unimplemented upstream (create_analysis_floats:
+        # "not matching anything right now"). Operand comparison resolves float
+        # values by name on both sides, so the zeros do not depress scores.
+        note = " (never matched by reccmp; expected 0%)" if row_type in ("flo", "lab") else ""
+        print(f"  {row_type} ({label}): original {entry[original_key]}, paired {entry[paired_key]}, coverage {coverage:.2f}%{note}")
     print("")
 
     print("Noise")

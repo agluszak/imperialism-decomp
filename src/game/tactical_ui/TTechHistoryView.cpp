@@ -21,6 +21,7 @@ TTechHistoryView::~TTechHistoryView() {}
 
 IMPLEMENT_DYNCREATE(TTechHistoryView, TView)
 
+// NOOP: verified empty in original 0x005b2263 (no standalone TTechHistoryView::TTechHistoryView body exists: CreateObject 0x005b2230 inlines this default ctor, calling the TView base ctor directly at that site)
 TTechHistoryView::TTechHistoryView() {}
 
 // FUNCTION: IMPERIALISM 0x005b22c0

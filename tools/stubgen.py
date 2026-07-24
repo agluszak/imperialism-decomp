@@ -22,6 +22,7 @@ import re
 from pathlib import Path
 
 from tools.common.repo import repo_root_from_file, resolve_repo_path
+from tools.common.template_aliases import load_aliases
 from tools.generate_symbols import generate_rows
 from tools.source_model import build_model
 
@@ -166,6 +167,11 @@ def compute_stub_rows(
     if model is None:
         model = build_model(repo_root, target)
     claimed = set(model.functions)
+    # Equivalence-alias members (config/template_aliases.csv) are never
+    # independent stub targets: the canonical body is the work item, and a
+    # stub claiming the alias pairs it at a junk score instead of letting the
+    # alias accounting recognize it (bd 5jjn / iftm).
+    alias_members, _alias_errors = load_aliases()
     if overlay_rows is None:
         _fields, overlay_rows, _stats = generate_rows(
             repo_root, target, inventory=symbols_csv, model=model
@@ -180,7 +186,7 @@ def compute_stub_rows(
         if not address_text:
             continue
         address = int(address_text, 16)
-        if address in claimed:
+        if address in claimed or address in alias_members:
             continue
         name = (row.get("name") or "").strip()
         prototype = sanitize_prototype((row.get("prototype") or "").strip())

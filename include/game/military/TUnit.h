@@ -23,7 +23,10 @@ public:
   void Free() override;                    // slot 0x1c
 
   // --- TUnit virtual functions ---
-  virtual void VTableSlot10(int pOwnerContext);         // slot 0x28
+  // Mac oracle: MoveTo(short) on TUnit/TCivUnit/TMilitaryUnit. The argument is the
+  // destination tile index (-1 = detach only); the overrides relink the unit between
+  // the per-tile / per-city-record order chains. Base body is a no-op.
+  virtual void MoveTo(int nTileIndex);                  // slot 0x28
   virtual void ContinueOrders();                        // slot 0x2c, Mac oracle
   virtual void DetachUnitOrderFromOwnerAndReset();      // slot 0x30
   virtual void SetOrders(UnitOrder order, int payload); // slot 0x34
@@ -41,7 +44,7 @@ public:
   short field_E;       // 0x0e
   // Doubly-linked-list back-pointer for the tile's civilian-order chain (terrainState-
   // Table[tileIndex06].firstCivilianOrder20, threaded via nextOnTile); null when this is
-  // the chain head. Recovered from TCivUnit::VTableSlot10 (0x5c2b70), which dereferences
+  // the chain head. Recovered from TCivUnit::MoveTo (0x5c2b70), which dereferences
   // it at +0x14 (TUnit::nextOnTile's own offset).
   TUnit* field_10;        // 0x10
   TUnit* nextOnTile;      // 0x14
@@ -57,7 +60,7 @@ public:
   // originals emit.
   TUnit();
 
-  void RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
+  void RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
                                          short nOrderOwnerNationId, short arg3);
 };
 

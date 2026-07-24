@@ -5,6 +5,7 @@
 #include "game/ui_core/TStaticText.h"
 #include "game/ui_text_label_helpers_decls.h"
 #include "game/globals/city_ui_globals.h"
+#include "game/globals/shared_globals.h"
 // SYNTHETIC: IMPERIALISM 0x004c71f0
 // TWarehouseView::CreateObject
 
@@ -54,7 +55,7 @@ void TWarehouseView::DoStartup() {
   // Resolve and style the 23 commodity value controls by their FourCC tags.
   for (short i = 0; i < 23; ++i) {
     TStaticText* control =
-        static_cast<TStaticText*>(ResolveControlByTag(g_awCommodityValueControlTags_00696108[i]));
+        static_cast<TStaticText*>(ResolveControlByTag(g_pTradeSummarySelectionMap[i]));
     commodityValueControlsA0[i] = static_cast<TPictureNumberText*>(control);
     if (control != nullptr) {
       control->InstallTextStyle(style.desc, 0);

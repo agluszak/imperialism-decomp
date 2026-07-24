@@ -18,6 +18,7 @@
 
 IMPLEMENT_DYNCREATE(TUnitOrder, TProductionOrder)
 
+// NOOP: verified empty in original 0x004b6f22 (no standalone TUnitOrder::TUnitOrder body exists: construction is fully inlined into CreateObject 0x004b6f20; that address is its operator-new call site)
 TUnitOrder::TUnitOrder() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b6f90

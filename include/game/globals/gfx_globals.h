@@ -49,6 +49,11 @@ extern int g_useCompatibleBitmapBlit;
 // the UI invalidation-flag assert helper from the TDlgWindow/UGameWindow assert hooks.
 extern char g_szUGameWindowSourcePath_00696bc0[];
 
+// Line-break characters the D0 trace dialog splits its pending text on ("\n\r").
+// Defined inside the extern "C" block of global_data_tables.cpp, so declared with C
+// linkage here to match.
+extern char g_szTraceLineBreakChars_00695200[];
+
 // UDisplayMgr font literals and runtime CString slots (markers in global_data_tables.cpp).
 extern "C" const char g_szUiFontLiteralBelweBdBt[];
 

@@ -166,5 +166,9 @@ const int kControlTagUsel = IMPERIALISM_FOURCC('u', 's', 'e', 'l');  // labor us
 const int kControlTagVert =
     IMPERIALISM_FOURCC('v', 'e', 'r', 't'); // TGPTreatyDialog.cpp; 2 Mac screen(s)
 const int kControlTagWord = IMPERIALISM_FOURCC('w', 'o', 'r', 'd'); // TToolBarCluster.cpp
+const int kControlTagWor1 =
+    IMPERIALISM_FOURCC('w', 'o', 'r', '1'); // minor-relationship dialog major-name strip 1
+const int kControlTagWor2 =
+    IMPERIALISM_FOURCC('w', 'o', 'r', '2'); // minor-relationship dialog major-name strip 2
 const int kControlTagFwnd =
     IMPERIALISM_FOURCC('f', 'w', 'n', 'd'); // TFloatWindow.cpp float-window type code

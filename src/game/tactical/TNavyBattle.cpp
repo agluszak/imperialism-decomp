@@ -25,6 +25,7 @@ TNavyBattle::~TNavyBattle() {}
 
 IMPLEMENT_DYNCREATE(TNavyBattle, TTacticalBattle)
 
+// NOOP: verified empty in original 0x005a5485 (no standalone TNavyBattle::TNavyBattle body exists: construction is fully inlined into CreateObject 0x005a5480; that address is its operator-new call site)
 TNavyBattle::TNavyBattle() {}
 
 // FUNCTION: IMPERIALISM 0x005a55c0

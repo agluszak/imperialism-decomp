@@ -76,34 +76,6 @@ TLanguageMgr* g_pLanguageMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a43e0
 TAnimator* g_pUiAnimator = 0;
 
-// Modal-message anchor point for the invasion-support warning (BSS, {0,0} at load).
-// GLOBAL: IMPERIALISM 0x006a2288
-POINT g_orderSupportModalPosition_006a2288 = {0, 0};
-// Typed C++ linkage (not inside extern "C").
-// FourCC tags of the 23 warehouse commodity value controls, in commodity-slot order
-// (cotton..gold). TWarehouseView::DoStartup (0x4c7360) resolves each into commodityValueControlsA0.
-// GLOBAL: IMPERIALISM 0x00696108
-unsigned int g_awCommodityValueControlTags_00696108[23] = {
-    IMPERIALISM_FOURCC('c', 'o', 't', 't'), IMPERIALISM_FOURCC('w', 'o', 'o', 'l'),
-    IMPERIALISM_FOURCC('t', 'i', 'm', 'b'), IMPERIALISM_FOURCC('c', 'o', 'a', 'l'),
-    IMPERIALISM_FOURCC('i', 'r', 'o', 'n'), IMPERIALISM_FOURCC('h', 'o', 'r', 's'),
-    IMPERIALISM_FOURCC('o', 'i', 'l', ' '), IMPERIALISM_FOURCC('f', 'o', 'o', 'd'),
-    IMPERIALISM_FOURCC('f', 'a', 'b', 'r'), IMPERIALISM_FOURCC('l', 'u', 'm', 'b'),
-    IMPERIALISM_FOURCC('p', 'a', 'p', 'e'), IMPERIALISM_FOURCC('s', 't', 'e', 'e'),
-    IMPERIALISM_FOURCC('f', 'u', 'e', 'l'), IMPERIALISM_FOURCC('c', 'l', 'o', 't'),
-    IMPERIALISM_FOURCC('f', 'u', 'r', 'n'), IMPERIALISM_FOURCC('h', 'a', 'r', 'd'),
-    IMPERIALISM_FOURCC('a', 'r', 'm', 'a'), IMPERIALISM_FOURCC('g', 'r', 'a', 'i'),
-    IMPERIALISM_FOURCC('p', 'r', 'o', 'd'), IMPERIALISM_FOURCC('f', 'i', 's', 'h'),
-    IMPERIALISM_FOURCC('l', 'i', 'v', 'e'), IMPERIALISM_FOURCC('g', 'e', 'm', 's'),
-    IMPERIALISM_FOURCC('g', 'o', 'l', 'd')};
-// Resource/order-type -> armory recruit-button icon class. TArmoryView::DoStartup (0x4cee20)
-// reads g[order->resourceTypeIndex48] and, for the land-unit class (value 8), selects the
-// button picture-variant (types 0x18/0x19/other -> 8/0x10/0x18). Indices 0x18-0x1d map to
-// classes 8/9; the leading 0..7 runs mirror the commodity-slot groups.
-// GLOBAL: IMPERIALISM 0x00695528
-short g_resourceTypeToUnitClass_00695528[32] = {0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7,
-                                                0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 9, 9, 9, 0, 0};
-
 extern "C" {
 
 // Diplomacy globals
@@ -169,7 +141,6 @@ char* g_pStatusPictureMainSharedText_00668b88 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x00695448
 extern const unsigned char g_MapContextStaticTable_00695448[0x20] = {
     1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0};
-char g_vtblTSortedByRelationshipList = 0;
 // Last cursor edge-auto-scroll timestamp in GetTickCountDiv16 units
 // (TAmbitApplication::HandleCursor, 0x49e320).
 // GLOBAL: IMPERIALISM 0x006a21c0
@@ -285,6 +256,10 @@ unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC = 0;
 char g_szMcAppUiSourcePath_006950B0[] = "D:\\Ambit\\McAppUI.cpp";
 // GLOBAL: IMPERIALISM 0x00695168
 char g_szQuickDrawSourcePath_00695168[] = "D:\\Ambit\\QuickDraw.cpp";
+// FindOneOf() set used by TD0TemplateDialog to split accumulated trace text into
+// listbox lines. Newline precedes carriage return in the original pool.
+// GLOBAL: IMPERIALISM 0x00695200
+char g_szTraceLineBreakChars_00695200[] = "\n\r";
 // Placeholder strings baked into the turn-event dialog builders (season/treasury/info
 // text shown until real values are bound).
 // GLOBAL: IMPERIALISM 0x00694354
@@ -478,11 +453,14 @@ char g_szUCountrySourcePath_00696728[] = "D:\\Ambit\\Cross\\UCountry.cpp";
 int g_diplomacyActionButtonTagTable_00696960[6] = {kControlTagInfo, kControlTagTrty,
                                                    kControlTagGran, kControlTagTrad,
                                                    kControlTagCoun, kControlTagOffr};
-// TCouncilView::DoEvent's council-control 4-char tag table ("tfni", "ttrt", "targ",
-// "tart", "tuoc", "rffo" as stored); also the same function's hover-text tag variants.
+// Diplomacy action-topic tab tags ("tfni", "ttrt", "targ", "tart", "tuoc", "rffo" as
+// stored): scanned in order by TDiplomacyMapView::DoEvent's commandId == 0x14 branch to
+// turn a clicked tab into a topic index, and by TCouncilView::DoEvent's council-control
+// and hover-text lookups.
 // GLOBAL: IMPERIALISM 0x00696978
-unsigned int g_councilControlTagTable[6] = {kControlTagInft, kControlTagTrtt, kControlTagGrat,
-                                            kControlTagTrat, kControlTagCout, kControlTagOffr};
+extern "C" unsigned int g_aDiplomacyActionTopicTabTags[6] = {kControlTagInft, kControlTagTrtt,
+                                                             kControlTagGrat, kControlTagTrat,
+                                                             kControlTagCout, kControlTagOffr};
 // Relation-tier to QuickDraw palette color-code map used by the diplomacy legend.
 // The caller at 0x004f6568 uses a signed relation tier and a two-byte stride.
 // GLOBAL: IMPERIALISM 0x00696990
@@ -631,6 +609,9 @@ int g_nOverlayClipCacheParamY = 0;
 // the wrong address, wrong size, and wrong storage class — 0x6960e0 actually
 // lands inside the unrelated kTradeSellPropagationTags string data below, and
 // the real table at 0x696108 is const-initialized, not runtime-populated.
+// FourCC control tags in commodity-slot order (cotton..gold). Also read by
+// TWarehouseView::DoStartup (0x4c7360), which resolves each of the 23 tags into
+// commodityValueControlsA0.
 // GLOBAL: IMPERIALISM 0x00696108
 const int g_pTradeSummarySelectionMap[23] = {
     kManifestTagCott, kManifestTagWool,  kManifestTagTimb, kManifestTagCoal, kManifestTagIron,
@@ -757,6 +738,8 @@ short g_cachedAiCityActionTurnTick_006967d8 = -1;
 // GLOBAL: IMPERIALISM 0x006a2ea0
 float g_cachedAiCityActionContextBias[3] = {0.0f, 0.0f, 0.0f};
 
+// City-building slot walk order, shared by the production-view slot builders and the
+// hit-test priority scans in TCityProductionView.
 // GLOBAL: IMPERIALISM 0x00696178
 short g_anCityBuildingSlotOrder[16] = {12, 13, 7, 10, 14, 15, 9, 6, 11, 2, 3, 8, 0, 1, 4, 5};
 // GLOBAL: IMPERIALISM 0x00696198
@@ -775,9 +758,6 @@ short g_awCityBuildingActionResourceIds[72] = {
     12, 0,  0,  12, 14, 0,  11, 0,  0, 12, 0,  0, 12, 12, 0, 12, 12, 0,  24, 24, 0, 24, 24, 0,
     9,  21, 11, 25, 9,  0,  12, 24, 0, 12, 26, 0, 12, 23, 0, 24, 25, 25, 19, 19, 0, 12, 11, 0,
     13, 0,  0,  12, 13, 11, 7,  0,  0, 0,  0,  0, 0,  0,  0, 13, 0,  0,  0,  0,  0, 0,  0,  0};
-// Per-(building-slot,action) control rects, 3 RECTs per row; populated at runtime (BSS).
-// GLOBAL: IMPERIALISM 0x006a24e8
-RECT g_anCityBuildingLayoutValues[72];
 // Runtime column-selector indices into g_anCityBuildingSlotCoords pairs (BSS, 0 at load).
 // GLOBAL: IMPERIALISM 0x006a2abc
 short g_nCityBuildingSlotXOffsetIndex = 0;
@@ -787,16 +767,14 @@ short g_nCityBuildingDrawYOffsetIndex = 0;
 // GLOBAL: IMPERIALISM 0x006a2998
 CRect g_aCityBuildingHoverSelectionRects[16];
 
-// Packed int table consumed by the city-building screen layout (icon/highlight coordinates
-// and 0/1 flags; per-field semantics not yet recovered). Populated by
-// InitializeCityBuildingLayoutData.
+// City-building screen control rects, one 72-rect table (BSS) populated by
+// InitializeCityBuildingLayoutData (0x4b98b0): elements 0..40 by per-field stores,
+// elements 41..71 (starting at 0x6a2778, the former g_aCityBuildingActionRects) by
+// inlined CRect constructor calls. TCityProductionView::DoPostCreate (0x4ba3b0) reads
+// the whole table with a row*3+action stride from base 0x6a24e8, which is why this is
+// one array and not a 41/31 split -- the split point is mid-row (41 = 13*3 + 2).
 // GLOBAL: IMPERIALISM 0x006a24e8
-CRect g_aCityBuildingLayoutRects[41];
-
-// 31 action-button rects for the city-building screen, placement-constructed by
-// InitializeCityBuildingLayoutData (immediately after g_aCityBuildingLayoutRects).
-// GLOBAL: IMPERIALISM 0x006a2778
-CRect g_aCityBuildingActionRects[31];
+CRect g_aCityBuildingLayoutRects[72];
 
 // GLOBAL: IMPERIALISM 0x006a1da4
 HRGN g_hOpenRgnAccumulator = nullptr;
@@ -1100,6 +1078,11 @@ int g_anUnitTypeTacticalRangeByType_006699E8[30] = {5,  5,  5,  5,  3,  3,  9,  
                                                     8,  8,  5,  5,  12, 14, 10, 10, 10, 10,
                                                     10, 12, 15, 17, 5,  8,  10, 0,  0,  0};
 
+// Resource/order-slot -> unit-category code. Also read by TArmoryView::DoStartup
+// (0x4cee20) as g[order->resourceTypeIndex48]: for the land-unit class (value 8) it
+// selects the button picture-variant (types 0x18/0x19/other -> 8/0x10/0x18); indices
+// 0x18-0x1d map to classes 8/9, and the leading 0..7 runs mirror the commodity-slot
+// groups.
 // GLOBAL: IMPERIALISM 0x00695528
 ArmyUnitCategoryStorage g_awTacticalUnitCategoryCodeBySlot[32] = {
     0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 9, 9, 9, 0, 0};
@@ -1653,12 +1636,6 @@ extern "C" const char s_SourcePathUDiplomacyViews_00696AE0[] =
     "D:\\Ambit\\Cross\\UDiplomacyViews.cpp";
 // GLOBAL: IMPERIALISM 0x006964b0
 extern "C" const char s_SourcePathUCityMinister_006964B0[] = "D:\\Ambit\\Cross\\UCityMinister.cpp";
-// Diplomacy action-topic tab tags, scanned in order by TDiplomacyMapView::DoEvent's
-// commandId == 0x14 branch to turn a clicked tab into a topic index.
-// GLOBAL: IMPERIALISM 0x00696978
-extern "C" const unsigned int g_aDiplomacyActionTopicTabTags[6] = {
-    kControlTagInft, kControlTagTrtt, kControlTagGrat,
-    kControlTagTrat, kControlTagCout, kControlTagOffr};
 // GLOBAL: IMPERIALISM 0x0069943c
 extern "C" const char s_SourcePathUSuperMap_0069943C[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
 // GLOBAL: IMPERIALISM 0x0069aa94
@@ -1699,6 +1676,18 @@ extern "C" const char* const g_pRegistrySettingsSectionAlt_0063E044 =
     s_ProfileSectionSettings_006941D0;
 // GLOBAL: IMPERIALISM 0x0063e048
 extern "C" const char* const g_pRegistryAutoResKey_0063E048 = s_ProfileKeyAutoRes_006941C4;
+// Game-preferences dialog data block (TGamePreferencesPicture::DoPostCreate 0x56a5b0).
+// Shared text seeded into the 'main' ticker control on entry.
+// GLOBAL: IMPERIALISM 0x0065ddc8
+char* g_pGamePreferencesSharedText_0065DDC8 = g_szEmptyString;
+// Second pointer to the "AutoRes" profile key (the 0x63e048 twin), used for the
+// auto-resolution radio preload.
+// GLOBAL: IMPERIALISM 0x0065ddcc
+extern "C" const char* const g_pGamePreferencesAutoResKey_0065DDCC = s_ProfileKeyAutoRes_006941C4;
+// Per-preference-row index into TSimMgr::preferenceValues (-1 = row has no backing
+// preference; rows are the 'opta'..'opte' checkboxes).
+// GLOBAL: IMPERIALISM 0x0065dde0
+extern const int g_anGamePreferenceIndexByRow[5] = {3, 2, 8, 10, 0};
 // GLOBAL: IMPERIALISM 0x0063e04c
 extern "C" const char* const g_pRegistryLanguageKey_0063E04C = s_ProfileKeyLanguage_006941B8;
 // GLOBAL: IMPERIALISM 0x0063e050
@@ -1716,6 +1705,27 @@ extern "C" unsigned short g_awCivilianLegendSelectionCountsBySlot[16] = {0};
 // GLOBAL: IMPERIALISM 0x00698ee0
 extern "C" int g_anArmyToolbarCategoryByUnitType[30] = {
     0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 9, 9, 9};
+
+// Developable resource types per civilian class (4 slots, -1 = unused): Miner
+// coal/iron/gems/gold, Farmer cotton/grain/fruit, Forester timber, Rancher
+// wool/livestock, Fisherman fish, Driller oil. TCivDescription::DrawDeveloper
+// (0x5903c0) walks a class's row to pick the development level and the per-resource
+// yield icons; Prospector/Engineer/Developer rows are empty (they have their own
+// legends).
+// GLOBAL: IMPERIALISM 0x00662b98
+const int g_anDevelopableResourceTypesByCivilianClass[9][4] = {
+    {3, 4, 0x15, 0x16}, {-1, -1, -1, -1},   {0, 0x11, 0x12, -1}, {2, -1, -1, -1}, {-1, -1, -1, -1},
+    {1, 0x14, -1, -1},  {0x13, -1, -1, -1}, {-1, -1, -1, -1},    {6, -1, -1, -1}};
+
+// 2x2 (x, y) anchor grid for TCivDescription::DrawDeveloper's per-resource yield
+// icons, panel-local, offset by the view origin at draw time.
+// GLOBAL: IMPERIALISM 0x00698fc8
+short g_aDeveloperYieldIconAnchors[4][2] = {{540, 353}, {588, 353}, {540, 378}, {588, 378}};
+
+// Per-civilian-class base source-x into the development-level icon strip (38px per
+// level frame; -1 = the class has no development strip). TCivDescription::DrawDeveloper.
+// GLOBAL: IMPERIALISM 0x00698fe0
+short g_anDevelopmentIconStripBaseXByCivilianClass[9] = {228, -1, 0, 114, -1, 798, 912, 1064, 684};
 
 // GLOBAL: IMPERIALISM 0x698f58
 extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[45] = {
@@ -3771,9 +3781,6 @@ short g_cityActionCapabilityGroupBySlot_00650670[32] = {
 
 // GLOBAL: IMPERIALISM 0x0064fab0
 short g_cityBuildingSoundCueOffsets[16] = {2, 3, 4, 5, 0, 1, 6, 10, 11, 12, 13, 7, 8, 9, 14, 35};
-
-// GLOBAL: IMPERIALISM 0x00696178
-short g_cityBuildingHitTestOrder[16] = {12, 13, 7, 10, 14, 15, 9, 6, 11, 2, 3, 8, 0, 1, 4, 5};
 
 // Threshold/sentinel table used by diplomacy trade controls: 300 selects action 11,
 // values below 96 select action 9, and the remaining values select action 10.

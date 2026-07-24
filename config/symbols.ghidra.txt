@@ -629,7 +629,7 @@ thunk_CopySpriteSurfaceToStrideBuffer 409999 l
 thunk_SetGlobalQuickDrawOrigin 409A11 l
 thunk_NumericEntryMethod_00409a39 409A39 l
 thunk_DispatchVfuncA0ToLinkedChildListSlot44 409A8E l
-WrapperFor_ftol_At004125d0 4125D0 f
+DynamicInitializer_ScaledShortConst_6A1340 4125D0 f
 InvokeCallbackForRecordRangeWithStride 412600 f
 OpenOrCreateCompanyProductRegistryKey 412640 f
 OrphanCallChain_C7_I93_00412720 412720 f
@@ -713,7 +713,7 @@ IltTarget_00415c00 415C00 f
 TObject::ShallowFree 415CE0 f
 TEventHandler::GetIdleFreq 415D50 f
 TEventHandler::SetIdleFreq 415D70 f
-WrapperFor_ftol_At00415df0 415DF0 f
+DynamicInitializer_ScaledShortConst_6A1418 415DF0 f
 InitializeUiResourcePoolStateAndRegisterAtExit 415E20 f
 DestroyUiResourcePoolStateAtExit 415E50 f
 TRuntimeLinkedBlockChainState_0063E880::thunk_DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70 415E55 l
@@ -927,9 +927,8 @@ BuildTurnEventDialogResourcesForEvent7DE 46FD10 f
 IltTarget_00474980 474980 f
 BuildUniversityDialogShell 4749A0 f
 BuildUniversityDialogControls 474AC5 l
-thunk_BuildUniversityRecruitmentRows 475F80 l
-BuildUniversityRecruitControls 475F82 l
-BuildUniversityRecruitmentRows 475F84 l
+UniversityRecruitRadioButtonAllocNullPath 475F82 l
+PushUniversityRecruitRadioButtonUiNode 475F84 l
 IltTarget_004793a0 4793A0 f
 CAmbitDocument::CreateObject 4793C0 f
 CAmbitDocument::GetRuntimeClass 479440 f
@@ -1019,7 +1018,7 @@ TCdAudioDevice::IsPlaybackActive 47CDF0 f
 IltTarget_0047ce10 47CE10 f
 IltTarget_0047ce30 47CE30 f
 IltTarget_0047ce50 47CE50 f
-WrapperFor_ftol_At0047cfa0 47CFA0 f
+DynamicInitializer_ScaledShortConst_6A1528 47CFA0 f
 TC2TemplateDialog::TC2TemplateDialog 47CFD0 f
 TC2TemplateDialog::'scalar_deleting_destructor' 47D090 f
 DestroyDialogWithListBoxAndHotKeyControl_Alias 47D0C0 f
@@ -1086,7 +1085,7 @@ CDibPal::LoadPalette 47ED70 f
 CDibPal::SavePalette 47EEA0 f
 CDibPal::SavePalette 47EF20 f
 CDibPal::SavePalette 47EFA0 f
-WrapperFor_ftol_At0047f250 47F250 f
+DynamicInitializer_ScaledShortConst_6A15C8 47F250 f
 IltTarget_0047f280 47F280 f
 OrphanRetStub_0047f2b0 47F2B0 f
 IltTarget_0047f2d0 47F2D0 f
@@ -1145,14 +1144,14 @@ CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::~CArray 480B50 f
 CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::Serialize 480BD0 f
 CArray[RuntimeSelectionRecord_#,RuntimeSelectionRecord_#]::'scalar_deleting_destructor' 480DD0 f
 ResizeDynamicPointerArrayWithGrowthStep 480E00 f
-WrapperFor_ftol_At004810c0 4810C0 f
+DynamicInitializer_ScaledShortConst_6A1680 4810C0 f
 IltTarget_004810f0 4810F0 f
-WrapperFor_FreeHeapBufferIfNotNull_At00481130 481130 f
-WrapperFor_CDialog_At00481160 481160 f
+TModalDialogBase_ScalarDeletingDestructor_PerTuCopy 481130 f
+TModalDialogBase_Destructor_PerTuCopy 481160 f
 OrphanRetStub_004811e0 4811E0 f
 OrphanVtableAssignStub_00481200 481200 f
 WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00481220 481220 f
-WrapperFor_ftol_At00481370 481370 f
+DynamicInitializer_ScaledShortConst_6A16D8 481370 f
 TA1TemplateDialog::TA1TemplateDialog 4813A0 f
 TA1TemplateDialog::'scalar_deleting_destructor' 481480 f
 WrapperFor_FreeHeapBufferIfNotNull_At00481480_Impl 4814B0 f
@@ -1217,7 +1216,7 @@ OrphanVtableAssignStub_00482440 482440 f
 IltTarget_00482460 482460 f
 IltTarget_004824b0 4824B0 f
 IltTarget_004824e0 4824E0 f
-WrapperFor_ftol_At00482730 482730 f
+DynamicInitializer_ScaledShortConst_6A177C 482730 f
 UiCursorTickTimerProc 482760 f
 InitializeChildWindowSurfaceAndTickTimer_Impl_At00482820 482820 f
 CIncludeView::CreateObject 482850 f
@@ -1278,12 +1277,11 @@ InitializeRefCountedObjectBaseVtable 484970 f
 TObject::'scalar_deleting_destructor' 484990 f
 WrapperFor_FreeHeapBufferIfNotNull_At00484990_Impl 4849C0 f
 ForwardBlitSurfaceRectSkippingTransparentColor 4849E0 f
-WrapperFor_ftol_At00484ac0 484AC0 f
+DynamicInitializer_ScaledShortConst_6A1830 484AC0 f
 CMainFrame::CreateObject 484AF0 f
 CMainFrame::GetRuntimeClass 484BB0 f
 CMainFrame::GetMessageMap 484BD0 f
 CMainFrame::CMainFrame 484BF0 f
-OrphanDeadLeaf_NoRefs_00484c10 484C10 f
 CMainFrame::'scalar_deleting_destructor' 484C40 f
 CMainFrame::~CMainFrame 484C70 f
 CMainFrame::OnCreate 484D00 f
@@ -1358,7 +1356,7 @@ TApplication::DoMenuCommand 486BA0 f
 CList[void_#,void_#]::Serialize 486DF0 f
 CList[void_#,void_#]::'scalar_deleting_destructor' 486F60 f
 CList[void_#,void_#]::~CList[void_#,void_#] 486F90 f
-WrapperFor_ftol_At00487150 487150 f
+DynamicInitializer_ScaledShortConst_6A1938 487150 f
 TBehavior::CreateObject 487180 f
 TBehavior::GetRuntimeClass 4871C0 f
 TBehavior::TBehavior 4871E0 f
@@ -1538,7 +1536,7 @@ THandleStream::ReadBytes 4897A0 f
 THandleStream::WriteBytesSlot78 489810 f
 TStream::ReadByte 489980 f
 TStream::WriteObjectSlotB4 4899A0 f
-WrapperFor_ftol_At00489a20 489A20 f
+DynamicInitializer_ScaledShortConst_6A1AB8 489A20 f
 SetGlobalUiInvalidationFlagAndReturnPrevious 489A50 f
 GetMcAppUiActiveFlag 489A70 f
 ClearGlobalUiInvalidationFlagAndReturnPrevious 489A90 f
@@ -1879,7 +1877,7 @@ MciMovieWindowState::Stop 4930D0 f
 PlayDefaultMessageBeep 4931E0 f
 BusyWaitUntilShiftedTickDeadline 493200 f
 GetTickCountDiv16 493250 f
-WrapperFor_ftol_At004933a0 4933A0 f
+DynamicInitializer_ScaledShortConst_6A1C38 4933A0 f
 CMcWindow::CreateObject 4933D0 f
 CMcWindow::GetRuntimeClass 493450 f
 CMcWindow::CMcWindow 493470 f
@@ -1905,7 +1903,7 @@ CMcWindow::OnChar 493CE0 f
 thunk_WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl_At00493d30 493D30 f
 CMcWindow::OnIdleUpdateMsg36A 493D50 f
 CMcWindow::PreCreateWindow 493D80 f
-WrapperFor_ftol_At00493f30 493F30 f
+DynamicInitializer_ScaledShortConst_6A1D88 493F30 f
 InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit 493F90 f
 DestroyDefaultQuickDrawSurfaceContextAtExit 493FC0 f
 InitStub_thunk_InitializeGlobalClipRegionHandleState_At00493fe0 493FE0 f
@@ -2163,7 +2161,7 @@ TAdorner::DrawLine 49DA50 f
 TAdorner::DoesAdorn 49DA80 f
 TAdorner::'scalar_deleting_destructor' 49DAB0 f
 WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl 49DAE0 f
-WrapperFor_ftol_At0049db60 49DB60 f
+DynamicInitializer_ScaledShortConst_6A21AC 49DB60 f
 loc_WriteUiRuntimeCursorTableBase_A 49DBEA l
 loc_WriteUiRuntimeCursorTableBase_B 49DC60 l
 IltTarget_0049dcc0 49DCC0 f
@@ -2196,7 +2194,7 @@ TAmbitFileBasedDocument::DoRead 49E6A0 f
 AssignStringSharedRefAndReturnThis 49EB00 f
 TAmbitFileBasedDocument::DoWrite 49EB30 f
 TAmbitFileBasedDocument::SaveDocument 49EE70 f
-WrapperFor_ftol_At0049efd0 49EFD0 f
+DynamicInitializer_ScaledShortConst_6A2248 49EFD0 f
 TAnimation::CreateObject 49F020 f
 TAnimation::'scalar_deleting_destructor' 49F050 f
 TAnimation::CreateTAnimationInstance 49F080 f
@@ -2266,7 +2264,7 @@ TAnimator::FreeUiTransientRegistryPayloads 4A0F80 f
 TAnimator::RemoveUiTransientRegistryObjectByTag 4A0FA0 f
 TBitmapResourceLoader::ReportUnimplementedResourceVirtualSlot02 4A1100 f
 CreateBitmapResourceLoaderHandle 4A1130 f
-WrapperFor_ftol_At004a1260 4A1260 f
+DynamicInitializer_ScaledShortConst_6A22D8 4A1260 f
 MapContextActionRecord::ReadFrom 4A13C0 f
 MapContextActionRecord::WriteTo 4A1640 f
 TArmyMgr::CreateObject 4A1810 f
@@ -2358,8 +2356,8 @@ TArmyStackList::'scalar_deleting_destructor' 4A84C0 f
 TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0 4A84F0 f
 IltTarget_004a8540 4A8540 f
 TArmyStackList::Compare 4A8560 f
-WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640 4A8640 f
-WrapperFor_ftol_At004a8740 4A8740 f
+TSortedList::TSortedList 4A8640 f
+DynamicInitializer_ScaledShortConst_6A2350 4A8740 f
 TGarrisonView::CreateObject 4A8770 f
 TGarrisonView::GetRuntimeClass 4A87F0 f
 TGarrisonView::TGarrisonView 4A8810 f
@@ -2432,7 +2430,7 @@ TMiniCivView::Draw 4AC000 f
 TMiniCivView::DoEvent 4AC320 f
 TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370 4AC370 f
 AssignSharedStringFromMidSubstring 4AC3A0 f
-WrapperFor_ftol_At004ac570 4AC570 f
+DynamicInitializer_ScaledShortConst_6A23B0 4AC570 f
 TSwapperDaddyView::CreateObject 4AC5C0 f
 TSwapperDaddyView::'scalar_deleting_destructor' 4AC650 f
 TSwapperDaddyView::GetRuntimeClass 4AC6A0 f
@@ -2496,7 +2494,7 @@ TBattleUnitsView::GetRuntimeClass 4B06D0 f
 TBattleUnitsView::StuffValues 4B06F0 f
 TBattleUnitsView::Close 4B0900 f
 CString::CString(void) 4B0970 f
-WrapperFor_ftol_At004b0ac0 4B0AC0 f
+DynamicInitializer_ScaledShortConst_6A2418 4B0AC0 f
 THotspotBehavior::CreateObject 4B0AF0 f
 THotspotBehavior::GetRuntimeClass 4B0B60 f
 THotspotBehavior::THotspotBehavior 4B0B80 f
@@ -2517,7 +2515,7 @@ TDropShadowTextBehavior::'scalar_deleting_destructor' 4B10D0 f
 DestructTDropShadowTextBehaviorAndMaybeFree_Impl 4B1100 f
 IltTarget_004b1120 4B1120 f
 TDropShadowTextBehavior::Draw 4B1150 f
-WrapperFor_ftol_At004b1370 4B1370 f
+DynamicInitializer_ScaledShortConst_6A2470 4B1370 f
 TCheater::CreateObject 4B13A0 f
 TCheater::ApplyCheats 4B1410 f
 TCheater::'scalar_deleting_destructor' 4B1430 f
@@ -2535,7 +2533,7 @@ TGPCheater::'scalar_deleting_destructor' 4B1A20 f
 TGPCheater::GetRuntimeClass 4B1A70 f
 TGPCheater::ConstructTGPCheaterBaseState 4B1A90 f
 TLaborPool::CreateTLaborPoolInstance 4B1CB0 f
-WrapperFor_ftol_At004b20a0 4B20A0 f
+DynamicInitializer_ScaledShortConst_6A24D0 4B20A0 f
 TLaborPool::CreateObject 4B20D0 f
 TLaborPool::GetRuntimeClass 4B2110 f
 IltTarget_004b2130 4B2130 f
@@ -2733,7 +2731,7 @@ TExpansionOrder::SetQuantity 4B9260 f
 SwapFirstTwoBytesInBuffer 4B9340 f
 TExpansionOrder::FillOrderSheet 4B9360 f
 WriteWordArrayToOutputCallbackLE 4B94A0 f
-WrapperFor_ftol_At004b9570 4B9570 f
+DynamicInitializer_ScaledShortConst_6A2AB8 4B9570 f
 InitializeCityBuildingHoverSelectionRects_004b95c0 4B95C0 f
 thunk_InitializeCityBuildingLayoutData 4B9890 f
 InitializeCityBuildingLayoutData 4B98B0 f
@@ -2771,7 +2769,7 @@ TNewTownView::'scalar_deleting_destructor' 4BD810 f
 TNewTownView::GetRuntimeClass 4BD860 f
 TNewTownView::StuffValues 4BD880 f
 TNewTownView::Close 4BDC10 f
-WrapperFor_ftol_At004bde50 4BDE50 f
+DynamicInitializer_ScaledShortConst_6A2C60 4BDE50 f
 IltTarget_004bdf90 4BDF90 f
 IltTarget_004bdfc0 4BDFC0 f
 InsertScoredTileCandidateWithRandomTieBreak 4BE000 f
@@ -2793,7 +2791,7 @@ TInteriorMinister::InteriorSlot1C 4BE430 f
 TInteriorMinister::MinisterSlot12 4BE450 f
 TInteriorMinister::InteriorSlot16 4BE480 f
 TInteriorMinister::InteriorSlot17 4BE4C0 f
-TInteriorMinister::Call4C 4BE4F0 f
+TInteriorMinister::ClearTrailingTable 4BE4F0 f
 TInteriorMinister::MinisterSlot14 4BE520 f
 TInteriorMinister::FillOrders 4BE5B0 f
 TInteriorMinister::InteriorSlot18 4BE650 f
@@ -2908,7 +2906,7 @@ WrapperFor_FreeHeapBufferIfNotNull_At004c6aa0 4C6AA0 f
 CList<long,long>::~CList 4C6AD0 f
 TLongintList::Dump 4C6B60 f
 TLongintList::Free 4C6BF0 f
-WrapperFor_ftol_At004c6cb0 4C6CB0 f
+DynamicInitializer_ScaledShortConst_6A2D00 4C6CB0 f
 TBuildingView::CreateObject 4C6DF0 f
 TBuildingView::GetRuntimeClass 4C6E90 f
 TBuildingView::TBuildingView 4C6EB0 f
@@ -3061,7 +3059,7 @@ TPlaceCityDialog::'scalar_deleting_destructor' 4D1830 f
 TPlaceCityDialog::StuffValues 4D1880 f
 TPlaceCityDialog::Draw 4D1E40 f
 TPlaceCityDialog::Close 4D1E60 l
-WrapperFor_ftol_At004d1fb0 4D1FB0 f
+DynamicInitializer_ScaledShortConst_6A2D80 4D1FB0 f
 TCivMgr::CreateObject 4D2000 f
 TCivMgr::GetRuntimeClass 4D2030 f
 TCivMgr::TCivMgr 4D2050 f
@@ -3120,7 +3118,7 @@ StrategicMapCallbackRecord::StreamOverlayHitMaskToSurfaceDib 4D5CF0 f
 StrategicMapCallbackRecord::BuildDiplomacyOverlayHitMaskOpcodeStream 4D5D30 f
 stretch::Compact 4D62D0 f
 DiplomacyMaskBufferRun::IsMaskPixelSet 4D6310 f
-WrapperFor_ftol_At004d64d0 4D64D0 f
+DynamicInitializer_ScaledShortConst_6A2E28 4D64D0 f
 TProvinceDesirabilityList::CreateObject 4D6500 f
 TProvinceDesirabilityList::GetRuntimeClass 4D6570 f
 TProvinceDesirabilityList::TProvinceDesirabilityList 4D6590 f
@@ -3409,7 +3407,7 @@ TLandSaleEvent::CreateObject 4E66C0 f
 TLandSaleEvent::GetRuntimeClass 4E66F0 f
 TLandSaleEvent::ILandSaleEvent 4E6710 f
 TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState 4E6740 f
-WrapperFor_ftol_At004e6a40 4E6A40 f
+DynamicInitializer_ScaledShortConst_6A2E80 4E6A40 f
 TAutoGreatPower::CreateObject 4E6A70 f
 TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage 4E6B10 f
 TAutoGreatPower::GetRuntimeClass 4E6B30 f
@@ -3469,7 +3467,7 @@ TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations 4EA300 f
 TAutoGreatPower::DispatchTurnOrderActionSlotB0 4EA430 f
 TAutoGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch 4EA450 f
 TAutoGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets 4EA470 f
-WrapperFor_ftol_At004ea5e0 4EA5E0 f
+DynamicInitializer_ScaledShortConst_6A2EE8 4EA5E0 f
 TAutoGreatPower::ComputeAiIndustryActionCostFromSlot 4EA610 f
 TAutoGreatPower::ComputeAiCityActionCostFromSlotAndMode 4EA700 f
 TAutoGreatPower::GetCachedAiCityActionContextBias 4EA830 f
@@ -3485,7 +3483,7 @@ OrphanCallChain_C4_I75_004eb5d0 4EB5D0 f
 TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio 4EB6B0 f
 TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits 4EB8B0 f
 thunk_thunk_PruneInvalidTrackedEntriesAndNotifyOwner 4EBEA0 l
-WrapperFor_ftol_At004ebff0 4EBFF0 f
+DynamicInitializer_ScaledShortConst_6A2F48 4EBFF0 f
 TDefenseMinister::CreateObject 4EC020 f
 TDefenseMinister::GetPersonalityWeightByFlag 4EC0A0 f
 TDefenseMinister::GetRuntimeClass 4EC0C0 f
@@ -3497,7 +3495,7 @@ TDefenseMinister::WriteTo 4EC1D0 f
 TDefenseMinister::ReadFrom 4EC2F0 f
 TDefenseMinister::GetRankingCriterionForGP 4EC3D0 f
 TDefenseMinister::MinisterSlot12 4EC450 f
-TDefenseMinister::Call4C 4EC4C0 f
+TDefenseMinister::ClearTrailingTable 4EC4C0 f
 TDefenseMinister::AssignDefenseUnitsToHomeAndBorderRegions 4EC540 f
 TDefenseMinister::BuildTileRingPriorityMapForNationTileList 4ECBB0 f
 TDefenseMinister::BuildStrategicTilePriorityHeatmap 4ECF20 f
@@ -3542,7 +3540,7 @@ TBullyMinister::'scalar_deleting_destructor' 4EE100 f
 DestructTBullyMinisterAndMaybeFree_Impl 4EE130 f
 TDefenseMinister::InitializeOrderArrayPreset25_10_20_50 4EE150 f
 TBullyMinister::MakeNewCity 4EE210 f
-WrapperFor_ftol_At004ee480 4EE480 f
+DynamicInitializer_ScaledShortConst_6A2FA0 4EE480 f
 TSortedByRelationshipList::CreateObject 4EE4B0 f
 TSortedByRelationshipList::GetRuntimeClass 4EE520 f
 TSortedByRelationshipList::TSortedByRelationshipList 4EE540 f
@@ -3614,7 +3612,7 @@ TNextDiplomationCommand::GetRuntimeClass 4F2910 f
 TNextDiplomationCommand::DispatchUiPacketWithTagNEXT 4F2930 f
 ByteSwapShortInPlace 4F2970 f
 DeserializeRelationshipSortedListBuffersFromStreamSwapBytes_Impl 4F2A60 f
-WrapperFor_ftol_At004f2b10 4F2B10 f
+DynamicInitializer_ScaledShortConst_6A3018 4F2B10 f
 TMinisterView::CreateObject 4F2BB0 f
 TMinisterView::GetRuntimeClass 4F2C40 f
 TMinisterView::TMinisterView 4F2C60 f
@@ -3758,7 +3756,7 @@ TScoreGraph::GetRuntimeClass 4FE290 f
 TScoreGraph::DoPostCreate 4FE2B0 f
 TScoreGraph::Draw 4FE390 f
 IltTarget_004fe5c0 4FE5C0 f
-WrapperFor_ftol_At004fe670 4FE670 f
+DynamicInitializer_ScaledShortConst_6A30A0 4FE670 f
 InitializeSharedStringRefBatch_006A3060_AndRegisterAtExit 4FE6A0 f
 DestroySharedStringRefBatch_006A3060_AtExit 4FE6E0 f
 TDisplayMgr::CreateObject 4FE710 f
@@ -3808,7 +3806,7 @@ TFuzzySet::Clear 4FF750 f
 TFuzzySet::Free 4FF780 f
 TFuzzySet::AllocateAndAppendRecord 4FF7D0 f
 TFuzzySet::SelectWeightedMemberIndex 4FF840 f
-WrapperFor_ftol_At004ffb00 4FFB00 f
+DynamicInitializer_ScaledShortConst_6A3160 4FFB00 f
 TGameWindow::CreateObject 4FFB30 f
 TGameWindow::GetRuntimeClass 4FFBF0 f
 TGameWindow::TGameWindow 4FFC10 f
@@ -3826,7 +3824,7 @@ TDlgWindow::GetRuntimeClass 500300 f
 TDlgWindow::TDlgWindow 500320 f
 TDlgWindow::'scalar_deleting_destructor' 500350 f
 TDlgWindow::AssertMcAppUILine2358 5003A0 f
-WrapperFor_ftol_At00500520 500520 f
+DynamicInitializer_ScaledShortConst_6A31B8 500520 f
 THelpMgr::CreateObject 500550 f
 THelpMgr::GetRuntimeClass 5005C0 f
 THelpMgr::THelpMgr 5005E0 f
@@ -3886,7 +3884,7 @@ TLonelyTileView::TLonelyTileView 505AE0 f
 TLonelyTileView::'scalar_deleting_destructor' 505B10 f
 TLonelyTileView::Draw 505B60 f
 IltTarget_00505dc0 505DC0 f
-WrapperFor_ftol_At00505f20 505F20 f
+DynamicInitializer_ScaledShortConst_6A3220 505F20 f
 TIconBar::CreateObject 505F50 f
 TIconBar::GetRuntimeClass 505FD0 f
 TIconBar::TIconBar 505FF0 f
@@ -3930,7 +3928,7 @@ TNumberedItem::TNumberedItem 5077C0 f
 TNumberedItem::'scalar_deleting_destructor' 507800 f
 TNumberedItem::InitializeNumberedResourceItem 507850 f
 TNumberedItem::Draw 5078A0 f
-WrapperFor_ftol_At00507b90 507B90 f
+DynamicInitializer_ScaledShortConst_6A3278 507B90 f
 TLanguageMgr::CreateObject 507BC0 f
 TLanguageMgr::GetRuntimeClass 507C40 f
 TLanguageMgr::TLanguageMgr 507C60 f
@@ -3946,7 +3944,7 @@ TLanguageMgr::FreeNestedPointerTableRowsAndResetDimensions 508760 f
 TLanguageMgr::BuildNewsTableDimensions 508800 f
 TLanguageMgr::PickGender 508910 f
 TLanguageMgr::NormalizeRuntimeCredentialNameToken 508C50 f
-WrapperFor_ftol_At00508ee0 508EE0 f
+DynamicInitializer_ScaledShortConst_6A32E0 508EE0 f
 BuildHexNeighborHighlightPolygonForTile 508F30 f
 IltTarget_005093e0 5093E0 f
 TMacViewMgr::CreateObject 509C00 f
@@ -3992,7 +3990,7 @@ TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10 50DA80 f
 TMacViewMgr::DrawStrategicMapUnitIcon 50DD40 f
 TMacViewMgr::DrawStrategicMapUnitIconOverlay 50DF40 f
 TMacViewMgr::BlitStrategicMapUnitActivityOverlayFrame 50E070 f
-WrapperFor_ftol_At0050e290 50E290 f
+DynamicInitializer_ScaledShortConst_6A3348 50E290 f
 GetProvinceIndex 50E2C0 f
 TMapMgr::CreateObject 50E2F0 f
 TMapMgr::GetRuntimeClass 50E3B0 f
@@ -4270,7 +4268,7 @@ TMapDialog::CopyCoastCornerMaskBetweenDirections3And4 5254A0 f
 TMapDialog::Copy64x64TileBlockWithStrideAdjustment 525670 f
 TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale 525730 f
 IltTarget_00525810 525810 f
-WrapperFor_ftol_At005258c0 5258C0 f
+DynamicInitializer_ScaledShortConst_6A38F4 5258C0 f
 TMapMaker::CreateObject 525910 f
 TMapMaker::GetRuntimeClass 525950 f
 TMapMaker::TMapMaker 525970 f
@@ -4361,7 +4359,7 @@ TMapMaker::ErrorCheck 52E840 f
 TMapMaker::EraseZones 52E890 f
 TMapMaker::TargetValidationSucceeded 52E900 f
 MapEdgePoint::Equals 52E990 f
-WrapperFor_ftol_At0052eb00 52EB00 f
+DynamicInitializer_ScaledShortConst_6A3A50 52EB00 f
 TMinister::CreateObject 52EB30 f
 TMinister::GetRuntimeClass 52EB60 f
 TMinister::TMinister 52EB80 f
@@ -4487,7 +4485,7 @@ TIndexAndRankList::'scalar_deleting_destructor' 5348A0 f
 TIndexAndRankList::DestructTIndexAndRankList 5348D0 f
 IltTarget_005348f0 5348F0 f
 TIndexAndRankList::Compare 534910 f
-WrapperFor_ftol_At00534a80 534A80 f
+DynamicInitializer_ScaledShortConst_6A3B80 534A80 f
 TMission::CreateObject 534BC0 f
 TMission::IsANoBrainer 534C00 f
 TMission::AccumulateLack 534C20 f
@@ -4559,7 +4557,7 @@ IsMapTileCompatibleWithCurrentTerrainOrActionContext 5359E0 f
 SelectBestCityDevelopmentFromResourcePools 535B00 f
 CompareMissionOrderEntriesByMovementClassThenEfficiency 535F80 f
 CompareMissionOrderEntriesByPriorityScore 536090 f
-WrapperFor_ftol_At00536290 536290 f
+DynamicInitializer_ScaledShortConst_6A3C64 536290 f
 ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile 5362C0 f
 TNavyMission::CreateObject 536390 f
 TNavyMission::GetRuntimeClass 536450 f
@@ -4775,7 +4773,7 @@ TInvadeMission::TryResolveTargetTerrainClass 53FDC0 f
 TInvadeMission::GetReplacementSlot48 53FE10 f
 RecomputeNationOrderPriorityMetrics 53FE30 f
 ComputeBestNationTileDevelopmentScore 540440 f
-WrapperFor_ftol_At00540810 540810 f
+DynamicInitializer_ScaledShortConst_6A3CD0 540810 f
 TProxyGreatPower::CreateObject 540840 f
 TProxyGreatPower::IsClient 5408C0 f
 TProxyGreatPower::IsRemote 5408E0 f
@@ -4847,7 +4845,7 @@ TRemoteMinor::'scalar_deleting_destructor' 541CD0 f
 TRemoteMinor::~TRemoteMinor 541D00 f
 TRemoteMinor::GetRuntimeClass 541D70 f
 TRemoteMinor::SetNationSelectedRegionAndMapCellLabel 541D90 f
-WrapperFor_ftol_At00541f60 541F60 f
+DynamicInitializer_ScaledShortConst_6A3D50 541F60 f
 NetMessage::DestinateToGP 5420A0 f
 NetMessage::DestinateTo 5420D0 f
 TimelyNetMessagePrefix::SetTimeEmitPacketGameFlowTurnId 542120 f
@@ -4975,7 +4973,7 @@ TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot 54CE80 f
 TMultiplayerMgr::EmitTurnEvent19NationStateArraysForSlot 54D1F0 f
 TMultiplayerMgr::CreateAndSendTurnEvent2D_TableRowShortArray 54D3D0 f
 TMultiplayerMgr::TrySaveGameAndMaybeShowFailureDialog 54D4E0 f
-WrapperFor_ftol_At0054d620 54D620 f
+DynamicInitializer_ScaledShortConst_6A3DD0 54D620 f
 TLoungeDialog::CreateObject 54D650 f
 TLoungeDialog::GetRuntimeClass 54D6D0 f
 TLoungeDialog::Free 54D6F0 f
@@ -4997,7 +4995,7 @@ TMadnessButton::CheckTheLook 54EB30 f
 TMultiMessagePicture::CreateObject 54EC20 f
 TMultiMessagePicture::GetRuntimeClass 54ECA0 f
 TMultiMessagePicture::DoEvent 54ECC0 f
-WrapperFor_ftol_At0054efb0 54EFB0 f
+DynamicInitializer_ScaledShortConst_6A3EB8 54EFB0 f
 BuildMapOrderBattleSideSnapshot 54F110 f
 RefreshMapOrderBattleSideSnapshot 54F340 f
 TShip::CreateObject 54F460 f
@@ -5208,7 +5206,7 @@ IltTarget_0055a5e0 55A5E0 f
 IltTarget_0055a630 55A630 f
 IltTarget_0055a690 55A690 f
 TNavyMgr::ResolveStrategicBattle 55A780 f
-WrapperFor_ftol_At0055b640 55B640 f
+DynamicInitializer_ScaledShortConst_6A3F60 55B640 f
 TNewsMgr::CreateObject 55B670 f
 TNewsMgr::'scalar_deleting_destructor' 55B6A0 f
 ResetTNewsMgrToSentinelVtable 55B6D0 f
@@ -5242,7 +5240,7 @@ TNewspaperView::BuildLocalizedNationListFromBitmaskWithConjunction 55DCD0 f
 TNewspaperView::ProvinceParmList 55DE90 f
 IltTarget_0055df20 55DF20 f
 TNewspaperView::AppendInterNationEventSummaryTextEntry 55DF50 f
-WrapperFor_ftol_At0055e330 55E330 f
+DynamicInitializer_ScaledShortConst_6A3FB8 55E330 f
 StepHexTileIndexByDirectionWithWrapRules 55E360 f
 IltTarget_0055e470 55E470 f
 TMapMgr::StepHexRowColByDirectionWithWrapRules 55E550 f
@@ -5364,7 +5362,7 @@ IltTarget_005644f0 5644F0 f
 TOcean::ComputeGlobalMapActionContextNodeValueAverage 564530 f
 TOcean::FindMapActionContextContainingNodeByIndex 564570 f
 TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh 564600 f
-WrapperFor_ftol_At005647d0 5647D0 f
+DynamicInitializer_ScaledShortConst_6A4028 5647D0 f
 WrapperFor_thunk_MapTurnEventCodeToPaletteIndex_At00564800 564800 f
 WrapperFor_thunk_MapTurnEventCodeToPaletteIndex_At00564830 564830 f
 TMilitaryPageView::CreateObject 564860 f
@@ -5464,7 +5462,7 @@ TMiniShipView::GetRuntimeClass 569E40 f
 IltTarget_00569e60 569E60 f
 TMiniShipView::Draw 569EB0 f
 TMiniShipView::DoMouseCommand 56A330 f
-WrapperFor_ftol_At0056a4e0 56A4E0 f
+DynamicInitializer_ScaledShortConst_6A4080 56A4E0 f
 TGamePreferencesPicture::CreateObject 56A510 f
 TGamePreferencesPicture::GetRuntimeClass 56A590 f
 TGamePreferencesPicture::DoPostCreate 56A5B0 f
@@ -5510,7 +5508,7 @@ TCreditsPicture::DoPostCreate 56EE50 f
 TCreditsPicture::DoEvent 56EFC0 f
 TCreditsPicture::Draw 56F190 f
 IltTarget_0056f1d0 56F1D0 f
-WrapperFor_ftol_At0056f330 56F330 f
+DynamicInitializer_ScaledShortConst_6A40E0 56F330 f
 TLineData::CreateObject 56F360 f
 TLineData::GetRuntimeClass 56F390 f
 TLineData::TLineData 56F3B0 f
@@ -5557,7 +5555,7 @@ TTextLine::SetTextLineStyleDescriptor 570440 f
 IltTarget_00570470 570470 f
 TTextLine::SetField1E 5704E0 f
 TTextLine::InstallViews 570500 f
-WrapperFor_ftol_At00570720 570720 f
+DynamicInitializer_ScaledShortConst_6A4138 570720 f
 TPictureButton::CreateObject 570750 f
 TPictureButton::GetRuntimeClass 5707D0 f
 TPictureButton::TPictureButton 5707F0 f
@@ -5654,7 +5652,7 @@ TTextPictureButton::'scalar_deleting_destructor' 572670 f
 DestructTTextPictureButtonAndMaybeFree_Impl 5726A0 f
 TTextPictureButton::InitializeTextPictureButtonAndTextStyle 572710 f
 TTextPictureButton::Draw 572790 f
-WrapperFor_ftol_At00572a50 572A50 f
+DynamicInitializer_ScaledShortConst_6A4190 572A50 f
 TNoHilitePicture::CreateObject 572A80 f
 TNoHilitePicture::GetRuntimeClass 572B10 f
 TNoHilitePicture::TNoHilitePicture 572B30 f
@@ -5695,7 +5693,7 @@ TSliderPicture::GetRuntimeClass 573A00 f
 TSliderPicture::TSliderPicture 573A20 f
 TSliderPicture::'scalar_deleting_destructor' 573A50 f
 TSliderPicture::Draw 573AA0 f
-WrapperFor_ftol_At00573bf0 573BF0 f
+DynamicInitializer_ScaledShortConst_6A41F8 573BF0 f
 TScrollView::CreateObject 573C20 f
 TScrollView::GetRuntimeClass 573C90 f
 TScrollView::InitializeScrollView 573CB0 f
@@ -5732,7 +5730,7 @@ TScrollerButton::TScrollerButton 574F40 f
 TScrollerButton::'scalar_deleting_destructor' 574F70 f
 TScrollerButton::TrackMouse 574FC0 f
 CDib::GetAbsoluteHeight 575080 f
-WrapperFor_ftol_At00575130 575130 f
+DynamicInitializer_ScaledShortConst_6A4260 575130 f
 TSpaceCommand::CreateObject 575180 f
 TSpaceCommand::DoIt 5751F0 f
 TSpaceCommand::'scalar_deleting_destructor' 575210 f
@@ -5827,7 +5825,7 @@ TSelectoText::'scalar_deleting_destructor' 57B6F0 f
 TSelectoText::CreateTSelectoTextInstance 57B720 f
 TSelectoText::GetRuntimeClass 57B740 f
 TSelectoText::Hilite 57B760 f
-WrapperFor_ftol_At0057b8b0 57B8B0 f
+DynamicInitializer_ScaledShortConst_6A43BC 57B8B0 f
 IsTurnFlowCooldownActiveAndResetExpiredState 57B900 f
 TSimMgr::CreateObject 57B940 f
 TSimMgr::GetRuntimeClass 57B9C0 f
@@ -5924,7 +5922,7 @@ TSimMgr::HandleTurnInstruction_Tbar_SetNationRelationBarValue 583510 f
 TSimMgr::HandleTurnInstruction_Tclr_ResetNationRelationBars 583670 f
 TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState 583700 f
 TSimMgr::SetActiveNationSlotAndRefreshCityCapabilityUiHandles 5837C0 f
-WrapperFor_ftol_At00583880 583880 f
+DynamicInitializer_ScaledShortConst_6A4488 583880 f
 TArrowsControl::CreateObject 5838B0 f
 TArrowsControl::GetRuntimeClass 583950 f
 TArrowsControl::TArrowsControl 583970 f
@@ -6223,7 +6221,7 @@ TWarningView::TWarningView 592900 f
 TWarningView::'scalar_deleting_destructor' 592930 f
 TWarningView::DoEvent 592980 f
 TWarningView::DoPostCreate 592A70 f
-WrapperFor_ftol_At005931e0 5931E0 f
+DynamicInitializer_ScaledShortConst_6A4518 5931E0 f
 UpdateDeferredCdAudioFade 593210 f
 TSoundPlayer::CreateObject 5932B0 f
 TSoundPlayer::GetRuntimeClass 593350 f
@@ -6241,7 +6239,7 @@ TSoundPlayer::SetActiveAudioCueAndResetQueue 593A10 f
 TSoundPlayer::StopCdAudioPlayback 593C10 f
 TSoundPlayer::ScaleAndApplyAuxOutputVolume 593CB0 f
 TSoundPlayer::StartDeferredAudioFadeTimerIfIdle 593CE0 f
-WrapperFor_ftol_At00593e50 593E50 f
+DynamicInitializer_ScaledShortConst_6A4580 593E50 f
 TStatusPicture::CreateObject 593E80 f
 TStatusPicture::GetRuntimeClass 593F00 f
 TStatusPicture::DoPostCreate 593F20 f
@@ -6253,7 +6251,7 @@ IltTarget_00594830 594830 f
 TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale 594900 f
 TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets 594C00 f
 IltTarget_00594d30 594D30 f
-WrapperFor_ftol_At00594ed0 594ED0 f
+DynamicInitializer_ScaledShortConst_6A460C 594ED0 f
 TWorldView::CreateObject 594F20 f
 TWorldView::CenterOn 594FC0 f
 TWorldView::GetRuntimeClass 594FE0 f
@@ -6340,7 +6338,7 @@ IltTarget_0059a440 59A440 f
 IltTarget_0059a4c0 59A4C0 f
 TMiniMapView::Draw 59A540 f
 TMiniMapView::TrackMouse 59A920 f
-WrapperFor_ftol_At0059acf0 59ACF0 f
+DynamicInitializer_ScaledShortConst_6A46A0 59ACF0 f
 TTacticalPlayer::CreateObject 59AD40 f
 TTacticalPlayer::StartBattle 59AD70 f
 TTacticalPlayer::AdvanceTacticalTurnPulse 59AD90 f
@@ -6382,14 +6380,13 @@ TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantB 59C2A0 f
 TArmyPlayer::DeploymentClick 59C3C0 f
 TArmyPlayer::SelectAndApplyTacticalCursorModeProfile 59C440 f
 TArmyPlayer::ApplyTacticalStanceProfileForCurrentCursorMode 59C970 f
-WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d 59C98D l
+ApplyDefenderHoldLineStanceCursorMode0 59C98D l
 SetLinkedListEntryState2CForTacticalCategory0 59C999 l
-IterateLinkedListCursorAndAdvanceToEnd_0059c9d7 59C9D7 l
-WrapperFor_thunk_ApplyTacticalCursorModeProfile2_ByActionClassCounts_At0059c9f6 59C9F6 l
-WrapperFor_thunk_ApplyTacticalCursorModeProfile3_ClassAware_At0059ca02 59CA02 l
-WrapperFor_thunk_ApplyTacticalCursorModeProfile4_ClassAware_At0059ca0e 59CA0E l
-WrapperFor_thunk_ApplyTacticalCursorModeProfile5_ClassAware_At0059ca1a 59CA1A l
-WrapperFor_thunk_ApplyTacticalCursorModeProfile6_DefaultByActionClass_At0059ca26 59CA26 l
+ApplyDefenderBombardStanceCursorMode2 59C9F6 l
+ApplyAttackerSiegeStanceCursorMode3 59CA02 l
+ApplyAttackerAssaultStanceCursorMode4 59CA0E l
+ApplyAttackerStandoffStanceCursorMode5 59CA1A l
+ApplyUnopposedAdvanceStanceCursorMode6 59CA26 l
 SetLinkedListEntryState2CTo13ForAllNodes 59CA32 l
 TArmyPlayer::ApplyDefenderHoldLineStanceByActionClass 59CAF0 f
 TArmyPlayer::AssignJobsByZeroCategory 59CC70 f
@@ -6447,7 +6444,7 @@ TNavyAutoPlayer::GetRuntimeClass 59F0C0 f
 IltTarget_0059f0e0 59F0E0 f
 TNavyAutoPlayer::StartBattle 59F110 f
 TNavyAutoPlayer::AdvanceTacticalTurnPulse 59F160 f
-WrapperFor_ftol_At0059f5c0 59F5C0 f
+DynamicInitializer_ScaledShortConst_6A4748 59F5C0 f
 CompareTacticalUnitsForTurnOrder 59F610 f
 TTacticalBattle::CreateObject 59F6D0 f
 TTacticalBattle::DeployTacticalUnitToTile 59F710 f
@@ -6575,7 +6572,7 @@ TNextMoveCommand::'scalar_deleting_destructor' 5A6590 f
 DestructTNextMoveCommandAndMaybeFree_Impl 5A65C0 f
 IltTarget_005a65e0 5A65E0 f
 TNextMoveCommand::DoIt 5A6620 f
-WrapperFor_ftol_At005a67e0 5A67E0 f
+DynamicInitializer_ScaledShortConst_6A54A8 5A67E0 f
 ClipSrcRectToBoundsAndOffsetDstRect 5A6940 f
 InitializeTacticalUnitFacingOffsetTable 5A6A20 f
 TTacticalBattleView::CreateObject 5A82B0 f
@@ -6641,7 +6638,7 @@ TTacticalHolaPicture::CreateObject 5AD6C0 f
 TTacticalHolaPicture::GetRuntimeClass 5AD740 f
 TTacticalHolaPicture::ConfigureBattleIntroCoatsAndSiteLabels 5AD760 f
 ResetUiFrameClipOrigin 5AD9E0 f
-WrapperFor_ftol_At005adb10 5ADB10 f
+DynamicInitializer_ScaledShortConst_6A57A8 5ADB10 f
 TTask::CreateObject 5ADB40 f
 TTask::GetRuntimeClass 5ADB70 f
 IltTarget_005adb90 5ADB90 f
@@ -6683,7 +6680,7 @@ InitializeCityProductionState_Impl_At005aec80 5AEC80 f
 DispatchCityProductionQueueCommand 5AECA0 f
 OrphanCallChain_C6_I47_005aecc0 5AECC0 f
 TTaskList::ContainsTask 5AED50 f
-WrapperFor_ftol_At005aef00 5AEF00 f
+DynamicInitializer_ScaledShortConst_6A5800 5AEF00 f
 TTechMgr::CreateObject 5AEF30 f
 TTechMgr::GetRuntimeClass 5AEF60 f
 TTechMgr::TTechMgr 5AEF80 f
@@ -6709,7 +6706,7 @@ TTechMgr::RefundTechItemPurchaseCostAndClearState 5B0BB0 f
 TTechMgr::ConsumeFirstPendingAbilityUnlock 5B0C20 f
 TTechMgr::SetCityOrderCapabilityTierScaledValueByIndex 5B0C70 f
 TTechMgr::GetNationFortLevelCap 5B0CA0 f
-WrapperFor_ftol_At005b0e40 5B0E40 f
+DynamicInitializer_ScaledShortConst_6A5858 5B0E40 f
 TTechStorePage::CreateObject 5B0E70 f
 TTechStorePage::GetRuntimeClass 5B0EF0 f
 TTechStorePage::PopulateUnlockedTechnologyRows 5B0F10 f
@@ -6727,7 +6724,7 @@ TTechItemView::DoEvent 5B1E20 f
 TTechHistoryView::CreateObject 5B2230 f
 TTechHistoryView::GetRuntimeClass 5B22A0 f
 TTechHistoryView::PopulateTechHistory 5B22C0 f
-WrapperFor_ftol_At005b2710 5B2710 f
+DynamicInitializer_ScaledShortConst_6A58B0 5B2710 f
 TGameSetupDialog::CreateObject 5B2740 f
 TGameSetupDialog::'scalar_deleting_destructor' 5B27D0 f
 TGameSetupDialog::GetRuntimeClass 5B2820 f
@@ -6744,12 +6741,12 @@ TRelationshipDialog::CreateObject 5B2CA0 f
 TRelationshipDialog::'scalar_deleting_destructor' 5B2D30 f
 TRelationshipDialog::GetRuntimeClass 5B2D80 f
 TRelationshipDialog::Close 5B2DA0 f
-TRelationshipDialog::VTableSlot68 5B2F10 f
+TRelationshipDialog::StuffValues 5B2F10 f
 TMinorRelationshipDialog::CreateObject 5B3300 f
 TMinorRelationshipDialog::'scalar_deleting_destructor' 5B3390 f
 TMinorRelationshipDialog::GetRuntimeClass 5B33E0 f
 TMinorRelationshipDialog::Close 5B3400 f
-TMinorRelationshipDialog::VTableSlot68 5B3570 f
+TMinorRelationshipDialog::StuffValues 5B3570 f
 TGPTreatyDialog::CreateObject 5B3AE0 f
 TGPTreatyDialog::'scalar_deleting_destructor' 5B3B70 f
 TGPTreatyDialog::GetRuntimeClass 5B3BC0 f
@@ -6768,7 +6765,7 @@ TSpecialQuitPicture::DoPostCreate 5B4810 f
 TSpecialQuitPicture::DoEvent 5B4A10 f
 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005b4bd0 5B4BD0 l
 HandleCitySiteShowAnimation_TailEpilogueRetC 5B4CD0 f
-WrapperFor_ftol_At005b4ee0 5B4EE0 f
+DynamicInitializer_ScaledShortConst_6A5908 5B4EE0 f
 TMyNumberText::CreateObject 5B4F10 f
 TMyNumberText::GetRuntimeClass 5B4FB0 f
 TMyNumberText::TMyNumberText 5B4FD0 f
@@ -6829,7 +6826,7 @@ TNoHiliteText::GetRuntimeClass 5B69E0 f
 TNoHiliteText::TNoHiliteText 5B6A00 f
 TNoHiliteText::'scalar_deleting_destructor' 5B6A30 f
 TTown::CreateTTownInstance 5B6A80 f
-WrapperFor_ftol_At005b6be0 5B6BE0 f
+DynamicInitializer_ScaledShortConst_6A5968 5B6BE0 f
 TTown::CreateObject 5B6C10 f
 TTown::GetRuntimeClass 5B6C40 f
 TTown::TTown 5B6C60 f
@@ -6844,7 +6841,7 @@ TTown::CalculateCityResources 5B73E0 f
 TTown::Grow 5B7570 f
 TTown::SetName 5B77E0 f
 TTown::IsUnblockedPort 5B7830 f
-WrapperFor_ftol_At005b79a0 5B79A0 f
+DynamicInitializer_ScaledShortConst_6A59C0 5B79A0 f
 TTradeMgr::CreateObject 5B79D0 f
 TTradeMgr::GetRuntimeClass 5B7A00 f
 TTradeMgr::TTradeMgr 5B7A20 f
@@ -6898,7 +6895,7 @@ TNextTradeCommand::'scalar_deleting_destructor' 5BA430 f
 TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl 5BA460 f
 TNextTradeCommand::InitializeRangePairFromDiplomacyConstants 5BA480 f
 TNextTradeCommand::DoIt 5BA4B0 f
-WrapperFor_ftol_At005ba600 5BA600 f
+DynamicInitializer_ScaledShortConst_6A5A20 5BA600 f
 TTradeScreenPicture::CreateObject 5BA680 f
 TTradeScreenPicture::GetRuntimeClass 5BA700 f
 TTradeScreenPicture::TTradeScreenPicture 5BA720 f
@@ -6992,7 +6989,7 @@ TTradeTotalsView::TTradeTotalsView 5C1B10 f
 TTradeTotalsView::'scalar_deleting_destructor' 5C1B40 f
 IltTarget_005c1b90 5C1B90 f
 TTradeTotalsView::Draw 5C1BD0 f
-WrapperFor_ftol_At005c2400 5C2400 f
+DynamicInitializer_ScaledShortConst_6A5A90 5C2400 f
 TUnit::CreateObject 5C2430 f
 TUnit::DetachUnitOrderFromOwnerAndReset 5C2470 f
 TUnit::GetRuntimeClass 5C2490 f
@@ -7045,7 +7042,7 @@ TMilitaryUnit::CanUpgrade 5C3650 f
 TMilitaryUnit::Upgrade 5C3670 f
 TMilitaryUnit::UpgradeRequirements 5C3840 f
 TMilitaryUnit::FindUnitByUID 5C38E0 f
-WrapperFor_ftol_At005c3ad0 5C3AD0 f
+DynamicInitializer_ScaledShortConst_6A5AE8 5C3AD0 f
 WrapperFor_thunk_GetTickCountDiv16_At005c3b00 5C3B00 f
 IltTarget_005c3b20 5C3B20 f
 WaitForSixteenthSecondTicks 5C3B40 f
@@ -7110,7 +7107,7 @@ ReadLineFromBufferedStreamUntilTerminator 5D4BA0 f
 TryGetFileMetadataForPath 5D4C10 f
 DeleteFileWithErrorReporting 5D4C40 f
 TruncateTextToFitWidthWithEllipsis 5D4C60 f
-WrapperFor_ftol_At005d4f00 5D4F00 f
+DynamicInitializer_ScaledShortConst_6A5BA8 5D4F00 f
 IltTarget_005d4fd0 5D4FD0 f
 TViewMgr::GetRuntimeClass 5D5040 f
 TViewMgr::TViewMgr 5D5060 f
@@ -7187,7 +7184,7 @@ IltTarget_005dc600 5DC600 f
 TViewMgr::ShowUnitHistory 5DC690 f
 IltTarget_005dca80 5DCA80 f
 TViewMgr::MakeGameSetupDialog 5DCAA0 f
-WrapperFor_ftol_At005dcc60 5DCC60 f
+DynamicInitializer_ScaledShortConst_6A5C18 5DCC60 f
 TModalMessageCommand::CreateObject 5DCC90 f
 TModalMessageCommand::DoIt 5DCD10 f
 TModalMessageCommand::'scalar_deleting_destructor' 5DCD50 f
@@ -7213,7 +7210,7 @@ TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView 5DE8F0 f
 TViewMgr::ShowLocalizedUiPromptByGroupAndIndex 5DE990 f
 TViewMgr::CreateModalMessageCommandAndQueue 5DEA60 f
 TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted 5DEB40 f
-WrapperFor_ftol_At005dee20 5DEE20 f
+DynamicInitializer_ScaledShortConst_6A5C70 5DEE20 f
 TE0TemplateDialog::TE0TemplateDialog 5DEE50 f
 TE0TemplateDialog::DoDataExchange 5DEE80 f
 TE0TemplateDialog::GetMessageMap 5DEEA0 f
@@ -7226,7 +7223,7 @@ TE0TemplateDialog::OnInitDialog 5DEF70 f
 TE0TemplateDialog::OnSetCursor 5DEFE0 f
 TE0TemplateDialog::OnNcPaint 5DF020 f
 TE0TemplateDialog::OnPaint 5DF040 f
-WrapperFor_ftol_At005df1a0 5DF1A0 f
+DynamicInitializer_ScaledShortConst_6A5CF0 5DF1A0 f
 TAssetMgr::CreateObject 5DF1D0 f
 TAssetMgr::GetRuntimeClass 5DF260 f
 TAssetMgr::TAssetMgr 5DF280 f
@@ -7290,7 +7287,7 @@ OpenCdAudioAndProbeAuxOutputDevice 5E18F0 f
 SendMciCommand804ToDevice 5E19E0 f
 SendMciStopCommandToDevice 5E1A10 f
 IltTarget_005e1a40 5E1A40 f
-WrapperFor_ftol_At005e1b90 5E1B90 f
+DynamicInitializer_ScaledShortConst_6A5E28 5E1B90 f
 TLowDiskWarningDialog::TLowDiskWarningDialog 5E1BC0 f
 TLowDiskWarningDialog::'scalar_deleting_destructor' 5E1C60 f
 TLowDiskWarningDialog::DoDataExchange 5E1C90 f
@@ -7312,7 +7309,7 @@ TMovieView::OpenMoviePathAndDetachOnSuccess 5E24B0 f
 TMovieView::PlayMovieIfActive 5E24E0 f
 TMovieView::StopMovieIfActive 5E2500 f
 TMovieView::HandleMouseDown 5E2520 f
-WrapperFor_ftol_At005e26a0 5E26A0 f
+DynamicInitializer_ScaledShortConst_6A5F3C 5E26A0 f
 InitializeRuntimeClassState_0066FA50_AndRegisterAtExit 5E26D0 f
 DestroyRuntimeClassState_0066FA50_AtExit 5E2700 f
 TRuntimeLinkedBlockChainState_0066FA50::thunk_DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580 5E2705 l
@@ -7371,7 +7368,7 @@ TNetMgr::SerializeDynamicDwordPointerArrayState 5E4830 f
 TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30 5E4A30 f
 TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60 5E4A60 f
 ResizeDwordPointerArrayAndZeroNewSlots 5E4A90 f
-WrapperFor_ftol_At005e4d50 5E4D50 f
+DynamicInitializer_ScaledShortConst_6A60B8 5E4D50 f
 WrapperFor_AppendPointerToGlobalVectorAsStatus_At005e4d80 5E4D80 f
 ReleaseGlobalDirectSoundDeviceAndChannels 5E4DC0 f
 ResetAndOpenGlobalCdAudioDevice 5E4DE0 f
@@ -11660,7 +11657,7 @@ g_aInitialCityRecruitmentOrderProfiles 695C50 l
 g_aUnitOrderCostProfileByAbilityId 695CD0 l
 g_aiCityActionCostProfiles 695CD2 l
 g_pTradeSummarySelectionMap 696108 l
-g_cityBuildingHitTestOrder 696178 l
+g_anCityBuildingSlotOrder 696178 l
 g_nCityBuildingSlotOrderLast 696196 l
 g_anCityBuildingSlotCoords 696198 l
 g_nCityBuildingSlotYOffsetIndex 6961D8 l
@@ -11686,7 +11683,7 @@ g_cachedAiCityActionTurnTick_006967d8 6967D8 l
 s_SourcePathUDefenseMinister_00696860 696860 l
 g_awDiplomacyTradePolicyIconValueTable 696950 l
 g_diplomacyActionButtonTagTable_00696960 696960 l
-g_councilControlTagTable 696978 l
+g_aDiplomacyActionTopicTabTags 696978 l
 g_aDiplomacyRelationPaletteColorCodes 696990 l
 g_infoPanelLabelXByRow_006969b0 6969B0 l
 g_infoPanelLabelYByRow_006969c0 6969C0 l
@@ -12510,8 +12507,7 @@ g_nUiAnimatorSurfaceBoundsHeight 6A222C l
 g_ptArmyOrderModalMessage 6A2318 l
 g_InfoBarDummyOrigin_006A2410 6A2410 l
 g_Sanitize_City_Counter_Value_006A24D4 6A24D4 l
-g_anCityBuildingLayoutValues 6A24E8 l
-g_aCityBuildingActionRects 6A2778 l
+g_aCityBuildingLayoutRects 6A24E8 l
 g_aCityBuildingHoverSelectionRects 6A2998 l
 g_nCityBuildingSlotXOffsetIndex 6A2ABC l
 g_nCityBuildingDrawYOffsetIndex 6A2AC0 l

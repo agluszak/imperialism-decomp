@@ -1,4 +1,5 @@
 #include "game/ui_widgets/TIndustryCluster.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_widgets.h"
 #include "game/ui_core/TWindow.h"
@@ -104,13 +105,15 @@ TTradeCluster::TTradeCluster() : TAmtBarCluster() {}
 // nation/resource context, then initializes the move/bar controls baseline.
 // FUNCTION: IMPERIALISM 0x00587130
 void TTradeCluster::DoPostCreate(int styleSeed) {
-  TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
+  // The 'Sell' control is a TMyNumberText (UI factory: new TMyNumberText() for tag
+  // 'Sell'); the slots dispatched below (0x6d/0x71/0x79) exist only on the TNumberText
+  // hierarchy, past TAmtBar's last slot 0x6a -- so this was never a TAmtBar.
+  TNumberText* sellControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
   if (sellControl != 0) {
-    int styleDescriptor[5];
-    InitializeUiTextStyleDescriptor(reinterpret_cast<TextStyle*>(styleDescriptor), 0, 0xe, 0x2b68,
-                                    2);
-    sellControl->ApplyStyleDescriptor(styleDescriptor, 0);
-    sellControl->SetStyleState(-1, 0);
+    TextStyle style;
+    InitializeUiTextStyleDescriptor(&style, 0, 0xe, 0x2b68, 2);
+    sellControl->InstallTextStyle(style, 0);
+    sellControl->SetTextAlignmentAndMaybeRefresh(-1, 0);
     CRect boundsBuffer;
     boundsBuffer.left = 0;
     boundsBuffer.top = 0;
@@ -533,12 +536,13 @@ void TTradeCluster::SetMoveAmount(short metricClampMax) {
     tradeMetricValue = metricClampMax;
   }
 
-  TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
+  TNumberText* sellControl =
+      static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
   if (sellControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineUpdateSell);
   }
   if (sellControl != 0) {
-    sellControl->SetControlValueSlot1E4(tradeMetricValue, 1);
+    sellControl->SetControlValue(tradeMetricValue, 1);
   }
 
   TAmtBar* barControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));

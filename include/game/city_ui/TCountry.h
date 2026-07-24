@@ -96,7 +96,6 @@ public:
   // Diplomacy / nation-state helpers (bodies may access TGreatPower tail via `this`).
   void DeserializeDiplomacyNationStateFromStream(TStream* stream);
   void SerializeDiplomacyNationStateToStream(TStream* stream);
-  char IsDiplomacyPolicyAllowedForTargetClassState(short policyCode, short targetNationSlot);
   void SetNationTradePolicyValueForTargetAndNotify(NationSlot targetNationSlot, short policyValue);
   void ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot);
 

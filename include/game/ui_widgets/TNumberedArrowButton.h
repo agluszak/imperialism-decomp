@@ -4,7 +4,6 @@
 
 #include "game/ui_core/TControl.h"
 
-extern "C" int g_vtblTNumberedArrowButton;
 struct CRuntimeClass;
 
 // VTABLE: IMPERIALISM 0x667678

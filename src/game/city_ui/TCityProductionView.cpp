@@ -124,7 +124,7 @@ void TCityProductionView::DoPostCreate(int arg) {
     }
     int row = (actionCount - 1) + tableOffset;
     for (int action = 0; action < 3; ++action) {
-      RECT bounds = g_anCityBuildingLayoutValues[row * 3 + action];
+      RECT bounds = g_aCityBuildingLayoutRects[row * 3 + action];
       if (bounds.right < 1) {
         buildingActionAnimations12C[buildingSlot][action] = 0;
         continue;
@@ -603,7 +603,7 @@ void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
   short buildingSlot = -1;
   CPoint localPoint(point);
   for (int priority = 15; priority >= 0; --priority) {
-    short candidate = g_cityBuildingHitTestOrder[priority];
+    short candidate = g_anCityBuildingSlotOrder[priority];
     if (PtInRgn(&localPoint, buildingClipRegionsEC[candidate])) {
       buildingSlot = candidate;
       break;
@@ -655,7 +655,7 @@ void TCityProductionView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoin
 
   CPoint point(currentPoint);
   for (int priority = 15; priority >= 0; --priority) {
-    short buildingSlot = g_cityBuildingHitTestOrder[priority];
+    short buildingSlot = g_anCityBuildingSlotOrder[priority];
     if (PtInRgn(&point, buildingClipRegionsEC[buildingSlot])) {
       HandleEvent(buildingSlot + 10000, this, 0);
       return;

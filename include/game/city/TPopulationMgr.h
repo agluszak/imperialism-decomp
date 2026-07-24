@@ -47,6 +47,8 @@ public:
   // 0x004b5c00: attach this population state to a city and allocate its three
   // labor pools.
   void InitializePopulationState(TCity* city);
+  // Mac CodeWarrior oracle: AddExpert(short) -- 0x004b6a30.
+  void AddExpert(short count);
 
   TCity* city04;
   short populationCount08; // +0x08 — total workers across the three skill bands

@@ -1,4 +1,5 @@
 #include "game/nation/TGreatPower.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_widgets.h"
 #include "game/ui_widgets/TAmtBar.h"
@@ -37,12 +38,14 @@ TAmtBarCluster::~TAmtBarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00586d60
 void TAmtBarCluster::DoPostCreate(int styleSeed) {
-  TAmtBar* moveControl = static_cast<TAmtBar*>(ResolveControlByTag(kControlTagMove));
+  // 'move' is a TNumberText (UI factory: new TNumberText() for tag 'move'); slots
+  // 0x6d/0x71 are TNumberText-hierarchy virtuals past TAmtBar's extent.
+  TNumberText* moveControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagMove));
   TextStyle styleDescriptor = {0, 0, 0, 0};
   if (moveControl != 0) {
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
-    moveControl->ApplyStyleDescriptor(&styleDescriptor, 0);
-    moveControl->SetStyleState(-2, 0);
+    moveControl->InstallTextStyle(styleDescriptor, 0);
+    moveControl->SetTextAlignmentAndMaybeRefresh(-2, 0);
   }
 
   TAmtBar* barControl = static_cast<TAmtBar*>(ResolveControlByTag(kControlTagBar));

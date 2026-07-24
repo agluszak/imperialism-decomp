@@ -14,6 +14,7 @@ TMiniCivLine::~TMiniCivLine() {}
 
 IMPLEMENT_DYNCREATE(TMiniCivLine, TLineData)
 
+// NOOP: verified empty in original 0x004ab6a3 (no standalone TMiniCivLine::TMiniCivLine body exists: CreateObject 0x004ab670 inlines this default ctor, calling the TLineData base ctor directly at that site)
 TMiniCivLine::TMiniCivLine() {}
 
 // FUNCTION: IMPERIALISM 0x004ab740

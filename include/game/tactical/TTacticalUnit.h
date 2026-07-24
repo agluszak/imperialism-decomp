@@ -60,6 +60,7 @@ public:
   // NOOP: verified empty in original (trivial inline ctor: both concrete branches
   // inline construction as a bare vptr store, so the base ctor must stay empty and
   // in-class).
+  // NOOP: verified empty in original 0x005a5d12 (no standalone TTacticalUnit::TTacticalUnit body exists: construction is fully inlined into CreateObject 0x005a5d10; that address is its operator-new call site)
   TTacticalUnit() {}
 
   // Seeds the common per-unit-in-battle state (tileIndex8=-2 "not placed" sentinel,

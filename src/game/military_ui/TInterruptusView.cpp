@@ -18,6 +18,7 @@ TInterruptusView::~TInterruptusView() {}
 
 IMPLEMENT_DYNCREATE(TInterruptusView, TItemBoyView)
 
+// NOOP: verified empty in original 0x004afcf3 (no standalone TInterruptusView::TInterruptusView body exists: CreateObject 0x004afcc0 inlines this default ctor, calling the TView base ctor directly at that site)
 TInterruptusView::TInterruptusView() {}
 
 // FUNCTION: IMPERIALISM 0x004afda0

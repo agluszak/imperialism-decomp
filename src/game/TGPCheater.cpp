@@ -34,6 +34,7 @@ TGPCheater::~TGPCheater() {}
 
 IMPLEMENT_DYNCREATE(TGPCheater, TCheater)
 
+// NOOP: verified empty in original 0x004b19e3 (no standalone TGPCheater::TGPCheater body exists: CreateObject 0x004b19b0 inlines this default ctor, calling the TView base ctor directly at that site)
 TGPCheater::TGPCheater() {}
 
 // FUNCTION: IMPERIALISM 0x004b1a90

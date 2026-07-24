@@ -1,4 +1,5 @@
 #include "game/ui_widgets/TAmtBar.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_widgets.h"
 #include "game/city_ui/TBuildingView.h"
@@ -138,12 +139,13 @@ void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
     return;
   }
 
-  TAmtBar* moveControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+  TNumberText* moveControl =
+      static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagMove));
   if (moveControl == 0) {
     FailNilPointerInUSmallViews(0xcf2);
   }
 
-  moveControl->SetControlValueSlot1E4((int)selectedOrder->quantityField04, 0);
+  moveControl->SetControlValue((int)selectedOrder->quantityField04, 0);
 
   CRect moveBoundsRect;
   RECT moveInvalidRect;

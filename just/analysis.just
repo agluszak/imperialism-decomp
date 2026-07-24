@@ -34,9 +34,18 @@ mfc-collection-audit *args:
 template-emission-matrix *args:
   uv run python -m tools.workflow.template_emission_matrix {{args}}
 
-# Re-verify every row of config/template_aliases.csv: alias and canonical bodies
-# must be identical modulo relocations (tools.binary.body_hash).
-[doc('Validate template-COMDAT alias rows in config/template_aliases.csv')]
+# Re-verify every row of config/template_aliases.csv per equivalence class:
+# duplicate_emission rows must be identical modulo relocations
+# (tools.binary.body_hash); folded_symbol_group rows must be bare jmp islands
+# whose fold chain lands on the recorded canonical.
+[doc('Validate equivalence-metadata rows in config/template_aliases.csv')]
 [group('analysis')]
 template-alias-check:
   uv run python -m tools.workflow.template_alias_check
+
+# Enumerate incremental-link stale-jmp fold islands (folded_symbol_group
+# candidates for config/template_aliases.csv); --emit prints ready CSV rows.
+[doc('Enumerate stale-jmp fold islands for folded_symbol_group rows')]
+[group('analysis')]
+stale-jmp-islands *args:
+  uv run python -m tools.workflow.stale_jmp_islands {{args}}

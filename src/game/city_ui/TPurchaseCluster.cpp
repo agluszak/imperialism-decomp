@@ -1,4 +1,5 @@
 #include "game/city_ui/TPurchaseCluster.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/ui_tags_city.h"
 #include "game/ui_tags_common.h"
 
@@ -54,12 +55,12 @@ void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, char redrawFl
   // int) matching this callsite's slot 0x1e4 dispatch and (nValue, 0) argument shape exactly
   // -- unlike the byte-coincident TDeluxeText::SetTextStyle at the
   // same offset, which takes a style-descriptor pointer, not a plain value.
-  TAmtBar* valueControl = static_cast<TAmtBar*>(ResolveControlByTag(kControlTagValu));
+  TNumberText* valueControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagValu));
   if (valueControl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x781);
   }
-  valueControl->SetControlValueSlot1E4(nValue, 0);
+  valueControl->SetControlValue(nValue, 0);
   if (redrawFlag == 0) {
     return;
   }

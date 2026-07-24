@@ -465,3 +465,39 @@ the mapping from behavior, then optionally cross-check the name exists in the Ma
   impls. Same shape appears when one caller pushes an arg a plain-`ret` callee ignores
   (production-order 0x4b5620's lone TGreatPower caller): match the many callee definitions,
   accept the one caller's ~1pp loss, don't contort the signature.
+
+## Shadow stubs: non-virtual degenerate methods hiding a real vtable slot (bead rcb6)
+
+A recurring vtable defect the reccmp score can't see: a method declared **non-virtual**
+on a `// VTABLE:` class, with a **degenerate body** (only `(void)x;` casts + optional
+constant `return`), **no address marker**, and **live call sites**. Because it's
+non-virtual the callsite emits a DIRECT call into a do-nothing body where the original
+dispatches through the vtable — silent dead code. Invisible to reccmp (no address
+claimed, so recomp-only), to empty-body/stub-count gates (real manual body), and to
+marker gates. Found only by hand until now.
+
+- First family: three TMapMgr shadows removed in dee3b1b21 (CallMetricSlotC4,
+  QueryIconStripXSlot110, NotifyCityRecordSlot12C) — each duplicated a real virtual
+  already on the same class at the same slot, so the fix was routing the callers to the
+  real virtual. Second family: TAmtBar::ApplyStyleDescriptor/SetStyleState (bead 12k2),
+  where the real owning class is unidentified (the 184-slot job) so there's nothing to
+  route to yet.
+- Now caught permanently by `just shadow-stub-gate`
+  (tools/workflow/check_shadow_stubs.py), ratcheted against
+  config/baselines/shadow_stub_baseline.csv. When you see a `...Slot<HEX>` non-virtual
+  method with a `(void)arg;`-only body, the gate resolves that byte offset in
+  vtable_abi_evidence.json and tells you whether it lands on real original code.
+- The fix is always one of: (a) the real virtual already exists on the class → route
+  callers to it and delete the shadow; (b) it doesn't → recover the owning class's
+  vtable and declare the real virtual at the slot, never guess. Ratchet the baseline
+  down with `--write-baseline` once fixed.
+
+## Oversize-vtable warnings from an over-virtual destructor
+
+`just vtable`'s "recomp vtable is larger than orig" warning can mean a dtor declared
+`virtual` that the original left non-virtual. Tell: the original table's first null slot
+sits exactly where our extra slot appears, and the dtor has a single **direct** call
+site (e.g. an atexit teardown of a fixed global) rather than any vtable dispatch.
+Example: TWNetSessionManager (~dtor 0x5e2a20, only caller is the 0x6a5f60 atexit
+teardown) — de-virtualizing the dtor removed the phantom 10th slot. Don't add a slot the
+original's table doesn't have just to keep the dtor virtual.

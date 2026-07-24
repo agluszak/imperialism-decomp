@@ -8,6 +8,7 @@
 
 IMPLEMENT_DYNCREATE(TTask, TObject)
 
+// NOOP: verified empty in original 0x005adb42 (no standalone TTask::TTask body exists: construction is fully inlined into CreateObject 0x005adb40; that address is its operator-new call site)
 TTask::TTask() {}
 
 // SYNTHETIC: IMPERIALISM 0x005adbb0
