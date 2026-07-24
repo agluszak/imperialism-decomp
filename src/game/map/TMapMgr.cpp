@@ -3544,6 +3544,31 @@ char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
   return 0;
 }
 
+// True when any province adjacent to `provinceIndex` is owned by `ownerNationCode`.
+// Walks that province's adjacentRegionIds0A list, bounded by adjacentRegionCount08, and
+// compares each neighbour's ownerNationCode00. An empty adjacency list answers false.
+// FUNCTION: IMPERIALISM 0x00517d40
+bool TMapMgr::HasAdjacentProvinceOwnedByNation(int provinceIndex, int ownerNationCode) {
+  Province* table = cityScoreTable;
+  Province* province = &table[provinceIndex];
+  int adjacentCount = province->adjacentRegionCount08;
+  if (adjacentCount < 1) {
+    return false;
+  }
+
+  int index = 0;
+  ProvinceIndexStorage* neighbourId = province->adjacentRegionIds0A;
+  do {
+    if (table[*neighbourId].ownerNationCode00 == ownerNationCode) {
+      return true;
+    }
+    index = index + 1;
+    neighbourId = neighbourId + 1;
+  } while (index < adjacentCount);
+
+  return false;
+}
+
 // FUNCTION: IMPERIALISM 0x00517dd0
 bool TMapMgr::HasDirectOrFallbackLinkedNodeType(ProvinceIndex cityRecordIndex, int nationCode,
                                                 char allowFallback) {

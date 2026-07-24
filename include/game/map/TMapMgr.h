@@ -665,7 +665,12 @@ public:
   unsigned char field9;                            // +0x09 -- 1-byte stream read
   unsigned char pad0a[2];                     // +0x0a -- alignment gap before the +0x0c pointer
   TTerrainStateRecordView* terrainStateTable; // +0x0c
-  Province* cityScoreTable;                   // +0x10
+  // True when any province adjacent to `provinceIndex` (its adjacentRegionIds0A list,
+  // bounded by adjacentRegionCount08) carries `ownerNationCode` in ownerNationCode00.
+  // 0x00517d40, __thiscall.
+  bool HasAdjacentProvinceOwnedByNation(int provinceIndex, int ownerNationCode);
+
+  Province* cityScoreTable; // +0x10
   // +0x14 -- no access anywhere in the binary (whole-image field-xref sweep returns
   // zero). The "per-tile ownership table" this used to be called was a mis-attribution:
   // ApplyJoinEmpireMode0GlobalDiplomacyReset reads [this+0x0c], i.e. terrainStateTable.

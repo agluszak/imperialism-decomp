@@ -3245,7 +3245,7 @@ address|name|symbol|size|type|prototype|provenance
 5178c0|TMapMgr::OrphanLeaf_NoCall_Ins08_005178c0||21|function|undefined OrphanLeaf_NoCall_Ins08_005178c0(void)|
 5178f0|ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias||644|function|undefined ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias()|
 517c30|IsNationCodeLinkedInNationGraph||198|function|undefined IsNationCodeLinkedInNationGraph()|
-517d40|OrphanDeadLeaf_NoRefs_00517d40||98|function|undefined OrphanDeadLeaf_NoRefs_00517d40()|
+517d40|TMapMgr::HasAdjacentProvinceOwnedByNation||98|function|undefined HasAdjacentProvinceOwnedByNation()|
 517dd0|HasDirectOrFallbackLinkedNodeType||328|function|undefined HasDirectOrFallbackLinkedNodeType()|
 517f80|CollectSecondDegreeLinksMatchingNodeType||204|function|undefined CollectSecondDegreeLinksMatchingNodeType()|
 518090|TMapMgr::CollectSecondDegreeLinksWithMinorNationFallback||126|function|int __thiscall CollectSecondDegreeLinksWithMinorNationFallback(int cityRecordIndex, int nationTag, int * nodeBuffer, char allowFallback)|
