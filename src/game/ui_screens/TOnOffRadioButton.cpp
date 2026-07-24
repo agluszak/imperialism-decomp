@@ -9,10 +9,13 @@
 
 IMPLEMENT_DYNCREATE(TOnOffRadioButton, TPictureButton)
 
+// Original store order after the vptr write: eventNumber60 = 0xc (overriding the
+// TControl ctor's 1), then byte state94 = 0. The timingWord92 store visible at
+// 0x5719f8 is the inlined TPictureButton ctor.
 // FUNCTION: IMPERIALISM 0x005719f0
 TOnOffRadioButton::TOnOffRadioButton() : TPictureButton() {
   eventNumber60 = 0xc;
-  field94 = 0;
+  state94 = 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00571a30

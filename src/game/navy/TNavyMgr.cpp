@@ -217,11 +217,6 @@ void BuildMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
   MapOrderBattleSideChildRecord* records = nullptr;
   if (childCount > 0) {
     records = new MapOrderBattleSideChildRecord[childCount];
-    // Original only zeroes each record's first byte (a stride-0x2c loop writing one
-    // byte per record), not the whole record -- reproduced verbatim.
-    for (int i = 0; i < childCount; ++i) {
-      reinterpret_cast<char*>(&records[i])[0] = 0;
-    }
   }
   snapshot->childRecords[side] = records;
 
@@ -1304,9 +1299,6 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
             }
             snapshot.childCount[1] = detailCount;
             snapshot.childRecords[1] = new MapOrderBattleSideChildRecord[detailCount];
-            for (int detailIndex = 0; detailIndex < detailCount; ++detailIndex) {
-              snapshot.childRecords[1][detailIndex].nameBuffer[0] = 0;
-            }
 
             CString resourceList;
             int reportIndex = 1;
@@ -1382,7 +1374,6 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         if (snapshot.childCount[1] < 1) {
           snapshot.childCount[1] = 1;
           snapshot.childRecords[1] = new MapOrderBattleSideChildRecord[1];
-          snapshot.childRecords[1][0].nameBuffer[0] = 0;
         }
 
         MapOrderBattleSideChildRecord& interaction = snapshot.childRecords[1][0];
@@ -1421,9 +1412,6 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
             static_cast<short>(CountMapOrderChildren(selection.selectedEntry->shipList));
         if (snapshot.childCount[0] > 0) {
           snapshot.childRecords[0] = new MapOrderBattleSideChildRecord[snapshot.childCount[0]];
-          for (int childIndex = 0; childIndex < snapshot.childCount[0]; ++childIndex) {
-            snapshot.childRecords[0][childIndex].nameBuffer[0] = 0;
-          }
         }
         int selectedChildIndex = 0;
         for (TMapOrderChildLinkNode* selectedNode = selection.selectedEntry->shipList;

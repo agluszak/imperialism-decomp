@@ -187,7 +187,7 @@ class UiCodegenTests(unittest.TestCase):
                 "bool resourceFlag71;",
             ),
             "TEditText.h": (
-                "CMcWindow* editWindow;",
+                "CMcEditWindow* editWindow;",
                 "CFont* editFont;",
                 "short maxCharacterCount;",
             ),

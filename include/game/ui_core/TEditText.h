@@ -7,15 +7,15 @@
 
 class CityDialogController;
 
-class CMcWindow;
+class CMcEditWindow;
 
 // VTABLE: IMPERIALISM 0x0064ad90
 class TEditText : public TStaticText {
 public:
-  CMcWindow* editWindow;   // 0x94, live edit CWnd while focused/active
-  CFont* editFont;         // 0x98, owns the HFONT installed into editWindow
-  short maxCharacterCount; // 0x9c
-  short reserved9e;        // 0x9e, no accesses observed
+  CMcEditWindow* editWindow; // 0x94, live edit-host window while focused/active
+  CFont* editFont;           // 0x98, owns the HFONT installed into editWindow
+  short maxCharacterCount;   // 0x9c
+  short reserved9e;          // 0x9e, no accesses observed
 
   DECLARE_DYNCREATE(TEditText)
   virtual ~TEditText() override;
@@ -26,7 +26,7 @@ public:
   void TargetValidationSucceeded() override;
   char BecomeTarget() override;
   void SelectOwner(unsigned char select) override;
-  CMcWindow* Open() override;
+  CWnd* Open() override;
   void Close() override;
   void SetEnabled(int enabledState, int refreshFlag) override;
   void Draw(RECT* rectBuffer) override;

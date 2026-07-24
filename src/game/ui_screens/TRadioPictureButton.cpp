@@ -24,22 +24,23 @@ TRadioPictureButton::~TRadioPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00571850
 void TRadioPictureButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  if (commandId == 0xc) {
+  switch (commandId) {
+  case 0xc:
     if (controlState64 == 0) {
       SetRadioState(1, 0);
     }
     TControl::DoEvent(commandId, sourceHandler, event);
     return;
-  }
-  if (commandId != kControlCommandHiliteOn) {
-    if (commandId != kControlCommandHiliteOff) {
-      TControl::DoEvent(commandId, sourceHandler, event);
-      return;
-    }
+  case kControlCommandHiliteOn:
+    SetRadioState(1, 0);
+    return;
+  case kControlCommandHiliteOff:
     SetRadioState(0, 0);
     return;
+  default:
+    TControl::DoEvent(commandId, sourceHandler, event);
+    return;
   }
-  SetRadioState(1, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005718f0

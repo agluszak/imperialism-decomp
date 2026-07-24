@@ -14,7 +14,7 @@ public:
 
   virtual void Free() override;
   virtual void DoKeyEvent(TToolboxEvent* event) override;
-  virtual CMcWindow* Open() override;
+  virtual CWnd* Open() override;
   virtual char HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
   virtual char HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
   virtual void UpdateTurnOrderNavigationWindowLayout();

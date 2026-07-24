@@ -7,6 +7,13 @@
 
 extern TInfoBarText* g_pCursorControlPanel;
 
+// USmallViews.cpp shared empty-text pointer. The original stores a pointer to
+// g_szEmptyString at 0x00662b90 and constructs transient CString values from it in
+// TArmyInfoView and the strategic toolbar text-refresh paths.
+extern "C" {
+extern char* g_pSmallViewsEmptyText_00662B90;
+}
+
 extern TTradeMgr* g_pNationInteractionStateManager;
 
 extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;

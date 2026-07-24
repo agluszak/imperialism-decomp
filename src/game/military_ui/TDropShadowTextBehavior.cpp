@@ -1,4 +1,7 @@
 #include "game/military_ui/TDropShadowTextBehavior.h"
+
+#include "game/ui_core/TStaticText.h"
+#include "game/ui_core/quickdraw_rendering.h"
 // SYNTHETIC: IMPERIALISM 0x004b0fe0
 // TDropShadowTextBehavior::CreateObject
 
@@ -8,8 +11,7 @@
 IMPLEMENT_DYNCREATE(TDropShadowTextBehavior, TBehavior)
 
 // FUNCTION: IMPERIALISM 0x004b10a0
-TDropShadowTextBehavior::TDropShadowTextBehavior()
-    : TBehavior(), field10(0), field11(0), field12(0), field13(0) {}
+TDropShadowTextBehavior::TDropShadowTextBehavior() : TBehavior(), shadowColor10(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x004b10d0
 // TDropShadowTextBehavior::`scalar deleting destructor'
@@ -19,4 +21,18 @@ TDropShadowTextBehavior::~TDropShadowTextBehavior() {}
 // FUNCTION: IMPERIALISM 0x004b1150
 void TDropShadowTextBehavior::Draw(RECT* bounds) {
   (void)bounds;
+  TStaticText* textOwner = static_cast<TStaticText*>(owner);
+  SetQuickDrawColorAndPropagateIfChanged(shadowColor10);
+
+  CString text;
+  textOwner->CopyTextTo(&text);
+
+  CRect shadowBounds;
+  textOwner->BuildInsetContentRect(&shadowBounds);
+  shadowBounds.top--;
+  shadowBounds.bottom--;
+  shadowBounds.left--;
+  shadowBounds.right--;
+  textOwner->DrawTextAligned(static_cast<LPCSTR>(text), text.GetLength(), &shadowBounds,
+                             textOwner->textAlignmentCode);
 }

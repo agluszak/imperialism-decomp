@@ -25,6 +25,7 @@ from tools.common.function_baseline import (
     load_function_baseline,
     write_function_baseline_atomic,
 )
+from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file
 from tools.common.report_score import effective_matching
 from tools.stubgen import compute_stub_rows
@@ -425,26 +426,15 @@ def load_function_sizes(build_dir: Path) -> dict[int, int]:
     for path in candidates:
         if not path.exists():
             continue
-        with path.open("r", encoding="utf-8", errors="replace") as fd:
-            header = fd.readline().rstrip("\n").split("|")  # pipe-split-ok: streaming scan of whichever of generated symbols.csv / original_entities.csv exists, with header-driven column indexing
+        for row in read_pipe_rows(path):
+            if (row.get("type") or "").strip().lower() != "function":
+                continue
             try:
-                addr_i, size_i, type_i = (
-                    header.index("address"),
-                    header.index("size"),
-                    header.index("type"),
+                sizes[int((row.get("address") or "").strip(), 16)] = int(
+                    (row.get("size") or "").strip()
                 )
             except ValueError:
                 continue
-            for line in fd:
-                parts = line.rstrip("\n").split("|")  # pipe-split-ok: same streaming scan; rows validated by column count below
-                if len(parts) <= max(addr_i, size_i, type_i):
-                    continue
-                if parts[type_i].strip().lower() != "function":
-                    continue
-                try:
-                    sizes[int(parts[addr_i], 16)] = int(parts[size_i])
-                except ValueError:
-                    continue
         if sizes:
             break
     return sizes

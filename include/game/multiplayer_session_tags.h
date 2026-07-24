@@ -16,7 +16,6 @@ const int kSessionTagBox0 =
     IMPERIALISM_FOURCC('b', 'o', 'x', '0'); // TMultiMessagePicture.cpp; 1 Mac screen(s)
 const int kSessionTagBusy =
     IMPERIALISM_FOURCC('b', 'u', 's', 'y'); // TLoungeDialog.cpp, TMultiplayerMgr.cpp
-const int kSessionTagBxb0 = IMPERIALISM_FOURCC('b', 'x', 'b', '0'); // TMultiplayerMgr.cpp
 const int kSessionTagCgop = IMPERIALISM_FOURCC('c', 'g', 'o', 'p'); // TMultiplayerMgr.cpp
 const int kSessionTagDead =
     IMPERIALISM_FOURCC('d', 'e', 'a', 'd'); // TMultiplayerMgr.cpp; 1 Mac screen(s)

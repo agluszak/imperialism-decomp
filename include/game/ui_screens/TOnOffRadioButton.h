@@ -23,10 +23,10 @@ public:
 
   TOnOffRadioButton();
 
-  // Original object size is 0x98 (CRuntimeClass m_nObjectSize). The ctor (0x5719f0)
-  // zeroes a single byte at +0x94 (the sibling TCzechBox models the same slot as its
-  // on/off state byte); the remaining three bytes are layout padding.
-  unsigned char field94;
+  // Original object size is 0x98 (CRuntimeClass m_nObjectSize). The ctor stores a
+  // single BYTE 0 at +0x94 (mirrors TCzechBox::isOn94); the remaining three bytes
+  // are layout padding.
+  unsigned char state94;
   unsigned char padding95[3];
 };
 ASSERT_SIZE(TOnOffRadioButton, 0x98);

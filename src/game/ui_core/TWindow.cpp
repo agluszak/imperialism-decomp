@@ -226,7 +226,7 @@ void TWindow::SetWindowTarget(TEventHandler* target) {
 // not-actionable fallback (mark busy, poke the linked window, fire the slot-0x73 chain),
 // and finally recurse the realize hook into each child.
 // FUNCTION: IMPERIALISM 0x0048de00
-CMcWindow* TWindow::Open() {
+CWnd* TWindow::Open() {
   if (nativeWindow50 == 0) {
     nativeWindow50 = new CMcWindow(this);
     if (childList44 != 0) {

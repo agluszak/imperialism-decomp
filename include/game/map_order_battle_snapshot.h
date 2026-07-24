@@ -7,9 +7,7 @@
 struct CStr32 {
   char data[0x20];
 
-  CStr32() {
-    data[0] = 0;
-  }
+  CStr32();
 };
 ASSERT_SIZE(CStr32, 0x20);
 
@@ -38,6 +36,10 @@ struct MapOrderBattleSideChildRecord {
     void* sourceObject;       // while the resolver is still updating a live unit
     unsigned int categoryTag; // once finalized: 'army', 'navy', 'merc', 'item', or 'rupt'
   } detailIdentity;           // +0x28
+
+  MapOrderBattleSideChildRecord() {
+    nameBuffer[0] = 0;
+  }
 };
 ASSERT_SIZE(MapOrderBattleSideChildRecord, 0x2c);
 

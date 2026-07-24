@@ -2391,13 +2391,13 @@ void TGreatPower::SortTrackedOrdersByTypePriority(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e03a0
-void TGreatPower::RunSlot4CThenSortTrackedOrders(void) {
+void TGreatPower::MoveCivilians(void) {
   this->DispatchTrackedOrderSlot2CCallbacks();
   this->SortTrackedOrdersByTypePriority();
 }
 
 // FUNCTION: IMPERIALISM 0x004e03d0
-void TGreatPower::ResetField900FromNeedCapA6(void) {
+void TGreatPower::MoveArmy(void) {
   this->field900 = this->needCapA6 / 5;
 }
 

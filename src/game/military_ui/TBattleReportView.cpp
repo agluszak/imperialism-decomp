@@ -274,8 +274,7 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
 // FUNCTION: IMPERIALISM 0x004adc80
 void TBattleReportView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                             RgnHandle hitArg) {
-  (void)point;
-  (void)hitArg;
+  TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
 }
 
 // FUNCTION: IMPERIALISM 0x004adcb0

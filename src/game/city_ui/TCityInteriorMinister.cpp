@@ -232,8 +232,8 @@ void TCityInteriorMinister::SelectRecruitmentProductionCommand(short commandInde
 }
 
 // FUNCTION: IMPERIALISM 0x004bef30
-void TCityInteriorMinister::InteriorSlot1C(short arg) {
-  list190->InsertLast(arg);
+void TCityInteriorMinister::PleaseBuildLandUnit(short unitType) {
+  list190->InsertLast(unitType);
 }
 
 // FUNCTION: IMPERIALISM 0x004bef60

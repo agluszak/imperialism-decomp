@@ -15,8 +15,7 @@ public:
   // view 3100 "Friendly army report" (Mac resource oracle), and
   // TViewMgr::DispatchProvinceOrderOverlayConfirmDialog is its only caller: it forwards
   // the province's city-record index and the per-category order counts. The previous
-  // `IsSelected(short, bool)` name/signature was a guess. Body (1,506 bytes: five CString
-  // locals and a large label/format pass) is not ported yet.
+  // `IsSelected(short, bool)` name/signature was a guess.
   virtual void PopulateFriendlyArmyReportContent(short cityRecordIndex, int* categoryCounts);
 };
 

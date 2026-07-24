@@ -251,6 +251,14 @@ key *args:
 smoke *args:
   uv run python tools/runtime/smoke.py run {{args}}
 
+# Differential startup oracle: run the SAME milestone ladder against the retail
+# binary and the recomp in isolated Wine prefixes; the original's reached set is
+# the expectation and any milestone it reaches that the recomp misses fails.
+[doc('Differential startup oracle: original vs recomp milestone ladder')]
+[group('build')]
+smoke-diff *args:
+  uv run python tools/runtime/smoke.py diff {{args}}
+
 # Scripted gdb session against the recomp (winedbg --gdb proxy; real gdb front
 # end: conditional breakpoints, set var, inferior calls, raw memory reads).
 # gdb sees no PDB symbols — use recomp VAs from `just addr 0xORIG`.
