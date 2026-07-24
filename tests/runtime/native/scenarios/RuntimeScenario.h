@@ -9,6 +9,7 @@ enum RuntimeScenarioCompletion {
   kCompleteOnEasyMap,
   kCompleteAfterTurns,
   kCompleteOnCityScreen,
+  kCompleteAfterMapZoomToggle,
   kCompleteAfterNormalJourney,
   kCompleteAfterLoadedMap
 };

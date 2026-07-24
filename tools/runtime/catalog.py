@@ -21,6 +21,11 @@ TESTS = (
     RuntimeTestSpec("easy_turns_advance", ("full",), required_oracles=("ui", "map")),
     RuntimeTestSpec("city_screen_opens", ("full",), required_oracles=("ui",)),
     RuntimeTestSpec(
+        "map_zoom_toggle_remains_responsive",
+        ("full",),
+        required_oracles=("ui", "map"),
+    ),
+    RuntimeTestSpec(
         "load_saved_game",
         ("full",),
         fixture="beginning_of_game.imp",

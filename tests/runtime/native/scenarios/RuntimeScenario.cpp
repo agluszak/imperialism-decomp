@@ -24,6 +24,7 @@
 #include "game/ImperialismApp.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/map/TMapMgr.h"
+#include "game/navy_ui/TOceanDialog.h"
 #include "game/ui_screens/TNewspaperView.h"
 #include "game/ui_core/TPicture.h"
 #include "game/ui_screens/TRadioTextCluster.h"
@@ -109,6 +110,7 @@ RuntimeTestState g_runtimeTestState = {
 CString g_randomSetupUiSnapshot;
 CString g_strategicMapUiSnapshot;
 CString g_capitalConfirmationUiSnapshot;
+short g_mapZoomToggleCycles;
 CString g_activatedEventSequence("[");
 CString g_handledModals("[");
 CString g_unexpectedModals("[");
@@ -1453,6 +1455,71 @@ void RunWaitingForCombinedMap() {
   WaitForNextTickOrTimeout("\"accepted city site did not advance to the combined map\"");
 }
 
+void RunActivatingMapZoomOut();
+void RunVerifyingMapZoomOut();
+void RunVerifyingMapZoomIn();
+
+void RunActivatingMapZoomOut() {
+  TView* mainView = MainView();
+  TMapUberPicture* mapView = IsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture))
+                                 ? static_cast<TMapUberPicture*>(mainView)
+                                 : 0;
+  TView* zoom = mapView != 0 ? mapView->ResolveControlByTag(kControlTagZmOt) : 0;
+  if (g_pUiRuntimeContext->currentTurnEventCode != 0x7dd || mapView == 0 || zoom == 0 ||
+      !g_ModalViewStack.IsEmpty()) {
+    Fail("\"combined-map zoom-out control is missing or the map is not idle\"");
+    return;
+  }
+  SetStep(RunVerifyingMapZoomOut, "verifying_map_zoom_out", "click_map_zoom_out");
+  if (!RuntimeUiDriver::ClickView(zoom)) {
+    Fail("\"combined-map zoom-out control has no native host\"");
+    return;
+  }
+  RequestAnotherDriverTick();
+}
+
+void RunVerifyingMapZoomOut() {
+  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+  if (mapView == 0 || mapView->ResolveControlByTag(kControlTagZmIn) == 0 ||
+      mapView->invalidationFlag94 != 0 || mapView->subviewAc != mapView->goodGoldTagControlA4) {
+    Fail("\"zoom-out release did not enter the alternate map mode\"");
+    return;
+  }
+  SetStep(RunVerifyingMapZoomIn, "verifying_map_zoom_in", "click_map_zoom_in");
+  TView* zoom = mapView->ResolveControlByTag(kControlTagZmIn);
+  if (!RuntimeUiDriver::ClickView(zoom)) {
+    Fail("\"combined-map zoom-in control has no native host\"");
+    return;
+  }
+  RequestAnotherDriverTick();
+}
+
+void RunVerifyingMapZoomIn() {
+  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+  if (mapView == 0 || mapView->ResolveControlByTag(kControlTagZmOt) == 0 ||
+      mapView->invalidationFlag94 == 0 || mapView->subviewAc != mapView->subview2A8) {
+    Fail("\"zoom-in release did not restore the strategic map mode\"");
+    return;
+  }
+
+  ++g_mapZoomToggleCycles;
+  if (g_mapZoomToggleCycles < 2) {
+    SetStep(RunActivatingMapZoomOut, "activating_map_zoom_out_again", "repeat_map_zoom_toggle");
+    RequestAnotherDriverTick();
+    return;
+  }
+
+  TMapDialog* mapDialog = mapView->subview2A8;
+  mapDialog->SetMapDialogCellCoordinatesAndRefresh(10, 10, 0);
+  int previousX = mapDialog->viewportOrigin60.x;
+  mapView->Scroll(4);
+  if (mapDialog->viewportOrigin60.x == previousX) {
+    Fail("\"combined-map scrolling stopped after repeated zoom toggles\"");
+    return;
+  }
+  Finish("passed", "null");
+}
+
 void RunVerifyingCombinedMapExtents() {
   TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
   TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
@@ -1500,6 +1567,12 @@ void RunVerifyingCombinedMapExtents() {
   if (Config().completion == kCompleteOnCityScreen) {
     SetStep(RunActivatingCityScreen, "activating_city_screen",
             "combined_map_ready_for_city_screen");
+    RequestAnotherDriverTick();
+    return;
+  }
+  if (Config().completion == kCompleteAfterMapZoomToggle) {
+    SetStep(RunActivatingMapZoomOut, "activating_map_zoom_out",
+            "combined_map_ready_for_zoom_toggle");
     RequestAnotherDriverTick();
     return;
   }
@@ -1560,6 +1633,7 @@ RuntimeScenario::RuntimeScenario(const RuntimeScenarioConfig& scenarioConfig)
     : config(scenarioConfig) {}
 
 void RuntimeScenario::Start(RuntimeContext& context) {
+  g_mapZoomToggleCycles = 0;
   InitializeDriver(config, context.Seed());
 }
 
@@ -1623,7 +1697,8 @@ void RuntimeScenario::ObserveTurnEvent(RuntimeContext&, int eventCode) {
     Fail("\"Easy difficulty entered capital-site selection event 0x3b8\"");
     return;
   }
-  if (Config().completion != kCompleteAfterNormalJourney ||
+  if ((Config().completion != kCompleteAfterNormalJourney &&
+       Config().completion != kCompleteAfterMapZoomToggle) ||
       (g_runtimeTestState.step != RunWaitingForCitySiteConfirmation &&
        g_runtimeTestState.step != RunWaitingForCombinedMap)) {
     return;
