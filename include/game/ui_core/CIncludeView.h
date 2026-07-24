@@ -123,6 +123,10 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 public:
+  // Blit the main-pane bitmap (m_field44) into the offscreen surface, clipped to
+  // `clipRect` when one is supplied. 0x00482ed0, __thiscall.
+  void BlitMainPaneBitmapToOffscreenClipped(RECT* clipRect);
+
   // Tear down the hosted dialog tree, re-resolve the 'main' pane picture, blit its bitmap
   // into the offscreen surface and force a full window repaint. Returns the (now cleared)
   // dialog context. One stack argument is accepted and never read. 0x004833b0, __thiscall.

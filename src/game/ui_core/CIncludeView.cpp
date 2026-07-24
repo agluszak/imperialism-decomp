@@ -226,6 +226,29 @@ void CIncludeView::BlitMapDialogSurfaceToHdcWithClipBounds(CDC* dc, RECT* clipRe
   }
 }
 
+// Blit the main-pane bitmap into the offscreen surface. The blit rect starts as the
+// bitmap's full extent and is narrowed by `clipRect` when one is supplied. Note the
+// original passes the rect's left edge as BOTH srcX and srcY (only destY uses top);
+// that asymmetry is reproduced as-is.
+// FUNCTION: IMPERIALISM 0x00482ed0
+void CIncludeView::BlitMainPaneBitmapToOffscreenClipped(RECT* clipRect) {
+  CPoint bitmapSize;
+  m_field44->CopyBitmapDimensionsToPoint(&bitmapSize);
+
+  RECT blitRect;
+  blitRect.left = 0;
+  blitRect.top = 0;
+  blitRect.right = bitmapSize.x;
+  blitRect.bottom = bitmapSize.y;
+  if (clipRect != 0) {
+    ::IntersectRect(&blitRect, clipRect, &blitRect);
+  }
+
+  m_field44->BlitSurfaceRectSkippingTransparentColor(
+      m_pOffscreenDib, blitRect.left, blitRect.left, blitRect.right - blitRect.left,
+      blitRect.bottom - blitRect.top, blitRect.left, blitRect.top, -1);
+}
+
 // FUNCTION: IMPERIALISM 0x00482fc0
 void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRect) {
   // Pass 1: blit each not-yet-processed hint rect into the offscreen surface.

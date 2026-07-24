@@ -554,7 +554,7 @@ address|matching|name
 0x482bf0|1.0|CIncludeView::OnDialogTreeHostMsg4EF
 0x482c90|1.0|CIncludeView::OnDraw
 0x482d00|0.4065040650406504|CIncludeView::BlitMapDialogSurfaceToHdcWithClipBounds
-0x482ed0|0.04|Helper_Uses_BlitSurfaceRectSkippingTransparentColor_At00482ed0
+0x482ed0|0.7708333333333334|CIncludeView::BlitMainPaneBitmapToOffscreenClipped
 0x482fc0|0.30177514792899407|CIncludeView::UpdateAndRenderMapTileHintOverlayQueue
 0x483220|0.4166666666666667|IncludeViewOverlayRectRecord::ComputeSpan
 0x483340|1.0|CIncludeView::SetUiRuntimeContextAndActivateMain

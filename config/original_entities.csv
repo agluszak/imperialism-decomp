@@ -518,7 +518,7 @@ address|name|symbol|size|type|prototype|provenance
 482bf0|CIncludeView::OnDialogTreeHostMsg4EF||119|function|LRESULT OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam)|
 482c90|CIncludeView::OnDraw||80|function|void OnDraw(CDC* pDC)|
 482d00|BlitMapDialogSurfaceToHdcWithClipBounds||359|function|undefined BlitMapDialogSurfaceToHdcWithClipBounds()|
-482ed0|Helper_Uses_BlitSurfaceRectSkippingTransparentColor_At00482ed0||120|function|undefined Helper_Uses_BlitSurfaceRectSkippingTransparentColor_At00482ed0()|
+482ed0|CIncludeView::BlitMainPaneBitmapToOffscreenClipped||120|function|undefined BlitMainPaneBitmapToOffscreenClipped()|
 482fc0|CIncludeView::UpdateAndRenderMapTileHintOverlayQueue||473|function|undefined UpdateAndRenderMapTileHintOverlayQueue()|
 483220|ComputeRectSpanFromStoredBounds||29|function|undefined ComputeRectSpanFromStoredBounds()|
 483340|CIncludeView::SetUiRuntimeContextAndActivateMain||36|function|void SetUiRuntimeContextAndActivateMain(TView* activeDialog)|
