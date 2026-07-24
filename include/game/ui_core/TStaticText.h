@@ -23,6 +23,7 @@ public:
   short textOptionFlags; // 0x92
 
   TStaticText();
+  TStaticText(const TStaticText& source); // 0x0048f9d0
   virtual ~TStaticText() override;
 
   void CopyViewStateFromSource(TView* source);

@@ -40,6 +40,11 @@ void TTextLine::SetTextLineRowBoundsAndStyle(short rowArg, short colArg, int* bo
   field1e = -2;
 }
 
+// FUNCTION: IMPERIALISM 0x00570420
+void TTextLine::SetCaptionText(CString* caption) {
+  captionText10 = *caption;
+}
+
 // FUNCTION: IMPERIALISM 0x00570440
 void TTextLine::SetTextLineStyleDescriptor(const TextStyle* descriptor) {
   styleDescriptor14 = *descriptor;

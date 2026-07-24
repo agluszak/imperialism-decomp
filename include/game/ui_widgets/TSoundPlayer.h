@@ -4,6 +4,7 @@
 
 #include "game/ui_core/TEventHandler.h"
 #include "game/city_ui/TLongintList.h"
+#include "game/ui_screens/CString.h"
 
 struct CRuntimeClass;
 
@@ -50,6 +51,10 @@ public:
   // sfxToken is short-typed: 0x5d6260 passes a word table load with no extension
   // (garbage upper bits), which only compiles against a short parameter.
   virtual int PlaySoundEffect(short sfxToken, int param_2 = 0, int param_3 = 1); // 0x2e -> 0x5e5140
+  virtual int PlaySoundAsynchronously(short soundId, short channel,
+                                      short priority);                              // 0x2f 0x5e5170
+  virtual int PlaySoundSynchronously(short soundId, short channel, short priority); // 0x30 0x5e5190
+  virtual int PlayAiffFile(CString fileName, short channel, short priority);        // 0x31 0x5e51b0
 
   void StopCdAudioPlayback(char fadeOut); // 0x593c10
 

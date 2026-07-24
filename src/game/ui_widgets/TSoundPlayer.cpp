@@ -476,6 +476,30 @@ int TSoundPlayer::PlaySoundEffect(short sfxToken, int param_2, int param_3) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x005e5170
+int TSoundPlayer::PlaySoundAsynchronously(short soundId, short channel, short priority) {
+  (void)soundId;
+  (void)channel;
+  (void)priority;
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005e5190
+int TSoundPlayer::PlaySoundSynchronously(short soundId, short channel, short priority) {
+  (void)soundId;
+  (void)channel;
+  (void)priority;
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005e51b0
+int TSoundPlayer::PlayAiffFile(CString fileName, short channel, short priority) {
+  (void)fileName;
+  (void)channel;
+  (void)priority;
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x005e51d0
 void TSoundPlayer::Free() {
   if (this->remainingRandomAudioCues != 0) {

@@ -16,6 +16,7 @@ struct TCdAudioDevice {
   void ResetAndOpenCdAudioDeviceHandle();
   // 0x0047ccd0 — if a device is open, send MCI command 0x804 to it and clear the handle.
   void SendMciCommand804IfDeviceOpenAndClearHandle();
+  void CloseDeviceAndClearHandle(); // 0x0047cd30
   // 0x0047cd00 — open the device handle only if it is not already set.
   void EnsureCdAudioDeviceHandleInitialized();
   // 0x0047cd80 — stop playback on the current MCI device.

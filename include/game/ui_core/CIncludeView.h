@@ -48,6 +48,8 @@ public:
   virtual ~CIncludeView() override; // 0x00482ab0 (scalar deleting destructor 0x4829c0)
 
   void SetUiRuntimeContextAndActivateMain(TView* activeDialog); // 0x00483340
+  void RefreshActiveDialogHost(int unusedArg);                  // 0x00483380
+  void TearDownActiveDialogContext();                           // 0x00483530
 
 protected:
   // Registers the "AmbitGameWindow" WNDCLASS and pins cs.lpszClass + cs.style before

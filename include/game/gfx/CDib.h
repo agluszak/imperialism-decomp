@@ -57,6 +57,7 @@ public:
 
   // Free every owned GDI/heap/mapping resource and zero the state. 0x0047bca0
   void Release();
+  void ReleaseMappedFileView(); // 0x0047bd90
   // Release the current state and adopt an already-packed BITMAPINFOHEADER + color table
   // + pixels block: derives m_paletteCount/m_pixelBytes from the header, points
   // m_colorTablePixels/m_dibBits into the block, and rebuilds m_hPalette. ownsInfo picks

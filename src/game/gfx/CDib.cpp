@@ -729,6 +729,16 @@ void CDib::Release() {
   m_hPalette = NULL;
 }
 
+// FUNCTION: IMPERIALISM 0x0047bd90
+void CDib::ReleaseMappedFileView() {
+  if (m_hFileMapping != NULL) {
+    UnmapViewOfFile(m_mappedView);
+    CloseHandle(m_hFile);
+    CloseHandle(m_hFileMapping);
+    m_hFileMapping = NULL;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0047bde0
 void CDib::BlitSurfaceRectSkippingTransparentColor(CDib* destDib, int srcX, int srcY,
                                                    unsigned int width, unsigned int height,

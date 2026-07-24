@@ -321,6 +321,13 @@ void CIncludeView::SetUiRuntimeContextAndActivateMain(TView* activeDialog) {
   m_activeDialogContext->ResolveControlByTag(kControlTagMain); // 'main'
 }
 
+// FUNCTION: IMPERIALISM 0x00483380
+void CIncludeView::RefreshActiveDialogHost(int unusedArg) {
+  (void)unusedArg;
+  m_activeDialogContext->PropagateUiResourceContextRecursive(this);
+  m_activeDialogContext->ResolveControlByTag(kControlTagMain);
+}
+
 // Tear the hosted dialog tree down, re-resolve the 'main' pane picture, blit its cached
 // bitmap into the offscreen surface and force a full repaint of the host window. The one
 // stack argument is accepted and never read; the (now cleared) dialog context is returned.
@@ -366,6 +373,20 @@ TView* CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedAr
     g_nIncludeViewReinitThreadOnceGate_006A17C0 = 1;
   }
   return m_activeDialogContext;
+}
+
+// FUNCTION: IMPERIALISM 0x00483530
+void CIncludeView::TearDownActiveDialogContext() {
+  m_field44 = 0;
+  if (m_activeDialogContext != 0) {
+    int previousFlag = ClearGlobalUiInvalidationFlagAndReturnPrevious();
+    m_activeDialogContext->nativeWindow50 = 0;
+    if (m_activeDialogContext != 0) {
+      m_activeDialogContext->Free();
+    }
+    m_activeDialogContext = 0;
+    SetGlobalUiInvalidationFlagAndReturnPrevious(previousFlag);
+  }
 }
 
 // The original computes the clip box and client rect but uses neither; returning

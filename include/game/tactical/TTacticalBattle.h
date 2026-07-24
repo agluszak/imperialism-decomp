@@ -203,6 +203,8 @@ public:
   // Mac identities: GetNeighborList(long, long*) and AreNeighbors(long, long).
   void GetNeighborList(TacticalTileIndex tileIndex,
                        TacticalTileIndex* outNeighborTiles6); // 0x5a0420
+  unsigned char HasAdjacentReachableTileForSelectedUnit();    // 0x5a1b50
+  void StartTacticalPlayersThatAreNotReady();                 // 0x59fcd0
   unsigned char AreNeighbors(TacticalTileIndex tileIndex,
                              TacticalTileIndex candidateTileIndex); // 0x5a0550
   void ConsumeFortStrengthPointsAndInvalidateIfDepleted(TacticalTileIndex tileIndex,

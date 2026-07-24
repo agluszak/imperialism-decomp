@@ -226,6 +226,16 @@ void TTacticalBattle::StartBattle() {
   tacticalPlayer18->StartBattle();
 }
 
+// FUNCTION: IMPERIALISM 0x0059fcd0
+void TTacticalBattle::StartTacticalPlayersThatAreNotReady() {
+  if (tacticalPlayer14->sideReadyFlag10 == 0) {
+    tacticalPlayer14->StartBattle();
+  }
+  if (tacticalPlayer18->sideReadyFlag10 == 0) {
+    tacticalPlayer18->StartBattle();
+  }
+}
+
 // Round handover once the current side is done deploying; the 'retr' tag name is the
 // command-dispatch label, not a retreat walk.
 // FUNCTION: IMPERIALISM 0x0059fd10
@@ -1145,6 +1155,22 @@ unsigned char TTacticalBattle::ResolveTacticalReactionChecksForTile(TacticalTile
     }
   } while (reactor != 0 && occupant->strength4 != 0);
   return reactionFired;
+}
+
+// FUNCTION: IMPERIALISM 0x005a1b50
+unsigned char TTacticalBattle::HasAdjacentReachableTileForSelectedUnit() {
+  TacticalTileIndex neighborTiles[6];
+  GetNeighborList(selectedUnit1c->tileIndex8, neighborTiles);
+  for (int direction = 0; direction < 6; ++direction) {
+    TacticalTileIndex neighborTile = neighborTiles[direction];
+    if (neighborTile != -1) {
+      short moveCost = tileMoveCostArray24[neighborTile];
+      if (moveCost != -1 && moveCost <= selectedUnit1c->actionPoints28) {
+        return 1;
+      }
+    }
+  }
+  return 0;
 }
 
 // Executes the move (pathing the unit toward the target tile), clears the follow-up
