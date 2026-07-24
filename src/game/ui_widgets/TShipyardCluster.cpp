@@ -1,4 +1,5 @@
 #include "game/ui_screens/TSimMgr.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_widgets.h"
 #include "game/ui_widgets/TShipyardCluster.h"
@@ -49,12 +50,13 @@ void TShipyardCluster::DoPostCreate(int styleSeed) {
 
 // FUNCTION: IMPERIALISM 0x0058a690
 void TShipyardCluster::SetMoveAmount(short amount) {
-  TAmtBar* moveControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+  TNumberText* moveControl =
+      static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagMove));
   if (moveControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }
 
-  moveControl->SetControlValueSlot1E4(0, 0);
+  moveControl->SetControlValue(0, 0);
 
   RECT invalidateRect;
   CRect moveRect;
@@ -84,10 +86,10 @@ void TShipyardCluster::SetMoveAmount(short amount) {
   CopyRect(&invalidateRect, &moveRect);
   this->ownerContext->InvalidateCityDialogRectRegion(&invalidateRect, 1);
 
-  TAmtBar* turnControl =
-      static_cast<TAmtBar*>(this->ownerContext->ResolveControlByTag(kControlTagTurn));
+  TNumberText* turnControl =
+      static_cast<TNumberText*>(this->ownerContext->ResolveControlByTag(kControlTagTurn));
   if (turnControl != 0) {
-    turnControl->SetControlValueSlot1E4(0, 0);
+    turnControl->SetControlValue(0, 0);
     turnControl->QueryBounds(&moveRect);
     CopyRect(&invalidateRect, &moveRect);
     this->ownerContext->InvalidateCityDialogRectRegion(&invalidateRect, 1);

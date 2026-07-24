@@ -131,7 +131,7 @@ void TMilitaryUnit::DetachUnitOrderFromOwnerAndReset() {
   if (ownerMission40 != 0) {
     ownerMission40->RejectConstituent(this, 1);
   }
-  RelinkIntoAnchorOccupantChain(-1);
+  MoveTo(-1);
   ClearPath();
 }
 
@@ -143,7 +143,7 @@ void TMilitaryUnit::DetachUnitOrderFromOwnerAndReset() {
 // is lower than this unit's, at the first position whose successor's priority is not
 // lower.
 // FUNCTION: IMPERIALISM 0x005c3200
-void TMilitaryUnit::RelinkIntoAnchorOccupantChain(int anchorIndex) {
+void TMilitaryUnit::MoveTo(int anchorIndex) {
   if (tileIndex06 != -1) {
     if (field_10 == 0) {
       if (tileIndex06 >= 0 && tileIndex06 < 0x180) {

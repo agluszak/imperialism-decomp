@@ -72,7 +72,12 @@ public:
   TRadioTextCluster* activeProtocolControlB0;
 
   TWNetSessionManager();
-  virtual ~TWNetSessionManager(); // 0x005e2a20 — frees the serialized-record scratch arrays
+  // Non-virtual on purpose: the original derived vtable at 0x66f9f0 has exactly the
+  // base's 9 slots (first null at slot 9), and the only call site is the direct
+  // atexit teardown of the fixed global at 0x6a5f60 (0x5e2a00). A virtual dtor here
+  // emitted a phantom 10th slot the original lacks (the vtable sweep's oversize
+  // warning).
+  ~TWNetSessionManager(); // 0x005e2a20 — frees the serialized-record scratch arrays
   virtual BOOL OnEnumerateServiceProvider(LPGUID providerGuid, LPSTR providerName,
                                           DWORD majorVersion, DWORD minorVersion) override;
   virtual BOOL OnEnumerateJoinableSession(const DPSESSIONDESC2* sessionDescription, DWORD* timeout,

@@ -37,7 +37,7 @@ static inline void PreparePersonalityTradeBids(TForeignMinister* minister) {
   TGreatPower* owner = minister->ownerContextAt04;
   if (minister->diplomacyPhaseCounter18 >= minister->tradeBidRefreshInterval1a ||
       minister->WeNeedMoney() != 0) {
-    owner->interiorMinister->LatchPendingShipTypeForOrderKind(minister->interiorOrderKind1c);
+    owner->interiorMinister->PleaseBuildShip(minister->interiorOrderKind1c);
     minister->diplomacyPhaseCounter18 = 0;
   }
   minister->SetBuyPriorities();

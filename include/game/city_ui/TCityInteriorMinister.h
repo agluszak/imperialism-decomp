@@ -22,12 +22,12 @@ public:
   short GetRankingCriterionForGP(short nationSlot) override;         // slot 0x0a 0x4bee20
   virtual void MakeNewCity(TCity* city) override;                    // slot 0x11 0x4c0d90
   virtual void FillOrders() override;                                // slot 0x15 0x4bf770
-  virtual void LatchPendingShipTypeForOrderKind(short arg) override; // slot 0x1a 0x4beeb0
+  virtual void PleaseBuildShip(short arg) override;          // slot 0x1a 0x4beeb0
   virtual void IndustryOrder(short industrySlot) override;           // slot 0x1b 0x4beee0
   virtual void PleaseBuildLandUnit(short unitType) override;         // slot 0x1c 0x4bef30
-  virtual short GetAccumulatedResourceNeed(int arg) override;        // slot 0x1d 0x4be7b0
-  virtual short GetUnmetDemandPressure(int arg) override;            // slot 0x1e 0x4be7d0
-  virtual void ClearUnmetDemandPressure(int arg) override;           // slot 0x1f 0x4be7f0
+  virtual short GetExteriorNeedFor(int arg) override;        // slot 0x1d 0x4be7b0
+  virtual short GetHistoricalNeedFor(int arg) override;      // slot 0x1e 0x4be7d0
+  virtual void ResetHistoricalNeedFor(int arg) override;     // slot 0x1f 0x4be7f0
   virtual void FillLists();                                          // slot 0x20 0x4bed60
   // Reports orderMetricTable40 deltas to the owner's foreign minister (index 0 as a
   // 25%-chance roll gated on either of the paired trigger slots [0]/[1], indices 2..6
@@ -157,11 +157,12 @@ public:
   short orderShortTableBA[16];    // +0xba..0xda
   short deferredLaborShortfallDA; // +0xda
   short orderShortTableDC[16];    // +0xdc..0xfc
-  // Three parallel short[23] order-type tables (GetAccumulatedResourceNeed/1E/1F index +0x12a/+0x158
-  // by order-type code); all cleared together by InitializeCityInteriorState.
+  // Three parallel short[23] order-type tables, all cleared together by
+  // InitializeCityInteriorState. GetExteriorNeedFor reads +0x12a;
+  // GetHistoricalNeedFor reads and ResetHistoricalNeedFor clears +0x158.
   short orderTypeTableFC[23];           // +0xfc..0x12a
-  short orderTypeTable12A[23];          // +0x12a..0x158
-  short orderTypeTable158[23];          // +0x158..0x186
+  short orderTypeTable12A[23];          // +0x12a..0x158 (exterior need by order type)
+  short orderTypeTable158[23];          // +0x158..0x186 (historical need by order type)
   short temporarilyReservedShipArms186; // +0x186
   TFuzzySet* cityPolicyFuzzySet;        // +0x188 (new TFuzzySet, 4 policy curves)
   TList* orderList18c;                  // +0x18c (new TList; ctor 0x4be840 nulls it)

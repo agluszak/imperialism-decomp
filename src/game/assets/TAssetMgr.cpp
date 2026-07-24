@@ -217,7 +217,7 @@ void TAssetMgr::SaveSettingValueFromPointerByKey(CString* value, const char* key
 }
 
 // FUNCTION: IMPERIALISM 0x005e0290
-void TAssetMgr::LoadSettingValueByKeyIntoOut(LPCSTR key, int defaultValue, int* out) {
+void TAssetMgr::LoadSettingValueByKeyIntoOut(int* out, LPCSTR key, int defaultValue) {
   *out = g_pImperialismApp->GetProfileInt("Settings", key, defaultValue);
 }
 

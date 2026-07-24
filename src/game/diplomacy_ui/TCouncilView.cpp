@@ -92,6 +92,7 @@ void TCouncilView::DoPostCreate(int arg) {
     scanBracketExpressions(g_pSimMgr, &finalTitle, static_cast<LPCSTR>(titleTemplate),
                            static_cast<LPCSTR>(terrainLabel));
     titleControl->SetTextAndMaybeRefresh(&finalTitle, 0);
+    BuildDiplomacyMapHintOverlayTextAndMetrics();
 
     if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e ==
         g_pSimMgr->GetActiveNationId()) {
@@ -132,14 +133,14 @@ void TCouncilView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   } else if (commandId == 0x14) {
     unsigned int tag = sourceHandler->controlTag;
     int tagIndex = 0;
-    unsigned int* tagTable = g_councilControlTagTable;
+    unsigned int* tagTable = g_aDiplomacyActionTopicTabTags;
     do {
       if (tag == *tagTable) {
         break;
       }
       tagTable += 1;
       tagIndex += 1;
-    } while (tagTable < g_councilControlTagTable + 6);
+    } while (tagTable < g_aDiplomacyActionTopicTabTags + 6);
     if (tagIndex < 6) {
       this->ChangeSelectedActionTopic(tagIndex);
       return;
@@ -358,6 +359,8 @@ void TCouncilView::AdvanceCivilianTerrainSelectionStep() {
         }
       }
       if (!allowAdvance) {
+        // The original jumps straight to the shared epilogue here, bypassing the
+        // hint-overlay rebuild below.
         g_pSimMgr->StartNextPhase();
         // 0x4fc836 jumps straight to the shared epilogue, skipping the overlay rebuild
         // below; with the function-scope CString forcing a single epilogue, that is a

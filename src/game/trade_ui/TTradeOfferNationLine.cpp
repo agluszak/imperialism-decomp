@@ -19,6 +19,7 @@ TTradeOfferNationLine::~TTradeOfferNationLine() {}
 
 IMPLEMENT_DYNCREATE(TTradeOfferNationLine, TLineData)
 
+// NOOP: verified empty in original 0x005bcff3 (no standalone TTradeOfferNationLine::TTradeOfferNationLine body exists: CreateObject 0x005bcfc0 inlines this default ctor, calling the TLineData base ctor directly at that site)
 TTradeOfferNationLine::TTradeOfferNationLine() {}
 
 // FUNCTION: IMPERIALISM 0x005bd090

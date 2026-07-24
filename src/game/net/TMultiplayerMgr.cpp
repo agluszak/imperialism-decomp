@@ -713,8 +713,8 @@ unsigned char TMultiplayerMgr::InitializeProtocolOptionControlFromProvider(TView
   }
 
   int defaultProtocolTag = 0;
-  g_pUiViewManager->LoadSettingValueByKeyIntoOut("DefaultProtocol", kControlTagPro0,
-                                                 &defaultProtocolTag);
+  g_pUiViewManager->LoadSettingValueByKeyIntoOut(&defaultProtocolTag, "DefaultProtocol",
+                                                 kControlTagPro0);
   TRadioTextCluster* protControl =
       static_cast<TRadioTextCluster*>(provider->ResolveControlByTag(kControlTagProt));
   protControl->AssertValid();
@@ -3007,10 +3007,10 @@ void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused
     static_cast<TView*>(boxControl)->SetState(static_cast<int>(occupiedByOther), 0);
     if (mySlotIndex != -1) {
       boxControl->SetState(static_cast<unsigned char>(i == mySlotIndex),
-                                      static_cast<unsigned char>(0));
+                           static_cast<unsigned char>(0));
     } else {
       boxControl->SetState(static_cast<unsigned char>(occupiedByOther),
-                                      static_cast<unsigned char>(0));
+                           static_cast<unsigned char>(0));
     }
     boxControl->CheckTheLook(0);
   }

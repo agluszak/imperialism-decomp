@@ -23,6 +23,7 @@ TNewTownView::~TNewTownView() {}
 
 IMPLEMENT_DYNCREATE(TNewTownView, TView)
 
+// NOOP: verified empty in original 0x004bd7d3 (no standalone TNewTownView::TNewTownView body exists: CreateObject 0x004bd7a0 inlines this default ctor, calling the TView base ctor directly at that site)
 TNewTownView::TNewTownView() {}
 
 // FUNCTION: IMPERIALISM 0x004bd880

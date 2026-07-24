@@ -44,6 +44,7 @@ public:
 
   // Both original construction sites (0x5a4790, 0x5a4990) inline the ctor as a bare
   // vptr store.
+  // NOOP: verified empty in original 0x0059b112 (no standalone TArmyPlayer::TArmyPlayer body exists: construction is fully inlined into CreateObject 0x0059b110; that address is its operator-new call site)
   TArmyPlayer() {}
 
   // Applies the tactical cursor/UI mode profile for this side.

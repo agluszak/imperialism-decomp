@@ -16,6 +16,7 @@ TCivAnimation::~TCivAnimation() {}
 
 IMPLEMENT_DYNCREATE(TCivAnimation, TAnimation)
 
+// NOOP: verified empty in original 0x0049f452 (no standalone TCivAnimation::TCivAnimation body exists: construction is fully inlined into CreateObject 0x0049f450; that address is its operator-new call site)
 TCivAnimation::TCivAnimation() {}
 
 // FUNCTION: IMPERIALISM 0x0049f580

@@ -84,7 +84,7 @@ public:
   virtual void FormStacks();    // slot 0x0b 0x4a1f80
   // Walks pendingUnitPool0c's TArmyStack entries starting at nextStackOrdinal10: for
   // each stack whose categoryFlag8 matches regionAffinityTable1c[ownerNationCodeE],
-  // relocates every unit on its embedded chain (RelinkIntoAnchorOccupantChain + SetOrders);
+  // relocates every unit on its embedded chain (MoveTo + SetOrders);
   // otherwise tries TryCreateTacticalBattleViewForTileArmies. Stops early on the first
   // battle view created; always re-releases the 3 cached objects up front and, when the
   // pass fully completes without creating one, via ReleaseThreeLinkedObjectsAndReset-
@@ -390,7 +390,7 @@ public:
   // Called by TArmyBattle::FinalizeTacticalBattleOutcome once a tactical battle's
   // outcome is decided (sideWonFlag = whether ourStack's side won). Dispatches the
   // army-context report, then applies the win/loss aftermath to both stacks: the
-  // winning stack's units settle into their tile (RelinkIntoAnchorOccupantChain + SetOrders)
+  // winning stack's units settle into their tile (MoveTo + SetOrders)
   // while the losing stack is redistributed to a random adjacent region (sideWonFlag
   // != 0) or relocated back to its origin tile (sideWonFlag == 0, via
   // RelocateStackUnitsToStackTile); both stacks then grow unit quality

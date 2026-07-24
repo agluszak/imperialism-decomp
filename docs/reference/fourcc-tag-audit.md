@@ -8,17 +8,17 @@ policy (Mac resource order, read big-endian).
 
 ## Summary
 
-- Tags: 542
+- Tags: 547
 - `generated_resource_manifest_tag`: 67
 - `multiplayer_session_or_message_tag`: 32
 - `ui_tag_app_and_setup_screens`: 57
 - `ui_tag_city_and_trade`: 63
 - `ui_tag_diplomacy`: 18
-- `ui_tag_military_navy_tactical`: 43
-- `ui_tag_shared`: 144
+- `ui_tag_military_navy_tactical`: 45
+- `ui_tag_shared`: 145
 - `ui_tag_strategic_map`: 22
-- `ui_tag_widget_plumbing`: 96
-- Corroborated by the Mac control-tag index: 404 of 542
+- `ui_tag_widget_plumbing`: 98
+- Corroborated by the Mac control-tag index: 406 of 547
 - Violations: 0
 
 ## Violations
@@ -300,6 +300,7 @@ build does not ship.
 | `kControlTagMusi` | `musi` | `0x6d757369` | `ui_tag_military_navy_tactical` | 1 |
 | `kControlTagNavy` | `navy` | `0x6e617679` | `ui_tag_military_navy_tactical` | 1 |
 | `kControlTagNeXT` | `NeXT` | `0x4e655854` | `ui_tag_military_navy_tactical` |  |
+| `kControlTagNooo` | `nooo` | `0x6e6f6f6f` | `ui_tag_military_navy_tactical` | 1 |
 | `kControlTagOpca` | `opca` | `0x6f706361` | `ui_tag_military_navy_tactical` | 1 |
 | `kControlTagOpta` | `opta` | `0x6f707461` | `ui_tag_military_navy_tactical` |  |
 | `kControlTagPurc` | `purc` | `0x70757263` | `ui_tag_military_navy_tactical` | 1 |
@@ -310,6 +311,7 @@ build does not ship.
 | `kControlTagScvw` | `scvw` | `0x73637677` | `ui_tag_military_navy_tactical` | 1 |
 | `kControlTagSkip` | `skip` | `0x736b6970` | `ui_tag_military_navy_tactical` |  |
 | `kControlTagSoun` | `soun` | `0x736f756e` | `ui_tag_military_navy_tactical` | 1 |
+| `kControlTagTpca` | `tpca` | `0x74706361` | `ui_tag_military_navy_tactical` | 1 |
 | `kControlTagTpic` | `tpic` | `0x74706963` | `ui_tag_military_navy_tactical` | 1 |
 | `kControlTagTxt0` | `txt0` | `0x74787430` | `ui_tag_military_navy_tactical` | 2 |
 | `kControlTagTxta` | `txta` | `0x74787461` | `ui_tag_military_navy_tactical` | 1 |
@@ -352,6 +354,7 @@ build does not ship.
 | `kControlTagFlag` | `flag` | `0x666c6167` | `ui_tag_shared` | 8 |
 | `kControlTagForc` | `forc` | `0x666f7263` | `ui_tag_shared` |  |
 | `kControlTagFurn` | `furn` | `0x6675726e` | `ui_tag_shared` | 5 |
+| `kControlTagGOLD` | `GOLD` | `0x474f4c44` | `ui_tag_shared` |  |
 | `kControlTagGd0Sp` | `gd0 ` | `0x67643020` | `ui_tag_shared` | 4 |
 | `kControlTagGlob` | `glob` | `0x676c6f62` | `ui_tag_shared` | 2 |
 | `kControlTagGrai` | `grai` | `0x67726169` | `ui_tag_shared` | 4 |
@@ -574,5 +577,7 @@ build does not ship.
 | `kControlTagUse2` | `use2` | `0x75736532` | `ui_tag_widget_plumbing` |  |
 | `kControlTagUsel` | `usel` | `0x7573656c` | `ui_tag_widget_plumbing` |  |
 | `kControlTagVert` | `vert` | `0x76657274` | `ui_tag_widget_plumbing` | 2 |
+| `kControlTagWor1` | `wor1` | `0x776f7231` | `ui_tag_widget_plumbing` |  |
+| `kControlTagWor2` | `wor2` | `0x776f7232` | `ui_tag_widget_plumbing` |  |
 | `kControlTagWord` | `word` | `0x776f7264` | `ui_tag_widget_plumbing` |  |
 | `kSummaryTagPopu` | `popu` | `0x706f7075` | `ui_tag_widget_plumbing` | 1 |

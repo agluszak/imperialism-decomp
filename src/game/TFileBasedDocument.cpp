@@ -12,4 +12,5 @@ TFileBasedDocument::~TFileBasedDocument() {}
 
 IMPLEMENT_DYNCREATE(TFileBasedDocument, TDocument)
 
+// NOOP: verified empty in original 0x004863c2 (no standalone TFileBasedDocument::TFileBasedDocument body exists: construction is fully inlined into CreateObject 0x004863c0; that address is its operator-new call site)
 TFileBasedDocument::TFileBasedDocument() {}

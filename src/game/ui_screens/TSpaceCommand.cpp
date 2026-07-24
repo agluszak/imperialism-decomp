@@ -18,4 +18,5 @@ TSpaceCommand::~TSpaceCommand() {}
 
 IMPLEMENT_DYNCREATE(TSpaceCommand, TCommand)
 
+// NOOP: verified empty in original 0x005751b3 (no standalone TSpaceCommand::TSpaceCommand body exists: CreateObject 0x00575180 inlines this default ctor, calling the TCommand base ctor directly at that site)
 TSpaceCommand::TSpaceCommand() {}

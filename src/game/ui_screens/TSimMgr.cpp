@@ -1555,7 +1555,7 @@ void TSimMgr::HandleTurnInstruction_Labo_SetNationLaborTierCounts(void* pInstruc
   g_apNationStates[ownerToken]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
 
   if (g_apNationStates[ownerToken]->interiorMinister != nullptr) {
-    g_apNationStates[ownerToken]->interiorMinister->TopUpNeedTargetsByPriorityWithinCap();
+    g_apNationStates[ownerToken]->interiorMinister->SetCityPolicies();
   }
 }
 

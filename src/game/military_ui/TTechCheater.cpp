@@ -12,6 +12,7 @@ TTechCheater::~TTechCheater() {}
 
 IMPLEMENT_DYNCREATE(TTechCheater, TCheater)
 
+// NOOP: verified empty in original 0x004b18b3 (no standalone TTechCheater::TTechCheater body exists: CreateObject 0x004b1880 inlines this default ctor, calling the TView base ctor directly at that site)
 TTechCheater::TTechCheater() {}
 
 // FUNCTION: IMPERIALISM 0x004b1990

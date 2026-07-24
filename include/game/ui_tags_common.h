@@ -57,6 +57,8 @@ const int kControlTagCoat = IMPERIALISM_FOURCC('c', 'o', 'a', 't'); // coat-of-a
 const int kControlTagCoun = IMPERIALISM_FOURCC('c', 'o', 'u', 'n'); // country-name edit box
 const int kControlTagCred = IMPERIALISM_FOURCC('c', 'r', 'e', 'd'); // credits text line 1
 const int kControlTagCurs = IMPERIALISM_FOURCC('c', 'u', 'r', 's'); // cursor panel
+const int kControlTagGOLD =
+    IMPERIALISM_FOURCC('G', 'O', 'L', 'D'); // toolbar gold readout (uppercase in the binary)
 const int kControlTagDeal =
     IMPERIALISM_FOURCC('d', 'e', 'a', 'l'); // foreign-minister "deal" button
 const int kControlTagDesc = IMPERIALISM_FOURCC('d', 'e', 's', 'c'); // tech-item description picture

@@ -44,7 +44,7 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
                                               short nOrderOwnerNationId, short arg3) {
   this->orderType = nOrderType;
   this->unitOrder = kUnitOrderIdle;
-  this->RelinkIntoAnchorOccupantChain(anchorIndex);
+  this->MoveTo(anchorIndex);
 
   // The order-owner "manager" is a real TSortedList: military units (field_1C != 0)
   // register into the owning country's militaryUnitList44; other orders into the
@@ -73,7 +73,7 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
 }
 
 // FUNCTION: IMPERIALISM 0x005c2610
-void TUnit::RelinkIntoAnchorOccupantChain(int anchorIndex) {
+void TUnit::MoveTo(int anchorIndex) {
   (void)anchorIndex;
 }
 
@@ -126,7 +126,7 @@ void TUnit::ReadFrom(TStream* stream) {
   if (savedTileIndex != -1) {
     short savedField_C = field_C;
     tileIndex06 = -1;
-    this->RelinkIntoAnchorOccupantChain(savedTileIndex);
+    this->MoveTo(savedTileIndex);
     field_C = savedField_C;
   }
   if (g_nSaveFormatVersion > 0x2d) {

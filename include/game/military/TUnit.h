@@ -23,20 +23,13 @@ public:
   void Free() override;                    // slot 0x1c
 
   // --- TUnit virtual functions ---
-  // Moves this unit into the occupant chain of the record named by anchorIndex, first
-  // unlinking it from whatever chain it currently sits in; anchorIndex -1 detaches it
-  // and leaves it unanchored. The chain is doubly linked through field_10 (prev) and
-  // nextOnTile (next), with the head stored on the anchor record itself, and
-  // tileIndex06 records the anchor the unit ended up on.
-  //
-  // Which table the anchor indexes is the subclass's business, which is why the base
-  // body (0x005c2610) is a bare no-op -- a plain TUnit is not anchored anywhere:
-  //   TCivUnit      -> terrainStateTable[tile].firstCivilianOrder20  (map tile)
-  //   TMilitaryUnit -> cityScoreTable[city].stationedUnitChain98     (city record)
-  virtual void RelinkIntoAnchorOccupantChain(int anchorIndex); // slot 0x28
-  virtual void ContinueOrders();                               // slot 0x2c, Mac oracle
-  virtual void DetachUnitOrderFromOwnerAndReset();             // slot 0x30
-  virtual void SetOrders(UnitOrder order, int payload);        // slot 0x34
+  // Mac oracle: MoveTo(short) on TUnit/TCivUnit/TMilitaryUnit. The argument is the
+  // destination tile index (-1 = detach only); the overrides relink the unit between
+  // the per-tile / per-city-record order chains. Base body is a no-op.
+  virtual void MoveTo(int nTileIndex);                  // slot 0x28
+  virtual void ContinueOrders();                        // slot 0x2c, Mac oracle
+  virtual void DetachUnitOrderFromOwnerAndReset();      // slot 0x30
+  virtual void SetOrders(UnitOrder order, int payload); // slot 0x34
 
   short orderType; // 0x04
   // 0x06 — anchor index of the order (-1 = unassigned); the domain depends on the
@@ -51,7 +44,7 @@ public:
   short field_E;       // 0x0e
   // Doubly-linked-list back-pointer for the tile's civilian-order chain (terrainState-
   // Table[tileIndex06].firstCivilianOrder20, threaded via nextOnTile); null when this is
-  // the chain head. Recovered from TCivUnit::RelinkIntoAnchorOccupantChain (0x5c2b70), which dereferences
+  // the chain head. Recovered from TCivUnit::MoveTo (0x5c2b70), which dereferences
   // it at +0x14 (TUnit::nextOnTile's own offset).
   TUnit* field_10;        // 0x10
   TUnit* nextOnTile;      // 0x14

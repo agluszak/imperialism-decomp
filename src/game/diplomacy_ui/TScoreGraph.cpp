@@ -22,6 +22,7 @@ TScoreGraph::~TScoreGraph() {}
 
 IMPLEMENT_DYNCREATE(TScoreGraph, TView)
 
+// NOOP: verified empty in original 0x004fe203 (no standalone TScoreGraph::TScoreGraph body exists: CreateObject 0x004fe1d0 inlines this default ctor, calling the TView base ctor directly at that site)
 TScoreGraph::TScoreGraph() {}
 
 // FUNCTION: IMPERIALISM 0x004fe2b0

@@ -245,7 +245,7 @@ void TArmyStack::ComputeStackCompositionClassCode() {
 }
 
 // Walk the stack's unit chain from the head, handing each unit its own field_C through
-// RelinkIntoAnchorOccupantChain and then clearing its orders with SetOrders(0, -1). The cursor is advanced
+// MoveTo and then clearing its orders with SetOrders(0, -1). The cursor is advanced
 // through cursor18 exactly as the original does, re-reading it each iteration.
 // FUNCTION: IMPERIALISM 0x004a7d20
 void TArmyStack::ReseatChainUnitsAndClearOrders() {
@@ -253,7 +253,7 @@ void TArmyStack::ReseatChainUnitsAndClearOrders() {
   TArmyStackUnitNode* node = cursor18;
   TUnit* unit = (node != nullptr) ? node->unit : nullptr;
   while (unit != nullptr) {
-    unit->RelinkIntoAnchorOccupantChain(unit->field_C);
+    unit->MoveTo(unit->field_C);
     unit->SetOrders(static_cast<UnitOrder>(0), -1);
     node = cursor18;
     if (node != nullptr) {

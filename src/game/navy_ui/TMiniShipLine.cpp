@@ -14,6 +14,7 @@ TMiniShipLine::~TMiniShipLine() {}
 
 IMPLEMENT_DYNCREATE(TMiniShipLine, TLineData)
 
+// NOOP: verified empty in original 0x00569be3 (no standalone TMiniShipLine::TMiniShipLine body exists: CreateObject 0x00569bb0 inlines this default ctor, calling the TLineData base ctor directly at that site)
 TMiniShipLine::TMiniShipLine() {}
 
 // FUNCTION: IMPERIALISM 0x00569c80

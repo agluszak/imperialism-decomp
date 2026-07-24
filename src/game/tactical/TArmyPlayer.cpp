@@ -189,7 +189,7 @@ void TArmyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
   unit->FlipUnitSideAffiliation();
   TMilitaryUnit* sourceUnit = static_cast<TArmyTacUnit*>(unit)->sourceUnit38;
   sourceUnit->field_18 = static_cast<short>(nationIndex1C);
-  sourceUnit->RelinkIntoAnchorOccupantChain(battle14->battleSiteIndex38);
+  sourceUnit->MoveTo(battle14->battleSiteIndex38);
   armyStack28->AddUnitToChainHead(sourceUnit);
   static_cast<TArmyTacUnit*>(unit)->morale34 = unit->strength4;
 }

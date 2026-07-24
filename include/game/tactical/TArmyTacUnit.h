@@ -34,6 +34,7 @@ public:
   float field54;               // +0x54
 
   // Both original construction sites inline the ctor as a bare vptr store.
+  // NOOP: verified empty in original 0x005a5ed2 (no standalone TArmyTacUnit::TArmyTacUnit body exists: construction is fully inlined into CreateObject 0x005a5ed0; that address is its operator-new call site)
   TArmyTacUnit() {}
 
   // Post-construction init from the source army unit (called unconditionally after

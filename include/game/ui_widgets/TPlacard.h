@@ -4,7 +4,6 @@
 
 #include "game/ui_core/TPicture.h"
 
-extern "C" int g_vtblTPlacard;
 struct CRuntimeClass;
 
 // VTABLE: IMPERIALISM 0x667218

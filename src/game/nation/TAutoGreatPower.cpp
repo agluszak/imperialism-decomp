@@ -870,7 +870,7 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
     // At war: purge the interior minister's queues for each advisory order type.
     int t;
     for (t = 0; t < 4; ++t) {
-      interiorMinister->ClearUnmetDemandPressure(orderTypes[t]);
+      interiorMinister->ResetHistoricalNeedFor(orderTypes[t]);
     }
     return;
   }
@@ -884,7 +884,7 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
   int t;
   for (t = 0; t < 4; ++t) {
     g_pSimMgr->GetStringPrelude(static_cast<short>(orderTypes[t]), &preludeText);
-    if (interiorMinister->GetUnmetDemandPressure(orderTypes[t]) >= 5) {
+    if (interiorMinister->GetHistoricalNeedFor(orderTypes[t]) >= 5) {
       TProvinceDesirabilityList* candidates = new TProvinceDesirabilityList();
       candidates->InitializeProvinceRecordSize();
 

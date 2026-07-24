@@ -28,6 +28,7 @@ TJoinSelectorDialog::~TJoinSelectorDialog() {}
 
 IMPLEMENT_DYNCREATE(TJoinSelectorDialog, TNoHilitePicture)
 
+// NOOP: verified empty in original 0x0054e6c6 (no standalone TJoinSelectorDialog::TJoinSelectorDialog body exists: CreateObject 0x0054e690 inlines this default ctor, calling the TNoHilitePicture base ctor directly at that site)
 TJoinSelectorDialog::TJoinSelectorDialog() {}
 
 // FUNCTION: IMPERIALISM 0x0054e730

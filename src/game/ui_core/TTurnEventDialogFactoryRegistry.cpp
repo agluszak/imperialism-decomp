@@ -88,11 +88,6 @@ TTurnEventDialogFactoryRegistry::TTurnEventDialogFactoryRegistry() : TObject(), 
 // SYNTHETIC: IMPERIALISM 0x00491b10
 // TTurnEventDialogFactoryRegistry::`scalar deleting destructor'
 
-// The complete-object destructor companion to the scalar deleting destructor above; both
-// are compiler-emitted from the same `~TTurnEventDialogFactoryRegistry() {}` body below.
-// SYNTHETIC: IMPERIALISM 0x00491b40
-// TTurnEventDialogFactoryRegistry::~TTurnEventDialogFactoryRegistry
-
 // The `factories` CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc> member's own
 // compiler-emitted serializer/destructor, called through the member's CList vtable and from
 // the complete-object destructor above.
@@ -105,6 +100,9 @@ TTurnEventDialogFactoryRegistry::TTurnEventDialogFactoryRegistry() : TObject(), 
 // TEMPLATE: IMPERIALISM 0x004929b0
 // ??1?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAE@XZ
 
+// Empty in source: the 116 bytes at 0x00491b40 are all compiler output (EH frame plus
+// the inlined destruction of the `factories` CList member).
+// FUNCTION: IMPERIALISM 0x00491b40
 TTurnEventDialogFactoryRegistry::~TTurnEventDialogFactoryRegistry() {}
 
 // FUNCTION: IMPERIALISM 0x00491be0

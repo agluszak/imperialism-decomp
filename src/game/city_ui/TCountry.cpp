@@ -791,18 +791,11 @@ void TCountry::SetNationTradePolicyValueForTargetAndNotify(NationSlot targetNati
   }
 }
 
-void TriggerNationWarTransitionHandlersIfNeeded(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
-}
-
 void TCountry::ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot) {
   this->ApplyJoinEmpireMode1TargetTransition(targetNationSlot);
   g_pNewsMgr->AddTreatyEvent(kInterNationEventNationJoinedEmpire, this->nationSlot,
                              targetNationSlot, 0);
 }
-
-void ApplyJoinEmpireMode2FinalizeNationNameState_004e59d0(void) {}
 
 // FUNCTION: IMPERIALISM 0x0057f0e0
 bool TCountry::IsNationProfileInMinorRange100To199() {

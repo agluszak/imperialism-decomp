@@ -18,3 +18,5 @@
 0x004847d0|0x00482a20|??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ|per_tu_duplicate
 0x005e4a30|0x00486f60|??_G?$CList@PAXPAX@@UAEPAXI@Z|per_tu_duplicate
 0x005e4610|0x00486df0|?Serialize@?$CList@PAXPAX@@UAEXAAVCArchive@@@Z|per_tu_duplicate
+0x00481160|0x00413b80|??1TModalDialogBase@@UAE@XZ|per_tu_duplicate
+0x00481130|0x00413c00|??_GTModalDialogBase@@UAEPAXI@Z|per_tu_duplicate

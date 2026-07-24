@@ -473,7 +473,7 @@ void TArmyMgr::ResolveNextMove() {
         TArmyStackUnitNode* node = stack->cursor18;
         TUnit* unit = (node != nullptr) ? node->unit : nullptr;
         while (unit != nullptr) {
-          unit->RelinkIntoAnchorOccupantChain(unit->field_C);
+          unit->MoveTo(unit->field_C);
           unit->SetOrders(kUnitOrderIdle, -1);
           node = stack->cursor18;
           if (node != nullptr) {
@@ -846,7 +846,7 @@ bool TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack, short
       TArmyStackUnitNode* node = ourStack->cursor18;
       TUnit* unit = (node != nullptr) ? node->unit : nullptr;
       while (unit != nullptr) {
-        unit->RelinkIntoAnchorOccupantChain(unit->field_C);
+        unit->MoveTo(unit->field_C);
         unit->SetOrders(kUnitOrderIdle, -1);
         node = ourStack->cursor18;
         if (node != nullptr) {
@@ -940,7 +940,7 @@ void TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack* stac
     return;
   }
   do {
-    unit->RelinkIntoAnchorOccupantChain(unit->field_C);
+    unit->MoveTo(unit->field_C);
     unit->SetOrders(kUnitOrderIdle, -1);
     node = stack->cursor18;
     if (node != nullptr) {
@@ -961,7 +961,7 @@ void TArmyMgr::RelocateStackUnitsToStackTile(TArmyStack* stack) {
   while (unit != nullptr) {
     unit->SetOrders(kUnitOrderIdle, -1);
     if (unit->tileIndex06 != stack->tileIndex10) {
-      unit->RelinkIntoAnchorOccupantChain(stack->tileIndex10);
+      unit->MoveTo(stack->tileIndex10);
     }
     node = stack->cursor18;
     if (node != nullptr) {
@@ -1803,7 +1803,7 @@ void TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack
     ourStack->cursor18 = node;
     TUnit* unit = (node != 0) ? node->unit : 0;
     while (unit != 0) {
-      unit->RelinkIntoAnchorOccupantChain(unit->field_C);
+      unit->MoveTo(unit->field_C);
       unit->SetOrders(kUnitOrderIdle, -1);
       node = ourStack->cursor18;
       if (node != 0) {
@@ -2329,7 +2329,7 @@ void ValidateOrderSupportDeltaAndMarkDirectionalOverlays(int nationSlot, short z
   if (totalArms != capacity && totalArms - capacity > -1) {
     CString message;
     g_pSimMgr->GetString(0x2745, 10, &message);
-    g_pUiRuntimeContext->ModalMessage(message, g_orderSupportModalPosition_006a2288);
+    g_pUiRuntimeContext->ModalMessage(message, g_ptArmyValidationModalMessage);
     g_pGlobalMapState->MarkDirectionalMapOverlayFlagsForNationOrders();
   }
 }

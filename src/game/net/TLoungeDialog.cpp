@@ -39,6 +39,7 @@ TLoungeDialog::~TLoungeDialog() {}
 
 IMPLEMENT_DYNCREATE(TLoungeDialog, TNoHilitePicture)
 
+// NOOP: verified empty in original 0x0054d686 (no standalone TLoungeDialog::TLoungeDialog body exists: CreateObject 0x0054d650 inlines this default ctor, calling the TNoHilitePicture base ctor directly at that site)
 TLoungeDialog::TLoungeDialog() {}
 
 // FUNCTION: IMPERIALISM 0x0054d6f0

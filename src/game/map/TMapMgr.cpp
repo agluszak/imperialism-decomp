@@ -2784,7 +2784,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
 }
 
 // FUNCTION: IMPERIALISM 0x00515330
-void TMapMgr::SeedRecruitSearchVisitedStateForUnqueuedGateTiles(TCivUnit* pCivilianOrderEntry) {
+void TMapMgr::DimByMining(TCivUnit* pCivilianOrderEntry) {
   field9 = 1;
   short nationTag = pCivilianOrderEntry->field_18;
   unsigned char eligibleGateFlags[24] = {0};
@@ -2822,8 +2822,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateForUnqueuedGateTiles(TCivUnit* pCivil
 }
 
 // FUNCTION: IMPERIALISM 0x00515460
-void TMapMgr::SeedRecruitSearchVisitedStateByQualifyingResourceEdges(
-    TCivUnit* pCivilianOrderEntry) {
+void TMapMgr::DimByDevelopment(TCivUnit* pCivilianOrderEntry) {
   short nationTag = pCivilianOrderEntry->field_18;
   bool recruitTierFlagIsTwo =
       (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x13] == 2);
