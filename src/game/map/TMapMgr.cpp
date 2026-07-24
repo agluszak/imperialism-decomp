@@ -31,6 +31,7 @@
 #include "game/city/TCity.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/ImperialismApp.h"
+#include "game/gfx/TAmbitApplication.h"
 #include "game/globals/prelude.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
@@ -4303,7 +4304,7 @@ void TMapMgr::DumpAndResetMapScriptState() {
   fprintf(logFile, g_szFmtYear_00697248,
           *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pSimMgr) + 0x2c) / 4);
   fclose(logFile);
-  PostWmCloseToMainThreadWindow();
+  g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
 }
 
 // FUNCTION: IMPERIALISM 0x00519610

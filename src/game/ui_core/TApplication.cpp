@@ -11,6 +11,15 @@
 #include "game/ui_core/TEventHandler.h"
 #include "game/mfc.h"
 
+// Post WM_CLOSE to the main thread's window. Faithful to the original: when
+// AfxGetThread() returns null the main-window pointer stays null and the m_hWnd
+// read dereferences it unguarded (latent original bug, kept as-is).
+// FUNCTION: IMPERIALISM 0x004146d0
+void TApplication::PostWmCloseToMainThreadWindow() {
+  CWnd* mainWindow = AfxGetThread() != 0 ? AfxGetThread()->GetMainWnd() : 0;
+  ::PostMessage(mainWindow->m_hWnd, WM_CLOSE, 0, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x00414720
 void TApplication::PostTurnEventCodeMessage2420(TurnEventCodeStorage eventCode) {
   ::PostMessage(AfxGetMainWnd()->m_hWnd, 0x2420, eventCode, 0);

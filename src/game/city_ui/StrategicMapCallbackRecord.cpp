@@ -25,6 +25,11 @@ StrategicMapCallbackRecord::StrategicMapCallbackRecord()
     : opcodeAppendCursor10(0), opcodeAlignmentOffset14(0), hadTrailingPadding18(0),
       destinationRowStride2c(0) {}
 
+// FUNCTION: IMPERIALISM 0x004d4bd0
+void StrategicMapCallbackRecord::SetDestinationHeightNoOp(int unusedHeight) {
+  (void)unusedHeight;
+}
+
 // TEMPLATE: IMPERIALISM 0x004d4dd0
 // ?OverStretch@?$stretch@E@@QAEXI@Z
 

@@ -41,6 +41,7 @@ public:
   // Post custom message 0x2420 (turn-event code in wParam) to the main frame; handled
   // by CMainFrame::HandleCustomMessage2420DispatchTurnEvent. Does not touch `this`.
   void PostTurnEventCodeMessage2420(TurnEventCodeStorage eventCode); // 0x414720
+  void PostWmCloseToMainThreadWindow();                              // 0x4146d0
 
   // MacApp TApplication::InModalState(): TRUE while the main view host's +0x90
   // interactive flag is clear.

@@ -55,6 +55,8 @@ extern double g_MapPreviewScaleX6A3410;
 
 extern double g_MapPreviewScaleY6A33D0;
 
+extern short g_MapPreviewVerticalOffset6A3448;
+
 // Strategic-map screen-coordinate conversion scales (1/64). MSVC500 emits their
 // dynamic initializers at 0x519910/0x519940, matching the original BSS-backed globals.
 extern double g_mapCellRowScale_006a3360;

@@ -48,7 +48,7 @@ address|name|symbol|size|type|prototype|provenance
 4145f0|ImperialismApp::OnIdle|?OnIdle@ImperialismApp@@UAEHJ@Z|55|function|public: virtual int __thiscall ImperialismApp::OnIdle(long)|
 414640|ImperialismApp::OnRunAmbitDeveloperAssert||28|function|void OnRunAmbitDeveloperAssert()|
 414670|ImperialismApp::OnUpdateAmbitDeveloperAssert||13|function|void OnUpdateAmbitDeveloperAssert(CCmdUI * commandUi)|
-4146d0|PostWmCloseToMainThreadWindow||55|function|undefined PostWmCloseToMainThreadWindow()|
+4146d0|TApplication::PostWmCloseToMainThreadWindow||55|function|void TApplication::PostWmCloseToMainThreadWindow()|windows_listing
 414720|TApplication::PostTurnEventCodeMessage2420||51|function|undefined PostTurnEventCodeMessage2420()|
 414770|TAmbitApplication::DoSetupMenus||1|function|undefined DoSetupMenus()|
 414850|LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850||6|function|undefined LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850()|
@@ -378,12 +378,14 @@ address|name|symbol|size|type|prototype|provenance
 47ef20|CDibPal::SavePalette_FileHandle||92|function|int SavePalette(UINT fileHandle)|
 47efa0|CDibPal::SavePalette_Mmio||267|function|int SavePalette(HMMIO mmioHandle)|
 47f250|`dynamic initializer for 'g_scaledShortConst_6A15C8''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A15C8''(void)|library
-47f2b0|OrphanRetStub_0047f2b0||3|function|undefined OrphanRetStub_0047f2b0()|
-47f320|OrphanRetStub_0047f320||3|function|undefined OrphanRetStub_0047f320()|
-47f340|OrphanVtableAssignStub_0047f340||6|function|undefined OrphanVtableAssignStub_0047f340()|
-47f3e0|AssertDiplomacyDialogsLine61||27|function|undefined AssertDiplomacyDialogsLine61()|
-47f410|OrphanRetStub_0047f410||3|function|undefined OrphanRetStub_0047f410()|
-47f430|OrphanVtableAssignStub_0047f430||6|function|undefined OrphanVtableAssignStub_0047f430()|
+47f2b0|TA3TemplateDialog::VerifyDialogContext||3|function|void TA3TemplateDialog::VerifyDialogContext(int unusedA, int unusedB)|windows_listing
+47f2d0|TA3TemplateDialog::`scalar deleting destructor'|??_GTA3TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
+47f320|TA3TemplateDialog::DoDataExchange||3|function|void TA3TemplateDialog::DoDataExchange(CDataExchange* pDX)|windows_listing
+47f340|TA3TemplateDialog::GetMessageMap|?GetMessageMap@TA3TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
+47f390|TA4TemplateDialog::`scalar deleting destructor'|??_GTA4TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
+47f3e0|TA4TemplateDialog::VerifyDialogContext||27|function|void TA4TemplateDialog::VerifyDialogContext(int unusedA, int unusedB)|windows_listing
+47f410|TA4TemplateDialog::DoDataExchange||3|function|void TA4TemplateDialog::DoDataExchange(CDataExchange* pDX)|windows_listing
+47f430|TA4TemplateDialog::GetMessageMap|?GetMessageMap@TA4TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47f450|TADTemplateDialog::TADTemplateDialog||109|function|TADTemplateDialog(void * initParam)|
 47f4e0|TADTemplateDialog::`scalar deleting destructor'|??_GTADTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47f510|TADTemplateDialog::~TADTemplateDialog||104|function|void __thiscall TADTemplateDialog::~TADTemplateDialog(void)|
@@ -410,7 +412,7 @@ address|name|symbol|size|type|prototype|provenance
 480400|ResetRuntimeSelectionRecordBuffer||139|function|undefined ResetRuntimeSelectionRecordBuffer()|
 4804c0|ApplyCtrlScrollAccelerationToListStep||40|function|undefined ApplyCtrlScrollAccelerationToListStep()|
 480500|TDirectPlaySessionManagerBase::SelectRuntimeProvider||453|function|BOOL __thiscall SelectRuntimeProvider(GUID *)|
-480750|InitializeDialogTemplateBaseState||43|function|undefined InitializeDialogTemplateBaseState()|
+480750|TModalDialogBase::TModalDialogBase||43|function|TModalDialogBase::TModalDialogBase(UINT nIDTemplate, CWnd* pParentWnd)|windows_listing
 480790|T104TemplateDialog::~T104TemplateDialog||104|function|void __thiscall T104TemplateDialog::~T104TemplateDialog(void)|
 480820|ReportDirectPlayAssertionStub||23|function|undefined ReportDirectPlayAssertionStub()|
 480850|TrySendNetworkPacketViaManagerContext||59|function|undefined TrySendNetworkPacketViaManagerContext()|
@@ -481,11 +483,14 @@ address|name|symbol|size|type|prototype|provenance
 4821b0|TB1TemplateDialog::GetMessageMap|?GetMessageMap@TB1TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 4821d0|TA1TemplateDialog::SetGameSetupValues||13|function|void __thiscall SetGameSetupValues(GameSetup* setup)|windows_listing
 4821f0|SyncTripleSelectionControlsFromState||180|function|undefined SyncTripleSelectionControlsFromState()|
-4822e0|OrphanRetStub_004822e0||1|function|undefined OrphanRetStub_004822e0()|
+4822e0|TA1TemplateDialog::OnDoubleClickedOk||1|function|void TA1TemplateDialog::OnDoubleClickedOk()|windows_listing
 482300|SyncTripleSelectionStateViaMessage400||122|function|undefined SyncTripleSelectionStateViaMessage400()|
 4823d0|TF7TemplateDialog::`scalar deleting destructor'|??_GTF7TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 482420|TF7TemplateDialog::DoDataExchange||3|function|void TF7TemplateDialog::DoDataExchange(CDataExchange* pDX)|
 482440|TF7TemplateDialog::GetMessageMap|?GetMessageMap@TF7TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
+482460|TF7TemplateDialog::OnCommand428||58|function|void TF7TemplateDialog::OnCommand428()|windows_listing
+4824b0|TF7TemplateDialog::OnCommand3||18|function|void TF7TemplateDialog::OnCommand3()|windows_listing
+4824e0|TF7TemplateDialog::OnCommand4||55|function|void TF7TemplateDialog::OnCommand4()|windows_listing
 482730|`dynamic initializer for 'g_scaledShortConst_6A177C''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A177C''(void)|library
 482760|UiCursorTickTimerProc||131|function|void UiCursorTickTimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime)|
 482820|InitializeChildWindowSurfaceAndTickTimer_Impl_At00482820||18|function|undefined InitializeChildWindowSurfaceAndTickTimer_Impl_At00482820()|
@@ -1325,7 +1330,7 @@ address|name|symbol|size|type|prototype|provenance
 49cb60|ResetGlobalDword6A1FC8||30|function|undefined ResetGlobalDword6A1FC8()|
 49cbc0|TBackdropWindow::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 49cbf0|TBackdropWindow::~TBackdropWindow||21|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0049cbc0_Impl()|
-49cc20|OrphanVtableAssignStub_0049cc20||6|function|undefined OrphanVtableAssignStub_0049cc20()|
+49cc20|TBackdropWindow::GetMessageMap|?GetMessageMap@TBackdropWindow@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|windows_listing
 49cc40|SetCachedShowSplashFlag||10|function|void SetCachedShowSplashFlag(BOOL showSplash)|
 49cc60|Function_0049cc60||1|function|undefined WrapperFor_AllocateWithFallbackHandler_At0049cc60()|
 49cca0|CreateGlobalBackdropWindowWithDefaultBmp3B6||243|function|undefined InitializeGlobalBackdropWindowWithDefaultBmp3B6()|
@@ -1334,6 +1339,7 @@ address|name|symbol|size|type|prototype|provenance
 49cfa0|TBackdropWindow::ResetTopLevelWindowStateAndReleaseTempMapBuffer||178|function|undefined ResetTopLevelWindowStateAndReleaseTempMapBuffer()|
 49d090|InitializeTopLevelWindowTimerAndAcquireTempMapHandle||186|function|undefined InitializeTopLevelWindowTimerAndAcquireTempMapHandle()|
 49d180|PaintStoredBitmapToWindowClientDc||135|function|undefined PaintStoredBitmapToWindowClientDc()|
+49d240|TBackdropWindow::OnTimer||54|function|void TBackdropWindow::OnTimer(UINT timerId)|windows_listing
 49d290|ResetGlobalPair6A2020And6A2024||13|function|undefined ResetGlobalPair6A2020And6A2024()|
 49d360|PrepareAndCreateDialogFromTemplateResource||184|function|undefined PrepareAndCreateDialogFromTemplateResource()|
 49d450|TControl::FinalizeModalDialogAndRestoreOwnerFocus||144|function|undefined FinalizeModalDialogAndRestoreOwnerFocus()|
@@ -1695,7 +1701,7 @@ address|name|symbol|size|type|prototype|provenance
 4b1430|TCheater::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b1480|TCheater::GetRuntimeClass||6|function|undefined GetTCheaterClassNamePointer()|rtti
 4b14a0|TCheater::ConstructTCheaterBaseState||354|function|undefined ConstructTCheaterBaseState()|
-4b1670|TCheater::DestructTCheaterAndMaybeFree||114|function|undefined DestructTCheaterAndMaybeFree()|
+4b1670|TCheater::CenterWindowUsingSize||114|function|void TCheater::CenterWindowUsingSize(const CPoint* size)|windows_listing
 4b1710|TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel||281|function|undefined ConstructNumericEntryDialogCoreAndValueLabel()|
 4b1880|TTechCheater::CreateObject|?CreateObject@TTechCheater@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4b18f0|TTechCheater::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -1755,7 +1761,7 @@ address|name|symbol|size|type|prototype|provenance
 4b4dc0|TCity::GetBuildingType||190|function|int __thiscall GetBuildingType(short buildingSlot)|
 4b4eb0|TProductionOrder::CreateObject|?CreateObject@TProductionOrder@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 4b4ee0|TProductionOrder::GetRuntimeClass||6|function|undefined GetTProductionOrderClassNamePointer()|rtti
-4b4f00|TProductionOrder::ConstructTProductionOrderBaseState||9|function|undefined ConstructTProductionOrderBaseState()|
+4b4f00|TProductionOrder::TProductionOrder||9|function|TProductionOrder::TProductionOrder()|windows_listing
 4b4f20|TProductionOrder::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b4f50|DestructTProductionOrderAndMaybeFree_Impl||7|function|undefined DestructTProductionOrderAndMaybeFree_Impl()|
 4b4f70|TProductionOrder::InitializeBasicCityOrderContext||65|function|undefined InitializeBasicCityOrderContext()|
@@ -2193,7 +2199,7 @@ address|name|symbol|size|type|prototype|provenance
 4d49d0|DestructLandSaleEventToBase||7|function|undefined DestructLandSaleEventToBase()|
 4d49f0|TCivMgr::ClearNationCivilianActionModesAndCycleSelection||146|function|void __thiscall ClearNationCivilianActionModesAndCycleSelection(int nationId)|listing
 4d4b90|StrategicMapCallbackRecord::StrategicMapCallbackRecord||48|function|StrategicMapCallbackRecord::StrategicMapCallbackRecord()|
-4d4bd0|DiscardTileTokenArgumentAndReturn||3|function|undefined DiscardTileTokenArgumentAndReturn()|
+4d4bd0|StrategicMapCallbackRecord::SetDestinationHeightNoOp||3|function|void StrategicMapCallbackRecord::SetDestinationHeightNoOp(int unusedHeight)|windows_listing
 4d4bf0|StrategicMapCallbackRecord::AppendPackedColorDword||382|function|undefined AppendPackedColorDwordToMaskBuffers()|
 4d4dd0|stretch<unsigned char>::OverStretch|?OverStretch@?$stretch@E@@QAEXI@Z|80|function|void __thiscall OverStretch(unsigned int requestedCount)|template
 4d4e40|stretch<unsigned char>::operator[]||102|function|unsigned char * __thiscall operator[](unsigned int index)|template
@@ -3251,7 +3257,7 @@ address|name|symbol|size|type|prototype|provenance
 51deb0|TMapEditView::DoKeyEvent||185|function|undefined OrphanTiny_ReturnZero_0048a730(int param_1)|
 51e0b0|InitializeMapInteractionPreviewScaleXDefault||21|function|undefined InitializeMapInteractionPreviewScaleXDefault()|
 51e0e0|InitializeMapInteractionPreviewScaleYDefault||21|function|undefined InitializeMapInteractionPreviewScaleYDefault()|
-51e110|RecomputeMapInteractionPreviewVerticalOffsetFromScale||30|function|undefined RecomputeMapInteractionPreviewVerticalOffsetFromScale()|
+51e110|RecomputeMapInteractionPreviewVerticalOffsetFromScale||30|function|void RecomputeMapInteractionPreviewVerticalOffsetFromScale()|windows_listing
 51e160|WrapperFor_SetQuickDrawFillColor_At0051e160||43|function|undefined WrapperFor_SetQuickDrawFillColor_At0051e160()|
 51e1a0|TMapDialog::ResetAllTileMarkersToSentinel||51|function|undefined OrphanCallChain_C1_I20_0051e1a0(void)|
 51e1f0|TMapDialog::ReleaseTileMarkerForTile||77|function|undefined OrphanLeaf_NoCall_Ins21_0051e1f0(void)|
@@ -8734,6 +8740,7 @@ address|name|symbol|size|type|prototype|provenance
 694b38|g_szUiLevel1_00694B38|||global||
 694b48|CDib::classCDib|||global||
 694c50|g_useCompatibleBitmapBlit|||global||
+694cc0|g_szDiplomacyDialogsSourcePath_00694CC0|||global||windows_listing
 694d10|g_szIncludeViewSourcePath_00694D10|||global||
 694eb8|TObject::classTObject|||global||
 694fc8|g_szUiNilPointerMessage|||global||
@@ -9540,6 +9547,7 @@ address|name|symbol|size|type|prototype|provenance
 6a141c|g_pUiResourceHead|||global||
 6a1420|g_pUiResourceContext|||global||
 6a143c|g_McAppUiFlag_006A143C|||global||
+6a15cc|g_diplomacyDialogAssertGuard_006A15CC|||global||windows_listing
 6a15e0|g_RuntimeSelectionRecords006a15e0|||global||
 6a17b0|g_nIncludeViewAssertGate_006A17B0|||global||
 6a17c4|g_nIncludeViewPointerAssertGate_006A17C4|||global||
@@ -9662,6 +9670,7 @@ address|name|symbol|size|type|prototype|provenance
 6a33b4|g_MapInteractionPreviewRowParity_006a33b4|||global||
 6a33b8|g_MapInteractionPreviewColumnParity_006a33b8|||global||
 6a33d0|g_MapPreviewScaleY6A33D0|||global||
+6a3448|g_MapPreviewVerticalOffset6A3448|||global||
 6a3410|g_MapPreviewScaleX6A3410|||global||
 6a3450|g_pCitySiteCachedPrimaryRenderSurfaceContext|||global||
 6a3470|g_mapGenMountainQuota_006a3470|||global||

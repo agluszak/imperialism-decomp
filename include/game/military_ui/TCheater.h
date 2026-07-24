@@ -13,6 +13,7 @@ public:
   virtual void ApplyCheats();   // slot 0x68 0x4b1410; Mac symbol oracle
 
   TCheater();
+  void CenterWindowUsingSize(const CPoint* size); // 0x004b1670
 
   // Two-phase init (MacApp IViewClass idiom): frame this cheater panel into `panel`, then
   // build its "Done" TStaticText caption and TButton child. 0x004b14a0, __thiscall.

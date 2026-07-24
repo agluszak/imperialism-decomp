@@ -1506,7 +1506,7 @@ void TSimMgr::ProcessScenarioScript() {
 
   delete[] buffer;
   if (g_bScenarioScriptTerminationRequested != 0) {
-    PostWmCloseToMainThreadWindow();
+    g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
   }
 
   TGreatPower** nationCursor = g_apNationStates;

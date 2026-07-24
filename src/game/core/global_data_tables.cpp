@@ -76,6 +76,9 @@ TLanguageMgr* g_pLanguageMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a43e0
 TAnimator* g_pUiAnimator = 0;
 
+// GLOBAL: IMPERIALISM 0x006a15cc
+int g_diplomacyDialogAssertGuard_006A15CC = 0;
+
 extern "C" {
 
 // Diplomacy globals
@@ -740,10 +743,9 @@ float g_cachedAiCityActionContextBias[3] = {0.0f, 0.0f, 0.0f};
 // GLOBAL: IMPERIALISM 0x00696178
 short g_anCityBuildingSlotOrder[16] = {12, 13, 7, 10, 14, 15, 9, 6, 11, 2, 3, 8, 0, 1, 4, 5};
 // GLOBAL: IMPERIALISM 0x00696198
-short g_anCityBuildingSlotCoords[32] = {200, 235, 340, 300, 281, 184, 340, 266,
-                                        87,  286, 230, 310, 340, 139, 240, 35,
-                                        50,  220, 50,  107, 50,  35,  340, 139,
-                                        82,  35,  300, 35,  340, 44,  150, 95};
+short g_anCityBuildingSlotCoords[32] = {200, 235, 340, 300, 281, 184, 340, 266, 87,  286, 230,
+                                        310, 340, 139, 240, 35,  50,  220, 50,  107, 50,  35,
+                                        340, 139, 82,  35,  300, 35,  340, 44,  150, 95};
 // GLOBAL: IMPERIALISM 0x006961d8
 short g_nCityBuildingSlotYOffsetIndex = 1;
 // GLOBAL: IMPERIALISM 0x006961dc
@@ -855,6 +857,10 @@ char g_szMcWindowSourcePath_006950D8[] = "D:\\Ambit\\McWindow.cpp";
 // GLOBAL: IMPERIALISM 0x006a1c74
 int g_nMcWindowStateMsgAssertGate_006A1C74 = 0;
 
+// Source-path string for the DiplomacyDialogs.cpp resource-A4 dialog assert.
+// GLOBAL: IMPERIALISM 0x00694cc0
+extern "C" const char g_szDiplomacyDialogsSourcePath_00694CC0[] = "D:\\Ambit\\DiplomacyDialogs.cpp";
+
 // Source-path string for CIncludeView's IncludeView.cpp one-shot debug asserts.
 // GLOBAL: IMPERIALISM 0x00694d10
 char g_szIncludeViewSourcePath_00694D10[] = "D:\\Ambit\\IncludeView.cpp";
@@ -947,6 +953,8 @@ float g_TileHeatmapNeighborDiffusionFactor = 0.2f;
 double g_MapPreviewScaleX6A3410;
 // GLOBAL: IMPERIALISM 0x006a33d0
 double g_MapPreviewScaleY6A33D0;
+// GLOBAL: IMPERIALISM 0x006a3448
+short g_MapPreviewVerticalOffset6A3448;
 // GLOBAL: IMPERIALISM 0x006a3360
 extern double g_mapCellRowScale_006a3360;
 // GLOBAL: IMPERIALISM 0x006a3388

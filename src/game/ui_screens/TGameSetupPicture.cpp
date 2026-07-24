@@ -71,7 +71,7 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     // touching any member.
     g_pGameFlowState->EnsureGameFlowStateAndPostTurnEvent5E5();
   } else if (controlTag == kControlTagQuit) {
-    PostWmCloseToMainThreadWindow();
+    g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
     // no PostTurnEventCodeMessage2420 on this path (matches the original).
   } else if (controlTag == kControlTagPref) {
     postEventCode = EncodeTurnEventCode(kTurnEventGamePreferences);

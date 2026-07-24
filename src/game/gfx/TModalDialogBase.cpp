@@ -32,6 +32,10 @@ TModalDialogBase::~TModalDialogBase() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00480750
+TModalDialogBase::TModalDialogBase(UINT nIDTemplate, CWnd* pParentWnd)
+    : CDialog(nIDTemplate, pParentWnd), modalCreated(0), createdDialog(nullptr), finalizeState(0) {}
+
 // FUNCTION: IMPERIALISM 0x0049d360
 int TModalDialogBase::PrepareAndCreateModalFromTemplate() {
   void* templateBytes = const_cast<void*>(reinterpret_cast<const void*>(m_lpDialogTemplate));

@@ -35,6 +35,8 @@ CWnd* GetMainWndViaDoubleAfxGetThread() {
 // this context); this is MFC dispatch-table plumbing, not game logic, so it's skipped in
 // the compile-only lint build (never linked, so the missing definition is harmless there).
 #ifndef IMPERIALISM_LINT
+// SYNTHETIC: IMPERIALISM 0x0049cc20
+// TBackdropWindow::GetMessageMap
 BEGIN_MESSAGE_MAP(TBackdropWindow, CWnd)
 ON_WM_CREATE()
 ON_WM_PAINT()
@@ -193,10 +195,10 @@ void TBackdropWindow::OnPaint() {
   m_backdropBmp->StretchDibitsFromStoredBitmapToHdcSimple(&paintDC, 0, 0, size.x, size.y);
 }
 
+// FUNCTION: IMPERIALISM 0x0049d240
 void TBackdropWindow::OnTimer(UINT timerId) {
-  if (timerId == 1) {
-    DestroyWindow();
-    return;
-  }
-  CWnd::OnTimer(timerId);
+  (void)timerId;
+  DestroyWindow();
+  CWnd* mainWnd = GetMainWndViaDoubleAfxGetThread();
+  ::UpdateWindow(mainWnd->m_hWnd);
 }

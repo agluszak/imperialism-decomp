@@ -93,8 +93,6 @@ extern ImperialismApp theApp;
 // 0x00412d90 — out-of-memory box; installed via the CRT _set_new_handler in InitInstance.
 int __cdecl ShowOutOfMemoryErrorNewHandler(size_t allocationSize);
 
-void PostWmCloseToMainThreadWindow(); // 0x004146d0
-
 // Opens (creating as needed) HKEY_CURRENT_USER\Software\<company>\<product> and returns the
 // final HKEY, or nullptr if any step fails. Caller owns the returned HKEY (RegCloseKey). No
 // live caller found (zero Ghidra xrefs). 0x00412640

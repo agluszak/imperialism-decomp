@@ -45,11 +45,17 @@ extern HRGN g_hOpenRgnAccumulator;
 
 extern int g_nDibOrientationFlag_006A1890;
 
+// DiplomacyDialogs.cpp file-scope guard checked by the resource-A4 dialog's tail virtual.
+// No writer is present in the retail image; zero takes the original diagnostic path.
+extern int g_diplomacyDialogAssertGuard_006A15CC;
+
 // One-slot CTemporaryRegion reuse cache (see CTemporaryRegion.h).
 extern RgnHandle g_pTemporaryRegionCache;
 
 // Provisional flag (0x00694c50) selecting the CDib blit path in TDDTemplateDialog::OnPaint.
 extern int g_useCompatibleBitmapBlit;
+
+extern "C" const char g_szDiplomacyDialogsSourcePath_00694CC0[];
 
 // Source-file path string ("D:\\Ambit\\Cross\\UGameWindow.cpp") passed with a line number to
 // the UI invalidation-flag assert helper from the TDlgWindow/UGameWindow assert hooks.

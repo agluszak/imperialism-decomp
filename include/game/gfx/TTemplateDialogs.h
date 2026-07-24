@@ -215,6 +215,38 @@ protected:
 
 ASSERT_SIZE(T102TemplateDialog, 0x74);
 
+// Resource-A3/A4 diplomacy dialog leaves. Both extend CDialog with one tail virtual at
+// slot 0xd8; A3's hook is empty, while A4 verifies the file-scope dialog context guard.
+// VTABLE: IMPERIALISM 0x00646b58
+class TA3TemplateDialog : public CDialog {
+public:
+  // FUNCTION: IMPERIALISM 0x0047f300
+  ~TA3TemplateDialog() override {}
+  TA3TemplateDialog(void* initParam); // 0x0047f280
+
+protected:
+  void DoDataExchange(CDataExchange* pDX) override;           // 0x0047f320
+  virtual void VerifyDialogContext(int unusedA, int unusedB); // 0x0047f2b0, slot 0xd8
+  DECLARE_MESSAGE_MAP()                                       // 0x0047f340
+};
+
+ASSERT_SIZE(TA3TemplateDialog, 0x5c);
+
+// VTABLE: IMPERIALISM 0x00646c60
+class TA4TemplateDialog : public CDialog {
+public:
+  // FUNCTION: IMPERIALISM 0x0047f3c0
+  ~TA4TemplateDialog() override {}
+  TA4TemplateDialog(void* initParam); // 0x0047f360
+
+protected:
+  void DoDataExchange(CDataExchange* pDX) override;           // 0x0047f410
+  virtual void VerifyDialogContext(int unusedA, int unusedB); // 0x0047f3e0, slot 0xd8
+  DECLARE_MESSAGE_MAP()                                       // 0x0047f430
+};
+
+ASSERT_SIZE(TA4TemplateDialog, 0x5c);
+
 // Member-less CDialog template leaves. Each class exists to bind a distinct dialog
 // resource and its own message map/vtable; their DoDataExchange overrides are empty.
 // VTABLE: IMPERIALISM 0x00647530
@@ -324,6 +356,9 @@ public:
 
 protected:
   void DoDataExchange(CDataExchange* pDX) override; // 0x00482420
+  afx_msg void OnCommand428();                      // 0x00482460
+  afx_msg void OnCommand3();                        // 0x004824b0
+  afx_msg void OnCommand4();                        // 0x004824e0
   DECLARE_MESSAGE_MAP()                             // 0x00482440
 };
 
@@ -543,6 +578,7 @@ protected:
   BOOL OnInitDialog() override;                     // 0x004821f0 (slot 0xc4)
   void OnOK() override;                             // 0x00482300 (slot 0xcc)
   void DoDataExchange(CDataExchange* pDX) override; // 0x00481540 (vtable index 35)
+  afx_msg void OnDoubleClickedOk();                 // 0x004822e0 (BN_DOUBLECLICKED, IDOK)
   DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x004815d0 (vtable index 12)
 };
 

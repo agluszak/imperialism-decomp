@@ -1382,7 +1382,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       }
       unsigned char stillClientSessionQuit = g_pSimMgr->multiplayerSessionRole == 2;
       if (stillClientSessionQuit == 0 && gameState->statusTag18 != kControlTagNewg) {
-        PostWmCloseToMainThreadWindow();
+        g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
         return 1;
       }
       g_pGlobalUiRootController->CreateAndQueueTurnEventPacketTagGWEN();

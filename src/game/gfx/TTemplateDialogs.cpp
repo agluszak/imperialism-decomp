@@ -4,7 +4,9 @@
 #include "game/gfx/CDibPal.h"
 #include "game/ImperialismApp.h"
 #include "game/city_ui/TCountry.h"
+#include "game/gfx/TAmbitApplication.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
@@ -331,6 +333,59 @@ BEGIN_MESSAGE_MAP(TFATemplateDialog, CDialog)
 END_MESSAGE_MAP()
 #endif
 
+// FUNCTION: IMPERIALISM 0x0047f280
+TA3TemplateDialog::TA3TemplateDialog(void* initParam)
+    : CDialog(0xa3, static_cast<CWnd*>(initParam)) {}
+
+// FUNCTION: IMPERIALISM 0x0047f2b0
+void TA3TemplateDialog::VerifyDialogContext(int unusedA, int unusedB) {
+  (void)unusedA;
+  (void)unusedB;
+}
+
+// SYNTHETIC: IMPERIALISM 0x0047f2d0
+// TA3TemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x0047f320
+void TA3TemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  (void)pDX;
+}
+
+// SYNTHETIC: IMPERIALISM 0x0047f340
+// TA3TemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TA3TemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x0047f360
+TA4TemplateDialog::TA4TemplateDialog(void* initParam)
+    : CDialog(0xa4, static_cast<CWnd*>(initParam)) {}
+
+// SYNTHETIC: IMPERIALISM 0x0047f390
+// TA4TemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x0047f3e0
+void TA4TemplateDialog::VerifyDialogContext(int unusedA, int unusedB) {
+  (void)unusedA;
+  (void)unusedB;
+  if (g_diplomacyDialogAssertGuard_006A15CC == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szDiplomacyDialogsSourcePath_00694CC0, 0x3d);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0047f410
+void TA4TemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  (void)pDX;
+}
+
+// SYNTHETIC: IMPERIALISM 0x0047f430
+// TA4TemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TA4TemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
 // FUNCTION: IMPERIALISM 0x0047f450
 TADTemplateDialog::TADTemplateDialog(void* initParam)
     : TModalDialogBase(0xad, static_cast<CWnd*>(initParam)), listbox() {}
@@ -421,6 +476,7 @@ void TA1TemplateDialog::DoDataExchange(CDataExchange* pDX) {
 // TA1TemplateDialog::GetMessageMap
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TA1TemplateDialog, CDialog)
+ON_CONTROL(BN_DOUBLECLICKED, IDOK, OnDoubleClickedOk)
 END_MESSAGE_MAP()
 #endif
 
@@ -664,6 +720,9 @@ BOOL TA1TemplateDialog::OnInitDialog() {
   return TRUE;
 }
 
+// FUNCTION: IMPERIALISM 0x004822e0
+void TA1TemplateDialog::OnDoubleClickedOk() {}
+
 // FUNCTION: IMPERIALISM 0x00482300
 void TA1TemplateDialog::OnOK() {
   CDialog::OnOK();
@@ -689,8 +748,31 @@ void TF7TemplateDialog::DoDataExchange(CDataExchange* pDX) {
 // TF7TemplateDialog::GetMessageMap
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TF7TemplateDialog, CDialog)
+ON_COMMAND(0x428, OnCommand428)
+ON_COMMAND(3, OnCommand3)
+ON_COMMAND(4, OnCommand4)
 END_MESSAGE_MAP()
 #endif
+
+// FUNCTION: IMPERIALISM 0x00482460
+void TF7TemplateDialog::OnCommand428() {
+  EndDialog(0x428);
+  CWnd* mainWindow = AfxGetThread() != 0 ? AfxGetThread()->GetMainWnd() : 0;
+  ::PostMessage(mainWindow->m_hWnd, WM_COMMAND, 0xe101, 0);
+}
+
+// FUNCTION: IMPERIALISM 0x004824b0
+void TF7TemplateDialog::OnCommand3() {
+  EndDialog(3);
+  g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
+}
+
+// FUNCTION: IMPERIALISM 0x004824e0
+void TF7TemplateDialog::OnCommand4() {
+  EndDialog(4);
+  CWnd* mainWindow = AfxGetThread() != 0 ? AfxGetThread()->GetMainWnd() : 0;
+  ::PostMessage(mainWindow->m_hWnd, WM_COMMAND, 0xe104, 0);
+}
 
 // The ID_800C command: put up the C2 template dialog with a 0..6 city-view slider and a
 // 10-row list box (each row carries a turn-event code as item data). On OK, dispatch the
