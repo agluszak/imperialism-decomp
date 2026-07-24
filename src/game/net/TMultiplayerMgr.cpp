@@ -187,13 +187,6 @@ typedef unsigned char CObject_slot_0x04_0x04;
 typedef unsigned int undefined3;
 typedef signed char sbyte;
 
-// Minimal stand-in for the CString locals that the raw decompile touches only via
-// their leading char* buffer (m_pchData at offset 0). Real string semantics are not
-// required to reproduce this state machine's control flow.
-struct GhStr {
-  char* m_pchData;
-};
-
 // Ghidra bit-concatenation intrinsics (compile-only; exact widths are not load-bearing
 // here). CONCAT31(hi,lo) packs a 3-byte high value with a 1-byte low value, etc.
 #define CONCAT11(hi, lo)                                                                           \

@@ -77,8 +77,8 @@ void TGameScorePicture::DoPostCreate(int arg) {
       int difficultyPercent =
           g_apNationStates[g_pSimMgr->GetActiveNationId()]->gameScoreDifficultyPercent958;
       if (difficultyPercent % 10 > 0) {
-        FormatFloatToLocalizedSharedString(static_cast<float>(difficultyPercent) * 0.1f,
-                                           &displayText);
+        FormatNonnegativeFloatToLocalizedSharedString(static_cast<float>(difficultyPercent) * 0.1f,
+                                                      &displayText);
       } else {
         displayText.Format(g_szDecimalFormat, difficultyPercent / 10);
       }

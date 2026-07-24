@@ -92,13 +92,16 @@
 // LIBRARY: IMPERIALISM 0x005ff15e
 // CString::Format (LPCTSTR, ...) — AFX_CDECL member; va_start + FormatV
 
-// Formats a float into *outResult as a comma-grouped integer part (thousands, then millions --
+// Formats a nonnegative float into *outResult as a comma-grouped integer part (thousands, then
+// millions --
 // applied in that order using the string length computed before either insertion, matching the
 // original's exact split points even though the first insertion already changes the string's
 // length by the time the second one runs) plus, when the value has a fractional remainder, a
 // "." and a 1-or-2-digit decimal part (a trailing-zero digit is stripped before formatting).
+// The retail arithmetic subtracts the absolute integral part from `value`, so negative fractional
+// inputs are intentionally outside this helper's domain rather than silently changing its body.
 // FUNCTION: IMPERIALISM 0x0057fa30
-void __stdcall FormatFloatToLocalizedSharedString(float value, CString* outResult) {
+void __stdcall FormatNonnegativeFloatToLocalizedSharedString(float value, CString* outResult) {
   CString thousandsSep(",");
   CString decimalPoint(".");
 

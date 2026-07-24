@@ -787,8 +787,6 @@ int QueryFreeDiskMegabytesOnWindowsVolume(LPCSTR windowsDirectory) {
   return (int)(freeBytes / (1024UL * 1024UL));
 }
 
-const unsigned int kAddrDecimalFormat = 0x0069430c;
-
 } // namespace
 
 // The low-disk-space startup gate: warns and asks to continue if free space on the Windows
@@ -819,8 +817,9 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
   if (g_pModuleLibraryCacheState != nullptr) {
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&templateText, 0x2763, 0x19);
   }
-  scratch.Format(reinterpret_cast<const char*>(kAddrDecimalFormat), freeMegabytes);
-  scanBracketExpressions(g_pSimMgr, &formattedText, templateText.GetBuffer(0));
+  scratch.Format(g_szDecimalFormat, freeMegabytes);
+  scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
+                         static_cast<LPCSTR>(scratch));
 
   TLowDiskWarningDialog dialog(nullptr);
   dialog.SetPromptText(formattedText);

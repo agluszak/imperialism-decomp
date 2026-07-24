@@ -3990,7 +3990,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.4669887278582931|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.45539452495974236|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags
@@ -4873,7 +4873,7 @@ address|matching|name
 0x57f570|0.8235294117647058|TSimMgr::PrepareMultiplayerTurnResume
 0x57f5b0|0.3146067415730337|TSimMgr::NumToCurrency
 0x57f8f0|0.5866666666666667|TSimMgr::NumToOrdinal
-0x57fa30|0.49056603773584906|FormatFloatToLocalizedSharedString
+0x57fa30|0.49056603773584906|FormatNonnegativeFloatToLocalizedSharedString
 0x57fe90|1.0|TSimMgr::GetStringPrelude
 0x57fec0|1.0|TSimMgr::ReinitializeRandomSeed
 0x57fef0|0.631578947368421|scanBracketExpressions
