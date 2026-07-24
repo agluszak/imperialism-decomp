@@ -12,8 +12,8 @@
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
   "git_branch": "fix/cast-audit-followups-2",
-  "git_commit": "57e1a339a0b2f94ae3d40ebb1c9cd8016c870a1b",
-  "git_commit_date": "2026-07-25T00:30:25+02:00",
+  "git_commit": "70fe038b7a23a360a082e345a0003e927418aabf",
+  "git_commit_date": "2026-07-25T00:35:23+02:00",
   "global_coverage_pct": 24.784837941768906,
   "global_orig_only_count": 8215,
   "global_recomp_only_count": 7855,
@@ -63,7 +63,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 12,
   "template_canonical_paired_count": 19,
-  "timestamp_utc": "2026-07-24T22:35:18+00:00",
+  "timestamp_utc": "2026-07-24T22:38:12+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }

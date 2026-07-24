@@ -99,9 +99,8 @@ void TUnitOrder::Produce() {
                             &sharedRefB);
   }
 
-  unsigned char* cityRaw = reinterpret_cast<unsigned char*>(cityContext);
-  short* cityQueueBase = reinterpret_cast<short*>(cityRaw + 0x4A);
-  cityQueueBase[entryId] = static_cast<short>(cityQueueBase[entryId] + pendingDelta);
+  cityContext->cityMetricsBlock4A[entryId] =
+      static_cast<short>(cityContext->cityMetricsBlock4A[entryId] + pendingDelta);
 
   TGreatPower* ownerNation = cityContext->ownerNationAc;
   short ownerNationSlot = 0;
