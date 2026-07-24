@@ -299,7 +299,6 @@ def scan_file(
         # character (e.g. an em dash) anywhere earlier in the file desyncs a
         # byte offset from the matching index into the decoded str.
         preceding = raw[: node.start_byte].decode("utf-8", errors="replace").splitlines()[-6:]
-        context = "\n".join(preceding)
         nl = raw.find(b"\n", body.end_byte)
         trailing = raw[body.end_byte : nl if nl != -1 else len(raw)].decode(
             "utf-8", errors="replace"
@@ -313,8 +312,21 @@ def scan_file(
                 break
             if line.strip() and not line.lstrip().startswith("//"):
                 break
-        noop = NOOP_RE.search(context) or NOOP_RE.search(trailing)
-        slot = SLOT_COMMENT_RE.search(trailing) or SLOT_COMMENT_RE.search(context)
+        # Anchor annotations to the contiguous comment block directly above, the same way
+        # the marker scan below does. Searching the raw 6-line window lets a NEIGHBOUR's
+        # `// NOOP:` vouch for this body -- adjacent ctor/dtor pairs make that routine.
+        block_lines: list[str] = []
+        for line in reversed(preceding):
+            stripped = line.strip()
+            if not stripped:
+                continue
+            if not stripped.startswith("//"):
+                break
+            block_lines.append(line)
+        block = "\n".join(reversed(block_lines))
+
+        noop = NOOP_RE.search(block) or NOOP_RE.search(trailing)
+        slot = SLOT_COMMENT_RE.search(trailing) or SLOT_COMMENT_RE.search(block)
 
         qualified = f"{qual}{name}"
         marker_addr = int(marker.group("addr"), 16) if marker else None

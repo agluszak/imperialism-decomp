@@ -144,9 +144,22 @@ def main() -> int:
                 continue  # declared virtual somewhere: not a shadow by this rule
             if not is_degenerate_body(body):
                 continue
-            # marker/annotation vouching for the definition (6 preceding lines)
-            preceding = raw[: node.start_byte].decode("utf-8", "replace").splitlines()[-6:]
-            if any(MARKER_RE.search(line) for line in preceding):
+            # A marker/annotation only vouches for the definition it is attached to.
+            # Anchor on the contiguous comment block directly above and stop at the first
+            # line of code: a fixed window instead picks up a NEIGHBOUR's marker (adjacent
+            # ctor/dtor pairs make that routine here) and silently exempts this body.
+            preceding = raw[: node.start_byte].decode("utf-8", "replace").splitlines()
+            vouched = False
+            for line in reversed(preceding):
+                stripped = line.strip()
+                if not stripped:
+                    continue
+                if not stripped.startswith("//"):
+                    break
+                if MARKER_RE.search(stripped):
+                    vouched = True
+                    break
+            if vouched:
                 continue
             candidates.append((cls, name, rel, node.start_point[0] + 1))
 
