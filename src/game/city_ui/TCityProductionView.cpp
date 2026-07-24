@@ -58,7 +58,23 @@ extern "C" short g_Render_Nation_Header_Value_00696228[12] = {-3, -2, 0, 2,  3, 
 
 IMPLEMENT_DYNCREATE(TCityProductionView, TNoHilitePicture)
 
-TCityProductionView::TCityProductionView() {}
+// FUNCTION: IMPERIALISM 0x004ba2e0
+TCityProductionView::TCityProductionView() {
+  selectedBuildingSlotA4 = -1;
+  needsRefreshAtA6 = false;
+  for (int i = 0; i < 16; i = i + 1) {
+    buildingClipRegionsEC[i] = 0;
+  }
+  for (int viewSlot = 0; viewSlot < 16; viewSlot = viewSlot + 1) {
+    buildingViewsAC[viewSlot] = 0;
+  }
+  currentMonthAtA8 = -1;
+  for (int group = 0; group < 8; group = group + 1) {
+    for (int slot = 0; slot < 3; slot = slot + 1) {
+      buildingActionAnimations12C[group][slot] = 0;
+    }
+  }
+}
 
 // SYNTHETIC: IMPERIALISM 0x004ba360
 // TCityProductionView::`scalar deleting destructor'

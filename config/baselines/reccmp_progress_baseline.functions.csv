@@ -1946,9 +1946,9 @@ address|matching|name
 0x4b9570|0.25|WrapperFor_ftol_At004b9570
 0x4b95c0|0.2542372881355932|InitializeCityBuildingHoverSelectionRects_004b95c0
 0x4b98b0|0.25257731958762886|InitializeCityBuildingLayoutData
-0x4ba240|0.9583333333333334|TCityProductionView::CreateObject
+0x4ba240|1.0|TCityProductionView::CreateObject
 0x4ba2c0|1.0|TCityProductionView::GetRuntimeClass
-0x4ba2e0|0.16|InitializeCityProductionView
+0x4ba2e0|1.0|TCityProductionView::TCityProductionView
 0x4ba360|1.0|TCityProductionView::`scalar deleting destructor'
 0x4ba390|0.0|TCityProductionView::~TCityProductionView
 0x4ba3b0|0.22384428223844283|TCityProductionView::DoPostCreate
@@ -7088,7 +7088,7 @@ address|matching|name
 0x608ba8|0.9397321428571429|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|1.0|CWnd::OnNotify
+0x6091d9|0.9787234042553191|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent

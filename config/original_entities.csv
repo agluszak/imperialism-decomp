@@ -1898,7 +1898,7 @@ address|name|symbol|size|type|prototype|provenance
 4b98b0|InitializeCityBuildingLayoutData||1951|function|undefined InitializeCityBuildingLayoutData()|
 4ba240|TCityProductionView::CreateObject|?CreateObject@TCityProductionView@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 4ba2c0|TCityProductionView::GetRuntimeClass||6|function|undefined GetTCityProductionViewClassNamePointer()|rtti
-4ba2e0|InitializeCityProductionView||85|function|undefined InitializeCityProductionView()|
+4ba2e0|TCityProductionView::TCityProductionView||85|function|undefined TCityProductionView()|
 4ba360|TCityProductionView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ba3b0|TTransFocusAnimation::InitializeCityBuildingControlRegions||718|function|void __thiscall InitializeCityBuildingControlRegions(void * pInitContext)|
 4ba740|TCityProductionView::Free||70|function|void __thiscall Free(void)|
