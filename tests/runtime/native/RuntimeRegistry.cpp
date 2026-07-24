@@ -12,7 +12,9 @@ RuntimeTestDescriptor g_descriptors[] = {
     {"random_game_easy_skips_capital", EasyRandomGameTest()},
     {"easy_turns_advance", EndTurnTest()},
     {"city_screen_opens", CityScreenTest()},
+    {"map_zoom_toggle_remains_responsive", MapZoomToggleTest()},
     {"load_saved_game", LoadSavedGameTest()},
+    {"turn_event_queue_bounds", TurnEventQueueBoundsTest()},
 };
 
 } // namespace

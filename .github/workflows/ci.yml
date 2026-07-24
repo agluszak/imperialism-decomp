@@ -62,3 +62,27 @@ jobs:
           git fetch origin "${{ github.base_ref }}" --quiet
           base="$(git merge-base HEAD "origin/${{ github.base_ref }}")"
           just generated-integrity-gate --no-worktree --base "$base"
+
+  # This job deliberately runs only on a repository-owned, asset-provisioned
+  # runner. Never attach the imperialism-runtime label to a general-purpose or
+  # fork-PR runner: pull-request code can read every file available to it.
+  runtime-pr:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, linux, x64, imperialism-runtime]
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Verify runner-local retail asset
+        run: |
+          test -n "$ORIGINAL_BINARY"
+          test -f "$ORIGINAL_BINARY"
+
+      - name: Sync Python tooling
+        run: uv sync --frozen
+
+      - name: Run required native runtime PR suite
+        run: just runtime-check pr --jobs 1 --junit build-runtime-tests/runtime-pr.xml

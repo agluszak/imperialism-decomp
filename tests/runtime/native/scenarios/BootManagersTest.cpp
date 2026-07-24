@@ -2,8 +2,20 @@
 
 namespace {
 
-const RuntimeScenarioConfig kConfig = {"boot_managers", kCompleteOnManagers, false, false, false};
-RuntimeScenario g_test(kConfig);
+class BootManagersTestCase : public RuntimeScenario {
+public:
+  const char* Name() const override {
+    return "boot_managers";
+  }
+  bool RequiresMainWindow() const override {
+    return false;
+  }
+  void OnManagersReady() override {
+    Pass();
+  }
+};
+
+BootManagersTestCase g_test;
 
 } // namespace
 

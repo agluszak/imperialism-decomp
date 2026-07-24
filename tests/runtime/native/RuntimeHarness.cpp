@@ -9,12 +9,35 @@ namespace {
 
 RuntimeContext g_context;
 RuntimeTestCase* g_testCase = 0;
-const int kPendingTurnEventCapacity = 32;
-int g_pendingTurnEvents[kPendingTurnEventCapacity];
-int g_pendingTurnEventHead = 0;
-int g_pendingTurnEventCount = 0;
+RuntimeTurnEventQueue g_pendingTurnEvents;
 
 } // namespace
+
+RuntimeTurnEventQueue::RuntimeTurnEventQueue() : head(0), count(0) {}
+
+bool RuntimeTurnEventQueue::Push(int eventCode) {
+  if (count == kCapacity) {
+    return false;
+  }
+  int tail = (head + count) % kCapacity;
+  events[tail] = eventCode;
+  ++count;
+  return true;
+}
+
+bool RuntimeTurnEventQueue::Pop(int& eventCode) {
+  if (count == 0) {
+    return false;
+  }
+  eventCode = events[head];
+  head = (head + 1) % kCapacity;
+  --count;
+  return true;
+}
+
+int RuntimeTurnEventQueue::Count() const {
+  return count;
+}
 
 void RuntimeHarness::EnsureSelected() {
   if (g_testCase != 0) {
@@ -28,10 +51,8 @@ void RuntimeHarness::EnsureSelected() {
 
 void RuntimeHarness::OnIdle() {
   EnsureSelected();
-  while (g_pendingTurnEventCount > 0) {
-    int eventCode = g_pendingTurnEvents[g_pendingTurnEventHead];
-    g_pendingTurnEventHead = (g_pendingTurnEventHead + 1) % kPendingTurnEventCapacity;
-    --g_pendingTurnEventCount;
+  int eventCode;
+  while (g_pendingTurnEvents.Pop(eventCode)) {
     g_testCase->ObserveTurnEvent(g_context, eventCode);
   }
   g_testCase->Tick(g_context);
@@ -44,13 +65,16 @@ void RuntimeHarness::ObserveBuiltUiTree(int eventCode, TView* root) {
 
 void RuntimeHarness::ObserveActivatedTurnEvent(int eventCode) {
   EnsureSelected();
-  if (g_pendingTurnEventCount == kPendingTurnEventCapacity) {
-    g_pendingTurnEventHead = (g_pendingTurnEventHead + 1) % kPendingTurnEventCapacity;
-    --g_pendingTurnEventCount;
+  if (!g_pendingTurnEvents.Push(eventCode)) {
+    g_testCase->FailHarness(
+        g_context,
+        "\"runtime harness turn-event queue overflowed before idle observation\"");
   }
-  int tail = (g_pendingTurnEventHead + g_pendingTurnEventCount) % kPendingTurnEventCapacity;
-  g_pendingTurnEvents[tail] = eventCode;
-  ++g_pendingTurnEventCount;
+}
+
+void RuntimeHarness::Pulse() {
+  EnsureSelected();
+  g_testCase->Pulse(g_context);
 }
 
 unsigned int RuntimeHarness::RandomSeed() {

@@ -14,6 +14,10 @@ void RuntimeTestDriver::ObserveActivatedTurnEvent(int eventCode) {
   RuntimeHarness::ObserveActivatedTurnEvent(eventCode);
 }
 
+void RuntimeTestDriver::Pulse() {
+  RuntimeHarness::Pulse();
+}
+
 unsigned int RuntimeTestDriver::RandomSeed() {
   return RuntimeHarness::RandomSeed();
 }

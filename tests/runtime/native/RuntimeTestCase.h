@@ -16,5 +16,7 @@ public:
   virtual void Tick(RuntimeContext& context) = 0;
   virtual void ObserveTurnEvent(RuntimeContext&, int) {}
   virtual void ObserveBuiltUiTree(RuntimeContext&, int, TView*) {}
+  virtual void Pulse(RuntimeContext&) {}
   virtual unsigned int RandomSeed(RuntimeContext& context) = 0;
+  virtual void FailHarness(RuntimeContext& context, const char* failure) = 0;
 };

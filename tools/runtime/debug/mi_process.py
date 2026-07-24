@@ -22,9 +22,15 @@ class MiCommandResult:
 class GdbMiProcess:
     """Own one GDB process and continuously service its MI streams."""
 
-    def __init__(self, cwd: Path, transcript_path: Path) -> None:
+    def __init__(
+        self,
+        cwd: Path,
+        transcript_path: Path,
+        command: tuple[str, ...] = ("gdb", "-q", "-nx", "--interpreter=mi3"),
+    ) -> None:
         self.cwd = cwd
         self.transcript_path = transcript_path
+        self.command_line = command
         self.process: asyncio.subprocess.Process | None = None
         self.events: asyncio.Queue[MiRecord] = asyncio.Queue()
         self._next_token = 1
@@ -39,10 +45,7 @@ class GdbMiProcess:
         self._transcript = self.transcript_path.open("w", encoding="utf-8")
         try:
             self.process = await asyncio.create_subprocess_exec(
-                "gdb",
-                "-q",
-                "-nx",
-                "--interpreter=mi3",
+                *self.command_line,
                 str(executable),
                 cwd=self.cwd,
                 stdin=asyncio.subprocess.PIPE,
@@ -58,6 +61,14 @@ class GdbMiProcess:
             asyncio.create_task(self._read_stderr()),
             asyncio.create_task(self._watch_exit()),
         ]
+
+    @property
+    def pid(self) -> int | None:
+        return self.process.pid if self.process is not None else None
+
+    @property
+    def returncode(self) -> int | None:
+        return self.process.returncode if self.process is not None else None
 
     async def command(self, command: str, timeout: float = 30.0) -> MiCommandResult:
         process = self._require_process()

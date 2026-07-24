@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass
 import json
 from pathlib import Path
 import subprocess
@@ -19,10 +20,15 @@ RESULT_DIR = REPO_ROOT / "build-runtime-tests" / "runtime-results"
 
 def add_run_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("name")
-    parser.add_argument("--timeout", type=float, default=300)
+    parser.add_argument("--timeout", type=float)
     parser.add_argument("--seed", type=int, default=1)
     parser.add_argument("--phase-timeout-ms", type=int, default=60000)
     parser.add_argument("--rerun-seh", action="store_true")
+    parser.add_argument(
+        "--require-fixtures",
+        action="store_true",
+        help="fail instead of skipping when a local retail-derived fixture is missing",
+    )
     parser.add_argument(
         "--no-gdb",
         action="store_true",
@@ -31,10 +37,13 @@ def add_run_arguments(parser: argparse.ArgumentParser) -> None:
 
 
 def run_one(args: argparse.Namespace) -> int:
-    if find_test(args.name) is None:
+    test = find_test(args.name)
+    if test is None:
         raise SystemExit(f"unknown runtime test {args.name!r}; run `just runtime-test-list`")
     if args.seed < 1:
         raise SystemExit("--seed must be a positive integer")
+    if args.timeout is None:
+        args.timeout = test.default_timeout
     from tools.runtime.runtime_tests import run_test
 
     return run_test(args)
@@ -48,6 +57,10 @@ def list_tests(_: argparse.Namespace) -> int:
 
 
 def _suite_command(test_name: str, args: argparse.Namespace) -> list[str]:
+    test = find_test(test_name)
+    if test is None:
+        raise ValueError(f"suite contains unknown runtime test {test_name!r}")
+    timeout = test.default_timeout if args.timeout is None else args.timeout
     command = [
         sys.executable,
         "-m",
@@ -57,7 +70,7 @@ def _suite_command(test_name: str, args: argparse.Namespace) -> list[str]:
         "--seed",
         str(args.seed),
         "--timeout",
-        str(args.timeout),
+        str(timeout),
         "--phase-timeout-ms",
         str(args.phase_timeout_ms),
     ]
@@ -65,7 +78,31 @@ def _suite_command(test_name: str, args: argparse.Namespace) -> list[str]:
         command.append("--rerun-seh")
     if args.no_gdb:
         command.append("--no-gdb")
+    if args.require_fixtures:
+        command.append("--require-fixtures")
     return command
+
+
+@dataclass(frozen=True)
+class SuiteCaseResult:
+    name: str
+    returncode: int
+    status: str
+    result: dict
+
+
+def _read_suite_case(name: str, returncode: int) -> SuiteCaseResult:
+    result_path = RESULT_DIR / f"{name}.json"
+    try:
+        parsed = json.loads(result_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        parsed = {"status": "failed", "failure": f"missing or invalid canonical result: {error}"}
+    reported_status = parsed.get("status")
+    if returncode == 0 and reported_status in {"passed", "skipped"}:
+        status = reported_status
+    else:
+        status = "failed"
+    return SuiteCaseResult(name, returncode, status, parsed)
 
 
 def run_suite(args: argparse.Namespace) -> int:
@@ -73,31 +110,45 @@ def run_suite(args: argparse.Namespace) -> int:
     if not tests:
         raise SystemExit(f"unknown or empty suite {args.suite!r}; choices: {', '.join(suite_names())}")
 
-    def invoke(name: str) -> tuple[str, int]:
+    def invoke(name: str) -> SuiteCaseResult:
+        (RESULT_DIR / f"{name}.json").unlink(missing_ok=True)
         completed = subprocess.run(_suite_command(name, args), cwd=REPO_ROOT, check=False)
-        return name, completed.returncode
+        return _read_suite_case(name, completed.returncode)
 
     with ThreadPoolExecutor(max_workers=args.jobs) as executor:
         results = list(executor.map(lambda test: invoke(test.name), tests))
-    failed = [name for name, returncode in results if returncode != 0]
+    failed = [result for result in results if result.status == "failed"]
+    skipped = [result for result in results if result.status == "skipped"]
+    passed = [result for result in results if result.status == "passed"]
     if args.junit is not None:
         suite = ET.Element(
             "testsuite",
             name=f"imperialism-runtime-{args.suite}",
             tests=str(len(results)),
             failures=str(len(failed)),
+            skipped=str(len(skipped)),
         )
-        for name, returncode in results:
-            case = ET.SubElement(suite, "testcase", classname="runtime", name=name)
-            if returncode != 0:
+        for result in results:
+            case = ET.SubElement(suite, "testcase", classname="runtime", name=result.name)
+            if result.status == "failed":
                 failure = ET.SubElement(case, "failure", message="semantic runtime test failed")
-                result_path = RESULT_DIR / f"{name}.json"
-                failure.text = result_path.read_text(encoding="utf-8") if result_path.is_file() else ""
+                failure.text = json.dumps(result.result, indent=2, sort_keys=True)
+            elif result.status == "skipped":
+                ET.SubElement(
+                    case,
+                    "skipped",
+                    message=str(result.result.get("failure", "runtime test skipped")),
+                )
         args.junit.parent.mkdir(parents=True, exist_ok=True)
         ET.ElementTree(suite).write(args.junit, encoding="utf-8", xml_declaration=True)
-    print(f"suite {args.suite}: {len(results) - len(failed)} passed, {len(failed)} failed")
+    print(
+        f"suite {args.suite}: {len(passed)} passed, {len(skipped)} skipped, "
+        f"{len(failed)} failed"
+    )
+    if skipped:
+        print("skipped: " + ", ".join(result.name for result in skipped))
     if failed:
-        print("failed: " + ", ".join(failed))
+        print("failed: " + ", ".join(result.name for result in failed))
     return 1 if failed else 0
 
 
@@ -121,11 +172,16 @@ def build_parser() -> argparse.ArgumentParser:
     suite = commands.add_parser("suite", help="run a catalog suite")
     suite.add_argument("suite", choices=suite_names())
     suite.add_argument("--jobs", type=int, default=1)
-    suite.add_argument("--timeout", type=float, default=300)
+    suite.add_argument("--timeout", type=float)
     suite.add_argument("--seed", type=int, default=1)
     suite.add_argument("--phase-timeout-ms", type=int, default=60000)
     suite.add_argument("--rerun-seh", action="store_true")
     suite.add_argument("--no-gdb", action="store_true")
+    suite.add_argument(
+        "--require-fixtures",
+        action="store_true",
+        help="fail instead of skipping when a local retail-derived fixture is missing",
+    )
     suite.add_argument("--junit", type=Path)
     suite.set_defaults(func=run_suite)
     show = commands.add_parser("show", help="show the latest canonical result")

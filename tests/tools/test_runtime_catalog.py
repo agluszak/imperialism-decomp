@@ -25,6 +25,19 @@ class RuntimeCatalogTests(unittest.TestCase):
         self.assertTrue(pr_names)
         self.assertLessEqual(pr_names, full_names)
 
+    def test_known_broken_reproducers_are_not_in_full_suite(self) -> None:
+        repro_names = {test.name for test in tests_in_suite("repro")}
+        full_names = {test.name for test in tests_in_suite("full")}
+        self.assertEqual(
+            repro_names,
+            {
+                "city_screen_opens",
+                "easy_turns_advance",
+                "map_zoom_toggle_remains_responsive",
+            },
+        )
+        self.assertFalse(repro_names & full_names)
+
     def test_native_registry_matches_host_catalog(self) -> None:
         source = (
             REPO_ROOT / "tests/runtime/native/RuntimeRegistry.cpp"
@@ -42,6 +55,36 @@ class RuntimeCatalogTests(unittest.TestCase):
             missing_required_oracles(test, {"ui_oracle": {"status": "passed"}}),
             ("map",),
         )
+
+    def test_ui_oracle_requirements_have_native_snapshot_policy(self) -> None:
+        snapshot_capable = set()
+        for source_path in (
+            REPO_ROOT / "tests/runtime/native/scenarios"
+        ).glob("*Test.cpp"):
+            source = source_path.read_text(encoding="utf-8")
+            name = re.search(r'return "([a-z0-9_]+)";', source)
+            random_flow = re.search(
+                r"bool UsesRandomGameFlow\(\) const override\s*\{\s*return true;\s*\}",
+                source,
+            )
+            if name is not None and random_flow is not None:
+                snapshot_capable.add(name.group(1))
+
+        ui_required = {test.name for test in TESTS if "ui" in test.required_oracles}
+        self.assertLessEqual(ui_required, snapshot_capable)
+
+    def test_native_scenarios_own_behavior_in_concrete_classes(self) -> None:
+        header = (
+            REPO_ROOT / "tests/runtime/native/scenarios/RuntimeScenario.h"
+        ).read_text(encoding="utf-8")
+        self.assertNotIn("RuntimeScenarioConfig", header)
+        self.assertNotIn("RuntimeScenarioCompletion", header)
+
+        for source_path in (
+            REPO_ROOT / "tests/runtime/native/scenarios"
+        ).glob("*Test.cpp"):
+            source = source_path.read_text(encoding="utf-8")
+            self.assertRegex(source, r"class \w+TestCase : public RuntimeScenario")
 
 
 class RuntimeProtocolTests(unittest.TestCase):

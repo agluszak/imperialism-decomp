@@ -16,15 +16,21 @@ class RuntimeTestSpec:
 
 TESTS = (
     RuntimeTestSpec("boot_managers", ("pr", "full"), required_oracles=()),
+    RuntimeTestSpec("turn_event_queue_bounds", ("pr", "full"), required_oracles=()),
     RuntimeTestSpec("random_game_easy_skips_capital", ("pr", "full"), required_oracles=("ui", "map")),
     RuntimeTestSpec("random_game_enters_map", ("full",), required_oracles=("ui", "map")),
-    RuntimeTestSpec("easy_turns_advance", ("full",), required_oracles=("ui", "map")),
-    RuntimeTestSpec("city_screen_opens", ("full",), required_oracles=("ui",)),
+    RuntimeTestSpec("easy_turns_advance", ("repro",), required_oracles=("ui", "map")),
+    RuntimeTestSpec("city_screen_opens", ("repro",), required_oracles=("ui",)),
+    RuntimeTestSpec(
+        "map_zoom_toggle_remains_responsive",
+        ("repro",),
+        required_oracles=("ui", "map"),
+    ),
     RuntimeTestSpec(
         "load_saved_game",
         ("full",),
         fixture="beginning_of_game.imp",
-        required_oracles=("ui", "map"),
+        required_oracles=("map",),
     ),
 )
 

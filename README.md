@@ -37,6 +37,10 @@ this repo installs them for you:
   image) — only needed to run/debug the recompiled `.exe` (`just run`,
   `just debug`); not required for build/gates/compare. Runtime-test failures capture
   screenshots internally as optional diagnostic artifacts.
+- `gdb` with MI3 support and Wine's `winedbg` — required by the default native
+  runtime-test path. `gdb` runs with `-nx --interpreter=mi3`; `winedbg --gdb`
+  provides the isolated remote target. Direct Wine remains available only as a
+  debugger-sensitivity control.
 - [Ghidra `12.1.2 PUBLIC`](https://ghidra-sre.org/) — external install; the
   project database itself is vendored (see `GHIDRA_INSTALL_DIR` below).
 - [`bd` (Beads)](https://github.com/steveyegge/beads) — issue tracking used
@@ -104,6 +108,25 @@ just install-reccmp-merge-driver    # auto-regenerate conflicting progress basel
 just tooling-check                  # verify the tooling surface
 just build && just detect && just stats   # first build + reccmp pairing; stats should show no baseline drift
 ```
+
+Before running native runtime tests, verify the host debugger surface and then
+run the asset-backed PR suite:
+
+```sh
+command -v wine wineserver winedbg gdb xwininfo xprop
+gdb --quiet --nx --interpreter=mi3 --batch -ex 'show version'
+just runtime-check pr --jobs 1
+```
+
+Use `just runtime-test NAME --no-gdb` only as a control when determining whether
+a failure is debugger-sensitive. It does not replace the default GDB/MI result
+and failure-capture path.
+
+The `runtime-pr` GitHub check runs on a repository-owned self-hosted runner with
+the `imperialism-runtime` label and a runner-local `ORIGINAL_BINARY`. Repository
+branch protection must require `runtime-pr` for same-repository pull requests.
+Do not expose that runner to fork pull requests or upload its retail assets and
+derived fixtures as workflow artifacts.
 
 `.env` (gitignored) only needs the two machine-specific paths:
 
