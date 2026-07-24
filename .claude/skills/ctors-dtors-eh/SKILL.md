@@ -293,3 +293,10 @@ reccmp consumes those groups: a claimed island row scores as an EFFECTIVE match
 (reason `folded_symbol_alias`), call/jmp operands into any group member pair with the
 canonical, and folded vtable slots pair through the group. When claiming a new island,
 add its `folded_symbol_group` row in the same change so it scores effective immediately.
+Two corollaries (bd iftm): a byte-identical per-TU duplicate COMDAT (e.g. TObject's
+0x4849c0 twin of 0x485f50) is recognized via a `per_tu_duplicate` alias row — do NOT
+stack a second `// FUNCTION` marker on the definition (reccmp drops the duplicate
+address and the row vanishes from the report), and stubgen skips alias members so the
+twin is counted as a recognized duplicate instead of stub-paired at a junk score. A
+??_G whose chain folds DIRECTLY onto a shared base body with no per-class island
+(TFileStream, TLongintList) has no claimable address; its 90.91% is the ceiling.
