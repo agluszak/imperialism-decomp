@@ -8,9 +8,6 @@
 
 IMPLEMENT_DYNCREATE(TPictureLine, TLineData)
 
-// NOOP: verified empty in original 0x00570032 (no standalone TPictureLine::TPictureLine body exists: construction is fully inlined into CreateObject 0x00570030; that address is its operator-new call site)
-TPictureLine::TPictureLine() {}
-
 // SYNTHETIC: IMPERIALISM 0x005700a0
 // TPictureLine::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005700d0

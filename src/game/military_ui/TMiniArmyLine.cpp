@@ -24,9 +24,6 @@ TMiniArmyLine::~TMiniArmyLine() {}
 
 IMPLEMENT_DYNCREATE(TMiniArmyLine, TLineData)
 
-// NOOP: verified empty in original 0x004aa8c3 (no standalone TMiniArmyLine::TMiniArmyLine body exists: CreateObject 0x004aa890 inlines this default ctor, calling the TLineData base ctor directly at that site)
-TMiniArmyLine::TMiniArmyLine() {}
-
 // FUNCTION: IMPERIALISM 0x004aa960
 void TMiniArmyLine::InstallViews(TView* panel, int* offsetLayout) {
   TMiniArmyView* armyView = new TMiniArmyView;

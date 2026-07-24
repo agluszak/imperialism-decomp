@@ -19,6 +19,7 @@ public:
   // zeroed frame/tag state, the tick interval, and a zeroed screen rect.
   void InitializeCouncilTicker(TCouncilView* hostPanel, int tickInterval);
 
-  TCouncilTickerAnimation();
+  // NOOP: verified empty in original 0x0049fef2 (no standalone TCouncilTickerAnimation::TCouncilTickerAnimation body exists: construction is fully inlined into CreateObject 0x0049fef0; that address is its operator-new call site)
+  TCouncilTickerAnimation() {}
 };
 ASSERT_SIZE(TCouncilTickerAnimation, 0x2c);

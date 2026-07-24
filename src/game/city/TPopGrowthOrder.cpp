@@ -28,9 +28,6 @@ TPopGrowthOrder::~TPopGrowthOrder() {}
 
 IMPLEMENT_DYNCREATE(TPopGrowthOrder, TProductionOrder)
 
-// NOOP: verified empty in original 0x004b8112 (no standalone TPopGrowthOrder::TPopGrowthOrder body exists: construction is fully inlined into CreateObject 0x004b8110; that address is its operator-new call site)
-TPopGrowthOrder::TPopGrowthOrder() {}
-
 // FUNCTION: IMPERIALISM 0x004b8160
 void TPopGrowthOrder::IPopGrowthOrder(TCity* city) {
   cityField08 = city;

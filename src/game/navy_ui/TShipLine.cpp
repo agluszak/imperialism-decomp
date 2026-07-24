@@ -26,9 +26,6 @@ TShipLine::~TShipLine() {}
 
 IMPLEMENT_DYNCREATE(TShipLine, TLineData)
 
-// NOOP: verified empty in original 0x00565063 (no standalone TShipLine::TShipLine body exists: CreateObject 0x00565030 inlines this default ctor, calling the TLineData base ctor directly at that site)
-TShipLine::TShipLine() {}
-
 // FUNCTION: IMPERIALISM 0x00565100
 void TShipLine::InstallViews(TView* panel, int* offsetLayout) {
   TShipView* shipView = new TShipView();

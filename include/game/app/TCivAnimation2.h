@@ -27,7 +27,8 @@ public:
   short kindIndex2c; // +0x2c
   short pad2e;       // +0x2e
 
-  TCivAnimation2();
+  // NOOP: verified empty in original 0x0049f602 (no standalone TCivAnimation2::TCivAnimation2 body exists: construction is fully inlined into CreateObject 0x0049f600; that address is its operator-new call site)
+  TCivAnimation2() {}
 
   // Real ctor (0x49f6a0): looks up a per-kind (stringId, ticksPerFrame) pair from two
   // 9-entry tables baked into the original as immediate stores (kind 0..8 -- battle

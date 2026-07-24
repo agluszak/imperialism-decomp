@@ -14,7 +14,8 @@ public:
   virtual ~TMiniArmyLine() override; // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x4aa960
 
-  TMiniArmyLine();
+  // NOOP: verified empty in original 0x004aa8c3 (no standalone TMiniArmyLine::TMiniArmyLine body exists: CreateObject 0x004aa890 inlines this default ctor, calling the TLineData base ctor directly at that site)
+  TMiniArmyLine() {}
 
   // Army unit represented by this roster row.
   TMilitaryUnit* militaryUnit10;

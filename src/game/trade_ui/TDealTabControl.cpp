@@ -19,9 +19,6 @@ TDealTabControl::~TDealTabControl() {}
 
 IMPLEMENT_DYNCREATE(TDealTabControl, TControl)
 
-// NOOP: verified empty in original 0x005bc6c8 (no standalone TDealTabControl::TDealTabControl body exists: CreateObject 0x005bc690 inlines this default ctor, calling the TControl base ctor directly at that site)
-TDealTabControl::TDealTabControl() {}
-
 // FUNCTION: IMPERIALISM 0x005bc780
 void TDealTabControl::Setup(short bitmapResourceId, unsigned char useAlternatePair) {
   if (useAlternatePair) {

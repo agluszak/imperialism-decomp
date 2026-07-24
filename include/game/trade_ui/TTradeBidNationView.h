@@ -12,7 +12,8 @@ public:
   virtual ~TTradeBidNationView() override;      // slot 0x01 (scalar deleting destructor)
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x5bdc20
 
-  TTradeBidNationView();
+  // NOOP: verified empty in original 0x005bdb73 (no standalone TTradeBidNationView::TTradeBidNationView body exists: CreateObject 0x005bdb40 inlines this default ctor, calling the TView base ctor directly at that site)
+  TTradeBidNationView() {}
 
   // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended
   // at 0x60. InstallViews writes the line's trade-category slot to +0x60 and the nation

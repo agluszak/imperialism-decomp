@@ -52,7 +52,8 @@ public:
   unsigned char specialistMode;   // 0x58 — bSpecialistMode
   unsigned char pad59[0x5c - 0x59];
 
-  TUnitOrder();
+  // NOOP: verified empty in original 0x004b6f22 (no standalone TUnitOrder::TUnitOrder body exists: construction is fully inlined into CreateObject 0x004b6f20; that address is its operator-new call site)
+  TUnitOrder() {}
 };
 
 ASSERT_SIZE(TUnitOrder, 0x5c);

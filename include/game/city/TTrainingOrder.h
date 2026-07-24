@@ -18,6 +18,7 @@ public:
                               short quantity) override;         // slot 0x10 0x4b6de0
   virtual void ITrainingOrder(TCity* city, short resourceType); // slot 0x11 0x4b6b20
 
-  TTrainingOrder();
+  // NOOP: verified empty in original 0x004b6a62 (no standalone TTrainingOrder::TTrainingOrder body exists: construction is fully inlined into CreateObject 0x004b6a60; that address is its operator-new call site)
+  TTrainingOrder() {}
 };
 ASSERT_SIZE(TTrainingOrder, 0x4c);

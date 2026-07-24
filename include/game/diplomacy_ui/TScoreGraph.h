@@ -13,6 +13,7 @@ public:
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x4fe2b0
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4fe390
 
-  TScoreGraph();
+  // NOOP: verified empty in original 0x004fe203 (no standalone TScoreGraph::TScoreGraph body exists: CreateObject 0x004fe1d0 inlines this default ctor, calling the TView base ctor directly at that site)
+  TScoreGraph() {}
 };
 ASSERT_SIZE(TScoreGraph, 0x60);

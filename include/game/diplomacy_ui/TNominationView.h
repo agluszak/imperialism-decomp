@@ -15,6 +15,7 @@ public:
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x4fb780
   virtual void Hilite();                        // slot 0x73 0x4305c0; Mac symbol oracle
 
-  TNominationView();
+  // NOOP: verified empty in original 0x004fb716 (no standalone TNominationView::TNominationView body exists: CreateObject 0x004fb6e0 inlines this default ctor, calling the TPicture base ctor directly at that site)
+  TNominationView() {}
 };
 ASSERT_SIZE(TNominationView, 0x90);

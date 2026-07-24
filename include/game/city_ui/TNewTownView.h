@@ -15,7 +15,8 @@ public:
   virtual void Close() override;         // slot 0x28 0x4bdc10
   virtual void StuffValues(TTown* town); // slot 0x68 0x4bd880
 
-  TNewTownView();
+  // NOOP: verified empty in original 0x004bd7d3 (no standalone TNewTownView::TNewTownView body exists: CreateObject 0x004bd7a0 inlines this default ctor, calling the TView base ctor directly at that site)
+  TNewTownView() {}
 
   // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended at 0x60. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
   TTown* town60;

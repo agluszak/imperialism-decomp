@@ -13,7 +13,8 @@ public:
   int nationSlot10; // +0x10 — forwarded to InitializeTechItem
   int techId14;     // +0x14 — forwarded to InitializeTechItem
 
-  TTechItemLine();
+  // NOOP: verified empty in original 0x005b10c3 (no standalone TTechItemLine::TTechItemLine body exists: CreateObject 0x005b1090 inlines this default ctor, calling the TLineData base ctor directly at that site)
+  TTechItemLine() {}
 };
 
 ASSERT_SIZE(TTechItemLine, 0x18);
