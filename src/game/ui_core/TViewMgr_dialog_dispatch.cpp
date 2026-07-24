@@ -493,9 +493,13 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   page->Free();
 
   TSuperCivRoster* roster = ::new TSuperCivRoster();
-  int rosterBounds[4] = {0x1ca, 0x136, 0xd, 0x2e};
-  TView* runningDialog = roster;
-  roster->InitializeLedgerRosterPages(pageOwner, rosterBounds, &runningDialog);
+  // 0x005dde05/0x005dde06 push ECX=&rosterSize then EDX=&rosterOffset, so right-to-left
+  // arg2 is the OFFSET {0xd,0x2e} and arg3 is the SIZE {0x1ca,0x136} -- both are pointers
+  // into one adjacent 4-int block (stores at [esp+0x24..0x30]). The previous model read
+  // arg3 as a TView** out-parameter and passed &runningDialog, which never existed.
+  int rosterSize[2] = {0x1ca, 0x136};
+  int rosterOffset[2] = {0xd, 0x2e};
+  roster->InitializeLedgerRosterPages(pageOwner, rosterOffset, rosterSize);
   roster->controlTag = kControlTagPage; // 'page'
 
   TStaticText* textEntry = ::new TStaticText();

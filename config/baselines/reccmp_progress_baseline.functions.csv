@@ -1770,7 +1770,7 @@ address|matching|name
 0x4b1430|1.0|TCheater::`scalar deleting destructor'
 0x4b1460|1.0|TCheater::~TCheater
 0x4b1480|1.0|TCheater::GetRuntimeClass
-0x4b14a0|0.717391304347826|TCheater::ConstructTCheaterBaseState
+0x4b14a0|0.7608695652173914|TCheater::ConstructTCheaterBaseState
 0x4b1670|1.0|TCheater::CenterWindowUsingSize
 0x4b1710|0.5657894736842105|TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel
 0x4b1880|1.0|TTechCheater::CreateObject
@@ -6185,7 +6185,7 @@ address|matching|name
 0x5dd770|1.0|TViewMgr::HandleTurnEventDialogFactorySlotE8
 0x5dd900|1.0|TViewMgr::HandleTurnEventDialogFactorySlotEC
 0x5dda30|0.8536585365853658|TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection
-0x5ddd20|0.835820895522388|TViewMgr::ShowCivilianLedgerDialogAndSelectUnit
+0x5ddd20|0.8562874251497006|TViewMgr::ShowCivilianLedgerDialogAndSelectUnit
 0x5de010|0.7357512953367875|TViewMgr::MakePlanetSeedDialog
 0x5de4f0|1.0|TViewMgr::ShowCivilianReportDialogAndReturnConfirm
 0x5de5d0|1.0|TViewMgr::DispatchProvinceOrderOverlayConfirmDialog
