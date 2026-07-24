@@ -2744,7 +2744,7 @@ address|name|symbol|size|type|prototype|provenance
 4f2910|TNextDiplomationCommand::GetRuntimeClass|?GetRuntimeClass@TNextDiplomationCommand@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
 4f2930|DispatchUiPacketWithTagNEXT||39|function|undefined DispatchUiPacketWithTagNEXT()|
 4f2970|ByteSwapShortInPlace||15|function|void __cdecl ByteSwapShortInPlace(unsigned char *bytes)|disassembly
-4f2a60|DeserializeRelationshipSortedListBuffersFromStreamSwapBytes_Impl||49|function|undefined DeserializeRelationshipSortedListBuffersFromStreamSwapBytes_Impl()|
+4f2a60|ReadByteSwappedShortArrayFromStream||49|function|undefined ReadByteSwappedShortArrayFromStream()|
 4f2b10|WrapperFor_ftol_At004f2b10||30|function|undefined WrapperFor_ftol_At004f2b10()|
 4f2bb0|TMinisterView::CreateObject|?CreateObject@TMinisterView@@SGPAVCObject@@XZ|107|function|undefined CreateObject()|rtti
 4f2c40|TMinisterView::GetRuntimeClass||6|function|undefined GetTMinisterViewClassNamePointer()|rtti

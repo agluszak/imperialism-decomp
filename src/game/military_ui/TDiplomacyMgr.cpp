@@ -1740,6 +1740,23 @@ void ByteSwapShortInPlace(unsigned char* bytes) {
   bytes[1] = firstByte;
 }
 
+// Read `shortCount` big-endian shorts from `stream` into `buffer` and byte-swap each pair
+// in place, so the caller ends up with host-order shorts. A zero or negative count reads
+// nothing back-to-front and skips the swap loop entirely.
+// FUNCTION: IMPERIALISM 0x004f2a60
+void ReadByteSwappedShortArrayFromStream(TStream* stream, unsigned char* buffer, int shortCount) {
+  stream->ReadBytes(buffer, shortCount * 2);
+  if (0 < shortCount) {
+    do {
+      unsigned char firstByte = buffer[0];
+      buffer[0] = buffer[1];
+      buffer[1] = firstByte;
+      buffer = buffer + 2;
+      shortCount = shortCount - 1;
+    } while (shortCount != 0);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x005449b0
 TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned int shortCount,
                                                                         short* current,
