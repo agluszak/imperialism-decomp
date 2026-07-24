@@ -268,5 +268,3 @@
 0x00607782|0x00608257|CWnd::CWnd_00607782|folded_symbol_group
 0x006077c0|0x00608257|CWnd::CWnd_006077C0|folded_symbol_group
 0x006244a3|0x0062409a|CThreadLocalObject|folded_symbol_group
-0x00481160|0x00413b80|??1TModalDialogBase@@UAE@XZ|per_tu_duplicate
-0x00481130|0x00413c00|??_GTModalDialogBase@@UAEPAXI@Z|per_tu_duplicate

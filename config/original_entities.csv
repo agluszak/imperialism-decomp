@@ -427,10 +427,10 @@ address|name|symbol|size|type|prototype|provenance
 480dd0|CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::`scalar deleting destructor'|??_G?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
 480e00|ResizeDynamicPointerArrayWithGrowthStep||310|function|undefined ResizeDynamicPointerArrayWithGrowthStep()|
 4810c0|`dynamic initializer for 'g_scaledShortConst_6A1680''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A1680''(void)|library
-481130|TModalDialogBase::`scalar deleting destructor'|??_GTModalDialogBase@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
-481160|TModalDialogBase::~TModalDialogBase|??1TModalDialogBase@@UAE@XZ|86|function|public: virtual __thiscall TModalDialogBase::~TModalDialogBase(void)|template
+481130|T102TemplateDialog::`scalar deleting destructor'|??_GT102TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
+481160|T102TemplateDialog::~T102TemplateDialog|??1T102TemplateDialog@@UAE@XZ|86|function|public: virtual __thiscall T102TemplateDialog::~T102TemplateDialog(void)|
 4811e0|OrphanRetStub_004811e0||3|function|undefined OrphanRetStub_004811e0()|
-481200|OrphanVtableAssignStub_00481200||6|function|undefined OrphanVtableAssignStub_00481200()|
+481200|T102TemplateDialog::GetMessageMap|?GetMessageMap@T102TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 481220|WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00481220||11|function|undefined WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00481220()|
 481370|`dynamic initializer for 'g_scaledShortConst_6A16D8''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A16D8''(void)|library
 4813a0|TA1TemplateDialog::TA1TemplateDialog||164|function|undefined TA1TemplateDialog(void* initParam)|windows_listing
@@ -438,35 +438,42 @@ address|name|symbol|size|type|prototype|provenance
 4814b0|TA1TemplateDialog::~TA1TemplateDialog||108|function|void __thiscall TA1TemplateDialog::~TA1TemplateDialog(void)|
 481540|TA1TemplateDialog::DoDataExchange||100|function|void TA1TemplateDialog::DoDataExchange(CDataExchange* pDX)|
 4815d0|TA1TemplateDialog::GetMessageMap|?GetMessageMap@TA1TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
-481670|OrphanRetStub_00481670||3|function|undefined OrphanRetStub_00481670()|
-481690|OrphanVtableAssignStub_00481690||6|function|undefined OrphanVtableAssignStub_00481690()|
-481730|OrphanRetStub_00481730||3|function|undefined OrphanRetStub_00481730()|
-481750|OrphanVtableAssignStub_00481750||6|function|undefined OrphanVtableAssignStub_00481750()|
+481620|TA5TemplateDialog::`scalar deleting destructor'|??_GTA5TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
+481670|TA5TemplateDialog::DoDataExchange||3|function|void TA5TemplateDialog::DoDataExchange(CDataExchange* pDX)|
+481690|TA5TemplateDialog::GetMessageMap|?GetMessageMap@TA5TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
+4816e0|TA6TemplateDialog::`scalar deleting destructor'|??_GTA6TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
+481730|TA6TemplateDialog::DoDataExchange||3|function|void TA6TemplateDialog::DoDataExchange(CDataExchange* pDX)|
+481750|TA6TemplateDialog::GetMessageMap|?GetMessageMap@TA6TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 481770|TControl::InitializeDialogTemplateA7WithSharedText||107|function|undefined InitializeDialogTemplateA7WithSharedText()|
 481800|TA7TemplateDialog::`scalar deleting destructor'|??_GTA7TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 481830|TA7TemplateDialog::~TA7TemplateDialog||71|function|void __thiscall TA7TemplateDialog::~TA7TemplateDialog(void)|
 4818a0|TA7TemplateDialog::DoDataExchange||22|function|void TA7TemplateDialog::DoDataExchange(CDataExchange* pDX)|
 4818d0|TA7TemplateDialog::GetMessageMap|?GetMessageMap@TA7TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
-481970|OrphanRetStub_00481970||3|function|undefined OrphanRetStub_00481970()|
-481990|OrphanVtableAssignStub_00481990||6|function|undefined OrphanVtableAssignStub_00481990()|
-481a30|OrphanRetStub_00481a30||3|function|undefined OrphanRetStub_00481a30()|
-481a50|OrphanVtableAssignStub_00481a50||6|function|undefined OrphanVtableAssignStub_00481a50()|
-481af0|OrphanRetStub_00481af0||3|function|undefined OrphanRetStub_00481af0()|
-481b10|OrphanVtableAssignStub_00481b10||6|function|undefined OrphanVtableAssignStub_00481b10()|
+481920|TA8TemplateDialog::`scalar deleting destructor'|??_GTA8TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
+481970|TA8TemplateDialog::DoDataExchange||3|function|void TA8TemplateDialog::DoDataExchange(CDataExchange* pDX)|
+481990|TA8TemplateDialog::GetMessageMap|?GetMessageMap@TA8TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
+4819e0|TA9TemplateDialog::`scalar deleting destructor'|??_GTA9TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
+481a30|TA9TemplateDialog::DoDataExchange||3|function|void TA9TemplateDialog::DoDataExchange(CDataExchange* pDX)|
+481a50|TA9TemplateDialog::GetMessageMap|?GetMessageMap@TA9TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
+481aa0|TAATemplateDialog::`scalar deleting destructor'|??_GTAATemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
+481af0|TAATemplateDialog::DoDataExchange||3|function|void TAATemplateDialog::DoDataExchange(CDataExchange* pDX)|
+481b10|TAATemplateDialog::GetMessageMap|?GetMessageMap@TAATemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 481b30|TControl::InitializeDialogTemplateABWithDualTextState||136|function|undefined InitializeDialogTemplateABWithDualTextState()|
 481bf0|TABTemplateDialog::`scalar deleting destructor'|??_GTABTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 481c20|TABTemplateDialog::~TABTemplateDialog||89|function|void __thiscall TABTemplateDialog::~TABTemplateDialog(void)|
 481ca0|TABTemplateDialog::DoDataExchange||43|function|void TABTemplateDialog::DoDataExchange(CDataExchange* pDX)|
 481ce0|TABTemplateDialog::GetMessageMap|?GetMessageMap@TABTemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
-481d80|OrphanRetStub_00481d80||3|function|undefined OrphanRetStub_00481d80()|
-481da0|OrphanVtableAssignStub_00481da0||6|function|undefined OrphanVtableAssignStub_00481da0()|
+481d30|TACTemplateDialog::`scalar deleting destructor'|??_GTACTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
+481d80|TACTemplateDialog::DoDataExchange||3|function|void TACTemplateDialog::DoDataExchange(CDataExchange* pDX)|
+481da0|TACTemplateDialog::GetMessageMap|?GetMessageMap@TACTemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 481dc0|TControl::InitializeDialogTemplateAEWithDualTextState||136|function|undefined InitializeDialogTemplateAEWithDualTextState()|
 481e80|TAETemplateDialog::`scalar deleting destructor'|??_GTAETemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 481eb0|TAETemplateDialog::~TAETemplateDialog||89|function|void __thiscall TAETemplateDialog::~TAETemplateDialog(void)|
 481f30|TAETemplateDialog::DoDataExchange||43|function|void TAETemplateDialog::DoDataExchange(CDataExchange* pDX)|
 481f70|TAETemplateDialog::GetMessageMap|?GetMessageMap@TAETemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
-482010|OrphanRetStub_00482010||3|function|undefined OrphanRetStub_00482010()|
-482030|OrphanVtableAssignStub_00482030||6|function|undefined OrphanVtableAssignStub_00482030()|
+481fc0|TAFTemplateDialog::`scalar deleting destructor'|??_GTAFTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
+482010|TAFTemplateDialog::DoDataExchange||3|function|void TAFTemplateDialog::DoDataExchange(CDataExchange* pDX)|
+482030|TAFTemplateDialog::GetMessageMap|?GetMessageMap@TAFTemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 482050|TControl::InitializeDialogTemplateB1WithSharedText||107|function|undefined InitializeDialogTemplateB1WithSharedText()|
 4820e0|TB1TemplateDialog::`scalar deleting destructor'|??_GTB1TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 482110|TB1TemplateDialog::~TB1TemplateDialog||71|function|void __thiscall TB1TemplateDialog::~TB1TemplateDialog(void)|
@@ -476,8 +483,9 @@ address|name|symbol|size|type|prototype|provenance
 4821f0|SyncTripleSelectionControlsFromState||180|function|undefined SyncTripleSelectionControlsFromState()|
 4822e0|OrphanRetStub_004822e0||1|function|undefined OrphanRetStub_004822e0()|
 482300|SyncTripleSelectionStateViaMessage400||122|function|undefined SyncTripleSelectionStateViaMessage400()|
-482420|OrphanRetStub_00482420||3|function|undefined OrphanRetStub_00482420()|
-482440|OrphanVtableAssignStub_00482440||6|function|undefined OrphanVtableAssignStub_00482440()|
+4823d0|TF7TemplateDialog::`scalar deleting destructor'|??_GTF7TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
+482420|TF7TemplateDialog::DoDataExchange||3|function|void TF7TemplateDialog::DoDataExchange(CDataExchange* pDX)|
+482440|TF7TemplateDialog::GetMessageMap|?GetMessageMap@TF7TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 482730|`dynamic initializer for 'g_scaledShortConst_6A177C''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A177C''(void)|library
 482760|UiCursorTickTimerProc||131|function|void UiCursorTickTimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime)|
 482820|InitializeChildWindowSurfaceAndTickTimer_Impl_At00482820||18|function|undefined InitializeChildWindowSurfaceAndTickTimer_Impl_At00482820()|
