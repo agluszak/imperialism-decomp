@@ -3414,7 +3414,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::MapGenPassSlot0E
 0x527730|0.29577464788732394|TMapMaker::MapGenPassSlot0F
-0x527d00|0.4268774703557312|TMapMaker::CreateRivers
+0x527d00|0.43478260869565216|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
@@ -3430,7 +3430,7 @@ address|matching|name
 0x5297e0|0.8735632183908046|TMapMaker::CopyRegionTemplateBankToNeighborCell
 0x5298a0|0.5172413793103449|TMapMaker::GetFineGridCellBasePointerFromCoarseIndex
 0x529960|0.242152466367713|TMapMaker::RotateMapColumnsByPeakCityTileDensity
-0x529d90|0.0|OrphanDeadLeaf_NoRefs_00529d90
+0x529d90|0.6413793103448275|TMapMaker::OrphanDeadLeaf_NoRefs_00529d90
 0x529f60|0.6068965517241379|TMapMaker::MapGenFinalizePassSlot19
 0x52a0a0|0.08163265306122448|OrphanDeadLeaf_NoRefs_0052a0a0
 0x52a160|0.26161790017211706|TMapMaker::GenerateCityRegionIdsBySeedAndNeighborPropagation
@@ -3458,7 +3458,7 @@ address|matching|name
 0x52d0d0|0.6666666666666666|stretch<Seapoint>::OverStretch
 0x52d150|1.0|stretch<Seapoint>::operator[]
 0x52d1f0|0.2621082621082621|TMapMaker::ReindexContiguousCityRegionIds
-0x52d4b0|0.0|OrphanDeadLeaf_NoRefs_0052d4b0
+0x52d4b0|0.35856573705179284|TMapMaker::OrphanDeadLeaf_NoRefs_0052d4b0
 0x52d6b0|0.043478260869565216|OrphanDeadLeaf_NoRefs_0052d6b0
 0x52d750|0.21443298969072164|TMapMaker::MergeSmallCityRegionsAndCompactIds
 0x52e350|0.3893805309734513|TMapMaker::RebuildUMapperRouteRecordsAndActiveMapRects
