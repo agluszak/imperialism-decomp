@@ -45,6 +45,10 @@ public:
   virtual void SetBuildingPicture(short buildingSlot, short buildingType);
   virtual void UpdateFields(); // slot 0x7b 0x4bcaf0
 
+#if defined(IMPERIALISM_RUNTIME_TESTS)
+  bool ActivateBuildingSlotForRuntimeTest(short buildingSlot);
+#endif
+
   TCityProductionView();
 
 private:

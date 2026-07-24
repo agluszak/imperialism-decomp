@@ -27,9 +27,11 @@ extern const unsigned int g_majorTreatyCellTags[7];
 // anchors), plus a trailing (1,0) pair with no known consumer that shares this data blob.
 // 0x696198.
 extern short g_anCityBuildingSlotOrder[16];
-extern short g_anCityBuildingSlotCoords[36];
-extern int g_nCityBuildingSlotXOffsetIndex;
-extern int g_nCityBuildingDrawYOffsetIndex;
+extern short g_anCityBuildingSlotCoords[32];
+extern short g_nCityBuildingSlotYOffsetIndex;
+extern short g_nCityBuildingDrawXOffsetIndex;
+extern short g_nCityBuildingSlotXOffsetIndex;
+extern short g_nCityBuildingDrawYOffsetIndex;
 extern short g_awCityBuildingActionResourceIds[72];
 extern RECT g_anCityBuildingLayoutValues[72];
 

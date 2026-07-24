@@ -1,6 +1,9 @@
 #include "RuntimeTestDriver.h"
 
 #include "game/ui_core/bitmap_descriptor_helpers.h"
+#include "game/city_ui/TCityProductionView.h"
+#include "game/city/TCity.h"
+#include "game/nation/TGreatPower.h"
 #include "game/ui_core/CIncludeView.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/gfx/TAmbitApplication.h"
@@ -29,6 +32,7 @@
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_map.h"
 #include "game/ui_tags_screens.h"
+#include "game/ui_tags_widgets.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -42,6 +46,7 @@ enum RuntimeTestKind {
   kRuntimeTestRandomGame,
   kRuntimeTestEasyRandomGame,
   kRuntimeTestEasyTurnAdvance,
+  kRuntimeTestCityScreen,
   kRuntimeTestLoadSavedGame
 };
 
@@ -69,6 +74,8 @@ enum RuntimeTestPhase {
   kRuntimeTestWaitingForCitySiteConfirmation,
   kRuntimeTestWaitingForCombinedMap,
   kRuntimeTestVerifyingCombinedMapExtents,
+  kRuntimeTestActivatingCityScreen,
+  kRuntimeTestWaitingForCityScreen,
   kRuntimeTestActivatingEndTurn,
   kRuntimeTestWaitingForEndTurnConfirm,
   kRuntimeTestWaitingForTurnProcessed,
@@ -130,11 +137,13 @@ CString g_mapStateJson;
 // Easy-difficulty kinds share the setup flow (dif1 click, no capital pick).
 bool IsEasyStyleTest() {
   return g_runtimeTestState.kind == kRuntimeTestEasyRandomGame ||
-         g_runtimeTestState.kind == kRuntimeTestEasyTurnAdvance;
+         g_runtimeTestState.kind == kRuntimeTestEasyTurnAdvance ||
+         g_runtimeTestState.kind == kRuntimeTestCityScreen;
 }
 
 bool IsRandomGameTest() {
-  return g_runtimeTestState.kind == kRuntimeTestRandomGame || IsEasyStyleTest();
+  return g_runtimeTestState.kind == kRuntimeTestRandomGame ||
+         g_runtimeTestState.kind == kRuntimeTestCityScreen || IsEasyStyleTest();
 }
 
 // Kinds whose runs end on a live map and want the normalized simulation
@@ -144,6 +153,9 @@ bool RecordsGameFlow() {
 }
 
 const char* TestName() {
+  if (g_runtimeTestState.kind == kRuntimeTestCityScreen) {
+    return "city_screen_opens";
+  }
   if (g_runtimeTestState.kind == kRuntimeTestLoadSavedGame) {
     return "load_saved_game";
   }
@@ -207,6 +219,10 @@ const char* PhaseName(RuntimeTestPhase phase) {
     return "waiting_for_combined_map";
   case kRuntimeTestVerifyingCombinedMapExtents:
     return "verifying_combined_map_extents";
+  case kRuntimeTestActivatingCityScreen:
+    return "activating_city_screen";
+  case kRuntimeTestWaitingForCityScreen:
+    return "waiting_for_city_screen";
   case kRuntimeTestActivatingEndTurn:
     return "activating_end_turn";
   case kRuntimeTestWaitingForEndTurnConfirm:
@@ -768,6 +784,8 @@ void InitializeDriver() {
     g_runtimeTestState.kind = kRuntimeTestEasyRandomGame;
   } else if (lstrcmpA(testName, "easy_turns_advance") == 0) {
     g_runtimeTestState.kind = kRuntimeTestEasyTurnAdvance;
+  } else if (lstrcmpA(testName, "city_screen_opens") == 0) {
+    g_runtimeTestState.kind = kRuntimeTestCityScreen;
   } else if (lstrcmpA(testName, "load_saved_game") == 0) {
     g_runtimeTestState.kind = kRuntimeTestLoadSavedGame;
     DWORD fixtureLength =
@@ -1068,6 +1086,11 @@ void RunWaitingForEasyStrategicMap() {
     RequestAnotherDriverTick();
     return;
   }
+  if (g_runtimeTestState.kind == kRuntimeTestCityScreen) {
+    SetPhase(kRuntimeTestActivatingCityScreen, "easy_combined_map_ready_for_city_screen");
+    RequestAnotherDriverTick();
+    return;
+  }
   Finish("passed", "null");
 }
 
@@ -1302,6 +1325,30 @@ void RunDispatchingMapHotkey() {
     Fail("\"map hotkey forwarding left the strategic map\"");
     return;
   }
+  if (g_runtimeTestState.kind == kRuntimeTestCityScreen) {
+    short citySite = -1;
+    for (short tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+      const TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
+      StrategicTerrainKind terrainKind = tile.GetTerrainKind();
+      bool supportsCity =
+          terrainKind == kStrategicTerrainPlains || terrainKind == kStrategicTerrainFarmland ||
+          terrainKind == kStrategicTerrainForest || terrainKind == kStrategicTerrainDesert;
+      if (supportsCity && tile.ownerNationTag04 == g_runtimeTestState.selectedNationSlot &&
+          tile.recruitSearchVisited0e == 0) {
+        citySite = tileIndex;
+        break;
+      }
+    }
+    if (citySite == -1) {
+      Fail("\"random map has no valid initial city-site candidate for the selected nation\"");
+      return;
+    }
+    citySiteView->SetMapViewTileIndex(citySite);
+    SetPhase(kRuntimeTestWaitingForCitySiteConfirmation, "submit_initial_city_site");
+    citySiteView->HandleMapClickByInteractionMode(citySite, 0);
+    RequestAnotherDriverTick();
+    return;
+  }
   SetPhase(kRuntimeTestExercisingMapHover, "exercise_city_site_hover");
   RequestAnotherDriverTick();
 }
@@ -1314,17 +1361,22 @@ void RunExercisingMapHover() {
     return;
   }
 
-  TQuickDrawSurfaceContext* savedSurface;
-  int savedSurfaceFlags;
-  GetGWorld(&savedSurface, &savedSurfaceFlags);
-  SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
-  CPoint point(0, 0);
-  mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&point, 0);
-  SetGWorld(savedSurface, savedSurfaceFlags);
-  mapView->RefreshControl();
-  mapView->ForceRedraw();
+  if (g_runtimeTestState.kind != kRuntimeTestCityScreen) {
+    TQuickDrawSurfaceContext* savedSurface;
+    int savedSurfaceFlags;
+    GetGWorld(&savedSurface, &savedSurfaceFlags);
+    SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
+    CPoint point(0, 0);
+    mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&point, 0);
+    SetGWorld(savedSurface, savedSurfaceFlags);
+    mapView->RefreshControl();
+    mapView->ForceRedraw();
+  }
   TView* cancel = mapView->ResolveControlByTag(kControlTagCanc);
-  if (!ClickViewThroughNativeHost(cancel)) {
+  if (g_runtimeTestState.kind == kRuntimeTestCityScreen && cancel != 0) {
+    TControl* cancelControl = static_cast<TControl*>(cancel);
+    cancelControl->HandleEvent(cancelControl->GetEventNumber(), cancelControl, 0);
+  } else if (!ClickViewThroughNativeHost(cancel)) {
     Fail("\"strategic-map return button or native host is missing\"");
     return;
   }
@@ -1551,6 +1603,62 @@ void RunVerifyingCombinedMapExtents() {
     Fail("\"combined-map scrolling stopped before the full top edge\"");
     return;
   }
+  if (g_runtimeTestState.kind == kRuntimeTestCityScreen) {
+    SetPhase(kRuntimeTestActivatingCityScreen, "combined_map_ready_for_city_screen");
+    RequestAnotherDriverTick();
+    return;
+  }
+  Finish("passed", "null");
+}
+
+void RunActivatingCityScreen() {
+  if (g_runtimeTestState.phaseTicks < 60) {
+    RequestAnotherDriverTick();
+    return;
+  }
+
+  TView* mainView = MainView();
+  if (g_pUiRuntimeContext->currentTurnEventCode != 0x7dd ||
+      !IsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture)) || !g_ModalViewStack.IsEmpty()) {
+    WaitForNextTickOrTimeout("\"combined map was not idle before opening the city screen\"");
+    return;
+  }
+  TView* toolbar = mainView->ResolveControlByTag(kControlTagTool);
+  TControl* city =
+      toolbar != 0 ? static_cast<TControl*>(toolbar->ResolveControlByTag(kControlTagCity)) : 0;
+  if (city == 0 || city->IsActionable() == 0) {
+    Fail("\"city toolbar control is missing or disabled\"");
+    return;
+  }
+  TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  if (activeNation == 0 || activeNation->city == 0) {
+    Fail("\"active nation has no city state before opening the city screen\"");
+    return;
+  }
+  for (short buildingSlot = 0; buildingSlot < 16; ++buildingSlot) {
+    activeNation->city->productionOrderTable1dc[buildingSlot] = 1;
+  }
+  SetPhase(kRuntimeTestWaitingForCityScreen, "activate_city_toolbar_control");
+  city->HandleEvent(city->GetEventNumber(), city, 0);
+  RequestAnotherDriverTick();
+}
+
+void RunWaitingForCityScreen() {
+  TView* mainView = MainView();
+  if (g_pUiRuntimeContext->currentTurnEventCode == 0x7dd ||
+      IsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture))) {
+    WaitForNextTickOrTimeout("\"city toolbar action did not leave the combined map\"");
+    return;
+  }
+  if (!g_ModalViewStack.IsEmpty()) {
+    RecordUnexpectedModal(static_cast<TView*>(g_ModalViewStack.GetHead()));
+    Fail("\"city toolbar action opened an unexpected modal\"");
+    return;
+  }
+  if (g_runtimeTestState.phaseTicks < 20) {
+    RequestAnotherDriverTick();
+    return;
+  }
   Finish("passed", "null");
 }
 
@@ -1644,6 +1752,12 @@ void RuntimeTestDriver::OnIdle() {
   case kRuntimeTestVerifyingCombinedMapExtents:
     RunVerifyingCombinedMapExtents();
     break;
+  case kRuntimeTestActivatingCityScreen:
+    RunActivatingCityScreen();
+    break;
+  case kRuntimeTestWaitingForCityScreen:
+    RunWaitingForCityScreen();
+    break;
   case kRuntimeTestActivatingEndTurn:
     RunActivatingEndTurn();
     break;
@@ -1696,7 +1810,8 @@ void RuntimeTestDriver::ObserveActivatedTurnEvent(int eventCode) {
     Fail("\"Easy difficulty entered capital-site selection event 0x3b8\"");
     return;
   }
-  if (g_runtimeTestState.kind != kRuntimeTestRandomGame ||
+  if ((g_runtimeTestState.kind != kRuntimeTestRandomGame &&
+       g_runtimeTestState.kind != kRuntimeTestCityScreen) ||
       (g_runtimeTestState.phase != kRuntimeTestWaitingForCitySiteConfirmation &&
        g_runtimeTestState.phase != kRuntimeTestWaitingForCombinedMap)) {
     return;

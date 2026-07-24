@@ -760,9 +760,14 @@ float g_cachedAiCityActionContextBias[3] = {0.0f, 0.0f, 0.0f};
 // GLOBAL: IMPERIALISM 0x00696178
 short g_anCityBuildingSlotOrder[16] = {12, 13, 7, 10, 14, 15, 9, 6, 11, 2, 3, 8, 0, 1, 4, 5};
 // GLOBAL: IMPERIALISM 0x00696198
-short g_anCityBuildingSlotCoords[36] = {200, 235, 340, 300, 281, 184, 340, 266, 87, 286, 230, 310,
-                                        340, 139, 240, 35,  50,  220, 50,  107, 50, 35,  340, 139,
-                                        82,  35,  300, 35,  340, 44,  150, 95,  1,  0,   1,   0};
+short g_anCityBuildingSlotCoords[32] = {200, 235, 340, 300, 281, 184, 340, 266,
+                                        87,  286, 230, 310, 340, 139, 240, 35,
+                                        50,  220, 50,  107, 50,  35,  340, 139,
+                                        82,  35,  300, 35,  340, 44,  150, 95};
+// GLOBAL: IMPERIALISM 0x006961d8
+short g_nCityBuildingSlotYOffsetIndex = 1;
+// GLOBAL: IMPERIALISM 0x006961dc
+short g_nCityBuildingDrawXOffsetIndex = 1;
 // Per-(building-slot,action) resource/picture ids, 3 shorts per table row (TCityProductionView
 // DoPostCreate action-control builder). Row index = (level-1) + slot loop counter.
 // GLOBAL: IMPERIALISM 0x0064fad0
@@ -775,9 +780,9 @@ short g_awCityBuildingActionResourceIds[72] = {
 RECT g_anCityBuildingLayoutValues[72];
 // Runtime column-selector indices into g_anCityBuildingSlotCoords pairs (BSS, 0 at load).
 // GLOBAL: IMPERIALISM 0x006a2abc
-int g_nCityBuildingSlotXOffsetIndex = 0;
+short g_nCityBuildingSlotXOffsetIndex = 0;
 // GLOBAL: IMPERIALISM 0x006a2ac0
-int g_nCityBuildingDrawYOffsetIndex = 0;
+short g_nCityBuildingDrawYOffsetIndex = 0;
 
 // GLOBAL: IMPERIALISM 0x006a2998
 CRect g_aCityBuildingHoverSelectionRects[16];
