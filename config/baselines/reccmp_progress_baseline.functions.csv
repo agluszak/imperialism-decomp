@@ -5230,7 +5230,7 @@ address|matching|name
 0x591e70|0.8333333333333334|TTransportPicture::TTransportPicture
 0x591ec0|1.0|TTransportPicture::`scalar deleting destructor'
 0x591ef0|1.0|TTransportPicture::~TTransportPicture
-0x591f10|0.1875|TTransportPicture::DoEvent
+0x591f10|0.6455696202531646|TTransportPicture::DoEvent
 0x5921c0|0.24719101123595505|TTransportPicture::Refresh
 0x592830|0.9|TTransportPicture::Draw
 0x592860|0.4897959183673469|TWarningView::CreateObject
