@@ -187,7 +187,18 @@ def _claim_expired(claim: dict) -> bool:
         return True  # unparsable claims don't block anyone forever
 
 
-def _push_claim(addr: str, branch: str) -> bool:
+def _push_claim(addr: str, branch: str, expected_sha: str = "") -> bool:
+    """Compare-and-swap the claim ref for addr.
+
+    expected_sha is the remote claim commit we observed (empty string = the ref
+    must not exist yet). git push --force-with-lease with an explicit expect
+    value makes every path atomic: a fresh claim only lands on an absent ref,
+    and a refresh / expiry takeover / --steal-claim only lands if the remote
+    claim is still exactly the one we based the decision on. A claim that
+    changed under us is rejected by the remote, never silently clobbered.
+    (Claim commits are parentless, so updating an existing ref is always
+    non-fast-forward; a plain push can never succeed here.)
+    """
     expires = (datetime.datetime.now(datetime.timezone.utc)
                + datetime.timedelta(hours=CLAIM_TTL_HOURS)).strftime("%Y-%m-%dT%H:%M:%SZ")
     payload = json.dumps({
@@ -200,12 +211,13 @@ def _push_claim(addr: str, branch: str) -> bool:
     if commit.returncode != 0:
         return False
     sha = commit.stdout.strip()
-    # Non-forced push: if someone claimed between our ls-remote and now, this
-    # fails and the loser sees the refusal on rerun.
-    push = _run(["git", "push", "origin", f"{sha}:{CLAIM_REF_PREFIX}{addr}"])
+    ref = CLAIM_REF_PREFIX + addr
+    push = _run(["git", "push",
+                 f"--force-with-lease={ref}:{expected_sha}",
+                 "origin", f"{sha}:{ref}"])
     if push.returncode != 0:
-        print(f"[claims] note: could not push claim for {addr} "
-              "(remote refused or raced) — continuing unclaimed")
+        print(f"[claims] could not push claim for {addr} "
+              "(remote refused, or the claim changed since it was inspected)")
         return False
     print(f"[claims] claimed {addr} for branch {branch!r} (expires {expires})")
     return True
@@ -328,7 +340,22 @@ def cmd_start(args: argparse.Namespace) -> int:
             print(f"  - {p}")
         return 2
 
-    claimed = [a for a in addrs if not args.no_claim and _push_claim(a, branch)]
+    # CAS claim push: the expected remote value is what we just inspected in 3b
+    # (empty = the ref must not exist). A claim that cannot be pushed is a hard
+    # stop unless the agent explicitly accepts running unclaimed.
+    claimed: list[str] = []
+    if not args.no_claim:
+        for addr in addrs:
+            if _push_claim(addr, branch, remote_claims.get(addr, "")):
+                claimed.append(addr)
+            elif args.proceed_unclaimed:
+                print(f"[agent-start] WARNING (proceed-unclaimed): {addr} is not "
+                      "claimed — another agent may pick it up")
+            else:
+                print(f"[agent-start] REFUSED: could not claim {addr} — rerun to "
+                      "re-inspect the claim, or pass --proceed-unclaimed to "
+                      "explicitly run without a claim")
+                return 2
 
     results: dict = {}
 
@@ -353,8 +380,20 @@ def cmd_start(args: argparse.Namespace) -> int:
         return 2
     else:
         for addr in addrs:
-            proc = _step(f"portprep {addr}", ["just", "ghidra-portprep", addr],
-                         results, tolerate=True)
+            proc = _step(f"portprep {addr}", ["just", "ghidra", "portprep", addr],
+                         results)
+            if proc.returncode != 0:
+                print(f"[agent-start] REFUSED: ghidra portprep failed for {addr} — "
+                      "the ground-truth dossier is mandatory (fix the Ghidra "
+                      "environment, or pass --no-portprep to explicitly accept "
+                      "working blind)")
+                return 2
+            if not proc.stdout.strip():
+                print(f"[agent-start] REFUSED: ghidra portprep produced no output "
+                      f"for {addr} — an empty dossier is not a dossier (fix the "
+                      "Ghidra environment, or pass --no-portprep to explicitly "
+                      "accept working blind)")
+                return 2
             portprep[addr] = proc.stdout
             stub_callees[addr] = sorted({
                 line.strip()
@@ -655,6 +694,9 @@ def main() -> int:
                               "that branch is known dead)")
     p_start.add_argument("--no-claim", action="store_true",
                          help="skip pushing claim refs (offline / read-only remote)")
+    p_start.add_argument("--proceed-unclaimed", action="store_true",
+                         help="continue when a claim push is rejected instead of "
+                              "hard-stopping (explicitly accept running unclaimed)")
     p_start.add_argument("--no-portprep", action="store_true",
                          help="skip ghidra-portprep (explicitly accept working blind)")
     p_start.add_argument("--no-compare", action="store_true",
