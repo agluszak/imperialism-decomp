@@ -5203,7 +5203,7 @@ address|matching|name
 0x58ead0|1.0|TCivToolbar::`scalar deleting destructor'
 0x58eb00|1.0|TCivToolbar::~TCivToolbar
 0x58eb20|0.46540880503144655|TCivToolbar::RefreshCivilianCommandPanelForSelection
-0x58ec50|0.5861027190332326|TCivToolbar::RefreshCivilianStackButtonsForTile
+0x58ec50|0.5896656534954408|TCivToolbar::RefreshCivilianStackButtonsForTile
 0x58eed0|0.47533632286995514|TCivToolbar::DoEvent
 0x58f050|0.5714285714285714|TCivDescription::CreateObject
 0x58f0f0|1.0|TCivDescription::GetRuntimeClass
