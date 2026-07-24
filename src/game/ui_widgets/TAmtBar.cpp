@@ -1,11 +1,11 @@
 #include <new>
 #include "game/ui_tags_common.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/ui_core/TWindow.h"
 
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
-#include "game/ui_core/TNumberText.h"
 #include "game/ui_widgets/TAmtBar.h"
 #include "game/ui_widgets/TAmtBarCluster.h"
 #include "game/TQuickDrawSurfaceContext.h"

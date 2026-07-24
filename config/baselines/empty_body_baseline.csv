@@ -1,6 +1,1 @@
 file|empty_but_big|empty_unmarked|empty_unresolved|noop_contradicted
-include/game/navy/TMapOrderChildLinkNode.h|0|0|1|0
-src/game/gfx/TAdorner.cpp|0|0|1|0
-src/game/gfx/TColorFill.cpp|0|0|1|0
-src/game/military_ui/TDiplomacyMgr.cpp|0|0|1|0
-src/game/ui_widgets/TAmtBar.cpp|0|0|2|0

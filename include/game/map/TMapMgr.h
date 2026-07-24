@@ -444,6 +444,9 @@ public:
   // classCode (no-op when already stamped) and recurses over the record's
   // adjacentRegionIds0A children. 0x0050f6b0, RET 8.
   void SetMapRecordFlagA3AndPropagateToChildren(int recordIndex, int classCode);
+  // Assign a compact class code to every populated, still-unclassified province and
+  // propagate that code through its adjacent-region tree. 0x0050f5f0.
+  void AssignSequentialClassesToPopulatedRegions();
   // 0x0050f860 -- rebuilds per-tile owner/neighbor caches and supplies fallback city
   // assignments after generation or scenario load.
   void RebuildTileOwnerNeighborCachesAndFallbackAssignments();
@@ -802,6 +805,9 @@ public:
   // chain) owned outside the active type-3/4 diplomatic mask; receiver is
   // g_pGlobalMapState at every callsite.
   char HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(StrategicTileIndex tileIndex);
+  // True when one of the province's active linked tiles reaches an eligible sea tile.
+  // 0x00518aa0.
+  char HasActiveLinkedTileWithReachableSea(int regionIndex);
 
   // 0x514110. Resolves a tile's border/subtype icon code from its StrategicTerrainKind, keyed off
   // resourceTypeByEdge[0]/gateFlag/activeFlags1c depending on terrain class; falls back to

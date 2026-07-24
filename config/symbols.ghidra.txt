@@ -995,7 +995,7 @@ IltTarget_0047bc30 47BC30 f
 CDib::Release 47BCA0 f
 OrphanCallChain_C3_I20_0047bd90 47BD90 f
 CDib::BlitSurfaceRectSkippingTransparentColor 47BDE0 f
-LoadBmpResourceByIdCached_Impl 47BF90 f
+CDib::GetPixelAddress 47BF90 f
 IltTarget_0047c000 47C000 f
 CDib::LoadBitmapResourceAndInitializeSurfaceState 47C080 f
 CDib::BuildMonochromeOutlineMaskInPlace 47C1F0 f
@@ -1241,7 +1241,7 @@ WrapperFor_thunk_PropagateUiResourceContextRecursive_At00483380 483380 f
 ReinitializeIncludeViewMainPaneAndRedrawWindow 4833B0 f
 WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At00483530 483530 f
 CIncludeView::OnEraseBkgnd 4835A0 f
-SelectPaletteAndResolveHandleMapEntry_004835e0 4835E0 f
+CIncludeView::BlitMainPaneBitmapRectToWindow 4835E0 f
 CIncludeView::OnCtlColor 483660 f
 CIncludeView::OnActivateView 483720 f
 CIncludeView::OnInitialUpdate 483750 f
@@ -2071,10 +2071,10 @@ TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive 49B330 f
 WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0 49B5D0 f
 WrapperFor_FreeHeapBufferIfNotNull_At0049b600 49B600 f
 ResolveBmpResourceHandleWithDefault3B6_Impl 49B630 f
-ResizePointerArrayAndZeroEntries_Simple 49B6A0 f
+CMap<WORD,WORD,CacheRecord*,CacheRecord*>::InitHashTable 49B6A0 f
 WrapperFor_AllocateAndLinkBlockHead_At0049b720 49B720 f
 FindShortKeyHashNodeAndOutputBucketIndex 49B7A0 f
-ResizePointerArrayAndZeroEntries 49B7F0 f
+CMap<void*,void*,CacheRecord*,CacheRecord*>::InitHashTable 49B7F0 f
 WrapperFor_AllocateAndLinkBlockHead_At0049b870 49B870 f
 DestructModuleLibraryCacheAndHashTables_Impl 49B8F0 f
 ComputeBucketIndexAndScanNodeByKey 49B980 f
@@ -2120,7 +2120,7 @@ IltTarget_0049c8a0 49C8A0 f
 TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels 49C8E0 f
 thunk_InitializeDirectSoundDeviceAndChannels 49C950 l
 TSoundResourceManager::InitializeDirectSoundDeviceAndChannels 49C970 f
-TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels_SecondTuCopy 49CA50 f
+TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels 49CA50 f
 ResetGlobalPair6A1FD0And6A1FD4 49CAC0 f
 ResetGlobalPair6A2000And6A2004 49CAE0 f
 ResetGlobalQuad6A1FD8To6A1FE4 49CB00 f

@@ -56,6 +56,8 @@ void UpdatePaletteIndexWithDefaultFallback(QuickDrawPaletteIndex paletteIndex);
 // local compatible DC if none active), and returns the text width via
 // GetTextExtentPoint32A. Ported in quickdraw_rendering.cpp.
 short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text);
+short __cdecl MeasureTextRangeWithCachedQuickDrawStyle(const char* text, short offset,
+                                                       short length); // 0x00494d20
 
 // Shrinks *text (dropping trailing characters and appending "...") until it fits
 // within maxWidth; empties the string outright if that would leave under 5
@@ -85,6 +87,7 @@ void SetQuickDrawTextSize(short value); // 0x00495260 (txSize)
 // resolves the palette entry to an RGB color; otherwise 0xff = black, <1 = white, and
 // positive indices retain the PALETTEINDEX marker. 0x004950f0
 void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex);
+void __cdecl ConfigureWhiteQuickDrawPen(unsigned char widePen); // 0x0051e160
 
 // Windows no-op for the classic QuickDraw HiliteColor hook. RGBQUAD is the VC5-era
 // Win32 GDI color record used by this Windows port. 0x00498ca0

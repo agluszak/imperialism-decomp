@@ -29,12 +29,8 @@
 class TModalDialogBase : public CDialog {
 public:
   // Forwards to CDialog::CDialog (0x006050d0) then zeroes the first three scratch fields,
-  // exactly as every leaf constructor does right after the base call. Kept inline so
-  // MSVC500 folds it into each leaf constructor, matching the original direct call to
-  // 0x006050d0 followed by the [0x5c]/[0x60]/[0x64] stores.
-  TModalDialogBase(UINT nIDTemplate, CWnd* pParentWnd)
-      : CDialog(nIDTemplate, pParentWnd), modalCreated(0), createdDialog(nullptr),
-        finalizeState(0) {}
+  // exactly as the original out-of-line constructor at 0x00480750 does.
+  TModalDialogBase(UINT nIDTemplate, CWnd* pParentWnd); // 0x00480750
   ~TModalDialogBase() override;
 
   // Overrides CDialog::DoModal (vtable index 48) with the game's own modal loop that runs the

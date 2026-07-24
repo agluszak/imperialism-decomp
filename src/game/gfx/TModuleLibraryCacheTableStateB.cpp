@@ -403,3 +403,12 @@ COLORREF TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor(unsigned int p
 // ??1?$CMap@GGPAUCacheRecord@@PAU1@@@UAE@XZ
 
 // TEMPLATE: IMPERIALISM 0x0049b270
+// ??1?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAE@XZ
+
+// VC5 emits afxtempl.h's InitHashTable body for each embedded CMap specialization.
+// These are MFC template code, not game-owned resize helpers.
+// TEMPLATE: IMPERIALISM 0x0049b6a0
+// ?InitHashTable@?$CMap@GGPAUCacheRecord@@PAU1@@@QAEXIH@Z
+
+// TEMPLATE: IMPERIALISM 0x0049b7f0
+// ?InitHashTable@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@QAEXIH@Z

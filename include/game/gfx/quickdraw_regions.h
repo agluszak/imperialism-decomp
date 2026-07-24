@@ -17,10 +17,9 @@ struct Region {
   int attachRegistered; // +0x10 BOOL result of CRgn::Attach in the ctor / RectRgn
   CRgn rgn;             // +0x14 the real GDI region (m_hObject at +0x18)
 
-  Region() : attachRegistered(0) {
-    attachRegistered = rgn.Attach(::CreateRectRgn(0, 0, 0, 0));
-  }
-  ~Region(); // 0x00495520
+  Region();                  // 0x004954a0
+  ~Region();                 // 0x00495520
+  void RefreshBoundingBox(); // 0x004955f0
 };
 ASSERT_SIZE(Region, 0x1c);
 

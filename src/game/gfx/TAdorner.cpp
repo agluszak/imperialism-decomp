@@ -11,8 +11,6 @@
 
 IMPLEMENT_DYNCREATE(TAdorner, TObject)
 
-TAdorner::TAdorner() {}
-
 static __inline void PulseUiInvalidationFlag() {
   int previous = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
   SetGlobalUiInvalidationFlagAndReturnPrevious(previous);

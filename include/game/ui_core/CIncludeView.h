@@ -48,6 +48,8 @@ public:
   virtual ~CIncludeView() override; // 0x00482ab0 (scalar deleting destructor 0x4829c0)
 
   void SetUiRuntimeContextAndActivateMain(TView* activeDialog); // 0x00483340
+  void RefreshActiveDialogHost(int unusedArg);                  // 0x00483380
+  void TearDownActiveDialogContext();                           // 0x00483530
 
 protected:
   // Registers the "AmbitGameWindow" WNDCLASS and pins cs.lpszClass + cs.style before
@@ -79,6 +81,9 @@ protected:
   void UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRect);
 
   afx_msg BOOL OnEraseBkgnd(CDC* pDC); // 0x004835a0
+  // Present the requested rectangle of the main-pane bitmap directly to this view's
+  // window DC, realizing the bitmap palette first. 0x004835e0.
+  void BlitMainPaneBitmapRectToWindow(RECT* rect);
   // WM_CTLCOLOR: bind the shared indexed palette for native edit controls and apply the
   // owning TControl's text color while returning the stock hollow brush.
   afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor); // 0x00483660

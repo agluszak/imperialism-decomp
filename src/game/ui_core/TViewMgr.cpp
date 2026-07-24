@@ -1352,7 +1352,7 @@ void TViewMgr::DispatchTurnEvent3B8AndWaitForCompletion(int payload, TEventHandl
   DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCitySiteSelector), payload);
   while (static_cast<short>(waitTarget->field14) == 0) {
     if (PumpUiMessagesAndBackgroundTasks(1) == 0) {
-      PostWmCloseToMainThreadWindow();
+      g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
     }
   }
 }

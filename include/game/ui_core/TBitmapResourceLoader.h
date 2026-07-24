@@ -37,11 +37,15 @@ public:
   virtual void ReleaseBitmapResource();                     // slot 0x01 0x495c00
   // slot 0x02 0x4a1100 -- provisional name; asserts (QuickDraw.h:417) and returns 0.
   virtual int ReportUnimplementedResourceVirtualSlot02();
+  void SetLoaderFlags(unsigned char newFlags); // 0x00495460
 };
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
 // 0x4a1130 -- allocates the loader handle-slot plus a loader for `resourceId`.
 TBitmapResourceLoader** CreateBitmapResourceLoaderHandle(unsigned short resourceId);
+unsigned char __cdecl GetBitmapResourceLoaderFlags(TBitmapResourceLoader** loaderHandle);
+void __cdecl SetBitmapResourceLoaderFlags(TBitmapResourceLoader** loaderHandle,
+                                          unsigned char newFlags);
 
 ASSERT_SIZE(TBitmapResourceLoaderState, 0x1c);
 ASSERT_SIZE(TBitmapResourceLoader, 0x20);

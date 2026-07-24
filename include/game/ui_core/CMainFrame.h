@@ -35,7 +35,8 @@ public:
   afx_msg void OnPaletteChanged(CWnd* pFocusWnd);
   // ON_WM_QUERYNEWPALETTE (0x30F): realize the cached palette into the active view DC
   // (also called directly from OnCreate / OnCommand8009 / OnPaletteChanged).
-  afx_msg BOOL OnQueryNewPalette(); // 0x00484ff0
+  afx_msg BOOL OnQueryNewPalette();                    // 0x00484ff0
+  CDibPal* ReplacePaletteAndRealize(CDibPal* palette); // 0x00485150
   // Message 0x2420 (posted by TApplication::PostTurnEventCodeMessage2420): dispatch the
   // carried turn-event code into the UI runtime with the active nation as payload.
   afx_msg LRESULT HandleCustomMessage2420DispatchTurnEvent(WPARAM wParam, LPARAM lParam);

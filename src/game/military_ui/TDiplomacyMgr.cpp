@@ -29,6 +29,8 @@ namespace {
 const unsigned int kTurnEventTagNext = kControlTagNeXT;
 struct ScratchSharedString {
   CString str;
+  // NOOP: verified empty in original 0x004f0245 (the four construction sites
+  // emit only CString::CString for the member; the wrapper body adds nothing)
   ScratchSharedString() {}
 };
 } // namespace

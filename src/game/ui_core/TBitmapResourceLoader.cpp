@@ -5,6 +5,33 @@
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
+// FUNCTION: IMPERIALISM 0x004953e0
+unsigned char __cdecl GetBitmapResourceLoaderFlags(TBitmapResourceLoader** loaderHandle) {
+  return (*loaderHandle)->flags;
+}
+
+// FUNCTION: IMPERIALISM 0x00495400
+void __cdecl SetBitmapResourceLoaderFlags(TBitmapResourceLoader** loaderHandle,
+                                          unsigned char newFlags) {
+  TBitmapResourceLoader* loader = *loaderHandle;
+  unsigned char oldFlags = loader->flags;
+  loader->flags = newFlags;
+  if (oldFlags != 0 && newFlags == 0) {
+    loader->ReleaseBitmapResource();
+    loader->flags &= 0xfe;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00495460
+void TBitmapResourceLoader::SetLoaderFlags(unsigned char newFlags) {
+  unsigned char oldFlags = flags;
+  flags = newFlags;
+  if (oldFlags != 0 && newFlags == 0) {
+    ReleaseBitmapResource();
+    flags &= 0xfe;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00495b70
 void TBitmapResourceLoader::EnsureBitmapResourceLoadedAndCopyRectSize() {
   if (bitmapResource == NULL) {

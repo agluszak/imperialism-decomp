@@ -47,13 +47,15 @@ public:
   // Idle after the base idle work.
   virtual BOOL OnIdle(LONG lCount) override; // slot +0x68, 0x004145f0
 
-  int ShowAutoResolutionDialogIfNeeded();                            // 0x00415090
-  BOOL SetSettingValueInSettingsSection(LPCTSTR key, LPCTSTR value); // 0x00415580
-  BOOL ApplyAutoResolutionModeAndPersist(int mode);                  // 0x004155b0
-  BOOL LoadLanguageResourcesFromIrgFiles();                          // 0x004149a0
-  void HandleStartupCommand100();                                    // 0x00413950
-  void PostStartupCommand100();                                      // 0x004138b0
-  LPCTSTR DetectImperialismInstallDriveAndSetPathPrefix();           // 0x00414870
+  int ShowAutoResolutionDialogIfNeeded();                                 // 0x00415090
+  BOOL SetSettingValueInSettingsSection(LPCTSTR key, LPCTSTR value);      // 0x00415580
+  UINT GetSettingValueFromSettingsSection(LPCTSTR key, int defaultValue); // 0x004154e0
+  BOOL WriteSettingValueToSettingsSection(LPCTSTR key, int value);        // 0x00415510
+  BOOL ApplyAutoResolutionModeAndPersist(int mode);                       // 0x004155b0
+  BOOL LoadLanguageResourcesFromIrgFiles();                               // 0x004149a0
+  void HandleStartupCommand100();                                         // 0x00413950
+  void PostStartupCommand100();                                           // 0x004138b0
+  LPCTSTR DetectImperialismInstallDriveAndSetPathPrefix();                // 0x00414870
   // Modal-pump helper (ExecuteViewModalStateWithPushPopChain 0x48da60,
   // ShowBlockingWaitOverlayDialog 0x498cc0 — both call it on
   // g_pImperialismApp): keep the wait cursor up while HandleStartupCommand100 runs.
@@ -90,8 +92,6 @@ extern ImperialismApp theApp;
 
 // 0x00412d90 — out-of-memory box; installed via the CRT _set_new_handler in InitInstance.
 int __cdecl ShowOutOfMemoryErrorNewHandler(size_t allocationSize);
-
-void PostWmCloseToMainThreadWindow(); // 0x004146d0
 
 // Opens (creating as needed) HKEY_CURRENT_USER\Software\<company>\<product> and returns the
 // final HKEY, or nullptr if any step fails. Caller owns the returned HKEY (RegCloseKey). No

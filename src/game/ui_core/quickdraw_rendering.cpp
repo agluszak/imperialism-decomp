@@ -299,6 +299,32 @@ void __cdecl RenderTradeScreenCommoditySummaryRows_Impl(CString* text, RECT* rec
   dc->SelectObject(oldFont);
 }
 
+// FUNCTION: IMPERIALISM 0x00494d20
+short __cdecl MeasureTextRangeWithCachedQuickDrawStyle(const char* text, short offset,
+                                                       short length) {
+  if (g_bQuickDrawMeasureFontDirty != 0 || g_pQuickDrawCachedMeasureFont == 0) {
+    if (g_pQuickDrawCachedMeasureFont != 0) {
+      delete g_pQuickDrawCachedMeasureFont;
+    }
+    g_pQuickDrawCachedMeasureFont =
+        CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
+    g_bQuickDrawMeasureFontDirty = 0;
+  }
+  CDC* dc = g_pQuickDrawMemoryDc;
+  if (dc == 0) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  CFont* oldFont = dc->SelectObject(g_pQuickDrawCachedMeasureFont);
+  SIZE extent;
+  GetTextExtentPointA(dc->m_hDC, text + offset, length, &extent);
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == 0) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  dc->SelectObject(oldFont);
+  return static_cast<short>(extent.cx);
+}
+
 // FUNCTION: IMPERIALISM 0x00494e00
 short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text) {
   // Active-DC path: reuse the global QuickDraw CDC, SelectObject the cached measure-font
@@ -844,6 +870,13 @@ QuickDrawCursorHandle __cdecl GetQuickDrawCursor(short cursorId) {
 
 // FUNCTION: IMPERIALISM 0x00498ca0
 void HiliteColor(const RGBQUAD*) {}
+
+// FUNCTION: IMPERIALISM 0x0051e160
+void __cdecl ConfigureWhiteQuickDrawPen(unsigned char widePen) {
+  short size = widePen != 0 ? 2 : 1;
+  SetQuickDrawPenSizeAndMarkDirty(size, size);
+  SetQuickDrawFillColor(0xffffff);
+}
 
 // FUNCTION: IMPERIALISM 0x005d4c60
 void TruncateTextToFitWidthWithEllipsis(CString* text, short maxWidth) {

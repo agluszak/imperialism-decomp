@@ -41,6 +41,14 @@ TStaticText::TStaticText()
   eventNumber60 = 13;
 }
 
+// FUNCTION: IMPERIALISM 0x0048f9d0
+TStaticText::TStaticText(const TStaticText& source)
+    : TControl(source), text(0), stringResourceGroupId(source.stringResourceGroupId),
+      stringResourceIndex(source.stringResourceIndex), textAlignmentCode(source.textAlignmentCode) {
+  text = new CString();
+  *text = *source.text;
+}
+
 // Destructors are compiler-generated (implicit) from real inheritance; the
 // `text` CString member's real destructor makes this non-trivial, so MSVC
 // emits it as its own out-of-line complete-object destructor (0x48fc30, 146

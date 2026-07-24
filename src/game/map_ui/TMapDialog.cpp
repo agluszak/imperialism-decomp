@@ -711,6 +711,11 @@ void InitializeMapInteractionPreviewScaleYDefault() {
   g_MapPreviewScaleY6A33D0 = 0.015625;
 }
 
+// FUNCTION: IMPERIALISM 0x0051e110
+void RecomputeMapInteractionPreviewVerticalOffsetFromScale() {
+  g_MapPreviewVerticalOffset6A3448 = static_cast<short>(g_MapPreviewScaleY6A33D0 * 512.0 - -1.0);
+}
+
 // FUNCTION: IMPERIALISM 0x0051e1a0
 void TMapDialog::ResetAllTileMarkersToSentinel() {
   g_pGlobalMapState->ResetAllTileMarkerSlotIndicesToSentinel();
@@ -1102,6 +1107,12 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
     }
   }
 
+  CRect tileRect;
+  tileRect.left = screenX;
+  tileRect.top = screenY;
+  tileRect.right = screenX + 0x40;
+  tileRect.bottom = screenY + 0x40;
+
   if (terrain.adjacencyBits06 != 0 || terrain.railFlags17 != 0) {
     for (int direction = 0; direction < 6; ++direction) {
       unsigned char directionBit = static_cast<unsigned char>(1 << direction);
@@ -1112,16 +1123,11 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
         routeMask = &g_pStrategicMapViewSystem->callbackC5c[direction];
       }
       if (routeMask != 0) {
+        routeMask->SetDestinationHeightNoOp(tileRect.bottom - tileRect.top);
         routeMask->ApplyBitmapMaskToPixelBuffer(destinationPixels);
       }
     }
   }
-
-  CRect tileRect;
-  tileRect.left = screenX;
-  tileRect.top = screenY;
-  tileRect.right = screenX + 0x40;
-  tileRect.bottom = screenY + 0x40;
 
   const unsigned short activeFlags = terrain.activeFlags1c;
   TMapUberPicture* mapOwner = static_cast<TMapUberPicture*>(ownerContext);

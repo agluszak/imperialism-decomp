@@ -41,6 +41,7 @@ struct StrategicMapCallbackRecord {
   // portable and avoids inline assembly while preserving the mask semantics.
   void ApplyBitmapMaskToPixelBuffer(unsigned char* destinationPixels);
   void ApplyPackedColorToPixelBuffer(unsigned char* destinationPixels);
+  void SetDestinationHeightNoOp(int unusedHeight); // 0x004d4bd0
 
   StrategicMapOpcodeByteStretch opcodeBytes00;
   // AppendOpcodeByte's private write cursor is distinct from opcodeBytes00's count because

@@ -10,11 +10,21 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 
+// FUNCTION: IMPERIALISM 0x004954a0
+Region::Region() : attachRegistered(0) {
+  attachRegistered = rgn.Attach(::CreateRectRgn(0, 0, 0, 0));
+}
+
 // FUNCTION: IMPERIALISM 0x00495520
 Region::~Region() {
   if (attachRegistered) {
     rgn.DeleteObject();
   }
+}
+
+// FUNCTION: IMPERIALISM 0x004955f0
+void Region::RefreshBoundingBox() {
+  ::GetRgnBox(static_cast<HRGN>(rgn.m_hObject), &rgnBBox);
 }
 
 // FUNCTION: IMPERIALISM 0x00495610

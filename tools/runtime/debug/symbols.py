@@ -8,6 +8,8 @@ from pathlib import Path
 import re
 import subprocess
 
+from reccmp.cvdump.demangler import msvc_demangle
+
 
 PUBLIC_RE = re.compile(
     r"^\s+[0-9A-Fa-f]+:[0-9A-Fa-f]+\s+(\S+)\s+([0-9A-Fa-f]{8})"
@@ -65,7 +67,11 @@ def _demangle(names: list[str]) -> dict[str, str]:
             timeout=30,
         )
     except (OSError, subprocess.SubprocessError):
-        return {}
+        return {
+            name: demangled
+            for name in names
+            if (demangled := msvc_demangle(name)) is not None
+        }
     lines = completed.stdout.splitlines()
     demangled: dict[str, str] = {}
     cursor = 0
@@ -75,6 +81,11 @@ def _demangle(names: list[str]) -> dict[str, str]:
         if cursor + 1 < len(lines):
             demangled[name] = lines[cursor + 1]
             cursor += 2
+    for name in names:
+        if name not in demangled:
+            fallback = msvc_demangle(name)
+            if fallback is not None:
+                demangled[name] = fallback
     return demangled
 
 

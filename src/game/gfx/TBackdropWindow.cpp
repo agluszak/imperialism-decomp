@@ -3,19 +3,20 @@
 #include "game/ui_core/CMainFrame.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/app_init_globals.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 
 namespace {
 
 void ReleaseTempMapWaitCursorBufferIfNeeded() {
-  void* tempBuffer = DAT_006a2054;
+  char* tempBuffer = g_pBackdropWaitCursorGuardToken;
   if (tempBuffer != NULL) {
     AfxGetModuleState();
     AfxGetApp()->EndWaitCursor();
-    delete static_cast<char*>(tempBuffer);
+    delete tempBuffer;
   }
-  DAT_006a2054 = NULL;
+  g_pBackdropWaitCursorGuardToken = NULL;
 }
 
 CWnd* GetMainWndViaDoubleAfxGetThread() {
@@ -34,6 +35,8 @@ CWnd* GetMainWndViaDoubleAfxGetThread() {
 // this context); this is MFC dispatch-table plumbing, not game logic, so it's skipped in
 // the compile-only lint build (never linked, so the missing definition is harmless there).
 #ifndef IMPERIALISM_LINT
+// SYNTHETIC: IMPERIALISM 0x0049cc20
+// TBackdropWindow::GetMessageMap
 BEGIN_MESSAGE_MAP(TBackdropWindow, CWnd)
 ON_WM_CREATE()
 ON_WM_PAINT()
@@ -45,19 +48,19 @@ END_MESSAGE_MAP()
 // TBackdropWindow::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0049cbf0
 TBackdropWindow::~TBackdropWindow() {
-  DAT_006a2050 = NULL;
+  g_pActiveBackdropWindow = NULL;
 }
 
 TBackdropWindow::TBackdropWindow() : CWnd(), m_backdropBmp(NULL) {}
 
 // FUNCTION: IMPERIALISM 0x0049cc60
 void Function_0049cc60(CWnd* parent) {
-  if (!g_cachedShowSplashFlag || DAT_006a2050 != NULL) {
+  if (!g_cachedShowSplashFlag || g_pActiveBackdropWindow != NULL) {
     return;
   }
 
   TBackdropWindow* window = new TBackdropWindow();
-  DAT_006a2050 = window;
+  g_pActiveBackdropWindow = window;
   if (window == NULL) {
     return;
   }
@@ -74,19 +77,19 @@ void Function_0049cc60(CWnd* parent) {
   }
 
   if (window->m_hWnd == NULL) {
-    if (DAT_006a2050 != NULL) {
-      delete DAT_006a2050;
+    if (g_pActiveBackdropWindow != NULL) {
+      delete g_pActiveBackdropWindow;
     }
-    DAT_006a2050 = NULL;
+    g_pActiveBackdropWindow = NULL;
     return;
   }
 
-  ::UpdateWindow(DAT_006a2050->m_hWnd);
+  ::UpdateWindow(g_pActiveBackdropWindow->m_hWnd);
 }
 
 // FUNCTION: IMPERIALISM 0x0049cca0
 void CreateGlobalBackdropWindowWithDefaultBmp3B6(TBackdropWindow* window, CWnd* parent) {
-  DAT_006a2050 = window;
+  g_pActiveBackdropWindow = window;
   if (window == NULL) {
     return;
   }
@@ -94,19 +97,19 @@ void CreateGlobalBackdropWindowWithDefaultBmp3B6(TBackdropWindow* window, CWnd* 
   window->InitializeDefaultBackdropWindowFromBmp3B6(parent);
 
   if (window->m_hWnd == NULL) {
-    if (DAT_006a2050 != NULL) {
-      delete DAT_006a2050;
+    if (g_pActiveBackdropWindow != NULL) {
+      delete g_pActiveBackdropWindow;
     }
-    DAT_006a2050 = NULL;
+    g_pActiveBackdropWindow = NULL;
     return;
   }
 
-  ::UpdateWindow(DAT_006a2050->m_hWnd);
+  ::UpdateWindow(g_pActiveBackdropWindow->m_hWnd);
 }
 
 // FUNCTION: IMPERIALISM 0x0049cdf0
 void RefreshBackdropOnInputMessages(MSG* msg) {
-  if (DAT_006a2050 == NULL || msg == NULL) {
+  if (g_pActiveBackdropWindow == NULL || msg == NULL) {
     return;
   }
 
@@ -117,7 +120,7 @@ void RefreshBackdropOnInputMessages(MSG* msg) {
     return;
   }
 
-  DAT_006a2050->DestroyWindow();
+  g_pActiveBackdropWindow->DestroyWindow();
 
   CWnd* mainWnd = GetMainWndViaDoubleAfxGetThread();
   HWND hwnd = (mainWnd != NULL) ? mainWnd->m_hWnd : NULL;
@@ -145,7 +148,7 @@ void TBackdropWindow::PostNcDestroy() {
   g_pModuleLibraryCacheState->ReleaseRecordByHandle(m_backdropBmp);
   m_backdropBmp = NULL;
   delete this;
-  DAT_006a2050 = NULL;
+  g_pActiveBackdropWindow = NULL;
 
   CWnd* mainWnd = GetMainWndViaDoubleAfxGetThread();
   if (mainWnd != NULL) {
@@ -175,7 +178,7 @@ int TBackdropWindow::OnCreate(LPCREATESTRUCT lpCreateStruct) {
     AfxGetModuleState();
     AfxGetApp()->BeginWaitCursor();
   }
-  DAT_006a2054 = waitCursorToken;
+  g_pBackdropWaitCursorGuardToken = waitCursorToken;
   return 0;
 }
 
@@ -192,10 +195,10 @@ void TBackdropWindow::OnPaint() {
   m_backdropBmp->StretchDibitsFromStoredBitmapToHdcSimple(&paintDC, 0, 0, size.x, size.y);
 }
 
+// FUNCTION: IMPERIALISM 0x0049d240
 void TBackdropWindow::OnTimer(UINT timerId) {
-  if (timerId == 1) {
-    DestroyWindow();
-    return;
-  }
-  CWnd::OnTimer(timerId);
+  (void)timerId;
+  DestroyWindow();
+  CWnd* mainWnd = GetMainWndViaDoubleAfxGetThread();
+  ::UpdateWindow(mainWnd->m_hWnd);
 }

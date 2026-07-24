@@ -15,6 +15,7 @@ src/game/map/TMapMaker_ReindexRegions.cpp|split_exception|Same TMapMaker_* monol
 src/game/map/TMapMaker_RotateMapColumns.cpp|split_exception|Same TMapMaker_* monolith-pass isolation reason.|
 src/game/ui_screens/TSimMgr_AdvanceGlobalTurnStateMachine.cpp|split_exception|Documented codegen reason (see file header): ~4KB monolithic turn state machine with /Ob1 inline predicate helpers; co-locating it perturbs neighbouring TSimMgr method codegen.|
 src/game/net/TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp|split_exception|Documented codegen reason (see file header): ~2.4KB packet dispatcher whose packet structs/inline tick-ack helper demonstrably re-shaped EmitNationDiplomacyNeedStateSnapshotEvent15's store scheduling when merged into TMultiplayerMgr.cpp.|
+src/game/net/TMultiplayerMgr_session.cpp|split_exception|Original-module seam: session and lobby lifecycle functions 0x5421a0-0x545730 live in Cross/UMissionSubs.cpp; the receive state machine beginning at 0x545940 remains in TMultiplayerMgr.cpp (7wb).|
 src/game/military/NetMessage.cpp|companion_record|Wire-header views private to the NetMessage layer.|TimelyMessageHeader;TimelyNetMessagePrefix;TurnEvent2SyncPacket
 src/game/military/TArmyMgr.cpp|companion_record|File-private action record used only by the army manager.|MapContextActionRecord
 src/game/diplomacy_ui/TDiplomacyMapView.cpp|companion_record|File-private mask-run record used only by the diplomacy map painter.|DiplomacyMaskBufferRun

@@ -4,6 +4,8 @@
 // assignment evidence: docs/reference/subsystem_assignment.csv.
 #include "game/globals/prelude.h"
 
+extern "C" double g_dMasterVolumeExponentScale;
+
 extern char s_szCombatLossesHeading_00699324[];
 
 extern "C" {

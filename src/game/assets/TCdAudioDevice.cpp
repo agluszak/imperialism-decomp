@@ -27,6 +27,14 @@ void TCdAudioDevice::EnsureCdAudioDeviceHandleInitialized() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0047cd30
+void TCdAudioDevice::CloseDeviceAndClearHandle() {
+  if (m_deviceId != 0) {
+    SendMciCommand804ToDevice(m_deviceId);
+    m_deviceId = 0;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0047cd60
 void TCdAudioDevice::ApplyMciPlaybackRangeFromAudioManager(int trackIndex) {
   SetMciPlaybackRangeByTrackIndexAndDevice(trackIndex, m_deviceId);

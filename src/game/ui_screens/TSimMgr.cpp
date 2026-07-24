@@ -1025,6 +1025,15 @@ void TSimMgr::ResetTurnFlags() {
   } while (nation < &g_apNationStates_End);
 }
 
+// FUNCTION: IMPERIALISM 0x0057f570
+void TSimMgr::PrepareMultiplayerTurnResume() {
+  unsigned char hasMultiplayerSession = multiplayerSessionRole != 0;
+  if (hasMultiplayerSession) {
+    g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
+    turnStateCode = 0x13;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0057f5b0
 void TSimMgr::NumToCurrency(int value, CString* destString) {
   CString thousandsSep(",");
@@ -1497,7 +1506,7 @@ void TSimMgr::ProcessScenarioScript() {
 
   delete[] buffer;
   if (g_bScenarioScriptTerminationRequested != 0) {
-    PostWmCloseToMainThreadWindow();
+    g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
   }
 
   TGreatPower** nationCursor = g_apNationStates;

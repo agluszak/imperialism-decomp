@@ -3,6 +3,7 @@
 #include "game/ui_tags_widgets.h"
 
 #include "game/ImperialismApp.h"
+#include "game/gfx/TAmbitApplication.h"
 #include "game/ui_widgets/TDeluxeText.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/globals/prelude.h"
@@ -68,7 +69,7 @@ void TSpecialQuitPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
   CString titlText;
   if (commandId == 10) {
     if (sourceHandler->controlTag == kControlTagQuit) {
-      PostWmCloseToMainThreadWindow();
+      g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
     }
     if (sourceHandler->controlTag == kControlTagShow) {
       ResolveControlByTag(kControlTagQuit)->SetState(0, 1);

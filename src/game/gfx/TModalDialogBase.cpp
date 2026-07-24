@@ -25,20 +25,16 @@ HWND ResolvePreModalOwner() {
 // SYNTHETIC: IMPERIALISM 0x00413c00
 // TModalDialogBase::`scalar deleting destructor'
 
-// Per-TU duplicate emissions of the same destructor pair (config/template_aliases.csv
-// rows verified by body-equivalence): a second complete-object-destructor copy at
-// 0x00481160 and its scalar-deleting companion at 0x00481130.
-// TEMPLATE: IMPERIALISM 0x00481160
-// ??1TModalDialogBase@@UAE@XZ
-
-// TEMPLATE: IMPERIALISM 0x00481130
-// ??_GTModalDialogBase@@UAEPAXI@Z
 // FUNCTION: IMPERIALISM 0x00413b80
 TModalDialogBase::~TModalDialogBase() {
   if (finalizeState != 0) {
     CleanupModalCreateState();
   }
 }
+
+// FUNCTION: IMPERIALISM 0x00480750
+TModalDialogBase::TModalDialogBase(UINT nIDTemplate, CWnd* pParentWnd)
+    : CDialog(nIDTemplate, pParentWnd), modalCreated(0), createdDialog(nullptr), finalizeState(0) {}
 
 // FUNCTION: IMPERIALISM 0x0049d360
 int TModalDialogBase::PrepareAndCreateModalFromTemplate() {

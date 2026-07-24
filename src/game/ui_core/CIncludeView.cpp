@@ -321,6 +321,13 @@ void CIncludeView::SetUiRuntimeContextAndActivateMain(TView* activeDialog) {
   m_activeDialogContext->ResolveControlByTag(kControlTagMain); // 'main'
 }
 
+// FUNCTION: IMPERIALISM 0x00483380
+void CIncludeView::RefreshActiveDialogHost(int unusedArg) {
+  (void)unusedArg;
+  m_activeDialogContext->PropagateUiResourceContextRecursive(this);
+  m_activeDialogContext->ResolveControlByTag(kControlTagMain);
+}
+
 // Tear the hosted dialog tree down, re-resolve the 'main' pane picture, blit its cached
 // bitmap into the offscreen surface and force a full repaint of the host window. The one
 // stack argument is accepted and never read; the (now cleared) dialog context is returned.
@@ -368,6 +375,20 @@ TView* CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedAr
   return m_activeDialogContext;
 }
 
+// FUNCTION: IMPERIALISM 0x00483530
+void CIncludeView::TearDownActiveDialogContext() {
+  m_field44 = 0;
+  if (m_activeDialogContext != 0) {
+    int previousFlag = ClearGlobalUiInvalidationFlagAndReturnPrevious();
+    m_activeDialogContext->nativeWindow50 = 0;
+    if (m_activeDialogContext != 0) {
+      m_activeDialogContext->Free();
+    }
+    m_activeDialogContext = 0;
+    SetGlobalUiInvalidationFlagAndReturnPrevious(previousFlag);
+  }
+}
+
 // The original computes the clip box and client rect but uses neither; returning
 // nonzero suppresses the default background erase (the tree repaints every pixel).
 // FUNCTION: IMPERIALISM 0x004835a0
@@ -377,6 +398,17 @@ BOOL CIncludeView::OnEraseBkgnd(CDC* pDC) {
   RECT clientRect;
   GetClientRect(&clientRect);
   return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x004835e0
+void CIncludeView::BlitMainPaneBitmapRectToWindow(RECT* rect) {
+  HDC hdc = ::GetDC(m_hWnd);
+  // LIBRARY: CDC::FromHandle (0x00612736)
+  CDC* dc = CDC::FromHandle(hdc);
+  m_field44->SelectAndRealizeDibPalette(dc, FALSE);
+  m_field44->StretchDibitsRectAtNaturalSize(rect->left, rect->top, dc, rect->left, rect->top,
+                                            rect->right - rect->left, rect->bottom - rect->top);
+  ::ReleaseDC(m_hWnd, dc->m_hDC);
 }
 
 // Native edit controls store their owning TControl in GWL_USERDATA. Select the game's

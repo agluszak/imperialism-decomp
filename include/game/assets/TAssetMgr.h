@@ -87,6 +87,7 @@ public:
   // Parameter order verified from the 0x5e0290 listing: the OUT pointer is the first
   // argument ([esp+4] receives the GetProfileInt result), then key, then default.
   void LoadSettingValueByKeyIntoOut(int* out, LPCSTR key, int defaultValue);
+  void WriteIntegerSettingByValueAndKey(int value, LPCSTR key); // 0x005e02c0
   // Checks for a pending "save/cli_*.imp" client save file (resumable multiplayer
   // session). `this` is unused; callers dispatch through g_pUiViewManager. 0x5e02f0.
   unsigned char HasPendingClientSaveFile();

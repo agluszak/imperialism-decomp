@@ -1,4 +1,5 @@
 #include "game/ui_widgets/TIndustryCluster.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_widgets.h"
 #include "game/ui_core/TWindow.h"

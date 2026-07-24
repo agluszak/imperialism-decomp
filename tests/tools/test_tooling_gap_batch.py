@@ -109,6 +109,27 @@ class DatacmpGateTests(unittest.TestCase):
         self.assertEqual(entries["g_Foo"]["diffs"], "2")
         self.assertEqual(entries["g_Bar"]["address"], "0x63e03c")
 
+    def test_initialized_zero_vs_bss_zero_is_a_documented_warning(self) -> None:
+        report = (
+            "g_Zero (0x669ec0) ... DIFF \n"
+            "    + 0x00                                  0.0 : (uninitialized) \n"
+        )
+        entry = parse_report(report)["g_Zero"]
+        self.assertEqual(entry["status"], "WARN")
+        self.assertEqual(entry["diffs"], "1")
+        self.assertEqual(entry["note"], "initialized_zero_vs_bss_zero_same_runtime_value")
+
+    def test_mixed_bss_and_value_differences_remain_diff(self) -> None:
+        report = (
+            "g_Mixed (0x669ec0) ... DIFF \n"
+            "    + 0x00                                  0.0 : (uninitialized) \n"
+            "    + 0x01                                  1 : 2 \n"
+        )
+        entry = parse_report(report)["g_Mixed"]
+        self.assertEqual(entry["status"], "DIFF")
+        self.assertEqual(entry["diffs"], "2")
+        self.assertEqual(entry["note"], "")
+
     def test_crt_descriptors_skipped(self) -> None:
         # CRuntimeClass descriptors are relocation noise: drop them and any of
         # their detail lines, without swallowing the next real variable.
