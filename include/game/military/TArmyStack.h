@@ -45,7 +45,7 @@ public:
   TArmyStackUnitNode* cursor18; // +0x18 -- traversal cursor over the chain
 
   // Walk the unit chain re-seating every unit: hand each one its own field_C through
-  // VTableSlot10 (slot 0x28) and then clear its orders via SetOrders(0, -1).
+  // RelinkIntoAnchorOccupantChain (slot 0x28) and then clear its orders via SetOrders(0, -1).
   // 0x004a7d20, __thiscall.
   void ReseatChainUnitsAndClearOrders();
 

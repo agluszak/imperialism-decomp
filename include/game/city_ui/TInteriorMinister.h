@@ -23,8 +23,12 @@ public:
   // Two stack args (RET 0x8; Ghidra reads two shorts). Mac oracle: SetParameters.
   virtual void SetParameters(short firstParameter, short secondParameter); // slot 0x12 0x4be450
   // Zeroes trailingTable (+0x18..0x25, 7 shorts). 0x4be4f0, __thiscall, no args.
-  virtual void Call4C();
-  virtual void MinisterSlot14();
+  virtual void ClearTrailingTable();
+  // Walks g_aInteriorMinisterNeedPriorityOrder_00696408 (10 need types, priority order)
+  // and raises each one's target toward its current value via owner slot 0x45, clamping
+  // every top-up to the nation's remaining headroom (needCapA6 - needsOverCapFlag) and
+  // returning early the moment that headroom reaches zero. 0x4be520, __thiscall, no args.
+  virtual void TopUpNeedTargetsByPriorityWithinCap();
   // The per-turn economic-AI pass. Runs TryDecayRelationNeedsUnlessDiplomacyPending()
   // once per GetTradeCapacityActionAllowance() (re-read each iteration, so clearing the
   // allowance ends the loop); then, once the owner's

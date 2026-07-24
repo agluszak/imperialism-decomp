@@ -104,7 +104,7 @@ void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(TCivUnit* pUnitOrderEn
     switch (pUnitOrderEntry->orderType) {
     case 0:
     case 8:
-      g_pGlobalMapState->MapMgrSlot23(pUnitOrderEntry);
+      g_pGlobalMapState->SeedRecruitSearchVisitedStateForUnqueuedGateTiles(pUnitOrderEntry);
       return;
     case 1:
       g_pGlobalMapState->SeedRecruitSearchVisitedStateByCapabilityThresholdAlt(pUnitOrderEntry);
@@ -112,7 +112,7 @@ void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(TCivUnit* pUnitOrderEn
     case 2:
     case 3:
     case 5:
-      g_pGlobalMapState->MapMgrSlot24(pUnitOrderEntry);
+      g_pGlobalMapState->SeedRecruitSearchVisitedStateByQualifyingResourceEdges(pUnitOrderEntry);
       return;
     case 4:
       g_pGlobalMapState->SeedRecruitSearchVisitedStateByCapabilityThreshold(pUnitOrderEntry);
@@ -252,7 +252,7 @@ void TCivMgr::SetActiveCivilianSelection(TCivUnit* entryContext, char refreshCom
     return;
   }
 
-  entryContext->VTableSlot10(entryContext->tileIndex06);
+  entryContext->RelinkIntoAnchorOccupantChain(entryContext->tileIndex06);
 
   TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
   if (mapUberPicture != nullptr) {
@@ -425,7 +425,7 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
   this->selectedEntry = pCivilianOrderEntry;
   this->DispatchSelectedUnitToGlobalMapStateHandler(pCivilianOrderEntry);
   if (pCivilianOrderEntry != nullptr) {
-    pCivilianOrderEntry->VTableSlot10(pCivilianOrderEntry->tileIndex06);
+    pCivilianOrderEntry->RelinkIntoAnchorOccupantChain(pCivilianOrderEntry->tileIndex06);
 
     TMapUberPicture* invalidateTarget = g_pUiRuntimeContext->mapUberPictureF0;
     if (invalidateTarget != nullptr) {
@@ -730,7 +730,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
 void TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex,
                                                            TCivUnit* pCivOrderEntry) {
   short previousTile = pCivOrderEntry->tileIndex06;
-  pCivOrderEntry->VTableSlot10(nNewTileIndex);
+  pCivOrderEntry->RelinkIntoAnchorOccupantChain(nNewTileIndex);
   if (previousTile != -1 && g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
     g_pUiRuntimeContext->mapUberPictureF0->RedrawTile(previousTile);
   }

@@ -96,7 +96,7 @@ short TInteriorMinister::GetTradeCapacityActionAllowance() {
 }
 
 // FUNCTION: IMPERIALISM 0x004be4f0
-void TInteriorMinister::Call4C() {
+void TInteriorMinister::ClearTrailingTable() {
   memset(trailingTable, 0, sizeof(trailingTable));
 }
 
@@ -106,7 +106,7 @@ void TInteriorMinister::Call4C() {
 // (TDefenseMinister::DoPeacetimeDeployment, this slot's sibling override
 // at 0x4ec540, has since been ported.)
 // FUNCTION: IMPERIALISM 0x004be520
-void TInteriorMinister::MinisterSlot14() {
+void TInteriorMinister::TopUpNeedTargetsByPriorityWithinCap() {
   short i = 0;
   do {
     short capRemaining =
