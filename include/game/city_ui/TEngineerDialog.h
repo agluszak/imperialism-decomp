@@ -24,5 +24,13 @@ public:
   DECLARE_DYNCREATE(TEngineerDialog)
   void Free() override;                 // 0x1c 0x4d05e0
   void Draw(RECT* rectBuffer) override; // 0x110 0x4d0650
+
+  // Rebuilds the engineer/city-view production overlay for the region anchored at
+  // nBuildingSlotId: reloads the three offscreen strip surfaces, retitles the panel,
+  // aggregates per-resource capability/development counts over the tile and its six
+  // hex neighbours (owned by the active nation, inside the city influence map), then
+  // conditionally builds fort/rail/port up-down buttons with their TDeluxeText labels
+  // and TIconBar amount rows, plus the cancel button. 0x004d0810, __thiscall.
+  void BuildCityViewProductionControls(short nBuildingSlotId);
 };
 ASSERT_SIZE(TEngineerDialog, 0x6c);

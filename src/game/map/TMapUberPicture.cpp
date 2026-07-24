@@ -14,6 +14,8 @@
 #include "game/map/TMiniMapView.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/gfx/TDisplayMgr.h"
+#include "game/military/TMilitaryUnit.h"
+#include "game/GameAssert.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/navy_ui/TNavyToolbarCluster.h"
 #include "game/navy/TOcean.h"
@@ -686,6 +688,64 @@ void TMapUberPicture::SetUpperLeft(int tileX, int tileY) {
 // FUNCTION: IMPERIALISM 0x00598a20
 void TMapUberPicture::NoticeTile(int tileIndex) {
   this->subviewAc->NoticeTile(tileIndex);
+}
+
+// FUNCTION: IMPERIALISM 0x00598a50
+void TMapUberPicture::PromptAndQueueMilitaryProvincePurgeOrders(short provinceIndex) {
+  short cityRecordIndex = g_pGlobalMapState->terrainStateTable[provinceIndex].cityRecordIndex;
+  if (cityRecordIndex == -1) {
+    return;
+  }
+  RGBQUAD hiliteColor;
+  hiliteColor.rgbBlue = 0xff;
+  hiliteColor.rgbGreen = 0xff;
+  hiliteColor.rgbRed = 0xff;
+  hiliteColor.rgbReserved = 0;
+  g_pDisplayMgr->SetHiliteColor(&hiliteColor);
+
+  TWindow* dialog =
+      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
+          static_cast<TurnEventId>(0x24f4)));
+  if (dialog == 0) {
+    GAME_FAIL_NIL_POINTER();
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USuperMap.cpp", 0x846);
+  }
+  dialog->SetModality(1);
+
+  short ownerNation = g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode00;
+
+  // Label the 30 army-name slots from the localized army-name string group.
+  for (int slot = 0; slot < 0x1e; ++slot) {
+    TStaticText* nameLabel = static_cast<TStaticText*>(
+        dialog->ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'a') + slot));
+    nameLabel->AssertValid();
+    nameLabel->SetTextFromStringResource(0x2717, static_cast<short>(slot + 1), 1);
+  }
+  dialog->PoseModally();
+
+  // Read the per-slot unit counts the player entered and spawn that many units each.
+  for (int countSlot = 0; countSlot < 0x1e; ++countSlot) {
+    TNumberText* countField = static_cast<TNumberText*>(
+        dialog->ResolveControlByTag(IMPERIALISM_FOURCC('n', 'u', 'm', 'a') + countSlot));
+    countField->AssertValid();
+    int unitCount = countField->UpdateControlCachedIntFromWindowText();
+    for (int made = 0; made < unitCount; ++made) {
+      TMilitaryUnit* unit = new TMilitaryUnit();
+      unit->IMilitaryUnit(0, provinceIndex, ownerNation, static_cast<short>(countSlot));
+    }
+  }
+  dialog->Close();
+  dialog->Free();
+
+  CString prompt("Kill all armies in the province?");
+  g_pUiRuntimeContext->ModalMessage(prompt, g_ptMapModeModalMessage, 1, 1);
+}
+
+// FUNCTION: IMPERIALISM 0x00598d70
+void TMapUberPicture::CreateCivilianWorkOrderAndRegisterSelection(int orderContext) {
+  TCivUnit* unit = new TCivUnit();
+  unit->ICivUnit(kCivilianUnitProspector, orderContext, 0);
+  InvalidateTile(static_cast<short>(orderContext));
 }
 
 // Windows uses the Mac MapView.rsrc:9462 "Navy Maker II" tree for this dialog.

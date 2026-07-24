@@ -201,6 +201,11 @@ public:
   // (RedistributeUnitOrderQueueToRandomAdjacentRegion, ResolveNextMove) so its exact
   // addressing convention isn't fully pinned down.
   short perTileOwnerNationCodeCache1c[0x180];
+  // Route a map action for the region named by contextArg's low short: if that region is
+  // one of the pending province's adjacent records, select the movable unit on the tile,
+  // otherwise charge the city-action gate cost. 0x004a4fc0, __thiscall.
+  void DispatchMapActionForRegionByAdjacency(int contextArg);
+
   short pendingMapActionIndex; // +0x31c
   unsigned char pad31e[0x39a - 0x31e];
   // +0x39a -- set when a terrain-descriptor refresh is pending; consumed and cleared by

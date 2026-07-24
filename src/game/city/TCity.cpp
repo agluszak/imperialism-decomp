@@ -998,7 +998,15 @@ short TCity::IsCapacityCenter(short resourceSlot) {
 
 // FUNCTION: IMPERIALISM 0x004b4d50
 void TCity::BuildPowerPlant(char enableUpgrade) {
-  (void)enableUpgrade;
+  if (enableUpgrade != 0) {
+    if (this->powerPlantUpgradeQueuedFlag04 == 0) {
+      this->ownerNationAc->AddToTreasury(-5000);
+      this->powerPlantUpgradeQueuedFlag04 = 1;
+    }
+  } else if (this->powerPlantUpgradeQueuedFlag04 != 0) {
+    this->ownerNationAc->AddToTreasury(5000);
+    this->powerPlantUpgradeQueuedFlag04 = 0;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004b4dc0

@@ -26,7 +26,12 @@ extern const unsigned int g_majorTreatyCellTags[7];
 // fixed 10x10 box at its anchor, except slots 10-11 which span between two consecutive
 // anchors), plus a trailing (1,0) pair with no known consumer that shares this data blob.
 // 0x696198.
+extern short g_anCityBuildingSlotOrder[16];
 extern short g_anCityBuildingSlotCoords[36];
+extern int g_nCityBuildingSlotXOffsetIndex;
+extern int g_nCityBuildingDrawYOffsetIndex;
+extern short g_awCityBuildingActionResourceIds[72];
+extern RECT g_anCityBuildingLayoutValues[72];
 
 // Per-building-slot hover/hit-test rects (indexed by slotId, see
 // TToolBarCluster::HandleCityBuildingHoverSelection), built by

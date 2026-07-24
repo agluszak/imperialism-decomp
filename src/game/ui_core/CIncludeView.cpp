@@ -4,6 +4,7 @@
 #include "game/ui_core/CMcWindow.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_core/TControl.h"
+#include "game/ui_core/TPicture.h"
 #include "game/TEvent.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/ui_core/TUiEvent.h"
@@ -74,6 +75,54 @@ IMPLEMENT_DYNCREATE(CIncludeView, CView)
 // Original AFX_MSGMAP_ENTRY order (entries @ 0x6489e8).
 //
 // clang-cl's lint build rejects the MFC message-map macros' unqualified `&OnPaint`-style
+// ?Serialize@?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEXAAVCArchive@@@Z
+
+// Every field is initialized in the member-initializer list in declaration order: the
+// original zeroes 0x40/0x44/0x48 before constructing the embedded m_overlayRectQueue
+// CList (0x4c), then 0x6c/0x70/0x74 and 0x90 after it, and writes the vptr LAST — the
+// MSVC signature of an all-init-list ctor with an empty body. Body assignments would
+// instead run after member construction and after the vptr write, scrambling the order.
+// m_overlayRectQueue (default CList ctor), m_overlayRectCursor68, and the capture CPoints
+// are left default/uninitialized, matching the original (no stores to 0x68 or 0x78-0x8f).
+// FUNCTION: IMPERIALISM 0x00482950
+CIncludeView::CIncludeView()
+    : CView(), m_activeDialogContext(0), m_field44(0), m_pOffscreenDib(0), m_tickTimerId(0),
+      m_field70(0), m_capturedControl74(0), m_uiInteractiveFlag90(1) {}
+
+// SYNTHETIC: IMPERIALISM 0x004829c0
+// CIncludeView::`scalar deleting destructor'
+
+// Compiler-emitted bodies of the m_overlayRectQueue CList<IncludeViewOverlayRectRecord,
+// IncludeViewOverlayRectRecord&> instantiation. The original emitted the set twice (one
+// copy per TU): vtable 0x648560 + these two in the ctor's TU, vtable 0x648578 + the
+// 0x4847xx copies and the single Serialize body in the other.
+// TEMPLATE: IMPERIALISM 0x004829f0
+// ??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z
+
+// TEMPLATE: IMPERIALISM 0x00482a20
+// ??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ
+
+// FUNCTION: IMPERIALISM 0x00482ab0
+CIncludeView::~CIncludeView() {
+  if (m_tickTimerId != 0) {
+    m_tickTimerId = 0;
+  }
+  m_field44 = 0;
+  if (m_activeDialogContext != 0) {
+    int previousUiActive = ClearGlobalUiInvalidationFlagAndReturnPrevious();
+    m_activeDialogContext->nativeWindow50 = 0;
+    if (m_activeDialogContext != 0) {
+      m_activeDialogContext->Free();
+    }
+    m_activeDialogContext = 0;
+    SetGlobalUiInvalidationFlagAndReturnPrevious(previousUiActive);
+  }
+  if (m_pOffscreenDib != 0) {
+    delete m_pOffscreenDib;
+  }
+  // m_overlayRectQueue's inlined ~CList and CView::~CView emit from the real member and
+  // real inheritance.
+}
 // address-of-member-function (a long-standing MSVC extension clang doesn't implement for
 // this context); this is MFC dispatch-table plumbing, not game logic, so it's skipped in
 // the compile-only lint build (never linked, so the missing definition is harmless there).
@@ -102,63 +151,6 @@ ON_MESSAGE(0x4ef, OnDialogTreeHostMsg4EF)
 ON_MESSAGE(0x4c8, OnMciNotifyMode) // MCIWNDM_NOTIFYMODE
 END_MESSAGE_MAP()
 #endif
-// ?Serialize@?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEXAAVCArchive@@@Z
-
-// Every field is initialized in the member-initializer list in declaration order: the
-// original zeroes 0x40/0x44/0x48 before constructing the embedded m_overlayRectQueue
-// CList (0x4c), then 0x6c/0x70/0x74 and 0x90 after it, and writes the vptr LAST — the
-// MSVC signature of an all-init-list ctor with an empty body. Body assignments would
-// instead run after member construction and after the vptr write, scrambling the order.
-// m_overlayRectQueue (default CList ctor), m_overlayRectCursor68, and the capture CPoints
-// are left default/uninitialized, matching the original (no stores to 0x68 or 0x78-0x8f).
-// FUNCTION: IMPERIALISM 0x00482950
-CIncludeView::CIncludeView()
-    : CView(), m_activeDialogContext(0), m_field44(0), m_pOffscreenDib(0), m_tickTimerId(0),
-      m_field70(0), m_capturedControl74(0), m_uiInteractiveFlag90(1) {}
-
-// SYNTHETIC: IMPERIALISM 0x004829c0
-// CIncludeView::`scalar deleting destructor'
-
-// Compiler-emitted bodies of the m_overlayRectQueue CList<IncludeViewOverlayRectRecord,
-// IncludeViewOverlayRectRecord&> instantiation. The original emitted the set twice (one
-// copy per TU): vtable 0x648560 + these two in the ctor's TU, vtable 0x648578 + the
-// 0x4847xx copies and the single Serialize body in the other.
-// TEMPLATE: IMPERIALISM 0x004829f0
-// ??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z
-
-// TEMPLATE: IMPERIALISM 0x00482a20
-// ??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ
-
-// TEMPLATE: IMPERIALISM 0x004847a0
-// ??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z
-
-// TEMPLATE: IMPERIALISM 0x004847d0
-// ??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ
-
-// TEMPLATE: IMPERIALISM 0x00484610
-// ?Serialize@?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEXAAVCArchive@@@Z
-
-// FUNCTION: IMPERIALISM 0x00482ab0
-CIncludeView::~CIncludeView() {
-  if (m_tickTimerId != 0) {
-    m_tickTimerId = 0;
-  }
-  m_field44 = 0;
-  if (m_activeDialogContext != 0) {
-    int previousUiActive = ClearGlobalUiInvalidationFlagAndReturnPrevious();
-    m_activeDialogContext->nativeWindow50 = 0;
-    if (m_activeDialogContext != 0) {
-      m_activeDialogContext->Free();
-    }
-    m_activeDialogContext = 0;
-    SetGlobalUiInvalidationFlagAndReturnPrevious(previousUiActive);
-  }
-  if (m_pOffscreenDib != 0) {
-    delete m_pOffscreenDib;
-  }
-  // m_overlayRectQueue's inlined ~CList and CView::~CView emit from the real member and
-  // real inheritance.
-}
 
 // FUNCTION: IMPERIALISM 0x00482bf0
 LRESULT CIncludeView::OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam) {
@@ -195,6 +187,131 @@ void CIncludeView::OnDraw(CDC* pDC) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00482d00
+void CIncludeView::BlitMapDialogSurfaceToHdcWithClipBounds(CDC* dc, RECT* clipRect) {
+  CDC* targetDc = dc;
+  if (targetDc == 0) {
+    // LIBRARY: CDC::FromHandle (0x00612736)
+    targetDc = CDC::FromHandle(::GetDC(m_hWnd));
+  }
+  RECT localClip;
+  if (clipRect != 0) {
+    CopyRect(&localClip, clipRect);
+  } else {
+    ::GetClientRect(m_hWnd, &localClip);
+  }
+  RECT clipBox;
+  targetDc->GetClipBox(&clipBox);
+  RECT surfaceBounds;
+  int surfaceHeight = m_pOffscreenDib->m_pInfoHeader->bmiHeader.biHeight;
+  if (surfaceHeight < 1) {
+    surfaceHeight = -surfaceHeight;
+  }
+  surfaceBounds.left = 0;
+  surfaceBounds.top = 0;
+  surfaceBounds.right = m_pOffscreenDib->m_pInfoHeader->bmiHeader.biWidth - 1;
+  surfaceBounds.bottom = surfaceHeight;
+  RECT blitRect;
+  IntersectRect(&blitRect, &localClip, &clipBox);
+  IntersectRect(&blitRect, &blitRect, &surfaceBounds);
+  m_field44->SelectAndRealizeDibPalette(targetDc, 0);
+  HDC memDc = CreateCompatibleDC(targetDc->m_hDC);
+  HGDIOBJ oldBitmap = SelectObject(memDc, m_field44->m_hBitmap);
+  BitBlt(targetDc->m_hDC, blitRect.left, blitRect.top, blitRect.right - blitRect.left,
+         blitRect.bottom - blitRect.top, memDc, blitRect.left, blitRect.top, SRCCOPY);
+  SelectObject(memDc, oldBitmap);
+  DeleteDC(memDc);
+  if (dc == 0) {
+    ::ReleaseDC(m_hWnd, targetDc->m_hDC);
+  }
+}
+
+// Blit the main-pane bitmap into the offscreen surface. The blit rect starts as the
+// bitmap's full extent and is narrowed by `clipRect` when one is supplied. Note the
+// original passes the rect's left edge as BOTH srcX and srcY (only destY uses top);
+// that asymmetry is reproduced as-is.
+// FUNCTION: IMPERIALISM 0x00482ed0
+void CIncludeView::BlitMainPaneBitmapToOffscreenClipped(RECT* clipRect) {
+  CPoint bitmapSize;
+  m_field44->CopyBitmapDimensionsToPoint(&bitmapSize);
+
+  RECT blitRect;
+  blitRect.left = 0;
+  blitRect.top = 0;
+  blitRect.right = bitmapSize.x;
+  blitRect.bottom = bitmapSize.y;
+  if (clipRect != 0) {
+    ::IntersectRect(&blitRect, clipRect, &blitRect);
+  }
+
+  m_field44->BlitSurfaceRectSkippingTransparentColor(
+      m_pOffscreenDib, blitRect.left, blitRect.left, blitRect.right - blitRect.left,
+      blitRect.bottom - blitRect.top, blitRect.left, blitRect.top, -1);
+}
+
+// FUNCTION: IMPERIALISM 0x00482fc0
+void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRect) {
+  // Pass 1: blit each not-yet-processed hint rect into the offscreen surface.
+  m_overlayRectCursor68 = m_overlayRectQueue.GetHeadPosition();
+  while (m_overlayRectCursor68 != 0) {
+    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.GetNext(m_overlayRectCursor68);
+    if (rec.processedFlag10 == 0) {
+      rec.processedFlag10 = 1;
+      CPoint dimensions;
+      m_field44->CopyBitmapDimensionsToPoint(&dimensions);
+      IncludeViewOverlayRectRecord surfaceRect;
+      surfaceRect.rect.left = 0;
+      surfaceRect.rect.top = 0;
+      surfaceRect.rect.right = dimensions.x;
+      surfaceRect.rect.bottom = dimensions.y;
+      IntersectRect(&surfaceRect.rect, &rec.rect, &surfaceRect.rect);
+      POINT span;
+      surfaceRect.ComputeSpan(&span);
+      POINT corner;
+      corner.x = surfaceRect.rect.left;
+      corner.y = surfaceRect.rect.top;
+      m_field44->ForwardBlitSurfaceRectSkippingTransparentColor(m_pOffscreenDib, &corner, &span,
+                                                                &corner, -1);
+    }
+  }
+  // Pass 2: repaint the hosted dialog tree over each remaining unprocessed rect.
+  m_overlayRectCursor68 = m_overlayRectQueue.GetHeadPosition();
+  while (m_overlayRectCursor68 != 0) {
+    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.GetNext(m_overlayRectCursor68);
+    if (rec.processedFlag10 == 0) {
+      rec.processedFlag10 = 1;
+      RECT paintRect;
+      CopyRect(&paintRect, &rec.rect);
+      m_activeDialogContext->PaintVisibleChildrenIntersectingClipRect(&paintRect, 0);
+    }
+  }
+  // Pass 3: flush every finished (flag 2) rect to the screen DC and remove it.
+  CDC* targetDc = dc;
+  if (targetDc == 0) {
+    // LIBRARY: CDC::FromHandle (0x00612736)
+    targetDc = CDC::FromHandle(::GetDC(m_hWnd));
+  }
+  m_overlayRectCursor68 = m_overlayRectQueue.GetHeadPosition();
+  while (m_overlayRectCursor68 != 0) {
+    POSITION current = m_overlayRectCursor68;
+    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.GetNext(m_overlayRectCursor68);
+    if (rec.processedFlag10 == 2) {
+      RECT flushRect = rec.rect;
+      m_overlayRectQueue.RemoveAt(current);
+      BlitMapDialogSurfaceToHdcWithClipBounds(targetDc, &flushRect);
+    }
+  }
+  if (dc == 0) {
+    ::ReleaseDC(m_hWnd, targetDc->m_hDC);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00483220
+void IncludeViewOverlayRectRecord::ComputeSpan(POINT* out) const {
+  out->x = rect.right - rect.left;
+  out->y = rect.bottom - rect.top;
+}
+
 // Install this view as the native host window for the given TView (and its whole
 // subtree), then let it resolve the 'main' control tag against itself.
 // FUNCTION: IMPERIALISM 0x00483340
@@ -202,6 +319,53 @@ void CIncludeView::SetUiRuntimeContextAndActivateMain(TView* activeDialog) {
   m_activeDialogContext = activeDialog;
   m_activeDialogContext->PropagateUiResourceContextRecursive(this);
   m_activeDialogContext->ResolveControlByTag(kControlTagMain); // 'main'
+}
+
+// Tear the hosted dialog tree down, re-resolve the 'main' pane picture, blit its cached
+// bitmap into the offscreen surface and force a full repaint of the host window. The one
+// stack argument is accepted and never read; the (now cleared) dialog context is returned.
+// FUNCTION: IMPERIALISM 0x004833b0
+TView* CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedArg) {
+  (void)unusedArg;
+  m_field44 = 0;
+  if (m_activeDialogContext != 0) {
+    int previousFlag = ClearGlobalUiInvalidationFlagAndReturnPrevious();
+    m_activeDialogContext->nativeWindow50 = 0;
+    if (m_activeDialogContext != 0) {
+      m_activeDialogContext->Free();
+    }
+    m_activeDialogContext = 0;
+    SetGlobalUiInvalidationFlagAndReturnPrevious(previousFlag);
+  }
+  if (g_nIncludeViewReinitAssertGate_006A17BC == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath_00694D10, 0x1d2);
+  }
+
+  TPicture* mainPane =
+      static_cast<TPicture*>(m_activeDialogContext->ResolveControlByTag(kControlTagMain));
+  m_field44 = mainPane->cachedBitmap;
+
+  CPoint bitmapSize;
+  m_field44->CopyBitmapDimensionsToPoint(&bitmapSize);
+  POINT sourceOrigin;
+  POINT blitSize;
+  POINT destOrigin;
+  blitSize.x = bitmapSize.x;
+  blitSize.y = bitmapSize.y;
+  sourceOrigin.x = 0;
+  sourceOrigin.y = 0;
+  destOrigin.x = 0;
+  destOrigin.y = 0;
+  m_field44->ForwardBlitSurfaceRectSkippingTransparentColor(m_pOffscreenDib, &sourceOrigin,
+                                                            &blitSize, &destOrigin, -1);
+
+  ::InvalidateRect(m_hWnd, 0, TRUE);
+  ::RedrawWindow(m_hWnd, 0, 0, RDW_INVALIDATE);
+
+  if (g_nIncludeViewReinitThreadOnceGate_006A17C0 == 0) {
+    g_nIncludeViewReinitThreadOnceGate_006A17C0 = 1;
+  }
+  return m_activeDialogContext;
 }
 
 // The original computes the clip box and client rect but uses neither; returning
@@ -543,6 +707,15 @@ void CIncludeView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
   }
   Default();
 }
+
+// TEMPLATE: IMPERIALISM 0x00484610
+// ?Serialize@?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEXAAVCArchive@@@Z
+
+// TEMPLATE: IMPERIALISM 0x004847a0
+// ??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z
+
+// TEMPLATE: IMPERIALISM 0x004847d0
+// ??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ
 
 // Native host view (TView::nativeWindow50) of the top window on the modal stack.
 // FUNCTION: IMPERIALISM 0x0048d290

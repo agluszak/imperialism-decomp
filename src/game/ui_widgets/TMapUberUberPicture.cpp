@@ -4,6 +4,9 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 
+// FUNCTION: IMPERIALISM 0x0045d270
+TMapUberUberPicture::TMapUberUberPicture() {}
+
 // FUNCTION: IMPERIALISM 0x0045d2a0
 void TMapUberUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {
   (void)edgeMask;
@@ -20,8 +23,6 @@ TMapUberUberPicture::~TMapUberUberPicture() {}
 // TMapUberUberPicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMapUberUberPicture, TOffLimitsPicture)
-
-TMapUberUberPicture::TMapUberUberPicture() {}
 
 // Slot 0x37 override: runs the base picture hook, then registers this picture as the app
 // root's viewport edge-scroll target (read by TAmbitApplication::HandleCursor).

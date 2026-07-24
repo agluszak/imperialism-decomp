@@ -76,6 +76,34 @@ TLanguageMgr* g_pLanguageMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a43e0
 TAnimator* g_pUiAnimator = 0;
 
+// Modal-message anchor point for the invasion-support warning (BSS, {0,0} at load).
+// GLOBAL: IMPERIALISM 0x006a2288
+POINT g_orderSupportModalPosition_006a2288 = {0, 0};
+// Typed C++ linkage (not inside extern "C").
+// FourCC tags of the 23 warehouse commodity value controls, in commodity-slot order
+// (cotton..gold). TWarehouseView::DoStartup (0x4c7360) resolves each into commodityValueControlsA0.
+// GLOBAL: IMPERIALISM 0x00696108
+unsigned int g_awCommodityValueControlTags_00696108[23] = {
+    IMPERIALISM_FOURCC('c', 'o', 't', 't'), IMPERIALISM_FOURCC('w', 'o', 'o', 'l'),
+    IMPERIALISM_FOURCC('t', 'i', 'm', 'b'), IMPERIALISM_FOURCC('c', 'o', 'a', 'l'),
+    IMPERIALISM_FOURCC('i', 'r', 'o', 'n'), IMPERIALISM_FOURCC('h', 'o', 'r', 's'),
+    IMPERIALISM_FOURCC('o', 'i', 'l', ' '), IMPERIALISM_FOURCC('f', 'o', 'o', 'd'),
+    IMPERIALISM_FOURCC('f', 'a', 'b', 'r'), IMPERIALISM_FOURCC('l', 'u', 'm', 'b'),
+    IMPERIALISM_FOURCC('p', 'a', 'p', 'e'), IMPERIALISM_FOURCC('s', 't', 'e', 'e'),
+    IMPERIALISM_FOURCC('f', 'u', 'e', 'l'), IMPERIALISM_FOURCC('c', 'l', 'o', 't'),
+    IMPERIALISM_FOURCC('f', 'u', 'r', 'n'), IMPERIALISM_FOURCC('h', 'a', 'r', 'd'),
+    IMPERIALISM_FOURCC('a', 'r', 'm', 'a'), IMPERIALISM_FOURCC('g', 'r', 'a', 'i'),
+    IMPERIALISM_FOURCC('p', 'r', 'o', 'd'), IMPERIALISM_FOURCC('f', 'i', 's', 'h'),
+    IMPERIALISM_FOURCC('l', 'i', 'v', 'e'), IMPERIALISM_FOURCC('g', 'e', 'm', 's'),
+    IMPERIALISM_FOURCC('g', 'o', 'l', 'd')};
+// Resource/order-type -> armory recruit-button icon class. TArmoryView::DoStartup (0x4cee20)
+// reads g[order->resourceTypeIndex48] and, for the land-unit class (value 8), selects the
+// button picture-variant (types 0x18/0x19/other -> 8/0x10/0x18). Indices 0x18-0x1d map to
+// classes 8/9; the leading 0..7 runs mirror the commodity-slot groups.
+// GLOBAL: IMPERIALISM 0x00695528
+short g_resourceTypeToUnitClass_00695528[32] = {0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7,
+                                                0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 9, 9, 9, 0, 0};
+
 extern "C" {
 
 // Diplomacy globals
@@ -729,10 +757,27 @@ short g_cachedAiCityActionTurnTick_006967d8 = -1;
 // GLOBAL: IMPERIALISM 0x006a2ea0
 float g_cachedAiCityActionContextBias[3] = {0.0f, 0.0f, 0.0f};
 
+// GLOBAL: IMPERIALISM 0x00696178
+short g_anCityBuildingSlotOrder[16] = {12, 13, 7, 10, 14, 15, 9, 6, 11, 2, 3, 8, 0, 1, 4, 5};
 // GLOBAL: IMPERIALISM 0x00696198
 short g_anCityBuildingSlotCoords[36] = {200, 235, 340, 300, 281, 184, 340, 266, 87, 286, 230, 310,
                                         340, 139, 240, 35,  50,  220, 50,  107, 50, 35,  340, 139,
                                         82,  35,  300, 35,  340, 44,  150, 95,  1,  0,   1,   0};
+// Per-(building-slot,action) resource/picture ids, 3 shorts per table row (TCityProductionView
+// DoPostCreate action-control builder). Row index = (level-1) + slot loop counter.
+// GLOBAL: IMPERIALISM 0x0064fad0
+short g_awCityBuildingActionResourceIds[72] = {
+    12, 0,  0,  12, 14, 0,  11, 0,  0, 12, 0,  0, 12, 12, 0, 12, 12, 0,  24, 24, 0, 24, 24, 0,
+    9,  21, 11, 25, 9,  0,  12, 24, 0, 12, 26, 0, 12, 23, 0, 24, 25, 25, 19, 19, 0, 12, 11, 0,
+    13, 0,  0,  12, 13, 11, 7,  0,  0, 0,  0,  0, 0,  0,  0, 13, 0,  0,  0,  0,  0, 0,  0,  0};
+// Per-(building-slot,action) control rects, 3 RECTs per row; populated at runtime (BSS).
+// GLOBAL: IMPERIALISM 0x006a24e8
+RECT g_anCityBuildingLayoutValues[72];
+// Runtime column-selector indices into g_anCityBuildingSlotCoords pairs (BSS, 0 at load).
+// GLOBAL: IMPERIALISM 0x006a2abc
+int g_nCityBuildingSlotXOffsetIndex = 0;
+// GLOBAL: IMPERIALISM 0x006a2ac0
+int g_nCityBuildingDrawYOffsetIndex = 0;
 
 // GLOBAL: IMPERIALISM 0x006a2998
 CRect g_aCityBuildingHoverSelectionRects[16];
@@ -838,6 +883,15 @@ char g_szIncludeViewSourcePath_00694D10[] = "D:\\Ambit\\IncludeView.cpp";
 // the detach-without-context one-shot assert (writer not yet identified).
 // GLOBAL: IMPERIALISM 0x006a17b0
 int g_nIncludeViewAssertGate_006A17B0 = 0;
+
+// GLOBAL: IMPERIALISM 0x006a17bc
+int g_nIncludeViewReinitAssertGate_006A17BC = 0;
+
+// GLOBAL: IMPERIALISM 0x006a17c0
+int g_nIncludeViewReinitThreadOnceGate_006A17C0 = 0;
+
+// GLOBAL: IMPERIALISM 0x006a2480
+int g_nMcAppUiAssertGate_006A2480 = 0;
 
 // Gate read by CIncludeView::OnMouseMove (0x4838e4) before firing the
 // drag-track-without-context one-shot assert (IncludeView.cpp line 0x2b7).
@@ -1935,6 +1989,9 @@ POINT g_ptCityInteriorMinisterModalMessage = {0, 0};
 POINT g_ptNationComparisonModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a5820
 POINT g_ptTechItemModalMessage = {0, 0};
+// Placement point for the formatted-error ("ERROR (...)") modal message dialog.
+// GLOBAL: IMPERIALISM 0x006a5ab0
+POINT g_ptFormattedErrorModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a3d08
 POINT g_ptNationAwolModalMessage = {0, 0};
 // Lounge host confirmation for replacing a remote nation with an AI.

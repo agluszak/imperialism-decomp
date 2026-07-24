@@ -22,8 +22,8 @@ TNumberText::~TNumberText() {}
 IMPLEMENT_DYNCREATE(TNumberText, TEditText)
 
 // FUNCTION: IMPERIALISM 0x00491060
-void TNumberText::InitializeNumberText(TControl* panel, int* offsetLayout, int* sizeLayout,
-                                       int value, int minimumValue, int maximumValue) {
+void TNumberText::InitializeNumberText(TView* panel, int* offsetLayout, int* sizeLayout, int value,
+                                       int minimumValue, int maximumValue) {
   this->InitializeTextEntryBaseAndOptionalStringResource(panel, offsetLayout, sizeLayout, 5, 5, -1,
                                                          0);
   this->maxCharacterCount = 0xff;

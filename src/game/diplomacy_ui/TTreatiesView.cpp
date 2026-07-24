@@ -12,6 +12,11 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
+// FUNCTION: IMPERIALISM 0x00430320
+TTreatiesView::TTreatiesView() {
+  diplomacyMapView60 = 0;
+}
+
 // SYNTHETIC: IMPERIALISM 0x00430350
 // TTreatiesView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00430380
@@ -23,8 +28,6 @@ TTreatiesView::~TTreatiesView() {}
 // TTreatiesView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTreatiesView, TPanelView)
-
-TTreatiesView::TTreatiesView() {}
 
 // FUNCTION: IMPERIALISM 0x004f7ac0
 void TTreatiesView::DoPostCreate(int arg) {

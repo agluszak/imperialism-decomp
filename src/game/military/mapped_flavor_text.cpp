@@ -189,6 +189,63 @@ char* __cdecl AppendInterNationEventSummaryTextEntry_Impl(TSimMgr* sim, const ch
 // TEMPLATE: IMPERIALISM 0x00580460
 // ?Add@?$stretch@D@@UAEPADD@Z
 
+// Expands a bracket-token template loaded from TSimMgr::GetString into a growable char
+// buffer. Literal characters are copied through; each "[N]" (N an ASCII digit) selects the
+// N-th trailing (codeGroup, offset) argument pair, resolves it through GetString, and — when
+// the digit is followed by a lowercase format letter — runs the result through
+// TLanguageMgr::Localize before appending. Returns the accumulated buffer (which the inlined
+// stretch<char> teardown then frees, matching the original's captured-then-freed pointer).
+// FUNCTION: IMPERIALISM 0x005804f0
+char* ExpandBracketMappedStringToSinkCallback(TSimMgr* sim, int /*unused*/, int templateOffset,
+                                              int templateCodeGroup, ...) {
+  stretch<char> sink;
+  CString templateText;
+  sim->GetString(templateCodeGroup, templateOffset, &templateText);
+  int* tokenArgs = &templateCodeGroup + 1;
+  char* t = (char*)(LPCSTR)templateText;
+  int i = 0;
+  if (t[0] != '\0') {
+    char c;
+    do {
+      c = t[i];
+      if (c == '[') {
+        while (c != '\0') {
+          char d = t[i + 1];
+          i++;
+          if (d >= '0' && d <= '9') {
+            int n = t[i] - '0';
+            CString token;
+            sim->GetString(static_cast<short>(tokenArgs[2 * n]),
+                           static_cast<short>(tokenArgs[2 * n + 1]), &token);
+            char formatChar = t[i + 1];
+            if (formatChar >= 'a' && formatChar <= 'z') {
+              token = g_pLanguageMgr->Localize((LPCSTR)token, formatChar);
+            }
+            for (char* p = (char*)(LPCSTR)token; *p != '\0'; ++p) {
+              sink.Add(*p);
+            }
+            break;
+          }
+          c = t[i];
+          if (c == ']') {
+            break;
+          }
+        }
+        c = t[i];
+        while (c != ']' && c != '\0') {
+          c = t[i + 1];
+          i++;
+        }
+      } else {
+        sink.Add(c);
+      }
+      c = t[i + 1];
+      i++;
+    } while (c != '\0');
+  }
+  return sink.RawData();
+}
+
 // The generated flavor text is rejected (regenerate) if it contains any character from
 // this banned set list; each entry is a FindOneOf char-set probe against the result.
 // FUNCTION: IMPERIALISM 0x005d4240

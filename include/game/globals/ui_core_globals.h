@@ -146,6 +146,11 @@ extern char g_szIncludeViewSourcePath_00694D10[];
 
 extern int g_nIncludeViewAssertGate_006A17B0;
 
+// One-shot assert / init gates used by CIncludeView's main-pane reinitialise path.
+extern int g_nIncludeViewReinitAssertGate_006A17BC;
+extern int g_nIncludeViewReinitThreadOnceGate_006A17C0;
+extern int g_nMcAppUiAssertGate_006A2480;
+
 extern int g_nIncludeViewPointerAssertGate_006A17C4;
 
 // Header path string ("D:\\Ambit\\McAppUI.h") passed with a line number to city-production

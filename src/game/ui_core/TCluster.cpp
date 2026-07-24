@@ -36,6 +36,30 @@ TCluster::TCluster() {
 // FUNCTION: IMPERIALISM 0x004914b0
 TCluster::~TCluster() {}
 
+// Frame this cluster into `parent`. The host window is inherited from the parent when
+// one is supplied, the control tag is blanked to four spaces, the enable/visible pair is
+// set, and the offset/size point pairs are copied into the frame fields. Registration as
+// a child happens through AttachChildControl (slot 0x5c) only when a parent exists, and
+// the resource context is cleared last.
+// FUNCTION: IMPERIALISM 0x004915d0
+void TCluster::InitializeClusterFrameAndAttachToParent(TView* parent, POINT* offset, POINT* size) {
+  if (parent != nullptr) {
+    nativeWindow50 = parent->nativeWindow50;
+  }
+  controlTag = kControlTagSpSpSpSp;
+  field04 = 1;
+  field08 = 1;
+  linkedChildHandler = parent;
+  ownerLocalX = offset->x;
+  ownerLocalY = offset->y;
+  frameWidth34 = size->x;
+  frameHeight38 = size->y;
+  if (parent != nullptr) {
+    parent->AttachChildControl(this, 0);
+  }
+  resourceContext = nullptr;
+}
+
 // FUNCTION: IMPERIALISM 0x00491650
 void TCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc &&

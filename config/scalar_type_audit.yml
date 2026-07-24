@@ -31,6 +31,9 @@ native_integral_reviews:
   90ad32c2364f4c93:
     classification: win32_struct_word_field
     evidence: LOGPALETTE.palNumEntries is WORD; retail 0x0047ae90 copies the low word of the 32-bit palette count to offset 2.
+  1bedaab2dce1eddf:
+    classification: win32_struct_word_field
+    evidence: LOGPALETTE.palNumEntries is WORD; retail 0x0047af60 copies the low word of the 32-bit palette count to offset 2.
   4a577257115fdf30:
     classification: win32_struct_word_field
     evidence: LOGPALETTE.palNumEntries is WORD; retail 0x0047e440 stores BX to offset 2 before CreatePalette.
@@ -198,6 +201,12 @@ nested_conversion_reviews:
     evidence: "the packed map-tile action state byte is read signed so the < 0 sign test is correct, then normalized to a byte for the retail byte compare."
 
 predicate_storage_reviews:
+  06ed593903a04495:
+    classification: byte_field_storage
+    evidence: "TEngineerDialog::BuildCityViewProductionControls stores the fort-availability predicate ((activeFlags1c >> 4) & 1 == 0) into a one-byte local mirroring the original's SETZ byte store; the explicit conversion preserves that byte layout and the value later gates widget construction, not a bool branch."
+  290838552df4ad4a:
+    classification: byte_field_storage
+    evidence: "the rail-availability predicate ((activeFlags1c >> 2) & 1 == 0) stored into the sibling one-byte local, same SETZ byte-store shape."
   1a972fb69f5925f0:
     classification: byte_field_storage
     evidence: "TLoadSavePicture::loadModeFlag90 is a one-byte object field initialized from the save-format predicate; the explicit conversion preserves the recovered byte layout."
@@ -386,6 +395,9 @@ discriminant_reviews:
   orderType:
     classification: mixed_domain_needs_per_site_split
     evidence: 'the sites mix three proven domains under one parameter name: ResourceKind bands (< 23, <= 22, >= 17, <= 6) in TCityInteriorMinister, the 14-entry industry domain (< 0x0e) in TMultiplayerMgr, and TUnit::orderType civilian/military kinds in TTerrainHelpPicture. Splitting them requires renaming the parameters per owner class first.'
+  ownerCode:
+    classification: nation_slot_domain
+    evidence: TCouncilView's census reads Province::ownerNationCode00 into ownerCode; > 6 separates the seven major-power slots from the minor/reserved band and the == sites compare against the selected NationSlot pair, the same domain as nationCode/ownerNationCode.
   ownerNationCode:
     classification: nation_slot_domain
     evidence: the 0x180 and 6 bounds are the encoded-nation-tag bands already documented on NationSlot/EncodedNationSlot; the >= 0 test is the unassigned -1 sentinel.
@@ -452,6 +464,9 @@ discriminant_reviews:
   ringState:
     classification: closed_domain_needs_listing_evidence
     evidence: TMapMaker walks a three-state coastline ring scanner (0/1/2) against kStrategicTerrainWater; the states are a local scan phase, nameable once the ring walk is described.
+  riverSpriteCode:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TEngineerDialog's rail census reads TTerrainStateRecordView::riverSpriteCode only as a nonzero presence test (river/coast connection present) to decide whether a tile counts toward the port-availability tally; the value itself is not compared against any code-domain band here.
   saveMode:
     classification: external_api_or_resource_constant
     evidence: TLoadSavePicture 0xa1 is a save-file format marker, not a mode enum.

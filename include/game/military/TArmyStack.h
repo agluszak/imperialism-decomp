@@ -44,12 +44,27 @@ public:
   TArmyStackUnitNode* head14;   // +0x14 -- head of an embedded {TUnit*, next} node chain
   TArmyStackUnitNode* cursor18; // +0x18 -- traversal cursor over the chain
 
+  // Walk the unit chain re-seating every unit: hand each one its own field_C through
+  // VTableSlot10 (slot 0x28) and then clear its orders via SetOrders(0, -1).
+  // 0x004a7d20, __thiscall.
+  void ReseatChainUnitsAndClearOrders();
+
+  // Derive this stack's composition code from its unit chain: take the min and max
+  // per-unit combat class over the chain (seeded 3 / 1), look the pair up in
+  // g_abStackCompositionClassTable, store it in field4, and pack field6 as
+  // (field4 << 8) | (rand() & 0xff). 0x004a7c60, __thiscall.
+  void ComputeStackCompositionClassCode();
+
   // Resets cursor18 to head14 and returns its unit (nullptr if the chain is empty).
   // 0x004a3b70, __thiscall, no args.
   TUnit* ResetCursorAndGetHeadUnit();
   // Advances cursor18 to its next node and returns that node's unit (nullptr if there is
   // no next node, or the cursor was already null). 0x004a3b90, __thiscall, no args.
   TUnit* AdvanceCursorAndGetUnit();
+
+  // Finds the first unit of type `unitTag` in this stack's owning country's military unit
+  // list and prepends it to the embedded node chain. 0x004a7a40.
+  void AddFirstCountryUnitOfTypeToStack(short unitTag);
   // Walks the whole chain from head14 (via ResetCursorAndGetHeadUnit/
   // AdvanceCursorAndGetUnit) and, for every unit with a positive field_34 (strength),
   // grows field_38 (percent-scaled quality) by 35 if boosted else 20, capped at 400.

@@ -39,6 +39,18 @@ void ShowDialogTemplate64Modal() {
   dialog.DoModal();
 }
 
+// Runs the "DD" template modal dialog previewing a selected picture: constructs the dialog,
+// seeds its title/picture (silhouette overlay off), and shows it modally.
+// FUNCTION: IMPERIALISM 0x00413a50
+void ShowSelectedDibInTemplateDDDialog(CDib* picture, CString title) {
+  TDDTemplateDialog dialog(0);
+  dialog.windowTitle = static_cast<LPCSTR>(title);
+  dialog.picture = picture;
+  dialog.drawOutline = 0;
+  dialog.fillPolygon = 0;
+  dialog.DoModal();
+}
+
 // Frees the heap silhouette-outline buffer; the base finalize (owner re-enable +
 // modal-state cleanup) is inlined from ~TModalDialogBase.
 // FUNCTION: IMPERIALISM 0x00413c30

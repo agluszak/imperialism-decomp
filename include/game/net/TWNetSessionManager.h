@@ -72,6 +72,7 @@ public:
   TRadioTextCluster* activeProtocolControlB0;
 
   TWNetSessionManager();
+  virtual ~TWNetSessionManager(); // 0x005e2a20 — frees the serialized-record scratch arrays
   virtual BOOL OnEnumerateServiceProvider(LPGUID providerGuid, LPSTR providerName,
                                           DWORD majorVersion, DWORD minorVersion) override;
   virtual BOOL OnEnumerateJoinableSession(const DPSESSIONDESC2* sessionDescription, DWORD* timeout,

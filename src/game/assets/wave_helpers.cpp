@@ -1,4 +1,5 @@
 #include "game/assets/wave_helpers.h"
+#include "game/globals/assets_globals.h"
 
 #include <stdio.h>
 
@@ -229,4 +230,29 @@ CloseAndReturn:
     mmioClose(hmmio, 0);
   }
   return result;
+}
+
+// Selects the aux output device whose product-id low 3 bits are 1 or 2 (the CD-audio line),
+// storing its index in g_nAuxOutputDeviceIndex (-1 on a device-caps query error).
+// FUNCTION: IMPERIALISM 0x005e1430
+int ProbeAuxOutputDeviceIndexByPidMask() {
+  MMRESULT capsResult = 0;
+  UINT deviceCount = auxGetNumDevs();
+  int deviceId = 0;
+  if (static_cast<int>(deviceCount) > 0) {
+    AUXCAPSA caps;
+    do {
+      capsResult = auxGetDevCapsA(deviceId, &caps, sizeof(AUXCAPSA));
+      if ((caps.wPid & 7) == 1 || (caps.wPid & 7) == 2) {
+        g_nAuxOutputDeviceIndex = deviceId;
+        break;
+      }
+      deviceId++;
+    } while (deviceId < static_cast<int>(deviceCount));
+  }
+  if (capsResult != 0) {
+    g_nAuxOutputDeviceIndex = -1;
+    return 0;
+  }
+  return 1;
 }

@@ -12,6 +12,11 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
+// FUNCTION: IMPERIALISM 0x00430420
+TTradePanelView::TTradePanelView() {
+  diplomacyMapView60 = 0;
+}
+
 // SYNTHETIC: IMPERIALISM 0x00430450
 // TTradePanelView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00430480
@@ -23,8 +28,6 @@ TTradePanelView::~TTradePanelView() {}
 // TTradePanelView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTradePanelView, TPanelView)
-
-TTradePanelView::TTradePanelView() {}
 
 // FUNCTION: IMPERIALISM 0x004f8780
 void TTradePanelView::DoPostCreate(int arg) {

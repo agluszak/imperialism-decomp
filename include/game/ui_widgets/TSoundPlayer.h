@@ -71,6 +71,9 @@ public:
   // the MCI playback range and the deferred-apply timer. Every callsite loads
   // ECX = g_pSfxPlaybackSystem.
   void SelectAndScheduleRandomAudioCue(); // 0x593790
+  // 0x5935c0 -- per-idle turn-audio state machine: flush cue pools on fade, apply the
+  // pending CD track, else poll and schedule a random ambient cue.
+  void UpdateAudioPlaybackStateAndScheduleRandomCue();
 
   // Non-virtual: reset both channel peers' active playback (StopOrResetActivePlaybackSlot30
   // on each). Callsite 0x5db798 (TViewMgr::HandleTurnEventDialogFactorySlotF8) loads ECX = g_pSfxPlaybackSystem.

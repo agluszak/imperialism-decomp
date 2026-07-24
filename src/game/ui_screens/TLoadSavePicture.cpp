@@ -27,6 +27,12 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/net/TMultiplayerMgr.h"
 
+// FUNCTION: IMPERIALISM 0x0043d8f0
+TLoadSavePicture::TLoadSavePicture() {
+  styleAt94.textColor = 0;
+  styleAt9e.textColor = 0;
+}
+
 // SYNTHETIC: IMPERIALISM 0x0043da40
 // TLoadSavePicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0043db20
@@ -38,8 +44,6 @@ TLoadSavePicture::~TLoadSavePicture() {}
 // TLoadSavePicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TLoadSavePicture, TPicture)
-
-TLoadSavePicture::TLoadSavePicture() {}
 
 // FUNCTION: IMPERIALISM 0x0056bcc0
 void TLoadSavePicture::DoPostCreate(int arg) {
@@ -411,6 +415,34 @@ int __cdecl ReadScenarioIndexFromSaveHeader(const char* path) {
   }
   fclose(file);
   return result;
+}
+
+// FUNCTION: IMPERIALISM 0x0056d840
+void LoadAndFormatMappedFlavorTextRecordsFromStream(int* outSlot, int targetGameId) {
+  CString scratch;
+  for (int slot = 0; slot < 8; ++slot) {
+    const char* prefix = (g_pSimMgr->multiplayerSessionRole == 0)
+                             ? g_szSingleSlotSavePrefix_00698718
+                             : g_szMultiplayerSavePrefix_00698710;
+    CString slotStr;
+    slotStr.Format(g_szDecimalFormat, slot);
+    CString path(g_szSaveDirectoryPrefix_00698724);
+    path += prefix;
+    path += slotStr;
+    path += g_szImpSaveExtension_00698708;
+    if (TryGetFileMetadataForPath(&path)) {
+      FILE* file = fopen(static_cast<const char*>(path), g_szLiteralRb_00698720);
+      int header[3];
+      int gameId = -3;
+      if (fread(header, 1, 0xc, file) == 0xc) {
+        gameId = header[2];
+      }
+      fclose(file);
+      if (gameId == targetGameId) {
+        *outSlot = slot;
+      }
+    }
+  }
 }
 
 // Top-level save-game driver. mode 0xa1 = autosave slot "A"; 0xa2 = autosave without

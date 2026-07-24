@@ -88,6 +88,37 @@ HKEY OpenOrCreateCompanyProductRegistryKey(LPCSTR company, LPCSTR product) {
 // returning it as a CString; falls back to defaultValue if any registry step fails or the
 // value isn't present. No live caller found (zero Ghidra xrefs to 0x00412840); InitInstance
 // below inlines its own equivalent registry-clear sequence rather than calling this.
+// Open (creating as needed) the HKCU\\Software\\<company>\\<product>\\<section> profile key
+// and hand back the section key; the three enclosing keys are closed on the way out.
+// Returns null when the product key could not be created.
+// FUNCTION: IMPERIALISM 0x00412720
+HKEY OpenOrCreateProfileSectionKey(LPCSTR company, LPCSTR product, LPCSTR section) {
+  HKEY hSoftware = nullptr;
+  HKEY hCompany = nullptr;
+  HKEY hProduct = nullptr;
+  HKEY hSection = nullptr;
+  DWORD disposition = 0;
+
+  if (RegOpenKeyExA(HKEY_CURRENT_USER, "Software", 0, 0x2001f, &hSoftware) == ERROR_SUCCESS) {
+    if (RegCreateKeyExA(hSoftware, company, 0, nullptr, 0, 0x2001f, nullptr, &hCompany,
+                        &disposition) == ERROR_SUCCESS) {
+      RegCreateKeyExA(hCompany, product, 0, nullptr, 0, 0x2001f, nullptr, &hProduct, &disposition);
+    }
+  }
+  if (hSoftware != nullptr) {
+    RegCloseKey(hSoftware);
+  }
+  if (hCompany != nullptr) {
+    RegCloseKey(hCompany);
+  }
+  if (hProduct == nullptr) {
+    return nullptr;
+  }
+  RegCreateKeyExA(hProduct, section, 0, nullptr, 0, 0x2001f, nullptr, &hSection, &disposition);
+  RegCloseKey(hProduct);
+  return hSection;
+}
+
 // FUNCTION: IMPERIALISM 0x00412840
 CString ReadOrCreateRegistryStringValueWithFallback(LPCSTR company, LPCSTR product, LPCSTR section,
                                                     LPCSTR valueName, LPCSTR defaultValue) {

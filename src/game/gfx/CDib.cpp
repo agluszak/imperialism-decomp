@@ -1,5 +1,7 @@
 #include "game/gfx/CDib.h"
+#include "game/gfx/CDibPal.h"
 
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/globals/prelude.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
@@ -152,6 +154,187 @@ CPoint* CDib::CopyBitmapDimensionsToPoint(CPoint* out) {
   out->x = m_pInfoHeader->bmiHeader.biWidth;
   out->y = m_pInfoHeader->bmiHeader.biHeight;
   return out;
+}
+
+// Opens `fileName` as a read-only memory mapping, validates the "BM" signature, then points
+// this CDib's info-header/color-table/pixel buffers directly into the mapped file and rebuilds
+// the palette. Same offset-swapped m_hFileMapping(0x28)=file / m_hFile(0x2c)=mapping note as the
+// serialize path below.
+// FUNCTION: IMPERIALISM 0x0047a420
+int CDib::LoadFromMemoryMappedBmpFile(LPCSTR fileName, int shareForWrite) {
+  DWORD shareMode = shareForWrite != 0 ? 1 : 0;
+  HANDLE fileHandle = CreateFileA(fileName, 0x80000000, shareMode, NULL, OPEN_EXISTING,
+                                  FILE_ATTRIBUTE_NORMAL, NULL);
+  GetFileSize(fileHandle, NULL);
+  HANDLE mappingHandle = CreateFileMappingA(fileHandle, NULL, PAGE_READONLY, 0, 0, NULL);
+  GetLastError();
+  if (mappingHandle == NULL) {
+    AfxMessageBox("Empty bitmap file", 0, 0);
+    return 0;
+  }
+
+  unsigned short* mapped =
+      static_cast<unsigned short*>(MapViewOfFile(mappingHandle, FILE_MAP_READ, 0, 0, 0));
+  if (*mapped != 0x4d42) {
+    AfxMessageBox("Invalid bitmap file", 0, 0);
+    return 0;
+  }
+
+  Release();
+  m_hGlobalInfo = NULL;
+  m_infoOwnMode = kDibInfoNotOwned;
+
+  BITMAPINFO* info = reinterpret_cast<BITMAPINFO*>(mapped + 7);
+  m_pInfoHeader = info;
+  if (info == NULL || info->bmiHeader.biClrUsed == 0) {
+    switch (info->bmiHeader.biBitCount) {
+    case 1:
+      m_paletteCount = 2;
+      break;
+    case 4:
+      m_paletteCount = 0x10;
+      break;
+    case 8:
+      m_paletteCount = 0x100;
+      break;
+    case 0x10:
+    case 0x18:
+    case 0x20:
+      m_paletteCount = 0;
+      break;
+    }
+  } else {
+    m_paletteCount = info->bmiHeader.biClrUsed;
+  }
+
+  m_pixelBytes = info->bmiHeader.biSizeImage;
+  if (m_pixelBytes == 0) {
+    unsigned int rowBits =
+        info->bmiHeader.biWidth * static_cast<unsigned int>(info->bmiHeader.biBitCount);
+    unsigned int rowDwords = rowBits >> 5;
+    if ((rowBits & 0x1f) != 0) {
+      rowDwords = rowDwords + 1;
+    }
+    int rows = info->bmiHeader.biHeight;
+    if (rows < 1) {
+      rows = -rows;
+    }
+    m_pixelBytes = rowDwords * 4 * rows;
+  }
+
+  m_colorTablePixels = reinterpret_cast<char*>(mapped) + 0x36;
+  m_dibBits = reinterpret_cast<char*>(mapped) + 0x36 + m_paletteCount * 4;
+  BuildPaletteFromRgbQuadBuffer();
+  m_mappedView = mapped;
+  m_hFileMapping = fileHandle;
+  m_hFile = mappingHandle;
+  return 1;
+}
+
+// Writes the current DIB (BITMAPFILEHEADER + BITMAPINFOHEADER + color table + pixels) into a
+// newly created memory-mapped .bmp file, then re-points this CDib's buffers into the mapping
+// and rebuilds the palette from the mapped color table. NOTE: the m_hFileMapping (0x28) and
+// m_hFile (0x2c) field names are offset-swapped from the CreateFile*/API roles but kept
+// consistent with CDib::Release, so the stores below match the original's field offsets.
+// FUNCTION: IMPERIALISM 0x0047a630
+int CDib::RemapSurfaceToMemoryMappedBmpFile(LPCSTR fileName) {
+  int offBits = m_paletteCount * 4 + 0x36;
+  unsigned int fileSize = offBits + m_pixelBytes;
+
+  HANDLE fileHandle =
+      CreateFileA(fileName, 0xc0000000, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+  HANDLE mappingHandle = CreateFileMappingA(fileHandle, NULL, PAGE_READWRITE, 0,
+                                            m_pixelBytes + 0x36 + m_paletteCount * 4, NULL);
+  GetLastError();
+  unsigned int* mapped =
+      static_cast<unsigned int*>(MapViewOfFile(mappingHandle, FILE_MAP_WRITE, 0, 0, 0));
+
+  // BITMAPFILEHEADER (14 bytes) packed exactly as the original's dword stores.
+  unsigned int* infoDest = reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mapped) + 0xe);
+  mapped[0] = (fileSize << 0x10) | 0x4d42;
+  mapped[1] = fileSize >> 0x10;
+  mapped[2] = offBits << 0x10;
+  *reinterpret_cast<unsigned short*>(mapped + 3) = static_cast<unsigned short>(offBits >> 0x10);
+
+  // Copy the packed BITMAPINFOHEADER (0x28 bytes) + color table into the mapped file.
+  unsigned int* infoSrc = reinterpret_cast<unsigned int*>(m_pInfoHeader);
+  unsigned int* infoWalk = infoDest;
+  for (unsigned int words = (m_paletteCount * 4 + 0x28U) >> 2; words != 0; words--) {
+    *infoWalk = *infoSrc;
+    infoSrc++;
+    infoWalk++;
+  }
+
+  // Copy the pixel buffer after the header + color table.
+  unsigned int pixelBytes = m_pixelBytes;
+  unsigned int* pixelStart =
+      reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mapped) + m_paletteCount * 4 + 0x36);
+  unsigned int* pixelSrc = static_cast<unsigned int*>(m_dibBits);
+  unsigned int* pixelWalk = pixelStart;
+  for (unsigned int pixelWords = pixelBytes >> 2; pixelWords != 0; pixelWords--) {
+    *pixelWalk = *pixelSrc;
+    pixelSrc++;
+    pixelWalk++;
+  }
+  unsigned char* pixelSrcByte = reinterpret_cast<unsigned char*>(pixelSrc);
+  unsigned char* pixelWalkByte = reinterpret_cast<unsigned char*>(pixelWalk);
+  for (unsigned int rem = pixelBytes & 3; rem != 0; rem--) {
+    *pixelWalkByte = *pixelSrcByte;
+    pixelSrcByte++;
+    pixelWalkByte++;
+  }
+
+  int savedPixelBytes = m_pixelBytes;
+  Release();
+  m_pixelBytes = savedPixelBytes;
+
+  m_dibBits = pixelStart;
+  m_hFileMapping = fileHandle;
+  m_hFile = mappingHandle;
+  m_dibBitsOwned = 0;
+  m_infoOwnMode = kDibInfoNotOwned;
+  m_pInfoHeader = reinterpret_cast<BITMAPINFO*>(infoDest);
+  m_mappedView = mapped;
+
+  if (infoDest == NULL || m_pInfoHeader->bmiHeader.biClrUsed == 0) {
+    switch (m_pInfoHeader->bmiHeader.biBitCount) {
+    case 1:
+      m_paletteCount = 2;
+      break;
+    case 4:
+      m_paletteCount = 0x10;
+      break;
+    case 8:
+      m_paletteCount = 0x100;
+      break;
+    case 0x10:
+    case 0x18:
+    case 0x20:
+      m_paletteCount = 0;
+      break;
+    }
+  } else {
+    m_paletteCount = m_pInfoHeader->bmiHeader.biClrUsed;
+  }
+
+  m_pixelBytes = m_pInfoHeader->bmiHeader.biSizeImage;
+  if (m_pixelBytes == 0) {
+    unsigned int rowBits = m_pInfoHeader->bmiHeader.biWidth *
+                           static_cast<unsigned int>(m_pInfoHeader->bmiHeader.biBitCount);
+    unsigned int rowDwords = rowBits >> 5;
+    if ((rowBits & 0x1f) != 0) {
+      rowDwords = rowDwords + 1;
+    }
+    int rows = m_pInfoHeader->bmiHeader.biHeight;
+    if (rows < 1) {
+      rows = -rows;
+    }
+    m_pixelBytes = rowDwords * 4 * rows;
+  }
+
+  m_colorTablePixels = reinterpret_cast<char*>(mapped) + 0x36;
+  BuildPaletteFromRgbQuadBuffer();
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0047a8a0
@@ -350,6 +533,30 @@ int CDib::BuildPaletteFromRgbQuadBuffer() {
   return 1;
 }
 
+// FUNCTION: IMPERIALISM 0x0047af60
+CPalette* CDib::CreatePaletteObjectFromColorTable() {
+  if (m_paletteCount == 0) {
+    return NULL;
+  }
+  unsigned char* paletteStorage = new unsigned char[m_paletteCount * 4 + 4];
+  LOGPALETTE* logPalette = static_cast<LOGPALETTE*>(static_cast<void*>(paletteStorage));
+  logPalette->palVersion = 0x300;
+  logPalette->palNumEntries = static_cast<WORD>(m_paletteCount);
+  const BYTE* source = static_cast<const BYTE*>(m_colorTablePixels);
+  for (int i = 0; i < m_paletteCount; i++) {
+    logPalette->palPalEntry[i].peRed = source[2];
+    logPalette->palPalEntry[i].peGreen = source[1];
+    logPalette->palPalEntry[i].peBlue = source[0];
+    logPalette->palPalEntry[i].peFlags = 0;
+    source += 4;
+  }
+  CPalette* palette = new CPalette();
+  HPALETTE hpal = CreatePalette(logPalette);
+  palette->Attach(hpal);
+  delete[] paletteStorage;
+  return palette;
+}
+
 // FUNCTION: IMPERIALISM 0x0047b0c0
 void CDib::CopyRgbQuadTableFrom(const LOGPALETTE* source) {
   RGBQUAD* dest = static_cast<RGBQUAD*>(m_colorTablePixels);
@@ -363,6 +570,32 @@ void CDib::CopyRgbQuadTableFrom(const LOGPALETTE* source) {
 
 // Build a device-dependent bitmap (CreateDIBitmap + CBM_INIT) from the stored header and
 // bits, compatible with the given DC. Returns NULL when there is no pixel buffer.
+// Adopt the palette object's HPALETTE and refill this DIB's colour table from its
+// LOGPALETTE entries, reordering each PALETTEENTRY into RGBQUAD form. A null palette
+// clears m_hPalette and leaves the table untouched when there are no entries.
+// Adopt the palette object's HPALETTE and refill this DIB's colour table from its
+// LOGPALETTE entries, reordering each PALETTEENTRY into RGBQUAD form. A null palette
+// clears m_hPalette; an empty table skips the copy entirely.
+// FUNCTION: IMPERIALISM 0x0047b130
+void CDib::AdoptPaletteAndCopyRgbQuadTable(CDibPal* palette) {
+  m_hPalette =
+      (palette != nullptr) ? static_cast<HPALETTE>(palette->m_hObject) : static_cast<HPALETTE>(0);
+  RGBQUAD* dest = static_cast<RGBQUAD*>(m_colorTablePixels);
+  int index = 0;
+  if (0 < m_paletteCount) {
+    PALETTEENTRY* entry = palette->m_pLogPalette->palPalEntry;
+    do {
+      dest->rgbRed = entry->peRed;
+      dest->rgbGreen = entry->peGreen;
+      dest->rgbBlue = entry->peBlue;
+      dest->rgbReserved = entry->peFlags;
+      dest = dest + 1;
+      index = index + 1;
+      entry = entry + 1;
+    } while (index < m_paletteCount);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0047b280
 HBITMAP CDib::CreateDibBitmapFromStoredInfo(CDC* dc) {
   if (m_pixelBytes == 0) {
@@ -965,6 +1198,45 @@ void CDib::FlipScanlineOrder() {
     lastRow -= stride;
   }
   delete[] temporaryRow;
+}
+
+// FUNCTION: IMPERIALISM 0x004849e0
+void CDib::ForwardBlitSurfaceRectSkippingTransparentColor(CDib* destDib, POINT* srcPoint,
+                                                          POINT* sizePoint, POINT* destPoint,
+                                                          int transparentColor) {
+  BlitSurfaceRectSkippingTransparentColor(destDib, srcPoint->x, srcPoint->x, sizePoint->x,
+                                          sizePoint->y, destPoint->x, destPoint->y,
+                                          transparentColor);
+}
+
+// Builds a temporary CDib matching the source bitmap's depth, blits `sourceDib`'s pixels
+// into it (a straight BitBlt of the destination DC region plus a transparent-color-skipping
+// surface copy from the source), then stretch-presents the composed surface back to the
+// destination DC at (srcX, srcY). The temp surface and its selected bitmap are released.
+// FUNCTION: IMPERIALISM 0x00496b80
+void BlitBitmapResourceToTemporaryCompatibleDcAndPresent(CDC* destDc, CDib* sourceDib, short srcX,
+                                                         short srcY, short transparentColor,
+                                                         short surfaceSrcX, short surfaceSrcY,
+                                                         short width, short height) {
+  CDib* surface = new CDib(width, height, sourceDib->m_pInfoHeader->bmiHeader.biBitCount);
+  surface->EnsureDibSectionCreated(destDc);
+  surface->CopyRgbQuadTableFrom(g_pModuleLibraryCacheState->ResolveDefaultLogPalette());
+
+  HDC tempDc = ::CreateCompatibleDC(destDc != NULL ? destDc->m_hDC : NULL);
+  HGDIOBJ oldBitmap = ::SelectObject(tempDc, surface->m_hBitmap);
+  ::BitBlt(tempDc, 0, 0, width, height, destDc != NULL ? destDc->m_hDC : NULL, srcX, srcY, SRCCOPY);
+
+  sourceDib->BlitSurfaceRectSkippingTransparentColor(surface, surfaceSrcX, surfaceSrcY, width,
+                                                     height, 0, 0, transparentColor);
+
+  POINT topLeft;
+  topLeft.x = srcX;
+  topLeft.y = srcY;
+  surface->StretchDibitsFromStoredBitmapToHdc(destDc, &topLeft);
+
+  ::SelectObject(tempDc, oldBitmap);
+  ::DeleteDC(tempDc);
+  delete surface;
 }
 
 // FUNCTION: IMPERIALISM 0x00575080

@@ -405,6 +405,66 @@ void TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0050f3c0
+void TMapMgr::VerifyMapDataAndWriteReport() {
+  SetCursor(g_pUiRuntimeContext->turnEventCursors[0x1a]);
+
+  short* provinceTileCounts = new short[0x180];
+  short* pCount = provinceTileCounts;
+  for (int i = 0xc0; i != 0; i--) {
+    pCount[0] = 0;
+    pCount[1] = 0;
+    pCount += 2;
+  }
+
+  FILE* report = fopen("maperr.txt", s_mcflavor_00697238);
+  if (report == NULL) {
+    MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMap.cpp", 0x327);
+  }
+
+  fprintf(report, "Map verfication check\n\n");
+  int tileIndex = 0;
+  do {
+    TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
+    signed char terrain = tile->terrainKindStorage00;
+    if (terrain < 0 || terrain > 7) {
+      fprintf(report, "Tile %d bad terrain: %d \n", tileIndex, terrain);
+    }
+    signed char code = tile->ownerNationTag04;
+    if (tile->GetTerrainKind() == kStrategicTerrainWater) {
+      if (code < 0x17) {
+        fprintf(report, "Tile %d bad seazone ID: %d \n", tileIndex, code);
+      }
+      if (tile->cityRecordIndex != -1) {
+        fprintf(report, "Tile %d has province ID: %d \n", tileIndex, tile->cityRecordIndex);
+      }
+    } else {
+      if (code > 0x16 || code < 0) {
+        fprintf(report, "Tile %d bad country: %d \n", tileIndex, code);
+      }
+      short provinceId = tile->cityRecordIndex;
+      if (provinceId < 0 || provinceId > 0x17f) {
+        fprintf(report, "Tile %d bad province: %d \n", tileIndex, provinceId);
+      }
+      provinceTileCounts[tile->cityRecordIndex]++;
+    }
+    ++tileIndex;
+  } while (tileIndex < 0x1950);
+
+  for (int p = 0; p < 0x180; ++p) {
+    if (provinceTileCounts[p] > 0x20) {
+      fprintf(report, "Province %d has too many tiles: %d\n", p, provinceTileCounts[p]);
+    }
+  }
+
+  fprintf(report, "End of verification check\n");
+  fclose(report);
+  delete[] provinceTileCounts;
+
+  SetCursor(LoadCursorA(NULL, IDC_ARROW));
+}
+
 // FUNCTION: IMPERIALISM 0x0050f6b0
 void TMapMgr::SetMapRecordFlagA3AndPropagateToChildren(int recordIndex, int classCode) {
   if (cityScoreTable[recordIndex].regionClassA3 != classCode) {
@@ -3482,6 +3542,31 @@ char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
     ++ordinal;
   } while (ordinal <= regionList->GetSize());
   return 0;
+}
+
+// True when any province adjacent to `provinceIndex` is owned by `ownerNationCode`.
+// Walks that province's adjacentRegionIds0A list, bounded by adjacentRegionCount08, and
+// compares each neighbour's ownerNationCode00. An empty adjacency list answers false.
+// FUNCTION: IMPERIALISM 0x00517d40
+bool TMapMgr::HasAdjacentProvinceOwnedByNation(int provinceIndex, int ownerNationCode) {
+  Province* table = cityScoreTable;
+  Province* province = &table[provinceIndex];
+  int adjacentCount = province->adjacentRegionCount08;
+  if (adjacentCount < 1) {
+    return false;
+  }
+
+  int index = 0;
+  ProvinceIndexStorage* neighbourId = province->adjacentRegionIds0A;
+  do {
+    if (table[*neighbourId].ownerNationCode00 == ownerNationCode) {
+      return true;
+    }
+    index = index + 1;
+    neighbourId = neighbourId + 1;
+  } while (index < adjacentCount);
+
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x00517dd0

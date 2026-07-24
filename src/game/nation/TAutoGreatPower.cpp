@@ -1714,6 +1714,42 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
   (void)developmentBudget;
 }
 
+// Sort comparator ordering missions by unmet weighted demand, highest first. A mission
+// still in an earlier lifecycle state sorts first outright; otherwise each side's
+// shortfall (1 - GetWeightedSatisfaction()) is scaled by importanceScore0c -- multiplied
+// when the shortfall is non-negative, divided when the mission is already oversatisfied --
+// and the larger shortfall wins. Returns -1 / 0 / 1.
+// FUNCTION: IMPERIALISM 0x004eb5d0
+short CompareMissionsByWeightedShortfall(TMission* left, TMission* right) {
+  left->AssertValid();
+  right->AssertValid();
+  if (left->state08 < right->state08) {
+    return -1;
+  }
+
+  float leftShortfall = 1.0f - left->GetWeightedSatisfaction();
+  if (0.0f <= leftShortfall) {
+    leftShortfall = left->importanceScore0c * leftShortfall;
+  } else {
+    leftShortfall = leftShortfall / left->importanceScore0c;
+  }
+
+  float rightShortfall = 1.0f - right->GetWeightedSatisfaction();
+  if (0.0f <= rightShortfall) {
+    rightShortfall = rightShortfall * right->importanceScore0c;
+  } else {
+    rightShortfall = rightShortfall / right->importanceScore0c;
+  }
+
+  if (rightShortfall < leftShortfall) {
+    return -1;
+  }
+  if (leftShortfall < rightShortfall) {
+    return 1;
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x004eb6b0
 void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unused) {
   (void)unused;

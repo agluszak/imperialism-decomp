@@ -1,6 +1,11 @@
 #include "game/net/TMadnessButton.h"
 #include "game/ui_core/ScopedMapQuickDrawContext.h"
 
+// FUNCTION: IMPERIALISM 0x0043d6f0
+TMadnessButton::TMadnessButton() {
+  initialPictureId = 0;
+}
+
 // SYNTHETIC: IMPERIALISM 0x0043d720
 // TMadnessButton::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0043d750
@@ -12,8 +17,6 @@ TMadnessButton::~TMadnessButton() {}
 // TMadnessButton::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMadnessButton, TCzechBox)
-
-TMadnessButton::TMadnessButton() {}
 
 // FUNCTION: IMPERIALISM 0x0054eaf0
 void TMadnessButton::DoPostCreate(int arg) {

@@ -49,5 +49,10 @@ public:
   // Loads the battle-setup tab data (terrain/backdrop selection) for the composition
   // class + fort level. 0x005a4fc0, __thiscall, ret 8.
   void LoadBattleSetupTabDataByIndex(int compositionClass, int fortLevel);
+
+  // Size the battlefield to the longest-ranged deployed unit: sweep recordList20 for the
+  // maximum GetUnitRange() and store that plus 0xb in battlefieldColumnCount34.
+  // 0x0059fc40, __thiscall.
+  void ComputeBattlefieldColumnCountFromUnitRanges();
 };
 ASSERT_SIZE(TArmyBattle, 0x78);

@@ -227,7 +227,31 @@ public:
 
   // --- data fields (raw pad except the ones the ported passes read) ---
   char pad_04[0x08 - 0x04]; // +0x04
-  char* mapTileGrid08;      // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
+  // Compact the city-region ids in place: walk every grid record, map each distinct
+  // region class (record[4] - 0x17) to the next free ordinal through
+  // g_cityRegionIdRemapTable_006a3498, write the remapped id back, and leave the final
+  // ordinal count in cityRegionCount2a4. 0x0052a0a0, __thiscall.
+  void CompactCityRegionIds();
+
+  // For each active city region, find the first entry still carrying its negative
+  // placeholder (-2, -3, ...) and hand it the next sequential value from *nextValue.
+  // Returns how many entries were assigned. 0x0052d6b0, __thiscall.
+  int AssignSequentialValuesToRegionPlaceholders(short* tileValues, int* nextValue);
+
+  // Centroid tile of every grid record owned by `nationCode` (record[4]). Tiles hugging
+  // both the left (col < 0x19) and right (col > 0x53) edges mean the territory wraps: with
+  // useWrapOffset the column sum is biased by leftEdgeCount * 0x6c, otherwise the sweep is
+  // redone snapping each column to the dominant edge. Returns -1 when nothing matches.
+  // 0x00529d90, __thiscall.
+  int ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOffset);
+
+  // Repair pass: for every grid entry whose value is < -1 (orphaned), adopt the value of
+  // the first hex neighbour that holds a valid value and belongs to the same terrain
+  // class (record[0] == 5 keyed by record[4] - 0x17). Returns the number repaired.
+  // 0x0052d4b0, __thiscall.
+  int RepairOrphanedTileValuesFromNeighbors(short* tileValues);
+
+  char* mapTileGrid08; // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
   // +0x0c the city-score record table, stored verbatim by the 0x525a30 entry
   // (the caller passes TMapMgr::cityScoreTable).
   Province* cityScoreTable0c;

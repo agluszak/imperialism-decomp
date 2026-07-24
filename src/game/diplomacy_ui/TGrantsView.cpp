@@ -12,6 +12,11 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
+// FUNCTION: IMPERIALISM 0x004303a0
+TGrantsView::TGrantsView() {
+  diplomacyMapView60 = 0;
+}
+
 // SYNTHETIC: IMPERIALISM 0x004303d0
 // TGrantsView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00430400
@@ -23,8 +28,6 @@ TGrantsView::~TGrantsView() {}
 // TGrantsView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TGrantsView, TPanelView)
-
-TGrantsView::TGrantsView() {}
 
 // FUNCTION: IMPERIALISM 0x004f8080
 void TGrantsView::DoPostCreate(int arg) {

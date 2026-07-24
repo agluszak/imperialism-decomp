@@ -2,6 +2,9 @@
 #include "game/city/TCity.h"
 #include "game/ui_widgets/TPictureNumberText.h"
 #include "game/city/TPopulationMgr.h"
+#include "game/ui_core/TStaticText.h"
+#include "game/ui_text_label_helpers_decls.h"
+#include "game/globals/city_ui_globals.h"
 // SYNTHETIC: IMPERIALISM 0x004c71f0
 // TWarehouseView::CreateObject
 
@@ -24,7 +27,61 @@ void TWarehouseView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint 
 }
 
 // FUNCTION: IMPERIALISM 0x004c7360
-void TWarehouseView::DoStartup() {}
+void TWarehouseView::DoStartup() {
+  TBuildingView::DoStartup();
+
+  struct {
+    TextStyle desc;
+    unsigned char tail[4];
+  } style;
+  style.tail[0] = 0;
+  style.tail[1] = 0;
+  style.tail[2] = 0;
+  style.tail[3] = 0;
+
+  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b67);
+
+  // 'name' -- the warehouse title label.
+  TStaticText* name =
+      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
+  if (name != nullptr) {
+    name->InstallTextStyle(style.desc, 0);
+    name->SetTextAlignmentAndMaybeRefresh(1, 0);
+  }
+
+  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b67);
+
+  // Resolve and style the 23 commodity value controls by their FourCC tags.
+  for (short i = 0; i < 23; ++i) {
+    TStaticText* control =
+        static_cast<TStaticText*>(ResolveControlByTag(g_awCommodityValueControlTags_00696108[i]));
+    commodityValueControlsA0[i] = static_cast<TPictureNumberText*>(control);
+    if (control != nullptr) {
+      control->InstallTextStyle(style.desc, 0);
+      control->SetTextAlignmentAndMaybeRefresh(1, 0);
+    }
+  }
+
+  // 'labo' -- labor value control.
+  TStaticText* labor =
+      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('l', 'a', 'b', 'o')));
+  laborValueControlFC = static_cast<TPictureNumberText*>(labor);
+  if (labor != nullptr) {
+    labor->InstallTextStyle(style.desc, 0);
+    labor->SetTextAlignmentAndMaybeRefresh(1, 0);
+  }
+
+  // 'powe' -- power value control.
+  TStaticText* power =
+      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'o', 'w', 'e')));
+  powerValueControl100 = static_cast<TPictureNumberText*>(power);
+  if (power != nullptr) {
+    power->InstallTextStyle(style.desc, 0);
+    power->SetTextAlignmentAndMaybeRefresh(1, 0);
+  }
+
+  UpdateFields();
+}
 
 // FUNCTION: IMPERIALISM 0x004c7d90
 void TWarehouseView::UpdateFields() {

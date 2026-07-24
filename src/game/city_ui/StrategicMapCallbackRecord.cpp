@@ -4,6 +4,7 @@
 #include <cstring>
 
 #include "game/gfx/CDib.h"
+#include "game/gfx/quickdraw_regions.h"
 #include "game/diplomacy_ui/TDiplomacyMapView.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/TQuickDrawSurfaceContext.h"
@@ -240,6 +241,54 @@ void StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment() {
 
 // TEMPLATE: IMPERIALISM 0x004d5970
 // stretch::SetCapacity
+
+// Edge test against a QuickDraw hit region: true when (x, y) is inside the region and,
+// with neighbour checking enabled, at least one of its four orthogonal neighbours falls
+// outside it -- i.e. the point sits on the region's boundary. With checkNeighbours off it
+// degenerates to a plain containment test. Each probe uses its own point slot, matching
+// the original's frame.
+// FUNCTION: IMPERIALISM 0x004d59a0
+int __cdecl IsPointOnHitRegionEdge(int x, int y, RgnHandle region, char checkNeighbours) {
+  CPoint centre;
+  centre.x = x;
+  centre.y = y;
+  if (PtInRgn(&centre, region) == 0) {
+    return 0;
+  }
+  if (checkNeighbours == '\0') {
+    return 1;
+  }
+
+  CPoint toRight;
+  toRight.x = x + 1;
+  toRight.y = y;
+  if (PtInRgn(&toRight, region) == 0) {
+    return 1;
+  }
+
+  CPoint toLeft;
+  toLeft.x = x - 1;
+  toLeft.y = y;
+  if (PtInRgn(&toLeft, region) == 0) {
+    return 1;
+  }
+
+  CPoint below;
+  below.x = x;
+  below.y = y + 1;
+  if (PtInRgn(&below, region) == 0) {
+    return 1;
+  }
+
+  CPoint above;
+  above.x = x;
+  above.y = y - 1;
+  if (PtInRgn(&above, region) == 0) {
+    return 1;
+  }
+
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x004d5cf0
 void StrategicMapCallbackRecord::StreamOverlayHitMaskToSurfaceDib(DiplomacyMaskBufferRun* run,

@@ -99,7 +99,37 @@ TCivUnit* TCivMgr::SelectFirstAvailableCivilianForNation(short nationId) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d2270
-void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(TCivUnit* pUnitOrderEntry) {}
+void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(TCivUnit* pUnitOrderEntry) {
+  if (pUnitOrderEntry != nullptr) {
+    switch (pUnitOrderEntry->orderType) {
+    case 0:
+    case 8:
+      g_pGlobalMapState->MapMgrSlot23(pUnitOrderEntry);
+      return;
+    case 1:
+      g_pGlobalMapState->SeedRecruitSearchVisitedStateByCapabilityThresholdAlt(pUnitOrderEntry);
+      return;
+    case 2:
+    case 3:
+    case 5:
+      g_pGlobalMapState->MapMgrSlot24(pUnitOrderEntry);
+      return;
+    case 4:
+      g_pGlobalMapState->SeedRecruitSearchVisitedStateByCapabilityThreshold(pUnitOrderEntry);
+      return;
+    case 6:
+      g_pGlobalMapState->MarkType5NeighborTilesUnavailableByNationCapability(pUnitOrderEntry);
+      return;
+    case 7:
+      g_pGlobalMapState->MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(pUnitOrderEntry);
+      return;
+    default:
+      g_pGlobalMapState->ResetRecruitSearchVisitedState();
+      return;
+    }
+  }
+  g_pGlobalMapState->ResetRecruitSearchVisitedState();
+}
 
 // FUNCTION: IMPERIALISM 0x004d2380
 bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short nClickMode) {
@@ -528,6 +558,23 @@ bool TCivMgr::PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex) {
   return false;
 }
 
+// FUNCTION: IMPERIALISM 0x004d39d0
+char TCivMgr::QueueProspectingOrderAndPlayFeedback(short nTileIndex) {
+  selectedEntry->SetOrders(static_cast<UnitOrder>(8), selectedEntry->tileIndex06);
+  RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, selectedEntry);
+  g_pSfxPlaybackSystem->PlaySoundEffect(0x232e, 0, 1);
+  unsigned int startTick = GetTickCountDiv16();
+  unsigned int nowTick;
+  do {
+    PumpUiMessagesAndBackgroundTasks(1);
+    nowTick = GetTickCountDiv16();
+    if (nowTick < startTick) {
+      return 1;
+    }
+  } while (nowTick - startTick < 0x1e);
+  return 1;
+}
+
 // FUNCTION: IMPERIALISM 0x004d3a60
 bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
   TCivUnit* pCiv = this->selectedEntry;
@@ -681,7 +728,16 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
 
 // FUNCTION: IMPERIALISM 0x004d4310
 void TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex,
-                                                           TCivUnit* pCivOrderEntry) {}
+                                                           TCivUnit* pCivOrderEntry) {
+  short previousTile = pCivOrderEntry->tileIndex06;
+  pCivOrderEntry->VTableSlot10(nNewTileIndex);
+  if (previousTile != -1 && g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
+    g_pUiRuntimeContext->mapUberPictureF0->RedrawTile(previousTile);
+  }
+  if (nNewTileIndex != -1 && g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
+    g_pUiRuntimeContext->mapUberPictureF0->RedrawTile(nNewTileIndex);
+  }
+}
 // specific completion kind: 5=rail section, 6=depot, 7=port, 8=discovery/prospecting,
 // 10=development-tier advance, 12=city/building completion, 13=tile activity byte), then
 // dispatches redraw invalidation for the affected tiles/cities when the localized map UI

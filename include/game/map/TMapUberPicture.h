@@ -152,6 +152,15 @@ public:
   // Resets map interaction back to civilian-selection mode: enters the overlay mode with
   // no explicit control, then sets interaction mode 0. 0x005999f0, __thiscall, 0 args.
   void ResetMapInteractionToCivilianMode();
+
+  // Creates a prospector civilian work-order unit bound to `orderContext` and repaints the
+  // affected tile. 0x00598d70.
+  void CreateCivilianWorkOrderAndRegisterSelection(int orderContext);
+
+  // Build the "kill all armies in the province" purge dialog: label the 30 army-name
+  // slots, pose it modally to collect per-slot unit counts, spawn that many TMilitaryUnits,
+  // then confirm. 0x00598a50. `this` is unused (all state is global). USuperMap.cpp.
+  void PromptAndQueueMilitaryProvincePurgeOrders(short provinceIndex);
   // Mac oracle: UpdateRoster(). Refresh the optional roster page without changing its
   // current page. 0x00599a20.
   void UpdateRoster();

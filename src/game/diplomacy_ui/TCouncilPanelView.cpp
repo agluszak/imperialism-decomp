@@ -9,6 +9,11 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
+// FUNCTION: IMPERIALISM 0x00430520
+TCouncilPanelView::TCouncilPanelView() {
+  diplomacyMapView60 = 0;
+}
+
 // SYNTHETIC: IMPERIALISM 0x00430570
 // TCouncilPanelView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004305a0
@@ -20,8 +25,6 @@ TCouncilPanelView::~TCouncilPanelView() {}
 // TCouncilPanelView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TCouncilPanelView, TPanelView)
-
-TCouncilPanelView::TCouncilPanelView() {}
 
 // Council panel header: when no summit is in session (selectedSourceNationSlot784 ==
 // -1), draws a single centered "no session" message (GetString 0x2733/0x34). Otherwise

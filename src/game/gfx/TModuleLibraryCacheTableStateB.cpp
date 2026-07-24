@@ -1,4 +1,9 @@
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include <new.h>
+#include <ctype.h>
+// The retail body emits `CALL _isdigit`; undo the <ctype.h> macro so the function-call
+// form is used (the macro would inline the __pctype test and drop the call).
+#undef isdigit
 
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
@@ -329,6 +334,50 @@ CString TModuleLibraryCacheTableStateB::LoadLocalizedStringByGroupAndIndex(int g
     result.ReleaseBuffer(-1);
   }
   return result;
+}
+
+// Loads a localized template string by packed group/index from `cache`, then expands each
+// `[N]` escape (N a single ASCII digit) by resolving the N-th trailing packed-id argument
+// (counting from `templateId`: [0] = templateId, [1] = first vararg) through the same cache
+// and appending the localized result. Non-digit bracket groups are skipped through ']'.
+// FUNCTION: IMPERIALISM 0x0049a910
+CString* renderTemplateOrExpandTokens(TModuleLibraryCacheTableStateB* cache, CString* out,
+                                      unsigned int templateId, ...) {
+  CString result;
+  CString templateText = cache->LoadLocalizedStringByPackedGroupAndIndex(templateId);
+  char* t = (char*)(LPCSTR)templateText;
+  int i = 0;
+  char c;
+  if (t[0] != '\0') {
+    do {
+      c = t[i];
+      if (c == '[') {
+        while (c != '\0') {
+          int d = t[i + 1];
+          i++;
+          if (isdigit(d)) {
+            result += cache->LoadLocalizedStringByPackedGroupAndIndex((&templateId)[t[i] - '0']);
+            break;
+          }
+          c = t[i];
+          if (c == ']') {
+            break;
+          }
+        }
+        c = t[i];
+        while (c != ']' && c != '\0') {
+          c = t[i + 1];
+          i++;
+        }
+      } else {
+        result += c;
+      }
+      c = t[i + 1];
+      i++;
+    } while (c != '\0');
+  }
+  new (out) CString(result);
+  return out;
 }
 
 // Windows COLORREF values with the PALETTEINDEX marker (0x01 in the high byte) name an

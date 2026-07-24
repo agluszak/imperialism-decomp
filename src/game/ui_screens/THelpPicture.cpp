@@ -38,6 +38,7 @@ HelpSetRecord* FindHelpSetById(short helpSetId) {
 
 IMPLEMENT_DYNCREATE(THelpPicture, TPicture)
 
+// FUNCTION: IMPERIALISM 0x00503c90
 THelpPicture::THelpPicture() : TPicture(), currentHelpSet90(0), topicListText94(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00503cc0

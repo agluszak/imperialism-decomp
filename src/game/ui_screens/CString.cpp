@@ -6,6 +6,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+// LIBRARY: IMPERIALISM 0x004adc40
+// CString::CString(const char*)
+
+// LIBRARY: IMPERIALISM 0x004ae990
+// CString::CString(const unsigned short*)
+
 // LIBRARY: IMPERIALISM 0x00605791
 // GetSharedEmptyStringRef -- a trivial `mov eax,const; ret` trampoline (returns the shared
 // empty CStringData). Ambiguous in the object-matcher oracle (239 byte-identical strcore.obj

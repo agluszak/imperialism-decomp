@@ -36,6 +36,9 @@ const unsigned int kEndControlTagReselectAlt = kControlTagScoreCaps; // mode 0x1
 
 } // namespace
 
+// FUNCTION: IMPERIALISM 0x00430630
+TCouncilView::TCouncilView() : TDiplomacyMapView() {}
+
 // SYNTHETIC: IMPERIALISM 0x00430660
 // TCouncilView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00430690
@@ -48,8 +51,6 @@ TCouncilView::~TCouncilView() {}
 // TCouncilView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TCouncilView, TDiplomacyMapView)
-
-TCouncilView::TCouncilView() : TDiplomacyMapView() {}
 
 // slot 0x37 — lifecycle-hook override: rebuilds the council nation-overlay geometry and
 // labels (the base impl is a no-op, hence the inherited slot name).
@@ -145,6 +146,79 @@ void TCouncilView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     }
   } else {
     TControl::DoEvent(commandId, sourceHandler, event);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004fbdf0
+void TCouncilView::BuildDiplomacyMapHintOverlayTextAndMetrics() {
+  CString text;
+  TextStyle style;
+  BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
+
+  // Census every pending-policy map record for the selected nation pair into eight
+  // relationship-category buckets: major/minor-nation × (source/target owner, in-vote /
+  // out-of-vote). Buckets 0-3 are out-of-vote, 4-7 in-vote.
+  TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
+  NationSlot sourceNation = diplomacy->selectedSourceNationSlot784;
+  NationSlot targetNation = diplomacy->selectedTargetNationSlot786;
+  short categoryCounts[8];
+  for (int i = 0; i < 8; ++i) {
+    categoryCounts[i] = 0;
+  }
+  for (int record = 0; record < 0x180; ++record) {
+    if (diplomacy->pendingPolicyCodeMatrix304[record] == -1) {
+      continue;
+    }
+    short ownerCode = g_pGlobalMapState->cityScoreTable[record].ownerNationCode00;
+    int category;
+    if (ownerCode >= 7) {
+      TCountry* country = g_apTerrainTypeDescriptorTable[ownerCode];
+      if (country->IsEncodedNationSlotMinus200Equal(sourceNation) ||
+          country->IsEncodedNationSlotMinus200Equal(targetNation)) {
+        category = 1;
+      } else {
+        category = 3;
+      }
+    } else {
+      if (ownerCode == sourceNation || ownerCode == targetNation) {
+        category = 0;
+      } else {
+        category = 2;
+      }
+    }
+    if (diplomacy->pendingPolicyCodeMatrix304[record] == targetNation) {
+      category += 4;
+    }
+    ++categoryCounts[category];
+  }
+
+  // Push the bucket totals onto the four overlay rows: a string-resource title label
+  // ('ttl0'-'ttl3') plus the two count fields ('num0'-'num3' major, 'num4'-'num7' minor).
+  for (int row = 0; row < 4; ++row) {
+    TStaticText* titleLabel = static_cast<TStaticText*>(
+        this->ResolveControlByTag(IMPERIALISM_FOURCC('t', 't', 'l', '0') + row));
+    titleLabel->AssertValid();
+    titleLabel->SetTextFromStringResource(0x2733, static_cast<short>(0x5a + row), 1);
+    titleLabel->InstallTextStyle(style, 0);
+    titleLabel->SetTextAlignmentAndMaybeRefresh(1, 0);
+    titleLabel->SetEnabled(1, 0);
+
+    TStaticText* majorField = static_cast<TStaticText*>(
+        this->ResolveControlByTag(IMPERIALISM_FOURCC('n', 'u', 'm', '0') + row));
+    majorField->AssertValid();
+    text.Format("%d", categoryCounts[row]);
+    majorField->SetTextAndMaybeRefresh(&text, 1);
+    majorField->InstallTextStyle(style, 0);
+    majorField->SetTextAlignmentAndMaybeRefresh(-1, 0);
+    majorField->SetEnabled(1, 1);
+
+    TStaticText* minorField = static_cast<TStaticText*>(
+        this->ResolveControlByTag(IMPERIALISM_FOURCC('n', 'u', 'm', '4') + row));
+    minorField->AssertValid();
+    text.Format("%d", categoryCounts[row + 4]);
+    minorField->SetTextAndMaybeRefresh(&text, 1);
+    minorField->InstallTextStyle(style, 0);
+    minorField->SetEnabled(1, 1);
   }
 }
 

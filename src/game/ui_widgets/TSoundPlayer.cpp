@@ -113,6 +113,57 @@ char TSoundPlayer::DoIdle(int action) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x005935c0
+void TSoundPlayer::UpdateAudioPlaybackStateAndScheduleRandomCue() {
+  if (clearCuePoolsAfterFade != 0 && fadeStartTick16 == 0) {
+    int n = audioCuePool->GetSize();
+    if (n > 0) {
+      audioCuePool->RemoveAll();
+      remainingRandomAudioCues->RemoveAll();
+    }
+    if (cdAudioPlaybackActive != 0) {
+      g_cdAudioDevice.StopPlayback();
+      cdAudioPlaybackActive = 0;
+      activeAudioCueId = 0;
+    }
+    clearCuePoolsAfterFade = 0;
+    return;
+  }
+
+  short pending = static_cast<short>(pendingAudioCueId);
+  if (pending != 0 && fadeStartTick16 == 0) {
+    if (static_cast<short>(g_pSimMgr->preferenceValues[3]) != 0) {
+      if (!IsTurnFlowCooldownActiveAndResetExpiredState()) {
+        if (ReturnTrueStub() == 0) {
+          g_pSimMgr->preferenceValues[3] = 0;
+          pendingAudioCueId = 0;
+          return;
+        }
+        if (pending != static_cast<short>(activeAudioCueId)) {
+          activeAudioCueId = pending;
+          g_cdAudioDevice.ApplyMciPlaybackRangeFromAudioManager(pending);
+          g_cdAudioDevice.ApplyAuxOutputVolumeFromScalar(
+              static_cast<short>(g_pSimMgr->preferenceValues[3]) << 8);
+          cdAudioPlaybackActive = 1;
+        }
+      }
+    }
+    pendingAudioCueId = 0;
+    return;
+  }
+
+  int n = audioCuePool->GetSize();
+  if (n > 0) {
+    g_randomAudioCuePollCounter = static_cast<short>(g_randomAudioCuePollCounter + 1);
+    if (g_randomAudioCuePollCounter > 4) {
+      g_randomAudioCuePollCounter = 0;
+      if (!g_cdAudioDevice.IsPlaybackActive()) {
+        SelectAndScheduleRandomAudioCue();
+      }
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00593730
 void TSoundPlayer::ResetDualAudioCuePools() {
   audioCuePool->RemoveAll();
