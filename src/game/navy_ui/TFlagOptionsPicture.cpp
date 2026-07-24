@@ -99,7 +99,7 @@ void TFlagOptionsPicture::DoPostCreate(int arg) {
     g_pSimMgr->GetString(0x2743, static_cast<short>(i), &text);
     TDropShadowText* control =
         static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTxt0 + i));
-    control->GetNextHandler();
+    control->AssertValid();
     if (i == 0) {
       ApplyUiTextStyleAndThemeFlags(control, 0, 0xc, 0x2b6c, 0x2b6a);
     } else {

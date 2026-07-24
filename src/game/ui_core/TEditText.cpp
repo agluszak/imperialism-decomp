@@ -56,7 +56,9 @@ void TEditText::Close() {
 void TEditText::Draw(RECT* rectBuffer) {
   // Open() lazily creates the live edit control the first time this paints; the static
   // text draw is only the fallback for a control that cannot host one.
-  if (Open() == nullptr) {
+  // Explicitly qualified: 0x004906a3 is a direct CALL to TEditText::Open, not a dispatch
+  // through slot 0x27 (byte 0x9c). An unqualified Open() here compiles to the virtual call.
+  if (TEditText::Open() == nullptr) {
     TStaticText::Draw(rectBuffer);
   }
 }

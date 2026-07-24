@@ -34,7 +34,7 @@ void TNavyToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
     unsigned int idx = sourceHandler->controlTag - kControlTagAgr0;
     if (idx < 3) {
       TView* main = GetWindow()->ResolveControlByTag(kControlTagMain);
-      main->GetNextHandler();
+      main->AssertValid();
       TTaskForce* order = GetActiveMapOrderEntry();
       if (order != nullptr) {
         order->SetAggression(idx);

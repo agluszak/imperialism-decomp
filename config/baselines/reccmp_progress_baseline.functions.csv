@@ -1060,7 +1060,7 @@ address|matching|name
 0x4904d0|0.4943820224719101|TEditText::~TEditText
 0x4905e0|0.0|WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0
 0x490650|1.0|TEditText::Close
-0x4906a0|0.6956521739130435|TEditText::Draw
+0x4906a0|1.0|TEditText::Draw
 0x4906d0|1.0|TEditText::IsEnabled
 0x4906f0|1.0|TEditText::SetEnable
 0x490730|1.0|TEditText::SetEnabled
@@ -1593,7 +1593,7 @@ address|matching|name
 0x4a9510|1.0|TArmyUnitView::`scalar deleting destructor'
 0x4a9540|1.0|TArmyUnitView::~TArmyUnitView
 0x4a95b0|0.5504587155963303|TArmyUnitView::Draw
-0x4a9990|0.6171428571428571|TArmyUnitView::DoEvent
+0x4a9990|0.6228571428571429|TArmyUnitView::DoEvent
 0x4a9ca0|0.5112781954887218|TArmyUnitView::HandleCrossUArmyViewsNameCommand
 0x4a9f20|0.5161290322580645|TArmyCheckBox::CreateObject
 0x4a9fc0|1.0|TArmyCheckBox::GetRuntimeClass
@@ -1624,7 +1624,7 @@ address|matching|name
 0x4aad90|0.4897959183673469|TMiniArmyView::CreateObject
 0x4aae10|1.0|TMiniArmyView::GetRuntimeClass
 0x4aaeb0|0.7365269461077845|TMiniArmyView::Draw
-0x4ab1d0|0.9533678756476683|TMiniArmyView::DoEvent
+0x4ab1d0|0.9637305699481865|TMiniArmyView::DoEvent
 0x4ab380|1.0|TSuperCivRoster::CreateObject
 0x4ab400|1.0|TSuperCivRoster::`scalar deleting destructor'
 0x4ab430|1.0|TSuperCivRoster::~TSuperCivRoster
@@ -4428,7 +4428,7 @@ address|matching|name
 0x56b210|0.4897959183673469|TFlagOptionsPicture::CreateObject
 0x56b290|1.0|TFlagOptionsPicture::GetRuntimeClass
 0x56b2b0|0.5577889447236181|TFlagOptionsPicture::DoEvent
-0x56b640|0.9230769230769231|TFlagOptionsPicture::DoPostCreate
+0x56b640|0.9358974358974359|TFlagOptionsPicture::DoPostCreate
 0x56b780|0.4897959183673469|TGameInfoPicture::CreateObject
 0x56b800|1.0|TGameInfoPicture::`scalar deleting destructor'
 0x56b830|1.0|TGameInfoPicture::~TGameInfoPicture
@@ -4457,12 +4457,12 @@ address|matching|name
 0x56e640|0.5688073394495413|TTwoPicSlider::TrackMouse
 0x56e840|0.4897959183673469|TQueryFloater::CreateObject
 0x56e8c0|1.0|TQueryFloater::GetRuntimeClass
-0x56e8e0|0.7906976744186046|TQueryFloater::DoPostCreate
+0x56e8e0|0.8023255813953488|TQueryFloater::DoPostCreate
 0x56ea20|0.6161879895561357|TQueryFloater::DoEvent
 0x56edb0|0.4897959183673469|TCreditsPicture::CreateObject
 0x56ee30|1.0|TCreditsPicture::GetRuntimeClass
-0x56ee50|0.6878980891719745|TCreditsPicture::DoPostCreate
-0x56efc0|0.8629441624365483|TCreditsPicture::DoEvent
+0x56ee50|0.7133757961783439|TCreditsPicture::DoPostCreate
+0x56efc0|0.883248730964467|TCreditsPicture::DoEvent
 0x56f190|1.0|TCreditsPicture::Draw
 0x56f330|0.25|`dynamic initializer for 'g_scaledShortConst_6A40E0''
 0x56f360|0.42424242424242425|TLineData::CreateObject

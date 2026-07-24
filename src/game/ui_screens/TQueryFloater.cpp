@@ -37,7 +37,7 @@ void TQueryFloater::DoPostCreate(int arg) {
   TextStyle style;
 
   TStaticText* titleControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
-  titleControl->GetNextHandler();
+  titleControl->AssertValid();
   titleControl->SetTextFromStringResource(0x2757, 1, 1);
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
   titleControl->InstallTextStyle(style, 0);
@@ -46,7 +46,7 @@ void TQueryFloater::DoPostCreate(int arg) {
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6c);
   for (int i = 0; i < 7; ++i) {
     TStaticText* lineControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTex0 + i));
-    lineControl->GetNextHandler();
+    lineControl->AssertValid();
     lineControl->SetTextFromStringResource(0x2757, static_cast<short>(i + 2), 1);
     lineControl->InstallTextStyle(style, 0);
     if (i == 6) {

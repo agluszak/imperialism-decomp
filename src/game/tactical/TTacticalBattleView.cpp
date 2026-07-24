@@ -934,7 +934,7 @@ void TTacticalBattleView::DoPostCreate(int arg) {
 
   TInfoBarText* cursorPanel =
       static_cast<TInfoBarText*>(GetWindow()->ResolveControlByTag(kControlTagCurs));
-  cursorPanel->GetNextHandler();
+  cursorPanel->AssertValid();
   g_pCursorControlPanel = cursorPanel;
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
