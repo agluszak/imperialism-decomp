@@ -77,6 +77,10 @@ public:
                                                      int arg4) override;
   void QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode,
                                                  NationSlot targetNationSlot) override;
+  // Reads the pending-policy pairs in field8d6, so it belongs here and not on TCountry:
+  // TMinor also derives from TCountry and is only 0x2dc bytes, while field8d6 sits at
+  // +0x8d6 inside TGreatPower's 0x964.
+  char IsDiplomacyPolicyAllowedForTargetClassState(short policyCode, short targetNationSlot);
   void NotifyActionSlot94(int sourceNation, int actionCode) override; // slot 0x94
   virtual void NoOpNationPendingActionHook(void);
 

@@ -259,7 +259,8 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
           for (int edgeIndex = 0; edgeIndex < 2; ++edgeIndex) {
             short resourceType = static_cast<short>(terrainRecord->resourceTypeByEdge[edgeIndex]);
             if (resourceType != -1) {
-              char contribution = globalMapState->FindResourceCapabilityRequirementLevel(regionIndex, edgeIndex);
+              char contribution =
+                  globalMapState->FindResourceCapabilityRequirementLevel(regionIndex, edgeIndex);
               currentNeedByType[resourceType] = static_cast<short>(
                   currentNeedByType[resourceType] + static_cast<short>(contribution));
             }
@@ -337,8 +338,8 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
             while (edge < 2) {
               signed char resourceType = terrainTable[linkedRegion].resourceTypeByEdge[edge];
               if (resourceType != -1) {
-                resourceSums[resourceType] +=
-                    static_cast<int>(globalMapState->FindResourceCapabilityRequirementLevel(linkedRegion, edge));
+                resourceSums[resourceType] += static_cast<int>(
+                    globalMapState->FindResourceCapabilityRequirementLevel(linkedRegion, edge));
               }
               ++edge;
             }
@@ -1211,6 +1212,26 @@ char TGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int ar
   }
 
   this->AppendTrackedSlotEntry(1, arg1, 0, static_cast<short>(arg4), 0);
+  return 0;
+}
+
+// Moved off TCountry, where the body had to reinterpret_cast<TGreatPower*>(this) to reach
+// field8d6 at +0x8d6 -- far past TCountry's own 0x94 and past TMinor's 0x2dc, so the cast
+// was an out-of-bounds read for every TMinor. field8d6 holds pending-policy pairs
+// (code, state); the policy is allowed only while the matching pair's state is still 0.
+// Markerless: no standalone address claims this body.
+char TGreatPower::IsDiplomacyPolicyAllowedForTargetClassState(short policyCode,
+                                                              short targetNationSlot) {
+  (void)targetNationSlot;
+  if (policyCode <= 0xc || policyCode >= 0x11) {
+    return 0;
+  }
+  if (policyCode == this->field8d6[0]) {
+    return this->field8d6[1] == 0;
+  }
+  if (policyCode == this->field8d6[2]) {
+    return this->field8d6[3] == 0;
+  }
   return 0;
 }
 
