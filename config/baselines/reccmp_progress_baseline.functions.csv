@@ -1330,9 +1330,9 @@ address|matching|name
 0x49bc40|0.5|ResetGlobalQuad6A1F18To6A1F24
 0x49bc70|0.5|ResetGlobalQuad6A1F28To6A1F34
 0x49bca0|0.16666666666666666|ResetGlobalDword6A1E68
-0x49bcd0|0.9454545454545454|TD0TemplateDialog::TD0TemplateDialog
+0x49bcd0|0.9642857142857143|TD0TemplateDialog::TD0TemplateDialog
 0x49bd60|1.0|TD0TemplateDialog::`scalar deleting destructor'
-0x49bd90|0.0|PopulateListBoxFromDelimitedText
+0x49bd90|0.8571428571428571|TD0TemplateDialog::AppendTraceTextAndFlushCompleteLines
 0x49bf60|1.0|TD0TemplateDialog::DoDataExchange
 0x49bf90|0.5|TD0TemplateDialog::GetMessageMap
 0x49bfb0|1.0|TD0TemplateDialog::OnOK
@@ -1978,32 +1978,32 @@ address|matching|name
 0x4bde50|0.25|WrapperFor_ftol_At004bde50
 0x4be000|0.8205128205128205|InsertScoredTileCandidateWithRandomTieBreak
 0x4be0d0|1.0|TInteriorMinister::CreateObject
-0x4be150|1.0|TInteriorMinister::InteriorSlot1D
-0x4be170|1.0|TInteriorMinister::InteriorSlot1E
-0x4be190|1.0|TInteriorMinister::InteriorSlot1F
+0x4be150|1.0|TInteriorMinister::GetAccumulatedResourceNeed
+0x4be170|1.0|TInteriorMinister::GetUnmetDemandPressure
+0x4be190|1.0|TInteriorMinister::ClearUnmetDemandPressure
 0x4be1b0|1.0|TInteriorMinister::GetRuntimeClass
 0x4be200|1.0|TInteriorMinister::`scalar deleting destructor'
 0x4be230|0.0|TInteriorMinister(void)
 0x4be290|1.0|TInteriorMinister::ReadFrom
 0x4be320|0.07272727272727272|TInteriorMinister::WriteTo
 0x4be3c0|0.2|TInteriorMinister::GetRankingCriterionForGP
-0x4be3f0|1.0|TInteriorMinister::InteriorSlot1A
+0x4be3f0|1.0|TInteriorMinister::LatchPendingShipTypeForOrderKind
 0x4be410|1.0|TInteriorMinister::IndustryOrder
 0x4be430|1.0|TInteriorMinister::PleaseBuildLandUnit
 0x4be450|1.0|TInteriorMinister::SetParameters
-0x4be480|0.9090909090909091|TInteriorMinister::InteriorSlot16
-0x4be4c0|1.0|TInteriorMinister::InteriorSlot17
+0x4be480|0.9090909090909091|TInteriorMinister::GetResourceNeedActionAllowance
+0x4be4c0|1.0|TInteriorMinister::GetTradeCapacityActionAllowance
 0x4be4f0|0.14285714285714285|TInteriorMinister::Call4C
 0x4be520|0.4444444444444444|TInteriorMinister::MinisterSlot14
 0x4be5b0|0.6306306306306306|TInteriorMinister::FillOrders
-0x4be650|0.8108108108108109|TInteriorMinister::InteriorSlot18
-0x4be690|0.8461538461538461|TInteriorMinister::InteriorSlot19
+0x4be650|0.8108108108108109|TInteriorMinister::TryDecayRelationNeedsUnlessDiplomacyPending
+0x4be690|0.8461538461538461|TInteriorMinister::AdvanceRoundRobinResourceNeedTarget
 0x4be6d0|1.0|TInteriorMinister::MakeNewCity
 0x4be6f0|1.0|TCityInteriorMinister::GetAiDevelopmentResourceBudgetScale
 0x4be710|0.5517241379310345|TCityInteriorMinister::CreateObject
-0x4be7b0|1.0|TCityInteriorMinister::InteriorSlot1D
-0x4be7d0|1.0|TCityInteriorMinister::InteriorSlot1E
-0x4be7f0|1.0|TCityInteriorMinister::InteriorSlot1F
+0x4be7b0|1.0|TCityInteriorMinister::GetAccumulatedResourceNeed
+0x4be7d0|1.0|TCityInteriorMinister::GetUnmetDemandPressure
+0x4be7f0|1.0|TCityInteriorMinister::ClearUnmetDemandPressure
 0x4be820|1.0|TCityInteriorMinister::GetRuntimeClass
 0x4be840|1.0|TCityInteriorMinister::TCityInteriorMinister
 0x4be880|1.0|TCityInteriorMinister::`scalar deleting destructor'
@@ -2014,7 +2014,7 @@ address|matching|name
 0x4becd0|1.0|TCityInteriorMinister::Free
 0x4bed60|1.0|TCityInteriorMinister::FillLists
 0x4bee20|0.046511627906976744|TCityInteriorMinister::GetRankingCriterionForGP
-0x4beeb0|1.0|TCityInteriorMinister::InteriorSlot1A
+0x4beeb0|1.0|TCityInteriorMinister::LatchPendingShipTypeForOrderKind
 0x4beee0|1.0|TCityInteriorMinister::IndustryOrder
 0x4bef10|1.0|TCityInteriorMinister::SelectRecruitmentProductionCommand
 0x4bef30|1.0|TCityInteriorMinister::PleaseBuildLandUnit
@@ -2870,7 +2870,7 @@ address|matching|name
 0x4fbd60|0.5822784810126582|TCouncilView::DoEvent
 0x4fbdf0|0.26961770623742454|TCouncilView::BuildDiplomacyMapHintOverlayTextAndMetrics
 0x4fc2e0|0.7128205128205128|TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker
-0x4fc630|0.4046920821114369|TCouncilView::AdvanceCivilianTerrainSelectionStep
+0x4fc630|0.40816326530612246|TCouncilView::AdvanceCivilianTerrainSelectionStep
 0x4fc950|1.0|TCouncilView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x4fc9c0|0.5818181818181818|TMapKey::CreateObject
 0x4fca70|1.0|TMapKey::GetRuntimeClass
@@ -3396,7 +3396,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::MapGenPassSlot0E
 0x527730|0.29577464788732394|TMapMaker::MapGenPassSlot0F
-0x527d00|0.4268774703557312|TMapMaker::CreateRivers
+0x527d00|0.43478260869565216|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam

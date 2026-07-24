@@ -25,33 +25,58 @@ public:
   // Zeroes trailingTable (+0x18..0x25, 7 shorts). 0x4be4f0, __thiscall, no args.
   virtual void Call4C();
   virtual void MinisterSlot14();
-  // Runs InteriorSlot18() once per InteriorSlot17() (re-read each iteration); then,
-  // once the owner's IsNationResourceNeedCurrentSumExceedingCapA6() is true, decays
-  // relation-need scores via the owner's TryDecayRelationNeedScores9AndB() once per
-  // InteriorSlot16(), accumulating the results; finally runs InteriorSlot19() that
-  // many times. 0x4be5b0, __thiscall, no args.
+  // The per-turn economic-AI pass. Runs TryDecayRelationNeedsUnlessDiplomacyPending()
+  // once per GetTradeCapacityActionAllowance() (re-read each iteration, so clearing the
+  // allowance ends the loop); then, once the owner's
+  // IsNationResourceNeedCurrentSumExceedingCapA6() is true, decays relation-need scores
+  // via the owner's TryDecayRelationNeedScores9AndB() once per
+  // GetResourceNeedActionAllowance(), accumulating the results; finally calls
+  // AdvanceRoundRobinResourceNeedTarget() that many times, servicing one resource's need
+  // target per call. 0x4be5b0, __thiscall, no args.
   virtual void FillOrders();
   // Slots 0x16-0x1f: TInteriorMinister's own new virtuals (real vtable 0x650808 is
   // 32 slots, 0x00-0x1f). TCityInteriorMinister inherits 0x16-0x19 and overrides
   // 0x1a-0x1f.
-  // Clamps/returns capabilityFlag16: clears it once needCapA6 exceeds 49.
-  virtual short InteriorSlot16(); // 0x16 0x4be480
-  // Clamps/returns capabilityFlag14: clears it once tradeCapacity exceeds 49.
-  virtual short InteriorSlot17(); // 0x17 0x4be4c0
-  // True unless GetDiplomacyCounterA2() is nonzero, in which case it falls back to
-  // TryDecayRelationNeedScores9And8().
-  virtual bool InteriorSlot18(); // 0x18 0x4be650
-  // Notifies the owner nation of round-robin slot field10 (TGreatPower slot 0x48),
-  // then advances field10 through 0..4.
-  virtual void InteriorSlot19(); // 0x19 0x4be690
-  // One stack arg each (base bodies are bare RET 0x4 no-ops; the
-  // TCityInteriorMinister overrides read it as a short).
-  virtual void InteriorSlot1A(short arg);           // 0x1a 0x4be3f0
-  virtual void IndustryOrder(short industrySlot);   // 0x1b 0x4be410
-  virtual void PleaseBuildLandUnit(short unitType); // 0x1c 0x4be430, Mac oracle
-  virtual short InteriorSlot1D(int arg);            // 0x1d 0x4be150 — returns arg
-  virtual short InteriorSlot1E(int arg);            // 0x1e 0x4be170 — returns arg
-  virtual void InteriorSlot1F(int arg);             // 0x1f 0x4be190 — no-op
+  //
+  // 0x16/0x17 are the two per-turn action allowances FillOrders uses as loop counts.
+  // Each returns a 0/1 capability flag that both constructors seed to 1 and that is
+  // permanently cleared once the owning nation outgrows the corresponding capacity
+  // (the threshold is 49 in both, compared as `> 0x31`).
+
+  // Returns capabilityFlag16, first clearing it once owner->needCapA6 exceeds 49. A null
+  // owner reads as need 0, so the flag survives. Gates the relation-need decay loop.
+  virtual short GetResourceNeedActionAllowance(); // 0x16 0x4be480
+  // Returns capabilityFlag14, first clearing it once owner->tradeCapacity exceeds 49.
+  // Gates the TryDecayRelationNeedsUnlessDiplomacyPending loop.
+  virtual short GetTradeCapacityActionAllowance(); // 0x17 0x4be4c0
+  // Returns false outright while the owner has diplomacy pending
+  // (GetDiplomacyCounterA2() != 0, owner slot 0x1d); otherwise returns the owner's
+  // TryDecayRelationNeedScores9And8() result (owner slot 0x4b).
+  virtual bool TryDecayRelationNeedsUnlessDiplomacyPending(); // 0x18 0x4be650
+  // Nudges one resource's need target toward its current value via the owner's
+  // TryIncrementNationResourceNeedTargetTowardCurrent(field10) (owner slot 0x48), then
+  // advances field10 round-robin through 0..4 -- one resource serviced per call.
+  virtual void AdvanceRoundRobinResourceNeedTarget(); // 0x19 0x4be690
+  // Queues a ship for the given advisory order kind: latches pendingShipType32 to 2 for
+  // order kind 2 and 1 otherwise, and only while it is still unset. Base body is a bare
+  // RET 0x4 no-op (a nation with no city minister has nowhere to queue it).
+  virtual void LatchPendingShipTypeForOrderKind(short orderKind); // 0x1a 0x4be3f0
+  virtual void IndustryOrder(short industrySlot);                 // 0x1b 0x4be410
+  virtual void PleaseBuildLandUnit(short unitType);               // 0x1c 0x4be430, Mac oracle
+  // 0x1d-0x1f are the per-order-type accessors over TCityInteriorMinister's two parallel
+  // short[23] tables. The base bodies are degenerate (identity/no-op) because a minister
+  // without those tables has no per-type history: 0x1d and 0x1e return the order type
+  // they were handed and 0x1f does nothing.
+
+  // Accumulated unmet need per order type (orderTypeTable12A); feeds the resource
+  // weighting in the city order planner.
+  virtual short GetAccumulatedResourceNeed(int orderType); // 0x1d 0x4be150 — base returns arg
+  // Accumulated demand pressure per order type (orderTypeTable158). TAutoGreatPower
+  // starts a foreign acquisition effort for an order type once this reaches 5.
+  virtual short GetUnmetDemandPressure(int orderType); // 0x1e 0x4be170 — base returns arg
+  // Resets that pressure for one order type; TAutoGreatPower purges all four advisory
+  // order types this way when the nation goes to war.
+  virtual void ClearUnmetDemandPressure(int orderType); // 0x1f 0x4be190 — base no-op
 
   // Own fields at +0x10..+0x28 (RTTI m_nObjectSize proves this block is
   // TInteriorMinister-only, distinct from TForeignMinister's own +0x10..+0x48 block --

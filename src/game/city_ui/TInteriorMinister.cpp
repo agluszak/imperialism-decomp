@@ -9,17 +9,17 @@
 
 // Slots 0x16-0x1f own bodies (honest stubs; slot ownership drives vtable matching).
 // FUNCTION: IMPERIALISM 0x004be150
-short TInteriorMinister::InteriorSlot1D(int arg) {
+short TInteriorMinister::GetAccumulatedResourceNeed(int arg) {
   return static_cast<short>(arg);
 }
 
 // FUNCTION: IMPERIALISM 0x004be170
-short TInteriorMinister::InteriorSlot1E(int arg) {
+short TInteriorMinister::GetUnmetDemandPressure(int arg) {
   return static_cast<short>(arg);
 }
 
 // FUNCTION: IMPERIALISM 0x004be190
-void TInteriorMinister::InteriorSlot1F(int) {}
+void TInteriorMinister::ClearUnmetDemandPressure(int) {}
 // SYNTHETIC: IMPERIALISM 0x004be0d0
 // TInteriorMinister::CreateObject
 
@@ -59,7 +59,7 @@ short TInteriorMinister::GetRankingCriterionForGP(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004be3f0
-void TInteriorMinister::InteriorSlot1A(short) {}
+void TInteriorMinister::LatchPendingShipTypeForOrderKind(short) {}
 
 // FUNCTION: IMPERIALISM 0x004be410
 void TInteriorMinister::IndustryOrder(short) {}
@@ -74,7 +74,7 @@ void TInteriorMinister::SetParameters(short firstParameter, short secondParamete
 }
 
 // FUNCTION: IMPERIALISM 0x004be480
-short TInteriorMinister::InteriorSlot16() {
+short TInteriorMinister::GetResourceNeedActionAllowance() {
   short needCap;
   if (ownerContextAt04 != 0) {
     needCap = ownerContextAt04->needCapA6;
@@ -88,7 +88,7 @@ short TInteriorMinister::InteriorSlot16() {
 }
 
 // FUNCTION: IMPERIALISM 0x004be4c0
-short TInteriorMinister::InteriorSlot17() {
+short TInteriorMinister::GetTradeCapacityActionAllowance() {
   if (ownerContextAt04->tradeCapacity > 0x31) {
     capabilityFlag14 = 0;
   }
@@ -126,18 +126,18 @@ void TInteriorMinister::MinisterSlot14() {
 void TInteriorMinister::FillOrders() {
   int accumulated = 0;
   int i = 0;
-  short count = InteriorSlot17();
+  short count = GetTradeCapacityActionAllowance();
   if (count > 0) {
     do {
-      InteriorSlot18();
+      TryDecayRelationNeedsUnlessDiplomacyPending();
       ++i;
-      count = InteriorSlot17();
+      count = GetTradeCapacityActionAllowance();
     } while (i < count);
     accumulated = 0;
   }
 
   if (ownerContextAt04->IsNationResourceNeedCurrentSumExceedingCapA6()) {
-    short count2 = InteriorSlot16();
+    short count2 = GetResourceNeedActionAllowance();
     if (count2 > 0) {
       int remaining = count2;
       do {
@@ -148,7 +148,7 @@ void TInteriorMinister::FillOrders() {
     if (accumulated > 0) {
       int remaining = accumulated;
       do {
-        InteriorSlot19();
+        AdvanceRoundRobinResourceNeedTarget();
         --remaining;
       } while (remaining != 0);
     }
@@ -156,7 +156,7 @@ void TInteriorMinister::FillOrders() {
 }
 
 // FUNCTION: IMPERIALISM 0x004be650
-bool TInteriorMinister::InteriorSlot18() {
+bool TInteriorMinister::TryDecayRelationNeedsUnlessDiplomacyPending() {
   bool result = false;
   if (ownerContextAt04->GetDiplomacyCounterA2() == 0) {
     result = ownerContextAt04->TryDecayRelationNeedScores9And8() != 0;
@@ -165,7 +165,7 @@ bool TInteriorMinister::InteriorSlot18() {
 }
 
 // FUNCTION: IMPERIALISM 0x004be690
-void TInteriorMinister::InteriorSlot19() {
+void TInteriorMinister::AdvanceRoundRobinResourceNeedTarget() {
   ownerContextAt04->TryIncrementNationResourceNeedTargetTowardCurrent(field10);
   ++field10;
   if (field10 > 4) {

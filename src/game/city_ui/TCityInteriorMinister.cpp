@@ -76,17 +76,17 @@ float TCityInteriorMinister::GetAiDevelopmentResourceBudgetScale(int* resourcePo
 // TCityInteriorMinister::CreateObject
 
 // FUNCTION: IMPERIALISM 0x004be7b0
-short TCityInteriorMinister::InteriorSlot1D(int arg) {
+short TCityInteriorMinister::GetAccumulatedResourceNeed(int arg) {
   return orderTypeTable12A[arg];
 }
 
 // FUNCTION: IMPERIALISM 0x004be7d0
-short TCityInteriorMinister::InteriorSlot1E(int arg) {
+short TCityInteriorMinister::GetUnmetDemandPressure(int arg) {
   return orderTypeTable158[arg];
 }
 
 // FUNCTION: IMPERIALISM 0x004be7f0
-void TCityInteriorMinister::InteriorSlot1F(int arg) {
+void TCityInteriorMinister::ClearUnmetDemandPressure(int arg) {
   orderTypeTable158[arg] = 0;
 }
 
@@ -215,7 +215,7 @@ short TCityInteriorMinister::GetRankingCriterionForGP(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004beeb0
-void TCityInteriorMinister::InteriorSlot1A(short orderKind) {
+void TCityInteriorMinister::LatchPendingShipTypeForOrderKind(short orderKind) {
   if (pendingShipType32 == 0) {
     pendingShipType32 = static_cast<short>((orderKind == 2) + 1);
   }

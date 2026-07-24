@@ -19,16 +19,16 @@ class TFuzzySet;
 class TCityInteriorMinister : public TInteriorMinister {
 public:
   virtual ~TCityInteriorMinister() override; // slot 0x01 (scalar deleting destructor)
-  short GetRankingCriterionForGP(short nationSlot) override; // slot 0x0a 0x4bee20
-  virtual void MakeNewCity(TCity* city) override;            // slot 0x11 0x4c0d90
-  virtual void FillOrders() override;                        // slot 0x15 0x4bf770
-  virtual void InteriorSlot1A(short arg) override;           // slot 0x1a 0x4beeb0
-  virtual void IndustryOrder(short industrySlot) override;   // slot 0x1b 0x4beee0
-  virtual void PleaseBuildLandUnit(short unitType) override; // slot 0x1c 0x4bef30
-  virtual short InteriorSlot1D(int arg) override;            // slot 0x1d 0x4be7b0
-  virtual short InteriorSlot1E(int arg) override;            // slot 0x1e 0x4be7d0
-  virtual void InteriorSlot1F(int arg) override;             // slot 0x1f 0x4be7f0
-  virtual void FillLists();                                  // slot 0x20 0x4bed60
+  short GetRankingCriterionForGP(short nationSlot) override;         // slot 0x0a 0x4bee20
+  virtual void MakeNewCity(TCity* city) override;                    // slot 0x11 0x4c0d90
+  virtual void FillOrders() override;                                // slot 0x15 0x4bf770
+  virtual void LatchPendingShipTypeForOrderKind(short arg) override; // slot 0x1a 0x4beeb0
+  virtual void IndustryOrder(short industrySlot) override;           // slot 0x1b 0x4beee0
+  virtual void PleaseBuildLandUnit(short unitType) override;         // slot 0x1c 0x4bef30
+  virtual short GetAccumulatedResourceNeed(int arg) override;        // slot 0x1d 0x4be7b0
+  virtual short GetUnmetDemandPressure(int arg) override;            // slot 0x1e 0x4be7d0
+  virtual void ClearUnmetDemandPressure(int arg) override;           // slot 0x1f 0x4be7f0
+  virtual void FillLists();                                          // slot 0x20 0x4bed60
   // Reports orderMetricTable40 deltas to the owner's foreign minister (index 0 as a
   // 25%-chance roll gated on either of the paired trigger slots [0]/[1], indices 2..6
   // forwarded directly when nonzero), then picks a (resultCode, magnitude) pair from
@@ -157,7 +157,7 @@ public:
   short orderShortTableBA[16];    // +0xba..0xda
   short deferredLaborShortfallDA; // +0xda
   short orderShortTableDC[16];    // +0xdc..0xfc
-  // Three parallel short[23] order-type tables (InteriorSlot1D/1E/1F index +0x12a/+0x158
+  // Three parallel short[23] order-type tables (GetAccumulatedResourceNeed/1E/1F index +0x12a/+0x158
   // by order-type code); all cleared together by InitializeCityInteriorState.
   short orderTypeTableFC[23];           // +0xfc..0x12a
   short orderTypeTable12A[23];          // +0x12a..0x158
