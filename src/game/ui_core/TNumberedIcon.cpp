@@ -22,7 +22,12 @@ void TNumberedIcon::DoPostCreate(int arg) {
   AssignFlags98AndMaybeRefresh(5, 1);
   InstallNumberText();
   if (numberTextAc != 0) {
-    CRect numberBounds(frameWidth34 - 0x10, frameHeight38 - 0x10, frameWidth34, frameHeight38);
+    // 0x00507511 loads +0x34 before +0x38. MSVC evaluates constructor arguments
+    // right-to-left, so passing the fields directly would load frameHeight38 first;
+    // sequencing them into locals pins the original order.
+    int iconWidth = frameWidth34;
+    int iconHeight = frameHeight38;
+    CRect numberBounds(iconWidth - 0x10, iconHeight - 0x10, iconWidth, iconHeight);
     numberTextAc->ApplyBounds(&numberBounds, 1);
   }
 }
