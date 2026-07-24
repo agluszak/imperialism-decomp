@@ -67,3 +67,38 @@ bare no-arg calls across src/game (TButton/TCity/TDlgWindow/TEventHandler/TMacVi
      usually scores worse — pick the local form, not the block form.
 
   *(ex decomp-loop list-note 107)*
+
+### Variadic `[N]`-template substitutors index the caller's vararg stack, not a real table
+*(2026-07, FilterStringByCharacterTypeFlag4AndAppend 0x49a7f0, 70%)*
+
+A string function whose decompile shows `auStackY_bN[param[i]]` used as a `char*` — where
+`auStackY_bN` is a large *uninitialized* stack array below ESP — is not a real table: it is
+the compiler indexing the **caller's argument list** with a pre-biased base. The asm is
+`MOVSX ECX,byte[fmt+i]; MOV EDX,[ESP + ECX*4 - 0xNN]` where the `-0xNN` displacement biases
+a `&fmt`-relative base by `-'0'*4`. So `[N]` (N an ASCII digit) selects the N-th trailing
+string argument counting from `fmt` itself: source is `(&fmt)[fmt[i] - '0']` (compiler folds
+`-'0'` into the base displacement, emitting exactly the biased indexed load). Model the
+function `Foo(int unusedLead, CString* out, char* fmt, ...)`; `out` is a caller-provided
+**return slot** copy-CONSTRUCTED (0x6057a7), not assigned — use `new (out) CString(result)`
+(genuine placement into a caller buffer, allowed). `isdigit`: the retail body emits
+`CALL _isdigit`, so `#include <ctype.h>` then `#undef isdigit` to force the function form (the
+macro inlines the `__pctype` table test and drops the call); a bare `extern "C" int isdigit(int)`
+fails the clang-cl lint with `-Winconsistent-dllimport`.
+
+### Error/assert modal reporters are pure `Format` + `operator+=` chains — 99-100% attainable
+*(2026-07, FormatAndAssignTurnStateSharedTextFromTemplate 0x5d48c0, 99%→exact)*
+
+A function with N `CString` locals, `CString::Format` (0x5ff15e) calls, and a long
+`operator+=` run building one message, ending in `TViewMgr::ModalMessage`, is mechanical.
+Keys: (a) format the number locals FIRST (declare them, `.Format(g_szDecimalFormat, n)`),
+THEN declare the accumulator `CString` — matches the original's "3 ctors, 3 Formats, 1 ctor"
+emission order; declaring all four up front runs the 4th ctor too early. (b) `operator+=`
+overload is auto-selected: literal/`char*` → 0x605cce (LPCSTR), `CString&` → 0x605d0a. (c)
+Read the exact separator/format string globals from the PE `.data`/`.rdata` (manual section
+walk: `va-ImageBase - section.VirtualAddress + section.PointerToRawData`) — `just ghidra
+string-oracle` only lists sole-referenced strings and caps output, missing shared 1-char
+separators like `","`/`"'"`/`" at "`. reccmp pairs literals by content, so inline them. (d)
+`ModalMessage(message_by_value, g_ptSomePlacement)` — the pass-by-value CString emits the copy
+ctor naturally; add the `g_pt*ModalMessage` POINT global as `{0,0}` in global_data_tables.cpp.
+The residual (if any) is one library CString-ctor ILT thunk (0x4076b7) — not worth touching a
+shared thunk.
