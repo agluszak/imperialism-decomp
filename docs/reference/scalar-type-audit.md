@@ -14,11 +14,11 @@ rather than domain discriminants.
 
 ## Summary
 
-- Findings: 382
+- Findings: 381
 - `native_integral_boundary`: 21
 - `nested_integral_cast`: 32
 - `predicate_storage_cast`: 15
-- `raw_discriminant_literal`: 314
+- `raw_discriminant_literal`: 313
 
 ## clang-tidy evaluation
 
@@ -189,7 +189,6 @@ is classified, and a family that stops appearing must be removed.
 | `orderType` | 11 | `mixed_domain_needs_per_site_split` | the sites mix three proven domains under one parameter name: ResourceKind bands (< 23, <= 22, >= 17, <= 6) in TCityInteriorMinister, the 14-entry industry domain (< 0x0e) in TMultiplayerMgr, and TUnit::orderType civilian/military kinds in TTerrainHelpPicture. Splitting them requires renaming the parameters per owner class first. |
 | `ownerCode` | 1 | `nation_slot_domain` | TCouncilView's census reads Province::ownerNationCode00 into ownerCode; > 6 separates the seven major-power slots from the minor/reserved band and the == sites compare against the selected NationSlot pair, the same domain as nationCode/ownerNationCode. |
 | `ownerNationCode` | 3 | `nation_slot_domain` | the 0x180 and 6 bounds are the encoded-nation-tag bands already documented on NationSlot/EncodedNationSlot; the >= 0 test is the unassigned -1 sentinel. |
-| `ownerState` | 1 | `byte_or_int_predicate_not_a_domain` | TUnitOrder tests whether an owner is set. |
 | `patternMode` | 1 | `closed_domain_needs_listing_evidence` | TModuleLibraryCacheTableStateB distinguishes pattern mode 0 when resolving a palette entry. |
 | `pendingShipType32` | 3 | `open_index_count_or_bound` | TCityInteriorMinister tests the pending ship slot for zero/non-zero occupancy, not for a particular ship type. |
 | `policyCode` | 8 | `diplomacy_proposal_code_domain` | DiplomacyProposalKind is recovered (imperialism-decomp-1uj.99.1.5); TCountry and TMinor still spell its 0xc/0x11 band edges and the 200/500 encoded-slot biases numerically. |
@@ -323,7 +322,6 @@ is classified, and a family that stops appearing must be removed.
 | `bd328d9447ddc0ed` | `raw_discriminant_literal` | `src/game/city/TShipOrder.cpp:192` | resourceTypeIndex48 != 0 | `unresolved_narrower_subdomain` | `imperialism-decomp-1uj.99.8` |
 | `c8ac857dcb374d76` | `raw_discriminant_literal` | `src/game/city/TTrainingOrder.cpp:46` | resourceTypeIndex48 == 1 | `unresolved_narrower_subdomain` | `imperialism-decomp-1uj.99.8` |
 | `aaf9d9576d818308` | `raw_discriminant_literal` | `src/game/city/TTrainingOrder.cpp:62` | resourceTypeIndex48 == 1 | `unresolved_narrower_subdomain` | `imperialism-decomp-1uj.99.8` |
-| `af6a071fd25444f9` | `raw_discriminant_literal` | `src/game/city/TUnitOrder.cpp:107` | ownerState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `34542c653bc0cea4` | `raw_discriminant_literal` | `src/game/city_ui/TArmoryView.cpp:64` | resourceType == 0x18 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
 | `8992db3cfef8386f` | `raw_discriminant_literal` | `src/game/city_ui/TArmoryView.cpp:67` | resourceType == 0x19 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
 | `8da0dc3f5a954b0c` | `raw_discriminant_literal` | `src/game/city_ui/TArmoryView.cpp:70` | resourceType == 0x19 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
