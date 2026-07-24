@@ -3680,7 +3680,7 @@ address|matching|name
 0x536470|0.3333333333333333|`dynamic initializer for '_init_TNavyMission''
 0x5364c0|0.5714285714285714|TNavyMission::Free
 0x536530|0.4691358024691358|TNavyMission::WriteTo
-0x536650|0.6219512195121951|TNavyMission::ReadFrom
+0x536650|0.691358024691358|TNavyMission::ReadFrom
 0x536740|0.5454545454545454|TNavyMission::SmokeEmIfYouGotEm
 0x536780|1.0|TNavyMission::AcceptReenforcement
 0x5367d0|0.4|TNavyMission::RejectConstituent

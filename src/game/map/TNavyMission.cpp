@@ -152,11 +152,13 @@ void TNavyMission::WriteTo(TStream* stream) {
 void TNavyMission::ReadFrom(TStream* stream) {
   TMission::ReadFrom(stream);
 
-  int id1 = stream->ReadInteger();
-  targetZone14 = FindMapActionContextByNodeId(static_cast<short>(id1));
+  // Both zone ids are 2-byte reads through slot 0x4c (ReadShort), not the 1-byte
+  // slot 0x40: the original does CALL [vt+0x4c] at 0x536667 and 0x536677.
+  short targetZoneId = stream->ReadShort();
+  targetZone14 = FindMapActionContextByNodeId(targetZoneId);
 
-  int id2 = stream->ReadInteger();
-  targetZone18 = FindMapActionContextByNodeId(static_cast<short>(id2));
+  short secondaryZoneId = stream->ReadShort();
+  targetZone18 = FindMapActionContextByNodeId(secondaryZoneId);
 
   stream->ReadBytes(&requiredShipEquipageByCategory[0], 0x10);
   for (int i = 0; i < 4; ++i) {
