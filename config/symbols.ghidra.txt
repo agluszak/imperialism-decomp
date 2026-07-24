@@ -1241,7 +1241,7 @@ WrapperFor_thunk_PropagateUiResourceContextRecursive_At00483380 483380 f
 ReinitializeIncludeViewMainPaneAndRedrawWindow 4833B0 f
 WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At00483530 483530 f
 CIncludeView::OnEraseBkgnd 4835A0 f
-SelectPaletteAndResolveHandleMapEntry_004835e0 4835E0 f
+CIncludeView::BlitMainPaneBitmapRectToWindow 4835E0 f
 CIncludeView::OnCtlColor 483660 f
 CIncludeView::OnActivateView 483720 f
 CIncludeView::OnInitialUpdate 483750 f

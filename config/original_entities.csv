@@ -500,7 +500,7 @@ address|name|symbol|size|type|prototype|provenance
 4833b0|ReinitializeIncludeViewMainPaneAndRedrawWindow||300|function|undefined ReinitializeIncludeViewMainPaneAndRedrawWindow()|
 483530|WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At00483530||66|function|undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At00483530()|
 4835a0|CIncludeView::OnEraseBkgnd||47|function|BOOL OnEraseBkgnd(CDC* pDC)|
-4835e0|SelectPaletteAndResolveHandleMapEntry_004835e0||92|function|undefined SelectPaletteAndResolveHandleMapEntry_004835e0()|
+4835e0|CIncludeView::BlitMainPaneBitmapRectToWindow||92|function|void __thiscall BlitMainPaneBitmapRectToWindow(RECT * rect)|
 483660|CIncludeView::OnCtlColor||141|function|void * __thiscall OnCtlColor(CDC * a0, CWnd * a1, uint a2)|
 483720|CIncludeView::OnActivateView||23|function|void OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeactiveView)|
 483750|CIncludeView::OnInitialUpdate||268|function|void OnInitialUpdate()|

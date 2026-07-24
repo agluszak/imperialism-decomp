@@ -391,7 +391,7 @@ address|matching|name
 0x47d540|1.0|TDDTemplateDialog::TDDTemplateDialog
 0x47d5b0|1.0|TDDTemplateDialog::DoDataExchange
 0x47d5d0|0.5|TDDTemplateDialog::GetMessageMap
-0x47d5f0|0.701123595505618|TDDTemplateDialog::OnPaint
+0x47d5f0|0.7056179775280899|TDDTemplateDialog::OnPaint
 0x47d960|0.9444444444444444|CGdiObject::~CGdiObject
 0x47d9d0|0.1|WrapperFor_DeleteRegionHandleFromClipState_At0047d9d0
 0x47da70|0.1|WrapperFor_DeleteRegionHandleFromClipState_At0047da70
@@ -542,19 +542,19 @@ address|matching|name
 0x482bd0|0.5|CIncludeView::GetMessageMap
 0x482bf0|1.0|CIncludeView::OnDialogTreeHostMsg4EF
 0x482c90|1.0|CIncludeView::OnDraw
-0x482d00|0.4065040650406504|CIncludeView::BlitMapDialogSurfaceToHdcWithClipBounds
+0x482d00|0.4146341463414634|CIncludeView::BlitMapDialogSurfaceToHdcWithClipBounds
 0x482ed0|0.7708333333333334|CIncludeView::BlitMainPaneBitmapToOffscreenClipped
-0x482fc0|0.30177514792899407|CIncludeView::UpdateAndRenderMapTileHintOverlayQueue
+0x482fc0|0.3076923076923077|CIncludeView::UpdateAndRenderMapTileHintOverlayQueue
 0x483220|0.4166666666666667|IncludeViewOverlayRectRecord::ComputeSpan
 0x483340|1.0|CIncludeView::SetUiRuntimeContextAndActivateMain
 0x483380|0.0|WrapperFor_thunk_PropagateUiResourceContextRecursive_At00483380
 0x4833b0|0.4777777777777778|CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow
 0x483530|0.08|WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At00483530
 0x4835a0|1.0|CIncludeView::OnEraseBkgnd
-0x4835e0|0.0|SelectPaletteAndResolveHandleMapEntry_004835e0
+0x4835e0|0.725|CIncludeView::BlitMainPaneBitmapRectToWindow
 0x483660|0.8785046728971962|CIncludeView::OnCtlColor
 0x483720|1.0|CIncludeView::OnActivateView
-0x483750|0.9120879120879121|CIncludeView::OnInitialUpdate
+0x483750|0.9230769230769231|CIncludeView::OnInitialUpdate
 0x4838b0|0.9487179487179487|CIncludeView::OnMouseMove
 0x4839e0|0.3181818181818182|CIncludeView::OnLButtonDown
 0x483ab0|0.0|TUiEvent::~TUiEvent
@@ -1181,12 +1181,12 @@ address|matching|name
 0x494130|0.47533632286995514|CreateFontFromPresetAndAttachRegionHandle
 0x494370|0.1|WrapperFor_DeleteRegionHandleFromClipState_At00494370
 0x4944e0|0.4266666666666667|UpdateGlobalFontPresetAndRebuildCachedFontIfDirty
-0x4945f0|0.8461538461538461|BindScopedMapQuickDrawDcHandle
+0x4945f0|1.0|BindScopedMapQuickDrawDcHandle
 0x494660|1.0|GetActiveQuickDrawDc
 0x494680|1.0|GetActiveQuickDrawSurfaceDib
 0x4946b0|0.5714285714285714|ReleaseScopedMapQuickDrawDcHandle
-0x494700|0.6055045871559633|ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(class TView *)
-0x4947e0|0.7578947368421053|ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(class TView *, struct tagRECT *)
+0x494700|0.6238532110091743|ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(class TView *)
+0x4947e0|0.7789473684210526|ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(class TView *, struct tagRECT *)
 0x4948b0|0.7666666666666667|ScopedMapQuickDrawContext::~ScopedMapQuickDrawContext
 0x494950|0.9259259259259259|RenderTacticalBattleSelectionAndUnitOverlayPass_Impl
 0x494a90|0.7142857142857143|DrawTextWithCachedQuickDrawStyleState
@@ -6334,7 +6334,7 @@ address|matching|name
 0x5e55ee|0.6607142857142857|CDragListBox::Dropped
 0x5e5661|0.0|MoveListBoxEntryPreserveItemData
 0x5e56cd|1.0|CDragListBox::DrawInsert
-0x5e56f2|0.96|CDragListBox::DrawSingle
+0x5e56f2|0.9733333333333334|CDragListBox::DrawSingle
 0x5e57e9|0.9871794871794872|CDragListBox::OnChildNotify
 0x5e58ab|1.0|CToolBarCtrl::Create
 0x5e58e4|0.9411764705882353|CProgressCtrl::~CProgressCtrl(void)
@@ -7059,7 +7059,7 @@ address|matching|name
 0x608a2b|1.0|CWnd::WinHelpA
 0x608b11|1.0|AfxFindMessageEntry
 0x608b66|1.0|CWnd::WindowProc
-0x608ba8|0.9397321428571429|CWnd::OnWndMsg
+0x608ba8|0.9441964285714286|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
 0x6091d9|1.0|CWnd::OnNotify
@@ -7284,7 +7284,7 @@ address|matching|name
 0x612682|0.8571428571428571|CDC::CDC
 0x612696|1.0|CDC::`scalar deleting destructor'
 0x6126c6|0.9473684210526315|afxMapHDC
-0x612736|0.0|FromHandle_612736
+0x612736|1.0|CDC::FromHandle
 0x61274c|1.0|CDC::Attach
 0x612783|1.0|CDC::Detach
 0x6127ca|0.9473684210526315|CDC::~CDC

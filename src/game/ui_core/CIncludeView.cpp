@@ -379,6 +379,17 @@ BOOL CIncludeView::OnEraseBkgnd(CDC* pDC) {
   return 1;
 }
 
+// FUNCTION: IMPERIALISM 0x004835e0
+void CIncludeView::BlitMainPaneBitmapRectToWindow(RECT* rect) {
+  HDC hdc = ::GetDC(m_hWnd);
+  // LIBRARY: CDC::FromHandle (0x00612736)
+  CDC* dc = CDC::FromHandle(hdc);
+  m_field44->SelectAndRealizeDibPalette(dc, FALSE);
+  m_field44->StretchDibitsRectAtNaturalSize(rect->left, rect->top, dc, rect->left, rect->top,
+                                            rect->right - rect->left, rect->bottom - rect->top);
+  ::ReleaseDC(m_hWnd, dc->m_hDC);
+}
+
 // Native edit controls store their owning TControl in GWL_USERDATA. Select the game's
 // indexed palette into the supplied DC, use the fixed edit background key, and resolve
 // the control's resource-derived text color (the style override when present, otherwise
