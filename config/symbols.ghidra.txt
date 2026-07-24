@@ -6741,12 +6741,12 @@ TRelationshipDialog::CreateObject 5B2CA0 f
 TRelationshipDialog::'scalar_deleting_destructor' 5B2D30 f
 TRelationshipDialog::GetRuntimeClass 5B2D80 f
 TRelationshipDialog::Close 5B2DA0 f
-TRelationshipDialog::VTableSlot68 5B2F10 f
+TRelationshipDialog::StuffValues 5B2F10 f
 TMinorRelationshipDialog::CreateObject 5B3300 f
 TMinorRelationshipDialog::'scalar_deleting_destructor' 5B3390 f
 TMinorRelationshipDialog::GetRuntimeClass 5B33E0 f
 TMinorRelationshipDialog::Close 5B3400 f
-TMinorRelationshipDialog::VTableSlot68 5B3570 f
+TMinorRelationshipDialog::StuffValues 5B3570 f
 TGPTreatyDialog::CreateObject 5B3AE0 f
 TGPTreatyDialog::'scalar_deleting_destructor' 5B3B70 f
 TGPTreatyDialog::GetRuntimeClass 5B3BC0 f

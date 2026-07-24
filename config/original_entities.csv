@@ -5553,12 +5553,12 @@ address|name|symbol|size|type|prototype|provenance
 5b2d30|TRelationshipDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b2d80|TRelationshipDialog::GetRuntimeClass||6|function|undefined GetTRelationshipDialogClassNamePointer()|rtti
 5b2da0|TRelationshipDialog::Close||278|function|void Close()|macos-name-oracle:Close()
-5b2f10|TRelationshipDialog::VTableSlot68||785|function|undefined DestructTRelationshipDialogAndMaybeFree(void)|
+5b2f10|TRelationshipDialog::StuffValues|?StuffValues@TRelationshipDialog@@UAEXXZ|785|function|void __thiscall TRelationshipDialog::StuffValues(void)|curated
 5b3300|TMinorRelationshipDialog::CreateObject|?CreateObject@TMinorRelationshipDialog@@SGPAVCObject@@XZ|106|function|undefined CreateObject()|rtti
 5b3390|TMinorRelationshipDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b33e0|TMinorRelationshipDialog::GetRuntimeClass||6|function|undefined GetTMinorRelationshipDialogClassNamePointer()|rtti
 5b3400|TMinorRelationshipDialog::Close||277|function|void Close()|macos-name-oracle:Close()
-5b3570|TMinorRelationshipDialog::VTableSlot68||1089|function|undefined DestructTMinorRelationshipDialogAndMaybeFree(void)|
+5b3570|TMinorRelationshipDialog::StuffValues|?StuffValues@TMinorRelationshipDialog@@UAEXXZ|1089|function|void __thiscall TMinorRelationshipDialog::StuffValues(void)|curated
 5b3ae0|TGPTreatyDialog::CreateObject|?CreateObject@TGPTreatyDialog@@SGPAVCObject@@XZ|106|function|undefined CreateObject()|rtti
 5b3b70|TGPTreatyDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b3bc0|TGPTreatyDialog::GetRuntimeClass||6|function|undefined GetTGPTreatyDialogClassNamePointer()|rtti
