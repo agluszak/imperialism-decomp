@@ -2615,7 +2615,7 @@ address|name|symbol|size|type|prototype|provenance
 4eb040|IterateLinkedListCursorEntries_004eb040||74|function|undefined IterateLinkedListCursorEntries_004eb040()|
 4eb0d0|TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner||131|function|undefined PruneInvalidTrackedEntriesAndNotifyOwner(void)|
 4eb190|TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools||853|function|void PlanAiDevelopmentActionsFromResourcePools(int unused)|
-4eb5d0|OrphanCallChain_C4_I75_004eb5d0||172|function|undefined OrphanCallChain_C4_I75_004eb5d0()|
+4eb5d0|CompareMissionsByWeightedShortfall||172|function|undefined CompareMissionsByWeightedShortfall()|
 4eb6b0|TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio||393|function|void UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unused)|
 4eb8b0|TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits||1212|function|void AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unused)|
 4ebff0|WrapperFor_ftol_At004ebff0||30|function|undefined WrapperFor_ftol_At004ebff0()|
