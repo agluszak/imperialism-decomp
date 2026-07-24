@@ -1222,7 +1222,7 @@ address|name|symbol|size|type|prototype|provenance
 497860|TDiplomacyMapView::FrameRegionOnHdcAndReleaseBrushState||165|function|undefined FrameRegionOnHdcAndReleaseBrushState()|
 497940|Helper_Uses_CBrush_At00497940||160|function|undefined Helper_Uses_CBrush_At00497940()|
 497a10|Helper_Uses_AttachRegionHandleToClipStateAndRegister_At00497a10||183|function|undefined Helper_Uses_AttachRegionHandleToClipStateAndRegister_At00497a10()|
-497b30|InitializeCityBuildingControlRegions_Impl||42|function|undefined InitializeCityBuildingControlRegions_Impl()|
+497b30|InitializeCityBuildingControlRegions_Impl||42|function|void InitializeCityBuildingControlRegions_Impl(RgnHandle region, int x, int y)|
 497bb0|CopyRgn||56|function|undefined CombineOptionalSourceRegionIntoDestinationAndUpdateBox()|
 497c00|QDLoadResource||3|function|undefined NoOpRuntimeCallback_00497c00()|
 497c80|SetQuickDrawTextOriginWithContextOffset||102|function|undefined SetQuickDrawTextOriginWithContextOffset()|
@@ -1631,13 +1631,13 @@ address|name|symbol|size|type|prototype|provenance
 4ad560|TBattleReportView::Free||37|function|void Free()|
 4ad5a0|TBattleReportView::DoIdle||386|function|char DoIdle(int action)|
 4ad7a0|TBattleReportView::DoEvent||937|function|void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event)|
-4adc40|InitializeOutSharedStringWithEmptyRefAndCopyBuffer||42|function|undefined InitializeOutSharedStringWithEmptyRefAndCopyBuffer()|
+4adc40|CString::CString|??0CString@@QAE@PBD@Z|42|function|public: __thiscall CString::CString(char const *)|msvc500_library_oracle
 4adc80|TBattleReportView::HandleCursorHoverSelectionByChildHitTestAndFallback||18|function|void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, int hitArg)|
 4adcb0|TBattleReportView::DoMouseCommand||117|function|void __thiscall DoMouseCommand(CPoint &point, TToolboxEvent *event, CPoint origin)|
 4ade00|TBattleReportView::Draw||27|function|void Draw(RECT* rectBuffer)|
 4ade30|TDiplomacyMapView::WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFill_At004ade00_Impl||311|function|undefined WrapperFor_thunk_RenderDiplomacyMatrixRowWithStatusIconsAndFill_At004ade00_Impl()|
 4adfc0|TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels||1973|function|void RefreshMapContextSelectionPanelAndInfoLabels(void* mapContextRecord)|
-4ae990|RefreshMapContextSelectionPanelAndInfoLabels_Impl||42|function|undefined RefreshMapContextSelectionPanelAndInfoLabels_Impl()|
+4ae990|CString::CString|??0CString@@QAE@PBG@Z|42|function|public: __thiscall CString::CString(unsigned short const *)|msvc500_library_oracle
 4ae9d0|TBattleDetailBook::CreateObject|?CreateObject@TBattleDetailBook@@SGPAVCObject@@XZ|123|function|undefined CreateObject()|rtti
 4aea70|TBattleDetailBook::GetRuntimeClass||6|function|undefined GetTBattleDetailBookClassNamePointer()|rtti
 4aea90|TBattleDetailBook::DoEvent||64|function|undefined ConstructTBattleDetailBookBaseState()|
@@ -1708,7 +1708,7 @@ address|name|symbol|size|type|prototype|provenance
 4b1a20|TGPCheater::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b1a70|TGPCheater::GetRuntimeClass||6|function|undefined GetTGPCheaterClassNamePointer()|rtti
 4b1a90|TGPCheater::ConstructTGPCheaterBaseState||428|function|undefined ConstructTGPCheaterBaseState()|
-4b1cb0|TLaborPool::CreateTLaborPoolInstance||547|function|undefined CreateTLaborPoolInstance()|
+4b1cb0|TGPCheater::RefreshGPCheaterNationValues||547|function|void RefreshGPCheaterNationValues(int nationSlot)|
 4b20a0|WrapperFor_ftol_At004b20a0||30|function|undefined WrapperFor_ftol_At004b20a0()|
 4b20d0|TLaborPool::CreateObject|?CreateObject@TLaborPool@@SGPAVCObject@@XZ|38|function|undefined CreateObject()|rtti
 4b2110|TLaborPool::GetRuntimeClass||6|function|undefined GetTLaborPoolClassNamePointer()|rtti
@@ -2093,9 +2093,7 @@ address|name|symbol|size|type|prototype|provenance
 4c8390|TShipyardView::DoStartup||1337|function|void DoStartup()|
 4c8a20|WrapperFor_thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext_At004c8a20||24|function|undefined WrapperFor_thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext_At004c8a20()|
 4c8a50|TShipyardView::UpdateFields||71|function|void UpdateFields()|
-4c8ac0|TShipyardView::DoEvent||329|function|undefined OrphanRetStub_0059add0(int param_1, int param_2)|
-4c8c09|UpdateCityViewCountControlAndRefreshSelection||54|function|undefined UpdateCityViewCountControlAndRefreshSelection()|
-4c8c3f|UpdateCityViewCountControlAndRefreshSelectionAlt||148|function|undefined UpdateCityViewCountControlAndRefreshSelectionAlt()|
+4c8ac0|TShipyardView::DoEvent||531|function|void __thiscall TShipyardView::DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
 4c8d70|TShipyardView::SetShip||774|function|void __thiscall SetShip(short shipType)|
 4c9150|TShipyardView::Draw||1274|function|void __thiscall RenderCityViewProductionDialogMetrics(int pDialogState, int * pRenderRectData)|
 4c97c0|TShipyardView::GetCostString||519|function|void GetCostString(CString * output, short actionIndex)|
@@ -2136,9 +2134,7 @@ address|name|symbol|size|type|prototype|provenance
 4cb6db|enable_level_pips_loop|||global||
 4cb717|disable_level_pips_loop|||global||
 4cb73d|cleanup_recruitment_selection|||global||
-4cb8a0|TUniversityView::DoEvent||301|function|undefined HandleUniversityRecruitmentSelectionAndStepCommand()|
-4cb9cd|UpdateUniversityCountControlAndRefreshView||54|function|undefined UpdateUniversityCountControlAndRefreshView()|
-4cba03|UpdateUniversityCountControlAndRefreshViewAlt||151|function|undefined UpdateUniversityCountControlAndRefreshViewAlt()|
+4cb8a0|TUniversityView::DoEvent||506|function|void __thiscall TUniversityView::DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
 4cbb20|TUniversityView::UpdateFields||823|function|void UpdateFields()|
 4cbf30|TUniversityView::Free||34|function|undefined 'scalar_deleting_destructor'(void)|
 4cbf70|TUniversityView::Draw||711|function|void __thiscall RenderUniversityRecruitmentRequirementGrid(RECT * pClipRect)|
@@ -2185,9 +2181,7 @@ address|name|symbol|size|type|prototype|provenance
 4cefd3|advanced_recruit_count_loop_next|||global||
 4cf0df|advanced_recruit_availability_loop_head|||global||
 4cf1b3|advanced_recruit_availability_loop_next|||global||
-4cf350|TArmoryView::DoEvent||287|function|undefined HandleArmoryViewSelectionAndStepCommand()|
-4cf46f|UpdateUniversitySpecialistCountControlAndRefreshView||54|function|undefined UpdateUniversitySpecialistCountControlAndRefreshView()|
-4cf4a5|UpdateUniversitySpecialistCountControlAndRefreshViewAlt||151|function|undefined UpdateUniversitySpecialistCountControlAndRefreshViewAlt()|
+4cf350|TArmoryView::DoEvent||492|function|void __thiscall TArmoryView::DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
 4cf5c0|TArmoryView::UpdateFields||1217|function|void UpdateFields()|
 4cf67d|specialist_entry_null_guard|||global||
 4cf93c|resolve_capacity_mode|||global||
@@ -3127,12 +3121,9 @@ address|name|symbol|size|type|prototype|provenance
 50e600|OrphanTiny_ThisAdjustJump_a4_0050e600||11|function|undefined OrphanTiny_ThisAdjustJump_a4_0050e600()|
 50e620|TMapMgr::ReadFrom||293|function|undefined WrapperFor_HandleCityDialogNoOpSlot18_At0050e620(int * param_1)|
 50e7a0|TMapMgr::WriteTo||200|function|undefined WrapperFor_HandleCityDialogNoOpSlot14_At0050e7a0(int * param_1)|
-50e8b0|TMapMgr::WrapperFor_AllocateWithFallbackHandler_At0050e8b0||81|function|undefined WrapperFor_AllocateWithFallbackHandler_At0050e8b0(void)|
-50e901|InitializeUMapPrimaryTileRecordDefaultsAndEnsureAuxBuffer||341|function|undefined InitializeUMapPrimaryTileRecordDefaultsAndEnsureAuxBuffer()|
-50ea56|InitializeUMapAuxEntryDefaultsAndSharedNameFields||325|function|undefined InitializeUMapAuxEntryDefaultsAndSharedNameFields()|
+50e8b0|TMapMgr::AllocateAndResetTerrainAndCityScoreTables||747|function|void TMapMgr::AllocateAndResetTerrainAndCityScoreTables(void)|
 50ec60|NationStateRecordA8::NationStateRecordA8||18|function|undefined InitializeSharedStringRefAndReturnThis()|
-50ec90|TMapMgr::BuildOrLoadGlobalMapStateForSession||283|function|char __thiscall BuildOrLoadGlobalMapStateForSession(const char * mapStreamName, char * tuningOverride)|
-50ed4d|RebuildGlobalMapStateAndMaybeDispatchTurnEvent3C0||591|function|undefined RebuildGlobalMapStateAndMaybeDispatchTurnEvent3C0()|
+50ec90|TMapMgr::BuildOrLoadGlobalMapStateForSession||874|function|char __thiscall BuildOrLoadGlobalMapStateForSession(const char * mapStreamName, char * tuningOverride)|
 50f200|TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream||337|function|undefined LoadPoliticalMapRegionSubtypeTableFromResourceStream()|
 50f3c0|VerifyMapDataAndWriteReport||434|function|void __fastcall VerifyMapDataAndWriteReport(int pMapDataContext)|
 50f5f0|WrapperFor_thunk_SetMapRecordFlagA3AndPropagateToChildren_At0050f5f0||139|function|undefined WrapperFor_thunk_SetMapRecordFlagA3AndPropagateToChildren_At0050f5f0()|
@@ -3413,10 +3404,10 @@ address|name|symbol|size|type|prototype|provenance
 5297e0|TMapMaker::FindUiChildControlByWindowHandleRecursive_25||133|function|undefined RestoreFinePatternBandFromNeighborCell()|
 5298a0|TMapMaker::vmethod_0081||74|function|undefined GetFineGridCellBasePointerFromCoarseIndex()|
 529960|RotateMapColumnsByPeakCityTileDensity||636|function|undefined RotateMapColumnsByPeakCityTileDensity()|
-529d90|OrphanDeadLeaf_NoRefs_00529d90||358|function|undefined OrphanDeadLeaf_NoRefs_00529d90()|
+529d90|ComputeOwnedTerritoryCentroidTile||358|function|undefined ComputeOwnedTerritoryCentroidTile()|
 529f60|TMapMaker::MapGenFinalizePassSlot19||247|function|void __thiscall MapGenFinalizePassSlot19(int mode)|
 6a3498|g_cityRegionIdRemapTable_006a3498|||global||
-52a0a0|OrphanDeadLeaf_NoRefs_0052a0a0||143|function|undefined OrphanDeadLeaf_NoRefs_0052a0a0()|
+52a0a0|CompactCityRegionIds||143|function|undefined CompactCityRegionIds()|
 52a160|GenerateCityRegionIdsBySeedAndNeighborPropagation||940|function|undefined GenerateCityRegionIdsBySeedAndNeighborPropagation()|
 52a670|GetCityRegionIdAtTileIndex||45|function|undefined GetCityRegionIdAtTileIndex()|
 52a6e0|WrapExtendedMapXCoordinateInPlace||48|function|undefined WrapExtendedMapXCoordinateInPlace()|
@@ -3445,8 +3436,8 @@ address|name|symbol|size|type|prototype|provenance
 52d0d0|stretch<Seapoint>::OverStretch|?OverStretch@?$stretch@USeapoint@@@@QAEXI@Z|90|function|void __thiscall OverStretch(unsigned int requestedCount)|template
 52d150|stretch<Seapoint>::operator[]|??A?$stretch@USeapoint@@@@QAEAAUSeapoint@@I@Z|115|function|Seapoint * __thiscall operator[](unsigned int index)|template
 52d1f0|ReindexContiguousCityRegionIds||546|function|undefined ReindexContiguousCityRegionIds()|
-52d4b0|OrphanDeadLeaf_NoRefs_0052d4b0||393|function|undefined OrphanDeadLeaf_NoRefs_0052d4b0()|
-52d6b0|OrphanDeadLeaf_NoRefs_0052d6b0||114|function|undefined OrphanDeadLeaf_NoRefs_0052d6b0()|
+52d4b0|RepairOrphanedTileValuesFromNeighbors||393|function|undefined RepairOrphanedTileValuesFromNeighbors()|
+52d6b0|AssignSequentialValuesToRegionPlaceholders||114|function|undefined AssignSequentialValuesToRegionPlaceholders()|
 52d750|MergeSmallCityRegionsAndCompactIds||2386|function|undefined MergeSmallCityRegionsAndCompactIds()|
 52e310|stretch<SeaSegment>::SetCapacity||38|function|void __thiscall SetCapacity(unsigned int requestedCapacity)|template
 52e350|RebuildUMapperRouteRecordsAndActiveMapRects||881|function|undefined RebuildUMapperRouteRecordsAndActiveMapRects()|
@@ -4447,9 +4438,7 @@ address|name|symbol|size|type|prototype|provenance
 56a510|TGamePreferencesPicture::CreateObject|?CreateObject@TGamePreferencesPicture@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 56a590|TGamePreferencesPicture::GetRuntimeClass||6|function|undefined GetTGamePreferencesPictureClassNamePointer()|rtti
 56a5b0|TGamePreferencesPicture::DoPostCreate||1700|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-56ae10|TGamePreferencesPicture::DoEvent||416|function|undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, CString param_2, int * param_3)|
-56af74|HandleOptionsTagApplyFragmentAndMaybePostTurnEvent5DC||135|function|void __thiscall HandleOptionsTagApplyFragmentAndMaybePostTurnEvent5DC(int pOptionsState)|
-56b021|HandleOptionsTagAudioRefreshFragmentAndMaybePostTurnEvent5DC||259|function|void HandleOptionsTagAudioRefreshFragmentAndMaybePostTurnEvent5DC(void)|
+56ae10|TGamePreferencesPicture::DoEvent||810|function|void __thiscall TGamePreferencesPicture::DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
 56b210|TFlagOptionsPicture::CreateObject|?CreateObject@TFlagOptionsPicture@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 56b290|TFlagOptionsPicture::GetRuntimeClass||6|function|undefined GetTFlagOptionsPictureClassNamePointer()|rtti
 56b2b0|TFlagOptionsPicture::DoEvent||705|function|undefined HandleDialogCommandTagSaveLoadPrefQuitCred()|

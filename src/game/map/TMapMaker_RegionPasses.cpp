@@ -41,7 +41,7 @@ inline int HexNeighborInline(int tileIndex, int direction) {
 // horizontally; `useWrapOffset` biases the accumulated column sum instead of re-sweeping
 // with every column snapped to whichever edge dominates. Returns -1 for an empty match.
 // FUNCTION: IMPERIALISM 0x00529d90
-int TMapMaker::OrphanDeadLeaf_NoRefs_00529d90(int nationCode, char useWrapOffset) {
+int TMapMaker::ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOffset) {
   int columnSum = 0;
   int rowSum = 0;
   int matchCount = 0;
@@ -115,7 +115,7 @@ int TMapMaker::OrphanDeadLeaf_NoRefs_00529d90(int nationCode, char useWrapOffset
 // table, the record is rewritten with the remapped id, and the number of distinct regions
 // is left in cityRegionCount2a4.
 // FUNCTION: IMPERIALISM 0x0052a0a0
-void TMapMaker::OrphanDeadLeaf_NoRefs_0052a0a0() {
+void TMapMaker::CompactCityRegionIds() {
   cityRegionCount2a4 = 0;
 
   int* remapCursor = g_cityRegionIdRemapTable_006a3498;
@@ -149,7 +149,7 @@ void TMapMaker::OrphanDeadLeaf_NoRefs_0052a0a0() {
 // (>= 0) value and shares its terrain class. The class key is -1 unless the tile record's
 // leading byte is 5, in which case it is record[4] - 0x17. Returns the repair count.
 // FUNCTION: IMPERIALISM 0x0052d4b0
-int TMapMaker::OrphanDeadLeaf_NoRefs_0052d4b0(short* tileValues) {
+int TMapMaker::RepairOrphanedTileValuesFromNeighbors(short* tileValues) {
   int repairedCount = 0;
   int tileIndex = 0;
   int byteOffset = 0;
@@ -198,7 +198,7 @@ int TMapMaker::OrphanDeadLeaf_NoRefs_0052d4b0(short* tileValues) {
 // still carrying placeholder -(i + 2) are searched from the start of the grid, and the
 // first match takes *nextValue (which is then advanced). Returns the number assigned.
 // FUNCTION: IMPERIALISM 0x0052d6b0
-int TMapMaker::OrphanDeadLeaf_NoRefs_0052d6b0(short* tileValues, int* nextValue) {
+int TMapMaker::AssignSequentialValuesToRegionPlaceholders(short* tileValues, int* nextValue) {
   int regionOrdinal = 0;
   int assignedCount = 0;
 
