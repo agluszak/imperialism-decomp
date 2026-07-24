@@ -8,17 +8,17 @@ policy (Mac resource order, read big-endian).
 
 ## Summary
 
-- Tags: 541
+- Tags: 542
 - `generated_resource_manifest_tag`: 67
 - `multiplayer_session_or_message_tag`: 32
 - `ui_tag_app_and_setup_screens`: 57
-- `ui_tag_city_and_trade`: 62
+- `ui_tag_city_and_trade`: 63
 - `ui_tag_diplomacy`: 18
 - `ui_tag_military_navy_tactical`: 43
 - `ui_tag_shared`: 144
 - `ui_tag_strategic_map`: 22
 - `ui_tag_widget_plumbing`: 96
-- Corroborated by the Mac control-tag index: 404 of 541
+- Corroborated by the Mac control-tag index: 404 of 542
 - Violations: 0
 
 ## Violations
@@ -207,6 +207,7 @@ build does not ship.
 | `kControlTagCos1` | `cos1` | `0x636f7331` | `ui_tag_city_and_trade` | 2 |
 | `kControlTagCos2` | `cos2` | `0x636f7332` | `ui_tag_city_and_trade` | 2 |
 | `kControlTagCpap` | `cpap` | `0x63706170` | `ui_tag_city_and_trade` | 1 |
+| `kControlTagCrup` | `crup` | `0x63727570` | `ui_tag_city_and_trade` |  |
 | `kControlTagEqu1` | `equ1` | `0x65717531` | `ui_tag_city_and_trade` | 1 |
 | `kControlTagEqu2` | `equ2` | `0x65717532` | `ui_tag_city_and_trade` | 1 |
 | `kControlTagEqu3` | `equ3` | `0x65717533` | `ui_tag_city_and_trade` | 1 |

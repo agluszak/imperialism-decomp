@@ -29,3 +29,4 @@ public:
   // ReadBytes (slot 0x3c) is inherited unchanged from TStream.
   void WriteBytesSlot78(void* data, int length) override;
 };
+ASSERT_SIZE(TCountingStream, 0xc);

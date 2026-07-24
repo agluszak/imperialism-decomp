@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TObject.h"
 #include "game/ui_tags_widgets.h"
 #include "game/mfc.h"
@@ -37,6 +39,7 @@ union THelpCompletionCounterPair {
 
 ASSERT_SIZE(THelpCompletionCounterPair, 4);
 
+#pragma pack(push, 2)
 // VTABLE: IMPERIALISM 0x00657040
 class THelpMgr : public TObject {
 public:
@@ -96,7 +99,6 @@ public:
   // 2-byte packed (like TControl's Mac-heritage records): the field suffixes are the real
   // offsets only under pack(2) — field1a is an int AT 0x1a, and helpIndexReady sits at
   // 0x2e (ctor 0x5005f3 writes word [this+0x2e]; read at 0x5bfae6 as the help detail level).
-#pragma pack(push, 2)
   TSortedPtrList* indexList;
   TWindow* pendingDialogView8;
   TWindow* pendingDialogViewC;
@@ -115,7 +117,6 @@ public:
   // Help/advisor detail level for info texts: 0 minimal, 1 concise verdict, >= 2 detailed
   // numbers ("indexReady" name is historic; hedged).
   short helpIndexReady;
-#pragma pack(pop)
 
   THelpMgr();
 
@@ -123,6 +124,8 @@ public:
   // 0x00503b90, __thiscall.
   void CycleTradeScreenMode0To2();
 };
+#pragma pack(pop)
+ASSERT_SIZE(THelpMgr, 0x30);
 
 // 0x00502b60 (free function in the THelpMgr TU): once per turn tick, show the
 // active nation's turn alerts (mission-score comparisons, treasury prompt, commodity

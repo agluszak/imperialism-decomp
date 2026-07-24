@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TPicture.h"
 #include "game/mfc.h"
 
@@ -24,3 +26,4 @@ public:
   short quitAnimationFrame90;
   short padA2;
 };
+ASSERT_SIZE(TSpecialQuitPicture, 0x94);

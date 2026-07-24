@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TPicture.h"
 #include "game/ui_tags_common.h"
 #include "game/mfc.h"
@@ -22,3 +24,4 @@ public:
   // buttons from the current page and the 'page' TPageView's layout fields.
   void ShowPage(int currentPage); // 0x56f6c0
 };
+ASSERT_SIZE(TBook, 0x98);

@@ -96,6 +96,7 @@ public:
   virtual void RemoveBehavior(TBehavior* behavior); // 0x23 0x48a4a0
   virtual void AddBehavior(TBehavior* behavior);    // 0x24 0x48a4d0
 };
+ASSERT_SIZE(TEventHandler, 0x20);
 
 // Builds a TEvent (commandNumber = dispatchMessage = commandId, sourceHandler = control,
 // targetHandler = owner) and forwards it to owner->DispatchQueuedUiCommandAndRelease.

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/city/TProductionOrder.h"
 #include "game/mfc.h"
 
@@ -18,3 +20,4 @@ public:
 
   TTrainingOrder();
 };
+ASSERT_SIZE(TTrainingOrder, 0x4c);

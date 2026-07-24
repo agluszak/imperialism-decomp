@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TPicture.h"
 #include "game/mfc.h"
 
@@ -14,3 +16,4 @@ public:
 
   TFlagOptionsPicture();
 };
+ASSERT_SIZE(TFlagOptionsPicture, 0x90);

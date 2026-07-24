@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/city/TProductionOrder.h"
 #include "game/mfc.h"
 
@@ -28,3 +30,4 @@ public:
 
   TPowerPlantOrder();
 };
+ASSERT_SIZE(TPowerPlantOrder, 0x50);

@@ -13,7 +13,7 @@ IMPLEMENT_DYNCREATE(TOnOffRadioButton, TPictureButton)
 // TControl ctor's 1), then byte state94 = 0. The timingWord92 store visible at
 // 0x5719f8 is the inlined TPictureButton ctor.
 // FUNCTION: IMPERIALISM 0x005719f0
-TOnOffRadioButton::TOnOffRadioButton() {
+TOnOffRadioButton::TOnOffRadioButton() : TPictureButton() {
   eventNumber60 = 0xc;
   state94 = 0;
 }

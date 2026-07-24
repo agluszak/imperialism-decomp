@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/map/TForeignMinister.h"
 
 // VTABLE: IMPERIALISM 0x0065a188
@@ -14,6 +16,7 @@ public:
   void SetTradeBids() override;
   void ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode) override;
 };
+ASSERT_SIZE(TArmsForeignMinister, 0x80);
 
 // VTABLE: IMPERIALISM 0x00659d70
 class TTedForeignMinister : public TForeignMinister {
@@ -29,6 +32,7 @@ public:
   void SetTradeBids() override;
   void ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode) override;
 };
+ASSERT_SIZE(TTedForeignMinister, 0x80);
 
 // VTABLE: IMPERIALISM 0x00659e30
 class TBillForeignMinister : public TForeignMinister {
@@ -66,6 +70,7 @@ public:
   void SetTradeBids() override;
   void ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode) override;
 };
+ASSERT_SIZE(TDiplomatForeignMinister, 0x80);
 
 // VTABLE: IMPERIALISM 0x0065a008
 class TTextileForeignMinister : public TForeignMinister {
@@ -79,6 +84,7 @@ public:
   void SetTradeBids() override;
   void ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode) override;
 };
+ASSERT_SIZE(TTextileForeignMinister, 0x80);
 
 // VTABLE: IMPERIALISM 0x0065a0c8
 class TTraderForeignMinister : public TForeignMinister {
@@ -93,3 +99,4 @@ public:
   void SetTradeBids() override;
   void ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode) override;
 };
+ASSERT_SIZE(TTraderForeignMinister, 0x80);

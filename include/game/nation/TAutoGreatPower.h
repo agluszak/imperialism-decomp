@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/nation/TGreatPower.h"
 #include "game/ui_tags_common.h"
 
@@ -177,6 +179,7 @@ public:
   float averageUnitDivergencePerOwnedRegionB68;
   float activeMissionPressureAverageB6c;
 };
+ASSERT_SIZE(TAutoGreatPower, 0xb70);
 
 bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePools,
                                                 TMilitaryUnit** bestUnitByType,

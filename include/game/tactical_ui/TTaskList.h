@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/TList.h"
 #include "game/mfc.h"
 
@@ -21,3 +23,4 @@ public:
   // inline, which is how the 15 xrefs to 0x5aeca0 are shaped.
   POSITION Insert(TTask* task);
 };
+ASSERT_SIZE(TTaskList, 0x20);

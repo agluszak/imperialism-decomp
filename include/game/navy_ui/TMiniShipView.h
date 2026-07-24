@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TControl.h"
 #include "game/mfc.h"
 
@@ -24,3 +26,4 @@ public:
   // pointer, matching TShip's layout exactly (same shape as TShipView::shipNode60).
   TShip* shipNode84;
 };
+ASSERT_SIZE(TMiniShipView, 0x88);

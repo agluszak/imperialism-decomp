@@ -7,3 +7,7 @@
 extern POINT g_ptControlStringModalMessage;
 
 extern short g_offerDeskSelectionIndexTable_00668568[8];
+
+// Offer-desk CaptureLayoutF0 pairs (runtime-written).
+extern "C" int g_aOfferDeskSheetLayoutInactive_006a5a00[2];
+extern "C" int g_aOfferDeskSheetLayoutActive_006a5a28[2];

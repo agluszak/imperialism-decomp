@@ -1,6 +1,5 @@
 #include "game/ui_screens/TUpDownPictureButton.h"
 #include "game/ui_core/TWindow.h"
-#include "game/ui_widgets/TAmtBar.h"
 #include "game/ui_core/TView.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
@@ -13,8 +12,8 @@
 
 IMPLEMENT_DYNCREATE(TUpDownPictureButton, TPicture)
 
-// FUNCTION: IMPERIALISM 0x005715a0
-TUpDownPictureButton::TUpDownPictureButton() : TPicture(), timingWord92(7000) {}
+// TUpDownPictureButton's ctor is defined inline in the header (marker there): the
+// original inlines it into every derived ctor.
 
 // SYNTHETIC: IMPERIALISM 0x005715d0
 // TUpDownPictureButton::`scalar deleting destructor'
@@ -23,14 +22,13 @@ TUpDownPictureButton::~TUpDownPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00571620
 void TUpDownPictureButton::HiliteState(unsigned char enabledState, unsigned char refreshNow) {
-  char mode = enabledState ? 1 : 0;
-  if (mode != static_cast<char>(controlState64)) {
-    controlState64 = static_cast<unsigned char>(mode);
-    short bitmapId =
-        mode == 0 ? static_cast<short>(glyphBase84 - 1) : static_cast<short>(glyphBase84 + 1);
-    reinterpret_cast<TAmtBar*>(this)->SetBitmap(bitmapId, 1);
+  if (enabledState != controlState64) {
+    controlState64 = enabledState;
+    SetPictureResourceIdAndRefresh(enabledState != 0 ? static_cast<short>(glyphBase84 + 1)
+                                                     : static_cast<short>(glyphBase84 - 1),
+                                   1);
     if (refreshNow) {
-      RefreshControl();
+      DrawImmediate();
     }
   }
 }

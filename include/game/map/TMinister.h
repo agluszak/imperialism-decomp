@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "decomp_types.h"
 
 #include "game/mfc.h"
@@ -55,3 +57,4 @@ public:
   // happen to share layout, not one shared base block. See TForeignMinister.h and
   // TInteriorMinister.h for the per-class fields now declared there.
 };
+ASSERT_SIZE(TMinister, 0x10);

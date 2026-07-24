@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/gfx/TDialogView.h"
 #include "game/mfc.h"
 
@@ -12,3 +14,4 @@ public:
 
   TMinorTradeBidsDialog();
 };
+ASSERT_SIZE(TMinorTradeBidsDialog, 0x60);

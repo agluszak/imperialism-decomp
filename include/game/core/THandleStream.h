@@ -44,3 +44,4 @@ public:
   void ReadBytes(void* buffer, int sizeBytes) override;
   void WriteBytesSlot78(void* data, int length) override;
 };
+ASSERT_SIZE(THandleStream, 0x18);

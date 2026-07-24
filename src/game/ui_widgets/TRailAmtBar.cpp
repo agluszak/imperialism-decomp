@@ -28,7 +28,10 @@
 // SYNTHETIC: IMPERIALISM 0x00589f70
 // TRailAmtBar::GetRuntimeClass
 
-IMPLEMENT_DYNCREATE(TRailAmtBar, TIndustryAmtBar)
+// The original descriptor's m_pBaseClass (0x662ff0) points at TAmtBar's CRuntimeClass —
+// the retail macro skipped the real C++ base TIndustryAmtBar (both classes are 0x6c with
+// the same inlined ctor chain down to TView). Reproduce the retail macro argument.
+IMPLEMENT_DYNCREATE(TRailAmtBar, TAmtBar)
 
 // FUNCTION: IMPERIALISM 0x00589f90
 TRailAmtBar::TRailAmtBar() : TIndustryAmtBar() {}
@@ -90,13 +93,13 @@ void TRailAmtBar::DoPostCreate(int arg) {
                               (int)productionOrCapValue);
   }
   auxValueB = 0x3a;
-  reinterpret_cast<TView*>(this)->TView::DoPostCreate(arg);
+  TView::DoPostCreate(arg);
 }
 
 // FUNCTION: IMPERIALISM 0x0058a1b0
 void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   CTemporaryRegion surface;
-  TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
+  TAmtBar* control = this;
   GetClip(surface.tempRgn);
 
   if (control != 0 && control->IsActionable() != 0) {

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_widgets/TIndustryAmtBar.h"
 
 struct CRuntimeClass;
@@ -15,3 +17,4 @@ public:
   void RenderPrimarySurfaceOverlayPanelWithClipCache() override;
   void RenderQuickDrawOverlayWithHitRegion(short selectedValue) override; // slot 0x6b 0x0058a3b0
 };
+ASSERT_SIZE(TRailAmtBar, 0x6c);

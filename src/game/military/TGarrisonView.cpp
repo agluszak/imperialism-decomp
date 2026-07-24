@@ -18,7 +18,7 @@
 IMPLEMENT_DYNCREATE(TGarrisonView, TMilitaryPageView)
 
 // FUNCTION: IMPERIALISM 0x004a8810
-TGarrisonView::TGarrisonView() {
+TGarrisonView::TGarrisonView() : TMilitaryPageView() {
   selectedTileIndex8C = -1;
 }
 

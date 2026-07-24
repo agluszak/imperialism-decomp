@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TPicture.h"
 #include "game/mfc.h"
 
@@ -13,3 +15,4 @@ public:
 
   TMultiMessagePicture();
 };
+ASSERT_SIZE(TMultiMessagePicture, 0x90);

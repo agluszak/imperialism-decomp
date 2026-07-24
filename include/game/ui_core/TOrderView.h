@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TView.h"
 #include "game/mfc.h"
 
@@ -25,3 +27,4 @@ public:
 
   TItemOrder* order64; // +0x64 — selected city-production item order
 };
+ASSERT_SIZE(TOrderView, 0x68);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/tactical_ui/TCityTask.h"
 #include "game/mfc.h"
 
@@ -25,3 +27,4 @@ public:
   short requestedShipType14;
   short waitingForShipOrderAdvance16;
 };
+ASSERT_SIZE(TShipBuildingTask, 0x18);

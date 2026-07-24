@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TView.h"
 #include "game/ui_tags_city.h"
 #include "game/ui_tags_common.h"
@@ -35,3 +37,4 @@ public:
   // Mac name oracle: TTradeBookView::ShowPage(long).
   void ShowPage(int page); // 0x5be3e0
 };
+ASSERT_SIZE(TTradeBookView, 0x78);

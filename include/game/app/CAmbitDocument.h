@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/mfc.h"
 
 class TAmbitFileBasedDocument;
@@ -35,3 +37,4 @@ public:
 
   DECLARE_MESSAGE_MAP()
 };
+ASSERT_SIZE(CAmbitDocument, 0x54);

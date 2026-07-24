@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TNoHilitePicture.h"
 #include "game/mfc.h"
 
@@ -14,3 +16,4 @@ public:
 
   TGameScorePicture();
 };
+ASSERT_SIZE(TGameScorePicture, 0x94);

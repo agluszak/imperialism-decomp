@@ -1,4 +1,3 @@
-#include "game/ui_widgets/TAmtBar.h"
 #include "game/ui_core/TWindow.h"
 // UI wrapper class quads extracted from trade_screen.
 
@@ -37,12 +36,11 @@ void THQButton::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x0058b750
 void THQButton::HiliteState(unsigned char enabledState, unsigned char refreshNow) {
-  char mode = enabledState ? 1 : 0;
-  if (mode != static_cast<char>(controlState64)) {
-    controlState64 = static_cast<unsigned char>(mode);
+  if (enabledState != controlState64) {
+    controlState64 = enabledState;
     short bitmapId = 0;
-    short modeState = glyph98;
-    if (mode == 0) {
+    if (enabledState == 0) {
+      short modeState = glyph98;
       if (modeState == 0) {
         bitmapId = glyph90;
       } else if (modeState == 1) {
@@ -53,22 +51,18 @@ void THQButton::HiliteState(unsigned char enabledState, unsigned char refreshNow
     } else {
       bitmapId = timingWord92;
     }
-    reinterpret_cast<TAmtBar*>(this)->SetBitmap(bitmapId, 1);
+    SetPictureResourceIdAndRefresh(bitmapId, 1);
     if (refreshNow) {
-      TWindow* owner = GetWindow();
-      if (owner != 0) {
-        owner->ForceRedraw();
-      }
+      GetWindow()->ForceRedraw();
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0058b7f0
 void THQButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
   if (commandId == 0xc) {
     if (controlState64 == 0) {
-      control->InvokeSlot1CC(1, 1);
+      IsSelected(1, 1);
     }
     TControl::DoEvent(commandId, sourceHandler, event);
     return;
@@ -78,10 +72,10 @@ void THQButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
       TControl::DoEvent(commandId, sourceHandler, event);
       return;
     }
-    control->InvokeSlot1CC(0, 1);
+    IsSelected(0, 1);
     return;
   }
-  control->InvokeSlot1CC(1, 1);
+  IsSelected(1, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0058b890

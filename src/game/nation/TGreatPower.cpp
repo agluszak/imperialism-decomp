@@ -1149,8 +1149,9 @@ void TGreatPower::DecrementDiplomacyCounterA2Slot66(int delta) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dda60
-int TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
-  return this->diplomacyState1c6[nationSlot] + this->relationDeltaSnapshot[nationSlot];
+short TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
+  return static_cast<short>(this->diplomacyState1c6[nationSlot] +
+                            this->relationDeltaSnapshot[nationSlot]);
 }
 
 // FUNCTION: IMPERIALISM 0x004dda90

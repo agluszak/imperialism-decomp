@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/tactical_ui/TTacticalToolbar.h"
 #include "game/mfc.h"
 
@@ -20,3 +22,4 @@ public:
 
   TTacNavyToolbar();
 };
+ASSERT_SIZE(TTacNavyToolbar, 0x98);

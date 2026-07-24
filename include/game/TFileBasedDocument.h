@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TDocument.h"
 #include "game/mfc.h"
 
@@ -11,3 +13,4 @@ public:
 
   TFileBasedDocument();
 };
+ASSERT_SIZE(TFileBasedDocument, 0x4);

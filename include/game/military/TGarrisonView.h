@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/navy/TMilitaryPageView.h"
 #include "game/mfc.h"
 
@@ -19,3 +21,4 @@ public:
   short selectedTileIndex8C;
   unsigned char padding8E[2];
 };
+ASSERT_SIZE(TGarrisonView, 0x90);

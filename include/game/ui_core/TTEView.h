@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TStaticText.h"
 #include "game/mfc.h"
 
@@ -36,3 +38,4 @@ public:
   unsigned char field95;      // +0x95
   unsigned char padding96[2]; // +0x96
 };
+ASSERT_SIZE(TTEView, 0x98);

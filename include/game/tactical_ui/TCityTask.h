@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/tactical_ui/TTask.h"
 #include "game/mfc.h"
 
@@ -50,3 +52,4 @@ public:
   short alreadyQueuedFlag;   // +0x0e — set once a follow-up TCityTask has been queued this tick
   unsigned char pendingFlag; // +0x10 — always 1 on construction; not restored by ReadFrom
 };
+ASSERT_SIZE(TCityTask, 0x14);

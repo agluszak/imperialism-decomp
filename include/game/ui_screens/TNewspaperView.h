@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TNewsMgr.h" // newsStory rows rendered by the advisor summary
 #include "game/ui_tags_screens.h"
 #include "game/ui_core/TPicture.h"
@@ -35,3 +37,4 @@ public:
   int AppendInterNationEventSummaryTextEntry(int column, int y, int recordId, int recordLength,
                                              TextStyle* style, int styleWord, CString* tokens);
 };
+ASSERT_SIZE(TNewspaperView, 0x98);

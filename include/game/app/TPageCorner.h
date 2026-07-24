@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TColorKeyPicture.h"
 #include "game/mfc.h"
 
@@ -13,3 +15,4 @@ public:
 
   TPageCorner();
 };
+ASSERT_SIZE(TPageCorner, 0x98);

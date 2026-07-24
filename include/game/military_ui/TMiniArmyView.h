@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TControl.h"
 #include "game/mfc.h"
 
@@ -19,3 +21,4 @@ public:
 
   TMiniArmyView();
 };
+ASSERT_SIZE(TMiniArmyView, 0x88);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_widgets/TDeluxeText.h"
 #include "game/mfc.h"
 
@@ -20,3 +22,4 @@ public:
 
   TInfoBarText();
 };
+ASSERT_SIZE(TInfoBarText, 0xb4);

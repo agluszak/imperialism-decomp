@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/map/TTacticalPlayer.h"
 #include "game/mfc.h"
 
@@ -21,3 +23,4 @@ public:
 
   TNavyPlayer();
 };
+ASSERT_SIZE(TNavyPlayer, 0x30);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TMegaPicture.h"
 #include "game/mfc.h"
 
@@ -17,3 +19,4 @@ public:
 
   TNumberedIcon();
 };
+ASSERT_SIZE(TNumberedIcon, 0xb0);

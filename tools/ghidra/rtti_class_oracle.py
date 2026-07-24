@@ -18,6 +18,18 @@ Use it to (a) verify/repair curated symbols.csv names at CreateObject addresses,
 (b) validate modeled class sizes against m_nObjectSize, (c) recover inheritance
 edges (m_pBaseClass chain), all without trusting Ghidra's provisional labels.
 
+CAVEAT on (c): base_name records the IMPLEMENT_DYN* macro's second argument as the
+retail programmers wrote it, which is NOT always the direct C++ base. Verified
+retail skips/typos (bd 223u, 2026-07): TMapMaker names TControl (C++ base TObject),
+TMilitaryUnit names TObject (C++ base TUnit), TRailAmtBar names TAmtBar (C++ base
+TIndustryAmtBar), TNumberedItem names TView (C++ base TMegaPicture), TMultiplayerMgr
+names TObject (C++ base TEventHandler), the six TForeignMinister personalities name
+TMinister (C++ base TForeignMinister), and TRemoteMinor names ITSELF (retail
+copy-paste bug, C++ base TMinor). Manual source reproduces the retail macro argument
+byte-for-byte while the class declaration carries the evidence-backed C++ base, so a
+header/oracle disagreement is only a defect when the IMPLEMENT macro argument
+disagrees with base_name.
+
 usage:
   rtti_class_oracle [--csv]          # table (default) or CSV to stdout
 """

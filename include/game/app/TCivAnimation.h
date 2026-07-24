@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TAnimation.h"
 #include "game/mfc.h"
 
@@ -15,3 +17,4 @@ public:
   short randomResetFrame2c;     // +0x2c frame that may restart the cycle early
   short randomResetThreshold2e; // +0x2e threshold compared with rand() & 0xf
 };
+ASSERT_SIZE(TCivAnimation, 0x30);

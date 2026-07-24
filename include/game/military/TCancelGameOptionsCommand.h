@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TCommand.h"
 #include "game/mfc.h"
 
@@ -14,3 +16,4 @@ public:
   // store); defined in-class so `new TCancelGameOptionsCommand()` reproduces that shape.
   TCancelGameOptionsCommand() : TCommand() {}
 };
+ASSERT_SIZE(TCancelGameOptionsCommand, 0x18);

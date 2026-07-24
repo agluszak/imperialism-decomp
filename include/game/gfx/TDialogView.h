@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TView.h"
 #include "game/mfc.h"
 
@@ -12,3 +14,4 @@ public:
 
   TDialogView();
 };
+ASSERT_SIZE(TDialogView, 0x60);

@@ -20,7 +20,10 @@ static __inline int ComputeHexAdjacentFullGridTileIndex(int tileIndex, int direc
 
 // SYNTHETIC: IMPERIALISM 0x00525950
 // TMapMaker::GetRuntimeClass
-IMPLEMENT_DYNAMIC(TMapMaker, TObject)
+// The original descriptor's m_pBaseClass (0x6598b8) points at TControl's CRuntimeClass —
+// the retail macro named TControl even though the C++ base is TObject (the 44-slot vtable
+// at 0x6598f8 rules out a TControl-branch layout). Reproduce the retail macro argument.
+IMPLEMENT_DYNAMIC(TMapMaker, TControl)
 
 // FUNCTION: IMPERIALISM 0x00525970
 TMapMaker::TMapMaker() : TObject() {}
@@ -1611,4 +1614,22 @@ void TMapMaker::EraseZones(long coarseIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0052e900
-void TMapMaker::TargetValidationSucceeded() {}
+void TMapMaker::TargetValidationSucceeded() {
+  // For every grid cell holding the sentinel class 0x64, walk direction-4 neighbours,
+  // pulling each neighbour's class into the current cell until an unassigned (-1)
+  // neighbour terminates the chain.
+  signed char* grid = &regionClassGrid10[0][0];
+  for (int cell = 0; cell < 0x195; ++cell) {
+    if (grid[cell] == 0x64) {
+      int cur = cell;
+      for (;;) {
+        int next = GetAdjacentRegionGridCell(cur, 4);
+        grid[cur] = grid[next];
+        if (grid[next] == -1) {
+          break;
+        }
+        cur = next;
+      }
+    }
+  }
+}

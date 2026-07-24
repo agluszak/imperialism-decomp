@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TView.h"
 #include "game/mfc.h"
 
@@ -14,3 +16,4 @@ public:
 
   struct BattleReportDetailRecord* battleDetail60; // +0x60
 };
+ASSERT_SIZE(TMerchantBoyView, 0x64);

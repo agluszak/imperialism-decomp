@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/military_ui/TCheater.h"
 #include "game/mfc.h"
 
@@ -11,3 +13,4 @@ public:
 
   TGPCheater();
 };
+ASSERT_SIZE(TGPCheater, 0x64);

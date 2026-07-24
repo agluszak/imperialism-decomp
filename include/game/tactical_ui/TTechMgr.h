@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TObject.h"
 
 // Global city-order capability table (singleton g_pCityOrderCapabilityState @ 0x006A43D8).
@@ -161,6 +163,7 @@ public:
 
   ~TTechMgr() override;
 };
+ASSERT_SIZE(TTechMgr, 0x63c);
 
 // Resolves the first enabled industry-capability slot (1..13) for a given class index
 // by scanning g_aIndustryCapabilityClassSlotTable (descending) and testing the

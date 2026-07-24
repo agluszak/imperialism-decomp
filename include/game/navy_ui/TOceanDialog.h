@@ -61,3 +61,4 @@ public:
 
   TOceanDialog();
 };
+ASSERT_SIZE(TOceanDialog, 0x80);

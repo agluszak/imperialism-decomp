@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TObject.h"
 #include "game/debug/TLaborPool.h"
 #include "game/mfc.h"
@@ -65,3 +67,4 @@ public:
 
   TPopulationMgr();
 };
+ASSERT_SIZE(TPopulationMgr, 0x50);

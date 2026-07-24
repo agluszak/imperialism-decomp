@@ -6,6 +6,8 @@
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
+#include "game/ui_text_label_helpers_decls.h"
+#include "game/ui_core/quickdraw_rendering.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -49,8 +51,61 @@ void THighScoresPicture::DoPostCreate(int arg) {
   }
 }
 
+// Draws the high-scores table: for each positive score row, the rank number ("N. "),
+// the player name, and the score value, each drawn twice (shadow pass in black at
+// +1,+1, then the themed foreground color).
 // FUNCTION: IMPERIALISM 0x00575460
-void THighScoresPicture::Draw(RECT* rectBuffer) {}
+void THighScoresPicture::Draw(RECT* rectBuffer) {
+  TPicture::Draw(rectBuffer);
+  COLORREF foregroundColor = 0;
+  CString lineText;
+  CString unusedText;
+  ResolveUiThemeColor(0x2b68, &foregroundColor);
+  COLORREF secondaryColor = 0;
+  ResolveUiThemeColor(0x2b67, &secondaryColor);
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0x18, 0x2b68);
+
+  int rank = 0;
+  int y = 100;
+  const int* scoreValue = scoreValues94;
+  const char (*scoreName)[0x20] = scoreNamesBc;
+  do {
+    if (*scoreValue < 1) {
+      break;
+    }
+    ++rank;
+    lineText.Format(g_szDecimalFormat, rank);
+    lineText += s_szRankDotSeparator_00698ab4;
+    SetQuickDrawColorAndSyncGlobals(0);
+    SetQuickDrawTextOriginWithContextOffset(0x97, static_cast<short>(y + 1));
+    DrawTextWithCachedQuickDrawStyleState(&lineText);
+    SetQuickDrawColorAndSyncGlobals(foregroundColor);
+    SetQuickDrawTextOriginWithContextOffset(0x96, static_cast<short>(y));
+    DrawTextWithCachedQuickDrawStyleState(&lineText);
+
+    lineText = CString(*scoreName);
+    SetQuickDrawColorAndSyncGlobals(0);
+    SetQuickDrawTextOriginWithContextOffset(0xbf, static_cast<short>(y + 1));
+    DrawTextWithCachedQuickDrawStyleState(&lineText);
+    SetQuickDrawColorAndSyncGlobals(foregroundColor);
+    SetQuickDrawTextOriginWithContextOffset(0xbe, static_cast<short>(y));
+    DrawTextWithCachedQuickDrawStyleState(&lineText);
+
+    lineText.Format(g_szDecimalFormat, *scoreValue);
+    SetQuickDrawColorAndSyncGlobals(0);
+    SetQuickDrawTextOriginWithContextOffset(0x1af, static_cast<short>(y + 1));
+    DrawTextWithCachedQuickDrawStyleState(&lineText);
+    SetQuickDrawColorAndSyncGlobals(foregroundColor);
+    SetQuickDrawTextOriginWithContextOffset(0x1ae, static_cast<short>(y));
+    DrawTextWithCachedQuickDrawStyleState(&lineText);
+
+    y += 0x20;
+    ++scoreValue;
+    ++scoreName;
+  } while (rank < 10);
+  (void)secondaryColor;
+  (void)unusedText;
+}
 
 // FUNCTION: IMPERIALISM 0x00575770
 void THighScoresPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {

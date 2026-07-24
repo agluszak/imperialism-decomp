@@ -2931,9 +2931,11 @@ void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused
     // SetState (slot 0x75), virtual in the original, not a qualified direct call.
     static_cast<TView*>(boxControl)->SetState(static_cast<int>(occupiedByOther), 0);
     if (mySlotIndex != -1) {
-      boxControl->SetState(static_cast<unsigned char>(i == mySlotIndex), 0);
+      boxControl->SetState(static_cast<unsigned char>(i == mySlotIndex),
+                                      static_cast<unsigned char>(0));
     } else {
-      boxControl->SetState(static_cast<unsigned char>(occupiedByOther), 0);
+      boxControl->SetState(static_cast<unsigned char>(occupiedByOther),
+                                      static_cast<unsigned char>(0));
     }
     boxControl->CheckTheLook(0);
   }

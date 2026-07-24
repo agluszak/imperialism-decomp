@@ -1,4 +1,7 @@
 #include "game/tactical/TTacticalBattleView.h"
+#include "game/ui_core/ScopedMapQuickDrawContext.h"
+#include "game/quickdraw_guards.h"
+#include "game/tactical_ui/TTacticalToolbar.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_military.h"
 #include "game/ui_core/TWindow.h"
@@ -19,6 +22,7 @@
 #include "game/tactical/TTacticalBattle.h"
 #include "game/map/TTacticalPlayer.h"
 #include "game/tactical/TTacticalUnit.h"
+#include "game/tactical/TArmyTacUnit.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TUiEvent.h"
@@ -1044,7 +1048,20 @@ void TTacticalBattleView::InvalidateTacticalHexTileRect(TacticalTileIndex tileIn
 }
 
 // FUNCTION: IMPERIALISM 0x005a8900
-void TTacticalBattleView::TacticalBattleViewSlot68(int param_1) {}
+void TTacticalBattleView::TacticalBattleViewSlot68(int tileIndex) {
+  int row = tileIndex / tileColumnsPerRow80;
+  int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
+  RECT tileRect;
+  tileRect.left = x;
+  if (row & 1) {
+    x += tileWidthPx88 / 2;
+    tileRect.left = x;
+  }
+  tileRect.top = row * tileRowHeightPx8C;
+  tileRect.right = x + tileWidthPx88;
+  tileRect.bottom = tileRect.top + tileRowHeightPx8C;
+  InvalidateCityDialogRectRegion(&tileRect, 1);
+}
 
 // FUNCTION: IMPERIALISM 0x005a89a0
 void TTacticalBattleView::InvalidateTacticalUnitTileRect(TTacticalUnit* unit) {
@@ -1145,11 +1162,81 @@ void TTacticalBattleView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
   SetCursor(LoadCursorA(0, IDC_ARROW));
 }
 
+// Hover pass: map the cursor to a hex tile, swap in that tile's cursor, and when the
+// hovered tile changed, erase the previous tile's highlight (blit-back from the
+// primary surface) and outline the new one, updating the toolbar's other-side panel.
 // FUNCTION: IMPERIALISM 0x005a8d40
 void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                               RgnHandle hitArg) {
-  (void)point;
   (void)hitArg;
+  int gridRow = 0;
+  int gridCol = 0;
+  ConvertScreenPointToHexGridCoordClamped(point, &gridRow, &gridCol);
+  int tileIndex = static_cast<short>(gridRow * tileColumnsPerRow80 + gridCol);
+  unsigned short cursorToken = static_cast<unsigned short>(
+      tacticalBattle60->ResolveTacticalHoverCursorResourceId(static_cast<short>(tileIndex)));
+  if (cursorToken == 999 || cursorToken == 0) {
+    cursorToken = 0xffff;
+  }
+  cursorId4e = cursorToken;
+  HCURSOR cursor;
+  if (cursorToken == 0xffff) {
+    cursor = LoadCursorA(0, IDC_ARROW);
+  } else {
+    cursor =
+        g_pUiRuntimeContext
+            ->turnEventCursors[static_cast<short>(cursorToken) - TViewMgr::kCursorResourceIdBase];
+  }
+  SetCursor(cursor);
+  if (tileIndex == field84) {
+    return;
+  }
+  ScopedMapQuickDrawContext guard(this);
+  CTemporaryRegion savedClip;
+  GetClip(savedClip.tempRgn);
+  int previousTile = field84;
+  field84 = tileIndex;
+  ResetQuickDrawStrokeState();
+  if (previousTile != -1) {
+    int row = previousTile / tileColumnsPerRow80;
+    int x = (previousTile % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
+    RECT tileRect;
+    tileRect.left = x;
+    if (row & 1) {
+      x += tileWidthPx88 / 2;
+      tileRect.left = x;
+    }
+    tileRect.top = row * tileRowHeightPx8C;
+    tileRect.right = x + tileWidthPx88;
+    tileRect.bottom = tileRect.top + tileRowHeightPx8C;
+    SetQuickDrawStrokeColor(0xffffff);
+    SetQuickDrawFillColor(0);
+    BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &tileRect,
+                                     &tileRect, 0, 0);
+  }
+  if (static_cast<short>(tileIndex) != -1) {
+    int row = tileIndex / tileColumnsPerRow80;
+    int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
+    RECT tileRect;
+    tileRect.left = x;
+    if (row & 1) {
+      x += tileWidthPx88 / 2;
+      tileRect.left = x;
+    }
+    tileRect.top = row * tileRowHeightPx8C;
+    tileRect.right = x + tileWidthPx88;
+    tileRect.bottom = tileRect.top + tileRowHeightPx8C;
+    SetQuickDrawStrokeColor(0xffffff);
+    SetQuickDrawFillColorFromPaletteIndex(0);
+    DrawHexSelectionOutlineSegments(&tileRect);
+    DrawTacticalTileInClipRect(static_cast<short>(tileIndex), &tileRect);
+  }
+  SetClip(savedClip.tempRgn);
+  if (toolbarD0 != 0 && tacticalBattle60->battleOutcomeCode44 == 0) {
+    toolbarD0->UpdateTacticalOtherSideUnitControl(
+        static_cast<TArmyTacUnit*>(tacticalBattle60->tileGrid4[tileIndex].occupant4));
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005a9090

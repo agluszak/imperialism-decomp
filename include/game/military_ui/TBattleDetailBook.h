@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TBook.h"
 #include "game/mfc.h"
 
@@ -13,3 +15,4 @@ public:
 
   TBattleDetailBook();
 };
+ASSERT_SIZE(TBattleDetailBook, 0x98);

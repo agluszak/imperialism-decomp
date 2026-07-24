@@ -11,21 +11,24 @@ public:
   virtual void PopulateArmyOrderPageEntries(TView* panel, int* offsetLayout,
                                             int* sizeLayout); // slot 0x6e 0x4aa540
 
-  // UNRESOLVED_FIELD_ATTRIBUTION: +0x84 has two conflicting readings.
-  //  - writer  0x4ab2e8 (TMiniArmyView::DoEvent) stores militaryUnit84->tileIndex06,
-  //    which TUnit documents as a map tile index;
-  //  - reader  0x5dda30 (TViewMgr's army-ledger driver) uses it as a province row:
-  //    SetActiveProvinceSelection(v) and cityScoreTable[v].cityTileIndex04.
-  // The sibling TSuperCivRoster's +0x84 is unambiguously a tile index at both ends, so
-  // this is not simply the same field. Kept provisionally named after the reader until
-  // the two domains are reconciled. -1 means no selection.
-  short selectedIndex84;
+  // RESOLVED (bd 7v4): one domain, the city-record index (0..0x180 rows of
+  // TMapMgr::cityScoreTable, a.k.a. province row). The apparent conflict came from
+  // TUnit::tileIndex06's doc: for TMilitaryUnit that field holds the stationed
+  // city-record index, not a raw map tile (same finding as TMapMgr.cpp 0x518d90).
+  //  - writer 0x4ab2e8 (TMiniArmyView::DoEvent) stores militaryUnit84->tileIndex06
+  //    (city-record index for military units);
+  //  - reader 0x5dda30 (TViewMgr army-ledger driver) passes it to TArmyMgr::
+  //    SetActiveProvinceSelection, whose body indexes cityScoreTable[v] bounded by
+  //    0x180, and reads cityScoreTable[v] at stride 0xa8 itself.
+  // The sibling TSuperCivRoster's +0x84 really is a map-tile index — different class,
+  // different domain. -1 means no selection.
+  short selectedCityRecordIndex84;
   short pad86;
 
   // The original constructor exists only inline-expanded at its callers: base page ctor,
-  // own vptr, then selectedIndex84 = -1.
+  // own vptr, then selectedCityRecordIndex84 = -1.
   TSuperArmyRoster() : TPageView() {
-    selectedIndex84 = -1;
+    selectedCityRecordIndex84 = -1;
   }
 };
 

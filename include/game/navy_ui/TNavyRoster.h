@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/navy/TMilitaryPageView.h"
 #include "game/ui_tags_common.h"
 
@@ -23,3 +25,4 @@ public:
   TView* classControls90[4];
   unsigned char paddingA0[0xd0 - 0xa0];
 };
+ASSERT_SIZE(TNavyRoster, 0xd0);

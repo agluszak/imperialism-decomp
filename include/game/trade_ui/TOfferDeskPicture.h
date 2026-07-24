@@ -64,7 +64,7 @@ public:
 
   // Updates the trade-desk selection state (activating/deactivating) and refreshes the UI
   // to match. 0x5c09d0, __thiscall.
-  void UpdateTradeSelectionStateAndRefreshUiIfChanged(int activate);
+  void UpdateTradeSelectionStateAndRefreshUiIfChanged(unsigned char activate);
 };
 
 ASSERT_SIZE(TOfferDeskPicture, 0xa8);

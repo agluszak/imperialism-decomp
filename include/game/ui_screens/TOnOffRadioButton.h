@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TPictureButton.h"
 #include "game/mfc.h"
 
@@ -15,6 +17,7 @@ public:
   virtual ~TOnOffRadioButton() override; // slot 0x01 (scalar deleting destructor)
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
                        TEvent* event) override; // slot 0x0f 0x00571a80
+  using TPictureButton::SetState;
   virtual void SetState(unsigned char on,
                         unsigned char drawImmediate); // slot 0x74 0x571b20
 
@@ -26,6 +29,7 @@ public:
   unsigned char state94;
   unsigned char padding95[3];
 };
+ASSERT_SIZE(TOnOffRadioButton, 0x98);
 
 #if defined(__clang__)
 #pragma clang diagnostic pop
