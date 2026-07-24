@@ -32,3 +32,4 @@ public:
   virtual void SetTradeOfferControlBitmap();
   virtual void SetTradeOfferSecondaryBitmap();
 };
+ASSERT_SIZE(TTradeCluster, 0x8c);

@@ -118,7 +118,7 @@ public:
   // and the corresponding Mac-oracle method signatures where available.
   virtual class TView* ResolveControlByTag(unsigned int controlTag);       // 0x25 0x48afd0
   virtual void SwitchActiveChildAndNotify(class TView* child);             // 0x26 0x48af80
-  virtual CMcWindow* Open();                                               // 0x27 0x48c820
+  virtual CWnd* Open();                                                    // 0x27 0x48c820
   virtual void Close();                                                    // 0x28 0x48c890
   virtual void SetEnabled(int enabledState, int refreshFlag);              // 0x29 0x48b1c0
   virtual void SetState(int state, int refreshFlag);                       // 0x2a 0x48b070
@@ -211,3 +211,4 @@ public:
   // definition in TView.cpp.
   virtual ~TView() override;
 };
+ASSERT_SIZE(TView, 0x60);

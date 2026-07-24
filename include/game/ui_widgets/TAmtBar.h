@@ -28,21 +28,13 @@ public:
 
   void SetBarMetric(int value, int range);
   void ClampAndApplyTradeMoveValue(int requestedValue);
-  void InvokeSlot1A8();
   void SetBarMetricRatio(int value);
-  void vmethod_0108();
+  // Remaining bridge methods from the retired raw-slot facade bank: each stands in
+  // for a virtual on the not-yet-reconstructed 184-slot TControl-branch vtable of the
+  // real receivers (TTradeCluster/TAmtBarCluster controls). Retire each by recovering
+  // the receiver class and calling the real virtual (see TAmtBar/TradeControl notes).
   void ApplyStyleDescriptor(void* descriptorBuffer, int modeFlag);
-  void vmethod_0110();
-  void vmethod_0111();
-  void vmethod_0112();
   void SetStyleState(int stateValue, int modeFlag);
-  void SetBitmap(int bitmapIdValue, int unknownFlag);
-  void InvokeSlot1CC(int value, int modeFlag);
-  void vmethod_0116();
-  void vmethod_0117();
-  void vmethod_0118();
-  void vmethod_0119();
-  void vmethod_0120();
   void SetControlValueSlot1E4(int value, int updateFlag);
   int QueryValue();
 };

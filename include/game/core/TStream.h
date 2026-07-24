@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TObject.h"
 #include "game/mfc.h"
 
@@ -69,3 +71,4 @@ public:
   virtual int AssertMcAppStreamLine304(int unusedArg);    // 47 (0xbc)
   virtual void AssertMcAppStreamLine596(int unusedArg1, int unusedArg2); // 48 (0xc0)
 };
+ASSERT_SIZE(TStream, 0x4);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/tactical/TTacticalBattle.h"
 #include "game/ui_tags_common.h"
 #include "game/mfc.h"
@@ -53,3 +55,4 @@ public:
   // 0x0059fc40, __thiscall.
   void ComputeBattlefieldColumnCountFromUnitRanges();
 };
+ASSERT_SIZE(TArmyBattle, 0x78);

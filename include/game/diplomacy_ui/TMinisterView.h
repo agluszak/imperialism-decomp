@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TView.h"
 #include "game/ui_tags_diplomacy.h"
 #include "game/mfc.h"
@@ -33,3 +35,4 @@ public:
   // at 0x64. Written by StuffValues from g_apTerrainTypeDescriptorTable.
   TCountry* selectedCountry;
 };
+ASSERT_SIZE(TMinisterView, 0x68);

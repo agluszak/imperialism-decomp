@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TPictureButton.h"
 #include "game/mfc.h"
 
@@ -13,3 +15,4 @@ public:
 
   TCloseButton();
 };
+ASSERT_SIZE(TCloseButton, 0x94);

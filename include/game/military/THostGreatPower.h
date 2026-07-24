@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/nation/TGreatPower.h"
 #include "game/mfc.h"
 
@@ -26,3 +28,4 @@ public:
   unsigned char nationLostEventDispatched;
   unsigned char pad965[3];
 };
+ASSERT_SIZE(THostGreatPower, 0x968);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TObject.h"
 #include "game/mfc.h"
 
@@ -17,3 +19,4 @@ public:
 
   TDocument();
 };
+ASSERT_SIZE(TDocument, 0x4);

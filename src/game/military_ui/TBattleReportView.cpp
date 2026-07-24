@@ -301,8 +301,7 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
 // FUNCTION: IMPERIALISM 0x004adc80
 void TBattleReportView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                             RgnHandle hitArg) {
-  (void)point;
-  (void)hitArg;
+  TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
 }
 
 // FUNCTION: IMPERIALISM 0x004adcb0
@@ -454,7 +453,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(void* mapCo
   case 1:
   case 2: {
     CString nameStr;
-    nameStr = record->nameBuffer0c[participantIndex];
+    nameStr = record->nameBuffer0c[participantIndex].data;
     TStaticText* locaText = static_cast<TStaticText*>(locaCtrl);
     if (locaText) {
       locaText->SetTextAndMaybeRefresh(&nameStr, 1);
@@ -482,7 +481,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(void* mapCo
       static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('m', 'd', 'a', 'f')));
   if (mdafCtrl) {
     mdafCtrl->Free();
-    CString mdafStr(record->nameBuffer0c[participantIndex]);
+    CString mdafStr(record->nameBuffer0c[participantIndex].data);
     TStaticText* mdafText = static_cast<TStaticText*>(mdafCtrl);
     if (mdafText) {
       mdafText->SetTextAndMaybeRefresh(&mdafStr, 1);
@@ -493,7 +492,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(void* mapCo
       static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'h', 's', 'f')));
   if (phsfCtrl) {
     phsfCtrl->Free();
-    CString phsfStr(record->overlayLabel4c[participantIndex]);
+    CString phsfStr(record->overlayLabel4c[participantIndex].data);
     TStaticText* phsfText = static_cast<TStaticText*>(phsfCtrl);
     if (phsfText) {
       phsfText->SetTextAndMaybeRefresh(&phsfStr, 1);
@@ -504,7 +503,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(void* mapCo
       static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('m', 'd', 'a', 'e')));
   if (mdaeCtrl) {
     mdaeCtrl->Free();
-    CString mdaeStr(record->nameBuffer0c[otherParticipantIndex]);
+    CString mdaeStr(record->nameBuffer0c[otherParticipantIndex].data);
     TStaticText* mdaeText = static_cast<TStaticText*>(mdaeCtrl);
     if (mdaeText) {
       mdaeText->SetTextAndMaybeRefresh(&mdaeStr, 1);
@@ -515,7 +514,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(void* mapCo
       static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'h', 's', 'e')));
   if (phseCtrl) {
     phseCtrl->Free();
-    CString phseStr(record->overlayLabel4c[otherParticipantIndex]);
+    CString phseStr(record->overlayLabel4c[otherParticipantIndex].data);
     TStaticText* phseText = static_cast<TStaticText*>(phseCtrl);
     if (phseText) {
       phseText->SetTextAndMaybeRefresh(&phseStr, 1);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TObject.h"
 #include "game/military/TUnit.h"
 #include "game/mfc.h"
@@ -89,3 +91,4 @@ public:
 
   TArmyStack();
 };
+ASSERT_SIZE(TArmyStack, 0x1c);

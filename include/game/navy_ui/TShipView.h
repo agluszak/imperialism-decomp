@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TView.h"
 #include "game/ui_tags_common.h"
 #include "game/mfc.h"
@@ -27,3 +29,4 @@ public:
   // Non-virtual: runs the rename dialog for field60 in response to the 'name' command.
   void RunEngineerOrderNameEditDialogAndApply();
 };
+ASSERT_SIZE(TShipView, 0x68);

@@ -7,6 +7,13 @@
 
 extern TInfoBarText* g_pCursorControlPanel;
 
+// USmallViews.cpp shared empty-text pointer. The original stores a pointer to
+// g_szEmptyString at 0x00662b90 and constructs transient CString values from it in
+// TArmyInfoView and the strategic toolbar text-refresh paths.
+extern "C" {
+extern char* g_pSmallViewsEmptyText_00662B90;
+}
+
 extern TTradeMgr* g_pNationInteractionStateManager;
 
 extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
@@ -146,6 +153,7 @@ extern int g_regionSeedGridCols_006a38f0;
 
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
+extern "C" char s_szRankDotSeparator_00698ab4[]; // ". " between high-score rank and name (defined in the extern "C" table block)
 extern char s_szTurnSummaryIndent_00696790[]; // "      " @ 0x696790
 
 extern char s_szTurnHistorySeparator_00699320[];

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/city_ui/TBuildingView.h"
 #include "game/ui_tags_city.h"
 #include "game/mfc.h"
@@ -50,3 +52,4 @@ public:
   short commoditySpriteIds[4];       // +0xbc
   short commodityRequiredAmounts[4]; // +0xc4
 };
+ASSERT_SIZE(TShipyardView, 0xcc);

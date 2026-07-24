@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/TButton.h"
 
 struct CRuntimeClass;
@@ -13,3 +15,4 @@ public:
   DECLARE_DYNCREATE(TStatusButton)
   void DoEvent(int selectedIndex, TEventHandler* sourceHandler, TEvent* event) override;
 };
+ASSERT_SIZE(TStatusButton, 0x84);

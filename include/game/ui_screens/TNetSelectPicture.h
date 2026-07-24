@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TNoHilitePicture.h"
 #include "game/mfc.h"
 
@@ -16,3 +18,4 @@ public:
   // expansion site emits only the base ctor call + vtbl install)
   TNetSelectPicture() {}
 };
+ASSERT_SIZE(TNetSelectPicture, 0x94);

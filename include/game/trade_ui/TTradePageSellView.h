@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TPageView.h"
 #include "game/mfc.h"
 
@@ -20,3 +22,4 @@ public:
   // fallback row when categorySlot is -1 or no nation qualifies.
   void RebuildNationOfferRowsForCategory(short categorySlot);
 };
+ASSERT_SIZE(TTradePageSellView, 0x88);

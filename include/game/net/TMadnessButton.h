@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TCzechBox.h"
 #include "game/mfc.h"
 
@@ -15,3 +17,4 @@ public:
 
   int initialPictureId; // 0x98, snapshot of glyphBase84 captured during DoPostCreate
 };
+ASSERT_SIZE(TMadnessButton, 0x9c);

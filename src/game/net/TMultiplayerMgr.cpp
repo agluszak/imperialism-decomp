@@ -2952,7 +2952,29 @@ NationStateRecordA8& NationStateRecordA8::operator=(const NationStateRecordA8& s
 // FUNCTION: IMPERIALISM 0x0054b1b0
 void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused) {
   (void)unused;
-  int mySlotIndex = FindActiveNationSlotIndexInGameFlowList();
+  // The original expands the FindActiveNationSlotIndexInGameFlowList body inline
+  // twice back-to-back (macro/hand-repeat: MSVC500 /Ob1 emits no COMDAT copy for
+  // an inline fn, so 0x5421a0's standalone body proves a non-inline definition).
+  // The first expansion's result is dead — only its GetSessionActiveNationId call
+  // survives; the second feeds the -1 check and the per-box compare below.
+  {
+    int deadActiveId = g_pNetMgr006a6014->GetSessionActiveNationId();
+    for (int probe = 0; probe < 7; ++probe) {
+      if (g_pGameFlowState->nationSessionIds[probe] == deadActiveId) {
+        break;
+      }
+    }
+  }
+  int mySlotIndex = -1;
+  {
+    int activeId = g_pNetMgr006a6014->GetSessionActiveNationId();
+    for (int probe2 = 0; probe2 < 7; ++probe2) {
+      if (g_pGameFlowState->nationSessionIds[probe2] == activeId) {
+        mySlotIndex = probe2;
+        break;
+      }
+    }
+  }
   if (mySlotIndex == -1) {
     CString notSeatedMessage;
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&notSeatedMessage, 0x2742,
@@ -2972,18 +2994,23 @@ void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused
   // so the per-box tail is TCzechBox::SetState + CheckTheLook, not an unresolved slot pair.
   for (int i = 0; i < 7; ++i) {
     TMadnessButton* boxControl =
-        static_cast<TMadnessButton*>(dialog->ResolveControlByTag(kSessionTagBxb0 + i));
+        static_cast<TMadnessButton*>(dialog->ResolveControlByTag(kSessionTagBox0 + i));
     boxControl->AssertValid();
     int sessionId = g_pGameFlowState->nationSessionIds[i];
     bool occupied = sessionId != 0 && sessionId != -2;
     bool isMine =
         g_pNetMgr006a6014->GetSessionActiveNationId() == g_pGameFlowState->nationSessionIds[i];
     bool occupiedByOther = occupied && !isMine;
-    boxControl->SetState(static_cast<int>(occupiedByOther), 0);
+    // First call dispatches TView::SetState (slot 0x2a, hidden by the TCzechBox
+    // overload — the original calls [vtbl+0xa8]); second is the TCzechBox
+    // SetState (slot 0x75), virtual in the original, not a qualified direct call.
+    static_cast<TView*>(boxControl)->SetState(static_cast<int>(occupiedByOther), 0);
     if (mySlotIndex != -1) {
-      boxControl->TCzechBox::SetState(static_cast<unsigned char>(i == mySlotIndex), 0);
+      boxControl->SetState(static_cast<unsigned char>(i == mySlotIndex),
+                                      static_cast<unsigned char>(0));
     } else {
-      boxControl->TCzechBox::SetState(static_cast<unsigned char>(occupiedByOther), 0);
+      boxControl->SetState(static_cast<unsigned char>(occupiedByOther),
+                                      static_cast<unsigned char>(0));
     }
     boxControl->CheckTheLook(0);
   }

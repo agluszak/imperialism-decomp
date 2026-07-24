@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TEventHandler.h"
 #include "game/mfc.h"
 
@@ -14,3 +16,4 @@ public:
 
   TCommandHandler();
 };
+ASSERT_SIZE(TCommandHandler, 0x20);

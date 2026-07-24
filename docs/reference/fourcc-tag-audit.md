@@ -8,17 +8,17 @@ policy (Mac resource order, read big-endian).
 
 ## Summary
 
-- Tags: 541
+- Tags: 542
 - `generated_resource_manifest_tag`: 67
-- `multiplayer_session_or_message_tag`: 33
+- `multiplayer_session_or_message_tag`: 32
 - `ui_tag_app_and_setup_screens`: 57
-- `ui_tag_city_and_trade`: 62
+- `ui_tag_city_and_trade`: 63
 - `ui_tag_diplomacy`: 18
 - `ui_tag_military_navy_tactical`: 43
 - `ui_tag_shared`: 144
-- `ui_tag_strategic_map`: 21
+- `ui_tag_strategic_map`: 22
 - `ui_tag_widget_plumbing`: 96
-- Corroborated by the Mac control-tag index: 403 of 541
+- Corroborated by the Mac control-tag index: 404 of 542
 - Violations: 0
 
 ## Violations
@@ -108,7 +108,6 @@ build does not ship.
 | `kSessionTagAwol` | `awol` | `0x61776f6c` | `multiplayer_session_or_message_tag` |  |
 | `kSessionTagBox0` | `box0` | `0x626f7830` | `multiplayer_session_or_message_tag` | 1 |
 | `kSessionTagBusy` | `busy` | `0x62757379` | `multiplayer_session_or_message_tag` |  |
-| `kSessionTagBxb0` | `bxb0` | `0x62786230` | `multiplayer_session_or_message_tag` |  |
 | `kSessionTagCgop` | `cgop` | `0x63676f70` | `multiplayer_session_or_message_tag` |  |
 | `kSessionTagDead` | `dead` | `0x64656164` | `multiplayer_session_or_message_tag` | 1 |
 | `kSessionTagDeca` | `deca` | `0x64656361` | `multiplayer_session_or_message_tag` |  |
@@ -208,6 +207,7 @@ build does not ship.
 | `kControlTagCos1` | `cos1` | `0x636f7331` | `ui_tag_city_and_trade` | 2 |
 | `kControlTagCos2` | `cos2` | `0x636f7332` | `ui_tag_city_and_trade` | 2 |
 | `kControlTagCpap` | `cpap` | `0x63706170` | `ui_tag_city_and_trade` | 1 |
+| `kControlTagCrup` | `crup` | `0x63727570` | `ui_tag_city_and_trade` |  |
 | `kControlTagEqu1` | `equ1` | `0x65717531` | `ui_tag_city_and_trade` | 1 |
 | `kControlTagEqu2` | `equ2` | `0x65717532` | `ui_tag_city_and_trade` | 1 |
 | `kControlTagEqu3` | `equ3` | `0x65717533` | `ui_tag_city_and_trade` | 1 |
@@ -462,6 +462,7 @@ build does not ship.
 | `kControlTagAgr2` | `agr2` | `0x61677232` | `ui_tag_strategic_map` | 1 |
 | `kControlTagAgro` | `agro` | `0x6167726f` | `ui_tag_strategic_map` | 1 |
 | `kControlTagEcon` | `econ` | `0x65636f6e` | `ui_tag_strategic_map` | 1 |
+| `kControlTagGene` | `gene` | `0x67656e65` | `ui_tag_strategic_map` | 1 |
 | `kControlTagGpee` | `gpee` | `0x67706565` | `ui_tag_strategic_map` | 2 |
 | `kControlTagLab1` | `lab1` | `0x6c616231` | `ui_tag_strategic_map` | 4 |
 | `kControlTagLab2` | `lab2` | `0x6c616232` | `ui_tag_strategic_map` | 5 |

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/military_ui/TCheater.h"
 #include "game/mfc.h"
 
@@ -23,3 +25,4 @@ public:
   // 0x4b1cb0 -- refresh the GP-cheater dialog's nation value fields from g_apNationStates.
   void RefreshGPCheaterNationValues(int nationSlot);
 };
+ASSERT_SIZE(TGPCheater, 0x64);

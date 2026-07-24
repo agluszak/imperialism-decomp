@@ -7,10 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TNoHilitePicture, TPicture)
 
-// FUNCTION: IMPERIALISM 0x00572b30
-TNoHilitePicture::TNoHilitePicture() : TPicture() {
-  hiliteState90 = false;
-}
+// TNoHilitePicture's ctor is defined inline in the header (marker there): the
+// original inlines it into every derived ctor.
 
 // SYNTHETIC: IMPERIALISM 0x00572b60
 // TNoHilitePicture::`scalar deleting destructor'

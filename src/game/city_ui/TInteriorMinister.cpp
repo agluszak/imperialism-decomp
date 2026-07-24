@@ -65,12 +65,12 @@ void TInteriorMinister::InteriorSlot1A(short) {}
 void TInteriorMinister::IndustryOrder(short) {}
 
 // FUNCTION: IMPERIALISM 0x004be430
-void TInteriorMinister::InteriorSlot1C(short) {}
+void TInteriorMinister::PleaseBuildLandUnit(short) {}
 
 // FUNCTION: IMPERIALISM 0x004be450
-void TInteriorMinister::MinisterSlot12(short arg1, short arg2) {
-  field12 = arg1;
-  field10 = arg2;
+void TInteriorMinister::SetParameters(short firstParameter, short secondParameter) {
+  field12 = firstParameter;
+  field10 = secondParameter;
 }
 
 // FUNCTION: IMPERIALISM 0x004be480
@@ -103,7 +103,7 @@ void TInteriorMinister::Call4C() {
 // Tops up up to 10 of the nation's needs (in the fixed priority order
 // g_aInteriorMinisterNeedPriorityOrder_00696408) toward their current reading, stopping as
 // soon as the nation's need-cap headroom (needCapA6 - needsOverCapFlag) hits zero.
-// (TDefenseMinister::AssignDefenseUnitsToHomeAndBorderRegions, this slot's sibling override
+// (TDefenseMinister::DoPeacetimeDeployment, this slot's sibling override
 // at 0x4ec540, has since been ported.)
 // FUNCTION: IMPERIALISM 0x004be520
 void TInteriorMinister::MinisterSlot14() {

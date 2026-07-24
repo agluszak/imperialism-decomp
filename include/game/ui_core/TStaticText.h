@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TControl.h"
 #include "game/ui_screens/CString.h"
 
@@ -54,3 +56,4 @@ public:
   virtual void DrawTextAligned(const char* textChars, int textLength, RECT* rect,
                                short alignmentCode); // 0x1d4 0x4900a0
 };
+ASSERT_SIZE(TStaticText, 0x94);

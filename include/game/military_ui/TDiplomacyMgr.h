@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "decomp_types.h"
 #include "game/nation_domain_types.h"
 #include "game/app/TObject.h"
@@ -58,8 +60,11 @@ public:
   virtual bool HasNationPairNeedLevel300(int sourceNation, int targetNation); // 25 (0x64)
   virtual DiplomacyRelationshipNotch GetRelationshipNotch(NationSlot sourceNation,
                                                           NationSlot targetNation); // 26 (0x68)
-  virtual void ShowRelationCodeNoticeForNationPairIfRelevant(int sourceNation, int targetNation,
-                                                             int unusedArg); // 27 (0x6c)
+  // Load the relation's display name from string group 0x2714 for alliance,
+  // non-aggression, peace, or war. Other relation codes leave treatyName unchanged.
+  virtual void LoadTreatyNameForNationPairIfDisplayable(NationSlot sourceNationSlot,
+                                                        NationSlot targetNationSlot,
+                                                        CString* treatyName); // 27 (0x6c)
   virtual DiplomacyRelationshipStorage
   GetNationPairDiplomacyRelationCode(NationSlot sourceNation,
                                      NationSlot targetNation); // 28 (0x70)
@@ -154,3 +159,4 @@ public:
   // finally notifies every eligible major power via SetTradePolicyTo.
   void RebuildMinorNationDispositionLookupTables(int nationCode);
 };
+ASSERT_SIZE(TDiplomacyMgr, 0x18dc);

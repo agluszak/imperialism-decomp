@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TView.h"
 #include "game/mfc.h"
 
@@ -26,3 +28,4 @@ public:
   // score lines; body not yet fully ported (CString/QuickDraw table render).
   virtual void Draw(RECT* rectBuffer) override;
 };
+ASSERT_SIZE(TStratReportView, 0x64);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TPicture.h"
 #include "game/ui_tags_screens.h"
 
@@ -27,3 +29,4 @@ public:
   HelpSetRecord* currentHelpSet90;
   TDeluxeText* topicListText94;
 };
+ASSERT_SIZE(THelpPicture, 0x98);

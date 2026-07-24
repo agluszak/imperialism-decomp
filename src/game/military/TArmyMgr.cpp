@@ -71,20 +71,17 @@ void MapContextActionRecord::ReadFrom(TStream* stream) {
   for (int side = 0; side < 2; ++side) {
     stream->ReadBytes(&nationIds[side], 1);
     if (g_nSaveFormatVersion < 0x2c) {
-      stream->streamSlot6c(&overlayLabel4c[side], 0x20);
-      stream->streamSlot6c(&overlayLabel4c[side], 0xff);
+      stream->streamSlot6c(nameBuffer0c[side].data, 0x20);
+      stream->streamSlot6c(overlayLabel4c[side].data, 0xff);
     } else {
-      stream->ReadBytes(&nameBuffer0c[side], 0x20);
-      stream->ReadBytes(&overlayLabel4c[side], 0xff);
+      stream->ReadBytes(nameBuffer0c[side].data, 0x20);
+      stream->ReadBytes(overlayLabel4c[side].data, 0xff);
     }
     stream->ReadBytes(&childCount24a[side], 2);
 
     delete[] sideChildRecords250[side];
     short count = childCount24a[side];
     MapOrderBattleSideChildRecord* newArray = new MapOrderBattleSideChildRecord[count];
-    for (int k = 0; k < count; ++k) {
-      newArray[k].nameBuffer[0] = 0;
-    }
     sideChildRecords250[side] = newArray;
 
     for (int j = 0; j < childCount24a[side]; ++j) {
@@ -118,8 +115,8 @@ void MapContextActionRecord::WriteTo(TStream* stream) {
 
   for (int side = 0; side < 2; ++side) {
     stream->WriteBytesSlot78(&nationIds[side], 1);
-    stream->WriteBytesSlot78(nameBuffer0c[side], 0x20);
-    stream->WriteBytesSlot78(overlayLabel4c[side], 0xff);
+    stream->WriteBytesSlot78(nameBuffer0c[side].data, 0x20);
+    stream->WriteBytesSlot78(overlayLabel4c[side].data, 0xff);
     stream->WriteBytesSlot78(&childCount24a[side], 2);
     for (int i = 0; i < childCount24a[side]; ++i) {
       MapOrderBattleSideChildRecord& child = sideChildRecords250[side][i];
@@ -246,10 +243,6 @@ void TArmyMgr::ReadFrom(TStream* stream) {
   if (g_nSaveFormatVersion > 0x24) {
     for (short count = stream->ReadShort(); count != 0; --count) {
       MapContextActionRecord record;
-      record.nameBuffer0c[0][0] = 0;
-      record.nameBuffer0c[1][0] = 0;
-      record.overlayLabel4c[0][0] = 0;
-      record.overlayLabel4c[1][0] = 0;
       record.childCount24a[0] = 0;
       record.childCount24a[1] = 0;
       record.sideChildRecords250[0] = 0;
@@ -536,71 +529,221 @@ void TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits() {
   }
 }
 
-// Own-source function (not a TArmyMgr method -- neither callsite reliably sets ECX to
-// `this` before calling it, and it cleans its own stack args, i.e. plain __cdecl).
-// Builds/dispatches the army-context action records for the "our stack" / "enemy stack"
-// pairing computed by TryCreateTacticalBattleViewForTileArmies; mode distinguishes the
-// peaceful (0) vs. no-enemy (1) paths.
+static inline void CopyTextIntoFixedBuffer(char* destination, int capacity, const char* source) {
+  int index = 0;
+  while (index < capacity) {
+    char value = source[index];
+    destination[index] = value;
+    if (value == 0) {
+      break;
+    }
+    ++index;
+  }
+}
+
+static inline void AppendTextIntoFixedBuffer(char* destination, int capacity, const char* source) {
+  int index = 0;
+  while (index < capacity && destination[index] != 0) {
+    ++index;
+  }
+  while (index < capacity) {
+    char value = *source;
+    destination[index] = value;
+    if (value == 0) {
+      break;
+    }
+    ++index;
+    ++source;
+  }
+}
+
+// Add one localized army-unit count fragment to a fixed-capacity context label.
+// FUNCTION: IMPERIALISM 0x004a2610
+static void BuildArmyActionLabelFromLocalizationAndCounts(CStr255* destination, int count,
+                                                          int activeCount, int unitTypeIndex) {
+  if (count == 0) {
+    return;
+  }
+
+  CString formattedLabel;
+  CString unitTypeName;
+  CString countText;
+  g_pSimMgr->GetString(0x2717, unitTypeIndex, &unitTypeName);
+  countText.Format(g_szDecimalFormat, count);
+
+  if (count == activeCount) {
+    scanBracketExpressions(g_pSimMgr, &formattedLabel, "[1] [2]", static_cast<LPCSTR>(countText),
+                           static_cast<LPCSTR>(unitTypeName));
+  } else {
+    CString inactiveCountText;
+    CString inactiveLabel;
+    inactiveCountText.Format(g_szDecimalFormat, count - activeCount);
+    g_pSimMgr->GetString(0x273d, 0xb, &inactiveLabel);
+    scanBracketExpressions(g_pSimMgr, &formattedLabel, "[1] [2] ([3] [4])",
+                           static_cast<LPCSTR>(countText), static_cast<LPCSTR>(unitTypeName),
+                           static_cast<LPCSTR>(inactiveCountText),
+                           static_cast<LPCSTR>(inactiveLabel));
+  }
+
+  bool destinationHasText;
+  {
+    CString currentLabel;
+    currentLabel = destination->data;
+    destinationHasText =
+        _mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(currentLabel)),
+                reinterpret_cast<const unsigned char*>(g_szEmptyString)) != 0;
+  }
+  if (destinationHasText) {
+    CString separator(g_szListSeparator_00695760);
+    AppendTextIntoFixedBuffer(destination->data, 0xff, static_cast<LPCSTR>(separator));
+  }
+  AppendTextIntoFixedBuffer(destination->data, 0xff, static_cast<LPCSTR>(formattedLabel));
+}
+
+// Own-source function (not a TArmyMgr method -- its callsites push all five arguments,
+// it never reads ECX as a receiver, and it returns with a bare RET).
 // FUNCTION: IMPERIALISM 0x004a2900
 static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
-                                                          TArmyStack* enemyStack, int mode,
+                                                          TArmyStack* enemyStack,
+                                                          unsigned char sideWonFlag,
                                                           int ownerNationCodeInt, int unused) {
-  (void)mode;
-  (void)ownerNationCodeInt;
   (void)unused;
 
-  // Ground truth also checks g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStamp-
-  // OutOfDate(ourStack->categoryFlag8, enemyStack->categoryFlag8) and enemyStack's head
-  // unit here, storing a "reason" code (3/4/unset) that's consumed only by the gapped
-  // record-construction/dispatch tail below -- not modeled since nothing in the ported
-  // portion reads it, and the tallying loops below run unconditionally regardless of it.
+  MapContextActionRecord record;
+  record.childCount24a[1] = 0;
+  record.childCount24a[0] = 0;
+  record.sideChildRecords250[1] = 0;
+  record.sideChildRecords250[0] = 0;
+  record.nationIds[1] = enemyStack->categoryFlag8;
+  record.nationIds[0] = ourStack->categoryFlag8;
+  record.tileOrObject08.raw = ownerNationCodeInt;
+  record.actionType04 = 0;
+  record.reservedByte03 = 0;
+
+  if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+          ourStack->categoryFlag8, enemyStack->categoryFlag8)) {
+    record.actionType04 = 3;
+  } else if (enemyStack->ResetCursorAndGetHeadUnit() == 0) {
+    record.actionType04 = 4;
+  }
 
   const int kUnitTypeSlotCount = 30;
   int ourCount[kUnitTypeSlotCount] = {0};
   int ourActiveCount[kUnitTypeSlotCount] = {0};
-  TUnit* ourBestUnit = nullptr;
-  for (TUnit* unit = ourStack->ResetCursorAndGetHeadUnit(); unit != nullptr;
+  int enemyCount[kUnitTypeSlotCount] = {0};
+  int enemyActiveCount[kUnitTypeSlotCount] = {0};
+  TMilitaryUnit* ourBestUnit = 0;
+  for (TUnit* unit = ourStack->ResetCursorAndGetHeadUnit(); unit != 0;
        unit = ourStack->AdvanceCursorAndGetUnit()) {
+    ++record.childCount24a[0];
     ++ourCount[unit->orderType];
-    if (static_cast<TMilitaryUnit*>(unit)->field_34 > 0) {
+    TMilitaryUnit* militaryUnit = static_cast<TMilitaryUnit*>(unit);
+    if (militaryUnit->field_34 > 0) {
       ++ourActiveCount[unit->orderType];
     }
-    if (unit->orderType >= EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1) &&
-        (ourBestUnit == nullptr || static_cast<TMilitaryUnit*>(unit)->field_38 / 100 >
-                                       static_cast<TMilitaryUnit*>(ourBestUnit)->field_38 / 100)) {
-      ourBestUnit = unit;
+    if (unit->orderType == EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1) &&
+        (ourBestUnit == 0 || militaryUnit->field_38 / 100 > ourBestUnit->field_38 / 100)) {
+      ourBestUnit = militaryUnit;
     }
   }
 
-  int enemyCount[kUnitTypeSlotCount] = {0};
-  int enemyActiveCount[kUnitTypeSlotCount] = {0};
-  TUnit* enemyBestUnit = nullptr;
-  for (TUnit* enemyUnit = enemyStack->ResetCursorAndGetHeadUnit(); enemyUnit != nullptr;
+  TMilitaryUnit* enemyBestUnit = 0;
+  for (TUnit* enemyUnit = enemyStack->ResetCursorAndGetHeadUnit(); enemyUnit != 0;
        enemyUnit = enemyStack->AdvanceCursorAndGetUnit()) {
+    ++record.childCount24a[1];
     ++enemyCount[enemyUnit->orderType];
-    if (static_cast<TMilitaryUnit*>(enemyUnit)->field_34 > 0) {
+    TMilitaryUnit* militaryUnit = static_cast<TMilitaryUnit*>(enemyUnit);
+    if (militaryUnit->field_34 > 0) {
       ++enemyActiveCount[enemyUnit->orderType];
     }
     if (enemyUnit->orderType >= EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1) &&
-        (enemyBestUnit == nullptr ||
-         static_cast<TMilitaryUnit*>(enemyUnit)->field_38 / 100 >
-             static_cast<TMilitaryUnit*>(enemyBestUnit)->field_38 / 100)) {
-      enemyBestUnit = enemyUnit;
+        (enemyBestUnit == 0 || militaryUnit->field_38 / 100 > enemyBestUnit->field_38 / 100)) {
+      enemyBestUnit = militaryUnit;
     }
   }
 
-  // Ground truth then allocates one "army context action record" (44 bytes: orderType, a
-  // computed short, and a CString unit-name copy) per distinct orderType seen across
-  // ourCount/enemyCount, builds a formatted label from ourBestUnit/enemyBestUnit and the
-  // per-type counts, and dispatches it. Not modeled -- needs a new record struct plus
-  // CString-internals fidelity, and ends in the same ModalMessage-
-  // family arity ambiguity already documented on several other TArmyMgr callsites; left as
-  // a gap rather than guessed.
-  (void)ourCount;
-  (void)ourActiveCount;
+  delete[] record.sideChildRecords250[0];
+  record.sideChildRecords250[0] = new MapOrderBattleSideChildRecord[record.childCount24a[0]];
+  delete[] record.sideChildRecords250[1];
+  record.sideChildRecords250[1] = new MapOrderBattleSideChildRecord[record.childCount24a[1]];
+
+  int childIndex = 0;
+  for (TUnit* ourRecordUnit = ourStack->ResetCursorAndGetHeadUnit(); ourRecordUnit != 0;
+       ourRecordUnit = ourStack->AdvanceCursorAndGetUnit()) {
+    TMilitaryUnit* militaryUnit = static_cast<TMilitaryUnit*>(ourRecordUnit);
+    MapOrderBattleSideChildRecord& child = record.sideChildRecords250[0][childIndex];
+    child.resourceType = ourRecordUnit->orderType;
+    child.stockOrRequired = militaryUnit->field_34;
+    if (child.stockOrRequired == -86) {
+      child.stockOrRequired = 0;
+    }
+    CString unitName;
+    unitName = militaryUnit->name24;
+    CopyTextIntoFixedBuffer(child.nameBuffer, 0x20, static_cast<LPCSTR>(unitName));
+    child.detailIdentity.categoryTag = kControlTagArmy;
+    child.strengthBucket = static_cast<short>(militaryUnit->field_38 / 100);
+    ++childIndex;
+  }
+
+  childIndex = 0;
+  for (TUnit* enemyRecordUnit = enemyStack->ResetCursorAndGetHeadUnit(); enemyRecordUnit != 0;
+       enemyRecordUnit = enemyStack->AdvanceCursorAndGetUnit()) {
+    TMilitaryUnit* militaryUnit = static_cast<TMilitaryUnit*>(enemyRecordUnit);
+    MapOrderBattleSideChildRecord& child = record.sideChildRecords250[1][childIndex];
+    child.resourceType = enemyRecordUnit->orderType;
+    child.stockOrRequired = militaryUnit->field_34;
+    if (child.stockOrRequired == -86) {
+      child.stockOrRequired = 0;
+    }
+    CString unitName;
+    unitName = militaryUnit->name24;
+    CopyTextIntoFixedBuffer(child.nameBuffer, 0x20, static_cast<LPCSTR>(unitName));
+    child.detailIdentity.categoryTag = kControlTagArmy;
+    child.strengthBucket = static_cast<short>(militaryUnit->field_38 / 100);
+    ++childIndex;
+  }
+
+  CString formattedName;
+  CString nationName;
+  CString nameTemplate;
+  g_pSimMgr->GetString(0x273d, 0x10, &nameTemplate);
+  g_apTerrainTypeDescriptorTable[ourStack->categoryFlag8]->FormatOverlayTerrainLabelText(
+      &nationName);
+  scanBracketExpressions(g_pSimMgr, &formattedName, static_cast<LPCSTR>(nameTemplate),
+                         static_cast<LPCSTR>(nationName));
+  CopyTextIntoFixedBuffer(record.nameBuffer0c[0].data, 0x20, static_cast<LPCSTR>(formattedName));
+
+  g_pSimMgr->GetString(0x273d, 0x11, &nameTemplate);
+  g_apTerrainTypeDescriptorTable[enemyStack->categoryFlag8]->FormatOverlayTerrainLabelText(
+      &nationName);
+  scanBracketExpressions(g_pSimMgr, &formattedName, static_cast<LPCSTR>(nameTemplate),
+                         static_cast<LPCSTR>(nationName));
+  CopyTextIntoFixedBuffer(record.nameBuffer0c[1].data, 0x20, static_cast<LPCSTR>(formattedName));
+
+  CopyTextIntoFixedBuffer(record.overlayLabel4c[1].data, 0xff, g_szEmptyString);
+  CopyTextIntoFixedBuffer(record.overlayLabel4c[0].data, 0xff, record.overlayLabel4c[1].data);
+  record.participantIndex02 = sideWonFlag == 0;
+
+  for (int unitTypeIndex = 0; unitTypeIndex < kUnitTypeSlotCount; ++unitTypeIndex) {
+    BuildArmyActionLabelFromLocalizationAndCounts(&record.overlayLabel4c[0],
+                                                  ourCount[unitTypeIndex],
+                                                  ourActiveCount[unitTypeIndex], unitTypeIndex);
+    BuildArmyActionLabelFromLocalizationAndCounts(&record.overlayLabel4c[1],
+                                                  enemyCount[unitTypeIndex],
+                                                  enemyActiveCount[unitTypeIndex], unitTypeIndex);
+  }
+
+  g_pMapContextActionManager->mapContextActionRecordList04->AppendCopiedRecordToPtrList(&record);
+  record.sideChildRecords250[1] = 0;
+  record.sideChildRecords250[0] = 0;
+  record.childCount24a[1] = 0;
+  record.childCount24a[0] = 0;
+  g_pMapContextActionManager->flag8 = 1;
+  if (g_bRandomMapDeveloperCheatFlag != 0) {
+    g_pMapContextActionManager->flag8 = 1;
+  }
+
   (void)ourBestUnit;
-  (void)enemyCount;
-  (void)enemyActiveCount;
   (void)enemyBestUnit;
 }
 
@@ -1156,12 +1299,12 @@ bool TArmyMgr::HasEligibleStationedUnitInRegion(short regionId) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a45e0
-void TArmyMgr::SetActiveProvinceSelection(short tileIndex) {
-  this->pendingMapActionIndex = tileIndex;
-  if (tileIndex != -1) {
+void TArmyMgr::SetActiveProvinceSelection(short cityRecordIndex) {
+  this->pendingMapActionIndex = cityRecordIndex;
+  if (cityRecordIndex != -1) {
     TMilitaryUnit* unit;
-    if (tileIndex >= 0 && tileIndex < 0x180) {
-      unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain98;
+    if (cityRecordIndex >= 0 && cityRecordIndex < 0x180) {
+      unit = g_pGlobalMapState->cityScoreTable[cityRecordIndex].stationedUnitChain98;
     } else {
       unit = nullptr;
     }
@@ -1174,7 +1317,7 @@ void TArmyMgr::SetActiveProvinceSelection(short tileIndex) {
     }
     TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
     static_cast<TArmyToolbar*>(mapView->categoryPages[mapView->activeUnitCategoryIndex96])
-        ->SetProvince(tileIndex);
+        ->SetProvince(cityRecordIndex);
   }
   g_pUiRuntimeContext->mapUberPictureF0->InvalidateMap();
 }
@@ -2126,9 +2269,6 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
     MapOrderBattleSideChildRecord* newRecords = nullptr;
     if (newCount > 0) {
       newRecords = new MapOrderBattleSideChildRecord[newCount];
-      for (int i = 0; i < newCount; ++i) {
-        newRecords[i].nameBuffer[0] = 0;
-      }
     }
     snapshot->childRecords[side] = newRecords;
     memcpy(newRecords, oldRecords, oldCount * sizeof(MapOrderBattleSideChildRecord));

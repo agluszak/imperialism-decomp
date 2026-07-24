@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TEventHandler.h"
 #include "game/city_ui/TLongintList.h"
 
@@ -88,3 +90,4 @@ public:
   // cueId=4, flag=true.
   void SetActiveAudioCueAndResetQueue(int cueId, bool flag); // 0x593a10
 };
+ASSERT_SIZE(TSoundPlayer, 0x84);

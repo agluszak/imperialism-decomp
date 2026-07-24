@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TObject.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_diplomacy.h"
@@ -37,10 +39,10 @@ struct MapContextActionRecord {
   // MapOrderBattleSnapshot (map_order_battle_snapshot.h): a fixed name buffer, a fixed
   // overlay-label buffer, a child-record count, then (after a 2-byte alignment pad) the
   // child-record array pointer. Ground truth: MapContextActionRecord::ReadFrom (0x4a13c0).
-  char nameBuffer0c[2][0x20];   // +0x0c/+0x2c
-  char overlayLabel4c[2][0xff]; // +0x4c/+0x14b
-  short childCount24a[2];       // +0x24a/+0x24c
-  unsigned char pad24e[2];      // +0x24e (alignment pad before the pointer array)
+  CStr32 nameBuffer0c[2];    // +0x0c/+0x2c
+  CStr255 overlayLabel4c[2]; // +0x4c/+0x14b
+  short childCount24a[2];    // +0x24a/+0x24c
+  unsigned char pad24e[2];   // +0x24e (alignment pad before the pointer array)
   // Per-side heap arrays built while resolving an army/navy order conflict. The copied
   // report record owns both buffers until CleanUpStacks releases the arrays.
   MapOrderBattleSideChildRecord* sideChildRecords250[2]; // +0x250/+0x254
@@ -255,7 +257,7 @@ public:
   // __thiscall, 1 arg. Called both by TArmyMgr's own map-click dispatchers and by other
   // classes on the g_pMapContextActionManager singleton (e.g. the map-interaction-mode
   // and province-cycling handlers).
-  void SetActiveProvinceSelection(short tileIndex);
+  void SetActiveProvinceSelection(short cityRecordIndex);
   // Clear pending military highlights for one nation and reset the province cursor.
   // The nation's militaryUnitList44 contains the same TUnit-derived entries walked by
   // SetActiveProvinceSelection. 0x004a46d0, __thiscall.
@@ -414,3 +416,4 @@ public:
 
   TArmyMgr();
 };
+ASSERT_SIZE(TArmyMgr, 0x3a8);

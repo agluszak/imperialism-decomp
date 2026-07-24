@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TSortedList.h"
 #include "game/mfc.h"
 
@@ -19,3 +21,4 @@ public:
   // FUNCTION: IMPERIALISM 0x004a8450
   TArmyStackList() : TSortedList() {}
 };
+ASSERT_SIZE(TArmyStackList, 0x20);

@@ -43,7 +43,7 @@ void TShipLine::InstallViews(TView* panel, int* offsetLayout) {
                         static_cast<TMilitaryPageView*>(panel)->primaryUnitAtlas84, atlasOffset);
   checkbox->controlTag = kControlTagChec; // 'chec'
   checkbox->eventNumber60 = 4;
-  checkbox->SetState(childLink14->active, 0);
+  checkbox->SetState(childLink14->active, static_cast<unsigned char>(0));
 
   int nameOffset[2] = {0x40, 0};
   int nameSize[2] = {0x80, 0x18};

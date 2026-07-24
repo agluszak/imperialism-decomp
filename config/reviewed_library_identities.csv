@@ -1468,6 +1468,7 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x006235bd||??_G_AFX_BASE_MODULE_STATE@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00623866||??_G_AFX_BASE_MODULE_STATE@@UAEPAXI@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x006238c3||?Unlock@CTypeLibCache@@QAEXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00623996|CEdit::GetRuntimeClass|?GetRuntimeClass@CEdit@@UBEPAUCRuntimeClass@@XZ|public: virtual struct CRuntimeClass * __thiscall CEdit::GetRuntimeClass(void)const|nafxcw|winctrl1.obj|cmceditwindow_vtable_0x64afd8_slot0;body=mov_eax_0x671b00_ret_where_0x671b00_CRuntimeClass_name="CEdit"(agent-verified 2026-07-23)
 0x006239b8||||||migrated_from:src/game/library_msvc500_fid.cpp comment:"_$E350"|LIBRARY
 0x006239f0||||||migrated_from:src/game/library_msvc500_fid.cpp comment:"_$E355"|LIBRARY
 0x00623abc||||||migrated_from:src/game/library_msvc500_fid.cpp comment:"_$E350"|LIBRARY

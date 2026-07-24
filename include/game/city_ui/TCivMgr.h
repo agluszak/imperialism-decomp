@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TObject.h"
 #include "game/mfc.h"
 #include "game/unit_domain_types.h"
@@ -106,3 +108,4 @@ public:
   // receiver's virtual slot 0x0c is RelinkCivilianOrderTileAndInvalidateMapTiles.
   bool PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex);
 };
+ASSERT_SIZE(TCivMgr, 0xc);

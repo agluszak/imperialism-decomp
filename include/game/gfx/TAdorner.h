@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TObject.h"
 #include "game/mfc.h"
 
@@ -49,3 +51,4 @@ public:
   unsigned char adornerFlags08;
   unsigned char pad09[3];
 };
+ASSERT_SIZE(TAdorner, 0xc);

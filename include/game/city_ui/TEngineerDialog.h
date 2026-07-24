@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TView.h"
 
 struct TQuickDrawSurfaceContext;
@@ -31,3 +33,4 @@ public:
   // and TIconBar amount rows, plus the cancel button. 0x004d0810, __thiscall.
   void BuildCityViewProductionControls(short nBuildingSlotId);
 };
+ASSERT_SIZE(TEngineerDialog, 0x6c);

@@ -43,3 +43,4 @@ public:
   // backing CArchive. The read form stores the resolved object through its
   // out-param and returns a success byte.
 };
+ASSERT_SIZE(TFileStream, 0x8);

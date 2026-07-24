@@ -1149,8 +1149,9 @@ void TGreatPower::DecrementDiplomacyCounterA2Slot66(int delta) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dda60
-int TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
-  return this->diplomacyState1c6[nationSlot] + this->relationDeltaSnapshot[nationSlot];
+short TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
+  return static_cast<short>(this->diplomacyState1c6[nationSlot] +
+                            this->relationDeltaSnapshot[nationSlot]);
 }
 
 // FUNCTION: IMPERIALISM 0x004dda90
@@ -2390,13 +2391,13 @@ void TGreatPower::SortTrackedOrdersByTypePriority(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e03a0
-void TGreatPower::RunSlot4CThenSortTrackedOrders(void) {
+void TGreatPower::MoveCivilians(void) {
   this->DispatchTrackedOrderSlot2CCallbacks();
   this->SortTrackedOrdersByTypePriority();
 }
 
 // FUNCTION: IMPERIALISM 0x004e03d0
-void TGreatPower::ResetField900FromNeedCapA6(void) {
+void TGreatPower::MoveArmy(void) {
   this->field900 = this->needCapA6 / 5;
 }
 

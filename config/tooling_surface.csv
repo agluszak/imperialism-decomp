@@ -96,6 +96,9 @@ module|tools.ghidra.linear_disasm|query:linear-disasm|Linear disassembly by addr
 module|tools.workflow.check_class_sizes|just:class-size-check|Modeled class sizes vs RTTI oracle object_size
 module|tools.ghidra.repair_code_gaps|just:repair-code-gaps|Create missing Ghidra functions at vtable/ILT/symbols targets
 module|tools.ghidra.fix_function_bounds|just:fix-function-bounds|Re-bound existing degenerate 1-byte Ghidra functions in place
+module|tools.ghidra.create_switch_table|just:create-switch-table|Define a computed-jump switch table and references in the Ghidra DB
+module|tools.ghidra.demote_functions|just:demote-functions|Demote case-body pseudo-functions to labels so dispatchers can reabsorb them
+module|tools.ghidra.delete_labels|just:delete-labels|Delete stale user labels that poison reccmp operand rendering
 module|tools.ghidra.prune_ilt_db_functions|just:prune-ilt-db-functions|Remove Function entities on ILT jmp thunks from the Ghidra DB
 module|tools.workflow.check_typedef_cast_drift|just:typedef-cast-audit|Audit Hard-Rule-9 typedef-cast externs for cross-file signature drift
 module|tools.reccmp.global_xref_oracle|just:global-xref-oracle|Mine reccmp asm diffs for orig-address<->recomp-symbol global pairs

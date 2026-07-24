@@ -465,7 +465,7 @@ void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
   node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
   node->SetModality(1);
   node->PoseModally();
-  short selectedIndex = roster->selectedIndex84;
+  short selectedIndex = roster->selectedCityRecordIndex84;
   node->Close();
   node->Free();
 

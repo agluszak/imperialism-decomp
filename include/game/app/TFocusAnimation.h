@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TAnimation.h"
 
 class TView;
@@ -27,3 +29,4 @@ public:
 
   char pad_2d[3];
 };
+ASSERT_SIZE(TFocusAnimation, 0x30);

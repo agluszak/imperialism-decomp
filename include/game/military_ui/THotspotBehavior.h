@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TBehavior.h"
 #include "game/gfx/quickdraw_regions.h"
 #include "game/mfc.h"
@@ -14,3 +16,4 @@ public:
 
   THotspotBehavior();
 };
+ASSERT_SIZE(THotspotBehavior, 0x10);

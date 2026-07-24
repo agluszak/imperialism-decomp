@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TNoHilitePicture.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_screens.h"
@@ -48,3 +50,4 @@ public:
   // via TSimMgr::SetDifficultyLevel.
   int nationStateCodesByMapSelection144[(0x160 - 0x144) / 4];
 };
+ASSERT_SIZE(TScenarioChooser, 0x160);

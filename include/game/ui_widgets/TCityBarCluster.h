@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TUberCluster.h"
 
 struct CRuntimeClass;
@@ -13,3 +15,4 @@ public:
 
   void UpdateTradeSummaryMetricControlsFromRecord(int recordContext);
 };
+ASSERT_SIZE(TCityBarCluster, 0x88);

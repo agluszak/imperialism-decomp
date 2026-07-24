@@ -29,9 +29,12 @@ public:
   virtual void SetOrders(UnitOrder order, int payload); // slot 0x34
 
   short orderType; // 0x04
-  // 0x06 — map tile index the order is anchored to (-1 = unassigned); read as
-  // the recruit/civilian target tile by TMapMgr and matched against the terrain
-  // table by TGreatPower slot 0x298.
+  // 0x06 — anchor index of the order (-1 = unassigned); the domain depends on the
+  // unit type: for civilian units it is a map tile index (read as the recruit/
+  // civilian target tile by TMapMgr and matched against the terrain table by
+  // TGreatPower slot 0x298), but for TMilitaryUnit it holds the stationed
+  // city-record index (0..0x180 rows of TMapMgr::cityScoreTable) — established at
+  // TMapMgr 0x518d90 and by the TSuperArmyRoster selection flow (bd 7v4).
   short tileIndex06;
   UnitOrder unitOrder; // 0x08
   short field_C;       // 0x0c

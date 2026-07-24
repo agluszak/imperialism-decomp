@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TNoHilitePicture.h"
 #include "game/mfc.h"
 
@@ -12,3 +14,4 @@ public:
 
   TBackgroundPicture();
 };
+ASSERT_SIZE(TBackgroundPicture, 0x94);

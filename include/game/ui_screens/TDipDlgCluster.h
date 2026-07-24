@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TUberCluster.h"
 #include "game/mfc.h"
 
@@ -12,3 +14,4 @@ public:
 
   TDipDlgCluster();
 };
+ASSERT_SIZE(TDipDlgCluster, 0x88);

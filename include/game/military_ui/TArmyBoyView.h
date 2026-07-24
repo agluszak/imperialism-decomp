@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TView.h"
 #include "game/mfc.h"
 
@@ -13,3 +15,4 @@ public:
 
   TArmyBoyView();
 };
+ASSERT_SIZE(TArmyBoyView, 0x64);

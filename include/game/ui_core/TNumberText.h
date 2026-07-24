@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TEditText.h"
 
 class CMcWindow;
@@ -25,3 +27,4 @@ public:
   void InitializeNumberText(TView* panel, int* offsetLayout, int* sizeLayout, int value,
                             int minimumValue, int maximumValue);
 };
+ASSERT_SIZE(TNumberText, 0xac);

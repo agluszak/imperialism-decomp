@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_widgets/TMapUberUberPicture.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_map.h"
@@ -183,3 +185,4 @@ public:
   // "Navy Maker II"). Applies the fourteen per-ship counts to the selected port zone.
   void RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* portZone);
 };
+ASSERT_SIZE(TMapUberPicture, 0xc4);

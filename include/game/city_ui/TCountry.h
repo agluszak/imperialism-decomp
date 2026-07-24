@@ -69,7 +69,7 @@ public:
   virtual void AddRegionIdToNationOwnedRegionList(int regionId);
   virtual void SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlot, int policyCode);
   virtual void DecrementDiplomacyCounterA2ByValue(int delta);
-  virtual int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot);
+  virtual short SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot);
   virtual short GetDiplomacyCounterA2(void);
   virtual short GetDiplomacyExternalStateByTarget(short nationSlot);
   virtual short QueryNationMetricBySlot7C(short metricSlot);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TLineData.h"
 #include "game/mfc.h"
 
@@ -17,3 +19,4 @@ public:
   // Army unit represented by this roster row.
   TMilitaryUnit* militaryUnit10;
 };
+ASSERT_SIZE(TMiniArmyLine, 0x14);

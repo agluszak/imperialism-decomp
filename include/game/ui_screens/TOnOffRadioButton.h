@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TPictureButton.h"
 #include "game/mfc.h"
 
@@ -15,14 +17,19 @@ public:
   virtual ~TOnOffRadioButton() override; // slot 0x01 (scalar deleting destructor)
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
                        TEvent* event) override; // slot 0x0f 0x00571a80
+  using TPictureButton::SetState;
   virtual void SetState(unsigned char on,
                         unsigned char drawImmediate); // slot 0x74 0x571b20
 
   TOnOffRadioButton();
 
-  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x94. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field94;
+  // Original object size is 0x98 (CRuntimeClass m_nObjectSize). The ctor stores a
+  // single BYTE 0 at +0x94 (mirrors TCzechBox::isOn94); the remaining three bytes
+  // are layout padding.
+  unsigned char state94;
+  unsigned char padding95[3];
 };
+ASSERT_SIZE(TOnOffRadioButton, 0x98);
 
 #if defined(__clang__)
 #pragma clang diagnostic pop

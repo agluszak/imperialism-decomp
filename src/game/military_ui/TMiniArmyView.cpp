@@ -97,7 +97,7 @@ void TMiniArmyView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   } else if (sourceHandler == this) {
     TSuperArmyRoster* roster = static_cast<TSuperArmyRoster*>(ownerContext);
     roster->AssertValid();
-    roster->selectedIndex84 = militaryUnit84->tileIndex06;
+    roster->selectedCityRecordIndex84 = militaryUnit84->tileIndex06;
   }
   TControl::DoEvent(commandId, sourceHandler, event);
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TPageView.h"
 
 struct TQuickDrawSurfaceContext;
@@ -21,3 +23,4 @@ public:
   // TDisplayMgr::RemoveGWorld. Other derived constructors clear it.
   TQuickDrawSurfaceContext* primaryUnitAtlas84;
 };
+ASSERT_SIZE(TMilitaryPageView, 0x88);

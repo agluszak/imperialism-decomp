@@ -27,6 +27,9 @@
 
 IMPLEMENT_DYNCREATE(TArmoryView, TBuildingView)
 
+// A standalone out-of-line ctor DOES exist here: 0x4ceda0 is 32 bytes of base-ctor call,
+// vptr store (0x652b10), `xor eax,eax` reused for BOTH dword [this+0x94] and [this+0x98],
+// then `mov eax,esi` return-this. Zero both fields; claiming the address pairs at 90%.
 // FUNCTION: IMPERIALISM 0x004ceda0
 TArmoryView::TArmoryView() {
   city94 = 0;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/city/TItemOrder.h"
 #include "game/mfc.h"
 
@@ -16,3 +18,4 @@ public:
 
   TOrItemOrder();
 };
+ASSERT_SIZE(TOrItemOrder, 0x54);

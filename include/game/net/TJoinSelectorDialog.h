@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TNoHilitePicture.h"
 #include "game/mfc.h"
 
@@ -18,3 +20,4 @@ public:
   void AddJoinableGameOptionEntry(const char* label, RuntimeSelectionRecord* record);
   RuntimeSelectionRecord* GetSelectedJoinableGame();
 };
+ASSERT_SIZE(TJoinSelectorDialog, 0x94);

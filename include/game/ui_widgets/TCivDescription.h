@@ -38,3 +38,4 @@ public:
   void UpdateCivilianOrderClassAndRefreshTargetCounts(class TCivUnit* orderState);
   void UpdateCivilianOrderTargetTileCountsForOwnerNation(class TCivUnit* selectedOrder);
 };
+ASSERT_SIZE(TCivDescription, 0x170);

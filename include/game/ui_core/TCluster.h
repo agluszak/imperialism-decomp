@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TControl.h"
 
 struct CRuntimeClass;
@@ -24,3 +26,4 @@ public:
   // resource context. 0x004915d0, __thiscall.
   void InitializeClusterFrameAndAttachToParent(TView* parent, POINT* offset, POINT* size);
 };
+ASSERT_SIZE(TCluster, 0x88);

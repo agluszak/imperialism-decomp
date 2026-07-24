@@ -1,5 +1,4 @@
 #include "game/ui_screens/TRadioPictureButton.h"
-#include "game/ui_widgets/TAmtBar.h"
 #include "game/ui_core/TControl.h"
 // SYNTHETIC: IMPERIALISM 0x00571700
 // TRadioPictureButton::CreateObject
@@ -11,7 +10,6 @@ IMPLEMENT_DYNCREATE(TRadioPictureButton, TUpDownPictureButton)
 
 // FUNCTION: IMPERIALISM 0x005717c0
 TRadioPictureButton::TRadioPictureButton() : TUpDownPictureButton() {
-  this->timingWord92 = 7000;
   this->eventNumber60 = 0xc;
   this->reserved94 = 0;
 }
@@ -26,22 +24,23 @@ TRadioPictureButton::~TRadioPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00571850
 void TRadioPictureButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  if (commandId == 0xc) {
+  switch (commandId) {
+  case 0xc:
     if (controlState64 == 0) {
-      reinterpret_cast<TAmtBar*>(this)->InvokeSlot1CC(1, 0);
+      SetRadioState(1, 0);
     }
     TControl::DoEvent(commandId, sourceHandler, event);
     return;
-  }
-  if (commandId != kControlCommandHiliteOn) {
-    if (commandId != kControlCommandHiliteOff) {
-      TControl::DoEvent(commandId, sourceHandler, event);
-      return;
-    }
-    reinterpret_cast<TAmtBar*>(this)->InvokeSlot1CC(0, 0);
+  case kControlCommandHiliteOn:
+    SetRadioState(1, 0);
+    return;
+  case kControlCommandHiliteOff:
+    SetRadioState(0, 0);
+    return;
+  default:
+    TControl::DoEvent(commandId, sourceHandler, event);
     return;
   }
-  reinterpret_cast<TAmtBar*>(this)->InvokeSlot1CC(1, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005718f0

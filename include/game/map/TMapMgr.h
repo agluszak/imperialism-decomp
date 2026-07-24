@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/CString.h"
 #include "game/app/TObject.h"
 #include "game/civilian_domain_types.h"
@@ -884,6 +886,7 @@ public:
 
   TMapMgr();
 };
+ASSERT_SIZE(TMapMgr, 0x28);
 
 // 0x005187f0 -- endian fix-up over the scenario tile-record array read from disk.
 void ByteSwapScenarioTileRecordWords(char* tileRecords);

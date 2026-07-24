@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/city_ui/TInteriorMinister.h"
 
 class TCity;
@@ -22,7 +24,7 @@ public:
   virtual void FillOrders() override;                        // slot 0x15 0x4bf770
   virtual void InteriorSlot1A(short arg) override;           // slot 0x1a 0x4beeb0
   virtual void IndustryOrder(short industrySlot) override;   // slot 0x1b 0x4beee0
-  virtual void InteriorSlot1C(short arg) override;           // slot 0x1c 0x4bef30
+  virtual void PleaseBuildLandUnit(short unitType) override; // slot 0x1c 0x4bef30
   virtual short InteriorSlot1D(int arg) override;            // slot 0x1d 0x4be7b0
   virtual short InteriorSlot1E(int arg) override;            // slot 0x1e 0x4be7d0
   virtual void InteriorSlot1F(int arg) override;             // slot 0x1f 0x4be7f0
@@ -173,3 +175,4 @@ public:
     return orderMetricTable40[60];
   }
 };
+ASSERT_SIZE(TCityInteriorMinister, 0x1c4);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TControl.h"
 
 extern "C" int g_vtblTNumberedArrowButton;
@@ -25,3 +27,4 @@ public:
   virtual void SetValue(short value84, unsigned char refreshFlag); // slot 0x71 0x58c330
   void SetState(short value86, unsigned char refreshFlag);
 };
+ASSERT_SIZE(TNumberedArrowButton, 0x88);

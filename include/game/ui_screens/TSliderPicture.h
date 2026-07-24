@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TNoHilitePicture.h"
 #include "game/mfc.h"
 
@@ -12,3 +14,4 @@ public:
 
   TSliderPicture();
 };
+ASSERT_SIZE(TSliderPicture, 0x94);

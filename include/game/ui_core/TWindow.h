@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TDialogBehavior.h"
 #include "game/ui_core/TView.h"
 #include "game/mfc.h"
@@ -19,7 +21,7 @@ public:
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
                            TEvent* event) override;                       // slot 0x10 0x48dd10
   virtual TWindow* GetWindow() override;                                  // slot 0x16 0x492cc0
-  virtual CMcWindow* Open() override;                                     // slot 0x27 0x48de00
+  virtual CWnd* Open() override;                                          // slot 0x27 0x48de00
   virtual void Close() override;                                          // slot 0x28 0x48e060
   virtual TView* GetRootView() override;                                  // slot 0x3a 0x492ce0
   virtual bool IsActionable() override;                                   // slot 0x3b 0x48d980
@@ -86,3 +88,4 @@ public:
 
   TWindow();
 };
+ASSERT_SIZE(TWindow, 0xa0);

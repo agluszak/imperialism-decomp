@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_core/TCommand.h"
 #include "game/multiplayer_session_tags.h"
 #include "game/mfc.h"
@@ -19,6 +21,7 @@ public:
   // store); defined in-class so `new TPoseMessageDialog()` reproduces that shape.
   TPoseMessageDialog() : TCommand() {}
 };
+ASSERT_SIZE(TPoseMessageDialog, 0x1c);
 
 // Build and queue the 'pose' command for a nation slot. 0x54b0f0, genuine cdecl.
 void __cdecl QueuePoseMessageDialogForNationSlot(int nationSlot);

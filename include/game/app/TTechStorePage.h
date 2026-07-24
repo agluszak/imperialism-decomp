@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/ui_screens/TPageView.h"
 #include "game/mfc.h"
 
@@ -24,3 +26,4 @@ public:
 
   TTechStorePage();
 };
+ASSERT_SIZE(TTechStorePage, 0x84);

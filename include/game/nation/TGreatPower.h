@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "decomp_types.h"
 #include "game/ui_screens/CString.h"
 #include "game/nation_domain_types.h"
@@ -59,7 +61,7 @@ public:
   void AddRegionIdToNationOwnedRegionList(int regionId) override;
   void SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlot, int policyCode) override;
   void DecrementDiplomacyCounterA2ByValue(int delta) override;
-  int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) override; // slot 0x1c
+  short SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) override; // slot 0x1c
   short GetDiplomacyCounterA2(void) override;                                  // slot 0x1d
   short GetDiplomacyExternalStateByTarget(short nationSlot) override;          // slot 0x1e
   short QueryNationMetricBySlot7C(short metricSlot) override;                  // slot 0x1f
@@ -185,9 +187,9 @@ public:
   // per-order-type priority table at 0x6966d0.
   virtual void SortTrackedOrdersByTypePriority(void);
   // slot 0x56 — body 0x004e03a0: runs slot 0x4c then the slot 0x55 sort.
-  virtual void RunSlot4CThenSortTrackedOrders(void);
+  virtual void MoveCivilians(void); // Mac oracle
   // slot 0x57 — body 0x004e03d0: field900 = needCapA6 / 5.
-  virtual void ResetField900FromNeedCapA6(void);
+  virtual void MoveArmy(void); // Mac oracle
   virtual void SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(int targetNationSlot,
                                                                             int isBoycottEnabled);
   virtual void RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void);
@@ -545,3 +547,4 @@ public:
     return city;
   }
 };
+ASSERT_SIZE(TGreatPower, 0x964);

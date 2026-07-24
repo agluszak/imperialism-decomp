@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/military_ui/TDefenseMinister.h"
 
 struct CRuntimeClass;
@@ -14,6 +16,7 @@ public:
   void MakeNewCity(TCity* city) override;
   double GetPersonalityWeightByFlag(char flag) override;
 };
+ASSERT_SIZE(TNapoleonMinister, 0x94);
 
 // VTABLE: IMPERIALISM 0x00654aa0
 class TBismarckMinister : public TDefenseMinister {
@@ -25,6 +28,7 @@ public:
   void MakeNewCity(TCity* city) override;
   double GetPersonalityWeightByFlag(char flag) override;
 };
+ASSERT_SIZE(TBismarckMinister, 0x94);
 
 // VTABLE: IMPERIALISM 0x00654b18
 class TPirateMinister : public TDefenseMinister {
@@ -36,6 +40,7 @@ public:
   void MakeNewCity(TCity* city) override;
   double GetPersonalityWeightByFlag(char flag) override;
 };
+ASSERT_SIZE(TPirateMinister, 0x94);
 
 // VTABLE: IMPERIALISM 0x00654b90
 class TDefenderMinister : public TDefenseMinister {
@@ -47,6 +52,7 @@ public:
   void MakeNewCity(TCity* city) override;
   double GetPersonalityWeightByFlag(char flag) override;
 };
+ASSERT_SIZE(TDefenderMinister, 0x94);
 
 // VTABLE: IMPERIALISM 0x00654c08
 class TBullyMinister : public TDefenseMinister {
@@ -58,3 +64,4 @@ public:
   void MakeNewCity(TCity* city) override;
   double GetPersonalityWeightByFlag(char flag) override;
 };
+ASSERT_SIZE(TBullyMinister, 0x94);

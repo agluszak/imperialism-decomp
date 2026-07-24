@@ -529,7 +529,7 @@ void TCountry::GenerateEthnicName(CString* out) const {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7ee0
-int TCountry::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
+short TCountry::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
   (void)nationSlot;
   return 0;
 }

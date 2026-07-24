@@ -289,6 +289,32 @@ fix-function-bounds *args: _require-ghidra-install
   uv run python -m tools.ghidra.fix_function_bounds {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
+# Define a computed-jump switch table (dword entries + COMPUTED_JUMP references
+# from the jump instruction) so fixupFunctionBody can follow flow into the case
+# bodies. Dry-run by default; --apply writes + saves the DB.
+[doc('MUTATES: Ghidra DB (--apply). Define a switch jump table + references')]
+[group('ghidra-db')]
+create-switch-table *args: _require-ghidra-install
+  uv run python -m tools.ghidra.create_switch_table {{args}}
+
+# MUTATES: Ghidra DB (with --apply).
+# Remove the Function entity at case-body pseudo-function entries (keeps the
+# label) so an enclosing dispatcher can reabsorb the bytes on the next
+# fix-function-bounds run. Refuses call-referenced targets without --force-refs.
+[doc('MUTATES: Ghidra DB (--apply). Demote case-body pseudo-functions to labels')]
+[group('ghidra-db')]
+demote-functions *args: _require-ghidra-install
+  uv run python -m tools.ghidra.demote_functions {{args}}
+
+# MUTATES: Ghidra DB (with --apply).
+# Delete stale user labels whose address manual source has since subsumed into a
+# typed struct region (they poison reccmp's original-side operand rendering).
+[doc('MUTATES: Ghidra DB (--apply). Delete stale user labels')]
+[group('ghidra-db')]
+delete-labels *args: _require-ghidra-install
+  uv run python -m tools.ghidra.delete_labels {{args}}
+
+# MUTATES: Ghidra DB (with --apply).
 # Remove Function entities sitting on ILT jmp thunks (they block reccmp's thunk
 # auto-resolution and collapse vtable matching). The DB-side counterpart of
 # prune-ilt-thunks; refresh-inventory runs it automatically before the export.

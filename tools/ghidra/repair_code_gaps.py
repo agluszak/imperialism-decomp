@@ -203,10 +203,14 @@ def main() -> int:
                 func = fm.getFunctionAt(taddr) if ok else None
                 if func is None:
                     failed.append((t, why))
-                elif func.getBody().getNumAddresses() <= 1:
+                elif func.getBody().getNumAddresses() <= 1 and byte_at(t) != 0xC3:
                     # Leaving a 1-byte function behind is worse than not
                     # creating one at all (it corrupts the real, larger
-                    # function that should own these bytes). Undo it.
+                    # function that should own these bytes). Undo it — unless
+                    # the single byte is a bare RET (0xC3): the image really
+                    # does contain one-byte no-op functions reached through
+                    # ILT thunks, and dropping those keeps them permanently
+                    # missing from the inventory (bd 0ykr).
                     fm.removeFunction(taddr)
                     degenerate.append((t, why))
                 else:

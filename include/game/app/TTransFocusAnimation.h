@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TFocusAnimation.h"
 
 struct TQuickDrawSurfaceContext;
@@ -25,3 +27,4 @@ public:
   TQuickDrawSurfaceContext* transientSurfaceContext; // 0x30 — offscreen scratch surface
   TQuickDrawSurfaceContext* insetBitmapSurface;      // 0x34 — bitmap resource f0c's surface
 };
+ASSERT_SIZE(TTransFocusAnimation, 0x38);

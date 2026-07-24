@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 #include "game/app/TPanelView.h"
 #include "game/mfc.h"
 
@@ -16,3 +18,4 @@ public:
 
   TGrantsView();
 };
+ASSERT_SIZE(TGrantsView, 0x64);
