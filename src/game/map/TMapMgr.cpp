@@ -3155,9 +3155,7 @@ void TMapMgr::AssignCityRecordDisplayName(ProvinceIndex cityRecordIndex, CString
 
 // FUNCTION: IMPERIALISM 0x00515f40
 void TMapMgr::SetGlobalMapCellSharedLabel(ProvinceIndex cityRecordIndex, CString* name) {
-  CString* dest = reinterpret_cast<CString*>(reinterpret_cast<char*>(cityScoreTable) +
-                                             cityRecordIndex * 0xa8 + 0xa4);
-  *dest = *name;
+  cityScoreTable[cityRecordIndex].cityNameA4 = *name;
 }
 
 // FUNCTION: IMPERIALISM 0x00515f80
