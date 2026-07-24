@@ -115,6 +115,13 @@ if(IMPERIALISM_LINT_COMPILE_ONLY)
 
     target_compile_definitions(Imperialism PRIVATE IMPERIALISM_LINT)
 
+    # MFC 4.2 release headers enable optional inline bodies whose CMenu
+    # definitions rely on VC5's implicit-int extension. Force one lint-only
+    # compatibility boundary before any source header can include MFC directly.
+    target_compile_options(Imperialism PRIVATE
+        "/FI${CMAKE_CURRENT_SOURCE_DIR}/tools/lint/msvc500_mfc_compat.h"
+    )
+
     target_compile_options(Imperialism PRIVATE
         # Core diagnostics. NOTE: this compiler is clang-cl (see cmake/clang-cl-i686.cmake),
         # where bare "-Wall"/"-Wextra" are parsed as the MSVC /Wall/​/Wextra spelling — i.e.
