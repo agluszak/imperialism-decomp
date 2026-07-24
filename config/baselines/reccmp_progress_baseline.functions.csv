@@ -3,7 +3,7 @@ address|matching|name
 0x4125d0|0.25|WrapperFor_ftol_At004125d0
 0x412600|0.0|InvokeCallbackForRecordRangeWithStride
 0x412640|0.43548387096774194|OpenOrCreateCompanyProductRegistryKey
-0x412720|0.042105263157894736|OrphanCallChain_C7_I93_00412720
+0x412720|0.4540540540540541|OpenOrCreateProfileSectionKey
 0x412840|0.5634674922600619|ReadOrCreateRegistryStringValueWithFallback
 0x412a70|1.0|GetMainViewHostFromActiveThread
 0x412aa0|0.5|ImperialismApp::GetMessageMap
@@ -7088,7 +7088,7 @@ address|matching|name
 0x608ba8|0.9397321428571429|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|1.0|CWnd::OnNotify
+0x6091d9|0.9787234042553191|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent

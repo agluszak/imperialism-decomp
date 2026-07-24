@@ -3,7 +3,7 @@ address|name|symbol|size|type|prototype|provenance
 4125d0|WrapperFor_ftol_At004125d0||30|function|undefined WrapperFor_ftol_At004125d0()|
 412600|InvokeCallbackForRecordRangeWithStride||42|function|undefined InvokeCallbackForRecordRangeWithStride()|
 412640|OrphanCallChain_C5_I60_00412640||173|function|undefined OrphanCallChain_C5_I60_00412640()|
-412720|OrphanCallChain_C7_I93_00412720||216|function|undefined OrphanCallChain_C7_I93_00412720()|
+412720|OpenOrCreateProfileSectionKey||216|function|undefined OpenOrCreateProfileSectionKey()|
 412840|ReadOrCreateRegistryStringValueWithFallback||440|function|undefined ReadOrCreateRegistryStringValueWithFallback()|
 412a70|GetMainViewHostFromActiveThread||32|function|void* __cdecl GetMainViewHostFromActiveThread(void)|
 412aa0|ImperialismApp::GetMessageMap|?GetMessageMap@ImperialismApp@@MBEPBUAFX_MSGMAP@@XZ|6|function|protected: virtual struct AFX_MSGMAP const * __thiscall ImperialismApp::GetMessageMap(void)const|
