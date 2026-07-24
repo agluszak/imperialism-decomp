@@ -50,6 +50,22 @@ void TArmyBattle::AllocateRecordList() {
   recordList20 = new TList();
 }
 
+// Size the battlefield to the longest-ranged deployed unit: the playable column count is
+// the maximum GetUnitRange() across recordList20 plus a fixed 0xb margin (0 when the list
+// is empty). The original re-reads the range on the update branch; kept as-is.
+// FUNCTION: IMPERIALISM 0x0059fc40
+void TArmyBattle::ComputeBattlefieldColumnCountFromUnitRanges() {
+  int maxRange = 0;
+  CIterator rangeIter(recordList20);
+  for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(rangeIter.Reset()); rangeIter.More();
+       record = static_cast<TArmyTacUnit*>(rangeIter.Advance())) {
+    if (maxRange < record->GetUnitRange()) {
+      maxRange = record->GetUnitRange();
+    }
+  }
+  battlefieldColumnCount34 = maxRange + 0xb;
+}
+
 // FUNCTION: IMPERIALISM 0x005a4790
 void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* ourStack,
                                                                     TArmyStack* enemyStack,

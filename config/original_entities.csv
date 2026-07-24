@@ -5378,7 +5378,7 @@ address|name|symbol|size|type|prototype|provenance
 59f890|TTacticalBattle::BuildTacticalBattleStateFromBothSides||554|function|undefined BuildTacticalBattleStateFromBothSides()|
 59fb50|TTacticalBattle::Free||152|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0059fb50(void)|
 59fc20|TTacticalBattle::StartBattle||8|function|undefined StartBattle()|
-59fc40|IterateLinkedListCursorEntries_0059fc40||99|function|undefined IterateLinkedListCursorEntries_0059fc40()|
+59fc40|TArmyBattle::ComputeBattlefieldColumnCountFromUnitRanges||99|function|undefined ComputeBattlefieldColumnCountFromUnitRanges()|
 59fcd0|OrphanCallChain_C2_I16_0059fcd0||35|function|undefined OrphanCallChain_C2_I16_0059fcd0()|
 59fd10|HandleTacticalCommandTag_retr||116|function|undefined HandleTacticalCommandTag_retr()|
 59fdb0|TTacticalBattle::FinalizeTacticalTurnStateAndQueueEvent232A||110|function|void __thiscall FinalizeTacticalTurnStateAndQueueEvent232A(void)|

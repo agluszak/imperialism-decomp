@@ -1515,7 +1515,7 @@ address|matching|name
 0x4a2390|0.8266666666666667|TArmyMgr::ResolveNextMove
 0x4a2500|0.984375|TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits
 0x4a2610|0.6646341463414634|BuildArmyActionLabelFromLocalizationAndCounts
-0x4a2900|0.13374805598755832|BuildArmyContextActionRecordsAndDispatchLabel
+0x4a2900|0.13063763608087092|BuildArmyContextActionRecordsAndDispatchLabel
 0x4a31c0|0.4|OrphanVtableAssignStub_004a31c0
 0x4a31e0|1.0|CStr255::CStr255
 0x4a3200|0.7047244094488189|TArmyMgr::TryCreateTacticalBattleViewForTileArmies
@@ -1552,7 +1552,7 @@ address|matching|name
 0x4a5c50|1.0|TArmyBattle::`scalar deleting destructor'
 0x4a5c80|0.0|TArmyBattle::~TArmyBattle
 0x4a5ca0|0.5432098765432098|TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters
-0x4a5ec0|0.5328947368421053|TArmyMgr::GenerateSpyReport
+0x4a5ec0|0.5307017543859649|TArmyMgr::GenerateSpyReport
 0x4a6680|0.708171206225681|TArmyMgr::ShowSpyReport
 0x4a6d40|0.38202247191011235|TArmyMgr::ScanMapContextActionEntriesForCodeMatch
 0x4a6dd0|1.0|TArmyMgr::GetByteFlagAtOffset8
@@ -3414,7 +3414,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::MapGenPassSlot0E
 0x527730|0.29577464788732394|TMapMaker::MapGenPassSlot0F
-0x527d00|0.43478260869565216|TMapMaker::CreateRivers
+0x527d00|0.4268774703557312|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
@@ -5446,7 +5446,7 @@ address|matching|name
 0x59f890|1.0|TTacticalBattle::BuildTacticalBattleStateFromBothSides
 0x59fb50|1.0|TTacticalBattle::Free
 0x59fc20|1.0|TTacticalBattle::StartBattle
-0x59fc40|0.047619047619047616|IterateLinkedListCursorEntries_0059fc40
+0x59fc40|1.0|TArmyBattle::ComputeBattlefieldColumnCountFromUnitRanges
 0x59fcd0|0.1111111111111111|OrphanCallChain_C2_I16_0059fcd0
 0x59fd10|1.0|TTacticalBattle::HandleTacticalCommandTag_retr
 0x59fdb0|1.0|TTacticalBattle::FinalizeTacticalTurnStateAndQueueEvent232A
@@ -7088,7 +7088,7 @@ address|matching|name
 0x608ba8|0.9397321428571429|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|0.9787234042553191|CWnd::OnNotify
+0x6091d9|1.0|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent
