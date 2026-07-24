@@ -1,0 +1,20 @@
+class|clone_owner|status|evidence|note
+TAdmiral|TObject|retail_raw_copy_risk|0x004798d0,0x00415ce0|Inherited slot tail-dispatches to the polymorphic byte copy; no class-specific CString refcount fix-up exists.
+TAssetMgr|TObject|retail_raw_copy_risk|0x004798d0,0x00415ce0|Inherited polymorphic byte copy covers the embedded CString array; no class-specific clone call is known.
+TCountry|TObject|retail_raw_copy_risk|0x004798d0,0x00415ce0|Inherited polymorphic byte copy covers both identity strings; preserve the retail body and audit callers before any hardening.
+TIncludeView|TView|retail_raw_copy_risk|0x0048bfd0,0x0048bef0|TView clone byte-copies the dynamic object then repairs view pointers, but does not refcount labelText6c or inherited hoverHelpText58.
+TInfoBarBehavior|TObject|retail_raw_copy_risk|0x004798d0,0x00415ce0|Inherited polymorphic byte copy covers text; no class-specific CString fix-up exists.
+TLanguageMgr|TObject|retail_raw_copy_risk|0x004798d0,0x00415ce0|Inherited polymorphic byte copy covers both resource paths; no class-specific clone call is known.
+TMapMgr|TObject|retail_raw_copy_risk|0x004798d0,0x00415ce0|Inherited polymorphic byte copy covers scenarioTagText1c; no class-specific clone call is known.
+TMilitaryUnit|TObject|retail_raw_copy_risk|0x004798d0,0x00415ce0|Inherited polymorphic byte copy covers name24; no class-specific CString fix-up exists.
+TMiniCivView|TControl|clone_rejected|0x00435760|Nearest ShallowClone override asserts and returns null, so unitText88 is never byte-copied by the clone API.
+TModalMessageCommand|TObject|retail_raw_copy_risk|0x004798d0,0x00415ce0|Inherited polymorphic byte copy covers message; no class-specific CString fix-up exists.
+TMultiplayerMgr|TEventHandler|base_header_clone_only|0x0048a7c0|Nearest override constructs a TEventHandler header and copies four scalar fields; it does not byte-copy the dynamic TMultiplayerMgr object.
+TSetupRandomMapPicture|TPicture|retail_raw_copy_risk|0x0048f640,0x0048bef0|TPicture clone uses the polymorphic byte copy and repairs view/picture fields, but not planetSeed94 or inherited hoverHelpText58.
+TShip|TObject|retail_raw_copy_risk|0x004798d0,0x00415ce0|Inherited polymorphic byte copy covers name; no class-specific CString fix-up exists.
+TSimMgr|TObject|retail_raw_copy_risk|0x004798d0,0x00415ce0|Inherited polymorphic byte copy covers the 23 embedded shared strings; no class-specific clone call is known.
+TStaticText|TStaticText|deep_copy_fixup|0x0048fc00,0x0048fb10|The class-specific clone allocates a new CString and assigns the source text after the retail byte copy.
+TTextLine|TObject|retail_raw_copy_risk|0x004798d0,0x00415ce0|Inherited polymorphic byte copy covers captionText10; no class-specific CString fix-up exists.
+TTextPictureButton|TPicture|retail_raw_copy_risk|0x0048f640,0x0048bef0|TPicture clone repairs view/picture fields but does not refcount buttonText or inherited hoverHelpText58.
+TView|TView|retail_raw_copy_risk|0x0048bfd0,0x0048bef0|Retail clone byte-copies hoverHelpText58 and the fix-up does not assign or reconstruct it; active generic child cloning makes this an explicit retail risk.
+TZone|TObject|retail_raw_copy_risk|0x004798d0,0x00415ce0|Inherited polymorphic byte copy covers displayName; no class-specific CString fix-up exists.

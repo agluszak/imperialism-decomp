@@ -43,6 +43,14 @@ template-emission-matrix *args:
 template-alias-check:
   uv run python -m tools.workflow.template_alias_check
 
+# Refresh the CString field snapshot from the semantic model + real VC5 layout
+# oracle, then regenerate the reviewed clone/raw-span report.
+[doc('Refresh the VC5-backed CString ownership and raw-span audit')]
+[group('analysis')]
+cstring-ownership-audit:
+  just generate-type-model
+  uv run python -m tools.workflow.cstring_ownership_audit --write
+
 # Enumerate incremental-link stale-jmp fold islands (folded_symbol_group
 # candidates for config/template_aliases.csv); --emit prints ready CSV rows.
 [doc('Enumerate stale-jmp fold islands for folded_symbol_group rows')]

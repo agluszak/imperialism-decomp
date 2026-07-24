@@ -151,12 +151,10 @@ void TCountry::Free(void) {
 
 // FUNCTION: IMPERIALISM 0x004d6bf0
 void TCountry::ReadFrom(TStream* stream) {
-  int streamState = reinterpret_cast<int>(stream);
+  TObject::ReadFrom(stream);
   stream->streamSlot70(&this->identitySharedString0, 0xff);
+  g_pSimMgr->sharedTextSlots[this->nationSlot] = this->identitySharedString0;
   stream->streamSlot70(&this->identitySharedString1, 0xff);
-
-  this->identitySharedString1 = g_pSimMgr->sharedTextSlots[this->nationSlot];
-  stream->ReadBytes(&this->identitySharedString0, 4);
 
   stream->ReadBytes(&this->nationSlot, 2);
   stream->ReadBytes(&this->encodedNationSlot, 2);
@@ -173,7 +171,7 @@ void TCountry::ReadFrom(TStream* stream) {
   if (this->militaryUnitList44->GetCount() != 0) {
     this->militaryUnitList44->FreePayloads();
   }
-  this->militaryUnitList44->ReadFrom(reinterpret_cast<TStream*>(streamState));
+  this->militaryUnitList44->ReadFrom(stream);
 
   int recruitCount = 0;
   stream->ReadBytes(&recruitCount, 4);

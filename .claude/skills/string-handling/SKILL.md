@@ -44,6 +44,17 @@ the shapes below it uses and transcribe them.
 
 ## Field notes
 
+### Keep CString ownership checks outside MFC internals
+*(2026-07, `cstring-ownership-audit` and `cstring-runtime-probe`)*
+
+Audit game-owned records with the VC5 layout oracle: snapshot physical field spans,
+reject raw game-source copies crossing an embedded or owned CString field, and review
+each `TObject::ShallowClone` path against its retail listing. Do not reconstruct
+`CStringData`, touch `m_pchData`, or implement MFC reference counting. Exercise the
+remaining ABI/lifetime assumptions through the public API in a standalone VC5/MFC 4.2
+probe (`just cstring-runtime-probe`), including the four-byte object, empty value,
+copy-on-write, buffer mutation, embedded arrays, return-by-value, and EH unwinding.
+
 ### Low-disk template expansion needs an explicit first replacement argument
 *(2026-07, WarnLowDiskSpaceAndConfirmContinue 0x415760)*
 
