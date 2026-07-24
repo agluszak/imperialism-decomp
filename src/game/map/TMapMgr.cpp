@@ -2493,7 +2493,7 @@ int TMapMgr::QueueDepotConstructionOrder(StrategicTileIndex nTileIndex, short nN
   terrainStateTable[nTileIndex].activeFlags1c |= 0x10;
 
   if (g_nSaveFormatVersion != -3 && g_pSimMgr->multiplayerSessionRole != 0) {
-    g_pGameFlowState->DispatchTurnEvent31TaggedPayload(kControlTagTown, town, -2);
+    g_pGameFlowState->SendStreamObject(kControlTagTown, town, -2);
     g_pGameFlowState->DispatchCityRedrawInvalidateEvent(
         terrainStateTable[nTileIndex].cityRecordIndex);
     DispatchTileRedrawInvalidateEvent(nTileIndex);
@@ -2528,7 +2528,7 @@ void TMapMgr::QueuePortConstructionOrder(StrategicTileIndex nTileIndex, short nN
   g_pActiveMapOrderContext->EnsurePortZoneForTile(nTileIndex);
 
   if (g_nSaveFormatVersion != -3 && g_pSimMgr->multiplayerSessionRole != 0) {
-    g_pGameFlowState->DispatchTurnEvent31TaggedPayload(kControlTagTown, town, -2);
+    g_pGameFlowState->SendStreamObject(kControlTagTown, town, -2);
     g_pGameFlowState->DispatchCityRedrawInvalidateEvent(
         terrainStateTable[nTileIndex].cityRecordIndex);
     DispatchTileRedrawInvalidateEvent(nTileIndex);
