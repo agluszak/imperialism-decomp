@@ -24,11 +24,28 @@
 
 class TObject;
 
-// Serializer tag+object pair for the 0x31 dispatch of
-// SerializeOrderDataIntoTurnEventByTag; the serializer reads it through void*.
+// Serializer tag+object pair for the 0x31 dispatch of TMultiplayerMgr::WriteMessageTo.
 struct TaggedSerializablePayload {
   int tag;
   TObject* object;
+};
+
+// TMultiplayerMgr::SendStreamMessage / WriteMessageTo transport their tag-selected
+// payload in one 32-bit `long` (confirmed by the retail Mac signature and the Windows
+// RET 0x0c/0x10 call sites). Scalar tags use scalarValue; object tags use the matching
+// pointer arm. This keeps the original wire/ABI representation explicit without
+// scattering pointer/integer casts through the dispatcher.
+//
+//   event 0x28: object
+//   event 0x2e: scalarValue narrowed to signed short (nation filter)
+//   event 0x2f: scalarValue as signed int (terrain descriptor slot)
+//   event 0x30: scalarValue as signed int (nation filter)
+//   event 0x31: taggedObject
+//   event 0x32: no payload; scalarValue is ignored
+union StreamMessagePayload32 {
+  long scalarValue;
+  TObject* object;
+  TaggedSerializablePayload* taggedObject;
 };
 
 // Event-8 lobby name/status announce: the selected/source nation followed by two
@@ -181,6 +198,7 @@ struct TurnEvent2DMinorNeedPacket : TimelyNetMessagePrefix {
 };
 
 ASSERT_SIZE(TaggedSerializablePayload, 0x8);
+ASSERT_SIZE(StreamMessagePayload32, 0x4);
 ASSERT_SIZE(TurnEvent8NameAnnouncePacket, 0x64);
 ASSERT_SIZE(LobbyChatEvent9Packet, 0x64);
 ASSERT_SIZE(LobbyTextPairEvent8Packet, 0x5c);

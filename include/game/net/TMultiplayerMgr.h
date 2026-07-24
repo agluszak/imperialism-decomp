@@ -165,8 +165,10 @@ public:
   // literal 1 for every slot, not looped), resets the 'okay' control, and -- only when
   // g_pSimMgr->multiplayerSessionRole == 2 -- broadcasts a minimal event-0xd "time" packet. Always returns 1.
   unsigned char ResetNationStatusSlotsAndInitializeNameControls(TView* panel);
-  void CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte, int mapOffsetSelector,
-                                                  int absoluteOffset, short shortA,
+  enum TurnEvent11MapOffsetBase { kTurnEvent11TerrainStateBase = 0, kTurnEvent11CityScoreBase = 1 };
+  void CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte,
+                                                  TurnEvent11MapOffsetBase mapOffsetBase,
+                                                  const void* mapEntry, short shortA,
                                                   short shortB);       // 0x5493c0
   void CreateAndSendTurnEvent12_TwoShorts(short shortA, short shortB); // 0x5494b0
   void SendNewsEvent(int nationSlot, NewsEvent* event);                // 0x549540 (Mac oracle)
@@ -183,10 +185,10 @@ public:
                                            unsigned char byte2); // 0x549680
   void DispatchTurnEvent1AWithNationActionPayload(short param0, short param1, short param2,
                                                   short param3, short param4); // 0x5497b0
-  // 0x549a90: wraps a {tag, object} pair and sends it through the event-0x31
-  // serializer. Town/depot/port creation uses the 'town' tag and destination -2.
-  void DispatchTurnEvent31TaggedPayload(int payloadTag, TObject* payloadObject,
-                                        int destinationSlot);
+  // Mac oracle: SendStreamObject(unsigned long, TObject*, int). Wraps a {tag, object}
+  // pair and sends it through event 0x31. Town/depot/port creation uses 'town' and -2.
+  void SendStreamObject(unsigned long payloadTag, TObject* payloadObject,
+                        int destinationSlot); // 0x549a90
   void DispatchTaggedGameStateEvent1F20(int packetTag, int param2,
                                         int nationSlotOrMode); // 0x54a340
   // Event-8 lobby text packet: source slot plus the manager's player-name pair.
@@ -340,13 +342,13 @@ public:
   // 0x54a5e0: per great-power tracked-object list (count + WriteTo sweep; 0 for
   // filtered-out or empty slots).
   void PublishNationDescriptorAndNotifyOrderListeners(TStream* stream, int nationFilter);
-  // 0x549c60: write the 0x1c-byte packet header then the tag-specific payload.
-  void SerializeOrderDataIntoTurnEventByTag(TStream* stream, short eventTag, short destinationSlot,
-                                            void* payload);
-  // 0x549ad0: measure with a TCountingStream, then serialize into a THandleStream over
-  // GlobalAlloc memory, stamp the real length, and send (loopback-suppressed for -3).
-  void DispatchTurnEventPacketWithCodeAndPayloadBuffer(short eventTag, short destinationSlot,
-                                                       void* payload);
+  // Mac oracle: WriteMessageTo(TStream*, short, short, long). Writes the 0x1c-byte
+  // packet header followed by the event-tag-selected 32-bit payload representation.
+  void WriteMessageTo(TStream* stream, short eventTag, short destinationSlot, long payload);
+  // Mac oracle: SendStreamMessage(short, short, long). Measures with a TCountingStream,
+  // serializes into a THandleStream over GlobalAlloc memory, stamps the real length,
+  // and sends (loopback-suppressed for destination -3).
+  void SendStreamMessage(short eventTag, short destinationSlot, long payload); // 0x549ad0
   // Mac oracle: SendTradeBook. Broadcasts the event-0x32 trade-book packet with no
   // payload to destination -2. 0x54b5b0.
   void SendTradeBook();

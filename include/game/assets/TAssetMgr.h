@@ -7,6 +7,7 @@
 #include "game/turn_event_codes.h"
 
 class TView;
+class TWindow;
 class TMovieView;
 
 // VTABLE: IMPERIALISM 0x0066f508
@@ -14,7 +15,7 @@ class TAssetMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TAssetMgr)
   virtual ~TAssetMgr() override; // slot 0x01 (scalar deleting destructor)
-  virtual TView*
+  virtual TWindow*
   ResolveTurnEventDialogNodeByMessageContext(TurnEventId messageContext); // slot 0x0a 0x5df3c0
   // Retail Mac identities. These are real resource-file lifecycle slots even though
   // the Windows implementations are intentional no-ops.

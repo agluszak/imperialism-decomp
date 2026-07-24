@@ -41,8 +41,7 @@ void TWarningView::DoPostCreate(int arg) {
   if (titlePanel == 0) {
     return;
   }
-  TView* titleControl =
-      reinterpret_cast<TView*>(titlePanel->ResolveControlByTag(kControlTagTitl)); // 'titl'
+  TView* titleControl = titlePanel->ResolveControlByTag(kControlTagTitl); // 'titl'
   if (titleControl != 0) {
     titleControl->RefreshControl();
   }

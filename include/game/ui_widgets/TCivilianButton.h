@@ -19,6 +19,7 @@ public:
   DECLARE_DYNCREATE(TCivilianButton)
   void Draw(RECT* rectBuffer) override;
 
-  void SetSelectedCivilianOrderAndEnableButton(TCivUnit* selectedOrder);
+  virtual void SetSelectedCivilianOrderAndEnableButton(
+      TCivUnit* selectedOrder); // slot 0x75 0x58b460; Mac: SetButton(TCivUnit*)
 };
 ASSERT_SIZE(TCivilianButton, 0xa0);

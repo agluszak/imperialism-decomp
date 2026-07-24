@@ -160,7 +160,7 @@ void TArmyMission::ReadFrom(TStream* stream) {
 
   short count = stream->ReadShort();
   TGreatPower* nation = g_apNationStates[nationId04];
-  TSortedList* unitList = reinterpret_cast<TSortedList*>(nation->militaryUnitList44);
+  TSortedList* unitList = nation->militaryUnitList44;
 
   for (int i = 0; i < count; ++i) {
     short index = stream->ReadShort();

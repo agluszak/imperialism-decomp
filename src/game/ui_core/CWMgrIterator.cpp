@@ -42,10 +42,3 @@ void* CWMgrIterator::NextWindow() {
 int CWMgrIterator::More() {
   return current != 0;
 }
-
-// FUNCTION: IMPERIALISM 0x004924c0
-int __stdcall PopSinglyLinkedListHeadPointer(int* head) {
-  int* node = reinterpret_cast<int*>(*head);
-  *head = *node;
-  return reinterpret_cast<int>(node + 2);
-}

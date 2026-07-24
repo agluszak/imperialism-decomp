@@ -11,8 +11,6 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/mfc.h"
-const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
-
 // SYNTHETIC: IMPERIALISM 0x0058b340
 // TCivilianButton::CreateObject
 // SYNTHETIC: IMPERIALISM 0x0058b3c0
@@ -62,9 +60,7 @@ void TCivilianButton::Draw(RECT* rectBuffer) {
   srcRect.bottom = 0x40;
 
   RECT dstRect = {0, 2, 0x40, 0x42};
-  int strategicMapViewSystem = *reinterpret_cast<int*>(kAddrStrategicMapViewSystem);
-  TQuickDrawSurfaceContext* hintSource = reinterpret_cast<TQuickDrawSurfaceContext*>(
-      *reinterpret_cast<int*>(strategicMapViewSystem + 0x66c));
+  TQuickDrawSurfaceContext* hintSource = g_pStrategicMapViewSystem->atlas66c;
   BlitQuickDrawSurfaces(hintSource->GetBlitSurface(),
                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &dstRect,
                         0x24);

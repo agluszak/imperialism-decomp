@@ -1269,9 +1269,8 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
                                                unsigned char closeAfterOpen,
                                                unsigned char isEmbeddedPage,
                                                TCityProductionView* productionView) {
-  TWindow* dialog =
-      reinterpret_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
-          static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill)));
+  TWindow* dialog = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
+      static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill));
   TBuildingView* buildingView =
       static_cast<TBuildingView*>(dialog->ResolveControlByTag(kControlTagDialog));
   if (buildingView == 0) {
@@ -1296,9 +1295,8 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
 TBuildingView* TMacViewMgr::RestoreBuildingWindowAtSavedPosition(
     short buildingSlot, TCity* city, unsigned char closeAfterOpen, unsigned char isEmbeddedPage,
     TCityProductionView* productionView, short savedX, short savedY) {
-  TWindow* dialog =
-      reinterpret_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
-          static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill)));
+  TWindow* dialog = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
+      static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill));
   TBuildingView* buildingView =
       static_cast<TBuildingView*>(dialog->ResolveControlByTag(kControlTagDialog));
   if (buildingView == 0) {
@@ -1326,8 +1324,8 @@ TBuildingView* TMacViewMgr::RestoreBuildingWindowAtSavedPosition(
 // FUNCTION: IMPERIALISM 0x0050d5b0
 void TMacViewMgr::OpenConstructionWindow(short buildingSlot, TCity* city,
                                          TCityProductionView* productionView) {
-  TWindow* dialog = reinterpret_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericCreator));
+  TWindow* dialog =
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericCreator);
   TBuildingConstructionView* constructionView =
       static_cast<TBuildingConstructionView*>(dialog->ResolveControlByTag(kControlTagDialog));
   if (constructionView == 0) {

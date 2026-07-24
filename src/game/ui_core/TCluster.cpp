@@ -62,15 +62,14 @@ void TCluster::InitializeClusterFrameAndAttachToParent(TView* parent, POINT* off
 
 // FUNCTION: IMPERIALISM 0x00491650
 void TCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  if (commandId == 0xc &&
-      reinterpret_cast<TView*>(sourceHandler)->ownerContext == reinterpret_cast<TView*>(this)) {
+  if (commandId == 0xc && static_cast<TView*>(sourceHandler)->ownerContext == this) {
     POSITION pos = childList44 != 0 ? childList44->GetHeadPosition() : NULL;
     while (pos != NULL) {
-      TControl* sibling = reinterpret_cast<TControl*>(childList44->GetNext(pos));
+      TControl* sibling = static_cast<TControl*>(childList44->GetNext(pos));
       if (sibling == 0) {
         break;
       }
-      if (reinterpret_cast<TEventHandler*>(sibling) != sourceHandler) {
+      if (sibling != sourceHandler) {
         sibling->HandleEvent(kControlCommandHiliteOff, this, 0);
       }
     }
@@ -108,7 +107,7 @@ void TCluster::SetSelectedChildTagAndRefresh(int childTag) {
   }
   POSITION pos = childList44->GetHeadPosition();
   while (pos != NULL) {
-    TControl* child = reinterpret_cast<TControl*>(childList44->GetNext(pos));
+    TControl* child = static_cast<TControl*>(childList44->GetNext(pos));
     if (child != 0) {
       if (child->controlTag == childTag) {
         child->DoEvent(kControlCommandHiliteOn, this, 0);

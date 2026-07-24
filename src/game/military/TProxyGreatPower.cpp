@@ -99,7 +99,7 @@ void TProxyGreatPower::SetTradePolicyTo(NationSlot targetNation, short tradePoli
 
 // FUNCTION: IMPERIALISM 0x00540c70
 void TProxyGreatPower::AddTurnStartEvent(TTurnStartEvent* event) {
-  g_pGameFlowState->DispatchTurnEvent31TaggedPayload(kControlTagStar, event, this->nationSlot);
+  g_pGameFlowState->SendStreamObject(kControlTagStar, event, this->nationSlot);
   event->Free();
 }
 

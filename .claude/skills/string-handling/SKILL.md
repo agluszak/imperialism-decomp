@@ -33,10 +33,38 @@ the shapes below it uses and transcribe them.
   operand in a diff often really holds the string (e.g. `" "` behind a junk name).
   Reference the named global, not a duplicate literal, or the operand won't pair.
   Use `just ghidra string-oracle` (or `just strings-for-function <addr>`) to read the real content.
-- **`LPCSTR` casts**: passing a `CString` where the original passed `char*` needs the
-  `(char*)(LPCSTR)` double cast the repo already uses — copy an existing call site.
+- **`LPCSTR` casts**: a `CString` passed through a string ellipsis must be converted
+  explicitly (`static_cast<LPCSTR>(text)`) so VC5 pushes the character pointer rather
+  than the four-byte object. Ordinary typed parameters should keep their natural
+  conversion. `just cstring-gate` checks the known stack-indexed template expanders.
+- **Mutable buffers are paired operations.** Every `GetBuffer` or
+  `GetBufferSetLength` path needs the evidence-matching `ReleaseBuffer`; do not request
+  a mutable buffer just to obtain an input `const char*`. `just cstring-gate` rejects
+  mechanically visible unpaired acquisitions and direct CString/CStringData internals.
 
 ## Field notes
+
+### Keep CString ownership checks outside MFC internals
+*(2026-07, `cstring-ownership-audit` and `cstring-runtime-probe`)*
+
+Audit game-owned records with the VC5 layout oracle: snapshot physical field spans,
+reject raw game-source copies crossing an embedded or owned CString field, and review
+each `TObject::ShallowClone` path against its retail listing. Do not reconstruct
+`CStringData`, touch `m_pchData`, or implement MFC reference counting. Exercise the
+remaining ABI/lifetime assumptions through the public API in a standalone VC5/MFC 4.2
+probe (`just cstring-runtime-probe`), including the four-byte object, empty value,
+copy-on-write, buffer mutation, embedded arrays, return-by-value, and EH unwinding.
+
+### Low-disk template expansion needs an explicit first replacement argument
+*(2026-07, WarnLowDiskSpaceAndConfirmContinue 0x415760)*
+
+The localized resource `0x2763:0x19` contains `[1:number]`. The retail listing formats
+the free-megabyte count into a CString, then pushes that CString's character pointer
+after the template pointer before calling `scanBracketExpressions`. The faithful call
+is `scanBracketExpressions(ctx, &out, static_cast<LPCSTR>(templateText),
+static_cast<LPCSTR>(formattedNumber))`. A three-argument call silently makes the callee
+read an unintended caller stack slot; `templateText.GetBuffer(0)` is also wrong because
+the callee only reads the template and no matching `ReleaseBuffer` follows.
 
 ### Missing assert file/line args are a cheap, systematic score win
 *(ex decomp-loop note 111)*

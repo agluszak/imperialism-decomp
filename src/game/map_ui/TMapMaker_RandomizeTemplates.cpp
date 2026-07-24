@@ -16,7 +16,7 @@ unsigned int TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
     unsigned short class5) {
   unsigned int result = class3;
   if (class3 != baseClass) {
-    int cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
+    char* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     int* dst = nullptr;
     int* src = nullptr;
@@ -75,7 +75,7 @@ unsigned int TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
   }
 
   if (class4 != baseClass) {
-    int cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
+    char* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
     int* dst = reinterpret_cast<int*>(cell + 0x2d90);
     unsigned int r = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     if ((r >> 0xc & 1) != 0) {
@@ -116,7 +116,7 @@ unsigned int TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
   }
 
   if (class5 != baseClass) {
-    int cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
+    char* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
     int* dst = reinterpret_cast<int*>(cell + 0x2dd8);
     unsigned int r = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     if ((r >> 0xc & 1) != 0) {

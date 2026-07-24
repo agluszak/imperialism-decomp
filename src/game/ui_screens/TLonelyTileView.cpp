@@ -4,6 +4,7 @@
 #include "game/ui_core/TMacViewMgr.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
+#include "game/map_ui/TMapDialog.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
@@ -35,15 +36,10 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
   RECT srcRect;
   TQuickDrawBlitSurface* srcSurface;
   if (controlTag == kControlTagTile && mapUberPicture->invalidationFlag94 != 0) {
-    // The tile-sprite atlas surface hangs off subview2A8+0x350 (a TQuickDrawSurfaceContext
-    // that isn't a recovered TMapUberPicture member, so it's read via a raw offset).
-    TQuickDrawSurfaceContext* tileAtlasCtx = *reinterpret_cast<TQuickDrawSurfaceContext**>(
-        reinterpret_cast<char*>(mapUberPicture->subview2A8) + 0x350);
-    // The sprite-variant byte lives in g_pGlobalMapState's per-tile descriptor table
-    // (36-byte records) at +0x10; the atlas column is variant * 64.
-    char* tileTable = *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pGlobalMapState) + 0xc);
+    TQuickDrawSurfaceContext* tileAtlasCtx = mapUberPicture->subview2A8->quickDrawSurface350;
+    // The tile's transient marker-slot index selects a 64-pixel atlas column.
     int spriteX =
-        static_cast<int>(*reinterpret_cast<signed char*>(tileTable + tileIndex60 * 36 + 0x10)) << 6;
+        static_cast<int>(g_pGlobalMapState->terrainStateTable[tileIndex60].markerSlotIndex10) << 6;
     srcRect.left = spriteX;
     srcRect.top = 0;
     srcRect.right = spriteX + 0x40;
