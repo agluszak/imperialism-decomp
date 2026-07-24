@@ -35,7 +35,7 @@ def main() -> int:
     parser.add_argument(
         "--no-worktree",
         action="store_true",
-        help="compare only committed HEAD changes (for CI checkouts)",
+        help="compare only committed HEAD changes",
     )
     args = parser.parse_args()
 

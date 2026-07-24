@@ -80,7 +80,7 @@ just build && just detect && just stats   # rebuild + measure
 just compare 0x004E73F0                    # targeted verbose compare (asm diff)
 just triage 0x004E73F0                     # structured semantic result — read this before a raw diff
 just vtable TCity                          # vtable layout vs original
-just precommit                             # build + gates + tooling tests + stats, in one command
+just precommit                             # every required build, gate, test, integrity, and runtime check
 ```
 
 The full per-workflow guidance lives in `AGENTS.md` (the contract; `CLAUDE.md` is
@@ -109,24 +109,23 @@ just tooling-check                  # verify the tooling surface
 just build && just detect && just stats   # first build + reccmp pairing; stats should show no baseline drift
 ```
 
-Before running native runtime tests, verify the host debugger surface and then
-run the asset-backed PR suite:
+`just precommit` is the single required verification entrypoint. It includes the
+asset-backed native PR suite, so verify the host debugger surface first:
 
 ```sh
 command -v wine wineserver winedbg gdb xwininfo xprop
 gdb --quiet --nx --interpreter=mi3 --batch -ex 'show version'
-just runtime-check pr --jobs 1
+just precommit
 ```
 
 Use `just runtime-test NAME --no-gdb` only as a control when determining whether
 a failure is debugger-sensitive. It does not replace the default GDB/MI result
 and failure-capture path.
 
-The `runtime-pr` GitHub check runs on a repository-owned self-hosted runner with
-the `imperialism-runtime` label and a runner-local `ORIGINAL_BINARY`. Repository
-branch protection must require `runtime-pr` for same-repository pull requests.
-Do not expose that runner to fork pull requests or upload its retail assets and
-derived fixtures as workflow artifacts.
+Hosted verification workflows are intentionally absent. Verification runs locally
+through `just precommit` so the legally obtained retail binary and derived fixtures
+remain on the developer's machine. `PRECOMMIT_BASE_REF` can override the default
+`origin/main` merge base used by the generated-artifact integrity check.
 
 `.env` (gitignored) only needs the two machine-specific paths:
 

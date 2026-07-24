@@ -26,7 +26,7 @@ agent-start mode +addrs:
 agent-check *args:
   uv run python -m tools.workflow.agent_task check {{args}}
 
-[doc('Render the task receipt + diff into a PR-ready summary (CI still recomputes)')]
+[doc('Render the task receipt + diff into a PR-ready summary (precommit still recomputes)')]
 [group('agent')]
 agent-finish *args:
   uv run python -m tools.workflow.agent_task finish {{args}}

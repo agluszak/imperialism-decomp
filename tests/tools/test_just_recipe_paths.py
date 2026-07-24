@@ -3,7 +3,7 @@
 Guard for the class of drift where a recipe hardcodes src/... or include/...
 paths that a later reorganization moves (imperialism-decomp-ifxx: the
 scalar-clang-tidy sample named five root-level src/game TUs that had all moved
-into subsystem folders, and CI never noticed because it does not run that
+into subsystem folders, and the normal verification path did not run that
 recipe).
 """
 

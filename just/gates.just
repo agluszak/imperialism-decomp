@@ -78,16 +78,42 @@ ui-platform-diff-check:
 # gates — mechanical checks (all read-only).
 # ---------------------------------------------------------------------------
 
-# The full pre-commit sequence in one command: matching build, runtime-test build,
-# all gates, then stats vs baseline. Review the stats delta, then run
-# `just stats-baseline-update` if accepted and commit the baseline with the change.
-[doc('Pre-commit: matching build + runtime-test build + gates + tests + stats')]
+# The complete repository verification sequence in one local command. It includes
+# the checks that formerly lived in hosted automation: the lint rejection fixture,
+# generated-artifact integrity over the branch/worktree diff, and the asset-backed
+# PR runtime suite. Review the stats delta, then run `just stats-baseline-update`
+# if accepted and commit the baseline with the change.
+[doc('Complete local verification: builds + gates + tests + integrity + runtime suite')]
 [group('gates')]
 precommit:
   just build
   just runtime-test-build
   just gates
+  just lint-warning-gate-test
   just test
+  just _precommit-generated-integrity-gate
+  just runtime-check pr --jobs 1 --junit build-runtime-tests/runtime-pr.xml
+
+# Compare the entire current branch plus worktree with main. PRECOMMIT_BASE_REF
+# permits an explicit integration base; otherwise prefer origin/main, then local
+# main. A single-branch checkout still checks all uncommitted changes against HEAD.
+[private]
+_precommit-generated-integrity-gate:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  base_ref="${PRECOMMIT_BASE_REF:-}"
+  if [[ -z "$base_ref" ]]; then
+    if git rev-parse --verify --quiet refs/remotes/origin/main >/dev/null; then
+      base_ref=origin/main
+    elif git rev-parse --verify --quiet refs/heads/main >/dev/null; then
+      base_ref=main
+    else
+      base_ref=HEAD
+    fi
+  fi
+  base="$(git merge-base HEAD "$base_ref")"
+  echo "Generated-integrity base: $base ($base_ref)"
+  just generated-integrity-gate --base "$base"
 
 # Run all mechanical source-policy gates (the pre-commit check).
 # Run `just format-check <touched paths>` separately on files you edited; the tree
@@ -102,7 +128,7 @@ gates:
   just decomplint
   just lint-warning-gate
 
-# Named warning gate used by the general checks and CI. Keep it separate from the
+# Named warning gate used by the general checks. Keep it separate from the
 # implementation recipe so callers have one stable policy entrypoint.
 [doc('Fail unless every clang-cl lint translation unit compiles warning-free')]
 [group('gates')]
@@ -265,8 +291,8 @@ destructor-placement-gate:
 symbols-integrity-gate:
   uv run python -m tools.workflow.check_symbols_integrity
 
-# Reject generated build inputs and retired generated source trees in a PR's diff. CI supplies
-# the merge base and --no-worktree so only committed branch changes are inspected.
+# Reject generated build inputs and retired generated source trees in a branch or
+# worktree diff. `precommit` resolves the merge base and includes local changes.
 [doc('Reject generated artifacts relative to a merge base')]
 [group('gates')]
 generated-integrity-gate *args:
@@ -347,9 +373,9 @@ shadow-stub-gate:
 agent-rules-gate:
   uv run python -m tools.workflow.check_agent_rules
 
-# The binary-free gate subset CI runs on every PR (no docker/wine/original exe:
-# excludes vtable, datacmp-gate, decomplint, lint). Keep in sync with `gates`.
-[doc('Source-only gate subset (what CI enforces; no built binary needed)')]
+# The binary-free gate subset (no docker/wine/original exe: excludes vtable,
+# datacmp-gate, decomplint, and lint). Keep in sync with `gates`.
+[doc('Source-only gate subset; no built binary needed')]
 [group('gates')]
 source-gates:
   just generate

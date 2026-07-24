@@ -152,7 +152,7 @@ def main() -> int:
 
     if ghidra_env.install_dir() is None:
         print("GHIDRA_INSTALL_DIR is not set; skipping (this audit needs the Ghidra DB, "
-              "source-only CI environments don't have it)")
+              "which is optional for source-only verification)")
         return 0
 
     by_name, files_of = collect_typedefs(repo_root / args.root)

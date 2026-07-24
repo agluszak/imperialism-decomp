@@ -35,7 +35,7 @@ just agent-finish              # PR title + body from the receipt (build-msvc500
 just agent-release             # after the work lands: free the claim refs (24h TTL otherwise)
 ```
 
-The receipt is guidance, not proof — CI recomputes the checks. Policy-baseline
+The receipt is guidance, not proof — `just precommit` recomputes the checks. Policy-baseline
 updates (`stub-count-gate-update`, `datacmp-gate-update`, `noop-gate-update`, and
 friends) are exceptions to architecture rules and refuse to run without
 `ALLOW_POLICY_BASELINE_UPDATE=1`, which requires an explicit human approval —

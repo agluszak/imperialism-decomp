@@ -14,7 +14,7 @@ def run(cmd: list[str]) -> None:
 
 
 def configure_wine_env() -> None:
-    # Registry-backed environment variables keep invocation simple in CI/scripts.
+    # Registry-backed environment variables keep invocation simple in automation/scripts.
     reg_sets = [
         (
             "PATH",

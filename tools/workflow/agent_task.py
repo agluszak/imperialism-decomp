@@ -20,8 +20,8 @@ format-check; then build (which regenerates its inputs), detect, gates (includin
 one full progress report), score extraction, targeted triage, and tests.
 
 `agent-finish` renders the receipt + diff into a summary suitable for a PR body.
-The receipt is guidance for the agent and reviewers — CI recomputes the checks
-itself and trusts only its own run.
+The receipt is guidance for the agent and reviewers — `just precommit`
+recomputes the checks and trusts only its own run.
 """
 
 from __future__ import annotations
@@ -630,8 +630,8 @@ def cmd_finish(args: argparse.Namespace) -> int:
     else:
         lines.append("- none recorded")
     lines += ["", "## Diffstat", "", "```", diffstat or "(no diff)", "```", "",
-              "_Receipt: build-msvc500/agent-task.json — guidance only; CI recomputes",
-              "all checks itself._"]
+              "_Receipt: build-msvc500/agent-task.json — guidance only; `just precommit`",
+              "recomputes all checks itself._"]
     body = "\n".join(lines)
     PR_BODY_MD.parent.mkdir(parents=True, exist_ok=True)
     PR_BODY_MD.write_text(body + "\n", encoding="utf-8")

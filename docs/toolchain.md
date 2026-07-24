@@ -44,7 +44,7 @@ parenthesization (2), and implicit multiplication widening (1). These are audit
 queues, not automatic fixes: analyzer null reports often follow retail-style
 warning/assert paths that deliberately continue, while cast and expression
 changes still require listing and reccmp verification.
-- `just lint` now forces `IMPERIALISM_LINT_WERROR=ON`; CI also proves the gate
+- `just lint` now forces `IMPERIALISM_LINT_WERROR=ON`; `just precommit` also proves the gate
   rejects an intentionally warning-producing translation unit. clang-tidy is
   separate and advisory because its scalar diagnostics need listing-aware
   classification rather than blanket suppression or cast insertion.

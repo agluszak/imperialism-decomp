@@ -699,7 +699,7 @@ def main() -> int:
     if not evidence_path.exists():
         print(
             f"evidence snapshot missing: {args.evidence} — run `just vtable-abi-extract` "
-            "first (needs Ghidra). Gate treats missing evidence as pass (source-only CI)."
+            "first (needs Ghidra). The source-only gate treats missing evidence as pass."
         )
         return 0
     evidence = json.loads(evidence_path.read_text(encoding="utf-8"))

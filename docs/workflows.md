@@ -91,8 +91,10 @@ just stats-baseline-update    # accepts the hash-verified report; commit the ref
 just agent-finish             # machine-derived summary / PR body from the receipt
 ```
 
-(`just precommit` remains the underlying build+gates+test bundle; the gates run the
-single full progress report used by both stats and generated-UI regression checks.)
+(`just precommit` is the complete local verification bundle: matching and runtime
+builds, all gates, the lint rejection fixture, tooling tests, merge-base generated-
+artifact integrity, and the asset-backed PR runtime suite. The gates run the single
+full progress report used by both stats and generated-UI regression checks.)
 Unchanged generated build inputs preserve their mtimes, so a no-op rebuild also
 preserves the EXE/PDB identity and can reuse that report.
 

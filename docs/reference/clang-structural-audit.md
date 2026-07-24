@@ -96,5 +96,5 @@ available for any of them. Two distinct regimes emerged instead:
   a class D false positive confined to fixed, reviewed sites (the `stretch<T>` helper,
   the `TG_LAYOUT_ASSERT` macro, one constant division). A gate that fails only on a
   *new* site for these three checks would catch real sizeof/macro/overflow bugs at
-  near-zero noise. Adopt only if a cheap clang-tidy invocation lands in CI; otherwise
+  near-zero noise. Adopt only if a cheap clang-tidy invocation lands in precommit; otherwise
   keep all nine checks advisory and re-run this audit opportunistically.
