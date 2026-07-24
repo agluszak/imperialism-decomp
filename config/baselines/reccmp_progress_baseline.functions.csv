@@ -36,8 +36,8 @@ address|matching|name
 0x4139f0|1.0|ImperialismApp::RestoreWaitCursorIfStartupBusy
 0x413a20|1.0|ImperialismApp::PreTranslateMessage
 0x413a50|0.7012987012987013|ShowSelectedDibInTemplateDDDialog
-0x413b80|1.0|TModalDialogBase::~TModalDialogBase
-0x413c00|1.0|TModalDialogBase::`scalar deleting destructor'
+0x413b80|1.0|TModalDialogBase::~TModalDialogBase(void)
+0x413c00|1.0|TModalDialogBase::`scalar deleting destructor'(unsigned int)
 0x413c30|0.8301886792452831|TDDTemplateDialog::~TDDTemplateDialog
 0x413cd0|1.0|TDDTemplateDialog::`scalar deleting destructor'
 0x413d20|0.6442953020134228|ImperialismApp::OnSelectActiveNation
@@ -97,7 +97,7 @@ address|matching|name
 0x41b5f0|1.0|ClearUiResourceContext
 0x41b610|1.0|PopUiResourcePoolNode
 0x41b6d0|0.08888302782539892|InitializeIndustryViewTradeMoveControlsAndCommodityRows
-0x426ec0|1.0|CList<TView *,TView *>::AddTail
+0x426ec0|1.0|CList<TView *,TView *>::AddTail(class TView *)
 0x426f60|0.4|GetUiLinkedListNodePayload
 0x426f80|0.6666666666666666|NoOpRuntimeCallback_00426f80
 0x426fa0|1.0|SetUiResourceContextFlagsAndMetrics
@@ -480,8 +480,6 @@ address|matching|name
 0x480dd0|1.0|CArray<RuntimeSelectionRecord *,RuntimeSelectionRecord *>::`scalar deleting destructor'
 0x480e00|0.015873015873015872|ResizeDynamicPointerArrayWithGrowthStep
 0x4810c0|0.25|WrapperFor_ftol_At004810c0
-0x481130|0.0|WrapperFor_FreeHeapBufferIfNotNull_At00481130
-0x481160|0.08|WrapperFor_CDialog_At00481160
 0x4811e0|0.0|OrphanRetStub_004811e0
 0x481200|0.5|OrphanVtableAssignStub_00481200
 0x481220|0.4|WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00481220
@@ -590,8 +588,7 @@ address|matching|name
 0x484af0|0.5517241379310345|CMainFrame::CreateObject
 0x484bb0|1.0|CMainFrame::GetRuntimeClass
 0x484bd0|0.5|CMainFrame::GetMessageMap
-0x484bf0|0.631578947368421|CMainFrame::CMainFrame
-0x484c10|0.2857142857142857|OrphanDeadLeaf_NoRefs_00484c10
+0x484bf0|0.8333333333333334|CMainFrame::CMainFrame
 0x484c40|1.0|CMainFrame::`scalar deleting destructor'
 0x484c70|0.6896551724137931|CMainFrame::~CMainFrame
 0x484d00|0.0|CMainFrame::OnCreate
@@ -754,7 +751,7 @@ address|matching|name
 0x488870|1.0|TList::`scalar deleting destructor'
 0x4888a0|0.9696969696969697|TList
 0x4888f0|1.0|TSortedList::`scalar deleting destructor'
-0x488920|0.9696969696969697|TSortedList
+0x488920|0.9696969696969697|TSortedList(void)
 0x4889a0|0.0|TStream::CreateObject
 0x4889d0|1.0|TStream::GetRuntimeClass
 0x488a10|1.0|TStream::`scalar deleting destructor'
@@ -1574,7 +1571,6 @@ address|matching|name
 0x4a84c0|1.0|TArmyStackList::`scalar deleting destructor'
 0x4a84f0|0.9696969696969697|TArmyStackList::~TArmyStackList
 0x4a8560|1.0|TArmyStackList::Compare
-0x4a8640|0.08695652173913043|WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640
 0x4a8740|0.25|WrapperFor_ftol_At004a8740
 0x4a8770|0.48|TGarrisonView::CreateObject
 0x4a87f0|1.0|TGarrisonView::GetRuntimeClass

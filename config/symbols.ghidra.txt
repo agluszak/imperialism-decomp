@@ -1146,8 +1146,8 @@ CArray[RuntimeSelectionRecord_#,RuntimeSelectionRecord_#]::'scalar_deleting_dest
 ResizeDynamicPointerArrayWithGrowthStep 480E00 f
 WrapperFor_ftol_At004810c0 4810C0 f
 IltTarget_004810f0 4810F0 f
-WrapperFor_FreeHeapBufferIfNotNull_At00481130 481130 f
-WrapperFor_CDialog_At00481160 481160 f
+TModalDialogBase_ScalarDeletingDestructor_PerTuCopy 481130 f
+TModalDialogBase_Destructor_PerTuCopy 481160 f
 OrphanRetStub_004811e0 4811E0 f
 OrphanVtableAssignStub_00481200 481200 f
 WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00481220 481220 f
@@ -1282,7 +1282,6 @@ CMainFrame::CreateObject 484AF0 f
 CMainFrame::GetRuntimeClass 484BB0 f
 CMainFrame::GetMessageMap 484BD0 f
 CMainFrame::CMainFrame 484BF0 f
-OrphanDeadLeaf_NoRefs_00484c10 484C10 f
 CMainFrame::'scalar_deleting_destructor' 484C40 f
 CMainFrame::~CMainFrame 484C70 f
 CMainFrame::OnCreate 484D00 f
@@ -2357,7 +2356,7 @@ TArmyStackList::'scalar_deleting_destructor' 4A84C0 f
 TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0 4A84F0 f
 IltTarget_004a8540 4A8540 f
 TArmyStackList::Compare 4A8560 f
-WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640 4A8640 f
+TSortedList::TSortedList 4A8640 f
 WrapperFor_ftol_At004a8740 4A8740 f
 TGarrisonView::CreateObject 4A8770 f
 TGarrisonView::GetRuntimeClass 4A87F0 f

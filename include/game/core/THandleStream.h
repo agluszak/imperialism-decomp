@@ -25,8 +25,12 @@ public:
   // or written anywhere else in the retail image. The previous name asserted an
   // ownership-or-dirty meaning that no writer, reader, or Mac signature supports, so
   // the slot stays opaque and explicitly unclassified.
-  // UNRESOLVED_FIELD_ATTRIBUTION: no observed reader; candidate readings (handle
-  // ownership flag, dirty flag) are both unevidenced.
+  // Evidence final (bead r3f): the ctor 0x4895e0 zero-initializes this byte (the CL
+  // store follows XOR ECX,ECX, so it is a constant 0, not a caller flag), no reader or
+  // writer exists anywhere else in the retail image, and the Mac oracle's
+  // IHandleStream(char**, long) carries no flag parameter. The slot stays opaque;
+  // treat it as never-used padding-with-a-zero-init unless a non-retail build ever
+  // shows a reader.
   unsigned char unclassifiedByte14;
 
   DECLARE_DYNCREATE(THandleStream)

@@ -260,7 +260,7 @@ address|name|symbol|size|type|prototype|provenance
 479960|CAmbitDocument::OnOpenDocument|?OnOpenDocument@CAmbitDocument@@UAEHPBD@Z|26|function|public: virtual int __thiscall CAmbitDocument::OnOpenDocument(char const *)|
 479990|CAmbitDocument::OnSaveDocument|?OnSaveDocument@CAmbitDocument@@UAEHPBD@Z|188|function|public: virtual int __thiscall CAmbitDocument::OnSaveDocument(char const *)|
 479a80|PopUiResourcePoolNode_00479A80||89|function|undefined PopUiResourcePoolNode_00479A80()|
-479b00|PushUiResourcePoolNode||125|function|undefined PushUiResourcePoolNode()|
+479b00|CList<TView *,TView *>::AddTail|?AddTail@?$CList@PAVTView@@PAV1@@@QAEPAU__POSITION@@PAVTView@@@Z|125|function|POSITION __thiscall AddTail(TView *)|template
 479ba0|InitializeJoinSelectorDialogControlsAndNationSlots_Impl||4|function|undefined InitializeJoinSelectorDialogControlsAndNationSlots_Impl()|
 479bc0|InitializeJoinSelectorDialogControlsAndNationSlots_Impl_At00479bc0||10|function|undefined InitializeJoinSelectorDialogControlsAndNationSlots_Impl_At00479bc0()|
 479be0|CList<TView *,TView *>::Serialize|?Serialize@?$CList@PAVTView@@PAV1@@@UAEXAAVCArchive@@@Z|280|function|undefined Serialize(CArchive &)|template
@@ -427,8 +427,8 @@ address|name|symbol|size|type|prototype|provenance
 480dd0|CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::`scalar deleting destructor'|??_G?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
 480e00|ResizeDynamicPointerArrayWithGrowthStep||310|function|undefined ResizeDynamicPointerArrayWithGrowthStep()|
 4810c0|WrapperFor_ftol_At004810c0||30|function|undefined WrapperFor_ftol_At004810c0()|
-481130|WrapperFor_FreeHeapBufferIfNotNull_At00481130||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00481130()|
-481160|WrapperFor_CDialog_At00481160||86|function|undefined WrapperFor_CDialog_At00481160()|
+481130|TModalDialogBase::`scalar deleting destructor'|??_GTModalDialogBase@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
+481160|TModalDialogBase::~TModalDialogBase|??1TModalDialogBase@@UAE@XZ|86|function|public: virtual __thiscall TModalDialogBase::~TModalDialogBase(void)|template
 4811e0|OrphanRetStub_004811e0||3|function|undefined OrphanRetStub_004811e0()|
 481200|OrphanVtableAssignStub_00481200||6|function|undefined OrphanVtableAssignStub_00481200()|
 481220|WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00481220||11|function|undefined WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00481220()|
@@ -539,8 +539,7 @@ address|name|symbol|size|type|prototype|provenance
 484af0|CMainFrame::CreateObject|?CreateObject@CMainFrame@@SGPAVCObject@@XZ|143|function|CMainFrame * __cdecl CreateObject(void)|rtti
 484bb0|CMainFrame::GetRuntimeClass|?GetRuntimeClass@CMainFrame@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
 484bd0|CMainFrame::GetMessageMap|?GetMessageMap@CMainFrame@@MBEPBUAFX_MSGMAP@@XZ|6|function|protected: virtual struct AFX_MSGMAP const * __thiscall CMainFrame::GetMessageMap(void)const|
-484bf0|TMacViewMgr::ConstructTMacViewMgrInPlace||32|function|undefined ConstructTMacViewMgrInPlace()|
-484c10|OrphanDeadLeaf_NoRefs_00484c10||20|function|undefined OrphanDeadLeaf_NoRefs_00484c10()|
+484bf0|CMainFrame::CMainFrame|??0CMainFrame@@QAE@XZ|52|function|CMainFrame* __thiscall CMainFrame::CMainFrame(void)|curated
 484c40|CMainFrame::`scalar deleting destructor'|??_GCMainFrame@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 484c70|TMacViewMgr::DestroyTMacViewMgrObject||108|function|undefined DestroyTMacViewMgrObject()|
 484d00|TMacViewMgr::TMacViewMgr_OnMsg_WM_CREATE_Impl||1|function|undefined TMacViewMgr_OnMsg_WM_CREATE_Impl()|
@@ -1532,7 +1531,7 @@ address|name|symbol|size|type|prototype|provenance
 4a84c0|TArmyStackList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a84f0|TArmyStackList::~TArmyStackList||62|function|TArmyStackList::~TArmyStackList()|
 4a8560|TArmyStackList::Compare||43|function|short Compare(void* a, void* b)|
-4a8640|WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640||77|function|undefined WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640()|
+4a8640|TSortedList::TSortedList|??0TSortedList@@QAE@XZ|77|function|TSortedList* __thiscall TSortedList::TSortedList(void)|curated
 4a8740|WrapperFor_ftol_At004a8740||30|function|undefined WrapperFor_ftol_At004a8740()|
 4a8770|TGarrisonView::CreateObject|?CreateObject@TGarrisonView@@SGPAVCObject@@XZ|92|function|undefined CreateObject()|rtti
 4a87f0|TGarrisonView::GetRuntimeClass||6|function|undefined GetTGarrisonViewClassNamePointer()|rtti
