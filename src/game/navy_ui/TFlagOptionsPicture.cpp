@@ -15,6 +15,8 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
+// FUNCTION: IMPERIALISM 0x0043d8c0
+TFlagOptionsPicture::TFlagOptionsPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x0043da10
 // TFlagOptionsPicture::`scalar deleting destructor'
@@ -28,8 +30,8 @@ TFlagOptionsPicture::~TFlagOptionsPicture() {}
 
 IMPLEMENT_DYNCREATE(TFlagOptionsPicture, TPicture)
 
-// NOOP: verified empty in original 0x0056b246 (no standalone TFlagOptionsPicture::TFlagOptionsPicture body exists: CreateObject 0x0056b210 inlines this default ctor, calling the TPicture base ctor directly at that site)
-TFlagOptionsPicture::TFlagOptionsPicture() {}
+// Base ctor call + vptr store only; the original body is 18 bytes ending in
+// `mov eax,esi` return-this.
 
 // FUNCTION: IMPERIALISM 0x0056b2b0
 void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {

@@ -259,7 +259,8 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
           for (int edgeIndex = 0; edgeIndex < 2; ++edgeIndex) {
             short resourceType = static_cast<short>(terrainRecord->resourceTypeByEdge[edgeIndex]);
             if (resourceType != -1) {
-              char contribution = globalMapState->CallMetricSlotC4(regionIndex, edgeIndex);
+              char contribution =
+                  globalMapState->FindResourceCapabilityRequirementLevel(regionIndex, edgeIndex);
               currentNeedByType[resourceType] = static_cast<short>(
                   currentNeedByType[resourceType] + static_cast<short>(contribution));
             }
@@ -337,8 +338,8 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
             while (edge < 2) {
               signed char resourceType = terrainTable[linkedRegion].resourceTypeByEdge[edge];
               if (resourceType != -1) {
-                resourceSums[resourceType] +=
-                    static_cast<int>(globalMapState->CallMetricSlotC4(linkedRegion, edge));
+                resourceSums[resourceType] += static_cast<int>(
+                    globalMapState->FindResourceCapabilityRequirementLevel(linkedRegion, edge));
               }
               ++edge;
             }
@@ -1211,6 +1212,26 @@ char TGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int ar
   }
 
   this->AppendTrackedSlotEntry(1, arg1, 0, static_cast<short>(arg4), 0);
+  return 0;
+}
+
+// Moved off TCountry, where the body had to reinterpret_cast<TGreatPower*>(this) to reach
+// field8d6 at +0x8d6 -- far past TCountry's own 0x94 and past TMinor's 0x2dc, so the cast
+// was an out-of-bounds read for every TMinor. field8d6 holds pending-policy pairs
+// (code, state); the policy is allowed only while the matching pair's state is still 0.
+// Markerless: no standalone address claims this body.
+char TGreatPower::IsDiplomacyPolicyAllowedForTargetClassState(short policyCode,
+                                                              short targetNationSlot) {
+  (void)targetNationSlot;
+  if (policyCode <= 0xc || policyCode >= 0x11) {
+    return 0;
+  }
+  if (policyCode == this->field8d6[0]) {
+    return this->field8d6[1] == 0;
+  }
+  if (policyCode == this->field8d6[2]) {
+    return this->field8d6[3] == 0;
+  }
   return 0;
 }
 
@@ -3116,29 +3137,31 @@ void TGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNatio
   this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNation, -1);
   for (int nation = 0; nation < 0x17; ++nation) {
     if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, nation) != 0) {
-      this->CallSlotA8(nation);
+      this->DeclareWarOnTargetForAlignedMinors(nation);
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e2630
-void TGreatPower::CallSlotA8(int targetNationSlot) {
-  const int kMajorPolicyNation = 7;
+void TGreatPower::DeclareWarOnTargetForAlignedMinors(int targetNationSlot) {
+  // EBX runs 7, 8, 9, ... in lockstep with the table index (MOV EBX,0x7 at 0x4e263a,
+  // INC EBX at 0x4e26da), so each iteration acts as THAT minor's own nation slot --
+  // minors occupy slots 7..22. It is not a fixed nation 7.
+  int minorNationSlot = kMajorNationCount; // minors occupy slots 7..22
   int tableIndex = 0;
   while (tableIndex < 16) {
     if (g_apMinorNationCapabilityObjects[tableIndex] != 0) {
       TMinor* auxRuntimeState = g_apNationAuxRuntimeStateSlots[tableIndex];
       if (auxRuntimeState != 0 &&
           auxRuntimeState->HasMinorStandingLinkSlot5C(this->nationSlot) != 0 &&
-          g_pDiplomacyTurnStateManager->IsNationPairAtWar(kMajorPolicyNation, targetNationSlot) ==
-              0) {
+          g_pDiplomacyTurnStateManager->IsNationPairAtWar(minorNationSlot, targetNationSlot) == 0) {
         g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCode(
-            kMajorPolicyNation, targetNationSlot, kDiplomacyRelationshipWar, 0);
+            minorNationSlot, targetNationSlot, kDiplomacyRelationshipWar, 0);
         if (targetNationSlot < kMajorNationCount &&
             g_pSimMgr->IsNationSlotEligibleForEventProcessing(targetNationSlot) != 0) {
           TGreatPower* targetState = g_apNationStates[targetNationSlot];
           if (targetState != 0 && targetState->diplomacyEligibilityA0 == 0) {
-            targetState->NotifyActionSlot94(kMajorPolicyNation, kDiplomacyProposalDeclareWar);
+            targetState->NotifyActionSlot94(minorNationSlot, kDiplomacyProposalDeclareWar);
           }
         }
         auxRuntimeState->ClearNationAuxRuntimeGrantSlotC4(-1);
@@ -3146,12 +3169,15 @@ void TGreatPower::CallSlotA8(int targetNationSlot) {
       }
     }
     ++tableIndex;
+    ++minorNationSlot;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e2720
-void TGreatPower::CallSlotA9(int targetNationSlot) {
-  const int kMajorPolicyNation = 7;
+void TGreatPower::MakePeaceWithTargetForAlignedMinors(int targetNationSlot) {
+  // Same per-minor slot counter as the war path above (MOV EBX,0x7 at 0x4e272a,
+  // INC EBX at 0x4e277a), not a fixed nation 7.
+  int minorNationSlot = kMajorNationCount; // minors occupy slots 7..22
   int tableIndex = 0;
   while (tableIndex < 16) {
     if (g_apMinorNationCapabilityObjects[tableIndex] != 0) {
@@ -3159,13 +3185,14 @@ void TGreatPower::CallSlotA9(int targetNationSlot) {
       if (auxRuntimeState != 0 &&
           auxRuntimeState->HasMinorStandingLinkSlot5C(this->nationSlot) != 0) {
         g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
-            kMajorPolicyNation, targetNationSlot, kDiplomacyRelationshipPeace);
+            minorNationSlot, targetNationSlot, kDiplomacyRelationshipPeace);
         if (this->colonyBoycottFlags[targetNationSlot] == 0) {
           auxRuntimeState->SetDiplomacyStandingSlot48(targetNationSlot, 100);
         }
       }
     }
     ++tableIndex;
+    ++minorNationSlot;
   }
 }
 
@@ -3173,11 +3200,11 @@ void TGreatPower::CallSlotA9(int targetNationSlot) {
 void TGreatPower::DispatchNationDiplomacySlotActionByMode(int targetNationSlot,
                                                           DiplomacyRelationship relationship) {
   if (static_cast<DiplomacyRelationshipStorage>(relationship) == kDiplomacyRelationshipWar) {
-    this->CallSlotA8(targetNationSlot);
+    this->DeclareWarOnTargetForAlignedMinors(targetNationSlot);
     return;
   }
 
-  this->CallSlotA9(targetNationSlot);
+  this->MakePeaceWithTargetForAlignedMinors(targetNationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x004e27f0

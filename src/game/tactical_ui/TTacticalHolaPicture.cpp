@@ -11,6 +11,8 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
+// FUNCTION: IMPERIALISM 0x0045d480
+TTacticalHolaPicture::TTacticalHolaPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x0045d4b0
 // TTacticalHolaPicture::`scalar deleting destructor'
@@ -24,8 +26,8 @@ TTacticalHolaPicture::~TTacticalHolaPicture() {}
 
 IMPLEMENT_DYNCREATE(TTacticalHolaPicture, TPicture)
 
-// NOOP: verified empty in original 0x005ad6f6 (no standalone TTacticalHolaPicture::TTacticalHolaPicture body exists: CreateObject 0x005ad6c0 inlines this default ctor, calling the TPicture base ctor directly at that site)
-TTacticalHolaPicture::TTacticalHolaPicture() {}
+// Base ctor call + vptr store only; the original body is 18 bytes ending in
+// `mov eax,esi` return-this.
 
 // Battle-intro ('hola', dialog 0xf19) setup: sets the attacker/defender coat-of-arms
 // pictures ('acoa'/'dcoa', bitmap nation + 0xea6), builds the "battle at <city> of

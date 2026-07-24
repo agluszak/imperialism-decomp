@@ -207,14 +207,14 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
-    ExpandRegionClassGridToTileBlocks();
+    ExpandRegionGridIntoTilesAndAllocateCityRecords();
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
-    ApplyRegionTemplateBanksAndSmoothOwnership();
+    RandomizeRegionTemplatesAndSmoothOwnership();
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
@@ -226,7 +226,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
-    RebuildCityRegionIdsAndBorderOverlays(0);
+    AssignOrCompactCityRegionIdsAndRebuildBorders(0);
 
     // Easter-egg keyword overrides: each mutates matching land tiles (water
     // is always skipped) with a per-tile LCG draw.
@@ -841,7 +841,7 @@ char TMapMaker::TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex) 
 }
 
 // FUNCTION: IMPERIALISM 0x005275a0
-void TMapMaker::ExpandRegionClassGridToTileBlocks() {
+void TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords() {
   int cityRecordIndex = 0;
   int coarseIndex;
   for (coarseIndex = 0; coarseIndex < 0x195; ++coarseIndex) {
@@ -1429,7 +1429,7 @@ void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
 }
 
 // FUNCTION: IMPERIALISM 0x005292f0
-void TMapMaker::ApplyRegionTemplateBanksAndSmoothOwnership() {
+void TMapMaker::RandomizeRegionTemplatesAndSmoothOwnership() {
   int coarseIndex;
   for (coarseIndex = 0; coarseIndex < 0x17a; ++coarseIndex) {
     unsigned short baseClass =
@@ -1528,7 +1528,7 @@ int TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00529f60
-void TMapMaker::RebuildCityRegionIdsAndBorderOverlays(int mode) {
+void TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders(int mode) {
   if (static_cast<unsigned char>(mode) != 0) {
     int i;
     cityRegionCount2a4 = 0;

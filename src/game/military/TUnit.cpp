@@ -40,11 +40,11 @@ TUnit::TUnit() {
 TUnit::~TUnit() {}
 
 // FUNCTION: IMPERIALISM 0x005c2530
-void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
+void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
                                               short nOrderOwnerNationId, short arg3) {
   this->orderType = nOrderType;
   this->unitOrder = kUnitOrderIdle;
-  this->MoveTo(pOwnerContext);
+  this->MoveTo(anchorIndex);
 
   // The order-owner "manager" is a real TSortedList: military units (field_1C != 0)
   // register into the owning country's militaryUnitList44; other orders into the
@@ -73,8 +73,8 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContex
 }
 
 // FUNCTION: IMPERIALISM 0x005c2610
-void TUnit::MoveTo(int pOwnerContext) {
-  (void)pOwnerContext;
+void TUnit::MoveTo(int anchorIndex) {
+  (void)anchorIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x005c2630

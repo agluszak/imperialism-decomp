@@ -1,6 +1,6 @@
 #pragma once
 
-// OrderSheet: the buffer passed to the TCityOrderItem::FillOrderSheet/CanFillOrderSheet
+// OrderSheet: the buffer passed to the TProductionOrder::FillOrderSheet/CanFillOrderSheet
 // family (TProductionOrder, TItemOrder, TExpansionOrder, TUnitOrder, TPowerPlantOrder,
 // TPopGrowthOrder, TFoodProcessingOrder, TTrainingOrder, TShipOrder/TCapacityOrder).
 //
@@ -13,8 +13,8 @@
 // trackingSlots10` array (same offset range 0x10..0x3e, same resource-code indexing) --
 // i.e. the order-sheet and the order's own tracking slots share one indexing scheme.
 //
-// Total size is evidence-backed (not guessed): TCityOrderItem::Produce (the shared
-// "clear the sheet" body) zeroes exactly 0x1e dwords (offsets 0x00..0x77) then three
+// Total size is evidence-backed (not guessed): TProductionOrder::ResetOrderSheet
+// (0x004b5180, the shared "clear the sheet" body) zeroes exactly 0x1e dwords (offsets 0x00..0x77) then three
 // more trailing shorts at 0x78/0x7a/0x7c, i.e. 0x7e bytes = 0x3f shorts (indices 0..62),
 // entry-for-entry via one loop plus three explicit statements for the remainder that
 // doesn't divide evenly into dwords -- not evidence that 0x78/0x7a/0x7c are a

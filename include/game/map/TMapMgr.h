@@ -829,9 +829,6 @@ public:
   // refresh the neighbor connection mask. 0x518990, __thiscall, RET 4.
   void ResetTileToBaseTransportFlag(StrategicTileIndex tileIndex);
 
-  char CallMetricSlotC4(int regionIndex, int edgeIndex);
-  short QueryIconStripXSlot110(int iconCode);
-  void NotifyCityRecordSlot12C(ProvinceIndex cityRecordIndex);
   void AssignCityRecordDisplayName(ProvinceIndex cityRecordIndex, CString* dest);
   void DumpAndResetMapScriptState(); // 0x00519140
 

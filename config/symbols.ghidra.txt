@@ -2792,7 +2792,7 @@ TInteriorMinister::InteriorSlot1C 4BE430 f
 TInteriorMinister::MinisterSlot12 4BE450 f
 TInteriorMinister::InteriorSlot16 4BE480 f
 TInteriorMinister::InteriorSlot17 4BE4C0 f
-TInteriorMinister::Call4C 4BE4F0 f
+TInteriorMinister::ClearTrailingTable 4BE4F0 f
 TInteriorMinister::MinisterSlot14 4BE520 f
 TInteriorMinister::FillOrders 4BE5B0 f
 TInteriorMinister::InteriorSlot18 4BE650 f
@@ -3496,7 +3496,7 @@ TDefenseMinister::WriteTo 4EC1D0 f
 TDefenseMinister::ReadFrom 4EC2F0 f
 TDefenseMinister::GetRankingCriterionForGP 4EC3D0 f
 TDefenseMinister::MinisterSlot12 4EC450 f
-TDefenseMinister::Call4C 4EC4C0 f
+TDefenseMinister::ClearTrailingTable 4EC4C0 f
 TDefenseMinister::AssignDefenseUnitsToHomeAndBorderRegions 4EC540 f
 TDefenseMinister::BuildTileRingPriorityMapForNationTileList 4ECBB0 f
 TDefenseMinister::BuildStrategicTilePriorityHeatmap 4ECF20 f

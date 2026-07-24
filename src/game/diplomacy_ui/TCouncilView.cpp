@@ -362,12 +362,17 @@ void TCouncilView::AdvanceCivilianTerrainSelectionStep() {
         // The original jumps straight to the shared epilogue here, bypassing the
         // hint-overlay rebuild below.
         g_pSimMgr->StartNextPhase();
+        // 0x4fc836 jumps straight to the shared epilogue, skipping the overlay rebuild
+        // below; with the function-scope CString forcing a single epilogue, that is a
+        // plain early return.
         return;
       }
       g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e = -1;
       g_pSimMgr->turnStateCode = 0x10;
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1f42, 0, 1);
     }
+    // Both surviving paths (slot78e == -1 at 0x4fc86b, and the allow-advance branch at
+    // 0x4fc869) fall through to the single call at 0x4fc882.
     BuildDiplomacyMapHintOverlayTextAndMetrics();
   }
 }

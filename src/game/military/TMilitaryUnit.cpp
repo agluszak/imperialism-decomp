@@ -139,11 +139,11 @@ void TMilitaryUnit::DetachUnitOrderFromOwnerAndReset() {
 // (cityScoreTable[region].stationedUnitChain98, threaded via nextOnTile/field_10,
 // ordered by g_awTacticalUnitCategoryCodeBySlot[orderType] ascending): detaches from
 // the current region's chain (if any), then inserts into the new region's chain (if
-// pOwnerContext isn't -1 = none) either as the new head or, when the head's priority
+// anchorIndex isn't -1 = none) either as the new head or, when the head's priority
 // is lower than this unit's, at the first position whose successor's priority is not
 // lower.
 // FUNCTION: IMPERIALISM 0x005c3200
-void TMilitaryUnit::MoveTo(int pOwnerContext) {
+void TMilitaryUnit::MoveTo(int anchorIndex) {
   if (tileIndex06 != -1) {
     if (field_10 == 0) {
       if (tileIndex06 >= 0 && tileIndex06 < 0x180) {
@@ -161,7 +161,7 @@ void TMilitaryUnit::MoveTo(int pOwnerContext) {
     nextOnTile = 0;
   }
 
-  short newTileIndex = static_cast<short>(pOwnerContext);
+  short newTileIndex = static_cast<short>(anchorIndex);
   if (newTileIndex == -1) {
     field_10 = 0;
     nextOnTile = 0;

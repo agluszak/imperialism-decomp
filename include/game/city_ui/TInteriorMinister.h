@@ -23,7 +23,7 @@ public:
   // Two stack args (RET 0x8; Ghidra reads two shorts). Mac oracle: SetParameters.
   virtual void SetParameters(short firstParameter, short secondParameter); // slot 0x12 0x4be450
   // Zeroes trailingTable (+0x18..0x25, 7 shorts). 0x4be4f0, __thiscall, no args.
-  virtual void Call4C();
+  virtual void ClearTrailingTable();
   // Tops up up to 10 of the nation's needs (fixed priority order
   // g_aInteriorMinisterNeedPriorityOrder_00696408) toward their current reading,
   // stopping when need-cap headroom hits zero. Mac oracle name (present on both

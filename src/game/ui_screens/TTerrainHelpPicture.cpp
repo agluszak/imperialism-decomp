@@ -19,6 +19,8 @@
 #include "game/ui_text_label_helpers_decls.h"
 
 #include <string.h>
+// FUNCTION: IMPERIALISM 0x0043d770
+TTerrainHelpPicture::TTerrainHelpPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x0043d7a0
 // TTerrainHelpPicture::`scalar deleting destructor'
@@ -32,8 +34,8 @@ TTerrainHelpPicture::~TTerrainHelpPicture() {}
 
 IMPLEMENT_DYNCREATE(TTerrainHelpPicture, TPicture)
 
-// NOOP: verified empty in original 0x00504e26 (no standalone TTerrainHelpPicture::TTerrainHelpPicture body exists: CreateObject 0x00504df0 inlines this default ctor, calling the TPicture base ctor directly at that site)
-TTerrainHelpPicture::TTerrainHelpPicture() {}
+// Base ctor call + vptr store only; the original body is 18 bytes ending in
+// `mov eax,esi` return-this.
 
 // FUNCTION: IMPERIALISM 0x00504e90
 void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {

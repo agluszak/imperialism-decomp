@@ -256,6 +256,10 @@ unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC = 0;
 char g_szMcAppUiSourcePath_006950B0[] = "D:\\Ambit\\McAppUI.cpp";
 // GLOBAL: IMPERIALISM 0x00695168
 char g_szQuickDrawSourcePath_00695168[] = "D:\\Ambit\\QuickDraw.cpp";
+// FindOneOf() set used by TD0TemplateDialog to split accumulated trace text into
+// listbox lines. Newline precedes carriage return in the original pool.
+// GLOBAL: IMPERIALISM 0x00695200
+char g_szTraceLineBreakChars_00695200[] = "\n\r";
 // Placeholder strings baked into the turn-event dialog builders (season/treasury/info
 // text shown until real values are bound).
 // GLOBAL: IMPERIALISM 0x00694354

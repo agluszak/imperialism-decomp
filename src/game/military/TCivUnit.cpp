@@ -27,8 +27,8 @@ TCivUnit::TCivUnit() {}
 TCivUnit::~TCivUnit() {}
 
 // FUNCTION: IMPERIALISM 0x005c2940
-void TCivUnit::ICivUnit(CivilianUnitKind unitKind, int pOwnerContext, int nOrderOwnerNationId) {
-  this->RegisterUnitOrderWithOwnerManager(EncodeCivilianUnitKind(unitKind), pOwnerContext,
+void TCivUnit::ICivUnit(CivilianUnitKind unitKind, int anchorIndex, int nOrderOwnerNationId) {
+  this->RegisterUnitOrderWithOwnerManager(EncodeCivilianUnitKind(unitKind), anchorIndex,
                                           static_cast<short>(nOrderOwnerNationId), 0);
   this->remainingTurns24 = 0;
   this->completionMarker26 = static_cast<short>(-1);
@@ -88,10 +88,10 @@ void TCivUnit::WriteTo(TStream* stream) {
 // Moves this unit between two tiles' civilian-order chains (terrainStateTable[tile-
 // Index06].firstCivilianOrder20, threaded via nextOnTile/field_10): detaches from the
 // current tile (if any) unlinking via field_10's prev-pointer role, then prepends to
-// the new tile's chain (if pOwnerContext isn't -1 = none).
+// the new tile's chain (if anchorIndex isn't -1 = none).
 // FUNCTION: IMPERIALISM 0x005c2b70
-void TCivUnit::MoveTo(int pOwnerContext) {
-  short newTileIndex = static_cast<short>(pOwnerContext);
+void TCivUnit::MoveTo(int anchorIndex) {
+  short newTileIndex = static_cast<short>(anchorIndex);
 
   if (tileIndex06 != -1) {
     if (field_10 == 0) {

@@ -18,6 +18,8 @@
 #include "game/ui_text_label_helpers_decls.h"
 
 #include <string.h>
+// FUNCTION: IMPERIALISM 0x004356e0
+TNewspaperView::TNewspaperView() {}
 
 // SYNTHETIC: IMPERIALISM 0x00435710
 // TNewspaperView::`scalar deleting destructor'
@@ -31,8 +33,8 @@ TNewspaperView::~TNewspaperView() {}
 
 IMPLEMENT_DYNCREATE(TNewspaperView, TPicture)
 
-// NOOP: verified empty in original 0x0055d196 (no standalone TNewspaperView::TNewspaperView body exists: CreateObject 0x0055d160 inlines this default ctor, calling the TPicture base ctor directly at that site)
-TNewspaperView::TNewspaperView() {}
+// Base ctor call + vptr store only; the original body is 18 bytes ending in
+// `mov eax,esi` return-this.
 
 // Populate the nation-status advisor page: date + special-metric headline children,
 // then the 3x3 inter-nation newspaper story grid from the queue manager's pages.

@@ -60,7 +60,7 @@ public:
   // originals emit.
   TUnit();
 
-  void RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
+  void RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
                                          short nOrderOwnerNationId, short arg3);
 };
 

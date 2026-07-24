@@ -96,7 +96,7 @@ short TInteriorMinister::GetNumCarsToBuild() {
 }
 
 // FUNCTION: IMPERIALISM 0x004be4f0
-void TInteriorMinister::Call4C() {
+void TInteriorMinister::ClearTrailingTable() {
   memset(trailingTable, 0, sizeof(trailingTable));
 }
 

@@ -10,6 +10,8 @@
 #include "game/ui_core/TWindow.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
+// FUNCTION: IMPERIALISM 0x0044fa80
+TMultiMessagePicture::TMultiMessagePicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x0044fb10
 // TMultiMessagePicture::`scalar deleting destructor'
@@ -23,8 +25,8 @@ TMultiMessagePicture::~TMultiMessagePicture() {}
 
 IMPLEMENT_DYNCREATE(TMultiMessagePicture, TPicture)
 
-// NOOP: verified empty in original 0x0054ec56 (no standalone TMultiMessagePicture::TMultiMessagePicture body exists: CreateObject 0x0054ec20 inlines this default ctor, calling the TPicture base ctor directly at that site)
-TMultiMessagePicture::TMultiMessagePicture() {}
+// Base ctor call + vptr store only; the original body is 18 bytes ending in
+// `mov eax,esi` return-this.
 
 // FUNCTION: IMPERIALISM 0x0054ecc0
 void TMultiMessagePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {

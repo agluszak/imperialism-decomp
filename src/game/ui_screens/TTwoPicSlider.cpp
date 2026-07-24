@@ -25,12 +25,15 @@
 
 IMPLEMENT_DYNCREATE(TTwoPicSlider, TControl)
 
-// Constructor body is inlined into the CreateObject factory in the original binary
-// (0x0056e120): allocate, run the base TControl ctor, patch the vtable, zero the
-// slider-specific fields.
+// A standalone out-of-line ctor does exist at 0x0043d610 (45 bytes: base TControl ctor,
+// vptr 0x641bd0, then one `xor eax,eax` reused for the field stores, `mov eax,esi`
+// return-this); the CreateObject factory at 0x0056e120 inlines the same body.
+// compositeSurface (+0x8c) is deliberately NOT in the init list: the original stores only
+// +0x84, +0x88, +0x90 (word) and +0x94, leaving +0x8c untouched for
+// InitializePictureSurfaces to set.
+// FUNCTION: IMPERIALISM 0x0043d610
 TTwoPicSlider::TTwoPicSlider()
-    : TControl(), lowerSurface(0), upperSurface(0), compositeSurface(0), splitPosition(0), mode(0) {
-}
+    : TControl(), lowerSurface(0), upperSurface(0), splitPosition(0), mode(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x0043d650
 // TTwoPicSlider::`scalar deleting destructor'

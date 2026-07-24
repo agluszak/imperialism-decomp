@@ -1256,7 +1256,7 @@ void TDiplomacyMapView::DrawVoteNuggets() {
     int iconCode = g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix304[policyIndex];
     if (tileHasOwnerFlags52C[policyIndex] && iconCode != -1 && tierValue <= selectedTier) {
       RECT* iconRect = &tileMarkerRects6AC[policyIndex];
-      short iconX = g_pGlobalMapState->QueryIconStripXSlot110(iconCode);
+      short iconX = g_pGlobalMapState->GetMapImprovementTierBucketOffset(iconCode);
 
       RECT srcRect;
       srcRect.left = iconX;

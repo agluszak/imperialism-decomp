@@ -286,7 +286,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
       }
     }
     mapMaker->mapTileGrid08 = reinterpret_cast<char*>(terrainStateTable);
-    mapMaker->RebuildCityRegionIdsAndBorderOverlays(1);
+    mapMaker->AssignOrCompactCityRegionIdsAndRebuildBorders(1);
   } else if (mapStreamName == 0) {
     if (tuningOverride != 0) {
       CString overrideText(tuningOverride);
@@ -4631,19 +4631,4 @@ char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(StrategicTileIndex ti
     }
   }
   return static_cast<char>(0xff);
-}
-
-char TMapMgr::CallMetricSlotC4(int regionIndex, int edgeIndex) {
-  (void)regionIndex;
-  (void)edgeIndex;
-  return 0;
-}
-
-short TMapMgr::QueryIconStripXSlot110(int iconCode) {
-  (void)iconCode;
-  return 0;
-}
-
-void TMapMgr::NotifyCityRecordSlot12C(ProvinceIndex cityRecordIndex) {
-  (void)cityRecordIndex;
 }

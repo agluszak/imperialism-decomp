@@ -19,16 +19,16 @@ class TFuzzySet;
 class TCityInteriorMinister : public TInteriorMinister {
 public:
   virtual ~TCityInteriorMinister() override; // slot 0x01 (scalar deleting destructor)
-  short GetRankingCriterionForGP(short nationSlot) override; // slot 0x0a 0x4bee20
-  virtual void MakeNewCity(TCity* city) override;            // slot 0x11 0x4c0d90
-  virtual void FillOrders() override;                        // slot 0x15 0x4bf770
+  short GetRankingCriterionForGP(short nationSlot) override;         // slot 0x0a 0x4bee20
+  virtual void MakeNewCity(TCity* city) override;                    // slot 0x11 0x4c0d90
+  virtual void FillOrders() override;                                // slot 0x15 0x4bf770
   virtual void PleaseBuildShip(short arg) override;          // slot 0x1a 0x4beeb0
-  virtual void IndustryOrder(short industrySlot) override;   // slot 0x1b 0x4beee0
-  virtual void PleaseBuildLandUnit(short unitType) override; // slot 0x1c 0x4bef30
+  virtual void IndustryOrder(short industrySlot) override;           // slot 0x1b 0x4beee0
+  virtual void PleaseBuildLandUnit(short unitType) override;         // slot 0x1c 0x4bef30
   virtual short GetExteriorNeedFor(int arg) override;        // slot 0x1d 0x4be7b0
   virtual short GetHistoricalNeedFor(int arg) override;      // slot 0x1e 0x4be7d0
   virtual void ResetHistoricalNeedFor(int arg) override;     // slot 0x1f 0x4be7f0
-  virtual void FillLists();                                  // slot 0x20 0x4bed60
+  virtual void FillLists();                                          // slot 0x20 0x4bed60
   // Reports orderMetricTable40 deltas to the owner's foreign minister (index 0 as a
   // 25%-chance roll gated on either of the paired trigger slots [0]/[1], indices 2..6
   // forwarded directly when nonzero), then picks a (resultCode, magnitude) pair from
