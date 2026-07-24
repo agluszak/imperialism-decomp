@@ -7,6 +7,7 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
+#include "game/military/TArmyMgr.h"
 #include "game/military/TCivUnit.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/ui_widgets/TTradeMgr.h"
@@ -972,8 +973,7 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
       if (regionId == -1) {
         continue;
       }
-      short regionOwner = *reinterpret_cast<short*>(
-          reinterpret_cast<unsigned char*>(g_pMapContextActionManager) + 0x1c + regionId * 2);
+      short regionOwner = g_pMapContextActionManager->perTileOwnerNationCodeCache1c[regionId];
       if (regionOwner == this->nationSlot || regionOwner == decodedNationSlot) {
         g_pGlobalMapState->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
             static_cast<short>(regionId), decodedNationSlot);
@@ -1015,17 +1015,15 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
 
   this->NotifyMajorPowersAffectedByMinorTerritoryChange();
   if (g_apNationStates[targetNationSlot] != 0 &&
-      reinterpret_cast<unsigned char*>(g_apNationStates[targetNationSlot])[0x8ce] < 3) {
+      g_apNationStates[targetNationSlot]->serializedStatusFlags[6] < '3') {
     g_apNationStates[targetNationSlot]->SetNationPendingActionStateAndPayload(6, this->nationSlot);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e5730
 void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
-  char* terrainTileBytes =
-      *reinterpret_cast<char**>(reinterpret_cast<unsigned char*>(g_pGlobalMapState) + 0xc);
-  unsigned char nationTileFlags =
-      terrainTileBytes[0x1c + static_cast<short>(this->homeTileIndex) * 0x24];
+  unsigned char nationTileFlags = static_cast<unsigned char>(
+      g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeTileIndex)].activeFlags1c);
   if ((nationTileFlags >> 2 & 1) != 0) {
     return;
   }

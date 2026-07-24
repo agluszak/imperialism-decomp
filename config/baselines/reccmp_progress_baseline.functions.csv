@@ -2555,7 +2555,7 @@ address|matching|name
 0x4e4ff0|0.3008849557522124|TMinor::CanInitiateJoinEmpireProposalToTarget
 0x4e50d0|0.18791946308724833|TMinor::QueueDiplomacyProposalCodeForTargetNation
 0x4e5300|0.46153846153846156|TMinor::NotifyActionSlot94
-0x4e5340|0.4166666666666667|TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers
+0x4e5340|0.42391304347826086|TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers
 0x4e5730|0.7317073170731707|TMinor::HandleNetworkPortConstructionOrder
 0x4e5840|0.17543859649122806|TMinor::ApplyJoinEmpireMode1TargetTransition
 0x4e59d0|0.5263157894736842|TMinor::ApplyJoinEmpireMode2FinalizeNationNameState
