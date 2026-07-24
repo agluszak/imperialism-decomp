@@ -5260,8 +5260,8 @@ address|matching|name
 0x593e50|0.25|`dynamic initializer for 'g_scaledShortConst_6A4580''
 0x593e80|0.48|TStatusPicture::CreateObject
 0x593f00|1.0|TStatusPicture::GetRuntimeClass
-0x593f20|0.3780487804878049|TStatusPicture::DoPostCreate
-0x5942f0|0.2857142857142857|TStatusPicture::DoEvent
+0x593f20|0.7217125382262997|TStatusPicture::DoPostCreate
+0x5942f0|0.45018450184501846|TStatusPicture::DoEvent
 0x594540|0.7003891050583657|TStatusPicture::Draw
 0x594790|0.3235294117647059|TStatusPicture::DrawBar
 0x594900|0.4539877300613497|TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale
