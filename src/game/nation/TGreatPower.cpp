@@ -3738,24 +3738,12 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(TZone* zone) {
       relationshipList->ReleasePtrList();
     }
   } else if (activeCandidateCount == 1) {
+    // The count guarantees that this scan finds a candidate before reaching the bound.
     while (selectedCandidateIndex < 0x17) {
       if (candidateFlags[selectedCandidateIndex] != 0) {
         break;
       }
       ++selectedCandidateIndex;
-    }
-    if (selectedCandidateIndex >= 0x17) {
-      // UNRESOLVED_FIELD_ATTRIBUTION: 0x004e912a reloads the index from [esp+0x38], which
-      // is also the incoming `zone` parameter slot; 0x004e917c does the same in the
-      // multi-candidate path below. Two readings remain open and are NOT settled here:
-      //   (a) VC5 coalesced the dead `zone` parameter slot with this local, so the value
-      //       is whatever the local last spilled and the reload carries no pointer meaning;
-      //   (b) the original really does seed the index from the argument bits.
-      // Nothing writes [esp+0x38] on this path, which favours (b), but (b) makes a
-      // TZone* the initial value of a 0..0x16 nation index, which no caller can want.
-      // Kept bit-faithful until the slot's liveness is resolved at codegen level; do not
-      // promote either reading into prose or a type without that evidence.
-      selectedCandidateIndex = reinterpret_cast<int>(zone);
     }
   } else {
     short navyPriorities[7] = {0, 0, 0, 0, 0, 0, 0};

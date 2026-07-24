@@ -2621,7 +2621,7 @@ address|matching|name
 0x4e8bf0|1.0|TAutoGreatPower::SetByteFlagAtOffsetAF0ByIndex
 0x4e8c20|1.0|TGreatPower::ComputeAdvisoryMapNodeCompositeScore
 0x4e8c50|0.8744326777609682|TGreatPower::ComputeAdvisoryMapNodeCompositeScoreByMode
-0x4e9060|0.5032679738562091|TGreatPower::ComputeMapActionContextCompositeScoreForNation
+0x4e9060|0.5082508250825083|TGreatPower::ComputeMapActionContextCompositeScoreForNation
 0x4e92b0|0.4961580680570801|TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState
 0x4e9a50|0.8576104746317512|TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16
 0x4e9ed0|1.0|TAutoGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded
