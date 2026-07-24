@@ -1531,7 +1531,7 @@ address|name|symbol|size|type|prototype|provenance
 4a7b20|TArmyStack::AddUnitToChainHead||81|function|undefined WrapperFor_AllocateWithFallbackHandler_At004a7b20()|
 4a7ba0|WrapperFor_FreeHeapBufferIfNotNull_At004a7ba0||90|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004a7ba0()|
 4a7c20|TArmyStack::Free||45|function|void __thiscall Free(void)|
-4a7c60|WrapperFor_GenerateThreadLocalRandom15_At004a7c60||131|function|undefined WrapperFor_GenerateThreadLocalRandom15_At004a7c60()|
+4a7c60|TArmyStack::ComputeStackCompositionClassCode||131|function|undefined ComputeStackCompositionClassCode()|
 4a7d20|OrphanCallChain_C2_I38_004a7d20||77|function|undefined OrphanCallChain_C2_I38_004a7d20()|
 4a7e70|AccumulateWeightedMeterAndCountFromEligibleLinkedEntries||355|function|undefined AccumulateWeightedMeterAndCountFromEligibleLinkedEntries()|
 4a8040|ApplyRandomizedMeterDecayToEligibleLinkedEntries||482|function|undefined ApplyRandomizedMeterDecayToEligibleLinkedEntries()|
