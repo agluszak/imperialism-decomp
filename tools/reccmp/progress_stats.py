@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import importlib.metadata
 import json
 import logging
 import subprocess
@@ -554,13 +555,31 @@ def report_input_hashes(
         target.recompiled_path,
         target.recompiled_pdb,
         *target.data_sources,
+        *target.equivalence_groups,
     }
     for source_root in target.source_paths:
         paths.update(path for path in source_root.rglob("*") if path.is_file())
-    return {
+    hashes = {
         _cache_path_label(repo_root, path): _file_sha256(path)
         for path in sorted(paths, key=lambda item: str(item.resolve()))
     }
+    # pyproject/uv.lock cover pin bumps, but not what is actually installed
+    # (e.g. a temporary `uv pip install -e` of the reccmp fork). Stamp the
+    # installed distribution so switching pinned <-> editable invalidates.
+    hashes["installed:reccmp"] = hashlib.sha256(
+        _reccmp_dist_stamp().encode("utf-8")
+    ).hexdigest()
+    return hashes
+
+
+def _reccmp_dist_stamp() -> str:
+    """Identity of the installed reccmp distribution (version + install origin)."""
+    try:
+        dist = importlib.metadata.distribution("reccmp")
+    except importlib.metadata.PackageNotFoundError:
+        return "absent"
+    direct_url = dist.read_text("direct_url.json") or ""
+    return f"{dist.version}|{direct_url}"
 
 
 def report_cache_is_current(
