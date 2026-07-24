@@ -3439,8 +3439,8 @@ void TMapMgr::ResetAllTileMarkerSlotIndicesToSentinel() {
 
 // FUNCTION: IMPERIALISM 0x005178f0
 int TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot, char wrapBias) {
-  char* tileTable = reinterpret_cast<char*>(terrainStateTable);
-  char* cityTable = reinterpret_cast<char*>(cityScoreTable);
+  TTerrainStateRecordView* tileTable = terrainStateTable;
+  Province* cityTable = cityScoreTable;
   unsigned int colSum = 0;
   int rowSum = 0;
   unsigned int tileCount = 0;
@@ -3448,8 +3448,7 @@ int TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlo
   unsigned int eastCount = 0;
 
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-    int tileByteOffset = tileIndex * 0x24;
-    char ownerNationTag = tileTable[tileByteOffset + 4];
+    signed char ownerNationTag = tileTable[tileIndex].ownerNationTag04;
     if (ownerNationTag != nationSlot) {
       continue;
     }
@@ -3458,11 +3457,10 @@ int TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlo
         g_apTerrainTypeDescriptorTable[nationSlot]->homeTileIndex != -1) {
       short nationHomeTile =
           static_cast<short>(g_apTerrainTypeDescriptorTable[nationSlot]->homeTileIndex);
-      short tileCityLink = *reinterpret_cast<short*>(tileTable + tileByteOffset + 0x14);
-      char tileCityByte = cityTable[0xa3 + static_cast<int>(tileCityLink) * 0xa8];
-      short nationTileCityLink =
-          *reinterpret_cast<short*>(tileTable + nationHomeTile * 0x24 + 0x14);
-      char nationCityByte = cityTable[0xa3 + static_cast<int>(nationTileCityLink) * 0xa8];
+      ProvinceIndexStorage tileCityLink = tileTable[tileIndex].cityRecordIndex;
+      signed char tileCityByte = cityTable[tileCityLink].regionClassA3;
+      ProvinceIndexStorage nationTileCityLink = tileTable[nationHomeTile].cityRecordIndex;
+      signed char nationCityByte = cityTable[nationTileCityLink].regionClassA3;
       if (tileCityByte != nationCityByte) {
         includeTile = 0;
       }
@@ -3488,7 +3486,7 @@ int TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlo
       rowSum = 0;
       colSum = 0;
       for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-        if (tileTable[tileIndex * 0x24 + 4] != nationSlot) {
+        if (tileTable[tileIndex].ownerNationTag04 != nationSlot) {
           continue;
         }
         int tileCol = tileIndex % 0x6c;
@@ -3518,7 +3516,7 @@ int TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlo
     if (ownedRegions != 0 && ownedRegions->GetSize() > 0) {
       int lastMatch = -1;
       for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-        if (static_cast<signed char>(tileTable[tileIndex * 0x24 + 4]) == nationSlot) {
+        if (tileTable[tileIndex].ownerNationTag04 == nationSlot) {
           lastMatch = tileIndex;
         }
       }
