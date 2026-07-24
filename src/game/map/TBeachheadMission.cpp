@@ -43,8 +43,6 @@ bool TBeachheadMission::IsDefensiveSeaZoneMission() const {
 // FUNCTION: IMPERIALISM 0x0053a400
 TBeachheadMission::~TBeachheadMission() {}
 
-TBeachheadMission::TBeachheadMission() : TControlSeaZoneMission(), parentMission3c(nullptr) {}
-
 // SYNTHETIC: IMPERIALISM 0x0053a420
 // TBeachheadMission::GetRuntimeClass
 

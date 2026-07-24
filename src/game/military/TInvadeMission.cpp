@@ -77,8 +77,6 @@ TInvadeMission::TInvadeMission(TZone* beachheadZone, short targetProvince)
 // FUNCTION: IMPERIALISM 0x0053f3f0
 TInvadeMission::~TInvadeMission() {}
 
-TInvadeMission::TInvadeMission() : TAttackProvinceMission(), beachhead34(nullptr) {}
-
 // FUNCTION: IMPERIALISM 0x0053f410
 void TInvadeMission::Free() {
   beachhead34->Free();

@@ -16,7 +16,8 @@ public:
   virtual ~TControlSeaZoneMission() override {}
 
 public:
-  TControlSeaZoneMission();
+  TControlSeaZoneMission() : TNavyMission() {}
+
   TControlSeaZoneMission(TZone* targetZone) : TNavyMission(targetZone) {}
 
   // Slots 0x0c-0x0f: TMission's own virtuals, overridden here.

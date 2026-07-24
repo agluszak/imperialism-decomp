@@ -26,7 +26,7 @@ IMPLEMENT_DYNCREATE(TDeluxeText, TTEView)
 // FUNCTION: IMPERIALISM 0x005b5ff0
 void TDeluxeText::IDeluxeText(TView* panel, int* offsetLayout, int* sizeLayout, RECT* insetRect,
                               TextStyle* style, short styleWord90) {
-  ITEView(0, panel, offsetLayout, sizeLayout, 5, 5, insetRect, style, styleWord90, 0, 1);
+  ITEView(nullptr, panel, offsetLayout, sizeLayout, 5, 5, insetRect, style, styleWord90, 0, 1);
   textColor98 = style->textColor;
   SetSelectedFlagAndState(0);
 }

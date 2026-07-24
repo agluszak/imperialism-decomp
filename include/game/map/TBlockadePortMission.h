@@ -22,7 +22,8 @@ public:
   // pointed-to object is not yet recovered, so it stays untyped.
   TZone* portZoneContext3c; // +0x3c blockade-target port zone (deserialized by node id)
 
-  TBlockadePortMission();
+  TBlockadePortMission() : TControlSeaZoneMission(), portZoneContext3c(nullptr) {}
+
   // 0x0053ab50 -- built from a map-order context node (a TZone): derives the
   // target port zone from context->primaryNeighbors[0] and stores the node in
   // portZoneContext3c.
