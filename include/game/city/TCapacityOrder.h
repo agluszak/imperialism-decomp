@@ -19,11 +19,13 @@ public:
   ~TCapacityOrder() override;
 
   void Produce() override; // slot 0x0d 0x4b8dd0
+  // MacApp-style initializer: `new TCapacityOrder()` then ICapacityOrder(...), which is
+  // how TCity builds it. This is the ONLY construction path -- 0x004b8d50 does the field
+  // init (including the trackingSlots10 clear as a REP STOSD) and matches at 100%.
   virtual void ICapacityOrder(TCity* city, short resourceType, short primaryInputResource,
                               short secondaryInputResource,
                               short productionSlot); // slot 0x12 0x4b8d50
 
-  explicit TCapacityOrder(TCity* city);
   short ComputeCapacityOrderMaxQuantity();
   bool SetCapacityOrderQuantity(short quantity);
   void CommitCapacityOrderIfPending();
@@ -33,7 +35,6 @@ public:
   // FillOrderSheet was actually TShipOrder::FillOrderSheet (0x004b8b80) -- moved there.
   bool CanMakeFromCityStock();
   bool CanFillOrderSheet(OrderSheet* orderSheet);
-  static TCapacityOrder* NewForCity(TCity* city);
 
   // No own fields: RTTI proves TCapacityOrder is exactly TItemOrder's size (0x54).
   // quantityField04/cityField08/summaryField0c/trackingSlots10/field3e/field40 are
