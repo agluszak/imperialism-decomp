@@ -162,23 +162,23 @@ address|name|symbol|size|type|prototype|provenance
 435610|TTradePageBuyView::TTradePageBuyView||27|function|undefined WrapperFor_ConstructTPageViewBaseState_At00435610()|
 435640|TTradePageBuyView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 435690|TTradeBookView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4356e0|WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0||18|function|undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0()|
+4356e0|TNewspaperView::TNewspaperView||18|function|TNewspaperView* __thiscall TNewspaperView::TNewspaperView(void)|
 435710|TNewspaperView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 435760|TControl::ShallowClone||21|function|undefined4 TControl::CloneEngineerDialogStateToNewInstance(void)|
 4357b0|BuildTurnEventDialogUiByCode||25768|function|int * __fastcall BuildTurnEventDialogUiByCode(int nContextSlot, int nEventCode)|
 43d590|ConstructUiPlanetListResourceEntry||25|function|undefined ConstructUiPlanetListResourceEntry()|
 43d5c0|TMapPreviewView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-43d610|TControl::WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610||45|function|undefined WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610()|
+43d610|TTwoPicSlider::TTwoPicSlider||45|function|TTwoPicSlider* __thiscall TTwoPicSlider::TTwoPicSlider(void)|
 43d650|TTwoPicSlider::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 43d6a0|TQueryFloater::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 43d6f0|TMadnessButton::TMadnessButton||28|function|undefined WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0()|
 43d720|TMadnessButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-43d770|WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d770||18|function|undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d770()|
+43d770|TTerrainHelpPicture::TTerrainHelpPicture||18|function|TTerrainHelpPicture* __thiscall TTerrainHelpPicture::TTerrainHelpPicture(void)|
 43d7a0|TTerrainHelpPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 43d7f0|TScrollView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 43d840|TStatusPicture::TStatusPicture||28|function|int * __fastcall TStatusPicture(int * pEntry)|
 43d870|TStatusPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-43d8c0|WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0||18|function|undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0()|
+43d8c0|TFlagOptionsPicture::TFlagOptionsPicture||18|function|TFlagOptionsPicture* __thiscall TFlagOptionsPicture::TFlagOptionsPicture(void)|
 43d8f0|TLoadSavePicture::TLoadSavePicture||68|function|undefined TLoadSavePicture()|
 43d960|TGamePreferencesPicture::TGamePreferencesPicture||18|function|int * __fastcall TGamePreferencesPicture(int * pEntry)|
 43d990|ConstructSelectableTextOptionEntry||18|function|undefined ConstructSelectableTextOptionEntry()|
@@ -198,7 +198,7 @@ address|name|symbol|size|type|prototype|provenance
 44a7f0|WrapperFor_thunk_RegisterDialogFactoryCallback_At0044a7f0||15|function|undefined WrapperFor_thunk_RegisterDialogFactoryCallback_At0044a7f0()|
 44a810|BuildTurnEventDialogResources_2508||1500|function|undefined BuildTurnEventDialogResources_2508()|
 44af90|InitializeJoinSelectorDialogControlsAndNationSlots||15321|function|undefined InitializeJoinSelectorDialogControlsAndNationSlots()|
-44fa80|WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80||18|function|undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80()|
+44fa80|TMultiMessagePicture::TMultiMessagePicture||18|function|TMultiMessagePicture* __thiscall TMultiMessagePicture::TMultiMessagePicture(void)|
 44fab0|TJoinSelectorDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 44fae0|TLoungeDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 44fb10|TMultiMessagePicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -233,7 +233,7 @@ address|name|symbol|size|type|prototype|provenance
 45d3b0|TTacMapUberPicture::Scroll||26|function|void __thiscall Scroll(MapScrollEdgeMaskStorage edgeMask)|mac_oracle
 45d3e0|TTacMapUberPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 45d430|TTacticalAdiosPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-45d480|WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480||18|function|undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480()|
+45d480|TTacticalHolaPicture::TTacticalHolaPicture||18|function|TTacticalHolaPicture* __thiscall TTacticalHolaPicture::TTacticalHolaPicture(void)|
 45d4b0|TTacticalHolaPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 45d520|BuildTurnEventDialogResourcesForEvent898||2326|function|undefined BuildTurnEventDialogResourcesForEvent898()|
 45e0b0|BuildTurnEventDialogResourcesForEvent8FC||6554|function|undefined BuildTurnEventDialogResourcesForEvent8FC()|
@@ -269,7 +269,7 @@ address|name|symbol|size|type|prototype|provenance
 479e10|RegisterUiResourceEntry_Impl||17|function|undefined RegisterUiResourceEntry_Impl()|
 479e40|CDib::CreateObject|?CreateObject@CDib@@SGPAVCObject@@XZ|100|function|undefined CreateObject()|rtti
 479ed0|CDib::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
-479ef0|WrapperFor_AFX_CLASSINIT_At00479ef0||16|function|undefined WrapperFor_AFX_CLASSINIT_At00479ef0()|
+479ef0|`dynamic initializer for '_init_CDib''||16|function|void __cdecl `dynamic initializer for '_init_CDib''(void)|
 479f40|CDib::CDib||79|function|CDib()|
 479fb0|CDib::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 479fe0|AllocateBitmapSurfaceHeaderAndPixelBuffer||370|function|undefined AllocateBitmapSurfaceHeaderAndPixelBuffer()|
@@ -566,7 +566,7 @@ address|name|symbol|size|type|prototype|provenance
 485c90|CMainFrame::OnActivateApp||98|function|undefined CreateTObjectInstance()|
 485df0|TObject::CreateObject|?CreateObject@TObject@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 485e20|TObject::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
-485e40|WrapperFor_AFX_CLASSINIT_At00485e40||16|function|undefined WrapperFor_AFX_CLASSINIT_At00485e40()|
+485e40|`dynamic initializer for '_init_TObject''||16|function|void __cdecl `dynamic initializer for '_init_TObject''(void)|
 485e90|TObject::Serialize||143|function|void __thiscall Serialize(CArchive& archive)|
 485f50|TObject::~TObject||7|function|void __thiscall ~TObject()|windows_listing
 485f70|TObject::WriteTo||3|function|void __thiscall WriteTo(TStream* stream)|
@@ -3516,7 +3516,7 @@ address|name|symbol|size|type|prototype|provenance
 534f70|TMission::Hold||10|function|void Hold(unsigned char value)|
 534f90|TMission::SmokeEmIfYouGotEm||3|function|char SmokeEmIfYouGotEm()|
 534fb0|TMission::GetRuntimeClass||6|function|undefined GetTMissionClassNamePointer()|rtti
-534fd0|WrapperFor_AFX_CLASSINIT_At00534fd0||16|function|undefined WrapperFor_AFX_CLASSINIT_At00534fd0()|
+534fd0|`dynamic initializer for '_init_TMission''||16|function|void __cdecl `dynamic initializer for '_init_TMission''(void)|
 535020|TMission::ConstructTMission||24|function|undefined ConstructTMission()|
 535050|TMission::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 535080|TMission::DestructTMission||7|function|undefined DestructTMission()|
@@ -3559,7 +3559,7 @@ address|name|symbol|size|type|prototype|provenance
 5362c0|ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile||145|function|undefined ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile()|
 536390|TNavyMission::CreateObject|?CreateObject@TNavyMission@@SGPAVCObject@@XZ|133|function|undefined CreateObject()|rtti
 536450|TNavyMission::GetRuntimeClass|?GetRuntimeClass@TNavyMission@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
-536470|WrapperFor_AFX_CLASSINIT_At00536470||16|function|undefined WrapperFor_AFX_CLASSINIT_At00536470()|
+536470|`dynamic initializer for '_init_TNavyMission''||16|function|void __cdecl `dynamic initializer for '_init_TNavyMission''(void)|
 5364c0|CleanupTMissionAndReleaseOwnedOrders||67|function|undefined CleanupTMissionAndReleaseOwnedOrders()|
 536530|SerializeTNavyMissionCommon||211|function|undefined SerializeTNavyMissionCommon()|
 536650|DeserializeTNavyMissionCommon||189|function|undefined DeserializeTNavyMissionCommon()|
@@ -3589,7 +3589,7 @@ address|name|symbol|size|type|prototype|provenance
 5383f0|ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder||573|function|undefined ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder()|
 5386c0|TControlSeaZoneMission::CreateObject|?CreateObject@TControlSeaZoneMission@@SGPAVCObject@@XZ|133|function|undefined CreateObject()|rtti
 538780|TControlSeaZoneMission::GetRuntimeClass|?GetRuntimeClass@TControlSeaZoneMission@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
-5387a0|WrapperFor_AFX_CLASSINIT_At005387a0||16|function|undefined WrapperFor_AFX_CLASSINIT_At005387a0()|
+5387a0|`dynamic initializer for '_init_TControlSeaZoneMission''||16|function|void __cdecl `dynamic initializer for '_init_TControlSeaZoneMission''(void)|
 5387f0|RecomputeAndClearMissionScoreUsingPortZoneContextAverage||198|function|undefined RecomputeAndClearMissionScoreUsingPortZoneContextAverage()|
 538900|ValidateMissionTerrainCoverageAndRefreshTargetContext||181|function|undefined ValidateMissionTerrainCoverageAndRefreshTargetContext()|
 5389f0|ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter||398|function|undefined ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter()|
@@ -3608,7 +3608,7 @@ address|name|symbol|size|type|prototype|provenance
 539960|TEscortMission::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 539990|TEscortMission::~TEscortMission||7|function|TEscortMission::~TEscortMission()|
 5399b0|TEscortMission::GetRuntimeClass|?GetRuntimeClass@TEscortMission@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
-5399d0|WrapperFor_AFX_CLASSINIT_At005399d0||16|function|undefined WrapperFor_AFX_CLASSINIT_At005399d0()|
+5399d0|`dynamic initializer for '_init_TEscortMission''||16|function|void __cdecl `dynamic initializer for '_init_TEscortMission''(void)|
 539a20|TMission::ConstructTEscortMissionForPortContext||58|function|undefined ConstructTEscortMissionForPortContext()|
 539a70|TEscortMission::ResetEscortMissionDispatchFlagAndCopyTargetContextId||11|function|undefined ResetEscortMissionDispatchFlagAndCopyTargetContextId()|
 539a90|ComputeNavyOrderDistributionSimilarityScoreForNation||404|function|undefined ComputeNavyOrderDistributionSimilarityScoreForNation()|
@@ -3622,7 +3622,7 @@ address|name|symbol|size|type|prototype|provenance
 53a3d0|TBeachheadMission::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 53a400|TBeachheadMission::~TBeachheadMission||7|function|TBeachheadMission::~TBeachheadMission()|
 53a420|TBeachheadMission::GetRuntimeClass|?GetRuntimeClass@TBeachheadMission@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
-53a440|WrapperFor_AFX_CLASSINIT_At0053a440||16|function|undefined WrapperFor_AFX_CLASSINIT_At0053a440()|
+53a440|`dynamic initializer for '_init_TBeachheadMission''||16|function|void __cdecl `dynamic initializer for '_init_TBeachheadMission''(void)|
 53a490|TBeachheadMission::ConstructTBeachheadMissionWithNodeAndParent||65|function|undefined ConstructTBeachheadMissionWithNodeAndParent()|
 53a500|TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext||531|function|undefined PopulateBeachheadMissionResourceWeightsFromNavyContext()|
 53a7b0|TBeachheadMission::HandleBlockadePortMissionActionType2ForBeachheadTarget||51|function|undefined HandleBlockadePortMissionActionType2ForBeachheadTarget()|
@@ -3635,7 +3635,7 @@ address|name|symbol|size|type|prototype|provenance
 53aa90|TBlockadePortMission::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 53aac0|TBlockadePortMission::~TBlockadePortMission||7|function|TBlockadePortMission::~TBlockadePortMission()|
 53aae0|TBlockadePortMission::GetRuntimeClass|?GetRuntimeClass@TBlockadePortMission@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
-53ab00|WrapperFor_AFX_CLASSINIT_At0053ab00||16|function|undefined WrapperFor_AFX_CLASSINIT_At0053ab00()|
+53ab00|`dynamic initializer for '_init_TBlockadePortMission''||16|function|void __cdecl `dynamic initializer for '_init_TBlockadePortMission''(void)|
 53ab50|TMission::ConstructBlockadePortMissionForContext||195|function|undefined ConstructBlockadePortMissionForContext()|
 53ac60|TBlockadePortMission::SerializeTBlockadePortMission||40|function|undefined SerializeTBlockadePortMission()|
 53aca0|TBlockadePortMission::DeserializeTBlockadePortMission||38|function|undefined DeserializeTBlockadePortMission()|
@@ -3649,7 +3649,7 @@ address|name|symbol|size|type|prototype|provenance
 53ba40|QueueMapOrderType6FromContextPointer||16|function|undefined QueueMapOrderType6FromContextPointer()|
 53ba60|TScatteredShipsMission::CreateObject|?CreateObject@TScatteredShipsMission@@SGPAVCObject@@XZ|133|function|undefined CreateObject()|rtti
 53bb20|TScatteredShipsMission::GetRuntimeClass|?GetRuntimeClass@TScatteredShipsMission@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
-53bb40|WrapperFor_AFX_CLASSINIT_At0053bb40||16|function|undefined WrapperFor_AFX_CLASSINIT_At0053bb40()|
+53bb40|`dynamic initializer for '_init_TScatteredShipsMission''||16|function|void __cdecl `dynamic initializer for '_init_TScatteredShipsMission''(void)|
 53bb90|ResetScatteredShipsMissionStateAndScoreDefault||13|function|undefined ResetScatteredShipsMissionStateAndScoreDefault()|
 53bbb0|TScatteredShipsMission::RunScatteredShipsMissionStateUpdatePipeline||22|function|undefined RunScatteredShipsMissionStateUpdatePipeline()|
 53bbe0|ReturnMissionArgPassthrough||3|function|undefined ReturnMissionArgPassthrough()|
@@ -3661,7 +3661,7 @@ address|name|symbol|size|type|prototype|provenance
 53bf90|ReturnFalseForScatteredShipsMissionCapabilityFlag||3|function|undefined ReturnFalseForScatteredShipsMissionCapabilityFlag()|
 53bfb0|TArmyMission::CreateObject|?CreateObject@TArmyMission@@SGPAVCObject@@XZ|89|function|undefined CreateObject()|rtti
 53c030|TArmyMission::GetRuntimeClass|?GetRuntimeClass@TArmyMission@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
-53c050|WrapperFor_AFX_CLASSINIT_At0053c050||16|function|undefined WrapperFor_AFX_CLASSINIT_At0053c050()|
+53c050|`dynamic initializer for '_init_TArmyMission''||16|function|void __cdecl `dynamic initializer for '_init_TArmyMission''(void)|
 53c0a0|TMission::ConstructTArmyMissionWithNodeKey||196|function|undefined ConstructTArmyMissionWithNodeKey()|
 53c1b0|ReturnFalseForArmyAttackInvadeCapabilityFlag||3|function|undefined ReturnFalseForArmyAttackInvadeCapabilityFlag()|
 53c1d0|TArmyMission::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -3689,7 +3689,7 @@ address|name|symbol|size|type|prototype|provenance
 53d670|TAttackProvinceMission::CreateObject|?CreateObject@TAttackProvinceMission@@SGPAVCObject@@XZ|94|function|undefined CreateObject()|rtti
 53d6f0|ReturnFalseForAttackProvinceMissionCapabilityFlag||3|function|undefined ReturnFalseForAttackProvinceMissionCapabilityFlag()|
 53d710|TAttackProvinceMission::GetRuntimeClass|?GetRuntimeClass@TAttackProvinceMission@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
-53d730|WrapperFor_AFX_CLASSINIT_At0053d730||16|function|undefined WrapperFor_AFX_CLASSINIT_At0053d730()|
+53d730|`dynamic initializer for '_init_TAttackProvinceMission''||16|function|void __cdecl `dynamic initializer for '_init_TAttackProvinceMission''(void)|
 53d780|TAttackProvinceMission::ConstructTAttackProvinceMission||40|function|undefined ConstructTAttackProvinceMission()|
 53d7c0|TAttackProvinceMission::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 53d7f0|TAttackProvinceMission::~TAttackProvinceMission||7|function|TAttackProvinceMission::~TAttackProvinceMission()|
@@ -3708,7 +3708,7 @@ address|name|symbol|size|type|prototype|provenance
 53e5b0|TAttackProvinceMission::HandleDefendProvinceMissionActionType01ForTargetTile||36|function|undefined HandleDefendProvinceMissionActionType01ForTargetTile()|
 53e5f0|TDefendProvinceMission::CreateObject|?CreateObject@TDefendProvinceMission@@SGPAVCObject@@XZ|82|function|undefined CreateObject()|rtti
 53e670|TDefendProvinceMission::GetRuntimeClass|?GetRuntimeClass@TDefendProvinceMission@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
-53e690|WrapperFor_AFX_CLASSINIT_At0053e690||16|function|undefined WrapperFor_AFX_CLASSINIT_At0053e690()|
+53e690|`dynamic initializer for '_init_TDefendProvinceMission''||16|function|void __cdecl `dynamic initializer for '_init_TDefendProvinceMission''(void)|
 53e6e0|ComputeDefendProvinceMissionCrossNationSupportVectorScore||711|function|undefined ComputeDefendProvinceMissionCrossNationSupportVectorScore()|
 53ea70|ComputeDefendProvinceMissionLocalSupportVectorScore||288|function|undefined ComputeDefendProvinceMissionLocalSupportVectorScore()|
 53ebe0|TDefendProvinceMission::CleanupDefendProvinceMissionAndReleaseChildContext||142|function|undefined CleanupDefendProvinceMissionAndReleaseChildContext()|
@@ -3727,7 +3727,7 @@ address|name|symbol|size|type|prototype|provenance
 53f1f0|TInvadeMission::IndustrialCostOfNeeds||52|function|float IndustrialCostOfNeeds()|
 53f240|ReturnFalseForInvadeMissionCapabilityFlag||3|function|undefined ReturnFalseForInvadeMissionCapabilityFlag()|
 53f260|TInvadeMission::GetRuntimeClass|?GetRuntimeClass@TInvadeMission@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
-53f280|WrapperFor_AFX_CLASSINIT_At0053f280||16|function|undefined WrapperFor_AFX_CLASSINIT_At0053f280()|
+53f280|`dynamic initializer for '_init_TInvadeMission''||16|function|void __cdecl `dynamic initializer for '_init_TInvadeMission''(void)|
 53f2d0|TMission::ConstructTInvadeMissionWithOptionalBeachhead||180|function|undefined ConstructTInvadeMissionWithOptionalBeachhead()|
 53f3c0|TInvadeMission::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 53f3f0|TInvadeMission::~TInvadeMission||7|function|TInvadeMission::~TInvadeMission()|
