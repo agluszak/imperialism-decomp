@@ -25,6 +25,19 @@ TG_LAYOUT_ASSERT(CWnd_EmbedSize_0x3c, sizeof(CWnd) == 0x3c);
 
 } // namespace
 
+// 0x004152e0 is this class's ordinary destructor: the ??_G above is its only
+// caller, and the body destroys exactly the two CWnd members (+0xb0 then
+// +0x74) before the inlined ~TModalDialogBase tail (vftable 0x63e5a0,
+// finalizeState check, CDialog::~CDialog). The original body carries NO own
+// mov [this], 0x646958 vptr store — a stale pre-relink emission the
+// incremental linker kept the ??_G pointing at — so no clean recompile can
+// reproduce it exactly; the extra recomp vptr store and the out-of-line base
+// dtor call (see TModalDialogBase.cpp's COMDAT-fold note) are the accepted
+// residual. (bd 4ldx; formerly mis-claimed as
+// TModalTemplateDialog::DestroyListBoxAndHotKeyChildren at 11%.)
+// FUNCTION: IMPERIALISM 0x004152e0
+TAutoResolutionDialog::~TAutoResolutionDialog() {}
+
 // FUNCTION: IMPERIALISM 0x0047dfd0
 TAutoResolutionDialog::TAutoResolutionDialog(void* initParam)
     : TModalDialogBase(0xfb, static_cast<CWnd*>(initParam)), primaryDialogControl(),

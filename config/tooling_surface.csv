@@ -140,7 +140,8 @@ module|tools.mfc.library_identify|just:library-identify|Per-address library-iden
 module|tools.workflow.check_library_identity|just:library-identity-gate|Semantic gate: every reviewed library identity must project EXACTLY (no count baseline)
 module|tools.mfc.build_library_oracle|just:build-library-oracle|Relocation-masked object matcher: match exe functions to libcmt/nafxcw COFF members
 module|tools.workflow.mfc_collection_audit|just:mfc-collection-audit|Embedded-MFC-collection audit: identity, offsets, block size, duplicate-COMDAT twins
-module|tools.workflow.template_alias_check|just:template-alias-check|Re-verify template_aliases.csv rows: same name + normalized-body equivalence
+module|tools.workflow.template_alias_check|just:template-alias-check|Re-verify template_aliases.csv rows per class: duplicate_emission body-equivalence, folded_symbol_group jmp-island chains
+module|tools.workflow.stale_jmp_islands|just:stale-jmp-islands|Enumerate incremental-link stale-jmp fold islands (folded_symbol_group candidates)
 module|tools.workflow.template_emission_matrix|just:template-emission-matrix|Template-emission compiler matrix: compile probe TUs per /Ob-TU cell, inventory CList COMDATs
 module|tools.ghidra.dedupe_ambiguous_datatypes|just:dedupe-ambiguous-datatypes|Remove /Demangler duplicate datatypes that make TypeResolver simple-name lookups ambiguous
 module|tools.class_field_coverage|just:class-field-coverage|Semantic field-quality report ranking classes by weak-byte x reference-weight

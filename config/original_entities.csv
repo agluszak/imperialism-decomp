@@ -59,7 +59,7 @@ address|name|symbol|size|type|prototype|provenance
 415050|CWnd::BeginModalState|?BeginModalState@CWnd@@UAEXXZ|13|function|public: virtual void __thiscall CWnd::BeginModalState(void)|msvc500_library_override
 415070|CWnd::EndModalState|?EndModalState@CWnd@@UAEXXZ|13|function|public: virtual void __thiscall CWnd::EndModalState(void)|msvc500_library_override
 415090|ShowAutoResolutionDialogIfNeeded||455|function|undefined ShowAutoResolutionDialogIfNeeded()|
-4152e0|DestroyDialogWithListBoxAndHotKeyControl||120|function|undefined DestroyDialogWithListBoxAndHotKeyControl()|
+4152e0|TAutoResolutionDialog::~TAutoResolutionDialog||120|function|void __thiscall ~TAutoResolutionDialog()|
 415380|T64TemplateDialog::OnInitDialog||11|function|BOOL T64TemplateDialog::OnInitDialog()|
 4153a0|ReadSettingsPrefIntByIndex||128|function|undefined ReadSettingsPrefIntByIndex()|
 415440|WriteSettingsPrefIntByIndex||124|function|undefined WriteSettingsPrefIntByIndex()|
@@ -533,7 +533,7 @@ address|name|symbol|size|type|prototype|provenance
 484860|WrapperFor_FreeLinkedBlockChain_At00484860||68|function|undefined WrapperFor_FreeLinkedBlockChain_At00484860()|
 484970|InitializeRefCountedObjectBaseVtable||9|function|undefined InitializeRefCountedObjectBaseVtable()|
 484990|TObject::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4849c0|WrapperFor_FreeHeapBufferIfNotNull_At00484990_Impl||7|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00484990_Impl()|
+4849c0|TObject::~TObject||7|function|void __thiscall ~TObject()|
 4849e0|ForwardBlitSurfaceRectSkippingTransparentColor||50|function|undefined ForwardBlitSurfaceRectSkippingTransparentColor()|
 484ac0|`dynamic initializer for 'g_scaledShortConst_6A1830''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A1830''(void)|library
 484af0|CMainFrame::CreateObject|?CreateObject@CMainFrame@@SGPAVCObject@@XZ|143|function|CMainFrame * __cdecl CreateObject(void)|rtti

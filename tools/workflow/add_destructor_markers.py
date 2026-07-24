@@ -97,6 +97,30 @@ def scalar_dtor_rows() -> list[tuple[int, float, str]]:
     return rows
 
 
+ALIASES_CSV = REPO_ROOT / "config/template_aliases.csv"
+
+
+def island_dtor_rows() -> list[tuple[int, str]]:
+    """(island_address, class) from folded_symbol_group alias rows whose name
+    is a destructor (``Class::~Class``). These are the incremental-link fold
+    islands enumerated by `just stale-jmp-islands` — each island is the leaf
+    class's canonical ordinary-destructor address, claimable directly without
+    decoding a ??_G caller (bd iftm)."""
+    rows: list[tuple[int, str]] = []
+    for line in ALIASES_CSV.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        parts = [p.strip() for p in line.split("|")]  # pipe-split-ok: commented table
+        if len(parts) != 4 or parts[3] != "folded_symbol_group":
+            continue
+        m = re.fullmatch(r"(\w+)::~(\w+)", parts[2])
+        if not m or m.group(1) != m.group(2):
+            continue
+        rows.append((int(parts[0], 16), m.group(1)))
+    return rows
+
+
 def decode_dtor_target(pe: Pe, gaddr: int) -> int | None:
     """First `call rel32` within the ??_G body, chased through one ILT jmp hop."""
     body = pe.read(gaddr, 16)
@@ -183,21 +207,34 @@ def main() -> int:
         help="for classes with no explicit destructor, insert a marked inline "
         "`~C() override {}` declaration after the class's first `public:`",
     )
+    ap.add_argument(
+        "--islands",
+        action="store_true",
+        help="claim fold islands from config/template_aliases.csv "
+        "folded_symbol_group rows instead of decoding below-100%% ??_G callers",
+    )
     args = ap.parse_args()
 
-    pe = Pe(parse_env_binary())
-    rows = scalar_dtor_rows()
     claimed = collect_claimed_addresses()
+
+    candidates: list[tuple[int | None, int, str]]  # (??_G addr or None, target, class)
+    if args.islands:
+        candidates = [(None, addr, cls) for addr, cls in island_dtor_rows()]
+    else:
+        pe = Pe(parse_env_binary())
+        candidates = []
+        for gaddr, _matching, cls in scalar_dtor_rows():
+            target = decode_dtor_target(pe, gaddr)
+            candidates.append((gaddr, target if target is not None else -1, cls))
 
     actions: list[tuple[Path, int, int, str, bool]] = []  # file, line-idx, target, class, decl
     report: dict[str, list[str]] = {}
     seen_targets: dict[int, str] = {}
 
-    for gaddr, matching, cls in sorted(rows, key=lambda r: r[0]):
+    for gaddr, target, cls in sorted(candidates, key=lambda r: r[1]):
         if args.limit and len(actions) >= args.limit:
             break
-        target = decode_dtor_target(pe, gaddr)
-        if target is None:
+        if target < 0:
             report.setdefault("no_call_decoded", []).append(f"{cls} ??_G=0x{gaddr:08x}")
             continue
         if target in claimed:
