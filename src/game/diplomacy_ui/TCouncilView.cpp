@@ -36,6 +36,9 @@ const unsigned int kEndControlTagReselectAlt = kControlTagScoreCaps; // mode 0x1
 
 } // namespace
 
+// FUNCTION: IMPERIALISM 0x00430630
+TCouncilView::TCouncilView() : TDiplomacyMapView() {}
+
 // SYNTHETIC: IMPERIALISM 0x00430660
 // TCouncilView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00430690
@@ -48,8 +51,6 @@ TCouncilView::~TCouncilView() {}
 // TCouncilView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TCouncilView, TDiplomacyMapView)
-
-TCouncilView::TCouncilView() : TDiplomacyMapView() {}
 
 // slot 0x37 — lifecycle-hook override: rebuilds the council nation-overlay geometry and
 // labels (the base impl is a no-op, hence the inherited slot name).

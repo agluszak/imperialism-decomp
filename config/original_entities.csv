@@ -140,7 +140,7 @@ address|name|symbol|size|type|prototype|provenance
 430570|TCouncilPanelView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4305c0|TNominationView::Hilite||1|function|void Hilite(void)|mac_oracle
 4305e0|TNominationView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-430630|ConstructPictureResourceEntry_Vtbl00640258||18|function|undefined ConstructPictureResourceEntry_Vtbl00640258()|
+430630|TCouncilView::TCouncilView||18|function|undefined TCouncilView()|
 430660|TCouncilView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 430690|WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl||115|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00430660_Impl()|
 430730|WrapperFor_FreeHeapBufferIfNotNull_At00430730||12|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00430730()|
@@ -2978,7 +2978,7 @@ address|name|symbol|size|type|prototype|provenance
 503b90|CycleTradeScreenMode0To2||36|function|undefined CycleTradeScreenMode0To2()|
 503bd0|THelpPicture::CreateObject|?CreateObject@THelpPicture@@SGPAVCObject@@XZ|123|function|undefined CreateObject()|rtti
 503c70|THelpPicture::GetRuntimeClass||6|function|undefined GetTHelpPictureClassNamePointer()|rtti
-503c90|THelpPicture::ConstructPictureResourceEntryType57080||32|function|undefined ConstructPictureResourceEntryType57080()|
+503c90|THelpPicture::THelpPicture||32|function|undefined ConstructPictureResourceEntryType57080()|
 503cc0|THelpPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 503d10|THelpPicture::DoPostCreate||345|function|undefined OrphanCallChain_C6_I49_004875d0(void)|
 503ed0|THelpPicture::DoEvent||447|function|undefined HandleNameSlotNextPrevToggleCommands()|

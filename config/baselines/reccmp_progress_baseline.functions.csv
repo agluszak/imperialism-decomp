@@ -152,7 +152,7 @@ address|matching|name
 0x4305c0|1.0|TNominationView::Hilite
 0x4305e0|1.0|TNominationView::`scalar deleting destructor'
 0x430610|0.2222222222222222|TNominationView::~TNominationView
-0x430630|0.2222222222222222|ConstructPictureResourceEntry_Vtbl00640258
+0x430630|1.0|TCouncilView::TCouncilView
 0x430660|1.0|TCouncilView::`scalar deleting destructor'
 0x430690|0.9841269841269841|TCouncilView::~TCouncilView
 0x430730|1.0|DiplomacyMaskBufferRun::~DiplomacyMaskBufferRun
@@ -190,7 +190,7 @@ address|matching|name
 0x435710|1.0|TNewspaperView::`scalar deleting destructor'
 0x435740|0.2222222222222222|TNewspaperView::~TNewspaperView
 0x435760|1.0|TControl::ShallowClone
-0x4357b0|0.49022536857829446|BuildTurnEventDialogUiByCode
+0x4357b0|0.49035526401247|BuildTurnEventDialogUiByCode
 0x43d590|1.0|TMapPreviewView::TMapPreviewView
 0x43d5c0|1.0|TMapPreviewView::`scalar deleting destructor'
 0x43d5f0|0.2222222222222222|TMapPreviewView::~TMapPreviewView
@@ -336,11 +336,11 @@ address|matching|name
 0x479e40|0.43636363636363634|CDib::CreateObject
 0x479ed0|1.0|CDib::GetRuntimeClass
 0x479ef0|0.3333333333333333|WrapperFor_AFX_CLASSINIT_At00479ef0
-0x479f40|0.9583333333333334|CDib::CDib(void)
+0x479f40|1.0|CDib::CDib(void)
 0x479fb0|1.0|CDib::`scalar deleting destructor'
-0x479fe0|0.6550522648083623|CDib::CDib(int, int, int)
-0x47a200|0.8497409326424871|CDib::CDib(class CDib const &)
-0x47a370|0.9444444444444444|CDib::~CDib
+0x479fe0|0.662020905923345|CDib::CDib(int, int, int)
+0x47a200|0.8601036269430051|CDib::CDib(class CDib const &)
+0x47a370|1.0|CDib::~CDib
 0x47a3e0|0.8148148148148148|CDib::CopyBitmapDimensionsToPoint
 0x47a420|0.704225352112676|CDib::LoadFromMemoryMappedBmpFile
 0x47a630|0.13953488372093023|CDib::RemapSurfaceToMemoryMappedBmpFile
@@ -425,9 +425,9 @@ address|matching|name
 0x47e0c0|1.0|TAutoResolutionDialog::DoDataExchange
 0x47e100|0.5|TAutoResolutionDialog::GetMessageMap
 0x47e120|1.0|TAutoResolutionDialog::OnInitDialog
-0x47e360|0.8333333333333334|CDibPal::CDibPal
+0x47e360|1.0|CDibPal::CDibPal
 0x47e390|1.0|CDibPal::`scalar deleting destructor'
-0x47e3c0|0.9230769230769231|CDibPal::~CDibPal
+0x47e3c0|0.9615384615384616|CDibPal::~CDibPal
 0x47e440|0.6111111111111112|CDibPal::BuildPaletteFromBitmapColorTable
 0x47e590|0.4701195219123506|CDibPal::DrawPalettePreviewGridRectangles
 0x47e930|1.0|CDibPal::SelectIntoDcAndRealize
@@ -3006,7 +3006,7 @@ address|matching|name
 0x503b90|0.15384615384615385|THelpMgr::CycleTradeScreenMode0To2
 0x503bd0|0.5714285714285714|THelpPicture::CreateObject
 0x503c70|1.0|THelpPicture::GetRuntimeClass
-0x503c90|0.3333333333333333|THelpPicture::ConstructPictureResourceEntryType57080
+0x503c90|1.0|THelpPicture::THelpPicture
 0x503cc0|1.0|THelpPicture::`scalar deleting destructor'
 0x503cf0|0.2222222222222222|THelpPicture::~THelpPicture
 0x503d10|0.4|THelpPicture::DoPostCreate
