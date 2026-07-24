@@ -22,11 +22,22 @@ TGWorldPartView::~TGWorldPartView() {}
 
 IMPLEMENT_DYNCREATE(TGWorldPartView, TView)
 
-// Returns the tail substring of `source` starting at 1-based position `startPos` (i.e.
-// CString::Mid(startPos - 1)). The source is taken by value, matching the original.
+// One-based CString::Mid: returns source.Mid(startPos - 1, count). Both original call
+// sites (0x4aaf59 in TMiniArmyView::Draw and 0x5d4cbe in
+// TruncateTextToFitWidthWithEllipsis) pass startPos = 1 and count = GetLength() - 1,
+// i.e. "drop the last character", which is the step those truncation loops repeat.
+//
+// Receiver caveat (imperialism-decomp-1uj.98.4): the original is __thiscall with ECX
+// holding a plain CString* -- 0x5d4cb5 loads CStringData::nDataLength from
+// [m_pchData - 8] on the very object it then passes in ECX -- and takes (dest, start,
+// count) on the stack, RET 0xc. There is no game class to own it (no CString-derived
+// type exists) and CString itself is MFC, which we do not model, so the receiver is
+// expressed as an ordinary parameter here rather than faked with a calling-convention
+// cast. That costs the out-of-line match but keeps the source model honest; both
+// callers currently inline the Mid instead of calling this helper.
 // FUNCTION: IMPERIALISM 0x004ac3a0
-CString AssignSharedStringFromMidSubstring(int startPos, CString source) {
-  return source.Mid(startPos - 1);
+CString AssignSharedStringFromMidSubstring(CString source, int startPos, int count) {
+  return source.Mid(startPos - 1, count);
 }
 
 // FUNCTION: IMPERIALISM 0x004ac880

@@ -1647,7 +1647,7 @@ address|matching|name
 0x4ab970|0.4843304843304843|TMiniCivView::InitializeForCivilianUnit
 0x4ac000|0.7423312883435583|TMiniCivView::Draw
 0x4ac320|1.0|TMiniCivView::DoEvent
-0x4ac3a0|0.5964912280701754|AssignSharedStringFromMidSubstring
+0x4ac3a0|0.576271186440678|AssignSharedStringFromMidSubstring
 0x4ac570|0.25|WrapperFor_ftol_At004ac570
 0x4ac5c0|0.5818181818181818|TSwapperDaddyView::CreateObject
 0x4ac650|1.0|TSwapperDaddyView::`scalar deleting destructor'
