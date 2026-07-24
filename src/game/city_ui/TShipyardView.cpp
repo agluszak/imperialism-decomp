@@ -136,6 +136,11 @@ void TShipyardView::DoStartup() {
   UpdateFields();
 }
 
+// FUNCTION: IMPERIALISM 0x004c8a20
+void TShipyardView::LoadShipyardIconSurface() {
+  iconSurfaceB8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
+}
+
 // FUNCTION: IMPERIALISM 0x004c8a50
 void TShipyardView::UpdateFields() {
   productionView98->UpdateUnits();

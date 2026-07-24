@@ -1,4 +1,5 @@
 #include "game/ui_widgets/TIndustryCluster.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_widgets.h"
 #include "game/ui_core/TWindow.h"
@@ -101,9 +102,8 @@ short TTraderAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
     short tradeCapacity = nationState->tradeCapacity;
     if (tradeCapacity != 0) {
       if ((int)requestedValue < (this->frameHeight38 / (int)tradeCapacity)) {
-        TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(
-            reinterpret_cast<TView*>(reinterpret_cast<void*>(this->ownerContext))
-                ->ResolveControlByTag(kControlTagSell));
+        TNumberText* sellControl =
+            static_cast<TNumberText*>(this->ownerContext->ResolveControlByTag(kControlTagSell));
         if (sellControl != 0) {
           result = 1;
         }

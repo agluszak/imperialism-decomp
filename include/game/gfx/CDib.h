@@ -57,6 +57,7 @@ public:
 
   // Free every owned GDI/heap/mapping resource and zero the state. 0x0047bca0
   void Release();
+  void ReleaseMappedFileView(); // 0x0047bd90
   // Release the current state and adopt an already-packed BITMAPINFOHEADER + color table
   // + pixels block: derives m_paletteCount/m_pixelBytes from the header, points
   // m_colorTablePixels/m_dibBits into the block, and rebuilds m_hPalette. ownsInfo picks
@@ -120,6 +121,11 @@ public:
   void BlitSurfaceRectSkippingTransparentColor(CDib* destDib, int srcX, int srcY,
                                                unsigned int width, unsigned int height, int destX,
                                                int destY, int transparentColor);
+
+  // Return the address of an 8-bit pixel, translating top-origin coordinates into the
+  // DIB's bottom-up scanline storage. Returns NULL when x or y exceeds the bitmap bounds.
+  // 0x0047bf90
+  void* GetPixelAddress(int x, int y);
 
   // Thin thiscall forwarder that unpacks POINT-pair arguments into the flat
   // BlitSurfaceRectSkippingTransparentColor parameter list. 0x004849e0

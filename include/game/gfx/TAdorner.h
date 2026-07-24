@@ -3,6 +3,7 @@
 #include "compat.h"
 
 #include "game/app/TObject.h"
+#include "game/gfx/ui_invalidation_guard.h"
 #include "game/mfc.h"
 
 // Forward declarations for types referenced by generated signatures.
@@ -41,7 +42,12 @@ public:
                         short length);          // slot 0x0f 0x49da50
   virtual unsigned char DoesAdorn(TView* view); // slot 0x10 0x49da80
 
-  TAdorner();
+  // Markerless inline ctor: CreateObject 0x49d650 expands the guard to its two
+  // flag writes, while TColorFill::CreateObject 0x4ff0c0 keeps the out-of-line
+  // guard call with the original UDisplayMgr.cpp source/line arguments.
+  TAdorner() {
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x69);
+  }
 
   // The Mac constructor oracle is TAdorner::IAdorner(unsigned long, unsigned char), and
   // TView's AdornerWithID/DeleteAdornerByID methods confirm the first argument is the

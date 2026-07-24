@@ -29,6 +29,7 @@ public:
   void SetTextLineStyleDescriptor(const TextStyle* descriptor);
   // 0x5704e0
   void SetField1E(short value);
+  void SetCaptionText(CString* caption); // 0x00570420
 };
 
 ASSERT_SIZE(TTextLine, 0x20);

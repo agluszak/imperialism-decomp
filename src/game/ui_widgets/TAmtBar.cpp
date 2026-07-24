@@ -1,5 +1,6 @@
 #include <new>
 #include "game/ui_tags_common.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/ui_core/TWindow.h"
 
 #include "game/globals/prelude.h"
@@ -155,12 +156,12 @@ void TAmtBar::ClampAndApplyTradeMoveValue(int requestedValue) {
   short appliedValue = ApplyMoveClamp(baseValue, requestedValue);
   TView* owner = GetWindow();
   if ((appliedValue == 0) && requestedValue != 0) {
-    TAmtBar* fallbackControl =
-        reinterpret_cast<TAmtBar*>(owner->ResolveControlByTag(kControlTagMove));
+    TNumberText* fallbackControl =
+        static_cast<TNumberText*>(owner->ResolveControlByTag(kControlTagMove));
     if (fallbackControl == 0) {
-      fallbackControl = reinterpret_cast<TAmtBar*>(owner->ResolveControlByTag(kControlTagSell));
+      fallbackControl = static_cast<TNumberText*>(owner->ResolveControlByTag(kControlTagSell));
     }
-    if (fallbackControl != 0 && fallbackControl->QueryValue() == 0) {
+    if (fallbackControl != 0 && fallbackControl->UpdateControlCachedIntFromWindowText() == 0) {
       appliedValue = 1;
     }
   }
@@ -173,9 +174,6 @@ void TAmtBar::SetBarMetricRatio(int value) {
   RefreshControl();
 }
 
-
 int TAmtBar::QueryValue() {
   return (int)stepOrCurrentValue;
 }
-
-

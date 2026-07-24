@@ -6,6 +6,7 @@
 #include "game/ImperialismCommandLineInfo.h"
 #include "game/app_init_globals.h"
 #include "game/globals/prelude.h"
+#include "game/globals/core_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -241,8 +242,8 @@ BOOL ImperialismApp::InitInstance() {
       return FALSE;
     }
 
-    DAT_006a1350 = ShowAutoResolutionDialogIfNeeded();
-    ApplyAutoResolutionModeAndPersist(DAT_006a1350);
+    g_nStartupAutoResolutionMode = ShowAutoResolutionDialogIfNeeded();
+    ApplyAutoResolutionModeAndPersist(g_nStartupAutoResolutionMode);
 
     if (!g_pModuleLibraryCacheState->LoadModuleLibrarySlotWithErrorDialog(localizedPictGobNameD0,
                                                                           0)) {
@@ -538,19 +539,6 @@ void ImperialismApp::OnUpdateAmbitDeveloperAssert(CCmdUI* commandUi) {
   commandUi->Enable(FALSE);
 }
 
-// Post WM_CLOSE to the main thread's window. Faithful to the original: when
-// AfxGetThread() returns null the main-window pointer stays null and the m_hWnd
-// read dereferences it unguarded (latent original bug, kept as-is).
-// FUNCTION: IMPERIALISM 0x004146d0
-void PostWmCloseToMainThreadWindow() {
-  if (AfxGetThread() != 0) {
-    PostMessageA(AfxGetThread()->GetMainWnd()->m_hWnd, WM_CLOSE, 0, 0);
-    return;
-  }
-  CWnd* nullMainWindow = 0;
-  PostMessageA(nullMainWindow->m_hWnd, WM_CLOSE, 0, 0);
-}
-
 BOOL QueryVolumeInformationForDriveIndex(char driveIndex, CString* volumeName, LPDWORD serial);
 bool QueryDriveTypeByDriveIndex(char driveIndex);
 
@@ -703,6 +691,16 @@ int ImperialismApp::ShowAutoResolutionDialogIfNeeded() {
 
   WriteProfileInt(g_pRegistrySettingsSection_0063E040, g_pRegistryAutoResKey_0063E048, autoResMode);
   return autoResMode;
+}
+
+// FUNCTION: IMPERIALISM 0x004154e0
+UINT ImperialismApp::GetSettingValueFromSettingsSection(LPCTSTR key, int defaultValue) {
+  return GetProfileInt(g_pRegistrySettingsSectionAlt_0063E044, key, defaultValue);
+}
+
+// FUNCTION: IMPERIALISM 0x00415510
+BOOL ImperialismApp::WriteSettingValueToSettingsSection(LPCTSTR key, int value) {
+  return WriteProfileInt(g_pRegistrySettingsSectionAlt_0063E044, key, value);
 }
 
 // FUNCTION: IMPERIALISM 0x00415580

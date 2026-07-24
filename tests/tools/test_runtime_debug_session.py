@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import unittest
+from unittest.mock import patch
 
 import tempfile
 from pathlib import Path
@@ -77,6 +78,21 @@ class LinkerMapTests(unittest.TestCase):
             )
             report_path.write_text("#0  0x00416355 in ?? ()\n", encoding="utf-8")
             output = symbolize_gdb_report(report_path, map_path)
+            self.assertIsNotNone(output)
+            self.assertIn("TView::Render", output.read_text(encoding="utf-8"))
+
+    def test_report_uses_vendored_demangler_when_llvm_undname_is_missing(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            map_path = root / "Imperialism.map"
+            report_path = root / "debugger-stop-01-sigsegv.txt"
+            map_path.write_text(
+                " 0001:00015340       ?Render@TView@@UAEXXZ 00416340 f TView.cpp.obj\n",
+                encoding="ascii",
+            )
+            report_path.write_text("#0  0x00416355 in ?? ()\n", encoding="utf-8")
+            with patch("tools.runtime.debug.symbols.subprocess.run", side_effect=FileNotFoundError):
+                output = symbolize_gdb_report(report_path, map_path)
             self.assertIsNotNone(output)
             self.assertIn("TView::Render", output.read_text(encoding="utf-8"))
 

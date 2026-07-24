@@ -30,6 +30,7 @@ public:
   virtual void SetShip(short shipType); // slot 0x7c 0x4c8d70
 
   TShipyardView();
+  void LoadShipyardIconSurface(); // 0x004c8a20
 
   // Own fields at +0xa0..+0xcc (RTTI m_nObjectSize 0xcc vs TBuildingView's 0xa0).
   // CreateObject (0x4c8200) only re-zeroes inherited

@@ -5,6 +5,7 @@
 #include "game/globals/prelude.h"
 #include "game/globals/assets_globals.h"
 #include "game/globals/shared_globals.h"
+#include "game/globals/ui_widgets_globals.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TApplication.h"
 #include "game/city_ui/TLongintList.h"
@@ -433,7 +434,7 @@ void TSoundPlayer::StopAllSoundChannels() {
 // FUNCTION: IMPERIALISM 0x005e5020
 void TSoundPlayer::SetMasterVolumeFromPercent(short percent) {
   if (this->directSoundInitPendingAt21 != 0) {
-    double val = -pow(2.0, (100 - percent) * DAT_0066fad0);
+    double val = -pow(2.0, (100 - percent) * g_dMasterVolumeExponentScale);
     int volume = static_cast<int>(val);
     if (volume > 0) {
       volume = 0;
@@ -472,6 +473,30 @@ int TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(short sfx
 // FUNCTION: IMPERIALISM 0x005e5140
 int TSoundPlayer::PlaySoundEffect(short sfxToken, int param_2, int param_3) {
   this->UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(sfxToken, param_2, param_3, 1);
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005e5170
+int TSoundPlayer::PlaySoundAsynchronously(short soundId, short channel, short priority) {
+  (void)soundId;
+  (void)channel;
+  (void)priority;
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005e5190
+int TSoundPlayer::PlaySoundSynchronously(short soundId, short channel, short priority) {
+  (void)soundId;
+  (void)channel;
+  (void)priority;
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005e51b0
+int TSoundPlayer::PlayAiffFile(CString fileName, short channel, short priority) {
+  (void)fileName;
+  (void)channel;
+  (void)priority;
   return 0;
 }
 

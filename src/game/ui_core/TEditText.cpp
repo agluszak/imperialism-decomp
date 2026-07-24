@@ -39,6 +39,14 @@ TEditText::~TEditText() {
   // function; our real-inheritance model calls it via chaining instead).
 }
 
+// FUNCTION: IMPERIALISM 0x004905e0
+void TEditText::InitializeEditText(TView* panel, int* offsetLayout, int* sizeLayout,
+                                   short maximumCharacterCount) {
+  InitializeTextEntryBaseAndOptionalStringResource(panel, offsetLayout, sizeLayout, 5, 5, -1, 0);
+  maxCharacterCount = maximumCharacterCount;
+  SetEnable(1);
+}
+
 // Releases the live edit CWnd and cached font in that order — shared by Free() below.
 // FUNCTION: IMPERIALISM 0x00490650
 void TEditText::Close() {

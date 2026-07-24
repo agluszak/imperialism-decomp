@@ -20,6 +20,7 @@
 #include "game/ui_tags_widgets.h"
 #include "game/military/NetMessage.h"
 #include "game/map/TMapMgr.h" // TTerrainStateRecordView (event 0x23 payload)
+#include "game/news_domain_types.h"
 
 class TObject;
 
@@ -28,6 +29,64 @@ class TObject;
 struct TaggedSerializablePayload {
   int tag;
   TObject* object;
+};
+
+// Event-8 lobby name/status announce: the selected/source nation followed by two
+// player-name strings. Both the session UI and receive dispatcher use this wire shape.
+struct TurnEvent8NameAnnouncePacket : TimelyMessageHeader {
+  char nationSlot18;        // +0x18
+  char senderName19[0x21];  // +0x19
+  char messageText3a[0x2a]; // +0x3a, total 0x64
+};
+
+// Event-9 lobby chat/seat-state packet.
+struct LobbyChatEvent9Packet : TimelyMessageHeader {
+  unsigned char nationSlot18; // +0x18
+  unsigned char pad19[3];
+  int field1C;            // +0x1c - zeroed by seat-state messages
+  char senderName[0x21];  // +0x20
+  char messageText[0x23]; // +0x41, total 0x64
+};
+
+// Event-8 lobby text pair emitted from the selected nation and the manager's two
+// cached 32-character player-name fields.
+struct LobbyTextPairEvent8Packet : TimelyMessageHeader {
+  unsigned char sourceNationSlot18;
+  char playerName19[0x21];
+  char playerNameMirror3A[0x22];
+};
+
+// Event-0xE host session-init record.
+struct TurnEventESessionInitPacket : TimelyMessageHeader {
+  char mapSeedText18[0x21];      // +0x18 - passed to RebuildMapContextAndGlobalMapState
+  unsigned char mapParamByte39;  // +0x39 - third Rebuild arg
+  char hostGameName3A[0x22];     // +0x3a
+  int saveSlotDword5C;           // +0x5c -> queueSyncDword
+  int scenarioTag60;             // +0x60 -> scenarioSelectionTag
+  signed char difficultyLevel64; // +0x64
+  unsigned char nameTableFlag65; // +0x65 -> useLocalizedNameTables68
+  unsigned char pad66[2];        // total 0x68
+};
+
+// Event-0x13 nine-dword nation-news payload.
+struct TurnEvent13NewsPacket : TimelyMessageHeader {
+  short nationSlot18; // +0x18
+  unsigned char pad1a[2];
+  NewsEvent newsEvent1C; // +0x1c, total 0x40
+};
+
+// Event-0x26 full diplomacy-matrix snapshot.
+struct TurnEvent26DiplomacyMatrixPacket : TimelyMessageHeader {
+  short relationCodeMatrix[0x180];              // +0x018
+  unsigned char pendingPolicyCodeMatrix[0x180]; // +0x318
+  short pendingPolicyTierMatrix[0x180];         // +0x498
+  short selectedSourceNationSlot;               // +0x798
+  short selectedTargetNationSlot;               // +0x79a
+  short selectionFlagsA;                        // +0x79c
+  short selectionFlagsB;                        // +0x79e
+  short selectionFlagsC;                        // +0x7a0
+  unsigned char pad7a2[2];                      // +0x7a2
+  unsigned char relationTailBlock[0x70];        // +0x7a4, total 0x814
 };
 
 // Turn-event-1 payload: the remaining turn-resume pending-nation bitmask.
@@ -122,6 +181,12 @@ struct TurnEvent2DMinorNeedPacket : TimelyNetMessagePrefix {
 };
 
 ASSERT_SIZE(TaggedSerializablePayload, 0x8);
+ASSERT_SIZE(TurnEvent8NameAnnouncePacket, 0x64);
+ASSERT_SIZE(LobbyChatEvent9Packet, 0x64);
+ASSERT_SIZE(LobbyTextPairEvent8Packet, 0x5c);
+ASSERT_SIZE(TurnEventESessionInitPacket, 0x68);
+ASSERT_SIZE(TurnEvent13NewsPacket, 0x40);
+ASSERT_SIZE(TurnEvent26DiplomacyMatrixPacket, 0x814);
 ASSERT_SIZE(TurnEvent1PendingMaskPacket, 0x1c);
 ASSERT_SIZE(TurnEventACityAnnouncePacket, 0x44);
 ASSERT_SIZE(TurnEventBNationDirectoryPacket, 0x668);

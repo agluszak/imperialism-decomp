@@ -5,7 +5,8 @@
 and recompiled binaries and exits 1 when it finds an issue. This wraps it in
 the standard ratchet: preserve valid mismatch output from exit 1, parse
 the report into per-variable fingerprints (status + number of differing-byte
-detail lines) and compare against config/baselines/datacmp_baseline.csv:
+detail lines + an optional normalization note) and compare against
+config/baselines/datacmp_baseline.csv:
 
   - a variable not in the baseline           -> FAIL (new data mismatch)
   - status worsened or diff-line count grew  -> FAIL (regressed global)
@@ -31,7 +32,15 @@ from tools.common.repo import repo_root_from_file, resolve_repo_path
 
 ENTRY_RE = re.compile(r"^(?P<name>\S.*?) \((?P<addr>0x[0-9a-fA-F]+)\) \.\.\. (?P<status>[A-Z]+)")
 DETAIL_RE = re.compile(r"^\s+\+ 0x[0-9a-fA-F]+\s")
-STATUS_RANK = {"OK": 0, "WARN": 1, "ERROR": 2, "FAIL": 2}
+STATUS_RANK = {"OK": 0, "WARN": 1, "DIFF": 2, "ERROR": 2, "FAIL": 2}
+
+# A compiler may place a source-level zero initializer in BSS while the original
+# linker kept the same zero bytes in initialized data. Both images expose the same
+# runtime value after loading; reccmp-datacmp reports only the section-placement
+# distinction as "0.0 : (uninitialized)".
+ZERO_VS_BSS_DETAIL_RE = re.compile(
+    r"^\s+\+ 0x[0-9a-fA-F]+\s+0(?:\.0*)?\s+:\s+\(uninitialized\)\s*$"
+)
 
 # MFC runtime-class records and function-pointer tables are composed primarily or
 # entirely of linked addresses. Those addresses cannot match until the referenced
@@ -41,9 +50,11 @@ RELOCATION_ONLY_RE = re.compile(r"(?:::class[A-Za-z0-9_]+$|^g_apfn[A-Za-z0-9_]*$
 
 
 def parse_report(text: str) -> dict[str, dict[str, str]]:
-    """name -> {address, status, diffs} from reccmp-datacmp --no-color output.
+    """name -> {address, status, diffs, note} from a datacmp report.
 
     Pointer-only records (see RELOCATION_ONLY_RE) are skipped as relocation noise.
+    A DIFF made solely of initialized-zero vs BSS-zero details is normalized to a
+    WARN because the loader produces the same runtime value.
     """
     entries: dict[str, dict[str, str]] = {}
     current: dict[str, str] | None = None
@@ -59,11 +70,26 @@ def parse_report(text: str) -> dict[str, dict[str, str]]:
                 "address": m.group("addr").lower(),
                 "status": m.group("status"),
                 "diffs": "0",
+                "note": "",
+                "_zero_vs_bss_only": "1",
             }
             entries[name] = current
             continue
         if current is not None and DETAIL_RE.match(line):
             current["diffs"] = str(int(current["diffs"]) + 1)
+            if not ZERO_VS_BSS_DETAIL_RE.match(line):
+                current["_zero_vs_bss_only"] = "0"
+
+    for row in entries.values():
+        if (
+            row["status"] == "DIFF"
+            and row["diffs"] != "0"
+            and row.pop("_zero_vs_bss_only") == "1"
+        ):
+            row["status"] = "WARN"
+            row["note"] = "initialized_zero_vs_bss_zero_same_runtime_value"
+        else:
+            row.pop("_zero_vs_bss_only", None)
     return entries
 
 
@@ -123,10 +149,12 @@ def run_datacmp(target: str, build_dir: Path) -> str:
 
 
 def write_baseline(path: Path, entries: dict[str, dict[str, str]]) -> None:
-    lines = ["name|address|status|diffs"]
+    lines = ["name|address|status|diffs|note"]
     for name in sorted(entries):
         row = entries[name]
-        lines.append(f"{name}|{row['address']}|{row['status']}|{row['diffs']}")
+        lines.append(
+            f"{name}|{row['address']}|{row['status']}|{row['diffs']}|{row.get('note', '')}"
+        )
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 

@@ -31,6 +31,7 @@
 #include "game/city/TCity.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/ImperialismApp.h"
+#include "game/gfx/TAmbitApplication.h"
 #include "game/globals/prelude.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
@@ -463,6 +464,24 @@ void TMapMgr::VerifyMapDataAndWriteReport() {
   delete[] provinceTileCounts;
 
   SetCursor(LoadCursorA(NULL, IDC_ARROW));
+}
+
+// FUNCTION: IMPERIALISM 0x0050f5f0
+void TMapMgr::AssignSequentialClassesToPopulatedRegions() {
+  int classCode = 0;
+  for (int recordIndex = 0; recordIndex < 0x180; ++recordIndex) {
+    Province& record = cityScoreTable[recordIndex];
+    if (record.linkedTileIndices42[0] != -1 && record.regionClassA3 == -1) {
+      int assignedClass = classCode++;
+      if (record.regionClassA3 != assignedClass) {
+        record.regionClassA3 = static_cast<char>(assignedClass);
+        for (int child = 0; child < record.adjacentRegionCount08; ++child) {
+          SetMapRecordFlagA3AndPropagateToChildren(record.adjacentRegionIds0A[child],
+                                                   assignedClass);
+        }
+      }
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0050f6b0
@@ -3931,6 +3950,21 @@ char TMapMgr::AreAllLinkedEntriesTerrainFlagBit2Clear(int regionIndex) {
   }
   return 0;
 }
+
+// FUNCTION: IMPERIALISM 0x00518aa0
+char TMapMgr::HasActiveLinkedTileWithReachableSea(int regionIndex) {
+  Province& record = cityScoreTable[regionIndex];
+  for (int i = 0; i < record.linkedRegionCount; ++i) {
+    StrategicTileIndex tileIndex = record.linkedTileIndices42[i];
+    unsigned char flags = terrainStateTable[tileIndex].activeFlags1c;
+    flags >>= 2;
+    flags &= 1;
+    if (flags != 0 && HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(tileIndex) != 0) {
+      return 1;
+    }
+  }
+  return 0;
+}
 // FUNCTION: IMPERIALISM 0x00518b40
 int TMapMgr::CalculateDeveloperTilePurchaseCost(StrategicTileIndex nTileIndex) {
   int total = 0;
@@ -4270,7 +4304,7 @@ void TMapMgr::DumpAndResetMapScriptState() {
   fprintf(logFile, g_szFmtYear_00697248,
           *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pSimMgr) + 0x2c) / 4);
   fclose(logFile);
-  PostWmCloseToMainThreadWindow();
+  g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
 }
 
 // FUNCTION: IMPERIALISM 0x00519610

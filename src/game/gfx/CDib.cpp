@@ -729,6 +729,16 @@ void CDib::Release() {
   m_hPalette = NULL;
 }
 
+// FUNCTION: IMPERIALISM 0x0047bd90
+void CDib::ReleaseMappedFileView() {
+  if (m_hFileMapping != NULL) {
+    UnmapViewOfFile(m_mappedView);
+    CloseHandle(m_hFile);
+    CloseHandle(m_hFileMapping);
+    m_hFileMapping = NULL;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0047bde0
 void CDib::BlitSurfaceRectSkippingTransparentColor(CDib* destDib, int srcX, int srcY,
                                                    unsigned int width, unsigned int height,
@@ -819,6 +829,26 @@ void CDib::BlitSurfaceRectSkippingTransparentColor(CDib* destDib, int srcX, int 
     destPtr += destStride;
     --height;
   } while (height != 0);
+}
+
+// FUNCTION: IMPERIALISM 0x0047bf90
+void* CDib::GetPixelAddress(int x, int y) {
+  int width = m_pInfoHeader->bmiHeader.biWidth;
+  if (x < width) {
+    int height = m_pInfoHeader->bmiHeader.biHeight;
+    int absoluteHeight = height;
+    if (absoluteHeight <= 0) {
+      absoluteHeight = -absoluteHeight;
+    }
+    if (y < absoluteHeight) {
+      unsigned int rowStride = (width + 3) & ~3u;
+      if (height <= 0) {
+        height = -height;
+      }
+      return static_cast<unsigned char*>(m_dibBits) + (height - y - 1) * rowStride + x;
+    }
+  }
+  return NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x0047c080

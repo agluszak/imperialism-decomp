@@ -84,6 +84,7 @@ public:
   virtual void DoTrade();                         // 0x60  0x0057f3c0, Mac oracle
   virtual int AllHumansFinished();                // 0x64  0x0057f4f0
   virtual void ResetTurnFlags();                  // 0x68  0x0057f530
+  void PrepareMultiplayerTurnResume();            // 0x0057f570
   virtual int PlayerLost();                       // 0x6c  0x0057f490, Mac oracle
   // Mac oracle: SetFlags(short). Windows reads and merges the full pushed dword.
   virtual void SetFlags(unsigned int flags);                  // 0x70  0x0057f4b0

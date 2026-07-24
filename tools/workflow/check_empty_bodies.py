@@ -432,6 +432,11 @@ def counts_per_file(findings: list[dict], repo_root: Path) -> dict[str, dict[str
     return out
 
 
+def baseline_file_is_initialized(path: Path) -> bool:
+    """A header-only baseline is a valid zero floor; a missing/empty file is not."""
+    return path.is_file() and path.stat().st_size > 0
+
+
 def main() -> int:
     repo_root = repo_root_from_file(__file__)
     parser = argparse.ArgumentParser(description=__doc__)
@@ -461,8 +466,9 @@ def main() -> int:
         return 0
 
     if args.baseline:
-        baseline = read_baseline(resolve_repo_path(repo_root, args.baseline), VIOLATION_KINDS)
-        if not baseline:
+        baseline_path = resolve_repo_path(repo_root, args.baseline)
+        baseline = read_baseline(baseline_path, VIOLATION_KINDS)
+        if not baseline and not baseline_file_is_initialized(baseline_path):
             print(f"Baseline missing: {args.baseline}")
             print("Run `just noop-gate-update` once, then re-run the gate.")
             return 1

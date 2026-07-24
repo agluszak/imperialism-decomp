@@ -20,6 +20,8 @@ public:
   TShipFractionCluster();
 
   void SetAvailableAndSelectedShipCounts(int availableCount, int selectedCount);
+  void IncrementSelectedShipCount(unsigned char displayOnly); // 0x005690d0
+  void DecrementSelectedShipCount(unsigned char displayOnly); // 0x00569150
 
   // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at
   // 0x88. Available ship count and upper bound for the selected count. The original

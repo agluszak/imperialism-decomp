@@ -613,6 +613,7 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x0061249e|CArchive::ReadClass|?ReadClass@CArchive@@QAEPAUCRuntimeClass@@PBU2@PAIPAK@Z|public: struct CRuntimeClass * __thiscall CArchive::ReadClass(struct CRuntimeClass const *, unsigned int *, unsigned long *)|nafxcw|arcobj.obj|object_matcher:unique:high (accepted 2026-07)
 0x00612682|CDC::CDC|??0CDC@@QAE@XZ|public: __thiscall CDC::CDC(void)|nafxcw|wingdi.obj|object_matcher:unique:high (accepted 2026-07)
 0x00612696|CDC::`scalar deleting dtor'|??_GCDC@@UAEPAXI@Z|public: virtual void * __thiscall CDC::`scalar deleting dtor'(unsigned int)|nafxcw|wingdi.obj|object_matcher:unique-via-existing:high (accepted 2026-07)
+0x00612736|CDC::FromHandle|?FromHandle@CDC@@SGPAV1@PAUHDC__@@@Z|public: static class CDC * __stdcall CDC::FromHandle(struct HDC__*)|nafxcw|wingdi.obj|ghidra_fid:nafxcw_score_529.010+listing_calls_afxMapHDC_then_CHandleMap_FromHandle
 0x0061274c|CDC::Attach|?Attach@CDC@@QAEHPAUHDC__@@@Z|public: int __thiscall CDC::Attach(struct HDC__*)|nafxcw|wingdi.obj|object_matcher:unique:high (accepted 2026-07)
 0x00612783|CDC::Detach|?Detach@CDC@@QAEPAUHDC__@@XZ|public: struct HDC__* __thiscall CDC::Detach(void)|nafxcw|wingdi.obj|object_matcher:unique:high (accepted 2026-07)
 0x006127ca|CDC::~CDC|??1CDC@@UAE@XZ|public: virtual __thiscall CDC::~CDC(void)|nafxcw|wingdi.obj|object_matcher:unique:high (accepted 2026-07)

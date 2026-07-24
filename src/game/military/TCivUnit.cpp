@@ -43,6 +43,15 @@ int TCivUnit::IsInIdleSelectionState() {
   return 1;
 }
 
+// FUNCTION: IMPERIALISM 0x005c29b0
+void TCivUnit::TickCivWorkOrderCountdownAndComplete() {
+  --remainingTurns24;
+  if (remainingTurns24 < 1) {
+    g_pSelectedCivilianOrderState->ApplyCompletedCivWorkOrderToMapState(this);
+    unitOrder = kUnitOrderIdle;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x005c29f0
 void TCivUnit::SetOrders(UnitOrder order, int payload) {
   const short kRemainingTurnsByMode[14] = {0, 0, 0, 0, 0, 1, 3, 3, 1, 0, 3, 3, 4, 1};

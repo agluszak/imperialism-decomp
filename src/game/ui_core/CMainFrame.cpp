@@ -207,6 +207,14 @@ void CMainFrame::OnPaletteChanged(CWnd* pFocusWnd) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00485150
+CDibPal* CMainFrame::ReplacePaletteAndRealize(CDibPal* palette) {
+  CDibPal* previousPalette = field_BC;
+  field_BC = palette;
+  OnQueryNewPalette();
+  return previousPalette;
+}
+
 // FUNCTION: IMPERIALISM 0x00485180
 void CMainFrame::OnCommand8009() {
   field_BC = g_pModuleLibraryCacheState->EnsureDefaultDibPalette();

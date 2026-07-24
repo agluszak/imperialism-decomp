@@ -10,7 +10,7 @@ struct Province;
 
 // VTABLE: IMPERIALISM 0x006598f8
 class TMapMaker : public TObject {
-  DECLARE_DYNAMIC(TMapMaker)
+  DECLARE_DYNCREATE(TMapMaker)
 public:
   TMapMaker();
   virtual ~TMapMaker() override;

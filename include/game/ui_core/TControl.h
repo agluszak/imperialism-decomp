@@ -82,6 +82,11 @@ public:
   TextStyle textStyle78; // 0x78-0x81
 
   TControl();
+  // Inline base-copy shape used by the concrete text/picture copy constructors: the
+  // retail bodies call TView's copy constructor and then copy only these live fields.
+  TControl(const TControl& source)
+      : TView(source), eventNumber60(source.eventNumber60), controlState64(source.controlState64),
+        contentInsets68(source.contentInsets68), textStyle78(source.textStyle78) {}
   DECLARE_DYNCREATE(TControl)
   // Slot 0x08 override (0x00435760): controls cannot be cloned (no engineer-dialog
   // state); assert via the McAppUI invalidation thunk and return null.

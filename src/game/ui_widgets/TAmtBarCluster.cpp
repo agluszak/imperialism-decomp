@@ -60,11 +60,11 @@ void TAmtBarCluster::DoPostCreate(int styleSeed) {
 void TAmtBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   int normalizedCommand = commandId - 100;
   if (normalizedCommand == 0) {
-    TAmtBar* moveControl = static_cast<TAmtBar*>(ResolveControlByTag(kControlTagMove));
+    TNumberText* moveControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagMove));
     if (moveControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineMoveAdjustMove);
     }
-    short moveValue = moveControl->QueryValue();
+    short moveValue = moveControl->UpdateControlCachedIntFromWindowText();
 
     TAmtBar* availableControl = static_cast<TAmtBar*>(ResolveControlByTag(kControlTagAvai));
     if (availableControl == 0) {
@@ -75,11 +75,11 @@ void TAmtBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
       SetMoveAmount(static_cast<short>(moveValue + 1));
     }
   } else if (normalizedCommand == 1) {
-    TAmtBar* moveControl = static_cast<TAmtBar*>(ResolveControlByTag(kControlTagMove));
+    TNumberText* moveControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagMove));
     if (moveControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineMoveAdjustMoveMinus);
     }
-    int moveValue = moveControl->QueryValue();
+    int moveValue = moveControl->UpdateControlCachedIntFromWindowText();
     if (static_cast<short>(moveValue) != 0) {
       SetMoveAmount(static_cast<short>(moveValue - 1));
     }

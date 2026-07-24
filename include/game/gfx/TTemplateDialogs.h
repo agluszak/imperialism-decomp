@@ -197,6 +197,173 @@ protected:
 
 ASSERT_SIZE(T104TemplateDialog, 0xb0);
 
+// Template-0x102 modal dialog (own vtable 0x647050). It adds no state beyond
+// TModalDialogBase and only supplies an empty DDX override plus a trivial
+// OnInitDialog override.
+// VTABLE: IMPERIALISM 0x00647050
+class T102TemplateDialog : public TModalDialogBase {
+public:
+  // FUNCTION: IMPERIALISM 0x00481160
+  ~T102TemplateDialog() override {}
+  T102TemplateDialog(void* initParam); // 0x004810f0
+
+protected:
+  BOOL OnInitDialog() override;                     // 0x00481220 (slot 0xc4)
+  void DoDataExchange(CDataExchange* pDX) override; // 0x004811e0 (vtable index 35)
+  DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x00481200 (vtable index 12)
+};
+
+ASSERT_SIZE(T102TemplateDialog, 0x74);
+
+// Resource-A3/A4 diplomacy dialog leaves. Both extend CDialog with one tail virtual at
+// slot 0xd8; A3's hook is empty, while A4 verifies the file-scope dialog context guard.
+// VTABLE: IMPERIALISM 0x00646b58
+class TA3TemplateDialog : public CDialog {
+public:
+  // FUNCTION: IMPERIALISM 0x0047f300
+  ~TA3TemplateDialog() override {}
+  TA3TemplateDialog(void* initParam); // 0x0047f280
+
+protected:
+  void DoDataExchange(CDataExchange* pDX) override;           // 0x0047f320
+  virtual void VerifyDialogContext(int unusedA, int unusedB); // 0x0047f2b0, slot 0xd8
+  DECLARE_MESSAGE_MAP()                                       // 0x0047f340
+};
+
+ASSERT_SIZE(TA3TemplateDialog, 0x5c);
+
+// VTABLE: IMPERIALISM 0x00646c60
+class TA4TemplateDialog : public CDialog {
+public:
+  // FUNCTION: IMPERIALISM 0x0047f3c0
+  ~TA4TemplateDialog() override {}
+  TA4TemplateDialog(void* initParam); // 0x0047f360
+
+protected:
+  void DoDataExchange(CDataExchange* pDX) override;           // 0x0047f410
+  virtual void VerifyDialogContext(int unusedA, int unusedB); // 0x0047f3e0, slot 0xd8
+  DECLARE_MESSAGE_MAP()                                       // 0x0047f430
+};
+
+ASSERT_SIZE(TA4TemplateDialog, 0x5c);
+
+// Member-less CDialog template leaves. Each class exists to bind a distinct dialog
+// resource and its own message map/vtable; their DoDataExchange overrides are empty.
+// VTABLE: IMPERIALISM 0x00647530
+class TA5TemplateDialog : public CDialog {
+public:
+  // FUNCTION: IMPERIALISM 0x00481650
+  ~TA5TemplateDialog() override {}
+  TA5TemplateDialog(void* initParam); // 0x004815f0
+
+protected:
+  void DoDataExchange(CDataExchange* pDX) override; // 0x00481670
+  DECLARE_MESSAGE_MAP()                             // 0x00481690
+};
+
+ASSERT_SIZE(TA5TemplateDialog, 0x5c);
+
+// VTABLE: IMPERIALISM 0x00647638
+class TA6TemplateDialog : public CDialog {
+public:
+  // FUNCTION: IMPERIALISM 0x00481710
+  ~TA6TemplateDialog() override {}
+  TA6TemplateDialog(void* initParam); // 0x004816b0
+
+protected:
+  void DoDataExchange(CDataExchange* pDX) override; // 0x00481730
+  DECLARE_MESSAGE_MAP()                             // 0x00481750
+};
+
+ASSERT_SIZE(TA6TemplateDialog, 0x5c);
+
+// VTABLE: IMPERIALISM 0x00647848
+class TA8TemplateDialog : public CDialog {
+public:
+  // FUNCTION: IMPERIALISM 0x00481950
+  ~TA8TemplateDialog() override {}
+  TA8TemplateDialog(void* initParam); // 0x004818f0
+
+protected:
+  void DoDataExchange(CDataExchange* pDX) override; // 0x00481970
+  DECLARE_MESSAGE_MAP()                             // 0x00481990
+};
+
+ASSERT_SIZE(TA8TemplateDialog, 0x5c);
+
+// VTABLE: IMPERIALISM 0x00647950
+class TA9TemplateDialog : public CDialog {
+public:
+  // FUNCTION: IMPERIALISM 0x00481a10
+  ~TA9TemplateDialog() override {}
+  TA9TemplateDialog(void* initParam); // 0x004819b0
+
+protected:
+  void DoDataExchange(CDataExchange* pDX) override; // 0x00481a30
+  DECLARE_MESSAGE_MAP()                             // 0x00481a50
+};
+
+ASSERT_SIZE(TA9TemplateDialog, 0x5c);
+
+// VTABLE: IMPERIALISM 0x00647a58
+class TAATemplateDialog : public CDialog {
+public:
+  // FUNCTION: IMPERIALISM 0x00481ad0
+  ~TAATemplateDialog() override {}
+  TAATemplateDialog(void* initParam); // 0x00481a70
+
+protected:
+  void DoDataExchange(CDataExchange* pDX) override; // 0x00481af0
+  DECLARE_MESSAGE_MAP()                             // 0x00481b10
+};
+
+ASSERT_SIZE(TAATemplateDialog, 0x5c);
+
+// VTABLE: IMPERIALISM 0x00647c68
+class TACTemplateDialog : public CDialog {
+public:
+  // FUNCTION: IMPERIALISM 0x00481d60
+  ~TACTemplateDialog() override {}
+  TACTemplateDialog(void* initParam); // 0x00481d00
+
+protected:
+  void DoDataExchange(CDataExchange* pDX) override; // 0x00481d80
+  DECLARE_MESSAGE_MAP()                             // 0x00481da0
+};
+
+ASSERT_SIZE(TACTemplateDialog, 0x5c);
+
+// VTABLE: IMPERIALISM 0x00647e78
+class TAFTemplateDialog : public CDialog {
+public:
+  // FUNCTION: IMPERIALISM 0x00481ff0
+  ~TAFTemplateDialog() override {}
+  TAFTemplateDialog(void* initParam); // 0x00481f90
+
+protected:
+  void DoDataExchange(CDataExchange* pDX) override; // 0x00482010
+  DECLARE_MESSAGE_MAP()                             // 0x00482030
+};
+
+ASSERT_SIZE(TAFTemplateDialog, 0x5c);
+
+// VTABLE: IMPERIALISM 0x00648088
+class TF7TemplateDialog : public CDialog {
+public:
+  // FUNCTION: IMPERIALISM 0x00482400
+  ~TF7TemplateDialog() override {}
+  TF7TemplateDialog(void* initParam); // 0x004823a0
+
+protected:
+  void DoDataExchange(CDataExchange* pDX) override; // 0x00482420
+  afx_msg void OnCommand428();                      // 0x00482460
+  afx_msg void OnCommand3();                        // 0x004824b0
+  afx_msg void OnCommand4();                        // 0x004824e0
+  DECLARE_MESSAGE_MAP()                             // 0x00482440
+};
+
+ASSERT_SIZE(TF7TemplateDialog, 0x5c);
+
 // Sibling "A7" template dialog (template id 0xa7, own vtable 0x647740): a PLAIN CDialog subclass
 // (base 0x5c) with one CString edit field at +0x5c (DDX_Text 0x3fc). Built by
 // InitializeDialogTemplateA7WithSharedText (0x00481770).
@@ -411,6 +578,7 @@ protected:
   BOOL OnInitDialog() override;                     // 0x004821f0 (slot 0xc4)
   void OnOK() override;                             // 0x00482300 (slot 0xcc)
   void DoDataExchange(CDataExchange* pDX) override; // 0x00481540 (vtable index 35)
+  afx_msg void OnDoubleClickedOk();                 // 0x004822e0 (BN_DOUBLECLICKED, IDOK)
   DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x004815d0 (vtable index 12)
 };
 

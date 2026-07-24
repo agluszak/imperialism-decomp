@@ -66,15 +66,18 @@ TMacViewMgr* g_pStrategicMapViewSystem = 0;
 // GLOBAL: IMPERIALISM 0x006a21bc
 TViewMgr* g_pUiRuntimeContext = 0;
 // GLOBAL: IMPERIALISM 0x006a2050
-TBackdropWindow* DAT_006a2050 = 0;
+TBackdropWindow* g_pActiveBackdropWindow = 0;
 // GLOBAL: IMPERIALISM 0x006a2054
-void* DAT_006a2054 = 0;
+char* g_pBackdropWaitCursorGuardToken = 0;
 // GLOBAL: IMPERIALISM 0x006a2148
 TAssetMgr* g_pUiViewManager = 0;
 // GLOBAL: IMPERIALISM 0x006a327c
 TLanguageMgr* g_pLanguageMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a43e0
 TAnimator* g_pUiAnimator = 0;
+
+// GLOBAL: IMPERIALISM 0x006a15cc
+int g_diplomacyDialogAssertGuard_006A15CC = 0;
 
 extern "C" {
 
@@ -216,7 +219,7 @@ char g_szCmdSwitchLangQuit_00694254[] = "L!";
 // GLOBAL: IMPERIALISM 0x006a1348
 class ImperialismApp* g_pImperialismApp = 0;
 // GLOBAL: IMPERIALISM 0x006a1350
-int DAT_006a1350 = 0;
+int g_nStartupAutoResolutionMode = 0;
 // Previous CRT new-handler returned by _set_new_handler at startup (write-only).
 // GLOBAL: IMPERIALISM 0x006a1354
 _PNH g_pfnPreviousNewHandler = 0;
@@ -740,10 +743,9 @@ float g_cachedAiCityActionContextBias[3] = {0.0f, 0.0f, 0.0f};
 // GLOBAL: IMPERIALISM 0x00696178
 short g_anCityBuildingSlotOrder[16] = {12, 13, 7, 10, 14, 15, 9, 6, 11, 2, 3, 8, 0, 1, 4, 5};
 // GLOBAL: IMPERIALISM 0x00696198
-short g_anCityBuildingSlotCoords[32] = {200, 235, 340, 300, 281, 184, 340, 266,
-                                        87,  286, 230, 310, 340, 139, 240, 35,
-                                        50,  220, 50,  107, 50,  35,  340, 139,
-                                        82,  35,  300, 35,  340, 44,  150, 95};
+short g_anCityBuildingSlotCoords[32] = {200, 235, 340, 300, 281, 184, 340, 266, 87,  286, 230,
+                                        310, 340, 139, 240, 35,  50,  220, 50,  107, 50,  35,
+                                        340, 139, 82,  35,  300, 35,  340, 44,  150, 95};
 // GLOBAL: IMPERIALISM 0x006961d8
 short g_nCityBuildingSlotYOffsetIndex = 1;
 // GLOBAL: IMPERIALISM 0x006961dc
@@ -855,6 +857,10 @@ char g_szMcWindowSourcePath_006950D8[] = "D:\\Ambit\\McWindow.cpp";
 // GLOBAL: IMPERIALISM 0x006a1c74
 int g_nMcWindowStateMsgAssertGate_006A1C74 = 0;
 
+// Source-path string for the DiplomacyDialogs.cpp resource-A4 dialog assert.
+// GLOBAL: IMPERIALISM 0x00694cc0
+extern "C" const char g_szDiplomacyDialogsSourcePath_00694CC0[] = "D:\\Ambit\\DiplomacyDialogs.cpp";
+
 // Source-path string for CIncludeView's IncludeView.cpp one-shot debug asserts.
 // GLOBAL: IMPERIALISM 0x00694d10
 char g_szIncludeViewSourcePath_00694D10[] = "D:\\Ambit\\IncludeView.cpp";
@@ -947,6 +953,8 @@ float g_TileHeatmapNeighborDiffusionFactor = 0.2f;
 double g_MapPreviewScaleX6A3410;
 // GLOBAL: IMPERIALISM 0x006a33d0
 double g_MapPreviewScaleY6A33D0;
+// GLOBAL: IMPERIALISM 0x006a3448
+short g_MapPreviewVerticalOffset6A3448;
 // GLOBAL: IMPERIALISM 0x006a3360
 extern double g_mapCellRowScale_006a3360;
 // GLOBAL: IMPERIALISM 0x006a3388
@@ -1434,7 +1442,7 @@ char g_szPlusPrefix_00698494[] = "+";
 char g_szListConjunction_00698498[] = " and ";
 
 // GLOBAL: IMPERIALISM 0x0066fad0
-double DAT_0066fad0 = 0.092;
+double g_dMasterVolumeExponentScale = 0.092;
 
 } // extern "C"
 
@@ -2159,7 +2167,8 @@ double g_dTacticalCursorRetreatRatioThreshold_00669538 = 0.8;
 // can't resolve the bare address to a clean symbol here). This named-global form is the
 // only one of the three giving a 100% exact match on all four affected functions
 // (TTacticalUnit/TArmyTacUnit/TNavyTacUnit x2); the residual is isolated to
-// just datacmp-gate, which needs a maintainer-approved baseline update to clear.
+// just datacmp-gate, which records this value-equivalent section-placement residue
+// as WARN with the initialized_zero_vs_bss_zero_same_runtime_value note.
 // GLOBAL: IMPERIALISM 0x00669ec0
 float g_fTacticalRetreatQualityWeightDefault_00669EC0 = 0.0f;
 // GLOBAL: IMPERIALISM 0x00669ec8

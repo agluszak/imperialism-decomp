@@ -110,3 +110,29 @@ void TShipFractionCluster::SetAvailableAndSelectedShipCounts(int availableCount,
     shipCountButton90->SetValue(selectedShipCount94, 1);
   }
 }
+
+// FUNCTION: IMPERIALISM 0x005690d0
+void TShipFractionCluster::IncrementSelectedShipCount(unsigned char displayOnly) {
+  if (selectedShipCount94 < availableShipCount88) {
+    selectedShipCount94 = static_cast<short>(selectedShipCount94 + 1);
+    shipCountButton90->SetValue(selectedShipCount94, 1);
+    if (displayOnly == 0) {
+      g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
+                                                            1);
+      mainSelectionView8c->UpdateRoster();
+    }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00569150
+void TShipFractionCluster::DecrementSelectedShipCount(unsigned char displayOnly) {
+  if (selectedShipCount94 > 0) {
+    selectedShipCount94 = static_cast<short>(selectedShipCount94 - 1);
+    shipCountButton90->SetValue(selectedShipCount94, 1);
+    if (displayOnly == 0) {
+      g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
+                                                            0);
+      mainSelectionView8c->UpdateRoster();
+    }
+  }
+}

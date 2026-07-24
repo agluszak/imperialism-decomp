@@ -47,6 +47,8 @@ public:
   // stores. It exists only because the chain-insert ctor below suppresses the
   // implicit one; no original function address corresponds to it (never emitted
   // out of line).
+  // NOOP: verified empty in original 0x00553c25 (the new-expression proceeds
+  // directly from allocation cleanup to the caller's field stores, with no ctor call)
   TMapOrderChildLinkNode() {}
   // Inline head-insert constructor: chains the new cell in front of `nextNode`
   // (which may be null). CreateLinkedOrderNode's 0x552650 body is exactly the
