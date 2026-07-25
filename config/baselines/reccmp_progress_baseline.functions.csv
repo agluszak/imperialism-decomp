@@ -2150,7 +2150,7 @@ address|matching|name
 0x4c72e0|1.0|TWarehouseView::`scalar deleting destructor'
 0x4c7310|1.0|TWarehouseView::~TWarehouseView
 0x4c7330|1.0|TWarehouseView::DoMouseCommand
-0x4c7360|0.12535612535612536|TWarehouseView::DoStartup
+0x4c7360|0.6877133105802048|TWarehouseView::DoStartup
 0x4c7d90|0.24836601307189543|TWarehouseView::UpdateFields
 0x4c7f10|0.5818181818181818|TUnitsView::CreateObject
 0x4c7fb0|1.0|TUnitsView::GetRuntimeClass
@@ -7094,7 +7094,7 @@ address|matching|name
 0x608ba8|0.9441964285714286|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|1.0|CWnd::OnNotify
+0x6091d9|0.9787234042553191|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent
