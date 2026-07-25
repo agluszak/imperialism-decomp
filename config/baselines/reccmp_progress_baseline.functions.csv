@@ -973,7 +973,7 @@ address|matching|name
 0x48c1c0|1.0|TView::HandleHelp
 0x48c1e0|1.0|TView::GetDrawableRegion
 0x48c220|0.4166666666666667|TView::SetHoverHelpText
-0x48c250|0.6962025316455697|TView::DoSetCursor
+0x48c250|0.8292682926829268|TView::DoSetCursor
 0x48c380|0.6608695652173913|TView::ApplyBounds
 0x48c450|0.6918918918918919|TView::HandleMouseDown
 0x48c590|0.6185567010309279|TView::HandleMouseUp
