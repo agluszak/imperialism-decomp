@@ -5724,7 +5724,7 @@ address|matching|name
 0x5b2a30|1.0|TMinorTradeBidsDialog::`scalar deleting destructor'
 0x5b2a60|1.0|TMinorTradeBidsDialog::~TMinorTradeBidsDialog
 0x5b2a80|1.0|TMinorTradeBidsDialog::GetRuntimeClass
-0x5b2aa0|0.7949790794979079|TMinorTradeBidsDialog::StuffValues
+0x5b2aa0|0.9554655870445344|TMinorTradeBidsDialog::StuffValues
 0x5b2ca0|0.8571428571428571|TRelationshipDialog::CreateObject
 0x5b2d30|1.0|TRelationshipDialog::`scalar deleting destructor'
 0x5b2d60|1.0|TRelationshipDialog::~TRelationshipDialog
