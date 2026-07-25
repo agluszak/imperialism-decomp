@@ -728,12 +728,12 @@ address|name|symbol|size|type|prototype|provenance
 488b40|TStream::ReadBytes||3|function|void __thiscall ReadBytes(void * buffer, int sizeBytes)|
 488b60|TStream::ReadInteger||19|function|int __thiscall ReadInteger()|
 488b90|TStream::streamSlot44||19|function|void __thiscall streamSlot44()|
-488bc0|TStream::streamSlot48||21|function|void TStream::streamSlot48(void* out)|
+488bc0|TStream::ReadCharacter||21|function|void TStream::ReadCharacter(short* outCharacter)|
 488bf0|TStream::ReadShort||20|function|short __thiscall ReadShort()|
 488c20|TStream::ReadDwordFromStreamViaVtableSlot3C||19|function|undefined ReadDwordFromStreamViaVtableSlot3C()|
 488c50|TStream::streamSlot70||59|function|void TStream::streamSlot70(CString* dest, int maxLen)|
 488ca0|TStream::streamSlot6c||36|function|void __thiscall streamSlot6c()|
-488ce0|TStream::streamSlot54||38|function|void TStream::streamSlot54(void* out)|
+488ce0|TStream::ReadVPoint||38|function|void TStream::ReadVPoint(VPoint* outPoint)|
 488d20|TStream::streamSlot58||15|function|void TStream::streamSlot58(void* out)|
 488d40|TStream::streamSlot5c||15|function|void TStream::streamSlot5c(void* out)|
 488d60|TStream::streamSlot60||15|function|void TStream::streamSlot60(void* out)|
@@ -746,7 +746,7 @@ address|name|symbol|size|type|prototype|provenance
 488e70|TStream::WriteBytesSlot78||3|function|void TStream::WriteBytesSlot78(void*, int)|
 488e90|TStream::streamSlot7c||15|function|void TStream::streamSlot7c(unsigned char value)|
 488eb0|TStream::streamSlot80||15|function|void TStream::streamSlot80(unsigned char value)|
-488ed0|TStream::streamSlot84||15|function|void __thiscall streamSlot84()|
+488ed0|TStream::WriteCharacter||15|function|void TStream::WriteCharacter(short value)|
 488ef0|TStream::WriteCountSlot88||15|function|void TStream::WriteCountSlot88(int count)|
 488f10|TStream::WriteDwordToStreamViaVtableSlot78||15|function|undefined WriteDwordToStreamViaVtableSlot78()|
 488f30|TStream::streamSlot90||15|function|void TStream::streamSlot90(double value)|
@@ -756,7 +756,7 @@ address|name|symbol|size|type|prototype|provenance
 488fb0|TStream::streamSlotA0||15|function|void TStream::streamSlotA0(void* data)|
 488fd0|TStream::streamSlotA4||15|function|void TStream::streamSlotA4(int value)|
 488ff0|TStream::WritePaddingToEvenByteBoundary||35|function|void __thiscall WritePaddingToEvenByteBoundary()|
-489030|TStream::streamSlotAc||42|function|void TStream::streamSlotAc(CString* sharedString)|
+489030|TStream::WriteSharedString||42|function|void TStream::WriteSharedString(CString* sharedString)|
 489070|TFileStream::CreateTFileStreamInstance||49|function|undefined CreateTFileStreamInstance()|
 4890c0|TFileStream::CreateObject|?CreateObject@TFileStream@@SGPAVCObject@@XZ|1|function|undefined CreateObject()|rtti
 4890f0|TFileStream::GetRuntimeClass||6|function|undefined GetTFileStreamClassNamePointer()|rtti
@@ -768,7 +768,7 @@ address|name|symbol|size|type|prototype|provenance
 4891c0|TFileStream::SetPosition||24|function|void __thiscall SetPosition(int position)|
 4891f0|TFileStream::SetLength||22|function|void __thiscall SetLength(int length)|
 489220|TFileStream::ReadBytes||73|function|void __thiscall ReadBytes(void * buffer, int sizeBytes)|
-489290|TFileStream::WriteBytesSlot78||73|function|void TFileStream::WriteBytesSlot78(void* source, int byteCount)|
+489290|TFileStream::WriteBytes||73|function|void TFileStream::WriteBytes(const void* source, int byteCount)|
 489300|TFileStream::ReadByte||24|function|char TFileStream::ReadByte(void* outObject)|
 489330|TFileStream::WriteObjectSlotB4||19|function|void TFileStream::WriteObjectSlotB4(void* objectRef, int flag)|
 489360|TFileStream::streamSlot70||20|function|void TFileStream::streamSlot70(CString* dest, int maxLen)|
@@ -783,7 +783,7 @@ address|name|symbol|size|type|prototype|provenance
 4894d0|TCountingStream::SetPosition||19|function|void __thiscall SetPosition(int position)|
 489500|TCountingStream::GetLength||4|function|int __thiscall GetLength()|
 489520|TCountingStream::SetLength||20|function|void __thiscall SetLength(int length)|
-489550|THandleStream::CreateTHandleStreamInstance||25|function|undefined CreateTHandleStreamInstance()|
+489550|TCountingStream::WriteBytes||25|function|void TCountingStream::WriteBytes(const void* data, int length)|
 489580|THandleStream::CreateObject|?CreateObject@THandleStream@@SGPAVCObject@@XZ|1|function|undefined CreateObject()|rtti
 4895c0|THandleStream::GetRuntimeClass||6|function|undefined GetTHandleStreamClassNamePointer()|rtti
 4895e0|THandleStream::ConstructTHandleStreamBaseState||30|function|undefined ConstructTHandleStreamBaseState()|
@@ -797,7 +797,7 @@ address|name|symbol|size|type|prototype|provenance
 489740|THandleStream::SetPosition||10|function|void __thiscall SetPosition(int position)|
 489760|THandleStream::SetLength||37|function|void __thiscall SetLength(int length)|
 4897a0|THandleStream::ReadBytes||74|function|void __thiscall ReadBytes(void * buffer, int sizeBytes)|
-489810|THandleStream::WriteBytesSlot78||113|function|void THandleStream::WriteBytesSlot78(void* data, int length)|
+489810|THandleStream::WriteBytes||113|function|void THandleStream::WriteBytes(const void* data, int length)|
 489980|TStream::ReadByte||5|function|char TStream::ReadByte(void*)|
 4899a0|TStream::WriteObjectSlotB4||3|function|void TStream::WriteObjectSlotB4(void*, int)|
 489a20|`dynamic initializer for 'g_scaledShortConst_6A1AB8''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A1AB8''(void)|library

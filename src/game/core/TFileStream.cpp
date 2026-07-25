@@ -73,7 +73,7 @@ void TFileStream::ReadBytes(void* destination, int requestedCount) {
 }
 
 // FUNCTION: IMPERIALISM 0x00489290
-void TFileStream::WriteBytes(void* source, int byteCount) {
+void TFileStream::WriteBytes(const void* source, int byteCount) {
   if (this->backingArchiveOrStream == 0) {
     FailNilPointer(0x410);
   }

@@ -34,7 +34,7 @@ public:
   void SetLength(int length) override;
   void ReadBytes(void* buffer, int sizeBytes) override;
   void ReadSharedString(CString* dest, int maxLen) override;
-  void WriteBytes(void* data, int length) override;
+  void WriteBytes(const void* data, int length) override;
 
   // 0x00489220 / 0x00489290: forward raw byte read/write to the backing
   // CArchive, asserting the backing pointer is non-null first.

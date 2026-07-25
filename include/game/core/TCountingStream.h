@@ -27,6 +27,6 @@ public:
   int GetLength() override;
   void SetLength(int length) override;
   // ReadBytes (slot 0x3c) is inherited unchanged from TStream.
-  void WriteBytes(void* data, int length) override;
+  void WriteBytes(const void* data, int length) override;
 };
 ASSERT_SIZE(TCountingStream, 0xc);
