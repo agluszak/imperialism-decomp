@@ -13,10 +13,9 @@
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 
-// Fixed format strings in the binary's read-only data (referenced by address so the
-// compiled code passes the exact original pointer, matching the codebase's kAddr idiom).
-static const unsigned int kGreatPowerLabelFmt = 0x00694e70;
-static const unsigned int kMinorNationLabelFmt = 0x00694e54;
+// Fixed format strings in the binary's read-only data.
+static const char kGreatPowerLabelFormat[] = "Great Power %2d, %s";
+static const char kMinorNationLabelFormat[] = "Minor Nation %2d, %s";
 
 // SYNTHETIC: IMPERIALISM 0x00413670
 // T64TemplateDialog::`scalar deleting destructor'
@@ -838,8 +837,7 @@ void TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void) {
       CString label;
       CString name;
       (*country)->FormatOverlayTerrainLabelText(&name);
-      label.Format(reinterpret_cast<const char*>(kGreatPowerLabelFmt), idx,
-                   static_cast<const char*>(name));
+      label.Format(kGreatPowerLabelFormat, idx, static_cast<const char*>(name));
       ::SendMessageA(hList, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(label)));
       ::SendMessageA(hList, LB_SETITEMDATA, idx, idx);
       ++idx;
@@ -850,8 +848,7 @@ void TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void) {
         CString label;
         CString name;
         (*country)->FormatOverlayTerrainLabelText(&name);
-        label.Format(reinterpret_cast<const char*>(kMinorNationLabelFmt), idx,
-                     static_cast<const char*>(name));
+        label.Format(kMinorNationLabelFormat, idx, static_cast<const char*>(name));
         ::SendMessageA(hList, LB_ADDSTRING, 0,
                        reinterpret_cast<LPARAM>(static_cast<LPCSTR>(label)));
         ::SendMessageA(hList, LB_SETITEMDATA, idx, idx);
