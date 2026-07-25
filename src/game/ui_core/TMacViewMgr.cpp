@@ -26,6 +26,7 @@
 #include "game/nation/TGreatPower.h"
 #include "game/ui_widgets/TMyStaticText.h"
 #include "game/ui_widgets/TTradeCluster.h"
+#include "game/ui_widgets/TTransportPicture.h"
 #include "game/ui_screens/TRightLeftView.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TStaticText.h"
@@ -56,12 +57,8 @@ namespace {
 const unsigned int kAddrStrategicMapOverlaySourceRowByIconId = 0x00696d20;
 const unsigned int kAddrDecimalFormat = 0x0069430c;
 
-static void SetPanelShortField(TControl* panel, int offset, short value) {
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(panel) + offset) = value;
-}
-
-static TControl* ResolveTaggedPanelOrFail(TView* hostView, unsigned int tag) {
-  TControl* panel = static_cast<TControl*>(hostView->ResolveControlByTag(tag));
+static TTransportPicture* ResolveTaggedPanelOrFail(TView* hostView, unsigned int tag) {
+  TTransportPicture* panel = static_cast<TTransportPicture*>(hostView->ResolveControlByTag(tag));
   if (panel == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -888,7 +885,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   CString scratch38;
 
   if (nationSlot == static_cast<word>(-1)) {
-    TControl* panel = ResolveTaggedPanelOrFail(hostView, kControlTagTota);
+    TTransportPicture* panel = ResolveTaggedPanelOrFail(hostView, kControlTagTota);
     g_pSimMgr->GetString(0x2735, 0, &scratch38);
     panel->SetHoverHelpText(scratch38);
 
@@ -911,9 +908,9 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
     textEntry->SetHoverHelpText(scratch38);
 
     short needCap = nation != 0 ? nation->needCapA6 : 0;
-    SetPanelShortField(panel, 0x94, nation != 0 ? nation->needsOverCapFlag : 0);
-    SetPanelShortField(panel, 0x96, needCap);
-    SetPanelShortField(panel, 0x98, static_cast<short>(-1));
+    panel->splitValue94 = nation != 0 ? nation->needsOverCapFlag : 0;
+    panel->splitValue96 = needCap;
+    panel->splitLimit98 = static_cast<short>(-1);
     return;
   }
 
@@ -931,7 +928,8 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   CString displayText;
 
   int summaryTag = GetTradeSummarySelectionTagByIndex(static_cast<short>(nationSlot));
-  TControl* panel = ResolveTaggedPanelOrFail(hostView, static_cast<unsigned int>(summaryTag));
+  TTransportPicture* panel =
+      ResolveTaggedPanelOrFail(hostView, static_cast<unsigned int>(summaryTag));
 
   short needTarget = 0;
   short needCurrent = 0;
@@ -1175,11 +1173,11 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   }
 
   if (showArrowWidgets == 0) {
-    SetPanelShortField(panel, 0x98, static_cast<short>(-1));
+    panel->splitLimit98 = static_cast<short>(-1);
   } else if (deficitCount < 1) {
-    SetPanelShortField(panel, 0x98, 0);
+    panel->splitLimit98 = 0;
   } else {
-    SetPanelShortField(panel, 0x98, deficitCount);
+    panel->splitLimit98 = deficitCount;
   }
 
   panel->SetHoverHelpText(displayText);
@@ -1244,9 +1242,9 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
     valueEntry->controlTag = kControlTagValu;
   }
 
-  SetPanelShortField(panel, 0x92, static_cast<short>(nationSlot));
-  SetPanelShortField(panel, 0x94, needTarget);
-  SetPanelShortField(panel, 0x96, needCurrent);
+  panel->resourceMetricSlot92 = static_cast<short>(nationSlot);
+  panel->splitValue94 = needTarget;
+  panel->splitValue96 = needCurrent;
 }
 
 // FUNCTION: IMPERIALISM 0x0050d310
