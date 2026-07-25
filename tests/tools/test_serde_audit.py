@@ -191,6 +191,25 @@ class BinaryExtractionTest(unittest.TestCase):
         ops, _ = binary_stream_ops(0x1000)
         self.assertEqual([(op["dir"], op["bytes"]) for op in ops], [("read", 1)])
 
+    def test_spilled_slot_pointer_reloaded_into_a_register_still_resolves(self):
+        # TMultiplayerMgr::ReadFrom parks the ReadBytes slot and reloads it into EBP once
+        # the string reads have used EBP for a different slot.
+        self.patch_listing(
+            self.PROLOGUE
+            + [
+                "00001006  MOV EBX,dword ptr [EAX + 0x3c]",
+                "0000100a  SUB ESP,0x4",
+                "0000100d  MOV dword ptr [ESP + 0x0],EBX",
+                "00001011  XOR EBX,EBX",
+                "00001013  MOV EBP,dword ptr [ESP + 0x0]",
+                "00001017  PUSH 0x4",
+                "00001019  PUSH ECX",
+                "0000101a  CALL EBP",
+            ]
+        )
+        ops, _ = binary_stream_ops(0x1000)
+        self.assertEqual([(op["dir"], op["bytes"]) for op in ops], [("read", 4)])
+
     def test_dispatch_on_another_objects_vtable_is_not_a_stream_call(self):
         # this->vtable[0x84] collides with TStream's WriteCharacter; only a slot loaded
         # from the *stream's* vtable may count. Regression: TNavyMission::ReadFrom.

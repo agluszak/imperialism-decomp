@@ -317,6 +317,15 @@ def _scan(address: int, strict: bool) -> tuple[list[dict], list[str]]:
                 vtable_regs.add(stack_load.group(1))
                 stream_regs.discard(stack_load.group(1))
                 continue
+            if key in stack_slot:
+                # A spilled slot pointer reloaded into a register, then called through it
+                # (TMultiplayerMgr::ReadFrom parks ReadBytes and reloads it into EBP after
+                # the string reads have used EBP for a different slot).
+                reg_slot[stack_load.group(1)] = stack_slot[key]
+                stream_regs.discard(stack_load.group(1))
+                vtable_regs.discard(stack_load.group(1))
+                continue
+            reg_slot.pop(stack_load.group(1), None)
 
         deref = DEREF_REG.match(line)
         if deref:
