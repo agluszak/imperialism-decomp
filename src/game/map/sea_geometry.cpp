@@ -204,11 +204,13 @@ void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b
 
 // FUNCTION: IMPERIALISM 0x0052d030
 double Seapoint::WrappedDeltaMetric(const Seapoint* other) const {
-  int rowDelta = coord00 / 0xd8 - other->coord00 / 0xd8;
+  int thisCoordinate = coord00;
+  int otherCoordinate = other->coord00;
+  int rowDelta = thisCoordinate / 0xd8 - otherCoordinate / 0xd8;
   if (rowDelta < 0) {
     rowDelta = -rowDelta;
   }
-  int colDelta = ((coord00 % 0xd8 - other->coord00 % 0xd8) + 0xd8) % 0xd8;
+  int colDelta = ((thisCoordinate % 0xd8 - otherCoordinate % 0xd8) + 0xd8) % 0xd8;
   if (0x6c < colDelta) {
     colDelta = 0xd7 - colDelta;
   }

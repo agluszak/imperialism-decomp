@@ -5,7 +5,7 @@ Physical offsets come from the real MSVC500 layout oracle. Clone ownership comes
 from the source inheritance graph and the listed Windows clone bodies. This report
 does not treat MFC internals as game source and does not implement CString itself.
 
-- Direct CString-bearing records: 30
+- Direct CString-bearing records: 29
 - TObject-derived records reviewed for clone behavior: 19
 - Proven safe raw CString boundaries: 2
 - Unreviewed raw spans crossing CString state: 0

@@ -3067,7 +3067,7 @@ address|name|symbol|size|type|prototype|provenance
 50e620|TMapMgr::ReadFrom||293|function|undefined WrapperFor_HandleCityDialogNoOpSlot18_At0050e620(int * param_1)|
 50e7a0|TMapMgr::WriteTo||200|function|undefined WrapperFor_HandleCityDialogNoOpSlot14_At0050e7a0(int * param_1)|
 50e8b0|TMapMgr::AllocateAndResetTerrainAndCityScoreTables||747|function|void TMapMgr::AllocateAndResetTerrainAndCityScoreTables(void)|
-50ec60|NationStateRecordA8::NationStateRecordA8||18|function|undefined InitializeSharedStringRefAndReturnThis()|
+50ec60|Province::Province||18|function|Province* __thiscall Province::Province(void)|construction+shared_city_record_layout
 50ec90|TMapMgr::BuildOrLoadGlobalMapStateForSession||874|function|char __thiscall BuildOrLoadGlobalMapStateForSession(const char * mapStreamName, char * tuningOverride)|
 50f200|TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream||337|function|undefined LoadPoliticalMapRegionSubtypeTableFromResourceStream()|
 50f3c0|VerifyMapDataAndWriteReport||434|function|void __fastcall VerifyMapDataAndWriteReport(int pMapDataContext)|
@@ -3262,7 +3262,7 @@ address|name|symbol|size|type|prototype|provenance
 51e1a0|TMapDialog::ResetAllTileMarkersToSentinel||51|function|undefined OrphanCallChain_C1_I20_0051e1a0(void)|
 51e1f0|TMapDialog::ReleaseTileMarkerForTile||77|function|undefined OrphanLeaf_NoCall_Ins21_0051e1f0(void)|
 51e260|TMapDialog::Draw||1780|function|undefined RenderMapInteractionPreviewSlotsAndTransientSprites()|
-51eb40|TMapDialog::RenderStrategicMapTileCell||5443|function|undefined RenderStrategicMapTileCell()|
+51eb40|TMapDialog::DrawOneTile||5443|function|void __thiscall TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX)|mac_oracle+windows_listing
 520670|TMapDialog::DrawBorder||527|function|void __thiscall DrawBorder(short relationLevel, int originX, int originY, int nationA, int nationB)|listing
 520970|TMapDialog::DrawMapDialogGuidePatternSetA_00520970||214|function|undefined DrawMapDialogGuidePatternSetA_00520970()|
 520a90|TMapDialog::DrawMapDialogGuidePatternSetB_00520a90||303|function|undefined DrawMapDialogGuidePatternSetB_00520a90()|
@@ -3281,8 +3281,8 @@ address|name|symbol|size|type|prototype|provenance
 522c10|TMapDialog::DrawWrappedMapRouteSegment||171|function|void __thiscall DrawWrappedMapRouteSegment(short col1, int row1, short col2, int row2)|listing
 522cf0|TMapDialog::DrawHexNeighborConnectionMask||692|function|undefined DrawHexNeighborConnectionMask()|
 523060|TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor||201|function|void __thiscall DrawGeneratedMapRouteSegmentsAndResetFillColor(void)|listing
-523170|TMapDialog::RenderMapTileAtScreenPositionUsingCache||948|function|void __thiscall RenderMapTileAtScreenPositionUsingCache(short tileIndex, short screenX, short screenY)|listing
-523640|TMapDialog::OrphanTiny_ReturnZero_0048a730||1044|function|undefined RenderMapOrderEntryTilePreview()|
+523170|TMapDialog::DrawTile||948|function|void __thiscall TMapDialog::DrawTile(short tileIndex, short screenX, short screenY)|mac_oracle+windows_listing
+523640|TMapDialog::RenderMapOrderEntryTilePreview||1044|function|void __thiscall TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX, int projectedY, int flag, short tileIndex)|windows_listing; Mac oracle identifies the shared slot as DrawUnit but a sibling override is actively claimed
 523b70|TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge||910|function|void __thiscall RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect, int flag)|listing
 523ff0|TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner||351|function|void __thiscall RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect, unsigned char altOverlay)|listing
 5241b0|TMapDialog::CopyTerrainTransitionMaskDirection2||251|function|void __thiscall CopyTerrainTransitionMaskDirection2(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
@@ -3297,7 +3297,7 @@ address|name|symbol|size|type|prototype|provenance
 5250a0|TMapDialog::CopyCoastCornerMaskBetweenDirections5And0||439|function|void __thiscall CopyCoastCornerMaskBetweenDirections5And0(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
 5252d0|TMapDialog::CopyCoastCornerMaskBetweenDirections4And5||362|function|void __thiscall CopyCoastCornerMaskBetweenDirections4And5(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
 5254a0|TMapDialog::CopyCoastCornerMaskBetweenDirections3And4||354|function|void __thiscall CopyCoastCornerMaskBetweenDirections3And4(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|listing
-525670|TMapDialog::Copy64x64TileBlockWithStrideAdjustment||131|function|undefined Copy64x64TileBlockWithStrideAdjustment()|
+525670|TMapDialog::NewCopy64||131|function|void __thiscall TMapDialog::NewCopy64(unsigned char* src, unsigned char* dest, short srcStride, short destStride)|mac_oracle+windows_listing
 525730|TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale||36|function|void TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex, const CPoint* viewportOrigin, short* outVerticalOffset, short* outHorizontalOffset, int projectionScale)|
 5258c0|`dynamic initializer for 'g_scaledShortConst_6A38F4''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A38F4''(void)|library
 525910|TMapMaker::CreateObject|?CreateObject@TMapMaker@@SGPAVCObject@@XZ|34|function|undefined CreateObject()|rtti
@@ -3908,7 +3908,7 @@ address|name|symbol|size|type|prototype|provenance
 54aa10|CreateAndSendTurnEvent0C_Text256AndTwoFlags||206|function|undefined CreateAndSendTurnEvent0C_Text256AndTwoFlags()|
 54ab20|DispatchTileRedrawInvalidateEvent||149|function|void __cdecl DispatchTileRedrawInvalidateEvent(short nTileIndex)|
 54abf0|DispatchCityRedrawInvalidateEvent||508|function|void __cdecl DispatchCityRedrawInvalidateEvent(short nCityId)|
-54ae90|NationStateRecordA8::operator=||261|function|undefined CopyA8RecordWithSharedStringAtA4()|
+54ae90|Province::operator=||261|function|Province& __thiscall Province::operator=(const Province& source)|shared_city_record_layout+windows_listing
 54aff0|TPoseMessageDialog::DoIt||16|function|void __thiscall DoIt(void)|
 54b010|TPoseMessageDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 54b040|DestructPoseMessageDialogTurnEventPacket||7|function|undefined DestructPoseMessageDialogTurnEventPacket()|

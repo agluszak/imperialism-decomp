@@ -17,32 +17,6 @@ ImperialismCommandLineInfo|68|m_bClearRegistrySettings34|int|other|52|4|no|96bb2
 ImperialismCommandLineInfo|68|m_strMainWindowTitle38|CString|embedded|56|4|yes|96bb27e5ea7e84dc|include/game/ImperialismCommandLineInfo.h
 ImperialismCommandLineInfo|68|m_bForceAutoResOn3c|int|other|60|4|no|96bb27e5ea7e84dc|include/game/ImperialismCommandLineInfo.h
 ImperialismCommandLineInfo|68|m_bForceAutoResOff40|int|other|64|4|no|96bb27e5ea7e84dc|include/game/ImperialismCommandLineInfo.h
-NationStateRecordA8|168|ownerNationCode00|unsigned char|other|0|1|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|formerOwnerNationCode01|unsigned char|other|1|1|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|developmentStage|unsigned char|other|2|1|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|fortLevel03|unsigned char|other|3|1|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|cityTileIndex04|short|other|4|2|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|lastTurnTick|short|other|6|2|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|adjacentRegionCount08|unsigned char|other|8|1|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|pad09|unsigned char|other|9|1|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|adjacentRegionIds0A|short[12]|other|10|24|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|adjacentRegionAnchorTiles22|short[12]|other|34|24|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|linkedRegionCount|unsigned char|other|58|1|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|field3B|unsigned char|other|59|1|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|field3C|unsigned char|other|60|1|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|pad3D|unsigned char|other|61|1|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|secondaryNeighborTileIndex3e|short|other|62|2|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|primaryNeighborTileIndex40|short|other|64|2|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|linkedRegionIds42|short[32]|other|66|64|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|resourceDevelopmentCounts82|short[10]|other|130|20|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|pad96|short|other|150|2|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|reservedUnitChainSlot98|int|other|152|4|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|reservedCityScoreSlot9C|int|other|156|4|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|navyOrderReachableA0|unsigned char|other|160|1|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|exploredByNationMaskA1|unsigned char|other|161|1|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|resourcePresenceMaskA2|unsigned char|other|162|1|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|regionClassA3|unsigned char|other|163|1|no|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
-NationStateRecordA8|168|cityNameA4|CString|embedded|164|4|yes|b9447bd091d02398|include/game/net/TMultiplayerMgr.h
 Province|168|ownerNationCode00|signed char|other|0|1|no|052a95d7098ec4a7|include/game/map/TMapMgr.h
 Province|168|formerOwnerNationCode01|signed char|other|1|1|no|052a95d7098ec4a7|include/game/map/TMapMgr.h
 Province|168|developmentStage|signed char|other|2|1|no|052a95d7098ec4a7|include/game/map/TMapMgr.h
