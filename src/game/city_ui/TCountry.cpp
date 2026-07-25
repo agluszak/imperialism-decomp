@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include "game/core/stream_byteswap.h"
 
 #include "game/city_ui/TCountry.h"
 
@@ -46,15 +47,6 @@ static __inline bool IsRecruitQuarterTickGate(short tickRaw) {
   mod4 ^= sign;
   mod4 -= sign;
   return static_cast<short>(mod4) == 2;
-}
-
-static void SwapAdjacentBytesInShortArray(short* entries, int pairCount) {
-  for (int i = 0; i < pairCount; ++i) {
-    unsigned char* bytes = reinterpret_cast<unsigned char*>(&entries[i]);
-    unsigned char tmp = bytes[0];
-    bytes[0] = bytes[1];
-    bytes[1] = tmp;
-  }
 }
 
 // SYNTHETIC: IMPERIALISM 0x004d66a0
@@ -159,52 +151,46 @@ void TCountry::ReadFrom(TStream* stream) {
   stream->ReadBytes(&this->nationSlot, 2);
   stream->ReadBytes(&this->encodedNationSlot, 2);
   stream->ReadBytes(this->unitNameOrdinalByType, 0x3c);
-  SwapAdjacentBytesInShortArray(this->unitNameOrdinalByType, 0x1e);
+  SwapShortArrayBytes(this->unitNameOrdinalByType, 0x1e);
 
   stream->ReadBytes(&this->unitNameCounter84, 2);
   stream->ReadBytes(&this->treasuryValue10, 4);
   stream->ReadBytes(&this->homeTileIndex, 4);
   stream->ReadBytes(&this->overlayAnchorTileCache8c, 4);
   stream->ReadBytes(this->needLevelByNation, 0x2e);
-  SwapAdjacentBytesInShortArray(this->needLevelByNation, 0x17);
+  SwapShortArrayBytes(this->needLevelByNation, 0x17);
 
   if (this->militaryUnitList44->GetCount() != 0) {
     this->militaryUnitList44->FreePayloads();
   }
   this->militaryUnitList44->ReadFrom(stream);
 
-  int recruitCount = 0;
-  stream->ReadBytes(&recruitCount, 4);
-  int recruitIndex = 1;
-  if (recruitCount > 0) {
-    do {
-      TMilitaryUnit* militaryOrder = new TMilitaryUnit();
-      if (militaryOrder != nullptr) {
-        // 0x4d6d33: the pushes are (0, -1, nationSlot, 0). nodeContext is -1, not 0 --
-        // 0 is a valid tile/anchor index, so passing it sends
-        // RegisterUnitOrderWithOwnerManager down the attach path against a nation table
-        // that is still being rebuilt, which is the load-time access violation.
-        militaryOrder->IMilitaryUnit(0, -1, this->nationSlot, 0);
-        militaryOrder->ReadFrom(stream);
-      }
-      recruitIndex = recruitIndex + 1;
-    } while (recruitIndex <= recruitCount);
+  // One count local serves both trailing loops: the original reads each count into the
+  // same stack slot (esp+0x28 at 0x4d6cf2 and again at 0x4d6d8d).
+  int entryCount;
+  stream->ReadBytes(&entryCount, 4);
+  // No null test on the new-expression: the only branch the original has here is the
+  // compiler's own skip-the-constructor-if-the-allocation-failed test at 0x4d6d24, and
+  // the IMilitaryUnit/ReadFrom pair that follows runs unconditionally.
+  for (int recruitIndex = 1; recruitIndex <= entryCount; ++recruitIndex) {
+    TMilitaryUnit* militaryOrder = new TMilitaryUnit();
+    // 0x4d6d33: the pushes are (0, -1, nationSlot, 0). nodeContext is -1, not 0 --
+    // 0 is a valid tile/anchor index, so passing it sends
+    // RegisterUnitOrderWithOwnerManager down the attach path against a nation table
+    // that is still being rebuilt, which is the load-time access violation.
+    militaryOrder->IMilitaryUnit(0, -1, this->nationSlot, 0);
+    militaryOrder->ReadFrom(stream);
   }
 
   if (this->ownedRegionList->GetSize() != 0) {
     this->ownedRegionList->RemoveAll();
   }
   this->ownedRegionList->NoOpReadFrom(stream);
-  int regionDeserializeCount = 0;
-  stream->ReadBytes(&regionDeserializeCount, 4);
-  int regionIndex = 1;
-  if (regionDeserializeCount > 0) {
-    do {
-      int entryValue = 0;
-      stream->ReadBytes(&entryValue, 4);
-      this->ownedRegionList->InsertLast(entryValue);
-      regionIndex = regionIndex + 1;
-    } while (regionIndex <= regionDeserializeCount);
+  stream->ReadBytes(&entryCount, 4);
+  for (int regionIndex = 1; regionIndex <= entryCount; ++regionIndex) {
+    int entryValue;
+    stream->ReadBytes(&entryValue, 4);
+    this->ownedRegionList->InsertLast(entryValue);
   }
 }
 
@@ -226,7 +212,8 @@ void TCountry::WriteTo(TStream* stream) {
   stream->WriteBytes(&this->treasuryValue10, 4);
   stream->WriteBytes(&this->homeTileIndex, 4);
   stream->WriteBytes(&this->overlayAnchorTileCache8c, 4);
-  WriteShortArrayElems(stream, this->needLevelByNation, 0x17);
+  // 0x4d6f24 reads the high byte before the low one -- the Rev swap shape.
+  WriteShortArrayElemsRev(stream, this->needLevelByNation, 0x17);
 
   WriteTrackedListToStream(stream, this->militaryUnitList44);
   WriteIntListToStream(stream, this->ownedRegionList);
@@ -739,11 +726,11 @@ void TCountry::DeserializeDiplomacyNationStateFromStream(TStream* stream) {
   // foreignMinister, so the first read overwrote all three minister pointers -- and were
   // paired with byte-swaps of three different arrays. Order follows the write twin below.
   stream->ReadBytes(nation->needCurrentByType, 0x2e);
-  SwapAdjacentBytesInShortArray(nation->needCurrentByType, 0x17);
+  SwapShortArrayBytes(nation->needCurrentByType, 0x17);
   stream->ReadBytes(nation->diplomacyPolicyByNation, 0x2e);
-  SwapAdjacentBytesInShortArray(nation->diplomacyPolicyByNation, 0x17);
+  SwapShortArrayBytes(nation->diplomacyPolicyByNation, 0x17);
   stream->ReadBytes(nation->diplomacyGrantByNation, 0x2e);
-  SwapAdjacentBytesInShortArray(nation->diplomacyGrantByNation, 0x17);
+  SwapShortArrayBytes(nation->diplomacyGrantByNation, 0x17);
   stream->ReadBytes(&nation->diplomacyCounterA2, 2);
   stream->ReadBytes(&nation->tradeCapacity, 2);
   stream->ReadBytes(&nation->needCapA6, 2);
@@ -756,7 +743,7 @@ void TCountry::DeserializeDiplomacyNationStateFromStream(TStream* stream) {
   stream->ReadBytes(&nation->field8d6[1], 2);
   stream->ReadBytes(&nation->field8d6[2], 2);
   stream->ReadBytes(nation->serializedStatusFlags, 8);
-  SwapAdjacentBytesInShortArray(reinterpret_cast<short*>(nation->serializedStatusFlags), 4);
+  SwapShortArrayBytes(nation->serializedStatusFlags, 4);
 }
 
 void TCountry::SerializeDiplomacyNationStateToStream(TStream* stream) {

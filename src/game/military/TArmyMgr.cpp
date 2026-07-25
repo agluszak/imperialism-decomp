@@ -228,32 +228,42 @@ void TArmyMgr::Free() {
 // FUNCTION: IMPERIALISM 0x004a1b80
 void TArmyMgr::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
+  // The null test and the final clear go through `this`, but the purge walk reloads the
+  // manager singleton on every iteration (0x4a1bb7/0x4a1bc6 read [0x006a3338] rather than
+  // EBP) -- the same asymmetry TArmyMgr::Free shows, so it is written the same way here.
   if (mapContextActionRecordList04 != 0) {
-    for (int ordinal = mapContextActionRecordList04->GetSize(); ordinal > 0; --ordinal) {
+    int ordinal = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
+    while (ordinal > 0) {
       MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
-          mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(ordinal));
+          g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
+              ordinal));
       delete[] record->sideChildRecords250[0];
       delete[] record->sideChildRecords250[1];
       record->sideChildRecords250[1] = 0;
       record->sideChildRecords250[0] = 0;
+      --ordinal;
     }
     mapContextActionRecordList04->ClearAndFreeAllPtrListRecords();
   }
   flag8 = 0;
-  if (g_nSaveFormatVersion > 0x24) {
-    for (short count = stream->ReadInteger(); count != 0; --count) {
+  if (g_nSaveFormatVersion >= 0x25) {
+    for (int count = stream->ReadInteger(); count != 0; --count) {
+      // The two stride-0x20 / stride-0xff store loops at 0x4a1c47 and 0x4a1c58 are the
+      // array default-construction of nameBuffer0c and overlayLabel4c, emitted by this
+      // declaration; only the POD tail needs clearing by hand.
       MapContextActionRecord record;
-      record.childCount24a[0] = 0;
       record.childCount24a[1] = 0;
-      record.sideChildRecords250[0] = 0;
+      record.childCount24a[0] = 0;
       record.sideChildRecords250[1] = 0;
+      record.sideChildRecords250[0] = 0;
 
       record.ReadFrom(stream);
       mapContextActionRecordList04->AppendCopiedRecordToPtrList(&record);
       flag8 = 1;
       // Redundant re-store (both branches write the same 1); preserved to match codegen
-      // (same idiom as AppendMapContextActionRecordAndResetWorkingFields).
-      if (g_apSecondaryNationStateSlots[0x17] != 0) {
+      // (same idiom as AppendMapContextActionRecordAndResetWorkingFields, which reads the
+      // same byte global at 0x006a42dc).
+      if (g_bRandomMapDeveloperCheatFlag != 0) {
         flag8 = 1;
       }
 

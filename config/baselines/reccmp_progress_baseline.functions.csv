@@ -1528,7 +1528,7 @@ address|matching|name
 0x4a18d0|1.0|TArmyMgr::~TArmyMgr
 0x4a18f0|1.0|TArmyMgr::IArmyMgr
 0x4a1a00|1.0|TArmyMgr::Free
-0x4a1b80|0.5585585585585585|TArmyMgr::ReadFrom
+0x4a1b80|0.8272727272727273|TArmyMgr::ReadFrom
 0x4a1d90|0.14285714285714285|WrapperFor_FreeHeapBufferIfNotNull_At004a1d90
 0x4a1dd0|0.8484848484848485|TArmyMgr::WriteTo
 0x4a1e40|0.8163265306122449|TArmyMgr::DoCombatMoves
@@ -1537,9 +1537,7 @@ address|matching|name
 0x4a2390|0.8266666666666667|TArmyMgr::ResolveNextMove
 0x4a2500|0.984375|TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits
 0x4a2610|0.4264264264264264|BuildArmyActionLabelFromLocalizationAndCounts
-0x4a2900|0.6021934197407777|BuildArmyContextActionRecordsAndDispatchLabel
-0x4a31c0|1.0|CStr32::CStr32
-0x4a31e0|1.0|CStr255::CStr255
+0x4a2900|0.6113886113886113|BuildArmyContextActionRecordsAndDispatchLabel
 0x4a3200|0.7047244094488189|TArmyMgr::TryCreateTacticalBattleViewForTileArmies
 0x4a35e0|0.6006825938566553|TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion
 0x4a37b0|0.9135802469135802|TArmyMgr::RelocateStackUnitsToStackTile
@@ -1574,7 +1572,7 @@ address|matching|name
 0x4a5c50|1.0|TArmyBattle::`scalar deleting destructor'
 0x4a5c80|0.0|TArmyBattle::~TArmyBattle
 0x4a5ca0|0.5432098765432098|TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters
-0x4a5ec0|0.5307017543859649|TArmyMgr::GenerateSpyReport
+0x4a5ec0|0.5328947368421053|TArmyMgr::GenerateSpyReport
 0x4a6680|0.7107652399481194|TArmyMgr::ShowSpyReport
 0x4a6d40|0.38202247191011235|TArmyMgr::ScanMapContextActionEntriesForCodeMatch
 0x4a6dd0|1.0|TArmyMgr::GetByteFlagAtOffset8
@@ -2318,7 +2316,7 @@ address|matching|name
 0x4d68f0|0.6206896551724138|TCountry::InitializeNationStateIdentityAndOwnedRegionList
 0x4d6b70|0.0|CString::operator=(class CString const &)
 0x4d6ba0|1.0|TCountry::Free
-0x4d6bf0|0.592797783933518|TCountry::ReadFrom
+0x4d6bf0|1.0|TCountry::ReadFrom
 0x4d6e60|0.3408360128617363|TCountry::WriteTo
 0x4d7070|1.0|TCountry::ReadCoreFieldsFromStream
 0x4d70e0|1.0|TCountry::WriteCoreFieldsToStream
@@ -2540,7 +2538,7 @@ address|matching|name
 0x4e3790|1.0|TMinor::`scalar deleting destructor'
 0x4e37c0|0.9767441860465116|TMinor
 0x4e3830|0.9526627218934911|TMinor::IMinor
-0x4e41c0|0.5615384615384615|TMinor::ReadFrom
+0x4e41c0|0.9859154929577465|TMinor::ReadFrom
 0x4e4390|0.81875|TMinor::WriteTo
 0x4e45f0|1.0|TMinor::ReturnFalseNationStateCapabilityFlag90
 0x4e4630|1.0|TMinor::SumDiplomacyState1c6AndRelationDeltaSnapshot
@@ -3249,7 +3247,7 @@ address|matching|name
 0x515720|0.4067796610169492|TMapMgr::MarkType5NeighborTilesUnavailableByNationCapability
 0x515890|0.1958041958041958|TMapMgr::SeedRecruitSearchVisitedStateByCapabilityThresholdAlt
 0x5159b0|0.378698224852071|TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA
-0x515b10|0.3378995433789954|TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB
+0x515b10|0.3167420814479638|TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB
 0x515d60|1.0|TMapMgr::ApplyUnitMovementClassForTileIfValid
 0x515db0|0.5217391304347826|TMapMgr::ClearPerTileByte0FForAllMapTiles
 0x515de0|1.0|TMapMgr::NoOpVirtualSlot2D
@@ -3278,7 +3276,7 @@ address|matching|name
 0x5177d0|1.0|TMapMgr::GetMapImprovementTileOffsetFromClass
 0x5177f0|0.25806451612903225|TMapMgr::GetMapImprovementTileSpriteOffset
 0x5178c0|0.75|TMapMgr::ResetAllTileMarkerSlotIndicesToSentinel
-0x5178f0|0.3194103194103194|TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias
+0x5178f0|0.3431372549019608|TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias
 0x517c30|0.358974358974359|TMapMgr::AreNationsBorderLinked
 0x517d40|0.5416666666666666|TMapMgr::HasAdjacentProvinceOwnedByNation
 0x517dd0|0.40963855421686746|TMapMgr::HasDirectOrFallbackLinkedNodeType
@@ -3987,7 +3985,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.4557165861513688|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.4544283413848631|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags
@@ -4212,16 +4210,16 @@ address|matching|name
 0x557560|0.9866666666666667|TNavyMgr::MakeSureAllShipsHaveOrders
 0x5577b0|0.8043478260869565|TNavyMgr::PrepareToCarryOutAllOrders
 0x557870|1.0|TTaskForce::RechargeAll
-0x5578a0|0.4507422402159244|TNavyMgr::CarryOutOrders
+0x5578a0|0.44804318488529016|TNavyMgr::CarryOutOrders
 0x557e10|0.6464646464646465|TNavyMgr::AssignEscorts
-0x557f10|0.3352601156069364|TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext
-0x558960|0.3629590207557211|TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes
+0x557f10|0.3358147229114971|TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext
+0x558960|0.35363247863247865|TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes
 0x559a70|0.3867403314917127|GetMapContextActionCode
 0x559dd0|0.6666666666666666|TNavyMgr::ActionCursor
 0x559e00|0.39464882943143814|TNavyMgr::SelectionCursor
 0x55a020|0.6847826086956522|TNavyMgr::SelectionClick
 0x55a160|0.4221105527638191|TNavyMgr::DoTileClick
-0x55a780|0.33212996389891697|TNavyMgr::ResolveStrategicBattle
+0x55a780|0.34975961538461536|TNavyMgr::ResolveStrategicBattle
 0x55b640|0.25|`dynamic initializer for 'g_scaledShortConst_6A3F60''
 0x55b670|1.0|TNewsMgr::CreateObject
 0x55b6a0|1.0|TNewsMgr::`scalar deleting destructor'
@@ -6019,7 +6017,7 @@ address|matching|name
 0x5c2ed0|1.0|TMilitaryUnit::`scalar deleting destructor'
 0x5c2f00|0.8|TMilitaryUnit::~TMilitaryUnit
 0x5c2f50|0.7671232876712328|TMilitaryUnit::IMilitaryUnit
-0x5c2fd0|0.6666666666666666|TMilitaryUnit::ReadFrom
+0x5c2fd0|1.0|TMilitaryUnit::ReadFrom
 0x5c30a0|0.9078947368421053|TMilitaryUnit::WriteTo
 0x5c3190|0.25|TMilitaryUnit::ClearPath
 0x5c31c0|1.0|TMilitaryUnit::DetachUnitOrderFromOwnerAndReset
