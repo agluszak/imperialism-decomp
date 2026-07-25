@@ -8,17 +8,17 @@ policy (Mac resource order, read big-endian).
 
 ## Summary
 
-- Tags: 547
+- Tags: 551
 - `generated_resource_manifest_tag`: 67
 - `multiplayer_session_or_message_tag`: 32
 - `ui_tag_app_and_setup_screens`: 57
 - `ui_tag_city_and_trade`: 62
 - `ui_tag_diplomacy`: 18
-- `ui_tag_military_navy_tactical`: 45
+- `ui_tag_military_navy_tactical`: 49
 - `ui_tag_shared`: 145
 - `ui_tag_strategic_map`: 23
 - `ui_tag_widget_plumbing`: 98
-- Corroborated by the Mac control-tag index: 407 of 547
+- Corroborated by the Mac control-tag index: 411 of 551
 - Violations: 0
 
 ## Violations
@@ -288,6 +288,8 @@ build does not ship.
 | `kControlTagFadm` | `fadm` | `0x6661646d` | `ui_tag_military_navy_tactical` | 1 |
 | `kControlTagFflg` | `fflg` | `0x66666c67` | `ui_tag_military_navy_tactical` | 1 |
 | `kControlTagFire` | `fire` | `0x66697265` | `ui_tag_military_navy_tactical` |  |
+| `kControlTagFlgL` | `flgL` | `0x666c674c` | `ui_tag_military_navy_tactical` | 1 |
+| `kControlTagFlgR` | `flgR` | `0x666c6752` | `ui_tag_military_navy_tactical` | 1 |
 | `kControlTagFshp` | `fshp` | `0x66736870` | `ui_tag_military_navy_tactical` | 1 |
 | `kControlTagGowy` | `gowy` | `0x676f7779` | `ui_tag_military_navy_tactical` |  |
 | `kControlTagHdr0` | `hdr0` | `0x68647230` | `ui_tag_military_navy_tactical` |  |
@@ -297,6 +299,8 @@ build does not ship.
 | `kControlTagLose` | `lose` | `0x6c6f7365` | `ui_tag_military_navy_tactical` |  |
 | `kControlTagMine` | `mine` | `0x6d696e65` | `ui_tag_military_navy_tactical` |  |
 | `kControlTagMusi` | `musi` | `0x6d757369` | `ui_tag_military_navy_tactical` | 1 |
+| `kControlTagNatL` | `natL` | `0x6e61744c` | `ui_tag_military_navy_tactical` | 1 |
+| `kControlTagNatR` | `natR` | `0x6e617452` | `ui_tag_military_navy_tactical` | 1 |
 | `kControlTagNavy` | `navy` | `0x6e617679` | `ui_tag_military_navy_tactical` | 1 |
 | `kControlTagNeXT` | `NeXT` | `0x4e655854` | `ui_tag_military_navy_tactical` |  |
 | `kControlTagNooo` | `nooo` | `0x6e6f6f6f` | `ui_tag_military_navy_tactical` | 1 |
