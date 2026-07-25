@@ -57,9 +57,9 @@ int TStream::AssertMcAppStreamLine304(int) {
 void TStream::ReadBytes(void*, int) {} // slot 0x3c primitive; subclasses keep this default
 
 // Read a single byte through the ReadBytes primitive (slot 0x3c) and return it; callers
-// sign-extend at the call site (identical body to streamSlot44 at a different slot).
+// sign-extend at the call site (identical body to ReadBoolean at a different slot).
 // FUNCTION: IMPERIALISM 0x00488b60
-char TStream::ReadInteger() {
+char TStream::ReadByte() {
   char value;
   ReadBytes(&value, 1);
   return value;
@@ -67,39 +67,39 @@ char TStream::ReadInteger() {
 
 // Read a single byte through the ReadBytes primitive (slot 0x3c) and return it.
 // FUNCTION: IMPERIALISM 0x00488b90
-char TStream::streamSlot44() {
+char TStream::ReadBoolean() {
   char value;
   ReadBytes(&value, 1);
   return value;
 }
 
 // FUNCTION: IMPERIALISM 0x00488bc0
-void TStream::streamSlot48(void* out) {
+void TStream::ReadCharacter(void* out) {
   *reinterpret_cast<short*>(out) = 0;
   ReadBytes(reinterpret_cast<char*>(out) + 1, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00488bf0
-short TStream::ReadShort() {
+short TStream::ReadInteger() {
   short value;
   ReadBytes(&value, 2);
   return value;
 }
 
 // FUNCTION: IMPERIALISM 0x00488c20
-int TStream::streamSlot50() {
+int TStream::ReadLong() {
   int value;
   ReadBytes(&value, 4);
   return value;
 }
 
-// Read a length-prefixed shared string into dest: pull the length via ReadShort
+// Read a length-prefixed shared string into dest: pull the length via ReadInteger
 // (slot 0x4c), size dest's buffer, read that many raw bytes, null-terminate, and
 // release. maxLen is a caller-supplied capacity hint the base impl does not use.
 // FUNCTION: IMPERIALISM 0x00488c50
-void TStream::streamSlot70(CString* dest, int maxLen) {
+void TStream::ReadSharedString(CString* dest, int maxLen) {
   (void)maxLen;
-  int length = this->ReadShort();
+  int length = this->ReadInteger();
   char* buffer = dest->GetBuffer(length + 1);
   this->ReadBytes(buffer, length);
   buffer[length] = 0;
@@ -109,15 +109,15 @@ void TStream::streamSlot70(CString* dest, int maxLen) {
 // Read a short length prefix (slot 0x4c), then that many raw bytes into buffer,
 // and null-terminate. maxLen is a caller capacity hint the base impl ignores.
 // FUNCTION: IMPERIALISM 0x00488ca0
-void TStream::streamSlot6c(void* buffer, int maxLen) {
+void TStream::ReadString(void* buffer, int maxLen) {
   (void)maxLen;
-  int length = this->ReadShort();
+  int length = this->ReadInteger();
   this->ReadBytes(buffer, length);
   static_cast<char*>(buffer)[length] = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00488ce0
-void TStream::streamSlot54(void* out) {
+void TStream::ReadVPoint(void* out) {
   int tmp[2];
   ReadBytes(tmp, 8);
   reinterpret_cast<int*>(out)[0] = tmp[0];
@@ -125,27 +125,27 @@ void TStream::streamSlot54(void* out) {
 }
 
 // FUNCTION: IMPERIALISM 0x00488d20
-void TStream::streamSlot58(void* out) {
+void TStream::ReadRect(void* out) {
   ReadBytes(out, 8);
 }
 
 // FUNCTION: IMPERIALISM 0x00488d40
-void TStream::streamSlot5c(void* out) {
+void TStream::ReadVRect(void* out) {
   ReadBytes(out, 0x10);
 }
 
 // FUNCTION: IMPERIALISM 0x00488d60
-void TStream::streamSlot60(void* out) {
+void TStream::ReadUnclassified16ByteRecord(void* out) {
   ReadBytes(out, 0x10);
 }
 
 // FUNCTION: IMPERIALISM 0x00488d80
-void TStream::streamSlot64(void* out) {
+void TStream::ReadPoint(void* out) {
   ReadBytes(out, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x00488da0
-int TStream::streamSlot68() {
+int TStream::ReadIDType() {
   int value;
   ReadBytes(&value, 4);
   return value;
@@ -153,7 +153,7 @@ int TStream::streamSlot68() {
 
 // If the guard predicate (slot 0x28) has bit 0 set, consume one byte.
 // FUNCTION: IMPERIALISM 0x00488dd0
-void TStream::SkipPaddingToEvenByteBoundary() {
+void TStream::ReadWordAlign() {
   if ((GetPosition() & 1) != 0) {
     char discarded;
     ReadBytes(&discarded, 1);
@@ -174,101 +174,100 @@ void TStream::SetPosition(int) {}
 void TStream::SetLength(int) {}
 
 // FUNCTION: IMPERIALISM 0x00488e70
-void TStream::WriteBytesSlot78(void*, int) {} // primitive; concrete subclass overrides
+void TStream::WriteBytes(void*, int) {} // primitive; concrete subclass overrides
 
 // FUNCTION: IMPERIALISM 0x00488e90
-void TStream::streamSlot7c(unsigned char value) {
-  WriteBytesSlot78(&value, 1);
+void TStream::WriteByte(unsigned char value) {
+  WriteBytes(&value, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00488eb0
-void TStream::streamSlot80(unsigned char value) {
-  WriteBytesSlot78(&value, 1);
+void TStream::WriteBoolean(unsigned char value) {
+  WriteBytes(&value, 1);
 }
 
-// Write the high byte of `value` through the WriteBytesSlot78 primitive (slot 0x78) —
-// the write-side counterpart of streamSlot48's high-byte read.
+// Write the high byte of `value` through the WriteBytes primitive (slot 0x78) —
+// the write-side counterpart of ReadCharacter's high-byte read.
 // FUNCTION: IMPERIALISM 0x00488ed0
-void TStream::streamSlot84(short value) {
-  WriteBytesSlot78(reinterpret_cast<char*>(&value) + 1, 1);
+void TStream::WriteCharacter(short value) {
+  WriteBytes(reinterpret_cast<char*>(&value) + 1, 1);
 }
 
 // ---------------------------------------------------------------------------
 // Typed read/write accessors: each delegates to a primitive vtable slot
-// (ReadBytes @0x3c / WriteBytesSlot78 @0x78). Default implementations on the
+// (ReadBytes @0x3c / WriteBytes @0x78). Default implementations on the
 // base, inherited by every concrete stream.
 // ---------------------------------------------------------------------------
 
 // FUNCTION: IMPERIALISM 0x00488ef0
-void TStream::WriteCountSlot88(int count) {
-  WriteBytesSlot78(&count, 2);
+void TStream::WriteInteger(int count) {
+  WriteBytes(&count, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x00488f10
-void TStream::streamSlot8c(int value) {
-  WriteBytesSlot78(&value, 4);
+void TStream::WriteLong(int value) {
+  WriteBytes(&value, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x00488f30
-void TStream::streamSlot90(double value) {
-  WriteBytesSlot78(&value, 8);
+void TStream::WriteVPoint(double value) {
+  WriteBytes(&value, 8);
 }
 
 // FUNCTION: IMPERIALISM 0x00488f50
-void TStream::streamSlot94(void* data) {
-  WriteBytesSlot78(data, 8);
+void TStream::WriteRect(void* data) {
+  WriteBytes(data, 8);
 }
 
 // FUNCTION: IMPERIALISM 0x00488f70
-void TStream::streamSlot98(void* data) {
-  WriteBytesSlot78(data, 0x10);
+void TStream::WriteVRect(void* data) {
+  WriteBytes(data, 0x10);
 }
 
 // FUNCTION: IMPERIALISM 0x00488f90
-void TStream::streamSlot9c(void* data) {
-  WriteBytesSlot78(data, 0x10);
+void TStream::WriteUnclassified16ByteRecord(void* data) {
+  WriteBytes(data, 0x10);
 }
 
 // FUNCTION: IMPERIALISM 0x00488fb0
-void TStream::streamSlotA0(void* data) {
-  WriteBytesSlot78(data, 4);
+void TStream::WritePoint(void* data) {
+  WriteBytes(data, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x00488fd0
-void TStream::streamSlotA4(int value) {
-  WriteBytesSlot78(&value, 4);
+void TStream::WriteIDType(int value) {
+  WriteBytes(&value, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x00488ff0
-void TStream::WritePaddingToEvenByteBoundary() {
+void TStream::WriteWordAlign() {
   if ((GetPosition() & 1) != 0) {
     unsigned char padding = 0;
-    WriteBytesSlot78(&padding, 1);
+    WriteBytes(&padding, 1);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00489030
-void TStream::streamSlotAc(CString* sharedString) {
+void TStream::WriteSharedString(CString* sharedString) {
   int length = sharedString->GetLength();
-  this->WriteCountSlot88(length);
-  this->WriteBytesSlot78(reinterpret_cast<void*>((char*)static_cast<LPCSTR>(*sharedString)),
-                         length);
+  this->WriteInteger(length);
+  this->WriteBytes(reinterpret_cast<void*>((char*)static_cast<LPCSTR>(*sharedString)), length);
 }
 
 // FUNCTION: IMPERIALISM 0x00489070
-void TStream::WriteLengthPrefixedCString(char* text) {
+void TStream::WriteString(char* text) {
   unsigned int length = strlen(text);
-  this->WriteCountSlot88(length);
-  this->WriteBytesSlot78(text, length);
+  this->WriteInteger(length);
+  this->WriteBytes(text, length);
 }
 
 // FUNCTION: IMPERIALISM 0x00489980
-char TStream::ReadByte(void*) {
+char TStream::ReadObject(void*) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004899a0
-void TStream::WriteObjectSlotB4(void*, int) {}
+void TStream::WriteObject(void*, int) {}
 
 // SYNTHETIC: IMPERIALISM 0x00488a10
 // TStream::`scalar deleting destructor'

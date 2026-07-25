@@ -31,10 +31,6 @@ void DeleteUnlinkedZone(TZone* zone) {
 
 // 0x005e7f50 resolves to CRT `_free` (per symbols.csv), not a game-specific tracking
 // helper -- call the real library function directly (LIBRARY: IMPERIALISM 0x005e7f50).
-void FreeStretchEntries(void* entries) {
-  free(entries);
-}
-
 } // namespace
 
 // TEMPLATE: IMPERIALISM 0x00558860
@@ -141,7 +137,7 @@ void TZone::Free() {
 // FUNCTION: IMPERIALISM 0x0055ed20
 void TZone::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  stream->streamSlot70(&displayName, 0x20);
+  stream->ReadSharedString(&displayName, 0x20);
   stream->ReadBytes(&statusCode04, 2);
   stream->ReadBytes(&tileOrTerrainId0c, 4);
   stream->ReadBytes(&seedNationId12, 2);
@@ -156,10 +152,10 @@ void TZone::ReadFrom(TStream* stream) {
   distanceLevel44 = 0;
 
   if (primaryNeighbors.Data() != 0) {
-    FreeStretchEntries(primaryNeighbors.Detach());
+    free(primaryNeighbors.Detach());
   }
   if (secondaryNeighbors.Data() != 0) {
-    FreeStretchEntries(secondaryNeighbors.Detach());
+    free(secondaryNeighbors.Detach());
   }
 
   // Pre-0xd save format stored the neighbor arrays directly; current saves rebuild them
@@ -186,12 +182,12 @@ void TZone::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0055eff0
 void TZone::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->streamSlotAc(&displayName);
-  stream->WriteBytesSlot78(&statusCode04, 2);
-  stream->WriteBytesSlot78(&tileOrTerrainId0c, 4);
-  stream->WriteBytesSlot78(&seedNationId12, 2);
-  stream->WriteBytesSlot78(&activeTileIndex20, 2);
-  stream->WriteBytesSlot78(&contextOrdinal14, 2);
+  stream->WriteSharedString(&displayName);
+  stream->WriteBytes(&statusCode04, 2);
+  stream->WriteBytes(&tileOrTerrainId0c, 4);
+  stream->WriteBytes(&seedNationId12, 2);
+  stream->WriteBytes(&activeTileIndex20, 2);
+  stream->WriteBytes(&contextOrdinal14, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0055f070

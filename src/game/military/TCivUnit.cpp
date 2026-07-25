@@ -91,7 +91,7 @@ void TCivUnit::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x005c2b40
 void TCivUnit::WriteTo(TStream* stream) {
   TUnit::WriteTo(stream);
-  stream->WriteBytesSlot78(&remainingTurns24, 2);
+  stream->WriteBytes(&remainingTurns24, 2);
 }
 
 // Moves this unit between two tiles' civilian-order chains (terrainStateTable[tile-

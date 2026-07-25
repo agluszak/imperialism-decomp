@@ -293,3 +293,45 @@ match the pass structure before chasing store order (24.9% -> 69.3%).
      residual rather than inventing a third.
      Corollary for triage: `memory address at original` is NOT a synonym for
      "wrong field". A bulk offset-fix pass over that bucket will corrupt correct source.
+
+### Length-prefixed collection loops are `while (count-- != 0)`, not a bottom-decrementing `for`
+
+Every save-stream reader that consumes a count followed by that many records writes the
+loop the same way, and it is not the form the port usually reaches for. The tell in the
+listing is a **decrement before the test, with the pre-decrement value tested**:
+
+```
+mov eax, dword ptr [count]     ; load
+mov cx, ax                     ; keep the OLD value
+dec eax                        ; decrement now
+test cx, cx                    ; test the old value
+mov dword ptr [count], eax     ; store back
+je  end
+```
+
+or, when the counter lives in a register, `mov ecx,eax / dec eax / test ecx,ecx / jz end
+/ lea edi,[eax+1]` — the `lea` restoring the trip count is the same idiom with the
+counter re-materialized.
+
+That is `while (count-- != 0) { ... }`. Writing it as `for (int n = count; n != 0; --n)`
+compiles to `test eax,eax / je` with the decrement at the bottom instead, and costs
+5–19pp on a reader of any size. Measured on one batch:
+
+| function | for-loop | `while (count-- != 0)` |
+| --- | --- | --- |
+| `TArmyMgr::ReadFrom` 0x4a1b80 | 82.7% | 92.8% |
+| `TArmyMission::ReadFrom` 0x53c3d0 | 68.6% | 87.2% |
+| `TTaskForce::ReadFrom` 0x552d10 | 59.9% | 68.6% |
+
+Two companion facts from the same batch:
+
+- **The count is an `int`, even though it arrives from `ReadInteger()` (a `short`).** The
+  `movsx eax,ax` immediately after the call is the widening; a `short` counter adds a
+  `cmp ax,bx` the original does not have.
+- **One scratch local often serves several reads.** When consecutive `ReadBytes(&x, 2)`
+  calls all target the *same* stack slot and the loop then decrements that slot in place,
+  that is one reused variable, not several the compiler happened to colour together.
+  `TTaskForce::ReadFrom` reads two zone ordinals and the child count into `esp+0x10` and
+  counts down in it; `TCountry::ReadFrom` reads both of its trailing counts into
+  `esp+0x28`. Splitting them into separate named locals grows the frame by a dword and
+  shifts every later slot, which shows up as a diff on lines you did not touch.

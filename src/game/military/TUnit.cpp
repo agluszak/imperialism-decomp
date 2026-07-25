@@ -127,12 +127,12 @@ void TUnit::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x005c27d0
 void TUnit::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&orderType, 2);
-  stream->WriteBytesSlot78(&tileIndex06, 2);
-  stream->WriteBytesSlot78(&field_C, 2);
-  stream->WriteBytesSlot78(&field_18, 2);
-  stream->WriteBytesSlot78(&field_1A, 2);
-  stream->WriteBytesSlot78(&field_1C, 1);
-  stream->WriteBytesSlot78(&unitOrder, 4);
-  stream->WriteBytesSlot78(&field_20, 4);
+  stream->WriteBytes(&orderType, 2);
+  stream->WriteBytes(&tileIndex06, 2);
+  stream->WriteBytes(&field_C, 2);
+  stream->WriteBytes(&field_18, 2);
+  stream->WriteBytes(&field_1A, 2);
+  stream->WriteBytes(&field_1C, 1);
+  stream->WriteBytes(&unitOrder, 4);
+  stream->WriteBytes(&field_20, 4);
 }

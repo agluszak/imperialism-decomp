@@ -234,7 +234,7 @@ void TMapEditView::PlaceTerrain(short tileIndex) {
   TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
   tile.SetTerrainKind(static_cast<StrategicTerrainKind>(editorActionValue36c));
   ClearTileAdjacencyRenderCache(tile);
-  g_pGlobalMapState->UpdateMapTileAdjacencyMasksAndVariantForTile(tileIndex);
+  g_pGlobalMapState->AssignPictToTile(tileIndex);
   InvalidateTile(tileIndex);
 
   for (short direction = 0; direction < 6; ++direction) {
@@ -246,7 +246,7 @@ void TMapEditView::PlaceTerrain(short tileIndex) {
       neighbor.riverSpriteCode |= kRiverSpriteCodeNeedsResolution;
       // The retail body clears the selected tile's byte here again, not the neighbor's.
       tile.spriteVariantIndex01 = 0;
-      g_pGlobalMapState->UpdateMapTileAdjacencyMasksAndVariantForTile(neighborIndex);
+      g_pGlobalMapState->AssignPictToTile(neighborIndex);
       InvalidateTile(neighborIndex);
     }
   }
@@ -271,7 +271,7 @@ void TMapEditView::DefaultResources(short tileIndex) {
   ClearTileAdjacencyRenderCache(tile);
   tile.resourceTypeByEdge[0] = static_cast<signed char>(resourceByProfile[tile.gateFlag]);
   tile.resourceTypeByEdge[1] = -1;
-  g_pGlobalMapState->UpdateMapTileAdjacencyMasksAndVariantForTile(tileIndex);
+  g_pGlobalMapState->AssignPictToTile(tileIndex);
   InvalidateTile(tileIndex);
 
   for (short direction = 0; direction < 6; ++direction) {
@@ -279,7 +279,7 @@ void TMapEditView::DefaultResources(short tileIndex) {
     if (neighborIndex != -1) {
       TTerrainStateRecordView& neighbor = g_pGlobalMapState->terrainStateTable[neighborIndex];
       ClearTileAdjacencyRenderCache(neighbor);
-      g_pGlobalMapState->UpdateMapTileAdjacencyMasksAndVariantForTile(neighborIndex);
+      g_pGlobalMapState->AssignPictToTile(neighborIndex);
       InvalidateTile(neighborIndex);
     }
   }
@@ -354,7 +354,7 @@ void TMapEditView::PlaceRiver(short tileIndex) {
       static_cast<RiverSpriteCodeStorage>(variant | kRiverSpriteCodeNeedsResolution);
   tile.adjacencyMaskA0a = 0;
   tile.adjacencyMaskB0b = 0;
-  g_pGlobalMapState->UpdateMapTileAdjacencyMasksAndVariantForTile(tileIndex);
+  g_pGlobalMapState->AssignPictToTile(tileIndex);
   InvalidateTile(tileIndex);
 }
 

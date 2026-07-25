@@ -423,146 +423,139 @@ void TGreatPower::ReadFrom(TStream* stream) {
 
   if (g_nSaveFormatVersion < 0x1D) {
     if (this->encodedNationSlot == -1) {
-      bool gate = this->IsRemote();
-      if (gate == 0) {
+      char remote = this->IsRemote();
+      if (remote == 0) {
         this->foreignMinister->ReadFrom(stream);
         this->interiorMinister->ReadFrom(stream);
         this->defenseMinister->ReadFrom(stream);
       }
       this->city->ReadFrom(stream);
     } else {
+      // Each `= 0` sits after its free-if, not inside it (0x4d9621 and friends).
       if (this->foreignMinister != 0) {
         this->foreignMinister->Free();
-        this->foreignMinister = 0;
       }
+      this->foreignMinister = 0;
       if (this->interiorMinister != 0) {
         this->interiorMinister->Free();
-        this->interiorMinister = 0;
       }
+      this->interiorMinister = 0;
       if (this->defenseMinister != 0) {
         this->defenseMinister->Free();
-        this->defenseMinister = 0;
       }
+      this->defenseMinister = 0;
       if (this->city != 0) {
         this->city->Free();
-        this->city = 0;
       }
+      this->city = 0;
     }
   } else {
-    int ministerMask = stream->ReadInteger();
+    // A byte, not an int: the mask lives in BL and every arm tests it with `TEST BL,imm`
+    // (0x4d966e / 0x4d96e6 / 0x4d97e0). Each arm is written present-first, because the
+    // original branches JZ to the absent case -- the fall-through is the present one.
+    // Two shapes repeat in all four arms and neither is what the port had:
+    //   * the minister is re-read from the member for ReadFrom (0x4d96bf), and the call
+    //     is unconditional -- there is no null test after the create
+    //   * the `= 0` in the absent arm sits AFTER the free-if, not inside it (0x4d96dc)
+    char ministerMask = stream->ReadByte();
 
-    if ((ministerMask & 1) == 0) {
+    if ((ministerMask & 1) != 0) {
+      if (this->foreignMinister == 0) {
+        TForeignMinister* created = new TForeignMinister();
+        this->foreignMinister = created;
+        created->IForeignMinister(this);
+      }
+      this->foreignMinister->ReadFrom(stream);
+    } else {
       if (this->foreignMinister != 0) {
         this->foreignMinister->Free();
-        this->foreignMinister = 0;
       }
-    } else {
-      TMinister* foreignMinister = this->foreignMinister;
-      if (foreignMinister == 0) {
-        TForeignMinister* created = new TForeignMinister();
-        created->IForeignMinister(this);
-        this->foreignMinister = created;
-        foreignMinister = created;
-      }
-      if (foreignMinister != 0) {
-        foreignMinister->ReadFrom(stream);
-      }
+      this->foreignMinister = 0;
     }
 
-    if ((ministerMask & 2) == 0) {
+    if ((ministerMask & 2) != 0) {
+      if (this->interiorMinister == 0) {
+        TCityInteriorMinister* created = new TCityInteriorMinister();
+        this->interiorMinister = created;
+        created->InitializeCityInteriorState(this);
+      }
+      this->interiorMinister->ReadFrom(stream);
+    } else {
       if (this->interiorMinister != 0) {
         this->interiorMinister->Free();
-        this->interiorMinister = 0;
       }
-    } else {
-      TMinister* interiorMinister = this->interiorMinister;
-      if (interiorMinister == 0) {
-        TCityInteriorMinister* created = new TCityInteriorMinister();
-        created->InitializeCityInteriorState(this);
-        this->interiorMinister = created;
-        interiorMinister = created;
-      }
-      if (interiorMinister != 0) {
-        interiorMinister->ReadFrom(stream);
-      }
+      this->interiorMinister = 0;
     }
 
-    if ((ministerMask & 4) == 0) {
+    if ((ministerMask & 4) != 0) {
+      if (this->defenseMinister == 0) {
+        TDefenseMinister* created = new TDefenseMinister();
+        this->defenseMinister = created;
+        created->InitializeBaseOrderArrayMetrics(this);
+      }
+      this->defenseMinister->ReadFrom(stream);
+    } else {
       if (this->defenseMinister != 0) {
         this->defenseMinister->Free();
-        this->defenseMinister = 0;
       }
-    } else {
-      TMinister* defenseMinister = this->defenseMinister;
-      if (defenseMinister == 0) {
-        TDefenseMinister* created = new TDefenseMinister();
-        created->InitializeBaseOrderArrayMetrics(this);
-        this->defenseMinister = created;
-        defenseMinister = created;
-      }
-      if (defenseMinister != 0) {
-        defenseMinister->ReadFrom(stream);
-      }
+      this->defenseMinister = 0;
     }
 
-    if ((ministerMask & 8) == 0) {
+    if ((ministerMask & 8) != 0) {
+      this->city->ReadFrom(stream);
+    } else {
       if (this->city != 0) {
         this->city->Free();
-        this->city = 0;
       }
-    } else {
-      TCity* cityObject = this->city;
-      if (cityObject != 0) {
-        cityObject->ReadFrom(stream);
-      }
+      this->city = 0;
     }
   }
 
-  TSortedList* townMarkerList = this->townMarkerList;
-  int hasItems = townMarkerList->GetCount();
-  if (hasItems != 0) {
-    townMarkerList->FreePayloads();
+  // Both collections reload their list pointer from the object at every use
+  // ([esi+0x898] / [esi+0x89c] throughout 0x4d9800..0x4d98e5), and both counts land in
+  // the same stack slot (esp+0x10 at 0x4d9826 and 0x4d98dc) -- one scratch int, no
+  // cached list locals. The new-expressions carry no null test either: the only branch
+  // is the compiler's own skip-the-constructor test (0x4d9856 / 0x4d990c).
+  if (this->townMarkerList->GetCount() != 0) {
+    this->townMarkerList->FreePayloads();
   }
-  townMarkerList->ReadFrom(stream);
+  this->townMarkerList->ReadFrom(stream);
 
-  int townCount = 0;
-  stream->ReadBytes(&townCount, 4);
-
-  if (townCount > 0) {
-    int townOrdinal = 1;
-    while (townOrdinal <= townCount) {
-      TTown* townMarker = new TTown();
-      if (townMarker != 0) {
-        townMarker->ReadFrom(stream);
-        townMarkerList->AddTail(townMarker);
-      }
-      ++townOrdinal;
-    }
+  int entryCount;
+  stream->ReadBytes(&entryCount, 4);
+  for (int townOrdinal = 1; townOrdinal <= entryCount; ++townOrdinal) {
+    TTown* townMarker = new TTown();
+    townMarker->ReadFrom(stream);
+    this->townMarkerList->AddTail(townMarker);
   }
 
-  if (townCount > 0) {
-    this->city->SetSelectedTownMarker(townMarkerList->GetEntryByOrdinal());
+  // 0x4d989d: the ordinal is 1, not GetEntryByOrdinal's default of 0 -- a 0 ordinal
+  // reaches CPtrList::FindIndex(-1) and faults. The original also guards on the city
+  // existing (0x4d9893) before selecting into it.
+  if (entryCount > 0 && this->city != nullptr) {
+    this->city->SetSelectedTownMarker(this->townMarkerList->GetEntryByOrdinal(1));
   }
 
-  TSortedList* trackedObjectList = this->trackedObjectList;
-  hasItems = trackedObjectList->GetCount();
-  if (hasItems != 0) {
-    trackedObjectList->FreePayloads();
+  if (this->trackedObjectList->GetCount() != 0) {
+    this->trackedObjectList->FreePayloads();
   }
-  trackedObjectList->ReadFrom(stream);
+  this->trackedObjectList->ReadFrom(stream);
 
-  int unusedOrderCount = 0;
-  stream->ReadBytes(&unusedOrderCount, 4);
-
-  int orderOrdinal = 1;
-  while (orderOrdinal < 5) {
+  // Count-driven, not a fixed four: the original runs EBX from 1 while EBX <= the count
+  // it just read (0x4d98f0 / 0x4d9941). A hardcoded bound reads the wrong number of
+  // TCivUnit records and desyncs everything after this nation.
+  stream->ReadBytes(&entryCount, 4);
+  for (int orderOrdinal = 1; orderOrdinal <= entryCount; ++orderOrdinal) {
     TCivUnit* civOrderObj = new TCivUnit();
-    if (civOrderObj != nullptr) {
-      civOrderObj->ICivUnit(kCivilianUnitMiner, -1, this->nationSlot);
-      civOrderObj->ReadFrom(stream);
-    }
-    ++orderOrdinal;
+    civOrderObj->ICivUnit(kCivilianUnitMiner, -1, this->nationSlot);
+    civOrderObj->ReadFrom(stream);
   }
+
+  // 0x4d9954: the 0x17-byte candidate flag block, read straight after the civilian-order
+  // loop and before the budget fields. WriteTo has always emitted it (0x4d9e9c), so
+  // omitting it here left every nation record 23 bytes short and desynced the rest of
+  // the stream from this point on.
+  stream->ReadBytes(this->candidateNationFlags, 0x17);
 
   stream->ReadBytes(&this->diplomacyBudgetBase, 4);
   stream->ReadBytes(&this->escalationCounter, 1);
@@ -581,7 +574,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
       int nodeOrdinal = 1;
       while (nodeOrdinal <= nodeCount) {
         unsigned char hasNode = 0;
-        char markerOk = stream->ReadByte(&hasNode);
+        char markerOk = stream->ReadObject(&hasNode);
         if (markerOk != 0) {
           missionNodeQueue->AddTail(0);
         }
@@ -606,13 +599,13 @@ void TGreatPower::ReadFrom(TStream* stream) {
 void TGreatPower::WriteTo(TStream* stream) {
   TCountry::WriteTo(stream);
 
-  stream->WriteBytesSlot78(&this->diplomacyEligibilityA0, 1);
-  stream->WriteBytesSlot78(&this->diplomacyCounterA2, 2);
-  stream->WriteBytesSlot78(&this->tradeCapacity, 2);
-  stream->WriteBytesSlot78(&this->needCapA6, 2);
-  stream->WriteBytesSlot78(&this->needsOverCapFlag, 2);
-  stream->WriteBytesSlot78(&this->grantTotalCost, 4);
-  stream->WriteBytesSlot78(&this->diplomacyCounterB0, 2);
+  stream->WriteBytes(&this->diplomacyEligibilityA0, 1);
+  stream->WriteBytes(&this->diplomacyCounterA2, 2);
+  stream->WriteBytes(&this->tradeCapacity, 2);
+  stream->WriteBytes(&this->needCapA6, 2);
+  stream->WriteBytes(&this->needsOverCapFlag, 2);
+  stream->WriteBytes(&this->grantTotalCost, 4);
+  stream->WriteBytes(&this->diplomacyCounterB0, 2);
 
   WriteShortArrayElems(stream, this->diplomacyPolicyByNation, 0x17);
   WriteShortArrayElems(stream, this->diplomacyGrantByNation, 0x17);
@@ -625,11 +618,11 @@ void TGreatPower::WriteTo(TStream* stream) {
   WriteShortArrayElems(stream, this->diplomacyState222, 0x17);
   WriteShortArrayElems(stream, this->diplomacyState250, 0x17);
 
-  stream->WriteBytesSlot78(&this->budgetPoolBase, 4);
-  stream->WriteBytesSlot78(&this->budgetPoolDelta, 4);
+  stream->WriteBytes(&this->budgetPoolBase, 4);
+  stream->WriteBytes(&this->budgetPoolDelta, 4);
   WriteIntArrayElems(stream, this->aidAllocationMatrix, 0x170);
 
-  stream->WriteBytesSlot78(&this->serializedStatusFlags[0], 0xd);
+  stream->WriteBytes(&this->serializedStatusFlags[0], 0xd);
   WriteShortArrayElemsRev(stream, this->field8d6, 0xd);
 
   this->turnEventQueue->WriteTo(stream);
@@ -651,7 +644,7 @@ void TGreatPower::WriteTo(TStream* stream) {
   if (this->city != 0) {
     presenceFlags = static_cast<unsigned char>(presenceFlags | 8);
   }
-  stream->streamSlot7c(presenceFlags);
+  stream->WriteByte(presenceFlags);
   if (this->foreignMinister != 0) {
     this->foreignMinister->WriteTo(stream);
   }
@@ -671,7 +664,7 @@ void TGreatPower::WriteTo(TStream* stream) {
   this->townMarkerList->WriteTo(stream);
   {
     int entryCount = this->townMarkerList->GetCount();
-    stream->WriteBytesSlot78(&entryCount, 4);
+    stream->WriteBytes(&entryCount, 4);
     for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
       TUnit* entry = static_cast<TUnit*>(this->townMarkerList->GetEntryByOrdinal(ordinal));
       entry->WriteTo(stream);
@@ -680,33 +673,33 @@ void TGreatPower::WriteTo(TStream* stream) {
   this->trackedObjectList->WriteTo(stream);
   {
     int entryCount = this->trackedObjectList->GetCount();
-    stream->WriteBytesSlot78(&entryCount, 4);
+    stream->WriteBytes(&entryCount, 4);
     for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
       TUnit* entry = static_cast<TUnit*>(this->trackedObjectList->GetEntryByOrdinal(ordinal));
       entry->WriteTo(stream);
     }
   }
 
-  stream->WriteBytesSlot78(this->candidateNationFlags, 0x17);
-  stream->WriteBytesSlot78(&this->diplomacyBudgetBase, 4);
-  stream->WriteBytesSlot78(&this->escalationCounter, 1);
-  stream->WriteBytesSlot78(&this->pendingCommitmentCost, 4);
-  stream->WriteBytesSlot78(&this->pressureCounter, 1);
-  stream->WriteBytesSlot78(&this->field900, 4);
-  stream->WriteBytesSlot78(&this->field904, 1);
+  stream->WriteBytes(this->candidateNationFlags, 0x17);
+  stream->WriteBytes(&this->diplomacyBudgetBase, 4);
+  stream->WriteBytes(&this->escalationCounter, 1);
+  stream->WriteBytes(&this->pendingCommitmentCost, 4);
+  stream->WriteBytes(&this->pressureCounter, 1);
+  stream->WriteBytes(&this->field900, 4);
+  stream->WriteBytes(&this->field904, 1);
 
   this->missionNodeQueue->WriteTo(stream);
   int missionNodeCount = this->missionNodeQueue->GetCount();
-  stream->WriteBytesSlot78(&missionNodeCount, 4);
+  stream->WriteBytes(&missionNodeCount, 4);
   for (int nodeOrdinal = 1; nodeOrdinal <= missionNodeCount; ++nodeOrdinal) {
     void* node = this->missionNodeQueue->GetEntryByOrdinal(nodeOrdinal);
-    stream->WriteObjectSlotB4(node, 0);
+    stream->WriteObject(node, 0);
   }
 
-  stream->WriteBytesSlot78(&this->field910, 4);
-  stream->WriteBytesSlot78(&this->aidAllocationTotal, 4);
-  stream->WriteBytesSlot78(this->colonyBoycottFlags, 0x17);
-  stream->WriteBytesSlot78(&this->militaryExpenses960, 4);
+  stream->WriteBytes(&this->field910, 4);
+  stream->WriteBytes(&this->aidAllocationTotal, 4);
+  stream->WriteBytes(this->colonyBoycottFlags, 0x17);
+  stream->WriteBytes(&this->militaryExpenses960, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x004da3e0
@@ -718,7 +711,7 @@ void TGreatPower::ReadCoreFieldsFromStream(TStream* stream, int unusedArg) {
   }
   this->trackedObjectList->ReadFrom(stream);
 
-  int orderCount = stream->ReadShort();
+  int orderCount = stream->ReadInteger();
   for (; orderCount > 0; --orderCount) {
     TCivUnit* civOrder = new TCivUnit();
     civOrder->ICivUnit(kCivilianUnitMiner, -1, this->nationSlot);
@@ -734,7 +727,7 @@ void TGreatPower::WriteCoreFieldsToStream(TStream* stream) {
 
   this->trackedObjectList->WriteTo(stream);
   int orderCount = this->trackedObjectList->GetCount();
-  stream->WriteCountSlot88(orderCount);
+  stream->WriteInteger(orderCount);
   for (int ordinal = 1; ordinal <= orderCount; ++ordinal) {
     TUnit* order = static_cast<TUnit*>(this->trackedObjectList->GetEntryByOrdinal(ordinal));
     order->WriteTo(stream);

@@ -102,18 +102,18 @@ void TForeignMinister::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0052f2b0
 void TForeignMinister::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&skillIndexC, 2);
-  stream->WriteBytesSlot78(&interiorBidResource10, 2);
-  stream->WriteBytesSlot78(&interiorBidAmount12, 2);
-  stream->WriteBytesSlot78(&capabilityFlag14, 2);
-  stream->WriteBytesSlot78(&capabilityFlag16, 2);
-  stream->WriteBytesSlot78(&diplomacyPhaseCounter18, 2);
-  stream->WriteBytesSlot78(&tradeBidRefreshInterval1a, 2);
-  stream->WriteBytesSlot78(&interiorOrderKind1c, 2);
+  stream->WriteBytes(&skillIndexC, 2);
+  stream->WriteBytes(&interiorBidResource10, 2);
+  stream->WriteBytes(&interiorBidAmount12, 2);
+  stream->WriteBytes(&capabilityFlag14, 2);
+  stream->WriteBytes(&capabilityFlag16, 2);
+  stream->WriteBytes(&diplomacyPhaseCounter18, 2);
+  stream->WriteBytes(&tradeBidRefreshInterval1a, 2);
+  stream->WriteBytes(&interiorOrderKind1c, 2);
   WriteShortArrayElems(stream, purchasePriorityByResource1e, 0x11);
   WriteShortArrayElems(stream, preferredResourceSlots40, 4);
-  stream->WriteBytesSlot78(&field48, 1);
-  stream->WriteBytesSlot78(tradePartnerEnabled49, sizeof(tradePartnerEnabled49));
+  stream->WriteBytes(&field48, 1);
+  stream->WriteBytes(tradePartnerEnabled49, sizeof(tradePartnerEnabled49));
   WriteShortArrayElems(stream, developmentGrantByNation50, 0x17);
 }
 

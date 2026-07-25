@@ -71,8 +71,8 @@ void MapContextActionRecord::ReadFrom(TStream* stream) {
   for (int side = 0; side < 2; ++side) {
     stream->ReadBytes(&nationIds[side], 1);
     if (g_nSaveFormatVersion < 0x2c) {
-      stream->streamSlot6c(nameBuffer0c[side].data, 0x20);
-      stream->streamSlot6c(overlayLabel4c[side].data, 0xff);
+      stream->ReadString(nameBuffer0c[side].data, 0x20);
+      stream->ReadString(overlayLabel4c[side].data, 0xff);
     } else {
       stream->ReadBytes(nameBuffer0c[side].data, 0x20);
       stream->ReadBytes(overlayLabel4c[side].data, 0xff);
@@ -89,7 +89,7 @@ void MapContextActionRecord::ReadFrom(TStream* stream) {
       stream->ReadBytes(&elem.resourceType, 2);
       stream->ReadBytes(&elem.stockOrRequired, 2);
       if (g_nSaveFormatVersion < 0x2c) {
-        stream->streamSlot6c(&elem.nameBuffer, 0x20);
+        stream->ReadString(&elem.nameBuffer, 0x20);
       } else {
         stream->ReadBytes(&elem.nameBuffer, 0x20);
       }
@@ -101,9 +101,9 @@ void MapContextActionRecord::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004a1640
 void MapContextActionRecord::WriteTo(TStream* stream) {
-  stream->WriteBytesSlot78(&participantIndex02, 1);
-  stream->WriteBytesSlot78(&reservedByte03, 1);
-  stream->WriteBytesSlot78(&actionType04, 4);
+  stream->WriteBytes(&participantIndex02, 1);
+  stream->WriteBytes(&reservedByte03, 1);
+  stream->WriteBytes(&actionType04, 4);
 
   short nodeId;
   if (actionType04 == 0 || actionType04 == 3 || actionType04 == 4) {
@@ -111,20 +111,20 @@ void MapContextActionRecord::WriteTo(TStream* stream) {
   } else {
     nodeId = static_cast<TZone*>(tileOrObject08.object)->GetContextOrdinalOrInvalid();
   }
-  stream->WriteBytesSlot78(&nodeId, 2);
+  stream->WriteBytes(&nodeId, 2);
 
   for (int side = 0; side < 2; ++side) {
-    stream->WriteBytesSlot78(&nationIds[side], 1);
-    stream->WriteBytesSlot78(nameBuffer0c[side].data, 0x20);
-    stream->WriteBytesSlot78(overlayLabel4c[side].data, 0xff);
-    stream->WriteBytesSlot78(&childCount24a[side], 2);
+    stream->WriteBytes(&nationIds[side], 1);
+    stream->WriteBytes(nameBuffer0c[side].data, 0x20);
+    stream->WriteBytes(overlayLabel4c[side].data, 0xff);
+    stream->WriteBytes(&childCount24a[side], 2);
     for (int i = 0; i < childCount24a[side]; ++i) {
       MapOrderBattleSideChildRecord& child = sideChildRecords250[side][i];
-      stream->WriteBytesSlot78(&child.resourceType, 2);
-      stream->WriteBytesSlot78(&child.stockOrRequired, 2);
-      stream->WriteBytesSlot78(child.nameBuffer, 0x20);
-      stream->WriteBytesSlot78(&child.strengthBucket, 2);
-      stream->WriteBytesSlot78(&child.detailIdentity, 4);
+      stream->WriteBytes(&child.resourceType, 2);
+      stream->WriteBytes(&child.stockOrRequired, 2);
+      stream->WriteBytes(child.nameBuffer, 0x20);
+      stream->WriteBytes(&child.strengthBucket, 2);
+      stream->WriteBytes(&child.detailIdentity, 4);
     }
   }
 }
@@ -228,32 +228,43 @@ void TArmyMgr::Free() {
 // FUNCTION: IMPERIALISM 0x004a1b80
 void TArmyMgr::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
+  // The null test and the final clear go through `this`, but the purge walk reloads the
+  // manager singleton on every iteration (0x4a1bb7/0x4a1bc6 read [0x006a3338] rather than
+  // EBP) -- the same asymmetry TArmyMgr::Free shows, so it is written the same way here.
   if (mapContextActionRecordList04 != 0) {
-    for (int ordinal = mapContextActionRecordList04->GetSize(); ordinal > 0; --ordinal) {
+    int ordinal = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
+    while (ordinal > 0) {
       MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
-          mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(ordinal));
+          g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
+              ordinal));
       delete[] record->sideChildRecords250[0];
       delete[] record->sideChildRecords250[1];
       record->sideChildRecords250[1] = 0;
       record->sideChildRecords250[0] = 0;
+      --ordinal;
     }
     mapContextActionRecordList04->ClearAndFreeAllPtrListRecords();
   }
   flag8 = 0;
-  if (g_nSaveFormatVersion > 0x24) {
-    for (short count = stream->ReadShort(); count != 0; --count) {
+  if (g_nSaveFormatVersion >= 0x25) {
+    int count = stream->ReadInteger();
+    while (count-- != 0) {
+      // The two stride-0x20 / stride-0xff store loops at 0x4a1c47 and 0x4a1c58 are the
+      // array default-construction of nameBuffer0c and overlayLabel4c, emitted by this
+      // declaration; only the POD tail needs clearing by hand.
       MapContextActionRecord record;
-      record.childCount24a[0] = 0;
       record.childCount24a[1] = 0;
-      record.sideChildRecords250[0] = 0;
+      record.childCount24a[0] = 0;
       record.sideChildRecords250[1] = 0;
+      record.sideChildRecords250[0] = 0;
 
       record.ReadFrom(stream);
       mapContextActionRecordList04->AppendCopiedRecordToPtrList(&record);
       flag8 = 1;
       // Redundant re-store (both branches write the same 1); preserved to match codegen
-      // (same idiom as AppendMapContextActionRecordAndResetWorkingFields).
-      if (g_apSecondaryNationStateSlots[0x17] != 0) {
+      // (same idiom as AppendMapContextActionRecordAndResetWorkingFields, which reads the
+      // same byte global at 0x006a42dc).
+      if (g_bRandomMapDeveloperCheatFlag != 0) {
         flag8 = 1;
       }
 
@@ -271,7 +282,7 @@ void TArmyMgr::ReadFrom(TStream* stream) {
 void TArmyMgr::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   int count = mapContextActionRecordList04->GetSize();
-  stream->WriteCountSlot88(count);
+  stream->WriteInteger(count);
   for (int index = 0; index < mapContextActionRecordList04->GetSize(); ++index) {
     MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
         mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(index + 1));

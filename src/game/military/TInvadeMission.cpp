@@ -147,8 +147,8 @@ void TInvadeMission::CalculateNeeds() {
 // FUNCTION: IMPERIALISM 0x0053f640
 void TInvadeMission::WriteTo(TStream* stream) {
   TAttackProvinceMission::WriteTo(stream);
-  stream->WriteBytesSlot78(&targetProvince30, 2);
-  stream->WriteBytesSlot78(&amassingProvince32, 2);
+  stream->WriteBytes(&targetProvince30, 2);
+  stream->WriteBytes(&amassingProvince32, 2);
   // The original dereferences beachhead34 unguarded (0x53f668); ReadFrom always
   // installs one, so a null here is a broken invariant, not a case to skip -- and a
   // guard would silently truncate the stream instead of failing.

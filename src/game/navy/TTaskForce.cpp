@@ -136,8 +136,8 @@ void TTaskForce::RegainVirginity(int nationArg, TZone* contextZone) {
 // FUNCTION: IMPERIALISM 0x00552b90
 void TTaskForce::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&aggression, 4);
-  stream->WriteBytesSlot78(&shipOrders, 4);
+  stream->WriteBytes(&aggression, 4);
+  stream->WriteBytes(&shipOrders, 4);
 
   short ownerOrdinal;
   if (shipOrders == 5) {
@@ -149,14 +149,14 @@ void TTaskForce::WriteTo(TStream* stream) {
   } else {
     ownerOrdinal = target.asZone->GetContextOrdinalOrInvalid();
   }
-  stream->WriteBytesSlot78(&ownerOrdinal, 2);
+  stream->WriteBytes(&ownerOrdinal, 2);
 
   short contextOrdinal = location->GetContextOrdinalOrInvalid();
-  stream->WriteBytesSlot78(&contextOrdinal, 2);
+  stream->WriteBytes(&contextOrdinal, 2);
 
-  stream->WriteBytesSlot78(&nation, 2);
-  stream->WriteBytesSlot78(&defeated, 1);
-  stream->WriteBytesSlot78(&ingotTileIndex, 2);
+  stream->WriteBytes(&nation, 2);
+  stream->WriteBytes(&defeated, 1);
+  stream->WriteBytes(&ingotTileIndex, 2);
 
   int childCount = 0;
   TMapOrderChildLinkNode* link = shipList;
@@ -166,7 +166,7 @@ void TTaskForce::WriteTo(TStream* stream) {
       link = link->next;
     } while (link != 0);
   }
-  stream->WriteBytesSlot78(&childCount, 2);
+  stream->WriteBytes(&childCount, 2);
 
   link = shipList;
   while (link != 0) {
@@ -182,9 +182,9 @@ void TTaskForce::WriteTo(TStream* stream) {
         }
       }
     }
-    stream->WriteBytesSlot78(&shipIndex, 2);
+    stream->WriteBytes(&shipIndex, 2);
     short activeFlag = link->active;
-    stream->WriteBytesSlot78(&activeFlag, 2);
+    stream->WriteBytes(&activeFlag, 2);
     link = link->next;
   }
 }
@@ -195,25 +195,26 @@ void TTaskForce::ReadFrom(TStream* stream) {
   stream->ReadBytes(&aggression, 4);
   stream->ReadBytes(&shipOrders, 4);
 
-  short ownerOrdinal;
-  stream->ReadBytes(&ownerOrdinal, 2);
+  // One scratch short serves the two ordinals and the child count, and doubles as the
+  // loop counter: the original reads all three into the same slot (esp+0x10 at 0x552d40,
+  // 0x552d7a and 0x552dbe) and decrements that slot in place at 0x552dd4.
+  short ordinal;
+  stream->ReadBytes(&ordinal, 2);
   if (shipOrders == 5) {
-    target.asProvince = &g_pGlobalMapState->cityScoreTable[ownerOrdinal];
+    target.asProvince = &g_pGlobalMapState->cityScoreTable[ordinal];
   } else {
-    target.asZone = FindMapActionContextByNodeId(ownerOrdinal);
+    target.asZone = FindMapActionContextByNodeId(ordinal);
   }
 
-  short contextOrdinal;
-  stream->ReadBytes(&contextOrdinal, 2);
-  location = FindMapActionContextByNodeId(contextOrdinal);
+  stream->ReadBytes(&ordinal, 2);
+  location = FindMapActionContextByNodeId(ordinal);
 
   stream->ReadBytes(&nation, 2);
   stream->ReadBytes(&defeated, 1);
   stream->ReadBytes(&ingotTileIndex, 2);
 
-  short childCount;
-  stream->ReadBytes(&childCount, 2);
-  for (short remaining = childCount; remaining != 0; --remaining) {
+  stream->ReadBytes(&ordinal, 2);
+  while (ordinal-- != 0) {
     short shipIndex;
     stream->ReadBytes(&shipIndex, 2);
     short activeByte;

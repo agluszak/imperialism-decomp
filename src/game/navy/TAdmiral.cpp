@@ -88,9 +88,9 @@ void TAdmiral::Free() {
 // FUNCTION: IMPERIALISM 0x00551670
 void TAdmiral::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&nationSlot, 2);
-  stream->streamSlotAc(&displayName);
-  stream->WriteBytesSlot78(&experiencePoints, 2);
+  stream->WriteBytes(&nationSlot, 2);
+  stream->WriteSharedString(&displayName);
+  stream->WriteBytes(&experiencePoints, 2);
 
   int index = 0;
   TShip* node = g_pNavyPrimaryOrderListHead;
@@ -103,14 +103,14 @@ void TAdmiral::WriteTo(TStream* stream) {
       }
     }
   }
-  stream->WriteBytesSlot78(&index, 2);
+  stream->WriteBytes(&index, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x00551700
 void TAdmiral::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   stream->ReadBytes(&nationSlot, 2);
-  stream->streamSlot70(&displayName, 0x20);
+  stream->ReadSharedString(&displayName, 0x20);
   stream->ReadBytes(&experiencePoints, 2);
   short index;
   stream->ReadBytes(&index, 2);

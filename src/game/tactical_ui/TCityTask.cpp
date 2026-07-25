@@ -254,12 +254,12 @@ void TCityTask::QueueCityProductionOrderCommand(TSortedList* commandQueue) {
 
 // FUNCTION: IMPERIALISM 0x005ae570
 void TCityTask::WriteTo(TStream* stream) {
-  stream->WriteBytesSlot78(&pendingFlag, 1);
+  stream->WriteBytes(&pendingFlag, 1);
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&citySlotIndex, 2);
-  stream->WriteBytesSlot78(&remainingAttempts, 2);
-  stream->WriteBytesSlot78(&requestedAmount, 2);
-  stream->WriteBytesSlot78(&alreadyQueuedFlag, 2);
+  stream->WriteBytes(&citySlotIndex, 2);
+  stream->WriteBytes(&remainingAttempts, 2);
+  stream->WriteBytes(&requestedAmount, 2);
+  stream->WriteBytes(&alreadyQueuedFlag, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x005ae5e0

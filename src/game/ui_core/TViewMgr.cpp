@@ -1,4 +1,5 @@
 #include "game/ui_core/TViewMgr.h"
+#include "game/GameAssert.h"
 #include "game/ui_core/TDialogBehavior.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_map.h"
@@ -383,12 +384,12 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
   TWindow* node = static_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventConfirmEndTurn));
   if (node == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x223);
   }
   node->SetModality(1);
   if (node->ResolveControlByTag(kControlTagDialog) == nullptr) { // 'GOLD'
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x227);
   }
   TDialogBehavior* content = node->GetDialogBehavior();
@@ -854,7 +855,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlot70(int eventCode) {
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(eventCode), 0));
   if (node == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x4ff);
   }
   GoldCommitControl* gold = static_cast<GoldCommitControl*>(
@@ -872,7 +873,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlot74(int eventCode) {
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(eventCode), 0));
   if (node == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x514);
   }
   GoldCommitControl* gold = static_cast<GoldCommitControl*>(
@@ -898,7 +899,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlot78(int eventCode) {
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(eventCode), 0));
   if (node == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x535);
   }
   GoldCommitControl* gold = static_cast<GoldCommitControl*>(
@@ -919,7 +920,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlot7C(int eventCode) {
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(eventCode), 0));
   if (node == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x54e);
   }
   GoldCommitControl* gold = static_cast<GoldCommitControl*>(
@@ -940,7 +941,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlot80(int eventCode) {
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(eventCode), 0));
   if (node == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x566);
   }
   GoldCommitControl* gold = static_cast<GoldCommitControl*>(
@@ -1690,7 +1691,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   TDropShadowNumberText* capacity = static_cast<TDropShadowNumberText*>(
       turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagMCap));
   if (capacity == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x686);
   }
   capacity->AssertValid();
@@ -1700,7 +1701,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
 
   TCity* city = nation->city;
   if (city == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x697);
   }
   short* citySummary = city->GetCitySummaryRecordSlot74();
@@ -1718,7 +1719,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
 
   TView* food = turn_event_ui_refresh::ResolveMainTaggedControl(kTagFood);
   if (food == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x6ad);
   }
   const int foodOnHand =
@@ -1922,7 +1923,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
       static_cast<TMapUberPicture*>(mainView->ResolveControlByTag(kControlTagMain));
   mapPicture->AssertValid();
   if (mapPicture == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xc5a);
   }
   mapPicture->DisplayMiniMap();
@@ -1934,7 +1935,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
   if (zoomControl == 0) {
     zoomControl = mainView->ResolveControlByTag(kControlTagZmIn);
     if (zoomControl == 0) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      GAME_FAIL_NIL_POINTER();
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xc69);
     }
   }
@@ -1945,7 +1946,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
   if (miniMapControl == 0) {
     miniMapControl = mainView->ResolveControlByTag(kControlTagInfo);
     if (miniMapControl == 0) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      GAME_FAIL_NIL_POINTER();
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xc70);
     }
   }
@@ -1954,7 +1955,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
 
   TView* orderControl = mainView->ResolveControlByTag(kControlTagTrad);
   if (orderControl == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xc76);
   }
   if (g_pSimMgr->TestTurnFlowStatusFlagMask(0x100)) {
@@ -1966,7 +1967,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
 
   orderControl = mainView->ResolveControlByTag(kControlTagDipl);
   if (orderControl == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xc7e);
   }
   if (g_pSimMgr->TestTurnFlowStatusFlagMask(1)) {
@@ -1978,7 +1979,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
 
   orderControl = mainView->ResolveControlByTag(kControlTagCity);
   if (orderControl == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xc86);
   }
   if (g_pSimMgr->TestTurnFlowStatusFlagMask(0x10)) {
@@ -1990,7 +1991,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
 
   orderControl = mainView->ResolveControlByTag(kControlTagTran);
   if (orderControl == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xc8e);
   }
   if (g_pSimMgr->TestTurnFlowStatusFlagMask(0x1000)) {
@@ -2013,13 +2014,13 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
     }
     TView* roster = mainView->ResolveControlByTag(rosterTag);
     if (roster == 0) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      GAME_FAIL_NIL_POINTER();
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xca0);
     }
     TView* rosterHotspot =
         roster->ResolveControlByTag(rosterIndex < 2 ? kControlTagLatr : kControlTagNext);
     if (rosterHotspot == 0) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      GAME_FAIL_NIL_POINTER();
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xca6);
     }
     g_pSimMgr->GetString(0x2732, 0, &sharedString);
@@ -2027,7 +2028,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
 
     rosterHotspot = roster->ResolveControlByTag(kControlTagDfnd);
     if (rosterHotspot == 0) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      GAME_FAIL_NIL_POINTER();
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xcab);
     }
     g_pSimMgr->GetString(0x2732, static_cast<short>(rosterIndex + 1), &sharedString);
@@ -2035,7 +2036,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
 
     rosterHotspot = roster->ResolveControlByTag(kControlTagDone);
     if (rosterHotspot == 0) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      GAME_FAIL_NIL_POINTER();
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xcb0);
     }
     g_pSimMgr->GetString(0x2732, 4, &sharedString);
@@ -2044,12 +2045,12 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
 
   TView* civRoster = mainView->ResolveControlByTag(kControlTagUciv);
   if (civRoster == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xcb7);
   }
   TView* rosterChild = civRoster->ResolveControlByTag(kControlTagUnit);
   if (rosterChild == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xcc2);
   }
   g_pSimMgr->GetString(0x2732, 0xe, &sharedString);
@@ -2057,7 +2058,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
 
   rosterChild = civRoster->ResolveControlByTag(kControlTagBack);
   if (rosterChild == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xcc8);
   }
   sharedString = g_szEmptyString;
@@ -2065,7 +2066,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
 
   rosterChild = civRoster->ResolveControlByTag(kControlTagGarr);
   if (rosterChild == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xccd);
   }
   g_pSimMgr->GetString(0x2732, 0xf, &sharedString);
@@ -2073,13 +2074,13 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
 
   TView* armyRoster = mainView->ResolveControlByTag(kControlTagUarm);
   if (armyRoster == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xcd3);
   }
   for (int placardIndex = 0; placardIndex < 10; placardIndex++) {
     TView* placard = armyRoster->ResolveControlByTag(kControlTagArmyPlacardFirst + placardIndex);
     if (placard == 0) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      GAME_FAIL_NIL_POINTER();
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xcd9);
     }
     g_pSimMgr->GetString(0x2726, static_cast<short>(placardIndex), &sharedString);
@@ -2087,7 +2088,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
   }
   rosterChild = armyRoster->ResolveControlByTag(kControlTagGarr);
   if (rosterChild == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xcdf);
   }
   g_pSimMgr->GetString(0x2732, 7, &sharedString);
@@ -2095,12 +2096,12 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
 
   TView* navyRoster = mainView->ResolveControlByTag(kControlTagUnav);
   if (navyRoster == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xce5);
   }
   rosterChild = navyRoster->ResolveControlByTag(kControlTagBack);
   if (rosterChild == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xce9);
   }
   sharedString = g_szEmptyString;
@@ -2108,7 +2109,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
 
   rosterChild = navyRoster->ResolveControlByTag(kControlTagBomb);
   if (rosterChild == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xcfe);
   }
   g_pSimMgr->GetString(0x2732, 8, &sharedString);
@@ -2116,7 +2117,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
 
   rosterChild = navyRoster->ResolveControlByTag(kControlTagAgr0);
   if (rosterChild == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xd03);
   }
   g_pSimMgr->GetString(0x2732, 9, &sharedString);
@@ -2124,7 +2125,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
 
   rosterChild = navyRoster->ResolveControlByTag(kControlTagAgr1);
   if (rosterChild == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xd08);
   }
   g_pSimMgr->GetString(0x2732, 0xa, &sharedString);
@@ -2132,7 +2133,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
 
   rosterChild = navyRoster->ResolveControlByTag(kControlTagAgr2);
   if (rosterChild == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xd0d);
   }
   g_pSimMgr->GetString(0x2732, 0xb, &sharedString);
@@ -2140,7 +2141,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
 
   // The dialog root is only asserted; the map picture then re-arms its click selection.
   if (mapPicture->ResolveControlByTag(kControlTagDialog) == 0) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xd17);
   }
   mapPicture->CycleMapInteractionSelectionAfterHandledClick();
@@ -2194,7 +2195,7 @@ void RefreshMainMenuButtonLabel(TView* mainView, unsigned int controlTag, short 
                                 short stringIndex, int assertLine) {
   TControl* control = static_cast<TControl*>(mainView->ResolveControlByTag(controlTag));
   if (control == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, assertLine);
   }
   CString label;
@@ -2377,7 +2378,7 @@ void TViewMgr::ShowBuildingExpansionDialog(short buildingSlotId, TCity* city,
   TWindow* node = static_cast<TWindow*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericExpander));
   if (node == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf50);
   }
   node->SetModality(1);
@@ -2387,7 +2388,7 @@ void TViewMgr::ShowBuildingExpansionDialog(short buildingSlotId, TCity* city,
       static_cast<TBuildingExpansionView*>(node->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
   expansionView->AssertValid();
   if (expansionView == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf54);
   }
   expansionView->StuffValues(buildingSlotId, city, productionView);

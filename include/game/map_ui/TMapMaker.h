@@ -8,6 +8,14 @@
 
 struct Province;
 
+// One full-resolution map-generator tile record. The random-template passes copy the
+// complete 0x24-byte record as nine dwords; individual gameplay fields remain owned by
+// TTerrainStateRecordView after generation.
+struct MapGeneratorTileRecord {
+  int words[9];
+};
+ASSERT_SIZE(MapGeneratorTileRecord, 0x24);
+
 // VTABLE: IMPERIALISM 0x006598f8
 class TMapMaker : public TObject {
   DECLARE_DYNCREATE(TMapMaker)
@@ -146,7 +154,8 @@ public:
   virtual void CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regionClass,
                                                     short unusedClass, short northClass,
                                                     short unusedClass2);
-  virtual char* GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex); // slot 33 / 0x84
+  virtual MapGeneratorTileRecord*
+  GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex); // slot 33 / 0x84
 
   // TMapMaker's real vtable (0x006598f8) ends at its last reachable slot (0x21 /
   // SelectOwner above); slots 0x22..0x28 are a literal NULL tail (matching the

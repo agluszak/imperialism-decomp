@@ -31,10 +31,6 @@ void ReleaseFrameRefTarget(CObject* target) {
   }
 }
 
-void* GetValueAtOffset98(CWnd* wnd) {
-  return *reinterpret_cast<void**>(reinterpret_cast<char*>(wnd) + 0x98);
-}
-
 } // namespace
 
 // The MCI stop-notify handler (0x00484230) is CIncludeView's MCIWNDM_NOTIFYMODE (msg 0x4c8)
@@ -121,9 +117,9 @@ void CMainFrame::ConfigureTopLevelWindowStyleAndPlacement(int width, int height)
   field_CC = 0;
   ModifyStyle(0x00C00000, 0, 0);
   ModifyStyleEx(0x200, 0, 0);
-  if (GetValueAtOffset98(this) != nullptr) {
-    ModifyStyleEx(0x200, 0, 0);
-    ModifyStyleEx(0x300, 0, 0);
+  if (GetActiveView() != nullptr) {
+    GetActiveView()->ModifyStyleEx(0x200, 0, 0);
+    GetActiveView()->ModifyStyleEx(0x300, 0, 0);
   }
   RECT rect;
   rect.left = 0;

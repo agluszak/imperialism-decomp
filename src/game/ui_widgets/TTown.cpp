@@ -68,26 +68,26 @@ void TTown::ReadFrom(TStream* stream) {
   if (g_nSaveFormatVersion < 0xa) {
     activeFlag4f = 1;
   } else {
-    activeFlag4f = stream->streamSlot44() != 0;
+    activeFlag4f = stream->ReadBoolean() != 0;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005b6e60
 void TTown::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(name, sizeof(name));
-  stream->WriteBytesSlot78(&tileIndex14, 2);
-  stream->WriteBytesSlot78(&field16, 2);
-  stream->WriteBytesSlot78(&field18, 2);
-  stream->WriteBytesSlot78(&createdTurnTick1a, 2);
-  stream->WriteBytesSlot78(&ownerNation1c, 2);
+  stream->WriteBytes(name, sizeof(name));
+  stream->WriteBytes(&tileIndex14, 2);
+  stream->WriteBytes(&field16, 2);
+  stream->WriteBytes(&field18, 2);
+  stream->WriteBytes(&createdTurnTick1a, 2);
+  stream->WriteBytes(&ownerNation1c, 2);
   // Element-wise with a byte swap, mirroring ReadFrom: a raw block write here emitted
   // host-order shorts that the reader then swapped, corrupting every yield on reload.
   WriteShortArrayElems(stream, resourceYieldByType, 0x17);
-  stream->WriteBytesSlot78(&transportLinkedFlag4c, 1);
-  stream->WriteBytesSlot78(&enabledFlag4d, 1);
-  stream->WriteBytesSlot78(&hasAdjacentCity4e, 1);
-  stream->streamSlot80(activeFlag4f);
+  stream->WriteBytes(&transportLinkedFlag4c, 1);
+  stream->WriteBytes(&enabledFlag4d, 1);
+  stream->WriteBytes(&hasAdjacentCity4e, 1);
+  stream->WriteBoolean(activeFlag4f);
 }
 
 static __inline short TownNeighborTile(TTown* town, int direction) {

@@ -2,6 +2,7 @@
 
 #include "RuntimeTestCase.h"
 
+class CString;
 class RuntimeContext;
 class TView;
 
@@ -51,4 +52,7 @@ protected:
   bool HasScenarioUiSnapshot() const;
   void CaptureScenarioUiSnapshot(int eventCode, TView* root);
   bool HoldAtScenarioScreen(const char* screenName) const;
+  // Per-class serialization round-trip findings, emitted verbatim into the result file
+  // under "serialization_roundtrip" (null when no scenario recorded any).
+  void RecordSerializationRoundtripReport(const CString& reportJson);
 };

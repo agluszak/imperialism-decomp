@@ -69,13 +69,13 @@ void TPowerPlantOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
 // FUNCTION: IMPERIALISM 0x004b7cc0
 void TPowerPlantOrder::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&resourceTypeIndex48, 2);
-  stream->WriteBytesSlot78(&quantityField04, 2);
-  stream->WriteBytesSlot78(&field40, 2);
-  stream->WriteBytesSlot78(&resourceTypeIndex48, 2);
-  stream->WriteBytesSlot78(trackingSlots10, 0x2e);
-  stream->WriteBytesSlot78(&accumulatedValue, 4);
-  stream->WriteBytesSlot78(&field4c, 2);
+  stream->WriteBytes(&resourceTypeIndex48, 2);
+  stream->WriteBytes(&quantityField04, 2);
+  stream->WriteBytes(&field40, 2);
+  stream->WriteBytes(&resourceTypeIndex48, 2);
+  stream->WriteBytes(trackingSlots10, 0x2e);
+  stream->WriteBytes(&accumulatedValue, 4);
+  stream->WriteBytes(&field4c, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x004b7d40

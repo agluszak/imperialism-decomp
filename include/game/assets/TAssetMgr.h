@@ -100,11 +100,10 @@ public:
   // 0x005e0520.
   void ScheduleTimerSlotCallbackWithInterval(TimerSlotCallback callback, UINT interval, int slot);
   // Loads the module's RT_VERSION resource and formats "(v. major.minor[.build[.revision]])"
-  // into *out from its VS_FIXEDFILEINFO dwFileVersionMS/dwFileVersionLS fields (raw offsets
-  // into the loaded resource block, matching the original's direct FindResource/
-  // LoadResource parse rather than VerQueryValue); leaves *out empty if the resource can't
-  // be found/loaded. `this` is unused; callers dispatch through g_pUiViewManager. 0x5e0590.
-  void FormatVersionStringFromVersionResource(CString* out);
+  // from its VS_FIXEDFILEINFO dwFileVersionMS/dwFileVersionLS fields in the loaded resource
+  // block, matching the original's direct FindResource/LoadResource parse rather than
+  // VerQueryValue. `this` is unused; callers dispatch through g_pUiViewManager. 0x5e0590.
+  CString FormatVersionStringFromVersionResource();
 };
 
 void __stdcall AssignScoresDatPathToSharedString(CString* out);

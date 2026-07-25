@@ -120,14 +120,14 @@ bool TShipBuildingTask::Tick(TSortedList* commandQueue) {
 
 // FUNCTION: IMPERIALISM 0x005ae9e0
 void TShipBuildingTask::WriteTo(TStream* stream) {
-  stream->WriteBytesSlot78(&pendingFlag, 1);
+  stream->WriteBytes(&pendingFlag, 1);
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&citySlotIndex, 2);
-  stream->WriteBytesSlot78(&remainingAttempts, 2);
-  stream->WriteBytesSlot78(&requestedAmount, 2);
-  stream->WriteBytesSlot78(&alreadyQueuedFlag, 2);
-  stream->WriteBytesSlot78(&requestedShipType14, 2);
-  stream->WriteBytesSlot78(&waitingForShipOrderAdvance16, 2);
+  stream->WriteBytes(&citySlotIndex, 2);
+  stream->WriteBytes(&remainingAttempts, 2);
+  stream->WriteBytes(&requestedAmount, 2);
+  stream->WriteBytes(&alreadyQueuedFlag, 2);
+  stream->WriteBytes(&requestedShipType14, 2);
+  stream->WriteBytes(&waitingForShipOrderAdvance16, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x005aea70

@@ -51,10 +51,10 @@ void TInteriorMinister::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004be320
 void TInteriorMinister::WriteTo(TStream* stream) {
   TMinister::WriteTo(stream);
-  stream->WriteBytesSlot78(&field10, 2);
-  stream->WriteBytesSlot78(&field12, 2);
-  stream->WriteBytesSlot78(&capabilityFlag14, 2);
-  stream->WriteBytesSlot78(&capabilityFlag16, 2);
+  stream->WriteBytes(&field10, 2);
+  stream->WriteBytes(&field12, 2);
+  stream->WriteBytes(&capabilityFlag14, 2);
+  stream->WriteBytes(&capabilityFlag16, 2);
   WriteShortArrayElems(stream, trailingTable, 7);
 }
 

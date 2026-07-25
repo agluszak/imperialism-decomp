@@ -122,7 +122,7 @@ TSortedPtrList::~TSortedPtrList() {}
 // FUNCTION: IMPERIALISM 0x005e1e50
 void TSortedPtrList::ReadFrom(TStream* stream) {
   stream->ReadBytes(&recordSize14, 2);
-  int count = stream->streamSlot50();
+  int count = stream->ReadLong();
   unsigned char* buffer = new unsigned char[recordSize14];
   for (short i = 1; i <= count; i++) {
     stream->ReadBytes(buffer, recordSize14);
@@ -133,9 +133,9 @@ void TSortedPtrList::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x005e1f10
 void TSortedPtrList::WriteTo(TStream* stream) {
-  stream->WriteBytesSlot78(&recordSize14, 2);
-  stream->streamSlot8c(m_nSize);
+  stream->WriteBytes(&recordSize14, 2);
+  stream->WriteLong(m_nSize);
   for (short i = 1; i <= m_nSize; i++) {
-    stream->WriteBytesSlot78(GetPtrListEntryByOneBasedIndex(i), recordSize14);
+    stream->WriteBytes(GetPtrListEntryByOneBasedIndex(i), recordSize14);
   }
 }

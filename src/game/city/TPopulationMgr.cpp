@@ -471,12 +471,12 @@ void TPopulationMgr::MakeUnavailable(short skillBand, short amount) {
 // FUNCTION: IMPERIALISM 0x004b6850
 void TPopulationMgr::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&populationCount08, 2);
-  stream->WriteBytesSlot78(&strength, 2);
-  stream->WriteBytesSlot78(&extraAt1e, 2);
-  stream->WriteBytesSlot78(&fieldAt20, 2);
-  stream->WriteBytesSlot78(predictedNeedByResource22, sizeof(predictedNeedByResource22));
-  stream->WriteBytesSlot78(&populationCountFloat0c, 4);
+  stream->WriteBytes(&populationCount08, 2);
+  stream->WriteBytes(&strength, 2);
+  stream->WriteBytes(&extraAt1e, 2);
+  stream->WriteBytes(&fieldAt20, 2);
+  stream->WriteBytes(predictedNeedByResource22, sizeof(predictedNeedByResource22));
+  stream->WriteBytes(&populationCountFloat0c, 4);
   baselineSlots10->WriteTo(stream);
   productionSlots14->WriteTo(stream);
   pendingDeltaSlots18->WriteTo(stream);

@@ -25,6 +25,11 @@
 #include "game/navy/TTaskForce.h"
 
 namespace {
+struct MapTileCostField {
+  short tileCosts[0x1950];
+};
+ASSERT_SIZE(MapTileCostField, 0x32a0);
+
 // Retain TOcean::`vftable' in the link until save/load paths virtual-dispatch through
 // g_pActiveMapOrderContext (currently only non-virtual methods are referenced).
 TOcean g_anchorTOceanInstance;
@@ -130,7 +135,9 @@ void TOcean::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
 
-  int i;
+  // A short counter: the bound test is a 16-bit `cmp word ptr [eax], bx` (0x5623a3), so
+  // an int loop variable would need a movsx of nationCount on every compare.
+  short i;
   for (i = 0; i < nationCount; ++i) {
     TZone* zone = &contextArray[i];
     if (g_pMapActionContextListHead == zone) {
@@ -209,7 +216,7 @@ void TOcean::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x005628f0
 void TOcean::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&nationCount, 2);
+  stream->WriteBytes(&nationCount, 2);
   int i;
   for (i = 0; i < nationCount; ++i) {
     contextArray[i].WriteTo(stream);
@@ -227,7 +234,7 @@ void TOcean::WriteTo(TStream* stream) {
       portZone = portZone->prev18;
     }
   }
-  stream->WriteBytesSlot78(&portZoneCount, 2);
+  stream->WriteBytes(&portZoneCount, 2);
 
   portZone = g_pMapActionContextListHead;
   while (portZone != 0 && portZone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
@@ -253,12 +260,12 @@ void TOcean::WriteTo(TStream* stream) {
     }
   }
 
-  stream->WriteBytesSlot78(&routeNodeCount, 2);
+  stream->WriteBytes(&routeNodeCount, 2);
   for (i = 0; i < routeNodeCount; ++i) {
-    stream->WriteBytesSlot78(&routeSegments[i].top, 4);
-    stream->WriteBytesSlot78(&routeSegments[i].left, 4);
-    stream->WriteBytesSlot78(&routeSegments[i].bottom, 4);
-    stream->WriteBytesSlot78(&routeSegments[i].right, 4);
+    stream->WriteBytes(&routeSegments[i].top, 4);
+    stream->WriteBytes(&routeSegments[i].left, 4);
+    stream->WriteBytes(&routeSegments[i].bottom, 4);
+    stream->WriteBytes(&routeSegments[i].right, 4);
   }
 }
 
@@ -268,10 +275,10 @@ void TOcean::WriteTo(TStream* stream) {
 // final pass flips the tentative negative costs positive. Returns the number of tiles
 // changed this sweep (0 => converged).
 // FUNCTION: IMPERIALISM 0x00562AF0
-int RelaxMapTileCostFieldByNeighborTerrain(short* costField) {
+int RelaxMapTileCostFieldByNeighborTerrain(MapTileCostField* costField) {
   int changedCount = 0;
   int tileIndex = 0;
-  short* pCost = costField;
+  short* pCost = costField->tileCosts;
   do {
     if (*pCost == 0) {
       for (int direction = 0; direction < 6; direction++) {
@@ -284,7 +291,7 @@ int RelaxMapTileCostFieldByNeighborTerrain(short* costField) {
           *pCost = -1;
           changedCount++;
         } else {
-          short neighborCost = costField[neighbor];
+          short neighborCost = costField->tileCosts[neighbor];
           if (neighborCost > 0 && (cur == 0 || neighborCost < -cur)) {
             *pCost = static_cast<short>(-1 - neighborCost);
             changedCount++;
@@ -295,7 +302,7 @@ int RelaxMapTileCostFieldByNeighborTerrain(short* costField) {
     tileIndex++;
     pCost++;
     if (tileIndex > 0x194f) {
-      short* clear = costField;
+      short* clear = costField->tileCosts;
       for (int i = 0x1950; i != 0; i--) {
         if (*clear < 0) {
           *clear = static_cast<short>(-*clear);
@@ -308,7 +315,7 @@ int RelaxMapTileCostFieldByNeighborTerrain(short* costField) {
 }
 
 // FUNCTION: IMPERIALISM 0x00562c00
-int SelectBestSeedTileForNationFromCostField(short* costField, short nationTag) {
+int SelectBestSeedTileForNationFromCostField(MapTileCostField* costField, short nationTag) {
   int bestTile = -1;
   int bestScore = -1;
   short equalBestCount = 0;
@@ -319,14 +326,14 @@ int SelectBestSeedTileForNationFromCostField(short* costField, short nationTag) 
       continue;
     }
 
-    int score = costField[tileIndex] * 12;
+    int score = costField->tileCosts[tileIndex] * 12;
     for (int direction = 0; direction < 6; ++direction) {
       short neighbor = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(tileIndex, direction);
       if (neighbor != -1 && g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04 ==
                                 tile->ownerNationTag04) {
-        score += costField[neighbor] * 2;
+        score += costField->tileCosts[neighbor] * 2;
         if (direction == 4 || direction == 1) {
-          score += costField[neighbor];
+          score += costField->tileCosts[neighbor];
         }
       }
     }
@@ -357,7 +364,7 @@ void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte) {
 // FUNCTION: IMPERIALISM 0x00562d90
 void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg) {
   TZone* contextBase;
-  int* costField;
+  MapTileCostField* costField;
   int relaxPassCount;
   int nationIndex;
 
@@ -368,29 +375,23 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
   if (contextBase == 0) {
     GAME_FAIL_NIL_POINTER();
   }
-  costField = new int[0xca8];
-  {
-    int* clearCursor = costField;
-    for (int clearIndex = 0xca8; clearIndex != 0; clearIndex = clearIndex - 1) {
-      *clearCursor = 0;
-      clearCursor = clearCursor + 1;
-    }
-  }
-  relaxPassCount = RelaxMapTileCostFieldByNeighborTerrain(reinterpret_cast<short*>(costField));
+  costField = new MapTileCostField;
+  memset(costField->tileCosts, 0, sizeof(costField->tileCosts));
+  relaxPassCount = RelaxMapTileCostFieldByNeighborTerrain(costField);
   while (relaxPassCount != 0) {
-    relaxPassCount = RelaxMapTileCostFieldByNeighborTerrain(reinterpret_cast<short*>(costField));
+    relaxPassCount = RelaxMapTileCostFieldByNeighborTerrain(costField);
   }
   nationIndex = 0;
   if (0 < static_cast<short>(nationCountArg)) {
     do {
       int seedTile = SelectBestSeedTileForNationFromCostField(
-          reinterpret_cast<short*>(costField), static_cast<short>(nationIndex + 0x17));
+          costField, static_cast<short>(nationIndex + 0x17));
       contextArray[nationIndex].SetMapActionContextTargetTileAndRefreshMarkers(nationIndex + 0x17,
                                                                                seedTile);
       nationIndex = nationIndex + 1;
     } while (nationIndex < static_cast<short>(nationCountArg));
   }
-  delete[] costField;
+  delete costField;
 }
 
 // FUNCTION: IMPERIALISM 0x00562f20

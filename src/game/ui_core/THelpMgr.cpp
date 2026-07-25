@@ -184,9 +184,9 @@ void THelpMgr::WriteTo(TStream* stream) {
     unsigned char first = bytes[0];
     bytes[0] = bytes[1];
     bytes[1] = first;
-    stream->WriteBytesSlot78(&swapped, 2);
+    stream->WriteBytes(&swapped, 2);
   }
-  stream->WriteBytesSlot78(&helpIndexReady, 2);
+  stream->WriteBytes(&helpIndexReady, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x00501070

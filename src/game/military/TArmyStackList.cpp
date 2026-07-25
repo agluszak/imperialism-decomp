@@ -1,4 +1,5 @@
 #include "game/military/TArmyStackList.h"
+#include "game/military/TArmyStack.h"
 // SYNTHETIC: IMPERIALISM 0x004a83b0
 // TArmyStackList::CreateObject
 
@@ -14,8 +15,8 @@ TArmyStackList::~TArmyStackList() {}
 
 // FUNCTION: IMPERIALISM 0x004a8560
 short TArmyStackList::Compare(void* a, void* b) {
-  short aKey = *reinterpret_cast<short*>(static_cast<char*>(a) + 6);
-  short bKey = *reinterpret_cast<short*>(static_cast<char*>(b) + 6);
+  short aKey = static_cast<TArmyStack*>(a)->field6;
+  short bKey = static_cast<TArmyStack*>(b)->field6;
   if (aKey < bKey) {
     return 1;
   }

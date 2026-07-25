@@ -111,20 +111,20 @@ void TArmyStack::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004a7960
 void TArmyStack::WriteTo(TStream* stream) {
-  stream->WriteBytesSlot78(&field4, 2);
-  stream->WriteBytesSlot78(&field6, 2);
-  stream->WriteBytesSlot78(&categoryFlag8, 1);
-  stream->WriteBytesSlot78(&fortLevelAttackerPenaltyCache9, 1);
-  stream->WriteBytesSlot78(&fieldA, 2);
-  stream->WriteBytesSlot78(&fieldC, 1);
-  stream->WriteBytesSlot78(&ownerNationCodeE, 2);
-  stream->WriteBytesSlot78(&tileIndex10, 2);
+  stream->WriteBytes(&field4, 2);
+  stream->WriteBytes(&field6, 2);
+  stream->WriteBytes(&categoryFlag8, 1);
+  stream->WriteBytes(&fortLevelAttackerPenaltyCache9, 1);
+  stream->WriteBytes(&fieldA, 2);
+  stream->WriteBytes(&fieldC, 1);
+  stream->WriteBytes(&ownerNationCodeE, 2);
+  stream->WriteBytes(&tileIndex10, 2);
 
   TArmyStackUnitNode* node = head14;
   cursor18 = node;
   TUnit* unit = (node != 0) ? node->unit : 0;
   while (unit != 0) {
-    stream->WriteBytesSlot78(&unit->field_1A, 2);
+    stream->WriteBytes(&unit->field_1A, 2);
     node = cursor18;
     if (node != 0) {
       node = node->next;

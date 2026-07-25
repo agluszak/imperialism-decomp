@@ -58,13 +58,13 @@ void TPortZone::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x00561820
 void TPortZone::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->streamSlotAc(&displayName);
-  stream->WriteBytesSlot78(&statusCode04, 2);
-  stream->WriteBytesSlot78(&tileOrTerrainId0c, 4);
-  stream->WriteBytesSlot78(&seedNationId12, 2);
-  stream->WriteBytesSlot78(&activeTileIndex20, 2);
-  stream->WriteBytesSlot78(&contextOrdinal14, 2);
-  stream->WriteBytesSlot78(&portTileIndex48, 2);
+  stream->WriteSharedString(&displayName);
+  stream->WriteBytes(&statusCode04, 2);
+  stream->WriteBytes(&tileOrTerrainId0c, 4);
+  stream->WriteBytes(&seedNationId12, 2);
+  stream->WriteBytes(&activeTileIndex20, 2);
+  stream->WriteBytes(&contextOrdinal14, 2);
+  stream->WriteBytes(&portTileIndex48, 2);
 }
 
 // slot 0x0a — TZone::GenerateMapActionContextDisplayNameAndHeadline override.

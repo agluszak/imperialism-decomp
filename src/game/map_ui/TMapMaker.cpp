@@ -1467,33 +1467,37 @@ void TMapMaker::CopyRegionTemplateBankWithRandomVariant(int coarseIndex, short r
                                                         short unusedClass, short northClass,
                                                         short southClass) {
   (void)unusedClass;
-  char* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
+  MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
 
   if (northClass == regionClass) {
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
-    if ((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0) {
-      memcpy(cell - 0xee8, cell, 0x24);
+    unsigned int randomBits = g_mapGenLcgState_006a38e8 >> 0xc;
+    if ((randomBits & 1) != 0) {
+      memcpy(cell - 106, cell, sizeof(*cell));
       g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
-      if ((g_mapGenLcgState_006a38e8 >> 0xc & 3) == 0) {
-        memcpy(cell - 0x1e18, cell, 0x24);
+      randomBits = g_mapGenLcgState_006a38e8 >> 0xc;
+      if ((randomBits & 3) == 0) {
+        memcpy(cell - 214, cell, sizeof(*cell));
       }
     } else {
-      memcpy(cell + 0x48, cell - 0xf0c, 0x24);
+      memcpy(cell + 2, cell - 107, sizeof(*cell));
     }
   } else {
-    memcpy(cell - 0xf30, cell, 0x24);
+    memcpy(cell - 108, cell, sizeof(*cell));
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
-    if ((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0) {
-      memcpy(cell - 0xf54, cell, 0x24);
+    unsigned int randomBits = g_mapGenLcgState_006a38e8 >> 0xc;
+    if ((randomBits & 1) != 0) {
+      memcpy(cell - 109, cell, sizeof(*cell));
       g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
-      if ((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0) {
-        memcpy(cell - 0x1e60, cell, 0x24);
+      randomBits = g_mapGenLcgState_006a38e8 >> 0xc;
+      if ((randomBits & 1) != 0) {
+        memcpy(cell - 216, cell, sizeof(*cell));
       }
     }
   }
 
   if (southClass != regionClass) {
-    memcpy(cell + 0x6c, cell - 0xee8, 0x24);
+    memcpy(cell + 3, cell - 106, sizeof(*cell));
   }
 }
 
@@ -1504,22 +1508,23 @@ void TMapMaker::CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regi
   (void)unusedClass;
   (void)unusedClass2;
   int neighbor = GetAdjacentRegionGridCell(coarseIndex, 2);
-  char* cell = GetFineGridCellBasePointerFromCoarseIndex(neighbor);
-  char* source = cell - 0xf30;
+  MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(neighbor);
+  MapGeneratorTileRecord* source = cell - 108;
 
   if (northClass == regionClass) {
-    memcpy(cell, source, 0x24);
+    memcpy(cell, source, sizeof(*cell));
   } else if (regionClass != 1) {
-    memcpy(cell - 0x24, source, 0x24);
+    memcpy(cell - 1, source, sizeof(*cell));
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
-    if ((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) == 0) {
-      memcpy(cell - 0x48, source, 0x24);
+    unsigned int randomBits = g_mapGenLcgState_006a38e8 >> 0xc;
+    if ((randomBits & 0x7fff) == 0) {
+      memcpy(cell - 2, source, sizeof(*cell));
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005298a0
-char* TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex) {
+MapGeneratorTileRecord* TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex) {
   char* cell =
       (static_cast<short>(coarseIndex % 0x1b) + static_cast<short>(coarseIndex / 0x1b) * 0x6c) *
           0x90 +
@@ -1527,7 +1532,9 @@ char* TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex) {
   if ((coarseIndex / 0x1b & 1U) != 0) {
     cell -= 0x48;
   }
-  return cell;
+  // Reviewed application-buffer boundary: mapTileGrid08 is still byte-addressed by the
+  // wider generator, while this virtual exposes its proven 0x24-byte record granularity.
+  return static_cast<MapGeneratorTileRecord*>(static_cast<void*>(cell));
 }
 
 // FUNCTION: IMPERIALISM 0x00529f60

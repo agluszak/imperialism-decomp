@@ -220,18 +220,19 @@ void TAutoGreatPower::ReadFrom(TStream* stream) {
   stream->ReadBytes(this->mapNodeStateFlags, 0x180);
   stream->ReadBytes(this->portZoneStateFlags, 0x70);
 
-  TSortedList* missionQueue = this->missionQueue;
-  if (missionQueue->GetCount() != 0) {
-    missionQueue->FreePayloads();
+  // The queue pointer is reloaded from the object at every use (0x4e7317, 0x4e7326,
+  // 0x4e7331, 0x4e7372), so it is not cached in a local here.
+  if (this->missionQueue->GetCount() != 0) {
+    this->missionQueue->FreePayloads();
   }
-  missionQueue->ReadFrom(stream);
+  this->missionQueue->ReadFrom(stream);
 
-  int missionCount = 0;
+  int missionCount;
   stream->ReadBytes(&missionCount, 4);
   for (int queueIndex = 1; queueIndex <= missionCount; ++queueIndex) {
     void* mission = 0;
-    if (stream->ReadByte(&mission) != 0) {
-      missionQueue->AddTail(mission);
+    if (stream->ReadObject(&mission) != 0) {
+      this->missionQueue->AddTail(mission);
     }
   }
 
@@ -246,21 +247,19 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
 
   WriteShortArrayElems(stream, this->actionMetricByQuarter, 6);
 
-  stream->WriteBytesSlot78(this->mapNodeStateFlags, 0x180);
-  stream->WriteBytesSlot78(this->portZoneStateFlags, 0x70);
+  stream->WriteBytes(this->mapNodeStateFlags, 0x180);
+  stream->WriteBytes(this->portZoneStateFlags, 0x70);
 
-  TSortedList* missionQueue = this->missionQueue;
-  missionQueue->WriteTo(stream);
-  int missionQueueCount = missionQueue->GetCount();
-
-  int zeroWord = 0;
-  stream->WriteBytesSlot78(&zeroWord, 4);
-  int index = 1;
-  if (index <= missionQueueCount) {
-    do {
-      stream->WriteObjectSlotB4(missionQueue->GetEntryByOrdinal(index), 0);
-      ++index;
-    } while (index <= missionQueueCount);
+  // 0x4e747a writes the queue COUNT, not a zero word: GetCount()'s result is stored into
+  // the local at esp+0x10 (0x4e7483) and that local's address is what WriteBytes receives.
+  // The port emitted a literal 0 here while still writing every element below, so a save
+  // claimed an empty mission queue and then appended N objects the reader never consumed
+  // -- a desync the static byte-count audit cannot see, because both sides move 4 bytes.
+  this->missionQueue->WriteTo(stream);
+  int missionQueueCount = this->missionQueue->GetCount();
+  stream->WriteBytes(&missionQueueCount, 4);
+  for (int index = 1; index <= missionQueueCount; ++index) {
+    stream->WriteObject(this->missionQueue->GetEntryByOrdinal(index), 0);
   }
 }
 

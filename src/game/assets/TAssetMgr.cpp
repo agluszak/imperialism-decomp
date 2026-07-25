@@ -265,31 +265,39 @@ void TAssetMgr::ScheduleTimerSlotCallbackWithInterval(TimerSlotCallback callback
                                     &DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot);
 }
 
+namespace {
+// The retail RT_VERSION block places its VS_FIXEDFILEINFO at +0x30. LoadResource returns
+// the raw block boundary used by the original; the embedded Windows SDK type owns all
+// field offsets from that point onward.
+struct LoadedVersionResourceBlock {
+  unsigned char prefix00[0x30];
+  VS_FIXEDFILEINFO fixedInfo30;
+};
+} // namespace
+
 // FUNCTION: IMPERIALISM 0x005e0590
-void TAssetMgr::FormatVersionStringFromVersionResource(CString* out) {
+CString TAssetMgr::FormatVersionStringFromVersionResource() {
+  CString versionText;
   HRSRC resourceHandle = FindResourceA(nullptr, MAKEINTRESOURCEA(1), MAKEINTRESOURCEA(16));
-  if (resourceHandle == nullptr) {
-    return;
+  if (resourceHandle != nullptr) {
+    HGLOBAL loadedResource = LoadResource(nullptr, resourceHandle);
+    if (loadedResource != nullptr) {
+      const LoadedVersionResourceBlock* versionInfo =
+          static_cast<const LoadedVersionResourceBlock*>(static_cast<const void*>(loadedResource));
+      unsigned int fileVersionMS = versionInfo->fixedInfo30.dwFileVersionMS;
+      unsigned int fileVersionLS = versionInfo->fixedInfo30.dwFileVersionLS;
+      short major = static_cast<short>(fileVersionMS >> 16);
+      short minor = static_cast<short>(fileVersionMS);
+      short build = static_cast<short>(fileVersionLS >> 16);
+      short revision = static_cast<short>(fileVersionLS);
+      if (revision != 0) {
+        versionText.Format("(v. %d.%d.%d.%d)", major, minor, build, revision);
+      } else if (fileVersionLS != 0) {
+        versionText.Format("(v. %d.%d.%d)", major, minor, build);
+      } else {
+        versionText.Format("(v. %d.%d)", major, minor);
+      }
+    }
   }
-  HGLOBAL loadedResource = LoadResource(nullptr, resourceHandle);
-  if (loadedResource == nullptr) {
-    return;
-  }
-  // Raw offsets into the loaded VS_VERSIONINFO block, matching the original's direct parse
-  // (dwFileVersionMS/dwFileVersionLS of the trailing VS_FIXEDFILEINFO) rather than the
-  // VerQueryValue API.
-  const char* versionInfo = static_cast<const char*>(loadedResource);
-  unsigned int fileVersionMS = *reinterpret_cast<const unsigned int*>(versionInfo + 0x38);
-  unsigned int fileVersionLS = *reinterpret_cast<const unsigned int*>(versionInfo + 0x3c);
-  short major = static_cast<short>(fileVersionMS >> 16);
-  short minor = static_cast<short>(fileVersionMS);
-  short build = static_cast<short>(fileVersionLS >> 16);
-  short revision = static_cast<short>(fileVersionLS);
-  if (revision != 0) {
-    out->Format("(v. %d.%d.%d.%d)", major, minor, build, revision);
-  } else if (fileVersionLS != 0) {
-    out->Format("(v. %d.%d.%d)", major, minor, build);
-  } else {
-    out->Format("(v. %d.%d)", major, minor);
-  }
+  return versionText;
 }

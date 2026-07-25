@@ -10,9 +10,14 @@ from __future__ import annotations
 
 import unittest
 
+from pathlib import Path
+import tempfile
+import unittest.mock
+
 from tools.workflow.serde_audit import (
     binary_stream_ops,
     compare,
+    serial_identity_findings,
     source_stream_ops,
     _loop_blocks,
 )
@@ -24,7 +29,7 @@ class SourceExtractionTest(unittest.TestCase):
             """{
               stream->ReadBytes(&field6, 2);
               stream->ReadBytes(&cityScoreTotal, 4);
-              stream->WriteBytesSlot78(&field6, 2);
+              stream->WriteBytes(&field6, 2);
             }"""
         )
         self.assertEqual(
@@ -33,7 +38,7 @@ class SourceExtractionTest(unittest.TestCase):
         )
 
     def test_typed_accessor_widths_come_from_the_slot_table(self):
-        ops = source_stream_ops("{ short v = stream->ReadShort(); stream->WriteCountSlot88(3); }")
+        ops = source_stream_ops("{ short v = stream->ReadInteger(); stream->WriteInteger(3); }")
         self.assertEqual([(op["dir"], op["bytes"]) for op in ops], [("read", 2), ("write", 2)])
 
     def test_sizeof_width_is_a_wildcard_not_a_guess(self):
@@ -54,7 +59,7 @@ class SourceExtractionTest(unittest.TestCase):
         ops = source_stream_ops(
             """{
               for (int remaining = 0x20; remaining != 0; --remaining) {
-                stream->WriteBytesSlot78(&value, 2);
+                stream->WriteBytes(&value, 2);
               }
             }"""
         )
@@ -186,8 +191,27 @@ class BinaryExtractionTest(unittest.TestCase):
         ops, _ = binary_stream_ops(0x1000)
         self.assertEqual([(op["dir"], op["bytes"]) for op in ops], [("read", 1)])
 
+    def test_spilled_slot_pointer_reloaded_into_a_register_still_resolves(self):
+        # TMultiplayerMgr::ReadFrom parks the ReadBytes slot and reloads it into EBP once
+        # the string reads have used EBP for a different slot.
+        self.patch_listing(
+            self.PROLOGUE
+            + [
+                "00001006  MOV EBX,dword ptr [EAX + 0x3c]",
+                "0000100a  SUB ESP,0x4",
+                "0000100d  MOV dword ptr [ESP + 0x0],EBX",
+                "00001011  XOR EBX,EBX",
+                "00001013  MOV EBP,dword ptr [ESP + 0x0]",
+                "00001017  PUSH 0x4",
+                "00001019  PUSH ECX",
+                "0000101a  CALL EBP",
+            ]
+        )
+        ops, _ = binary_stream_ops(0x1000)
+        self.assertEqual([(op["dir"], op["bytes"]) for op in ops], [("read", 4)])
+
     def test_dispatch_on_another_objects_vtable_is_not_a_stream_call(self):
-        # this->vtable[0x84] collides with TStream's streamSlot84; only a slot loaded
+        # this->vtable[0x84] collides with TStream's WriteCharacter; only a slot loaded
         # from the *stream's* vtable may count. Regression: TNavyMission::ReadFrom.
         self.patch_listing(
             self.PROLOGUE
@@ -240,6 +264,28 @@ class ComparisonTest(unittest.TestCase):
             compare([self.op("read", 2)], [self.op("write", 2)])["status"], "divergent"
         )
 
+    def slot_op(self, name, direction, size, count=1):
+        return {"op": name, "dir": direction, "bytes": size, "count": count}
+
+    def test_a_different_stream_slot_is_a_divergence_even_with_a_wildcard_width(self):
+        # ReadSharedString's width is unknowable statically, so width comparison alone
+        # let a raw 0x20-byte block read stand in for a length-prefixed string. The slot
+        # names have to disagree loudly instead -- this is the TShip::ReadFrom defect.
+        original = [self.slot_op("ReadSharedString", "read", None)]
+        ported = [self.slot_op("ReadBytes", "read", 0x20)]
+        self.assertEqual(compare(original, ported)["status"], "divergent")
+
+    def test_matching_stream_slots_still_align(self):
+        original = [self.slot_op("ReadSharedString", "read", None)]
+        ported = [self.slot_op("ReadSharedString", "read", None)]
+        self.assertEqual(compare(original, ported)["status"], "aligned")
+
+    def test_helper_expanded_ops_are_exempt_from_the_slot_check(self):
+        # Inline helpers do not carry a slot name, so they must not be compared by name.
+        original = [self.slot_op("ReadBytes", "read", 2)]
+        ported = [self.slot_op("SwapShortArrayBytes", "read", 2)]
+        self.assertEqual(compare(original, ported)["status"], "aligned")
+
     def test_unknown_width_is_a_wildcard_and_is_counted(self):
         original = [self.op("read", 0x422)]
         ported = [self.op("read", None)]
@@ -256,6 +302,68 @@ class ComparisonTest(unittest.TestCase):
         original = [self.op("write", 2, 30)]
         ported = [self.op("write", 2, 1)]
         self.assertEqual(compare(original, ported)["status"], "divergent")
+
+
+class SerialIdentityTest(unittest.TestCase):
+    """The CObject sub-format's identity surface -- invisible to byte accounting.
+
+    CArchive persists a class name and schema; a mismatch makes a retail save unreadable
+    however correct the field code is.
+    """
+
+    def run_with(self, oracle_rows, sources):
+        import tools.workflow.serde_audit as audit
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            oracle = root / "rtti.csv"
+            oracle.write_text(
+                "descriptor,name,object_size,schema,createobject_thunk,createobject,"
+                "base_descriptor,base_name\n" + "".join(oracle_rows),
+                encoding="utf-8",
+            )
+            source_dir = root / "src"
+            source_dir.mkdir()
+            (source_dir / "x.cpp").write_text(sources, encoding="utf-8")
+            with unittest.mock.patch.object(audit, "RTTI_ORACLE", oracle), unittest.mock.patch.object(
+                audit, "REPO_ROOT", root
+            ):
+                return serial_identity_findings()
+
+    def test_matching_identities_report_nothing(self):
+        findings = self.run_with(
+            ["0x1,TMission,0x10,0x1,0x2,0x3,0x4,TObject\n"],
+            "IMPLEMENT_SERIAL(TMission, TObject, 1)\n",
+        )
+        self.assertEqual(findings, [])
+
+    def test_schema_mismatch_is_reported(self):
+        findings = self.run_with(
+            ["0x1,TMission,0x10,0x2,0x2,0x3,0x4,TObject\n"],
+            "IMPLEMENT_SERIAL(TMission, TObject, 1)\n",
+        )
+        self.assertTrue(any("schema" in f for f in findings))
+
+    def test_base_mismatch_is_reported(self):
+        findings = self.run_with(
+            ["0x1,TBeachheadMission,0x10,0x1,0x2,0x3,0x4,TControlSeaZoneMission\n"],
+            "IMPLEMENT_SERIAL(TBeachheadMission, TNavyMission, 1)\n",
+        )
+        self.assertTrue(any("chains to" in f for f in findings))
+
+    def test_a_serial_class_we_never_declare_is_reported(self):
+        findings = self.run_with(
+            ["0x1,TMission,0x10,0x1,0x2,0x3,0x4,TObject\n"],
+            "IMPLEMENT_DYNCREATE(TMission, TObject)\n",
+        )
+        self.assertTrue(any("never declares IMPLEMENT_SERIAL" in f for f in findings))
+
+    def test_declaring_serial_on_a_dyncreate_class_is_reported(self):
+        findings = self.run_with(
+            ["0x1,TMission,0x10,0xffff,0x2,0x3,0x4,TObject\n"],
+            "IMPLEMENT_SERIAL(TMission, TObject, 1)\n",
+        )
+        self.assertTrue(any("not serial" in f for f in findings))
 
 
 if __name__ == "__main__":

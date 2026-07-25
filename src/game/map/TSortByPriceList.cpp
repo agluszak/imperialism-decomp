@@ -21,7 +21,7 @@ TSortByPriceList::TSortByPriceList() {}
 
 // FUNCTION: IMPERIALISM 0x005347b0
 short TSortByPriceList::Compare(void* a, void* b) {
-  short aKey = *reinterpret_cast<short*>(static_cast<char*>(a) + 2);
-  short bKey = *reinterpret_cast<short*>(static_cast<char*>(b) + 2);
+  short aKey = static_cast<short*>(a)[1];
+  short bKey = static_cast<short*>(b)[1];
   return static_cast<short>(((aKey <= bKey) - 1 & 2) - 1);
 }

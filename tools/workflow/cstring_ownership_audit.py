@@ -48,7 +48,7 @@ RAW_CALLS = {
     "memcpy": (0, 1),
     "memmove": (0, 1),
     "ReadBytes": (0,),
-    "WriteBytesSlot78": (0,),
+    "WriteBytes": (0,),
 }
 
 

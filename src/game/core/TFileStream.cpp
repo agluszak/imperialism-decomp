@@ -73,7 +73,7 @@ void TFileStream::ReadBytes(void* destination, int requestedCount) {
 }
 
 // FUNCTION: IMPERIALISM 0x00489290
-void TFileStream::WriteBytesSlot78(void* source, int byteCount) {
+void TFileStream::WriteBytes(void* source, int byteCount) {
   if (this->backingArchiveOrStream == 0) {
     FailNilPointer(0x410);
   }
@@ -81,14 +81,14 @@ void TFileStream::WriteBytesSlot78(void* source, int byteCount) {
 }
 
 // FUNCTION: IMPERIALISM 0x00489300
-char TFileStream::ReadByte(void* outObject) {
+char TFileStream::ReadObject(void* outObject) {
   *reinterpret_cast<void**>(outObject) = BackingArchive(this->backingArchiveOrStream)
                                              ->ReadObject(static_cast<const CRuntimeClass*>(0));
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00489330
-void TFileStream::WriteObjectSlotB4(void* objectRef, int flag) {
+void TFileStream::WriteObject(void* objectRef, int flag) {
   (void)flag;
   BackingArchive(this->backingArchiveOrStream)->WriteObject(static_cast<const CObject*>(objectRef));
 }
@@ -96,12 +96,12 @@ void TFileStream::WriteObjectSlotB4(void* objectRef, int flag) {
 // Delegate the shared-string read straight to the backing CArchive via the MFC
 // operator>>(CArchive&, CString&). maxLen is unused (see TStream base override).
 // FUNCTION: IMPERIALISM 0x00489360
-void TFileStream::streamSlot70(CString* dest, int maxLen) {
+void TFileStream::ReadSharedString(CString* dest, int maxLen) {
   (void)maxLen;
   *BackingArchive(this->backingArchiveOrStream) >> *dest;
 }
 
 // FUNCTION: IMPERIALISM 0x00489390
-void TFileStream::streamSlotAc(CString* sharedString) {
+void TFileStream::WriteSharedString(CString* sharedString) {
   *BackingArchive(this->backingArchiveOrStream) << *sharedString;
 }

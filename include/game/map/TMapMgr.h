@@ -21,6 +21,23 @@ struct GlobalMapTileRecord {
   TCivUnit* firstCivilianOrder; // 0x20
 };
 
+// Raw 0x24-byte tile record as stored in a Mac-endian scenario file. It is kept
+// separate from TTerrainStateRecordView because the three word fields remain byte
+// arrays until the load boundary swaps them, and +0x20 is serialized pointer storage
+// that must be cleared rather than interpreted as a live TCivUnit*.
+struct ScenarioTileDiskRecord {
+  unsigned char bytes00[4];
+  signed char ownerNationTag04;
+  unsigned char bytes05[0x14 - 0x05];
+  unsigned char cityRecordIndex14[2];
+  unsigned char bytes16[0x1a - 0x16];
+  unsigned char tileActionOrdinal1a[2];
+  unsigned char activeFlags1c[2];
+  unsigned char bytes1e[2];
+  int transientPointerBits20;
+};
+ASSERT_SIZE(ScenarioTileDiskRecord, 0x24);
+
 struct TTerrainStateRecordView {
   // Packed StrategicTerrainKind representation. Signed MOVSX reads are confirmed by
   // 0x516150/0x5161a0/0x5161e0/0x516220; -1 is the unassigned sentinel. Keep this byte
@@ -34,7 +51,7 @@ struct TTerrainStateRecordView {
   }
   // Per-tile sprite/adjacency variant index, read by the rendering-variant lookup family
   // (0x516150/0x5161a0/0x5161e0/0x516220) and written by
-  // UpdateMapTileAdjacencyMasksAndVariantForTile's streak-length bookkeeping. Same
+  // AssignPictToTile's streak-length bookkeeping. Same
   // evidence basis as terrainKindStorage00 above; also MOVSX-read there.
   signed char spriteVariantIndex01;
   // Staged river/coast connection and sprite code. The high bit marks a
@@ -250,8 +267,9 @@ public:
   virtual char BuildOrLoadGlobalMapStateForSession(const char* mapStreamName,
                                                    char* tuningOverride); // slot 0x0b 0x50ec90
   virtual void LoadPoliticalMapRegionSubtypeTableFromResourceStream();    // slot 0x0c 0x50f200
-  virtual unsigned char*
-  UpdateMapTileAdjacencyMasksAndVariantForTile(StrategicTileIndex tileIndex); // slot 0x0d 0x510210
+  // Mac oracle: TMapMgr::AssignPictToTile(short). Recomputes the tile's adjacency masks
+  // and rendering variant in place; all Windows callers discard the incidental EAX value.
+  virtual void AssignPictToTile(StrategicTileIndex tileIndex); // slot 0x0d 0x510210
   // If tileIndex's gateFlag != 1 (not yet initialized): resets the strategic terrain kind
   // to plains and
   // resourceTypeByEdge to {0x11, 0xff}, refreshes gateFlag via
@@ -784,7 +802,7 @@ public:
   // (terrainStateTable byte 0) and feature/subtype code (byte 2, the field the layout
   // calls riverSpriteCode), inspects the west (tile-1) and NE-row (tile-0x6b) neighbors, and
   // picks a sprite-variant id -- using the map-generation LCG (g_mapGenLcgState_006a38e8)
-  // to break ties. Called by UpdateMapTileAdjacencyMasksAndVariantForTile (0x510210).
+  // to break ties. Called by AssignPictToTile (0x510210).
   int ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex);
 
   // 0x5112f0/0x511360/0x5113d0/0x511440. Predicate helpers for the variant resolver:
@@ -898,4 +916,4 @@ public:
 ASSERT_SIZE(TMapMgr, 0x28);
 
 // 0x005187f0 -- endian fix-up over the scenario tile-record array read from disk.
-void ByteSwapScenarioTileRecordWords(char* tileRecords);
+void ByteSwapScenarioTileRecordWords(ScenarioTileDiskRecord* tileRecords);

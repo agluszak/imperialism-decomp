@@ -14,11 +14,11 @@ public:
   // clang-format off
   virtual ~TFileStream() override; // slot 0x01 (scalar deleting destructor)
   // slots 0x0a..0x0d: position/length accessors below
-  // slot 0x1c streamSlot70 owned by the hand declaration below (0x489360)
-  // slot 0x1e WriteBytesSlot78 owned by the hand declaration below (0x489290)
-  virtual void streamSlotAc(CString* sharedString) override;       // slot 0x2b 0x489390
-  virtual char ReadByte(void* outByte) override;                   // slot 0x2c 0x489300
-  virtual void WriteObjectSlotB4(void* object, int flag) override; // slot 0x2d 0x489330
+  // slot 0x1c ReadSharedString owned by the hand declaration below (0x489360)
+  // slot 0x1e WriteBytes owned by the hand declaration below (0x489290)
+  virtual void WriteSharedString(CString* sharedString) override;       // slot 0x2b 0x489390
+  virtual char ReadObject(void* outByte) override;                   // slot 0x2c 0x489300
+  virtual void WriteObject(void* object, int flag) override; // slot 0x2d 0x489330
   // clang-format on
   ArchiveStreamAdapter* backingArchiveOrStream;
 
@@ -33,8 +33,8 @@ public:
   int GetLength() override;
   void SetLength(int length) override;
   void ReadBytes(void* buffer, int sizeBytes) override;
-  void streamSlot70(CString* dest, int maxLen) override;
-  void WriteBytesSlot78(void* data, int length) override;
+  void ReadSharedString(CString* dest, int maxLen) override;
+  void WriteBytes(void* data, int length) override;
 
   // 0x00489220 / 0x00489290: forward raw byte read/write to the backing
   // CArchive, asserting the backing pointer is non-null first.

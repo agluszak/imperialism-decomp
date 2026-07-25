@@ -108,14 +108,14 @@ void TMapMgr::ReadFrom(TStream* stream) {
   stream->ReadBytes(&field8, 1);
   stream->ReadBytes(&field9, 1);
   stream->ReadBytes(&cityScoreTotal, 4);
-  stream->streamSlot70(&scenarioTagText1c, 0x20);
-  hexNeighborWrapHorizontally20 = stream->streamSlot44();
+  stream->ReadSharedString(&scenarioTagText1c, 0x20);
+  hexNeighborWrapHorizontally20 = stream->ReadBoolean();
   stream->ReadBytes(terrainStateTable, 0x38f40);
   int i;
   Province* record = cityScoreTable;
   for (i = 0; i < 0x180; ++i, ++record) {
     stream->ReadBytes(record, 0xa4);
-    stream->streamSlot70(&record->cityNameA4, 0x20);
+    stream->ReadSharedString(&record->cityNameA4, 0x20);
   }
   for (i = 0; i < 0x1950; ++i) {
     terrainStateTable[i].firstCivilianOrder20 = nullptr;
@@ -139,19 +139,19 @@ void TMapMgr::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0050e7a0
 void TMapMgr::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&field6, 2);
-  stream->WriteBytesSlot78(&field8, 1);
-  stream->WriteBytesSlot78(&field9, 1);
-  stream->WriteBytesSlot78(&cityScoreTotal, 4);
-  stream->streamSlotAc(&scenarioTagText1c);
-  stream->streamSlot80(hexNeighborWrapHorizontally20);
-  stream->WriteBytesSlot78(terrainStateTable, 0x38f40);
+  stream->WriteBytes(&field6, 2);
+  stream->WriteBytes(&field8, 1);
+  stream->WriteBytes(&field9, 1);
+  stream->WriteBytes(&cityScoreTotal, 4);
+  stream->WriteSharedString(&scenarioTagText1c);
+  stream->WriteBoolean(hexNeighborWrapHorizontally20);
+  stream->WriteBytes(terrainStateTable, 0x38f40);
   Province* record = cityScoreTable;
   for (int i = 0; i < 0x180; ++i, ++record) {
-    stream->WriteBytesSlot78(record, 0xa4);
-    stream->streamSlotAc(&record->cityNameA4);
+    stream->WriteBytes(record, 0xa4);
+    stream->WriteSharedString(&record->cityNameA4);
   }
-  stream->WriteBytesSlot78(&pendingRiverMouthTile22, 2);
+  stream->WriteBytes(&pendingRiverMouthTile22, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0050e8b0
@@ -271,7 +271,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
       LoadPoliticalMapRegionSubtypeTableFromResourceStream();
       short tile;
       for (tile = 0; tile < 0x1950; ++tile) {
-        UpdateMapTileAdjacencyMasksAndVariantForTile(tile);
+        AssignPictToTile(tile);
         UpdateTileNeighborBorderInfluenceCounters(tile, 0);
       }
       g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventMapEditor), 0);
@@ -355,7 +355,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
   if (sessionActive == 0) {
     short tile;
     for (tile = 0; tile < 0x1950; ++tile) {
-      UpdateMapTileAdjacencyMasksAndVariantForTile(tile);
+      AssignPictToTile(tile);
       UpdateTileNeighborBorderInfluenceCounters(tile, 0);
     }
   }
@@ -832,13 +832,11 @@ static __inline void SwapShortBytes(void* value) {
 }
 
 // FUNCTION: IMPERIALISM 0x00510210
-unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(StrategicTileIndex tileIndex) {
+void TMapMgr::AssignPictToTile(StrategicTileIndex tileIndex) {
   short neighbors[6];
-  unsigned char* result;
 
   if (terrainStateTable[tileIndex].GetTerrainKind() != kStrategicTerrainWater) {
     GetNeighborTileIDArray(tileIndex, neighbors, hexNeighborWrapHorizontally20);
-    result = reinterpret_cast<unsigned char*>(terrainStateTable);
     for (int d = 0; d < 6; ++d) {
       if (neighbors[d] != -1 &&
           terrainStateTable[neighbors[d]].gateFlag == terrainStateTable[tileIndex].gateFlag) {
@@ -871,9 +869,7 @@ unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(StrategicTi
     }
     if (terrainStateTable[tileIndex].GetTerrainKind() == kStrategicTerrainMountain) {
       g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
-      result = 0;
       if ((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0) {
-        result = reinterpret_cast<unsigned char*>(terrainStateTable);
         terrainStateTable[tileIndex].spriteVariantIndex01 = 1;
       }
     }
@@ -933,10 +929,9 @@ unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(StrategicTi
       }
     }
     RiverSpriteCodeStorage finalVariant = terrainStateTable[tileIndex].riverSpriteCode;
-    result = reinterpret_cast<unsigned char*>((unsigned int)(unsigned char)finalVariant);
     if (0x1a < finalVariant && finalVariant < 0x2b) {
       terrainStateTable[tileIndex].riverSpriteCode = finalVariant - 0x10;
-      return reinterpret_cast<unsigned char*>((unsigned int)(unsigned char)(finalVariant - 0x10));
+      return;
     }
   } else {
     GetNeighborTileIDArray(tileIndex, neighbors, hexNeighborWrapHorizontally20);
@@ -955,50 +950,46 @@ unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(StrategicTi
         }
       }
     }
-    result = reinterpret_cast<unsigned char*>(terrainStateTable);
     if (terrainStateTable[tileIndex].adjacencyMaskB0b != 0) {
       RiverSpriteCodeStorage variant = terrainStateTable[tileIndex].riverSpriteCode;
-      result = &terrainStateTable[tileIndex].riverSpriteCode;
       if (variant == 0) {
-        return result;
+        return;
       }
       if ((variant & 0x80) == 0) {
         int resolved = ResolveMapTileVariantSpriteFromAdjacencyState(tileIndex);
         terrainStateTable[tileIndex].riverSpriteCode =
             static_cast<RiverSpriteCodeStorage>(resolved);
-        return reinterpret_cast<unsigned char*>(resolved);
+        return;
       }
-      *result = variant & 0x7f;
-      return result;
+      terrainStateTable[tileIndex].riverSpriteCode = variant & 0x7f;
+      return;
     }
     if (neighbors[4] == -1) {
-      return result;
+      return;
     }
     if (terrainStateTable[neighbors[4]].spriteVariantIndex01 != 0) {
-      return result;
+      return;
     }
     if (((neighbors[5] == -1) || (terrainStateTable[neighbors[5]].spriteVariantIndex01 == 0)) &&
         ((neighbors[0] == -1) || (terrainStateTable[neighbors[0]].spriteVariantIndex01 == 0))) {
       g_mapGenLcgState_006a38e8 = lcg * 0x15a4e35 + 1;
       unsigned int roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
-      result = reinterpret_cast<unsigned char*>(roll / 100);
       if (3 < roll % 100) {
-        return result;
+        return;
       }
       g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
       terrainStateTable[tileIndex].spriteVariantIndex01 =
           (unsigned char)((g_mapGenLcgState_006a38e8 >> 0xc) & 3) + 1;
       if (pendingRiverMouthTile22 != -1) {
-        return result;
+        return;
       }
       pendingRiverMouthTile22 = tileIndex;
-      return reinterpret_cast<unsigned char*>(tileIndex & 0xffff);
+      return;
     }
     g_mapGenLcgState_006a38e8 = lcg * 0x15a4e35 + 1;
     unsigned int roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
-    result = reinterpret_cast<unsigned char*>(roll / 100);
     if (7 < roll % 100) {
-      return result;
+      return;
     }
     char v;
     if (neighbors[5] != -1) {
@@ -1006,14 +997,12 @@ unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(StrategicTi
       if (v != 0) {
         terrainStateTable[tileIndex].spriteVariantIndex01 = v + 1;
         v = terrainStateTable[tileIndex].spriteVariantIndex01;
-        result =
-            reinterpret_cast<unsigned char*>(&terrainStateTable[tileIndex].spriteVariantIndex01);
         if (v != 0) {
           if (v < 5) {
-            return result;
+            return;
           }
-          *result = 1;
-          return result;
+          terrainStateTable[tileIndex].spriteVariantIndex01 = 1;
+          return;
         }
         goto assign_river_mouth_one;
       }
@@ -1022,15 +1011,13 @@ unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(StrategicTi
       terrainStateTable[tileIndex].spriteVariantIndex01 =
           terrainStateTable[neighbors[0]].spriteVariantIndex01 + 1;
       v = terrainStateTable[tileIndex].spriteVariantIndex01;
-      result = reinterpret_cast<unsigned char*>(&terrainStateTable[tileIndex].spriteVariantIndex01);
       if ((v == 0) || (4 < v)) {
       assign_river_mouth_one:
-        *result = 1;
-        return result;
+        terrainStateTable[tileIndex].spriteVariantIndex01 = 1;
+        return;
       }
     }
   }
-  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x005107e0
@@ -3715,10 +3702,10 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
   }
 
   // Pass 2: development-stage bonus.
-  char* stagePtr = reinterpret_cast<char*>(cityScoreTable) + 2;
+  region = cityScoreTable;
   for (r = 0; r < 0x180; ++r) {
-    regionScores[r] += (*stagePtr + 3) * 1000;
-    stagePtr += 0xa8;
+    regionScores[r] += (region->developmentStage + 3) * 1000;
+    ++region;
   }
 
   // Pass 3: terrain-type descriptor bonuses (first 7 weighted higher than the next 16).
@@ -3850,23 +3837,25 @@ char TMapMgr::LoadScenarioMapStateFromTableResource(int scenarioIndex) {
 }
 
 // Byte-swaps the three 16-bit fields inside each of the 0x1950 scenario tile records
-// (Mac-endian on disk) and clears the dword at record+0x5.
+// (Mac-endian on disk) and clears the serialized pointer bits at +0x20.
 // FUNCTION: IMPERIALISM 0x005187f0
-void ByteSwapScenarioTileRecordWords(char* tileRecords) {
-  char* record = tileRecords + 0x1b;
+void ByteSwapScenarioTileRecordWords(ScenarioTileDiskRecord* tileRecords) {
+  ScenarioTileDiskRecord* record = tileRecords;
+  unsigned char* swapCursor = &record->tileActionOrdinal1a[1];
   int remaining = 0x1950;
   do {
-    char low = record[-7];
-    record[-7] = record[-6];
-    record[-6] = low;
-    low = record[-1];
-    record[-1] = record[0];
-    record[0] = low;
-    low = record[1];
-    record[1] = record[2];
-    record[2] = low;
-    *reinterpret_cast<int*>(record + 5) = 0;
-    record += 0x24;
+    unsigned char low = swapCursor[-7];
+    swapCursor[-7] = swapCursor[-6];
+    swapCursor[-6] = low;
+    low = swapCursor[-1];
+    swapCursor[-1] = swapCursor[0];
+    swapCursor[0] = low;
+    low = swapCursor[1];
+    swapCursor[1] = swapCursor[2];
+    swapCursor[2] = low;
+    record->transientPointerBits20 = 0;
+    swapCursor += sizeof(ScenarioTileDiskRecord);
+    ++record;
     --remaining;
   } while (remaining != 0);
 }

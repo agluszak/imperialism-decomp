@@ -21,8 +21,8 @@ bool TTask::Tick(TSortedList*) {
 // FUNCTION: IMPERIALISM 0x005adc50
 void TTask::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&citySlotIndex, 2);
-  stream->WriteBytesSlot78(&remainingAttempts, 2);
+  stream->WriteBytes(&citySlotIndex, 2);
+  stream->WriteBytes(&remainingAttempts, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x005adc90

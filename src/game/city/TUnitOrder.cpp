@@ -140,19 +140,19 @@ void TUnitOrder::SetOrderCostProfile(short resourceTypeIndex, short nPrimaryInpu
 // FUNCTION: IMPERIALISM 0x004b7850
 void TUnitOrder::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&resourceTypeIndex48, 2);
-  stream->WriteBytesSlot78(&quantityField04, 2);
-  stream->WriteBytesSlot78(&field40, 2);
-  stream->WriteBytesSlot78(&resourceTypeIndex48, 2);
-  stream->WriteBytesSlot78(trackingSlots10, 0x2e);
-  stream->WriteBytesSlot78(&accumulatedValue, 4);
-  stream->WriteBytesSlot78(&primaryInputResourceId, 2);
-  stream->WriteBytesSlot78(&secondaryInputResourceId, 2);
-  stream->WriteBytesSlot78(&primaryInputPerUnit, 2);
-  stream->WriteBytesSlot78(&secondaryInputPerUnit, 2);
-  stream->WriteBytesSlot78(&cashCostPerUnit, 2);
-  stream->WriteBytesSlot78(&workforceMode, 2);
-  stream->WriteBytesSlot78(&specialistMode, 1);
+  stream->WriteBytes(&resourceTypeIndex48, 2);
+  stream->WriteBytes(&quantityField04, 2);
+  stream->WriteBytes(&field40, 2);
+  stream->WriteBytes(&resourceTypeIndex48, 2);
+  stream->WriteBytes(trackingSlots10, 0x2e);
+  stream->WriteBytes(&accumulatedValue, 4);
+  stream->WriteBytes(&primaryInputResourceId, 2);
+  stream->WriteBytes(&secondaryInputResourceId, 2);
+  stream->WriteBytes(&primaryInputPerUnit, 2);
+  stream->WriteBytes(&secondaryInputPerUnit, 2);
+  stream->WriteBytes(&cashCostPerUnit, 2);
+  stream->WriteBytes(&workforceMode, 2);
+  stream->WriteBytes(&specialistMode, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x004b7920
