@@ -32,7 +32,9 @@ enum DiplomacyProposalKind {
   kDiplomacyProposalNonAggressionPact = 0x12F,
   kDiplomacyProposalPeaceTreaty = 0x130,
   kDiplomacyProposalDeclareWar = 0x131,
-  kDiplomacyProposalJoinEmpireWithWarEntanglements = 0x132
+  kDiplomacyProposalJoinEmpireWithWarEntanglements = 0x132,
+  kDiplomacyProposalBuildConsulate = 0x133,
+  kDiplomacyProposalBuildEmbassy = 0x134
 };
 
 // The relation matrix and getter use signed 16-bit storage. Setters receive an

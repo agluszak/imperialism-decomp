@@ -109,6 +109,12 @@ public:
   // PoseWarOffer / InvalidateAndForwardTabSwitchToChild.
   void ChangeSelectedActionTopic(int topicIndex);
 
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  bool RuntimeGetNationSelectionPoint(short nationSlot, CPoint* point) const;
+  short RuntimeActiveNation() const;
+  int RuntimeActionTopicIndex() const;
+#endif
+
 protected:
   // 0x90 — compared against a terrain-descriptor index in
   // ResolveDiplomacyActionFromClickAndUpdateTarget (matched to `actionCode != 0xd`); reset to 0

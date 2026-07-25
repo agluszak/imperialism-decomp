@@ -10,6 +10,13 @@
 #include <windows.h>
 
 bool RuntimeUiDriver::ClickView(TView* view) {
+  if (view == 0) {
+    return false;
+  }
+  return ClickViewPoint(view, view->frameWidth34 / 2, view->frameHeight38 / 2);
+}
+
+bool RuntimeUiDriver::ClickViewPoint(TView* view, int localX, int localY) {
   CIncludeView* host = GetMainViewHostFromActiveThread();
   if (view == 0 || host == 0 || host->m_hWnd == 0) {
     return false;
@@ -17,8 +24,8 @@ bool RuntimeUiDriver::ClickView(TView* view) {
 
   CPoint position;
   view->GetAbsolutePosition(&position);
-  position.x += view->frameWidth34 / 2;
-  position.y += view->frameHeight38 / 2;
+  position.x += localX;
+  position.y += localY;
   LPARAM mousePosition = MAKELPARAM(position.x, position.y);
   SendMessageA(host->m_hWnd, WM_LBUTTONDOWN, MK_LBUTTON, mousePosition);
   SendMessageA(host->m_hWnd, WM_LBUTTONUP, 0, mousePosition);
