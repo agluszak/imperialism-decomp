@@ -755,6 +755,8 @@ short g_nCityBuildingSlotYOffsetIndex = 1;
 short g_nCityBuildingDrawXOffsetIndex = 1;
 // Per-(building-slot,action) resource/picture ids, 3 shorts per table row (TCityProductionView
 // DoPostCreate action-control builder). Row index = (level-1) + slot loop counter.
+// GLOBAL: IMPERIALISM 0x0064faa8
+char* g_pCityBuildingHoverEmptyText_0064faa8 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x0064fad0
 short g_awCityBuildingActionResourceIds[72] = {
     12, 0,  0,  12, 14, 0,  11, 0,  0, 12, 0,  0, 12, 12, 0, 12, 12, 0,  24, 24, 0, 24, 24, 0,
@@ -766,6 +768,8 @@ short g_nCityBuildingSlotXOffsetIndex = 0;
 // GLOBAL: IMPERIALISM 0x006a2ac0
 short g_nCityBuildingDrawYOffsetIndex = 0;
 
+// GLOBAL: IMPERIALISM 0x006a2980
+CRect g_cityBuildingHoverFallbackRect_006a2980;
 // GLOBAL: IMPERIALISM 0x006a2998
 CRect g_aCityBuildingHoverSelectionRects[16];
 

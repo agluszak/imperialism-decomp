@@ -14,11 +14,11 @@ rather than domain discriminants.
 
 ## Summary
 
-- Findings: 380
+- Findings: 382
 - `native_integral_boundary`: 16
 - `nested_integral_cast`: 31
 - `predicate_storage_cast`: 15
-- `raw_discriminant_literal`: 318
+- `raw_discriminant_literal`: 320
 
 ## clang-tidy evaluation
 
@@ -178,7 +178,7 @@ is classified, and a family that stops appearing must be removed.
 | `navyState28` | 3 | `closed_domain_needs_listing_evidence` | TNavyMission selects three mission phases 0/1/2; the phase transitions have not been decoded. |
 | `newCode` | 1 | `turn_event_code_domain` | TurnEventCodeStorage compared to 0 is the recovered no-event sentinel. |
 | `newState` | 2 | `closed_domain_needs_listing_evidence` | TTacticalBattle two-value state assignment; the same domain as the tactical hover/selection phase. |
-| `nextBuildingType` | 2 | `closed_domain_needs_listing_evidence` | TCity::GetNextBuildingType returns the city building-type domain; TCityProductionView compares its slot-0xe result with raw type 2, whose resource-backed name is not yet recovered. |
+| `nextBuildingType` | 4 | `closed_domain_needs_listing_evidence` | TCity::GetNextBuildingType returns the city building-type domain; TCityProductionView compares its slot-0xe result with raw type 2, whose resource-backed name is not yet recovered. |
 | `offerType` | 3 | `diplomacy_proposal_code_domain` | TOffersPanelView selects on the single proposal code 0x29a to choose between the text and proposal controls. |
 | `orderKind` | 1 | `closed_domain_needs_listing_evidence` | TCityInteriorMinister returns order kind 2 from a switch default; the order-kind domain is TUnitOrder work. |
 | `orderType` | 11 | `mixed_domain_needs_per_site_split` | the sites mix three proven domains under one parameter name: ResourceKind bands (< 23, <= 22, >= 17, <= 6) in TCityInteriorMinister, the 14-entry industry domain (< 0x0e) in TMultiplayerMgr, and TUnit::orderType civilian/military kinds in TTerrainHelpPicture. Splitting them requires renaming the parameters per owner class first. |
@@ -334,8 +334,10 @@ is classified, and a family that stops appearing must be removed.
 | `6d8e6cf1c94f1e35` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:2613` | resourceType < 7 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
 | `1b2119f9a2bda235` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:2613` | resourceType > 0x10 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
 | `991981b6c75470b1` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:2613` | resourceType >= 0 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
-| `8f169fc0d602ec55` | `raw_discriminant_literal` | `src/game/city_ui/TCityProductionView.cpp:316` | nextBuildingType == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `70ab295d0a911059` | `raw_discriminant_literal` | `src/game/city_ui/TCityProductionView.cpp:317` | nextBuildingType == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `8f169fc0d602ec55` | `raw_discriminant_literal` | `src/game/city_ui/TCityProductionView.cpp:317` | nextBuildingType == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `70ab295d0a911059` | `raw_discriminant_literal` | `src/game/city_ui/TCityProductionView.cpp:318` | nextBuildingType == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `7f92aa3fb0b92ac3` | `raw_discriminant_literal` | `src/game/city_ui/TCityProductionView.cpp:412` | nextBuildingType == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `ed752b41406dea6e` | `raw_discriminant_literal` | `src/game/city_ui/TCityProductionView.cpp:425` | nextBuildingType == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `a11189c6acbf01de` | `raw_discriminant_literal` | `src/game/city_ui/TCivMgr.cpp:35` | keyCode == 2 | `character_or_virtual_key_code` | `imperialism-decomp-1uj.99.8` |
 | `5c08a97d4ba87f5a` | `raw_discriminant_literal` | `src/game/city_ui/TCivMgr.cpp:149` | nClickMode == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `c32780ddbb3826ed` | `raw_discriminant_literal` | `src/game/city_ui/TCivMgr.cpp:154` | actionKind == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
