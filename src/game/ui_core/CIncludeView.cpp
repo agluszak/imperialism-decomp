@@ -269,8 +269,8 @@ void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRec
       POINT corner;
       corner.x = surfaceRect.rect.left;
       corner.y = surfaceRect.rect.top;
-      m_pMainPaneDib->ForwardBlitSurfaceRectSkippingTransparentColor(m_pOffscreenDib, &corner, &span,
-                                                                &corner, -1);
+      m_pMainPaneDib->ForwardBlitSurfaceRectSkippingTransparentColor(m_pOffscreenDib, &corner,
+                                                                     &span, &corner, -1);
     }
   }
   // Pass 2: repaint the hosted dialog tree over each remaining unprocessed rect.
@@ -362,7 +362,7 @@ TView* CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedAr
   destOrigin.x = 0;
   destOrigin.y = 0;
   m_pMainPaneDib->ForwardBlitSurfaceRectSkippingTransparentColor(m_pOffscreenDib, &sourceOrigin,
-                                                            &blitSize, &destOrigin, -1);
+                                                                 &blitSize, &destOrigin, -1);
 
   ::InvalidateRect(m_hWnd, 0, TRUE);
   ::RedrawWindow(m_hWnd, 0, 0, RDW_INVALIDATE);
@@ -405,7 +405,8 @@ void CIncludeView::BlitMainPaneBitmapRectToWindow(RECT* rect) {
   CDC* dc = CDC::FromHandle(hdc);
   m_pMainPaneDib->SelectAndRealizeDibPalette(dc, FALSE);
   m_pMainPaneDib->StretchDibitsRectAtNaturalSize(rect->left, rect->top, dc, rect->left, rect->top,
-                                            rect->right - rect->left, rect->bottom - rect->top);
+                                                 rect->right - rect->left,
+                                                 rect->bottom - rect->top);
   ::ReleaseDC(m_hWnd, dc->m_hDC);
 }
 
