@@ -626,7 +626,7 @@ address|matching|name
 0x484c40|1.0|CMainFrame::`scalar deleting destructor'
 0x484c70|0.6896551724137931|CMainFrame::~CMainFrame
 0x484d00|0.0|CMainFrame::OnCreate
-0x484d70|0.8516129032258064|CMainFrame::ConfigureTopLevelWindowStyleAndPlacement
+0x484d70|0.9240506329113924|CMainFrame::ConfigureTopLevelWindowStyleAndPlacement
 0x484f70|0.75|CMainFrame::PreCreateWindow
 0x484fb0|1.0|CMainFrame::OnMsg0464
 0x484fd0|1.0|CMainFrame::OnStartupCommand100
