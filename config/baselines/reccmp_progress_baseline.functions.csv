@@ -3177,9 +3177,9 @@ address|matching|name
 0x50f740|0.7681159420289855|TMapMgr::GenerateProvinceNames
 0x50f860|0.49236641221374045|TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments
 0x50fca0|0.6910994764397905|TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority
-0x50fe10|0.13513513513513514|TMapMgr::UpdateTileNeighborBorderInfluenceCounters
+0x50fe10|0.6768558951965066|TMapMgr::UpdateTileNeighborBorderInfluenceCounters
 0x510210|0.30982019363762103|TMapMgr::AssignPictToTile
-0x5107e0|0.3728813559322034|TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded
+0x5107e0|0.3559322033898305|TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded
 0x5108d0|0.33119383825417203|TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState
 0x5112f0|1.0|TMapMgr::CheckTileVariantCodeMembershipSetA
 0x511360|1.0|TMapMgr::CheckTileVariantCodeMembershipSetB
@@ -3247,7 +3247,7 @@ address|matching|name
 0x515720|0.4067796610169492|TMapMgr::MarkType5NeighborTilesUnavailableByNationCapability
 0x515890|0.1958041958041958|TMapMgr::SeedRecruitSearchVisitedStateByCapabilityThresholdAlt
 0x5159b0|0.378698224852071|TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA
-0x515b10|0.3378995433789954|TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB
+0x515b10|0.3167420814479638|TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB
 0x515d60|1.0|TMapMgr::ApplyUnitMovementClassForTileIfValid
 0x515db0|0.5217391304347826|TMapMgr::ClearPerTileByte0FForAllMapTiles
 0x515de0|1.0|TMapMgr::NoOpVirtualSlot2D
