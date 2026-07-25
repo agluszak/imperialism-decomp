@@ -612,7 +612,7 @@ void TMapMaker::RunMapGenerationAttempt() {
   memset(cityRegionIds200, -1, sizeof(cityRegionIds200));
   lastMinorSeedCandidate29c = -1;
 
-  signed char* regionClassGridFlat = reinterpret_cast<signed char*>(regionClassGrid10);
+  signed char* regionClassGridFlat = &regionClassGrid10[0][0];
 
   for (int classIndex = 0; classIndex < 7; ++classIndex) {
     int assigned;
@@ -869,8 +869,9 @@ void TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords() {
 
     int coarseRow = coarseIndex / 0x1b;
     int coarseColumn = coarseIndex % 0x1b;
-    TTerrainStateRecordView* tile = reinterpret_cast<TTerrainStateRecordView*>(mapTileGrid08) +
-                                    (coarseRow * 4 * 108 + coarseColumn * 4);
+    TTerrainStateRecordView* tile =
+        static_cast<TTerrainStateRecordView*>(static_cast<void*>(mapTileGrid08)) +
+        (coarseRow * 4 * 108 + coarseColumn * 4);
     if ((coarseRow & 1) != 0) {
       tile -= 2;
     }
