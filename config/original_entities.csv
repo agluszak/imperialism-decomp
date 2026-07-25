@@ -5368,7 +5368,7 @@ address|name|symbol|size|type|prototype|provenance
 5a59a0|ConvertHexTileIndexToRowAndDoubleColumn||58|function|void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex, uint * outRow, int * outCol2X)|
 5a59f0|TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory||293|function|undefined ComputeReachableTileDistanceByMoveBudget()|
 5a5b70|TNavyBattle::CreateTTacticalBattleInstance||14|function|undefined ResolveNavyOrderChainsForTurnPhase()|
-5a5b90|TTacticalBattle::SetCurrentSideNavyShipDisplayMode||17|function|undefined HandleNavyTacticalToolbarModeAndCommandTags_Impl()|
+5a5b90|TNavyBattle::SetTargeting||17|function|void TNavyBattle::SetTargeting(NavyTargeting targeting)|
 5a5bc0|TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget||111|function|undefined ExecuteTacticalActionAndQueueEventIfSupportUnavailable()|
 5a5c50|TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget||141|function|undefined MoveTacticalUnitAndQueueEvent232AOnBlockedEngagementState()|
 5a5d10|TTacticalUnit::CreateObject|?CreateObject@TTacticalUnit@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
@@ -5398,7 +5398,7 @@ address|name|symbol|size|type|prototype|provenance
 5a6330|TNavyTacUnit::GetUnitRange||12|function|undefined OrphanTiny_ReturnZero_005a5d60(void)|
 5a6350|TNavyTacUnit::GetBaseAttackPower||11|function|float TNavyTacUnit::GetBaseAttackPower()|
 5a6370|TNavyTacUnit::GetDamageScale||11|function|float TNavyTacUnit::GetDamageScale()|
-5a63c0|ApplyTacticalDamageAndDeathState||207|function|void __thiscall ApplyTacticalDamageAndDeathState(float damageAmount, int damageMode)|
+5a63c0|TNavyTacUnit::ApplyNavalDamage||207|function|void TNavyTacUnit::ApplyNavalDamage(float damageAmount, NavyTargeting targeting)|
 5a64d0|TNextMoveCommand::CreateObject|?CreateObject@TNextMoveCommand@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5a6540|TNextMoveCommand::GetRuntimeClass||6|function|undefined GetTNextMoveCommandClassNamePointer()|rtti
 5a6560|TNextMoveCommand::ConstructTNextMoveCommandBaseState||18|function|undefined ConstructTNextMoveCommandBaseState()|
