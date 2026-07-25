@@ -5509,7 +5509,7 @@ address|matching|name
 0x5a4710|0.19047619047619047|TArmyBattle::CreateObject
 0x5a4750|1.0|TArmyBattle::GetRuntimeClass
 0x5a4790|0.873015873015873|TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8
-0x5a4990|0.767402376910017|TArmyBattle::ReadFrom
+0x5a4990|0.7809847198641766|TArmyBattle::ReadFrom
 0x5a4da0|0.783625730994152|TArmyBattle::WriteTo
 0x5a4fc0|0.8550185873605948|TArmyBattle::LoadBattleSetupTabDataByIndex
 0x5a51e0|0.783068783068783|TArmyBattle::DeployTacticalUnitToTile
