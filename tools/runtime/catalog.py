@@ -30,10 +30,14 @@ TESTS = (
     ),
     RuntimeTestSpec("serialization_roundtrip", ("pr", "full"), required_oracles=()),
     RuntimeTestSpec("save_load_roundtrip", ("pr", "full"), required_oracles=("map",)),
+    # No fixture: it saves through the document path first and replays its own bytes.
+    # A committed save whose provenance cannot be checked in is worse than none --
+    # the previous fixture was stale and made a correct reader look broken
+    # (imperialism-decomp-cinw.17).
+    # The replay consumes the live game state, so no oracle can be captured afterwards.
     RuntimeTestSpec(
         "save_stream_checkpoints",
         ("full",),
-        fixture="beginning_of_game.imp",
         required_oracles=(),
     ),
     RuntimeTestSpec(

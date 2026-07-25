@@ -9,6 +9,7 @@
 #include "game/globals/prelude.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/globals/shared_globals.h"
+#include "game/ui_tags_map.h"
 
 // Save then load, both through the real document path.
 //
@@ -81,6 +82,13 @@ private:
       return;
     }
 
+    // Before handing the file to the document machinery, record how many bytes the
+    // writer actually produced and whether the header is well formed. If the load below
+    // faults while these numbers are sane, the fault is in the load path's state rebuild
+    // rather than in the byte stream -- save_stream_checkpoints proves the chain's
+    // accounting separately, and this pins the two halves to the same file.
+    ReportSavedFileShape(path);
+
     if (g_pUiViewManager->OpenMainDocumentFromPathAndMarkLoaded(path) == 0) {
       FailScenario("\"the just-written save would not open through the real load path\"");
       return;
@@ -89,6 +97,38 @@ private:
     phase = kWaitForLoadedMap;
     EnterScenarioStep("waiting_for_loaded_map", "opened_saved_game");
     RequestScenarioTick();
+  }
+
+  // Header + length only: cheap, and enough to separate "the writer produced nonsense"
+  // from "the reader mis-consumed sane bytes".
+  void ReportSavedFileShape(const CString& path) {
+    CString report("[");
+    CFile file;
+    CFileException error;
+    if (!file.Open(path, CFile::modeRead | CFile::shareDenyWrite, &error)) {
+      report += "\n    {\"saved_file\": \"unreadable\"}\n  ]";
+      RecordSerializationRoundtripReport(report);
+      return;
+    }
+    const int fileLength = static_cast<int>(file.GetLength());
+    int header[3];
+    header[0] = 0;
+    header[1] = 0;
+    header[2] = 0;
+    file.Read(header, sizeof(header));
+    int liveNations = 0;
+    for (short slot = 0; slot < kTerrainTypeDescriptorTableCount; ++slot) {
+      if (g_apTerrainTypeDescriptorTable[slot] != 0) {
+        ++liveNations;
+      }
+    }
+    CString entry;
+    entry.Format("\n    {\"saved_file\": \"written\", \"bytes\": %d, \"magic_ok\": %s, "
+                 "\"format_version\": %d, \"live_nation_records\": %d}\n  ]",
+                 fileLength, header[0] == kControlTagAMBI ? "true" : "false", header[1],
+                 liveNations);
+    report += entry;
+    RecordSerializationRoundtripReport(report);
   }
 
   void WaitForLoadedMap() {

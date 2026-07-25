@@ -78,9 +78,12 @@ private:
       FailScenario("\"loaded game has a negative economic turn\"");
       return;
     }
+    // The map view can exist a tick before its children do, so this waits rather than
+    // failing outright -- a genuinely absent mini-map still fails, just as a timeout on
+    // this condition instead of a spurious first-tick failure.
     TMapUberPicture* mapView = static_cast<TMapUberPicture*>(mainView);
     if (mapView->miniMapViewC0 == 0 || mapView->ResolveControlByTag(kControlTagSend) == 0) {
-      FailScenario("\"loaded strategic map is missing its mini-map or end-turn control\"");
+      WaitForScenarioTick("\"loaded strategic map never built its mini-map or end-turn control\"");
       return;
     }
     TMapDialog* mapDialog = mapView->subview2A8;
