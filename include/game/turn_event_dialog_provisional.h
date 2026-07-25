@@ -31,20 +31,6 @@ class TViewMgr;
 // the concrete dialog/control classes.
 namespace turn_event_dialog {
 
-// The status-icon control TViewMgr hands to TMacViewMgr::ApplySellOrderRowToNationState.
-// Its two queried slots sit at bytes 0x1d4/0x1d8, past TPicture's own 0x72, so it is a
-// TPicture subclass whose concrete identity is not recovered yet -- the two slots between
-// are the only padding left here, and deriving from TPicture is what lets the call site
-// use a plain downcast instead of the old reinterpret_cast bridge.
-IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
-struct CityOrderSource : public TPicture {
-  virtual void cityOrderSlot73();
-  virtual void cityOrderSlot74();
-  virtual short QuerySellQuantity1D4(); // slot 0x75 byte 0x1d4
-  virtual char QuerySellModeFlag1D8();  // slot 0x76 byte 0x1d8
-};
-IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
-
 // Slots 0x71/0x72 are NOT declared here: they are TPicture::ResetPictureResourceEntry
 // and TPicture::SetPictureResourceIdAndRefresh, and every caller now uses TPicture
 // directly. What remains are the per-dialog overrides at 0x1cc/0x1d0 whose concrete

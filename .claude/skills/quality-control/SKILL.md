@@ -271,3 +271,33 @@ first. The rule is one question — does the original have a standalone body for
 No address means in-class is free; an existing address means it is a trade, because our
 one-class-per-file layout cannot reproduce `/Ob1`'s "standalone body + same-TU inlined
 users" shape. Full reasoning in the `ctors-dtors-eh` skill and `docs/toolchain.md`.
+
+## Reach for `just stackcmp` first on any esp-relative diff
+
+When `just triage` reports `memory address at original` and either operand is
+**esp-relative**, run `just stackcmp 0xADDR` before reading a single line of the
+rendered diff. It answers in one command what eyeballing cannot, and it distinguishes
+three outcomes that need completely different work:
+
+| stackcmp output | meaning | what to do |
+| --- | --- | --- |
+| no stack mismatch (only `? not seen`) | the diff is **structural** — different code shape | fix the source shape; reordering locals is pure contortion |
+| `⇄` 1:1 match, wrong order | declaration/evaluation order | reorder locals, or check *parameters* — see below |
+| `✗` one slot maps to several | real layout/liveness defect | investigate the frame; often slot coalescing |
+
+It is also the tool for "is this a compiler artifact?" questions. `TGreatPower::`
+`ComputeMapActionContextCompositeScoreForNation` carried a
+`reinterpret_cast<int>(zone)` modelling a mystery reload for a long time; one stackcmp
+showed the original's `[esp+0x38]` (the `zone` parameter slot) corresponding to **both**
+`[esp+0x38]` and `[esp+0x14]` in our build — VC5 had coalesced the dead parameter slot
+with a local, so the "assignment" was never source semantics at all.
+
+Two traps:
+
+- **`⇄` does not always mean locals.** `TDialogBehavior::Dismiss` has no locals; its
+  `⇄ esp+0x08 : esp+0x04` was about *parameters* — the original reads the second one
+  (`MOV AL,[ESP+8]` + a dead `TEST AL,AL`) while the port writes `(void)accepted;` and
+  never touches that slot.
+- **`just stackcmp-triage` with no arguments samples the TOP of the score range** and
+  will happily report `ok` on twelve near-100% functions. For low-scoring suspects,
+  invoke `just stackcmp` on the specific addresses.

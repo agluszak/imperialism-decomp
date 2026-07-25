@@ -291,9 +291,10 @@ int TTradeCluster::IsTradeControlAtMinimum() {
   return sellControl->UpdateControlCachedIntFromWindowText() <= 0 ? 1 : 0;
 }
 
-// Returns the current Sell control quantity.
+// Returns the current Sell control quantity. This is the zero-argument virtual at
+// byte 0x1d4; callers rely on its zero-byte stack cleanup.
 // FUNCTION: IMPERIALISM 0x00587950
-int TTradeCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) {
+int TTradeCluster::GetTradeSellControlValue() {
   TNumberText* sellControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
   return sellControl->UpdateControlCachedIntFromWindowText();
 }
@@ -307,8 +308,8 @@ unsigned char TTradeCluster::IsSelectionAllowed() {
     FailNilPointerInUSmallViews(kAssertLineBidActionable);
   }
 
-  if (bidControl->bitmapId != kTradeBitmapBidStateA &&
-      bidControl->bitmapId != kTradeBitmapBidStateB) {
+  if (bidControl->glyphBase84 != kTradeBitmapBidStateA &&
+      bidControl->glyphBase84 != kTradeBitmapBidStateB) {
     return 0;
   }
 
@@ -328,8 +329,8 @@ int TTradeCluster::GetBoolSlot1DC() {
     FailNilPointerInUSmallViews(kAssertLineOfferActionable);
   }
 
-  if (offerControl->bitmapId != kTradeBitmapOfferStateA &&
-      offerControl->bitmapId != kTradeBitmapOfferStateB) {
+  if (offerControl->glyphBase84 != kTradeBitmapOfferStateA &&
+      offerControl->glyphBase84 != kTradeBitmapOfferStateB) {
     return 0;
   }
 

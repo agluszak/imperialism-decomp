@@ -68,19 +68,19 @@ void TStatusPicture::DoPostCreate(int arg) {
   RefreshControl();
   g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
 
-  // Same per-nation average as DoEvent's commandId==10/newIndex==0 branch (identical
-  // instruction sequence): sums 4 dip[0x1824+i*0x10] dwords; the *400/40 magic-number scale
-  // cancels to a plain 16-bit truncation, verified by simulation.
+  // Same per-nation score as DoEvent's commandId==10/newIndex==0 branch.
   {
-    char* dip = reinterpret_cast<char*>(g_pDiplomacyTurnStateManager);
-    int dipOffset = 0;
-    for (int i = 0; i < 7; ++i, dipOffset += 0x10) {
+    for (int i = 0; i < 7; ++i) {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(i)) != 0) {
-        int sum = *reinterpret_cast<int*>(dip + 0x1824 + dipOffset) +
-                  *reinterpret_cast<int*>(dip + 0x1828 + dipOffset) +
-                  *reinterpret_cast<int*>(dip + 0x182c + dipOffset) +
-                  *reinterpret_cast<int*>(dip + 0x1830 + dipOffset);
-        values94[i] = static_cast<short>(sum);
+        int sum = 0;
+        int* metric = g_pDiplomacyTurnStateManager->comparativePowerRows1824[i];
+        int metricCount = 4;
+        do {
+          sum += *metric;
+          ++metric;
+          --metricCount;
+        } while (metricCount != 0);
+        values94[i] = static_cast<short>(sum) * 400 / 400;
         pictureIds_b0[i] = static_cast<short>(i);
       } else {
         pictureIds_b0[i] = -1;
@@ -113,19 +113,17 @@ void TStatusPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
         comparisonMode90 = newIndex;
         if (newIndex == 0) {
           g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
-          char* dip = reinterpret_cast<char*>(g_pDiplomacyTurnStateManager);
-          int dipOffset = 0;
-          for (int i = 0; i < 7; ++i, dipOffset += 0x10) {
+          for (int i = 0; i < 7; ++i) {
             if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(i)) != 0) {
-              int sum = *reinterpret_cast<int*>(dip + 0x1824 + dipOffset) +
-                        *reinterpret_cast<int*>(dip + 0x1828 + dipOffset) +
-                        *reinterpret_cast<int*>(dip + 0x182c + dipOffset) +
-                        *reinterpret_cast<int*>(dip + 0x1830 + dipOffset);
-              // The original scales this sum by 400 then divides by 40 via a magic-number
-              // sequence; verified by simulation that the two cancel exactly for every
-              // 16-bit-range input, so the net effect is a plain (sign-extending) truncation
-              // to 16 bits.
-              values94[i] = static_cast<short>(sum);
+              int sum = 0;
+              int* metric = g_pDiplomacyTurnStateManager->comparativePowerRows1824[i];
+              int metricCount = 4;
+              do {
+                sum += *metric;
+                ++metric;
+                --metricCount;
+              } while (metricCount != 0);
+              values94[i] = static_cast<short>(sum) * 400 / 400;
               pictureIds_b0[i] = static_cast<short>(i);
             } else {
               pictureIds_b0[i] = -1;

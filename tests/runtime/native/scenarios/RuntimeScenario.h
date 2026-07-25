@@ -24,7 +24,7 @@ public:
   virtual bool UsesRandomGameFlow() const;
   virtual bool UsesEasyDifficulty() const;
   virtual bool RecordsGameFlow() const;
-  virtual bool RequiresCityUiSnapshot() const;
+  virtual bool RequiresScenarioUiSnapshot() const;
 
   virtual void OnManagersReady();
   virtual void OnEasyMapReady();
@@ -42,11 +42,13 @@ protected:
 
   TView* CurrentMainView() const;
   unsigned long ScenarioPhaseTicks() const;
+  unsigned long ScenarioPhaseElapsedMs() const;
   const char* FixturePath() const;
   void SetSelectedNation(short nationSlot);
   bool AdvanceNewspaperIfNeeded();
   void ResetNewspaperAdvance();
   void RecordUnexpectedModalView(TView* modal);
-  bool HasCityUiSnapshot() const;
-  void CaptureCityUiSnapshot(int eventCode, TView* root);
+  bool HasScenarioUiSnapshot() const;
+  void CaptureScenarioUiSnapshot(int eventCode, TView* root);
+  bool HoldAtScenarioScreen(const char* screenName) const;
 };

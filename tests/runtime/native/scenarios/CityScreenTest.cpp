@@ -32,7 +32,7 @@ public:
   bool RecordsGameFlow() const override {
     return true;
   }
-  bool RequiresCityUiSnapshot() const override {
+  bool RequiresScenarioUiSnapshot() const override {
     return true;
   }
 
@@ -60,7 +60,7 @@ public:
 
   void ObserveScenarioUiTree(int eventCode, TView* root) override {
     if (eventCode == kTurnEventCityProduction) {
-      CaptureCityUiSnapshot(eventCode, root);
+      CaptureScenarioUiSnapshot(eventCode, root);
     }
   }
 
@@ -125,11 +125,14 @@ private:
       FailScenario("\"city production view is missing required production controls\"");
       return;
     }
-    if (!HasCityUiSnapshot()) {
+    if (!HasScenarioUiSnapshot()) {
       WaitForScenarioTick("\"city production UI tree was not captured\"");
       return;
     }
-    if (ScenarioPhaseTicks() < 20) {
+    // Keep the production view live long enough to expose repaint/invalidation loops.
+    // A tick-only wait completes in a few milliseconds because the driver posts its
+    // own messages, which previously let TPlacard::Draw self-invalidation escape.
+    if (ScenarioPhaseTicks() < 20 || ScenarioPhaseElapsedMs() < 1000) {
       RequestScenarioTick();
       return;
     }
@@ -163,8 +166,7 @@ private:
       return;
     }
     TCityProductionView* cityView = static_cast<TCityProductionView*>(mainView);
-    TBuildingView* buildingView =
-        cityView->BuildingViewForRuntimeTest(kInteractiveBuildingSlot);
+    TBuildingView* buildingView = cityView->BuildingViewForRuntimeTest(kInteractiveBuildingSlot);
     if (buildingView == 0) {
       WaitForScenarioTick("\"oil-refinery building control did not open its production view\"");
       return;

@@ -53,7 +53,7 @@ public:
   // ownerLocalX/Y directly against the fixed 0x280x0x1e0 work area, per flag.
   virtual void Center(unsigned char centerX, unsigned char centerY,
                       unsigned char unused);                    // slot 0x71 0x48e150
-  virtual void AssertMcAppUILine2358(int unusedArg);            // slot 0x72 0x48d8d0
+  virtual void Activate(unsigned char active);                  // slot 0x72 0x48d8d0
   virtual void Show(unsigned char show, unsigned char refresh); // slot 0x73 0x48d900
   // MacApp TWindow::CloseAndFree(): Close (slot 0x28) then Free (slot 0x07).
   virtual void CloseAndFree();                 // slot 0x74 0x48e120

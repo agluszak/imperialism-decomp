@@ -96,7 +96,7 @@ RuntimeTestState g_runtimeTestState = {0,  0, "not_started", false, 1,  0,  0,  
                                        -1, 0, false,         "",    "", "", "", ""};
 CString g_randomSetupUiSnapshot;
 CString g_strategicMapUiSnapshot;
-CString g_cityUiSnapshot;
+CString g_scenarioUiSnapshot;
 CString g_capitalConfirmationUiSnapshot;
 CString g_activatedEventSequence("[");
 CString g_handledModals("[");
@@ -402,9 +402,9 @@ bool WriteResultFile(const char* status, const char* failure) {
     status = "failed";
     failure = "\"generated UI factory snapshot is missing\"";
   }
-  if (ActiveScenario().RequiresCityUiSnapshot() && g_cityUiSnapshot.IsEmpty()) {
+  if (ActiveScenario().RequiresScenarioUiSnapshot() && g_scenarioUiSnapshot.IsEmpty()) {
     status = "failed";
-    failure = "\"city production UI snapshot is missing\"";
+    failure = "\"scenario UI snapshot is missing\"";
   }
   CString uiSnapshots("[");
   if (IsRandomGameTest()) {
@@ -419,12 +419,12 @@ bool WriteResultFile(const char* status, const char* failure) {
       uiSnapshots += "\n";
       uiSnapshots += g_strategicMapUiSnapshot;
     }
-    if (!g_cityUiSnapshot.IsEmpty()) {
+    if (!g_scenarioUiSnapshot.IsEmpty()) {
       if (!g_randomSetupUiSnapshot.IsEmpty() || !g_strategicMapUiSnapshot.IsEmpty()) {
         uiSnapshots += ",";
       }
       uiSnapshots += "\n";
-      uiSnapshots += g_cityUiSnapshot;
+      uiSnapshots += g_scenarioUiSnapshot;
     }
     uiSnapshots += "\n  ";
   }
@@ -1448,7 +1448,7 @@ bool RuntimeScenario::RecordsGameFlow() const {
   return false;
 }
 
-bool RuntimeScenario::RequiresCityUiSnapshot() const {
+bool RuntimeScenario::RequiresScenarioUiSnapshot() const {
   return false;
 }
 
@@ -1488,6 +1488,8 @@ void RuntimeScenario::RequestScenarioTick() {
 
 void RuntimeScenario::EnterScenarioStep(const char* phaseName, const char* action) {
   SetStep(RunScenarioOwnedStep, phaseName, action);
+  g_runtimeTestState.lastHeartbeatMs = 0;
+  MaybeWriteHeartbeat();
 }
 
 void RuntimeScenario::StartRandomGameFlow() {
@@ -1502,6 +1504,10 @@ TView* RuntimeScenario::CurrentMainView() const {
 
 unsigned long RuntimeScenario::ScenarioPhaseTicks() const {
   return g_runtimeTestState.phaseTicks;
+}
+
+unsigned long RuntimeScenario::ScenarioPhaseElapsedMs() const {
+  return GetTickCount() - g_runtimeTestState.phaseStartMs;
 }
 
 const char* RuntimeScenario::FixturePath() const {
@@ -1524,12 +1530,21 @@ void RuntimeScenario::RecordUnexpectedModalView(TView* modal) {
   RecordUnexpectedModal(modal);
 }
 
-bool RuntimeScenario::HasCityUiSnapshot() const {
-  return !g_cityUiSnapshot.IsEmpty();
+bool RuntimeScenario::HasScenarioUiSnapshot() const {
+  return !g_scenarioUiSnapshot.IsEmpty();
 }
 
-void RuntimeScenario::CaptureCityUiSnapshot(int eventCode, TView* root) {
-  g_cityUiSnapshot = CaptureUiSnapshot(eventCode, root);
+void RuntimeScenario::CaptureScenarioUiSnapshot(int eventCode, TView* root) {
+  g_scenarioUiSnapshot = CaptureUiSnapshot(eventCode, root);
+}
+
+bool RuntimeScenario::HoldAtScenarioScreen(const char* screenName) const {
+  char holdTarget[48];
+  if (GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_HOLD", holdTarget, sizeof(holdTarget)) ==
+      0) {
+    return false;
+  }
+  return lstrcmpiA(holdTarget, screenName) == 0;
 }
 
 void RuntimeTestObserveBuiltUiTree(int eventCode, TView* root) {

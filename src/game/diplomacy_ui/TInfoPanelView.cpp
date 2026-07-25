@@ -260,56 +260,57 @@ void TInfoPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
 
 // FUNCTION: IMPERIALISM 0x004fae00
 void TInfoPanelView::SetInfoCountry(short countryId) {
-  // Initialize the 8-byte/4-short field array to -1.
-  *(reinterpret_cast<int*>(&countryInfoCategoryIndices64[0])) = -1;
-  *(reinterpret_cast<int*>(&countryInfoCategoryIndices64[2])) = -1;
+  memset(countryInfoCategoryIndices64, 0xff, sizeof(countryInfoCategoryIndices64));
 
   if (countryId < 7) {
-    // Great-power row: scan 0x898 + 2*countryId + i*0xa0 for i=0..3 and store
-    // the first four non-zero values as 13, 14, 15, 16.
-    short* base = reinterpret_cast<short*>(
-        reinterpret_cast<char*>(g_pNationInteractionStateManager) + 0x898 + countryId * 2);
-    int count = 0;
-    for (int i = 0; i < 4; i++) {
-      if (base[i * 80] != 0) {
-        countryInfoCategoryIndices64[count++] = (short)(13 + i);
+    short categoryIndex = 13;
+    short categoryCount = 0;
+    do {
+      if (g_pNationInteractionStateManager->categoryRows[categoryIndex].cells18[46 + countryId] !=
+          0) {
+        countryInfoCategoryIndices64[categoryCount++] = categoryIndex;
       }
-    }
-  } else {
-    // Minor-power row: bubble-sort the first 7 values from
-    // secondary->diplomacySaveExt13c[0..6], then copy the first 4 positive
-    // indices into countryInfoCategoryIndices64.
-    TMinor* secondary = g_apSecondaryNationStateSlots[countryId];
-    short values[7];
-    short indices[7];
-    for (int idx = 0; idx < 7; idx++) {
-      values[idx] = secondary->diplomacySaveExt13c[idx];
-      if (idx == 6 &&
-          g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] ==
-              0) {
-        values[6] = 0;
-      }
-      indices[idx] = (short)idx;
-    }
-
-    // Selection sort descending by values.
-    for (int outer = 0; outer < 6; outer++) {
-      for (int inner = outer; inner < 7; inner++) {
-        if (values[inner] > values[outer]) {
-          short temp = values[outer];
-          values[outer] = values[inner];
-          values[inner] = temp;
-          short tempIdx = indices[outer];
-          indices[outer] = indices[inner];
-          indices[inner] = tempIdx;
-        }
-      }
-    }
-
-    for (int copyIdx = 0; copyIdx < 4; copyIdx++) {
-      if (values[copyIdx] > 0) {
-        countryInfoCategoryIndices64[copyIdx] = indices[copyIdx];
-      }
-    }
+      ++categoryIndex;
+    } while (categoryIndex <= 16);
+    return;
   }
+
+  TMinor* secondary = g_apSecondaryNationStateSlots[countryId];
+  short values[7];
+  short indices[7];
+  short valueIndex = 0;
+  do {
+    values[valueIndex] = secondary->diplomacySaveExt13c[valueIndex];
+    if (valueIndex == 6 &&
+        g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0) {
+      values[6] = 0;
+    }
+    indices[valueIndex] = valueIndex;
+    ++valueIndex;
+  } while (valueIndex < 7);
+
+  short outer = 0;
+  do {
+    short inner = outer;
+    do {
+      if (values[inner] > values[outer]) {
+        short temp = values[outer];
+        values[outer] = values[inner];
+        values[inner] = temp;
+        short tempIdx = indices[outer];
+        indices[outer] = indices[inner];
+        indices[inner] = tempIdx;
+      }
+      ++inner;
+    } while (inner < 7);
+    ++outer;
+  } while (outer < 6);
+
+  short copyIndex = 0;
+  do {
+    if (values[copyIndex] > 0) {
+      countryInfoCategoryIndices64[copyIndex] = indices[copyIndex];
+    }
+    ++copyIndex;
+  } while (copyIndex < 4);
 }

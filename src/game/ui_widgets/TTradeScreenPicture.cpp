@@ -21,6 +21,16 @@
 
 IMPLEMENT_DYNCREATE(TTradeScreenPicture, TPicture)
 
+#ifdef IMPERIALISM_RUNTIME_TESTS
+namespace {
+int g_runtimeTradeDynamicDrawCount;
+}
+
+int RuntimeTradeDynamicDrawCount() {
+  return g_runtimeTradeDynamicDrawCount;
+}
+#endif
+
 // FUNCTION: IMPERIALISM 0x005ba720
 TTradeScreenPicture::TTradeScreenPicture() {}
 
@@ -48,6 +58,10 @@ void TTradeScreenPicture::Draw(RECT* rectBuffer) {
                                      &localRect, 0, 0);
     return;
   }
+
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  ++g_runtimeTradeDynamicDrawCount;
+#endif
 
   TPicture::Draw(rectBuffer);
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xe, 0x2b68, 2);

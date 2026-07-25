@@ -67,7 +67,7 @@ void TWindow::SetDialogItems(unsigned long defaultCommandCode, unsigned long can
 }
 
 // FUNCTION: IMPERIALISM 0x0048d8d0
-void TWindow::AssertMcAppUILine2358(int) {
+void TWindow::Activate(unsigned char) {
   if (g_McAppUiFlag_006A1B04 == 0) {
     AssertMcAppUiInvalidation(g_szMcAppUiSourcePath_006950B0, 0x936);
   }

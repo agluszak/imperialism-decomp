@@ -1,4 +1,6 @@
 #include "game/ui_widgets/TPlacard.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 #include "game/ui_core/TControl.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -56,15 +58,34 @@ bool TPlacard::SetValue(short value, bool refreshNow) {
 
 // FUNCTION: IMPERIALISM 0x0058bc60
 void TPlacard::Draw(RECT* rectBuffer) {
-  (void)rectBuffer;
-  TPicture::Draw(nullptr);
+  CString valueText;
+  TPicture::Draw(rectBuffer);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
+
+  valueText.Format(g_szDecimalFormat, glyph90);
+
+  short textX;
   if (glyph90 < 10) {
-    SetQuickDrawTextOriginWithContextOffset(frameWidth34 / 2 - 2, 0);
+    textX = static_cast<short>(frameWidth34 / 2 - 2);
   } else if (glyph90 < 100) {
-    SetQuickDrawTextOriginWithContextOffset(frameWidth34 / 2 - 6, 0);
+    textX = static_cast<short>(frameWidth34 / 2 - 6);
   } else {
-    SetQuickDrawTextOriginWithContextOffset(frameWidth34 / 2 - 10, 0);
+    textX = static_cast<short>(frameWidth34 / 2 - 10);
   }
-  RefreshControl();
+
+  COLORREF textColor;
+  COLORREF shadowColor;
+  ResolveUiThemeColor(0x2b6c, &textColor);
+  ResolveUiThemeColor(0x2b67, &shadowColor);
+
+  short textY = static_cast<short>(frameHeight38 - 2);
+  SetQuickDrawColorAndSyncGlobals(shadowColor);
+  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textX + 1),
+                                          static_cast<short>(textY + 1));
+  DrawTextWithCachedQuickDrawStyleState(&valueText);
+
+  SetQuickDrawColorAndSyncGlobals(textColor);
+  SetQuickDrawTextOriginWithContextOffset(textX, textY);
+  DrawTextWithCachedQuickDrawStyleState(&valueText);
+  SetQuickDrawFillColor(0);
 }

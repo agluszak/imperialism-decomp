@@ -24,7 +24,7 @@ public:
   void DoPostCreate(int styleSeed) override; // 0xdc 0x587130
   virtual int IsTradeControlAtMinimum() override;
   void SetMoveAmount(short amount) override;
-  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0);
+  virtual int GetTradeSellControlValue();
   virtual unsigned char IsSelectionAllowed();
   virtual int GetBoolSlot1DC();
   virtual void DoControlAction();
