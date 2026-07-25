@@ -39,7 +39,7 @@ IMPLEMENT_DYNCREATE(TNewspaperView, TPicture)
 // Populate the nation-status advisor page: date + special-metric headline children,
 // then the 3x3 inter-nation newspaper story grid from the queue manager's pages.
 // FUNCTION: IMPERIALISM 0x0055d200
-void TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog(int pageNation) {
+void TNewspaperView::StuffValues(int pageNation) {
   CString tokens[4];
   summaryPageIndex90 = pageNation;
   CString formatText;
@@ -51,21 +51,9 @@ void TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog(int pageNa
   TextStyle titleStyle;   // (face 0, 12pt)
   TextStyle featureStyle; // (face 1, 14pt)
   TextStyle plainStyle;   // (face 0, 14pt)
-  char* styleRefBytes = reinterpret_cast<char*>(&titleStyle.textColor);
-  styleRefBytes[0] = 0;
-  styleRefBytes[1] = 0;
-  styleRefBytes[2] = 0;
-  styleRefBytes[3] = 0;
-  char* featureRefBytes = reinterpret_cast<char*>(&featureStyle.textColor);
-  featureRefBytes[0] = 0;
-  featureRefBytes[1] = 0;
-  featureRefBytes[2] = 0;
-  featureRefBytes[3] = 0;
-  char* plainRefBytes = reinterpret_cast<char*>(&plainStyle.textColor);
-  plainRefBytes[0] = 0;
-  plainRefBytes[1] = 0;
-  plainRefBytes[2] = 0;
-  plainRefBytes[3] = 0;
+  titleStyle.textColor = 0;
+  featureStyle.textColor = 0;
+  plainStyle.textColor = 0;
   InitializeUiTextStyleDescriptor(&titleStyle, 0, 0xc, 0x2b67, 2);
   InitializeUiTextStyleDescriptor(&featureStyle, 1, 0xe, 0x2b67, 2);
   InitializeUiTextStyleDescriptor(&plainStyle, 0, 0xe, 0x2b67, 2);

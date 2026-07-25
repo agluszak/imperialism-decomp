@@ -1545,7 +1545,7 @@ void TViewMgr::HandleTurnEvent2103_RunNationStatusReportUpdate(int pageIndex) {
       static_cast<TNewspaperView*>(activeDialog->ResolveControlByTag(kControlTagMain));
   mainControl->AssertValid();
   g_pSfxPlaybackSystem->PlaySoundEffect(0x14b4, 0, 1);
-  mainControl->BuildInterNationEventSummaryRowsForAdvisorDialog(pageIndex);
+  mainControl->StuffValues(pageIndex);
   activeDialog->ForceRedraw();
 }
 

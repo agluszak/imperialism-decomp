@@ -4142,7 +4142,7 @@ address|name|symbol|size|type|prototype|provenance
 55cda0|TNewsMgr::ConcatenateTreaty||292|function|void __thiscall ConcatenateTreaty(InterNationEventKind eventKind,int nationA,int nationB)|
 55d160|TNewspaperView::CreateObject|?CreateObject@TNewspaperView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 55d1e0|TNewspaperView::GetRuntimeClass||6|function|undefined GetTNewspaperViewClassNamePointer()|rtti
-55d200|TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog||1415|function|undefined BuildInterNationEventSummaryRowsForAdvisorDialog()|
+55d200|TNewspaperView::StuffValues||1415|function|void TNewspaperView::StuffValues(int pageNation)|
 55d910|TNewspaperView::FormatInterNationEventRowTokensToSharedStrings||272|function|undefined FormatInterNationEventRowTokensToSharedStrings()|
 55da80|TNewspaperView::BuildLocalizedTokenListFromBitmaskWithConjunction||462|function|undefined BuildLocalizedTokenListFromBitmaskWithConjunction()|
 55dcd0|TNewspaperView::BuildLocalizedNationListFromBitmaskWithConjunction||347|function|undefined BuildLocalizedNationListFromBitmaskWithConjunction()|
@@ -5069,7 +5069,7 @@ address|name|symbol|size|type|prototype|provenance
 591580|TArmyInfoView::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 5915a0|TArmyInfoView::?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@PAU12@@Z||18|function|undefined ?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@PAU12@@Z()|
 5915d0|TArmyInfoView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-591620|TArmyInfoView::PopulateFriendlyArmyReportContent||1506|function|void __thiscall PopulateFriendlyArmyReportContent(short cityRecordIndex, int * categoryCounts)|manual_recovery
+591620|TArmyInfoView::StuffValues||1506|function|void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts)|mac_name_windows_signature
 591d90|TTransportPicture::CreateObject|?CreateObject@TTransportPicture@@SGPAVCObject@@XZ|139|function|undefined CreateObject()|rtti
 591e50|TTransportPicture::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 591e70|TTransportPicture::?ConstructTTransportPictureBaseState@@YIPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@PAU12@@Z||52|function|undefined ?ConstructTTransportPictureBaseState@@YIPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@PAU12@@Z()|
