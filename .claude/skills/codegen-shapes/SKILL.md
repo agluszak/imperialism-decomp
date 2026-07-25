@@ -335,3 +335,32 @@ Two companion facts from the same batch:
   counts down in it; `TCountry::ReadFrom` reads both of its trailing counts into
   `esp+0x28`. Splitting them into separate named locals grows the frame by a dword and
   shifts every later slot, which shows up as a diff on lines you did not touch.
+
+### Act inside the search loop; a found-flag after it is a different function
+
+A search-then-use body has two spellings, and VC5 does not treat them as equivalent:
+
+```cpp
+// costs a callee-saved register and a zero-init
+TUnit* found = 0;
+for (unit = it.Reset(); it.More(); unit = it.Advance()) {
+  if (unit->tag == wanted) { found = unit; break; }
+}
+if (found != 0) { ...use found... }
+
+// what the original emits
+for (unit = it.Reset(); it.More(); unit = it.Advance()) {
+  if (unit->tag != wanted) { continue; }
+  ...use unit...
+  break;
+}
+```
+
+The tell in the diff is an extra `xor <callee-saved>,<callee-saved>` near the prologue plus a
+frame one dword larger than the original's, with every later stack reference shifted by
+4 — the flag variable's slot. `TArmyStack::AddFirstCountryUnitOfTypeToStack` 0x4a7a40 went
+**57.89% → 100% exact** on this change alone, with no other edit.
+
+Worth checking whenever a ported body reads "find it, then do something with it": the
+original usually does the something where it found it. The same shape explains frame-size
+diffs in bodies that otherwise look structurally identical.
