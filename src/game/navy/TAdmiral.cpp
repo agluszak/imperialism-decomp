@@ -39,11 +39,7 @@ TAdmiral::TAdmiral(NationSlot nationSlotArg)
       if (node == this) {
         continue;
       }
-      if (static_cast<unsigned char>(
-              _mbscmp(
-                  reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(node->displayName)),
-                  reinterpret_cast<unsigned char*>(
-                      (char*)static_cast<LPCSTR>(this->displayName))) == 0)) {
+      if (node->displayName.Compare(this->displayName) == 0) {
         this->NameThyself();
       }
     }

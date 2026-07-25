@@ -42,13 +42,6 @@ namespace {
 
 const int kAutoResPromptSentinel = 0x29a;
 
-// VC5 materializes this char result as neg/sbb/inc before testing it, matching the
-// retail language-name comparison while keeping the MBCS pointer conversion local.
-__inline char AreMbcsStringsEqual(LPCSTR left, LPCSTR right) {
-  return _mbscmp(const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(left)),
-                 const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(right))) == 0;
-}
-
 // Inlined at every _findfirst/_findnext site in LoadLanguageResourcesFromIrgFiles.
 __inline void CloseCrtFindHandleIfOpen(long& findHandle) {
   if (findHandle != -1) {
@@ -291,9 +284,7 @@ BOOL ImperialismApp::InitInstance() {
     CIncludeView* mainView = GetMainViewHostFromActiveThread();
     mainView->SetUiRuntimeContextAndActivateMain(g_pDisplayMgr->activeDialog);
 
-    if (_mbscmp(const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(
-                    static_cast<LPCSTR>(cmdInfo.m_strMainWindowTitle38))),
-                reinterpret_cast<unsigned char*>(g_szEmptyString)) != 0) {
+    if (cmdInfo.m_strMainWindowTitle38.Compare(g_szEmptyString) != 0) {
       CIncludeView* uiWindow = GetMainViewHostFromActiveThread();
       if (uiWindow != nullptr) {
         uiWindow->SetWindowText(static_cast<LPCSTR>(cmdInfo.m_strMainWindowTitle38));
@@ -627,7 +618,7 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
     languageLabel.ReleaseBuffer(-1);
     languageLabel.MakeUpper();
 
-    if (AreMbcsStringsEqual(savedLanguage, languageLabel)) {
+    if (savedLanguage.Compare(languageLabel) == 0) {
       WriteProfileString(g_pRegistrySettingsSection_0063E040, g_pRegistryLanguageKey_0063E04C,
                          savedLanguage);
 
@@ -644,12 +635,13 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
       LoadStringA(irgModule, 0x323, languageCodeStringE0.GetBufferSetLength(0x21), 0x20);
       languageCodeStringE0.ReleaseBuffer(-1);
 
-      const unsigned char* langBytes =
-          reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(languageCodeStringE0));
-      languagePackIdE4 = (static_cast<unsigned int>(langBytes[2]) * 0x100U +
-                          static_cast<unsigned int>(langBytes[1])) *
+      unsigned char languageCodeByte0 = languageCodeStringE0[0];
+      unsigned char languageCodeByte1 = languageCodeStringE0[1];
+      unsigned char languageCodeByte2 = languageCodeStringE0[2];
+      languagePackIdE4 = (static_cast<unsigned int>(languageCodeByte2) * 0x100U +
+                          static_cast<unsigned int>(languageCodeByte1)) *
                              0x100U +
-                         static_cast<unsigned int>(langBytes[0]);
+                         static_cast<unsigned int>(languageCodeByte0);
     }
     FreeLibrary(irgModule);
 
