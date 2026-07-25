@@ -4253,7 +4253,7 @@ address|matching|name
 0x55e550|0.543046357615894|TMapMgr::StepHexRowColByDirectionWithWrapRules
 0x55e660|1.0|TZone::CreateObject
 0x55e6e0|1.0|TZone::GetRuntimeClass
-0x55e700|0.7166666666666667|TZone::TZone
+0x55e700|0.9743589743589743|TZone::TZone
 0x55e820|1.0|TZone::QueryZoneCapabilityFlagA
 0x55e840|1.0|TZone::QueryPortZoneCapability
 0x55e860|1.0|TZone::QueryZoneCapabilityFlagC
@@ -4277,13 +4277,13 @@ address|matching|name
 0x55f4d0|0.676056338028169|TZone::HasSecondaryNeighborWithNationTag
 0x55f540|0.3855421686746988|TZone::IsZoneMaskOrArrayEntryPresentForKey
 0x55f5c0|0.4935064935064935|TZone::GenerateZoneStatusCodeIfUnset
-0x55f780|0.42159383033419023|TZone::GenerateMapActionContextDisplayNameAndHeadline
+0x55f780|0.6801007556675063|TZone::GenerateMapActionContextDisplayNameAndHeadline
 0x55fb60|0.7407407407407407|TZone::SetMapActionContextTargetTileAndRefreshMarkers
 0x55fc40|0.23076923076923078|TZone::HandleKeyDown
 0x55fe60|0.5|TZone::FindNearestActiveSeaContextTileFromOffset216
 0x55fef0|0.46153846153846156|TZone::GetActiveNationSlotTile
 0x55ff70|0.39655172413793105|TZone::ScoreCoastalTileForContextAndCityStateAffinity
-0x560150|0.5263157894736842|TZone::FindBestCoastalTileForContextAndCityStateByHeuristic
+0x560150|0.674364896073903|TZone::FindBestCoastalTileForContextAndCityStateByHeuristic
 0x560470|0.5373134328358209|TMapMgr::AdvanceSpiralSearchStateAndStepHexCoordinates
 0x560580|0.40404040404040403|TZone::SetMapOrderUiFlag
 0x5606f0|0.44776119402985076|TZone::BuildNavalIntelligenceSourceDescription
