@@ -60,7 +60,7 @@ void TMinister::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0052ecf0
 void TMinister::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&this->skillIndexC, 2);
+  stream->WriteBytes(&this->skillIndexC, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0052ed20

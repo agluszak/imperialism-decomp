@@ -125,13 +125,13 @@ void TArmyMission::Free() {
 // FUNCTION: IMPERIALISM 0x0053c2b0
 void TArmyMission::WriteTo(TStream* stream) {
   TMission::WriteTo(stream);
-  stream->WriteBytesSlot78(&presentLocation14, 2);
+  stream->WriteBytes(&presentLocation14, 2);
   for (int i = 0; i < 5; ++i) {
     float swapped = SwapFloat(requiredEquipageByClass[i]);
-    stream->WriteBytesSlot78(&swapped, 4);
+    stream->WriteBytes(&swapped, 4);
   }
 
-  stream->WriteCountSlot88(orderListAt18->GetCount());
+  stream->WriteInteger(orderListAt18->GetCount());
 
   TGreatPower* nation = g_apNationStates[nationId04];
   TSortedList* unitList = nation->militaryUnitList44;
@@ -139,7 +139,7 @@ void TArmyMission::WriteTo(TStream* stream) {
   CIterator iter(orderListAt18);
   void* currentUnit = iter.Reset();
   while (iter.More()) {
-    stream->WriteCountSlot88(unitList->FindOneBasedOrdinalOf(currentUnit));
+    stream->WriteInteger(unitList->FindOneBasedOrdinalOf(currentUnit));
     currentUnit = iter.Advance();
   }
 }
@@ -158,12 +158,12 @@ void TArmyMission::ReadFrom(TStream* stream) {
     }
   }
 
-  short count = stream->ReadShort();
+  short count = stream->ReadInteger();
   TGreatPower* nation = g_apNationStates[nationId04];
   TSortedList* unitList = nation->militaryUnitList44;
 
   for (int i = 0; i < count; ++i) {
-    short index = stream->ReadShort();
+    short index = stream->ReadInteger();
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitList->GetEntryByOrdinal(index));
     AcceptReenforcement(unit, 0);
   }

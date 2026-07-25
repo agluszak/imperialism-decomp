@@ -504,7 +504,7 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
   case 0x31: {
     // The inverted-inequality nesting reproduces the original body layout: the 'town'
     // handler falls through inline, 'star' and 'army' bodies are emitted after it.
-    int payloadTag = stream->streamSlot50();
+    int payloadTag = stream->ReadLong();
     if (payloadTag != kControlTagArmy) {     // 'army'
       if (payloadTag != kControlTagStar) {   // 'star'
         if (payloadTag == kControlTagTown) { // 'town'
@@ -521,9 +521,9 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
           }
         }
       } else {
-        if (stream->streamSlot50() == kControlTagLand) { // 'land'
-          short tileIndex = stream->ReadShort();
-          short nationCode = stream->ReadShort();
+        if (stream->ReadLong() == kControlTagLand) { // 'land'
+          short tileIndex = stream->ReadInteger();
+          short nationCode = stream->ReadInteger();
           TLandSaleEvent* saleEvent = new TLandSaleEvent();
           saleEvent->ILandSaleEvent(tileIndex, nationCode);
           g_apNationStates[static_cast<short>(g_pSimMgr->GetActiveNationId())]->AddTurnStartEvent(
@@ -557,7 +557,7 @@ void TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* str
                                                                     short nationSlot) {
   // Stream leads with a nation letter ('a' + slot); everything below - including the
   // count read - is skipped when it doesn't match the requested slot.
-  int terrainSlot = stream->ReadInteger() - 0x61; // - 'a'
+  int terrainSlot = stream->ReadByte() - 0x61; // - 'a'
   const bool terrainSelected = nationSlot == -1 || nationSlot == terrainSlot;
   if (terrainSelected) {
     if (g_apTerrainTypeDescriptorTable[terrainSlot] != 0) {
@@ -568,7 +568,7 @@ void TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* str
       }
       g_apTerrainTypeDescriptorTable[terrainSlot]->militaryUnitList44->FreePayloads();
     }
-    short recruitOrderCount = stream->ReadShort();
+    short recruitOrderCount = stream->ReadInteger();
     for (int recruitOrderIdx = recruitOrderCount; recruitOrderIdx != 0; --recruitOrderIdx) {
       TMilitaryUnit* recruitOrder = new TMilitaryUnit();
       recruitOrder->IMilitaryUnit(0, -1, static_cast<short>(terrainSlot), 0);
@@ -595,7 +595,7 @@ void TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations(TStream* stream
       }
       g_apNationStates[nationIdx]->trackedObjectList->FreePayloads();
     }
-    short workOrderCount = stream->ReadShort();
+    short workOrderCount = stream->ReadInteger();
     for (int workOrderIdx = workOrderCount; workOrderIdx != 0; --workOrderIdx) {
       TCivUnit* workOrder = new TCivUnit();
       workOrder->ICivUnit(kCivilianUnitMiner, -1, nationIdx);

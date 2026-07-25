@@ -9,7 +9,7 @@
 IMPLEMENT_DYNCREATE(TCountingStream, TStream)
 
 // ReadBytes (slot 0x3c, 0x00488b40) is inherited unchanged from TStream;
-// TCountingStream only overrides the byte-counting write path (WriteBytesSlot78).
+// TCountingStream only overrides the byte-counting write path (WriteBytes).
 
 // FUNCTION: IMPERIALISM 0x00489410
 TCountingStream::TCountingStream() {
@@ -56,7 +56,7 @@ void TCountingStream::SetLength(int position) {
 }
 
 // FUNCTION: IMPERIALISM 0x00489550
-void TCountingStream::WriteBytesSlot78(void* data, int length) {
+void TCountingStream::WriteBytes(void* data, int length) {
   (void)data;
   this->positionOrByteCount += length;
   if (this->positionOrByteCount > this->maxExtentOrLimit) {

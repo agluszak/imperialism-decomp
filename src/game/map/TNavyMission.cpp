@@ -128,36 +128,36 @@ void TNavyMission::WriteTo(TStream* stream) {
   TMission::WriteTo(stream);
 
   int nodeIdx1 = targetZone14 != nullptr ? targetZone14->GetContextOrdinalOrInvalid() : -1;
-  stream->WriteCountSlot88(nodeIdx1);
+  stream->WriteInteger(nodeIdx1);
 
   int nodeIdx2 = targetZone18 != nullptr ? targetZone18->GetContextOrdinalOrInvalid() : -1;
-  stream->WriteCountSlot88(nodeIdx2);
+  stream->WriteInteger(nodeIdx2);
 
   for (int i = 0; i < 4; ++i) {
     float swapped = SwapFloat(requiredShipEquipageByCategory[i]);
-    stream->WriteBytesSlot78(&swapped, 4);
+    stream->WriteBytes(&swapped, 4);
   }
 
   // orderList24 payloads are TShip primary-order nodes (serialized by roster index).
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
     int idx = static_cast<TShip*>(node->payload)->GetIndex();
-    stream->WriteCountSlot88(idx);
+    stream->WriteInteger(idx);
   }
-  stream->WriteCountSlot88(-1);
+  stream->WriteInteger(-1);
 
-  stream->WriteBytesSlot78(&navyState28, 4);
+  stream->WriteBytes(&navyState28, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x00536650
 void TNavyMission::ReadFrom(TStream* stream) {
   TMission::ReadFrom(stream);
 
-  // Both zone ids are 2-byte reads through slot 0x4c (ReadShort), not the 1-byte
+  // Both zone ids are 2-byte reads through slot 0x4c (ReadInteger), not the 1-byte
   // slot 0x40: the original does CALL [vt+0x4c] at 0x536667 and 0x536677.
-  short targetZoneId = stream->ReadShort();
+  short targetZoneId = stream->ReadInteger();
   targetZone14 = FindMapActionContextByNodeId(targetZoneId);
 
-  short secondaryZoneId = stream->ReadShort();
+  short secondaryZoneId = stream->ReadInteger();
   targetZone18 = FindMapActionContextByNodeId(secondaryZoneId);
 
   stream->ReadBytes(&requiredShipEquipageByCategory[0], 0x10);
@@ -165,12 +165,12 @@ void TNavyMission::ReadFrom(TStream* stream) {
     requiredShipEquipageByCategory[i] = SwapFloat(requiredShipEquipageByCategory[i]);
   }
 
-  short nodeIdx = stream->ReadShort();
+  short nodeIdx = stream->ReadInteger();
   if (nodeIdx > -1) {
     do {
       TShip* orderNode = TShip::GetNth(nodeIdx);
       AcceptReenforcement(orderNode, 0);
-      nodeIdx = stream->ReadShort();
+      nodeIdx = stream->ReadInteger();
     } while (nodeIdx >= 0);
   }
 

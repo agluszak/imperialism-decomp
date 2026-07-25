@@ -230,7 +230,7 @@ void TAutoGreatPower::ReadFrom(TStream* stream) {
   stream->ReadBytes(&missionCount, 4);
   for (int queueIndex = 1; queueIndex <= missionCount; ++queueIndex) {
     void* mission = 0;
-    if (stream->ReadByte(&mission) != 0) {
+    if (stream->ReadObject(&mission) != 0) {
       missionQueue->AddTail(mission);
     }
   }
@@ -246,19 +246,19 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
 
   WriteShortArrayElems(stream, this->actionMetricByQuarter, 6);
 
-  stream->WriteBytesSlot78(this->mapNodeStateFlags, 0x180);
-  stream->WriteBytesSlot78(this->portZoneStateFlags, 0x70);
+  stream->WriteBytes(this->mapNodeStateFlags, 0x180);
+  stream->WriteBytes(this->portZoneStateFlags, 0x70);
 
   TSortedList* missionQueue = this->missionQueue;
   missionQueue->WriteTo(stream);
   int missionQueueCount = missionQueue->GetCount();
 
   int zeroWord = 0;
-  stream->WriteBytesSlot78(&zeroWord, 4);
+  stream->WriteBytes(&zeroWord, 4);
   int index = 1;
   if (index <= missionQueueCount) {
     do {
-      stream->WriteObjectSlotB4(missionQueue->GetEntryByOrdinal(index), 0);
+      stream->WriteObject(missionQueue->GetEntryByOrdinal(index), 0);
       ++index;
     } while (index <= missionQueueCount);
   }

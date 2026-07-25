@@ -227,29 +227,29 @@ void TArmyBattle::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x005a4da0
 void TArmyBattle::WriteTo(TStream* stream) {
-  stream->WriteBytesSlot78(&currentSideC, 4);
-  stream->WriteBytesSlot78(&battleLive10, 4);
+  stream->WriteBytes(&currentSideC, 4);
+  stream->WriteBytes(&battleLive10, 4);
 
   TArmyPlayer* ourPlayer = static_cast<TArmyPlayer*>(tacticalPlayer14);
   ourPlayer->AssertValid();
   int ourNationIndex = ourPlayer->armyStack28->categoryFlag8;
-  stream->WriteBytesSlot78(&ourNationIndex, 4);
+  stream->WriteBytes(&ourNationIndex, 4);
   int ourNationCode = ourPlayer->armyStack28->ownerNationCodeE;
-  stream->WriteBytesSlot78(&ourNationCode, 4);
+  stream->WriteBytes(&ourNationCode, 4);
   int ourTileIndex = ourPlayer->armyStack28->tileIndex10;
-  stream->WriteBytesSlot78(&ourTileIndex, 4);
+  stream->WriteBytes(&ourTileIndex, 4);
 
   TArmyPlayer* enemyPlayer = static_cast<TArmyPlayer*>(tacticalPlayer18);
   enemyPlayer->AssertValid();
   int enemyNationIndex = enemyPlayer->armyStack28->categoryFlag8;
-  stream->WriteBytesSlot78(&enemyNationIndex, 4);
+  stream->WriteBytes(&enemyNationIndex, 4);
   int enemyNationCode = enemyPlayer->armyStack28->ownerNationCodeE;
-  stream->WriteBytesSlot78(&enemyNationCode, 4);
+  stream->WriteBytes(&enemyNationCode, 4);
   int enemyTileIndex = enemyPlayer->armyStack28->tileIndex10;
-  stream->WriteBytesSlot78(&enemyTileIndex, 4);
+  stream->WriteBytes(&enemyTileIndex, 4);
 
   int unitRecordCount = recordList20->GetCount();
-  stream->WriteBytesSlot78(&unitRecordCount, 2);
+  stream->WriteBytes(&unitRecordCount, 2);
   CIterator recordIter(recordList20);
   for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(recordIter.Reset()); recordIter.More();
        record = static_cast<TArmyTacUnit*>(recordIter.Advance())) {
@@ -259,9 +259,9 @@ void TArmyBattle::WriteTo(TStream* stream) {
     } else {
       recordUnitId = 0;
     }
-    stream->WriteBytesSlot78(&recordUnitId, 4);
-    stream->WriteBytesSlot78(&record->side20, 4);
-    stream->WriteBytesSlot78(&record->field24, 2);
+    stream->WriteBytes(&recordUnitId, 4);
+    stream->WriteBytes(&record->side20, 4);
+    stream->WriteBytes(&record->field24, 2);
   }
 
   TArmyTacUnit* linked = static_cast<TArmyTacUnit*>(selectedUnit1c);
@@ -271,13 +271,13 @@ void TArmyBattle::WriteTo(TStream* stream) {
   } else {
     linkedUnitId = 0;
   }
-  stream->WriteBytesSlot78(&linkedUnitId, 4);
+  stream->WriteBytes(&linkedUnitId, 4);
 
-  stream->WriteBytesSlot78(&battleSiteIndex38, 4);
-  stream->WriteBytesSlot78(&battleOutcomeCode44, 4);
-  stream->WriteBytesSlot78(&fortLevel49, 1);
-  stream->WriteBytesSlot78(&currentTacticalActionCode4c, 4);
-  stream->WriteBytesSlot78(&compositionClass50, 4);
+  stream->WriteBytes(&battleSiteIndex38, 4);
+  stream->WriteBytes(&battleOutcomeCode44, 4);
+  stream->WriteBytes(&fortLevel49, 1);
+  stream->WriteBytes(&currentTacticalActionCode4c, 4);
+  stream->WriteBytes(&compositionClass50, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x005a4fc0

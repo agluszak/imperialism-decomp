@@ -230,12 +230,12 @@ TMission* TMission::CreateMission(NationSlot sourceNation, eMissionType missionK
 // FUNCTION: IMPERIALISM 0x00535820
 void TMission::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&nationId04, 2);
-  stream->WriteBytesSlot78(&state08, 1);
-  stream->WriteBytesSlot78(&importanceScore0c, 4);
-  stream->WriteBytesSlot78(&flag10, 1);
-  stream->WriteBytesSlot78(&pathMarker06, 2);
-  stream->WriteBytesSlot78(&marker11, 1);
+  stream->WriteBytes(&nationId04, 2);
+  stream->WriteBytes(&state08, 1);
+  stream->WriteBytes(&importanceScore0c, 4);
+  stream->WriteBytes(&flag10, 1);
+  stream->WriteBytes(&pathMarker06, 2);
+  stream->WriteBytes(&marker11, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005358a0

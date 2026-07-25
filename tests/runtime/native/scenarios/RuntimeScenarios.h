@@ -12,4 +12,7 @@ RuntimeTestCase* TradeScreenTest();
 RuntimeTestCase* MapZoomToggleTest();
 RuntimeTestCase* LoadSavedGameTest();
 RuntimeTestCase* TurnEventQueueBoundsTest();
+RuntimeTestCase* SerializationRoundtripTest();
+RuntimeTestCase* SaveStreamCheckpointTest();
+RuntimeTestCase* SaveLoadRoundtripTest();
 RuntimeTestCase* UnknownRuntimeTest();

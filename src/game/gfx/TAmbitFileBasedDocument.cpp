@@ -130,11 +130,11 @@ void TAmbitFileBasedDocument::DoWrite(ArchiveStreamAdapter* file, unsigned char 
   TFileStream* stream = new TFileStream();
   stream->SetBackingArchive(file);
 
-  stream->WriteBytesSlot78(const_cast<int*>(&g_nAmbitSaveFileMagic), 4);
-  stream->WriteBytesSlot78(const_cast<int*>(&g_nCurrentAmbitSaveFormatVersion), 4);
+  stream->WriteBytes(const_cast<int*>(&g_nAmbitSaveFileMagic), 4);
+  stream->WriteBytes(const_cast<int*>(&g_nCurrentAmbitSaveFormatVersion), 4);
   int savedSessionSlot = g_pGameFlowState->queueSyncDword;
-  stream->WriteBytesSlot78(&savedSessionSlot, 4);
-  stream->WriteBytesSlot78(g_ScenarioSaveNameBuffer_006A2178, 0x20);
+  stream->WriteBytes(&savedSessionSlot, 4);
+  stream->WriteBytes(g_ScenarioSaveNameBuffer_006A2178, 0x20);
 
   char* tileOwnerTags = new char[0x1950];
   if (tileOwnerTags == 0) {
@@ -145,21 +145,21 @@ void TAmbitFileBasedDocument::DoWrite(ArchiveStreamAdapter* file, unsigned char 
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     *nextTileOwnerTag++ = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
   }
-  stream->WriteBytesSlot78(tileOwnerTags, 0x1950);
+  stream->WriteBytes(tileOwnerTags, 0x1950);
   delete[] tileOwnerTags;
 
   int economicQuarter = g_pSimMgr->economicTurn / 4;
-  stream->WriteBytesSlot78(&economicQuarter, 2);
+  stream->WriteBytes(&economicQuarter, 2);
   unsigned char difficultyLevel = static_cast<unsigned char>(g_pSimMgr->difficultyLevel);
-  stream->WriteBytesSlot78(&difficultyLevel, 1);
+  stream->WriteBytes(&difficultyLevel, 1);
   unsigned char activeNationSlot = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
-  stream->WriteBytesSlot78(&activeNationSlot, 1);
+  stream->WriteBytes(&activeNationSlot, 1);
 
   CString activeNationName;
   g_apTerrainTypeDescriptorTable[static_cast<signed char>(activeNationSlot)]
       ->FormatOverlayTerrainLabelText(&activeNationName);
   char* activeNationNameBuffer = activeNationName.GetBuffer(0x21);
-  stream->WriteBytesSlot78(activeNationNameBuffer, 0x20);
+  stream->WriteBytes(activeNationNameBuffer, 0x20);
   activeNationName.ReleaseBuffer(-1);
 
   g_pGlobalUiRootController->WriteTo(stream);

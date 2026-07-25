@@ -158,7 +158,7 @@ void TAmbitApplication::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0049e2f0
 void TAmbitApplication::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&languagePackId50, 4);
+  stream->WriteBytes(&languagePackId50, 4);
 }
 
 // MacApp TAmbitApplication::HandleCursor(CPoint, Region**): on the map-style turn-event

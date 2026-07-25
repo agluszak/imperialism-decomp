@@ -276,7 +276,7 @@ void TBillForeignMinister::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x00531ce0
 void TBillForeignMinister::WriteTo(TStream* stream) {
   TForeignMinister::WriteTo(stream);
-  stream->WriteBytesSlot78(&orderFlag80, 1);
+  stream->WriteBytes(&orderFlag80, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00531d20

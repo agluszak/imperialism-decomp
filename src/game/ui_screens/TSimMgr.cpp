@@ -297,7 +297,7 @@ void TSimMgr::ReadFrom(TStream* stream) {
   stream->ReadBytes(&turnFlowStatusFlags, 4);
 
   if (g_nSaveFormatVersion >= 0x20) {
-    difficultyLevel = stream->ReadInteger() & 0xff;
+    difficultyLevel = stream->ReadByte() & 0xff;
   }
 
   if (g_nSaveFormatVersion < 0x2d) {
@@ -359,7 +359,7 @@ void TSimMgr::ReadFrom(TStream* stream) {
 
   if (g_nSaveFormatVersion >= 0x3c) {
     for (i = 0; i < 0x17; ++i) {
-      stream->streamSlot70(&sharedTextSlots[i], 0x20);
+      stream->ReadSharedString(&sharedTextSlots[i], 0x20);
     }
   }
 
@@ -377,34 +377,34 @@ void TSimMgr::WriteTo(TStream* stream) {
   int i;
   TObject::WriteTo(stream);
 
-  stream->WriteBytesSlot78(&economicTurn, 2);
-  stream->WriteBytesSlot78(&activeNationSlot, 2);
-  stream->WriteBytesSlot78(&turnStateCode, 2);
-  stream->WriteBytesSlot78(&mode, 2);
-  stream->WriteBytesSlot78(&previousTurnStateCode, 2);
-  stream->WriteBytesSlot78(&previousMode, 2);
-  stream->WriteBytesSlot78(&field14, 1);
-  stream->WriteBytesSlot78(&numGreatPowers, 4);
-  stream->WriteBytesSlot78(&numMinorCountries, 4);
-  stream->WriteBytesSlot78(&turnFlowStatusFlags, 4);
-  stream->streamSlot7c(static_cast<unsigned char>(difficultyLevel));
-  stream->WriteBytesSlot78(&multiplayerGameActive, 0x3e);
-  stream->WriteBytesSlot78(&field_64, 4);
-  stream->WriteBytesSlot78(&field15, 0x17);
-  stream->WriteBytesSlot78(&multiplayerSessionRole, 4);
+  stream->WriteBytes(&economicTurn, 2);
+  stream->WriteBytes(&activeNationSlot, 2);
+  stream->WriteBytes(&turnStateCode, 2);
+  stream->WriteBytes(&mode, 2);
+  stream->WriteBytes(&previousTurnStateCode, 2);
+  stream->WriteBytes(&previousMode, 2);
+  stream->WriteBytes(&field14, 1);
+  stream->WriteBytes(&numGreatPowers, 4);
+  stream->WriteBytes(&numMinorCountries, 4);
+  stream->WriteBytes(&turnFlowStatusFlags, 4);
+  stream->WriteByte(static_cast<unsigned char>(difficultyLevel));
+  stream->WriteBytes(&multiplayerGameActive, 0x3e);
+  stream->WriteBytes(&field_64, 4);
+  stream->WriteBytes(&field15, 0x17);
+  stream->WriteBytes(&multiplayerSessionRole, 4);
 
   unsigned char hasGameFlowState = multiplayerSessionRole != 0;
   if (hasGameFlowState) {
     g_pGameFlowState->WriteTo(stream);
   }
 
-  stream->WriteBytesSlot78(&preferenceValues[10], 2);
-  stream->WriteBytesSlot78(&field6a, 2);
-  stream->WriteBytesSlot78(&field6c, 2);
-  stream->WriteBytesSlot78(phaseStateByDecade, 0xc);
+  stream->WriteBytes(&preferenceValues[10], 2);
+  stream->WriteBytes(&field6a, 2);
+  stream->WriteBytes(&field6c, 2);
+  stream->WriteBytes(phaseStateByDecade, 0xc);
 
   for (i = 0; i < 0x17; ++i) {
-    stream->streamSlotAc(&sharedTextSlots[i]);
+    stream->WriteSharedString(&sharedTextSlots[i]);
   }
 }
 

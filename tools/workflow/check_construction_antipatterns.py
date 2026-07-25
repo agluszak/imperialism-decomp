@@ -25,7 +25,7 @@ PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     # Construction rule 2: no manual vtable-pointer writes. Catches the write through
     # `this` (C-style or reinterpret_cast), the same write through ANY object variable,
     # and explicit `obj->vtable = ...` / `obj.vptr = ...` member assignments. To avoid
-    # flagging legitimate offset-0 out-param writes (e.g. TFileStream::ReadByte stores a
+    # flagging legitimate offset-0 out-param writes (e.g. TFileStream::ReadObject stores a
     # deserialized object pointer), the raw-pointer form requires a vtable-looking RHS:
     # `& <symbol>` or `reinterpret_cast<void*>(0x<const>)`.
     ("manual_vptr_write", re.compile(

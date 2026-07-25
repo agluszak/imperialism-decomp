@@ -20,7 +20,7 @@
 static __inline void WriteTrackedListToStream(TStream* stream, TSortedList* list) {
   list->WriteTo(stream);
   int entryCount = list->GetCount();
-  stream->WriteBytesSlot78(&entryCount, 4);
+  stream->WriteBytes(&entryCount, 4);
   for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
     TUnit* entry = static_cast<TUnit*>(list->GetEntryByOrdinal(ordinal));
     entry->WriteTo(stream);
@@ -32,9 +32,9 @@ static __inline void WriteTrackedListToStream(TStream* stream, TSortedList* list
 static __inline void WriteIntListToStream(TStream* stream, TLongintList* list) {
   list->NoOpWriteTo(stream);
   int entryCount = list->GetSize();
-  stream->WriteBytesSlot78(&entryCount, 4);
+  stream->WriteBytes(&entryCount, 4);
   for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
     int entryValue = list->At(ordinal);
-    stream->WriteBytesSlot78(&entryValue, 4);
+    stream->WriteBytes(&entryValue, 4);
   }
 }

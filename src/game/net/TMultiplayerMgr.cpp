@@ -1971,7 +1971,7 @@ void TMultiplayerMgr::WriteMessageTo(TStream* stream, short eventTag, short dest
   } else {
     header.toNetworkId = g_pGameFlowState->nationSessionIds[dest];
   }
-  stream->WriteBytesSlot78(&header, 0x1c);
+  stream->WriteBytes(&header, 0x1c);
   StreamMessagePayload32 payloadValue;
   payloadValue.scalarValue = payload;
   switch (tag) {
@@ -1986,19 +1986,19 @@ void TMultiplayerMgr::WriteMessageTo(TStream* stream, short eventTag, short dest
     return;
   case 0x31: {
     TaggedSerializablePayload* record = payloadValue.taggedObject;
-    stream->streamSlot8c(record->tag);
+    stream->WriteLong(record->tag);
     if (record->tag != kControlTagStar) { // 'star'
       record->object->WriteTo(stream);
       return;
     }
     TTurnStartEvent* event = static_cast<TTurnStartEvent*>(record->object);
     event->AssertValid();
-    stream->streamSlot8c(event->eventTag04);
+    stream->WriteLong(event->eventTag04);
     if (event->eventTag04 == kControlTagLand) { // 'land'
       TLandSaleEvent* landSale = static_cast<TLandSaleEvent*>(event);
       landSale->AssertValid();
-      stream->WriteCountSlot88(landSale->tileIndex08);
-      stream->WriteCountSlot88(landSale->nationCode0a);
+      stream->WriteInteger(landSale->tileIndex08);
+      stream->WriteInteger(landSale->nationCode0a);
       return;
     }
   } break;
@@ -2098,19 +2098,19 @@ struct TileRedrawInvalidateTurnEventPacket : NetMessage {
 // FUNCTION: IMPERIALISM 0x0054a500
 void TMultiplayerMgr::PublishTerrainDescriptorAndNotifyOrderListeners(TStream* stream,
                                                                       int terrainSlot) {
-  stream->streamSlot7c(static_cast<unsigned char>(terrainSlot + 'a'));
+  stream->WriteByte(static_cast<unsigned char>(terrainSlot + 'a'));
   TCountry* descriptor = g_apTerrainTypeDescriptorTable[terrainSlot];
   if (descriptor == 0) {
-    stream->WriteCountSlot88(0);
+    stream->WriteInteger(0);
   } else {
-    stream->WriteCountSlot88(descriptor->militaryUnitList44->GetCount());
+    stream->WriteInteger(descriptor->militaryUnitList44->GetCount());
     CIterator unitIter(descriptor->militaryUnitList44);
     for (TObject* unit = static_cast<TObject*>(unitIter.Reset()); unitIter.More();
          unit = static_cast<TObject*>(unitIter.Advance())) {
       unit->WriteTo(stream);
     }
   }
-  stream->streamSlot7c('.');
+  stream->WriteByte('.');
 }
 
 // FUNCTION: IMPERIALISM 0x0054a5e0
@@ -2126,9 +2126,9 @@ void TMultiplayerMgr::PublishNationDescriptorAndNotifyOrderListeners(TStream* st
     }
     TGreatPower* nation = *cell;
     if (nation == 0 || !matches) {
-      stream->WriteCountSlot88(0);
+      stream->WriteInteger(0);
     } else {
-      stream->WriteCountSlot88(nation->trackedObjectList->GetCount());
+      stream->WriteInteger(nation->trackedObjectList->GetCount());
       CIterator trackedIter(nation->trackedObjectList);
       for (TObject* tracked = static_cast<TObject*>(trackedIter.Reset()); trackedIter.More();
            tracked = static_cast<TObject*>(trackedIter.Advance())) {

@@ -91,13 +91,13 @@ void TAnimator::Free() {
 void TAnimator::ReadFrom(TStream* stream) {
   mapUberPicture2c = 0;
   field10 = 0x7fffffff;
-  field10 = stream->streamSlot50();
+  field10 = stream->ReadLong();
   TObject::ReadFrom(stream);
 }
 
 // FUNCTION: IMPERIALISM 0x004a0e50
 void TAnimator::WriteTo(TStream* stream) {
-  stream->streamSlot8c(field10);
+  stream->WriteLong(field10);
   TObject::WriteTo(stream);
 }
 

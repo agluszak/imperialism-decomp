@@ -449,7 +449,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
       }
     }
   } else {
-    int ministerMask = stream->ReadInteger();
+    int ministerMask = stream->ReadByte();
 
     if ((ministerMask & 1) == 0) {
       if (this->foreignMinister != 0) {
@@ -540,8 +540,11 @@ void TGreatPower::ReadFrom(TStream* stream) {
     }
   }
 
-  if (townCount > 0) {
-    this->city->SetSelectedTownMarker(townMarkerList->GetEntryByOrdinal());
+  // 0x4d989d: the ordinal is 1, not GetEntryByOrdinal's default of 0 -- a 0 ordinal
+  // reaches CPtrList::FindIndex(-1) and faults. The original also guards on the city
+  // existing (0x4d9893) before selecting into it.
+  if (townCount > 0 && this->city != nullptr) {
+    this->city->SetSelectedTownMarker(townMarkerList->GetEntryByOrdinal(1));
   }
 
   TSortedList* trackedObjectList = this->trackedObjectList;
@@ -551,11 +554,14 @@ void TGreatPower::ReadFrom(TStream* stream) {
   }
   trackedObjectList->ReadFrom(stream);
 
-  int unusedOrderCount = 0;
-  stream->ReadBytes(&unusedOrderCount, 4);
+  int civilianOrderCount = 0;
+  stream->ReadBytes(&civilianOrderCount, 4);
 
+  // Count-driven, not a fixed four: the original runs EBX from 1 while EBX <= the count
+  // it just read (0x4d98f0 / 0x4d9941). A hardcoded bound reads the wrong number of
+  // TCivUnit records and desyncs everything after this nation.
   int orderOrdinal = 1;
-  while (orderOrdinal < 5) {
+  while (orderOrdinal <= civilianOrderCount) {
     TCivUnit* civOrderObj = new TCivUnit();
     if (civOrderObj != nullptr) {
       civOrderObj->ICivUnit(kCivilianUnitMiner, -1, this->nationSlot);
@@ -563,6 +569,12 @@ void TGreatPower::ReadFrom(TStream* stream) {
     }
     ++orderOrdinal;
   }
+
+  // 0x4d9954: the 0x17-byte candidate flag block, read straight after the civilian-order
+  // loop and before the budget fields. WriteTo has always emitted it (0x4d9e9c), so
+  // omitting it here left every nation record 23 bytes short and desynced the rest of
+  // the stream from this point on.
+  stream->ReadBytes(this->candidateNationFlags, 0x17);
 
   stream->ReadBytes(&this->diplomacyBudgetBase, 4);
   stream->ReadBytes(&this->escalationCounter, 1);
@@ -581,7 +593,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
       int nodeOrdinal = 1;
       while (nodeOrdinal <= nodeCount) {
         unsigned char hasNode = 0;
-        char markerOk = stream->ReadByte(&hasNode);
+        char markerOk = stream->ReadObject(&hasNode);
         if (markerOk != 0) {
           missionNodeQueue->AddTail(0);
         }
@@ -606,13 +618,13 @@ void TGreatPower::ReadFrom(TStream* stream) {
 void TGreatPower::WriteTo(TStream* stream) {
   TCountry::WriteTo(stream);
 
-  stream->WriteBytesSlot78(&this->diplomacyEligibilityA0, 1);
-  stream->WriteBytesSlot78(&this->diplomacyCounterA2, 2);
-  stream->WriteBytesSlot78(&this->tradeCapacity, 2);
-  stream->WriteBytesSlot78(&this->needCapA6, 2);
-  stream->WriteBytesSlot78(&this->needsOverCapFlag, 2);
-  stream->WriteBytesSlot78(&this->grantTotalCost, 4);
-  stream->WriteBytesSlot78(&this->diplomacyCounterB0, 2);
+  stream->WriteBytes(&this->diplomacyEligibilityA0, 1);
+  stream->WriteBytes(&this->diplomacyCounterA2, 2);
+  stream->WriteBytes(&this->tradeCapacity, 2);
+  stream->WriteBytes(&this->needCapA6, 2);
+  stream->WriteBytes(&this->needsOverCapFlag, 2);
+  stream->WriteBytes(&this->grantTotalCost, 4);
+  stream->WriteBytes(&this->diplomacyCounterB0, 2);
 
   WriteShortArrayElems(stream, this->diplomacyPolicyByNation, 0x17);
   WriteShortArrayElems(stream, this->diplomacyGrantByNation, 0x17);
@@ -625,11 +637,11 @@ void TGreatPower::WriteTo(TStream* stream) {
   WriteShortArrayElems(stream, this->diplomacyState222, 0x17);
   WriteShortArrayElems(stream, this->diplomacyState250, 0x17);
 
-  stream->WriteBytesSlot78(&this->budgetPoolBase, 4);
-  stream->WriteBytesSlot78(&this->budgetPoolDelta, 4);
+  stream->WriteBytes(&this->budgetPoolBase, 4);
+  stream->WriteBytes(&this->budgetPoolDelta, 4);
   WriteIntArrayElems(stream, this->aidAllocationMatrix, 0x170);
 
-  stream->WriteBytesSlot78(&this->serializedStatusFlags[0], 0xd);
+  stream->WriteBytes(&this->serializedStatusFlags[0], 0xd);
   WriteShortArrayElemsRev(stream, this->field8d6, 0xd);
 
   this->turnEventQueue->WriteTo(stream);
@@ -651,7 +663,7 @@ void TGreatPower::WriteTo(TStream* stream) {
   if (this->city != 0) {
     presenceFlags = static_cast<unsigned char>(presenceFlags | 8);
   }
-  stream->streamSlot7c(presenceFlags);
+  stream->WriteByte(presenceFlags);
   if (this->foreignMinister != 0) {
     this->foreignMinister->WriteTo(stream);
   }
@@ -671,7 +683,7 @@ void TGreatPower::WriteTo(TStream* stream) {
   this->townMarkerList->WriteTo(stream);
   {
     int entryCount = this->townMarkerList->GetCount();
-    stream->WriteBytesSlot78(&entryCount, 4);
+    stream->WriteBytes(&entryCount, 4);
     for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
       TUnit* entry = static_cast<TUnit*>(this->townMarkerList->GetEntryByOrdinal(ordinal));
       entry->WriteTo(stream);
@@ -680,33 +692,33 @@ void TGreatPower::WriteTo(TStream* stream) {
   this->trackedObjectList->WriteTo(stream);
   {
     int entryCount = this->trackedObjectList->GetCount();
-    stream->WriteBytesSlot78(&entryCount, 4);
+    stream->WriteBytes(&entryCount, 4);
     for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
       TUnit* entry = static_cast<TUnit*>(this->trackedObjectList->GetEntryByOrdinal(ordinal));
       entry->WriteTo(stream);
     }
   }
 
-  stream->WriteBytesSlot78(this->candidateNationFlags, 0x17);
-  stream->WriteBytesSlot78(&this->diplomacyBudgetBase, 4);
-  stream->WriteBytesSlot78(&this->escalationCounter, 1);
-  stream->WriteBytesSlot78(&this->pendingCommitmentCost, 4);
-  stream->WriteBytesSlot78(&this->pressureCounter, 1);
-  stream->WriteBytesSlot78(&this->field900, 4);
-  stream->WriteBytesSlot78(&this->field904, 1);
+  stream->WriteBytes(this->candidateNationFlags, 0x17);
+  stream->WriteBytes(&this->diplomacyBudgetBase, 4);
+  stream->WriteBytes(&this->escalationCounter, 1);
+  stream->WriteBytes(&this->pendingCommitmentCost, 4);
+  stream->WriteBytes(&this->pressureCounter, 1);
+  stream->WriteBytes(&this->field900, 4);
+  stream->WriteBytes(&this->field904, 1);
 
   this->missionNodeQueue->WriteTo(stream);
   int missionNodeCount = this->missionNodeQueue->GetCount();
-  stream->WriteBytesSlot78(&missionNodeCount, 4);
+  stream->WriteBytes(&missionNodeCount, 4);
   for (int nodeOrdinal = 1; nodeOrdinal <= missionNodeCount; ++nodeOrdinal) {
     void* node = this->missionNodeQueue->GetEntryByOrdinal(nodeOrdinal);
-    stream->WriteObjectSlotB4(node, 0);
+    stream->WriteObject(node, 0);
   }
 
-  stream->WriteBytesSlot78(&this->field910, 4);
-  stream->WriteBytesSlot78(&this->aidAllocationTotal, 4);
-  stream->WriteBytesSlot78(this->colonyBoycottFlags, 0x17);
-  stream->WriteBytesSlot78(&this->militaryExpenses960, 4);
+  stream->WriteBytes(&this->field910, 4);
+  stream->WriteBytes(&this->aidAllocationTotal, 4);
+  stream->WriteBytes(this->colonyBoycottFlags, 0x17);
+  stream->WriteBytes(&this->militaryExpenses960, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x004da3e0
@@ -718,7 +730,7 @@ void TGreatPower::ReadCoreFieldsFromStream(TStream* stream, int unusedArg) {
   }
   this->trackedObjectList->ReadFrom(stream);
 
-  int orderCount = stream->ReadShort();
+  int orderCount = stream->ReadInteger();
   for (; orderCount > 0; --orderCount) {
     TCivUnit* civOrder = new TCivUnit();
     civOrder->ICivUnit(kCivilianUnitMiner, -1, this->nationSlot);
@@ -734,7 +746,7 @@ void TGreatPower::WriteCoreFieldsToStream(TStream* stream) {
 
   this->trackedObjectList->WriteTo(stream);
   int orderCount = this->trackedObjectList->GetCount();
-  stream->WriteCountSlot88(orderCount);
+  stream->WriteInteger(orderCount);
   for (int ordinal = 1; ordinal <= orderCount; ++ordinal) {
     TUnit* order = static_cast<TUnit*>(this->trackedObjectList->GetEntryByOrdinal(ordinal));
     order->WriteTo(stream);

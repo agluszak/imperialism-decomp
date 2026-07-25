@@ -40,8 +40,8 @@ TAttackProvinceMission::TAttackProvinceMission(short targetProvince, short amass
 // FUNCTION: IMPERIALISM 0x0053d810
 void TAttackProvinceMission::WriteTo(TStream* stream) {
   TArmyMission::WriteTo(stream);
-  stream->WriteBytesSlot78(&targetProvince30, 2);
-  stream->WriteBytesSlot78(&amassingProvince32, 2);
+  stream->WriteBytes(&targetProvince30, 2);
+  stream->WriteBytes(&amassingProvince32, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0053d850

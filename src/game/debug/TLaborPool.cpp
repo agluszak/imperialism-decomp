@@ -16,9 +16,9 @@ TLaborPool::~TLaborPool() {}
 // FUNCTION: IMPERIALISM 0x004b21d0
 void TLaborPool::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&lowSkillCount04, 2);
-  stream->WriteBytesSlot78(&mediumSkillCount06, 2);
-  stream->WriteBytesSlot78(&highSkillCount08, 2);
+  stream->WriteBytes(&lowSkillCount04, 2);
+  stream->WriteBytes(&mediumSkillCount06, 2);
+  stream->WriteBytes(&highSkillCount08, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x004b2220

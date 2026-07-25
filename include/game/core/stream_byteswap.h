@@ -9,7 +9,7 @@
 // The stream format is BIG-ENDIAN (the Windows build shares its persisted format with
 // the Macintosh original), so every 16/32-bit field has to be swapped around the raw
 // block read/write primitives -- TStream itself moves bytes only (ReadBytes slot 0x3c,
-// WriteBytesSlot78 slot 0x78) and does no reordering.
+// WriteBytes slot 0x78) and does no reordering.
 //
 // Two shapes appear in the original image and both are reproduced here:
 //
@@ -33,7 +33,7 @@ void SwapFirstTwoBytesInBuffer(unsigned char* buffer); // 0x004b9340
 // swaps each pair in place, leaving the caller with host-order shorts.
 void ReadByteSwappedShortArrayFromStream(TStream* stream, unsigned char* buffer, int shortCount);
 
-// Writes `count` shorts through the stream's WriteBytesSlot78 primitive, each swapped
+// Writes `count` shorts through the stream's WriteBytes primitive, each swapped
 // into the stream's big-endian order.
 void WriteByteSwappedShortArrayToStream(TStream* stream, short* words, int count);
 
@@ -87,7 +87,7 @@ static __inline float SwapFloat(float value) {
 }
 
 // Write-side: copy each element into a stack temp, swap it to the stream's byte order and
-// write it through the WriteBytesSlot78 primitive (slot 0x78).
+// write it through the WriteBytes primitive (slot 0x78).
 static __inline void WriteShortArrayElems(TStream* stream, const short* values, int count) {
   for (int remaining = count; remaining != 0; --remaining) {
     short element = *values;
@@ -95,7 +95,7 @@ static __inline void WriteShortArrayElems(TStream* stream, const short* values, 
     unsigned char low = elementBytes[0];
     elementBytes[0] = elementBytes[1];
     elementBytes[1] = low;
-    stream->WriteBytesSlot78(&element, 2);
+    stream->WriteBytes(&element, 2);
     ++values;
   }
 }
@@ -110,7 +110,7 @@ static __inline void WriteShortArrayElemsRev(TStream* stream, const short* value
     unsigned char low = elementBytes[0];
     elementBytes[0] = high;
     elementBytes[1] = low;
-    stream->WriteBytesSlot78(&element, 2);
+    stream->WriteBytes(&element, 2);
     ++values;
   }
 }
@@ -125,7 +125,7 @@ static __inline void WriteIntArrayElems(TStream* stream, const int* values, int 
     elementBytes[1] = elementBytes[2];
     elementBytes[2] = b1;
     elementBytes[3] = b0;
-    stream->WriteBytesSlot78(&element, 4);
+    stream->WriteBytes(&element, 4);
     ++values;
   }
 }

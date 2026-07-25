@@ -68,8 +68,8 @@ void TDefenseMinister::InitializeBaseOrderArrayMetrics(TGreatPower* owner) {
 // FUNCTION: IMPERIALISM 0x004ec1d0
 void TDefenseMinister::WriteTo(TStream* stream) {
   TMinister::WriteTo(stream);
-  stream->WriteBytesSlot78(&field10, 2);
-  stream->WriteBytesSlot78(&field12, 2);
+  stream->WriteBytes(&field10, 2);
+  stream->WriteBytes(&field12, 2);
   short* cursor = recruitOrderCountByType;
   int remaining = 0x1e;
   do {
@@ -78,7 +78,7 @@ void TDefenseMinister::WriteTo(TStream* stream) {
     unsigned char lowByte = stackBytes[0];
     stackBytes[0] = stackBytes[1];
     stackBytes[1] = lowByte;
-    stream->WriteBytesSlot78(&stackWord, 2);
+    stream->WriteBytes(&stackWord, 2);
     cursor = cursor + 1;
     remaining = remaining - 1;
   } while (remaining != 0);
@@ -90,14 +90,14 @@ void TDefenseMinister::WriteTo(TStream* stream) {
     unsigned char lowByte = stackBytes[0];
     stackBytes[0] = stackBytes[1];
     stackBytes[1] = lowByte;
-    stream->WriteBytesSlot78(&stackWord, 2);
+    stream->WriteBytes(&stackWord, 2);
     cursor = cursor + 1;
     remaining = remaining - 1;
   } while (remaining != 0);
-  stream->WriteBytesSlot78(&thresholdA, 2);
-  stream->WriteBytesSlot78(&thresholdB, 2);
-  stream->WriteBytesSlot78(&thresholdC, 2);
-  stream->WriteBytesSlot78(&thresholdD, 2);
+  stream->WriteBytes(&thresholdA, 2);
+  stream->WriteBytes(&thresholdB, 2);
+  stream->WriteBytes(&thresholdC, 2);
+  stream->WriteBytes(&thresholdD, 2);
 }
 
 // Slot 6 override (0x4ec2f0): deserialize defense-minister order-array metrics.

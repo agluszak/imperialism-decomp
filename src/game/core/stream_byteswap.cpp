@@ -25,7 +25,7 @@ void SwapFirstTwoBytesInBuffer(unsigned char* buffer) {
 }
 
 // Copy each short into a 2-byte scratch, swap it to the stream's big-endian order, and
-// push it through the WriteBytesSlot78 primitive (slot 0x78). The swap is inlined at this
+// push it through the WriteBytes primitive (slot 0x78). The swap is inlined at this
 // site in the original even though SwapFirstTwoBytesInBuffer exists.
 // (Previously named WriteWordArrayToOutputCallbackLE -- the stream order is big-endian,
 // so the "LE" in that name was backwards.)
@@ -37,7 +37,7 @@ void WriteByteSwappedShortArrayToStream(TStream* stream, short* words, int count
     unsigned char tmp = bytes[0];
     bytes[0] = bytes[1];
     bytes[1] = tmp;
-    stream->WriteBytesSlot78(&buffer, 2);
+    stream->WriteBytes(&buffer, 2);
     ++words;
   }
 }

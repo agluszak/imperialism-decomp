@@ -108,14 +108,14 @@ void TMapMgr::ReadFrom(TStream* stream) {
   stream->ReadBytes(&field8, 1);
   stream->ReadBytes(&field9, 1);
   stream->ReadBytes(&cityScoreTotal, 4);
-  stream->streamSlot70(&scenarioTagText1c, 0x20);
-  hexNeighborWrapHorizontally20 = stream->streamSlot44();
+  stream->ReadSharedString(&scenarioTagText1c, 0x20);
+  hexNeighborWrapHorizontally20 = stream->ReadBoolean();
   stream->ReadBytes(terrainStateTable, 0x38f40);
   int i;
   Province* record = cityScoreTable;
   for (i = 0; i < 0x180; ++i, ++record) {
     stream->ReadBytes(record, 0xa4);
-    stream->streamSlot70(&record->cityNameA4, 0x20);
+    stream->ReadSharedString(&record->cityNameA4, 0x20);
   }
   for (i = 0; i < 0x1950; ++i) {
     terrainStateTable[i].firstCivilianOrder20 = nullptr;
@@ -139,19 +139,19 @@ void TMapMgr::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0050e7a0
 void TMapMgr::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&field6, 2);
-  stream->WriteBytesSlot78(&field8, 1);
-  stream->WriteBytesSlot78(&field9, 1);
-  stream->WriteBytesSlot78(&cityScoreTotal, 4);
-  stream->streamSlotAc(&scenarioTagText1c);
-  stream->streamSlot80(hexNeighborWrapHorizontally20);
-  stream->WriteBytesSlot78(terrainStateTable, 0x38f40);
+  stream->WriteBytes(&field6, 2);
+  stream->WriteBytes(&field8, 1);
+  stream->WriteBytes(&field9, 1);
+  stream->WriteBytes(&cityScoreTotal, 4);
+  stream->WriteSharedString(&scenarioTagText1c);
+  stream->WriteBoolean(hexNeighborWrapHorizontally20);
+  stream->WriteBytes(terrainStateTable, 0x38f40);
   Province* record = cityScoreTable;
   for (int i = 0; i < 0x180; ++i, ++record) {
-    stream->WriteBytesSlot78(record, 0xa4);
-    stream->streamSlotAc(&record->cityNameA4);
+    stream->WriteBytes(record, 0xa4);
+    stream->WriteSharedString(&record->cityNameA4);
   }
-  stream->WriteBytesSlot78(&pendingRiverMouthTile22, 2);
+  stream->WriteBytes(&pendingRiverMouthTile22, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0050e8b0

@@ -11,7 +11,7 @@ public:
   virtual ~THandleStream() override; // slot 0x01 (scalar deleting destructor)
   virtual void Free() override; // slot 0x07 0x4896a0
   // slots 0x0a..0x0d: position/length accessors below
-  // slot 0x1e WriteBytesSlot78 owned by the hand declaration below (0x489810)
+  // slot 0x1e WriteBytes owned by the hand declaration below (0x489810)
   virtual int GrowthSize(int requestedSize); // slot 0x31 0x489720
   // clang-format on
   // Field semantics evidenced by AttachGlobalMemoryHandleAndResetPosition (0x489660):
@@ -46,6 +46,6 @@ public:
   int GetLength() override;
   void SetLength(int length) override;
   void ReadBytes(void* buffer, int sizeBytes) override;
-  void WriteBytesSlot78(void* data, int length) override;
+  void WriteBytes(void* data, int length) override;
 };
 ASSERT_SIZE(THandleStream, 0x18);

@@ -92,7 +92,7 @@ void THandleStream::ReadBytes(void* buffer, int sizeBytes) {
 }
 
 // FUNCTION: IMPERIALISM 0x00489810
-void THandleStream::WriteBytesSlot78(void* data, int length) {
+void THandleStream::WriteBytes(void* data, int length) {
   int available = attachedSizeBytes - streamPosition;
   if (available < length) {
     SetLength(attachedSizeBytes + GrowthSize(length - available));
