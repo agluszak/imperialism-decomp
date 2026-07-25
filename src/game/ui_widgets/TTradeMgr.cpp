@@ -739,65 +739,64 @@ void TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline() {
 }
 
 // FUNCTION: IMPERIALISM 0x005b94d0
-void TTradeMgr::DispatchProposalAmountSlot60(short ownerNation, int sourceContext, int amount,
-                                             int maxAmount, int targetNation, char emitEventFlag,
-                                             char skipLocalizationBranch) {
-  if ((skipLocalizationBranch == 0) && (g_pSimMgr->difficultyLevel == 2)) {
-    g_pGameFlowState->CreateAndSendTurnEvent1C_BoolAndSixShorts(
-        true, ownerNation, static_cast<short>(sourceContext), static_cast<short>(amount),
-        static_cast<short>(maxAmount), static_cast<short>(targetNation), emitEventFlag);
-    return;
+void TTradeMgr::SetDealResults(short sourceNation, int targetNation, int amount, int maximumAmount,
+                               int commodityType, char shortfallFlag, char remoteReplay) {
+  if (remoteReplay == 0) {
+    unsigned char isClient = g_pSimMgr->multiplayerSessionRole == 2;
+    if (isClient != 0) {
+      g_pGameFlowState->CreateAndSendTurnEvent1C_BoolAndSixShorts(
+          true, sourceNation, static_cast<short>(targetNation), static_cast<short>(amount),
+          static_cast<short>(maximumAmount), static_cast<short>(commodityType), shortfallFlag);
+      return;
+    }
   }
-  if (g_pSimMgr->difficultyLevel == 1) {
+  unsigned char isHost = g_pSimMgr->multiplayerSessionRole == 1;
+  if (isHost != 0) {
     g_pGameFlowState->CreateAndSendTurnEvent1C_BoolAndSixShorts(
-        false, ownerNation, static_cast<short>(sourceContext), static_cast<short>(amount),
-        static_cast<short>(maxAmount), static_cast<short>(targetNation), emitEventFlag);
+        false, sourceNation, static_cast<short>(targetNation), static_cast<short>(amount),
+        static_cast<short>(maximumAmount), static_cast<short>(commodityType), shortfallFlag);
   }
 
-  short ownerSlot = ownerNation;
-  if (emitEventFlag != 0) {
-    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(ownerNation) != 0) {
-      g_apNationStates[ownerSlot]->ClearDiplomacyState1c6ForTarget(
-          static_cast<short>(targetNation));
-    }
+  if (shortfallFlag != 0 && g_pDiplomacyTurnStateManager->IsMajorNationSlot(sourceNation) != 0) {
+    g_apNationStates[sourceNation]->ClearDiplomacyState1c6ForTarget(
+        static_cast<short>(commodityType));
   }
   if (static_cast<short>(amount) < 1) {
-    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(ownerNation) != 0) {
-      g_apNationStates[ownerSlot]->AppendTrackedSlotEntry(kTrackedSlotOfferEntry, ownerNation,
-                                                          static_cast<short>(amount),
-                                                          static_cast<short>(targetNation), amount);
+    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(sourceNation) != 0) {
+      g_apNationStates[sourceNation]->AppendTrackedSlotEntry(
+          kTrackedSlotOfferEntry, targetNation, static_cast<short>(amount),
+          static_cast<short>(commodityType), maximumAmount);
     }
   } else {
-    int ownerIndex = static_cast<int>(ownerSlot);
-    static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[ownerIndex])
-        ->ApplyIndexedResourceDeltaAndAdjustNationTotals(targetNation, amount, maxAmount);
-    static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[static_cast<short>(sourceContext)])
-        ->ApplyIndexedResourceDeltaAndAdjustNationTotals(targetNation, -amount, ownerNation);
-    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(maxAmount) != 0) {
-      if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(ownerNation) == 0) {
-        static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[sourceContext])
-            ->DecrementDiplomacyCounterA2ByValue(amount);
-      }
+    int sourceNationIndex = static_cast<int>(sourceNation);
+    static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[sourceNationIndex])
+        ->ApplyIndexedResourceDeltaAndAdjustNationTotals(commodityType, amount, maximumAmount);
+    short targetNationSlot = static_cast<short>(targetNation);
+    static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[targetNationSlot])
+        ->ApplyIndexedResourceDeltaAndAdjustNationTotals(commodityType, -amount, sourceNation);
+    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(targetNationSlot) != 0 &&
+        g_pDiplomacyTurnStateManager->IsMajorNationSlot(sourceNation) == 0) {
+      static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[targetNationSlot])
+          ->DecrementDiplomacyCounterA2ByValue(amount);
     }
     short relationBump = g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
-        ownerSlot, static_cast<short>(sourceContext));
+        sourceNation, targetNationSlot);
     if (relationBump > 0) {
-      int matrixIndex = ownerIndex * 0x17 + sourceContext;
+      int matrixIndex = sourceNationIndex * 0x17 + targetNation;
       short standingScore =
           g_pDiplomacyTurnStateManager->relationStandingScoreMatrix79c[matrixIndex];
-      g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(ownerNation, maxAmount,
+      g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(sourceNation, targetNationSlot,
                                                            static_cast<short>(standingScore + 1));
     }
-    short targetCode = static_cast<short>(maxAmount);
-    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(maxAmount) != 0) {
-      g_apNationStates[static_cast<short>(targetNation)]->AppendTrackedSlotEntry(
-          kTrackedSlotAcceptEntry, ownerNation, static_cast<short>(amount),
-          static_cast<short>(targetNation), sourceContext);
+    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(targetNationSlot) != 0) {
+      g_apNationStates[targetNationSlot]->AppendTrackedSlotEntry(
+          kTrackedSlotAcceptEntry, sourceNation, static_cast<short>(amount),
+          static_cast<short>(commodityType), maximumAmount);
     }
-    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(ownerNation) != 0) {
-      g_apNationStates[ownerIndex]->AppendTrackedSlotEntry(
+    if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(sourceNation) != 0) {
+      g_apNationStates[sourceNationIndex]->AppendTrackedSlotEntry(
           kTrackedSlotOfferEntry, targetNation, static_cast<short>(amount),
-          static_cast<short>(targetNation), targetCode);
+          static_cast<short>(commodityType), maximumAmount);
     }
   }
 }

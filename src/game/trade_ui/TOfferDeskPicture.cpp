@@ -415,9 +415,9 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
   }
 
   if (quantityValid) {
-    g_pNationInteractionStateManager->DispatchProposalAmountSlot60(
-        sourceNationSlot90, targetNationSlot92, proposedAmount98, maxAmount94, commodityType96,
-        static_cast<char>(suppressEventFlag9a), 0);
+    g_pNationInteractionStateManager->SetDealResults(sourceNationSlot90, targetNationSlot92,
+                                                     proposedAmount98, maxAmount94, commodityType96,
+                                                     static_cast<char>(suppressEventFlag9a), 0);
 
     TView* acceptButton = ResolveControlByTag(kControlTagAcce);
     acceptButton->AssertValid();
