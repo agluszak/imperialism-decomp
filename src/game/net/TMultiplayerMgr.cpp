@@ -1563,10 +1563,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
            matrix->pendingPolicyTierMatrix,
            sizeof(g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix484));
     // The original copies each pair with a single 32-bit register move.
-    *reinterpret_cast<int*>(&g_pDiplomacyTurnStateManager->selectedSourceNationSlot784) =
-        *reinterpret_cast<int*>(&matrix->selectedSourceNationSlot);
-    *reinterpret_cast<int*>(&g_pDiplomacyTurnStateManager->selectionFlagsA788) =
-        *reinterpret_cast<int*>(&matrix->selectionFlagsA);
+    g_pDiplomacyTurnStateManager->packedSelectedNationSlots784 = matrix->packedSelectedNationSlots;
+    g_pDiplomacyTurnStateManager->packedSelectionFlagsAB788 = matrix->packedSelectionFlagsAB;
     g_pDiplomacyTurnStateManager->selectionFlagsC78c = matrix->selectionFlagsC;
     memcpy(g_pDiplomacyTurnStateManager->comparativePowerRows1824, matrix->relationTailBlock,
            sizeof(matrix->relationTailBlock));
