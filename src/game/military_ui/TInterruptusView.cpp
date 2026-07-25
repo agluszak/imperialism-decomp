@@ -39,7 +39,7 @@ void TInterruptusView::Draw(RECT* rectBuffer) {
   g_pSimMgr->GetString(0x273c, 0x1e, &templateText);
 
   short minorIndex = battleDetail60->payload.interrupt.minorNationSlot24;
-  g_apNationAuxRuntimeStateSlots[minorIndex]->FormatOverlayTerrainLabelText(&nationLabel);
+  g_apTerrainTypeDescriptorTable[minorIndex]->FormatOverlayTerrainLabelText(&nationLabel);
 
   scanBracketExpressions(g_pSimMgr, &label, static_cast<const char*>(templateText),
                          static_cast<const char*>(countText), static_cast<const char*>(kindText),
