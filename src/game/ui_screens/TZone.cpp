@@ -178,20 +178,24 @@ void TZone::ReadFrom(TStream* stream) {
   // Pre-0xd save format stored the neighbor arrays directly; current saves rebuild them
   // (AppendUniquePrimaryNeighbor et al.) after load instead.
   if (g_nSaveFormatVersion < 0xd) {
-    short primaryCount;
-    stream->ReadBytes(&primaryCount, 2);
-    for (short i = 0; i < primaryCount; ++i) {
-      TZone* entry;
-      stream->ReadBytes(&entry, 4);
-      primaryNeighbors[static_cast<unsigned int>(i)] = entry;
+    {
+      short neighborCount;
+      stream->ReadBytes(&neighborCount, 2);
+      for (short neighborIndex = 0; neighborIndex < neighborCount; ++neighborIndex) {
+        TZone* entry;
+        stream->ReadBytes(&entry, 4);
+        primaryNeighbors[static_cast<unsigned int>(neighborIndex)] = entry;
+      }
     }
 
-    short secondaryCount;
-    stream->ReadBytes(&secondaryCount, 2);
-    for (short j = 0; j < secondaryCount; ++j) {
-      Province* entry;
-      stream->ReadBytes(&entry, 4);
-      secondaryNeighbors[static_cast<unsigned int>(j)] = entry;
+    {
+      short neighborCount;
+      stream->ReadBytes(&neighborCount, 2);
+      for (short neighborIndex = 0; neighborIndex < neighborCount; ++neighborIndex) {
+        Province* entry;
+        stream->ReadBytes(&entry, 4);
+        secondaryNeighbors[static_cast<unsigned int>(neighborIndex)] = entry;
+      }
     }
   }
 }
@@ -810,15 +814,19 @@ void TZone::BuildNavalIntelligenceSourceDescription(CString* out, short nation) 
     return;
   }
 
-  CString reportTemplate;
   if (selected->admiral != 0) {
-    CString admiralName = CString(s_szAdmiralPrefix_0069578c) + selected->admiral->displayName;
-    CString shipName = selected->name;
+    CString admiralName;
+    CString shipName;
+    CString reportTemplate;
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0xe);
+    admiralName = s_szAdmiralPrefix_0069578c + selected->admiral->displayName;
+    shipName = selected->name;
     scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(reportTemplate),
                            static_cast<LPCSTR>(admiralName), static_cast<LPCSTR>(shipName));
   } else {
-    CString shipName = selected->name;
+    CString shipName;
+    CString reportTemplate;
+    shipName = selected->name;
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0xf);
     scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(reportTemplate),
                            static_cast<LPCSTR>(shipName));
@@ -978,8 +986,8 @@ short TZone::GetCachedMapActionContextDistanceOrRecompute(TZone* other) {
     g_pMapActionContextDistanceCache = newCache;
   }
 
-  short thisOrd = GetContextOrdinalOrInvalid();
-  short otherOrd = other->GetContextOrdinalOrInvalid();
+  short thisOrd = this != 0 ? contextOrdinal14 : -1;
+  short otherOrd = other != 0 ? other->contextOrdinal14 : -1;
   char* cache = static_cast<char*>(g_pMapActionContextDistanceCache);
   signed char cachedDistance = cache[thisOrd * g_nMapActionContextCount + otherOrd];
 
@@ -998,7 +1006,7 @@ short TZone::GetCachedMapActionContextDistanceOrRecompute(TZone* other) {
 
     for (TZone* writeNode = g_pMapActionContextListHead; writeNode != 0;
          writeNode = writeNode->prev18) {
-      short nodeOrd = writeNode->GetContextOrdinalOrInvalid();
+      short nodeOrd = writeNode != 0 ? writeNode->contextOrdinal14 : -1;
       cache = static_cast<char*>(g_pMapActionContextDistanceCache);
       cache[thisOrd * g_nMapActionContextCount + nodeOrd] =
           static_cast<char>(writeNode->distanceLevel44);
