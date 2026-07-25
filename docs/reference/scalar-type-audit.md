@@ -14,11 +14,11 @@ rather than domain discriminants.
 
 ## Summary
 
-- Findings: 383
+- Findings: 382
 - `native_integral_boundary`: 16
 - `nested_integral_cast`: 31
 - `predicate_storage_cast`: 15
-- `raw_discriminant_literal`: 321
+- `raw_discriminant_literal`: 320
 
 ## clang-tidy evaluation
 
@@ -179,7 +179,7 @@ is classified, and a family that stops appearing must be removed.
 | `newCode` | 1 | `turn_event_code_domain` | TurnEventCodeStorage compared to 0 is the recovered no-event sentinel. |
 | `newState` | 2 | `closed_domain_needs_listing_evidence` | TTacticalBattle two-value state assignment; the same domain as the tactical hover/selection phase. |
 | `nextBuildingType` | 4 | `closed_domain_needs_listing_evidence` | TCity::GetNextBuildingType returns the city building-type domain; TCityProductionView compares its slot-0xe result with raw type 2, whose resource-backed name is not yet recovered. |
-| `offerType` | 3 | `diplomacy_proposal_code_domain` | TOffersPanelView selects on the single proposal code 0x29a to choose between the text and proposal controls. |
+| `offerType` | 2 | `diplomacy_proposal_code_domain` | TOffersPanelView selects on the single proposal code 0x29a to choose between the text and proposal controls. |
 | `orderKind` | 1 | `closed_domain_needs_listing_evidence` | TCityInteriorMinister returns order kind 2 from a switch default; the order-kind domain is TUnitOrder work. |
 | `orderType` | 11 | `mixed_domain_needs_per_site_split` | the sites mix three proven domains under one parameter name: ResourceKind bands (< 23, <= 22, >= 17, <= 6) in TCityInteriorMinister, the 14-entry industry domain (< 0x0e) in TMultiplayerMgr, and TUnit::orderType civilian/military kinds in TTerrainHelpPicture. Splitting them requires renaming the parameters per owner class first. |
 | `ownerCode` | 1 | `nation_slot_domain` | TCouncilView's census reads Province::ownerNationCode00 into ownerCode; > 6 separates the seven major-power slots from the minor/reserved band and the == sites compare against the selected NationSlot pair, the same domain as nationCode/ownerNationCode. |
@@ -372,12 +372,11 @@ is classified, and a family that stops appearing must be removed.
 | `95242545df6f913e` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:1276` | legendSurfaceModeAt524 != 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `3b085b668c93d1d4` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TFrameRadioView.cpp:21` | controlState64 != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `b14cf437f2e16040` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TFrameRadioView.cpp:38` | controlState64 == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
-| `9dbd5367a2231b2d` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TOffersPanelView.cpp:122` | offerType == 0x29a | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `ff1c640b1928a03c` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TOffersPanelView.cpp:149` | offerType == 0x29a | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `1ad8ca508a19ba29` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TOffersPanelView.cpp:158` | offerType != 0x29a | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `2d73b9bd9f073bcc` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TOffersPanelView.cpp:188` | promptCode == 0x0a | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `f3b19aa022d58da1` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TOffersPanelView.cpp:201` | promptCode == 0x14 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `7da1397aac01d7b0` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TOffersPanelView.cpp:215` | promptCode == 0x0b | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `9dbd5367a2231b2d` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TOffersPanelView.cpp:133` | offerType == 0x29a | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
+| `2338f203f0ac07bd` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TOffersPanelView.cpp:187` | offerType == 0x29a | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
+| `2d73b9bd9f073bcc` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TOffersPanelView.cpp:240` | promptCode == 0x0a | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `f3b19aa022d58da1` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TOffersPanelView.cpp:253` | promptCode == 0x14 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `7da1397aac01d7b0` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TOffersPanelView.cpp:267` | promptCode == 0x0b | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `05d3ab271af23a61` | `raw_discriminant_literal` | `src/game/gfx/CDib.cpp:180` | bfType != 0x4d42 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
 | `41eb1415adb86245` | `raw_discriminant_literal` | `src/game/gfx/TModalDialogBase.cpp:31` | finalizeState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `997a52658ffd76dd` | `raw_discriminant_literal` | `src/game/gfx/TModuleLibraryCacheTableStateB.cpp:209` | patternMode == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
