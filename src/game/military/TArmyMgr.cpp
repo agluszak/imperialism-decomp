@@ -292,9 +292,12 @@ void TArmyMgr::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004a1e40
 void TArmyMgr::DoCombatMoves() {
-  // g_pSimMgr->multiplayerSessionRole is the multiplayer-mode dword (compared against 1/2 throughout
-  // TMultiplayerMgr.cpp); == 2 selects the alternate branch here.
-  if (g_pSimMgr->multiplayerSessionRole == 2) {
+  // g_pSimMgr->multiplayerSessionRole is the multiplayer-mode dword (compared against 1/2
+  // throughout TMultiplayerMgr.cpp); == 2 selects the alternate branch here. The test is
+  // materialized into a byte Boolean before it is branched on -- 0x4a1e49's
+  // xor/cmp/setz/test al pair is an unsigned char local, not a direct `if` on the compare.
+  unsigned char isNetworkClient = (g_pSimMgr->multiplayerSessionRole == 2);
+  if (isNetworkClient) {
     this->ClearPendingStacksAndFinalizeMilitaryUnits();
     g_pSimMgr->StartNextPhase();
   } else {
