@@ -5,6 +5,8 @@
 #include "game/ui_widgets/TTradeCluster.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/nation/TGreatPower.h"
+#include "game/city/TCity.h"
+#include "game/city/TPopulationMgr.h"
 #include "game/ui_core/TNumberText.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/mfc.h"
@@ -36,15 +38,13 @@ TCityBarCluster::TCityBarCluster() : TUberCluster() {}
 TCityBarCluster::~TCityBarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x005866b0
-void TCityBarCluster::ApplyMoveValue(int value) {
-  int recordContext = value;
-  int recordNode = *reinterpret_cast<int*>(recordContext + 0xac);
-  int metricContext = *reinterpret_cast<int*>(recordContext + 0x1d8);
-  int metrics = *reinterpret_cast<int*>(metricContext + 0x10);
+void TCityBarCluster::ApplyMoveValue(TCity* city) {
+  TGreatPower* nation = city->ownerNationAc;
+  TPopulationMgr* population = city->productionSummary1d8;
 
   TNumberText* areaControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagTrea));
   if (areaControl != 0) {
-    areaControl->SetControlValue(*reinterpret_cast<int*>(recordNode + 0x10), 1);
+    areaControl->SetControlValue(nation->treasuryValue10, 1);
     areaControl->SetEnabled(0, 1);
   }
 
@@ -53,21 +53,21 @@ void TCityBarCluster::ApplyMoveValue(int value) {
   if (returnControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryRtnu);
   }
-  returnControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 4), 1);
+  returnControl->SetControlValue(population->baselineSlots10->lowSkillCount04, 1);
 
   TNumberText* airControl = static_cast<TNumberText*>(this->ResolveControlByTag(kSummaryTagTrai));
   if (airControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryIart);
   }
-  airControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 6), 1);
+  airControl->SetControlValue(population->baselineSlots10->mediumSkillCount06, 1);
 
   TNumberText* profControl = static_cast<TNumberText*>(this->ResolveControlByTag(kSummaryTagProf));
   if (profControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryProf);
   }
-  profControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 8), 1);
+  profControl->SetControlValue(population->baselineSlots10->highSkillCount08, 1);
 }
 
-void TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(int recordContext) {
-  ApplyMoveValue(recordContext);
+void TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(TCity* city) {
+  ApplyMoveValue(city);
 }
