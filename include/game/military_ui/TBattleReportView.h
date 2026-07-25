@@ -4,6 +4,7 @@
 
 class TAnimator;
 class TIdleMeAnimation;
+struct MapContextActionRecord;
 
 // VTABLE: IMPERIALISM 0x0063efa8
 class TBattleReportView : public TDiplomacyMapView {
@@ -22,7 +23,7 @@ public:
   void DoMouseCommand(CPoint& point, TToolboxEvent* event,
                       CPoint origin) override; // slot 0x47 0x4adcb0
 
-  void RefreshMapContextSelectionPanelAndInfoLabels(void* mapContextRecord);
+  void RefreshMapContextSelectionPanelAndInfoLabels(MapContextActionRecord* mapContextRecord);
 
   // 0x4ade30 (311 bytes) -- draws a small marker glyph from the strategic-map icon strip
   // for every g_pMapContextActionManager action record NOT currently selected (and with

@@ -14,11 +14,11 @@ rather than domain discriminants.
 
 ## Summary
 
-- Findings: 381
+- Findings: 383
 - `native_integral_boundary`: 21
 - `nested_integral_cast`: 32
 - `predicate_storage_cast`: 15
-- `raw_discriminant_literal`: 313
+- `raw_discriminant_literal`: 315
 
 ## clang-tidy evaluation
 
@@ -139,7 +139,7 @@ is classified, and a family that stops appearing must be removed.
 | --- | --- | --- | --- |
 | `actionCode` | 2 | `byte_or_int_predicate_not_a_domain` | TNavyMgr tests whether ResolveCivilianTileOrderActionCode produced an action at all; the equality sites on the same domain already use the recovered tag and proposal enumerators. |
 | `actionKind` | 5 | `closed_domain_needs_listing_evidence` | TCivMgr and TArmyMgr select on 1, 2, 4, 7 and 10 with gaps, which is a sparse command domain rather than a contiguous enum; the producing dispatcher must be decoded first. |
-| `actionType04` | 16 | `closed_domain_needs_listing_evidence` | MapContextActionRecord::actionType04 selects five battle/news report shapes (0..4) across TArmyMgr, TBattleReportView and TNewsMgr and is serialized as four bytes by TArmyMgr 0x004a1c40; naming the five needs each report body decoded. |
+| `actionType04` | 18 | `closed_domain_needs_listing_evidence` | MapContextActionRecord::actionType04 selects five battle/news report shapes (0..4) across TArmyMgr, TBattleReportView and TNewsMgr and is serialized as four bytes by TArmyMgr 0x004a1c40; naming the five needs each report body decoded. |
 | `aiState` | 3 | `closed_domain_needs_listing_evidence` | TArmyPlayer tests 2, 5 and 0xe against the same field aiStateCode2c reads; recovering the state machine is army-AI work, not a mechanical rename. |
 | `aiStateCode2c` | 5 | `closed_domain_needs_listing_evidence` | same TArmyPlayer state machine as aiState, tested against 2, 4, 5 and 0xc. |
 | `alignmentCode` | 1 | `external_api_or_resource_constant` | TStaticText maps the value onto Win32 DrawText alignment flags. |
@@ -443,12 +443,14 @@ is classified, and a family that stops appearing must be removed.
 | `ad22edb45462ff50` | `raw_discriminant_literal` | `src/game/military/TMilitaryUnit.cpp:331` | secondaryMetricCode == 0xc | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `e71536a51ec3fed1` | `raw_discriminant_literal` | `src/game/military/mapped_flavor_text.cpp:395` | nShortcutCode == 2 | `character_or_virtual_key_code` | `imperialism-decomp-1uj.99.8` |
 | `4a79b994bd1af4d1` | `raw_discriminant_literal` | `src/game/military_ui/TArmyCheckBox.cpp:35` | controlState64 == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
-| `a5f5cab8fcae572d` | `raw_discriminant_literal` | `src/game/military_ui/TBattleReportView.cpp:102` | actionType04 == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `5de72bd7b7c5c651` | `raw_discriminant_literal` | `src/game/military_ui/TBattleReportView.cpp:102` | actionType04 == 3 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `d47e60018cb6c1b0` | `raw_discriminant_literal` | `src/game/military_ui/TBattleReportView.cpp:102` | actionType04 == 4 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `339b91e18fd44feb` | `raw_discriminant_literal` | `src/game/military_ui/TBattleReportView.cpp:196` | actionType04 == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `eb5c660d98f4f6fc` | `raw_discriminant_literal` | `src/game/military_ui/TBattleReportView.cpp:467` | actionType04 == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `ef97cb8420e8f734` | `raw_discriminant_literal` | `src/game/military_ui/TBattleReportView.cpp:467` | actionType04 == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `a5f5cab8fcae572d` | `raw_discriminant_literal` | `src/game/military_ui/TBattleReportView.cpp:104` | actionType04 == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `5de72bd7b7c5c651` | `raw_discriminant_literal` | `src/game/military_ui/TBattleReportView.cpp:104` | actionType04 == 3 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `d47e60018cb6c1b0` | `raw_discriminant_literal` | `src/game/military_ui/TBattleReportView.cpp:104` | actionType04 == 4 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `339b91e18fd44feb` | `raw_discriminant_literal` | `src/game/military_ui/TBattleReportView.cpp:198` | actionType04 == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `12f67d3ac946ef6a` | `raw_discriminant_literal` | `src/game/military_ui/TBattleReportView.cpp:479` | actionType04 == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `ae14ce17165733c4` | `raw_discriminant_literal` | `src/game/military_ui/TBattleReportView.cpp:482` | actionType04 == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `2e2d57632ca544aa` | `raw_discriminant_literal` | `src/game/military_ui/TBattleReportView.cpp:485` | actionType04 == 3 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `65127a119432fa64` | `raw_discriminant_literal` | `src/game/military_ui/TBattleReportView.cpp:488` | actionType04 == 4 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `e3ffe675dfcb60ef` | `raw_discriminant_literal` | `src/game/military_ui/TDiplomacyMgr.cpp:879` | relationCode == 0x133 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
 | `5554920346785a3f` | `raw_discriminant_literal` | `src/game/military_ui/TDiplomacyMgr.cpp:883` | relationCode == 0x134 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
 | `15e3563d5e4cb4b6` | `raw_discriminant_literal` | `src/game/military_ui/TDiplomacyMgr.cpp:1105` | forceOrMode == 2 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
