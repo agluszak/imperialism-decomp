@@ -20,7 +20,11 @@ DEFAULT_PORT = 47632
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+from tools.runtime.display import virtual_display
 from tools.runtime.wine import ensure_template_prefix, prefix_environment
+
+# Open Xvfb handles keyed by prefix path, released in shut_down_wine_prefix.
+_DISPLAY_HANDLES: dict[str, object] = {}
 from tools.runtime.debug.session import WineGdbProxy
 
 STARTUP_MILESTONES = [
@@ -65,17 +69,28 @@ def create_wine_prefix() -> tuple[Path, dict[str, str]]:
 
     Cloned from the seeded per-Wine-version template (see runtime_tests) —
     ~0.6s instead of a ~6.5s wineboot.
+
+    Honours IMPERIALISM_RUNTIME_DISPLAY the same way the semantic runner does, so a
+    smoke run can go off-screen instead of mapping a window on the developer's desktop.
+    The Xvfb handle is stashed on the returned environment and released by
+    shut_down_wine_prefix.
     """
     parent = Path(tempfile.mkdtemp(prefix="imperialism-smoke-wine-"))
     prefix = parent / "prefix"
-    template = ensure_template_prefix()
+    environment = prefix_environment(prefix)
+    display = virtual_display(environment)
+    display.__enter__()
+    _DISPLAY_HANDLES[str(prefix)] = display
+    template = ensure_template_prefix(
+        bool(environment.get("IMPERIALISM_WINE_VIRTUAL_DESKTOP"))
+    )
     subprocess.run(
         ["cp", "-a", "--reflink=auto", str(template), str(prefix)],
         check=True,
         capture_output=True,
         timeout=180,
     )
-    return parent, prefix_environment(prefix)
+    return parent, environment
 
 
 def shut_down_wine_prefix(prefix: Path, environment: dict[str, str]) -> None:
@@ -85,6 +100,9 @@ def shut_down_wine_prefix(prefix: Path, environment: dict[str, str]) -> None:
         ["wineserver", "--wait"], env=environment, capture_output=True, timeout=60
     )
     shutil.rmtree(prefix, ignore_errors=True)
+    # After wineserver is gone: it has to reach the same X display the run used.
+    for key in [k for k in _DISPLAY_HANDLES if k.startswith(str(prefix))]:
+        _DISPLAY_HANDLES.pop(key).__exit__(None, None, None)
 
 
 def launch_proxy(

@@ -19,11 +19,12 @@ SEEDED_REGISTRY_VALUES = (
     ("Language", None, "ENGLISH"),
 )
 
-# Wine's own virtual desktop. On a bare Xvfb there is no window manager, so nothing
-# activates the game window and its paint path never primes the render cache -- several
-# scenarios assert on that cache. Explorer's desktop supplies activation itself, which
-# makes off-screen runs behave like a managed desktop.
-VIRTUAL_DESKTOP_GEOMETRY = "1024x768"
+# Registry seeded only for off-screen (Xvfb) runs. There is no window manager there, so
+# Wine's managed-window path has nobody to hand mapping and placement to; Managed=N makes
+# Wine own its windows outright instead of waiting on a WM that will never answer.
+VIRTUAL_DISPLAY_REGISTRY = (
+    ("HKCU\\Software\\Wine\\X11 Driver", "Managed", "N"),
+)
 
 
 def retail_game_dir() -> Path:
@@ -76,10 +77,7 @@ def populate_wine_prefix(prefix: Path, virtual_desktop: bool = False) -> None:
 
 
 def _seed_virtual_desktop(environment: dict[str, str]) -> None:
-    for key, name, value in (
-        ("HKCU\\Software\\Wine\\Explorer", "Desktop", "Default"),
-        ("HKCU\\Software\\Wine\\Explorer\\Desktops", "Default", VIRTUAL_DESKTOP_GEOMETRY),
-    ):
+    for key, name, value in VIRTUAL_DISPLAY_REGISTRY:
         subprocess.run(
             ["wine", "reg", "add", key, "/v", name, "/d", value, "/f"],
             env=environment,
@@ -93,7 +91,7 @@ def template_identity(wine_version: str, virtual_desktop: bool = False) -> str:
     payload = {
         "schema": PREFIX_TEMPLATE_SCHEMA,
         "seeded_registry_values": SEEDED_REGISTRY_VALUES,
-        "virtual_desktop": VIRTUAL_DESKTOP_GEOMETRY if virtual_desktop else None,
+        "virtual_desktop": VIRTUAL_DISPLAY_REGISTRY if virtual_desktop else None,
         "wine_version": wine_version,
     }
     serialized = json.dumps(payload, sort_keys=True, separators=(",", ":"))

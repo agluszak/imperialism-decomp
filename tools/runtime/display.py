@@ -11,16 +11,22 @@ Selected with `IMPERIALISM_RUNTIME_DISPLAY`:
   host      the inherited DISPLAY -- the default, and what CI-less desktops get today
   :5        a specific display that is already running
 
-**The default is `host`, deliberately.** Scenarios that assert on the render cache --
-`random_game_enters_map`, `random_game_easy_skips_capital`, `load_saved_game` -- fail
-under a bare Xvfb: the game paints, but the tile never reaches the cache those tests
-read. Neither a larger screen (1920x1080x24) nor Wine's own virtual desktop fixed it, so
-whatever activation the game waits for is still missing. Until that is understood,
-off-screen runs are opt-in and the paint-dependent scenarios are known to fail there.
-Tracked as imperialism-decomp-0kr0.
+Off-screen runs seed `Managed=N` into the prefix (see tools/runtime/wine.py). With no
+window manager present, Wine's managed-window path waits on a WM that never answers;
+owning its windows outright is what makes the game paint normally, and it fixed the
+whole render-cache failure class off-screen.
 
-Everything else passes off-screen, which already covers the serialization suite and the
-manager/boot tests -- the ones worth running repeatedly while working.
+**The default is still `host`.** Two scenarios that pick a capital by screen coordinate
+-- `random_game_enters_map` and `save_load_roundtrip` -- select a slightly different
+tile off-screen, because window decorations shift the mapping from pixel to tile. Their
+map-state expectations are therefore display-specific, and the difference is real game
+state (a few terrain counts move) rather than a harness artifact. Committing a second
+set of expectations would just move the problem, so the honest fix is to make those
+scenarios address tiles rather than pixels. Tracked as imperialism-decomp-0kr0.
+
+Everything else passes off-screen: the whole serialization suite, load_saved_game,
+random_game_easy_skips_capital, and the manager/boot tests -- the ones worth running
+repeatedly while working. `just test` uses the virtual display unconditionally.
 
 Screenshots keep working: `tools.runtime.screenshot` captures by window id against
 whatever `DISPLAY` names, so it reads the virtual server without changes.

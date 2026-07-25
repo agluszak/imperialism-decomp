@@ -185,7 +185,9 @@ typedef-args-audit *args:
 # Run the Python tooling unit tests (tests/tools).
 [group('gates')]
 test:
-  uv run python -m unittest discover -s tests/tools
+  # Off-screen: a few of these exercise the Wine harness end to end, and without this
+  # they map a game window on the developer's desktop and steal focus mid-run.
+  IMPERIALISM_RUNTIME_DISPLAY=virtual uv run python -m unittest discover -s tests/tools
 
 [doc('Audit every ported ReadFrom/WriteTo for save-file byte desync against the listing')]
 [group('reports')]

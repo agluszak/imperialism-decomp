@@ -56,12 +56,19 @@ The display actually used is reported as `host.display` in the result. Needs an 
 binary on PATH (`brew install xorg-server`, no root); without one the session falls back
 to the inherited `DISPLAY`.
 
-**Known limitation, and why `host` is still the default.** The render-cache scenarios --
-`random_game_enters_map`, `random_game_easy_skips_capital`, `load_saved_game` -- fail
-under a bare Xvfb with "primed city-site hover tile is not present in the render cache",
-while passing on the host display. A larger virtual screen and Wine's own virtual desktop
-both failed to fix it, so the missing ingredient is not resolution and not window
-management alone. Everything else passes off-screen, including the whole serialization
-suite. Tracked as `imperialism-decomp-0kr0`.
+Off-screen runs seed `Managed=N` into the prefix: with no window manager present, Wine's
+managed-window path waits on a WM that never answers, and owning its windows outright is
+what makes the game paint normally off-screen.
+
+**Known limitation, and why `host` is still the default.** `random_game_enters_map` and
+`save_load_roundtrip` pick a capital by screen coordinate, and window decorations shift
+which tile that pixel lands on -- so off-screen they found a slightly different city and
+a few terrain counts move. That is real game state, not a harness artifact, which is why
+committing a second set of expectations would only move the problem; the fix is to make
+those scenarios address tiles rather than pixels. Everything else passes off-screen.
+Tracked as `imperialism-decomp-0kr0`.
+
+`just test` always uses the virtual display -- the Wine-touching tooling tests have no
+such pixel dependency.
 
 Screenshot capture is unaffected either way: it captures by window id against `DISPLAY`.
