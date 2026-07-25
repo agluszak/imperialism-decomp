@@ -411,6 +411,11 @@ COLORREF TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor(unsigned int p
 // TEMPLATE: IMPERIALISM 0x0049b270
 // ??1?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAE@XZ
 
+// The pointer-key cache uses the same VC5 afxtempl.h archive loop, with four-byte key
+// and value elements.
+// TEMPLATE: IMPERIALISM 0x0049b330
+// ?Serialize@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAEXAAVCArchive@@@Z
+
 // VC5 emits afxtempl.h's InitHashTable body for each embedded CMap specialization.
 // These are MFC template code, not game-owned resize helpers.
 // TEMPLATE: IMPERIALISM 0x0049b6a0
