@@ -102,7 +102,7 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       g_pGlobalMapState->AllocateAndResetTerrainAndCityScoreTables();
       g_pGlobalMapState->LoadPoliticalMapRegionSubtypeTableFromResourceStream();
       for (short tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-        g_pGlobalMapState->UpdateMapTileAdjacencyMasksAndVariantForTile(tileIndex);
+        g_pGlobalMapState->AssignPictToTile(tileIndex);
         g_pGlobalMapState->UpdateTileNeighborBorderInfluenceCounters(tileIndex, 0);
       }
       postEventCode = EncodeTurnEventCode(kTurnEventMapEditor);
