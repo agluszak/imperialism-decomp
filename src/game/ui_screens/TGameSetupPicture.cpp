@@ -87,10 +87,11 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
           g_pActiveMapOrderContext = 0;
         }
         g_pActiveMapOrderContext = new TOcean();
-        // ResetPortZoneGlobalContextCounters (0x4043d1): the zone-graph BFS distance
-        // cache is invalidated whenever the map order context is rebuilt.
-        g_nMapActionContextCount = 0;
-        g_nMapActionContextDistanceCacheSizedFor = -1;
+        // The zone-graph BFS distance cache is invalidated whenever the map order
+        // context is rebuilt. The original CALLs the shared helper here (0x00575be0);
+        // inlining its two global writes was a modelling error. Cited by its real
+        // address, 0x005621b0 -- 0x004043d1 is only the ILT thunk in front of it.
+        ResetPortZoneGlobalContextCounters();
         if (g_pGameFlowState != 0) {
           g_pGameFlowState->Free();
           g_pGameFlowState = 0;

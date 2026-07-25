@@ -54,8 +54,31 @@
 #include "game/globals/ui_screens_globals.h"
 #include "game/military/mapped_flavor_text.h"
 
-int __cdecl TouchSessionActiveNationId(void);
-void __cdecl ResetPortZoneGlobalContextCounters(void);
+// C++98-compatible compile-time layout guards for the turn/nation-count block. This block
+// was challenged (bd imperialism-decomp-g11y) on the grounds that +0x2c held a short turn
+// counter while the header supposedly placed `int numGreatPowers` there. The header is
+// right; the challenge dropped the TObject vptr at +0x00, which shifts every field by 4.
+// Binary evidence per field:
+//   +0x2c economicTurn        GetEconomicTurn 0x0057d8b0  MOV AX,[ECX+0x2c]
+//                             AdvanceSeason   0x0057d950  INC word ptr [ECX+0x2c]
+//                             GetSeason       0x0057d830  MOVSX then % 4 (4 turns/year)
+//   +0x2e activeNationSlot    MOV word ptr [ESI+0x2e],0xffff   (-1 == no active nation)
+//   +0x30 numGreatPowers      MOV dword ptr [ESI+0x30],0x7     (7 great powers)
+//   +0x34 numMinorCountries   MOV dword ptr [ESI+0x34],0x10    (16 minors)
+//   +0x3c turnFlowStatusFlags SetFlags 0x0057f4b0 / TestTurnFlowStatusFlagMask 0x0057f4d0
+// Access widths in the binary match the declared types throughout (word at 0x2c/0x2e,
+// dword at 0x30/0x34/0x3c), so a failure here is real drift, not a naming argument.
+#define TSIMMGR_LAYOUT_ASSERT(name, expr) typedef char name[(expr) ? 1 : -1]
+TSIMMGR_LAYOUT_ASSERT(TSimMgr_Offset_economicTurn_0x2C, offsetof(TSimMgr, economicTurn) == 0x2C);
+TSIMMGR_LAYOUT_ASSERT(TSimMgr_Offset_activeNationSlot_0x2E,
+                      offsetof(TSimMgr, activeNationSlot) == 0x2E);
+TSIMMGR_LAYOUT_ASSERT(TSimMgr_Offset_numGreatPowers_0x30,
+                      offsetof(TSimMgr, numGreatPowers) == 0x30);
+TSIMMGR_LAYOUT_ASSERT(TSimMgr_Offset_numMinorCountries_0x34,
+                      offsetof(TSimMgr, numMinorCountries) == 0x34);
+TSIMMGR_LAYOUT_ASSERT(TSimMgr_Offset_turnFlowStatusFlags_0x3C,
+                      offsetof(TSimMgr, turnFlowStatusFlags) == 0x3C);
+
 void RegenerateAllMapActionContextStatusCodes();
 
 static inline bool IsNationEligibleForOptionalPhase(short nationSlot) {

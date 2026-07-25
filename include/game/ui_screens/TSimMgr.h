@@ -267,11 +267,20 @@ public:
   short scenarioMapIndexPlusOne;
 };
 
-// Read the current DirectPlay session id while touching the session runtime state.
-// Genuine cdecl helper at 0x549240.
+ASSERT_SIZE(TSimMgr, 0x118);
+
+// Free function, NOT a TSimMgr member -- it only looked like one while it sat between the
+// class's closing brace and its ASSERT_SIZE. The __cdecl is verified against the assembly,
+// not inherited from a Ghidra label: 0x00549240 takes no arguments, loads the g_pNetMgr
+// global into ECX and tail-jumps to TNetMgr::GetSessionActiveNationId (0x005e4280).
+// Reads the current DirectPlay session id while touching the session runtime state.
 int __cdecl TouchSessionActiveNationId(void);
 
-ASSERT_SIZE(TSimMgr, 0x118);
+// Also a free function of the TSimMgr TU (0x005621b0): invalidates the zone-graph BFS
+// distance cache. Declared here so callers outside this TU stop hand-inlining its two
+// global writes -- the original really does CALL it (e.g. 0x00575be0 in
+// TGameSetupPicture::DoEvent, through the ILT thunk at 0x004043d1).
+void __cdecl ResetPortZoneGlobalContextCounters(void);
 
 // 0x5d4c10 / 0x5d4c40 — file-metadata probe (CFile::GetStatus) and delete-with-error-box
 // (CFile::Remove) helpers from the TSimMgr TU; the save flow in TLoadSavePicture.cpp
