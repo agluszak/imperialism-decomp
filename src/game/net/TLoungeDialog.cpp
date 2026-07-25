@@ -195,8 +195,7 @@ char TLoungeDialog::DoIdle(int action) {
     nameLabel->CopyTextTo(&currentName);
     desiredName = g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(
         &g_pGameFlowState->defaultNationTextSlots[nationSlot]);
-    if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(currentName)),
-                reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(desiredName))) != 0) {
+    if (currentName.Compare(desiredName) != 0) {
       nameLabel->SetTextAndMaybeRefresh(&desiredName, 1);
       if (statusIndex == 4) {
         ApplyUiTextStyleAndThemeFlags(nameLabel, 0, 0xe, 0x2b67, 0x2b6a);

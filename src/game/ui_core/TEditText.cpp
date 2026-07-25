@@ -232,8 +232,7 @@ void TEditText::InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refr
     editWindow->SetWindowText(clampedText);
     return;
   }
-  if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(*text)),
-              reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(clampedText))) != 0) {
+  if (text->Compare(clampedText) != 0) {
     *text = clampedText;
     if (static_cast<char>(refreshFlag) != 0) {
       RefreshControl();
