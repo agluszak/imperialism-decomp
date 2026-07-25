@@ -1314,26 +1314,26 @@ address|matching|name
 0x498dd0|1.0|TE0TemplateDialog::`scalar deleting destructor'
 0x498e00|0.14285714285714285|WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00
 0x498f60|0.6938775510204082|TModuleLibraryCacheTableStateB::TModuleLibraryCacheTableStateB
-0x498fe0|0.5166240409207161|TModuleLibraryCacheTableStateB::~TModuleLibraryCacheTableStateB
+0x498fe0|0.5103092783505154|TModuleLibraryCacheTableStateB::~TModuleLibraryCacheTableStateB
 0x4992a0|1.0|TModuleLibraryCacheTableStateB::LoadModuleLibrarySlotWithErrorDialog
 0x499380|0.8181818181818182|TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog
 0x499440|0.967741935483871|TModuleLibraryCacheTableStateB::LoadUiStringResourceById
 0x4994c0|0.8297872340425532|TModuleLibraryCacheTableStateB::LoadUiStringResourceByGroupAndIndex
 0x4995a0|1.0|TModuleLibraryCacheTableStateB::ResolveDefaultLogPalette
 0x4995c0|0.23076923076923078|TModuleLibraryCacheTableStateB::EnsureDefaultDibPalette
-0x4997e0|0.3404255319148936|TModuleLibraryCacheTableStateB::LoadBmpResourceByIdCached
-0x499b40|0.2857142857142857|TModuleLibraryCacheTableStateB::BuildIndexedBmpResourceById
+0x4997e0|0.32108317214700194|TModuleLibraryCacheTableStateB::LoadBmpResourceByIdCached
+0x499b40|0.28629856850715746|TModuleLibraryCacheTableStateB::BuildIndexedBmpResourceById
 0x499e80|0.012422360248447204|AllocateAndLinkBlockHeadPair_00499e80
-0x49a0b0|0.7931034482758621|TModuleLibraryCacheTableStateB::IncrementDialogResourceRefCountByShortIdInRegistry
-0x49a190|0.8990825688073395|TModuleLibraryCacheTableStateB::ReleaseRecordById
-0x49a390|0.9244712990936556|TModuleLibraryCacheTableStateB::ReleaseRecordByHandle
+0x49a0b0|0.8771929824561403|TModuleLibraryCacheTableStateB::IncrementDialogResourceRefCountByShortIdInRegistry
+0x49a190|0.9846153846153847|TModuleLibraryCacheTableStateB::ReleaseRecordById
+0x49a390|0.9818181818181818|TModuleLibraryCacheTableStateB::ReleaseRecordByHandle
 0x49a590|0.7719298245614035|TModuleLibraryCacheTableStateB::LoadLocalizedStringByPackedGroupAndIndex
 0x49a6c0|0.8|TModuleLibraryCacheTableStateB::LoadLocalizedStringByGroupAndIndex
 0x49a7f0|0.704225352112676|FilterStringByCharacterTypeFlag4AndAppend
 0x49a910|0.48484848484848486|renderTemplateOrExpandTokens
 0x49ace0|1.0|TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor
 0x49ad50|0.02666666666666667|RemoveHashIndexedRecordByShortKey
-0x49ae30|0.9791666666666666|CMap<unsigned short,unsigned short,CacheRecord *,CacheRecord *>::~CMap<unsigned short,unsigned short,CacheRecord *,CacheRecord *>
+0x49ae30|0.9791666666666666|CMap<short,short,CacheRecord *,CacheRecord *>::~CMap<short,short,CacheRecord *,CacheRecord *>
 0x49aef0|0.01015228426395939|TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive
 0x49b190|0.02666666666666667|BuildIndexedBmpResourceById_Impl
 0x49b270|0.9791666666666666|CMap<void *,void *,CacheRecord *,CacheRecord *>::~CMap<void *,void *,CacheRecord *,CacheRecord *>
@@ -1341,7 +1341,7 @@ address|matching|name
 0x49b5d0|0.0|WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0
 0x49b600|0.0|WrapperFor_FreeHeapBufferIfNotNull_At0049b600
 0x49b630|0.05405405405405406|ResolveBmpResourceHandleWithDefault3B6_Impl
-0x49b6a0|1.0|CMap<unsigned short,unsigned short,CacheRecord *,CacheRecord *>::InitHashTable
+0x49b6a0|1.0|CMap<short,short,CacheRecord *,CacheRecord *>::InitHashTable
 0x49b720|0.05405405405405406|WrapperFor_AllocateAndLinkBlockHead_At0049b720
 0x49b7a0|0.08333333333333333|FindShortKeyHashNodeAndOutputBucketIndex
 0x49b7f0|1.0|CMap<void *,void *,CacheRecord *,CacheRecord *>::InitHashTable
