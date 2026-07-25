@@ -1271,7 +1271,7 @@ address|name|symbol|size|type|prototype|provenance
 49a910|renderTemplateOrExpandTokens||326|function|undefined4 __stdcall renderTemplateOrExpandTokens(undefined4 ctx_or_stream, undefined4 result_or_handle, undefined4 input_str_arg)|
 49ace0|TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor||69|function|ulong __thiscall ResolvePaletteIndexColor(uint packedColor)|
 49ad50|RemoveHashIndexedRecordByShortKey||171|function|undefined RemoveHashIndexedRecordByShortKey()|
-49ae30|CMap<WORD,WORD,CacheRecord*,CacheRecord*>::~CMap|??1?$CMap@GGPAUCacheRecord@@PAU1@@@UAE@XZ|132|function|void ~CMap()|curated
+49ae30|CMap<short,short,CacheRecord*,CacheRecord*>::~CMap|??1?$CMap@FFPAUCacheRecord@@PAU1@@@UAE@XZ|132|function|void ~CMap()|curated
 49aef0|TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive||522|function|undefined SerializeNodeMapEntries_Key16Value32_WithArchive()|
 49b190|BuildIndexedBmpResourceById_Impl||168|function|undefined BuildIndexedBmpResourceById_Impl()|
 49b270|CMap<void*,void*,CacheRecord*,CacheRecord*>::~CMap|??1?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAE@XZ|132|function|void ~CMap()|curated
@@ -1279,7 +1279,7 @@ address|name|symbol|size|type|prototype|provenance
 49b5d0|WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0()|
 49b600|WrapperFor_FreeHeapBufferIfNotNull_At0049b600||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0049b600()|
 49b630|ResolveBmpResourceHandleWithDefault3B6_Impl||76|function|undefined ResolveBmpResourceHandleWithDefault3B6_Impl()|
-49b6a0|CMap<WORD,WORD,CacheRecord*,CacheRecord*>::InitHashTable|?InitHashTable@?$CMap@GGPAUCacheRecord@@PAU1@@@QAEXIH@Z|90|function|void InitHashTable(unsigned int hashSize, int bAllocNow)|curated
+49b6a0|CMap<short,short,CacheRecord*,CacheRecord*>::InitHashTable|?InitHashTable@?$CMap@FFPAUCacheRecord@@PAU1@@@QAEXIH@Z|90|function|void InitHashTable(unsigned int hashSize, int bAllocNow)|curated
 49b720|WrapperFor_AllocateAndLinkBlockHead_At0049b720||87|function|undefined WrapperFor_AllocateAndLinkBlockHead_At0049b720()|
 49b7a0|FindShortKeyHashNodeAndOutputBucketIndex||55|function|undefined FindShortKeyHashNodeAndOutputBucketIndex()|
 49b7f0|CMap<void*,void*,CacheRecord*,CacheRecord*>::InitHashTable|?InitHashTable@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@QAEXIH@Z|90|function|void InitHashTable(unsigned int hashSize, int bAllocNow)|curated
