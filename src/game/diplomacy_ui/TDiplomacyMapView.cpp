@@ -1202,8 +1202,8 @@ void DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(TQuickDrawBl
             unsigned int fillByte = static_cast<unsigned char>(paletteColor.value);
             unsigned int packedFill =
                 fillByte | (fillByte << 8) | (fillByte << 16) | (fillByte << 24);
-            *reinterpret_cast<unsigned int*>(rowCursor) = packedFill;
-            *reinterpret_cast<unsigned int*>(rowCursor + 4) = packedFill;
+            memcpy(rowCursor, &packedFill, sizeof(packedFill));
+            memcpy(rowCursor + sizeof(packedFill), &packedFill, sizeof(packedFill));
             x += 8;
             destCursor = rowCursor + 8;
           } else {
