@@ -161,7 +161,7 @@ void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(char glyph) {
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->SetMapperFlags(1);
+  dc->SetBkMode(TRANSPARENT);
   dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
@@ -212,9 +212,7 @@ void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text) {
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  // The original calls CDC::SetMapperFlags(1) here. This is not the Win32
-  // background-mode setter: it configures the font mapper before TextOut.
-  dc->SetMapperFlags(1);
+  dc->SetBkMode(TRANSPARENT);
 
   dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {
@@ -284,7 +282,7 @@ void __cdecl RenderTradeScreenCommoditySummaryRows_Impl(CString* text, RECT* rec
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->SetMapperFlags(1);
+  dc->SetBkMode(TRANSPARENT);
 
   dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {

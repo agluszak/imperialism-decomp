@@ -1087,8 +1087,8 @@ address|matching|name
 0x48fe60|0.9056603773584906|TStaticText::SetTextAndMaybeRefresh
 0x48fed0|1.0|TStaticText::SetTextFromStringResource
 0x48ff70|1.0|TStaticText::SetTextAlignmentAndMaybeRefresh
-0x48ffb0|0.624113475177305|TStaticText::Draw
-0x4900a0|0.45977011494252873|TStaticText::DrawTextAligned
+0x48ffb0|0.6382978723404256|TStaticText::Draw
+0x4900a0|0.47126436781609193|TStaticText::DrawTextAligned
 0x490210|0.2916666666666667|TEditText::CreateObject
 0x490380|1.0|TEditText::GetRuntimeClass
 0x4903a0|0.2|TEditText::TEditText
@@ -7334,7 +7334,7 @@ address|matching|name
 0x612a78|0.5|CDC::SelectPalette
 0x612a88|0.0|TOceanDialog::SelectPaletteThenLookupHandleMapEntryWithCreate
 0x612a9a|0.9615384615384616|CDC::SetPolyFillMode(int)
-0x612ad2|0.9615384615384616|CDC::SetMapperFlags(unsigned long)
+0x612ad2|1.0|CDC::SetBkMode
 0x612bea|1.0|CDC::SetMapMode
 0x612c22|0.9714285714285714|CDC::MoveTo
 0x612c6e|0.9714285714285714|CDC::OffsetWindowOrg(int, int)
@@ -7349,6 +7349,7 @@ address|matching|name
 0x613062|1.0|CDC::OffsetClipRgn(struct tagSIZE)
 0x6130ec|1.0|CDC::LineTo
 0x613121|1.0|CDC::SetTextAlign
+0x6131cb|1.0|CDC::SetMapperFlags
 0x613203|1.0|CDC::ArcTo
 0x613293|1.0|CDC::PolyDraw
 0x6132dc|0.9655172413793104|CDC::PolyBezierTo(struct tagPOINT const *, int)

@@ -261,7 +261,7 @@ HBRUSH CMcWindow::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) {
       pDC->SetTextColor(g_pModuleLibraryCacheState->ResolvePaletteIndexColor(packedTextColor));
     }
   }
-  pDC->SetMapperFlags(1);
+  pDC->SetBkMode(TRANSPARENT);
   return reinterpret_cast<HBRUSH>(::GetStockObject(NULL_BRUSH));
 }
 

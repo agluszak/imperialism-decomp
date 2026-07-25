@@ -1396,7 +1396,7 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x006129d7||?SelectObject@CDC@@QAEPAVCPen@@PAV2@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00612a2a|CDC::SelectClipRgn|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00612a9a||?SetPolyFillMode@CDC@@QAEHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
-0x00612ad2||?SetMapperFlags@CDC@@QAEKK@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612ad2|CDC::SetBkMode|?SetBkMode@CDC@@QAEHH@Z|public: int __thiscall CDC::SetBkMode(int)|nafxcw|wingdi.obj|SetBkMode import at 0x006aadd0; all callers pass TRANSPARENT|LIBRARY
 0x00612b0a||?SetPolyFillMode@CDC@@QAEHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00612b42||?SetPolyFillMode@CDC@@QAEHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00612b7a||?SetPolyFillMode@CDC@@QAEHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
