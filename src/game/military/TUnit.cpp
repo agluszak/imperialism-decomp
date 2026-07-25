@@ -64,7 +64,7 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
 }
 
 // FUNCTION: IMPERIALISM 0x005c2610
-void TUnit::MoveTo(int anchorIndex) {
+void TUnit::MoveTo(short anchorIndex) {
   (void)anchorIndex;
 }
 

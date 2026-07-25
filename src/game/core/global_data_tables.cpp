@@ -2570,7 +2570,7 @@ char g_szFmtEmba_00697254[] = "emba %d %d %d\n";
 // GLOBAL: IMPERIALISM 0x00697248
 char g_szFmtYear_00697248[12] = "year %d\n";
 // GLOBAL: IMPERIALISM 0x006976e0
-char s_mcflavor_006976e0[] = "";
+char g_szLiteralWb_006976E0[] = "wb";
 // GLOBAL: IMPERIALISM 0x00698b0c
 char g_szLowercaseX[] = "x";
 // GLOBAL: IMPERIALISM 0x0069ab00

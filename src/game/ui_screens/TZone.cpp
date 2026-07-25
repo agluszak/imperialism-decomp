@@ -850,7 +850,7 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
   if (resolvedNation == -1) {
     resolvedNation = g_pSimMgr->GetActiveNationId();
   }
-  unsigned char nationBit = static_cast<unsigned char>(1 << resolvedNation);
+  unsigned char nationBit = static_cast<unsigned char>(1 << static_cast<short>(resolvedNation));
   if ((nationKeyMask10 & nationBit) != 0) {
     for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
       if (ship->location == this && ship->nation == resolvedNation && ship->taskForce == 0) {
