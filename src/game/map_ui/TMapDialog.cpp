@@ -750,15 +750,15 @@ void TMapDialog::ReleaseTileMarkerForTile(short tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x0051e260
 void TMapDialog::Draw(RECT* rectBuffer) {
-  if (g_pGlobalMapState == 0 || rectBuffer == 0 || quickDrawSurface350 == 0 ||
-      g_pCitySiteCachedPrimaryRenderSurfaceContext == 0) {
+  if (g_pGlobalMapState == 0) {
     return;
   }
 
   CTemporaryRegion savedClip;
   RECT dirtyRect = *rectBuffer;
   RECT cacheRect = dirtyRect;
-  OffsetRect(&cacheRect, 0x40, 0x40);
+  static CSize cacheMargin(0x40, 0x40);
+  OffsetRect(&cacheRect, cacheMargin.cx, cacheMargin.cy);
 
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags = 0;
@@ -771,6 +771,23 @@ void TMapDialog::Draw(RECT* rectBuffer) {
     LockPixels(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
     LockPixels(GetGWorldPixMap(quickDrawSurface350));
 
+    int markerFirstRow = static_cast<int>(viewportOrigin60.y * g_MapPreviewScaleX6A3410);
+    int markerFirstColumn = static_cast<int>(viewportOrigin60.x * g_MapPreviewScaleY6A33D0 - 1.0);
+    int markerLastColumn = g_MapPreviewVerticalOffset6A3448 + markerFirstColumn;
+
+    int markerIndex;
+    for (markerIndex = 0; markerIndex < 90; ++markerIndex) {
+      TMapDialogTileMarker& marker = tileMarkers7c[markerIndex];
+      if (marker.a < static_cast<short>(markerFirstRow) ||
+          marker.a > static_cast<short>(markerFirstRow + 8) ||
+          marker.b < static_cast<short>(markerFirstColumn) ||
+          marker.b > static_cast<short>(markerLastColumn)) {
+        marker.flag = 0;
+      } else {
+        marker.flag = 1;
+      }
+    }
+
     int firstRowValue = viewportOrigin60.y + rectBuffer->top;
     int firstRow = DivideMapPixelOffsetBy64(firstRowValue);
     int rowSpan = rectBuffer->bottom - rectBuffer->top;
@@ -780,24 +797,18 @@ void TMapDialog::Draw(RECT* rectBuffer) {
     int colSpan = rectBuffer->right - rectBuffer->left;
     int lastCol = firstCol + DivideMapPixelOffsetBy64(colSpan) + 1;
 
-    int markerIndex;
-    for (markerIndex = 0; markerIndex < 90; ++markerIndex) {
-      TMapDialogTileMarker& marker = tileMarkers7c[markerIndex];
-      marker.flag = marker.a >= firstRow && marker.a <= firstRow + 8 && marker.b >= firstCol &&
-                    marker.b <= lastCol;
-    }
+    GetPixBaseAddr(GetGWorldPixMap(quickDrawSurface350));
+    GetPixBaseAddr(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
+    GetPixBaseAddr(GetGWorldPixMap(g_pStrategicMapViewSystem->atlas668));
 
-    LockPixels(GetGWorldPixMap(quickDrawSurface350));
-    LockPixels(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
-    if (g_pStrategicMapViewSystem != 0 && g_pStrategicMapViewSystem->atlas668 != 0) {
-      LockPixels(GetGWorldPixMap(g_pStrategicMapViewSystem->atlas668));
-    }
-
-    for (int row = firstRow; row < lastRow && row < 60; ++row) {
+    for (int row = firstRow;
+         static_cast<short>(row) < static_cast<short>(lastRow) && static_cast<short>(row) < 60;
+         ++row) {
       if (row < 0) {
         continue;
       }
-      for (int unwrappedCol = firstCol; unwrappedCol <= lastCol; ++unwrappedCol) {
+      for (int unwrappedCol = firstCol;
+           static_cast<short>(unwrappedCol) <= static_cast<short>(lastCol); ++unwrappedCol) {
         int col = unwrappedCol;
         if (col >= 108) {
           col -= 108;
@@ -805,7 +816,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
           col += 108;
         }
 
-        short tileIndex = row * 108 + col;
+        short tileIndex = static_cast<short>(ComputeStridedRecordAddress6C(col, row));
         short projectedY;
         short projectedX;
         ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin60, &projectedY,
@@ -840,15 +851,16 @@ void TMapDialog::Draw(RECT* rectBuffer) {
         } else {
           TCivUnit* unit =
               g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, g_pSimMgr->GetActiveNationId());
+          int animationTag = PointerAddressLong32(unit);
           if (unit != 0 && unit->unitOrder > static_cast<UnitOrder>(4) &&
-              g_pUiAnimator->FindRegisteredAnimationByTag(reinterpret_cast<int>(unit)) == 0) {
+              g_pUiAnimator->FindRegisteredAnimationByTag(animationTag) == 0) {
             short animationY;
             short animationX;
             ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin60, &animationY,
                                                          &animationX, 1);
             RECT animationRect = {animationX, animationY, animationX + 0x40, animationY + 0x40};
-            TCivAnimation2* animation = new TCivAnimation2(this, &animationRect, unit->orderType,
-                                                           reinterpret_cast<int>(unit));
+            TCivAnimation2* animation =
+                new TCivAnimation2(this, &animationRect, unit->orderType, animationTag);
             g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
           }
         }
@@ -871,8 +883,8 @@ void TMapDialog::Draw(RECT* rectBuffer) {
         TCivUnit* firstCivilianOrder =
             g_pGlobalMapState->terrainStateTable[tileIndex].firstCivilianOrder20;
         if (firstCivilianOrder != 0) {
-          TAnimation* animation = g_pUiAnimator->FindRegisteredAnimationByTag(
-              reinterpret_cast<int>(firstCivilianOrder));
+          TAnimation* animation =
+              g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(firstCivilianOrder));
           if (animation != 0) {
             SetGWorld(g_pCitySiteCachedPrimaryRenderSurfaceContext, savedSurfaceFlags);
             RECT animationClip = animation->screenRect1C;

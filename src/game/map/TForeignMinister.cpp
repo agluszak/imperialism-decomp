@@ -343,7 +343,7 @@ void TForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3, sho
     short availableAmount =
         static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
     if (availableAmount < static_cast<short>(dispatchAmount)) {
-      g_pNationInteractionStateManager->DispatchProposalAmountSlot60(
+      g_pNationInteractionStateManager->SetDealResults(
           owner->nationSlot, arg2,
           static_cast<int>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode)),
           static_cast<int>(dispatchAmount), resourceCode, 0, 0);
@@ -366,7 +366,7 @@ void TForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3, sho
     }
     *ledgerEntry = static_cast<short>(*ledgerEntry - static_cast<short>(dispatchAmount));
   }
-  g_pNationInteractionStateManager->DispatchProposalAmountSlot60(
+  g_pNationInteractionStateManager->SetDealResults(
       owner->nationSlot, arg2, static_cast<int>(dispatchAmount), arg3, resourceCode, 0, 0);
 }
 

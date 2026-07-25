@@ -1051,7 +1051,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // posts the 'NeXT' trade command.
     TurnEvent1CProposalAmountPacket* proposalAmount =
         static_cast<TurnEvent1CProposalAmountPacket*>(packet);
-    g_pNationInteractionStateManager->DispatchProposalAmountSlot60(
+    g_pNationInteractionStateManager->SetDealResults(
         proposalAmount->ownerNation1C, proposalAmount->sourceContext1E, proposalAmount->amount24,
         proposalAmount->maxAmount20, proposalAmount->targetNation22,
         proposalAmount->emitEventFlag26, 1);

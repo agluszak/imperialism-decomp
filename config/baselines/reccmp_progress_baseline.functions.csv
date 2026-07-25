@@ -463,8 +463,8 @@ address|matching|name
 0x47fd70|1.0|TDirectPlaySessionManagerBase::GetRuntimeSelectionAuxStatus
 0x47fd90|0.9523809523809523|TWNetSessionManager::RebuildRuntimeSelectionSource
 0x47fe50|0.34146341463414637|TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed
-0x480030|0.33043478260869563|TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext
-0x480150|0.3781818181818182|TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice
+0x480030|1.0|TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext
+0x480150|0.526984126984127|TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice
 0x4803d0|1.0|TWNetSessionManager::OpenCurrentSessionDescriptionForJoin
 0x480400|1.0|TWNetSessionManager::ResetRuntimeSelectionRecordBuffer
 0x4804c0|1.0|TDirectPlaySessionManagerBase::ExtendEnumSessionsTimeoutWhileCtrlHeld
@@ -973,7 +973,7 @@ address|matching|name
 0x48c1c0|1.0|TView::HandleHelp
 0x48c1e0|1.0|TView::GetDrawableRegion
 0x48c220|0.4166666666666667|TView::SetHoverHelpText
-0x48c250|0.6962025316455697|TView::DoSetCursor
+0x48c250|0.8292682926829268|TView::DoSetCursor
 0x48c380|0.6608695652173913|TView::ApplyBounds
 0x48c450|0.6918918918918919|TView::HandleMouseDown
 0x48c590|0.6185567010309279|TView::HandleMouseUp
@@ -2426,7 +2426,7 @@ address|matching|name
 0x4dd740|1.0|TGreatPower::GetDiplomacyExternalStateByTarget
 0x4dd770|1.0|TGreatPower::SetCityStockCounterAndRefresh
 0x4dd7b0|1.0|TGreatPower::AddToCityStockCounterAndRefresh
-0x4dd7f0|0.7108433734939759|TGreatPower::ComputeProductionMetricForOrderKind
+0x4dd7f0|0.7349397590361446|TGreatPower::ComputeProductionMetricForOrderKind
 0x4dda20|1.0|TGreatPower::DecrementDiplomacyCounterA2ByValue
 0x4dda40|1.0|TGreatPower::DecrementDiplomacyCounterA2Slot66
 0x4dda60|1.0|TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot
@@ -3368,7 +3368,7 @@ address|matching|name
 0x51e160|0.2857142857142857|ConfigureWhiteQuickDrawPen
 0x51e1a0|1.0|TMapDialog::ResetAllTileMarkersToSentinel
 0x51e1f0|0.2777777777777778|TMapDialog::ReleaseTileMarkerForTile
-0x51e260|0.07543323139653414|TMapDialog::Draw
+0x51e260|0.3286290322580645|TMapDialog::Draw
 0x51eb40|0.1473429951690821|TMapDialog::DrawOneTile
 0x520670|0.860125260960334|TMapDialog::DrawBorder
 0x520970|0.7682926829268293|TMapDialog::DrawMapDialogGuidePatternSetA_00520970
@@ -3401,7 +3401,7 @@ address|matching|name
 0x524b30|0.14388489208633093|TMapDialog::CopyCoastCornerMaskBetweenDirections1And2
 0x524c60|0.08080808080808081|TMapDialog::CopyCoastCornerMaskBetweenDirections0And1
 0x524e70|0.0639269406392694|TMapDialog::CopyCoastCornerMaskBetweenDirections2And3
-0x5250a0|0.0639269406392694|TMapDialog::CopyCoastCornerMaskBetweenDirections5And0
+0x5250a0|0.09090909090909091|TMapDialog::CopyCoastCornerMaskBetweenDirections5And0
 0x5252d0|0.061855670103092786|TMapDialog::CopyCoastCornerMaskBetweenDirections4And5
 0x5254a0|0.12631578947368421|TMapDialog::CopyCoastCornerMaskBetweenDirections3And4
 0x525670|0.24761904761904763|TMapDialog::NewCopy64
@@ -3985,7 +3985,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.45614035087719296|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.45485272815065186|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags
@@ -5866,7 +5866,7 @@ address|matching|name
 0x5b91e0|0.37|TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked
 0x5b9370|0.8571428571428571|TTradeMgr::RefreshNationStateAndEmitTurnEvent3Mode18
 0x5b9410|0.6486486486486487|TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline
-0x5b94d0|0.49591280653950953|TTradeMgr::DispatchProposalAmountSlot60
+0x5b94d0|0.23404255319148937|TTradeMgr::SetDealResults
 0x5b9790|1.0|TTradeMgr::SetNationMetricCellValueByIndex
 0x5b97c0|0.9807692307692307|TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags
 0x5b9890|0.9523809523809523|TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations
@@ -5955,7 +5955,7 @@ address|matching|name
 0x5bea00|0.09692671394799054|TOfferDeskPicture::PoseOfferSheet
 0x5bf740|0.6442953020134228|TOfferDeskPicture::DoEvent
 0x5bf860|1.0|TOfferDeskPicture::DoKeyEvent
-0x5bf930|0.7841191066997518|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
+0x5bf930|0.7890818858560794|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
 0x5c04f0|0.8108108108108109|TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt
 0x5c0930|0.05|TOfferDeskPicture::HandleMouseUp
 0x5c09d0|0.7486631016042781|TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged

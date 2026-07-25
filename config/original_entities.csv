@@ -5692,7 +5692,7 @@ address|name|symbol|size|type|prototype|provenance
 5b91e0|ProcessPendingDiplomacyTransferEntriesUntilBlocked||305|function|undefined ProcessPendingDiplomacyTransferEntriesUntilBlocked()|
 5b9370|RefreshNationStateAndEmitTurnEvent3Mode18||117|function|undefined RefreshNationStateAndEmitTurnEvent3Mode18()|
 5b9410|TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline||134|function|undefined RebuildNationMetricPassesAndClampRowsByBaseline()|
-5b94d0|ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C||555|function|undefined ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C()|
+5b94d0|SetDealResults||555|function|void SetDealResults(short sourceNation, int targetNation, int amount, int maximumAmount, int commodityType, char shortfallFlag, char remoteReplay)|
 5b9790|TTradeMgr::SetNationMetricCellValueByIndex||24|function|undefined SetNationMetricCellValueByIndex()|
 5b97c0|TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags||145|function|undefined RunNationUpdatePassesAndResetTransitionFlags()|
 5b9890|TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations||46|function|undefined RunNationMetricPreUpdatePassAcrossSecondaryNations()|
