@@ -265,8 +265,7 @@ void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRec
       surfaceRect.rect.right = dimensions.x;
       surfaceRect.rect.bottom = dimensions.y;
       IntersectRect(&surfaceRect.rect, &rec.rect, &surfaceRect.rect);
-      POINT span;
-      surfaceRect.ComputeSpan(&span);
+      CPoint span = surfaceRect.ComputeSpan();
       POINT corner;
       corner.x = surfaceRect.rect.left;
       corner.y = surfaceRect.rect.top;
@@ -307,9 +306,8 @@ void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRec
 }
 
 // FUNCTION: IMPERIALISM 0x00483220
-void IncludeViewOverlayRectRecord::ComputeSpan(POINT* out) const {
-  out->x = rect.right - rect.left;
-  out->y = rect.bottom - rect.top;
+CPoint IncludeViewOverlayRectRecord::ComputeSpan() const {
+  return CPoint(rect.right - rect.left, rect.bottom - rect.top);
 }
 
 // Install this view as the native host window for the given TView (and its whole

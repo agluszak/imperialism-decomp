@@ -715,7 +715,14 @@ int TCity::ComputeAverageWeightWord0TimesTenFromResourceCounts() {
     totalCount += count;
   }
   if (totalCount != 0) {
-    return (totalCount / 2 + weightedSum * 10) / totalCount;
+    // The idiomatic rounding form, value first. Addend order is NOT observable here and is
+    // not the lever for the residual diff: writing it the other way round produces
+    // byte-identical codegen, because MSVC500 normalises the commutative add. The original
+    // does evaluate weightedSum * 10 first (LEA ECX,[EAX+EAX*4] at 0x004b434d), but that
+    // falls out of register allocation, not of the source order -- the original still has
+    // weightedSum live in ECX at the loop exit, while our build reloads it from the
+    // [esp+0x10] spill slot. Don't re-derive this; see bd imperialism-decomp-g4yh.1.
+    return (weightedSum * 10 + totalCount / 2) / totalCount;
   }
   return 1;
 }
