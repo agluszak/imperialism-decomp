@@ -95,12 +95,10 @@ void TCityProductionView::DoPostCreate(int arg) {
     short level = city->GetNextBuildingType(slot);
     CDib* bitmap = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(
         static_cast<unsigned short>(level * 0x10 + 0x1bbc + slot));
-    int* outlinePolygon = bitmap->BuildNonTransparentOutlinePolygon(0xffffffff);
-    // GEOMETRY_RAW_BUFFER: two-int header followed by packed POINT records.
+    POINT* outlinePolygon = bitmap->BuildNonTransparentOutlinePolygon(0xffffffff);
     buildingClipRegionsEC[slot] = NewRgn();
     (*buildingClipRegionsEC[slot])->rgn.DeleteObject();
-    HRGN polygonRegion = ::CreatePolygonRgn(reinterpret_cast<POINT*>(outlinePolygon + 2),
-                                            outlinePolygon[0], WINDING);
+    HRGN polygonRegion = ::CreatePolygonRgn(outlinePolygon + 1, outlinePolygon[0].x, WINDING);
     (*buildingClipRegionsEC[slot])->rgn.Attach(polygonRegion);
     delete[] outlinePolygon;
     g_pModuleLibraryCacheState->ReleaseRecordByHandle(bitmap);

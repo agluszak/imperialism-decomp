@@ -961,12 +961,12 @@ int CDib::BuildMonochromeOutlineMaskInPlace() {
 // then the right edge bottom-up and closes the polygon. Y coordinates are
 // flipped through abs(biHeight) because DIB rows are stored bottom-up.
 // FUNCTION: IMPERIALISM 0x0047c3d0
-int* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
+POINT* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
   byte bVar1;
   int scan_offset;
   int col_idx;
   int byte_idx;
-  int* points;
+  POINT* points;
   unsigned int stride;
   int byte_scan;
   int row_stride;
@@ -977,7 +977,7 @@ int* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
   byte* pixel_ptr;
   int bit_row;
   int width;
-  int* out_iter;
+  POINT* out_iter;
   int row_idx;
   int pair_count;
   byte* row_ptr;
@@ -1020,12 +1020,12 @@ int* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
         bit_scan_row = bit_scan_row + col_idx;
       }
     }
-    points = new int[(transparentIndex + 1) * 4];
+    points = new POINT[(transparentIndex + 1) * 2];
     width = 0;
-    *points = transparentIndex * 2 + 1;
+    points[0].x = transparentIndex * 2 + 1;
     transparentIndex = 1;
     height = 0;
-    out_iter = points + 2;
+    out_iter = points + 1;
   LAB_0047c48c:
     do {
       row_idx = m_pInfoHeader->bmiHeader.biHeight;
@@ -1037,7 +1037,7 @@ int* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
         width = width + -8;
         if (-1 < width) {
           height = width * scan_offset * 4;
-          out_iter = points + transparentIndex * 2;
+          out_iter = points + transparentIndex;
           do {
             row_idx = m_pInfoHeader->bmiHeader.biWidth;
             row_idx = ((int)(row_idx + (row_idx >> 0x1f & 7U)) >> 3) + -1;
@@ -1054,18 +1054,17 @@ int* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
               if (col_idx < 1) {
                 col_idx = -col_idx;
               }
-              *out_iter = (int)cVar10 + row_idx * 8;
-              out_iter[1] = (col_idx - width) + -1;
+              out_iter->x = (int)cVar10 + row_idx * 8;
+              out_iter->y = (col_idx - width) + -1;
               transparentIndex = transparentIndex + 1;
-              out_iter = out_iter + 2;
+              out_iter = out_iter + 1;
             }
           LAB_0047c5a0:
             width = width + -8;
             height = height + scan_offset * -0x20;
           } while (-1 < width);
         }
-        points[transparentIndex * 2] = points[2];
-        points[transparentIndex * 2 + 1] = points[3];
+        points[transparentIndex] = points[1];
         return points;
       }
       bit_row = m_pInfoHeader->bmiHeader.biWidth;
@@ -1083,10 +1082,10 @@ int* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
         if (row_idx < 1) {
           row_idx = -row_idx;
         }
-        *out_iter = (byte_idx * 8 + 8) - (int)cVar9;
+        out_iter->x = (byte_idx * 8 + 8) - (int)cVar9;
         transparentIndex = transparentIndex + 1;
-        out_iter[1] = (row_idx - width) + -1;
-        out_iter = out_iter + 2;
+        out_iter->y = (row_idx - width) + -1;
+        out_iter = out_iter + 1;
       }
       width = width + 8;
       height = height + col_idx;
@@ -1128,11 +1127,11 @@ LAB_0047c603:
       col_idx = -height;
     }
     if (col_idx <= scan_offset) {
-      points = new int[(row_idx + 1) * 4];
-      *points = row_idx * 2 + 1;
+      points = new POINT[(row_idx + 1) * 2];
+      points[0].x = row_idx * 2 + 1;
       pair_count = 1;
       height = 0;
-      out_iter = points + 2;
+      out_iter = points + 1;
       row_ptr = pixel_ptr;
       do {
         width = m_pInfoHeader->bmiHeader.biHeight;
@@ -1143,7 +1142,7 @@ LAB_0047c603:
         if (row_idx <= height) {
           height = height + -2;
           if (-1 < height) {
-            out_iter = points + pair_count * 2;
+            out_iter = points + pair_count;
             pixel_ptr = pixel_ptr + height * stride;
             do {
               width = m_pInfoHeader->bmiHeader.biWidth;
@@ -1157,17 +1156,16 @@ LAB_0047c603:
               if (row_stride < 1) {
                 row_stride = -row_stride;
               }
-              *out_iter = width;
+              out_iter->x = width;
               pair_count = pair_count + 1;
-              out_iter[1] = (row_stride - height) + -1;
-              out_iter = out_iter + 2;
+              out_iter->y = (row_stride - height) + -1;
+              out_iter = out_iter + 1;
             LAB_0047c72a:
               height = height + -2;
               pixel_ptr = pixel_ptr + stride * -2;
             } while (-1 < height);
           }
-          points[pair_count * 2] = points[2];
-          points[pair_count * 2 + 1] = points[3];
+          points[pair_count] = points[1];
           return points;
         }
         row_idx = m_pInfoHeader->bmiHeader.biWidth;
@@ -1178,10 +1176,10 @@ LAB_0047c603:
               if (width < 1) {
                 width = -width;
               }
-              *out_iter = scan_offset;
-              out_iter[1] = (width - height) + -1;
+              out_iter->x = scan_offset;
+              out_iter->y = (width - height) + -1;
               pair_count = pair_count + 1;
-              out_iter = out_iter + 2;
+              out_iter = out_iter + 1;
               break;
             }
             scan_offset = scan_offset + 1;

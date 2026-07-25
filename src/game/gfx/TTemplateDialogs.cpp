@@ -52,7 +52,7 @@ void ShowSelectedDibInTemplateDDDialog(CDib* picture, CString title) {
 // modal-state cleanup) is inlined from ~TModalDialogBase.
 // FUNCTION: IMPERIALISM 0x00413c30
 TDDTemplateDialog::~TDDTemplateDialog() {
-  delete outlinePolygon;
+  delete[] outlinePolygon;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00413cd0
@@ -165,7 +165,7 @@ END_MESSAGE_MAP()
 
 // Draws the preview picture into the client area, then optionally overlays a red silhouette
 // outline (Polyline) and/or fill (FillRgn) built from the picture's non-transparent-pixel
-// polygon (outlinePolygon: [0]=POINT count, POINTs from index 2). Three blit modes:
+// polygon (outlinePolygon[0].x = POINT count, vertices from index 1). Three blit modes:
 //   renderMode != 0            -> palette-masked StretchDIBits (StretchDibitsWithCopiedPaletteTable)
 //   g_useCompatibleBitmapBlit  -> CreateCompatibleDC + BitBlt of a device bitmap, using the
 //                                 module palette cache's default palette
@@ -215,15 +215,12 @@ void TDDTemplateDialog::OnPaint() {
   if (drawOutline != 0) {
     CPen pen(PS_SOLID, 1, RGB(0xff, 0, 0));
     CPen* oldPen = dc.SelectObject(&pen);
-    // GEOMETRY_RAW_BUFFER: two-int header followed by packed POINT records.
-    dc.Polyline(reinterpret_cast<POINT*>(outlinePolygon + 2), outlinePolygon[0]);
+    dc.Polyline(outlinePolygon + 1, outlinePolygon[0].x);
     dc.SelectObject(oldPen);
   }
   if (fillPolygon != 0) {
     CRgn region;
-    // GEOMETRY_RAW_BUFFER: two-int header followed by packed POINT records.
-    region.CreatePolygonRgn(reinterpret_cast<POINT*>(outlinePolygon + 2), outlinePolygon[0],
-                            ALTERNATE);
+    region.CreatePolygonRgn(outlinePolygon + 1, outlinePolygon[0].x, ALTERNATE);
     CBrush brush(RGB(0xff, 0, 0));
     dc.FillRgn(&region, &brush);
   }

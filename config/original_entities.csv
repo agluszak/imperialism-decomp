@@ -304,7 +304,7 @@ address|name|symbol|size|type|prototype|provenance
 47bf90|CDib::GetPixelAddress||73|function|void * __thiscall GetPixelAddress(int x, int y)|
 47c080|CDib::LoadBitmapResourceAndInitializeSurfaceState||224|function|int LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module)|
 47c1f0|CDib::BuildMonochromeOutlineMaskInPlace||384|function|int BuildMonochromeOutlineMaskInPlace()|
-47c3d0|CDib::BuildNonTransparentOutlinePolygon||898|function|int * __thiscall Sprite__CollectNonTransparentPixels(uint this_ptr)|
+47c3d0|CDib::BuildNonTransparentOutlinePolygon||898|function|POINT * BuildNonTransparentOutlinePolygon(unsigned int transparentIndex)|
 47c980|CDib::FlipScanlineOrder||203|function|void FlipScanlineOrder()|
 47cac0|WrapperFor_DeleteRegionHandleFromClipState_At0047cac0||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At0047cac0()|
 47cb60|WrapperFor_DeleteRegionHandleFromClipState_At0047cb60||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At0047cb60()|
@@ -1230,7 +1230,7 @@ address|name|symbol|size|type|prototype|provenance
 497c00|QDLoadResource||3|function|undefined NoOpRuntimeCallback_00497c00()|
 497c80|SetQuickDrawTextOriginWithContextOffset||102|function|undefined SetQuickDrawTextOriginWithContextOffset()|
 497d10|DrawCenteredGuideLineOnMapDc||376|function|undefined DrawCenteredGuideLineOnMapDc()|
-497ef0|BitMapToRegion||76|function|undefined RebuildSpriteNonTransparentPolygonRegion()|
+497ef0|BitMapToRegion||76|function|int BitMapToRegion(RgnHandle rgn, TBitmapSurfaceNode * surface)|
 497f60|OpenRgn||20|function|undefined RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl()|
 497f90|CloseRgn||65|function|undefined WrapperFor_LookupHandleMapEntryWithCreate_At00497f90()|
 498070|IntersectClipRegionWithRectAndUpdateBounds||197|function|undefined IntersectClipRegionWithRectAndUpdateBounds()|
