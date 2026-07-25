@@ -3368,7 +3368,7 @@ address|matching|name
 0x51e160|0.2857142857142857|ConfigureWhiteQuickDrawPen
 0x51e1a0|1.0|TMapDialog::ResetAllTileMarkersToSentinel
 0x51e1f0|0.2777777777777778|TMapDialog::ReleaseTileMarkerForTile
-0x51e260|0.07543323139653414|TMapDialog::Draw
+0x51e260|0.3286290322580645|TMapDialog::Draw
 0x51eb40|0.1473429951690821|TMapDialog::DrawOneTile
 0x520670|0.860125260960334|TMapDialog::DrawBorder
 0x520970|0.7682926829268293|TMapDialog::DrawMapDialogGuidePatternSetA_00520970
@@ -3401,7 +3401,7 @@ address|matching|name
 0x524b30|0.14388489208633093|TMapDialog::CopyCoastCornerMaskBetweenDirections1And2
 0x524c60|0.08080808080808081|TMapDialog::CopyCoastCornerMaskBetweenDirections0And1
 0x524e70|0.0639269406392694|TMapDialog::CopyCoastCornerMaskBetweenDirections2And3
-0x5250a0|0.0639269406392694|TMapDialog::CopyCoastCornerMaskBetweenDirections5And0
+0x5250a0|0.09090909090909091|TMapDialog::CopyCoastCornerMaskBetweenDirections5And0
 0x5252d0|0.061855670103092786|TMapDialog::CopyCoastCornerMaskBetweenDirections4And5
 0x5254a0|0.12631578947368421|TMapDialog::CopyCoastCornerMaskBetweenDirections3And4
 0x525670|0.24761904761904763|TMapDialog::NewCopy64
@@ -3423,7 +3423,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords
 0x527730|0.29577464788732394|TMapMaker::PlaceTerrainFeatureQuotas
-0x527d00|0.4268774703557312|TMapMaker::CreateRivers
+0x527d00|0.43478260869565216|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
