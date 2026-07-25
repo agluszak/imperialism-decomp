@@ -86,7 +86,8 @@ TArmyPlayer::~TArmyPlayer() {}
 IMPLEMENT_DYNCREATE(TArmyPlayer, TTacticalPlayer)
 
 // FUNCTION: IMPERIALISM 0x0059b1b0
-void TArmyPlayer::IArmyPlayer(TArmyStack* stack, int isOurSide, char watchFlag, int nationIndex) {
+void TArmyPlayer::IArmyPlayer(TArmyStack* stack, unsigned char isOurSide, unsigned char watchFlag,
+                              int nationIndex) {
   // Scatter-init of the side state, in the original store order.
   // The original only reads the low byte of `isOurSide` (a char/BOOL param).
   isOurSideFlagC = static_cast<char>(isOurSide);

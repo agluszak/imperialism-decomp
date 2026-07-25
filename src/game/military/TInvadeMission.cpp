@@ -77,8 +77,6 @@ TInvadeMission::TInvadeMission(TZone* beachheadZone, short targetProvince)
 // FUNCTION: IMPERIALISM 0x0053f3f0
 TInvadeMission::~TInvadeMission() {}
 
-TInvadeMission::TInvadeMission() : TAttackProvinceMission(), beachhead34(nullptr) {}
-
 // FUNCTION: IMPERIALISM 0x0053f410
 void TInvadeMission::Free() {
   beachhead34->Free();
@@ -149,9 +147,12 @@ void TInvadeMission::CalculateNeeds() {
 // FUNCTION: IMPERIALISM 0x0053f640
 void TInvadeMission::WriteTo(TStream* stream) {
   TAttackProvinceMission::WriteTo(stream);
-  if (beachhead34 != nullptr) {
-    beachhead34->WriteTo(stream);
-  }
+  stream->WriteBytesSlot78(&targetProvince30, 2);
+  stream->WriteBytesSlot78(&amassingProvince32, 2);
+  // The original dereferences beachhead34 unguarded (0x53f668); ReadFrom always
+  // installs one, so a null here is a broken invariant, not a case to skip -- and a
+  // guard would silently truncate the stream instead of failing.
+  beachhead34->WriteTo(stream);
 }
 
 // FUNCTION: IMPERIALISM 0x0053f690

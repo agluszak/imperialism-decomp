@@ -36,8 +36,6 @@ IMPLEMENT_SERIAL(TControlSeaZoneMission, TNavyMission, 1)
 // SYNTHETIC: IMPERIALISM 0x005355f0
 // TControlSeaZoneMission::`scalar deleting destructor'
 
-TControlSeaZoneMission::TControlSeaZoneMission() : TNavyMission() {}
-
 // FUNCTION: IMPERIALISM 0x005355b0
 bool TControlSeaZoneMission::IsHospitalMission() const {
   return true;

@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "game/nation/TGreatPower.h"
+#include "game/core/stream_byteswap.h"
 #include "game/core/TStream.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
@@ -49,7 +50,12 @@ void TInteriorMinister::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004be320
 void TInteriorMinister::WriteTo(TStream* stream) {
-  SerializeTMinisterBaseOrderArrayHeader(stream);
+  TMinister::WriteTo(stream);
+  stream->WriteBytesSlot78(&field10, 2);
+  stream->WriteBytesSlot78(&field12, 2);
+  stream->WriteBytesSlot78(&capabilityFlag14, 2);
+  stream->WriteBytesSlot78(&capabilityFlag16, 2);
+  WriteShortArrayElems(stream, trailingTable, 7);
 }
 
 // FUNCTION: IMPERIALISM 0x004be3c0

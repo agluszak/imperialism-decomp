@@ -8,6 +8,7 @@
 #include "game/city/TCapacityOrder.h"
 #include "game/tactical_ui/TCityTask.h"
 #include "game/city/TExpansionOrder.h"
+#include "game/core/stream_byteswap.h"
 #include "game/city/TFoodProcessingOrder.h"
 #include "game/city/TItemOrder.h"
 #include "game/city/TOrItemOrder.h"
@@ -336,7 +337,7 @@ void TCity::WriteTo(TStream* stream) {
     SwapFirstTwoBytesInBuffer(reinterpret_cast<unsigned char*>(&value));
     stream->WriteBytesSlot78(&value, 2);
   }
-  WriteWordArrayToOutputCallbackLE(stream, consumedProductionInputByType2a6, 0x17);
+  WriteByteSwappedShortArrayToStream(stream, consumedProductionInputByType2a6, 0x17);
 
   stream->WriteBytesSlot78(&rollingItemProductionScore78, 4);
   productionSummary1d8->WriteTo(stream);

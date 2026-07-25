@@ -24,10 +24,6 @@ public:
 };
 ASSERT_SIZE(TExpansionOrder, 0x54);
 
-// 0x4b9340: swaps the first two bytes of the buffer (byte-order swap helper).
-void SwapFirstTwoBytesInBuffer(unsigned char* buffer);
-
-class TStream;
-// 0x4b94a0: writes `count` shorts to the stream, each byte-swapped, via the stream's
-// WriteBytesSlot78 primitive.
-void WriteWordArrayToOutputCallbackLE(TStream* stream, short* words, int count);
+// SwapFirstTwoBytesInBuffer (0x4b9340) and WriteByteSwappedShortArrayToStream (0x4b94a0)
+// are shared stream byte-order helpers, not expansion-order code: they live in
+// game/core/stream_byteswap.h.

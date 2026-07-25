@@ -25,11 +25,15 @@ IMPLEMENT_DYNCREATE(TCheater, TView)
 void TCheater::ConstructTCheaterBaseState(TView* panel, int unusedArg) {
   int frameOffset[2] = {0, 0};
   int frameSize[2] = {0x280, 0x1e0};
-  int captionLayout[2] = {0x80, 0x20};
+  int captionSize[2] = {0x80, 0x20};
   InitializeUiResourceEntryFrameAndParent(0, panel, frameOffset, frameSize, 5, 5, 0);
 
   TStaticText* caption = new TStaticText();
-  caption->IStaticText(this, frameSize, captionLayout, 5, 5, 0x80, 1);
+  // IStaticText(panel, offset, size, ...). The caption's OFFSET is frameOffset, not
+  // frameSize: 0x004b1536 computes LEA EDX,[ESP+0x1c] -> frameOffset for arg2 and
+  // 0x004b1530 LEA ECX,[ESP+0x28] -> captionSize for arg3. Passing the 0x280x0x1e0
+  // frame extent as an offset was invisible while both were int[2].
+  caption->IStaticText(this, frameOffset, captionSize, 5, 5, 0x80, 1);
 
   TButton* doneButton = new TButton();
   CString doneLabel("Done");

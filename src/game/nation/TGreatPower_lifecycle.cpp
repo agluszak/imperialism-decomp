@@ -209,8 +209,8 @@ short TGreatPower::GetDiplomacyCounterA2(void) {
 // TGreatPower::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004d8cc0
-void TGreatPower::IGreatPower(int arg1, int arg2) {
-  this->InitializeNationStateIdentityAndOwnedRegionList(static_cast<NationSlot>(arg1));
+void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) {
+  this->InitializeNationStateIdentityAndOwnedRegionList(nationSlotIndex);
 
   TSimMgr* localizationRuntime = g_pSimMgr;
   if (localizationRuntime != 0) {
@@ -220,7 +220,7 @@ void TGreatPower::IGreatPower(int arg1, int arg2) {
     this->treasuryValue10 = 0;
   }
 
-  this->diplomacyEligibilityA0 = (static_cast<short>(arg2) == 1) ? 1 : 0;
+  this->diplomacyEligibilityA0 = (humanControlledFlag == 1) ? 1 : 0;
 
   TCity* cityModel = new TCity();
   if (cityModel != 0) {

@@ -88,9 +88,21 @@ def scan(root: pathlib.Path) -> list[str]:
             m = CTOR.match(line)
             if not m:
                 continue
-            # A marker within the preceding 4 lines claims a real address for this body.
-            back = "\n".join(lines[max(0, i - 4) : i])
-            if any(k in back for k in MARKERS):
+            # Hard Rule 3: a marker is IMMEDIATELY followed by its declaration, so only
+            # the contiguous comment block directly above can claim this body. Scanning a
+            # fixed window instead picks up a NEIGHBOUR's marker -- e.g. a destructor's
+            # // FUNCTION four lines up -- and silently exempts the constructor.
+            claimed = False
+            j = i - 1
+            while j >= 0:
+                stripped = lines[j].strip()
+                if not stripped.startswith("//"):
+                    break
+                if any(k in stripped for k in MARKERS):
+                    claimed = True
+                    break
+                j -= 1
+            if claimed:
                 continue
             rel = path.relative_to(REPO).as_posix()
             findings.append(f"{rel}:{m.group(1)}")

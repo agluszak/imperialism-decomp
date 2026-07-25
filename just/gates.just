@@ -187,6 +187,11 @@ typedef-args-audit *args:
 test:
   uv run python -m unittest discover -s tests/tools
 
+[doc('Audit every ported ReadFrom/WriteTo for save-file byte desync against the listing')]
+[group('reports')]
+serde-audit *args:
+  uv run python -m tools.workflow.serde_audit {{args}}
+
 # Raw-vtable source gate (Hard Rule 13); also runs as the first step of `just build`.
 [group('gates')]
 vtable-gate:

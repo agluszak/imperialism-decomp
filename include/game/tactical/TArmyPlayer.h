@@ -136,7 +136,10 @@ public:
 
   // Builds the side's tactical unit records from the stack's army unit chain and
   // stores the stack into armyStack28. 0x0059b1b0, __thiscall, ret 0x10.
-  void IArmyPlayer(TArmyStack* stack, int isOurSide, char watchFlag, int nationIndex);
+  // Mac oracle: IArmyPlayer(TArmyStack*, unsigned char, unsigned char, long) -- the
+  // original only reads the low byte of isOurSide, as the body comment notes.
+  void IArmyPlayer(TArmyStack* stack, unsigned char isOurSide, unsigned char watchFlag,
+                   int nationIndex);
 };
 
 ASSERT_SIZE(TArmyPlayer, 0x54);

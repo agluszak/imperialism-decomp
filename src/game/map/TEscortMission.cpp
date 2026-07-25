@@ -36,8 +36,6 @@ bool TEscortMission::IsDefensiveSeaZoneMission() const {
 // SYNTHETIC: IMPERIALISM 0x00539960
 // TEscortMission::`scalar deleting destructor'
 
-TEscortMission::TEscortMission() : TNavyMission() {}
-
 // FUNCTION: IMPERIALISM 0x00539990
 TEscortMission::~TEscortMission() {}
 
