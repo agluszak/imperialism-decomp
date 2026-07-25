@@ -180,7 +180,11 @@ void TCountry::ReadFrom(TStream* stream) {
     do {
       TMilitaryUnit* militaryOrder = new TMilitaryUnit();
       if (militaryOrder != nullptr) {
-        militaryOrder->IMilitaryUnit(0, 0, this->nationSlot);
+        // 0x4d6d33: the pushes are (0, -1, nationSlot, 0). nodeContext is -1, not 0 --
+        // 0 is a valid tile/anchor index, so passing it sends
+        // RegisterUnitOrderWithOwnerManager down the attach path against a nation table
+        // that is still being rebuilt, which is the load-time access violation.
+        militaryOrder->IMilitaryUnit(0, -1, this->nationSlot, 0);
         militaryOrder->ReadFrom(stream);
       }
       recruitIndex = recruitIndex + 1;

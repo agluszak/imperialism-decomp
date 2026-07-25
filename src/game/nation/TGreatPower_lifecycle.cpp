@@ -540,8 +540,11 @@ void TGreatPower::ReadFrom(TStream* stream) {
     }
   }
 
-  if (townCount > 0) {
-    this->city->SetSelectedTownMarker(townMarkerList->GetEntryByOrdinal());
+  // 0x4d989d: the ordinal is 1, not GetEntryByOrdinal's default of 0 -- a 0 ordinal
+  // reaches CPtrList::FindIndex(-1) and faults. The original also guards on the city
+  // existing (0x4d9893) before selecting into it.
+  if (townCount > 0 && this->city != nullptr) {
+    this->city->SetSelectedTownMarker(townMarkerList->GetEntryByOrdinal(1));
   }
 
   TSortedList* trackedObjectList = this->trackedObjectList;
@@ -551,11 +554,14 @@ void TGreatPower::ReadFrom(TStream* stream) {
   }
   trackedObjectList->ReadFrom(stream);
 
-  int unusedOrderCount = 0;
-  stream->ReadBytes(&unusedOrderCount, 4);
+  int civilianOrderCount = 0;
+  stream->ReadBytes(&civilianOrderCount, 4);
 
+  // Count-driven, not a fixed four: the original runs EBX from 1 while EBX <= the count
+  // it just read (0x4d98f0 / 0x4d9941). A hardcoded bound reads the wrong number of
+  // TCivUnit records and desyncs everything after this nation.
   int orderOrdinal = 1;
-  while (orderOrdinal < 5) {
+  while (orderOrdinal <= civilianOrderCount) {
     TCivUnit* civOrderObj = new TCivUnit();
     if (civOrderObj != nullptr) {
       civOrderObj->ICivUnit(kCivilianUnitMiner, -1, this->nationSlot);

@@ -2318,7 +2318,7 @@ address|matching|name
 0x4d68f0|0.6206896551724138|TCountry::InitializeNationStateIdentityAndOwnedRegionList
 0x4d6b70|0.0|CString::operator=(class CString const &)
 0x4d6ba0|1.0|TCountry::Free
-0x4d6bf0|0.5872576177285319|TCountry::ReadFrom
+0x4d6bf0|0.592797783933518|TCountry::ReadFrom
 0x4d6e60|0.3408360128617363|TCountry::WriteTo
 0x4d7070|1.0|TCountry::ReadCoreFieldsFromStream
 0x4d70e0|1.0|TCountry::WriteCoreFieldsToStream
@@ -2369,7 +2369,7 @@ address|matching|name
 0x4d8c50|0.9767441860465116|TGreatPower
 0x4d8cc0|0.47844827586206895|TGreatPower::IGreatPower
 0x4d9160|1.0|TGreatPower::Free
-0x4d92e0|0.44714828897338404|TGreatPower::ReadFrom
+0x4d92e0|0.4474678760393046|TGreatPower::ReadFrom
 0x4d9c70|0.8169014084507042|TGreatPower::WriteTo
 0x4da3e0|0.6308724832214765|TGreatPower::ReadCoreFieldsFromStream
 0x4da500|0.3917525773195876|TGreatPower::WriteCoreFieldsToStream
@@ -7096,7 +7096,7 @@ address|matching|name
 0x608ba8|0.9441964285714286|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|1.0|CWnd::OnNotify
+0x6091d9|0.9787234042553191|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent

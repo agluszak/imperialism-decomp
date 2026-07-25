@@ -28,6 +28,7 @@ TESTS = (
         required_oracles=("ui", "map"),
     ),
     RuntimeTestSpec("serialization_roundtrip", ("pr", "full"), required_oracles=()),
+    RuntimeTestSpec("save_load_roundtrip", ("pr", "full"), required_oracles=("map",)),
     RuntimeTestSpec(
         "save_stream_checkpoints",
         ("full",),
