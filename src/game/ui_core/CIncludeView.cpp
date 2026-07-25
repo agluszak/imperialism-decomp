@@ -211,9 +211,13 @@ void CIncludeView::BlitMapDialogSurfaceToHdcWithClipBounds(CDC* dc, RECT* clipRe
   surfaceBounds.top = 0;
   surfaceBounds.right = m_pOffscreenDib->m_pInfoHeader->bmiHeader.biWidth - 1;
   surfaceBounds.bottom = surfaceHeight;
+  // Two distinct destination rects, not one reused: the original's frame is SUB ESP,0x54
+  // against the 0x40 four RECTs alone would need, and the extra 0x14 is this second RECT
+  // plus the `this` spill at [ESP+0x10].
+  RECT clippedToBox;
+  IntersectRect(&clippedToBox, &localClip, &clipBox);
   RECT blitRect;
-  IntersectRect(&blitRect, &localClip, &clipBox);
-  IntersectRect(&blitRect, &blitRect, &surfaceBounds);
+  IntersectRect(&blitRect, &clippedToBox, &surfaceBounds);
   m_pMainPaneDib->SelectAndRealizeDibPalette(targetDc, 0);
   HDC memDc = CreateCompatibleDC(targetDc->m_hDC);
   HGDIOBJ oldBitmap = SelectObject(memDc, m_pMainPaneDib->m_hBitmap);
