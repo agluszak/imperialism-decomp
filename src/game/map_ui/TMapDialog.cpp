@@ -751,8 +751,7 @@ void TMapDialog::ReleaseTileMarkerForTile(short tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x0051e260
 void TMapDialog::Draw(RECT* rectBuffer) {
-  if (g_pGlobalMapState == 0 || rectBuffer == 0 || quickDrawSurface350 == 0 ||
-      g_pCitySiteCachedPrimaryRenderSurfaceContext == 0) {
+  if (g_pGlobalMapState == 0) {
     return;
   }
 
@@ -772,41 +771,42 @@ void TMapDialog::Draw(RECT* rectBuffer) {
     LockPixels(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
     LockPixels(GetGWorldPixMap(quickDrawSurface350));
 
-    int firstRowValue = viewportOrigin60.y + rectBuffer->top;
-    int firstRow = DivideMapPixelOffsetBy64(firstRowValue);
-    int rowSpan = rectBuffer->bottom - rectBuffer->top;
-    int lastRow = firstRow + DivideMapPixelOffsetBy64(rowSpan) + 1;
-    int firstColValue = viewportOrigin60.x + rectBuffer->left + 0x20;
-    int firstCol = DivideMapPixelOffsetBy64(firstColValue) - 1;
-    int colSpan = rectBuffer->right - rectBuffer->left;
-    int lastCol = firstCol + DivideMapPixelOffsetBy64(colSpan) + 1;
+    int markerFirstRow = static_cast<int>(viewportOrigin60.y * g_MapPreviewScaleX6A3410);
+    int markerFirstCol = static_cast<int>(viewportOrigin60.x * g_MapPreviewScaleY6A33D0 - 1.0);
+    int markerLastCol = markerFirstCol + g_MapPreviewVerticalOffset6A3448;
 
     int markerIndex;
     for (markerIndex = 0; markerIndex < 90; ++markerIndex) {
       TMapDialogTileMarker& marker = tileMarkers7c[markerIndex];
-      marker.flag = marker.a >= firstRow && marker.a <= firstRow + 8 && marker.b >= firstCol &&
-                    marker.b <= lastCol;
+      marker.flag = marker.a >= markerFirstRow && marker.a <= markerFirstRow + 8 &&
+                    marker.b >= markerFirstCol && marker.b <= markerLastCol;
     }
 
-    LockPixels(GetGWorldPixMap(quickDrawSurface350));
-    LockPixels(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
-    if (g_pStrategicMapViewSystem != 0 && g_pStrategicMapViewSystem->atlas668 != 0) {
-      LockPixels(GetGWorldPixMap(g_pStrategicMapViewSystem->atlas668));
-    }
+    int firstRowValue = viewportOrigin60.y + rectBuffer->top;
+    short firstRow = static_cast<short>(DivideMapPixelOffsetBy64(firstRowValue));
+    int rowSpan = rectBuffer->bottom - rectBuffer->top;
+    short lastRow = static_cast<short>(firstRow + DivideMapPixelOffsetBy64(rowSpan) + 1);
+    int firstColValue = viewportOrigin60.x + rectBuffer->left + 0x20;
+    short firstCol = static_cast<short>(DivideMapPixelOffsetBy64(firstColValue) - 1);
+    int colSpan = rectBuffer->right - rectBuffer->left;
+    short lastCol = static_cast<short>(firstCol + DivideMapPixelOffsetBy64(colSpan) + 1);
 
-    for (int row = firstRow; row < lastRow && row < 60; ++row) {
-      if (row < 0) {
-        continue;
-      }
-      for (int unwrappedCol = firstCol; unwrappedCol <= lastCol; ++unwrappedCol) {
-        int col = unwrappedCol;
+    GetPixBaseAddr(GetGWorldPixMap(quickDrawSurface350));
+    GetPixBaseAddr(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
+    GetPixBaseAddr(GetGWorldPixMap(g_pStrategicMapViewSystem->atlas668));
+
+    short cacheSearchIndex = 0;
+    for (short row = firstRow; row < lastRow && row < 60; ++row) {
+      for (short unwrappedCol = firstCol; unwrappedCol <= lastCol; ++unwrappedCol) {
+        short col = unwrappedCol;
         if (col >= 108) {
           col -= 108;
         } else if (col < 0) {
           col += 108;
         }
 
-        short tileIndex = row * 108 + col;
+        short tileIndex =
+            static_cast<short>(ComputeStridedRecordAddress6C(static_cast<int>(col), row));
         short projectedY;
         short projectedX;
         ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin60, &projectedY,
@@ -818,15 +818,11 @@ void TMapDialog::Draw(RECT* rectBuffer) {
         signed char cachedMarkerIndex =
             g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10;
         if (cachedMarkerIndex == -1) {
-          markerIndex = 0;
-          while (markerIndex < 90 && tileMarkers7c[markerIndex].flag != 0) {
-            ++markerIndex;
+          ++g_MapTileCacheMissCount6A3454;
+          while (cacheSearchIndex < 90 && tileMarkers7c[cacheSearchIndex].flag != 0) {
+            ++cacheSearchIndex;
           }
-          if (markerIndex == 90) {
-            continue;
-          }
-
-          TMapDialogTileMarker& marker = tileMarkers7c[markerIndex];
+          TMapDialogTileMarker& marker = tileMarkers7c[cacheSearchIndex];
           if (marker.c >= 0) {
             g_pGlobalMapState->terrainStateTable[marker.c].markerSlotIndex10 = -1;
           }
@@ -835,9 +831,9 @@ void TMapDialog::Draw(RECT* rectBuffer) {
           marker.b = unwrappedCol;
           marker.c = tileIndex;
           g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10 =
-              static_cast<signed char>(markerIndex);
-          DrawOneTile(tileIndex, 0, markerIndex << 6);
-          cachedMarkerIndex = static_cast<signed char>(markerIndex);
+              static_cast<signed char>(cacheSearchIndex);
+          DrawOneTile(tileIndex, 0, cacheSearchIndex << 6);
+          cachedMarkerIndex = static_cast<signed char>(cacheSearchIndex);
         } else {
           TCivUnit* unit =
               g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, g_pSimMgr->GetActiveNationId());
@@ -864,10 +860,10 @@ void TMapDialog::Draw(RECT* rectBuffer) {
         destinationRect.top = projectedY + 0x40;
         destinationRect.right = destinationRect.left + 0x40;
         destinationRect.bottom = destinationRect.top + 0x40;
-        BlitRectWithOptionalTransparency(
-            quickDrawSurface350->GetBlitSurface(),
-            g_pCitySiteCachedPrimaryRenderSurfaceContext->GetBlitSurface(), &sourceRect,
-            &destinationRect, 0, 0);
+        quickDrawSurface350->GetBlitSurface()->surfaceDib->BlitSurfaceRectSkippingTransparentColor(
+            g_pCitySiteCachedPrimaryRenderSurfaceContext->GetBlitSurface()->surfaceDib,
+            sourceRect.left, sourceRect.top, sourceRect.right - sourceRect.left,
+            sourceRect.bottom - sourceRect.top, destinationRect.left, destinationRect.top, -1);
 
         TCivUnit* firstCivilianOrder =
             g_pGlobalMapState->terrainStateTable[tileIndex].firstCivilianOrder20;

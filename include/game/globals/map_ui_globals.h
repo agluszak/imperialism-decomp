@@ -37,6 +37,9 @@ extern const int g_riverConnectionTypeByDirectionPair_00697568[6][6];
 extern "C" {
 extern TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext;
 
+// Counts strategic-map tile cache misses serviced by TMapDialog::Draw.
+extern short g_MapTileCacheMissCount6A3454;
+
 // TCitySiteView's currently painted six-neighbor highlight set. Each entry is a map tile
 // index or -1; the paint pass restores the previous cells before replacing this cache.
 extern short g_aStrategicMapNeighborHighlightTiles_00697320[6];
