@@ -1732,36 +1732,46 @@ void TMapDialog::DrawCityBorderSegmentsByMask(unsigned char borderMask, int scre
 // FUNCTION: IMPERIALISM 0x00521A40
 void TMapDialog::DrawNationBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY,
                                                 short tileIndex) {
-  const bool direction1 = (borderMask & 2) != 0;
-  const short currentNation = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+  const unsigned char direction1 = borderMask & 2;
   short neighborTile;
 
   if (direction1) {
     neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionEast);
     short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
     if ((borderMask & 1) == 0) {
-      DrawBorder(2, screenX, screenY, currentNation, neighborNation);
+      DrawBorder(2, screenX, screenY,
+                 g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04, neighborNation);
     } else {
-      DrawBorder(1, screenX, screenY, currentNation, neighborNation);
+      DrawBorder(1, screenX, screenY,
+                 g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04, neighborNation);
       if ((borderMask & 0x40) != 0) {
         neighborTile =
             g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthEast);
         neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
-        DrawBorder(3, screenX, screenY, currentNation, neighborNation);
+        DrawBorder(3, screenX, screenY,
+                   g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04,
+                   neighborNation);
       }
     }
 
     if ((borderMask & 4) == 0) {
       neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionEast);
       neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
-      DrawBorder(6, screenX, screenY, currentNation, neighborNation);
+      DrawBorder(6, screenX, screenY,
+                 g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04, neighborNation);
     } else {
       neighborTile =
           g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
       neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
-      DrawBorder(7, screenX, screenY, currentNation, neighborNation);
+      DrawBorder(7, screenX, screenY,
+                 g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04, neighborNation);
       if ((borderMask & 0x80) != 0) {
-        DrawBorder(5, screenX, screenY, currentNation, neighborNation);
+        neighborTile =
+            g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
+        neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
+        DrawBorder(5, screenX, screenY,
+                   g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04,
+                   neighborNation);
       }
     }
   }
@@ -1769,17 +1779,27 @@ void TMapDialog::DrawNationBorderSegmentsByMask(unsigned char borderMask, int sc
   if ((borderMask & 1) != 0) {
     neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthEast);
     short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
-    DrawBorder(0, screenX, screenY, currentNation, neighborNation);
+    DrawBorder(0, screenX, screenY,
+               g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04, neighborNation);
     if (!direction1) {
-      DrawBorder(3, screenX, screenY, currentNation, neighborNation);
+      neighborTile =
+          g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthEast);
+      neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
+      DrawBorder(3, screenX, screenY,
+                 g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04, neighborNation);
     }
   }
   if ((borderMask & 4) != 0) {
     neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
     short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
-    DrawBorder(9, screenX, screenY, currentNation, neighborNation);
+    DrawBorder(9, screenX, screenY,
+               g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04, neighborNation);
     if (!direction1) {
-      DrawBorder(5, screenX, screenY, currentNation, neighborNation);
+      neighborTile =
+          g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
+      neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
+      DrawBorder(5, screenX, screenY,
+                 g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04, neighborNation);
     }
   }
 
@@ -1792,8 +1812,13 @@ void TMapDialog::DrawNationBorderSegmentsByMask(unsigned char borderMask, int sc
       neighborTile =
           g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthWest);
       short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
-      DrawBorder(0, screenX, screenY, currentNation, neighborNation);
-      DrawBorder(3, screenX, screenY, currentNation, neighborNation);
+      DrawBorder(0, screenX, screenY,
+                 g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04, neighborNation);
+      neighborTile =
+          g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionNorthWest);
+      neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
+      DrawBorder(3, screenX, screenY,
+                 g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04, neighborNation);
     }
 
     neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
@@ -1804,8 +1829,13 @@ void TMapDialog::DrawNationBorderSegmentsByMask(unsigned char borderMask, int sc
       neighborTile =
           g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthWest);
       short neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
-      DrawBorder(5, screenX, screenY, currentNation, neighborNation);
-      DrawBorder(9, screenX, screenY, currentNation, neighborNation);
+      DrawBorder(5, screenX, screenY,
+                 g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04, neighborNation);
+      neighborTile =
+          g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthWest);
+      neighborNation = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
+      DrawBorder(9, screenX, screenY,
+                 g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04, neighborNation);
     }
   }
 }
