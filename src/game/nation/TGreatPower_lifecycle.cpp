@@ -564,6 +564,12 @@ void TGreatPower::ReadFrom(TStream* stream) {
     ++orderOrdinal;
   }
 
+  // 0x4d9954: the 0x17-byte candidate flag block, read straight after the civilian-order
+  // loop and before the budget fields. WriteTo has always emitted it (0x4d9e9c), so
+  // omitting it here left every nation record 23 bytes short and desynced the rest of
+  // the stream from this point on.
+  stream->ReadBytes(this->candidateNationFlags, 0x17);
+
   stream->ReadBytes(&this->diplomacyBudgetBase, 4);
   stream->ReadBytes(&this->escalationCounter, 1);
   stream->ReadBytes(&this->pendingCommitmentCost, 4);

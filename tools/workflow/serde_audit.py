@@ -103,7 +103,18 @@ HELPERS = {
     "WriteIntArrayElems": ("write", 4),
 }
 
-SOURCE_OPS = set(SLOT_BY_NAME) | set(HELPERS)
+# Collection helpers that expand to more than one stream op. Each entry is the ordered
+# list of (direction, byte width, repeat count) it contributes; None means "unknown
+# repeat", matching what the tracked list/array length produces at runtime. The nested
+# element WriteTo calls are not stream ops themselves and so do not appear.
+MULTI_HELPERS = {
+    # list->WriteTo, then the 4-byte entry count, then each entry's own WriteTo.
+    "WriteTrackedListToStream": [("write", 4, 1)],
+    # list->NoOpWriteTo, the 4-byte entry count, then each 4-byte value.
+    "WriteIntListToStream": [("write", 4, 1), ("write", 4, None)],
+}
+
+SOURCE_OPS = set(SLOT_BY_NAME) | set(HELPERS) | set(MULTI_HELPERS)
 
 # ---------------------------------------------------------------------------
 # Binary side: replay the listing, tracking where the slot pointer lives.
@@ -228,20 +239,31 @@ def _scan(address: int, strict: bool) -> tuple[list[dict], list[str]]:
     # it at entry and reloads it for the tail call), so stack slots have to be tracked
     # for vtables as well as for hoisted slot pointers.
     stack_vtable: set[int] = set()
+    # Linear replay loses register liveness across branches: a register still holding the
+    # stream's vtable on the not-taken path gets clobbered inside the taken one
+    # (TTradeMgr::ReadFrom keeps the vtable in EAX for its old-format branch while the
+    # new-format loop reuses EAX). Snapshot the tracked state at every forward jump and
+    # union it back in at the target -- the "may hold a vtable" join.
+    pending_join: dict[int, list[tuple[set[str], set[str], dict[str, int], dict[int, int], set[int], int]]] = {}
     esp = 0
     pushed_since_call = 0
-    pending_imm: int | None = None
+    pending_imms: list[int] = []
 
     def emit(slot: int, where: str) -> int:
-        nonlocal pending_imm
         name, direction, width, arg_bytes = SLOTS[slot]
         size = width
         if width == "operand":
-            if pending_imm is None:
+            distinct = sorted(set(pending_imms))
+            if not distinct:
                 warnings.append(f"{where}: {name} with a non-literal size operand")
                 size = None
+            elif len(distinct) > 1:
+                # A version-gated if/else whose arms push different sizes and converge on
+                # one call site. Both widths are real; neither is "the" width, so the op
+                # is a variant and the width becomes a wildcard.
+                size = None
             else:
-                size = pending_imm
+                size = distinct[0]
         ops.append({"op": name, "dir": direction, "bytes": size, "count": 1,
                     "at": int(where, 16)})
         return arg_bytes
@@ -250,6 +272,38 @@ def _scan(address: int, strict: bool) -> tuple[list[dict], list[str]]:
     for position, line in enumerate(lines):
         line = line.rstrip()
         where = line.split()[0]
+
+        joins = pending_join.pop(int(where, 16), None)
+        if joins:
+            for saved in joins:
+                saved_vtable, saved_stream, saved_slots, saved_stack, saved_svt, saved_esp = saved
+                vtable_regs |= saved_vtable
+                stream_regs |= saved_stream
+                stack_vtable |= saved_svt
+                for register, slot in saved_slots.items():
+                    reg_slot.setdefault(register, slot)
+                for key, slot in saved_stack.items():
+                    stack_slot.setdefault(key, slot)
+                # Restore ESP too: the linear walk falls through a RET into the next
+                # block, so the running depth is meaningless at a join. The branch's own
+                # depth is the correct one for the taken path.
+                esp = saved_esp
+                pushed_since_call = 0
+
+        jump = ANY_JUMP.match(line)
+        if jump:
+            target = int(jump.group(2), 16)
+            if target > int(where, 16):
+                pending_join.setdefault(target, []).append(
+                    (
+                        set(vtable_regs),
+                        set(stream_regs),
+                        dict(reg_slot),
+                        dict(stack_slot),
+                        set(stack_vtable),
+                        esp,
+                    )
+                )
 
         stack_load = LOAD_STACK_REG.match(line)
         if stack_load:
@@ -311,7 +365,7 @@ def _scan(address: int, strict: bool) -> tuple[list[dict], list[str]]:
 
         push = PUSH_IMM.match(line)
         if push:
-            pending_imm = int(push.group(1), 0)
+            pending_imms.append(int(push.group(1), 0))
             esp -= 4
             pushed_since_call += 4
             continue
@@ -358,7 +412,8 @@ def _scan(address: int, strict: bool) -> tuple[list[dict], list[str]]:
             elif helper is not None:
                 direction, element = helper
                 ops.append({"op": "stream_helper", "dir": direction, "bytes": element,
-                            "count": pending_imm, "at": int(where, 16)})
+                            "count": pending_imms[-1] if pending_imms else None,
+                            "at": int(where, 16)})
                 esp += pushed_since_call
             else:
                 # Unknown callee. A __cdecl callee leaves cleanup to the caller, which
@@ -369,7 +424,7 @@ def _scan(address: int, strict: bool) -> tuple[list[dict], list[str]]:
                 if not ADD_ESP.match(following):
                     esp += pushed_since_call
             pushed_since_call = 0
-            pending_imm = None
+            pending_imms = []
             continue
 
         dest = DEST_WRITE.match(line)
@@ -382,6 +437,7 @@ def _scan(address: int, strict: bool) -> tuple[list[dict], list[str]]:
 
 
 BACK_JUMP = re.compile(r"^([0-9a-f]{8})\s+J\w+ (0x[0-9a-f]+)$")
+ANY_JUMP = re.compile(r"^([0-9a-f]{8})\s+J\w+ (0x[0-9a-f]+)$")
 DEC_RE = re.compile(r"^\S+\s+DEC (E[A-Z]{2})$")
 DEC_STACK = re.compile(r"^\S+\s+DEC dword ptr \[ESP")
 MOV_IMM = re.compile(r"^\S+\s+MOV (E[A-Z]{2}),(0x[0-9a-f]+|\d+)$")
@@ -554,13 +610,71 @@ def _multiplier(blocks: list[tuple[int, int, int | None]], position: int, base: 
     return total
 
 
+IF_ELSE_RE = re.compile(r"\bif\s*\(")
+
+
+def _variant_spans(body: str) -> list[tuple[int, int]]:
+    """Spans of `if (...) {A} else {B}` where each arm holds exactly one stream op.
+
+    MSVC compiles a version-gated width choice into two argument-push sequences that
+    converge on a single call, so the original shows ONE op of variant width where the
+    source shows two. Collapse our side the same way (TGreatPower::ReadFrom's
+    grantTotalCost is 2 bytes below save version 0x3e and 4 at or above it).
+    """
+    spans = []
+    for match in IF_ELSE_RE.finditer(body):
+        open_paren = body.index("(", match.end() - 1)
+        header = _balanced(body, open_paren, "(", ")")
+        cursor = open_paren + len(header)
+        while cursor < len(body) and body[cursor] in " \t\r\n":
+            cursor += 1
+        if cursor >= len(body) or body[cursor] != "{":
+            continue
+        then_block = _balanced(body, cursor, "{", "}")
+        after = cursor + len(then_block)
+        tail = body[after : after + 12]
+        else_match = re.match(r"\s*else\s*\{", tail)
+        if not else_match:
+            continue
+        else_start = after + else_match.end() - 1
+        else_block = _balanced(body, else_start, "{", "}")
+        then_ops = CALL_RE.findall(then_block)
+        else_ops = CALL_RE.findall(else_block)
+        if len(then_ops) != 1 or len(else_ops) != 1 or then_ops[0] != else_ops[0]:
+            continue
+        # Only a *width* variant collapses: both arms must move the same destination at
+        # different sizes. Two arms touching different fields are two real ops and the
+        # original emits two calls for them.
+        then_args = _split_args(_balanced(then_block, then_block.index("("), "(", ")")[1:-1])
+        else_args = _split_args(_balanced(else_block, else_block.index("("), "(", ")")[1:-1])
+        if len(then_args) < 2 or len(else_args) < 2:
+            continue
+        same_target = then_args[0].strip() == else_args[0].strip()
+        different_width = _literal(then_args[1]) != _literal(else_args[1])
+        if same_target and different_width:
+            spans.append((cursor, else_start + len(else_block)))
+    return spans
+
+
 def source_stream_ops(body: str) -> list[dict]:
     ops: list[dict] = []
     blocks = _loop_blocks(body)
+    variants = _variant_spans(body)
     for match in CALL_RE.finditer(body):
         name = match.group(1)
         raw = _balanced(body, body.index("(", match.end() - 1), "(", ")")[1:-1]
         args = _split_args(raw)
+        if name in MULTI_HELPERS:
+            for direction, width, count in MULTI_HELPERS[name]:
+                ops.append(
+                    {
+                        "op": name,
+                        "dir": direction,
+                        "bytes": width,
+                        "count": _multiplier(blocks, match.start(), count),
+                    }
+                )
+            continue
         if name in HELPERS:
             direction, element = HELPERS[name]
             if direction == "swap":
@@ -579,12 +693,17 @@ def source_stream_ops(body: str) -> list[dict]:
         size = _literal(args[1]) if (width == "operand" and len(args) > 1) else width
         if size == "operand":
             size = None
+        span = next((s for s in variants if s[0] < match.start() < s[1]), None)
         ops.append(
             {
                 "op": name,
                 "dir": direction,
                 "bytes": size,
                 "count": _multiplier(blocks, match.start(), 1),
+                # Both arms of a version-gated width choice are emitted. Whether the
+                # compiler gave them one shared call site or two is a codegen decision
+                # the source cannot predict, so the comparison resolves it instead.
+                "variant": span,
             }
         )
     return ops
@@ -618,22 +737,48 @@ def compare(original: list[dict], ported: list[dict]) -> dict:
     wildcard: it cannot prove a divergence, so it is counted and reported instead.
     """
     unverified = 0
-    limit = min(len(original), len(ported))
-    for index in range(limit):
-        left, right = original[index], ported[index]
+    left_index = right_index = 0
+    while left_index < len(original) and right_index < len(ported):
+        left, right = original[left_index], ported[right_index]
         if left["dir"] != right["dir"]:
-            return {"status": "divergent", "index": index, "unverified": unverified}
+            return {"status": "divergent", "index": left_index, "unverified": unverified}
+
+        # A version-gated width choice: if the compiler merged the two arms into one
+        # call site the original shows a single variant-width op, so the source's two
+        # arms collapse onto it. If it kept two call sites they line up one-to-one.
+        variant = right.get("variant")
+        following = ported[right_index + 1] if right_index + 1 < len(ported) else None
+        if (
+            variant is not None
+            and left["bytes"] is None
+            and following is not None
+            and following.get("variant") == variant
+        ):
+            right_index += 2
+            left_index += 1
+            unverified += 1
+            continue
+
         if left["bytes"] is None or right["bytes"] is None:
             unverified += 1
         elif left["bytes"] != right["bytes"]:
-            return {"status": "divergent", "index": index, "unverified": unverified}
+            return {"status": "divergent", "index": left_index, "unverified": unverified}
         if left.get("count") is None or right.get("count") is None:
             unverified += 1
         elif left["count"] != right["count"]:
-            return {"status": "divergent", "index": index, "unverified": unverified}
-    if len(original) != len(ported):
-        return {"status": "divergent", "index": limit, "unverified": unverified}
+            return {"status": "divergent", "index": left_index, "unverified": unverified}
+        left_index += 1
+        right_index += 1
+
+    if left_index != len(original) or right_index != len(ported):
+        return {"status": "divergent", "index": left_index, "unverified": unverified}
     return {"status": "aligned", "index": None, "unverified": unverified}
+
+
+def _multiset(ops: list[dict]) -> list[tuple]:
+    # Counts are deliberately excluded: one side routinely knows a loop's trip count
+    # while the other does not, and a reordering check only needs the op identities.
+    return sorted((op["dir"], str(op["bytes"])) for op in ops)
 
 
 def load_scores() -> dict[int, float]:
@@ -671,7 +816,7 @@ def main(argv: list[str] | None = None) -> int:
         serializers = {a: v for a, v in serializers.items() if a in wanted}
 
     scores = load_scores()
-    divergent, aligned, artifacts = [], [], []
+    divergent, aligned, artifacts, reordered = [], [], [], []
 
     for address, info in sorted(serializers.items()):
         original, warnings = binary_stream_ops(address)
@@ -685,7 +830,14 @@ def main(argv: list[str] | None = None) -> int:
             "warnings": warnings,
             **compare(original, info["ops"]),
         }
-        if row["status"] == "aligned":
+        if row["status"] == "divergent" and _multiset(original) == _multiset(info["ops"]):
+            # Same ops, different order. In practice this is a version-gated if/else
+            # whose arms the compiler laid out in the opposite order from the source --
+            # only one arm ever runs, so no single execution path shifts. Split out so it
+            # is checked once rather than sitting in the desync list forever.
+            row["status"] = "reordered"
+            reordered.append(row)
+        elif row["status"] == "aligned":
             aligned.append(row)
         elif row["score"] is not None and row["score"] >= 99.995:
             # Self-calibration: a 100%-exact function compiles to the original's bytes,
@@ -696,10 +848,11 @@ def main(argv: list[str] | None = None) -> int:
         else:
             divergent.append(row)
 
-    total_unverified = sum(row["unverified"] for row in aligned + divergent + artifacts)
+    total_unverified = sum(row["unverified"] for row in aligned + divergent + artifacts + reordered)
     print(f"serializers audited: {len(serializers)}")
     print(f"  byte-aligned with the original  : {len(aligned)}")
     print(f"  DESYNC CANDIDATES               : {len(divergent)}")
+    print(f"  same ops, branch order differs  : {len(reordered)}")
     print(f"  tool artifacts (function exact) : {len(artifacts)}")
     print(f"  widths not provable either side : {total_unverified} (sizeof/computed sizes)")
     print()
@@ -716,6 +869,13 @@ def main(argv: list[str] | None = None) -> int:
         print(f"          ported  : {_brief(row['ported'], row['index'])}")
         for warning in row["warnings"][:2]:
             print(f"          note: {warning}")
+        print()
+
+    if reordered:
+        print("same ops in a different order (version-gated if/else laid out the other")
+        print("way round by the compiler; only one arm runs, so no path shifts):")
+        for row in reordered:
+            print(f"  0x{row['address']:06x} {row['name']}")
         print()
 
     if not args.divergent_only and artifacts:

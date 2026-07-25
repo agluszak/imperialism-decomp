@@ -2369,7 +2369,7 @@ address|matching|name
 0x4d8c50|0.9767441860465116|TGreatPower
 0x4d8cc0|0.47844827586206895|TGreatPower::IGreatPower
 0x4d9160|1.0|TGreatPower::Free
-0x4d92e0|0.4366412213740458|TGreatPower::ReadFrom
+0x4d92e0|0.44714828897338404|TGreatPower::ReadFrom
 0x4d9c70|0.8169014084507042|TGreatPower::WriteTo
 0x4da3e0|0.6308724832214765|TGreatPower::ReadCoreFieldsFromStream
 0x4da500|0.3917525773195876|TGreatPower::WriteCoreFieldsToStream
@@ -3425,7 +3425,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords
 0x527730|0.29577464788732394|TMapMaker::PlaceTerrainFeatureQuotas
-0x527d00|0.4268774703557312|TMapMaker::CreateRivers
+0x527d00|0.43478260869565216|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
