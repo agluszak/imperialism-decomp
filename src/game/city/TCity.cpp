@@ -329,13 +329,13 @@ void TCity::WriteTo(TStream* stream) {
 
   for (int productionSlot = 0; productionSlot < 0x10; ++productionSlot) {
     short value = production22c[productionSlot];
-    SwapFirstTwoBytesInBuffer(reinterpret_cast<unsigned char*>(&value));
+    SwapFirstTwoBytesInBuffer(&value);
     stream->WriteBytes(&value, 2);
   }
   for (int accumulatedProductionSlot = 0; accumulatedProductionSlot < 0x10;
        ++accumulatedProductionSlot) {
     short value = production24c[accumulatedProductionSlot];
-    SwapFirstTwoBytesInBuffer(reinterpret_cast<unsigned char*>(&value));
+    SwapFirstTwoBytesInBuffer(&value);
     stream->WriteBytes(&value, 2);
   }
   WriteByteSwappedShortArrayToStream(stream, consumedProductionInputByType2a6, 0x17);

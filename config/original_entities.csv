@@ -1889,9 +1889,9 @@ address|name|symbol|size|type|prototype|provenance
 4b9090|TExpansionOrder::CommitIfPending||267|function|undefined CommitIfPending(void)|
 4b91f0|TExpansionOrder::MaxOrder||65|function|undefined MaxOrder(void)|
 4b9260|TExpansionOrder::SetQuantity||174|function|undefined SetQuantity(short param_1)|
-4b9340|SwapFirstTwoBytesInBuffer||15|function|undefined SwapFirstTwoBytesInBuffer()|
+4b9340|SwapFirstTwoBytesInBuffer||15|function|void SwapFirstTwoBytesInBuffer(short* value)|
 4b9360|TExpansionOrder::FillOrderSheet||78|function|undefined FillOrderSheet(void)|
-4b94a0|WriteWordArrayToOutputCallbackLE||70|function|undefined WriteWordArrayToOutputCallbackLE()|
+4b94a0|WriteByteSwappedShortArrayToStream||70|function|void WriteByteSwappedShortArrayToStream(TStream* stream, short* words, int count)|
 4b9570|`dynamic initializer for 'g_scaledShortConst_6A2AB8''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A2AB8''(void)|library
 4b95c0|InitializeCityBuildingHoverSelectionRects_004b95c0||573|function|undefined InitializeCityBuildingHoverSelectionRects_004b95c0()|
 4b98b0|InitializeCityBuildingLayoutData||1951|function|undefined InitializeCityBuildingLayoutData()|
@@ -2688,8 +2688,8 @@ address|name|symbol|size|type|prototype|provenance
 4f28a0|TNextDiplomationCommand::CreateObject|?CreateObject@TNextDiplomationCommand@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4f2910|TNextDiplomationCommand::GetRuntimeClass|?GetRuntimeClass@TNextDiplomationCommand@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
 4f2930|DispatchUiPacketWithTagNEXT||39|function|undefined DispatchUiPacketWithTagNEXT()|
-4f2970|ByteSwapShortInPlace||15|function|void __cdecl ByteSwapShortInPlace(unsigned char *bytes)|disassembly
-4f2a60|ReadByteSwappedShortArrayFromStream||49|function|undefined ReadByteSwappedShortArrayFromStream()|
+4f2970|ByteSwapShortInPlace||15|function|void ByteSwapShortInPlace(short* value)|disassembly
+4f2a60|ReadByteSwappedShortArrayFromStream||49|function|void ReadByteSwappedShortArrayFromStream(TStream* stream, short* values, int shortCount)|
 4f2b10|`dynamic initializer for 'g_scaledShortConst_6A3018''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A3018''(void)|library
 4f2bb0|TMinisterView::CreateObject|?CreateObject@TMinisterView@@SGPAVCObject@@XZ|107|function|undefined CreateObject()|rtti
 4f2c40|TMinisterView::GetRuntimeClass||6|function|undefined GetTMinisterViewClassNamePointer()|rtti
