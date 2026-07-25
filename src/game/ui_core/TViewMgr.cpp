@@ -1030,18 +1030,6 @@ void RefreshToolBarClusterByTag(unsigned int controlTag) {
   toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
 }
 
-void RefreshOrderStatusPicture(unsigned int controlTag, unsigned int flagMask,
-                               short pictureWhenFlagSet, short pictureWhenFlagClear) {
-  TControl* control = ResolveMainTaggedControl(controlTag);
-  if (control == nullptr) {
-    return;
-  }
-  control->AssertValid();
-  const short pictureId =
-      g_pSimMgr->TestTurnFlowStatusFlagMask(flagMask) ? pictureWhenFlagSet : pictureWhenFlagClear;
-  static_cast<TPicture*>(control)->SetPictureResourceIdAndRefresh(pictureId, true);
-}
-
 void RefreshTradClusterPictureAndHintText() {
   TControl* tradControl = ResolveMainTaggedControl(kControlTagTrad);
   if (tradControl == nullptr) {
@@ -1085,17 +1073,6 @@ void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidth, int 
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, styleWidth, styleSecondary);
   control->InstallTextStyle(styleDescriptor, 0);
   (void)stylePrimary;
-}
-
-void RefreshQuerControlLayoutAndClearText() {
-  TControl* querControl = ResolveMainTaggedControl(kControlTagQuer);
-  if (querControl == nullptr) {
-    return;
-  }
-  querControl->AssertValid();
-  CPoint layoutPosition(0, 0);
-  querControl->Locate(layoutPosition, 0);
-  querControl->SetHoverHelpText(g_szEmptyString);
 }
 
 } // namespace turn_event_ui_refresh

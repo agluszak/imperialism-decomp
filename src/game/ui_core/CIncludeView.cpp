@@ -86,7 +86,7 @@ IMPLEMENT_DYNCREATE(CIncludeView, CView)
 // are left default/uninitialized, matching the original (no stores to 0x68 or 0x78-0x8f).
 // FUNCTION: IMPERIALISM 0x00482950
 CIncludeView::CIncludeView()
-    : CView(), m_activeDialogContext(0), m_field44(0), m_pOffscreenDib(0), m_tickTimerId(0),
+    : CView(), m_activeDialogContext(0), m_pMainPaneDib(0), m_pOffscreenDib(0), m_tickTimerId(0),
       m_field70(0), m_capturedControl74(0), m_uiInteractiveFlag90(1) {}
 
 // SYNTHETIC: IMPERIALISM 0x004829c0
@@ -107,7 +107,7 @@ CIncludeView::~CIncludeView() {
   if (m_tickTimerId != 0) {
     m_tickTimerId = 0;
   }
-  m_field44 = 0;
+  m_pMainPaneDib = 0;
   if (m_activeDialogContext != 0) {
     int previousUiActive = ClearGlobalUiInvalidationFlagAndReturnPrevious();
     m_activeDialogContext->nativeWindow50 = 0;
@@ -161,7 +161,7 @@ LRESULT CIncludeView::OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam) {
       TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath_00694D10, 0x77);
     }
     m_activeDialogContext = 0;
-    m_field44 = 0;
+    m_pMainPaneDib = 0;
     break;
   case 1:
     m_activeDialogContext->PropagateUiResourceContextRecursive(this);
@@ -211,12 +211,16 @@ void CIncludeView::BlitMapDialogSurfaceToHdcWithClipBounds(CDC* dc, RECT* clipRe
   surfaceBounds.top = 0;
   surfaceBounds.right = m_pOffscreenDib->m_pInfoHeader->bmiHeader.biWidth - 1;
   surfaceBounds.bottom = surfaceHeight;
+  // Two distinct destination rects, not one reused: the original's frame is SUB ESP,0x54
+  // against the 0x40 four RECTs alone would need, and the extra 0x14 is this second RECT
+  // plus the `this` spill at [ESP+0x10].
+  RECT clippedToBox;
+  IntersectRect(&clippedToBox, &localClip, &clipBox);
   RECT blitRect;
-  IntersectRect(&blitRect, &localClip, &clipBox);
-  IntersectRect(&blitRect, &blitRect, &surfaceBounds);
-  m_field44->SelectAndRealizeDibPalette(targetDc, 0);
+  IntersectRect(&blitRect, &clippedToBox, &surfaceBounds);
+  m_pMainPaneDib->SelectAndRealizeDibPalette(targetDc, 0);
   HDC memDc = CreateCompatibleDC(targetDc->m_hDC);
-  HGDIOBJ oldBitmap = SelectObject(memDc, m_field44->m_hBitmap);
+  HGDIOBJ oldBitmap = SelectObject(memDc, m_pMainPaneDib->m_hBitmap);
   BitBlt(targetDc->m_hDC, blitRect.left, blitRect.top, blitRect.right - blitRect.left,
          blitRect.bottom - blitRect.top, memDc, blitRect.left, blitRect.top, SRCCOPY);
   SelectObject(memDc, oldBitmap);
@@ -233,7 +237,7 @@ void CIncludeView::BlitMapDialogSurfaceToHdcWithClipBounds(CDC* dc, RECT* clipRe
 // FUNCTION: IMPERIALISM 0x00482ed0
 void CIncludeView::BlitMainPaneBitmapToOffscreenClipped(RECT* clipRect) {
   CPoint bitmapSize;
-  m_field44->CopyBitmapDimensionsToPoint(&bitmapSize);
+  m_pMainPaneDib->CopyBitmapDimensionsToPoint(&bitmapSize);
 
   RECT blitRect;
   blitRect.left = 0;
@@ -244,7 +248,7 @@ void CIncludeView::BlitMainPaneBitmapToOffscreenClipped(RECT* clipRect) {
     ::IntersectRect(&blitRect, clipRect, &blitRect);
   }
 
-  m_field44->BlitSurfaceRectSkippingTransparentColor(
+  m_pMainPaneDib->BlitSurfaceRectSkippingTransparentColor(
       m_pOffscreenDib, blitRect.left, blitRect.left, blitRect.right - blitRect.left,
       blitRect.bottom - blitRect.top, blitRect.left, blitRect.top, -1);
 }
@@ -258,7 +262,7 @@ void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRec
     if (rec.processedFlag10 == 0) {
       rec.processedFlag10 = 1;
       CPoint dimensions;
-      m_field44->CopyBitmapDimensionsToPoint(&dimensions);
+      m_pMainPaneDib->CopyBitmapDimensionsToPoint(&dimensions);
       IncludeViewOverlayRectRecord surfaceRect;
       surfaceRect.rect.left = 0;
       surfaceRect.rect.top = 0;
@@ -269,8 +273,8 @@ void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRec
       POINT corner;
       corner.x = surfaceRect.rect.left;
       corner.y = surfaceRect.rect.top;
-      m_field44->ForwardBlitSurfaceRectSkippingTransparentColor(m_pOffscreenDib, &corner, &span,
-                                                                &corner, -1);
+      m_pMainPaneDib->ForwardBlitSurfaceRectSkippingTransparentColor(m_pOffscreenDib, &corner,
+                                                                     &span, &corner, -1);
     }
   }
   // Pass 2: repaint the hosted dialog tree over each remaining unprocessed rect.
@@ -332,7 +336,7 @@ void CIncludeView::RefreshActiveDialogHost(int unusedArg) {
 // FUNCTION: IMPERIALISM 0x004833b0
 TView* CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedArg) {
   (void)unusedArg;
-  m_field44 = 0;
+  m_pMainPaneDib = 0;
   if (m_activeDialogContext != 0) {
     int previousFlag = ClearGlobalUiInvalidationFlagAndReturnPrevious();
     m_activeDialogContext->nativeWindow50 = 0;
@@ -348,10 +352,10 @@ TView* CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedAr
 
   TPicture* mainPane =
       static_cast<TPicture*>(m_activeDialogContext->ResolveControlByTag(kControlTagMain));
-  m_field44 = mainPane->cachedBitmap;
+  m_pMainPaneDib = mainPane->cachedBitmap;
 
   CPoint bitmapSize;
-  m_field44->CopyBitmapDimensionsToPoint(&bitmapSize);
+  m_pMainPaneDib->CopyBitmapDimensionsToPoint(&bitmapSize);
   POINT sourceOrigin;
   POINT blitSize;
   POINT destOrigin;
@@ -361,8 +365,8 @@ TView* CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedAr
   sourceOrigin.y = 0;
   destOrigin.x = 0;
   destOrigin.y = 0;
-  m_field44->ForwardBlitSurfaceRectSkippingTransparentColor(m_pOffscreenDib, &sourceOrigin,
-                                                            &blitSize, &destOrigin, -1);
+  m_pMainPaneDib->ForwardBlitSurfaceRectSkippingTransparentColor(m_pOffscreenDib, &sourceOrigin,
+                                                                 &blitSize, &destOrigin, -1);
 
   ::InvalidateRect(m_hWnd, 0, TRUE);
   ::RedrawWindow(m_hWnd, 0, 0, RDW_INVALIDATE);
@@ -375,7 +379,7 @@ TView* CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedAr
 
 // FUNCTION: IMPERIALISM 0x00483530
 void CIncludeView::TearDownActiveDialogContext() {
-  m_field44 = 0;
+  m_pMainPaneDib = 0;
   if (m_activeDialogContext != 0) {
     int previousFlag = ClearGlobalUiInvalidationFlagAndReturnPrevious();
     m_activeDialogContext->nativeWindow50 = 0;
@@ -403,9 +407,10 @@ void CIncludeView::BlitMainPaneBitmapRectToWindow(RECT* rect) {
   HDC hdc = ::GetDC(m_hWnd);
   // LIBRARY: CDC::FromHandle (0x00612736)
   CDC* dc = CDC::FromHandle(hdc);
-  m_field44->SelectAndRealizeDibPalette(dc, FALSE);
-  m_field44->StretchDibitsRectAtNaturalSize(rect->left, rect->top, dc, rect->left, rect->top,
-                                            rect->right - rect->left, rect->bottom - rect->top);
+  m_pMainPaneDib->SelectAndRealizeDibPalette(dc, FALSE);
+  m_pMainPaneDib->StretchDibitsRectAtNaturalSize(rect->left, rect->top, dc, rect->left, rect->top,
+                                                 rect->right - rect->left,
+                                                 rect->bottom - rect->top);
   ::ReleaseDC(m_hWnd, dc->m_hDC);
 }
 

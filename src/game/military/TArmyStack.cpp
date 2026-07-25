@@ -139,27 +139,26 @@ void TArmyStack::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004a7a40
 void TArmyStack::AddFirstCountryUnitOfTypeToStack(short unitTag) {
+  // The link happens inside the search loop, not after it behind a found-flag: the
+  // original never materializes a `foundUnit` local (which costs a callee-saved register
+  // and a zero-init), it just uses the iterator's current unit and leaves.
   TSortedList* unitList = g_apTerrainTypeDescriptorTable[categoryFlag8]->militaryUnitList44;
-  TUnit* foundUnit = 0;
   CIterator cursor(unitList);
   for (TUnit* unit = static_cast<TUnit*>(cursor.Reset()); cursor.More();
        unit = static_cast<TUnit*>(cursor.Advance())) {
-    if (unit->field_1A == unitTag) {
-      foundUnit = unit;
-      break;
+    if (unit->field_1A != unitTag) {
+      continue;
     }
-  }
-
-  if (foundUnit != 0) {
     TArmyStackUnitNode* node = new TArmyStackUnitNode();
     if (node == 0) {
       MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0xbeb);
     }
-    node->unit = foundUnit;
+    node->unit = unit;
     node->next = head14;
     ++fieldA;
     head14 = node;
+    break;
   }
 }
 
