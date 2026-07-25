@@ -458,10 +458,10 @@ address|matching|name
 0x47fb20|1.0|TDirectPlaySessionManagerBase::OnDirectPlayAssertion111
 0x47fb50|1.0|TDirectPlaySessionManagerBase::OnEnumerateJoinableSession
 0x47fb80|0.1111111111111111|WrapperFor_Ordinal_4_At0047fb80
-0x47fcb0|0.4745762711864407|TWNetSessionManager::CreatePlayerAndStoreResult
+0x47fcb0|1.0|TWNetSessionManager::CreatePlayerAndStoreResult
 0x47fd30|1.0|TWNetSessionManager::DestroyPlayerAndStoreResult
 0x47fd70|1.0|TDirectPlaySessionManagerBase::GetRuntimeSelectionAuxStatus
-0x47fd90|0.9523809523809523|TWNetSessionManager::RebuildRuntimeSelectionSource
+0x47fd90|0.9761904761904762|TWNetSessionManager::RebuildRuntimeSelectionSource
 0x47fe50|0.34146341463414637|TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed
 0x480030|1.0|TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext
 0x480150|0.526984126984127|TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice
@@ -472,9 +472,9 @@ address|matching|name
 0x480750|1.0|TModalDialogBase::TModalDialogBase
 0x480790|0.4782608695652174|T104TemplateDialog
 0x480820|1.0|TDirectPlaySessionManagerBase::ShowJoinGameSelectionDialogAndCaptureChoice
-0x480850|0.8679245283018868|TWNetSessionManager::TrySendNetworkPacket
-0x4808a0|0.7189542483660131|TWNetSessionManager::TryReceiveNetworkPacketIntoResizableBuffer
-0x480990|0.9|TWNetSessionManager::SetLocalPlayerDataAndStoreResult
+0x480850|1.0|TWNetSessionManager::TrySendNetworkPacket
+0x4808a0|1.0|TWNetSessionManager::TryReceiveNetworkPacketIntoResizableBuffer
+0x480990|1.0|TWNetSessionManager::SetLocalPlayerDataAndStoreResult
 0x4809d0|1.0|TDirectPlaySessionManagerBase::GetPlayerData
 0x480a10|0.8135593220338984|T104TemplateDialog::T104TemplateDialog
 0x480aa0|1.0|T104TemplateDialog::`scalar deleting destructor'
@@ -3973,7 +3973,7 @@ address|matching|name
 0x5449b0|0.44036697247706424|BuildTurnEvent2ArraySyncPacketDeltaOrFull
 0x544cd0|0.3422459893048128|TurnEvent2SyncPacket::ApplyEncodedDeltaPayloadToBufferByMode
 0x544e30|0.25|TMultiplayerMgr::DoIdle
-0x544e70|0.8958333333333334|TMultiplayerMgr::InitializeProtocolOptionControlFromProvider
+0x544e70|1.0|TMultiplayerMgr::InitializeProtocolOptionControlFromProvider
 0x544f30|1.0|TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DC
 0x544fc0|1.0|TMultiplayerMgr::ValidateGameFlowNameAndSelectionContext
 0x544ff0|1.0|TMultiplayerMgr::ValidateAndPrepareGameFlowNameForDispatch
@@ -6312,9 +6312,9 @@ address|matching|name
 0x5e34f0|0.2753623188405797|TNetMgr::HandleError
 0x5e39a0|0.9777777777777777|TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource
 0x5e3a60|0.9230769230769231|TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath
-0x5e3ad0|0.5915492957746479|TNetMgr::OpenRuntimeSelectionSourceAndApplyActiveNationState
+0x5e3ad0|0.7445255474452555|TNetMgr::OpenRuntimeSelectionSourceAndApplyActiveNationState
 0x5e3c00|1.0|TNetMgr::ReturnTrueRuntimeCredentialFinalizeStub
-0x5e3c20|0.7183098591549296|TNetMgr::OpenJoinGameRuntimeSelectionAndStartSession
+0x5e3c20|1.0|TNetMgr::OpenJoinGameRuntimeSelectionAndStartSession
 0x5e3d40|0.6576576576576577|TNetMgr::Send
 0x5e3ef0|1.0|TNetMgr::ResetTurnEventQueueRuntimeRecordBuffer
 0x5e3f10|1.0|TNetMgr::FreeTurnEventPacketBuffer
