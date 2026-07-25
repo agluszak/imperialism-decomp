@@ -13,6 +13,8 @@ const int kControlTagZmIn = IMPERIALISM_FOURCC('Z', 'm', 'I', 'n'); // map zoom-
 const int kControlTagZmOt = IMPERIALISM_FOURCC('Z', 'm', 'O', 't'); // map zoom-out hotspot
 const int kControlTagAdam =
     IMPERIALISM_FOURCC('a', 'd', 'a', 'm'); // TMapUberPicture.cpp; 3 Mac screen(s)
+const int kControlTagAgr1 =
+    IMPERIALISM_FOURCC('a', 'g', 'r', '1'); // middle of 3 aggression-level buttons
 const int kControlTagAgr2 =
     IMPERIALISM_FOURCC('a', 'g', 'r', '2'); // last of 3 aggression-level buttons
 const int kControlTagAgro =
