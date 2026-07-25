@@ -25,13 +25,13 @@ public:
   // Census the map's pending-policy records into relationship-category counts (major/minor
   // × in-vote/out-of-vote) for the selected nation pair, then push those counts as styled
   // text onto the 'num0'-'num3' / 'sco0'-'sco3' overlay labels. 0x4fbdf0, __thiscall.
-  void BuildDiplomacyMapHintOverlayTextAndMetrics();
+  void DisplayStats();
 
   // Rebuilds the council candidate name/coat-of-arms controls and (re)starts the vote
   // ticker. Non-virtual; called from DoEvent's "star" branch with ecx = this. Its
   // receiver is confirmed to be a TCouncilView (writes councilNationCount24c8 / visibleVoteTier528).
   // 0x4fc2e0, __thiscall.
-  void InitializeDiplomacyCouncilViewControlsAndTicker();
+  void StartVoting();
 
   // 0x4fc630. Per-tick step driven by TCouncilTickerAnimation: advances the visible vote
   // tier, invalidates every tile marker whose pending-policy tier just became visible,
@@ -39,7 +39,7 @@ public:
   // resolves the 'end ' control and either re-enables it (prompting the player) or
   // silently advances the council turn state, depending on eligibility/localization
   // checks against the active nation.
-  void AdvanceCivilianTerrainSelectionStep();
+  void NextTick();
 
   short councilNationCount24c8; // +0x24c8 — compared (+2) against visibleVoteTier528 on hover
   short tickerSlots24ca[10];    // +0x24ca — zeroed by the slot-0x37 rebuild

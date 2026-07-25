@@ -2808,9 +2808,9 @@ address|name|symbol|size|type|prototype|provenance
 4fba50|TCouncilView::GetRuntimeClass|?GetRuntimeClass@TCouncilView@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
 4fba70|TCouncilView::DoPostCreate||578|function|undefined RefreshDiplomacyNationOverlayGeometryAndLabels()|
 4fbd60|TCouncilView::DoEvent||101|function|undefined DestructTCouncilViewAndMaybeFree()|
-4fbdf0|BuildDiplomacyMapHintOverlayTextAndMetrics||1005|function|undefined BuildDiplomacyMapHintOverlayTextAndMetrics()|
-4fc2e0|TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker||658|function|undefined InitializeDiplomacyCouncilViewControlsAndTicker()|
-4fc630|AdvanceCivilianTerrainSelectionStep||637|function|undefined AdvanceCivilianTerrainSelectionStep()|
+4fbdf0|TCouncilView::DisplayStats||1005|function|void TCouncilView::DisplayStats()|
+4fc2e0|TCouncilView::StartVoting||658|function|void TCouncilView::StartVoting()|
+4fc630|TCouncilView::NextTick||637|function|void TCouncilView::NextTick()|
 4fc950|TCouncilView::HandleCursorHoverSelectionByChildHitTestAndFallback||61|function|undefined WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950()|
 4fc9c0|TMapKey::CreateObject|?CreateObject@TMapKey@@SGPAVCObject@@XZ|112|function|undefined CreateObject()|rtti
 4fca70|TMapKey::GetRuntimeClass||6|function|undefined GetTMapKeyClassNamePointer()|rtti
