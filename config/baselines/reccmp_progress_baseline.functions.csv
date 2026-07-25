@@ -16,11 +16,11 @@ address|matching|name
 0x412d40|0.25|InitializeImperialismAppSingletonGlobal
 0x412d70|0.0|DestroyImperialismAppSingletonGlobal
 0x412d90|1.0|ShowOutOfMemoryErrorNewHandler
-0x412dc0|0.5045317220543807|ImperialismApp::InitInstance
+0x412dc0|0.4815361890694239|ImperialismApp::InitInstance
 0x413250|0.35064935064935066|TDiplomacyMgr::SelectBestMajorNationForMinorByStandingAndNeed
 0x413380|1.0|CObject::operator delete
 0x4133a0|0.2|OrphanCallChain_C1_I08_004133a0
-0x4133d0|0.6363636363636364|ImperialismCommandLineInfo::ParseParam
+0x4133d0|0.19383259911894274|ImperialismCommandLineInfo::ParseParam
 0x413550|1.0|ImperialismCommandLineInfo::`scalar deleting destructor'
 0x413580|0.972972972972973|ImperialismCommandLineInfo
 0x4135f0|1.0|TAmbitApplication::`scalar deleting destructor'
@@ -56,7 +56,7 @@ address|matching|name
 0x414770|1.0|TAmbitApplication::DoSetupMenus
 0x414850|1.0|GetDataDirectoryPathLiteral
 0x414870|0.30857142857142855|ImperialismApp::DetectImperialismInstallDriveAndSetPathPrefix
-0x4149a0|0.5912305516265912|ImperialismApp::LoadLanguageResourcesFromIrgFiles
+0x4149a0|0.3955431754874652|ImperialismApp::LoadLanguageResourcesFromIrgFiles
 0x415000|0.15384615384615385|WrapperFor_GetOrCreateCrtThreadDataFromTls_At00415000
 0x415030|1.0|CWnd::DoDataExchange
 0x415050|1.0|CWnd::BeginModalState
@@ -1610,7 +1610,7 @@ address|matching|name
 0x4a8840|1.0|TGarrisonView::`scalar deleting destructor'
 0x4a8870|1.0|TGarrisonView::~TGarrisonView
 0x4a8890|0.7931034482758621|TGarrisonView::StuffValues
-0x4a8a20|0.7687074829931972|TGarrisonView::Close
+0x4a8a20|0.56|TGarrisonView::Close
 0x4a8ca0|0.4897959183673469|TArmyUnitLine::CreateObject
 0x4a8d10|1.0|TArmyUnitLine::GetRuntimeClass
 0x4a8d30|1.0|TArmyUnitLine::TArmyUnitLine
@@ -4114,7 +4114,7 @@ address|matching|name
 0x551220|1.0|TShip::SetTaskForce
 0x5512d0|0.3018867924528302|TAdmiral::CreateObject
 0x551410|1.0|TAdmiral::GetRuntimeClass
-0x551430|1.0|TAdmiral::TAdmiral
+0x551430|0.42953020134228187|TAdmiral::TAdmiral
 0x551550|1.0|TAdmiral::`scalar deleting destructor'
 0x551580|0.9696969696969697|TAdmiral::~TAdmiral
 0x5515d0|0.6046511627906976|TAdmiral::Free
@@ -4231,9 +4231,9 @@ address|matching|name
 0x55b8c0|1.0|TNewsMgr::WriteTo
 0x55b8e0|0.7975460122699386|TNewsMgr::StartNewsPhase
 0x55ba10|1.0|TLanguageMgr::GetNewsTexPath
-0x55ba30|0.45263157894736844|TNewsMgr::LoadNewsTable
+0x55ba30|0.3383458646616541|TNewsMgr::LoadNewsTable
 0x55bbf0|1.0|TLanguageMgr::GetNewsTabPath
-0x55bc10|0.5684647302904564|TNewsMgr::CreateNewspaper
+0x55bc10|0.6900826446280992|TNewsMgr::CreateNewspaper
 0x55c010|0.2482638888888889|TNewsMgr::CreateEventStories
 0x55c970|0.5185185185185185|TNewsMgr::AddEvent
 0x55c9f0|0.8313725490196079|TNewsMgr::AddTreatyEvent
