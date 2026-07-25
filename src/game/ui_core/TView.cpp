@@ -398,14 +398,14 @@ bool TView::IsActionable() {
          ownerContext != 0 && ownerContext->IsActionable() != 0;
 }
 // FUNCTION: IMPERIALISM 0x0048b250
-void TView::CaptureLayoutF0(int* buffer, int modeFlag) {
-  if (modeFlag != 0 && IsActionable() != 0) {
+void TView::Locate(const CPoint& position, unsigned char refresh) {
+  if (refresh != 0 && IsActionable() != 0) {
     InvalidateCityDialogRectRegion(0, 1);
   }
-  ownerLocalX = buffer[0];
-  ownerLocalY = buffer[1];
+  ownerLocalX = position.x;
+  ownerLocalY = position.y;
   UpdateCoordinates();
-  if (modeFlag != 0 && IsActionable() != 0) {
+  if (refresh != 0 && IsActionable() != 0) {
     InvalidateCityDialogRectRegion(0, 0);
   }
 }
@@ -434,22 +434,21 @@ void TView::UpdateCoordinates() {
   }
 }
 // FUNCTION: IMPERIALISM 0x0048b3f0
-void TView::CaptureLayout(int* buffer, int modeFlag) {
-  if (modeFlag != 0) {
+void TView::Resize(const CPoint& size, unsigned char refresh) {
+  if (refresh != 0) {
     CRect oldRect;
     GetDrawableQDRect(&oldRect);
-    frameWidth34 = buffer[0];
-    frameHeight38 = buffer[1];
+    frameWidth34 = size.x;
+    frameHeight38 = size.y;
     CRect newRect;
     GetDrawableQDRect(&newRect);
-    RECT unionRect;
-    UnionRect(&unionRect, &newRect, &oldRect);
+    UnionRect(&newRect, &newRect, &oldRect);
     if (g_McAppUiActiveFlag_006950AC != 0) {
-      InvalidateRect(nativeWindow50->m_hWnd, &unionRect, 0);
+      InvalidateRect(nativeWindow50->m_hWnd, &newRect, 0);
     }
   } else {
-    frameWidth34 = buffer[0];
-    frameHeight38 = buffer[1];
+    frameWidth34 = size.x;
+    frameHeight38 = size.y;
   }
 }
 

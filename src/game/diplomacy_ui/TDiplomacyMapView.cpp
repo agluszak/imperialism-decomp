@@ -383,7 +383,7 @@ void TDiplomacyMapView::InitializeDiplomacyMinisterActionControlsAndLabels() {
   } else {
     TView* offrControl = ResolveControlByTag(g_aDiplomacyActionTopicTabTags[5]);
     SetControlHoverHelpText(CString(g_szEmptyString), offrControl);
-    offrControl->CaptureLayoutF0(g_diplomacyPopupLayoutPosition_006a3020, 0);
+    offrControl->Locate(g_diplomacyPopupLayoutPosition_006a3020, 0);
   }
 }
 
@@ -1381,7 +1381,7 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
 }
 
 // Selects a minister action topic: repositions the old/new topic buttons via
-// CaptureLayoutF0, toggles the 'ltab'/'rtab' bracket TPicture controls around the new
+// Locate, toggles the 'ltab'/'rtab' bracket TPicture controls around the new
 // selection (and their picture-resource id, 5001/5002 at the ends, 5003-5007 or the
 // mode-6 override 8410 in between), refreshes the picture-dependent interaction mode via
 // a fixed topic->mode table, and invalidates the map region.
@@ -1401,10 +1401,10 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
     return;
   }
 
-  int layoutPosition[2] = {0x39, 0x320};
-  actionButtonsA0[stateFlagAtB8]->CaptureLayoutF0(layoutPosition, 1);
-  layoutPosition[1] = 0x162;
-  actionButtonsA0[newTopic]->CaptureLayoutF0(layoutPosition, 1);
+  CPoint layoutPosition(0x39, 0x320);
+  actionButtonsA0[stateFlagAtB8]->Locate(layoutPosition, 1);
+  layoutPosition.y = 0x162;
+  actionButtonsA0[newTopic]->Locate(layoutPosition, 1);
 
   TPicture* ltabControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagLtab));
   ltabControl->AssertValid();

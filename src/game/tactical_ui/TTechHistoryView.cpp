@@ -60,6 +60,6 @@ void TTechHistoryView::PopulateTechHistory(short techId) {
   scrollView->contentView60 = descText;
   scrollView->SyncBoundedValueAndToggleControlStates();
 
-  int titleLayout[2] = {0x8c, 0xf0 - titleControl->frameHeight38 / 2};
-  titleControl->CaptureLayoutF0(titleLayout, 1);
+  CPoint titleLayout(0x8c, 0xf0 - titleControl->frameHeight38 / 2);
+  titleControl->Locate(titleLayout, 1);
 }

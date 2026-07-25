@@ -25,10 +25,11 @@ public:
                                                    int contextSlot); // slot 0x0a 0x491c80
   virtual TView* InvokeDialogFactoryFromPacket(int nContextId, TView* pEventPacket,
                                                TurnEventId nEventCode,
-                                               int* pAnchorPoint); // slot 0x0b 0x491d80
-  virtual TView* RunRegisteredDialogFactoriesByEventCode(int nContextId, TView* pEventPacket,
-                                                         TurnEventId nEventCode,
-                                                         int* pAnchorPoint); // slot 0x0c 0x491cc0
+                                               const CPoint& anchorPoint); // slot 0x0b 0x491d80
+  virtual TView*
+  RunRegisteredDialogFactoriesByEventCode(int nContextId, TView* pEventPacket,
+                                          TurnEventId nEventCode,
+                                          const CPoint& anchorPoint); // slot 0x0c 0x491cc0
 
   TTurnEventDialogFactoryRegistry();
   void RegisterDialogFactoryCallback(TurnEventDialogFactoryProc factory);

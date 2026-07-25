@@ -101,7 +101,7 @@ public:
   // hierarchies, not further TMapUberPicture instances. TView is their true common
   // ancestor (TCivToolbar/TArmyToolbar: TView<-...<-TCluster<-TControl chain;
   // TMapUberPicture: TView<-TEventHandler<-TPicture<-... chain), which is why
-  // SetMapInteractionMode's own categoryPages[]->CaptureLayoutF0 calls (a slot inherited
+  // SetMapInteractionMode's own categoryPages[]->Locate calls (a slot inherited
   // unchanged at the same byte offset in every one of these subclasses) work regardless of
   // the concrete type. Callers that need a concrete page (TCivMgr.cpp) downcast with
   // static_cast<TCivToolbar*> at the specific call site instead of typing the whole array
@@ -116,7 +116,7 @@ public:
 
   // Sets the active map-interaction mode (0=civilian, 1=army, 2=navy, 3=none), clearing
   // the previous mode's selection state (TCivMgr/TArmyMgr singleton), refreshing the
-  // mode-caption text, and dispatching CaptureLayoutF0 on the old/new categoryPages[]
+  // mode-caption text, and dispatching Locate on the old/new categoryPages[]
   // entries. 0x00596cb0, __thiscall, 1 arg. Curated in symbols.csv as
   // `TToolBarCluster::SetMapInteractionMode`, but this callsite's own disassembly reads
   // activeUnitCategoryIndex96/categoryPages[] at their real TMapUberPicture offsets --

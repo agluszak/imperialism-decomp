@@ -102,12 +102,12 @@ TCountry|148|pad_86|short|other|134|2|no|6c73fa626dd677d3|include/game/city_ui/T
 TCountry|148|homeTileIndex|int|other|136|4|no|6c73fa626dd677d3|include/game/city_ui/TCountry.h
 TCountry|148|overlayAnchorTileCache8c|int|other|140|4|no|6c73fa626dd677d3|include/game/city_ui/TCountry.h
 TCountry|148|ownedRegionList|TLongintList *|other|144|4|no|6c73fa626dd677d3|include/game/city_ui/TCountry.h
-TIncludeView|116|turnEventCode60|short|other|96|2|no|12c5834a26e95cbb|include/game/ui_core/TIncludeView.h
-TIncludeView|116|padding62|short|other|98|2|no|12c5834a26e95cbb|include/game/ui_core/TIncludeView.h
-TIncludeView|116|anchorPoint64|int[2]|other|100|8|no|12c5834a26e95cbb|include/game/ui_core/TIncludeView.h
-TIncludeView|116|labelText6c|CString|embedded|108|4|yes|12c5834a26e95cbb|include/game/ui_core/TIncludeView.h
-TIncludeView|116|completionFlag70|short|other|112|2|no|12c5834a26e95cbb|include/game/ui_core/TIncludeView.h
-TIncludeView|116|padding72|short|other|114|2|no|12c5834a26e95cbb|include/game/ui_core/TIncludeView.h
+TIncludeView|116|turnEventCode60|short|other|96|2|no|33ef7183f1d89763|include/game/ui_core/TIncludeView.h
+TIncludeView|116|padding62|short|other|98|2|no|33ef7183f1d89763|include/game/ui_core/TIncludeView.h
+TIncludeView|116|anchorPoint64|CPoint|other|100|8|no|33ef7183f1d89763|include/game/ui_core/TIncludeView.h
+TIncludeView|116|labelText6c|CString|embedded|108|4|yes|33ef7183f1d89763|include/game/ui_core/TIncludeView.h
+TIncludeView|116|completionFlag70|short|other|112|2|no|33ef7183f1d89763|include/game/ui_core/TIncludeView.h
+TIncludeView|116|padding72|short|other|114|2|no|33ef7183f1d89763|include/game/ui_core/TIncludeView.h
 TInfoBarBehavior|36|text|CString|embedded|16|4|yes|65ee622ba1a00d6e|include/game/military_ui/TInfoBarBehavior.h
 TInfoBarBehavior|36|layoutRect|CRect|other|20|16|no|65ee622ba1a00d6e|include/game/military_ui/TInfoBarBehavior.h
 TLanguageMgr|52|firstColumn|unsigned char|other|4|1|no|e8b88321d0cefa03|include/game/ui_core/TLanguageMgr.h

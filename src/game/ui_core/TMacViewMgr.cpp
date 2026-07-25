@@ -1300,10 +1300,8 @@ TBuildingView* TMacViewMgr::RestoreBuildingWindowAtSavedPosition(
   buildingView->ApplyCityViewSelectionPayloadAndRefreshControls(city, isEmbeddedPage != 0,
                                                                 productionView, buildingSlot);
   dialog->controlValue3c = 0x65;
-  int placement[2];
-  placement[0] = savedX;
-  placement[1] = savedY;
-  dialog->CaptureLayoutF0(placement, 0);
+  CPoint placement(savedX, savedY);
+  dialog->Locate(placement, 0);
   if (closeAfterOpen != 0) {
     dialog->SetModality(1);
     dialog->PoseModally();

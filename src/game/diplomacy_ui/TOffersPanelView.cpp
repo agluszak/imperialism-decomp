@@ -243,8 +243,8 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
 
   TView* sheet = ResolveControlByTag(kControlTagShee);
   TView* wait = ResolveControlByTag(kControlTagWait);
-  wait->CaptureLayoutF0(g_diplomacyPopupLayoutPosition_006a3020, 0);
-  sheet->CaptureLayoutF0(g_diplomacyWarOfferSheetPosition_006a2fe0, 1);
+  wait->Locate(g_diplomacyPopupLayoutPosition_006a3020, 0);
+  sheet->Locate(g_diplomacyWarOfferSheetPosition_006a2fe0, 1);
   proposalText->UpdateTextEntrySharedStringAndMaybeNotify(&formattedMessage, 1);
   proposalText->CenterVertically(1);
   RefreshControl();

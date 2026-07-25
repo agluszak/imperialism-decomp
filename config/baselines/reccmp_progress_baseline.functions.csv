@@ -940,9 +940,9 @@ address|matching|name
 0x48b1a0|1.0|TView::GetRootView
 0x48b1c0|1.0|TView::SetEnabled
 0x48b200|1.0|TView::IsActionable
-0x48b250|0.918918918918919|TView::CaptureLayoutF0
+0x48b250|1.0|TView::Locate
 0x48b2d0|0.19130434782608696|TView::UpdateCoordinates
-0x48b3f0|0.75|TView::CaptureLayout
+0x48b3f0|1.0|TView::Resize
 0x48b4b0|0.2814814814814815|TView::InvalidateOffsetRegionUsingChildClipRect
 0x48b5f0|0.4819277108433735|TView::InvalidateCityDialogRectRegion
 0x48b690|1.0|TView::ValidateControlRectIfWindowActive
@@ -1001,7 +1001,7 @@ address|matching|name
 0x48ce40|1.0|TIncludeView::`scalar deleting destructor'
 0x48ce70|0.38461538461538464|TIncludeView::~TIncludeView
 0x48cf10|1.0|TIncludeView::BuildTurnEventFactoryPacket
-0x48cfd0|0.7238095238095238|TIncludeView::DoPostCreate
+0x48cfd0|0.6486486486486487|TIncludeView::DoPostCreate
 0x48d090|0.27586206896551724|TWindow::CreateObject
 0x48d220|1.0|TWindow::GetRuntimeClass
 0x48d240|0.2222222222222222|InitializeViewModalStateNodeBlockChainHeadAndRegisterAtExit
@@ -3425,7 +3425,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords
 0x527730|0.29577464788732394|TMapMaker::PlaceTerrainFeatureQuotas
-0x527d00|0.43478260869565216|TMapMaker::CreateRivers
+0x527d00|0.4268774703557312|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
@@ -3987,7 +3987,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.4662695218161327|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.46498148446304943|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags
@@ -5710,7 +5710,7 @@ address|matching|name
 0x5b1e20|0.5635103926096998|TTechItemView::DoEvent
 0x5b2230|1.0|TTechHistoryView::CreateObject
 0x5b22a0|1.0|TTechHistoryView::GetRuntimeClass
-0x5b22c0|0.3342776203966006|TTechHistoryView::PopulateTechHistory
+0x5b22c0|0.327683615819209|TTechHistoryView::PopulateTechHistory
 0x5b2710|0.25|`dynamic initializer for 'g_scaledShortConst_6A58B0''
 0x5b2740|0.8571428571428571|TGameSetupDialog::CreateObject
 0x5b27d0|1.0|TGameSetupDialog::`scalar deleting destructor'

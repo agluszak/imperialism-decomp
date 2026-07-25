@@ -110,7 +110,7 @@
 // Provisional dispatch interfaces for the runtime-resolved turn-event dialog node and
 // its 'GOLD' child control now live in one shared header so the TViewMgr and
 // TMacViewMgr copies can't drift apart (bd imperialism-decomp-hpd.7). The lower slots
-// (ResolveControlByTag, CaptureLayoutF0, Close, Free, AssertValid) are real
+// (ResolveControlByTag, Locate, Close, Free, AssertValid) are real
 // inherited TView/TObject virtuals dispatched directly.
 namespace {
 using turn_event_dialog::GoldCommitControl;
@@ -395,9 +395,9 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
     content->defaultCommandCode = kControlTagPic5; // 'cip5'
   }
 
-  POINT placement;
+  CPoint placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
 
   TPicture* gold = static_cast<TPicture*>(node->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
   gold->AssertValid();
@@ -509,9 +509,9 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     content->defaultCommandCode = kControlTagOkay; // 'okay'
   }
 
-  POINT placement;
+  CPoint placement;
   this->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
-  dialog->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  dialog->Locate(placement, 0);
 
   TPicture* gold = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
   gold->AssertValid();
@@ -1102,8 +1102,8 @@ void RefreshQuerControlLayoutAndClearText() {
     return;
   }
   querControl->AssertValid();
-  int layoutCaptureBuffer = 0;
-  querControl->CaptureLayoutF0(&layoutCaptureBuffer, 0);
+  CPoint layoutPosition(0, 0);
+  querControl->Locate(layoutPosition, 0);
   querControl->SetHoverHelpText(g_szEmptyString);
 }
 
@@ -1265,7 +1265,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
 
   TIncludeView* packet = ::new TIncludeView();
   CString emptyText(g_szEmptyString);
-  int anchorPoint[2] = {0, 0};
+  CPoint anchorPoint(0, 0);
   packet->BuildTurnEventFactoryPacket(nullptr, mainView, newCode, anchorPoint, &emptyText, 1);
   packet->DoPostCreate(0);
   packet->controlTag = kControlTagIncl; // 'Incl'
@@ -2132,9 +2132,9 @@ void TViewMgr::ShowBuildingExpansionDialog(short buildingSlotId, TCity* city,
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf54);
   }
   expansionView->StuffValues(buildingSlotId, city, productionView);
-  POINT placement;
+  CPoint placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
   int dialogAction = node->PoseModally();
   expansionView->DoClosingAction(static_cast<unsigned long>(dialogAction));
   node->Close();

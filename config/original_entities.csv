@@ -9765,6 +9765,8 @@ address|name|symbol|size|type|prototype|provenance
 6a58c8|g_defaultDropShadowTextColor|||global||
 6a590c|g_pCursorControlPanel|||global||
 6a59e0|g_ptControlStringModalMessage|||global||
+6a5a00|g_offerDeskSheetPosition_006a5a00|||global||listing,mac_resource
+6a5a28|g_offerDeskOffscreenPosition_006a5a28|||global||listing,mac_resource
 6a5aec|g_zoneStatusCodePrngSeed_006a5aec|||global||
 6a5af0|g_anProvinceNameOrdinalByNationSlot_006a5af0|||global||
 6a5b58|g_ptCitySiteSelectionDialogPlacement|||global||

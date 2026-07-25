@@ -115,7 +115,7 @@ void TTurnEventDialogFactoryRegistry::RegisterDialogFactoryCallback(
 TView*
 TTurnEventDialogFactoryRegistry::ResolveDialogNodeByMessageContext(TurnEventId messageContext,
                                                                    int contextSlot) {
-  int anchor[2] = {0, 0};
+  CPoint anchor(0, 0);
   return InvokeDialogFactoryFromPacket(contextSlot, nullptr, messageContext, anchor);
 }
 
@@ -129,7 +129,7 @@ void EnsureTurnEventDialogFactoryRegistryInitialized() {
 
 // FUNCTION: IMPERIALISM 0x00491cc0
 TView* TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode(
-    int nContextId, TView* pEventPacket, TurnEventId nEventCode, int* pAnchorPoint) {
+    int nContextId, TView* pEventPacket, TurnEventId nEventCode, const CPoint& anchorPoint) {
   (void)nContextId;
   TView* result = nullptr;
   POSITION pos = factories.GetHeadPosition();
@@ -145,16 +145,16 @@ TView* TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode(
     if (pEventPacket != nullptr) {
       pEventPacket->AttachChildControl(result, 0);
     }
-    if (pAnchorPoint[1] != 0 || pAnchorPoint[0] != 0) {
-      int layout[2];
+    if (anchorPoint.y != 0 || anchorPoint.x != 0) {
+      CPoint position;
       // Operand order follows the original: ADD EDX,EAX is anchor[0] + ownerLocalX
       // (0x00491d16) but ADD EAX,ECX is ownerLocalY + anchor[1] (0x00491d1b).
       // VC5 still schedules the +0x28 load ahead of +0x24 here and neither operand
       // reordering nor sequencing the first load into a local changes that (both
       // measured, both 92.59%), so the residual is left alone rather than contorted.
-      layout[0] = pAnchorPoint[0] + result->ownerLocalX;
-      layout[1] = result->ownerLocalY + pAnchorPoint[1];
-      result->CaptureLayoutF0(layout, 0);
+      position.x = anchorPoint.x + result->ownerLocalX;
+      position.y = result->ownerLocalY + anchorPoint.y;
+      result->Locate(position, 0);
     }
   }
 
@@ -165,11 +165,11 @@ TView* TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode(
 TView* TTurnEventDialogFactoryRegistry::InvokeDialogFactoryFromPacket(int nContextId,
                                                                       TView* pEventPacket,
                                                                       TurnEventId nEventCode,
-                                                                      int* pAnchorPoint) {
+                                                                      const CPoint& anchorPoint) {
   const int savedFlag = g_McAppUiActiveFlag_006950AC;
   g_McAppUiActiveFlag_006950AC = 0;
   TView* result =
-      RunRegisteredDialogFactoriesByEventCode(nContextId, pEventPacket, nEventCode, pAnchorPoint);
+      RunRegisteredDialogFactoriesByEventCode(nContextId, pEventPacket, nEventCode, anchorPoint);
   if (result != nullptr) {
     result->DispatchControlEventToChildrenAndSelf(nContextId);
     result->NoOpUiCallback();

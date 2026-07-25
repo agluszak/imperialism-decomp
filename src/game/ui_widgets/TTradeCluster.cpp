@@ -350,10 +350,8 @@ void TTradeCluster::DoControlAction() {
     FailNilPointerInUSmallViews(kAssertLineBidSecondary);
   }
 
-  int layoutCapture[2];
-  layoutCapture[0] = 0x11;
-  layoutCapture[1] = 0x14;
-  bidControl->CaptureLayout(layoutCapture, 1);
+  CPoint size(0x11, 0x14);
+  bidControl->Resize(size, 1);
 
   if (g_pUiRuntimeContext->GetPendingTurnOverlayCode() < 4) {
     bidControl->SetEnabled(1, 1);
@@ -386,8 +384,8 @@ void TTradeCluster::SetTradeBidControlBitmap() {
     bidControl->SetPictureResourceIdAndRefresh(kTradeBitmapBidStateA, 0);
   }
 
-  int layoutCapture[2] = {0x41, 0x14};
-  bidControl->CaptureLayout(layoutCapture, 1);
+  CPoint size(0x41, 0x14);
+  bidControl->Resize(size, 1);
 
   TView* greenControl = this->ResolveControlByTag(kControlTagGree);
   if (greenControl == 0) {
@@ -429,10 +427,10 @@ void TTradeCluster::SetTradeOfferControlBitmap() {
     offerControl->SetPictureResourceIdAndRefresh(kTradeBitmapOfferStateA, 0);
   }
 
-  int layoutCaptureF4[2] = {0x41, 0x14};
-  offerControl->CaptureLayout(layoutCaptureF4, 1);
-  int layoutCaptureF0[2] = {0x73, 0};
-  offerControl->CaptureLayoutF0(layoutCaptureF0, 1);
+  CPoint size(0x41, 0x14);
+  offerControl->Resize(size, 1);
+  CPoint layoutCaptureF0(0x73, 0);
+  offerControl->Locate(layoutCaptureF0, 1);
 
   TView* greenControl = this->ResolveControlByTag(kControlTagGree);
   if (greenControl == 0) {
@@ -467,8 +465,8 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
     FailNilPointerInUSmallViews(kAssertLineOfferSecondaryOffr);
   }
 
-  int layoutCaptureF4[2] = {0x11, 0x14};
-  offerControl->CaptureLayout(layoutCaptureF4, 1);
+  CPoint size(0x11, 0x14);
+  offerControl->Resize(size, 1);
 
   short activeNationSlot = g_pSimMgr->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
@@ -484,8 +482,8 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
       } else {
         offerControl->SetPictureResourceIdAndRefresh(kTradeBitmapOfferSecondaryStateA, 0);
       }
-      int layoutCaptureF0[2] = {0xa3, 0};
-      offerControl->CaptureLayoutF0(layoutCaptureF0, 1);
+      CPoint layoutCaptureF0(0xa3, 0);
+      offerControl->Locate(layoutCaptureF0, 1);
     } else {
       offerControl->SetEnabled(0, 1);
     }

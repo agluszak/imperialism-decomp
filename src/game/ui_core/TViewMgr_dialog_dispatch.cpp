@@ -164,9 +164,9 @@ char TViewMgr::ShowNewCityDialog(TTown* town) {
   }
   placeCity->StuffValues(town);
   node->Center(1, 1, 1);
-  POINT placement;
+  CPoint placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
   node->SetModality(1);
   int result = node->PoseModally();
   node->Close();
@@ -199,9 +199,9 @@ void TViewMgr::ShowCombatReportDialog(TCombatReportContext* reportContext) {
   }
   report->StuffValues(reportContext);
 
-  POINT placement;
+  CPoint placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
   node->SetModality(1);
   node->PoseModally();
   node->Close();
@@ -223,9 +223,9 @@ int TViewMgr::ShowConstructionOptionsDialog(int dialogValue) {
       static_cast<turn_event_dialog::TDialogValueControl*>(
           node->ResolveControlByTag(kControlTagDialog));
   engineerDialog->StuffValues(reinterpret_cast<void*>(dialogValue));
-  POINT placement;
+  CPoint placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
   node->SetModality(1);
   int result = node->PoseModally();
   node->Close();
@@ -260,9 +260,9 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x14a);
   }
   TControl* gold = static_cast<TControl*>(node->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
-  POINT placement;
+  CPoint placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
   node->PoseModally();
   TDeluxeText* nameText =
       static_cast<TDeluxeText*>(static_cast<TView*>(gold->ResolveControlByTag(kControlTagName)));
@@ -291,9 +291,9 @@ TNavyRoster* TViewMgr::MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry) {
   }
   page->StuffValues(activeMapOrderEntry);
 
-  POINT placement;
+  CPoint placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
   node->PoseModally();
   node->Close();
   node->Free();
@@ -332,9 +332,9 @@ void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
                          0xc);
   ApplyControlThemeStyleAndOptionalCaption(textEntry, 0, 0xe, 0x2b6a, -2, 0);
 
-  POINT placement;
+  CPoint placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
   node->SetModality(1);
   node->PoseModally();
   TZone* selectedZone = roster->selectedZone84;
@@ -389,9 +389,9 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE8(void* selection) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1ca);
   }
   gold->StuffValues(selection);
-  POINT placement;
+  CPoint placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
   node->SetModality(1);
   node->PoseModally();
   node->Close();
@@ -415,9 +415,9 @@ void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
   // TGarrisonView. StuffValues rebuilds its TArmyUnitLine roster for this map tile.
   static_cast<TGarrisonView*>(page)->StuffValues(static_cast<short>(mapSelection));
 
-  POINT placement;
+  CPoint placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
   node->SetModality(1);
   node->PoseModally();
   node->Close();
@@ -460,9 +460,9 @@ void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
                          0xb);
   ApplyControlThemeStyleAndOptionalCaption(textEntry, 0, 0xe, 0x2b6a, -2, 0);
 
-  POINT placement;
+  CPoint placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
   node->SetModality(1);
   node->PoseModally();
   short selectedIndex = roster->selectedCityRecordIndex84;
@@ -509,9 +509,9 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
                          0xa);
   ApplyControlThemeStyleAndOptionalCaption(textEntry, 0, 0xe, 0x2b6a, -2, 0);
 
-  POINT placement;
+  CPoint placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
   node->SetModality(1);
   node->PoseModally();
   short selectedIndex = roster->selectedTileIndex84;
@@ -638,9 +638,9 @@ bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrder
   TCivReport* report =
       static_cast<TCivReport*>(static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog)));
   report->PopulateCivilianReportContent(pCivilianOrderEntry);
-  POINT placement;
+  CPoint placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
   unsigned int resultTag = node->PoseModally();
   node->Close();
   node->Free();
@@ -661,9 +661,9 @@ bool TViewMgr::DispatchProvinceOrderOverlayConfirmDialog(short cityRecordIndex,
   TArmyInfoView* report = static_cast<TArmyInfoView*>(
       static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog)));
   report->PopulateFriendlyArmyReportContent(cityRecordIndex, categoryCounts);
-  POINT placement;
+  CPoint placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
   unsigned int resultTag = node->PoseModally();
   node->Close();
   node->Free();
@@ -678,9 +678,9 @@ void TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView() {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x33f);
   }
-  POINT placement;
+  CPoint placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
   node->PoseModally();
   node->Close();
   node->Free();

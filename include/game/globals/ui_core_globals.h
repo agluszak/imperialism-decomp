@@ -16,7 +16,7 @@ extern int g_nationInfoGoldResourceOverride_006a5bac;
 
 extern int g_lastTurnAlertTick_006a31c0;
 
-extern int g_turnEventDialogAnchorPoint[2];
+extern CPoint g_turnEventDialogAnchorPoint;
 
 extern CPtrList g_LiveViewRegistry;
 

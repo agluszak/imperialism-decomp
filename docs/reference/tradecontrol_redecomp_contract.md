@@ -204,8 +204,8 @@
 | `57` | `0x00e4` | `CtrlSlot57` | `thunk_WrapperFor_InvalidateCityDialogRectRegion_At0048b6d0@0x00406604` | `1` |
 | `58` | `0x00e8` | `CtrlSlot58` | `thunk_QueryChildMapViewSlot58OrZero@0x00404de0` | `1` |
 | `59` | `0x00ec` | `IsActionableSlotEC` | `thunk_CanProcessMapViewSlotECUnderWindowState@0x00408350` | `1` |
-| `60` | `0x00f0` | `CaptureLayoutSlotF0` | `thunk_WrapperFor_InvalidateCityDialogRectRegion_At0048b250@0x00404e3a` | `1` |
-| `61` | `0x00f4` | `CaptureLayoutSlotF4` | `thunk_UpdateControlPositionAndInvalidateUnionRect@0x00403eef` | `1` |
+| `60` | `0x00f0` | `Locate` | `thunk_WrapperFor_InvalidateCityDialogRectRegion_At0048b250@0x00404e3a` | `1` |
+| `61` | `0x00f4` | `Resize` | `thunk_UpdateControlPositionAndInvalidateUnionRect@0x00403eef` | `1` |
 | `62` | `0x00f8` | `RefreshSlotF8` | `thunk_SetGlobalUiSelectionIfChangedAndNotify@0x00405916` | `1` |
 | `63` | `0x00fc` | `CtrlSlot63` | `thunk_NoOpCommandHandler@0x00403a85` | `1` |
 | `64` | `0x0100` | `CtrlSlot64` | `thunk_WrapperFor_GetOrCreateHandleMapObjectByHandle_At0048b7b0@0x004015ff` | `1` |

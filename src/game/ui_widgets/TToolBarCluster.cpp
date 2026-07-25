@@ -608,9 +608,9 @@ void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf6c);
   }
-  POINT placement;
+  CPoint placement;
   g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
   node->PoseModally();
   node->Close();
   node->Free();

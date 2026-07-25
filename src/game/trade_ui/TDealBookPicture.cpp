@@ -351,14 +351,14 @@ void TDealBookPicture::SwitchPages() {
 
   // Capture the four commodity sub-views' layouts (the original caches all four distinct
   // views -- bought/sold trades and the buy/sell pages -- not the buy page twice).
-  int captureBuffer1[2] = {1000, 1000};
-  boughtTradesView98->CaptureLayoutF0(captureBuffer1, 1);
-  int captureBuffer2[2] = {1000, 1000};
-  soldTradesView9C->CaptureLayoutF0(captureBuffer2, 1);
-  int captureBuffer3[2] = {0x41, 0x59};
-  sellPageViewA4->CaptureLayoutF0(captureBuffer3, 1);
-  int captureBuffer4[2] = {0x13a, 0x59};
-  buyPageViewA0->CaptureLayoutF0(captureBuffer4, 1);
+  CPoint captureBuffer1(1000, 1000);
+  boughtTradesView98->Locate(captureBuffer1, 1);
+  CPoint captureBuffer2(1000, 1000);
+  soldTradesView9C->Locate(captureBuffer2, 1);
+  CPoint captureBuffer3(0x41, 0x59);
+  sellPageViewA4->Locate(captureBuffer3, 1);
+  CPoint captureBuffer4(0x13a, 0x59);
+  buyPageViewA0->Locate(captureBuffer4, 1);
 
   sellPageViewA8 = sellPageViewA4;
   buyPageViewAC = buyPageViewA0;

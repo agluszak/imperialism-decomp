@@ -253,8 +253,8 @@ void TScrollBarView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
   if (heightDiff <= 0) {
     return;
   }
-  POINT origin;
+  CPoint origin;
   origin.y = -(ratio * heightDiff / 1024);
   origin.x = content->ownerLocalX;
-  content->CaptureLayoutF0(reinterpret_cast<int*>(&origin), 1);
+  content->Locate(origin, 1);
 }

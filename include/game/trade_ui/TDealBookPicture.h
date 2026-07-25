@@ -36,7 +36,7 @@ public:
   TTradePageBuyView* buyPageViewA0;   // +0xa0, tag 'tbou'
   TTradePageSellView* sellPageViewA4; // +0xa4, tag 'tsol'
   // +0xa8/+0xac -- re-cached sell/buy page pointers set at the end of SwitchPages right
-  // after the four CaptureLayoutF0 calls. lastPageIndex92 is computed from these copies.
+  // after the four Locate calls. lastPageIndex92 is computed from these copies.
   TTradePageSellView* sellPageViewA8;
   TTradePageBuyView* buyPageViewAC;
   bool tradeListEmptyB0; // +0xb0 -- CalculatePages starts true and clears it when a row exists
