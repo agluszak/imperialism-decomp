@@ -1334,7 +1334,7 @@ address|matching|name
 0x49ace0|1.0|TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor
 0x49ad50|0.02666666666666667|RemoveHashIndexedRecordByShortKey
 0x49ae30|0.9791666666666666|CMap<short,short,CacheRecord *,CacheRecord *>::~CMap<short,short,CacheRecord *,CacheRecord *>
-0x49aef0|0.01015228426395939|TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive
+0x49aef0|1.0|CMap<short,short,CacheRecord *,CacheRecord *>::Serialize
 0x49b190|0.02666666666666667|BuildIndexedBmpResourceById_Impl
 0x49b270|0.9791666666666666|CMap<void *,void *,CacheRecord *,CacheRecord *>::~CMap<void *,void *,CacheRecord *,CacheRecord *>
 0x49b330|0.01015228426395939|TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive
