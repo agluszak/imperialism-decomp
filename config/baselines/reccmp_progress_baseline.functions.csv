@@ -5216,7 +5216,7 @@ address|matching|name
 0x590c30|1.0|TCivReport::TCivReport
 0x590c60|1.0|TCivReport::`scalar deleting destructor'
 0x590c90|1.0|TCivReport::~TCivReport
-0x590cb0|0.08203125|TCivReport::PopulateCivilianReportContent
+0x590cb0|0.6554267650158061|TCivReport::PopulateCivilianReportContent
 0x591500|0.4897959183673469|TArmyInfoView::CreateObject
 0x591580|1.0|TArmyInfoView::GetRuntimeClass
 0x5915a0|1.0|TArmyInfoView::TArmyInfoView
