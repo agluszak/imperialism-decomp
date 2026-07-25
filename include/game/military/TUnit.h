@@ -64,7 +64,6 @@ public:
     field_10 = 0;
     nextOnTile = 0;
     tileIndex06 = static_cast<short>(0xffff);
-    unitOrder = kUnitOrderIdle;
     field_1C = 0;
   }
 

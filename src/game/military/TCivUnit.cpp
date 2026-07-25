@@ -18,7 +18,9 @@
 IMPLEMENT_DYNCREATE(TCivUnit, TUnit)
 
 // FUNCTION: IMPERIALISM 0x005c28c0
-TCivUnit::TCivUnit() {}
+TCivUnit::TCivUnit() {
+  unitOrder = kUnitOrderIdle;
+}
 
 // SYNTHETIC: IMPERIALISM 0x005c28f0
 // TCivUnit::`scalar deleting destructor'

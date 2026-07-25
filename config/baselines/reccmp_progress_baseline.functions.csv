@@ -1732,7 +1732,7 @@ address|matching|name
 0x4afd30|1.0|TInterruptusView::`scalar deleting destructor'
 0x4afd60|1.0|TInterruptusView::~TInterruptusView
 0x4afd80|1.0|TInterruptusView::GetRuntimeClass
-0x4afda0|0.9888888888888889|TInterruptusView::Draw
+0x4afda0|1.0|TInterruptusView::Draw
 0x4aff60|1.0|TBatRepDetLine::CreateObject
 0x4affd0|1.0|TBatRepDetLine::`scalar deleting destructor'
 0x4b0000|0.0|TBatRepDetLine::~TBatRepDetLine
@@ -2623,7 +2623,7 @@ address|matching|name
 0x4e92b0|0.4961580680570801|TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState
 0x4e9a50|0.8576104746317512|TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16
 0x4e9ed0|1.0|TAutoGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded
-0x4e9f10|0.6|TAutoGreatPower::HasActiveCandidateNationSlots
+0x4e9f10|0.6166666666666667|TAutoGreatPower::HasActiveCandidateNationSlots
 0x4e9ff0|0.8571428571428571|TAutoGreatPower::SetCandidateNationFlagAndPortZoneState
 0x4ea0e0|0.6808510638297872|TAutoGreatPower::NotifyAllianceSlot214
 0x4ea150|0.8372093023255814|TAutoGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers
@@ -2638,7 +2638,7 @@ address|matching|name
 0x4ea700|0.29411764705882354|TAutoGreatPower::ComputeAiCityActionCostFromSlotAndMode
 0x4ea830|0.4900662251655629|TAutoGreatPower::GetCachedAiCityActionContextBias
 0x4ea990|0.7948717948717948|TAutoGreatPower::KillMissions
-0x4eaa20|0.777988614800759|TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores
+0x4eaa20|0.7817836812144212|TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores
 0x4eae70|0.8774193548387097|TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment
 0x4eafa0|1.0|TAutoGreatPower::SeedTrackedEntryAssignmentsFromEligibleUnits
 0x4eb040|1.0|TAutoGreatPower::MReassess
@@ -4832,15 +4832,15 @@ address|matching|name
 0x57b900|0.4|IsTurnFlowCooldownActiveAndResetExpiredState
 0x57b940|1.0|TSimMgr::CreateObject
 0x57b9c0|1.0|TSimMgr::GetRuntimeClass
-0x57b9e0|0.9487179487179487|TSimMgr::TSimMgr
+0x57b9e0|0.9615384615384616|TSimMgr::TSimMgr
 0x57bb50|1.0|TSimMgr::`scalar deleting destructor'
 0x57bb80|0.926829268292683|TSimMgr::~TSimMgr
 0x57bbf0|0.7368421052631579|TSimMgr::ISimMgr
-0x57bd20|0.9895833333333334|TSimMgr::Free
+0x57bd20|1.0|TSimMgr::Free
 0x57bea0|0.944|TSimMgr::ReadFrom
 0x57c230|0.875|TSimMgr::WriteTo
 0x57c390|1.0|TSimMgr::RebuildNationStateSlotsNoOp
-0x57c3b0|0.9915966386554622|TSimMgr::RebuildGlobalOrderManagersAndCapabilityState
+0x57c3b0|0.9957983193277311|TSimMgr::RebuildGlobalOrderManagersAndCapabilityState
 0x57c7c0|0.8744588744588745|TSimMgr::RebuildMapContextAndGlobalMapState
 0x57c9a0|0.9230769230769231|TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState
 0x57cad0|0.7278481012658228|TSimMgr::RebuildNationStateSlotsAndAvailability
@@ -5724,7 +5724,7 @@ address|matching|name
 0x5b2a30|1.0|TMinorTradeBidsDialog::`scalar deleting destructor'
 0x5b2a60|1.0|TMinorTradeBidsDialog::~TMinorTradeBidsDialog
 0x5b2a80|1.0|TMinorTradeBidsDialog::GetRuntimeClass
-0x5b2aa0|0.9554655870445344|TMinorTradeBidsDialog::StuffValues
+0x5b2aa0|0.9635627530364372|TMinorTradeBidsDialog::StuffValues
 0x5b2ca0|0.8571428571428571|TRelationshipDialog::CreateObject
 0x5b2d30|1.0|TRelationshipDialog::`scalar deleting destructor'
 0x5b2d60|1.0|TRelationshipDialog::~TRelationshipDialog
@@ -5868,10 +5868,10 @@ address|matching|name
 0x5b9410|0.6486486486486487|TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline
 0x5b94d0|0.23404255319148937|TTradeMgr::SetDealResults
 0x5b9790|1.0|TTradeMgr::SetNationMetricCellValueByIndex
-0x5b97c0|0.9807692307692307|TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags
-0x5b9890|0.9523809523809523|TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations
+0x5b97c0|1.0|TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags
+0x5b9890|1.0|TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations
 0x5b98d0|0.34558823529411764|TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores
-0x5b9b30|0.21052631578947367|TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores
+0x5b9b30|0.2151029748283753|TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores
 0x5b9f30|1.0|TTradeMgr::Power
 0x5b9f70|0.6666666666666666|TTradeMgr::IsNationMetricCellNegative
 0x5b9fa0|0.6666666666666666|TTradeMgr::IsNationMetricCellPositive
@@ -5984,7 +5984,7 @@ address|matching|name
 0x5c1b70|1.0|TTradeTotalsView::~TTradeTotalsView
 0x5c1bd0|0.5509433962264151|TTradeTotalsView::Draw
 0x5c2400|0.25|`dynamic initializer for 'g_scaledShortConst_6A5A90''
-0x5c2430|0.896551724137931|TUnit::CreateObject
+0x5c2430|1.0|TUnit::CreateObject
 0x5c2470|1.0|TUnit::DetachUnitOrderFromOwnerAndReset
 0x5c2490|1.0|TUnit::GetRuntimeClass
 0x5c24e0|1.0|TUnit::`scalar deleting destructor'
@@ -6013,7 +6013,7 @@ address|matching|name
 0x5c2c60|1.0|TCivUnit::ResetCivWorkOrderAndRefreshCounters
 0x5c2cb0|0.3023255813953488|TMilitaryUnit::CreateObject
 0x5c2dd0|0.5|TMilitaryUnit::GetRuntimeClass
-0x5c2df0|0.98989898989899|TMilitaryUnit::TMilitaryUnit
+0x5c2df0|1.0|TMilitaryUnit::TMilitaryUnit
 0x5c2ed0|1.0|TMilitaryUnit::`scalar deleting destructor'
 0x5c2f00|0.8|TMilitaryUnit::~TMilitaryUnit
 0x5c2f50|0.7671232876712328|TMilitaryUnit::IMilitaryUnit
@@ -7094,7 +7094,7 @@ address|matching|name
 0x608ba8|0.9441964285714286|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|1.0|CWnd::OnNotify
+0x6091d9|0.9787234042553191|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent
