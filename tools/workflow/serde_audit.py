@@ -102,6 +102,7 @@ HELPERS = {
     "WriteShortArrayElems": ("write", 2),
     "WriteShortArrayElemsRev": ("write", 2),
     "WriteIntArrayElems": ("write", 4),
+    "WriteFloatArrayElems": ("write", 4),
 }
 
 # Collection helpers that expand to more than one stream op. Each entry is the ordered

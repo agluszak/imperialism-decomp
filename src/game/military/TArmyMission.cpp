@@ -3,6 +3,7 @@
 #include <math.h>
 
 #include "game/military/TArmyMission.h"
+#include "game/core/stream_byteswap.h"
 #include "game/TList.h"
 #include "game/nation/TGreatPower.h"
 #include "game/core/TStream.h"
@@ -65,22 +66,6 @@ bool TArmyMission::IsANoBrainer() const {
 // SYNTHETIC: IMPERIALISM 0x0053c1d0
 // TArmyMission::`scalar deleting destructor'
 
-// Swaps float byte order (Big-Endian <-> Little-Endian)
-static inline float SwapFloat(float val) {
-  union {
-    float f;
-    unsigned char b[4];
-  } swapped;
-  swapped.f = val;
-  unsigned char byte0 = swapped.b[0];
-  unsigned char byte1 = swapped.b[1];
-  swapped.b[0] = swapped.b[3];
-  swapped.b[1] = swapped.b[2];
-  swapped.b[2] = byte1;
-  swapped.b[3] = byte0;
-  return swapped.f;
-}
-
 // Shared accumulation loop over orderListAt18 (0x53c620 / 0x53ceb0 / 0x53d020 / 0x53d200 /
 // 0x53fc10 all repeat this exact per-unit vector-contribution pattern -- kept `inline` and
 // TU-local: giving it real external linkage (tried during bd 1uj.16.7) changed this TU's own
@@ -126,20 +111,16 @@ void TArmyMission::Free() {
 void TArmyMission::WriteTo(TStream* stream) {
   TMission::WriteTo(stream);
   stream->WriteBytes(&presentLocation14, 2);
-  for (int i = 0; i < 5; ++i) {
-    float swapped = SwapFloat(requiredEquipageByClass[i]);
-    stream->WriteBytes(&swapped, 4);
-  }
+  WriteFloatArrayElems(stream, requiredEquipageByClass, 5);
 
   stream->WriteInteger(orderListAt18->GetCount());
 
-  TGreatPower* nation = g_apNationStates[nationId04];
-  TSortedList* unitList = nation->militaryUnitList44;
-
+  // The nation lookup stays inside the loop, as at 0x53c350.
   CIterator iter(orderListAt18);
   void* currentUnit = iter.Reset();
   while (iter.More()) {
-    stream->WriteInteger(unitList->FindOneBasedOrdinalOf(currentUnit));
+    stream->WriteInteger(
+        g_apNationStates[nationId04]->militaryUnitList44->FindOneBasedOrdinalOf(currentUnit));
     currentUnit = iter.Advance();
   }
 }
@@ -153,18 +134,18 @@ void TArmyMission::ReadFrom(TStream* stream) {
     requiredEquipageByClass[4] = 0.0f;
   } else {
     stream->ReadBytes(&requiredEquipageByClass[0], 0x14);
-    for (int i = 0; i < 5; ++i) {
-      requiredEquipageByClass[i] = SwapFloat(requiredEquipageByClass[i]);
-    }
+    // In-place four-byte reverse over the whole array (0x53c420), not a per-element
+    // load/swap/store through a temporary.
+    ReverseDwordArrayBytes(requiredEquipageByClass, 5);
   }
 
-  short count = stream->ReadInteger();
-  TGreatPower* nation = g_apNationStates[nationId04];
-  TSortedList* unitList = nation->militaryUnitList44;
-
-  for (int i = 0; i < count; ++i) {
-    short index = stream->ReadInteger();
-    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitList->GetEntryByOrdinal(index));
+  // The nation and its unit list are re-read on every iteration, and the ordinal is read
+  // after them -- both follow from writing the lookup as one receiver expression, which
+  // is the order 0x53c46a..0x53c48e evaluates.
+  for (int count = stream->ReadInteger(); count != 0; --count) {
+    TSortedList* unitList = g_apNationStates[nationId04]->militaryUnitList44;
+    TMilitaryUnit* unit =
+        static_cast<TMilitaryUnit*>(unitList->GetEntryByOrdinal(stream->ReadInteger()));
     AcceptReenforcement(unit, 0);
   }
 }
