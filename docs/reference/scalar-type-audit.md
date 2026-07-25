@@ -93,7 +93,7 @@ canonical types these boundaries convert between live in `docs/reference/scalar-
 | `src/game/tactical/TArmyPlayer.cpp:1535` | int -> char | `float_table_read_then_byte_store` | the same float-table truncation. |
 | `src/game/tactical/TArmyPlayer.cpp:1564` | int -> char | `float_table_read_then_byte_store` | the same float-table truncation. |
 | `src/game/tactical/TArmyPlayer.cpp:1613` | int -> char | `float_table_read_then_byte_store` | the same float-table truncation. |
-| `src/game/tactical_ui/TTacArmyView.cpp:621` | short -> char | `word_arithmetic_then_character` | the AI state code is biased in word arithmetic and stored as the ASCII character the debug overlay draws. |
+| `src/game/tactical_ui/TTacArmyView.cpp:657` | short -> char | `word_arithmetic_then_character` | the AI state code is biased in word arithmetic and stored as the ASCII character the debug overlay draws. |
 | `src/game/tactical_ui/TTechMgr.cpp:186` | int -> short | `prng_extract_then_narrow` | the same LCG extraction shape as TArmyMgr, with a caller-supplied range span. |
 | `src/game/trade_ui/TDealTabControl.cpp:88` | short -> short | `narrow_operand_then_narrow_result` | CPoint::y and CRect::top are LONG, so the inner casts are real narrowings to the retail word arithmetic; the outer cast stores the row index as a short. Same-width cast names in the report describe the cast types, not the operand types. |
 | `src/game/ui_core/TLanguageMgr.cpp:171` | unsigned int -> int | `unsigned_char_then_signed_compare` | the format character is widened without sign extension, then compared as a signed count. |
@@ -284,7 +284,7 @@ is classified, and a family that stops appearing must be removed.
 | `b97c45855ac1db98` | `nested_integral_cast` | `src/game/tactical/TArmyPlayer.cpp:1535` | int -> char | `float_table_read_then_byte_store` | `imperialism-decomp-1uj.99.2` |
 | `18cab6f36c866700` | `nested_integral_cast` | `src/game/tactical/TArmyPlayer.cpp:1564` | int -> char | `float_table_read_then_byte_store` | `imperialism-decomp-1uj.99.2` |
 | `65d0afcdf6299bbd` | `nested_integral_cast` | `src/game/tactical/TArmyPlayer.cpp:1613` | int -> char | `float_table_read_then_byte_store` | `imperialism-decomp-1uj.99.2` |
-| `a4d0dcc60098301c` | `nested_integral_cast` | `src/game/tactical_ui/TTacArmyView.cpp:621` | short -> char | `word_arithmetic_then_character` | `imperialism-decomp-1uj.99.2` |
+| `a4d0dcc60098301c` | `nested_integral_cast` | `src/game/tactical_ui/TTacArmyView.cpp:657` | short -> char | `word_arithmetic_then_character` | `imperialism-decomp-1uj.99.2` |
 | `9f9caf8fda50fb94` | `nested_integral_cast` | `src/game/tactical_ui/TTechMgr.cpp:186` | int -> short | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
 | `6c7e30e81b08a3f7` | `nested_integral_cast` | `src/game/trade_ui/TDealTabControl.cpp:88` | short -> short | `narrow_operand_then_narrow_result` | `imperialism-decomp-1uj.99.2` |
 | `eb220da528b853bc` | `nested_integral_cast` | `src/game/ui_core/TLanguageMgr.cpp:171` | unsigned int -> int | `unsigned_char_then_signed_compare` | `imperialism-decomp-1uj.99.2` |
@@ -554,12 +554,12 @@ is classified, and a family that stops appearing must be removed.
 | `3f4c478857b1c59a` | `raw_discriminant_literal` | `src/game/ui_core/TMacViewMgr.cpp:649` | terrainCode == 0 | `nation_slot_domain` | `imperialism-decomp-1uj.99.8` |
 | `30700317d6ed6f45` | `raw_discriminant_literal` | `src/game/ui_core/TStaticText.cpp:175` | textAlignmentCode == 1 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
 | `508c2564ad6ed710` | `raw_discriminant_literal` | `src/game/ui_core/TStaticText.cpp:196` | alignmentCode == 1 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
-| `b78042b12a8ab8bc` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:196` | eventCode < 0x2b68 | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `72137b7325079b2f` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:197` | eventCode == 0x2b67 | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `a3c931af11fa9b59` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:236` | eventCode != 200 | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `bad383d2ccd30214` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:1159` | curCode < 0x2135 | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `3057d8baea938a55` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:1179` | newCode == 0 | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `2ddea2ec4c95980b` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:1953` | followupState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `b78042b12a8ab8bc` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:198` | eventCode < 0x2b68 | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
+| `72137b7325079b2f` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:199` | eventCode == 0x2b67 | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
+| `a3c931af11fa9b59` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:238` | eventCode != 200 | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
+| `bad383d2ccd30214` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:1161` | curCode < 0x2135 | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
+| `3057d8baea938a55` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:1181` | newCode == 0 | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
+| `2ddea2ec4c95980b` | `raw_discriminant_literal` | `src/game/ui_core/TViewMgr.cpp:2199` | followupState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `9d5c2b0854ebdcaa` | `raw_discriminant_literal` | `src/game/ui_screens/TAlwaysPictureButton.cpp:26` | enabledState == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `54f643a28e2af6a1` | `raw_discriminant_literal` | `src/game/ui_screens/TCzechBox.cpp:44` | controlState64 != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `c3101696c199afd2` | `raw_discriminant_literal` | `src/game/ui_screens/TGWorldButton.cpp:40` | fEnabledState == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |

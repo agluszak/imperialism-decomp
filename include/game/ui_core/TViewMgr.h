@@ -43,11 +43,11 @@ public:
   virtual void RefreshMainViewNationIndicatorForCurrentTurnEvent();        // slot 0x12 0x5d6b70
 
   // Extended UI-runtime virtuals (same object as g_pUiRuntimeContext @ 0x006A21BC).
-  virtual void DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload);       // 0x4c
-  virtual void SetCursorRangeAndRefreshMainPanel(int payload);                       // 0x50
-  virtual short GetPendingTurnOverlayCode();                                         // 0x54
-  virtual void RefreshStrategicMapStatusIconsForActiveNation();                      // 0x58
-  virtual void HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(int nationIndex); // 0x5c
+  virtual void DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload); // 0x4c
+  virtual void SetCursorRangeAndRefreshMainPanel(int payload);                 // 0x50
+  virtual short GetPendingTurnOverlayCode();                                   // 0x54
+  virtual void RefreshStrategicMapStatusIconsForActiveNation();                // 0x58
+  virtual void RefreshTradeAndIndustryOverviewScreen(int nationIndex);         // 0x5c
   // Resolves the active dialog's 'main' and 'curs' panels, refreshes the cursor info
   // panel's map-hint style, then clears the 'main' panel's title text (0x5da040).
   virtual void RefreshMainDialogAndCursorHelp(int eventCode); // 0x60
