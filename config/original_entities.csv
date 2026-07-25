@@ -4003,7 +4003,7 @@ address|name|symbol|size|type|prototype|provenance
 550e70|GetResourceDescriptorWeightWord0ByType||17|function|short GetResourceDescriptorWeightWord0ByType(short resourceType)|
 550ea0|GetResourceDescriptorWord20ByType||17|function|short GetResourceDescriptorWord20ByType(short resourceType)|
 550ed0|GetResourceDescriptorWeightWord1ByType||17|function|short GetResourceDescriptorWeightWord1ByType(short resourceType)|
-550f30|GetResourceDescriptorWord08ByTypeOffset||25|function|short GetResourceDescriptorWord08ByTypeOffset(short resourceType, short subslot)|
+550f30|GetResourceDescriptorStatByColumn||25|function|short GetResourceDescriptorStatByColumn(short resourceType, short statColumn)|
 550f60|TShip::IsInHomePort||8|function|bool TShip::IsInHomePort() const|
 550f80|TShip::Damage||12|function|void TShip::Damage(short decrement)|
 550ff0|TShip::ReassignToForce||197|function|void TShip::ReassignToForce(TTaskForce* newOwnerEntry)|
