@@ -295,7 +295,7 @@ void TCityInteriorMinister::WriteTo(TStream* stream) {
     int remaining = 23;
     do {
       short element = *demandCursor;
-      unsigned char* elementBytes = reinterpret_cast<unsigned char*>(&element);
+      unsigned char* elementBytes = static_cast<unsigned char*>(static_cast<void*>(&element));
       unsigned char low = elementBytes[0];
       elementBytes[0] = elementBytes[1];
       elementBytes[1] = low;

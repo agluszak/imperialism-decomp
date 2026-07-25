@@ -39,7 +39,7 @@ void TInteriorMinister::ReadFrom(TStream* stream) {
   stream->ReadBytes(&field12, 2);
   stream->ReadBytes(&capabilityFlag14, 2);
   stream->ReadBytes(&capabilityFlag16, 2);
-  unsigned char* table = reinterpret_cast<unsigned char*>(trailingTable);
+  unsigned char* table = static_cast<unsigned char*>(static_cast<void*>(trailingTable));
   stream->ReadBytes(table, sizeof(trailingTable));
   for (int i = 0; i < 7; ++i) {
     unsigned char lo = table[i * 2];
