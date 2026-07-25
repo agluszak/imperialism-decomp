@@ -25,7 +25,7 @@ IMPLEMENT_DYNCREATE(TBattleUnitsView, TMilitaryPageView)
 
 // FUNCTION: IMPERIALISM 0x004b06f0
 void TBattleUnitsView::StuffValues(BattleRecord* battleRecord, int participantIndex) {
-  switch (battleRecord->battleType04) {
+  switch (battleRecord->actionType04) {
   case 0:
   case 3:
   case 4:
@@ -43,13 +43,15 @@ void TBattleUnitsView::StuffValues(BattleRecord* battleRecord, int participantIn
 
   CString unusedTextA;
   CString unusedTextB;
-  int detailCount = battleRecord->participantDetailCounts24a[participantIndex];
+  int detailCount = battleRecord->childCount24a[participantIndex];
   for (int detailIndex = 0; detailIndex < detailCount; ++detailIndex) {
     TBatRepDetLine* line = new TBatRepDetLine;
     int lineBounds[2] = {0xec, 0x31};
     line->SetLineDataRowAndBounds(0, 0, lineBounds);
     line->battleRecord10 = battleRecord;
-    line->battleDetail14 = battleRecord->participantDetails250[participantIndex] + detailIndex;
+    line->battleDetail14 = reinterpret_cast<BattleReportDetailRecord*>(
+                               battleRecord->sideChildRecords250[participantIndex]) +
+                           detailIndex;
     AddOrderedEntry(line);
   }
 

@@ -13,8 +13,8 @@ checks do not launch the game or open a retail binary.
 - Boot-path stages: 6; unresolved: 0
 - `dispatch_only_unknown`: 1
 - `foreign_resource_domain`: 2
-- `implemented_apparently_unreachable`: 39
-- `implemented_reachable`: 55
+- `implemented_apparently_unreachable`: 38
+- `implemented_reachable`: 56
 - `internal_dispatch`: 1
 
 ## Event matrix
@@ -32,7 +32,7 @@ checks do not launch the game or open a retail binary.
 | `0x03ea` | `kTurnEventDefaultView` | `implemented_apparently_unreachable` | MA - kDefaultViewID | 0x004357b0 BuildTurnEventDialogUiByCode [Linger.rsrc:1002] | - | - | - | - |
 | `0x0546` | `kTurnEventCombatReport` | `implemented_reachable` | CombatReport 2 | 0x0043dbc0 InitializeArmyNavyReportViewsAndCommandTags [MapView.rsrc:1350] | dialog: TViewMgr::ShowCombatReportDialog (src/game/ui_core/TViewMgr_dialog_dispatch.cpp:190) | - | - | - |
 | `0x0547` | `kTurnEventDiplomacyOffer` | `implemented_reachable` | Battle Report-Diplomacy Style<br>diplomacy_offer | 0x004295a0 BuildTurnEventDialogResourcesForEvent547Or7D8 [Diplo.rsrc:1351] | TSimMgr::AdvanceGlobalTurnStateMachine (src/game/ui_screens/TSimMgr_AdvanceGlobalTurnStateMachine.cpp:349)<br>TSimMgr::AdvanceGlobalTurnStateMachine (src/game/ui_screens/TSimMgr_AdvanceGlobalTurnStateMachine.cpp:633) | g_pCursorControlPanel->AssertValid<br>mainView->RefreshControl<br>this->SetCursorRangeAndRefreshMainPanel | - | - |
-| `0x0548` | `kTurnEventDetailedBattleReport` | `implemented_apparently_unreachable` | Detail Battle Report | 0x004295a0 BuildTurnEventDialogResourcesForEvent547Or7D8 [Diplo.rsrc:1352] | - | - | - | - |
+| `0x0548` | `kTurnEventDetailedBattleReport` | `implemented_reachable` | Detail Battle Report | 0x004295a0 BuildTurnEventDialogResourcesForEvent547Or7D8 [Diplo.rsrc:1352] | dialog: TBattleReportView::DoEvent (src/game/military_ui/TBattleReportView.cpp:291) | - | - | - |
 | `0x05dc` | `kTurnEventMainMenu` | `implemented_reachable` | kGameSetupMainView<br>main_menu | 0x004538a0 InitializeGameSetupScreenControlsAndModeTags [Startup.rsrc:1500] | TGamePreferencesPicture::DoEvent (src/game/navy_ui/TGamePreferencesPicture.cpp:184)<br>TGamePreferencesPicture::DoEvent (src/game/navy_ui/TGamePreferencesPicture.cpp:224)<br>THighScoresPicture::DoEvent (src/game/ui_screens/THighScoresPicture.cpp:116)<br>TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC (src/game/ui_screens/TLoadSavePicture.cpp:292)<br>TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DC (src/game/net/TMultiplayerMgr_session.cpp:422)<br>TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DCAlt (src/game/net/TMultiplayerMgr_session.cpp:485)<br>TScenarioChooser::ExitScreen (src/game/ui_screens/TScenarioChooser.cpp:192)<br>TSetupRandomMapPicture::ExitScreen (src/game/ui_screens/TSetupRandomMapPicture.cpp:372)<br>TSimMgr::AdvanceGlobalTurnStateMachine (src/game/ui_screens/TSimMgr_AdvanceGlobalTurnStateMachine.cpp:124)<br>TViewMgr::HandleTurnStateExitAndPostFollowupEventCode (src/game/ui_core/TViewMgr.cpp:2202) | this->HandleTurnEventDialogFactorySlotF8 | - | main_menu |
 | `0x05dd` | `kTurnEventRandomGameSetup` | `implemented_reachable` | kGameSetupRandomView | 0x004538a0 InitializeGameSetupScreenControlsAndModeTags [Startup.rsrc:1501] | TGameSetupMultiplayerPicture::DoEvent (src/game/ui_screens/TGameSetupMultiplayerPicture.cpp:147) | this->NoOpTurnEventStateVtableSlotFC | - | - |
 | `0x05de` | `kTurnEventLoadSave` | `implemented_reachable` | Load / Save | 0x004357b0 BuildTurnEventDialogUiByCode [Linger.rsrc:1502] | TGameSetupMultiplayerPicture::DoEvent (src/game/ui_screens/TGameSetupMultiplayerPicture.cpp:136)<br>TSimMgr::AdvanceGlobalTurnStateMachine (src/game/ui_screens/TSimMgr_AdvanceGlobalTurnStateMachine.cpp:701)<br>TSimMgr::AdvanceGlobalTurnStateMachine (src/game/ui_screens/TSimMgr_AdvanceGlobalTurnStateMachine.cpp:708) | this->HandleTurnEvent5DE_RefreshMainView | - | - |

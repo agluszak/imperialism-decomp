@@ -6,15 +6,22 @@
 #include <string.h>
 
 #include "game/gfx/CDib.h"
+#include "game/GameAssert.h"
 #include "game/app/TAnimator.h"
+#include "game/assets/TAssetMgr.h"
 #include "game/military/TArmyMgr.h"
+#include "game/military_ui/TBattleUnitsView.h"
 #include "game/ui_core/TControl.h"
 #include "game/ui_core/TPicture.h"
 #include "game/ui_core/TStaticText.h"
+#include "game/ui_core/TWindow.h"
 #include "game/TEvent.h"
+#include "game/ui_screens/TBook.h"
 #include "game/ui_widgets/TInfoBarText.h"
+#include "game/ui_widgets/TDropShadowText.h"
 #include "game/military_ui/TIdleMeAnimation.h"
 #include "game/ui_core/TMacViewMgr.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/map/TMapMgr.h"
 #include "game/ui_screens/TZone.h"
 #include "game/TQuickDrawSurfaceContext.h"
@@ -26,6 +33,7 @@
 #include "game/globals/military_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
+#include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x00430a30
 // TBattleReportView::`scalar deleting destructor'
@@ -267,33 +275,110 @@ char TBattleReportView::DoIdle(int action) {
 
 // FUNCTION: IMPERIALISM 0x004ad7a0
 void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  if (commandId == 10 && sourceHandler != NULL) {
+  if (commandId == 10) {
     int tag = sourceHandler->controlTag;
     if (tag == IMPERIALISM_FOURCC('n', 'e', 'x', 't')) {
       int count = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
       if (selectedReportIndex24c8 < count) {
-        selectedReportIndex24c8++;
         RefreshMapContextSelectionPanelAndInfoLabels(static_cast<MapContextActionRecord*>(
             g_pMapContextActionManager->mapContextActionRecordList04
-                ->GetPtrListEntryByOneBasedIndex(selectedReportIndex24c8)));
+                ->GetPtrListEntryByOneBasedIndex(selectedReportIndex24c8 + 1)));
       }
+      return;
+    }
+    if (tag == IMPERIALISM_FOURCC('i', 'n', 'f', 'o')) {
+      TWindow* dialog = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
+          kTurnEventDetailedBattleReport);
+      if (dialog == 0) {
+        GAME_FAIL_NIL_POINTER();
+        TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UBattleReportViews.cpp",
+                                                     0x1ef);
+      }
+      dialog->SetModality(1);
+
+      TBook* book = static_cast<TBook*>(dialog->ResolveControlByTag(kControlTagDialog));
+      book->AssertValid();
+      BattleRecord* battleRecord = static_cast<BattleRecord*>(
+          g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
+              selectedReportIndex24c8));
+      // This command's open payload is a BattleRecord despite the shared DoEvent slot's
+      // generic TEvent pointer type; retail reads the record fields directly from arg 3.
+      BattleRecord* eventBattleRecord = reinterpret_cast<BattleRecord*>(event);
+
+      TBattleUnitsView* leftPage =
+          static_cast<TBattleUnitsView*>(book->ResolveControlByTag(kControlTagPage));
+      leftPage->AssertValid();
+      leftPage->StuffValues(battleRecord, 0);
+      TBattleUnitsView* rightPage =
+          static_cast<TBattleUnitsView*>(book->ResolveControlByTag(kControlTagPagf));
+      rightPage->AssertValid();
+      rightPage->StuffValues(eventBattleRecord, 1);
+      if (leftPage->pageCount < rightPage->pageCount) {
+        leftPage->pageCount = rightPage->pageCount;
+      } else {
+        rightPage->pageCount = leftPage->pageCount;
+      }
+      book->ShowPage(1);
+
+      TPicture* leftFlag = static_cast<TPicture*>(book->ResolveControlByTag(kControlTagFlgL));
+      leftFlag->AssertValid();
+      TPicture* rightFlag = static_cast<TPicture*>(book->ResolveControlByTag(kControlTagFlgR));
+      rightFlag->AssertValid();
+      leftFlag->SetPictureResourceIdAndRefresh(
+          static_cast<short>(0x1147 + static_cast<signed char>(eventBattleRecord->nationIds[0])),
+          0);
+      rightFlag->SetPictureResourceIdAndRefresh(
+          static_cast<short>(0x114e + static_cast<signed char>(eventBattleRecord->nationIds[1])),
+          0);
+
+      TDropShadowText* leftNation =
+          static_cast<TDropShadowText*>(book->ResolveControlByTag(kControlTagNatL));
+      leftNation->AssertValid();
+      TDropShadowText* rightNation =
+          static_cast<TDropShadowText*>(book->ResolveControlByTag(kControlTagNatR));
+      rightNation->AssertValid();
+      ApplyUiTextStyleAndThemeFlags(leftNation, 0, 0xe, 0x2b6b, 0x2b6c);
+      ApplyUiTextStyleAndThemeFlags(rightNation, 0, 0xe, 0x2b6b, 0x2b6c);
+      leftNation->SetTextAlignmentAndMaybeRefresh(1, 0);
+      rightNation->SetTextAlignmentAndMaybeRefresh(1, 0);
+      {
+        CString leftName(eventBattleRecord->nameBuffer0c[0].data);
+        leftNation->SetTextAndMaybeRefresh(&leftName, 0);
+      }
+      {
+        CString rightName(eventBattleRecord->nameBuffer0c[1].data);
+        rightNation->SetTextAndMaybeRefresh(&rightName, 0);
+      }
+
+      SetControlHoverHelpText(CString(g_pBattleReportSharedText_0064dc30), dialog);
+      LoadUiStringByGroupAndIndexToControlObject(0x2730, 0x22,
+                                                 book->ResolveControlByTag(kControlTagOkay));
+      CPoint placement;
+      g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
+      dialog->Locate(placement, 0);
+      TDialogBehavior* behavior = dialog->GetDialogBehavior();
+      if (behavior != 0) {
+        behavior->defaultCommandCode = kControlTagOkay;
+      }
+      dialog->PoseModally();
+      dialog->Close();
+      dialog->Free();
       return;
     }
     if (tag == IMPERIALISM_FOURCC('p', 'r', 'e', 'v')) {
       if (selectedReportIndex24c8 > 1) {
-        selectedReportIndex24c8--;
         RefreshMapContextSelectionPanelAndInfoLabels(static_cast<MapContextActionRecord*>(
             g_pMapContextActionManager->mapContextActionRecordList04
-                ->GetPtrListEntryByOneBasedIndex(selectedReportIndex24c8)));
+                ->GetPtrListEntryByOneBasedIndex(selectedReportIndex24c8 - 1)));
       }
       return;
     }
     if (tag == IMPERIALISM_FOURCC('o', 'k', 'a', 'y')) {
-      g_pSimMgr->Free();
+      g_pSimMgr->StartNextPhase();
       return;
     }
   }
-  TDiplomacyMapView::DoEvent(commandId, sourceHandler, event);
+  TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004adc80
