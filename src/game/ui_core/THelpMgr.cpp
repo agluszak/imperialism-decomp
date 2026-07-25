@@ -842,9 +842,9 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUHelpMgr_00696C58, 0x5cd);
     }
 
-    POINT placement;
+    CPoint placement;
     g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(pendingDialogView8, &placement);
-    pendingDialogView8->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+    pendingDialogView8->Locate(placement, 0);
     pendingDialogView8->Open();
   }
 
@@ -948,9 +948,9 @@ void THelpMgr::EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextI
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUHelpMgr_00696C58, 0x6c1);
     }
 
-    POINT placement;
+    CPoint placement;
     g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(pendingDialogViewC, &placement);
-    pendingDialogViewC->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+    pendingDialogViewC->Locate(placement, 0);
     pendingDialogViewC->Open();
   }
 

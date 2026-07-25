@@ -383,8 +383,7 @@ void TMapDialog::InvalidateTile(short tileIndex) {
   int originalTileIndex = tileIndex;
   short projectedY;
   ProjectTileIndexToWrappedScreenOffsetByScale(static_cast<short>(originalTileIndex),
-                                               &viewportOrigin60, &projectedY,
-                                               reinterpret_cast<short*>(&tileIndex), 1);
+                                               &viewportOrigin60, &projectedY, &tileIndex, 1);
 
   CRect invalidateRect(static_cast<short>(tileIndex), projectedY,
                        static_cast<short>(tileIndex) + 0x40, projectedY + 0x40);

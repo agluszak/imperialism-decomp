@@ -46,11 +46,11 @@ void TTacticalAdiosPicture::DoPostCreate(int arg) {
   infoControl->SetTextAlignmentAndMaybeRefresh(1, 0);
 
   TView* owner = GetWindow();
-  POINT placement;
+  CPoint placement;
   g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(owner, &placement);
 
   TView* owner2 = GetWindow();
-  owner2->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  owner2->Locate(placement, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005ad650

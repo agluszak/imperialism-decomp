@@ -25,7 +25,7 @@ class TViewMgr;
 //
 // The turn-event slots 0x68..0x6e and the GOLD control's 0x71/0x72 are consistent
 // across every call site. Slots that correspond to real, already-recovered TView
-// methods (ResolveControlByTag 0x25, Close 0x28, CaptureLayoutF0 0x3c, Free
+// methods (ResolveControlByTag 0x25, Close 0x28, Locate 0x3c, Free
 // 0x07) are NOT redeclared here — callers invoke those real inherited methods
 // directly. The remaining Slot* names below are still provisional pending recovery of
 // the concrete dialog/control classes.
@@ -52,10 +52,9 @@ struct MainActionControl : public TControl {
                                 int targetNation); // slot 0x73 byte 0x1cc
 };
 
-// The 'DLOG' child of event 0xf0a's dialog. Its slot 0x68 is the class's first new
-// virtual (TView ends at 0x67) and takes one argument, exactly like TEngineerDialog's
-// BuildCityViewProductionControls at the same index -- but the Mac resource oracle has
-// no view for 0xf0a, so the concrete class is genuinely unknown here.
+// The unresolved 'DLOG' child used by the tactical-map selection dialog. Slot 0x68
+// consumes an opaque selection object; keep the argument opaque until that concrete
+// resource class is recovered rather than borrowing another dialog's payload type.
 struct TDialogValueControl : public TView {
   virtual void StuffValues(void* value); // slot 0x68 byte 0x1a0
 };

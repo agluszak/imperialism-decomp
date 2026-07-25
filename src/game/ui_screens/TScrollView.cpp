@@ -55,7 +55,7 @@ void TScrollView::AdjustCityDialogScrollRangeByDeltaAndClamp(short mode, short d
     return;
   }
 
-  POINT origin;
+  CPoint origin;
   int baseX = contentView60->ownerLocalX;
   int baseY = contentView60->ownerLocalY;
   origin.x = baseX + mode;
@@ -72,7 +72,7 @@ void TScrollView::AdjustCityDialogScrollRangeByDeltaAndClamp(short mode, short d
     origin.y = 0;
   }
 
-  contentView60->CaptureLayoutF0(reinterpret_cast<int*>(&origin), 1);
+  contentView60->Locate(origin, 1);
 
   short trackRange = scrollBar64->word8a - scrollBar64->word88;
   short newValue =
@@ -88,10 +88,10 @@ void TScrollView::AdjustCityDialogScrollRangeByDeltaAndClamp(short mode, short d
 
 // FUNCTION: IMPERIALISM 0x005741e0
 void TScrollView::SyncBoundedValueAndToggleControlStates() {
-  POINT contentOrigin;
+  CPoint contentOrigin;
   contentOrigin.x = contentView60->ownerLocalX;
   contentOrigin.y = 0;
-  contentView60->CaptureLayoutF0(reinterpret_cast<int*>(&contentOrigin), 1);
+  contentView60->Locate(contentOrigin, 1);
 
   TScrollBarView* bar = scrollBar64;
   bar->word8c = bar->word88;

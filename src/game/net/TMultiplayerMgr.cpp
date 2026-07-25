@@ -688,9 +688,9 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     if (content != 0) {
       content->defaultCommandCode = kControlTagOkay; // 'okay'
     }
-    POINT placement;
+    CPoint placement;
     g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
-    dialog->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+    dialog->Locate(placement, 0);
     TPicture* goldPicture = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog));
     goldPicture->AssertValid();
     if (goldPicture == 0) {

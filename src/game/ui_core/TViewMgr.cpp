@@ -41,6 +41,7 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
+#include "game/globals/ui_screens_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/city_ui/TCountry.h" // FormatOverlayTerrainLabelText (terrain overlay case)
 #include "game/nation/TGreatPower.h"
@@ -112,15 +113,11 @@
 // Provisional dispatch interfaces for the runtime-resolved turn-event dialog node and
 // its 'GOLD' child control now live in one shared header so the TViewMgr and
 // TMacViewMgr copies can't drift apart (bd imperialism-decomp-hpd.7). The lower slots
-// (ResolveControlByTag, CaptureLayoutF0, Close, Free, AssertValid) are real
+// (ResolveControlByTag, Locate, Close, Free, AssertValid) are real
 // inherited TView/TObject virtuals dispatched directly.
 namespace {
 using turn_event_dialog::GoldCommitControl;
 using turn_event_dialog::GoldDialogControl;
-// g_pUiViewManager (TAssetMgr) @ 0x6a2148 — the UI/view asset registry that resolves
-// turn-event dialog nodes by message context.
-const unsigned int kAddrDefaultGameSetupPolicies = 0x00698b1a;
-const unsigned int kAddrDefaultGameSetupPoliciesEnd = 0x00698b52;
 } // namespace
 
 namespace {
@@ -397,9 +394,9 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
     content->defaultCommandCode = kControlTagPic5; // 'cip5'
   }
 
-  POINT placement;
+  CPoint placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
 
   TPicture* gold = static_cast<TPicture*>(node->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
   gold->AssertValid();
@@ -422,7 +419,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
 
 // FUNCTION: IMPERIALISM 0x005d5960
 int TViewMgr::ClassifyTurnStateForOverlayMode() {
-  switch (*reinterpret_cast<short*>(&g_pSimMgr->mode)) {
+  switch (static_cast<short>(g_pSimMgr->mode)) {
   case 6:
   case 0xc:
   case 0xe:
@@ -477,18 +474,13 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   TextStyle styleDescriptor;
   CRect bounds;            // function-scope like the original (0x38): not overlapped with the
   short overlaySfxIds[13]; // sfx table (0x48), so the frame keeps both live regions
-  // The payload is a {-1000 sentinel, resource word} pair; the word is only read
-  // through a short lvalue over the pre-zeroed int (word stores/compares, dword pass).
+  // The payload is a {-1000 sentinel, resource word} pair. Keep the local dword-sized:
+  // the dialog's picture setter consumes it through the original dword argument slot.
   int payloadResource;
-  // The original zeroes the four styleRef6 bytes individually (0x5d5d69..0x5d5d85).
-  char* styleRefBytes = reinterpret_cast<char*>(&styleDescriptor.textColor);
-  styleRefBytes[0] = 0;
-  styleRefBytes[1] = 0;
-  styleRefBytes[2] = 0;
-  styleRefBytes[3] = 0;
+  styleDescriptor.textColor = 0;
   payloadResource = 0;
   if (messagePosition.x == -1000) {
-    *reinterpret_cast<short*>(&payloadResource) = static_cast<short>(messagePosition.y);
+    payloadResource = static_cast<short>(messagePosition.y);
   }
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
 
@@ -511,9 +503,9 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     content->defaultCommandCode = kControlTagOkay; // 'okay'
   }
 
-  POINT placement;
+  CPoint placement;
   this->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
-  dialog->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  dialog->Locate(placement, 0);
 
   TPicture* gold = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
   gold->AssertValid();
@@ -642,16 +634,13 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
 }
 
 static void InitializeGameSetupFromDefaultNationPolicies(GameSetup* setup) {
-  const short* src = reinterpret_cast<const short*>(kAddrDefaultGameSetupPolicies);
-  const short* srcEnd = reinterpret_cast<const short*>(kAddrDefaultGameSetupPoliciesEnd);
   short* dst = setup->cityMinisterPolicyIds;
-  while (src < srcEnd) {
-    dst[-7] = src[-1];
-    dst[0] = src[0];
-    dst[7] = src[1];
-    dst[0xe] = src[2];
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    dst[-7] = g_aDefaultNationSetupPolicyProfiles[nationSlot][0];
+    dst[0] = g_aDefaultNationSetupPolicyProfiles[nationSlot][1];
+    dst[7] = g_aDefaultNationSetupPolicyProfiles[nationSlot][2];
+    dst[0xe] = g_aDefaultNationSetupPolicyProfiles[nationSlot][3];
     ++dst;
-    src += 4;
   }
 }
 
@@ -1104,8 +1093,8 @@ void RefreshQuerControlLayoutAndClearText() {
     return;
   }
   querControl->AssertValid();
-  int layoutCaptureBuffer = 0;
-  querControl->CaptureLayoutF0(&layoutCaptureBuffer, 0);
+  CPoint layoutPosition(0, 0);
+  querControl->Locate(layoutPosition, 0);
   querControl->SetHoverHelpText(g_szEmptyString);
 }
 
@@ -1267,7 +1256,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
 
   TIncludeView* packet = ::new TIncludeView();
   CString emptyText(g_szEmptyString);
-  int anchorPoint[2] = {0, 0};
+  CPoint anchorPoint(0, 0);
   packet->BuildTurnEventFactoryPacket(nullptr, mainView, newCode, anchorPoint, &emptyText, 1);
   packet->DoPostCreate(0);
   packet->controlTag = kControlTagIncl; // 'Incl'
@@ -1526,11 +1515,7 @@ void TViewMgr::RefreshTechnologyStorePageAndHudText(int nationSlot) {
 void TViewMgr::ShowAbilityStatusReport(int abilityIndex) {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
   TextStyle style;
-  char* styleRefBytes = reinterpret_cast<char*>(&style.textColor);
-  styleRefBytes[0] = 0;
-  styleRefBytes[1] = 0;
-  styleRefBytes[2] = 0;
-  styleRefBytes[3] = 0;
+  style.textColor = 0;
   CString statusText;
   CString prefix;
   TPicture* mainControl =
@@ -2392,9 +2377,9 @@ void TViewMgr::ShowBuildingExpansionDialog(short buildingSlotId, TCity* city,
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf54);
   }
   expansionView->StuffValues(buildingSlotId, city, productionView);
-  POINT placement;
+  CPoint placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->Locate(placement, 0);
   int dialogAction = node->PoseModally();
   expansionView->DoClosingAction(static_cast<unsigned long>(dialogAction));
   node->Close();

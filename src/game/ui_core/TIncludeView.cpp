@@ -22,8 +22,8 @@ IMPLEMENT_DYNCREATE(TIncludeView, TView)
 // FUNCTION: IMPERIALISM 0x0048cd70
 TIncludeView::TIncludeView()
     : TView(), turnEventCode60(-1), padding62(0), labelText6c(), completionFlag70(1), padding72(0) {
-  anchorPoint64[0] = 0;
-  anchorPoint64[1] = 0;
+  anchorPoint64.x = 0;
+  anchorPoint64.y = 0;
   CString empty(g_szEmptyString);
   labelText6c = empty;
   field04 = 0;
@@ -36,7 +36,7 @@ TIncludeView::~TIncludeView() {}
 
 // FUNCTION: IMPERIALISM 0x0048cf10
 void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* mainView,
-                                               short eventCode, int* anchorPoint,
+                                               short eventCode, const CPoint& anchorPoint,
                                                CString* labelText, int flag) {
   if (mainView != nullptr) {
     nativeWindow50 = mainView->nativeWindow50;
@@ -45,8 +45,8 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* ma
   field04 = 1;
   field08 = 1;
   linkedChildHandler = mainView;
-  ownerLocalX = g_turnEventDialogAnchorPoint[0];
-  ownerLocalY = g_turnEventDialogAnchorPoint[1];
+  ownerLocalX = g_turnEventDialogAnchorPoint.x;
+  ownerLocalY = g_turnEventDialogAnchorPoint.y;
   frameWidth34 = mainView->frameWidth34;
   frameHeight38 = mainView->frameHeight38;
   if (mainView != nullptr) {
@@ -54,8 +54,8 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* ma
   }
   this->resourceContext = resourceContext;
   turnEventCode60 = eventCode;
-  anchorPoint64[0] = anchorPoint[0];
-  anchorPoint64[1] = anchorPoint[1];
+  anchorPoint64.x = anchorPoint.x;
+  anchorPoint64.y = anchorPoint.y;
   labelText6c = *labelText;
   completionFlag70 = static_cast<short>(flag);
 }
@@ -66,8 +66,9 @@ void TIncludeView::DoPostCreate(int arg) {
   if (turnEventCode60 != -1 && g_pTurnEventDialogFactoryRegistry != nullptr) {
     TurnEventId eventCode = DecodeTurnEventCode(turnEventCode60);
     if (ownerContext != nullptr) {
-      CaptureLayoutF0(g_turnEventDialogAnchorPoint, 0);
-      CaptureLayout(&ownerContext->frameWidth34, 0);
+      Locate(g_turnEventDialogAnchorPoint, 0);
+      CPoint ownerSize(ownerContext->frameWidth34, ownerContext->frameHeight38);
+      Resize(ownerSize, 0);
     }
     TView* dialog = g_pTurnEventDialogFactoryRegistry->InvokeDialogFactoryFromPacket(
         0, this, eventCode, g_turnEventDialogAnchorPoint);

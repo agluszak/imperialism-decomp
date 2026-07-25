@@ -29,7 +29,7 @@ public:
   // their own disassembly reads/writes this+0x94/0x96/0x98/0xb0..0xbf at exactly
   // TMapUberPicture's real field offsets (invalidationFlag94/activeUnitCategoryIndex96/
   // orderEntryContext98/categoryPages[4]), and dispatches through TMapUberPicture's own
-  // vtable slots (0x58 GetWindow, 0x74/CaptureLayoutF0 on categoryPages[] entries) --
+  // vtable slots (0x58 GetWindow, 0x74/Locate on categoryPages[] entries) --
   // not a further-derived, RTTI-invisible TToolBarCluster subclass as previously
   // theorized. TWorldView.cpp's ownerContext (also retyped to TMapUberPicture*) reaches
   // the same object independently, corroborating this.
