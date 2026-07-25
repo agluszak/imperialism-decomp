@@ -2367,7 +2367,7 @@ address|matching|name
 0x4d8c50|0.9767441860465116|TGreatPower
 0x4d8cc0|0.47844827586206895|TGreatPower::IGreatPower
 0x4d9160|1.0|TGreatPower::Free
-0x4d92e0|0.43267776096822996|TGreatPower::ReadFrom
+0x4d92e0|0.7293754818812644|TGreatPower::ReadFrom
 0x4d9c70|0.8169014084507042|TGreatPower::WriteTo
 0x4da3e0|0.6308724832214765|TGreatPower::ReadCoreFieldsFromStream
 0x4da500|0.3917525773195876|TGreatPower::WriteCoreFieldsToStream
