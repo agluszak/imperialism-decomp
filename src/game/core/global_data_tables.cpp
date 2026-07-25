@@ -581,6 +581,8 @@ TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext = 0;
 // TCitySiteView::DoPostCreate after allocating its own surface.
 // GLOBAL: IMPERIALISM 0x006a3450
 TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext = 0;
+// GLOBAL: IMPERIALISM 0x006a3454
+short g_MapTileCacheMissCount6A3454;
 // Scratch DIB used only while TColorKeyPicture composites its tagged background and
 // transparent foreground before presenting the result.
 // GLOBAL: IMPERIALISM 0x006a4194
@@ -764,6 +766,8 @@ short g_nCityBuildingSlotYOffsetIndex = 1;
 short g_nCityBuildingDrawXOffsetIndex = 1;
 // Per-(building-slot,action) resource/picture ids, 3 shorts per table row (TCityProductionView
 // DoPostCreate action-control builder). Row index = (level-1) + slot loop counter.
+// GLOBAL: IMPERIALISM 0x0064faa8
+char* g_pCityBuildingHoverEmptyText_0064faa8 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x0064fad0
 short g_awCityBuildingActionResourceIds[72] = {
     12, 0,  0,  12, 14, 0,  11, 0,  0, 12, 0,  0, 12, 12, 0, 12, 12, 0,  24, 24, 0, 24, 24, 0,
@@ -775,6 +779,8 @@ short g_nCityBuildingSlotXOffsetIndex = 0;
 // GLOBAL: IMPERIALISM 0x006a2ac0
 short g_nCityBuildingDrawYOffsetIndex = 0;
 
+// GLOBAL: IMPERIALISM 0x006a2980
+CRect g_cityBuildingHoverFallbackRect_006a2980;
 // GLOBAL: IMPERIALISM 0x006a2998
 CRect g_aCityBuildingHoverSelectionRects[16];
 
@@ -1681,6 +1687,8 @@ extern "C" const char g_szDoubleQuote[] = "\"";
 // GLOBAL: IMPERIALISM 0x0069a7f8
 extern "C" const char s_SourcePathUTestDialogs_0069A7F8[] = "D:\\Ambit\\Cross\\UTestDialogs.cpp";
 extern "C" const char s_SourcePathUCityViews_00696650[] = "D:\\Ambit\\Cross\\UCityViews.cpp";
+// GLOBAL: IMPERIALISM 0x00696508
+short g_shipyardQueueIconLeftBySlot[8] = {4, 4, 3, 2, 4, 4, 3, 2};
 extern "C" const char s_SourcePathUArmyViews_00695858[] = "D:\\Ambit\\Cross\\UArmyViews.cpp";
 extern "C" const char s_SourcePathUOceanViews_00698650[] = "D:\\Ambit\\Cross\\UOceanViews.cpp";
 // GLOBAL: IMPERIALISM 0x00696ae0

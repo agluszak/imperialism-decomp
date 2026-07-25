@@ -43,6 +43,10 @@ const int kControlTagFire =
     IMPERIALISM_FOURCC('f', 'i', 'r', 'e'); // TMultiplayerMgr.cpp, TTacticalBattle.cpp
 const int kControlTagFshp =
     IMPERIALISM_FOURCC('f', 's', 'h', 'p'); // TBattleReportView.cpp; 1 Mac screen(s)
+const int kControlTagFlgL =
+    IMPERIALISM_FOURCC('f', 'l', 'g', 'L'); // detailed battle report left flag
+const int kControlTagFlgR =
+    IMPERIALISM_FOURCC('f', 'l', 'g', 'R'); // detailed battle report right flag
 const int kControlTagGowy =
     IMPERIALISM_FOURCC('g', 'o', 'w', 'y'); // flag-options "go/continue" hotspot
 const int kControlTagHdr0 = IMPERIALISM_FOURCC(
@@ -54,6 +58,10 @@ const int kControlTagLose =
     IMPERIALISM_FOURCC('l', 'o', 's', 'e'); // TClientGreatPower.cpp, TMultiplayerMgr.cpp
 const int kControlTagMine =
     IMPERIALISM_FOURCC('m', 'i', 'n', 'e'); // TMultiplayerMgr.cpp, TTacticalBattle.cpp
+const int kControlTagNatL =
+    IMPERIALISM_FOURCC('n', 'a', 't', 'L'); // detailed battle report left nation label
+const int kControlTagNatR =
+    IMPERIALISM_FOURCC('n', 'a', 't', 'R'); // detailed battle report right nation label
 const int kControlTagMusi = IMPERIALISM_FOURCC('m', 'u', 's', 'i'); // music-volume scrollbar
 const int kControlTagNavy =
     IMPERIALISM_FOURCC('n', 'a', 'v', 'y'); // TBatRepDetLine.cpp, TNavyMgr.cpp; 1 Mac screen(s)

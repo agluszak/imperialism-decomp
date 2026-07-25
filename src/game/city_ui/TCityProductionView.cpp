@@ -20,6 +20,7 @@
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TMacViewMgr.h"
 #include "game/ui_widgets/TPlacard.h"
+#include "game/ui_widgets/TInfoBarText.h"
 #include "game/city/TPopulationMgr.h"
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/ui_core/TStaticText.h"
@@ -362,8 +363,9 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
 void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                               RgnHandle hitArg) {
   CTemporaryRegion scopedRegion;
-  CString hoverText;
-  CString scratch;
+  CPoint hitPoint = *point;
+  CString firstQuantityText;
+  CString secondQuantityText;
 
   // Outside the city-backdrop hit area: fall back to the base child hit-test.
   if (point->y < 0x24 || point->y > 0x1e2 || point->x < 0x33 || point->x > 0x24d) {
@@ -378,27 +380,102 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
       break;
     }
     short slot = g_anCityBuildingSlotOrder[slotIndex];
-    if (PtInRgn(point, buildingClipRegionsEC[slot]) == 0) {
+    if (PtInRgn(&hitPoint, buildingClipRegionsEC[slot]) == 0) {
       continue;
     }
 
+    CString hoverText;
+    CString qualifierText;
+    CString assembledText;
+    CString templateText;
+
     TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
     TCity* city = (nation != 0) ? nation->city : 0;
-    city->GetNextBuildingType(slot);
+    short nextBuildingType = city->GetNextBuildingType(slot);
     bool available = city->IsCapacityCenter(slot) != 0;
 
-    if (slot == 6 || slot == 0xb) {
+    bool restrictedSlot = slot == 6 || slot == 0xb;
+    bool technologyAvailable = true;
+    if (restrictedSlot) {
       short activeNation = g_pSimMgr->GetActiveNationId();
       if (g_pCityOrderCapabilityState->orderCapRows277[activeNation].techStatusByTechId[0x13] !=
           2) {
+        technologyAvailable = false;
         available = false;
       }
     }
 
+    if (technologyAvailable) {
+      g_pSimMgr->GetString(0x2719, slot, &hoverText);
+      if (available) {
+        if (slot == 0xb) {
+          if (nextBuildingType == 0) {
+            g_pSimMgr->GetString(0x2734, city->powerPlantUpgradeQueuedFlag04 != 0 ? 0x19 : 0x1a,
+                                 &templateText);
+            scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
+                                   static_cast<LPCSTR>(hoverText));
+          } else {
+            firstQuantityText.Format(g_szDecimalFormat, city->orderSlotsE4[0x34]->quantityField04);
+            g_pSimMgr->GetString(0x2734, 0x18, &qualifierText);
+            g_pSimMgr->GetString(0x2734, 0x1d, &templateText);
+            scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
+                                   static_cast<LPCSTR>(hoverText),
+                                   static_cast<LPCSTR>(firstQuantityText));
+          }
+        } else if (nextBuildingType == 0) {
+          TProductionOrder* order = city->orderSlotsE4[slot + 0x35];
+          g_pSimMgr->GetString(0x2734, order->quantityField04 > 0 ? 0x19 : 0x1a, &templateText);
+          scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
+                                 static_cast<LPCSTR>(hoverText));
+        } else {
+          TProductionOrder* order = city->orderSlotsE4[slot + 0x35];
+          short buildingType = static_cast<short>(city->GetBuildingType(slot));
+          firstQuantityText.Format(g_szDecimalFormat,
+                                   buildingType - city->productionAccum1fc[slot]);
+          secondQuantityText.Format(g_szDecimalFormat, buildingType);
+          g_pSimMgr->GetString(0x2734, 0x18, &qualifierText);
+          g_pSimMgr->GetString(0x2734, order->quantityField04 > 0 ? 0x1c : 0x1b, &templateText);
+          scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
+                                 static_cast<LPCSTR>(hoverText),
+                                 static_cast<LPCSTR>(firstQuantityText),
+                                 static_cast<LPCSTR>(secondQuantityText));
+        }
+        hoverText = assembledText;
+      }
+      g_pCursorControlPanel->SetTextAndLayoutRect(hoverText,
+                                                  &g_aCityBuildingHoverSelectionRects[slot]);
+    }
+
+    if (restrictedSlot && technologyAvailable) {
+      g_pCursorControlPanel->SetTextAndLayoutRect(CString(g_pCityBuildingHoverEmptyText_0064faa8),
+                                                  &g_aCityBuildingHoverSelectionRects[slot]);
+    }
+
     if (available) {
-      g_pSimMgr->GetString(0x2734, slot, &hoverText);
+      if (selectedBuildingSlotA4 != slot && selectedBuildingSlotA4 != -1) {
+        InvalidateOffsetRegionUsingChildClipRect(buildingClipRegionsEC[selectedBuildingSlotA4]);
+      }
+      if (city->GetNextBuildingType(slot) == 0) {
+        ScopedMapQuickDrawContext drawContext(this);
+        SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
+        GetClip(scopedRegion.tempRgn);
+        SetClip(buildingClipRegionsEC[slot]);
+        SetQuickDrawFillColor(0);
+        QDFrameRgn(buildingClipRegionsEC[slot]);
+        SetClip(scopedRegion.tempRgn);
+      }
+      selectedBuildingSlotA4 = slot;
     }
     handled = true;
+  }
+
+  if (!handled) {
+    g_pCursorControlPanel->SetTextAndLayoutRect(CString(g_pCityBuildingHoverEmptyText_0064faa8),
+                                                &g_cityBuildingHoverFallbackRect_006a2980);
+    if (selectedBuildingSlotA4 != -1) {
+      InvalidateOffsetRegionUsingChildClipRect(buildingClipRegionsEC[selectedBuildingSlotA4]);
+      selectedBuildingSlotA4 = -1;
+    }
   }
 }
 

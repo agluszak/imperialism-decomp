@@ -35,6 +35,8 @@ extern short g_nCityBuildingDrawXOffsetIndex;
 extern short g_nCityBuildingSlotXOffsetIndex;
 extern short g_nCityBuildingDrawYOffsetIndex;
 extern short g_awCityBuildingActionResourceIds[72];
+extern char* g_pCityBuildingHoverEmptyText_0064faa8;
+extern CRect g_cityBuildingHoverFallbackRect_006a2980;
 
 // Per-building-slot hover/hit-test rects (indexed by slotId, see
 // TToolBarCluster::HandleCityBuildingHoverSelection), built by

@@ -18,6 +18,9 @@ extern short g_cityActionCapabilityGroupBySlot_00650670[32];
 extern short g_cityBuildingSoundCueOffsets[16];
 
 extern "C" {
+// Horizontal inset of each ship icon inside its eight shipyard queue buttons.
+extern short g_shipyardQueueIconLeftBySlot[8]; // @ 0x696508
+
 extern float g_AiDevelopmentResourceBudgetScale_00650758;
 
 extern "C" const char s_SourcePathUCityDialogs_006962E8[];

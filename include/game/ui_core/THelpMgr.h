@@ -24,7 +24,7 @@ struct HelpSetRecord {
   short contextId;
   short rank;
   unsigned char flagByte;
-  unsigned char padByte;
+  // The retail initializer leaves the natural alignment byte after this field untouched.
   short topicCount;
 };
 

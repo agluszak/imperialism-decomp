@@ -1,6 +1,7 @@
 #pragma once
 
 #include "compat.h"
+#include "game/military/TArmyMgr.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_military.h"
 
@@ -61,13 +62,7 @@ ASSERT_SIZE(BattleReportArmyDetailPayload, 0x28);
 ASSERT_SIZE(BattleReportDetailPayload, 0x28);
 ASSERT_SIZE(BattleReportDetailRecord, 0x2c);
 
-// Only the region consumed by TBattleUnitsView is modeled. The participant detail
-// counts and arrays are indexed in lockstep by participantIndex.
-struct BattleRecord {
-  unsigned char padding00[4];
-  int battleType04;
-  unsigned char padding08[0x242];
-  short participantDetailCounts24a[2];
-  unsigned char padding24e[2];
-  BattleReportDetailRecord* participantDetails250[2];
-};
+// The Mac oracle calls the 0x268-byte TArmyMgr report record BattleRecord. Keep that
+// identity shared with the already recovered Windows layout instead of maintaining a
+// second partial struct for TBattleUnitsView.
+typedef MapContextActionRecord BattleRecord;

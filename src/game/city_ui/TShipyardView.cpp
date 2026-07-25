@@ -4,6 +4,7 @@
 
 #include "game/assets/TAssetMgr.h"
 #include "game/ui_core/TCluster.h"
+#include "game/app/TOverlayRadioButton.h"
 #include "game/city/TCity.h"
 #include "game/city_ui/TCityProductionView.h"
 #include "game/ui_core/TControl.h"
@@ -17,6 +18,7 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/globals/prelude.h"
+#include "game/globals/city_ui_globals.h"
 #include "game/globals/nation_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
@@ -61,9 +63,21 @@ void TShipyardView::Free() {
 // Rebuilds the 8-slot ship-build queue UI: caches the strategic-map view system's
 // active-view pointer and a bitmap surface for resource id 0x264f, then for each of
 // eight 'but0'-'but7' queue-slot buttons clears its cached value and resets the
-// button plus its embedded 'plus'/'minu' stepper controls to the disabled/off state.
+// button, its paired 'clu0'-'clu7' quantity cluster, and the cluster's embedded
+// 'plus'/'minu' stepper controls to the disabled/off state.
 // FUNCTION: IMPERIALISM 0x004c8390
 void TShipyardView::DoStartup() {
+  // 14-byte style buffer: the 10-byte descriptor plus 4 explicitly zeroed tail bytes.
+  // Retail clears the tail at function entry and reuses the same descriptor throughout.
+  struct {
+    TextStyle desc;
+    unsigned char tail[4];
+  } style;
+  style.tail[0] = 0;
+  style.tail[1] = 0;
+  style.tail[2] = 0;
+  style.tail[3] = 0;
+
   productionView98 = g_pStrategicMapViewSystem->activeCityProductionView04;
   unresolvedZeroB4 = 0;
   iconSurfaceB8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
@@ -75,30 +89,69 @@ void TShipyardView::DoStartup() {
     slotButton->SetState(0, 1);
     buildQueueSlotValues[slotIndex] = 0;
 
+    TControl* queueSlot =
+        static_cast<TControl*>(ResolveControlByTag(kControlTagClu0 + slotIndex)); // 'clu0'-'clu7'
+    queueSlot->SetEnabled(0, 1);
+    queueSlot->SetState(0, 1);
+
     TControl* plusButton =
-        static_cast<TControl*>(slotButton->ResolveControlByTag(kControlTagPlus)); // 'plus'
+        static_cast<TControl*>(queueSlot->ResolveControlByTag(kControlTagPlus)); // 'plus'
     plusButton->AssertValid();
     plusButton->SetState(0, 0);
 
     TControl* minusButton =
-        static_cast<TControl*>(slotButton->ResolveControlByTag(kControlTagMinu)); // 'minu'
+        static_cast<TControl*>(queueSlot->ResolveControlByTag(kControlTagMinu)); // 'minu'
     minusButton->AssertValid();
     minusButton->SetState(0, 0);
   }
 
-  // 14-byte style buffer: the 10-byte descriptor plus 4 explicitly zeroed tail bytes (the
-  // original zeroes them once before the first Build call) -- same idiom as
-  // TBattleReportView::DoPostCreate.
-  struct {
-    TextStyle desc;
-    unsigned char tail[4];
-  } style;
-  style.tail[0] = 0;
-  style.tail[1] = 0;
-  style.tail[2] = 0;
-  style.tail[3] = 0;
-
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
+  for (short queueIndex = 0; queueIndex < 8; ++queueIndex) {
+    TShipOrder* order = city94->shipOrderSlots[queueIndex];
+    if (order->resourceTypeIndex48 != 0) {
+      TOverlayRadioButton* slotButton = static_cast<TOverlayRadioButton*>(
+          ResolveControlByTag(kControlTagBut0 + queueIndex)); // 'but0'-'but7'
+      slotButton->SetEnabled(1, 1);
+      slotButton->SetState(1, 1);
+
+      short shipType = order->resourceTypeIndex48;
+      buildQueueSlotValues[queueIndex] = shipType;
+      slotButton->overlaySurfaceContext98 = iconSurfaceB8;
+      short sourceLeft = shipType;
+      sourceLeft *= 0x50;
+      sourceLeft -= 0x50;
+      slotButton->overlaySrcRect9c.left = sourceLeft;
+      slotButton->overlaySrcRect9c.top = 0;
+      slotButton->overlaySrcRect9c.right = slotButton->overlaySrcRect9c.left + 0x50;
+      slotButton->overlaySrcRect9c.bottom = 0x2d;
+      slotButton->overlayDstRectAc.left = g_shipyardQueueIconLeftBySlot[queueIndex];
+      slotButton->overlayDstRectAc.top = 0xc;
+      slotButton->overlayDstRectAc.right = slotButton->overlayDstRectAc.left + 0x50;
+      slotButton->overlayDstRectAc.bottom = 0x39;
+
+      TControl* queueSlot = static_cast<TControl*>(
+          ResolveControlByTag(kControlTagClu0 + queueIndex)); // 'clu0'-'clu7'
+      queueSlot->SetEnabled(1, 1);
+
+      TControl* plusButton =
+          static_cast<TControl*>(queueSlot->ResolveControlByTag(kControlTagPlus)); // 'plus'
+      plusButton->AssertValid();
+      plusButton->SetState(1, 0);
+
+      TControl* minusButton =
+          static_cast<TControl*>(queueSlot->ResolveControlByTag(kControlTagMinu)); // 'minu'
+      minusButton->AssertValid();
+      minusButton->SetState(1, 0);
+
+      TNumberText* quantity =
+          static_cast<TNumberText*>(queueSlot->ResolveControlByTag(kControlTagNumb)); // 'numb'
+      quantity->SetState(0, 0);
+      quantity->SetControlValue(order->quantityField04, 1);
+      quantity->InstallTextStyle(style.desc, 1);
+    }
+  }
+
+  BuildUiTextStyleDescriptor(&style.desc, 0, 0x18, 0x2b6b);
   TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
   title->AssertValid();
   title->InstallTextStyle(style.desc, 1);
@@ -123,10 +176,11 @@ void TShipyardView::DoStartup() {
   description->AssertValid();
   description->InstallTextStyle(style.desc, 1);
 
-  selectedRequirementRow = 0;
   selectedStatsRowA2 = 0;
+  selectedRequirementRow = 0;
   SetShip(buildQueueSlotValues[0]);
 
+  BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
   // 'sele' is a TCluster (confirmed by cross-referencing turn_event_dialog_factory.cpp,
   // which builds a real TCluster with controlTag 'sele'); byte 0x1c8 matches
   // TCluster::SetSelectedChildTagAndRefresh(int) exactly (1 arg, RET 4).
