@@ -8904,7 +8904,6 @@ address|name|symbol|size|type|prototype|provenance
 698b0c|g_szLowercaseX|||global||
 698b10|g_nTurnCooldownSideFlag00698B10|||global||
 698b18|g_aDefaultNationSetupPolicyProfiles|||global||
-698b1a|g_anScenarioNationSetupTable_00698B1A|||global||
 698b50|g_apfnScenarioScriptInstructionHandlers|||global||
 698bec|g_szConanCheatFileName_00698BEC|||global||
 698bf4|s_PictWvGobPathFormat_00698BF4|||global||
@@ -9717,7 +9716,6 @@ address|name|symbol|size|type|prototype|provenance
 6a4264|g_SetupScreensAssertFlag_006A4264|||global||
 6a4268|g_pActiveRandomMapSetupPicture006A4268|||global||
 6a4280|g_apSecondaryNationStateSlots|||global||
-6a429c|g_apNationAuxRuntimeStateSlots|||global||
 6a42dc|g_bRandomMapDeveloperCheatFlag|||global||
 6a4310|g_apTerrainTypeDescriptorTable|||global||
 6a432c|g_apMinorNationCapabilityObjects|||global||
