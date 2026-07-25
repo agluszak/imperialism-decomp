@@ -18,12 +18,11 @@
 
 namespace {
 
-// Inline "ensure-and-address" accessor for the overlay-quad table, matching the original's
-// inlined grow-on-demand element access (the grow itself is the real OverStretch call). Used
-// for the comparison reads; the metric/build/invalidate sites go through operator[] instead.
-inline Seapoint* QuadEnsureAt(unsigned int index) {
-  SeapointStretch& t = g_seapointQuadTable_006a3478;
-  return &t[index];
+// Code-generation adapter for the sites where retail exhausts VC5's inline budget and
+// calls stretch<Seapoint>::operator[] out of line. Comparison reads below intentionally
+// use quad[index] directly because retail inlines those earlier accesses.
+inline Seapoint* QuadAccessForCall(unsigned int index) {
+  return &g_seapointQuadTable_006a3478[index];
 }
 
 } // namespace
@@ -43,25 +42,28 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
     return;
   }
   do {
-    if (QuadEnsureAt(i)->coord00 == -1) {
+    unsigned char isInvalid = quad[i].coord00 == -1;
+    if (isInvalid) {
       i = i + 1;
       continue;
     }
-    QuadEnsureAt(i);
-    QuadEnsureAt(i);
+    quad[i];
+    quad[i];
     unsigned int j = i + 1;
     unsigned int bestPrimary = 0xffffffff;
     unsigned int bestSecondary = 0xffffffff;
     if (j < static_cast<unsigned int>(quad.Count())) {
       do {
-        Seapoint* a = QuadEnsureAt(i);
-        Seapoint* b = QuadEnsureAt(j);
-        if (a->lo04 == b->lo04 && a->hi08 == b->hi08) {
+        Seapoint* a = &quad[i];
+        Seapoint* b = &quad[j];
+        unsigned char sameEdge = a->lo04 == b->lo04 && a->hi08 == b->hi08;
+        if (sameEdge) {
           int dirDelta = ((b->f0c - a->f0c) + 6) % 6;
-          if (dirDelta >= 2 && dirDelta <= 4) {
+          unsigned char isPrimaryDirection = dirDelta >= 2 && dirDelta <= 4;
+          if (isPrimaryDirection) {
             if (bestPrimary != 0xffffffff) {
-              Seapoint* pa = QuadEnsureAt(i);
-              Seapoint* pb = QuadEnsureAt(j);
+              Seapoint* pa = &quad[i];
+              Seapoint* pb = &quad[j];
               int rowDelta = pa->coord00 / 0xd8 - pb->coord00 / 0xd8;
               if (rowDelta < 0) {
                 rowDelta = -rowDelta;
@@ -72,15 +74,18 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
               }
               float candidateDist = static_cast<float>(
                   sqrt(static_cast<double>(colDelta * colDelta * rowDelta * rowDelta)));
-              if (quad[bestPrimary].WrappedDeltaMetric(&quad[i]) <= candidateDist) {
+              if (QuadAccessForCall(bestPrimary)->WrappedDeltaMetric(QuadAccessForCall(i)) <=
+                  candidateDist) {
                 goto next;
               }
             }
             bestPrimary = j;
           } else if (bestPrimary == 0xffffffff) {
             if (bestSecondary != 0xffffffff) {
-              float candidateDist = static_cast<float>(quad[j].WrappedDeltaMetric(&quad[i]));
-              if (quad[bestSecondary].WrappedDeltaMetric(&quad[i]) <= candidateDist) {
+              float candidateDist = static_cast<float>(
+                  QuadAccessForCall(j)->WrappedDeltaMetric(QuadAccessForCall(i)));
+              if (QuadAccessForCall(bestSecondary)->WrappedDeltaMetric(QuadAccessForCall(i)) <=
+                  candidateDist) {
                 goto next;
               }
             }
@@ -95,20 +100,20 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
       bestPrimary = bestSecondary;
     }
     if (bestPrimary == 0xffffffff) {
-      Seapoint* p = &quad[i];
+      Seapoint* p = QuadAccessForCall(i);
       p->coord00 = -1;
       p->hi08 = -1;
       p->lo04 = -1;
     } else {
       SeaSegment tmp;
-      tmp.InitFromPoints(&quad[bestPrimary], &quad[i]);
+      tmp.InitFromPoints(QuadAccessForCall(bestPrimary), QuadAccessForCall(i));
       stretch<SeaSegment>* out = &seg;
       out->Add(tmp);
-      Seapoint* pi = &quad[i];
+      Seapoint* pi = QuadAccessForCall(i);
       pi->coord00 = -1;
       pi->hi08 = -1;
       pi->lo04 = -1;
-      Seapoint* pm = &quad[bestPrimary];
+      Seapoint* pm = QuadAccessForCall(bestPrimary);
       pm->coord00 = -1;
       pm->hi08 = -1;
       pm->lo04 = -1;
