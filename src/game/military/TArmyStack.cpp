@@ -83,27 +83,26 @@ void TArmyStack::ReadFrom(TStream* stream) {
     short unitTag;
     stream->ReadBytes(&unitTag, 2);
 
+    // Linked where the match is found, not after the loop behind a flag -- see the
+    // found-flag note in the codegen-shapes skill; the sibling
+    // AddFirstCountryUnitOfTypeToStack went 57.89% -> 100% on exactly this.
     TSortedList* unitList = g_apTerrainTypeDescriptorTable[categoryFlag8]->militaryUnitList44;
-    TUnit* foundUnit = 0;
     CIterator cursor(unitList);
     for (TUnit* unit = static_cast<TUnit*>(cursor.Reset()); cursor.More();
          unit = static_cast<TUnit*>(cursor.Advance())) {
-      if (unit->field_1A == unitTag) {
-        foundUnit = unit;
-        break;
+      if (unit->field_1A != unitTag) {
+        continue;
       }
-    }
-
-    if (foundUnit != 0) {
       TArmyStackUnitNode* node = new TArmyStackUnitNode();
       if (node == 0) {
         MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
         TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0xbeb);
       }
-      node->unit = foundUnit;
+      node->unit = unit;
       node->next = head14;
       ++fieldA;
       head14 = node;
+      break;
     }
   }
   cursor18 = 0;
