@@ -2993,7 +2993,7 @@ address|matching|name
 0x5005e0|0.45714285714285713|THelpMgr::THelpMgr
 0x500630|1.0|THelpMgr::`scalar deleting destructor'
 0x500660|1.0|THelpMgr::~THelpMgr
-0x500680|0.09482758620689655|THelpMgr::IHelpMgr
+0x500680|0.9528535980148883|THelpMgr::IHelpMgr
 0x500f10|1.0|THelpMgr::ResetHelpSetRanksAndFlags
 0x500f50|1.0|THelpMgr::ReadFrom
 0x500fe0|1.0|THelpMgr::WriteTo
