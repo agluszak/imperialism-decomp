@@ -950,6 +950,16 @@ def main(argv: list[str] | None = None) -> int:
     print("A divergence is a save-file desync candidate. A low reccmp score with no")
     print("divergence is a codegen/EH-shape issue and cannot corrupt a load.")
     print()
+    print("The unprovable widths are NOT an audit gap to chase by hand: a sizeof(...) or")
+    print("count*N becomes a literal in the compiled push, so reccmp compares it against")
+    print("the original's immediate directly. A wrong sizeof shows up as an operand")
+    print("mismatch in `just compare`, not here. Verified by hand on TCity::ReadFrom")
+    print("(13 of them; every sizeof matched the original's literal exactly).")
+    print()
+    print("What this audit still cannot see is a wrong VALUE at the right width -- a")
+    print("length prefix that does not equal the number of records that follow it. That")
+    print("class needs the runtime roundtrip test (see imperialism-decomp-cinw.19).")
+    print()
 
     for row in sorted(divergent, key=lambda r: r["index"]):
         score = f"{row['score']:.1f}%" if row["score"] is not None else "   -  "
