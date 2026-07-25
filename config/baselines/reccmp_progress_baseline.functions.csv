@@ -1703,7 +1703,7 @@ address|matching|name
 0x4adc80|1.0|TBattleReportView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x4adcb0|1.0|TBattleReportView::DoMouseCommand
 0x4ade00|1.0|TBattleReportView::Draw
-0x4ade30|0.8743718592964824|TBattleReportView::RenderMapContextActionMarkers
+0x4ade30|0.9045226130653267|TBattleReportView::RenderMapContextActionMarkers
 0x4adfc0|0.1228600201409869|TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels
 0x4ae990|0.34615384615384615|CString::CString(unsigned short const *)
 0x4ae9d0|0.6666666666666666|TBattleDetailBook::CreateObject
