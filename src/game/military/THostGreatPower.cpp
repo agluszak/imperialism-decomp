@@ -36,7 +36,7 @@ void THostGreatPower::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x00541040
 void THostGreatPower::WriteTo(TStream* stream) {
   TGreatPower::WriteTo(stream);
-  stream->WriteBytesSlot78(&nationLostEventDispatched, 1);
+  stream->WriteBytes(&nationLostEventDispatched, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00541080

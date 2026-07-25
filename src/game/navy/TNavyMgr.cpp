@@ -366,7 +366,7 @@ void TNavyMgr::WriteToFilterously(TStream* stream, short nationFilter) {
       ++matchCount;
     }
   }
-  stream->WriteBytesSlot78(&matchCount, 2);
+  stream->WriteBytes(&matchCount, 2);
   tail = g_pNavyPrimaryOrderListHead;
   if (tail != 0) {
     for (TShip* older2 = tail->next; older2 != 0; older2 = older2->next) {
@@ -384,7 +384,7 @@ void TNavyMgr::WriteToFilterously(TStream* stream, short nationFilter) {
       ++matchCount;
     }
   }
-  stream->WriteBytesSlot78(&matchCount, 2);
+  stream->WriteBytes(&matchCount, 2);
   for (TAdmiral* admiral2 = g_pNavySecondaryOrderListHead; admiral2 != 0;
        admiral2 = admiral2->next) {
     if (nationFilter == -1 || nationFilter == admiral2->nationSlot) {
@@ -399,7 +399,7 @@ void TNavyMgr::WriteToFilterously(TStream* stream, short nationFilter) {
       ++matchCount;
     }
   }
-  stream->WriteBytesSlot78(&matchCount, 2);
+  stream->WriteBytes(&matchCount, 2);
   for (TTaskForce* order2 = orderQueueHead; order2 != 0; order2 = order2->nextForce) {
     if (nationFilter == -1 || nationFilter == order2->nation) {
       order2->WriteTo(stream);

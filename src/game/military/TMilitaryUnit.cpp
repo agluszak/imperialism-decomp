@@ -74,9 +74,9 @@ static void SwapAdjacentBytesInShortArray(short* entries, int pairCount) {
 void TMilitaryUnit::ReadFrom(TStream* stream) {
   TUnit::ReadFrom(stream);
   // name24 (CString) is read here in the original via TStream slot 0x70
-  // (streamSlot70, "read shared string with capacity"): args (&name24, 0x20)
+  // (ReadSharedString, "read shared string with capacity"): args (&name24, 0x20)
   // verified against 0x5c2fd0.
-  stream->streamSlot70(&name24, 0x20);
+  stream->ReadSharedString(&name24, 0x20);
   stream->ReadBytes(orderTargetTiles28, 6);
   SwapAdjacentBytesInShortArray(orderTargetTiles28, 3);
   stream->ReadBytes(orderTargetTilesMirror2E, 6);
@@ -90,14 +90,14 @@ void TMilitaryUnit::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x005c30a0
 void TMilitaryUnit::WriteTo(TStream* stream) {
   TUnit::WriteTo(stream);
-  stream->streamSlotAc(&name24);
+  stream->WriteSharedString(&name24);
   for (int i = 0; i < 3; ++i) {
     short swapped = orderTargetTiles28[i];
     unsigned char* bytes = reinterpret_cast<unsigned char*>(&swapped);
     unsigned char tmp = bytes[0];
     bytes[0] = bytes[1];
     bytes[1] = tmp;
-    stream->WriteBytesSlot78(&swapped, 2);
+    stream->WriteBytes(&swapped, 2);
   }
   for (int j = 0; j < 3; ++j) {
     short swapped = orderTargetTilesMirror2E[j];
@@ -105,12 +105,12 @@ void TMilitaryUnit::WriteTo(TStream* stream) {
     unsigned char tmp = bytes[0];
     bytes[0] = bytes[1];
     bytes[1] = tmp;
-    stream->WriteBytesSlot78(&swapped, 2);
+    stream->WriteBytes(&swapped, 2);
   }
-  stream->WriteBytesSlot78(&field_34, 2);
-  stream->WriteBytesSlot78(&field_36, 2);
-  stream->WriteBytesSlot78(&field_38, 2);
-  stream->WriteBytesSlot78(&field_3A, 2);
+  stream->WriteBytes(&field_34, 2);
+  stream->WriteBytes(&field_36, 2);
+  stream->WriteBytes(&field_38, 2);
+  stream->WriteBytes(&field_3A, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x005c3190

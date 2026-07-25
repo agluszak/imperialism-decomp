@@ -403,8 +403,8 @@ void TDiplomacyMgr::WriteTo(TStream* stream) {
   WriteShortArrayElems(stream, relationTurnStampMatrixFe0, kNationPairMatrixEntries);
   WriteShortArrayElems(stream, relationCodeMatrix04, kDiplomacyPairMatrixEntries);
 
-  stream->WriteBytesSlot78(pendingPolicyCodeMatrix304, sizeof(pendingPolicyCodeMatrix304));
-  stream->WriteBytesSlot78(&proposalDispatchCounter790, 2);
+  stream->WriteBytes(pendingPolicyCodeMatrix304, sizeof(pendingPolicyCodeMatrix304));
+  stream->WriteBytes(&proposalDispatchCounter790, 2);
 
   WriteShortArrayElems(stream, relationSideEffectMatrix1402, kNationPairMatrixEntries);
   WriteShortArrayElems(stream, &selectedSourceNationSlot784, 2);
@@ -414,7 +414,7 @@ void TDiplomacyMgr::WriteTo(TStream* stream) {
   for (int remaining = 0x10; remaining != 0; --remaining) {
     short value = *slot;
     SwapFirstTwoBytesInBuffer(reinterpret_cast<unsigned char*>(&value));
-    stream->WriteBytesSlot78(&value, 2);
+    stream->WriteBytes(&value, 2);
     ++slot;
   }
 

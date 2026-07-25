@@ -259,22 +259,22 @@ void TTechMgr::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   WriteShortArrayElems(stream, prioritySlots04, 0x1d);
   WriteShortArrayElems(stream, &capabilityValueByNationAndResource[0][0], 0xa1);
-  stream->WriteBytesSlot78(&techSelectorShort1d2, 2);
-  stream->WriteBytesSlot78(&activeZoneIndex1d4, 2);
-  stream->WriteBytesSlot78(perTechUnlockFlag180, 0x1d);
-  stream->WriteBytesSlot78(resourceTypeEnabled19d, sizeof(resourceTypeEnabled19d));
-  stream->WriteBytesSlot78(initFlags1ab, 0x1e);
-  stream->WriteBytesSlot78(initFlags1c9, sizeof(initFlags1c9));
-  stream->WriteBytesSlot78(&packedRulePair264, sizeof(packedRulePair264));
+  stream->WriteBytes(&techSelectorShort1d2, 2);
+  stream->WriteBytes(&activeZoneIndex1d4, 2);
+  stream->WriteBytes(perTechUnlockFlag180, 0x1d);
+  stream->WriteBytes(resourceTypeEnabled19d, sizeof(resourceTypeEnabled19d));
+  stream->WriteBytes(initFlags1ab, 0x1e);
+  stream->WriteBytes(initFlags1c9, sizeof(initFlags1c9));
+  stream->WriteBytes(&packedRulePair264, sizeof(packedRulePair264));
   WriteShortArrayElems(stream, nationCapRows1e8[0].slots, 0x46);
-  stream->WriteBytesSlot78(orderCapRows277, sizeof(orderCapRows277));
-  stream->WriteBytesSlot78(capRowsB333, sizeof(capRowsB333));
-  stream->WriteBytesSlot78(abilityActiveRows395, sizeof(abilityActiveRows395));
-  stream->WriteBytesSlot78(universityRecruitmentAvailabilityByNation467,
+  stream->WriteBytes(orderCapRows277, sizeof(orderCapRows277));
+  stream->WriteBytes(capRowsB333, sizeof(capRowsB333));
+  stream->WriteBytes(abilityActiveRows395, sizeof(abilityActiveRows395));
+  stream->WriteBytes(universityRecruitmentAvailabilityByNation467,
                            sizeof(universityRecruitmentAvailabilityByNation467));
   WriteShortArrayElems(stream, capRowsE4a6[0].completionYearOffsetByTechId, 0xcb);
   WriteShortArrayElems(stream, &capabilityValueByNationAndResource[0][0], 0xa1);
-  stream->WriteBytesSlot78(&marker262, sizeof(marker262));
+  stream->WriteBytes(&marker262, sizeof(marker262));
 }
 
 // FUNCTION: IMPERIALISM 0x005af980

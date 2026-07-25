@@ -209,7 +209,7 @@ void TOcean::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x005628f0
 void TOcean::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&nationCount, 2);
+  stream->WriteBytes(&nationCount, 2);
   int i;
   for (i = 0; i < nationCount; ++i) {
     contextArray[i].WriteTo(stream);
@@ -227,7 +227,7 @@ void TOcean::WriteTo(TStream* stream) {
       portZone = portZone->prev18;
     }
   }
-  stream->WriteBytesSlot78(&portZoneCount, 2);
+  stream->WriteBytes(&portZoneCount, 2);
 
   portZone = g_pMapActionContextListHead;
   while (portZone != 0 && portZone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
@@ -253,12 +253,12 @@ void TOcean::WriteTo(TStream* stream) {
     }
   }
 
-  stream->WriteBytesSlot78(&routeNodeCount, 2);
+  stream->WriteBytes(&routeNodeCount, 2);
   for (i = 0; i < routeNodeCount; ++i) {
-    stream->WriteBytesSlot78(&routeSegments[i].top, 4);
-    stream->WriteBytesSlot78(&routeSegments[i].left, 4);
-    stream->WriteBytesSlot78(&routeSegments[i].bottom, 4);
-    stream->WriteBytesSlot78(&routeSegments[i].right, 4);
+    stream->WriteBytes(&routeSegments[i].top, 4);
+    stream->WriteBytes(&routeSegments[i].left, 4);
+    stream->WriteBytes(&routeSegments[i].bottom, 4);
+    stream->WriteBytes(&routeSegments[i].right, 4);
   }
 }
 

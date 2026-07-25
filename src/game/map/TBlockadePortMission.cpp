@@ -58,13 +58,13 @@ TBlockadePortMission::TBlockadePortMission(TZone* context)
 // FUNCTION: IMPERIALISM 0x0053ac60
 void TBlockadePortMission::WriteTo(TStream* stream) {
   TNavyMission::WriteTo(stream);
-  stream->WriteCountSlot88(portZoneContext3c->GetContextOrdinalOrInvalid());
+  stream->WriteInteger(portZoneContext3c->GetContextOrdinalOrInvalid());
 }
 
 // FUNCTION: IMPERIALISM 0x0053aca0
 void TBlockadePortMission::ReadFrom(TStream* stream) {
   TNavyMission::ReadFrom(stream);
-  portZoneContext3c = FindMapActionContextByNodeId(stream->ReadShort());
+  portZoneContext3c = FindMapActionContextByNodeId(stream->ReadInteger());
 }
 
 // FUNCTION: IMPERIALISM 0x0053ace0

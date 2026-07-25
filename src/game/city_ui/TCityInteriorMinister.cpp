@@ -239,54 +239,54 @@ void TCityInteriorMinister::PleaseBuildLandUnit(short unitType) {
 // FUNCTION: IMPERIALISM 0x004bef60
 void TCityInteriorMinister::WriteTo(TStream* stream) {
   TMinister::WriteTo(stream);
-  stream->WriteBytesSlot78(&field10, 2);
-  stream->WriteBytesSlot78(&field12, 2);
-  stream->WriteBytesSlot78(&capabilityFlag14, 2);
-  stream->WriteBytesSlot78(&capabilityFlag16, 2);
+  stream->WriteBytes(&field10, 2);
+  stream->WriteBytes(&field12, 2);
+  stream->WriteBytes(&capabilityFlag14, 2);
+  stream->WriteBytes(&capabilityFlag16, 2);
   WriteShortArrayElems(stream, trailingTable, 7);
-  stream->WriteBytesSlot78(&nextProductionBuildingOrdinal30, 2);
-  stream->WriteBytesSlot78(&pendingShipType32, 2);
-  stream->WriteBytesSlot78(&field34, 2);
-  stream->WriteBytesSlot78(&pendingRecruitmentCommandIndex36, 2);
-  stream->WriteBytesSlot78(&pendingUnitCommandIndex38, 2);
-  stream->WriteBytesSlot78(&resource15ProductionPercent3a, 2);
-  stream->WriteBytesSlot78(&field3c, 2);
-  stream->WriteBytesSlot78(&accumulatedUnmetNeed3e, 2);
+  stream->WriteBytes(&nextProductionBuildingOrdinal30, 2);
+  stream->WriteBytes(&pendingShipType32, 2);
+  stream->WriteBytes(&field34, 2);
+  stream->WriteBytes(&pendingRecruitmentCommandIndex36, 2);
+  stream->WriteBytes(&pendingUnitCommandIndex38, 2);
+  stream->WriteBytes(&resource15ProductionPercent3a, 2);
+  stream->WriteBytes(&field3c, 2);
+  stream->WriteBytes(&accumulatedUnmetNeed3e, 2);
   WriteShortArrayElems(stream, orderMetricTable40, 61);
-  stream->WriteBytesSlot78(&deferredLaborShortfallDA, 2);
+  stream->WriteBytes(&deferredLaborShortfallDA, 2);
   WriteShortArrayElems(stream, orderShortTableDC, 16);
   WriteShortArrayElems(stream, orderTypeTableFC, 23);
   WriteShortArrayElems(stream, orderTypeTable12A, 23);
   WriteShortArrayElems(stream, orderTypeTable158, 23);
-  stream->WriteBytesSlot78(&temporarilyReservedShipArms186, 2);
+  stream->WriteBytes(&temporarilyReservedShipArms186, 2);
 
   {
     list28->NoOpWriteTo(stream);
     int entryCount = list28->GetSize();
-    stream->WriteBytesSlot78(&entryCount, 4);
+    stream->WriteBytes(&entryCount, 4);
     for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
       int entryValue = list28->At(ordinal);
-      stream->WriteBytesSlot78(&entryValue, 4);
+      stream->WriteBytes(&entryValue, 4);
     }
   }
 
   {
     list2c->NoOpWriteTo(stream);
     int entryCount = list2c->GetSize();
-    stream->WriteBytesSlot78(&entryCount, 4);
+    stream->WriteBytes(&entryCount, 4);
     for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
       int entryValue = list2c->At(ordinal);
-      stream->WriteBytesSlot78(&entryValue, 4);
+      stream->WriteBytes(&entryValue, 4);
     }
   }
 
   {
     list190->NoOpWriteTo(stream);
     int entryCount = list190->GetSize();
-    stream->WriteBytesSlot78(&entryCount, 4);
+    stream->WriteBytes(&entryCount, 4);
     for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
       int entryValue = list190->At(ordinal);
-      stream->WriteBytesSlot78(&entryValue, 4);
+      stream->WriteBytes(&entryValue, 4);
     }
   }
 
@@ -299,7 +299,7 @@ void TCityInteriorMinister::WriteTo(TStream* stream) {
       unsigned char low = elementBytes[0];
       elementBytes[0] = elementBytes[1];
       elementBytes[1] = low;
-      stream->WriteBytesSlot78(&element, 2);
+      stream->WriteBytes(&element, 2);
       ++demandCursor;
       --remaining;
     } while (remaining != 0);

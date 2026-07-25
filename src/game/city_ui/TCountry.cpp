@@ -152,9 +152,9 @@ void TCountry::Free(void) {
 // FUNCTION: IMPERIALISM 0x004d6bf0
 void TCountry::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  stream->streamSlot70(&this->identitySharedString0, 0xff);
+  stream->ReadSharedString(&this->identitySharedString0, 0xff);
   g_pSimMgr->sharedTextSlots[this->nationSlot] = this->identitySharedString0;
-  stream->streamSlot70(&this->identitySharedString1, 0xff);
+  stream->ReadSharedString(&this->identitySharedString1, 0xff);
 
   stream->ReadBytes(&this->nationSlot, 2);
   stream->ReadBytes(&this->encodedNationSlot, 2);
@@ -212,16 +212,16 @@ void TCountry::ReadFrom(TStream* stream) {
 void TCountry::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
 
-  stream->streamSlotAc(&this->identitySharedString0);
-  stream->streamSlotAc(&this->identitySharedString1);
+  stream->WriteSharedString(&this->identitySharedString0);
+  stream->WriteSharedString(&this->identitySharedString1);
 
-  stream->WriteBytesSlot78(&this->nationSlot, 2);
-  stream->WriteBytesSlot78(&this->encodedNationSlot, 2);
+  stream->WriteBytes(&this->nationSlot, 2);
+  stream->WriteBytes(&this->encodedNationSlot, 2);
   WriteShortArrayElems(stream, this->unitNameOrdinalByType, 0x1e);
-  stream->WriteBytesSlot78(&this->unitNameCounter84, 2);
-  stream->WriteBytesSlot78(&this->treasuryValue10, 4);
-  stream->WriteBytesSlot78(&this->homeTileIndex, 4);
-  stream->WriteBytesSlot78(&this->overlayAnchorTileCache8c, 4);
+  stream->WriteBytes(&this->unitNameCounter84, 2);
+  stream->WriteBytes(&this->treasuryValue10, 4);
+  stream->WriteBytes(&this->homeTileIndex, 4);
+  stream->WriteBytes(&this->overlayAnchorTileCache8c, 4);
   WriteShortArrayElems(stream, this->needLevelByNation, 0x17);
 
   WriteTrackedListToStream(stream, this->militaryUnitList44);
@@ -239,10 +239,10 @@ void TCountry::ReadCoreFieldsFromStream(TStream* stream, int unusedArg) {
 
 // FUNCTION: IMPERIALISM 0x004d70e0
 void TCountry::WriteCoreFieldsToStream(TStream* stream) {
-  stream->WriteBytesSlot78(&this->encodedNationSlot, 2);
-  stream->WriteBytesSlot78(&this->treasuryValue10, 4);
-  stream->WriteBytesSlot78(&this->homeTileIndex, 4);
-  stream->WriteBytesSlot78(&this->overlayAnchorTileCache8c, 4);
+  stream->WriteBytes(&this->encodedNationSlot, 2);
+  stream->WriteBytes(&this->treasuryValue10, 4);
+  stream->WriteBytes(&this->homeTileIndex, 4);
+  stream->WriteBytes(&this->overlayAnchorTileCache8c, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7150
@@ -761,17 +761,17 @@ void TCountry::SerializeDiplomacyNationStateToStream(TStream* stream) {
   WriteShortArrayElems(stream, nation->needCurrentByType, 0x17);
   WriteShortArrayElems(stream, nation->diplomacyPolicyByNation, 0x17);
   WriteShortArrayElems(stream, nation->diplomacyGrantByNation, 0x17);
-  stream->WriteBytesSlot78(&nation->diplomacyCounterA2, 2);
-  stream->WriteBytesSlot78(&nation->tradeCapacity, 2);
-  stream->WriteBytesSlot78(&nation->needCapA6, 2);
-  stream->WriteBytesSlot78(&nation->needsOverCapFlag, 2);
-  stream->WriteBytesSlot78(&nation->grantTotalCost, 2);
-  stream->WriteBytesSlot78(&nation->diplomacyCounterB0, 2);
-  stream->WriteBytesSlot78(&nation->budgetPoolBase, 2);
-  stream->WriteBytesSlot78(&nation->budgetPoolDelta, 2);
-  stream->WriteBytesSlot78(&nation->field8d6[0], 2);
-  stream->WriteBytesSlot78(&nation->field8d6[1], 2);
-  stream->WriteBytesSlot78(&nation->field8d6[2], 2);
+  stream->WriteBytes(&nation->diplomacyCounterA2, 2);
+  stream->WriteBytes(&nation->tradeCapacity, 2);
+  stream->WriteBytes(&nation->needCapA6, 2);
+  stream->WriteBytes(&nation->needsOverCapFlag, 2);
+  stream->WriteBytes(&nation->grantTotalCost, 2);
+  stream->WriteBytes(&nation->diplomacyCounterB0, 2);
+  stream->WriteBytes(&nation->budgetPoolBase, 2);
+  stream->WriteBytes(&nation->budgetPoolDelta, 2);
+  stream->WriteBytes(&nation->field8d6[0], 2);
+  stream->WriteBytes(&nation->field8d6[1], 2);
+  stream->WriteBytes(&nation->field8d6[2], 2);
   WriteShortArrayElems(stream, reinterpret_cast<short*>(nation->serializedStatusFlags), 4);
 }
 

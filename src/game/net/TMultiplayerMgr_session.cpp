@@ -186,13 +186,13 @@ void TMultiplayerMgr::ReadFrom(TStream* stream) {
       }
     }
 
-    stream->streamSlot70(&defaultNationTextSlots[i], 0x20);
-    stream->streamSlot70(&nationDisplayNameSlots[i], 0x20);
+    stream->ReadSharedString(&defaultNationTextSlots[i], 0x20);
+    stream->ReadSharedString(&nationDisplayNameSlots[i], 0x20);
   }
 
-  stream->streamSlot70(&playerNameString, 0x20);
+  stream->ReadSharedString(&playerNameString, 0x20);
   CString tempStr;
-  stream->streamSlot70(&tempStr, 0x20);
+  stream->ReadSharedString(&tempStr, 0x20);
   stream->ReadBytes(&queueSyncDword, 4);
   stream->ReadBytes(&sessionReadyFlag, 1);
 
@@ -237,14 +237,14 @@ void TMultiplayerMgr::ReadFrom(TStream* stream) {
 void TMultiplayerMgr::WriteTo(TStream* stream) {
   TEventHandler::WriteTo(stream);
   for (int i = 0; i < kMajorNationSessionSlotCount; ++i) {
-    stream->WriteBytesSlot78(&nationSessionIds[i], 4);
-    stream->streamSlotAc(&defaultNationTextSlots[i]);
-    stream->streamSlotAc(&nationDisplayNameSlots[i]);
+    stream->WriteBytes(&nationSessionIds[i], 4);
+    stream->WriteSharedString(&defaultNationTextSlots[i]);
+    stream->WriteSharedString(&nationDisplayNameSlots[i]);
   }
-  stream->streamSlotAc(&playerNameString);
-  stream->streamSlotAc(&gameNameString);
-  stream->WriteBytesSlot78(&queueSyncDword, 4);
-  stream->WriteBytesSlot78(&sessionReadyFlag, 1);
+  stream->WriteSharedString(&playerNameString);
+  stream->WriteSharedString(&gameNameString);
+  stream->WriteBytes(&queueSyncDword, 4);
+  stream->WriteBytes(&sessionReadyFlag, 1);
   if (g_pNetMgr006a6014 != nullptr) {
     g_pNetMgr006a6014->WriteTo(stream);
   }

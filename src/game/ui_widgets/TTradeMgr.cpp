@@ -127,13 +127,13 @@ void TTradeMgr::WriteTo(TStream* stream) {
   NationMetricCategoryRow* row = categoryRows;
   int rows = 0x11;
   do {
-    stream->WriteBytesSlot78(&row->presetSeed04, 2);
-    stream->WriteBytesSlot78(&row->proposalWeightScale06, 2);
-    stream->WriteBytesSlot78(&row->field08, 2);
-    stream->WriteBytesSlot78(&row->field0a, 2);
-    stream->WriteBytesSlot78(&row->weightedScore0c, 8);
-    stream->WriteBytesSlot78(&row->capabilityActiveFlag14, 2);
-    stream->WriteBytesSlot78(&row->field16, 2);
+    stream->WriteBytes(&row->presetSeed04, 2);
+    stream->WriteBytes(&row->proposalWeightScale06, 2);
+    stream->WriteBytes(&row->field08, 2);
+    stream->WriteBytes(&row->field0a, 2);
+    stream->WriteBytes(&row->weightedScore0c, 8);
+    stream->WriteBytes(&row->capabilityActiveFlag14, 2);
+    stream->WriteBytes(&row->field16, 2);
     WriteShortArrayElems(stream, &row->cells18[0], 0x17);
     WriteShortArrayElems(stream, &row->cells18[23], 0x17);
     WriteShortArrayElems(stream, &row->cells18[46], 0x17);

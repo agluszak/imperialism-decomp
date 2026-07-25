@@ -136,8 +136,8 @@ void TTaskForce::RegainVirginity(int nationArg, TZone* contextZone) {
 // FUNCTION: IMPERIALISM 0x00552b90
 void TTaskForce::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&aggression, 4);
-  stream->WriteBytesSlot78(&shipOrders, 4);
+  stream->WriteBytes(&aggression, 4);
+  stream->WriteBytes(&shipOrders, 4);
 
   short ownerOrdinal;
   if (shipOrders == 5) {
@@ -149,14 +149,14 @@ void TTaskForce::WriteTo(TStream* stream) {
   } else {
     ownerOrdinal = target.asZone->GetContextOrdinalOrInvalid();
   }
-  stream->WriteBytesSlot78(&ownerOrdinal, 2);
+  stream->WriteBytes(&ownerOrdinal, 2);
 
   short contextOrdinal = location->GetContextOrdinalOrInvalid();
-  stream->WriteBytesSlot78(&contextOrdinal, 2);
+  stream->WriteBytes(&contextOrdinal, 2);
 
-  stream->WriteBytesSlot78(&nation, 2);
-  stream->WriteBytesSlot78(&defeated, 1);
-  stream->WriteBytesSlot78(&ingotTileIndex, 2);
+  stream->WriteBytes(&nation, 2);
+  stream->WriteBytes(&defeated, 1);
+  stream->WriteBytes(&ingotTileIndex, 2);
 
   int childCount = 0;
   TMapOrderChildLinkNode* link = shipList;
@@ -166,7 +166,7 @@ void TTaskForce::WriteTo(TStream* stream) {
       link = link->next;
     } while (link != 0);
   }
-  stream->WriteBytesSlot78(&childCount, 2);
+  stream->WriteBytes(&childCount, 2);
 
   link = shipList;
   while (link != 0) {
@@ -182,9 +182,9 @@ void TTaskForce::WriteTo(TStream* stream) {
         }
       }
     }
-    stream->WriteBytesSlot78(&shipIndex, 2);
+    stream->WriteBytes(&shipIndex, 2);
     short activeFlag = link->active;
-    stream->WriteBytesSlot78(&activeFlag, 2);
+    stream->WriteBytes(&activeFlag, 2);
     link = link->next;
   }
 }

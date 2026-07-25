@@ -10,7 +10,7 @@ public:
   // clang-format off
   virtual ~TCountingStream() override; // slot 0x01 (scalar deleting destructor)
   // slots 0x0a..0x0d: position/length accessors below
-  // slot 0x1e WriteBytesSlot78 owned by the hand declaration below (0x489550)
+  // slot 0x1e WriteBytes owned by the hand declaration below (0x489550)
   // clang-format on
   int positionOrByteCount;
   int maxExtentOrLimit;
@@ -27,6 +27,6 @@ public:
   int GetLength() override;
   void SetLength(int length) override;
   // ReadBytes (slot 0x3c) is inherited unchanged from TStream.
-  void WriteBytesSlot78(void* data, int length) override;
+  void WriteBytes(void* data, int length) override;
 };
 ASSERT_SIZE(TCountingStream, 0xc);

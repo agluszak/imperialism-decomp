@@ -33,12 +33,12 @@ void TProductionOrder::IProductionOrder(TCity* city, short resourceType) {
 // FUNCTION: IMPERIALISM 0x004b4fe0
 void TProductionOrder::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&resourceTypeIndex48, 2);
-  stream->WriteBytesSlot78(&quantityField04, 2);
-  stream->WriteBytesSlot78(&field40, 2);
-  stream->WriteBytesSlot78(&resourceTypeIndex48, 2);
-  stream->WriteBytesSlot78(trackingSlots10, 0x2e);
-  stream->WriteBytesSlot78(&accumulatedValue, 4);
+  stream->WriteBytes(&resourceTypeIndex48, 2);
+  stream->WriteBytes(&quantityField04, 2);
+  stream->WriteBytes(&field40, 2);
+  stream->WriteBytes(&resourceTypeIndex48, 2);
+  stream->WriteBytes(trackingSlots10, 0x2e);
+  stream->WriteBytes(&accumulatedValue, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x004b5060

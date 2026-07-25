@@ -24,7 +24,7 @@ class SourceExtractionTest(unittest.TestCase):
             """{
               stream->ReadBytes(&field6, 2);
               stream->ReadBytes(&cityScoreTotal, 4);
-              stream->WriteBytesSlot78(&field6, 2);
+              stream->WriteBytes(&field6, 2);
             }"""
         )
         self.assertEqual(
@@ -33,7 +33,7 @@ class SourceExtractionTest(unittest.TestCase):
         )
 
     def test_typed_accessor_widths_come_from_the_slot_table(self):
-        ops = source_stream_ops("{ short v = stream->ReadShort(); stream->WriteCountSlot88(3); }")
+        ops = source_stream_ops("{ short v = stream->ReadInteger(); stream->WriteInteger(3); }")
         self.assertEqual([(op["dir"], op["bytes"]) for op in ops], [("read", 2), ("write", 2)])
 
     def test_sizeof_width_is_a_wildcard_not_a_guess(self):
@@ -54,7 +54,7 @@ class SourceExtractionTest(unittest.TestCase):
         ops = source_stream_ops(
             """{
               for (int remaining = 0x20; remaining != 0; --remaining) {
-                stream->WriteBytesSlot78(&value, 2);
+                stream->WriteBytes(&value, 2);
               }
             }"""
         )
@@ -187,7 +187,7 @@ class BinaryExtractionTest(unittest.TestCase):
         self.assertEqual([(op["dir"], op["bytes"]) for op in ops], [("read", 1)])
 
     def test_dispatch_on_another_objects_vtable_is_not_a_stream_call(self):
-        # this->vtable[0x84] collides with TStream's streamSlot84; only a slot loaded
+        # this->vtable[0x84] collides with TStream's WriteCharacter; only a slot loaded
         # from the *stream's* vtable may count. Regression: TNavyMission::ReadFrom.
         self.patch_listing(
             self.PROLOGUE

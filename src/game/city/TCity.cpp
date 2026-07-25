@@ -308,15 +308,15 @@ void TCity::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004b35d0
 void TCity::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&powerPlantUpgradeQueuedFlag04, 1);
-  stream->WriteBytesSlot78(&lowProductionFlag7c, 1);
-  stream->WriteBytesSlot78(&lowStockFlag7d, 1);
-  stream->WriteBytesSlot78(productionFlags21c, sizeof(productionFlags21c));
-  stream->WriteBytesSlot78(&foodSubstitutionCount06, 2);
-  stream->WriteBytesSlot78(&starvationPopulationLoss08, 2);
-  stream->WriteBytesSlot78(&serializedState0a, 2);
-  stream->WriteBytesSlot78(&cityPhaseCounter0c, 2);
-  stream->WriteBytesSlot78(&powerAvailableB4, 2);
+  stream->WriteBytes(&powerPlantUpgradeQueuedFlag04, 1);
+  stream->WriteBytes(&lowProductionFlag7c, 1);
+  stream->WriteBytes(&lowStockFlag7d, 1);
+  stream->WriteBytes(productionFlags21c, sizeof(productionFlags21c));
+  stream->WriteBytes(&foodSubstitutionCount06, 2);
+  stream->WriteBytes(&starvationPopulationLoss08, 2);
+  stream->WriteBytes(&serializedState0a, 2);
+  stream->WriteBytes(&cityPhaseCounter0c, 2);
+  stream->WriteBytes(&powerAvailableB4, 2);
   WriteShortArrayElems(stream, cityMetricsBlock0E, 0x1e);
   WriteShortArrayElems(stream, cityMetricsBlock4A, 9);
   WriteShortArrayElems(stream, orderCountByType5c, 0x0e);
@@ -329,17 +329,17 @@ void TCity::WriteTo(TStream* stream) {
   for (int productionSlot = 0; productionSlot < 0x10; ++productionSlot) {
     short value = production22c[productionSlot];
     SwapFirstTwoBytesInBuffer(reinterpret_cast<unsigned char*>(&value));
-    stream->WriteBytesSlot78(&value, 2);
+    stream->WriteBytes(&value, 2);
   }
   for (int accumulatedProductionSlot = 0; accumulatedProductionSlot < 0x10;
        ++accumulatedProductionSlot) {
     short value = production24c[accumulatedProductionSlot];
     SwapFirstTwoBytesInBuffer(reinterpret_cast<unsigned char*>(&value));
-    stream->WriteBytesSlot78(&value, 2);
+    stream->WriteBytes(&value, 2);
   }
   WriteByteSwappedShortArrayToStream(stream, consumedProductionInputByType2a6, 0x17);
 
-  stream->WriteBytesSlot78(&rollingItemProductionScore78, 4);
+  stream->WriteBytes(&rollingItemProductionScore78, 4);
   productionSummary1d8->WriteTo(stream);
   for (int orderSlot = 0; orderSlot < 0x3d; ++orderSlot) {
     TObject* order = static_cast<TObject*>(orderSlotsE4[orderSlot]);
@@ -350,7 +350,7 @@ void TCity::WriteTo(TStream* stream) {
 
   trackedOrderList270->WriteTo(stream);
   int taskCount = trackedOrderList270->GetCount();
-  stream->WriteBytesSlot78(&taskCount, 4);
+  stream->WriteBytes(&taskCount, 4);
   for (int taskOrdinal = 1; taskOrdinal <= taskCount; ++taskOrdinal) {
     TObject* task = static_cast<TObject*>(trackedOrderList270->GetEntryByOrdinal(taskOrdinal));
     task->WriteTo(stream);

@@ -173,7 +173,7 @@ void TZone::Free() {
 // FUNCTION: IMPERIALISM 0x0055ed20
 void TZone::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  stream->streamSlot70(&displayName, 0x20);
+  stream->ReadSharedString(&displayName, 0x20);
   stream->ReadBytes(&statusCode04, 2);
   stream->ReadBytes(&tileOrTerrainId0c, 4);
   stream->ReadBytes(&seedNationId12, 2);
@@ -218,12 +218,12 @@ void TZone::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0055eff0
 void TZone::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->streamSlotAc(&displayName);
-  stream->WriteBytesSlot78(&statusCode04, 2);
-  stream->WriteBytesSlot78(&tileOrTerrainId0c, 4);
-  stream->WriteBytesSlot78(&seedNationId12, 2);
-  stream->WriteBytesSlot78(&activeTileIndex20, 2);
-  stream->WriteBytesSlot78(&contextOrdinal14, 2);
+  stream->WriteSharedString(&displayName);
+  stream->WriteBytes(&statusCode04, 2);
+  stream->WriteBytes(&tileOrTerrainId0c, 4);
+  stream->WriteBytes(&seedNationId12, 2);
+  stream->WriteBytes(&activeTileIndex20, 2);
+  stream->WriteBytes(&contextOrdinal14, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0055f070

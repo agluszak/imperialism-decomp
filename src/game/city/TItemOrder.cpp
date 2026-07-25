@@ -97,16 +97,16 @@ void TItemOrder::Restock() {
 // FUNCTION: IMPERIALISM 0x004b5670
 void TItemOrder::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytesSlot78(&resourceTypeIndex48, 2);
-  stream->WriteBytesSlot78(&quantityField04, 2);
-  stream->WriteBytesSlot78(&field40, 2);
-  stream->WriteBytesSlot78(&resourceTypeIndex48, 2);
-  stream->WriteBytesSlot78(trackingSlots10, 0x2e);
-  stream->WriteBytesSlot78(&accumulatedValue, 4);
-  stream->WriteBytesSlot78(&requestedQuantity4c, 2);
-  stream->WriteBytesSlot78(&primaryInputResourceId, 2);
-  stream->WriteBytesSlot78(&secondaryInputResourceId, 2);
-  stream->WriteBytesSlot78(&productionSlot, 2);
+  stream->WriteBytes(&resourceTypeIndex48, 2);
+  stream->WriteBytes(&quantityField04, 2);
+  stream->WriteBytes(&field40, 2);
+  stream->WriteBytes(&resourceTypeIndex48, 2);
+  stream->WriteBytes(trackingSlots10, 0x2e);
+  stream->WriteBytes(&accumulatedValue, 4);
+  stream->WriteBytes(&requestedQuantity4c, 2);
+  stream->WriteBytes(&primaryInputResourceId, 2);
+  stream->WriteBytes(&secondaryInputResourceId, 2);
+  stream->WriteBytes(&productionSlot, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x004b5710

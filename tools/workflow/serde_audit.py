@@ -55,37 +55,37 @@ BASELINE = REPO_ROOT / "config" / "baselines" / "reccmp_progress_baseline.functi
 SLOTS: dict[int, tuple[str, str, object, int]] = {
     # slot: (name, direction, width, arg_bytes)
     0x3C: ("ReadBytes", "read", "operand", 8),
-    0x40: ("ReadInteger", "read", 1, 0),
-    0x44: ("streamSlot44", "read", 1, 0),
-    0x48: ("streamSlot48", "read", 1, 4),
-    0x4C: ("ReadShort", "read", 2, 0),
-    0x50: ("streamSlot50", "read", 4, 0),
-    0x54: ("streamSlot54", "read", 8, 4),
-    0x58: ("streamSlot58", "read", 8, 4),
-    0x5C: ("streamSlot5c", "read", 16, 4),
-    0x60: ("streamSlot60", "read", 16, 4),
-    0x64: ("streamSlot64", "read", 4, 4),
-    0x68: ("streamSlot68", "read", 4, 0),
-    0x6C: ("streamSlot6c", "read", None, 8),
-    0x70: ("streamSlot70", "read", None, 8),
-    0x74: ("SkipPaddingToEvenByteBoundary", "read", 0, 0),
-    0x78: ("WriteBytesSlot78", "write", "operand", 8),
-    0x7C: ("streamSlot7c", "write", 1, 4),
-    0x80: ("streamSlot80", "write", 1, 4),
-    0x84: ("streamSlot84", "write", 1, 4),
-    0x88: ("WriteCountSlot88", "write", 2, 4),
-    0x8C: ("streamSlot8c", "write", 4, 4),
-    0x90: ("streamSlot90", "write", 8, 8),
-    0x94: ("streamSlot94", "write", 8, 4),
-    0x98: ("streamSlot98", "write", 16, 4),
-    0x9C: ("streamSlot9c", "write", 16, 4),
-    0xA0: ("streamSlotA0", "write", 4, 4),
-    0xA4: ("streamSlotA4", "write", 4, 4),
-    0xA8: ("WriteLengthPrefixedCString", "write", None, 4),
-    0xAC: ("streamSlotAc", "write", None, 4),
-    0xB0: ("ReadByte", "read", "object", 4),
-    0xB4: ("WriteObjectSlotB4", "write", "object", 8),
-    0xB8: ("WritePaddingToEvenByteBoundary", "write", 0, 0),
+    0x40: ("ReadByte", "read", 1, 0),
+    0x44: ("ReadBoolean", "read", 1, 0),
+    0x48: ("ReadCharacter", "read", 1, 4),
+    0x4C: ("ReadInteger", "read", 2, 0),
+    0x50: ("ReadLong", "read", 4, 0),
+    0x54: ("ReadVPoint", "read", 8, 4),
+    0x58: ("ReadRect", "read", 8, 4),
+    0x5C: ("ReadVRect", "read", 16, 4),
+    0x60: ("ReadUnclassified16ByteRecord", "read", 16, 4),
+    0x64: ("ReadPoint", "read", 4, 4),
+    0x68: ("ReadIDType", "read", 4, 0),
+    0x6C: ("ReadString", "read", None, 8),
+    0x70: ("ReadSharedString", "read", None, 8),
+    0x74: ("ReadWordAlign", "read", 0, 0),
+    0x78: ("WriteBytes", "write", "operand", 8),
+    0x7C: ("WriteByte", "write", 1, 4),
+    0x80: ("WriteBoolean", "write", 1, 4),
+    0x84: ("WriteCharacter", "write", 1, 4),
+    0x88: ("WriteInteger", "write", 2, 4),
+    0x8C: ("WriteLong", "write", 4, 4),
+    0x90: ("WriteVPoint", "write", 8, 8),
+    0x94: ("WriteRect", "write", 8, 4),
+    0x98: ("WriteVRect", "write", 16, 4),
+    0x9C: ("WriteUnclassified16ByteRecord", "write", 16, 4),
+    0xA0: ("WritePoint", "write", 4, 4),
+    0xA4: ("WriteIDType", "write", 4, 4),
+    0xA8: ("WriteString", "write", None, 4),
+    0xAC: ("WriteSharedString", "write", None, 4),
+    0xB0: ("ReadObject", "read", "object", 4),
+    0xB4: ("WriteObject", "write", "object", 8),
+    0xB8: ("WriteWordAlign", "write", 0, 0),
 }
 SLOT_BY_NAME = {name: (slot, direction, width) for slot, (name, direction, width, _) in SLOTS.items()}
 
@@ -212,11 +212,11 @@ def binary_stream_ops(address: int) -> tuple[list[dict], list[str]]:
         return strict, warnings
     relaxed, relaxed_warnings = _scan(address, strict=False)
     # Only trust the relaxed pass when it found a raw block read/write. Every real
-    # serializer moves bytes through ReadBytes/WriteBytesSlot78; a relaxed pass that
+    # serializer moves bytes through ReadBytes/WriteBytes; a relaxed pass that
     # turned up only typed-accessor slots has almost certainly matched some other
     # object's vtable at a colliding offset, which is the thing strict mode exists to
     # reject.
-    if relaxed and any(op["op"] in ("ReadBytes", "WriteBytesSlot78") for op in relaxed):
+    if relaxed and any(op["op"] in ("ReadBytes", "WriteBytes") for op in relaxed):
         return relaxed, relaxed_warnings + [
             "stream register not tracked; slot offsets matched without vtable proof"
         ]
