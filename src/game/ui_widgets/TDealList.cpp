@@ -3,6 +3,7 @@
 
 #include "game/mfc.h"
 #include "game/ui_core/TSortedPtrList.h"
+#include "game/ui_widgets/TradeDealEntry.h"
 
 // SYNTHETIC: IMPERIALISM 0x005ba130
 // TDealList::CreateObject
@@ -22,30 +23,33 @@ TDealList::~TDealList() {}
 
 // FUNCTION: IMPERIALISM 0x005ba260
 short TDealList::Compare(void* a, void* b) {
-  short* recA = static_cast<short*>(a);
-  short* recB = static_cast<short*>(b);
-  short kind = recA[6];
+  TradeDealEntry* recA = static_cast<TradeDealEntry*>(a);
+  TradeDealEntry* recB = static_cast<TradeDealEntry*>(b);
+  short kind = recA->category0c;
   bool invertScore;
   if (kind < 0xd || 0x10 < kind) {
     invertScore = false;
   } else {
     invertScore = true;
   }
-  int valueA = *reinterpret_cast<int*>(recA + 4);
-  int priorityA = recA[3];
+  int valueA = recA->dispatchScore08;
+  int priorityA = recA->relationStanding06;
   int scoreA;
   int scoreB;
   if (invertScore) {
     scoreA = (0xff - priorityA) * valueA;
-    scoreB = (0xff - recB[3]) * *reinterpret_cast<int*>(recB + 4);
+    scoreB = (0xff - recB->relationStanding06) * recB->dispatchScore08;
   } else {
     scoreA = -(valueA * priorityA);
-    scoreB = -(*reinterpret_cast<int*>(recB + 4) * recB[3]);
+    scoreB = -(recB->dispatchScore08 * recB->relationStanding06);
   }
   if (scoreA == scoreB) {
-    scoreA = (recA[2] * recA[0] + valueA + recA[1] * priorityA + kind) % 7;
-    scoreB =
-        (recB[6] + recB[2] * recB[0] + *reinterpret_cast<int*>(recB + 4) + recB[1] * recB[3]) % 7;
+    scoreA = (recA->relationDelta04 * recA->sourceNationSlot + valueA +
+              recA->targetNationSlot * priorityA + kind) %
+             7;
+    scoreB = (recB->category0c + recB->relationDelta04 * recB->sourceNationSlot +
+              recB->dispatchScore08 + recB->targetNationSlot * recB->relationStanding06) %
+             7;
   }
   return static_cast<short>(scoreA <= scoreB ? 1 : -1);
 }

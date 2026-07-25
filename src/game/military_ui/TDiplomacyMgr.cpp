@@ -1836,7 +1836,7 @@ TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned
     packet->messageLength = packetSize;
     packet->eventCode = 2;
     packet->toNetworkId = 0;
-    memcpy(packet->payload, current, shortCount * 2);
+    memcpy(packet->payload.raw, current, shortCount * 2);
     packet->deltaKind21 = 0;
     return packet;
   }
@@ -1854,13 +1854,13 @@ TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned
   packet->eventCode = 2;
   packet->toNetworkId = 0;
   packet->deltaKind21 = 2;
-  short* out = packet->payload;
+  TurnEvent2ShortDeltaEntry* out = packet->payload.shortEntries;
   short* cur = current;
   for (int i = 0; i < static_cast<int>(shortCount); ++i) {
     if (*cur != cur[baseline - current]) {
-      out[0] = static_cast<short>(i);
-      out[1] = *cur;
-      out += 2;
+      out->index = static_cast<unsigned short>(i);
+      out->value = *cur;
+      ++out;
     }
     ++cur;
   }

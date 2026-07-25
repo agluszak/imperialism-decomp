@@ -21,6 +21,23 @@ struct GlobalMapTileRecord {
   TCivUnit* firstCivilianOrder; // 0x20
 };
 
+// Raw 0x24-byte tile record as stored in a Mac-endian scenario file. It is kept
+// separate from TTerrainStateRecordView because the three word fields remain byte
+// arrays until the load boundary swaps them, and +0x20 is serialized pointer storage
+// that must be cleared rather than interpreted as a live TCivUnit*.
+struct ScenarioTileDiskRecord {
+  unsigned char bytes00[4];
+  signed char ownerNationTag04;
+  unsigned char bytes05[0x14 - 0x05];
+  unsigned char cityRecordIndex14[2];
+  unsigned char bytes16[0x1a - 0x16];
+  unsigned char tileActionOrdinal1a[2];
+  unsigned char activeFlags1c[2];
+  unsigned char bytes1e[2];
+  int transientPointerBits20;
+};
+ASSERT_SIZE(ScenarioTileDiskRecord, 0x24);
+
 struct TTerrainStateRecordView {
   // Packed StrategicTerrainKind representation. Signed MOVSX reads are confirmed by
   // 0x516150/0x5161a0/0x5161e0/0x516220; -1 is the unassigned sentinel. Keep this byte
@@ -899,4 +916,4 @@ public:
 ASSERT_SIZE(TMapMgr, 0x28);
 
 // 0x005187f0 -- endian fix-up over the scenario tile-record array read from disk.
-void ByteSwapScenarioTileRecordWords(char* tileRecords);
+void ByteSwapScenarioTileRecordWords(ScenarioTileDiskRecord* tileRecords);

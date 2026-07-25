@@ -203,8 +203,7 @@ void ComposeAndDispatchTurnSummaryLocalizedMessage() {
     summary += sectionMsg;
   }
 
-  CString versionText;
-  g_pUiViewManager->FormatVersionStringFromVersionResource(&versionText);
+  CString versionText = g_pUiViewManager->FormatVersionStringFromVersionResource();
 
   if (strcmp(g_szEmptyString, static_cast<LPCSTR>(versionText)) != 0) {
     if (strcmp(g_szEmptyString, static_cast<LPCSTR>(summary)) != 0) {

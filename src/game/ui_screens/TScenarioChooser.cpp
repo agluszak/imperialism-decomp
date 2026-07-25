@@ -339,14 +339,14 @@ void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenar
 
   // The map file is the Mac-endian tile record array; byte 4 of each 0x24-byte record is
   // the owner tag the preview draws.
-  char* tileRecords = new char[0x38f40];
+  ScenarioTileDiskRecord* tileRecords = new ScenarioTileDiskRecord[0x1950];
   g_pUiViewManager->BuildScenarioPathForModeAndIndex(scenarioIndex, 1, &path);
   FILE* mapStream = fopen(path, "rb");
-  fread(tileRecords, 0x24, 0x1950, mapStream);
+  fread(tileRecords, sizeof(ScenarioTileDiskRecord), 0x1950, mapStream);
   ByteSwapScenarioTileRecordWords(tileRecords);
   fclose(mapStream);
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-    fieldBuffer[tileIndex] = tileRecords[tileIndex * 0x24 + 4];
+    fieldBuffer[tileIndex] = tileRecords[tileIndex].ownerNationTag04;
   }
 
   TMapPreviewView* mapPreview =
