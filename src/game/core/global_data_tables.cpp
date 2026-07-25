@@ -1640,6 +1640,11 @@ extern "C" const char s_SourcePathUTacViews_00699FF4[] = "D:\\Ambit\\Cross\\UTac
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[] = "D:\\Ambit\\Cross\\UViewMgr.more.cpp";
 // GLOBAL: IMPERIALISM 0x00696c58
 extern "C" const char s_SourcePathUHelpMgr_00696C58[] = "D:\\Ambit\\Cross\\UHelpMgr.cpp";
+// Signed source-row offsets into the strategic-map unit overlay atlas.
+// GLOBAL: IMPERIALISM 0x00696d20
+extern "C" short g_anStrategicMapOverlaySourceRowByIconId[28] = {
+    0,    798,  114,  228, 342, -114, 684, -114, -114, -114, -114, -114, -114, -114,
+    -114, -114, -114, 0,   0,   -114, 798, 570,  456,  0,    0,    0,    0,    0};
 // GLOBAL: IMPERIALISM 0x00696860
 extern "C" const char s_SourcePathUDefenseMinister_00696860[] =
     "D:\\Ambit\\Cross\\UDefenseMinister.cpp";

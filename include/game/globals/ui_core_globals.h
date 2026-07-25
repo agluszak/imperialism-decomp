@@ -175,6 +175,10 @@ extern TextStyle g_UiResourceEntryDefaultTextStyle;
 
 extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[];
 
+// TMacViewMgr.cpp — source-row offsets into the strategic unit-overlay atlas.
+// Negative entries are unsupported icon identifiers. 0x696d20.
+extern "C" short g_anStrategicMapOverlaySourceRowByIconId[28];
+
 // THelpMgr.cpp — periodic nation-comparison advisory tick.
 extern short g_nTurnFlowNationComparisonAdvisoryTick;
 
