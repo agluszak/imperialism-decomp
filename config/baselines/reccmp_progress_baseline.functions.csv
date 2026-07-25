@@ -3423,7 +3423,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords
 0x527730|0.29577464788732394|TMapMaker::PlaceTerrainFeatureQuotas
-0x527d00|0.4268774703557312|TMapMaker::CreateRivers
+0x527d00|0.43478260869565216|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
@@ -3432,7 +3432,7 @@ address|matching|name
 0x5288a0|0.40969162995594716|TMapMaker::DesertBand
 0x528c10|0.27350427350427353|GetNeighborTileIndexOnMap108x60
 0x528ce0|0.8089887640449438|TMapMaker::GetAdjacentRegionGridCell
-0x528e50|0.1515650741350906|TMapMaker::SmoothCityRegionOwnershipByNeighborSampling
+0x528e50|0.2980132450331126|TMapMaker::SmoothCityRegionOwnershipByNeighborSampling
 0x5292f0|1.0|TMapMaker::RandomizeRegionTemplatesAndSmoothOwnership
 0x5293d0|0.1907514450867052|TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
 0x5296a0|0.8484848484848485|TMapMaker::CopyRegionTemplateBankWithRandomVariant
