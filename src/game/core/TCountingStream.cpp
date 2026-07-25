@@ -56,7 +56,7 @@ void TCountingStream::SetLength(int position) {
 }
 
 // FUNCTION: IMPERIALISM 0x00489550
-void TCountingStream::WriteBytes(void* data, int length) {
+void TCountingStream::WriteBytes(const void* data, int length) {
   (void)data;
   this->positionOrByteCount += length;
   if (this->positionOrByteCount > this->maxExtentOrLimit) {

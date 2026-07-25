@@ -600,9 +600,7 @@ static void BuildArmyActionLabelFromLocalizationAndCounts(CStr255* destination, 
   {
     CString currentLabel;
     currentLabel = destination->data;
-    destinationHasText =
-        _mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(currentLabel)),
-                reinterpret_cast<const unsigned char*>(g_szEmptyString)) != 0;
+    destinationHasText = currentLabel.Compare(g_szEmptyString) != 0;
   }
   if (destinationHasText) {
     CString separator(g_szListSeparator_00695760);

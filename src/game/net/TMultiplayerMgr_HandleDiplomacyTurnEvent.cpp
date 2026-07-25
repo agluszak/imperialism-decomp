@@ -46,7 +46,7 @@
 namespace {
 
 // Turn-event-0x24 header: the 0xa8-byte city-score record payload is a separate
-// NationStateRecordA8 local constructed immediately after this header on the stack
+// Province local constructed immediately after this header on the stack
 // (the original initializes the header, then constructs the record, and Send reads
 // messageLength = 0xc8 bytes across both locals).
 struct TurnEvent24CityRecordHeader : TimelyNetMessagePrefix {
@@ -303,7 +303,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
           g_apTerrainTypeDescriptorTable[capitalSlot]->GetHomeRegionCityRecordIndex());
       TurnEvent24CityRecordHeader packetHeader;
       packetHeader.InitializeEmitEventHeaderWithActiveNation();
-      NationStateRecordA8 cityRecord;
+      Province cityRecord;
       packetHeader.eventCode = 0;
       packetHeader.eventCode = 0x24;
       packetHeader.fromNetworkId = 0;
@@ -313,12 +313,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
       packetHeader.messageLength = 0xc8;
       packetHeader.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
       packetHeader.cityRecordIndex = cityRecordIndex;
-      // Same 0xa8 record: the packet-side NationStateRecordA8 is a view of
-      // Province (identical layout, CString at +0xa4; the original
-      // copies with the shared operator= 0x54ae90). Confined here pending a merge of
-      // the two reconstructions.
-      cityRecord = *reinterpret_cast<NationStateRecordA8*>(
-          &g_pGlobalMapState->cityScoreTable[cityRecordIndex]);
+      cityRecord = g_pGlobalMapState->cityScoreTable[cityRecordIndex];
       g_pNetMgr006a6014->Send(&packetHeader, 0);
     }
 
@@ -722,9 +717,10 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       oldNation->trackedObjectList = trackedObjects;
       memcpy(newNation->candidateNationFlags, oldNation->candidateNationFlags,
              sizeof(newNation->candidateNationFlags));
-      // 0xd-byte block copy from serializedStatusFlags through expansionEventGate
-      // (field8d5 is deliberately left at its freshly constructed value).
-      memcpy(newNation->serializedStatusFlags, oldNation->serializedStatusFlags, 0xd);
+      // Copy the complete 13-byte pending-action block; field8d5 is deliberately left at
+      // its freshly constructed value.
+      memcpy(&newNation->pendingActionStatus, &oldNation->pendingActionStatus,
+             sizeof(newNation->pendingActionStatus));
       memcpy(newNation->field8d6, oldNation->field8d6, sizeof(newNation->field8d6));
       newNation->field900 = oldNation->field900;
       newNation->field904 = oldNation->field904;

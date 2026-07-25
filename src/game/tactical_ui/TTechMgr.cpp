@@ -146,7 +146,7 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
     nationCapRows1e8[n].slots[9] = 0x1b;
   }
 
-  packedRulePair264 = *reinterpret_cast<unsigned int*>(g_aTechItemPrerequisitePairs[30]);
+  activePrerequisitePair264 = g_aTechItemPrerequisitePairs[30];
   RecomputeGlobalCapabilityAverages();
 }
 
@@ -217,7 +217,7 @@ void TTechMgr::ReadFrom(TStream* stream) {
     stream->ReadBytes(initFlags1ab, 0x1e);
     stream->ReadBytes(initFlags1c9, sizeof(initFlags1c9));
     if (g_nSaveFormatVersion > 0x34) {
-      stream->ReadBytes(&packedRulePair264, sizeof(packedRulePair264));
+      stream->ReadBytes(&activePrerequisitePair264, sizeof(activePrerequisitePair264));
     }
   } else {
     stream->ReadBytes(prioritySlots04, sizeof(prioritySlots04));
@@ -265,13 +265,13 @@ void TTechMgr::WriteTo(TStream* stream) {
   stream->WriteBytes(resourceTypeEnabled19d, sizeof(resourceTypeEnabled19d));
   stream->WriteBytes(initFlags1ab, 0x1e);
   stream->WriteBytes(initFlags1c9, sizeof(initFlags1c9));
-  stream->WriteBytes(&packedRulePair264, sizeof(packedRulePair264));
+  stream->WriteBytes(&activePrerequisitePair264, sizeof(activePrerequisitePair264));
   WriteShortArrayElems(stream, nationCapRows1e8[0].slots, 0x46);
   stream->WriteBytes(orderCapRows277, sizeof(orderCapRows277));
   stream->WriteBytes(capRowsB333, sizeof(capRowsB333));
   stream->WriteBytes(abilityActiveRows395, sizeof(abilityActiveRows395));
   stream->WriteBytes(universityRecruitmentAvailabilityByNation467,
-                           sizeof(universityRecruitmentAvailabilityByNation467));
+                     sizeof(universityRecruitmentAvailabilityByNation467));
   WriteShortArrayElems(stream, capRowsE4a6[0].completionYearOffsetByTechId, 0xcb);
   WriteShortArrayElems(stream, &capabilityValueByNationAndResource[0][0], 0xa1);
   stream->WriteBytes(&marker262, sizeof(marker262));
@@ -345,7 +345,7 @@ void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
     activeZoneIndex1d4 = 8;
     return;
   case 0xb:
-    packedRulePair264 = *reinterpret_cast<unsigned int*>(g_aTechItemPrerequisitePairs[31]);
+    activePrerequisitePair264 = g_aTechItemPrerequisitePairs[31];
     return;
   case 0x15:
     resourceTypeEnabled19d[9] = 1;
@@ -363,7 +363,7 @@ void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
     techSelectorShort1d2 = 0xd;
     return;
   case 0x16:
-    packedRulePair264 = *reinterpret_cast<unsigned int*>(g_aTechItemPrerequisitePairs[32]);
+    activePrerequisitePair264 = g_aTechItemPrerequisitePairs[32];
     break;
   }
 }
@@ -500,7 +500,7 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
   case 0x16:
     ActivateSlotAndUpdateUI(0x16, nationSlot);
     ActivateSlotAndUpdateUI(0x17, nationSlot);
-    packedRulePair264 = *reinterpret_cast<unsigned int*>(g_aTechItemPrerequisitePairs[32]);
+    activePrerequisitePair264 = g_aTechItemPrerequisitePairs[32];
     if (eraOffset != 0) {
       TCity* city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
       city->cityStockArmsD6 = static_cast<short>(city->cityStockArmsD6 + eraOffset * 20);
@@ -692,12 +692,14 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
 
 // FUNCTION: IMPERIALISM 0x005b0a20
 bool TTechMgr::AreTechItemPrerequisitePairCompleted(int techId, int nationSlot) {
-  short p1 = g_aTechItemPrerequisitePairs[techId][0];
-  unsigned char* p1StatusByNation = &orderCapRows277[0].techStatusByTechId[p1];
-  if (p1StatusByNation[nationSlot * sizeof(OrderCapRow)] == 2) {
-    short p2 = g_aTechItemPrerequisitePairs[techId][1];
-    unsigned char* p2StatusByNation = &orderCapRows277[0].techStatusByTechId[p2];
-    if (p2StatusByNation[nationSlot * sizeof(OrderCapRow)] == 2) {
+  short primaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].ids.primaryTechId;
+  unsigned char* primaryStatusByNation =
+      &orderCapRows277[0].techStatusByTechId[primaryPrerequisiteTechId];
+  if (primaryStatusByNation[nationSlot * sizeof(OrderCapRow)] == 2) {
+    short secondaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].ids.secondaryTechId;
+    unsigned char* secondaryStatusByNation =
+        &orderCapRows277[0].techStatusByTechId[secondaryPrerequisiteTechId];
+    if (secondaryStatusByNation[nationSlot * sizeof(OrderCapRow)] == 2) {
       return true;
     }
   }
@@ -705,16 +707,20 @@ bool TTechMgr::AreTechItemPrerequisitePairCompleted(int techId, int nationSlot) 
 }
 
 // FUNCTION: IMPERIALISM 0x005b0a90
-void TTechMgr::SelectMissingTechItemPrerequisitesFromPair(int techId, int nationSlot, int* missing1,
-                                                          int* missing2) {
-  short p1 = g_aTechItemPrerequisitePairs[techId][0];
-  if (orderCapRows277[nationSlot].techStatusByTechId[p1] == 2) {
-    *missing1 = g_aTechItemPrerequisitePairs[techId][1];
-    *missing2 = 0;
+void TTechMgr::SelectMissingTechItemPrerequisitesFromPair(int techId, int nationSlot,
+                                                          int* missingPrimaryTechId,
+                                                          int* missingSecondaryTechId) {
+  short primaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].ids.primaryTechId;
+  if (orderCapRows277[nationSlot].techStatusByTechId[primaryPrerequisiteTechId] == 2) {
+    *missingPrimaryTechId = g_aTechItemPrerequisitePairs[techId].ids.secondaryTechId;
+    *missingSecondaryTechId = 0;
   } else {
-    *missing1 = p1;
-    short p2 = g_aTechItemPrerequisitePairs[techId][1];
-    *missing2 = (orderCapRows277[nationSlot].techStatusByTechId[p2] != 2) ? p2 : 0;
+    *missingPrimaryTechId = primaryPrerequisiteTechId;
+    short secondaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].ids.secondaryTechId;
+    *missingSecondaryTechId =
+        (orderCapRows277[nationSlot].techStatusByTechId[secondaryPrerequisiteTechId] != 2)
+            ? secondaryPrerequisiteTechId
+            : 0;
   }
 }
 

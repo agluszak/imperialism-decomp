@@ -7,6 +7,7 @@
 #include <mbstring.h>
 #include "game/ui_core/CMcEditWindow.h"
 #include "game/app/TObject.h"
+#include "game/pointer_representation.h"
 // SYNTHETIC: IMPERIALISM 0x00490210
 // TEditText::CreateObject
 
@@ -136,13 +137,13 @@ CWnd* TEditText::Open() {
 
     editFont = CreateFontFromPresetAndAttachRegionHandle(&textStyle78);
     ::SendMessageA(editWindow->m_hWnd, WM_SETFONT,
-                   reinterpret_cast<WPARAM>(editFont != 0 ? editFont->m_hObject : 0), 0);
+                   PointerAddressBits32(editFont != 0 ? editFont->m_hObject : 0), 0);
     if (text != 0 && text->GetLength() != 0) {
       editWindow->SetWindowText(*text);
     }
     editWindow->ModifyStyleEx(0, WS_EX_CLIENTEDGE, 0);
     nativeWindow50->ModifyStyle(WS_CLIPCHILDREN, 0, 0);
-    ::SetWindowLongA(editWindow->m_hWnd, GWL_USERDATA, reinterpret_cast<LONG>(this));
+    ::SetWindowLongA(editWindow->m_hWnd, GWL_USERDATA, PointerAddressLong32(this));
     ::SendMessageA(editWindow->m_hWnd, EM_LIMITTEXT, maxCharacterCount, 0);
   }
   return editWindow;
@@ -232,8 +233,7 @@ void TEditText::InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refr
     editWindow->SetWindowText(clampedText);
     return;
   }
-  if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(*text)),
-              reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(clampedText))) != 0) {
+  if (text->Compare(clampedText) != 0) {
     *text = clampedText;
     if (static_cast<char>(refreshFlag) != 0) {
       RefreshControl();

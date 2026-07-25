@@ -13,11 +13,6 @@
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 
-// Fixed format strings in the binary's read-only data (referenced by address so the
-// compiled code passes the exact original pointer, matching the codebase's kAddr idiom).
-static const unsigned int kGreatPowerLabelFmt = 0x00694e70;
-static const unsigned int kMinorNationLabelFmt = 0x00694e54;
-
 // SYNTHETIC: IMPERIALISM 0x00413670
 // T64TemplateDialog::`scalar deleting destructor'
 
@@ -57,7 +52,7 @@ void ShowSelectedDibInTemplateDDDialog(CDib* picture, CString title) {
 // modal-state cleanup) is inlined from ~TModalDialogBase.
 // FUNCTION: IMPERIALISM 0x00413c30
 TDDTemplateDialog::~TDDTemplateDialog() {
-  delete outlinePolygon;
+  delete[] outlinePolygon;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00413cd0
@@ -170,7 +165,7 @@ END_MESSAGE_MAP()
 
 // Draws the preview picture into the client area, then optionally overlays a red silhouette
 // outline (Polyline) and/or fill (FillRgn) built from the picture's non-transparent-pixel
-// polygon (outlinePolygon: [0]=POINT count, POINTs from index 2). Three blit modes:
+// polygon (outlinePolygon[0].x = POINT count, vertices from index 1). Three blit modes:
 //   renderMode != 0            -> palette-masked StretchDIBits (StretchDibitsWithCopiedPaletteTable)
 //   g_useCompatibleBitmapBlit  -> CreateCompatibleDC + BitBlt of a device bitmap, using the
 //                                 module palette cache's default palette
@@ -220,15 +215,12 @@ void TDDTemplateDialog::OnPaint() {
   if (drawOutline != 0) {
     CPen pen(PS_SOLID, 1, RGB(0xff, 0, 0));
     CPen* oldPen = dc.SelectObject(&pen);
-    // GEOMETRY_RAW_BUFFER: two-int header followed by packed POINT records.
-    dc.Polyline(reinterpret_cast<POINT*>(outlinePolygon + 2), outlinePolygon[0]);
+    dc.Polyline(outlinePolygon + 1, outlinePolygon[0].x);
     dc.SelectObject(oldPen);
   }
   if (fillPolygon != 0) {
     CRgn region;
-    // GEOMETRY_RAW_BUFFER: two-int header followed by packed POINT records.
-    region.CreatePolygonRgn(reinterpret_cast<POINT*>(outlinePolygon + 2), outlinePolygon[0],
-                            ALTERNATE);
+    region.CreatePolygonRgn(outlinePolygon + 1, outlinePolygon[0].x, ALTERNATE);
     CBrush brush(RGB(0xff, 0, 0));
     dc.FillRgn(&region, &brush);
   }
@@ -819,53 +811,6 @@ void TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void) {
     g_pUiRuntimeContext->DispatchTurnEvent(static_cast<short>(eventCode),
                                            static_cast<int>(sliderPos));
   }
-}
-
-// The ID_8013 command: show the D2 template dialog listing every nation (great powers,
-// then minor nations) with each row's item data set to its table index. Re-shows on OK,
-// exits on cancel, then posts the startup command.
-// FUNCTION: IMPERIALISM 0x004855b0
-void TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void) {
-  while (true) {
-    TD2TemplateDialog dialog(0);
-    dialog.PrepareAndCreateModalFromTemplate();
-    HWND hList = dialog.listbox.m_hWnd;
-
-    int idx = 0;
-    TCountry** country;
-    for (country = g_apTerrainTypeDescriptorTable; country < &g_apTerrainTypeDescriptorTable[7];
-         ++country) {
-      CString label;
-      CString name;
-      (*country)->FormatOverlayTerrainLabelText(&name);
-      label.Format(reinterpret_cast<const char*>(kGreatPowerLabelFmt), idx,
-                   static_cast<const char*>(name));
-      ::SendMessageA(hList, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(label)));
-      ::SendMessageA(hList, LB_SETITEMDATA, idx, idx);
-      ++idx;
-    }
-    if (idx < 0x17) {
-      for (country = &g_apTerrainTypeDescriptorTable[idx];
-           country < &g_apTerrainTypeDescriptorTable[0x17]; ++country) {
-        CString label;
-        CString name;
-        (*country)->FormatOverlayTerrainLabelText(&name);
-        label.Format(reinterpret_cast<const char*>(kMinorNationLabelFmt), idx,
-                     static_cast<const char*>(name));
-        ::SendMessageA(hList, LB_ADDSTRING, 0,
-                       reinterpret_cast<LPARAM>(static_cast<LPCSTR>(label)));
-        ::SendMessageA(hList, LB_SETITEMDATA, idx, idx);
-        ++idx;
-      }
-    }
-
-    ::SendMessageA(hList, LB_SETSEL, g_pSimMgr->GetActiveNationId(), 0);
-    ::SendMessageA(hList, LB_SETCURSEL, 0, 0);
-    if (dialog.DoModal() != 1) {
-      break;
-    }
-  }
-  g_pImperialismApp->PostStartupCommand100();
 }
 
 // FUNCTION: IMPERIALISM 0x00498cc0

@@ -2,6 +2,7 @@
 
 #include "compat.h"
 
+#include "game/navy_tactical_types.h"
 #include "game/tactical/TTacticalBattle.h"
 #include "game/mfc.h"
 
@@ -29,6 +30,8 @@ public:
 
   // NOOP: verified empty in original 0x005a5485 (no standalone TNavyBattle::TNavyBattle body exists: construction is fully inlined into CreateObject 0x005a5480; that address is its operator-new call site)
   TNavyBattle() {}
+
+  void SetTargeting(NavyTargeting targeting); // 0x5a5b90
 
   // The navy battle initializer rotates the six base movement costs into this
   // direction-indexed table from a random starting direction.

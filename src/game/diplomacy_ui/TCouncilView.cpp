@@ -92,7 +92,7 @@ void TCouncilView::DoPostCreate(int arg) {
     scanBracketExpressions(g_pSimMgr, &finalTitle, static_cast<LPCSTR>(titleTemplate),
                            static_cast<LPCSTR>(terrainLabel));
     titleControl->SetTextAndMaybeRefresh(&finalTitle, 0);
-    BuildDiplomacyMapHintOverlayTextAndMetrics();
+    DisplayStats();
 
     if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e ==
         g_pSimMgr->GetActiveNationId()) {
@@ -127,7 +127,7 @@ void TCouncilView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
       // TCouncilView (verified: it writes councilNationCount24c8/visibleVoteTier528 and resolves its
       // own controls via the TView vtable), so it is owned by this class, not the small
       // TCouncilTickerAnimation it was previously attributed to.
-      this->InitializeDiplomacyCouncilViewControlsAndTicker();
+      this->StartVoting();
       return;
     }
   } else if (commandId == 0x14) {
@@ -151,7 +151,7 @@ void TCouncilView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
 }
 
 // FUNCTION: IMPERIALISM 0x004fbdf0
-void TCouncilView::BuildDiplomacyMapHintOverlayTextAndMetrics() {
+void TCouncilView::DisplayStats() {
   CString text;
   TextStyle style;
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
@@ -159,15 +159,14 @@ void TCouncilView::BuildDiplomacyMapHintOverlayTextAndMetrics() {
   // Census every pending-policy map record for the selected nation pair into eight
   // relationship-category buckets: major/minor-nation × (source/target owner, in-vote /
   // out-of-vote). Buckets 0-3 are out-of-vote, 4-7 in-vote.
-  TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
-  NationSlot sourceNation = diplomacy->selectedSourceNationSlot784;
-  NationSlot targetNation = diplomacy->selectedTargetNationSlot786;
+  NationSlot sourceNation = g_pDiplomacyTurnStateManager->selectedSourceNationSlot784;
+  NationSlot targetNation = g_pDiplomacyTurnStateManager->selectedTargetNationSlot786;
   short categoryCounts[8];
   for (int i = 0; i < 8; ++i) {
     categoryCounts[i] = 0;
   }
   for (int record = 0; record < 0x180; ++record) {
-    if (diplomacy->pendingPolicyCodeMatrix304[record] == -1) {
+    if (g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix304[record] == -1) {
       continue;
     }
     short ownerCode = g_pGlobalMapState->cityScoreTable[record].ownerNationCode00;
@@ -187,7 +186,7 @@ void TCouncilView::BuildDiplomacyMapHintOverlayTextAndMetrics() {
         category = 2;
       }
     }
-    if (diplomacy->pendingPolicyCodeMatrix304[record] == targetNation) {
+    if (g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix304[record] == targetNation) {
       category += 4;
     }
     ++categoryCounts[category];
@@ -207,7 +206,7 @@ void TCouncilView::BuildDiplomacyMapHintOverlayTextAndMetrics() {
     TStaticText* majorField = static_cast<TStaticText*>(
         this->ResolveControlByTag(IMPERIALISM_FOURCC('n', 'u', 'm', '0') + row));
     majorField->AssertValid();
-    text.Format("%d", categoryCounts[row]);
+    text.Format(g_szDecimalFormat, categoryCounts[row]);
     majorField->SetTextAndMaybeRefresh(&text, 1);
     majorField->InstallTextStyle(style, 0);
     majorField->SetTextAlignmentAndMaybeRefresh(-1, 0);
@@ -216,17 +215,41 @@ void TCouncilView::BuildDiplomacyMapHintOverlayTextAndMetrics() {
     TStaticText* minorField = static_cast<TStaticText*>(
         this->ResolveControlByTag(IMPERIALISM_FOURCC('n', 'u', 'm', '4') + row));
     minorField->AssertValid();
-    text.Format("%d", categoryCounts[row + 4]);
+    text.Format(g_szDecimalFormat, categoryCounts[row + 4]);
     minorField->SetTextAndMaybeRefresh(&text, 1);
     minorField->InstallTextStyle(style, 0);
     minorField->SetEnabled(1, 1);
   }
+
+  CString scoreText;
+  BuildUiTextStyleDescriptor(&style, 0, 0x18, 0x2b68);
+
+  COLORREF scoreShadowColor;
+  ResolveUiThemeColor(0x2b6a, &scoreShadowColor);
+
+  TDropShadowText* sourceScore =
+      static_cast<TDropShadowText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 'c', 'o', '0')));
+  sourceScore->AssertValid();
+  scoreText.Format(g_szDecimalFormat, g_pDiplomacyTurnStateManager->selectionFlagsA788);
+  sourceScore->SetTextAndMaybeRefresh(&scoreText, 1);
+  sourceScore->InstallTextStyle(style, 0);
+  sourceScore->shadowColor94 = scoreShadowColor;
+  sourceScore->SetEnabled(1, 1);
+
+  TDropShadowText* targetScore =
+      static_cast<TDropShadowText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 'c', 'o', '1')));
+  targetScore->AssertValid();
+  scoreText.Format(g_szDecimalFormat, g_pDiplomacyTurnStateManager->selectionFlagsB78a);
+  targetScore->SetTextAndMaybeRefresh(&scoreText, 1);
+  targetScore->InstallTextStyle(style, 0);
+  targetScore->shadowColor94 = scoreShadowColor;
+  targetScore->SetEnabled(1, 1);
 }
 
 // Receiver confirmed to be TCouncilView (writes councilNationCount24c8 / visibleVoteTier528 and
 // resolves its own controls via the TView vtable).
 // FUNCTION: IMPERIALISM 0x004fc2e0
-void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
+void TCouncilView::StartVoting() {
   CString candidateName;
 
   TextStyle councilTextStyle;
@@ -264,13 +287,10 @@ void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
 
   const short localizationMode = static_cast<short>(g_pSimMgr->mode);
   if (localizationMode == 0x16 || localizationMode == 0x17) {
-    const char* tileRecordBytes = reinterpret_cast<const char*>(g_pGlobalMapState->cityScoreTable);
-    int flagIndex = 0;
-    for (int tileOffset = 0; tileOffset < 0xfc00; tileOffset += 0xa8) {
-      if (tileRecordBytes[tileOffset] != -1) {
-        tileHasOwnerFlags52C[flagIndex] = true;
+    for (int provinceIndex = 0; provinceIndex < 0x180; ++provinceIndex) {
+      if (g_pGlobalMapState->cityScoreTable[provinceIndex].ownerNationCode00 != -1) {
+        tileHasOwnerFlags52C[provinceIndex] = true;
       }
-      ++flagIndex;
     }
     visibleVoteTier528 = kCouncilTickerIntervalMapMode;
 
@@ -311,7 +331,7 @@ void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
 }
 
 // FUNCTION: IMPERIALISM 0x004fc630
-void TCouncilView::AdvanceCivilianTerrainSelectionStep() {
+void TCouncilView::NextTick() {
   CString unusedMsg; // constructed/destructed; never populated in the observed binary
   ++visibleVoteTier528;
 
@@ -373,7 +393,7 @@ void TCouncilView::AdvanceCivilianTerrainSelectionStep() {
     }
     // Both surviving paths (slot78e == -1 at 0x4fc86b, and the allow-advance branch at
     // 0x4fc869) fall through to the single call at 0x4fc882.
-    BuildDiplomacyMapHintOverlayTextAndMetrics();
+    DisplayStats();
   }
 }
 

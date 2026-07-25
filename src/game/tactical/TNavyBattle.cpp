@@ -90,7 +90,7 @@ void TNavyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileInde
 // distance to the attacker, derives a hit-chance threshold from the attacker's quality,
 // range, and that distance, plays the muzzle-flash effect at the attacker's tile, then
 // rolls against the threshold. On a hit, applies scaled damage via
-// TNavyTacUnit::ApplyTacticalDamageAndDeathState (damage mode = the attacker side's
+// TNavyTacUnit::ApplyNavalDamage (targeting = the attacker side's
 // ship-panel toggle), invalidates the defender's tile, and if destroyed clears it from
 // the grid and plays the sinking effect; on a miss, plays the splash effect instead.
 // FUNCTION: IMPERIALISM 0x005a5730
@@ -130,12 +130,12 @@ void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
   if (static_cast<float>(rand() % 100) < hitThreshold) {
     TTacticalPlayer* attackerSidePlayer = (&tacticalPlayer14)[currentSideC];
     attackerSidePlayer->AssertValid();
-    int damageMode = static_cast<TNavyPlayer*>(attackerSidePlayer)->shipDisplayMode2c;
+    NavyTargeting targeting = static_cast<TNavyPlayer*>(attackerSidePlayer)->targetingMode2c;
     float attackPower = attackerUnit->GetBaseAttackPower();
     float scaledStrength = attackerUnit->strength4 * attackPower;
     float damageScale = defenderUnit->GetDamageScale();
     float damageAmount = damageScale * scaledStrength;
-    defenderUnit->ApplyTacticalDamageAndDeathState(damageAmount, damageMode);
+    defenderUnit->ApplyNavalDamage(damageAmount, targeting);
     if (battleView8 != 0) {
       battleView8->InvalidateTacticalUnitTileRect(defenderUnit);
     }
@@ -208,6 +208,11 @@ void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit*
 // FUNCTION: IMPERIALISM 0x005a5b70
 void TNavyBattle::FinalizeTacticalBattleOutcome(int) {
   g_pNavyOrderManager->CarryOutOrders();
+}
+
+// FUNCTION: IMPERIALISM 0x005a5b90
+void TNavyBattle::SetTargeting(NavyTargeting targeting) {
+  static_cast<TNavyPlayer*>((&tacticalPlayer14)[currentSideC])->targetingMode2c = targeting;
 }
 
 // FUNCTION: IMPERIALISM 0x005a5bc0

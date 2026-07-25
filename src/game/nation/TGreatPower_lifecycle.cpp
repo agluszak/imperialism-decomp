@@ -180,7 +180,7 @@ TGreatPower::TGreatPower()
 
   int pendingIndex = 0;
   do {
-    this->serializedStatusFlags[pendingIndex] = 0;
+    this->pendingActionStatus.byAction[pendingIndex] = 0;
     this->field8d6[pendingIndex] = -1;
     ++pendingIndex;
   } while (pendingIndex < 0x0D);
@@ -409,7 +409,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
   stream->ReadBytes(this->aidAllocationMatrix, 0x5C0);
   ReverseDwordArrayBytes(this->aidAllocationMatrix, 0x170);
 
-  stream->ReadBytes(this->serializedStatusFlags, 0x0D);
+  stream->ReadBytes(&this->pendingActionStatus, sizeof(this->pendingActionStatus));
   stream->ReadBytes(this->field8d6, 0x1A);
   SwapShortArrayBytes(this->field8d6, 0x0D);
 
@@ -622,7 +622,7 @@ void TGreatPower::WriteTo(TStream* stream) {
   stream->WriteBytes(&this->budgetPoolDelta, 4);
   WriteIntArrayElems(stream, this->aidAllocationMatrix, 0x170);
 
-  stream->WriteBytes(&this->serializedStatusFlags[0], 0xd);
+  stream->WriteBytes(&this->pendingActionStatus, sizeof(this->pendingActionStatus));
   WriteShortArrayElemsRev(stream, this->field8d6, 0xd);
 
   this->turnEventQueue->WriteTo(stream);
@@ -739,7 +739,7 @@ void TGreatPower::NoOpNationPendingActionHook(void) {}
 
 // FUNCTION: IMPERIALISM 0x004da5e0
 void TGreatPower::DispatchPendingStatusPrompts(void) {
-  signed char* flags = this->serializedStatusFlags;
+  signed char* flags = this->pendingActionStatus.byAction;
   char flag5Handled = (flags[5]) >= 0x33;
   if (!flag5Handled &&
       g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] ==
@@ -799,13 +799,13 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
 void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
   if (g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] ==
       2) {
-    this->serializedStatusFlags[5] = 0x33;
+    this->pendingActionStatus.roles.capabilityStatus05 = 0x33;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004da8a0
 void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
-  signed char* flags = this->serializedStatusFlags;
+  signed char* flags = this->pendingActionStatus.byAction;
   char flag5Handled = (flags[5]) >= 0x33;
   if (!flag5Handled &&
       g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] ==
@@ -858,7 +858,7 @@ void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
 // FUNCTION: IMPERIALISM 0x004daa10
 void TGreatPower::SetNationPendingActionStateAndPayload(int index, short payload) {
   if (g_nSaveFormatVersion != -3) {
-    this->serializedStatusFlags[index] = 0x32;
+    this->pendingActionStatus.byAction[index] = 0x32;
     this->field8d6[index] = payload;
   }
 }
@@ -888,8 +888,8 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
 
   short nationSlot = this->nationSlot;
 
-  // Land recruit order (serializedStatusFlags[1] == '2').
-  if (this->serializedStatusFlags[1] == 0x32) {
+  // Land recruit order (pending status 1 == '2').
+  if (this->pendingActionStatus.roles.landRecruitStatus01 == 0x32) {
     TMilitaryUnit* militaryOrder = new TMilitaryUnit();
     int nodeContext = this->GetHomeRegionCityRecordIndex();
     short capValue = g_pCityOrderCapabilityState->nationCapRows1e8[nationSlot].slots[9];
@@ -897,8 +897,8 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     this->DispatchTurnOrderActionSlotB0(3, capValue, 1);
   }
 
-  // Navy primary/secondary order (serializedStatusFlags[0] == '2').
-  if (this->serializedStatusFlags[0] == 0x32) {
+  // Navy primary/secondary order (pending status 0 == '2').
+  if (this->pendingActionStatus.roles.navyOrderStatus00 == 0x32) {
     short zoneIndex = g_pCityOrderCapabilityState->activeZoneIndex1d4;
     TZone* portZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationSlot);
     TShip* primaryOrder =
@@ -913,8 +913,8 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     this->DispatchTurnOrderActionSlotB0(0, g_pCityOrderCapabilityState->activeZoneIndex1d4, 1);
   }
 
-  // Civil work order (serializedStatusFlags[2] < '3').
-  if (this->serializedStatusFlags[2] < 0x33) {
+  // Civil work order (pending status 2 < '3').
+  if (this->pendingActionStatus.roles.civilWorkStatus02 < 0x33) {
     bool needsCivOrder = false;
     TMinor** minorEntry = g_apMinorNationCapabilityObjects;
     short zoneCursor = 7;
@@ -945,8 +945,8 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     }
   }
 
-  // Final pending-action flush (serializedStatusFlags[0x0a] == '2').
-  if (this->serializedStatusFlags[0x0a] == 0x32) {
+  // Final pending-action flush (pending status 0x0a == '2').
+  if (this->pendingActionStatus.roles.actionStatus0A == 0x32) {
     this->city->orderCountByType5c[6] += 2; // navy secondary-order counter
     this->DispatchTurnOrderActionSlotB0(1, 6, 2);
   }

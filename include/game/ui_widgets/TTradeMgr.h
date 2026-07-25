@@ -79,7 +79,7 @@ public:
   // (if the game isn't in that mode) posts the turn-flow UI refresh command.
   void RefreshNationStateAndEmitTurnEvent3Mode18(); // 0x5b9370
   // Average, across all 17 category rows, of (proposalWeightScale06 - presetSeed04).
-  // Called from the free function BuildInterNationEventSummaryRowsForAdvisorDialog
+  // Called from TNewspaperView::StuffValues
   // (0x55d200) while building the advisor-dialog inter-nation event summary rows.
   int ComputeAverageProposalWeightDeltaAcrossCategoryRows(); // 0x5ba0e0
 

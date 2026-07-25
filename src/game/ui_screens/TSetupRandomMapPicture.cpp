@@ -38,8 +38,7 @@ static void GenerateDifferentRandomMapSeed(CString* seed) {
   CString previousSeed(*seed);
   do {
     GenerateMappedFlavorTextByCurrentContextNation(seed);
-  } while (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(*seed)),
-                   reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(previousSeed))) == 0);
+  } while (seed->Compare(previousSeed) == 0);
 }
 
 // SYNTHETIC: IMPERIALISM 0x00576ca0
@@ -279,10 +278,7 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
                                                                 planetSeed, 0, 0, 0, 0);
       wrapHorizontally98 = resultTag == kControlTagOne1;
 
-      if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(planetSeed)),
-                  reinterpret_cast<const unsigned char*>(g_szEmptyString)) != 0 &&
-          _mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(planetSeed)),
-                  reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(planetSeed94))) != 0) {
+      if (planetSeed.Compare(g_szEmptyString) != 0 && planetSeed.Compare(planetSeed94) != 0) {
         planetSeed94 = planetSeed;
         MajorTomToGroundControl(1);
       } else {
@@ -309,9 +305,7 @@ void TSetupRandomMapPicture::StartGame() {
     for (int nationSlot = 0; nationSlot < 0x17 && duplicateName == 0; ++nationSlot) {
       if (nationSlot != selectedNationSlot9A) {
         g_pSimMgr->GetString(0x2715, static_cast<short>(nationSlot), &localizedName);
-        duplicateName =
-            _mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(localizedName)),
-                    reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(countryText))) == 0;
+        duplicateName = localizedName.Compare(countryText) == 0;
       }
     }
     if (duplicateName != 0) {

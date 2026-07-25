@@ -1131,7 +1131,7 @@ short g_awUnitCombatClassBySlot[32] = {1, 2, 1, 1, 3, 2, 2, 1, 1, 2, 1, 1, 3, 2,
 // GLOBAL: IMPERIALISM 0x006953c0
 unsigned char g_abStackCompositionClassTable[16] = {0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 3, 0, 0, 3, 4, 5};
 // Per-unit-type strength-weighting percent (short table at 0x6953e8, 30 unit types + 2
-// pad), read by TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer as
+// pad), read by TDefenseMinister::CreateEnemyPowerMap as
 // weightPercent * TMilitaryUnit::field_34 / 100.
 // GLOBAL: IMPERIALISM 0x006953e8
 short g_anUnitStrengthWeightPercentBySlot[32] = {
@@ -1518,11 +1518,12 @@ short g_aUnitOrderCostProfileByAbilityId[0x1e][7] = {
     {24, 16, 2, -1, 0, 5000, 4},  {25, 16, 2, -1, 0, 7000, 4}, {26, 16, 3, -1, 0, 9000, 4},
     {27, -1, 0, -1, 0, 0, 4},     {28, -1, 0, -1, 0, 0, 4},    {29, -1, 0, -1, 0, 0, 4}};
 // GLOBAL: IMPERIALISM 0x0066ac10
-short g_aTechItemPrerequisitePairs[34][2] = {
-    {0, 0},  {0, 0},  {0, 0}, {0, 0},  {0, 0},  {1, 0},  {1, 0},  {0, 0},  {7, 3},
-    {0, 0},  {2, 0},  {0, 0}, {6, 0},  {0, 0},  {11, 0}, {0, 0},  {8, 0},  {10, 0},
-    {10, 0}, {0, 0},  {7, 0}, {15, 0}, {13, 0}, {5, 12}, {9, 10}, {14, 0}, {19, 0},
-    {24, 0}, {26, 0}, {0, 0}, {25, 0}, {25, 0}, {25, 0}, {0, 0}};
+TechPrerequisitePair g_aTechItemPrerequisitePairs[34] = {
+    {{0, 0}},  {{0, 0}},  {{0, 0}},  {{0, 0}},  {{0, 0}},  {{1, 0}},  {{1, 0}},
+    {{0, 0}},  {{7, 3}},  {{0, 0}},  {{2, 0}},  {{0, 0}},  {{6, 0}},  {{0, 0}},
+    {{11, 0}}, {{0, 0}},  {{8, 0}},  {{10, 0}}, {{10, 0}}, {{0, 0}},  {{7, 0}},
+    {{15, 0}}, {{13, 0}}, {{5, 12}}, {{9, 10}}, {{14, 0}}, {{19, 0}}, {{24, 0}},
+    {{26, 0}}, {{0, 0}},  {{25, 0}}, {{25, 0}}, {{25, 0}}, {{0, 0}}};
 // GLOBAL: IMPERIALISM 0x006a3ed8
 TTaskForce* g_pCachedMapActionContext = 0;
 TSoundPlayer* g_pSfxPlaybackSystem = 0;

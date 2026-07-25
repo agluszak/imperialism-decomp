@@ -1390,8 +1390,7 @@ void TViewMgr::SetCursorRangeAndRefreshMainPanel(int payload) {
   static_cast<TInfoBarText*>(cursor)->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
   TControl* mainPanel = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagMain));
   mainPanel->AssertValid();
-  static_cast<TCouncilView*>(static_cast<void*>(mainPanel))
-      ->InitializeDiplomacyCouncilViewControlsAndTicker();
+  static_cast<TCouncilView*>(static_cast<void*>(mainPanel))->StartVoting();
 }
 
 // FUNCTION: IMPERIALISM 0x005d8040
@@ -1545,7 +1544,7 @@ void TViewMgr::HandleTurnEvent2103_RunNationStatusReportUpdate(int pageIndex) {
       static_cast<TNewspaperView*>(activeDialog->ResolveControlByTag(kControlTagMain));
   mainControl->AssertValid();
   g_pSfxPlaybackSystem->PlaySoundEffect(0x14b4, 0, 1);
-  mainControl->BuildInterNationEventSummaryRowsForAdvisorDialog(pageIndex);
+  mainControl->StuffValues(pageIndex);
   activeDialog->ForceRedraw();
 }
 

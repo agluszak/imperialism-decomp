@@ -26,7 +26,7 @@ int TFloatWindow::GetWindowTypeTag() {
 void TFloatWindow::Close() {
   busyFlag98 = 0;
   if (nativeWindow50 != 0 && nativeWindow50->m_hWnd != 0) {
-    SendMessageA(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), 0x468, 1, controlTag);
+    SendMessageA(nativeWindow50->m_hWnd, 0x468, 1, controlTag);
   }
   if (childList44 != 0) {
     POSITION pos = childList44->GetHeadPosition();

@@ -154,9 +154,6 @@ struct TurnEvent15Packet : NetMessage {
 #include <cstdlib>
 #include <cstring>
 
-// FUNCTION: IMPERIALISM 0x0050ec60
-NationStateRecordA8::NationStateRecordA8() {}
-
 // FUNCTION: IMPERIALISM 0x005427a0
 TMultiplayerSlotHandle::TMultiplayerSlotHandle() : allocatedData(0), tagOrSize(0) {}
 
@@ -294,7 +291,7 @@ struct TurnEvent1EDiplomacyActionPacket : TimelyNetMessagePrefix {
 struct TurnEvent24CityRecordPacket : TimelyNetMessagePrefix {
   short cityRecordIndex; // +0x1c
   unsigned char pad1e[2];
-  NationStateRecordA8 record; // +0x20
+  Province record; // +0x20
 };
 
 // Event-0x27 join-empire dispatch.
@@ -2258,42 +2255,6 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   packet.cityNameA4 = src->cityNameA4;
 
   g_pNetMgr006a6014->Send(&packet, 0);
-}
-
-// FUNCTION: IMPERIALISM 0x0054ae90
-NationStateRecordA8& NationStateRecordA8::operator=(const NationStateRecordA8& source) {
-  ownerNationCode00 = source.ownerNationCode00;
-  formerOwnerNationCode01 = source.formerOwnerNationCode01;
-  developmentStage = source.developmentStage;
-  fortLevel03 = source.fortLevel03;
-  cityTileIndex04 = source.cityTileIndex04;
-  lastTurnTick = source.lastTurnTick;
-  adjacentRegionCount08 = source.adjacentRegionCount08;
-  for (int a = 0; a < 12; ++a) {
-    adjacentRegionIds0A[a] = source.adjacentRegionIds0A[a];
-  }
-  for (int b = 0; b < 12; ++b) {
-    adjacentRegionAnchorTiles22[b] = source.adjacentRegionAnchorTiles22[b];
-  }
-  linkedRegionCount = source.linkedRegionCount;
-  field3B = source.field3B;
-  field3C = source.field3C;
-  secondaryNeighborTileIndex3e = source.secondaryNeighborTileIndex3e;
-  primaryNeighborTileIndex40 = source.primaryNeighborTileIndex40;
-  for (int c = 0; c < 0x20; ++c) {
-    linkedRegionIds42[c] = source.linkedRegionIds42[c];
-  }
-  for (int d = 0; d < 10; ++d) {
-    resourceDevelopmentCounts82[d] = source.resourceDevelopmentCounts82[d];
-  }
-  reservedUnitChainSlot98 = source.reservedUnitChainSlot98;
-  reservedCityScoreSlot9C = source.reservedCityScoreSlot9C;
-  navyOrderReachableA0 = source.navyOrderReachableA0;
-  exploredByNationMaskA1 = source.exploredByNationMaskA1;
-  resourcePresenceMaskA2 = source.resourcePresenceMaskA2;
-  regionClassA3 = source.regionClassA3;
-  cityNameA4 = source.cityNameA4;
-  return *this;
 }
 
 // FUNCTION: IMPERIALISM 0x0054b1b0

@@ -4,7 +4,7 @@
 
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_core/THelpMgr.h"
-#include "game/tactical/TTacticalBattle.h"
+#include "game/tactical/TNavyBattle.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 
@@ -42,13 +42,13 @@ void TTacNavyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     unsigned int tag = sourceHandler->controlTag;
     switch (tag) {
     case kControlTagCrew:
-      battle88->SetCurrentSideNavyShipDisplayMode(1);
+      static_cast<TNavyBattle*>(battle88)->SetTargeting(kNavyTargetingCrew);
       break;
     case kControlTagHull:
-      battle88->SetCurrentSideNavyShipDisplayMode(0);
+      static_cast<TNavyBattle*>(battle88)->SetTargeting(kNavyTargetingHull);
       break;
     case kControlTagSail:
-      battle88->SetCurrentSideNavyShipDisplayMode(2);
+      static_cast<TNavyBattle*>(battle88)->SetTargeting(kNavyTargetingSail);
       break;
     default:
       break;

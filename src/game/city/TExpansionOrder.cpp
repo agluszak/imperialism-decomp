@@ -47,7 +47,8 @@ void TExpansionOrder::Produce() {
   short newValue;
   if (resourceTypeIndex48 == 0x0f) {
     TGreatPower* owner = city->ownerNationAc;
-    signed char usesThreeRegionsPerLevel = owner->field8d1 >= '3';
+    signed char usesThreeRegionsPerLevel =
+        owner->pendingActionStatus.roles.expansionCapacityStatus09 >= '3';
     if (usesThreeRegionsPerLevel != zero) {
       int regionCount = owner->ownedRegionList->GetSize();
       if (regionCount / 3 > 1) {

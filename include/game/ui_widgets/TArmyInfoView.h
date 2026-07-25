@@ -16,7 +16,7 @@ public:
   // TViewMgr::DispatchProvinceOrderOverlayConfirmDialog is its only caller: it forwards
   // the province's city-record index and the per-category order counts. The previous
   // `IsSelected(short, bool)` name/signature was a guess.
-  virtual void PopulateFriendlyArmyReportContent(short cityRecordIndex, int* categoryCounts);
+  virtual void StuffValues(short cityRecordIndex, int* categoryCounts);
 };
 
 ASSERT_SIZE(TArmyInfoView, 0x90);

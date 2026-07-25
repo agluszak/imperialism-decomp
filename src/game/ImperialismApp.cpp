@@ -32,6 +32,7 @@
 #include "game/gfx/TAutoResolutionDialog.h"
 #include "game/app/TModalTemplateDialog.h"
 #include "game/military/mapped_flavor_text.h"
+#include "game/pointer_representation.h"
 #include "game/gfx/quickdraw_regions.h"
 
 #include <io.h>  // CRT _findfirst/_findnext/_findclose (LIBRARY 0x5e7ae0/0x5e7c10/0x5e7d30)
@@ -41,13 +42,6 @@
 namespace {
 
 const int kAutoResPromptSentinel = 0x29a;
-
-// VC5 materializes this char result as neg/sbb/inc before testing it, matching the
-// retail language-name comparison while keeping the MBCS pointer conversion local.
-__inline char AreMbcsStringsEqual(LPCSTR left, LPCSTR right) {
-  return _mbscmp(const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(left)),
-                 const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(right))) == 0;
-}
 
 // Inlined at every _findfirst/_findnext site in LoadLanguageResourcesFromIrgFiles.
 __inline void CloseCrtFindHandleIfOpen(long& findHandle) {
@@ -159,7 +153,7 @@ CString ReadOrCreateRegistryStringValueWithFallback(LPCSTR company, LPCSTR produ
   DWORD dataSize = 0;
   LONG status = RegQueryValueExA(hFinal, valueName, nullptr, &dataType, nullptr, &dataSize);
   if (status == ERROR_SUCCESS) {
-    LPBYTE buffer = reinterpret_cast<LPBYTE>(value.GetBuffer(dataSize));
+    LPBYTE buffer = static_cast<LPBYTE>(static_cast<void*>(value.GetBuffer(dataSize)));
     status = RegQueryValueExA(hFinal, valueName, nullptr, &dataType, buffer, &dataSize);
     value.ReleaseBuffer(-1);
   }
@@ -291,9 +285,7 @@ BOOL ImperialismApp::InitInstance() {
     CIncludeView* mainView = GetMainViewHostFromActiveThread();
     mainView->SetUiRuntimeContextAndActivateMain(g_pDisplayMgr->activeDialog);
 
-    if (_mbscmp(const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(
-                    static_cast<LPCSTR>(cmdInfo.m_strMainWindowTitle38))),
-                reinterpret_cast<unsigned char*>(g_szEmptyString)) != 0) {
+    if (cmdInfo.m_strMainWindowTitle38.Compare(g_szEmptyString) != 0) {
       CIncludeView* uiWindow = GetMainViewHostFromActiveThread();
       if (uiWindow != nullptr) {
         uiWindow->SetWindowText(static_cast<LPCSTR>(cmdInfo.m_strMainWindowTitle38));
@@ -482,7 +474,7 @@ void ImperialismApp::OnPreviewDibResource() {
     dib = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(
         static_cast<unsigned short>(inputValue));
   } else {
-    dib = reinterpret_cast<CDib*>(inputValue);
+    dib = static_cast<CDib*>(PointerFromAddressLong32(inputValue));
   }
 
   if (dib != 0 && AfxIsValidAddress(dib, sizeof(CDib), FALSE) &&
@@ -627,7 +619,7 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
     languageLabel.ReleaseBuffer(-1);
     languageLabel.MakeUpper();
 
-    if (AreMbcsStringsEqual(savedLanguage, languageLabel)) {
+    if (savedLanguage.Compare(languageLabel) == 0) {
       WriteProfileString(g_pRegistrySettingsSection_0063E040, g_pRegistryLanguageKey_0063E04C,
                          savedLanguage);
 
@@ -644,12 +636,13 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
       LoadStringA(irgModule, 0x323, languageCodeStringE0.GetBufferSetLength(0x21), 0x20);
       languageCodeStringE0.ReleaseBuffer(-1);
 
-      const unsigned char* langBytes =
-          reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(languageCodeStringE0));
-      languagePackIdE4 = (static_cast<unsigned int>(langBytes[2]) * 0x100U +
-                          static_cast<unsigned int>(langBytes[1])) *
+      unsigned char languageCodeByte0 = languageCodeStringE0[0];
+      unsigned char languageCodeByte1 = languageCodeStringE0[1];
+      unsigned char languageCodeByte2 = languageCodeStringE0[2];
+      languagePackIdE4 = (static_cast<unsigned int>(languageCodeByte2) * 0x100U +
+                          static_cast<unsigned int>(languageCodeByte1)) *
                              0x100U +
-                         static_cast<unsigned int>(langBytes[0]);
+                         static_cast<unsigned int>(languageCodeByte0);
     }
     FreeLibrary(irgModule);
 
