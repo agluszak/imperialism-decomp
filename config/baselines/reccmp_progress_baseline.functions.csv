@@ -5905,7 +5905,7 @@ address|matching|name
 0x5bac30|1.0|TDealBookPicture::~TDealBookPicture
 0x5bac50|0.8432432432432433|TDealBookPicture::Startup
 0x5baf70|0.48205128205128206|TDealBookPicture::ShowPage
-0x5bb2e0|0.17110799438990182|TDealBookPicture::CalculatePages
+0x5bb2e0|0.30985915492957744|TDealBookPicture::CalculatePages
 0x5bbc30|0.26763990267639903|TDealBookPicture::DoEvent
 0x5bc0d0|0.5084745762711864|TDealBookPicture::SwitchPages
 0x5bc690|0.6666666666666666|TDealTabControl::CreateObject

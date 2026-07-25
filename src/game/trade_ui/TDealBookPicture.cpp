@@ -9,9 +9,11 @@
 #include "game/nation/TGreatPower.h"
 #include "game/ui_screens/TPageView.h"
 #include "game/ui_screens/TSimMgr.h"
+#include "game/ui_screens/TTextLine.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/ui_core/TStaticText.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_widgets/TToolBarCluster.h"
 #include "game/trade_ui/TTradePageBuyView.h"
@@ -223,9 +225,56 @@ void TDealBookPicture::CalculatePages() {
     }
   }
 
-  // The original's middle section appends the per-minor aid-allocation rows when the
-  // nation's allocation matrix is nonempty. Its row text/object subtype is still being
-  // recovered; the tracked-deal rows and common page finalization remain valid without it.
+  if (nation->SumAidAllocationMatrixAllCells() != 0) {
+    CString aidHeading;
+    tradeListEmptyB0 = false;
+
+    int headingBounds[2] = {200, 30};
+    TTextLine* heading = new TTextLine();
+    heading->SetTextLineRowBoundsAndStyle(0, 60, headingBounds, -1, 0);
+    g_pSimMgr->GetString(0x2741, 7, &aidHeading);
+    heading->SetCaptionText(&aidHeading);
+
+    TextStyle headingStyle;
+    BuildUiTextStyleDescriptor(&headingStyle, 0, 14, 0x2b67);
+    heading->SetTextLineStyleDescriptor(&headingStyle);
+    heading->SetField1E(1);
+    soldTradesView9C->AddOrderedEntry(heading);
+
+    for (short targetNation = 0; targetNation < 23; ++targetNation) {
+      if (nation->SumAidAllocationMatrixColumnForTarget(static_cast<NationSlot>(targetNation)) ==
+          0) {
+        continue;
+      }
+
+      ++sellRow;
+      tradeListEmptyB0 = false;
+
+      int headerBounds[2] = {200, 30};
+      TCommodityLine* header = new TCommodityLine();
+      header->SetLineDataRowAndBounds(0, 30, headerBounds);
+      header->commoditySlot10 = targetNation;
+      soldTradesView9C->AddOptionEntry(header);
+
+      for (short minorNation = 7; minorNation < 23; ++minorNation) {
+        int allocation = nation->aidAllocationMatrix[(minorNation - 7) * 23 + targetNation];
+        if (g_apMinorNationCapabilityObjects[minorNation - 7] == 0 || allocation == 0) {
+          continue;
+        }
+
+        CString nationName;
+        CString allocationText;
+        int lineBounds[2] = {200, 30};
+        TTextLine* line = new TTextLine();
+        line->SetTextLineRowBoundsAndStyle(static_cast<short>(sellRow), 0, lineBounds, -1, 0);
+        nationName = g_pSimMgr->LoadNormalizedCredentialName(minorNation);
+        g_pSimMgr->NumToCurrency(allocation, &allocationText);
+        nationName += s_szTurnHistorySeparator_00699320 + allocationText;
+        line->SetCaptionText(&nationName);
+        soldTradesView9C->AddOrderedEntry(line);
+      }
+    }
+  }
 
   int totalsBounds[2] = {200, (nation->pressureCounter > 0 ? 5 : 4) * 30};
   TTradeTotalsLine* totals = new TTradeTotalsLine();
