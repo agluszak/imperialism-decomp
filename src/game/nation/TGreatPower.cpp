@@ -432,7 +432,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
               this->SetNationPendingActionStateAndPayload(4, regionId);
             } else {
               this->SetNationPendingActionStateAndPayload(3, regionId);
-              if (this->expansionAlertCounter < 0x33) {
+              if (this->pendingActionStatus.roles.expansionAlertStatus08 < 0x33) {
                 this->SetNationPendingActionStateAndPayload(8, -1);
               }
             }
@@ -3032,7 +3032,8 @@ void TGreatPower::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int m
 
   if (targetNationSlot >= 0 && targetNationSlot < kNationSlotCount) {
     TGreatPower* targetNation = g_apNationStates[targetNationSlot];
-    if (targetNation != 0 && targetNation->field8d1 < 3) {
+    if (targetNation != 0 &&
+        targetNation->pendingActionStatus.roles.expansionCapacityStatus09 < 3) {
       targetNation->SetNationPendingActionStateAndPayload(9, this->nationSlot);
     }
   }
@@ -3048,10 +3049,10 @@ void TGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
 void TGreatPower::AddRegionIdToNationOwnedRegionList(int regionId) {
   this->ownedRegionList->InsertLast(regionId);
   if (this->ownedRegionList->GetSize() >= 9) {
-    signed char pressureHigh = this->serializedStatusFlags[6];
+    signed char pressureHigh = this->pendingActionStatus.roles.territorialPressureStatus06;
     pressureHigh = pressureHigh >= 0x33;
     if (pressureHigh != 0) {
-      signed char gateHigh = this->expansionEventGate;
+      signed char gateHigh = this->pendingActionStatus.roles.expansionEventStatus0C;
       gateHigh = gateHigh >= 0x33;
       if (gateHigh == 0) {
         this->SetNationPendingActionStateAndPayload(0x0C, -1);

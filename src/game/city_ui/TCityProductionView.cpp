@@ -235,11 +235,12 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
     RuntimeTestDriver::Pulse();
 #endif
 
-    if (slot == 0xf && city->ownerNationAc->field8d2 > '2') {
+    if (slot == 0xf && city->ownerNationAc->pendingActionStatus.roles.actionStatus0A > '2') {
       SetGWorld(scratchContext, savedFlags);
       BlitBitmapResourceRectWithScreenOffsetAndPalette(&scratchBounds, scratchContext, 0xa6, 0x3c,
                                                        0x1b9e, savedContext, savedFlags);
-    } else if (slot == 0xe && city->ownerNationAc->field8d3 >= '3') {
+    } else if (slot == 0xe &&
+               city->ownerNationAc->pendingActionStatus.roles.actionStatus0B >= '3') {
       SetGWorld(scratchContext, savedFlags);
       BlitBitmapResourceRectWithScreenOffsetAndPalette(&scratchBounds, scratchContext, 0x6d, 0x143,
                                                        0x1b9f, savedContext, savedFlags);

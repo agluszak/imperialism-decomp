@@ -742,8 +742,8 @@ void TCountry::DeserializeDiplomacyNationStateFromStream(TStream* stream) {
   stream->ReadBytes(&nation->field8d6[0], 2);
   stream->ReadBytes(&nation->field8d6[1], 2);
   stream->ReadBytes(&nation->field8d6[2], 2);
-  stream->ReadBytes(nation->serializedStatusFlags, 8);
-  SwapShortArrayBytes(nation->serializedStatusFlags, 4);
+  stream->ReadBytes(nation->pendingActionStatus.byAction, 8);
+  SwapShortArrayBytes(nation->pendingActionStatus.byAction, 4);
 }
 
 void TCountry::SerializeDiplomacyNationStateToStream(TStream* stream) {
@@ -763,7 +763,10 @@ void TCountry::SerializeDiplomacyNationStateToStream(TStream* stream) {
   stream->WriteBytes(&nation->field8d6[0], 2);
   stream->WriteBytes(&nation->field8d6[1], 2);
   stream->WriteBytes(&nation->field8d6[2], 2);
-  WriteShortArrayElems(stream, reinterpret_cast<short*>(nation->serializedStatusFlags), 4);
+  for (int wordIndex = 0; wordIndex < 4; ++wordIndex) {
+    short statusWord = nation->pendingActionStatus.GetSerializedPrefixWord(wordIndex);
+    WriteShortArrayElems(stream, &statusWord, 1);
+  }
 }
 
 char IsPolicyCodeInSpecialNationPolicySet(short policyCode) {

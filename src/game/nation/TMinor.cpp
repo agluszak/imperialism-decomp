@@ -1007,7 +1007,8 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
 
   this->NotifyMajorPowersAffectedByMinorTerritoryChange();
   if (g_apNationStates[targetNationSlot] != 0 &&
-      g_apNationStates[targetNationSlot]->serializedStatusFlags[6] < '3') {
+      g_apNationStates[targetNationSlot]->pendingActionStatus.roles.territorialPressureStatus06 <
+          '3') {
     g_apNationStates[targetNationSlot]->SetNationPendingActionStateAndPayload(6, this->nationSlot);
   }
 }

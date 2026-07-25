@@ -60,7 +60,7 @@ void TPopGrowthOrder::Produce() {
 
   TCity* city = cityField08;
   TGreatPower* owner = city->ownerNationAc;
-  if (owner->field8d1 >= '3') {
+  if (owner->pendingActionStatus.roles.expansionCapacityStatus09 >= '3') {
     int regionCount = owner->ownedRegionList->GetSize();
     if (regionCount / 3 > 1) {
       city->productionAccum1fc[0x0f] = static_cast<short>(owner->ownedRegionList->GetSize() / 3);

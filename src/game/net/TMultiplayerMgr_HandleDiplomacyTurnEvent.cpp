@@ -722,9 +722,10 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       oldNation->trackedObjectList = trackedObjects;
       memcpy(newNation->candidateNationFlags, oldNation->candidateNationFlags,
              sizeof(newNation->candidateNationFlags));
-      // 0xd-byte block copy from serializedStatusFlags through expansionEventGate
-      // (field8d5 is deliberately left at its freshly constructed value).
-      memcpy(newNation->serializedStatusFlags, oldNation->serializedStatusFlags, 0xd);
+      // Copy the complete 13-byte pending-action block; field8d5 is deliberately left at
+      // its freshly constructed value.
+      memcpy(&newNation->pendingActionStatus, &oldNation->pendingActionStatus,
+             sizeof(newNation->pendingActionStatus));
       memcpy(newNation->field8d6, oldNation->field8d6, sizeof(newNation->field8d6));
       newNation->field900 = oldNation->field900;
       newNation->field904 = oldNation->field904;

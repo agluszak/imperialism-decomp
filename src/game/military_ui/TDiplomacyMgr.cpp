@@ -1251,7 +1251,7 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
       winnerNationSlot = topNationSlot;
     } else if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(
                    static_cast<short>(topNationSlot)) &&
-               g_apNationStates[topNationSlot]->field8d3 < '3') {
+               g_apNationStates[topNationSlot]->pendingActionStatus.roles.actionStatus0B < '3') {
       g_apNationStates[topNationSlot]->SetNationPendingActionStateAndPayload(0xb, -1);
     }
   } else if (topSideCount < secondSideCount) {
@@ -1259,7 +1259,7 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
       winnerNationSlot = secondNationSlot;
     } else if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(
                    static_cast<short>(secondNationSlot)) &&
-               g_apNationStates[secondNationSlot]->field8d3 < '3') {
+               g_apNationStates[secondNationSlot]->pendingActionStatus.roles.actionStatus0B < '3') {
       g_apNationStates[secondNationSlot]->SetNationPendingActionStateAndPayload(0xb, -1);
     }
   } else if (forceFullClear) {

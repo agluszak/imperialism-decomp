@@ -24,6 +24,42 @@ class TTurnStartEvent;
 // 16-bit discriminator stored in each diplomacy tracked-slot record.
 enum eTrackedSlotEntryKind { kTrackedSlotAcceptEntry = 0, kTrackedSlotOfferEntry = 1 };
 
+// The 13 pending-action status bytes at TGreatPower+0x8c8 are consumed both by action
+// index and by several stable gameplay roles. The complete array and the named record are
+// two views of the same bytes; unlike the former eight-byte declaration, neither view
+// reaches into adjacent fields.
+struct PendingActionStatusRoles {
+  signed char navyOrderStatus00;
+  signed char landRecruitStatus01;
+  signed char civilWorkStatus02;
+  signed char actionStatus03;
+  signed char actionStatus04;
+  signed char capabilityStatus05;
+  signed char territorialPressureStatus06;
+  signed char trainingStatus07;
+  signed char expansionAlertStatus08;
+  signed char expansionCapacityStatus09;
+  signed char actionStatus0A;
+  signed char actionStatus0B;
+  signed char expansionEventStatus0C;
+};
+
+ASSERT_SIZE(PendingActionStatusRoles, 0x0d);
+
+union PendingActionStatusBlock {
+  signed char byAction[0x0d];
+  PendingActionStatusRoles roles;
+
+  short GetSerializedPrefixWord(int wordIndex) const {
+    int byteIndex = wordIndex * 2;
+    unsigned short lowByte = static_cast<unsigned char>(byAction[byteIndex]);
+    unsigned short highByte = static_cast<unsigned char>(byAction[byteIndex + 1]);
+    return static_cast<short>(lowByte | (highByte << 8));
+  }
+};
+
+ASSERT_SIZE(PendingActionStatusBlock, 0x0d);
+
 // Nation object: inherits the intermediate base TCountry (identity strings, nation-slot
 // metrics, military-unit + owned-region lists), itself a TObject.
 // VTABLE: IMPERIALISM 0x00653938
@@ -88,7 +124,7 @@ public:
   // slot 0x2b — body 0x004da860: marks status flag 5 handled when the city-order
   // capability byte (+0x277 row) is active.
   virtual void MarkStatusFlag5HandledIfCapabilityActive(void);
-  // slot 0x2c — body 0x004da8a0: sweeps serializedStatusFlags, advancing every
+  // slot 0x2c — body 0x004da8a0: sweeps pendingActionStatus.byAction, advancing every
   // pending ('2') flag to its handled state.
   virtual void MarkAllPendingStatusFlagsHandled(void);
   // slot 0x2d — body 0x004da5e0: dispatches one UI turn-status prompt per pending
@@ -412,16 +448,9 @@ public:
   unsigned char candidateNationFlags[0x17];
   unsigned char scenarioInitFlag;
   unsigned char pad_8b8[0x8c8 - 0x8b8];
-  // 0x8c8 — pending-action status flag block. The serialization block is 0x0D bytes
-  // (0x8c8..0x8d4) and slot 0x2c/0x2d sweep indices 0..0xc, so indices 8..0xc
-  // address the named bytes that follow (expansionAlertCounter..expansionEventGate).
-  // Compared signed (setge vs 0x33) by the region-list growth check (0x4e22b0).
-  signed char serializedStatusFlags[8];
-  signed char expansionAlertCounter;
-  signed char field8d1;
-  unsigned char field8d2;
-  unsigned char field8d3;
-  signed char expansionEventGate;
+  // 0x8c8..0x8d4 — complete 13-byte pending-action status record. Listings use signed
+  // byte comparisons throughout, including 0x8d2/0x8d3 (JL/JGE at 0x4baa3b/0x4f1241).
+  PendingActionStatusBlock pendingActionStatus;
   unsigned char field8d5;
   short field8d6[0x0d];
   int diplomacyBudgetBase;
