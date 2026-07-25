@@ -88,6 +88,34 @@ struct TurnEvent17ProposalResolutionPacket : TimelyMessageHeader {
   unsigned char pad1e[2];
 };
 
+// Packed network payload entries used by TurnEvent2SyncPacket. These are wire records,
+// not views of the destination arrays: x86 intentionally performs the unaligned word/dword
+// loads at +0 and +2 that the packet encoding requires.
+#pragma pack(push, 1)
+struct TurnEvent2ByteDeltaEntry {
+  unsigned short index;
+  unsigned char value;
+};
+struct TurnEvent2ShortDeltaEntry {
+  unsigned short index;
+  short value;
+};
+struct TurnEvent2IntDeltaEntry {
+  unsigned short index;
+  int value;
+};
+#pragma pack(pop)
+ASSERT_SIZE(TurnEvent2ByteDeltaEntry, 3);
+ASSERT_SIZE(TurnEvent2ShortDeltaEntry, 4);
+ASSERT_SIZE(TurnEvent2IntDeltaEntry, 6);
+
+union TurnEvent2DeltaPayload {
+  unsigned char raw[1];
+  TurnEvent2ByteDeltaEntry byteEntries[1];
+  TurnEvent2ShortDeltaEntry shortEntries[1];
+  TurnEvent2IntDeltaEntry intEntries[1];
+};
+
 // 0x5449b0 (TMultiplayerMgr TU): heap-build the turn-event-2 sync packet, delta or full.
 // Turn-event-2 relation-matrix sync packet. Variable-length: full form carries the raw
 // 0x89c-short block, delta form (deltaKind21 == 2) carries (index, value) pairs for the
@@ -100,7 +128,7 @@ struct TurnEvent2SyncPacket : NetMessage {
   unsigned char flag20;         // +0x20 - cleared by the caller after the baseline refresh
   unsigned char deltaKind21;    // +0x21 - 2 = delta pairs, 0 = full block
   unsigned char pad22[2];
-  short payload[1]; // +0x24 - variable length
+  TurnEvent2DeltaPayload payload; // +0x24 - variable-length wire records
 
   // 0x544cd0 — apply the payload to `buffer` per deltaKind21: 0 = raw block copy,
   // 1 = (short index, byte value) triples, 2 = (short index, short value) pairs,

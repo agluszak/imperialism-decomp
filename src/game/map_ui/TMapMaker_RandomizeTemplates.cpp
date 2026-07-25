@@ -6,6 +6,8 @@
 
 #include "game/map_ui/TMapMaker.h"
 
+#include <string.h>
+
 #include "decomp_types.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
@@ -16,111 +18,91 @@ unsigned int TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
     unsigned short class5) {
   unsigned int result = class3;
   if (class3 != baseClass) {
-    char* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
+    MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
-    int* dst = nullptr;
-    int* src = nullptr;
-    int n = 0;
+    MapGeneratorTileRecord* dst = nullptr;
+    MapGeneratorTileRecord* src = nullptr;
     bool copy = true;
     switch ((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 5) {
     case 1:
     case 5:
-      n = 9;
-      src = reinterpret_cast<int*>(cell + 0xfc0);
-      dst = reinterpret_cast<int*>(cell + 0xf9c);
+      src = &cell[112];
+      dst = &cell[111];
       break;
     case 2:
-      dst = reinterpret_cast<int*>(cell + 0xfc0);
-      n = 9;
-      src = reinterpret_cast<int*>(cell + 0xf9c);
+      dst = &cell[112];
+      src = &cell[111];
       break;
     default:
       copy = false;
       break;
     }
     if (copy) {
-      for (; n != 0; n = n + -1) {
-        *dst = *src;
-        src = src + 1;
-        dst = dst + 1;
-      }
+      memcpy(dst, src, sizeof(*dst));
     }
-    dst = reinterpret_cast<int*>(cell + 0x1ecc);
+    dst = &cell[219];
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     unsigned int r = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
     result = r / 5;
     copy = true;
     switch (r % 5) {
     case 1:
-      src = reinterpret_cast<int*>(cell + 0x1ef0);
-      n = 9;
+      src = &cell[220];
       break;
     case 2:
     case 5:
-      n = 9;
       src = dst;
-      dst = reinterpret_cast<int*>(cell + 0x1ef0);
+      dst = &cell[220];
       break;
     default:
       copy = false;
       break;
     }
     if (copy) {
-      for (; n != 0; n = n + -1) {
-        *dst = *src;
-        src = src + 1;
-        dst = dst + 1;
-      }
+      memcpy(dst, src, sizeof(*dst));
     }
   }
 
   if (class4 != baseClass) {
-    char* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
-    int* dst = reinterpret_cast<int*>(cell + 0x2d90);
+    MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
+    MapGeneratorTileRecord* dst = &cell[324];
     unsigned int r = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     if ((r >> 0xc & 1) != 0) {
-      dst = reinterpret_cast<int*>(cell + 0x2db4);
+      dst = &cell[325];
     }
     g_mapGenLcgState_006a38e8 = r * 0x15a4e35 + 1;
     unsigned int r2 = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
     result = r2 / 7;
-    int* src = nullptr;
-    int n = 0;
+    MapGeneratorTileRecord* src = nullptr;
     bool copy = true;
     switch (r2 % 7) {
     case 0:
     case 1:
     case 3:
     case 5:
-      src = dst + 0x3cc;
-      n = 9;
+      src = dst + 108;
       break;
     case 2:
     case 4:
     case 6:
-      n = 9;
       src = dst;
-      dst = dst + 0x3cc;
+      dst = dst + 108;
       break;
     default:
       copy = false;
       break;
     }
     if (copy) {
-      for (; n != 0; n = n + -1) {
-        *dst = *src;
-        src = src + 1;
-        dst = dst + 1;
-      }
+      memcpy(dst, src, sizeof(*dst));
     }
   }
 
   if (class5 != baseClass) {
-    char* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
-    int* dst = reinterpret_cast<int*>(cell + 0x2dd8);
+    MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
+    MapGeneratorTileRecord* dst = &cell[326];
     unsigned int r = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     if ((r >> 0xc & 1) != 0) {
-      dst = reinterpret_cast<int*>(cell + 0x2dfc);
+      dst = &cell[327];
     }
     g_mapGenLcgState_006a38e8 = r * 0x15a4e35 + 1;
     unsigned int r2 = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
@@ -130,23 +112,15 @@ unsigned int TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
     case 1:
     case 3:
     case 5: {
-      int* src = dst + 0x3cc;
-      for (int n = 9; n != 0; n = n + -1) {
-        *dst = *src;
-        src = src + 1;
-        dst = dst + 1;
-      }
+      MapGeneratorTileRecord* src = dst + 108;
+      memcpy(dst, src, sizeof(*dst));
       return result;
     }
     case 2:
     case 4:
     case 6: {
-      int* src = dst + 0x3cc;
-      for (int n = 9; n != 0; n = n + -1) {
-        *src = *dst;
-        dst = dst + 1;
-        src = src + 1;
-      }
+      MapGeneratorTileRecord* src = dst + 108;
+      memcpy(src, dst, sizeof(*src));
       break;
     }
     default:

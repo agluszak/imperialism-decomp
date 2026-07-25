@@ -197,14 +197,6 @@ void TTradeMgr::ResetNationMetricRowsAndClearCategoryRankLists() {
 }
 
 namespace {
-// The event record queued into a rank list per accumulated relation change.
-struct DiplomacyRelationEvent {
-  short sourceSlot;
-  short targetSlot;
-  short cellValue;
-  short relationScore;
-};
-
 // TDiplomacyMgr relation-standing-score matrix, row stride 0x17 shorts.
 inline short RelationStanding(TDiplomacyMgr* mgr, int source, int target) {
   return mgr->relationStandingScoreMatrix79c[source * 0x17 + target];
@@ -237,17 +229,19 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[row * 0x50 + source] < 0) &&
                 (g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target) == 0) &&
                 (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, target) == 0)) {
-              DiplomacyRelationEvent event;
-              event.sourceSlot = static_cast<short>(source);
-              event.targetSlot = static_cast<short>(target);
-              event.cellValue = cell;
-              event.relationScore = RelationStanding(g_pDiplomacyTurnStateManager, source, target);
+              TradeDealEntry event;
+              event.sourceNationSlot = static_cast<short>(source);
+              event.targetNationSlot = static_cast<short>(target);
+              event.relationDelta04 = cell;
+              event.relationStanding06 =
+                  RelationStanding(g_pDiplomacyTurnStateManager, source, target);
               // Fixed: scoreA/scoreB are the row's OWN proposalWeightScale06/field16, not
               // target-relative cells (confirmed via psVar6[-8]/*psVar6 anchored at the
               // row's field06/field16 in the raw disassembly).
-              this->ComputeNationMetricDispatchScoreAndResolveScale(
+              event.dispatchScore08 = this->ComputeNationMetricDispatchScoreAndResolveScale(
                   static_cast<short>(source), static_cast<short>(target),
                   categoryRows[row].proposalWeightScale06, categoryRows[row].field16);
+              event.category0c = static_cast<short>(row);
               this->categoryRankLists[row]->InsertCopiedRecordSortedByComparator(&event);
             }
             source = source + 1;
@@ -269,15 +263,16 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[row * 0x50 + source] < 0) &&
                 (g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, secTarget) == 0) &&
                 (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, secTarget) == 0)) {
-              DiplomacyRelationEvent event;
-              event.sourceSlot = static_cast<short>(source);
-              event.targetSlot = static_cast<short>(secTarget);
-              event.cellValue = cell;
-              event.relationScore =
+              TradeDealEntry event;
+              event.sourceNationSlot = static_cast<short>(source);
+              event.targetNationSlot = static_cast<short>(secTarget);
+              event.relationDelta04 = cell;
+              event.relationStanding06 =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, secTarget);
-              this->ComputeNationMetricDispatchScoreAndResolveScale(
+              event.dispatchScore08 = this->ComputeNationMetricDispatchScoreAndResolveScale(
                   static_cast<short>(source), static_cast<short>(secTarget),
                   categoryRows[row].proposalWeightScale06, categoryRows[row].field16);
+              event.category0c = static_cast<short>(row);
               this->categoryRankLists[row]->InsertCopiedRecordSortedByComparator(&event);
             }
             source = source + 1;
@@ -305,14 +300,16 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
                 (cells[midRow * 0x50 + source] < 0) &&
                 (g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target) == 0) &&
                 (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, target) == 0)) {
-              DiplomacyRelationEvent event;
-              event.sourceSlot = static_cast<short>(source);
-              event.targetSlot = static_cast<short>(target);
-              event.cellValue = cell;
-              event.relationScore = RelationStanding(g_pDiplomacyTurnStateManager, source, target);
-              this->ComputeNationMetricDispatchScoreAndResolveScale(
+              TradeDealEntry event;
+              event.sourceNationSlot = static_cast<short>(source);
+              event.targetNationSlot = static_cast<short>(target);
+              event.relationDelta04 = cell;
+              event.relationStanding06 =
+                  RelationStanding(g_pDiplomacyTurnStateManager, source, target);
+              event.dispatchScore08 = this->ComputeNationMetricDispatchScoreAndResolveScale(
                   static_cast<short>(source), static_cast<short>(target),
                   categoryRows[midRow].proposalWeightScale06, categoryRows[midRow].field16);
+              event.category0c = static_cast<short>(midRow);
               this->categoryRankLists[midRow]->InsertCopiedRecordSortedByComparator(&event);
             }
             source = source + 1;
@@ -339,15 +336,16 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
                   (g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, secTarget) ==
                    0) &&
                   (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, secTarget) == 0)) {
-                DiplomacyRelationEvent event;
-                event.sourceSlot = static_cast<short>(source);
-                event.targetSlot = static_cast<short>(secTarget);
-                event.cellValue = cell;
-                event.relationScore =
+                TradeDealEntry event;
+                event.sourceNationSlot = static_cast<short>(source);
+                event.targetNationSlot = static_cast<short>(secTarget);
+                event.relationDelta04 = cell;
+                event.relationStanding06 =
                     RelationStanding(g_pDiplomacyTurnStateManager, source, secTarget);
-                this->ComputeNationMetricDispatchScoreAndResolveScale(
+                event.dispatchScore08 = this->ComputeNationMetricDispatchScoreAndResolveScale(
                     static_cast<short>(source), static_cast<short>(secTarget),
                     categoryRows[7].proposalWeightScale06, categoryRows[7].field16);
+                event.category0c = 7;
                 this->categoryRankLists[7]->InsertCopiedRecordSortedByComparator(&event);
               }
               source = source + 1;
@@ -377,14 +375,16 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
                 (cells[lastRow * 0x50 + source] < 0) &&
                 (g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target) == 0) &&
                 (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, target) == 0)) {
-              DiplomacyRelationEvent event;
-              event.sourceSlot = static_cast<short>(source);
-              event.targetSlot = static_cast<short>(target);
-              event.cellValue = cell;
-              event.relationScore = RelationStanding(g_pDiplomacyTurnStateManager, source, target);
-              this->ComputeNationMetricDispatchScoreAndResolveScale(
+              TradeDealEntry event;
+              event.sourceNationSlot = static_cast<short>(source);
+              event.targetNationSlot = static_cast<short>(target);
+              event.relationDelta04 = cell;
+              event.relationStanding06 =
+                  RelationStanding(g_pDiplomacyTurnStateManager, source, target);
+              event.dispatchScore08 = this->ComputeNationMetricDispatchScoreAndResolveScale(
                   static_cast<short>(source), static_cast<short>(target),
                   categoryRows[lastRow].proposalWeightScale06, categoryRows[lastRow].field16);
+              event.category0c = static_cast<short>(lastRow);
               this->categoryRankLists[lastRow]->InsertCopiedRecordSortedByComparator(&event);
             }
             source = source + 1;
@@ -572,8 +572,9 @@ void TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short slot
       }
       if (0 < transfer) {
         g_apTerrainTypeDescriptorTable[entry->sourceNationSlot]
-            ->TryDispatchNationActionViaUiContextOrFallback(entry->targetNationSlot, transfer,
-                                                            entry->dealAmount08, slot);
+            ->TryDispatchNationActionViaUiContextOrFallback(
+                entry->targetNationSlot, transfer, static_cast<short>(entry->dispatchScore08),
+                slot);
       }
       idx = idx + 1;
       i = static_cast<int>(idx);
@@ -626,10 +627,10 @@ void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked() {
     }
 
     if (relationDelta > 0) {
-      blocked =
-          g_apTerrainTypeDescriptorTable[entry->sourceNationSlot]
-              ->TryDispatchNationActionViaUiContextOrFallback(
-                  entry->targetNationSlot, relationDelta, entry->dealAmount08, dispatchIdx) != 0;
+      blocked = g_apTerrainTypeDescriptorTable[entry->sourceNationSlot]
+                    ->TryDispatchNationActionViaUiContextOrFallback(
+                        entry->targetNationSlot, relationDelta,
+                        static_cast<short>(entry->dispatchScore08), dispatchIdx) != 0;
     } else {
       blocked = false;
     }
