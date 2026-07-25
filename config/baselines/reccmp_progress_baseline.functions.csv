@@ -420,7 +420,7 @@ address|matching|name
 0x47e390|1.0|CDibPal::`scalar deleting destructor'
 0x47e3c0|0.9615384615384616|CDibPal::~CDibPal
 0x47e440|0.6111111111111112|CDibPal::BuildPaletteFromBitmapColorTable
-0x47e590|0.4701195219123506|CDibPal::DrawPalettePreviewGridRectangles
+0x47e590|0.5905511811023622|CDibPal::DrawPalettePreviewGridRectangles
 0x47e930|1.0|CDibPal::SelectIntoDcAndRealize
 0x47e960|0.40892193308550184|CDibPal::LoadPaletteFile
 0x47ec00|0.1|WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5_Impl
@@ -3423,7 +3423,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords
 0x527730|0.29577464788732394|TMapMaker::PlaceTerrainFeatureQuotas
-0x527d00|0.43478260869565216|TMapMaker::CreateRivers
+0x527d00|0.4268774703557312|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
