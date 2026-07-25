@@ -460,7 +460,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
 
   // Fort-wall bitmap for odd-row wall tiles.
   if (grid[tileIndex].deployMark8 == 1) {
-    short fortCell = tacticalBattle60->IsTacticalSideCategoryCoverageIncompleteOrFlagOff();
+    short fortCell = ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(tileIndex);
     short fortSpriteX =
         static_cast<short>(fortCell * 3) * static_cast<short>(unitSpriteCellWidth90);
     RECT fortSrc = {fortSpriteX, 0, fortSpriteX + unitSpriteCellWidth90, tileRowHeightPx8C};
@@ -641,34 +641,44 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     BlitRectWithOptionalTransparency(&g_pStrategicMapViewSystem->atlas6b8->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &flagSrc,
                                      &flagDst, 0, 0);
-    SetQuickDrawFillColor(0);
+    SetQuickDrawFillColor(occupant->selectedFlag18 != 0 ? 0xffffff : 0);
+    flagDst.left -= 1;
+    flagDst.top -= 1;
+    flagDst.right += 1;
+    flagDst.bottom += 1;
     QDFrameRect(&flagDst);
     if (occupant->selectedFlag18 != 0) {
       SetQuickDrawFillColor(0);
       flagDst.left -= 1;
-      flagDst.top += 1;
+      flagDst.top -= 1;
       flagDst.right += 1;
+      flagDst.bottom += 1;
       QDFrameRect(&flagDst);
     }
     if (g_nForceTacticalBattleViewFlag_006A4758 != 0) {
       SetQuickDrawFillColor(0);
-      SetQuickDrawTextOriginWithContextOffset(0, 0);
+      SetQuickDrawTextOriginWithContextOffset(
+          static_cast<short>(tileScreenRect.left + tileWidthPx88 - 8),
+          static_cast<short>(tileScreenRect.bottom - 2));
       RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(
           static_cast<char>(static_cast<short>(occupant->aiStateCode2c) + 0x61));
     }
   }
 
-  // Selection-marker animation redraw hook.
-  TAnimation* selectionAnim = g_pUiAnimator->FindRegisteredAnimationByTag(0x13);
-  if (selectionAnim != 0) {
-    POINT offset = {0, 0};
-    selectionAnim->DrawNextFrame(&offset);
+  // Per-tile animation redraw hook. Retail keys this lookup by the tactical tile and
+  // skips it entirely for an empty non-wall tile.
+  if (occupant != 0 || edgeKind != kFortWallEdgeNone) {
+    TAnimation* selectionAnim = g_pUiAnimator->FindRegisteredAnimationByTag(tileIndex);
+    if (selectionAnim != 0) {
+      POINT offset = {0, 0};
+      selectionAnim->DrawNextFrame(&offset);
+    }
   }
 
-  // Neighbor units bleeding into this tile from the row-adjacent tiles.
+  // Neighbor units bleeding into this tile from adjacency slots 3 and 2.
   for (int neighborPick = 0; neighborPick < 2; ++neighborPick) {
-    int neighborIdx = neighborPick == 0 ? tileIndex - 0x1d : tileIndex - 0x1c;
-    if (neighborIdx < 0) {
+    TacticalTileIndex neighborIdx = neighborPick == 0 ? tileNeighbors[3] : tileNeighbors[2];
+    if (neighborIdx == -1) {
       continue;
     }
     TTacticalUnit* neighborUnit = grid[neighborIdx].occupant4;
@@ -716,12 +726,15 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
   // Deployment-zone tick marks along the column midline.
   if (tacticalBattle60->tileMoveCostArray24[sideSlot] > 0) {
     int tickMidX = tileWidthPx88 / 2 + paintLeft;
+    int tickMidY = tileRowHeightPx8C / 2 + paintTop;
     SetQuickDrawFillColor(0);
-    SetQuickDrawTextOriginWithContextOffset(static_cast<short>(tickMidX), static_cast<short>(y));
-    DrawCenteredGuideLineOnMapDc(static_cast<short>(tickMidX), static_cast<short>(y));
+    SetQuickDrawTextOriginWithContextOffset(static_cast<short>(tickMidX - 2),
+                                            static_cast<short>(tickMidY));
+    DrawCenteredGuideLineOnMapDc(static_cast<short>(tickMidX + 2), static_cast<short>(tickMidY));
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(tickMidX - 1),
-                                            static_cast<short>(y));
-    DrawCenteredGuideLineOnMapDc(static_cast<short>(tickMidX - 1), static_cast<short>(y));
+                                            static_cast<short>(tickMidY + 1));
+    DrawCenteredGuideLineOnMapDc(static_cast<short>(tickMidX + 1),
+                                 static_cast<short>(tickMidY + 1));
     if ((row < 2 && tacticalBattle60->currentSideC == 0) ||
         (row / 2 == tacticalBattle60->battlefieldColumnCount34 - 1 &&
          tacticalBattle60->currentSideC == 1)) {
@@ -731,10 +744,12 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     } else {
       g_pUiRuntimeContext->SetForeColor(0x33);
     }
-    SetQuickDrawTextOriginWithContextOffset(static_cast<short>(tickMidX), static_cast<short>(y));
-    DrawCenteredGuideLineOnMapDc(static_cast<short>(tickMidX), static_cast<short>(y));
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(tickMidX - 1),
-                                            static_cast<short>(y));
-    DrawCenteredGuideLineOnMapDc(static_cast<short>(tickMidX - 1), static_cast<short>(y));
+                                            static_cast<short>(tickMidY - 1));
+    DrawCenteredGuideLineOnMapDc(static_cast<short>(tickMidX + 1),
+                                 static_cast<short>(tickMidY - 1));
+    SetQuickDrawTextOriginWithContextOffset(static_cast<short>(tickMidX - 1),
+                                            static_cast<short>(tickMidY));
+    DrawCenteredGuideLineOnMapDc(static_cast<short>(tickMidX + 1), static_cast<short>(tickMidY));
   }
 }
