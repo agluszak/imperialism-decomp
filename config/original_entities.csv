@@ -2453,7 +2453,7 @@ address|name|symbol|size|type|prototype|provenance
 4e3560|TGreatPower::PayForMilitary||135|function|void __thiscall PayForMilitary()|
 4e3620|SumDiplomacyGrantEntriesMaskedToValueBits||38|function|undefined SumDiplomacyGrantEntriesMaskedToValueBits()|
 4e3660|TMinor::CreateObject|?CreateObject@TMinor@@SGPAVCObject@@XZ|108|function|undefined CreateObject()|rtti
-4e36f0|TMinor::GetRuntimeClass||6|function|undefined GetTMinorClassNamePointer()|rtti
+4e36f0|TMinor::GetRuntimeClass||6|function|CRuntimeClass * GetRuntimeClass() const|rtti
 4e3710|TMinor::TMinor||88|function|undefined TMinor()|
 4e3790|TMinor::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4e37c0|TMinor::~TMinor||80|function|undefined ~TMinor()|

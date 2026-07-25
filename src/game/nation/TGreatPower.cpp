@@ -124,8 +124,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   }
   int homeLinked = marker->IsUnblockedPort();
   if (homeLinked == 0) {
-    this->MarkConnectedOwnedRegionsFrom(reinterpret_cast<unsigned char*>(influenceMap),
-                                        marker->tileIndex14);
+    this->MarkConnectedOwnedRegionsFrom(influenceMap, marker->tileIndex14);
     marker = static_cast<TTown*>(markerCursor.Reset());
     while (markerCursor.More() != 0 && homeLinked == 0) {
       if (influenceMap[marker->tileIndex14] != 0 && marker->IsUnblockedPort() != 0) {
@@ -138,8 +137,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   while (markerCursor.More() != 0) {
     if (marker->IsUnblockedPort() != 0 && homeLinked != 0 && marker->activeFlag4f != 0 &&
         influenceMap[marker->tileIndex14] == 0) {
-      this->MarkConnectedOwnedRegionsFrom(reinterpret_cast<unsigned char*>(influenceMap),
-                                          marker->tileIndex14);
+      this->MarkConnectedOwnedRegionsFrom(influenceMap, marker->tileIndex14);
     }
     marker = static_cast<TTown*>(markerCursor.Advance());
   }
@@ -170,7 +168,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
 // --- Slots 0x35/0x37/0x50/0x51/0x55-0x57 ---
 
 // FUNCTION: IMPERIALISM 0x004dbac0
-void TGreatPower::MarkConnectedOwnedRegionsFrom(unsigned char* regionMap, short regionId) {
+void TGreatPower::MarkConnectedOwnedRegionsFrom(char* regionMap, short regionId) {
   short nextRegion;
   do {
     regionMap[regionId] = 1;

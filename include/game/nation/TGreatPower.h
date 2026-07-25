@@ -155,7 +155,7 @@ public:
   // slot 0x35 — body 0x004dbac0: marks regionMap[id]=1 for every region connected to
   // regionId through same-owner neighbors (self-recursive through this slot, with the
   // first eligible neighbor tail-iterated).
-  virtual void MarkConnectedOwnedRegionsFrom(unsigned char* regionMap, short regionId);
+  virtual void MarkConnectedOwnedRegionsFrom(char* regionMap, short regionId);
 
   // Builds a per-tile strength map around transport-linked towns. The caller owns the
   // returned 0x1950-byte allocation. 0x4dbbb0.
