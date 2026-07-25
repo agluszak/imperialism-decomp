@@ -28,8 +28,18 @@ struct IncludeViewOverlayRectRecord {
   int processedFlag10; // +0x10 — set once the repaint pass has consumed the rect
   int field14;
 
-  // Writes the rect's (width, height) span into `out`. 0x00483220.
-  void ComputeSpan(POINT* out) const;
+  // The rect's (width, height) span, returned BY VALUE: the original is thiscall with a
+  // single stack argument it never reads as data and a RET 4, i.e. the hidden
+  // return-struct pointer, and it leaves that pointer in EAX. Modelling it instead as a
+  // void-returning out-param overload compiles to nearly the same thing but gets the
+  // evaluation order wrong -- the original computes bottom - top BEFORE right - left,
+  // which is what constructor arguments evaluated right-to-left produce, not what two
+  // ordered `out->x = ...; out->y = ...;` statements produce.
+  //
+  // CPoint rather than CSize: this is a MacApp port, where the single VPoint type carries
+  // both positions and extents. Its consumers keep that shape (CDib's blit forwarder takes
+  // the span as a POINT*, CopyBitmapDimensionsToPoint hands back dimensions in a CPoint).
+  CPoint ComputeSpan() const; // 0x00483220
 };
 ASSERT_SIZE(IncludeViewOverlayRectRecord, 0x18);
 

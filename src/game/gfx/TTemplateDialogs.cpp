@@ -994,10 +994,14 @@ void TE0TemplateDialog::OnRButtonDown(UINT nFlags, CPoint point) {
   EndDialog(0);
 }
 
+// The original writes CREATESTRUCT +0x18 then +0x1c -- cs.y and cs.x, the window's ORIGIN,
+// not cs.cx/cs.cy. Creating the dialog at (-1000, -1000) parks it off-screen until it is
+// positioned for real, which is the same idiom CMainFrame::PreCreateWindow uses (cs.x =
+// 0xFFFFFC18). Sizing it -1000 x -1000 was never the intent.
 // FUNCTION: IMPERIALISM 0x005def40
 BOOL TE0TemplateDialog::PreCreateWindow(CREATESTRUCT& cs) {
-  cs.cx = -1000;
-  cs.cy = -1000;
+  cs.y = -1000;
+  cs.x = -1000;
   return CDialog::PreCreateWindow(cs);
 }
 

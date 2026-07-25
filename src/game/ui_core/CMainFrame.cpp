@@ -80,9 +80,15 @@ ON_MESSAGE(0x2420, HandleCustomMessage2420DispatchTurnEvent)
 END_MESSAGE_MAP()
 #endif
 
+// MSVC500 emits the vptr store AFTER the member-initializer list and before the body, so
+// the original's store order (0xcc, 0xbc, 0xc4 | vptr | 0xc0) splits the four fields: the
+// three zero/one stores are mem-init, and m_backgroundColor is assigned in the BODY. The
+// leading 0xcc store is the scheduler filling the latency slot of the XOR EAX,EAX that
+// feeds the two pointer stores; it is not a declaration-order signal.
 // FUNCTION: IMPERIALISM 0x00484bf0
-CMainFrame::CMainFrame()
-    : CFrameWnd(), field_BC(0), field_C0(0x100005f), field_C4(0), field_CC(1) {}
+CMainFrame::CMainFrame() : CFrameWnd(), field_BC(0), field_C4(0), field_CC(1) {
+  m_backgroundColor = kTiledBackdropSentinelColor;
+}
 
 // The scalar deleting destructor is compiler-generated from the virtual dtor.
 // SYNTHETIC: IMPERIALISM 0x00484c40
@@ -245,10 +251,10 @@ LRESULT CMainFrame::OnMsg0BC0(WPARAM wParam, LPARAM lParam) {
 }
 
 // FUNCTION: IMPERIALISM 0x00485990
-int CMainFrame::SetFieldC0AndInvalidateWindowIfChanged(int styleValue) {
-  int priorValue = field_C0;
-  if (priorValue != styleValue) {
-    field_C0 = styleValue;
+COLORREF CMainFrame::SetBackgroundColorAndInvalidate(COLORREF color) {
+  COLORREF priorValue = m_backgroundColor;
+  if (priorValue != color) {
+    m_backgroundColor = color;
     InvalidateRect(NULL, TRUE);
   }
   return priorValue;
@@ -256,11 +262,11 @@ int CMainFrame::SetFieldC0AndInvalidateWindowIfChanged(int styleValue) {
 
 // FUNCTION: IMPERIALISM 0x004859d0
 BOOL CMainFrame::OnEraseBkgnd(CDC* pDC) {
-  if (field_C0 != 0x100005f) {
+  if (m_backgroundColor != kTiledBackdropSentinelColor) {
     g_pModuleLibraryCacheState->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(pDC, FALSE);
     RECT solidRect;
     GetClientRect(&solidRect);
-    pDC->FillSolidRect(&solidRect, field_C0);
+    pDC->FillSolidRect(&solidRect, m_backgroundColor);
     return TRUE;
   }
   if (field_C4 == 0) {

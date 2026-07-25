@@ -13,6 +13,11 @@
 // stubs still pair ambiguously. This is NOT an OLE divergence: the game's MFC has OLE
 // support and its vtables carry the OLE-gated CCmdTarget slots (see ImperialismApp).
 
+// PALETTEINDEX(0x5f). Not a colour anyone wants painted: OnEraseBkgnd treats exactly this
+// value as "no solid fill — tile the backdrop DIB", so it is the frame's default and the
+// value TMovieView restores when the movie ends.
+const COLORREF kTiledBackdropSentinelColor = PALETTEINDEX(0x5f);
+
 // VTABLE: IMPERIALISM 0x006488d8
 class CMainFrame : public CFrameWnd {
 public:
@@ -51,23 +56,31 @@ public:
   // ON_COMMAND(0x800D): forward through the UI runtime context's slot 0x19 (byte 0x64).
   // 0x00485590.
   afx_msg void OnCommand800D();
-  // ON_WM_ERASEBKGND: when field_C0 is the tiled-backdrop sentinel, lazily load the
+  // ON_WM_ERASEBKGND: when m_backgroundColor is the tiled-backdrop sentinel, lazily load the
   // backdrop CDib and tile it 128x128 across the client area; otherwise realize the
-  // default palette and solid-fill with field_C0. 0x004859d0.
+  // default palette and solid-fill with m_backgroundColor. 0x004859d0.
   afx_msg BOOL OnEraseBkgnd(CDC* pDC);
   // ON_MESSAGE(0xBC0): validate then execute a queued UI command object carried in
   // lParam (posted by TApplication::DispatchQueuedUiCommandAndRelease). 0x00485960.
   afx_msg LRESULT OnMsg0BC0(WPARAM wParam, LPARAM lParam);
 
   void ConfigureTopLevelWindowStyleAndPlacement(int width, int height);
-  int SetFieldC0AndInvalidateWindowIfChanged(int styleValue); // 0x00485990
+  // Returns the previous colour; repaints only on an actual change. 0x00485990.
+  COLORREF SetBackgroundColorAndInvalidate(COLORREF color);
 
   CDibPal* field_BC;
-  int field_C0;
-  CDib* field_C4; // backdrop DIB (tiled-background path of OnEraseBkgnd)
+  // 0xc0 — the frame's erase-background colour, a palette-relative COLORREF. The ctor
+  // installs the PALETTEINDEX(0x5f) sentinel, which OnEraseBkgnd reads as "tile the
+  // backdrop DIB instead of solid-filling"; TMovieView swaps in PALETTEINDEX(0) for the
+  // duration of a movie and restores the sentinel afterwards.
+  COLORREF m_backgroundColor;
+  CDib* field_C4; // 0xc4 — backdrop DIB (tiled-background path of OnEraseBkgnd)
+  // 0xc8 — not written by the constructor and no reader located yet. It sits where the
+  // old `field_CC` was declared; that name was one slot early, which put the ctor's
+  // `= 1` store at 0xc8 instead of the 0xcc the original writes (0x00484bfa).
+  int field_C8;
+  // 0xcc — set to 1 by the ctor and cleared by ConfigureTopLevelWindowStyleAndPlacement
+  // (0x00484d80, MOV [ESI+0xcc],EDI) before it strips WS_CAPTION for fullscreen.
   int field_CC;
-
-  // Original object size is 0xd0 (CRuntimeClass m_nObjectSize); the source class ended at 0xcc. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int fieldcc;
 };
 ASSERT_SIZE(CMainFrame, 0xd0);

@@ -30,7 +30,7 @@ TMovieView::TMovieView() : TPicture() {
   } else {
     mainFrame = 0;
   }
-  mainFrame->SetFieldC0AndInvalidateWindowIfChanged(0x1000000);
+  mainFrame->SetBackgroundColorAndInvalidate(PALETTEINDEX(0));
 }
 
 // The scalar deleting destructor is compiler-generated from the virtual dtor; it is a
@@ -53,7 +53,7 @@ TMovieView::~TMovieView() {
   } else {
     mainFrame = 0;
   }
-  mainFrame->SetFieldC0AndInvalidateWindowIfChanged(0x100005f);
+  mainFrame->SetBackgroundColorAndInvalidate(kTiledBackdropSentinelColor);
 
   g_pSfxPlaybackSystem->RequestDirectSoundInitIfAllowed();
 }
