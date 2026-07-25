@@ -463,8 +463,8 @@ address|matching|name
 0x47fd70|1.0|TDirectPlaySessionManagerBase::GetRuntimeSelectionAuxStatus
 0x47fd90|0.9523809523809523|TWNetSessionManager::RebuildRuntimeSelectionSource
 0x47fe50|0.34146341463414637|TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed
-0x480030|0.33043478260869563|TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext
-0x480150|0.3781818181818182|TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice
+0x480030|1.0|TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext
+0x480150|0.526984126984127|TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice
 0x4803d0|1.0|TWNetSessionManager::OpenCurrentSessionDescriptionForJoin
 0x480400|1.0|TWNetSessionManager::ResetRuntimeSelectionRecordBuffer
 0x4804c0|1.0|TDirectPlaySessionManagerBase::ExtendEnumSessionsTimeoutWhileCtrlHeld
@@ -3423,7 +3423,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords
 0x527730|0.29577464788732394|TMapMaker::PlaceTerrainFeatureQuotas
-0x527d00|0.43478260869565216|TMapMaker::CreateRivers
+0x527d00|0.4268774703557312|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
