@@ -8529,6 +8529,7 @@ address|name|symbol|size|type|prototype|provenance
 66d8a0|TNextTradeCommand::classTNextTradeCommand|||global||
 66d8e0|g_TradePowerIdentity_0066D8E0|||global||
 66dad0|g_tradeCommodityRowTagTable|||global||
+66efd0|g_strategicMapStatusIconTagTable|||global||
 66db50|g_cstrTradeTotalsBalanceSubstitution0066DB50|||global||
 66dba0|TTradeScreenPicture::classTTradeScreenPicture|||global||
 66dbb8|TDealBookPicture::classTDealBookPicture|||global||

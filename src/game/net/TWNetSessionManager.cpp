@@ -125,8 +125,8 @@ BOOL TWNetSessionManager::RebuildRuntimeSelectionSource() {
 }
 
 // FUNCTION: IMPERIALISM 0x0047fe50
-bool TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry) {
-  if (sessionEntry != 0) {
+bool TWNetSessionManager::InitializeDirectPlayForProviderGuidOrEnumerate(const GUID* providerGuid) {
+  if (providerGuid != 0) {
     if (directPlayInterface04 != 0) {
       directPlayInterface04->Close();
       directPlayInterface04->Release();
@@ -138,24 +138,28 @@ bool TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(const GUID*
   }
 
   IDirectPlay* createdInterface = 0;
-  GUID selectedGuid;
-  if (sessionEntry != 0) {
-    selectedGuid = *sessionEntry;
-    lastErrorCode0c = DirectPlayCreate(&selectedGuid, &createdInterface, 0);
+  GUID selectedProviderGuid;
+  if (providerGuid != 0) {
+    selectedProviderGuid = *providerGuid;
+    lastErrorCode0c = DirectPlayCreate(&selectedProviderGuid, &createdInterface, 0);
   } else {
     ClearRuntimeSelectionRecordArray();
     g_RuntimeSelectionRecords006a15e0.SetSize(0, -1);
     lastErrorCode0c = DirectPlayEnumerate(ForwardEnumSessionToCallbackTable, this);
-    if (lastErrorCode0c >= 0 && SelectRuntimeProvider(&selectedGuid)) {
-      lastErrorCode0c = DirectPlayCreate(&selectedGuid, &createdInterface, 0);
+    if (lastErrorCode0c >= 0 && SelectRuntimeProvider(&selectedProviderGuid)) {
+      lastErrorCode0c = DirectPlayCreate(&selectedProviderGuid, &createdInterface, 0);
     } else {
       return lastErrorCode0c >= 0;
     }
   }
 
   if (lastErrorCode0c >= 0 && createdInterface != 0) {
-    lastErrorCode0c = createdInterface->QueryInterface(
-        IID_IDirectPlay2, reinterpret_cast<void**>(&directPlayInterface04));
+    union DirectPlay2OutParameter {
+      IDirectPlay2** typed;
+      void** opaque;
+    } directPlay2Out;
+    directPlay2Out.typed = &directPlayInterface04;
+    lastErrorCode0c = createdInterface->QueryInterface(IID_IDirectPlay2, directPlay2Out.opaque);
   }
   if (createdInterface != 0) {
     createdInterface->Release();
@@ -167,7 +171,7 @@ bool TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(const GUID*
 
 // FUNCTION: IMPERIALISM 0x00480030
 BOOL TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext() {
-  OpenRuntimeSelectionSourceWithOptionalSeed(0);
+  InitializeDirectPlayForProviderGuidOrEnumerate(0);
   memset(&sessionDescription10, 0, sizeof(sessionDescription10));
   sessionDescription10.dwSize = sizeof(sessionDescription10);
   sessionDescription10.dwFlags = 0x40;
@@ -194,7 +198,7 @@ BOOL TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext() {
 
 // FUNCTION: IMPERIALISM 0x00480150
 BOOL TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
-  OpenRuntimeSelectionSourceWithOptionalSeed(0);
+  InitializeDirectPlayForProviderGuidOrEnumerate(0);
 
   memset(&sessionDescription10, 0, sizeof(sessionDescription10));
   sessionDescription10.dwSize = sizeof(DPSESSIONDESC2);

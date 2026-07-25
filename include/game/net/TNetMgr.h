@@ -68,7 +68,7 @@ public:
   unsigned char ReturnTrueRuntimeCredentialFinalizeStub(); // 0x5e3c00
 
   // Copies seed (up to 32 chars) into the DirectPlay session-name buffer and opens the
-  // selection source at index via OpenRuntimeSelectionSourceWithOptionalSeed, posing
+  // selection source at index via InitializeDirectPlayForProviderGuidOrEnumerate, posing
   // the localized error dialog on failure.
   unsigned char OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, int flag,
                                                              const char* seed); // 0x5e3a60

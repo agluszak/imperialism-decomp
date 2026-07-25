@@ -308,7 +308,7 @@ unsigned char TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, i
   strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed88, seed, 0x20);
   const GUID* sessionGuid = static_cast<const GUID*>(g_WNetSerializedPtrArrayA006a5f10[index]);
   unsigned char result =
-      g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceWithOptionalSeed(sessionGuid);
+      g_NetworkSessionManager006a5f60.InitializeDirectPlayForProviderGuidOrEnumerate(sessionGuid);
   if (result == 0) {
     HandleError(g_NetworkSessionManager006a5f60.lastErrorCode0c);
   }

@@ -818,24 +818,16 @@ short TViewMgr::GetPendingTurnOverlayCode() {
 
 // FUNCTION: IMPERIALISM 0x005d6c30
 void TViewMgr::RefreshStrategicMapStatusIconsForActiveNation() {
-  static const char kStatusIconTagBytes[] =
-      " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
   TView* mainView = g_pDisplayMgr->activeDialog;
-  const short nationId = this->currentTurnEventNationSlot06;
-  for (short iconIndex = 0; iconIndex < 0x12; ++iconIndex) {
-    const unsigned int tag =
-        *reinterpret_cast<const unsigned int*>(kStatusIconTagBytes + iconIndex * 4);
-    TView* control = mainView->ResolveControlByTag(tag);
+  for (short iconIndex = 0; iconIndex <= 0x11; ++iconIndex) {
+    TView* control = mainView->ResolveControlByTag(g_strategicMapStatusIconTagTable[iconIndex]);
     if (control != nullptr) {
       control->AssertValid();
       g_pStrategicMapViewSystem->ApplySellOrderRowToNationState(
-          static_cast<TTradeCluster*>(control), iconIndex, nationId);
+          static_cast<TTradeCluster*>(control), iconIndex, currentTurnEventNationSlot06);
     }
   }
-  TGreatPower* nation = g_apNationStates[nationId];
-  if (nation != nullptr) {
-    nation->SnapshotDiplomacyState1c6Into250();
-  }
+  g_apNationStates[currentTurnEventNationSlot06]->SnapshotDiplomacyState1c6Into250();
 }
 
 // FUNCTION: IMPERIALISM 0x005d6cd0
