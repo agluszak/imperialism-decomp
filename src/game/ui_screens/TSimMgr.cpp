@@ -1511,14 +1511,14 @@ void TSimMgr::ProcessScenarioScript() {
   g_pUiViewManager->ReleaseResourceStreamIfNotNull(stream);
 
   STurnInstructionCursor instruction;
-  instruction.tokenCursor = reinterpret_cast<unsigned int*>(buffer);
+  instruction.byteCursor = buffer;
   union {
     unsigned int instructionTag;
     unsigned char instructionTagBytes[4];
   };
   instructionTag = 0;
-  while (reinterpret_cast<unsigned char*>(instruction.tokenCursor) < buffer + resourceSize &&
-         instructionTag != kControlTagTERM && g_bScenarioScriptTerminationRequested == 0) {
+  while (instruction.byteCursor < buffer + resourceSize && instructionTag != kControlTagTERM &&
+         g_bScenarioScriptTerminationRequested == 0) {
     instructionTag = *instruction.tokenCursor;
     int instructionCount = g_nScenarioScriptInstructionCount;
     DECODE_SCENARIO_DWORD_TOKEN(instructionTag);
@@ -2173,7 +2173,7 @@ void TSimMgr::HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId(void
     unsigned char contextTokenBytes[4];
   };
   contextToken = *instruction->tokenCursor;
-  const char* rawName = reinterpret_cast<const char*>(instruction->tokenCursor + 1);
+  const char* rawName = instruction->textCursor + sizeof(unsigned int);
   instruction->tokenCursor = instruction->tokenCursor + 1;
   DECODE_SCENARIO_SHORT_TOKEN(contextToken);
 
@@ -2198,7 +2198,7 @@ void TSimMgr::HandleTurnInstruction_Cnam_AssignCountryName(void* pInstructionRaw
     unsigned char countryTokenBytes[4];
   };
   countryToken = *instruction->tokenCursor;
-  const char* rawName = reinterpret_cast<const char*>(instruction->tokenCursor + 1);
+  const char* rawName = instruction->textCursor + sizeof(unsigned int);
   instruction->tokenCursor = instruction->tokenCursor + 1;
   DECODE_SCENARIO_DWORD_TOKEN(countryToken);
 
@@ -2259,7 +2259,7 @@ void TSimMgr::HandleTurnInstruction_Pnam_AssignProvinceName(void* pInstructionRa
     unsigned char tileTokenBytes[4];
   };
   tileToken = *instruction->tokenCursor;
-  const char* rawName = reinterpret_cast<const char*>(instruction->tokenCursor + 1);
+  const char* rawName = instruction->textCursor + sizeof(unsigned int);
   instruction->tokenCursor = instruction->tokenCursor + 1;
   DECODE_SCENARIO_DWORD_TOKEN(tileToken);
 

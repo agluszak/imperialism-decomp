@@ -34,6 +34,13 @@
 
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 
+namespace {
+union WordOutputInt {
+  int value;
+  short word;
+};
+} // namespace
+
 static inline double DefaultMapCellScale() {
   return 0.015625;
 }
@@ -139,15 +146,14 @@ IMPLEMENT_DYNCREATE(TMapDialog, TWorldView)
 // addresses pass as short* (the high words are dead), matching the original stack reads.
 // FUNCTION: IMPERIALISM 0x00519b50
 TMapDialog::TMapDialog() : TWorldView() {
-  int row;
-  int col;
+  WordOutputInt row;
+  WordOutputInt col;
   viewportOrigin60.x = 0;
   suppressMarkerOverlay34C = false;
   overlayObject35C = 0;
   viewportOrigin60.y = 0;
-  SplitTileIndexToRowAndColumn(g_pGlobalMapState->field6, reinterpret_cast<short*>(&row),
-                               reinterpret_cast<short*>(&col));
-  SetMapViewCellCoordinates(col, row);
+  SplitTileIndexToRowAndColumn(g_pGlobalMapState->field6, &row.word, &col.word);
+  SetMapViewCellCoordinates(col.value, row.value);
   unresolvedWord354 = 0;
   selectedTileIndex356 = -1;
   unresolvedFlag358 = false;
@@ -469,10 +475,10 @@ unsigned char TMapDialog::IsTileVisible(short tileIndex) {
 // only the low words of the arg slot / col local (same short*-into-int idiom as the ctor).
 // FUNCTION: IMPERIALISM 0x0051ac40
 void TMapDialog::CenterOn(int tileIndex) {
-  int col;
+  WordOutputInt col;
   SplitTileIndexToRowAndColumn(static_cast<short>(tileIndex), reinterpret_cast<short*>(&tileIndex),
-                               reinterpret_cast<short*>(&col));
-  SetMapViewCellCoordinates(col - static_cast<short>(g_wMapDialogViewportTileSpan) / 2,
+                               &col.word);
+  SetMapViewCellCoordinates(col.value - static_cast<short>(g_wMapDialogViewportTileSpan) / 2,
                             tileIndex - 3);
   RECT invalidateRect;
   invalidateRect.left = 0;
@@ -484,18 +490,20 @@ void TMapDialog::CenterOn(int tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x0051ace0
 int TMapDialog::GetCenterTile() const {
-  int col = viewportOrigin60.x / 0x40 + static_cast<short>(g_wMapDialogViewportTileSpan) / 2;
-  int row = viewportOrigin60.y / 0x40 + 4;
-  NormalizeWrappedMapCoord108x60(reinterpret_cast<short*>(&col), reinterpret_cast<short*>(&row));
-  return col + row * 0x6c;
+  WordOutputInt col;
+  WordOutputInt row;
+  col.value = viewportOrigin60.x / 0x40 + static_cast<short>(g_wMapDialogViewportTileSpan) / 2;
+  row.value = viewportOrigin60.y / 0x40 + 4;
+  NormalizeWrappedMapCoord108x60(&col.word, &row.word);
+  return col.value + row.value * 0x6c;
 }
 
 // FUNCTION: IMPERIALISM 0x0051ad70
 void TMapDialog::SetMapViewTileIndex(int arg1) {
-  int tileCol;
+  WordOutputInt tileCol;
   SplitTileIndexToRowAndColumn(static_cast<short>(arg1), reinterpret_cast<short*>(&arg1),
-                               reinterpret_cast<short*>(&tileCol));
-  SetMapViewCellCoordinates(tileCol, arg1);
+                               &tileCol.word);
+  SetMapViewCellCoordinates(tileCol.value, arg1);
 }
 
 // FUNCTION: IMPERIALISM 0x0051adc0

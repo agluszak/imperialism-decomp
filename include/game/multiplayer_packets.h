@@ -97,13 +97,23 @@ struct TurnEvent26DiplomacyMatrixPacket : TimelyMessageHeader {
   short relationCodeMatrix[0x180];              // +0x018
   unsigned char pendingPolicyCodeMatrix[0x180]; // +0x318
   short pendingPolicyTierMatrix[0x180];         // +0x498
-  short selectedSourceNationSlot;               // +0x798
-  short selectedTargetNationSlot;               // +0x79a
-  short selectionFlagsA;                        // +0x79c
-  short selectionFlagsB;                        // +0x79e
-  short selectionFlagsC;                        // +0x7a0
-  unsigned char pad7a2[2];                      // +0x7a2
-  unsigned char relationTailBlock[0x70];        // +0x7a4, total 0x814
+  union {
+    struct {
+      short selectedSourceNationSlot; // +0x798
+      short selectedTargetNationSlot; // +0x79a
+    };
+    int packedSelectedNationSlots;
+  };
+  union {
+    struct {
+      short selectionFlagsA; // +0x79c
+      short selectionFlagsB; // +0x79e
+    };
+    int packedSelectionFlagsAB;
+  };
+  short selectionFlagsC;                 // +0x7a0
+  unsigned char pad7a2[2];               // +0x7a2
+  unsigned char relationTailBlock[0x70]; // +0x7a4, total 0x814
 };
 
 // Turn-event-1 payload: the remaining turn-resume pending-nation bitmask.
