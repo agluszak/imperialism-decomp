@@ -370,10 +370,9 @@ void TCity::Free() {
   // (TProductionOrder-family orders, TShipOrder, TUnitOrder) derives from
   // TObject and shares Free() at the same vtable slot (0x07), so the original
   // dispatches polymorphically through one uniform TObject* loop rather than
-  // one loop per typed band. Keeping the bands separately typed in the union
-  // (for callers that need the real element type) while restoring this loop's
-  // shape via the flat void*/TObject* view.
-  TObject** orderSlot = reinterpret_cast<TObject**>(this->orderSlotsE4);
+  // one loop per typed band. The union retains the real per-band types for
+  // specialized callers and exposes this proven common-base view directly.
+  TObject** orderSlot = this->objectOrderSlots;
   int remaining = 0x3d;
   do {
     if (*orderSlot != 0) {

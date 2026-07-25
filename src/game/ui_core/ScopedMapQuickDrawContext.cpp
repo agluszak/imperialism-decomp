@@ -14,7 +14,7 @@ int BindScopedMapQuickDrawDcHandle(TView* view, CDC* existingDc) {
   CDC* dcHandleObject = existingDc;
   if (existingDc == 0) {
     if (view->nativeWindow50 != 0) {
-      HDC hdc = GetDC(reinterpret_cast<HWND>(view->nativeWindow50->m_hWnd));
+      HDC hdc = GetDC(view->nativeWindow50->m_hWnd);
       // LIBRARY: CDC::FromHandle (0x00612736)
       CDC* cdc = CDC::FromHandle(hdc);
       g_pScopedMapQuickDrawDcHandleObject = cdc;
@@ -52,7 +52,7 @@ CDib* GetActiveQuickDrawSurfaceDib() {
 void ReleaseScopedMapQuickDrawDcHandle(TView* view, CDC* existingDc) {
   if (existingDc == 0) {
     HDC boundDc = g_pScopedMapQuickDrawDcHandleObject->m_hAttribDC;
-    ReleaseDC(reinterpret_cast<HWND>(view->nativeWindow50->m_hWnd), boundDc);
+    ReleaseDC(view->nativeWindow50->m_hWnd, boundDc);
   }
   g_pScopedMapQuickDrawDcHandleObject = 0;
   g_pScopedMapQuickDrawViewContext = 0;
@@ -76,7 +76,7 @@ ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg)
       g_pScopedMapQuickDrawDcHandleObject = 0;
     } else {
       // LIBRARY: CDC::FromHandle (0x00612736)
-      CDC::FromHandle(GetDC(reinterpret_cast<HWND>(viewContext->nativeWindow50->m_hWnd)));
+      CDC::FromHandle(GetDC(viewContext->nativeWindow50->m_hWnd));
     }
   }
 }
@@ -94,7 +94,7 @@ ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg, REC
   } else {
     // LIBRARY: CDC::FromHandle (0x00612736)
     g_pScopedMapQuickDrawDcHandleObject =
-        CDC::FromHandle(GetDC(reinterpret_cast<HWND>(renderTarget->nativeWindow50->m_hWnd)));
+        CDC::FromHandle(GetDC(renderTarget->nativeWindow50->m_hWnd));
   }
 }
 
@@ -102,7 +102,7 @@ ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg, REC
 ScopedMapQuickDrawContext::~ScopedMapQuickDrawContext() {
   if (this == 0) {
     TView* viewContext = this->renderTarget;
-    ReleaseDC(reinterpret_cast<HWND>(viewContext->nativeWindow50->m_hWnd),
+    ReleaseDC(viewContext->nativeWindow50->m_hWnd,
               g_pScopedMapQuickDrawDcHandleObject->m_hAttribDC);
   }
   g_pScopedMapQuickDrawDcHandleObject = 0;

@@ -769,7 +769,7 @@ address|name|symbol|size|type|prototype|provenance
 4891f0|TFileStream::SetLength||22|function|void __thiscall SetLength(int length)|
 489220|TFileStream::ReadBytes||73|function|void __thiscall ReadBytes(void * buffer, int sizeBytes)|
 489290|TFileStream::WriteBytes||73|function|void TFileStream::WriteBytes(const void* source, int byteCount)|
-489300|TFileStream::ReadByte||24|function|char TFileStream::ReadByte(void* outObject)|
+489300|TFileStream::ReadObject||24|function|char TFileStream::ReadObject(void* outObject)|macos-name-oracle:ReadObject(TObject*&)
 489330|TFileStream::WriteObjectSlotB4||19|function|void TFileStream::WriteObjectSlotB4(void* objectRef, int flag)|
 489360|TFileStream::streamSlot70||20|function|void TFileStream::streamSlot70(CString* dest, int maxLen)|
 489390|TFileStream::streamSlotAc||20|function|void TFileStream::streamSlotAc(CString* sharedString)|
@@ -808,7 +808,7 @@ address|name|symbol|size|type|prototype|provenance
 489b60|NotifyGlobalCaptureOwnerState1WithCachedCoords||99|function|undefined NotifyGlobalCaptureOwnerState1WithCachedCoords()|
 489bf0|TMouseCaptureState::BeginMouseCaptureForControlAndStartRepeatTimer||133|function|void TMouseCaptureState::BeginMouseCaptureForControlAndStartRepeatTimer(CPoint* point, TControl* control)|
 489cb0|TMouseCaptureState::NotifyCaptureOwnerState1AndMaybeUpdateCoords||108|function|undefined NotifyCaptureOwnerState1AndMaybeUpdateCoords()|
-489d40|TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer||153|function|undefined EndMouseCaptureAndStopRepeatTimer()|
+489d40|TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer||153|function|void TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer(unsigned int nFlags, int x, int y)|
 489e40|CopyCurrentMouseCapturePoint||21|function|void __cdecl CopyCurrentMouseCapturePoint(CPoint * outPoint)|
 489e70|CMcEditWindow::OnChar|?OnChar@CMcEditWindow@@IAEXIII@Z|67|function|protected: void __thiscall CMcEditWindow::OnChar(unsigned int,unsigned int,unsigned int)|
 489ee0|CMcEditWindow::GetMessageMap|?GetMessageMap@CMcEditWindow@@MBEPBUAFX_MSGMAP@@XZ|6|function|protected: virtual struct AFX_MSGMAP const * __thiscall CMcEditWindow::GetMessageMap(void)const|
@@ -1076,7 +1076,7 @@ address|name|symbol|size|type|prototype|provenance
 492110|TFloatWindow::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 492140|DestructTWindowAndUnlinkGlobalWindowNode||306|function|undefined DestructTWindowAndUnlinkGlobalWindowNode()|
 492310|TFloatWindow::GetWindowTypeTag||6|function|undefined OrphanVtableAssignStub_00492310(void)|
-492330|TFloatWindow::Close||140|function|void Close()|macos-name-oracle:Close()
+492330|TFloatWindow::Close||140|function|void TFloatWindow::Close()|macos-name-oracle:Close()
 4923f0|CWMgrIterator::Reset||26|function|void __thiscall Reset(unsigned char param_1)|
 492440|CWMgrIterator::FirstWindow||32|function|void* __thiscall FirstWindow()|
 492470|CWMgrIterator::NextWindow||27|function|void* __thiscall NextWindow()|
@@ -1153,13 +1153,13 @@ address|name|symbol|size|type|prototype|provenance
 494460|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00494460||59|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00494460()|
 4944b0|ReleaseCachedGlobalFontObjectIfPresent_At004944b0||18|function|undefined ReleaseCachedGlobalFontObjectIfPresent_At004944b0()|
 4944e0|UpdateGlobalFontPresetAndRebuildCachedFontIfDirty||141|function|undefined UpdateGlobalFontPresetAndRebuildCachedFontIfDirty()|
-4945f0|BindScopedMapQuickDrawDcHandle||73|function|undefined BindScopedMapQuickDrawDcHandle()|
+4945f0|BindScopedMapQuickDrawDcHandle||73|function|int BindScopedMapQuickDrawDcHandle(TView* view, CDC* existingDc)|
 494660|GetActiveQuickDrawDc||15|function|undefined GetActiveQuickDrawDc()|
 494680|GetActiveQuickDrawSurfaceDib||24|function|undefined GetActiveQuickDrawSurfaceDib()|
-4946b0|ReleaseScopedMapQuickDrawDcHandle||55|function|undefined ReleaseScopedMapQuickDrawDcHandle()|
-494700|ConstructScopedMapQuickDrawContext||171|function|undefined ConstructScopedMapQuickDrawContext()|
-4947e0|ScopedMapQuickDrawContext::ScopedMapQuickDrawContext||157|function|void __thiscall ScopedMapQuickDrawContext(TView* renderTarget,RECT* clipRect)|
-4948b0|DestroyScopedMapQuickDrawContext||118|function|undefined DestroyScopedMapQuickDrawContext()|
+4946b0|ReleaseScopedMapQuickDrawDcHandle||55|function|void ReleaseScopedMapQuickDrawDcHandle(TView* view, CDC* existingDc)|
+494700|ScopedMapQuickDrawContext::ScopedMapQuickDrawContext||171|function|void __thiscall ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg)|
+4947e0|ScopedMapQuickDrawContext::ScopedMapQuickDrawContext||157|function|void __thiscall ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg, RECT* clipRect)|
+4948b0|ScopedMapQuickDrawContext::~ScopedMapQuickDrawContext||118|function|void __thiscall ScopedMapQuickDrawContext::~ScopedMapQuickDrawContext()|
 494950|RenderTacticalBattleSelectionAndUnitOverlayPass_Impl||254|function|undefined RenderTacticalBattleSelectionAndUnitOverlayPass_Impl()|
 494a90|THQButton::DrawTextWithCachedQuickDrawStyleState||262|function|undefined DrawTextWithCachedQuickDrawStyleState()|
 494bf0|RenderTradeScreenCommoditySummaryRows_Impl||232|function|undefined RenderTradeScreenCommoditySummaryRows_Impl()|
@@ -1731,7 +1731,7 @@ address|name|symbol|size|type|prototype|provenance
 4b3080|TPopGrowthOrder::~TPopGrowthOrder||7|function|TPopGrowthOrder::~TPopGrowthOrder()|
 4b30a0|TCity::ReadFrom||1044|function|undefined DeserializeCityProductionState()|
 4b35d0|TCity::WriteTo||915|function|undefined SerializeCityProductionState()|
-4b3a60|TCity::Free||129|function|undefined Call1C()|
+4b3a60|TCity::Free||129|function|void TCity::Free()|macos-name-oracle:Free()
 4b3b20|TCity::SetSelectedTownMarker||13|function|void __thiscall SetSelectedTownMarker(void* order)|
 4b3b40|TCity::EndCityPhase||528|function|void __thiscall EndCityPhase(void)|
 4b3de0|TCity::PredictedNeeds||101|function|void __thiscall PredictedNeeds(void)|
@@ -3031,7 +3031,7 @@ address|name|symbol|size|type|prototype|provenance
 50a820|TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807||360|function|void BuildStrategicMapTileOverlayStripSurfaces800To807()|
 50a9f0|TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches||2394|function|void BuildStrategicMapRenderAtlasesAndTileMaskCaches()|
 50b5b0|TMacViewMgr::ReloadBitmap244AndRefreshUiCaches||98|function|void ReloadBitmap244AndRefreshUiCaches()|
-50b640|TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress||730|function|void RenderTurnEventPalettePreviewSurfaceAndProgress()|listing
+50b640|TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress||730|function|void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress()|listing
 50b9e0|TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles||179|function|void RebuildMapTileNeighborHighlightPolygonsForAllTiles()|listing
 50bad0|TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent||187|function|undefined RebuildNationClipRegionsAndDispatchMapEvent()|
 50bbc0|TMacViewMgr::ApplySellOrderRowToNationState||102|function|undefined ApplySellOrderRowToNationState(int * param_1, undefined4 param_2, short param_3)|
@@ -3726,7 +3726,7 @@ address|name|symbol|size|type|prototype|provenance
 53ea70|ComputeDefendProvinceMissionLocalSupportVectorScore||288|function|undefined ComputeDefendProvinceMissionLocalSupportVectorScore()|
 53ebe0|TDefendProvinceMission::CleanupDefendProvinceMissionAndReleaseChildContext||142|function|undefined CleanupDefendProvinceMissionAndReleaseChildContext()|
 53ecc0|TDefendProvinceMission::UpdateDefendProvinceMissionStateByNationTargetMatch||39|function|undefined UpdateDefendProvinceMissionStateByNationTargetMatch()|
-53ed00|TDefendProvinceMission::ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile14||178|function|undefined ComputeDefendProvinceMissionTerrainAdjacencyScoreFromTile14()|
+53ed00|TDefendProvinceMission::CalculateImportance||178|function|void TDefendProvinceMission::CalculateImportance()|macos-name-oracle:CalculateImportance()
 53edf0|TDefendProvinceMission::PopulateDefendProvinceMissionResourceWeightsByDiplomacyContext||398|function|undefined PopulateDefendProvinceMissionResourceWeightsByDiplomacyContext()|
 53eff0|ClearMissionStateByte11||5|function|undefined ClearMissionStateByte11()|
 53f010|TDefendProvinceMission::HandleInvadeMissionActionType3ForTargetTile||30|function|undefined HandleInvadeMissionActionType3ForTargetTile()|

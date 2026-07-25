@@ -82,8 +82,8 @@ void TFileStream::WriteBytes(const void* source, int byteCount) {
 
 // FUNCTION: IMPERIALISM 0x00489300
 char TFileStream::ReadObject(void* outObject) {
-  *reinterpret_cast<void**>(outObject) = BackingArchive(this->backingArchiveOrStream)
-                                             ->ReadObject(static_cast<const CRuntimeClass*>(0));
+  *static_cast<void**>(outObject) = BackingArchive(this->backingArchiveOrStream)
+                                        ->ReadObject(static_cast<const CRuntimeClass*>(0));
   return 1;
 }
 
