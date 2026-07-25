@@ -56,15 +56,19 @@ static __inline void SwapShortArrayBytes(void* base, int count) {
 
 // Read-side fixup applied after a block ReadBytes of a 32-bit array.
 static __inline void ReverseDwordArrayBytes(void* base, int count) {
+  // Outer pair first, then the inner pair: that is the read/write interleaving the
+  // original emits (0x53c420 in TArmyMission::ReadFrom).
   unsigned char* bytes = static_cast<unsigned char*>(base);
   int i = 0;
   while (i < count) {
-    unsigned char t0 = bytes[0];
-    unsigned char t1 = bytes[1];
-    bytes[0] = bytes[3];
-    bytes[1] = bytes[2];
-    bytes[2] = t1;
-    bytes[3] = t0;
+    unsigned char first = bytes[0];
+    unsigned char last = bytes[3];
+    bytes[0] = last;
+    unsigned char third = bytes[2];
+    bytes[3] = first;
+    unsigned char second = bytes[1];
+    bytes[1] = third;
+    bytes[2] = second;
     bytes += 4;
     ++i;
   }
@@ -111,6 +115,28 @@ static __inline void WriteShortArrayElemsRev(TStream* stream, const short* value
     elementBytes[0] = high;
     elementBytes[1] = low;
     stream->WriteBytes(&element, 2);
+    ++values;
+  }
+}
+
+// Float variant. The temp is declared once outside the loop and the swap reads b0, b3, b2
+// before touching b1 -- the order TArmyMission::WriteTo shows at 0x53c2e5.
+static __inline void WriteFloatArrayElems(TStream* stream, const float* values, int count) {
+  union {
+    float value;
+    unsigned char bytes[4];
+  } element;
+  for (int remaining = count; remaining != 0; --remaining) {
+    element.value = *values;
+    unsigned char byte0 = element.bytes[0];
+    unsigned char byte3 = element.bytes[3];
+    unsigned char byte2 = element.bytes[2];
+    element.bytes[0] = byte3;
+    element.bytes[3] = byte0;
+    unsigned char byte1 = element.bytes[1];
+    element.bytes[1] = byte2;
+    element.bytes[2] = byte1;
+    stream->WriteBytes(&element.value, 4);
     ++values;
   }
 }

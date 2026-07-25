@@ -195,25 +195,26 @@ void TTaskForce::ReadFrom(TStream* stream) {
   stream->ReadBytes(&aggression, 4);
   stream->ReadBytes(&shipOrders, 4);
 
-  short ownerOrdinal;
-  stream->ReadBytes(&ownerOrdinal, 2);
+  // One scratch short serves the two ordinals and the child count, and doubles as the
+  // loop counter: the original reads all three into the same slot (esp+0x10 at 0x552d40,
+  // 0x552d7a and 0x552dbe) and decrements that slot in place at 0x552dd4.
+  short ordinal;
+  stream->ReadBytes(&ordinal, 2);
   if (shipOrders == 5) {
-    target.asProvince = &g_pGlobalMapState->cityScoreTable[ownerOrdinal];
+    target.asProvince = &g_pGlobalMapState->cityScoreTable[ordinal];
   } else {
-    target.asZone = FindMapActionContextByNodeId(ownerOrdinal);
+    target.asZone = FindMapActionContextByNodeId(ordinal);
   }
 
-  short contextOrdinal;
-  stream->ReadBytes(&contextOrdinal, 2);
-  location = FindMapActionContextByNodeId(contextOrdinal);
+  stream->ReadBytes(&ordinal, 2);
+  location = FindMapActionContextByNodeId(ordinal);
 
   stream->ReadBytes(&nation, 2);
   stream->ReadBytes(&defeated, 1);
   stream->ReadBytes(&ingotTileIndex, 2);
 
-  short childCount;
-  stream->ReadBytes(&childCount, 2);
-  for (short remaining = childCount; remaining != 0; --remaining) {
+  stream->ReadBytes(&ordinal, 2);
+  while (ordinal-- != 0) {
     short shipIndex;
     stream->ReadBytes(&shipIndex, 2);
     short activeByte;

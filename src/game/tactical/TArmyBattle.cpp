@@ -160,14 +160,16 @@ void TArmyBattle::ReadFrom(TStream* stream) {
     record->ownerNationIndex14 = sourceUnit->field_18;
     record->sapTargetTileIndex40 = -1;
     record->sourceUnit38 = sourceUnit;
-    unsigned char deployedCategory0Flag;
+    // int, not unsigned char: the original materializes the flag with `mov eax,1` /
+    // `xor eax,eax` (0x5a4adc / 0x5a4ae3), which is the full-register BOOL shape.
+    int deployedCategory0Flag;
     if (sourceUnit->unitOrder == 2 &&
         g_anUnitTypeCombatCategoryByType00669858[record->unitTypeC] == 0) {
       deployedCategory0Flag = 1;
     } else {
       deployedCategory0Flag = 0;
     }
-    record->flag3c = deployedCategory0Flag;
+    record->flag3c = static_cast<unsigned char>(deployedCategory0Flag);
     stream->ReadBytes(&record->side20, 4);
     stream->ReadBytes(&record->field24, 2);
     recordList20->AddTail(record);

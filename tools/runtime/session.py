@@ -15,6 +15,7 @@ from tools.runtime.classification import (
     no_progress_budget_seconds,
 )
 from tools.runtime.debug.session import DebuggerTransportError, GdbSession, is_terminal_stop
+from tools.runtime.display import virtual_display
 from tools.runtime.protocol import read_json_file
 from tools.runtime.wine import (
     initialize_wine_prefix,
@@ -74,6 +75,8 @@ def execute_run(
     budget_seconds = no_progress_budget_seconds(phase_timeout_ms)
     pid_path = run_dir / "pid"
     started = time.monotonic()
+    display_stack = virtual_display(environment, run_dir / "xvfb.log")
+    virtual_display_name = display_stack.__enter__()
     try:
         initialize_wine_prefix(prefix, environment)
 
@@ -247,9 +250,13 @@ def execute_run(
         shut_down_wine_prefix(environment)
         pid_path.unlink(missing_ok=True)
         shutil.rmtree(prefix, ignore_errors=True)
+        # After the prefix is gone: wineserver has to reach the same X display the
+        # session used, so the virtual server outlives it.
+        display_stack.__exit__(None, None, None)
 
     return {
         "classification": classification,
+        "display": virtual_display_name or "host",
         "wine_exit": inferior_exit_code,
         "proxy_pid": proxy_pid,
         "proxy_exit_code": proxy_exit_code,

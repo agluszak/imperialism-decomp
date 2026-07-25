@@ -131,11 +131,15 @@ void TShip::ReadFrom(TStream* stream) {
   stream->ReadBytes(&type, 2);
   stream->ReadBytes(&aggression, 4);
   stream->ReadBytes(&nation, 2);
-  stream->ReadBytes(&name, 0x20);
+  // 0x54fb8b dispatches slot 0x70 (ReadSharedString), the mirror of WriteTo's
+  // WriteSharedString -- not a raw 0x20-byte block read. The port's ReadBytes both
+  // desynced the stream (a shared string is a 2-byte length plus its bytes) and wrote
+  // 0x20 bytes over the CString handle and the six fields that follow it.
+  stream->ReadSharedString(&name, 0x20);
   stream->ReadBytes(&strength, 2);
   stream->ReadBytes(&selection, 4);
   stream->ReadBytes(&experience, 2);
-  short zoneIndex = 0;
+  short zoneIndex;
   stream->ReadBytes(&zoneIndex, 2);
   location = FindMapActionContextByNodeId(zoneIndex);
 }

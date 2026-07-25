@@ -32,7 +32,8 @@ class WinePrefixTemplateTests(unittest.TestCase):
             old_template.mkdir()
             (old_template / "keep").write_text("live", encoding="utf-8")
 
-            def populate(path: Path) -> None:
+            def populate(path: Path, virtual_desktop: bool = False) -> None:
+                del virtual_desktop
                 path.mkdir(parents=True)
                 (path / "system.reg").write_text("seeded", encoding="utf-8")
 

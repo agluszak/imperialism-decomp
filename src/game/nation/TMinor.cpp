@@ -1,5 +1,6 @@
 #include "game/nation/TMinor.h"
 #include "game/resource_domain_types.h"
+#include "game/core/stream_byteswap.h"
 
 #include <stdlib.h>
 
@@ -37,15 +38,6 @@ short DecodeTerrainNationSlotFromEncoded(short encodedNationSlot, short nationSl
     return static_cast<short>(encodedNationSlot - 100);
   }
   return static_cast<short>(encodedNationSlot - 200);
-}
-
-void SwapAdjacentBytesInShortArray(short* entries, int pairCount) {
-  for (int i = 0; i < pairCount; ++i) {
-    unsigned char* bytes = reinterpret_cast<unsigned char*>(&entries[i]);
-    unsigned char tmp = bytes[0];
-    bytes[0] = bytes[1];
-    bytes[1] = tmp;
-  }
 }
 
 int SignedDivideBy100(int value) {
@@ -364,11 +356,11 @@ void TMinor::IMinor(NationSlot nationSlot) {
 void TMinor::ReadFrom(TStream* stream) {
   TCountry::ReadFrom(stream);
   stream->ReadBytes(this->needCurrentByType, sizeof(this->needCurrentByType));
-  SwapAdjacentBytesInShortArray(this->needCurrentByType, 0x17);
+  SwapShortArrayBytes(this->needCurrentByType, 0x17);
   stream->ReadBytes(this->diplomacyPolicyByNation, sizeof(this->diplomacyPolicyByNation));
-  SwapAdjacentBytesInShortArray(this->diplomacyPolicyByNation, 0x17);
+  SwapShortArrayBytes(this->diplomacyPolicyByNation, 0x17);
   stream->ReadBytes(this->diplomacyGrantByNation, sizeof(this->diplomacyGrantByNation));
-  SwapAdjacentBytesInShortArray(this->diplomacyGrantByNation, 0x17);
+  SwapShortArrayBytes(this->diplomacyGrantByNation, 0x17);
   stream->ReadBytes(&this->diplomacyRandomThreshold11e, 2);
   stream->ReadBytes(&this->diplomacyRandomThreshold120, 2);
   stream->ReadBytes(&this->diplomacyRandomThreshold122, 2);
@@ -381,10 +373,10 @@ void TMinor::ReadFrom(TStream* stream) {
   stream->ReadBytes(&this->diplomacyPolicyGate130, 2);
   stream->ReadBytes(&this->diplomacyPolicyGate132, 2);
   stream->ReadBytes(diplomacySaveFields134, 8);
-  SwapAdjacentBytesInShortArray(diplomacySaveFields134, 4);
+  SwapShortArrayBytes(diplomacySaveFields134, 4);
   if (g_nSaveFormatVersion > 0x39) {
     stream->ReadBytes(diplomacySaveExt13c, 0x2e);
-    SwapAdjacentBytesInShortArray(diplomacySaveExt13c, 0x17);
+    SwapShortArrayBytes(diplomacySaveExt13c, 0x17);
   }
 }
 
