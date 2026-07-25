@@ -3368,7 +3368,7 @@ address|matching|name
 0x51e160|0.2857142857142857|ConfigureWhiteQuickDrawPen
 0x51e1a0|1.0|TMapDialog::ResetAllTileMarkersToSentinel
 0x51e1f0|0.2777777777777778|TMapDialog::ReleaseTileMarkerForTile
-0x51e260|0.07543323139653414|TMapDialog::Draw
+0x51e260|0.31794871794871793|TMapDialog::Draw
 0x51eb40|0.2631200575125809|TMapDialog::DrawOneTile
 0x520670|0.860125260960334|TMapDialog::DrawBorder
 0x520970|0.7682926829268293|TMapDialog::DrawMapDialogGuidePatternSetA_00520970
@@ -3396,7 +3396,7 @@ address|matching|name
 0x5242f0|0.09917355371900827|TMapDialog::CopyTerrainTransitionMaskDirection1
 0x524540|0.15151515151515152|TMapDialog::CopyTerrainTransitionMaskDirection0
 0x524670|0.16541353383458646|TMapDialog::CopyTerrainTransitionMaskDirection5
-0x5247a0|0.10126582278481013|TMapDialog::CopyTerrainTransitionMaskDirection4
+0x5247a0|0.1092436974789916|TMapDialog::CopyTerrainTransitionMaskDirection4
 0x5249f0|0.16793893129770993|TMapDialog::CopyTerrainTransitionMaskDirection3
 0x524b30|0.14285714285714285|TMapDialog::CopyCoastCornerMaskBetweenDirections1And2
 0x524c60|0.10101010101010101|TMapDialog::CopyCoastCornerMaskBetweenDirections0And1
@@ -3439,7 +3439,7 @@ address|matching|name
 0x5297e0|0.8735632183908046|TMapMaker::CopyRegionTemplateBankToNeighborCell
 0x5298a0|0.5172413793103449|TMapMaker::GetFineGridCellBasePointerFromCoarseIndex
 0x529960|0.27314814814814814|TMapMaker::RotateMapColumnsByPeakCityTileDensity
-0x529d90|0.625|TMapMaker::ComputeOwnedTerritoryCentroidTile
+0x529d90|0.6413793103448275|TMapMaker::ComputeOwnedTerritoryCentroidTile
 0x529f60|0.6068965517241379|TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders
 0x52a0a0|0.47058823529411764|TMapMaker::CompactCityRegionIds
 0x52a160|0.26161790017211706|TMapMaker::GenerateCityRegionIdsBySeedAndNeighborPropagation
