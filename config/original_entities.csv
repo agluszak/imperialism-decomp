@@ -652,7 +652,7 @@ address|name|symbol|size|type|prototype|provenance
 487880|DestructTCommandAndMaybeFree_Impl||7|function|undefined DestructTCommandAndMaybeFree_Impl()|
 4878a0|InitializeRangePairAndResetCursor||39|function|undefined InitializeRangePairAndResetCursor()|
 4878e0|TCommand::Free||12|function|undefined NextDiplomacyCommandVtableSlotDC_DestroySelf()|
-487900|TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94||19|function|void NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94()|
+487900|TCommand::Process||19|function|void Process()|
 487a00|TCommand::DoIt||1|function|void __thiscall DoIt(void)|
 487a60|DispatchTSortedListDefaultCompare||20|function|short DispatchTSortedListDefaultCompare(void* a, void* b, void* context)|
 487a90|TSortedList::CreateObject|?CreateObject@TSortedList@@SGPAVCObject@@XZ|94|function|undefined CreateObject()|rtti

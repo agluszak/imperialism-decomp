@@ -1,5 +1,7 @@
 #include "game/ui_core/CMainFrame.h"
 
+#include "game/pointer_representation.h"
+#include "game/ui_core/TCommand.h"
 #include "game/ui_core/CIncludeView.h" // GetMainViewHostFromActiveThread()->m_hWnd
 #include "game/ImperialismApp.h"
 #include "game/gfx/TBackdropWindow.h"
@@ -16,16 +18,6 @@
 void TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void);
 
 namespace {
-
-// Provisional interface for the queued UI command posted through message 0xBC0 by
-// TApplication::DispatchQueuedUiCommandAndRelease. The concrete class is not yet
-// recovered (the poster is registered via opaque vtable data with no traceable
-// callers); OnMsg0BC0 only needs its first own virtual (slot 0x0a, byte 0x28) after the
-// inherited AssertValid (slot 0x03). Legitimate provisional placeholder pending
-// class-recovery (bd imperialism-decomp-ve8.4).
-struct QueuedUiCommand : public TObject {
-  virtual void ExecuteQueuedCommand(); // slot 0x0a byte 0x28
-};
 
 void ReleaseFrameRefTarget(CObject* target) {
   if (target != nullptr) {
@@ -286,10 +278,9 @@ LRESULT CMainFrame::HandleCustomMessage2420DispatchTurnEvent(WPARAM wParam, LPAR
 // FUNCTION: IMPERIALISM 0x00485960
 LRESULT CMainFrame::OnMsg0BC0(WPARAM wParam, LPARAM lParam) {
   (void)wParam;
-  // lParam carries the queued UI command object (Win32 message-boundary cast).
-  QueuedUiCommand* command = reinterpret_cast<QueuedUiCommand*>(lParam);
+  TCommand* command = static_cast<TCommand*>(PointerFromAddressLong32(lParam));
   command->AssertValid();
-  command->ExecuteQueuedCommand();
+  command->Process();
   return 0;
 }
 
