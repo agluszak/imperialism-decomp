@@ -2218,7 +2218,7 @@ address|matching|name
 0x4cd880|1.0|TTradeSchoolView::`scalar deleting destructor'
 0x4cd8b0|1.0|TTradeSchoolView::~TTradeSchoolView
 0x4cd8d0|0.2820143884892086|TTradeSchoolView::DoStartup
-0x4ce070|0.10606060606060606|TTradeSchoolView::UpdateFields
+0x4ce070|0.8163265306122449|TTradeSchoolView::UpdateFields
 0x4ce480|0.4897959183673469|TBuildingExpansionView::CreateObject
 0x4ce500|1.0|TBuildingExpansionView::GetRuntimeClass
 0x4ce520|1.0|TBuildingExpansionView::TBuildingExpansionView

@@ -13,11 +13,6 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-static __inline void SetTradeSchoolControlEnabledIfChanged(TView* control, bool enabled) {
-  if ((control->IsActionable() != 0) != enabled) {
-    control->SetEnabled(enabled, 1);
-  }
-}
 // SYNTHETIC: IMPERIALISM 0x004cd760
 // TTradeSchoolView::CreateObject
 
@@ -106,39 +101,42 @@ void TTradeSchoolView::UpdateFields() {
     return;
   }
 
-  const unsigned int controlTags[6] = {
-      kControlTagPap1, kControlTagPap2, kControlTagMon1, // 'pap1', 'pap2', 'mon1'
-      kControlTagMon2, kControlTagUntV, kControlTagTraV};
-  const int assertLines[6] = {0x9df, 0x9ef, 0xa00, 0xa11, 0xa23, 0xa34};
-  bool shouldEnable[6];
-  shouldEnable[0] = city94->cityStockPaperCA >= 1;
-  shouldEnable[1] = city94->cityStockPaperCA >= 2;
-
-  int availableBudget = city94->ownerNationAc->ComputeAvailableDiplomacyBudget();
-  shouldEnable[2] = availableBudget >= 100;
-  shouldEnable[3] = availableBudget >= 1000;
-
   TPopulationMgr* population = city94->productionSummary1d8;
+#define UPDATE_TRADE_SCHOOL_CONTROL(controlTag, assertLine, enableCondition)                       \
+  control = ResolveControlByTag(controlTag);                                                       \
+  if (control == 0) {                                                                              \
+    FailNilPointerWithAssert(s_SourcePathUCityViews_00696650, assertLine);                         \
+  }                                                                                                \
+  if (enableCondition) {                                                                           \
+    if (control->IsActionable() == 0) {                                                            \
+      control->SetEnabled(1, 1);                                                                   \
+    }                                                                                              \
+  } else {                                                                                         \
+    if (control->IsActionable() != 0) {                                                            \
+      control->SetEnabled(0, 1);                                                                   \
+    }                                                                                              \
+  }
+
+  TView* control;
+  UPDATE_TRADE_SCHOOL_CONTROL(kControlTagPap1, 0x9df, city94->cityStockPaperCA >= 1);
+  UPDATE_TRADE_SCHOOL_CONTROL(kControlTagPap2, 0x9ef, city94->cityStockPaperCA >= 2);
+  UPDATE_TRADE_SCHOOL_CONTROL(kControlTagMon1, 0xa00,
+                              city94->ownerNationAc->ComputeAvailableDiplomacyBudget() >= 100);
+  UPDATE_TRADE_SCHOOL_CONTROL(kControlTagMon2, 0xa11,
+                              city94->ownerNationAc->ComputeAvailableDiplomacyBudget() >= 1000);
+
   short availableWorkers = population->strength;
-  short professionalLimit = population->productionSlots14->lowSkillCount04;
-  if (availableWorkers > professionalLimit) {
-    availableWorkers = professionalLimit;
+  short workerLimit = population->productionSlots14->lowSkillCount04;
+  if (availableWorkers >= workerLimit) {
+    availableWorkers = workerLimit;
   }
-  shouldEnable[4] = availableWorkers != 0;
+  UPDATE_TRADE_SCHOOL_CONTROL(kControlTagUntV, 0xa23, availableWorkers != 0);
 
-  short railWorkers = static_cast<short>(population->strength / 2);
-  short railLimit = population->productionSlots14->mediumSkillCount06;
-  if (railWorkers > railLimit) {
-    railWorkers = railLimit;
+  availableWorkers = static_cast<short>(population->strength / 2);
+  workerLimit = population->productionSlots14->mediumSkillCount06;
+  if (availableWorkers >= workerLimit) {
+    availableWorkers = workerLimit;
   }
-  shouldEnable[5] = railWorkers != 0;
-
-  for (int controlIndex = 0; controlIndex < 6; ++controlIndex) {
-    TView* control = ResolveControlByTag(controlTags[controlIndex]);
-    if (control == 0) {
-      FailNilPointerWithAssert(s_SourcePathUCityViews_00696650, assertLines[controlIndex]);
-      continue;
-    }
-    SetTradeSchoolControlEnabledIfChanged(control, shouldEnable[controlIndex]);
-  }
+  UPDATE_TRADE_SCHOOL_CONTROL(kControlTagTraV, 0xa34, availableWorkers != 0);
+#undef UPDATE_TRADE_SCHOOL_CONTROL
 }
