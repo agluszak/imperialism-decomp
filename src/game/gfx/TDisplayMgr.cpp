@@ -242,8 +242,8 @@ void TDisplayMgr::UpdateTheGWorld(short eventCode) {
   clipRect.right = queryBounds.right;
   clipRect.bottom = queryBounds.bottom;
 
-  SetGlobalQuickDrawOrigin(static_cast<short>(mainView->ownerLocalX),
-                           static_cast<short>(mainView->ownerLocalY));
+  SetGlobalQuickDrawOrigin(static_cast<short>(mainView->absoluteX),
+                           static_cast<short>(mainView->absoluteY));
   ClipRect(&clipRect);
   mainView->Draw(&queryBounds);
 

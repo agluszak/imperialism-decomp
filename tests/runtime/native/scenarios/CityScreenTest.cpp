@@ -32,7 +32,7 @@ public:
   bool RecordsGameFlow() const override {
     return true;
   }
-  bool RequiresCityUiSnapshot() const override {
+  bool RequiresScenarioUiSnapshot() const override {
     return true;
   }
 
@@ -60,7 +60,7 @@ public:
 
   void ObserveScenarioUiTree(int eventCode, TView* root) override {
     if (eventCode == kTurnEventCityProduction) {
-      CaptureCityUiSnapshot(eventCode, root);
+      CaptureScenarioUiSnapshot(eventCode, root);
     }
   }
 
@@ -125,7 +125,7 @@ private:
       FailScenario("\"city production view is missing required production controls\"");
       return;
     }
-    if (!HasCityUiSnapshot()) {
+    if (!HasScenarioUiSnapshot()) {
       WaitForScenarioTick("\"city production UI tree was not captured\"");
       return;
     }

@@ -25,6 +25,7 @@
 #include "game/map/TMapMgr.h"
 #include "game/nation/TGreatPower.h"
 #include "game/ui_widgets/TMyStaticText.h"
+#include "game/ui_widgets/TTradeCluster.h"
 #include "game/ui_screens/TRightLeftView.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TStaticText.h"
@@ -127,7 +128,6 @@ void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstRect) {
 
 // Provisional turn-event dialog / GOLD control interfaces are shared with TViewMgr.cpp
 // via one header so the two copies can't drift (bd imperialism-decomp-hpd.7).
-using turn_event_dialog::CityOrderSource;
 using turn_event_dialog::GoldDialogControl;
 
 } // namespace
@@ -816,15 +816,15 @@ void TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent() {
 }
 
 // FUNCTION: IMPERIALISM 0x0050bbc0
-void TMacViewMgr::ApplySellOrderRowToNationState(CityOrderSource* orderSource, int param_2,
-                                                 short param_3) {
-  if (orderSource->QuerySellModeFlag1D8() != 0) {
-    g_apNationStates[param_3]->SetDiplomacyState1c6ClampedToCounterA4(static_cast<short>(param_2),
-                                                                      -1);
+void TMacViewMgr::ApplySellOrderRowToNationState(TTradeCluster* orderSource, int orderSlot,
+                                                 short nationSlot) {
+  if (orderSource->IsSelectionAllowed() != 0) {
+    g_apNationStates[nationSlot]->SetDiplomacyState1c6ClampedToCounterA4(
+        static_cast<short>(orderSlot), -1);
     return;
   }
-  g_apNationStates[param_3]->SetDiplomacyState1c6ClampedToCounterA4(
-      static_cast<short>(param_2), orderSource->QuerySellQuantity1D4());
+  g_apNationStates[nationSlot]->SetDiplomacyState1c6ClampedToCounterA4(
+      static_cast<short>(orderSlot), static_cast<short>(orderSource->GetTradeSellControlValue()));
 }
 
 // FUNCTION: IMPERIALISM 0x0050bc50

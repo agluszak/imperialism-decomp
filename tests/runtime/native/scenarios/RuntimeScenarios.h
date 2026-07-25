@@ -7,6 +7,7 @@ RuntimeTestCase* RandomGameJourneyTest();
 RuntimeTestCase* EasyRandomGameTest();
 RuntimeTestCase* EndTurnTest();
 RuntimeTestCase* CityScreenTest();
+RuntimeTestCase* TradeScreenTest();
 RuntimeTestCase* MapZoomToggleTest();
 RuntimeTestCase* LoadSavedGameTest();
 RuntimeTestCase* TurnEventQueueBoundsTest();

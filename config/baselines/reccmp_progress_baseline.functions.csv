@@ -2428,7 +2428,7 @@ address|matching|name
 0x4dd740|1.0|TGreatPower::GetDiplomacyExternalStateByTarget
 0x4dd770|1.0|TGreatPower::SetCityStockCounterAndRefresh
 0x4dd7b0|1.0|TGreatPower::AddToCityStockCounterAndRefresh
-0x4dd7f0|0.6987951807228916|TGreatPower::ComputeProductionMetricForOrderKind
+0x4dd7f0|0.7228915662650602|TGreatPower::ComputeProductionMetricForOrderKind
 0x4dda20|1.0|TGreatPower::DecrementDiplomacyCounterA2ByValue
 0x4dda40|1.0|TGreatPower::DecrementDiplomacyCounterA2Slot66
 0x4dda60|0.6|TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot
@@ -3140,7 +3140,7 @@ address|matching|name
 0x50bbc0|1.0|TMacViewMgr::ApplySellOrderRowToNationState
 0x50bc50|0.6167400881057269|TMacViewMgr::SyncSellTaggedChildControlWithNationState
 0x50be30|0.96|TMacViewMgr::MakeBookDialog
-0x50bea0|0.2146430195543429|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
+0x50bea0|0.20827648931332424|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 0x50d310|0.5625|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 0x50d360|0.6857142857142857|TMacViewMgr::OpenBuildingWindow
 0x50d470|0.7195121951219512|TMacViewMgr::RestoreBuildingWindowAtSavedPosition
@@ -3153,8 +3153,8 @@ address|matching|name
 0x50d920|1.0|TMacViewMgr::ClearActiveCityProductionViewAndDiscardRegion
 0x50d950|0.8070175438596491|TMacViewMgr::RefreshActiveGoldControlAndUiRuntimeState
 0x50d9e0|0.6105263157894737|TMacViewMgr::CopySpriteSurfaceToStrideBuffer
-0x50da80|0.28635346756152125|TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10
-0x50dd40|0.3202614379084967|TMacViewMgr::DrawStrategicMapUnitIcon
+0x50da80|0.30734966592427615|TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10
+0x50dd40|0.32679738562091504|TMacViewMgr::DrawStrategicMapUnitIcon
 0x50df40|0.2727272727272727|TMacViewMgr::DrawStrategicMapUnitIconOverlay
 0x50e070|0.656934306569343|TMacViewMgr::BlitStrategicMapUnitActivityOverlayFrame
 0x50e290|0.25|`dynamic initializer for 'g_scaledShortConst_6A3348''
@@ -3987,7 +3987,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.4544283413848631|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.46570048309178746|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags
@@ -5053,9 +5053,9 @@ address|matching|name
 0x587130|0.4919093851132686|TTradeCluster::DoPostCreate
 0x5873e0|0.3269230769230769|TTradeCluster::DoEvent
 0x587900|0.7272727272727273|TTradeCluster::IsTradeControlAtMinimum
-0x587950|0.7692307692307693|TTradeCluster::NotifyControlSelectionChange
-0x587980|0.5263157894736842|TTradeCluster::IsSelectionAllowed
-0x587a10|0.4745762711864407|TTradeCluster::GetBoolSlot1DC
+0x587950|1.0|TTradeCluster::GetTradeSellControlValue
+0x587980|0.5614035087719298|TTradeCluster::IsSelectionAllowed
+0x587a10|0.5084745762711864|TTradeCluster::GetBoolSlot1DC
 0x587aa0|0.9016393442622951|TTradeCluster::DoControlAction
 0x587bb0|0.4083333333333333|TTradeCluster::SetTradeBidControlBitmap
 0x587dd0|0.65625|TTradeCluster::SetTradeOfferControlBitmap
@@ -5094,7 +5094,7 @@ address|matching|name
 0x589720|0.9|TRailCluster::TRailCluster
 0x589760|1.0|TRailCluster::`scalar deleting destructor'
 0x589790|1.0|TRailCluster::~TRailCluster
-0x5897b0|0.3349282296650718|TRailCluster::DoPostCreate
+0x5897b0|0.32|TRailCluster::DoPostCreate
 0x5899c0|1.0|TRailCluster::SetMoveAmount(short)
 0x5899f0|0.358974358974359|TRailCluster::SetMoveAmount(short, unsigned char)
 0x589d10|0.7301587301587301|TRailCluster::UpdateMax
@@ -5494,7 +5494,7 @@ address|matching|name
 0x5a35a0|1.0|TTacticalBattle::HandleTacticalCommandTag_mine
 0x5a3640|1.0|TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints
 0x5a36d0|0.8342245989304813|TTacticalBattle::HandleTacticalCommandTag_digg
-0x5a3810|0.7166666666666667|TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand
+0x5a3810|1.0|TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand
 0x5a38e0|1.0|TTacticalBattle::HandleTacticalCommandTag_raly
 0x5a39a0|0.9393939393939394|ComputeHexTileDistanceFromIndices
 0x5a3a70|0.4|TTacticalBattle::FindFortWallTileCrossedByFiringLine
@@ -5957,7 +5957,7 @@ address|matching|name
 0x5bea00|0.09692671394799054|TOfferDeskPicture::PoseOfferSheet
 0x5bf740|0.6442953020134228|TOfferDeskPicture::DoEvent
 0x5bf860|1.0|TOfferDeskPicture::DoKeyEvent
-0x5bf930|0.7841191066997518|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
+0x5bf930|0.7890818858560794|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
 0x5c04f0|0.8108108108108109|TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt
 0x5c0930|0.05|TOfferDeskPicture::HandleMouseUp
 0x5c09d0|0.7486631016042781|TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged
@@ -6134,7 +6134,7 @@ address|matching|name
 0x5d7100|1.0|TViewMgr::PoseWarOfferIfTurnFlowReady
 0x5d7190|1.0|TViewMgr::NoOpTurnEventStateVtableSlotD4
 0x5d71b0|1.0|TViewMgr::DispatchNationActionToMainControl
-0x5d7240|0.14885496183206107|TViewMgr::DispatchTurnEvent
+0x5d7240|0.14772727272727273|TViewMgr::DispatchTurnEvent
 0x5d7c40|0.75|TViewMgr::DispatchTurnEvent3B8AndWaitForCompletion
 0x5d7cb0|0.0749063670411985|TViewMgr::HandleTurnEvent7DB_SelectCityAndRefreshView
 0x5d7f70|1.0|TViewMgr::RefreshCityProductionUi
@@ -6146,7 +6146,7 @@ address|matching|name
 0x5d8980|0.6728971962616822|TViewMgr::ShowAbilityStatusReport
 0x5d8c40|1.0|TViewMgr::HandleTurnEvent2103_RunNationStatusReportUpdate
 0x5d8cc0|1.0|TViewMgr::SyncTacticalStatusPanelRegion
-0x5d8dd0|0.028823058446757407|TViewMgr::HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor
+0x5d8dd0|0.12933025404157045|TViewMgr::HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor
 0x5da040|0.5483870967741935|TViewMgr::RefreshMainDialogAndCursorHelp
 0x5da180|0.6919431279620853|TViewMgr::HandleTurnEvent2260_RefreshMainHudTitles
 0x5da360|0.046598322460391424|TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons

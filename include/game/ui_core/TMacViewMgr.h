@@ -7,9 +7,6 @@
 #include "game/gfx/quickdraw_regions.h"
 #include "game/city_ui/StrategicMapCallbackRecord.h"
 
-namespace turn_event_dialog {
-struct CityOrderSource;
-}
 #include "game/mfc.h"
 
 class TStream;
@@ -18,6 +15,7 @@ class TView;
 class TCity;
 class TBuildingView;
 class TCityProductionView;
+class TTradeCluster;
 struct TQuickDrawSurfaceContext;
 struct TBitmapSurfaceNode;
 
@@ -35,9 +33,8 @@ public:
   virtual void LoadStrategicMapUnitOverlayAtlas751();             // slot 0x0c 0x50a3e0
   virtual void LoadStrategicMapOverlayAtlas8699();                // slot 0x0d 0x50a410
   virtual void LoadStrategicMapMarkerAtlas1372();                 // slot 0x0e 0x50a440
-  virtual void ApplySellOrderRowToNationState(turn_event_dialog::CityOrderSource* orderSource,
-                                              int param_2,
-                                              short param_3); // slot 0x0f 0x50bbc0
+  virtual void ApplySellOrderRowToNationState(TTradeCluster* orderSource, int orderSlot,
+                                              short nationSlot); // slot 0x0f 0x50bbc0
   virtual void SyncSellTaggedChildControlWithNationState(TView* view, short orderSlot,
                                                          short nationIndex);  // slot 0x10 0x50bc50
   virtual void RefreshCityProductionDetailPanelAndArrowWidgets(word param_1); // slot 0x11 0x50bea0

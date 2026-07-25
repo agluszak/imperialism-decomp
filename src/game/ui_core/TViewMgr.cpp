@@ -17,6 +17,7 @@
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 
 #include "game/turn_event_dialog_provisional.h"
+#include "game/resource_domain_types.h"
 
 #include "game/ImperialismApp.h"
 #include "game/gfx/TAmbitApplication.h"
@@ -29,6 +30,7 @@
 #include "game/ui_core/CWMgrIterator.h"   // window-registry traversal for the full (code-0) refresh
 #include "game/ui_core/quickdraw_rendering.h" // SetQuickDrawFillColor / SetQuickDrawStrokeColor
 #include "game/ui_widgets/TToolBarCluster.h" // pulls TView/TControl/TCluster chain for main-view dispatch
+#include "game/ui_widgets/TTradeCluster.h"
 #include "game/assets/TMovieView.h"
 
 #include "game/ui_screens/TSimMgr.h"
@@ -37,6 +39,7 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
+#include "game/globals/ui_widgets_globals.h"
 #include "game/city_ui/TCountry.h" // FormatOverlayTerrainLabelText (terrain overlay case)
 #include "game/nation/TGreatPower.h"
 #include "game/military_ui/TSortedByRelationshipList.h"
@@ -51,6 +54,7 @@
 #include "game/gfx/CTemporaryRegion.h"
 #include "game/ui_screens/TNewspaperView.h"
 #include "game/ui_core/TPicture.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/ui_screens/turn_flow_cooldown.h" // IsTurnFlowCooldownActiveAndResetExpiredState
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_core/ui_message_pump.h"
@@ -72,6 +76,7 @@
 #include "game/ui_screens/TScrollView.h" // nation-info modal overflow scroll wrapper
 #include "game/ui_core/TStaticText.h"
 #include "game/ui_widgets/TDropShadowText.h"
+#include "game/ui_widgets/TDropShadowNumberText.h"
 #include "game/app/TTechStorePage.h"
 #include "game/military/mapped_flavor_text.h" // BuildUiMessageTextFromBracketTemplate / scanBracketExpressions
 #include "game/ui_core/TEditText.h"
@@ -829,11 +834,11 @@ void TViewMgr::RefreshStrategicMapStatusIconsForActiveNation() {
   for (short iconIndex = 0; iconIndex < 0x12; ++iconIndex) {
     const unsigned int tag =
         *reinterpret_cast<const unsigned int*>(kStatusIconTagBytes + iconIndex * 4);
-    TControl* control = static_cast<TControl*>(mainView->ResolveControlByTag(tag));
+    TView* control = mainView->ResolveControlByTag(tag);
     if (control != nullptr) {
       control->AssertValid();
       g_pStrategicMapViewSystem->ApplySellOrderRowToNationState(
-          static_cast<turn_event_dialog::CityOrderSource*>(control), iconIndex, nationId);
+          static_cast<TTradeCluster*>(control), iconIndex, nationId);
     }
   }
   TGreatPower* nation = g_apNationStates[nationId];
@@ -1052,9 +1057,9 @@ void RefreshTradClusterPictureAndHintText() {
     return;
   }
   tradControl->AssertValid();
-  TToolBarCluster* tradCluster = static_cast<TToolBarCluster*>(tradControl);
-  const short pictureId = static_cast<short>(tradCluster->selectedChildTag + 1);
-  static_cast<TPicture*>(tradControl)->SetPictureResourceIdAndRefresh(pictureId, false);
+  TPicture* tradPicture = static_cast<TPicture*>(tradControl);
+  const short pictureId = static_cast<short>(tradPicture->glyphBase84 + 1);
+  tradPicture->SetPictureResourceIdAndRefresh(pictureId, false);
   tradControl->SetState(0, 0);
 
   CString hintText;
@@ -1220,7 +1225,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       }
     } else if (newCode == kTurnEventTradeOverview || newCode == kTurnEventIndustryOverview) {
       mainView->RefreshControl();
-      this->HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(newCode);
+      this->HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(secondary);
     } else if (newCode == kTurnEventCityProduction) {
       mainView->RefreshControl();
       this->HandleTurnEvent7DB_SelectCityAndRefreshView(secondary);
@@ -1295,6 +1300,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
         break;
       case kTurnEventDiplomacyMap:
         this->HandleTurnEvent7D8_ActivateDiplomacyMapView(newCode);
+        g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
         break;
       }
     } else if (newCode > kTurnEventTechnologyAdvance) {
@@ -1319,10 +1325,12 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       switch (newCode) {
       case kTurnEventTradeOverview:
       case kTurnEventIndustryOverview:
-        this->HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(newCode);
+        this->HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(secondary);
+        g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
         break;
       case kTurnEventCityProduction:
         this->HandleTurnEvent7DB_SelectCityAndRefreshView(secondary);
+        g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
         break;
       case kTurnEventStrategicMap:
         this->HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(newCode);
@@ -1600,54 +1608,195 @@ void TViewMgr::SyncTacticalStatusPanelRegion() {
 }
 
 // FUNCTION: IMPERIALISM 0x005d8dd0
-void TViewMgr::HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(int) {
+void TViewMgr::HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(int nationIndex) {
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
   turn_event_ui_refresh::RefreshTradClusterPictureAndHintText();
-  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTopB);
-  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTool);
-  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagTopB, 0x2730, 0);
 
-  TControl* textControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagText);
-  if (textControl != nullptr) {
-    textControl->AssertValid();
-    textControl->SetHoverHelpText(g_szEmptyString);
-  }
+  TToolBarCluster* topToolbar = static_cast<TToolBarCluster*>(
+      turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagTopB));
+  topToolbar->AssertValid();
+  topToolbar->RefreshTurnOrderStatusPanelTextsAndControls();
 
-  const short activeNationId = g_pSimMgr->GetActiveNationId();
-  g_apNationStates[activeNationId]->IsHost();
+  TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(
+      turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagTool));
+  toolbar->AssertValid();
+  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(static_cast<short>(nationIndex));
+  toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
+
+  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagQuer, 0x2730, 2);
+
+  TControl* mainControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagMain);
+  mainControl->AssertValid();
+  mainControl->SetHoverHelpText(g_szEmptyString);
+
+  TGreatPower* nation = g_apNationStates[static_cast<short>(nationIndex)];
+  g_pSimMgr->SetFlags(0x100);
+  nation->RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix();
   this->fieldEc = 0;
   for (short metricSlot = 0; metricSlot < 0x11; ++metricSlot) {
-    if (g_apNationStates[activeNationId]->QueryNationMetricBySlot7C(metricSlot) == -1) {
+    if (nation->QueryNationMetricBySlot7C(metricSlot) == -1) {
       this->fieldEc = static_cast<short>(this->fieldEc + 1);
     }
   }
 
-  turn_event_ui_refresh::ApplyThemeToTaggedTextControl(kControlTagText, 0xc, 0x2b67, 0x2b6c);
-  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagText, 0x2730, 0);
-  turn_event_ui_refresh::ApplyThemeToTaggedTextControl(kControlTagDoof, 0xc, 0x2b67, 0x2b6c);
-  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagDoof, 0x2730, 0);
-  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagDoof, 0x2731, 0);
+  const unsigned int kTagTopTitle = IMPERIALISM_FOURCC('t', 'o', 'p', 'T');
+  const unsigned int kTagCommodityTitle = IMPERIALISM_FOURCC('c', 'o', 'm', 'T');
+  const unsigned int kTagOrdersTitle = IMPERIALISM_FOURCC('o', 'r', 'd', 'T');
+  const unsigned int kTagPriceTitle = IMPERIALISM_FOURCC('p', 'r', 'i', 'T');
+  const unsigned int kTagAvailableTitle = IMPERIALISM_FOURCC('a', 'v', 'a', 'T');
+  const unsigned int kTagQuantityTitle = IMPERIALISM_FOURCC('q', 't', 'y', 'T');
+  const unsigned int kTagMiniPicture = IMPERIALISM_FOURCC('m', 'P', 'i', 'c');
 
-  TextStyle foodStyle;
-  foodStyle.fontFamily = 0;
-  foodStyle.fontStyleFlags = 0;
-  foodStyle.fontSize = 0;
-  foodStyle.textColor = 0;
-  BuildUiTextStyleDescriptor(&foodStyle, 0, 0xc, 0x2b6b);
-  TControl* foodControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagDoof);
-  if (foodControl != nullptr) {
-    foodControl->AssertValid();
-    foodControl->InstallTextStyle(foodStyle, 0);
-    turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagDoof, 0x2730, 0);
-    foodControl->InstallTextStyle(foodStyle, 0);
-    turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagDoof, 0x2730, 0);
-    foodControl->InstallTextStyle(foodStyle, 0);
-    turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagDoof, 0x2730, 0);
+  CString label;
+  TDropShadowText* title =
+      static_cast<TDropShadowText*>(turn_event_ui_refresh::ResolveMainTaggedControl(kTagTopTitle));
+  title->AssertValid();
+  ApplyUiTextStyleAndThemeFlags(title, 0, 0x10, 0x2b6c, 0x2b67);
+  g_pSimMgr->GetString(0x2731, 0xc, &label);
+  title->SetTextAndMaybeRefresh(&label, 0);
+
+  TDropShadowText* commodityTitle = static_cast<TDropShadowText*>(
+      turn_event_ui_refresh::ResolveMainTaggedControl(kTagCommodityTitle));
+  commodityTitle->AssertValid();
+  ApplyUiTextStyleAndThemeFlags(commodityTitle, 0, 0xc, 0x2b6c, 0x2b67);
+  g_pSimMgr->GetString(0x2731, 0xd, &label);
+  commodityTitle->SetTextAndMaybeRefresh(&label, 0);
+
+  TDropShadowText* ordersTitle = static_cast<TDropShadowText*>(
+      turn_event_ui_refresh::ResolveMainTaggedControl(kTagOrdersTitle));
+  ordersTitle->AssertValid();
+  ApplyUiTextStyleAndThemeFlags(ordersTitle, 0, 0xc, 0x2b6c, 0x2b67);
+  g_pSimMgr->GetString(0x2731, 0xe, &label);
+  ordersTitle->SetTextAndMaybeRefresh(&label, 0);
+
+  TextStyle columnStyle;
+  BuildUiTextStyleDescriptor(&columnStyle, 0, 0xc, 0x2b68);
+  const unsigned int columnTags[3] = {kTagPriceTitle, kTagAvailableTitle, kTagQuantityTitle};
+  for (short column = 0; column < 3; ++column) {
+    TStaticText* columnTitle = static_cast<TStaticText*>(
+        turn_event_ui_refresh::ResolveMainTaggedControl(columnTags[column]));
+    columnTitle->AssertValid();
+    columnTitle->InstallTextStyle(columnStyle, 0);
+    g_pSimMgr->GetString(0x2731, static_cast<short>(0xf + column), &label);
+    columnTitle->SetTextAndMaybeRefresh(&label, 0);
   }
 
-  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagQuer, 0x2730, 0);
+  TView* miniPicture = turn_event_ui_refresh::ResolveMainTaggedControl(kTagMiniPicture);
+  miniPicture->AssertValid();
+  g_pSimMgr->GetString(0x2731, 3, &label);
+  miniPicture->SetHoverHelpText(label);
 
-  RefreshStrategicMapStatusIconsForActiveNation();
+  TDropShadowNumberText* capacity = static_cast<TDropShadowNumberText*>(
+      turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagMCap));
+  if (capacity == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x686);
+  }
+  capacity->AssertValid();
+  ApplyUiNumberTextStyleAndThemeColor(capacity, 0, 0xa, 0x2b6c, 0x2b67);
+  capacity->HiliteState(1, 0);
+  capacity->SetControlValue(nation->tradeCapacity, 0);
+
+  TCity* city = nation->city;
+  if (city == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x697);
+  }
+  short* citySummary = city->GetCitySummaryRecordSlot74();
+
+  const unsigned int kTagFood = IMPERIALISM_FOURCC('f', 'o', 'o', 'd');
+  const unsigned int kTagCotton = IMPERIALISM_FOURCC('c', 'o', 't', 't');
+  const unsigned int kTagWool = IMPERIALISM_FOURCC('w', 'o', 'o', 'l');
+  const unsigned int kTagTimber = IMPERIALISM_FOURCC('t', 'i', 'm', 'b');
+  const unsigned int kTagCoal = IMPERIALISM_FOURCC('c', 'o', 'a', 'l');
+  const unsigned int kTagIron = IMPERIALISM_FOURCC('i', 'r', 'o', 'n');
+  const unsigned int kTagOil = IMPERIALISM_FOURCC('o', 'i', 'l', ' ');
+  const unsigned int kTagFabric = IMPERIALISM_FOURCC('f', 'a', 'b', 'r');
+  const unsigned int kTagLumber = IMPERIALISM_FOURCC('l', 'u', 'm', 'b');
+  const unsigned int kTagSteel = IMPERIALISM_FOURCC('s', 't', 'e', 'e');
+
+  TView* food = turn_event_ui_refresh::ResolveMainTaggedControl(kTagFood);
+  if (food == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x6ad);
+  }
+  const int foodOnHand =
+      city->cityStockCannedFoodC4 + city->cityStockLivestockDE + city->cityStockGrainD8 +
+      city->cityStockFruitDA + nation->needTargetByType[kResourceLivestock] +
+      nation->needTargetByType[kResourceFruit] + nation->needTargetByType[kResourceFish] +
+      nation->needTargetByType[kResourceGrain];
+  const int foodRequired =
+      citySummary[kResourceLivestock] + citySummary[kResourceFruit] + citySummary[kResourceGrain];
+  const bool foodShortage = foodOnHand < foodRequired;
+  food->SetEnabled(foodShortage ? 1 : 0, 0);
+  g_pSimMgr->GetString(0x2731, foodShortage ? 4 : 8, &label);
+  food->SetHoverHelpText(label);
+
+  TView* cotton = turn_event_ui_refresh::ResolveMainTaggedControl(kTagCotton);
+  TView* wool = turn_event_ui_refresh::ResolveMainTaggedControl(kTagWool);
+  const bool textileShortage = city->cityStockCottonB6 + city->cityStockWoolB8 +
+                                   nation->needTargetByType[kResourceCotton] +
+                                   nation->needTargetByType[kResourceWool] <
+                               city->GetBuildingType(0) * 2;
+  g_pSimMgr->GetString(0x2731, 0x13, &label);
+  cotton->SetEnabled(textileShortage ? 1 : 0, 0);
+  wool->SetEnabled(textileShortage ? 1 : 0, 0);
+  cotton->SetHoverHelpText(textileShortage ? label : CString(g_szEmptyString));
+  wool->SetHoverHelpText(textileShortage ? label : CString(g_szEmptyString));
+
+  struct ShortageControl {
+    unsigned int tag;
+    short stock;
+    short needType;
+    short buildingType;
+    short multiplier;
+    short stringIndex;
+  };
+  const ShortageControl shortageControls[7] = {
+      {kTagTimber, city->cityStockTimberBA, kResourceTimber, 4, 2, 0x15},
+      {kTagCoal, city->cityStockCoalBC, kResourceCoal, 2, 1, 0x16},
+      {kTagIron, city->cityStockIronBE, kResourceIron, 2, 1, 0x17},
+      {kTagOil, city->cityStockOilC2, kResourceOil, 6, 2, 0x18},
+      {kTagFabric, city->cityStockFabricC6, kResourceFabric, 1, 2, 0x19},
+      {kTagLumber, city->cityStockLumberC8, kResourceLumber, 5, 2, 0x1a},
+      {kTagSteel, city->cityStockSteelCC, kResourceSteel, 3, 2, 0x1b}};
+  for (short i = 0; i < 7; ++i) {
+    TView* shortageControl =
+        turn_event_ui_refresh::ResolveMainTaggedControl(shortageControls[i].tag);
+    const bool shortage =
+        shortageControls[i].stock + nation->needTargetByType[shortageControls[i].needType] <
+        city->GetBuildingType(shortageControls[i].buildingType) * shortageControls[i].multiplier;
+    shortageControl->SetEnabled(shortage ? 1 : 0, 0);
+    if (shortage) {
+      g_pSimMgr->GetString(0x2731, shortageControls[i].stringIndex, &label);
+      shortageControl->SetHoverHelpText(label);
+    } else {
+      shortageControl->SetHoverHelpText(g_szEmptyString);
+    }
+  }
+
+  if (nation->tradeCapacity == 0) {
+    g_pSimMgr->GetString(0x2731, 0x12, &label);
+    ModalMessage(label, g_ptCitySiteSelectionDialogPlacement);
+    this->fieldEc = 5;
+  }
+
+  for (short commodity = 0; commodity < 0x11; ++commodity) {
+    TView* row = turn_event_ui_refresh::ActiveMainView()->ResolveControlByTag(
+        g_tradeCommodityRowTagTable[commodity]);
+    if (row == nullptr) {
+      continue;
+    }
+    g_pStrategicMapViewSystem->SyncSellTaggedChildControlWithNationState(
+        row, commodity, static_cast<short>(nationIndex));
+    if ((commodity == 6 || commodity == 0xc) &&
+        g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0) {
+      row->Free();
+    } else {
+      g_pSimMgr->GetStringPrelude(commodity, &label);
+      row->SetHoverHelpText(label);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005da040

@@ -28,3 +28,14 @@ bool StrategicMapDriver::ActivateCity() {
   city->HandleEvent(city->GetEventNumber(), city, 0);
   return true;
 }
+
+bool StrategicMapDriver::ActivateTrade() {
+  TView* toolbar = root != 0 ? root->ResolveControlByTag(kControlTagTool) : 0;
+  TControl* trade =
+      toolbar != 0 ? static_cast<TControl*>(toolbar->ResolveControlByTag(kControlTagTrad)) : 0;
+  if (trade == 0 || trade->IsActionable() == 0) {
+    return false;
+  }
+  trade->HandleEvent(trade->GetEventNumber(), trade, 0);
+  return true;
+}
