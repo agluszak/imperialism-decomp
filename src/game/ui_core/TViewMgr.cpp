@@ -1359,33 +1359,50 @@ void TViewMgr::DispatchTurnEvent3B8AndWaitForCompletion(int payload, TEventHandl
 
 // FUNCTION: IMPERIALISM 0x005d7cb0
 void TViewMgr::HandleTurnEvent7DB_SelectCityAndRefreshView(int nationSlot) {
-  turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
-  TView* mainView = turn_event_ui_refresh::ActiveMainView();
-  if (mainView == nullptr) {
-    return;
-  }
+  TView* mainView = g_pDisplayMgr->activeDialog;
+  CString hoverText;
+  g_pSimMgr->SetFlags(0x10);
+
+  TInfoBarText* cursor = static_cast<TInfoBarText*>(mainView->ResolveControlByTag(kControlTagCurs));
+  g_pCursorControlPanel = cursor;
+  cursor->AssertValid();
+  cursor->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
   TControl* cityControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagCity));
   if (cityControl != nullptr) {
-    cityControl->AssertValid();
+    TPicture* cityPicture = static_cast<TPicture*>(cityControl);
+    cityPicture->SetPictureResourceIdAndRefresh(cityPicture->glyphBase84 + 1, 0);
     cityControl->SetState(0, 0);
-    cityControl->SwitchActiveChildAndNotify(nullptr);
-    cityControl->SetHoverHelpText(g_szEmptyString);
+    g_pSimMgr->GetString(0x2730, 0x1d, &hoverText);
+    SetControlHoverHelpTextAltEntry(hoverText, cityControl);
   }
 
-  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTopB);
-  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTool);
+  TToolBarCluster* topBar =
+      static_cast<TToolBarCluster*>(mainView->ResolveControlByTag(kControlTagTopB));
+  topBar->AssertValid();
+  topBar->RefreshTurnOrderStatusPanelTextsAndControls();
+
+  TToolBarCluster* toolbar =
+      static_cast<TToolBarCluster*>(mainView->ResolveControlByTag(kControlTagTool));
+  toolbar->AssertValid();
+  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(static_cast<short>(nationSlot));
+  toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
 
   TControl* querControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagQuer));
   if (querControl != nullptr) {
-    querControl->AssertValid();
-    querControl->SetHoverHelpText(g_szEmptyString);
+    g_pSimMgr->GetString(0x2730, 2, &hoverText);
+    SetControlHoverHelpText(hoverText, querControl);
   }
 
   TCityProductionView* productionView =
       static_cast<TCityProductionView*>(mainView->ResolveControlByTag(kControlTagMain));
   productionView->AssertValid();
-  productionView->SetHoverHelpText(g_szEmptyString);
+  hoverText = CString(g_szEmptyString);
+  SetControlHoverHelpText(hoverText, productionView);
+
+  productionView =
+      static_cast<TCityProductionView*>(mainView->ResolveControlByTag(kControlTagMain));
+  productionView->AssertValid();
   g_pStrategicMapViewSystem->activeCityProductionView04 = productionView;
 
   TGreatPower* nation = g_apNationStates[static_cast<short>(nationSlot)];

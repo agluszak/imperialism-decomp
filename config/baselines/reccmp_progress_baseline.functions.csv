@@ -6134,7 +6134,7 @@ address|matching|name
 0x5d71b0|1.0|TViewMgr::DispatchNationActionToMainControl
 0x5d7240|0.14786729857819905|TViewMgr::DispatchTurnEvent
 0x5d7c40|0.75|TViewMgr::DispatchTurnEvent3B8AndWaitForCompletion
-0x5d7cb0|0.0749063670411985|TViewMgr::HandleTurnEvent7DB_SelectCityAndRefreshView
+0x5d7cb0|0.9313432835820895|TViewMgr::HandleTurnEvent7DB_SelectCityAndRefreshView
 0x5d7f70|1.0|TViewMgr::RefreshCityProductionUi
 0x5d7f90|1.0|TViewMgr::ClearActiveCityBuildingViewSlot
 0x5d7fc0|0.53125|TViewMgr::SetCursorRangeAndRefreshMainPanel
@@ -7094,7 +7094,7 @@ address|matching|name
 0x608ba8|0.9441964285714286|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|0.9787234042553191|CWnd::OnNotify
+0x6091d9|1.0|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent
