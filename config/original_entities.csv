@@ -1272,7 +1272,7 @@ address|name|symbol|size|type|prototype|provenance
 49ace0|TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor||69|function|ulong __thiscall ResolvePaletteIndexColor(uint packedColor)|
 49ad50|RemoveHashIndexedRecordByShortKey||171|function|undefined RemoveHashIndexedRecordByShortKey()|
 49ae30|CMap<short,short,CacheRecord*,CacheRecord*>::~CMap|??1?$CMap@FFPAUCacheRecord@@PAU1@@@UAE@XZ|132|function|void ~CMap()|curated
-49aef0|TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive||522|function|undefined SerializeNodeMapEntries_Key16Value32_WithArchive()|
+49aef0|CMap<short,short,CacheRecord*,CacheRecord*>::Serialize|?Serialize@?$CMap@FFPAUCacheRecord@@PAU1@@@UAEXAAVCArchive@@@Z|522|function|void Serialize(CArchive& archive)|curated
 49b190|BuildIndexedBmpResourceById_Impl||168|function|undefined BuildIndexedBmpResourceById_Impl()|
 49b270|CMap<void*,void*,CacheRecord*,CacheRecord*>::~CMap|??1?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAE@XZ|132|function|void ~CMap()|curated
 49b330|TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive||517|function|undefined SerializeNodeMapEntries_Key32Value32_WithArchive()|

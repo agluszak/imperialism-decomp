@@ -402,6 +402,12 @@ COLORREF TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor(unsigned int p
 // TEMPLATE: IMPERIALISM 0x0049ae30
 // ??1?$CMap@FFPAUCacheRecord@@PAU1@@@UAE@XZ
 
+// VC5 emits afxtempl.h's archive loop for the short-key cache specialization. The body
+// serializes each two-byte key and four-byte CacheRecord pointer, and rebuilds the map
+// through CMap::SetAt while loading.
+// TEMPLATE: IMPERIALISM 0x0049aef0
+// ?Serialize@?$CMap@FFPAUCacheRecord@@PAU1@@@UAEXAAVCArchive@@@Z
+
 // TEMPLATE: IMPERIALISM 0x0049b270
 // ??1?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAE@XZ
 
