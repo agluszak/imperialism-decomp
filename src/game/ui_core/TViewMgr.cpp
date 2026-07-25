@@ -1226,7 +1226,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       }
     } else if (newCode == kTurnEventTradeOverview || newCode == kTurnEventIndustryOverview) {
       mainView->RefreshControl();
-      this->HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(secondary);
+      this->RefreshTradeAndIndustryOverviewScreen(secondary);
     } else if (newCode == kTurnEventCityProduction) {
       mainView->RefreshControl();
       this->HandleTurnEvent7DB_SelectCityAndRefreshView(secondary);
@@ -1326,7 +1326,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       switch (newCode) {
       case kTurnEventTradeOverview:
       case kTurnEventIndustryOverview:
-        this->HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(secondary);
+        this->RefreshTradeAndIndustryOverviewScreen(secondary);
         g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
         break;
       case kTurnEventCityProduction:
@@ -1609,7 +1609,7 @@ void TViewMgr::SyncTacticalStatusPanelRegion() {
 }
 
 // FUNCTION: IMPERIALISM 0x005d8dd0
-void TViewMgr::HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor(int nationIndex) {
+void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
   turn_event_ui_refresh::RefreshTradClusterPictureAndHintText();
 

@@ -5966,7 +5966,7 @@ address|name|symbol|size|type|prototype|provenance
 5d8980|TViewMgr::ShowAbilityStatusReport||560|function|void ShowAbilityStatusReport(int abilityIndex)|
 5d8c40|HandleTurnEvent2103_RunNationStatusReportUpdate||84|function|undefined HandleTurnEvent2103_RunNationStatusReportUpdate()|
 5d8cc0|TViewMgr::SyncTacticalStatusPanelRegion||206|function|void SyncTacticalStatusPanelRegion()|
-5d8dd0|HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor||3770|function|undefined HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor()|
+5d8dd0|RefreshTradeAndIndustryOverviewScreen||3770|function|undefined RefreshTradeAndIndustryOverviewScreen()|
 5da040|TViewMgr::RefreshMainDialogAndCursorHelp||243|function|void RefreshMainDialogAndCursorHelp(int eventCode)|
 5da180|TViewMgr::HandleTurnEvent2260_RefreshMainHudTitles||370|function|void __thiscall HandleTurnEvent2260_RefreshMainHudTitles(int eventCode)|windows_listing
 5da360|TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons||3184|function|void __thiscall HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int eventCode)|windows_listing

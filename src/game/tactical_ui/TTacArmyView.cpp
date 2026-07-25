@@ -320,7 +320,8 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
   int paintRight = corners->right;
   int paintBottom = corners->bottom;
 
-  int rowParity = (tileIndex / 0x1d) & 1;
+  int hexRow = tileIndex / 0x1d;
+  int rowParity = hexRow & 1;
   int sideSlot = rowParity + (tileIndex % 0x1d) * 2;
 
   // Fort-wall edge classification for this tile. The four values are a closed local
@@ -342,11 +343,13 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     edgeKind = kFortWallEdgeOddRow;
   }
 
+  // The even-row-left kind describes the wall owned by the PREVIOUS tile, so its garrison
+  // probe uses tileIndex - 1 (0x005aaabb in the original), not tileIndex.
   unsigned char wallBreached = 0;
-  if ((((edgeKind == kFortWallEdgeEvenRowRight || edgeKind == kFortWallEdgeOddRow) &&
-        !tacticalBattle60->HasFortWallGarrison(tileIndex)) ||
-       (edgeKind == kFortWallEdgeEvenRowLeft &&
-        !tacticalBattle60->HasFortWallGarrison(tileIndex)))) {
+  if (((edgeKind == kFortWallEdgeEvenRowRight || edgeKind == kFortWallEdgeOddRow) &&
+       !tacticalBattle60->HasFortWallGarrison(tileIndex)) ||
+      (edgeKind == kFortWallEdgeEvenRowLeft &&
+       !tacticalBattle60->HasFortWallGarrison(tileIndex - 1))) {
     wallBreached = 1;
   }
   unsigned char gunSlotRow = 0;
@@ -368,39 +371,44 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     }
   }
 
-  // Column guide ticks between deployment columns (setup phase only).
-  if (tacticalBattle60->battleLive10 == 0 && rowParity > 0) {
-    g_pUiRuntimeContext->SetForeColor(0);
+  // Deployment-phase crosshair on an empty selectable tile: a 5px horizontal tick plus
+  // three 3px strokes centred on the tile, in fore colours 0x35 then 0x34
+  // (0x005aab15..0x005aac1e). The centre is the tile rect's own midpoint -- not the
+  // clipped paint rect -- and the outer gate is the hex row index, not its parity.
+  if (tacticalBattle60->battleLive10 == 0 && hexRow > 0) {
+    g_pUiRuntimeContext->SetForeColor(0x35);
     if (tacticalBattle60->ApplyGridColumnSelectionGuard(tileIndex) &&
         grid[tileIndex].occupant4 == 0) {
-      int yMid = tileRowHeightPx8C / 2;
+      const int centerY = tileScreenRect.top + tileRowHeightPx8C / 2;
+      const int centerX = tileScreenRect.left + tileWidthPx88 / 2;
       SetQuickDrawFillColor(0);
-      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(paintLeft),
-                                              static_cast<short>(y + yMid + 1));
-      DrawCenteredGuideLineOnMapDc(static_cast<short>(paintRight),
-                                   static_cast<short>(y + yMid + 1));
-      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(paintLeft),
-                                              static_cast<short>(y + yMid + 1));
-      DrawCenteredGuideLineOnMapDc(static_cast<short>(paintRight),
-                                   static_cast<short>(y + yMid + 1));
-      g_pUiRuntimeContext->SetForeColor(0);
-      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(paintLeft),
-                                              static_cast<short>(y + yMid - 1));
-      DrawCenteredGuideLineOnMapDc(static_cast<short>(paintRight),
-                                   static_cast<short>(y + yMid - 1));
-      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(paintLeft),
-                                              static_cast<short>(y + yMid - 1));
-      DrawCenteredGuideLineOnMapDc(static_cast<short>(paintRight),
-                                   static_cast<short>(y + yMid - 1));
+      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(centerX - 2),
+                                              static_cast<short>(centerY));
+      DrawCenteredGuideLineOnMapDc(static_cast<short>(centerX + 2), static_cast<short>(centerY));
+      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(centerX - 1),
+                                              static_cast<short>(centerY + 1));
+      DrawCenteredGuideLineOnMapDc(static_cast<short>(centerX + 1),
+                                   static_cast<short>(centerY + 1));
+      g_pUiRuntimeContext->SetForeColor(0x34);
+      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(centerX - 1),
+                                              static_cast<short>(centerY - 1));
+      DrawCenteredGuideLineOnMapDc(static_cast<short>(centerX + 1),
+                                   static_cast<short>(centerY - 1));
+      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(centerX - 1),
+                                              static_cast<short>(centerY));
+      DrawCenteredGuideLineOnMapDc(static_cast<short>(centerX + 1), static_cast<short>(centerY));
     }
   }
 
   // Trench overlay: pick the segment sprite from the per-tile 6-bit direction mask.
   short trenchSpriteBase = 0;
   if (grid[tileIndex].trenchMask10 != 0) {
-    int segmentPairSprite[36] = {0,   0xe,  0xc, 0x11, 9,  0x12, 0xe,  0,   0x11, 9, 0x12, 0xc,
-                                 0xc, 0x11, 0,   0x13, 10, 0x13, 0x11, 9,   0x13, 0, 0x10, 8,
-                                 9,   0x12, 10,  0x10, 0,  0xb,  0x12, 0xc, 0x13, 8, 0xb,  0};
+    // Symmetric 6x6 lookup keyed by the two set direction bits; transcribed from the
+    // in-frame initializer at 0x005aac49..0x005aad97.
+    int segmentPairSprite[36] = {0,    0x0e, 0x0a, 0x07, 0x14, 0x0d, 0x0e, 0,    0x13,
+                                 0x11, 0x09, 0x15, 0x0a, 0x13, 0,    0x0c, 0x10, 0x08,
+                                 0x07, 0x11, 0x0c, 0,    0x12, 0x0b, 0x14, 0x09, 0x10,
+                                 0x12, 0,    0x0f, 0x0d, 0x15, 0x08, 0x0b, 0x0f, 0};
     int singleSegmentSprite[6] = {0x19, 0x1a, 0x1b, 0x16, 0x17, 0x18};
     unsigned char mask = grid[tileIndex].trenchMask10;
     int firstBit = -1;
@@ -426,7 +434,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     }
     trenchSpriteBase = spriteIndex * static_cast<short>(tileWidthPx88);
     ResetQuickDrawStrokeState();
-    UpdatePaletteIndexWithDefaultFallback(0);
+    UpdatePaletteIndexWithDefaultFallback(0x10);
     RECT dstRect = tileScreenRect;
     if ((mask & 0x80) != 0) {
       RECT fullSrc = {0, 0, tileWidthPx88, tileRowHeightPx8C};
@@ -446,6 +454,10 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     SetQuickDrawStrokeColor(0);
   }
 
+  // Adjacency for the trench-link pass below (0x005aaf53).
+  TacticalTileIndex tileNeighbors[6];
+  tacticalBattle60->GetNeighborList(tileIndex, tileNeighbors);
+
   // Fort-wall bitmap for odd-row wall tiles.
   if (grid[tileIndex].deployMark8 == 1) {
     short fortCell = tacticalBattle60->IsTacticalSideCategoryCoverageIncompleteOrFlagOff();
@@ -454,7 +466,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     RECT fortSrc = {fortSpriteX, 0, fortSpriteX + unitSpriteCellWidth90, tileRowHeightPx8C};
     RECT fortDst = tileScreenRect;
     ResetQuickDrawStrokeState();
-    UpdatePaletteIndexWithDefaultFallback(0);
+    UpdatePaletteIndexWithDefaultFallback(0x10);
     OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface6C, &fortSrc);
     OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &fortDst);
     BlitRectWithOptionalTransparency(&fortLevelAtlasSurface6C->blitSurface,
@@ -474,30 +486,45 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface6C, &wallSrc);
     OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &wallDst);
     ResetQuickDrawStrokeState();
-    UpdatePaletteIndexWithDefaultFallback(0);
+    UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency(&fortLevelAtlasSurface6C->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &wallSrc,
                                      &wallDst, 0x24, 0);
     SetQuickDrawStrokeColor(0);
   }
 
-  // Trench-connection markers into the neighboring tiles.
-  int trenchLinks = 0;
+  // Trench-connection markers into the neighbouring tiles. The link tests walk the real
+  // adjacency list (0x005ab422..0x005ab4d4), not a fixed +/-0x1d,0x1c stride: even rows use
+  // neighbours 4/5/3, odd rows use neighbours 1/0/2, and a link is only considered once the
+  // "anchor" neighbour (4 resp. 1) is itself a wall tile.
+  unsigned char trenchLink[4] = {0, 0, 0, 0};
   if (rowParity == 0) {
-    // even rows link via the previous-row pair
-    if (tileIndex - 0x1d >= 0 && grid[tileIndex - 0x1d].deployMark8 == 1) {
-      trenchLinks |= 2;
+    const TacticalTileIndex anchor = tileNeighbors[4];
+    if (anchor != -1 && grid[anchor].deployMark8 == 1) {
+      if (tileNeighbors[5] != -1 && grid[tileNeighbors[5]].deployMark8 == 1) {
+        trenchLink[2] = 1;
+      }
+      if (tileNeighbors[3] != -1 && grid[tileNeighbors[3]].deployMark8 == 1) {
+        trenchLink[0] = 1;
+      }
     }
-    if (tileIndex - 0x1c >= 0 && grid[tileIndex - 0x1c].deployMark8 == 1) {
-      trenchLinks |= 1;
+  } else {
+    const TacticalTileIndex anchor = tileNeighbors[1];
+    if (anchor != -1 && grid[anchor].deployMark8 == 1) {
+      if (tileNeighbors[0] != -1 && grid[tileNeighbors[0]].deployMark8 == 1) {
+        trenchLink[3] = 1;
+      }
+      if (tileNeighbors[2] != -1 && grid[tileNeighbors[2]].deployMark8 == 1) {
+        trenchLink[1] = 1;
+      }
     }
   }
 
   // Per-direction trench segment sprites for the link mask.
   for (int segment = 0x15; segment - 0x14 < 4; ++segment) {
-    if ((trenchLinks & (1 << (segment - 0x15))) != 0) {
+    if (trenchLink[segment - 0x15] != 0) {
       ResetQuickDrawStrokeState();
-      UpdatePaletteIndexWithDefaultFallback(0);
+      UpdatePaletteIndexWithDefaultFallback(0x10);
       RECT linkSrc = {segment * tileWidthPx88, 0, (segment + 1) * tileWidthPx88, tileRowHeightPx8C};
       RECT linkDst = tileScreenRect;
       OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface6C, &linkSrc);
@@ -513,11 +540,20 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
   TTacticalUnit* occupant = grid[tileIndex].occupant4;
   if (occupant != 0) {
     if (occupant == tacticalBattle60->selectedUnit1c) {
-      g_pUiAnimator->FindRegisteredAnimationByTag(0x13);
+      // The blink animation registered under tag 0x2711 picks the outline colour from a
+      // two-entry palette table by its current frame index; with no animation registered
+      // the outline falls back to palette index 0x13 (0x005ab609..0x005ab695). The second,
+      // inset pass is always drawn in palette index 0.
+      short selectionPalette[2] = {0x13, 0};
+      TAnimation* blink = g_pUiAnimator->FindRegisteredAnimationByTag(0x2711);
+      RECT selectionRect = tileScreenRect;
+      SetQuickDrawFillColorFromPaletteIndex(blink == 0 ? 0x13
+                                                       : selectionPalette[blink->frameIndex08]);
+      DrawHexSelectionOutlineSegments(&selectionRect);
+      selectionRect.left += 1;
+      selectionRect.top += 1;
       SetQuickDrawFillColorFromPaletteIndex(0);
-      DrawHexSelectionOutlineSegments(&tileScreenRect);
-      SetQuickDrawFillColorFromPaletteIndex(0);
-      DrawHexSelectionOutlineSegments(&tileScreenRect);
+      DrawHexSelectionOutlineSegments(&selectionRect);
     }
     short spriteY = occupant->side20 == 0 ? 0 : static_cast<short>(unitSpriteCellHeight94);
     short spriteX =
@@ -527,7 +563,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     RECT unitDst;
     ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(occupant, &unitDst);
     ResetQuickDrawStrokeState();
-    UpdatePaletteIndexWithDefaultFallback(0);
+    UpdatePaletteIndexWithDefaultFallback(0x10);
     if (ClipSrcRectToBoundsAndOffsetDstRect(corners, &unitDst, &unitSrc)) {
       OffsetRectForSurfaceDibFlip(unitSpriteAtlasSurface68, &unitSrc);
       OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &unitDst);
@@ -564,7 +600,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface6C, &deckSrc);
     OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &deckDst);
     ResetQuickDrawStrokeState();
-    UpdatePaletteIndexWithDefaultFallback(0);
+    UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency(&fortLevelAtlasSurface6C->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &deckSrc,
                                      &deckDst, 0x24, 0);
@@ -647,7 +683,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     RECT nDst;
     ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(neighborUnit, &nDst);
     ResetQuickDrawStrokeState();
-    UpdatePaletteIndexWithDefaultFallback(0);
+    UpdatePaletteIndexWithDefaultFallback(0x10);
     if (ClipSrcRectToBoundsAndOffsetDstRect(corners, &nDst, &nSrc)) {
       OffsetRectForSurfaceDibFlip(unitSpriteAtlasSurface68, &nSrc);
       OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &nDst);
@@ -670,7 +706,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     }
     OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface6C, &slotSrc);
     OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &slotDst);
-    UpdatePaletteIndexWithDefaultFallback(0);
+    UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency(&fortLevelAtlasSurface6C->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &slotSrc,
                                      &slotDst, 0x24, 0);
