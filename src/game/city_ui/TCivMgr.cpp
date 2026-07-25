@@ -27,6 +27,7 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/mfc.h"
 #include "game/gfx/ui_invalidation_guard.h"
+#include "game/pointer_representation.h"
 #include "game/ui_core/ui_message_pump.h"
 
 // 0x005d4890. 'D' (0x44) is the only currently-known remapped shortcut code (keyCode 2);
@@ -408,7 +409,7 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
   }
 
   ownerNationState->treasuryValue10 += refundAmount;
-  g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(reinterpret_cast<int>(pCivilianOrderEntry));
+  g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(PointerAddressLong32(pCivilianOrderEntry));
 
   pCivilianOrderEntry->SetOrders(kUnitOrderIdle, subtypeOrTargetProvince);
   if ((subtypeOrTargetProvince != 0) && (subtypeOrTargetProvince != -1)) {
