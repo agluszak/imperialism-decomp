@@ -146,21 +146,16 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
         provinceOrdinal = 1;
         do {
           provinceId = ownerNationProvinceCollection->At(provinceOrdinal);
-          provinceTileCount =
-              (int)*(char*)(reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) +
-                            provinceId * 0xa8 + 0x3a);
+          Province* province = &g_pGlobalMapState->cityScoreTable[provinceId];
+          provinceTileCount = province->linkedRegionCount;
           if (0 < provinceTileCount) {
-            short* provinceTileIndices = reinterpret_cast<short*>(
-                reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + provinceId * 0xa8 +
-                0x42);
+            short* provinceTileIndices = province->linkedTileIndices42;
             provinceTileOrdinal = 0;
             while (provinceTileOrdinal < provinceTileCount) {
               tileIndex = *provinceTileIndices;
-              if ((*(char*)(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) +
-                            tileIndex * 0x24 + 0xe) == '\0') &&
-                  ((unsigned short)(unsigned char)*(
-                       char*)(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) +
-                              tileIndex * 0x24 + 0x13) == (unsigned short)slotIndex)) {
+              TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
+              if ((tile->recruitSearchVisited0e == 0) &&
+                  ((unsigned short)(unsigned char)tile->gateFlag == (unsigned short)slotIndex)) {
                 if ((int)(unsigned int)(*currentLegendSelectionCounter) <= candidateOrdinal) {
                   TMapUberPicture* activeMapPicture =
                       static_cast<TMapUberPicture*>(g_pGlobalUiRootController->edgeScrollTarget48);
@@ -197,14 +192,14 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
   // ORIG_CALLCONV: __thiscall
   NationSlot ownerNationId;
   int provinceTileOrdinal;
-  char* provinceRecord;
+  Province* provinceRecord;
   short* targetCountSlot;
   int classSlotOrdinal;
   int remainingSlots;
   int provinceOrdinal;
   short* provinceTileIndices;
   int provinceTileIndex;
-  char* tableBase;
+  TTerrainStateRecordView* tileRecord;
   short tileProfileId;
   TLongintList* ownerNationProvinceCollection;
   int provinceCount;
@@ -226,16 +221,14 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
   do {
     int provinceRecordId = ownerNationProvinceCollection->At(provinceOrdinal);
     provinceTileOrdinal = 0;
-    provinceRecord =
-        reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + provinceRecordId * 0xa8;
-    if ('\0' < *(char*)(provinceRecord + 0x3a)) {
-      provinceTileIndices = reinterpret_cast<short*>(provinceRecord + 0x42);
+    provinceRecord = &g_pGlobalMapState->cityScoreTable[provinceRecordId];
+    if (0 < provinceRecord->linkedRegionCount) {
+      provinceTileIndices = provinceRecord->linkedTileIndices42;
       do {
         provinceTileIndex = (short)*provinceTileIndices;
-        tableBase = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) +
-                    static_cast<short>(provinceTileIndex) * 0x24;
-        if (*(char*)(tableBase + 0xe) == '\0') {
-          tileProfileId = (short)*(char*)(tableBase + 0x13);
+        tileRecord = &g_pGlobalMapState->terrainStateTable[static_cast<short>(provinceTileIndex)];
+        if (tileRecord->recruitSearchVisited0e == 0) {
+          tileProfileId = static_cast<short>(tileRecord->gateFlag);
           classSlotOrdinal = 0;
           remainingSlots = 5;
           targetCountSlot = &context->targetTileCountsBySlot[0];
@@ -252,7 +245,7 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
         }
         provinceTileOrdinal = provinceTileOrdinal + 1;
         provinceTileIndices = provinceTileIndices + 1;
-      } while (provinceTileOrdinal < *(char*)(provinceRecord + 0x3a));
+      } while (provinceTileOrdinal < provinceRecord->linkedRegionCount);
     }
     provinceOrdinal = provinceOrdinal + 1;
     provinceCount = ownerNationProvinceCollection->GetSize();

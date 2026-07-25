@@ -581,7 +581,7 @@ address|matching|name
 0x482d00|0.4146341463414634|CIncludeView::BlitMapDialogSurfaceToHdcWithClipBounds
 0x482ed0|0.7708333333333334|CIncludeView::BlitMainPaneBitmapToOffscreenClipped
 0x482fc0|0.3076923076923077|CIncludeView::UpdateAndRenderMapTileHintOverlayQueue
-0x483220|0.4166666666666667|IncludeViewOverlayRectRecord::ComputeSpan
+0x483220|1.0|IncludeViewOverlayRectRecord::ComputeSpan
 0x483340|1.0|CIncludeView::SetUiRuntimeContextAndActivateMain
 0x483380|1.0|CIncludeView::RefreshActiveDialogHost
 0x4833b0|0.4777777777777778|CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow
@@ -622,11 +622,11 @@ address|matching|name
 0x484af0|0.5517241379310345|CMainFrame::CreateObject
 0x484bb0|1.0|CMainFrame::GetRuntimeClass
 0x484bd0|0.5|CMainFrame::GetMessageMap
-0x484bf0|0.8333333333333334|CMainFrame::CMainFrame
+0x484bf0|1.0|CMainFrame::CMainFrame
 0x484c40|1.0|CMainFrame::`scalar deleting destructor'
 0x484c70|0.6896551724137931|CMainFrame::~CMainFrame
 0x484d00|0.0|CMainFrame::OnCreate
-0x484d70|0.9240506329113924|CMainFrame::ConfigureTopLevelWindowStyleAndPlacement
+0x484d70|0.9367088607594937|CMainFrame::ConfigureTopLevelWindowStyleAndPlacement
 0x484f70|0.75|CMainFrame::PreCreateWindow
 0x484fb0|1.0|CMainFrame::OnMsg0464
 0x484fd0|1.0|CMainFrame::OnStartupCommand100
@@ -639,7 +639,7 @@ address|matching|name
 0x4855b0|0.4887459807073955|TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog
 0x485920|0.8148148148148148|CMainFrame::HandleCustomMessage2420DispatchTurnEvent
 0x485960|1.0|CMainFrame::OnMsg0BC0
-0x485990|1.0|CMainFrame::SetFieldC0AndInvalidateWindowIfChanged
+0x485990|1.0|CMainFrame::SetBackgroundColorAndInvalidate
 0x4859d0|0.8852459016393442|CMainFrame::OnEraseBkgnd
 0x485bd0|1.0|CMainFrame::OnPaint
 0x485c00|1.0|CMainFrame::OnChar
@@ -5209,7 +5209,7 @@ address|matching|name
 0x58f110|0.782608695652174|TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts
 0x58f1a0|0.232|TCivDescription::DoMouseCommand
 0x58f3c0|1.0|TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation
-0x58f550|0.4825174825174825|TCivDescription::Draw
+0x58f550|0.5664335664335665|TCivDescription::Draw
 0x58f7b0|0.5809906291834003|TCivDescription::DrawEngineer
 0x58fec0|0.4918032786885246|TCivDescription::DrawProspector
 0x5903c0|0.4519774011299435|TCivDescription::DrawDeveloper
@@ -6201,7 +6201,7 @@ address|matching|name
 0x5deee0|1.0|TE0TemplateDialog::OnKeyDown
 0x5def00|1.0|TE0TemplateDialog::OnLButtonDown
 0x5def20|1.0|TE0TemplateDialog::OnRButtonDown
-0x5def40|0.7142857142857143|TE0TemplateDialog::PreCreateWindow
+0x5def40|1.0|TE0TemplateDialog::PreCreateWindow
 0x5def70|1.0|TE0TemplateDialog::OnInitDialog
 0x5defe0|1.0|TE0TemplateDialog::OnSetCursor
 0x5df020|1.0|TE0TemplateDialog::OnNcPaint
