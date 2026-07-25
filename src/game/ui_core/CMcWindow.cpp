@@ -251,7 +251,8 @@ HBRUSH CMcWindow::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) {
   CWnd::OnCtlColor(pDC, pWnd, nCtlColor);
   if (nCtlColor == CTLCOLOR_EDIT) {
     HWND controlWindow = pWnd != NULL ? pWnd->m_hWnd : NULL;
-    TControl* control = reinterpret_cast<TControl*>(::GetWindowLong(controlWindow, GWL_USERDATA));
+    TControl* control = static_cast<TControl*>(
+        PointerFromAddressLong32(::GetWindowLong(controlWindow, GWL_USERDATA)));
     if (control != NULL) {
       g_pModuleLibraryCacheState->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(pDC, FALSE);
       pDC->SetBkColor(0x000000ff);
@@ -263,7 +264,8 @@ HBRUSH CMcWindow::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) {
     }
   }
   pDC->SetBkMode(TRANSPARENT);
-  return reinterpret_cast<HBRUSH>(::GetStockObject(NULL_BRUSH));
+  return static_cast<HBRUSH>(
+      PointerFromAddressLong32(PointerAddressLong32(::GetStockObject(NULL_BRUSH))));
 }
 
 // Overrides CWnd::OnCommand (vtable slot 0x80): custom notify code 0x400 from a child
