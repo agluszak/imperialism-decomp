@@ -168,43 +168,107 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
   unsigned char* row = static_cast<unsigned char*>(dib->m_dibBits);
   int sourceRowStride = (dib->m_pInfoHeader->bmiHeader.biWidth + 3) & 0xfffffffc;
   int generatedBaseOffset = 0;
+  int rowDestinationOffset = 0;
+  int remainingHeight = height;
 
-  opcodeAppendCursor10 = 0;
-  opcodeBytes00.RemoveAll();
-  opcodeAlignmentOffset14 = 0;
-  hadTrailingPadding18 = 0;
-
-  int y = 0;
-  while (y < height) {
+  while (remainingHeight > 0) {
     int x = 0;
+    int xPlusOne = 1;
+    int xPlusThree = 3;
     while (x < width) {
       unsigned char pixel = row[x];
       if (pixel != transparentPixel) {
-        int destinationOffset = y * destinationRowStride + x;
-        int displacement = destinationOffset - generatedBaseOffset;
-        if (displacement > 0x7f) {
-          int advance = displacement;
-          AppendOpcodeByte(0x05);
-          AppendOpcodeByte(advance);
-          AppendOpcodeByte(advance >> 8);
-          AppendOpcodeByte(advance >> 16);
-          AppendOpcodeByte(advance >> 24);
-          generatedBaseOffset = destinationOffset;
-          displacement = 0;
+        int displacement = x - generatedBaseOffset + rowDestinationOffset;
+        while (displacement > 0x7f) {
+          int advance = displacement + 0x80;
+          displacement = displacement - advance;
+          generatedBaseOffset = generatedBaseOffset + advance;
+
+          unsigned int opcodeIndex = static_cast<unsigned int>(opcodeAppendCursor10);
+          opcodeAppendCursor10 = static_cast<int>(opcodeIndex) + 1;
+          opcodeBytes00[opcodeIndex] = 0x05;
+
+          unsigned int byteSwappedAdvance =
+              ((static_cast<unsigned int>(advance) & 0x000000ff) << 24) |
+              ((static_cast<unsigned int>(advance) & 0x0000ff00) << 8) |
+              ((static_cast<unsigned int>(advance) & 0x00ff0000) >> 8) |
+              ((static_cast<unsigned int>(advance) & 0xff000000) >> 24);
+          AppendOpcodeBytePair(byteSwappedAdvance >> 16);
+          AppendOpcodeBytePair(byteSwappedAdvance);
         }
-        AppendOpcodeByte(0xc6);
-        AppendOpcodeByte(0x40);
-        AppendOpcodeByte(displacement);
-        AppendOpcodeByte(pixel);
+
+        if (xPlusOne >= width || row[xPlusOne] == transparentPixel) {
+          AppendOpcodeByte(0xc6);
+          AppendOpcodeByte(0x40);
+          AppendOpcodeByte(displacement);
+          AppendOpcodeByte(pixel);
+        } else {
+          if (xPlusThree < width && row[x + 2] != transparentPixel &&
+              row[xPlusThree] != transparentPixel) {
+            unsigned int packedPixels;
+            memcpy(&packedPixels, row + x, sizeof(packedPixels));
+            unsigned int byteSwappedPixels =
+                ((packedPixels & 0x000000ff) << 24) | ((packedPixels & 0x0000ff00) << 8) |
+                ((packedPixels & 0x00ff0000) >> 8) | ((packedPixels & 0xff000000) >> 24);
+
+            AppendOpcodeByte(0xc7);
+            AppendOpcodeByte(0x40);
+            AppendOpcodeByte(displacement);
+            AppendOpcodeBytePair(byteSwappedPixels >> 16);
+            AppendOpcodeBytePair(byteSwappedPixels);
+            x = x + 3;
+            xPlusOne = xPlusOne + 3;
+            xPlusThree = xPlusThree + 3;
+          } else {
+            AppendOpcodeByte(0x66);
+            AppendOpcodeByte(0xc7);
+            AppendOpcodeByte(0x40);
+            AppendOpcodeByte(displacement);
+            AppendOpcodeByte(pixel);
+            AppendOpcodeByte(row[xPlusOne]);
+            x = x + 1;
+            xPlusOne = xPlusOne + 1;
+            xPlusThree = xPlusThree + 1;
+          }
+        }
       }
       x = x + 1;
+      xPlusOne = xPlusOne + 1;
+      xPlusThree = xPlusThree + 1;
     }
     row = row + sourceRowStride;
-    y = y + 1;
+    rowDestinationOffset = rowDestinationOffset + destinationRowStride;
+    remainingHeight = remainingHeight - 1;
   }
 
   g_pModuleLibraryCacheState->ReleaseRecordById(static_cast<short>(resourceId));
-  AppendOpcodeByte(0xc3);
+  unsigned int opcodeIndex = static_cast<unsigned int>(opcodeAppendCursor10);
+  opcodeAppendCursor10 = static_cast<int>(opcodeIndex) + 1;
+  opcodeBytes00[opcodeIndex] = 0xc3;
+  opcodeBytes00.Compact();
+  FinalizeOpcodeBufferAlignment();
+
+  unsigned char* alignmentProbe = &opcodeBytes00[opcodeAlignmentOffset14];
+  if ((reinterpret_cast<unsigned int>(alignmentProbe) & 3) != 0) {
+    opcodeAlignmentOffset14 = reinterpret_cast<unsigned int>(alignmentProbe) & 3;
+    if (opcodeAlignmentOffset14 != 0) {
+      opcodeBytes00.Add(0);
+      opcodeBytes00.Add(0);
+      opcodeBytes00.Add(0);
+      opcodeBytes00.Compact();
+      alignmentProbe = &opcodeBytes00[opcodeAlignmentOffset14];
+      opcodeAlignmentOffset14 = reinterpret_cast<unsigned int>(alignmentProbe) & 3;
+    }
+
+    if (opcodeAlignmentOffset14 != 0) {
+      int payloadByteCount = opcodeBytes00.GetSize() - 3;
+      for (int sourceIndex = 0; sourceIndex < payloadByteCount; ++sourceIndex) {
+        unsigned char value = opcodeBytes00[sourceIndex];
+        opcodeBytes00[sourceIndex + opcodeAlignmentOffset14] = value;
+      }
+      hadTrailingPadding18 = 1;
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004d5580

@@ -2288,7 +2288,7 @@ address|matching|name
 0x4d4bf0|0.19736842105263158|StrategicMapCallbackRecord::AppendPackedColorDword
 0x4d4dd0|1.0|stretch<unsigned char>::OverStretch
 0x4d4ff0|0.1044776119402985|StrategicMapCallbackRecord::ApplyBitmapMaskToPixelBuffer
-0x4d5090|0.09070294784580499|StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows
+0x4d5090|0.2339622641509434|StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows
 0x4d5580|1.0|StrategicMapCallbackRecord::AppendOpcodeByte
 0x4d5610|0.16842105263157894|StrategicMapCallbackRecord::AppendOpcodeBytePair
 0x4d5720|0.34104046242774566|StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment
