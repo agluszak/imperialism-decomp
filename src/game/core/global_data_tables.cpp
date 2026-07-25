@@ -128,6 +128,7 @@ char* g_pSmallViewsEmptyText_00662B90 = g_szEmptyString;
 char* g_pMiniCivSharedText_0064cb18 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x0065c830
 char* g_pShipFractionSharedText_0065c830 = g_szEmptyString;
+
 // Shared empty-text pointer used by the diplomacy panel Setup methods. Unlike the
 // empty string storage itself, the original reads this pointer through an absolute load.
 // GLOBAL: IMPERIALISM 0x00654ec8
@@ -1640,6 +1641,11 @@ extern "C" const char s_SourcePathUTacViews_00699FF4[] = "D:\\Ambit\\Cross\\UTac
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[] = "D:\\Ambit\\Cross\\UViewMgr.more.cpp";
 // GLOBAL: IMPERIALISM 0x00696c58
 extern "C" const char s_SourcePathUHelpMgr_00696C58[] = "D:\\Ambit\\Cross\\UHelpMgr.cpp";
+// Signed source-row offsets into the strategic-map unit overlay atlas.
+// GLOBAL: IMPERIALISM 0x00696d20
+extern "C" short g_anStrategicMapOverlaySourceRowByIconId[28] = {
+    0,    798,  114,  228, 342, -114, 684, -114, -114, -114, -114, -114, -114, -114,
+    -114, -114, -114, 0,   0,   -114, 798, 570,  456,  0,    0,    0,    0,    0};
 // GLOBAL: IMPERIALISM 0x00696860
 extern "C" const char s_SourcePathUDefenseMinister_00696860[] =
     "D:\\Ambit\\Cross\\UDefenseMinister.cpp";
@@ -1766,11 +1772,12 @@ extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[45] = {
     8,  9, -1, -1, -1, 8,  9,  10, 11, 12, 6,  5, 2,  -1, -1, 13, -1, -1, -1, -1, -1, -1, -1,
     -1, 0, 3,  7,  -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0,  10, 11, 12, -1, -1};
 
-// Offer-desk CaptureLayoutF0 pairs, written at runtime by the trade screens.
+// Offer-desk Locate positions. The Mac Offer Sheet resource independently places
+// the `shee` view at (45,128); the retail startup table initializes both points.
 // GLOBAL: IMPERIALISM 0x006a5a00
-int g_aOfferDeskSheetLayoutInactive_006a5a00[2] = {0, 0};
+CPoint g_offerDeskSheetPosition_006a5a00(45, 128);
 // GLOBAL: IMPERIALISM 0x006a5a28
-int g_aOfferDeskSheetLayoutActive_006a5a28[2] = {0, 0};
+CPoint g_offerDeskOffscreenPosition_006a5a28(2000, 2000);
 // GLOBAL: IMPERIALISM 0x00698ab0
 int g_nRandomMapSelectedNationSlot00698AB0 = -1;
 // Rank separator drawn between the high-score rank number and the player name.
@@ -1969,7 +1976,7 @@ TInfoBarText* g_pCursorControlPanel = nullptr;
 POINT g_ptControlStringModalMessage = {0, 0};
 
 // GLOBAL: IMPERIALISM 0x006a1ab0
-int g_turnEventDialogAnchorPoint[2] = {0, 0};
+CPoint g_turnEventDialogAnchorPoint(0, 0);
 
 // McAppUI-wide modal-window stack (an MFC CPtrList of TWindow*, base 0x006a1ac0).
 // TWindow::ExecuteViewModalStateWithPushPopChain pushes the active window on entry and
@@ -3779,9 +3786,9 @@ short g_creditsPlaybackActive_006a4084 = 0;
 // zero run at this exact address is meaningfully checked.
 short g_offerDeskSelectionIndexTable_00668568[8] = {0};
 // GLOBAL: IMPERIALISM 0x006a2fe0
-int g_diplomacyWarOfferSheetPosition_006a2fe0[2] = {0};
+CPoint g_diplomacyWarOfferSheetPosition_006a2fe0(0, 0);
 // GLOBAL: IMPERIALISM 0x006a3020
-int g_diplomacyPopupLayoutPosition_006a3020[2] = {0};
+CPoint g_diplomacyPopupLayoutPosition_006a3020(0, 0);
 
 // GLOBAL: IMPERIALISM 0x006a2410
 int g_InfoBarDummyOrigin_006A2410[2] = {0};
@@ -3842,3 +3849,13 @@ float g_fNavyHitChanceNumerator_00669f04 = 80.0f;
 // from the session id / four-cc status tag (busy, redy, unas, awol, dead).
 // GLOBAL: IMPERIALISM 0x0065c168
 extern "C" const int kLoungeStatusGlyphIds[5] = {0x11fe, 0x11ff, 0x1200, 0x1201, 0x1202};
+
+// Kept at the end of this TU so recovering these previously absolute-addressed tables
+// does not perturb the placement of later globals still reached by raw addresses.
+// GLOBAL: IMPERIALISM 0x0065c648
+extern "C" const short g_anTerrainFlowTypeByRiverSpriteCode[16] = {0, 1, 2, 2, 3, 3, 4, 4,
+                                                                   4, 4, 5, 5, 6, 6, 7, 8};
+
+// GLOBAL: IMPERIALISM 0x0065c668
+extern "C" const short g_anTerrainFlowDirections[9][2] = {{0, 2}, {0, 3}, {0, 4}, {1, 3}, {1, 4},
+                                                          {1, 5}, {2, 4}, {2, 5}, {3, 5}};

@@ -101,7 +101,7 @@ public:
   char CheckEntanglements(int targetNationSlot, eDipAction action);
 
   // 0x4f6d90 -- selects a minister action topic: repositions the old/new topic buttons
-  // via CaptureLayoutF0, toggles the 'ltab'/'rtab' bracket TPicture controls around the
+  // via Locate, toggles the 'ltab'/'rtab' bracket TPicture controls around the
   // new selection (and their picture-resource id), refreshes the picture-dependent
   // interaction mode, and invalidates the map region. Shared out-of-line method: called
   // from TDiplomacyMapView::DoEvent and TCouncilView::DoEvent (topicIndex from a

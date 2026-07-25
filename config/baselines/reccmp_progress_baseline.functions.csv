@@ -940,9 +940,9 @@ address|matching|name
 0x48b1a0|1.0|TView::GetRootView
 0x48b1c0|1.0|TView::SetEnabled
 0x48b200|1.0|TView::IsActionable
-0x48b250|0.918918918918919|TView::CaptureLayoutF0
-0x48b2d0|0.19130434782608696|TView::UpdateCoordinates
-0x48b3f0|0.75|TView::CaptureLayout
+0x48b250|1.0|TView::Locate
+0x48b2d0|0.2033898305084746|TView::UpdateCoordinates
+0x48b3f0|1.0|TView::Resize
 0x48b4b0|0.2814814814814815|TView::InvalidateOffsetRegionUsingChildClipRect
 0x48b5f0|0.4819277108433735|TView::InvalidateCityDialogRectRegion
 0x48b690|1.0|TView::ValidateControlRectIfWindowActive
@@ -1001,7 +1001,7 @@ address|matching|name
 0x48ce40|1.0|TIncludeView::`scalar deleting destructor'
 0x48ce70|0.38461538461538464|TIncludeView::~TIncludeView
 0x48cf10|1.0|TIncludeView::BuildTurnEventFactoryPacket
-0x48cfd0|0.7238095238095238|TIncludeView::DoPostCreate
+0x48cfd0|0.6486486486486487|TIncludeView::DoPostCreate
 0x48d090|0.27586206896551724|TWindow::CreateObject
 0x48d220|1.0|TWindow::GetRuntimeClass
 0x48d240|0.2222222222222222|InitializeViewModalStateNodeBlockChainHeadAndRegisterAtExit
@@ -3138,7 +3138,7 @@ address|matching|name
 0x50bbc0|1.0|TMacViewMgr::ApplySellOrderRowToNationState
 0x50bc50|0.6167400881057269|TMacViewMgr::SyncSellTaggedChildControlWithNationState
 0x50be30|0.96|TMacViewMgr::MakeBookDialog
-0x50bea0|0.23144306131858|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
+0x50bea0|0.23420931304748732|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 0x50d310|0.5625|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 0x50d360|0.6857142857142857|TMacViewMgr::OpenBuildingWindow
 0x50d470|0.7195121951219512|TMacViewMgr::RestoreBuildingWindowAtSavedPosition
@@ -3201,7 +3201,7 @@ address|matching|name
 0x5127e0|0.6551724137931034|SplitTileIndexToHexRasterColumnX2AndRow
 0x512850|0.5555555555555556|ComputeTileIndexFromHexColumnX2AndRow
 0x5128f0|1.0|LookupHexNeighborRowDeltaByDirection
-0x512930|0.26334519572953735|BuildHexAreaTileIndexList
+0x512930|0.25622775800711745|BuildHexAreaTileIndexList
 0x512b50|0.4375|TMapMgr::GetNeighborTileIDArray
 0x512cc0|0.4647887323943662|TMapMgr::GetNeighborTileID
 0x512dd0|0.5435897435897435|TMapMgr::GetDirectionFrom
@@ -3214,7 +3214,7 @@ address|matching|name
 0x5135a0|0.45614035087719296|TMapMgr::FindResourceCapabilityRequirementLevelByType
 0x513610|0.896551724137931|TMapMgr::FindResourceCapabilityRequirementLevel
 0x513660|0.7142857142857143|TMapMgr::GetTileCivilianWorkOrderCostClassNibble
-0x5136a0|0.8888888888888888|TMapMgr::SetCivilianDevelopmentClassNibble
+0x5136a0|1.0|TMapMgr::SetCivilianDevelopmentClassNibble
 0x513720|0.4155844155844156|TMapMgr::FindMaxResourceCapabilityValueForTile
 0x5137b0|0.18994413407821228|TMapMgr::CanBuildPortAtTile
 0x513980|0.5513784461152882|TMapMgr::IsValidSecondaryNationHomeTileCandidate
@@ -3985,7 +3985,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.45403316696184187|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.4662695218161327|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags
@@ -4891,34 +4891,34 @@ address|matching|name
 0x581b20|1.0|TSimMgr::LoadNormalizedCredentialName
 0x581bc0|1.0|TSimMgr::AssignSharedStringFromIndexedSlot7C
 0x581c00|0.34146341463414637|TSimMgr::NameCapitals
-0x581e60|0.70625|TSimMgr::ProcessScenarioScript
-0x582120|1.0|TSimMgr::HandleTurnInstruction_Labo_SetNationLaborTierCounts
+0x581e60|0.6875|TSimMgr::ProcessScenarioScript
+0x582120|0.8571428571428571|TSimMgr::HandleTurnInstruction_Labo_SetNationLaborTierCounts
 0x5822c0|0.7346938775510204|TSimMgr::HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta
 0x5823e0|0.723404255319149|TSimMgr::HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh
-0x5824c0|1.0|TSimMgr::HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders
-0x582630|1.0|TSimMgr::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder
-0x582720|0.975|TSimMgr::HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders
-0x582860|1.0|TSimMgr::HandleTurnInstruction_Tran_SetNationTransportStat
-0x5828f0|1.0|TSimMgr::HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry
+0x5824c0|0.9550561797752809|TSimMgr::HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders
+0x582630|0.9444444444444444|TSimMgr::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder
+0x582720|0.8625|TSimMgr::HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders
+0x582860|0.967741935483871|TSimMgr::HandleTurnInstruction_Tran_SetNationTransportStat
+0x5828f0|0.9302325581395349|TSimMgr::HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry
 0x5829b0|1.0|TSimMgr::HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus
 0x582a40|1.0|TSimMgr::HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus
-0x582ad0|1.0|TSimMgr::HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations
-0x582b70|1.0|TSimMgr::HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry
-0x582bf0|1.0|TSimMgr::HandleTurnInstruction_Emba_SetEmbassyRelationFlags
-0x582ce0|1.0|TSimMgr::HandleTurnInstruction_Subs_ApplyNationSubsidyEntry
-0x582da0|1.0|TSimMgr::HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry
+0x582ad0|0.918918918918919|TSimMgr::HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations
+0x582b70|0.8928571428571429|TSimMgr::HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry
+0x582bf0|0.7894736842105263|TSimMgr::HandleTurnInstruction_Emba_SetEmbassyRelationFlags
+0x582ce0|0.8604651162790697|TSimMgr::HandleTurnInstruction_Subs_ApplyNationSubsidyEntry
+0x582da0|0.9459459459459459|TSimMgr::HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry
 0x582ed0|1.0|TSimMgr::HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4
-0x582f20|1.0|TSimMgr::HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry
-0x582fa0|1.0|TSimMgr::HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId
-0x583070|1.0|TSimMgr::HandleTurnInstruction_Cnam_AssignCountryName
-0x5831d0|1.0|TSimMgr::HandleTurnInstruction_Rela_SetNationRelationValue
-0x583270|1.0|TSimMgr::HandleTurnInstruction_Pnam_AssignProvinceName
-0x583360|1.0|TSimMgr::HandleTurnInstruction_Cash_SetNationCash
+0x582f20|0.8928571428571429|TSimMgr::HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry
+0x582fa0|0.9333333333333333|TSimMgr::HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId
+0x583070|0.890625|TSimMgr::HandleTurnInstruction_Cnam_AssignCountryName
+0x5831d0|0.8157894736842105|TSimMgr::HandleTurnInstruction_Rela_SetNationRelationValue
+0x583270|0.86|TSimMgr::HandleTurnInstruction_Pnam_AssignProvinceName
+0x583360|0.9142857142857143|TSimMgr::HandleTurnInstruction_Cash_SetNationCash
 0x583400|1.0|TSimMgr::HandleTurnInstruction_Flag_SetNationFlagAndRefresh
-0x583470|1.0|TSimMgr::HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue
-0x583510|1.0|TSimMgr::HandleTurnInstruction_Tbar_SetNationRelationBarValue
-0x583670|1.0|TSimMgr::HandleTurnInstruction_Tclr_ResetNationRelationBars
-0x583700|1.0|TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState
+0x583470|0.9473684210526315|TSimMgr::HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue
+0x583510|0.9534883720930233|TSimMgr::HandleTurnInstruction_Tbar_SetNationRelationBarValue
+0x583670|0.96875|TSimMgr::HandleTurnInstruction_Tclr_ResetNationRelationBars
+0x583700|0.9761904761904762|TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState
 0x5837c0|1.0|TSimMgr::SetActiveNationSlotAndRefreshCityCapabilityUiHandles
 0x583880|0.25|`dynamic initializer for 'g_scaledShortConst_6A4488''
 0x5838b0|0.5818181818181818|TArrowsControl::CreateObject
@@ -5708,7 +5708,7 @@ address|matching|name
 0x5b1e20|0.5635103926096998|TTechItemView::DoEvent
 0x5b2230|1.0|TTechHistoryView::CreateObject
 0x5b22a0|1.0|TTechHistoryView::GetRuntimeClass
-0x5b22c0|0.3342776203966006|TTechHistoryView::PopulateTechHistory
+0x5b22c0|0.327683615819209|TTechHistoryView::PopulateTechHistory
 0x5b2710|0.25|`dynamic initializer for 'g_scaledShortConst_6A58B0''
 0x5b2740|0.8571428571428571|TGameSetupDialog::CreateObject
 0x5b27d0|1.0|TGameSetupDialog::`scalar deleting destructor'
@@ -6115,7 +6115,7 @@ address|matching|name
 0x5d5a70|1.0|TViewMgr::ModalMessage(class CString, struct tagPOINT const &)
 0x5d5b00|1.0|TViewMgr::ModalMessage(class CString, struct tagPOINT const &, short, unsigned char)
 0x5d5c40|0.9333333333333333|TViewMgr::ModalMessage(long, class CString, class CString, struct tagPOINT const &, short, unsigned char)
-0x5d5d30|0.908235294117647|TViewMgr::RunNationInfoModalAndReturnNonCancel
+0x5d5d30|0.8912529550827423|TViewMgr::RunNationInfoModalAndReturnNonCancel
 0x5d6480|0.924187725631769|TViewMgr::BuildAndShowTurnOverlayByMode
 0x5d69b0|0.35294117647058826|TViewMgr::ComputeTurnEventDialogPlacementByCode
 0x5d6b70|1.0|TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent
@@ -6141,7 +6141,7 @@ address|matching|name
 0x5d8040|0.13445378151260504|TViewMgr::HandleTurnEvent7D8_ActivateDiplomacyMapView
 0x5d83b0|0.14035087719298245|TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary
 0x5d8750|0.9318181818181818|TViewMgr::RefreshTechnologyStorePageAndHudText
-0x5d8980|0.6728971962616822|TViewMgr::ShowAbilityStatusReport
+0x5d8980|0.6394984326018809|TViewMgr::ShowAbilityStatusReport
 0x5d8c40|1.0|TViewMgr::HandleTurnEvent2103_RunNationStatusReportUpdate
 0x5d8cc0|1.0|TViewMgr::SyncTacticalStatusPanelRegion
 0x5d8dd0|0.12933025404157045|TViewMgr::HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor

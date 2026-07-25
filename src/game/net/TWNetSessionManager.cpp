@@ -420,9 +420,9 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
     behavior->defaultCommandCode = kControlTagOkay; // 'okay'
   }
 
-  POINT placement;
+  CPoint placement;
   g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
-  dialog->CaptureLayout((int*)&placement, 0);
+  dialog->Resize(placement, 0);
 
   TJoinSelectorDialog* selector =
       static_cast<TJoinSelectorDialog*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'GOLD'

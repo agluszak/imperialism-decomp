@@ -175,10 +175,10 @@ void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
   int scaledMaximum = static_cast<int>(static_cast<float>(selectedOrder->MaxOrder()) * barScale);
   barControl->SetBarMetric(scaledMoveAmount, scaledMaximum);
 
-  int moveControlPosition[2];
-  moveControlPosition[0] = barControl->ownerLocalX + static_cast<short>(scaledMoveAmount) - 2;
-  moveControlPosition[1] = barControl->ownerLocalY + barControl->frameHeight38;
-  moveControl->CaptureLayoutF0(moveControlPosition, 1);
+  CPoint moveControlPosition;
+  moveControlPosition.x = barControl->ownerLocalX + static_cast<short>(scaledMoveAmount) - 2;
+  moveControlPosition.y = barControl->ownerLocalY + barControl->frameHeight38;
+  moveControl->Locate(moveControlPosition, 1);
   moveControl->QueryBounds(&moveBoundsRect);
   OffsetRect(&moveBoundsRect, this->ownerLocalX, this->ownerLocalY);
   CopyRect(&moveInvalidRect, &moveBoundsRect);

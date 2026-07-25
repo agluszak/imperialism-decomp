@@ -200,9 +200,9 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       historyView->AssertValid();
       historyView->PopulateTechHistory(static_cast<short>(techId64));
 
-      POINT placement;
+      CPoint placement;
       g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(node, &placement);
-      historyView->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+      historyView->Locate(placement, 0);
       node->SetModality(1);
       TDialogBehavior* behavior = node->GetDialogBehavior();
       if (behavior != nullptr) {

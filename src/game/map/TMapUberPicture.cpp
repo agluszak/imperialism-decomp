@@ -124,13 +124,13 @@ void TMapUberPicture::Free() {
 
 // A shared "previous mode" layout-capture scratch buffer (0x6a45e8, BSS/zeroed) and a
 // per-mode saved-layout table (0x6a4590, stride 8 = 2 ints, indexed by mode 0-3); both
-// passed to CaptureLayoutF0 by SetMapInteractionMode below. Exact field semantics inside
-// each 8-byte entry aren't recovered -- CaptureLayoutF0's own body isn't ported.
-static int g_MapUberModeLayoutScratch_006a45e8[2] = {0};
-static int g_MapUberModeLayoutTable_006a4590[4][2] = {{0}};
+// passed to Locate by SetMapInteractionMode below. Each 8-byte entry is a saved owner-local
+// position; Locate writes its x/y components to ownerLocalX/ownerLocalY.
+static CPoint g_MapUberModeLayoutScratch_006a45e8(0, 0);
+static CPoint g_MapUberModeLayoutTable_006a4590[4];
 // A second layout-capture scratch buffer (0x6a45b8, BSS/zeroed), used the same way by
 // EnterMapInteractionOverlayMode.
-static int g_MapUberModeSecondaryLayoutScratch_006a45b8[2] = {0};
+static CPoint g_MapUberModeSecondaryLayoutScratch_006a45b8(0, 0);
 
 // FUNCTION: IMPERIALISM 0x00596cb0
 void TMapUberPicture::SetMapInteractionMode(short nMode) {
@@ -176,11 +176,11 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
   }
 
   if (previousMode < 3) {
-    categoryPages[previousMode]->CaptureLayoutF0(g_MapUberModeLayoutScratch_006a45e8, 1);
+    categoryPages[previousMode]->Locate(g_MapUberModeLayoutScratch_006a45e8, 1);
   }
   this->activeUnitCategoryIndex96 = nMode;
   if (nMode < 3) {
-    categoryPages[nMode]->CaptureLayoutF0(g_MapUberModeLayoutTable_006a4590[nMode], 1);
+    categoryPages[nMode]->Locate(g_MapUberModeLayoutTable_006a4590[nMode], 1);
   }
 }
 
@@ -1015,8 +1015,8 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
   int selectedTile = goodGoldTagControlA4->ComputeWrappedTileIndexFromObjectOffset7C7E();
   subview2A8->CenterOn(selectedTile);
 
-  this->goodGoldTagControlA4->CaptureLayoutF0(g_MapUberModeLayoutScratch_006a45e8, 0);
-  this->subview2A8->CaptureLayoutF0(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);
+  this->goodGoldTagControlA4->Locate(g_MapUberModeLayoutScratch_006a45e8, 0);
+  this->subview2A8->Locate(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);
   this->subviewAc = this->subview2A8;
 
   if (this->miniMapViewC0 != nullptr) {
@@ -1042,8 +1042,8 @@ void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOve
     }
     invalidationFlag94 = 0;
     goodGoldTagControlA4->CenterOn(subview2A8->GetCenterTile());
-    subview2A8->CaptureLayoutF0(g_MapUberModeLayoutScratch_006a45e8, 0);
-    goodGoldTagControlA4->CaptureLayoutF0(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);
+    subview2A8->Locate(g_MapUberModeLayoutScratch_006a45e8, 0);
+    goodGoldTagControlA4->Locate(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);
     TMiniMapView* miniMap = miniMapViewC0;
     subviewAc = goodGoldTagControlA4;
 

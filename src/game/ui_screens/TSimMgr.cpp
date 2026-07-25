@@ -81,6 +81,18 @@ TSIMMGR_LAYOUT_ASSERT(TSimMgr_Offset_turnFlowStatusFlags_0x3C,
 
 void RegenerateAllMapActionContextStatusCodes();
 
+#define DECODE_SCENARIO_DWORD_TOKEN(token)                                                         \
+  unsigned char token##SwapByte = token##Bytes[0];                                                 \
+  token##Bytes[0] = token##Bytes[3];                                                               \
+  token##Bytes[3] = token##SwapByte;                                                               \
+  token##SwapByte = token##Bytes[1];                                                               \
+  token##Bytes[1] = token##Bytes[2];                                                               \
+  token##Bytes[2] = token##SwapByte
+
+#define DECODE_SCENARIO_SHORT_TOKEN(token)                                                         \
+  token##Bytes[0] = token##Bytes[3];                                                               \
+  token##Bytes[1] = token##Bytes[2]
+
 static inline bool IsNationEligibleForOptionalPhase(short nationSlot) {
   if (nationSlot == -1) {
     return false;
@@ -1500,18 +1512,16 @@ void TSimMgr::ProcessScenarioScript() {
 
   STurnInstructionCursor instruction;
   instruction.tokenCursor = reinterpret_cast<unsigned int*>(buffer);
-  unsigned int instructionTag = 0;
+  union {
+    unsigned int instructionTag;
+    unsigned char instructionTagBytes[4];
+  };
+  instructionTag = 0;
   while (reinterpret_cast<unsigned char*>(instruction.tokenCursor) < buffer + resourceSize &&
          instructionTag != kControlTagTERM && g_bScenarioScriptTerminationRequested == 0) {
     instructionTag = *instruction.tokenCursor;
     int instructionCount = g_nScenarioScriptInstructionCount;
-    unsigned char* raw = reinterpret_cast<unsigned char*>(&instructionTag);
-    unsigned char temp = raw[0];
-    raw[0] = raw[3];
-    raw[3] = temp;
-    temp = raw[1];
-    raw[1] = raw[2];
-    raw[2] = temp;
+    DECODE_SCENARIO_DWORD_TOKEN(instructionTag);
     instruction.tokenCursor = instruction.tokenCursor + 1;
     ++instructionCount;
     g_nScenarioScriptInstructionCount = instructionCount;
@@ -1550,33 +1560,37 @@ void TSimMgr::ProcessScenarioScript() {
 void TSimMgr::HandleTurnInstruction_Labo_SetNationLaborTierCounts(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
 
-  unsigned int ownerToken = *instruction->tokenCursor;
+  union {
+    unsigned int ownerToken;
+    unsigned char ownerTokenBytes[4];
+  };
+  ownerToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* oraw = reinterpret_cast<unsigned char*>(&ownerToken);
-  unsigned char ot = oraw[0];
-  oraw[0] = oraw[3];
-  oraw[3] = ot;
-  ot = oraw[1];
-  oraw[1] = oraw[2];
-  oraw[2] = ot;
+  DECODE_SCENARIO_DWORD_TOKEN(ownerToken);
 
-  unsigned int tierAToken = *instruction->tokenCursor;
+  union {
+    unsigned int tierAToken;
+    unsigned char tierATokenBytes[4];
+  };
+  tierAToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* araw = reinterpret_cast<unsigned char*>(&tierAToken);
-  araw[0] = araw[3];
-  araw[1] = araw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(tierAToken);
 
-  unsigned int tierBToken = *instruction->tokenCursor;
+  union {
+    unsigned int tierBToken;
+    unsigned char tierBTokenBytes[4];
+  };
+  tierBToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* braw = reinterpret_cast<unsigned char*>(&tierBToken);
-  braw[0] = braw[3];
-  braw[1] = braw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(tierBToken);
 
-  unsigned int tierCToken = *instruction->tokenCursor;
+  union {
+    unsigned int tierCToken;
+    unsigned char tierCTokenBytes[4];
+  };
+  tierCToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* craw = reinterpret_cast<unsigned char*>(&tierCToken);
-  craw[0] = craw[3];
-  craw[1] = craw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(tierCToken);
 
   TGreatPower* nation = g_apNationStates[ownerToken];
   TCity* city = (nation != nullptr) ? nation->city : nullptr;
@@ -1598,30 +1612,32 @@ void TSimMgr::HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void* pIn
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
   unsigned int* cursor = instruction->tokenCursor;
 
-  unsigned int nationToken = *cursor;
+  union {
+    unsigned int nationToken;
+    unsigned char nationTokenBytes[4];
+  };
+  nationToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
-  unsigned char nt = nraw[0];
-  nraw[0] = nraw[3];
-  nraw[3] = nt;
-  nt = nraw[1];
-  nraw[1] = nraw[2];
-  nraw[2] = nt;
+  DECODE_SCENARIO_DWORD_TOKEN(nationToken);
 
-  unsigned int indexToken = *cursor;
+  union {
+    unsigned int indexToken;
+    unsigned char indexTokenBytes[4];
+  };
+  indexToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* iraw = reinterpret_cast<unsigned char*>(&indexToken);
-  iraw[0] = iraw[3];
-  iraw[1] = iraw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(indexToken);
 
-  unsigned int valueToken = *cursor;
+  union {
+    unsigned int valueToken;
+    unsigned char valueTokenBytes[4];
+  };
+  valueToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
-  vraw[0] = vraw[3];
-  vraw[1] = vraw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(valueToken);
 
   TCity* city;
   if (g_apNationStates[static_cast<int>(nationToken)] == nullptr) {
@@ -1644,30 +1660,32 @@ void TSimMgr::HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void*
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
   unsigned int* cursor = instruction->tokenCursor;
 
-  unsigned int nationToken = *cursor;
+  union {
+    unsigned int nationToken;
+    unsigned char nationTokenBytes[4];
+  };
+  nationToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
-  unsigned char nt = nraw[0];
-  nraw[0] = nraw[3];
-  nraw[3] = nt;
-  nt = nraw[1];
-  nraw[1] = nraw[2];
-  nraw[2] = nt;
+  DECODE_SCENARIO_DWORD_TOKEN(nationToken);
 
-  unsigned int indexToken = *cursor;
+  union {
+    unsigned int indexToken;
+    unsigned char indexTokenBytes[4];
+  };
+  indexToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* iraw = reinterpret_cast<unsigned char*>(&indexToken);
-  iraw[0] = iraw[3];
-  iraw[1] = iraw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(indexToken);
 
-  unsigned int valueToken = *cursor;
+  union {
+    unsigned int valueToken;
+    unsigned char valueTokenBytes[4];
+  };
+  valueToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
-  vraw[0] = vraw[3];
-  vraw[1] = vraw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(valueToken);
 
   TCity* city;
   if (g_apNationStates[static_cast<int>(nationToken)] == nullptr) {
@@ -1686,31 +1704,29 @@ void TSimMgr::HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void*
 void TSimMgr::HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
 
-  unsigned int regionToken = *instruction->tokenCursor;
+  union {
+    unsigned int regionToken;
+    unsigned char regionTokenBytes[4];
+  };
+  regionToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* regionRaw = reinterpret_cast<unsigned char*>(&regionToken);
-  unsigned char temp = regionRaw[0];
-  regionRaw[0] = regionRaw[3];
-  regionRaw[3] = temp;
-  temp = regionRaw[1];
-  regionRaw[1] = regionRaw[2];
-  regionRaw[2] = temp;
+  DECODE_SCENARIO_DWORD_TOKEN(regionToken);
 
-  unsigned int orderTypeToken = *instruction->tokenCursor;
+  union {
+    unsigned int orderTypeToken;
+    unsigned char orderTypeTokenBytes[4];
+  };
+  orderTypeToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* orderTypeRaw = reinterpret_cast<unsigned char*>(&orderTypeToken);
-  orderTypeRaw[0] = orderTypeRaw[3];
-  orderTypeRaw[1] = orderTypeRaw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(orderTypeToken);
 
-  unsigned int countToken = *instruction->tokenCursor;
+  union {
+    unsigned int countToken;
+    unsigned char countTokenBytes[4];
+  };
+  countToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* countRaw = reinterpret_cast<unsigned char*>(&countToken);
-  temp = countRaw[0];
-  countRaw[0] = countRaw[3];
-  countRaw[3] = temp;
-  temp = countRaw[1];
-  countRaw[1] = countRaw[2];
-  countRaw[2] = temp;
+  DECODE_SCENARIO_DWORD_TOKEN(countToken);
 
   int remaining = static_cast<int>(countToken);
   int ownerNationCode =
@@ -1731,17 +1747,21 @@ void TSimMgr::HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders(void*
 void TSimMgr::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
 
-  unsigned int orderTypeToken = *instruction->tokenCursor;
+  union {
+    unsigned int orderTypeToken;
+    unsigned char orderTypeTokenBytes[4];
+  };
+  orderTypeToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* orderTypeRaw = reinterpret_cast<unsigned char*>(&orderTypeToken);
-  orderTypeRaw[0] = orderTypeRaw[3];
-  orderTypeRaw[1] = orderTypeRaw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(orderTypeToken);
 
-  unsigned int terrainToken = *instruction->tokenCursor;
+  union {
+    unsigned int terrainToken;
+    unsigned char terrainTokenBytes[4];
+  };
+  terrainToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* terrainRaw = reinterpret_cast<unsigned char*>(&terrainToken);
-  terrainRaw[0] = terrainRaw[3];
-  terrainRaw[1] = terrainRaw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(terrainToken);
 
   int ownerNationTag =
       g_pGlobalMapState->terrainStateTable[static_cast<short>(terrainToken)].ownerNationTag04;
@@ -1755,37 +1775,37 @@ void TSimMgr::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pIn
 void TSimMgr::HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
 
-  unsigned int nationToken = *instruction->tokenCursor;
+  union {
+    unsigned int nationToken;
+    unsigned char nationTokenBytes[4];
+  };
+  nationToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* nationRaw = reinterpret_cast<unsigned char*>(&nationToken);
-  unsigned char temp = nationRaw[0];
-  nationRaw[0] = nationRaw[3];
-  nationRaw[3] = temp;
-  temp = nationRaw[1];
-  nationRaw[1] = nationRaw[2];
-  nationRaw[2] = temp;
+  DECODE_SCENARIO_DWORD_TOKEN(nationToken);
 
-  unsigned int orderTypeToken = *instruction->tokenCursor;
+  union {
+    unsigned int orderTypeToken;
+    unsigned char orderTypeTokenBytes[4];
+  };
+  orderTypeToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* orderTypeRaw = reinterpret_cast<unsigned char*>(&orderTypeToken);
-  orderTypeRaw[0] = orderTypeRaw[3];
-  orderTypeRaw[1] = orderTypeRaw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(orderTypeToken);
 
-  unsigned int contextToken = *instruction->tokenCursor;
+  union {
+    unsigned int contextToken;
+    unsigned char contextTokenBytes[4];
+  };
+  contextToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* contextRaw = reinterpret_cast<unsigned char*>(&contextToken);
-  contextRaw[0] = contextRaw[3];
-  contextRaw[1] = contextRaw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(contextToken);
 
-  unsigned int countToken = *instruction->tokenCursor;
+  union {
+    unsigned int countToken;
+    unsigned char countTokenBytes[4];
+  };
+  countToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* countRaw = reinterpret_cast<unsigned char*>(&countToken);
-  temp = countRaw[0];
-  countRaw[0] = countRaw[3];
-  countRaw[3] = temp;
-  temp = countRaw[1];
-  countRaw[1] = countRaw[2];
-  countRaw[2] = temp;
+  DECODE_SCENARIO_DWORD_TOKEN(countToken);
 
   short orderType = static_cast<short>(orderTypeToken);
   int nationSlot = static_cast<int>(nationToken);
@@ -1813,23 +1833,23 @@ void TSimMgr::HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructi
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
   unsigned int* cursor = instruction->tokenCursor;
 
-  unsigned int nationToken = *cursor;
+  union {
+    unsigned int nationToken;
+    unsigned char nationTokenBytes[4];
+  };
+  nationToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
-  unsigned char nt = nraw[0];
-  nraw[0] = nraw[3];
-  nraw[3] = nt;
-  nt = nraw[1];
-  nraw[1] = nraw[2];
-  nraw[2] = nt;
+  DECODE_SCENARIO_DWORD_TOKEN(nationToken);
 
-  unsigned int valueToken = *cursor;
+  union {
+    unsigned int valueToken;
+    unsigned char valueTokenBytes[4];
+  };
+  valueToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
-  vraw[0] = vraw[3];
-  vraw[1] = vraw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(valueToken);
 
   g_apNationStates[static_cast<int>(nationToken)]->needCapA6 = static_cast<short>(valueToken);
 }
@@ -1842,15 +1862,21 @@ void TSimMgr::HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void* pInstruc
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
   unsigned int* cursor = instruction->tokenCursor;
 
-  unsigned int tileToken = *cursor;
+  union {
+    unsigned int tileToken;
+    unsigned char tileTokenBytes[4];
+  };
+  tileToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* traw = reinterpret_cast<unsigned char*>(&tileToken);
-  traw[0] = traw[3];
-  traw[1] = traw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(tileToken);
   short tileIndex = static_cast<short>(tileToken);
 
-  unsigned int valueToken = *cursor;
+  union {
+    unsigned int valueToken;
+    unsigned char valueTokenBytes[4];
+  };
+  valueToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
 
@@ -1861,7 +1887,7 @@ void TSimMgr::HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void* pInstruc
       tileResourceKind == kResourceOil) {
     selectHighNibble = 1;
   }
-  unsigned char value = reinterpret_cast<unsigned char*>(&valueToken)[3];
+  unsigned char value = valueTokenBytes[3];
   g_pGlobalMapState->SetCivilianDevelopmentClassNibble(tileIndex, selectHighNibble, value, 1);
 }
 
@@ -1872,11 +1898,13 @@ void TSimMgr::HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void* pInstruc
 void TSimMgr::HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
   unsigned int* cursor = instruction->tokenCursor;
-  unsigned int token = *cursor;
+  union {
+    unsigned int token;
+    unsigned char tokenBytes[4];
+  };
+  token = *cursor;
   instruction->tokenCursor = cursor + 1;
-  unsigned char* raw = reinterpret_cast<unsigned char*>(&token);
-  raw[0] = raw[3];
-  raw[1] = raw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(token);
   short tileIndex = static_cast<short>(token);
   int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
   g_pGlobalMapState->QueueDepotConstructionOrder(tileIndex, static_cast<short>(nationTag));
@@ -1892,11 +1920,13 @@ void TSimMgr::HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(void* pI
 void TSimMgr::HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
   unsigned int* cursor = instruction->tokenCursor;
-  unsigned int token = *cursor;
+  union {
+    unsigned int token;
+    unsigned char tokenBytes[4];
+  };
+  token = *cursor;
   instruction->tokenCursor = cursor + 1;
-  unsigned char* raw = reinterpret_cast<unsigned char*>(&token);
-  raw[0] = raw[3];
-  raw[1] = raw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(token);
   short tileIndex = static_cast<short>(token);
   int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
   g_pGlobalMapState->QueuePortConstructionOrder(tileIndex, static_cast<short>(nationTag));
@@ -1912,27 +1942,23 @@ void TSimMgr::HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations(void* p
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
   unsigned int* cursor = instruction->tokenCursor;
 
-  unsigned int nationToken = *cursor;
+  union {
+    unsigned int nationToken;
+    unsigned char nationTokenBytes[4];
+  };
+  nationToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
-  unsigned char nt = nraw[0];
-  nraw[0] = nraw[3];
-  nraw[3] = nt;
-  nt = nraw[1];
-  nraw[1] = nraw[2];
-  nraw[2] = nt;
+  DECODE_SCENARIO_DWORD_TOKEN(nationToken);
 
-  unsigned int techToken = *cursor;
+  union {
+    unsigned int techToken;
+    unsigned char techTokenBytes[4];
+  };
+  techToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* traw = reinterpret_cast<unsigned char*>(&techToken);
-  unsigned char tt = traw[0];
-  traw[0] = traw[3];
-  traw[3] = tt;
-  tt = traw[1];
-  traw[1] = traw[2];
-  traw[2] = tt;
+  DECODE_SCENARIO_DWORD_TOKEN(techToken);
 
   g_pCityOrderCapabilityState->ApplyTechUnlockAndQueueNationAbilityNotices(
       static_cast<int>(techToken), static_cast<int>(nationToken));
@@ -1945,19 +1971,23 @@ void TSimMgr::HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry(void* pInstruc
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
   unsigned int* cursor = instruction->tokenCursor;
 
-  unsigned int categoryToken = *cursor;
+  union {
+    unsigned int categoryToken;
+    unsigned char categoryTokenBytes[4];
+  };
+  categoryToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* craw = reinterpret_cast<unsigned char*>(&categoryToken);
-  craw[0] = craw[3];
-  craw[1] = craw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(categoryToken);
 
-  unsigned int valueToken = *cursor;
+  union {
+    unsigned int valueToken;
+    unsigned char valueTokenBytes[4];
+  };
+  valueToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
-  vraw[0] = vraw[3];
-  vraw[1] = vraw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(valueToken);
 
   g_pNationInteractionStateManager->SetNationMetricCellValueByIndex(
       static_cast<short>(categoryToken), static_cast<short>(valueToken));
@@ -1971,34 +2001,32 @@ void TSimMgr::HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void* pInstruct
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
   unsigned int* cursor = instruction->tokenCursor;
 
-  unsigned int nationAToken = *cursor;
+  union {
+    unsigned int nationAToken;
+    unsigned char nationATokenBytes[4];
+  };
+  nationAToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* araw = reinterpret_cast<unsigned char*>(&nationAToken);
-  unsigned char at = araw[0];
-  araw[0] = araw[3];
-  araw[3] = at;
-  at = araw[1];
-  araw[1] = araw[2];
-  araw[2] = at;
+  DECODE_SCENARIO_DWORD_TOKEN(nationAToken);
 
-  unsigned int nationBToken = *cursor;
+  union {
+    unsigned int nationBToken;
+    unsigned char nationBTokenBytes[4];
+  };
+  nationBToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* braw = reinterpret_cast<unsigned char*>(&nationBToken);
-  unsigned char bt = braw[0];
-  braw[0] = braw[3];
-  braw[3] = bt;
-  bt = braw[1];
-  braw[1] = braw[2];
-  braw[2] = bt;
+  DECODE_SCENARIO_DWORD_TOKEN(nationBToken);
 
-  unsigned int valueToken = *cursor;
+  union {
+    unsigned int valueToken;
+    unsigned char valueTokenBytes[4];
+  };
+  valueToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
-  vraw[0] = vraw[3];
-  vraw[1] = vraw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(valueToken);
 
   int nationA = static_cast<int>(nationAToken);
   int nationB = static_cast<int>(nationBToken);
@@ -2014,27 +2042,29 @@ void TSimMgr::HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void* pInstruct
 void TSimMgr::HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
 
-  unsigned int ownerToken = *instruction->tokenCursor;
+  union {
+    unsigned int ownerToken;
+    unsigned char ownerTokenBytes[4];
+  };
+  ownerToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* oraw = reinterpret_cast<unsigned char*>(&ownerToken);
-  unsigned char ot = oraw[0];
-  oraw[0] = oraw[3];
-  oraw[3] = ot;
-  ot = oraw[1];
-  oraw[1] = oraw[2];
-  oraw[2] = ot;
+  DECODE_SCENARIO_DWORD_TOKEN(ownerToken);
 
-  unsigned int targetToken = *instruction->tokenCursor;
+  union {
+    unsigned int targetToken;
+    unsigned char targetTokenBytes[4];
+  };
+  targetToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* traw = reinterpret_cast<unsigned char*>(&targetToken);
-  traw[0] = traw[3];
-  traw[1] = traw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(targetToken);
 
-  unsigned int levelToken = *instruction->tokenCursor;
+  union {
+    unsigned int levelToken;
+    unsigned char levelTokenBytes[4];
+  };
+  levelToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* lraw = reinterpret_cast<unsigned char*>(&levelToken);
-  lraw[0] = lraw[3];
-  lraw[1] = lraw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(levelToken);
 
   g_apNationStates[ownerToken]->SetTradePolicyTo(static_cast<NationSlot>(targetToken),
                                                  static_cast<int>(levelToken));
@@ -2046,35 +2076,29 @@ void TSimMgr::HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(void* pInstruct
 void TSimMgr::HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
 
-  unsigned int sourceToken = *instruction->tokenCursor;
+  union {
+    unsigned int sourceToken;
+    unsigned char sourceTokenBytes[4];
+  };
+  sourceToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* sourceRaw = reinterpret_cast<unsigned char*>(&sourceToken);
-  unsigned char temp = sourceRaw[0];
-  sourceRaw[0] = sourceRaw[3];
-  sourceRaw[3] = temp;
-  temp = sourceRaw[1];
-  sourceRaw[1] = sourceRaw[2];
-  sourceRaw[2] = temp;
+  DECODE_SCENARIO_DWORD_TOKEN(sourceToken);
 
-  unsigned int targetToken = *instruction->tokenCursor;
+  union {
+    unsigned int targetToken;
+    unsigned char targetTokenBytes[4];
+  };
+  targetToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* targetRaw = reinterpret_cast<unsigned char*>(&targetToken);
-  temp = targetRaw[0];
-  targetRaw[0] = targetRaw[3];
-  targetRaw[3] = temp;
-  temp = targetRaw[1];
-  targetRaw[1] = targetRaw[2];
-  targetRaw[2] = temp;
+  DECODE_SCENARIO_DWORD_TOKEN(targetToken);
 
-  unsigned int relationToken = *instruction->tokenCursor;
+  union {
+    unsigned int relationToken;
+    unsigned char relationTokenBytes[4];
+  };
+  relationToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* relationRaw = reinterpret_cast<unsigned char*>(&relationToken);
-  temp = relationRaw[0];
-  relationRaw[0] = relationRaw[3];
-  relationRaw[3] = temp;
-  temp = relationRaw[1];
-  relationRaw[1] = relationRaw[2];
-  relationRaw[2] = temp;
+  DECODE_SCENARIO_DWORD_TOKEN(relationToken);
 
   int sourceNation = static_cast<int>(sourceToken);
   int targetNation = static_cast<int>(targetToken);
@@ -2099,11 +2123,13 @@ void TSimMgr::HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry(void* pInst
 void TSimMgr::HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
   unsigned int* cursor = instruction->tokenCursor;
-  unsigned int token = *cursor;
+  union {
+    unsigned int token;
+    unsigned char tokenBytes[4];
+  };
+  token = *cursor;
   instruction->tokenCursor = cursor + 1;
-  unsigned char* raw = reinterpret_cast<unsigned char*>(&token);
-  raw[0] = raw[3];
-  raw[1] = raw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(token);
   economicTurn = static_cast<short>(token) * 4;
 }
 
@@ -2114,19 +2140,23 @@ void TSimMgr::HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void* pIns
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
   unsigned int* cursor = instruction->tokenCursor;
 
-  unsigned int cityToken = *cursor;
+  union {
+    unsigned int cityToken;
+    unsigned char cityTokenBytes[4];
+  };
+  cityToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* craw = reinterpret_cast<unsigned char*>(&cityToken);
-  craw[0] = craw[3];
-  craw[1] = craw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(cityToken);
 
-  unsigned int nationToken = *cursor;
+  union {
+    unsigned int nationToken;
+    unsigned char nationTokenBytes[4];
+  };
+  nationToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
-  nraw[0] = nraw[3];
-  nraw[1] = nraw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(nationToken);
 
   g_pGlobalMapState->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
       static_cast<short>(cityToken), static_cast<int>(nationToken));
@@ -2138,12 +2168,14 @@ void TSimMgr::HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void* pIns
 void TSimMgr::HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
 
-  unsigned int contextToken = *instruction->tokenCursor;
+  union {
+    unsigned int contextToken;
+    unsigned char contextTokenBytes[4];
+  };
+  contextToken = *instruction->tokenCursor;
   const char* rawName = reinterpret_cast<const char*>(instruction->tokenCursor + 1);
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* contextRaw = reinterpret_cast<unsigned char*>(&contextToken);
-  contextRaw[0] = contextRaw[3];
-  contextRaw[1] = contextRaw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(contextToken);
 
   CString contextName(rawName);
   instruction->tokenCursor += 0x10;
@@ -2161,16 +2193,14 @@ void TSimMgr::HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId(void
 void TSimMgr::HandleTurnInstruction_Cnam_AssignCountryName(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
 
-  unsigned int countryToken = *instruction->tokenCursor;
+  union {
+    unsigned int countryToken;
+    unsigned char countryTokenBytes[4];
+  };
+  countryToken = *instruction->tokenCursor;
   const char* rawName = reinterpret_cast<const char*>(instruction->tokenCursor + 1);
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* countryRaw = reinterpret_cast<unsigned char*>(&countryToken);
-  unsigned char temp = countryRaw[0];
-  countryRaw[0] = countryRaw[3];
-  countryRaw[3] = temp;
-  temp = countryRaw[1];
-  countryRaw[1] = countryRaw[2];
-  countryRaw[2] = temp;
+  DECODE_SCENARIO_DWORD_TOKEN(countryToken);
 
   CString countryName(rawName);
   instruction->tokenCursor += 0x10;
@@ -2190,23 +2220,29 @@ void TSimMgr::HandleTurnInstruction_Cnam_AssignCountryName(void* pInstructionRaw
 void TSimMgr::HandleTurnInstruction_Rela_SetNationRelationValue(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
 
-  unsigned int sourceToken = *instruction->tokenCursor;
+  union {
+    unsigned int sourceToken;
+    unsigned char sourceTokenBytes[4];
+  };
+  sourceToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* sraw = reinterpret_cast<unsigned char*>(&sourceToken);
-  sraw[0] = sraw[3];
-  sraw[1] = sraw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(sourceToken);
 
-  unsigned int targetToken = *instruction->tokenCursor;
+  union {
+    unsigned int targetToken;
+    unsigned char targetTokenBytes[4];
+  };
+  targetToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* traw = reinterpret_cast<unsigned char*>(&targetToken);
-  traw[0] = traw[3];
-  traw[1] = traw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(targetToken);
 
-  unsigned int scoreToken = *instruction->tokenCursor;
+  union {
+    unsigned int scoreToken;
+    unsigned char scoreTokenBytes[4];
+  };
+  scoreToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* vraw = reinterpret_cast<unsigned char*>(&scoreToken);
-  vraw[0] = vraw[3];
-  vraw[1] = vraw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(scoreToken);
 
   g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(
       static_cast<int>(sourceToken), static_cast<int>(targetToken), static_cast<int>(scoreToken));
@@ -2218,16 +2254,14 @@ void TSimMgr::HandleTurnInstruction_Rela_SetNationRelationValue(void* pInstructi
 void TSimMgr::HandleTurnInstruction_Pnam_AssignProvinceName(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
 
-  unsigned int tileToken = *instruction->tokenCursor;
+  union {
+    unsigned int tileToken;
+    unsigned char tileTokenBytes[4];
+  };
+  tileToken = *instruction->tokenCursor;
   const char* rawName = reinterpret_cast<const char*>(instruction->tokenCursor + 1);
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* traw = reinterpret_cast<unsigned char*>(&tileToken);
-  unsigned char tt = traw[0];
-  traw[0] = traw[3];
-  traw[3] = tt;
-  tt = traw[1];
-  traw[1] = traw[2];
-  traw[2] = tt;
+  DECODE_SCENARIO_DWORD_TOKEN(tileToken);
 
   CString rawText(rawName);
   instruction->tokenCursor += 0x10;
@@ -2242,27 +2276,23 @@ void TSimMgr::HandleTurnInstruction_Cash_SetNationCash(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
   unsigned int* cursor = instruction->tokenCursor;
 
-  unsigned int nationToken = *cursor;
+  union {
+    unsigned int nationToken;
+    unsigned char nationTokenBytes[4];
+  };
+  nationToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
-  unsigned char nt = nraw[0];
-  nraw[0] = nraw[3];
-  nraw[3] = nt;
-  nt = nraw[1];
-  nraw[1] = nraw[2];
-  nraw[2] = nt;
+  DECODE_SCENARIO_DWORD_TOKEN(nationToken);
 
-  unsigned int cashToken = *cursor;
+  union {
+    unsigned int cashToken;
+    unsigned char cashTokenBytes[4];
+  };
+  cashToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* craw = reinterpret_cast<unsigned char*>(&cashToken);
-  unsigned char ct = craw[0];
-  craw[0] = craw[3];
-  craw[3] = ct;
-  ct = craw[1];
-  craw[1] = craw[2];
-  craw[2] = ct;
+  DECODE_SCENARIO_DWORD_TOKEN(cashToken);
 
   g_apNationStates[static_cast<int>(nationToken)]->treasuryValue10 = static_cast<int>(cashToken);
 }
@@ -2274,11 +2304,13 @@ void TSimMgr::HandleTurnInstruction_Cash_SetNationCash(void* pInstructionRaw) {
 void TSimMgr::HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
   unsigned int* cursor = instruction->tokenCursor;
-  unsigned int token = *cursor;
+  union {
+    unsigned int token;
+    unsigned char tokenBytes[4];
+  };
+  token = *cursor;
   instruction->tokenCursor = cursor + 1;
-  unsigned char* raw = reinterpret_cast<unsigned char*>(&token);
-  raw[0] = raw[3];
-  raw[1] = raw[2];
+  DECODE_SCENARIO_SHORT_TOKEN(token);
   short index = static_cast<short>(token);
   field6a = index;
   g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(index);
@@ -2291,25 +2323,21 @@ void TSimMgr::HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstruct
 void TSimMgr::HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
 
-  unsigned int indexToken = *instruction->tokenCursor;
+  union {
+    unsigned int indexToken;
+    unsigned char indexTokenBytes[4];
+  };
+  indexToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* iraw = reinterpret_cast<unsigned char*>(&indexToken);
-  unsigned char it = iraw[0];
-  iraw[0] = iraw[3];
-  iraw[3] = it;
-  it = iraw[1];
-  iraw[1] = iraw[2];
-  iraw[2] = it;
+  DECODE_SCENARIO_DWORD_TOKEN(indexToken);
 
-  unsigned int valueToken = *instruction->tokenCursor;
+  union {
+    unsigned int valueToken;
+    unsigned char valueTokenBytes[4];
+  };
+  valueToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
-  unsigned char vt = vraw[0];
-  vraw[0] = vraw[3];
-  vraw[3] = vt;
-  vt = vraw[1];
-  vraw[1] = vraw[2];
-  vraw[2] = vt;
+  DECODE_SCENARIO_DWORD_TOKEN(valueToken);
 
   g_pCityOrderCapabilityState->SetCityOrderCapabilityTierScaledValueByIndex(
       static_cast<int>(indexToken), static_cast<int>(valueToken + 1));
@@ -2326,35 +2354,29 @@ void TSimMgr::HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue(void* p
 void TSimMgr::HandleTurnInstruction_Tbar_SetNationRelationBarValue(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
 
-  unsigned int ownerToken = *instruction->tokenCursor;
+  union {
+    unsigned int ownerToken;
+    unsigned char ownerTokenBytes[4];
+  };
+  ownerToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* oraw = reinterpret_cast<unsigned char*>(&ownerToken);
-  unsigned char ot = oraw[0];
-  oraw[0] = oraw[3];
-  oraw[3] = ot;
-  ot = oraw[1];
-  oraw[1] = oraw[2];
-  oraw[2] = ot;
+  DECODE_SCENARIO_DWORD_TOKEN(ownerToken);
 
-  unsigned int typeToken = *instruction->tokenCursor;
+  union {
+    unsigned int typeToken;
+    unsigned char typeTokenBytes[4];
+  };
+  typeToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* traw = reinterpret_cast<unsigned char*>(&typeToken);
-  unsigned char tt = traw[0];
-  traw[0] = traw[3];
-  traw[3] = tt;
-  tt = traw[1];
-  traw[1] = traw[2];
-  traw[2] = tt;
+  DECODE_SCENARIO_DWORD_TOKEN(typeToken);
 
-  unsigned int valueToken = *instruction->tokenCursor;
+  union {
+    unsigned int valueToken;
+    unsigned char valueTokenBytes[4];
+  };
+  valueToken = *instruction->tokenCursor;
   instruction->tokenCursor = instruction->tokenCursor + 1;
-  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
-  unsigned char vt = vraw[0];
-  vraw[0] = vraw[3];
-  vraw[3] = vt;
-  vt = vraw[1];
-  vraw[1] = vraw[2];
-  vraw[2] = vt;
+  DECODE_SCENARIO_DWORD_TOKEN(valueToken);
 
   short needIndex = static_cast<short>(typeToken);
   int value = static_cast<int>(valueToken);
@@ -2383,15 +2405,13 @@ void TSimMgr::HandleTurnInstruction_Tbar_SetNationRelationBarValue(void* pInstru
 void TSimMgr::HandleTurnInstruction_Tclr_ResetNationRelationBars(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
   unsigned int* cursor = instruction->tokenCursor;
-  unsigned int nationToken = *cursor;
+  union {
+    unsigned int nationToken;
+    unsigned char nationTokenBytes[4];
+  };
+  nationToken = *cursor;
   instruction->tokenCursor = cursor + 1;
-  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
-  unsigned char nt = nraw[0];
-  nraw[0] = nraw[3];
-  nraw[3] = nt;
-  nt = nraw[1];
-  nraw[1] = nraw[2];
-  nraw[2] = nt;
+  DECODE_SCENARIO_DWORD_TOKEN(nationToken);
   int nation = static_cast<int>(nationToken);
 
   g_apNationStates[nation]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
@@ -2411,27 +2431,23 @@ void TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionR
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
   unsigned int* cursor = instruction->tokenCursor;
 
-  unsigned int slotToken = *cursor;
+  union {
+    unsigned int slotToken;
+    unsigned char slotTokenBytes[4];
+  };
+  slotToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* sraw = reinterpret_cast<unsigned char*>(&slotToken);
-  unsigned char st = sraw[0];
-  sraw[0] = sraw[3];
-  sraw[3] = st;
-  st = sraw[1];
-  sraw[1] = sraw[2];
-  sraw[2] = st;
+  DECODE_SCENARIO_DWORD_TOKEN(slotToken);
 
-  unsigned int stateToken = *cursor;
+  union {
+    unsigned int stateToken;
+    unsigned char stateTokenBytes[4];
+  };
+  stateToken = *cursor;
   cursor = cursor + 1;
   instruction->tokenCursor = cursor;
-  unsigned char* vraw = reinterpret_cast<unsigned char*>(&stateToken);
-  unsigned char vt = vraw[0];
-  vraw[0] = vraw[3];
-  vraw[3] = vt;
-  vt = vraw[1];
-  vraw[1] = vraw[2];
-  vraw[2] = vt;
+  DECODE_SCENARIO_DWORD_TOKEN(stateToken);
 
   int slot = static_cast<int>(slotToken);
   phaseStateByDecade[slot] = static_cast<unsigned char>(stateToken);
@@ -2439,6 +2455,9 @@ void TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionR
     field6c = static_cast<short>(static_cast<short>(slotToken) * 10 + 0x717);
   }
 }
+
+#undef DECODE_SCENARIO_SHORT_TOKEN
+#undef DECODE_SCENARIO_DWORD_TOKEN
 
 // FUNCTION: IMPERIALISM 0x005837c0
 void TSimMgr::SetActiveNationSlotAndRefreshCityCapabilityUiHandles(NationSlot nationSlot) {

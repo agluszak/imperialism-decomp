@@ -481,9 +481,9 @@ void TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged(unsigned 
   crupControl->AssertValid();
   crupControl->SetEnabled(activate == 0, 0);
   if (activate != 0) {
-    int bookLayout[2] = {0x3a, 0x2d};
-    bookControl->CaptureLayoutF0(bookLayout, 0);
-    sheetControl->CaptureLayoutF0(g_aOfferDeskSheetLayoutActive_006a5a28, 0);
+    CPoint bookLayout(0x3a, 0x2d);
+    bookControl->Locate(bookLayout, 0);
+    sheetControl->Locate(g_offerDeskOffscreenPosition_006a5a28, 0);
     SetPictureResourceIdAndRefresh(0x226f, 1);
     g_pSfxPlaybackSystem->PlaySoundEffect(0x13ee, 0, 1);
     TDealTabControl* tabsControl =
@@ -496,8 +496,8 @@ void TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged(unsigned 
     listControl->AssertValid();
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 1, listControl);
   } else {
-    bookControl->CaptureLayoutF0(g_aOfferDeskSheetLayoutActive_006a5a28, 0);
-    sheetControl->CaptureLayoutF0(g_aOfferDeskSheetLayoutInactive_006a5a00, 0);
+    bookControl->Locate(g_offerDeskOffscreenPosition_006a5a28, 0);
+    sheetControl->Locate(g_offerDeskSheetPosition_006a5a00, 0);
     SetPictureResourceIdAndRefresh(0x2152, 1);
     g_pSfxPlaybackSystem->PlaySoundEffect(0x13ef, 0, 1);
     static_cast<TTradeBookView*>(bookControl)->SetItem(-1);

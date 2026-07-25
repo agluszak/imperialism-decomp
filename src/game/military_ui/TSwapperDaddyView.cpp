@@ -22,12 +22,12 @@ TView* TSwapperDaddyView::SelectSwapperItemByTag(int tag) {
     TView* child = iter.FirstSubView();
     while (iter.MoreSubViews()) {
       if (child->controlTag == tag) {
-        int matchLayout[2] = {0, 0};
-        child->CaptureLayoutF0(matchLayout, 1);
+        CPoint matchLayout(0, 0);
+        child->Locate(matchLayout, 1);
         matched = child;
       } else {
-        int offscreenLayout[2] = {1000, 1000};
-        child->CaptureLayoutF0(offscreenLayout, 0);
+        CPoint offscreenLayout(1000, 1000);
+        child->Locate(offscreenLayout, 0);
       }
       child = iter.NextSubView();
     }

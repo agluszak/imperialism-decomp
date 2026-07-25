@@ -11,14 +11,14 @@ public:
   virtual void DoPostCreate(int arg) override; // slot 0x37 0x48cfd0
   short turnEventCode60;
   short padding62;
-  int anchorPoint64[2];
+  CPoint anchorPoint64;
   CString labelText6c;
   short completionFlag70;
   short padding72;
 
   // Turn-event factory packet builder (thiscall on the freshly-constructed entry).
   void BuildTurnEventFactoryPacket(TView* resourceContext, TView* mainView, short eventCode,
-                                   int* anchorPoint, CString* labelText, int flag);
+                                   const CPoint& anchorPoint, CString* labelText, int flag);
 
   TIncludeView();
 };

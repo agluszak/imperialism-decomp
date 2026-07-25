@@ -12,11 +12,11 @@ extern short g_awDiplomacyTradePolicyIconValueTable[7];
 
 // Persistent (X,Y) layout-capture buffer shared by the diplomacy popup family
 // (TOffersPanelView::PoseOffer, TOffersPanelView::PoseWarOffer,
-// InitializeDiplomacyMinisterActionControlsAndLabels) via TView::CaptureLayoutF0, which
+// InitializeDiplomacyMinisterActionControlsAndLabels) via TView::Locate, which
 // reads exactly buffer[0]/buffer[1] as ownerLocalX/ownerLocalY.
-extern int g_diplomacyWarOfferSheetPosition_006a2fe0[2];
+extern CPoint g_diplomacyWarOfferSheetPosition_006a2fe0;
 
-extern int g_diplomacyPopupLayoutPosition_006a3020[2];
+extern CPoint g_diplomacyPopupLayoutPosition_006a3020;
 
 extern "C" {
 extern char* g_pDiplomacyPanelEmptyText_00654ec8;

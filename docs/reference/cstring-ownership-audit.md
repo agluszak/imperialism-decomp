@@ -43,8 +43,8 @@ pointer without incrementing its reference count is unsafe if that clone path ru
 | Source | Operation | Record span | Verdict | Detail |
 | --- | --- | --- | --- | --- |
 | `src/game/app/TObject.cpp:18` | `memcpy` | runtime class `[0, m_nObjectSize)` | `reviewed_retail_polymorphic_copy` | Listing 0x00415ce0 uses runtime size then `REP MOVSD/MOVSB`; the source is explicitly quarantined. |
-| `src/game/map/TMapMgr.cpp:117` | `ReadBytes` | `Province` 0x0..0xa4 | `safe_boundary` | ends at first CString offset 0xa4 |
-| `src/game/map/TMapMgr.cpp:151` | `WriteBytes` | `Province` 0x0..0xa4 | `safe_boundary` | ends at first CString offset 0xa4 |
+| `src/game/map/TMapMgr.cpp:118` | `ReadBytes` | `Province` 0x0..0xa4 | `safe_boundary` | ends at first CString offset 0xa4 |
+| `src/game/map/TMapMgr.cpp:152` | `WriteBytes` | `Province` 0x0..0xa4 | `safe_boundary` | ends at first CString offset 0xa4 |
 
 A `crosses_cstring` row is a hard failure. The report intentionally permits the
 two `Province` spans ending exactly at `cityNameA4`; that CString is serialized
