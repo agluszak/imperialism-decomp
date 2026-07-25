@@ -16,6 +16,16 @@
 #include "game/gfx/ui_invalidation_guard.h"
 
 #include <string.h>
+
+namespace {
+
+static __inline unsigned int ByteSwapNewsTableDword(unsigned int value) {
+  return ((value & 0x000000ffU) << 24) | ((value & 0x0000ff00U) << 8) |
+         ((value & 0x00ff0000U) >> 8) | ((value & 0xff000000U) >> 24);
+}
+
+} // namespace
+
 // SYNTHETIC: IMPERIALISM 0x0055b670
 // TNewsMgr::CreateObject
 
@@ -91,7 +101,7 @@ void TNewsMgr::StartNewsPhase() {
       CreateNewspaper(slot);
     }
   }
-  delete storyTemplateTable;
+  delete[] storyTemplateTable;
   g_pUiViewManager->ReleaseResourceStreamIfNotNull(newsTexStream);
   sharedEventRecordQueue->InvokePtrListResetHook();
 }
@@ -100,27 +110,23 @@ void TNewsMgr::StartNewsPhase() {
 void TNewsMgr::LoadNewsTable() {
   CFile* stream = g_pUiViewManager->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTabPath());
   int byteCount = g_pUiViewManager->GetResourceStreamSize(stream);
-  // Byte-sized blob whose record count is only known after the divide below.
-  storyTemplateTable = reinterpret_cast<newsEntry*>(new unsigned char[byteCount]);
+  storyTemplateCount = static_cast<unsigned int>(byteCount) / sizeof(newsEntry);
+  storyTemplateTable = new newsEntry[storyTemplateCount];
   if (storyTemplateTable == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUNewspaper_00698470, 0x106);
   }
   g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(stream, storyTemplateTable, &byteCount);
   g_pUiViewManager->ReleaseResourceStreamIfNotNull(stream);
-  storyTemplateCount = static_cast<unsigned int>(byteCount) / 0x18;
-  // news.tab is big-endian Mac data: byteswap every dword of every record.
+  // news.tab is big-endian Mac data: byteswap every field of every record.
   for (int i = 0; i < storyTemplateCount; i++) {
-    int* record = reinterpret_cast<int*>(&storyTemplateTable[i]);
-    for (int d = 0; d < 6; d++) {
-      unsigned char* b = reinterpret_cast<unsigned char*>(&record[d]);
-      unsigned char t = b[0];
-      b[0] = b[3];
-      b[3] = t;
-      t = b[1];
-      b[1] = b[2];
-      b[2] = t;
-    }
+    newsEntry& entry = storyTemplateTable[i];
+    entry.storyId = ByteSwapNewsTableDword(entry.storyId);
+    entry.textArgA0 = ByteSwapNewsTableDword(entry.textArgA0);
+    entry.textArgA1 = ByteSwapNewsTableDword(entry.textArgA1);
+    entry.textArgB0 = ByteSwapNewsTableDword(entry.textArgB0);
+    entry.textArgB1 = ByteSwapNewsTableDword(entry.textArgB1);
+    entry.reserved14 = ByteSwapNewsTableDword(entry.reserved14);
   }
 }
 
