@@ -5847,7 +5847,7 @@ address|matching|name
 0x5b7a70|1.0|TTradeMgr::~TTradeMgr
 0x5b7a90|0.7058823529411765|TTradeMgr::InitializeNationInteractionStateManagerDefaults
 0x5b7bc0|1.0|TTradeMgr::Free
-0x5b7c10|0.7673469387755102|TTradeMgr::ReadFrom
+0x5b7c10|1.0|TTradeMgr::ReadFrom
 0x5b7d90|0.9711934156378601|TTradeMgr::WriteTo
 0x5b7f50|1.0|IsSpecialNationInteractionResource
 0x5b7fc0|0.5504587155963303|TTradeMgr::ResetNationMetricRowsAndClearCategoryRankLists
