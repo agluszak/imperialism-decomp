@@ -863,19 +863,18 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
       if (g_apTerrainTypeDescriptorTable[row] != 0) {
         int col = 0;     // paired terrain/minor index
         int colBase = 0; // col * kNationSlotCount
-        int fieldOffset = 0xb2;
         do {
           if (g_apTerrainTypeDescriptorTable[col] != 0) {
-            char* rowNation = reinterpret_cast<char*>(g_apNationStates[row]);
-            short flag = *reinterpret_cast<short*>(rowNation + fieldOffset + 0x2e);
+            TGreatPower* rowNation = g_apNationStates[row];
+            short flag = rowNation->diplomacyGrantByNation[col];
             if (flag != -1) {
               if (IsMajorNationSlot(col) != 0) {
                 // arg0 is the constant 0 (held in [esp+0x10] across the loop in the original).
                 g_apNationStates[col]->NotifyActionSlot94(0, flag);
               }
-              g_apNationStates[row]->RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(row);
+              rowNation->RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(col);
             }
-            short relationCode = *reinterpret_cast<short*>(rowNation + fieldOffset);
+            short relationCode = rowNation->diplomacyPolicyByNation[col];
             if (relationCode != -1) {
               if (relationCode == 0x133) {
                 relationSideEffectMatrix1402[rowBase + col] = 1;
@@ -897,7 +896,6 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
             }
           }
           ++col;
-          fieldOffset += 2;
           colBase += kNationSlotCount;
         } while (static_cast<short>(col) < kNationSlotCount);
       }
