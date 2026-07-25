@@ -24,10 +24,15 @@ IMPLEMENT_DYNCREATE(TTradeScreenPicture, TPicture)
 #ifdef IMPERIALISM_RUNTIME_TESTS
 namespace {
 int g_runtimeTradeDynamicDrawCount;
-}
+int g_runtimeTradeTransparentTextDrawCount;
+} // namespace
 
 int RuntimeTradeDynamicDrawCount() {
   return g_runtimeTradeDynamicDrawCount;
+}
+
+int RuntimeTradeTransparentTextDrawCount() {
+  return g_runtimeTradeTransparentTextDrawCount;
 }
 #endif
 
@@ -118,4 +123,11 @@ void TTradeScreenPicture::Draw(RECT* rectBuffer) {
     ++i;
     ++tagPtr;
   } while (tagPtr < &g_tradeCommodityRowTagTable[17]);
+
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  if (g_pQuickDrawMemoryDc != nullptr &&
+      ::GetBkMode(g_pQuickDrawMemoryDc->GetSafeHdc()) == TRANSPARENT) {
+    ++g_runtimeTradeTransparentTextDrawCount;
+  }
+#endif
 }

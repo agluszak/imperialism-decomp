@@ -12,4 +12,5 @@ public:
   static bool ActivateControl(TView* root, int tag);
   static bool ClickControl(TView* root, int tag);
   static bool ClickView(TView* view);
+  static bool ClickViewPoint(TView* view, int localX, int localY);
 };

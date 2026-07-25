@@ -18,4 +18,5 @@ ASSERT_SIZE(TTradeScreenPicture, 0x90);
 
 #ifdef IMPERIALISM_RUNTIME_TESTS
 int RuntimeTradeDynamicDrawCount();
+int RuntimeTradeTransparentTextDrawCount();
 #endif
