@@ -946,7 +946,7 @@ address|name|symbol|size|type|prototype|provenance
 48d670|DestructTWindowViewAndUnlinkGlobalLists||356|function|undefined DestructTWindowViewAndUnlinkGlobalLists()|
 48d840|GetLiveRegistryHeadHostView||31|function|CWnd * __cdecl GetLiveRegistryHeadHostView(void)|
 48d8a0|TWindow::SetDialogItems||23|function|void __thiscall SetDialogItems(unsigned long defaultCommandCode, unsigned long cancelCommandCode)|
-48d8d0|TWindow::AssertMcAppUILine2358||30|function|undefined AssertMcAppUILine2358()|
+48d8d0|TWindow::Activate||30|function|void Activate(unsigned char active)|
 48d900|TWindow::Show||95|function|void __thiscall Show(uchar show, uchar refresh)|
 48d980|TWindow::IsActionable||42|function|bool __thiscall IsActionable()|listing
 48d9c0|TWindow::SetTitle||18|function|void __thiscall SetTitle(CString const * title)|
@@ -2894,7 +2894,7 @@ address|name|symbol|size|type|prototype|provenance
 500300|TDlgWindow::GetRuntimeClass||6|function|undefined GetTDlgWindowClassNamePointer()|rtti
 500320|TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop||18|function|undefined ConstructTurnEventWindowEntryStaticBackdrop()|
 500350|TDlgWindow::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-5003a0|TDlgWindow::AssertMcAppUILine2358||62|function|undefined AssertUGameWindowLines634And639()|
+5003a0|TDlgWindow::Activate||62|function|void Activate(unsigned char active)|
 500520|`dynamic initializer for 'g_scaledShortConst_6A31B8''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A31B8''(void)|library
 500550|THelpMgr::CreateObject|?CreateObject@THelpMgr@@SGPAVCObject@@XZ|70|function|undefined CreateObject()|rtti
 5005c0|THelpMgr::GetRuntimeClass||6|function|undefined GetTHelpMgrClassNamePointer()|rtti

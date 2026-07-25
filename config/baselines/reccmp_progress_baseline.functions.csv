@@ -1014,7 +1014,7 @@ address|matching|name
 0x48d670|0.2085889570552147|TWindow::~TWindow
 0x48d840|1.0|GetLiveRegistryHeadHostView
 0x48d8a0|1.0|TWindow::SetDialogItems
-0x48d8d0|1.0|TWindow::AssertMcAppUILine2358
+0x48d8d0|1.0|TWindow::Activate
 0x48d900|0.6216216216216216|TWindow::Show
 0x48d980|1.0|TWindow::IsActionable
 0x48d9c0|1.0|TWindow::SetTitle
@@ -2988,7 +2988,7 @@ address|matching|name
 0x500320|1.0|TDlgWindow::TDlgWindow
 0x500350|1.0|TDlgWindow::`scalar deleting destructor'
 0x500380|1.0|TDlgWindow::~TDlgWindow
-0x5003a0|0.34782608695652173|TDlgWindow::AssertMcAppUILine2358
+0x5003a0|0.6666666666666666|TDlgWindow::Activate
 0x500520|0.25|`dynamic initializer for 'g_scaledShortConst_6A31B8''
 0x500550|0.25|THelpMgr::CreateObject
 0x5005c0|1.0|THelpMgr::GetRuntimeClass
@@ -3425,7 +3425,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords
 0x527730|0.29577464788732394|TMapMaker::PlaceTerrainFeatureQuotas
-0x527d00|0.4268774703557312|TMapMaker::CreateRivers
+0x527d00|0.43478260869565216|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
