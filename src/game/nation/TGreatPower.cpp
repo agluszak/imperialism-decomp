@@ -3525,7 +3525,7 @@ void TGreatPower::GenerateGameScore() {
 
 // FUNCTION: IMPERIALISM 0x004e3560
 void TGreatPower::PayForMilitary() {
-  int maintenanceMultiplier = g_pCityOrderCapabilityState->packedRulePair264;
+  int maintenanceMultiplier = g_pCityOrderCapabilityState->activePrerequisitePair264.packedValue;
   int militaryUnitCost = 0;
   CIterator unitIter(militaryUnitList44);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();

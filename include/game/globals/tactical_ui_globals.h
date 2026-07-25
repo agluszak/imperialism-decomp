@@ -3,11 +3,12 @@
 // (bead 8mo.2). Definitions stay in src/game/global_data_tables.cpp;
 // assignment evidence: docs/reference/subsystem_assignment.csv.
 #include "game/globals/prelude.h"
+#include "game/tactical_ui/TechPrerequisitePair.h"
 
 extern POINT g_ptTechCapabilityModalMessage; // @ 0x6a57c8
 
 // Per-tech prerequisite pair (tech ids; 0 = none), indexed by tech id. 0x66ac10.
-extern short g_aTechItemPrerequisitePairs[34][2];
+extern TechPrerequisitePair g_aTechItemPrerequisitePairs[34];
 
 // Hex-neighbour offset tables (offset-coordinate grid; even/odd rows shift columns
 // differently), indexed by direction 0..5. Read by the city-region border/merge passes.
@@ -28,8 +29,6 @@ extern int g_nTacticalUnitSpriteCellHeight_006A549C;
 
 extern char g_nForceTacticalBattleViewFlag_006A4758;
 
-// City-order capability rule-table pointer slots written into TTechMgr+0x264 as tech
-// unlocks are applied (default at construction, alternates for tech ids 0x0b/0x16).
 // 26 (start, end) capability-priority range pairs (see the .cpp note).
 extern short g_anCapabilityPriorityRangePairs[53];
 
