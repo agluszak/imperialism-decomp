@@ -39,6 +39,7 @@ import sys
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CACHE_PATH = REPO_ROOT / "build-msvc500" / "evidence" / "serde_audit_listings.json"
 BASELINE = REPO_ROOT / "config" / "baselines" / "reccmp_progress_baseline.functions.csv"
+RTTI_ORACLE = REPO_ROOT / "config" / "rtti_class_oracle.csv"
 
 # ---------------------------------------------------------------------------
 # TStream vtable vocabulary.
@@ -781,6 +782,59 @@ def _multiset(ops: list[dict]) -> list[tuple]:
     return sorted((op["dir"], str(op["bytes"])) for op in ops)
 
 
+IMPLEMENT_SERIAL_RE = re.compile(r"IMPLEMENT_SERIAL\(\s*(\w+)\s*,\s*(\w+)\s*,\s*(\w+)\s*\)")
+
+
+def serial_identity_findings() -> list[str]:
+    """Check the CObject sub-format's identity surface against the RTTI oracle.
+
+    Byte accounting says nothing about this half. CArchive persists a class NAME STRING
+    and a SCHEMA NUMBER for every object it writes, and looks the name up in the runtime
+    class list on read -- so a class whose IMPLEMENT_SERIAL name, base or schema differs
+    from the original makes a retail save unreadable no matter how correct its field code
+    is. A class the original serializes but we declare only DYNCREATE fails the same way.
+    """
+    if not RTTI_ORACLE.is_file():
+        return ["rtti oracle missing; cannot check serial identities"]
+    with RTTI_ORACLE.open(encoding="utf-8") as handle:
+        oracle = {row["name"]: row for row in csv.DictReader(handle)}
+
+    ours: dict[str, tuple[str, str, str]] = {}
+    for path in sorted((REPO_ROOT / "src").rglob("*.cpp")):
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for match in IMPLEMENT_SERIAL_RE.finditer(text):
+            ours[match.group(1)] = (match.group(2), match.group(3), str(path.relative_to(REPO_ROOT)))
+
+    findings = []
+    for name, (base, schema, path) in sorted(ours.items()):
+        row = oracle.get(name)
+        if row is None:
+            findings.append(f"{name}: declared IMPLEMENT_SERIAL but absent from the RTTI oracle ({path})")
+            continue
+        if row["schema"] in ("", "0xffff"):
+            findings.append(
+                f"{name}: we declare IMPLEMENT_SERIAL(schema {schema}) but the original's "
+                f"descriptor has no schema -- it is DYNCREATE/DYNAMIC, not serial ({path})"
+            )
+        elif int(schema, 0) != int(row["schema"], 16):
+            findings.append(
+                f"{name}: schema {schema} but the original writes {row['schema']} ({path})"
+            )
+        if row["base_name"] != base:
+            findings.append(
+                f"{name}: base {base} but the original's descriptor chains to "
+                f"{row['base_name']} ({path})"
+            )
+
+    for name, row in sorted(oracle.items()):
+        if row["schema"] not in ("", "0xffff") and name not in ours:
+            findings.append(
+                f"{name}: the original serializes it (schema {row['schema']}) but our source "
+                f"never declares IMPLEMENT_SERIAL -- objects of this class cannot be read back"
+            )
+    return findings
+
+
 def load_scores() -> dict[int, float]:
     if not BASELINE.is_file():
         return {}
@@ -849,6 +903,20 @@ def main(argv: list[str] | None = None) -> int:
             divergent.append(row)
 
     total_unverified = sum(row["unverified"] for row in aligned + divergent + artifacts + reordered)
+    identity_findings = serial_identity_findings() if not args.addr else []
+    if not args.addr:
+        serial_count = sum(
+            1
+            for path in (REPO_ROOT / "src").rglob("*.cpp")
+            for _ in IMPLEMENT_SERIAL_RE.finditer(path.read_text(encoding="utf-8", errors="replace"))
+        )
+        status = "OK" if not identity_findings else f"{len(identity_findings)} PROBLEM(S)"
+        print(f"CObject serial identities (name/base/schema vs the RTTI oracle): {status}")
+        print(f"  IMPLEMENT_SERIAL classes: {serial_count}")
+        for finding in identity_findings:
+            print(f"  ! {finding}")
+        print()
+
     print(f"serializers audited: {len(serializers)}")
     print(f"  byte-aligned with the original  : {len(aligned)}")
     print(f"  DESYNC CANDIDATES               : {len(divergent)}")
@@ -893,6 +961,8 @@ def main(argv: list[str] | None = None) -> int:
             suffix = f"  ({row['unverified']} unverified widths)" if row["unverified"] else ""
             print(f"  0x{row['address']:06x} {score:>7} {row['name']}{suffix}")
 
+    if args.check and identity_findings:
+        return 1
     return 1 if (divergent and args.check) else 0
 
 

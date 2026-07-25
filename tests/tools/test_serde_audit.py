@@ -10,9 +10,14 @@ from __future__ import annotations
 
 import unittest
 
+from pathlib import Path
+import tempfile
+import unittest.mock
+
 from tools.workflow.serde_audit import (
     binary_stream_ops,
     compare,
+    serial_identity_findings,
     source_stream_ops,
     _loop_blocks,
 )
@@ -256,6 +261,68 @@ class ComparisonTest(unittest.TestCase):
         original = [self.op("write", 2, 30)]
         ported = [self.op("write", 2, 1)]
         self.assertEqual(compare(original, ported)["status"], "divergent")
+
+
+class SerialIdentityTest(unittest.TestCase):
+    """The CObject sub-format's identity surface -- invisible to byte accounting.
+
+    CArchive persists a class name and schema; a mismatch makes a retail save unreadable
+    however correct the field code is.
+    """
+
+    def run_with(self, oracle_rows, sources):
+        import tools.workflow.serde_audit as audit
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            oracle = root / "rtti.csv"
+            oracle.write_text(
+                "descriptor,name,object_size,schema,createobject_thunk,createobject,"
+                "base_descriptor,base_name\n" + "".join(oracle_rows),
+                encoding="utf-8",
+            )
+            source_dir = root / "src"
+            source_dir.mkdir()
+            (source_dir / "x.cpp").write_text(sources, encoding="utf-8")
+            with unittest.mock.patch.object(audit, "RTTI_ORACLE", oracle), unittest.mock.patch.object(
+                audit, "REPO_ROOT", root
+            ):
+                return serial_identity_findings()
+
+    def test_matching_identities_report_nothing(self):
+        findings = self.run_with(
+            ["0x1,TMission,0x10,0x1,0x2,0x3,0x4,TObject\n"],
+            "IMPLEMENT_SERIAL(TMission, TObject, 1)\n",
+        )
+        self.assertEqual(findings, [])
+
+    def test_schema_mismatch_is_reported(self):
+        findings = self.run_with(
+            ["0x1,TMission,0x10,0x2,0x2,0x3,0x4,TObject\n"],
+            "IMPLEMENT_SERIAL(TMission, TObject, 1)\n",
+        )
+        self.assertTrue(any("schema" in f for f in findings))
+
+    def test_base_mismatch_is_reported(self):
+        findings = self.run_with(
+            ["0x1,TBeachheadMission,0x10,0x1,0x2,0x3,0x4,TControlSeaZoneMission\n"],
+            "IMPLEMENT_SERIAL(TBeachheadMission, TNavyMission, 1)\n",
+        )
+        self.assertTrue(any("chains to" in f for f in findings))
+
+    def test_a_serial_class_we_never_declare_is_reported(self):
+        findings = self.run_with(
+            ["0x1,TMission,0x10,0x1,0x2,0x3,0x4,TObject\n"],
+            "IMPLEMENT_DYNCREATE(TMission, TObject)\n",
+        )
+        self.assertTrue(any("never declares IMPLEMENT_SERIAL" in f for f in findings))
+
+    def test_declaring_serial_on_a_dyncreate_class_is_reported(self):
+        findings = self.run_with(
+            ["0x1,TMission,0x10,0xffff,0x2,0x3,0x4,TObject\n"],
+            "IMPLEMENT_SERIAL(TMission, TObject, 1)\n",
+        )
+        self.assertTrue(any("not serial" in f for f in findings))
 
 
 if __name__ == "__main__":

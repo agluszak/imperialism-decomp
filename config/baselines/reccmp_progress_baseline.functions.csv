@@ -649,7 +649,7 @@ address|matching|name
 0x485df0|1.0|TObject::CreateObject
 0x485e20|1.0|TObject::GetRuntimeClass
 0x485e40|0.3333333333333333|`dynamic initializer for '_init_TObject''
-0x485e90|0.7142857142857143|TObject::Serialize
+0x485e90|0.8235294117647058|TObject::Serialize
 0x485f50|1.0|TObject
 0x485f70|1.0|TObject::WriteTo
 0x485f90|1.0|TObject::ReadFrom
