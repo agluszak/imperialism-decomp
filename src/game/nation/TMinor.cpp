@@ -711,8 +711,7 @@ char TMinor::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, i
     return 0;
   }
 
-  g_pNationInteractionStateManager->DispatchProposalAmountSlot60(this->nationSlot, arg1, arg2, arg3,
-                                                                 arg4, 1, 0);
+  g_pNationInteractionStateManager->SetDealResults(this->nationSlot, arg1, arg2, arg3, arg4, 1, 0);
   return 0;
 }
 

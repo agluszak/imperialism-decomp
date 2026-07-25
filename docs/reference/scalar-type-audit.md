@@ -14,11 +14,11 @@ rather than domain discriminants.
 
 ## Summary
 
-- Findings: 380
+- Findings: 382
 - `native_integral_boundary`: 16
 - `nested_integral_cast`: 31
 - `predicate_storage_cast`: 15
-- `raw_discriminant_literal`: 318
+- `raw_discriminant_literal`: 320
 
 ## clang-tidy evaluation
 
@@ -178,7 +178,7 @@ is classified, and a family that stops appearing must be removed.
 | `navyState28` | 3 | `closed_domain_needs_listing_evidence` | TNavyMission selects three mission phases 0/1/2; the phase transitions have not been decoded. |
 | `newCode` | 1 | `turn_event_code_domain` | TurnEventCodeStorage compared to 0 is the recovered no-event sentinel. |
 | `newState` | 2 | `closed_domain_needs_listing_evidence` | TTacticalBattle two-value state assignment; the same domain as the tactical hover/selection phase. |
-| `nextBuildingType` | 2 | `closed_domain_needs_listing_evidence` | TCity::GetNextBuildingType returns the city building-type domain; TCityProductionView compares its slot-0xe result with raw type 2, whose resource-backed name is not yet recovered. |
+| `nextBuildingType` | 4 | `closed_domain_needs_listing_evidence` | TCity::GetNextBuildingType returns the city building-type domain; TCityProductionView compares its slot-0xe result with raw type 2, whose resource-backed name is not yet recovered. |
 | `offerType` | 3 | `diplomacy_proposal_code_domain` | TOffersPanelView selects on the single proposal code 0x29a to choose between the text and proposal controls. |
 | `orderKind` | 1 | `closed_domain_needs_listing_evidence` | TCityInteriorMinister returns order kind 2 from a switch default; the order-kind domain is TUnitOrder work. |
 | `orderType` | 11 | `mixed_domain_needs_per_site_split` | the sites mix three proven domains under one parameter name: ResourceKind bands (< 23, <= 22, >= 17, <= 6) in TCityInteriorMinister, the 14-entry industry domain (< 0x0e) in TMultiplayerMgr, and TUnit::orderType civilian/military kinds in TTerrainHelpPicture. Splitting them requires renaming the parameters per owner class first. |
@@ -334,8 +334,10 @@ is classified, and a family that stops appearing must be removed.
 | `6d8e6cf1c94f1e35` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:2613` | resourceType < 7 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
 | `1b2119f9a2bda235` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:2613` | resourceType > 0x10 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
 | `991981b6c75470b1` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:2613` | resourceType >= 0 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
-| `8f169fc0d602ec55` | `raw_discriminant_literal` | `src/game/city_ui/TCityProductionView.cpp:316` | nextBuildingType == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `70ab295d0a911059` | `raw_discriminant_literal` | `src/game/city_ui/TCityProductionView.cpp:317` | nextBuildingType == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `8f169fc0d602ec55` | `raw_discriminant_literal` | `src/game/city_ui/TCityProductionView.cpp:317` | nextBuildingType == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `70ab295d0a911059` | `raw_discriminant_literal` | `src/game/city_ui/TCityProductionView.cpp:318` | nextBuildingType == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `7f92aa3fb0b92ac3` | `raw_discriminant_literal` | `src/game/city_ui/TCityProductionView.cpp:412` | nextBuildingType == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `ed752b41406dea6e` | `raw_discriminant_literal` | `src/game/city_ui/TCityProductionView.cpp:425` | nextBuildingType == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `a11189c6acbf01de` | `raw_discriminant_literal` | `src/game/city_ui/TCivMgr.cpp:35` | keyCode == 2 | `character_or_virtual_key_code` | `imperialism-decomp-1uj.99.8` |
 | `5c08a97d4ba87f5a` | `raw_discriminant_literal` | `src/game/city_ui/TCivMgr.cpp:149` | nClickMode == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `c32780ddbb3826ed` | `raw_discriminant_literal` | `src/game/city_ui/TCivMgr.cpp:154` | actionKind == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
@@ -402,8 +404,8 @@ is classified, and a family that stops appearing must be removed.
 | `ee06265f181c2758` | `raw_discriminant_literal` | `src/game/map/TNavyMission.cpp:321` | navyState28 == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `fd2282a1284889ae` | `raw_discriminant_literal` | `src/game/map/TNavyMission.cpp:330` | navyState28 == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `b3f384e5d7867a6b` | `raw_discriminant_literal` | `src/game/map/TNavyMission.cpp:339` | navyState28 == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `62926fb688e40ace` | `raw_discriminant_literal` | `src/game/map_ui/TMapDialog.cpp:1175` | resourceType < 0 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
-| `ff0fefe2c5903075` | `raw_discriminant_literal` | `src/game/map_ui/TMapDialog.cpp:1270` | tileActionState16 >= 0 | `map_tile_action_state_domain` | `imperialism-decomp-1uj.99.8` |
+| `62926fb688e40ace` | `raw_discriminant_literal` | `src/game/map_ui/TMapDialog.cpp:1177` | resourceType < 0 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
+| `ff0fefe2c5903075` | `raw_discriminant_literal` | `src/game/map_ui/TMapDialog.cpp:1272` | tileActionState16 >= 0 | `map_tile_action_state_domain` | `imperialism-decomp-1uj.99.8` |
 | `bc1131ea218c9ee6` | `raw_discriminant_literal` | `src/game/map_ui/TMapEditView.cpp:99` | editorActionMode368 != 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `2388240767cdc1a4` | `raw_discriminant_literal` | `src/game/map_ui/TMapEditView.cpp:129` | editorActionMode368 != 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `4a30cfb1c0e1c46b` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:176` | g_zoneStatusCodePrngSeed_006a5aec == 0 | `open_index_count_or_bound` | `imperialism-decomp-1uj.99.8` |
@@ -455,7 +457,7 @@ is classified, and a family that stops appearing must be removed.
 | `c72a0da6796fe9b5` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:3220` | proposalCode != 1 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
 | `2de08d0b6ccca2bc` | `raw_discriminant_literal` | `src/game/nation/TMinor.cpp:696` | policyCode <= 0xc | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
 | `f2f4f8df56fd2be1` | `raw_discriminant_literal` | `src/game/nation/TMinor.cpp:696` | policyCode >= 0x11 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `c6039ab51a51ede0` | `raw_discriminant_literal` | `src/game/nation/TMinor.cpp:1302` | resetOrderMode != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `c6039ab51a51ede0` | `raw_discriminant_literal` | `src/game/nation/TMinor.cpp:1301` | resetOrderMode != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `62c20b03795433bb` | `raw_discriminant_literal` | `src/game/navy/TNavyMgr.cpp:1480` | actionCode != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `78e8835c98c86d61` | `raw_discriminant_literal` | `src/game/navy/TNavyMgr.cpp:1547` | actionCode == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `973cffb713529276` | `raw_discriminant_literal` | `src/game/navy/TOcean.cpp:508` | nationCode < 0x17 | `nation_slot_domain` | `imperialism-decomp-1uj.99.8` |
@@ -468,16 +470,16 @@ is classified, and a family that stops appearing must be removed.
 | `66550a49939e8f22` | `raw_discriminant_literal` | `src/game/net/TMultiplayerMgr.cpp:2787` | orderType < 0x0e | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
 | `23993f280189d591` | `raw_discriminant_literal` | `src/game/net/TMultiplayerMgr.cpp:2855` | orderType < 0x0e | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
 | `e124a0c483572816` | `raw_discriminant_literal` | `src/game/net/TMultiplayerMgr_session.cpp:632` | eventCode == 0xc | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `204a44147ae8da54` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:124` | lastErrorCode0c == 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
-| `6c3ed5e6dbcab2b0` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:149` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
-| `02077477f6ee0a95` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:152` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
-| `43bbaf8ea89162ee` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:156` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
-| `052203aac8ded85e` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:165` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
-| `cd6c85a00662b79f` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:176` | lastErrorCode0c < 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
-| `500c933f3765a400` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:179` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
-| `b6c0c12eba527b10` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:198` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
-| `913d71d8d05d603b` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:205` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
-| `4ee35b7e665a7fc4` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:330` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
+| `204a44147ae8da54` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:125` | lastErrorCode0c == 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
+| `6c3ed5e6dbcab2b0` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:150` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
+| `02077477f6ee0a95` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:153` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
+| `43bbaf8ea89162ee` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:157` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
+| `052203aac8ded85e` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:166` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
+| `cd6c85a00662b79f` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:177` | lastErrorCode0c < 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
+| `500c933f3765a400` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:193` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
+| `b6c0c12eba527b10` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:213` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
+| `913d71d8d05d603b` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:220` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
+| `4ee35b7e665a7fc4` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:358` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
 | `ba0144f15d94ff96` | `raw_discriminant_literal` | `src/game/tactical/TArmyBattle.cpp:84` | sessionModeActive == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `ac7875b8b64b625f` | `raw_discriminant_literal` | `src/game/tactical/TArmyBattle.cpp:357` | terrainType0 == 4 | `tactical_terrain_kind_domain` | `imperialism-decomp-1uj.99.8` |
 | `8d97f14724feed63` | `raw_discriminant_literal` | `src/game/tactical/TArmyPlayer.cpp:762` | cursorMode == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |

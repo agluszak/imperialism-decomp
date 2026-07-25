@@ -758,7 +758,8 @@ void TMapDialog::Draw(RECT* rectBuffer) {
   CTemporaryRegion savedClip;
   RECT dirtyRect = *rectBuffer;
   RECT cacheRect = dirtyRect;
-  OffsetRect(&cacheRect, 0x40, 0x40);
+  static CSize cacheMargin(0x40, 0x40);
+  OffsetRect(&cacheRect, cacheMargin.cx, cacheMargin.cy);
 
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags = 0;
@@ -837,15 +838,16 @@ void TMapDialog::Draw(RECT* rectBuffer) {
         } else {
           TCivUnit* unit =
               g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, g_pSimMgr->GetActiveNationId());
+          int animationTag = PointerAddressLong32(unit);
           if (unit != 0 && unit->unitOrder > static_cast<UnitOrder>(4) &&
-              g_pUiAnimator->FindRegisteredAnimationByTag(reinterpret_cast<int>(unit)) == 0) {
+              g_pUiAnimator->FindRegisteredAnimationByTag(animationTag) == 0) {
             short animationY;
             short animationX;
             ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin60, &animationY,
                                                          &animationX, 1);
             RECT animationRect = {animationX, animationY, animationX + 0x40, animationY + 0x40};
-            TCivAnimation2* animation = new TCivAnimation2(this, &animationRect, unit->orderType,
-                                                           reinterpret_cast<int>(unit));
+            TCivAnimation2* animation =
+                new TCivAnimation2(this, &animationRect, unit->orderType, animationTag);
             g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
           }
         }
@@ -868,8 +870,8 @@ void TMapDialog::Draw(RECT* rectBuffer) {
         TCivUnit* firstCivilianOrder =
             g_pGlobalMapState->terrainStateTable[tileIndex].firstCivilianOrder20;
         if (firstCivilianOrder != 0) {
-          TAnimation* animation = g_pUiAnimator->FindRegisteredAnimationByTag(
-              reinterpret_cast<int>(firstCivilianOrder));
+          TAnimation* animation =
+              g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(firstCivilianOrder));
           if (animation != 0) {
             SetGWorld(g_pCitySiteCachedPrimaryRenderSurfaceContext, savedSurfaceFlags);
             RECT animationClip = animation->screenRect1C;

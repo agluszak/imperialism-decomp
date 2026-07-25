@@ -49,9 +49,12 @@ public:
   virtual void ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short slot); // 0x15 0x5b9060
   virtual void InitializePendingDiplomacyTransferCursorAndProcess();              // 0x16 0x5b9190
   virtual void RebuildNationMetricPassesAndClampRowsByBaseline();                 // 0x17 0x5b9410
-  virtual void DispatchProposalAmountSlot60(short ownerNation, int sourceContext, int amount,
-                                            int maxAmount, int targetNation, char emitEventFlag,
-                                            char skipLocalizationBranch);    // 0x18 0x5b94d0
+  // Mac names this SetDealResults and declares five shorts plus two unsigned chars.
+  // The Windows body consumes argument slots 2..5 as dwords and narrows only at the
+  // nation/resource APIs, so preserve those Windows widths here.
+  virtual void SetDealResults(short sourceNation, int targetNation, int amount, int maximumAmount,
+                              int commodityType, char shortfallFlag,
+                              char remoteReplay);                            // 0x18 0x5b94d0
   virtual void SetNationMetricCellValueByIndex(short category, short value); // 0x19 0x5b9790
   virtual void RunNationUpdatePassesAndResetTransitionFlags();               // 0x1a 0x5b97c0
   virtual void RunNationMetricPreUpdatePassAcrossSecondaryNations();         // 0x1b 0x5b9890
