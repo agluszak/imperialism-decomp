@@ -6,9 +6,9 @@
 // crossing segments by shared endpoint + heading angle, then writes that segment's region id
 // (SelectAttrByAngle) into the tile. Own translation unit.
 //
-// NOTE: the two-segment tie-break and the exact overlay-coord doubling are reconstructed from a
-// heavily register-aliased decompile and are the least-certain part; the scanline crossing test
-// and the fill/advance loop are faithful.
+// The scanline crossing and two-segment tie-break follow the listing's integer slope and
+// shared-endpoint angle comparisons; the exact overlay-coordinate interpretation remains
+// provisional.
 
 #include "game/map_ui/TMapMaker.h"
 
@@ -30,7 +30,7 @@ void TMapMaker::AssignCityRegionIdsFromOverlayScanlineIntersections() {
 
   int cellX = 0;
   int leftCol = 0;
-  unsigned int scanY = 0;
+  int scanY = 0;
   int firstX = -1;
   short region = -1;
   int rowBase = 0;
@@ -50,8 +50,7 @@ void TMapMaker::AssignCityRegionIdsFromOverlayScanlineIntersections() {
           spanHi = leftEdge;
         }
         bool crosses = false;
-        if (leftEdge != rightEdge && seg->y0 != seg->y1 && static_cast<int>(scanY) >= seg->y0 &&
-            seg->y1 > static_cast<int>(scanY)) {
+        if (leftEdge != rightEdge && seg->y0 != seg->y1 && scanY >= seg->y0 && seg->y1 > scanY) {
           if (seg->x0 != seg->x1) {
             int dx;
             if (seg->wrap16 == 0) {
@@ -63,11 +62,11 @@ void TMapMaker::AssignCityRegionIdsFromOverlayScanlineIntersections() {
               if (spanHi < 0x6c) {
                 spanHi = spanHi + 0xd8;
               }
-              // Wrapped segment: the crossing spans the 0xd8-wide horizontal seam.
-              dx = (seg->x0 < seg->x1) ? -0xd8 : 0xd8;
+              // The wrapped branch measures the crossing across the 0xd8-wide seam.
+              dx = -0xd8;
             }
-            double slope = static_cast<double>(dx) / (seg->y1 - seg->y0);
-            double crossX = static_cast<double>(static_cast<int>(scanY)) * slope +
+            int slope = dx / (seg->y1 - seg->y0);
+            double crossX = static_cast<double>(scanY) * slope +
                             (static_cast<double>(seg->x0) - static_cast<double>(seg->y0) * slope);
             if (spanLo <= crossX && crossX < spanHi) {
               crosses = true;

@@ -3423,7 +3423,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords
 0x527730|0.29577464788732394|TMapMaker::PlaceTerrainFeatureQuotas
-0x527d00|0.43478260869565216|TMapMaker::CreateRivers
+0x527d00|0.4268774703557312|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
@@ -3453,7 +3453,7 @@ address|matching|name
 0x52b220|0.34234234234234234|SeaSegment::InitFromPoints
 0x52b3e0|1.0|stretch<SeaSegment>::OverStretch
 0x52b460|1.0|stretch<SeaSegment>::operator[]
-0x52b9b0|0.18181818181818182|TMapMaker::AssignCityRegionIdsFromOverlayScanlineIntersections
+0x52b9b0|0.21221864951768488|TMapMaker::AssignCityRegionIdsFromOverlayScanlineIntersections
 0x52bef0|0.21359223300970873|SeaSegment::ExtractWrappedEndpoint
 0x52c000|1.0|SeaSegment::SelectAttrByAngle
 0x52c060|0.36363636363636365|WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060
