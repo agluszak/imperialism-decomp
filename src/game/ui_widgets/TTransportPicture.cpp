@@ -4,6 +4,8 @@
 #include "game/mfc.h"
 #include "game/ui_core/TControl.h"
 #include "game/nation/TGreatPower.h"
+#include "game/ui_widgets/TSoundPlayer.h"
+#include "game/ui_widgets/TTradeMgr.h"
 #include "game/ui_core/TStaticText.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
@@ -34,37 +36,70 @@ void TTransportPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     short nationId = g_pSimMgr->GetActiveNationId();
     TGreatPower* nation = g_apNationStates[nationId];
     int metricSlot = static_cast<int>(resourceMetricSlot92);
-    short metricA = 0;
-    short metricB = 0;
-    char* nationBytes = reinterpret_cast<char*>(nation);
+    short targetAmount;
+    short currentAmount;
     if (metricSlot == 0) {
-      metricA = *reinterpret_cast<short*>(nationBytes + 0x13e) +
-                *reinterpret_cast<short*>(nationBytes + 0x110);
-      metricB = *reinterpret_cast<short*>(nationBytes + 0x10e) +
-                *reinterpret_cast<short*>(nationBytes + 0x110);
+      targetAmount = nation->needTargetByType[1] + nation->needTargetByType[0];
+      currentAmount = nation->needCurrentByType[1] + nation->needCurrentByType[0];
     } else if (metricSlot == 0x13) {
-      metricA = *reinterpret_cast<short*>(nationBytes + 0x162) +
-                *reinterpret_cast<short*>(nationBytes + 0x164);
-      metricB = *reinterpret_cast<short*>(nationBytes + 0x136) +
-                *reinterpret_cast<short*>(nationBytes + 0x134);
+      targetAmount = nation->needTargetByType[0x14] + nation->needTargetByType[0x13];
+      currentAmount = nation->needCurrentByType[0x14] + nation->needCurrentByType[0x13];
     } else {
-      metricA = *reinterpret_cast<short*>(nationBytes + metricSlot * 2 + 0x13c);
-      metricB = *reinterpret_cast<short*>(nationBytes + metricSlot * 2 + 0x10e);
+      targetAmount = nation->needTargetByType[metricSlot];
+      currentAmount = nation->needCurrentByType[metricSlot];
     }
     bool changed = false;
     if (commandId == 100) {
-      if (metricA < metricB && *reinterpret_cast<short*>(nationBytes + 0xa6) != metricA) {
-        splitValue94 = (short)(metricA + 1);
+      if (targetAmount < currentAmount && nation->needCapA6 != nation->needsOverCapFlag) {
+        splitValue94 = static_cast<short>(targetAmount + 1);
         changed = true;
       }
-    } else if (metricA > 0) {
-      splitValue94 = (short)(metricA - 1);
+    } else if (targetAmount > 0) {
+      splitValue94 = static_cast<short>(targetAmount - 1);
       changed = true;
     }
     if (changed) {
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
+
+      short selectedMetricSlot = resourceMetricSlot92;
+      if (selectedMetricSlot == 0) {
+        short firstWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0);
+        short secondWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(1);
+        int primaryNeedIndex;
+        int secondaryNeedIndex;
+        if (firstWeight > secondWeight) {
+          primaryNeedIndex = 0;
+          secondaryNeedIndex = 1;
+        } else {
+          primaryNeedIndex = 1;
+          secondaryNeedIndex = 0;
+        }
+
+        short primaryCurrentAmount = nation->needCurrentByType[primaryNeedIndex];
+        if (primaryCurrentAmount < splitValue94) {
+          nation->UpdateNeedTargetAndAccumulateOverCap(primaryNeedIndex, primaryCurrentAmount);
+          nation->UpdateNeedTargetAndAccumulateOverCap(
+              secondaryNeedIndex, static_cast<short>(splitValue94 - primaryCurrentAmount));
+        } else {
+          nation->UpdateNeedTargetAndAccumulateOverCap(primaryNeedIndex, splitValue94);
+          nation->UpdateNeedTargetAndAccumulateOverCap(secondaryNeedIndex, 0);
+        }
+      } else if (selectedMetricSlot == 0x13) {
+        short primaryCurrentAmount = nation->needCurrentByType[0x13];
+        if (primaryCurrentAmount < splitValue94) {
+          nation->UpdateNeedTargetAndAccumulateOverCap(0x13, primaryCurrentAmount);
+          nation->UpdateNeedTargetAndAccumulateOverCap(
+              0x14, static_cast<short>(splitValue94 - primaryCurrentAmount));
+        } else {
+          nation->UpdateNeedTargetAndAccumulateOverCap(0x13, splitValue94);
+          nation->UpdateNeedTargetAndAccumulateOverCap(0x14, 0);
+        }
+      } else {
+        nation->UpdateNeedTargetAndAccumulateOverCap(selectedMetricSlot, splitValue94);
+      }
+
       RefreshControl();
     }
-    return;
   }
   TControl::DoEvent(commandId, sourceHandler, event);
 }
