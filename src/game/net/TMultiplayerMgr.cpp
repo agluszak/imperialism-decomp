@@ -217,6 +217,14 @@ struct TurnEvent11MapPokePacket : TimelyMessageHeader {
   short maskWord26;     // +0x26, total 0x28
 };
 
+union MapPokeBufferView {
+  TTerrainStateRecordView* terrainRecords;
+  Province* cityRecords;
+  unsigned char* bytes;
+  short* words;
+  int* dwords;
+};
+
 // Events 0x20/0x21/0x22 receive views (the emit-side structs later in this TU pack
 // their payload at different offsets; the receive side reads +0x18..).
 struct TurnEvent20PacketM : TimelyMessageHeader {
@@ -501,7 +509,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // the status tag, refresh the lounge dialog's row, and - when hosting - retune the
     // start button and lobby message. Slot 0xf3 asks the host to re-broadcast its own
     // claim instead.
-    LobbyChatEvent9Packet* chat = reinterpret_cast<LobbyChatEvent9Packet*>(packet);
+    LobbyChatEvent9Packet* chat = static_cast<LobbyChatEvent9Packet*>(packet);
     if (chat->nationSlot18 != 0xf3) {
       int slot9 = static_cast<char>(chat->nationSlot18);
       int sessionId = chat->field1C;
@@ -871,41 +879,47 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TurnEvent11MapPokePacket* poke = static_cast<TurnEvent11MapPokePacket*>(packet);
     switch (poke->pokeWidthCode18) {
     case 1: {
-      unsigned char* bufferBase1 = 0;
+      MapPokeBufferView bufferBase1;
+      bufferBase1.bytes = 0;
       if (poke->bufferSelector1C == 0) {
-        bufferBase1 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->terrainStateTable);
+        bufferBase1.terrainRecords = g_pGlobalMapState->terrainStateTable;
       } else if (poke->bufferSelector1C == 1) {
-        bufferBase1 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
+        bufferBase1.cityRecords = g_pGlobalMapState->cityScoreTable;
       }
       unsigned char maskByte = static_cast<unsigned char>(poke->maskWord26);
-      unsigned char* target1 = bufferBase1 + poke->byteOffset20;
-      *target1 =
-          static_cast<unsigned char>((*target1 & static_cast<unsigned char>(~maskByte)) |
+      MapPokeBufferView target1;
+      target1.bytes = bufferBase1.bytes + poke->byteOffset20;
+      *target1.bytes =
+          static_cast<unsigned char>((*target1.bytes & static_cast<unsigned char>(~maskByte)) |
                                      (static_cast<unsigned char>(poke->valueWord24) & maskByte));
       break;
     }
     case 2: {
-      unsigned char* bufferBase2 = 0;
+      MapPokeBufferView bufferBase2;
+      bufferBase2.bytes = 0;
       if (poke->bufferSelector1C == 0) {
-        bufferBase2 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->terrainStateTable);
+        bufferBase2.terrainRecords = g_pGlobalMapState->terrainStateTable;
       } else if (poke->bufferSelector1C == 1) {
-        bufferBase2 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
+        bufferBase2.cityRecords = g_pGlobalMapState->cityScoreTable;
       }
-      short* target2 = reinterpret_cast<short*>(bufferBase2 + poke->byteOffset20);
-      *target2 = static_cast<short>((*target2 & ~poke->maskWord26) |
-                                    (poke->valueWord24 & poke->maskWord26));
+      MapPokeBufferView target2;
+      target2.bytes = bufferBase2.bytes + poke->byteOffset20;
+      *target2.words = static_cast<short>((*target2.words & ~poke->maskWord26) |
+                                          (poke->valueWord24 & poke->maskWord26));
       break;
     }
     case 4: {
-      unsigned char* bufferBase4 = 0;
+      MapPokeBufferView bufferBase4;
+      bufferBase4.bytes = 0;
       if (poke->bufferSelector1C == 0) {
-        bufferBase4 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->terrainStateTable);
+        bufferBase4.terrainRecords = g_pGlobalMapState->terrainStateTable;
       } else if (poke->bufferSelector1C == 1) {
-        bufferBase4 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
+        bufferBase4.cityRecords = g_pGlobalMapState->cityScoreTable;
       }
       int maskBits = poke->maskWord26;
-      int* target4 = reinterpret_cast<int*>(bufferBase4 + poke->byteOffset20);
-      *target4 = (poke->valueWord24 & maskBits) | (*target4 & ~maskBits);
+      MapPokeBufferView target4;
+      target4.bytes = bufferBase4.bytes + poke->byteOffset20;
+      *target4.dwords = (poke->valueWord24 & maskBits) | (*target4.dwords & ~maskBits);
       break;
     }
     default:
