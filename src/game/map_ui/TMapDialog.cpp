@@ -18,6 +18,7 @@
 #include "game/navy/TOcean.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TStaticText.h"
+#include "game/ui_core/ScopedMapQuickDrawContext.h"
 #include "game/gfx/CTemporaryRegion.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_core/TView.h"
@@ -908,11 +909,6 @@ static unsigned char ReflectHexDirectionMaskForBottomUpSurface(unsigned char mas
 
 // FUNCTION: IMPERIALISM 0x0051EB40
 void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, short screenX) {
-  if (g_pGlobalMapState == 0 || g_pStrategicMapViewSystem == 0 ||
-      g_pStrategicMapViewSystem->atlas668 == 0 || quickDrawSurface350 == 0) {
-    return;
-  }
-
   CTemporaryRegion temporaryRegion;
   TBitmapSurfaceNode** destinationSurfaceObject = GetGWorldPixMap(quickDrawSurface350);
   unsigned char* destinationPixels = GetPixBaseAddr(destinationSurfaceObject);
@@ -1130,7 +1126,7 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
 
   const unsigned short activeFlags = terrain.activeFlags1c;
   TMapUberPicture* mapOwner = static_cast<TMapUberPicture*>(ownerContext);
-  const bool cityOverlayVisible = mapOwner == 0 || mapOwner->activeUnitCategoryIndex96 != 4;
+  const bool cityOverlayVisible = mapOwner->activeUnitCategoryIndex96 != 4;
 
   if ((activeFlags & 3) != 0 && terrain.gateFlag != 0 && cityOverlayVisible) {
     int improvementOffset = g_pGlobalMapState->GetMapImprovementOffsetByActiveFlagsAndCityStage(
@@ -1198,15 +1194,105 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
     }
   }
 
+  if (cityOverlayVisible) {
+    short neighborTile =
+        TMapMgr::GetNeighborTileID(tileIndex, static_cast<StrategicHexDirectionStorage>(5));
+    if (neighborTile != -1) {
+      const TTerrainStateRecordView& neighbor = g_pGlobalMapState->terrainStateTable[neighborTile];
+      if ((neighbor.activeFlags1c & 3) != 0 && neighbor.gateFlag != 0) {
+        CString cityName;
+        g_pGlobalMapState->AssignCityRecordDisplayName(neighbor.cityRecordIndex, &cityName);
+        CRgn clipRegion;
+        CDC* activeDc = GetActiveQuickDrawDc();
+        clipRegion.Attach(::CreateRectRgnIndirect(&tileRect));
+        activeDc->SelectClipRgn(&clipRegion);
+        clipRegion.DeleteObject();
+        SetQuickDrawTextFont(4);
+        SetQuickDrawTextSize(9);
+        SetQuickDrawTextFace(0);
+        int labelX = screenX - MeasureTextExtentWithCachedQuickDrawStyle(&cityName) / 2;
+        if ((neighbor.activeFlags1c & 1) == 0) {
+          labelX -= 10;
+        }
+        SetQuickDrawTextOriginWithContextOffset(static_cast<short>(labelX + 1), screenY + 10);
+        SetQuickDrawFillColorFromPaletteIndex(0);
+        DrawTextWithCachedQuickDrawStyleState(&cityName);
+        SetQuickDrawTextOriginWithContextOffset(static_cast<short>(labelX), screenY + 9);
+        SetQuickDrawFillColorFromPaletteIndex(0x13);
+        DrawTextWithCachedQuickDrawStyleState(&cityName);
+        SetQuickDrawFillColorFromPaletteIndex(0);
+        activeDc->SelectClipRgn(0);
+      }
+    }
+
+    neighborTile =
+        TMapMgr::GetNeighborTileID(tileIndex, static_cast<StrategicHexDirectionStorage>(0));
+    if (neighborTile != -1) {
+      const TTerrainStateRecordView& neighbor = g_pGlobalMapState->terrainStateTable[neighborTile];
+      if ((neighbor.activeFlags1c & 3) != 0 && neighbor.gateFlag != 0) {
+        CString cityName;
+        g_pGlobalMapState->AssignCityRecordDisplayName(neighbor.cityRecordIndex, &cityName);
+        CRgn clipRegion;
+        CDC* activeDc = GetActiveQuickDrawDc();
+        clipRegion.Attach(::CreateRectRgnIndirect(&tileRect));
+        activeDc->SelectClipRgn(&clipRegion);
+        clipRegion.DeleteObject();
+        SetQuickDrawTextFont(4);
+        SetQuickDrawTextSize(9);
+        SetQuickDrawTextFace(0);
+        int labelX = screenX + 0x40 - MeasureTextExtentWithCachedQuickDrawStyle(&cityName) / 2;
+        if ((neighbor.activeFlags1c & 1) == 0) {
+          labelX -= 10;
+        }
+        SetQuickDrawTextOriginWithContextOffset(static_cast<short>(labelX + 1), screenY + 10);
+        SetQuickDrawFillColorFromPaletteIndex(0);
+        DrawTextWithCachedQuickDrawStyleState(&cityName);
+        SetQuickDrawTextOriginWithContextOffset(static_cast<short>(labelX), screenY + 9);
+        SetQuickDrawFillColorFromPaletteIndex(0x13);
+        DrawTextWithCachedQuickDrawStyleState(&cityName);
+        SetQuickDrawFillColorFromPaletteIndex(0);
+        activeDc->SelectClipRgn(0);
+      }
+    }
+  }
+
   if (terrain.perTileVisitedFlag0f > 0) {
     int markerOffset = (terrain.perTileVisitedFlag0f - 1) << 6;
     Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas694[6], quickDrawSurface350,
                                    markerOffset, tileRect);
-  } else if (isOcean && terrain.tileActionState16 >= 0 &&
-             terrain.tileActionState16 < kMapTileActionStateStrategicAtlasFrameCount) {
-    int actionOffset = terrain.tileActionState16 << 6;
-    Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas690, quickDrawSurface350,
-                                   actionOffset, tileRect);
+  } else if (tileIndex == g_pGlobalMapState->pendingRiverMouthTile22 && isOcean) {
+    g_pUiRuntimeContext->SetForeColor(3);
+    CRect selectionRect(screenX + 0x20, screenY + 0x20, screenX + 0x21, screenY + 0x21);
+    FillRectWithQuickDrawBrushAndContextOffset(&selectionRect);
+  }
+
+  if (isOcean) {
+    if (terrain.tileActionState16 >= 0 &&
+        terrain.tileActionState16 < kMapTileActionStateStrategicAtlasFrameCount) {
+      int actionOffset = terrain.tileActionState16 << 6;
+      Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas690, quickDrawSurface350,
+                                     actionOffset, tileRect);
+    }
+    return;
+  }
+
+  const int activeNation = g_pSimMgr->GetActiveNationId();
+  TCivUnit* civilianOrder =
+      g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, static_cast<short>(activeNation));
+  if (civilianOrder == 0) {
+    civilianOrder = terrain.firstCivilianOrder20;
+  }
+  if (civilianOrder != 0 &&
+      (terrain.ownerNationTag04 == activeNation || terrain.ownerNationTag04 > 6)) {
+    RenderMapOrderEntryTilePreview(civilianOrder, screenY, screenX, 0, tileIndex);
+  }
+
+  if (tileDebugOverlayEnabled360) {
+    CString tileDebugText;
+    SetQuickDrawFillColor(0);
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x20, screenY + 0x20);
+    tileDebugText.Format(g_szDecimalFormat, static_cast<int>(terrain.cityRecordIndex));
+    DrawTextWithCachedQuickDrawStyleState(&tileDebugText);
   }
 }
 
