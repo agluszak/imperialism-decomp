@@ -105,6 +105,7 @@ CString g_faults("[");
 CString g_actionLog("[");
 CString g_lastFingerprint;
 CString g_mapStateJson;
+CString g_serializationRoundtripJson;
 
 // Easy-difficulty kinds share the setup flow (dif1 click, no capital pick).
 RuntimeScenario& ActiveScenario() {
@@ -437,60 +438,65 @@ bool WriteResultFile(const char* status, const char* failure) {
   if (!g_mapStateJson.IsEmpty()) {
     mapState = g_mapStateJson;
   }
+  CString roundtrip("null");
+  if (!g_serializationRoundtripJson.IsEmpty()) {
+    roundtrip = g_serializationRoundtripJson;
+  }
   CString json;
-  json.Format("{\n"
-              "  \"format_version\": 1,\n"
-              "  \"name\": \"%s\",\n"
-              "  \"status\": \"%s\",\n"
-              "  \"seed\": %u,\n"
-              "  \"idle_ticks\": %lu,\n"
-              "  \"elapsed_ms\": %lu,\n"
-              "  \"phase\": \"%s\",\n"
-              "  \"last_action\": \"%s\",\n"
-              "  \"event_sequence\": %s,\n"
-              "  \"actions\": %s,\n"
-              "  \"ui_snapshots\": %s,\n"
-              "  \"capital_confirmation_snapshot\": %s,\n"
-              "  \"map_state\": %s,\n"
-              "  \"state\": {\n"
-              "    \"turn_event\": %d,\n"
-              "    \"root_class\": \"%s\",\n"
-              "    \"active_nation\": %d,\n"
-              "    \"selected_nation\": %d,\n"
-              "    \"difficulty\": %d,\n"
-              "    \"multiplayer_role\": %d,\n"
-              "    \"turn_state\": %d,\n"
-              "    \"mode\": %d,\n"
-              "    \"global_map\": %s,\n"
-              "    \"display_manager\": %s,\n"
-              "    \"global_ui_root\": %s,\n"
-              "    \"simulation_manager\": %s,\n"
-              "    \"ui_runtime_context\": %s,\n"
-              "    \"ui_view_manager\": %s\n"
-              "  },\n"
-              "  \"runtime\": {\n"
-              "    \"faults\": %s,\n"
-              "    \"handled_modals\": %s,\n"
-              "    \"unexpected_modals\": %s\n"
-              "  },\n"
-              "  \"failure\": %s\n"
-              "}\n",
-              TestName(), status, g_runtimeTestState.seed, g_runtimeTestState.idleTicks,
-              GetTickCount() - g_runtimeTestState.startMs, PhaseName(),
-              g_runtimeTestState.lastAction, static_cast<LPCSTR>(eventSequence),
-              static_cast<LPCSTR>(actionLog), static_cast<LPCSTR>(uiSnapshots),
-              static_cast<LPCSTR>(capitalConfirmationSnapshot), static_cast<LPCSTR>(mapState),
-              g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
-              RuntimeClassName(mainView), g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1,
-              g_runtimeTestState.selectedNationSlot,
-              g_pSimMgr != 0 ? g_pSimMgr->difficultyLevel : -1,
-              g_pSimMgr != 0 ? g_pSimMgr->multiplayerSessionRole : -1,
-              g_pSimMgr != 0 ? g_pSimMgr->turnStateCode : -1, g_pSimMgr != 0 ? g_pSimMgr->mode : -1,
-              g_pGlobalMapState != 0 ? "true" : "false", g_pDisplayMgr != 0 ? "true" : "false",
-              g_pGlobalUiRootController != 0 ? "true" : "false", g_pSimMgr != 0 ? "true" : "false",
-              g_pUiRuntimeContext != 0 ? "true" : "false", g_pUiViewManager != 0 ? "true" : "false",
-              static_cast<LPCSTR>(faults), static_cast<LPCSTR>(handledModals),
-              static_cast<LPCSTR>(unexpectedModals), failure);
+  json.Format(
+      "{\n"
+      "  \"format_version\": 1,\n"
+      "  \"name\": \"%s\",\n"
+      "  \"status\": \"%s\",\n"
+      "  \"seed\": %u,\n"
+      "  \"idle_ticks\": %lu,\n"
+      "  \"elapsed_ms\": %lu,\n"
+      "  \"phase\": \"%s\",\n"
+      "  \"last_action\": \"%s\",\n"
+      "  \"event_sequence\": %s,\n"
+      "  \"actions\": %s,\n"
+      "  \"ui_snapshots\": %s,\n"
+      "  \"capital_confirmation_snapshot\": %s,\n"
+      "  \"map_state\": %s,\n"
+      "  \"serialization_roundtrip\": %s,\n"
+      "  \"state\": {\n"
+      "    \"turn_event\": %d,\n"
+      "    \"root_class\": \"%s\",\n"
+      "    \"active_nation\": %d,\n"
+      "    \"selected_nation\": %d,\n"
+      "    \"difficulty\": %d,\n"
+      "    \"multiplayer_role\": %d,\n"
+      "    \"turn_state\": %d,\n"
+      "    \"mode\": %d,\n"
+      "    \"global_map\": %s,\n"
+      "    \"display_manager\": %s,\n"
+      "    \"global_ui_root\": %s,\n"
+      "    \"simulation_manager\": %s,\n"
+      "    \"ui_runtime_context\": %s,\n"
+      "    \"ui_view_manager\": %s\n"
+      "  },\n"
+      "  \"runtime\": {\n"
+      "    \"faults\": %s,\n"
+      "    \"handled_modals\": %s,\n"
+      "    \"unexpected_modals\": %s\n"
+      "  },\n"
+      "  \"failure\": %s\n"
+      "}\n",
+      TestName(), status, g_runtimeTestState.seed, g_runtimeTestState.idleTicks,
+      GetTickCount() - g_runtimeTestState.startMs, PhaseName(), g_runtimeTestState.lastAction,
+      static_cast<LPCSTR>(eventSequence), static_cast<LPCSTR>(actionLog),
+      static_cast<LPCSTR>(uiSnapshots), static_cast<LPCSTR>(capitalConfirmationSnapshot),
+      static_cast<LPCSTR>(mapState), static_cast<LPCSTR>(roundtrip),
+      g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
+      RuntimeClassName(mainView), g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1,
+      g_runtimeTestState.selectedNationSlot, g_pSimMgr != 0 ? g_pSimMgr->difficultyLevel : -1,
+      g_pSimMgr != 0 ? g_pSimMgr->multiplayerSessionRole : -1,
+      g_pSimMgr != 0 ? g_pSimMgr->turnStateCode : -1, g_pSimMgr != 0 ? g_pSimMgr->mode : -1,
+      g_pGlobalMapState != 0 ? "true" : "false", g_pDisplayMgr != 0 ? "true" : "false",
+      g_pGlobalUiRootController != 0 ? "true" : "false", g_pSimMgr != 0 ? "true" : "false",
+      g_pUiRuntimeContext != 0 ? "true" : "false", g_pUiViewManager != 0 ? "true" : "false",
+      static_cast<LPCSTR>(faults), static_cast<LPCSTR>(handledModals),
+      static_cast<LPCSTR>(unexpectedModals), failure);
 
   return WriteFileAtomically(g_runtimeTestState.resultPath, json);
 }
@@ -1490,6 +1496,10 @@ void RuntimeScenario::EnterScenarioStep(const char* phaseName, const char* actio
   SetStep(RunScenarioOwnedStep, phaseName, action);
   g_runtimeTestState.lastHeartbeatMs = 0;
   MaybeWriteHeartbeat();
+}
+
+void RuntimeScenario::RecordSerializationRoundtripReport(const CString& reportJson) {
+  g_serializationRoundtripJson = reportJson;
 }
 
 void RuntimeScenario::StartRandomGameFlow() {

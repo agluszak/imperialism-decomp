@@ -27,6 +27,7 @@ TESTS = (
         ("repro",),
         required_oracles=("ui", "map"),
     ),
+    RuntimeTestSpec("serialization_roundtrip", ("pr", "full"), required_oracles=()),
     RuntimeTestSpec(
         "load_saved_game",
         ("full",),
