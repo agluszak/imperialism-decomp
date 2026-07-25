@@ -4325,10 +4325,10 @@ address|matching|name
 0x562190|1.0|TOcean::GetRuntimeClass
 0x5621b0|1.0|ResetPortZoneGlobalContextCounters
 0x5621e0|1.0|TOcean::Free
-0x562340|0.38974358974358975|TOcean::ReadFrom
+0x562340|0.4724137931034483|TOcean::ReadFrom
 0x5627a0|0.9583333333333334|TZone::~TZone
 0x562880|1.0|TZone::`vector deleting destructor'
-0x5628f0|0.7735849056603774|TOcean::WriteTo
+0x5628f0|0.6962025316455697|TOcean::WriteTo
 0x562af0|0.7919463087248322|RelaxMapTileCostFieldByNeighborTerrain
 0x562c00|0.5803108808290155|SelectBestSeedTileForNationFromCostField
 0x562d90|0.7623762376237624|TOcean::InitializeMapActionContextsForNationCountUsingCostField
