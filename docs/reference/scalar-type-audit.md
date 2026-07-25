@@ -113,8 +113,8 @@ decisions -- including the ones that were measured and reverted -- is
 
 | Source | Detail | Classification | Evidence |
 | --- | --- | --- | --- |
-| `src/game/city/TCity.cpp:863` | predicate -> char | `predicate_arithmetic_into_byte_return` | the value is not a predicate: the comparison result is an addend (`(0x0f < capacity) + 3`) producing building tier 3 or 4, narrowed once at the char return. bool would force an extra normalization and lose the arithmetic shape. |
-| `src/game/city/TCity.cpp:871` | predicate -> char | `predicate_arithmetic_into_byte_return` | the sibling tier computation `(0x1f < capacity) + 3` on the next capacity band, with the same char return. |
+| `src/game/city/TCity.cpp:870` | predicate -> char | `predicate_arithmetic_into_byte_return` | the value is not a predicate: the comparison result is an addend (`(0x0f < capacity) + 3`) producing building tier 3 or 4, narrowed once at the char return. bool would force an extra normalization and lose the arithmetic shape. |
+| `src/game/city/TCity.cpp:878` | predicate -> char | `predicate_arithmetic_into_byte_return` | the sibling tier computation `(0x1f < capacity) + 3` on the next capacity band, with the same char return. |
 | `src/game/city_ui/TEngineerDialog.cpp:112` | predicate -> unsigned char | `byte_field_storage` | TEngineerDialog::BuildCityViewProductionControls stores the fort-availability predicate ((activeFlags1c >> 4) & 1 == 0) into a one-byte local mirroring the original's SETZ byte store; the explicit conversion preserves that byte layout and the value later gates widget construction, not a bool branch. |
 | `src/game/city_ui/TEngineerDialog.cpp:113` | predicate -> unsigned char | `byte_field_storage` | the rail-availability predicate ((activeFlags1c >> 2) & 1 == 0) stored into the sibling one-byte local, same SETZ byte-store shape. |
 | `src/game/military_ui/TArmyCheckBox.cpp:139` | predicate -> unsigned char | `byte_abi_argument` | TArmyCheckBox::SetState is a virtual taking `unsigned char on` at slot 0x72 (0x004aa360); the toggle passes the inverted IsOn() predicate through that byte parameter, so the conversion belongs at the ABI boundary and the parameter must not become bool. |
@@ -292,8 +292,8 @@ is classified, and a family that stops appearing must be removed.
 | `bd0a5d6bf28d042b` | `nested_integral_cast` | `src/game/ui_screens/TSimMgr.cpp:2419` | short -> short | `narrow_operand_then_narrow_result` | `imperialism-decomp-1uj.99.2` |
 | `d6c4811bfba0d8c3` | `nested_integral_cast` | `src/game/ui_screens/TZone.cpp:718` | short -> unsigned short | `narrow_operand_then_narrow_result` | `imperialism-decomp-1uj.99.2` |
 | `455e7f2ca9d668cc` | `nested_integral_cast` | `src/game/ui_screens/TZone.cpp:782` | signed char -> unsigned char | `signed_byte_sign_test` | `imperialism-decomp-1uj.99.2` |
-| `d144e1a86956838b` | `predicate_storage_cast` | `src/game/city/TCity.cpp:863` | predicate -> char | `predicate_arithmetic_into_byte_return` | `imperialism-decomp-1uj.99.7` |
-| `853e86ea99ed7cf3` | `predicate_storage_cast` | `src/game/city/TCity.cpp:871` | predicate -> char | `predicate_arithmetic_into_byte_return` | `imperialism-decomp-1uj.99.7` |
+| `d144e1a86956838b` | `predicate_storage_cast` | `src/game/city/TCity.cpp:870` | predicate -> char | `predicate_arithmetic_into_byte_return` | `imperialism-decomp-1uj.99.7` |
+| `853e86ea99ed7cf3` | `predicate_storage_cast` | `src/game/city/TCity.cpp:878` | predicate -> char | `predicate_arithmetic_into_byte_return` | `imperialism-decomp-1uj.99.7` |
 | `06ed593903a04495` | `predicate_storage_cast` | `src/game/city_ui/TEngineerDialog.cpp:112` | predicate -> unsigned char | `byte_field_storage` | `imperialism-decomp-1uj.99.7` |
 | `290838552df4ad4a` | `predicate_storage_cast` | `src/game/city_ui/TEngineerDialog.cpp:113` | predicate -> unsigned char | `byte_field_storage` | `imperialism-decomp-1uj.99.7` |
 | `ef3d88e3b5456166` | `predicate_storage_cast` | `src/game/military_ui/TArmyCheckBox.cpp:139` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
@@ -311,13 +311,13 @@ is classified, and a family that stops appearing must be removed.
 | `754a989e0e3df21a` | `raw_discriminant_literal` | `src/game/assets/TCdAudioDevice.cpp:188` | deviceKind == 2 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
 | `ea417a6a61d3d393` | `raw_discriminant_literal` | `src/game/city/TCapacityOrder.cpp:172` | resourceTypeIndex48 != 0 | `unresolved_narrower_subdomain` | `imperialism-decomp-1uj.99.8` |
 | `f907e6612b1d2cf9` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:293` | taskKind == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `c9b19f9faa0f5a57` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:903` | buildingType == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `d787baa854421514` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:906` | buildingType < 0x10 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `34317d5b1d7c7077` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:910` | buildingType >= 0x20 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `ab89945c627821a9` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:916` | buildingType == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `bedae6fb0a293d45` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:919` | buildingType < 8 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `3a27748b61cc6ae7` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:923` | buildingType >= 0x10 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `852bcc8302841190` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:928` | buildingType != 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `c9b19f9faa0f5a57` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:910` | buildingType == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `d787baa854421514` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:913` | buildingType < 0x10 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `34317d5b1d7c7077` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:917` | buildingType >= 0x20 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `ab89945c627821a9` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:923` | buildingType == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `bedae6fb0a293d45` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:926` | buildingType < 8 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `3a27748b61cc6ae7` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:930` | buildingType >= 0x10 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `852bcc8302841190` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:935` | buildingType != 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `6e3edc5670bb2ef9` | `raw_discriminant_literal` | `src/game/city/TExpansionOrder.cpp:48` | resourceTypeIndex48 == 0x0f | `unresolved_narrower_subdomain` | `imperialism-decomp-1uj.99.8` |
 | `bd328d9447ddc0ed` | `raw_discriminant_literal` | `src/game/city/TShipOrder.cpp:192` | resourceTypeIndex48 != 0 | `unresolved_narrower_subdomain` | `imperialism-decomp-1uj.99.8` |
 | `c8ac857dcb374d76` | `raw_discriminant_literal` | `src/game/city/TTrainingOrder.cpp:46` | resourceTypeIndex48 == 1 | `unresolved_narrower_subdomain` | `imperialism-decomp-1uj.99.8` |
