@@ -6147,7 +6147,7 @@ address|matching|name
 0x5d8dd0|0.12933025404157045|TViewMgr::HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor
 0x5da040|0.5483870967741935|TViewMgr::RefreshMainDialogAndCursorHelp
 0x5da180|0.6919431279620853|TViewMgr::HandleTurnEvent2260_RefreshMainHudTitles
-0x5da360|0.046598322460391424|TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons
+0x5da360|0.05123513266239707|TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons
 0x5db2f0|1.0|CString::GetLength
 0x5db3b0|0.2422145328719723|TViewMgr::HandleTurnEventDialogFactorySlotF4
 0x5db620|0.7692307692307693|TViewMgr::HandleTurnStateExitAndPostFollowupEventCode
