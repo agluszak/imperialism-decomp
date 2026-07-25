@@ -1,0 +1,236 @@
+#include "RuntimeScenario.h"
+
+#include "game/ArchiveStreamAdapter.h"
+#include "game/app/TAnimator.h"
+#include "game/city_ui/TCountry.h"
+#include "game/core/TFileStream.h"
+#include "game/gfx/TAmbitApplication.h"
+#include "game/map/TMapMgr.h"
+#include "game/military/TArmyMgr.h"
+#include "game/military_ui/TDiplomacyMgr.h"
+#include "game/navy/TNavyMgr.h"
+#include "game/navy/TOcean.h"
+#include "game/tactical_ui/TTechMgr.h"
+#include "game/ui_core/THelpMgr.h"
+#include "game/ui_core/TMacViewMgr.h"
+#include "game/ui_core/TViewMgr.h"
+#include "game/ui_screens/TNewsMgr.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/ui_tags_map.h"
+#include "game/ui_widgets/TTradeMgr.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
+
+// Save-stream checkpoint oracle.
+//
+// The round-trip test proves our reader agrees with our writer. This proves our reader
+// agrees with the RETAIL FORMAT, which is the other half and the one that decides whether
+// load_saved_game can pass: it replays a real save through the manager chain and records
+// the byte offset either side of every ReadFrom. The first manager whose span does not
+// end where the next one's begins is named outright instead of inferred, and if the final
+// offset equals the file length the whole chain's accounting is proved end to end.
+//
+// It deliberately reimplements the DoRead sequence here rather than instrumenting
+// TAmbitFileBasedDocument::DoRead (0x49e6a0). Adding checkpoint calls to a production
+// body would change its codegen and its reccmp score for the sake of a test; the header
+// layout and manager order are small, fixed, and asserted against DoRead by the comment
+// below, so the duplication is cheap and the production tree stays untouched.
+//
+// KEEP IN SYNC with TAmbitFileBasedDocument::DoRead. If a manager is added, removed or
+// reordered there, this list must follow, or the oracle will report a phantom desync.
+
+namespace {
+
+// CArchive buffers ahead of its caller and keeps the buffer cursor protected, so the
+// file's own offset is not the logical read position. Count what the managers actually
+// consume instead: every typed accessor on TStream funnels through the ReadBytes
+// primitive (slot 0x3c), so overriding that one method sees every byte.
+//
+// The exception is ReadObject (slot 0xb0), which TFileStream forwards straight to
+// CArchive::ReadObject without going through ReadBytes. Spans containing one are marked
+// approximate rather than silently wrong -- in this chain that is the nation records,
+// whose mission-node queues read objects.
+class CountingFileStream : public TFileStream {
+public:
+  CountingFileStream() : consumed(0), objectReads(0) {}
+
+  void ReadBytes(void* destination, int requestedCount) override {
+    TFileStream::ReadBytes(destination, requestedCount);
+    consumed += requestedCount;
+  }
+
+  char ReadObject(void* outObject) override {
+    ++objectReads;
+    return TFileStream::ReadObject(outObject);
+  }
+
+  int consumed;
+  int objectReads;
+};
+
+class SaveStreamCheckpointTestCase : public RuntimeScenario {
+public:
+  const char* Name() const override {
+    return "save_stream_checkpoints";
+  }
+  bool RequiresFixture() const override {
+    return true;
+  }
+  bool RequiresMainWindow() const override {
+    return false;
+  }
+
+  void OnManagersReady() override {
+    EnterScenarioStep("save_stream_checkpoints", "replay_fixture");
+    Replay();
+  }
+
+private:
+  CString report;
+  int entries;
+
+  void Replay() {
+    report = "[";
+    entries = 0;
+
+    CFile file;
+    CFileException error;
+    if (!file.Open(FixturePath(), CFile::modeRead | CFile::shareDenyWrite, &error)) {
+      FailScenario("\"could not open the save fixture for checkpoint replay\"");
+      return;
+    }
+    const int fileLength = static_cast<int>(file.GetLength());
+
+    CArchive archive(&file, CArchive::load);
+    ArchiveStreamAdapter adapter(&archive);
+    CountingFileStream stream;
+    stream.SetBackingArchive(&adapter);
+
+    // Header, exactly as DoRead consumes it.
+    int fileMagic = 0;
+    int savedSessionSlot = 0;
+    char label[0x20];
+    stream.ReadBytes(&fileMagic, 4);
+    stream.ReadBytes(&g_nSaveFormatVersion, 4);
+    stream.ReadBytes(&savedSessionSlot, 4);
+    stream.ReadBytes(label, 0x20);
+    if (fileMagic != kControlTagAMBI) {
+      g_nSaveFormatVersion = -1;
+      FailScenario("\"save fixture does not start with the AMBI magic\"");
+      return;
+    }
+    unsigned char discarded[0x1950];
+    stream.ReadBytes(discarded, 0x1950);
+    stream.ReadBytes(discarded, 0x24);
+    Record("header", 0, stream.consumed, 0);
+
+    struct ChainEntry {
+      const char* name;
+      TObject* object;
+    };
+    ChainEntry chain[] = {
+        {"TAmbitApplication", g_pGlobalUiRootController},
+        {"TSimMgr", g_pSimMgr},
+        {"TAnimator", g_pUiAnimator},
+        {"TTradeMgr", g_pNationInteractionStateManager},
+        {"TDiplomacyMgr", g_pDiplomacyTurnStateManager},
+        {"TTechMgr", g_pCityOrderCapabilityState},
+        {"TMapMgr", g_pGlobalMapState},
+        {"TOcean", g_pActiveMapOrderContext},
+        {"TNavyMgr", g_pNavyOrderManager},
+        {"TArmyMgr", g_pMapContextActionManager},
+    };
+    const int chainCount = sizeof(chain) / sizeof(chain[0]);
+
+    for (int index = 0; index < chainCount; ++index) {
+      if (!ReadOne(stream, chain[index].name, chain[index].object)) {
+        return;
+      }
+    }
+
+    for (short slot = 0; slot < kTerrainTypeDescriptorTableCount; ++slot) {
+      if (g_apTerrainTypeDescriptorTable[slot] == 0) {
+        continue;
+      }
+      CString label2;
+      label2.Format("nation[%d]", slot);
+      if (!ReadOne(stream, label2, g_apTerrainTypeDescriptorTable[slot])) {
+        return;
+      }
+    }
+
+    ChainEntry tail[] = {
+        {"TViewMgr", g_pUiRuntimeContext},
+        {"TMacViewMgr", g_pStrategicMapViewSystem},
+        {"TNewsMgr", g_pNewsMgr},
+        {"THelpMgr", g_pHelpMgr},
+    };
+    // VC5 leaks a for-scoped declaration into the enclosing block, so this loop needs
+    // its own name rather than reusing `index`.
+    for (int tailIndex = 0; tailIndex < 4; ++tailIndex) {
+      if (!ReadOne(stream, tail[tailIndex].name, tail[tailIndex].object)) {
+        return;
+      }
+    }
+
+    // The decisive whole-chain assertion, and the one immune to buffering: if the chain
+    // consumed the file exactly, one more byte cannot be read.
+    unsigned char probe = 0;
+    const UINT leftover = archive.Read(&probe, 1);
+    report += "\n  ]";
+    RecordSerializationRoundtripReport(report);
+    g_nSaveFormatVersion = -1;
+
+    if (leftover != 0) {
+      CString failure;
+      failure.Format("\"the manager chain left bytes unread (counted %d consumed of a %d "
+                     "byte file); the last span in serialization_roundtrip whose size looks "
+                     "wrong names the first divergent manager\"",
+                     stream.consumed, fileLength);
+      FailScenario(failure);
+      return;
+    }
+    Pass();
+  }
+
+  // Reading into the live managers is what the real load does; a checkpoint replay that
+  // read into throwaway objects would not exercise the same version gates or collection
+  // states. The game state after this test is spent, which is why nothing follows it.
+  bool ReadOne(CountingFileStream& stream, const char* name, TObject* object) {
+    if (object == 0) {
+      CString failure;
+      failure.Format("\"%s is null before its ReadFrom; the chain cannot be replayed\"", name);
+      report += "\n  ]";
+      RecordSerializationRoundtripReport(report);
+      g_nSaveFormatVersion = -1;
+      FailScenario(failure);
+      return false;
+    }
+    const int before = stream.consumed;
+    const int objectsBefore = stream.objectReads;
+    object->ReadFrom(&stream);
+    Record(name, before, stream.consumed, stream.objectReads - objectsBefore);
+    return true;
+  }
+
+  void Record(const char* name, int before, int after, int objectReads) {
+    CString entry;
+    entry.Format("\n    {\"span\": \"%s\", \"from\": %d, \"to\": %d, \"bytes\": %d, "
+                 "\"object_reads\": %d, \"exact\": %s}",
+                 name, before, after, after - before, objectReads,
+                 objectReads == 0 ? "true" : "false");
+    if (entries != 0) {
+      report += ",";
+    }
+    report += entry;
+    ++entries;
+  }
+};
+
+SaveStreamCheckpointTestCase g_test;
+
+} // namespace
+
+RuntimeTestCase* SaveStreamCheckpointTest() {
+  return &g_test;
+}

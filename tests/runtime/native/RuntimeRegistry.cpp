@@ -17,6 +17,7 @@ RuntimeTestDescriptor g_descriptors[] = {
     {"load_saved_game", LoadSavedGameTest()},
     {"turn_event_queue_bounds", TurnEventQueueBoundsTest()},
     {"serialization_roundtrip", SerializationRoundtripTest()},
+    {"save_stream_checkpoints", SaveStreamCheckpointTest()},
 };
 
 } // namespace

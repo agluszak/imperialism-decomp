@@ -29,6 +29,12 @@ TESTS = (
     ),
     RuntimeTestSpec("serialization_roundtrip", ("pr", "full"), required_oracles=()),
     RuntimeTestSpec(
+        "save_stream_checkpoints",
+        ("full",),
+        fixture="beginning_of_game.imp",
+        required_oracles=(),
+    ),
+    RuntimeTestSpec(
         "load_saved_game",
         ("full",),
         fixture="beginning_of_game.imp",
