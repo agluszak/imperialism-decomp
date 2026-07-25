@@ -12,6 +12,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
+#include "game/pointer_representation.h"
 
 // SYNTHETIC: IMPERIALISM 0x004933d0
 // CMcWindow::CreateObject
@@ -271,8 +272,9 @@ HBRUSH CMcWindow::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) {
 // FUNCTION: IMPERIALISM 0x00493c30
 BOOL CMcWindow::OnCommand(WPARAM wParam, LPARAM lParam) {
   if (HIWORD(wParam) == 0x400) {
+    HWND controlWindow = static_cast<HWND>(PointerFromAddressLong32(lParam));
     TView* controlView =
-        reinterpret_cast<TView*>(::GetWindowLong(reinterpret_cast<HWND>(lParam), GWL_USERDATA));
+        static_cast<TView*>(PointerFromAddressLong32(::GetWindowLong(controlWindow, GWL_USERDATA)));
     if (controlView != NULL) {
       controlView->RefreshControl();
       m_pOwnerWindow->ForceRedraw();

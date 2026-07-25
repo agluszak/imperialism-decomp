@@ -1,4 +1,5 @@
 #include "game/assets/TCdAudioDevice.h"
+#include "game/pointer_representation.h"
 
 #include "game/globals/prelude.h"
 #include "game/globals/assets_globals.h"
@@ -208,5 +209,5 @@ bool __stdcall SendMciCommand804ToDevice(MCIDEVICEID device) {
 
 // FUNCTION: IMPERIALISM 0x005e1a10
 void __stdcall SendMciStopCommandToDevice(MCIDEVICEID device) {
-  mciSendCommandA(device, MCI_STOP, 0, reinterpret_cast<DWORD>(&device));
+  mciSendCommandA(device, MCI_STOP, 0, PointerAddressBits32(&device));
 }

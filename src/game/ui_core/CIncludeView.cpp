@@ -15,6 +15,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
+#include "game/pointer_representation.h"
 
 // MCIWNDM_NOTIFYMODE / MCI_MODE_STOP for the movie stop-notify handler. NOAVIFILE keeps
 // this to the MCIWnd control messages without pulling in the AVIFile COM interfaces.
@@ -423,7 +424,8 @@ HBRUSH CIncludeView::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) {
   CWnd::OnCtlColor(pDC, pWnd, nCtlColor);
   if (nCtlColor == CTLCOLOR_EDIT) {
     HWND controlWindow = pWnd != NULL ? pWnd->m_hWnd : NULL;
-    TControl* control = reinterpret_cast<TControl*>(::GetWindowLong(controlWindow, GWL_USERDATA));
+    TControl* control = static_cast<TControl*>(
+        PointerFromAddressLong32(::GetWindowLong(controlWindow, GWL_USERDATA)));
     if (control != NULL) {
       g_pModuleLibraryCacheState->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(pDC, FALSE);
       pDC->SetBkColor(0x0000ff00);
@@ -435,7 +437,8 @@ HBRUSH CIncludeView::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) {
     }
   }
   pDC->SetBkMode(TRANSPARENT);
-  return reinterpret_cast<HBRUSH>(::GetStockObject(NULL_BRUSH));
+  return static_cast<HBRUSH>(
+      PointerFromAddressLong32(PointerAddressLong32(::GetStockObject(NULL_BRUSH))));
 }
 
 // FUNCTION: IMPERIALISM 0x00483720
@@ -561,7 +564,7 @@ BOOL CIncludeView::PreCreateWindow(CREATESTRUCT& cs) {
   wndClass.lpfnWndProc = ::DefWindowProc;
   wndClass.hInstance = AfxGetInstanceHandle();
   wndClass.style = CS_VREDRAW | CS_HREDRAW;
-  wndClass.hbrBackground = reinterpret_cast<HBRUSH>(5);
+  wndClass.hbrBackground = static_cast<HBRUSH>(PointerFromAddressLong32(5));
   wndClass.lpszClassName = "AmbitGameWindow";
   wndClass.hIcon = ::LoadIcon(AfxGetResourceHandle(), MAKEINTRESOURCE(0x7a02));
   if (wndClass.hIcon == NULL) {
@@ -581,8 +584,9 @@ BOOL CIncludeView::PreCreateWindow(CREATESTRUCT& cs) {
 // FUNCTION: IMPERIALISM 0x00483e80
 BOOL CIncludeView::OnCommand(WPARAM wParam, LPARAM lParam) {
   if (HIWORD(wParam) == 0x400) {
+    HWND controlWindow = static_cast<HWND>(PointerFromAddressLong32(lParam));
     TView* controlView =
-        reinterpret_cast<TView*>(::GetWindowLong(reinterpret_cast<HWND>(lParam), GWL_USERDATA));
+        static_cast<TView*>(PointerFromAddressLong32(::GetWindowLong(controlWindow, GWL_USERDATA)));
     if (controlView != NULL) {
       controlView->RefreshControl();
       m_activeDialogContext->ForceRedraw();

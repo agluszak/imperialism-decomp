@@ -3,6 +3,7 @@
 #include "game/gfx/TModalDialogBase.h"
 
 #include "game/mfc.h"
+#include "game/pointer_representation.h"
 
 namespace {
 
@@ -38,9 +39,9 @@ TModalDialogBase::TModalDialogBase(UINT nIDTemplate, CWnd* pParentWnd)
 
 // FUNCTION: IMPERIALISM 0x0049d360
 int TModalDialogBase::PrepareAndCreateModalFromTemplate() {
-  void* templateBytes = const_cast<void*>(reinterpret_cast<const void*>(m_lpDialogTemplate));
+  void* templateBytes = const_cast<void*>(static_cast<const void*>(m_lpDialogTemplate));
   loadedResource = m_hDialogTemplate;
-  const UINT templateId = static_cast<UINT>(reinterpret_cast<DWORD>(m_lpszTemplateName));
+  const UINT templateId = PointerAddressBits32(m_lpszTemplateName);
   if (templateId != 0) {
     AFX_MODULE_STATE* moduleState = AfxGetModuleState();
     HMODULE module = moduleState->m_hCurrentInstanceHandle;

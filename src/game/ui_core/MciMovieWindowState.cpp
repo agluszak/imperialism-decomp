@@ -1,6 +1,7 @@
 #include "game/ui_core/MciMovieWindowState.h"
 
 #include "game/mfc.h"
+#include "game/pointer_representation.h"
 
 // FUNCTION: IMPERIALISM 0x00492f60
 MciMovieWindowState::MciMovieWindowState(HWND parentHwnd) {
@@ -16,7 +17,7 @@ void MciMovieWindowState::Close() {
 
 // FUNCTION: IMPERIALISM 0x00492fc0
 bool MciMovieWindowState::OpenAndCenter(LPCSTR moviePath) {
-  lastResult = SendMessageA(hwnd, MCIWNDM_OPENA, 0, reinterpret_cast<LPARAM>(moviePath));
+  lastResult = SendMessageA(hwnd, MCIWNDM_OPENA, 0, PointerAddressLong32(moviePath));
   if (lastResult == 0) {
     CWnd window;
     window.Attach(hwnd);

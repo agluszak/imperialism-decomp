@@ -49,9 +49,6 @@ native_integral_reviews:
   c2e2852e7faabcf6:
     classification: win32_uint_sentinel
     evidence: MessageBeep takes UINT and 0xffffffff selects the simple default sound; retail wrapper 0x004931e0 pushes -1 directly.
-  3971bc60890cc38d:
-    classification: win32_resource_identifier
-    evidence: MFC stores integer dialog resource IDs in the pointer-shaped m_lpszTemplateName field; FindResourceA consumes the recovered low UINT identifier at 0x0049d360.
   04a2df0d87143ebc:
     classification: mfc_word_map_key
     evidence: m_tableA is keyed by WORD and the BMP resource identifier stays 32-bit until the CMap lookup boundary in retail 0x00499b40.
