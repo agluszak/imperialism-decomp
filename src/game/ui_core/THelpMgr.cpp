@@ -162,7 +162,7 @@ void THelpMgr::ReadFrom(TStream* stream) {
     short* counters = civilianCompletionCounters10.values;
     stream->ReadBytes(counters, 10);
     for (int i = 0; i < 5; ++i) {
-      unsigned char* bytes = reinterpret_cast<unsigned char*>(&counters[i]);
+      unsigned char* bytes = static_cast<unsigned char*>(static_cast<void*>(&counters[i]));
       unsigned char first = bytes[0];
       bytes[0] = bytes[1];
       bytes[1] = first;
@@ -180,7 +180,7 @@ void THelpMgr::WriteTo(TStream* stream) {
   short* counters = civilianCompletionCounters10.values;
   for (int i = 0; i < 5; ++i) {
     short swapped = counters[i];
-    unsigned char* bytes = reinterpret_cast<unsigned char*>(&swapped);
+    unsigned char* bytes = static_cast<unsigned char*>(static_cast<void*>(&swapped));
     unsigned char first = bytes[0];
     bytes[0] = bytes[1];
     bytes[1] = first;

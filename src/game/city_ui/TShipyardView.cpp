@@ -429,7 +429,7 @@ void TShipyardView::SetStats(short shipType) {
     TNumberText* stat =
         static_cast<TNumberText*>(ResolveControlByTag(kControlTagSta0 + statIndex)); // 'sta0'+index
     stat->AssertValid();
-    stat->SetControlValue(GetResourceDescriptorWord08ByTypeOffset(shipType, statIndex), 0);
+    stat->SetControlValue(GetResourceDescriptorStatByColumn(shipType, statIndex), 0);
     stat->QueryBounds(&invalidRect);
     InvalidateCityDialogRectRegion(&invalidRect, 1);
   }

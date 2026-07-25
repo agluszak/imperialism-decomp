@@ -51,6 +51,52 @@ struct SeaSegment {
   unsigned char wrap16; // +0x16 set when the segment spans the horizontal wrap (|dx| > 0x6c)
   unsigned char pad17;  // +0x17
 
+  // The city-region merge pass consumes this persisted record as a bounding box plus two
+  // region ids. These typed accessors keep that phase-specific view at the record boundary
+  // without changing the VC5 aggregate shape used by stretch<SeaSegment>.
+  short& BorderX0() {
+    return x0;
+  }
+  short& BorderY0() {
+    return y0;
+  }
+  short& BorderX1() {
+    return x1;
+  }
+  short& BorderY1() {
+    return y1;
+  }
+  int& BorderReserved08() {
+    return coord0;
+  }
+  int& BorderReserved0c() {
+    return coord1;
+  }
+  short& BorderRegionA() {
+    return attr10;
+  }
+  short& BorderRegionB() {
+    return attr12;
+  }
+  short BorderX0() const {
+    return x0;
+  }
+  short BorderY0() const {
+    return y0;
+  }
+  short BorderX1() const {
+    return x1;
+  }
+  short BorderY1() const {
+    return y1;
+  }
+  short BorderRegionA() const {
+    return attr10;
+  }
+  short BorderRegionB() const {
+    return attr12;
+  }
+
   // Build the segment from two Seapoints' linear coords, normalize endpoint order and
   // recompute the heading angle. 0x0052b220.
   void InitFromPoints(const Seapoint* p0, const Seapoint* p1);

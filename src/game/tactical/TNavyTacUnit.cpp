@@ -1,5 +1,7 @@
 #include "game/tactical/TNavyTacUnit.h"
 
+#include <string.h>
+
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/navy/TShip.h"
@@ -62,21 +64,21 @@ float TNavyTacUnit::GetDamageScale() {
 }
 
 // FUNCTION: IMPERIALISM 0x005a63c0
-void TNavyTacUnit::ApplyTacticalDamageAndDeathState(float damageAmount, int damageMode) {
+void TNavyTacUnit::ApplyNavalDamage(float damageAmount, NavyTargeting targeting) {
   int hullDelta;
   int crewDelta;
   int actionPointDelta = 0;
 
-  switch (damageMode) {
-  case 0:
+  switch (targeting) {
+  case kNavyTargetingHull:
     hullDelta = static_cast<int>(damageAmount);
     crewDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA_00669f10);
     break;
-  case 1:
+  case kNavyTargetingCrew:
     hullDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA_00669f10);
     crewDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioB_00669f18);
     break;
-  case 2:
+  case kNavyTargetingSail:
     hullDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA_00669f10);
     crewDelta = 0;
     if (static_cast<float>(rand() % 10) < damageAmount) {
@@ -84,10 +86,9 @@ void TNavyTacUnit::ApplyTacticalDamageAndDeathState(float damageAmount, int dama
     }
     break;
   default:
-    // Unreached in practice (damageMode is always the 0-2 ship-panel toggle); the original
-    // just reinterprets damageAmount's raw bits as both deltas rather than converting them.
-    hullDelta = *reinterpret_cast<int*>(&damageAmount);
-    crewDelta = *reinterpret_cast<int*>(&damageAmount);
+    // Unreached in practice; preserve the original default branch's raw float bits.
+    memcpy(&hullDelta, &damageAmount, sizeof(hullDelta));
+    crewDelta = hullDelta;
     break;
   }
 

@@ -693,15 +693,15 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
     // iteration); compareRow is a fresh per-row cursor reset from it -- the original
     // (pcVar9/pcVar10 at 0x0050b640) keeps these separate so the inner loop's 214
     // single-byte steps never bleed into the row stride advance.
-    char* rowStart = reinterpret_cast<char*>(smoothingBase + 1);
-    char* scratchRow = reinterpret_cast<char*>(scratchBuffer + 0x1b1);
+    unsigned char* rowStart = smoothingBase + 1;
+    unsigned char* scratchRow = scratchBuffer + 0x1b1;
     int edgeRow = 0x70;
     while (edgeRow != 0) {
       int edgeCol = 0xd6;
-      char* compareRow = rowStart;
+      unsigned char* compareRow = rowStart;
       while (edgeCol != 0) {
-        char centerPixel = compareRow[0];
-        char neighborPixel;
+        unsigned char centerPixel = compareRow[0];
+        unsigned char neighborPixel;
         if ((compareRow[-static_cast<int>(strideBytes)] != centerPixel) &&
             ((neighborPixel = compareRow[-1], neighborPixel != centerPixel) ||
              (neighborPixel = compareRow[1], neighborPixel != centerPixel))) {

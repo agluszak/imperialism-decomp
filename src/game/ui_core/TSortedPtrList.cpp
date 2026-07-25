@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "game/core/TStream.h"
+#include "game/pointer_representation.h"
 #include "game/mfc.h"
 
 // SYNTHETIC: IMPERIALISM 0x00488030
@@ -102,10 +103,10 @@ void TSortedPtrList::InsertCopiedRecordAtFrontOfPtrList(void* record) {
 
 // FUNCTION: IMPERIALISM 0x00488360
 short TSortedPtrList::Compare(void* a, void* b) {
-  if (reinterpret_cast<unsigned int>(a) > reinterpret_cast<unsigned int>(b)) {
+  if (PointerAddressBits32(a) > PointerAddressBits32(b)) {
     return 1;
   }
-  if (reinterpret_cast<unsigned int>(a) < reinterpret_cast<unsigned int>(b)) {
+  if (PointerAddressBits32(a) < PointerAddressBits32(b)) {
     return -1;
   }
   return 0;

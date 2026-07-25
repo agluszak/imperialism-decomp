@@ -194,10 +194,6 @@ public:
   // "targ" command: cycles the selected unit's target to the next reachable enemy unit,
   // recentering the view on it (or plays a "no target" cue). 0x5a3f10, __thiscall.
   void HandleTacticalCommandTag_targ();
-  // Sets the current side's navy ship-panel display mode (hull/crew/sail) from the navy
-  // toolbar; the players are TNavyPlayer in a sea battle. 0x5a5b90, __thiscall.
-  void SetCurrentSideNavyShipDisplayMode(int mode);
-
   // Helpers the command family dispatches into (all __thiscall on the battle).
   void ApplyTacticalDoneSelectionAndRefreshUi(TTacticalUnit* unit); // 0x59fe40
   // Mac identities: GetNeighborList(long, long*) and AreNeighbors(long, long).

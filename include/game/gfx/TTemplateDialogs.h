@@ -453,13 +453,13 @@ public:
   TDDTemplateDialog(void* initParam); // 0x0047d540
   ~TDDTemplateDialog() override;      // 0x00413c30 — frees the outline buffer
 
-  CDib* picture;        // 0x74 source picture/DIB (not owned here; set by the caller)
-  int drawOutline;      // 0x78 != 0 -> draw red silhouette polyline in OnPaint
-  int fillPolygon;      // 0x7c != 0 -> fill silhouette region red in OnPaint
-  int renderMode;       // 0x80 OnPaint blit-mode selector (0 = simple/blit, != 0 = masked stretch)
-  unsigned int flag84;  // 0x84 = flags88 & 1 (computed in OnInitDialog)
-  unsigned int flags88; // 0x88 flags source (set by the caller)
-  int* outlinePolygon;  // 0x8c heap silhouette buffer: [0]=count, POINT pairs from index 2
+  CDib* picture;         // 0x74 source picture/DIB (not owned here; set by the caller)
+  int drawOutline;       // 0x78 != 0 -> draw red silhouette polyline in OnPaint
+  int fillPolygon;       // 0x7c != 0 -> fill silhouette region red in OnPaint
+  int renderMode;        // 0x80 OnPaint blit-mode selector (0 = simple/blit, != 0 = masked stretch)
+  unsigned int flag84;   // 0x84 = flags88 & 1 (computed in OnInitDialog)
+  unsigned int flags88;  // 0x88 flags source (set by the caller)
+  POINT* outlinePolygon; // 0x8c heap silhouette buffer: [0].x=count, vertices from [1]
   const char* windowTitle; // 0x90 LPCSTR passed to SetWindowText (set by the caller)
 
 protected:

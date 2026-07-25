@@ -26,12 +26,12 @@
 // Swap one 16-bit field in place. The image carries two byte-identical bodies (the
 // original emits a copy per module); the read path calls 0x004f2970 and the write path
 // calls 0x004b9340, so both keep a definition and a name.
-void ByteSwapShortInPlace(unsigned char* bytes);       // 0x004f2970
-void SwapFirstTwoBytesInBuffer(unsigned char* buffer); // 0x004b9340
+void ByteSwapShortInPlace(short* value);      // 0x004f2970
+void SwapFirstTwoBytesInBuffer(short* value); // 0x004b9340
 
 // Reads `shortCount` big-endian shorts through the stream's ReadBytes primitive and
 // swaps each pair in place, leaving the caller with host-order shorts.
-void ReadByteSwappedShortArrayFromStream(TStream* stream, unsigned char* buffer, int shortCount);
+void ReadByteSwappedShortArrayFromStream(TStream* stream, short* values, int shortCount);
 
 // Writes `count` shorts through the stream's WriteBytes primitive, each swapped
 // into the stream's big-endian order.
@@ -95,7 +95,7 @@ static __inline float SwapFloat(float value) {
 static __inline void WriteShortArrayElems(TStream* stream, const short* values, int count) {
   for (int remaining = count; remaining != 0; --remaining) {
     short element = *values;
-    unsigned char* elementBytes = reinterpret_cast<unsigned char*>(&element);
+    unsigned char* elementBytes = static_cast<unsigned char*>(static_cast<void*>(&element));
     unsigned char low = elementBytes[0];
     elementBytes[0] = elementBytes[1];
     elementBytes[1] = low;
@@ -109,7 +109,7 @@ static __inline void WriteShortArrayElems(TStream* stream, const short* values, 
 static __inline void WriteShortArrayElemsRev(TStream* stream, const short* values, int count) {
   for (int remaining = count; remaining != 0; --remaining) {
     short element = *values;
-    unsigned char* elementBytes = reinterpret_cast<unsigned char*>(&element);
+    unsigned char* elementBytes = static_cast<unsigned char*>(static_cast<void*>(&element));
     unsigned char high = elementBytes[1];
     unsigned char low = elementBytes[0];
     elementBytes[0] = high;
@@ -144,7 +144,7 @@ static __inline void WriteFloatArrayElems(TStream* stream, const float* values, 
 static __inline void WriteIntArrayElems(TStream* stream, const int* values, int count) {
   for (int remaining = count; remaining != 0; --remaining) {
     int element = *values;
-    unsigned char* elementBytes = reinterpret_cast<unsigned char*>(&element);
+    unsigned char* elementBytes = static_cast<unsigned char*>(static_cast<void*>(&element));
     unsigned char b0 = elementBytes[0];
     unsigned char b1 = elementBytes[1];
     elementBytes[0] = elementBytes[3];

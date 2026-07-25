@@ -3,6 +3,7 @@
 #include "compat.h"
 
 #include "game/app/TObject.h"
+#include "game/tactical_ui/TechPrerequisitePair.h"
 
 // Global city-order capability table (singleton g_pCityOrderCapabilityState @ 0x006A43D8).
 // VTABLE: IMPERIALISM 0x0066ad28
@@ -56,14 +57,14 @@ public:
     short slots[10];
   };
   NationCapRow nationCapRows1e8[7];
-  // 0x262 active-tech marker + 0x264 packed prerequisite pair (the 6-byte gap that sits
+  // 0x262 active-tech marker + 0x264 active prerequisite pair (the 6-byte gap that sits
   // between the two per-nation tables). ApplyCityOrderCapabilityUnlockByTechId and the
   // defaults initializer write these. +0x264 is NOT a pointer: the original copies rows
   // 30..32 of g_aTechItemPrerequisitePairs into it wholesale (one dword each, value
   // {25,0} = 0x19), advancing as milestone techs 0x0b/0x16 land; the copy is kept as a
-  // single packed dword to match the original's one-mov write.
+  // single four-byte record copy to match the original's one-mov write.
   short marker262;
-  unsigned int packedRulePair264;
+  TechPrerequisitePair activePrerequisitePair264;
   // Per-nation, per-tech research-status row (byte[techId]: 2 = researched, 1 = in
   // progress, 0 = not started). True base 0x268, stride 0x1d. The defaults initializer
   // sets techs 0..2 to 2 and zeroes the rest; readers index it dynamically by tech id
@@ -136,8 +137,9 @@ public:
   // Writes the not-yet-researched prerequisites of `techId` for the nation: if the first
   // is done, missing1 = the second (0 if none) and missing2 = 0; otherwise missing1 = the
   // first and missing2 = the second if it is also unresearched. 0x5b0a90.
-  void SelectMissingTechItemPrerequisitesFromPair(int techId, int nationSlot, int* missing1,
-                                                  int* missing2);
+  void SelectMissingTechItemPrerequisitesFromPair(int techId, int nationSlot,
+                                                  int* missingPrimaryTechId,
+                                                  int* missingSecondaryTechId);
   // Activates an ability in its slot group for a nation: marks it active, records it in
   // nationCapRows1e8[nation].slots[group], and for unit-order groups (1..8) reloads the
   // city's TUnitOrder cost profile; for other groups upgrades matching military units.

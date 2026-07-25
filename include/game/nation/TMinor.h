@@ -15,8 +15,6 @@ class TMinor : public TCountry {
 public:
   TMinor();
 
-  static void* GetTMinorClassNamePointer();
-
   DECLARE_DYNCREATE(TMinor)
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;

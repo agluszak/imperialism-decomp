@@ -85,7 +85,8 @@ void TCity::ICity(TGreatPower* ownerNation) {
   }
 
   int regionCount = ownerNation->ownedRegionList->GetSize();
-  int regionsPerCapacity = ownerNation->field8d1 >= '3' ? 3 : 4;
+  int regionsPerCapacity =
+      ownerNation->pendingActionStatus.roles.expansionCapacityStatus09 >= '3' ? 3 : 4;
   short capacity = static_cast<short>(regionCount / regionsPerCapacity);
   productionAccum1fc[0x0f] = capacity > 1 ? capacity : 1;
 
@@ -328,13 +329,13 @@ void TCity::WriteTo(TStream* stream) {
 
   for (int productionSlot = 0; productionSlot < 0x10; ++productionSlot) {
     short value = production22c[productionSlot];
-    SwapFirstTwoBytesInBuffer(reinterpret_cast<unsigned char*>(&value));
+    SwapFirstTwoBytesInBuffer(&value);
     stream->WriteBytes(&value, 2);
   }
   for (int accumulatedProductionSlot = 0; accumulatedProductionSlot < 0x10;
        ++accumulatedProductionSlot) {
     short value = production24c[accumulatedProductionSlot];
-    SwapFirstTwoBytesInBuffer(reinterpret_cast<unsigned char*>(&value));
+    SwapFirstTwoBytesInBuffer(&value);
     stream->WriteBytes(&value, 2);
   }
   WriteByteSwappedShortArrayToStream(stream, consumedProductionInputByType2a6, 0x17);
@@ -369,10 +370,9 @@ void TCity::Free() {
   // (TProductionOrder-family orders, TShipOrder, TUnitOrder) derives from
   // TObject and shares Free() at the same vtable slot (0x07), so the original
   // dispatches polymorphically through one uniform TObject* loop rather than
-  // one loop per typed band. Keeping the bands separately typed in the union
-  // (for callers that need the real element type) while restoring this loop's
-  // shape via the flat void*/TObject* view.
-  TObject** orderSlot = reinterpret_cast<TObject**>(this->orderSlotsE4);
+  // one loop per typed band. The union retains the real per-band types for
+  // specialized callers and exposes this proven common-base view directly.
+  TObject** orderSlot = this->objectOrderSlots;
   int remaining = 0x3d;
   do {
     if (*orderSlot != 0) {
@@ -487,7 +487,7 @@ void TCity::EndCityPhase() {
   } while (remaining != 0);
 
   short capacity;
-  if (ownerNationAc->field8d1 >= '3') {
+  if (ownerNationAc->pendingActionStatus.roles.expansionCapacityStatus09 >= '3') {
     int regionCapacity = ownerNationAc->ownedRegionList->GetSize() / 3;
     if (regionCapacity > 1) {
       capacity = static_cast<short>(ownerNationAc->ownedRegionList->GetSize() / 3);
@@ -813,7 +813,7 @@ short TCity::GetMaxBuildingCapacity(int buildingSlot) {
   if (buildingSlot == 0xf) {
     TGreatPower* owner = this->ownerNationAc;
     int regionCount = owner->ownedRegionList->GetSize();
-    if (static_cast<signed char>(owner->serializedStatusFlags[9]) < 0x33) {
+    if (owner->pendingActionStatus.roles.expansionCapacityStatus09 < 0x33) {
       if (regionCount / 4 > 1) {
         return static_cast<short>(regionCount / 4);
       }
@@ -883,7 +883,8 @@ short TCity::GetNextBuildingType(short buildingSlot) {
   short result = 0;
   short buildingType;
   if (buildingSlot == 0x0f) {
-    unsigned char usesThreeRegionsPerLevel = ownerNationAc->field8d1 >= '3';
+    unsigned char usesThreeRegionsPerLevel =
+        ownerNationAc->pendingActionStatus.roles.expansionCapacityStatus09 >= '3';
     if (usesThreeRegionsPerLevel != 0) {
       int regionCapacity = ownerNationAc->ownedRegionList->GetSize() / 3;
       if (regionCapacity > 1) {
@@ -944,15 +945,16 @@ short TCity::GetNextBuildingType(short buildingSlot) {
   }
 
   case 8:
-    if (ownerNationAc->expansionEventGate == '3') {
+    if (ownerNationAc->pendingActionStatus.roles.expansionEventStatus0C == '3') {
       result = 3;
       return result;
     }
-    result = static_cast<short>((ownerNationAc->serializedStatusFlags[6] == '3') + 1);
+    result = static_cast<short>(
+        (ownerNationAc->pendingActionStatus.roles.territorialPressureStatus06 == '3') + 1);
     return result;
 
   case 10: {
-    signed char status = ownerNationAc->serializedStatusFlags[7];
+    signed char status = ownerNationAc->pendingActionStatus.roles.trainingStatus07;
     if (status < '3') {
       result = 1;
       return result;
@@ -962,13 +964,15 @@ short TCity::GetNextBuildingType(short buildingSlot) {
   }
 
   case 0x0e: {
-    unsigned char thresholdReached = ownerNationAc->expansionAlertCounter >= '3';
+    unsigned char thresholdReached =
+        ownerNationAc->pendingActionStatus.roles.expansionAlertStatus08 >= '3';
     result = static_cast<short>((thresholdReached != 0) + 1);
     return result;
   }
 
   case 0x0f: {
-    unsigned char thresholdReached = ownerNationAc->field8d1 >= '3';
+    unsigned char thresholdReached =
+        ownerNationAc->pendingActionStatus.roles.expansionCapacityStatus09 >= '3';
     result = static_cast<short>((thresholdReached != 0) + 1);
     return result;
   }
@@ -1021,7 +1025,7 @@ int TCity::GetBuildingType(short buildingSlot) {
     return this->productionOrderTable1dc[buildingSlot];
   }
   TGreatPower* owner = this->ownerNationAc;
-  if (static_cast<signed char>(owner->serializedStatusFlags[9]) < 0x33) {
+  if (owner->pendingActionStatus.roles.expansionCapacityStatus09 < 0x33) {
     if (owner->ownedRegionList->GetSize() / 4 > 1) {
       return this->ownerNationAc->ownedRegionList->GetSize() / 4;
     }

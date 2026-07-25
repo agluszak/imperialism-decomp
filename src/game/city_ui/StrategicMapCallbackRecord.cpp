@@ -7,6 +7,7 @@
 #include "game/gfx/quickdraw_regions.h"
 #include "game/diplomacy_ui/TDiplomacyMapView.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/pointer_representation.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
@@ -288,14 +289,14 @@ void StrategicMapCallbackRecord::AppendOpcodeBytePair(int value) {
 // FUNCTION: IMPERIALISM 0x004d5720
 void StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment() {
   unsigned char* alignmentProbe = &opcodeBytes00[opcodeAlignmentOffset14];
-  opcodeAlignmentOffset14 = reinterpret_cast<unsigned int>(alignmentProbe) & 3;
+  opcodeAlignmentOffset14 = PointerAddressBits32(alignmentProbe) & 3;
   if (opcodeAlignmentOffset14 != 0) {
     opcodeBytes00.Add(0);
     opcodeBytes00.Add(0);
     opcodeBytes00.Add(0);
     opcodeBytes00.Compact();
     alignmentProbe = &opcodeBytes00[opcodeAlignmentOffset14];
-    opcodeAlignmentOffset14 = reinterpret_cast<unsigned int>(alignmentProbe) & 3;
+    opcodeAlignmentOffset14 = PointerAddressBits32(alignmentProbe) & 3;
   }
 
   if (opcodeAlignmentOffset14 != 0) {
@@ -453,7 +454,7 @@ void StrategicMapCallbackRecord::BuildDiplomacyOverlayHitMaskOpcodeStream(
   opcodeBytes00.Compact();
   FinalizeOpcodeBufferAlignment();
   unsigned char* alignedEntry = &opcodeBytes00[opcodeAlignmentOffset14];
-  if ((reinterpret_cast<unsigned int>(alignedEntry) & 3) != 0) {
+  if ((PointerAddressBits32(alignedEntry) & 3) != 0) {
     FinalizeOpcodeBufferAlignment();
   }
 }

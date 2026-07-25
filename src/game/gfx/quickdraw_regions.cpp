@@ -350,11 +350,9 @@ void CopyRgn(RgnHandle src, RgnHandle dst) {
 // BitMapToRegion role in this engine's sprite pipeline).
 // FUNCTION: IMPERIALISM 0x00497ef0
 int BitMapToRegion(RgnHandle rgn, TBitmapSurfaceNode* surface) {
-  int* polygonPoints = surface->dib->BuildNonTransparentOutlinePolygon(0xffffffff);
+  POINT* polygonPoints = surface->dib->BuildNonTransparentOutlinePolygon(0xffffffff);
   (*rgn)->rgn.DeleteObject();
-  // GEOMETRY_RAW_BUFFER: two-int header followed by packed POINT records.
-  HRGN polygonRegion =
-      ::CreatePolygonRgn(reinterpret_cast<POINT*>(polygonPoints + 2), polygonPoints[0], WINDING);
+  HRGN polygonRegion = ::CreatePolygonRgn(polygonPoints + 1, polygonPoints[0].x, WINDING);
   int attached = (*rgn)->rgn.Attach(polygonRegion);
   delete[] polygonPoints;
   return attached;

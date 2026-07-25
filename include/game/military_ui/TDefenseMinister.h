@@ -38,7 +38,7 @@ public:
   // Buckets militaryUnitList44 by orderType into three TList buckets, trims a batch of
   // up to 4 (or fewer, when small) bucket-1 units plus one bucket-2 unit to garrison
   // the nation's home tile, then selects the top border-priority-scored owned regions
-  // (via BuildTileRingPriorityMapForNationTileList) and assigns 2 bucket-1 + 1
+  // (via CreatePeaceDefenseMap) and assigns 2 bucket-1 + 1
   // bucket-2 unit to each.
   virtual void DoPeacetimeDeployment(); // 0x50 (0x4ec540), Mac oracle
   // Builds a per-tile priority map (one byte per map tile, 0x1950 tiles): for every
@@ -49,14 +49,14 @@ public:
   // +1 to each of its neighbors that CheckTileProspectingDiscoveryCandidate accepts.
   // Caller owns the returned buffer (operator new[]/delete[]).
   virtual unsigned char*
-  BuildTileRingPriorityMapForNationTileList(TLongintList* ownedRegions); // 0x54 (0x4ecbb0)
+  CreatePeaceDefenseMap(TLongintList* ownedRegions); // 0x54 (0x4ecbb0), Mac oracle
   // Per-tile strategic priority heatmap (one int per map tile, 0x1950 tiles): for
   // every tile this nation owns with a qualifying activeFlags1c/gateFlag combination,
   // adds 300 to the tile itself, 200 to each of its 6 immediate hex neighbors, and 100
   // to each of the 12 tiles in the radius-2 ring; every unowned tile with a nonzero
   // adjacencyBits06 gets a flat +100. Caller owns the returned buffer (operator
   // new[]/delete[]).
-  virtual int* BuildStrategicTilePriorityHeatmap(); // 0x58 (0x4ecf20)
+  virtual int* CreateHomeValueMap(); // 0x58 (0x4ecf20), Mac oracle
   // Per-tile stationed-unit-strength heatmap (one int per map tile): for every tile
   // this nation owns (or, when excludeEnemyTiles == 0, that a nation we're at war
   // with owns) whose stationed-unit chain head's field_18 differs from our nation
@@ -70,13 +70,12 @@ public:
   // second), and the closing normalization loop multiplies weightSum[0] itself by every
   // maxWeight[i] > 1 rather than weightSum[i] (the per-ring maxWeight buffer is freed;
   // the per-tile hex-ring buffers are never freed, matching the original leak).
-  virtual int* BuildHexAreaTileIndexListIntoAllocatedBuffer(char excludeEnemyTiles); // 0x5c
-                                                                                     // (0x4ed050)
+  virtual int* CreateEnemyPowerMap(unsigned char excludeEnemyTiles); // 0x5c (0x4ed050), Mac oracle
   // One stack arg (RET 0x4 across the base and all five personality overrides).
   // Not a factory despite the old Ghidra 'Create*Instance' names: every body
   // FLDs a per-personality FP weight constant (base 0.0f; the flag selects
   // between a pair on the conditional personalities). slot 0x60 (0x4ec0a0)
-  virtual double GetPersonalityWeightByFlag(char flag);
+  virtual double GetStategicEscalationMultiplier(unsigned char flag); // Mac oracle spelling
 
   // +0x10..0x94 -- own block (RTTI m_nObjectSize proves this range is TDefenseMinister-
   // only, not shared TMinister base state; see TMinister.h). Fully recovered from

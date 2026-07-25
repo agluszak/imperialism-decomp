@@ -1,9 +1,13 @@
 #include "game/ui_core/CMainFrame.h"
 
+#include "game/pointer_representation.h"
+#include "game/ui_core/TCommand.h"
 #include "game/ui_core/CIncludeView.h" // GetMainViewHostFromActiveThread()->m_hWnd
 #include "game/ImperialismApp.h"
 #include "game/gfx/TBackdropWindow.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TTemplateDialogs.h"
+#include "game/city_ui/TCountry.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
@@ -14,16 +18,6 @@
 void TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void);
 
 namespace {
-
-// Provisional interface for the queued UI command posted through message 0xBC0 by
-// TApplication::DispatchQueuedUiCommandAndRelease. The concrete class is not yet
-// recovered (the poster is registered via opaque vtable data with no traceable
-// callers); OnMsg0BC0 only needs its first own virtual (slot 0x0a, byte 0x28) after the
-// inherited AssertValid (slot 0x03). Legitimate provisional placeholder pending
-// class-recovery (bd imperialism-decomp-ve8.4).
-struct QueuedUiCommand : public TObject {
-  virtual void ExecuteQueuedCommand(); // slot 0x0a byte 0x28
-};
 
 void ReleaseFrameRefTarget(CObject* target) {
   if (target != nullptr) {
@@ -64,6 +58,7 @@ ON_WM_CREATE()
 ON_COMMAND(0x8009, OnCommand8009)
 ON_COMMAND(0x800C, OnCommand800C)
 ON_COMMAND(0x800D, OnCommand800D)
+ON_COMMAND(0x8013, OnCommand8013)
 ON_WM_PAINT()
 ON_WM_CHAR()
 ON_WM_ACTIVATE()
@@ -232,6 +227,46 @@ void CMainFrame::OnCommand800D() {
   g_pUiRuntimeContext->HandleTurnEvent2260_RefreshMainHudTitles(0);
 }
 
+// FUNCTION: IMPERIALISM 0x004855b0
+void CMainFrame::OnCommand8013() {
+  while (true) {
+    TD2TemplateDialog dialog(0);
+    dialog.PrepareAndCreateModalFromTemplate();
+
+    int nationIndex = 0;
+    TCountry** country;
+    for (country = g_apTerrainTypeDescriptorTable; country < &g_apTerrainTypeDescriptorTable[7];
+         ++country) {
+      CString label;
+      CString name;
+      (*country)->FormatOverlayTerrainLabelText(&name);
+      label.Format("Great Power %2d, %s", nationIndex, static_cast<const char*>(name));
+      dialog.listbox.AddString(label);
+      dialog.listbox.SetItemData(nationIndex, nationIndex);
+      ++nationIndex;
+    }
+    if (nationIndex < 0x17) {
+      for (country = &g_apTerrainTypeDescriptorTable[nationIndex];
+           country < &g_apTerrainTypeDescriptorTable[0x17]; ++country) {
+        CString label;
+        CString name;
+        (*country)->FormatOverlayTerrainLabelText(&name);
+        label.Format("Minor Nation %2d, %s", nationIndex, static_cast<const char*>(name));
+        dialog.listbox.AddString(label);
+        dialog.listbox.SetItemData(nationIndex, nationIndex);
+        ++nationIndex;
+      }
+    }
+
+    dialog.listbox.SetSel(0, g_pSimMgr->GetActiveNationId());
+    dialog.listbox.SetCurSel(0);
+    if (dialog.DoModal() != 1) {
+      break;
+    }
+  }
+  g_pImperialismApp->PostStartupCommand100();
+}
+
 // FUNCTION: IMPERIALISM 0x00485920
 LRESULT CMainFrame::HandleCustomMessage2420DispatchTurnEvent(WPARAM wParam, LPARAM lParam) {
   (void)lParam;
@@ -243,10 +278,9 @@ LRESULT CMainFrame::HandleCustomMessage2420DispatchTurnEvent(WPARAM wParam, LPAR
 // FUNCTION: IMPERIALISM 0x00485960
 LRESULT CMainFrame::OnMsg0BC0(WPARAM wParam, LPARAM lParam) {
   (void)wParam;
-  // lParam carries the queued UI command object (Win32 message-boundary cast).
-  QueuedUiCommand* command = reinterpret_cast<QueuedUiCommand*>(lParam);
+  TCommand* command = static_cast<TCommand*>(PointerFromAddressLong32(lParam));
   command->AssertValid();
-  command->ExecuteQueuedCommand();
+  command->Process();
   return 0;
 }
 

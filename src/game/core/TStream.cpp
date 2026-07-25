@@ -74,9 +74,10 @@ char TStream::ReadBoolean() {
 }
 
 // FUNCTION: IMPERIALISM 0x00488bc0
-void TStream::ReadCharacter(void* out) {
-  *reinterpret_cast<short*>(out) = 0;
-  ReadBytes(reinterpret_cast<char*>(out) + 1, 1);
+void TStream::ReadCharacter(short* outCharacter) {
+  unsigned char* characterBytes = static_cast<unsigned char*>(static_cast<void*>(outCharacter));
+  *outCharacter = 0;
+  ReadBytes(characterBytes + 1, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00488bf0
@@ -117,11 +118,10 @@ void TStream::ReadString(void* buffer, int maxLen) {
 }
 
 // FUNCTION: IMPERIALISM 0x00488ce0
-void TStream::ReadVPoint(void* out) {
-  int tmp[2];
-  ReadBytes(tmp, 8);
-  reinterpret_cast<int*>(out)[0] = tmp[0];
-  reinterpret_cast<int*>(out)[1] = tmp[1];
+void TStream::ReadVPoint(VPoint* outPoint) {
+  VPoint point;
+  ReadBytes(&point, sizeof(point));
+  *outPoint = point;
 }
 
 // FUNCTION: IMPERIALISM 0x00488d20
@@ -174,7 +174,7 @@ void TStream::SetPosition(int) {}
 void TStream::SetLength(int) {}
 
 // FUNCTION: IMPERIALISM 0x00488e70
-void TStream::WriteBytes(void*, int) {} // primitive; concrete subclass overrides
+void TStream::WriteBytes(const void*, int) {} // primitive; concrete subclass overrides
 
 // FUNCTION: IMPERIALISM 0x00488e90
 void TStream::WriteByte(unsigned char value) {
@@ -190,7 +190,9 @@ void TStream::WriteBoolean(unsigned char value) {
 // the write-side counterpart of ReadCharacter's high-byte read.
 // FUNCTION: IMPERIALISM 0x00488ed0
 void TStream::WriteCharacter(short value) {
-  WriteBytes(reinterpret_cast<char*>(&value) + 1, 1);
+  const unsigned char* characterBytes =
+      static_cast<const unsigned char*>(static_cast<const void*>(&value));
+  WriteBytes(characterBytes + 1, 1);
 }
 
 // ---------------------------------------------------------------------------
@@ -251,7 +253,7 @@ void TStream::WriteWordAlign() {
 void TStream::WriteSharedString(CString* sharedString) {
   int length = sharedString->GetLength();
   this->WriteInteger(length);
-  this->WriteBytes(reinterpret_cast<void*>((char*)static_cast<LPCSTR>(*sharedString)), length);
+  this->WriteBytes(static_cast<LPCSTR>(*sharedString), length);
 }
 
 // FUNCTION: IMPERIALISM 0x00489070

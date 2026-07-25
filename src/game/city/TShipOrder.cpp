@@ -23,19 +23,6 @@ enum {
   kResourceWeightIndex10 = 16,
 };
 
-static void ZeroShipOrderTrackingSlots(TShipOrder* order) {
-  int remaining;
-  int* cursor = reinterpret_cast<int*>(order->trackingSlots10);
-
-  remaining = 0xb;
-  while (remaining != 0) {
-    *cursor = 0;
-    cursor = cursor + 1;
-    remaining = remaining + -1;
-  }
-  *reinterpret_cast<short*>(cursor) = 0;
-}
-
 // SYNTHETIC: IMPERIALISM 0x004b8470
 // TShipOrder::CreateObject
 
@@ -212,20 +199,23 @@ void TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability() {
     this->quantityField04 = static_cast<short>(quantity - 1);
   }
 
-  ZeroShipOrderTrackingSlots(this);
+  for (int resource = 0; resource < 0x17; ++resource) {
+    this->trackingSlots10[resource] = 0;
+  }
   this->quantityField04 = 0;
 
   TGreatPower* owner = city->ownerNationAc;
-  if (owner->serializedStatusFlags[0] == '2') {
+  if (owner->pendingActionStatus.roles.navyOrderStatus00 == '2') {
     return;
   }
 
   short currentCapability = owner->GetCityBuildingProductionSlot8D(2);
   short desiredCapability;
-  if (owner->serializedStatusFlags[0] == '\0') {
+  if (owner->pendingActionStatus.roles.navyOrderStatus00 == '\0') {
     desiredCapability = 0;
   } else {
-    desiredCapability = static_cast<short>(owner->serializedStatusFlags[0] - 0x33);
+    desiredCapability =
+        static_cast<short>(owner->pendingActionStatus.roles.navyOrderStatus00 - 0x33);
   }
 
   if (currentCapability < 0x19) {

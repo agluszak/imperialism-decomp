@@ -133,6 +133,9 @@ ASSERT_SIZE(TTerrainStateRecordView, 0x24);
 // 0x96..0x97 — so 0x3e/0x40/0x94 are real short fields (formerly folded into pads) and 0xa4 is
 // the CString city display name (also read by AssignCityRecordDisplayName).
 struct Province {
+  Province();
+  Province& operator=(const Province& source);
+
   signed char ownerNationCode00;
   // Previous/founding owner nation code: the tile context menu (0x504e90) renders a
   // "formerly of <nation>" line when it differs from ownerNationCode00 (same idiom as
@@ -194,6 +197,7 @@ struct Province {
   signed char regionClassA3;
   CString cityNameA4; // 0xa4 — city display name
 };
+ASSERT_SIZE(Province, 0xa8);
 
 // Endian fixup of every city-score record's short fields after a raw scenario table
 // load (called only by TMapMgr::LoadScenarioMapStateFromTableResource). 0x518840,

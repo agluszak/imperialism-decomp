@@ -657,7 +657,7 @@ bool TViewMgr::DispatchProvinceOrderOverlayConfirmDialog(short cityRecordIndex,
   // MapView.rsrc view 3100's 'DLOG' pict is a TArmyInfoView (Mac resource oracle).
   TArmyInfoView* report = static_cast<TArmyInfoView*>(
       static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog)));
-  report->PopulateFriendlyArmyReportContent(cityRecordIndex, categoryCounts);
+  report->StuffValues(cityRecordIndex, categoryCounts);
   CPoint placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->Locate(placement, 0);

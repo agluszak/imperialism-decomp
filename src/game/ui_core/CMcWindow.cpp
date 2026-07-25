@@ -12,6 +12,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
+#include "game/pointer_representation.h"
 
 // SYNTHETIC: IMPERIALISM 0x004933d0
 // CMcWindow::CreateObject
@@ -250,7 +251,8 @@ HBRUSH CMcWindow::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) {
   CWnd::OnCtlColor(pDC, pWnd, nCtlColor);
   if (nCtlColor == CTLCOLOR_EDIT) {
     HWND controlWindow = pWnd != NULL ? pWnd->m_hWnd : NULL;
-    TControl* control = reinterpret_cast<TControl*>(::GetWindowLong(controlWindow, GWL_USERDATA));
+    TControl* control = static_cast<TControl*>(
+        PointerFromAddressLong32(::GetWindowLong(controlWindow, GWL_USERDATA)));
     if (control != NULL) {
       g_pModuleLibraryCacheState->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(pDC, FALSE);
       pDC->SetBkColor(0x000000ff);
@@ -262,7 +264,8 @@ HBRUSH CMcWindow::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) {
     }
   }
   pDC->SetBkMode(TRANSPARENT);
-  return reinterpret_cast<HBRUSH>(::GetStockObject(NULL_BRUSH));
+  return static_cast<HBRUSH>(
+      PointerFromAddressLong32(PointerAddressLong32(::GetStockObject(NULL_BRUSH))));
 }
 
 // Overrides CWnd::OnCommand (vtable slot 0x80): custom notify code 0x400 from a child
@@ -271,8 +274,9 @@ HBRUSH CMcWindow::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) {
 // FUNCTION: IMPERIALISM 0x00493c30
 BOOL CMcWindow::OnCommand(WPARAM wParam, LPARAM lParam) {
   if (HIWORD(wParam) == 0x400) {
+    HWND controlWindow = static_cast<HWND>(PointerFromAddressLong32(lParam));
     TView* controlView =
-        reinterpret_cast<TView*>(::GetWindowLong(reinterpret_cast<HWND>(lParam), GWL_USERDATA));
+        static_cast<TView*>(PointerFromAddressLong32(::GetWindowLong(controlWindow, GWL_USERDATA)));
     if (controlView != NULL) {
       controlView->RefreshControl();
       m_pOwnerWindow->ForceRedraw();

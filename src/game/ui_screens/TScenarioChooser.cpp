@@ -240,9 +240,7 @@ void TScenarioChooser::StartGame() {
       g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2742, 3);
       g_pUiRuntimeContext->MakePlanetSeedDialog(promptText, g_cstrCountryNameSettingValue006A4220,
                                                 0, 0, 0, 0);
-    } while (_mbscmp(reinterpret_cast<const unsigned char*>(
-                         static_cast<LPCSTR>(g_cstrCountryNameSettingValue006A4220)),
-                     reinterpret_cast<const unsigned char*>(g_szEmptyString)) == 0);
+    } while (g_cstrCountryNameSettingValue006A4220.Compare(g_szEmptyString) == 0);
 
     CString qualifiedName = g_pLanguageMgr->PickGender(g_cstrCountryNameSettingValue006A4220);
     qualifiedName += g_cstrCountryNameSettingValue006A4220;

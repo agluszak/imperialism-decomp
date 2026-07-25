@@ -92,15 +92,13 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
     for (int cityIndex = 0; cityIndex < 0x180; ++cityIndex) {
       CString cityName;
       g_pGlobalMapState->AssignCityRecordDisplayName(cityIndex, &cityName);
-      if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(searchText)),
-                  reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(cityName))) == 0) {
+      if (searchText.Compare(cityName) == 0) {
         CenterOn(g_pGlobalMapState->cityScoreTable[cityIndex].cityTileIndex04);
         return;
       }
     }
 
-    if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(searchText)),
-                reinterpret_cast<const unsigned char*>(g_szEmptyString)) != 0) {
+    if (searchText.Compare(g_szEmptyString) != 0) {
       CString notFoundTemplate;
       g_pSimMgr->GetString(0x2758, 0xd, &notFoundTemplate);
       scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(notFoundTemplate),
@@ -120,15 +118,13 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
     for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
       CString zoneName;
       zone->AssignZoneDisplayNameToOutputRef(&zoneName);
-      if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(searchText)),
-                  reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(zoneName))) == 0) {
+      if (searchText.Compare(zoneName) == 0) {
         CenterOn(static_cast<short>(zone->tileOrTerrainId0c));
         return;
       }
     }
 
-    if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(searchText)),
-                reinterpret_cast<const unsigned char*>(g_szEmptyString)) != 0) {
+    if (searchText.Compare(g_szEmptyString) != 0) {
       CString notFoundTemplate;
       g_pSimMgr->GetString(0x2758, 0xe, &notFoundTemplate);
       scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(notFoundTemplate),
