@@ -99,15 +99,16 @@ public:
   unsigned char DestroyPlayerAndStoreResult(DWORD idPlayer);
   // Free the runtime selection entries and release the DirectPlay interfaces.
   void ResetRuntimeSelectionRecordBuffer(); // 0x00480400
-  // If sessionEntry is null and a session is already open (directPlayInterface04 !=
+  // If providerGuid is null and a session is already open (directPlayInterface04 !=
   // 0), no-op success. Otherwise closes any open session, then either creates a
-  // fresh IDirectPlay bound to sessionEntry's GUID (DirectPlayCreate, ordinal 1 of
-  // DPLAYX.DLL) or, when sessionEntry is null, enumerates providers
+  // fresh IDirectPlay bound to providerGuid (DirectPlayCreate, ordinal 1 of
+  // DPLAYX.DLL) or, when providerGuid is null, enumerates providers
   // (DirectPlayEnumerateA, ordinal 2) through this object's virtual provider callback.
   // Either way the resulting IDirectPlay is QueryInterface'd up to
   // IDirectPlay2 into directPlayInterface04 and the runtime-selection list is reset.
-  bool OpenRuntimeSelectionSourceWithOptionalSeed(const GUID* sessionEntry); // 0x47fe50
-  // Reopens the session with no seed (OpenRuntimeSelectionSourceWithOptionalSeed(null,0)),
+  bool InitializeDirectPlayForProviderGuidOrEnumerate(const GUID* providerGuid); // 0x47fe50
+  // Reopens the session with provider enumeration
+  // (InitializeDirectPlayForProviderGuidOrEnumerate(null)),
   // then rebuilds sessionDescription10, lets the derived slot populate its application
   // identity, and opens it as a newly created DirectPlay session.
   BOOL OpenRuntimeSelectionSourceFromCurrentContext(); // 0x480030

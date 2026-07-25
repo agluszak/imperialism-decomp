@@ -462,7 +462,7 @@ address|matching|name
 0x47fd30|1.0|TWNetSessionManager::DestroyPlayerAndStoreResult
 0x47fd70|1.0|TDirectPlaySessionManagerBase::GetRuntimeSelectionAuxStatus
 0x47fd90|0.9761904761904762|TWNetSessionManager::RebuildRuntimeSelectionSource
-0x47fe50|0.34146341463414637|TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed
+0x47fe50|0.34146341463414637|TWNetSessionManager::InitializeDirectPlayForProviderGuidOrEnumerate
 0x480030|1.0|TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext
 0x480150|0.526984126984127|TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice
 0x4803d0|1.0|TWNetSessionManager::OpenCurrentSessionDescriptionForJoin
@@ -6121,7 +6121,7 @@ address|matching|name
 0x5d6b70|1.0|TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent
 0x5d6bf0|1.0|TViewMgr::AddPendingTurnOverlayCode
 0x5d6c10|1.0|TViewMgr::GetPendingTurnOverlayCode
-0x5d6c30|0.5|TViewMgr::RefreshStrategicMapStatusIconsForActiveNation
+0x5d6c30|0.6736842105263158|TViewMgr::RefreshStrategicMapStatusIconsForActiveNation
 0x5d6cd0|1.0|TViewMgr::HandleTurnEventDialogFactorySlot70
 0x5d6d70|1.0|TViewMgr::HandleTurnEventDialogFactorySlot74
 0x5d6e30|1.0|TViewMgr::NoOpTurnEventStateVtableSlot8C
@@ -6366,7 +6366,7 @@ address|matching|name
 0x5e55ee|0.6607142857142857|CDragListBox::Dropped
 0x5e5661|0.0|MoveListBoxEntryPreserveItemData
 0x5e56cd|1.0|CDragListBox::DrawInsert
-0x5e56f2|0.96|CDragListBox::DrawSingle
+0x5e56f2|0.9733333333333334|CDragListBox::DrawSingle
 0x5e57e9|0.9871794871794872|CDragListBox::OnChildNotify
 0x5e58ab|1.0|CToolBarCtrl::Create
 0x5e58e4|0.9411764705882353|CProgressCtrl::~CProgressCtrl(void)
@@ -7654,7 +7654,7 @@ address|matching|name
 0x61ed3c|1.0|CDC::LPtoHIMETRIC
 0x61ed57|1.0|CDC::HIMETRICtoLP
 0x61ed72|1.0|CDC::GetHalftoneBrush
-0x61ede5|0.966789667896679|CDC::DrawDragRect
+0x61ede5|0.974169741697417|CDC::DrawDragRect
 0x61f0fa|1.0|CDC::FillSolidRect(struct tagRECT const *, unsigned long)
 0x61f124|1.0|CDC::FillSolidRect(int, int, int, int, unsigned long)
 0x61f19b|1.0|CDC::Draw3dRect(int, int, int, int, unsigned long, unsigned long)

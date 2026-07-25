@@ -81,6 +81,17 @@ int g_diplomacyDialogAssertGuard_006A15CC = 0;
 
 extern "C" {
 
+// Seventeen four-byte control tags followed by the zero-tag sentinel that the refresh loop
+// also visits.
+// GLOBAL: IMPERIALISM 0x0066efd0
+const unsigned int g_strategicMapStatusIconTagTable[18] = {
+    kControlTagRs0Sp, kControlTagRs1Sp, kControlTagRs2Sp,
+    kControlTagRs3Sp, kControlTagRs4Sp, kControlTagRs5Sp,
+    kControlTagRs6Sp, kControlTagMa0Sp, kControlTagMa1Sp,
+    kControlTagMa2Sp, kControlTagMa3Sp, kControlTagMa4Sp,
+    kControlTagMa5Sp, kControlTagGd0Sp, kControlTagGd1Sp,
+    kControlTagGd2Sp, kControlTagGd3Sp, 0};
+
 // Diplomacy globals
 // GLOBAL: IMPERIALISM 0x006a4280
 TMinor* g_apSecondaryNationStateSlots[36] = {0};

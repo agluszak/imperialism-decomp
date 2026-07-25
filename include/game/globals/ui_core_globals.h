@@ -25,6 +25,8 @@ extern CPtrList g_ModalViewStack;
 extern char s_szTurnHistoryPrefix_0069b71c[];
 
 extern "C" {
+extern const unsigned int g_strategicMapStatusIconTagTable[18];
+
 extern int g_Reset_Quick_Draw_Value_0064B8F0;
 
 extern int g_Reset_Quick_Draw_Value_0064B8F4;
