@@ -4877,7 +4877,7 @@ address|matching|name
 0x580460|1.0|stretch<char>::Add
 0x5804f0|0.19498607242339833|ExpandBracketMappedStringToSinkCallback
 0x580760|1.0|TSimMgr::GetString
-0x580790|0.24938875305623473|TSimMgr::DiplomacyNoticeString
+0x580790|0.25396825396825395|TSimMgr::DiplomacyNoticeString
 0x5811e0|1.0|TSimMgr::GetNumGPs
 0x581200|1.0|TSimMgr::ReduceNumGPs
 0x581240|1.0|TSimMgr::GetNumCountries

@@ -1148,14 +1148,18 @@ CString TSimMgr::DiplomacyNoticeString(const DiplomacyNotice* notice) {
   CString countryName;
   CString formattedValue;
 
-  short code = notice->policyOrGrantCode;
+  // Ground truth (0x5807fa..0x580821) zeroes `rejected` first, then loads BOTH
+  // notice fields into registers before the sign test, and only sign-flips `code`
+  // afterwards -- so nationSlot is read ahead of the branch, not at its use site.
   char rejected = 0;
+  short code = notice->policyOrGrantCode;
+  short nationSlot = notice->nationSlot;
   if (code < 0) {
     rejected = 1;
     code = static_cast<short>(-code);
   }
 
-  g_apTerrainTypeDescriptorTable[notice->nationSlot]->FormatOverlayTerrainLabelText(&countryName);
+  g_apTerrainTypeDescriptorTable[nationSlot]->FormatOverlayTerrainLabelText(&countryName);
 
   switch (code) {
   case 5:
