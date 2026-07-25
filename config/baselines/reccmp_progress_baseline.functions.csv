@@ -2823,7 +2823,7 @@ address|matching|name
 0x4f48c0|0.6274509803921569|TDiplomacyMapView::Draw
 0x4f4a30|0.34108527131782945|TDiplomacyMapView::DrawNames
 0x4f4ec0|0.5555555555555556|TDiplomacyMapView::DrawIcons
-0x4f5410|0.1407035175879397|TDiplomacyMapView::DoMouseCommand
+0x4f5410|0.4188376753507014|TDiplomacyMapView::DoMouseCommand
 0x4f5e00|0.48314606741573035|TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget
 0x4f5f90|1.0|TDiplomacyMapView::DoSetCursor
 0x4f5fb0|0.42|TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback

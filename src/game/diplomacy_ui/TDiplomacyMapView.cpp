@@ -630,150 +630,165 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
   (void)event;
   (void)origin;
 
+  CRect invalidRect;
+  CRect recurringGrantRect;
+  unsigned char grantUpdated;
+  unsigned char policyUpdated;
   eDipAction action = ResolveDiplomacyActionFromClickAndUpdateTarget(&point);
-  TGreatPower* sourceNation = g_apNationStates[selectedTerrainIndexAt90];
 
   switch (action) {
   case kDipActionJoinEmpire: {
-    if (sourceNation->diplomacyPolicyByNation[activeNationC2] == kDiplomacyProposalJoinEmpire) {
-      sourceNation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(activeNationC2, -1);
+    if (g_apNationStates[selectedTerrainIndexAt90]->diplomacyPolicyByNation[activeNationC2] ==
+        kDiplomacyProposalJoinEmpire) {
+      g_apNationStates[selectedTerrainIndexAt90]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+          activeNationC2, -1);
       break;
     }
     if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
             selectedTerrainIndexAt90, activeNationC2, action)) {
-      ShowDiplomacyActionRejectedNotice();
-      action = kDipActionNone;
-      break;
+      goto reject_action;
     }
     if (!CheckEntanglements(activeNationC2, action)) {
-      action = kDipActionNone;
-      break;
+      goto clear_action;
     }
-    sourceNation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(activeNationC2,
-                                                                   kDiplomacyProposalJoinEmpire);
+    g_apNationStates[selectedTerrainIndexAt90]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+        activeNationC2, kDiplomacyProposalJoinEmpire);
     break;
   }
   case kDipActionAlliance: {
-    if (sourceNation->diplomacyPolicyByNation[activeNationC2] == kDiplomacyProposalAlliance) {
-      sourceNation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(activeNationC2, -1);
+    if (g_apNationStates[selectedTerrainIndexAt90]->diplomacyPolicyByNation[activeNationC2] ==
+        kDiplomacyProposalAlliance) {
+      g_apNationStates[selectedTerrainIndexAt90]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+          activeNationC2, -1);
       break;
     }
     if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
             selectedTerrainIndexAt90, activeNationC2, action)) {
-      ShowDiplomacyActionRejectedNotice();
-      action = kDipActionNone;
-      break;
+      goto reject_action;
     }
     if (!CheckEntanglements(activeNationC2, action)) {
-      action = kDipActionNone;
-      break;
+      goto clear_action;
     }
-    sourceNation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(activeNationC2,
-                                                                   kDiplomacyProposalAlliance);
+    g_apNationStates[selectedTerrainIndexAt90]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+        activeNationC2, kDiplomacyProposalAlliance);
     break;
   }
   case kDipActionNonAggressionPact: {
-    if (sourceNation->diplomacyPolicyByNation[activeNationC2] ==
+    if (g_apNationStates[selectedTerrainIndexAt90]->diplomacyPolicyByNation[activeNationC2] ==
         kDiplomacyProposalNonAggressionPact) {
-      sourceNation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(activeNationC2, -1);
+      g_apNationStates[selectedTerrainIndexAt90]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+          activeNationC2, -1);
       break;
     }
     if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
             selectedTerrainIndexAt90, activeNationC2, action)) {
-      ShowDiplomacyActionRejectedNotice();
-      action = kDipActionNone;
-      break;
+      goto reject_action;
     }
-    sourceNation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+    g_apNationStates[selectedTerrainIndexAt90]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
         activeNationC2, kDiplomacyProposalNonAggressionPact);
     break;
   }
   case kDipActionPeaceTreaty: {
-    if (sourceNation->diplomacyPolicyByNation[activeNationC2] == kDiplomacyProposalPeaceTreaty) {
-      sourceNation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(activeNationC2, -1);
+    if (g_apNationStates[selectedTerrainIndexAt90]->diplomacyPolicyByNation[activeNationC2] ==
+        kDiplomacyProposalPeaceTreaty) {
+      g_apNationStates[selectedTerrainIndexAt90]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+          activeNationC2, -1);
       break;
     }
     if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
             selectedTerrainIndexAt90, activeNationC2, action)) {
-      ShowDiplomacyActionRejectedNotice();
-      action = kDipActionNone;
-      break;
+      goto reject_action;
     }
-    sourceNation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(activeNationC2,
-                                                                   kDiplomacyProposalPeaceTreaty);
+    g_apNationStates[selectedTerrainIndexAt90]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+        activeNationC2, kDiplomacyProposalPeaceTreaty);
     break;
   }
   case kDipActionDeclareWar: {
-    if (sourceNation->diplomacyPolicyByNation[activeNationC2] == kDiplomacyProposalDeclareWar) {
-      sourceNation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(activeNationC2, -1);
+    if (g_apNationStates[selectedTerrainIndexAt90]->diplomacyPolicyByNation[activeNationC2] ==
+        kDiplomacyProposalDeclareWar) {
+      g_apNationStates[selectedTerrainIndexAt90]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+          activeNationC2, -1);
       break;
     }
     if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
             selectedTerrainIndexAt90, activeNationC2, action)) {
-      ShowDiplomacyActionRejectedNotice();
-      action = kDipActionNone;
-      break;
+      goto reject_action;
     }
-    sourceNation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(activeNationC2,
-                                                                   kDiplomacyProposalDeclareWar);
+    g_apNationStates[selectedTerrainIndexAt90]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+        activeNationC2, kDiplomacyProposalDeclareWar);
     break;
   }
   case kDipActionOneTimeGrant: {
-    short grantValue = g_awDiplomacyGrantValueTable[selectedGrantRowC0];
-    bool grantUpdated;
-    if (sourceNation->diplomacyGrantByNation[activeNationC2] == grantValue) {
-      grantUpdated =
-          sourceNation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(activeNationC2, -1);
-      if (!grantUpdated) {
-        break;
-      }
+    if (g_apNationStates[selectedTerrainIndexAt90]->diplomacyGrantByNation[activeNationC2] ==
+        g_awDiplomacyGrantValueTable[selectedGrantRowC0]) {
+      grantUpdated = g_apNationStates[selectedTerrainIndexAt90]
+                         ->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(activeNationC2, -1);
     } else {
       if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
               selectedTerrainIndexAt90, activeNationC2, action)) {
-        ShowDiplomacyActionRejectedNotice();
-        action = kDipActionNone;
-        break;
+        goto reject_one_time_validation;
       }
-      grantUpdated = sourceNation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(activeNationC2,
-                                                                                    grantValue);
+      grantUpdated = g_apNationStates[selectedTerrainIndexAt90]
+                         ->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(
+                             activeNationC2, g_awDiplomacyGrantValueTable[selectedGrantRowC0]);
       if (!grantUpdated) {
         g_pDiplomacyTurnStateManager->proposalArrayMode18d8 = 0x17;
         ShowDiplomacyActionRejectedNotice();
         action = kDipActionNone;
-        break;
+        goto finish_one_time_grant;
       }
     }
-    CRect grantRect(0x32, 0x17c, 0xe6, 0x190);
-    InvalidateCityDialogRectRegion(&grantRect, 1);
+    goto finish_one_time_grant;
+  reject_one_time_validation:
+    ShowDiplomacyActionRejectedNotice();
+    action = kDipActionNone;
+    grantUpdated = 0;
+  finish_one_time_grant:
+    if (!grantUpdated) {
+      break;
+    }
+    invalidRect.left = 0x32;
+    invalidRect.top = 0x17c;
+    invalidRect.right = 0xe6;
+    invalidRect.bottom = 0x190;
+    InvalidateCityDialogRectRegion(&invalidRect, 1);
     goto refresh_toolbar;
   }
   case kDipActionRecurringGrant: {
     short grantValue =
         static_cast<short>(g_awDiplomacyGrantValueTable[selectedGrantRowC0] | 0x4000);
-    bool grantUpdated;
-    if (sourceNation->diplomacyGrantByNation[activeNationC2] == grantValue) {
-      grantUpdated =
-          sourceNation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(activeNationC2, -1);
-      if (!grantUpdated) {
-        break;
-      }
+    if (g_apNationStates[selectedTerrainIndexAt90]->diplomacyGrantByNation[activeNationC2] ==
+        grantValue) {
+      grantUpdated = g_apNationStates[selectedTerrainIndexAt90]
+                         ->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(activeNationC2, -1);
     } else {
       if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
               selectedTerrainIndexAt90, activeNationC2, action)) {
-        ShowDiplomacyActionRejectedNotice();
-        action = kDipActionNone;
-        break;
+        goto reject_recurring_validation;
       }
-      grantUpdated = sourceNation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(activeNationC2,
-                                                                                    grantValue);
+      grantUpdated =
+          g_apNationStates[selectedTerrainIndexAt90]
+              ->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(activeNationC2, grantValue);
       if (!grantUpdated) {
         g_pDiplomacyTurnStateManager->proposalArrayMode18d8 = 0x17;
         ShowDiplomacyActionRejectedNotice();
         action = kDipActionNone;
-        break;
+        goto finish_recurring_grant;
       }
     }
-    CRect recurringGrantRect(0x32, 0x17c, 0xe6, 0x190);
+    goto finish_recurring_grant;
+  reject_recurring_validation:
+    ShowDiplomacyActionRejectedNotice();
+    action = kDipActionNone;
+    grantUpdated = 0;
+  finish_recurring_grant:
+    if (!grantUpdated) {
+      break;
+    }
+    recurringGrantRect.left = 0x32;
+    recurringGrantRect.top = 0x17c;
+    recurringGrantRect.right = 0xe6;
+    recurringGrantRect.bottom = 0x190;
     InvalidateCityDialogRectRegion(&recurringGrantRect, 1);
     goto refresh_toolbar;
   }
@@ -782,83 +797,86 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
   case kDipActionBoycott: {
     if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
             selectedTerrainIndexAt90, activeNationC2, action)) {
-      ShowDiplomacyActionRejectedNotice();
-      action = kDipActionNone;
-      break;
+      goto reject_action;
     }
 
     if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) == 0 || activeNationC2 < 7) {
       short policyValue = g_awDiplomacyTradePolicyIconValueTable[selectedGrantRowC0];
-      if (sourceNation->needLevelByNation[activeNationC2] == policyValue) {
-        sourceNation->SetTradePolicyTo(activeNationC2, 100);
+      if (g_apNationStates[selectedTerrainIndexAt90]->needLevelByNation[activeNationC2] ==
+          policyValue) {
+        g_apNationStates[selectedTerrainIndexAt90]->SetTradePolicyTo(activeNationC2, 100);
       } else {
-        sourceNation->SetTradePolicyTo(activeNationC2, policyValue);
+        g_apNationStates[selectedTerrainIndexAt90]->SetTradePolicyTo(activeNationC2, policyValue);
       }
     } else {
-      sourceNation->SetTradePolicyTo(activeNationC2, 100);
-      short* policyValue = g_awDiplomacyTradePolicyIconValueTable;
-      do {
+      g_apNationStates[selectedTerrainIndexAt90]->SetTradePolicyTo(activeNationC2, 100);
+      for (int policyIndex = 0; policyIndex < 6; ++policyIndex) {
         if (g_pDiplomacyTurnStateManager->SelectBestMajorNationForMinorByStandingAndNeed(
                 activeNationC2) == selectedTerrainIndexAt90) {
           break;
         }
-        sourceNation->SetTradePolicyTo(activeNationC2, *policyValue);
-        ++policyValue;
-      } while (policyValue < g_awDiplomacyTradePolicyIconValueTable + 6);
+        g_apNationStates[selectedTerrainIndexAt90]->SetTradePolicyTo(
+            activeNationC2, g_awDiplomacyTradePolicyIconValueTable[policyIndex]);
+      }
     }
     break;
   }
+  reject_action:
+    ShowDiplomacyActionRejectedNotice();
+  clear_action:
+    action = kDipActionNone;
+    break;
   case kDipActionInspectNation: {
     if (frameRegionSelectorAt98 != activeNationC2) {
       frameRegionSelectorAt98 = activeNationC2;
-      TInfoPanelView* infoPanel = static_cast<TInfoPanelView*>(actionButtonsA0[0]);
-      infoPanel->SetInfoCountry(activeNationC2);
-      infoPanel->Setup();
+      static_cast<TInfoPanelView*>(actionButtonsA0[0])->SetInfoCountry(activeNationC2);
+      static_cast<TInfoPanelView*>(actionButtonsA0[0])->Setup();
       legendSurfaceModeAt524 = 6;
       InvalidateCityDialogRectRegion(&mapViewportRect514, 1);
     }
     break;
   }
   case kDipActionBuildEmbassy: {
-    bool policyUpdated;
-    if (sourceNation->diplomacyPolicyByNation[activeNationC2] == kDiplomacyProposalBuildEmbassy) {
-      policyUpdated =
-          sourceNation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(activeNationC2, -1);
+    if (g_apNationStates[selectedTerrainIndexAt90]->diplomacyPolicyByNation[activeNationC2] ==
+        kDiplomacyProposalBuildEmbassy) {
+      policyUpdated = g_apNationStates[selectedTerrainIndexAt90]
+                          ->ApplyDiplomacyPolicyStateForTargetWithCostChecks(activeNationC2, -1);
     } else {
       if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
               selectedTerrainIndexAt90, activeNationC2, action)) {
-        ShowDiplomacyActionRejectedNotice();
-        action = kDipActionNone;
-        break;
+        goto reject_policy_action;
       }
-      policyUpdated = sourceNation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-          activeNationC2, kDiplomacyProposalBuildEmbassy);
+      policyUpdated = g_apNationStates[selectedTerrainIndexAt90]
+                          ->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+                              activeNationC2, kDiplomacyProposalBuildEmbassy);
     }
-    if (policyUpdated) {
-      goto refresh_toolbar;
-    }
-    break;
+    goto finish_policy_update;
   }
   case kDipActionBuildConsulate: {
-    bool policyUpdated;
-    if (sourceNation->diplomacyPolicyByNation[activeNationC2] == kDiplomacyProposalBuildConsulate) {
-      policyUpdated =
-          sourceNation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(activeNationC2, -1);
+    if (g_apNationStates[selectedTerrainIndexAt90]->diplomacyPolicyByNation[activeNationC2] ==
+        kDiplomacyProposalBuildConsulate) {
+      policyUpdated = g_apNationStates[selectedTerrainIndexAt90]
+                          ->ApplyDiplomacyPolicyStateForTargetWithCostChecks(activeNationC2, -1);
     } else {
       if (!g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
               selectedTerrainIndexAt90, activeNationC2, action)) {
-        ShowDiplomacyActionRejectedNotice();
-        action = kDipActionNone;
-        break;
+        goto reject_policy_action;
       }
-      policyUpdated = sourceNation->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
-          activeNationC2, kDiplomacyProposalBuildConsulate);
+      policyUpdated = g_apNationStates[selectedTerrainIndexAt90]
+                          ->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+                              activeNationC2, kDiplomacyProposalBuildConsulate);
     }
+    goto finish_policy_update;
+  }
+  reject_policy_action:
+    ShowDiplomacyActionRejectedNotice();
+    action = kDipActionNone;
+    policyUpdated = 0;
+  finish_policy_update:
     if (policyUpdated) {
       goto refresh_toolbar;
     }
     break;
-  }
   case kDipActionLinkTradePolicy: {
     TCountry* targetNation = g_apTerrainTypeDescriptorTable[activeNationC2];
     short controllingNation = targetNation->encodedNationSlot;
@@ -870,6 +888,7 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
       controllingNation = targetNation->nationSlot;
     }
     if (controllingNation != selectedTerrainIndexAt90) {
+      TGreatPower* sourceNation = g_apNationStates[selectedTerrainIndexAt90];
       sourceNation->SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(
           activeNationC2, sourceNation->colonyBoycottFlags[activeNationC2] == 0);
     }
@@ -888,9 +907,9 @@ refresh_toolbar: {
 
 finalize_action:
   if (action != kDipActionNone && activeNationC2 != -1) {
-    g_pSfxPlaybackSystem->PlaySoundEffect(4000, 0, 1);
-    CRect invalidRect = nationTextHitRectsC4[activeNationC2];
+    invalidRect = nationTextHitRectsC4[activeNationC2];
     invalidRect.right += 0x10;
+    g_pSfxPlaybackSystem->PlaySoundEffect(4000, 0, 1);
     InvalidateCityDialogRectRegion(&invalidRect, 1);
   }
 }
