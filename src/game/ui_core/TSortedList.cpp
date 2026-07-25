@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include "game/map/TMission.h"
+#include "game/pointer_representation.h"
 
 // Default-compare trampoline whose address Sort() passes as the comparator: adapts the
 // three-arg __cdecl comparator shape onto the virtual Compare of the list supplied as
@@ -21,10 +22,10 @@ IMPLEMENT_DYNCREATE(TSortedList, TObject)
 
 // FUNCTION: IMPERIALISM 0x00487b30
 short TSortedList::Compare(void* a, void* b) {
-  if (reinterpret_cast<unsigned int>(a) > reinterpret_cast<unsigned int>(b)) {
+  if (PointerAddressBits32(a) > PointerAddressBits32(b)) {
     return 1;
   }
-  if (reinterpret_cast<unsigned int>(a) < reinterpret_cast<unsigned int>(b)) {
+  if (PointerAddressBits32(a) < PointerAddressBits32(b)) {
     return -1;
   }
   return 0;

@@ -657,7 +657,7 @@ address|name|symbol|size|type|prototype|provenance
 487a60|DispatchTSortedListDefaultCompare||20|function|short DispatchTSortedListDefaultCompare(void* a, void* b, void* context)|
 487a90|TSortedList::CreateObject|?CreateObject@TSortedList@@SGPAVCObject@@XZ|94|function|undefined CreateObject()|rtti
 487b10|TSortedList::GetRuntimeClass||6|function|undefined GetTSortedListClassNamePointer()|rtti
-487b30|TSortedList::Compare||24|function|short Compare(void* a, void* b)|
+487b30|TSortedList::Compare||24|function|short TSortedList::Compare(void* a, void* b)|
 487b60|TSortedList::QuickSort||80|function|void QuickSort(int lo, int hi, TSortedListCompareFunc compare, void* context)|
 487bd0|TSortedList::QSPartitionCore||179|function|int QSPartitionCore(int lo, int hi, TSortedListCompareFunc compare, void* context)|
 487cc0|TSortedList::QSPartition||155|function|int QSPartition(int lo, int hi, TSortedListCompareFunc compare, void* context)|
@@ -685,7 +685,7 @@ address|name|symbol|size|type|prototype|provenance
 4881f0|TSortedPtrList::InsertCopiedRecordSortedByComparator||156|function|undefined UpsertPtrListRecordByComparator()|
 4882c0|TSortedPtrList::AppendCopiedRecordToPtrList||60|function|undefined AppendCopiedRecordToPtrList()|
 488310|TSortedPtrList::InsertCopiedRecordAtFrontOfPtrList||60|function|undefined InsertCopiedRecordAtFrontOfPtrList()|
-488360|TSortedPtrList::Compare||24|function|undefined CompareUnsignedIntsAscending()|
+488360|TSortedPtrList::Compare||24|function|short TSortedPtrList::Compare(void* a, void* b)|
 488390|TSortedPtrList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4883c0|CObArray::thunk_DestructCObArray||5|function|uint thunk_DestructCObArray(void)|
 4883e0|TSortedPtrList::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
