@@ -76,11 +76,18 @@ public:
   bool RequiresFixture() const override {
     return true;
   }
-  bool RequiresMainWindow() const override {
-    return false;
+  bool UsesRandomGameFlow() const override {
+    return true;
+  }
+  bool UsesEasyDifficulty() const override {
+    return true;
   }
 
-  void OnManagersReady() override {
+  // Replay only once a game exists. TSimMgr::ReadFrom rebuilds the nation states through
+  // TMapMgr::ChooseNationSetupProfilesForOpenSlots, which reads live map tables -- at
+  // manager-ready time there is no map and it dereferences null. The real load path has
+  // the same requirement; the document machinery satisfies it before Serialize runs.
+  void OnEasyMapReady() override {
     EnterScenarioStep("save_stream_checkpoints", "replay_fixture");
     Replay();
   }
