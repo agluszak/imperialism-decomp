@@ -261,3 +261,33 @@ native records. Model temporary overlapping field use as an explicit `RECT` unio
 not as four integers plus a cast. `just geometry-type-gate` enforces cast-free geometry
 and the curated recovered `TView`/`TControl` API surface without guessing ownership for
 every native API signature.
+
+
+### The eight-condition test for a genuine dual-use field
+
+CLAUDE.md forbids "dual-use" as an explanation and points here for the bar a slot has to
+clear before it counts as a legitimate variant. All eight must hold; `just dual-use-gate`
+enforces the outcome.
+
+1. **Same concrete object** — the same constructor, vtable and allocation shape for both
+   access families. Two allocation sites means two classes.
+2. **Same physical offset**, confirmed from raw instructions, not from decompiler field
+   names.
+3. **Layout agrees with the MSVC500 layout oracle** — if the recovered class size or
+   member order disagrees, the offset is a symptom, not the finding.
+4. **Every writer inventoried.**
+5. **Every reader inventoried**, with its access width and signedness.
+6. **Representation control is explicit** — a discriminator field, proven-disjoint
+   lifetimes, or a proven per-instance role. "It depends on context" is not control.
+7. **No simpler explanation survives.** Rule out, in this order: wrong receiver;
+   derived-class field ownership; adjacent or packed fields read as one; a shared index
+   domain described two ways. In practice one of these is the answer far more often than
+   a real variant is.
+8. **The final model is a real construct** — an explicit `union`, a variant payload, a
+   separate record type, or discriminator-keyed typed accessors. A raw `int` plus
+   scattered casts fails this condition even when 1-7 hold.
+
+Short of all eight the status stays `unresolved_field_attribution`, and the slot keeps its
+`// UNRESOLVED_FIELD_ATTRIBUTION:` tag naming the conflicting readings and the addresses
+that produced them. That tag is the deliverable; a confident wrong model is worse than an
+explicitly unresolved one.

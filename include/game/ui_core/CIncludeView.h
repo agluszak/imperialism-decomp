@@ -80,7 +80,7 @@ protected:
                       CView* pDeactiveView) override; // 0x00483720
   void OnDraw(CDC* pDC) override;                     // 0x00482c90
 
-  // Blit the offscreen map surface (m_field44's bitmap) to `dc` (or a fresh window DC
+  // Blit the offscreen map surface (m_pMainPaneDib's bitmap) to `dc` (or a fresh window DC
   // when null), clipped to the intersection of the caller clip / client rect / the
   // offscreen DIB's natural bounds. 0x00482d00.
   void BlitMapDialogSurfaceToHdcWithClipBounds(CDC* dc, RECT* clipRect);
@@ -138,7 +138,7 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 public:
-  // Blit the main-pane bitmap (m_field44) into the offscreen surface, clipped to
+  // Blit the main-pane bitmap (m_pMainPaneDib) into the offscreen surface, clipped to
   // `clipRect` when one is supplied. 0x00482ed0, __thiscall.
   void BlitMainPaneBitmapToOffscreenClipped(RECT* clipRect);
 
@@ -148,10 +148,13 @@ public:
   TView* ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedArg);
 
   TView* m_activeDialogContext; // 0x40 — g_pDisplayMgr->activeDialog tree hosted here
-  // 0x44 — the offscreen map surface DIB, cleared (to 0) together with the context by
-  // msg 0x4ef. Blitted to the window DC by BlitMapDialogSurfaceToHdcWithClipBounds; the
-  // writer that installs a live surface here is in still-unported paint setup.
-  CDib* m_field44;
+  // 0x44 — the main-pane source DIB: the bitmap of the 'main' tagged picture, blitted
+  // INTO m_pOffscreenDib by BlitMainPaneBitmapToOffscreenClipped and used as the palette
+  // source by BlitMapDialogSurfaceToHdcWithClipBounds. Cleared (to 0) together with the
+  // dialog context by msg 0x4ef. Distinct from m_pOffscreenDib at +0x48, which is the
+  // composited destination -- both are CDib*, and the two are read together in every
+  // paint path, which is what made the slot look ambiguous.
+  CDib* m_pMainPaneDib;
   CDib* m_pOffscreenDib; // 0x48 — 640x480x8 surface created in OnInitialUpdate
   // 0x4c — overlay dirty-rect queue. The original emitted the CList<Rec,Rec&>
   // instantiation twice (ctor TU vtable 0x648560, dtor/Serialize TU vtable 0x648578) —

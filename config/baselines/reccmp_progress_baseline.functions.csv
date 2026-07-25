@@ -420,7 +420,7 @@ address|matching|name
 0x47e390|1.0|CDibPal::`scalar deleting destructor'
 0x47e3c0|0.9615384615384616|CDibPal::~CDibPal
 0x47e440|0.6111111111111112|CDibPal::BuildPaletteFromBitmapColorTable
-0x47e590|0.4701195219123506|CDibPal::DrawPalettePreviewGridRectangles
+0x47e590|0.5905511811023622|CDibPal::DrawPalettePreviewGridRectangles
 0x47e930|1.0|CDibPal::SelectIntoDcAndRealize
 0x47e960|0.40892193308550184|CDibPal::LoadPaletteFile
 0x47ec00|0.1|WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5_Impl
@@ -1589,7 +1589,7 @@ address|matching|name
 0x4a7770|0.6666666666666666|TArmyStack::IArmyStack
 0x4a77b0|0.8311688311688312|TArmyStack::ReadFrom
 0x4a7960|0.9367088607594937|TArmyStack::WriteTo
-0x4a7a40|0.5789473684210527|TArmyStack::AddFirstCountryUnitOfTypeToStack
+0x4a7a40|1.0|TArmyStack::AddFirstCountryUnitOfTypeToStack
 0x4a7b20|1.0|TArmyStack::AddUnitToChainHead
 0x4a7ba0|0.8|TArmyStack::RemoveUnitFromChain
 0x4a7c20|1.0|TArmyStack::Free
