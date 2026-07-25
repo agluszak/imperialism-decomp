@@ -3,6 +3,7 @@
 #include "game/ui_tags_common.h"
 
 #include <stdlib.h>
+#include <string.h>
 #include "game/app/TAnimator.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/app/TCivAnimation2.h"
@@ -29,8 +30,16 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
+#include "game/pointer_representation.h"
 
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
+
+namespace {
+union WordOutputInt {
+  int value;
+  short word;
+};
+} // namespace
 
 static inline double DefaultMapCellScale() {
   return 0.015625;
@@ -41,6 +50,12 @@ static inline int DivideMapPixelOffsetBy64(int value) {
     value += 0x3f;
   }
   return value >> 6;
+}
+
+static inline void CopyPixelDword(unsigned char* destination, const unsigned char* source) {
+  int pixelWord;
+  memcpy(&pixelWord, source, sizeof(pixelWord));
+  memcpy(destination, &pixelWord, sizeof(pixelWord));
 }
 
 static inline bool LandTilesHaveDifferentNationOwners(short firstTile, short secondTile) {
@@ -110,8 +125,8 @@ void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, const CPoint*
 // centering helpers read the signed low word.
 // FUNCTION: IMPERIALISM 0x00519970
 void InitializeMapDialogViewportTileSpan() {
-  *reinterpret_cast<short*>(&g_wMapDialogViewportTileSpan) =
-      static_cast<short>(g_mapCellRowScale_006a3360 * 512.0 - -1.0);
+  short viewportTileSpan = static_cast<short>(g_mapCellRowScale_006a3360 * 512.0 - -1.0);
+  memcpy(&g_wMapDialogViewportTileSpan, &viewportTileSpan, sizeof(viewportTileSpan));
 }
 
 static int g_mapDialogViewportTileSpanInitializer = (InitializeMapDialogViewportTileSpan(), 0);
@@ -131,15 +146,14 @@ IMPLEMENT_DYNCREATE(TMapDialog, TWorldView)
 // addresses pass as short* (the high words are dead), matching the original stack reads.
 // FUNCTION: IMPERIALISM 0x00519b50
 TMapDialog::TMapDialog() : TWorldView() {
-  int row;
-  int col;
+  WordOutputInt row;
+  WordOutputInt col;
   viewportOrigin60.x = 0;
   suppressMarkerOverlay34C = false;
   overlayObject35C = 0;
   viewportOrigin60.y = 0;
-  SplitTileIndexToRowAndColumn(g_pGlobalMapState->field6, reinterpret_cast<short*>(&row),
-                               reinterpret_cast<short*>(&col));
-  SetMapViewCellCoordinates(col, row);
+  SplitTileIndexToRowAndColumn(g_pGlobalMapState->field6, &row.word, &col.word);
+  SetMapViewCellCoordinates(col.value, row.value);
   unresolvedWord354 = 0;
   selectedTileIndex356 = -1;
   unresolvedFlag358 = false;
@@ -461,10 +475,10 @@ unsigned char TMapDialog::IsTileVisible(short tileIndex) {
 // only the low words of the arg slot / col local (same short*-into-int idiom as the ctor).
 // FUNCTION: IMPERIALISM 0x0051ac40
 void TMapDialog::CenterOn(int tileIndex) {
-  int col;
+  WordOutputInt col;
   SplitTileIndexToRowAndColumn(static_cast<short>(tileIndex), reinterpret_cast<short*>(&tileIndex),
-                               reinterpret_cast<short*>(&col));
-  SetMapViewCellCoordinates(col - static_cast<short>(g_wMapDialogViewportTileSpan) / 2,
+                               &col.word);
+  SetMapViewCellCoordinates(col.value - static_cast<short>(g_wMapDialogViewportTileSpan) / 2,
                             tileIndex - 3);
   RECT invalidateRect;
   invalidateRect.left = 0;
@@ -476,18 +490,20 @@ void TMapDialog::CenterOn(int tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x0051ace0
 int TMapDialog::GetCenterTile() const {
-  int col = viewportOrigin60.x / 0x40 + static_cast<short>(g_wMapDialogViewportTileSpan) / 2;
-  int row = viewportOrigin60.y / 0x40 + 4;
-  NormalizeWrappedMapCoord108x60(reinterpret_cast<short*>(&col), reinterpret_cast<short*>(&row));
-  return col + row * 0x6c;
+  WordOutputInt col;
+  WordOutputInt row;
+  col.value = viewportOrigin60.x / 0x40 + static_cast<short>(g_wMapDialogViewportTileSpan) / 2;
+  row.value = viewportOrigin60.y / 0x40 + 4;
+  NormalizeWrappedMapCoord108x60(&col.word, &row.word);
+  return col.value + row.value * 0x6c;
 }
 
 // FUNCTION: IMPERIALISM 0x0051ad70
 void TMapDialog::SetMapViewTileIndex(int arg1) {
-  int tileCol;
+  WordOutputInt tileCol;
   SplitTileIndexToRowAndColumn(static_cast<short>(arg1), reinterpret_cast<short*>(&arg1),
-                               reinterpret_cast<short*>(&tileCol));
-  SetMapViewCellCoordinates(tileCol, arg1);
+                               &tileCol.word);
+  SetMapViewCellCoordinates(tileCol.value, arg1);
 }
 
 // FUNCTION: IMPERIALISM 0x0051adc0
@@ -742,15 +758,15 @@ void TMapDialog::ReleaseTileMarkerForTile(short tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x0051e260
 void TMapDialog::Draw(RECT* rectBuffer) {
-  if (g_pGlobalMapState == 0 || rectBuffer == 0 || quickDrawSurface350 == 0 ||
-      g_pCitySiteCachedPrimaryRenderSurfaceContext == 0) {
+  if (g_pGlobalMapState == 0) {
     return;
   }
 
   CTemporaryRegion savedClip;
   RECT dirtyRect = *rectBuffer;
   RECT cacheRect = dirtyRect;
-  OffsetRect(&cacheRect, 0x40, 0x40);
+  static CSize cacheMargin(0x40, 0x40);
+  OffsetRect(&cacheRect, cacheMargin.cx, cacheMargin.cy);
 
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags = 0;
@@ -763,6 +779,23 @@ void TMapDialog::Draw(RECT* rectBuffer) {
     LockPixels(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
     LockPixels(GetGWorldPixMap(quickDrawSurface350));
 
+    int markerFirstRow = static_cast<int>(viewportOrigin60.y * g_MapPreviewScaleX6A3410);
+    int markerFirstColumn = static_cast<int>(viewportOrigin60.x * g_MapPreviewScaleY6A33D0 - 1.0);
+    int markerLastColumn = g_MapPreviewVerticalOffset6A3448 + markerFirstColumn;
+
+    int markerIndex;
+    for (markerIndex = 0; markerIndex < 90; ++markerIndex) {
+      TMapDialogTileMarker& marker = tileMarkers7c[markerIndex];
+      if (marker.a < static_cast<short>(markerFirstRow) ||
+          marker.a > static_cast<short>(markerFirstRow + 8) ||
+          marker.b < static_cast<short>(markerFirstColumn) ||
+          marker.b > static_cast<short>(markerLastColumn)) {
+        marker.flag = 0;
+      } else {
+        marker.flag = 1;
+      }
+    }
+
     int firstRowValue = viewportOrigin60.y + rectBuffer->top;
     int firstRow = DivideMapPixelOffsetBy64(firstRowValue);
     int rowSpan = rectBuffer->bottom - rectBuffer->top;
@@ -772,24 +805,18 @@ void TMapDialog::Draw(RECT* rectBuffer) {
     int colSpan = rectBuffer->right - rectBuffer->left;
     int lastCol = firstCol + DivideMapPixelOffsetBy64(colSpan) + 1;
 
-    int markerIndex;
-    for (markerIndex = 0; markerIndex < 90; ++markerIndex) {
-      TMapDialogTileMarker& marker = tileMarkers7c[markerIndex];
-      marker.flag = marker.a >= firstRow && marker.a <= firstRow + 8 && marker.b >= firstCol &&
-                    marker.b <= lastCol;
-    }
+    GetPixBaseAddr(GetGWorldPixMap(quickDrawSurface350));
+    GetPixBaseAddr(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
+    GetPixBaseAddr(GetGWorldPixMap(g_pStrategicMapViewSystem->atlas668));
 
-    LockPixels(GetGWorldPixMap(quickDrawSurface350));
-    LockPixels(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
-    if (g_pStrategicMapViewSystem != 0 && g_pStrategicMapViewSystem->atlas668 != 0) {
-      LockPixels(GetGWorldPixMap(g_pStrategicMapViewSystem->atlas668));
-    }
-
-    for (int row = firstRow; row < lastRow && row < 60; ++row) {
+    for (int row = firstRow;
+         static_cast<short>(row) < static_cast<short>(lastRow) && static_cast<short>(row) < 60;
+         ++row) {
       if (row < 0) {
         continue;
       }
-      for (int unwrappedCol = firstCol; unwrappedCol <= lastCol; ++unwrappedCol) {
+      for (int unwrappedCol = firstCol;
+           static_cast<short>(unwrappedCol) <= static_cast<short>(lastCol); ++unwrappedCol) {
         int col = unwrappedCol;
         if (col >= 108) {
           col -= 108;
@@ -797,7 +824,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
           col += 108;
         }
 
-        short tileIndex = row * 108 + col;
+        short tileIndex = static_cast<short>(ComputeStridedRecordAddress6C(col, row));
         short projectedY;
         short projectedX;
         ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin60, &projectedY,
@@ -827,20 +854,21 @@ void TMapDialog::Draw(RECT* rectBuffer) {
           marker.c = tileIndex;
           g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10 =
               static_cast<signed char>(markerIndex);
-          RenderStrategicMapTileCell(tileIndex, 0, markerIndex << 6);
+          DrawOneTile(tileIndex, 0, markerIndex << 6);
           cachedMarkerIndex = static_cast<signed char>(markerIndex);
         } else {
           TCivUnit* unit =
               g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, g_pSimMgr->GetActiveNationId());
+          int animationTag = PointerAddressLong32(unit);
           if (unit != 0 && unit->unitOrder > static_cast<UnitOrder>(4) &&
-              g_pUiAnimator->FindRegisteredAnimationByTag(reinterpret_cast<int>(unit)) == 0) {
+              g_pUiAnimator->FindRegisteredAnimationByTag(animationTag) == 0) {
             short animationY;
             short animationX;
             ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin60, &animationY,
                                                          &animationX, 1);
             RECT animationRect = {animationX, animationY, animationX + 0x40, animationY + 0x40};
-            TCivAnimation2* animation = new TCivAnimation2(this, &animationRect, unit->orderType,
-                                                           reinterpret_cast<int>(unit));
+            TCivAnimation2* animation =
+                new TCivAnimation2(this, &animationRect, unit->orderType, animationTag);
             g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
           }
         }
@@ -863,8 +891,8 @@ void TMapDialog::Draw(RECT* rectBuffer) {
         TCivUnit* firstCivilianOrder =
             g_pGlobalMapState->terrainStateTable[tileIndex].firstCivilianOrder20;
         if (firstCivilianOrder != 0) {
-          TAnimation* animation = g_pUiAnimator->FindRegisteredAnimationByTag(
-              reinterpret_cast<int>(firstCivilianOrder));
+          TAnimation* animation =
+              g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(firstCivilianOrder));
           if (animation != 0) {
             SetGWorld(g_pCitySiteCachedPrimaryRenderSurfaceContext, savedSurfaceFlags);
             RECT animationClip = animation->screenRect1C;
@@ -907,7 +935,7 @@ static unsigned char ReflectHexDirectionMaskForBottomUpSurface(unsigned char mas
 }
 
 // FUNCTION: IMPERIALISM 0x0051EB40
-void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, short screenX) {
+void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   if (g_pGlobalMapState == 0 || g_pStrategicMapViewSystem == 0 ||
       g_pStrategicMapViewSystem->atlas668 == 0 || quickDrawSurface350 == 0) {
     return;
@@ -932,9 +960,7 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
     int centerColumn = centerTile % 108;
     if ((tileColumn == 0 && centerColumn > 54) || (tileColumn == 107 && centerColumn < 54)) {
       short seamOffset = g_pGlobalMapState->GetFixedConstant0xc80();
-      Copy64x64TileBlockWithStrideAdjustment(reinterpret_cast<int*>(sourcePixels + seamOffset),
-                                             reinterpret_cast<int*>(destinationPixels),
-                                             sourceStride, destinationStride);
+      NewCopy64(sourcePixels + seamOffset, destinationPixels, sourceStride, destinationStride);
       usedWrappedSeamTile = true;
     }
   }
@@ -947,9 +973,7 @@ void TMapDialog::RenderStrategicMapTileCell(short tileIndex, short screenY, shor
       sourceOffset = g_pGlobalMapState->LookupTileSpriteVariantOffsetByTerrainAndGate(tileIndex);
     }
 
-    Copy64x64TileBlockWithStrideAdjustment(reinterpret_cast<int*>(sourcePixels + sourceOffset),
-                                           reinterpret_cast<int*>(destinationPixels), sourceStride,
-                                           destinationStride);
+    NewCopy64(sourcePixels + sourceOffset, destinationPixels, sourceStride, destinationStride);
 
     if (!isOcean) {
       unsigned char adjacencyMaskA =
@@ -2026,8 +2050,7 @@ void TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor() {
 }
 
 // FUNCTION: IMPERIALISM 0x00523170
-void TMapDialog::RenderMapTileAtScreenPositionUsingCache(short tileIndex, short screenX,
-                                                         short screenY) {
+void TMapDialog::DrawTile(short tileIndex, short screenX, short screenY) {
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags = 0;
   GetGWorld(&savedSurface, &savedSurfaceFlags);
@@ -2060,7 +2083,7 @@ void TMapDialog::RenderMapTileAtScreenPositionUsingCache(short tileIndex, short 
   marker.c = tileIndex;
   g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10 =
       static_cast<signed char>(markerIndex);
-  RenderStrategicMapTileCell(tileIndex, 0, markerIndex << 6);
+  DrawOneTile(tileIndex, 0, markerIndex << 6);
 
   RECT sourceRect = {markerIndex << 6, 0, (markerIndex + 1) << 6, 0x40};
   RECT cacheRect = {screenX + 0x40, screenY + 0x40, screenX + 0x80, screenY + 0x80};
@@ -2072,7 +2095,7 @@ void TMapDialog::RenderMapTileAtScreenPositionUsingCache(short tileIndex, short 
       g_pGlobalMapState->terrainStateTable[tileIndex].firstCivilianOrder20;
   if (firstCivilianOrder != 0) {
     TAnimation* animation =
-        g_pUiAnimator->FindRegisteredAnimationByTag(reinterpret_cast<int>(firstCivilianOrder));
+        g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(firstCivilianOrder));
     if (animation != 0) {
       SetGWorld(g_pCitySiteCachedPrimaryRenderSurfaceContext, savedSurfaceFlags);
       RECT animationClip = animation->screenRect1C;
@@ -2099,7 +2122,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
                                                 int projectedY, int flag, short tileIndex) {
   bool belongsToActiveNation = orderEntry->field_18 == g_pSimMgr->GetActiveNationId();
   if (orderEntry->unitOrder > static_cast<UnitOrder>(4) && belongsToActiveNation) {
-    int animationTag = reinterpret_cast<int>(orderEntry);
+    int animationTag = PointerAddressLong32(orderEntry);
     if (g_pUiAnimator->FindRegisteredAnimationByTag(animationTag) == 0) {
       short animationY;
       short animationX;
@@ -2430,33 +2453,33 @@ void TMapDialog::CopyCoastCornerMaskBetweenDirections3And4(unsigned char* src, u
 // Copies a 64-row tile block, 16 dwords (64 bytes) per row via two unrolled 8-dword
 // stores, advancing source and destination by their own dword strides between rows.
 // FUNCTION: IMPERIALISM 0x00525670
-void TMapDialog::Copy64x64TileBlockWithStrideAdjustment(int* src, int* dest, short srcStride,
-                                                        short destStride) {
-  int srcStrideDwords = static_cast<short>(srcStride / 4);
-  int destStrideDwords = static_cast<short>(destStride / 4);
+void TMapDialog::NewCopy64(unsigned char* src, unsigned char* dest, short srcStride,
+                           short destStride) {
+  short srcStrideDwords = static_cast<short>(srcStride / 4);
+  short destStrideDwords = static_cast<short>(destStride / 4);
   int row = 0x40;
   do {
     int inner = 2;
-    int* s;
-    int* d;
+    unsigned char* s;
+    unsigned char* d;
     do {
       s = src;
       d = dest;
-      d[0] = s[0];
-      d[1] = s[1];
-      d[2] = s[2];
-      d[3] = s[3];
-      d[4] = s[4];
-      d[5] = s[5];
-      d[6] = s[6];
-      d[7] = s[7];
+      CopyPixelDword(d, s);
+      CopyPixelDword(d + 4, s + 4);
+      CopyPixelDword(d + 8, s + 8);
+      CopyPixelDword(d + 0xc, s + 0xc);
+      CopyPixelDword(d + 0x10, s + 0x10);
+      CopyPixelDword(d + 0x14, s + 0x14);
+      CopyPixelDword(d + 0x18, s + 0x18);
+      CopyPixelDword(d + 0x1c, s + 0x1c);
       inner = inner - 1;
-      dest = d + 8;
-      src = s + 8;
+      dest = d + 0x20;
+      src = s + 0x20;
     } while (inner != 0);
     row = row - 1;
-    dest = d + destStrideDwords - 8;
-    src = s + srcStrideDwords - 8;
+    dest = d + destStrideDwords * 4 - 0x20;
+    src = s + srcStrideDwords * 4 - 0x20;
   } while (row != 0);
 }
 

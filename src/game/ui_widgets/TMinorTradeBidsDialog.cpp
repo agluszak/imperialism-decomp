@@ -39,25 +39,30 @@ void TMinorTradeBidsDialog::StuffValues() {
     }
   }
 
-  for (int minorIndex = 0; minorIndex < 16; ++minorIndex) {
-    if (g_apMinorNationCapabilityObjects[minorIndex] == 0) {
-      continue;
-    }
+  TMinor** auxiliaryNationSlot = g_apNationAuxRuntimeStateSlots;
+  int minorTableByteOffset = 0;
+  int remainingMinorCount = 16;
+  do {
+    int minorIndex = minorTableByteOffset / sizeof(TMinor*);
+    if (g_apMinorNationCapabilityObjects[minorIndex] != 0) {
+      TView* minorPanel = ResolveControlByTag(g_minorTreatyPanelTags[minorIndex]);
+      if (minorPanel == 0) {
+        FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x189);
+      }
 
-    TView* minorPanel = ResolveControlByTag(g_minorTreatyPanelTags[minorIndex]);
-    if (minorPanel == 0) {
-      FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x189);
-    }
-
-    for (short metricSlot = 0; metricSlot < 0x17; ++metricSlot) {
-      TNumberText* amountControl = static_cast<TNumberText*>(
-          minorPanel->ResolveControlByTag(g_tradeBidNationMetricControlTags[metricSlot]));
-      if (amountControl != 0) {
-        amountControl->SetEnable(0);
-        amountControl->minimumValue = -1;
-        amountControl->SetControlValue(
-            g_apNationAuxRuntimeStateSlots[minorIndex]->QueryNationMetricBySlot7C(metricSlot), 0);
+      for (short metricSlot = 0; metricSlot < 0x17; ++metricSlot) {
+        TNumberText* amountControl = static_cast<TNumberText*>(
+            minorPanel->ResolveControlByTag(g_tradeBidNationMetricControlTags[metricSlot]));
+        if (amountControl != 0) {
+          amountControl->SetEnable(0);
+          amountControl->minimumValue = -1;
+          amountControl->SetControlValue(
+              (*auxiliaryNationSlot)->QueryNationMetricBySlot7C(metricSlot), 0);
+        }
       }
     }
-  }
+    minorTableByteOffset += sizeof(TMinor*);
+    ++auxiliaryNationSlot;
+    --remainingMinorCount;
+  } while (remainingMinorCount != 0);
 }

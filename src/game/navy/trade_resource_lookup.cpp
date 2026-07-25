@@ -38,13 +38,13 @@ short GetResourceDescriptorWeightWord1ByType(short resourceType) {
   return g_NavyOrderResourceDescriptorTable[resourceType].descriptorWeight;
 }
 
-// Generic accessor: reads the low short of the `subslot`-th 4-byte int-sized column in
-// the resourceType row (subslot 0=resolveWeight, 1=calculateWeight, 2=taskForceWeight,
+// Generic accessor: reads the low short of the `statColumn`-th 4-byte column in the
+// resourceType row (column 0=resolveWeight, 1=calculateWeight, 2=taskForceWeight,
 // 3=stockCap, 4=navyPriorityWeight, 5=resourceDescriptorWeightWord0,
 // 6=enabledFlagOrBucketOffset, 7=descriptorWeight, 8=padding) -- matches the original's
-// own generic int-indexed-then-short-read pattern rather than a per-column switch.
+// shipyard stat-panel indexing.
 // FUNCTION: IMPERIALISM 0x00550f30
-short GetResourceDescriptorWord08ByTypeOffset(short resourceType, short subslot) {
-  const int* row = reinterpret_cast<const int*>(&g_NavyOrderResourceDescriptorTable[resourceType]);
-  return *reinterpret_cast<const short*>(row + subslot);
+short GetResourceDescriptorStatByColumn(short resourceType, short statColumn) {
+  return static_cast<short>(
+      g_NavyOrderResourceDescriptorTable[resourceType].statColumnDwords[statColumn]);
 }

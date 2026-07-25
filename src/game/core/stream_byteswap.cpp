@@ -18,7 +18,8 @@
 // function. Kept as two separately-named definitions because a marker binds to exactly
 // one address; the write path calls this one.
 // FUNCTION: IMPERIALISM 0x004b9340
-void SwapFirstTwoBytesInBuffer(unsigned char* buffer) {
+void SwapFirstTwoBytesInBuffer(short* value) {
+  unsigned char* buffer = static_cast<unsigned char*>(static_cast<void*>(value));
   unsigned char tmp = buffer[0];
   buffer[0] = buffer[1];
   buffer[1] = tmp;
@@ -33,7 +34,7 @@ void SwapFirstTwoBytesInBuffer(unsigned char* buffer) {
 void WriteByteSwappedShortArrayToStream(TStream* stream, short* words, int count) {
   for (; count > 0; --count) {
     unsigned short buffer = static_cast<unsigned short>(*words);
-    unsigned char* bytes = reinterpret_cast<unsigned char*>(&buffer);
+    unsigned char* bytes = static_cast<unsigned char*>(static_cast<void*>(&buffer));
     unsigned char tmp = bytes[0];
     bytes[0] = bytes[1];
     bytes[1] = tmp;
@@ -44,7 +45,8 @@ void WriteByteSwappedShortArrayToStream(TStream* stream, short* words, int count
 
 // Swap the two bytes of one 16-bit field in place.
 // FUNCTION: IMPERIALISM 0x004f2970
-void ByteSwapShortInPlace(unsigned char* bytes) {
+void ByteSwapShortInPlace(short* value) {
+  unsigned char* bytes = static_cast<unsigned char*>(static_cast<void*>(value));
   unsigned char firstByte = bytes[0];
   unsigned char secondByte = bytes[1];
   bytes[0] = secondByte;
@@ -56,10 +58,10 @@ void ByteSwapShortInPlace(unsigned char* bytes) {
 // nothing back-to-front and skips the swap loop entirely. The loop walks a separate
 // cursor rather than advancing `buffer`, matching the original's register use.
 // FUNCTION: IMPERIALISM 0x004f2a60
-void ReadByteSwappedShortArrayFromStream(TStream* stream, unsigned char* buffer, int shortCount) {
-  stream->ReadBytes(buffer, shortCount * 2);
+void ReadByteSwappedShortArrayFromStream(TStream* stream, short* values, int shortCount) {
+  stream->ReadBytes(values, shortCount * 2);
   if (0 < shortCount) {
-    unsigned char* cursor = buffer;
+    unsigned char* cursor = static_cast<unsigned char*>(static_cast<void*>(values));
     do {
       unsigned char firstByte = cursor[0];
       unsigned char secondByte = cursor[1];

@@ -1,6 +1,7 @@
 #include "game/navy/TAdmiral.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "game/military/mapped_flavor_text.h"
 #include "game/navy/TShip.h"
@@ -16,6 +17,16 @@
 #include "game/core/TStream.h"
 #include "game/ui_screens/CString.h"
 #include "game/gfx/ui_invalidation_guard.h"
+
+namespace {
+
+__inline unsigned int PointerSeedBits(const void* pointer) {
+  unsigned int bits;
+  memcpy(&bits, &pointer, sizeof(bits));
+  return bits;
+}
+
+} // namespace
 
 // SYNTHETIC: IMPERIALISM 0x005512d0
 // TAdmiral::CreateObject
@@ -39,11 +50,7 @@ TAdmiral::TAdmiral(NationSlot nationSlotArg)
       if (node == this) {
         continue;
       }
-      if (static_cast<unsigned char>(
-              _mbscmp(
-                  reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(node->displayName)),
-                  reinterpret_cast<unsigned char*>(
-                      (char*)static_cast<LPCSTR>(this->displayName))) == 0)) {
+      if (node->displayName.Compare(this->displayName) == 0) {
         this->NameThyself();
       }
     }
@@ -164,17 +171,17 @@ void TAdmiral::ReassignThyself() {
 
 // Mac oracle: TAdmiral::EstimateEnemyForces(short*, const TZone*, short) const.
 // FUNCTION: IMPERIALISM 0x00551a00
-short TAdmiral::EstimateEnemyForces(short* estimatedCounts, TZone* zone, NationSlot nation) const {
+short TAdmiral::EstimateEnemyForces(short* estimatedCounts, const TZone* zone,
+                                    NationSlot nation) const {
   int skill = this == 0 ? 0 : experiencePoints / 100 + 1;
-  srand(static_cast<unsigned int>(g_pSimMgr->GetEconomicTurn() + reinterpret_cast<int>(this) +
-                                  reinterpret_cast<int>(zone) + nation));
+  srand(g_pSimMgr->GetEconomicTurn() + PointerSeedBits(this) + PointerSeedBits(zone) + nation);
 
   int i;
   for (i = 0; i < 5; ++i) {
     estimatedCounts[i] = 0;
   }
 
-  short total = 0;
+  int total = 0;
   for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
     if (ship->nation != nation || ship->location != zone) {
       continue;
@@ -211,9 +218,9 @@ short TAdmiral::EstimateEnemyForces(short* estimatedCounts, TZone* zone, NationS
       category = static_cast<short>(g_aIndustryCapabilityClassSlotTable[ship->type].classId);
     }
     estimatedCounts[category] = static_cast<short>(estimatedCounts[category] + estimatedCount);
-    total = static_cast<short>(total + estimatedCount);
+    total += estimatedCount;
   }
-  return total;
+  return static_cast<short>(total);
 }
 
 // Mac oracle: TAdmiral::GetFleetReport(CStr255&, TZone*, short) const.
@@ -329,10 +336,7 @@ void TAdmiral::NameThyself() {
     if (node == this) {
       continue;
     }
-    if (static_cast<unsigned char>(
-            _mbscmp(reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(node->displayName)),
-                    reinterpret_cast<unsigned char*>(
-                        (char*)static_cast<LPCSTR>(this->displayName))) == 0)) {
+    if (node->displayName.Compare(this->displayName) == 0) {
       this->NameThyself();
     }
   }

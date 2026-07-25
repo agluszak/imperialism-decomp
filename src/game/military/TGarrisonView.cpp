@@ -88,20 +88,14 @@ void TGarrisonView::Close() {
             TMilitaryUnit* nextUnit = static_cast<TMilitaryUnit*>(unit->nextOnTile);
             CString unitName;
             unitName = unit->name24;
-            unsigned char isSecretUnit =
-                _mbscmp(
-                    reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(unitName)),
-                    reinterpret_cast<const unsigned char*>(g_szGarrisonSecretUnitNameSnidely)) == 0;
+            unsigned char isSecretUnit = unitName.Compare(g_szGarrisonSecretUnitNameSnidely) == 0;
             if (isSecretUnit != 0) {
               CString activeNationName;
               short activeNation = g_pSimMgr->GetActiveNationId();
               g_apTerrainTypeDescriptorTable[activeNation]->FormatOverlayTerrainLabelText(
                   &activeNationName);
               unsigned char isSecretNation =
-                  _mbscmp(
-                      reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(activeNationName)),
-                      reinterpret_cast<const unsigned char*>(g_szGarrisonSecretNationNameFrog)) ==
-                  0;
+                  activeNationName.Compare(g_szGarrisonSecretNationNameFrog) == 0;
               if (isSecretNation != 0) {
                 activeNation = g_pSimMgr->GetActiveNationId();
                 if (g_apTerrainTypeDescriptorTable[activeNation]->GetHomeRegionCityRecordIndex() ==

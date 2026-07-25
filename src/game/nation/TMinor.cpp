@@ -26,8 +26,6 @@
 
 #include <new>
 
-static const unsigned int kAddrClassDescTMinor = 0x006536a0;
-
 namespace {
 
 short DecodeTerrainNationSlotFromEncoded(short encodedNationSlot, short nationSlot) {
@@ -52,10 +50,6 @@ int SignedDivideBy100(int value) {
 // TMinor::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMinor, TCountry)
-
-void* TMinor::GetTMinorClassNamePointer() {
-  return reinterpret_cast<void*>(kAddrClassDescTMinor);
-}
 
 // FUNCTION: IMPERIALISM 0x004e3710
 TMinor::TMinor() {}
@@ -717,8 +711,7 @@ char TMinor::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, i
     return 0;
   }
 
-  g_pNationInteractionStateManager->DispatchProposalAmountSlot60(this->nationSlot, arg1, arg2, arg3,
-                                                                 arg4, 1, 0);
+  g_pNationInteractionStateManager->SetDealResults(this->nationSlot, arg1, arg2, arg3, arg4, 1, 0);
   return 0;
 }
 
@@ -1007,7 +1000,8 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
 
   this->NotifyMajorPowersAffectedByMinorTerritoryChange();
   if (g_apNationStates[targetNationSlot] != 0 &&
-      g_apNationStates[targetNationSlot]->serializedStatusFlags[6] < '3') {
+      g_apNationStates[targetNationSlot]->pendingActionStatus.roles.territorialPressureStatus06 <
+          '3') {
     g_apNationStates[targetNationSlot]->SetNationPendingActionStateAndPayload(6, this->nationSlot);
   }
 }
@@ -1053,8 +1047,7 @@ void TMinor::SetNationRowDisplayValueByDiplomacyPredicate(NationSlot targetNatio
     if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(targetNationSlot, nationSlot) == 0 &&
         (nationSlot == this->nationSlot ||
          (g_apNationStates[targetNationSlot] != 0 &&
-          reinterpret_cast<unsigned char*>(
-              g_apNationStates[targetNationSlot])[0x918 + nationSlot] == 0))) {
+          g_apNationStates[targetNationSlot]->colonyBoycottFlags[nationSlot] == 0))) {
       this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), 100);
     } else {
       this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), 300);
@@ -1100,7 +1093,7 @@ int ResolveDiplomacyMaskOwnerNationSlot(const TMinor* minor, short provinceId) {
 
 // FUNCTION: IMPERIALISM 0x004e5ac0
 void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
-  char* tileArrayBase = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable);
+  TTerrainStateRecordView* terrainTiles = g_pGlobalMapState->terrainStateTable;
   if (provinceId == -1) {
     if (this->ownedRegionList == 0) {
       return;
@@ -1114,7 +1107,7 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
         int linkedIndex = 0;
         while (linkedIndex < regionRecord->linkedRegionCount) {
           short tileId = regionRecord->linkedTileIndices42[linkedIndex];
-          tileArrayBase[0x18 + tileId * 0x24] = static_cast<char>(-1);
+          terrainTiles[tileId].secondaryOwnerNationTag18 = -1;
           linkedIndex++;
         }
       }
@@ -1129,7 +1122,7 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
     int linkedIndex = 0;
     while (linkedIndex < regionRecord->linkedRegionCount) {
       short tileId = regionRecord->linkedTileIndices42[linkedIndex];
-      tileArrayBase[0x18 + tileId * 0x24] = static_cast<char>(-1);
+      terrainTiles[tileId].secondaryOwnerNationTag18 = -1;
       linkedIndex++;
     }
   }
@@ -1145,7 +1138,6 @@ void TMinor::NotifyMajorPowersAffectedByMinorTerritoryChange(void) {
 
   char notifyMajorSlots[7] = {0};
   TTerrainStateRecordView* terrainTiles = g_pGlobalMapState->terrainStateTable;
-  char* terrainBytes = reinterpret_cast<char*>(terrainTiles);
 
   if (this->ownedRegionList != 0) {
     int ownedCount = this->ownedRegionList->GetSize();
@@ -1157,10 +1149,10 @@ void TMinor::NotifyMajorPowersAffectedByMinorTerritoryChange(void) {
         int linkedIndex = 0;
         while (linkedIndex < regionRecord->linkedRegionCount) {
           short tileId = regionRecord->linkedTileIndices42[linkedIndex];
-          int tileNation = static_cast<signed char>(terrainBytes[0x18 + tileId * 0x24]);
+          int tileNation = terrainTiles[tileId].secondaryOwnerNationTag18;
           if (tileNation != -1 && needLevel300ByMajorSlot[tileNation] != 0) {
             notifyMajorSlots[tileNation] = 1;
-            terrainBytes[0x18 + tileId * 0x24] = static_cast<char>(-1);
+            terrainTiles[tileId].secondaryOwnerNationTag18 = -1;
           }
           linkedIndex++;
         }

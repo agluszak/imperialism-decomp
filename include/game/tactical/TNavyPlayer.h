@@ -2,6 +2,7 @@
 
 #include "compat.h"
 
+#include "game/navy_tactical_types.h"
 #include "game/map/TTacticalPlayer.h"
 #include "game/mfc.h"
 
@@ -18,8 +19,7 @@ public:
   // Navy slice (base TTacticalPlayer ends at +0x28).
   class TTaskForce* taskForce28; // +0x28 the side's fleet order node (0x59edd0 marks it
                                  // eliminated and prunes its order head after commit)
-  int shipDisplayMode2c;         // +0x2c ship-panel display mode set by the navy toolbar
-                                 // (hull=0, crew=1, sail=2)
+  NavyTargeting targetingMode2c; // +0x2c targeting mode set by the navy toolbar
 
   // In-class inline: the original has no out-of-line TNavyPlayer::TNavyPlayer -- every
   // caller absorbs it, so an out-of-line definition pessimizes them into a call.

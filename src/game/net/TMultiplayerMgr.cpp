@@ -154,9 +154,6 @@ struct TurnEvent15Packet : NetMessage {
 #include <cstdlib>
 #include <cstring>
 
-// FUNCTION: IMPERIALISM 0x0050ec60
-NationStateRecordA8::NationStateRecordA8() {}
-
 // FUNCTION: IMPERIALISM 0x005427a0
 TMultiplayerSlotHandle::TMultiplayerSlotHandle() : allocatedData(0), tagOrSize(0) {}
 
@@ -218,6 +215,14 @@ struct TurnEvent11MapPokePacket : TimelyMessageHeader {
   int byteOffset20;     // +0x20 - raw byte offset into the selected table
   short valueWord24;    // +0x24
   short maskWord26;     // +0x26, total 0x28
+};
+
+union MapPokeBufferView {
+  TTerrainStateRecordView* terrainRecords;
+  Province* cityRecords;
+  unsigned char* bytes;
+  short* words;
+  int* dwords;
 };
 
 // Events 0x20/0x21/0x22 receive views (the emit-side structs later in this TU pack
@@ -294,7 +299,7 @@ struct TurnEvent1EDiplomacyActionPacket : TimelyNetMessagePrefix {
 struct TurnEvent24CityRecordPacket : TimelyNetMessagePrefix {
   short cityRecordIndex; // +0x1c
   unsigned char pad1e[2];
-  NationStateRecordA8 record; // +0x20
+  Province record; // +0x20
 };
 
 // Event-0x27 join-empire dispatch.
@@ -504,7 +509,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // the status tag, refresh the lounge dialog's row, and - when hosting - retune the
     // start button and lobby message. Slot 0xf3 asks the host to re-broadcast its own
     // claim instead.
-    LobbyChatEvent9Packet* chat = reinterpret_cast<LobbyChatEvent9Packet*>(packet);
+    LobbyChatEvent9Packet* chat = static_cast<LobbyChatEvent9Packet*>(packet);
     if (chat->nationSlot18 != 0xf3) {
       int slot9 = static_cast<char>(chat->nationSlot18);
       int sessionId = chat->field1C;
@@ -874,41 +879,47 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TurnEvent11MapPokePacket* poke = static_cast<TurnEvent11MapPokePacket*>(packet);
     switch (poke->pokeWidthCode18) {
     case 1: {
-      unsigned char* bufferBase1 = 0;
+      MapPokeBufferView bufferBase1;
+      bufferBase1.bytes = 0;
       if (poke->bufferSelector1C == 0) {
-        bufferBase1 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->terrainStateTable);
+        bufferBase1.terrainRecords = g_pGlobalMapState->terrainStateTable;
       } else if (poke->bufferSelector1C == 1) {
-        bufferBase1 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
+        bufferBase1.cityRecords = g_pGlobalMapState->cityScoreTable;
       }
       unsigned char maskByte = static_cast<unsigned char>(poke->maskWord26);
-      unsigned char* target1 = bufferBase1 + poke->byteOffset20;
-      *target1 =
-          static_cast<unsigned char>((*target1 & static_cast<unsigned char>(~maskByte)) |
+      MapPokeBufferView target1;
+      target1.bytes = bufferBase1.bytes + poke->byteOffset20;
+      *target1.bytes =
+          static_cast<unsigned char>((*target1.bytes & static_cast<unsigned char>(~maskByte)) |
                                      (static_cast<unsigned char>(poke->valueWord24) & maskByte));
       break;
     }
     case 2: {
-      unsigned char* bufferBase2 = 0;
+      MapPokeBufferView bufferBase2;
+      bufferBase2.bytes = 0;
       if (poke->bufferSelector1C == 0) {
-        bufferBase2 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->terrainStateTable);
+        bufferBase2.terrainRecords = g_pGlobalMapState->terrainStateTable;
       } else if (poke->bufferSelector1C == 1) {
-        bufferBase2 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
+        bufferBase2.cityRecords = g_pGlobalMapState->cityScoreTable;
       }
-      short* target2 = reinterpret_cast<short*>(bufferBase2 + poke->byteOffset20);
-      *target2 = static_cast<short>((*target2 & ~poke->maskWord26) |
-                                    (poke->valueWord24 & poke->maskWord26));
+      MapPokeBufferView target2;
+      target2.bytes = bufferBase2.bytes + poke->byteOffset20;
+      *target2.words = static_cast<short>((*target2.words & ~poke->maskWord26) |
+                                          (poke->valueWord24 & poke->maskWord26));
       break;
     }
     case 4: {
-      unsigned char* bufferBase4 = 0;
+      MapPokeBufferView bufferBase4;
+      bufferBase4.bytes = 0;
       if (poke->bufferSelector1C == 0) {
-        bufferBase4 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->terrainStateTable);
+        bufferBase4.terrainRecords = g_pGlobalMapState->terrainStateTable;
       } else if (poke->bufferSelector1C == 1) {
-        bufferBase4 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
+        bufferBase4.cityRecords = g_pGlobalMapState->cityScoreTable;
       }
       int maskBits = poke->maskWord26;
-      int* target4 = reinterpret_cast<int*>(bufferBase4 + poke->byteOffset20);
-      *target4 = (poke->valueWord24 & maskBits) | (*target4 & ~maskBits);
+      MapPokeBufferView target4;
+      target4.bytes = bufferBase4.bytes + poke->byteOffset20;
+      *target4.dwords = (poke->valueWord24 & maskBits) | (*target4.dwords & ~maskBits);
       break;
     }
     default:
@@ -1054,7 +1065,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // posts the 'NeXT' trade command.
     TurnEvent1CProposalAmountPacket* proposalAmount =
         static_cast<TurnEvent1CProposalAmountPacket*>(packet);
-    g_pNationInteractionStateManager->DispatchProposalAmountSlot60(
+    g_pNationInteractionStateManager->SetDealResults(
         proposalAmount->ownerNation1C, proposalAmount->sourceContext1E, proposalAmount->amount24,
         proposalAmount->maxAmount20, proposalAmount->targetNation22,
         proposalAmount->emitEventFlag26, 1);
@@ -1566,10 +1577,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
            matrix->pendingPolicyTierMatrix,
            sizeof(g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix484));
     // The original copies each pair with a single 32-bit register move.
-    *reinterpret_cast<int*>(&g_pDiplomacyTurnStateManager->selectedSourceNationSlot784) =
-        *reinterpret_cast<int*>(&matrix->selectedSourceNationSlot);
-    *reinterpret_cast<int*>(&g_pDiplomacyTurnStateManager->selectionFlagsA788) =
-        *reinterpret_cast<int*>(&matrix->selectionFlagsA);
+    g_pDiplomacyTurnStateManager->packedSelectedNationSlots784 = matrix->packedSelectedNationSlots;
+    g_pDiplomacyTurnStateManager->packedSelectionFlagsAB788 = matrix->packedSelectionFlagsAB;
     g_pDiplomacyTurnStateManager->selectionFlagsC78c = matrix->selectionFlagsC;
     memcpy(g_pDiplomacyTurnStateManager->comparativePowerRows1824, matrix->relationTailBlock,
            sizeof(matrix->relationTailBlock));
@@ -2258,42 +2267,6 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   packet.cityNameA4 = src->cityNameA4;
 
   g_pNetMgr006a6014->Send(&packet, 0);
-}
-
-// FUNCTION: IMPERIALISM 0x0054ae90
-NationStateRecordA8& NationStateRecordA8::operator=(const NationStateRecordA8& source) {
-  ownerNationCode00 = source.ownerNationCode00;
-  formerOwnerNationCode01 = source.formerOwnerNationCode01;
-  developmentStage = source.developmentStage;
-  fortLevel03 = source.fortLevel03;
-  cityTileIndex04 = source.cityTileIndex04;
-  lastTurnTick = source.lastTurnTick;
-  adjacentRegionCount08 = source.adjacentRegionCount08;
-  for (int a = 0; a < 12; ++a) {
-    adjacentRegionIds0A[a] = source.adjacentRegionIds0A[a];
-  }
-  for (int b = 0; b < 12; ++b) {
-    adjacentRegionAnchorTiles22[b] = source.adjacentRegionAnchorTiles22[b];
-  }
-  linkedRegionCount = source.linkedRegionCount;
-  field3B = source.field3B;
-  field3C = source.field3C;
-  secondaryNeighborTileIndex3e = source.secondaryNeighborTileIndex3e;
-  primaryNeighborTileIndex40 = source.primaryNeighborTileIndex40;
-  for (int c = 0; c < 0x20; ++c) {
-    linkedRegionIds42[c] = source.linkedRegionIds42[c];
-  }
-  for (int d = 0; d < 10; ++d) {
-    resourceDevelopmentCounts82[d] = source.resourceDevelopmentCounts82[d];
-  }
-  reservedUnitChainSlot98 = source.reservedUnitChainSlot98;
-  reservedCityScoreSlot9C = source.reservedCityScoreSlot9C;
-  navyOrderReachableA0 = source.navyOrderReachableA0;
-  exploredByNationMaskA1 = source.exploredByNationMaskA1;
-  resourcePresenceMaskA2 = source.resourcePresenceMaskA2;
-  regionClassA3 = source.regionClassA3;
-  cityNameA4 = source.cityNameA4;
-  return *this;
 }
 
 // FUNCTION: IMPERIALISM 0x0054b1b0

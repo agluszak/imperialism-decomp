@@ -33,10 +33,7 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone*
   if (displayNameOverride == 0) {
     g_apTerrainTypeDescriptorTable[resourceType]->GenerateEthnicName(&shipNode->name);
     for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0; existing = existing->next) {
-      if (existing != shipNode &&
-          _mbscmp(reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(existing->name)),
-                  reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(shipNode->name))) ==
-              0) {
+      if (existing != shipNode && existing->name.Compare(shipNode->name) == 0) {
         RegenerateNavyPrimaryOrderDisplayNameUntilUnique(shipNode);
         break;
       }

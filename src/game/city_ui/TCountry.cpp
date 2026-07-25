@@ -92,12 +92,9 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nation
   this->overlayAnchorTileCache8c = -1;
   this->encodedNationSlot = -1;
 
-  int dwordIndex = 0;
-  do {
-    *reinterpret_cast<int*>(&this->needLevelByNation[dwordIndex * 2]) = 0x640064;
-    ++dwordIndex;
-  } while (dwordIndex < 0xb);
-  this->needLevelByNation[0x16] = 100;
+  for (int nationIndex = 0; nationIndex < 0x17; ++nationIndex) {
+    this->needLevelByNation[nationIndex] = 100;
+  }
 
   this->identitySharedString0 = g_szEmptyString;
   CString flavorName;
@@ -111,11 +108,9 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nation
 
   this->militaryUnitList44 = new TSortedList();
 
-  int ordinalIndex = 0;
-  do {
-    *reinterpret_cast<int*>(&this->unitNameOrdinalByType[ordinalIndex * 2]) = 0x10001;
-    ++ordinalIndex;
-  } while (ordinalIndex < 0xf);
+  for (int unitType = 0; unitType < 0x1e; ++unitType) {
+    this->unitNameOrdinalByType[unitType] = 1;
+  }
   this->unitNameCounter84 = 1;
 
   TLongintList* ownedRegions = new TLongintList();
@@ -742,8 +737,8 @@ void TCountry::DeserializeDiplomacyNationStateFromStream(TStream* stream) {
   stream->ReadBytes(&nation->field8d6[0], 2);
   stream->ReadBytes(&nation->field8d6[1], 2);
   stream->ReadBytes(&nation->field8d6[2], 2);
-  stream->ReadBytes(nation->serializedStatusFlags, 8);
-  SwapShortArrayBytes(nation->serializedStatusFlags, 4);
+  stream->ReadBytes(nation->pendingActionStatus.byAction, 8);
+  SwapShortArrayBytes(nation->pendingActionStatus.byAction, 4);
 }
 
 void TCountry::SerializeDiplomacyNationStateToStream(TStream* stream) {
@@ -763,7 +758,10 @@ void TCountry::SerializeDiplomacyNationStateToStream(TStream* stream) {
   stream->WriteBytes(&nation->field8d6[0], 2);
   stream->WriteBytes(&nation->field8d6[1], 2);
   stream->WriteBytes(&nation->field8d6[2], 2);
-  WriteShortArrayElems(stream, reinterpret_cast<short*>(nation->serializedStatusFlags), 4);
+  for (int wordIndex = 0; wordIndex < 4; ++wordIndex) {
+    short statusWord = nation->pendingActionStatus.GetSerializedPrefixWord(wordIndex);
+    WriteShortArrayElems(stream, &statusWord, 1);
+  }
 }
 
 char IsPolicyCodeInSpecialNationPolicySet(short policyCode) {

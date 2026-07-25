@@ -152,9 +152,7 @@ void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode
       if (existing == shipNode) {
         continue;
       }
-      if (_mbscmp(reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(existing->name)),
-                  reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(shipNode->name))) ==
-          0) {
+      if (existing->name.Compare(shipNode->name) == 0) {
         goto retry;
       }
     }

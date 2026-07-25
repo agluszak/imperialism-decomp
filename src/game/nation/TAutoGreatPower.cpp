@@ -1481,9 +1481,9 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
     if (g_pDiplomacyTurnStateManager
             ->relationStandingScoreMatrix79c[nationSlot * 0x17 + peerNation] >= 100) {
       maximumAdjustedMilitaryScore =
-          static_cast<float>(defenseMinister->GetPersonalityWeightByFlag(1) * militaryScore);
+          static_cast<float>(defenseMinister->GetStategicEscalationMultiplier(1) * militaryScore);
       missionScore =
-          static_cast<float>(defenseMinister->GetPersonalityWeightByFlag(0) * missionScore);
+          static_cast<float>(defenseMinister->GetStategicEscalationMultiplier(0) * missionScore);
     }
 
     if (militaryScore > maximumAdjustedMilitaryScore) {

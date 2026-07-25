@@ -49,7 +49,7 @@ void TCouncilTickerAnimation::Tick() {
   int tick = tickCounter10 + 1;
   tickCounter10 = tick;
   if (tick == ticksPerFrame14) {
-    static_cast<TCouncilView*>(ownerView04)->AdvanceCivilianTerrainSelectionStep();
+    static_cast<TCouncilView*>(ownerView04)->NextTick();
     tickCounter10 = 0;
   }
 }

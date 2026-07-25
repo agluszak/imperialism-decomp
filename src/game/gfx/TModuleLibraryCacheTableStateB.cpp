@@ -27,7 +27,7 @@ TModuleLibraryCacheTableStateB::TModuleLibraryCacheTableStateB() : m_dibPalette(
 TModuleLibraryCacheTableStateB::~TModuleLibraryCacheTableStateB() {
   while (m_tableA.GetCount() > 0) {
     POSITION pos = m_tableA.GetStartPosition();
-    WORD key;
+    short key;
     CacheRecord* record;
     m_tableA.GetNextAssoc(pos, key, record);
 
@@ -129,7 +129,7 @@ CDibPal* TModuleLibraryCacheTableStateB::EnsureDefaultDibPalette() {
 }
 
 // FUNCTION: IMPERIALISM 0x004997e0
-CDib* TModuleLibraryCacheTableStateB::LoadBmpResourceByIdCached(unsigned short bmpId) {
+CDib* TModuleLibraryCacheTableStateB::LoadBmpResourceByIdCached(short bmpId) {
   CacheRecord* record = NULL;
   if (m_tableA.Lookup(bmpId, record)) {
     record->refCount++;
@@ -224,14 +224,14 @@ CDib* TModuleLibraryCacheTableStateB::BuildIndexedBmpResourceById(short bmpId, i
   }
 
   CacheRecord* record = NULL;
-  if (m_tableA.Lookup(static_cast<WORD>(bmpId), record)) {
+  if (m_tableA.Lookup(bmpId, record)) {
     record->refCount++;
   } else {
     record = new CacheRecord;
     record->id = bmpId;
     record->pObject = dib;
     record->refCount = 1;
-    m_tableA.SetAt(static_cast<WORD>(bmpId), record);
+    m_tableA.SetAt(bmpId, record);
     m_tableB.SetAt(dib, record);
   }
 
@@ -258,7 +258,7 @@ CDib* TModuleLibraryCacheTableStateB::BuildIndexedBmpResourceById(short bmpId, i
 void TModuleLibraryCacheTableStateB::IncrementDialogResourceRefCountByShortIdInRegistry(
     unsigned int packedKey) {
   CacheRecord* record = NULL;
-  if (m_tableA.Lookup(static_cast<WORD>(packedKey), record)) {
+  if (m_tableA.Lookup(static_cast<short>(packedKey), record)) {
     record->refCount++;
   } else {
     reinterpret_cast<CacheRecord*>(packedKey)->refCount++;
@@ -268,10 +268,10 @@ void TModuleLibraryCacheTableStateB::IncrementDialogResourceRefCountByShortIdInR
 // FUNCTION: IMPERIALISM 0x0049a190
 void TModuleLibraryCacheTableStateB::ReleaseRecordById(short id) {
   CacheRecord* record = NULL;
-  m_tableA.Lookup(static_cast<WORD>(id), record);
+  m_tableA.Lookup(id, record);
 
   record->refCount--;
-  if (record->refCount < 1) {
+  if (record->refCount <= 0) {
     if (record->pObject != NULL) {
       delete record->pObject;
     }
@@ -294,7 +294,7 @@ void TModuleLibraryCacheTableStateB::ReleaseRecordByHandle(void* handle) {
   }
 
   record->refCount--;
-  if (record->refCount < 1) {
+  if (record->refCount <= 0) {
     if (record->pObject != NULL) {
       delete record->pObject;
     }
@@ -400,7 +400,7 @@ COLORREF TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor(unsigned int p
 // placeholder class names (TModuleLibraryCacheTableStateA_0064BA68 /
 // TModuleLibraryCacheTableStateB_0064BA80) with hand-written stub bodies.
 // TEMPLATE: IMPERIALISM 0x0049ae30
-// ??1?$CMap@GGPAUCacheRecord@@PAU1@@@UAE@XZ
+// ??1?$CMap@FFPAUCacheRecord@@PAU1@@@UAE@XZ
 
 // TEMPLATE: IMPERIALISM 0x0049b270
 // ??1?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAE@XZ
@@ -408,7 +408,7 @@ COLORREF TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor(unsigned int p
 // VC5 emits afxtempl.h's InitHashTable body for each embedded CMap specialization.
 // These are MFC template code, not game-owned resize helpers.
 // TEMPLATE: IMPERIALISM 0x0049b6a0
-// ?InitHashTable@?$CMap@GGPAUCacheRecord@@PAU1@@@QAEXIH@Z
+// ?InitHashTable@?$CMap@FFPAUCacheRecord@@PAU1@@@QAEXIH@Z
 
 // TEMPLATE: IMPERIALISM 0x0049b7f0
 // ?InitHashTable@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@QAEXIH@Z

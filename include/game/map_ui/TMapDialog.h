@@ -38,7 +38,7 @@ public:
   bool unresolvedFlag358;     // +0x358 zeroed by the ctor; no confirmed reader yet
   unsigned char pad359[3];
   TObject* overlayObject35C; // Free() dispatches TObject::Free virtually, then clears it.
-  // Per-tile debug/text-overlay gate read by RenderStrategicMapTileCell (0x51eb40). Zeroed
+  // Per-tile debug/text-overlay gate read by DrawOneTile (0x51eb40). Zeroed
   // by the ctor.
   bool tileDebugOverlayEnabled360; // +0x360
   unsigned char pad361[3];
@@ -89,9 +89,10 @@ public:
   // Mac CodeWarrior identity: TMapDialog::InvalidateTile(short). Projects the tile into
   // the current viewport, releases its cached marker, and invalidates its 64x64 cell.
   virtual void InvalidateTile(short tileIndex);
-  // Renders one 64x64 strategic-map cell into the tile-cache surface. The final two
-  // arguments are destination Y/X respectively (the original callers push X, then Y).
-  virtual void RenderStrategicMapTileCell(short tileIndex, short screenY, short screenX);
+  // Mac CodeWarrior identity: TMapDialog::DrawOneTile(short, short, short). Renders one
+  // 64x64 strategic-map cell into the tile-cache surface. The final two arguments are
+  // destination Y/X respectively (the original callers push X, then Y).
+  virtual void DrawOneTile(short tileIndex, short screenY, short screenX);
   virtual void DrawNationBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY,
                                               short tileIndex);
   virtual void DrawCityBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY,
@@ -126,8 +127,8 @@ public:
   // Draws every generated inter-region route segment in viewport-relative coordinates,
   // then restores the QuickDraw fill color to black.
   virtual void DrawGeneratedMapRouteSegmentsAndResetFillColor();
-  virtual void RenderMapTileAtScreenPositionUsingCache(short tileIndex, short screenX,
-                                                       short screenY);
+  // Mac CodeWarrior identity: TMapDialog::DrawTile(short, short, short).
+  virtual void DrawTile(short tileIndex, short screenX, short screenY);
   // Exact 64x64 pixel wedges used to blend a neighboring terrain sprite into the base tile.
   virtual void CopyTerrainTransitionMaskDirection2(unsigned char* src, unsigned char* dest,
                                                    short srcStride, short destStride);
@@ -154,8 +155,9 @@ public:
                                                          short srcStride, short destStride);
   virtual void CopyCoastCornerMaskBetweenDirections3And4(unsigned char* src, unsigned char* dest,
                                                          short srcStride, short destStride);
-  virtual void Copy64x64TileBlockWithStrideAdjustment(int* src, int* dest, short srcStride,
-                                                      short destStride);
+  // Mac CodeWarrior identity: TMapDialog::NewCopy64(unsigned char*, unsigned char*, short, short).
+  virtual void NewCopy64(unsigned char* src, unsigned char* dest, short srcStride,
+                         short destStride);
   // Mac CodeWarrior identity: TMapDialog::GetCenterTile() const.
   virtual int GetCenterTile() const;
   virtual void SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode);

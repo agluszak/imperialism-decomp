@@ -32,7 +32,7 @@ TArmyInfoView::TArmyInfoView() : TPicture() {}
 TArmyInfoView::~TArmyInfoView() {}
 
 // FUNCTION: IMPERIALISM 0x00591620
-void TArmyInfoView::PopulateFriendlyArmyReportContent(short cityRecordIndex, int* categoryCounts) {
+void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
   CString reportText;
   CString categoryName;
   CString countText;
@@ -44,26 +44,10 @@ void TArmyInfoView::PopulateFriendlyArmyReportContent(short cityRecordIndex, int
   TextStyle bodyStyle;
   TextStyle smallStyle;
   TextStyle smallBoldStyle;
-  char* titleColorBytes = reinterpret_cast<char*>(&titleStyle.textColor);
-  titleColorBytes[0] = 0;
-  titleColorBytes[1] = 0;
-  titleColorBytes[2] = 0;
-  titleColorBytes[3] = 0;
-  char* bodyColorBytes = reinterpret_cast<char*>(&bodyStyle.textColor);
-  bodyColorBytes[0] = 0;
-  bodyColorBytes[1] = 0;
-  bodyColorBytes[2] = 0;
-  bodyColorBytes[3] = 0;
-  char* smallColorBytes = reinterpret_cast<char*>(&smallStyle.textColor);
-  smallColorBytes[0] = 0;
-  smallColorBytes[1] = 0;
-  smallColorBytes[2] = 0;
-  smallColorBytes[3] = 0;
-  char* smallBoldColorBytes = reinterpret_cast<char*>(&smallBoldStyle.textColor);
-  smallBoldColorBytes[0] = 0;
-  smallBoldColorBytes[1] = 0;
-  smallBoldColorBytes[2] = 0;
-  smallBoldColorBytes[3] = 0;
+  titleStyle.textColor = 0;
+  bodyStyle.textColor = 0;
+  smallStyle.textColor = 0;
+  smallBoldStyle.textColor = 0;
 
   InitializeUiTextStyleDescriptor(&titleStyle, 0, 0xe, 0x2b67, 1);
   BuildUiTextStyleDescriptor(&bodyStyle, 0, 0xc, 0x2b67);

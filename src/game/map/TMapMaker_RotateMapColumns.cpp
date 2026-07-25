@@ -124,26 +124,14 @@ void TMapMaker::RotateMapColumnsByPeakCityTileDensity() {
 
   int destByte = 0;
   int sourceCol = bestColumn + 0x6b;
-  int* src = reinterpret_cast<int*>(mapTileGrid08);
-  int* dst = scratch;
-  for (int words = 0xe3d0; words != 0; words = words + -1) {
-    *dst = *src;
-    src = src + 1;
-    dst = dst + 1;
-  }
+  memcpy(scratch, mapTileGrid08, 0x38f40);
   do {
     int rows = 0x3c;
     int* scratchRow = scratch + (sourceCol % 0x6c) * 9;
     int rowByte = destByte;
     do {
       rows = rows + -1;
-      int* s = scratchRow;
-      int* d = reinterpret_cast<int*>(mapTileGrid08 + rowByte);
-      for (int words = 9; words != 0; words = words + -1) {
-        *d = *s;
-        s = s + 1;
-        d = d + 1;
-      }
+      memcpy(mapTileGrid08 + rowByte, scratchRow, 0x24);
       scratchRow = scratchRow + 0x3cc;
       rowByte = rowByte + 0xf30;
     } while (rows != 0);

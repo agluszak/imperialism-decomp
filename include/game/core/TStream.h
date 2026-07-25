@@ -7,6 +7,15 @@
 
 class CString;
 
+// MacApp VPoint: two 32-bit coordinates. The Windows stream slots read/write the
+// complete eight-byte value even though the native Windows POINT uses 16-bit fields
+// in this VC5-era codebase.
+struct VPoint {
+  int vertical;
+  int horizontal;
+};
+ASSERT_SIZE(VPoint, 0x8);
+
 // TStream -- the MacApp-derived serialization byte stream the save format is built on.
 // Names come from the Mac CodeWarrior oracle (name oracle only, per AGENTS.md Hard Rule
 // 12); every width below is proven by the corresponding body in TStream.cpp, all of
@@ -58,10 +67,10 @@ public:
   virtual void ReadBytes(void* buffer, int sizeBytes); // 15 (0x3c) primitive, no-op base
   virtual char ReadByte();                             // 16 (0x40) 1 byte
   virtual char ReadBoolean();                          // 17 (0x44) 1 byte
-  virtual void ReadCharacter(void* out);               // 18 (0x48) 1 byte into a short
+  virtual void ReadCharacter(short* outCharacter);     // 18 (0x48) 1 byte into a short
   virtual short ReadInteger();                         // 19 (0x4c) 2 bytes (MacApp Integer)
   virtual int ReadLong();                              // 20 (0x50) 4 bytes
-  virtual void ReadVPoint(void* out);                  // 21 (0x54) 8 bytes, two longs
+  virtual void ReadVPoint(VPoint* outPoint);           // 21 (0x54) 8 bytes, two longs
   virtual void ReadRect(void* out);                    // 22 (0x58) 8 bytes
   virtual void ReadVRect(void* out);                   // 23 (0x5c) 16 bytes
   // 0x60 has no call site anywhere in the image and no Mac counterpart of this width,
@@ -72,7 +81,7 @@ public:
   virtual void ReadString(void* buffer, int maxLen);        // 27 (0x6c) 2-byte length + bytes
   virtual void ReadSharedString(CString* dest, int maxLen); // 28 (0x70) same, into a CString
   virtual void ReadWordAlign();                             // 29 (0x74) skip to an even offset
-  virtual void WriteBytes(void* data, int length);          // 30 (0x78) primitive, no-op base
+  virtual void WriteBytes(const void* data, int length);    // 30 (0x78) primitive, no-op base
   virtual void WriteByte(unsigned char value);              // 31 (0x7c) 1 byte
   virtual void WriteBoolean(unsigned char value);           // 32 (0x80) 1 byte
   virtual void WriteCharacter(short value);                 // 33 (0x84) 1 byte (the high one)

@@ -10,6 +10,7 @@
 #include "game/nation/TGreatPower.h"
 #include "game/ui_screens/TZone.h"
 #include "game/globals/prelude.h"
+#include "game/globals/military_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_globals.h"
 #include "game/tactical_ui/TTechMgr.h"
@@ -275,9 +276,8 @@ void TDefendProvinceMission::CalculateImportance() {
       }
     }
 
-    static const double* const p_neg_one_0065A9E0 = reinterpret_cast<const double*>(0x0065a9e0);
     local_8 = (static_cast<float>(local_c) / static_cast<float>(adjacentCount) -
-               static_cast<float>(*p_neg_one_0065A9E0)) *
+               static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9E0)) *
               local_8;
   }
 

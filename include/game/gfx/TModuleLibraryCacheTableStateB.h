@@ -23,7 +23,7 @@
 // still provisional pending the resource lookup/insert sites.
 //
 // bd 1uj.44: these two CMap<> destructors are compiler-emitted (no hand-written body is
-// correct per the mfc-collections skill) at 0x0049ae30 (CMap<WORD,WORD,CacheRecord*,
+// correct per the mfc-collections skill) at 0x0049ae30 (CMap<short,short,CacheRecord*,
 // CacheRecord*>::~CMap, vtable 0x0064ba80) and 0x0049b270 (CMap<void*,void*,CacheRecord*,
 // CacheRecord*>::~CMap, vtable 0x0064ba68) — claimed via `// TEMPLATE:` markers in
 // TModuleLibraryCacheTableStateB.cpp (see the ISLE-style decorated-name-comment
@@ -67,7 +67,7 @@ public:
   int LoadUiStringResourceById(CString* out, unsigned int stringId); // 0x00499440
 
   // Cached bitmap-surface lookup/load by resource id (primary + slot modules). 0x004997e0
-  CDib* LoadBmpResourceByIdCached(unsigned short bmpId);
+  CDib* LoadBmpResourceByIdCached(short bmpId);
 
   // Lazily build and return the shared palette from backdrop bitmap 0x3b6. 0x004995c0
   CDibPal* EnsureDefaultDibPalette();
@@ -87,7 +87,7 @@ public:
   CDib* BuildIndexedBmpResourceById(short bmpId, int width, int height, int patternMode);
 
   CDibPal* m_dibPalette;                                   // 0x00 global DIB palette companion
-  CMap<WORD, WORD, CacheRecord*, CacheRecord*> m_tableA;   // 0x04 (vtable 0x0064ba80)
+  CMap<short, short, CacheRecord*, CacheRecord*> m_tableA; // 0x04 (vtable 0x0064ba80)
   CMap<void*, void*, CacheRecord*, CacheRecord*> m_tableB; // 0x20 (vtable 0x0064ba68)
   HMODULE m_slots[4];                                      // 0x3c (gob pack slots 0..3)
   HMODULE m_primaryModule;                                 // 0x4c

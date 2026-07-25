@@ -2,6 +2,8 @@
 #include "game/ui_tags_common.h"
 #include "game/ui_core/TApplication.h"
 
+#include "game/pointer_representation.h"
+
 #include "game/gfx/TNewGameCommand.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
@@ -107,7 +109,7 @@ void TApplication::Idle(int idlePhase) {
 
 // FUNCTION: IMPERIALISM 0x00486b50
 void TApplication::DispatchQueuedUiCommandAndRelease(void* payload) {
-  AfxGetMainWnd()->PostMessage(0xbc0, 0, reinterpret_cast<LPARAM>(payload));
+  AfxGetMainWnd()->PostMessage(0xbc0, 0, PointerAddressLong32(payload));
 }
 
 // FUNCTION: IMPERIALISM 0x00486ba0

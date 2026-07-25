@@ -381,14 +381,13 @@ void TDiplomacyMgr::ReadFrom(TStream* stream) {
     stream->ReadBytes(specialRelationSourceSlots1894, sizeof(specialRelationSourceSlots1894));
     NationSlot* slot = specialRelationSourceSlots1894;
     for (int remaining = 0x10; remaining != 0; --remaining) {
-      ByteSwapShortInPlace(reinterpret_cast<unsigned char*>(slot));
+      ByteSwapShortInPlace(slot);
       ++slot;
     }
   }
 
   if (g_nSaveFormatVersion > 0x1b) {
-    ReadByteSwappedShortArrayFromStream(
-        stream, reinterpret_cast<unsigned char*>(specialRelationTargetSlots18b4), 0x10);
+    ReadByteSwappedShortArrayFromStream(stream, specialRelationTargetSlots18b4, 0x10);
   }
 }
 
@@ -413,7 +412,7 @@ void TDiplomacyMgr::WriteTo(TStream* stream) {
   NationSlot* slot = specialRelationSourceSlots1894;
   for (int remaining = 0x10; remaining != 0; --remaining) {
     short value = *slot;
-    SwapFirstTwoBytesInBuffer(reinterpret_cast<unsigned char*>(&value));
+    SwapFirstTwoBytesInBuffer(&value);
     stream->WriteBytes(&value, 2);
     ++slot;
   }
@@ -1251,7 +1250,7 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
       winnerNationSlot = topNationSlot;
     } else if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(
                    static_cast<short>(topNationSlot)) &&
-               g_apNationStates[topNationSlot]->field8d3 < '3') {
+               g_apNationStates[topNationSlot]->pendingActionStatus.roles.actionStatus0B < '3') {
       g_apNationStates[topNationSlot]->SetNationPendingActionStateAndPayload(0xb, -1);
     }
   } else if (topSideCount < secondSideCount) {
@@ -1259,7 +1258,7 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
       winnerNationSlot = secondNationSlot;
     } else if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(
                    static_cast<short>(secondNationSlot)) &&
-               g_apNationStates[secondNationSlot]->field8d3 < '3') {
+               g_apNationStates[secondNationSlot]->pendingActionStatus.roles.actionStatus0B < '3') {
       g_apNationStates[secondNationSlot]->SetNationPendingActionStateAndPayload(0xb, -1);
     }
   } else if (forceFullClear) {

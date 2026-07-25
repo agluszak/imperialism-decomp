@@ -287,7 +287,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
         return 0;
       }
     }
-    mapMaker->mapTileGrid08 = reinterpret_cast<char*>(terrainStateTable);
+    mapMaker->mapTileGrid08 = static_cast<char*>(static_cast<void*>(terrainStateTable));
     mapMaker->AssignOrCompactCityRegionIdsAndRebuildBorders(1);
   } else if (mapStreamName == 0) {
     if (tuningOverride != 0) {
@@ -297,7 +297,8 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
       GenerateMappedFlavorTextByCurrentContextNation(&scenarioTagText1c);
     }
     mapMaker->GenerateMapFromTuningStringAndApplyScenarioOverrides(
-        reinterpret_cast<char*>(terrainStateTable), cityScoreTable, &scenarioTagText1c);
+        static_cast<char*>(static_cast<void*>(terrainStateTable)), cityScoreTable,
+        &scenarioTagText1c);
   }
 
   if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
@@ -3331,7 +3332,7 @@ int TMapMgr::GetMapImprovementOffsetByActiveFlagsAndCityStage(StrategicTileIndex
 short TMapMgr::GetMapImprovementOffsetByTownTransportLink(StrategicTileIndex tileIndex,
                                                           int unusedParam2) {
   (void)unusedParam2;
-  unsigned char flags = terrainStateTable[tileIndex].activeFlags1c;
+  unsigned short flags = terrainStateTable[tileIndex].activeFlags1c;
   TTown* town = FindTownMarkerForTileByOwnerNation(tileIndex);
   unsigned char linked = (town != nullptr) ? town->transportLinkedFlag4c : 1;
   if (flags & 4) {

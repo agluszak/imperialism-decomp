@@ -58,7 +58,22 @@ bool TPlacard::SetValue(short value, bool refreshNow) {
 
 // FUNCTION: IMPERIALISM 0x0058bc60
 void TPlacard::Draw(RECT* rectBuffer) {
+  union ThemeColorStorage {
+    COLORREF packedValue;
+    unsigned char channels[4];
+  };
+
   CString valueText;
+  ThemeColorStorage textColor;
+  ThemeColorStorage shadowColor;
+  textColor.channels[0] = 0;
+  textColor.channels[1] = 0;
+  textColor.channels[2] = 0;
+  textColor.channels[3] = 0;
+  shadowColor.channels[0] = 0;
+  shadowColor.channels[1] = 0;
+  shadowColor.channels[2] = 0;
+  shadowColor.channels[3] = 0;
   TPicture::Draw(rectBuffer);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
 
@@ -73,18 +88,16 @@ void TPlacard::Draw(RECT* rectBuffer) {
     textX = static_cast<short>(frameWidth34 / 2 - 10);
   }
 
-  COLORREF textColor;
-  COLORREF shadowColor;
-  ResolveUiThemeColor(0x2b6c, &textColor);
-  ResolveUiThemeColor(0x2b67, &shadowColor);
+  ResolveUiThemeColor(0x2b6c, &textColor.packedValue);
+  ResolveUiThemeColor(0x2b67, &shadowColor.packedValue);
 
   short textY = static_cast<short>(frameHeight38 - 2);
-  SetQuickDrawColorAndSyncGlobals(shadowColor);
+  SetQuickDrawColorAndSyncGlobals(shadowColor.packedValue);
   SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textX + 1),
                                           static_cast<short>(textY + 1));
   DrawTextWithCachedQuickDrawStyleState(&valueText);
 
-  SetQuickDrawColorAndSyncGlobals(textColor);
+  SetQuickDrawColorAndSyncGlobals(textColor.packedValue);
   SetQuickDrawTextOriginWithContextOffset(textX, textY);
   DrawTextWithCachedQuickDrawStyleState(&valueText);
   SetQuickDrawFillColor(0);

@@ -71,8 +71,7 @@ void TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer(unsigned int nFlags, 
     return;
   }
   if (g_McAppUiMouseCaptureTimerId_006A1ADC != 0) {
-    ::KillTimer(reinterpret_cast<HWND>(capturedControl->nativeWindow50->m_hWnd),
-                g_McAppUiMouseCaptureTimerId_006A1ADC);
+    ::KillTimer(capturedControl->nativeWindow50->m_hWnd, g_McAppUiMouseCaptureTimerId_006A1ADC);
     g_McAppUiMouseCaptureTimerId_006A1ADC = 0;
   }
   ::ReleaseCapture();

@@ -49,21 +49,6 @@ native_integral_reviews:
   c2e2852e7faabcf6:
     classification: win32_uint_sentinel
     evidence: MessageBeep takes UINT and 0xffffffff selects the simple default sound; retail wrapper 0x004931e0 pushes -1 directly.
-  3971bc60890cc38d:
-    classification: win32_resource_identifier
-    evidence: MFC stores integer dialog resource IDs in the pointer-shaped m_lpszTemplateName field; FindResourceA consumes the recovered low UINT identifier at 0x0049d360.
-  04a2df0d87143ebc:
-    classification: mfc_word_map_key
-    evidence: m_tableA is keyed by WORD and the BMP resource identifier stays 32-bit until the CMap lookup boundary in retail 0x00499b40.
-  d09f763966efebc6:
-    classification: mfc_word_map_key
-    evidence: m_tableA is keyed by WORD and the BMP resource identifier stays 32-bit until the CMap insertion boundary in retail 0x00499b40.
-  5e99d2391a6383ab:
-    classification: mfc_word_map_key
-    evidence: retail 0x0049a0b0 explicitly loads only the low input word before hashing the CMap key.
-  531a3bdd6c6d74a9:
-    classification: mfc_word_map_key
-    evidence: retail 0x0049a190 loads and hashes the signed short argument as the WORD-key representation used by m_tableA.
   1c1d74f04479d145:
     classification: win32_allocation_size
     evidence: VC5 GlobalAlloc takes a DWORD byte count; retail 0x005e3d40 forwards the 32-bit packet length unchanged at the API boundary.
@@ -193,9 +178,6 @@ nested_conversion_reviews:
   fb4cc0429d2807ae:
     classification: signed_table_byte_then_int
     evidence: "the university requirement table stores signed bytes; the signed step preserves negative levels and the int step is the arithmetic width."
-  d6c4811bfba0d8c3:
-    classification: narrow_operand_then_narrow_result
-    evidence: "tileOrTerrainId0c is widened arithmetic; the signed step performs the retail word addition and the unsigned step is the tile-id key."
   455e7f2ca9d668cc:
     classification: signed_byte_sign_test
     evidence: "the packed map-tile action state byte is read signed so the < 0 sign test is correct, then normalized to a byte for the retail byte compare."
@@ -269,6 +251,9 @@ discriminant_reviews:
   battleOutcomeCode44:
     classification: closed_domain_needs_listing_evidence
     evidence: three outcome codes 0/1/2 shared by TNavyBattle, TTacticalBattle and TNextMoveCommand; the producer that assigns them has not been decoded, so the names are not yet evidence-backed.
+  bfType:
+    classification: external_api_or_resource_constant
+    evidence: BITMAPFILEHEADER::bfType is the Win32 BMP file signature field; 0x4d42 is the external bitmap format magic, not a game-domain discriminant.
   buildingType:
     classification: closed_domain_needs_listing_evidence
     evidence: TCity bands building types at 8, 0x10 and 0x20, which is a three-tier building-class layout; the tier names come from the city construction tables, which are not yet recovered.

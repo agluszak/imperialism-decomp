@@ -39,9 +39,9 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
   int availableUnitCounts[10];
   memset(availableUnitCounts, 0, sizeof(availableUnitCounts));
   int totalUnitCounts[10];
-  unsigned char hasUpgradeableUnit;
+  bool hasUpgradeableUnit;
 
-  memset(&hasUpgradeableUnit, 0, sizeof(hasUpgradeableUnit));
+  hasUpgradeableUnit = 0;
   selectedProvinceIndex = provinceIndex;
   memset(totalUnitCounts, 0, sizeof(totalUnitCounts));
   if (provinceIndex != -1) {

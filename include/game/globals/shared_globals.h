@@ -167,7 +167,7 @@ extern char s_szColonSeparator_00696b10[];
 
 extern char s_mcflavor_00696d10[];
 
-extern char s_mcflavor_006976e0[];
+extern char g_szLiteralWb_006976E0[];
 
 extern char g_szLowercaseX[];
 
@@ -1383,7 +1383,7 @@ extern int g_InfoBarDummyOrigin_006A2410[2];
 // nation still has need-cap headroom (needCapA6 - needsOverCapFlag).
 extern short g_aInteriorMinisterNeedPriorityOrder_00696408[10];
 
-// Naval combat damage-split ratios (TNavyTacUnit::ApplyTacticalDamageAndDeathState, 0x5a63c0):
+// Naval combat damage-split ratios (TNavyTacUnit::ApplyNavalDamage, 0x5a63c0):
 // the two shares a hit's damage is divided between strength4 (hull) and crewStrength38
 // depending on the attacker's ship-panel aim mode.
 extern double g_dNavyDamageSplitRatioA_00669f10; // 0.25

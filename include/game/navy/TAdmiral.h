@@ -55,7 +55,7 @@ public:
 
   // Mac oracle: EstimateEnemyForces / GetFleetReport. The report intentionally
   // perturbs observed ship counts and classes according to this admiral's skill.
-  short EstimateEnemyForces(short* estimatedCounts, TZone* zone, NationSlot nation) const;
+  short EstimateEnemyForces(short* estimatedCounts, const TZone* zone, NationSlot nation) const;
   void GetFleetReport(CString* out, TZone* zone, NationSlot nation) const;
 };
 ASSERT_SIZE(TAdmiral, 0x1c);

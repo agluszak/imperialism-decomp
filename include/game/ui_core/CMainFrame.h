@@ -47,6 +47,7 @@ public:
   afx_msg LRESULT HandleCustomMessage2420DispatchTurnEvent(WPARAM wParam, LPARAM lParam);
   afx_msg void OnCommand8009();
   afx_msg void OnCommand800C();
+  afx_msg void OnCommand8013();                                           // 0x004855b0
   afx_msg void OnPaint();                                                 // 0x00485bd0
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);             // 0x00485c00
   afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized); // 0x00485c60

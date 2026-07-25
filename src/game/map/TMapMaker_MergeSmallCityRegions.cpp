@@ -25,20 +25,6 @@
 #include "game/mfc.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-// One 0x18-byte region-border-link record (the overlay-span record this pass stores).
-struct RegionBorderLink {
-  short bboxX0;           // +0x00
-  short bboxY0;           // +0x02
-  short bboxX1;           // +0x04
-  short bboxY1;           // +0x06
-  int reserved08;         // +0x08
-  int reserved0c;         // +0x0c
-  unsigned short regionA; // +0x10
-  unsigned short regionB; // +0x12
-  short reserved14;       // +0x14
-  short reserved16;       // +0x16
-};
-
 // The region-border-link table (0x006a3900) and the hex-neighbour offset tables this pass
 // reads are defined in global_data_tables.cpp (declared in global_data_tables.h, included
 // above).
@@ -53,9 +39,9 @@ const int kRegionIdBias = 0x17;     // tile[4] region id is biased by +0x17
 
 // Inlined ElementAt(i) matching the original's inlined table access: grow via the real
 // OverStretch method on a miss, bump count, then return the (region-border-typed) record.
-inline RegionBorderLink* LinkElementAt(unsigned int i) {
+inline SeaSegment* LinkElementAt(unsigned int i) {
   SeaSegmentStretch& t = g_regionBorderLinkTable_006a3900;
-  return reinterpret_cast<RegionBorderLink*>(&t[i]);
+  return &t[i];
 }
 
 // region id for the city-region tile at byte offset `off` in the grid (-1 if offset negative).
@@ -115,14 +101,14 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
       // shared-border area weighted by target size, plus size/merge biases.
       for (unsigned int li = 0;
            li < static_cast<unsigned int>(g_regionBorderLinkTable_006a3900.Count()); ++li) {
-        RegionBorderLink* link = LinkElementAt(li);
+        SeaSegment* link = LinkElementAt(li);
         int other;
-        if (link->regionA == regionByte) {
-          other = static_cast<short>(link->regionB);
-        } else if (link->regionB != regionByte) {
+        if (link->BorderRegionA() == regionByte) {
+          other = link->BorderRegionB();
+        } else if (link->BorderRegionB() != regionByte) {
           other = 0xfffe;
         } else {
-          other = static_cast<short>(link->regionA);
+          other = link->BorderRegionA();
         }
         if (static_cast<short>(other) < 0) {
           continue;
@@ -136,8 +122,8 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
         if (mergedFlags[other] == 0) {
           bias += 0x1388;
         }
-        const int width = link->bboxX1 - link->bboxX0;
-        const int height = link->bboxY1 - link->bboxY0;
+        const int width = link->BorderX1() - link->BorderX0();
+        const int height = link->BorderY1() - link->BorderY0();
         const int areaSq = width * width * height * height;
         // MSVC emits the FILD/FSQRT/FIMUL/FIADD chain + a _ftol (0x5e73d0) call for this
         // (double)->int cast, matching the original.
@@ -212,27 +198,27 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
         // referenced `region` at `mergeTarget`.
         if (static_cast<int>(bestLink) >= 0) {
           SeaSegmentStretch& t = g_regionBorderLinkTable_006a3900;
-          RegionBorderLink* consumed = reinterpret_cast<RegionBorderLink*>(&t[bestLink]);
-          consumed->bboxX0 = 0;
-          consumed->bboxY0 = 0;
-          consumed->bboxX1 = 0;
-          consumed->bboxY1 = 0;
-          consumed->regionA = 0xffff;
-          consumed->regionB = 0xffff;
-          consumed->reserved08 = -1;
-          consumed->reserved0c = -1;
+          SeaSegment* consumed = &t[bestLink];
+          consumed->BorderX0() = 0;
+          consumed->BorderY0() = 0;
+          consumed->BorderX1() = 0;
+          consumed->BorderY1() = 0;
+          consumed->BorderRegionA() = -1;
+          consumed->BorderRegionB() = -1;
+          consumed->BorderReserved08() = -1;
+          consumed->BorderReserved0c() = -1;
         }
         for (unsigned int li = 0;
              li < static_cast<unsigned int>(g_regionBorderLinkTable_006a3900.Count()); ++li) {
-          RegionBorderLink* link = LinkElementAt(li);
-          if (link->regionA == region) {
+          SeaSegment* link = LinkElementAt(li);
+          if (link->BorderRegionA() == region) {
             link = LinkElementAt(li);
-            link->regionA = static_cast<unsigned short>(mergeTarget);
+            link->BorderRegionA() = static_cast<short>(mergeTarget);
           }
           link = LinkElementAt(li);
-          if (link->regionB == region) {
+          if (link->BorderRegionB() == region) {
             link = LinkElementAt(li);
-            link->regionB = static_cast<unsigned short>(mergeTarget);
+            link->BorderRegionB() = static_cast<short>(mergeTarget);
           }
         }
       }
@@ -252,15 +238,15 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
       }
       for (unsigned int li = 0;
            li < static_cast<unsigned int>(g_regionBorderLinkTable_006a3900.Count()); ++li) {
-        RegionBorderLink* link = LinkElementAt(li);
-        if (static_cast<short>(link->regionA) == cityRegionCount2a4) {
+        SeaSegment* link = LinkElementAt(li);
+        if (link->BorderRegionA() == cityRegionCount2a4) {
           link = LinkElementAt(li);
-          link->regionA = static_cast<unsigned short>(regionByte);
+          link->BorderRegionA() = static_cast<short>(regionByte);
         }
         link = LinkElementAt(li);
-        if (static_cast<short>(link->regionB) == cityRegionCount2a4) {
+        if (link->BorderRegionB() == cityRegionCount2a4) {
           link = LinkElementAt(li);
-          link->regionB = static_cast<unsigned short>(regionByte);
+          link->BorderRegionB() = static_cast<short>(regionByte);
         }
       }
     }

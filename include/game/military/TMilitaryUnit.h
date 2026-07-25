@@ -65,7 +65,7 @@ public:
   // --- TObject/TUnit overrides ---
   void ReadFrom(TStream* stream) override;
   void WriteTo(TStream* stream) override;
-  void MoveTo(int nTileIndex) override;
+  void MoveTo(short nTileIndex) override;
   void DetachUnitOrderFromOwnerAndReset() override;
 
   // --- TMilitaryUnit virtual functions ---
