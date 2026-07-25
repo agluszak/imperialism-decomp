@@ -2123,8 +2123,7 @@ void TSimMgr::HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId(void
   contextRaw[1] = contextRaw[2];
 
   CString contextName(rawName);
-  instruction->tokenCursor =
-      reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(instruction->tokenCursor) + 0x40);
+  instruction->tokenCursor += 0x10;
   short contextId = static_cast<short>(contextToken);
   if (FindMapActionContextByNodeId(contextId) != 0) {
     TZone* context = FindMapActionContextByNodeId(contextId);
@@ -2151,8 +2150,7 @@ void TSimMgr::HandleTurnInstruction_Cnam_AssignCountryName(void* pInstructionRaw
   countryRaw[2] = temp;
 
   CString countryName(rawName);
-  instruction->tokenCursor =
-      reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(instruction->tokenCursor) + 0x40);
+  instruction->tokenCursor += 0x10;
   CString unusedNamePartA;
   CString unusedNamePartB;
   CString unusedNamePartC;
@@ -2209,8 +2207,7 @@ void TSimMgr::HandleTurnInstruction_Pnam_AssignProvinceName(void* pInstructionRa
   traw[2] = tt;
 
   CString rawText(rawName);
-  instruction->tokenCursor =
-      reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(instruction->tokenCursor) + 0x40);
+  instruction->tokenCursor += 0x10;
   CString name(rawText);
   g_pGlobalMapState->SetGlobalMapCellSharedLabel(static_cast<int>(tileToken), &name);
 }
