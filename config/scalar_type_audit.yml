@@ -178,9 +178,6 @@ nested_conversion_reviews:
   fb4cc0429d2807ae:
     classification: signed_table_byte_then_int
     evidence: "the university requirement table stores signed bytes; the signed step preserves negative levels and the int step is the arithmetic width."
-  d6c4811bfba0d8c3:
-    classification: narrow_operand_then_narrow_result
-    evidence: "tileOrTerrainId0c is widened arithmetic; the signed step performs the retail word addition and the unsigned step is the tile-id key."
   455e7f2ca9d668cc:
     classification: signed_byte_sign_test
     evidence: "the packed map-tile action state byte is read signed so the < 0 sign test is correct, then normalized to a byte for the retail byte compare."

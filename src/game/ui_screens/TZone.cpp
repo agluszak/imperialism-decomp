@@ -29,6 +29,19 @@ void DeleteUnlinkedZone(TZone* zone) {
   delete zone;
 }
 
+static inline int SignedRemainderByFour(int value) {
+  return value % 4;
+}
+
+static inline short InlineTileIndexFromRowCol(int row, int col) {
+  if (row < 0 || row >= 0x3c || col < 0 || col >= 0x6c) {
+    return -1;
+  }
+  return static_cast<short>(col + row * 0x6c);
+}
+
+enum { kFirstMapRegionNationTag = 0x17 };
+
 // 0x005e7f50 resolves to CRT `_free` (per symbols.csv), not a game-specific tracking
 // helper -- call the real library function directly (LIBRARY: IMPERIALISM 0x005e7f50).
 } // namespace
@@ -44,13 +57,17 @@ void DeleteUnlinkedZone(TZone* zone) {
 IMPLEMENT_DYNCREATE(TZone, TObject)
 
 // FUNCTION: IMPERIALISM 0x0055e700
-TZone::TZone()
-    : statusCode04(-1), displayName(), tileOrTerrainId0c(-1), nationKeyMask10(0),
-      seedNationId12(-1), contextOrdinal14(0),
-      prev18(static_cast<TZone*>(g_pMapActionContextListHead)), next1c(0), activeTileIndex20(-1),
-      primaryNeighbors(), secondaryNeighbors(), distanceLevel44(0) {
+TZone::TZone() : displayName(), primaryNeighbors(), secondaryNeighbors() {
+  seedNationId12 = -1;
   contextOrdinal14 = static_cast<short>(g_nMapActionContextCount);
   g_nMapActionContextCount = g_nMapActionContextCount + 1;
+  tileOrTerrainId0c = -1;
+  nationKeyMask10 = 0;
+  prev18 = static_cast<TZone*>(g_pMapActionContextListHead);
+  next1c = 0;
+  distanceLevel44 = 0;
+  statusCode04 = -1;
+  activeTileIndex20 = -1;
   g_pMapActionContextListHead = this;
   if (prev18 != 0) {
     prev18->next1c = this;
@@ -358,40 +375,44 @@ void TZone::GenerateZoneStatusCodeIfUnset() {
 }
 
 // FUNCTION: IMPERIALISM 0x0055f780
-void TZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
-                                                           void* overrideName) {
-  char* usedCity = static_cast<char*>(usedCityFlags);
-  char* providedName = static_cast<char*>(overrideName);
-  if (providedName == 0) {
+void TZone::GenerateMapActionContextDisplayNameAndHeadline(unsigned char* usedCityFlags,
+                                                           const char* overrideName) {
+  if (overrideName != 0) {
+    CString providedName(overrideName);
+    displayName = providedName;
+  } else {
     int chosenCity = -1;
     // With a used-city bitmap and secondary neighbours, try to feature a random adjacent
     // city that has not been used yet.
-    if (usedCity != 0 && secondaryNeighbors.Count() != 0) {
+    if (usedCityFlags != 0 && secondaryNeighbors.Count() != 0) {
       g_zoneStatusCodePrngSeed_006a5aec = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35 + 1;
       unsigned int pick = (g_zoneStatusCodePrngSeed_006a5aec >> 0xc & 0x7fff) %
                           static_cast<unsigned int>(secondaryNeighbors.Count());
       Province* cityRecord = secondaryNeighbors[pick];
       short tile = cityRecord->linkedTileIndices42[0];
       chosenCity = g_pGlobalMapState->terrainStateTable[tile].cityRecordIndex;
-      if (usedCity[chosenCity] == '\0') {
-        usedCity[chosenCity] = 1;
-      } else {
+      if (usedCityFlags[chosenCity] != 0) {
         chosenCity = -1;
+      } else {
+        usedCityFlags[chosenCity] = 1;
       }
     }
-    if (chosenCity == -1) {
-      if (g_pSimMgr->useLocalizedNameTables68 == '\0') {
-        GenerateMappedFlavorTextByCurrentContextNation(&displayName);
-      } else {
+    if (chosenCity != -1) {
+      g_pGlobalMapState->AssignCityRecordDisplayName(chosenCity, &displayName);
+    } else {
+      if (g_pSimMgr->useLocalizedNameTables68 != 0) {
         // Walk the headline resource table with a random start + stride so successive
         // contexts get distinct names.
         if (g_mapActionContextDisplayNameCacheId_006984b8 == -1) {
-          unsigned int r = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35 + 1;
-          g_mapActionContextDisplayNameCacheId_006984b8 = (r >> 0xc & 0x7fff) % 0x25;
-          g_zoneStatusCodePrngSeed_006a5aec = r * 0x15a4e35 + 1;
+          unsigned int randomValue = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35U + 1;
+          int nameIndex = static_cast<int>((randomValue >> 0xc) & 0x7fff);
+          g_mapActionContextDisplayNameCacheId_006984b8 = nameIndex % 0x25;
+          unsigned int nextRandomValue = randomValue * 0x15a4e35U + 1;
+          g_zoneStatusCodePrngSeed_006a5aec = nextRandomValue;
           int strides[4] = {1, 7, 0xb, 0x17};
-          g_mapActionContextDisplayNameCacheStep_006984bc =
-              strides[g_zoneStatusCodePrngSeed_006a5aec >> 0xc & 3];
+          int strideSelector = static_cast<int>((nextRandomValue >> 0xc) & 0x7fff);
+          int strideIndex = SignedRemainderByFour(strideSelector);
+          g_mapActionContextDisplayNameCacheStep_006984bc = strides[strideIndex];
         }
         CString resourceName;
         g_pSimMgr->GetString(0x275b,
@@ -400,16 +421,13 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
         displayName = resourceName;
         g_mapActionContextDisplayNameCacheId_006984b8 +=
             g_mapActionContextDisplayNameCacheStep_006984bc;
-        if (0x24 < g_mapActionContextDisplayNameCacheId_006984b8) {
+        if (g_mapActionContextDisplayNameCacheId_006984b8 >= 0x25) {
           g_mapActionContextDisplayNameCacheId_006984b8 -= 0x25;
         }
+      } else {
+        GenerateMappedFlavorTextByCurrentContextNation(&displayName);
       }
-    } else {
-      g_pGlobalMapState->AssignCityRecordDisplayName(chosenCity, &displayName);
     }
-  } else {
-    CString provided(providedName);
-    displayName = provided;
   }
   // Build the headline by expanding the status-code-selected template with the display name.
   CString headlineTemplate;
@@ -635,26 +653,36 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
 
 // FUNCTION: IMPERIALISM 0x00560150
 short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* contextProvince) {
-  unsigned int tileCandidate = 0;
+  short tileCandidate = 0;
 
   for (;;) {
-    TTerrainStateRecordView& tileRecord =
-        g_pGlobalMapState->terrainStateTable[static_cast<short>(tileCandidate)];
-    if (tileRecord.GetTerrainKind() == kStrategicTerrainWater) {
-      TZone* zoneForTile = 0;
-      if (g_pActiveMapOrderContext != 0) {
-        zoneForTile =
-            g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(static_cast<short>(tileCandidate));
+    TTerrainStateRecordView& tileRecord = g_pGlobalMapState->terrainStateTable[tileCandidate];
+    int isWater = tileRecord.GetTerrainKind() == kStrategicTerrainWater;
+    if (isWater) {
+      TZone* zoneForTile;
+      short tileActionState = static_cast<signed char>(tileRecord.tileActionState16);
+      if (tileActionState == kMapTileActionStateAnchor ||
+          tileActionState == kMapTileActionStateDockedFleet) {
+        zoneForTile = TZone::FindPortZoneByTile(tileCandidate);
+      } else {
+        short nationCode = tileRecord.ownerNationTag04;
+        if (nationCode < kFirstMapRegionNationTag) {
+          zoneForTile = 0;
+        } else {
+          zoneForTile =
+              &g_pActiveMapOrderContext->contextArray[nationCode - kFirstMapRegionNationTag];
+        }
       }
       if (zoneForTile == this) {
         int neighborDir = 0;
         do {
           short neighborTile = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
-              static_cast<short>(tileCandidate), static_cast<short>(neighborDir));
+              tileCandidate, static_cast<short>(neighborDir));
           if (neighborTile != -1) {
             TTerrainStateRecordView& neighborRecord =
                 g_pGlobalMapState->terrainStateTable[neighborTile];
-            if (neighborRecord.GetTerrainKind() != kStrategicTerrainWater) {
+            int neighborIsWater = neighborRecord.GetTerrainKind() == kStrategicTerrainWater;
+            if (!neighborIsWater) {
               short cityStateLink = neighborRecord.cityRecordIndex;
               Province* province = 0;
               if (cityStateLink != -1) {
@@ -672,17 +700,17 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
         }
       }
     }
-    tileCandidate = tileCandidate + 1;
-    if (static_cast<short>(tileCandidate) >= 0x1950) {
+    tileCandidate = static_cast<short>(tileCandidate + 1);
+    if (tileCandidate >= 0x1950) {
       break;
     }
   }
 
-  if (static_cast<short>(tileCandidate) > 0x194f) {
-    tileCandidate = static_cast<unsigned short>(static_cast<short>(tileOrTerrainId0c) + 0x6c);
+  if (tileCandidate >= 0x1950) {
+    tileCandidate = static_cast<short>(tileOrTerrainId0c + 0x6c);
   }
 
-  short bestTile = static_cast<short>(tileCandidate);
+  short bestTile = tileCandidate;
   int bestTileIndex = static_cast<int>(bestTile);
   int bestScore =
       ScoreCoastalTileForContextAndCityStateAffinity(bestTileIndex, this, contextProvince);
@@ -696,7 +724,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
   TMapMgr::AdvanceSpiralSearchStateAndStepHexCoordinates(&spiral);
 
   while (spiral.ring < 0xc) {
-    short spiralTile = TMapMgr::TileIndexFromRowCol(spiral.row, spiral.col);
+    short spiralTile = InlineTileIndexFromRowCol(spiral.row, spiral.col);
 
     bool tileInBounds;
     if ((spiralTile < 0) || (0x194f < spiralTile)) {
@@ -706,21 +734,16 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
     }
 
     if (tileInBounds) {
-      int spiralTileIndex = TMapMgr::TileIndexFromRowCol(spiral.row, spiral.col);
+      int spiralTileIndex = InlineTileIndexFromRowCol(spiral.row, spiral.col);
       int candidateScore =
           ScoreCoastalTileForContextAndCityStateAffinity(spiralTileIndex, this, contextProvince);
       if (bestScore < candidateScore) {
         bestScore = candidateScore;
-        short nextTile = TMapMgr::TileIndexFromRowCol(spiral.row, spiral.col);
-        if (nextTile < 0) {
-          tileCandidate = 0xffffffff;
-        } else {
-          tileCandidate = static_cast<unsigned int>(nextTile);
-        }
+        tileCandidate = InlineTileIndexFromRowCol(spiral.row, spiral.col);
       }
     }
 
-    bestTile = static_cast<short>(tileCandidate);
+    bestTile = tileCandidate;
     spiral.stepInRing = spiral.stepInRing + 1;
     if (spiral.ring <= spiral.stepInRing) {
       spiral.stepInRing = 0;
@@ -1148,10 +1171,8 @@ void RegenerateAllMapActionContextStatusCodes(void) {
   }
   g_mapActionContextDisplayNameCacheId_006984b8 = -1;
 
-  int statusScratch[96];
-  for (int i = 0; i < 0x60; i = i + 1) {
-    statusScratch[i] = 0;
-  }
+  unsigned char statusScratch[0x180];
+  memset(statusScratch, 0, sizeof(statusScratch));
 
   for (TZone* node = g_pMapActionContextListHead; node != 0; node = node->prev18) {
     node->GenerateZoneStatusCodeIfUnset();

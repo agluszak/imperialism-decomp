@@ -69,8 +69,8 @@ void TPortZone::WriteTo(TStream* stream) {
 
 // slot 0x0a — TZone::GenerateMapActionContextDisplayNameAndHeadline override.
 // FUNCTION: IMPERIALISM 0x005618b0
-void TPortZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
-                                                               void* overrideName) {
+void TPortZone::GenerateMapActionContextDisplayNameAndHeadline(unsigned char* usedCityFlags,
+                                                               const char* overrideName) {
   (void)usedCityFlags;
   (void)overrideName;
   short cityIndex = g_pGlobalMapState->terrainStateTable[portTileIndex48].cityRecordIndex;
