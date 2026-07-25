@@ -3,6 +3,7 @@
 #include <new.h>
 
 #include "game/map/TMapMgr.h"
+#include "game/navy/TOcean.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/core/TStream.h"
 #include "game/globals/prelude.h"
@@ -130,5 +131,48 @@ bool TPortZone::HasZoneActiveChildCount(int unused) {
 // slot 0x13 — TZone::FindNearestActiveSeaContextTileFromOffset216 override.
 // FUNCTION: IMPERIALISM 0x00561e40
 short TPortZone::FindNearestActiveSeaContextTileFromOffset216() {
-  return 0;
+  short originTile = static_cast<short>(tileOrTerrainId0c);
+  HexSpiralSearchState spiral;
+  spiral.row = originTile / 0x6c;
+  spiral.col = originTile % 0x6c;
+  spiral.ring = 0;
+  spiral.direction = 5;
+  spiral.stepInRing = 1;
+  TMapMgr::AdvanceSpiralSearchStateAndStepHexCoordinates(&spiral);
+
+  while (spiral.ring < 10) {
+    short candidateTile = -1;
+    if (spiral.row >= 0 && spiral.row < 60 && spiral.col >= 0 && spiral.col < 108) {
+      candidateTile = static_cast<short>(spiral.col + spiral.row * 108);
+    }
+    if (candidateTile >= 0 && candidateTile < 0x1950) {
+      TTerrainStateRecordView& candidateRecord =
+          g_pGlobalMapState->terrainStateTable[candidateTile];
+      TZone* candidateContext = 0;
+      if (candidateRecord.tileActionState16 == kMapTileActionStateAnchor ||
+          candidateRecord.tileActionState16 == kMapTileActionStateDockedFleet) {
+        candidateContext = TZone::GetFirstPortZone();
+        while (candidateContext != 0 &&
+               static_cast<short>(candidateContext->tileOrTerrainId0c) != candidateTile &&
+               candidateContext->activeTileIndex20 != candidateTile &&
+               static_cast<TPortZone*>(candidateContext)->portTileIndex48 != candidateTile) {
+          candidateContext = candidateContext->GetNextPortZone();
+        }
+      } else {
+        short nationCode = static_cast<short>(candidateRecord.ownerNationTag04);
+        if (nationCode >= 0x17) {
+          candidateContext = &g_pActiveMapOrderContext->contextArray[nationCode - 0x17];
+        }
+      }
+
+      TZone* expectedContext = primaryNeighbors[0];
+      if (candidateContext == expectedContext && candidateRecord.tileActionState16 == -1) {
+        return candidateTile;
+      }
+    }
+
+    TMapMgr::AdvanceSpiralSearchStateAndStepHexCoordinates(&spiral);
+  }
+
+  return -1;
 }
