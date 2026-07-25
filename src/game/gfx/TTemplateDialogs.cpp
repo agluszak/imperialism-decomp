@@ -13,10 +13,6 @@
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 
-// Fixed format strings in the binary's read-only data.
-static const char kGreatPowerLabelFormat[] = "Great Power %2d, %s";
-static const char kMinorNationLabelFormat[] = "Minor Nation %2d, %s";
-
 // SYNTHETIC: IMPERIALISM 0x00413670
 // T64TemplateDialog::`scalar deleting destructor'
 
@@ -818,51 +814,6 @@ void TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void) {
     g_pUiRuntimeContext->DispatchTurnEvent(static_cast<short>(eventCode),
                                            static_cast<int>(sliderPos));
   }
-}
-
-// The ID_8013 command: show the D2 template dialog listing every nation (great powers,
-// then minor nations) with each row's item data set to its table index. Re-shows on OK,
-// exits on cancel, then posts the startup command.
-// FUNCTION: IMPERIALISM 0x004855b0
-void TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void) {
-  while (true) {
-    TD2TemplateDialog dialog(0);
-    dialog.PrepareAndCreateModalFromTemplate();
-    HWND hList = dialog.listbox.m_hWnd;
-
-    int idx = 0;
-    TCountry** country;
-    for (country = g_apTerrainTypeDescriptorTable; country < &g_apTerrainTypeDescriptorTable[7];
-         ++country) {
-      CString label;
-      CString name;
-      (*country)->FormatOverlayTerrainLabelText(&name);
-      label.Format(kGreatPowerLabelFormat, idx, static_cast<const char*>(name));
-      ::SendMessageA(hList, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(label)));
-      ::SendMessageA(hList, LB_SETITEMDATA, idx, idx);
-      ++idx;
-    }
-    if (idx < 0x17) {
-      for (country = &g_apTerrainTypeDescriptorTable[idx];
-           country < &g_apTerrainTypeDescriptorTable[0x17]; ++country) {
-        CString label;
-        CString name;
-        (*country)->FormatOverlayTerrainLabelText(&name);
-        label.Format(kMinorNationLabelFormat, idx, static_cast<const char*>(name));
-        ::SendMessageA(hList, LB_ADDSTRING, 0,
-                       reinterpret_cast<LPARAM>(static_cast<LPCSTR>(label)));
-        ::SendMessageA(hList, LB_SETITEMDATA, idx, idx);
-        ++idx;
-      }
-    }
-
-    ::SendMessageA(hList, LB_SETSEL, g_pSimMgr->GetActiveNationId(), 0);
-    ::SendMessageA(hList, LB_SETCURSEL, 0, 0);
-    if (dialog.DoModal() != 1) {
-      break;
-    }
-  }
-  g_pImperialismApp->PostStartupCommand100();
 }
 
 // FUNCTION: IMPERIALISM 0x00498cc0

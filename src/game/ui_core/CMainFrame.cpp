@@ -4,6 +4,8 @@
 #include "game/ImperialismApp.h"
 #include "game/gfx/TBackdropWindow.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include "game/gfx/TTemplateDialogs.h"
+#include "game/city_ui/TCountry.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/prelude.h"
@@ -64,6 +66,7 @@ ON_WM_CREATE()
 ON_COMMAND(0x8009, OnCommand8009)
 ON_COMMAND(0x800C, OnCommand800C)
 ON_COMMAND(0x800D, OnCommand800D)
+ON_COMMAND(0x8013, OnCommand8013)
 ON_WM_PAINT()
 ON_WM_CHAR()
 ON_WM_ACTIVATE()
@@ -230,6 +233,46 @@ void CMainFrame::OnCommand800C() {
 // FUNCTION: IMPERIALISM 0x00485590
 void CMainFrame::OnCommand800D() {
   g_pUiRuntimeContext->HandleTurnEvent2260_RefreshMainHudTitles(0);
+}
+
+// FUNCTION: IMPERIALISM 0x004855b0
+void CMainFrame::OnCommand8013() {
+  while (true) {
+    TD2TemplateDialog dialog(0);
+    dialog.PrepareAndCreateModalFromTemplate();
+
+    int nationIndex = 0;
+    TCountry** country;
+    for (country = g_apTerrainTypeDescriptorTable; country < &g_apTerrainTypeDescriptorTable[7];
+         ++country) {
+      CString label;
+      CString name;
+      (*country)->FormatOverlayTerrainLabelText(&name);
+      label.Format("Great Power %2d, %s", nationIndex, static_cast<const char*>(name));
+      dialog.listbox.AddString(label);
+      dialog.listbox.SetItemData(nationIndex, nationIndex);
+      ++nationIndex;
+    }
+    if (nationIndex < 0x17) {
+      for (country = &g_apTerrainTypeDescriptorTable[nationIndex];
+           country < &g_apTerrainTypeDescriptorTable[0x17]; ++country) {
+        CString label;
+        CString name;
+        (*country)->FormatOverlayTerrainLabelText(&name);
+        label.Format("Minor Nation %2d, %s", nationIndex, static_cast<const char*>(name));
+        dialog.listbox.AddString(label);
+        dialog.listbox.SetItemData(nationIndex, nationIndex);
+        ++nationIndex;
+      }
+    }
+
+    dialog.listbox.SetSel(0, g_pSimMgr->GetActiveNationId());
+    dialog.listbox.SetCurSel(0);
+    if (dialog.DoModal() != 1) {
+      break;
+    }
+  }
+  g_pImperialismApp->PostStartupCommand100();
 }
 
 // FUNCTION: IMPERIALISM 0x00485920
