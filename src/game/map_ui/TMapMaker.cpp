@@ -1385,30 +1385,39 @@ int TMapMaker::GetAdjacentRegionGridCell(int cell, int direction) {
 // same-owner neighbor at all, copy a uniformly-random neighbor's record onto it.
 // FUNCTION: IMPERIALISM 0x00528e50
 void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
+  short owner;
   for (int tileIndex = 0x6c; tileIndex < 0x1950 - 0x6c; ++tileIndex) {
     int sameOwnerCount = 0;
     int differingNeighborDir = -1;
+    owner = static_cast<signed char>(mapTileGrid08[tileIndex * 0x24 + 4]);
     for (int dir = 0; dir < 6; ++dir) {
       int neighborTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, dir);
-      char neighborOwner = (neighborTile != -1) ? mapTileGrid08[neighborTile * 0x24 + 4] : -1;
-      if (neighborOwner == mapTileGrid08[tileIndex * 0x24 + 4]) {
+      short neighborOwner = (neighborTile != -1)
+                                ? static_cast<signed char>(mapTileGrid08[neighborTile * 0x24 + 4])
+                                : -1;
+      if (neighborOwner == owner) {
         ++sameOwnerCount;
       } else if (neighborOwner != -1) {
         differingNeighborDir = dir;
       }
     }
 
-    bool erode = false;
     if (sameOwnerCount == 0) {
-      erode = true;
+      // Always replace an unsupported ownership cell.
     } else if (sameOwnerCount == 1) {
       g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
-      erode = (g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0;
+      if ((g_mapGenLcgState_006a38e8 >> 0xc & 1) == 0) {
+        continue;
+      }
     } else if (sameOwnerCount == 2) {
       g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
-      erode = (g_mapGenLcgState_006a38e8 >> 0xc & 4) == 0;
+      if ((g_mapGenLcgState_006a38e8 >> 0xc & 4) != 0) {
+        continue;
+      }
+    } else {
+      continue;
     }
-    if (erode && differingNeighborDir != -1) {
+    if (differingNeighborDir != -1) {
       int neighborTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, differingNeighborDir);
       memcpy(&mapTileGrid08[tileIndex * 0x24], &mapTileGrid08[neighborTile * 0x24], 0x24);
     }
@@ -1416,16 +1425,20 @@ void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
 
   for (int isolatedTile = 0x6c; isolatedTile < 0x1950 - 0x6c; ++isolatedTile) {
     bool hasSameOwnerNeighbor = false;
+    owner = static_cast<signed char>(mapTileGrid08[isolatedTile * 0x24 + 4]);
     for (int isoDir = 0; isoDir < 6; ++isoDir) {
       int neighborTile = ComputeHexAdjacentFullGridTileIndex(isolatedTile, isoDir);
-      char neighborOwner = (neighborTile != -1) ? mapTileGrid08[neighborTile * 0x24 + 4] : -1;
-      if (neighborOwner == mapTileGrid08[isolatedTile * 0x24 + 4]) {
+      short neighborOwner = (neighborTile != -1)
+                                ? static_cast<signed char>(mapTileGrid08[neighborTile * 0x24 + 4])
+                                : -1;
+      if (neighborOwner == owner) {
         hasSameOwnerNeighbor = true;
       }
     }
     if (!hasSameOwnerNeighbor) {
       g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
-      int randomDir = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 6);
+      short randomDir =
+          static_cast<short>(static_cast<int>(g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 6);
       int neighborTile = ComputeHexAdjacentFullGridTileIndex(isolatedTile, randomDir);
       memcpy(&mapTileGrid08[isolatedTile * 0x24], &mapTileGrid08[neighborTile * 0x24], 0x24);
     }
