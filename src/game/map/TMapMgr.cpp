@@ -4300,6 +4300,13 @@ void TMapMgr::DumpAndResetMapScriptState() {
     nationIndex++;
   } while (nationSlot < g_apNationStates + 7);
 
+  // UNRESOLVED_FIELD_ATTRIBUTION: 0x005194bf reads a SHORT at g_pSimMgr+0x2c
+  // (MOVSX EAX,word ptr [edx+0x2c]) and divides by 4 to print a year, i.e. a
+  // 4-turns-per-year counter. TSimMgr.h currently places `int numGreatPowers` at +0x2c
+  // (turnStateCode/mode/previousTurnStateCode/previousMode 0x00-0x0f, field14 0x10,
+  // field15[0x17] 0x11-0x27, economicTurn 0x28, activeNationSlot 0x2a), which fits
+  // neither the width nor the meaning. The raw read is kept because it matches the
+  // binary; the field NAME is what is wrong. Do not substitute numGreatPowers here.
   fprintf(logFile, g_szFmtYear_00697248,
           *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pSimMgr) + 0x2c) / 4);
   fclose(logFile);

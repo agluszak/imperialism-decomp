@@ -1,11 +1,11 @@
 #include "game/gfx/TDlgWindow.h"
+#include "game/gfx/TDisplayMgr.h"
 #include "game/globals/prelude.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
 // Application/document-root pointer @ 0x6a2158; its +0x0a field gates the line-0x27f assert.
-static const unsigned int kAddrMainViewHostPtr = 0x006a2158;
 
 // The original reaches the shared UI invalidation-flag helper through the incremental-link
 // thunk; this only retypes the args of a genuine __cdecl(void) thunk (Hard Rule 9).
@@ -34,8 +34,9 @@ TDlgWindow::~TDlgWindow() {}
 void TDlgWindow::AssertMcAppUILine2358(int) {
   TWindow::AssertMcAppUILine2358(0);
   AssertUGameWindowInvalidation(g_szUGameWindowSourcePath_00696bc0, 0x27a);
-  void* mainViewHost = *reinterpret_cast<void**>(kAddrMainViewHostPtr);
-  if (*reinterpret_cast<short*>(reinterpret_cast<char*>(mainViewHost) + 0xa) != 0) {
+  // 0x006a2158 is g_pDisplayMgr (see its // GLOBAL marker) and +0xa is its
+  // dialogActiveFlag, so this is a plain typed read rather than a raw address poke.
+  if (g_pDisplayMgr->dialogActiveFlag != 0) {
     AssertUGameWindowInvalidation(g_szUGameWindowSourcePath_00696bc0, 0x27f);
   }
 }
