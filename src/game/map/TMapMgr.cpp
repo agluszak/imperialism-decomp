@@ -3332,7 +3332,7 @@ int TMapMgr::GetMapImprovementOffsetByActiveFlagsAndCityStage(StrategicTileIndex
 short TMapMgr::GetMapImprovementOffsetByTownTransportLink(StrategicTileIndex tileIndex,
                                                           int unusedParam2) {
   (void)unusedParam2;
-  unsigned char flags = terrainStateTable[tileIndex].activeFlags1c;
+  unsigned short flags = terrainStateTable[tileIndex].activeFlags1c;
   TTown* town = FindTownMarkerForTileByOwnerNation(tileIndex);
   unsigned char linked = (town != nullptr) ? town->transportLinkedFlag4c : 1;
   if (flags & 4) {

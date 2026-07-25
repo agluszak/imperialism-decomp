@@ -123,7 +123,7 @@ void TMilitaryUnit::DetachUnitOrderFromOwnerAndReset() {
 // is lower than this unit's, at the first position whose successor's priority is not
 // lower.
 // FUNCTION: IMPERIALISM 0x005c3200
-void TMilitaryUnit::MoveTo(int anchorIndex) {
+void TMilitaryUnit::MoveTo(short anchorIndex) {
   if (tileIndex06 != -1) {
     if (field_10 == 0) {
       if (tileIndex06 >= 0 && tileIndex06 < 0x180) {
@@ -141,7 +141,7 @@ void TMilitaryUnit::MoveTo(int anchorIndex) {
     nextOnTile = 0;
   }
 
-  short newTileIndex = static_cast<short>(anchorIndex);
+  short newTileIndex = anchorIndex;
   if (newTileIndex == -1) {
     field_10 = 0;
     nextOnTile = 0;

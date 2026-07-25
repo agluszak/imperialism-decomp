@@ -167,7 +167,7 @@ extern char s_szColonSeparator_00696b10[];
 
 extern char s_mcflavor_00696d10[];
 
-extern char s_mcflavor_006976e0[];
+extern char g_szLiteralWb_006976E0[];
 
 extern char g_szLowercaseX[];
 
