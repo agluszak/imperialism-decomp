@@ -152,7 +152,7 @@ CString ReadOrCreateRegistryStringValueWithFallback(LPCSTR company, LPCSTR produ
   DWORD dataSize = 0;
   LONG status = RegQueryValueExA(hFinal, valueName, nullptr, &dataType, nullptr, &dataSize);
   if (status == ERROR_SUCCESS) {
-    LPBYTE buffer = reinterpret_cast<LPBYTE>(value.GetBuffer(dataSize));
+    LPBYTE buffer = static_cast<LPBYTE>(static_cast<void*>(value.GetBuffer(dataSize)));
     status = RegQueryValueExA(hFinal, valueName, nullptr, &dataType, buffer, &dataSize);
     value.ReleaseBuffer(-1);
   }
