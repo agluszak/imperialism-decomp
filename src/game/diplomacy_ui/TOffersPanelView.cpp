@@ -4,6 +4,7 @@
 #include "game/ui_tags_city.h"
 
 #include "game/ui_widgets/TDeluxeText.h"
+#include "game/diplomacy_ui/TDiplomacyMapView.h"
 #include "game/ui_screens/TPictureButton.h"
 #include "game/city_ui/TCountry.h"
 #include "game/military_ui/TDiplomacyMgr.h"
@@ -117,53 +118,104 @@ char TOffersPanelView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, 
 
 // FUNCTION: IMPERIALISM 0x004f9450
 char TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short offerType) {
+  ResolveControlByTag(kControlTagOffr);
+  CString templateText;
   CString proposalText;
+  CString targetNationName;
+  CString sourceNationName;
+
+  g_apTerrainTypeDescriptorTable[targetNation]->FormatOverlayTerrainLabelText(&targetNationName);
+  g_apTerrainTypeDescriptorTable[sourceNation]->FormatOverlayTerrainLabelText(&sourceNationName);
+  diplomacyMapView60->frameRegionSelectorAt98 = targetNation;
+
+  bool hasEntanglements = false;
 
   if (offerType == 0x29a) {
     g_pSimMgr->GetString(0x2742, 0, &proposalText);
   } else {
-    short stringIndex = 0;
     switch (offerType) {
     case kDiplomacyProposalJoinEmpire:
-      stringIndex = 0;
+      g_pSimMgr->GetString(0x274a, 0, &templateText);
+      scanBracketExpressions(g_pSimMgr, &proposalText, static_cast<LPCSTR>(templateText),
+                             static_cast<LPCSTR>(targetNationName));
       break;
-    case kDiplomacyProposalAlliance:
-      stringIndex = 1;
-      break;
-    case kDiplomacyProposalNonAggressionPact:
-      stringIndex = 2;
-      break;
-    case kDiplomacyProposalPeaceTreaty:
-      stringIndex = 3;
-      break;
-    case kDiplomacyProposalJoinEmpireWithWarEntanglements:
-      stringIndex = 4;
+    case kDiplomacyProposalAlliance: {
+      for (int nation = 0; nation < 7 && !hasEntanglements; ++nation) {
+        if (nation != sourceNation && nation != targetNation &&
+            g_pDiplomacyTurnStateManager->IsNationPairAtWar(
+                static_cast<NationSlot>(nation), static_cast<NationSlot>(targetNation)) &&
+            !g_pDiplomacyTurnStateManager->IsNationPairAtWar(static_cast<NationSlot>(sourceNation),
+                                                             static_cast<NationSlot>(nation))) {
+          hasEntanglements = true;
+        }
+      }
+      g_pSimMgr->GetString(0x274a, hasEntanglements ? 8 : 1, &templateText);
+      scanBracketExpressions(g_pSimMgr, &proposalText, static_cast<LPCSTR>(templateText),
+                             static_cast<LPCSTR>(targetNationName));
       break;
     }
-    g_pSimMgr->GetString(0x274a, stringIndex, &proposalText);
+    case kDiplomacyProposalNonAggressionPact:
+      g_pSimMgr->GetString(0x274a, 2, &templateText);
+      scanBracketExpressions(g_pSimMgr, &proposalText, static_cast<LPCSTR>(templateText),
+                             static_cast<LPCSTR>(targetNationName));
+      break;
+    case kDiplomacyProposalPeaceTreaty: {
+      for (int nation = 0; nation < 7 && !hasEntanglements; ++nation) {
+        if (nation != sourceNation && nation != targetNation &&
+            g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
+                static_cast<NationSlot>(sourceNation), static_cast<NationSlot>(nation)) ==
+                kDiplomacyRelationshipAlliance &&
+            g_pDiplomacyTurnStateManager->IsNationPairAtWar(
+                static_cast<NationSlot>(nation), static_cast<NationSlot>(targetNation))) {
+          hasEntanglements = true;
+        }
+      }
+      g_pSimMgr->GetString(0x274a, hasEntanglements ? 9 : 3, &templateText);
+      scanBracketExpressions(g_pSimMgr, &proposalText, static_cast<LPCSTR>(templateText),
+                             static_cast<LPCSTR>(targetNationName));
+      break;
+    }
+    case kDiplomacyProposalJoinEmpireWithWarEntanglements:
+      g_pSimMgr->GetString(0x274a, 4, &templateText);
+      scanBracketExpressions(g_pSimMgr, &proposalText, static_cast<LPCSTR>(templateText),
+                             static_cast<LPCSTR>(targetNationName),
+                             static_cast<LPCSTR>(targetNationName));
+      break;
+    }
   }
 
+  bool isNotice = offerType == 0x29a;
   TView* sheet = ResolveControlByTag(kControlTagShee);
   TView* wait = ResolveControlByTag(kControlTagWait);
-  TDeluxeText* message = static_cast<TDeluxeText*>(
-      ResolveControlByTag(offerType == 0x29a ? kControlTagText : kControlTagProp));
-  message->AssertValid();
+  TDeluxeText* message;
+  if (isNotice) {
+    message = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagText));
+    message->AssertValid();
+    sheet->Locate(g_diplomacyPopupLayoutPosition_006a3020, 1);
+    wait->Locate(g_diplomacyWarOfferSheetPosition_006a2fe0, 1);
+  } else {
+    message = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagProp));
+    message->AssertValid();
+    wait->Locate(g_diplomacyPopupLayoutPosition_006a3020, 1);
+    sheet->Locate(g_diplomacyWarOfferSheetPosition_006a2fe0, 1);
+  }
   message->UpdateTextEntrySharedStringAndMaybeNotify(&proposalText, 1);
-  message->RefreshControl();
-  sheet->RefreshControl();
-  wait->RefreshControl();
+  message->CenterVertically(1);
+  RefreshControl();
+  ForceRedraw();
 
   // The original blocks only for interactive offers. DoEvent writes the selected
   // FourCC into this field when the accept/reject hotspot is activated.
-  if (offerType != 0x29a) {
+  if (!isNotice) {
     lastNegotiationResponseTag64 = 0;
     while (lastNegotiationResponseTag64 == 0) {
       PumpUiMessagesAndBackgroundTasks(1);
     }
+    if (lastNegotiationResponseTag64 == static_cast<int>(kControlTagAcce)) {
+      return 1;
+    }
   }
-  (void)sourceNation;
-  (void)targetNation;
-  return lastNegotiationResponseTag64 == static_cast<int>(kControlTagAcce);
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004f9a60

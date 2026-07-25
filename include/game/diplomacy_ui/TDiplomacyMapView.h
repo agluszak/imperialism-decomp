@@ -33,6 +33,7 @@ ASSERT_SIZE(DiplomacyMaskBufferRun, 0x14);
 // VTABLE: IMPERIALISM 0x00655b68
 class TDiplomacyMapView : public TPicture {
   friend class TInfoPanelView;
+  friend class TOffersPanelView;
 
 public:
   DECLARE_DYNCREATE(TDiplomacyMapView)
