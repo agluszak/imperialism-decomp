@@ -8813,6 +8813,7 @@ address|name|symbol|size|type|prototype|provenance
 6967d4|g_cachedAiCityActionNationSlot_006967d4|||global||
 6967d8|g_cachedAiCityActionTurnTick_006967d8|||global||
 696860|s_SourcePathUDefenseMinister_00696860|||global||
+696948|g_awDiplomacyGrantValueTable|||global||
 696950|g_awDiplomacyTradePolicyIconValueTable|||global||
 696960|g_diplomacyActionButtonTagTable_00696960|||global||
 696978|g_aDiplomacyActionTopicTabTags|||global||

@@ -123,8 +123,6 @@ public:
   // rule as the order UI, then expose its reporting admiral/source label.
   TAdmiral* FindReportingAdmiralForNation(short nation);
   void BuildNavalIntelligenceSourceDescription(CString* out, short nation);
-  void InvokeObjectVtableMethod24();
-  void* HandleTurnEventVtableSlot24CopyPayloadBuffer();
   // 0x0055f140 — average node value of this context. Port zones (QueryPortZone-
   // Capability true) refresh via AssertValid, then return the home-region city score
   // of the terrain-table owner nation under the port tile (0 if that nation isn't

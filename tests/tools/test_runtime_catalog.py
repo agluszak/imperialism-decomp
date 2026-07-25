@@ -32,6 +32,7 @@ class RuntimeCatalogTests(unittest.TestCase):
             repro_names,
             {
                 "city_screen_opens",
+                "diplomacy_screen_operates",
                 "easy_turns_advance",
                 "map_zoom_toggle_remains_responsive",
                 "trade_screen_operates",

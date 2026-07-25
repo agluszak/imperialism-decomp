@@ -37,38 +37,6 @@ void FreeStretchEntries(void* entries) {
 
 } // namespace
 
-void TZone::InvokeObjectVtableMethod24() {
-  HandleTurnEventVtableSlot24CopyPayloadBuffer();
-}
-
-void* TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
-  CRuntimeClass* runtimeClass = GetRuntimeClass();
-  unsigned int payloadSize = static_cast<unsigned int>(runtimeClass->m_nObjectSize);
-  runtimeClass = GetRuntimeClass();
-  CObject* destObject = runtimeClass->CreateObject();
-  if (destObject == 0) {
-    return 0;
-  }
-  unsigned int* destCursor = reinterpret_cast<unsigned int*>(destObject);
-  unsigned int* sourceCursor = reinterpret_cast<unsigned int*>(this);
-  unsigned int dwordCount = payloadSize >> 2;
-  unsigned int byteRemainder = payloadSize & 3;
-  unsigned int dwordIndex;
-  for (dwordIndex = dwordCount; dwordIndex != 0; dwordIndex = dwordIndex - 1) {
-    *destCursor = *sourceCursor;
-    sourceCursor = sourceCursor + 1;
-    destCursor = destCursor + 1;
-  }
-  unsigned char* destByteCursor = reinterpret_cast<unsigned char*>(destCursor);
-  unsigned char* sourceByteCursor = reinterpret_cast<unsigned char*>(sourceCursor);
-  for (; byteRemainder != 0; byteRemainder = byteRemainder - 1) {
-    *destByteCursor = *sourceByteCursor;
-    sourceByteCursor = sourceByteCursor + 1;
-    destByteCursor = destByteCursor + 1;
-  }
-  return destObject;
-}
-
 // TEMPLATE: IMPERIALISM 0x00558860
 // stretch::operator[]
 // SYNTHETIC: IMPERIALISM 0x0055e660

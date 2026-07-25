@@ -34,7 +34,7 @@ struct TTerrainStateRecordView {
   }
   // Per-tile sprite/adjacency variant index, read by the rendering-variant lookup family
   // (0x516150/0x5161a0/0x5161e0/0x516220) and written by
-  // UpdateMapTileAdjacencyMasksAndVariantForTile's streak-length bookkeeping. Same
+  // AssignPictToTile's streak-length bookkeeping. Same
   // evidence basis as terrainKindStorage00 above; also MOVSX-read there.
   signed char spriteVariantIndex01;
   // Staged river/coast connection and sprite code. The high bit marks a
@@ -250,8 +250,9 @@ public:
   virtual char BuildOrLoadGlobalMapStateForSession(const char* mapStreamName,
                                                    char* tuningOverride); // slot 0x0b 0x50ec90
   virtual void LoadPoliticalMapRegionSubtypeTableFromResourceStream();    // slot 0x0c 0x50f200
-  virtual unsigned char*
-  UpdateMapTileAdjacencyMasksAndVariantForTile(StrategicTileIndex tileIndex); // slot 0x0d 0x510210
+  // Mac oracle: TMapMgr::AssignPictToTile(short). Recomputes the tile's adjacency masks
+  // and rendering variant in place; all Windows callers discard the incidental EAX value.
+  virtual void AssignPictToTile(StrategicTileIndex tileIndex); // slot 0x0d 0x510210
   // If tileIndex's gateFlag != 1 (not yet initialized): resets the strategic terrain kind
   // to plains and
   // resourceTypeByEdge to {0x11, 0xff}, refreshes gateFlag via
@@ -784,7 +785,7 @@ public:
   // (terrainStateTable byte 0) and feature/subtype code (byte 2, the field the layout
   // calls riverSpriteCode), inspects the west (tile-1) and NE-row (tile-0x6b) neighbors, and
   // picks a sprite-variant id -- using the map-generation LCG (g_mapGenLcgState_006a38e8)
-  // to break ties. Called by UpdateMapTileAdjacencyMasksAndVariantForTile (0x510210).
+  // to break ties. Called by AssignPictToTile (0x510210).
   int ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex);
 
   // 0x5112f0/0x511360/0x5113d0/0x511440. Predicate helpers for the variant resolver:

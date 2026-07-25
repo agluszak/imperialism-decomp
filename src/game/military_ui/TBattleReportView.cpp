@@ -14,6 +14,7 @@
 #include "game/military_ui/TIdleMeAnimation.h"
 #include "game/ui_core/TMacViewMgr.h"
 #include "game/map/TMapMgr.h"
+#include "game/ui_screens/TZone.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TSoundPlayer.h"
@@ -102,7 +103,7 @@ void TBattleReportView::DoPostCreate(int arg) {
       cell = g_pGlobalMapState->cityScoreTable[record->tileOrObject08.tileIndex].cityTileIndex04;
     } else {
       cell =
-          *reinterpret_cast<short*>(reinterpret_cast<char*>(record->tileOrObject08.object) + 0xc);
+          static_cast<short>(static_cast<TZone*>(record->tileOrObject08.object)->tileOrTerrainId0c);
     }
 
     // Spiral outward from the record's cell until a free crowding-grid cell is found.
@@ -251,8 +252,7 @@ void TBattleReportView::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x004ad560
 void TBattleReportView::Free() {
   if (transientRegistryObject24cc != 0) {
-    g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(
-        *reinterpret_cast<int*>(reinterpret_cast<char*>(transientRegistryObject24cc) + 0x18));
+    g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(transientRegistryObject24cc->registryTag18);
   }
   TDiplomacyMapView::Free();
 }
