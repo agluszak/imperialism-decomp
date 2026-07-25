@@ -264,13 +264,10 @@ void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
 
   const short localizationMode = static_cast<short>(g_pSimMgr->mode);
   if (localizationMode == 0x16 || localizationMode == 0x17) {
-    const char* tileRecordBytes = reinterpret_cast<const char*>(g_pGlobalMapState->cityScoreTable);
-    int flagIndex = 0;
-    for (int tileOffset = 0; tileOffset < 0xfc00; tileOffset += 0xa8) {
-      if (tileRecordBytes[tileOffset] != -1) {
-        tileHasOwnerFlags52C[flagIndex] = true;
+    for (int provinceIndex = 0; provinceIndex < 0x180; ++provinceIndex) {
+      if (g_pGlobalMapState->cityScoreTable[provinceIndex].ownerNationCode00 != -1) {
+        tileHasOwnerFlags52C[provinceIndex] = true;
       }
-      ++flagIndex;
     }
     visibleVoteTier528 = kCouncilTickerIntervalMapMode;
 

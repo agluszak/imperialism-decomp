@@ -118,8 +118,8 @@ void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, const CPoint*
 // centering helpers read the signed low word.
 // FUNCTION: IMPERIALISM 0x00519970
 void InitializeMapDialogViewportTileSpan() {
-  *reinterpret_cast<short*>(&g_wMapDialogViewportTileSpan) =
-      static_cast<short>(g_mapCellRowScale_006a3360 * 512.0 - -1.0);
+  short viewportTileSpan = static_cast<short>(g_mapCellRowScale_006a3360 * 512.0 - -1.0);
+  memcpy(&g_wMapDialogViewportTileSpan, &viewportTileSpan, sizeof(viewportTileSpan));
 }
 
 static int g_mapDialogViewportTileSpanInitializer = (InitializeMapDialogViewportTileSpan(), 0);
