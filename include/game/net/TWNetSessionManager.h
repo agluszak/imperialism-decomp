@@ -110,27 +110,27 @@ public:
   // Reopens the session with no seed (OpenRuntimeSelectionSourceWithOptionalSeed(null,0)),
   // then rebuilds sessionDescription10, lets the derived slot populate its application
   // identity, and opens it as a newly created DirectPlay session.
-  bool OpenRuntimeSelectionSourceFromCurrentContext(); // 0x480030
+  BOOL OpenRuntimeSelectionSourceFromCurrentContext(); // 0x480030
   // IDirectPlay2::CreatePlayer wrapper: builds a DPNAME from shortName (dwSize=16,
   // dwFlags=0, lpszShortNameA=shortName, lpszLongNameA=0) and stores the HRESULT in
   // lastErrorCode0c. Returns SUCCEEDED(result).
-  unsigned char CreatePlayerAndStoreResult(LPDPID idOut, LPSTR shortName); // 0x47fcb0
+  char CreatePlayerAndStoreResult(LPDPID idOut, LPSTR shortName); // 0x47fcb0
   // IDirectPlay2::SetPlayerData wrapper for the local player (localPlayerId60),
   // dwFlags=DPSET_LOCAL(2). Stores the HRESULT in lastErrorCode0c and returns
   // SUCCEEDED(result).
-  unsigned char SetLocalPlayerDataAndStoreResult(LPVOID data, DWORD size); // 0x480990
+  BOOL SetLocalPlayerDataAndStoreResult(LPVOID data, DWORD size); // 0x480990
   // Presents the "choose a session to join" flow (DirectPlayCreate(NULL),
   // AfxMessageBox-backed progress UI and EnumSessions, and leaves directPlayInterface04
   // bound to the chosen session on success. The callback-table dispatch and
   // AfxGetMainWnd()/message-box progress-UI plumbing aren't modeled yet, so this
   // remains structurally incomplete; always reports failure until that's done.
-  unsigned char OpenRuntimeSelectionSourceWithUserChoice(); // 0x480150
+  BOOL OpenRuntimeSelectionSourceWithUserChoice(); // 0x480150
   // Clears g_RuntimeSelectionRecords006a15e0 and re-issues DirectPlayEnumerateA
   // (ordinal 2) via ForwardEnumSessionToCallbackTable/this, storing the HRESULT in
   // lastErrorCode0c. Returns SUCCEEDED(result). Ghidra-verified: takes no explicit
   // stack argument (bare RET, no ret-n cleanup) -- TNetMgr's caller does not forward
   // its own `provider` here.
-  bool RebuildRuntimeSelectionSource(); // 0x47fd90
+  BOOL RebuildRuntimeSelectionSource(); // 0x47fd90
 };
 ASSERT_SIZE(TWNetSessionManager, 0xb4);
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
