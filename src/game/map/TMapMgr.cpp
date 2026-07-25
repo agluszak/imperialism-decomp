@@ -33,6 +33,7 @@
 #include "game/ImperialismApp.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/globals/prelude.h"
+#include "game/globals/map_flow_globals.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 
@@ -3513,9 +3514,6 @@ int TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlo
   return fallbackTile;
 }
 
-static const unsigned int kAddrTerrainFlowTypeRemapTable = 0x0065c632;
-static const unsigned int kAddrTerrainFlowDirectionTable = 0x0065c668;
-
 // FUNCTION: IMPERIALISM 0x00517c30
 char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
   TLongintList* regionList = g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList;
@@ -4514,14 +4512,13 @@ StrategicTileIndex TraceTerrainFlowToNearestSeaTile(StrategicTileIndex tileIndex
       flowType = static_cast<short>(flowType - kRiverSpriteCodeFlowVariantBias);
     }
     if (flowType >= kRiverSpriteCodeFlowFirst && flowType <= kRiverSpriteCodeFlowLast) {
-      flowType = *reinterpret_cast<const short*>(kAddrTerrainFlowTypeRemapTable + flowType * 2);
+      flowType = g_anTerrainFlowTypeByRiverSpriteCode[flowType - kRiverSpriteCodeFlowFirst];
     } else if (flowType >= kRiverSpriteCodeLandSingleDirectionFirst &&
                flowType <= kRiverSpriteCodeWaterSingleDirectionLast) {
       return -1;
     }
 
-    short stepDirection = *reinterpret_cast<const short*>(kAddrTerrainFlowDirectionTable +
-                                                          (flowVariant + flowType * 2) * 2);
+    short stepDirection = g_anTerrainFlowDirections[flowType][flowVariant];
     short walkTile = tileIndex;
     for (int stepCount = 0; stepCount < 100; ++stepCount) {
       walkTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(walkTile, stepDirection);
@@ -4540,15 +4537,14 @@ StrategicTileIndex TraceTerrainFlowToNearestSeaTile(StrategicTileIndex tileIndex
       }
       if (nextFlowType >= kRiverSpriteCodeFlowFirst && nextFlowType <= kRiverSpriteCodeFlowLast) {
         nextFlowType =
-            *reinterpret_cast<const short*>(kAddrTerrainFlowTypeRemapTable + nextFlowType * 2);
+            g_anTerrainFlowTypeByRiverSpriteCode[nextFlowType - kRiverSpriteCodeFlowFirst];
       } else if (nextFlowType >= kRiverSpriteCodeLandSingleDirectionFirst &&
                  nextFlowType <= kRiverSpriteCodeWaterSingleDirectionLast) {
         break;
       }
 
       short preferredDirection = static_cast<short>((static_cast<int>(stepDirection) + 3) % 6);
-      const short* directionPair =
-          reinterpret_cast<const short*>(kAddrTerrainFlowDirectionTable + nextFlowType * 4);
+      const short* directionPair = g_anTerrainFlowDirections[nextFlowType];
       if (directionPair[0] == preferredDirection) {
         stepDirection = directionPair[1];
       } else if (directionPair[1] != preferredDirection) {
@@ -4584,14 +4580,13 @@ char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(StrategicTileIndex ti
       flowType = static_cast<short>(flowType - kRiverSpriteCodeFlowVariantBias);
     }
     if (flowType >= kRiverSpriteCodeFlowFirst && flowType <= kRiverSpriteCodeFlowLast) {
-      flowType = *reinterpret_cast<const short*>(kAddrTerrainFlowTypeRemapTable + flowType * 2);
+      flowType = g_anTerrainFlowTypeByRiverSpriteCode[flowType - kRiverSpriteCodeFlowFirst];
     } else if (flowType >= kRiverSpriteCodeLandSingleDirectionFirst &&
                flowType <= kRiverSpriteCodeWaterSingleDirectionLast) {
       return static_cast<char>(0xff);
     }
 
-    short stepDirection = *reinterpret_cast<const short*>(kAddrTerrainFlowDirectionTable +
-                                                          (attempt + flowType * 2) * 2);
+    short stepDirection = g_anTerrainFlowDirections[flowType][attempt];
     short walkTile = tileIndex;
     for (int stepCount = 0; stepCount < 100; ++stepCount) {
       walkTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(walkTile, stepDirection);
@@ -4613,7 +4608,7 @@ char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(StrategicTileIndex ti
       }
       if (nextFlowType >= kRiverSpriteCodeFlowFirst && nextFlowType <= kRiverSpriteCodeFlowLast) {
         nextFlowType =
-            *reinterpret_cast<const short*>(kAddrTerrainFlowTypeRemapTable + nextFlowType * 2);
+            g_anTerrainFlowTypeByRiverSpriteCode[nextFlowType - kRiverSpriteCodeFlowFirst];
       } else if (nextFlowType >= kRiverSpriteCodeLandSingleDirectionFirst &&
                  nextFlowType <= kRiverSpriteCodeWaterSingleDirectionLast) {
         break;
@@ -4627,8 +4622,7 @@ char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(StrategicTileIndex ti
       }
 
       short preferredDirection = static_cast<short>((static_cast<int>(stepDirection) + 3) % 6);
-      const short* directionPair =
-          reinterpret_cast<const short*>(kAddrTerrainFlowDirectionTable + nextFlowType * 4);
+      const short* directionPair = g_anTerrainFlowDirections[nextFlowType];
       if (directionPair[0] == preferredDirection) {
         stepDirection = directionPair[1];
       } else if (directionPair[1] != preferredDirection) {

@@ -128,6 +128,7 @@ char* g_pSmallViewsEmptyText_00662B90 = g_szEmptyString;
 char* g_pMiniCivSharedText_0064cb18 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x0065c830
 char* g_pShipFractionSharedText_0065c830 = g_szEmptyString;
+
 // Shared empty-text pointer used by the diplomacy panel Setup methods. Unlike the
 // empty string storage itself, the original reads this pointer through an absolute load.
 // GLOBAL: IMPERIALISM 0x00654ec8
@@ -3848,3 +3849,13 @@ float g_fNavyHitChanceNumerator_00669f04 = 80.0f;
 // from the session id / four-cc status tag (busy, redy, unas, awol, dead).
 // GLOBAL: IMPERIALISM 0x0065c168
 extern "C" const int kLoungeStatusGlyphIds[5] = {0x11fe, 0x11ff, 0x1200, 0x1201, 0x1202};
+
+// Kept at the end of this TU so recovering these previously absolute-addressed tables
+// does not perturb the placement of later globals still reached by raw addresses.
+// GLOBAL: IMPERIALISM 0x0065c648
+extern "C" const short g_anTerrainFlowTypeByRiverSpriteCode[16] = {0, 1, 2, 2, 3, 3, 4, 4,
+                                                                   4, 4, 5, 5, 6, 6, 7, 8};
+
+// GLOBAL: IMPERIALISM 0x0065c668
+extern "C" const short g_anTerrainFlowDirections[9][2] = {{0, 2}, {0, 3}, {0, 4}, {1, 3}, {1, 4},
+                                                          {1, 5}, {2, 4}, {2, 5}, {3, 5}};
