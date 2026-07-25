@@ -89,9 +89,11 @@ void TTradeMgr::Free() {
 
 // FUNCTION: IMPERIALISM 0x005b7c10
 void TTradeMgr::ReadFrom(TStream* stream) {
-  if (g_nSaveFormatVersion < 0x27) {
-    stream->ReadBytes(&categoryRows[0].presetSeed04, 0xaa0);
-  } else {
+  // The empty base call is real (0x5b7c20) and was missing from the port. The version
+  // test is written the way the original branches it: CMP 0x27 / JL sends the legacy
+  // whole-block read to the jump target, so the per-row arm is the fall-through.
+  TObject::ReadFrom(stream);
+  if (g_nSaveFormatVersion >= 0x27) {
     NationMetricCategoryRow* row = categoryRows;
     int rows = 0x11;
     do {
@@ -111,6 +113,8 @@ void TTradeMgr::ReadFrom(TStream* stream) {
       row = row + 1;
       rows = rows + -1;
     } while (rows != 0);
+  } else {
+    stream->ReadBytes(&categoryRows[0].presetSeed04, 0xaa0);
   }
   TDealList** p = this->categoryRankLists;
   int i = 0x11;

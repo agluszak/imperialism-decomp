@@ -145,6 +145,16 @@ class ProxyExitGdbSession(FailingPollGdbSession):
         )
 
 
+class _NoVirtualDisplay:
+    """Stands in for tools.runtime.display.virtual_display in session unit tests."""
+
+    def __enter__(self) -> None:
+        return None
+
+    def __exit__(self, *_exception) -> bool:
+        return False
+
+
 class RuntimeSessionTests(unittest.TestCase):
     def test_transport_failure_cannot_be_overwritten_by_healthy_heartbeat(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -165,6 +175,12 @@ class RuntimeSessionTests(unittest.TestCase):
                 ),
                 patch("tools.runtime.session.retail_game_dir", return_value=root),
                 patch("tools.runtime.session.shut_down_wine_prefix"),
+                # No Xvfb in a unit test: it would spawn a real X server, and its
+                # clock reads would eat the patched time.monotonic sequence below.
+                patch(
+                    "tools.runtime.session.virtual_display",
+                    return_value=_NoVirtualDisplay(),
+                ),
                 patch("tools.runtime.session.capture_failure_screenshot"),
                 patch(
                     "tools.runtime.session.time.monotonic",
@@ -207,6 +223,12 @@ class RuntimeSessionTests(unittest.TestCase):
                 ),
                 patch("tools.runtime.session.retail_game_dir", return_value=root),
                 patch("tools.runtime.session.shut_down_wine_prefix"),
+                # No Xvfb in a unit test: it would spawn a real X server, and its
+                # clock reads would eat the patched time.monotonic sequence below.
+                patch(
+                    "tools.runtime.session.virtual_display",
+                    return_value=_NoVirtualDisplay(),
+                ),
                 patch("tools.runtime.session.capture_failure_screenshot"),
             ):
                 result = execute_run(
@@ -248,6 +270,12 @@ class RuntimeSessionTests(unittest.TestCase):
                 ),
                 patch("tools.runtime.session.retail_game_dir", return_value=root),
                 patch("tools.runtime.session.shut_down_wine_prefix"),
+                # No Xvfb in a unit test: it would spawn a real X server, and its
+                # clock reads would eat the patched time.monotonic sequence below.
+                patch(
+                    "tools.runtime.session.virtual_display",
+                    return_value=_NoVirtualDisplay(),
+                ),
             ):
                 result = execute_run(
                     name="boot_managers",
@@ -280,6 +308,12 @@ class RuntimeSessionTests(unittest.TestCase):
                 ),
                 patch("tools.runtime.session.retail_game_dir", return_value=root),
                 patch("tools.runtime.session.shut_down_wine_prefix"),
+                # No Xvfb in a unit test: it would spawn a real X server, and its
+                # clock reads would eat the patched time.monotonic sequence below.
+                patch(
+                    "tools.runtime.session.virtual_display",
+                    return_value=_NoVirtualDisplay(),
+                ),
             ):
                 result = execute_run(
                     name="boot_managers",

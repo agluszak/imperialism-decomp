@@ -133,10 +133,7 @@ void TNavyMission::WriteTo(TStream* stream) {
   int nodeIdx2 = targetZone18 != nullptr ? targetZone18->GetContextOrdinalOrInvalid() : -1;
   stream->WriteInteger(nodeIdx2);
 
-  for (int i = 0; i < 4; ++i) {
-    float swapped = SwapFloat(requiredShipEquipageByCategory[i]);
-    stream->WriteBytes(&swapped, 4);
-  }
+  WriteFloatArrayElems(stream, requiredShipEquipageByCategory, 4);
 
   // orderList24 payloads are TShip primary-order nodes (serialized by roster index).
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
@@ -161,9 +158,8 @@ void TNavyMission::ReadFrom(TStream* stream) {
   targetZone18 = FindMapActionContextByNodeId(secondaryZoneId);
 
   stream->ReadBytes(&requiredShipEquipageByCategory[0], 0x10);
-  for (int i = 0; i < 4; ++i) {
-    requiredShipEquipageByCategory[i] = SwapFloat(requiredShipEquipageByCategory[i]);
-  }
+  // In-place four-byte reverse over the array (0x53669e), not a per-element temporary.
+  ReverseDwordArrayBytes(requiredShipEquipageByCategory, 4);
 
   short nodeIdx = stream->ReadInteger();
   if (nodeIdx > -1) {
@@ -171,7 +167,7 @@ void TNavyMission::ReadFrom(TStream* stream) {
       TShip* orderNode = TShip::GetNth(nodeIdx);
       AcceptReenforcement(orderNode, 0);
       nodeIdx = stream->ReadInteger();
-    } while (nodeIdx >= 0);
+    } while (nodeIdx > -1);
   }
 
   stream->ReadBytes(&navyState28, 4);

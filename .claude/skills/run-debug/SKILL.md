@@ -40,3 +40,28 @@ or timed-out semantic runs capture a screenshot internally when possible, but pi
 are diagnostic only and never influence pass/fail. Use `just smoke`, `just smoke-diff`,
 or `just gdb-script` for startup and debugger observation independent of native test
 instrumentation.
+
+### Running off-screen
+
+Wine maps a real window per session, which steals focus while you work. Give the session
+its own `Xvfb` instead:
+
+```sh
+IMPERIALISM_RUNTIME_DISPLAY=virtual just runtime-test <name>   # off-screen
+IMPERIALISM_RUNTIME_DISPLAY=host    just runtime-test <name>   # default: real desktop
+IMPERIALISM_RUNTIME_DISPLAY=:5      just runtime-test <name>   # your own server
+```
+
+The display actually used is reported as `host.display` in the result. Needs an `Xvfb`
+binary on PATH (`brew install xorg-server`, no root); without one the session falls back
+to the inherited `DISPLAY`.
+
+**Known limitation, and why `host` is still the default.** The render-cache scenarios --
+`random_game_enters_map`, `random_game_easy_skips_capital`, `load_saved_game` -- fail
+under a bare Xvfb with "primed city-site hover tile is not present in the render cache",
+while passing on the host display. A larger virtual screen and Wine's own virtual desktop
+both failed to fix it, so the missing ingredient is not resolution and not window
+management alone. Everything else passes off-screen, including the whole serialization
+suite. Tracked as `imperialism-decomp-0kr0`.
+
+Screenshot capture is unaffected either way: it captures by window id against `DISPLAY`.

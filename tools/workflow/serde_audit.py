@@ -102,6 +102,7 @@ HELPERS = {
     "WriteShortArrayElems": ("write", 2),
     "WriteShortArrayElemsRev": ("write", 2),
     "WriteIntArrayElems": ("write", 4),
+    "WriteFloatArrayElems": ("write", 4),
 }
 
 # Collection helpers that expand to more than one stream op. Each entry is the ordered
@@ -753,6 +754,19 @@ def compare(original: list[dict], ported: list[dict]) -> dict:
         if left["dir"] != right["dir"]:
             return {"status": "divergent", "index": left_index, "unverified": unverified}
 
+        # Same direction, different accessor. Width alone cannot separate a raw block move
+        # from a length-prefixed string -- ReadSharedString's width is a wildcard, so a
+        # ported ReadBytes(&field, 0x20) used to pass against it while consuming a
+        # completely different number of bytes at runtime (TShip::ReadFrom did exactly
+        # that). Whenever both sides name a real TStream slot, the slots must agree.
+        # Helper-expanded ops are not slot names and stay out of this check.
+        if (
+            left["op"] in SLOT_BY_NAME
+            and right["op"] in SLOT_BY_NAME
+            and left["op"] != right["op"]
+        ):
+            return {"status": "divergent", "index": left_index, "unverified": unverified}
+
         # A version-gated width choice: if the compiler merged the two arms into one
         # call site the original shows a single variant-width op, so the source's two
         # arms collapse onto it. If it kept two call sites they line up one-to-one.
@@ -935,6 +949,16 @@ def main(argv: list[str] | None = None) -> int:
     print()
     print("A divergence is a save-file desync candidate. A low reccmp score with no")
     print("divergence is a codegen/EH-shape issue and cannot corrupt a load.")
+    print()
+    print("The unprovable widths are NOT an audit gap to chase by hand: a sizeof(...) or")
+    print("count*N becomes a literal in the compiled push, so reccmp compares it against")
+    print("the original's immediate directly. A wrong sizeof shows up as an operand")
+    print("mismatch in `just compare`, not here. Verified by hand on TCity::ReadFrom")
+    print("(13 of them; every sizeof matched the original's literal exactly).")
+    print()
+    print("What this audit still cannot see is a wrong VALUE at the right width -- a")
+    print("length prefix that does not equal the number of records that follow it. That")
+    print("class needs the runtime roundtrip test (see imperialism-decomp-cinw.19).")
     print()
 
     for row in sorted(divergent, key=lambda r: r["index"]):

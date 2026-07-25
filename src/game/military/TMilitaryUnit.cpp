@@ -1,4 +1,5 @@
 #include "game/military/TMilitaryUnit.h"
+#include "game/core/stream_byteswap.h"
 
 #include "game/ui_core/CIterator.h"
 #include "game/city_ui/TCountry.h"
@@ -61,15 +62,6 @@ void TMilitaryUnit::IMilitaryUnit(MilitaryUnitKindStorage unitKind, int nodeCont
   ClearPath();
 }
 
-static void SwapAdjacentBytesInShortArray(short* entries, int pairCount) {
-  for (int i = 0; i < pairCount; ++i) {
-    unsigned char* bytes = reinterpret_cast<unsigned char*>(&entries[i]);
-    unsigned char tmp = bytes[0];
-    bytes[0] = bytes[1];
-    bytes[1] = tmp;
-  }
-}
-
 // FUNCTION: IMPERIALISM 0x005c2fd0
 void TMilitaryUnit::ReadFrom(TStream* stream) {
   TUnit::ReadFrom(stream);
@@ -77,10 +69,12 @@ void TMilitaryUnit::ReadFrom(TStream* stream) {
   // (ReadSharedString, "read shared string with capacity"): args (&name24, 0x20)
   // verified against 0x5c2fd0.
   stream->ReadSharedString(&name24, 0x20);
+  // Both swap loops are inlined at this call site in the original (0x5c3001 / 0x5c3022),
+  // so they go through the shared __inline helper rather than a local out-of-line copy.
   stream->ReadBytes(orderTargetTiles28, 6);
-  SwapAdjacentBytesInShortArray(orderTargetTiles28, 3);
+  SwapShortArrayBytes(orderTargetTiles28, 3);
   stream->ReadBytes(orderTargetTilesMirror2E, 6);
-  SwapAdjacentBytesInShortArray(orderTargetTilesMirror2E, 3);
+  SwapShortArrayBytes(orderTargetTilesMirror2E, 3);
   stream->ReadBytes(&field_34, 2);
   stream->ReadBytes(&field_36, 2);
   stream->ReadBytes(&field_38, 2);
@@ -91,22 +85,8 @@ void TMilitaryUnit::ReadFrom(TStream* stream) {
 void TMilitaryUnit::WriteTo(TStream* stream) {
   TUnit::WriteTo(stream);
   stream->WriteSharedString(&name24);
-  for (int i = 0; i < 3; ++i) {
-    short swapped = orderTargetTiles28[i];
-    unsigned char* bytes = reinterpret_cast<unsigned char*>(&swapped);
-    unsigned char tmp = bytes[0];
-    bytes[0] = bytes[1];
-    bytes[1] = tmp;
-    stream->WriteBytes(&swapped, 2);
-  }
-  for (int j = 0; j < 3; ++j) {
-    short swapped = orderTargetTilesMirror2E[j];
-    unsigned char* bytes = reinterpret_cast<unsigned char*>(&swapped);
-    unsigned char tmp = bytes[0];
-    bytes[0] = bytes[1];
-    bytes[1] = tmp;
-    stream->WriteBytes(&swapped, 2);
-  }
+  WriteShortArrayElems(stream, orderTargetTiles28, 3);
+  WriteShortArrayElemsRev(stream, orderTargetTilesMirror2E, 3);
   stream->WriteBytes(&field_34, 2);
   stream->WriteBytes(&field_36, 2);
   stream->WriteBytes(&field_38, 2);

@@ -1,6 +1,7 @@
 #include "RuntimeScenario.h"
 
 #include "game/ArchiveStreamAdapter.h"
+#include "game/assets/TAssetMgr.h"
 #include "game/app/TAnimator.h"
 #include "game/city_ui/TCountry.h"
 #include "game/core/TFileStream.h"
@@ -23,12 +24,19 @@
 
 // Save-stream checkpoint oracle.
 //
-// The round-trip test proves our reader agrees with our writer. This proves our reader
-// agrees with the RETAIL FORMAT, which is the other half and the one that decides whether
-// load_saved_game can pass: it replays a real save through the manager chain and records
-// the byte offset either side of every ReadFrom. The first manager whose span does not
-// end where the next one's begins is named outright instead of inferred, and if the final
-// offset equals the file length the whole chain's accounting is proved end to end.
+// It replays a save through the manager chain and records the byte offset either side of
+// every ReadFrom. The first manager whose span does not end where the next one's begins
+// is named outright instead of inferred, and if the final offset equals the file length
+// the whole chain's accounting is proved end to end. That is what turns "the load crashed
+// somewhere downstream" into "manager N consumed the wrong number of bytes".
+//
+// It replays a save this build just WROTE, not a committed fixture. The fixture that used
+// to back this test was itself produced by an older build of ours and was stale, which
+// made a correct reader look broken (imperialism-decomp-cinw.17) -- a save whose
+// provenance cannot be checked in is worse than no save at all. Self-saving costs the
+// retail-fidelity half of the question and keeps the reader-vs-writer half, which is the
+// half that finds desyncs; pointing this at a genuine retail save is strictly stronger and
+// is what load_saved_game is for.
 //
 // It deliberately reimplements the DoRead sequence here rather than instrumenting
 // TAmbitFileBasedDocument::DoRead (0x49e6a0). Adding checkpoint calls to a production
@@ -73,9 +81,6 @@ public:
   const char* Name() const override {
     return "save_stream_checkpoints";
   }
-  bool RequiresFixture() const override {
-    return true;
-  }
   bool UsesRandomGameFlow() const override {
     return true;
   }
@@ -100,10 +105,18 @@ private:
     report = "[";
     entries = 0;
 
+    // Write the save first, through the same document path a real save uses, so the
+    // bytes being replayed are this build's own and their provenance is beyond doubt.
+    CString path("save/rt_save_stream_checkpoints.imp");
+    if (g_pUiViewManager->SaveMainDocumentToPathAndMarkSaved(path) == 0) {
+      FailScenario("\"the document refused to save through the real save path\"");
+      return;
+    }
+
     CFile file;
     CFileException error;
-    if (!file.Open(FixturePath(), CFile::modeRead | CFile::shareDenyWrite, &error)) {
-      FailScenario("\"could not open the save fixture for checkpoint replay\"");
+    if (!file.Open(path, CFile::modeRead | CFile::shareDenyWrite, &error)) {
+      FailScenario("\"could not reopen the just-written save for checkpoint replay\"");
       return;
     }
     const int fileLength = static_cast<int>(file.GetLength());
@@ -191,8 +204,9 @@ private:
     if (leftover != 0) {
       CString failure;
       failure.Format("\"the manager chain left bytes unread (counted %d consumed of a %d "
-                     "byte file); the last span in serialization_roundtrip whose size looks "
-                     "wrong names the first divergent manager\"",
+                     "byte file); compare each span in save_stream_checkpoints against the "
+                     "same class in serialization_roundtrip -- the first span whose size "
+                     "disagrees names the divergent manager\"",
                      stream.consumed, fileLength);
       FailScenario(failure);
       return;

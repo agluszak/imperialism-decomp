@@ -1856,6 +1856,20 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int) {
     static_cast<TPicture*>(tranControl)->SetPictureResourceIdAndRefresh(followUpPictureId, true);
   }
 
+  // The strategic-map screen builds its own mini-map: 0x5da567 resolves the 'main'
+  // control and 0x5da5b3 dispatches vtable slot 0x7d (TMapUberPicture::DisplayMiniMap,
+  // 0x599cf0) on it, unconditionally. The port omitted this, so the mini-map existed
+  // only when the city-site selector had already created one on its way in -- a game
+  // entered by loading a save has no city-site step, so its map had no mini-map at all
+  // (imperialism-decomp-cinw.20).
+  TControl* mainPicture = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagMain);
+  if (mainPicture == nullptr) {
+    GAME_FAIL_NIL_POINTER();
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xc5a);
+  }
+  mainPicture->AssertValid();
+  static_cast<TMapUberPicture*>(mainPicture)->DisplayMiniMap();
+
   turn_event_ui_refresh::RefreshQuerControlLayoutAndClearText();
 
   turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagQuer, 0x2730, 0);
