@@ -9,6 +9,8 @@
 #include "game/app/TAnimator.h"
 #include "game/military/TArmyMgr.h"
 #include "game/ui_core/TControl.h"
+#include "game/ui_core/TPicture.h"
+#include "game/ui_core/TStaticText.h"
 #include "game/TEvent.h"
 #include "game/ui_widgets/TInfoBarText.h"
 #include "game/military_ui/TIdleMeAnimation.h"
@@ -203,9 +205,9 @@ void TBattleReportView::DoPostCreate(int arg) {
     selectedOrdinal = 1;
   }
   selectedReportIndex24c8 = selectedOrdinal - 1;
-  RefreshMapContextSelectionPanelAndInfoLabels(
+  RefreshMapContextSelectionPanelAndInfoLabels(static_cast<MapContextActionRecord*>(
       g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
-          selectedOrdinal));
+          selectedOrdinal)));
   SetIdleFreq(2);
 
   TIdleMeAnimation* animation = new TIdleMeAnimation();
@@ -271,18 +273,18 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       int count = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
       if (selectedReportIndex24c8 < count) {
         selectedReportIndex24c8++;
-        RefreshMapContextSelectionPanelAndInfoLabels(
+        RefreshMapContextSelectionPanelAndInfoLabels(static_cast<MapContextActionRecord*>(
             g_pMapContextActionManager->mapContextActionRecordList04
-                ->GetPtrListEntryByOneBasedIndex(selectedReportIndex24c8));
+                ->GetPtrListEntryByOneBasedIndex(selectedReportIndex24c8)));
       }
       return;
     }
     if (tag == IMPERIALISM_FOURCC('p', 'r', 'e', 'v')) {
       if (selectedReportIndex24c8 > 1) {
         selectedReportIndex24c8--;
-        RefreshMapContextSelectionPanelAndInfoLabels(
+        RefreshMapContextSelectionPanelAndInfoLabels(static_cast<MapContextActionRecord*>(
             g_pMapContextActionManager->mapContextActionRecordList04
-                ->GetPtrListEntryByOneBasedIndex(selectedReportIndex24c8));
+                ->GetPtrListEntryByOneBasedIndex(selectedReportIndex24c8)));
       }
       return;
     }
@@ -376,13 +378,9 @@ void TBattleReportView::RenderMapContextActionMarkers(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004adfc0
-void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(void* mapContextRecord) {
-  MapContextActionRecord* record = static_cast<MapContextActionRecord*>(mapContextRecord);
-  if (!record) {
-    return;
-  }
-  short newIndex = record->listOrdinal264;
-  if (selectedReportIndex24c8 == newIndex) {
+void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
+    MapContextActionRecord* record) {
+  if (selectedReportIndex24c8 == static_cast<short>(record->listOrdinal264)) {
     return;
   }
 
@@ -390,157 +388,200 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(void* mapCo
     MapContextActionRecord* oldRecord = static_cast<MapContextActionRecord*>(
         g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
             selectedReportIndex24c8));
-    if (oldRecord) {
-      RECT oldRect;
-      oldRect.left = oldRecord->markerPixelX258;
-      oldRect.top = oldRecord->markerPixelY25c;
-      oldRect.right = oldRect.left + 18;
-      oldRect.bottom = oldRect.top + 18;
-      InvalidateOffsetRegionUsingChildClipRect((RgnHandle)&oldRect);
-    }
+    RECT oldRect;
+    oldRect.left = oldRecord->markerPixelX258;
+    oldRect.top = oldRecord->markerPixelY25c;
+    oldRect.right = oldRect.left + 18;
+    oldRect.bottom = oldRect.top + 18;
+    InvalidateCityDialogRectRegion(&oldRect, 1);
   }
 
-  selectedReportIndex24c8 = newIndex;
-  if (newIndex != 0) {
+  selectedReportIndex24c8 = static_cast<short>(record->listOrdinal264);
+  if (selectedReportIndex24c8 != 0) {
     MapContextActionRecord* newRecord = static_cast<MapContextActionRecord*>(
         g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
-            newIndex));
-    if (newRecord) {
-      RECT newRect;
-      newRect.left = newRecord->markerPixelX258;
-      newRect.top = newRecord->markerPixelY25c;
-      newRect.right = newRect.left + 18;
-      newRect.bottom = newRect.top + 18;
-      InvalidateOffsetRegionUsingChildClipRect((RgnHandle)&newRect);
-    }
+            selectedReportIndex24c8));
+    RECT newRect;
+    newRect.left = newRecord->markerPixelX258;
+    newRect.top = newRecord->markerPixelY25c;
+    newRect.right = newRect.left + 18;
+    newRect.bottom = newRect.top + 18;
+    InvalidateCityDialogRectRegion(&newRect, 1);
   }
 
-  int participantIndex = record->reservedByte03;
-  int otherParticipantIndex = 1 - participantIndex;
-  short activeNationId = g_pSimMgr->GetActiveNationId();
-
-  TControl* locaCtrl =
-      static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('l', 'o', 'c', 'a')));
-  if (locaCtrl) {
-    locaCtrl->Free();
+  short participantIndex = static_cast<signed char>(record->reservedByte03);
+  short otherParticipantIndex = static_cast<short>(1 - participantIndex);
+  int activeSideRelation;
+  if (static_cast<signed char>(
+          record->nationIds[static_cast<signed char>(record->participantIndex02)]) ==
+      g_pSimMgr->GetActiveNationId()) {
+    activeSideRelation = 1;
+  } else if (static_cast<signed char>(
+                 record->nationIds[1 - static_cast<signed char>(record->participantIndex02)]) ==
+             g_pSimMgr->GetActiveNationId()) {
+    activeSideRelation = -1;
+  } else {
+    activeSideRelation = 0;
   }
+  char displayedParticipantIsActive =
+      static_cast<signed char>(record->nationIds[participantIndex]) ==
+      g_pSimMgr->GetActiveNationId();
 
   switch (record->actionType04) {
-  case 0: {
+  case 0:
+  case 3:
+  case 4: {
+    TStaticText* locaText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLoca));
+    locaText->AssertValid();
     CString strLocation;
     CString strTerrain;
-    CString strResource;
     g_pGlobalMapState->AssignCityRecordDisplayName(record->tileOrObject08.tileIndex, &strLocation);
-    int tileIdx = record->tileOrObject08.tileIndex;
-    if (tileIdx >= 0 && tileIdx < 23 && g_apTerrainTypeDescriptorTable[tileIdx] != NULL) {
-      g_apTerrainTypeDescriptorTable[tileIdx]->FormatOverlayTerrainLabelText(&strTerrain);
-    }
-    g_pSimMgr->GetString(0x273d, 7, &strResource);
+    int ownerNation =
+        g_pGlobalMapState->cityScoreTable[record->tileOrObject08.tileIndex].ownerNationCode00;
+    g_apTerrainTypeDescriptorTable[ownerNation]->FormatOverlayTerrainLabelText(&strTerrain);
+    CString locationTemplate;
+    g_pSimMgr->GetString(0x273d, 7, &locationTemplate);
     CString combinedStr;
-    scanBracketExpressions(g_pSimMgr, &combinedStr, "[0][1][2]", (const char*)strLocation,
-                           (const char*)strTerrain, (const char*)strResource);
+    scanBracketExpressions(g_pSimMgr, &combinedStr, static_cast<LPCSTR>(locationTemplate),
+                           static_cast<LPCSTR>(strLocation), static_cast<LPCSTR>(strTerrain));
     combinedStr += " ";
-    TStaticText* locaText = static_cast<TStaticText*>(locaCtrl);
-    if (locaText) {
-      locaText->SetTextAndMaybeRefresh(&combinedStr, 1);
-    }
+    locaText->SetTextAndMaybeRefresh(&combinedStr, 1);
     break;
   }
   case 1:
   case 2: {
+    TStaticText* locaText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLoca));
+    locaText->AssertValid();
     CString nameStr;
-    nameStr = record->nameBuffer0c[participantIndex].data;
-    TStaticText* locaText = static_cast<TStaticText*>(locaCtrl);
-    if (locaText) {
-      locaText->SetTextAndMaybeRefresh(&nameStr, 1);
-    }
+    static_cast<TZone*>(record->tileOrObject08.object)->AssignZoneDisplayNameToOutputRef(&nameStr);
+    locaText->SetTextAndMaybeRefresh(&nameStr, 1);
     break;
   }
   default:
     break;
   }
 
-  TControl* userCtrl =
-      static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('u', 's', 'e', 'r')));
-  if (userCtrl) {
-    userCtrl->Free();
-    short stringResId = (record->actionType04 == 1 || record->actionType04 == 2) ? 0x273c : 0x273d;
-    CString userStr;
-    g_pSimMgr->GetString(stringResId, 5, &userStr);
-    TStaticText* userText = static_cast<TStaticText*>(userCtrl);
-    if (userText) {
-      userText->SetTextAndMaybeRefresh(&userStr, 1);
+  TPicture* friendlyFlag = static_cast<TPicture*>(ResolveControlByTag(kControlTagFflg));
+  friendlyFlag->AssertValid();
+  friendlyFlag->SetPictureResourceIdAndRefresh(
+      static_cast<short>(0x1130 + static_cast<signed char>(record->nationIds[participantIndex])),
+      1);
+
+  TPicture* enemyFlag = static_cast<TPicture*>(ResolveControlByTag(kControlTagEflg));
+  enemyFlag->AssertValid();
+  enemyFlag->SetPictureResourceIdAndRefresh(
+      static_cast<short>(0x1130 +
+                         static_cast<signed char>(record->nationIds[otherParticipantIndex])),
+      1);
+
+  int userStringGroup;
+  int userStringIndex;
+  if (record->actionType04 == 2) {
+    userStringGroup = 0x273c;
+    userStringIndex = activeSideRelation + 5;
+  } else if (record->actionType04 == 1) {
+    userStringGroup = 0x273c;
+    userStringIndex = activeSideRelation + 8;
+  } else if (record->actionType04 == 3) {
+    userStringGroup = 0x273d;
+    userStringIndex = activeSideRelation + 40;
+  } else if (record->actionType04 == 4) {
+    userStringGroup = 0x273d;
+    userStringIndex = activeSideRelation + 43;
+  } else {
+    userStringGroup = 0x273d;
+    int activeHomeRegion = g_apTerrainTypeDescriptorTable[g_pSimMgr->GetActiveNationId()]
+                               ->GetHomeRegionCityRecordIndex();
+    char activeNationOwnsBattleSite = activeHomeRegion == record->tileOrObject08.tileIndex;
+    char reportSidesAreSame = record->reservedByte03 == record->participantIndex02;
+    char reportParticipantIsActive =
+        static_cast<signed char>(
+            record->nationIds[static_cast<signed char>(record->participantIndex02)]) ==
+        g_pSimMgr->GetActiveNationId();
+    char activeNationIsOtherReportSide = activeSideRelation != 0 && !reportParticipantIsActive;
+    int otherNation = static_cast<signed char>(record->nationIds[0]);
+    if (otherNation == g_pSimMgr->GetActiveNationId()) {
+      otherNation = static_cast<signed char>(record->nationIds[1]);
+    }
+    bool otherNationOwnsBattleSite =
+        g_apTerrainTypeDescriptorTable[otherNation]->GetHomeRegionCityRecordIndex() ==
+        record->tileOrObject08.tileIndex;
+
+    if (activeNationOwnsBattleSite && displayedParticipantIsActive) {
+      userStringIndex = 48;
+    } else if (activeNationOwnsBattleSite && activeNationIsOtherReportSide) {
+      userStringIndex = 49;
+    } else if (reportParticipantIsActive && reportSidesAreSame && otherNationOwnsBattleSite) {
+      userStringIndex = 48;
+    } else if (reportParticipantIsActive && reportSidesAreSame) {
+      userStringIndex = 4;
+    } else if (reportParticipantIsActive) {
+      userStringIndex = 7;
+    } else if (activeNationIsOtherReportSide && reportSidesAreSame) {
+      userStringIndex = 5;
+    } else if (activeNationIsOtherReportSide) {
+      userStringIndex = 2;
+    } else if (reportSidesAreSame) {
+      userStringIndex = 3;
+    } else {
+      userStringIndex = 6;
     }
   }
+  --userStringIndex;
 
-  TControl* mdafCtrl =
-      static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('m', 'd', 'a', 'f')));
-  if (mdafCtrl) {
-    mdafCtrl->Free();
+  CString userStr;
+  g_pSimMgr->GetString(userStringGroup, static_cast<short>(userStringIndex), &userStr);
+  TStaticText* userText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagResu));
+  userText->AssertValid();
+  userText->SetTextAndMaybeRefresh(&userStr, 1);
+
+  {
+    TStaticText* mdafText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagFadm));
+    mdafText->AssertValid();
     CString mdafStr(record->nameBuffer0c[participantIndex].data);
-    TStaticText* mdafText = static_cast<TStaticText*>(mdafCtrl);
-    if (mdafText) {
-      mdafText->SetTextAndMaybeRefresh(&mdafStr, 1);
-    }
+    mdafText->SetTextAndMaybeRefresh(&mdafStr, 1);
   }
 
-  TControl* phsfCtrl =
-      static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'h', 's', 'f')));
-  if (phsfCtrl) {
-    phsfCtrl->Free();
+  {
+    TStaticText* phsfText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagFshp));
+    phsfText->AssertValid();
     CString phsfStr(record->overlayLabel4c[participantIndex].data);
-    TStaticText* phsfText = static_cast<TStaticText*>(phsfCtrl);
-    if (phsfText) {
-      phsfText->SetTextAndMaybeRefresh(&phsfStr, 1);
-    }
+    phsfText->SetTextAndMaybeRefresh(&phsfStr, 1);
   }
 
-  TControl* mdaeCtrl =
-      static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('m', 'd', 'a', 'e')));
-  if (mdaeCtrl) {
-    mdaeCtrl->Free();
+  {
+    TStaticText* mdaeText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagEadm));
+    mdaeText->AssertValid();
     CString mdaeStr(record->nameBuffer0c[otherParticipantIndex].data);
-    TStaticText* mdaeText = static_cast<TStaticText*>(mdaeCtrl);
-    if (mdaeText) {
-      mdaeText->SetTextAndMaybeRefresh(&mdaeStr, 1);
-    }
+    mdaeText->SetTextAndMaybeRefresh(&mdaeStr, 1);
   }
 
-  TControl* phseCtrl =
-      static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'h', 's', 'e')));
-  if (phseCtrl) {
-    phseCtrl->Free();
+  {
+    TStaticText* phseText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagEshp));
+    phseText->AssertValid();
     CString phseStr(record->overlayLabel4c[otherParticipantIndex].data);
-    TStaticText* phseText = static_cast<TStaticText*>(phseCtrl);
-    if (phseText) {
-      phseText->SetTextAndMaybeRefresh(&phseStr, 1);
-    }
+    phseText->SetTextAndMaybeRefresh(&phseStr, 1);
   }
 
-  TControl* prevCtrl =
-      static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'r', 'e', 'v')));
-  if (prevCtrl) {
-    prevCtrl->Free();
-    prevCtrl->SetState(record->listOrdinal264 > 1, 0);
-    prevCtrl->SetEnabled(record->listOrdinal264 > 1, 1);
-  }
+  char hasPrevious = selectedReportIndex24c8 > 1;
+  int count = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
+  char hasNext = selectedReportIndex24c8 < count;
 
-  TControl* nextCtrl =
-      static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'e', 'x', 't')));
-  if (nextCtrl) {
-    nextCtrl->Free();
-    int count = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
-    nextCtrl->SetState(record->listOrdinal264 < count, 0);
-    nextCtrl->SetEnabled(record->listOrdinal264 < count, 1);
-  }
+  TControl* prevCtrl = static_cast<TControl*>(ResolveControlByTag(kControlTagPrev));
+  prevCtrl->AssertValid();
+  prevCtrl->SetState(hasPrevious, 0);
+  prevCtrl->SetEnabled(hasPrevious, 1);
 
-  TControl* infoCtrl =
-      static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('i', 'n', 'f', 'o')));
-  if (infoCtrl) {
-    infoCtrl->Free();
-    bool enableInfo =
-        (record->nationIds[0] == activeNationId || record->nationIds[1] == activeNationId);
-    infoCtrl->SetState(enableInfo, 0);
-    infoCtrl->SetEnabled(enableInfo, 1);
-  }
+  TControl* nextCtrl = static_cast<TControl*>(ResolveControlByTag(kControlTagNext));
+  nextCtrl->AssertValid();
+  nextCtrl->SetState(hasNext, 0);
+  nextCtrl->SetEnabled(hasNext, 1);
+
+  bool enableInfo =
+      (static_cast<signed char>(record->nationIds[0]) == g_pSimMgr->GetActiveNationId() ||
+       static_cast<signed char>(record->nationIds[1]) == g_pSimMgr->GetActiveNationId());
+  TControl* infoCtrl = static_cast<TControl*>(ResolveControlByTag(kControlTagInfo));
+  infoCtrl->AssertValid();
+  infoCtrl->SetState(enableInfo, 0);
+  infoCtrl->SetEnabled(enableInfo, 1);
 }
