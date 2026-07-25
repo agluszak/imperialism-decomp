@@ -150,6 +150,11 @@ target). They need a built binary + reccmp DB. Details in the `quality-control` 
 - `just gates` — the mechanical source-policy gates: `decomplint` plus the ratchet
   gates (`datacmp-gate`, `stub-count-gate`, `class-size-gate`, `noop-gate`), each
   with a `just <gate>-update` baseline target.
+- `just serde-audit` — for any `ReadFrom`/`WriteTo` work: compares each serializer's
+  stream ops against the original's listing (direction, width, repeat count, slot
+  identity). Run it before reading scores. It cannot see a wrong *value* at the right
+  width — a length prefix that disagrees with the records after it needs the runtime
+  round-trip test.
 - `just triage 0xADDR` / `just triage --file src/game/X.cpp` — consume reccmp's
   structured semantic result and add Imperialism-specific advice. Address and file
   requests are filtered inside reccmp and analyzed together in one fresh process;
@@ -346,25 +351,15 @@ skills; the invariants:
   `int field10`) and update the init helper's argument to match, so call sites pass real
   objects via implicit upcast with no cast.
 - **"Dual-use" / "dual-purpose" / "same slot used as X and Y" is NEVER a final
-  explanation — it is a mandatory investigation trigger.** A purported dual-use field is
-  an *unresolved modelling defect* until proven otherwise; the label usually hides a wrong
-  receiver/class attribution, a wrong offset from a wrong base/derived layout, two adjacent
-  fields/arrays read as one region, one identifier domain given two descriptions, or two
-  concrete classes merged into one. Until resolved, keep the slot **opaque and explicitly
-  unresolved** (raw `int`/`void*` is fine as a *provisional* state, tagged
-  `// UNRESOLVED_FIELD_ATTRIBUTION:` with the conflicting readings and evidence addresses) —
-  never write prose calling it intentional dual use, and never leave `reinterpret_cast<int>`
-  of a pointer into a member as the "answer". A field is a *legitimate* variant only when
-  ALL eight hold: (1) same concrete object (same ctor/vtable/allocation shape for both
-  access families); (2) same physical offset confirmed from raw instructions, not decompiler
-  names; (3) class layout agrees with the MSVC500 layout oracle; (4) every writer
-  inventoried; (5) every reader inventoried (width + signedness); (6) representation control
-  is explicit (a discriminator field, proven-disjoint lifetimes, or proven per-instance
-  role); (7) no simpler explanation survives (wrong receiver, derived-field ownership,
-  adjacent/packed fields, and shared index domains all ruled out); (8) the final model is an
-  explicit `union` / variant payload / separate record type / discriminator-keyed typed
-  accessors — **not** a raw `int` plus scattered casts. Without all eight the status stays
-  `unresolved_field_attribution`. (Enforced by `just dual-use-gate`.)
+  explanation — it is a mandatory investigation trigger.** A purported dual-use field is an
+  *unresolved modelling defect* until proven otherwise; the label usually hides a wrong
+  receiver, a wrong offset from a wrong layout, adjacent fields read as one region, or two
+  concrete classes merged into one. Until resolved keep the slot opaque and tagged
+  `// UNRESOLVED_FIELD_ATTRIBUTION:` with the conflicting readings and evidence addresses —
+  never prose calling it intentional, never `reinterpret_cast<int>` of a pointer as the
+  "answer". Eight conditions must ALL hold before a slot is a legitimate variant, and the
+  final model must then be a real `union`/variant/discriminator — the list and its evidence
+  recipes are in the **`data-modeling`** skill. (Enforced by `just dual-use-gate`.)
 - **Renames and pointer↔pointer / int-as-int narrowing are codegen-neutral and safe** —
   reccmp pairs by address and these casts compile to nothing. Reuse the curated
   `original_entities.csv` name (don't invent a third); confirm with `just compare <addr>`.
@@ -444,30 +439,12 @@ when source changes affect it. Pushing Git commits and synchronizing Beads throu
 Dolt remote are separate operations and require explicit authorization. A current
 "do not commit" or "do not push" instruction still wins.
 
-## Session Completion
+## Session completion
 
-This protocol applies when ending a Beads implementation workflow. It is subordinate to explicit user, repository, and orchestrator instructions.
+Subordinate to explicit user, repository, or orchestrator instructions. When ending a
+Beads workflow: file beads for anything left over, run the gates if code changed, close or
+update the issues you touched, commit per **Git policy** above, then hand off with what
+changed, how it was verified, issue status, and any step that stayed blocked (naming the
+exact command and error).
 
-1. **File issues for remaining work** - Create beads for anything that needs follow-up
-2. **Run quality gates** (if code changed) - Tests, linters, builds
-3. **Update issue status** - Close finished work, update in-progress items
-4. **Commit completed work and report remote sync separately**:
-   ```bash
-   git add <scoped paths>
-   git commit
-   git status
-
-   # Only when explicitly authorized:
-   git pull --rebase
-   git push
-   bd dolt push
-   git status
-   ```
-5. **Hand off** - Summarize changes, validation, issue status, and any blocked sync/commit/push step
-
-**Critical rules:**
-- Explicit user or orchestrator instructions override this Beads block.
-- Commit completed, verified work by default; do not push or run Dolt remote sync without
-  explicit authorization.
-- If a required sync or push is blocked, stop and report the exact command and error.
 <!-- END BEADS INTEGRATION -->
