@@ -264,6 +264,28 @@ class ComparisonTest(unittest.TestCase):
             compare([self.op("read", 2)], [self.op("write", 2)])["status"], "divergent"
         )
 
+    def slot_op(self, name, direction, size, count=1):
+        return {"op": name, "dir": direction, "bytes": size, "count": count}
+
+    def test_a_different_stream_slot_is_a_divergence_even_with_a_wildcard_width(self):
+        # ReadSharedString's width is unknowable statically, so width comparison alone
+        # let a raw 0x20-byte block read stand in for a length-prefixed string. The slot
+        # names have to disagree loudly instead -- this is the TShip::ReadFrom defect.
+        original = [self.slot_op("ReadSharedString", "read", None)]
+        ported = [self.slot_op("ReadBytes", "read", 0x20)]
+        self.assertEqual(compare(original, ported)["status"], "divergent")
+
+    def test_matching_stream_slots_still_align(self):
+        original = [self.slot_op("ReadSharedString", "read", None)]
+        ported = [self.slot_op("ReadSharedString", "read", None)]
+        self.assertEqual(compare(original, ported)["status"], "aligned")
+
+    def test_helper_expanded_ops_are_exempt_from_the_slot_check(self):
+        # Inline helpers do not carry a slot name, so they must not be compared by name.
+        original = [self.slot_op("ReadBytes", "read", 2)]
+        ported = [self.slot_op("SwapShortArrayBytes", "read", 2)]
+        self.assertEqual(compare(original, ported)["status"], "aligned")
+
     def test_unknown_width_is_a_wildcard_and_is_counted(self):
         original = [self.op("read", 0x422)]
         ported = [self.op("read", None)]

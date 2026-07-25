@@ -2584,8 +2584,8 @@ address|matching|name
 0x4e6bb0|0.9767441860465116|TAutoGreatPower::~TAutoGreatPower
 0x4e6c20|0.9415292353823088|TAutoGreatPower::InitializeNationMinisterSubsystemsByPolicyIds
 0x4e7230|1.0|TAutoGreatPower::Free
-0x4e72c0|0.4134078212290503|TAutoGreatPower::ReadFrom
-0x4e73f0|0.5324675324675324|TAutoGreatPower::WriteTo
+0x4e72c0|1.0|TAutoGreatPower::ReadFrom
+0x4e73f0|0.9868421052631579|TAutoGreatPower::WriteTo
 0x4e7510|0.37037037037037035|TAutoGreatPower::SorryYouLose
 0x4e7550|1.0|TAutoGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary
 0x4e7590|1.0|TAutoGreatPower::FillInteriorMinisterOrders
@@ -3677,8 +3677,8 @@ address|matching|name
 0x536450|1.0|TNavyMission::GetRuntimeClass
 0x536470|0.3333333333333333|`dynamic initializer for '_init_TNavyMission''
 0x5364c0|0.5714285714285714|TNavyMission::Free
-0x536530|0.4691358024691358|TNavyMission::WriteTo
-0x536650|0.691358024691358|TNavyMission::ReadFrom
+0x536530|1.0|TNavyMission::WriteTo
+0x536650|0.8961038961038961|TNavyMission::ReadFrom
 0x536740|0.5454545454545454|TNavyMission::SmokeEmIfYouGotEm
 0x536780|1.0|TNavyMission::AcceptReenforcement
 0x5367d0|0.4|TNavyMission::RejectConstituent
@@ -4075,7 +4075,7 @@ address|matching|name
 0x54f640|0.2564102564102564|TShip::Free
 0x54f8e0|0.4649122807017544|CreateNavyPrimaryOrderNodeAndAssignDisplayName
 0x54fab0|1.0|TShip::WriteTo
-0x54fb50|0.5714285714285714|TShip::ReadFrom
+0x54fb50|1.0|TShip::ReadFrom
 0x54fbf0|0.7457627118644068|RegenerateNavyPrimaryOrderDisplayNameUntilUnique
 0x54fd50|0.6292134831460674|RecomputeGlobalCapabilityAverages
 0x54fee0|1.0|GetNavyContextPointerFromGlobalTableByIndex

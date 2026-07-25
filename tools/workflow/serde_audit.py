@@ -754,6 +754,19 @@ def compare(original: list[dict], ported: list[dict]) -> dict:
         if left["dir"] != right["dir"]:
             return {"status": "divergent", "index": left_index, "unverified": unverified}
 
+        # Same direction, different accessor. Width alone cannot separate a raw block move
+        # from a length-prefixed string -- ReadSharedString's width is a wildcard, so a
+        # ported ReadBytes(&field, 0x20) used to pass against it while consuming a
+        # completely different number of bytes at runtime (TShip::ReadFrom did exactly
+        # that). Whenever both sides name a real TStream slot, the slots must agree.
+        # Helper-expanded ops are not slot names and stay out of this check.
+        if (
+            left["op"] in SLOT_BY_NAME
+            and right["op"] in SLOT_BY_NAME
+            and left["op"] != right["op"]
+        ):
+            return {"status": "divergent", "index": left_index, "unverified": unverified}
+
         # A version-gated width choice: if the compiler merged the two arms into one
         # call site the original shows a single variant-width op, so the source's two
         # arms collapse onto it. If it kept two call sites they line up one-to-one.

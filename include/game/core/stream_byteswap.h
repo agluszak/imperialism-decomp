@@ -64,9 +64,9 @@ static __inline void ReverseDwordArrayBytes(void* base, int count) {
     unsigned char first = bytes[0];
     unsigned char last = bytes[3];
     bytes[0] = last;
+    unsigned char third = bytes[2];
     bytes[3] = first;
     unsigned char second = bytes[1];
-    unsigned char third = bytes[2];
     bytes[1] = third;
     bytes[2] = second;
     bytes += 4;
