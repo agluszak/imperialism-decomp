@@ -4019,7 +4019,7 @@ address|name|symbol|size|type|prototype|provenance
 551700|TAdmiral::ReadFrom||211|function|void TAdmiral::ReadFrom(TStream* stream)|
 551850|TAdmiral::ReassignThyself||248|function|void TAdmiral::ReassignThyself()|
 5519d0|FindCumulativeWeightBucketIndex||29|function|int FindCumulativeWeightBucketIndex(short* weightTable, short roll)|
-551a00|TAdmiral::EstimateEnemyForces||373|function|short TAdmiral::EstimateEnemyForces(short* estimatedCounts, TZone* zone, short nation) const|
+551a00|TAdmiral::EstimateEnemyForces||373|function|short TAdmiral::EstimateEnemyForces(short* estimatedCounts, const TZone* zone, short nation) const|
 551be0|TAdmiral::GetFleetReport||1110|function|void TAdmiral::GetFleetReport(CString* out, TZone* zone, short nation) const|
 552250|TAdmiral::AssignToShip||135|function|void TAdmiral::AssignToShip(TShip* primaryOrderNode)|
 552310|TAdmiral::ReassignToZone||232|function|void TAdmiral::ReassignToZone(TZone* zone)|
