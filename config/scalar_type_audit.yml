@@ -49,18 +49,6 @@ native_integral_reviews:
   c2e2852e7faabcf6:
     classification: win32_uint_sentinel
     evidence: MessageBeep takes UINT and 0xffffffff selects the simple default sound; retail wrapper 0x004931e0 pushes -1 directly.
-  04a2df0d87143ebc:
-    classification: mfc_word_map_key
-    evidence: m_tableA is keyed by WORD and the BMP resource identifier stays 32-bit until the CMap lookup boundary in retail 0x00499b40.
-  d09f763966efebc6:
-    classification: mfc_word_map_key
-    evidence: m_tableA is keyed by WORD and the BMP resource identifier stays 32-bit until the CMap insertion boundary in retail 0x00499b40.
-  5e99d2391a6383ab:
-    classification: mfc_word_map_key
-    evidence: retail 0x0049a0b0 explicitly loads only the low input word before hashing the CMap key.
-  531a3bdd6c6d74a9:
-    classification: mfc_word_map_key
-    evidence: retail 0x0049a190 loads and hashes the signed short argument as the WORD-key representation used by m_tableA.
   1c1d74f04479d145:
     classification: win32_allocation_size
     evidence: VC5 GlobalAlloc takes a DWORD byte count; retail 0x005e3d40 forwards the 32-bit packet length unchanged at the API boundary.

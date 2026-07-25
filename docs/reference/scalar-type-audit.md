@@ -14,8 +14,8 @@ rather than domain discriminants.
 
 ## Summary
 
-- Findings: 384
-- `native_integral_boundary`: 20
+- Findings: 380
+- `native_integral_boundary`: 16
 - `nested_integral_cast`: 32
 - `predicate_storage_cast`: 15
 - `raw_discriminant_literal`: 317
@@ -46,10 +46,6 @@ a stale category-level approval.
 | `8643894c63c98a37` | `src/game/ui_core/CIncludeView.cpp:604` | `mfc_bool_callback_return` | CWnd::OnSetCursor returns BOOL while Default returns LRESULT; retail 0x00483ef0 tail-returns the full Default result through the BOOL override ABI. |
 | `b442f3eac7d1c116` | `src/game/ui_core/CMcWindow.cpp:290` | `mfc_bool_callback_return` | CWnd::OnQueryNewPalette returns BOOL while Default returns LRESULT; retail 0x00493ca0 preserves the MFC callback ABI. |
 | `c2e2852e7faabcf6` | `src/game/gfx/TDisplayMgr.cpp:39` | `win32_uint_sentinel` | MessageBeep takes UINT and 0xffffffff selects the simple default sound; retail wrapper 0x004931e0 pushes -1 directly. |
-| `04a2df0d87143ebc` | `src/game/gfx/TModuleLibraryCacheTableStateB.cpp:227` | `mfc_word_map_key` | m_tableA is keyed by WORD and the BMP resource identifier stays 32-bit until the CMap lookup boundary in retail 0x00499b40. |
-| `d09f763966efebc6` | `src/game/gfx/TModuleLibraryCacheTableStateB.cpp:234` | `mfc_word_map_key` | m_tableA is keyed by WORD and the BMP resource identifier stays 32-bit until the CMap insertion boundary in retail 0x00499b40. |
-| `5e99d2391a6383ab` | `src/game/gfx/TModuleLibraryCacheTableStateB.cpp:261` | `mfc_word_map_key` | retail 0x0049a0b0 explicitly loads only the low input word before hashing the CMap key. |
-| `531a3bdd6c6d74a9` | `src/game/gfx/TModuleLibraryCacheTableStateB.cpp:271` | `mfc_word_map_key` | retail 0x0049a190 loads and hashes the signed short argument as the WORD-key representation used by m_tableA. |
 | `1c1d74f04479d145` | `src/game/net/TNetMgr.cpp:400` | `win32_allocation_size` | VC5 GlobalAlloc takes a DWORD byte count; retail 0x005e3d40 forwards the 32-bit packet length unchanged at the API boundary. |
 | `fdcb8f20e3a45adb` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:571` | `win32_struct_byte_field` | RGBQUAD.rgbBlue is BYTE; retail 0x005de010 copies the low packed-color byte into the four-byte local structure. |
 | `806aaeb52fe4f325` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:572` | `win32_struct_byte_field` | RGBQUAD.rgbGreen is BYTE; retail 0x005de010 extracts packed-color bits 8 through 15 into the structure. |
@@ -247,10 +243,6 @@ is classified, and a family that stops appearing must be removed.
 | `4a577257115fdf30` | `native_integral_boundary` | `src/game/gfx/CDibPal.cpp:41` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `efb9327b8ccc01bd` | `native_integral_boundary` | `src/game/gfx/CDibPal.cpp:231` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `c2e2852e7faabcf6` | `native_integral_boundary` | `src/game/gfx/TDisplayMgr.cpp:39` | game scalar -> UINT | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `04a2df0d87143ebc` | `native_integral_boundary` | `src/game/gfx/TModuleLibraryCacheTableStateB.cpp:227` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `d09f763966efebc6` | `native_integral_boundary` | `src/game/gfx/TModuleLibraryCacheTableStateB.cpp:234` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `5e99d2391a6383ab` | `native_integral_boundary` | `src/game/gfx/TModuleLibraryCacheTableStateB.cpp:261` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `531a3bdd6c6d74a9` | `native_integral_boundary` | `src/game/gfx/TModuleLibraryCacheTableStateB.cpp:271` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `1c1d74f04479d145` | `native_integral_boundary` | `src/game/net/TNetMgr.cpp:400` | game scalar -> DWORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `8643894c63c98a37` | `native_integral_boundary` | `src/game/ui_core/CIncludeView.cpp:604` | game scalar -> BOOL | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `b442f3eac7d1c116` | `native_integral_boundary` | `src/game/ui_core/CMcWindow.cpp:290` | game scalar -> BOOL | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
