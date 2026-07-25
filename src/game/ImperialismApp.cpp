@@ -32,6 +32,7 @@
 #include "game/gfx/TAutoResolutionDialog.h"
 #include "game/app/TModalTemplateDialog.h"
 #include "game/military/mapped_flavor_text.h"
+#include "game/pointer_representation.h"
 #include "game/gfx/quickdraw_regions.h"
 
 #include <io.h>  // CRT _findfirst/_findnext/_findclose (LIBRARY 0x5e7ae0/0x5e7c10/0x5e7d30)
@@ -473,7 +474,7 @@ void ImperialismApp::OnPreviewDibResource() {
     dib = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(
         static_cast<unsigned short>(inputValue));
   } else {
-    dib = reinterpret_cast<CDib*>(inputValue);
+    dib = static_cast<CDib*>(PointerFromAddressLong32(inputValue));
   }
 
   if (dib != 0 && AfxIsValidAddress(dib, sizeof(CDib), FALSE) &&
