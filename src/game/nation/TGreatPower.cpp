@@ -3425,7 +3425,7 @@ int TGreatPower::ComputeNationNavyOrderWeightedMovementScore() {
   CIterator iter(militaryUnitList44);
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
-    if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
+    if (unit->GetCategory() > EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       score += g_anWeightedNeighborUnitScoreByType_006955F0[unit->orderType] *
                (static_cast<short>(unit->field_38 / 100) + 10) / 10;
     }

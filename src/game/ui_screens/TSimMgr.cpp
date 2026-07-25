@@ -1359,7 +1359,7 @@ void TSimMgr::UpdatePersistentTopTenNationScores() {
   GetString(0x2737, 0xd, &ownNationName);
 
   AssignScoresDatPathToSharedString(&path);
-  FILE* file = fopen(path, "rb");
+  FILE* file = fopen(path, g_szLiteralRb_00698720);
 
   int scoreValues[10];
   char scoreRecords[10][0x20];
@@ -1394,7 +1394,7 @@ void TSimMgr::UpdatePersistentTopTenNationScores() {
     g_apNationStates[activeNationSlot]->FormatOverlayTerrainLabelText(&recordName);
     strcpy(scoreRecords[insertIndex], recordName);
 
-    FILE* writeFile = fopen(path, "wb");
+    FILE* writeFile = fopen(path, g_szLiteralWb_006976E0);
     for (int i = 0; i < 10; ++i) {
       fwrite(&scoreValues[i], 4, 1, writeFile);
       fwrite(scoreRecords[i], 0x20, 1, writeFile);

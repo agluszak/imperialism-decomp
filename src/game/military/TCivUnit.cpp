@@ -101,8 +101,7 @@ void TCivUnit::WriteTo(TStream* stream) {
 // current tile (if any) unlinking via field_10's prev-pointer role, then prepends to
 // the new tile's chain (if anchorIndex isn't -1 = none).
 // FUNCTION: IMPERIALISM 0x005c2b70
-void TCivUnit::MoveTo(int anchorIndex) {
-  short newTileIndex = static_cast<short>(anchorIndex);
+void TCivUnit::MoveTo(short newTileIndex) {
 
   if (tileIndex06 != -1) {
     if (field_10 == 0) {

@@ -5810,7 +5810,7 @@ address|name|symbol|size|type|prototype|provenance
 5c24e0|TUnit::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5c2510|TUnit::~TUnit||7|function|void __thiscall ~TUnit()|
 5c2530|TUnit::RegisterUnitOrderWithOwnerManager||165|function|undefined RegisterUnitOrderWithOwnerManager()|
-5c2610|TUnit::MoveTo||3|function|void __thiscall TUnit::MoveTo(int anchorIndex)|
+5c2610|TUnit::MoveTo||3|function|void __thiscall TUnit::MoveTo(short anchorIndex)|
 5c2630|TUnit::SetOrders||19|function|void __thiscall SetOrders(UnitOrder order, int payload)|mac_oracle
 5c2660|TUnit::ContinueOrders||16|function|void __thiscall ContinueOrders()|mac_oracle
 5c2680|TUnit::Free||89|function|void __thiscall Free()|
@@ -5828,7 +5828,7 @@ address|name|symbol|size|type|prototype|provenance
 5c2a90|TCivUnit::ContinueOrders||61|function|void __thiscall ContinueOrders()|mac_oracle
 5c2b10|TCivUnit::ReadFrom||32|function|void __thiscall ReadFrom(TStream* stream)|
 5c2b40|TCivUnit::WriteTo||32|function|void __thiscall WriteTo(TStream* stream)|
-5c2b70|TCivUnit::MoveTo||157|function|void __thiscall TCivUnit::MoveTo(int anchorIndex)|
+5c2b70|TCivUnit::MoveTo||157|function|void __thiscall TCivUnit::MoveTo(short anchorIndex)|
 5c2c40|TCivUnit::DetachUnitOrderFromOwnerAndReset||8|function|void __thiscall DetachUnitOrderFromOwnerAndReset()|
 5c2c60|TCivUnit::ResetCivWorkOrderAndRefreshCounters||62|function|void __thiscall ResetCivWorkOrderAndRefreshCounters()|
 5c2cb0|TMilitaryUnit::CreateObject|?CreateObject@TMilitaryUnit@@SGPAVCObject@@XZ|217|function|undefined CreateObject()|rtti
@@ -5841,7 +5841,7 @@ address|name|symbol|size|type|prototype|provenance
 5c30a0|TMilitaryUnit::WriteTo||190|function|void __thiscall WriteTo(TStream* stream)|
 5c3190|TMilitaryUnit::ClearPath||32|function|void __thiscall ClearPath(void)|mac_oracle
 5c31c0|TMilitaryUnit::DetachUnitOrderFromOwnerAndReset||39|function|void __thiscall DetachUnitOrderFromOwnerAndReset()|
-5c3200|TMilitaryUnit::MoveTo||395|function|void __thiscall TMilitaryUnit::MoveTo(int anchorIndex)|
+5c3200|TMilitaryUnit::MoveTo||395|function|void __thiscall TMilitaryUnit::MoveTo(short anchorIndex)|
 5c3400|TMilitaryUnit::GetArmsCarried||60|function|short __thiscall GetArmsCarried(void) const|mac_oracle
 5c3450|TMilitaryUnit::GetTypeArmsCarried||35|function|short __cdecl GetTypeArmsCarried(int unitTypeSlot)|mac_oracle
 5c3490|TMilitaryUnit::GetCategory||13|function|ArmyUnitCategoryStorage __thiscall GetCategory(void) const|mac_oracle
@@ -8861,7 +8861,7 @@ address|name|symbol|size|type|prototype|provenance
 6974b0|g_coarseHexRowOffset_006974b0|||global||
 6974c8|g_coarseHexColOffsetOddRow_006974c8|||global||
 697568|g_riverConnectionTypeByDirectionPair_00697568|||global||
-6976e0|s_mcflavor_006976e0|||global||
+6976e0|g_szLiteralWb_006976E0|||global||
 697818|g_aDiplomacyPlanningQuarterPhaseByNation|||global||
 697848|TMission::classTMission|||global||
 697870|g_Recompute_Nation_Order_LookupTable_00697870|||global||

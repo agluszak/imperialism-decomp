@@ -26,7 +26,7 @@ public:
   // Mac oracle: MoveTo(short) on TUnit/TCivUnit/TMilitaryUnit. The argument is the
   // destination tile index (-1 = detach only); the overrides relink the unit between
   // the per-tile / per-city-record order chains. Base body is a no-op.
-  virtual void MoveTo(int nTileIndex);                  // slot 0x28
+  virtual void MoveTo(short nTileIndex);                // slot 0x28
   virtual void ContinueOrders();                        // slot 0x2c, Mac oracle
   virtual void DetachUnitOrderFromOwnerAndReset();      // slot 0x30
   virtual void SetOrders(UnitOrder order, int payload); // slot 0x34
