@@ -217,9 +217,7 @@ void TOcean::ReadFrom(TStream* stream) {
 void TOcean::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   stream->WriteBytes(&nationCount, 2);
-  // A short counter: the bound test is a 16-bit `cmp word ptr [eax], bx` (0x5623a3), so
-  // an int loop variable would need a movsx of nationCount on every compare.
-  short i;
+  int i;
   for (i = 0; i < nationCount; ++i) {
     contextArray[i].WriteTo(stream);
   }
