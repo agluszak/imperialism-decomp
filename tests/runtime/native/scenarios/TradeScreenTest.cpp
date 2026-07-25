@@ -118,6 +118,10 @@ private:
       FailScenario("\"Board of Trade did not render its dynamic price and availability cells\"");
       return;
     }
+    if (RuntimeTradeTransparentTextDrawCount() == 0) {
+      FailScenario("\"Board of Trade dynamic text was rendered with an opaque background\"");
+      return;
+    }
     if (ScenarioPhaseElapsedMs() < 1000) {
       RequestScenarioTick();
       return;

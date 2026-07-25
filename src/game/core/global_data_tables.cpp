@@ -3817,6 +3817,10 @@ short g_cityActionCapabilityGroupBySlot_00650670[32] = {
 // GLOBAL: IMPERIALISM 0x0064fab0
 short g_cityBuildingSoundCueOffsets[16] = {2, 3, 4, 5, 0, 1, 6, 10, 11, 12, 13, 7, 8, 9, 14, 35};
 
+// One-time and recurring diplomacy-grant amounts selected by the four grant rows.
+// GLOBAL: IMPERIALISM 0x00696948
+short g_awDiplomacyGrantValueTable[4] = {1000, 3000, 5000, 10000};
+
 // Threshold/sentinel table used by diplomacy trade controls: 300 selects action 11,
 // values below 96 select action 9, and the remaining values select action 10.
 // GLOBAL: IMPERIALISM 0x00696950
