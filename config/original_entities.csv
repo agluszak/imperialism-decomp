@@ -401,13 +401,13 @@ address|name|symbol|size|type|prototype|provenance
 47fb20|AssertDirectPlayLine111||20|function|undefined AssertDirectPlayLine111()|
 47fb50|AssertDirectPlayLine118||20|function|undefined AssertDirectPlayLine118()|
 47fb80|WrapperFor_Ordinal_4_At0047fb80||34|function|undefined WrapperFor_Ordinal_4_At0047fb80()|
-47fcb0|CacheObjectVslot18ResultToField0C||86|function|undefined CacheObjectVslot18ResultToField0C()|
+47fcb0|TWNetSessionManager::CreatePlayerAndStoreResult||86|function|char CreatePlayerAndStoreResult(LPDPID idOut, LPSTR shortName)|curated
 47fd30|TWNetSessionManager::DestroyPlayerAndStoreResult||33|function|unsigned char DestroyPlayerAndStoreResult(DWORD idPlayer)|curated
 47fd70|ReturnFalseRuntimeSelectionAuxStatus||5|function|undefined ReturnFalseRuntimeSelectionAuxStatus()|
-47fd90|RebuildRuntimeSelectionSource||129|function|undefined RebuildRuntimeSelectionSource()|
+47fd90|RebuildRuntimeSelectionSource||129|function|BOOL RebuildRuntimeSelectionSource()|
 47fe50|OpenRuntimeSelectionSourceWithOptionalSeed||377|function|undefined OpenRuntimeSelectionSourceWithOptionalSeed()|
-480030|OpenRuntimeSelectionSourceFromCurrentContext||209|function|undefined OpenRuntimeSelectionSourceFromCurrentContext()|
-480150|OpenRuntimeSelectionSourceWithUserChoice||512|function|undefined OpenRuntimeSelectionSourceWithUserChoice()|
+480030|OpenRuntimeSelectionSourceFromCurrentContext||209|function|BOOL OpenRuntimeSelectionSourceFromCurrentContext()|
+480150|OpenRuntimeSelectionSourceWithUserChoice||512|function|BOOL OpenRuntimeSelectionSourceWithUserChoice()|
 4803d0|CheckConnectivityOrShowLocalizedWarningAndReturnReady_Impl||32|function|undefined CheckConnectivityOrShowLocalizedWarningAndReturnReady_Impl()|
 480400|ResetRuntimeSelectionRecordBuffer||139|function|undefined ResetRuntimeSelectionRecordBuffer()|
 4804c0|ApplyCtrlScrollAccelerationToListStep||40|function|undefined ApplyCtrlScrollAccelerationToListStep()|
@@ -417,7 +417,7 @@ address|name|symbol|size|type|prototype|provenance
 480820|ReportDirectPlayAssertionStub||23|function|undefined ReportDirectPlayAssertionStub()|
 480850|TrySendNetworkPacketViaManagerContext||59|function|undefined TrySendNetworkPacketViaManagerContext()|
 4808a0|TryReceiveNetworkPacketIntoResizableBuffer||182|function|undefined TryReceiveNetworkPacketIntoResizableBuffer()|
-480990|CacheObjectVslot74ResultToField0C||44|function|undefined CacheObjectVslot74ResultToField0C()|
+480990|SetLocalPlayerDataAndStoreResult||44|function|BOOL SetLocalPlayerDataAndStoreResult(LPVOID data, DWORD size)|
 4809d0|TDirectPlaySessionManagerBase::GetPlayerData||45|function|BOOL TDirectPlaySessionManagerBase::GetPlayerData(DPID playerId, void* buffer, DWORD* sizeInOut)|
 480a10|TControl::InitializeDialogTemplate104WithRegionState||109|function|undefined InitializeDialogTemplate104WithRegionState()|
 480aa0|T104TemplateDialog::`scalar deleting destructor'|??_GT104TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
@@ -6132,7 +6132,7 @@ address|name|symbol|size|type|prototype|provenance
 5e34b0|ReturnTrueRuntimeCredentialInitStub||3|function|undefined ReturnTrueRuntimeCredentialInitStub()|
 5e34d0|ResetRuntimeSelectionRecordBufferAndReturnTrue||13|function|undefined ResetRuntimeSelectionRecordBufferAndReturnTrue()|
 5e34f0|ReportWNetManagerErrorCodeAndNotifyUi||951|function|undefined ReportWNetManagerErrorCodeAndNotifyUi()|
-5e39a0|ResetRuntimeProtocolOptionsAndRebuildSelectionSource||141|function|undefined ResetRuntimeProtocolOptionsAndRebuildSelectionSource()|
+5e39a0|ResetRuntimeProtocolOptionsAndRebuildSelectionSource||141|function|unsigned char ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider)|
 5e3a60|OpenRuntimeSelectionSourceByIndexAndCopyPath||74|function|undefined OpenRuntimeSelectionSourceByIndexAndCopyPath()|
 5e3ad0|OpenRuntimeSelectionSourceAndApplyActiveNationState||237|function|undefined OpenRuntimeSelectionSourceAndApplyActiveNationState()|
 5e3c00|ReturnTrueRuntimeCredentialFinalizeStub||3|function|undefined ReturnTrueRuntimeCredentialFinalizeStub()|

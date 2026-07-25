@@ -389,23 +389,22 @@ char TMultiplayerMgr::DoIdle(int action) {
 // FUNCTION: IMPERIALISM 0x00544e70
 unsigned char TMultiplayerMgr::InitializeProtocolOptionControlFromProvider(TView* provider) {
   lobbyDialogView40 = provider;
-  if (!g_pNetMgr006a6014->ResetRuntimeProtocolOptionsAndRebuildSelectionSource(provider)) {
-    return 0;
+  if (g_pNetMgr006a6014->ResetRuntimeProtocolOptionsAndRebuildSelectionSource(provider)) {
+    int defaultProtocolTag;
+    g_pUiViewManager->LoadSettingValueByKeyIntoOut(&defaultProtocolTag, "DefaultProtocol",
+                                                   kControlTagPro0);
+    TRadioTextCluster* protControl =
+        static_cast<TRadioTextCluster*>(provider->ResolveControlByTag(kControlTagProt));
+    protControl->AssertValid();
+    TView* defaultOption = protControl->ResolveControlByTag(defaultProtocolTag);
+    if (defaultOption != 0) {
+      protControl->SetSelectedTextOptionByTag(defaultProtocolTag, true);
+    } else {
+      protControl->SetSelectedTextOptionByTag(kControlTagPro0, true);
+    }
+    return 1;
   }
-
-  int defaultProtocolTag = 0;
-  g_pUiViewManager->LoadSettingValueByKeyIntoOut(&defaultProtocolTag, "DefaultProtocol",
-                                                 kControlTagPro0);
-  TRadioTextCluster* protControl =
-      static_cast<TRadioTextCluster*>(provider->ResolveControlByTag(kControlTagProt));
-  protControl->AssertValid();
-  TView* defaultOption = protControl->ResolveControlByTag(defaultProtocolTag);
-  if (defaultOption != 0) {
-    protControl->SetSelectedTextOptionByTag(defaultProtocolTag, true);
-  } else {
-    protControl->SetSelectedTextOptionByTag(kControlTagPro0, true);
-  }
-  return 1;
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00544f30

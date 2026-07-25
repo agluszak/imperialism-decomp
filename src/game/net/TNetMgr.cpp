@@ -321,27 +321,26 @@ unsigned char TNetMgr::OpenRuntimeSelectionSourceAndApplyActiveNationState(
   strncpy(g_NetworkSessionManager006a5f60.joinGameSeed68, emptyOrSeed, 0x20);
   strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed88, seedPath, 0x20);
 
-  unsigned char opened =
-      g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceFromCurrentContext();
-  unsigned char result = 0;
-  if (opened) {
-    CString localName(localPlayerName);
+  int result = g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceFromCurrentContext();
+  if (result) {
     DPID nationId;
-    unsigned char created = g_NetworkSessionManager006a5f60.CreatePlayerAndStoreResult(
-        &nationId, localName.GetBuffer(1));
-    localName.ReleaseBuffer(-1);
-    if (created) {
+    {
+      CString localName(localPlayerName);
+      result = g_NetworkSessionManager006a5f60.CreatePlayerAndStoreResult(&nationId,
+                                                                          localName.GetBuffer(1));
+      localName.ReleaseBuffer(-1);
+    }
+    if (result) {
       g_NetworkSessionManager006a5f60.localPlayerId60 = nationId;
       g_NetworkSessionManager006a5f60.broadcastPlayerId64 = nationId;
       result = g_NetworkSessionManager006a5f60.SetLocalPlayerDataAndStoreResult(
           &g_NetworkSessionManager006a5f60.joinGamePlayerDataTagAC, 4);
-      if (result) {
-        return result;
-      }
     }
   }
-  HandleError(g_NetworkSessionManager006a5f60.lastErrorCode0c);
-  return result;
+  if (!result) {
+    HandleError(g_NetworkSessionManager006a5f60.lastErrorCode0c);
+  }
+  return static_cast<unsigned char>(result);
 }
 
 // FUNCTION: IMPERIALISM 0x005e3c00
@@ -356,35 +355,29 @@ unsigned char TNetMgr::OpenJoinGameRuntimeSelectionAndStartSession(int selection
   strncpy(g_NetworkSessionManager006a5f60.joinGameSeed68, seed, 0x20);
   g_NetworkSessionManager006a5f60.joinGamePlayerNameA8 = *outGameName;
 
-  if (!g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceWithUserChoice()) {
-    return 0;
-  }
-  *outGameName = g_NetworkSessionManager006a5f60.joinGamePlayerNameA8;
+  int result = g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceWithUserChoice();
+  if (result) {
+    *outGameName = g_NetworkSessionManager006a5f60.joinGamePlayerNameA8;
 
-  LPSTR shortName = g_NetworkSessionManager006a5f60.joinGamePlayerNameA8.GetBuffer(1);
-  DPID localPlayerId;
-  unsigned char createResult =
-      g_NetworkSessionManager006a5f60.CreatePlayerAndStoreResult(&localPlayerId, shortName);
-  g_NetworkSessionManager006a5f60.joinGamePlayerNameA8.ReleaseBuffer(-1);
-  if (!createResult) {
-    return 0;
-  }
-
-  g_NetworkSessionManager006a5f60.localPlayerId60 = localPlayerId;
-  if (!g_NetworkSessionManager006a5f60.SetLocalPlayerDataAndStoreResult(
+    LPSTR shortName = g_NetworkSessionManager006a5f60.joinGamePlayerNameA8.GetBuffer(1);
+    DPID localPlayerId;
+    result = g_NetworkSessionManager006a5f60.CreatePlayerAndStoreResult(&localPlayerId, shortName);
+    g_NetworkSessionManager006a5f60.joinGamePlayerNameA8.ReleaseBuffer(-1);
+    if (result) {
+      g_NetworkSessionManager006a5f60.localPlayerId60 = localPlayerId;
+      result = g_NetworkSessionManager006a5f60.SetLocalPlayerDataAndStoreResult(
           &g_NetworkSessionManager006a5f60.joinGamePlayerDataTagAC,
-          sizeof(g_NetworkSessionManager006a5f60.joinGamePlayerDataTagAC))) {
-    return 0;
+          sizeof(g_NetworkSessionManager006a5f60.joinGamePlayerDataTagAC));
+      if (result) {
+        g_NetworkSessionManager006a5f60.broadcastPlayerId64 = 0;
+        long enumResult = g_NetworkSessionManager006a5f60.directPlayInterface04->EnumPlayers(
+            0, RecordHostPlayerIdDuringEnumeration, &g_NetworkSessionManager006a5f60, 0x10);
+        g_NetworkSessionManager006a5f60.lastErrorCode0c = enumResult;
+        result = enumResult >= 0 && g_NetworkSessionManager006a5f60.broadcastPlayerId64 != 0;
+      }
+    }
   }
-
-  g_NetworkSessionManager006a5f60.broadcastPlayerId64 = 0;
-  long enumResult = g_NetworkSessionManager006a5f60.directPlayInterface04->EnumPlayers(
-      0, RecordHostPlayerIdDuringEnumeration, &g_NetworkSessionManager006a5f60, 0x10);
-  g_NetworkSessionManager006a5f60.lastErrorCode0c = enumResult;
-  if (enumResult < 0) {
-    return 0;
-  }
-  return g_NetworkSessionManager006a5f60.broadcastPlayerId64 != 0;
+  return static_cast<unsigned char>(result);
 }
 
 // FUNCTION: IMPERIALISM 0x005e3d40
