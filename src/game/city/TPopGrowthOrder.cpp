@@ -2,20 +2,6 @@
 #include "game/city/TCity.h"
 #include "game/nation/TGreatPower.h"
 
-// Matches TCapacityOrder's own ZeroTrackingSlots helper: zeroes the 0x2e-byte
-// trackingSlots10 array (0x17 shorts) via the same 11x-4-byte-then-1x-2-byte write
-// pattern the original compiles this loop into.
-static void ZeroPopGrowthTrackingSlots(TPopGrowthOrder* order) {
-  int remaining = 0xb;
-  int* blockCursor = reinterpret_cast<int*>(order->trackingSlots10);
-  while (remaining != 0) {
-    *blockCursor = 0;
-    blockCursor = blockCursor + 1;
-    remaining = remaining + -1;
-  }
-  *reinterpret_cast<short*>(blockCursor) = 0;
-}
-
 // SYNTHETIC: IMPERIALISM 0x004b3050
 // TPopGrowthOrder::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004b3080
@@ -34,7 +20,9 @@ void TPopGrowthOrder::IPopGrowthOrder(TCity* city) {
   summaryField0c = city != nullptr ? city->productionSummary1d8 : nullptr;
   resourceTypeIndex48 = 1;
   quantityField04 = 0;
-  ZeroPopGrowthTrackingSlots(this);
+  for (int resource = 0; resource < 0x17; ++resource) {
+    trackingSlots10[resource] = 0;
+  }
   accumulatedValue = 0;
   field40 = 0;
   field3e = 0;
