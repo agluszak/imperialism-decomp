@@ -462,7 +462,7 @@ address|matching|name
 0x47fd30|1.0|TWNetSessionManager::DestroyPlayerAndStoreResult
 0x47fd70|1.0|TDirectPlaySessionManagerBase::GetRuntimeSelectionAuxStatus
 0x47fd90|0.9761904761904762|TWNetSessionManager::RebuildRuntimeSelectionSource
-0x47fe50|0.34146341463414637|TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed
+0x47fe50|0.34146341463414637|TWNetSessionManager::InitializeDirectPlayForProviderGuidOrEnumerate
 0x480030|1.0|TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext
 0x480150|0.526984126984127|TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice
 0x4803d0|1.0|TWNetSessionManager::OpenCurrentSessionDescriptionForJoin
