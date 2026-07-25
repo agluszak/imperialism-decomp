@@ -17,6 +17,7 @@
 #include "game/military/TArmyMgr.h"
 #include "game/ui_widgets/TArmyToolbar.h"
 #include "game/ui_widgets/TArmyInfoView.h"
+#include "game/city_ui/TEngineerDialog.h"
 #include "game/ui_widgets/TCivReport.h"
 #include "game/ui_widgets/TCombatReportView.h"
 #include "game/assets/TAssetMgr.h"
@@ -216,13 +217,9 @@ int TViewMgr::ShowConstructionOptionsDialog(int dialogValue) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x100);
   }
-  // MapView.rsrc view 7200's 'DLOG' pict is a TEngineerDialog (Mac resource oracle), and
-  // slot 0x68 is its first new virtual -- but that body (0x4d0810, 3,136 bytes) is still
-  // autogen-owned, so declaring the virtual here would cross the manual/autogen boundary.
-  turn_event_dialog::TDialogValueControl* engineerDialog =
-      static_cast<turn_event_dialog::TDialogValueControl*>(
-          node->ResolveControlByTag(kControlTagDialog));
-  engineerDialog->StuffValues(reinterpret_cast<void*>(dialogValue));
+  TEngineerDialog* engineerDialog =
+      static_cast<TEngineerDialog*>(node->ResolveControlByTag(kControlTagDialog));
+  engineerDialog->BuildCityViewProductionControls(static_cast<short>(dialogValue));
   CPoint placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->Locate(placement, 0);

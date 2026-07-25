@@ -6117,7 +6117,7 @@ address|matching|name
 0x5d5a70|1.0|TViewMgr::ModalMessage(class CString, struct tagPOINT const &)
 0x5d5b00|1.0|TViewMgr::ModalMessage(class CString, struct tagPOINT const &, short, unsigned char)
 0x5d5c40|0.9333333333333333|TViewMgr::ModalMessage(long, class CString, class CString, struct tagPOINT const &, short, unsigned char)
-0x5d5d30|0.908235294117647|TViewMgr::RunNationInfoModalAndReturnNonCancel
+0x5d5d30|0.8912529550827423|TViewMgr::RunNationInfoModalAndReturnNonCancel
 0x5d6480|0.924187725631769|TViewMgr::BuildAndShowTurnOverlayByMode
 0x5d69b0|0.35294117647058826|TViewMgr::ComputeTurnEventDialogPlacementByCode
 0x5d6b70|1.0|TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent
@@ -6143,7 +6143,7 @@ address|matching|name
 0x5d8040|0.13445378151260504|TViewMgr::HandleTurnEvent7D8_ActivateDiplomacyMapView
 0x5d83b0|0.14035087719298245|TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary
 0x5d8750|0.9318181818181818|TViewMgr::RefreshTechnologyStorePageAndHudText
-0x5d8980|0.6728971962616822|TViewMgr::ShowAbilityStatusReport
+0x5d8980|0.6394984326018809|TViewMgr::ShowAbilityStatusReport
 0x5d8c40|1.0|TViewMgr::HandleTurnEvent2103_RunNationStatusReportUpdate
 0x5d8cc0|1.0|TViewMgr::SyncTacticalStatusPanelRegion
 0x5d8dd0|0.12933025404157045|TViewMgr::HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor
@@ -7096,7 +7096,7 @@ address|matching|name
 0x608ba8|0.9441964285714286|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|0.9787234042553191|CWnd::OnNotify
+0x6091d9|1.0|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent

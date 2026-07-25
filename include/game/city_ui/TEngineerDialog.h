@@ -31,6 +31,6 @@ public:
   // hex neighbours (owned by the active nation, inside the city influence map), then
   // conditionally builds fort/rail/port up-down buttons with their TDeluxeText labels
   // and TIconBar amount rows, plus the cancel button. 0x004d0810, __thiscall.
-  void BuildCityViewProductionControls(short nBuildingSlotId);
+  virtual void BuildCityViewProductionControls(short nBuildingSlotId); // slot 0x68
 };
 ASSERT_SIZE(TEngineerDialog, 0x6c);
