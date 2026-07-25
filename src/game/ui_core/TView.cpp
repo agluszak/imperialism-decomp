@@ -814,18 +814,19 @@ void TView::SetHoverHelpText(CString sharedString) {
 // FUNCTION: IMPERIALISM 0x0048c250
 void TView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
   if (hoverHelpEnabled5c != 0) {
-    CRect rect;
-    GetQDExtent(&rect);
-    RECT parentRect;
-    CopyRect(&parentRect, &rect);
+    CRect extentStorage;
+    CRect quickDrawExtent(*GetQDExtent(&extentStorage));
+    RECT hoverHelpRect;
+    CopyRect(&hoverHelpRect, &quickDrawExtent);
     if (g_pCursorControlPanel != nullptr) {
-      g_pCursorControlPanel->SetTextAndLayoutRect(hoverHelpText58, &parentRect);
+      g_pCursorControlPanel->SetTextAndLayoutRect(hoverHelpText58, &hoverHelpRect);
     }
   }
-  if (GetCursorID() != 0xffff) {
+  short cursorId = GetCursorID();
+  if (cursorId != -1) {
     CPoint transformedPoint = ViewToQDPt(point);
     if (PtInRgn(&transformedPoint, hitArg)) {
-      QuickDrawCursorHandle cursorHandle = GetQuickDrawCursor(static_cast<short>(GetCursorID()));
+      QuickDrawCursorHandle cursorHandle = GetQuickDrawCursor(cursorId);
       SetQuickDrawCursor(*cursorHandle);
       return;
     }

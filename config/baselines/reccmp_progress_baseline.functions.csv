@@ -473,8 +473,7 @@ address|matching|name
 0x480790|0.4782608695652174|T104TemplateDialog
 0x480820|1.0|TDirectPlaySessionManagerBase::ShowJoinGameSelectionDialogAndCaptureChoice
 0x480850|0.8679245283018868|TWNetSessionManager::TrySendNetworkPacket
-0x4808a0|0.7189542483660131|TWNetSessionManager::TryReceiveNetworkPacketIntoResizableBuffer
-0x480990|0.9|TWNetSessionManager::SetLocalPlayerDataAndStoreResult
+0x4808a0|0.18556701030927836|TWNetSessionManager::TryReceiveNetworkPacketIntoResizableBuffer(void *, unsigned long)
 0x4809d0|1.0|TDirectPlaySessionManagerBase::GetPlayerData
 0x480a10|0.8135593220338984|T104TemplateDialog::T104TemplateDialog
 0x480aa0|1.0|T104TemplateDialog::`scalar deleting destructor'
@@ -6290,14 +6289,11 @@ address|matching|name
 0x5e2980|0.08|StartAsyncWNetOperationWithErrorCallback
 0x5e29d0|0.25|InitializeNetManagerInstanceAndRegisterAtExit
 0x5e2a00|0.0|DestroyGlobalState_006A5F60_AtExit
-0x5e2a20|0.5352112676056338|TWNetSessionManager::~TWNetSessionManager
+0x5e2a20|0.024096385542168676|TWNetSessionManager::~TWNetSessionManager(void)
 0x5e2b50|1.0|TDirectPlaySessionManagerBase::InitializeSessionDescription
 0x5e2b70|1.0|TDirectPlaySessionManagerBase::ResetSessionDescription
-0x5e2bb0|0.9782608695652174|TWNetSessionManager::ResetSessionDescription
-0x5e2c80|1.0|TWNetSessionManager::InitializeSessionDescription
-0x5e2cf0|0.7186440677966102|TWNetSessionManager::OnEnumerateJoinableSession
-0x5e2f60|0.37735849056603776|TWNetSessionManager::OnEnumerateServiceProvider
-0x5e30c0|0.459546925566343|TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice
+0x5e2bb0|0.11504424778761062|TWNetSessionManager::ResetSessionDescription(struct _GUID *, char *, unsigned long, unsigned long)
+0x5e2cf0|0.10289389067524116|TWNetSessionManager::OnEnumerateJoinableSession(struct _GUID *)
 0x5e3310|0.6285714285714286|TWNetSessionManager::TWNetSessionManager
 0x5e3390|0.42424242424242425|TNetMgr::CreateObject
 0x5e33c0|1.0|TNetMgr::GetRuntimeClass
@@ -6312,13 +6308,13 @@ address|matching|name
 0x5e34f0|0.2753623188405797|TNetMgr::HandleError
 0x5e39a0|0.9777777777777777|TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource
 0x5e3a60|0.9230769230769231|TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath
-0x5e3ad0|0.5915492957746479|TNetMgr::OpenRuntimeSelectionSourceAndApplyActiveNationState
+0x5e3ad0|0.5774647887323944|TNetMgr::OpenRuntimeSelectionSourceAndApplyActiveNationState
 0x5e3c00|1.0|TNetMgr::ReturnTrueRuntimeCredentialFinalizeStub
-0x5e3c20|0.7183098591549296|TNetMgr::OpenJoinGameRuntimeSelectionAndStartSession
+0x5e3c20|0.704225352112676|TNetMgr::OpenJoinGameRuntimeSelectionAndStartSession
 0x5e3d40|0.6576576576576577|TNetMgr::Send
 0x5e3ef0|1.0|TNetMgr::ResetTurnEventQueueRuntimeRecordBuffer
 0x5e3f10|1.0|TNetMgr::FreeTurnEventPacketBuffer
-0x5e3f30|0.4566929133858268|TNetMgr::PopNextTurnEventPacketOrProcessSpecialQueueRecords
+0x5e3f30|0.452755905511811|TNetMgr::PopNextTurnEventPacketOrProcessSpecialQueueRecords
 0x5e4280|1.0|TNetMgr::GetSessionActiveNationId
 0x5e42a0|1.0|TNetMgr::NoOpDialogModeTagChangedHook
 0x5e42c0|1.0|TNetMgr::NotifyIfNationMatchesSessionActiveNation

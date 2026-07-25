@@ -1,4 +1,5 @@
 #include "game/net/TWNetSessionManager.h"
+#include "game/TScopedWaitCursor.h"
 #include "game/multiplayer_session_tags.h"
 #include "game/ui_tags_common.h"
 
@@ -174,7 +175,20 @@ bool TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext() {
   InitializeSessionDescription();
   lastErrorCode0c = directPlayInterface04->Open(&sessionDescription10, DPOPEN_CREATE);
   if (lastErrorCode0c < 0) {
-    ResetRuntimeSelectionRecordBuffer();
+    for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
+      delete g_RuntimeSelectionRecords006a15e0[index];
+    }
+    g_RuntimeSelectionRecords006a15e0.RemoveAll();
+
+    if (directPlayInterface04 != 0) {
+      directPlayInterface04->Close();
+      directPlayInterface04->Release();
+      directPlayInterface04 = 0;
+    }
+    if (directPlayLobby08 != 0) {
+      directPlayLobby08->Release();
+      directPlayLobby08 = 0;
+    }
   }
   return lastErrorCode0c >= 0;
 }
@@ -185,15 +199,16 @@ unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
 
   memset(&sessionDescription10, 0, sizeof(sessionDescription10));
   sessionDescription10.dwSize = sizeof(DPSESSIONDESC2);
-  InitializeSessionDescription();
+  ResetSessionDescription();
 
-  AfxGetMainWnd()->BeginWaitCursor();
-  // Holding Ctrl during discovery stretches the enumeration window from 1s to 5s.
-  DWORD enumerationTimeout = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0 ? 5000 : 1000;
-  lastErrorCode0c = directPlayInterface04->EnumSessions(&sessionDescription10, enumerationTimeout,
-                                                        ForwardEnumSessionsToSessionManager, this,
-                                                        DPENUMSESSIONS_AVAILABLE);
-  AfxGetMainWnd()->EndWaitCursor();
+  {
+    TScopedWaitCursor waitCursor;
+    // Holding Ctrl during discovery stretches the enumeration window from 1s to 5s.
+    DWORD enumerationTimeout = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0 ? 5000 : 1000;
+    lastErrorCode0c = directPlayInterface04->EnumSessions(&sessionDescription10, enumerationTimeout,
+                                                          ForwardEnumSessionsToSessionManager, this,
+                                                          DPENUMSESSIONS_AVAILABLE);
+  }
 
   if (lastErrorCode0c >= 0) {
     GUID selectedSessionGuid;
@@ -208,7 +223,20 @@ unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
     }
   }
 
-  ResetRuntimeSelectionRecordBuffer();
+  for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
+    delete g_RuntimeSelectionRecords006a15e0[index];
+  }
+  g_RuntimeSelectionRecords006a15e0.SetSize(0, -1);
+
+  if (directPlayInterface04 != 0) {
+    directPlayInterface04->Close();
+    directPlayInterface04->Release();
+    directPlayInterface04 = 0;
+  }
+  if (directPlayLobby08 != 0) {
+    directPlayLobby08->Release();
+    directPlayLobby08 = 0;
+  }
   return 0;
 }
 
