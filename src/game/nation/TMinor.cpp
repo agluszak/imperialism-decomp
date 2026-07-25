@@ -1048,8 +1048,7 @@ void TMinor::SetNationRowDisplayValueByDiplomacyPredicate(NationSlot targetNatio
     if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(targetNationSlot, nationSlot) == 0 &&
         (nationSlot == this->nationSlot ||
          (g_apNationStates[targetNationSlot] != 0 &&
-          reinterpret_cast<unsigned char*>(
-              g_apNationStates[targetNationSlot])[0x918 + nationSlot] == 0))) {
+          g_apNationStates[targetNationSlot]->colonyBoycottFlags[nationSlot] == 0))) {
       this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), 100);
     } else {
       this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), 300);
