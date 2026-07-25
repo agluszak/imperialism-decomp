@@ -25,9 +25,12 @@
 #include "game/ui_widgets/TNextTradeCommand.h"
 #include "game/ui_core/TNumberText.h"
 #include "game/ui_screens/TPictureButton.h"
+#include "game/ui_screens/TToggleButton.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TSoundPlayer.h"
+#include "game/ui_widgets/TInfoBarText.h"
 #include "game/ui_core/TStaticText.h"
+#include "game/ui_core/TWindow.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_widgets/TToolBarCluster.h"
 #include "game/ui_widgets/TTradeMgr.h"
@@ -127,9 +130,35 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x005bea00
 void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, short proposedAmount,
                                        short maxAmount, short commodityType) {
-  if (sourceNation == -1) {
+  bool waitingForLocalReply = targetNation == -1 || targetNation != g_pSimMgr->GetActiveNationId();
+  if (targetNation == -1) {
     sourceNation = g_pSimMgr->GetActiveNationId();
+    targetNation = sourceNation;
   }
+
+  TView* sheet = ResolveControlByTag(kControlTagShee);
+  TView* wait = ResolveControlByTag(kControlTagWait);
+
+  CString commodityName;
+  CString targetNationName;
+  CString sourceNationName;
+  CString maximumAmountText;
+  CString proposedAmountText;
+  CString displayText;
+  CString capacityText;
+
+  CRect offerInvalidRect(0x143, 0xae, 0x220, 0x1ac);
+  CRect iconInvalidRect(0x23c, 0x92, 0x268, 0xaa);
+  RGBQUAD hiliteColor = {0x7f, 0x7f, 0x7f, 0};
+
+  SetControlHoverHelpText(CString(g_szEmptyString), this);
+  g_pCursorControlPanel = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs));
+  g_pCursorControlPanel->AssertValid();
+  if (g_pCursorControlPanel == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x613);
+  }
+  g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
   sourceNationSlot90 = sourceNation;
   targetNationSlot92 = targetNation;
@@ -138,29 +167,180 @@ void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, s
   commodityType96 = commodityType;
   suppressEventFlag9a = 0;
 
+  g_pSimMgr->GetStringPrelude(commodityType, &commodityName);
+  targetNationName = g_pSimMgr->LoadNormalizedCredentialName(targetNation);
+  sourceNationName = g_pSimMgr->LoadNormalizedCredentialName(sourceNation);
+  g_pSimMgr->NumToCurrency(maxAmount, &maximumAmountText);
+  proposedAmountText.Format(g_szDecimalFormat, static_cast<int>(proposedAmount));
+
+  if (waitingForLocalReply) {
+    TStaticText* text = static_cast<TStaticText*>(wait->ResolveControlByTag(kControlTagText));
+    text->AssertValid();
+    TPicture* commodityIcon =
+        static_cast<TPicture*>(wait->ResolveControlByTag(IMPERIALISM_FOURCC('i', 'c', 'o', 'w')));
+    commodityIcon->AssertValid();
+
+    CString messageTemplate;
+    CString waitingText;
+    if (commodityType == kResourceGold) {
+      g_pSimMgr->GetString(0x2740, 0xb, &messageTemplate);
+      commodityIcon->SetEnabled(0, 1);
+      SetControlHoverHelpTextAltEntry(CString(g_cstrTradeTotalsBalanceSubstitution0066DB50),
+                                      commodityIcon);
+    } else {
+      g_pSimMgr->GetString(0x2740, 0xa, &messageTemplate);
+      commodityIcon->SetPictureResourceIdAndRefresh(static_cast<short>(commodityType + 0x2bc), 1);
+      commodityIcon->SetEnabled(1, 1);
+    }
+    scanBracketExpressions(g_pSimMgr, &waitingText, static_cast<LPCSTR>(messageTemplate),
+                           static_cast<LPCSTR>(commodityName));
+    text->SetTextAndMaybeRefresh(&waitingText, 1);
+
+    if (wait->ownerLocalX != g_offerDeskOffscreenPosition_006a5a28.x ||
+        wait->ownerLocalY != g_offerDeskOffscreenPosition_006a5a28.y) {
+      wait->Locate(g_offerDeskOffscreenPosition_006a5a28, 1);
+    }
+    if (!selectionActive9e && (sheet->ownerLocalX != g_offerDeskSheetPosition_006a5a00.x ||
+                               sheet->ownerLocalY != g_offerDeskSheetPosition_006a5a00.y)) {
+      sheet->Locate(g_offerDeskSheetPosition_006a5a00, 1);
+    }
+
+    TView* formatButton = ResolveControlByTag(kControlTagForM);
+    formatButton->AssertValid();
+    formatButton->SetState(0, 0);
+    GetWindow()->ForceRedraw();
+    return;
+  }
+
+  UpdateTradeSelectionStateAndRefreshUiIfChanged(0);
+  sheet->Locate(g_offerDeskSheetPosition_006a5a00, 0);
+  wait->Locate(g_offerDeskOffscreenPosition_006a5a28, 0);
+
+  TView* acceptButton = ResolveControlByTag(kControlTagAcce);
+  acceptButton->AssertValid();
+  TView* rejectButton = ResolveControlByTag(kControlTagReje);
+  rejectButton->AssertValid();
+  acceptButton->SetState(1, 0);
+  rejectButton->SetState(1, 0);
+
+  TView* formatButton = ResolveControlByTag(kControlTagForM);
+  formatButton->AssertValid();
+  formatButton->SetState(1, 0);
+
+  if (g_pSimMgr->multiplayerSessionRole != 0) {
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x13f2, 0, 1);
+  }
+
+  CString offerTemplate;
+  g_pSimMgr->GetString(0x2740, 0xc, &offerTemplate);
+  scanBracketExpressions(
+      g_pSimMgr, &displayText, static_cast<LPCSTR>(offerTemplate),
+      static_cast<LPCSTR>(targetNationName), static_cast<LPCSTR>(proposedAmountText),
+      static_cast<LPCSTR>(commodityName), static_cast<LPCSTR>(maximumAmountText));
+
+  TextStyle style;
+  style.textColor = 0;
+  TStaticText* offerText =
+      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('o', 'f', 'f', 'e')));
+  offerText->AssertValid();
+  BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6b);
+  offerText->InstallTextStyle(style, 0);
+  offerText->SetTextAlignmentAndMaybeRefresh(1, 0);
+  offerText->SetTextAndMaybeRefresh(&displayText, 0);
+
+  TStaticText* purchaseTitle =
+      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'u', 'r', 'T')));
+  purchaseTitle->AssertValid();
+  purchaseTitle->InstallTextStyle(style, 0);
+  purchaseTitle->SetTextAlignmentAndMaybeRefresh(-1, 0);
+  purchaseTitle->SetTextFromStringResource(0x2740, 0xe, 1);
+
+  TStaticText* unitText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUnit));
+  unitText->AssertValid();
+  unitText->InstallTextStyle(style, 0);
+  unitText->SetTextAlignmentAndMaybeRefresh(-2, 0);
+  unitText->SetTextFromStringResource(0x2740, 0xf, 1);
+
+  g_pSimMgr->GetString(0x2740, 0xf, &offerTemplate);
+  scanBracketExpressions(g_pSimMgr, &displayText, static_cast<LPCSTR>(offerTemplate),
+                         static_cast<LPCSTR>(commodityName));
+  TStaticText* numberOfText =
+      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'o', 'o', 'f')));
+  numberOfText->AssertValid();
+  numberOfText->InstallTextStyle(style, 0);
+  numberOfText->SetTextAlignmentAndMaybeRefresh(-2, 0);
+  numberOfText->SetTextAndMaybeRefresh(&displayText, 0);
+
+  short capacity =
+      g_apTerrainTypeDescriptorTable[g_pSimMgr->GetActiveNationId()]->GetDiplomacyCounterA2();
+  capacityText.Format(g_szDecimalFormat, static_cast<int>(capacity));
+  TStaticText* maximumText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagMCap));
+  maximumText->AssertValid();
+  BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b67);
+  maximumText->InstallTextStyle(style, 0);
+  maximumText->SetTextAlignmentAndMaybeRefresh(1, 0);
+  maximumText->SetTextAndMaybeRefresh(&capacityText, 1);
+  maximumText->RefreshControl();
+
+  sheet = ResolveControlByTag(kControlTagShee);
+  sheet->AssertValid();
+  sheet->RefreshControl();
+
   TNumberText* purchaseControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagPurc));
   purchaseControl->AssertValid();
-  purchaseControl->maximumValue = maxAmount;
-  purchaseControl->SetControlValue(proposedAmount, 0);
+  detailedErrorFlag9d = 1;
+  short purchaseLimit = proposedAmount;
+  if (proposedAmount > maxAmount) {
+    purchaseLimit = maxAmount;
+    detailedErrorFlag9d = 0;
+  }
+  purchaseControl->maximumValue = purchaseLimit;
+  BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b67);
+  purchaseControl->InstallTextStyle(style, 0);
+  purchaseControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+  purchaseControl->SetControlValue(maxAmount, 0);
+  purchaseControl->BecomeTarget();
+  purchaseControl->GetCurrentText(&proposedAmountText);
+  purchaseControl->SetEditSelectionAndScrollCaret(
+      0, static_cast<short>(proposedAmountText.GetLength()), 1);
+
+  SetGlobalBlitTransparentColorRaw(purchaseControl->stylePayload48->packedColor);
+  g_pDisplayMgr->SetHiliteColor(&hiliteColor);
+
+  TPicture* commodityIcon = static_cast<TPicture*>(ResolveControlByTag(kControlTagIcon));
+  commodityIcon->AssertValid();
+  commodityIcon->SetPictureResourceIdAndRefresh(static_cast<short>(commodityType + 0x2bc), 0);
 
   acceptButtonA0 = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
   acceptButtonA0->AssertValid();
-  acceptButtonA0->SetState(0, 0);
+  acceptButtonA0->SetState(1, 0);
   rejectButtonA4 = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
   rejectButtonA4->AssertValid();
-  rejectButtonA4->SetState(0, 0);
+  rejectButtonA4->SetState(1, 0);
 
   TView* cluster = ResolveControlByTag(kControlTagClus);
   cluster->AssertValid();
-  TView* noMore = cluster->ResolveControlByTag(kControlTagNomo);
+  TToggleButton* noMore =
+      static_cast<TToggleButton*>(cluster->ResolveControlByTag(kControlTagNomo));
   noMore->AssertValid();
   noMore->SetEnabled(1, 0);
-  noMore->SetState(0, 0);
+  noMore->Select(false, false);
+
+  TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(ResolveControlByTag(kControlTagTool));
+  toolbar->AssertValid();
+  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
+
+  InvalidateCityDialogRectRegion(&offerInvalidRect, 1);
+  InvalidateCityDialogRectRegion(&iconInvalidRect, 1);
+
+  TDropShadowText* info = static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagInfo));
+  info->AssertValid();
+  ApplyUiTextStyleAndThemeFlags(info, 0, 0xc, 0x2b6c, 0x2b6b);
+  info->SetTextAlignmentAndMaybeRefresh(-2, 0);
 
   selectionActive9e = false;
-  detailedErrorFlag9d = proposedAmount > maxAmount;
   RefreshSelectedNationOrderCompatibilityInfo();
-  ResolveControlByTag(kControlTagShee)->RefreshControl();
+  g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(4, true);
 }
 
 // FUNCTION: IMPERIALISM 0x005bf740

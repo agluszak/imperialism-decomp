@@ -5952,7 +5952,7 @@ address|matching|name
 0x5be5b0|1.0|TOfferDeskPicture::`scalar deleting destructor'
 0x5be5e0|1.0|TOfferDeskPicture::~TOfferDeskPicture
 0x5be600|0.7938931297709924|TOfferDeskPicture::DoPostCreate
-0x5bea00|0.09692671394799054|TOfferDeskPicture::PoseOfferSheet
+0x5bea00|0.6868686868686869|TOfferDeskPicture::PoseOfferSheet
 0x5bf740|0.6442953020134228|TOfferDeskPicture::DoEvent
 0x5bf860|1.0|TOfferDeskPicture::DoKeyEvent
 0x5bf930|0.7775020678246485|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
