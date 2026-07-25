@@ -4265,7 +4265,7 @@ address|matching|name
 0x55ead0|1.0|stretch<TZone *>::Add
 0x55eba0|1.0|stretch<Province *>::Add
 0x55ec60|0.84|TZone::Free
-0x55ed20|0.53125|TZone::ReadFrom
+0x55ed20|0.5416666666666666|TZone::ReadFrom
 0x55eff0|1.0|TZone::WriteTo
 0x55f070|1.0|TZone::AssignZoneDisplayNameToOutputRef
 0x55f090|1.0|TZone::AssignZoneDisplayNameAliasToOutputRef
@@ -4286,7 +4286,7 @@ address|matching|name
 0x560150|0.674364896073903|TZone::FindBestCoastalTileForContextAndCityStateByHeuristic
 0x560470|0.5373134328358209|TMapMgr::AdvanceSpiralSearchStateAndStepHexCoordinates
 0x560580|0.40404040404040403|TZone::SetMapOrderUiFlag
-0x5606f0|0.44776119402985076|TZone::BuildNavalIntelligenceSourceDescription
+0x5606f0|0.5460992907801419|TZone::BuildNavalIntelligenceSourceDescription
 0x560970|0.8|TZone::FindReportingAdmiralForNation
 0x5609e0|0.9863013698630136|TZone::CreateTaskForceFromNavyOrdersForNationIfEligible
 0x560b00|0.7047619047619048|TZone::CanDisplayMapOrderEntryInCurrentContext
@@ -4294,7 +4294,7 @@ address|matching|name
 0x560e20|1.0|ResetMapActionContextActivityAndNationFlags
 0x560e70|0.4583333333333333|TZone::SelectBestPrimaryNeighborForNationDiplomacyMask
 0x560f80|1.0|TZone::PropagateMapActionContextDistanceLevelsRecursive
-0x5610b0|0.09803921568627451|TZone::GetCachedMapActionContextDistanceOrRecompute
+0x5610b0|0.10223642172523961|TZone::GetCachedMapActionContextDistanceOrRecompute
 0x561400|0.6666666666666666|TZone::BuildNationBitmaskForActiveType3Or4OrdersIncludingNation
 0x561490|0.7058823529411765|TZone::BuildNationBitmaskForActiveType3Or4Orders
 0x561510|0.5970149253731343|TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask
