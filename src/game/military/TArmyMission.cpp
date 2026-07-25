@@ -142,7 +142,8 @@ void TArmyMission::ReadFrom(TStream* stream) {
   // The nation and its unit list are re-read on every iteration, and the ordinal is read
   // after them -- both follow from writing the lookup as one receiver expression, which
   // is the order 0x53c46a..0x53c48e evaluates.
-  for (int count = stream->ReadInteger(); count != 0; --count) {
+  int count = stream->ReadInteger();
+  while (count-- != 0) {
     TSortedList* unitList = g_apNationStates[nationId04]->militaryUnitList44;
     TMilitaryUnit* unit =
         static_cast<TMilitaryUnit*>(unitList->GetEntryByOrdinal(stream->ReadInteger()));

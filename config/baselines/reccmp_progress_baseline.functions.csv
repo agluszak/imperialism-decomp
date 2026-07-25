@@ -1528,7 +1528,7 @@ address|matching|name
 0x4a18d0|1.0|TArmyMgr::~TArmyMgr
 0x4a18f0|1.0|TArmyMgr::IArmyMgr
 0x4a1a00|1.0|TArmyMgr::Free
-0x4a1b80|0.8272727272727273|TArmyMgr::ReadFrom
+0x4a1b80|0.9279279279279279|TArmyMgr::ReadFrom
 0x4a1d90|0.14285714285714285|WrapperFor_FreeHeapBufferIfNotNull_At004a1d90
 0x4a1dd0|0.8484848484848485|TArmyMgr::WriteTo
 0x4a1e40|0.8163265306122449|TArmyMgr::DoCombatMoves
@@ -3784,7 +3784,7 @@ address|matching|name
 0x53c200|1.0|TArmyMission
 0x53c220|0.8837209302325582|TArmyMission::Free
 0x53c2b0|1.0|TArmyMission::WriteTo
-0x53c3d0|0.6863905325443787|TArmyMission::ReadFrom
+0x53c3d0|0.872093023255814|TArmyMission::ReadFrom
 0x53c4f0|0.7142857142857143|TArmyMission::SmokeEmIfYouGotEm
 0x53c570|0.7017543859649122|TArmyMission::AcceptReenforcement
 0x53c5e0|0.6666666666666666|TArmyMission::RejectConstituent
@@ -4142,7 +4142,7 @@ address|matching|name
 0x552930|0.8333333333333334|TTaskForce::Free
 0x552a70|0.10434782608695652|TTaskForce::RegainVirginity
 0x552b90|0.611764705882353|TTaskForce::WriteTo
-0x552d10|0.5988372093023255|TTaskForce::ReadFrom
+0x552d10|0.6858789625360231|TTaskForce::ReadFrom
 0x552f60|1.0|TTaskForce::SetAggression
 0x552f80|0.6572769953051644|TTaskForce::OrderEvade
 0x5530f0|0.6517857142857143|TTaskForce::OrderPatrol
@@ -4174,7 +4174,7 @@ address|matching|name
 0x554e70|0.5514018691588785|TTaskForce::GetGeneralDescription
 0x555090|0.4647887323943662|TTaskForce::RemoveStragglers
 0x5551d0|0.37104072398190047|TTaskForce::GetAuthority
-0x555420|0.5638297872340425|TTaskForce::Encounter
+0x555420|0.5531914893617021|TTaskForce::Encounter
 0x555720|0.248|TTaskForce::TryToSpot
 0x555920|0.39628482972136225|TTaskForce::ResolveEncounterWith
 0x555c20|0.5945945945945946|TTaskForce::AttemptToEvade
@@ -4265,7 +4265,7 @@ address|matching|name
 0x55ead0|1.0|stretch<TZone *>::Add
 0x55eba0|1.0|stretch<Province *>::Add
 0x55ec60|0.84|TZone::Free
-0x55ed20|0.5208333333333334|TZone::ReadFrom
+0x55ed20|0.53125|TZone::ReadFrom
 0x55eff0|1.0|TZone::WriteTo
 0x55f070|1.0|TZone::AssignZoneDisplayNameToOutputRef
 0x55f090|1.0|TZone::AssignZoneDisplayNameAliasToOutputRef

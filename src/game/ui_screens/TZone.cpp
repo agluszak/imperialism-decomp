@@ -31,10 +31,6 @@ void DeleteUnlinkedZone(TZone* zone) {
 
 // 0x005e7f50 resolves to CRT `_free` (per symbols.csv), not a game-specific tracking
 // helper -- call the real library function directly (LIBRARY: IMPERIALISM 0x005e7f50).
-void FreeStretchEntries(void* entries) {
-  free(entries);
-}
-
 } // namespace
 
 // TEMPLATE: IMPERIALISM 0x00558860
@@ -156,10 +152,10 @@ void TZone::ReadFrom(TStream* stream) {
   distanceLevel44 = 0;
 
   if (primaryNeighbors.Data() != 0) {
-    FreeStretchEntries(primaryNeighbors.Detach());
+    free(primaryNeighbors.Detach());
   }
   if (secondaryNeighbors.Data() != 0) {
-    FreeStretchEntries(secondaryNeighbors.Detach());
+    free(secondaryNeighbors.Detach());
   }
 
   // Pre-0xd save format stored the neighbor arrays directly; current saves rebuild them

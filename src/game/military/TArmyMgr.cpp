@@ -247,7 +247,8 @@ void TArmyMgr::ReadFrom(TStream* stream) {
   }
   flag8 = 0;
   if (g_nSaveFormatVersion >= 0x25) {
-    for (int count = stream->ReadInteger(); count != 0; --count) {
+    int count = stream->ReadInteger();
+    while (count-- != 0) {
       // The two stride-0x20 / stride-0xff store loops at 0x4a1c47 and 0x4a1c58 are the
       // array default-construction of nameBuffer0c and overlayLabel4c, emitted by this
       // declaration; only the POD tail needs clearing by hand.
