@@ -728,7 +728,7 @@ void TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(ProvinceIndex
 // separately-emitted 6-entry const table that happens to sit shortly after it in the
 // original .rdata layout, not guaranteed to hold in a freshly linked recompile. Modeled here
 // as its own bounds-safe table instead of pointer-walking off an unrelated global.
-static const unsigned char kHexDirectionBitMask[6] = {1, 2, 4, 8, 16, 32};
+static const short kHexDirectionBitMask[6] = {1, 2, 4, 8, 16, 32};
 
 // The "next" hex direction (d+1 mod 6), read raw at 0x00696e30 as its own table rather than
 // computed by TMapMgr::UpdateTileNeighborBorderInfluenceCounters (0x50fe10) -- the original
@@ -740,81 +740,82 @@ void TMapMgr::UpdateTileNeighborBorderInfluenceCounters(StrategicTileIndex tileI
   short neighbors[6];
   GetNeighborTileIDArray(tileIndex, neighbors, hexNeighborWrapHorizontally20);
 
-  TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
-  bool isWater = tile->GetTerrainKind() == kStrategicTerrainWater;
-
-  for (int d = 0; d < 6; ++d) {
+  int remainingDirections = 6;
+  for (int d = 0; remainingDirections != 0; ++d, --remainingDirections) {
     StrategicTileIndex neighborTile = neighbors[d];
     if (neighborTile == -1) {
-      tile->ownerBorderMask07 += kHexDirectionBitMask[d];
+      terrainStateTable[tileIndex].ownerBorderMask07 += kHexDirectionBitMask[d];
       continue;
     }
-    TTerrainStateRecordView* neighbor = &terrainStateTable[neighborTile];
-    if (isWater) {
-      if (mode == 0 && neighbor->GetTerrainKind() == kStrategicTerrainWater &&
-          neighbor->ownerNationTag04 != tile->ownerNationTag04) {
-        tile->ownerBorderMask07 += kHexDirectionBitMask[d];
+    if (terrainStateTable[tileIndex].GetTerrainKind() == kStrategicTerrainWater) {
+      if (mode == 0 && terrainStateTable[neighborTile].GetTerrainKind() == kStrategicTerrainWater &&
+          terrainStateTable[neighborTile].ownerNationTag04 !=
+              terrainStateTable[tileIndex].ownerNationTag04) {
+        terrainStateTable[tileIndex].ownerBorderMask07 += kHexDirectionBitMask[d];
       }
-    } else if (neighbor->GetTerrainKind() == kStrategicTerrainWater) {
-      tile->waterAdjacencyMask09 += kHexDirectionBitMask[d];
+    } else if (terrainStateTable[neighborTile].GetTerrainKind() == kStrategicTerrainWater) {
+      terrainStateTable[tileIndex].waterAdjacencyMask09 += kHexDirectionBitMask[d];
     } else {
-      if (neighbor->ownerNationTag04 != tile->ownerNationTag04) {
-        tile->ownerBorderMask07 += kHexDirectionBitMask[d];
+      if (terrainStateTable[neighborTile].ownerNationTag04 !=
+          terrainStateTable[tileIndex].ownerNationTag04) {
+        terrainStateTable[tileIndex].ownerBorderMask07 += kHexDirectionBitMask[d];
       }
-      if (mode != 2 && neighbor->cityRecordIndex != tile->cityRecordIndex) {
-        tile->cityBorderMask08 += kHexDirectionBitMask[d];
+      if (mode != 2 && terrainStateTable[neighborTile].cityRecordIndex !=
+                           terrainStateTable[tileIndex].cityRecordIndex) {
+        terrainStateTable[tileIndex].cityBorderMask08 += kHexDirectionBitMask[d];
       }
     }
   }
 
-  if (isWater) {
-    for (int d = 0; d < 6; ++d) {
+  if (terrainStateTable[tileIndex].GetTerrainKind() == kStrategicTerrainWater) {
+    remainingDirections = 6;
+    for (int d = 0; remainingDirections != 0; ++d, --remainingDirections) {
       short neighborA = neighbors[d];
       short neighborB = neighbors[kNextHexDirection[d]];
       if (neighborA == -1 || neighborB == -1) {
         continue;
       }
-      TTerrainStateRecordView* tileA = &terrainStateTable[neighborA];
-      TTerrainStateRecordView* tileB = &terrainStateTable[neighborB];
-      if (tileA->GetTerrainKind() == kStrategicTerrainWater ||
-          tileB->GetTerrainKind() == kStrategicTerrainWater) {
+      if (terrainStateTable[neighborA].GetTerrainKind() == kStrategicTerrainWater ||
+          terrainStateTable[neighborB].GetTerrainKind() == kStrategicTerrainWater) {
         continue;
       }
-      if (tileA->ownerNationTag04 != tileB->ownerNationTag04) {
-        tile->ownerBorderMask07 += kHexDirectionBitMask[d];
+      if (terrainStateTable[neighborA].ownerNationTag04 !=
+          terrainStateTable[neighborB].ownerNationTag04) {
+        terrainStateTable[tileIndex].ownerBorderMask07 += kHexDirectionBitMask[d];
       }
-      if (mode != 2 && tileA->cityRecordIndex != tileB->cityRecordIndex) {
-        tile->cityBorderMask08 += kHexDirectionBitMask[d];
+      if (mode != 2 && terrainStateTable[neighborA].cityRecordIndex !=
+                           terrainStateTable[neighborB].cityRecordIndex) {
+        terrainStateTable[tileIndex].cityBorderMask08 += kHexDirectionBitMask[d];
       }
     }
   }
 
   if (mode != 2) {
-    unsigned char cityMask = tile->cityBorderMask08;
+    unsigned char cityMask = terrainStateTable[tileIndex].cityBorderMask08;
     if ((cityMask & 2) && (cityMask & 1) && neighbors[1] != -1 && neighbors[0] != -1 &&
         terrainStateTable[neighbors[1]].cityRecordIndex !=
             terrainStateTable[neighbors[0]].cityRecordIndex) {
-      tile->cityBorderMask08 = cityMask + 0x40;
+      terrainStateTable[tileIndex].cityBorderMask08 = cityMask + 0x40;
     }
-    cityMask = tile->cityBorderMask08;
+    cityMask = terrainStateTable[tileIndex].cityBorderMask08;
     if ((cityMask & 2) && (cityMask & 4) && neighbors[1] != -1 && neighbors[2] != -1 &&
         terrainStateTable[neighbors[1]].cityRecordIndex !=
             terrainStateTable[neighbors[2]].cityRecordIndex) {
-      tile->cityBorderMask08 = cityMask + 0x80;
+      terrainStateTable[tileIndex].cityBorderMask08 = cityMask + 0x80;
     }
   }
 
-  unsigned char ownerMask = tile->ownerBorderMask07;
+  unsigned char ownerMask = terrainStateTable[tileIndex].ownerBorderMask07;
   if ((ownerMask & 2) && (ownerMask & 1) && neighbors[1] != -1 && neighbors[0] != -1 &&
       terrainStateTable[neighbors[1]].ownerNationTag04 !=
           terrainStateTable[neighbors[0]].ownerNationTag04) {
-    tile->ownerBorderMask07 = ownerMask + 0x40;
+    terrainStateTable[tileIndex].ownerBorderMask07 = ownerMask + 0x40;
   }
-  ownerMask = tile->ownerBorderMask07;
+  ownerMask = terrainStateTable[tileIndex].ownerBorderMask07;
   if ((ownerMask & 2) && (ownerMask & 4) && neighbors[1] != -1 && neighbors[2] != -1 &&
       terrainStateTable[neighbors[1]].ownerNationTag04 !=
           terrainStateTable[neighbors[2]].ownerNationTag04) {
-    tile->ownerBorderMask07 = ownerMask + 0x80;
+    terrainStateTable[tileIndex].ownerBorderMask07 = ownerMask + 0x80;
   }
 }
 
