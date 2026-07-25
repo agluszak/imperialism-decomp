@@ -14,7 +14,7 @@ public:
   TNapoleonMinister();
   DECLARE_DYNCREATE(TNapoleonMinister)
   void MakeNewCity(TCity* city) override;
-  double GetPersonalityWeightByFlag(char flag) override;
+  double GetStategicEscalationMultiplier(unsigned char flag) override;
 };
 ASSERT_SIZE(TNapoleonMinister, 0x94);
 
@@ -26,7 +26,7 @@ public:
   TBismarckMinister();
   DECLARE_DYNCREATE(TBismarckMinister)
   void MakeNewCity(TCity* city) override;
-  double GetPersonalityWeightByFlag(char flag) override;
+  double GetStategicEscalationMultiplier(unsigned char flag) override;
 };
 ASSERT_SIZE(TBismarckMinister, 0x94);
 
@@ -38,7 +38,7 @@ public:
   TPirateMinister();
   DECLARE_DYNCREATE(TPirateMinister)
   void MakeNewCity(TCity* city) override;
-  double GetPersonalityWeightByFlag(char flag) override;
+  double GetStategicEscalationMultiplier(unsigned char flag) override;
 };
 ASSERT_SIZE(TPirateMinister, 0x94);
 
@@ -50,7 +50,7 @@ public:
   TDefenderMinister();
   DECLARE_DYNCREATE(TDefenderMinister)
   void MakeNewCity(TCity* city) override;
-  double GetPersonalityWeightByFlag(char flag) override;
+  double GetStategicEscalationMultiplier(unsigned char flag) override;
 };
 ASSERT_SIZE(TDefenderMinister, 0x94);
 
@@ -62,6 +62,6 @@ public:
   TBullyMinister();
   DECLARE_DYNCREATE(TBullyMinister)
   void MakeNewCity(TCity* city) override;
-  double GetPersonalityWeightByFlag(char flag) override;
+  double GetStategicEscalationMultiplier(unsigned char flag) override;
 };
 ASSERT_SIZE(TBullyMinister, 0x94);

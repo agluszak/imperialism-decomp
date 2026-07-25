@@ -19,6 +19,7 @@
 #include "game/map/TMapMgr.h"
 #include "game/military/TMilitaryUnit.h"
 #include "game/core/TStream.h"
+#include "game/core/stream_byteswap.h"
 #include "game/map/TMission.h"
 #include "game/military/TUnit.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -27,7 +28,7 @@
 // Slot 24 (0x60) — body 0x4ec0a0; placed first because it is the lowest address.
 
 // FUNCTION: IMPERIALISM 0x004ec0a0
-double TDefenseMinister::GetPersonalityWeightByFlag(char) {
+double TDefenseMinister::GetStategicEscalationMultiplier(unsigned char) {
   return g_DefenseMinisterWeightZero_006548E0;
 }
 // SYNTHETIC: IMPERIALISM 0x004ec020
@@ -70,30 +71,8 @@ void TDefenseMinister::WriteTo(TStream* stream) {
   TMinister::WriteTo(stream);
   stream->WriteBytes(&field10, 2);
   stream->WriteBytes(&field12, 2);
-  short* cursor = recruitOrderCountByType;
-  int remaining = 0x1e;
-  do {
-    unsigned int stackWord = static_cast<unsigned int>(*cursor);
-    unsigned char* stackBytes = reinterpret_cast<unsigned char*>(&stackWord);
-    unsigned char lowByte = stackBytes[0];
-    stackBytes[0] = stackBytes[1];
-    stackBytes[1] = lowByte;
-    stream->WriteBytes(&stackWord, 2);
-    cursor = cursor + 1;
-    remaining = remaining - 1;
-  } while (remaining != 0);
-  cursor = orderWeightTableB;
-  remaining = 0x1e;
-  do {
-    unsigned int stackWord = static_cast<unsigned int>(*cursor);
-    unsigned char* stackBytes = reinterpret_cast<unsigned char*>(&stackWord);
-    unsigned char lowByte = stackBytes[0];
-    stackBytes[0] = stackBytes[1];
-    stackBytes[1] = lowByte;
-    stream->WriteBytes(&stackWord, 2);
-    cursor = cursor + 1;
-    remaining = remaining - 1;
-  } while (remaining != 0);
+  WriteShortArrayElems(stream, recruitOrderCountByType, 0x1e);
+  WriteShortArrayElems(stream, orderWeightTableB, 0x1e);
   stream->WriteBytes(&thresholdA, 2);
   stream->WriteBytes(&thresholdB, 2);
   stream->WriteBytes(&thresholdC, 2);
@@ -108,25 +87,9 @@ void TDefenseMinister::ReadFrom(TStream* stream) {
   stream->ReadBytes(&field10, 2);
   stream->ReadBytes(&field12, 2);
   stream->ReadBytes(recruitOrderCountByType, 0x3c);
-  unsigned char* pairCursor = reinterpret_cast<unsigned char*>(recruitOrderCountByType);
-  int pairCount = 0x1e;
-  do {
-    unsigned char highByte = pairCursor[0];
-    pairCursor[0] = pairCursor[1];
-    pairCursor[1] = highByte;
-    pairCursor = pairCursor + 2;
-    pairCount = pairCount - 1;
-  } while (pairCount != 0);
+  SwapShortArrayBytes(recruitOrderCountByType, 0x1e);
   stream->ReadBytes(orderWeightTableB, 0x3c);
-  pairCursor = reinterpret_cast<unsigned char*>(orderWeightTableB);
-  pairCount = 0x1e;
-  do {
-    unsigned char highByte = pairCursor[0];
-    pairCursor[0] = pairCursor[1];
-    pairCursor[1] = highByte;
-    pairCursor = pairCursor + 2;
-    pairCount = pairCount - 1;
-  } while (pairCount != 0);
+  SwapShortArrayBytes(orderWeightTableB, 0x1e);
   stream->ReadBytes(&thresholdA, 2);
   stream->ReadBytes(&thresholdB, 2);
   stream->ReadBytes(&thresholdC, 2);
@@ -180,7 +143,7 @@ void TDefenseMinister::DoPeacetimeDeployment() {
     }
   }
 
-  unsigned char* priorityMap = this->BuildTileRingPriorityMapForNationTileList(ownedRegionsList);
+  unsigned char* priorityMap = this->CreatePeaceDefenseMap(ownedRegionsList);
 
   TList* bucket1 = new TList();
   if (bucket1 == nullptr) {
@@ -283,8 +246,7 @@ void TDefenseMinister::DoPeacetimeDeployment() {
 // Slot 21 override (0x4ecbb0).
 
 // FUNCTION: IMPERIALISM 0x004ecbb0
-unsigned char*
-TDefenseMinister::BuildTileRingPriorityMapForNationTileList(TLongintList* ownedRegions) {
+unsigned char* TDefenseMinister::CreatePeaceDefenseMap(TLongintList* ownedRegions) {
   int ownNationSlot = ownerContextAt04->nationSlot;
   int regionCount = ownedRegions->GetSize();
 
@@ -372,7 +334,7 @@ TDefenseMinister::BuildTileRingPriorityMapForNationTileList(TLongintList* ownedR
 }
 
 // FUNCTION: IMPERIALISM 0x004ecf20
-int* TDefenseMinister::BuildStrategicTilePriorityHeatmap() {
+int* TDefenseMinister::CreateHomeValueMap() {
   short ownNationSlot = ownerContextAt04->nationSlot;
 
   int* heatmap = new int[0x1950];
@@ -405,7 +367,7 @@ int* TDefenseMinister::BuildStrategicTilePriorityHeatmap() {
 }
 
 // FUNCTION: IMPERIALISM 0x004ed050
-int* TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer(char excludeEnemyTiles) {
+int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
   short ownNationSlot = ownerContextAt04->nationSlot;
 
   bool atWarWithNation[0x17];
