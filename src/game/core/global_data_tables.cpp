@@ -1676,6 +1676,8 @@ extern "C" const char g_szDoubleQuote[] = "\"";
 // GLOBAL: IMPERIALISM 0x0069a7f8
 extern "C" const char s_SourcePathUTestDialogs_0069A7F8[] = "D:\\Ambit\\Cross\\UTestDialogs.cpp";
 extern "C" const char s_SourcePathUCityViews_00696650[] = "D:\\Ambit\\Cross\\UCityViews.cpp";
+// GLOBAL: IMPERIALISM 0x00696508
+short g_shipyardQueueIconLeftBySlot[8] = {4, 4, 3, 2, 4, 4, 3, 2};
 extern "C" const char s_SourcePathUArmyViews_00695858[] = "D:\\Ambit\\Cross\\UArmyViews.cpp";
 extern "C" const char s_SourcePathUOceanViews_00698650[] = "D:\\Ambit\\Cross\\UOceanViews.cpp";
 // GLOBAL: IMPERIALISM 0x00696ae0

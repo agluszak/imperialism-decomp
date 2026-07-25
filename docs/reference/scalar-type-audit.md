@@ -14,11 +14,11 @@ rather than domain discriminants.
 
 ## Summary
 
-- Findings: 382
+- Findings: 383
 - `native_integral_boundary`: 16
 - `nested_integral_cast`: 31
 - `predicate_storage_cast`: 15
-- `raw_discriminant_literal`: 320
+- `raw_discriminant_literal`: 321
 
 ## clang-tidy evaluation
 
@@ -201,7 +201,7 @@ is classified, and a family that stops appearing must be removed.
 | `renderMode` | 1 | `byte_or_int_predicate_not_a_domain` | TC2TemplateDialog tests non-zero to choose the alternate render path. |
 | `resetOrderMode` | 1 | `byte_or_int_predicate_not_a_domain` | TMinor tests non-zero to decide whether to reset the order tables. |
 | `resourceType` | 13 | `industry_action_order_type_domain` | the residual sites are the 14-entry industry/navy-order domain (TGreatPower 0x004dd140 walks orderCountByType5c[0x0e], TNavyMgr its 14-entry report table) plus one signed -1 sentinel test and TTechMgr's slotMap index; none are ResourceKind. |
-| `resourceTypeIndex48` | 8 | `unresolved_narrower_subdomain` | TUnitOrder::resourceTypeIndex48 takes 0, 1, 5, 6, 8 and 0x0f across TTrainingOrder, TExpansionOrder, TShipOrder, TCapacityOrder and TTechMgr; 0x0f exceeds the 14-entry industry domain and no listing yet proves the extent, so the slot stays explicitly unresolved rather than being forced into ResourceKind. |
+| `resourceTypeIndex48` | 9 | `unresolved_narrower_subdomain` | TUnitOrder::resourceTypeIndex48 takes 0, 1, 5, 6, 8 and 0x0f across TTrainingOrder, TExpansionOrder, TShipOrder, TCapacityOrder and TTechMgr; 0x0f exceeds the 14-entry industry domain and no listing yet proves the extent, so the slot stays explicitly unresolved rather than being forced into ResourceKind. |
 | `ringState` | 6 | `closed_domain_needs_listing_evidence` | TMapMaker walks a three-state coastline ring scanner (0/1/2) against kStrategicTerrainWater; the states are a local scan phase, nameable once the ring walk is described. |
 | `riverSpriteCode` | 1 | `byte_or_int_predicate_not_a_domain` | TEngineerDialog's rail census reads TTerrainStateRecordView::riverSpriteCode only as a nonzero presence test (river/coast connection present) to decide whether a tile counts toward the port-availability tally; the value itself is not compared against any code-domain band here. |
 | `saveMode` | 1 | `external_api_or_resource_constant` | TLoadSavePicture 0xa1 is a save-file format marker, not a mode enum. |
@@ -351,6 +351,7 @@ is classified, and a family that stops appearing must be removed.
 | `05a5c94c820b5e33` | `raw_discriminant_literal` | `src/game/city_ui/TEngineerDialog.cpp:218` | riverSpriteCode != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `60c03fbcbae33de8` | `raw_discriminant_literal` | `src/game/city_ui/TIndustryView.cpp:188` | selectedIndustryUnitTypeA4 > 0 | `open_index_count_or_bound` | `imperialism-decomp-1uj.99.8` |
 | `8679af1ccc6ae355` | `raw_discriminant_literal` | `src/game/city_ui/TRailheadDialog.cpp:36` | serializedState0a == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `bd9160414d9d73af` | `raw_discriminant_literal` | `src/game/city_ui/TShipyardView.cpp:111` | resourceTypeIndex48 != 0 | `unresolved_narrower_subdomain` | `imperialism-decomp-1uj.99.8` |
 | `96c51a3a68560ef5` | `raw_discriminant_literal` | `src/game/city_ui/TUnitsView.cpp:34` | unitType < 14 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
 | `78d080aeeadfd7e4` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TCouncilView.cpp:174` | ownerCode >= 7 | `nation_slot_domain` | `imperialism-decomp-1uj.99.8` |
 | `63882066f5a88c2f` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TCouncilView.cpp:289` | localizationMode == 0x16 | `string_group_or_resource_identifier` | `imperialism-decomp-1uj.99.8` |
