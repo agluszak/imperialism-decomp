@@ -173,9 +173,11 @@ int CDib::LoadFromMemoryMappedBmpFile(LPCSTR fileName, int shareForWrite) {
     return 0;
   }
 
-  unsigned short* mapped =
-      static_cast<unsigned short*>(MapViewOfFile(mappingHandle, FILE_MAP_READ, 0, 0, 0));
-  if (*mapped != 0x4d42) {
+  unsigned char* mapped =
+      static_cast<unsigned char*>(MapViewOfFile(mappingHandle, FILE_MAP_READ, 0, 0, 0));
+  const BITMAPFILEHEADER* fileHeader =
+      static_cast<const BITMAPFILEHEADER*>(static_cast<const void*>(mapped));
+  if (fileHeader->bfType != 0x4d42) {
     AfxMessageBox("Invalid bitmap file", 0, 0);
     return 0;
   }
@@ -184,7 +186,8 @@ int CDib::LoadFromMemoryMappedBmpFile(LPCSTR fileName, int shareForWrite) {
   m_hGlobalInfo = NULL;
   m_infoOwnMode = kDibInfoNotOwned;
 
-  BITMAPINFO* info = reinterpret_cast<BITMAPINFO*>(mapped + 7);
+  BITMAPINFO* info =
+      static_cast<BITMAPINFO*>(static_cast<void*>(mapped + sizeof(BITMAPFILEHEADER)));
   m_pInfoHeader = info;
   if (info == NULL || info->bmiHeader.biClrUsed == 0) {
     switch (info->bmiHeader.biBitCount) {
@@ -222,8 +225,8 @@ int CDib::LoadFromMemoryMappedBmpFile(LPCSTR fileName, int shareForWrite) {
     m_pixelBytes = rowDwords * 4 * rows;
   }
 
-  m_colorTablePixels = reinterpret_cast<char*>(mapped) + 0x36;
-  m_dibBits = reinterpret_cast<char*>(mapped) + 0x36 + m_paletteCount * 4;
+  m_colorTablePixels = mapped + 0x36;
+  m_dibBits = mapped + 0x36 + m_paletteCount * 4;
   BuildPaletteFromRgbQuadBuffer();
   m_mappedView = mapped;
   m_hFileMapping = fileHandle;
@@ -241,48 +244,30 @@ int CDib::RemapSurfaceToMemoryMappedBmpFile(LPCSTR fileName) {
   int offBits = m_paletteCount * 4 + 0x36;
   unsigned int fileSize = offBits + m_pixelBytes;
 
+  BITMAPFILEHEADER fileHeader;
+  fileHeader.bfType = 0x4d42;
+  fileHeader.bfSize = fileSize;
+  fileHeader.bfReserved1 = 0;
+  fileHeader.bfReserved2 = 0;
+  fileHeader.bfOffBits = offBits;
+
   HANDLE fileHandle =
       CreateFileA(fileName, 0xc0000000, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
   HANDLE mappingHandle = CreateFileMappingA(fileHandle, NULL, PAGE_READWRITE, 0,
                                             m_pixelBytes + 0x36 + m_paletteCount * 4, NULL);
   GetLastError();
-  unsigned int* mapped =
-      static_cast<unsigned int*>(MapViewOfFile(mappingHandle, FILE_MAP_WRITE, 0, 0, 0));
-
-  // BITMAPFILEHEADER (14 bytes) packed exactly as the original's dword stores.
-  unsigned int* infoDest = reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mapped) + 0xe);
-  mapped[0] = (fileSize << 0x10) | 0x4d42;
-  mapped[1] = fileSize >> 0x10;
-  mapped[2] = offBits << 0x10;
-  *reinterpret_cast<unsigned short*>(mapped + 3) = static_cast<unsigned short>(offBits >> 0x10);
+  unsigned char* mapped =
+      static_cast<unsigned char*>(MapViewOfFile(mappingHandle, FILE_MAP_WRITE, 0, 0, 0));
+  memcpy(mapped, &fileHeader, sizeof(fileHeader));
 
   // Copy the packed BITMAPINFOHEADER (0x28 bytes) + color table into the mapped file.
-  unsigned int* infoSrc = reinterpret_cast<unsigned int*>(m_pInfoHeader);
-  unsigned int* infoWalk = infoDest;
-  for (unsigned int words = (m_paletteCount * 4 + 0x28U) >> 2; words != 0; words--) {
-    *infoWalk = *infoSrc;
-    infoSrc++;
-    infoWalk++;
-  }
+  unsigned char* infoDest = mapped + sizeof(BITMAPFILEHEADER);
+  memcpy(infoDest, m_pInfoHeader, m_paletteCount * 4 + sizeof(BITMAPINFOHEADER));
 
   // Copy the pixel buffer after the header + color table.
   unsigned int pixelBytes = m_pixelBytes;
-  unsigned int* pixelStart =
-      reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mapped) + m_paletteCount * 4 + 0x36);
-  unsigned int* pixelSrc = static_cast<unsigned int*>(m_dibBits);
-  unsigned int* pixelWalk = pixelStart;
-  for (unsigned int pixelWords = pixelBytes >> 2; pixelWords != 0; pixelWords--) {
-    *pixelWalk = *pixelSrc;
-    pixelSrc++;
-    pixelWalk++;
-  }
-  unsigned char* pixelSrcByte = reinterpret_cast<unsigned char*>(pixelSrc);
-  unsigned char* pixelWalkByte = reinterpret_cast<unsigned char*>(pixelWalk);
-  for (unsigned int rem = pixelBytes & 3; rem != 0; rem--) {
-    *pixelWalkByte = *pixelSrcByte;
-    pixelSrcByte++;
-    pixelWalkByte++;
-  }
+  unsigned char* pixelStart = mapped + m_paletteCount * 4 + 0x36;
+  memcpy(pixelStart, m_dibBits, pixelBytes);
 
   int savedPixelBytes = m_pixelBytes;
   Release();
@@ -293,7 +278,7 @@ int CDib::RemapSurfaceToMemoryMappedBmpFile(LPCSTR fileName) {
   m_hFile = mappingHandle;
   m_dibBitsOwned = 0;
   m_infoOwnMode = kDibInfoNotOwned;
-  m_pInfoHeader = reinterpret_cast<BITMAPINFO*>(infoDest);
+  m_pInfoHeader = static_cast<BITMAPINFO*>(static_cast<void*>(infoDest));
   m_mappedView = mapped;
 
   if (infoDest == NULL || m_pInfoHeader->bmiHeader.biClrUsed == 0) {
@@ -332,7 +317,7 @@ int CDib::RemapSurfaceToMemoryMappedBmpFile(LPCSTR fileName) {
     m_pixelBytes = rowDwords * 4 * rows;
   }
 
-  m_colorTablePixels = reinterpret_cast<char*>(mapped) + 0x36;
+  m_colorTablePixels = mapped + 0x36;
   BuildPaletteFromRgbQuadBuffer();
   return 1;
 }
@@ -815,11 +800,10 @@ void CDib::BlitSurfaceRectSkippingTransparentColor(CDib* destDib, int srcX, int 
   do {
     char* srcRow = srcPtr;
     char* destRow = destPtr;
-    for (unsigned int w = width >> 2; w != 0; --w) {
-      *reinterpret_cast<unsigned int*>(destRow) = *reinterpret_cast<unsigned int*>(srcRow);
-      srcRow += 4;
-      destRow += 4;
-    }
+    unsigned int copiedDwordBytes = width & ~3u;
+    memcpy(destRow, srcRow, copiedDwordBytes);
+    srcRow += copiedDwordBytes;
+    destRow += copiedDwordBytes;
     srcPtr += srcStride;
     for (unsigned int b = width & 3; b != 0; --b) {
       *destRow = *srcRow;
@@ -862,7 +846,7 @@ int CDib::LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODU
   Release();
   m_hGlobalInfo = NULL;
   m_infoOwnMode = kDibInfoNotOwned;
-  m_pInfoHeader = reinterpret_cast<BITMAPINFO*>(resource);
+  m_pInfoHeader = static_cast<BITMAPINFO*>(static_cast<void*>(resource));
 
   if (m_pInfoHeader->bmiHeader.biClrUsed == 0) {
     switch (m_pInfoHeader->bmiHeader.biBitCount) {
@@ -901,7 +885,7 @@ int CDib::LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODU
   }
 
   m_colorTablePixels = m_pInfoHeader->bmiColors;
-  m_dibBits = reinterpret_cast<BYTE*>(m_colorTablePixels) + m_paletteCount * sizeof(RGBQUAD);
+  m_dibBits = static_cast<BYTE*>(m_colorTablePixels) + m_paletteCount * sizeof(RGBQUAD);
   BuildPaletteFromRgbQuadBuffer();
   return 1;
 }

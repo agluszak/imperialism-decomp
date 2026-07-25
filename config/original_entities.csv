@@ -276,7 +276,7 @@ address|name|symbol|size|type|prototype|provenance
 47a200|ConstructBitmapBlitBufferFromSourceDescriptor||283|function|undefined ConstructBitmapBlitBufferFromSourceDescriptor()|
 47a370|DestructBitmapSurfaceStateAndRestoreRuntimeClass||70|function|undefined DestructBitmapSurfaceStateAndRestoreRuntimeClass()|
 47a3e0|CDib::CopyBitmapDimensionsToPoint||45|function|CPoint * CopyBitmapDimensionsToPoint(CPoint * out)|
-47a420|BuildPaletteAndReleaseBitmapSurfaceResources||353|function|undefined BuildPaletteAndReleaseBitmapSurfaceResources()|
+47a420|CDib::LoadFromMemoryMappedBmpFile||353|function|int CDib::LoadFromMemoryMappedBmpFile(LPCSTR fileName, int shareForWrite)|
 47a630|CDib::RemapSurfaceToMemoryMappedBmpFile||432|function|int CDib::RemapSurfaceToMemoryMappedBmpFile(LPCSTR fileName)|
 47a8a0|CDib::AttachPackedInfoHeader||209|function|BOOL __thiscall CDib::AttachPackedInfoHeader(BITMAPINFO * info, BOOL ownsInfo, HGLOBAL hGlobalInfo)|
 47aa00|SelectAndRealizeDibPalette||79|function|undefined SelectAndRealizeDibPalette()|
@@ -300,9 +300,9 @@ address|name|symbol|size|type|prototype|provenance
 47bb10|ReadBitmapStreamStateAndWriteBmpHeaderThunk||56|function|undefined ReadBitmapStreamStateAndWriteBmpHeaderThunk()|
 47bca0|ReleaseBitmapSurfaceResourcesAndResetState||177|function|undefined ReleaseBitmapSurfaceResourcesAndResetState()|
 47bd90|OrphanCallChain_C3_I20_0047bd90||49|function|undefined OrphanCallChain_C3_I20_0047bd90()|
-47bde0|BlitSurfaceRectSkippingTransparentColor||331|function|undefined BlitSurfaceRectSkippingTransparentColor()|
+47bde0|CDib::BlitSurfaceRectSkippingTransparentColor||331|function|void CDib::BlitSurfaceRectSkippingTransparentColor(CDib* destDib, int srcX, int srcY, unsigned int width, unsigned int height, int destX, int destY, int transparentColor)|
 47bf90|CDib::GetPixelAddress||73|function|void * __thiscall GetPixelAddress(int x, int y)|
-47c080|CDib::LoadBitmapResourceAndInitializeSurfaceState||224|function|int LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module)|
+47c080|CDib::LoadBitmapResourceAndInitializeSurfaceState||224|function|int CDib::LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module)|
 47c1f0|CDib::BuildMonochromeOutlineMaskInPlace||384|function|int BuildMonochromeOutlineMaskInPlace()|
 47c3d0|CDib::BuildNonTransparentOutlinePolygon||898|function|POINT * BuildNonTransparentOutlinePolygon(unsigned int transparentIndex)|
 47c980|CDib::FlipScanlineOrder||203|function|void FlipScanlineOrder()|

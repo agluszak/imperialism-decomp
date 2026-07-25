@@ -269,6 +269,9 @@ discriminant_reviews:
   battleOutcomeCode44:
     classification: closed_domain_needs_listing_evidence
     evidence: three outcome codes 0/1/2 shared by TNavyBattle, TTacticalBattle and TNextMoveCommand; the producer that assigns them has not been decoded, so the names are not yet evidence-backed.
+  bfType:
+    classification: external_api_or_resource_constant
+    evidence: BITMAPFILEHEADER::bfType is the Win32 BMP file signature field; 0x4d42 is the external bitmap format magic, not a game-domain discriminant.
   buildingType:
     classification: closed_domain_needs_listing_evidence
     evidence: TCity bands building types at 8, 0x10 and 0x20, which is a three-tier building-class layout; the tier names come from the city construction tables, which are not yet recovered.
