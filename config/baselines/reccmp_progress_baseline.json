@@ -12,8 +12,8 @@
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
   "git_branch": "fix/cpoint-layout-casts",
-  "git_commit": "f6185f489c17a19a009e169f9424e875ed92fc47",
-  "git_commit_date": "2026-07-25T15:08:54+02:00",
+  "git_commit": "bdf64d56d68f7b774345aa62ca2212147d9a1769",
+  "git_commit_date": "2026-07-25T15:12:25+02:00",
   "global_coverage_pct": 24.814645308924486,
   "global_orig_only_count": 8214,
   "global_recomp_only_count": 7875,
@@ -63,7 +63,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 12,
   "template_canonical_paired_count": 19,
-  "timestamp_utc": "2026-07-25T13:10:26+00:00",
+  "timestamp_utc": "2026-07-25T13:12:28+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
