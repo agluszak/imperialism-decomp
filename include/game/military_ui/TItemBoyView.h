@@ -2,6 +2,7 @@
 
 #include "compat.h"
 
+#include "game/battle_report_records.h"
 #include "game/ui_core/TView.h"
 #include "game/mfc.h"
 
@@ -25,6 +26,6 @@ public:
   // the raw listing).
   void DrawItemHeaderAndIconRows(CString* header);
 
-  struct BattleReportDetailRecord* battleDetail60; // +0x60
+  BattleReportDetailRecord* battleDetail60; // +0x60
 };
 ASSERT_SIZE(TItemBoyView, 0x64);

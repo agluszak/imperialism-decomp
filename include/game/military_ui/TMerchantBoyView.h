@@ -2,6 +2,7 @@
 
 #include "compat.h"
 
+#include "game/battle_report_records.h"
 #include "game/ui_core/TView.h"
 #include "game/mfc.h"
 
@@ -15,6 +16,6 @@ public:
   // NOOP: verified empty in original 0x004af6d3 (no standalone TMerchantBoyView::TMerchantBoyView body exists: CreateObject 0x004af6a0 inlines this default ctor, calling the TView base ctor directly at that site)
   TMerchantBoyView() {}
 
-  struct BattleReportDetailRecord* battleDetail60; // +0x60
+  BattleReportDetailRecord* battleDetail60; // +0x60
 };
 ASSERT_SIZE(TMerchantBoyView, 0x64);
