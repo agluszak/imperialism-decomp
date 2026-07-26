@@ -1,6 +1,9 @@
 #include "game/city/TFoodProcessingOrder.h"
 
 #include "game/city/TCity.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
+#include "game/ui_core/TViewMgr.h"
 
 // SYNTHETIC: IMPERIALISM 0x004b7dc0
 // TFoodProcessingOrder::CreateObject
@@ -31,12 +34,53 @@ void TFoodProcessingOrder::IFoodProcessingOrder(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x004b7ed0
 short TFoodProcessingOrder::MaxOrder() {
-  return 0;
+  short limit = static_cast<short>(cityField08->cityStockGrainD8 / 2);
+  short fishAndLivestock =
+      static_cast<short>(cityField08->cityStockFishDC + cityField08->cityStockLivestockDE);
+  short workforceLimit = static_cast<short>(summaryField0c->strength / 2);
+  if (cityField08->cityStockFruitDA < limit) {
+    limit = cityField08->cityStockFruitDA;
+  }
+  if (fishAndLivestock < limit) {
+    limit = fishAndLivestock;
+  }
+  if (workforceLimit < limit) {
+    limit = workforceLimit;
+  }
+  return static_cast<short>(quantityField04 + limit * 2);
 }
 
 // FUNCTION: IMPERIALISM 0x004b7f50
 bool TFoodProcessingOrder::SetQuantity(short param_1) {
-  return 0;
+  if ((param_1 & 1) != 0) {
+    ++param_1;
+  }
+  short previousQuantity = quantityField04;
+  if (param_1 > MaxOrder() || param_1 < 0) {
+    return false;
+  }
+  quantityField04 = param_1;
+
+  short halfDelta = static_cast<short>((param_1 - previousQuantity) / 2);
+  cityField08->cityStockGrainD8 = static_cast<short>(cityField08->cityStockGrainD8 - halfDelta * 2);
+  cityField08->VerifyStocks();
+  cityField08->cityStockFruitDA = static_cast<short>(cityField08->cityStockFruitDA - halfDelta);
+  cityField08->VerifyStocks();
+  summaryField0c->strength = static_cast<short>(summaryField0c->strength - halfDelta * 2);
+
+  short livestock = cityField08->cityStockLivestockDE;
+  if (livestock < halfDelta) {
+    cityField08->cityStockLivestockDE = 0;
+    cityField08->VerifyStocks();
+    cityField08->cityStockFishDC =
+        static_cast<short>(cityField08->cityStockFishDC - (halfDelta - livestock));
+  } else {
+    cityField08->cityStockLivestockDE =
+        static_cast<short>(cityField08->cityStockLivestockDE - halfDelta);
+  }
+  cityField08->VerifyStocks();
+  g_pUiRuntimeContext->RefreshCityProductionUi();
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x004b8060

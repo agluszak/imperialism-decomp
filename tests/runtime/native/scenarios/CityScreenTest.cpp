@@ -3,13 +3,16 @@
 #include "screens/StrategicMapDriver.h"
 
 #include "game/city/TCity.h"
+#include "game/city/TItemOrder.h"
 #include "game/city/TProductionOrder.h"
 #include "game/city/TUnitOrder.h"
 #include "game/city_ui/TBuildingView.h"
 #include "game/city_ui/TCityProductionView.h"
 #include "game/city_ui/TIndustryView.h"
 #include "game/city_ui/TUniversityView.h"
-#include "game/core/global_data_tables.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
+#include "game/globals/ui_core_globals.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/nation/TGreatPower.h"
 #include "game/turn_event_codes.h"
@@ -20,13 +23,17 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_tags_city.h"
 #include "game/ui_tags_common.h"
+#include "game/ui_widgets/TIndustryCluster.h"
 #include "game/ui_widgets/TRailCluster.h"
 
 namespace {
 
 class CityScreenTestCase : public RuntimeScenario {
 public:
-  CityScreenTestCase() : phase(kActivateCityScreen), activeBuildingSlot(kUniversityBuildingSlot) {}
+  CityScreenTestCase()
+      : phase(kActivateCityScreen), activeBuildingSlot(kUniversityBuildingSlot),
+        interactionComplete(false), interactionKind(kNoInteraction), interactionUnitOrder(0),
+        interactionItemOrder(0), interactionRowTag(0) {}
 
   const char* Name() const override {
     return "city_screen_opens";
@@ -59,6 +66,10 @@ public:
       ActivateBuilding();
     } else if (phase == kWaitForBuilding) {
       WaitForBuilding();
+    } else if (phase == kWaitForOrderIncrease) {
+      WaitForOrderIncrease();
+    } else if (phase == kWaitForOrderRestore) {
+      WaitForOrderRestore();
     } else if (phase == kWaitForBuildingClose) {
       WaitForBuildingClose();
     } else if (phase == kReturnToMap) {
@@ -80,6 +91,8 @@ private:
     kWaitForCityScreen,
     kActivateBuilding,
     kWaitForBuilding,
+    kWaitForOrderIncrease,
+    kWaitForOrderRestore,
     kWaitForBuildingClose,
     kReturnToMap,
     kWaitForMap
@@ -89,6 +102,8 @@ private:
     kUniversityBuildingSlot = kTurnEventUniversity - kTurnEventTextileMill,
     kRailyardBuildingSlot = kTurnEventRailyard - kTurnEventTextileMill
   };
+
+  enum InteractionKind { kNoInteraction, kUniversityInteraction, kItemInteraction };
 
   void ActivateCityScreen() {
     if (ScenarioPhaseTicks() < 60) {
@@ -158,6 +173,8 @@ private:
       return;
     }
     TCityProductionView* cityView = static_cast<TCityProductionView*>(mainView);
+    interactionComplete = false;
+    interactionKind = kNoInteraction;
     phase = kWaitForBuilding;
     EnterScenarioStep("waiting_for_city_building", "activate_city_building_hit_region");
     if (!cityView->ActivateBuildingSlotForRuntimeTest(activeBuildingSlot)) {
@@ -248,6 +265,289 @@ private:
     return true;
   }
 
+  short IndustryUnitTypeForBuilding(short buildingSlot) {
+    static const short kIndustryUnitTypesByPage[7] = {8, 13, 11, 15, 9, 14, 12};
+    return buildingSlot >= 0 && buildingSlot < 7 ? kIndustryUnitTypesByPage[buildingSlot] : -1;
+  }
+
+  TIndustryCluster* ResolveItemIndustryCluster(TBuildingView* buildingView) {
+    short unitType = IndustryUnitTypeForBuilding(activeBuildingSlot);
+    if (unitType < 0) {
+      return 0;
+    }
+    return static_cast<TIndustryCluster*>(
+        buildingView->ResolveControlByTag(g_pTradeSummarySelectionMap[unitType]));
+  }
+
+  bool ValidateItemQuantity(TBuildingView* buildingView) {
+    if (buildingView->IsKindOf(RUNTIME_CLASS(TIndustryView)) == 0) {
+      FailScenario("\"industry building control opened the wrong view class\"");
+      return false;
+    }
+    short unitType = IndustryUnitTypeForBuilding(activeBuildingSlot);
+    TIndustryCluster* industryCluster = ResolveItemIndustryCluster(buildingView);
+    TNumberText* quantity =
+        industryCluster == 0
+            ? 0
+            : static_cast<TNumberText*>(industryCluster->ResolveControlByTag(kControlTagMove));
+    TProductionOrder* order = unitType < 0 ? 0 : buildingView->city94->orderSlotsE4[unitType];
+    if (quantity == 0 || order == 0 || industryCluster->selectedMetricOrder != order) {
+      FailScenario("\"industry production count control is missing or has the wrong order\"");
+      return false;
+    }
+    CString quantityText;
+    CString expectedText;
+    quantity->GetCurrentText(&quantityText);
+    expectedText.Format("%d", order->quantityField04);
+    if (quantityText != expectedText || quantity->value != order->quantityField04 ||
+        !HasCorrectNumberTextPresentationState(quantity, 10, PALETTEINDEX(0))) {
+      FailScenario("\"industry production count state does not match its live item order\"");
+      return false;
+    }
+    return true;
+  }
+
+  TBuildingView* ActiveBuildingView() {
+    TView* mainView = CurrentMainView();
+    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventCityProduction || mainView == 0 ||
+        mainView->IsKindOf(RUNTIME_CLASS(TCityProductionView)) == 0) {
+      return 0;
+    }
+    return static_cast<TCityProductionView*>(mainView)->BuildingViewForRuntimeTest(
+        activeBuildingSlot);
+  }
+
+  void CaptureUnitOrderState(TUnitOrder* order) {
+    interactionKind = kUniversityInteraction;
+    interactionUnitOrder = order;
+    interactionItemOrder = 0;
+    priorQuantity = order->quantityField04;
+    priorPrimaryStock = order->cityField08->CityStockByType(order->primaryInputResourceId);
+    priorSecondaryStock =
+        order->secondaryInputResourceId < 0
+            ? 0
+            : order->cityField08->CityStockByType(order->secondaryInputResourceId);
+    priorTreasury = order->cityField08->ownerNationAc->treasuryValue10;
+    TPopulationMgr* population = order->summaryField0c;
+    priorStrength = population->strength;
+    priorPopulationCount = population->populationCount08;
+    priorPopulationFloat = population->populationCountFloat0c;
+    priorBaselineLow = population->baselineSlots10->lowSkillCount04;
+    priorBaselineMedium = population->baselineSlots10->mediumSkillCount06;
+    priorBaselineHigh = population->baselineSlots10->highSkillCount08;
+    priorProductionLow = population->productionSlots14->lowSkillCount04;
+    priorProductionMedium = population->productionSlots14->mediumSkillCount06;
+    priorProductionHigh = population->productionSlots14->highSkillCount08;
+  }
+
+  void CaptureItemOrderState(TItemOrder* order) {
+    interactionKind = kItemInteraction;
+    interactionUnitOrder = 0;
+    interactionItemOrder = order;
+    priorQuantity = order->quantityField04;
+    priorRequestedQuantity = order->requestedQuantity4c;
+    priorPrimaryStock = order->cityField08->CityStockByType(order->primaryInputResourceId);
+    priorPrimaryTracking = order->trackingSlots10[order->primaryInputResourceId];
+    priorSecondaryStock =
+        order->secondaryInputResourceId < 0
+            ? 0
+            : order->cityField08->CityStockByType(order->secondaryInputResourceId);
+    priorSecondaryTracking = order->secondaryInputResourceId < 0
+                                 ? 0
+                                 : order->trackingSlots10[order->secondaryInputResourceId];
+    priorStrength = order->summaryField0c->strength;
+    priorField3e = order->field3e;
+    priorProductionAccum = order->cityField08->productionAccum1fc[order->productionSlot];
+  }
+
+  bool BeginUniversityInteraction(TBuildingView* buildingView) {
+    for (short category = 0; category < 9; ++category) {
+      if (category == 6 || category == 7) {
+        continue;
+      }
+      TView* row = buildingView->ResolveControlByTag(kControlTagClu0 + category);
+      TView* plus = row == 0 ? 0 : row->ResolveControlByTag(kControlTagPlus);
+      TUnitOrder* order = buildingView->city94->buildOrderSlots[category + 9];
+      if (plus == 0 || plus->IsActionable() == 0 || order == 0 ||
+          order->MaxOrder() <= order->quantityField04) {
+        continue;
+      }
+      CaptureUnitOrderState(order);
+      interactionRowTag = kControlTagClu0 + category;
+      phase = kWaitForOrderIncrease;
+      EnterScenarioStep("waiting_for_university_order_increase", "activate_university_plus_arrow");
+      if (!RuntimeUiDriver::ActivateControl(row, kControlTagPlus)) {
+        FailScenario("\"university plus arrow could not be activated\"");
+        return false;
+      }
+      RequestScenarioTick();
+      return true;
+    }
+    FailScenario("\"university has no actionable production-order plus arrow\"");
+    return false;
+  }
+
+  bool BeginItemInteraction(TBuildingView* buildingView) {
+    TIndustryCluster* cluster = ResolveItemIndustryCluster(buildingView);
+    TView* rightArrow = cluster == 0 ? 0 : cluster->ResolveControlByTag(kControlTagRght);
+    TItemOrder* order = cluster == 0 ? 0 : static_cast<TItemOrder*>(cluster->selectedMetricOrder);
+    if (rightArrow == 0 || rightArrow->IsActionable() == 0 || order == 0 ||
+        order->MaxOrder() <= order->quantityField04) {
+      FailScenario("\"industry item order has no actionable right arrow\"");
+      return false;
+    }
+    CaptureItemOrderState(order);
+    phase = kWaitForOrderIncrease;
+    EnterScenarioStep("waiting_for_industry_order_increase", "activate_industry_right_arrow");
+    rightArrow->HandleEvent(100, rightArrow, 0);
+    RequestScenarioTick();
+    return true;
+  }
+
+  bool UnitOrderStateWasReserved() {
+    TUnitOrder* order = interactionUnitOrder;
+    TPopulationMgr* population = order->summaryField0c;
+    if (order->quantityField04 != priorQuantity + 1 ||
+        order->cityField08->CityStockByType(order->primaryInputResourceId) !=
+            priorPrimaryStock - order->primaryInputPerUnit ||
+        (order->secondaryInputResourceId >= 0 &&
+         order->cityField08->CityStockByType(order->secondaryInputResourceId) !=
+             priorSecondaryStock - order->secondaryInputPerUnit) ||
+        order->cityField08->ownerNationAc->treasuryValue10 !=
+            priorTreasury - order->cashCostPerUnit ||
+        population->populationCount08 != priorPopulationCount - 1 ||
+        population->populationCountFloat0c != priorPopulationFloat - 1.0f ||
+        population->strength >= priorStrength) {
+      return false;
+    }
+    return true;
+  }
+
+  bool ItemOrderStateWasReserved() {
+    TItemOrder* order = interactionItemOrder;
+    short primaryAmount = order->secondaryInputResourceId < 0 ? 2 : 1;
+    if (order->quantityField04 != priorQuantity + 1 ||
+        order->requestedQuantity4c != order->quantityField04 ||
+        order->cityField08->CityStockByType(order->primaryInputResourceId) !=
+            priorPrimaryStock - primaryAmount ||
+        order->trackingSlots10[order->primaryInputResourceId] !=
+            priorPrimaryTracking + primaryAmount ||
+        (order->secondaryInputResourceId >= 0 &&
+         (order->cityField08->CityStockByType(order->secondaryInputResourceId) !=
+              priorSecondaryStock - 1 ||
+          order->trackingSlots10[order->secondaryInputResourceId] != priorSecondaryTracking + 1)) ||
+        order->summaryField0c->strength != priorStrength - 2 ||
+        order->field3e != priorField3e + 2 ||
+        order->cityField08->productionAccum1fc[order->productionSlot] != priorProductionAccum - 1) {
+      return false;
+    }
+    return true;
+  }
+
+  bool UnitOrderStateWasRestored() {
+    TUnitOrder* order = interactionUnitOrder;
+    TPopulationMgr* population = order->summaryField0c;
+    return order->quantityField04 == priorQuantity &&
+           order->cityField08->CityStockByType(order->primaryInputResourceId) ==
+               priorPrimaryStock &&
+           (order->secondaryInputResourceId < 0 ||
+            order->cityField08->CityStockByType(order->secondaryInputResourceId) ==
+                priorSecondaryStock) &&
+           order->cityField08->ownerNationAc->treasuryValue10 == priorTreasury &&
+           population->strength == priorStrength &&
+           population->populationCount08 == priorPopulationCount &&
+           population->populationCountFloat0c == priorPopulationFloat &&
+           population->baselineSlots10->lowSkillCount04 == priorBaselineLow &&
+           population->baselineSlots10->mediumSkillCount06 == priorBaselineMedium &&
+           population->baselineSlots10->highSkillCount08 == priorBaselineHigh &&
+           population->productionSlots14->lowSkillCount04 == priorProductionLow &&
+           population->productionSlots14->mediumSkillCount06 == priorProductionMedium &&
+           population->productionSlots14->highSkillCount08 == priorProductionHigh;
+  }
+
+  bool ItemOrderStateWasRestored() {
+    TItemOrder* order = interactionItemOrder;
+    return order->quantityField04 == priorQuantity &&
+           order->requestedQuantity4c == priorRequestedQuantity &&
+           order->cityField08->CityStockByType(order->primaryInputResourceId) ==
+               priorPrimaryStock &&
+           order->trackingSlots10[order->primaryInputResourceId] == priorPrimaryTracking &&
+           (order->secondaryInputResourceId < 0 ||
+            (order->cityField08->CityStockByType(order->secondaryInputResourceId) ==
+                 priorSecondaryStock &&
+             order->trackingSlots10[order->secondaryInputResourceId] == priorSecondaryTracking)) &&
+           order->summaryField0c->strength == priorStrength && order->field3e == priorField3e &&
+           order->cityField08->productionAccum1fc[order->productionSlot] == priorProductionAccum;
+  }
+
+  void WaitForOrderIncrease() {
+    TBuildingView* buildingView = ActiveBuildingView();
+    if (buildingView == 0) {
+      FailScenario("\"city building view disappeared during order interaction\"");
+      return;
+    }
+    bool stateIsCorrect = interactionKind == kUniversityInteraction ? UnitOrderStateWasReserved()
+                                                                    : ItemOrderStateWasReserved();
+    bool uiIsCorrect = interactionKind == kUniversityInteraction
+                           ? ValidateUniversityQuantities(buildingView)
+                           : ValidateItemQuantity(buildingView);
+    if (!stateIsCorrect || !uiIsCorrect) {
+      FailScenario("\"city production increase did not reserve model state and refresh UI\"");
+      return;
+    }
+
+    TView* interactionRoot;
+    int controlTag;
+    int commandId;
+    if (interactionKind == kUniversityInteraction) {
+      interactionRoot = buildingView->ResolveControlByTag(interactionRowTag);
+      controlTag = kControlTagMinu;
+      commandId = 0;
+    } else {
+      interactionRoot = ResolveItemIndustryCluster(buildingView);
+      controlTag = kControlTagLeft;
+      commandId = 101;
+    }
+    TView* control = interactionRoot == 0 ? 0 : interactionRoot->ResolveControlByTag(controlTag);
+    if (control == 0 || control->IsActionable() == 0) {
+      FailScenario("\"city production decrease control is missing or disabled\"");
+      return;
+    }
+
+    phase = kWaitForOrderRestore;
+    EnterScenarioStep("waiting_for_city_order_restore", "activate_city_order_decrease");
+    if (interactionKind == kUniversityInteraction) {
+      if (!RuntimeUiDriver::ActivateControl(interactionRoot, controlTag)) {
+        FailScenario("\"university minus arrow could not be activated\"");
+        return;
+      }
+    } else {
+      control->HandleEvent(commandId, control, 0);
+    }
+    RequestScenarioTick();
+  }
+
+  void WaitForOrderRestore() {
+    TBuildingView* buildingView = ActiveBuildingView();
+    if (buildingView == 0) {
+      FailScenario("\"city building view disappeared while restoring order state\"");
+      return;
+    }
+    bool stateIsCorrect = interactionKind == kUniversityInteraction ? UnitOrderStateWasRestored()
+                                                                    : ItemOrderStateWasRestored();
+    bool uiIsCorrect = interactionKind == kUniversityInteraction
+                           ? ValidateUniversityQuantities(buildingView)
+                           : ValidateItemQuantity(buildingView);
+    if (!stateIsCorrect || !uiIsCorrect) {
+      FailScenario("\"city production decrease did not restore model state and refresh UI\"");
+      return;
+    }
+    interactionComplete = true;
+    phase = kWaitForBuilding;
+    EnterScenarioStep("verified_city_order_interaction", "close_verified_city_building");
+    RequestScenarioTick();
+  }
+
   void WaitForBuilding() {
     TView* mainView = CurrentMainView();
     if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventCityProduction || mainView == 0 ||
@@ -267,9 +567,14 @@ private:
       FailScenario("\"city building control opened the wrong production slot\"");
       return;
     }
-    bool quantitiesAreValid = activeBuildingSlot == kUniversityBuildingSlot
-                                  ? ValidateUniversityQuantities(buildingView)
-                                  : ValidateRailyardQuantity(buildingView);
+    bool quantitiesAreValid;
+    if (activeBuildingSlot == kUniversityBuildingSlot) {
+      quantitiesAreValid = ValidateUniversityQuantities(buildingView);
+    } else if (activeBuildingSlot == kRailyardBuildingSlot) {
+      quantitiesAreValid = ValidateRailyardQuantity(buildingView);
+    } else {
+      quantitiesAreValid = ValidateItemQuantity(buildingView);
+    }
     if (!quantitiesAreValid) {
       return;
     }
@@ -323,6 +628,14 @@ private:
       RequestScenarioTick();
       return;
     }
+    if (!interactionComplete && activeBuildingSlot == kUniversityBuildingSlot) {
+      BeginUniversityInteraction(buildingView);
+      return;
+    }
+    if (!interactionComplete && activeBuildingSlot != kRailyardBuildingSlot) {
+      BeginItemInteraction(buildingView);
+      return;
+    }
     phase = kWaitForBuildingClose;
     EnterScenarioStep("closing_city_building", "activate_native_system_close");
     SendMessageA(buildingHwnd, WM_SYSCOMMAND, SC_CLOSE, 0);
@@ -345,6 +658,32 @@ private:
       activeBuildingSlot = kRailyardBuildingSlot;
       phase = kActivateBuilding;
       EnterScenarioStep("activating_railyard_building", "activate_railyard_building_slot");
+      RequestScenarioTick();
+      return;
+    }
+    if (activeBuildingSlot == kRailyardBuildingSlot) {
+      TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+      if (activeNation == 0 || activeNation->city == 0) {
+        FailScenario("\"active nation lost its city before industry interaction\"");
+        return;
+      }
+      short itemBuildingSlot = -1;
+      for (short buildingSlot = 1; buildingSlot < 7; ++buildingSlot) {
+        short unitType = IndustryUnitTypeForBuilding(buildingSlot);
+        TProductionOrder* order = activeNation->city->orderSlotsE4[unitType];
+        if (activeNation->city->GetBuildingType(buildingSlot) > 0 && order != 0 &&
+            order->MaxOrder() > order->quantityField04) {
+          itemBuildingSlot = buildingSlot;
+          break;
+        }
+      }
+      if (itemBuildingSlot < 0) {
+        FailScenario("\"city has no actionable TItemOrder-backed industry building\"");
+        return;
+      }
+      activeBuildingSlot = itemBuildingSlot;
+      phase = kActivateBuilding;
+      EnterScenarioStep("activating_item_industry_building", "activate_item_industry_slot");
       RequestScenarioTick();
       return;
     }
@@ -389,6 +728,29 @@ private:
 
   Phase phase;
   short activeBuildingSlot;
+  bool interactionComplete;
+  InteractionKind interactionKind;
+  TUnitOrder* interactionUnitOrder;
+  TItemOrder* interactionItemOrder;
+  int interactionRowTag;
+  short priorQuantity;
+  short priorRequestedQuantity;
+  short priorPrimaryStock;
+  short priorPrimaryTracking;
+  short priorSecondaryStock;
+  short priorSecondaryTracking;
+  short priorStrength;
+  short priorField3e;
+  short priorProductionAccum;
+  int priorTreasury;
+  short priorPopulationCount;
+  float priorPopulationFloat;
+  short priorBaselineLow;
+  short priorBaselineMedium;
+  short priorBaselineHigh;
+  short priorProductionLow;
+  short priorProductionMedium;
+  short priorProductionHigh;
 };
 
 CityScreenTestCase g_test;
