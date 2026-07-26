@@ -1,6 +1,9 @@
 #include "game/city/TPopGrowthOrder.h"
 #include "game/city/TCity.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 #include "game/nation/TGreatPower.h"
+#include "game/ui_core/TViewMgr.h"
 
 // SYNTHETIC: IMPERIALISM 0x004b3050
 // TPopGrowthOrder::`scalar deleting destructor'
@@ -30,12 +33,46 @@ void TPopGrowthOrder::IPopGrowthOrder(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x004b81b0
 short TPopGrowthOrder::MaxOrder() {
-  return 0;
+  short currentQuantity = quantityField04;
+  short furnitureLimit = static_cast<short>(cityField08->cityStockFurnitureD2 + currentQuantity);
+  short clothingLimit = static_cast<short>(cityField08->cityStockClothingD0 + currentQuantity);
+  short foodLimit = static_cast<short>(cityField08->cityStockCannedFoodC4 + currentQuantity);
+  short capacityLimit = static_cast<short>(cityField08->productionAccum1fc[0x0f] + currentQuantity);
+
+  field40 = 0;
+  short limit = furnitureLimit;
+  if (clothingLimit < limit) {
+    limit = clothingLimit;
+  }
+  if (foodLimit < limit) {
+    limit = foodLimit;
+  }
+  if (capacityLimit < limit) {
+    field40 = 2;
+    limit = capacityLimit;
+  }
+  return limit;
 }
 
 // FUNCTION: IMPERIALISM 0x004b8230
 bool TPopGrowthOrder::SetQuantity(short param_1) {
-  return 0;
+  short delta = static_cast<short>(param_1 - quantityField04);
+  if (param_1 > MaxOrder() || param_1 < 0) {
+    return false;
+  }
+  quantityField04 = param_1;
+
+  cityField08->cityStockFurnitureD2 = static_cast<short>(cityField08->cityStockFurnitureD2 - delta);
+  cityField08->VerifyStocks();
+  cityField08->cityStockClothingD0 = static_cast<short>(cityField08->cityStockClothingD0 - delta);
+  cityField08->VerifyStocks();
+  cityField08->cityStockCannedFoodC4 =
+      static_cast<short>(cityField08->cityStockCannedFoodC4 - delta);
+  cityField08->VerifyStocks();
+  cityField08->productionAccum1fc[0x0f] =
+      static_cast<short>(cityField08->productionAccum1fc[0x0f] - delta);
+  g_pUiRuntimeContext->RefreshCityProductionUi();
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x004b82f0

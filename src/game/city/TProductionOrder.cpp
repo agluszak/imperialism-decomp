@@ -59,7 +59,11 @@ short TProductionOrder::MaxOrder() {
 
 // FUNCTION: IMPERIALISM 0x004b5100
 bool TProductionOrder::SetQuantity(short param_1) {
-  return 0;
+  if (param_1 > MaxOrder() || param_1 < 0) {
+    return false;
+  }
+  quantityField04 = param_1;
+  return true;
 }
 
 // NOOP: verified empty in original 0x004b5140
