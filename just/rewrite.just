@@ -49,3 +49,12 @@ build-library-oracle *args:
 [group('rewrite')]
 format *paths:
   uv run python -m tools.workflow.format_cpp {{paths}}
+
+# MUTATES: resources/cursors with --write. Reconstruct the custom named cursor files
+# from the retail PE's GROUP_CURSOR and CURSOR resources; check mode is read-only.
+[doc('MUTATES (--write): resources/cursors. Check or regenerate retail cursor assets')]
+[group('rewrite')]
+cursor-resources mode="--check":
+  : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY in .env}"
+  uv run python -m tools.workflow.pe_resources turn-event-cursors \
+    "$ORIGINAL_BINARY" resources/cursors {{mode}}

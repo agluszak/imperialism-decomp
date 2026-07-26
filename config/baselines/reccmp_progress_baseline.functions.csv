@@ -925,7 +925,7 @@ address|matching|name
 0x48ae60|0.519774011299435|TView::DetachChildFromOwnerList
 0x48af80|1.0|TView::SwitchActiveChildAndNotify
 0x48afd0|0.4666666666666667|TView::ResolveControlByTag
-0x48b070|0.7096774193548387|TView::SetState
+0x48b070|1.0|TView::SetState
 0x48b0b0|1.0|TView::Free
 0x48b180|1.0|TView::GetWindow
 0x48b1a0|1.0|TView::GetRootView
@@ -1102,7 +1102,7 @@ address|matching|name
 0x490c70|1.0|TEditText::GetCurrentText
 0x490cb0|1.0|TEditText::SetTextAlignmentAndMaybeRefresh
 0x490cf0|0.3312883435582822|TEditText::InitDialogWindowAndSyncTitleIfChanged
-0x490e50|0.625|TEditText::UpdateCoordinates
+0x490e50|0.65625|TEditText::UpdateCoordinates
 0x490ed0|0.28865979381443296|TNumberText::CreateObject
 0x491040|1.0|TNumberText::GetRuntimeClass
 0x491060|0.875|TNumberText::INumberText
@@ -6072,7 +6072,7 @@ address|matching|name
 0x5d50b0|1.0|TViewMgr::`scalar deleting destructor'
 0x5d50e0|1.0|TViewMgr::~TViewMgr
 0x5d5100|1.0|TViewMgr::LoadTurnEventCursorTable
-0x5d5140|0.835820895522388|LoadTurnEventCursorByResourceIdOffset1000
+0x5d5140|0.9253731343283582|LoadTurnEventCursorByResourceIdOffset1000
 0x5d51e0|1.0|TViewMgr::Free
 0x5d5200|1.0|TViewMgr::ReadFrom
 0x5d5250|1.0|TViewMgr::WriteTo
