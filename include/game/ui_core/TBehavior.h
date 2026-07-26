@@ -15,6 +15,9 @@ public:
   TBehavior();
 
   DECLARE_DYNCREATE(TBehavior)
+  // Non-virtual (no vtable slot references it); the only caller is
+  // TDropShadowTextBehavior::IDropShadowTextBehavior, which passes the 'drop' tag.
+  void SetBehaviorTag(unsigned long tag);         // 0x00487260
   virtual void SetOwner(TEventHandler* owner);    // slot 0x0a byte 0x28 0x487280
   virtual unsigned char IsEnabled();              // slot 0x0b byte 0x2c 0x4872a0
   virtual void SetEnabled(unsigned char enabled); // slot 0x0c byte 0x30 0x4872c0

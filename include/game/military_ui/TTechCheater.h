@@ -12,6 +12,10 @@ public:
   virtual ~TTechCheater() override; // slot 0x01 (scalar deleting destructor)
   void ApplyCheats() override;      // slot 0x68 0x4b1990; Mac symbol oracle
 
+  // Two-phase init (MacApp IViewClass idiom): chains to the TCheater base state with
+  // this cheater's dialog resource id. 0x004b1960, __thiscall.
+  void ConstructTTechCheaterBaseState(TView* panel);
+
   // NOOP: verified empty in original 0x004b18b3 (no standalone TTechCheater::TTechCheater body exists: CreateObject 0x004b1880 inlines this default ctor, calling the TView base ctor directly at that site)
   TTechCheater() {}
 };

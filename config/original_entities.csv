@@ -696,7 +696,7 @@ address|name|symbol|size|type|prototype|provenance
 4871e0|TBehavior::ConstructTBehaviorBaseState||27|function|undefined ConstructTBehaviorBaseState()|
 487210|TBehavior::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 487240|DestructTBehaviorAndMaybeFree_Impl||7|function|undefined DestructTBehaviorAndMaybeFree_Impl()|
-487260|IltTarget_00487260||10|function|undefined IltTarget_00487260()|
+487260|TBehavior::SetBehaviorTag||10|function|void __thiscall TBehavior::SetBehaviorTag(unsigned long tag)|curated
 487280|TBehavior::SetOwner||10|function|void __thiscall SetOwner(TEventHandler * owner)|
 4872a0|TBehavior::IsEnabled||4|function|unsigned char __thiscall IsEnabled(void)|
 4872c0|TBehavior::SetEnabled||10|function|void __thiscall SetEnabled(unsigned char enabled)|
@@ -1837,7 +1837,7 @@ address|name|symbol|size|type|prototype|provenance
 4b10a0|TDropShadowTextBehavior::ConstructTDropShadowTextBehaviorBaseState||32|function|undefined ConstructTDropShadowTextBehaviorBaseState()|
 4b10d0|TDropShadowTextBehavior::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b1100|DestructTDropShadowTextBehaviorAndMaybeFree_Impl||7|function|undefined DestructTDropShadowTextBehaviorAndMaybeFree_Impl()|
-4b1120|IltTarget_004b1120||20|function|undefined IltTarget_004b1120()|
+4b1120|TDropShadowTextBehavior::IDropShadowTextBehavior||20|function|void __thiscall TDropShadowTextBehavior::IDropShadowTextBehavior(COLORREF shadowColor)|curated
 4b1150|TDropShadowTextBehavior::Draw||188|function|void __thiscall Draw(RECT * bounds)|
 4b1370|`dynamic initializer for 'g_scaledShortConst_6A2470''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A2470''(void)|library
 4b13a0|TCheater::CreateObject|?CreateObject@TCheater@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
@@ -1850,7 +1850,7 @@ address|name|symbol|size|type|prototype|provenance
 4b1880|TTechCheater::CreateObject|?CreateObject@TTechCheater@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4b18f0|TTechCheater::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b1940|TTechCheater::GetRuntimeClass||6|function|undefined GetTTechCheaterClassNamePointer()|rtti
-4b1960|IltTarget_004b1960||18|function|undefined IltTarget_004b1960()|
+4b1960|TTechCheater::ConstructTTechCheaterBaseState||18|function|void __thiscall TTechCheater::ConstructTTechCheaterBaseState(TView * panel)|curated
 4b1990|TTechCheater::ApplyCheats||1|function|void ApplyCheats(void)|mac_oracle
 4b19b0|TGPCheater::CreateObject|?CreateObject@TGPCheater@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4b1a20|TGPCheater::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
