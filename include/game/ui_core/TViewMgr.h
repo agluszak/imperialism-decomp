@@ -69,7 +69,7 @@ public:
   virtual void HandleTurnEventDialogFactorySlot7C(int eventCode); // 0x7c 0x5d6f10
   virtual void HandleTurnEventDialogFactorySlot80(int eventCode); // 0x80 0x5d6fd0
   virtual void ShowTransportScreen(short nationSlot);             // 0x84; Mac oracle
-  virtual void ShowAbilityStatusReport(int abilityIndex);         // 0x88 0x5d8980 (ret 4)
+  virtual void ShowAbilityStatusReport(short abilityIndex);       // 0x88 0x5d8980 (ret 4)
   virtual void NoOpTurnEventStateVtableSlot8C(int arg);           // 0x8c
   virtual char MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
                                         short proposalCode); // 0x90

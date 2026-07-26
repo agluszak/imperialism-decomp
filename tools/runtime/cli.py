@@ -30,6 +30,11 @@ def add_run_arguments(parser: argparse.ArgumentParser) -> None:
         help="fail instead of skipping when a local retail-derived fixture is missing",
     )
     parser.add_argument(
+        "--gdb",
+        action="store_true",
+        help="attach the debugger on the first attempt instead of only on failure",
+    )
+    parser.add_argument(
         "--no-gdb",
         action="store_true",
         help="run directly under Wine as a debugger-sensitivity control",
@@ -76,6 +81,8 @@ def _suite_command(test_name: str, args: argparse.Namespace) -> list[str]:
     ]
     if args.rerun_seh:
         command.append("--rerun-seh")
+    if getattr(args, "gdb", False):
+        command.append("--gdb")
     if args.no_gdb:
         command.append("--no-gdb")
     if args.require_fixtures:

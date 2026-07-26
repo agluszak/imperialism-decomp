@@ -2,6 +2,7 @@
 
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/gfx/CDib.h"
+#include "game/gfx/TScopedQuickDrawBrush.h"
 #include "game/gfx/CDibPal.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
@@ -48,6 +49,8 @@ TQuickDrawClipStateInitializer::TQuickDrawClipStateInitializer() {
   g_pGlobalClipRegionHandleObject->Attach(::CreateRectRgn(0, 0, 0, 0));
 }
 
+// SYNTHETIC: IMPERIALISM 0x00493fe0
+// InitStub_thunk_InitializeGlobalClipRegionHandleState_At00493fe0
 static TQuickDrawClipStateInitializer g_quickDrawClipStateInitializer;
 
 // FUNCTION: IMPERIALISM 0x00494130
@@ -819,11 +822,8 @@ void DrawCenteredGuideLineOnMapDc(short x, short y) {
 
 // FUNCTION: IMPERIALISM 0x00498980
 void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
-  CBrush brush;
-  brush.CreateSolidBrush(g_QuickDrawForegroundColor);
-
-  RECT fillRect;
-  CopyRect(&fillRect, rect);
+  CBrush brush(g_QuickDrawForegroundColor);
+  TScopedQuickDrawBrush brushBounds(rect);
 
   CDib* activeSurfaceDib = 0;
   if (g_pActiveQuickDrawSurfaceContextHead == &g_defaultQuickDrawSurfaceSentinel) {
@@ -831,22 +831,17 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
   } else {
     TBitmapSurfaceContextDescriptor* descriptor =
         static_cast<TBitmapSurfaceContextDescriptor*>(g_pActiveQuickDrawSurfaceContextHead);
-    TBitmapSurfaceNode* node = descriptor->GetPixMap();
-    if (node != nullptr) {
-      activeSurfaceDib = node->dib;
-    }
+    activeSurfaceDib = (*descriptor->GetPixMapHandle())->dib;
   }
   if (activeSurfaceDib == 0) {
-    OffsetRect(&fillRect, g_nQuickDrawOriginX, g_nQuickDrawOriginY);
+    OffsetRect(&brushBounds.paintRect00, g_nQuickDrawOriginX, g_nQuickDrawOriginY);
   }
 
   CDC* dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  if (dc != nullptr) {
-    FillRect(dc->GetSafeHdc(), &fillRect, static_cast<HBRUSH>(brush.GetSafeHandle()));
-  }
+  FillRect(dc->m_hDC, &brushBounds.paintRect00, static_cast<HBRUSH>(brush));
 }
 
 // FUNCTION: IMPERIALISM 0x00498b50

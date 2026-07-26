@@ -1,7 +1,11 @@
 #include "game/gfx/TNewGameCommand.h"
 
+#include "game/ui_screens/TSimMgr.h"
+
 // FUNCTION: IMPERIALISM 0x0049ddb0
-void TNewGameCommand::DoIt() {}
+void TNewGameCommand::DoIt() {
+  ReinitializeGameFlowAndPostTurnEventCode(kTurnEventRebuildRegisteredWindows);
+}
 
 // SYNTHETIC: IMPERIALISM 0x0049ddd0
 // TNewGameCommand::`scalar deleting destructor'

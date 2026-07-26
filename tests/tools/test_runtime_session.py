@@ -170,8 +170,8 @@ class RuntimeSessionTests(unittest.TestCase):
                 patch("tools.runtime.session.initialize_wine_prefix"),
                 patch("tools.runtime.session.prefix_environment", return_value={}),
                 patch(
-                    "tools.runtime.session.windows_path",
-                    side_effect=lambda path, _environment: str(path),
+                    "tools.runtime.session.windows_paths",
+                    side_effect=lambda paths, _environment: [str(path) for path in paths],
                 ),
                 patch("tools.runtime.session.retail_game_dir", return_value=root),
                 patch("tools.runtime.session.shut_down_wine_prefix"),
@@ -182,10 +182,7 @@ class RuntimeSessionTests(unittest.TestCase):
                     return_value=_NoVirtualDisplay(),
                 ),
                 patch("tools.runtime.session.capture_failure_screenshot"),
-                patch(
-                    "tools.runtime.session.time.monotonic",
-                    side_effect=(0.0, 0.1, 0.2, 0.3),
-                ),
+                patch("tools.runtime.session.time.monotonic", return_value=0.0),
             ):
                 result = execute_run(
                     name="boot_managers",
@@ -218,8 +215,8 @@ class RuntimeSessionTests(unittest.TestCase):
                 patch("tools.runtime.session.initialize_wine_prefix"),
                 patch("tools.runtime.session.prefix_environment", return_value={}),
                 patch(
-                    "tools.runtime.session.windows_path",
-                    side_effect=lambda path, _environment: str(path),
+                    "tools.runtime.session.windows_paths",
+                    side_effect=lambda paths, _environment: [str(path) for path in paths],
                 ),
                 patch("tools.runtime.session.retail_game_dir", return_value=root),
                 patch("tools.runtime.session.shut_down_wine_prefix"),
@@ -265,8 +262,8 @@ class RuntimeSessionTests(unittest.TestCase):
                 patch("tools.runtime.session.initialize_wine_prefix"),
                 patch("tools.runtime.session.prefix_environment", return_value={}),
                 patch(
-                    "tools.runtime.session.windows_path",
-                    side_effect=lambda path, _environment: str(path),
+                    "tools.runtime.session.windows_paths",
+                    side_effect=lambda paths, _environment: [str(path) for path in paths],
                 ),
                 patch("tools.runtime.session.retail_game_dir", return_value=root),
                 patch("tools.runtime.session.shut_down_wine_prefix"),
@@ -303,8 +300,8 @@ class RuntimeSessionTests(unittest.TestCase):
                 patch("tools.runtime.session.initialize_wine_prefix"),
                 patch("tools.runtime.session.prefix_environment", return_value={}),
                 patch(
-                    "tools.runtime.session.windows_path",
-                    side_effect=lambda path, _environment: str(path),
+                    "tools.runtime.session.windows_paths",
+                    side_effect=lambda paths, _environment: [str(path) for path in paths],
                 ),
                 patch("tools.runtime.session.retail_game_dir", return_value=root),
                 patch("tools.runtime.session.shut_down_wine_prefix"),

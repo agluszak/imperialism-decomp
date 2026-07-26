@@ -68,7 +68,7 @@ TViewMgr* g_pUiRuntimeContext = 0;
 // GLOBAL: IMPERIALISM 0x006a2050
 TBackdropWindow* g_pActiveBackdropWindow = 0;
 // GLOBAL: IMPERIALISM 0x006a2054
-char* g_pBackdropWaitCursorGuardToken = 0;
+CWaitCursor* g_pBackdropWaitCursor = 0;
 // GLOBAL: IMPERIALISM 0x006a2148
 TAssetMgr* g_pUiViewManager = 0;
 // GLOBAL: IMPERIALISM 0x006a327c
@@ -562,8 +562,12 @@ int g_nQuickDrawResolvedTextOriginY = 0;
 int g_nUiFrameClipOriginX = 0;
 // GLOBAL: IMPERIALISM 0x006a545c
 int g_nUiFrameClipOriginY = 0;
+// SYNTHETIC: IMPERIALISM 0x00493f90
+// InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit
+// SYNTHETIC: IMPERIALISM 0x00493fc0
+// DestroyDefaultQuickDrawSurfaceContextAtExit
 // GLOBAL: IMPERIALISM 0x006a1ca0
-TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
+TBitmapSurfaceContextDescriptor g_defaultQuickDrawSurfaceSentinel;
 // Statically initialized to the sentinel address (the dword at 0x006950f8 holds
 // 0x006a1ca0 in the original), not null — the restore path in
 // BuildStrategicMapCommodityIconAtlasFrom700To722 captures this before the first
@@ -825,7 +829,7 @@ RgnHandle g_pTemporaryRegionCache = 0;
 // GLOBAL: IMPERIALISM 0x006a2018
 // Cached CCommandLineInfo::m_bShowSplash flag (cmdInfo+0x04 after the CObject vptr).
 // Writer: SetCachedShowSplashFlag @ 0x0049cc40 from InitInstance @ 0x00412f81.
-// Reader: Function_0049cc60 @ 0x0049cc60 when nonzero.
+// Reader: CreateBackdropWindowIfSplashEnabled @ 0x0049cc60 when nonzero.
 BOOL g_cachedShowSplashFlag = FALSE;
 
 } // extern "C"

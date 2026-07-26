@@ -3,6 +3,7 @@
 // (bead 8mo.2). Definitions stay in src/game/global_data_tables.cpp;
 // assignment evidence: docs/reference/subsystem_assignment.csv.
 #include "game/globals/prelude.h"
+#include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_tags_common.h"
 
 extern TInfoBarText* g_pCursorControlPanel;
@@ -1447,7 +1448,7 @@ extern int g_nUiFrameClipOriginX;
 
 extern int g_nUiFrameClipOriginY;
 
-extern TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
+extern TBitmapSurfaceContextDescriptor g_defaultQuickDrawSurfaceSentinel;
 
 extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead;
 

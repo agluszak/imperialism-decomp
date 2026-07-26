@@ -175,116 +175,59 @@ void DisposeTemporaryRegionCache(void) {
   g_pTemporaryRegionCache = 0;
 }
 
-// Combine two source clip regions into `dst`: when both are empty `dst` becomes an empty
-// region; when exactly one is empty the other is copied (RGN_COPY); when both are non-empty
-// they are combined with RGN_DIFF. The bounding box of `dst` is refreshed afterwards. The
-// per-region emptiness test (GetRgnBox -> CopyRect -> IsRectEmpty) is inlined at each site, as
-// in the original.
+// The retail combine body expands this predicate at each decision point. A public
+// out-of-line EmptyRgn remains below for callers in other translation units.
+inline unsigned char IsRgnEmptyForCombine(RgnHandle rgn) {
+  unsigned char empty;
+  if (rgn == NULL) {
+    empty = 1;
+  } else {
+    Region* region = *rgn;
+    CRgn* nativeRegion = &region->rgn;
+    if (static_cast<HRGN>(*nativeRegion) == NULL) {
+      empty = 1;
+    } else {
+      ::GetRgnBox(static_cast<HRGN>(region->rgn.m_hObject), &region->rgnBBox);
+      RECT box;
+      Region* refreshedRegion = *rgn;
+      ::CopyRect(&box, &refreshedRegion->rgnBBox);
+      empty = static_cast<unsigned char>(::IsRectEmpty(&box));
+    }
+  }
+  return empty;
+}
+
+// Likewise, the both-empty branch expands this operation before the shared final bounds refresh.
+inline void SetEmptyRgnForCombine(RgnHandle rgn) {
+  (*rgn)->rgn.DeleteObject();
+  CRgn* region = &(*rgn)->rgn;
+  region->Attach(::CreateRectRgn(0, 0, 0, 0));
+  Region* boundsOwner = *rgn;
+  ::GetRgnBox(static_cast<HRGN>(boundsOwner->rgn.m_hObject), &boundsOwner->rgnBBox);
+}
+
+// Combine two source clip regions into `dst`: both empty creates an empty destination,
+// exactly one empty copies the other, and two non-empty regions use RGN_DIFF.
 // FUNCTION: IMPERIALISM 0x00497540
 void CombineClipRegionsWithEmptyHandling(RgnHandle srcA, RgnHandle srcB, RgnHandle dst) {
-  RECT boundsScratch;
-
-  char emptyA;
-  if (srcA == NULL) {
-    emptyA = 1;
+  if (IsRgnEmptyForCombine(srcA) && IsRgnEmptyForCombine(srcB)) {
+    SetEmptyRgnForCombine(dst);
+  } else if (IsRgnEmptyForCombine(srcA)) {
+    CRgn* rgnB = &(*srcB)->rgn;
+    CRgn* rgnDst = &(*dst)->rgn;
+    ::CombineRgn(static_cast<HRGN>(rgnDst->m_hObject), static_cast<HRGN>(*rgnB), NULL, RGN_COPY);
+  } else if (IsRgnEmptyForCombine(srcB)) {
+    CRgn* rgnA = &(*srcA)->rgn;
+    CRgn* rgnDst = &(*dst)->rgn;
+    ::CombineRgn(static_cast<HRGN>(rgnDst->m_hObject), static_cast<HRGN>(*rgnA), NULL, RGN_COPY);
   } else {
-    Region* ra = *srcA;
-    HRGN ha = static_cast<HRGN>(static_cast<HGDIOBJ>(ra->rgn));
-    if (ha == NULL) {
-      emptyA = 1;
-    } else {
-      ::GetRgnBox(ha, &ra->rgnBBox);
-      ::CopyRect(&boundsScratch, &ra->rgnBBox);
-      emptyA = static_cast<char>(::IsRectEmpty(&boundsScratch));
-    }
+    CRgn* rgnB = &(*srcB)->rgn;
+    CRgn* rgnA = &(*srcA)->rgn;
+    CRgn* rgnDst = &(*dst)->rgn;
+    ::CombineRgn(static_cast<HRGN>(rgnDst->m_hObject), static_cast<HRGN>(*rgnA),
+                 static_cast<HRGN>(*rgnB), RGN_DIFF);
   }
 
-  if (emptyA != 0) {
-    char emptyB;
-    if (srcB == NULL) {
-      emptyB = 1;
-    } else {
-      Region* rb = *srcB;
-      HRGN hb = static_cast<HRGN>(static_cast<HGDIOBJ>(rb->rgn));
-      if (hb == NULL) {
-        emptyB = 1;
-      } else {
-        ::GetRgnBox(hb, &rb->rgnBBox);
-        ::CopyRect(&boundsScratch, &rb->rgnBBox);
-        emptyB = static_cast<char>(::IsRectEmpty(&boundsScratch));
-      }
-    }
-    if (emptyB != 0) {
-      (*dst)->rgn.DeleteObject();
-      (*dst)->rgn.Attach(::CreateRectRgn(0, 0, 0, 0));
-      ::GetRgnBox(static_cast<HRGN>((*dst)->rgn.m_hObject), &(*dst)->rgnBBox);
-      return;
-    }
-  }
-
-  char emptyA2;
-  if (srcA == NULL) {
-    emptyA2 = 1;
-  } else {
-    Region* ra = *srcA;
-    HRGN ha = static_cast<HRGN>(static_cast<HGDIOBJ>(ra->rgn));
-    if (ha == NULL) {
-      emptyA2 = 1;
-    } else {
-      ::GetRgnBox(ha, &ra->rgnBBox);
-      ::CopyRect(&boundsScratch, &ra->rgnBBox);
-      emptyA2 = static_cast<char>(::IsRectEmpty(&boundsScratch));
-    }
-  }
-
-  HRGN hrgnSrc1;
-  HRGN hrgnSrc2;
-  HRGN hrgnDst;
-  int mode;
-  if (emptyA2 == 0) {
-    char emptyB2;
-    if (srcB == NULL) {
-      emptyB2 = 1;
-    } else {
-      Region* rb = *srcB;
-      HRGN hb = static_cast<HRGN>(static_cast<HGDIOBJ>(rb->rgn));
-      if (hb == NULL) {
-        emptyB2 = 1;
-      } else {
-        ::GetRgnBox(hb, &rb->rgnBBox);
-        ::CopyRect(&boundsScratch, &rb->rgnBBox);
-        emptyB2 = static_cast<char>(::IsRectEmpty(&boundsScratch));
-      }
-    }
-    if (emptyB2 == 0) {
-      hrgnSrc2 = static_cast<HRGN>(static_cast<HGDIOBJ>((*srcB)->rgn));
-      hrgnSrc1 = static_cast<HRGN>(static_cast<HGDIOBJ>((*srcA)->rgn));
-      mode = RGN_DIFF;
-      hrgnDst = static_cast<HRGN>((*dst)->rgn.m_hObject);
-    } else if (static_cast<HGDIOBJ>((*srcA)->rgn) == NULL) {
-      mode = RGN_COPY;
-      hrgnDst = static_cast<HRGN>((*dst)->rgn.m_hObject);
-      hrgnSrc1 = NULL;
-      hrgnSrc2 = NULL;
-    } else {
-      hrgnSrc1 = static_cast<HRGN>((*srcA)->rgn.m_hObject);
-      mode = RGN_COPY;
-      hrgnSrc2 = NULL;
-      hrgnDst = static_cast<HRGN>((*dst)->rgn.m_hObject);
-    }
-  } else if (static_cast<HGDIOBJ>((*srcB)->rgn) == NULL) {
-    hrgnDst = static_cast<HRGN>((*dst)->rgn.m_hObject);
-    mode = RGN_COPY;
-    hrgnSrc1 = NULL;
-    hrgnSrc2 = NULL;
-  } else {
-    hrgnSrc1 = static_cast<HRGN>((*srcB)->rgn.m_hObject);
-    hrgnDst = static_cast<HRGN>((*dst)->rgn.m_hObject);
-    mode = RGN_COPY;
-    hrgnSrc2 = NULL;
-  }
-
-  ::CombineRgn(hrgnDst, hrgnSrc1, hrgnSrc2, mode);
   ::GetRgnBox(static_cast<HRGN>((*dst)->rgn.m_hObject), &(*dst)->rgnBBox);
 }
 
@@ -300,9 +243,7 @@ void UnionRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst) {
 
 // FUNCTION: IMPERIALISM 0x00497810
 void SetEmptyRgn(RgnHandle rgn) {
-  (*rgn)->rgn.DeleteObject();
-  (*rgn)->rgn.Attach(::CreateRectRgn(0, 0, 0, 0));
-  ::GetRgnBox(static_cast<HRGN>((*rgn)->rgn.m_hObject), &(*rgn)->rgnBBox);
+  SetEmptyRgnForCombine(rgn);
 }
 
 // FUNCTION: IMPERIALISM 0x00497860
@@ -449,27 +390,35 @@ void QDFrameOval(RECT* rect) {
     return;
   }
 
+  CBrush* nullBrush = CBrush::FromHandle(static_cast<HBRUSH>(::GetStockObject(NULL_BRUSH)));
   CDC* dc = g_pQuickDrawMemoryDc;
   if (dc == 0) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  CBrush* previousBrush =
-      dc->SelectObject(CBrush::FromHandle(static_cast<HBRUSH>(::GetStockObject(NULL_BRUSH))));
+  CBrush* previousBrush = dc->SelectObject(nullBrush);
 
-  int penSize = g_nQuickDrawPenHorizontalSize;
-  if (penSize <= g_nQuickDrawPenVerticalSize) {
-    penSize = g_nQuickDrawPenVerticalSize;
-  }
   TScopedQuickDrawPen pen;
-  pen.CreatePen(PS_SOLID, penSize, g_QuickDrawForegroundColor);
-  pen.previousPen08 = dc->SelectObject(&pen);
 
   RECT ovalRect;
   ::CopyRect(&ovalRect, rect);
-  if (g_pActiveQuickDrawSurfaceContextHead == &g_defaultQuickDrawSurfaceSentinel) {
+  CDib* activeSurfaceDib = 0;
+  if (g_pActiveQuickDrawSurfaceContextHead != &g_defaultQuickDrawSurfaceSentinel) {
+    TBitmapSurfaceContextDescriptor* descriptor =
+        static_cast<TBitmapSurfaceContextDescriptor*>(g_pActiveQuickDrawSurfaceContextHead);
+    activeSurfaceDib = (*descriptor->GetPixMapHandle())->dib;
+  }
+  if (activeSurfaceDib == 0) {
     ::OffsetRect(&ovalRect, g_nQuickDrawOriginX, g_nQuickDrawOriginY);
   }
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == 0) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
   ::Ellipse(dc->m_hDC, ovalRect.left, ovalRect.top, ovalRect.right, ovalRect.bottom);
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == 0) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
   dc->SelectObject(previousBrush);
 }
 
@@ -485,35 +434,41 @@ void QDPaintOval(RECT* rect) {
   }
 
   CBrush brush(g_QuickDrawForegroundColor);
-  int penSize = g_nQuickDrawPenHorizontalSize;
-  if (penSize <= g_nQuickDrawPenVerticalSize) {
-    penSize = g_nQuickDrawPenVerticalSize;
-  }
   TScopedQuickDrawPen pen;
-  pen.CreatePen(PS_SOLID, penSize, g_QuickDrawForegroundColor);
 
+  RECT ovalRect;
+  ::CopyRect(&ovalRect, rect);
+  CDib* activeSurfaceDib = 0;
+  if (g_pActiveQuickDrawSurfaceContextHead != &g_defaultQuickDrawSurfaceSentinel) {
+    TBitmapSurfaceContextDescriptor* descriptor =
+        static_cast<TBitmapSurfaceContextDescriptor*>(g_pActiveQuickDrawSurfaceContextHead);
+    activeSurfaceDib = (*descriptor->GetPixMapHandle())->dib;
+  }
+  if (activeSurfaceDib == 0) {
+    ::OffsetRect(&ovalRect, g_nQuickDrawOriginX, g_nQuickDrawOriginY);
+  }
   CDC* dc = g_pQuickDrawMemoryDc;
   if (dc == 0) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  pen.previousPen08 = dc->SelectObject(&pen);
-
-  RECT ovalRect;
-  ::CopyRect(&ovalRect, rect);
-  if (g_pActiveQuickDrawSurfaceContextHead == &g_defaultQuickDrawSurfaceSentinel) {
-    ::OffsetRect(&ovalRect, g_nQuickDrawOriginX, g_nQuickDrawOriginY);
-  }
   CBrush* previousBrush = dc->SelectObject(&brush);
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == 0) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
   ::Ellipse(dc->m_hDC, ovalRect.left, ovalRect.top, ovalRect.right, ovalRect.bottom);
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == 0) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
   dc->SelectObject(previousBrush);
 }
 
-// EmptyRgn: true when the handle carries no region or its bounding box is empty.
 // FUNCTION: IMPERIALISM 0x00498aa0
 unsigned char EmptyRgn(RgnHandle rgn) {
-  if (rgn != 0) {
+  if (rgn != NULL) {
     Region* region = *rgn;
-    if (static_cast<HRGN>(region->rgn) != 0) {
+    if (static_cast<HRGN>(region->rgn) != NULL) {
       ::GetRgnBox(static_cast<HRGN>(region->rgn.m_hObject), &region->rgnBBox);
       RECT box;
       ::CopyRect(&box, &region->rgnBBox);

@@ -113,7 +113,7 @@ class RuntimeSuiteTests(unittest.TestCase):
                 run_dir = Path(kwargs["run_dir"])
                 calls.append(run_dir)
                 run_dir.mkdir(parents=True, exist_ok=True)
-                label = "primary" if len(calls) == 1 else "seh-rerun"
+                label = "primary" if len(calls) == 1 else run_dir.name
                 (run_dir / "gdb.log").write_text(label, encoding="utf-8")
                 result = {
                     "format_version": 1,
@@ -146,11 +146,15 @@ class RuntimeSuiteTests(unittest.TestCase):
             ):
                 self.assertEqual(run_test(args), 1)
 
-            self.assertEqual(len(calls), 2)
-            self.assertEqual(calls[1], calls[0] / "seh-rerun")
+            self.assertEqual(len(calls), 3)
+            self.assertEqual(calls[1], calls[0] / "gdb-rerun")
+            self.assertEqual(calls[2], calls[0] / "seh-rerun")
             self.assertEqual((calls[0] / "gdb.log").read_text(encoding="utf-8"), "primary")
             self.assertEqual(
-                (calls[1] / "gdb.log").read_text(encoding="utf-8"), "seh-rerun"
+                (calls[1] / "gdb.log").read_text(encoding="utf-8"), "gdb-rerun"
+            )
+            self.assertEqual(
+                (calls[2] / "gdb.log").read_text(encoding="utf-8"), "seh-rerun"
             )
 
 

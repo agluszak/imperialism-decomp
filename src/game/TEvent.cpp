@@ -10,5 +10,3 @@ IMPLEMENT_DYNCREATE(TEvent, TObject)
 
 // SYNTHETIC: IMPERIALISM 0x00492c70
 // TEvent::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x00492ca0
-TEvent::~TEvent() {}

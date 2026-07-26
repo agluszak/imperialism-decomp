@@ -1562,7 +1562,7 @@ void TViewMgr::RefreshTechnologyStorePageAndHudText(int nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d8980
-void TViewMgr::ShowAbilityStatusReport(int abilityIndex) {
+void TViewMgr::ShowAbilityStatusReport(short abilityIndex) {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
   TextStyle style;
   style.textColor = 0;

@@ -68,6 +68,9 @@ struct TBitmapSurfaceContextDescriptor : public TQuickDrawSurfaceContext {
   const char* debugSourcePath; // +0x30
 
   TBitmapSurfaceContextDescriptor();
+  ~TBitmapSurfaceContextDescriptor() {
+    ReleaseSurfaceNode();
+  }
   bool InitializeSurfaceNode(int width, int height, int bitDepth);
   void ReleaseSurfaceNode();
 

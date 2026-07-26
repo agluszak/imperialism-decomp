@@ -6,13 +6,12 @@
 // Temporary loading/backdrop CWnd subclass created during CMainFrame::OnCreate.
 // It is a CWnd-sized object plus one cached bitmap handle at +0x3c.
 //
-// Retail vftable 0x0064bca8; not annotated with // VTABLE because the current
-// linked MFC headers emit extra OLE/dispatch slots, as with CMainFrame.
+// VTABLE: IMPERIALISM 0x0064bca8
 class TBackdropWindow : public CWnd {
   DECLARE_MESSAGE_MAP()
 
 public:
-  TBackdropWindow() : CWnd(), m_backdropBmp(NULL) {}
+  TBackdropWindow() : CWnd() {}
 
   virtual ~TBackdropWindow() override;
 
@@ -30,6 +29,5 @@ protected:
 ASSERT_SIZE(TBackdropWindow, 0x40);
 
 // Guarded creator @ 0x0049cc60 — see g_cachedShowSplashFlag in global_data_tables.h.
-void Function_0049cc60(CWnd* parent);
-void CreateGlobalBackdropWindowWithDefaultBmp3B6(TBackdropWindow* window, CWnd* parent);
+void CreateBackdropWindowIfSplashEnabled(CWnd* parent);
 void RefreshBackdropOnInputMessages(MSG* msg);
