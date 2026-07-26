@@ -5019,7 +5019,7 @@ address|matching|name
 0x5870e0|1.0|TTradeCluster::`scalar deleting destructor'
 0x587110|1.0|TTradeCluster
 0x587130|0.4919093851132686|TTradeCluster::DoPostCreate
-0x5873e0|0.3269230769230769|TTradeCluster::DoEvent
+0x5873e0|0.33114754098360655|TTradeCluster::DoEvent
 0x587900|0.7272727272727273|TTradeCluster::IsTradeControlAtMinimum
 0x587950|1.0|TTradeCluster::GetTradeSellControlValue
 0x587980|0.5614035087719298|TTradeCluster::IsSelectionAllowed
@@ -6072,7 +6072,7 @@ address|matching|name
 0x5d50b0|1.0|TViewMgr::`scalar deleting destructor'
 0x5d50e0|1.0|TViewMgr::~TViewMgr
 0x5d5100|1.0|TViewMgr::LoadTurnEventCursorTable
-0x5d5140|0.835820895522388|LoadTurnEventCursorByResourceIdOffset1000
+0x5d5140|0.9253731343283582|LoadTurnEventCursorByResourceIdOffset1000
 0x5d51e0|1.0|TViewMgr::Free
 0x5d5200|1.0|TViewMgr::ReadFrom
 0x5d5250|1.0|TViewMgr::WriteTo
