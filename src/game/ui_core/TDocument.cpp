@@ -2,8 +2,6 @@
 
 // SYNTHETIC: IMPERIALISM 0x00486350
 // TDocument::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x00486380
-TDocument::~TDocument() {}
 // SYNTHETIC: IMPERIALISM 0x00486320
 // TDocument::CreateObject
 
