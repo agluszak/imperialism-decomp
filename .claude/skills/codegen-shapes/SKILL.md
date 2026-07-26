@@ -388,8 +388,20 @@ neither works.
 The reason the table reads that way: the iterator call **is** the lowering, and both loop
 shapes are inline expansions of it. `/Ob0` keeps the call; `/Ob1`/`/Ob2` expand it into a
 loop, and then expand the element ctor into that loop too when the ctor is expandable.
-So an original that calls `??_H` is telling you its translation unit had inline expansion
-off — which is a per-TU fact you cannot reproduce from the call site.
+
+**But `/Ob0` is not what the retail binary did, so do not "fix" an iterator mismatch by
+setting it.** Measured directly: `docs/reference/original_module_map.csv` puts 0x4a2900
+and both CStr constructors in `Cross/UArmyMgr.cpp` (0x4a1f80..0x4a9990), so that module is
+the one that would have to be `/Ob0`. Forcing `/Ob0` on exactly those 42 functions moves
+20 of them down and 1 up, mean **-6.03 pp**, with four 100% functions falling to 67-76%;
+the neighbouring `Cross/UAmbit.cpp` functions lose 34.64 pp on average. A module compiled
+`/Ob0` would have improved, not regressed. So MSVC500 has a second route to `??_H` that
+this matrix has not found yet — extend `just vector-ctor-probe` rather than reaching for
+the flag.
+
+The one thing `/Ob0` does deliver is address-taking: under it, 0x4a31c0/0x4a31e0 pair at
+100%. That is not worth 20 regressions, but it confirms the bead's premise that the
+constructors re-pair automatically once something takes their address.
 
 Two corollaries worth knowing before you model an element type:
 
