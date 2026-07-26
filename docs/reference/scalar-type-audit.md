@@ -69,11 +69,11 @@ canonical types these boundaries convert between live in `docs/reference/scalar-
 | `include/game/ui_fourcc.h:33` | unsigned char -> unsigned int | `encoding_policy_widening` | the same per-character promotion for byte 3 of the tag. |
 | `include/game/ui_fourcc.h:34` | unsigned char -> unsigned int | `encoding_policy_widening` | the same per-character promotion for byte 4 of the tag. |
 | `src/game/city_ui/TUniversityView.cpp:375` | signed char -> int | `signed_table_byte_then_int` | the university requirement table stores signed bytes; the signed step preserves negative levels and the int step is the arithmetic width. |
-| `src/game/map_ui/TMapMaker.cpp:1441` | int -> short | `prng_extract_then_narrow` | the map-generation LCG state is unsigned so the >> 0xc extraction is logical; the int step selects retail signed remainder code and the short step is the direction word consumed by the inlined neighbor lookup. |
-| `src/game/map_ui/TMapMaker.cpp:1453` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the region-class grid stores signed bytes; the signed step preserves the -1 sentinel and the unsigned short step is the word key the neighbour tally uses. |
-| `src/game/map_ui/TMapMaker.cpp:1460` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the same signed-byte grid read for the first neighbour. |
-| `src/game/map_ui/TMapMaker.cpp:1463` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the same signed-byte grid read for the second neighbour. |
-| `src/game/map_ui/TMapMaker.cpp:1466` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the same signed-byte grid read for the third neighbour. |
+| `src/game/map_ui/TMapMaker.cpp:1442` | int -> short | `prng_extract_then_narrow` | the map-generation LCG state is unsigned so the >> 0xc extraction is logical; the int step selects retail signed remainder code and the short step is the direction word consumed by the inlined neighbor lookup. |
+| `src/game/map_ui/TMapMaker.cpp:1454` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the region-class grid stores signed bytes; the signed step preserves the -1 sentinel and the unsigned short step is the word key the neighbour tally uses. |
+| `src/game/map_ui/TMapMaker.cpp:1461` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the same signed-byte grid read for the first neighbour. |
+| `src/game/map_ui/TMapMaker.cpp:1464` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the same signed-byte grid read for the second neighbour. |
+| `src/game/map_ui/TMapMaker.cpp:1467` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the same signed-byte grid read for the third neighbour. |
 | `src/game/military/TArmyMgr.cpp:2005` | int -> short | `prng_extract_then_narrow` | the map-generation LCG state is unsigned so the >> 0xc extraction is logical; the int step keeps the modulus signed and the short step is the caller's word storage. |
 | `src/game/military/TArmyMgr.cpp:2011` | int -> short | `prng_extract_then_narrow` | the sibling extraction with a modulus of 100, same three-step shape. |
 | `src/game/military/TArmyMgr.cpp:2021` | unsigned int -> int | `prng_extract_then_narrow` | the same LCG extraction consumed directly as an int. |
@@ -256,11 +256,11 @@ is classified, and a family that stops appearing must be removed.
 | `08a127d9814aa2e3` | `nested_integral_cast` | `include/game/ui_fourcc.h:33` | unsigned char -> unsigned int | `encoding_policy_widening` | `imperialism-decomp-1uj.99.2` |
 | `239a01f6e5d42d4e` | `nested_integral_cast` | `include/game/ui_fourcc.h:34` | unsigned char -> unsigned int | `encoding_policy_widening` | `imperialism-decomp-1uj.99.2` |
 | `fb4cc0429d2807ae` | `nested_integral_cast` | `src/game/city_ui/TUniversityView.cpp:375` | signed char -> int | `signed_table_byte_then_int` | `imperialism-decomp-1uj.99.2` |
-| `8a5cc0fec966a3f8` | `nested_integral_cast` | `src/game/map_ui/TMapMaker.cpp:1441` | int -> short | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
-| `caa87a07f2146dbb` | `nested_integral_cast` | `src/game/map_ui/TMapMaker.cpp:1453` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
-| `7fcc0893d2017e1f` | `nested_integral_cast` | `src/game/map_ui/TMapMaker.cpp:1460` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
-| `b60ed63416b4f980` | `nested_integral_cast` | `src/game/map_ui/TMapMaker.cpp:1463` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
-| `3f41f67892a6fd59` | `nested_integral_cast` | `src/game/map_ui/TMapMaker.cpp:1466` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
+| `8a5cc0fec966a3f8` | `nested_integral_cast` | `src/game/map_ui/TMapMaker.cpp:1442` | int -> short | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
+| `caa87a07f2146dbb` | `nested_integral_cast` | `src/game/map_ui/TMapMaker.cpp:1454` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
+| `7fcc0893d2017e1f` | `nested_integral_cast` | `src/game/map_ui/TMapMaker.cpp:1461` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
+| `b60ed63416b4f980` | `nested_integral_cast` | `src/game/map_ui/TMapMaker.cpp:1464` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
+| `3f41f67892a6fd59` | `nested_integral_cast` | `src/game/map_ui/TMapMaker.cpp:1467` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
 | `d04e53616a68e0c4` | `nested_integral_cast` | `src/game/military/TArmyMgr.cpp:2005` | int -> short | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
 | `5d24093db60dff4e` | `nested_integral_cast` | `src/game/military/TArmyMgr.cpp:2011` | int -> short | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
 | `991e04b36a1b6e0f` | `nested_integral_cast` | `src/game/military/TArmyMgr.cpp:2021` | unsigned int -> int | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
@@ -383,15 +383,15 @@ is classified, and a family that stops appearing must be removed.
 | `41eb1415adb86245` | `raw_discriminant_literal` | `src/game/gfx/TModalDialogBase.cpp:31` | finalizeState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `997a52658ffd76dd` | `raw_discriminant_literal` | `src/game/gfx/TModuleLibraryCacheTableStateB.cpp:209` | patternMode == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `7b961e77ff19b05e` | `raw_discriminant_literal` | `src/game/gfx/TTemplateDialogs.cpp:181` | renderMode != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
-| `c870122e8cec8fc5` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:262` | reloadPoliticalMapState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
-| `a5a7ff77939f0f4a` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:270` | reloadPoliticalMapState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
-| `484aff0476c99917` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:391` | politicalCode >= 0x17 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `657dd985259e6911` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:401` | politicalCode < 7 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `e33b4fe446a8f214` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:2701` | orderType != 1 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
-| `09d4e4e5287945bb` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:2701` | orderType != 7 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
-| `ce0290539c3a9dc5` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:2890` | orderType == 0 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
-| `1349d5fd980e9988` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:3312` | categoryCode < 7 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
-| `a8ed50b8e31bddc2` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:3585` | nationCode > 6 | `nation_slot_domain` | `imperialism-decomp-1uj.99.8` |
+| `c870122e8cec8fc5` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:263` | reloadPoliticalMapState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `a5a7ff77939f0f4a` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:271` | reloadPoliticalMapState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `484aff0476c99917` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:401` | politicalCode >= 0x17 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `657dd985259e6911` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:411` | politicalCode < 7 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `e33b4fe446a8f214` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:2711` | orderType != 1 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
+| `09d4e4e5287945bb` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:2711` | orderType != 7 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
+| `ce0290539c3a9dc5` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:2900` | orderType == 0 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
+| `1349d5fd980e9988` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:3322` | categoryCode < 7 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
+| `a8ed50b8e31bddc2` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:3595` | nationCode > 6 | `nation_slot_domain` | `imperialism-decomp-1uj.99.8` |
 | `36d6ad0c1b2c391e` | `raw_discriminant_literal` | `src/game/map/TMapUberPicture.cpp:137` | previousMode == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `e8676fc50fc10d50` | `raw_discriminant_literal` | `src/game/map/TMapUberPicture.cpp:139` | previousMode == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `e2ad95951f5a369d` | `raw_discriminant_literal` | `src/game/map/TMapUberPicture.cpp:148` | previousMode == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
@@ -410,19 +410,19 @@ is classified, and a family that stops appearing must be removed.
 | `ff0fefe2c5903075` | `raw_discriminant_literal` | `src/game/map_ui/TMapDialog.cpp:1262` | tileActionState16 >= 0 | `map_tile_action_state_domain` | `imperialism-decomp-1uj.99.8` |
 | `bc1131ea218c9ee6` | `raw_discriminant_literal` | `src/game/map_ui/TMapEditView.cpp:99` | editorActionMode368 != 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `2388240767cdc1a4` | `raw_discriminant_literal` | `src/game/map_ui/TMapEditView.cpp:129` | editorActionMode368 != 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `4a30cfb1c0e1c46b` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:176` | g_zoneStatusCodePrngSeed_006a5aec == 0 | `open_index_count_or_bound` | `imperialism-decomp-1uj.99.8` |
-| `d467602d6c4b3153` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1178` | featureType == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `857b0d2f3552e944` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1178` | featureType == 4 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `d8b80e6b4cadd765` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1183` | featureType == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `b80917fc482ae524` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1184` | featureType == 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `45c7aeeb07b15586` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1195` | featureType == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `298732b8b76f2fed` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1196` | featureType == 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `dbea61fe5d9aa905` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1264` | ringState == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `03801a56c0104b38` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1267` | ringState == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `4ac47da6cd42ee59` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1278` | ringState == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `85c16429db5ea9f1` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1307` | ringState == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `2a46803b91939a10` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1310` | ringState == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `a76be91479ae1ec4` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1346` | ringState == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `4a30cfb1c0e1c46b` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:177` | g_zoneStatusCodePrngSeed_006a5aec == 0 | `open_index_count_or_bound` | `imperialism-decomp-1uj.99.8` |
+| `d467602d6c4b3153` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1179` | featureType == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `857b0d2f3552e944` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1179` | featureType == 4 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `d8b80e6b4cadd765` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1184` | featureType == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `b80917fc482ae524` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1185` | featureType == 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `45c7aeeb07b15586` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1196` | featureType == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `298732b8b76f2fed` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1197` | featureType == 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `dbea61fe5d9aa905` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1265` | ringState == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `03801a56c0104b38` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1268` | ringState == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `4ac47da6cd42ee59` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1279` | ringState == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `85c16429db5ea9f1` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1308` | ringState == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `2a46803b91939a10` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1311` | ringState == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `a76be91479ae1ec4` | `raw_discriminant_literal` | `src/game/map_ui/TMapMaker.cpp:1347` | ringState == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `44df54f8df9583ad` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:65` | actionType04 == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `a18fb0380b7d30ef` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:65` | actionType04 == 3 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `4c220a464b92192d` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:65` | actionType04 == 4 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |

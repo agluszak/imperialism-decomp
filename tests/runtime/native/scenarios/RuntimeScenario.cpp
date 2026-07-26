@@ -789,6 +789,10 @@ void RunWaitingForMainMenu() {
   }
 
   srand(g_runtimeTestState.seed);
+  // The random-map setup screen chooses its planet/tuning seed while it is being
+  // constructed. That mapped-flavor path advances the game's zone/status LCG rather
+  // than CRT rand(), so both sources must be pinned before StartRandomGame builds it.
+  g_zoneStatusCodePrngSeed_006a5aec = g_runtimeTestState.seed;
   MainMenuDriver menu(mainView);
   if (!menu.StartRandomGame()) {
     Fail("\"main-menu random-game button or native host is missing\"");
