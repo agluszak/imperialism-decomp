@@ -117,7 +117,7 @@ decisions -- including the ones that were measured and reverted -- is
 | `src/game/nation/TGreatPower.cpp:206` | predicate -> char | `predicate_arithmetic_into_byte_storage` | `(town->enabledFlag4d != 0) + 1` yields influence weight 1 or 2 written into the byte influence map; the comparison is an addend, not a logical value. |
 | `src/game/nation/TGreatPower.cpp:1627` | predicate -> char | `byte_return_abi` | the enclosing affordability query returns char and its callers consume AL; converting the local alone would only move the normalization. |
 | `src/game/nation/TGreatPower.cpp:1635` | predicate -> char | `byte_return_abi` | the sibling affordability query with the same char return contract. |
-| `src/game/net/TMultiplayerMgr.cpp:2329` | predicate -> unsigned char | `byte_abi_argument` | TCzechBox::SetState takes unsigned char at recovered slot 0x75; the selected-slot predicate crosses that byte ABI boundary (both byte args cast explicitly to pick the slot-0x75 overload over the visible TView::SetState(int, int)). |
+| `src/game/net/TMultiplayerMgr.cpp:2330` | predicate -> unsigned char | `byte_abi_argument` | TCzechBox::SetState takes unsigned char at recovered slot 0x75; the selected-slot predicate crosses that byte ABI boundary (both byte args cast explicitly to pick the slot-0x75 overload over the visible TView::SetState(int, int)). |
 | `src/game/ui_screens/TCzechBox.cpp:73` | predicate -> unsigned char | `byte_abi_argument` | TCzechBox::SetState is a virtual taking `unsigned char isOn` at slot 0x75 (0x00571e00); same byte ABI as the TArmyCheckBox family. |
 | `src/game/ui_screens/TCzechBox.cpp:79` | predicate -> unsigned char | `byte_abi_argument` | the same slot-0x75 byte parameter, reached from ToggleIf(unsigned char expectedState, unsigned char refreshNow). |
 | `src/game/ui_screens/TLoadSavePicture.cpp:50` | predicate -> unsigned char | `byte_field_storage` | TLoadSavePicture::loadModeFlag90 is a one-byte object field initialized from the save-format predicate; the explicit conversion preserves the recovered byte layout. |
@@ -292,7 +292,7 @@ is classified, and a family that stops appearing must be removed.
 | `b441b8502f10ecf2` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:206` | predicate -> char | `predicate_arithmetic_into_byte_storage` | `imperialism-decomp-1uj.99.7` |
 | `f25ec5fb631b91f5` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:1627` | predicate -> char | `byte_return_abi` | `imperialism-decomp-1uj.99.7` |
 | `40aca8b0eb14fbab` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:1635` | predicate -> char | `byte_return_abi` | `imperialism-decomp-1uj.99.7` |
-| `b5fa1d97e89a5eb5` | `predicate_storage_cast` | `src/game/net/TMultiplayerMgr.cpp:2329` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
+| `b5fa1d97e89a5eb5` | `predicate_storage_cast` | `src/game/net/TMultiplayerMgr.cpp:2330` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `d525f39e47be4ea5` | `predicate_storage_cast` | `src/game/ui_screens/TCzechBox.cpp:73` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `65f76dbb872a689f` | `predicate_storage_cast` | `src/game/ui_screens/TCzechBox.cpp:79` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `1a972fb69f5925f0` | `predicate_storage_cast` | `src/game/ui_screens/TLoadSavePicture.cpp:50` | predicate -> unsigned char | `byte_field_storage` | `imperialism-decomp-1uj.99.7` |
@@ -355,10 +355,10 @@ is classified, and a family that stops appearing must be removed.
 | `8679af1ccc6ae355` | `raw_discriminant_literal` | `src/game/city_ui/TRailheadDialog.cpp:36` | serializedState0a == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `bd9160414d9d73af` | `raw_discriminant_literal` | `src/game/city_ui/TShipyardView.cpp:111` | resourceTypeIndex48 != 0 | `unresolved_narrower_subdomain` | `imperialism-decomp-1uj.99.8` |
 | `96c51a3a68560ef5` | `raw_discriminant_literal` | `src/game/city_ui/TUnitsView.cpp:34` | unitType < 14 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
-| `78d080aeeadfd7e4` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TCouncilView.cpp:174` | ownerCode >= 7 | `nation_slot_domain` | `imperialism-decomp-1uj.99.8` |
-| `63882066f5a88c2f` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TCouncilView.cpp:289` | localizationMode == 0x16 | `string_group_or_resource_identifier` | `imperialism-decomp-1uj.99.8` |
-| `62488fe6df1874a0` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TCouncilView.cpp:289` | localizationMode == 0x17 | `string_group_or_resource_identifier` | `imperialism-decomp-1uj.99.8` |
-| `07538b856fda0a18` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TCouncilView.cpp:301` | localizationMode == 0x17 | `string_group_or_resource_identifier` | `imperialism-decomp-1uj.99.8` |
+| `78d080aeeadfd7e4` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TCouncilView.cpp:175` | ownerCode >= 7 | `nation_slot_domain` | `imperialism-decomp-1uj.99.8` |
+| `63882066f5a88c2f` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TCouncilView.cpp:292` | localizationMode == 0x16 | `string_group_or_resource_identifier` | `imperialism-decomp-1uj.99.8` |
+| `62488fe6df1874a0` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TCouncilView.cpp:292` | localizationMode == 0x17 | `string_group_or_resource_identifier` | `imperialism-decomp-1uj.99.8` |
+| `07538b856fda0a18` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TCouncilView.cpp:304` | localizationMode == 0x17 | `string_group_or_resource_identifier` | `imperialism-decomp-1uj.99.8` |
 | `280131c81d525b8c` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:396` | interactionModeAt94 == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `b24a54804c1e2df2` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:398` | interactionModeAt94 == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `f6a50da9edb18fb9` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:400` | interactionModeAt94 == 4 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
@@ -469,8 +469,8 @@ is classified, and a family that stops appearing must be removed.
 | `57e3a5974770dde4` | `raw_discriminant_literal` | `src/game/navy_ui/TOceanDialog.cpp:468` | tileActionState16 >= 0 | `map_tile_action_state_domain` | `imperialism-decomp-1uj.99.8` |
 | `a2e7252d51d2c1f2` | `raw_discriminant_literal` | `src/game/navy_ui/TOceanDialog.cpp:477` | tileActionState16 >= 2 | `map_tile_action_state_domain` | `imperialism-decomp-1uj.99.8` |
 | `7c78071d29c9080d` | `raw_discriminant_literal` | `src/game/net/TMadnessButton.cpp:37` | controlState64 != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
-| `66550a49939e8f22` | `raw_discriminant_literal` | `src/game/net/TMultiplayerMgr.cpp:2799` | orderType < 0x0e | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
-| `23993f280189d591` | `raw_discriminant_literal` | `src/game/net/TMultiplayerMgr.cpp:2867` | orderType < 0x0e | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
+| `66550a49939e8f22` | `raw_discriminant_literal` | `src/game/net/TMultiplayerMgr.cpp:2808` | orderType < 0x0e | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
+| `23993f280189d591` | `raw_discriminant_literal` | `src/game/net/TMultiplayerMgr.cpp:2876` | orderType < 0x0e | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
 | `e124a0c483572816` | `raw_discriminant_literal` | `src/game/net/TMultiplayerMgr_session.cpp:631` | eventCode == 0xc | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
 | `204a44147ae8da54` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:124` | lastErrorCode0c == 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
 | `623a9bab2a8991f6` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:149` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |

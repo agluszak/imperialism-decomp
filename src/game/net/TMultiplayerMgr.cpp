@@ -1576,10 +1576,11 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     memcpy(g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix484,
            matrix->pendingPolicyTierMatrix,
            sizeof(g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix484));
-    // The original copies each pair with a single 32-bit register move.
-    g_pDiplomacyTurnStateManager->packedSelectedNationSlots784 = matrix->packedSelectedNationSlots;
-    g_pDiplomacyTurnStateManager->packedSelectionFlagsAB788 = matrix->packedSelectionFlagsAB;
-    g_pDiplomacyTurnStateManager->selectionFlagsC78c = matrix->selectionFlagsC;
+    // Both records copy as whole units: the original moves the leadership pair with one
+    // 32-bit register move and the tally with a 32-bit move plus a trailing 16-bit move,
+    // which is exactly what a POD record assignment emits.
+    g_pDiplomacyTurnStateManager->congressLeadership784 = matrix->congressLeadership;
+    g_pDiplomacyTurnStateManager->congressSupport788 = matrix->congressSupport;
     memcpy(g_pDiplomacyTurnStateManager->comparativePowerRows1824, matrix->relationTailBlock,
            sizeof(matrix->relationTailBlock));
     break;
@@ -2528,7 +2529,8 @@ void NationStatusEvent25Packet::InitializeNationStatusEvent25PayloadDefaults() {
 
 // Builds a turn-event-26 packet snapshotting g_pDiplomacyTurnStateManager's
 // relationCodeMatrix04/pendingPolicyCodeMatrix304/pendingPolicyTierMatrix484/
-// selectedSourceNationSlot784../comparativePowerRows1824 and sends it via TNetMgr::Send.
+// congressLeadership784/congressSupport788/comparativePowerRows1824 and sends it via
+// TNetMgr::Send.
 // FUNCTION: IMPERIALISM 0x0054c480
 void TMultiplayerMgr::EmitTurnEvent26DiplomacyMatrixSnapshot() {
   TurnEvent26DiplomacyMatrixPacket packet;
@@ -2544,11 +2546,18 @@ void TMultiplayerMgr::EmitTurnEvent26DiplomacyMatrixSnapshot() {
          sizeof(packet.pendingPolicyCodeMatrix));
   memcpy(packet.pendingPolicyTierMatrix, g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix484,
          sizeof(packet.pendingPolicyTierMatrix));
-  packet.selectedSourceNationSlot = g_pDiplomacyTurnStateManager->selectedSourceNationSlot784;
-  packet.selectedTargetNationSlot = g_pDiplomacyTurnStateManager->selectedTargetNationSlot786;
-  packet.selectionFlagsA = g_pDiplomacyTurnStateManager->selectionFlagsA788;
-  packet.selectionFlagsB = g_pDiplomacyTurnStateManager->selectionFlagsB78a;
-  packet.selectionFlagsC = g_pDiplomacyTurnStateManager->selectionFlagsC78c;
+  // Field-by-field here, not record assignment: the emitter loads and stores all five
+  // shorts individually.
+  packet.congressLeadership.chairmanNationSlot =
+      g_pDiplomacyTurnStateManager->congressLeadership784.chairmanNationSlot;
+  packet.congressLeadership.counterpartNationSlot =
+      g_pDiplomacyTurnStateManager->congressLeadership784.counterpartNationSlot;
+  packet.congressSupport.chairmanSupportCount =
+      g_pDiplomacyTurnStateManager->congressSupport788.chairmanSupportCount;
+  packet.congressSupport.counterpartSupportCount =
+      g_pDiplomacyTurnStateManager->congressSupport788.counterpartSupportCount;
+  packet.congressSupport.neutralCount =
+      g_pDiplomacyTurnStateManager->congressSupport788.neutralCount;
   memcpy(packet.relationTailBlock, g_pDiplomacyTurnStateManager->comparativePowerRows1824,
          sizeof(packet.relationTailBlock));
   g_pNetMgr006a6014->Send(&packet, 0);
