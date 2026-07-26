@@ -25,6 +25,12 @@ cstring-runtime-probe:
   uv run python -m tools.workflow.cstring_runtime_probe \
     --work-dir "{{build_dir}}/cstring-runtime-probe"
 
+[doc('Ask MSVC500 which array-construction shape it emits (inline / call-loop / vector-ctor iterator); --sweep varies the optimization flags')]
+[group('runtime-test')]
+vector-ctor-probe *args:
+  uv run python -m tools.workflow.vector_ctor_probe \
+    --work-dir "{{build_dir}}/vector-ctor-probe" {{args}}
+
 [doc('List registered native semantic runtime tests')]
 [group('runtime-test')]
 runtime-test-list:

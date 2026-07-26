@@ -1,7 +1,7 @@
 address|name|symbol|size|type|prototype|provenance
 406ccb|thunk_HandleEngineerConstructionAction||5|function|bool __thiscall thunk_HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)|
 4125d0|`dynamic initializer for 'g_scaledShortConst_6A1340''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A1340''(void)|library
-412600|InvokeCallbackForRecordRangeWithStride||42|function|undefined InvokeCallbackForRecordRangeWithStride()|
+412600|`vector constructor iterator'|??_H@YGXPAXIHP6EX0@Z@Z|42|function|void __stdcall `vector constructor iterator'(void * base,unsigned int elementSize,int count,void * (__thiscall * ctor)(void *))|msvc500_library_oracle
 412640|OpenOrCreateCompanyProductRegistryKey||173|function|HKEY OpenOrCreateCompanyProductRegistryKey(LPCSTR company, LPCSTR product)|
 412720|OpenOrCreateProfileSectionKey||216|function|undefined OpenOrCreateProfileSectionKey()|
 412840|ReadOrCreateRegistryStringValueWithFallback||440|function|CString ReadOrCreateRegistryStringValueWithFallback(LPCSTR company, LPCSTR product, LPCSTR section, LPCSTR valueName, LPCSTR defaultValue)|
