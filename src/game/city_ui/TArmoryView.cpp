@@ -106,7 +106,8 @@ void TArmoryView::DoStartup() {
   unit->InstallTextStyle(style.desc, 1);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
-  TStaticText* cost = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCost)); // 'cost'
+  TStaticText* cost =
+      static_cast<TStaticText*>(ResolveControlByTag(kControlTagCostLower)); // 'cost'
   cost->AssertValid();
   cost->InstallTextStyle(style.desc, 1);
   cost->SetTextFromStringResource(0x271c, 0x1e, 1);
