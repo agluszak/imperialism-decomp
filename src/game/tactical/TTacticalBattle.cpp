@@ -733,7 +733,7 @@ void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
 void TTacticalBattle::QueueTacticalEventPacket232A() {
   pendingEndOfActionFlag48 = 0;
   TNextMoveCommand* command = new TNextMoveCommand();
-  command->InitializeRangePair(0x232a, g_pGlobalUiRootController, 0, 0, 0);
+  command->ICommand(0x232a, g_pGlobalUiRootController, 0, 0, 0);
   command->battle18 = this;
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
 }

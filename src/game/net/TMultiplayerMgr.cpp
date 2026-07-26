@@ -739,7 +739,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     if (responseTag == kSessionTagRsvp) { // 'rsvp'
       TPoseMessageDialog* poseCommand = new TPoseMessageDialog();
       poseCommand->kickedByNationSlot18 = kickerNation;
-      poseCommand->InitializeRangePair(kSessionTagPose, g_pGlobalUiRootController, 0, 0, 0);
+      poseCommand->ICommand(kSessionTagPose, g_pGlobalUiRootController, 0, 0, 0);
       g_pGlobalUiRootController->DispatchUiSelectionToHandler(poseCommand);
     }
     g_pGameFlowState->processPrimaryEventQueue = savedProcessPrimary;
@@ -785,7 +785,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
                                                                         0x14);
         g_pUiRuntimeContext->ModalMessage(messageTextE, g_ptNationAwolModalMessage, 0, 0);
         TCancelGameOptionsCommand* cancelCommand = new TCancelGameOptionsCommand();
-        cancelCommand->InitializeRangePair(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
+        cancelCommand->ICommand(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
         g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommand);
         return 1;
       }
@@ -806,7 +806,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageTextE2, 0x2742, 2);
         g_pUiRuntimeContext->ModalMessage(messageTextE2, g_ptNationAwolModalMessage, 0, 0);
         TCancelGameOptionsCommand* cancelCommand2 = new TCancelGameOptionsCommand();
-        cancelCommand2->InitializeRangePair(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
+        cancelCommand2->ICommand(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
         g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommand2);
         return 1;
       }
@@ -845,7 +845,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     if (matchSlot == -1) {
       TCancelGameOptionsCommand* cancelCommand3 = new TCancelGameOptionsCommand();
-      cancelCommand3->InitializeRangePair(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
+      cancelCommand3->ICommand(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
       g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommand3);
       return 1;
     }
@@ -1318,7 +1318,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       return 1;
     case kControlTagCgam: { // 'cgam' - cancel game
       TCancelGameOptionsCommand* cancelCommandCgam = new TCancelGameOptionsCommand();
-      cancelCommandCgam->InitializeRangePair(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
+      cancelCommandCgam->ICommand(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
       g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommandCgam);
       CString messageCgam;
       g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageCgam, 0x2742, 0x27);
@@ -1334,7 +1334,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
                                                                       gameState->value1C);
       g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&messageFoff, 0);
       TCancelGameOptionsCommand* cancelCommandFoff = new TCancelGameOptionsCommand();
-      cancelCommandFoff->InitializeRangePair(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
+      cancelCommandFoff->ICommand(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
       g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommandFoff);
       return 1;
     }
@@ -2502,7 +2502,7 @@ void TMultiplayerMgr::SetNationStatusAwolByNationIdAndDispatchNotices(int networ
         g_pUiRuntimeContext->ModalMessage(formatted, g_ptNationAwolModalMessage, 0, 0);
         if (g_pGameFlowState != this || fieldF4 == 0) {
           TCancelGameOptionsCommand* cancelCommand = new TCancelGameOptionsCommand();
-          cancelCommand->InitializeRangePair(kSessionTagCgop, g_pGlobalUiRootController, 0, 0,
+          cancelCommand->ICommand(kSessionTagCgop, g_pGlobalUiRootController, 0, 0,
                                              0); // 'pogc'
           g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommand);
         }
@@ -2767,7 +2767,7 @@ void TMultiplayerMgr::RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSl
 // FUNCTION: IMPERIALISM 0x0054cde0
 void TMultiplayerMgr::CreateAndQueueTurnEventPacketTagPOGC() {
   TCancelGameOptionsCommand* command = new TCancelGameOptionsCommand();
-  command->InitializeRangePair(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0); // 'pogc'
+  command->ICommand(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0); // 'pogc'
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
 }
 

@@ -38,6 +38,7 @@ struct TextStyle;
 struct TQuickDrawSurfaceContext;
 struct TBitmapSurfaceContextDescriptor;
 struct TCdAudioDevice;
+struct CRGBColor;
 class TArmyMgr;
 class TAdmiral;
 class TDiplomacyMgr;
@@ -70,6 +71,7 @@ class TNetMgr;
 class TTradeMgr;
 class TSoundResourceManager;
 class TModuleLibraryCacheTableStateB;
+class TD0TemplateDialog;
 class CDib;
 
 struct GlobalViewportRectDefaultsRecord {

@@ -78,42 +78,132 @@ void CopySurfaceTile(unsigned char* destination, const unsigned char* source, in
   }
 }
 
-bool VerifyStrategicCoastMaskPass(TMapDialog* mapDialog) {
+bool VerifyStrategicCoastCornerComposite(TMapDialog* mapDialog) {
+  if (mapDialog == 0 || mapDialog->quickDrawSurface350 == 0 || g_pStrategicMapViewSystem == 0 ||
+      g_pStrategicMapViewSystem->atlas668 == 0) {
+    return false;
+  }
   short coastTile = -1;
   for (short tile = 0; tile < 0x1950; ++tile) {
     const TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tile];
-    if (terrain.GetTerrainKind() == kStrategicTerrainWater && terrain.adjacencyMaskB0b != 0 &&
-        terrain.riverSpriteCode != kRiverSpriteCodeNone) {
-      coastTile = tile;
+    if (terrain.GetTerrainKind() != kStrategicTerrainWater || terrain.adjacencyMaskB0b == 0 ||
+        tile % 108 == 0 || tile % 108 == 107) {
+      continue;
+    }
+    for (int corner = 0; corner < 6; ++corner) {
+      int previousDirection = (corner + 5) % 6;
+      int cornerBits = (1 << previousDirection) | (1 << corner);
+      if ((terrain.adjacencyMaskB0b & cornerBits) == 0) {
+        continue;
+      }
+      char useAltOffset = static_cast<char>(terrain.spriteVariantIndex01 & (1 << corner));
+      if (g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariant(
+              static_cast<char>(terrain.adjacencyMaskB0b), static_cast<char>(corner + 1),
+              useAltOffset) != 0) {
+        coastTile = tile;
+        break;
+      }
+    }
+    if (coastTile != -1) {
       break;
     }
   }
-  if (coastTile == -1 || mapDialog->quickDrawSurface350 == 0) {
+  if (coastTile == -1) {
     return false;
   }
 
-  TBitmapSurfaceNode** surfaceHandle = GetGWorldPixMap(mapDialog->quickDrawSurface350);
-  if (surfaceHandle == 0 || *surfaceHandle == 0 || !LockPixels(surfaceHandle)) {
+  TBitmapSurfaceNode** destinationHandle = GetGWorldPixMap(mapDialog->quickDrawSurface350);
+  TBitmapSurfaceNode** sourceHandle = GetGWorldPixMap(g_pStrategicMapViewSystem->atlas668);
+  if (destinationHandle == 0 || *destinationHandle == 0 || sourceHandle == 0 ||
+      *sourceHandle == 0 || !LockPixels(destinationHandle)) {
     return false;
   }
-  TBitmapSurfaceNode* surface = *surfaceHandle;
-  unsigned char withoutMask[0x1000];
-  unsigned char withMask[0x1000];
-  RiverSpriteCodeStorage savedCode =
-      g_pGlobalMapState->terrainStateTable[coastTile].riverSpriteCode;
+  if (!LockPixels(sourceHandle)) {
+    UnlockPixels(destinationHandle);
+    return false;
+  }
+  TBitmapSurfaceNode* destinationSurface = *destinationHandle;
+  TBitmapSurfaceNode* sourceSurface = *sourceHandle;
+  int destinationStride = destinationSurface->stride & 0x3fff;
+  int sourceStride = sourceSurface->stride & 0x3fff;
+  unsigned char expected[0x1000];
+  unsigned char actual[0x1000];
+  TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[coastTile];
+  TTerrainStateRecordView savedTerrain = terrain;
+  short sourceOffset = g_pGlobalMapState->LookupTileSpriteVariantOffsetByAdjacencyMaskB(coastTile);
+  CopySurfaceTile(expected, sourceSurface->pixelBits + sourceOffset, sourceStride);
+
+  for (int corner = 0; corner < 6; ++corner) {
+    int previousDirection = (corner + 5) % 6;
+    int cornerBits = (1 << previousDirection) | (1 << corner);
+    if ((terrain.adjacencyMaskB0b & cornerBits) == 0) {
+      continue;
+    }
+    int coastOffset = g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariant(
+        static_cast<char>(terrain.adjacencyMaskB0b), static_cast<char>(corner + 1),
+        static_cast<char>(terrain.spriteVariantIndex01 & (1 << corner)));
+    if (coastOffset == 0) {
+      continue;
+    }
+    unsigned char* coastSource = sourceSurface->pixelBits + coastOffset;
+    switch (corner) {
+    case 0:
+      mapDialog->CopyCoastCornerMaskBetweenDirections5And0(coastSource, expected, sourceStride,
+                                                           0x40);
+      break;
+    case 1:
+      mapDialog->CopyCoastCornerMaskBetweenDirections0And1(coastSource, expected, sourceStride,
+                                                           0x40);
+      break;
+    case 2:
+      mapDialog->CopyCoastCornerMaskBetweenDirections1And2(coastSource, expected, sourceStride,
+                                                           0x40);
+      break;
+    case 3:
+      mapDialog->CopyCoastCornerMaskBetweenDirections2And3(coastSource, expected, sourceStride,
+                                                           0x40);
+      break;
+    case 4:
+      mapDialog->CopyCoastCornerMaskBetweenDirections3And4(coastSource, expected, sourceStride,
+                                                           0x40);
+      break;
+    case 5:
+      mapDialog->CopyCoastCornerMaskBetweenDirections4And5(coastSource, expected, sourceStride,
+                                                           0x40);
+      break;
+    }
+  }
+
+  terrain.riverSpriteCode = kRiverSpriteCodeNone;
+  terrain.ownerBorderMask07 = 0;
+  terrain.cityBorderMask08 = 0;
+  terrain.adjacencyBits06 = 0;
+  terrain.railFlags17 = 0;
+  terrain.activeFlags1c = 0;
+  terrain.resourceTypeByEdge[0] = -1;
+  terrain.resourceTypeByEdge[1] = -1;
+  terrain.secondaryOwnerNationTag18 = -1;
+  terrain.perTileVisitedFlag0f = 0;
+  terrain.tileActionState16 = static_cast<MapTileActionStateStorage>(-1);
+  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+  short savedCategory = mapView->activeUnitCategoryIndex96;
+  short savedRiverMouth = g_pGlobalMapState->pendingRiverMouthTile22;
+  mapView->activeUnitCategoryIndex96 = 4;
+  g_pGlobalMapState->pendingRiverMouthTile22 = -1;
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags;
   GetGWorld(&savedSurface, &savedSurfaceFlags);
   SetGWorld(mapDialog->quickDrawSurface350, savedSurfaceFlags);
-  g_pGlobalMapState->terrainStateTable[coastTile].riverSpriteCode = kRiverSpriteCodeNone;
   mapDialog->DrawOneTile(coastTile, 0, 0);
-  CopySurfaceTile(withoutMask, surface->pixelBits, surface->stride & 0x3fff);
-  g_pGlobalMapState->terrainStateTable[coastTile].riverSpriteCode = savedCode;
+  CopySurfaceTile(actual, destinationSurface->pixelBits, destinationStride);
+  terrain = savedTerrain;
+  mapView->activeUnitCategoryIndex96 = savedCategory;
+  g_pGlobalMapState->pendingRiverMouthTile22 = savedRiverMouth;
   mapDialog->DrawOneTile(coastTile, 0, 0);
-  CopySurfaceTile(withMask, surface->pixelBits, surface->stride & 0x3fff);
   SetGWorld(savedSurface, savedSurfaceFlags);
-  UnlockPixels(surfaceHandle);
-  return memcmp(withoutMask, withMask, sizeof(withMask)) != 0;
+  UnlockPixels(sourceHandle);
+  UnlockPixels(destinationHandle);
+  return memcmp(expected, actual, sizeof(expected)) == 0;
 }
 
 bool VerifyMiniMapViewportFrame(TMiniMapView* miniMap) {
@@ -1112,6 +1202,23 @@ void RunWaitingForDirectStrategicMap() {
     Fail("\"nation control modes do not match the setup selection\"");
     return;
   }
+  TMapUberPicture* mapView = static_cast<TMapUberPicture*>(mainView);
+  if (!VerifyStrategicCoastCornerComposite(mapView->subview2A8)) {
+    Fail("\"strategic coast corners do not match the adjacency-selected atlas composite\"");
+    return;
+  }
+  const char* holdPhase = getenv("IMPERIALISM_RUNTIME_TEST_HOLD");
+  if (holdPhase != 0 && lstrcmpiA(holdPhase, "strategic") == 0) {
+    RedrawWindow(mapView->nativeWindow50->m_hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+    if (!CaptureHeldPrimarySurfaceBmp(g_runtimeTestState.resultPath) ||
+        !CaptureHeldWindowBmp(g_runtimeTestState.resultPath, mapView->nativeWindow50->m_hWnd,
+                              mapView->frameWidth34, mapView->frameHeight38)) {
+      Fail("\"could not capture the held strategic map\"");
+      return;
+    }
+    Finish("passed", "null");
+    return;
+  }
   ActiveScenario().OnMapReadyWithoutCapitalSelection();
 }
 
@@ -1191,6 +1298,10 @@ void RunWaitingForModalDismissal() {
     Fail("\"strategic map did not create its mini-map view\"");
     return;
   }
+  if (!VerifyStrategicCoastCornerComposite(mapView->subview2A8)) {
+    Fail("\"strategic coast corners do not match the adjacency-selected atlas composite\"");
+    return;
+  }
   // Snapshot the map here rather than leaving it to Finish: this is the first
   // strategic map, and scenarios that continue past it may start a second random game
   // whose generation is not reproducible. CaptureMapStateSnapshot only records once.
@@ -1200,6 +1311,12 @@ void RunWaitingForModalDismissal() {
   const char* holdPhase = getenv("IMPERIALISM_RUNTIME_TEST_HOLD");
   if (holdPhase != 0 && lstrcmpiA(holdPhase, "strategic") == 0) {
     RedrawWindow(mapView->nativeWindow50->m_hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+    if (!CaptureHeldPrimarySurfaceBmp(g_runtimeTestState.resultPath) ||
+        !CaptureHeldWindowBmp(g_runtimeTestState.resultPath, mapView->nativeWindow50->m_hWnd,
+                              mapView->frameWidth34, mapView->frameHeight38)) {
+      Fail("\"could not capture the held strategic map\"");
+      return;
+    }
     Finish("passed", "null");
     return;
   }
@@ -1531,8 +1648,8 @@ void RunVerifyingCombinedMapExtents() {
     Finish("passed", "null");
     return;
   }
-  if (!VerifyStrategicCoastMaskPass(mapDialog)) {
-    Fail("\"strategic coast sprite mask did not alter an ocean-land boundary tile\"");
+  if (!VerifyStrategicCoastCornerComposite(mapDialog)) {
+    Fail("\"strategic coast corners do not match the adjacency-selected atlas composite\"");
     return;
   }
   if (GetMcAppUiActiveFlag() == 0) {

@@ -639,7 +639,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       int policyDice6 = rand() % 6;
       int policyDice4 = rand() % 4;
       TAutoGreatPower* newNation = new TAutoGreatPower();
-      newNation->InitializeNationMinisterSubsystemsByPolicyIds(
+      newNation->IAutoGreatPower(
           nationSlot, 2, static_cast<short>(policyDice4), static_cast<short>(policyDice6),
           static_cast<short>(policyDice5));
 

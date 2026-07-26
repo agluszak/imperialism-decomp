@@ -23,6 +23,37 @@ extern CString g_cstrUiFontPalatino;
 
 extern CString g_cstrUiFontBelweBdBt;
 
+// Process-lifetime trace dialog whose source-level global definition causes VC5 to emit
+// the dynamic initializer at 0x0049baa0 and its registered cleanup at 0x0049bad0.
+extern TD0TemplateDialog g_debugTraceDialog;
+
+// File-scope zero geometry/color defaults recovered from the VC5 dynamic-initializer
+// bodies in the 0x0049b9d0-0x0049cb60 cluster. They have no retail readers, but their
+// real C++ types explain the compiler-emitted initializer shapes.
+extern CRGBColor g_defaultRgbColor_006A1E18;
+extern CPoint g_defaultPoint_006A1E20;
+extern CRect g_defaultRect_006A1E28;
+extern CRect g_defaultRect_006A1E38;
+extern CPoint g_defaultPoint_006A1E48;
+extern CRGBColor g_defaultRgbColor_006A1E68;
+extern CPoint g_defaultPoint_006A1E70;
+extern CRect g_defaultRect_006A1F18;
+extern CRect g_defaultRect_006A1F28;
+extern CPoint g_defaultPoint_006A1F38;
+extern CRGBColor g_defaultRgbColor_006A1F70;
+extern CPoint g_defaultPoint_006A1F78;
+extern CRect g_defaultRect_006A1F88;
+extern CRect g_defaultRect_006A1F98;
+extern CPoint g_defaultPoint_006A1FA8;
+extern double g_ScaleDefault6A1FC0;
+extern CRGBColor g_defaultRgbColor_006A1FC8;
+extern CPoint g_defaultPoint_006A1FD0;
+extern CRect g_defaultRect_006A1FD8;
+extern double g_ScaleDefault6A1FE8;
+extern CRect g_defaultRect_006A1FF0;
+extern CPoint g_defaultPoint_006A2000;
+extern short g_scaledDefaultWidth_006A2008;
+
 extern int g_nUiInvalidationAssertFlagLine471;
 
 extern int g_nUiInvalidationAssertFlagLine495;

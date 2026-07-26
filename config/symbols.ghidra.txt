@@ -3416,7 +3416,7 @@ TAutoGreatPower::GetRuntimeClass 4E6B30 f
 TAutoGreatPower::TAutoGreatPower 4E6B50 f
 TAutoGreatPower::'scalar_deleting_destructor' 4E6B80 f
 TAutoGreatPower::~TAutoGreatPower 4E6BB0 f
-TAutoGreatPower::InitializeNationMinisterSubsystemsByPolicyIds 4E6C20 f
+TAutoGreatPower::IAutoGreatPower 4E6C20 f
 TAutoGreatPower::Free 4E7230 f
 TAutoGreatPower::ReadFrom 4E72C0 f
 TAutoGreatPower::WriteTo 4E73F0 f

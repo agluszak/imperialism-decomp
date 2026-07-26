@@ -646,7 +646,7 @@ address|name|symbol|size|type|prototype|provenance
 487820|TCommand::ConstructTurnEventPacketBase||26|function|undefined ConstructTurnEventPacketBase()|
 487850|TCommand::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 487880|DestructTCommandAndMaybeFree_Impl||7|function|undefined DestructTCommandAndMaybeFree_Impl()|
-4878a0|InitializeRangePairAndResetCursor||39|function|undefined InitializeRangePairAndResetCursor()|
+4878a0|TCommand::ICommand||39|function|void __thiscall ICommand(long itsCommandNumber, TCommandHandler * itsContext, unsigned char canUndo, unsigned char causesChange, TObject * itsChangedObject)|mac-oracle
 4878e0|TCommand::Free||12|function|undefined NextDiplomacyCommandVtableSlotDC_DestroySelf()|
 487900|TCommand::Process||19|function|void Process()|
 487a00|TCommand::DoIt||1|function|void __thiscall DoIt(void)|
@@ -1137,8 +1137,8 @@ address|name|symbol|size|type|prototype|provenance
 493d50|CMcWindow::OnIdleUpdateMsg36A||19|function|long __thiscall OnIdleUpdateMsg36A(uint wParam, long lParam)|
 493d80|CMcWindow::PreCreateWindow|?PreCreateWindow@CMcWindow@@MAEHAAUtagCREATESTRUCTA@@@Z|91|function|protected: virtual int __thiscall CMcWindow::PreCreateWindow(struct tagCREATESTRUCTA &)|
 493f30|`dynamic initializer for 'g_scaledShortConst_6A1D88''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A1D88''(void)|library
-493f90|InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit||24|function|undefined InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit()|
-493fc0|DestroyDefaultQuickDrawSurfaceContextAtExit||10|function|undefined DestroyDefaultQuickDrawSurfaceContextAtExit()|
+493f90|`dynamic initializer for 'g_defaultQuickDrawSurfaceSentinel''||24|function|void __cdecl `dynamic initializer for 'g_defaultQuickDrawSurfaceSentinel''(void)|
+493fc0|TBitmapSurfaceContextDescriptor::`dynamic atexit destructor'||10|function|undefined DynamicAtexitDestructor()|
 493fe0|InitStub_thunk_InitializeGlobalClipRegionHandleState_At00493fe0||24|function|undefined InitStub_thunk_InitializeGlobalClipRegionHandleState_At00493fe0()|
 494010|TQuickDrawClipStateInitializer::`dynamic atexit destructor'||29|function|undefined DynamicAtexitDestructor()|
 494040|CBrush::InitializeGlobalClipRegionHandleState||77|function|undefined InitializeGlobalClipRegionHandleState()|
@@ -1289,19 +1289,19 @@ address|name|symbol|size|type|prototype|provenance
 49b870|WrapperFor_AllocateAndLinkBlockHead_At0049b870||88|function|undefined WrapperFor_AllocateAndLinkBlockHead_At0049b870()|
 49b8f0|DestructModuleLibraryCacheAndHashTables_Impl||99|function|undefined DestructModuleLibraryCacheAndHashTables_Impl()|
 49b980|ComputeBucketIndexAndScanNodeByKey||52|function|undefined ComputeBucketIndexAndScanNodeByKey()|
-49b9d0|ResetGlobalPair6A1E20And6A1E24||13|function|undefined ResetGlobalPair6A1E20And6A1E24()|
-49b9f0|ResetGlobalPair6A1E48And6A1E4C||13|function|undefined ResetGlobalPair6A1E48And6A1E4C()|
-49ba10|ResetGlobalQuad6A1E28To6A1E34||23|function|undefined ResetGlobalQuad6A1E28To6A1E34()|
-49ba40|ResetGlobalQuad6A1E38To6A1E44||23|function|undefined ResetGlobalQuad6A1E38To6A1E44()|
-49ba70|ResetGlobalDword6A1E18||30|function|undefined ResetGlobalDword6A1E18()|
-49baa0|InitializeStaticDialogTemplateD0AndRegisterAtExit||26|function|undefined InitializeStaticDialogTemplateD0AndRegisterAtExit()|
-49bad0|CleanupStaticDialogTemplateD0AtExit||10|function|undefined CleanupStaticDialogTemplateD0AtExit()|
+49b9d0|`dynamic initializer for 'g_defaultPoint_006A1E20''||13|function|void __cdecl `dynamic initializer for 'g_defaultPoint_006A1E20''(void)|
+49b9f0|`dynamic initializer for 'g_defaultPoint_006A1E48''||13|function|void __cdecl `dynamic initializer for 'g_defaultPoint_006A1E48''(void)|
+49ba10|`dynamic initializer for 'g_defaultRect_006A1E28''||23|function|void __cdecl `dynamic initializer for 'g_defaultRect_006A1E28''(void)|
+49ba40|`dynamic initializer for 'g_defaultRect_006A1E38''||23|function|void __cdecl `dynamic initializer for 'g_defaultRect_006A1E38''(void)|
+49ba70|`dynamic initializer for 'g_defaultRgbColor_006A1E18''||30|function|void __cdecl `dynamic initializer for 'g_defaultRgbColor_006A1E18''(void)|
+49baa0|`dynamic initializer for 'g_debugTraceDialog''||26|function|void __cdecl `dynamic initializer for 'g_debugTraceDialog''(void)|
+49bad0|TD0TemplateDialog::`dynamic atexit destructor'||10|function|undefined DynamicAtexitDestructor()|
 49baf0|DestructStaticDialogTemplateD0Object||71|function|undefined DestructStaticDialogTemplateD0Object()|
-49bc00|ResetGlobalPair6A1E70And6A1E74||13|function|undefined ResetGlobalPair6A1E70And6A1E74()|
-49bc20|ResetGlobalPair6A1F38And6A1F3C||13|function|undefined ResetGlobalPair6A1F38And6A1F3C()|
-49bc40|ResetGlobalQuad6A1F18To6A1F24||23|function|undefined ResetGlobalQuad6A1F18To6A1F24()|
-49bc70|ResetGlobalQuad6A1F28To6A1F34||23|function|undefined ResetGlobalQuad6A1F28To6A1F34()|
-49bca0|ResetGlobalDword6A1E68||30|function|undefined ResetGlobalDword6A1E68()|
+49bc00|`dynamic initializer for 'g_defaultPoint_006A1E70''||13|function|void __cdecl `dynamic initializer for 'g_defaultPoint_006A1E70''(void)|
+49bc20|`dynamic initializer for 'g_defaultPoint_006A1F38''||13|function|void __cdecl `dynamic initializer for 'g_defaultPoint_006A1F38''(void)|
+49bc40|`dynamic initializer for 'g_defaultRect_006A1F18''||23|function|void __cdecl `dynamic initializer for 'g_defaultRect_006A1F18''(void)|
+49bc70|`dynamic initializer for 'g_defaultRect_006A1F28''||23|function|void __cdecl `dynamic initializer for 'g_defaultRect_006A1F28''(void)|
+49bca0|`dynamic initializer for 'g_defaultRgbColor_006A1E68''||30|function|void __cdecl `dynamic initializer for 'g_defaultRgbColor_006A1E68''(void)|
 49bcd0|InitializeDialogTemplateD0WithTextState||106|function|undefined InitializeDialogTemplateD0WithTextState()|
 49bd60|TD0TemplateDialog::`scalar deleting destructor'|??_GTD0TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 49bd90|PopulateListBoxFromDelimitedText||327|function|undefined PopulateListBoxFromDelimitedText()|
@@ -1309,14 +1309,14 @@ address|name|symbol|size|type|prototype|provenance
 49bf90|TD0TemplateDialog::GetMessageMap|?GetMessageMap@TD0TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 49bfb0|TD0TemplateDialog::OnOK||1|function|void TD0TemplateDialog::OnOK()|
 49bfd0|TD0TemplateDialog::OnCancel||8|function|void TD0TemplateDialog::OnCancel()|
-49bff0|ResetGlobalPair6A1F78And6A1F7C||13|function|undefined ResetGlobalPair6A1F78And6A1F7C()|
-49c010|ResetGlobalPair6A1FA8And6A1FAC||13|function|undefined ResetGlobalPair6A1FA8And6A1FAC()|
-49c030|ResetGlobalQuad6A1F88To6A1F94||23|function|undefined ResetGlobalQuad6A1F88To6A1F94()|
-49c060|ResetGlobalQuad6A1F98To6A1FA4||23|function|undefined ResetGlobalQuad6A1F98To6A1FA4()|
-49c090|ResetGlobalDword6A1F70||30|function|undefined ResetGlobalDword6A1F70()|
-49c0c0|InitializeGlobalPair6A1FE8And6A1FECDefault||21|function|undefined InitializeGlobalPair6A1FE8And6A1FECDefault()|
-49c0f0|InitializeGlobalPair6A1FC0And6A1FC4Default||21|function|undefined InitializeGlobalPair6A1FC0And6A1FC4Default()|
-49c120|UpdateGlobalWord6A2008FromScaled6A1FC0||30|function|undefined UpdateGlobalWord6A2008FromScaled6A1FC0()|
+49bff0|`dynamic initializer for 'g_defaultPoint_006A1F78''||13|function|void __cdecl `dynamic initializer for 'g_defaultPoint_006A1F78''(void)|
+49c010|`dynamic initializer for 'g_defaultPoint_006A1FA8''||13|function|void __cdecl `dynamic initializer for 'g_defaultPoint_006A1FA8''(void)|
+49c030|`dynamic initializer for 'g_defaultRect_006A1F88''||23|function|void __cdecl `dynamic initializer for 'g_defaultRect_006A1F88''(void)|
+49c060|`dynamic initializer for 'g_defaultRect_006A1F98''||23|function|void __cdecl `dynamic initializer for 'g_defaultRect_006A1F98''(void)|
+49c090|`dynamic initializer for 'g_defaultRgbColor_006A1F70''||30|function|void __cdecl `dynamic initializer for 'g_defaultRgbColor_006A1F70''(void)|
+49c0c0|`dynamic initializer for 'g_ScaleDefault6A1FE8''||21|function|void __cdecl `dynamic initializer for 'g_ScaleDefault6A1FE8''(void)|
+49c0f0|`dynamic initializer for 'g_ScaleDefault6A1FC0''||21|function|void __cdecl `dynamic initializer for 'g_ScaleDefault6A1FC0''(void)|
+49c120|`dynamic initializer for 'g_scaledDefaultWidth_006A2008''||30|function|void __cdecl `dynamic initializer for 'g_scaledDefaultWidth_006A2008''(void)|
 49c150|InitializeDirectSoundDeviceAndChannels_Impl||186|function|undefined InitializeDirectSoundDeviceAndChannels_Impl()|
 49c240|TSoundResourceManager::UpdateLocalizationAudioSlot||54|function|int UpdateLocalizationAudioSlot(int slot)|
 49c290|TSoundResourceManager::LoadWaveFileByPathAndBuildBuffer||210|function|int LoadWaveFileByPathAndBuildBuffer(char* filePath, int slot)|
@@ -1326,11 +1326,11 @@ address|name|symbol|size|type|prototype|provenance
 49c8e0|TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels||80|function|void __thiscall ReleaseDirectSoundDeviceAndChannels(void)|
 49c970|TSoundResourceManager::InitializeDirectSoundDeviceAndChannels||161|function|int __thiscall InitializeDirectSoundDeviceAndChannels(void)|
 49ca50|TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels|?ReleaseDirectSoundDeviceAndChannels@TSoundResourceManager@@QAEXXZ|80|function|void __thiscall ReleaseDirectSoundDeviceAndChannels(void)|curated
-49cac0|ResetGlobalPair6A1FD0And6A1FD4||13|function|undefined ResetGlobalPair6A1FD0And6A1FD4()|
-49cae0|ResetGlobalPair6A2000And6A2004||13|function|undefined ResetGlobalPair6A2000And6A2004()|
-49cb00|ResetGlobalQuad6A1FD8To6A1FE4||23|function|undefined ResetGlobalQuad6A1FD8To6A1FE4()|
-49cb30|ResetGlobalQuad6A1FF0To6A1FFC||23|function|undefined ResetGlobalQuad6A1FF0To6A1FFC()|
-49cb60|ResetGlobalDword6A1FC8||30|function|undefined ResetGlobalDword6A1FC8()|
+49cac0|`dynamic initializer for 'g_defaultPoint_006A1FD0''||13|function|void __cdecl `dynamic initializer for 'g_defaultPoint_006A1FD0''(void)|
+49cae0|`dynamic initializer for 'g_defaultPoint_006A2000''||13|function|void __cdecl `dynamic initializer for 'g_defaultPoint_006A2000''(void)|
+49cb00|`dynamic initializer for 'g_defaultRect_006A1FD8''||23|function|void __cdecl `dynamic initializer for 'g_defaultRect_006A1FD8''(void)|
+49cb30|`dynamic initializer for 'g_defaultRect_006A1FF0''||23|function|void __cdecl `dynamic initializer for 'g_defaultRect_006A1FF0''(void)|
+49cb60|`dynamic initializer for 'g_defaultRgbColor_006A1FC8''||30|function|void __cdecl `dynamic initializer for 'g_defaultRgbColor_006A1FC8''(void)|
 49cbc0|TBackdropWindow::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 49cbf0|TBackdropWindow::~TBackdropWindow||21|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0049cbc0_Impl()|
 49cc20|TBackdropWindow::GetMessageMap|?GetMessageMap@TBackdropWindow@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|windows_listing
@@ -2504,7 +2504,7 @@ address|name|symbol|size|type|prototype|provenance
 4e6b50|TAutoGreatPower::TAutoGreatPower||28|function|void __thiscall TAutoGreatPower(void)|
 4e6b80|TAutoGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4e6bb0|TAutoGreatPower::~TAutoGreatPower||80|function|undefined ~TAutoGreatPower()|
-4e6c20|TAutoGreatPower::InitializeNationMinisterSubsystemsByPolicyIds||1160|function|void __thiscall InitializeNationMinisterSubsystemsByPolicyIds(int nationSlot, int nationInitializationMode, short cityMinisterPolicyId, short foreignMinisterPolicyId, short defenseMinisterPolicyId)|
+4e6c20|TAutoGreatPower::IAutoGreatPower||1160|function|void __thiscall IAutoGreatPower(int nationSlot, int nationInitializationMode, short cityMinisterPolicyId, short foreignMinisterPolicyId, short defenseMinisterPolicyId)|
 4e7230|TAutoGreatPower::Free||107|function|undefined Free()|
 4e72c0|TGreatPower::InitializeMapActionCandidateStateAndQueueMission||235|function|undefined InitializeMapActionCandidateStateAndQueueMission()|
 4e73f0|TGreatPower::SerializeGreatPowerTailStateToMessage||212|function|undefined SerializeGreatPowerTailStateToMessage()|
@@ -3068,7 +3068,7 @@ address|name|symbol|size|type|prototype|provenance
 50e600|OrphanTiny_ThisAdjustJump_a4_0050e600||11|function|undefined OrphanTiny_ThisAdjustJump_a4_0050e600()|
 50e620|TMapMgr::ReadFrom||293|function|undefined WrapperFor_HandleCityDialogNoOpSlot18_At0050e620(int * param_1)|
 50e7a0|TMapMgr::WriteTo||200|function|undefined WrapperFor_HandleCityDialogNoOpSlot14_At0050e7a0(int * param_1)|
-50e8b0|TMapMgr::AllocateAndResetTerrainAndCityScoreTables||81|function|void TMapMgr::AllocateAndResetTerrainAndCityScoreTables(void)|
+50e8b0|TMapMgr::AllocateAndResetTerrainAndCityScoreTables||747|function|void TMapMgr::AllocateAndResetTerrainAndCityScoreTables(void)|
 50ec60|Province::Province||18|function|Province* __thiscall Province::Province(void)|construction+shared_city_record_layout
 50ec90|TMapMgr::BuildOrLoadGlobalMapStateForSession||874|function|char __thiscall BuildOrLoadGlobalMapStateForSession(const char * mapStreamName, char * tuningOverride)|
 50f200|TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream||337|function|undefined LoadPoliticalMapRegionSubtypeTableFromResourceStream()|
@@ -5717,7 +5717,7 @@ address|name|symbol|size|type|prototype|provenance
 5ba400|TNextTradeCommand::ConstructTNextTradeCommandBaseState||18|function|undefined ConstructTNextTradeCommandBaseState()|
 5ba430|TNextTradeCommand::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5ba460|TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl||7|function|undefined DestructTNextTradeCommandAndMaybeFree_Impl()|
-5ba480|InitializeRangePairFromDiplomacyConstants||23|function|undefined InitializeRangePairFromDiplomacyConstants()|
+5ba480|TNextTradeCommand::INextTradeCommand||23|function|void __thiscall INextTradeCommand(void)|mac-oracle
 5ba4b0|TNextTradeCommand::DoIt||11|function|void __thiscall DoIt(void)|
 5ba600|`dynamic initializer for 'g_scaledShortConst_6A5A20''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A5A20''(void)|library
 5ba680|TTradeScreenPicture::CreateObject|?CreateObject@TTradeScreenPicture@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
@@ -9611,16 +9611,30 @@ address|name|symbol|size|type|prototype|provenance
 6a1dc8|g_QuickDrawSetCursorAssertGate|||global||
 6a1dcc|g_QuickDrawGetCursorAssertGate|||global||
 6a1dd0|g_QuickDrawEqualRgnAssertGate|||global||
-6a1e20|g_ResetStateDword6A1E20|||global||
-6a1e24|g_ResetStateDword6A1E24|||global||
-6a1e48|g_ResetStateDword6A1E48|||global||
-6a1e4c|g_ResetStateDword6A1E4C|||global||
-6a1e70|g_ResetStateDword6A1E70|||global||
-6a1e74|g_ResetStateDword6A1E74|||global||
-6a1f38|g_ResetStateDword6A1F38|||global||
-6a1f3c|g_ResetStateDword6A1F3C|||global||
+6a1e18|g_defaultRgbColor_006A1E18|||global||
+6a1e20|g_defaultPoint_006A1E20|||global||
+6a1e28|g_defaultRect_006A1E28|||global||
+6a1e38|g_defaultRect_006A1E38|||global||
+6a1e48|g_defaultPoint_006A1E48|||global||
+6a1e68|g_defaultRgbColor_006A1E68|||global||
+6a1e70|g_defaultPoint_006A1E70|||global||
+6a1e78|g_debugTraceDialog|||global||
+6a1f18|g_defaultRect_006A1F18|||global||
+6a1f28|g_defaultRect_006A1F28|||global||
+6a1f38|g_defaultPoint_006A1F38|||global||
+6a1f70|g_defaultRgbColor_006A1F70|||global||
+6a1f78|g_defaultPoint_006A1F78|||global||
+6a1f88|g_defaultRect_006A1F88|||global||
+6a1f98|g_defaultRect_006A1F98|||global||
+6a1fa8|g_defaultPoint_006A1FA8|||global||
 6a1fc0|g_ScaleDefault6A1FC0|||global||
+6a1fc8|g_defaultRgbColor_006A1FC8|||global||
+6a1fd0|g_defaultPoint_006A1FD0|||global||
+6a1fd8|g_defaultRect_006A1FD8|||global||
 6a1fe8|g_ScaleDefault6A1FE8|||global||
+6a1ff0|g_defaultRect_006A1FF0|||global||
+6a2000|g_defaultPoint_006A2000|||global||
+6a2008|g_scaledDefaultWidth_006A2008|||global||
 6a2018|g_cachedShowSplashFlag|||global||
 6a2050|g_pActiveBackdropWindow|||global||
 6a2054|g_pBackdropWaitCursor|||global||

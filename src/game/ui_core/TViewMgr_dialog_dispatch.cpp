@@ -697,7 +697,7 @@ void TViewMgr::CreateModalMessageCommandAndQueue(CString* message, int payload) 
   TModalMessageCommand* command = new TModalMessageCommand();
   command->message = *message;
   command->payload = payload;
-  command->InitializeRangePair(kControlTagHeyBang, g_pGlobalUiRootController, 0, 0, 0);
+  command->ICommand(kControlTagHeyBang, g_pGlobalUiRootController, 0, 0, 0);
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
 }
 
