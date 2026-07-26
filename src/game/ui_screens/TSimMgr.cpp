@@ -1,14 +1,10 @@
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_tags_screens.h"
 #include "game/resource_domain_types.h"
+#include "game/core/runtime_prng_seed.h"
 #include "game/ui_screens/TSimMgr.h"
 
-#ifdef IMPERIALISM_RUNTIME_TESTS
-#include "RuntimeTestDriver.h"
-#endif
-
 #include <cstring>
-#include <ctime>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -1129,11 +1125,7 @@ void TSimMgr::GetStringPrelude(short offset, CString* destString) {
 
 // FUNCTION: IMPERIALISM 0x0057fec0
 void TSimMgr::ReinitializeRandomSeed() {
-#ifdef IMPERIALISM_RUNTIME_TESTS
-  srand(RuntimeTestDriver::RandomSeed());
-#else
-  srand(static_cast<unsigned int>(time(0)));
-#endif
+  srand(static_cast<unsigned int>(ClockDerivedPrngSeed()));
 }
 
 // FUNCTION: IMPERIALISM 0x00580760
