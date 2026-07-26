@@ -350,7 +350,7 @@ address|matching|name
 0x479e10|0.2222222222222222|RegisterUiResourceEntry_Impl
 0x479e40|0.43636363636363634|CDib::CreateObject
 0x479ed0|1.0|CDib::GetRuntimeClass
-0x479f10|0.0|IltTarget_00479f10
+0x479f10|1.0|operator>>(class CArchive &, class CDib *&)
 0x479f40|1.0|CDib::CDib(void)
 0x479fb0|1.0|CDib::`scalar deleting destructor'
 0x479fe0|0.662020905923345|CDib::CDib(int, int, int)
@@ -695,7 +695,7 @@ address|matching|name
 0x485df0|1.0|TObject::CreateObject
 0x485e20|1.0|TObject::GetRuntimeClass
 0x485e40|0.3333333333333333|`dynamic initializer for '_init_TObject''
-0x485e60|0.0|IltTarget_00485e60
+0x485e60|1.0|operator>>(class CArchive &, class TObject *&)
 0x485e90|0.8235294117647058|TObject::Serialize
 0x485f50|1.0|TObject
 0x485f70|1.0|TObject::WriteTo
@@ -3796,7 +3796,7 @@ address|matching|name
 0x534f90|1.0|TMission::SmokeEmIfYouGotEm
 0x534fb0|1.0|TMission::GetRuntimeClass
 0x534fd0|0.3333333333333333|`dynamic initializer for '_init_TMission''
-0x534ff0|0.0|IltTarget_00534ff0
+0x534ff0|1.0|operator>>(class CArchive &, class TMission *&)
 0x535020|1.0|TMission::TMission
 0x535050|1.0|TMission::`scalar deleting destructor'
 0x535080|1.0|TMission
@@ -3840,7 +3840,7 @@ address|matching|name
 0x536390|1.0|TNavyMission::CreateObject
 0x536450|1.0|TNavyMission::GetRuntimeClass
 0x536470|0.3333333333333333|`dynamic initializer for '_init_TNavyMission''
-0x536490|0.0|IltTarget_00536490
+0x536490|1.0|operator>>(class CArchive &, class TNavyMission *&)
 0x5364c0|0.5714285714285714|TNavyMission::Free
 0x536530|1.0|TNavyMission::WriteTo
 0x536650|0.8961038961038961|TNavyMission::ReadFrom
@@ -3872,9 +3872,9 @@ address|matching|name
 0x538120|0.27936507936507937|TNavyMission::ComputeMissionOrderMatchScoreWithCandidateNavyOrder
 0x5383f0|0.277602523659306|TNavyMission::ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder
 0x5386c0|1.0|TControlSeaZoneMission::CreateObject
-0x538780|0.5|TControlSeaZoneMission::GetRuntimeClass
+0x538780|1.0|TControlSeaZoneMission::GetRuntimeClass
 0x5387a0|0.3333333333333333|`dynamic initializer for '_init_TControlSeaZoneMission''
-0x5387c0|0.0|IltTarget_005387c0
+0x5387c0|1.0|operator>>(class CArchive &, class TControlSeaZoneMission *&)
 0x5387f0|0.7746478873239436|TControlSeaZoneMission::Initialize
 0x538900|0.45161290322580644|TControlSeaZoneMission::GetReplacementSlot48
 0x5389f0|0.29714285714285715|TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter
@@ -3892,9 +3892,9 @@ address|matching|name
 0x539940|1.0|TEscortMission::IsDefensiveSeaZoneMission
 0x539960|1.0|TEscortMission::`scalar deleting destructor'
 0x539990|1.0|TEscortMission::~TEscortMission
-0x5399b0|0.5|TEscortMission::GetRuntimeClass
+0x5399b0|1.0|TEscortMission::GetRuntimeClass
 0x5399d0|0.3333333333333333|`dynamic initializer for '_init_TEscortMission''
-0x5399f0|0.0|IltTarget_005399f0
+0x5399f0|1.0|operator>>(class CArchive &, class TEscortMission *&)
 0x539a20|0.3448275862068966|TEscortMission::TEscortMission
 0x539a70|1.0|TEscortMission::Initialize
 0x539a90|0.3744292237442922|TNavyMission::ComputeOrderDistributionSimilarityScoreForZone
@@ -3907,9 +3907,9 @@ address|matching|name
 0x53a3b0|1.0|TBeachheadMission::IsDefensiveSeaZoneMission
 0x53a3d0|1.0|TBeachheadMission::`scalar deleting destructor'
 0x53a400|1.0|TBeachheadMission::~TBeachheadMission
-0x53a420|0.5|TBeachheadMission::GetRuntimeClass
+0x53a420|1.0|TBeachheadMission::GetRuntimeClass
 0x53a440|0.3333333333333333|`dynamic initializer for '_init_TBeachheadMission''
-0x53a460|0.0|IltTarget_0053a460
+0x53a460|1.0|operator>>(class CArchive &, class TBeachheadMission *&)
 0x53a490|0.30303030303030304|TBeachheadMission::TBeachheadMission
 0x53a500|0.37341772151898733|TBeachheadMission::CalculateNeeds
 0x53a7b0|1.0|TBeachheadMission::Matches
@@ -3921,9 +3921,9 @@ address|matching|name
 0x53aa70|1.0|TBlockadePortMission::IsDefensiveSeaZoneMission
 0x53aa90|1.0|TBlockadePortMission::`scalar deleting destructor'
 0x53aac0|1.0|TBlockadePortMission::~TBlockadePortMission
-0x53aae0|0.5|TBlockadePortMission::GetRuntimeClass
+0x53aae0|1.0|TBlockadePortMission::GetRuntimeClass
 0x53ab00|0.3333333333333333|`dynamic initializer for '_init_TBlockadePortMission''
-0x53ab20|0.0|IltTarget_0053ab20
+0x53ab20|1.0|operator>>(class CArchive &, class TBlockadePortMission *&)
 0x53ab50|0.38016528925619836|TBlockadePortMission::TBlockadePortMission
 0x53ac60|0.9714285714285714|TBlockadePortMission::WriteTo
 0x53aca0|1.0|TBlockadePortMission::ReadFrom
@@ -3936,9 +3936,9 @@ address|matching|name
 0x53ba10|1.0|TBlockadePortMission::Matches
 0x53ba40|1.0|TBlockadePortMission::GiveActionOrders
 0x53ba60|1.0|TScatteredShipsMission::CreateObject
-0x53bb20|0.5|TScatteredShipsMission::GetRuntimeClass
+0x53bb20|1.0|TScatteredShipsMission::GetRuntimeClass
 0x53bb40|0.3333333333333333|`dynamic initializer for '_init_TScatteredShipsMission''
-0x53bb60|0.0|IltTarget_0053bb60
+0x53bb60|1.0|operator>>(class CArchive &, class TScatteredShipsMission *&)
 0x53bb90|0.75|TScatteredShipsMission::Initialize
 0x53bbb0|1.0|TScatteredShipsMission::Reassess
 0x53bbe0|1.0|TScatteredShipsMission::GetReplacementSlot48
@@ -3951,9 +3951,9 @@ address|matching|name
 0x53bdd0|0.472|TScatteredShipsMission::GiveOrders
 0x53bf90|1.0|TScatteredShipsMission::RefreshMissionPortZoneContextForNation
 0x53bfb0|1.0|TArmyMission::CreateObject
-0x53c030|0.5|TArmyMission::GetRuntimeClass
+0x53c030|1.0|TArmyMission::GetRuntimeClass
 0x53c050|0.3333333333333333|`dynamic initializer for '_init_TArmyMission''
-0x53c070|0.0|IltTarget_0053c070
+0x53c070|1.0|operator>>(class CArchive &, class TArmyMission *&)
 0x53c0a0|1.0|TArmyMission::TArmyMission
 0x53c1b0|1.0|TArmyMission::IsANoBrainer
 0x53c1d0|1.0|TArmyMission::`scalar deleting destructor'
@@ -3982,9 +3982,9 @@ address|matching|name
 0x53d630|0.5925925925925926|TArmyMission::GetReplacementSlot48
 0x53d670|0.8421052631578947|TAttackProvinceMission::CreateObject
 0x53d6f0|1.0|TAttackProvinceMission::IsHospitalMission
-0x53d710|0.5|TAttackProvinceMission::GetRuntimeClass
+0x53d710|1.0|TAttackProvinceMission::GetRuntimeClass
 0x53d730|0.3333333333333333|`dynamic initializer for '_init_TAttackProvinceMission''
-0x53d750|0.0|IltTarget_0053d750
+0x53d750|1.0|operator>>(class CArchive &, class TAttackProvinceMission *&)
 0x53d780|0.8333333333333334|TAttackProvinceMission::TAttackProvinceMission
 0x53d7c0|1.0|TAttackProvinceMission::`scalar deleting destructor'
 0x53d7f0|1.0|TAttackProvinceMission
@@ -4004,7 +4004,7 @@ address|matching|name
 0x53e5f0|1.0|TDefendProvinceMission::CreateObject
 0x53e670|1.0|TDefendProvinceMission::GetRuntimeClass
 0x53e690|0.3333333333333333|`dynamic initializer for '_init_TDefendProvinceMission''
-0x53e6b0|0.0|IltTarget_0053e6b0
+0x53e6b0|1.0|operator>>(class CArchive &, class TDefendProvinceMission *&)
 0x53e6e0|0.6545454545454545|TDefendProvinceMission::ComputeCrossNationSupportVectorScore
 0x53ea70|0.574585635359116|TDefendProvinceMission::ComputeLocalSupportVectorScore
 0x53ebe0|1.0|TDefendProvinceMission::Free
@@ -4023,9 +4023,9 @@ address|matching|name
 0x53f1c0|0.6666666666666666|TInvadeMission::RejectConstituent
 0x53f1f0|0.26666666666666666|TInvadeMission::IndustrialCostOfNeeds
 0x53f240|1.0|TInvadeMission::IsHospitalMission
-0x53f260|0.5|TInvadeMission::GetRuntimeClass
+0x53f260|1.0|TInvadeMission::GetRuntimeClass
 0x53f280|0.3333333333333333|`dynamic initializer for '_init_TInvadeMission''
-0x53f2a0|0.0|IltTarget_0053f2a0
+0x53f2a0|1.0|operator>>(class CArchive &, class TInvadeMission *&)
 0x53f2d0|0.3|TInvadeMission::TInvadeMission
 0x53f3c0|1.0|TInvadeMission::`scalar deleting destructor'
 0x53f3f0|1.0|TInvadeMission::~TInvadeMission

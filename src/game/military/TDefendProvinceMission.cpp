@@ -15,6 +15,10 @@
 #include "game/globals/tactical_globals.h"
 #include "game/tactical_ui/TTechMgr.h"
 
+// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
+//   CArchive& AFXAPI operator>>(CArchive&, TDefendProvinceMission*&)
+// SYNTHETIC: IMPERIALISM 0x0053e6b0
+// operator>>
 IMPLEMENT_SERIAL(TDefendProvinceMission, TArmyMission, 1)
 
 #include "game/ui_core/CIterator.h"
