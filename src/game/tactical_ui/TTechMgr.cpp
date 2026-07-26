@@ -1,8 +1,7 @@
-#include <time.h>
-
 #include "game/tactical_ui/TTechMgr.h"
 
 #include "decomp_types.h"
+#include "game/core/runtime_prng_seed.h"
 #include "game/nation/TGreatPower.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/net/TMultiplayerMgr.h"
@@ -165,7 +164,7 @@ void TTechMgr::GenerateRandomCapabilityPrioritySlots() {
       (seed = static_cast<unsigned int>(g_pGameFlowState->queueSyncDword)) == 0) {
     // Genuine __cdecl free function declared (void); the guardrail-sanctioned arg-adjust cast
     // pushes the ignored 0 argument the original passes.
-    seed = time(0);
+    seed = static_cast<unsigned int>(ClockDerivedPrngSeed());
   }
 
   short* pnOutputSlotCursor = &prioritySlots04[3];

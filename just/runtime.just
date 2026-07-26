@@ -36,14 +36,16 @@ vector-ctor-probe *args:
 runtime-test-list:
   uv run python -m tools.runtime.cli list
 
-[doc('Run one named native semantic runtime test')]
+[doc('Run one named native semantic runtime test (rebuilds first)')]
 [group('runtime-test')]
 runtime-test name *args:
+  just runtime-test-build
   uv run python -m tools.runtime.cli run "{{name}}" {{args}}
 
-[doc('Run a catalog runtime suite (pr or full)')]
+[doc('Run a catalog runtime suite (pr or full); rebuilds first')]
 [group('runtime-test')]
 runtime-test-suite suite='pr' *args:
+  just runtime-test-build
   uv run python -m tools.runtime.cli suite "{{suite}}" {{args}}
 
 [doc('Build and run a required runtime suite using local retail assets')]
@@ -51,7 +53,6 @@ runtime-test-suite suite='pr' *args:
 runtime-check suite='pr' *args:
   : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY to your legally obtained Imperialism.exe}"
   test -f "$ORIGINAL_BINARY"
-  just runtime-test-build
   just runtime-test-suite "{{suite}}" --require-fixtures {{args}}
 
 [doc('Show the latest canonical result for a runtime test')]

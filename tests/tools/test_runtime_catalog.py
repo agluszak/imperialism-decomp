@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 import unittest
 from pathlib import Path
@@ -172,6 +173,52 @@ class MissingOracleRecordingTests(unittest.TestCase):
         assert spec is not None
         result = {"status": "failed", "map_oracle": {"status": "skipped", "reason": "no map_state"}}
         self.assertEqual(missing_required_oracles(spec, result), ("map",))
+
+
+class MapExpectationConsistencyTests(unittest.TestCase):
+    """The seed-1 random-game scenarios generate one map; their oracles must agree.
+
+    random_game_enters_map's expectation drifted four tiles away from its two siblings
+    and stayed wrong for a long time, because the scenario aborted before map capture
+    and so never compared them (imperialism-decomp-vtzb).  A disagreement here means
+    either a real generation change -- in which case every one of these files moves
+    together -- or one stale recording.
+    """
+
+    SEED1_RANDOM_GAME_SCENARIOS = (
+        "random_game_easy_skips_capital",
+        "random_game_introductory_exits_newspaper",
+        "random_game_enters_map",
+    )
+
+    def _expectation(self, name: str) -> dict:
+        path = REPO_ROOT / "tests" / "runtime" / "expectations" / f"{name}.seed1.json"
+        self.assertTrue(path.is_file(), f"missing map expectation {path}")
+        return json.loads(path.read_text(encoding="utf-8"))
+
+    def test_seed1_random_games_expect_one_map(self) -> None:
+        expectations = {
+            name: self._expectation(name) for name in self.SEED1_RANDOM_GAME_SCENARIOS
+        }
+        for key in ("representative_tile", "owned_tiles", "terrain_counts", "wrap"):
+            values = {name: value[key] for name, value in expectations.items()}
+            distinct = {json.dumps(value, sort_keys=True) for value in values.values()}
+            self.assertEqual(
+                len(distinct),
+                1,
+                f"seed-1 random-game scenarios disagree on {key}: {values}",
+            )
+
+    def test_every_gating_map_oracle_test_has_a_seed1_expectation(self) -> None:
+        for test in TESTS:
+            if "map" not in test.required_oracles or test.fixture is not None:
+                continue
+            # repro-only entries are known-broken reproducers, not gates; they are
+            # expected to have no recorded expectation yet.
+            if set(test.suite) <= {"repro"}:
+                continue
+            path = REPO_ROOT / "tests" / "runtime" / "expectations" / f"{test.name}.seed1.json"
+            self.assertTrue(path.is_file(), f"{test.name} requires the map oracle but has no {path}")
 
 
 if __name__ == "__main__":

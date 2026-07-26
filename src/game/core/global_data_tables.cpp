@@ -1710,8 +1710,17 @@ extern "C" const char s_SourcePathUSuperMap_0069943C[] = "D:\\Ambit\\Cross\\USup
 extern "C" const char s_SourcePathUTradeViews_0069AA94[] = "D:\\Ambit\\Cross\\UTradeViews.cpp";
 // GLOBAL: IMPERIALISM 0x006984cc
 extern "C" const char s_SourcePathUOcean_006984CC[] = "D:\\Ambit\\Cross\\UOcean.cpp";
+// UStatusViews.cpp keeps this reciprocal scale as a TU-local dynamic-initialization
+// temporary.  Retail's initializer at 0x00594ea0 writes 0.015625 here, and the
+// following initializer at 0x00594ed0 uses it to derive the mini-map viewport width.
+static inline double DefaultMiniMapViewportCoordinateScale() {
+  return 0.015625;
+}
+
+static double s_miniMapViewportCoordinateScale = DefaultMiniMapViewportCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a460c
-short g_defaultMarkerBoxWidth_006a460c = 0;
+short g_defaultMarkerBoxWidth_006a460c =
+    static_cast<short>(s_miniMapViewportCoordinateScale * 512.0 - -1.0);
 
 // Profile string keys used by LoadProfileStringAndAssignSharedRef during multiplayer init.
 // GLOBAL: IMPERIALISM 0x00698010

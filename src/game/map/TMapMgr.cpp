@@ -4,6 +4,7 @@
 #include "game/ui_tags_map.h"
 
 #include "game/map/TMapMgr.h"
+#include "game/core/runtime_prng_seed.h"
 
 #include "game/map_ui/TMapMaker.h"
 #include "game/ui_screens/TSetupRandomMapPicture.h"
@@ -290,6 +291,12 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
     mapMaker->mapTileGrid08 = static_cast<char*>(static_cast<void*>(terrainStateTable));
     mapMaker->AssignOrCompactCityRegionIdsAndRebuildBorders(1);
   } else if (mapStreamName == 0) {
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    // The tuning-string generator uses the shared flavor-text LCG, not CRT rand().
+    // Random-map setup normally supplies an override generated earlier, but keep the
+    // no-override path deterministic too.
+    g_zoneStatusCodePrngSeed_006a5aec = ClockDerivedPrngSeed();
+#endif
     if (tuningOverride != 0) {
       CString overrideText(tuningOverride);
       scenarioTagText1c = overrideText;
@@ -350,7 +357,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
   mapMaker->RebuildUMapperRouteRecordsAndActiveMapRects();
   g_pSimMgr->ReinitializeRandomSeed();
   g_zoneStatusCodePrngSeed_006a5aec = 0;
-  g_zoneStatusCodePrngSeed_006a5aec = time(0);
+  g_zoneStatusCodePrngSeed_006a5aec = ClockDerivedPrngSeed();
   if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
   }
@@ -509,7 +516,7 @@ void TMapMgr::GenerateProvinceNames() {
   }
   g_zoneStatusCodePrngSeed_006a5aec = seed;
   if (seed == 0) {
-    g_zoneStatusCodePrngSeed_006a5aec = time(0);
+    g_zoneStatusCodePrngSeed_006a5aec = ClockDerivedPrngSeed();
   }
 
   // Reset the localized province-name ordinals, then assign a name to every
@@ -527,7 +534,7 @@ void TMapMgr::GenerateProvinceNames() {
   // Reseed the PRNG from the system clock so later status-code generation is
   // non-deterministic.
   g_zoneStatusCodePrngSeed_006a5aec = 0;
-  g_zoneStatusCodePrngSeed_006a5aec = time(0);
+  g_zoneStatusCodePrngSeed_006a5aec = ClockDerivedPrngSeed();
 }
 
 // FUNCTION: IMPERIALISM 0x0050f860
