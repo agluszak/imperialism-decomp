@@ -55,19 +55,19 @@ void TNavyBoyView::Draw(RECT* rectBuffer) {
   g_pSimMgr->GetString(0x2760, 6, &typeNames[12]);
   g_pSimMgr->GetString(0x2760, 6, &typeNames[13]);
 
-  short kindId = battleDetail60->payload.navy.shipType00;
+  short kindId = battleDetail60->resourceType;
   finalLabel = typeNames[kindId];
   // The ship-name temporary and the " "+name concat temporary both destruct right
   // after this statement in the original (two back-to-back ~CString calls) --
   // matched here by keeping the name construction an unnamed temporary inside the
   // expression rather than a function-scoped local.
-  finalLabel += s_szSpaceSeparator_00695794 + CString(battleDetail60->payload.navy.shipName04);
+  finalLabel += s_szSpaceSeparator_00695794 + CString(battleDetail60->nameBuffer);
 
   SetQuickDrawTextOriginWithContextOffset(0x50, 0x18);
   DrawTextWithCachedQuickDrawStyleState(&finalLabel);
 
-  short levelDivisor = GetResourceDescriptorWord14ByType(battleDetail60->payload.navy.shipType00);
-  short level = battleDetail60->payload.navy.trainingLevel02;
+  short levelDivisor = GetResourceDescriptorWord14ByType(battleDetail60->resourceType);
+  short level = battleDetail60->stockOrRequired;
   short sVar2 = (level * 0x14) / levelDivisor + 1;
   if (sVar2 > 0x14) {
     sVar2 = 0x14;
