@@ -3815,10 +3815,17 @@ short g_creditsPlaybackActive_006a4084 = 0;
 // C-array-index offset baked into the instruction displacement, so only the leading
 // zero run at this exact address is meaningfully checked.
 short g_offerDeskSelectionIndexTable_00668568[8] = {0};
+// The two fixed slots the diplomacy popup family swaps its children between via
+// TView::Locate: the in-panel position and an off-screen park position that stands in for
+// a hide flag. Both live in .bss and are filled by dynamic initializers in the retail
+// image -- 0x004f2b60 stores (8, 7) here and 0x004f2b90 stores (2000, 2000) below -- so
+// datacmp's static-image comparison cannot see a wrong value; only the initializer's
+// disassembly can. (A third CPoint at 0x006a2fe8, initialized to (128, 128) by
+// 0x004f2b40, has no reader anywhere in the image and is deliberately left unmodeled.)
 // GLOBAL: IMPERIALISM 0x006a2fe0
-CPoint g_diplomacyWarOfferSheetPosition_006a2fe0(0, 0);
+CPoint g_diplomacyPopupVisiblePosition_006a2fe0(8, 7);
 // GLOBAL: IMPERIALISM 0x006a3020
-CPoint g_diplomacyPopupLayoutPosition_006a3020(0, 0);
+CPoint g_diplomacyPopupOffscreenPosition_006a3020(2000, 2000);
 
 // GLOBAL: IMPERIALISM 0x006a2410
 int g_InfoBarDummyOrigin_006A2410[2] = {0};
