@@ -581,22 +581,22 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
 
   index = 0;
   while (index < 0x10) {
-    callback6bc[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2740, 0x40, 0x40,
-                                                                   0x1680, 0x10);
+    strategicTileMasks6bc[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2740, 0x40,
+                                                                             0x40, 0x1680, 0x10);
     index = index + 1;
   }
   resourceId = 0x2760;
   while (resourceId < 0x2766) {
-    callbackB3c[resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
+    strategicTileMasks6bc[0x18 + resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
         resourceId - 0x26, 0x40, 0x40, 0x1680, 0x10);
-    callbackC5c[resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
+    strategicTileMasks6bc[0x1e + resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
         resourceId, 0x40, 0x40, 0x1680, 0x10);
     resourceId = resourceId + 1;
   }
   index = 0x10;
   while (index < 0x18) {
-    callback6bc[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2756, 0x40, 0x40,
-                                                                   0x1680, 0x10);
+    strategicTileMasks6bc[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2756, 0x40,
+                                                                             0x40, 0x1680, 0x10);
     index = index + 1;
   }
 }

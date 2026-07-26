@@ -106,9 +106,10 @@ public:
   TQuickDrawSurfaceContext* atlas694[8];
   TQuickDrawSurfaceContext* atlas6b4;
   TQuickDrawSurfaceContext* atlas6b8;
-  StrategicMapCallbackRecord callback6bc[0x18];
-  StrategicMapCallbackRecord callbackB3c[6];
-  StrategicMapCallbackRecord callbackC5c[6];
+  // One contiguous mask table. DrawOneTile indexes the first 32 entries by normalized
+  // river/coast sprite code; the final twelve entries are also the two six-direction
+  // road/rail mask families. The former three-array model hid that shared indexing.
+  StrategicMapCallbackRecord strategicTileMasks6bc[0x24];
   int fieldD7c;
   int fieldD80;
 

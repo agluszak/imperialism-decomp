@@ -100,8 +100,6 @@ void TMiniMapView::Draw(RECT* rectBuffer) {
   if (g_applyMiniMapVerticalClipOffset_006993e8 != 0) {
     markerY = static_cast<short>(markerY + verticalClipOffset);
   }
-  CDC* dc = GetActiveQuickDrawDc();
-  int savedDc = dc->SaveDC();
   SetQuickDrawFillColor(0xffffff);
   SetQuickDrawTextOriginWithContextOffset(markerX, markerY);
   DrawCenteredGuideLineOnMapDc(static_cast<short>(markerX + markerBoxWidth98 * 2), markerY);
@@ -109,7 +107,6 @@ void TMiniMapView::Draw(RECT* rectBuffer) {
                                static_cast<short>(markerY + markerBoxHeight9c * 2));
   DrawCenteredGuideLineOnMapDc(markerX, static_cast<short>(markerY + markerBoxHeight9c * 2));
   DrawCenteredGuideLineOnMapDc(markerX, markerY);
-  dc->RestoreDC(savedDc);
   SetQuickDrawFillColor(0);
   SetQuickDrawStrokeColor(0xffffff);
 }
