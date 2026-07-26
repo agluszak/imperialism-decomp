@@ -2133,7 +2133,7 @@ TBackdropWindow::~TBackdropWindow 49CBF0 f
 OrphanVtableAssignStub_0049cc20 49CC20 f
 SetCachedShowSplashFlag 49CC40 f
 Function_0049cc60 49CC60 f
-CreateGlobalBackdropWindowWithDefaultBmp3B6 49CCA0 f
+CreateGlobalBackdropWindowWithDefaultBmp3B6 49CCA0 l
 RefreshBackdropOnInputMessages 49CDF0 f
 TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6 49CE90 f
 IltTarget_0049cf50 49CF50 f

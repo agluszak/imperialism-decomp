@@ -1496,3 +1496,4 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x00497c60||||nafxcw|except.obj|canonical_empty_MFC_virtual_body;object_matcher_has_23_candidates_so_identity_intentionally_unassigned;no_game_xrefs|LIBRARY
 0x004985b0|CPen::CPen|??0CPen@@QAE@XZ|public: __thiscall CPen::CPen(void)|nafxcw|wingdi.obj|listing_stores_CPen_vtable_0x671054_and_null_m_hObject;vendor_afxwin1_inline_default_ctor|LIBRARY
 0x004985d0|CPen::CreatePen|?CreatePen@CPen@@QAEHHHK@Z|public: int __thiscall CPen::CreatePen(int,int,unsigned long)|nafxcw|wingdi.obj|listing_calls_CreatePen_then_CGdiObject_Attach;exact_vendor_afxwin1_inline_body|LIBRARY
+0x00623471|CWnd::GetRuntimeClass|?GetRuntimeClass@CWnd@@UBEPAUCRuntimeClass@@XZ|public: virtual CRuntimeClass * __thiscall CWnd::GetRuntimeClass(void) const|nafxcw|wincore.obj|recompiled_PDB_roadmap_wincore_obj_exact_6_byte_body;TBackdropWindow_vtable_slot_0;listing_returns_CWnd_runtime_class_0x670b10|LIBRARY

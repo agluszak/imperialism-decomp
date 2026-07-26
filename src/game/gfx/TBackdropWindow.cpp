@@ -51,47 +51,29 @@ TBackdropWindow::~TBackdropWindow() {
   g_pActiveBackdropWindow = NULL;
 }
 // FUNCTION: IMPERIALISM 0x0049cc60
-void Function_0049cc60(CWnd* parent) {
+void CreateBackdropWindowIfSplashEnabled(CWnd* parent) {
   if (!g_cachedShowSplashFlag || g_pActiveBackdropWindow != NULL) {
     return;
   }
 
   TBackdropWindow* window = new TBackdropWindow();
   g_pActiveBackdropWindow = window;
-  if (window == NULL) {
-    return;
-  }
 
   window->m_backdropBmp = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(0x3b6);
   if (window->m_backdropBmp != NULL) {
     CPoint size;
     window->m_backdropBmp->CopyBitmapDimensionsToPoint(&size);
-    HWND parentHwnd = (parent != NULL) ? parent->m_hWnd : NULL;
-    AfxGetModuleState();
-    HCURSOR cursor = ::LoadCursorA(NULL, MAKEINTRESOURCEA(0x7f00));
-    LPCSTR wndClass = AfxRegisterWndClass(0, cursor, NULL, NULL);
-    window->CreateEx(0, wndClass, NULL, 0x90000000, 0, 0, size.x, size.y, parentHwnd, NULL, NULL);
-  }
-
-  if (window->m_hWnd == NULL) {
-    if (g_pActiveBackdropWindow != NULL) {
-      delete g_pActiveBackdropWindow;
+    HWND parentHwnd;
+    if (parent == NULL) {
+      parentHwnd = NULL;
+    } else {
+      parentHwnd = parent->m_hWnd;
     }
-    g_pActiveBackdropWindow = NULL;
-    return;
+    AfxGetModuleState();
+    window->CreateEx(
+        0, AfxRegisterWndClass(0, ::LoadCursorA(NULL, MAKEINTRESOURCEA(0x7f00)), NULL, NULL), NULL,
+        0x90000000, 0, 0, size.x, size.y, parentHwnd, NULL, NULL);
   }
-
-  ::UpdateWindow(g_pActiveBackdropWindow->m_hWnd);
-}
-
-// FUNCTION: IMPERIALISM 0x0049cca0
-void CreateGlobalBackdropWindowWithDefaultBmp3B6(TBackdropWindow* window, CWnd* parent) {
-  g_pActiveBackdropWindow = window;
-  if (window == NULL) {
-    return;
-  }
-
-  window->InitializeDefaultBackdropWindowFromBmp3B6(parent);
 
   if (window->m_hWnd == NULL) {
     if (g_pActiveBackdropWindow != NULL) {

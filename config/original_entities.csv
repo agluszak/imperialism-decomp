@@ -1335,8 +1335,7 @@ address|name|symbol|size|type|prototype|provenance
 49cbf0|TBackdropWindow::~TBackdropWindow||21|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0049cbc0_Impl()|
 49cc20|TBackdropWindow::GetMessageMap|?GetMessageMap@TBackdropWindow@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|windows_listing
 49cc40|SetCachedShowSplashFlag||10|function|void SetCachedShowSplashFlag(BOOL showSplash)|
-49cc60|Function_0049cc60||1|function|undefined WrapperFor_AllocateWithFallbackHandler_At0049cc60()|
-49cca0|CreateGlobalBackdropWindowWithDefaultBmp3B6||243|function|undefined InitializeGlobalBackdropWindowWithDefaultBmp3B6()|
+49cc60|CreateBackdropWindowIfSplashEnabled||307|function|void CreateBackdropWindowIfSplashEnabled(CWnd* parent)|windows_listing
 49cdf0|RefreshBackdropOnInputMessages||123|function|undefined RefreshBackdropOnInputMessages()|
 49ce90|TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6||138|function|undefined InitializeDefaultBackdropWindowFromBmp3B6()|
 49cfa0|TBackdropWindow::ResetTopLevelWindowStateAndReleaseTempMapBuffer||178|function|undefined ResetTopLevelWindowStateAndReleaseTempMapBuffer()|

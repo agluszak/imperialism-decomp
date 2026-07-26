@@ -1,7 +1,7 @@
 address|matching|name
 0x406ccb|0.0|thunk_HandleEngineerConstructionAction
 0x4125d0|0.25|`dynamic initializer for 'g_scaledShortConst_6A1340''
-0x412600|0.0|InvokeCallbackForRecordRangeWithStride
+0x412600|0.0|`vector constructor iterator'(void *, unsigned int, int, void (__thiscall *)(void *))
 0x412640|0.43548387096774194|OpenOrCreateCompanyProductRegistryKey
 0x412720|0.4540540540540541|OpenOrCreateProfileSectionKey
 0x412840|0.5634674922600619|ReadOrCreateRegistryStringValueWithFallback
@@ -1389,11 +1389,10 @@ address|matching|name
 0x49cb30|0.5|ResetGlobalQuad6A1FF0To6A1FFC
 0x49cb60|0.16666666666666666|ResetGlobalDword6A1FC8
 0x49cbc0|1.0|TBackdropWindow::`scalar deleting destructor'
-0x49cbf0|0.6666666666666666|TBackdropWindow::~TBackdropWindow
+0x49cbf0|1.0|TBackdropWindow::~TBackdropWindow
 0x49cc20|0.5|TBackdropWindow::GetMessageMap
 0x49cc40|1.0|SetCachedShowSplashFlag
-0x49cc60|0.0|Function_0049cc60
-0x49cca0|0.3106796116504854|CreateGlobalBackdropWindowWithDefaultBmp3B6
+0x49cc60|0.8994708994708994|CreateBackdropWindowIfSplashEnabled
 0x49cdf0|0.7466666666666667|RefreshBackdropOnInputMessages
 0x49ce90|0.7878787878787878|TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6
 0x49cfa0|0.6593406593406593|TBackdropWindow::PostNcDestroy
@@ -7092,7 +7091,7 @@ address|matching|name
 0x608ba8|0.9441964285714286|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|0.9787234042553191|CWnd::OnNotify
+0x6091d9|1.0|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent
@@ -7714,6 +7713,7 @@ address|matching|name
 0x623212|0.9887640449438202|CWinApp::GetProfileStringA
 0x623324|1.0|CWinApp::GetProfileBinary
 0x62343f|1.0|CWnd::CreateObject
+0x623471|0.5|CWnd::GetRuntimeClass
 0x623477|0.8|_AFX_THREAD_STATE::_AFX_THREAD_STATE
 0x62348e|1.0|_AFX_THREAD_STATE::`scalar deleting destructor'
 0x6234a9|0.9555555555555556|_AFX_THREAD_STATE::~_AFX_THREAD_STATE

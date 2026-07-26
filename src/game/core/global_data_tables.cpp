@@ -825,7 +825,7 @@ RgnHandle g_pTemporaryRegionCache = 0;
 // GLOBAL: IMPERIALISM 0x006a2018
 // Cached CCommandLineInfo::m_bShowSplash flag (cmdInfo+0x04 after the CObject vptr).
 // Writer: SetCachedShowSplashFlag @ 0x0049cc40 from InitInstance @ 0x00412f81.
-// Reader: Function_0049cc60 @ 0x0049cc60 when nonzero.
+// Reader: CreateBackdropWindowIfSplashEnabled @ 0x0049cc60 when nonzero.
 BOOL g_cachedShowSplashFlag = FALSE;
 
 } // extern "C"
