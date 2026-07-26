@@ -12,8 +12,8 @@
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
   "git_branch": "fix/faithful-land-ocean-transition",
-  "git_commit": "1e909e4bd5c98fe2955667fe44ab2d281b59b63b",
-  "git_commit_date": "2026-07-26T21:17:31+02:00",
+  "git_commit": "a8cb322a17adab1ddfd1e450a7a073d50211ad7e",
+  "git_commit_date": "2026-07-26T21:26:19+02:00",
   "global_coverage_pct": 24.95424597364568,
   "global_orig_only_count": 8201,
   "global_recomp_only_count": 7981,
@@ -63,7 +63,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 12,
   "template_canonical_paired_count": 19,
-  "timestamp_utc": "2026-07-26T19:23:51+00:00",
+  "timestamp_utc": "2026-07-26T19:26:22+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
