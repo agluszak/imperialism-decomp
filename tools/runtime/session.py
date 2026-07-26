@@ -23,7 +23,6 @@ from tools.runtime.wine import (
     prefix_environment,
     retail_game_dir,
     shut_down_wine_prefix,
-    windows_path,
     windows_paths,
 )
 

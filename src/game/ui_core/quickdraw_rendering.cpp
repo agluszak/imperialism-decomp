@@ -49,6 +49,8 @@ TQuickDrawClipStateInitializer::TQuickDrawClipStateInitializer() {
   g_pGlobalClipRegionHandleObject->Attach(::CreateRectRgn(0, 0, 0, 0));
 }
 
+// SYNTHETIC: IMPERIALISM 0x00493fe0
+// InitStub_thunk_InitializeGlobalClipRegionHandleState_At00493fe0
 static TQuickDrawClipStateInitializer g_quickDrawClipStateInitializer;
 
 // FUNCTION: IMPERIALISM 0x00494130

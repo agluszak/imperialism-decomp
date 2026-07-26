@@ -562,8 +562,12 @@ int g_nQuickDrawResolvedTextOriginY = 0;
 int g_nUiFrameClipOriginX = 0;
 // GLOBAL: IMPERIALISM 0x006a545c
 int g_nUiFrameClipOriginY = 0;
+// SYNTHETIC: IMPERIALISM 0x00493f90
+// InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit
+// SYNTHETIC: IMPERIALISM 0x00493fc0
+// DestroyDefaultQuickDrawSurfaceContextAtExit
 // GLOBAL: IMPERIALISM 0x006a1ca0
-TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
+TBitmapSurfaceContextDescriptor g_defaultQuickDrawSurfaceSentinel;
 // Statically initialized to the sentinel address (the dword at 0x006950f8 holds
 // 0x006a1ca0 in the original), not null — the restore path in
 // BuildStrategicMapCommodityIconAtlasFrom700To722 captures this before the first
