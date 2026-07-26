@@ -16,6 +16,10 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_globals.h"
 
+// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
+//   CArchive& AFXAPI operator>>(CArchive&, TAttackProvinceMission*&)
+// SYNTHETIC: IMPERIALISM 0x0053d750
+// operator>>
 IMPLEMENT_SERIAL(TAttackProvinceMission, TArmyMission, 1)
 
 // SYNTHETIC: IMPERIALISM 0x0053d670

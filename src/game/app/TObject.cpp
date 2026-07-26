@@ -39,6 +39,10 @@ TObject* TObject::ShallowClone() {
 // SYNTHETIC: IMPERIALISM 0x00485df0
 // TObject::CreateObject
 
+// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
+//   CArchive& AFXAPI operator>>(CArchive&, TObject*&)
+// SYNTHETIC: IMPERIALISM 0x00485e60
+// operator>>
 IMPLEMENT_SERIAL(TObject, CObject, 1)
 
 // SYNTHETIC: IMPERIALISM 0x00485e20
