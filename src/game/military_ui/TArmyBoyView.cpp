@@ -23,12 +23,12 @@ IMPLEMENT_DYNCREATE(TArmyBoyView, TView)
 // FUNCTION: IMPERIALISM 0x004aebc0
 void TArmyBoyView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
-  short level = battleDetail60->payload.army.trainingLevel02;
+  short level = battleDetail60->stockOrRequired;
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0);
   SetQuickDrawColorAndSyncGlobals(0x1c474b);
   SetQuickDrawTextOriginWithContextOffset(0x40, 0x17);
-  CString nameString(battleDetail60->payload.army.unitName04);
+  CString nameString(battleDetail60->nameBuffer);
   DrawTextWithCachedQuickDrawStyleState(&nameString);
   SetQuickDrawFillColor(0);
 
@@ -66,7 +66,7 @@ void TArmyBoyView::Draw(RECT* rectBuffer) {
   DrawCenteredGuideLineOnMapDc(0x93, 0x27);
   DrawCenteredGuideLineOnMapDc(0x93, 0x21);
 
-  short xpPercent = battleDetail60->payload.army.experiencePercent24;
+  short xpPercent = battleDetail60->strengthBucket;
   short barWidth = xpPercent * 0xb;
   if (xpPercent % 100 > 0x31) {
     barWidth += 5;

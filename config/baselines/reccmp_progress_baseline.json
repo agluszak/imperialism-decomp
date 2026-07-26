@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
-  "git_branch": "main",
-  "git_commit": "0356a093989719175a00be46e678f1e7921fd9ee",
-  "git_commit_date": "2026-07-25T23:56:09+02:00",
+  "git_branch": "fix/reinterpret-casts-fifteenth",
+  "git_commit": "a1c7124e1de764d7fd5d529326afb8f8f71cae64",
+  "git_commit_date": "2026-07-26T15:17:34+02:00",
   "global_coverage_pct": 24.929074768921023,
   "global_orig_only_count": 8203,
   "global_recomp_only_count": 7952,
@@ -63,7 +63,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 12,
   "template_canonical_paired_count": 19,
-  "timestamp_utc": "2026-07-25T21:56:17+00:00",
+  "timestamp_utc": "2026-07-26T13:17:56+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }

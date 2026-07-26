@@ -27,7 +27,7 @@ void TBatRepDetLine::InstallViews(TView* panel, int* offsetLayout) {
   panel->AssertValid();
   TBattleUnitsView* battleUnitsView = static_cast<TBattleUnitsView*>(panel);
 
-  switch (battleDetail14->categoryTag28) {
+  switch (battleDetail14->detailIdentity.categoryTag) {
   case kControlTagArmy: { // 'army'
     TArmyBoyView* armyView = new TArmyBoyView;
     armyView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &field08, 5, 5, 0);
@@ -35,9 +35,9 @@ void TBatRepDetLine::InstallViews(TView* panel, int* offsetLayout) {
 
     int checkboxOffset[2] = {0, 0};
     int checkboxSize[2] = {0x40, 0x31};
-    TArmyCheckBox* checkbox = new TArmyCheckBox(armyView, checkboxOffset, checkboxSize, 5, 5,
-                                                battleUnitsView->primaryUnitAtlas84,
-                                                battleDetail14->payload.army.unitType00 << 7);
+    TArmyCheckBox* checkbox =
+        new TArmyCheckBox(armyView, checkboxOffset, checkboxSize, 5, 5,
+                          battleUnitsView->primaryUnitAtlas84, battleDetail14->resourceType << 7);
     static_cast<TView*>(checkbox)->SetState(0, 0);
     checkbox->SetState(1, 0);
     break;
@@ -64,9 +64,9 @@ void TBatRepDetLine::InstallViews(TView* panel, int* offsetLayout) {
                                   0x140, 0x1e0, 0x280, 0, 0x320, 0x3c0, 0x460};
     int checkboxOffset[2] = {0, 0};
     int checkboxSize[2] = {0x50, 0x2d};
-    TArmyCheckBox* checkbox = new TArmyCheckBox(
-        navyView, checkboxOffset, checkboxSize, 5, 5, battleUnitsView->secondaryUnitAtlas88,
-        shipAtlasOffsets[battleDetail14->payload.navy.shipType00]);
+    TArmyCheckBox* checkbox = new TArmyCheckBox(navyView, checkboxOffset, checkboxSize, 5, 5,
+                                                battleUnitsView->secondaryUnitAtlas88,
+                                                shipAtlasOffsets[battleDetail14->resourceType]);
     static_cast<TView*>(checkbox)->SetState(0, 0);
     checkbox->SetState(1, 0);
     break;
@@ -80,7 +80,7 @@ void TBatRepDetLine::InstallViews(TView* panel, int* offsetLayout) {
     short merchantAtlasSlots[14] = {0, 0, 1, 0, 0, 2, 3, 0, 0, 0, 4, 0, 0, 0};
     int checkboxOffset[2] = {0, 0};
     int checkboxSize[2] = {0x50, 0x2d};
-    int atlasOffset = merchantAtlasSlots[battleDetail14->payload.merchant.commodityType00] * 0x50;
+    int atlasOffset = merchantAtlasSlots[battleDetail14->resourceType] * 0x50;
     TArmyCheckBox* checkbox = new TArmyCheckBox(merchantView, checkboxOffset, checkboxSize, 5, 5,
                                                 battleUnitsView->primaryUnitAtlas84, atlasOffset);
     static_cast<TView*>(checkbox)->SetState(0, 0);

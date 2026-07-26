@@ -308,11 +308,11 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       TBattleUnitsView* leftPage =
           static_cast<TBattleUnitsView*>(book->ResolveControlByTag(kControlTagPage));
       leftPage->AssertValid();
-      leftPage->StuffValues(battleRecord, 0);
+      leftPage->StuffValues(*battleRecord, 0);
       TBattleUnitsView* rightPage =
           static_cast<TBattleUnitsView*>(book->ResolveControlByTag(kControlTagPagf));
       rightPage->AssertValid();
-      rightPage->StuffValues(eventBattleRecord, 1);
+      rightPage->StuffValues(*eventBattleRecord, 1);
       if (leftPage->pageCount < rightPage->pageCount) {
         leftPage->pageCount = rightPage->pageCount;
       } else {
