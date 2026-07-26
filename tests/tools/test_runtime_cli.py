@@ -113,8 +113,7 @@ class RuntimeSuiteTests(unittest.TestCase):
                 run_dir = Path(kwargs["run_dir"])
                 calls.append(run_dir)
                 run_dir.mkdir(parents=True, exist_ok=True)
-                labels = ("primary", "gdb-rerun", "seh-rerun")
-                label = labels[len(calls) - 1]
+                label = "primary" if len(calls) == 1 else run_dir.name
                 (run_dir / "gdb.log").write_text(label, encoding="utf-8")
                 result = {
                     "format_version": 1,

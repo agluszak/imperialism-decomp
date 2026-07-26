@@ -18,6 +18,10 @@
 extern "C" int __stdcall DirectSoundCreate(void* pcGuidDevice, IDirectSound** ppDS,
                                            void* pUnkOuter);
 
+// SYNTHETIC: IMPERIALISM 0x005e4d80
+// `dynamic initializer for 'g_soundResourceManager''
+// SYNTHETIC: IMPERIALISM 0x005e4dc0
+// TSoundResourceManager::`dynamic atexit destructor'
 TSoundResourceManager g_soundResourceManager;
 
 // Cleanup handler (registered in the shutdown handler table at 0x692668) that zeroes the

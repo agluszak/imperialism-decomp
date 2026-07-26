@@ -182,10 +182,7 @@ class RuntimeSessionTests(unittest.TestCase):
                     return_value=_NoVirtualDisplay(),
                 ),
                 patch("tools.runtime.session.capture_failure_screenshot"),
-                patch(
-                    "tools.runtime.session.time.monotonic",
-                    side_effect=(0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
-                ),
+                patch("tools.runtime.session.time.monotonic", return_value=0.0),
             ):
                 result = execute_run(
                     name="boot_managers",

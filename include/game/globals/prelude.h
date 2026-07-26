@@ -36,6 +36,7 @@ int GetTradeSummarySelectionTagByIndex(short index);
 struct NationState;
 struct TextStyle;
 struct TQuickDrawSurfaceContext;
+struct TBitmapSurfaceContextDescriptor;
 struct TCdAudioDevice;
 class TArmyMgr;
 class TAdmiral;
