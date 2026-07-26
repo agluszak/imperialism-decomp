@@ -2,15 +2,15 @@
 
 #include "game/city_ui/TCountry.h"
 
-// Minor-power nation row (g_apTerrainTypeDescriptorTable[7..], g_apSecondaryNationStateSlots).
-// Inherits the TCountry prefix (0x94) and extends with minor-only tail state to 0x2dc.
-// VTABLE: IMPERIALISM 0x00653c90
 struct TMinorRuntimeStatusEntry {
   short fields[7];
 };
 
 ASSERT_SIZE(TMinorRuntimeStatusEntry, 0x0e);
 
+// Minor-power nation row (g_apTerrainTypeDescriptorTable[7..], g_apSecondaryNationStateSlots).
+// Inherits the TCountry prefix (0x94) and extends with minor-only tail state to 0x2dc.
+// VTABLE: IMPERIALISM 0x00653c90
 class TMinor : public TCountry {
 public:
   TMinor();
