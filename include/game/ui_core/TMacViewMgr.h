@@ -36,9 +36,14 @@ public:
   virtual void ApplySellOrderRowToNationState(TTradeCluster* orderSource, int orderSlot,
                                               short nationSlot); // slot 0x0f 0x50bbc0
   virtual void SyncSellTaggedChildControlWithNationState(TView* view, short orderSlot,
-                                                         short nationIndex);  // slot 0x10 0x50bc50
-  virtual void RefreshCityProductionDetailPanelAndArrowWidgets(word param_1); // slot 0x11 0x50bea0
-  virtual TView* MakeBookDialog(int dialogId);                                // slot 0x12 0x50be30
+                                                         short nationIndex); // slot 0x10 0x50bc50
+  // (resourceSlot, nationIndex, hostView) -- RET 0xc proves three args. arg2 indexes
+  // g_apNationStates (0x0050bed6), arg1 is the ledger row compared against -1
+  // (0x0050bedd), arg3 is the host view the 'tota' panel is resolved on (0x0050befb).
+  virtual void
+  RefreshCityProductionDetailPanelAndArrowWidgets(short resourceSlot, short nationIndex,
+                                                  TView* hostView); // slot 0x11 0x50bea0
+  virtual TView* MakeBookDialog(int dialogId);                      // slot 0x12 0x50be30
   // RET 0x8 = 2 dwords; body waits on this->activeCityProductionView04, args vestigial.
   virtual void DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1,
                                                             int unusedArg2); // slot 0x13 0x50d310

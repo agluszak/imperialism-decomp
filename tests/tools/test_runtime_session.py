@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from pathlib import Path
 import tempfile
-import itertools
 import unittest
 from unittest.mock import patch
 
@@ -183,14 +182,7 @@ class RuntimeSessionTests(unittest.TestCase):
                     return_value=_NoVirtualDisplay(),
                 ),
                 patch("tools.runtime.session.capture_failure_screenshot"),
-                # An open-ended increasing clock rather than a fixed tuple: the run
-                # path also records phase timings, so pinning the exact number of
-                # monotonic() reads made this test break whenever instrumentation
-                # was added, which is not what it is trying to assert.
-                patch(
-                    "tools.runtime.session.time.monotonic",
-                    side_effect=itertools.count(0.0, 0.1),
-                ),
+                patch("tools.runtime.session.time.monotonic", return_value=0.0),
             ):
                 result = execute_run(
                     name="boot_managers",

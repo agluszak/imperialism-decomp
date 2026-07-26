@@ -1032,10 +1032,10 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
         short coastOffset;
         if (useTripleOffset) {
           coastOffset = g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariantTriple(
-              static_cast<char>(riverSpriteCode), static_cast<char>(corner + 1), riverSpriteCode);
+              static_cast<char>(adjacencyMask), static_cast<char>(corner + 1), riverSpriteCode);
         } else {
           coastOffset = g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariant(
-              static_cast<char>(riverSpriteCode), static_cast<char>(corner + 1),
+              static_cast<char>(adjacencyMask), static_cast<char>(corner + 1),
               static_cast<char>(variantMask & (1 << corner)));
         }
         if (coastOffset == 0) {

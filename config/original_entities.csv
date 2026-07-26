@@ -5963,7 +5963,7 @@ address|name|symbol|size|type|prototype|provenance
 5d7f90|ClearActiveCityBuildingViewSlot||19|function|undefined ClearActiveCityBuildingViewSlot()|
 5d7fc0|SetCursorRangeAndRefreshMainPanel||93|function|undefined SetCursorRangeAndRefreshMainPanel()|
 5d8040|HandleTurnEvent7D8_ActivateDiplomacyMapView||561|function|undefined HandleTurnEvent7D8_ActivateDiplomacyMapView()|
-5d83b0|HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary||728|function|undefined HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary()|
+5d83b0|TViewMgr::ShowTransportScreen||728|function|undefined TViewMgr::ShowTransportScreen()|
 5d8750|HandleTurnEvent8FC_RebuildPageTabsAndTitles||433|function|undefined HandleTurnEvent8FC_RebuildPageTabsAndTitles()|
 5d8980|TViewMgr::ShowAbilityStatusReport||560|function|void ShowAbilityStatusReport(int abilityIndex)|
 5d8c40|HandleTurnEvent2103_RunNationStatusReportUpdate||84|function|undefined HandleTurnEvent2103_RunNationStatusReportUpdate()|
