@@ -3,6 +3,7 @@
 #include <time.h>
 
 #include "game/map_ui/TMapMaker.h"
+#include "game/core/runtime_prng_seed.h"
 #include "game/ui_screens/CString.h"
 #include "game/app/TObject.h"
 #include "game/ui_core/TControl.h"
@@ -168,13 +169,13 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
   g_mapGenLcgState_006a38e8 = seed;
   if (seed == 0) {
     // CRT time(); seed is 0 on this path, so the original's pushed arg is NULL.
-    seed = time(0);
+    seed = ClockDerivedPrngSeed();
   }
   seed = seed * 0x15a4e35 + 1;
   g_mapGenLcgState_006a38e8 = seed;
   g_zoneStatusCodePrngSeed_006a5aec = (static_cast<unsigned int>(seed) >> 12) & 0x7fff;
   if (g_zoneStatusCodePrngSeed_006a5aec == 0) {
-    g_zoneStatusCodePrngSeed_006a5aec = time(0);
+    g_zoneStatusCodePrngSeed_006a5aec = ClockDerivedPrngSeed();
   }
 
   for (;;) {
