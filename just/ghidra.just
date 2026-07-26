@@ -315,6 +315,14 @@ delete-labels *args: _require-ghidra-install
   uv run python -m tools.ghidra.delete_labels {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
+# Rename an existing function entry without changing its body or boundary. This
+# covers compiler-generated source names that contain characters Ghidra rejects.
+[doc('MUTATES: Ghidra DB (--apply). Rename existing function entries')]
+[group('ghidra-db')]
+rename-functions *args: _require-ghidra-install
+  uv run python -m tools.ghidra.rename_functions {{args}}
+
+# MUTATES: Ghidra DB (with --apply).
 # Remove Function entities sitting on ILT jmp thunks (they block reccmp's thunk
 # auto-resolution and collapse vtable matching). The DB-side counterpart of
 # prune-ilt-thunks; refresh-inventory runs it automatically before the export.

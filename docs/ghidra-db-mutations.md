@@ -5,6 +5,18 @@ planned to be replaced with a newer DB in a separate folder. Everything below is
 the record of what has mutated the DB, so the still-wanted mutations can be
 re-run against the new database.
 
+## 2026-07-26 (latest): QuickDraw sentinel dynamic-initializer label
+
+Renamed the Ghidra function at `0x00493f90` from the stale behavioral label
+`InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit` to the legal DB alias
+`DynamicInitializerForDefaultQuickDrawSurfaceSentinel`. The authoritative source
+model remains VC5's exact compiler name, ``dynamic initializer for
+'g_defaultQuickDrawSurfaceSentinel'``; Ghidra cannot accept that spelling because
+it contains spaces and backticks. Applied with the new surgical command
+`just rename-functions
+0x00493f90=DynamicInitializerForDefaultQuickDrawSurfaceSentinel --apply`, then
+persisted with `just export-project`.
+
 ## 2026-07-19 (latest): 8 more verified MFC layouts, driven by the weak-pointer-type inventory
 
 Follow-up to the CDataExchange/CView entry directly below: ran

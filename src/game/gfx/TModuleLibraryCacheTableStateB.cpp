@@ -6,10 +6,26 @@
 #undef isdigit
 
 #include "game/globals/prelude.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
+#include "game/gfx/ui_invalidation_guard.h"
 
 extern "C" const char s_BmpResourceNameFormat_006951C4[];
 extern "C" const char s_MissingRequiredFileFormat_00695188[];
+
+struct LockedPaletteResourceHeader {
+  WORD version;
+  WORD entryCount;
+  void* lockedEntries;
+};
+
+// The retail ResourceMgr code deliberately stores LockResource's pointer in the first
+// PALETTEENTRY-sized slot of an eight-byte LOGPALETTE allocation. The union expresses that
+// exact representation at the Win32 API boundary without a pointer cast.
+union PaletteResourceDescriptor {
+  LockedPaletteResourceHeader resource;
+  LOGPALETTE logicalPalette;
+};
 
 // Both embedded CMap members default-construct (hash size 17, block size 10); the leading
 // m_dibPalette is zeroed first (declaration order), matching the original's [obj]=0 then map A,
@@ -52,6 +68,9 @@ TModuleLibraryCacheTableStateB::~TModuleLibraryCacheTableStateB() {
   }
 }
 // ??1?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAE@XZ
+
+// FUNCTION: IMPERIALISM 0x00499280
+void TModuleLibraryCacheTableStateB::NoOpRetailCacheHook() {}
 
 // FUNCTION: IMPERIALISM 0x004992a0
 BOOL TModuleLibraryCacheTableStateB::LoadModuleLibrarySlotWithErrorDialog(LPCSTR path, int slot) {
@@ -238,6 +257,20 @@ CDib* TModuleLibraryCacheTableStateB::BuildIndexedBmpResourceById(short bmpId, i
   return dib;
 }
 
+// FUNCTION: IMPERIALISM 0x00499e80
+void TModuleLibraryCacheTableStateB::RetainOrRegisterObject(short id, CObject* object) {
+  CacheRecord* record = NULL;
+  if (m_tableA.Lookup(id, record)) {
+    record->refCount++;
+    return;
+  }
+
+  record = new CacheRecord(id, object);
+
+  m_tableA.SetAt(id, record);
+  m_tableB.SetAt(object, record);
+}
+
 // Increment the ref count of the m_tableA record whose key is the low 16 bits of
 // packedKey; if no such record is registered (e.g. a picture record that was never
 // stored under this table), treat packedKey itself as an already-valid CacheRecord*
@@ -262,6 +295,17 @@ void TModuleLibraryCacheTableStateB::IncrementDialogResourceRefCountByShortIdInR
     record->refCount++;
   } else {
     reinterpret_cast<CacheRecord*>(packedKey)->refCount++;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0049a120
+void TModuleLibraryCacheTableStateB::IncrementRecordRefCountByHandleOrRecord(
+    CacheRecord* recordOrHandle) {
+  CacheRecord* record = NULL;
+  if (m_tableB.Lookup(recordOrHandle, record)) {
+    record->refCount++;
+  } else {
+    recordOrHandle->refCount++;
   }
 }
 
@@ -380,6 +424,64 @@ CString* renderTemplateOrExpandTokens(TModuleLibraryCacheTableStateB* cache, CSt
   return out;
 }
 
+// FUNCTION: IMPERIALISM 0x0049aac0
+BOOL TModuleLibraryCacheTableStateB::LoadPaletteResourceByName(CPalette* palette,
+                                                               LPCSTR resourceName) {
+  if (g_paletteResourceNameAssertGate == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szResourceMgrSourcePath, 0x22f);
+  }
+
+  PaletteResourceDescriptor* descriptor = new PaletteResourceDescriptor;
+  if (descriptor == NULL) {
+    return FALSE;
+  }
+
+  descriptor->resource.version = 0x300;
+  descriptor->resource.entryCount = 0x100;
+  HRSRC resource = FindResourceA(NULL, resourceName, g_szPaletteResourceType);
+  if (resource == NULL) {
+    delete descriptor;
+    return FALSE;
+  }
+
+  HGLOBAL loadedResource = LoadResource(NULL, resource);
+  if (loadedResource == NULL) {
+    delete descriptor;
+    return FALSE;
+  }
+
+  descriptor->resource.lockedEntries = LockResource(loadedResource);
+  if (descriptor->resource.lockedEntries == NULL) {
+    delete descriptor;
+    return FALSE;
+  }
+
+  HPALETTE paletteHandle = CreatePalette(&descriptor->logicalPalette);
+  if (!palette->Attach(paletteHandle)) {
+    delete descriptor;
+    return FALSE;
+  }
+
+  delete descriptor;
+  return TRUE;
+}
+
+// FUNCTION: IMPERIALISM 0x0049abd0
+BOOL TModuleLibraryCacheTableStateB::LoadPaletteResource(CPalette* palette,
+                                                         unsigned long resourceId) {
+  if (g_paletteResourceIdAssertGate == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szResourceMgrSourcePath, 0x252);
+  }
+
+  if (resourceId == (resourceId & 0xffff)) {
+    return LoadPaletteResourceByName(palette, MAKEINTRESOURCE(resourceId & 0xffff));
+  }
+
+  CString resourceName;
+  resourceName.Format(g_szPaletteResourceIdFormat, resourceId);
+  return LoadPaletteResourceByName(palette, resourceName);
+}
+
 // Windows COLORREF values with the PALETTEINDEX marker (0x01 in the high byte) name an
 // entry in the shared DIB palette. Native edit controls need an RGB-bearing palette color,
 // so resolve that entry and return PALETTERGB; ordinary COLORREF values pass through.
@@ -387,7 +489,13 @@ CString* renderTemplateOrExpandTokens(TModuleLibraryCacheTableStateB* cache, CSt
 COLORREF TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor(unsigned int packedColor) {
   if (m_dibPalette != NULL && (packedColor & 0xff000000) == 0x01000000) {
     PALETTEENTRY& entry = m_dibPalette->m_pLogPalette->palPalEntry[packedColor & 0xffff];
-    return PALETTERGB(entry.peRed, entry.peGreen, entry.peBlue);
+    COLORREF green = entry.peGreen;
+    COLORREF paletteRgb = entry.peBlue | 0x200;
+    paletteRgb <<= 8;
+    paletteRgb |= green;
+    paletteRgb <<= 8;
+    paletteRgb |= entry.peRed;
+    return paletteRgb;
   }
   return packedColor;
 }
@@ -432,3 +540,30 @@ template BOOL CMap<void*, void*, CacheRecord*, CacheRecord*>::RemoveKey(void*);
 
 // TEMPLATE: IMPERIALISM 0x0049b7f0
 // ?InitHashTable@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@QAEXIH@Z
+
+// The remaining bodies are likewise emitted from the two real CMap<> members. Their
+// protected node-management methods are MFC template implementation details, not source
+// APIs to recreate in game code.
+// TEMPLATE: IMPERIALISM 0x0049ad50
+// ?RemoveKey@?$CMap@FFPAUCacheRecord@@PAU1@@@QAEHF@Z
+
+// SYNTHETIC: IMPERIALISM 0x0049b5d0
+// CMap<short,short,CacheRecord*,CacheRecord*>::`scalar deleting destructor'
+
+// SYNTHETIC: IMPERIALISM 0x0049b600
+// CMap<void*,void*,CacheRecord*,CacheRecord*>::`scalar deleting destructor'
+
+// TEMPLATE: IMPERIALISM 0x0049b720
+// ?NewAssoc@?$CMap@FFPAUCacheRecord@@PAU1@@@IAEPAUCAssoc@1@XZ
+
+// TEMPLATE: IMPERIALISM 0x0049b7a0
+// ?GetAssocAt@?$CMap@FFPAUCacheRecord@@PAU1@@@IBEPAUCAssoc@1@FAAI@Z
+
+// TEMPLATE: IMPERIALISM 0x0049b870
+// ?NewAssoc@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@IAEPAUCAssoc@1@XZ
+
+// TEMPLATE: IMPERIALISM 0x0049b8f0
+// ?FreeAssoc@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@IAEXPAUCAssoc@1@@Z
+
+// TEMPLATE: IMPERIALISM 0x0049b980
+// ?GetAssocAt@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@IBEPAUCAssoc@1@PAXAAI@Z
