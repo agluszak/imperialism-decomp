@@ -26,11 +26,11 @@ TCouncilPanelView::~TCouncilPanelView() {}
 
 IMPLEMENT_DYNCREATE(TCouncilPanelView, TPanelView)
 
-// Council panel header: when no summit is in session (selectedSourceNationSlot784 ==
-// -1), draws a single centered "no session" message (GetString 0x2733/0x34). Otherwise
-// draws a bracket-expanded "Congress of <decade>" title, then 3 "label: value" rows:
-// the chairman nation + selectionFlagsA788, the counterpart nation +
-// selectionFlagsB78a, and a generic label (GetString 0x2733/0x36) + selectionFlagsC78c.
+// Council panel header: when no summit is in session (a chairman slot of -1), draws a
+// single centered "no session" message (GetString 0x2733/0x34). Otherwise draws a
+// bracket-expanded "Congress of <decade>" title, then the three CongressSupportTally
+// rows in record order: the chairman nation + its support count, the counterpart nation
+// + its support count, and a generic label (GetString 0x2733/0x36) + the neutral count.
 // Every label/value is drawn twice (theme 0x2b68 color at +1,+1 then theme 0x2b6b
 // color at +0,+0), matching the drop-shadow idiom used across this UI family.
 // FUNCTION: IMPERIALISM 0x004fb030
@@ -49,7 +49,7 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
   ResolveUiThemeColor(0x2b6b, &styleShadow);
   ResolveUiThemeColor(0x2b68, &styleForeground);
 
-  if (g_pDiplomacyTurnStateManager->selectedSourceNationSlot784 == -1) {
+  if (g_pDiplomacyTurnStateManager->congressLeadership784.chairmanNationSlot == -1) {
     g_pSimMgr->GetString(0x2733, 0x34, &rowText);
     short width = MeasureTextExtentWithCachedQuickDrawStyle(&rowText);
     short x = static_cast<short>(centerX - width / 2);
@@ -78,8 +78,9 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b68);
 
-  // Row A: chairman nation (selectedSourceNationSlot784) + its selectionFlagsA788.
-  g_apTerrainTypeDescriptorTable[g_pDiplomacyTurnStateManager->selectedSourceNationSlot784]
+  // Row A: the chairman nation and its support count.
+  g_apTerrainTypeDescriptorTable[g_pDiplomacyTurnStateManager->congressLeadership784
+                                     .chairmanNationSlot]
       ->FormatOverlayTerrainLabelText(&rowText);
   rowText += s_szColonSeparator_00696b10;
   short rowAWidth = MeasureTextExtentWithCachedQuickDrawStyle(&rowText);
@@ -91,7 +92,8 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(rowALabelX, 0x3c);
   DrawTextWithCachedQuickDrawStyleState(&rowText);
 
-  scratchText.Format(g_szDecimalFormat, g_pDiplomacyTurnStateManager->selectionFlagsA788);
+  scratchText.Format(g_szDecimalFormat,
+                     g_pDiplomacyTurnStateManager->congressSupport788.chairmanSupportCount);
   SetQuickDrawColorAndSyncGlobals(styleForeground);
   SetQuickDrawTextOriginWithContextOffset(centerX + 5, 0x3d);
   DrawTextWithCachedQuickDrawStyleState(&scratchText);
@@ -99,8 +101,9 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(centerX + 4, 0x3c);
   DrawTextWithCachedQuickDrawStyleState(&scratchText);
 
-  // Row B: counterpart nation (selectedTargetNationSlot786) + its selectionFlagsB78a.
-  g_apTerrainTypeDescriptorTable[g_pDiplomacyTurnStateManager->selectedTargetNationSlot786]
+  // Row B: the counterpart nation and its support count.
+  g_apTerrainTypeDescriptorTable[g_pDiplomacyTurnStateManager->congressLeadership784
+                                     .counterpartNationSlot]
       ->FormatOverlayTerrainLabelText(&rowText);
   rowText += s_szColonSeparator_00696b10;
   short rowBWidth = MeasureTextExtentWithCachedQuickDrawStyle(&rowText);
@@ -112,7 +115,8 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(rowBLabelX, 0x4c);
   DrawTextWithCachedQuickDrawStyleState(&rowText);
 
-  scratchText.Format(g_szDecimalFormat, g_pDiplomacyTurnStateManager->selectionFlagsB78a);
+  scratchText.Format(g_szDecimalFormat,
+                     g_pDiplomacyTurnStateManager->congressSupport788.counterpartSupportCount);
   SetQuickDrawColorAndSyncGlobals(styleForeground);
   SetQuickDrawTextOriginWithContextOffset(centerX + 5, 0x4d);
   DrawTextWithCachedQuickDrawStyleState(&scratchText);
@@ -120,7 +124,7 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(centerX + 4, 0x4c);
   DrawTextWithCachedQuickDrawStyleState(&scratchText);
 
-  // Row C: generic label (GetString 0x2733/0x36) + selectionFlagsC78c.
+  // Row C: a generic label (GetString 0x2733/0x36) and the neutral count.
   g_pSimMgr->GetString(0x2733, 0x36, &rowText);
   short rowCWidth = MeasureTextExtentWithCachedQuickDrawStyle(&rowText);
   short rowCLabelX = static_cast<short>(centerX - rowCWidth);
@@ -131,7 +135,8 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(rowCLabelX, 0x5c);
   DrawTextWithCachedQuickDrawStyleState(&rowText);
 
-  scratchText.Format(g_szDecimalFormat, g_pDiplomacyTurnStateManager->selectionFlagsC78c);
+  scratchText.Format(g_szDecimalFormat,
+                     g_pDiplomacyTurnStateManager->congressSupport788.neutralCount);
   SetQuickDrawColorAndSyncGlobals(styleForeground);
   SetQuickDrawTextOriginWithContextOffset(centerX + 5, 0x5d);
   DrawTextWithCachedQuickDrawStyleState(&scratchText);

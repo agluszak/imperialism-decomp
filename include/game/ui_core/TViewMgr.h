@@ -174,6 +174,12 @@ public:
   // Mac oracle: TViewMgr::ModalMessage(CStr255, const VPoint&) and the four-argument
   // overload. Windows substitutes CString/POINT but preserves the value/reference shape.
   void ModalMessage(CString message, const POINT& messagePosition);
+  // `overlayMode` is a short all the way down the chain, and every hop forwards it
+  // without a width conversion: TModalMessageCommand::DoIt (0x5dcd10) passes a short
+  // field with a bare `mov ax, word ptr [ecx+0x1c]` (an int parameter would force a
+  // `movsx`), 0x5d5b00 forwards it with a plain `mov ecx, dword ptr [esp+0x20]`, and
+  // 0x5d5c40 hands it on the same way -- which is why the receiving `contextTag` on
+  // RunNationInfoModalAndReturnNonCancel is a short too.
   char ModalMessage(CString message, const POINT& messagePosition, short overlayMode,
                     unsigned char showCancel);
   // 0x5de990 — load string (group, index) and pose it through the localized-message
@@ -189,7 +195,11 @@ public:
   char DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag);
   // Mac oracle: TViewMgr::ModalMessage(long, CStr255, CStr255, const VPoint&, short,
   // unsigned char). This overload formats and presents the actual modal message window.
-  char ModalMessage(long templateKind, CString formatText, CString message,
+  // Argument roles are fixed by 0x5d5c40: the second CString is copy-constructed and
+  // forwarded by value as RunNationInfoModalAndReturnNonCancel's `titleSuffix` (appended
+  // to the 'titl' control after two carriage returns), while the third supplies the
+  // chars/length pair that fills the 'info' body.
+  char ModalMessage(long templateKind, CString titleSuffix, CString message,
                     const POINT& messagePosition, short overlayMode, unsigned char showCancel);
 
   // 0x5de4f0. Shows the Civilian Report confirmation dialog (resource 0xbc4) for
@@ -207,7 +217,7 @@ public:
   // own virtual slot 0x11 and the only caller passes TViewMgr's `this`.)
   bool RunNationInfoModalAndReturnNonCancel(int messageKind, CString titleSuffix,
                                             const char* messageChars, int messageLength,
-                                            const POINT& messagePosition, int contextTag,
+                                            const POINT& messagePosition, short contextTag,
                                             char showCancel);
 
   // 0x5de5d0 (ret 0x8). Resolves the turn-event dialog node for message context 0xc1c,
