@@ -13,6 +13,14 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include <cstring>
 
+static __inline CDC* ResolveActiveQuickDrawDc() {
+  CDC* dc = g_pQuickDrawMemoryDc;
+  if (dc == 0) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  return dc;
+}
+
 // The QuickDraw clip/surface module state is seeded by a file-scope C++ object
 // (at 0x6a1d58) whose constructor runs from the CRT static-init table (thunk
 // 0x493fe0, entry 0x692648) before WinMain, and whose destructor is registered
@@ -598,56 +606,35 @@ void __cdecl BlitRectWithOptionalTransparency(TQuickDrawBlitSurface* srcSurface,
                                               RECT* dstRect, unsigned char blitFlags,
                                               RgnHandle clipRegion) {
   if (clipRegion != 0) {
-    CDC* clipDc = g_pQuickDrawMemoryDc;
-    if (clipDc == 0) {
-      clipDc = g_pScopedMapQuickDrawDcHandleObject;
-    }
+    CDC* clipDc = ResolveActiveQuickDrawDc();
     clipDc->SelectClipRgn(&(*clipRegion)->rgn);
   }
 
   if (dstSurface == g_defaultQuickDrawSurfaceSentinel.GetBlitSurface() || clipRegion != 0) {
-    CDC* destinationDc = g_pQuickDrawMemoryDc;
-    if (destinationDc == 0) {
-      destinationDc = g_pScopedMapQuickDrawDcHandleObject;
-    }
+    CDC* destinationDc = ResolveActiveQuickDrawDc();
     g_pModuleLibraryCacheState->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(destinationDc,
                                                                                   FALSE);
 
     if ((blitFlags & 0x24) == 0x24) {
-      destinationDc = g_pQuickDrawMemoryDc;
-      if (destinationDc == 0) {
-        destinationDc = g_pScopedMapQuickDrawDcHandleObject;
-      }
       srcSurface->surfaceDib->StretchDibitsWithCopiedPaletteTable(
-          destinationDc, 0x10, dstRect->left + g_nQuickDrawOriginX,
+          ResolveActiveQuickDrawDc(), 0x10, dstRect->left + g_nQuickDrawOriginX,
           dstRect->top + g_nQuickDrawOriginY, CRect(dstRect).Width(), CRect(dstRect).Height(),
           srcRect->left, srcRect->top, CRect(srcRect).Width(), CRect(srcRect).Height());
     } else {
       CDC sourceDc;
-      CDC* compatibleDc = g_pQuickDrawMemoryDc;
-      if (compatibleDc == 0) {
-        compatibleDc = g_pScopedMapQuickDrawDcHandleObject;
-      }
+      CDC* compatibleDc = ResolveActiveQuickDrawDc();
       sourceDc.Attach(CreateCompatibleDC(compatibleDc->GetSafeHdc()));
       HGDIOBJ previousBitmap =
           SelectObject(sourceDc.GetSafeHdc(), srcSurface->surfaceDib->m_hBitmap);
 
       if (dstSurface == g_defaultQuickDrawSurfaceSentinel.GetBlitSurface()) {
-        destinationDc = g_pQuickDrawMemoryDc;
-        if (destinationDc == 0) {
-          destinationDc = g_pScopedMapQuickDrawDcHandleObject;
-        }
-        BitBlt(destinationDc->m_hDC, dstRect->left + g_nQuickDrawOriginX,
+        BitBlt(ResolveActiveQuickDrawDc()->m_hDC, dstRect->left + g_nQuickDrawOriginX,
                dstRect->top + g_nQuickDrawOriginY, CRect(srcRect).Width(), CRect(srcRect).Height(),
                sourceDc.GetSafeHdc(), srcRect->left, srcRect->top, SRCCOPY);
       } else {
-        destinationDc = g_pQuickDrawMemoryDc;
-        if (destinationDc == 0) {
-          destinationDc = g_pScopedMapQuickDrawDcHandleObject;
-        }
-        BitBlt(destinationDc->m_hDC, dstRect->left, dstRect->top, CRect(srcRect).Width(),
-               CRect(srcRect).Height(), sourceDc.GetSafeHdc(), srcRect->left, srcRect->top,
-               SRCCOPY);
+        BitBlt(ResolveActiveQuickDrawDc()->m_hDC, dstRect->left, dstRect->top,
+               CRect(srcRect).Width(), CRect(srcRect).Height(), sourceDc.GetSafeHdc(),
+               srcRect->left, srcRect->top, SRCCOPY);
       }
 
       if (previousBitmap != 0) {
@@ -656,64 +643,14 @@ void __cdecl BlitRectWithOptionalTransparency(TQuickDrawBlitSurface* srcSurface,
     }
   } else {
     int srcPitch = srcSurface->stride;
+    unsigned char* srcPtr = srcSurface->pixelBits + srcRect->top * srcPitch + srcRect->left;
     int dstPitch = dstSurface->stride;
+    unsigned char* dstPtr = dstSurface->pixelBits + dstRect->top * dstPitch + dstRect->left;
     int rowCount = CRect(srcRect).Height();
     int rowBytes = CRect(srcRect).Width();
     if (rowCount < 0) {
       rowCount = -rowCount;
     }
-
-    // The GDI branch clips off-screen rectangles for us. Memory-backed GWorlds need the
-    // equivalent paired clipping before forming their pixel pointers: strategic-map hover
-    // restoration can legitimately request a cached tile at (-32, -64), which otherwise
-    // starts the destination copy before the DIB allocation.
-    int srcX = srcRect->left;
-    int srcY = srcRect->top;
-    int dstX = dstRect->left;
-    int dstY = dstRect->top;
-    int trim = dstSurface->clipRect.left - dstX;
-    if (trim > 0) {
-      srcX += trim;
-      dstX += trim;
-      rowBytes -= trim;
-    }
-    trim = srcSurface->clipRect.left - srcX;
-    if (trim > 0) {
-      srcX += trim;
-      dstX += trim;
-      rowBytes -= trim;
-    }
-    if (dstX + rowBytes > dstSurface->clipRect.right) {
-      rowBytes = dstSurface->clipRect.right - dstX;
-    }
-    if (srcX + rowBytes > srcSurface->clipRect.right) {
-      rowBytes = srcSurface->clipRect.right - srcX;
-    }
-
-    trim = dstSurface->clipRect.top - dstY;
-    if (trim > 0) {
-      srcY += trim;
-      dstY += trim;
-      rowCount -= trim;
-    }
-    trim = srcSurface->clipRect.top - srcY;
-    if (trim > 0) {
-      srcY += trim;
-      dstY += trim;
-      rowCount -= trim;
-    }
-    if (dstY + rowCount > dstSurface->clipRect.bottom) {
-      rowCount = dstSurface->clipRect.bottom - dstY;
-    }
-    if (srcY + rowCount > srcSurface->clipRect.bottom) {
-      rowCount = srcSurface->clipRect.bottom - srcY;
-    }
-    if (rowBytes <= 0 || rowCount <= 0) {
-      return;
-    }
-
-    unsigned char* srcPtr = srcSurface->pixelBits + srcY * srcPitch + srcX;
-    unsigned char* dstPtr = dstSurface->pixelBits + dstY * dstPitch + dstX;
     if ((blitFlags & 0x24) != 0x24) {
       while (rowCount-- != 0) {
         memcpy(dstPtr, srcPtr, rowBytes);
@@ -738,10 +675,7 @@ void __cdecl BlitRectWithOptionalTransparency(TQuickDrawBlitSurface* srcSurface,
     }
   }
   if (clipRegion != 0) {
-    CDC* clipDc = g_pQuickDrawMemoryDc;
-    if (clipDc == 0) {
-      clipDc = g_pScopedMapQuickDrawDcHandleObject;
-    }
+    CDC* clipDc = ResolveActiveQuickDrawDc();
     clipDc->SelectClipRgn(0);
   }
 }
