@@ -7,29 +7,6 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 
-namespace {
-
-void ReleaseTempMapWaitCursorBufferIfNeeded() {
-  char* tempBuffer = g_pBackdropWaitCursorGuardToken;
-  if (tempBuffer != NULL) {
-    AfxGetModuleState();
-    AfxGetApp()->EndWaitCursor();
-    delete tempBuffer;
-  }
-  g_pBackdropWaitCursorGuardToken = NULL;
-}
-
-CWnd* GetMainWndViaDoubleAfxGetThread() {
-  CWinThread* thread = AfxGetThread();
-  if (thread == NULL) {
-    return NULL;
-  }
-  thread = AfxGetThread();
-  return thread->GetMainWnd();
-}
-
-} // namespace
-
 // clang-cl's lint build rejects the MFC message-map macros' unqualified `&OnPaint`-style
 // address-of-member-function (a long-standing MSVC extension clang doesn't implement for
 // this context); this is MFC dispatch-table plumbing, not game logic, so it's skipped in
@@ -88,7 +65,7 @@ void CreateBackdropWindowIfSplashEnabled(CWnd* parent) {
 
 // FUNCTION: IMPERIALISM 0x0049cdf0
 void RefreshBackdropOnInputMessages(MSG* msg) {
-  if (g_pActiveBackdropWindow == NULL || msg == NULL) {
+  if (g_pActiveBackdropWindow == NULL) {
     return;
   }
 
@@ -100,10 +77,7 @@ void RefreshBackdropOnInputMessages(MSG* msg) {
   }
 
   g_pActiveBackdropWindow->DestroyWindow();
-
-  CWnd* mainWnd = GetMainWndViaDoubleAfxGetThread();
-  HWND hwnd = (mainWnd != NULL) ? mainWnd->m_hWnd : NULL;
-  ::UpdateWindow(hwnd);
+  AfxGetMainWnd()->UpdateWindow();
 }
 
 // FUNCTION: IMPERIALISM 0x0049ce90
@@ -129,17 +103,11 @@ void TBackdropWindow::PostNcDestroy() {
   delete this;
   g_pActiveBackdropWindow = NULL;
 
-  CWnd* mainWnd = GetMainWndViaDoubleAfxGetThread();
-  if (mainWnd != NULL) {
-    static_cast<CMainFrame*>(mainWnd)->ConfigureTopLevelWindowStyleAndPlacement(0x280, 0x1e0);
-  }
+  static_cast<CMainFrame*>(AfxGetMainWnd())->ConfigureTopLevelWindowStyleAndPlacement(0x280, 0x1e0);
+  AfxGetMainWnd()->SetWindowPos(NULL, 0, 0, 0, 0, 5);
 
-  mainWnd = GetMainWndViaDoubleAfxGetThread();
-  if (mainWnd != NULL) {
-    mainWnd->SetWindowPos(NULL, 0, 0, 0, 0, 5);
-  }
-
-  ReleaseTempMapWaitCursorBufferIfNeeded();
+  delete g_pBackdropWaitCursor;
+  g_pBackdropWaitCursor = NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x0049d090
@@ -151,13 +119,8 @@ int TBackdropWindow::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   CenterWindow(NULL);
   ::SetTimer(m_hWnd, 1, 0x2ee, NULL);
 
-  ReleaseTempMapWaitCursorBufferIfNeeded();
-  char* waitCursorToken = new char(0);
-  if (waitCursorToken != NULL) {
-    AfxGetModuleState();
-    AfxGetApp()->BeginWaitCursor();
-  }
-  g_pBackdropWaitCursorGuardToken = waitCursorToken;
+  delete g_pBackdropWaitCursor;
+  g_pBackdropWaitCursor = new CWaitCursor();
   return 0;
 }
 
@@ -178,6 +141,5 @@ void TBackdropWindow::OnPaint() {
 void TBackdropWindow::OnTimer(UINT timerId) {
   (void)timerId;
   DestroyWindow();
-  CWnd* mainWnd = GetMainWndViaDoubleAfxGetThread();
-  ::UpdateWindow(mainWnd->m_hWnd);
+  AfxGetMainWnd()->UpdateWindow();
 }

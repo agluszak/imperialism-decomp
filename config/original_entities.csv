@@ -9623,7 +9623,7 @@ address|name|symbol|size|type|prototype|provenance
 6a1fe8|g_ScaleDefault6A1FE8|||global||
 6a2018|g_cachedShowSplashFlag|||global||
 6a2050|g_pActiveBackdropWindow|||global||
-6a2054|g_pBackdropWaitCursorGuardToken|||global||
+6a2054|g_pBackdropWaitCursor|||global||
 6a20f8|g_pSimMgr|||global||
 6a2128|g_ptSaveLoadErrorModalMessage|||global||
 6a2148|g_pUiViewManager|||global||

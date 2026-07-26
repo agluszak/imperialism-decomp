@@ -1393,12 +1393,12 @@ address|matching|name
 0x49cc20|0.5|TBackdropWindow::GetMessageMap
 0x49cc40|1.0|SetCachedShowSplashFlag
 0x49cc60|0.8994708994708994|CreateBackdropWindowIfSplashEnabled
-0x49cdf0|0.7466666666666667|RefreshBackdropOnInputMessages
+0x49cdf0|1.0|RefreshBackdropOnInputMessages
 0x49ce90|0.7878787878787878|TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6
-0x49cfa0|0.6593406593406593|TBackdropWindow::PostNcDestroy
-0x49d090|0.5869565217391305|TBackdropWindow::OnCreate
+0x49cfa0|1.0|TBackdropWindow::PostNcDestroy
+0x49d090|1.0|TBackdropWindow::OnCreate
 0x49d180|0.8048780487804879|TBackdropWindow::OnPaint
-0x49d240|0.32|TBackdropWindow::OnTimer
+0x49d240|1.0|TBackdropWindow::OnTimer
 0x49d290|0.6666666666666666|ResetGlobalPair6A2020And6A2024
 0x49d360|0.4966442953020134|TModalDialogBase::PrepareAndCreateModalFromTemplate
 0x49d450|0.4657534246575342|TModalDialogBase::DoModal

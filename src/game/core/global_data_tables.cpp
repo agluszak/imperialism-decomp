@@ -68,7 +68,7 @@ TViewMgr* g_pUiRuntimeContext = 0;
 // GLOBAL: IMPERIALISM 0x006a2050
 TBackdropWindow* g_pActiveBackdropWindow = 0;
 // GLOBAL: IMPERIALISM 0x006a2054
-char* g_pBackdropWaitCursorGuardToken = 0;
+CWaitCursor* g_pBackdropWaitCursor = 0;
 // GLOBAL: IMPERIALISM 0x006a2148
 TAssetMgr* g_pUiViewManager = 0;
 // GLOBAL: IMPERIALISM 0x006a327c

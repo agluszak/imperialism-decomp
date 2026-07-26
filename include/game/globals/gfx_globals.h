@@ -6,9 +6,8 @@
 
 extern "C" TBackdropWindow* g_pActiveBackdropWindow;
 
-// Heap-owned lifetime marker paired with BeginWaitCursor/EndWaitCursor while the
-// startup backdrop is visible.
-extern "C" char* g_pBackdropWaitCursorGuardToken;
+// Heap-owned MFC wait cursor kept alive while the startup backdrop is visible.
+extern "C" CWaitCursor* g_pBackdropWaitCursor;
 
 extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
 
