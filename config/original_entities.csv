@@ -3345,13 +3345,13 @@ address|name|symbol|size|type|prototype|provenance
 514ef0|TMapMgr::ResetRecruitSearchVisitedState||25|function|void TMapMgr::ResetRecruitSearchVisitedState()|
 514f20|TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory||338|function|void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCivilianOrderEntry)|
 5150e0|TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates||457|function|void TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates( TMilitaryUnit* const candidates[6], short orderTargetSlot)|
-515330|TMapMgr::DimByMining||226|function|void __thiscall TMapMgr::DimByMining(TCivUnit * pCivilianOrderEntry)|
+515330|TMapMgr::DimByProspecting||226|function|void __thiscall TMapMgr::DimByProspecting(TCivUnit * pCivilianOrderEntry)|
 515460|TMapMgr::DimByDevelopment||271|function|void __thiscall TMapMgr::DimByDevelopment(TCivUnit * pCivilianOrderEntry)|
-5155c0|TMapMgr::SeedRecruitSearchVisitedStateByCapabilityThreshold||269|function|void TMapMgr::SeedRecruitSearchVisitedStateByCapabilityThreshold(TCivUnit* pCivilianOrderEntry)|
-515720|TMapMgr::MarkType5NeighborTilesUnavailableByNationCapability||287|function|undefined MarkType5NeighborTilesUnavailableByNationCapability()|
-515890|TMapMgr::SeedRecruitSearchVisitedStateByCapabilityThresholdAlt||212|function|void TMapMgr::SeedRecruitSearchVisitedStateByCapabilityThresholdAlt(TCivUnit* pCivilianOrderEntry)|
-5159b0|TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA||272|function|undefined MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA()|
-515b10|TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB||331|function|undefined MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB()|
+5155c0|TMapMgr::DimByMining||269|function|void __thiscall TMapMgr::DimByMining(TCivUnit * pCivilianOrderEntry)|
+515720|TMapMgr::DimByFishing||287|function|void __thiscall TMapMgr::DimByFishing(TCivUnit * pCivilianOrderEntry)|
+515890|TMapMgr::DimByCompany||212|function|void __thiscall TMapMgr::DimByCompany(TCivUnit * pCivilianOrderEntry)|
+5159b0|TMapMgr::DimByTrackLaying||272|function|void __thiscall TMapMgr::DimByTrackLaying(TCivUnit * pCivilianOrderEntry)|
+515b10|TMapMgr::DimByEngineering||331|function|void __thiscall TMapMgr::DimByEngineering(TCivUnit * pCivilianOrderEntry)|
 515d60|TMapMgr::ApplyUnitMovementClassForTileIfValid||24|function|undefined ApplyUnitMovementClassForTileIfValid(int param_1)|
 515d90|IltTarget_00515d90||1|function|undefined IltTarget_00515d90()|
 515db0|ClearPerTileByte0FForAllMapTiles||27|function|undefined ClearPerTileByte0FForAllMapTiles()|
