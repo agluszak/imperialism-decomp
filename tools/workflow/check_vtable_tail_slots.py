@@ -22,10 +22,12 @@ joining an empire, the tile-object owner reassignment never ran.
 The heuristic here: for each `// VTABLE:` annotation, read the original vtable,
 take its last real slot, resolve that slot through its ILT thunk, and report the
 class when the resulting function is declared in our headers but not as a
-virtual. Two details matter and both produced false positives before they were
-handled -- the dump runs past a class's table into whatever vtable sits next in
-memory (so the extent must stop at the first NULL slot), and `virtual` is often
-on the line above a wrapped declaration.
+virtual. Three details matter, and each produced false positives before it was
+handled: the dump runs past a class's table into whatever vtable sits next in
+memory (so the extent must stop at the first NULL slot), `virtual` is often on
+the line above a wrapped declaration, and the name lookup has to be scoped to
+the annotated class's own header or an identically-named member of an unrelated
+class matches.
 
 This is a REPORTING aid, not a gate. Its output is a list of candidates to check
 by hand, never grounds to edit a class model on its own: confirm the slot's
@@ -78,11 +80,20 @@ class HeaderIndex:
         for path in sorted(glob.glob("include/**/*.h", recursive=True)):
             self.text[path] = open(path, errors="replace").read().split("\n")
 
-    def lookup(self, name: str) -> tuple[bool, bool]:
-        """Return (declared_anywhere, declared_virtual)."""
+    def lookup(self, name: str, header: str | None = None) -> tuple[bool, bool]:
+        """Return (declared_in_scope, declared_virtual).
+
+        `header` scopes the search to the annotated class's own header. Without
+        it, a name that belongs to an unrelated class matches and produces a
+        false positive -- TDiplomacyMgr's last slot resolves to a function named
+        IsNationSlotEligibleForEventProcessing, which is a non-virtual TSimMgr
+        member; TDlgWindow's resolves to MFC CWnd::GetWindowText. Neither class
+        declares the name itself, so neither is the missing-tail-slot defect.
+        """
         pattern = re.compile(r"\b" + re.escape(name) + r"\s*\(")
+        sources = [self.text[header]] if header and header in self.text else list(self.text.values())
         declared = False
-        for lines in self.text.values():
+        for lines in sources:
             for i, line in enumerate(lines):
                 if not pattern.search(line):
                     continue
@@ -152,7 +163,7 @@ def main() -> int:
         name = resolve(last["entry_addr"], last.get("current_name", ""))
         if not name:
             continue
-        declared, is_virtual = headers.lookup(name)
+        declared, is_virtual = headers.lookup(name, header)
         if declared and not is_virtual:
             suspects.append((cls, addr, last["index"], name, header))
             print(f"SUSPECT {cls} {addr} slot {last['index']} -> {name}  [{header}]", flush=True)
