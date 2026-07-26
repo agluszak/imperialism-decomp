@@ -1665,7 +1665,7 @@ void SplitTileIndexToHexRasterColumnX2AndRow(StrategicTileIndex tileIndex, short
 // Combines a doubled hex-raster column (columnX2, as produced by
 // SplitTileIndexToHexRasterColumnX2AndRow) and a row back into a linear tile index.
 // FUNCTION: IMPERIALISM 0x00512850
-int ComputeTileIndexFromHexColumnX2AndRow(int columnX2, int row) {
+int ComputeTileIndexFromHexColumnX2AndRow(short columnX2, int row) {
   return columnX2 / 2 + row * 0x6c;
 }
 

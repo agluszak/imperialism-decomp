@@ -184,12 +184,20 @@ CIncludeView* GetMainViewHostFromActiveThread() {
 // ImperialismApp::GetMessageMap
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(ImperialismApp, CWinApp)
+ON_COMMAND(0x8014, OnDeveloperCommand8014)
 ON_COMMAND(0x8015, OnSelectActiveNation)
 ON_COMMAND(0x8016, OnApplyTurnCooldownOverride)
 ON_COMMAND(0x8017, OnAdjustNationResourcesAndPopulation)
 ON_COMMAND(0x8018, OnPreviewDibResource)
 ON_COMMAND(0x8019, OnRunAmbitDeveloperAssert)
 ON_UPDATE_COMMAND_UI(0x8019, OnUpdateAmbitDeveloperAssert)
+ON_COMMAND(0x801e, OnDeveloperCommand801E)
+ON_UPDATE_COMMAND_UI(0x801e, OnUpdateDeveloperCommand801E)
+ON_COMMAND(0x801f, OnDeveloperCommand801F)
+ON_UPDATE_COMMAND_UI(0x801f, OnUpdateDeveloperCommand801F)
+ON_COMMAND(0x8020, OnDeveloperCommand8020)
+ON_COMMAND(0xe100, CWinApp::OnFileNew)
+ON_COMMAND(0xe101, CWinApp::OnFileOpen)
 END_MESSAGE_MAP()
 #endif
 
@@ -395,6 +403,12 @@ BOOL ImperialismApp::PreTranslateMessage(MSG* pMsg) {
   return CWinThread::PreTranslateMessage(pMsg);
 }
 
+// The 0x8014 command tail-calls the retail no-op module-library cache hook.
+// FUNCTION: IMPERIALISM 0x00413d00
+void ImperialismApp::OnDeveloperCommand8014() {
+  g_pModuleLibraryCacheState->NoOpRetailCacheHook();
+}
+
 // Let the developer choose the active nation, rebuild the active nation's derived resource
 // state when the simulation is in setup mode, then redispatch the currently displayed turn
 // event for the newly selected nation.
@@ -533,6 +547,27 @@ void ImperialismApp::OnUpdateAmbitDeveloperAssert(CCmdUI* commandUi) {
 
 BOOL QueryVolumeInformationForDriveIndex(char driveIndex, CString* volumeName, LPDWORD serial);
 bool QueryDriveTypeByDriveIndex(char driveIndex);
+
+// 0x801e/0x801f/0x8020 are empty in retail: the developer features behind them were
+// compiled out, leaving only the message-map wiring.
+// FUNCTION: IMPERIALISM 0x004147b0
+void ImperialismApp::OnDeveloperCommand801E() {}
+
+// FUNCTION: IMPERIALISM 0x004147d0
+void ImperialismApp::OnUpdateDeveloperCommand801E(CCmdUI* commandUi) {
+  (void)commandUi;
+}
+
+// FUNCTION: IMPERIALISM 0x004147f0
+void ImperialismApp::OnDeveloperCommand801F() {}
+
+// FUNCTION: IMPERIALISM 0x00414810
+void ImperialismApp::OnUpdateDeveloperCommand801F(CCmdUI* commandUi) {
+  (void)commandUi;
+}
+
+// FUNCTION: IMPERIALISM 0x00414830
+void ImperialismApp::OnDeveloperCommand8020() {}
 
 // Returns the on-disk data directory prefix. Used by TLanguageMgr's table loaders (real
 // caller: TLanguageMgr::LoadNewsTabTexResourcesAndBuildEntries, 0x00507e50).
