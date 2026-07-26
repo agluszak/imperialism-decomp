@@ -19,7 +19,8 @@
 #include "game/ui_tags_military.h"
 #include "game/ui_tags_widgets.h"
 #include "game/military/NetMessage.h"
-#include "game/map/TMapMgr.h" // TTerrainStateRecordView (event 0x23 payload)
+#include "game/nation_domain_types.h" // CongressLeadership / CongressSupportTally
+#include "game/map/TMapMgr.h"         // TTerrainStateRecordView (event 0x23 payload)
 #include "game/news_domain_types.h"
 
 class TObject;
@@ -97,23 +98,10 @@ struct TurnEvent26DiplomacyMatrixPacket : TimelyMessageHeader {
   short relationCodeMatrix[0x180];              // +0x018
   unsigned char pendingPolicyCodeMatrix[0x180]; // +0x318
   short pendingPolicyTierMatrix[0x180];         // +0x498
-  union {
-    struct {
-      short selectedSourceNationSlot; // +0x798
-      short selectedTargetNationSlot; // +0x79a
-    };
-    int packedSelectedNationSlots;
-  };
-  union {
-    struct {
-      short selectionFlagsA; // +0x79c
-      short selectionFlagsB; // +0x79e
-    };
-    int packedSelectionFlagsAB;
-  };
-  short selectionFlagsC;                 // +0x7a0
-  unsigned char pad7a2[2];               // +0x7a2
-  unsigned char relationTailBlock[0x70]; // +0x7a4, total 0x814
+  CongressLeadership congressLeadership;        // +0x798
+  CongressSupportTally congressSupport;         // +0x79c..+0x7a1
+  unsigned char pad7a2[2];                      // +0x7a2
+  unsigned char relationTailBlock[0x70];        // +0x7a4, total 0x814
 };
 
 // Turn-event-1 payload: the remaining turn-resume pending-nation bitmask.

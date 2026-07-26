@@ -159,8 +159,9 @@ void TCouncilView::DisplayStats() {
   // Census every pending-policy map record for the selected nation pair into eight
   // relationship-category buckets: major/minor-nation × (source/target owner, in-vote /
   // out-of-vote). Buckets 0-3 are out-of-vote, 4-7 in-vote.
-  NationSlot sourceNation = g_pDiplomacyTurnStateManager->selectedSourceNationSlot784;
-  NationSlot targetNation = g_pDiplomacyTurnStateManager->selectedTargetNationSlot786;
+  NationSlot sourceNation = g_pDiplomacyTurnStateManager->congressLeadership784.chairmanNationSlot;
+  NationSlot targetNation =
+      g_pDiplomacyTurnStateManager->congressLeadership784.counterpartNationSlot;
   short categoryCounts[8];
   for (int i = 0; i < 8; ++i) {
     categoryCounts[i] = 0;
@@ -230,7 +231,8 @@ void TCouncilView::DisplayStats() {
   TDropShadowText* sourceScore =
       static_cast<TDropShadowText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 'c', 'o', '0')));
   sourceScore->AssertValid();
-  scoreText.Format(g_szDecimalFormat, g_pDiplomacyTurnStateManager->selectionFlagsA788);
+  scoreText.Format(g_szDecimalFormat,
+                   g_pDiplomacyTurnStateManager->congressSupport788.chairmanSupportCount);
   sourceScore->SetTextAndMaybeRefresh(&scoreText, 1);
   sourceScore->InstallTextStyle(style, 0);
   sourceScore->shadowColor94 = scoreShadowColor;
@@ -239,7 +241,8 @@ void TCouncilView::DisplayStats() {
   TDropShadowText* targetScore =
       static_cast<TDropShadowText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 'c', 'o', '1')));
   targetScore->AssertValid();
-  scoreText.Format(g_szDecimalFormat, g_pDiplomacyTurnStateManager->selectionFlagsB78a);
+  scoreText.Format(g_szDecimalFormat,
+                   g_pDiplomacyTurnStateManager->congressSupport788.counterpartSupportCount);
   targetScore->SetTextAndMaybeRefresh(&scoreText, 1);
   targetScore->InstallTextStyle(style, 0);
   targetScore->shadowColor94 = scoreShadowColor;
@@ -260,14 +263,14 @@ void TCouncilView::StartVoting() {
 
   TStaticText* can0 = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan0));
   can0->AssertValid();
-  g_apNationStates[g_pDiplomacyTurnStateManager->selectedSourceNationSlot784]
+  g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership784.chairmanNationSlot]
       ->LoadNationDisplayNameSharedRefFromField8(&candidateName);
   can0->SetTextAndMaybeRefresh(&candidateName, 1);
   can0->InstallTextStyle(councilTextStyle, 0);
 
   TStaticText* can1 = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan1));
   can1->AssertValid();
-  g_apNationStates[g_pDiplomacyTurnStateManager->selectedTargetNationSlot786]
+  g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership784.counterpartNationSlot]
       ->LoadNationDisplayNameSharedRefFromField8(&candidateName);
   can1->SetTextAndMaybeRefresh(&candidateName, 1);
   can1->InstallTextStyle(councilTextStyle, 0);
@@ -275,13 +278,13 @@ void TCouncilView::StartVoting() {
   TPicture* coat0 = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoa0));
   coat0->AssertValid();
   coat0->SetPictureResourceIdAndRefresh(
-      static_cast<short>(g_pDiplomacyTurnStateManager->selectedSourceNationSlot784 +
+      static_cast<short>(g_pDiplomacyTurnStateManager->congressLeadership784.chairmanNationSlot +
                          kCouncilCoatOfArmsPictureBase),
       1);
   TPicture* coat1 = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoa1));
   coat1->AssertValid();
   coat1->SetPictureResourceIdAndRefresh(
-      static_cast<short>(g_pDiplomacyTurnStateManager->selectedTargetNationSlot786 +
+      static_cast<short>(g_pDiplomacyTurnStateManager->congressLeadership784.counterpartNationSlot +
                          kCouncilCoatOfArmsPictureBase),
       1);
 

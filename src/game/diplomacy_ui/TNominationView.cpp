@@ -48,7 +48,7 @@ void TNominationView::DoPostCreate(int arg) {
   TStaticText* candidate0Control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan0));
   candidate0Control->AssertValid();
   TGreatPower* nation0 =
-      g_apNationStates[g_pDiplomacyTurnStateManager->selectedSourceNationSlot784];
+      g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership784.chairmanNationSlot];
   nation0->FormatOverlayTerrainLabelText(&text);
   candidate0Control->SetTextAndMaybeRefresh(&text, 1);
   candidate0Control->InstallTextStyle(style, 1);
@@ -56,7 +56,7 @@ void TNominationView::DoPostCreate(int arg) {
   TStaticText* candidate1Control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan1));
   candidate1Control->AssertValid();
   TGreatPower* nation1 =
-      g_apNationStates[g_pDiplomacyTurnStateManager->selectedTargetNationSlot786];
+      g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership784.counterpartNationSlot];
   nation1->FormatOverlayTerrainLabelText(&text);
   candidate1Control->SetTextAndMaybeRefresh(&text, 1);
   candidate1Control->InstallTextStyle(style, 1);

@@ -5935,7 +5935,7 @@ address|name|symbol|size|type|prototype|provenance
 5d5960|TViewMgr::ClassifyTurnStateForOverlayMode||47|function|undefined ClassifyTurnStateForOverlayMode()|
 5d5a70|TViewMgr::ModalMessage||104|function|void ModalMessage(CString message, POINT const & messagePosition)|mac-oracle
 5d5b00|TViewMgr::ModalMessage||138|function|char ModalMessage(CString message, POINT const & messagePosition, short overlayMode, unsigned char showCancel)|mac-oracle
-5d5c40|TViewMgr::ModalMessage||151|function|char ModalMessage(long templateKind, CString formatText, CString message, POINT const & messagePosition, short overlayMode, unsigned char showCancel)|mac-oracle
+5d5c40|TViewMgr::ModalMessage||151|function|char ModalMessage(long templateKind, CString titleSuffix, CString message, POINT const & messagePosition, short overlayMode, unsigned char showCancel)|mac-oracle
 5d5d10|CString::operator char const *||3|function|char const * __thiscall operator char const *()|
 5d5d30|TViewMgr::RunNationInfoModalAndReturnNonCancel||1485|function|bool RunNationInfoModalAndReturnNonCancel(int messageKind, CString titleSuffix, char const * messageChars, int messageLength, POINT const & messagePosition, int contextTag, char showCancel)|mac-oracle-point-semantics
 5d6480|TViewMgr::BuildAndShowTurnOverlayByMode||999|function|undefined BuildAndShowTurnOverlayByMode()|
