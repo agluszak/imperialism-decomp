@@ -1266,7 +1266,7 @@ address|matching|name
 0x4967e0|1.0|TransparentBlitBitmapRegionUsingMaskedRasterOps
 0x496b80|0.7457627118644068|BlitBitmapResourceToTemporaryCompatibleDcAndPresent
 0x496d40|0.24797843665768193|BlitRectWithOptionalTransparency
-0x497230|0.27586206896551724|InitializeGlobalRectDefaultsIfUninitialized
+0x497230|1.0|InitializeGlobalRectDefaultsIfUninitialized
 0x4972a0|1.0|InitializeTurnOrderNavigationDialogByViewportSize_Impl
 0x4972c0|1.0|LockPixels
 0x4972e0|1.0|UnlockPixels
@@ -2974,7 +2974,7 @@ address|matching|name
 0x4ffcb0|1.0|TGameWindow::Open
 0x4ffd10|1.0|TGameWindow::HandleMouseDown
 0x4ffd40|1.0|TGameWindow::HandleMouseUp
-0x4ffd70|0.4260089686098655|TGameWindow::DoKeyEvent
+0x4ffd70|0.9867256637168141|TGameWindow::DoKeyEvent
 0x500160|1.0|TGameWindow::UpdateTurnOrderNavigationWindowLayout
 0x500200|1.0|TGameWindow::NoOpTurnOrderNavigationVtableSlotA
 0x500220|1.0|TGameWindow::NoOpTurnOrderNavigationVtableSlotB
@@ -3367,7 +3367,7 @@ address|matching|name
 0x51e1a0|1.0|TMapDialog::ResetAllTileMarkersToSentinel
 0x51e1f0|0.2777777777777778|TMapDialog::ReleaseTileMarkerForTile
 0x51e260|0.30535894843276035|TMapDialog::Draw
-0x51eb40|0.2609633357296909|TMapDialog::DrawOneTile
+0x51eb40|0.26710334788937407|TMapDialog::DrawOneTile
 0x520670|0.860125260960334|TMapDialog::DrawBorder
 0x520970|0.7682926829268293|TMapDialog::DrawMapDialogGuidePatternSetA_00520970
 0x520a90|1.0|TMapDialog::DrawMapDialogGuidePatternSetB_00520a90
@@ -4992,7 +4992,7 @@ address|matching|name
 0x584e20|1.0|TToolBarCluster::TToolBarCluster
 0x584e50|1.0|TToolBarCluster::`scalar deleting destructor'
 0x584e80|1.0|TToolBarCluster::~TToolBarCluster
-0x584ea0|0.783410138248848|TToolBarCluster::DoEvent
+0x584ea0|0.836027713625866|TToolBarCluster::DoEvent
 0x5851c0|0.6613545816733067|TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x5853f0|0.708994708994709|TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls
 0x585ba0|0.481994459833795|TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext
@@ -5272,7 +5272,7 @@ address|matching|name
 0x5950b0|0.2702702702702703|TWorldView::DoEvent
 0x595130|0.39618138424821003|TWorldView::DoKeyEvent
 0x595810|1.0|TWorldView::DoSetCursor
-0x5958b0|0.4166666666666667|TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback
+0x5958b0|0.38073394495412843|TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x595c40|1.0|TWorldView::SetMapOverlayModeAndRenderPreview
 0x595c70|0.2942528735632184|TWorldView::RenderMapContextOverlayWithScopedClipAndSurface
 0x596020|1.0|TWorldView::RenderMapOrderEntryTilePreview
@@ -5334,7 +5334,7 @@ address|matching|name
 0x599a20|1.0|TMapUberPicture::UpdateRoster
 0x599a50|0.6666666666666666|TMapUberPicture::EnterMapInteractionOverlayMode
 0x599b90|0.8382352941176471|TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews
-0x599cf0|0.5878378378378378|TMapUberPicture::DisplayMiniMap
+0x599cf0|0.5886287625418061|TMapUberPicture::DisplayMiniMap
 0x599fa0|1.0|TMapUberPicture::InvalidateMiniMap
 0x599fd0|0.7291666666666666|TMapUberPicture::RemoveMiniMap
 0x59a180|0.8368794326241135|TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag
@@ -7091,7 +7091,7 @@ address|matching|name
 0x608ba8|0.9441964285714286|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|1.0|CWnd::OnNotify
+0x6091d9|0.9787234042553191|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent

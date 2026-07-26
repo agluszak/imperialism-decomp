@@ -1,4 +1,5 @@
 #include "game/gfx/TGameWindow.h"
+#include "game/gfx/TAmbitApplication.h"
 #include "game/ui_tags_common.h"
 
 #include "game/ui_screens/TSimMgr.h"
@@ -20,49 +21,7 @@ namespace {
 
 const short kUiCommandHandledMarker = 0x29a;
 
-static short QueryUiRuntimeEventCode() {
-  return g_pUiRuntimeContext->currentTurnEventCode;
-}
-
-static short QueryUiRuntimeFieldF8() {
-  return g_pUiRuntimeContext->fieldF8;
-}
-
-static TMovieView* QueryUiRuntimeActiveMovieView() {
-  return g_pUiRuntimeContext->activeMovieViewF4;
-}
-
 } // namespace
-
-namespace GameWindowInvoke {
-
-static short ConsumeFirstPendingAbilityUnlockForNation(short nationId) {
-  return g_pCityOrderCapabilityState->ConsumeFirstPendingAbilityUnlock(nationId);
-}
-
-static void DispatchUiRuntimeMessage101AAndRefreshActiveViewGate() {
-  g_pUiRuntimeContext->DispatchUiRuntimeMessage101AAndRefreshActiveView();
-}
-
-static void SelectAndActivatePendingEventForCurrentViewGate() {
-  g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
-}
-
-static void DispatchUiRuntimeAbilityUnlockSlot88Gate(int abilityIndex) {
-  if (g_pUiRuntimeContext == nullptr) {
-    return;
-  }
-  g_pUiRuntimeContext->ShowAbilityStatusReport(abilityIndex);
-}
-
-static void PlayClickSfx7000() {
-  if (g_pSfxPlaybackSystem == nullptr) {
-    return;
-  }
-  g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
-}
-
-} // namespace GameWindowInvoke
 // SYNTHETIC: IMPERIALISM 0x004ffb30
 // TGameWindow::CreateObject
 
@@ -115,46 +74,46 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
   if (commandEvent->handledMarker == kUiCommandHandledMarker) {
     return;
   }
-  if (g_pApplicationUiRootController->InModalState() != 0) {
+  if (g_pGlobalUiRootController->InModalState() != 0) {
     return;
   }
   commandEvent->handledMarker = kUiCommandHandledMarker;
 
-  short commandCode = commandEvent->commandCode;
-  if (commandCode == kUiKeyHelpLowerCase || commandCode == kUiKeyHelpUpperCase) {
+  if (commandEvent->commandCode == kUiKeyHelpLowerCase ||
+      commandEvent->commandCode == kUiKeyHelpUpperCase) {
     if (mainControl->ResolveControlByTag(kControlTagQuer) != 0) {
       if (g_pHelpMgr != 0) {
-        GameWindowInvoke::PlayClickSfx7000();
-        if (QueryUiRuntimeEventCode() == kTurnEventStrategicMap) {
-          GameWindowInvoke::DispatchUiRuntimeMessage101AAndRefreshActiveViewGate();
+        g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
+        if (g_pUiRuntimeContext->currentTurnEventCode == kTurnEventStrategicMap) {
+          g_pUiRuntimeContext->DispatchUiRuntimeMessage101AAndRefreshActiveView();
           return;
         }
-        GameWindowInvoke::SelectAndActivatePendingEventForCurrentViewGate();
+        g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
         return;
       }
     }
   }
 
-  if (commandCode == kUiKeyEnter || commandCode == kUiKeyReturn || commandCode == kUiKeyEscape ||
-      commandCode == kUiKeySpace) {
-    if (QueryUiRuntimeEventCode() != kTurnEventStrategicMap &&
+  if (commandEvent->commandCode == kUiKeyEnter || commandEvent->commandCode == kUiKeyReturn ||
+      commandEvent->commandCode == kUiKeyEscape || commandEvent->commandCode == kUiKeySpace) {
+    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap &&
         mainControl->ResolveControlByTag(kControlTagEnd) != 0) { // 'end '
-      GameWindowInvoke::PlayClickSfx7000();
+      g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
       if (g_pSimMgr->mode != 0x11) {
         g_pSimMgr->StartNextPhase();
         return;
       }
       short nationId = g_pSimMgr->GetActiveNationId();
-      short abilityIndex = GameWindowInvoke::ConsumeFirstPendingAbilityUnlockForNation(nationId);
+      short abilityIndex = g_pCityOrderCapabilityState->ConsumeFirstPendingAbilityUnlock(nationId);
       if (abilityIndex != -1) {
-        GameWindowInvoke::DispatchUiRuntimeAbilityUnlockSlot88Gate(abilityIndex);
+        g_pUiRuntimeContext->ShowAbilityStatusReport(abilityIndex);
         return;
       }
       g_pSimMgr->StartNextPhase();
       return;
     }
-    if (QueryUiRuntimeFieldF8() != 0) {
-      TMovieView* activeMovieView = QueryUiRuntimeActiveMovieView();
+    if (g_pUiRuntimeContext->fieldF8 != 0) {
+      TMovieView* activeMovieView = g_pUiRuntimeContext->activeMovieViewF4;
       if (activeMovieView == 0) {
         return;
       }
@@ -165,58 +124,48 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
     return;
   }
 
-  if (g_pSimMgr == 0) {
-    mainControl->DoKeyEvent(event);
-    return;
+  if (g_pSimMgr != 0 &&
+      (g_pSimMgr->mode == 0x69 || g_pSimMgr->mode == 0x68 || g_pSimMgr->mode == 0x67 ||
+       g_pSimMgr->mode == 0x6a || g_pSimMgr->mode == 0x6d ||
+       g_pUiRuntimeContext->currentTurnEventCode == kTurnEventStrategicMap)) {
+    switch (commandEvent->commandCode) {
+    case 0x31:
+      if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventTransport) {
+        g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
+        g_pSimMgr->EnterOptionalPhase(0x69);
+      }
+      return;
+    case 0x32:
+      if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventCityProduction) {
+        g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
+        g_pSimMgr->EnterOptionalPhase(0x6a);
+      }
+      return;
+    case 0x33:
+      if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventTradeOverview &&
+          g_pUiRuntimeContext->currentTurnEventCode != kTurnEventIndustryOverview) {
+        g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
+        g_pSimMgr->EnterOptionalPhase(0x67);
+      }
+      return;
+    case 0x34:
+      if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventDiplomacyMap) {
+        g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
+        g_pSimMgr->EnterOptionalPhase(0x68);
+      }
+      return;
+    case 0x35:
+      if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventTechnologyStore) {
+        g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
+        g_pSimMgr->EnterOptionalPhase(0x6d);
+      }
+      return;
+    default:
+      mainControl->DoKeyEvent(event);
+      return;
+    }
   }
-  if (g_pSimMgr->mode != 0x69 && g_pSimMgr->mode != 0x68 && g_pSimMgr->mode != 0x67 &&
-      g_pSimMgr->mode != 0x6a && g_pSimMgr->mode != 0x6d &&
-      QueryUiRuntimeEventCode() != kTurnEventStrategicMap) {
-    mainControl->DoKeyEvent(event);
-    return;
-  }
-
-  switch (commandCode) {
-  case 0x31:
-    if (QueryUiRuntimeEventCode() != kTurnEventTransport) {
-      GameWindowInvoke::PlayClickSfx7000();
-      g_pSimMgr->EnterOptionalPhase(0x69);
-      return;
-    }
-    break;
-  case 0x32:
-    if (QueryUiRuntimeEventCode() != kTurnEventCityProduction) {
-      GameWindowInvoke::PlayClickSfx7000();
-      g_pSimMgr->EnterOptionalPhase(0x6a);
-      return;
-    }
-    break;
-  case 0x33:
-    if (QueryUiRuntimeEventCode() != kTurnEventTradeOverview &&
-        QueryUiRuntimeEventCode() != kTurnEventIndustryOverview) {
-      GameWindowInvoke::PlayClickSfx7000();
-      g_pSimMgr->EnterOptionalPhase(0x67);
-      return;
-    }
-    break;
-  case 0x34:
-    if (QueryUiRuntimeEventCode() != kTurnEventDiplomacyMap) {
-      GameWindowInvoke::PlayClickSfx7000();
-      g_pSimMgr->EnterOptionalPhase(0x68);
-      return;
-    }
-    break;
-  case 0x35:
-    if (QueryUiRuntimeEventCode() != kTurnEventTechnologyStore) {
-      GameWindowInvoke::PlayClickSfx7000();
-      g_pSimMgr->EnterOptionalPhase(0x6d);
-      return;
-    }
-    break;
-  default:
-    mainControl->DoKeyEvent(event);
-    return;
-  }
+  mainControl->DoKeyEvent(event);
 }
 
 // FUNCTION: IMPERIALISM 0x00500160

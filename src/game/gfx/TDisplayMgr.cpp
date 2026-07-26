@@ -42,12 +42,15 @@ void PlayDefaultMessageBeep(...) {
 // FUNCTION: IMPERIALISM 0x00497230
 GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized() {
   if (g_pGlobalViewportRectDefaultsRecord == nullptr) {
-    g_globalViewportRectDefaultsRecord.field0 = 0;
-    g_globalViewportRectDefaultsRecord.viewportBounds.left = 0;
-    g_globalViewportRectDefaultsRecord.viewportBounds.top = 0;
-    g_globalViewportRectDefaultsRecord.viewportBounds.right = 0x280;
-    g_globalViewportRectDefaultsRecord.viewportBounds.bottom = 0x1e0;
+    register int viewportHeight = 0x1e0;
+    register int zero = 0;
+    register int viewportWidth = 0x280;
+    g_globalViewportRectDefaultsRecord.viewportBounds.bottom = viewportHeight;
     g_pGlobalViewportRectDefaultsRecord = &g_globalViewportRectDefaultsRecord;
+    g_globalViewportRectDefaultsRecord.field0 = zero;
+    g_globalViewportRectDefaultsRecord.viewportBounds.left = zero;
+    g_globalViewportRectDefaultsRecord.viewportBounds.top = zero;
+    g_globalViewportRectDefaultsRecord.viewportBounds.right = viewportWidth;
   }
   return &g_pGlobalViewportRectDefaultsRecord;
 }
