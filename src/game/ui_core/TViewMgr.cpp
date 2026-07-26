@@ -1180,39 +1180,51 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       QueueDeferredUiEventPacket(mainView, 0x29a, mainView);
     } else if (newCode == kTurnEventDiplomacyOffer) {
       mainView->RefreshControl();
+
+      g_pCursorControlPanel =
+          static_cast<TInfoBarText*>(mainView->ResolveControlByTag(kControlTagCurs));
       g_pCursorControlPanel->AssertValid();
+      g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
+
+      TView* diplomacyMap = mainView->ResolveControlByTag(kControlTagMain);
+      diplomacyMap->AssertValid();
+      if (diplomacyMap != nullptr &&
+          diplomacyMap->IsKindOf(RUNTIME_CLASS(TDiplomacyMapView)) != 0) {
+        static_cast<TDiplomacyMapView*>(diplomacyMap)
+            ->SetSelectedTerrainIndexForTurnEvent(secondary);
+      }
     } else if (newCode == kTurnEventTechnologyStore) {
       mainView->RefreshControl();
-      this->RefreshTechnologyStorePageAndHudText(0);
+      this->RefreshTechnologyStorePageAndHudText(payload);
     } else if (newCode == kTurnEventDiplomacyMap) {
       if (static_cast<short>(g_pSimMgr->mode) == 0x68) {
         mainView->RefreshControl();
-        this->HandleTurnEvent7D8_ActivateDiplomacyMapView(newCode);
+        this->ShowDiplomacyScreen(static_cast<short>(payload));
       }
     } else if (newCode == kTurnEventTradeOverview || newCode == kTurnEventIndustryOverview) {
       mainView->RefreshControl();
-      this->RefreshTradeAndIndustryOverviewScreen(secondary);
+      this->RefreshTradeAndIndustryOverviewScreen(payload);
     } else if (newCode == kTurnEventCityProduction) {
       mainView->RefreshControl();
-      this->HandleTurnEvent7DB_SelectCityAndRefreshView(secondary);
+      this->ShowCityProductionView(static_cast<short>(payload));
     } else if (newCode == kTurnEventStrategicMap) {
       mainView->RefreshControl();
-      this->HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(payload);
+      this->ShowTerrainMap(static_cast<short>(payload));
     } else if (newCode == kTurnEventTransport) {
       mainView->RefreshControl();
-      this->HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(newCode);
+      this->ShowTransportScreen(static_cast<short>(payload));
     } else if (newCode == kTurnEventNewspaperStatus) {
-      this->HandleTurnEvent2103_RunNationStatusReportUpdate();
+      this->ShowNewspaper(secondary);
     } else if (newCode == kTurnEventDealBook) {
       mainView->RefreshControl();
-      this->HandleTurnEvent2260_RefreshMainHudTitles(newCode);
+      this->ShowDealBookScreen(static_cast<short>(payload));
     }
     DispatchPostTurnStateUpdatesTail();
     return;
   }
 
   // Cross-code path: tear down the previous dialog, build the new turn-event UI packet.
-  g_pUiViewManager->OpenFilesForView(0);
+  g_pUiViewManager->OpenFilesForView(newCode);
   mainView->Open();
   if (this->field10 != 0) {
     ShowBlockingWaitOverlayDialog();
@@ -1242,12 +1254,27 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   }
   this->currentTurnEventCode = newCode;
 
+  bool clearDispatchBusyFlag = true;
+
   if (newCode > kTurnEventMapEditor) {
     if (newCode < kTurnEventRandomGameSetup) {
       if (newCode == kTurnEventMainMenu) {
         this->HandleTurnEventDialogFactorySlotF8();
       } else if (newCode == kTurnEventDiplomacyOffer) {
-        this->SetCursorRangeAndRefreshMainPanel(static_cast<int>(newCode));
+        g_pCursorControlPanel =
+            static_cast<TInfoBarText*>(mainView->ResolveControlByTag(kControlTagCurs));
+        g_pCursorControlPanel->AssertValid();
+        g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
+
+        TView* diplomacyMap = mainView->ResolveControlByTag(kControlTagMain);
+        diplomacyMap->AssertValid();
+        if (diplomacyMap != nullptr &&
+            diplomacyMap->IsKindOf(RUNTIME_CLASS(TDiplomacyMapView)) != 0) {
+          static_cast<TDiplomacyMapView*>(diplomacyMap)
+              ->SetSelectedTerrainIndexForTurnEvent(secondary);
+        }
+        g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
+        clearDispatchBusyFlag = false;
       }
     } else if (newCode < kTurnEventTradeOverview) {
       switch (newCode) {
@@ -1255,64 +1282,75 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
         this->NoOpTurnEventStateVtableSlotFC();
         break;
       case kTurnEventLoadSave:
-        this->HandleTurnEvent5DE_RefreshMainView();
+        this->ShowLoadSaveScreen();
         break;
       case kTurnEventScenarioGameSetup:
-        this->HandleTurnEvent5DF_RefreshMainView();
+        this->ShowScenarioScreen();
         break;
       case kTurnEventHighScores:
-        this->RefreshMainViewForTurnEvent5DF();
+        this->ShowHighScoreScreen();
         break;
       case kTurnEventDiplomacyMap:
-        this->HandleTurnEvent7D8_ActivateDiplomacyMapView(newCode);
+        this->ShowDiplomacyScreen(static_cast<short>(payload));
         g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
+        clearDispatchBusyFlag = false;
         break;
       }
     } else if (newCode > kTurnEventTechnologyAdvance) {
       if (newCode == kTurnEventTacticalView || newCode == kTurnEventProvisional0F3C) {
         this->SyncTacticalStatusPanelRegion();
       } else if (newCode == kTurnEventTechnologyStore) {
-        this->RefreshTechnologyStorePageAndHudText(0);
+        this->RefreshTechnologyStorePageAndHudText(payload);
+        g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
+        clearDispatchBusyFlag = false;
       } else if (newCode == kTurnEventOpeningCinematic) {
         this->HandleTurnEventDialogFactorySlotF4();
       } else if (newCode == kTurnEventUnitHistory) {
-        this->ShowUnitHistory(secondary);
+        this->ShowUnitHistory(payload);
+        clearDispatchBusyFlag = false;
       } else if (newCode == kTurnEventNewspaperStatus) {
-        this->HandleTurnEvent2103_RunNationStatusReportUpdate(secondary);
+        this->ShowNewspaper(secondary);
       } else if (newCode == kTurnEventOfferSheet) {
-        this->RefreshMainDialogAndCursorHelp(newCode);
+        this->RefreshMainDialogAndCursorHelp(payload);
       } else if (newCode == kTurnEventDealBook) {
-        this->HandleTurnEvent2260_RefreshMainHudTitles(newCode);
+        this->ShowDealBookScreen(static_cast<short>(payload));
       }
     } else if (newCode == kTurnEventTechnologyAdvance) {
-      this->ShowAbilityStatusReport(secondary);
+      this->ShowAbilityStatusReport(payload);
     } else {
       switch (newCode) {
       case kTurnEventTradeOverview:
       case kTurnEventIndustryOverview:
-        this->RefreshTradeAndIndustryOverviewScreen(secondary);
+        this->RefreshTradeAndIndustryOverviewScreen(payload);
         g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
+        clearDispatchBusyFlag = false;
         break;
       case kTurnEventCityProduction:
-        this->HandleTurnEvent7DB_SelectCityAndRefreshView(secondary);
+        this->ShowCityProductionView(static_cast<short>(payload));
         g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
+        clearDispatchBusyFlag = false;
         break;
       case kTurnEventStrategicMap:
-        this->HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(payload);
+        this->ShowTerrainMap(static_cast<short>(payload));
+        g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
+        clearDispatchBusyFlag = false;
         break;
       case kTurnEventTransport:
-        this->HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(newCode);
+        this->ShowTransportScreen(static_cast<short>(payload));
+        g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
+        clearDispatchBusyFlag = false;
         break;
       case kTurnEventCouncilOfGovernors:
-        this->SetCursorRangeAndRefreshMainPanel(static_cast<int>(secondary));
+        this->SetCursorRangeAndRefreshMainPanel(payload);
         break;
       }
     }
   } else if (newCode == kTurnEventMapEditor) {
     this->ConfigureActiveDialogGoldValueGridForTurnEvent3C0();
-    g_pGlobalUiRootController->dispatchBusyFlag4c = 0;
   } else if (newCode == kTurnEventCitySiteSelector) {
-    this->InitializeCitySiteSelectionScreenForNation(static_cast<int>(secondary));
+    this->InitializeCitySiteSelectionScreenForNation(payload);
+  }
+  if (clearDispatchBusyFlag) {
     g_pGlobalUiRootController->dispatchBusyFlag4c = 0;
   }
 #ifdef IMPERIALISM_RUNTIME_TESTS
@@ -1332,7 +1370,7 @@ void TViewMgr::DispatchTurnEvent3B8AndWaitForCompletion(int payload, TEventHandl
 }
 
 // FUNCTION: IMPERIALISM 0x005d7cb0
-void TViewMgr::HandleTurnEvent7DB_SelectCityAndRefreshView(int nationSlot) {
+void TViewMgr::ShowCityProductionView(short nationSlot) {
   TView* mainView = g_pDisplayMgr->activeDialog;
   CString hoverText;
   g_pSimMgr->SetFlags(0x10);
@@ -1408,7 +1446,7 @@ void TViewMgr::SetCursorRangeAndRefreshMainPanel(int payload) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d8040
-void TViewMgr::HandleTurnEvent7D8_ActivateDiplomacyMapView(int) {
+void TViewMgr::ShowDiplomacyScreen(short) {
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
   TView* mainView = turn_event_ui_refresh::ActiveMainView();
   if (mainView == nullptr) {
@@ -1438,7 +1476,7 @@ void TViewMgr::HandleTurnEvent7D8_ActivateDiplomacyMapView(int) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d83b0
-void TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(int) {
+void TViewMgr::ShowTransportScreen(short) {
   // Ground truth default-constructs one CString early (lea ecx,[esp+0x10];
   // call CString::CString(void) at 0x5d83d1) and hands that same local to both
   // SetHoverHelpText calls, which take their argument by value. Passing a
@@ -1558,7 +1596,7 @@ void TViewMgr::ShowAbilityStatusReport(int abilityIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d8c40
-void TViewMgr::HandleTurnEvent2103_RunNationStatusReportUpdate(int pageIndex) {
+void TViewMgr::ShowNewspaper(int pageIndex) {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
   TNewspaperView* mainControl =
       static_cast<TNewspaperView*>(activeDialog->ResolveControlByTag(kControlTagMain));
@@ -1799,7 +1837,7 @@ void TViewMgr::RefreshMainDialogAndCursorHelp(int) {
 }
 
 // FUNCTION: IMPERIALISM 0x005da180
-void TViewMgr::HandleTurnEvent2260_RefreshMainHudTitles(int) {
+void TViewMgr::ShowDealBookScreen(short) {
   TView* mainView = g_pDisplayMgr->activeDialog;
 
   g_pCursorControlPanel =
@@ -1836,7 +1874,7 @@ void TViewMgr::HandleTurnEvent2260_RefreshMainHudTitles(int) {
 // never emits). Ordering, tag set, and the nil-check source-line arguments are transcribed
 // from the 0x005da360 listing.
 // FUNCTION: IMPERIALISM 0x005da360
-void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload) {
+void TViewMgr::ShowTerrainMap(short nationSlot) {
   TView* mainView = g_pDisplayMgr->activeDialog;
   CString sharedString;
 
@@ -1853,7 +1891,7 @@ void TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int nPayload)
   TToolBarCluster* toolBar =
       static_cast<TToolBarCluster*>(mainView->ResolveControlByTag(kControlTagTbr1));
   toolBar->AssertValid();
-  toolBar->UpdateControlTagTreaTextFromNationAndMapContext(static_cast<short>(nPayload));
+  toolBar->UpdateControlTagTreaTextFromNationAndMapContext(nationSlot);
   toolBar->RefreshTurnOrderStatusPanelTextsAndControls();
 
   toolBar = static_cast<TToolBarCluster*>(mainView->ResolveControlByTag(kControlTagTool));
@@ -2270,7 +2308,7 @@ void TViewMgr::NoOpTurnEventStateVtableSlotFC() {}
 // Turn-event 0x5DE (vtable slot 0x100): like the 0x5DF handler, re-asserts and refreshes the
 // 'main' view panel; the original brackets the body with a scoped (empty) CString local.
 // FUNCTION: IMPERIALISM 0x005dbd30
-void TViewMgr::HandleTurnEvent5DE_RefreshMainView() {
+void TViewMgr::ShowLoadSaveScreen() {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
   CString scratch;
   TView* mainView = activeDialog->ResolveControlByTag(kControlTagMain);
@@ -2279,16 +2317,16 @@ void TViewMgr::HandleTurnEvent5DE_RefreshMainView() {
 }
 
 // FUNCTION: IMPERIALISM 0x005dbdd0
-void TViewMgr::HandleTurnEvent5DF_RefreshMainView() {
+void TViewMgr::ShowScenarioScreen() {
   TView* mainPanel = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
   mainPanel->AssertValid();
   mainPanel->RefreshControl();
 }
 
-// Twin of HandleTurnEvent5DF_RefreshMainView: re-assert and refresh the active dialog's
+// Twin of ShowScenarioScreen: re-assert and refresh the active dialog's
 // 'main' council-ticker panel.
 // FUNCTION: IMPERIALISM 0x005dbe10
-void TViewMgr::RefreshMainViewForTurnEvent5DF() {
+void TViewMgr::ShowHighScoreScreen() {
   TView* mainPanel = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
   mainPanel->AssertValid();
   mainPanel->RefreshControl();

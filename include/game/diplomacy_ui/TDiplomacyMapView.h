@@ -92,6 +92,10 @@ public:
   // optional colony-boycott overlay. presentRect is only read, never threaded onward.
   void DrawIcons(RECT* presentRect);
 
+  void SetSelectedTerrainIndexForTurnEvent(short terrainIndex) {
+    selectedTerrainIndexAt90 = terrainIndex;
+  }
+
   // 0x4f4620 -- resolves the 6 minister action-topic buttons (info/trty/gran/trad/
   // coun/offr), refreshes the info button's nation-slot selection, and (re)assigns
   // each button's hover-help text; called from DoPostCreate.

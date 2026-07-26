@@ -394,8 +394,8 @@ void TCity::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b3b20
-void TCity::SetSelectedTownMarker(void* order) {
-  this->selectedOrderB0 = order;
+void TCity::SetSelectedTownMarker(void* townMarker) {
+  this->selectedOrderB0 = townMarker;
 }
 
 // FUNCTION: IMPERIALISM 0x004b3b40

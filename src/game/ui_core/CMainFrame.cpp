@@ -224,7 +224,7 @@ void CMainFrame::OnCommand800C() {
 
 // FUNCTION: IMPERIALISM 0x00485590
 void CMainFrame::OnCommand800D() {
-  g_pUiRuntimeContext->HandleTurnEvent2260_RefreshMainHudTitles(0);
+  g_pUiRuntimeContext->ShowDealBookScreen(0);
 }
 
 // FUNCTION: IMPERIALISM 0x004855b0

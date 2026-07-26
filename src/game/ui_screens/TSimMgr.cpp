@@ -1027,7 +1027,7 @@ void TSimMgr::SetFlags(unsigned int flags) {
 }
 
 // Out-of-line in the original: every callsite (ShowTurnAlertsForActiveNation x3,
-// HandleTurnEvent7DD x8) calls this copy instead of inlining the mask test.
+// ShowTerrainMap x8) calls this copy instead of inlining the mask test.
 // FUNCTION: IMPERIALISM 0x0057f4d0
 unsigned char TSimMgr::TestTurnFlowStatusFlagMask(unsigned int mask) {
   // test+setne needs the branchy if/return-1/return-0 shape (VC5 folds it to a byte

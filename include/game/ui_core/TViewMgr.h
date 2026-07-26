@@ -54,11 +54,11 @@ public:
   // Sibling of slot 0x60: refreshes the 'curs' cursor panel, then repopulates the
   // 'quer' query label and 'titL' nation-title panel from the current scenario setup
   // (0x5da180).
-  virtual void HandleTurnEvent2260_RefreshMainHudTitles(int eventCode); // 0x64
+  virtual void ShowDealBookScreen(short nationSlot); // 0x64; Mac oracle
 
   // UI runtime helper functions
-  virtual void AddPendingTurnOverlayCode(int modeValue);                   // 0x68
-  virtual void HandleTurnEvent7D8_ActivateDiplomacyMapView(int eventCode); // 0x6c
+  virtual void AddPendingTurnOverlayCode(int modeValue); // 0x68
+  virtual void ShowDiplomacyScreen(short nationSlot);    // 0x6c; Mac oracle
   // Resolve the factory dialog for eventCode, commit its 'GOLD' child, then push the
   // slot-0x9c refresh down the dialog's linked children (0x5d6cd0).
   virtual void HandleTurnEventDialogFactorySlot70(int eventCode); // 0x70 0x5d6cd0
@@ -68,20 +68,20 @@ public:
   virtual void HandleTurnEventDialogFactorySlot78(int eventCode); // 0x78 0x5d6e50
   virtual void HandleTurnEventDialogFactorySlot7C(int eventCode); // 0x7c 0x5d6f10
   virtual void HandleTurnEventDialogFactorySlot80(int eventCode); // 0x80 0x5d6fd0
-  virtual void HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(int eventCode); // 0x84
-  virtual void ShowAbilityStatusReport(int abilityIndex); // 0x88 0x5d8980 (ret 4)
-  virtual void NoOpTurnEventStateVtableSlot8C(int arg);   // 0x8c
+  virtual void ShowTransportScreen(short nationSlot);             // 0x84; Mac oracle
+  virtual void ShowAbilityStatusReport(int abilityIndex);         // 0x88 0x5d8980 (ret 4)
+  virtual void NoOpTurnEventStateVtableSlot8C(int arg);           // 0x8c
   virtual char MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
                                         short proposalCode); // 0x90
   virtual char PoseWarOfferIfTurnFlowReady(int sourceNation, int arg1, int arg2,
                                            int promptCode); // 0x94
   virtual void DispatchNationActionToMainControl(int sourceNation, int arg1, int arg2, int arg3,
-                                                 int targetNation);                // 0x98
-  virtual void HandleTurnEvent2103_RunNationStatusReportUpdate(int pageIndex = 0); // 0x9c
-  virtual void SyncTacticalStatusPanelRegion();                                    // 0xa0
+                                                 int targetNation); // 0x98
+  virtual void ShowNewspaper(int pageIndex = 0);                    // 0x9c; Mac oracle uses long
+  virtual void SyncTacticalStatusPanelRegion();                     // 0xa0
   virtual void DispatchTurnEvent3B8AndWaitForCompletion(int payload,
                                                         TEventHandler* waitTarget); // 0xa4
-  virtual void HandleTurnEvent7DB_SelectCityAndRefreshView(int nationSlot);         // 0xa8
+  virtual void ShowCityProductionView(short nationSlot); // 0xa8; Mac oracle
   // Forwards to g_pStrategicMapViewSystem's own vtable slot 0x5c/0x60/0x68/0x6c/
   // 0x70/0x74 (TMacViewMgr) -- verified via disassembly (0057db14-style pattern:
   // `mov ecx,[g_pStrategicMapViewSystem]; mov eax,[ecx]; jmp [eax+0xNN]`, no
@@ -99,7 +99,7 @@ public:
   // city and production view into its TBuildingExpansionView 'DLOG' child.
   virtual void ShowBuildingExpansionDialog(short buildingSlotId, class TCity* city,
                                            class TCityProductionView* productionView); // 0xb8
-  virtual void HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons(int eventCode);     // 0xbc
+  virtual void ShowTerrainMap(short nationSlot);                           // 0xbc; Mac oracle
   virtual void ForwardBuildStrategicMapRenderAtlasesAndTileMaskCaches();   // 0xc0 0x5dc180
   virtual void RenderTurnEventPalettePreviewSurfaceAndProgress();          // 0xc4 0x5dc1c0
   virtual void RebuildMapTileNeighborHighlightPolygonsForAllTiles();       // 0xc8 0x5dc1a0
@@ -130,11 +130,11 @@ public:
   virtual void NoOpTurnEventStateVtableSlotFC(); // 0xfc 0x5dbd10 -- real body is a bare `ret`
   // Turn-event 0x5DE: re-assert + refresh the 'main' view panel (sibling of the 0x5DF
   // handler; the original brackets the body with a scoped empty CString). 0x5dbd30.
-  virtual void HandleTurnEvent5DE_RefreshMainView(); // 0x100 0x5dbd30
+  virtual void ShowLoadSaveScreen(); // 0x100 0x5dbd30; Mac oracle
   // Turn-event 0x5DF path (see DispatchTurnEvent): re-asserts and refreshes
   // the main view's 'main' panel (0x5dbdd0).
-  virtual void HandleTurnEvent5DF_RefreshMainView(); // 0x104
-  virtual void RefreshMainViewForTurnEvent5DF();     // 0x108
+  virtual void ShowScenarioScreen();  // 0x104; Mac oracle
+  virtual void ShowHighScoreScreen(); // 0x108; Mac oracle
   // Resolves the active dialog's 'GOLD' control and configures its value-cell grid
   // (0x14 x 0x14) via the control's slot-0x79 virtual (0x5dc3f0).
   virtual void ConfigureActiveDialogGoldValueGridForTurnEvent3C0(); // 0x10c 0x5dc3f0

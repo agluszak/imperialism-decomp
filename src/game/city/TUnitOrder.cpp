@@ -4,6 +4,7 @@
 
 #include "game/ui_screens/CString.h"
 #include "game/city/TCity.h"
+#include "game/map/TMapMgr.h"
 #include "game/military/TCivUnit.h"
 #include "game/nation/TGreatPower.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -76,10 +77,10 @@ void TUnitOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
   orderSheet->slotByResourceCode[0x3c] = quantity;
 }
 
-// Slot 0x0d: commit the pending recruitment delta for this city order. TUnitOrder's base
-// override does the real work (subclasses like TPowerPlantOrder override it with a no-op).
-// Reads the inherited TProductionOrder recipe fields (quantity/city/resource-type) plus this
-// class's specialistMode, then spawns quantityField04 TCivUnit work orders into the city.
+// Slot 0x0d: commit the pending recruitment delta for this city order. Civilian recruits
+// are placed on a reachable tile belonging to the selected town's connected region. The
+// retail search is repeated for every recruit because each constructed TCivUnit immediately
+// occupies its chosen tile and changes the next search result.
 // FUNCTION: IMPERIALISM 0x004b73b0
 void TUnitOrder::Produce() {
   short pendingDelta = quantityField04;
@@ -108,14 +109,22 @@ void TUnitOrder::Produce() {
     ownerNationSlot = ownerNation->nationSlot;
   }
 
+  const short recruitSearchOrigin = cityContext->SelectedOrderTileId();
+  const bool allowActiveFlag2 = entryId == 4;
   for (short i = 0; i < pendingDelta; ++i) {
+    short spawnTile = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+        recruitSearchOrigin, allowActiveFlag2);
+    if (spawnTile == -1) {
+      continue;
+    }
+
     TCivUnit* orderObject = new TCivUnit();
     if (orderObject == nullptr) {
       continue;
     }
 
     CivilianUnitKind unitKind = DecodeCivilianUnitKind(entryId);
-    orderObject->ICivUnit(unitKind, i, ownerNationSlot);
+    orderObject->ICivUnit(unitKind, spawnTile, ownerNationSlot);
   }
 
   quantityField04 = 0;
