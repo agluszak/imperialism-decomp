@@ -875,13 +875,20 @@ TView* TMacViewMgr::MakeBookDialog(int dialogId) {
   return dialog;
 }
 
+// Refreshes one ledger row of the transport screen -- or the capacity total when
+// resourceSlot is -1. The caller walks every row, so this is where an unavailable good
+// gets greyed out. RET 0xc proves three arguments: the port previously declared one and
+// looked the nation up with `g_apNationStates[resourceSlot]`, indexing the nation table
+// with a resource index, which handed every row another nation's non-zero needs and left
+// the whole ledger enabled.
 // FUNCTION: IMPERIALISM 0x0050bea0
-void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlot) {
-  TGreatPower* nation = g_apNationStates[nationSlot];
-  TView* hostView = activeCityProductionView04;
+void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resourceSlot,
+                                                                  short nationIndex,
+                                                                  TView* hostView) {
+  TGreatPower* nation = g_apNationStates[nationIndex];
   CString scratch38;
 
-  if (nationSlot == static_cast<word>(-1)) {
+  if (resourceSlot == -1) {
     TTransportPicture* panel = ResolveTaggedPanelOrFail(hostView, kControlTagTota);
     g_pSimMgr->GetString(0x2735, 0, &scratch38);
     panel->SetHoverHelpText(scratch38);
@@ -911,8 +918,8 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
     return;
   }
 
-  if (nationSlot == 1 || nationSlot == 7 || nationSlot == 10 || nationSlot == 0x10 ||
-      nationSlot == 0x14) {
+  if (resourceSlot == 1 || resourceSlot == 7 || resourceSlot == 10 || resourceSlot == 0x10 ||
+      resourceSlot == 0x14) {
     return;
   }
 
@@ -924,7 +931,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   CString bracketScratch;
   CString displayText;
 
-  int summaryTag = GetTradeSummarySelectionTagByIndex(static_cast<short>(nationSlot));
+  int summaryTag = GetTradeSummarySelectionTagByIndex(static_cast<short>(resourceSlot));
   TTransportPicture* panel =
       ResolveTaggedPanelOrFail(hostView, static_cast<unsigned int>(summaryTag));
 
@@ -937,7 +944,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   bool useSummaryPath = false;
   bool useProductionTailPath = false;
 
-  switch (nationSlot) {
+  switch (resourceSlot) {
   case 0:
     needTarget = static_cast<short>(nation->needTargetByType[0] + nation->needTargetByType[1]);
     needCurrent = static_cast<short>(nation->needCurrentByType[0] + nation->needCurrentByType[1]);
@@ -955,7 +962,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   case 2:
     needTarget = nation->needTargetByType[2];
     needCurrent = nation->needCurrentByType[2];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
     {
       int production = city->GetBuildingType(4);
       deficitCount = static_cast<short>(production * 2 - city->cityStockTimberBA);
@@ -969,17 +976,17 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
     break;
   case 3:
   case 4:
-    needTarget = nation->needTargetByType[nationSlot];
-    needCurrent = nation->needCurrentByType[nationSlot];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
+    needTarget = nation->needTargetByType[resourceSlot];
+    needCurrent = nation->needCurrentByType[resourceSlot];
+    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
     {
       int production = city->GetBuildingType(2);
-      deficitCount = static_cast<short>(production - (&city->cityStockCottonB6)[nationSlot]);
+      deficitCount = static_cast<short>(production - (&city->cityStockCottonB6)[resourceSlot]);
       formatCurrent.Format(g_szDecimalFormat,
-                           static_cast<int>((&city->cityStockCottonB6)[nationSlot]));
+                           static_cast<int>((&city->cityStockCottonB6)[resourceSlot]));
       formatTarget.Format(g_szDecimalFormat, production);
       g_pSimMgr->GetString(0x2719, 2, &displayText);
-      formatFieldValue = (&city->cityStockCottonB6)[nationSlot];
+      formatFieldValue = (&city->cityStockCottonB6)[resourceSlot];
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -987,7 +994,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   case 5:
     needTarget = nation->needTargetByType[5];
     needCurrent = nation->needCurrentByType[5];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
     formatCurrent.Format(g_szDecimalFormat, static_cast<int>(needCurrent));
     formatTarget.Format(g_szDecimalFormat, static_cast<int>(needTarget));
     g_pSimMgr->GetString(0x2719, 1, &displayText);
@@ -997,7 +1004,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   case 6:
     needTarget = nation->needTargetByType[6];
     needCurrent = nation->needCurrentByType[6];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
     {
       int production = city->GetBuildingType(6);
       deficitCount = static_cast<short>(production * 2 - city->cityStockOilC2);
@@ -1012,7 +1019,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   case 8:
     needTarget = nation->needTargetByType[8];
     needCurrent = nation->needCurrentByType[8];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
     {
       int production = city->GetBuildingType(1);
       deficitCount = static_cast<short>(production * 2 - city->cityStockFabricC6);
@@ -1027,7 +1034,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   case 9:
     needTarget = nation->needTargetByType[9];
     needCurrent = nation->needCurrentByType[9];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
     {
       int production = city->GetBuildingType(5);
       deficitCount = static_cast<short>(production * 2 - city->cityStockLumberC8);
@@ -1042,7 +1049,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   case 0xb:
     needTarget = nation->needTargetByType[0xb];
     needCurrent = nation->needCurrentByType[0xb];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
     {
       int production = city->GetBuildingType(3);
       deficitCount = static_cast<short>(production * 2 - city->cityStockSteelCC);
@@ -1057,7 +1064,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   case 0xc:
     needTarget = nation->needTargetByType[0xc];
     needCurrent = nation->needCurrentByType[0xc];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
     {
       int production = city->GetBuildingType(0xb);
       deficitCount = static_cast<short>(production * 2 - city->cityStockFuelCE);
@@ -1072,9 +1079,9 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   case 0xd:
   case 0xe:
   case 0xf:
-    needTarget = nation->needTargetByType[nationSlot];
-    needCurrent = nation->needCurrentByType[nationSlot];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
+    needTarget = nation->needTargetByType[resourceSlot];
+    needCurrent = nation->needCurrentByType[resourceSlot];
+    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
     formatCurrent.Format(g_szDecimalFormat, static_cast<int>(needCurrent));
     formatTarget.Format(g_szDecimalFormat, static_cast<int>(needTarget));
     g_pSimMgr->GetString(0x2719, 8, &displayText);
@@ -1083,16 +1090,16 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
     break;
   case 0x11:
   case 0x12:
-    needTarget = nation->needTargetByType[nationSlot];
-    needCurrent = nation->needCurrentByType[nationSlot];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
+    needTarget = nation->needTargetByType[resourceSlot];
+    needCurrent = nation->needCurrentByType[resourceSlot];
+    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
     {
       short* summary = city->GetCitySummaryRecordSlot74();
-      short summaryValue = summary[nationSlot];
+      short summaryValue = summary[resourceSlot];
       formatTarget.Format(g_szDecimalFormat, static_cast<int>(summaryValue));
-      deficitCount = static_cast<short>(summaryValue - (&city->cityStockCottonB6)[nationSlot]);
+      deficitCount = static_cast<short>(summaryValue - (&city->cityStockCottonB6)[resourceSlot]);
       formatCurrent.Format(g_szDecimalFormat,
-                           static_cast<int>((&city->cityStockCottonB6)[nationSlot]));
+                           static_cast<int>((&city->cityStockCottonB6)[resourceSlot]));
       g_pSimMgr->GetString(0x2735, 7, &displayText);
       ScanBracketExpressionsInto(&bracketScratch, displayText);
       displayText = bracketScratch;
@@ -1120,7 +1127,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   case 0x15:
     needTarget = nation->needTargetByType[0x15];
     needCurrent = nation->needCurrentByType[0x15];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
     g_pSimMgr->GetString(500, 0, &formatCurrent);
     g_pSimMgr->GetString(0x2735, 9, &displayText);
     ScanBracketExpressionsInto(&bracketScratch, displayText);
@@ -1129,17 +1136,17 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   case 0x16:
     needTarget = nation->needTargetByType[0x16];
     needCurrent = nation->needCurrentByType[0x16];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(nationSlot), &formatTarget);
+    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
     g_pSimMgr->GetString(200, 0, &formatCurrent);
     g_pSimMgr->GetString(0x2735, 9, &displayText);
     ScanBracketExpressionsInto(&bracketScratch, displayText);
     useBracketOnlyPath = true;
     break;
   default:
-    needTarget = static_cast<short>(nationSlot);
-    needCurrent = static_cast<short>(nationSlot);
-    showArrowWidgets = static_cast<short>(nationSlot);
-    deficitCount = static_cast<short>(nationSlot);
+    needTarget = static_cast<short>(resourceSlot);
+    needCurrent = static_cast<short>(resourceSlot);
+    showArrowWidgets = static_cast<short>(resourceSlot);
+    deficitCount = static_cast<short>(resourceSlot);
     break;
   }
 
@@ -1219,7 +1226,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   g_pSimMgr->GetString(0x2735, 4, &scratch38);
   textEntry->SetHoverHelpText(scratch38);
 
-  if (nationSlot == 0x15 || nationSlot == 0x16) {
+  if (resourceSlot == 0x15 || resourceSlot == 0x16) {
     TMyStaticText* valueEntry = new TMyStaticText();
 
     int valueHeight = 0xb;
@@ -1232,7 +1239,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
     valueEntry->controlTag = kControlTagValu;
   }
 
-  panel->resourceMetricSlot92 = static_cast<short>(nationSlot);
+  panel->resourceMetricSlot92 = static_cast<short>(resourceSlot);
   panel->splitValue94 = needTarget;
   panel->splitValue96 = needCurrent;
 }

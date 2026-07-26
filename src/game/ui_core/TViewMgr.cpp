@@ -1476,7 +1476,7 @@ void TViewMgr::ShowDiplomacyScreen(short) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d83b0
-void TViewMgr::ShowTransportScreen(short) {
+void TViewMgr::ShowTransportScreen(short nationSlot) {
   // Ground truth default-constructs one CString early (lea ecx,[esp+0x10];
   // call CString::CString(void) at 0x5d83d1) and hands that same local to both
   // SetHoverHelpText calls, which take their argument by value. Passing a
@@ -1502,6 +1502,22 @@ void TViewMgr::ShowTransportScreen(short) {
   if (querControl != nullptr) {
     querControl->AssertValid();
     querControl->SetHoverHelpText(emptyHelpText);
+  }
+
+  // The tail the port was missing entirely: refresh the capacity total (row -1), then walk
+  // all 23 ledger rows (0x005d864b..0x005d8660). This is the only dispatch of
+  // TMacViewMgr slot 0x11 in the image -- without it nothing ever evaluates a row's
+  // availability, so every good stayed enabled and painted regardless of stock.
+  // Host is the 'main' child of the active dialog (esi, set at 0x005d83f6 from a
+  // ResolveControlByTag('main') on g_pDisplayMgr->activeDialog), and the nation index is
+  // this function's own argument (ebx from [esp+0x2c] at 0x005d863e) -- not the active
+  // nation, so the screen can be refreshed for a nation other than the player's.
+  TView* hostView = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagMain);
+  g_pStrategicMapViewSystem->RefreshCityProductionDetailPanelAndArrowWidgets(-1, nationSlot,
+                                                                             hostView);
+  for (short row = 0; row < 0x17; ++row) {
+    g_pStrategicMapViewSystem->RefreshCityProductionDetailPanelAndArrowWidgets(row, nationSlot,
+                                                                               hostView);
   }
 }
 

@@ -582,7 +582,7 @@ TCountry::thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089 409089
 thunk_AdvanceSpiralSearchStateAndStepHexCoordinates 4090A2 l
 thunk_SetCityDialogValueDword10 4090D4 l
 thunk_SetGlobalUiInvalidationFlagAndReturnPrevious 4090ED l
-thunk_HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary 409115 l
+thunk_TViewMgr::ShowTransportScreen 409115 l
 thunk_BuildSavePathStringForMode 409129 l
 thunk_SelectAndScheduleRandomAudioCue 409138 l
 thunk_ConstructUiNumericTextEntryBase 40913D l
@@ -7157,7 +7157,7 @@ TViewMgr::ClearActiveCityBuildingViewSlot 5D7F90 f
 TViewMgr::SetCursorRangeAndRefreshMainPanel 5D7FC0 f
 TViewMgr::HandleTurnEvent7D8_ActivateDiplomacyMapView 5D8040 f
 IltTarget_005d8310 5D8310 f
-TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary 5D83B0 f
+TViewMgr::TViewMgr::ShowTransportScreen 5D83B0 f
 TViewMgr::RefreshTechnologyStorePageAndHudText 5D8750 f
 TViewMgr::ShowAbilityStatusReport 5D8980 f
 TViewMgr::HandleTurnEvent2103_RunNationStatusReportUpdate 5D8C40 f
