@@ -2028,28 +2028,28 @@ address|name|symbol|size|type|prototype|provenance
 4c59e0|TSteelCityMinister::ConstructTSteelCityMinisterBaseState||43|function|undefined ConstructTSteelCityMinisterBaseState()|
 4c5a20|TSteelCityMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4c5a50|DestructTSteelCityMinisterAndMaybeFree_Impl||7|function|undefined DestructTSteelCityMinisterAndMaybeFree_Impl()|
-4c5a70|TSteelCityMinister::InitializeCityInteriorState||13|function|void __thiscall InitializeCityInteriorState(TGreatPower * owner)|
+4c5a70|TSteelCityMinister::ISteelCityMinister||13|function|void __thiscall ISteelCityMinister(TGreatPower * owner)|mac-oracle
 4c5a90|ConfigureCityInteriorMinisterPriorityPreset_004c5a90||285|function|undefined ConfigureCityInteriorMinisterPriorityPreset_004c5a90()|
 4c5c00|TShipBuilderCityMinister::CreateObject|?CreateObject@TShipBuilderCityMinister@@SGPAVCObject@@XZ|132|function|undefined CreateObject()|rtti
 4c5cc0|TShipBuilderCityMinister::GetRuntimeClass||6|function|undefined GetTShipBuilderCityMinisterClassNamePointer()|rtti
 4c5ce0|TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState||47|function|undefined ConstructTShipBuilderCityMinisterBaseState()|
 4c5d20|TShipBuilderCityMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4c5d50|DestructTShipBuilderCityMinisterAndMaybeFree_Impl||7|function|undefined DestructTShipBuilderCityMinisterAndMaybeFree_Impl()|
-4c5d70|TShipBuilderCityMinister::InitializeCityInteriorState||13|function|void __thiscall InitializeCityInteriorState(TGreatPower * owner)|
+4c5d70|TShipBuilderCityMinister::IShipBuilderCityMinister||13|function|void __thiscall IShipBuilderCityMinister(TGreatPower * owner)|mac-oracle
 4c5d90|ConfigureCityInteriorMinisterPriorityPreset_004c5d90||285|function|undefined ConfigureCityInteriorMinisterPriorityPreset_004c5d90()|
 4c5f00|TEvenCityMinister::CreateObject|?CreateObject@TEvenCityMinister@@SGPAVCObject@@XZ|132|function|undefined CreateObject()|rtti
 4c5fc0|TEvenCityMinister::GetRuntimeClass||6|function|undefined GetTEvenCityMinisterClassNamePointer()|rtti
 4c5fe0|TEvenCityMinister::ConstructTEvenCityMinisterBaseState||47|function|undefined ConstructTEvenCityMinisterBaseState()|
 4c6020|TEvenCityMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4c6050|DestructTEvenCityMinisterAndMaybeFree_Impl||7|function|undefined DestructTEvenCityMinisterAndMaybeFree_Impl()|
-4c6070|TEvenCityMinister::InitializeCityInteriorState||13|function|void __thiscall InitializeCityInteriorState(TGreatPower * owner)|
+4c6070|TEvenCityMinister::IEvenCityMinister||13|function|void __thiscall IEvenCityMinister(TGreatPower * owner)|mac-oracle
 4c6090|ConfigureCityInteriorMinisterPriorityPreset_004c6090||295|function|undefined ConfigureCityInteriorMinisterPriorityPreset_004c6090()|
 4c6210|TRailCityMinister::CreateObject|?CreateObject@TRailCityMinister@@SGPAVCObject@@XZ|130|function|undefined CreateObject()|rtti
 4c62d0|TRailCityMinister::GetRuntimeClass||6|function|undefined GetTRailCityMinisterClassNamePointer()|rtti
 4c62f0|TRailCityMinister::ConstructTRailCityMinisterBaseState||45|function|undefined ConstructTRailCityMinisterBaseState()|
 4c6330|TRailCityMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4c6360|DestructTRailCityMinisterAndMaybeFree_Impl||7|function|undefined DestructTRailCityMinisterAndMaybeFree_Impl()|
-4c6380|TRailCityMinister::InitializeCityInteriorState||13|function|void __thiscall InitializeCityInteriorState(TGreatPower * owner)|
+4c6380|TRailCityMinister::IRailCityMinister||13|function|void __thiscall IRailCityMinister(TGreatPower * owner)|mac-oracle
 4c63a0|ConfigureCityInteriorMinisterPriorityPreset_004c63a0||315|function|undefined ConfigureCityInteriorMinisterPriorityPreset_004c63a0()|
 4c65d0|CList<long,long>::Serialize|?Serialize@?$CList@JJ@@UAEXAAVCArchive@@@Z|280|function|undefined Serialize(CArchive &)|template
 4c6740|TLongintList::InsertLast||125|function|void __thiscall InsertLast(int value)|
