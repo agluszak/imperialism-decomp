@@ -68,6 +68,13 @@ def run_test(args: argparse.Namespace) -> int:
     run_dir = result_dir / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
 
+    # Attaching gdb costs ~4.5 s of the ~10 s a test takes, measured with the phase
+    # timings in host["phase_seconds"]: launch drops from 8.4 s to 3.9 s without it.
+    # That is paid on every test, including the ones that pass, to collect crash
+    # classification that only failures need -- so the first attempt runs bare and a
+    # failure is retried under the debugger, mirroring how --rerun-seh already works.
+    # --gdb forces the debugger on the first attempt for interactive debugging.
+    debugger_first = getattr(args, "gdb", False) and not args.no_gdb
     host = execute_run(
         name=name,
         run_dir=run_dir,
@@ -77,7 +84,7 @@ def run_test(args: argparse.Namespace) -> int:
         winedebug=None,
         wine_log_name="wine.log",
         fixture=fixture,
-        use_gdb=not args.no_gdb,
+        use_gdb=debugger_first,
     )
     host.update(
         {
@@ -117,6 +124,42 @@ def run_test(args: argparse.Namespace) -> int:
             )
 
     failed = result.get("status") != "passed" or host["classification"] is not None
+    if failed and not debugger_first and not args.no_gdb:
+        gdb_run_dir = run_dir / "gdb-rerun"
+        gdb_run_dir.mkdir(exist_ok=True)
+        gdb_host = execute_run(
+            name=name,
+            run_dir=gdb_run_dir,
+            seed=args.seed,
+            timeout=args.timeout,
+            phase_timeout_ms=args.phase_timeout_ms,
+            winedebug=None,
+            wine_log_name="wine.log",
+            fixture=fixture,
+            use_gdb=True,
+        )
+        gdb_result = read_json_file(gdb_run_dir / "result.json")
+        if gdb_result is not None:
+            try:
+                validate_result(gdb_result, name, args.seed)
+                apply_ui_oracle(gdb_result)
+                apply_map_oracle(gdb_result, name, args.seed)
+                if test_spec is not None:
+                    record_missing_oracles(
+                        gdb_result,
+                        missing_required_oracles(test_spec, gdb_result),
+                        fallback_failure=gdb_host["classification"],
+                    )
+                # Keep the debugger run: it carries the backtrace and classification the
+                # bare run could not produce. Note when the failure did not reproduce.
+                gdb_result["bare_run_failure"] = result.get("failure")
+                result, host = gdb_result, gdb_host
+            except ValueError:
+                host["gdb_rerun"] = gdb_host
+        else:
+            host["gdb_rerun"] = gdb_host
+        failed = result.get("status") != "passed" or host["classification"] is not None
+
     if failed and args.rerun_seh:
         seh_run_dir = run_dir / "seh-rerun"
         seh_run_dir.mkdir()
