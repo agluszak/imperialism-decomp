@@ -14,6 +14,9 @@ public:
 
   TArmyUnitLine();
 
+  // Two-phase init (MacApp IViewClass idiom): sets the shared TLineData row/bounds
+  // then this line's militaryUnit10. 0x004a8db0, __thiscall.
+  void IArmyUnitLine(short rowArg, short colArg, int* bounds, TMilitaryUnit* item);
   // StuffValues installs the represented stationed-unit node here before adding
   // the line to the page's ordered-entry list.
   TMilitaryUnit* militaryUnit10;
