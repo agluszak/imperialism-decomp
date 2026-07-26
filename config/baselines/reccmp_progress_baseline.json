@@ -12,8 +12,8 @@
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
   "git_branch": "agent/recover-gfx-subsystem-2",
-  "git_commit": "9019a89987038b8a301ba6c3b9a6a61c90d53c7b",
-  "git_commit_date": "2026-07-26T20:56:56+02:00",
+  "git_commit": "b5a9c8f48db6054301aa36c91e1664d398ba33e6",
+  "git_commit_date": "2026-07-26T21:17:02+02:00",
   "global_coverage_pct": 24.95424597364568,
   "global_orig_only_count": 8201,
   "global_recomp_only_count": 7981,
@@ -63,7 +63,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 12,
   "template_canonical_paired_count": 19,
-  "timestamp_utc": "2026-07-26T19:16:24+00:00",
+  "timestamp_utc": "2026-07-26T19:19:20+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
