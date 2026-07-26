@@ -108,21 +108,21 @@ void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(TCivUnit* pUnitOrderEn
       g_pGlobalMapState->DimByMining(pUnitOrderEntry);
       return;
     case 1:
-      g_pGlobalMapState->SeedRecruitSearchVisitedStateByCapabilityThresholdAlt(pUnitOrderEntry);
+      g_pGlobalMapState->MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(pUnitOrderEntry);
       return;
     case 2:
     case 3:
     case 5:
-      g_pGlobalMapState->DimByDevelopment(pUnitOrderEntry);
+      g_pGlobalMapState->SeedRecruitSearchVisitedStateByCapabilityThresholdAlt(pUnitOrderEntry);
       return;
     case 4:
-      g_pGlobalMapState->SeedRecruitSearchVisitedStateByCapabilityThreshold(pUnitOrderEntry);
+      g_pGlobalMapState->DimByDevelopment(pUnitOrderEntry);
       return;
     case 6:
-      g_pGlobalMapState->MarkType5NeighborTilesUnavailableByNationCapability(pUnitOrderEntry);
+      g_pGlobalMapState->SeedRecruitSearchVisitedStateByCapabilityThreshold(pUnitOrderEntry);
       return;
     case 7:
-      g_pGlobalMapState->MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(pUnitOrderEntry);
+      g_pGlobalMapState->MarkType5NeighborTilesUnavailableByNationCapability(pUnitOrderEntry);
       return;
     default:
       g_pGlobalMapState->ResetRecruitSearchVisitedState();

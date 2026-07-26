@@ -10,8 +10,8 @@ public:
   bool UsesRandomGameFlow() const override {
     return true;
   }
-  bool UsesEasyDifficulty() const override {
-    return true;
+  int DifficultyLevel() const override {
+    return 1;
   }
   bool RecordsGameFlow() const override {
     return true;

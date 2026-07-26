@@ -25,14 +25,14 @@ public:
   bool UsesRandomGameFlow() const override {
     return true;
   }
-  bool UsesEasyDifficulty() const override {
-    return true;
+  int DifficultyLevel() const override {
+    return 1;
   }
   bool RecordsGameFlow() const override {
     return true;
   }
 
-  void OnEasyMapReady() override {
+  void OnMapReadyWithoutCapitalSelection() override {
     spawnedCivilian = 0;
     selectionTicks = 0;
     EnterScenarioStep("recruiting_civilian", "produce_and_select_recruited_civilian");

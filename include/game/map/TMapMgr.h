@@ -401,8 +401,8 @@ public:
   // pendingDevelopmentFlag0d. Behaviour-derived name in the Mac oracle's DimBy*
   // family (the oracle lists only DimByDevelopment/DimByProspecting for TMapMgr).
   virtual void DimByMining(class TCivUnit* pCivilianOrderEntry); // slot 0x23 0x515330
-  // Mac oracle: TMapMgr::DimByDevelopment(TUnit*). TCivMgr dispatches order types 2
-  // (Farmer), 3 (Forester), and 5 (Rancher) here.
+  // Mac oracle: TMapMgr::DimByDevelopment(TUnit*). TCivMgr dispatches order type 4
+  // (Engineer) here (0x004d2270 calls vtable byte offset 0x90 for case 4).
   // Seeds recruitSearchVisited0e (defaults to 1/ineligible, unlike the sibling slot above):
   // requires the tile be diplomatically compatible
   // (TDiplomacyMgr::LookupOrderCompatibilityMatrixValue == 2, ownerNationTag04 >= 7),

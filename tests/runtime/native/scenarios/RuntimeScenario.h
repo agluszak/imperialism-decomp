@@ -23,12 +23,13 @@ public:
   virtual bool RequiresMainWindow() const;
   virtual bool RequiresFixture() const;
   virtual bool UsesRandomGameFlow() const;
-  virtual bool UsesEasyDifficulty() const;
+  virtual int DifficultyLevel() const;
   virtual bool RecordsGameFlow() const;
   virtual bool RequiresScenarioUiSnapshot() const;
+  virtual bool BeforeInitialNewspaperExit();
 
   virtual void OnManagersReady();
-  virtual void OnEasyMapReady();
+  virtual void OnMapReadyWithoutCapitalSelection();
   virtual void OnCombinedMapReady();
   virtual void RunScenarioStep();
   virtual void ObserveScenarioUiTree(int eventCode, TView* root);

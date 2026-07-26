@@ -198,10 +198,12 @@ else()
         endforeach()
 
         if(IMPERIALISM_RUNTIME_TESTS)
-            # Runtime tests optimize for debugger fidelity rather than byte
-            # matching. Apply this to every game frame so GDB can follow
-            # conventional EBP chains.
-            target_compile_options(Imperialism PRIVATE /Oy-)
+            # Runtime tests must exercise the same optimized game-code ABI as the
+            # production executable. In particular, /Oy- changes frame layout and
+            # can hide calling-convention or corrupted-argument failures that occur
+            # under `just debug`'s /Oy /Ob1 build.
+            target_compile_options(Imperialism PRIVATE /Oy /Ob1)
+            target_link_options(Imperialism PRIVATE /OPT:NOREF /OPT:NOICF)
             # VC5 PDBs predate the format understood by current LLVM tools.
             # Emit a linker map as the build-specific symbolization sidecar.
             target_link_options(Imperialism PRIVATE /MAP:Imperialism.map)

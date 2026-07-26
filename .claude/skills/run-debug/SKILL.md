@@ -47,8 +47,9 @@ Wine maps a real window per session, which steals focus while you work. Give the
 its own `Xvfb` instead:
 
 ```sh
-IMPERIALISM_RUNTIME_DISPLAY=virtual just runtime-test <name>   # off-screen
-IMPERIALISM_RUNTIME_DISPLAY=host    just runtime-test <name>   # default: real desktop
+just runtime-test <name>                                      # default: off-screen
+IMPERIALISM_RUNTIME_DISPLAY=virtual just runtime-test <name>   # explicit off-screen
+IMPERIALISM_RUNTIME_DISPLAY=host    just runtime-test <name>   # opt-in real desktop
 IMPERIALISM_RUNTIME_DISPLAY=:5      just runtime-test <name>   # your own server
 ```
 
@@ -60,13 +61,20 @@ Off-screen runs seed `Managed=N` into the prefix: with no window manager present
 managed-window path waits on a WM that never answers, and owning its windows outright is
 what makes the game paint normally off-screen.
 
-**Known limitation, and why `host` is still the default.** `random_game_enters_map` and
+**Known limitation.** `random_game_enters_map` and
 `save_load_roundtrip` pick a capital by screen coordinate, and window decorations shift
 which tile that pixel lands on -- so off-screen they found a slightly different city and
 a few terrain counts move. That is real game state, not a harness artifact, which is why
 committing a second set of expectations would only move the problem; the fix is to make
 those scenarios address tiles rather than pixels. Everything else passes off-screen.
 Tracked as `imperialism-decomp-0kr0`.
+
+Runtime-test game code must use the production `/Oy /Ob1` optimization and linker flags.
+Compiling it with `/Oy-` changes stack-frame shape and can mask exactly the ABI defects the
+suite is meant to catch: a one-argument call through a two-argument virtual slot survived
+under `/Oy-` but corrupted the caller's saved argument under `just debug`'s `/Oy` build.
+Keep linker maps and register/memory stop captures for symbolization instead of weakening
+the tested ABI to obtain frame-pointer backtraces.
 
 `just test` always uses the virtual display -- the Wine-touching tooling tests have no
 such pixel dependency.
