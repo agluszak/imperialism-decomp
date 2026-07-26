@@ -24,6 +24,12 @@ TMiniArmyLine::~TMiniArmyLine() {}
 
 IMPLEMENT_DYNCREATE(TMiniArmyLine, TLineData)
 
+// FUNCTION: IMPERIALISM 0x004aa920
+void TMiniArmyLine::IMiniArmyLine(short rowArg, short colArg, int* bounds, TMilitaryUnit* item) {
+  SetLineDataRowAndBounds(rowArg, colArg, bounds);
+  militaryUnit10 = item;
+}
+
 // FUNCTION: IMPERIALISM 0x004aa960
 void TMiniArmyLine::InstallViews(TView* panel, int* offsetLayout) {
   TMiniArmyView* armyView = new TMiniArmyView;

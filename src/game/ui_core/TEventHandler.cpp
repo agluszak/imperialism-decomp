@@ -124,6 +124,16 @@ void TEventHandler::DoMenuCommand(int param) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0048a340
+void TEventHandler::HandleMenuCommand(int command) {
+  DoMenuCommand(command);
+}
+
+// FUNCTION: IMPERIALISM 0x0048a360
+void TEventHandler::HandleKeyEvent(TToolboxEvent* event) {
+  DoKeyEvent(event);
+}
+
 // FUNCTION: IMPERIALISM 0x0048a380
 void TEventHandler::DoKeyEvent(TToolboxEvent* event) {
   TEventHandler* child = GetNextHandler();

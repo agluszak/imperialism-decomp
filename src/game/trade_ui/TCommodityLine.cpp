@@ -24,6 +24,12 @@ TCommodityLine::TCommodityLine() : TLineData() {}
 // FUNCTION: IMPERIALISM 0x005c1520
 TCommodityLine::~TCommodityLine() {}
 
+// FUNCTION: IMPERIALISM 0x005c1540
+void TCommodityLine::ICommodityLine(short rowArg, short colArg, int* bounds, short value) {
+  SetLineDataRowAndBounds(rowArg, colArg, bounds);
+  commoditySlot10 = value;
+}
+
 // FUNCTION: IMPERIALISM 0x005c1580
 void TCommodityLine::InstallViews(TView* panel, int* offsetLayout) {
   CString commodityName;
