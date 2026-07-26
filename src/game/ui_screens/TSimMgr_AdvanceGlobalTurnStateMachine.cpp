@@ -269,7 +269,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 8: {
     turnStateCode = 0xb;
-    DoMilitary();
+    DoCityAndTransport();
     if (multiplayerSessionRole != 0) {
       g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
       turnStateCode = 0x13;
@@ -349,9 +349,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
                                              activeNationSlot);
       break;
     }
-    if (!IsNationTerrainEligible(activeNationSlot)) {
-      StartNextPhase();
-    }
+    StartNextPhase();
     break;
   }
 
@@ -519,7 +517,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       }
       TGreatPower* nation = g_apNationStates[nationSlot];
       if (nation != nullptr) {
-        nation->SetNationTransferTargetCodeAndNotifyEligiblePeers(0);
+        nation->ApplyRelationDeltaToCityStockAndUpdateState1f4();
       }
     }
     const short tickA = GetEconomicTurn();

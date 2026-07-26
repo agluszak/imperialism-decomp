@@ -15,6 +15,10 @@ public:
   COLORREF shadowColor10;
 
   TDropShadowTextBehavior();
+
+  // Two-phase init (MacApp IViewClass idiom): stores the shadow colour and tags the
+  // behaviour 'drop'. 0x004b1120, __thiscall.
+  void IDropShadowTextBehavior(COLORREF shadowColor);
 };
 
 ASSERT_SIZE(TDropShadowTextBehavior, 0x14);

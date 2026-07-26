@@ -64,7 +64,7 @@ public:
   // Load a localized UI string by (group, index) into `out`. Reached via the global
   // g_pModuleLibraryCacheState from many call sites (e.g. TMultiplayerMgr init, low-disk
   // warning). Real __thiscall method (ECX = this on entry at 0x4994c0).
-  void LoadUiStringResourceByGroupAndIndex(CString* out, int group, int index);       // 0x004994c0
+  int LoadUiStringResourceByGroupAndIndex(CString* out, int group, int index);        // 0x004994c0
   CString LoadLocalizedStringByPackedGroupAndIndex(unsigned int packedGroupAndIndex); // 0x0049a590
   CString LoadLocalizedStringByGroupAndIndex(int group, int index);                   // 0x0049a6c0
 

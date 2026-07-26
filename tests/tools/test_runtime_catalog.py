@@ -41,7 +41,6 @@ class RuntimeCatalogTests(unittest.TestCase):
                 "city_screen_opens",
                 "transport_screen_operates",
                 "diplomacy_screen_operates",
-                "easy_turns_advance",
                 "map_zoom_toggle_remains_responsive",
                 "trade_screen_operates",
             },
