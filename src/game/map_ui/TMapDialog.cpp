@@ -1072,6 +1072,18 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
       }
     }
 
+    if (terrain.riverSpriteCode != kRiverSpriteCodeNone) {
+      int normalizedSpriteCode = terrain.riverSpriteCode;
+      if (normalizedSpriteCode > kRiverSpriteCodeFlowLast) {
+        normalizedSpriteCode -= kRiverSpriteCodeFlowVariantBias;
+      }
+      StrategicMapCallbackRecord* terrainMask =
+          &g_pStrategicMapViewSystem
+               ->strategicTileMasks6bc[normalizedSpriteCode - kRiverSpriteCodeFlowFirst];
+      terrainMask->SetDestinationHeightNoOp(0x40);
+      terrainMask->ApplyBitmapMaskToPixelBuffer(destinationPixels);
+    }
+
     if (terrain.ownerBorderMask07 != 0) {
       SetQuickDrawFillColor(0);
       if (!isOcean) {
@@ -1105,9 +1117,9 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
       unsigned char directionBit = static_cast<unsigned char>(1 << direction);
       StrategicMapCallbackRecord* routeMask = 0;
       if ((static_cast<unsigned char>(terrain.adjacencyBits06) & directionBit) != 0) {
-        routeMask = &g_pStrategicMapViewSystem->callbackB3c[direction];
+        routeMask = &g_pStrategicMapViewSystem->strategicTileMasks6bc[0x18 + direction];
       } else if ((terrain.railFlags17 & directionBit) != 0) {
-        routeMask = &g_pStrategicMapViewSystem->callbackC5c[direction];
+        routeMask = &g_pStrategicMapViewSystem->strategicTileMasks6bc[0x1e + direction];
       }
       if (routeMask != 0) {
         routeMask->SetDestinationHeightNoOp(tileRect.bottom - tileRect.top);
