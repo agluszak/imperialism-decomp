@@ -8588,7 +8588,7 @@ address|name|symbol|size|type|prototype|provenance
 670e50|CStatusBarCtrl::classRuntimeClass|||global||
 670e68|CImageList::classRuntimeClass|||global||
 670e80|CRichEditCtrl::classRuntimeClass|||global||
-67106c|CBrush::'vftable'|||global||
+67106c|CRgn::'vftable'|||global||
 671aa0|CStatic::classRuntimeClass|||global||
 671ab8|CButton::classRuntimeClass|||global||
 671ad0|CListBox::classRuntimeClass|||global||

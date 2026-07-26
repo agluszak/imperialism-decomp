@@ -11460,7 +11460,7 @@ CToolBarCtrl::classRuntimeClass 670E38 l
 CStatusBarCtrl::classRuntimeClass 670E50 l
 CImageList::classRuntimeClass 670E68 l
 CRichEditCtrl::classRuntimeClass 670E80 l
-CBrush::'vftable' 67106C l
+CRgn::'vftable' 67106C l
 CStatic::classRuntimeClass 671AA0 l
 CButton::classRuntimeClass 671AB8 l
 CListBox::classRuntimeClass 671AD0 l

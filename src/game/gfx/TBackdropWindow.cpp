@@ -89,11 +89,16 @@ void TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6(CWnd* parent) {
 
   CPoint size;
   m_backdropBmp->CopyBitmapDimensionsToPoint(&size);
-  HWND parentHwnd = (parent != NULL) ? parent->m_hWnd : NULL;
+  HWND parentHwnd;
+  if (parent == NULL) {
+    parentHwnd = NULL;
+  } else {
+    parentHwnd = parent->m_hWnd;
+  }
   AfxGetModuleState();
   HCURSOR cursor = ::LoadCursorA(NULL, MAKEINTRESOURCEA(0x7f00));
-  LPCSTR wndClass = AfxRegisterWndClass(0, cursor, NULL, NULL);
-  CreateEx(0, wndClass, NULL, 0x90000000, 0, 0, size.x, size.y, parentHwnd, NULL, NULL);
+  CreateEx(0, AfxRegisterWndClass(0, cursor, NULL, NULL), NULL, 0x90000000, 0, 0, size.x, size.y,
+           parentHwnd, NULL, NULL);
 }
 
 // FUNCTION: IMPERIALISM 0x0049cfa0
@@ -127,10 +132,6 @@ int TBackdropWindow::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 // FUNCTION: IMPERIALISM 0x0049d180
 void TBackdropWindow::OnPaint() {
   CPaintDC paintDC(this);
-  if (m_backdropBmp == NULL) {
-    return;
-  }
-
   CPoint size;
   m_backdropBmp->SelectAndRealizeDibPalette(&paintDC, FALSE);
   m_backdropBmp->CopyBitmapDimensionsToPoint(&size);
