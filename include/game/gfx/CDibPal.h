@@ -28,6 +28,9 @@ public:
   // Debug helper: fills a 16x16 grid of PALETTEINDEX-colored rectangles across `bounds`,
   // one cell per palette entry (capped at the palette's actual entry count). 0x0047e590
   void DrawPalettePreviewGridRectangles(CDC* dc, RECT* bounds, BOOL bForceBackground);
+  // Reshape this logical palette to the current system-palette layout and mark the
+  // non-static entries PC_NOCOLLAPSE. 0x0047e7a0
+  BOOL CreateIdentityPalette();
 
   // Load a RIFF PAL palette, prompting for a file when fileName is null or empty. 0x0047e960
   int LoadPaletteFile(LPCSTR fileName);

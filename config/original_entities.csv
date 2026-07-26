@@ -317,30 +317,30 @@ address|name|symbol|size|type|prototype|provenance
 47ae20|EnsureBitmapSurfaceDibSectionCreated||65|function|undefined EnsureBitmapSurfaceDibSectionCreated()|
 47ae90|BuildPaletteFromRgbQuadBuffer||145|function|undefined BuildPaletteFromRgbQuadBuffer()|
 47af60|ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl||157|function|undefined ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl()|
-47b030|IltTarget_0047b030||108|function|undefined IltTarget_0047b030()|
+47b030|CDib::CreateLogPaletteFromColorTable||108|function|LOGPALETTE * __thiscall CDib::CreateLogPaletteFromColorTable(void)|windows_listing,source_lineage
 47b0c0|CopyRgbQuadTableToBitmapSurfacePalette||65|function|undefined CopyRgbQuadTableToBitmapSurfacePalette()|
 47b130|CDib::AdoptPaletteAndCopyRgbQuadTable||82|function|undefined AdoptPaletteAndCopyRgbQuadTable()|
-47b1b0|IltTarget_0047b1b0||152|function|undefined IltTarget_0047b1b0()|
+47b1b0|CDib::SetSystemPalette||152|function|BOOL __thiscall CDib::SetSystemPalette(CDC * dc)|windows_listing,source_lineage
 47b280|CreateDibBitmapFromStoredInfo||50|function|undefined CreateDibBitmapFromStoredInfo()|
-47b2d0|IltTarget_0047b2d0||712|function|undefined IltTarget_0047b2d0()|
+47b2d0|CDib::Compress||712|function|BOOL __thiscall CDib::Compress(CDC * dc, BOOL compress)|windows_listing,source_lineage
 47b6d0|ReadBitmapStreamIntoSurfaceState||517|function|undefined ReadBitmapStreamIntoSurfaceState()|
 47b9f0|WriteBmpHeaderAndDataOffsetToStreamWithSehGuard||160|function|undefined WriteBmpHeaderAndDataOffsetToStreamWithSehGuard()|
 47bb10|ReadBitmapStreamStateAndWriteBmpHeaderThunk||56|function|undefined ReadBitmapStreamStateAndWriteBmpHeaderThunk()|
-47bb60|IltTarget_0047bb60||48|function|undefined IltTarget_0047bb60()|
-47bc30|IltTarget_0047bc30||67|function|undefined IltTarget_0047bc30()|
+47bb60|CDib::ComputePaletteSize||48|function|void __thiscall CDib::ComputePaletteSize(unsigned int bitCount)|windows_listing,source_lineage
+47bc30|CDib::ComputeMetrics||67|function|void __thiscall CDib::ComputeMetrics(void)|windows_listing,source_lineage
 47bca0|ReleaseBitmapSurfaceResourcesAndResetState||177|function|undefined ReleaseBitmapSurfaceResourcesAndResetState()|
 47bd90|OrphanCallChain_C3_I20_0047bd90||49|function|undefined OrphanCallChain_C3_I20_0047bd90()|
 47bde0|CDib::BlitSurfaceRectSkippingTransparentColor||331|function|void CDib::BlitSurfaceRectSkippingTransparentColor(CDib* destDib, int srcX, int srcY, unsigned int width, unsigned int height, int destX, int destY, int transparentColor)|
 47bf90|CDib::GetPixelAddress||73|function|void * __thiscall GetPixelAddress(int x, int y)|
-47c000|IltTarget_0047c000||91|function|undefined IltTarget_0047c000()|
+47c000|CDib::GetPixelAddressRespectingTopDownOrientation||91|function|void * __thiscall CDib::GetPixelAddressRespectingTopDownOrientation(int x, int y)|windows_listing
 47c080|CDib::LoadBitmapResourceAndInitializeSurfaceState||224|function|int CDib::LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module)|
 47c1f0|CDib::BuildMonochromeOutlineMaskInPlace||384|function|int BuildMonochromeOutlineMaskInPlace()|
 47c3d0|CDib::BuildNonTransparentOutlinePolygon||898|function|POINT * BuildNonTransparentOutlinePolygon(unsigned int transparentIndex)|
-47c850|IltTarget_0047c850||227|function|undefined IltTarget_0047c850()|
+47c850|CDib::MapColorTableAndPixelsToPalette||227|function|BOOL __thiscall CDib::MapColorTableAndPixelsToPalette(CPalette * palette)|windows_listing
 47c980|CDib::FlipScanlineOrder||203|function|void FlipScanlineOrder()|
-47ca90|IltTarget_0047ca90||30|function|undefined IltTarget_0047ca90()|
+47ca90|CPalette::`scalar deleting destructor'|??_GCPalette@@UAEPAXI@Z|30|function|void * __thiscall CPalette::`scalar deleting destructor'(unsigned int)|compiler_emission
 47cac0|WrapperFor_DeleteRegionHandleFromClipState_At0047cac0||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At0047cac0()|
-47cb30|IltTarget_0047cb30||30|function|undefined IltTarget_0047cb30()|
+47cb30|CGdiObject::`scalar deleting destructor'|??_GCGdiObject@@UAEPAXI@Z|30|function|void * __thiscall CGdiObject::`scalar deleting destructor'(unsigned int)|compiler_emission
 47cb60|WrapperFor_DeleteRegionHandleFromClipState_At0047cb60||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At0047cb60()|
 47cca0|ResetAndOpenCdAudioDeviceHandle||25|function|undefined ResetAndOpenCdAudioDeviceHandle()|
 47ccd0|SendMciCommand804IfDeviceOpenAndClearHandle||23|function|undefined SendMciCommand804IfDeviceOpenAndClearHandle()|
@@ -348,12 +348,12 @@ address|name|symbol|size|type|prototype|provenance
 47cd30|CloseGlobalCdAudioDeviceAndClearHandle||23|function|void __cdecl CloseGlobalCdAudioDeviceAndClearHandle(void)|
 47cd60|TCdAudioDevice::ApplyMciPlaybackRangeFromAudioManager||16|function|undefined ApplyMciPlaybackRangeFromAudioManager()|
 47cd80|TCdAudioDevice::StopPlayback||9|function|void __thiscall StopPlayback(void)|
-47cda0|IltTarget_0047cda0||17|function|undefined IltTarget_0047cda0()|
+47cda0|TCdAudioDevice::GetAuxOutputVolume||17|function|int __thiscall TCdAudioDevice::GetAuxOutputVolume(void)|windows_listing
 47cdd0|TCdAudioDevice::ApplyAuxOutputVolumeFromScalar||13|function|int __thiscall ApplyAuxOutputVolumeFromScalar(int scalar)|
 47cdf0|TCdAudioDevice::IsPlaybackActive||9|function|bool __thiscall IsPlaybackActive(void)|
-47ce10|IltTarget_0047ce10||12|function|undefined IltTarget_0047ce10()|
-47ce30|IltTarget_0047ce30||12|function|undefined IltTarget_0047ce30()|
-47ce50|IltTarget_0047ce50||12|function|undefined IltTarget_0047ce50()|
+47ce10|TCdAudioDevice::QueryMciStatusField5||12|function|unsigned int __thiscall TCdAudioDevice::QueryMciStatusField5(void) const|windows_listing
+47ce30|TCdAudioDevice::QueryMciStatusField8||12|function|unsigned int __thiscall TCdAudioDevice::QueryMciStatusField8(void) const|windows_listing
+47ce50|TCdAudioDevice::QueryMciStatusField3||12|function|unsigned int __thiscall TCdAudioDevice::QueryMciStatusField3(void) const|windows_listing
 47cfa0|`dynamic initializer for 'g_scaledShortConst_6A1528''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A1528''(void)|library
 47cfd0|InitializeDialogTemplateC2WithTextState||133|function|undefined InitializeDialogTemplateC2WithTextState()|
 47d090|TC2TemplateDialog::`scalar deleting destructor'|??_GTC2TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
@@ -379,7 +379,7 @@ address|name|symbol|size|type|prototype|provenance
 47d5f0|RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives||699|function|undefined RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives()|
 47d960|CGdiObject::~CGdiObject||70|function|undefined ~CGdiObject()|
 47d9d0|WrapperFor_DeleteRegionHandleFromClipState_At0047d9d0||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At0047d9d0()|
-47da40|IltTarget_0047da40||30|function|undefined IltTarget_0047da40()|
+47da40|CRgn::`scalar deleting destructor'|??_GCRgn@@UAEPAXI@Z|30|function|void * __thiscall CRgn::`scalar deleting destructor'(unsigned int)|compiler_emission
 47da70|WrapperFor_DeleteRegionHandleFromClipState_At0047da70||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At0047da70()|
 47dae0|UpdateCursorHelperWindowLayoutAndMask||128|function|undefined UpdateCursorHelperWindowLayoutAndMask()|
 47db80|TDDTemplateDialog::OnLButtonDblClk||3|function|void __thiscall OnLButtonDblClk(uint nFlags, CPoint point)|
@@ -402,19 +402,19 @@ address|name|symbol|size|type|prototype|provenance
 47e0c0|TAutoResolutionDialog::DoDataExchange||46|function|void TAutoResolutionDialog::DoDataExchange(CDataExchange* pDX)|
 47e100|TAutoResolutionDialog::GetMessageMap|?GetMessageMap@TAutoResolutionDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47e120|RefreshNewGameCommandWindowTextAndData||165|function|undefined RefreshNewGameCommandWindowTextAndData()|
-47e200|IltTarget_0047e200||30|function|undefined IltTarget_0047e200()|
-47e230|IltTarget_0047e230||30|function|undefined IltTarget_0047e230()|
-47e260|IltTarget_0047e260||30|function|undefined IltTarget_0047e260()|
+47e200|CButton::`scalar deleting destructor'|??_GCButton@@UAEPAXI@Z|30|function|void * __thiscall CButton::`scalar deleting destructor'(unsigned int)|compiler_emission
+47e230|CListBox::`scalar deleting destructor'|??_GCListBox@@UAEPAXI@Z|30|function|void * __thiscall CListBox::`scalar deleting destructor'(unsigned int)|compiler_emission
+47e260|CSliderCtrl::`scalar deleting destructor'|??_GCSliderCtrl@@UAEPAXI@Z|30|function|void * __thiscall CSliderCtrl::`scalar deleting destructor'(unsigned int)|compiler_emission
 47e360|CDibPal::CDibPal||17|function|CDibPal()|
 47e390|CDibPal::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 47e3c0|CDibPal::~CDibPal||94|function|~CDibPal()|
 47e440|CDibPal::BuildPaletteFromBitmapColorTable||199|function|int BuildPaletteFromBitmapColorTable(CDib * dib)|
-47e550|IltTarget_0047e550||38|function|undefined IltTarget_0047e550()|
+47e550|CPalette::GetEntryCount|?GetEntryCount@CPalette@@QAEHXZ|38|function|int __thiscall CPalette::GetEntryCount(void)|mfc_inline
 47e590|DrawPalettePreviewGridRectanglesToViewDc||406|function|undefined DrawPalettePreviewGridRectanglesToViewDc()|
-47e7a0|IltTarget_0047e7a0||305|function|undefined IltTarget_0047e7a0()|
+47e7a0|CDibPal::CreateIdentityPalette||305|function|BOOL __thiscall CDibPal::CreateIdentityPalette(void)|windows_listing
 47e930|CDibPal::SelectIntoDcAndRealize||32|function|undefined SelectIntoDcAndRealize()|
 47e960|CDibPal::LoadPaletteFile||519|function|int LoadPaletteFile(LPCSTR fileName)|
-47ec00|WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5_Impl||74|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5_Impl()|
+47ec00|CFileDialog::~CFileDialog|??1CFileDialog@@UAE@XZ|74|function|void __thiscall CFileDialog::~CFileDialog(void)|mfc_inline
 47ec70|CDibPal::LoadPalette_CFile||95|function|int LoadPalette(CFile * file)|
 47ecf0|CDibPal::LoadPalette_FileHandle||92|function|int LoadPalette(UINT fileHandle)|
 47ed70|CDibPal::LoadPalette_Mmio||237|function|int LoadPalette(HMMIO mmioHandle)|
@@ -9966,6 +9966,11 @@ address|name|symbol|size|type|prototype|provenance
 6a141c|g_pUiResourceHead|||global||
 6a1420|g_pUiResourceContext|||global||
 6a143c|g_McAppUiFlag_006A143C|||global||
+6a1484|g_dibCompressAssertGate_006A1484|||global||
+6a14e0|g_gfxScale6A14E0|||global||
+6a1528|g_scaledShortConst_6A1528|||global||
+6a1580|g_gfxScale6A1580|||global||
+6a15c8|g_scaledShortConst_6A15C8|||global||
 6a15e0|g_RuntimeSelectionRecords006a15e0|||global||
 6a17b0|g_nIncludeViewAssertGate_006A17B0|||global||
 6a17c4|g_nIncludeViewPointerAssertGate_006A17C4|||global||

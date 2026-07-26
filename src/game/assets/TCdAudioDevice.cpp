@@ -46,6 +46,13 @@ void TCdAudioDevice::StopPlayback() {
   SendMciStopCommandToDevice(m_deviceId);
 }
 
+// FUNCTION: IMPERIALISM 0x0047cda0
+int TCdAudioDevice::GetAuxOutputVolume() {
+  unsigned int volume;
+  GetAuxOutputVolumeFromFirstCompatibleDevice(&volume);
+  return volume;
+}
+
 // FUNCTION: IMPERIALISM 0x0047cdd0
 int TCdAudioDevice::ApplyAuxOutputVolumeFromScalar(int scalar) {
   return SetAuxOutputVolumeFromScalar(scalar);
@@ -54,6 +61,21 @@ int TCdAudioDevice::ApplyAuxOutputVolumeFromScalar(int scalar) {
 // FUNCTION: IMPERIALISM 0x0047cdf0
 bool TCdAudioDevice::IsPlaybackActive() {
   return SendMciStatusCommand814AndIgnoreFailure(m_deviceId);
+}
+
+// FUNCTION: IMPERIALISM 0x0047ce10
+unsigned int TCdAudioDevice::QueryMciStatusField5() const {
+  return QueryMciStatusField5ViaCommand814(m_deviceId);
+}
+
+// FUNCTION: IMPERIALISM 0x0047ce30
+unsigned int TCdAudioDevice::QueryMciStatusField8() const {
+  return QueryMciStatusField8ViaCommand814(m_deviceId);
+}
+
+// FUNCTION: IMPERIALISM 0x0047ce50
+unsigned int TCdAudioDevice::QueryMciStatusField3() const {
+  return QueryMciStatusField3ViaCommand814(m_deviceId);
 }
 
 // FUNCTION: IMPERIALISM 0x005df8d0
