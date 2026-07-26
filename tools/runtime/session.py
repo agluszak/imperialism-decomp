@@ -23,11 +23,12 @@ from tools.runtime.wine import (
     retail_game_dir,
     shut_down_wine_prefix,
     windows_path,
+    windows_paths,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BUILD_DIR = REPO_ROOT / "build-runtime-tests"
-POLL_INTERVAL_SECONDS = 0.5
+POLL_INTERVAL_SECONDS = 0.05
 
 def execute_run(
     name: str,
@@ -75,28 +76,37 @@ def execute_run(
     budget_seconds = no_progress_budget_seconds(phase_timeout_ms)
     pid_path = run_dir / "pid"
     started = time.monotonic()
+    # Phase timings, so that "the suite is slow" can be answered with a measurement
+    # instead of a guess. Cheap (a handful of monotonic reads) and always on.
+    phase_timings: dict[str, float] = {}
+
+    def mark(phase: str, since: float) -> float:
+        now = time.monotonic()
+        phase_timings[phase] = round(now - since, 3)
+        return now
+
     display_stack = virtual_display(environment, run_dir / "xvfb.log")
     virtual_display_name = display_stack.__enter__()
+    phase_start = mark("display", started)
     try:
         initialize_wine_prefix(prefix, environment)
+        phase_start = mark("prefix", phase_start)
 
         environment["IMPERIALISM_RUNTIME_TEST"] = name
-        environment["IMPERIALISM_RUNTIME_TEST_RESULT"] = windows_path(
-            result_path, environment
-        )
-        environment["IMPERIALISM_RUNTIME_TEST_HEARTBEAT"] = windows_path(
-            heartbeat_path, environment
-        )
+        # One winepath invocation for every path this run needs; see windows_paths().
+        translated_paths = [result_path, heartbeat_path, debug_record_path]
+        if fixture is not None:
+            translated_paths.append(fixture)
+        translated = windows_paths(translated_paths, environment)
+        environment["IMPERIALISM_RUNTIME_TEST_RESULT"] = translated[0]
+        environment["IMPERIALISM_RUNTIME_TEST_HEARTBEAT"] = translated[1]
+        environment["IMPERIALISM_RUNTIME_TEST_DEBUG_RECORD"] = translated[2]
         environment["IMPERIALISM_RUNTIME_TEST_SEED"] = str(seed)
         environment["IMPERIALISM_RUNTIME_TEST_PHASE_TIMEOUT_MS"] = str(phase_timeout_ms)
-        environment["IMPERIALISM_RUNTIME_TEST_DEBUG_RECORD"] = windows_path(
-            debug_record_path, environment
-        )
         if fixture is not None:
-            environment["IMPERIALISM_RUNTIME_TEST_FIXTURE"] = windows_path(
-                fixture, environment
-            )
+            environment["IMPERIALISM_RUNTIME_TEST_FIXTURE"] = translated[3]
 
+        phase_start = mark("path_translation", phase_start)
         if use_gdb:
             environment["IMPERIALISM_RUNTIME_TEST_DEBUGGER"] = "1"
             debugger = GdbSession(
@@ -118,6 +128,7 @@ def execute_run(
                 stdout=wine_log, stderr=subprocess.STDOUT,
             )
             inferior_pid = direct_process.pid
+        phase_start = mark("launch", phase_start)
         if inferior_pid is not None:
             pid_path.write_text(f"{inferior_pid}\n", encoding="utf-8")
         if classification is None and (debugger is not None or direct_process is not None):
@@ -230,6 +241,7 @@ def execute_run(
                         inferior_terminal_reason = "host-terminated"
                     break
                 time.sleep(POLL_INTERVAL_SECONDS)
+        phase_start = mark("run", phase_start)
     finally:
         if debugger is not None:
             try:
@@ -267,6 +279,7 @@ def execute_run(
         "inferior_terminal_reason": inferior_terminal_reason,
         "inferior_signal": inferior_signal,
         "duration_seconds": round(time.monotonic() - started, 3),
+        "phase_seconds": {**phase_timings, "teardown": round(time.monotonic() - phase_start, 3)},
         "debugger": "gdb" if use_gdb else "none",
         "debugger_stop_count": debugger.stop_count if debugger is not None else 0,
         "debugger_transport_error": debugger_error,
