@@ -1165,20 +1165,27 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
 
   panel->SetHoverHelpText(displayText);
 
+  // A row with nothing available is greyed out and loses its stepper arrows entirely:
+  // the original calls slot 7 (`CALL [edx+0x1c]` at 0x0050cae2 / 0x0050cb1c), which is
+  // TView::Free -- destroying the placeholder control -- not slot 0x1c
+  // BecameWindowTarget at vtable offset 0x70. Confusing the slot index with the byte
+  // offset left every placeholder arrow sprite alive on screen.
   if (needCurrent == 0) {
     panel->SetEnabled(0, 0);
     TControl* leftArrow = ResolveTaggedChildOrFail(panel, kControlTagLeft);
-    leftArrow->BecameWindowTarget();
+    leftArrow->Free();
     TControl* rightArrow = ResolveTaggedChildOrFail(panel, kControlTagRght);
-    rightArrow->BecameWindowTarget();
+    rightArrow->Free();
     return;
   }
 
+  // Same slot-7 Free: the placeholder 'left'/'rght' controls are destroyed after their
+  // layout is copied, and a live TRightLeftView is built in each one's place.
   TControl* leftSource = ResolveTaggedChildOrFail(panel, kControlTagLeft);
   int leftLayout0[2];
   int leftLayout1[2];
   CopyViewLayoutFieldsToStack(leftLayout0, leftLayout1, leftSource);
-  leftSource->BecameWindowTarget();
+  leftSource->Free();
 
   TRightLeftView* leftView = new TRightLeftView();
   leftView->InitializeUiResourceEntryFrameAndParent(0, panel, leftLayout1, leftLayout0, 5, 5, 0);
@@ -1188,7 +1195,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   int rightLayout0[2];
   int rightLayout1[2];
   CopyViewLayoutFieldsToStack(rightLayout0, rightLayout1, rightSource);
-  rightSource->BecameWindowTarget();
+  rightSource->Free();
 
   TRightLeftView* rightView = new TRightLeftView();
   rightView->InitializeUiResourceEntryFrameAndParent(0, panel, rightLayout1, rightLayout0, 5, 5, 0);
