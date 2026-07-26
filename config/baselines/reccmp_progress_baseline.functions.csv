@@ -1131,7 +1131,7 @@ address|matching|name
 0x48efa0|1.0|TPicture::GetRuntimeClass
 0x48efc0|0.42105263157894735|TPicture::TPicture(void)
 0x48f050|1.0|TPicture::`scalar deleting destructor'
-0x48f080|0.8547008547008547|TPicture::TPicture(class TPicture const &)
+0x48f080|0.896551724137931|TPicture::TPicture(class TPicture const &)
 0x48f190|0.0|IltTarget_0048f190
 0x48f250|0.547945205479452|TPicture::~TPicture
 0x48f330|1.0|TPicture::IPicture
@@ -1139,7 +1139,7 @@ address|matching|name
 0x48f520|0.896551724137931|TPicture::ResetPictureResourceEntry
 0x48f570|0.7654320987654321|TPicture::SetPictureResourceIdAndRefresh
 0x48f610|1.0|PictureFallbackSizeScratch::Set
-0x48f640|0.8247422680412371|TPicture::ShallowClone
+0x48f640|0.8333333333333334|TPicture::ShallowClone
 0x48f710|0.28865979381443296|TStaticText::CreateObject
 0x48f870|1.0|TStaticText::GetRuntimeClass
 0x48f890|0.5617977528089888|TStaticText::TStaticText(void)
@@ -1412,10 +1412,10 @@ address|matching|name
 0x4997e0|0.3146067415730337|TModuleLibraryCacheTableStateB::LoadBmpResourceByIdCached
 0x499b40|0.310838445807771|TModuleLibraryCacheTableStateB::BuildIndexedBmpResourceById
 0x499e80|1.0|TModuleLibraryCacheTableStateB::RetainOrRegisterObject
-0x49a0b0|0.8771929824561403|TModuleLibraryCacheTableStateB::IncrementDialogResourceRefCountByShortIdInRegistry
-0x49a120|0.9122807017543859|TModuleLibraryCacheTableStateB::IncrementRecordRefCountByHandleOrRecord
+0x49a0b0|1.0|TModuleLibraryCacheTableStateB::IncrementRecordRefCountById
+0x49a120|1.0|TModuleLibraryCacheTableStateB::IncrementRecordRefCountByHandle
 0x49a190|0.9846153846153847|TModuleLibraryCacheTableStateB::ReleaseRecordById
-0x49a390|0.9818181818181818|TModuleLibraryCacheTableStateB::ReleaseRecordByHandle
+0x49a390|1.0|TModuleLibraryCacheTableStateB::ReleaseRecordByHandle
 0x49a590|0.7719298245614035|TModuleLibraryCacheTableStateB::LoadLocalizedStringByPackedGroupAndIndex
 0x49a6c0|0.8|TModuleLibraryCacheTableStateB::LoadLocalizedStringByGroupAndIndex
 0x49a7f0|0.704225352112676|FilterStringByCharacterTypeFlag4AndAppend
