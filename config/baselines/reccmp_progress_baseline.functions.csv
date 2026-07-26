@@ -241,7 +241,7 @@ address|matching|name
 0x43db60|1.0|TRadioText::~TRadioText
 0x43db80|1.0|TCreditsPicture::~TCreditsPicture
 0x43dba0|0.3333333333333333|IltTarget_0043dba0
-0x43dbc0|0.406349555091728|InitializeArmyNavyReportViewsAndCommandTags
+0x43dbc0|0.365172754195459|InitializeArmyNavyReportViewsAndCommandTags
 0x44a6c0|1.0|TPageCorner::TPageCorner
 0x44a6f0|1.0|TShipFractionCluster::TShipFractionCluster
 0x44a720|1.0|TShipFractionCluster::`scalar deleting destructor'
@@ -320,7 +320,7 @@ address|matching|name
 0x460140|1.0|TTechHistoryView::`scalar deleting destructor'
 0x460170|1.0|TTechHistoryView::~TTechHistoryView
 0x460190|0.3333333333333333|IltTarget_00460190
-0x4601b0|0.5490722922188737|InitializeTradeScreenBitmapControls
+0x4601b0|0.6127068732931925|InitializeTradeScreenBitmapControls
 0x46fcf0|0.3333333333333333|IltTarget_0046fcf0
 0x46fd10|0.2119089316987741|BuildTurnEventDialogResourcesForEvent7DE
 0x474980|0.3333333333333333|IltTarget_00474980
