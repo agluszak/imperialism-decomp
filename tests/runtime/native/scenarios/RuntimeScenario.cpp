@@ -644,9 +644,17 @@ void MaybeWriteHeartbeat() {
 
 // Seed-stable normalized simulation snapshot for the host-side map oracle:
 // per-terrain-kind tile counts, per-nation owned-tile counts, and a few
-// derived scalars. Captured at Finish for the random-game family.
+// derived scalars. Captured at the first strategic map the scenario reaches, and at
+// Finish for scenarios that never reach one earlier.
+//
+// The first map is the only reproducible one. random_game_enters_map deliberately
+// returns to the main menu and starts a *second* random game to exercise the return
+// path, and that second generation continues from whatever RNG state the first
+// session left behind -- which depends on how much play and animation happened, so it
+// varies run to run (observed representative tiles 1360, 4061 and 5050 for one seed).
+// Capturing once, at the first map, keeps the oracle comparing a stable value.
 void CaptureMapStateSnapshot() {
-  if (g_pGlobalMapState == 0) {
+  if (g_pGlobalMapState == 0 || !g_mapStateJson.IsEmpty()) {
     return;
   }
   long terrainCounts[kStrategicTerrainCount + 1]; // [+1] = unassigned/other
@@ -997,6 +1005,12 @@ void RunWaitingForModalDismissal() {
   if (mapView->miniMapViewC0 == 0) {
     Fail("\"strategic map did not create its mini-map view\"");
     return;
+  }
+  // Snapshot the map here rather than leaving it to Finish: this is the first
+  // strategic map, and scenarios that continue past it may start a second random game
+  // whose generation is not reproducible. CaptureMapStateSnapshot only records once.
+  if (RecordsGameFlow()) {
+    CaptureMapStateSnapshot();
   }
   const char* holdPhase = getenv("IMPERIALISM_RUNTIME_TEST_HOLD");
   if (holdPhase != 0 && lstrcmpiA(holdPhase, "capital") != 0) {
