@@ -29,6 +29,7 @@ from tools.runtime.catalog import (
     missing_required_oracles,
     record_missing_oracles,
 )
+from tools.runtime.fixtures import validate_fixture_metadata
 from tools.runtime.oracles.map import evaluate_map_oracle
 from tools.runtime.protocol import read_json_file, validate_result
 from tools.runtime.oracles.ui import evaluate_ui_oracle
@@ -143,6 +144,7 @@ def run_test(args: argparse.Namespace) -> int:
     result_dir.mkdir(parents=True, exist_ok=True)
 
     fixture: Path | None = None
+    fixture_metadata: dict[str, object] | None = None
     if name in FIXTURES:
         fixture = fixture_directory() / FIXTURES[name]
         if not fixture.is_file():
@@ -160,6 +162,19 @@ def run_test(args: argparse.Namespace) -> int:
             (result_dir / f"{name}.json").write_text(serialized, encoding="utf-8")
             print(serialized, end="")
             return 1 if require_fixtures else 0
+        try:
+            fixture_metadata = validate_fixture_metadata(fixture, name)
+        except ValueError as error:
+            failed_fixture = {
+                "format_version": 1,
+                "name": name,
+                "status": "failed",
+                "failure": str(error),
+            }
+            serialized = json.dumps(failed_fixture, indent=2, sort_keys=True) + "\n"
+            (result_dir / f"{name}.json").write_text(serialized, encoding="utf-8")
+            print(serialized, end="")
+            return 1
     run_id = f"{name}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}-{os.getpid()}"
     run_dir = result_dir / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
@@ -191,6 +206,8 @@ def run_test(args: argparse.Namespace) -> int:
             "phase_timeout_ms": args.phase_timeout_ms,
         }
     )
+    if fixture_metadata is not None:
+        primary_host["fixture_metadata"] = fixture_metadata
 
     result, primary_attempt = _process_attempt(
         name=name,
@@ -216,6 +233,8 @@ def run_test(args: argparse.Namespace) -> int:
             fixture=fixture,
             use_gdb=True,
         )
+        if fixture_metadata is not None:
+            gdb_host["fixture_metadata"] = fixture_metadata
         gdb_result, gdb_attempt = _process_attempt(
             name=name,
             seed=args.seed,
@@ -247,6 +266,8 @@ def run_test(args: argparse.Namespace) -> int:
             fixture=fixture,
             use_gdb=not args.no_gdb,
         )
+        if fixture_metadata is not None:
+            seh_host["fixture_metadata"] = fixture_metadata
         seh_result, seh_attempt = _process_attempt(
             name=name,
             seed=args.seed,

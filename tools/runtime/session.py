@@ -19,9 +19,10 @@ from tools.runtime.display import virtual_display
 from tools.runtime.protocol import read_json_file
 from tools.runtime.wine import (
     initialize_wine_prefix,
+    prepare_game_sandbox,
     worktree_prefix,
     prefix_environment,
-    retail_game_dir,
+    runtime_provenance,
     shut_down_wine_prefix,
     windows_paths,
 )
@@ -90,28 +91,33 @@ def execute_run(
     virtual_display_name = display_stack.__enter__()
     phase_start = mark("display", started)
     try:
+        game_dir, staged_fixture, asset_manifest_sha256 = prepare_game_sandbox(
+            run_dir, executable, fixture
+        )
+        sandbox_executable = game_dir / executable.name
+        phase_start = mark("sandbox", phase_start)
         initialize_wine_prefix(prefix, environment)
         phase_start = mark("prefix", phase_start)
 
         environment["IMPERIALISM_RUNTIME_TEST"] = name
         # One winepath invocation for every path this run needs; see windows_paths().
         translated_paths = [result_path, heartbeat_path, debug_record_path]
-        if fixture is not None:
-            translated_paths.append(fixture)
+        if staged_fixture is not None:
+            translated_paths.append(staged_fixture)
         translated = windows_paths(translated_paths, environment)
         environment["IMPERIALISM_RUNTIME_TEST_RESULT"] = translated[0]
         environment["IMPERIALISM_RUNTIME_TEST_HEARTBEAT"] = translated[1]
         environment["IMPERIALISM_RUNTIME_TEST_DEBUG_RECORD"] = translated[2]
         environment["IMPERIALISM_RUNTIME_TEST_SEED"] = str(seed)
         environment["IMPERIALISM_RUNTIME_TEST_PHASE_TIMEOUT_MS"] = str(phase_timeout_ms)
-        if fixture is not None:
+        if staged_fixture is not None:
             environment["IMPERIALISM_RUNTIME_TEST_FIXTURE"] = translated[3]
 
         phase_start = mark("path_translation", phase_start)
         if use_gdb:
             environment["IMPERIALISM_RUNTIME_TEST_DEBUGGER"] = "1"
             debugger = GdbSession(
-                executable, retail_game_dir(), environment, run_dir
+                sandbox_executable, game_dir, environment, run_dir
             )
             try:
                 debugger.start()
@@ -125,7 +131,7 @@ def execute_run(
         else:
             wine_log = (run_dir / wine_log_name).open("wb")
             direct_process = subprocess.Popen(
-                ["wine", str(executable)], cwd=retail_game_dir(), env=environment,
+                ["wine", str(sandbox_executable)], cwd=game_dir, env=environment,
                 stdout=wine_log, stderr=subprocess.STDOUT,
             )
             inferior_pid = direct_process.pid
@@ -269,6 +275,12 @@ def execute_run(
         # session used, so the virtual server outlives it.
         display_stack.__exit__(None, None, None)
 
+    provenance = runtime_provenance(
+        sandbox_executable,
+        asset_manifest_sha256,
+        virtual_display_name,
+        staged_fixture,
+    )
     return {
         "classification": classification,
         "display": virtual_display_name or "host",
@@ -283,6 +295,8 @@ def execute_run(
         "inferior_signal": inferior_signal,
         "duration_seconds": round(time.monotonic() - started, 3),
         "phase_seconds": {**phase_timings, "teardown": round(time.monotonic() - phase_start, 3)},
+        "game_dir": str(game_dir),
+        "provenance": provenance,
         "debugger": "gdb" if use_gdb else "none",
         "debugger_stop_count": debugger.stop_count if debugger is not None else 0,
         "debugger_transport_error": debugger_error,

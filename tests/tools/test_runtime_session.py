@@ -173,7 +173,11 @@ class RuntimeSessionTests(unittest.TestCase):
                     "tools.runtime.session.windows_paths",
                     side_effect=lambda paths, _environment: [str(path) for path in paths],
                 ),
-                patch("tools.runtime.session.retail_game_dir", return_value=root),
+                patch(
+                    "tools.runtime.session.prepare_game_sandbox",
+                    return_value=(root, None, "asset-hash"),
+                ),
+                patch("tools.runtime.session.runtime_provenance", return_value={}),
                 patch("tools.runtime.session.shut_down_wine_prefix"),
                 # No Xvfb in a unit test: it would spawn a real X server, and its
                 # clock reads would eat the patched time.monotonic sequence below.
@@ -218,7 +222,11 @@ class RuntimeSessionTests(unittest.TestCase):
                     "tools.runtime.session.windows_paths",
                     side_effect=lambda paths, _environment: [str(path) for path in paths],
                 ),
-                patch("tools.runtime.session.retail_game_dir", return_value=root),
+                patch(
+                    "tools.runtime.session.prepare_game_sandbox",
+                    return_value=(root, None, "asset-hash"),
+                ),
+                patch("tools.runtime.session.runtime_provenance", return_value={}),
                 patch("tools.runtime.session.shut_down_wine_prefix"),
                 # No Xvfb in a unit test: it would spawn a real X server, and its
                 # clock reads would eat the patched time.monotonic sequence below.
@@ -265,7 +273,11 @@ class RuntimeSessionTests(unittest.TestCase):
                     "tools.runtime.session.windows_paths",
                     side_effect=lambda paths, _environment: [str(path) for path in paths],
                 ),
-                patch("tools.runtime.session.retail_game_dir", return_value=root),
+                patch(
+                    "tools.runtime.session.prepare_game_sandbox",
+                    return_value=(root, None, "asset-hash"),
+                ),
+                patch("tools.runtime.session.runtime_provenance", return_value={}),
                 patch("tools.runtime.session.shut_down_wine_prefix"),
                 # No Xvfb in a unit test: it would spawn a real X server, and its
                 # clock reads would eat the patched time.monotonic sequence below.
@@ -303,7 +315,11 @@ class RuntimeSessionTests(unittest.TestCase):
                     "tools.runtime.session.windows_paths",
                     side_effect=lambda paths, _environment: [str(path) for path in paths],
                 ),
-                patch("tools.runtime.session.retail_game_dir", return_value=root),
+                patch(
+                    "tools.runtime.session.prepare_game_sandbox",
+                    return_value=(root, None, "asset-hash"),
+                ),
+                patch("tools.runtime.session.runtime_provenance", return_value={}),
                 patch("tools.runtime.session.shut_down_wine_prefix"),
                 # No Xvfb in a unit test: it would spawn a real X server, and its
                 # clock reads would eat the patched time.monotonic sequence below.
