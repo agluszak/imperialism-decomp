@@ -41,6 +41,7 @@ class TInfoBarText;
 #include "game/ui_widgets/TInfoBarText.h"
 #include "game/app/TAnimator.h"
 #include "game/TQuickDrawSurfaceContext.h"
+#include "game/quickdraw_types.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/gfx/TBackdropWindow.h"
 #include "game/gfx/TTemplateDialogs.h"
@@ -992,35 +993,109 @@ extern double g_mapCellRowScale_006a3360;
 // GLOBAL: IMPERIALISM 0x006a3388
 extern double g_mapCellColumnScale_006a3388;
 
-// Two more 1/64 (0.015625) scale-factor doubles reset to default by the same defaults-table
-// initializers (0x49c0c0 / 0x49c0f0); g_ScaleDefault6A1FC0 is scaled by
-// UpdateGlobalWord6A2008FromScaled6A1FC0 (0x49c120). Zero on disk (runtime-set).
-// GLOBAL: IMPERIALISM 0x006a1fe8
-double g_ScaleDefault6A1FE8;
-// GLOBAL: IMPERIALISM 0x006a1fc0
-double g_ScaleDefault6A1FC0;
+} // extern "C"
 
-// Two dword slots in the 0x6a1e20 reset region, zeroed together by the cleanup handler
-// ResetGlobalPair6A1E20And6A1E24 (0x49b9d0). Only ever written (to 0); purpose not yet
-// recovered. Zero on disk.
+// These file-scope defaults have no retail readers. Their initializer bodies nevertheless
+// prove their source types: two dword stores are CPoint(0,0), four are CRect(0,0,0,0),
+// and four byte stores are the default CRGBColor constructor. Keep them as real objects so
+// VC5 owns the compiler helpers rather than exposing reset functions as source APIs.
+// SYNTHETIC: IMPERIALISM 0x0049b9d0
+// `dynamic initializer for 'g_defaultPoint_006A1E20''
 // GLOBAL: IMPERIALISM 0x006a1e20
-int g_ResetStateDword6A1E20;
-// GLOBAL: IMPERIALISM 0x006a1e24
-int g_ResetStateDword6A1E24;
-// More dword slots in the same 0x6a1exx/0x6a1fxx reset region, each zeroed by its own
-// ResetGlobalPair cleanup handler (0x49b9f0 / 0x49bc00 / 0x49bc20). Only ever written to 0.
+CPoint g_defaultPoint_006A1E20(0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049b9f0
+// `dynamic initializer for 'g_defaultPoint_006A1E48''
 // GLOBAL: IMPERIALISM 0x006a1e48
-int g_ResetStateDword6A1E48;
-// GLOBAL: IMPERIALISM 0x006a1e4c
-int g_ResetStateDword6A1E4C;
+CPoint g_defaultPoint_006A1E48(0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049ba10
+// `dynamic initializer for 'g_defaultRect_006A1E28''
+// GLOBAL: IMPERIALISM 0x006a1e28
+CRect g_defaultRect_006A1E28(0, 0, 0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049ba40
+// `dynamic initializer for 'g_defaultRect_006A1E38''
+// GLOBAL: IMPERIALISM 0x006a1e38
+CRect g_defaultRect_006A1E38(0, 0, 0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049ba70
+// `dynamic initializer for 'g_defaultRgbColor_006A1E18''
+// GLOBAL: IMPERIALISM 0x006a1e18
+CRGBColor g_defaultRgbColor_006A1E18;
+// SYNTHETIC: IMPERIALISM 0x0049bc00
+// `dynamic initializer for 'g_defaultPoint_006A1E70''
 // GLOBAL: IMPERIALISM 0x006a1e70
-int g_ResetStateDword6A1E70;
-// GLOBAL: IMPERIALISM 0x006a1e74
-int g_ResetStateDword6A1E74;
+CPoint g_defaultPoint_006A1E70(0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049bc20
+// `dynamic initializer for 'g_defaultPoint_006A1F38''
 // GLOBAL: IMPERIALISM 0x006a1f38
-int g_ResetStateDword6A1F38;
-// GLOBAL: IMPERIALISM 0x006a1f3c
-int g_ResetStateDword6A1F3C;
+CPoint g_defaultPoint_006A1F38(0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049bc40
+// `dynamic initializer for 'g_defaultRect_006A1F18''
+// GLOBAL: IMPERIALISM 0x006a1f18
+CRect g_defaultRect_006A1F18(0, 0, 0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049bc70
+// `dynamic initializer for 'g_defaultRect_006A1F28''
+// GLOBAL: IMPERIALISM 0x006a1f28
+CRect g_defaultRect_006A1F28(0, 0, 0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049bca0
+// `dynamic initializer for 'g_defaultRgbColor_006A1E68''
+// GLOBAL: IMPERIALISM 0x006a1e68
+CRGBColor g_defaultRgbColor_006A1E68;
+// SYNTHETIC: IMPERIALISM 0x0049bff0
+// `dynamic initializer for 'g_defaultPoint_006A1F78''
+// GLOBAL: IMPERIALISM 0x006a1f78
+CPoint g_defaultPoint_006A1F78(0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049c010
+// `dynamic initializer for 'g_defaultPoint_006A1FA8''
+// GLOBAL: IMPERIALISM 0x006a1fa8
+CPoint g_defaultPoint_006A1FA8(0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049c030
+// `dynamic initializer for 'g_defaultRect_006A1F88''
+// GLOBAL: IMPERIALISM 0x006a1f88
+CRect g_defaultRect_006A1F88(0, 0, 0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049c060
+// `dynamic initializer for 'g_defaultRect_006A1F98''
+// GLOBAL: IMPERIALISM 0x006a1f98
+CRect g_defaultRect_006A1F98(0, 0, 0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049c090
+// `dynamic initializer for 'g_defaultRgbColor_006A1F70''
+// GLOBAL: IMPERIALISM 0x006a1f70
+CRGBColor g_defaultRgbColor_006A1F70;
+static inline double DefaultGfxCoordinateScale() {
+  return 0.015625;
+}
+// SYNTHETIC: IMPERIALISM 0x0049c0c0
+// `dynamic initializer for 'g_ScaleDefault6A1FE8''
+// GLOBAL: IMPERIALISM 0x006a1fe8
+double g_ScaleDefault6A1FE8 = DefaultGfxCoordinateScale();
+// SYNTHETIC: IMPERIALISM 0x0049c0f0
+// `dynamic initializer for 'g_ScaleDefault6A1FC0''
+// GLOBAL: IMPERIALISM 0x006a1fc0
+double g_ScaleDefault6A1FC0 = DefaultGfxCoordinateScale();
+// SYNTHETIC: IMPERIALISM 0x0049c120
+// `dynamic initializer for 'g_scaledDefaultWidth_006A2008''
+// GLOBAL: IMPERIALISM 0x006a2008
+short g_scaledDefaultWidth_006A2008 = static_cast<short>(g_ScaleDefault6A1FC0 * 512.0 - -1.0);
+// SYNTHETIC: IMPERIALISM 0x0049cac0
+// `dynamic initializer for 'g_defaultPoint_006A1FD0''
+// GLOBAL: IMPERIALISM 0x006a1fd0
+CPoint g_defaultPoint_006A1FD0(0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049cae0
+// `dynamic initializer for 'g_defaultPoint_006A2000''
+// GLOBAL: IMPERIALISM 0x006a2000
+CPoint g_defaultPoint_006A2000(0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049cb00
+// `dynamic initializer for 'g_defaultRect_006A1FD8''
+// GLOBAL: IMPERIALISM 0x006a1fd8
+CRect g_defaultRect_006A1FD8(0, 0, 0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049cb30
+// `dynamic initializer for 'g_defaultRect_006A1FF0''
+// GLOBAL: IMPERIALISM 0x006a1ff0
+CRect g_defaultRect_006A1FF0(0, 0, 0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049cb60
+// `dynamic initializer for 'g_defaultRgbColor_006A1FC8''
+// GLOBAL: IMPERIALISM 0x006a1fc8
+CRGBColor g_defaultRgbColor_006A1FC8;
+
+extern "C" {
 
 // Order-type index rankings (0..13) sorted by descending descriptor weight, rebuilt by
 // TNavyMgr::INavyMgr (0x556610): by resolveWeight, calculateWeight, and

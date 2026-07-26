@@ -38,6 +38,7 @@ struct TextStyle;
 struct TQuickDrawSurfaceContext;
 struct TBitmapSurfaceContextDescriptor;
 struct TCdAudioDevice;
+struct CRGBColor;
 class TArmyMgr;
 class TAdmiral;
 class TDiplomacyMgr;

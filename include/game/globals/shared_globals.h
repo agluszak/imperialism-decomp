@@ -1917,26 +1917,6 @@ extern const double g_BullyWeightHigh_00654918;
 
 extern const float g_UnreferencedConstant_006545d4;
 
-extern double g_ScaleDefault6A1FE8;
-
-extern double g_ScaleDefault6A1FC0;
-
-extern int g_ResetStateDword6A1E20;
-
-extern int g_ResetStateDword6A1E24;
-
-extern int g_ResetStateDword6A1E48;
-
-extern int g_ResetStateDword6A1E4C;
-
-extern int g_ResetStateDword6A1E70;
-
-extern int g_ResetStateDword6A1E74;
-
-extern int g_ResetStateDword6A1F38;
-
-extern int g_ResetStateDword6A1F3C;
-
 // TSimMgr_AdvanceGlobalTurnStateMachine.cpp — debug tag literal passed to
 // TSimMgr::RebuildMapContextAndGlobalMapState.
 extern const char s_Chunk_00698C0C[];
