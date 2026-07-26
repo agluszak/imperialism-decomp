@@ -87,7 +87,14 @@ extern CPoint g_defaultPoint_006A21B0;
 extern int g_paletteResourceNameAssertGate;
 extern int g_paletteResourceIdAssertGate;
 
+// Per-site assertion gate read by CDib::Compress before its CDib.cpp line-0x31b
+// diagnostic call.
 extern "C" {
+extern int g_dibCompressAssertGate_006A1484;
+extern double g_gfxScale6A14E0;
+extern short g_scaledShortConst_6A1528;
+extern double g_gfxScale6A1580;
+extern short g_scaledShortConst_6A15C8;
 extern const char g_szPaletteResourceType[];
 extern const char g_szResourceMgrSourcePath[];
 extern const char g_szPaletteResourceIdFormat[];

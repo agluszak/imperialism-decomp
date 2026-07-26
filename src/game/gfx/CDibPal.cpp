@@ -80,6 +80,45 @@ void CDibPal::DrawPalettePreviewGridRectangles(CDC* dc, RECT* bounds, BOOL bForc
   dc->SelectPalette(oldPalette, FALSE);
 }
 
+// FUNCTION: IMPERIALISM 0x0047e7a0
+BOOL CDibPal::CreateIdentityPalette() {
+  BOOL result = FALSE;
+  HWND desktop = ::GetDesktopWindow();
+  HDC hdc = ::GetDC(desktop);
+  if ((::GetDeviceCaps(hdc, RASTERCAPS) & RC_PALETTE) != 0) {
+    int reservedCount = ::GetDeviceCaps(hdc, NUMCOLORS);
+    int paletteSize = ::GetDeviceCaps(hdc, SIZEPALETTE);
+    if (reservedCount <= 0x100) {
+      ::SetSystemPaletteUse(hdc, SYSPAL_NOSTATIC);
+      ::SetSystemPaletteUse(hdc, SYSPAL_STATIC);
+      HPALETTE palette = static_cast<HPALETTE>(m_hObject);
+      HPALETTE oldPalette = ::SelectPalette(hdc, palette, FALSE);
+      ::RealizePalette(hdc);
+      ::SelectPalette(hdc, oldPalette, FALSE);
+
+      PALETTEENTRY entries[0x100];
+      ::GetSystemPaletteEntries(hdc, 0, paletteSize, entries);
+      int halfReserved = reservedCount / 2;
+      int i = 0;
+      for (; i < halfReserved; i++) {
+        entries[i].peFlags = 0;
+      }
+      for (; i < paletteSize - halfReserved; i++) {
+        entries[i].peFlags = PC_NOCOLLAPSE;
+      }
+      for (; i < paletteSize; i++) {
+        entries[i].peFlags = 0;
+      }
+      entries[0x10].peFlags = PC_RESERVED;
+      ::ResizePalette(palette, paletteSize);
+      ::SetPaletteEntries(palette, 0, paletteSize, entries);
+      result = TRUE;
+    }
+  }
+  ::ReleaseDC(desktop, hdc);
+  return result;
+}
+
 // FUNCTION: IMPERIALISM 0x0047e930
 UINT CDibPal::SelectIntoDcAndRealize(CDC* dc, BOOL background) {
   // LIBRARY: CDC::SelectPalette (0x00612a78)

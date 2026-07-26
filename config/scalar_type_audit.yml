@@ -34,6 +34,12 @@ native_integral_reviews:
   1bedaab2dce1eddf:
     classification: win32_struct_word_field
     evidence: LOGPALETTE.palNumEntries is WORD; retail 0x0047af60 copies the low word of the 32-bit palette count to offset 2.
+  17f25feb058b46da:
+    classification: win32_struct_word_field
+    evidence: LOGPALETTE.palNumEntries is WORD; retail 0x0047b030 copies the low word of CDib's 32-bit palette count to offset 2.
+  ce86d676236a8915:
+    classification: win32_struct_word_field
+    evidence: LOGPALETTE.palNumEntries is WORD; retail 0x0047b1b0 copies the low word of the Win32 device palette entry count to offset 2.
   4a577257115fdf30:
     classification: win32_struct_word_field
     evidence: LOGPALETTE.palNumEntries is WORD; retail 0x0047e440 stores BX to offset 2 before CreatePalette.
