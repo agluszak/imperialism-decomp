@@ -14,3 +14,5 @@ END
 128 ACCELERATOR
 BEGIN
 END
+
+#include "cursors/cursors.rc"

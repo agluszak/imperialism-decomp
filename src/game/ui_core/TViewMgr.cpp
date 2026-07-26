@@ -124,7 +124,7 @@ namespace {
 const unsigned int kAddrClassDescTViewMgr = 0x0066f0b8;
 } // namespace
 
-HCURSOR LoadTurnEventCursorByResourceIdOffset1000(int cursorResourceId);
+HCURSOR LoadTurnEventCursorByResourceIdOffset1000(short cursorResourceId);
 
 // The RTTI/CRuntimeClass oracle previously assigned TViewMgr::CreateObject to
 // 0x005d4c60, but that address's real body (verified via `just ghidra listing`
@@ -165,11 +165,10 @@ void TViewMgr::LoadTurnEventCursorTable() {
 }
 
 // FUNCTION: IMPERIALISM 0x005d5140
-HCURSOR LoadTurnEventCursorByResourceIdOffset1000(int cursorResourceId) {
+HCURSOR LoadTurnEventCursorByResourceIdOffset1000(short cursorResourceId) {
   CString cursorName;
   cursorName.Format(s_TurnEventCursorNameFormat_0069B6B4, cursorResourceId);
-  AFX_MODULE_STATE* moduleState = AfxGetModuleState();
-  return LoadCursorA(moduleState->m_hCurrentInstanceHandle, cursorName);
+  return LoadCursorA(AfxGetResourceHandle(), cursorName);
 }
 
 // FUNCTION: IMPERIALISM 0x005d51e0

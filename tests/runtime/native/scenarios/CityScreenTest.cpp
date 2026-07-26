@@ -3,8 +3,12 @@
 #include "screens/StrategicMapDriver.h"
 
 #include "game/city/TCity.h"
+#include "game/city/TProductionOrder.h"
+#include "game/city/TUnitOrder.h"
 #include "game/city_ui/TBuildingView.h"
 #include "game/city_ui/TCityProductionView.h"
+#include "game/city_ui/TIndustryView.h"
+#include "game/city_ui/TUniversityView.h"
 #include "game/core/global_data_tables.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/nation/TGreatPower.h"
@@ -12,14 +16,17 @@
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_tags_city.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_widgets/TRailCluster.h"
 
 namespace {
 
 class CityScreenTestCase : public RuntimeScenario {
 public:
-  CityScreenTestCase() : phase(kActivateCityScreen) {}
+  CityScreenTestCase() : phase(kActivateCityScreen), activeBuildingSlot(kUniversityBuildingSlot) {}
 
   const char* Name() const override {
     return "city_screen_opens";
@@ -78,7 +85,10 @@ private:
     kWaitForMap
   };
 
-  enum { kInteractiveBuildingSlot = 6 };
+  enum {
+    kUniversityBuildingSlot = kTurnEventUniversity - kTurnEventTextileMill,
+    kRailyardBuildingSlot = kTurnEventRailyard - kTurnEventTextileMill
+  };
 
   void ActivateCityScreen() {
     if (ScenarioPhaseTicks() < 60) {
@@ -96,11 +106,6 @@ private:
       FailScenario("\"active nation has no city state before opening the city screen\"");
       return;
     }
-    // The deterministic Easy fixture can restore the oil-refinery window while its
-    // capacity is still zero. Seed only that proven-invalid slot; replacing the
-    // complete table makes the first city paint synchronously load every building
-    // and no longer represents the game's generated state.
-    activeNation->city->productionOrderTable1dc[6] = 1;
     phase = kWaitForCityScreen;
     EnterScenarioStep("waiting_for_city_screen", "activate_city_toolbar_control");
     StrategicMapDriver map(mainView);
@@ -141,7 +146,7 @@ private:
       return;
     }
     phase = kActivateBuilding;
-    EnterScenarioStep("activating_city_building", "activate_oil_refinery_building_slot");
+    EnterScenarioStep("activating_city_building", "activate_university_building_slot");
     RequestScenarioTick();
   }
 
@@ -155,11 +160,92 @@ private:
     TCityProductionView* cityView = static_cast<TCityProductionView*>(mainView);
     phase = kWaitForBuilding;
     EnterScenarioStep("waiting_for_city_building", "activate_city_building_hit_region");
-    if (!cityView->ActivateBuildingSlotForRuntimeTest(kInteractiveBuildingSlot)) {
-      FailScenario("\"oil-refinery building hit region is missing or inactive\"");
+    if (!cityView->ActivateBuildingSlotForRuntimeTest(activeBuildingSlot)) {
+      FailScenario("\"city production building hit region is missing or inactive\"");
       return;
     }
     RequestScenarioTick();
+  }
+
+  bool HasCorrectNumberTextPresentationState(TNumberText* numberText, short fontSize,
+                                             COLORREF textColor) {
+    return numberText->field04 == 0 && numberText->field08 != 0 &&
+           numberText->stylePayload48 == 0 && numberText->textStyle78.fontFamily == 3 &&
+           numberText->textStyle78.fontStyleFlags == 0 &&
+           numberText->textStyle78.fontSize == fontSize &&
+           numberText->textStyle78.textColor == textColor &&
+           numberText->absoluteX == numberText->ownerContext->absoluteX + numberText->ownerLocalX &&
+           numberText->absoluteY == numberText->ownerContext->absoluteY + numberText->ownerLocalY &&
+           numberText->frameWidth34 > 0 && numberText->frameHeight38 > 0;
+  }
+
+  bool ValidateUniversityQuantities(TBuildingView* buildingView) {
+    if (buildingView->IsKindOf(RUNTIME_CLASS(TUniversityView)) == 0) {
+      FailScenario("\"university building control opened the wrong view class\"");
+      return false;
+    }
+    bool foundLiveRecruitmentCount = false;
+    for (short category = 0; category < 9; ++category) {
+      if (category == 6 || category == 7) {
+        continue;
+      }
+      TView* recruitmentRow = buildingView->ResolveControlByTag(kControlTagClu0 + category);
+      TNumberText* recruitmentQuantity =
+          recruitmentRow == 0
+              ? 0
+              : static_cast<TNumberText*>(recruitmentRow->ResolveControlByTag(kControlTagNumb));
+      if (recruitmentQuantity == 0) {
+        FailScenario("\"university recruitment count control is missing\"");
+        return false;
+      }
+      if (recruitmentQuantity->textStyle78.textColor != PALETTEINDEX(0xd2)) {
+        continue;
+      }
+      foundLiveRecruitmentCount = true;
+      TUnitOrder* order = buildingView->city94->buildOrderSlots[category + 9];
+      CString quantityText;
+      CString expectedText;
+      recruitmentQuantity->GetCurrentText(&quantityText);
+      expectedText.Format("%d", order->quantityField04);
+      if (quantityText != expectedText || recruitmentQuantity->value != order->quantityField04 ||
+          !HasCorrectNumberTextPresentationState(recruitmentQuantity, 10, PALETTEINDEX(0xd2))) {
+        FailScenario("\"university recruitment count state does not match its live order\"");
+        return false;
+      }
+    }
+    if (!foundLiveRecruitmentCount) {
+      FailScenario("\"university has no styled live recruitment count\"");
+      return false;
+    }
+    return true;
+  }
+
+  bool ValidateRailyardQuantity(TBuildingView* buildingView) {
+    if (buildingView->IsKindOf(RUNTIME_CLASS(TIndustryView)) == 0) {
+      FailScenario("\"railyard building control opened the wrong view class\"");
+      return false;
+    }
+    TRailCluster* railCluster =
+        static_cast<TRailCluster*>(buildingView->ResolveControlByTag(kSummaryTagRail));
+    TNumberText* railQuantity =
+        railCluster == 0
+            ? 0
+            : static_cast<TNumberText*>(railCluster->ResolveControlByTag(kControlTagMove));
+    if (railQuantity == 0 || railCluster->selectedMetricOrder == 0) {
+      FailScenario("\"railyard production count control is missing\"");
+      return false;
+    }
+    CString quantityText;
+    CString expectedText;
+    railQuantity->GetCurrentText(&quantityText);
+    expectedText.Format("%d", railCluster->selectedMetricOrder->quantityField04);
+    if (quantityText != expectedText ||
+        railQuantity->value != railCluster->selectedMetricOrder->quantityField04 ||
+        !HasCorrectNumberTextPresentationState(railQuantity, 10, PALETTEINDEX(0))) {
+      FailScenario("\"railyard production count state does not match its live order\"");
+      return false;
+    }
+    return true;
   }
 
   void WaitForBuilding() {
@@ -170,16 +256,21 @@ private:
       return;
     }
     TCityProductionView* cityView = static_cast<TCityProductionView*>(mainView);
-    TBuildingView* buildingView = cityView->BuildingViewForRuntimeTest(kInteractiveBuildingSlot);
+    TBuildingView* buildingView = cityView->BuildingViewForRuntimeTest(activeBuildingSlot);
     if (buildingView == 0) {
-      WaitForScenarioTick("\"oil-refinery building control did not open its production view\"");
+      WaitForScenarioTick("\"city building control did not open its production view\"");
       return;
     }
     TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
     if (activeNation == 0 || buildingView->city94 != activeNation->city ||
-        buildingView->isEmbeddedPage9C ||
-        buildingView->embeddedPageIndex9E != kInteractiveBuildingSlot) {
+        buildingView->isEmbeddedPage9C || buildingView->embeddedPageIndex9E != activeBuildingSlot) {
       FailScenario("\"city building control opened the wrong production slot\"");
+      return;
+    }
+    bool quantitiesAreValid = activeBuildingSlot == kUniversityBuildingSlot
+                                  ? ValidateUniversityQuantities(buildingView)
+                                  : ValidateRailyardQuantity(buildingView);
+    if (!quantitiesAreValid) {
       return;
     }
     TWindow* buildingWindow = buildingView->GetWindow();
@@ -246,8 +337,15 @@ private:
       return;
     }
     TCityProductionView* cityView = static_cast<TCityProductionView*>(mainView);
-    if (cityView->BuildingViewForRuntimeTest(kInteractiveBuildingSlot) != 0) {
+    if (cityView->BuildingViewForRuntimeTest(activeBuildingSlot) != 0) {
       WaitForScenarioTick("\"native system close did not close the city building window\"");
+      return;
+    }
+    if (activeBuildingSlot == kUniversityBuildingSlot) {
+      activeBuildingSlot = kRailyardBuildingSlot;
+      phase = kActivateBuilding;
+      EnterScenarioStep("activating_railyard_building", "activate_railyard_building_slot");
+      RequestScenarioTick();
       return;
     }
     phase = kReturnToMap;
@@ -290,6 +388,7 @@ private:
   }
 
   Phase phase;
+  short activeBuildingSlot;
 };
 
 CityScreenTestCase g_test;
