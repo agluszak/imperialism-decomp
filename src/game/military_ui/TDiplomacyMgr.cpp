@@ -1723,15 +1723,20 @@ int TDiplomacyMgr::SelectDiplomacyTargetNationFromCandidateSetSlot94(int sourceN
 
 // FUNCTION: IMPERIALISM 0x004f24a0
 void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(int nationCode) {
-  for (int auxIndex = 0; auxIndex < 16; ++auxIndex) {
-    TMinor* candidate = g_apNationAuxRuntimeStateSlots[auxIndex];
+  // Ground truth walks the aux-slot table by byte offset (esi stepping 4 into
+  // [esi + &g_apSecondaryNationStateSlots[7]]) rather than re-scaling an index,
+  // and carries the minor slot as its own counter seeded to 7 (mov [esp+0x14], 7
+  // at 0x4f24a9) instead of recomputing 7 + auxIndex in the body.
+  TMinor** auxSlot = g_apNationAuxRuntimeStateSlots;
+  short minorSlot = 7;
+  for (int auxIndex = 0; auxIndex < 16; ++auxIndex, ++auxSlot, ++minorSlot) {
+    TMinor* candidate = *auxSlot;
     if (!candidate->IsEncodedNationSlotMinus200Equal(nationCode)) {
       continue;
     }
     candidate->ApplyJoinEmpireMode2FinalizeNationNameState();
 
     TMinor* capabilityObject = g_apMinorNationCapabilityObjects[auxIndex];
-    short minorSlot = static_cast<short>(7 + auxIndex);
 
     for (int majorSlot = 0; majorSlot < 7; ++majorSlot) {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(majorSlot)) {

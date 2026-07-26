@@ -2761,7 +2761,7 @@ address|matching|name
 0x4f2090|0.35714285714285715|TDiplomacyMgr::GetNthAlliedMajorNationSlot90
 0x4f2100|0.8760330578512396|TDiplomacyMgr::SelectNationSlotFromCollectedStandingEntriesSlot98
 0x4f21f0|0.31952662721893493|TDiplomacyMgr::SelectDiplomacyTargetNationFromCandidateSetSlot94
-0x4f24a0|0.14788732394366197|TDiplomacyMgr::RebuildMinorNationDispositionLookupTables
+0x4f24a0|0.1780821917808219|TDiplomacyMgr::RebuildMinorNationDispositionLookupTables
 0x4f2760|1.0|BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy
 0x4f27f0|1.0|TDiplomacyMgr::ApplyTurnEvent2SyncPacketToRelationMatrix
 0x4f2820|1.0|TDiplomacyMgr::BuildEmbassy
