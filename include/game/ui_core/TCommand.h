@@ -35,7 +35,10 @@ public:
   // signature is a five-argument thiscall (RET 0x14) matching TCommand::ICommand.
   void InitializeRangePair(int arg1, TCommandHandler* arg2, int arg3, int arg4, int arg5);
 
-  virtual ~TCommand() override;
+  // Inline for the same reason as TEvent::~TEvent: command subclasses in the retail
+  // build fold the trivial destructor chain directly to the CObject vtable reset.
+  // FUNCTION: IMPERIALISM 0x00487880
+  virtual ~TCommand() override {}
 };
 
 ASSERT_SIZE(TCommand, 0x18);

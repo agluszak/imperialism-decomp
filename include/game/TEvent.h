@@ -13,7 +13,11 @@ class TEvent : public TObject {
 public:
   DECLARE_DYNCREATE(TEvent)
 
-  ~TEvent() override;
+  // Inline so derived command destructors collapse the trivial TEvent/TObject chain to
+  // the original direct CObject vtable reset. The compiler still emits the addressed
+  // out-of-line copy used by TEvent's scalar deleting destructor.
+  // FUNCTION: IMPERIALISM 0x00492ca0
+  ~TEvent() override {}
 
   int commandNumber;            // 0x04
   int dispatchMessage;          // 0x08

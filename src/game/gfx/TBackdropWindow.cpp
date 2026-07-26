@@ -7,29 +7,6 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 
-namespace {
-
-void ReleaseTempMapWaitCursorBufferIfNeeded() {
-  char* tempBuffer = g_pBackdropWaitCursorGuardToken;
-  if (tempBuffer != NULL) {
-    AfxGetModuleState();
-    AfxGetApp()->EndWaitCursor();
-    delete tempBuffer;
-  }
-  g_pBackdropWaitCursorGuardToken = NULL;
-}
-
-CWnd* GetMainWndViaDoubleAfxGetThread() {
-  CWinThread* thread = AfxGetThread();
-  if (thread == NULL) {
-    return NULL;
-  }
-  thread = AfxGetThread();
-  return thread->GetMainWnd();
-}
-
-} // namespace
-
 // clang-cl's lint build rejects the MFC message-map macros' unqualified `&OnPaint`-style
 // address-of-member-function (a long-standing MSVC extension clang doesn't implement for
 // this context); this is MFC dispatch-table plumbing, not game logic, so it's skipped in
@@ -51,47 +28,29 @@ TBackdropWindow::~TBackdropWindow() {
   g_pActiveBackdropWindow = NULL;
 }
 // FUNCTION: IMPERIALISM 0x0049cc60
-void Function_0049cc60(CWnd* parent) {
+void CreateBackdropWindowIfSplashEnabled(CWnd* parent) {
   if (!g_cachedShowSplashFlag || g_pActiveBackdropWindow != NULL) {
     return;
   }
 
   TBackdropWindow* window = new TBackdropWindow();
   g_pActiveBackdropWindow = window;
-  if (window == NULL) {
-    return;
-  }
 
   window->m_backdropBmp = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(0x3b6);
   if (window->m_backdropBmp != NULL) {
     CPoint size;
     window->m_backdropBmp->CopyBitmapDimensionsToPoint(&size);
-    HWND parentHwnd = (parent != NULL) ? parent->m_hWnd : NULL;
-    AfxGetModuleState();
-    HCURSOR cursor = ::LoadCursorA(NULL, MAKEINTRESOURCEA(0x7f00));
-    LPCSTR wndClass = AfxRegisterWndClass(0, cursor, NULL, NULL);
-    window->CreateEx(0, wndClass, NULL, 0x90000000, 0, 0, size.x, size.y, parentHwnd, NULL, NULL);
-  }
-
-  if (window->m_hWnd == NULL) {
-    if (g_pActiveBackdropWindow != NULL) {
-      delete g_pActiveBackdropWindow;
+    HWND parentHwnd;
+    if (parent == NULL) {
+      parentHwnd = NULL;
+    } else {
+      parentHwnd = parent->m_hWnd;
     }
-    g_pActiveBackdropWindow = NULL;
-    return;
+    AfxGetModuleState();
+    window->CreateEx(
+        0, AfxRegisterWndClass(0, ::LoadCursorA(NULL, MAKEINTRESOURCEA(0x7f00)), NULL, NULL), NULL,
+        0x90000000, 0, 0, size.x, size.y, parentHwnd, NULL, NULL);
   }
-
-  ::UpdateWindow(g_pActiveBackdropWindow->m_hWnd);
-}
-
-// FUNCTION: IMPERIALISM 0x0049cca0
-void CreateGlobalBackdropWindowWithDefaultBmp3B6(TBackdropWindow* window, CWnd* parent) {
-  g_pActiveBackdropWindow = window;
-  if (window == NULL) {
-    return;
-  }
-
-  window->InitializeDefaultBackdropWindowFromBmp3B6(parent);
 
   if (window->m_hWnd == NULL) {
     if (g_pActiveBackdropWindow != NULL) {
@@ -106,7 +65,7 @@ void CreateGlobalBackdropWindowWithDefaultBmp3B6(TBackdropWindow* window, CWnd* 
 
 // FUNCTION: IMPERIALISM 0x0049cdf0
 void RefreshBackdropOnInputMessages(MSG* msg) {
-  if (g_pActiveBackdropWindow == NULL || msg == NULL) {
+  if (g_pActiveBackdropWindow == NULL) {
     return;
   }
 
@@ -118,10 +77,7 @@ void RefreshBackdropOnInputMessages(MSG* msg) {
   }
 
   g_pActiveBackdropWindow->DestroyWindow();
-
-  CWnd* mainWnd = GetMainWndViaDoubleAfxGetThread();
-  HWND hwnd = (mainWnd != NULL) ? mainWnd->m_hWnd : NULL;
-  ::UpdateWindow(hwnd);
+  AfxGetMainWnd()->UpdateWindow();
 }
 
 // FUNCTION: IMPERIALISM 0x0049ce90
@@ -133,11 +89,16 @@ void TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6(CWnd* parent) {
 
   CPoint size;
   m_backdropBmp->CopyBitmapDimensionsToPoint(&size);
-  HWND parentHwnd = (parent != NULL) ? parent->m_hWnd : NULL;
+  HWND parentHwnd;
+  if (parent == NULL) {
+    parentHwnd = NULL;
+  } else {
+    parentHwnd = parent->m_hWnd;
+  }
   AfxGetModuleState();
   HCURSOR cursor = ::LoadCursorA(NULL, MAKEINTRESOURCEA(0x7f00));
-  LPCSTR wndClass = AfxRegisterWndClass(0, cursor, NULL, NULL);
-  CreateEx(0, wndClass, NULL, 0x90000000, 0, 0, size.x, size.y, parentHwnd, NULL, NULL);
+  CreateEx(0, AfxRegisterWndClass(0, cursor, NULL, NULL), NULL, 0x90000000, 0, 0, size.x, size.y,
+           parentHwnd, NULL, NULL);
 }
 
 // FUNCTION: IMPERIALISM 0x0049cfa0
@@ -147,17 +108,11 @@ void TBackdropWindow::PostNcDestroy() {
   delete this;
   g_pActiveBackdropWindow = NULL;
 
-  CWnd* mainWnd = GetMainWndViaDoubleAfxGetThread();
-  if (mainWnd != NULL) {
-    static_cast<CMainFrame*>(mainWnd)->ConfigureTopLevelWindowStyleAndPlacement(0x280, 0x1e0);
-  }
+  static_cast<CMainFrame*>(AfxGetMainWnd())->ConfigureTopLevelWindowStyleAndPlacement(0x280, 0x1e0);
+  AfxGetMainWnd()->SetWindowPos(NULL, 0, 0, 0, 0, 5);
 
-  mainWnd = GetMainWndViaDoubleAfxGetThread();
-  if (mainWnd != NULL) {
-    mainWnd->SetWindowPos(NULL, 0, 0, 0, 0, 5);
-  }
-
-  ReleaseTempMapWaitCursorBufferIfNeeded();
+  delete g_pBackdropWaitCursor;
+  g_pBackdropWaitCursor = NULL;
 }
 
 // FUNCTION: IMPERIALISM 0x0049d090
@@ -169,23 +124,14 @@ int TBackdropWindow::OnCreate(LPCREATESTRUCT lpCreateStruct) {
   CenterWindow(NULL);
   ::SetTimer(m_hWnd, 1, 0x2ee, NULL);
 
-  ReleaseTempMapWaitCursorBufferIfNeeded();
-  char* waitCursorToken = new char(0);
-  if (waitCursorToken != NULL) {
-    AfxGetModuleState();
-    AfxGetApp()->BeginWaitCursor();
-  }
-  g_pBackdropWaitCursorGuardToken = waitCursorToken;
+  delete g_pBackdropWaitCursor;
+  g_pBackdropWaitCursor = new CWaitCursor();
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0049d180
 void TBackdropWindow::OnPaint() {
   CPaintDC paintDC(this);
-  if (m_backdropBmp == NULL) {
-    return;
-  }
-
   CPoint size;
   m_backdropBmp->SelectAndRealizeDibPalette(&paintDC, FALSE);
   m_backdropBmp->CopyBitmapDimensionsToPoint(&size);
@@ -196,6 +142,5 @@ void TBackdropWindow::OnPaint() {
 void TBackdropWindow::OnTimer(UINT timerId) {
   (void)timerId;
   DestroyWindow();
-  CWnd* mainWnd = GetMainWndViaDoubleAfxGetThread();
-  ::UpdateWindow(mainWnd->m_hWnd);
+  AfxGetMainWnd()->UpdateWindow();
 }
