@@ -19,6 +19,9 @@ const WORD kBitmapFileSignature = 0x4d42;
 // SYNTHETIC: IMPERIALISM 0x00479ed0
 // CDib::GetRuntimeClass
 
+// SYNTHETIC: IMPERIALISM 0x00479ef0
+// `dynamic initializer for '_init_CDib''
+
 IMPLEMENT_SERIAL(CDib, CObject, 0)
 
 // FUNCTION: IMPERIALISM 0x00479f40
