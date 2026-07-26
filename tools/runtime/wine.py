@@ -34,16 +34,73 @@ def retail_game_dir() -> Path:
     return Path(original).resolve().parent
 
 
-def windows_path(path: Path, environment: dict[str, str]) -> str:
+def _drive_mappings(prefix: Path) -> list[tuple[Path, str]]:
+    """Wine's drive letters as (host target, drive) pairs, longest target first.
+
+    dosdevices/<letter>: is a symlink to the host directory the drive maps to, so the
+    translation winepath performs is available by reading the prefix. Longest first so a
+    nested mapping wins over the root drive.
+    """
+    mappings: list[tuple[Path, str]] = []
+    for entry in sorted((prefix / "dosdevices").glob("?:")):
+        try:
+            target = entry.resolve(strict=True)
+        except OSError:
+            continue
+        if target.is_dir():
+            mappings.append((target, entry.name.upper()))
+    mappings.sort(key=lambda item: len(str(item[0])), reverse=True)
+    return mappings
+
+
+def _translate_locally(path: Path, mappings: list[tuple[Path, str]]) -> str | None:
+    resolved = path.resolve()
+    for target, drive in mappings:
+        if resolved == target:
+            return f"{drive}\\"
+        if target in resolved.parents:
+            tail = str(resolved.relative_to(target)).replace("/", "\\")
+            return f"{drive}\\{tail}"
+    return None
+
+
+def windows_paths(paths: list[Path], environment: dict[str, str]) -> list[str]:
+    """Translate several host paths to Windows form in one winepath invocation.
+
+    Each winepath call starts its own Wine process, which costs about a second even
+    against a warm wineserver -- four separate calls were 4 s of every test's ~5.5 s.
+    winepath accepts multiple operands and answers one line each, so the whole set costs
+    what a single call did.
+    """
+    if not paths:
+        return []
+    prefix = Path(environment.get("WINEPREFIX", ""))
+    if prefix.is_dir():
+        # Pure-Python translation from the prefix's own drive map. Spawning winepath
+        # costs about a second per invocation because it starts a Wine process, and it
+        # was the single largest phase in a run once the server was kept warm.
+        mappings = _drive_mappings(prefix)
+        translated = [_translate_locally(path, mappings) for path in paths]
+        if all(item is not None for item in translated):
+            return [item for item in translated if item is not None]
     completed = subprocess.run(
-        ["winepath", "-w", str(path.resolve())],
+        ["winepath", "-w", *[str(path.resolve()) for path in paths]],
         env=environment,
-        check=True,
         capture_output=True,
         text=True,
-        timeout=60,
+        check=True,
+        timeout=120,
     )
-    return completed.stdout.strip()
+    translated = [line.strip() for line in completed.stdout.splitlines() if line.strip()]
+    if len(translated) != len(paths):
+        raise RuntimeError(
+            f"winepath returned {len(translated)} paths for {len(paths)} inputs"
+        )
+    return translated
+
+
+def windows_path(path: Path, environment: dict[str, str]) -> str:
+    return windows_paths([path], environment)[0]
 
 
 def prefix_environment(prefix: Path) -> dict[str, str]:
