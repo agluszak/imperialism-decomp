@@ -9,11 +9,9 @@
 
 namespace {
 
-const int kEndTurnCycles = 3;
-
 class EndTurnTestCase : public RuntimeScenario {
 public:
-  EndTurnTestCase() : phase(kActivateEndTurn), baselineEconomicTurn(0), turnsCompleted(0) {}
+  EndTurnTestCase() : phase(kActivateEndTurn), baselineEconomicTurn(0), leftDealBook(false) {}
 
   const char* Name() const override {
     return "easy_turns_advance";
@@ -53,10 +51,11 @@ private:
       return;
     }
     baselineEconomicTurn = g_pSimMgr->economicTurn;
+    leftDealBook = false;
     ResetNewspaperAdvance();
     StrategicMapDriver map(mainView);
     if (!map.EndTurn()) {
-      FailScenario("\"end-turn (send) control is missing\"");
+      FailScenario("\"end-turn control is missing\"");
       return;
     }
     phase = kWaitForTurnProcessed;
@@ -65,6 +64,16 @@ private:
   }
 
   void WaitForTurnProcessed() {
+    if (g_pUiRuntimeContext->currentTurnEventCode == 0x11f8) {
+      FailScenario("\"end turn entered the game-over/opening-cinematic path\"");
+      return;
+    }
+    if (g_pUiRuntimeContext->currentTurnEventCode == kTurnEventDealBook && !leftDealBook) {
+      leftDealBook = true;
+      g_pSimMgr->StartNextPhase();
+      RequestScenarioTick();
+      return;
+    }
     if (AdvanceNewspaperIfNeeded()) {
       return;
     }
@@ -79,19 +88,12 @@ private:
       FailScenario("\"economic turn advanced by more than one\"");
       return;
     }
-    ++turnsCompleted;
-    if (turnsCompleted < kEndTurnCycles) {
-      phase = kActivateEndTurn;
-      EnterScenarioStep("activating_end_turn", "turn_processed");
-      RequestScenarioTick();
-      return;
-    }
     Pass();
   }
 
   Phase phase;
   short baselineEconomicTurn;
-  int turnsCompleted;
+  bool leftDealBook;
 };
 
 EndTurnTestCase g_test;

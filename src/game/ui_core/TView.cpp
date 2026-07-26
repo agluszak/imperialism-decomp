@@ -805,7 +805,7 @@ void TView::GetDrawableRegion(RgnHandle clipRegion) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c220
-void TView::SetHoverHelpText(CString sharedString) {
+void TView::SetHoverHelpText(const CString& sharedString) {
   hoverHelpEnabled5c = 1;
   hoverHelpText58 = sharedString;
 }
