@@ -1679,6 +1679,8 @@ extern "C" const char s_SourcePathUArmyMgr_0069573C[] = "D:\\Ambit\\Cross\\UArmy
 extern "C" const char s_SourcePathUCityDialogs_006962E8[] = "D:\\Ambit\\Cross\\UCityDialogs.cpp";
 // GLOBAL: IMPERIALISM 0x00696d68
 extern "C" const char s_SourcePathUMacViewMgr_00696D68[] = "D:\\Ambit\\Cross\\UMacViewMgr.cpp";
+// GLOBAL: IMPERIALISM 0x006992f0
+extern "C" const char s_SourcePathUSmallViews_006992F0[] = "D:\\Ambit\\Cross\\USmallViews.cpp";
 // GLOBAL: IMPERIALISM 0x00696310
 extern "C" const char g_szCityProductionUniversityPrefix[] = "University: ";
 // GLOBAL: IMPERIALISM 0x00696320
@@ -2537,6 +2539,10 @@ int g_mapActionContextDisplayNameCacheStep_006984bc = 7;
 // Empty content: reccmp pairs by the // GLOBAL address marker, not by value. ===
 // GLOBAL: IMPERIALISM 0x00695794
 char s_szSpaceSeparator_00695794[] = " ";
+// Gauge caption separator: TTransportPicture::Refresh joins the current and total counts
+// as "<cur>  /  <total>", giving the transport ledger rows their "1  /  1" reading.
+// GLOBAL: IMPERIALISM 0x0069936c
+char s_szGaugeCountSeparator_0069936C[] = "  /  ";
 // Six-space indent prefixed to each great-power turn-summary line (0x4e2b70).
 // GLOBAL: IMPERIALISM 0x00696790
 char s_szTurnSummaryIndent_00696790[] = "      ";
