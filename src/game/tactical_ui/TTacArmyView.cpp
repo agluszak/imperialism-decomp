@@ -451,18 +451,21 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     BlitRectWithOptionalTransparency(&effectAtlasSurface74->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &segSrc,
                                      &dstRect, 0x24, 0);
-    SetQuickDrawStrokeColor(0);
+    SetQuickDrawStrokeColor(0xffffff);
   }
 
   // Adjacency for the trench-link pass below (0x005aaf53).
   TacticalTileIndex tileNeighbors[6];
   tacticalBattle60->GetNeighborList(tileIndex, tileNeighbors);
 
-  // Fort-wall bitmap for odd-row wall tiles.
+  short fortCell = 0;
+
+  // Fort-wall bitmap for odd-row wall tiles. The retail pass also draws the unit
+  // that bleeds across this wall edge, then caps the wall with the next sprite cell.
   if (grid[tileIndex].deployMark8 == 1) {
-    short fortCell = ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(tileIndex);
-    short fortSpriteX =
-        static_cast<short>(fortCell * 3) * static_cast<short>(unitSpriteCellWidth90);
+    fortCell = ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(tileIndex);
+    short fortSpriteCell = static_cast<short>(fortCell * 3);
+    short fortSpriteX = fortSpriteCell * static_cast<short>(unitSpriteCellWidth90);
     RECT fortSrc = {fortSpriteX, 0, fortSpriteX + unitSpriteCellWidth90, tileRowHeightPx8C};
     RECT fortDst = tileScreenRect;
     ResetQuickDrawStrokeState();
@@ -472,7 +475,54 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     BlitRectWithOptionalTransparency(&fortLevelAtlasSurface6C->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &fortSrc,
                                      &fortDst, 0x24, 0);
-    SetQuickDrawStrokeColor(0);
+    SetQuickDrawStrokeColor(0xffffff);
+
+    TTacticalUnit* edgeUnit = 0;
+    if (rowParity != 0) {
+      if (fortCell == 1 || fortCell == 5) {
+        edgeUnit = grid[tileNeighbors[5]].occupant4;
+      }
+    } else if (fortCell == 2 || fortCell == 4) {
+      edgeUnit = grid[tileNeighbors[0]].occupant4;
+    }
+    if (edgeUnit != 0) {
+      short edgeSpriteX =
+          static_cast<short>(edgeUnit->unitTypeC) * static_cast<short>(unitSpriteCellWidth90);
+      if (rowParity != 0) {
+        edgeSpriteX += static_cast<short>(unitSpriteCellWidth90 / 2);
+      }
+      short edgeSpriteY = edgeUnit->side20 == 0 ? 0 : static_cast<short>(unitSpriteCellHeight94);
+      RECT edgeSrc = {edgeSpriteX, edgeSpriteY, edgeSpriteX + unitSpriteCellWidth90,
+                      edgeSpriteY + unitSpriteCellHeight94};
+      RECT edgeDst;
+      ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(edgeUnit, &edgeDst);
+      ResetQuickDrawStrokeState();
+      UpdatePaletteIndexWithDefaultFallback(0x10);
+      if (ClipSrcRectToBoundsAndOffsetDstRect(corners, &edgeDst, &edgeSrc)) {
+        OffsetRectForSurfaceDibFlip(unitSpriteAtlasSurface68, &edgeSrc);
+        OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &edgeDst);
+        BlitRectWithOptionalTransparency(&unitSpriteAtlasSurface68->blitSurface,
+                                         &g_pActiveQuickDrawSurfaceContext->blitSurface, &edgeSrc,
+                                         &edgeDst, 0x24, 0);
+      }
+      SetQuickDrawStrokeColor(0xffffff);
+    }
+
+    fortSpriteX =
+        static_cast<short>(fortSpriteCell + 1) * static_cast<short>(unitSpriteCellWidth90);
+    fortSrc.left = fortSpriteX;
+    fortSrc.top = 0;
+    fortSrc.right = fortSpriteX + unitSpriteCellWidth90;
+    fortSrc.bottom = tileRowHeightPx8C;
+    fortDst = tileScreenRect;
+    ResetQuickDrawStrokeState();
+    UpdatePaletteIndexWithDefaultFallback(0x10);
+    OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface6C, &fortSrc);
+    OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &fortDst);
+    BlitRectWithOptionalTransparency(&fortLevelAtlasSurface6C->blitSurface,
+                                     &g_pActiveQuickDrawSurfaceContext->blitSurface, &fortSrc,
+                                     &fortDst, 0x24, 0);
+    SetQuickDrawStrokeColor(0xffffff);
   } else if ((gunSlotOccupied || wallBreached || edgeKind == kFortWallEdgeEvenRowLeft) &&
              edgeKind != kFortWallEdgeNone) {
     // Wall segment selected by breach/occupancy state.
@@ -490,7 +540,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     BlitRectWithOptionalTransparency(&fortLevelAtlasSurface6C->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &wallSrc,
                                      &wallDst, 0x24, 0);
-    SetQuickDrawStrokeColor(0);
+    SetQuickDrawStrokeColor(0xffffff);
   }
 
   // Trench-connection markers into the neighbouring tiles. The link tests walk the real
@@ -532,7 +582,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
       BlitRectWithOptionalTransparency(&fortLevelAtlasSurface6C->blitSurface,
                                        &g_pActiveQuickDrawSurfaceContext->blitSurface, &linkSrc,
                                        &linkDst, 0x24, 0);
-      SetQuickDrawStrokeColor(0);
+      SetQuickDrawStrokeColor(0xffffff);
     }
   }
 
@@ -571,7 +621,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
                                        &g_pActiveQuickDrawSurfaceContext->blitSurface, &unitSrc,
                                        &unitDst, 0x24, 0);
     }
-    SetQuickDrawStrokeColor(0);
+    SetQuickDrawStrokeColor(0xffffff);
   }
 
   // Wall-tile decoration pass for the edge kinds not covered above.
@@ -579,7 +629,8 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
       (edgeKind != kFortWallEdgeNone && !gunSlotOccupied && edgeKind != kFortWallEdgeEvenRowLeft)) {
     short deckSpriteX;
     if (edgeKind == kFortWallEdgeNone) {
-      deckSpriteX = static_cast<short>(unitSpriteCellWidth90) * 2;
+      deckSpriteX =
+          static_cast<short>(fortCell * 3 + 2) * static_cast<short>(unitSpriteCellWidth90);
     } else if (!wallBreached) {
       if (!gunSlotRow) {
         deckSpriteX = (edgeKind - 1) * static_cast<short>(tileWidthPx88);
@@ -604,7 +655,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     BlitRectWithOptionalTransparency(&fortLevelAtlasSurface6C->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &deckSrc,
                                      &deckDst, 0x24, 0);
-    SetQuickDrawStrokeColor(0);
+    SetQuickDrawStrokeColor(0xffffff);
   }
 
   // Strength/ammo indicator bars for the occupant.
@@ -637,7 +688,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     RECT flagDst = {paintBottom - 0xc, barRect.top - 6, paintBottom - 3, barRect.top};
     OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &flagDst);
     SetQuickDrawFillColor(0);
-    SetQuickDrawStrokeColor(0);
+    SetQuickDrawStrokeColor(0xffffff);
     BlitRectWithOptionalTransparency(&g_pStrategicMapViewSystem->atlas6b8->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &flagSrc,
                                      &flagDst, 0, 0);
@@ -701,11 +752,11 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
                                        &g_pActiveQuickDrawSurfaceContext->blitSurface, &nSrc, &nDst,
                                        0x24, 0);
     }
-    SetQuickDrawStrokeColor(0);
+    SetQuickDrawStrokeColor(0xffffff);
   }
 
-  // Gun-slot wall overlay when the slot row is occupied.
-  if (edgeKind != kFortWallEdgeNone && gunSlotRow && edgeKind != kFortWallEdgeEvenRowLeft) {
+  // Gun-slot wall overlay when an occupant is present in the wall slot.
+  if (edgeKind != kFortWallEdgeNone && gunSlotOccupied && edgeKind != kFortWallEdgeEvenRowLeft) {
     short slotSpriteX = (edgeKind + 8) * static_cast<short>(tileWidthPx88);
     RECT slotSrc = {slotSpriteX, 0, slotSpriteX + tileWidthPx88, tileRowHeightPx8C};
     RECT slotDst = {paintLeft, paintTop + 1, paintLeft + tileWidthPx88,
@@ -720,7 +771,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     BlitRectWithOptionalTransparency(&fortLevelAtlasSurface6C->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &slotSrc,
                                      &slotDst, 0x24, 0);
-    SetQuickDrawStrokeColor(0);
+    SetQuickDrawStrokeColor(0xffffff);
   }
 
   // Deployment-zone tick marks along the column midline.
