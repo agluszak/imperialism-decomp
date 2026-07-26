@@ -30,6 +30,7 @@ module|tools.workflow.check_generated_markers|just:generated-marker-gate|Reject 
 module|tools.workflow.check_cstring_usage|just:cstring-gate|Reject pseudo CString models, unpaired mutable buffers, and CString objects in string ellipses
 module|tools.workflow.cstring_ownership_audit|just:cstring-ownership-audit/cstring-ownership-audit-check|VC5-backed CString layout, clone ownership, and raw-span audit
 module|tools.workflow.cstring_runtime_probe|just:cstring-runtime-probe|Public-API CString ABI and lifetime probe compiled and run with VC5/MFC 4.2
+module|tools.workflow.vector_ctor_probe|just:vector-ctor-probe|Which array-construction shape MSVC500 emits (inline store loop / ctor call loop / vector-ctor iterator)
 module|tools.workflow.check_ilt_ossification|just:ilt-ossification-gate|Ratchet gate against ILT/thunk-name ossification in manual source
 module|tools.workflow.check_construction_antipatterns|just:antipattern-gate|Real-C++-construction anti-pattern gate
 module|tools.workflow.check_global_location|just:global-location-gate|Global definition location policy gate
