@@ -43,6 +43,7 @@ class TInfoBarText;
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/gfx/TBackdropWindow.h"
+#include "game/gfx/TTemplateDialogs.h"
 #include "game/ui_screens/TSetupRandomMapPicture.h"
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
@@ -78,6 +79,13 @@ TAnimator* g_pUiAnimator = 0;
 
 // GLOBAL: IMPERIALISM 0x006a15cc
 int g_diplomacyDialogAssertGuard_006A15CC = 0;
+
+// SYNTHETIC: IMPERIALISM 0x0049baa0
+// `dynamic initializer for 'g_debugTraceDialog''
+// SYNTHETIC: IMPERIALISM 0x0049bad0
+// TD0TemplateDialog::`dynamic atexit destructor'
+// GLOBAL: IMPERIALISM 0x006a1e78
+TD0TemplateDialog g_debugTraceDialog(0);
 
 extern "C" {
 
@@ -563,9 +571,9 @@ int g_nUiFrameClipOriginX = 0;
 // GLOBAL: IMPERIALISM 0x006a545c
 int g_nUiFrameClipOriginY = 0;
 // SYNTHETIC: IMPERIALISM 0x00493f90
-// InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit
+// `dynamic initializer for 'g_defaultQuickDrawSurfaceSentinel''
 // SYNTHETIC: IMPERIALISM 0x00493fc0
-// DestroyDefaultQuickDrawSurfaceContextAtExit
+// TBitmapSurfaceContextDescriptor::`dynamic atexit destructor'
 // GLOBAL: IMPERIALISM 0x006a1ca0
 TBitmapSurfaceContextDescriptor g_defaultQuickDrawSurfaceSentinel;
 // Statically initialized to the sentinel address (the dword at 0x006950f8 holds
