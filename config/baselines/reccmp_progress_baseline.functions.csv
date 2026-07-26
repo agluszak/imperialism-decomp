@@ -6139,7 +6139,7 @@ address|matching|name
 0x5d7f90|1.0|TViewMgr::ClearActiveCityBuildingViewSlot
 0x5d7fc0|0.53125|TViewMgr::SetCursorRangeAndRefreshMainPanel
 0x5d8040|0.20945945945945946|TViewMgr::HandleTurnEvent7D8_ActivateDiplomacyMapView
-0x5d83b0|0.14594594594594595|TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary
+0x5d83b0|0.16103896103896104|TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary
 0x5d8750|0.9318181818181818|TViewMgr::RefreshTechnologyStorePageAndHudText
 0x5d8980|0.6394984326018809|TViewMgr::ShowAbilityStatusReport
 0x5d8c40|1.0|TViewMgr::HandleTurnEvent2103_RunNationStatusReportUpdate

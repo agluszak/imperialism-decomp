@@ -1439,6 +1439,12 @@ void TViewMgr::HandleTurnEvent7D8_ActivateDiplomacyMapView(int) {
 
 // FUNCTION: IMPERIALISM 0x005d83b0
 void TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(int) {
+  // Ground truth default-constructs one CString early (lea ecx,[esp+0x10];
+  // call CString::CString(void) at 0x5d83d1) and hands that same local to both
+  // SetHoverHelpText calls, which take their argument by value. Passing a
+  // const char* instead built a separate temporary per call site, which is why
+  // our version had no EH frame where the original sets one up.
+  CString emptyHelpText;
   turn_event_ui_refresh::RefreshMainPanelControl();
   g_pSimMgr->SetFlags(0x1000);
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
@@ -1448,7 +1454,7 @@ void TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(int)
     tranControl->AssertValid();
     tranControl->SetState(0, 0);
     tranControl->SwitchActiveChildAndNotify(nullptr);
-    tranControl->SetHoverHelpText(g_szEmptyString);
+    tranControl->SetHoverHelpText(emptyHelpText);
   }
 
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTopB);
@@ -1457,7 +1463,7 @@ void TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(int)
   TControl* querControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagQuer);
   if (querControl != nullptr) {
     querControl->AssertValid();
-    querControl->SetHoverHelpText(g_szEmptyString);
+    querControl->SetHoverHelpText(emptyHelpText);
   }
 }
 
