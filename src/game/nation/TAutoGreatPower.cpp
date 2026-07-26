@@ -157,28 +157,28 @@ void TAutoGreatPower::IAutoGreatPower(int nationSlot,
   switch (cityMinisterPolicyId) {
   case 0: {
     TSteelCityMinister* minister = new TSteelCityMinister();
-    minister->InitializeCityInteriorState(this);
+    minister->ISteelCityMinister(this);
     interiorMinister = minister;
     minister->SetParameters(1, 2);
     break;
   }
   case 1: {
     TRailCityMinister* minister = new TRailCityMinister();
-    minister->InitializeCityInteriorState(this);
+    minister->IRailCityMinister(this);
     interiorMinister = minister;
     minister->SetParameters(1, 2);
     break;
   }
   case 2: {
     TShipBuilderCityMinister* minister = new TShipBuilderCityMinister();
-    minister->InitializeCityInteriorState(this);
+    minister->IShipBuilderCityMinister(this);
     interiorMinister = minister;
     minister->SetParameters(1, 2);
     break;
   }
   case 3: {
     TEvenCityMinister* minister = new TEvenCityMinister();
-    minister->InitializeCityInteriorState(this);
+    minister->IEvenCityMinister(this);
     interiorMinister = minister;
     minister->SetParameters(1, 2);
     break;
