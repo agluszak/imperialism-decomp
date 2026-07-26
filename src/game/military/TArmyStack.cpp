@@ -17,7 +17,8 @@
 // rather than factoring it into a shared helper.
 static bool IsUnitMeterEligible(TUnit* unit) {
   TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
-  return milUnit->field_34 > milUnit->field_3C / 2 && (milUnit->field_3A & 2) == 0;
+  return milUnit->strength34 > milUnit->strengthSnapshot3C / 2 &&
+         (milUnit->battleStateFlags3A & 2) == 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a3b70
@@ -90,7 +91,7 @@ void TArmyStack::ReadFrom(TStream* stream) {
     CIterator cursor(unitList);
     for (TUnit* unit = static_cast<TUnit*>(cursor.Reset()); cursor.More();
          unit = static_cast<TUnit*>(cursor.Advance())) {
-      if (unit->field_1A != unitTag) {
+      if (unit->unitRosterId1A != unitTag) {
         continue;
       }
       TArmyStackUnitNode* node = new TArmyStackUnitNode();
@@ -123,7 +124,7 @@ void TArmyStack::WriteTo(TStream* stream) {
   cursor18 = node;
   TUnit* unit = (node != 0) ? node->unit : 0;
   while (unit != 0) {
-    stream->WriteBytes(&unit->field_1A, 2);
+    stream->WriteBytes(&unit->unitRosterId1A, 2);
     node = cursor18;
     if (node != 0) {
       node = node->next;
@@ -145,7 +146,7 @@ void TArmyStack::AddFirstCountryUnitOfTypeToStack(short unitTag) {
   CIterator cursor(unitList);
   for (TUnit* unit = static_cast<TUnit*>(cursor.Reset()); cursor.More();
        unit = static_cast<TUnit*>(cursor.Advance())) {
-    if (unit->field_1A != unitTag) {
+    if (unit->unitRosterId1A != unitTag) {
       continue;
     }
     TArmyStackUnitNode* node = new TArmyStackUnitNode();
@@ -241,7 +242,7 @@ void TArmyStack::ComputeStackCompositionClassCode() {
   field6 = static_cast<short>((field4 << 8) + (roll & 0xff));
 }
 
-// Walk the stack's unit chain from the head, handing each unit its own field_C through
+// Walk the stack's unit chain from the head, handing each unit its own orderTargetIndex0C through
 // MoveTo and then clearing its orders with SetOrders(0, -1). The cursor is advanced
 // through cursor18 exactly as the original does, re-reading it each iteration.
 // FUNCTION: IMPERIALISM 0x004a7d20
@@ -250,7 +251,7 @@ void TArmyStack::ReseatChainUnitsAndClearOrders() {
   TArmyStackUnitNode* node = cursor18;
   TUnit* unit = (node != nullptr) ? node->unit : nullptr;
   while (unit != nullptr) {
-    unit->MoveTo(unit->field_C);
+    unit->MoveTo(unit->orderTargetIndex0C);
     unit->SetOrders(static_cast<UnitOrder>(0), -1);
     node = cursor18;
     if (node != nullptr) {
@@ -288,7 +289,7 @@ void TArmyStack::AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(int* o
     int percentEfficiency = static_cast<int>(g_afPercentEfficiencyByOrderType[unit->orderType]);
     *outWeightedSum += (((scaledFactor * kRoundBlendWeightSecondary[counter]) / 1000 +
                          (kRoundBlendWeightPrimary[counter] * weightClass) / 100) *
-                        percentEfficiency * milUnit->field_34) /
+                        percentEfficiency * milUnit->strength34) /
                        500;
     *outCount += g_anCountWeightByOrderType[unit->orderType];
   }
@@ -309,8 +310,8 @@ void TArmyStack::ApplyRandomizedMeterDecayToEligibleLinkedEntries(int weightedSu
   for (TUnit* unit = this->ResetCursorAndGetHeadUnit(); unit != nullptr;
        unit = this->AdvanceCursorAndGetUnit()) {
     TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
-    if (milUnit->field_34 > 0 && (milUnit->field_3A & 2) == 0) {
-      activityScore += (milUnit->field_34 > milUnit->field_3C / 2) ? 2 : 1;
+    if (milUnit->strength34 > 0 && (milUnit->battleStateFlags3A & 2) == 0) {
+      activityScore += (milUnit->strength34 > milUnit->strengthSnapshot3C / 2) ? 2 : 1;
     }
   }
   if (activityScore == 0) {
@@ -321,15 +322,15 @@ void TArmyStack::ApplyRandomizedMeterDecayToEligibleLinkedEntries(int weightedSu
   for (TUnit* decayUnit = this->ResetCursorAndGetHeadUnit(); decayUnit != nullptr;
        decayUnit = this->AdvanceCursorAndGetUnit()) {
     TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(decayUnit);
-    if (milUnit->field_34 > 0 && (milUnit->field_3A & 2) == 0) {
+    if (milUnit->strength34 > 0 && (milUnit->battleStateFlags3A & 2) == 0) {
       int roll = static_cast<int>(rand());
-      if ((milUnit->field_3A & 1) != 0) {
+      if ((milUnit->battleStateFlags3A & 1) != 0) {
         roll = (kDecayScalePercentByRound[counter] * roll) / 100;
       }
-      if (roll < milUnit->field_34) {
-        milUnit->field_34 -= static_cast<short>(roll);
+      if (roll < milUnit->strength34) {
+        milUnit->strength34 -= static_cast<short>(roll);
       } else {
-        milUnit->field_34 = 0;
+        milUnit->strength34 = 0;
       }
     }
   }
@@ -341,10 +342,11 @@ void TArmyStack::ApplyMeterGrowthToEligibleUnits(bool boosted) {
   TUnit* unit = this->ResetCursorAndGetHeadUnit();
   while (unit != nullptr) {
     TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
-    if (milUnit->field_34 > 0) {
-      milUnit->field_38 = static_cast<short>(milUnit->field_38 + growthAmount);
-      if (milUnit->field_38 > 0x190) {
-        milUnit->field_38 = 0x190;
+    if (milUnit->strength34 > 0) {
+      milUnit->experiencePercent38 =
+          static_cast<short>(milUnit->experiencePercent38 + growthAmount);
+      if (milUnit->experiencePercent38 > 0x190) {
+        milUnit->experiencePercent38 = 0x190;
       }
     }
     unit = this->AdvanceCursorAndGetUnit();

@@ -52,7 +52,7 @@ void TMiniArmyView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(0xa, 0xc);
   DrawTextWithCachedQuickDrawStyleState(&displayName);
 
-  short level = militaryUnit84->field_34;
+  short level = militaryUnit84->strength34;
   short sVar1 = level / 0x19 + 1;
   if (sVar1 > 0x14) {
     sVar1 = 0x14;

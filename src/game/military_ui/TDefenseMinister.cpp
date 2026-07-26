@@ -403,11 +403,11 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
         unit = 0;
       }
 
-      if (unit->field_18 != ownNationSlot) {
+      if (unit->ownerNationSlot18 != ownNationSlot) {
         int categoryScores[4] = {0, 0, 0, 0};
         int categoryFlags[4] = {1, 1, 1, 1};
 
-        for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+        for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
           short combatClass = g_awUnitCombatClassBySlot[unit->orderType];
           if (unit->orderType == EncodeMilitaryUnitKind(kMilitaryUnitLightArtillery) ||
               unit->orderType == EncodeMilitaryUnitKind(kMilitaryUnitArtillery)) {
@@ -418,7 +418,7 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
             }
           } else {
             int weightedValue =
-                g_anUnitStrengthWeightPercentBySlot[unit->orderType] * unit->field_34 / 100;
+                g_anUnitStrengthWeightPercentBySlot[unit->orderType] * unit->strength34 / 100;
             if (combatClass >= 0) {
               for (int k = 0; k <= combatClass; ++k) {
                 categoryScores[k] += weightedValue;

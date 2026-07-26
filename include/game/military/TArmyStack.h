@@ -44,7 +44,7 @@ public:
   TArmyStackUnitNode* head14;   // +0x14 -- head of an embedded {TUnit*, next} node chain
   TArmyStackUnitNode* cursor18; // +0x18 -- traversal cursor over the chain
 
-  // Walk the unit chain re-seating every unit: hand each one its own field_C through
+  // Walk the unit chain re-seating every unit: hand each one its own orderTargetIndex0C through
   // MoveTo (slot 0x28) and then clear its orders via SetOrders(0, -1).
   // 0x004a7d20, __thiscall.
   void ReseatChainUnitsAndClearOrders();
@@ -66,8 +66,8 @@ public:
   // list and prepends it to the embedded node chain. 0x004a7a40.
   void AddFirstCountryUnitOfTypeToStack(short unitTag);
   // Walks the whole chain from head14 (via ResetCursorAndGetHeadUnit/
-  // AdvanceCursorAndGetUnit) and, for every unit with a positive field_34 (strength),
-  // grows field_38 (percent-scaled quality) by 35 if boosted else 20, capped at 400.
+  // AdvanceCursorAndGetUnit) and, for every unit with a positive strength34 (strength),
+  // grows experiencePercent38 (percent-scaled quality) by 35 if boosted else 20, capped at 400.
   // 0x004a82b0, __thiscall, 1 arg.
   void ApplyMeterGrowthToEligibleUnits(bool boosted);
   // Walks the chain accumulating a weighted meter sum and eligible-entry count into the

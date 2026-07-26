@@ -153,7 +153,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
           if (checkedRegion >= 0 && checkedRegion < 0x180) {
             unit = g_pGlobalMapState->cityScoreTable[checkedRegion].stationedUnitChain98;
           }
-          for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+          for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
             if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
               AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f, unitOrderWeight);
             }
@@ -165,7 +165,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
           if (checkedRegion >= 0 && checkedRegion < 0x180) {
             unit = g_pGlobalMapState->cityScoreTable[checkedRegion].stationedUnitChain98;
           }
-          for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+          for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
             short costPoints = unit->GetArmsCarried();
             if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
               int remainingBudget = remainingBudgetByNation[candidateNationIndex];
@@ -203,7 +203,7 @@ float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
   if (regionIndex >= 0 && regionIndex < 0x180) {
     unit = g_pGlobalMapState->cityScoreTable[regionIndex].stationedUnitChain98;
   }
-  for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+  for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
     AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f,
                                                   static_cast<float>(unitOrderWeight));
   }

@@ -40,7 +40,7 @@ public:
   int strength4; // +0x04 current strength; ApplyTacticalDamage floors at 0 -> state1c = 3
   TacticalTileIndex tileIndex8; // +0x08 tactical grid index (init -2 = not yet placed)
   int unitTypeC;                // +0x0c unit-type id; indexes the 0x669858/0x669898 per-type tables
-  int qualityLevel10;           // +0x10 = source unit field_38 / 100 at army init
+  int qualityLevel10;           // +0x10 = source unit experiencePercent38 / 100 at army init
   int ownerNationIndex14;       // +0x14 owning nation index (matched vs the stack's side)
   char selectedFlag18;          // +0x18
   unsigned char pad19[3];       // +0x19

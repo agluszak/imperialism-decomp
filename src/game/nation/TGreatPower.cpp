@@ -3427,7 +3427,7 @@ int TGreatPower::ComputeNationNavyOrderWeightedMovementScore() {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
     if (unit->GetCategory() > EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       score += g_anWeightedNeighborUnitScoreByType_006955F0[unit->orderType] *
-               (static_cast<short>(unit->field_38 / 100) + 10) / 10;
+               (static_cast<short>(unit->experiencePercent38 / 100) + 10) / 10;
     }
   }
   for (TShip* node = TShip::GetFirst(); node != 0; node = node->next) {

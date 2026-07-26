@@ -282,9 +282,9 @@ void TArmyMission::AccumulateMissionUnitPriorityContributionWithScaleMode(TMilit
 // FUNCTION: IMPERIALISM 0x0053cc10
 void AccumulateUnitOrderPriorityVectorContribution(TMilitaryUnit* unit, float* vector, float scale,
                                                    float weight) {
-  short quality = unit->field_38;
+  short quality = unit->experiencePercent38;
   short stat5 = unit->GetAttribute(5);
-  short strength = unit->field_34;
+  short strength = unit->strength34;
   float dampen = 1.0f - static_cast<float>(stat5) * weight * -0.0001f;
   scale = static_cast<float>(strength) * 0.002f *
           (1.0f - static_cast<float>(static_cast<short>(quality / 100)) * -0.1f) * scale;
@@ -416,7 +416,7 @@ float TArmyMission::ValueOf(TMilitaryUnit* candidateUnit) {
 
 // FUNCTION: IMPERIALISM 0x0053d4a0
 float TArmyMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector) {
-  if (static_cast<double>(candidateUnit->field_34) * 0.002 < 139069760.0) {
+  if (static_cast<double>(candidateUnit->strength34) * 0.002 < 139069760.0) {
     if (!IsANoBrainer()) {
       return -1000.0f;
     }
