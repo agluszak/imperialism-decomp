@@ -8,7 +8,7 @@ solved the same way: give each session its own Xvfb server and point `DISPLAY` a
 Selected with `IMPERIALISM_RUNTIME_DISPLAY`:
 
   virtual   private Xvfb per session (off-screen; needs an Xvfb binary on PATH)
-  host      the inherited DISPLAY -- the default, and what CI-less desktops get today
+  host      the inherited DISPLAY (explicit opt-in for visual/debugging work)
   :5        a specific display that is already running
 
 Off-screen runs seed `Managed=N` into the prefix (see tools/runtime/wine.py). With no
@@ -16,9 +16,11 @@ window manager present, Wine's managed-window path waits on a WM that never answ
 owning its windows outright is what makes the game paint normally, and it fixed the
 whole render-cache failure class off-screen.
 
-**The default is still `host`.** Two scenarios that pick a capital by screen coordinate
--- `random_game_enters_map` and `save_load_roundtrip` -- select a slightly different
-tile off-screen, because window decorations shift the mapping from pixel to tile. Their
+The default is `virtual`, so normal runtime-test runs cannot map a window on the
+developer's desktop or steal focus. Set `IMPERIALISM_RUNTIME_DISPLAY=host` explicitly
+for visual/debugging work. Two scenarios that pick a capital by screen coordinate --
+`random_game_enters_map` and `save_load_roundtrip` -- select a slightly different tile
+off-screen, because window decorations shift the mapping from pixel to tile. Their
 map-state expectations are therefore display-specific, and the difference is real game
 state (a few terrain counts move) rather than a harness artifact. Committing a second
 set of expectations would just move the problem, so the honest fix is to make those
@@ -62,7 +64,7 @@ def virtual_display(environment: dict[str, str], log_path: Path | None = None):
     DISPLAY, because a missing off-screen server is a comfort problem, not a
     correctness one.
     """
-    requested = os.environ.get("IMPERIALISM_RUNTIME_DISPLAY", "host").strip() or "host"
+    requested = os.environ.get("IMPERIALISM_RUNTIME_DISPLAY", "virtual").strip() or "virtual"
     if requested == "host":
         yield None
         return

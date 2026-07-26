@@ -10,6 +10,7 @@ RuntimeTestDescriptor g_descriptors[] = {
     {"boot_managers", BootManagersTest()},
     {"random_game_enters_map", RandomGameJourneyTest()},
     {"random_game_easy_skips_capital", EasyRandomGameTest()},
+    {"random_game_introductory_exits_newspaper", IntroductoryRandomGameTest()},
     {"easy_turns_advance", EndTurnTest()},
     {"city_screen_opens", CityScreenTest()},
     {"civilian_recruitment_selection", CivilianRecruitmentTest()},

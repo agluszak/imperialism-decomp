@@ -26,8 +26,8 @@ public:
   bool UsesRandomGameFlow() const override {
     return true;
   }
-  bool UsesEasyDifficulty() const override {
-    return true;
+  int DifficultyLevel() const override {
+    return 1;
   }
   bool RecordsGameFlow() const override {
     return true;
@@ -36,7 +36,7 @@ public:
     return true;
   }
 
-  void OnEasyMapReady() override {
+  void OnMapReadyWithoutCapitalSelection() override {
     phase = kActivateCityScreen;
     EnterScenarioStep("activating_city_screen", "easy_combined_map_ready_for_city_screen");
     RequestScenarioTick();

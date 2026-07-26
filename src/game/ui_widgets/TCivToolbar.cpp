@@ -12,6 +12,7 @@
 #include "game/map/TMapMgr.h"
 
 #include "game/ui_core/TControl.h"
+#include "game/ui_core/TPicture.h"
 #include "game/GameAssert.h"
 #include "game/mfc.h"
 #include "game/globals/prelude.h"
@@ -53,8 +54,8 @@ void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivUnit* selectedOrde
   if (selectedOrder == 0) {
     unitControl->SetEnabled(0, 1);
   } else {
-    static_cast<TCluster*>(unitControl)
-        ->SetSelectedChildTagAndRefresh(this->civilianClassId + 0x438);
+    static_cast<TPicture*>(unitControl)
+        ->SetPictureResourceIdAndRefresh(static_cast<short>(this->civilianClassId + 0x438), 1);
     unitControl->SetEnabled(1, 1);
   }
 

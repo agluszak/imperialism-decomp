@@ -2261,7 +2261,7 @@ address|matching|name
 0x4d20c0|1.0|TCivMgr::ICivMgr
 0x4d20e0|0.4931506849315068|TCivMgr::ClearCivilianSelectionHighlightsForNation
 0x4d2160|0.5899280575539568|TCivMgr::SelectFirstAvailableCivilianForNation
-0x4d2270|0.7920792079207921|TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler
+0x4d2270|0.8910891089108911|TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler
 0x4d2380|0.01834862385321101|TCivMgr::HandleCivilianTileSelectionOrReportClick
 0x4d2540|0.8041237113402062|TCivMgr::ResolveCivilianTileSelectionOrReportActionCode
 0x4d26d0|0.012345679012345678|TCivMgr::HandleCivilianTileOrderAction
@@ -5199,7 +5199,7 @@ address|matching|name
 0x58eaa0|1.0|TCivToolbar::TCivToolbar
 0x58ead0|1.0|TCivToolbar::`scalar deleting destructor'
 0x58eb00|1.0|TCivToolbar::~TCivToolbar
-0x58eb20|0.46540880503144655|TCivToolbar::RefreshCivilianCommandPanelForSelection
+0x58eb20|0.4567901234567901|TCivToolbar::RefreshCivilianCommandPanelForSelection
 0x58ec50|0.5896656534954408|TCivToolbar::RefreshCivilianStackButtonsForTile
 0x58eed0|0.47533632286995514|TCivToolbar::DoEvent
 0x58f050|0.5714285714285714|TCivDescription::CreateObject
