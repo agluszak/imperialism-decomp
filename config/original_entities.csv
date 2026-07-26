@@ -2279,9 +2279,7 @@ address|name|symbol|size|type|prototype|provenance
 4cac90|TUniversityView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4cace0|TUniversityView::DoStartup||1265|function|void DoStartup()|
 4cb320|TUniversityView::SetUnit||1105|function|void __thiscall SetUnit(short recruitmentCategory)|
-4cb8a0|TUniversityView::DoEvent||301|function|void __thiscall TUniversityView::DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
-4cb9cd|UpdateUniversityCountControlAndRefreshView||54|function|uint UpdateUniversityCountControlAndRefreshView(void)|
-4cba03|UpdateUniversityCountControlAndRefreshViewAlt||151|function|uint UpdateUniversityCountControlAndRefreshViewAlt(void)|
+4cb8a0|TUniversityView::DoEvent||506|function|void __thiscall TUniversityView::DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
 4cbb20|TUniversityView::UpdateFields||823|function|void UpdateFields()|
 4cbf30|TUniversityView::Free||34|function|undefined 'scalar_deleting_destructor'(void)|
 4cbf70|TUniversityView::Draw||711|function|void __thiscall RenderUniversityRecruitmentRequirementGrid(RECT * pClipRect)|

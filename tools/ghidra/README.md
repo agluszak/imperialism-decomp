@@ -37,7 +37,7 @@ Normal entrypoints are the just targets, not the module directly:
 
 The hot-path read-only inspect commands (`listing`, `decompile`, `xrefs` (to/from/both,
 thunk-hopping TO), `read-data`, `function-slice`, `jumptable`, `search`, `linear-disasm`,
-`raw-disasm`, `vtable-dump` — see `query_registry.COMMANDS`) each used to pay the full
+`raw-disasm`, `vtable-dump`, `check-function-extents` — see `query_registry.COMMANDS`) each used to pay the full
 pyghidra JVM + project-load cost (~15-30s) on every call. `daemon.py` opens the
 project/program **once** and serves those commands over a Unix-domain socket, so every
 call after the first is sub-second.
