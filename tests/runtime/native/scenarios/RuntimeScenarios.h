@@ -7,6 +7,7 @@ RuntimeTestCase* RandomGameJourneyTest();
 RuntimeTestCase* EasyRandomGameTest();
 RuntimeTestCase* EndTurnTest();
 RuntimeTestCase* CityScreenTest();
+RuntimeTestCase* CivilianRecruitmentTest();
 RuntimeTestCase* DiplomacyScreenTest();
 RuntimeTestCase* TradeScreenTest();
 RuntimeTestCase* MapZoomToggleTest();

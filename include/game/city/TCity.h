@@ -58,7 +58,7 @@ public:
   virtual void MakeTown(short selectedResourceType);
   // slot 0x11 — body 0x004b3b20: adopt the selected order/marker (TGreatPower slots
   // 0x3a/0x3b hand the new Frog City marker through this).
-  virtual void SetSelectedTownMarker(void* order);
+  virtual void SetSelectedTownMarker(void* townMarker);
   // slot 0x12 — body 0x004b4540: pack two shorts and write them to eventQueue274
   // (slot 0x38).
   virtual void AddTransportRequest(short low, short high);
@@ -135,7 +135,9 @@ public:
   // (entry 0x13 doubles as the +0xa4 labor reserve in 0x004b44d0).
   short reservedByType7e[0x17];
   class TGreatPower* ownerNationAc; // 0xAC — owning nation state (0x004b4dc0)
-  // +0xb0 — currently selected order; its +0x14 tile id drives the port-zone lookup
+  // UNRESOLVED_FIELD_ATTRIBUTION: +0xb0 is a TTown* while setting the home-city marker
+  // (0x4dfb70/0x4dfca0), but 0x4dfd30 can call TProductionOrder::Restock through the same
+  // stored pointer. Keep it opaque until the state transition/discriminator is recovered.
   void* selectedOrderB0; // +0xb0
   // +0xB4 — city power value displayed by TWarehouseView's 'powe' control and
   // snapshotted by the turn-event-0x2c packet.
@@ -218,8 +220,8 @@ public:
   short SelectedOrderTileId() const {
     if (selectedOrderB0 != 0) {
       short tileId;
-      const char* marker = static_cast<const char*>(selectedOrderB0);
-      memcpy(&tileId, marker + 0x14, sizeof(tileId));
+      const char* selectedRecord = static_cast<const char*>(selectedOrderB0);
+      memcpy(&tileId, selectedRecord + 0x14, sizeof(tileId));
       return tileId;
     }
     return 1;

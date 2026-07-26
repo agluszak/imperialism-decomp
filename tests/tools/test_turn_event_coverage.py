@@ -37,7 +37,7 @@ class TurnEventCoverageTests(unittest.TestCase):
         self.assertTrue(self.by_event[0x5DC]["factories"])
         self.assertIn("this->HandleTurnEventDialogFactorySlotF8", self.by_event[0x5DC]["hooks"])
         self.assertIn(
-            "this->HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons",
+            "this->ShowTerrainMap",
             self.by_event[0x7DD]["hooks"],
         )
         self.assertIn(
