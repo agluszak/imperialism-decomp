@@ -198,7 +198,11 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       this->SetMoveAmount(static_cast<short>(sellValue - 1));
       return;
     }
-    break;
+    // At or below one the original RETURNS (0x0058763e `jle` targets the epilogue at
+    // 0x005877be, a bare `ret 0xc`) -- it does not fall through to the base handler.
+    // Breaking here delegated to TAmtBarCluster::DoEvent, which resolves 'move'; the trade
+    // row has no such child, so it dereferenced null and crashed on the 1 -> 0 click.
+    return;
   }
   case 0x67:
     g_pUiRuntimeContext->AddPendingTurnOverlayCode(-1);

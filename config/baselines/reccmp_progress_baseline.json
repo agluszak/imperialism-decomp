@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
-  "git_branch": "fix/transport-availability",
-  "git_commit": "f822f6fda5c8719a3d83d90974bac3838483d6c5",
-  "git_commit_date": "2026-07-26T21:23:22+02:00",
+  "git_branch": "fix/trade-amtbar-crash",
+  "git_commit": "e315e94f320fd87ed991fcf0d0b97cdb1f3f0ca8",
+  "git_commit_date": "2026-07-26T21:24:41+02:00",
   "global_coverage_pct": 24.95424597364568,
   "global_orig_only_count": 8201,
   "global_recomp_only_count": 7981,
@@ -63,7 +63,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 12,
   "template_canonical_paired_count": 19,
-  "timestamp_utc": "2026-07-26T19:24:20+00:00",
+  "timestamp_utc": "2026-07-26T19:31:46+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
