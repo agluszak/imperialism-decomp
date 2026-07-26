@@ -277,13 +277,15 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     return;
   }
   default:
-    break;
+    // Out-of-range commands DO reach the base: the switch's range check (`ja 0x005877ac`
+    // at 0x005873f7) lands on a push/push/push + `call 0x00407a90` with ecx = this, an ILT
+    // thunk to TAmtBarCluster::DoEvent. Only the in-range guard-failure paths skip it, by
+    // jumping to the epilogue at 0x005877be which sits *after* that call.
+    TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
+    return;
   }
-  // No delegation to TAmtBarCluster::DoEvent from anywhere in this function: the original
-  // (0x005873e0) contains no call to it at all, and every one of its seven early exits
-  // jumps to the same bare `ret 0xc` epilogue at 0x005877be. The base handler resolves a
-  // 'move' child that trade rows do not have, so any path reaching it dereferences null --
-  // which is exactly how stepping a sell amount down at the minimum crashed.
+  // Nothing after the switch: a `break` out of an in-range case returns without touching
+  // the base, matching the 0x005877be exits.
 }
 
 // Returns early if UI mode is outside trade range (>3); otherwise reports
