@@ -1100,6 +1100,12 @@ void TViewMgr::DispatchNationActionToMainControl(int sourceNation, int arg1, int
 
 // FUNCTION: IMPERIALISM 0x005d7240
 void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
+  // Ground truth copies both halves of dialogPlacement08 into a stack POINT in the
+  // prologue (0x5d7266..0x5d7273: reads [this+0xc] then [this+8], stores them to the
+  // ESP0-32/ESP0-28 local pair) and later passes &that local as the factory packet's
+  // anchor (LEA ECX,[ESP+0x18]; PUSH ECX at 0x5d75df) -- so the anchor is this
+  // manager's dialog placement, not the (0,0) we were passing.
+  CPoint anchorPoint(dialogPlacement08);
   TView* mainView = g_pDisplayMgr->activeDialog;
   SetQuickDrawFillColor(0);
   SetQuickDrawStrokeColor(0xffffff);
@@ -1225,7 +1231,6 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
 
   TIncludeView* packet = ::new TIncludeView();
   CString emptyText(g_szEmptyString);
-  CPoint anchorPoint(0, 0);
   packet->BuildTurnEventFactoryPacket(nullptr, mainView, newCode, anchorPoint, &emptyText, 1);
   packet->DoPostCreate(0);
   packet->controlTag = kControlTagIncl; // 'Incl'
