@@ -48,14 +48,9 @@ struct TBitmapSurfaceNode {
   // pad06 at the same {pixelBits, stride, pad} layout (see above); never written by the
   // constructor (0x00495d00).
   short pad06;
-  int field08;
-  int field0c;
-  // pixelWidth10/pixelHeight14: the constructor (0x00495d00) sets these from the backing
-  // CDib's dimensions (CDib::CopyBitmapDimensionsToPoint). Note the descriptor init at
-  // 0x495eb0 re-derives clipRect.right/bottom from the same CDib call rather than reading
-  // these cached fields.
-  int pixelWidth10;
-  int pixelHeight14;
+  // The constructors treat +0x08..+0x17 as one rectangle: the default overload builds an
+  // empty CRect, while the allocating overload sets {0,0,width,height} from the CDib.
+  CRect bounds; // +0x08
   // bitDepth18: the constructor (0x00495d00) stores the low 16 bits of its third argument
   // (the bit-depth passed to `new CDib(width, height, bitDepth)`) here via a 16-bit write
   // `MOV word ptr [ESI+0x18], BX` -- so this is a `short`, not the DIB-derived height. The
@@ -64,6 +59,7 @@ struct TBitmapSurfaceNode {
   short bitDepth18;                                        // +0x18
   short pad1a;                                             // +0x1a alignment filler before `dib`
   CDib* dib;                                               // +0x1c
+  TBitmapSurfaceNode();                                    // 0x00495cc0
   TBitmapSurfaceNode(int width, int height, int bitDepth); // 0x00495d00
 };
 ASSERT_SIZE(TBitmapSurfaceNode, 0x20);

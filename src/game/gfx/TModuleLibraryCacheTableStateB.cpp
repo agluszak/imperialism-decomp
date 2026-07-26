@@ -408,6 +408,11 @@ COLORREF TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor(unsigned int p
 // TEMPLATE: IMPERIALISM 0x0049aef0
 // ?Serialize@?$CMap@FFPAUCacheRecord@@PAU1@@@UAEXAAVCArchive@@@Z
 
+// VC5 afxtempl.h body for the pointer-key m_tableB member.
+// TEMPLATE: IMPERIALISM 0x0049b190
+// ?RemoveKey@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@QAEHPAX@Z
+template BOOL CMap<void*, void*, CacheRecord*, CacheRecord*>::RemoveKey(void*);
+
 // TEMPLATE: IMPERIALISM 0x0049b270
 // ??1?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAE@XZ
 
@@ -415,6 +420,10 @@ COLORREF TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor(unsigned int p
 // and value elements.
 // TEMPLATE: IMPERIALISM 0x0049b330
 // ?Serialize@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAEXAAVCArchive@@@Z
+
+// VC5 afxtempl.h CPlex teardown for the short-key m_tableA member.
+// TEMPLATE: IMPERIALISM 0x0049b630
+// ?RemoveAll@?$CMap@FFPAUCacheRecord@@PAU1@@@QAEXXZ
 
 // VC5 emits afxtempl.h's InitHashTable body for each embedded CMap specialization.
 // These are MFC template code, not game-owned resize helpers.

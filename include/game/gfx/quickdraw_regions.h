@@ -17,9 +17,10 @@ struct Region {
   int attachRegistered; // +0x10 BOOL result of CRgn::Attach in the ctor / RectRgn
   CRgn rgn;             // +0x14 the real GDI region (m_hObject at +0x18)
 
-  Region();                  // 0x004954a0
-  ~Region();                 // 0x00495520
-  void RefreshBoundingBox(); // 0x004955f0
+  Region();                               // 0x004954a0
+  ~Region();                              // 0x00495520
+  BOOL ReplaceWithRect(const RECT* rect); // 0x004955b0
+  void RefreshBoundingBox();              // 0x004955f0
 };
 ASSERT_SIZE(Region, 0x1c);
 
@@ -27,16 +28,17 @@ typedef Region** RgnHandle;
 
 // Mac QuickDraw API surface (names follow Inside Macintosh; QD prefix only where
 // a Win32 name collides).
-void InitializeCityBuildingControlRegions_Impl(RgnHandle region, int x, int y); // 0x00497b30
-RgnHandle NewRgn(void);                                                         // 0x00495820
-RgnHandle DisposeRgn(RgnHandle rgn);                                            // 0x00495610
-void RectRgn(RgnHandle rgn, RECT* rect);                                        // 0x004958e0
-void GetClip(RgnHandle rgn);                                                    // 0x00495920
-void SetClip(RgnHandle rgn);                                                    // 0x00495a30
-void ClipRect(RECT* rect);                                                      // 0x00495a80
-void UnionRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst);                   // 0x004977a0
-void SetEmptyRgn(RgnHandle rgn);                                                // 0x00497810
-void QDFrameRgn(RgnHandle rgn);                                                 // 0x00497860
+void OffsetRgn(RgnHandle region, int horizontalOffset, int verticalOffset); // 0x00497b30
+void RefreshRgnBoundingBox(RgnHandle region);                               // 0x00497b70
+RgnHandle NewRgn(void);                                                     // 0x00495820
+RgnHandle DisposeRgn(RgnHandle rgn);                                        // 0x00495610
+void RectRgn(RgnHandle rgn, RECT* rect);                                    // 0x004958e0
+void GetClip(RgnHandle rgn);                                                // 0x00495920
+void SetClip(RgnHandle rgn);                                                // 0x00495a30
+void ClipRect(RECT* rect);                                                  // 0x00495a80
+void UnionRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst);               // 0x004977a0
+void SetEmptyRgn(RgnHandle rgn);                                            // 0x00497810
+void QDFrameRgn(RgnHandle rgn);                                             // 0x00497860
 // Combine two clip regions into dst (empty/copy/RGN_DIFF cases) and refresh its box. 0x00497540
 void CombineClipRegionsWithEmptyHandling(RgnHandle srcA, RgnHandle srcB, RgnHandle dst);
 // Fill the region with a solid foreground-color brush (CBrush(COLORREF) form). 0x00497940
@@ -46,13 +48,17 @@ void QDPaintRgn(RgnHandle rgn);
 // Intersect the clip region with `rect` (RGN_AND) and refresh its bounding box. 0x00498070
 void IntersectClipRegionWithRectAndUpdateBounds(RgnHandle clipRgn, RECT* rect);
 void SetRectRgn(RgnHandle rgn, short left, short top, short right,
-                short bottom);              // 0x00498be0
-void CopyRgn(RgnHandle src, RgnHandle dst); // 0x00497bb0
-void OpenRgn(void);                         // 0x00497f60
-void CloseRgn(RgnHandle dst);               // 0x00497f90
-void QDFrameRect(RECT* rect);               // 0x00498180 (Win32 ::FrameRect collides)
-unsigned char EmptyRgn(RgnHandle rgn);      // 0x00498aa0
-int PtInRgn(CPoint* point, RgnHandle rgn);  // 0x00495650
+                short bottom);                               // 0x00498be0
+unsigned char EqualRgn(RgnHandle first, RgnHandle second);   // 0x00498c30
+void CopyRgn(RgnHandle src, RgnHandle dst);                  // 0x00497bb0
+void SectRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst); // 0x00498000
+void OpenRgn(void);                                          // 0x00497f60
+void CloseRgn(RgnHandle dst);                                // 0x00497f90
+void QDFrameRect(RECT* rect);              // 0x00498180 (Win32 ::FrameRect collides)
+void QDFrameOval(RECT* rect);              // 0x00498310
+void QDPaintOval(RECT* rect);              // 0x004986d0
+unsigned char EmptyRgn(RgnHandle rgn);     // 0x00498aa0
+int PtInRgn(CPoint* point, RgnHandle rgn); // 0x00495650
 // QuickDraw MapPt: rescale a point from srcRect's space into dstRect's, per axis.
 void MapPt(int* point, RECT* srcRect, RECT* dstRect); // 0x004956e0
 // Byte-identical unfolded second copy kept by the retail image.

@@ -291,10 +291,6 @@ address|name|symbol|size|type|prototype|provenance
 47b0c0|CopyRgbQuadTableToBitmapSurfacePalette||65|function|undefined CopyRgbQuadTableToBitmapSurfacePalette()|
 47b130|CDib::AdoptPaletteAndCopyRgbQuadTable||82|function|undefined AdoptPaletteAndCopyRgbQuadTable()|
 47b280|CreateDibBitmapFromStoredInfo||50|function|undefined CreateDibBitmapFromStoredInfo()|
-47b53b|thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b53b||9|function|undefined thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b53b(HDC param_1, HPALETTE param_2)|
-47b544|thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b544||9|function|undefined thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b544(HDC param_1, HPALETTE param_2)|
-47b54d|thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b54d||9|function|undefined thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b54d(HDC param_1, HPALETTE param_2)|
-47b55d|WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d||93|function|undefined WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d(HDC param_1, HPALETTE param_2)|
 47b6d0|ReadBitmapStreamIntoSurfaceState||517|function|undefined ReadBitmapStreamIntoSurfaceState()|
 47b9f0|WriteBmpHeaderAndDataOffsetToStreamWithSehGuard||160|function|undefined WriteBmpHeaderAndDataOffsetToStreamWithSehGuard()|
 47bb10|ReadBitmapStreamStateAndWriteBmpHeaderThunk||56|function|undefined ReadBitmapStreamStateAndWriteBmpHeaderThunk()|
@@ -552,7 +548,7 @@ address|name|symbol|size|type|prototype|provenance
 484af0|CMainFrame::CreateObject|?CreateObject@CMainFrame@@SGPAVCObject@@XZ|143|function|CMainFrame * __cdecl CreateObject(void)|rtti
 484bb0|CMainFrame::GetRuntimeClass|?GetRuntimeClass@CMainFrame@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
 484bd0|CMainFrame::GetMessageMap|?GetMessageMap@CMainFrame@@MBEPBUAFX_MSGMAP@@XZ|6|function|protected: virtual struct AFX_MSGMAP const * __thiscall CMainFrame::GetMessageMap(void)const|
-484bf0|CMainFrame::CMainFrame|??0CMainFrame@@QAE@XZ|52|function|CMainFrame* __thiscall CMainFrame::CMainFrame(void)|curated
+484bf0|CMainFrame::CMainFrame|??0CMainFrame@@QAE@XZ|32|function|CMainFrame* __thiscall CMainFrame::CMainFrame(void)|curated
 484c40|CMainFrame::`scalar deleting destructor'|??_GCMainFrame@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 484c70|TMacViewMgr::DestroyTMacViewMgrObject||108|function|undefined DestroyTMacViewMgrObject()|
 484d00|TMacViewMgr::TMacViewMgr_OnMsg_WM_CREATE_Impl||1|function|undefined TMacViewMgr_OnMsg_WM_CREATE_Impl()|
@@ -1179,10 +1175,11 @@ address|name|symbol|size|type|prototype|provenance
 4953a0|ResetQuickDrawStrokeState||47|function|undefined ResetQuickDrawStrokeState()|
 4953e0|RenderUiBitmapOnRuntimeSurfaceContext_Impl||10|function|undefined RenderUiBitmapOnRuntimeSurfaceContext_Impl()|
 495400|RenderUiBitmapOnRuntimeSurfaceContext_Impl_At00495400||38|function|undefined RenderUiBitmapOnRuntimeSurfaceContext_Impl_At00495400()|
+495440|TBitmapResourceLoader::GetLoaderFlags||4|function|unsigned char TBitmapResourceLoader::GetLoaderFlags() const|
 495460|OrphanCallChain_C1_I15_00495460||36|function|undefined OrphanCallChain_C1_I15_00495460()|
 4954a0|WrapperFor_AttachRegionHandleToClipStateAndRegister_At004954a0||91|function|undefined WrapperFor_AttachRegionHandleToClipStateAndRegister_At004954a0()|
 495520|Region::~Region||102|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At00495520()|
-4955b0|CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0||45|function|undefined Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0()|
+4955b0|Region::ReplaceWithRect||45|function|BOOL Region::ReplaceWithRect(const RECT* rect)|
 4955f0|BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl||12|function|undefined BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl()|
 495610|DisposeRgn||46|function|RgnHandle __cdecl DisposeRgn(RgnHandle region)|
 495650|PtInRgn||107|function|int __cdecl IsPointInsideHitRegion(CPoint* point, int hitArg)|
@@ -1197,11 +1194,13 @@ address|name|symbol|size|type|prototype|provenance
 495b70|TBitmapResourceLoader::EnsureBitmapResourceLoadedAndCopyRectSize||111|function|void EnsureBitmapResourceLoadedAndCopyRectSize()|
 495c00|TBitmapResourceLoader::ReleaseBitmapResource||35|function|void ReleaseBitmapResource(void)|
 495c40|BlitBitmapResourceLoaderToActiveDc||93|function|void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader **handle, RECT *bounds)|
+495cc0|TBitmapSurfaceNode::TBitmapSurfaceNode||44|function|TBitmapSurfaceNode::TBitmapSurfaceNode()|
 495d00|TBitmapSurfaceNode::TBitmapSurfaceNode|??0TBitmapSurfaceNode@@QAE@HHH@Z|212|function|TBitmapSurfaceNode * __thiscall TBitmapSurfaceNode(int width, int height, int bitDepth)|windows_ctor_listing
 495e20|TBitmapSurfaceContextDescriptor::TBitmapSurfaceContextDescriptor|??0TBitmapSurfaceContextDescriptor@@QAE@XZ|103|function|TBitmapSurfaceContextDescriptor * __thiscall TBitmapSurfaceContextDescriptor(void)|windows_ctor_listing
 495eb0|TBitmapSurfaceContextDescriptor::InitializeSurfaceNode||220|function|bool InitializeSurfaceNode(int width, int height, int bitDepth)|
 495fd0|TBitmapSurfaceContextDescriptor::ReleaseSurfaceNode||134|function|void ReleaseSurfaceNode()|
 496090|BindGWorldSurfaceToMemoryDC||146|function|void __cdecl BindGWorldSurfaceToMemoryDC(CDib * dibSurface, HDC referenceDc)|windows_listing
+496160|DisposeQuickDrawMemoryDC||64|function|void DisposeQuickDrawMemoryDC(void)|
 4961b0|SetGWorld||138|function|void __cdecl SetGWorld(TQuickDrawSurfaceContext * context, int flags)|quickdraw_toolbox_identity
 496270|GetGWorld||24|function|void __cdecl GetGWorld(TQuickDrawSurfaceContext ** outContext, int * outFlags)|quickdraw_toolbox_identity
 4962a0|GetGWorldPixMap||8|function|TBitmapSurfaceNode ** __cdecl GetGWorldPixMap(TQuickDrawSurfaceContext * context)|quickdraw_toolbox_identity
@@ -1225,7 +1224,8 @@ address|name|symbol|size|type|prototype|provenance
 497860|TDiplomacyMapView::FrameRegionOnHdcAndReleaseBrushState||165|function|undefined FrameRegionOnHdcAndReleaseBrushState()|
 497940|FillClipRegionWithForegroundBrush||160|function|void FillClipRegionWithForegroundBrush(RgnHandle rgn)|
 497a10|QDPaintRgn||183|function|void QDPaintRgn(RgnHandle rgn)|
-497b30|InitializeCityBuildingControlRegions_Impl||42|function|void InitializeCityBuildingControlRegions_Impl(RgnHandle region, int x, int y)|
+497b30|OffsetRgn||42|function|void OffsetRgn(RgnHandle region, int horizontalOffset, int verticalOffset)|
+497b70|RefreshRgnBoundingBox||45|function|void RefreshRgnBoundingBox(RgnHandle region)|
 497bb0|CopyRgn||56|function|undefined CombineOptionalSourceRegionIntoDestinationAndUpdateBox()|
 497c00|QDLoadResource||3|function|undefined NoOpRuntimeCallback_00497c00()|
 497c80|SetQuickDrawTextOriginWithContextOffset||102|function|undefined SetQuickDrawTextOriginWithContextOffset()|
@@ -1233,10 +1233,12 @@ address|name|symbol|size|type|prototype|provenance
 497ef0|BitMapToRegion||76|function|int BitMapToRegion(RgnHandle rgn, TBitmapSurfaceNode * surface)|
 497f60|OpenRgn||20|function|undefined RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl()|
 497f90|CloseRgn||65|function|undefined WrapperFor_LookupHandleMapEntryWithCreate_At00497f90()|
+498000|SectRgn||71|function|void SectRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst)|
 498070|IntersectClipRegionWithRectAndUpdateBounds||197|function|undefined IntersectClipRegionWithRectAndUpdateBounds()|
 498180|QDFrameRect||319|function|undefined DrawFrameRectOrUpdateClipRegion()|
 4985b0|InitializeBrushStateVtableAndClearHandle||16|function|undefined InitializeBrushStateVtableAndClearHandle()|
 498610|WrapperFor_DeleteRegionHandleFromClipState_At00498610||111|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At00498610()|
+4986a0|TScopedQuickDrawPen::`scalar deleting destructor'|??_GTScopedQuickDrawPen@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 498980|FillRectWithQuickDrawBrushAndContextOffset||215|function|undefined FillRectWithQuickDrawBrushAndContextOffset()|
 498aa0|EmptyRgn||76|function|undefined GetRegionBoxToRectIfPresent()|
 498b10|ProbeRectEmptyAfterCopyToLocal||34|function|undefined ProbeRectEmptyAfterCopyToLocal()|
@@ -1244,6 +1246,7 @@ address|name|symbol|size|type|prototype|provenance
 498b80|GetQuickDrawCursor||30|function|QuickDrawCursorHandle __cdecl GetQuickDrawCursor(short cursorId)|
 498bb0|SectRect||22|function|undefined IntersectRectWrapper()|
 498be0|SetRectRgn||50|function|void __cdecl SetRectRgn(RgnHandle rgn, short left, short top, short right, short bottom)|
+498c30|EqualRgn||30|function|unsigned char EqualRgn(RgnHandle first, RgnHandle second)|
 498c60|NoOpModalAnimWaitBracketHookA_00498c60||1|function|undefined4 __cdecl NoOpModalAnimWaitBracketHookA_00498c60()|
 498c80|NoOpModalAnimWaitBracketHookB_00498c80||1|function|undefined4 __cdecl NoOpModalAnimWaitBracketHookB_00498c80()|
 498ca0|HiliteColor||1|function|void HiliteColor(const RGBQUAD *color)|
@@ -2092,7 +2095,7 @@ address|name|symbol|size|type|prototype|provenance
 4c8390|TShipyardView::DoStartup||1337|function|void DoStartup()|
 4c8a20|WrapperFor_thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext_At004c8a20||24|function|undefined WrapperFor_thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext_At004c8a20()|
 4c8a50|TShipyardView::UpdateFields||71|function|void UpdateFields()|
-4c8ac0|TShipyardView::DoEvent||531|function|void __thiscall TShipyardView::DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
+4c8ac0|TShipyardView::DoEvent||329|function|void __thiscall TShipyardView::DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
 4c8d70|TShipyardView::SetShip||774|function|void __thiscall SetShip(short shipType)|
 4c9150|TShipyardView::Draw||1274|function|void __thiscall RenderCityViewProductionDialogMetrics(int pDialogState, int * pRenderRectData)|
 4c97c0|TShipyardView::GetCostString||519|function|void GetCostString(CString * output, short actionIndex)|
@@ -2113,7 +2116,7 @@ address|name|symbol|size|type|prototype|provenance
 4cac90|TUniversityView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4cace0|TUniversityView::DoStartup||1265|function|void DoStartup()|
 4cb320|TUniversityView::SetUnit||1105|function|void __thiscall SetUnit(short recruitmentCategory)|
-4cb8a0|TUniversityView::DoEvent||506|function|void __thiscall TUniversityView::DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
+4cb8a0|TUniversityView::DoEvent||301|function|void __thiscall TUniversityView::DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
 4cbb20|TUniversityView::UpdateFields||823|function|void UpdateFields()|
 4cbf30|TUniversityView::Free||34|function|undefined 'scalar_deleting_destructor'(void)|
 4cbf70|TUniversityView::Draw||711|function|void __thiscall RenderUniversityRecruitmentRequirementGrid(RECT * pClipRect)|
@@ -2150,7 +2153,7 @@ address|name|symbol|size|type|prototype|provenance
 4ceda0|TArmoryView::TArmoryView||32|function|undefined TArmoryView()|
 4cedd0|TArmoryView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4cee20|TArmoryView::DoStartup||1048|function|void DoStartup()|
-4cf350|TArmoryView::DoEvent||492|function|void __thiscall TArmoryView::DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
+4cf350|TArmoryView::DoEvent||287|function|void __thiscall TArmoryView::DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
 4cf5c0|TArmoryView::UpdateFields||1217|function|void UpdateFields()|
 4cfbd0|TArmoryView::RefreshCityViewProductionDetails||1748|function|void __thiscall RefreshCityViewProductionDetails(short nBuildingSlotId)|
 4d0470|TArmoryView::Free||34|function|undefined HandleArmoryViewCloseAndMaybePostCommand23F8()|
@@ -3066,7 +3069,7 @@ address|name|symbol|size|type|prototype|provenance
 50e600|OrphanTiny_ThisAdjustJump_a4_0050e600||11|function|undefined OrphanTiny_ThisAdjustJump_a4_0050e600()|
 50e620|TMapMgr::ReadFrom||293|function|undefined WrapperFor_HandleCityDialogNoOpSlot18_At0050e620(int * param_1)|
 50e7a0|TMapMgr::WriteTo||200|function|undefined WrapperFor_HandleCityDialogNoOpSlot14_At0050e7a0(int * param_1)|
-50e8b0|TMapMgr::AllocateAndResetTerrainAndCityScoreTables||747|function|void TMapMgr::AllocateAndResetTerrainAndCityScoreTables(void)|
+50e8b0|TMapMgr::AllocateAndResetTerrainAndCityScoreTables||81|function|void TMapMgr::AllocateAndResetTerrainAndCityScoreTables(void)|
 50ec60|Province::Province||18|function|Province* __thiscall Province::Province(void)|construction+shared_city_record_layout
 50ec90|TMapMgr::BuildOrLoadGlobalMapStateForSession||874|function|char __thiscall BuildOrLoadGlobalMapStateForSession(const char * mapStreamName, char * tuningOverride)|
 50f200|TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream||337|function|undefined LoadPoliticalMapRegionSubtypeTableFromResourceStream()|
@@ -4254,8 +4257,8 @@ address|name|symbol|size|type|prototype|provenance
 564570|TOcean::FindMapActionContextContainingNodeByIndex||97|function|TZone* __thiscall FindMapActionContextContainingNodeByIndex(int cityRecordIndex)|
 564600|TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh||116|function|TTaskForce* __thiscall EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* zone)|
 5647d0|`dynamic initializer for 'g_scaledShortConst_6A4028''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A4028''(void)|library
-564800|WrapperFor_thunk_MapTurnEventCodeToPaletteIndex_At00564800||19|function|undefined WrapperFor_thunk_MapTurnEventCodeToPaletteIndex_At00564800()|
-564830|WrapperFor_thunk_MapTurnEventCodeToPaletteIndex_At00564830||19|function|undefined WrapperFor_thunk_MapTurnEventCodeToPaletteIndex_At00564830()|
+564800|`dynamic initializer for 'g_aOceanMapOwnerPaletteIndexByNationTag''||19|function|void __cdecl `dynamic initializer for 'g_aOceanMapOwnerPaletteIndexByNationTag''(void)|
+564830|`dynamic initializer for 'g_aOceanMapBorderPaletteIndexByNationTag''||19|function|void __cdecl `dynamic initializer for 'g_aOceanMapBorderPaletteIndexByNationTag''(void)|
 564860|TMilitaryPageView::CreateObject|?CreateObject@TMilitaryPageView@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
 564900|TMilitaryPageView::GetRuntimeClass||6|function|undefined GetTMilitaryPageViewClassNamePointer()|rtti
 564920|TMilitaryPageView::ConstructTMilitaryPageViewBaseState||28|function|undefined ConstructTMilitaryPageViewBaseState()|
@@ -5856,7 +5859,7 @@ address|name|symbol|size|type|prototype|provenance
 5c3840|TMilitaryUnit::UpgradeRequirements||113|function|void __thiscall UpgradeRequirements(short& candidateSlot, short& armsCost, short& cashCost, short& fuelCost)|mac_oracle
 5c38e0|TMilitaryUnit::FindUnitByUID||133|function|TMilitaryUnit* __cdecl FindUnitByUID(int unitId)|mac_oracle
 5c3ad0|`dynamic initializer for 'g_scaledShortConst_6A5AE8''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A5AE8''(void)|library
-5c3b00|WrapperFor_thunk_GetTickCountDiv16_At005c3b00||15|function|undefined WrapperFor_thunk_GetTickCountDiv16_At005c3b00()|
+5c3b00|`dynamic initializer for 'g_zoneStatusCodePrngSeed_006a5aec''||15|function|void __cdecl `dynamic initializer for 'g_zoneStatusCodePrngSeed_006a5aec''(void)|
 5c3b40|Function_005c3b40||19|function|undefined4 Function_005c3b40(void)|
 5c3b70|LoadBitmapResourceSurfaceAndRestoreQuickDrawContext||336|function|TQuickDrawSurfaceContext * __cdecl LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId)|windows_listing
 5c3d20|ResolveUiThemeColor||201|function|undefined ResolveUiThemeColor()|
@@ -6156,9 +6159,9 @@ address|name|symbol|size|type|prototype|provenance
 5e4a60|TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1)|
 5e4a90|ResizeDwordPointerArrayAndZeroNewSlots||310|function|undefined ResizeDwordPointerArrayAndZeroNewSlots()|
 5e4d50|`dynamic initializer for 'g_scaledShortConst_6A60B8''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A60B8''(void)|library
-5e4d80|WrapperFor_AppendPointerToGlobalVectorAsStatus_At005e4d80||40|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At005e4d80()|
-5e4dc0|ReleaseGlobalDirectSoundDeviceAndChannels||10|function|void __cdecl ReleaseGlobalDirectSoundDeviceAndChannels(void)|
-5e4de0|ResetAndOpenGlobalCdAudioDevice||24|function|void __cdecl ResetAndOpenGlobalCdAudioDevice(void)|
+5e4d80|`dynamic initializer for 'g_soundResourceManager''||40|function|void __cdecl `dynamic initializer for 'g_soundResourceManager''(void)|
+5e4dc0|TSoundResourceManager::`dynamic atexit destructor'||10|function|undefined DynamicAtexitDestructor()|
+5e4de0|`dynamic initializer for 'g_cdAudioDevice''||24|function|void __cdecl `dynamic initializer for 'g_cdAudioDevice''(void)|
 5e4e70|TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists||192|function|void __thiscall InitializeSoundSubsystemAndAllocateChannelLists(int handlerTag)|
 5e4f60|TSoundPlayer::ReturnConstantTrue_SoundPredicate||3|function|undefined ReturnConstantTrue_SoundPredicate()|
 5e4f80|TSoundPlayer::RequestDirectSoundInitIfAllowed||22|function|undefined RequestDirectSoundInitIfAllowed()|
@@ -8381,7 +8384,6 @@ address|name|symbol|size|type|prototype|provenance
 662960|TSimMgr::classTSimMgr|||global||
 662978|g_anScenarioScriptInstructionTags|||global||
 662b00|TResizableByteSink::'vftable'|||global||
-662b90|g_pSmallViewsEmptyText_00662B90|||global||manual_recovery
 662db8|TArrowsControl::classTArrowsControl|||global||
 662dd0|TSidewaysArrow::classTSidewaysArrow|||global||
 662de8|TUpDownView::classTUpDownView|||global||
@@ -8528,7 +8530,6 @@ address|name|symbol|size|type|prototype|provenance
 66d8a0|TNextTradeCommand::classTNextTradeCommand|||global||
 66d8e0|g_TradePowerIdentity_0066D8E0|||global||
 66dad0|g_tradeCommodityRowTagTable|||global||
-66efd0|g_strategicMapStatusIconTagTable|||global||
 66db50|g_cstrTradeTotalsBalanceSubstitution0066DB50|||global||
 66dba0|TTradeScreenPicture::classTTradeScreenPicture|||global||
 66dbb8|TDealBookPicture::classTDealBookPicture|||global||
@@ -8740,7 +8741,6 @@ address|name|symbol|size|type|prototype|provenance
 694b38|g_szUiLevel1_00694B38|||global||
 694b48|CDib::classCDib|||global||
 694c50|g_useCompatibleBitmapBlit|||global||
-694cc0|g_szDiplomacyDialogsSourcePath_00694CC0|||global||windows_listing
 694d10|g_szIncludeViewSourcePath_00694D10|||global||
 694eb8|TObject::classTObject|||global||
 694fc8|g_szUiNilPointerMessage|||global||
@@ -8813,7 +8813,6 @@ address|name|symbol|size|type|prototype|provenance
 6967d4|g_cachedAiCityActionNationSlot_006967d4|||global||
 6967d8|g_cachedAiCityActionTurnTick_006967d8|||global||
 696860|s_SourcePathUDefenseMinister_00696860|||global||
-696948|g_awDiplomacyGrantValueTable|||global||
 696950|g_awDiplomacyTradePolicyIconValueTable|||global||
 696960|g_diplomacyActionButtonTagTable_00696960|||global||
 696978|g_aDiplomacyActionTopicTabTags|||global||
@@ -9547,7 +9546,6 @@ address|name|symbol|size|type|prototype|provenance
 6a141c|g_pUiResourceHead|||global||
 6a1420|g_pUiResourceContext|||global||
 6a143c|g_McAppUiFlag_006A143C|||global||
-6a15cc|g_diplomacyDialogAssertGuard_006A15CC|||global||windows_listing
 6a15e0|g_RuntimeSelectionRecords006a15e0|||global||
 6a17b0|g_nIncludeViewAssertGate_006A17B0|||global||
 6a17c4|g_nIncludeViewPointerAssertGate_006A17C4|||global||
@@ -9610,8 +9608,10 @@ address|name|symbol|size|type|prototype|provenance
 6a1db4|g_bQuickDrawStrokePairDirty|||global||
 6a1dbc|g_hQuickDrawSavedBitmap|||global||
 6a1dc0|g_pGlobalViewportRectDefaultsRecord|||global||
+6a1dc4|g_QuickDrawRegionBoundsAssertGate|||global||
 6a1dc8|g_QuickDrawSetCursorAssertGate|||global||
 6a1dcc|g_QuickDrawGetCursorAssertGate|||global||
+6a1dd0|g_QuickDrawEqualRgnAssertGate|||global||
 6a1e20|g_ResetStateDword6A1E20|||global||
 6a1e24|g_ResetStateDword6A1E24|||global||
 6a1e48|g_ResetStateDword6A1E48|||global||
@@ -9670,7 +9670,6 @@ address|name|symbol|size|type|prototype|provenance
 6a33b4|g_MapInteractionPreviewRowParity_006a33b4|||global||
 6a33b8|g_MapInteractionPreviewColumnParity_006a33b8|||global||
 6a33d0|g_MapPreviewScaleY6A33D0|||global||
-6a3448|g_MapPreviewVerticalOffset6A3448|||global||
 6a3410|g_MapPreviewScaleX6A3410|||global||
 6a3450|g_pCitySiteCachedPrimaryRenderSurfaceContext|||global||
 6a3470|g_mapGenMountainQuota_006a3470|||global||
@@ -9763,8 +9762,6 @@ address|name|symbol|size|type|prototype|provenance
 6a58c8|g_defaultDropShadowTextColor|||global||
 6a590c|g_pCursorControlPanel|||global||
 6a59e0|g_ptControlStringModalMessage|||global||
-6a5a00|g_offerDeskSheetPosition_006a5a00|||global||listing,mac_resource
-6a5a28|g_offerDeskOffscreenPosition_006a5a28|||global||listing,mac_resource
 6a5aec|g_zoneStatusCodePrngSeed_006a5aec|||global||
 6a5af0|g_anProvinceNameOrdinalByNationSlot_006a5af0|||global||
 6a5b58|g_ptCitySiteSelectionDialogPlacement|||global||
@@ -9812,5 +9809,13 @@ address|name|symbol|size|type|prototype|provenance
 6239f0|_$E355|_$E355|18|function||
 623abc|_$E350|_$E350|18|function||
 623af4|_$E355|_$E355|18|function||
+662b90|g_pSmallViewsEmptyText_00662B90|||global||manual_recovery
+66efd0|g_strategicMapStatusIconTagTable|||global||
+694cc0|g_szDiplomacyDialogsSourcePath_00694CC0|||global||windows_listing
+696948|g_awDiplomacyGrantValueTable|||global||
 698010|s_GameName_00698010|||global||
 69801c|s_PlayerName_0069801c|||global||
+6a15cc|g_diplomacyDialogAssertGuard_006A15CC|||global||windows_listing
+6a3448|g_MapPreviewVerticalOffset6A3448|||global||
+6a5a00|g_offerDeskSheetPosition_006a5a00|||global||listing,mac_resource
+6a5a28|g_offerDeskOffscreenPosition_006a5a28|||global||listing,mac_resource

@@ -120,6 +120,15 @@ public:
 
 class TSoundResourceManager {
 public:
+  TSoundResourceManager() : m_device(0), m_module(0) {
+    for (int channel = 0; channel < 6; ++channel) {
+      m_channels[channel] = 0;
+    }
+  }
+  ~TSoundResourceManager() {
+    ReleaseDirectSoundDeviceAndChannels();
+  }
+
   // 0x0049c240 — rewind channel `slot` to position 0 and (re)start playback.
   int UpdateLocalizationAudioSlot(int slot);
   // 0x0049c290 — load a wave file by path and copy it into channel `slot`'s buffer.

@@ -9,6 +9,7 @@
 #include "game/assets/TAssetMgr.h"
 #include "game/ui_core/TEditText.h"
 #include "game/net/TJoinSelectorDialog.h"
+#include "game/net/TNetMgr.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
 #include "game/globals/prelude.h"
@@ -81,6 +82,12 @@ BOOL TDirectPlaySessionManagerBase::OnEnumerateJoinableSession(
   (void)flags;
   TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\DirectPlay.cpp", 0x76);
   return FALSE;
+}
+
+// FUNCTION: IMPERIALISM 0x0047fb80
+BOOL TDirectPlaySessionManagerBase::CreateDirectPlayLobbyAndStoreResult() {
+  lastErrorCode0c = DirectPlayLobbyCreateA(0, &directPlayLobby08, 0, 0, 0);
+  return lastErrorCode0c >= 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0047fcb0
@@ -358,6 +365,35 @@ BOOL TWNetSessionManager::SetLocalPlayerDataAndStoreResult(LPVOID data, DWORD si
 BOOL TDirectPlaySessionManagerBase::GetPlayerData(DPID playerId, void* buffer, DWORD* sizeInOut) {
   lastErrorCode0c = directPlayInterface04->GetPlayerData(playerId, buffer, sizeInOut, 0);
   return lastErrorCode0c >= 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005e2900
+static BOOL FAR PASCAL RecordHostPlayerIdDuringEnumeration(DPID dpId, DWORD dwPlayerType,
+                                                           LPCDPNAME lpName, DWORD dwFlags,
+                                                           LPVOID lpContext) {
+  (void)dwPlayerType;
+  (void)lpName;
+  (void)dwFlags;
+  TDirectPlaySessionManagerBase* session = static_cast<TDirectPlaySessionManagerBase*>(lpContext);
+  DWORD playerRole = 0;
+  DWORD playerRoleSize = sizeof(playerRole);
+  if (session->GetPlayerData(dpId, &playerRole, &playerRoleSize) == 0) {
+    g_pNetMgr006a6014->HandleError(session->lastErrorCode0c);
+    return FALSE;
+  }
+  if (playerRole == 1) {
+    session->broadcastPlayerId64 = dpId;
+    return FALSE;
+  }
+  return TRUE;
+}
+
+// FUNCTION: IMPERIALISM 0x005e2980
+BOOL TDirectPlaySessionManagerBase::FindHostPlayerIdByEnumeration() {
+  broadcastPlayerId64 = 0;
+  lastErrorCode0c = directPlayInterface04->EnumPlayers(0, RecordHostPlayerIdDuringEnumeration, this,
+                                                       DPENUMPLAYERS_REMOTE);
+  return lastErrorCode0c >= 0 && broadcastPlayerId64 != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e2a20

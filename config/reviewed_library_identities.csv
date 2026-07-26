@@ -620,7 +620,7 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x00612828|CDC::StartDocA|?StartDocA@CDC@@QAEHPBD@Z|public: int __thiscall CDC::StartDocA(char const *)|nafxcw|wingdi.obj|object_matcher:unique:high (accepted 2026-07)
 0x00612897|CDC::RestoreDC|?RestoreDC@CDC@@UAEHH@Z|public: virtual int __thiscall CDC::RestoreDC(int)|nafxcw|wingdi.obj|object_matcher:unique:high (accepted 2026-07)
 0x006128ec|CDC::SelectStockObject|?SelectStockObject@CDC@@UAEPAVCGdiObject@@H@Z|public: virtual class CGdiObject * __thiscall CDC::SelectStockObject(int)|nafxcw|wingdi.obj|object_matcher:unique:high (accepted 2026-07)
-0x00612931|CDC::SelectObject|?SelectObject@CDC@@UAEPAVCFont@@PAV2@@Z|public: virtual class CFont * __thiscall CDC::SelectObject(class CFont *)|nafxcw|wingdi.obj|hand_verified_overload_order:font_precedes_existing_brush_0x612984_and_pen_0x6129d7;exact_decorated_symbol_from_nafxcw_wingdi.obj
+0x00612931|CDC::SelectObject|?SelectObject@CDC@@QAEPAVCPen@@PAV2@@Z|public: class CPen * __thiscall CDC::SelectObject(class CPen *)|nafxcw|wingdi.obj|typed_call_evidence:QDFrameOval_0x498428_selects_TScopedQuickDrawPen_and_dtor_0x49864f_restores_its_saved_CPen
 0x00612bea|CDC::SetMapMode|?SetMapMode@CDC@@UAEHH@Z|public: virtual int __thiscall CDC::SetMapMode(int)|nafxcw|wingdi.obj|object_matcher:unique-via-existing:high (accepted 2026-07)
 0x00612d5e|CDC::SetWindowOrg|?SetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z|public: class CPoint __thiscall CDC::SetWindowOrg(int, int)|nafxcw|wingdi.obj|object_matcher:unique-via-existing:high (accepted 2026-07)
 0x00612e9a|CDC::GetClipBox|?GetClipBox@CDC@@UBEHPAUtagRECT@@@Z|public: virtual int __thiscall CDC::GetClipBox(struct tagRECT *) const|nafxcw|wingdi.obj|object_matcher:unique-via-existing:high (accepted 2026-07)
@@ -1393,7 +1393,7 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x006126b2||?DeleteTempMap@CMenu@@SGXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x006126c6||?afxMapHDC@@YAPAVCHandleMap@@H@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00612984||?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
-0x006129d7||?SelectObject@CDC@@QAEPAVCPen@@PAV2@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x006129d7|CDC::SelectObject|?SelectObject@CDC@@UAEPAVCFont@@PAV2@@Z|public: virtual class CFont * __thiscall CDC::SelectObject(class CFont *)|nafxcw|wingdi.obj|remaining_identical_SelectObject_body_after_typed_pen_0x612931_and_brush_0x612984_assignment|LIBRARY
 0x00612a2a|CDC::SelectClipRgn|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00612a9a||?SetPolyFillMode@CDC@@QAEHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00612ad2|CDC::SetBkMode|?SetBkMode@CDC@@QAEHH@Z|public: int __thiscall CDC::SetBkMode(int)|nafxcw|wingdi.obj|SetBkMode import at 0x006aadd0; all callers pass TRANSPARENT|LIBRARY
@@ -1480,3 +1480,19 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x00626bb3||??1CWinThread@@UAE@XZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x004845f0||||mfc_template|afxtempl.h|listing_0x004845f0_exact_release_CList_GetNext_POSITION_ref_shape; xrefs from TUiEvent-list traversal at 0x00482fc0|LIBRARY
 0x004924c0||||mfc_template|afxtempl.h|listing_0x004924c0_exact_release_CList_GetNext_POSITION_ref_shape; xrefs from TView child-list traversal at 0x0048b2d0 and 0x0048de00|LIBRARY
+0x00479ba0|CDocManager::GetFirstDocTemplatePosition|?GetFirstDocTemplatePosition@CDocManager@@UBEPAU__POSITION@@XZ|public: virtual struct __POSITION * __thiscall CDocManager::GetFirstDocTemplatePosition(void) const|nafxcw|docmgr.obj|object_matcher_unique_review_1_candidate|LIBRARY
+0x0047cac0||||mfc_inline|afxwin1.inl|exact_70_byte_duplicate_of_reviewed_CGdiObject_dtor_0x47d960;vendor_inline_calls_DeleteObject|LIBRARY
+0x0047cb60||||mfc_inline|afxwin1.inl|exact_70_byte_duplicate_of_reviewed_CGdiObject_dtor_0x47d960;vendor_inline_calls_DeleteObject|LIBRARY
+0x0047d9d0||||mfc_inline|afxwin1.inl|exact_70_byte_duplicate_of_reviewed_CGdiObject_dtor_0x47d960;vendor_inline_calls_DeleteObject|LIBRARY
+0x0047da70||||mfc_inline|afxwin1.inl|exact_70_byte_duplicate_of_reviewed_CGdiObject_dtor_0x47d960;vendor_inline_calls_DeleteObject|LIBRARY
+0x00494370||||mfc_inline|afxwin1.inl|exact_70_byte_duplicate_of_reviewed_CGdiObject_dtor_0x47d960;vendor_inline_calls_DeleteObject|LIBRARY
+0x00623a82|CPen::GetRuntimeClass|?GetRuntimeClass@CPen@@UBEPAUCRuntimeClass@@XZ|public: virtual struct CRuntimeClass * __thiscall CPen::GetRuntimeClass(void) const|nafxcw|wingdi.obj|vtable_0x64b948_slot0_returns_CRuntimeClass_0x6722f8_named_CPen|LIBRARY
+0x00496420||||compiler_emission||EH_delete_cleanup_called_only_from_TDisplayMgr_RemoveGWorld_and_Free;source_delete_expression_emits_it|LIBRARY
+0x00497400||||compiler_emission||byte_exact_duplicate_of_CTemporaryRegion_dtor_0x497390;no_xrefs;not_a_distinct_source_function|LIBRARY
+0x00497470||||compiler_emission||stack_receiver_cleanup_copy_of_CTemporaryRegion_dtor_shape;no_xrefs;not_a_distinct_source_function|LIBRARY
+0x00497b00|CBrush::`scalar deleting destructor'|??_GCBrush@@UAEPAXI@Z|public: virtual void * __thiscall CBrush::`scalar deleting destructor'(unsigned int)|nafxcw|wingdi.obj|vtable_slot_0x672638_via_ILT_0x40759a;body_calls_reviewed_CGdiObject_dtor_then_operator_delete|LIBRARY
+0x00497c20||||nafxcw||canonical_MFC_null_return_virtual_body;object_matcher_21_MFC_candidates;no_xrefs;not_game_source|LIBRARY
+0x00497c40||||nafxcw||canonical_MFC_null_return_virtual_body;object_matcher_21_MFC_candidates;no_xrefs;not_game_source|LIBRARY
+0x00497c60||||nafxcw|except.obj|canonical_empty_MFC_virtual_body;object_matcher_has_23_candidates_so_identity_intentionally_unassigned;no_game_xrefs|LIBRARY
+0x004985b0|CPen::CPen|??0CPen@@QAE@XZ|public: __thiscall CPen::CPen(void)|nafxcw|wingdi.obj|listing_stores_CPen_vtable_0x671054_and_null_m_hObject;vendor_afxwin1_inline_default_ctor|LIBRARY
+0x004985d0|CPen::CreatePen|?CreatePen@CPen@@QAEHHHK@Z|public: int __thiscall CPen::CreatePen(int,int,unsigned long)|nafxcw|wingdi.obj|listing_calls_CreatePen_then_CGdiObject_Attach;exact_vendor_afxwin1_inline_body|LIBRARY

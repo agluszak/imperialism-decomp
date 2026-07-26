@@ -106,7 +106,7 @@ void TCityProductionView::DoPostCreate(int arg) {
 
     short x = g_anCityBuildingSlotCoords[g_nCityBuildingSlotXOffsetIndex + slot * 2];
     short y = g_anCityBuildingSlotCoords[g_nCityBuildingSlotYOffsetIndex + slot * 2];
-    InitializeCityBuildingControlRegions_Impl(buildingClipRegionsEC[slot], x, y);
+    OffsetRgn(buildingClipRegionsEC[slot], x, y);
   }
 
   TWindow* window = GetWindow();

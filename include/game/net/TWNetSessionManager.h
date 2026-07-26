@@ -10,6 +10,7 @@
 // (3 IUnknown + 22 methods before Receive); the DirectX 1 IDirectPlay had them at
 // +0x54/+0x5c, which is how the interface generation was identified.
 #include <dplay.h>
+#include <dplobby.h>
 
 class TView;
 class TRadioTextCluster;
@@ -51,9 +52,11 @@ public:
   // Reads a player's per-player data block, recording the HRESULT in lastErrorCode0c
   // and returning whether it succeeded. 0x4809d0.
   BOOL GetPlayerData(DPID playerId, void* buffer, DWORD* sizeInOut);
+  BOOL CreateDirectPlayLobbyAndStoreResult(); // 0x0047fb80
+  BOOL FindHostPlayerIdByEnumeration();       // 0x005e2980
 
   IDirectPlay2* directPlayInterface04;
-  IUnknown* directPlayLobby08;
+  IDirectPlayLobbyA* directPlayLobby08;
   int lastErrorCode0c;
   DPSESSIONDESC2 sessionDescription10;
   int localPlayerId60;

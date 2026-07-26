@@ -603,12 +603,18 @@ CDC* g_pQuickDrawMemoryDc = nullptr;
 HGDIOBJ g_hQuickDrawSavedBitmap = nullptr;
 // GLOBAL: IMPERIALISM 0x006a1db0
 int g_nActiveQuickDrawSurfaceFlags = 0;
+// RefreshRgnBoundingBox asserts when this compatibility gate is zero.
+// GLOBAL: IMPERIALISM 0x006a1dc4
+int g_QuickDrawRegionBoundsAssertGate = 0;
 // McAppUI's Windows compatibility cursor hooks assert when their corresponding
 // availability gate is zero. Neither gate has another retail-binary xref.
 // GLOBAL: IMPERIALISM 0x006a1dc8
 int g_QuickDrawSetCursorAssertGate = 0;
 // GLOBAL: IMPERIALISM 0x006a1dcc
 int g_QuickDrawGetCursorAssertGate = 0;
+// EqualRgn reports its unsupported QuickDraw compatibility assertion when zero.
+// GLOBAL: IMPERIALISM 0x006a1dd0
+int g_QuickDrawEqualRgnAssertGate = 0;
 
 // Overlay clip cache parameters
 // GLOBAL: IMPERIALISM 0x006a4450
@@ -1964,9 +1970,11 @@ const short g_ShipRosterAtlasHorizontalOffsetByResourceType_006985E8[14] = {
 
 // Palette entries used to color ocean-map previews by their owning nation tag.
 // GLOBAL: IMPERIALISM 0x006985b8
-const unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24] = {
-    0xf3, 0x2a, 0x25, 0x1d, 0xf6, 0x8c, 0xbd, 0x0a, 0x0b, 0x0d, 0x29, 0xde,
-    0xdf, 0xfa, 0x2c, 0x31, 0x33, 0x41, 0x48, 0xd0, 0xcd, 0xce, 0xcf, 0x00,
+unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24] = {
+    0xf3, 0x2a, 0x25, 0x1d, 0xf6, 0x8c,
+    0xbd, 0x0a, 0x0b, 0x0d, 0x29, 0xde,
+    0xdf, 0xfa, 0x2c, 0x31, 0x33, 0x41,
+    0x48, 0xd0, 0xcd, 0xce, 0xcf, static_cast<unsigned char>(g_pUiRuntimeContext->GetColor(0x32)),
 };
 
 // The four one-reader feature bytes bracket the ocean overview's optional route,
@@ -1982,9 +1990,11 @@ const unsigned char g_bDrawOceanNationLabels = 1;
 
 // Border/transition colors paired with the owner-fill table immediately above.
 // GLOBAL: IMPERIALISM 0x006985d0
-const unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24] = {
-    0x15, 0x2d, 0x1e, 0x1c, 0x30, 0xae, 0xca, 0x7d, 0x7d, 0x7d, 0x7d, 0xe2,
-    0xe2, 0xe2, 0xe2, 0x51, 0x51, 0x51, 0x51, 0xf0, 0xf0, 0xf0, 0xf0, 0x00,
+unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24] = {
+    0x15, 0x2d, 0x1e, 0x1c, 0x30, 0xae,
+    0xca, 0x7d, 0x7d, 0x7d, 0x7d, 0xe2,
+    0xe2, 0xe2, 0xe2, 0x51, 0x51, 0x51,
+    0x51, 0xf0, 0xf0, 0xf0, 0xf0, static_cast<unsigned char>(g_pUiRuntimeContext->GetColor(0x3c)),
 };
 
 // GLOBAL: IMPERIALISM 0x006a590c
@@ -2505,7 +2515,7 @@ int g_streamLine596AssertGuard = 0;
 // Zone status-code PRNG seed (0x006a5aec) + display-name cache key (0x006984b8);
 // see global_data_tables.h. Runtime-initialized.
 // GLOBAL: IMPERIALISM 0x006a5aec
-unsigned int g_zoneStatusCodePrngSeed_006a5aec = 0;
+unsigned int g_zoneStatusCodePrngSeed_006a5aec = GetTickCountDiv16();
 // GLOBAL: IMPERIALISM 0x006a5af0
 extern "C" short g_anProvinceNameOrdinalByNationSlot_006a5af0[23] = {0};
 // GLOBAL: IMPERIALISM 0x006984b8 (static init -1 in the original .data section)
