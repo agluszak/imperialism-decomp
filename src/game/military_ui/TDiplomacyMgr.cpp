@@ -36,9 +36,9 @@ struct ScratchSharedString {
 };
 } // namespace
 
-static __inline void InitializeRangePairAndResetCursor(TNextTradeCommand* packet, int eventTag,
+static __inline void InitializeNextTradeCommandForHandler(TNextTradeCommand* packet, int eventTag,
                                                        TApplication* owner) {
-  packet->InitializeRangePair(eventTag, owner, 0, 0, 0);
+  packet->ICommand(eventTag, owner, 0, 0, 0);
 }
 
 static __inline TDiplomacyMgr* ReadGlobalTDiplomacyTurnStateManager() {
@@ -1097,7 +1097,7 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
 
     if (propagatedTransition == 0) {
       TNextTradeCommand* packet = new TNextTradeCommand();
-      InitializeRangePairAndResetCursor(packet, kTurnEventTagNext, g_pGlobalUiRootController);
+      InitializeNextTradeCommandForHandler(packet, kTurnEventTagNext, g_pGlobalUiRootController);
       g_pGlobalUiRootController->DispatchUiSelectionToHandler(packet);
     }
   } else {

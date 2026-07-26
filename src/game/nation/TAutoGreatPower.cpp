@@ -73,7 +73,7 @@ TAutoGreatPower::TAutoGreatPower() : TGreatPower() {
 TAutoGreatPower::~TAutoGreatPower() {}
 
 // FUNCTION: IMPERIALISM 0x004e6c20
-void TAutoGreatPower::InitializeNationMinisterSubsystemsByPolicyIds(int nationSlot,
+void TAutoGreatPower::IAutoGreatPower(int nationSlot,
                                                                     int nationInitializationMode,
                                                                     short cityMinisterPolicyId,
                                                                     short foreignMinisterPolicyId,

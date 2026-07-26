@@ -374,7 +374,7 @@ void TSetupRandomMapPicture::ExitScreen() {
 // FUNCTION: IMPERIALISM 0x00578230
 void TSetupRandomMapPicture::GroundControlToMajorTom(unsigned char mode) {
   TSpaceCommand* command = new TSpaceCommand();
-  command->InitializeRangePair(kControlTagNASA, g_pGlobalUiRootController, 0, 0, 0);
+  command->ICommand(kControlTagNASA, g_pGlobalUiRootController, 0, 0, 0);
   command->setupPicture18 = this;
   command->mode1c = mode;
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
