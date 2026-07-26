@@ -11,6 +11,7 @@
 #include "game/core/TStream.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
+#include "game/ui_core/TViewMgr.h"
 
 // SYNTHETIC: IMPERIALISM 0x004b6f20
 // TUnitOrder::CreateObject
@@ -49,12 +50,89 @@ void TUnitOrder::IUnitOrder(TCity* city, short nEntryId, short nPrimaryInputReso
 
 // FUNCTION: IMPERIALISM 0x004b7080
 short TUnitOrder::MaxOrder() {
-  return 0;
+  short workforceLimit;
+  if (workforceMode == kLowSkillWorkforceMode) {
+    workforceLimit = summaryField0c->productionSlots14->lowSkillCount04;
+    if (summaryField0c->strength < workforceLimit) {
+      workforceLimit = summaryField0c->strength;
+    }
+  } else if (workforceMode == kMediumSkillWorkforceMode) {
+    workforceLimit = summaryField0c->productionSlots14->mediumSkillCount06;
+    short strengthLimit = static_cast<short>(summaryField0c->strength / 2);
+    if (strengthLimit < workforceLimit) {
+      workforceLimit = strengthLimit;
+    }
+  } else if (workforceMode == kHighSkillWorkforceMode) {
+    workforceLimit = summaryField0c->productionSlots14->highSkillCount08;
+    short strengthLimit = static_cast<short>(summaryField0c->strength / 4);
+    if (strengthLimit < workforceLimit) {
+      workforceLimit = strengthLimit;
+    }
+  } else {
+    workforceLimit = 9999;
+  }
+
+  short primaryLimit = static_cast<short>(cityField08->CityStockByType(primaryInputResourceId) /
+                                          primaryInputPerUnit);
+  short secondaryLimit = primaryLimit;
+  if (secondaryInputResourceId >= 0) {
+    secondaryLimit = static_cast<short>(cityField08->CityStockByType(secondaryInputResourceId) /
+                                        secondaryInputPerUnit);
+  }
+
+  TGreatPower* owner = cityField08->ownerNationAc;
+  short cashLimit = primaryLimit;
+  if (cashCostPerUnit != 0 && owner->diplomacyEligibilityA0 != 0) {
+    int availableCash = owner->treasuryValue10 + owner->diplomacyBudgetBase / 100;
+    if (availableCash <= 0) {
+      availableCash = 0;
+    }
+    cashLimit = static_cast<short>(availableCash / cashCostPerUnit);
+    if (cashLimit < 0) {
+      cashLimit = 0;
+    }
+  }
+
+  field40 = 1;
+  short limit = workforceLimit;
+  if (primaryLimit < limit) {
+    field40 = 0;
+    limit = primaryLimit;
+  }
+  if (secondaryLimit < limit) {
+    field40 = 0;
+    limit = secondaryLimit;
+  }
+  if (cashLimit < limit) {
+    field40 = 3;
+    limit = cashLimit;
+  }
+  return static_cast<short>(quantityField04 + limit);
 }
 
 // FUNCTION: IMPERIALISM 0x004b7210
 bool TUnitOrder::SetQuantity(short param_1) {
-  return 0;
+  short delta = static_cast<short>(param_1 - quantityField04);
+  if (param_1 > MaxOrder() || param_1 < 0) {
+    return false;
+  }
+  quantityField04 = param_1;
+
+  cityField08->CityStockByType(primaryInputResourceId) = static_cast<short>(
+      cityField08->CityStockByType(primaryInputResourceId) - primaryInputPerUnit * delta);
+  cityField08->VerifyStocks();
+  if (secondaryInputResourceId >= 0) {
+    cityField08->CityStockByType(secondaryInputResourceId) = static_cast<short>(
+        cityField08->CityStockByType(secondaryInputResourceId) - secondaryInputPerUnit * delta);
+    cityField08->VerifyStocks();
+  }
+  if (workforceMode) {
+    summaryField0c->RemovePopulation(workforceMode, delta);
+  }
+  cityField08->ownerNationAc->treasuryValue10 -=
+      static_cast<int>(cashCostPerUnit) * static_cast<int>(delta);
+  g_pUiRuntimeContext->RefreshCityProductionUi();
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x004b7320

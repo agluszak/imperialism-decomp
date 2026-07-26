@@ -12,6 +12,10 @@
 #include "game/globals/shared_globals.h"
 #include "game/navy_order.h"
 
+// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
+//   CArchive& AFXAPI operator>>(CArchive&, TScatteredShipsMission*&)
+// SYNTHETIC: IMPERIALISM 0x0053bb60
+// operator>>
 IMPLEMENT_SERIAL(TScatteredShipsMission, TNavyMission, 1)
 
 // SYNTHETIC: IMPERIALISM 0x0053ba60

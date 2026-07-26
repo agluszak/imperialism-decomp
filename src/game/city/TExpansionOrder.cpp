@@ -1,8 +1,11 @@
 #include "game/city/TExpansionOrder.h"
 
 #include "game/city/TCity.h"
-#include "game/nation/TGreatPower.h"
 #include "game/core/TStream.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
+#include "game/nation/TGreatPower.h"
+#include "game/ui_core/TViewMgr.h"
 
 // SYNTHETIC: IMPERIALISM 0x004b8f50
 // TExpansionOrder::CreateObject
@@ -81,12 +84,42 @@ void TExpansionOrder::Produce() {
 
 // FUNCTION: IMPERIALISM 0x004b91f0
 short TExpansionOrder::MaxOrder() {
-  return 0;
+  short limit = static_cast<short>(trackingSlots10[primaryInputResourceId] +
+                                   cityField08->CityStockByType(primaryInputResourceId));
+  if (secondaryInputResourceId < 0) {
+    limit = static_cast<short>(limit / 2);
+  } else {
+    short secondaryLimit =
+        static_cast<short>(trackingSlots10[secondaryInputResourceId] +
+                           cityField08->CityStockByType(secondaryInputResourceId));
+    if (secondaryLimit < limit) {
+      limit = secondaryLimit;
+    }
+  }
+  return limit;
 }
 
 // FUNCTION: IMPERIALISM 0x004b9260
 bool TExpansionOrder::SetQuantity(short param_1) {
-  return 0;
+  short delta = static_cast<short>(param_1 - quantityField04);
+  if (param_1 > MaxOrder() || param_1 < 0) {
+    return false;
+  }
+  quantityField04 = param_1;
+  requestedQuantity4c = quantityField04;
+
+  cityField08->CityStockByType(primaryInputResourceId) =
+      static_cast<short>(cityField08->CityStockByType(primaryInputResourceId) - delta);
+  cityField08->VerifyStocks();
+  trackingSlots10[primaryInputResourceId] =
+      static_cast<short>(trackingSlots10[primaryInputResourceId] + delta);
+  cityField08->CityStockByType(secondaryInputResourceId) =
+      static_cast<short>(cityField08->CityStockByType(secondaryInputResourceId) - delta);
+  cityField08->VerifyStocks();
+  trackingSlots10[secondaryInputResourceId] =
+      static_cast<short>(trackingSlots10[secondaryInputResourceId] + delta);
+  g_pUiRuntimeContext->RefreshCityProductionUi();
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x004b9360

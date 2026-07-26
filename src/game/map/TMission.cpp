@@ -19,6 +19,10 @@
 // SYNTHETIC: IMPERIALISM 0x00534bc0
 // TMission::CreateObject
 
+// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
+//   CArchive& AFXAPI operator>>(CArchive&, TMission*&)
+// SYNTHETIC: IMPERIALISM 0x00534ff0
+// operator>>
 IMPLEMENT_SERIAL(TMission, TObject, 1)
 
 // --- TMission default-mission virtual stubs (concrete missions override) ---

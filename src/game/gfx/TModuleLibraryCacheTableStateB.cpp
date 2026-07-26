@@ -272,42 +272,25 @@ void TModuleLibraryCacheTableStateB::RetainOrRegisterObject(short id, CObject* o
   m_tableB.SetAt(object, record);
 }
 
-// Increment the ref count of the m_tableA record whose key is the low 16 bits of
-// packedKey; if no such record is registered (e.g. a picture record that was never
-// stored under this table), treat packedKey itself as an already-valid CacheRecord*
-// and bump its ref count directly. Faithful to the original's manually-inlined hash
-// walk, expressed via the public CMap API (mfc-collections: never walk protected
-// CMap internals).
-//
-// UNRESOLVED_FIELD_ATTRIBUTION: the parameter's width does not agree across the ABI
-// boundary. This body reads `word ptr [ESP+8]` for the lookup but `dword ptr [ESP+8]`
-// as a CacheRecord* on the miss path, while all three call sites push only 16 bits and
-// leave the high half as whatever happened to be in the register: 0x48f080
-// `MOV AX,CX` over EAX=cachedBitmap, 0x48f640 `MOV AX,DX` over EAX=[this+0x88],
-// 0x48f190 `MOV SI,CX` over ESI=this. The likeliest reading is an original ODR
-// mismatch (the caller TU declared a 16-bit id parameter, this TU defined a pointer
-// parameter); until that is proved, the call sites pass the plain short id and the
-// miss path stays modelled as the pointer read it compiles to.
+// Retail receives a genuine short: all three callers write only the low half of the
+// argument register before pushing it. TPicture resource loading registers every
+// non-negative id in m_tableA before a picture can be copied, so those callers cannot
+// reach the miss path. The lookup result is therefore intentionally ignored: on the
+// impossible miss path the local remains uninitialized, and VC5 reuses the argument
+// slot for it. That explains the retail full-slot load without inventing a pointer-or-id
+// source API.
 // FUNCTION: IMPERIALISM 0x0049a0b0
-void TModuleLibraryCacheTableStateB::IncrementDialogResourceRefCountByShortIdInRegistry(
-    unsigned int packedKey) {
-  CacheRecord* record = NULL;
-  if (m_tableA.Lookup(static_cast<short>(packedKey), record)) {
-    record->refCount++;
-  } else {
-    reinterpret_cast<CacheRecord*>(packedKey)->refCount++;
-  }
+void TModuleLibraryCacheTableStateB::IncrementRecordRefCountById(short id) {
+  CacheRecord* record;
+  m_tableA.Lookup(id, record);
+  record->refCount++;
 }
 
 // FUNCTION: IMPERIALISM 0x0049a120
-void TModuleLibraryCacheTableStateB::IncrementRecordRefCountByHandleOrRecord(
-    CacheRecord* recordOrHandle) {
-  CacheRecord* record = NULL;
-  if (m_tableB.Lookup(recordOrHandle, record)) {
-    record->refCount++;
-  } else {
-    recordOrHandle->refCount++;
-  }
+void TModuleLibraryCacheTableStateB::IncrementRecordRefCountByHandle(void* handle) {
+  CacheRecord* record;
+  m_tableB.Lookup(handle, record);
+  record->refCount++;
 }
 
 // FUNCTION: IMPERIALISM 0x0049a190
@@ -333,10 +316,8 @@ void TModuleLibraryCacheTableStateB::ReleaseRecordByHandle(void* handle) {
     return;
   }
 
-  CacheRecord* record = NULL;
-  if (!m_tableB.Lookup(handle, record)) {
-    record = static_cast<CacheRecord*>(handle);
-  }
+  CacheRecord* record;
+  m_tableB.Lookup(handle, record);
 
   record->refCount--;
   if (record->refCount <= 0) {

@@ -43,6 +43,15 @@ from tools.common import ghidra_env
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("addresses", nargs="+", help="Function entry addresses (0x...).")
+    parser.add_argument(
+        "--disassemble-tail",
+        action="store_true",
+        help=(
+            "before re-bounding, disassemble the byte just past the body when it is "
+            "undefined; needed for functions truncated because their tail was never "
+            "turned into instructions"
+        ),
+    )
     parser.add_argument("--apply", action="store_true",
                         help="Fix the bounds and save the program (default: dry-run).")
     parser.add_argument("--force", action="store_true",
@@ -103,6 +112,17 @@ def main() -> int:
                     continue
                 if listing.getInstructionAt(taddr) is None:
                     DisassembleCommand(taddr, None, True).applyTo(program, pyghidra.task_monitor())
+                if args.disassemble_tail:
+                    # A body that stops mid-function because the bytes after it were never
+                    # disassembled cannot be re-bound on its own: fixupFunctionBody follows
+                    # existing instruction flow, and undefined data offers nothing to follow.
+                    # Disassembling the boundary first gives the flow somewhere to go. The
+                    # swallow guard below still protects a mis-analysed neighbour.
+                    boundary = func.getBody().getMaxAddress().next()
+                    if boundary is not None and listing.getInstructionAt(boundary) is None:
+                        DisassembleCommand(boundary, None, True).applyTo(
+                            program, pyghidra.task_monitor()
+                        )
                 before = func.getBody()
                 CreateFunctionCmd.fixupFunctionBody(program, func, pyghidra.task_monitor())
                 # Never let a re-bound body swallow a neighbouring function.

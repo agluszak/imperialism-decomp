@@ -2,6 +2,9 @@
 
 #include "game/city/TCity.h"
 #include "game/core/TStream.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
+#include "game/ui_core/TViewMgr.h"
 
 // SYNTHETIC: IMPERIALISM 0x004b79f0
 // TPowerPlantOrder::CreateObject
@@ -33,12 +36,33 @@ void TPowerPlantOrder::IPowerPlantOrder(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x004b7b00
 short TPowerPlantOrder::MaxOrder() {
-  return 0;
+  return static_cast<short>(quantityField04 + cityField08->cityStockFuelCE * 6);
 }
 
 // FUNCTION: IMPERIALISM 0x004b7b30
 bool TPowerPlantOrder::SetQuantity(short param_1) {
-  return 0;
+  short delta = static_cast<short>(param_1 - quantityField04);
+  if (param_1 > MaxOrder() || param_1 < 0) {
+    return false;
+  }
+  quantityField04 = param_1;
+
+  if (cityField08->productionSummary1d8->strength < -static_cast<int>(delta)) {
+    quantityField04 = static_cast<short>(quantityField04 - delta);
+    return false;
+  }
+
+  field4c = quantityField04;
+  cityField08->cityStockFuelCE = static_cast<short>(cityField08->cityStockFuelCE - delta / 6);
+  cityField08->VerifyStocks();
+
+  short previousPower = cityField08->productionSummary1d8->extraAt1e;
+  cityField08->powerAvailableB4 = quantityField04;
+  cityField08->productionSummary1d8->extraAt1e = quantityField04;
+  cityField08->productionSummary1d8->strength = static_cast<short>(
+      cityField08->productionSummary1d8->strength + quantityField04 - previousPower);
+  g_pUiRuntimeContext->RefreshCityProductionUi();
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x004b7c20
