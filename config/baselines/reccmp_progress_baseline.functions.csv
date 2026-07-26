@@ -2300,9 +2300,7 @@ address|matching|name
 0x4cacc0|1.0|TUniversityView::~TUniversityView
 0x4cace0|0.26778242677824265|TUniversityView::DoStartup
 0x4cb320|0.3894736842105263|TUniversityView::SetUnit
-0x4cb8a0|0.47715736040609136|TUniversityView::DoEvent
-0x4cb9cd|0.0|UpdateUniversityCountControlAndRefreshView
-0x4cba03|0.0|UpdateUniversityCountControlAndRefreshViewAlt
+0x4cb8a0|0.5954198473282443|TUniversityView::DoEvent
 0x4cbb20|0.3258145363408521|TUniversityView::UpdateFields
 0x4cbf30|1.0|TUniversityView::Free
 0x4cbf70|0.5364583333333334|TUniversityView::Draw
