@@ -12,6 +12,8 @@
 #include "game/globals/prelude.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
+#include <stdarg.h>
+#include <stdio.h>
 
 // SYNTHETIC: IMPERIALISM 0x00413670
 // T64TemplateDialog::`scalar deleting destructor'
@@ -830,6 +832,29 @@ TE0TemplateDialog::~TE0TemplateDialog() {
 // SYNTHETIC: IMPERIALISM 0x00498dd0
 // TE0TemplateDialog::`scalar deleting destructor'
 
+// The leading context value is part of this retail entry point's ABI but is not used by
+// the formatter. Both trace functions target the process-wide debug dialog.
+// FUNCTION: IMPERIALISM 0x0049bb60
+void TracePrintfWithContext(int context, const char* format, ...) {
+  (void)context;
+  char buffer[512];
+  va_list args;
+  va_start(args, format);
+  vsprintf(buffer, format, args);
+  g_debugTraceDialog.AppendTraceTextAndFlushCompleteLines(buffer);
+  va_end(args);
+}
+
+// FUNCTION: IMPERIALISM 0x0049bbb0
+void TracePrintf(const char* format, ...) {
+  char buffer[512];
+  va_list args;
+  va_start(args, format);
+  vsprintf(buffer, format, args);
+  g_debugTraceDialog.AppendTraceTextAndFlushCompleteLines(buffer);
+  va_end(args);
+}
+
 // 0x0049bd19 zeroes +0x98 after the CListBox ctor and before the derived vptr store, i.e.
 // exactly where a member-initializer in declaration order lands.
 // FUNCTION: IMPERIALISM 0x0049bcd0
@@ -844,6 +869,8 @@ TD0TemplateDialog::TD0TemplateDialog(void* initParam)
 // arrives in arbitrary chunks, so the tail that has no line break yet is held in a static
 // accumulator until a later call completes it. The function-local static is what emits the
 // 0x006a1fb0 init-guard byte and the atexit destructor registration at 0x0049bf40.
+// SYNTHETIC: IMPERIALISM 0x0049bf40
+// CString function-local static dynamic atexit destructor
 // FUNCTION: IMPERIALISM 0x0049bd90
 void TD0TemplateDialog::AppendTraceTextAndFlushCompleteLines(const char* text) {
   static CString s_pendingTraceText;

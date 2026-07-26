@@ -24,6 +24,19 @@ extern "C" int __stdcall DirectSoundCreate(void* pcGuidDevice, IDirectSound** pp
 // TSoundResourceManager::`dynamic atexit destructor'
 TSoundResourceManager g_soundResourceManager;
 
+// SYNTHETIC: IMPERIALISM 0x0049c3b0
+// WaveLoadDescriptor::~WaveLoadDescriptor
+WaveLoadDescriptor::~WaveLoadDescriptor() {
+  if (pwfx != 0) {
+    GlobalFreePtr(pwfx);
+  }
+  pwfx = 0;
+  if (pbWaveData != 0) {
+    GlobalFreePtr(pbWaveData);
+  }
+  pbWaveData = 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0049c150
 int TSoundResourceManager::CreateChannelBuffer(IDirectSoundBuffer** ppChannel) {
   WAVEFORMATEX wfx;
@@ -161,6 +174,12 @@ int TSoundResourceManager::SetChannelVolumesUntilAccepted(int volume) {
     }
   }
   return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x0049c8a0
+int TSoundResourceManager::SetChannelVolume(int volume, int slot) {
+  m_field34 = m_channels[slot]->SetVolume(volume);
+  return m_field34 == 0;
 }
 
 // Release the six channel buffers, the DirectSound device, and the wave-pack module.

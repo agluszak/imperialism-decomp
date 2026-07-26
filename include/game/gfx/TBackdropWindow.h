@@ -11,11 +11,12 @@ class TBackdropWindow : public CWnd {
   DECLARE_MESSAGE_MAP()
 
 public:
-  TBackdropWindow() : CWnd() {}
+  TBackdropWindow();
 
   virtual ~TBackdropWindow() override;
 
   void InitializeDefaultBackdropWindowFromBmp3B6(CWnd* parent);
+  void DestroyAndRefreshMainWindow();
   virtual void PostNcDestroy() override;
 
   CDib* m_backdropBmp; // 0x3c

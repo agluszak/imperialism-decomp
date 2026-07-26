@@ -21,6 +21,10 @@ ON_WM_TIMER()
 END_MESSAGE_MAP()
 #endif
 
+// SYNTHETIC: IMPERIALISM 0x0049cb90
+// TBackdropWindow::TBackdropWindow
+TBackdropWindow::TBackdropWindow() : CWnd() {}
+
 // SYNTHETIC: IMPERIALISM 0x0049cbc0
 // TBackdropWindow::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0049cbf0
@@ -99,6 +103,12 @@ void TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6(CWnd* parent) {
   HCURSOR cursor = ::LoadCursorA(NULL, MAKEINTRESOURCEA(0x7f00));
   CreateEx(0, AfxRegisterWndClass(0, cursor, NULL, NULL), NULL, 0x90000000, 0, 0, size.x, size.y,
            parentHwnd, NULL, NULL);
+}
+
+// FUNCTION: IMPERIALISM 0x0049cf50
+void TBackdropWindow::DestroyAndRefreshMainWindow() {
+  DestroyWindow();
+  AfxGetMainWnd()->UpdateWindow();
 }
 
 // FUNCTION: IMPERIALISM 0x0049cfa0

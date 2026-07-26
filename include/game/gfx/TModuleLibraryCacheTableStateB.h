@@ -32,6 +32,11 @@
 // 0064BA80) with hand-written stub bodies; both are retired in favor of letting the real
 // `CMap<K,ARG_K,V,ARG_V>` members below emit their own destructors.
 struct CacheRecord {
+  // NOOP: verified empty in original allocation sites, including 0x00499ed0.
+  CacheRecord() {}
+  CacheRecord(short idValue, CObject* objectValue)
+      : id(idValue), pObject(objectValue), refCount(1) {}
+
   short id;
   CObject* pObject;
   int refCount;
@@ -51,6 +56,9 @@ public:
 
   void ReleaseRecordById(short id);         // 0x0049a190
   void ReleaseRecordByHandle(void* handle); // 0x0049a390
+  // Bump the ref count of the record indexed by object handle, or of the argument
+  // itself when it is already a CacheRecord pointer. 0x0049a120
+  void IncrementRecordRefCountByHandleOrRecord(CacheRecord* recordOrHandle);
   // Bump the ref count of the record keyed by the low 16 bits of packedKey (or of
   // packedKey itself, reinterpreted as a CacheRecord*, when no such record exists).
   void IncrementDialogResourceRefCountByShortIdInRegistry(unsigned int packedKey); // 0x0049a0b0
@@ -85,6 +93,17 @@ public:
 
   // Build an indexed 8-bit CDib fallback and cache it by resource id. 0x00499b40
   CDib* BuildIndexedBmpResourceById(short bmpId, int width, int height, int patternMode);
+
+  // Retain the record already indexed by id, or register object in both cache maps.
+  // This retail-only helper currently has no direct call xrefs. 0x00499e80
+  void RetainOrRegisterObject(short id, CObject* object);
+  // ResourceMgr.cpp palette-resource overloads. The numeric form accepts either a
+  // 16-bit MAKEINTRESOURCE id or formats a larger id as "#<decimal>".
+  BOOL LoadPaletteResourceByName(CPalette* palette, LPCSTR resourceName); // 0x0049aac0
+  BOOL LoadPaletteResource(CPalette* palette, unsigned long resourceId);  // 0x0049abd0
+
+  // Retail-only empty cache hook reached by a dead global wrapper. 0x00499280
+  void NoOpRetailCacheHook();
 
   CDibPal* m_dibPalette;                                   // 0x00 global DIB palette companion
   CMap<short, short, CacheRecord*, CacheRecord*> m_tableA; // 0x04 (vtable 0x0064ba80)

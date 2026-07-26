@@ -107,15 +107,7 @@ public:
   unsigned char* pbWaveData; // 0x0c — GlobalAlloc'd wave data bytes
 
   WaveLoadDescriptor() : cbWaveSize(0), cSamples(0), pwfx(0), pbWaveData(0) {}
-  ~WaveLoadDescriptor() {
-    if (pwfx != 0) {
-      GlobalFreePtr(pwfx);
-    }
-    pwfx = 0;
-    if (pbWaveData != 0) {
-      GlobalFreePtr(pbWaveData);
-    }
-  }
+  ~WaveLoadDescriptor();
 };
 
 class TSoundResourceManager {
@@ -141,6 +133,8 @@ public:
   int ReadWaveDataAndFormatViaLoaderWithRetry(WaveLoadDescriptor* desc, int slot);
   // 0x0049c850 — push `volume` to every channel until one accepts it.
   int SetChannelVolumesUntilAccepted(int volume);
+  // 0x0049c8a0 — set one channel's volume and retain the DirectSound result.
+  int SetChannelVolume(int volume, int slot);
   // 0x0049c970 — create the DirectSound device (once), set the app main-window cooperative
   // level, then create all six channel buffers. Returns 1 on success, 0 on failure.
   int InitializeDirectSoundDeviceAndChannels();
