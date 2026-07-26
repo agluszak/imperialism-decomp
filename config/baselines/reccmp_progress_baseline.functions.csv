@@ -2738,7 +2738,7 @@ address|matching|name
 0x4eff40|0.27988338192419826|TDiplomacyMgr::PropagateRelationSideEffectSlot80
 0x4f01e0|0.4595959595959596|TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn
 0x4f0590|1.0|TDiplomacyMgr::SyncNationField790FromLocalizationStateId
-0x4f05c0|0.17050691244239632|TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows
+0x4f05c0|0.1793103448275862|TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows
 0x4f09c0|1.0|TDiplomacyMgr::QueueNationPairWarTransition
 0x4f0a10|0.8633405639913232|TDiplomacyMgr::ProcessQueuedWarTransitions
 0x4f0db0|1.0|TNextDiplomationCommand::DoIt

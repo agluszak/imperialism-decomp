@@ -911,27 +911,38 @@ void TDiplomacyMgr::SyncNationField790FromLocalizationStateId() {
 
 // FUNCTION: IMPERIALISM 0x004f05c0
 void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
-  for (int i = 0; i < 7; i++) {
-    if (g_apNationStates[i] != NULL) {
-      g_apNationStates[i]->ApplyJoinEmpireMode2FinalizeNationNameState();
+  // Ground truth walks the table by pointer with a separate count-down counter
+  // (`dec edi; jne` at 0x4f05f4), not an ascending index compare.
+  TGreatPower** nationSlot = g_apNationStates;
+  for (int remaining = 7; remaining != 0; --remaining, ++nationSlot) {
+    if (*nationSlot != NULL) {
+      (*nationSlot)->ApplyJoinEmpireMode2FinalizeNationNameState();
     }
   }
 
-  if (g_pSimMgr && g_pSimMgr->multiplayerSessionRole == 2) {
+  // The original dereferences g_pSimMgr unguarded and materializes the mode test
+  // into a byte before branching (`cmp [edx+0x44],2; sete cl; test cl,cl; je`),
+  // so the null check here was ours, not the retail code's.
+  unsigned char isClientSession = g_pSimMgr->multiplayerSessionRole == 2;
+  if (isClientSession) {
     if (pendingWarTransitionQueue18d4) {
       pendingWarTransitionQueue18d4->ClearAndFreeAllPtrListRecords();
     }
     return;
   }
 
+  // Ground truth sets both tie flags to 1 once in the prologue (0x4f05d2/0x4f05d7,
+  // the [esp+0x13]/[esp+0x12] bytes) rather than re-initializing them per minor
+  // slot, so they live at function scope here.
+  bool isOfferTie = true;
+  bool isRelationTie = true;
+
   for (int minorSlot = 7; minorSlot < 23; minorSlot++) {
     short bestOfferScore = 0x8b;
     int bestOfferNation = -1;
-    bool isOfferTie = true;
 
     int bestRelationScore = 9000;
     int bestRelationNation = -1;
-    bool isRelationTie = true;
     (void)isOfferTie;
     (void)isRelationTie;
 
