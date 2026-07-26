@@ -1,4 +1,5 @@
 #include "RuntimeScenario.h"
+#include "RuntimeUiDriver.h"
 
 #include "game/city/TCity.h"
 #include "game/city/TUnitOrder.h"
@@ -56,7 +57,9 @@ bool CursorDrawsVisiblePixels(HCURSOR cursor) {
 
 class CivilianRecruitmentTestCase : public RuntimeScenario {
 public:
-  CivilianRecruitmentTestCase() : spawnedCivilian(0), targetMountainTile(-1), selectionTicks(0) {}
+  CivilianRecruitmentTestCase()
+      : spawnedCivilian(0), targetHillTile(-1), targetMountainTile(-1), targetSeaTile(-1),
+        selectionTicks(0) {}
 
   const char* Name() const override {
     return "civilian_recruitment_selection";
@@ -89,7 +92,7 @@ public:
       RequestScenarioTick();
       return;
     }
-    VerifyProspectorMountainCursor();
+    VerifyProspectorOrdersAndCursors();
   }
 
 private:
@@ -141,30 +144,40 @@ private:
       return;
     }
 
-    g_pSelectedCivilianOrderState->SetActiveCivilianSelection(spawnedCivilian, 1);
-    targetMountainTile = FindUnoccupiedMountainTile();
-    if (targetMountainTile == -1) {
-      FailScenario("\"random map has no unoccupied mountain for cursor verification\"");
+    for (short prospectingNation = 0; prospectingNation < 7; ++prospectingNation) {
+      spawnedCivilian->field_18 = prospectingNation;
+      g_pGlobalMapState->DimByProspecting(spawnedCivilian);
+      targetHillTile = FindProspectorTarget(kStrategicTerrainHills, true);
+      targetMountainTile = FindProspectorTarget(kStrategicTerrainMountain, true);
+      if (targetHillTile != -1 && targetMountainTile != -1) {
+        break;
+      }
+    }
+    targetSeaTile = FindProspectorTarget(kStrategicTerrainWater, false);
+    if (targetHillTile == -1 || targetMountainTile == -1 || targetSeaTile == -1) {
+      char failure[160];
+      wsprintfA(failure,
+                "\"prospector samples missing: eligible hill=%d mountain=%d prohibited sea=%d\"",
+                targetHillTile, targetMountainTile, targetSeaTile);
+      FailScenario(failure);
       return;
     }
-    // Arrange the precise action context under test. The real selection dispatcher seeds
-    // this byte as an eligibility mask based on the prospector's location and technology;
-    // clearing one actual mountain makes it a valid survey target without bypassing the
-    // map hover classifier or cursor-table lookup.
-    g_pGlobalMapState->terrainStateTable[targetMountainTile].recruitSearchVisited0e = 0;
+    g_pSelectedCivilianOrderState->SetActiveCivilianSelection(spawnedCivilian, 1);
     TMapUberPicture* mapView = static_cast<TMapUberPicture*>(mainView);
     mapView->CenterOn(targetMountainTile);
     EnterScenarioStep("waiting_after_civilian_selection",
-                      "selected_prospector_and_centered_unvisited_mountain");
+                      "selected_prospector_with_real_terrain_eligibility");
     RequestScenarioTick();
   }
 
-  short FindUnoccupiedMountainTile() {
+  short FindProspectorTarget(StrategicTerrainKind terrainKind, bool mustBeEligible) {
     for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
       const TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tile];
-      if (terrain.GetTerrainKind() != kStrategicTerrainMountain ||
-          terrain.firstCivilianOrder20 != 0 || terrain.tileActionState16 != -1 ||
+      if (terrain.GetTerrainKind() != terrainKind || terrain.firstCivilianOrder20 != 0 ||
           tile % 0x6c == 0 || tile % 0x6c == 0x6b) {
+        continue;
+      }
+      if ((terrain.recruitSearchVisited0e == 0) != mustBeEligible) {
         continue;
       }
       return tile;
@@ -172,7 +185,69 @@ private:
     return -1;
   }
 
-  void VerifyProspectorMountainCursor() {
+  bool FindVisiblePointForTile(TMapDialog* mapDialog, short targetTile, CPoint* outPoint,
+                               short* outBand) {
+    for (int y = 1; y < mapDialog->frameHeight38; y += 2) {
+      for (int x = 1; x < mapDialog->frameWidth34; x += 2) {
+        short column;
+        short row;
+        short band;
+        CPoint candidate(x, y);
+        mapDialog->ConvertPoint(candidate, column, row, band);
+        short tile = static_cast<short>(ComputeStridedRecordAddress6C(column, row));
+        if (tile == targetTile) {
+          *outPoint = candidate;
+          *outBand = band;
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  bool VerifyCursorForTile(TMapDialog* mapDialog, short targetTile, short expectedToken,
+                           CPoint* outPoint) {
+    TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+    mapView->CenterOn(targetTile);
+
+    CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
+    mapDialog->Draw(&mapBounds);
+
+    short band = 0;
+    if (!FindVisiblePointForTile(mapDialog, targetTile, outPoint, &band)) {
+      FailScenario("\"centered prospector target has no visible map hit point\"");
+      return false;
+    }
+
+    unsigned short classifiedToken =
+        g_pSelectedCivilianOrderState->LookupCivilianTileOrderCursorTokenByActionIndex(targetTile,
+                                                                                       band);
+    if (classifiedToken != expectedToken) {
+      FailScenario("\"prospector cursor classifier disagrees with terrain eligibility\"");
+      return false;
+    }
+
+    mapDialog->activeRegionBand72 = -1;
+    mapDialog->cursorId4e = 0xffff;
+    CPoint hostPoint(outPoint->x + mapDialog->absoluteX, outPoint->y + mapDialog->absoluteY);
+    SendMessageA(mapDialog->nativeWindow50->m_hWnd, WM_MOUSEMOVE, 0,
+                 MAKELPARAM(hostPoint.x, hostPoint.y));
+    if (mapDialog->cursorId4e != expectedToken) {
+      FailScenario("\"native prospector hover did not apply the classified cursor\"");
+      return false;
+    }
+
+    HCURSOR expectedCursor =
+        g_pUiRuntimeContext->turnEventCursors[expectedToken - TViewMgr::kCursorResourceIdBase];
+    if (expectedCursor == 0 || GetCursor() != expectedCursor ||
+        !CursorDrawsVisiblePixels(expectedCursor)) {
+      FailScenario("\"classified prospector cursor is not visibly active\"");
+      return false;
+    }
+    return true;
+  }
+
+  void VerifyProspectorOrdersAndCursors() {
     for (int index = 0; index < 0x36; ++index) {
       if (g_pUiRuntimeContext->turnEventCursors[index] == 0) {
         char failure[96];
@@ -193,56 +268,44 @@ private:
     int savedSurfaceFlags;
     GetGWorld(&savedSurface, &savedSurfaceFlags);
     SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
-    CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
-    mapDialog->Draw(&mapBounds);
-
-    CPoint cursorPoint;
-    bool foundPoint = false;
-    for (int y = 1; y < mapDialog->frameHeight38 && !foundPoint; y += 2) {
-      for (int x = 1; x < mapDialog->frameWidth34; x += 2) {
-        short column;
-        short row;
-        short band;
-        CPoint candidate(x, y);
-        mapDialog->ConvertPoint(candidate, column, row, band);
-        short tile = static_cast<short>(ComputeStridedRecordAddress6C(column, row));
-        if (tile == targetMountainTile) {
-          cursorPoint = candidate;
-          foundPoint = true;
-          break;
-        }
-      }
-    }
-    if (!foundPoint) {
-      SetGWorld(savedSurface, savedSurfaceFlags);
-      FailScenario("\"centered mountain has no visible eye-cursor hit point\"");
-      return;
-    }
-
     if (mapDialog->nativeWindow50 == 0 || mapDialog->nativeWindow50->m_hWnd == 0) {
       SetGWorld(savedSurface, savedSurfaceFlags);
       FailScenario("\"strategic map has no native mouse-routing host\"");
       return;
     }
 
-    mapDialog->activeRegionBand72 = -1;
-    mapDialog->cursorId4e = 0xffff;
-    CPoint hostPoint(cursorPoint.x + mapDialog->absoluteX, cursorPoint.y + mapDialog->absoluteY);
-    SendMessageA(mapDialog->nativeWindow50->m_hWnd, WM_MOUSEMOVE, 0,
-                 MAKELPARAM(hostPoint.x, hostPoint.y));
+    CPoint hillPoint;
+    CPoint mountainPoint;
+    CPoint seaPoint;
+    if (!VerifyCursorForTile(mapDialog, targetHillTile, 1001, &hillPoint) ||
+        !VerifyCursorForTile(mapDialog, targetSeaTile, 1008, &seaPoint) ||
+        !VerifyCursorForTile(mapDialog, targetMountainTile, 1001, &mountainPoint)) {
+      SetGWorld(savedSurface, savedSurfaceFlags);
+      return;
+    }
+
+    short oldTile = spawnedCivilian->tileIndex06;
+    UnitOrder oldOrder = spawnedCivilian->unitOrder;
+    if (!RuntimeUiDriver::ClickViewPoint(mapDialog, mountainPoint.x, mountainPoint.y)) {
+      SetGWorld(savedSurface, savedSurfaceFlags);
+      FailScenario("\"strategic map click could not be routed through its native host\"");
+      return;
+    }
     SetGWorld(savedSurface, savedSurfaceFlags);
 
-    HCURSOR expectedCursor = g_pUiRuntimeContext->turnEventCursors[1];
-    if (mapDialog->cursorId4e != 1001 || expectedCursor == 0 || GetCursor() != expectedCursor ||
-        !CursorDrawsVisiblePixels(expectedCursor)) {
-      FailScenario("\"prospector hover over mountain did not activate the eye cursor\"");
+    if (oldOrder != kUnitOrderIdle || oldTile == targetMountainTile ||
+        spawnedCivilian->unitOrder != kUnitOrderProspect ||
+        spawnedCivilian->tileIndex06 != targetMountainTile) {
+      FailScenario("\"clicking an eye-cursor mountain did not queue the prospector order\"");
       return;
     }
     Pass();
   }
 
   TCivUnit* spawnedCivilian;
+  short targetHillTile;
   short targetMountainTile;
+  short targetSeaTile;
   unsigned long selectionTicks;
 };
 
