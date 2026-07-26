@@ -3113,10 +3113,10 @@ address|matching|name
 0x508f30|0.31334622823984526|BuildHexNeighborHighlightPolygonForTile
 0x509c00|1.0|TMacViewMgr::CreateObject
 0x509c80|1.0|TMacViewMgr::GetRuntimeClass
-0x509ca0|0.9166666666666666|TMacViewMgr::TMacViewMgr
+0x509ca0|0.796875|TMacViewMgr::TMacViewMgr
 0x509e10|1.0|TMacViewMgr::GetClipRegionSlotByIndex
 0x509e30|1.0|TMacViewMgr::`scalar deleting destructor'
-0x509e60|0.9863013698630136|TMacViewMgr::~TMacViewMgr
+0x509e60|0.49122807017543857|TMacViewMgr::~TMacViewMgr
 0x509f20|1.0|TMacViewMgr::IMacViewMgr
 0x509f70|0.7171717171717171|TMacViewMgr::Free
 0x50a140|1.0|TMacViewMgr::ReadFrom
@@ -3137,7 +3137,7 @@ address|matching|name
 0x50bbc0|1.0|TMacViewMgr::ApplySellOrderRowToNationState
 0x50bc50|0.6167400881057269|TMacViewMgr::SyncSellTaggedChildControlWithNationState
 0x50be30|0.96|TMacViewMgr::MakeBookDialog
-0x50bea0|0.23881973259566622|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
+0x50bea0|0.23328722913785155|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 0x50d310|0.5625|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 0x50d360|0.6857142857142857|TMacViewMgr::OpenBuildingWindow
 0x50d470|0.7195121951219512|TMacViewMgr::RestoreBuildingWindowAtSavedPosition
@@ -3368,7 +3368,7 @@ address|matching|name
 0x51e1a0|1.0|TMapDialog::ResetAllTileMarkersToSentinel
 0x51e1f0|0.2777777777777778|TMapDialog::ReleaseTileMarkerForTile
 0x51e260|0.30535894843276035|TMapDialog::Draw
-0x51eb40|0.26710334788937407|TMapDialog::DrawOneTile
+0x51eb40|0.26898047722342733|TMapDialog::DrawOneTile
 0x520670|0.860125260960334|TMapDialog::DrawBorder
 0x520970|0.7682926829268293|TMapDialog::DrawMapDialogGuidePatternSetA_00520970
 0x520a90|1.0|TMapDialog::DrawMapDialogGuidePatternSetB_00520a90
@@ -5344,7 +5344,7 @@ address|matching|name
 0x59a380|0.7741935483870968|TMiniMapView::TMiniMapView
 0x59a3f0|1.0|TMiniMapView::`scalar deleting destructor'
 0x59a420|1.0|TMiniMapView::~TMiniMapView
-0x59a540|0.32755298651252407|TMiniMapView::Draw
+0x59a540|0.4189723320158103|TMiniMapView::Draw
 0x59a920|0.3062200956937799|TMiniMapView::TrackMouse
 0x59acf0|0.25|`dynamic initializer for 'g_scaledShortConst_6A46A0''
 0x59ad40|1.0|TTacticalPlayer::CreateObject
