@@ -4290,7 +4290,7 @@ address|matching|name
 0x560970|0.8|TZone::FindReportingAdmiralForNation
 0x5609e0|1.0|TZone::CreateTaskForceFromNavyOrdersForNationIfEligible
 0x560b00|0.7047619047619048|TZone::CanDisplayMapOrderEntryInCurrentContext
-0x560ba0|0.16822429906542055|TZone::ExpandTaskForceTraversalDepthAndMarkDeferredNodes
+0x560ba0|0.16981132075471697|TZone::ExpandTaskForceTraversalDepthAndMarkDeferredNodes
 0x560e20|1.0|ResetMapActionContextActivityAndNationFlags
 0x560e70|0.4583333333333333|TZone::SelectBestPrimaryNeighborForNationDiplomacyMask
 0x560f80|1.0|TZone::PropagateMapActionContextDistanceLevelsRecursive
