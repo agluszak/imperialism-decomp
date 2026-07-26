@@ -642,6 +642,39 @@ def _text_value(
         ) from exc
 
 
+def _normalize_mac_window_payload(type_code: str, raw_family: dict) -> UiWindowPayload:
+    # The Mac `fwnd` window-flags word is also the Windows TWindow style type for
+    # the 0x1f40 floating-window family. The retail Windows factory at 0x0041b6d0
+    # emits this exact descriptor for the city building dialogs: flags 0x80,
+    # style 0x1f40, topmost/resource 6f/6e/captioned-frame/resource 71 set, and
+    # resource 6c clear. Keep the generic fallback for Mac window encodings whose
+    # Windows translation has not yet been corroborated.
+    raw_window_flags = raw_family.get("window_flags")
+    if type_code == "fwnd" and raw_window_flags == 0x1F40:
+        return UiWindowPayload(
+            0x80,
+            0x1F40,
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            UiWindowColorPayload(1, 1, 0x20202020, 0x20202020),
+        )
+    return UiWindowPayload(
+        8,
+        2,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        UiWindowColorPayload(1, 1, 0x20202020, 0x20202020),
+    )
+
+
 def normalize_resource_view(
     key: UiResourceKey, view: dict, text_resources: TextResources
 ) -> UiSemanticView:
@@ -730,17 +763,7 @@ def normalize_resource_view(
         cluster_value = 0x20202020 if type_code == "clus" else None
         window: UiWindowPayload | None = None
         if type_code in ("wind", "fwnd"):
-            window = UiWindowPayload(
-                8,
-                2,
-                0,
-                1,
-                1,
-                0,
-                0,
-                1,
-                UiWindowColorPayload(1, 1, 0x20202020, 0x20202020),
-            )
+            window = _normalize_mac_window_payload(type_code, raw_family)
         family = UiSemanticFamily(
             frame_style=frame_style,
             content_insets=content_insets,
