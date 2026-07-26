@@ -103,26 +103,26 @@ TCivUnit* TCivMgr::SelectFirstAvailableCivilianForNation(short nationId) {
 void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(TCivUnit* pUnitOrderEntry) {
   if (pUnitOrderEntry != nullptr) {
     switch (pUnitOrderEntry->orderType) {
-    case 0:
-    case 8:
-      g_pGlobalMapState->DimByMining(pUnitOrderEntry);
-      return;
     case 1:
-      g_pGlobalMapState->MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(pUnitOrderEntry);
+      g_pGlobalMapState->DimByProspecting(pUnitOrderEntry);
+      return;
+    case 4:
+      g_pGlobalMapState->DimByEngineering(pUnitOrderEntry);
       return;
     case 2:
     case 3:
     case 5:
-      g_pGlobalMapState->SeedRecruitSearchVisitedStateByCapabilityThresholdAlt(pUnitOrderEntry);
-      return;
-    case 4:
-      g_pGlobalMapState->DimByDevelopment(pUnitOrderEntry);
-      return;
-    case 6:
-      g_pGlobalMapState->SeedRecruitSearchVisitedStateByCapabilityThreshold(pUnitOrderEntry);
+      g_pGlobalMapState->DimByCompany(pUnitOrderEntry);
       return;
     case 7:
-      g_pGlobalMapState->MarkType5NeighborTilesUnavailableByNationCapability(pUnitOrderEntry);
+      g_pGlobalMapState->DimByDevelopment(pUnitOrderEntry);
+      return;
+    case 0:
+    case 8:
+      g_pGlobalMapState->DimByMining(pUnitOrderEntry);
+      return;
+    case 6:
+      g_pGlobalMapState->DimByFishing(pUnitOrderEntry);
       return;
     default:
       g_pGlobalMapState->ResetRecruitSearchVisitedState();
@@ -134,7 +134,50 @@ void TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(TCivUnit* pUnitOrderEn
 
 // FUNCTION: IMPERIALISM 0x004d2380
 bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short nClickMode) {
-  return 0;
+  int actionCode = 0;
+  short nationId = g_pSimMgr->GetActiveNationId();
+  TCivUnit* clickedEntry = g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, nationId);
+  if (clickedEntry != nullptr) {
+    if (clickedEntry->IsInIdleSelectionState()) {
+      if (nClickMode == 2 ||
+          (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c & 0x20) == 0) {
+        actionCode = 2;
+      }
+    } else {
+      actionCode = 10;
+    }
+  }
+
+  TCivUnit* tileEntry = g_pGlobalMapState->terrainStateTable[nTileIndex].firstCivilianOrder20;
+  if (actionCode == 2) {
+    TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+    if (mapUberPicture == nullptr) {
+      return false;
+    }
+
+    mapUberPicture->SetMapInteractionMode(0);
+    selectedEntry = tileEntry;
+    DispatchSelectedUnitToGlobalMapStateHandler(tileEntry);
+    if (tileEntry != nullptr) {
+      tileEntry->MoveTo(tileEntry->tileIndex06);
+      if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
+        g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(tileEntry->tileIndex06);
+      }
+      mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+      if (mapUberPicture != nullptr) {
+        static_cast<TCivToolbar*>(
+            mapUberPicture->categoryPages[mapUberPicture->activeUnitCategoryIndex96])
+            ->RefreshCivilianCommandPanelForSelection(tileEntry);
+      }
+    }
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x2338, 0, 1);
+    return true;
+  }
+  if (actionCode == 10) {
+    HandleCivilianReportDecision(tileEntry);
+    return true;
+  }
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004d2540
@@ -160,7 +203,69 @@ unsigned short TCivMgr::ResolveCivilianTileSelectionOrReportActionCode(short nTi
 
 // FUNCTION: IMPERIALISM 0x004d26d0
 bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) {
-  return 0;
+  bool handled = false;
+  int actionCode = ResolveCivilianTileOrderActionCode(nTileIndex, nInputHint);
+  switch (actionCode) {
+  case 2: {
+    TCivUnit* tileEntry = g_pGlobalMapState->terrainStateTable[nTileIndex].firstCivilianOrder20;
+    selectedEntry = tileEntry;
+    DispatchSelectedUnitToGlobalMapStateHandler(tileEntry);
+    if (tileEntry != nullptr) {
+      tileEntry->MoveTo(tileEntry->tileIndex06);
+      TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+      if (mapUberPicture != nullptr) {
+        mapUberPicture->InvalidateTile(tileEntry->tileIndex06);
+      }
+      mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+      if (mapUberPicture != nullptr) {
+        static_cast<TCivToolbar*>(
+            mapUberPicture->categoryPages[mapUberPicture->activeUnitCategoryIndex96])
+            ->RefreshCivilianCommandPanelForSelection(tileEntry);
+      }
+    }
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x2338, 0, 1);
+    return false;
+  }
+  case 3:
+    handled = CanAssignCivilianOrderToTile(nTileIndex);
+    if (handled) {
+      selectedEntry->SetOrders(kUnitOrderRedeploy, selectedEntry->tileIndex06);
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x2328, 0, 1);
+      RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, selectedEntry);
+    }
+    return handled;
+  case 4:
+  case 5:
+  case 6:
+  case 7:
+    return HandleEngineerConstructionAction(nTileIndex);
+  case 8:
+    selectedEntry->SetOrders(kUnitOrderProspect, selectedEntry->tileIndex06);
+    RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, selectedEntry);
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x232e, 0, 1);
+    {
+      unsigned int startTick = GetTickCountDiv16();
+      unsigned int nowTick;
+      do {
+        PumpUiMessagesAndBackgroundTasks(1);
+        nowTick = GetTickCountDiv16();
+        if (nowTick < startTick) {
+          return true;
+        }
+      } while (nowTick - startTick < 0x1e);
+    }
+    return true;
+  case 9:
+    return QueueCivilianWorkOrderWithCostCheck(nTileIndex);
+  case 10:
+    HandleCivilianReportDecision(
+        g_pGlobalMapState->terrainStateTable[nTileIndex].firstCivilianOrder20);
+    return false;
+  case 11:
+    handled = PromptAndQueueDeveloperTilePurchaseOrder(nTileIndex);
+    break;
+  }
+  return handled;
 }
 
 // FUNCTION: IMPERIALISM 0x004d2930
