@@ -1112,6 +1112,15 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
 
 // FUNCTION: IMPERIALISM 0x004f0e20
 void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMode) {
+  // Ground truth zeroes a register once (xor ebp,ebp at 0x4f0e33) and spends it on
+  // both the matrix probe (cmp word ptr [edi], bp) and four dword locals it clears
+  // up front (mov [esp+0x28]/[esp+0x2c]/[esp+0x34]/[esp+0x3c], ebp at 0x4f0e40), so
+  // these are function-scope zero-initialized rather than declared at first use.
+  int topNationSlot = 0;
+  int secondNationSlot = 0;
+  int topPower = 0;
+  int secondPower = 0;
+
   bool forceFullClear = (forceOrMode == 2);
   if (relationCodeMatrix04[0] == 0) {
     InitializeDiplomacyStandingBaselineRandom();
@@ -1120,13 +1129,11 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
     memset(relationCodeMatrix04, 0, sizeof(relationCodeMatrix04));
   }
 
-  int topNationSlot;
-  int secondNationSlot;
   BuildMajorNationDiplomacyStandingRanking(&topNationSlot, &secondNationSlot);
   selectedTargetNationSlot786 = static_cast<short>(secondNationSlot);
   selectedSourceNationSlot784 = static_cast<short>(topNationSlot);
-  int topPower = comparativePowerRows1824[topNationSlot][1];
-  int secondPower = comparativePowerRows1824[secondNationSlot][1];
+  topPower = comparativePowerRows1824[topNationSlot][1];
+  secondPower = comparativePowerRows1824[secondNationSlot][1];
 
   int topSideScore[kNationSlotCount];
   int secondSideScore[kNationSlotCount];

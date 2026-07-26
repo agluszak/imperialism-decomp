@@ -2744,7 +2744,7 @@ address|matching|name
 0x4f0db0|1.0|TNextDiplomationCommand::DoIt
 0x4f0dd0|1.0|TNextDiplomationCommand::`scalar deleting destructor'
 0x4f0e00|0.0|TNextDiplomationCommand::~TNextDiplomationCommand
-0x4f0e20|0.1889400921658986|TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices
+0x4f0e20|0.19080459770114944|TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices
 0x4f1570|0.7578947368421053|TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom
 0x4f1630|0.7108433734939759|TDiplomacyMgr::BuildMajorNationDiplomacyStandingRanking
 0x4f1760|0.7320754716981132|TDiplomacyMgr::RecomputeNationComparativePowerMetrics
