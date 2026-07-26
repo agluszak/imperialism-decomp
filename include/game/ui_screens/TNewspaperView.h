@@ -34,7 +34,7 @@ public:
   void ProvinceParmList(CString& out, int cityRecordIndex);
   // 0x55df50: build one TDeluxeText row (column grid x=0x18/0xe2/0x1ac) from the .tex
   // record, expand its bracket template with tokens, and return the consumed height.
-  int AppendInterNationEventSummaryTextEntry(int column, int y, int recordId, int recordLength,
+  int AppendInterNationEventSummaryTextEntry(int column, int y, int recordOffset, int recordLength,
                                              TextStyle* style, int styleWord, CString* tokens);
 };
 ASSERT_SIZE(TNewspaperView, 0x98);

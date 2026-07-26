@@ -17,12 +17,12 @@ class TStream;
 //   -25 / -26, -27 / -28 : random army/map-context stories
 //   -1000-n : code-0x11 stories (n = the record's payload value)
 struct newsEntry {
-  int storyId;    // +0x00 — match key; 0 in a story slot means "slot empty"
-  int textArgA0;  // +0x04 \ read as a pair by the page renderer (0x55d200)
-  int textArgA1;  // +0x08 / (headline text codes — hedged)
-  int textArgB0;  // +0x0c \ second pair
-  int textArgB1;  // +0x10 / (body text codes — hedged)
-  int reserved14; // +0x14 — byteswapped with the rest; no observed reader
+  int storyId;            // +0x00 — match key; 0 in a story slot means "slot empty"
+  int headlineTextOffset; // +0x04 \ byte range in news.tex
+  int headlineTextLength; // +0x08 /
+  int storyTextOffset;    // +0x0c \ second byte range in news.tex
+  int storyTextLength;    // +0x10 /
+  int reserved14;         // +0x14 — byteswapped with the rest; no observed reader
 };
 
 // 0x3C-byte story card, 9 per nation page (Mac oracle: newsStory).
