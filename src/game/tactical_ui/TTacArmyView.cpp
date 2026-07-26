@@ -290,6 +290,12 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x005aa900
 void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT* clipRect) {
+  // Ground truth clears these three byte locals in the prologue (0x5aa90a's
+  // mov byte ptr [esp+0x13]/[esp+0x27]/[esp+0x53], al off a single xor eax,eax),
+  // so they are function-scope zero-initialized rather than declared at first use.
+  unsigned char wallBreached = 0;
+  unsigned char gunSlotRow = 0;
+  unsigned char gunSlotOccupied = 0;
   int row = tileIndex / tileColumnsPerRow80;
   int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
   if (row & 1) {
@@ -345,15 +351,12 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
 
   // The even-row-left kind describes the wall owned by the PREVIOUS tile, so its garrison
   // probe uses tileIndex - 1 (0x005aaabb in the original), not tileIndex.
-  unsigned char wallBreached = 0;
   if (((edgeKind == kFortWallEdgeEvenRowRight || edgeKind == kFortWallEdgeOddRow) &&
        !tacticalBattle60->HasFortWallGarrison(tileIndex)) ||
       (edgeKind == kFortWallEdgeEvenRowLeft &&
        !tacticalBattle60->HasFortWallGarrison(tileIndex - 1))) {
     wallBreached = 1;
   }
-  unsigned char gunSlotRow = 0;
-  unsigned char gunSlotOccupied = 0;
   if (edgeKind != kFortWallEdgeNone) {
     int wallNeighbor;
     if (edgeKind == kFortWallEdgeEvenRowRight) {
