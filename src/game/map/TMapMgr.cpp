@@ -292,13 +292,10 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
     mapMaker->AssignOrCompactCityRegionIdsAndRebuildBorders(1);
   } else if (mapStreamName == 0) {
 #ifdef IMPERIALISM_RUNTIME_TESTS
-    // Seed here, before the tuning string is chosen. Without an override the string is
-    // random flavor text, and its hash is what seeds the map-generation LCG below -- so
-    // a different draw here means a whole different map. Seeding any later (inside the
-    // generator, at the click that starts the game, or at the main menu) leaves this
-    // draw unpinned and still yields several maps for one scenario seed
-    // (imperialism-decomp-nhot).
-    srand(RuntimeTestDriver::RandomSeed());
+    // The tuning-string generator uses the shared flavor-text LCG, not CRT rand().
+    // Random-map setup normally supplies an override generated earlier, but keep the
+    // no-override path deterministic too.
+    g_zoneStatusCodePrngSeed_006a5aec = ClockDerivedPrngSeed();
 #endif
     if (tuningOverride != 0) {
       CString overrideText(tuningOverride);

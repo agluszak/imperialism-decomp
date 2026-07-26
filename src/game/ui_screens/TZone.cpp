@@ -1,7 +1,7 @@
-#include <time.h>
 #include "game/ui_tags_common.h"
 
 #include "game/ui_screens/TZone.h"
+#include "game/core/runtime_prng_seed.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_screens_globals.h"
@@ -1183,7 +1183,7 @@ void RegenerateAllMapActionContextStatusCodes(void) {
   }
   g_zoneStatusCodePrngSeed_006a5aec = seed;
   if (seed == 0) {
-    g_zoneStatusCodePrngSeed_006a5aec = time(0);
+    g_zoneStatusCodePrngSeed_006a5aec = ClockDerivedPrngSeed();
   }
   g_mapActionContextDisplayNameCacheId_006984b8 = -1;
 
@@ -1196,7 +1196,7 @@ void RegenerateAllMapActionContextStatusCodes(void) {
   }
 
   g_zoneStatusCodePrngSeed_006a5aec = 0;
-  g_zoneStatusCodePrngSeed_006a5aec = time(0);
+  g_zoneStatusCodePrngSeed_006a5aec = ClockDerivedPrngSeed();
 }
 
 // Walks every map tile; for each coastal/port tile (anchor or docked-fleet marker) or land tile
