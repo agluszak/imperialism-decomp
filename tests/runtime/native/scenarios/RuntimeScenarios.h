@@ -5,6 +5,7 @@ class RuntimeTestCase;
 RuntimeTestCase* BootManagersTest();
 RuntimeTestCase* RandomGameJourneyTest();
 RuntimeTestCase* EasyRandomGameTest();
+RuntimeTestCase* IntroductoryRandomGameTest();
 RuntimeTestCase* EndTurnTest();
 RuntimeTestCase* CityScreenTest();
 RuntimeTestCase* CivilianRecruitmentTest();

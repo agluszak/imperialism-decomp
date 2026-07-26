@@ -85,14 +85,14 @@ public:
   bool UsesRandomGameFlow() const override {
     return true;
   }
-  bool UsesEasyDifficulty() const override {
-    return true;
+  int DifficultyLevel() const override {
+    return 1;
   }
 
   // Run once the map exists, so the managers hold real state rather than
   // default-constructed emptiness -- an empty collection round-trips trivially and
   // would prove nothing.
-  void OnEasyMapReady() override {
+  void OnMapReadyWithoutCapitalSelection() override {
     EnterScenarioStep("serialization_roundtrip", "collect_managers");
     RunRoundtrips();
   }

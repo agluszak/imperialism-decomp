@@ -364,6 +364,12 @@ class GdbSession:
             ("registers", "info registers"),
             ("modules", "info sharedlibrary"),
             ("near pc", "x/32i $pc-32"),
+            ("eax pointee", "x/32bx $eax"),
+            ("ebx pointee", "x/32bx $ebx"),
+            ("ecx pointee", "x/32bx $ecx"),
+            ("edx pointee", "x/32bx $edx"),
+            ("esi pointee", "x/64bx $esi"),
+            ("edi pointee", "x/64bx $edi"),
             ("stack", "x/256wx $sp"),
         ):
             try:

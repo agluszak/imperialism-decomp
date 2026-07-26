@@ -52,7 +52,7 @@ void RunWaitingForRandomSetup();
 void RunSettingCountryName();
 void RunSelectingDifficulty();
 void RunActivatingOkay();
-void RunWaitingForEasyStrategicMap();
+void RunWaitingForDirectStrategicMap();
 void RunWaitingForStrategicMap();
 void RunVerifyingStrategicMap();
 void RunWaitingForModalDismissal();
@@ -107,13 +107,17 @@ CString g_lastFingerprint;
 CString g_mapStateJson;
 CString g_serializationRoundtripJson;
 
-// Easy-difficulty kinds share the setup flow (dif1 click, no capital pick).
+// Introductory and Easy share the setup flow: native difficulty click, then no capital pick.
 RuntimeScenario& ActiveScenario() {
   return *g_runtimeTestState.scenario;
 }
 
-bool IsEasyStyleTest() {
-  return ActiveScenario().UsesEasyDifficulty();
+int SelectedDifficultyLevel() {
+  return ActiveScenario().DifficultyLevel();
+}
+
+bool SkipsCapitalSelection() {
+  return SelectedDifficultyLevel() <= 1;
 }
 
 bool IsRandomGameTest() {
@@ -816,26 +820,25 @@ void RunSettingCountryName() {
 
 void RunSelectingDifficulty() {
   TView* mainView = MainView();
-  const unsigned long expectedTag = IsEasyStyleTest() ? kControlTagDif1 : kControlTagDif2;
+  const unsigned long expectedTag = kControlTagDif0 + SelectedDifficultyLevel();
   RandomSetupDriver setup(mainView);
-  if (!setup.SelectDifficulty(expectedTag, IsEasyStyleTest())) {
+  if (!setup.SelectDifficulty(expectedTag, SkipsCapitalSelection())) {
     Fail("\"requested difficulty control is missing\"");
     return;
   }
-  SetStep(RunActivatingOkay, "activating_okay",
-          IsEasyStyleTest() ? "click_diff_dif1" : "select_diff_dif2");
+  SetStep(RunActivatingOkay, "activating_okay", "select_requested_difficulty");
   RequestAnotherDriverTick();
 }
 
 void RunActivatingOkay() {
   TView* mainView = MainView();
   RandomSetupDriver setup(mainView);
-  if (!setup.Accept(IsEasyStyleTest())) {
+  if (!setup.Accept(SkipsCapitalSelection())) {
     Fail("\"okay control or requested input path is missing\"");
     return;
   }
-  if (IsEasyStyleTest()) {
-    SetStep(RunWaitingForEasyStrategicMap, "waiting_for_easy_strategic_map", "click_okay");
+  if (SkipsCapitalSelection()) {
+    SetStep(RunWaitingForDirectStrategicMap, "waiting_for_direct_strategic_map", "click_okay");
   } else {
     SetStep(RunWaitingForStrategicMap, "waiting_for_strategic_map", "activate_okay");
   }
@@ -865,6 +868,9 @@ bool AdvanceInitialNewspaperIfNeeded() {
     WaitForNextTickOrTimeout("\"newspaper end action did not advance to the combined map\"");
     return true;
   }
+  if (!ActiveScenario().BeforeInitialNewspaperExit()) {
+    return true;
+  }
   TControl* endControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagEnd));
   if (endControl == 0 || endControl->IsActionable() == 0) {
     Fail("\"newspaper end control is missing or disabled\"");
@@ -877,14 +883,14 @@ bool AdvanceInitialNewspaperIfNeeded() {
   return true;
 }
 
-void RunWaitingForEasyStrategicMap() {
+void RunWaitingForDirectStrategicMap() {
   const int eventCode = g_pUiRuntimeContext->currentTurnEventCode;
   if (eventCode == 0x3b8) {
-    Fail("\"Easy difficulty incorrectly entered capital-site selection\"");
+    Fail("\"difficulty that skips capital selection entered the city-site selector\"");
     return;
   }
   if (eventCode == 0x5e4) {
-    Fail("\"single-player Easy game incorrectly entered multiplayer synchronization\"");
+    Fail("\"single-player random game incorrectly entered multiplayer synchronization\"");
     return;
   }
   if (AdvanceInitialNewspaperIfNeeded()) {
@@ -892,16 +898,16 @@ void RunWaitingForEasyStrategicMap() {
   }
   TView* mainView = MainView();
   if (eventCode != 0x7dd || !IsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture))) {
-    WaitForNextTickOrTimeout("\"Easy random game did not reach the combined strategic map\"");
+    WaitForNextTickOrTimeout("\"random game did not reach the combined strategic map\"");
     return;
   }
   if (!g_ModalViewStack.IsEmpty()) {
     RecordUnexpectedModal(static_cast<TView*>(g_ModalViewStack.GetHead()));
-    Fail("\"Easy random game unexpectedly displayed a modal capital prompt\"");
+    Fail("\"random game unexpectedly displayed a modal capital prompt\"");
     return;
   }
-  if (g_pSimMgr->difficultyLevel != 1) {
-    Fail("\"native Easy selection did not store difficulty level 1\"");
+  if (g_pSimMgr->difficultyLevel != SelectedDifficultyLevel()) {
+    Fail("\"native difficulty selection did not store the requested level\"");
     return;
   }
   if (g_pSimMgr->multiplayerSessionRole != 0) {
@@ -909,10 +915,10 @@ void RunWaitingForEasyStrategicMap() {
     return;
   }
   if (!NationModesMatchSelectedNation()) {
-    Fail("\"nation control modes do not match the Easy setup selection\"");
+    Fail("\"nation control modes do not match the setup selection\"");
     return;
   }
-  ActiveScenario().OnEasyMapReady();
+  ActiveScenario().OnMapReadyWithoutCapitalSelection();
 }
 
 void RunWaitingForStrategicMap() {
@@ -1389,7 +1395,7 @@ void RuntimeScenario::ObserveBuiltUiTree(RuntimeContext&, int eventCode, TView* 
   }
   if (eventCode == 0x5dd) {
     g_randomSetupUiSnapshot = CaptureUiSnapshot(eventCode, root);
-  } else if (eventCode == 0x3b8 || (IsEasyStyleTest() && eventCode == 0x7dd)) {
+  } else if (eventCode == 0x3b8 || (SkipsCapitalSelection() && eventCode == 0x7dd)) {
     // Capture only the first arrival: later 0x7dd trees (turn-advance cycles)
     // legitimately diverge from the factory expectation as the game evolves.
     if (g_strategicMapUiSnapshot.IsEmpty()) {
@@ -1411,7 +1417,7 @@ void RuntimeScenario::ObserveTurnEvent(RuntimeContext&, int eventCode) {
     Fail("\"single-player game entered multiplayer synchronization event 0x5e4\"");
     return;
   }
-  if (IsEasyStyleTest() && eventCode == 0x3b8) {
+  if (SkipsCapitalSelection() && eventCode == 0x3b8) {
     Fail("\"Easy difficulty entered capital-site selection event 0x3b8\"");
     return;
   }
@@ -1446,8 +1452,8 @@ bool RuntimeScenario::UsesRandomGameFlow() const {
   return false;
 }
 
-bool RuntimeScenario::UsesEasyDifficulty() const {
-  return false;
+int RuntimeScenario::DifficultyLevel() const {
+  return 2;
 }
 
 bool RuntimeScenario::RecordsGameFlow() const {
@@ -1458,11 +1464,15 @@ bool RuntimeScenario::RequiresScenarioUiSnapshot() const {
   return false;
 }
 
+bool RuntimeScenario::BeforeInitialNewspaperExit() {
+  return true;
+}
+
 void RuntimeScenario::OnManagersReady() {
   StartRandomGameFlow();
 }
 
-void RuntimeScenario::OnEasyMapReady() {
+void RuntimeScenario::OnMapReadyWithoutCapitalSelection() {
   Pass();
 }
 
