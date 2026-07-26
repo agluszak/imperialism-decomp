@@ -55,6 +55,11 @@ runtime-check suite='pr' *args:
   test -f "$ORIGINAL_BINARY"
   just runtime-test-suite "{{suite}}" --require-fixtures {{args}}
 
+[doc('Stop this worktree warm wineserver and Xvfb; drop the Wine prefix')]
+[group('runtime-test')]
+runtime-clean:
+  uv run python -m tools.runtime.cli clean
+
 [doc('Show the latest canonical result for a runtime test')]
 [group('runtime-test')]
 runtime-test-show name:
