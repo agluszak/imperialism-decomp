@@ -36,6 +36,7 @@ module|tools.workflow.check_global_location|just:global-location-gate|Global def
 module|tools.workflow.check_manual_cruntimeclass|just:manual-cruntimeclass-gate|Manual CRuntimeClass definition policy gate
 module|tools.workflow.check_structure_audit|just:structure-audit-gate|Structure-audit gate: duplicate top-level includes + CRLF in manual source
 module|tools.workflow.check_vtable_coverage|just:vtable-coverage|Report unpaired vtable annotations
+module|tools.workflow.check_vtable_tail_slots|just:vtable-tail-slots|Report possible unmodelled vtable tail slots for manual verification
 module|tools.workflow.vtable_abi_audit|just:vtable-abi-audit|Vtable ABI audit: declarations vs binary calling-convention evidence
 module|tools.ghidra.vtable_abi_evidence|query:vtable-abi-evidence|Extract per-slot vtable ABI evidence (RET imm, ECX use, caller facts)
 module|tools.workflow.correct_scalar_dtors|just:correct-scalar-dtors|Canonicalize scalar deleting destructor names
