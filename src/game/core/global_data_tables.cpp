@@ -81,6 +81,21 @@ TAnimator* g_pUiAnimator = 0;
 // GLOBAL: IMPERIALISM 0x006a15cc
 int g_diplomacyDialogAssertGuard_006A15CC = 0;
 
+// ResourceMgr.cpp diagnostic gates used by the palette-resource overloads.
+// GLOBAL: IMPERIALISM 0x006a1e50
+int g_paletteResourceNameAssertGate = 0;
+// GLOBAL: IMPERIALISM 0x006a1e54
+int g_paletteResourceIdAssertGate = 0;
+
+extern "C" {
+// GLOBAL: IMPERIALISM 0x006951cc
+extern const char g_szPaletteResourceType[] = "PALETTE";
+// GLOBAL: IMPERIALISM 0x006951d8
+extern const char g_szResourceMgrSourcePath[] = "D:\\Ambit\\ResourceMgr.cpp";
+// GLOBAL: IMPERIALISM 0x006951f8
+extern const char g_szPaletteResourceIdFormat[] = "#%lu";
+}
+
 // SYNTHETIC: IMPERIALISM 0x0049baa0
 // `dynamic initializer for 'g_debugTraceDialog''
 // SYNTHETIC: IMPERIALISM 0x0049bad0
@@ -999,6 +1014,26 @@ extern double g_mapCellColumnScale_006a3388;
 // prove their source types: two dword stores are CPoint(0,0), four are CRect(0,0,0,0),
 // and four byte stores are the default CRGBColor constructor. Keep them as real objects so
 // VC5 owns the compiler helpers rather than exposing reset functions as source APIs.
+// SYNTHETIC: IMPERIALISM 0x00498e70
+// `dynamic initializer for 'g_defaultPoint_006A1CF8''
+// GLOBAL: IMPERIALISM 0x006a1cf8
+CPoint g_defaultPoint_006A1CF8(0, 0);
+// SYNTHETIC: IMPERIALISM 0x00498e90
+// `dynamic initializer for 'g_defaultPoint_006A1D78''
+// GLOBAL: IMPERIALISM 0x006a1d78
+CPoint g_defaultPoint_006A1D78(0, 0);
+// SYNTHETIC: IMPERIALISM 0x00498eb0
+// `dynamic initializer for 'g_defaultRect_006A1D30''
+// GLOBAL: IMPERIALISM 0x006a1d30
+CRect g_defaultRect_006A1D30(0, 0, 0, 0);
+// SYNTHETIC: IMPERIALISM 0x00498ee0
+// `dynamic initializer for 'g_defaultRect_006A1D68''
+// GLOBAL: IMPERIALISM 0x006a1d68
+CRect g_defaultRect_006A1D68(0, 0, 0, 0);
+// SYNTHETIC: IMPERIALISM 0x00498f30
+// `dynamic initializer for 'g_defaultRgbColor_006A1CE0''
+// GLOBAL: IMPERIALISM 0x006a1ce0
+CRGBColor g_defaultRgbColor_006A1CE0;
 // SYNTHETIC: IMPERIALISM 0x0049b9d0
 // `dynamic initializer for 'g_defaultPoint_006A1E20''
 // GLOBAL: IMPERIALISM 0x006a1e20
@@ -1094,6 +1129,116 @@ CRect g_defaultRect_006A1FF0(0, 0, 0, 0);
 // `dynamic initializer for 'g_defaultRgbColor_006A1FC8''
 // GLOBAL: IMPERIALISM 0x006a1fc8
 CRGBColor g_defaultRgbColor_006A1FC8;
+// SYNTHETIC: IMPERIALISM 0x0049d290
+// `dynamic initializer for 'g_defaultPoint_006A2020''
+// GLOBAL: IMPERIALISM 0x006a2020
+CPoint g_defaultPoint_006A2020(0, 0);
+
+// Additional QuickDraw.cpp file-scope geometry defaults found by auditing raw code
+// islands that the Ghidra function inventory omitted.
+// SYNTHETIC: IMPERIALISM 0x0049d2b0
+// `dynamic initializer for 'g_defaultPoint_006A2048''
+// GLOBAL: IMPERIALISM 0x006a2048
+CPoint g_defaultPoint_006A2048(0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049d2d0
+// `dynamic initializer for 'g_defaultRect_006A2028''
+// GLOBAL: IMPERIALISM 0x006a2028
+CRect g_defaultRect_006A2028(0, 0, 0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049d300
+// `dynamic initializer for 'g_defaultRect_006A2038''
+// GLOBAL: IMPERIALISM 0x006a2038
+CRect g_defaultRect_006A2038(0, 0, 0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049d330
+// `dynamic initializer for 'g_defaultRgbColor_006A201C''
+// GLOBAL: IMPERIALISM 0x006a201c
+CRGBColor g_defaultRgbColor_006A201C;
+
+// SYNTHETIC: IMPERIALISM 0x0049d550
+// `dynamic initializer for 'g_defaultPoint_006A2070''
+// GLOBAL: IMPERIALISM 0x006a2070
+CPoint g_defaultPoint_006A2070(0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049d570
+// `dynamic initializer for 'g_defaultPoint_006A2098''
+// GLOBAL: IMPERIALISM 0x006a2098
+CPoint g_defaultPoint_006A2098(0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049d590
+// `dynamic initializer for 'g_defaultRect_006A2078''
+// GLOBAL: IMPERIALISM 0x006a2078
+CRect g_defaultRect_006A2078(0, 0, 0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049d5c0
+// `dynamic initializer for 'g_defaultRect_006A2088''
+// GLOBAL: IMPERIALISM 0x006a2088
+CRect g_defaultRect_006A2088(0, 0, 0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049d5f0
+// `dynamic initializer for 'g_defaultRgbColor_006A2068''
+// GLOBAL: IMPERIALISM 0x006a2068
+CRGBColor g_defaultRgbColor_006A2068;
+
+// SYNTHETIC: IMPERIALISM 0x0049d7b0
+// `dynamic initializer for 'g_defaultPoint_006A20B8''
+// GLOBAL: IMPERIALISM 0x006a20b8
+CPoint g_defaultPoint_006A20B8(0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049d7d0
+// `dynamic initializer for 'g_defaultPoint_006A20E0''
+// GLOBAL: IMPERIALISM 0x006a20e0
+CPoint g_defaultPoint_006A20E0(0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049d7f0
+// `dynamic initializer for 'g_defaultRect_006A20C0''
+// GLOBAL: IMPERIALISM 0x006a20c0
+CRect g_defaultRect_006A20C0(0, 0, 0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049d820
+// `dynamic initializer for 'g_defaultRect_006A20D0''
+// GLOBAL: IMPERIALISM 0x006a20d0
+CRect g_defaultRect_006A20D0(0, 0, 0, 0);
+// SYNTHETIC: IMPERIALISM 0x0049d850
+// `dynamic initializer for 'g_defaultRgbColor_006A20B0''
+// GLOBAL: IMPERIALISM 0x006a20b0
+CRGBColor g_defaultRgbColor_006A20B0;
+
+// The two 1/64 coordinate scales and their derived 512-unit short mirror the earlier
+// 0x49c0c0-0x49c120 initializer trio.
+// SYNTHETIC: IMPERIALISM 0x0049db00
+// `dynamic initializer for 'g_ScaleDefault6A2140''
+// GLOBAL: IMPERIALISM 0x006a2140
+double g_ScaleDefault6A2140 = DefaultGfxCoordinateScale();
+// SYNTHETIC: IMPERIALISM 0x0049db30
+// `dynamic initializer for 'g_ScaleDefault6A2108''
+// GLOBAL: IMPERIALISM 0x006a2108
+double g_ScaleDefault6A2108 = DefaultGfxCoordinateScale();
+// SYNTHETIC: IMPERIALISM 0x0049db60
+// `dynamic initializer for 'g_scaledShortConst_6A21AC''
+// GLOBAL: IMPERIALISM 0x006a21ac
+short g_scaledShortConst_6A21AC = static_cast<short>(g_ScaleDefault6A2108 * 512.0 - -1.0);
+
+// Nonzero CPoint defaults emitted as direct dword stores.
+// SYNTHETIC: IMPERIALISM 0x0049db90
+// `dynamic initializer for 'g_defaultPoint_006A2150''
+// GLOBAL: IMPERIALISM 0x006a2150
+CPoint g_defaultPoint_006A2150(0x80, 0x80);
+// SYNTHETIC: IMPERIALISM 0x0049dbb0
+// `dynamic initializer for 'g_defaultPoint_006A2100''
+// GLOBAL: IMPERIALISM 0x006a2100
+CPoint g_defaultPoint_006A2100(0x32, 0x1e);
+// SYNTHETIC: IMPERIALISM 0x0049dbe0
+// `dynamic initializer for 'g_defaultPoint_006A2118''
+// GLOBAL: IMPERIALISM 0x006a2118
+CPoint g_defaultPoint_006A2118(0x5dc, 0x1c2);
+// SYNTHETIC: IMPERIALISM 0x0049dc10
+// `dynamic initializer for 'g_defaultPoint_006A2198''
+// GLOBAL: IMPERIALISM 0x006a2198
+CPoint g_defaultPoint_006A2198(0x32, 0x32);
+// SYNTHETIC: IMPERIALISM 0x0049dc30
+// `dynamic initializer for 'g_defaultPoint_006A2160''
+// GLOBAL: IMPERIALISM 0x006a2160
+CPoint g_defaultPoint_006A2160(0x50, 0x2d);
+// SYNTHETIC: IMPERIALISM 0x0049dc60
+// `dynamic initializer for 'g_defaultPoint_006A2120''
+// GLOBAL: IMPERIALISM 0x006a2120
+CPoint g_defaultPoint_006A2120(0x208, 0x384);
+// SYNTHETIC: IMPERIALISM 0x0049dc90
+// `dynamic initializer for 'g_defaultPoint_006A21B0''
+// GLOBAL: IMPERIALISM 0x006a21b0
+CPoint g_defaultPoint_006A21B0(0x50, 0x2d);
 
 extern "C" {
 

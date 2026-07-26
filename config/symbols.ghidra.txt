@@ -582,7 +582,7 @@ TCountry::thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089 409089
 thunk_AdvanceSpiralSearchStateAndStepHexCoordinates 4090A2 l
 thunk_SetCityDialogValueDword10 4090D4 l
 thunk_SetGlobalUiInvalidationFlagAndReturnPrevious 4090ED l
-thunk_TViewMgr::ShowTransportScreen 409115 l
+thunk_HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary 409115 l
 thunk_BuildSavePathStringForMode 409129 l
 thunk_SelectAndScheduleRandomAudioCue 409138 l
 thunk_ConstructUiNumericTextEntryBase 40913D l
@@ -1906,7 +1906,7 @@ thunk_WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl_At00493d30 493D30 f
 CMcWindow::OnIdleUpdateMsg36A 493D50 f
 CMcWindow::PreCreateWindow 493D80 f
 WrapperFor_ftol_At00493f30 493F30 f
-InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit 493F90 f
+DynamicInitializerForDefaultQuickDrawSurfaceSentinel 493F90 f
 DestroyDefaultQuickDrawSurfaceContextAtExit 493FC0 f
 InitStub_thunk_InitializeGlobalClipRegionHandleState_At00493fe0 493FE0 f
 WrapperFor_DeleteRegionHandleFromClipState_At00494010 494010 f
@@ -2165,7 +2165,7 @@ TAdorner::'scalar_deleting_destructor' 49DAB0 f
 WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl 49DAE0 f
 WrapperFor_ftol_At0049db60 49DB60 f
 loc_WriteUiRuntimeCursorTableBase_A 49DBEA l
-loc_WriteUiRuntimeCursorTableBase_B 49DC60 l
+DynamicInitializerForDefaultPoint006A2120 49DC60 f
 IltTarget_0049dcc0 49DCC0 f
 IltTarget_0049dce0 49DCE0 f
 IltTarget_0049dd00 49DD00 f
@@ -3416,7 +3416,7 @@ TAutoGreatPower::GetRuntimeClass 4E6B30 f
 TAutoGreatPower::TAutoGreatPower 4E6B50 f
 TAutoGreatPower::'scalar_deleting_destructor' 4E6B80 f
 TAutoGreatPower::~TAutoGreatPower 4E6BB0 f
-TAutoGreatPower::IAutoGreatPower 4E6C20 f
+TAutoGreatPower::InitializeNationMinisterSubsystemsByPolicyIds 4E6C20 f
 TAutoGreatPower::Free 4E7230 f
 TAutoGreatPower::ReadFrom 4E72C0 f
 TAutoGreatPower::WriteTo 4E73F0 f
@@ -7157,7 +7157,7 @@ TViewMgr::ClearActiveCityBuildingViewSlot 5D7F90 f
 TViewMgr::SetCursorRangeAndRefreshMainPanel 5D7FC0 f
 TViewMgr::HandleTurnEvent7D8_ActivateDiplomacyMapView 5D8040 f
 IltTarget_005d8310 5D8310 f
-TViewMgr::TViewMgr::ShowTransportScreen 5D83B0 f
+TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary 5D83B0 f
 TViewMgr::RefreshTechnologyStorePageAndHudText 5D8750 f
 TViewMgr::ShowAbilityStatusReport 5D8980 f
 TViewMgr::HandleTurnEvent2103_RunNationStatusReportUpdate 5D8C40 f
@@ -11460,7 +11460,7 @@ CToolBarCtrl::classRuntimeClass 670E38 l
 CStatusBarCtrl::classRuntimeClass 670E50 l
 CImageList::classRuntimeClass 670E68 l
 CRichEditCtrl::classRuntimeClass 670E80 l
-CRgn::'vftable' 67106C l
+CBrush::'vftable' 67106C l
 CStatic::classRuntimeClass 671AA0 l
 CButton::classRuntimeClass 671AB8 l
 CListBox::classRuntimeClass 671AD0 l
@@ -12520,8 +12520,8 @@ g_ptCivilianOrderModalMessage 6A2D40 l
 g_ptGreatPowerModalMessage 6A2DF0 l
 g_cachedAiCityActionContextBias 6A2EA0 l
 g_ptDiplomacyNoticeModalMessage 6A2FC0 l
-g_diplomacyPopupVisiblePosition_006a2fe0 6A2FE0 l
-g_diplomacyPopupOffscreenPosition_006a3020 6A3020 l
+g_diplomacyWarOfferSheetPosition_006a2fe0 6A2FE0 l
+g_diplomacyPopupLayoutPosition_006a3020 6A3020 l
 g_cstrUiFontBelweLight 6A3060 l
 g_cstrUiFontPalatino 6A3080 l
 g_cstrUiFontBelweBdBt 6A30A4 l

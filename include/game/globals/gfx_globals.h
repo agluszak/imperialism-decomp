@@ -30,6 +30,11 @@ extern TD0TemplateDialog g_debugTraceDialog;
 // File-scope zero geometry/color defaults recovered from the VC5 dynamic-initializer
 // bodies in the 0x0049b9d0-0x0049cb60 cluster. They have no retail readers, but their
 // real C++ types explain the compiler-emitted initializer shapes.
+extern CRGBColor g_defaultRgbColor_006A1CE0;
+extern CPoint g_defaultPoint_006A1CF8;
+extern CRect g_defaultRect_006A1D30;
+extern CRect g_defaultRect_006A1D68;
+extern CPoint g_defaultPoint_006A1D78;
 extern CRGBColor g_defaultRgbColor_006A1E18;
 extern CPoint g_defaultPoint_006A1E20;
 extern CRect g_defaultRect_006A1E28;
@@ -53,6 +58,40 @@ extern double g_ScaleDefault6A1FE8;
 extern CRect g_defaultRect_006A1FF0;
 extern CPoint g_defaultPoint_006A2000;
 extern short g_scaledDefaultWidth_006A2008;
+extern CPoint g_defaultPoint_006A2020;
+extern CRGBColor g_defaultRgbColor_006A201C;
+extern CRect g_defaultRect_006A2028;
+extern CRect g_defaultRect_006A2038;
+extern CPoint g_defaultPoint_006A2048;
+extern CRGBColor g_defaultRgbColor_006A2068;
+extern CPoint g_defaultPoint_006A2070;
+extern CRect g_defaultRect_006A2078;
+extern CRect g_defaultRect_006A2088;
+extern CPoint g_defaultPoint_006A2098;
+extern CRGBColor g_defaultRgbColor_006A20B0;
+extern CPoint g_defaultPoint_006A20B8;
+extern CRect g_defaultRect_006A20C0;
+extern CRect g_defaultRect_006A20D0;
+extern CPoint g_defaultPoint_006A20E0;
+extern CPoint g_defaultPoint_006A2100;
+extern double g_ScaleDefault6A2108;
+extern CPoint g_defaultPoint_006A2118;
+extern CPoint g_defaultPoint_006A2120;
+extern double g_ScaleDefault6A2140;
+extern CPoint g_defaultPoint_006A2150;
+extern CPoint g_defaultPoint_006A2160;
+extern CPoint g_defaultPoint_006A2198;
+extern short g_scaledShortConst_6A21AC;
+extern CPoint g_defaultPoint_006A21B0;
+
+extern int g_paletteResourceNameAssertGate;
+extern int g_paletteResourceIdAssertGate;
+
+extern "C" {
+extern const char g_szPaletteResourceType[];
+extern const char g_szResourceMgrSourcePath[];
+extern const char g_szPaletteResourceIdFormat[];
+}
 
 extern int g_nUiInvalidationAssertFlagLine471;
 
