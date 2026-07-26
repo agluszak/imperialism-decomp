@@ -10,6 +10,7 @@ struct TBitmapSurfaceNode;
 
 void GetGWorld(TQuickDrawSurfaceContext** outContext, int* outFlags);
 void SetGWorld(TQuickDrawSurfaceContext* context, int flags);
+void DisposeQuickDrawMemoryDC(void); // 0x00496160
 TBitmapSurfaceNode** GetGWorldPixMap(TQuickDrawSurfaceContext* context);
 unsigned char* GetPixBaseAddr(TBitmapSurfaceNode** pixMap);
 short NewGWorld(TQuickDrawSurfaceContext** outContext, short bitDepth, const RECT* bounds,

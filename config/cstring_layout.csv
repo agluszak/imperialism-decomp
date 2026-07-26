@@ -249,9 +249,9 @@ TView|96|helpState54|unsigned short|other|84|2|no|58db9f5da483215d|include/game/
 TView|96|padding_56_to_57|unsigned char[2]|other|86|2|no|58db9f5da483215d|include/game/ui_core/TView.h
 TView|96|hoverHelpText58|CString|embedded|88|4|yes|58db9f5da483215d|include/game/ui_core/TView.h
 TView|96|hoverHelpEnabled5c|int|other|92|4|no|58db9f5da483215d|include/game/ui_core/TView.h
-TWNetSessionManager|180|joinGamePlayerNameA8|CString|embedded|168|4|yes|8357bd582952a7ef|include/game/net/TWNetSessionManager.h
-TWNetSessionManager|180|joinGamePlayerDataTagAC|int|other|172|4|no|8357bd582952a7ef|include/game/net/TWNetSessionManager.h
-TWNetSessionManager|180|activeProtocolControlB0|TRadioTextCluster *|other|176|4|no|8357bd582952a7ef|include/game/net/TWNetSessionManager.h
+TWNetSessionManager|180|joinGamePlayerNameA8|CString|embedded|168|4|yes|e0efb16174dcd263|include/game/net/TWNetSessionManager.h
+TWNetSessionManager|180|joinGamePlayerDataTagAC|int|other|172|4|no|e0efb16174dcd263|include/game/net/TWNetSessionManager.h
+TWNetSessionManager|180|activeProtocolControlB0|TRadioTextCluster *|other|176|4|no|e0efb16174dcd263|include/game/net/TWNetSessionManager.h
 TZone|72|statusCode04|short|other|4|2|no|f0acc9c03bbe5805|include/game/ui_screens/TZone.h
 TZone|72|pad06|char[2]|other|6|2|no|f0acc9c03bbe5805|include/game/ui_screens/TZone.h
 TZone|72|displayName|CString|embedded|8|4|yes|f0acc9c03bbe5805|include/game/ui_screens/TZone.h

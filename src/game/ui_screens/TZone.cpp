@@ -1145,6 +1145,11 @@ TZone* TZone::GetNextPortZone() {
 // deleting destructor's thunk at 0x407775; TPortZone::~TPortZone (0x5616f0) is
 // instruction-for-instruction identical since TPortZone has no unique members of its own
 // -- the original inlined this same body there too instead of calling it out-of-line.
+// Exact-capacity fallback emitted for the primary-neighbor pointer stretch.
+// TEMPLATE: IMPERIALISM 0x005620c0
+// ?SetCapacity@?$stretch@PAVTZone@@@@QAEXI@Z
+template void stretch<TZone*>::SetCapacity(unsigned int);
+
 // FUNCTION: IMPERIALISM 0x005627a0
 TZone::~TZone() {
   if (g_pMapActionContextListHead == this) {
