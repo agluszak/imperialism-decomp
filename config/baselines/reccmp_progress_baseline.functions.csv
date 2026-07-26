@@ -3191,7 +3191,7 @@ address|matching|name
 0x511e80|1.0|TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress
 0x511ed0|0.6666666666666666|TMapMgr::DispatchTurnEvent7DDForActiveNation
 0x511f10|1.0|TMapMgr::ComputeRepresentativeTileIndexForNation
-0x511f30|0.17100371747211895|TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask
+0x511f30|0.24|TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask
 0x5121d0|0.3111111111111111|TMapMgr::IsNodeTypeLinkUnavailableAndNoActiveMapActionContext
 0x5122b0|1.0|TMapMgr::IsShiftKeyDown
 0x5122d0|1.0|TMapMgr::IsAltKeyDown

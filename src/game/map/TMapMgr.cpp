@@ -1570,7 +1570,13 @@ bool TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short 
   bool regionClassSeen[24] = {false};
 
   int i;
-  MarkOwnedRegionClasses(g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList, regionClassSeen);
+  // Ground truth probes the list first and skips the marking pass when it is empty
+  // (call [edx+0x28] = GetSize; cmp eax,1; jl at 0x511f71), mirroring the guard this
+  // function already applies on the nationB side further down.
+  if (g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList->GetSize() >= 1) {
+    MarkOwnedRegionClasses(g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList,
+                           regionClassSeen);
+  }
   for (i = 0; i < 16; ++i) {
     TMinor* minor = g_apNationAuxRuntimeStateSlots[i];
     if (minor != 0 && minor->IsEncodedNationSlotMinus200Equal(nationA) &&
