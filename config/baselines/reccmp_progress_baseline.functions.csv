@@ -2534,7 +2534,7 @@ address|matching|name
 0x4e3620|0.35714285714285715|TGreatPower::SumDiplomacyGrantEntriesMaskedToValueBits
 0x4e3660|0.4444444444444444|TMinor::CreateObject
 0x4e36f0|1.0|TMinor::GetRuntimeClass
-0x4e3710|0.3333333333333333|TMinor::TMinor
+0x4e3710|0.4|TMinor::TMinor
 0x4e3790|1.0|TMinor::`scalar deleting destructor'
 0x4e37c0|0.9767441860465116|TMinor
 0x4e3830|0.9526627218934911|TMinor::IMinor
