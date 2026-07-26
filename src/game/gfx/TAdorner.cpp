@@ -64,5 +64,3 @@ unsigned char TAdorner::DoesAdorn(TView*) {
 
 // SYNTHETIC: IMPERIALISM 0x0049dab0
 // TAdorner::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x0049dae0
-TAdorner::~TAdorner() {}

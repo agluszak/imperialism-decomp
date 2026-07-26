@@ -68,7 +68,7 @@ TViewMgr* g_pUiRuntimeContext = 0;
 // GLOBAL: IMPERIALISM 0x006a2050
 TBackdropWindow* g_pActiveBackdropWindow = 0;
 // GLOBAL: IMPERIALISM 0x006a2054
-char* g_pBackdropWaitCursorGuardToken = 0;
+CWaitCursor* g_pBackdropWaitCursor = 0;
 // GLOBAL: IMPERIALISM 0x006a2148
 TAssetMgr* g_pUiViewManager = 0;
 // GLOBAL: IMPERIALISM 0x006a327c
@@ -825,7 +825,7 @@ RgnHandle g_pTemporaryRegionCache = 0;
 // GLOBAL: IMPERIALISM 0x006a2018
 // Cached CCommandLineInfo::m_bShowSplash flag (cmdInfo+0x04 after the CObject vptr).
 // Writer: SetCachedShowSplashFlag @ 0x0049cc40 from InitInstance @ 0x00412f81.
-// Reader: Function_0049cc60 @ 0x0049cc60 when nonzero.
+// Reader: CreateBackdropWindowIfSplashEnabled @ 0x0049cc60 when nonzero.
 BOOL g_cachedShowSplashFlag = FALSE;
 
 } // extern "C"

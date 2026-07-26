@@ -585,7 +585,7 @@ address|matching|name
 0x483750|0.9230769230769231|CIncludeView::OnInitialUpdate
 0x4838b0|0.9487179487179487|CIncludeView::OnMouseMove
 0x4839e0|0.3181818181818182|CIncludeView::OnLButtonDown
-0x483ab0|0.0|TUiEvent::~TUiEvent
+0x483ab0|1.0|TUiEvent::~TUiEvent
 0x483ad0|1.0|TUiEvent::`scalar deleting destructor'
 0x483b00|1.0|CIncludeView::OnLButtonUp
 0x483b70|1.0|CIncludeView::OnLButtonDblClk
@@ -656,11 +656,11 @@ address|matching|name
 0x486300|1.0|TTEView::StuffTERects
 0x486320|1.0|TDocument::CreateObject
 0x486350|1.0|TDocument::`scalar deleting destructor'
-0x486380|1.0|TDocument::~TDocument
+0x486380|1.0|TDocument
 0x4863a0|1.0|TDocument::GetRuntimeClass
 0x4863c0|1.0|TFileBasedDocument::CreateObject
 0x4863f0|1.0|TFileBasedDocument::`scalar deleting destructor'
-0x486420|0.0|TFileBasedDocument::~TFileBasedDocument
+0x486420|1.0|TFileBasedDocument
 0x486440|1.0|TFileBasedDocument::GetRuntimeClass
 0x486530|1.0|TDocument::DoRead
 0x486550|1.0|TDocument::DoWrite
@@ -711,7 +711,7 @@ address|matching|name
 0x487800|1.0|TCommand::GetRuntimeClass
 0x487820|1.0|TCommand::TCommand
 0x487850|1.0|TCommand::`scalar deleting destructor'
-0x487880|0.0|TCommand::~TCommand
+0x487880|1.0|TCommand
 0x4878a0|1.0|TCommand::InitializeRangePair
 0x4878e0|1.0|TCommand::Free
 0x487900|1.0|TCommand::Process
@@ -1155,7 +1155,7 @@ address|matching|name
 0x492b00|0.0|WrapperFor_FreeLinkedBlockChain_At00492b00
 0x492b70|0.0|WrapperFor_StringSharedRef_AssignFromPtr_At00492b70
 0x492c70|1.0|TEvent::`scalar deleting destructor'
-0x492ca0|1.0|TEvent::~TEvent
+0x492ca0|1.0|TEvent
 0x492cc0|1.0|TWindow::GetWindow
 0x492ce0|1.0|TWindow::GetRootView
 0x492d00|1.0|TWindow::TranslatePointToParentChain4E
@@ -1266,7 +1266,7 @@ address|matching|name
 0x4967e0|1.0|TransparentBlitBitmapRegionUsingMaskedRasterOps
 0x496b80|0.7457627118644068|BlitBitmapResourceToTemporaryCompatibleDcAndPresent
 0x496d40|0.24797843665768193|BlitRectWithOptionalTransparency
-0x497230|0.27586206896551724|InitializeGlobalRectDefaultsIfUninitialized
+0x497230|1.0|InitializeGlobalRectDefaultsIfUninitialized
 0x4972a0|1.0|InitializeTurnOrderNavigationDialogByViewportSize_Impl
 0x4972c0|1.0|LockPixels
 0x4972e0|1.0|UnlockPixels
@@ -1274,9 +1274,9 @@ address|matching|name
 0x497320|0.9615384615384616|CTemporaryRegion::CTemporaryRegion
 0x497390|1.0|CTemporaryRegion::~CTemporaryRegion
 0x4974f0|1.0|DisposeTemporaryRegionCache
-0x497540|0.145|CombineClipRegionsWithEmptyHandling
+0x497540|0.8805970149253731|CombineClipRegionsWithEmptyHandling
 0x4977a0|1.0|UnionRgn
-0x497810|0.6222222222222222|SetEmptyRgn
+0x497810|1.0|SetEmptyRgn
 0x497860|0.5111111111111111|QDFrameRgn
 0x497940|0.42857142857142855|FillClipRegionWithForegroundBrush
 0x497a10|0.43478260869565216|QDPaintRgn
@@ -1293,11 +1293,12 @@ address|matching|name
 0x498000|1.0|SectRgn
 0x498070|0.5504587155963303|IntersectClipRegionWithRectAndUpdateBounds
 0x498180|0.6790123456790124|QDFrameRect
-0x498310|0.45739910313901344|QDFrameOval
-0x498610|0.9642857142857143|TScopedQuickDrawPen::~TScopedQuickDrawPen
+0x498310|0.5734767025089605|QDFrameOval
+0x4985b0|0.75|CGdiObject::CGdiObject
+0x498610|0.9642857142857143|TScopedQuickDrawPen
 0x4986a0|1.0|TScopedQuickDrawPen::`scalar deleting destructor'
-0x4986d0|0.288135593220339|QDPaintOval
-0x498980|0.3181818181818182|FillRectWithQuickDrawBrushAndContextOffset
+0x4986d0|0.5586206896551724|QDPaintOval
+0x498980|0.8461538461538461|FillRectWithQuickDrawBrushAndContextOffset
 0x498aa0|0.5901639344262295|EmptyRgn
 0x498b10|1.0|ProbeRectEmptyAfterCopyToLocal
 0x498b50|1.0|SetQuickDrawCursor
@@ -1389,17 +1390,16 @@ address|matching|name
 0x49cb30|0.5|ResetGlobalQuad6A1FF0To6A1FFC
 0x49cb60|0.16666666666666666|ResetGlobalDword6A1FC8
 0x49cbc0|1.0|TBackdropWindow::`scalar deleting destructor'
-0x49cbf0|0.6666666666666666|TBackdropWindow::~TBackdropWindow
+0x49cbf0|1.0|TBackdropWindow::~TBackdropWindow
 0x49cc20|0.5|TBackdropWindow::GetMessageMap
 0x49cc40|1.0|SetCachedShowSplashFlag
-0x49cc60|0.0|Function_0049cc60
-0x49cca0|0.3106796116504854|CreateGlobalBackdropWindowWithDefaultBmp3B6
-0x49cdf0|0.7466666666666667|RefreshBackdropOnInputMessages
-0x49ce90|0.7878787878787878|TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6
-0x49cfa0|0.6593406593406593|TBackdropWindow::PostNcDestroy
-0x49d090|0.5869565217391305|TBackdropWindow::OnCreate
-0x49d180|0.8048780487804879|TBackdropWindow::OnPaint
-0x49d240|0.32|TBackdropWindow::OnTimer
+0x49cc60|0.8994708994708994|CreateBackdropWindowIfSplashEnabled
+0x49cdf0|1.0|RefreshBackdropOnInputMessages
+0x49ce90|0.9494949494949495|TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6
+0x49cfa0|1.0|TBackdropWindow::PostNcDestroy
+0x49d090|1.0|TBackdropWindow::OnCreate
+0x49d180|0.85|TBackdropWindow::OnPaint
+0x49d240|1.0|TBackdropWindow::OnTimer
 0x49d290|0.6666666666666666|ResetGlobalPair6A2020And6A2024
 0x49d360|0.4966442953020134|TModalDialogBase::PrepareAndCreateModalFromTemplate
 0x49d450|0.4657534246575342|TModalDialogBase::DoModal
@@ -1422,12 +1422,12 @@ address|matching|name
 0x49da50|1.0|TAdorner::DrawLine
 0x49da80|1.0|TAdorner::DoesAdorn
 0x49dab0|1.0|TAdorner::`scalar deleting destructor'
-0x49dae0|1.0|TAdorner::~TAdorner
+0x49dae0|1.0|TAdorner
 0x49db60|0.25|`dynamic initializer for 'g_scaledShortConst_6A21AC''
 0x49dd40|1.0|TNewGameCommand::CreateObject
-0x49ddb0|0.4|TNewGameCommand::DoIt
+0x49ddb0|1.0|TNewGameCommand::DoIt
 0x49ddd0|1.0|TNewGameCommand::`scalar deleting destructor'
-0x49de00|0.0|TNewGameCommand::~TNewGameCommand
+0x49de00|1.0|TNewGameCommand::~TNewGameCommand
 0x49de20|1.0|TNewGameCommand::GetRuntimeClass
 0x49de40|0.5806451612903226|TAmbitApplication::CreateObject
 0x49deb0|1.0|TAmbitApplication::GetRuntimeClass
@@ -1443,7 +1443,7 @@ address|matching|name
 0x49e5d0|1.0|TAmbitFileBasedDocument::GetRuntimeClass
 0x49e5f0|1.0|TAmbitFileBasedDocument::TAmbitFileBasedDocument
 0x49e610|1.0|TAmbitFileBasedDocument::`scalar deleting destructor'
-0x49e640|0.0|TAmbitFileBasedDocument::~TAmbitFileBasedDocument
+0x49e640|1.0|TAmbitFileBasedDocument::~TAmbitFileBasedDocument
 0x49e660|1.0|TAmbitFileBasedDocument::IAmbitDocument
 0x49e680|1.0|TAmbitFileBasedDocument::DoMakeViews
 0x49e6a0|0.5655430711610487|TAmbitFileBasedDocument::DoRead
@@ -1536,7 +1536,7 @@ address|matching|name
 0x4a2390|0.8355555555555556|TArmyMgr::ResolveNextMove
 0x4a2500|0.984375|TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits
 0x4a2610|0.4068767908309456|BuildArmyActionLabelFromLocalizationAndCounts
-0x4a2900|0.6053946053946054|BuildArmyContextActionRecordsAndDispatchLabel
+0x4a2900|0.6093906093906094|BuildArmyContextActionRecordsAndDispatchLabel
 0x4a3200|0.7086614173228346|TArmyMgr::TryCreateTacticalBattleViewForTileArmies
 0x4a35e0|0.6006825938566553|TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion
 0x4a37b0|1.0|TArmyMgr::RelocateStackUnitsToStackTile
@@ -1571,7 +1571,7 @@ address|matching|name
 0x4a5c50|1.0|TArmyBattle::`scalar deleting destructor'
 0x4a5c80|0.0|TArmyBattle::~TArmyBattle
 0x4a5ca0|0.5432098765432098|TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters
-0x4a5ec0|0.5307017543859649|TArmyMgr::GenerateSpyReport
+0x4a5ec0|0.5328947368421053|TArmyMgr::GenerateSpyReport
 0x4a6680|0.7107652399481194|TArmyMgr::ShowSpyReport
 0x4a6d40|0.38202247191011235|TArmyMgr::ScanMapContextActionEntriesForCodeMatch
 0x4a6dd0|1.0|TArmyMgr::GetByteFlagAtOffset8
@@ -2742,7 +2742,7 @@ address|matching|name
 0x4f0a10|0.8633405639913232|TDiplomacyMgr::ProcessQueuedWarTransitions
 0x4f0db0|1.0|TNextDiplomationCommand::DoIt
 0x4f0dd0|1.0|TNextDiplomationCommand::`scalar deleting destructor'
-0x4f0e00|0.0|TNextDiplomationCommand::~TNextDiplomationCommand
+0x4f0e00|1.0|TNextDiplomationCommand::~TNextDiplomationCommand
 0x4f0e20|0.19080459770114944|TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices
 0x4f1570|0.7578947368421053|TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom
 0x4f1630|0.7108433734939759|TDiplomacyMgr::BuildMajorNationDiplomacyStandingRanking
@@ -2945,7 +2945,7 @@ address|matching|name
 0x4ff000|1.0|TDisplayMgr::CloseFloaters
 0x4ff0c0|0.9655172413793104|TColorFill::CreateObject
 0x4ff150|1.0|TColorFill::`scalar deleting destructor'
-0x4ff180|0.0|TColorFill::~TColorFill
+0x4ff180|1.0|TColorFill::~TColorFill
 0x4ff1a0|1.0|TColorFill::GetRuntimeClass
 0x4ff1c0|1.0|TColorFill::Draw
 0x4ff1f0|1.0|TGWorldPeeker::CreateObject
@@ -2975,7 +2975,7 @@ address|matching|name
 0x4ffcb0|1.0|TGameWindow::Open
 0x4ffd10|1.0|TGameWindow::HandleMouseDown
 0x4ffd40|1.0|TGameWindow::HandleMouseUp
-0x4ffd70|0.4260089686098655|TGameWindow::DoKeyEvent
+0x4ffd70|0.9867256637168141|TGameWindow::DoKeyEvent
 0x500160|1.0|TGameWindow::UpdateTurnOrderNavigationWindowLayout
 0x500200|1.0|TGameWindow::NoOpTurnOrderNavigationVtableSlotA
 0x500220|1.0|TGameWindow::NoOpTurnOrderNavigationVtableSlotB
@@ -3946,7 +3946,7 @@ address|matching|name
 0x5424b0|1.0|TCancelGameOptionsCommand::CreateObject
 0x542520|1.0|TCancelGameOptionsCommand::DoIt
 0x542560|1.0|TCancelGameOptionsCommand::`scalar deleting destructor'
-0x542590|0.0|TCancelGameOptionsCommand::~TCancelGameOptionsCommand
+0x542590|1.0|TCancelGameOptionsCommand::~TCancelGameOptionsCommand
 0x5425b0|1.0|TCancelGameOptionsCommand::GetRuntimeClass
 0x5425d0|1.0|TMultiplayerMgr::CreateObject
 0x542650|1.0|TMultiplayerMgr::GetRuntimeClass
@@ -3984,7 +3984,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.46522858982614296|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.4639407598197038|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags
@@ -4013,7 +4013,7 @@ address|matching|name
 0x54ae90|1.0|Province::operator=
 0x54aff0|0.3333333333333333|TPoseMessageDialog::DoIt
 0x54b010|1.0|TPoseMessageDialog::`scalar deleting destructor'
-0x54b040|0.0|TPoseMessageDialog::~TPoseMessageDialog
+0x54b040|1.0|TPoseMessageDialog::~TPoseMessageDialog
 0x54b060|1.0|TPoseMessageDialog::CreateObject
 0x54b0d0|1.0|TPoseMessageDialog::GetRuntimeClass
 0x54b0f0|1.0|QueuePoseMessageDialogForNationSlot
@@ -4734,7 +4734,7 @@ address|matching|name
 0x575180|1.0|TSpaceCommand::CreateObject
 0x5751f0|1.0|TSpaceCommand::DoIt
 0x575210|1.0|TSpaceCommand::`scalar deleting destructor'
-0x575240|0.0|TSpaceCommand::~TSpaceCommand
+0x575240|1.0|TSpaceCommand::~TSpaceCommand
 0x575260|1.0|TSpaceCommand::GetRuntimeClass
 0x575280|0.6785714285714286|THighScoresPicture::CreateObject
 0x575300|1.0|THighScoresPicture::GetRuntimeClass
@@ -4993,7 +4993,7 @@ address|matching|name
 0x584e20|1.0|TToolBarCluster::TToolBarCluster
 0x584e50|1.0|TToolBarCluster::`scalar deleting destructor'
 0x584e80|1.0|TToolBarCluster::~TToolBarCluster
-0x584ea0|0.783410138248848|TToolBarCluster::DoEvent
+0x584ea0|0.836027713625866|TToolBarCluster::DoEvent
 0x5851c0|0.6613545816733067|TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x5853f0|0.708994708994709|TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls
 0x585ba0|0.481994459833795|TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext
@@ -5491,7 +5491,7 @@ address|matching|name
 0x5a35a0|1.0|TTacticalBattle::HandleTacticalCommandTag_mine
 0x5a3640|1.0|TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints
 0x5a36d0|0.8342245989304813|TTacticalBattle::HandleTacticalCommandTag_digg
-0x5a3810|0.7166666666666667|TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand
+0x5a3810|1.0|TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand
 0x5a38e0|1.0|TTacticalBattle::HandleTacticalCommandTag_raly
 0x5a39a0|0.9393939393939394|ComputeHexTileDistanceFromIndices
 0x5a3a70|0.4|TTacticalBattle::FindFortWallTileCrossedByFiringLine
@@ -5558,7 +5558,7 @@ address|matching|name
 0x5a6540|1.0|TNextMoveCommand::GetRuntimeClass
 0x5a6560|0.2222222222222222|TNextMoveCommand::ConstructTNextMoveCommandBaseState
 0x5a6590|1.0|TNextMoveCommand::`scalar deleting destructor'
-0x5a65c0|0.0|TNextMoveCommand::~TNextMoveCommand
+0x5a65c0|1.0|TNextMoveCommand::~TNextMoveCommand
 0x5a6620|0.43478260869565216|TNextMoveCommand::DoIt
 0x5a67e0|0.25|`dynamic initializer for 'g_scaledShortConst_6A54A8''
 0x5a6940|1.0|ClipSrcRectToBoundsAndOffsetDstRect
@@ -5580,13 +5580,13 @@ address|matching|name
 0x5a8900|1.0|TTacticalBattleView::TacticalBattleViewSlot68
 0x5a89a0|1.0|TTacticalBattleView::InvalidateTacticalUnitTileRect
 0x5a89f0|0.42857142857142855|TTacticalBattleView::ComputeTacticalUnitTileScreenRect
-0x5a8ac0|0.6086956521739131|TTacticalBattleView::CenterViewportAroundGridIndexAndSnap
+0x5a8ac0|0.6867469879518072|TTacticalBattleView::CenterViewportAroundGridIndexAndSnap
 0x5a8be0|1.0|TTacticalBattleView::Scroll
 0x5a8ca0|1.0|TTacticalBattleView::DoSetCursor
 0x5a8d40|0.5252525252525253|TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x5a9090|0.8208955223880597|TTacticalBattleView::PlayTacticalTileEffect
 0x5a9170|0.9541284403669725|TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog
-0x5a9240|0.5707317073170731|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
+0x5a9240|0.5463414634146342|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
 0x5a9550|0.23429541595925296|TTacticalBattleView::DrawUiTilesAndOverlay
 0x5a99e0|1.0|DrawHexSelectionOutlineSegments
 0x5a9b40|0.92|TTacticalBattleView::UpdateTacticalActionControlBitmapForCurrentUnit
@@ -5887,7 +5887,7 @@ address|matching|name
 0x5ba3e0|1.0|TNextTradeCommand::GetRuntimeClass
 0x5ba400|1.0|TNextTradeCommand::TNextTradeCommand
 0x5ba430|1.0|TNextTradeCommand::`scalar deleting destructor'
-0x5ba460|0.0|TNextTradeCommand::~TNextTradeCommand
+0x5ba460|1.0|TNextTradeCommand::~TNextTradeCommand
 0x5ba480|1.0|TNextTradeCommand::INextTradeCommand
 0x5ba4b0|0.0|TNextTradeCommand::DoIt
 0x5ba600|0.25|`dynamic initializer for 'g_scaledShortConst_6A5A20''
@@ -5954,7 +5954,7 @@ address|matching|name
 0x5bea00|0.6868686868686869|TOfferDeskPicture::PoseOfferSheet
 0x5bf740|0.6442953020134228|TOfferDeskPicture::DoEvent
 0x5bf860|1.0|TOfferDeskPicture::DoKeyEvent
-0x5bf930|0.7907361455748553|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
+0x5bf930|0.7411083540115798|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
 0x5c04f0|0.8108108108108109|TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt
 0x5c0930|0.05|TOfferDeskPicture::HandleMouseUp
 0x5c09d0|0.7486631016042781|TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged
@@ -6170,7 +6170,7 @@ address|matching|name
 0x5dcc90|1.0|TModalMessageCommand::CreateObject
 0x5dcd10|1.0|TModalMessageCommand::DoIt
 0x5dcd50|1.0|TModalMessageCommand::`scalar deleting destructor'
-0x5dcd80|0.8|TModalMessageCommand::~TModalMessageCommand
+0x5dcd80|0.9696969696969697|TModalMessageCommand::~TModalMessageCommand
 0x5dcdd0|1.0|TModalMessageCommand::GetRuntimeClass
 0x5dcdf0|1.0|TViewMgr::ShowNewCityDialog
 0x5dcf20|0.7391304347826086|TViewMgr::ShowCombatReportDialog
@@ -7092,7 +7092,7 @@ address|matching|name
 0x608ba8|0.9441964285714286|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|1.0|CWnd::OnNotify
+0x6091d9|0.9787234042553191|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent
@@ -7652,7 +7652,7 @@ address|matching|name
 0x61ed3c|1.0|CDC::LPtoHIMETRIC
 0x61ed57|1.0|CDC::HIMETRICtoLP
 0x61ed72|1.0|CDC::GetHalftoneBrush
-0x61ede5|0.966789667896679|CDC::DrawDragRect
+0x61ede5|0.985239852398524|CDC::DrawDragRect
 0x61f0fa|1.0|CDC::FillSolidRect(struct tagRECT const *, unsigned long)
 0x61f124|1.0|CDC::FillSolidRect(int, int, int, int, unsigned long)
 0x61f19b|1.0|CDC::Draw3dRect(int, int, int, int, unsigned long, unsigned long)
@@ -7714,6 +7714,7 @@ address|matching|name
 0x623212|0.9887640449438202|CWinApp::GetProfileStringA
 0x623324|1.0|CWinApp::GetProfileBinary
 0x62343f|1.0|CWnd::CreateObject
+0x623471|0.5|CWnd::GetRuntimeClass
 0x623477|0.8|_AFX_THREAD_STATE::_AFX_THREAD_STATE
 0x62348e|1.0|_AFX_THREAD_STATE::`scalar deleting destructor'
 0x6234a9|0.9555555555555556|_AFX_THREAD_STATE::~_AFX_THREAD_STATE

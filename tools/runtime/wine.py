@@ -34,16 +34,73 @@ def retail_game_dir() -> Path:
     return Path(original).resolve().parent
 
 
-def windows_path(path: Path, environment: dict[str, str]) -> str:
+def _drive_mappings(prefix: Path) -> list[tuple[Path, str]]:
+    """Wine's drive letters as (host target, drive) pairs, longest target first.
+
+    dosdevices/<letter>: is a symlink to the host directory the drive maps to, so the
+    translation winepath performs is available by reading the prefix. Longest first so a
+    nested mapping wins over the root drive.
+    """
+    mappings: list[tuple[Path, str]] = []
+    for entry in sorted((prefix / "dosdevices").glob("?:")):
+        try:
+            target = entry.resolve(strict=True)
+        except OSError:
+            continue
+        if target.is_dir():
+            mappings.append((target, entry.name.upper()))
+    mappings.sort(key=lambda item: len(str(item[0])), reverse=True)
+    return mappings
+
+
+def _translate_locally(path: Path, mappings: list[tuple[Path, str]]) -> str | None:
+    resolved = path.resolve()
+    for target, drive in mappings:
+        if resolved == target:
+            return f"{drive}\\"
+        if target in resolved.parents:
+            tail = str(resolved.relative_to(target)).replace("/", "\\")
+            return f"{drive}\\{tail}"
+    return None
+
+
+def windows_paths(paths: list[Path], environment: dict[str, str]) -> list[str]:
+    """Translate several host paths to Windows form in one winepath invocation.
+
+    Each winepath call starts its own Wine process, which costs about a second even
+    against a warm wineserver -- four separate calls were 4 s of every test's ~5.5 s.
+    winepath accepts multiple operands and answers one line each, so the whole set costs
+    what a single call did.
+    """
+    if not paths:
+        return []
+    prefix = Path(environment.get("WINEPREFIX", ""))
+    if prefix.is_dir():
+        # Pure-Python translation from the prefix's own drive map. Spawning winepath
+        # costs about a second per invocation because it starts a Wine process, and it
+        # was the single largest phase in a run once the server was kept warm.
+        mappings = _drive_mappings(prefix)
+        translated = [_translate_locally(path, mappings) for path in paths]
+        if all(item is not None for item in translated):
+            return [item for item in translated if item is not None]
     completed = subprocess.run(
-        ["winepath", "-w", str(path.resolve())],
+        ["winepath", "-w", *[str(path.resolve()) for path in paths]],
         env=environment,
-        check=True,
         capture_output=True,
         text=True,
-        timeout=60,
+        check=True,
+        timeout=120,
     )
-    return completed.stdout.strip()
+    translated = [line.strip() for line in completed.stdout.splitlines() if line.strip()]
+    if len(translated) != len(paths):
+        raise RuntimeError(
+            f"winepath returned {len(translated)} paths for {len(paths)} inputs"
+        )
+    return translated
+
+
+def windows_path(path: Path, environment: dict[str, str]) -> str:
+    return windows_paths([path], environment)[0]
 
 
 def prefix_environment(prefix: Path) -> dict[str, str]:
@@ -131,14 +188,67 @@ def ensure_template_prefix(virtual_desktop: bool = False) -> Path:
         return template
 
 
-def initialize_wine_prefix(prefix: Path, environment: dict[str, str]) -> None:
-    virtual_desktop = bool(environment.get("IMPERIALISM_WINE_VIRTUAL_DESKTOP"))
+# State a run mutates and the next run must not inherit. Everything else in the prefix
+# (notably the ~1.2 GB drive_c/windows builtin DLL tree) is effectively read-only, which
+# is what makes reusing one prefix per worktree safe.
+MUTABLE_PREFIX_TREES = (Path("drive_c/users"),)
+
+
+def worktree_prefix() -> Path:
+    """The single Wine prefix this worktree reuses across runs.
+
+    BUILD_DIR is repo-local and gitignored, so this is per worktree by construction:
+    concurrent agents each get their own prefix and their own wineserver, and none of
+    them can kill another's game with `wineserver -k`.
+    """
+    return BUILD_DIR / "wineprefix"
+
+
+def _clone_tree(source: Path, destination: Path) -> None:
     subprocess.run(
-        ["cp", "-a", "--reflink=auto", str(ensure_template_prefix(virtual_desktop)), str(prefix)],
+        ["cp", "-a", "--reflink=auto", str(source), str(destination)],
         check=True,
         capture_output=True,
         timeout=180,
     )
+
+
+def _restore_mutable_state(prefix: Path, template: Path) -> None:
+    """Reset the parts of the prefix a previous run may have changed.
+
+    Only the user profile is restored. The registry hives are deliberately left alone:
+    a warm wineserver holds them in memory, so rewriting the files under it would not
+    reset anything and would risk the server flushing its cached copy back over the
+    restored one. Registry drift across runs is therefore an accepted cost of the warm
+    server -- see the trade recorded on imperialism-decomp-3sn1.
+    """
+    for relative in MUTABLE_PREFIX_TREES:
+        source = template / relative
+        if not source.is_dir():
+            continue
+        target = prefix / relative
+        shutil.rmtree(target, ignore_errors=True)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        _clone_tree(source, target)
+
+
+def initialize_wine_prefix(prefix: Path, environment: dict[str, str]) -> None:
+    """Make `prefix` ready for a run, materializing it from the template on first use.
+
+    Runs used to get a private prefix copied per test. That cost a full 1.3 GB byte copy
+    on any filesystem without reflink support (build-runtime-tests is on ext4 here), plus
+    an rmtree of the same size on teardown, for isolation that a per-worktree prefix
+    already provides -- each agent works in its own worktree, so nobody shares a
+    wineserver with anybody else. See imperialism-decomp-3sn1.
+    """
+    virtual_desktop = bool(environment.get("IMPERIALISM_WINE_VIRTUAL_DESKTOP"))
+    template = ensure_template_prefix(virtual_desktop)
+    if not (prefix / "system.reg").is_file():
+        shutil.rmtree(prefix, ignore_errors=True)
+        prefix.parent.mkdir(parents=True, exist_ok=True)
+        _clone_tree(template, prefix)
+        return
+    _restore_mutable_state(prefix, template)
 
 
 def shut_down_wine_prefix(environment: dict[str, str]) -> None:

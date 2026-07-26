@@ -25,7 +25,8 @@ class TView;
 class TAdorner : public TObject {
 public:
   DECLARE_DYNCREATE(TAdorner)
-  virtual ~TAdorner() override;                    // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x0049dae0
+  virtual ~TAdorner() override {}                  // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x49d990
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x49d960
   // The seven adorner hooks follow the MacApp declaration order. Windows RET immediates

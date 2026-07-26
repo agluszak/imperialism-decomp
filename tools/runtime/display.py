@@ -38,6 +38,7 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from pathlib import Path
+import json
 import os
 import shutil
 import subprocess
@@ -78,6 +79,16 @@ def virtual_display(environment: dict[str, str], log_path: Path | None = None):
             f"got {requested!r}"
         )
 
+    # A live worktree-scoped Xvfb is reused rather than restarted. wineserver is kept
+    # warm across runs and stays bound to whatever display it started on, so a per-run
+    # display would leave it pointing at a dead server on the next test.
+    reused = _live_worktree_display()
+    if reused is not None:
+        environment["DISPLAY"] = reused
+        environment["IMPERIALISM_WINE_VIRTUAL_DESKTOP"] = "1"
+        yield reused
+        return
+
     binary = _xvfb_binary()
     if binary is None:
         yield None
@@ -114,6 +125,7 @@ def virtual_display(environment: dict[str, str], log_path: Path | None = None):
         display = f":{display_number}"
         environment["DISPLAY"] = display
         environment["IMPERIALISM_WINE_VIRTUAL_DESKTOP"] = "1"
+        _record_worktree_display(display, process.pid)
         try:
             yield display
         finally:
@@ -123,13 +135,8 @@ def virtual_display(environment: dict[str, str], log_path: Path | None = None):
         if write_fd != -1:
             os.close(write_fd)
         os.close(read_fd)
-        if process is not None and process.poll() is None:
-            process.terminate()
-            try:
-                process.wait(timeout=5)
-            except subprocess.TimeoutExpired:
-                process.kill()
-                process.wait(timeout=5)
+        # Deliberately left running: it is worktree-scoped and the warm wineserver is
+        # bound to it. `just runtime-clean` reaps it.
         if log_handle is not None:
             log_handle.close()
 
@@ -155,3 +162,30 @@ def _read_display_number(read_fd: int, process: subprocess.Popen[bytes]) -> str 
             number = collected.split(b"\n", 1)[0].decode("ascii", "ignore").strip()
             return number or None
     return None
+
+
+def _display_state_path() -> Path:
+    from tools.runtime.wine import BUILD_DIR
+
+    return BUILD_DIR / "xvfb-display.json"
+
+
+def _live_worktree_display() -> str | None:
+    """Return this worktree's Xvfb display if its server is still running."""
+    try:
+        state = json.loads(_display_state_path().read_text(encoding="utf-8"))
+        pid = int(state["pid"])
+        display = str(state["display"])
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
+    try:
+        os.kill(pid, 0)
+    except OSError:
+        return None
+    return display
+
+
+def _record_worktree_display(display: str, pid: int) -> None:
+    path = _display_state_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({"display": display, "pid": pid}), encoding="utf-8")
