@@ -76,4 +76,30 @@ def missing_required_oracles(test: RuntimeTestSpec, result: dict) -> tuple[str, 
     return tuple(missing)
 
 
+def record_missing_oracles(
+    result: dict, missing: tuple[str, ...], fallback_failure: str | None = None
+) -> None:
+    """Fold a missing-oracle finding into a result without hiding a real failure.
+
+    Missing oracles are usually a *consequence* of a failure rather than a cause: the
+    driver snapshots map state only on a passing finish, so a crash or a phase timeout
+    guarantees the map oracle is absent.  Treating that as the failure replaced every
+    such primary failure with "missing required oracle(s): map" -- the least actionable
+    description available.  So the primary failure stays authoritative and the gap is
+    recorded as a secondary diagnostic; only a run that otherwise passed is failed by a
+    missing oracle, since there the gap really is the finding.
+    """
+    if not missing:
+        return
+    result["missing_oracles"] = list(missing)
+    summary = "missing required oracle(s): " + ", ".join(missing)
+    if result.get("status") == "passed":
+        result["status"] = "failed"
+        result["failure"] = summary
+        return
+    if not result.get("failure"):
+        result["failure"] = fallback_failure or "runtime test failed"
+    result["secondary_failures"] = [*result.get("secondary_failures", []), summary]
+
+
 FIXTURES = {test.name: test.fixture for test in TESTS if test.fixture is not None}

@@ -26,6 +26,13 @@ def apply_map_oracle(result: dict, name: str, seed: int) -> None:
     """
     map_state = result.get("map_state")
     if not map_state:
+        # Say why rather than leaving the key absent. The driver only snapshots map
+        # state on a passing finish, so this is the normal shape of a crashed or
+        # timed-out run and must not read as an oracle-infrastructure problem.
+        result["map_oracle"] = {
+            "status": "skipped",
+            "reason": "run captured no map_state; the driver snapshots it only on a passing finish",
+        }
         return
     expectation_path = (
         REPO_ROOT / "tests" / "runtime" / "expectations" / f"{name}.seed{seed}.json"
