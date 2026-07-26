@@ -18,6 +18,7 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/globals/prelude.h"
+#include "game/gfx/ui_invalidation_guard.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/nation_globals.h"
 #include "game/globals/shared_globals.h"
@@ -266,7 +267,10 @@ void TShipyardView::SetShip(short shipType) {
 
   CRect invalidRect;
   TStaticText* shipName = static_cast<TStaticText*>(ResolveControlByTag(kControlTagSnam)); // 'snam'
-  shipName->AssertValid();
+  if (shipName == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x408);
+  }
   shipName->SetTextFromStringResource(0x2716, static_cast<short>(shipType + 1), 0);
   shipName->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
@@ -474,7 +478,10 @@ void TShipyardView::SetStats(short shipType) {
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   TStaticText* history = static_cast<TStaticText*>(ResolveControlByTag(kControlTagHist)); // 'hist'
-  history->AssertValid();
+  if (history == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x410);
+  }
   history->SetTextFromStringResource(0x23f7, shipType, 0);
   history->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
@@ -482,7 +489,10 @@ void TShipyardView::SetStats(short shipType) {
   for (short statIndex = 0; statIndex < 6; ++statIndex) {
     TNumberText* stat =
         static_cast<TNumberText*>(ResolveControlByTag(kControlTagSta0 + statIndex)); // 'sta0'+index
-    stat->AssertValid();
+    if (stat == nullptr) {
+      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x418);
+    }
     stat->SetControlValue(GetResourceDescriptorStatByColumn(shipType, statIndex), 0);
     stat->QueryBounds(&invalidRect);
     InvalidateCityDialogRectRegion(&invalidRect, 1);

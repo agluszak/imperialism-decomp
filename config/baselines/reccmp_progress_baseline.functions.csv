@@ -2138,10 +2138,10 @@ address|matching|name
 0x4c8a20|1.0|TShipyardView::LoadShipyardIconSurface
 0x4c8a50|1.0|TShipyardView::UpdateFields
 0x4c8ac0|0.314410480349345|TShipyardView::DoEvent
-0x4c8d70|0.48333333333333334|TShipyardView::SetShip
+0x4c8d70|0.5380434782608695|TShipyardView::SetShip
 0x4c9150|0.5045045045045045|TShipyardView::Draw
 0x4c97c0|0.205761316872428|TShipyardView::GetCostString
-0x4c9a60|0.4244604316546763|TShipyardView::SetStats(short)
+0x4c9a60|0.5405405405405406|TShipyardView::SetStats(short)
 0x4c9d20|1.0|TShipyardView::SetStats(class TView *)
 0x4c9d70|0.5714285714285714|TBuildingConstructionView::CreateObject
 0x4c9e10|1.0|TBuildingConstructionView::GetRuntimeClass
