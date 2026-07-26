@@ -10,13 +10,14 @@ extern "C" unsigned int g_aDiplomacyActionTopicTabTags[6]; // @ 0x696978
 extern short g_awDiplomacyGrantValueTable[4];
 extern short g_awDiplomacyTradePolicyIconValueTable[7];
 
-// Persistent (X,Y) layout-capture buffer shared by the diplomacy popup family
-// (TOffersPanelView::PoseOffer, TOffersPanelView::PoseWarOffer,
-// InitializeDiplomacyMinisterActionControlsAndLabels) via TView::Locate, which
-// reads exactly buffer[0]/buffer[1] as ownerLocalX/ownerLocalY.
-extern CPoint g_diplomacyWarOfferSheetPosition_006a2fe0;
+// The two constant slots the diplomacy popup family (TOffersPanelView::PoseOffer,
+// TOffersPanelView::PoseWarOffer, InitializeDiplomacyMinisterActionControlsAndLabels)
+// swaps its children between via TView::Locate, which copies x/y straight into
+// ownerLocalX/ownerLocalY. Nothing writes them at runtime: (8, 7) is the in-panel
+// position and (2000, 2000) parks a control off-screen in place of a visibility flag.
+extern CPoint g_diplomacyPopupVisiblePosition_006a2fe0;
 
-extern CPoint g_diplomacyPopupLayoutPosition_006a3020;
+extern CPoint g_diplomacyPopupOffscreenPosition_006a3020;
 
 extern "C" {
 extern char* g_pDiplomacyPanelEmptyText_00654ec8;
