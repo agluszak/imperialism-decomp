@@ -18,6 +18,7 @@
 #include "game/ui_core/TUiEvent.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/ScopedMapQuickDrawContext.h"
+#include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_screens/TZone.h"
 #include "game/navy/TTaskForce.h"
@@ -306,11 +307,24 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
   }
   SetCursor(cursor);
 
+  TQuickDrawSurfaceContext* savedHoverSurface;
+  int savedHoverSurfaceFlags;
+  GetGWorld(&savedHoverSurface, &savedHoverSurfaceFlags);
+  bool restoreHoverSurface = savedHoverSurface != &g_defaultQuickDrawSurfaceSentinel;
+  if (restoreHoverSurface) {
+    // Hover frames are transient window decorations. If an animation tick leaves an
+    // offscreen GWorld active, QDFrameRect would burn the frame into the map cache and the
+    // next restoration blit would faithfully copy that stale black rectangle back onscreen.
+    SetGWorld(&g_defaultQuickDrawSurfaceSentinel, savedHoverSurfaceFlags);
+  }
   {
     ScopedMapQuickDrawContext scopedContext(this);
     if (hoveredTileIndex6c != paintedHoverTileIndex6e) {
       RenderStrategicTileSelectionAndNeighborHighlights();
     }
+  }
+  if (restoreHoverSurface) {
+    SetGWorld(savedHoverSurface, savedHoverSurfaceFlags);
   }
 
   paintedHoverTileIndex6e = hoveredTileIndex6c;

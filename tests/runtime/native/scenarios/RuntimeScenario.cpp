@@ -17,6 +17,7 @@
 #include "game/ui_core/TEditText.h"
 #include "game/ui_screens/TGameSetupPicture.h"
 #include "game/ImperialismApp.h"
+#include "game/TQuickDrawSurfaceContext.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/map/TMapMgr.h"
 #include "game/navy_ui/TOceanDialog.h"
@@ -1015,8 +1016,16 @@ void RunPrimingMapHover() {
     return;
   }
 
-  mapDialog->RefreshControl();
-  mapDialog->ForceRedraw();
+  // Drive the map's semantic draw entry directly. An invalidation plus UpdateWindow is not
+  // sufficient under every virtual-display host: the window manager may coalesce the paint,
+  // leaving the tile cache empty while the scenario proceeds to the hover path.
+  TQuickDrawSurfaceContext* savedSurface;
+  int savedSurfaceFlags;
+  GetGWorld(&savedSurface, &savedSurfaceFlags);
+  SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
+  CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
+  mapDialog->Draw(&mapBounds);
+  SetGWorld(savedSurface, savedSurfaceFlags);
   CPoint point(256, 224);
   mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&point, 0);
   short paintedTile = static_cast<short>(mapDialog->paintedHoverTileIndex6e);
@@ -1304,6 +1313,44 @@ void RunVerifyingCombinedMapExtents() {
   TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
   if (mapDialog == 0 || IsViewKindOf(mapDialog, RUNTIME_CLASS(TCitySiteView))) {
     Fail("\"combined map retained the country-bounded city-site view\"");
+    return;
+  }
+  if (g_pActiveQuickDrawSurfaceContextHead != &g_defaultQuickDrawSurfaceSentinel ||
+      g_pQuickDrawMemoryDc != 0) {
+    Fail("\"combined map retained an offscreen QuickDraw surface after construction\"");
+    return;
+  }
+
+  mapDialog->RefreshControl();
+  mapDialog->ForceRedraw();
+  CPoint firstHoverPoint(160, 160);
+  CPoint secondHoverPoint(352, 288);
+  TQuickDrawBlitSurface* mapCache = g_pPrimaryRenderSurfaceContext->GetBlitSurface();
+  int mapCacheBytes = mapCache->stride * (mapCache->clipRect.bottom - mapCache->clipRect.top);
+  unsigned char* mapCacheBeforeHover = new unsigned char[mapCacheBytes];
+  memcpy(mapCacheBeforeHover, mapCache->pixelBits, mapCacheBytes);
+  TQuickDrawSurfaceContext* savedSurface;
+  int savedSurfaceFlags;
+  GetGWorld(&savedSurface, &savedSurfaceFlags);
+  short savedInteractionMode = mapView->activeUnitCategoryIndex96;
+  mapView->activeUnitCategoryIndex96 = 5;
+  SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
+  mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&firstHoverPoint, 0);
+  if (g_pActiveQuickDrawSurfaceContextHead != g_pPrimaryRenderSurfaceContext ||
+      memcmp(mapCacheBeforeHover, mapCache->pixelBits, mapCacheBytes) != 0) {
+    mapView->activeUnitCategoryIndex96 = savedInteractionMode;
+    SetGWorld(savedSurface, savedSurfaceFlags);
+    delete[] mapCacheBeforeHover;
+    Fail("\"combined-map hover painted its transient frame into the map cache\"");
+    return;
+  }
+  mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&secondHoverPoint, 0);
+  mapView->activeUnitCategoryIndex96 = savedInteractionMode;
+  SetGWorld(savedSurface, savedSurfaceFlags);
+  bool mapCacheUnchanged = memcmp(mapCacheBeforeHover, mapCache->pixelBits, mapCacheBytes) == 0;
+  delete[] mapCacheBeforeHover;
+  if (!mapCacheUnchanged) {
+    Fail("\"moving the combined-map cursor retained a frame in the map cache\"");
     return;
   }
   g_MapInteractionPreviewPoint_006a3370 = CPoint(0, 0);

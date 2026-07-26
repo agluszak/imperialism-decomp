@@ -913,14 +913,6 @@ void TMapDialog::Draw(RECT* rectBuffer) {
   UnlockPixels(GetGWorldPixMap(quickDrawSurface350));
 }
 
-static unsigned char ReflectHexDirectionMaskForBottomUpSurface(unsigned char mask) {
-  // Hex-neighbor masks use top-to-bottom world directions. The transition-mask routines
-  // operate on the bottom-up DIB scanline order, so reflect both diagonal pairs before
-  // choosing a raster wedge. Horizontal directions 1 and 4 remain unchanged.
-  return static_cast<unsigned char>(((mask & 0x01) << 2) | (mask & 0x02) | ((mask & 0x04) >> 2) |
-                                    ((mask & 0x08) << 2) | (mask & 0x10) | ((mask & 0x20) >> 2));
-}
-
 // FUNCTION: IMPERIALISM 0x0051EB40
 void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   CTemporaryRegion temporaryRegion;
@@ -958,18 +950,14 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
     NewCopy64(sourcePixels + sourceOffset, destinationPixels, sourceStride, destinationStride);
 
     if (!isOcean) {
-      unsigned char adjacencyMaskA =
-          ReflectHexDirectionMaskForBottomUpSurface(terrain.adjacencyMaskA0a);
-      unsigned char adjacencyMaskB =
-          ReflectHexDirectionMaskForBottomUpSurface(terrain.adjacencyMaskB0b);
       for (int direction = 0; direction < 6; ++direction) {
         int directionBit = 1 << direction;
         unsigned char* transitionSource = 0;
-        if ((adjacencyMaskA & directionBit) != 0) {
+        if ((terrain.adjacencyMaskA0a & directionBit) != 0) {
           transitionSource =
               sourcePixels +
               g_pGlobalMapState->LookupTileSpriteVariantOffsetByGateAndVariant(tileIndex);
-        } else if ((adjacencyMaskB & directionBit) != 0 &&
+        } else if ((terrain.adjacencyMaskB0b & directionBit) != 0 &&
                    terrain.GetTerrainKind() != kStrategicTerrainDesert) {
           transitionSource =
               sourcePixels +
@@ -1008,15 +996,9 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
     }
 
     if (isOcean && terrain.adjacencyMaskB0b != 0) {
-      unsigned char adjacencyMask = terrain.adjacencyMaskB0b;
-      unsigned char variantMask = terrain.spriteVariantIndex01;
-      short riverSpriteCode = terrain.riverSpriteCode;
-      const bool synthesizedCoast = riverSpriteCode == kRiverSpriteCodeNone;
-      if (synthesizedCoast) {
-        adjacencyMask = ReflectHexDirectionMaskForBottomUpSurface(adjacencyMask);
-        variantMask = ReflectHexDirectionMaskForBottomUpSurface(variantMask);
-        riverSpriteCode = adjacencyMask;
-      }
+      const unsigned char adjacencyMask = terrain.adjacencyMaskB0b;
+      const unsigned char variantMask = terrain.spriteVariantIndex01;
+      const short riverSpriteCode = terrain.riverSpriteCode;
       for (int corner = 0; corner < 6; ++corner) {
         int previousDirection = (corner + 5) % 6;
         int cornerBits = (1 << previousDirection) | (1 << corner);
@@ -1025,7 +1007,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
         }
 
         bool useTripleOffset = false;
-        switch (synthesizedCoast ? -1 : corner) {
+        switch (corner) {
         case 1:
           useTripleOffset = riverSpriteCode == kRiverSpriteCodeWaterSingleDirectionFirst ||
                             riverSpriteCode == kRiverSpriteCodeWaterSingleDirectionFirst + 1;
