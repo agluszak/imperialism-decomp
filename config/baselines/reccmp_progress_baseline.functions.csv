@@ -3160,7 +3160,7 @@ address|matching|name
 0x50e600|0.0|OrphanTiny_ThisAdjustJump_a4_0050e600
 0x50e620|0.9174311926605505|TMapMgr::ReadFrom
 0x50e7a0|1.0|TMapMgr::WriteTo
-0x50e8b0|0.18994413407821228|TMapMgr::AllocateAndResetTerrainAndCityScoreTables
+0x50e8b0|0.27298050139275765|TMapMgr::AllocateAndResetTerrainAndCityScoreTables
 0x50ec60|1.0|Province::Province
 0x50ec90|1.0|TMapMgr::BuildOrLoadGlobalMapStateForSession
 0x50f200|0.5714285714285714|TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream
