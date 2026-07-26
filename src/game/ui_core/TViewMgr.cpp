@@ -12,6 +12,7 @@
 #include "game/ui_widgets/TCivReport.h"
 #include "game/ui_widgets/TTown.h"
 #include "game/ui_screens/TOffLimitsPicture.h"
+#include "game/ui_screens/TUpDownPictureButton.h"
 #include "game/city_ui/TPlaceCityDialog.h"
 #include "game/ui_widgets/TCombatReportView.h"
 
@@ -1476,42 +1477,68 @@ void TViewMgr::ShowDiplomacyScreen(short) {
 
 // FUNCTION: IMPERIALISM 0x005d83b0
 void TViewMgr::ShowTransportScreen(short nationSlot) {
-  // Ground truth default-constructs one CString early (lea ecx,[esp+0x10];
-  // call CString::CString(void) at 0x5d83d1) and hands that same local to both
-  // SetHoverHelpText calls, which take their argument by value. Passing a
-  // const char* instead built a separate temporary per call site, which is why
-  // our version had no EH frame where the original sets one up.
-  CString emptyHelpText;
-  turn_event_ui_refresh::RefreshMainPanelControl();
+  CString text;
+
+  TView* activeDialog = g_pDisplayMgr->activeDialog;
+  TView* hostView = activeDialog->ResolveControlByTag(kControlTagMain);
+  hostView->AssertValid();
+  hostView->RefreshControl();
+
   g_pSimMgr->SetFlags(0x1000);
-  turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
 
-  TControl* tranControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagTran);
-  if (tranControl != nullptr) {
-    tranControl->AssertValid();
-    tranControl->SetState(0, 0);
-    tranControl->SwitchActiveChildAndNotify(nullptr);
-    tranControl->SetHoverHelpText(emptyHelpText);
+  TInfoBarText* cursor =
+      static_cast<TInfoBarText*>(activeDialog->ResolveControlByTag(kControlTagCurs));
+  g_pCursorControlPanel = cursor;
+  cursor->AssertValid();
+  cursor->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
+
+  TUpDownPictureButton* transportButton =
+      static_cast<TUpDownPictureButton*>(activeDialog->ResolveControlByTag(kControlTagTran));
+  if (transportButton != nullptr) {
+    transportButton->SetPictureResourceIdAndRefresh(
+        static_cast<short>(transportButton->glyphBase84 + 1), 0);
+    transportButton->SetState(0, 0);
+    g_pSimMgr->GetString(0x2730, 0x1e, &text);
+    SetControlHoverHelpTextAltEntry(text, transportButton);
   }
 
-  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTopB);
-  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTool);
+  TToolBarCluster* topBar =
+      static_cast<TToolBarCluster*>(activeDialog->ResolveControlByTag(kControlTagTopB));
+  topBar->AssertValid();
+  topBar->RefreshTurnOrderStatusPanelTextsAndControls();
 
-  TControl* querControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagQuer);
-  if (querControl != nullptr) {
-    querControl->AssertValid();
-    querControl->SetHoverHelpText(emptyHelpText);
+  TToolBarCluster* toolBar =
+      static_cast<TToolBarCluster*>(activeDialog->ResolveControlByTag(kControlTagTool));
+  toolBar->AssertValid();
+  toolBar->UpdateControlTagTreaTextFromNationAndMapContext(nationSlot);
+  toolBar->RefreshTurnOrderStatusPanelTextsAndControls();
+
+  TView* queryControl = activeDialog->ResolveControlByTag(kControlTagQuer);
+  if (queryControl != nullptr) {
+    g_pSimMgr->GetString(0x2730, 2, &text);
+    SetControlHoverHelpText(text, queryControl);
   }
 
-  // The tail the port was missing entirely: refresh the capacity total (row -1), then walk
-  // all 23 ledger rows (0x005d864b..0x005d8660). This is the only dispatch of
-  // TMacViewMgr slot 0x11 in the image -- without it nothing ever evaluates a row's
-  // availability, so every good stayed enabled and painted regardless of stock.
-  // Host is the 'main' child of the active dialog (esi, set at 0x005d83f6 from a
-  // ResolveControlByTag('main') on g_pDisplayMgr->activeDialog), and the nation index is
-  // this function's own argument (ebx from [esp+0x2c] at 0x005d863e) -- not the active
-  // nation, so the screen can be refreshed for a nation other than the player's.
-  TView* hostView = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagMain);
+  {
+    CString clearText(g_szEmptyString);
+    text = clearText;
+  }
+  SetControlHoverHelpText(text, hostView);
+
+  TDropShadowText* leftTitle =
+      static_cast<TDropShadowText*>(hostView->ResolveControlByTag(kControlTagTitL));
+  leftTitle->AssertValid();
+  ApplyUiTextStyleAndThemeFlags(leftTitle, 0, 0x12, 0x2b6b, 0x2b6c);
+  g_pSimMgr->GetString(0x2735, 5, &text);
+  leftTitle->SetTextAndMaybeRefresh(&text, 0);
+
+  TDropShadowText* rightTitle =
+      static_cast<TDropShadowText*>(hostView->ResolveControlByTag(kControlTagTitR));
+  rightTitle->AssertValid();
+  ApplyUiTextStyleAndThemeFlags(rightTitle, 0, 0x12, 0x2b6b, 0x2b6c);
+  g_pSimMgr->GetString(0x2735, 6, &text);
+  rightTitle->SetTextAndMaybeRefresh(&text, 0);
+
   g_pStrategicMapViewSystem->RefreshCityProductionDetailPanelAndArrowWidgets(-1, nationSlot,
                                                                              hostView);
   for (short row = 0; row < 0x17; ++row) {

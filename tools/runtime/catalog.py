@@ -26,6 +26,7 @@ TESTS = (
     RuntimeTestSpec("random_game_enters_map", ("full",), required_oracles=("ui", "map")),
     RuntimeTestSpec("easy_turns_advance", ("repro",), required_oracles=("ui", "map")),
     RuntimeTestSpec("city_screen_opens", ("repro",), required_oracles=("ui",)),
+    RuntimeTestSpec("transport_screen_operates", ("repro",), required_oracles=("ui",)),
     RuntimeTestSpec("civilian_recruitment_selection", ("pr", "full"), required_oracles=("map",)),
     RuntimeTestSpec("diplomacy_screen_operates", ("repro",), required_oracles=("ui",)),
     RuntimeTestSpec("trade_screen_operates", ("repro",), required_oracles=("ui",)),

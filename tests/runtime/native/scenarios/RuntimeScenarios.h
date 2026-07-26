@@ -8,6 +8,7 @@ RuntimeTestCase* EasyRandomGameTest();
 RuntimeTestCase* IntroductoryRandomGameTest();
 RuntimeTestCase* EndTurnTest();
 RuntimeTestCase* CityScreenTest();
+RuntimeTestCase* TransportScreenTest();
 RuntimeTestCase* CivilianRecruitmentTest();
 RuntimeTestCase* DiplomacyScreenTest();
 RuntimeTestCase* TradeScreenTest();

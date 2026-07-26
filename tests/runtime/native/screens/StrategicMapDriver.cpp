@@ -29,6 +29,17 @@ bool StrategicMapDriver::ActivateCity() {
   return true;
 }
 
+bool StrategicMapDriver::ActivateTransport() {
+  TView* toolbar = root != 0 ? root->ResolveControlByTag(kControlTagTool) : 0;
+  TControl* transport =
+      toolbar != 0 ? static_cast<TControl*>(toolbar->ResolveControlByTag(kControlTagTran)) : 0;
+  if (transport == 0 || transport->IsActionable() == 0) {
+    return false;
+  }
+  transport->HandleEvent(transport->GetEventNumber(), transport, 0);
+  return true;
+}
+
 bool StrategicMapDriver::ActivateDiplomacy() {
   TView* toolbar = root != 0 ? root->ResolveControlByTag(kControlTagTool) : 0;
   TControl* diplomacy =

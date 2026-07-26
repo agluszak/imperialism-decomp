@@ -13,6 +13,7 @@ RuntimeTestDescriptor g_descriptors[] = {
     {"random_game_introductory_exits_newspaper", IntroductoryRandomGameTest()},
     {"easy_turns_advance", EndTurnTest()},
     {"city_screen_opens", CityScreenTest()},
+    {"transport_screen_operates", TransportScreenTest()},
     {"civilian_recruitment_selection", CivilianRecruitmentTest()},
     {"diplomacy_screen_operates", DiplomacyScreenTest()},
     {"trade_screen_operates", TradeScreenTest()},

@@ -8,6 +8,7 @@ public:
 
   bool EndTurn();
   bool ActivateCity();
+  bool ActivateTransport();
   bool ActivateDiplomacy();
   bool ActivateTrade();
 

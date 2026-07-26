@@ -8,17 +8,17 @@ policy (Mac resource order, read big-endian).
 
 ## Summary
 
-- Tags: 552
+- Tags: 553
 - `generated_resource_manifest_tag`: 67
 - `multiplayer_session_or_message_tag`: 32
 - `ui_tag_app_and_setup_screens`: 57
 - `ui_tag_city_and_trade`: 62
 - `ui_tag_diplomacy`: 18
 - `ui_tag_military_navy_tactical`: 49
-- `ui_tag_shared`: 145
+- `ui_tag_shared`: 146
 - `ui_tag_strategic_map`: 23
 - `ui_tag_widget_plumbing`: 99
-- Corroborated by the Mac control-tag index: 412 of 552
+- Corroborated by the Mac control-tag index: 413 of 553
 - Violations: 0
 
 ## Violations
@@ -441,6 +441,7 @@ build does not ship.
 | `kControlTagText` | `text` | `0x74657874` | `ui_tag_shared` | 5 |
 | `kControlTagTime` | `time` | `0x74696d65` | `ui_tag_shared` |  |
 | `kControlTagTitL` | `titL` | `0x7469744c` | `ui_tag_shared` | 3 |
+| `kControlTagTitR` | `titR` | `0x74697452` | `ui_tag_shared` | 1 |
 | `kControlTagTitl` | `titl` | `0x7469746c` | `ui_tag_shared` | 24 |
 | `kControlTagTnam` | `tnam` | `0x746e616d` | `ui_tag_shared` | 3 |
 | `kControlTagTool` | `tool` | `0x746f6f6c` | `ui_tag_shared` | 19 |
