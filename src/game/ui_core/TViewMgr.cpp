@@ -1852,8 +1852,9 @@ void TViewMgr::RefreshMainDialogAndCursorHelp(int) {
 }
 
 // FUNCTION: IMPERIALISM 0x005da180
-void TViewMgr::ShowDealBookScreen(short) {
+void TViewMgr::ShowDealBookScreen(short nationSlot) {
   TView* mainView = g_pDisplayMgr->activeDialog;
+  CString sharedString;
 
   g_pCursorControlPanel =
       static_cast<TInfoBarText*>(mainView->ResolveControlByTag(kControlTagCurs));
@@ -1862,25 +1863,21 @@ void TViewMgr::ShowDealBookScreen(short) {
 
   TView* mainControl = static_cast<TView*>(mainView->ResolveControlByTag(kControlTagMain));
   mainControl->AssertValid();
-  CString emptyTitle(g_szEmptyString);
-  SetControlHoverHelpText(emptyTitle, mainControl);
+  sharedString = CString(g_szEmptyString);
+  SetControlHoverHelpText(sharedString, mainControl);
 
   TView* queryControl = mainControl->ResolveControlByTag(kControlTagQuer);
   LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, queryControl);
 
-  TControl* titleControl =
-      static_cast<TControl*>(mainControl->ResolveControlByTag(kControlTagTitL)); // 'titL'
-  if (titleControl != nullptr) {
-    titleControl->AssertValid();
-    titleControl->RefreshControl();
-    static_cast<TInfoBarText*>(titleControl)
-        ->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b6b);
-    CString titleString;
-    g_pSimMgr->GetString(0x2741, 0, &titleString);
-    titleControl->SetHoverHelpText(titleString);
-  }
+  TDropShadowText* titleControl =
+      static_cast<TDropShadowText*>(mainControl->ResolveControlByTag(kControlTagTitL)); // 'titL'
+  titleControl->AssertValid();
+  ApplyUiTextStyleAndThemeFlags(titleControl, 0, 0x12, 0x2b6c, 0x2b6b);
+  titleControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+  g_pSimMgr->GetString(0x2741, 0, &sharedString);
+  titleControl->SetTextAndMaybeRefresh(&sharedString, 0);
   // 0x5bac50 is invoked on the 'main' deal-book control (the binary's receiver), not 'titL'.
-  static_cast<TDealBookPicture*>(mainControl)->Startup(0x2b6c);
+  static_cast<TDealBookPicture*>(mainControl)->Startup(nationSlot);
 }
 
 // Strategic-map screen refresh (turn event 0x7dd). The original is one monolithic body:

@@ -76,7 +76,8 @@ void TDealBookPicture::Startup(short startupValue) {
   markControl->SetState(1, 0);
   LoadUiStringByGroupAndIndexToControlObject(0x2741, 6, this->ResolveControlByTag(kControlTagMark));
   markControl->SetState(0, 0);
-  LoadUiStringByGroupAndIndexToControlObject(0x2741, 7, this->ResolveControlByTag(kControlTagTabs));
+  TView* tabsControl = this->ResolveControlByTag(kControlTagTabs);
+  LoadUiStringByGroupAndIndexToControlObject(0x2741, 7, tabsControl);
 
   this->alternatePageModeB1 = false;
   this->ShowPage(0, startupValue);
