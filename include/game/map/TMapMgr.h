@@ -390,19 +390,18 @@ public:
   virtual void SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
       class TMilitaryUnit* const candidates[6],
       short orderTargetSlot); // slot 0x22 0x5150e0
-  // Dims (marks recruitSearchVisited0e ineligible) every tile a Miner/Driller order
-  // cannot target -- TCivMgr dispatches order types 0 (Miner) and 8 (Driller) here.
-  // Eligible only for water tiles (always) or tiles owned by
+  // Mac oracle: TMapMgr::DimByProspecting(TUnit*). Dims every tile a Prospector cannot
+  // search. Water is always ineligible; land must be owned by the unit's nation or
+  // diplomatically compatible. Eligibility is further gated on
   // pCivilianOrderEntry->field_18 (nationTag) or diplomatically compatible
   // (TDiplomacyMgr::LookupOrderCompatibilityMatrixValue == 2), further gated on
   // gateFlag being in {8,9} (or {10,11,12} when
   // g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x13]
   // == 2), and finally on this nation's bit not already being set in
-  // pendingDevelopmentFlag0d. Behaviour-derived name in the Mac oracle's DimBy*
-  // family (the oracle lists only DimByDevelopment/DimByProspecting for TMapMgr).
-  virtual void DimByMining(class TCivUnit* pCivilianOrderEntry); // slot 0x23 0x515330
-  // Mac oracle: TMapMgr::DimByDevelopment(TUnit*). TCivMgr dispatches order type 4
-  // (Engineer) here (0x004d2270 calls vtable byte offset 0x90 for case 4).
+  // pendingDevelopmentFlag0d.
+  virtual void DimByProspecting(class TCivUnit* pCivilianOrderEntry); // slot 0x23 0x515330
+  // Mac oracle: TMapMgr::DimByDevelopment(TUnit*). TCivMgr dispatches order type 7
+  // (Developer) here (0x004d2270 calls vtable byte offset 0x90 for case 7).
   // Seeds recruitSearchVisited0e (defaults to 1/ineligible, unlike the sibling slot above):
   // requires the tile be diplomatically compatible
   // (TDiplomacyMgr::LookupOrderCompatibilityMatrixValue == 2, ownerNationTag04 >= 7),
@@ -418,14 +417,12 @@ public:
   // (over its qualifying resourceTypeByEdge entries) from
   // g_pCityOrderCapabilityState->capabilityValueByNationAndResource. Which resourceTypes
   // qualify depends on pCivilianOrderEntry->orderType (== 0 selects {3,4,21,22}, else {6}).
-  virtual void SeedRecruitSearchVisitedStateByCapabilityThreshold(
-      class TCivUnit* pCivilianOrderEntry); // slot 0x25 0x5155c0
+  virtual void DimByMining(class TCivUnit* pCivilianOrderEntry); // slot 0x25 0x5155c0
   // Seeds recruitSearchVisited0e = 1 across all tiles, then for each of the order's nation's
   // enabled TTown markers, clears it (0) on any hex-adjacent water tile that shares the
   // town's regionSubtypeTag05 and whose developmentClassNibbles0c is below
   // TTechMgr::capabilityValueByNationAndResource[nationTag][19].
-  virtual void MarkType5NeighborTilesUnavailableByNationCapability(
-      class TCivUnit* pCivilianOrderEntry); // slot 0x26 0x515720
+  virtual void DimByFishing(class TCivUnit* pCivilianOrderEntry); // slot 0x26 0x515720
   // Sibling of SeedRecruitSearchVisitedStateByCapabilityThreshold: defaults every tile to
   // blocked, then clears it if owned by pCivilianOrderEntry->field_18 (via
   // ownerNationTag04 or secondaryOwnerNationTag18) and g_abGateFlagQualifies[gateFlag] is
@@ -433,8 +430,7 @@ public:
   // entry qualifies if g_anResourceTypeRequiredOrderType[resourceType] matches
   // pCivilianOrderEntry->orderType, and either g_abResourceTypeAlwaysQualifies[resourceType]
   // or ownerNationTag04 matches) exceeds the low development nibble.
-  virtual void SeedRecruitSearchVisitedStateByCapabilityThresholdAlt(
-      class TCivUnit* pCivilianOrderEntry); // slot 0x27 0x515890
+  virtual void DimByCompany(class TCivUnit* pCivilianOrderEntry); // slot 0x27 0x515890
   // Seeds recruitSearchVisited0e = 1 for all tiles, then (if the order's terrain-type gate
   // passes) walks the 6 direct hex neighbors of pCivilianOrderEntry->tileIndex06 via
   // BuildHexAreaTileIndexList(tile, 1) and clears recruitSearchVisited0e for any neighbor
@@ -442,14 +438,12 @@ public:
   // this tile's adjacencyBits06 doesn't already have that direction's bit set. Also flips 3
   // notification flag globals based on nation-indexed OrderCapRow padding bytes (see
   // TTechMgr::OrderCapRow's tech-status gate comments (ids 0x17/0x06/0x0c)).
-  virtual void MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(
-      class TCivUnit* pCivilianOrderEntry); // slot 0x28 0x5159b0
+  virtual void DimByTrackLaying(class TCivUnit* pCivilianOrderEntry); // slot 0x28 0x5159b0
   // Same shape as ProfileA (slot 0x28), but the terrain-kind gate is a per-call local
   // 8-entry table built from the same 3 OrderCapRow checks (rather than ProfileA's shared
   // global table), and it additionally clears the origin tile's own recruitSearchVisited0e
   // when its regionSubtypeTag05 is -1 or its city's fortLevel03 is below 3.
-  virtual void MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(
-      class TCivUnit* pCivilianOrderEntry); // slot 0x29 0x515b10
+  virtual void DimByEngineering(class TCivUnit* pCivilianOrderEntry); // slot 0x29 0x515b10
   // Picks 2 of cityRecordIndex's 6 hex neighbors as "linked" tiles, ranked by
   // g_anStrategicTerrainNeighborLinkPriority[GetTerrainKind()] (same-cityRecordIndex neighbors get a
   // +0x14 bonus in the second pass): the top-ranked same-city neighbor becomes

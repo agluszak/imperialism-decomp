@@ -2805,7 +2805,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
 }
 
 // FUNCTION: IMPERIALISM 0x00515330
-void TMapMgr::DimByMining(TCivUnit* pCivilianOrderEntry) {
+void TMapMgr::DimByProspecting(TCivUnit* pCivilianOrderEntry) {
   field9 = 1;
   short nationTag = pCivilianOrderEntry->field_18;
   unsigned char eligibleGateFlags[24] = {0};
@@ -2820,7 +2820,7 @@ void TMapMgr::DimByMining(TCivUnit* pCivilianOrderEntry) {
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
     if (tile->GetTerrainKind() == kStrategicTerrainWater) {
-      tile->recruitSearchVisited0e = 0;
+      tile->recruitSearchVisited0e = 1;
       continue;
     }
     if (tile->ownerNationTag04 != nationTag) {
@@ -2892,7 +2892,7 @@ void TMapMgr::DimByDevelopment(TCivUnit* pCivilianOrderEntry) {
 }
 
 // FUNCTION: IMPERIALISM 0x005155c0
-void TMapMgr::SeedRecruitSearchVisitedStateByCapabilityThreshold(TCivUnit* pCivilianOrderEntry) {
+void TMapMgr::DimByMining(TCivUnit* pCivilianOrderEntry) {
   unsigned char qualifiesByResourceType[23] = {0};
   if (pCivilianOrderEntry->orderType == 0) {
     qualifiesByResourceType[3] = 1;
@@ -2940,7 +2940,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateByCapabilityThreshold(TCivUnit* pCivi
 }
 
 // FUNCTION: IMPERIALISM 0x00515720
-void TMapMgr::MarkType5NeighborTilesUnavailableByNationCapability(TCivUnit* pCivilianOrderEntry) {
+void TMapMgr::DimByFishing(TCivUnit* pCivilianOrderEntry) {
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     terrainStateTable[tileIndex].recruitSearchVisited0e = 1;
   }
@@ -2978,7 +2978,7 @@ void TMapMgr::MarkType5NeighborTilesUnavailableByNationCapability(TCivUnit* pCiv
 }
 
 // FUNCTION: IMPERIALISM 0x00515890
-void TMapMgr::SeedRecruitSearchVisitedStateByCapabilityThresholdAlt(TCivUnit* pCivilianOrderEntry) {
+void TMapMgr::DimByCompany(TCivUnit* pCivilianOrderEntry) {
   this->field9 = 1;
   short nationTag = pCivilianOrderEntry->field_18;
   short orderType = pCivilianOrderEntry->orderType;
@@ -3018,8 +3018,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateByCapabilityThresholdAlt(TCivUnit* pC
 }
 
 // FUNCTION: IMPERIALISM 0x005159b0
-void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(
-    TCivUnit* pCivilianOrderEntry) {
+void TMapMgr::DimByTrackLaying(TCivUnit* pCivilianOrderEntry) {
   this->field9 = 1;
   for (int i = 0; i < 0x1950; ++i) {
     terrainStateTable[i].recruitSearchVisited0e = 1;
@@ -3057,8 +3056,7 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(
 }
 
 // FUNCTION: IMPERIALISM 0x00515b10
-void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(
-    TCivUnit* pCivilianOrderEntry) {
+void TMapMgr::DimByEngineering(TCivUnit* pCivilianOrderEntry) {
   StrategicTileIndex tileIndex = pCivilianOrderEntry->tileIndex06;
   short nationTag = pCivilianOrderEntry->field_18;
 
