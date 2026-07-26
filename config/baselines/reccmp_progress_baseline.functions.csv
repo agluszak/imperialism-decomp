@@ -5019,7 +5019,7 @@ address|matching|name
 0x5870e0|1.0|TTradeCluster::`scalar deleting destructor'
 0x587110|1.0|TTradeCluster
 0x587130|0.4919093851132686|TTradeCluster::DoPostCreate
-0x5873e0|0.3269230769230769|TTradeCluster::DoEvent
+0x5873e0|0.33114754098360655|TTradeCluster::DoEvent
 0x587900|0.7272727272727273|TTradeCluster::IsTradeControlAtMinimum
 0x587950|1.0|TTradeCluster::GetTradeSellControlValue
 0x587980|0.5614035087719298|TTradeCluster::IsSelectionAllowed
