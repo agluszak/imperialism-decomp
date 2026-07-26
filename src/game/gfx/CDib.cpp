@@ -545,6 +545,25 @@ CPalette* CDib::CreatePaletteObjectFromColorTable() {
   return palette;
 }
 
+// FUNCTION: IMPERIALISM 0x0047b030
+LOGPALETTE* CDib::CreateLogPaletteFromColorTable() {
+  if (m_paletteCount == 0) {
+    return NULL;
+  }
+  unsigned char* storage = new unsigned char[m_paletteCount * sizeof(PALETTEENTRY) + 4];
+  LOGPALETTE* palette = static_cast<LOGPALETTE*>(static_cast<void*>(storage));
+  palette->palVersion = 0x300;
+  palette->palNumEntries = static_cast<WORD>(m_paletteCount);
+  RGBQUAD* source = static_cast<RGBQUAD*>(m_colorTablePixels);
+  for (int i = 0; i < m_paletteCount; i++) {
+    palette->palPalEntry[i].peRed = source[i].rgbRed;
+    palette->palPalEntry[i].peGreen = source[i].rgbGreen;
+    palette->palPalEntry[i].peBlue = source[i].rgbBlue;
+    palette->palPalEntry[i].peFlags = 0;
+  }
+  return palette;
+}
+
 // FUNCTION: IMPERIALISM 0x0047b0c0
 void CDib::CopyRgbQuadTableFrom(const LOGPALETTE* source) {
   RGBQUAD* dest = static_cast<RGBQUAD*>(m_colorTablePixels);
@@ -584,6 +603,30 @@ void CDib::AdoptPaletteAndCopyRgbQuadTable(CDibPal* palette) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0047b1b0
+BOOL CDib::SetSystemPalette(CDC* dc) {
+  if (m_paletteCount != 0) {
+    return FALSE;
+  }
+  HDC hdc = dc != NULL ? dc->m_hDC : NULL;
+  if ((::GetDeviceCaps(hdc, RASTERCAPS) & RC_PALETTE) == 0) {
+    return FALSE;
+  }
+  int entryCount = ::GetDeviceCaps(hdc, NUMCOLORS);
+  int paletteSize = ::GetDeviceCaps(hdc, SIZEPALETTE);
+  if (paletteSize != 0) {
+    entryCount = paletteSize;
+  }
+  unsigned char* storage = new unsigned char[entryCount * sizeof(PALETTEENTRY) + 4];
+  LOGPALETTE* palette = static_cast<LOGPALETTE*>(static_cast<void*>(storage));
+  palette->palVersion = 0x300;
+  palette->palNumEntries = static_cast<WORD>(entryCount);
+  ::GetSystemPaletteEntries(hdc, 0, entryCount, palette->palPalEntry);
+  m_hPalette = ::CreatePalette(palette);
+  delete[] storage;
+  return TRUE;
+}
+
 // FUNCTION: IMPERIALISM 0x0047b280
 HBITMAP CDib::CreateDibBitmapFromStoredInfo(CDC* dc) {
   if (m_pixelBytes == 0) {
@@ -591,6 +634,132 @@ HBITMAP CDib::CreateDibBitmapFromStoredInfo(CDC* dc) {
   }
   return ::CreateDIBitmap(dc->GetSafeHdc(), &m_pInfoHeader->bmiHeader, CBM_INIT, m_dibBits,
                           m_pInfoHeader, DIB_RGB_COLORS);
+}
+
+// Rebuild the DIB from a temporary device-dependent bitmap. With compression enabled,
+// the first GetDIBits call asks GDI for the RLE buffer size and the second materializes
+// it; the non-compression path computes the DWORD-aligned BI_RGB size directly.
+// FUNCTION: IMPERIALISM 0x0047b2d0
+BOOL CDib::Compress(CDC* dc, BOOL compress) {
+  if (g_dibCompressAssertGate_006A1484 == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\CDib.cpp", 0x31b);
+  }
+
+  if (m_pInfoHeader->bmiHeader.biBitCount != 4 && m_pInfoHeader->bmiHeader.biBitCount != 8) {
+    return FALSE;
+  }
+  if (m_hBitmap != NULL) {
+    return FALSE;
+  }
+
+  HDC hdc = dc != NULL ? dc->m_hDC : NULL;
+  HPALETTE oldPalette = ::SelectPalette(hdc, m_hPalette, FALSE);
+  HBITMAP bitmap;
+  if (m_pixelBytes == 0) {
+    bitmap = NULL;
+  } else {
+    bitmap = ::CreateDIBitmap(hdc, &m_pInfoHeader->bmiHeader, CBM_INIT, m_dibBits, m_pInfoHeader,
+                              DIB_RGB_COLORS);
+  }
+  if (bitmap == NULL) {
+    return FALSE;
+  }
+
+  int infoBytes = sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD) * m_paletteCount;
+  BITMAPINFO* info = static_cast<BITMAPINFO*>(static_cast<void*>(new unsigned char[infoBytes]));
+  memcpy(info, m_pInfoHeader, infoBytes);
+
+  if (compress != FALSE) {
+    switch (info->bmiHeader.biBitCount) {
+    case 4:
+      info->bmiHeader.biCompression = BI_RLE4;
+      break;
+    case 8:
+      info->bmiHeader.biCompression = BI_RLE8;
+      break;
+    }
+
+    if (::GetDIBits(hdc, bitmap, 0, info->bmiHeader.biHeight, NULL, info, DIB_RGB_COLORS) == 0) {
+      AfxMessageBox("Unable to compress this DIB", MB_OK, 0);
+      ::DeleteObject(bitmap);
+      delete[] static_cast<unsigned char*>(static_cast<void*>(info));
+      ::SelectPalette(hdc, oldPalette, FALSE);
+      return FALSE;
+    }
+    if (info->bmiHeader.biSizeImage == 0) {
+      AfxMessageBox("Driver can't do compression", MB_OK, 0);
+      ::DeleteObject(bitmap);
+      delete[] static_cast<unsigned char*>(static_cast<void*>(info));
+      ::SelectPalette(hdc, oldPalette, FALSE);
+      return FALSE;
+    }
+    m_pixelBytes = info->bmiHeader.biSizeImage;
+  } else {
+    info->bmiHeader.biCompression = BI_RGB;
+    unsigned int rowBits =
+        static_cast<unsigned int>(info->bmiHeader.biWidth) * info->bmiHeader.biBitCount;
+    unsigned int rowDwords = rowBits >> 5;
+    if ((rowBits & 0x1f) != 0) {
+      rowDwords++;
+    }
+    int rows = info->bmiHeader.biHeight;
+    if (rows < 1) {
+      rows = -rows;
+    }
+    m_pixelBytes = rowDwords * sizeof(int) * rows;
+    info->bmiHeader.biSizeImage = m_pixelBytes;
+  }
+
+  unsigned char* pixels = new unsigned char[m_pixelBytes];
+  ::GetDIBits(hdc, bitmap, 0, info->bmiHeader.biHeight, pixels, info, DIB_RGB_COLORS);
+  ::DeleteObject(bitmap);
+
+  Release();
+  m_dibBitsOwned = TRUE;
+  m_infoOwnMode = kDibInfoOwnedByteArray;
+  m_pInfoHeader = info;
+  m_dibBits = pixels;
+
+  if (info == NULL || info->bmiHeader.biClrUsed == 0) {
+    switch (info->bmiHeader.biBitCount) {
+    case 1:
+      m_paletteCount = 2;
+      break;
+    case 4:
+      m_paletteCount = 0x10;
+      break;
+    case 8:
+      m_paletteCount = 0x100;
+      break;
+    case 0x10:
+    case 0x18:
+    case 0x20:
+      m_paletteCount = 0;
+      break;
+    }
+  } else {
+    m_paletteCount = info->bmiHeader.biClrUsed;
+  }
+
+  m_pixelBytes = info->bmiHeader.biSizeImage;
+  if (m_pixelBytes == 0) {
+    unsigned int rowBits =
+        static_cast<unsigned int>(info->bmiHeader.biWidth) * info->bmiHeader.biBitCount;
+    unsigned int rowDwords = rowBits >> 5;
+    if ((rowBits & 0x1f) != 0) {
+      rowDwords++;
+    }
+    int rows = info->bmiHeader.biHeight;
+    if (rows < 1) {
+      rows = -rows;
+    }
+    m_pixelBytes = rowDwords * sizeof(int) * rows;
+  }
+
+  m_colorTablePixels = info->bmiColors;
+  BuildPaletteFromRgbQuadBuffer();
+  ::SelectPalette(hdc, oldPalette, FALSE);
+  return TRUE;
 }
 
 // FUNCTION: IMPERIALISM 0x0047b6d0
@@ -677,6 +846,49 @@ void CDib::Serialize(CArchive& archive) {
   } else {
     Read(archive.GetFile());
   }
+}
+
+// FUNCTION: IMPERIALISM 0x0047bb60
+void CDib::ComputePaletteSize(unsigned int bitCount) {
+  if (m_pInfoHeader != NULL && m_pInfoHeader->bmiHeader.biClrUsed != 0) {
+    m_paletteCount = m_pInfoHeader->bmiHeader.biClrUsed;
+    return;
+  }
+  switch (bitCount) {
+  case 1:
+    m_paletteCount = 2;
+    break;
+  case 4:
+    m_paletteCount = 0x10;
+    break;
+  case 8:
+    m_paletteCount = 0x100;
+    break;
+  case 0x10:
+  case 0x18:
+  case 0x20:
+    m_paletteCount = 0;
+    break;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0047bc30
+void CDib::ComputeMetrics() {
+  m_pixelBytes = m_pInfoHeader->bmiHeader.biSizeImage;
+  if (m_pixelBytes == 0) {
+    unsigned int rowBits = static_cast<unsigned int>(m_pInfoHeader->bmiHeader.biWidth) *
+                           m_pInfoHeader->bmiHeader.biBitCount;
+    unsigned int rowDwords = rowBits >> 5;
+    if ((rowBits & 0x1f) != 0) {
+      rowDwords++;
+    }
+    int rows = m_pInfoHeader->bmiHeader.biHeight;
+    if (rows < 1) {
+      rows = -rows;
+    }
+    m_pixelBytes = rowDwords * sizeof(int) * rows;
+  }
+  m_colorTablePixels = m_pInfoHeader->bmiColors;
 }
 
 // FUNCTION: IMPERIALISM 0x0047bca0
@@ -836,6 +1048,25 @@ void* CDib::GetPixelAddress(int x, int y) {
     }
   }
   return NULL;
+}
+
+// FUNCTION: IMPERIALISM 0x0047c000
+void* CDib::GetPixelAddressRespectingTopDownOrientation(int x, int y) {
+  int width = m_pInfoHeader->bmiHeader.biWidth;
+  if (x >= width) {
+    return NULL;
+  }
+  int signedHeight = m_pInfoHeader->bmiHeader.biHeight;
+  int height = signedHeight > 0 ? signedHeight : -signedHeight;
+  if (y >= height) {
+    return NULL;
+  }
+  int stride = (width + 3) & ~3;
+  unsigned char* pixels = static_cast<unsigned char*>(m_dibBits);
+  if (signedHeight < 0) {
+    return pixels + y * stride + x;
+  }
+  return pixels + (height - y - 1) * stride + x;
 }
 
 // FUNCTION: IMPERIALISM 0x0047c080
@@ -1193,6 +1424,40 @@ LAB_0047c603:
     scan_offset = scan_offset + 2;
     scan_ptr = scan_ptr + row_stride;
   } while (true);
+}
+
+// FUNCTION: IMPERIALISM 0x0047c850
+BOOL CDib::MapColorTableAndPixelsToPalette(CPalette* palette) {
+  unsigned char translation[0x100];
+  RGBQUAD* sourceColors = static_cast<RGBQUAD*>(m_colorTablePixels);
+  HPALETTE paletteHandle = static_cast<HPALETTE>(palette->m_hObject);
+  for (int i = 0; i < 0x100; i++) {
+    COLORREF color = RGB(sourceColors[i].rgbRed, sourceColors[i].rgbGreen, sourceColors[i].rgbBlue);
+    translation[i] = static_cast<unsigned char>(::GetNearestPaletteIndex(paletteHandle, color));
+  }
+  translation[0x10] = 0x10;
+
+  int rows = m_pInfoHeader->bmiHeader.biHeight;
+  if (rows < 1) {
+    rows = -rows;
+  }
+  int byteCount = ((m_pInfoHeader->bmiHeader.biWidth + 3) & ~3) * rows;
+  unsigned char* pixels = static_cast<unsigned char*>(m_dibBits);
+  for (int remaining = byteCount; remaining != 0; remaining--) {
+    *pixels = translation[*pixels];
+    pixels++;
+  }
+
+  PALETTEENTRY entries[0x100];
+  ::GetPaletteEntries(paletteHandle, 0, 0x100, entries);
+  RGBQUAD* destination = static_cast<RGBQUAD*>(m_colorTablePixels);
+  for (int j = 0; j < 0x100; j++) {
+    destination[j].rgbRed = entries[j].peRed;
+    destination[j].rgbGreen = entries[j].peGreen;
+    destination[j].rgbBlue = entries[j].peBlue;
+  }
+  m_pInfoHeader->bmiHeader.biClrUsed = 0x100;
+  return TRUE;
 }
 
 // FUNCTION: IMPERIALISM 0x0047c980

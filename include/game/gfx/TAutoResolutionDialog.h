@@ -16,9 +16,9 @@ public:
     return m_nModalResult;
   }
 
-  CWnd primaryDialogControl;    // 0x74
-  CWnd secondaryDialogControl;  // 0xb0
-  int autoResolutionCheckState; // 0xec
+  CButton primaryDialogControl;    // 0x74, vtable 0x671c4c
+  CListBox secondaryDialogControl; // 0xb0, vtable 0x671d1c
+  int autoResolutionCheckState;    // 0xec
 
 protected:
   BOOL OnInitDialog() override;                     // 0x0047e120 (vtable index 49)

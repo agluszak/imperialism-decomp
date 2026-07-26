@@ -32,6 +32,10 @@ struct TCdAudioDevice {
   int ApplyAuxOutputVolumeFromScalar(int scalar);
   // 0x0047cdf0 — true while the current MCI device is not stopped (and its status query succeeds).
   bool IsPlaybackActive();
+  int GetAuxOutputVolume();                  // 0x0047cda0
+  unsigned int QueryMciStatusField5() const; // 0x0047ce10
+  unsigned int QueryMciStatusField8() const; // 0x0047ce30
+  unsigned int QueryMciStatusField3() const; // 0x0047ce50
 };
 // g_cdAudioDevice (0x006a60bc) is declared in game/global_data_tables.h.
 

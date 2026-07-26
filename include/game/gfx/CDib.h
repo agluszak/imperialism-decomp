@@ -71,6 +71,12 @@ public:
   int BuildPaletteFromRgbQuadBuffer();
   // Allocate a fresh CPalette from the color table (returns NULL if there is no palette). 0x0047af60
   CPalette* CreatePaletteObjectFromColorTable();
+  // Allocate a LOGPALETTE copy of the RGBQUAD color table. The caller owns the
+  // returned byte array. 0x0047b030
+  LOGPALETTE* CreateLogPaletteFromColorTable();
+  // Build a logical palette from the display's system palette when this DIB has no
+  // color table. 0x0047b1b0
+  BOOL SetSystemPalette(CDC* dc);
 
   // Load a .bmp via a read-only file mapping and point the DIB buffers into it. 0x0047a420
   int LoadFromMemoryMappedBmpFile(LPCSTR fileName, int shareForWrite);
@@ -100,6 +106,12 @@ public:
   // CreateDIBitmap from the stored header/bits (CBM_INIT), compatible with the given DC.
   // Returns NULL if no pixel buffer. 0x0047b280
   HBITMAP CreateDibBitmapFromStoredInfo(CDC* dc);
+  // Rebuild the stored pixels through GDI, either as BI_RLE4/BI_RLE8 data or as an
+  // uncompressed BI_RGB DIB. Compression is supported only for 4- and 8-bpp surfaces.
+  // 0x0047b2d0
+  BOOL Compress(CDC* dc, BOOL compress);
+  void ComputePaletteSize(unsigned int bitCount); // 0x0047bb60
+  void ComputeMetrics();                          // 0x0047bc30
   // StretchDIBits with the color-table entry `paletteIndex` temporarily forced white (then
   // restored): masks that palette slot to white for the blit. Two-pass (AND then paint ROP).
   // 0x0047ac50
@@ -126,6 +138,11 @@ public:
   // DIB's bottom-up scanline storage. Returns NULL when x or y exceeds the bitmap bounds.
   // 0x0047bf90
   void* GetPixelAddress(int x, int y);
+  // Variant that preserves top-down (negative-height) row orientation. 0x0047c000
+  void* GetPixelAddressRespectingTopDownOrientation(int x, int y);
+  // Remap every 8-bpp pixel to its nearest entry in `palette`, then replace the
+  // RGBQUAD table with that palette's 256 entries. 0x0047c850
+  BOOL MapColorTableAndPixelsToPalette(CPalette* palette);
 
   // Thin thiscall forwarder that unpacks POINT-pair arguments into the flat
   // BlitSurfaceRectSkippingTransparentColor parameter list. 0x004849e0

@@ -47,6 +47,10 @@ class TInfoBarText;
 #include "game/gfx/TTemplateDialogs.h"
 #include "game/ui_screens/TSetupRandomMapPicture.h"
 
+static inline double DefaultGfxCoordinateScale() {
+  return 0.015625;
+}
+
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 // GLOBAL: IMPERIALISM 0x006a4310
 TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0};
@@ -508,6 +512,20 @@ short g_infoPanelLabelXByRow_006969b0[4] = {0x48, 0x48, 0x48, 0x48};
 short g_infoPanelLabelYByRow_006969c0[4] = {0x198, 0x1a9, 0x1ba, 0x1cb};
 // GLOBAL: IMPERIALISM 0x006a143c
 int g_McAppUiFlag_006A143C = 0;
+// GLOBAL: IMPERIALISM 0x006a1484
+int g_dibCompressAssertGate_006A1484 = 0;
+// GLOBAL: IMPERIALISM 0x006a14e0
+double g_gfxScale6A14E0 = DefaultGfxCoordinateScale();
+// SYNTHETIC: IMPERIALISM 0x0047cfa0
+// `dynamic initializer for 'g_scaledShortConst_6A1528''
+// GLOBAL: IMPERIALISM 0x006a1528
+short g_scaledShortConst_6A1528 = static_cast<short>(g_gfxScale6A14E0 * 512.0 - -1.0);
+// GLOBAL: IMPERIALISM 0x006a1580
+double g_gfxScale6A1580 = DefaultGfxCoordinateScale();
+// SYNTHETIC: IMPERIALISM 0x0047f250
+// `dynamic initializer for 'g_scaledShortConst_6A15C8''
+// GLOBAL: IMPERIALISM 0x006a15c8
+short g_scaledShortConst_6A15C8 = static_cast<short>(g_gfxScale6A1580 * 512.0 - -1.0);
 // GLOBAL: IMPERIALISM 0x00698ab8
 char g_szSetupScreensSourcePath_00698AB8[] = "D:\\Ambit\\Cross\\USetupScreens.cpp";
 // GLOBAL: IMPERIALISM 0x006a4264
@@ -1094,9 +1112,6 @@ CRect g_defaultRect_006A1F98(0, 0, 0, 0);
 // `dynamic initializer for 'g_defaultRgbColor_006A1F70''
 // GLOBAL: IMPERIALISM 0x006a1f70
 CRGBColor g_defaultRgbColor_006A1F70;
-static inline double DefaultGfxCoordinateScale() {
-  return 0.015625;
-}
 // SYNTHETIC: IMPERIALISM 0x0049c0c0
 // `dynamic initializer for 'g_ScaleDefault6A1FE8''
 // GLOBAL: IMPERIALISM 0x006a1fe8
