@@ -7,7 +7,13 @@ import re
 import unittest
 from pathlib import Path
 
-from tools.runtime.catalog import TESTS, find_test, missing_required_oracles, tests_in_suite
+from tools.runtime.catalog import (
+    TESTS,
+    find_test,
+    missing_required_oracles,
+    record_missing_oracles,
+    tests_in_suite,
+)
 from tools.runtime.protocol import validate_result
 
 
@@ -112,6 +118,60 @@ class RuntimeProtocolTests(unittest.TestCase):
                 "boot_managers",
                 1,
             )
+
+
+class MissingOracleRecordingTests(unittest.TestCase):
+    """A missing oracle must never displace the failure that caused it.
+
+    The driver snapshots map state only on a passing finish, so any crash or phase
+    timeout in a map-oracle test leaves the oracle absent.  Reporting that absence as
+    the failure hid every real cause behind "missing required oracle(s): map".
+    """
+
+    def test_no_missing_oracles_leaves_the_result_untouched(self) -> None:
+        result = {"status": "passed"}
+        record_missing_oracles(result, ())
+        self.assertEqual(result, {"status": "passed"})
+
+    def test_passing_run_is_failed_by_a_missing_oracle(self) -> None:
+        result = {"status": "passed"}
+        record_missing_oracles(result, ("map",))
+        self.assertEqual(result["status"], "failed")
+        self.assertEqual(result["failure"], "missing required oracle(s): map")
+        self.assertEqual(result["missing_oracles"], ["map"])
+        self.assertNotIn("secondary_failures", result)
+
+    def test_primary_failure_survives_a_missing_oracle(self) -> None:
+        result = {"status": "failed", "failure": "phase timeout in waiting_for_strategic_map"}
+        record_missing_oracles(result, ("map",))
+        self.assertEqual(result["status"], "failed")
+        self.assertEqual(result["failure"], "phase timeout in waiting_for_strategic_map")
+        self.assertEqual(result["secondary_failures"], ["missing required oracle(s): map"])
+        self.assertEqual(result["missing_oracles"], ["map"])
+
+    def test_failed_run_without_a_message_uses_the_host_classification(self) -> None:
+        result = {"status": "failed"}
+        record_missing_oracles(result, ("map", "ui"), fallback_failure="access violation")
+        self.assertEqual(result["failure"], "access violation")
+        self.assertEqual(result["secondary_failures"], ["missing required oracle(s): map, ui"])
+
+    def test_secondary_failures_accumulate(self) -> None:
+        result = {"status": "failed", "failure": "crash", "secondary_failures": ["earlier note"]}
+        record_missing_oracles(result, ("map",))
+        self.assertEqual(
+            result["secondary_failures"], ["earlier note", "missing required oracle(s): map"]
+        )
+
+    def test_absent_map_oracle_report_still_counts_as_missing(self) -> None:
+        spec = find_test("random_game_enters_map")
+        assert spec is not None
+        self.assertEqual(missing_required_oracles(spec, {"status": "failed"}), ("ui", "map"))
+
+    def test_skipped_map_oracle_report_counts_as_missing(self) -> None:
+        spec = find_test("save_load_roundtrip")
+        assert spec is not None
+        result = {"status": "failed", "map_oracle": {"status": "skipped", "reason": "no map_state"}}
+        self.assertEqual(missing_required_oracles(spec, result), ("map",))
 
 
 if __name__ == "__main__":
