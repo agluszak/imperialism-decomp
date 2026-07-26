@@ -22,7 +22,12 @@ BUILD_DIR = REPO_ROOT / "build-runtime-tests"
 sys.path.insert(0, str(REPO_ROOT))
 
 from tools.runtime.artifacts import prune_old_run_dirs
-from tools.runtime.catalog import FIXTURES, find_test, missing_required_oracles
+from tools.runtime.catalog import (
+    FIXTURES,
+    find_test,
+    missing_required_oracles,
+    record_missing_oracles,
+)
 from tools.runtime.oracles.map import apply_map_oracle
 from tools.runtime.protocol import read_json_file, validate_result
 from tools.runtime.oracles.ui import apply_ui_oracle
@@ -105,10 +110,11 @@ def run_test(args: argparse.Namespace) -> int:
         apply_map_oracle(result, name, args.seed)
         test_spec = find_test(name)
         if test_spec is not None:
-            missing_oracles = missing_required_oracles(test_spec, result)
-            if missing_oracles:
-                result["status"] = "failed"
-                result["failure"] = "missing required oracle(s): " + ", ".join(missing_oracles)
+            record_missing_oracles(
+                result,
+                missing_required_oracles(test_spec, result),
+                fallback_failure=host["classification"],
+            )
 
     failed = result.get("status") != "passed" or host["classification"] is not None
     if failed and args.rerun_seh:
