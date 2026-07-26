@@ -48,17 +48,23 @@ public:
   CanInitiateJoinEmpireProposalToTarget(NationSlot targetNationSlot,
                                         DiplomacyProposalCodeStorage proposalCode); // 0x4e4ff0
   virtual void HandleNetworkPortConstructionOrder(int nationId); // slot 0x2d 0x4e5730
-  virtual void SetNationRowDisplayValueByDiplomacyPredicate(NationSlot targetNationSlot); // slot 0x2e 0x4e5a40
-  virtual void ClearTileActivityOverlayByProvinceId(int provinceId); // slot 0x2f 0x4e5ac0
-  virtual void NotifyMajorPowersAffectedByMinorTerritoryChange(void); // slot 0x30 0x4e5be0
-  virtual void ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId); // slot 0x31 0x4e5d90
+  virtual void
+  SetNationRowDisplayValueByDiplomacyPredicate(NationSlot targetNationSlot); // slot 0x2e 0x4e5a40
+  virtual void ClearTileActivityOverlayByProvinceId(int provinceId);         // slot 0x2f 0x4e5ac0
+  virtual void NotifyMajorPowersAffectedByMinorTerritoryChange(void);        // slot 0x30 0x4e5be0
+  virtual void
+  ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId); // slot 0x31 0x4e5d90
   short GetDiplomacyRandomThreshold124() const {
     return diplomacyRandomThreshold124;
   }
 
-  virtual void ReassignUnitOrdersForCountryTargetChange(short provinceId, char includeAllPolicyTargets); // slot 0x32 0x4e6150
-  virtual void ReassignTileObjectOwnerAndNotifyForSelectedCells(int priorOwnerNationSlot); // slot 0x33 0x4e6040
-  virtual void RelinkTileUnitsToCountryOrderManager(int destinationNationSlot); // slot 0x34 0x4e6520
+  virtual void
+  ReassignUnitOrdersForCountryTargetChange(short provinceId,
+                                           char includeAllPolicyTargets); // slot 0x32 0x4e6150
+  virtual void
+  ReassignTileObjectOwnerAndNotifyForSelectedCells(int priorOwnerNationSlot); // slot 0x33 0x4e6040
+  virtual void
+  RelinkTileUnitsToCountryOrderManager(int destinationNationSlot); // slot 0x34 0x4e6520
 
   void SetDiplomacyStandingSlot48(int targetNation, int standing);
   char HasMinorStandingLinkSlot5C(int sourceNation);

@@ -1039,7 +1039,7 @@ inline void RefreshTradClusterPictureAndHintText() {
 }
 
 inline void RefreshTaggedControlWithLocalizedString(unsigned int controlTag, short stringCode,
-                                             short stringIndex) {
+                                                    short stringIndex) {
   TControl* control = ResolveMainTaggedControl(controlTag);
   if (control == nullptr) {
     return;
@@ -1051,7 +1051,7 @@ inline void RefreshTaggedControlWithLocalizedString(unsigned int controlTag, sho
 }
 
 inline void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidth, int stylePrimary,
-                                   int styleSecondary) {
+                                          int styleSecondary) {
   TControl* control = ResolveMainTaggedControl(controlTag);
   if (control == nullptr) {
     return;
