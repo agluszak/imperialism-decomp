@@ -24,16 +24,20 @@ public:
   virtual void DoIt();    // slot 0x0b byte 0x2c 0x487a00
 
   // commandNumber/dispatchMessage/sourceHandler/targetHandler inherited from TEvent.
-  // InitializeRangePair writes commandNumber==dispatchMessage and
-  // targetHandler==targetContext; whether the duplicates ever diverge is unconfirmed.
+  // ICommand writes commandNumber==dispatchMessage and targetHandler==targetContext;
+  // whether the duplicates ever diverge is unconfirmed.
   TCommandHandler* targetContext; // 0x14
 
   TCommand();
 
-  // 0x004878a0: seeds the command payload (resolving a default context when the
-  // second argument is null). Only the first two arguments are used; the native
-  // signature is a five-argument thiscall (RET 0x14) matching TCommand::ICommand.
-  void InitializeRangePair(int arg1, TCommandHandler* arg2, int arg3, int arg4, int arg5);
+  // 0x004878a0 — the MacApp two-phase initializer: every call site is a `new` followed
+  // immediately by this call. Seeds the command payload, resolving a default context
+  // when itsContext is null. RET 0x14 confirms the five-argument thiscall shape, and
+  // only the first two are read; the trailing three are carried for the MacApp
+  // signature. Mac oracle: TCommand::ICommand(long, TCommandHandler*, unsigned char,
+  // unsigned char, TObject*) — name and parameter types from there (Hard Rule 12).
+  void ICommand(long itsCommandNumber, TCommandHandler* itsContext, unsigned char canUndo,
+                unsigned char causesChange, TObject* itsChangedObject);
 
   // Inline for the same reason as TEvent::~TEvent: command subclasses in the retail
   // build fold the trivial destructor chain directly to the CObject vtable reset.

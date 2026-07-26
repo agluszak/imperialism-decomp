@@ -26,18 +26,19 @@ TCommand::TCommand() : targetContext(0) {}
 // TCommand::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004878a0
-void TCommand::InitializeRangePair(int arg1, TCommandHandler* arg2, int arg3, int arg4, int arg5) {
-  (void)arg3;
-  (void)arg4;
-  (void)arg5;
-  TCommandHandler* resolvedContext = arg2;
+void TCommand::ICommand(long itsCommandNumber, TCommandHandler* itsContext, unsigned char canUndo,
+                        unsigned char causesChange, TObject* itsChangedObject) {
+  (void)canUndo;
+  (void)causesChange;
+  (void)itsChangedObject;
+  TCommandHandler* resolvedContext = itsContext;
   if (resolvedContext == 0) {
     resolvedContext = g_pApplicationUiRootController;
   }
   sourceHandler = 0;
-  dispatchMessage = arg1;
+  dispatchMessage = itsCommandNumber;
   targetHandler = resolvedContext;
-  commandNumber = arg1;
+  commandNumber = itsCommandNumber;
   targetContext = resolvedContext;
 }
 

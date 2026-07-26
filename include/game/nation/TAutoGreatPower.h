@@ -12,7 +12,12 @@ public:
 
   TAutoGreatPower();
   ~TAutoGreatPower() override;
-  void InitializeNationMinisterSubsystemsByPolicyIds(int nationSlot, int nationInitializationMode,
+  // MacApp two-phase initializer. Mac oracle: TAutoGreatPower::IAutoGreatPower(short,
+  // short, short, short, short) -- name taken from there (Hard Rule 12), but NOT the
+  // parameter types: the retail body reads arg1 and arg2 as dwords (0x4e6c2e/0x4e6c3e)
+  // and only arg5 through MOVSX word (0x4e6c4b), so the leading pair is int-width here.
+  // The Windows listing outranks the Mac signature on types.
+  void IAutoGreatPower(int nationSlot, int nationInitializationMode,
                                                      short cityMinisterPolicyId,
                                                      short foreignMinisterPolicyId,
                                                      short defenseMinisterPolicyId);
