@@ -277,11 +277,13 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     return;
   }
   default:
-    TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
-    return;
+    break;
   }
-
-  TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
+  // No delegation to TAmtBarCluster::DoEvent from anywhere in this function: the original
+  // (0x005873e0) contains no call to it at all, and every one of its seven early exits
+  // jumps to the same bare `ret 0xc` epilogue at 0x005877be. The base handler resolves a
+  // 'move' child that trade rows do not have, so any path reaching it dereferences null --
+  // which is exactly how stepping a sell amount down at the minimum crashed.
 }
 
 // Returns early if UI mode is outside trade range (>3); otherwise reports
