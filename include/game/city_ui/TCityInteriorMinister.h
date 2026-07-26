@@ -124,6 +124,12 @@ public:
   // analogue of TForeignMinister::IForeignMinister(owner). Links the base order
   // array to the owning great power, allocates the tracked-list members and the city-policy
   // TFuzzySet, and seeds the fuzzy set with four policy curves.
+  // The base half of the MacApp two-phase construction: each personality subclass has
+  // its own attested initializer (ISteelCityMinister / IShipBuilderCityMinister /
+  // IEvenCityMinister / IRailCityMinister, all (TGreatPower*)) whose entire body is a
+  // chain call to this one. By MacApp convention this would be ICityInteriorMinister,
+  // but that symbol is NOT attested anywhere in the Mac oracle, so the invented name
+  // stays rather than being swapped for a guessed one.
   void InitializeCityInteriorState(TGreatPower* owner);
   float GetAiDevelopmentResourceBudgetScale(int* resourcePools);
   int GetAverageDevelopmentOrderAllocation();
