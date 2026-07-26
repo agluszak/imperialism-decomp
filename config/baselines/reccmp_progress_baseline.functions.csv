@@ -1926,7 +1926,7 @@ address|matching|name
 0x4b4fe0|1.0|TProductionOrder::WriteTo
 0x4b5060|1.0|TProductionOrder::ReadFrom
 0x4b50e0|1.0|TProductionOrder::MaxOrder
-0x4b5100|0.1111111111111111|TProductionOrder::SetQuantity
+0x4b5100|1.0|TProductionOrder::SetQuantity
 0x4b5140|1.0|TProductionOrder::Restock
 0x4b5160|1.0|TProductionOrder::Produce
 0x4b5180|1.0|TProductionOrder::ResetOrderSheet
@@ -1937,8 +1937,8 @@ address|matching|name
 0x4b5240|1.0|TItemOrder::`scalar deleting destructor'
 0x4b5270|0.0|TItemOrder::~TItemOrder
 0x4b5290|1.0|TItemOrder::IItemOrder
-0x4b5310|0.0392156862745098|TItemOrder::MaxOrder
-0x4b53d0|0.05333333333333334|TItemOrder::SetQuantity
+0x4b5310|0.7755102040816326|TItemOrder::MaxOrder
+0x4b53d0|0.43356643356643354|TItemOrder::SetQuantity
 0x4b5510|0.43636363636363634|TItemOrder::FillOrderSheet
 0x4b5580|0.9428571428571428|TItemOrder::Produce
 0x4b5620|1.0|TItemOrder::Restock
@@ -1950,8 +1950,8 @@ address|matching|name
 0x4b5820|1.0|TOrItemOrder::`scalar deleting destructor'
 0x4b5850|0.0|TOrItemOrder::~TOrItemOrder
 0x4b5870|1.0|TOrItemOrder::IOrItemOrder
-0x4b58f0|0.046511627906976744|TOrItemOrder::MaxOrder
-0x4b5990|0.03773584905660377|TOrItemOrder::SetQuantity
+0x4b58f0|0.49411764705882355|TOrItemOrder::MaxOrder
+0x4b5990|0.24615384615384617|TOrItemOrder::SetQuantity
 0x4b5b40|1.0|TPopulationMgr::CreateObject
 0x4b5b70|1.0|TPopulationMgr::GetRuntimeClass
 0x4b5b90|0.4|IltTarget_004b5b90
@@ -1980,8 +1980,8 @@ address|matching|name
 0x4b6ad0|1.0|TTrainingOrder::`scalar deleting destructor'
 0x4b6b00|0.0|TTrainingOrder::~TTrainingOrder
 0x4b6b20|1.0|TTrainingOrder::ITrainingOrder
-0x4b6b90|0.02247191011235955|TTrainingOrder::MaxOrder
-0x4b6cd0|0.05405405405405406|TTrainingOrder::SetQuantity
+0x4b6b90|0.48520710059171596|TTrainingOrder::MaxOrder
+0x4b6cd0|0.33093525179856115|TTrainingOrder::SetQuantity
 0x4b6de0|1.0|TTrainingOrder::FillOrderSheet
 0x4b6e30|0.7916666666666666|TTrainingOrder::Produce
 0x4b6f00|1.0|TTrainingOrder::Restock
@@ -1991,8 +1991,8 @@ address|matching|name
 0x4b6f90|1.0|TUnitOrder::`scalar deleting destructor'
 0x4b6fc0|0.0|TUnitOrder::~TUnitOrder
 0x4b6fe0|1.0|TUnitOrder::IUnitOrder
-0x4b7080|0.017094017094017096|TUnitOrder::MaxOrder
-0x4b7210|0.057971014492753624|TUnitOrder::SetQuantity
+0x4b7080|0.39111111111111113|TUnitOrder::MaxOrder
+0x4b7210|0.6412213740458015|TUnitOrder::SetQuantity
 0x4b7320|1.0|TUnitOrder::FillOrderSheet
 0x4b73b0|0.16292134831460675|TUnitOrder::Produce
 0x4b77e0|1.0|TUnitOrder::SetOrderCostProfile
@@ -2004,8 +2004,8 @@ address|matching|name
 0x4b7a60|1.0|TPowerPlantOrder::`scalar deleting destructor'
 0x4b7a90|0.0|TPowerPlantOrder::~TPowerPlantOrder
 0x4b7ab0|1.0|TPowerPlantOrder::IPowerPlantOrder
-0x4b7b00|0.25|TPowerPlantOrder::MaxOrder
-0x4b7b30|0.06153846153846154|TPowerPlantOrder::SetQuantity
+0x4b7b00|0.3076923076923077|TPowerPlantOrder::MaxOrder
+0x4b7b30|0.48120300751879697|TPowerPlantOrder::SetQuantity
 0x4b7c20|1.0|TPowerPlantOrder::Produce
 0x4b7c40|1.0|TPowerPlantOrder::Restock
 0x4b7c90|1.0|TPowerPlantOrder::FillOrderSheet
@@ -2017,16 +2017,16 @@ address|matching|name
 0x4b7e30|1.0|TFoodProcessingOrder::`scalar deleting destructor'
 0x4b7e60|0.0|TFoodProcessingOrder::~TFoodProcessingOrder
 0x4b7e80|1.0|TFoodProcessingOrder::IFoodProcessingOrder
-0x4b7ed0|0.058823529411764705|TFoodProcessingOrder::MaxOrder
-0x4b7f50|0.05970149253731343|TFoodProcessingOrder::SetQuantity
+0x4b7ed0|0.4375|TFoodProcessingOrder::MaxOrder
+0x4b7f50|0.2878787878787879|TFoodProcessingOrder::SetQuantity
 0x4b8060|1.0|TFoodProcessingOrder::Produce
 0x4b80a0|1.0|TFoodProcessingOrder::Restock
 0x4b80c0|1.0|TFoodProcessingOrder::FillOrderSheet
 0x4b8110|1.0|TPopGrowthOrder::CreateObject
 0x4b8140|1.0|TPopGrowthOrder::GetRuntimeClass
 0x4b8160|0.8260869565217391|TPopGrowthOrder::IPopGrowthOrder
-0x4b81b0|0.06451612903225806|TPopGrowthOrder::MaxOrder
-0x4b8230|0.0851063829787234|TPopGrowthOrder::SetQuantity
+0x4b81b0|0.7586206896551724|TPopGrowthOrder::MaxOrder
+0x4b8230|0.6741573033707865|TPopGrowthOrder::SetQuantity
 0x4b82f0|0.6056338028169014|TPopGrowthOrder::Produce
 0x4b8420|1.0|TPopGrowthOrder::Restock
 0x4b8440|1.0|TPopGrowthOrder::FillOrderSheet
@@ -2057,8 +2057,8 @@ address|matching|name
 0x4b8ff0|0.0|TExpansionOrder::~TExpansionOrder
 0x4b9010|1.0|TExpansionOrder::IExpansionOrder
 0x4b9090|0.6125|TExpansionOrder::Produce
-0x4b91f0|0.08333333333333333|TExpansionOrder::MaxOrder
-0x4b9260|0.07272727272727272|TExpansionOrder::SetQuantity
+0x4b91f0|0.5909090909090909|TExpansionOrder::MaxOrder
+0x4b9260|0.4158415841584158|TExpansionOrder::SetQuantity
 0x4b9340|1.0|SwapFirstTwoBytesInBuffer
 0x4b9360|1.0|TExpansionOrder::FillOrderSheet
 0x4b94a0|1.0|WriteByteSwappedShortArrayToStream

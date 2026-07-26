@@ -1,7 +1,10 @@
 #include "game/city/TTrainingOrder.h"
 
 #include "game/city/TCity.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
 #include "game/nation/TGreatPower.h"
+#include "game/ui_core/TViewMgr.h"
 
 // SYNTHETIC: IMPERIALISM 0x004b6a60
 // TTrainingOrder::CreateObject
@@ -32,12 +35,80 @@ void TTrainingOrder::ITrainingOrder(TCity* city, short resourceType) {
 
 // FUNCTION: IMPERIALISM 0x004b6b90
 short TTrainingOrder::MaxOrder() {
-  return 0;
+  short paperPerUnit;
+  int cashPerUnit;
+  short workforceLimit;
+  if (resourceTypeIndex48 == 1) {
+    paperPerUnit = 1;
+    cashPerUnit = 100;
+    workforceLimit = summaryField0c->productionSlots14->lowSkillCount04;
+    if (summaryField0c->strength < workforceLimit) {
+      workforceLimit = summaryField0c->strength;
+    }
+  } else {
+    paperPerUnit = 2;
+    cashPerUnit = 1000;
+    workforceLimit = summaryField0c->productionSlots14->mediumSkillCount06;
+    short strengthLimit = static_cast<short>(summaryField0c->strength / 2);
+    if (strengthLimit < workforceLimit) {
+      workforceLimit = strengthLimit;
+    }
+  }
+
+  TGreatPower* owner = cityField08->ownerNationAc;
+  short cashLimit;
+  if (owner->diplomacyEligibilityA0 == 0) {
+    cashLimit = workforceLimit;
+  } else {
+    int availableCash = owner->treasuryValue10 + owner->diplomacyBudgetBase / 100;
+    if (availableCash <= 0) {
+      availableCash = 0;
+    }
+    cashLimit = static_cast<short>(availableCash / cashPerUnit);
+    if (cashLimit < 0) {
+      cashLimit = 0;
+    }
+  }
+
+  short paperLimit = static_cast<short>(cityField08->cityStockPaperCA / paperPerUnit);
+  field40 = 1;
+  short limit = workforceLimit;
+  if (cashLimit < limit) {
+    field40 = 3;
+    limit = cashLimit;
+  }
+  if (paperLimit < limit) {
+    field40 = 0;
+    limit = paperLimit;
+  }
+
+  if (quantityField04 + limit > 99) {
+    limit = static_cast<short>(99 - quantityField04);
+  }
+  return static_cast<short>(quantityField04 + limit);
 }
 
 // FUNCTION: IMPERIALISM 0x004b6cd0
 bool TTrainingOrder::SetQuantity(short param_1) {
-  return 0;
+  short delta = static_cast<short>(param_1 - quantityField04);
+  if (param_1 > MaxOrder() || param_1 < 0) {
+    return false;
+  }
+  quantityField04 = param_1;
+
+  TGreatPower* owner = cityField08->ownerNationAc;
+  if (resourceTypeIndex48 == 1) {
+    cityField08->cityStockPaperCA = static_cast<short>(cityField08->cityStockPaperCA - delta);
+    cityField08->VerifyStocks();
+    owner->treasuryValue10 -= static_cast<int>(delta) * 100;
+  } else {
+    cityField08->cityStockPaperCA = static_cast<short>(cityField08->cityStockPaperCA - delta * 2);
+    cityField08->VerifyStocks();
+    owner->treasuryValue10 -= static_cast<int>(delta) * 1000;
+  }
+  summaryField0c->MakeUnavailable(resourceTypeIndex48, delta);
+  g_pUiRuntimeContext->RefreshCityProductionUi();
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x004b6de0

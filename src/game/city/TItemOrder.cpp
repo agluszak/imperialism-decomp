@@ -2,6 +2,9 @@
 
 #include "game/city/TCity.h"
 #include "game/core/TStream.h"
+#include "game/globals/prelude.h"
+#include "game/globals/shared_globals.h"
+#include "game/ui_core/TViewMgr.h"
 
 // SYNTHETIC: IMPERIALISM 0x004b51d0
 // TItemOrder::CreateObject
@@ -37,12 +40,75 @@ void TItemOrder::IItemOrder(TCity* city, short outputResourceType, short primary
 
 // FUNCTION: IMPERIALISM 0x004b5310
 short TItemOrder::MaxOrder() {
-  return 0;
+  short currentQuantity = quantityField04;
+  short workforceLimit = static_cast<short>(summaryField0c->strength / 2 + currentQuantity);
+  short productionLimit =
+      static_cast<short>(cityField08->productionAccum1fc[productionSlot] + currentQuantity);
+  short resourceLimit = static_cast<short>(trackingSlots10[primaryInputResourceId] +
+                                           cityField08->CityStockByType(primaryInputResourceId));
+
+  if (secondaryInputResourceId < 0) {
+    resourceLimit = static_cast<short>(resourceLimit / 2);
+  } else {
+    short secondaryLimit =
+        static_cast<short>(trackingSlots10[secondaryInputResourceId] +
+                           cityField08->CityStockByType(secondaryInputResourceId));
+    if (secondaryLimit < resourceLimit) {
+      resourceLimit = secondaryLimit;
+    }
+  }
+
+  field40 = 2;
+  short limit = productionLimit;
+  if (workforceLimit < limit) {
+    field40 = 1;
+    limit = workforceLimit;
+  }
+  if (resourceLimit < limit) {
+    field40 = 0;
+    limit = resourceLimit;
+  }
+  return limit;
 }
 
 // FUNCTION: IMPERIALISM 0x004b53d0
 bool TItemOrder::SetQuantity(short param_1) {
-  return 0;
+  short delta = static_cast<short>(param_1 - quantityField04);
+  if (param_1 > MaxOrder() || param_1 < 0) {
+    return false;
+  }
+  quantityField04 = param_1;
+  requestedQuantity4c = quantityField04;
+
+  short primaryChange;
+  if (secondaryInputResourceId < 0) {
+    primaryChange = static_cast<short>(delta * 2);
+    cityField08->CityStockByType(primaryInputResourceId) =
+        static_cast<short>(cityField08->CityStockByType(primaryInputResourceId) - primaryChange);
+    cityField08->VerifyStocks();
+    trackingSlots10[primaryInputResourceId] =
+        static_cast<short>(trackingSlots10[primaryInputResourceId] + primaryChange);
+  } else {
+    cityField08->CityStockByType(primaryInputResourceId) =
+        static_cast<short>(cityField08->CityStockByType(primaryInputResourceId) - delta);
+    cityField08->VerifyStocks();
+    trackingSlots10[primaryInputResourceId] =
+        static_cast<short>(trackingSlots10[primaryInputResourceId] + delta);
+
+    cityField08->CityStockByType(secondaryInputResourceId) =
+        static_cast<short>(cityField08->CityStockByType(secondaryInputResourceId) - delta);
+    cityField08->VerifyStocks();
+    trackingSlots10[secondaryInputResourceId] =
+        static_cast<short>(trackingSlots10[secondaryInputResourceId] + delta);
+  }
+
+  short workforceChange = static_cast<short>(delta * 2);
+  summaryField0c->strength = static_cast<short>(summaryField0c->strength - workforceChange);
+  field3e = static_cast<short>(field3e + workforceChange);
+  cityField08->productionAccum1fc[productionSlot] =
+      static_cast<short>(cityField08->productionAccum1fc[productionSlot] - delta);
+  g_pUiRuntimeContext->RefreshCityProductionUi();
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x004b5510
