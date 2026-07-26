@@ -1077,8 +1077,8 @@ void TMapUberPicture::DisplayMiniMap() {
   this->miniMapViewC0 = miniMap;
 
   RECT toolRect;
-  toolRect.left = toolControl->ownerLocalX;
-  toolRect.top = toolControl->ownerLocalY + kToolWindowMargin;
+  toolRect.left = toolControl->ownerLocalX + offsetLayout[0];
+  toolRect.top = toolControl->ownerLocalY + offsetLayout[1];
   toolRect.right = toolRect.left + 0x71;
   toolRect.bottom = toolRect.top + 0x41;
   RgnHandle region = NewRgn();

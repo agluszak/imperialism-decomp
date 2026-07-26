@@ -1,7 +1,7 @@
 address|matching|name
 0x406ccb|0.0|thunk_HandleEngineerConstructionAction
 0x4125d0|0.25|`dynamic initializer for 'g_scaledShortConst_6A1340''
-0x412600|0.0|InvokeCallbackForRecordRangeWithStride
+0x412600|0.0|`vector constructor iterator'(void *, unsigned int, int, void (__thiscall *)(void *))
 0x412640|0.43548387096774194|OpenOrCreateCompanyProductRegistryKey
 0x412720|0.4540540540540541|OpenOrCreateProfileSectionKey
 0x412840|0.5634674922600619|ReadOrCreateRegistryStringValueWithFallback
@@ -3368,7 +3368,7 @@ address|matching|name
 0x51e1a0|1.0|TMapDialog::ResetAllTileMarkersToSentinel
 0x51e1f0|0.2777777777777778|TMapDialog::ReleaseTileMarkerForTile
 0x51e260|0.30535894843276035|TMapDialog::Draw
-0x51eb40|0.2609633357296909|TMapDialog::DrawOneTile
+0x51eb40|0.26710334788937407|TMapDialog::DrawOneTile
 0x520670|0.860125260960334|TMapDialog::DrawBorder
 0x520970|0.7682926829268293|TMapDialog::DrawMapDialogGuidePatternSetA_00520970
 0x520a90|1.0|TMapDialog::DrawMapDialogGuidePatternSetB_00520a90
@@ -5273,7 +5273,7 @@ address|matching|name
 0x5950b0|0.2702702702702703|TWorldView::DoEvent
 0x595130|0.39618138424821003|TWorldView::DoKeyEvent
 0x595810|1.0|TWorldView::DoSetCursor
-0x5958b0|0.4166666666666667|TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback
+0x5958b0|0.38073394495412843|TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x595c40|1.0|TWorldView::SetMapOverlayModeAndRenderPreview
 0x595c70|0.2942528735632184|TWorldView::RenderMapContextOverlayWithScopedClipAndSurface
 0x596020|1.0|TWorldView::RenderMapOrderEntryTilePreview
@@ -5335,7 +5335,7 @@ address|matching|name
 0x599a20|1.0|TMapUberPicture::UpdateRoster
 0x599a50|0.6666666666666666|TMapUberPicture::EnterMapInteractionOverlayMode
 0x599b90|0.8382352941176471|TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews
-0x599cf0|0.5878378378378378|TMapUberPicture::DisplayMiniMap
+0x599cf0|0.5886287625418061|TMapUberPicture::DisplayMiniMap
 0x599fa0|1.0|TMapUberPicture::InvalidateMiniMap
 0x599fd0|0.7291666666666666|TMapUberPicture::RemoveMiniMap
 0x59a180|0.8368794326241135|TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag
