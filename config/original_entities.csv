@@ -1137,8 +1137,8 @@ address|name|symbol|size|type|prototype|provenance
 493d50|CMcWindow::OnIdleUpdateMsg36A||19|function|long __thiscall OnIdleUpdateMsg36A(uint wParam, long lParam)|
 493d80|CMcWindow::PreCreateWindow|?PreCreateWindow@CMcWindow@@MAEHAAUtagCREATESTRUCTA@@@Z|91|function|protected: virtual int __thiscall CMcWindow::PreCreateWindow(struct tagCREATESTRUCTA &)|
 493f30|`dynamic initializer for 'g_scaledShortConst_6A1D88''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A1D88''(void)|library
-493f90|InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit||24|function|undefined InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit()|
-493fc0|DestroyDefaultQuickDrawSurfaceContextAtExit||10|function|undefined DestroyDefaultQuickDrawSurfaceContextAtExit()|
+493f90|`dynamic initializer for 'g_defaultQuickDrawSurfaceSentinel''||24|function|void __cdecl `dynamic initializer for 'g_defaultQuickDrawSurfaceSentinel''(void)|
+493fc0|TBitmapSurfaceContextDescriptor::`dynamic atexit destructor'||10|function|undefined DynamicAtexitDestructor()|
 493fe0|InitStub_thunk_InitializeGlobalClipRegionHandleState_At00493fe0||24|function|undefined InitStub_thunk_InitializeGlobalClipRegionHandleState_At00493fe0()|
 494010|TQuickDrawClipStateInitializer::`dynamic atexit destructor'||29|function|undefined DynamicAtexitDestructor()|
 494040|CBrush::InitializeGlobalClipRegionHandleState||77|function|undefined InitializeGlobalClipRegionHandleState()|
@@ -1294,8 +1294,8 @@ address|name|symbol|size|type|prototype|provenance
 49ba10|ResetGlobalQuad6A1E28To6A1E34||23|function|undefined ResetGlobalQuad6A1E28To6A1E34()|
 49ba40|ResetGlobalQuad6A1E38To6A1E44||23|function|undefined ResetGlobalQuad6A1E38To6A1E44()|
 49ba70|ResetGlobalDword6A1E18||30|function|undefined ResetGlobalDword6A1E18()|
-49baa0|InitializeStaticDialogTemplateD0AndRegisterAtExit||26|function|undefined InitializeStaticDialogTemplateD0AndRegisterAtExit()|
-49bad0|CleanupStaticDialogTemplateD0AtExit||10|function|undefined CleanupStaticDialogTemplateD0AtExit()|
+49baa0|`dynamic initializer for 'g_debugTraceDialog''||26|function|void __cdecl `dynamic initializer for 'g_debugTraceDialog''(void)|
+49bad0|TD0TemplateDialog::`dynamic atexit destructor'||10|function|undefined DynamicAtexitDestructor()|
 49baf0|DestructStaticDialogTemplateD0Object||71|function|undefined DestructStaticDialogTemplateD0Object()|
 49bc00|ResetGlobalPair6A1E70And6A1E74||13|function|undefined ResetGlobalPair6A1E70And6A1E74()|
 49bc20|ResetGlobalPair6A1F38And6A1F3C||13|function|undefined ResetGlobalPair6A1F38And6A1F3C()|
@@ -9617,6 +9617,7 @@ address|name|symbol|size|type|prototype|provenance
 6a1e4c|g_ResetStateDword6A1E4C|||global||
 6a1e70|g_ResetStateDword6A1E70|||global||
 6a1e74|g_ResetStateDword6A1E74|||global||
+6a1e78|g_debugTraceDialog|||global||
 6a1f38|g_ResetStateDword6A1F38|||global||
 6a1f3c|g_ResetStateDword6A1F3C|||global||
 6a1fc0|g_ScaleDefault6A1FC0|||global||
