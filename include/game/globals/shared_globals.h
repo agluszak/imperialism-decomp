@@ -1458,10 +1458,10 @@ extern CDib* g_pColorKeyCompositeDib;
 
 // Owner-nation tag (0..23) to the QuickDraw palette index used behind ocean-map
 // order previews and garrison badges.
-extern const unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24];
+extern unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24];
 
 // Per-owner outline palette used by the ocean overview's direct 16x16 neighbor-edge pass.
-extern const unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24];
+extern unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24];
 
 // Secret garrison-close names used by the retail easter-egg path.
 extern const char g_szGarrisonSecretNationNameFrog[];

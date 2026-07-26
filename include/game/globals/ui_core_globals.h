@@ -69,9 +69,13 @@ extern HGDIOBJ g_hQuickDrawSavedBitmap;
 
 extern int g_nActiveQuickDrawSurfaceFlags;
 
+extern int g_QuickDrawRegionBoundsAssertGate;
+
 extern int g_QuickDrawSetCursorAssertGate;
 
 extern int g_QuickDrawGetCursorAssertGate;
+
+extern int g_QuickDrawEqualRgnAssertGate;
 
 extern char* g_pNationInfoEmptyText_0066f050;
 

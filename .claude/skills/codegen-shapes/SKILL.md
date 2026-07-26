@@ -364,3 +364,65 @@ frame one dword larger than the original's, with every later stack reference shi
 Worth checking whenever a ported body reads "find it, then do something with it": the
 original usually does the something where it found it. The same shape explains frame-size
 diffs in bodies that otherwise look structurally identical.
+
+### Array-of-class construction: three shapes, and only `/Ob0` picks the iterator
+
+*(2026-07, `just vector-ctor-probe`, bd cinw.18)*
+
+A local `T a[N]` where `T` has a constructor compiles to one of three shapes, and which
+one you get is **not** a per-translation-unit option in the way it looks:
+
+| shape | what it looks like | when MSVC500 emits it |
+| --- | --- | --- |
+| inline store loop | `mov BYTE PTR [eax],0` / `add eax,STRIDE` / `dec ecx` / `jne` | the element ctor is expandable (in-class / `inline`) and inline expansion is on |
+| ctor call loop | `mov ecx,esi` / `call ??0T@@QAE@XZ` / `add esi,STRIDE` / `dec` / `jne` | the element ctor is out-of-line, `/Ob1` or `/Ob2` |
+| vector-ctor iterator | `push ctor` / `push N` / `lea` / `push size` / `push base` / `call ??_H` | **`/Ob0` only** (with `/O2` or `/Od`) |
+
+Measured across element size (0x20..0x100), count (2..64), frame size, position relative
+to loops and calls, EH state, `new[]` with a runtime count, and `/Od /O1 /O2 /Ob0 /Ob1
+/Ob2 /GX-`: **nothing except `/Ob0` selects the iterator.** Size and count in particular
+do not — a `CStr255[2]` inlines just as readily as a `CStr32[2]`. Do not reach for
+`#pragma optimize("ys")` or a TU split to chase an iterator call; both were measured and
+neither works.
+
+The reason the table reads that way: the iterator call **is** the lowering, and both loop
+shapes are inline expansions of it. `/Ob0` keeps the call; `/Ob1`/`/Ob2` expand it into a
+loop, and then expand the element ctor into that loop too when the ctor is expandable.
+
+**But `/Ob0` is not what the retail binary did, so do not "fix" an iterator mismatch by
+setting it.** Measured directly: `docs/reference/original_module_map.csv` puts 0x4a2900
+and both CStr constructors in `Cross/UArmyMgr.cpp` (0x4a1f80..0x4a9990), so that module is
+the one that would have to be `/Ob0`. Forcing `/Ob0` on exactly those 42 functions moves
+20 of them down and 1 up, mean **-6.03 pp**, with four 100% functions falling to 67-76%;
+the neighbouring `Cross/UAmbit.cpp` functions lose 34.64 pp on average. A module compiled
+`/Ob0` would have improved, not regressed. So MSVC500 has a second route to `??_H` that
+this matrix has not found yet — extend `just vector-ctor-probe` rather than reaching for
+the flag.
+
+The one thing `/Ob0` does deliver is address-taking: under it, 0x4a31c0/0x4a31e0 pair at
+100%. That is not worth 20 regressions, but it confirms the bead's premise that the
+constructors re-pair automatically once something takes their address.
+
+Two corollaries worth knowing before you model an element type:
+
+- **A destructor on the element switches `??_H` to `??_L`** (`eh vector constructor
+  iterator`, five arguments) and adds a `??_M` cleanup call. So an original that calls the
+  four-argument `??_H` proves its element type has **no** destructor.
+- **Under `/Ob0` a record local emits a call to the record's own constructor**, with the
+  member arrays going through the iterator *inside* that constructor. An original that
+  shows iterator calls inline in the caller, with no enclosing ctor call, therefore had
+  its enclosing construction expanded while the element ctors were not — a combination
+  `/Ob0` alone does not produce.
+
+`just vector-ctor-probe [--sweep]` re-runs the whole matrix against the real MSVC500 in
+Docker and prints what the compiler actually emitted, so extend it rather than guessing
+when a new array-construction mismatch turns up.
+
+### Compiler array helpers are `??_H` / `??_L` / `??_M`, never gameplay functions
+
+The probe emits `??_H@YGXPAXIHP6EX0@Z@Z` byte-for-byte identically to retail 0x412600,
+which had been carrying the invented name `InvokeCallbackForRecordRangeWithStride`. If a
+small function loads (count, base, size, callback) off its own stack, calls the callback
+through a register with `ecx` set to a walking pointer, and returns `ret 0x10`, it is
+`` `vector constructor iterator' `` — claim it as a compiler helper (construction Hard
+Rule 6) instead of naming it after whatever the callers happen to construct.

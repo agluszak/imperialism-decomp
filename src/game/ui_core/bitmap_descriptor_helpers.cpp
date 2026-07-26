@@ -63,6 +63,16 @@ void BindGWorldSurfaceToMemoryDC(CDib* dibSurface, HDC referenceDc) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00496160
+void DisposeQuickDrawMemoryDC(void) {
+  if (g_hQuickDrawSavedBitmap != nullptr) {
+    ::SelectObject(g_pQuickDrawMemoryDc->m_hDC, g_hQuickDrawSavedBitmap);
+  }
+  g_hQuickDrawSavedBitmap = nullptr;
+  delete g_pQuickDrawMemoryDc;
+  g_pQuickDrawMemoryDc = nullptr;
+}
+
 // FUNCTION: IMPERIALISM 0x004961b0
 void SetGWorld(TQuickDrawSurfaceContext* contextPtr, int flags) {
   if (g_pActiveQuickDrawSurfaceContextHead == contextPtr) {

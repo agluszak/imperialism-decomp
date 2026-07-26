@@ -21,31 +21,6 @@
 #include <cstring>
 #include <new>
 
-// IDirectPlay2::EnumPlayers callback for OpenJoinGameRuntimeSelectionAndStartSession
-// (0x5e2900): each enumerated player's 4-byte per-player data block is its role; role 1
-// is the host, whose DPID is recorded before enumeration stops. A failed read reports
-// the session's last error instead.
-// FUNCTION: IMPERIALISM 0x005e2900
-static BOOL FAR PASCAL RecordHostPlayerIdDuringEnumeration(DPID dpId, DWORD dwPlayerType,
-                                                           LPCDPNAME lpName, DWORD dwFlags,
-                                                           LPVOID lpContext) {
-  (void)dwPlayerType;
-  (void)lpName;
-  (void)dwFlags;
-  TDirectPlaySessionManagerBase* session = static_cast<TDirectPlaySessionManagerBase*>(lpContext);
-  DWORD playerRole = 0;
-  DWORD playerRoleSize = 4;
-  if (session->GetPlayerData(dpId, &playerRole, &playerRoleSize) == 0) {
-    g_pNetMgr006a6014->HandleError(session->lastErrorCode0c);
-    return FALSE;
-  }
-  if (playerRole == 1) {
-    session->broadcastPlayerId64 = dpId;
-    return FALSE;
-  }
-  return TRUE;
-}
-
 // SYNTHETIC: IMPERIALISM 0x005e3390
 // TNetMgr::CreateObject
 
@@ -369,11 +344,7 @@ unsigned char TNetMgr::OpenJoinGameRuntimeSelectionAndStartSession(int selection
           &g_NetworkSessionManager006a5f60.joinGamePlayerDataTagAC,
           sizeof(g_NetworkSessionManager006a5f60.joinGamePlayerDataTagAC));
       if (result) {
-        g_NetworkSessionManager006a5f60.broadcastPlayerId64 = 0;
-        long enumResult = g_NetworkSessionManager006a5f60.directPlayInterface04->EnumPlayers(
-            0, RecordHostPlayerIdDuringEnumeration, &g_NetworkSessionManager006a5f60, 0x10);
-        g_NetworkSessionManager006a5f60.lastErrorCode0c = enumResult;
-        result = enumResult >= 0 && g_NetworkSessionManager006a5f60.broadcastPlayerId64 != 0;
+        result = g_NetworkSessionManager006a5f60.FindHostPlayerIdByEnumeration();
       }
     }
   }

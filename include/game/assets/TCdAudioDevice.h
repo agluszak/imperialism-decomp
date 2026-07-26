@@ -10,6 +10,13 @@
 struct TCdAudioDevice {
   MCIDEVICEID m_deviceId; // 0x00
 
+  TCdAudioDevice() {
+    ResetAndOpenCdAudioDeviceHandle();
+  }
+  ~TCdAudioDevice() {
+    CloseDeviceAndClearHandle();
+  }
+
   // 0x0047cd60 — set the MCI time format to TMSF and play the given CD track's range.
   void ApplyMciPlaybackRangeFromAudioManager(int trackIndex);
   // 0x0047cca0 — clear then (re)open the device handle.

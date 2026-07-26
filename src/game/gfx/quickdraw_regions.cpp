@@ -4,10 +4,13 @@
 #include "game/gfx/quickdraw_regions.h"
 
 #include "game/gfx/CDib.h"
+#include "game/gfx/TScopedQuickDrawPen.h"
+#include "game/gfx/ui_invalidation_guard.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/globals/prelude.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
+#include "game/globals/ui_core_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 
 // FUNCTION: IMPERIALISM 0x004954a0
@@ -20,6 +23,15 @@ Region::~Region() {
   if (attachRegistered) {
     rgn.DeleteObject();
   }
+}
+
+// FUNCTION: IMPERIALISM 0x004955b0
+BOOL Region::ReplaceWithRect(const RECT* rect) {
+  if (attachRegistered) {
+    rgn.DeleteObject();
+  }
+  attachRegistered = rgn.Attach(::CreateRectRgnIndirect(rect));
+  return attachRegistered;
 }
 
 // FUNCTION: IMPERIALISM 0x004955f0
@@ -332,10 +344,17 @@ void QDPaintRgn(RgnHandle rgn) {
 }
 
 // FUNCTION: IMPERIALISM 0x00497b30
-void InitializeCityBuildingControlRegions_Impl(RgnHandle region, int x, int y) {
-  (void)x;
-  (void)y;
-  ::GetRgnBox(static_cast<HRGN>((*region)->rgn), &(*region)->rgnBBox);
+void OffsetRgn(RgnHandle region, int horizontalOffset, int verticalOffset) {
+  ::OffsetRgn(static_cast<HRGN>((*region)->rgn.m_hObject), horizontalOffset, verticalOffset);
+  ::GetRgnBox(static_cast<HRGN>((*region)->rgn.m_hObject), &(*region)->rgnBBox);
+}
+
+// FUNCTION: IMPERIALISM 0x00497b70
+void RefreshRgnBoundingBox(RgnHandle region) {
+  if (g_QuickDrawRegionBoundsAssertGate == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szQuickDrawSourcePath_00695168, 0x86b);
+  }
+  ::GetRgnBox(static_cast<HRGN>((*region)->rgn.m_hObject), &(*region)->rgnBBox);
 }
 
 // FUNCTION: IMPERIALISM 0x00497bb0
@@ -374,6 +393,16 @@ void CloseRgn(RgnHandle dst) {
   g_hOpenRgnAccumulator = 0;
 }
 
+// FUNCTION: IMPERIALISM 0x00498000
+void SectRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst) {
+  CRgn* rgnB = &(*srcB)->rgn;
+  CRgn* rgnA = &(*srcA)->rgn;
+  CRgn* rgnDst = &(*dst)->rgn;
+  ::CombineRgn(static_cast<HRGN>(rgnDst->m_hObject), static_cast<HRGN>(*rgnA),
+               static_cast<HRGN>(*rgnB), RGN_AND);
+  ::GetRgnBox(static_cast<HRGN>((*dst)->rgn.m_hObject), &(*dst)->rgnBBox);
+}
+
 // FUNCTION: IMPERIALISM 0x00498070
 void IntersectClipRegionWithRectAndUpdateBounds(RgnHandle clipRgn, RECT* rect) {
   CRgn rectRegion;
@@ -409,6 +438,76 @@ void QDFrameRect(RECT* rect) {
   ::FrameRect(dc->m_hDC, &frameRect, static_cast<HBRUSH>(brush));
 }
 
+// FUNCTION: IMPERIALISM 0x00498310
+void QDFrameOval(RECT* rect) {
+  if (g_hOpenRgnAccumulator != 0) {
+    CRgn ovalRegion;
+    ovalRegion.Attach(::CreateEllipticRgnIndirect(rect));
+    ::CombineRgn(g_hOpenRgnAccumulator, g_hOpenRgnAccumulator, static_cast<HRGN>(ovalRegion),
+                 RGN_XOR);
+    ovalRegion.DeleteObject();
+    return;
+  }
+
+  CDC* dc = g_pQuickDrawMemoryDc;
+  if (dc == 0) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  CBrush* previousBrush =
+      dc->SelectObject(CBrush::FromHandle(static_cast<HBRUSH>(::GetStockObject(NULL_BRUSH))));
+
+  int penSize = g_nQuickDrawPenHorizontalSize;
+  if (penSize <= g_nQuickDrawPenVerticalSize) {
+    penSize = g_nQuickDrawPenVerticalSize;
+  }
+  TScopedQuickDrawPen pen;
+  pen.CreatePen(PS_SOLID, penSize, g_QuickDrawForegroundColor);
+  pen.previousPen08 = dc->SelectObject(&pen);
+
+  RECT ovalRect;
+  ::CopyRect(&ovalRect, rect);
+  if (g_pActiveQuickDrawSurfaceContextHead == &g_defaultQuickDrawSurfaceSentinel) {
+    ::OffsetRect(&ovalRect, g_nQuickDrawOriginX, g_nQuickDrawOriginY);
+  }
+  ::Ellipse(dc->m_hDC, ovalRect.left, ovalRect.top, ovalRect.right, ovalRect.bottom);
+  dc->SelectObject(previousBrush);
+}
+
+// FUNCTION: IMPERIALISM 0x004986d0
+void QDPaintOval(RECT* rect) {
+  if (g_hOpenRgnAccumulator != 0) {
+    CRgn ovalRegion;
+    ovalRegion.Attach(::CreateEllipticRgnIndirect(rect));
+    ::CombineRgn(g_hOpenRgnAccumulator, g_hOpenRgnAccumulator, static_cast<HRGN>(ovalRegion),
+                 RGN_XOR);
+    ovalRegion.DeleteObject();
+    return;
+  }
+
+  CBrush brush(g_QuickDrawForegroundColor);
+  int penSize = g_nQuickDrawPenHorizontalSize;
+  if (penSize <= g_nQuickDrawPenVerticalSize) {
+    penSize = g_nQuickDrawPenVerticalSize;
+  }
+  TScopedQuickDrawPen pen;
+  pen.CreatePen(PS_SOLID, penSize, g_QuickDrawForegroundColor);
+
+  CDC* dc = g_pQuickDrawMemoryDc;
+  if (dc == 0) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  pen.previousPen08 = dc->SelectObject(&pen);
+
+  RECT ovalRect;
+  ::CopyRect(&ovalRect, rect);
+  if (g_pActiveQuickDrawSurfaceContextHead == &g_defaultQuickDrawSurfaceSentinel) {
+    ::OffsetRect(&ovalRect, g_nQuickDrawOriginX, g_nQuickDrawOriginY);
+  }
+  CBrush* previousBrush = dc->SelectObject(&brush);
+  ::Ellipse(dc->m_hDC, ovalRect.left, ovalRect.top, ovalRect.right, ovalRect.bottom);
+  dc->SelectObject(previousBrush);
+}
+
 // EmptyRgn: true when the handle carries no region or its bounding box is empty.
 // FUNCTION: IMPERIALISM 0x00498aa0
 unsigned char EmptyRgn(RgnHandle rgn) {
@@ -441,4 +540,16 @@ int SectRect(RECT* src1, RECT* src2, RECT* dst) {
 // FUNCTION: IMPERIALISM 0x00498be0
 void SetRectRgn(RgnHandle rgn, short left, short top, short right, short bottom) {
   (*rgn)->rgn.Attach(::CreateRectRgn(left, top, right, bottom));
+}
+
+// The Windows compatibility layer did not implement QuickDraw EqualRgn: it reports the
+// source assertion and returns false without inspecting either region.
+// FUNCTION: IMPERIALISM 0x00498c30
+unsigned char EqualRgn(RgnHandle first, RgnHandle second) {
+  (void)first;
+  (void)second;
+  if (g_QuickDrawEqualRgnAssertGate == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szQuickDrawSourcePath_00695168, 0x999);
+  }
+  return 0;
 }

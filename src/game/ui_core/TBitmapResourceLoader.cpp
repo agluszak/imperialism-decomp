@@ -22,6 +22,11 @@ void __cdecl SetBitmapResourceLoaderFlags(TBitmapResourceLoader** loaderHandle,
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00495440
+unsigned char TBitmapResourceLoader::GetLoaderFlags() const {
+  return flags;
+}
+
 // FUNCTION: IMPERIALISM 0x00495460
 void TBitmapResourceLoader::SetLoaderFlags(unsigned char newFlags) {
   unsigned char oldFlags = flags;
