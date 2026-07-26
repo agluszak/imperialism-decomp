@@ -194,12 +194,47 @@ def build_parser() -> argparse.ArgumentParser:
     show = commands.add_parser("show", help="show the latest canonical result")
     show.add_argument("name")
     show.set_defaults(func=show_result)
+    clean = commands.add_parser(
+        "clean", help="stop this worktree's warm wineserver and Xvfb, drop its prefix"
+    )
+    clean.set_defaults(func=clean_worktree_runtime)
     return parser
+
+
+def clean_worktree_runtime(_: argparse.Namespace) -> int:
+    """Stop the warm wineserver and Xvfb this worktree kept, and drop its prefix.
+
+    The runtime session deliberately leaves both running between tests; this is how a
+    worktree gives them back when it is done, or recovers if one wedges.
+    """
+    import json
+    import os
+    import shutil
+    import subprocess
+
+    from tools.runtime.wine import BUILD_DIR, prefix_environment, worktree_prefix
+
+    prefix = worktree_prefix()
+    if prefix.is_dir():
+        subprocess.run(
+            ["wineserver", "-k"], env=prefix_environment(prefix), check=False, capture_output=True
+        )
+        shutil.rmtree(prefix, ignore_errors=True)
+        print(f"removed {prefix}")
+    display_state = BUILD_DIR / "xvfb-display.json"
+    try:
+        state = json.loads(display_state.read_text(encoding="utf-8"))
+        os.kill(int(state["pid"]), 15)
+        print(f"stopped Xvfb {state['display']} (pid {state['pid']})")
+    except (OSError, ValueError, KeyError, TypeError):
+        pass
+    display_state.unlink(missing_ok=True)
+    return 0
 
 
 def main(argv: list[str] | None = None) -> int:
     arguments = list(sys.argv[1:] if argv is None else argv)
-    if arguments and arguments[0] not in {"run", "list", "suite", "show"}:
+    if arguments and arguments[0] not in {"run", "list", "suite", "show", "clean"}:
         arguments.insert(0, "run")
     args = build_parser().parse_args(arguments)
     return args.func(args)

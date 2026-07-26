@@ -188,14 +188,67 @@ def ensure_template_prefix(virtual_desktop: bool = False) -> Path:
         return template
 
 
-def initialize_wine_prefix(prefix: Path, environment: dict[str, str]) -> None:
-    virtual_desktop = bool(environment.get("IMPERIALISM_WINE_VIRTUAL_DESKTOP"))
+# State a run mutates and the next run must not inherit. Everything else in the prefix
+# (notably the ~1.2 GB drive_c/windows builtin DLL tree) is effectively read-only, which
+# is what makes reusing one prefix per worktree safe.
+MUTABLE_PREFIX_TREES = (Path("drive_c/users"),)
+
+
+def worktree_prefix() -> Path:
+    """The single Wine prefix this worktree reuses across runs.
+
+    BUILD_DIR is repo-local and gitignored, so this is per worktree by construction:
+    concurrent agents each get their own prefix and their own wineserver, and none of
+    them can kill another's game with `wineserver -k`.
+    """
+    return BUILD_DIR / "wineprefix"
+
+
+def _clone_tree(source: Path, destination: Path) -> None:
     subprocess.run(
-        ["cp", "-a", "--reflink=auto", str(ensure_template_prefix(virtual_desktop)), str(prefix)],
+        ["cp", "-a", "--reflink=auto", str(source), str(destination)],
         check=True,
         capture_output=True,
         timeout=180,
     )
+
+
+def _restore_mutable_state(prefix: Path, template: Path) -> None:
+    """Reset the parts of the prefix a previous run may have changed.
+
+    Only the user profile is restored. The registry hives are deliberately left alone:
+    a warm wineserver holds them in memory, so rewriting the files under it would not
+    reset anything and would risk the server flushing its cached copy back over the
+    restored one. Registry drift across runs is therefore an accepted cost of the warm
+    server -- see the trade recorded on imperialism-decomp-3sn1.
+    """
+    for relative in MUTABLE_PREFIX_TREES:
+        source = template / relative
+        if not source.is_dir():
+            continue
+        target = prefix / relative
+        shutil.rmtree(target, ignore_errors=True)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        _clone_tree(source, target)
+
+
+def initialize_wine_prefix(prefix: Path, environment: dict[str, str]) -> None:
+    """Make `prefix` ready for a run, materializing it from the template on first use.
+
+    Runs used to get a private prefix copied per test. That cost a full 1.3 GB byte copy
+    on any filesystem without reflink support (build-runtime-tests is on ext4 here), plus
+    an rmtree of the same size on teardown, for isolation that a per-worktree prefix
+    already provides -- each agent works in its own worktree, so nobody shares a
+    wineserver with anybody else. See imperialism-decomp-3sn1.
+    """
+    virtual_desktop = bool(environment.get("IMPERIALISM_WINE_VIRTUAL_DESKTOP"))
+    template = ensure_template_prefix(virtual_desktop)
+    if not (prefix / "system.reg").is_file():
+        shutil.rmtree(prefix, ignore_errors=True)
+        prefix.parent.mkdir(parents=True, exist_ok=True)
+        _clone_tree(template, prefix)
+        return
+    _restore_mutable_state(prefix, template)
 
 
 def shut_down_wine_prefix(environment: dict[str, str]) -> None:

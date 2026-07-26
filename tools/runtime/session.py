@@ -19,6 +19,7 @@ from tools.runtime.display import virtual_display
 from tools.runtime.protocol import read_json_file
 from tools.runtime.wine import (
     initialize_wine_prefix,
+    worktree_prefix,
     prefix_environment,
     retail_game_dir,
     shut_down_wine_prefix,
@@ -46,7 +47,8 @@ def execute_run(
     if not executable.is_file():
         raise SystemExit(f"Missing {executable}; run `just runtime-test-build` first")
 
-    prefix = run_dir / "prefix"
+    # One prefix per worktree, reused across runs; see wine.worktree_prefix().
+    prefix = worktree_prefix()
     result_path = run_dir / "result.json"
     heartbeat_path = run_dir / "heartbeat.json"
     debug_record_path = run_dir / "debug-record.json"
@@ -259,9 +261,11 @@ def execute_run(
             debugger.close()
         if not use_gdb and 'wine_log' in locals():
             wine_log.close()
-        shut_down_wine_prefix(environment)
         pid_path.unlink(missing_ok=True)
-        shutil.rmtree(prefix, ignore_errors=True)
+        # Neither the prefix nor its wineserver is torn down here. Both are
+        # worktree-scoped, and keeping the server warm is the whole point: starting a
+        # fresh one per test is what the per-test cost was actually being spent on.
+        # `just runtime-clean` stops them when a worktree is done with.
         # After the prefix is gone: wineserver has to reach the same X display the
         # session used, so the virtual server outlives it.
         display_stack.__exit__(None, None, None)

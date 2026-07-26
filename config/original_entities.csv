@@ -1335,8 +1335,7 @@ address|name|symbol|size|type|prototype|provenance
 49cbf0|TBackdropWindow::~TBackdropWindow||21|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0049cbc0_Impl()|
 49cc20|TBackdropWindow::GetMessageMap|?GetMessageMap@TBackdropWindow@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|windows_listing
 49cc40|SetCachedShowSplashFlag||10|function|void SetCachedShowSplashFlag(BOOL showSplash)|
-49cc60|Function_0049cc60||1|function|undefined WrapperFor_AllocateWithFallbackHandler_At0049cc60()|
-49cca0|CreateGlobalBackdropWindowWithDefaultBmp3B6||243|function|undefined InitializeGlobalBackdropWindowWithDefaultBmp3B6()|
+49cc60|CreateBackdropWindowIfSplashEnabled||307|function|void CreateBackdropWindowIfSplashEnabled(CWnd* parent)|windows_listing
 49cdf0|RefreshBackdropOnInputMessages||123|function|undefined RefreshBackdropOnInputMessages()|
 49ce90|TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6||138|function|undefined InitializeDefaultBackdropWindowFromBmp3B6()|
 49cfa0|TBackdropWindow::ResetTopLevelWindowStateAndReleaseTempMapBuffer||178|function|undefined ResetTopLevelWindowStateAndReleaseTempMapBuffer()|
@@ -8589,7 +8588,7 @@ address|name|symbol|size|type|prototype|provenance
 670e50|CStatusBarCtrl::classRuntimeClass|||global||
 670e68|CImageList::classRuntimeClass|||global||
 670e80|CRichEditCtrl::classRuntimeClass|||global||
-67106c|CBrush::'vftable'|||global||
+67106c|CRgn::'vftable'|||global||
 671aa0|CStatic::classRuntimeClass|||global||
 671ab8|CButton::classRuntimeClass|||global||
 671ad0|CListBox::classRuntimeClass|||global||
@@ -9624,7 +9623,7 @@ address|name|symbol|size|type|prototype|provenance
 6a1fe8|g_ScaleDefault6A1FE8|||global||
 6a2018|g_cachedShowSplashFlag|||global||
 6a2050|g_pActiveBackdropWindow|||global||
-6a2054|g_pBackdropWaitCursorGuardToken|||global||
+6a2054|g_pBackdropWaitCursor|||global||
 6a20f8|g_pSimMgr|||global||
 6a2128|g_ptSaveLoadErrorModalMessage|||global||
 6a2148|g_pUiViewManager|||global||
