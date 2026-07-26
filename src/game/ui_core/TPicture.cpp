@@ -45,7 +45,7 @@ TPicture::TPicture(const TPicture& source)
     : TControl(source), glyphBase84(source.glyphBase84), bitmapId(source.bitmapId),
       resourceNamespaceId(source.resourceNamespaceId), cachedBitmap(source.cachedBitmap) {
   if (glyphBase84 != -1) {
-    g_pModuleLibraryCacheState->IncrementDialogResourceRefCountByShortIdInRegistry(glyphBase84);
+    g_pModuleLibraryCacheState->IncrementRecordRefCountById(glyphBase84);
   }
 }
 
@@ -183,7 +183,7 @@ TObject* TPicture::ShallowClone() {
   clone->resourceNamespaceId = resourceNamespaceId;
   clone->cachedBitmap = cachedBitmap;
   if (glyphBase84 != -1) {
-    g_pModuleLibraryCacheState->IncrementDialogResourceRefCountByShortIdInRegistry(glyphBase84);
+    g_pModuleLibraryCacheState->IncrementRecordRefCountById(glyphBase84);
   }
   return clone;
 }

@@ -56,12 +56,10 @@ public:
 
   void ReleaseRecordById(short id);         // 0x0049a190
   void ReleaseRecordByHandle(void* handle); // 0x0049a390
-  // Bump the ref count of the record indexed by object handle, or of the argument
-  // itself when it is already a CacheRecord pointer. 0x0049a120
-  void IncrementRecordRefCountByHandleOrRecord(CacheRecord* recordOrHandle);
-  // Bump the ref count of the record keyed by the low 16 bits of packedKey (or of
-  // packedKey itself, reinterpreted as a CacheRecord*, when no such record exists).
-  void IncrementDialogResourceRefCountByShortIdInRegistry(unsigned int packedKey); // 0x0049a0b0
+  // Bump the reference count for a registered object handle. 0x0049a120
+  void IncrementRecordRefCountByHandle(void* handle);
+  // Bump the reference count for a registered dialog-resource identifier. 0x0049a0b0
+  void IncrementRecordRefCountById(short id);
 
   // Load a localized UI string by (group, index) into `out`. Reached via the global
   // g_pModuleLibraryCacheState from many call sites (e.g. TMultiplayerMgr init, low-disk
