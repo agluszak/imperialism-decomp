@@ -581,22 +581,22 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
 
   index = 0;
   while (index < 0x10) {
-    callback6bc[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2740, 0x40, 0x40,
-                                                                   0x1680, 0x10);
+    strategicTileMasks6bc[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2740, 0x40,
+                                                                             0x40, 0x1680, 0x10);
     index = index + 1;
   }
   resourceId = 0x2760;
   while (resourceId < 0x2766) {
-    callbackB3c[resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
+    strategicTileMasks6bc[0x18 + resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
         resourceId - 0x26, 0x40, 0x40, 0x1680, 0x10);
-    callbackC5c[resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
+    strategicTileMasks6bc[0x1e + resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
         resourceId, 0x40, 0x40, 0x1680, 0x10);
     resourceId = resourceId + 1;
   }
   index = 0x10;
   while (index < 0x18) {
-    callback6bc[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2756, 0x40, 0x40,
-                                                                   0x1680, 0x10);
+    strategicTileMasks6bc[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2756, 0x40,
+                                                                             0x40, 0x1680, 0x10);
     index = index + 1;
   }
 }
@@ -1165,20 +1165,27 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
 
   panel->SetHoverHelpText(displayText);
 
+  // A row with nothing available is greyed out and loses its stepper arrows entirely:
+  // the original calls slot 7 (`CALL [edx+0x1c]` at 0x0050cae2 / 0x0050cb1c), which is
+  // TView::Free -- destroying the placeholder control -- not slot 0x1c
+  // BecameWindowTarget at vtable offset 0x70. Confusing the slot index with the byte
+  // offset left every placeholder arrow sprite alive on screen.
   if (needCurrent == 0) {
     panel->SetEnabled(0, 0);
     TControl* leftArrow = ResolveTaggedChildOrFail(panel, kControlTagLeft);
-    leftArrow->BecameWindowTarget();
+    leftArrow->Free();
     TControl* rightArrow = ResolveTaggedChildOrFail(panel, kControlTagRght);
-    rightArrow->BecameWindowTarget();
+    rightArrow->Free();
     return;
   }
 
+  // Same slot-7 Free: the placeholder 'left'/'rght' controls are destroyed after their
+  // layout is copied, and a live TRightLeftView is built in each one's place.
   TControl* leftSource = ResolveTaggedChildOrFail(panel, kControlTagLeft);
   int leftLayout0[2];
   int leftLayout1[2];
   CopyViewLayoutFieldsToStack(leftLayout0, leftLayout1, leftSource);
-  leftSource->BecameWindowTarget();
+  leftSource->Free();
 
   TRightLeftView* leftView = new TRightLeftView();
   leftView->InitializeUiResourceEntryFrameAndParent(0, panel, leftLayout1, leftLayout0, 5, 5, 0);
@@ -1188,7 +1195,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nationSlo
   int rightLayout0[2];
   int rightLayout1[2];
   CopyViewLayoutFieldsToStack(rightLayout0, rightLayout1, rightSource);
-  rightSource->BecameWindowTarget();
+  rightSource->Free();
 
   TRightLeftView* rightView = new TRightLeftView();
   rightView->InitializeUiResourceEntryFrameAndParent(0, panel, rightLayout1, rightLayout0, 5, 5, 0);

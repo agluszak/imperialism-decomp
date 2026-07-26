@@ -53,6 +53,9 @@ extern "C" const unsigned int g_tradeCommodityRowTagTable[17];
 
 extern "C" const char s_SourcePathUTestDialogs_0069A7F8[];
 
+// Assert source-path string for the USmallViews TU (TTransportPicture and friends).
+extern "C" const char s_SourcePathUSmallViews_006992F0[];
+
 // TSimMgr_AdvanceGlobalTurnStateMachine.cpp / turn_flow_cooldown.cpp — turn-cooldown state.
 extern short g_nTurnCooldownDeferCounter006A43C4;
 

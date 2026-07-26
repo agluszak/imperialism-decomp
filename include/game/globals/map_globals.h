@@ -63,9 +63,8 @@ extern "C" const char g_szDoubleQuote[];
 extern "C" const int kLoungeStatusGlyphIds[5];
 extern "C" const char s_SourcePathUSuperMap_0069943C[];
 
-// Default viewport-marker-box width, shared by TMiniMapView/TacticalBattleView's own
-// marker-box construction (assigned once via ftol() elsewhere; role beyond that isn't
-// further recovered).
+// Default mini-map viewport-marker width. Retail derives the nine-column span during
+// CRT initialization from the UStatusViews.cpp 1/64 coordinate scale.
 extern "C" short g_defaultMarkerBoxWidth_006a460c;
 
 extern unsigned char g_abResourceTypeUsesHighNibbleFlag[24];

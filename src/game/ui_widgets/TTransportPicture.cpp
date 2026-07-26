@@ -8,8 +8,13 @@
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/ui_core/TStaticText.h"
 #include "game/ui_core/TViewMgr.h"
+#include "game/gfx/CTemporaryRegion.h"
+#include "game/gfx/quickdraw_regions.h"
+#include "game/gfx/ui_invalidation_guard.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
+#include "game/globals/ui_widgets_globals.h"
 
 // SYNTHETIC: IMPERIALISM 0x00591d90
 // TTransportPicture::CreateObject
@@ -104,61 +109,120 @@ void TTransportPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   TControl::DoEvent(commandId, sourceHandler, event);
 }
 
+// Paints the ledger gauge, then updates its caption. The bar is drawn as two abutting
+// fills -- track start to marker in the row's own colour, marker to track end in the
+// empty-track colour 0x3b -- with an optional 2px limit marker underneath. Every fill is
+// bracketed by ClipRect/SetClip against a scoped GetClip so it cannot bleed outside the
+// gauge; the CTemporaryRegion holding that saved clip is the function's outermost object
+// and its destructor is what closes the EH frame.
 // FUNCTION: IMPERIALISM 0x005921c0
 void TTransportPicture::Refresh() {
-  short total = splitValue96;
-  if (total < 1) {
-    total = 1;
-  }
-
-  // The gauge is 113 pixels wide. The original gives the first remainder pixels one
-  // extra pixel so all integer divisions still fill the complete bar.
-  float pixelsPerUnit = 113.0f / static_cast<float>(total);
-  float remainder = 113.0f - pixelsPerUnit * static_cast<float>(total);
-  float markerPosition;
-  if (remainder < static_cast<float>(splitValue94)) {
-    markerPosition = remainder * (pixelsPerUnit + 1.0f) +
-                     (static_cast<float>(splitValue94) - remainder) * pixelsPerUnit;
-  } else {
-    markerPosition = static_cast<float>(splitValue94) * (pixelsPerUnit + 1.0f);
-  }
-
+  CTemporaryRegion savedClip;
   CString currentText;
   CString totalText;
   CString gaugeText;
-  currentText.Format(g_szDecimalFormat, static_cast<int>(splitValue94));
-  totalText.Format(g_szDecimalFormat, static_cast<int>(splitValue96));
-  gaugeText = currentText + CString(s_szSpaceSeparator_00695794) + totalText;
 
-  TStaticText* text = static_cast<TStaticText*>(ResolveControlByTag(kControlTagText));
-  text->AssertValid();
-  text->SetTextAndMaybeRefresh(&gaugeText, 1);
-
-  if (resourceMetricSlot92 == 0x16 || resourceMetricSlot92 == 0x15) {
-    int multiplier = resourceMetricSlot92 == 0x16 ? 200 : 500;
-    CString valueText;
-    valueText.Format(g_szDecimalFormat, static_cast<int>(splitValue94) * multiplier);
-    TStaticText* value = static_cast<TStaticText*>(ResolveControlByTag(kControlTagValu));
-    value->AssertValid();
-    value->SetTextAndMaybeRefresh(&valueText, 1);
+  // Rows in the right-hand ledger column start further right than the left column's.
+  // Written as an if/else, not a ternary: VC5 turns a ternary between two constants into a
+  // branchless setle/dec/and/add chain, where the original branches (0x00592220).
+  short trackLeft = 0x61;
+  if (ownerLocalX > 0xc8) {
+    trackLeft = 0x5d;
   }
 
+  // The gauge is 113 pixels wide. The original gives the first remainder pixels one
+  // extra pixel so all integer divisions still fill the complete bar. The +1.0f is
+  // emitted as a subtraction of the -1.0 double at 0x006631a0. There is deliberately no
+  // guard on splitValue96 here -- the original divides by it unclamped (0x00592258).
+  float pixelsPerUnit = 113.0f / static_cast<float>(splitValue96);
+  float remainder = 113.0f - pixelsPerUnit * static_cast<float>(splitValue96);
+  float markerOffset;
+  if (remainder < static_cast<float>(splitValue94)) {
+    markerOffset = remainder * (pixelsPerUnit + 1.0f) +
+                   (static_cast<float>(splitValue94) - remainder) * pixelsPerUnit;
+  } else {
+    markerOffset = static_cast<float>(splitValue94) * (pixelsPerUnit + 1.0f);
+  }
+
+  GetClip(savedClip.tempRgn);
+  int marker = static_cast<int>(static_cast<float>(trackLeft) + markerOffset);
+
+  RECT emptyRect;
+  emptyRect.left = marker;
+  emptyRect.top = 0xd;
+  emptyRect.right = trackLeft + 0x71;
+  emptyRect.bottom = 0x11;
+  ClipRect(&emptyRect);
+  g_pUiRuntimeContext->SetForeColor(0x3b);
+  FillRectWithQuickDrawBrushAndContextOffset(&emptyRect);
+
+  RECT fillRect;
+  fillRect.left = trackLeft;
+  fillRect.top = 0xd;
+  fillRect.right = marker;
+  fillRect.bottom = 0x11;
+  if (controlTag == static_cast<int>(kControlTagTota)) {
+    // The capacity total goes red once allocation reaches the cap.
+    g_pUiRuntimeContext->SetForeColor(splitValue96 == splitValue94 ? 0x34 : 0x33);
+  } else {
+    g_pUiRuntimeContext->SetForeColor(gaugeMetricId90);
+  }
+  ClipRect(&fillRect);
+  FillRectWithQuickDrawBrushAndContextOffset(&fillRect);
+  SetClip(savedClip.tempRgn);
+  SetQuickDrawFillColor(0);
+
   if (splitLimit98 >= 0) {
-    SetState(splitValue94 < splitLimit98 ? 0 : 1, 0);
+    RECT limitRect;
+    limitRect.left = trackLeft - 1;
+    limitRect.top = 0x12;
+    limitRect.right = trackLeft + 0x72;
+    limitRect.bottom = 0x14;
+    g_pUiRuntimeContext->SetForeColor(splitValue94 < splitLimit98 ? 0x33 : 0x34);
+    ClipRect(&limitRect);
+    FillRectWithQuickDrawBrushAndContextOffset(&limitRect);
+    SetClip(savedClip.tempRgn);
+    SetQuickDrawFillColor(0);
+  }
+
+  TStaticText* text = static_cast<TStaticText*>(ResolveControlByTag(kControlTagText));
+  if (text == 0) {
+    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1a59);
+  }
+  currentText.Format(g_szDecimalFormat, static_cast<int>(splitValue94));
+  totalText.Format(g_szDecimalFormat, static_cast<int>(splitValue96));
+  gaugeText = currentText + s_szGaugeCountSeparator_0069936C + totalText;
+  text->SetTextAndMaybeRefresh(&gaugeText, 1);
+
+  // The two money rows caption their allocation in currency rather than units.
+  if (resourceMetricSlot92 == 0x16) {
+    TStaticText* value = static_cast<TStaticText*>(ResolveControlByTag(kControlTagValu));
+    if (value == 0) {
+      FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1a63);
+    }
+    g_pSimMgr->NumToCurrency(static_cast<int>(splitValue94) * 200, &gaugeText);
+    value->SetTextAndMaybeRefresh(&gaugeText, 1);
+  } else if (resourceMetricSlot92 == 0x15) {
+    TStaticText* value = static_cast<TStaticText*>(ResolveControlByTag(kControlTagValu));
+    if (value == 0) {
+      FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1a6a);
+    }
+    g_pSimMgr->NumToCurrency(static_cast<int>(splitValue94) * 500, &gaugeText);
+    value->SetTextAndMaybeRefresh(&gaugeText, 1);
   }
 
   if (controlTag != static_cast<int>(kControlTagTota)) {
-    short activeNation = g_pSimMgr->GetActiveNationId();
-    TGreatPower* nation = g_apNationStates[activeNation];
+    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
     TTransportPicture* totalPicture =
         static_cast<TTransportPicture*>(ownerContext->ResolveControlByTag(kControlTagTota));
-    totalPicture->AssertValid();
-    totalPicture->splitValue94 = nation != 0 ? nation->needsOverCapFlag : 0;
+    if (totalPicture == 0) {
+      FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1a77);
+    }
+    totalPicture->splitValue94 = static_cast<short>(nation->needsOverCapFlag - nation->needCapA6 +
+                                                    (nation != 0 ? nation->needCapA6 : 0));
     totalPicture->RefreshControl();
+    PrepareForDrawing();
   }
-
-  (void)markerPosition;
-  TView::RefreshControl();
 }
 
 // FUNCTION: IMPERIALISM 0x00592830
