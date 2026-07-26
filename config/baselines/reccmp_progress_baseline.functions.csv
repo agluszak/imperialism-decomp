@@ -6138,13 +6138,13 @@ address|matching|name
 0x5d7f70|1.0|TViewMgr::RefreshCityProductionUi
 0x5d7f90|1.0|TViewMgr::ClearActiveCityBuildingViewSlot
 0x5d7fc0|0.53125|TViewMgr::SetCursorRangeAndRefreshMainPanel
-0x5d8040|0.13445378151260504|TViewMgr::HandleTurnEvent7D8_ActivateDiplomacyMapView
-0x5d83b0|0.14035087719298245|TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary
+0x5d8040|0.20945945945945946|TViewMgr::HandleTurnEvent7D8_ActivateDiplomacyMapView
+0x5d83b0|0.14594594594594595|TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary
 0x5d8750|0.9318181818181818|TViewMgr::RefreshTechnologyStorePageAndHudText
 0x5d8980|0.6394984326018809|TViewMgr::ShowAbilityStatusReport
 0x5d8c40|1.0|TViewMgr::HandleTurnEvent2103_RunNationStatusReportUpdate
 0x5d8cc0|1.0|TViewMgr::SyncTacticalStatusPanelRegion
-0x5d8dd0|0.12933025404157045|TViewMgr::RefreshTradeAndIndustryOverviewScreen
+0x5d8dd0|0.21285563751317177|TViewMgr::RefreshTradeAndIndustryOverviewScreen
 0x5da040|0.5483870967741935|TViewMgr::RefreshMainDialogAndCursorHelp
 0x5da180|0.6919431279620853|TViewMgr::HandleTurnEvent2260_RefreshMainHudTitles
 0x5da360|0.6070120355834642|TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons

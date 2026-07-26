@@ -977,11 +977,11 @@ static void ModifyMainViewChildWindowStyleClear02000000(TView* mainView) {
 
 namespace turn_event_ui_refresh {
 
-TView* ActiveMainView() {
+inline TView* ActiveMainView() {
   return g_pDisplayMgr->activeDialog;
 }
 
-TControl* ResolveMainTaggedControl(unsigned int controlTag) {
+inline TControl* ResolveMainTaggedControl(unsigned int controlTag) {
   TView* mainView = ActiveMainView();
   if (mainView == nullptr) {
     return nullptr;
@@ -989,7 +989,7 @@ TControl* ResolveMainTaggedControl(unsigned int controlTag) {
   return static_cast<TControl*>(mainView->ResolveControlByTag(controlTag));
 }
 
-void BindCursorPanelAndSetTurnEventCodeRange() {
+inline void BindCursorPanelAndSetTurnEventCodeRange() {
   TControl* cursor = ResolveMainTaggedControl(kControlTagCurs);
   g_pCursorControlPanel = static_cast<TInfoBarText*>(cursor);
   if (cursor != nullptr) {
@@ -1003,7 +1003,7 @@ void BindCursorPanelAndSetTurnEventCodeRange() {
 // It must NOT be the direct TCouncilView ticker init (0x4fc2e0): on non-council
 // screens (e.g. the combined map, whose 'main' has no can0/can1 children) that
 // misdispatch dereferences a null control and crashes.
-void RefreshMainPanelControl() {
+inline void RefreshMainPanelControl() {
   TControl* mainPanel = ResolveMainTaggedControl(kControlTagMain);
   if (mainPanel != nullptr) {
     mainPanel->AssertValid();
@@ -1011,7 +1011,7 @@ void RefreshMainPanelControl() {
   }
 }
 
-void RefreshToolBarClusterByTag(unsigned int controlTag) {
+inline void RefreshToolBarClusterByTag(unsigned int controlTag) {
   TControl* control = ResolveMainTaggedControl(controlTag);
   if (control == nullptr) {
     return;
@@ -1022,7 +1022,7 @@ void RefreshToolBarClusterByTag(unsigned int controlTag) {
   toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
 }
 
-void RefreshTradClusterPictureAndHintText() {
+inline void RefreshTradClusterPictureAndHintText() {
   TControl* tradControl = ResolveMainTaggedControl(kControlTagTrad);
   if (tradControl == nullptr) {
     return;
@@ -1038,7 +1038,7 @@ void RefreshTradClusterPictureAndHintText() {
   tradControl->SetHoverHelpText(hintText);
 }
 
-void RefreshTaggedControlWithLocalizedString(unsigned int controlTag, short stringCode,
+inline void RefreshTaggedControlWithLocalizedString(unsigned int controlTag, short stringCode,
                                              short stringIndex) {
   TControl* control = ResolveMainTaggedControl(controlTag);
   if (control == nullptr) {
@@ -1050,7 +1050,7 @@ void RefreshTaggedControlWithLocalizedString(unsigned int controlTag, short stri
   control->SetHoverHelpText(localizedText);
 }
 
-void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidth, int stylePrimary,
+inline void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidth, int stylePrimary,
                                    int styleSecondary) {
   TControl* control = ResolveMainTaggedControl(controlTag);
   if (control == nullptr) {
