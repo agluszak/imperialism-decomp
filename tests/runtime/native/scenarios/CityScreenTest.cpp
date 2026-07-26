@@ -11,6 +11,7 @@
 #include "game/turn_event_codes.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
+#include "game/ui_core/TWindow.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_tags_city.h"
 
@@ -51,6 +52,8 @@ public:
       ActivateBuilding();
     } else if (phase == kWaitForBuilding) {
       WaitForBuilding();
+    } else if (phase == kWaitForBuildingClose) {
+      WaitForBuildingClose();
     } else if (phase == kReturnToMap) {
       ReturnToMap();
     } else {
@@ -70,6 +73,7 @@ private:
     kWaitForCityScreen,
     kActivateBuilding,
     kWaitForBuilding,
+    kWaitForBuildingClose,
     kReturnToMap,
     kWaitForMap
   };
@@ -178,8 +182,72 @@ private:
       FailScenario("\"city building control opened the wrong production slot\"");
       return;
     }
+    TWindow* buildingWindow = buildingView->GetWindow();
+    if (buildingWindow == 0 || buildingWindow->nativeWindow50 == 0 ||
+        buildingWindow->nativeWindow50->m_hWnd == 0) {
+      FailScenario("\"city building production view has no native window\"");
+      return;
+    }
+    HWND buildingHwnd = buildingWindow->nativeWindow50->m_hWnd;
+    LONG style = GetWindowLongA(buildingHwnd, GWL_STYLE);
+    LONG extendedStyle = GetWindowLongA(buildingHwnd, GWL_EXSTYLE);
+    if (buildingWindow->windowStyleType != 0x1f40 || buildingWindow->windowFlags != 0x80 ||
+        !buildingWindow->useCaptionedFrameFlag6d || !buildingWindow->topmostFlag70 ||
+        (style & (WS_CAPTION | WS_SYSMENU)) != (WS_CAPTION | WS_SYSMENU) ||
+        (extendedStyle & WS_EX_TOOLWINDOW) == 0) {
+      CString failure;
+      failure.Format("\"city building native window is missing its retail floating frame: "
+                     "descriptor_style=0x%x descriptor_flags=0x%x caption=%d topmost=%d "
+                     "style=0x%lx exstyle=0x%lx\"",
+                     buildingWindow->windowStyleType, buildingWindow->windowFlags,
+                     buildingWindow->useCaptionedFrameFlag6d, buildingWindow->topmostFlag70, style,
+                     extendedStyle);
+      FailScenario(failure);
+      return;
+    }
+    CWnd* mainWindow = AfxGetMainWnd();
+    if (mainWindow == 0 || GetParent(buildingHwnd) != mainWindow->m_hWnd) {
+      FailScenario("\"city building native window is not owned by the main game window\"");
+      return;
+    }
+    RECT windowRect;
+    POINT clientOrigin;
+    clientOrigin.x = 0;
+    clientOrigin.y = 0;
+    if (!GetWindowRect(buildingHwnd, &windowRect) || !ClientToScreen(buildingHwnd, &clientOrigin) ||
+        clientOrigin.y <= windowRect.top) {
+      FailScenario("\"city building native window has no non-client caption area\"");
+      return;
+    }
+    POINT captionPoint;
+    captionPoint.x = (windowRect.left + windowRect.right) / 2;
+    captionPoint.y = (windowRect.top + clientOrigin.y) / 2;
+    LPARAM hitPoint =
+        MAKELPARAM(static_cast<short>(captionPoint.x), static_cast<short>(captionPoint.y));
+    if (SendMessageA(buildingHwnd, WM_NCHITTEST, 0, hitPoint) != HTCAPTION) {
+      FailScenario("\"city building native frame does not expose a movable caption\"");
+      return;
+    }
     if (ScenarioPhaseTicks() < 5) {
       RequestScenarioTick();
+      return;
+    }
+    phase = kWaitForBuildingClose;
+    EnterScenarioStep("closing_city_building", "activate_native_system_close");
+    SendMessageA(buildingHwnd, WM_SYSCOMMAND, SC_CLOSE, 0);
+    RequestScenarioTick();
+  }
+
+  void WaitForBuildingClose() {
+    TView* mainView = CurrentMainView();
+    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventCityProduction || mainView == 0 ||
+        mainView->IsKindOf(RUNTIME_CLASS(TCityProductionView)) == 0) {
+      FailScenario("\"city production view disappeared while closing a building window\"");
+      return;
+    }
+    TCityProductionView* cityView = static_cast<TCityProductionView*>(mainView);
+    if (cityView->BuildingViewForRuntimeTest(kInteractiveBuildingSlot) != 0) {
+      WaitForScenarioTick("\"native system close did not close the city building window\"");
       return;
     }
     phase = kReturnToMap;

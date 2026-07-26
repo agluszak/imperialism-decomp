@@ -96,7 +96,7 @@ address|matching|name
 0x41b5a0|0.7777777777777778|SetUiResourceContextNumberValueAndRange
 0x41b5f0|1.0|ClearUiResourceContext
 0x41b610|1.0|PopUiResourcePoolNode
-0x41b6d0|0.08888302782539892|InitializeIndustryViewTradeMoveControlsAndCommodityRows
+0x41b6d0|0.08923861438368208|InitializeIndustryViewTradeMoveControlsAndCommodityRows
 0x426ec0|1.0|CList<TView *,TView *>::AddTail(class TView *)
 0x426f60|0.4|GetUiLinkedListNodePayload
 0x426f80|0.6666666666666666|NoOpRuntimeCallback_00426f80
@@ -187,7 +187,7 @@ address|matching|name
 0x435710|1.0|TNewspaperView::`scalar deleting destructor'
 0x435740|1.0|TNewspaperView::~TNewspaperView
 0x435760|1.0|TControl::ShallowClone
-0x4357b0|0.5913950792219502|BuildTurnEventDialogUiByCode
+0x4357b0|0.5482416591523895|BuildTurnEventDialogUiByCode
 0x43d590|1.0|TMapPreviewView::TMapPreviewView
 0x43d5c0|1.0|TMapPreviewView::`scalar deleting destructor'
 0x43d5f0|1.0|TMapPreviewView::~TMapPreviewView

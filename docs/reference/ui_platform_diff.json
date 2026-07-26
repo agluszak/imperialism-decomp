@@ -31,20 +31,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -3738,7 +3738,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_00415fe0.cpp",
-      "generated_sha256": "cffef71f0c2e2120d19beb6d35f400935c638a141a858679e842056d42a74c6f",
+      "generated_sha256": "1ecd40ba9e2329443467c3b57382ed80029b897179b4c5447a3e324737f4860d",
       "name": "BuildTradeSchoolDialogControls"
     },
     "0x0041b6d0": {
@@ -3771,20 +3771,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -4588,20 +4588,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -5293,20 +5293,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -6054,20 +6054,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -7054,20 +7054,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -8054,20 +8054,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -8759,20 +8759,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -9464,20 +9464,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -10760,20 +10760,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -11261,20 +11261,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -11986,20 +11986,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -13471,20 +13471,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -14084,20 +14084,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -15857,7 +15857,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0041b6d0.cpp",
-      "generated_sha256": "a184d037cf1d8abac941196b4c7a93e39b709781fb9c746a6b9b7e888d6abcd6",
+      "generated_sha256": "fdc1338fbab24701e1c9f7fc4bcb40b8e9097d308cf94ba4cd745d62aff478ba",
       "name": "InitializeIndustryViewTradeMoveControlsAndCommodityRows"
     },
     "0x00427360": {
@@ -29131,20 +29131,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -29943,20 +29943,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -34802,7 +34802,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_004357b0.cpp",
-      "generated_sha256": "adb0ded0b3d1d9a63d2c0575e8fb115df9d38656824693c36dfcb54326bed4c6",
+      "generated_sha256": "edfcbbffedf3935d19ca8632f66178c3ccf1aa9f86d7284ed37c18a4faa75e7f",
       "name": "BuildTurnEventDialogUiByCode"
     },
     "0x0043dbc0": {
@@ -53367,20 +53367,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -55774,7 +55774,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0044fbc0.cpp",
-      "generated_sha256": "2fbb7aac487e9cf38cd8f7e53527402b7cf175bacbf18d76f3b290929459f4f7",
+      "generated_sha256": "ca0cab46b10b368db4340f3d8515f021dbfea7a0b5d729186b087de3abdc5289",
       "name": "BuildUiResourceTreeByTemplateIdAndBindScreenContext"
     },
     "0x004538a0": {
@@ -89215,20 +89215,20 @@
                   "style": null,
                   "text": null,
                   "window": {
-                    "captioned_frame": 0,
+                    "captioned_frame": 1,
                     "color": {
                       "background": 538976288,
                       "behavior_flag": 1,
                       "foreground": 538976288,
                       "triplet_flag": 1
                     },
-                    "flags": 8,
+                    "flags": 128,
                     "resource_6c": 0,
                     "resource_6e": 1,
                     "resource_6f": 1,
                     "resource_71": 1,
-                    "style_type": 2,
-                    "topmost": 0
+                    "style_type": 8000,
+                    "topmost": 1
                   }
                 },
                 "geometry": [
@@ -92174,7 +92174,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_004749a0.cpp",
-      "generated_sha256": "851720cc1c8d251aa4e5c4a275d9b09298e23987833f5ae905bc311a6dfe9873",
+      "generated_sha256": "f040d698c72f682ca7b725af61795baf0a66387510ee4b9878afa5f77dc39fdb",
       "name": "BuildUniversityDialogShell"
     }
   },

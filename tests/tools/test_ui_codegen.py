@@ -81,6 +81,16 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn("node_flag, 0x3e, 8, 0x19, 0x23, 1, 0,", map_factory)
         self.assertIn("node_quer, 0x5b, 8, 0x19, 0x23, 1, 0,", map_factory)
 
+    def test_city_building_floaters_keep_retail_captioned_window_descriptor(self) -> None:
+        city_factory = self.rendered[0x0041B6D0]
+        oil_case = city_factory[
+            city_factory.index("case kTurnEventOilRefinery:") :
+        ]
+        self.assertIn(
+            "SetUiResourceContextFlagsAndMetrics(0x80, 0x1f40, 1, 1, 1, 1, 0, 1);",
+            oil_case,
+        )
+
     def test_all_factories_use_the_canonical_semantic_emitter(self) -> None:
         manifest_text = (REPO_ROOT / "config/ui_factory_codegen.yml").read_text()
         self.assertNotIn("emission:", manifest_text)
