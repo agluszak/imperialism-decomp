@@ -198,7 +198,11 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       this->SetMoveAmount(static_cast<short>(sellValue - 1));
       return;
     }
-    break;
+    // At or below one the original RETURNS (0x0058763e `jle` targets the epilogue at
+    // 0x005877be, a bare `ret 0xc`) -- it does not fall through to the base handler.
+    // Breaking here delegated to TAmtBarCluster::DoEvent, which resolves 'move'; the trade
+    // row has no such child, so it dereferenced null and crashed on the 1 -> 0 click.
+    return;
   }
   case 0x67:
     g_pUiRuntimeContext->AddPendingTurnOverlayCode(-1);
@@ -273,11 +277,15 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     return;
   }
   default:
+    // Out-of-range commands DO reach the base: the switch's range check (`ja 0x005877ac`
+    // at 0x005873f7) lands on a push/push/push + `call 0x00407a90` with ecx = this, an ILT
+    // thunk to TAmtBarCluster::DoEvent. Only the in-range guard-failure paths skip it, by
+    // jumping to the epilogue at 0x005877be which sits *after* that call.
     TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
     return;
   }
-
-  TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
+  // Nothing after the switch: a `break` out of an in-range case returns without touching
+  // the base, matching the 0x005877be exits.
 }
 
 // Returns early if UI mode is outside trade range (>3); otherwise reports
