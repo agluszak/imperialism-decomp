@@ -15,6 +15,10 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_core/CIterator.h"
 
+// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
+//   CArchive& AFXAPI operator>>(CArchive&, TArmyMission*&)
+// SYNTHETIC: IMPERIALISM 0x0053c070
+// operator>>
 IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
 
 // FUNCTION: IMPERIALISM 0x005356f0

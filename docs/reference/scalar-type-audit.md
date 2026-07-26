@@ -38,11 +38,11 @@ a stale category-level approval.
 
 | Fingerprint | Source | Classification | Evidence |
 | --- | --- | --- | --- |
-| `ddb6e55e5ead83ab` | `src/game/gfx/CDib.cpp:81` | `win32_struct_word_field` | BITMAPINFOHEADER.biBitCount is WORD; retail 0x00479fe0 writes the low argument word to header offset 0x0e. |
-| `90ad32c2364f4c93` | `src/game/gfx/CDib.cpp:510` | `win32_struct_word_field` | LOGPALETTE.palNumEntries is WORD; retail 0x0047ae90 copies the low word of the 32-bit palette count to offset 2. |
-| `1bedaab2dce1eddf` | `src/game/gfx/CDib.cpp:532` | `win32_struct_word_field` | LOGPALETTE.palNumEntries is WORD; retail 0x0047af60 copies the low word of the 32-bit palette count to offset 2. |
-| `17f25feb058b46da` | `src/game/gfx/CDib.cpp:556` | `win32_struct_word_field` | LOGPALETTE.palNumEntries is WORD; retail 0x0047b030 copies the low word of CDib's 32-bit palette count to offset 2. |
-| `ce86d676236a8915` | `src/game/gfx/CDib.cpp:623` | `win32_struct_word_field` | LOGPALETTE.palNumEntries is WORD; retail 0x0047b1b0 copies the low word of the Win32 device palette entry count to offset 2. |
+| `ddb6e55e5ead83ab` | `src/game/gfx/CDib.cpp:85` | `win32_struct_word_field` | BITMAPINFOHEADER.biBitCount is WORD; retail 0x00479fe0 writes the low argument word to header offset 0x0e. |
+| `90ad32c2364f4c93` | `src/game/gfx/CDib.cpp:514` | `win32_struct_word_field` | LOGPALETTE.palNumEntries is WORD; retail 0x0047ae90 copies the low word of the 32-bit palette count to offset 2. |
+| `1bedaab2dce1eddf` | `src/game/gfx/CDib.cpp:536` | `win32_struct_word_field` | LOGPALETTE.palNumEntries is WORD; retail 0x0047af60 copies the low word of the 32-bit palette count to offset 2. |
+| `17f25feb058b46da` | `src/game/gfx/CDib.cpp:560` | `win32_struct_word_field` | LOGPALETTE.palNumEntries is WORD; retail 0x0047b030 copies the low word of CDib's 32-bit palette count to offset 2. |
+| `ce86d676236a8915` | `src/game/gfx/CDib.cpp:627` | `win32_struct_word_field` | LOGPALETTE.palNumEntries is WORD; retail 0x0047b1b0 copies the low word of the Win32 device palette entry count to offset 2. |
 | `4a577257115fdf30` | `src/game/gfx/CDibPal.cpp:41` | `win32_struct_word_field` | LOGPALETTE.palNumEntries is WORD; retail 0x0047e440 stores BX to offset 2 before CreatePalette. |
 | `efb9327b8ccc01bd` | `src/game/gfx/CDibPal.cpp:270` | `win32_struct_word_field` | GetObjectA yields a UINT entry count but LOGPALETTE.palNumEntries is WORD; retail 0x0047efa0 narrows only at the structure field. |
 | `8643894c63c98a37` | `src/game/ui_core/CIncludeView.cpp:604` | `mfc_bool_callback_return` | CWnd::OnSetCursor returns BOOL while Default returns LRESULT; retail 0x00483ef0 tail-returns the full Default result through the BOOL override ABI. |
@@ -239,11 +239,11 @@ is classified, and a family that stops appearing must be removed.
 | --- | --- | --- | --- | --- | --- |
 | `d97fbba03dae091e` | `native_integral_boundary` | `src/game/assets/TCdAudioDevice.cpp:180` | game scalar -> DWORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `9440836a8128678f` | `native_integral_boundary` | `src/game/assets/TCdAudioDevice.cpp:181` | game scalar -> DWORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `ddb6e55e5ead83ab` | `native_integral_boundary` | `src/game/gfx/CDib.cpp:81` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `90ad32c2364f4c93` | `native_integral_boundary` | `src/game/gfx/CDib.cpp:510` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `1bedaab2dce1eddf` | `native_integral_boundary` | `src/game/gfx/CDib.cpp:532` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `17f25feb058b46da` | `native_integral_boundary` | `src/game/gfx/CDib.cpp:556` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `ce86d676236a8915` | `native_integral_boundary` | `src/game/gfx/CDib.cpp:623` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
+| `ddb6e55e5ead83ab` | `native_integral_boundary` | `src/game/gfx/CDib.cpp:85` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
+| `90ad32c2364f4c93` | `native_integral_boundary` | `src/game/gfx/CDib.cpp:514` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
+| `1bedaab2dce1eddf` | `native_integral_boundary` | `src/game/gfx/CDib.cpp:536` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
+| `17f25feb058b46da` | `native_integral_boundary` | `src/game/gfx/CDib.cpp:560` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
+| `ce86d676236a8915` | `native_integral_boundary` | `src/game/gfx/CDib.cpp:627` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `4a577257115fdf30` | `native_integral_boundary` | `src/game/gfx/CDibPal.cpp:41` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `efb9327b8ccc01bd` | `native_integral_boundary` | `src/game/gfx/CDibPal.cpp:270` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `c2e2852e7faabcf6` | `native_integral_boundary` | `src/game/gfx/TDisplayMgr.cpp:39` | game scalar -> UINT | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
@@ -388,7 +388,7 @@ is classified, and a family that stops appearing must be removed.
 | `2d73b9bd9f073bcc` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TOffersPanelView.cpp:240` | promptCode == 0x0a | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `f3b19aa022d58da1` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TOffersPanelView.cpp:253` | promptCode == 0x14 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `7da1397aac01d7b0` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TOffersPanelView.cpp:267` | promptCode == 0x0b | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `05d3ab271af23a61` | `raw_discriminant_literal` | `src/game/gfx/CDib.cpp:183` | bfType != 0x4d42 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
+| `05d3ab271af23a61` | `raw_discriminant_literal` | `src/game/gfx/CDib.cpp:187` | bfType != 0x4d42 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
 | `41eb1415adb86245` | `raw_discriminant_literal` | `src/game/gfx/TModalDialogBase.cpp:31` | finalizeState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `997a52658ffd76dd` | `raw_discriminant_literal` | `src/game/gfx/TModuleLibraryCacheTableStateB.cpp:228` | patternMode == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `7b961e77ff19b05e` | `raw_discriminant_literal` | `src/game/gfx/TTemplateDialogs.cpp:183` | renderMode != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
@@ -412,9 +412,9 @@ is classified, and a family that stops appearing must be removed.
 | `38ec0beb6f880306` | `raw_discriminant_literal` | `src/game/map/TMapUberPicture.cpp:400` | previousMode != 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `ae0028fc7ae98640` | `raw_discriminant_literal` | `src/game/map/TMapUberPicture.cpp:428` | previousMode != 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `21979072c87bde3c` | `raw_discriminant_literal` | `src/game/map/TMapUberPicture.cpp:472` | visitedModes == 7 | `bit_flag_mask_not_a_domain` | `imperialism-decomp-1uj.99.8` |
-| `ee06265f181c2758` | `raw_discriminant_literal` | `src/game/map/TNavyMission.cpp:321` | navyState28 == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `fd2282a1284889ae` | `raw_discriminant_literal` | `src/game/map/TNavyMission.cpp:330` | navyState28 == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `b3f384e5d7867a6b` | `raw_discriminant_literal` | `src/game/map/TNavyMission.cpp:339` | navyState28 == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `ee06265f181c2758` | `raw_discriminant_literal` | `src/game/map/TNavyMission.cpp:325` | navyState28 == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `fd2282a1284889ae` | `raw_discriminant_literal` | `src/game/map/TNavyMission.cpp:334` | navyState28 == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `b3f384e5d7867a6b` | `raw_discriminant_literal` | `src/game/map/TNavyMission.cpp:343` | navyState28 == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `62926fb688e40ace` | `raw_discriminant_literal` | `src/game/map_ui/TMapDialog.cpp:1179` | resourceType < 0 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
 | `ff0fefe2c5903075` | `raw_discriminant_literal` | `src/game/map_ui/TMapDialog.cpp:1274` | tileActionState16 >= 0 | `map_tile_action_state_domain` | `imperialism-decomp-1uj.99.8` |
 | `bc1131ea218c9ee6` | `raw_discriminant_literal` | `src/game/map_ui/TMapEditView.cpp:99` | editorActionMode368 != 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
