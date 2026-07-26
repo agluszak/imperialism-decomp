@@ -42,7 +42,7 @@ address|matching|name
 0x413c00|1.0|TModalDialogBase::`scalar deleting destructor'
 0x413c30|0.8301886792452831|TDDTemplateDialog::~TDDTemplateDialog
 0x413cd0|1.0|TDDTemplateDialog::`scalar deleting destructor'
-0x413d00|0.0|IltTarget_00413d00
+0x413d00|1.0|ImperialismApp::OnDeveloperCommand8014
 0x413d20|0.6442953020134228|ImperialismApp::OnSelectActiveNation
 0x413ed0|0.4782608695652174|TDBTemplateDialog
 0x413f60|0.45454545454545453|ImperialismApp::OnApplyTurnCooldownOverride
@@ -59,11 +59,11 @@ address|matching|name
 0x4146d0|1.0|TApplication::PostWmCloseToMainThreadWindow
 0x414720|1.0|TApplication::PostTurnEventCodeMessage2420
 0x414770|1.0|TAmbitApplication::DoSetupMenus
-0x4147b0|0.6666666666666666|IltTarget_004147b0
-0x4147d0|0.0|IltTarget_004147d0
-0x4147f0|0.6666666666666666|IltTarget_004147f0
-0x414810|0.0|IltTarget_00414810
-0x414830|0.6666666666666666|IltTarget_00414830
+0x4147b0|1.0|ImperialismApp::OnDeveloperCommand801E
+0x4147d0|1.0|ImperialismApp::OnUpdateDeveloperCommand801E
+0x4147f0|1.0|ImperialismApp::OnDeveloperCommand801F
+0x414810|1.0|ImperialismApp::OnUpdateDeveloperCommand801F
+0x414830|1.0|ImperialismApp::OnDeveloperCommand8020
 0x414850|1.0|GetDataDirectoryPathLiteral
 0x414870|0.30857142857142855|ImperialismApp::DetectImperialismInstallDriveAndSetPathPrefix
 0x4149a0|0.3955431754874652|ImperialismApp::LoadLanguageResourcesFromIrgFiles
@@ -3230,7 +3230,7 @@ address|matching|name
 0x507e50|0.3558897243107769|TLanguageMgr::LoadNewsTabTexResourcesAndBuildEntries
 0x508280|0.26666666666666666|IltTarget_00508280
 0x5082b0|0.35348837209302325|TLanguageMgr::ParseNewsTableRow
-0x5083f0|0.39747634069400634|TLanguageMgr::Localize
+0x5083f0|0.4037854889589905|TLanguageMgr::Localize
 0x5086a0|0.8108108108108109|TLanguageMgr::ReloadPreplutNewsTableAndResources
 0x508760|0.5714285714285714|TLanguageMgr::FreeNestedPointerTableRowsAndResetDimensions
 0x508800|0.6461538461538462|TLanguageMgr::BuildNewsTableDimensions
@@ -3334,11 +3334,11 @@ address|matching|name
 0x5125e0|0.03225806451612903|IltTarget_005125e0
 0x5126d0|0.027777777777777776|IltTarget_005126d0
 0x5127e0|0.6551724137931034|SplitTileIndexToHexRasterColumnX2AndRow
-0x512850|0.5555555555555556|ComputeTileIndexFromHexColumnX2AndRow
+0x512850|1.0|ComputeTileIndexFromHexColumnX2AndRow
 0x512880|0.16666666666666666|IltTarget_00512880
 0x5128b0|0.13333333333333333|IltTarget_005128b0
 0x5128f0|1.0|LookupHexNeighborRowDeltaByDirection
-0x512930|0.26334519572953735|BuildHexAreaTileIndexList
+0x512930|0.25622775800711745|BuildHexAreaTileIndexList
 0x512b50|0.4375|TMapMgr::GetNeighborTileIDArray
 0x512cc0|0.4647887323943662|TMapMgr::GetNeighborTileID
 0x512dd0|0.5435897435897435|TMapMgr::GetDirectionFrom
@@ -3353,10 +3353,10 @@ address|matching|name
 0x5135a0|0.45614035087719296|TMapMgr::FindResourceCapabilityRequirementLevelByType
 0x513610|0.896551724137931|TMapMgr::FindResourceCapabilityRequirementLevel
 0x513660|0.7142857142857143|TMapMgr::GetTileCivilianWorkOrderCostClassNibble
-0x5136a0|0.8888888888888888|TMapMgr::SetCivilianDevelopmentClassNibble
+0x5136a0|1.0|TMapMgr::SetCivilianDevelopmentClassNibble
 0x513720|0.4155844155844156|TMapMgr::FindMaxResourceCapabilityValueForTile
 0x5137b0|0.18994413407821228|TMapMgr::CanBuildPortAtTile
-0x513980|0.5513784461152882|TMapMgr::IsValidSecondaryNationHomeTileCandidate
+0x513980|0.556390977443609|TMapMgr::IsValidSecondaryNationHomeTileCandidate
 0x513ca0|0.5782312925170068|TMapMgr::HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask
 0x513ed0|0.6111111111111112|TMapMgr::CheckTileProspectingDiscoveryCandidate
 0x513f60|0.9722222222222222|TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair
@@ -4176,7 +4176,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.46555054732775275|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.45460399227301995|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549260|0.25|IltTarget_00549260
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C

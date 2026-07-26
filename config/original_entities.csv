@@ -40,7 +40,7 @@ address|name|symbol|size|type|prototype|provenance
 413c00|TModalDialogBase::`scalar deleting destructor'|??_GTModalDialogBase@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 413c30|TDDTemplateDialog::~TDDTemplateDialog|??1TDDTemplateDialog@@UAE@XZ|117|function|public: virtual __thiscall TDDTemplateDialog::~TDDTemplateDialog(void)|
 413cd0|TDDTemplateDialog::`scalar deleting destructor'|??_GTDDTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
-413d00|IltTarget_00413d00||16|function|undefined IltTarget_00413d00()|
+413d00|ImperialismApp::OnDeveloperCommand8014||16|function|void __thiscall ImperialismApp::OnDeveloperCommand8014(void)|curated
 413d20|ImperialismApp::OnSelectActiveNation||328|function|void OnSelectActiveNation()|
 413ed0|TDBTemplateDialog::~TDBTemplateDialog||104|function|void __thiscall TDBTemplateDialog::~TDBTemplateDialog(void)|
 413f60|ImperialismApp::OnApplyTurnCooldownOverride||208|function|void OnApplyTurnCooldownOverride()|
@@ -56,11 +56,11 @@ address|name|symbol|size|type|prototype|provenance
 4146d0|TApplication::PostWmCloseToMainThreadWindow||55|function|void TApplication::PostWmCloseToMainThreadWindow()|windows_listing
 414720|TApplication::PostTurnEventCodeMessage2420||51|function|undefined PostTurnEventCodeMessage2420()|
 414770|TAmbitApplication::DoSetupMenus||1|function|undefined DoSetupMenus()|
-4147b0|IltTarget_004147b0||1|function|undefined IltTarget_004147b0()|
-4147d0|IltTarget_004147d0||3|function|undefined IltTarget_004147d0()|
-4147f0|IltTarget_004147f0||1|function|undefined IltTarget_004147f0()|
-414810|IltTarget_00414810||3|function|undefined IltTarget_00414810()|
-414830|IltTarget_00414830||1|function|undefined IltTarget_00414830()|
+4147b0|ImperialismApp::OnDeveloperCommand801E||1|function|void __thiscall ImperialismApp::OnDeveloperCommand801E(void)|curated
+4147d0|ImperialismApp::OnUpdateDeveloperCommand801E||3|function|void __thiscall ImperialismApp::OnUpdateDeveloperCommand801E(CCmdUI * commandUi)|curated
+4147f0|ImperialismApp::OnDeveloperCommand801F||1|function|void __thiscall ImperialismApp::OnDeveloperCommand801F(void)|curated
+414810|ImperialismApp::OnUpdateDeveloperCommand801F||3|function|void __thiscall ImperialismApp::OnUpdateDeveloperCommand801F(CCmdUI * commandUi)|curated
+414830|ImperialismApp::OnDeveloperCommand8020||1|function|void __thiscall ImperialismApp::OnDeveloperCommand8020(void)|curated
 414850|LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850||6|function|undefined LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850()|
 414870|ImperialismApp::DetectImperialismInstallDriveAndSetPathPrefix||233|function|LPCTSTR __thiscall DetectImperialismInstallDriveAndSetPathPrefix(void)|
 4149a0|LoadLanguageResourcesFromIrgFiles||1285|function|undefined LoadLanguageResourcesFromIrgFiles()|
