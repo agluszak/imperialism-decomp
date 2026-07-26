@@ -9,7 +9,10 @@
 #include "game/ui_core/TSortedList.h"
 #include "game/ui_core/TPicture.h"
 #include "game/ui_core/TViewMgr.h"
+#include "game/ui_screens/TNewsMgr.h"
+#include "game/ui_screens/TNewspaperView.h"
 #include "game/ui_screens/TSimMgr.h"
+#include "game/ui_widgets/TDeluxeText.h"
 
 namespace {
 
@@ -29,7 +32,50 @@ public:
   }
 
   bool BeforeInitialNewspaperExit() override {
-    return ValidateStartingCivilians();
+    if (!ValidateStartingCivilians()) {
+      return false;
+    }
+
+    TNewspaperView* newspaper = static_cast<TNewspaperView*>(CurrentMainView());
+    const int nationSlot = newspaper->summaryPageIndex90;
+    int populatedStories = 0;
+    for (int column = 0; column < 3; ++column) {
+      for (int row = 0; row < 3; ++row) {
+        if (g_pNewsMgr->stories[nationSlot][column][row].entry.storyId != 0) {
+          ++populatedStories;
+        }
+      }
+    }
+    if (populatedStories == 0) {
+      CString failure;
+      failure.Format("\"Introductory newspaper page %d has no generated stories "
+                     "(active nation %d, template count %d)\"",
+                     nationSlot, static_cast<int>(g_pSimMgr->activeNationSlot),
+                     g_pNewsMgr->storyTemplateCount);
+      FailScenario(failure);
+      return false;
+    }
+
+    int populatedTextEntries = 0;
+    if (newspaper->childList44 == 0) {
+      FailScenario("\"Introductory newspaper has no content controls\"");
+      return false;
+    }
+    POSITION position = newspaper->childList44->GetHeadPosition();
+    while (position != 0) {
+      TView* child = newspaper->childList44->GetNext(position);
+      if (child->IsKindOf(RUNTIME_CLASS(TDeluxeText)) != 0) {
+        TDeluxeText* textEntry = static_cast<TDeluxeText*>(child);
+        if (textEntry->text != 0 && !textEntry->text->IsEmpty()) {
+          ++populatedTextEntries;
+        }
+      }
+    }
+    if (populatedTextEntries < 2) {
+      FailScenario("\"Introductory newspaper did not populate its headline and story text\"");
+      return false;
+    }
+    return true;
   }
 
   void OnMapReadyWithoutCapitalSelection() override {

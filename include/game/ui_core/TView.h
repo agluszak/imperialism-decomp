@@ -104,7 +104,7 @@ public:
                                                int layoutParam7, int attachFlag);
   void InvalidateCityDialogRectRegion(RECT* rect, int flag);
   void CopyViewStateFromSource(TView* source);
-  void SetHoverHelpText(CString sharedString);
+  void SetHoverHelpText(const CString& sharedString);
   void PropagateUiResourceContextRecursive(CWnd* nativeWindow);
 
   // Base-slot overrides (vtable bodies differ from TEventHandler's).

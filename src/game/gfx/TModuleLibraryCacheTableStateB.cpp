@@ -117,15 +117,16 @@ int TModuleLibraryCacheTableStateB::LoadUiStringResourceById(CString* out, unsig
 // (group * 100 + index) from the primary data module. On load failure falls back to the
 // shared empty string. Resource id = group*100 + index matches LoadStringA's id arithmetic.
 // FUNCTION: IMPERIALISM 0x004994c0
-void TModuleLibraryCacheTableStateB::LoadUiStringResourceByGroupAndIndex(CString* out, int group,
-                                                                         int index) {
-  LPSTR buffer = out->GetBufferSetLength(0x100);
+int TModuleLibraryCacheTableStateB::LoadUiStringResourceByGroupAndIndex(CString* out, int group,
+                                                                        int index) {
+  LPSTR buffer = out->GetBuffer(0x100);
   int length = LoadStringA(m_primaryModule, index + group * 100, buffer, 0x100);
-  out->ReleaseBuffer(length);
+  out->ReleaseBuffer(-1);
   if (length == 0) {
     CString empty(g_szEmptyString);
     *out = empty;
   }
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x004995a0

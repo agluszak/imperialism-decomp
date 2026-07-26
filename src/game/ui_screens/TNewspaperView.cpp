@@ -125,14 +125,17 @@ void TNewspaperView::StuffValues(int pageNation) {
       }
       FormatInterNationEventRowTokensToSharedStrings(story, tokens);
       if (story->feature38 != 0) {
-        y += AppendInterNationEventSummaryTextEntry(col, y, story->entry.textArgA0,
-                                                    story->entry.textArgA1, &plainStyle, 1, tokens);
+        y += AppendInterNationEventSummaryTextEntry(col, y, story->entry.headlineTextOffset,
+                                                    story->entry.headlineTextLength, &plainStyle, 1,
+                                                    tokens);
       } else {
-        y += AppendInterNationEventSummaryTextEntry(
-            col, y, story->entry.textArgA0, story->entry.textArgA1, &featureStyle, 1, tokens);
+        y += AppendInterNationEventSummaryTextEntry(col, y, story->entry.headlineTextOffset,
+                                                    story->entry.headlineTextLength, &featureStyle,
+                                                    1, tokens);
       }
-      y += AppendInterNationEventSummaryTextEntry(col, y, story->entry.textArgB0,
-                                                  story->entry.textArgB1, &titleStyle, -2, tokens);
+      y += AppendInterNationEventSummaryTextEntry(col, y, story->entry.storyTextOffset,
+                                                  story->entry.storyTextLength, &titleStyle, -2,
+                                                  tokens);
     }
   }
   g_pUiViewManager->ReleaseResourceStreamIfNotNull(newsTexStream94);
@@ -246,10 +249,9 @@ void TNewspaperView::ProvinceParmList(CString& out, int cityRecordIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055df50
-int TNewspaperView::AppendInterNationEventSummaryTextEntry(int column, int y, int recordId,
+int TNewspaperView::AppendInterNationEventSummaryTextEntry(int column, int y, int recordOffset,
                                                            int recordLength, TextStyle* style,
                                                            int styleWord, CString* tokens) {
-  (void)recordId;
   TDeluxeText* text;
   int offsetPair[2];
   int sizePair[2];
@@ -274,7 +276,7 @@ int TNewspaperView::AppendInterNationEventSummaryTextEntry(int column, int y, in
   }
 
   char* recordBuffer = new char[recordLength];
-  g_pUiViewManager->SeekResourceStreamFromBeginning(newsTexStream94, recordLength);
+  g_pUiViewManager->SeekResourceStreamFromBeginning(newsTexStream94, recordOffset);
   g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(newsTexStream94, recordBuffer,
                                                            &recordLength);
   char* formatted = AppendInterNationEventSummaryTextEntry_Impl(
