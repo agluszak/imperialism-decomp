@@ -13,6 +13,7 @@
 #include "game/ui_text_label_helpers_decls.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_map.h"
+#include "game/globals/ui_widgets_globals.h"
 
 // SYNTHETIC: IMPERIALISM 0x00591500
 // TArmyInfoView::CreateObject
@@ -57,7 +58,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
   TStaticText* control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
   if (control == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x18fd);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x18fd);
   }
   g_pSimMgr->GetString(0x2744, 0xb, &reportText);
   control->SetTextAndMaybeRefresh(&reportText, 1);
@@ -66,7 +67,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
   control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLab2));
   if (control == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x1902);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1902);
   }
   g_pSimMgr->GetString(0x2744, 0xc, &reportText);
   control->SetTextAndMaybeRefresh(&reportText, 1);
@@ -75,7 +76,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
   control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLab3));
   if (control == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x1907);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1907);
   }
   g_pSimMgr->GetString(0x2744, 0xd, &reportText);
   control->SetTextAndMaybeRefresh(&reportText, 1);
@@ -104,7 +105,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
   control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagWhom));
   if (control == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x191b);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x191b);
   }
   control->SetTextAndMaybeRefresh(&reportText, 1);
   control->InstallTextStyle(smallStyle, 0);
@@ -112,7 +113,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
   control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagGene));
   if (control == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x1920);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1920);
   }
   {
     CString emptyGeneralText(g_pSmallViewsEmptyText_00662B90);
@@ -131,7 +132,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
   control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagOrds));
   if (control == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USmallViews.cpp", 0x192c);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x192c);
   }
   control->SetTextAndMaybeRefresh(&reportText, 1);
   control->InstallTextStyle(smallStyle, 0);
