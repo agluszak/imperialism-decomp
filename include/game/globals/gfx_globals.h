@@ -23,6 +23,10 @@ extern CString g_cstrUiFontPalatino;
 
 extern CString g_cstrUiFontBelweBdBt;
 
+// Process-lifetime trace dialog whose source-level global definition causes VC5 to emit
+// the dynamic initializer at 0x0049baa0 and its registered cleanup at 0x0049bad0.
+extern TD0TemplateDialog g_debugTraceDialog;
+
 extern int g_nUiInvalidationAssertFlagLine471;
 
 extern int g_nUiInvalidationAssertFlagLine495;

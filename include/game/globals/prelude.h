@@ -70,6 +70,7 @@ class TNetMgr;
 class TTradeMgr;
 class TSoundResourceManager;
 class TModuleLibraryCacheTableStateB;
+class TD0TemplateDialog;
 class CDib;
 
 struct GlobalViewportRectDefaultsRecord {
