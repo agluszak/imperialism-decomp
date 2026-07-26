@@ -4,6 +4,7 @@
 
 #include "game/ui_core/TCluster.h"
 #include "game/gfx/ui_invalidation_guard.h"
+#include "game/globals/ui_widgets_globals.h"
 // SYNTHETIC: IMPERIALISM 0x00584200
 // TTradePolicyCluster::CreateObject
 
@@ -30,7 +31,7 @@ void TTradePolicyCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
   SetSelectedChildTagAndRefresh(kControlTagSpSpSpSp);
   TView* clusControl = owner->ResolveControlByTag(kControlTagClus);
   if (clusControl == nullptr) {
-    FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x203);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x203);
   }
   static_cast<TCluster*>(clusControl)->SetSelectedChildTagAndRefresh(kControlTagSpSpSpSp);
 }

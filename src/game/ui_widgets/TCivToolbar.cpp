@@ -23,6 +23,7 @@
 #include "game/map/TMapUberPicture.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/gfx/ui_invalidation_guard.h"
+#include "game/globals/ui_widgets_globals.h"
 
 // 0x004d3a60 (HandleEngineerConstructionAction) lives on TCivMgr — see TCivMgr.cpp.
 
@@ -111,7 +112,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
     stackButton =
         static_cast<TControl*>(this->ResolveControlByTag(kControlTagStackSlotFirst + slotIndex));
     if (stackButton == 0) {
-      FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x15d1);
+      FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x15d1);
     }
     static_cast<TCivilianButton*>(stackButton)
         ->SetSelectedCivilianOrderAndEnableButton(selectedTileEntry);
@@ -126,7 +127,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
     stackButton =
         static_cast<TControl*>(this->ResolveControlByTag(kControlTagStackSlotFirst + slotIndex));
     if (stackButton == 0) {
-      FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x15df);
+      FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x15df);
     }
     static_cast<TCivilianButton*>(stackButton)->SetSelectedCivilianOrderAndEnableButton(0);
     slotIndex = slotIndex + 1;
@@ -141,17 +142,17 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   commandEnabled = (selectedStackButton != 0) ? 1 : 0;
   stackButton = static_cast<TControl*>(this->ResolveControlByTag(kControlTagDfnd));
   if (stackButton == 0) {
-    FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x15eb);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x15eb);
   }
   stackButton->SetState(commandEnabled, 1);
   stackButton = static_cast<TControl*>(this->ResolveControlByTag(kControlTagLatr));
   if (stackButton == 0) {
-    FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x15ed);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x15ed);
   }
   stackButton->SetState(commandEnabled, 1);
   stackButton = static_cast<TControl*>(this->ResolveControlByTag(kControlTagDone));
   if (stackButton == 0) {
-    FailNilPointerWithAssert("D:\\Ambit\\Cross\\USmallViews.cpp", 0x15ef);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x15ef);
   }
   stackButton->SetState(commandEnabled, 1);
 }
