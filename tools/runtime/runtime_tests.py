@@ -11,6 +11,7 @@ Wine server and game process — never other agents' sessions.
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import os
 from pathlib import Path
@@ -28,9 +29,9 @@ from tools.runtime.catalog import (
     missing_required_oracles,
     record_missing_oracles,
 )
-from tools.runtime.oracles.map import apply_map_oracle
+from tools.runtime.oracles.map import evaluate_map_oracle
 from tools.runtime.protocol import read_json_file, validate_result
-from tools.runtime.oracles.ui import apply_ui_oracle
+from tools.runtime.oracles.ui import evaluate_ui_oracle
 from tools.runtime.session import execute_run
 
 
@@ -39,6 +40,101 @@ def fixture_directory() -> Path:
     if override:
         return Path(override)
     return REPO_ROOT / "tests" / "runtime" / "fixtures"
+
+
+def _record_failure(result: dict, summary: str) -> None:
+    if result.get("status") == "passed":
+        result["status"] = "failed"
+        result["failure"] = summary
+        return
+    if not result.get("failure"):
+        result["failure"] = summary
+        return
+    if result.get("failure") != summary:
+        result["secondary_failures"] = [*result.get("secondary_failures", []), summary]
+
+
+def _process_attempt(
+    *, name: str, seed: int, run_dir: Path, host: dict, kind: str, authoritative: bool
+) -> tuple[dict, dict]:
+    """Validate and enrich one attempt without losing its raw native/host evidence."""
+    raw_native = read_json_file(run_dir / "result.json")
+    if raw_native is None:
+        result = {
+            "format_version": 1,
+            "name": name,
+            "seed": seed,
+            "status": "failed",
+            "failure": host.get("classification") or "missing result file",
+        }
+    else:
+        result = copy.deepcopy(raw_native)
+        try:
+            validate_result(result, name, seed)
+        except ValueError as error:
+            result = {
+                "format_version": 1,
+                "name": name,
+                "seed": seed,
+                "status": "failed",
+                "failure": f"invalid native result: {error}",
+                "invalid_native_result": raw_native,
+            }
+
+    oracle_reports: dict[str, dict] = {}
+    evaluators = (
+        ("ui", lambda: evaluate_ui_oracle(result)),
+        ("map", lambda: evaluate_map_oracle(result, name, seed)),
+    )
+    for oracle_name, evaluator in evaluators:
+        try:
+            report = evaluator()
+        except Exception as error:
+            report = {
+                "status": "error",
+                "error": f"{type(error).__name__}: {error}",
+            }
+        if report is None:
+            continue
+        oracle_reports[oracle_name] = report
+        result[f"{oracle_name}_oracle"] = report
+        if report.get("status") == "failed":
+            _record_failure(result, f"{oracle_name} oracle mismatch")
+        elif report.get("status") == "error":
+            _record_failure(result, f"{oracle_name} oracle error: {report['error']}")
+
+    test_spec = find_test(name)
+    if test_spec is not None:
+        record_missing_oracles(
+            result,
+            missing_required_oracles(test_spec, result),
+            fallback_failure=host.get("classification"),
+        )
+    if host.get("classification") is not None:
+        _record_failure(result, str(host["classification"]))
+
+    run_dir.mkdir(parents=True, exist_ok=True)
+    if raw_native is not None:
+        (run_dir / "native-result.json").write_text(
+            json.dumps(raw_native, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+    (run_dir / "run.json").write_text(
+        json.dumps(host, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    (run_dir / "result.json").write_text(
+        json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    attempt = {
+        "kind": kind,
+        "authoritative": authoritative,
+        "run_dir": str(run_dir),
+        "status": result.get("status"),
+        "classification": host.get("classification"),
+        "host": copy.deepcopy(host),
+        "native": copy.deepcopy(raw_native),
+        "oracles": oracle_reports,
+    }
+    return result, attempt
 
 
 def run_test(args: argparse.Namespace) -> int:
@@ -75,7 +171,7 @@ def run_test(args: argparse.Namespace) -> int:
     # failure is retried under the debugger, mirroring how --rerun-seh already works.
     # --gdb forces the debugger on the first attempt for interactive debugging.
     debugger_first = getattr(args, "gdb", False) and not args.no_gdb
-    host = execute_run(
+    primary_host = execute_run(
         name=name,
         run_dir=run_dir,
         seed=args.seed,
@@ -86,7 +182,7 @@ def run_test(args: argparse.Namespace) -> int:
         fixture=fixture,
         use_gdb=debugger_first,
     )
-    host.update(
+    primary_host.update(
         {
             "run_id": run_id,
             "run_dir": str(run_dir),
@@ -96,34 +192,16 @@ def run_test(args: argparse.Namespace) -> int:
         }
     )
 
-    result_path = run_dir / "result.json"
-    result = read_json_file(result_path)
-    if result is None:
-        result = {
-            "format_version": 1,
-            "name": name,
-            "status": "failed",
-            "failure": host["classification"] or "missing result file",
-        }
-    else:
-        try:
-            validate_result(result, name, args.seed)
-        except ValueError as error:
-            raise SystemExit(str(error)) from error
-        try:
-            apply_ui_oracle(result)
-        except ValueError as error:
-            raise SystemExit(str(error)) from error
-        apply_map_oracle(result, name, args.seed)
-        test_spec = find_test(name)
-        if test_spec is not None:
-            record_missing_oracles(
-                result,
-                missing_required_oracles(test_spec, result),
-                fallback_failure=host["classification"],
-            )
-
-    failed = result.get("status") != "passed" or host["classification"] is not None
+    result, primary_attempt = _process_attempt(
+        name=name,
+        seed=args.seed,
+        run_dir=run_dir,
+        host=primary_host,
+        kind="primary_gdb" if debugger_first else "primary_wine",
+        authoritative=True,
+    )
+    attempts = [primary_attempt]
+    failed = result.get("status") != "passed" or primary_host["classification"] is not None
     if failed and not debugger_first and not args.no_gdb:
         gdb_run_dir = run_dir / "gdb-rerun"
         gdb_run_dir.mkdir(exist_ok=True)
@@ -138,32 +216,27 @@ def run_test(args: argparse.Namespace) -> int:
             fixture=fixture,
             use_gdb=True,
         )
-        gdb_result = read_json_file(gdb_run_dir / "result.json")
-        if gdb_result is not None:
-            try:
-                validate_result(gdb_result, name, args.seed)
-                apply_ui_oracle(gdb_result)
-                apply_map_oracle(gdb_result, name, args.seed)
-                if test_spec is not None:
-                    record_missing_oracles(
-                        gdb_result,
-                        missing_required_oracles(test_spec, gdb_result),
-                        fallback_failure=gdb_host["classification"],
-                    )
-                # Keep the debugger run: it carries the backtrace and classification the
-                # bare run could not produce. Note when the failure did not reproduce.
-                gdb_result["bare_run_failure"] = result.get("failure")
-                result, host = gdb_result, gdb_host
-            except ValueError:
-                host["gdb_rerun"] = gdb_host
-        else:
-            host["gdb_rerun"] = gdb_host
-        failed = result.get("status") != "passed" or host["classification"] is not None
+        gdb_result, gdb_attempt = _process_attempt(
+            name=name,
+            seed=args.seed,
+            run_dir=gdb_run_dir,
+            host=gdb_host,
+            kind="diagnostic_gdb",
+            authoritative=False,
+        )
+        attempts.append(gdb_attempt)
+        if gdb_result.get("status") == "passed" and gdb_host.get("classification") is None:
+            result["classification"] = "debugger_sensitive_non_reproduction"
+        result["diagnostic_gdb"] = {
+            "status": gdb_result.get("status"),
+            "classification": gdb_host.get("classification"),
+            "run_dir": str(gdb_run_dir),
+        }
 
     if failed and args.rerun_seh:
         seh_run_dir = run_dir / "seh-rerun"
         seh_run_dir.mkdir()
-        host["seh_rerun"] = execute_run(
+        seh_host = execute_run(
             name=name,
             run_dir=seh_run_dir,
             seed=args.seed,
@@ -174,23 +247,38 @@ def run_test(args: argparse.Namespace) -> int:
             fixture=fixture,
             use_gdb=not args.no_gdb,
         )
+        seh_result, seh_attempt = _process_attempt(
+            name=name,
+            seed=args.seed,
+            run_dir=seh_run_dir,
+            host=seh_host,
+            kind="diagnostic_seh",
+            authoritative=False,
+        )
+        attempts.append(seh_attempt)
+        result["diagnostic_seh"] = {
+            "status": seh_result.get("status"),
+            "classification": seh_host.get("classification"),
+            "run_dir": str(seh_run_dir),
+        }
 
-    result["host"] = host
-    (run_dir / "run.json").write_text(
-        json.dumps(host, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-    )
+    result["host"] = primary_host
+    result["attempts"] = attempts
+    result_path = run_dir / "result.json"
     serialized = json.dumps(result, indent=2, sort_keys=True) + "\n"
     result_path.write_text(serialized, encoding="utf-8")
     # Canonical latest-result location, kept for existing consumers.
     (result_dir / f"{name}.json").write_text(serialized, encoding="utf-8")
     prune_old_run_dirs(result_dir, name)
     print(serialized, end="")
-    if host["classification"] is not None:
-        print(f"runtime test classified as {host['classification']}", file=sys.stderr)
-        return 1
-    if host["inferior_exit_code"] not in {None, 0}:
+    if primary_host["classification"] is not None:
         print(
-            f"Inferior exited with code {host['inferior_exit_code']}", file=sys.stderr
+            f"runtime test classified as {primary_host['classification']}", file=sys.stderr
+        )
+        return 1
+    if primary_host["inferior_exit_code"] not in {None, 0}:
+        print(
+            f"Inferior exited with code {primary_host['inferior_exit_code']}", file=sys.stderr
         )
         return 1
     return 0 if result.get("status") == "passed" else 1

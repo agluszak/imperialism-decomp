@@ -18,7 +18,7 @@ from tools.runtime.protocol import read_json_file
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 
-def apply_map_oracle(result: dict, name: str, seed: int) -> None:
+def evaluate_map_oracle(result: dict, name: str, seed: int) -> dict:
     """Compare map_state against the committed seed-specific expectation.
 
     Missing expectation files skip explicitly (new tests/seeds); to record one,
@@ -29,21 +29,24 @@ def apply_map_oracle(result: dict, name: str, seed: int) -> None:
         # Say why rather than leaving the key absent. The driver only snapshots map
         # state on a passing finish, so this is the normal shape of a crashed or
         # timed-out run and must not read as an oracle-infrastructure problem.
-        result["map_oracle"] = {
+        return {
             "status": "skipped",
             "reason": "run captured no map_state; the driver snapshots it only on a passing finish",
         }
-        return
     expectation_path = (
         REPO_ROOT / "tests" / "runtime" / "expectations" / f"{name}.seed{seed}.json"
     )
     relative = expectation_path.relative_to(REPO_ROOT)
     expected = read_json_file(expectation_path)
     if expected is None:
-        result["map_oracle"] = {"status": "skipped", "reason": f"missing {relative}"}
-        return
+        return {"status": "skipped", "reason": f"missing {relative}"}
     comparison = compare_map_state(map_state, expected)
     comparison["expectation"] = str(relative)
+    return comparison
+
+
+def apply_map_oracle(result: dict, name: str, seed: int) -> None:
+    comparison = evaluate_map_oracle(result, name, seed)
     result["map_oracle"] = comparison
     if comparison["status"] == "failed":
         result["status"] = "failed"

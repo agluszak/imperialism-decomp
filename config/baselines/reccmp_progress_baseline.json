@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
-  "git_branch": "fix/end-turn-restart",
-  "git_commit": "a987576c378ba2639fa380f02e289ba9d5bb1463",
-  "git_commit_date": "2026-07-27T01:28:40+02:00",
+  "git_branch": "refactor/runtime-harness",
+  "git_commit": "22b9c1f74ef18b01808dc0ee96714bdf84d5b3f4",
+  "git_commit_date": "2026-07-27T01:32:46+02:00",
   "global_coverage_pct": 25.370420870829925,
   "global_orig_only_count": 8210,
   "global_recomp_only_count": 8037,
@@ -63,7 +63,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 12,
   "template_canonical_paired_count": 19,
-  "timestamp_utc": "2026-07-26T23:29:13+00:00",
+  "timestamp_utc": "2026-07-26T23:42:06+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }

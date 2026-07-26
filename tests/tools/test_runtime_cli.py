@@ -32,6 +32,14 @@ def suite_args(junit: Path, require_fixtures: bool = False) -> argparse.Namespac
 
 
 class RuntimeSuiteTests(unittest.TestCase):
+    @staticmethod
+    def _host(classification: str | None = None) -> dict:
+        return {
+            "classification": classification,
+            "wine_exit": 0,
+            "inferior_exit_code": 0,
+        }
+
     def test_single_run_uses_catalog_timeout_when_not_overridden(self) -> None:
         args = argparse.Namespace(name="custom", seed=1, timeout=None)
         spec = RuntimeTestSpec("custom", ("full",), default_timeout=42.5)
@@ -156,6 +164,104 @@ class RuntimeSuiteTests(unittest.TestCase):
             self.assertEqual(
                 (calls[2] / "gdb.log").read_text(encoding="utf-8"), "seh-rerun"
             )
+
+    def test_diagnostic_pass_cannot_replace_failed_primary_attempt(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            calls = []
+
+            def fake_execute(**kwargs: object) -> dict:
+                run_dir = Path(kwargs["run_dir"])
+                calls.append(run_dir)
+                status = "failed" if len(calls) == 1 else "passed"
+                native = {
+                    "format_version": 1,
+                    "name": "boot_managers",
+                    "seed": 1,
+                    "status": status,
+                }
+                if status == "failed":
+                    native["failure"] = "bare Wine failure"
+                (run_dir / "result.json").write_text(json.dumps(native), encoding="utf-8")
+                return self._host()
+
+            args = argparse.Namespace(
+                name="boot_managers",
+                seed=1,
+                timeout=30.0,
+                phase_timeout_ms=15_000,
+                rerun_seh=False,
+                no_gdb=False,
+                require_fixtures=False,
+            )
+            with (
+                patch("tools.runtime.runtime_tests.BUILD_DIR", root),
+                patch("tools.runtime.runtime_tests.execute_run", side_effect=fake_execute),
+            ):
+                self.assertEqual(run_test(args), 1)
+
+            result = json.loads(
+                (root / "runtime-results/boot_managers.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(result["status"], "failed")
+            self.assertEqual(result["failure"], "bare Wine failure")
+            self.assertEqual(result["classification"], "debugger_sensitive_non_reproduction")
+            self.assertEqual([attempt["authoritative"] for attempt in result["attempts"]], [True, False])
+            self.assertEqual(result["attempts"][1]["status"], "passed")
+            self.assertTrue((calls[0] / "native-result.json").is_file())
+            self.assertTrue((calls[1] / "native-result.json").is_file())
+
+    def test_oracle_errors_and_mismatches_coexist_with_native_result(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+
+            def fake_execute(**kwargs: object) -> dict:
+                run_dir = Path(kwargs["run_dir"])
+                native = {
+                    "format_version": 1,
+                    "name": "random_game_easy_skips_capital",
+                    "seed": 1,
+                    "status": "passed",
+                    "ui_snapshots": [{"event": 1}],
+                    "map_state": {"wrap": 0},
+                }
+                (run_dir / "result.json").write_text(json.dumps(native), encoding="utf-8")
+                return self._host()
+
+            args = argparse.Namespace(
+                name="random_game_easy_skips_capital",
+                seed=1,
+                timeout=30.0,
+                phase_timeout_ms=15_000,
+                rerun_seh=False,
+                no_gdb=True,
+                require_fixtures=False,
+            )
+            with (
+                patch("tools.runtime.runtime_tests.BUILD_DIR", root),
+                patch("tools.runtime.runtime_tests.execute_run", side_effect=fake_execute),
+                patch(
+                    "tools.runtime.runtime_tests.evaluate_ui_oracle",
+                    side_effect=ValueError("broken UI model"),
+                ),
+                patch(
+                    "tools.runtime.runtime_tests.evaluate_map_oracle",
+                    return_value={"status": "failed", "differences": {"wrap": {}}},
+                ),
+            ):
+                self.assertEqual(run_test(args), 1)
+
+            result = json.loads(
+                (
+                    root
+                    / "runtime-results/random_game_easy_skips_capital.json"
+                ).read_text(encoding="utf-8")
+            )
+            self.assertEqual(result["ui_oracle"]["status"], "error")
+            self.assertEqual(result["map_oracle"]["status"], "failed")
+            self.assertEqual(result["status"], "failed")
+            self.assertEqual(result["attempts"][0]["native"]["status"], "passed")
+            self.assertIn("map oracle mismatch", result["secondary_failures"])
 
 
 if __name__ == "__main__":
