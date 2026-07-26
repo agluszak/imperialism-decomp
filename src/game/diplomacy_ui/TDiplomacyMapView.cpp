@@ -383,7 +383,7 @@ void TDiplomacyMapView::InitializeDiplomacyMinisterActionControlsAndLabels() {
   } else {
     TView* offrControl = ResolveControlByTag(g_aDiplomacyActionTopicTabTags[5]);
     SetControlHoverHelpText(CString(g_szEmptyString), offrControl);
-    offrControl->Locate(g_diplomacyPopupLayoutPosition_006a3020, 0);
+    offrControl->Locate(g_diplomacyPopupOffscreenPosition_006a3020, 0);
   }
 }
 

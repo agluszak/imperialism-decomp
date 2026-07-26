@@ -19,6 +19,7 @@ from an existing checkout, or from the templates):
 ```sh
 cp ../imperialism-decomp/.env .              # or: cp .env.example .env and edit
 cp ../imperialism-decomp/reccmp-user.yml .   # machine path to the original binary
+just vendor-msvc500-headers                   # gitignored MSVC/MFC header mirror; the class model needs it
 just restore-project                          # recreate the live Ghidra project from vendor/ghidra/exports/*.gzf
 just install-reccmp-merge-driver              # one-time local Git config; shared by worktrees
 just tooling-check                            # verify the tooling surface
@@ -26,6 +27,14 @@ just build && just detect && just stats       # first build + reccmp pairing; st
 ```
 
 Notes:
+- **Skipping `just vendor-msvc500-headers` fails a gate in a confusing way.** Without the
+  mirror, `tools.class_model` cannot resolve `CString` members, so ~28 classes silently
+  drop out of the CString owner inventory and `just cstring-ownership-audit-check` reports
+  a long `removed=[...]` list plus `TStaticText: layout-affecting declaration changed`.
+  Nothing is actually stale — a long-lived checkout can even mask this by keeping an old
+  `build-msvc500/generated/record_model.json`. Populate the mirror, rerun
+  `just cstring-ownership-audit`, and the regenerated snapshot matches the committed one.
+  Do **not** commit a shrunken `config/cstring_layout.csv`.
 - **Worktrees under a dot-directory** (e.g. `.claude/worktrees/<name>`) cannot host
   the live Ghidra project: Ghidra's `ProjectLocator` rejects any path element
   starting with `.` ("Path element starting with '.' is not permitted"). Before

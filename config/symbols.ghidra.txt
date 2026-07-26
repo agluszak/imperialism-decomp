@@ -12520,8 +12520,8 @@ g_ptCivilianOrderModalMessage 6A2D40 l
 g_ptGreatPowerModalMessage 6A2DF0 l
 g_cachedAiCityActionContextBias 6A2EA0 l
 g_ptDiplomacyNoticeModalMessage 6A2FC0 l
-g_diplomacyWarOfferSheetPosition_006a2fe0 6A2FE0 l
-g_diplomacyPopupLayoutPosition_006a3020 6A3020 l
+g_diplomacyPopupVisiblePosition_006a2fe0 6A2FE0 l
+g_diplomacyPopupOffscreenPosition_006a3020 6A3020 l
 g_cstrUiFontBelweLight 6A3060 l
 g_cstrUiFontPalatino 6A3080 l
 g_cstrUiFontBelweBdBt 6A30A4 l

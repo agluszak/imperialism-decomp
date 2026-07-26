@@ -33,12 +33,15 @@ IMPLEMENT_DYNCREATE(TMapKey, TPicture)
 void TMapKey::DoPostCreate(int arg) {
   TPicture::DoPostCreate(arg);
 
+  // Two parallel 8-entry word tables laying the legend out as a 4-row/2-column grid:
+  // frame+0x4c..0x5a holds the X column (4x 0x171 then 4x 0x1de) and frame+0x5c..0x6a the
+  // Y rows (0x187/0x1a0/0x1b8/0x1d1 repeated per column). The loop indexes them at
+  // [esp+ebp*2+0x4c] (0x004fccd4) and [esp+ebp*2+0x60] with esp already 4 lower from the
+  // preceding `push -2`, i.e. base frame+0x5c (0x004fcce5). Only the first seven cells are
+  // filled -- the eighth row carries the "Minor Nation" swatch, whose caption is part of
+  // the legend picture resource rather than a TDeluxeText.
   short legendX[8] = {0x171, 0x171, 0x171, 0x171, 0x1de, 0x1de, 0x1de, 0x1de};
-  // Retail declares only six Y entries but draws seven labels. VC5 places the loop's
-  // zeroed RECT immediately after this array, so index 6 reads that RECT's left member
-  // after it has been cleared. Preserve the original source/stack shape instead of an
-  // invented seventh table entry.
-  short legendY[6] = {0x1b8, 0x1d1, 0x187, 0x1a0, 0x1b8, 0x1d1};
+  short legendY[8] = {0x187, 0x1a0, 0x1b8, 0x1d1, 0x187, 0x1a0, 0x1b8, 0x1d1};
 
   // The loop only walks the first 7 of g_apTerrainTypeDescriptorTable's 23 entries: the
   // array iterator is seeded with the array's own address (0x6a4310) and bounded by a
