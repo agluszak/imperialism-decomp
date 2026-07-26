@@ -130,8 +130,6 @@ TMinor* g_apSecondaryNationStateSlots[36] = {0};
 TMinor* g_apMinorNationCapabilityObjects[16] = {0};
 // GLOBAL: IMPERIALISM 0x006a4370
 TGreatPower* g_apNationStates[7] = {0};
-// GLOBAL: IMPERIALISM 0x006a438c
-TGreatPower* g_apNationStates_End;
 // GLOBAL: IMPERIALISM 0x006a20f8
 TSimMgr* g_pSimMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a21b8

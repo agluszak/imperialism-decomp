@@ -95,7 +95,7 @@ void TNewsMgr::StartNewsPhase() {
   newsTexStream = g_pUiViewManager->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTexPath());
   memset(stories, 0, sizeof(stories));
   short slot = 0;
-  for (TGreatPower** nation = g_apNationStates; nation < &g_apNationStates_End; nation++, slot++) {
+  for (TGreatPower** nation = g_apNationStates; nation < &g_apNationStates_End; ++nation, ++slot) {
     if ((*nation != 0 && (*nation)->diplomacyEligibilityA0 != 0) ||
         g_pSimMgr->GetActiveNationId() == slot) {
       CreateNewspaper(slot);
@@ -122,10 +122,10 @@ void TNewsMgr::LoadNewsTable() {
   for (int i = 0; i < storyTemplateCount; i++) {
     newsEntry& entry = storyTemplateTable[i];
     entry.storyId = ByteSwapNewsTableDword(entry.storyId);
-    entry.textArgA0 = ByteSwapNewsTableDword(entry.textArgA0);
-    entry.textArgA1 = ByteSwapNewsTableDword(entry.textArgA1);
-    entry.textArgB0 = ByteSwapNewsTableDword(entry.textArgB0);
-    entry.textArgB1 = ByteSwapNewsTableDword(entry.textArgB1);
+    entry.headlineTextOffset = ByteSwapNewsTableDword(entry.headlineTextOffset);
+    entry.headlineTextLength = ByteSwapNewsTableDword(entry.headlineTextLength);
+    entry.storyTextOffset = ByteSwapNewsTableDword(entry.storyTextOffset);
+    entry.storyTextLength = ByteSwapNewsTableDword(entry.storyTextLength);
     entry.reserved14 = ByteSwapNewsTableDword(entry.reserved14);
   }
 }

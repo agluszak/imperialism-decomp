@@ -1493,8 +1493,9 @@ extern TMinor* g_apSecondaryNationStateSlots[36];
 extern TMinor* g_apMinorNationCapabilityObjects[16];
 
 extern TGreatPower* g_apNationStates[7];
-
-extern TGreatPower* g_apNationStates_End;
+// Several retail loops compare their cursor with the immediate one-past address
+// 0x006a438c. It is not a separately allocated pointer object.
+#define g_apNationStates_End g_apNationStates[7]
 
 extern TSimMgr* g_pSimMgr;
 
