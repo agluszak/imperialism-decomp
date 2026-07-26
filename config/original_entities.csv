@@ -207,7 +207,7 @@ address|name|symbol|size|type|prototype|provenance
 43daa0|TRadioText::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 43dad0|TCreditsPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 43dba0|IltTarget_0043dba0||15|function|undefined IltTarget_0043dba0()|
-43dbc0|InitializeArmyNavyReportViewsAndCommandTags||18464|function|undefined InitializeArmyNavyReportViewsAndCommandTags()|
+43dbc0|InitializeArmyNavyReportViewsAndCommandTags||41505|function|undefined InitializeArmyNavyReportViewsAndCommandTags()|
 44a6c0|TPageCorner::TPageCorner||18|function|TPageCorner::TPageCorner()|
 44a6f0|TShipFractionCluster::TShipFractionCluster||18|function|TShipFractionCluster::TShipFractionCluster()|
 44a720|TShipFractionCluster::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -264,7 +264,7 @@ address|name|symbol|size|type|prototype|provenance
 4600f0|TTechStorePage::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 460140|TTechHistoryView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 460190|IltTarget_00460190||15|function|undefined IltTarget_00460190()|
-4601b0|InitializeTradeScreenBitmapControls||41928|function|undefined InitializeTradeScreenBitmapControls()|
+4601b0|InitializeTradeScreenBitmapControls||51455|function|undefined InitializeTradeScreenBitmapControls()|
 46fcf0|IltTarget_0046fcf0||15|function|undefined IltTarget_0046fcf0()|
 46fd10|BuildTurnEventDialogResourcesForEvent7DE||15634|function|undefined BuildTurnEventDialogResourcesForEvent7DE()|
 474980|IltTarget_00474980||15|function|undefined IltTarget_00474980()|
