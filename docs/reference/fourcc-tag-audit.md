@@ -8,7 +8,7 @@ policy (Mac resource order, read big-endian).
 
 ## Summary
 
-- Tags: 551
+- Tags: 552
 - `generated_resource_manifest_tag`: 67
 - `multiplayer_session_or_message_tag`: 32
 - `ui_tag_app_and_setup_screens`: 57
@@ -17,8 +17,8 @@ policy (Mac resource order, read big-endian).
 - `ui_tag_military_navy_tactical`: 49
 - `ui_tag_shared`: 145
 - `ui_tag_strategic_map`: 23
-- `ui_tag_widget_plumbing`: 98
-- Corroborated by the Mac control-tag index: 411 of 551
+- `ui_tag_widget_plumbing`: 99
+- Corroborated by the Mac control-tag index: 412 of 552
 - Violations: 0
 
 ## Violations
@@ -499,6 +499,7 @@ build does not ship.
 | `kControlTagCol1` | `col1` | `0x636f6c31` | `ui_tag_widget_plumbing` | 2 |
 | `kControlTagCol2` | `col2` | `0x636f6c32` | `ui_tag_widget_plumbing` | 2 |
 | `kControlTagCost` | `Cost` | `0x436f7374` | `ui_tag_widget_plumbing` | 3 |
+| `kControlTagCostLower` | `cost` | `0x636f7374` | `ui_tag_widget_plumbing` | 3 |
 | `kControlTagDefe` | `defe` | `0x64656665` | `ui_tag_widget_plumbing` |  |
 | `kControlTagDipl` | `dipl` | `0x6469706c` | `ui_tag_widget_plumbing` | 7 |
 | `kControlTagDlog` | `dlog` | `0x646c6f67` | `ui_tag_widget_plumbing` |  |
