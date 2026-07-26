@@ -2191,7 +2191,7 @@ address|matching|name
 0x4c4370|0.37628865979381443|TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand
 0x4c4690|0.5872340425531914|TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutputs
 0x4c4840|0.8477366255144033|TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle
-0x4c49f0|0.776595744680851|TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex
+0x4c49f0|0.8051948051948052|TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex
 0x4c4d40|0.5899280575539568|TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget
 0x4c4e60|0.7973856209150327|TCityInteriorMinister::FillRemainingNeedCapacityAndReducePowerPlantOrder
 0x4c4f90|1.0|TCityInteriorMinister::GetAverageDevelopmentOrderAllocation
@@ -2272,9 +2272,7 @@ address|matching|name
 0x4c8390|0.5793650793650794|TShipyardView::DoStartup
 0x4c8a20|1.0|TShipyardView::LoadShipyardIconSurface
 0x4c8a50|1.0|TShipyardView::UpdateFields
-0x4c8ac0|0.314410480349345|TShipyardView::DoEvent
-0x4c8c09|0.0|UpdateCityViewCountControlAndRefreshSelection
-0x4c8c3f|0.0|UpdateCityViewCountControlAndRefreshSelectionAlt
+0x4c8ac0|0.4745762711864407|TShipyardView::DoEvent
 0x4c8d70|0.5380434782608695|TShipyardView::SetShip
 0x4c9150|0.5045045045045045|TShipyardView::Draw
 0x4c97c0|0.205761316872428|TShipyardView::GetCostString
@@ -2339,9 +2337,7 @@ address|matching|name
 0x4cedd0|1.0|TArmoryView::`scalar deleting destructor'
 0x4cee00|1.0|TArmoryView::~TArmoryView
 0x4cee20|0.7197549770290965|TArmoryView::DoStartup
-0x4cf350|0.5779816513761468|TArmoryView::DoEvent
-0x4cf46f|0.0|UpdateUniversitySpecialistCountControlAndRefreshView
-0x4cf4a5|0.0|UpdateUniversitySpecialistCountControlAndRefreshViewAlt
+0x4cf350|0.7208480565371025|TArmoryView::DoEvent
 0x4cf5c0|0.2440677966101695|TArmoryView::UpdateFields
 0x4cfbd0|0.2316715542521994|TArmoryView::RefreshCityViewProductionDetails
 0x4d0470|1.0|TArmoryView::Free
@@ -6072,8 +6068,7 @@ address|matching|name
 0x5b4760|0.7142857142857143|TSpecialQuitPicture::CreateObject
 0x5b47f0|1.0|TSpecialQuitPicture::GetRuntimeClass
 0x5b4810|0.8032786885245902|TSpecialQuitPicture::DoPostCreate
-0x5b4a10|0.8028169014084507|TSpecialQuitPicture::DoEvent
-0x5b4cd0|0.0|HandleCitySiteShowAnimation_TailEpilogueRetC
+0x5b4a10|0.815668202764977|TSpecialQuitPicture::DoEvent
 0x5b4ee0|0.25|`dynamic initializer for 'g_scaledShortConst_6A5908''
 0x5b4f10|0.5818181818181818|TMyNumberText::CreateObject
 0x5b4fb0|1.0|TMyNumberText::GetRuntimeClass

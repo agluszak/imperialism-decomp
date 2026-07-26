@@ -2178,7 +2178,7 @@ address|name|symbol|size|type|prototype|provenance
 4c4370|TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand||631|function|void __thiscall ChooseAndMarkNextCityProductionCommand()|
 4c4690|TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutputs||335|function|void __thiscall ComputeCityProductionCommandLimitsFromBuildingOutputs()|
 4c4840|TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle||323|function|void __thiscall RebuildCityOrderCommandAvailabilityAndPriorityCycle()|
-4c49f0|TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex||646|function|void __thiscall UpdateMinisterProductionMetricsForResourceIndex(short orderSlot)|
+4c49f0|TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex||669|function|void __thiscall UpdateMinisterProductionMetricsForResourceIndex(short orderSlot)|
 4c4d40|TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget||219|function|short __thiscall RaisePowerPlantOrderToReachLaborTarget(short targetLabor)|
 4c4e60|TCityInteriorMinister::FillRemainingNeedCapacityAndReducePowerPlantOrder||229|function|void __thiscall FillRemainingNeedCapacityAndReducePowerPlantOrder()|
 4c4f90|TCityInteriorMinister::GetAverageDevelopmentOrderAllocation||49|function|int GetAverageDevelopmentOrderAllocation(void)|
@@ -2256,9 +2256,7 @@ address|name|symbol|size|type|prototype|provenance
 4c8390|TShipyardView::DoStartup||1337|function|void DoStartup()|
 4c8a20|WrapperFor_thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext_At004c8a20||24|function|undefined WrapperFor_thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext_At004c8a20()|
 4c8a50|TShipyardView::UpdateFields||71|function|void UpdateFields()|
-4c8ac0|TShipyardView::DoEvent||329|function|void __thiscall TShipyardView::DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
-4c8c09|UpdateCityViewCountControlAndRefreshSelection||54|function|uint UpdateCityViewCountControlAndRefreshSelection(void)|
-4c8c3f|UpdateCityViewCountControlAndRefreshSelectionAlt||148|function|uint UpdateCityViewCountControlAndRefreshSelectionAlt(void)|
+4c8ac0|TShipyardView::DoEvent||531|function|void __thiscall TShipyardView::DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
 4c8d70|TShipyardView::SetShip||774|function|void __thiscall SetShip(short shipType)|
 4c9150|TShipyardView::Draw||1274|function|void __thiscall RenderCityViewProductionDialogMetrics(int pDialogState, int * pRenderRectData)|
 4c97c0|TShipyardView::GetCostString||519|function|void GetCostString(CString * output, short actionIndex)|
@@ -2316,9 +2314,7 @@ address|name|symbol|size|type|prototype|provenance
 4ceda0|TArmoryView::TArmoryView||32|function|undefined TArmoryView()|
 4cedd0|TArmoryView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4cee20|TArmoryView::DoStartup||1048|function|void DoStartup()|
-4cf350|TArmoryView::DoEvent||287|function|void __thiscall TArmoryView::DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
-4cf46f|UpdateUniversitySpecialistCountControlAndRefreshView||54|function|uint UpdateUniversitySpecialistCountControlAndRefreshView(void)|
-4cf4a5|UpdateUniversitySpecialistCountControlAndRefreshViewAlt||151|function|uint UpdateUniversitySpecialistCountControlAndRefreshViewAlt(void)|
+4cf350|TArmoryView::DoEvent||492|function|void __thiscall TArmoryView::DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
 4cf5c0|TArmoryView::UpdateFields||1217|function|void UpdateFields()|
 4cfbd0|TArmoryView::RefreshCityViewProductionDetails||1748|function|void __thiscall RefreshCityViewProductionDetails(short nBuildingSlotId)|
 4d0470|TArmoryView::Free||34|function|undefined HandleArmoryViewCloseAndMaybePostCommand23F8()|
@@ -5964,8 +5960,7 @@ address|name|symbol|size|type|prototype|provenance
 5b4760|TSpecialQuitPicture::CreateObject|?CreateObject@TSpecialQuitPicture@@SGPAVCObject@@XZ|112|function|undefined CreateObject()|rtti
 5b47f0|TSpecialQuitPicture::GetRuntimeClass||6|function|undefined GetTSpecialQuitPictureClassNamePointer()|rtti
 5b4810|TSpecialQuitPicture::DoPostCreate||390|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-5b4a10|TSpecialQuitPicture::DoEvent||704|function|void __thiscall HandleCitySiteShowAnimation(int nMessage, int pUiEvent)|
-5b4cd0|HandleCitySiteShowAnimation_TailEpilogueRetC||21|function|undefined HandleCitySiteShowAnimation_TailEpilogueRetC()|
+5b4a10|TSpecialQuitPicture::DoEvent||725|function|void __thiscall HandleCitySiteShowAnimation(int nMessage, int pUiEvent)|
 5b4ee0|`dynamic initializer for 'g_scaledShortConst_6A5908''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A5908''(void)|library
 5b4f10|TMyNumberText::CreateObject|?CreateObject@TMyNumberText@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
 5b4fb0|TMyNumberText::GetRuntimeClass|?GetRuntimeClass@TMyNumberText@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
