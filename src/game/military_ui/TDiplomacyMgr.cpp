@@ -122,11 +122,11 @@ void TDiplomacyMgr::InitializeTDiplomacyTurnStateManagerDefaults() {
     --pairCount;
   } while (pairCount != 0);
 
-  selectedSourceNationSlot784 = static_cast<short>(-1);
-  selectedTargetNationSlot786 = static_cast<short>(-1);
-  selectionFlagsA788 = static_cast<short>(zero);
-  selectionFlagsB78a = static_cast<short>(zero);
-  selectionFlagsC78c = static_cast<short>(zero);
+  congressLeadership784.chairmanNationSlot = static_cast<short>(-1);
+  congressLeadership784.counterpartNationSlot = static_cast<short>(-1);
+  congressSupport788.chairmanSupportCount = static_cast<short>(zero);
+  congressSupport788.counterpartSupportCount = static_cast<short>(zero);
+  congressSupport788.neutralCount = static_cast<short>(zero);
   proposalArrayMode18d8 = static_cast<short>(zero);
 
   short* rowStart = relationTurnStampMatrixFe0;
@@ -369,12 +369,12 @@ void TDiplomacyMgr::ReadFrom(TStream* stream) {
   }
 
   if (g_nSaveFormatVersion > 0xd) {
-    // One 4-byte read covering selectedSourceNationSlot784 + selectedTargetNationSlot786,
-    // then one 6-byte read covering selectionFlagsA788/B78a/C78c.
-    stream->ReadBytes(&selectedSourceNationSlot784, 4);
-    SwapShortArrayBytes(&selectedSourceNationSlot784, 2);
-    stream->ReadBytes(&selectionFlagsA788, 6);
-    SwapShortArrayBytes(&selectionFlagsA788, 3);
+    // One read per record: 4 bytes for the whole CongressLeadership pair, then 6 for
+    // the whole CongressSupportTally. Both are byte-swapped as short arrays.
+    stream->ReadBytes(&congressLeadership784, sizeof(congressLeadership784));
+    SwapShortArrayBytes(&congressLeadership784, 2);
+    stream->ReadBytes(&congressSupport788, sizeof(congressSupport788));
+    SwapShortArrayBytes(&congressSupport788, 3);
   }
 
   if (g_nSaveFormatVersion > 0x1a) {
@@ -406,8 +406,8 @@ void TDiplomacyMgr::WriteTo(TStream* stream) {
   stream->WriteBytes(&proposalDispatchCounter790, 2);
 
   WriteShortArrayElems(stream, relationSideEffectMatrix1402, kNationPairMatrixEntries);
-  WriteShortArrayElems(stream, &selectedSourceNationSlot784, 2);
-  WriteShortArrayElems(stream, &selectionFlagsA788, 3);
+  WriteShortArrayElems(stream, &congressLeadership784.chairmanNationSlot, 2);
+  WriteShortArrayElems(stream, &congressSupport788.chairmanSupportCount, 3);
 
   NationSlot* slot = specialRelationSourceSlots1894;
   for (int remaining = 0x10; remaining != 0; --remaining) {
@@ -1130,8 +1130,8 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
   }
 
   BuildMajorNationDiplomacyStandingRanking(&topNationSlot, &secondNationSlot);
-  selectedTargetNationSlot786 = static_cast<short>(secondNationSlot);
-  selectedSourceNationSlot784 = static_cast<short>(topNationSlot);
+  congressLeadership784.counterpartNationSlot = static_cast<short>(secondNationSlot);
+  congressLeadership784.chairmanNationSlot = static_cast<short>(topNationSlot);
   topPower = comparativePowerRows1824[topNationSlot][1];
   secondPower = comparativePowerRows1824[secondNationSlot][1];
 
@@ -1258,9 +1258,9 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
   }
 
   int neutralCount = totalOwnedCount - topSideCount - secondSideCount;
-  selectionFlagsA788 = static_cast<short>(topSideCount);
-  selectionFlagsB78a = static_cast<short>(secondSideCount);
-  selectionFlagsC78c = static_cast<short>(neutralCount);
+  congressSupport788.chairmanSupportCount = static_cast<short>(topSideCount);
+  congressSupport788.counterpartSupportCount = static_cast<short>(secondSideCount);
+  congressSupport788.neutralCount = static_cast<short>(neutralCount);
 
   int winnerNationSlot = -1;
   if (secondSideCount < topSideCount) {

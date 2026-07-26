@@ -100,27 +100,14 @@ public:
   short relationCodeMatrix04[kDiplomacyPairMatrixEntries];
   signed char pendingPolicyCodeMatrix304[kDiplomacyPairMatrixEntries];
   short pendingPolicyTierMatrix484[kDiplomacyPairMatrixEntries];
-  union {
-    struct {
-      NationSlot selectedSourceNationSlot784;
-      NationSlot selectedTargetNationSlot786;
-    };
-    int packedSelectedNationSlots784;
-  };
+  CongressLeadership congressLeadership784; // +0x784
   // Build the turn-event-2 relation-matrix sync packet (delta against the baseline
   // snapshot when one exists) and refresh the baseline copy. 0x4f2760.
   struct TurnEvent2SyncPacket* BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
   // 0x4f27f0 — apply a received turn-event-2 sync packet to the relation matrix.
   void ApplyTurnEvent2SyncPacketToRelationMatrix(TurnEvent2SyncPacket* packet);
 
-  union {
-    struct {
-      short selectionFlagsA788;
-      short selectionFlagsB78a;
-    };
-    int packedSelectionFlagsAB788;
-  };
-  short selectionFlagsC78c;
+  CongressSupportTally congressSupport788; // +0x788..+0x78d
   NationSlot lastProcessedNationSlot78e;
   short proposalDispatchCounter790;
   unsigned char pad792[2];

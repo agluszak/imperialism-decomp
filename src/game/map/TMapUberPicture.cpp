@@ -122,15 +122,13 @@ void TMapUberPicture::Free() {
   TOffLimitsPicture::Free();
 }
 
-// A shared "previous mode" layout-capture scratch buffer (0x6a45e8, BSS/zeroed) and a
-// per-mode saved-layout table (0x6a4590, stride 8 = 2 ints, indexed by mode 0-3); both
-// passed to Locate by SetMapInteractionMode below. Each 8-byte entry is a saved owner-local
-// position; Locate writes its x/y components to ownerLocalX/ownerLocalY.
-static CPoint g_MapUberModeLayoutScratch_006a45e8(0, 0);
-static CPoint g_MapUberModeLayoutTable_006a4590[4];
-// A second layout-capture scratch buffer (0x6a45b8, BSS/zeroed), used the same way by
-// EnterMapInteractionOverlayMode.
-static CPoint g_MapUberModeSecondaryLayoutScratch_006a45b8(0, 0);
+// Startup initializers at 0x596870/0x5968a0/0x5968e0 establish the visible positions
+// for the three unit-category pages and the hidden parking position used while swapping
+// pages. Each 8-byte entry is an owner-local CPoint consumed by TView::Locate.
+static CPoint g_MapUberModeSecondaryLayoutScratch_006a45b8(5, 0x1b);
+static CPoint g_MapUberModeLayoutTable_006a4590[4] = {CPoint(0, 0x8f), CPoint(0, 0x92),
+                                                      CPoint(0, 0x90)};
+static CPoint g_MapUberModeLayoutScratch_006a45e8(-1000, -1000);
 
 // FUNCTION: IMPERIALISM 0x00596cb0
 void TMapUberPicture::SetMapInteractionMode(short nMode) {

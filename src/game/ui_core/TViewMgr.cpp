@@ -457,10 +457,10 @@ char TViewMgr::ModalMessage(CString message, const POINT& messagePosition, short
 }
 
 // FUNCTION: IMPERIALISM 0x005d5c40
-char TViewMgr::ModalMessage(long templateKind, CString formatText, CString message,
+char TViewMgr::ModalMessage(long templateKind, CString titleSuffix, CString message,
                             const POINT& messagePosition, short overlayMode,
                             unsigned char showCancel) {
-  return RunNationInfoModalAndReturnNonCancel(templateKind, formatText,
+  return RunNationInfoModalAndReturnNonCancel(templateKind, titleSuffix,
                                               static_cast<LPCSTR>(message), message.GetLength(),
                                               messagePosition, overlayMode, showCancel);
 }
@@ -468,7 +468,7 @@ char TViewMgr::ModalMessage(long templateKind, CString formatText, CString messa
 // FUNCTION: IMPERIALISM 0x005d5d30
 bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString titleSuffix,
                                                     const char* messageChars, int messageLength,
-                                                    const POINT& messagePosition, int contextTag,
+                                                    const POINT& messagePosition, short contextTag,
                                                     char showCancel) {
   CString titleText;
   TextStyle styleDescriptor;
@@ -2376,11 +2376,16 @@ void TViewMgr::InitializeCitySiteSelectionScreenForNation(int nationSlot) {
   mainPicture->AssertValid();
   mainPicture->DisplayMiniMap();
 
-  CString formatText;
-  CString messageText;
-  g_pSimMgr->GetString(0x273f, 4, &formatText);
-  g_pSimMgr->GetString(0x273f, 3, &messageText);
-  ModalMessage(4, formatText, messageText, g_ptCitySiteSelectionDialogPlacement, 2, 0);
+  // The original loads (0x273f, 4) into the first-declared local and (0x273f, 3) into the
+  // second, then passes the *second* as the title suffix and the *first* as the message
+  // body: at 0x5dc30e the param-3 copy ctor reads [esp+0x24] (the index-4 local) and at
+  // 0x5dc31f the param-2 copy ctor reads [esp+0x24] (the index-3 local). Keep the
+  // declaration order — it fixes the frame slots — and pass them in that order.
+  CString messageBody;
+  CString titleSuffix;
+  g_pSimMgr->GetString(0x273f, 4, &messageBody);
+  g_pSimMgr->GetString(0x273f, 3, &titleSuffix);
+  ModalMessage(4, titleSuffix, messageBody, g_ptCitySiteSelectionDialogPlacement, 2, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005dc3f0
