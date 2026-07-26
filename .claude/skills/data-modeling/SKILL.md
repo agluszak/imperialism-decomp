@@ -178,6 +178,30 @@ is not a regression worth a single line of work.
     g_TileHeatmapNeighborDiffusionFactor 0x658780 = 0.2f.)
   *(ex decomp-loop list-note 80)*
 
+### Dynamic-initializer globals are invisible to datacmp — read the initializer, not the image
+
+A global whose value is written by a CRT dynamic initializer (any non-POD global, e.g. a
+`CPoint`, and anything else `_initterm` fills in) lives in `.bss`, so the static image is
+zeroed in BOTH binaries. `just datacmp` therefore reports a match no matter how wrong the
+value is, and no gate will ever flag it. The only evidence is the initializer's
+disassembly, which is usually an *unowned* address with no Ghidra function at it — so
+`just ghidra listing` prints one instruction and stops. Use `just ghidra raw-disasm
+<addr> <count>` instead.
+
+Finding the initializer: `just ghidra xrefs <globalAddr>` reports the writer as `? (?)`
+when it is unowned; the initializers for a cluster of related globals sit adjacent to each
+other (`0x004f2b40` / `0x004f2b60` / `0x004f2b90` each fill one CPoint of the diplomacy
+popup cluster at `0x006a2fe8` / `0x006a2fe0` / `0x006a3020`).
+
+This bites hardest on **position/geometry constants used as visibility state**. The TView
+UI family has no visible flag: `TView::Locate(pt, refresh)` copies `pt` straight into
+`ownerLocalX/Y`, so parking a control at an off-screen point (2000, 2000) *is* the hide
+mechanism. Two `CPoint` globals left at `(0, 0)` turned every "hide" in the diplomacy
+offers family into a no-op that pinned the ACCEPT/REJECT sheet at the visible origin —
+a purely visual bug with a 100% datacmp result and no score signal anywhere. When a
+control renders that should be hidden, check the parked-position global's initializer
+before suspecting the show/hide logic.
+
 ### Dual-width global reads: type by the widest reader, cast at the narrow ones
 *(ex decomp-loop note 118)*
 

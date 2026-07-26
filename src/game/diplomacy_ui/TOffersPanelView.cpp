@@ -191,13 +191,13 @@ char TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
   if (isNotice) {
     message = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagText));
     message->AssertValid();
-    sheet->Locate(g_diplomacyPopupLayoutPosition_006a3020, 1);
-    wait->Locate(g_diplomacyWarOfferSheetPosition_006a2fe0, 1);
+    sheet->Locate(g_diplomacyPopupOffscreenPosition_006a3020, 1);
+    wait->Locate(g_diplomacyPopupVisiblePosition_006a2fe0, 1);
   } else {
     message = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagProp));
     message->AssertValid();
-    wait->Locate(g_diplomacyPopupLayoutPosition_006a3020, 1);
-    sheet->Locate(g_diplomacyWarOfferSheetPosition_006a2fe0, 1);
+    wait->Locate(g_diplomacyPopupOffscreenPosition_006a3020, 1);
+    sheet->Locate(g_diplomacyPopupVisiblePosition_006a2fe0, 1);
   }
   message->UpdateTextEntrySharedStringAndMaybeNotify(&proposalText, 1);
   message->CenterVertically(1);
@@ -295,8 +295,8 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
 
   TView* sheet = ResolveControlByTag(kControlTagShee);
   TView* wait = ResolveControlByTag(kControlTagWait);
-  wait->Locate(g_diplomacyPopupLayoutPosition_006a3020, 0);
-  sheet->Locate(g_diplomacyWarOfferSheetPosition_006a2fe0, 1);
+  wait->Locate(g_diplomacyPopupOffscreenPosition_006a3020, 0);
+  sheet->Locate(g_diplomacyPopupVisiblePosition_006a2fe0, 1);
   proposalText->UpdateTextEntrySharedStringAndMaybeNotify(&formattedMessage, 1);
   proposalText->CenterVertically(1);
   RefreshControl();

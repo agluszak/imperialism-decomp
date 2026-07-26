@@ -9649,8 +9649,8 @@ address|name|symbol|size|type|prototype|provenance
 6a2df0|g_ptGreatPowerModalMessage|||global||
 6a2ea0|g_cachedAiCityActionContextBias|||global||
 6a2fc0|g_ptDiplomacyNoticeModalMessage|||global||
-6a2fe0|g_diplomacyWarOfferSheetPosition_006a2fe0|||global||
-6a3020|g_diplomacyPopupLayoutPosition_006a3020|||global||
+6a2fe0|g_diplomacyPopupVisiblePosition_006a2fe0|||global||
+6a3020|g_diplomacyPopupOffscreenPosition_006a3020|||global||
 6a3060|g_cstrUiFontBelweLight|||global||
 6a3080|g_cstrUiFontPalatino|||global||
 6a30a4|g_cstrUiFontBelweBdBt|||global||
