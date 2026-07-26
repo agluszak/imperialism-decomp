@@ -25,6 +25,6 @@ IMPLEMENT_DYNCREATE(TPoseMessageDialog, TCommand)
 void __cdecl QueuePoseMessageDialogForNationSlot(int nationSlot) {
   TPoseMessageDialog* command = new TPoseMessageDialog();
   command->kickedByNationSlot18 = nationSlot;
-  command->InitializeRangePair(kSessionTagPose, g_pGlobalUiRootController, 0, 0, 0); // 'pose'
+  command->ICommand(kSessionTagPose, g_pGlobalUiRootController, 0, 0, 0); // 'pose'
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
 }

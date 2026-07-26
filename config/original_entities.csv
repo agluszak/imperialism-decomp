@@ -646,7 +646,7 @@ address|name|symbol|size|type|prototype|provenance
 487820|TCommand::ConstructTurnEventPacketBase||26|function|undefined ConstructTurnEventPacketBase()|
 487850|TCommand::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 487880|DestructTCommandAndMaybeFree_Impl||7|function|undefined DestructTCommandAndMaybeFree_Impl()|
-4878a0|InitializeRangePairAndResetCursor||39|function|undefined InitializeRangePairAndResetCursor()|
+4878a0|TCommand::ICommand||39|function|void __thiscall ICommand(long itsCommandNumber, TCommandHandler * itsContext, unsigned char canUndo, unsigned char causesChange, TObject * itsChangedObject)|mac-oracle
 4878e0|TCommand::Free||12|function|undefined NextDiplomacyCommandVtableSlotDC_DestroySelf()|
 487900|TCommand::Process||19|function|void Process()|
 487a00|TCommand::DoIt||1|function|void __thiscall DoIt(void)|
@@ -2504,7 +2504,7 @@ address|name|symbol|size|type|prototype|provenance
 4e6b50|TAutoGreatPower::TAutoGreatPower||28|function|void __thiscall TAutoGreatPower(void)|
 4e6b80|TAutoGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4e6bb0|TAutoGreatPower::~TAutoGreatPower||80|function|undefined ~TAutoGreatPower()|
-4e6c20|TAutoGreatPower::InitializeNationMinisterSubsystemsByPolicyIds||1160|function|void __thiscall InitializeNationMinisterSubsystemsByPolicyIds(int nationSlot, int nationInitializationMode, short cityMinisterPolicyId, short foreignMinisterPolicyId, short defenseMinisterPolicyId)|
+4e6c20|TAutoGreatPower::IAutoGreatPower||1160|function|void __thiscall IAutoGreatPower(int nationSlot, int nationInitializationMode, short cityMinisterPolicyId, short foreignMinisterPolicyId, short defenseMinisterPolicyId)|
 4e7230|TAutoGreatPower::Free||107|function|undefined Free()|
 4e72c0|TGreatPower::InitializeMapActionCandidateStateAndQueueMission||235|function|undefined InitializeMapActionCandidateStateAndQueueMission()|
 4e73f0|TGreatPower::SerializeGreatPowerTailStateToMessage||212|function|undefined SerializeGreatPowerTailStateToMessage()|
@@ -5717,7 +5717,7 @@ address|name|symbol|size|type|prototype|provenance
 5ba400|TNextTradeCommand::ConstructTNextTradeCommandBaseState||18|function|undefined ConstructTNextTradeCommandBaseState()|
 5ba430|TNextTradeCommand::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5ba460|TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl||7|function|undefined DestructTNextTradeCommandAndMaybeFree_Impl()|
-5ba480|InitializeRangePairFromDiplomacyConstants||23|function|undefined InitializeRangePairFromDiplomacyConstants()|
+5ba480|TNextTradeCommand::INextTradeCommand||23|function|void __thiscall INextTradeCommand(void)|mac-oracle
 5ba4b0|TNextTradeCommand::DoIt||11|function|void __thiscall DoIt(void)|
 5ba600|`dynamic initializer for 'g_scaledShortConst_6A5A20''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A5A20''(void)|library
 5ba680|TTradeScreenPicture::CreateObject|?CreateObject@TTradeScreenPicture@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti

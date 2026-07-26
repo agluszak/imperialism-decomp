@@ -737,7 +737,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
     // (ctor thunk 0x407a31 -> 0x4e6b50) -- this slot is genuinely a TAutoGreatPower, not a
     // bare TGreatPower (whose object size is 0x964, too small for the tail AI state block).
     TAutoGreatPower* pTVar5 = new TAutoGreatPower();
-    pTVar5->InitializeNationMinisterSubsystemsByPolicyIds(
+    pTVar5->IAutoGreatPower(
         slotIndex, 2, cityMinisterPolicyIds[nationIndex], foreignMinisterPolicyIds[nationIndex],
         defenseMinisterPolicyIds[nationIndex]);
     g_apNationStates[nationIndex] = pTVar5;
