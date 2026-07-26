@@ -977,11 +977,11 @@ static void ModifyMainViewChildWindowStyleClear02000000(TView* mainView) {
 
 namespace turn_event_ui_refresh {
 
-TView* ActiveMainView() {
+inline TView* ActiveMainView() {
   return g_pDisplayMgr->activeDialog;
 }
 
-TControl* ResolveMainTaggedControl(unsigned int controlTag) {
+inline TControl* ResolveMainTaggedControl(unsigned int controlTag) {
   TView* mainView = ActiveMainView();
   if (mainView == nullptr) {
     return nullptr;
@@ -989,7 +989,7 @@ TControl* ResolveMainTaggedControl(unsigned int controlTag) {
   return static_cast<TControl*>(mainView->ResolveControlByTag(controlTag));
 }
 
-void BindCursorPanelAndSetTurnEventCodeRange() {
+inline void BindCursorPanelAndSetTurnEventCodeRange() {
   TControl* cursor = ResolveMainTaggedControl(kControlTagCurs);
   g_pCursorControlPanel = static_cast<TInfoBarText*>(cursor);
   if (cursor != nullptr) {
@@ -1003,7 +1003,7 @@ void BindCursorPanelAndSetTurnEventCodeRange() {
 // It must NOT be the direct TCouncilView ticker init (0x4fc2e0): on non-council
 // screens (e.g. the combined map, whose 'main' has no can0/can1 children) that
 // misdispatch dereferences a null control and crashes.
-void RefreshMainPanelControl() {
+inline void RefreshMainPanelControl() {
   TControl* mainPanel = ResolveMainTaggedControl(kControlTagMain);
   if (mainPanel != nullptr) {
     mainPanel->AssertValid();
@@ -1011,7 +1011,7 @@ void RefreshMainPanelControl() {
   }
 }
 
-void RefreshToolBarClusterByTag(unsigned int controlTag) {
+inline void RefreshToolBarClusterByTag(unsigned int controlTag) {
   TControl* control = ResolveMainTaggedControl(controlTag);
   if (control == nullptr) {
     return;
@@ -1022,7 +1022,7 @@ void RefreshToolBarClusterByTag(unsigned int controlTag) {
   toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
 }
 
-void RefreshTradClusterPictureAndHintText() {
+inline void RefreshTradClusterPictureAndHintText() {
   TControl* tradControl = ResolveMainTaggedControl(kControlTagTrad);
   if (tradControl == nullptr) {
     return;
@@ -1038,8 +1038,8 @@ void RefreshTradClusterPictureAndHintText() {
   tradControl->SetHoverHelpText(hintText);
 }
 
-void RefreshTaggedControlWithLocalizedString(unsigned int controlTag, short stringCode,
-                                             short stringIndex) {
+inline void RefreshTaggedControlWithLocalizedString(unsigned int controlTag, short stringCode,
+                                                    short stringIndex) {
   TControl* control = ResolveMainTaggedControl(controlTag);
   if (control == nullptr) {
     return;
@@ -1050,8 +1050,8 @@ void RefreshTaggedControlWithLocalizedString(unsigned int controlTag, short stri
   control->SetHoverHelpText(localizedText);
 }
 
-void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidth, int stylePrimary,
-                                   int styleSecondary) {
+inline void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidth, int stylePrimary,
+                                          int styleSecondary) {
   TControl* control = ResolveMainTaggedControl(controlTag);
   if (control == nullptr) {
     return;
@@ -1100,6 +1100,12 @@ void TViewMgr::DispatchNationActionToMainControl(int sourceNation, int arg1, int
 
 // FUNCTION: IMPERIALISM 0x005d7240
 void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
+  // Ground truth copies both halves of dialogPlacement08 into a stack POINT in the
+  // prologue (0x5d7266..0x5d7273: reads [this+0xc] then [this+8], stores them to the
+  // ESP0-32/ESP0-28 local pair) and later passes &that local as the factory packet's
+  // anchor (LEA ECX,[ESP+0x18]; PUSH ECX at 0x5d75df) -- so the anchor is this
+  // manager's dialog placement, not the (0,0) we were passing.
+  CPoint anchorPoint(dialogPlacement08);
   TView* mainView = g_pDisplayMgr->activeDialog;
   SetQuickDrawFillColor(0);
   SetQuickDrawStrokeColor(0xffffff);
@@ -1225,7 +1231,6 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
 
   TIncludeView* packet = ::new TIncludeView();
   CString emptyText(g_szEmptyString);
-  CPoint anchorPoint(0, 0);
   packet->BuildTurnEventFactoryPacket(nullptr, mainView, newCode, anchorPoint, &emptyText, 1);
   packet->DoPostCreate(0);
   packet->controlTag = kControlTagIncl; // 'Incl'
@@ -1434,6 +1439,12 @@ void TViewMgr::HandleTurnEvent7D8_ActivateDiplomacyMapView(int) {
 
 // FUNCTION: IMPERIALISM 0x005d83b0
 void TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(int) {
+  // Ground truth default-constructs one CString early (lea ecx,[esp+0x10];
+  // call CString::CString(void) at 0x5d83d1) and hands that same local to both
+  // SetHoverHelpText calls, which take their argument by value. Passing a
+  // const char* instead built a separate temporary per call site, which is why
+  // our version had no EH frame where the original sets one up.
+  CString emptyHelpText;
   turn_event_ui_refresh::RefreshMainPanelControl();
   g_pSimMgr->SetFlags(0x1000);
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
@@ -1443,7 +1454,7 @@ void TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(int)
     tranControl->AssertValid();
     tranControl->SetState(0, 0);
     tranControl->SwitchActiveChildAndNotify(nullptr);
-    tranControl->SetHoverHelpText(g_szEmptyString);
+    tranControl->SetHoverHelpText(emptyHelpText);
   }
 
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTopB);
@@ -1452,7 +1463,7 @@ void TViewMgr::HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(int)
   TControl* querControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagQuer);
   if (querControl != nullptr) {
     querControl->AssertValid();
-    querControl->SetHoverHelpText(g_szEmptyString);
+    querControl->SetHoverHelpText(emptyHelpText);
   }
 }
 

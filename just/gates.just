@@ -408,6 +408,13 @@ class-size-check *args:
 vtable-coverage *args:
   uv run python -m tools.workflow.check_vtable_coverage --project-dir "{{build_dir}}" {{args}}
 
+# Report classes whose last original vtable slot resolves to a source-declared
+# non-virtual method. This is evidence for manual review, never an automatic gate.
+[doc('Report possible unmodelled vtable tail slots for manual verification')]
+[group('reports')]
+vtable-tail-slots *args:
+  uv run python -m tools.workflow.check_vtable_tail_slots {{args}}
+
 [group('gates')]
 format-check *paths:
   uv run python -m tools.workflow.format_cpp --check {{paths}}

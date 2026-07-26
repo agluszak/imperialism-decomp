@@ -911,27 +911,38 @@ void TDiplomacyMgr::SyncNationField790FromLocalizationStateId() {
 
 // FUNCTION: IMPERIALISM 0x004f05c0
 void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
-  for (int i = 0; i < 7; i++) {
-    if (g_apNationStates[i] != NULL) {
-      g_apNationStates[i]->ApplyJoinEmpireMode2FinalizeNationNameState();
+  // Ground truth walks the table by pointer with a separate count-down counter
+  // (`dec edi; jne` at 0x4f05f4), not an ascending index compare.
+  TGreatPower** nationSlot = g_apNationStates;
+  for (int remaining = 7; remaining != 0; --remaining, ++nationSlot) {
+    if (*nationSlot != NULL) {
+      (*nationSlot)->ApplyJoinEmpireMode2FinalizeNationNameState();
     }
   }
 
-  if (g_pSimMgr && g_pSimMgr->multiplayerSessionRole == 2) {
+  // The original dereferences g_pSimMgr unguarded and materializes the mode test
+  // into a byte before branching (`cmp [edx+0x44],2; sete cl; test cl,cl; je`),
+  // so the null check here was ours, not the retail code's.
+  unsigned char isClientSession = g_pSimMgr->multiplayerSessionRole == 2;
+  if (isClientSession) {
     if (pendingWarTransitionQueue18d4) {
       pendingWarTransitionQueue18d4->ClearAndFreeAllPtrListRecords();
     }
     return;
   }
 
+  // Ground truth sets both tie flags to 1 once in the prologue (0x4f05d2/0x4f05d7,
+  // the [esp+0x13]/[esp+0x12] bytes) rather than re-initializing them per minor
+  // slot, so they live at function scope here.
+  bool isOfferTie = true;
+  bool isRelationTie = true;
+
   for (int minorSlot = 7; minorSlot < 23; minorSlot++) {
     short bestOfferScore = 0x8b;
     int bestOfferNation = -1;
-    bool isOfferTie = true;
 
     int bestRelationScore = 9000;
     int bestRelationNation = -1;
-    bool isRelationTie = true;
     (void)isOfferTie;
     (void)isRelationTie;
 
@@ -1101,6 +1112,15 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
 
 // FUNCTION: IMPERIALISM 0x004f0e20
 void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMode) {
+  // Ground truth zeroes a register once (xor ebp,ebp at 0x4f0e33) and spends it on
+  // both the matrix probe (cmp word ptr [edi], bp) and four dword locals it clears
+  // up front (mov [esp+0x28]/[esp+0x2c]/[esp+0x34]/[esp+0x3c], ebp at 0x4f0e40), so
+  // these are function-scope zero-initialized rather than declared at first use.
+  int topNationSlot = 0;
+  int secondNationSlot = 0;
+  int topPower = 0;
+  int secondPower = 0;
+
   bool forceFullClear = (forceOrMode == 2);
   if (relationCodeMatrix04[0] == 0) {
     InitializeDiplomacyStandingBaselineRandom();
@@ -1109,13 +1129,11 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
     memset(relationCodeMatrix04, 0, sizeof(relationCodeMatrix04));
   }
 
-  int topNationSlot;
-  int secondNationSlot;
   BuildMajorNationDiplomacyStandingRanking(&topNationSlot, &secondNationSlot);
   selectedTargetNationSlot786 = static_cast<short>(secondNationSlot);
   selectedSourceNationSlot784 = static_cast<short>(topNationSlot);
-  int topPower = comparativePowerRows1824[topNationSlot][1];
-  int secondPower = comparativePowerRows1824[secondNationSlot][1];
+  topPower = comparativePowerRows1824[topNationSlot][1];
+  secondPower = comparativePowerRows1824[secondNationSlot][1];
 
   int topSideScore[kNationSlotCount];
   int secondSideScore[kNationSlotCount];
@@ -1705,15 +1723,20 @@ int TDiplomacyMgr::SelectDiplomacyTargetNationFromCandidateSetSlot94(int sourceN
 
 // FUNCTION: IMPERIALISM 0x004f24a0
 void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(int nationCode) {
-  for (int auxIndex = 0; auxIndex < 16; ++auxIndex) {
-    TMinor* candidate = g_apNationAuxRuntimeStateSlots[auxIndex];
+  // Ground truth walks the aux-slot table by byte offset (esi stepping 4 into
+  // [esi + &g_apSecondaryNationStateSlots[7]]) rather than re-scaling an index,
+  // and carries the minor slot as its own counter seeded to 7 (mov [esp+0x14], 7
+  // at 0x4f24a9) instead of recomputing 7 + auxIndex in the body.
+  TMinor** auxSlot = g_apNationAuxRuntimeStateSlots;
+  short minorSlot = 7;
+  for (int auxIndex = 0; auxIndex < 16; ++auxIndex, ++auxSlot, ++minorSlot) {
+    TMinor* candidate = *auxSlot;
     if (!candidate->IsEncodedNationSlotMinus200Equal(nationCode)) {
       continue;
     }
     candidate->ApplyJoinEmpireMode2FinalizeNationNameState();
 
     TMinor* capabilityObject = g_apMinorNationCapabilityObjects[auxIndex];
-    short minorSlot = static_cast<short>(7 + auxIndex);
 
     for (int majorSlot = 0; majorSlot < 7; ++majorSlot) {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(majorSlot)) {

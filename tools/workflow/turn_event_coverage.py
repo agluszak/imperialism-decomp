@@ -495,9 +495,13 @@ def render_report(rows: list[dict], mac_complement: list[dict], callbacks: dict)
         )
     )
     for row in mac_complement:
+        # Escape the cell separator outside the f-string: a backslash inside an
+        # f-string expression is only legal on Python 3.12+, and this repo's uv
+        # environment pins 3.11 (SyntaxError at import time, breaking the gate).
+        owner_cell = row["owner"].replace("|", "\\|")
         lines.append(
             f"| `{row['resource']}` | {row['name']} | `{row['status']}` | "
-            f"{row['owner'].replace('|', '\\|')} | `{row['bead']}` |"
+            f"{owner_cell} | `{row['bead']}` |"
         )
 
     validation = callbacks["validation"]

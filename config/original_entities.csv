@@ -8159,7 +8159,6 @@ address|name|symbol|size|type|prototype|provenance
 653720|g_Compute_Advisory_Handler_LookupTable_00653720|||global||
 653724|g_Compute_Advisory_Peer_LookupTable_00653724|||global||
 653728|g_ApplyIndexedResourceDeltaScale_00653728|||global||
-653d00|g_apfnMapOrderUiDispatchHandlers|||global||
 653f18|g_afAdvisoryMissionTierThresholdByMinisterSkill_00653F18|||global||
 653f90|TAutoGreatPower::classTAutoGreatPower|||global||
 653fc0|g_DAT_00653fc0_Value_00653FC0|||global||

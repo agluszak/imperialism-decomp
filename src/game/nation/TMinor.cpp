@@ -1035,7 +1035,10 @@ void TMinor::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
 void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
   short decodedSlot = DecodeTerrainNationSlotFromEncoded(this->encodedNationSlot, this->nationSlot);
   this->encodedNationSlot = -1;
-  this->SetNationRowDisplayValueByDiplomacyPredicate(decodedSlot);
+  // Ground truth dispatches slot 0x33 here (CALL [ebx+0xcc] at 0x4e5a03 ->
+  // 0x4e6040), i.e. ReassignTileObjectOwnerAndNotifyForSelectedCells -- not the
+  // slot-0x2e display-value helper this port had been calling.
+  this->ReassignTileObjectOwnerAndNotifyForSelectedCells(decodedSlot);
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     this->SetDiplomacyStandingSlot48(nationSlot, 100);
   }
@@ -1372,9 +1375,9 @@ void TMinor::ReassignUnitOrdersForCountryTargetChange(short provinceId,
 
 // FUNCTION: IMPERIALISM 0x004e64a0
 void TMinor::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
-  if (this->ownedRegionList != 0) {
-    this->ownedRegionList->Delete(regionId);
-  }
+  // The original dereferences the list unguarded here (mov ecx,[esi+0x90] straight
+  // into mov eax,[ecx]; call [eax+0x34] at 0x4e64a9) -- the null test was ours.
+  this->ownedRegionList->Delete(regionId);
   this->ClearTileActivityOverlayByProvinceId(regionId);
   this->ApplyDiplomacyRelationMaskToProvinceLinkedObjects(regionId);
   this->ReassignUnitOrdersForCountryTargetChange(static_cast<short>(regionId), 1);

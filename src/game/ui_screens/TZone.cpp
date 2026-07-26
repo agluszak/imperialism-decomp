@@ -901,6 +901,9 @@ void TZone::ExpandTaskForceTraversalDepthAndMarkDeferredNodes(int remainingDepth
   }
 
   distanceLevel44 = static_cast<short>(depth + 1);
+  // Ground truth tests the depth once and skips both passes together (the single
+  // `jle` after `mov word ptr [esi+0x44], cx` at 0x560bbd), so the city-marking
+  // pass nests inside the depth check rather than re-testing it.
   if (depth > 0) {
     for (int i = primaryNeighbors.Count() - 1; i >= 0; --i) {
       TZone* neighbor = primaryNeighbors.GetAt(i);
@@ -908,12 +911,12 @@ void TZone::ExpandTaskForceTraversalDepthAndMarkDeferredNodes(int remainingDepth
         neighbor->ExpandTaskForceTraversalDepthAndMarkDeferredNodes(depth - 1, 0);
       }
     }
-  }
 
-  if (depth > 0 && markAdjacentCities != 0) {
-    for (int i = secondaryNeighbors.Count() - 1; i >= 0; --i) {
-      Province* city = secondaryNeighbors.Data()[i];
-      city->navyOrderReachableA0 = 1;
+    if (markAdjacentCities != 0) {
+      for (int i = secondaryNeighbors.Count() - 1; i >= 0; --i) {
+        Province* city = secondaryNeighbors.Data()[i];
+        city->navyOrderReachableA0 = 1;
+      }
     }
   }
 }
