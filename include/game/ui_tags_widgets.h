@@ -16,6 +16,13 @@ const int kControlTagArms = IMPERIALISM_FOURCC('A', 'r', 'm', 's'); // TStatusBu
 const int kControlTagClos = IMPERIALISM_FOURCC('C', 'l', 'o', 's'); // TStatusButton.cpp
 const int kControlTagCost =
     IMPERIALISM_FOURCC('C', 'o', 's', 't'); // TMinorTradeBidsDialog.cpp; 3 Mac screen(s)
+// Lowercase sibling of kControlTagCost, and a genuinely different control: the city
+// building views label their cost column 'cost' (0x636f7374, pushed at 0x4cf070 in
+// TArmoryView::DoStartup) while the trade-bids dialog uses 'Cost' (0x436f7374, pushed at
+// 0x5b2aab). Same spelling, different tag -- see kControlTagTitL/kControlTagTitl for the
+// same trap.
+const int kControlTagCostLower =
+    IMPERIALISM_FOURCC('c', 'o', 's', 't'); // TArmoryView.cpp and the building views
 const int kControlTagDoneCaps =
     IMPERIALISM_FOURCC('D', 'O', 'N', 'E'); // TToolBarCluster.cpp; 1 Mac screen(s)
 const int kControlTagFlagCaps =

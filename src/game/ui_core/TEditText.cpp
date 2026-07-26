@@ -243,7 +243,7 @@ void TEditText::InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refr
 
 // FUNCTION: IMPERIALISM 0x00490e50
 void TEditText::UpdateCoordinates() {
-  TView::Open();
+  TView::UpdateCoordinates();
   if (editWindow != nullptr) {
     RECT clientRect;
     GetClientRect(editWindow->m_hWnd, &clientRect);

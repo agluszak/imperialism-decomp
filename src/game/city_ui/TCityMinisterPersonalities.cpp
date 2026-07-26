@@ -23,7 +23,7 @@ TSteelCityMinister::TSteelCityMinister() : TCityInteriorMinister() {
 // TSteelCityMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004c5a70
-void TSteelCityMinister::InitializeCityInteriorState(TGreatPower* owner) {
+void TSteelCityMinister::ISteelCityMinister(TGreatPower* owner) {
   TCityInteriorMinister::InitializeCityInteriorState(owner);
 }
 
@@ -77,7 +77,7 @@ TShipBuilderCityMinister::TShipBuilderCityMinister() : TCityInteriorMinister() {
 // TShipBuilderCityMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004c5d70
-void TShipBuilderCityMinister::InitializeCityInteriorState(TGreatPower* owner) {
+void TShipBuilderCityMinister::IShipBuilderCityMinister(TGreatPower* owner) {
   TCityInteriorMinister::InitializeCityInteriorState(owner);
 }
 
@@ -131,7 +131,7 @@ TEvenCityMinister::TEvenCityMinister() : TCityInteriorMinister() {
 // TEvenCityMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004c6070
-void TEvenCityMinister::InitializeCityInteriorState(TGreatPower* owner) {
+void TEvenCityMinister::IEvenCityMinister(TGreatPower* owner) {
   TCityInteriorMinister::InitializeCityInteriorState(owner);
 }
 
@@ -186,7 +186,7 @@ TRailCityMinister::TRailCityMinister() : TCityInteriorMinister() {
 // TRailCityMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004c6380
-void TRailCityMinister::InitializeCityInteriorState(TGreatPower* owner) {
+void TRailCityMinister::IRailCityMinister(TGreatPower* owner) {
   TCityInteriorMinister::InitializeCityInteriorState(owner);
 }
 

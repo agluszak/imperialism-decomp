@@ -331,9 +331,8 @@ class TView* TView::ResolveControlByTag(unsigned int controlTag) {
 }
 // FUNCTION: IMPERIALISM 0x0048b070
 void TView::SetState(int state, int refreshFlag) {
-  (void)refreshFlag;
   SetEnable(state);
-  if (state != 0) {
+  if (refreshFlag != 0) {
     RefreshControl();
   }
 }
