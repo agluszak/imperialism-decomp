@@ -357,7 +357,7 @@ address|matching|name
 0x47a200|0.8601036269430051|CDib::CDib(class CDib const &)
 0x47a370|1.0|CDib::~CDib
 0x47a3e0|0.8148148148148148|CDib::CopyBitmapDimensionsToPoint
-0x47a420|0.704225352112676|CDib::LoadFromMemoryMappedBmpFile
+0x47a420|0.7132867132867133|CDib::LoadFromMemoryMappedBmpFile
 0x47a630|0.4880952380952381|CDib::RemapSurfaceToMemoryMappedBmpFile
 0x47a8a0|0.6888888888888889|CDib::AttachPackedInfoHeader
 0x47aa00|0.7547169811320755|CDib::SelectAndRealizeDibPalette
@@ -369,42 +369,41 @@ address|matching|name
 0x47ae20|0.9333333333333333|CDib::EnsureDibSectionCreated
 0x47ae90|1.0|CDib::BuildPaletteFromRgbQuadBuffer
 0x47af60|0.9838709677419355|CDib::CreatePaletteObjectFromColorTable
-0x47b030|0.08333333333333333|IltTarget_0047b030
+0x47b030|0.7741935483870968|CDib::CreateLogPaletteFromColorTable
 0x47b0c0|0.4727272727272727|CDib::CopyRgbQuadTableFrom
 0x47b130|0.38235294117647056|CDib::AdoptPaletteAndCopyRgbQuadTable
-0x47b1b0|0.028985507246376812|IltTarget_0047b1b0
+0x47b1b0|0.9552238805970149|CDib::SetSystemPalette
 0x47b280|1.0|CDib::CreateDibBitmapFromStoredInfo
-0x47b2d0|0.007575757575757576|IltTarget_0047b2d0
+0x47b2d0|0.6232394366197183|CDib::Compress
 0x47b6d0|0.3663663663663664|CDib::Read
 0x47b9f0|0.37777777777777777|CDib::Write
 0x47bb10|1.0|CDib::Serialize
-0x47bb60|0.0|IltTarget_0047bb60
-0x47bc30|0.06896551724137931|IltTarget_0047bc30
+0x47bb60|0.37037037037037035|CDib::ComputePaletteSize
+0x47bc30|0.49056603773584906|CDib::ComputeMetrics
 0x47bca0|1.0|CDib::Release
 0x47bd90|1.0|CDib::ReleaseMappedFileView
 0x47bde0|0.21352313167259787|CDib::BlitSurfaceRectSkippingTransparentColor
 0x47bf90|1.0|CDib::GetPixelAddress
-0x47c000|0.043478260869565216|IltTarget_0047c000
-0x47c080|0.5396825396825397|CDib::LoadBitmapResourceAndInitializeSurfaceState
-0x47c1f0|0.43934426229508194|CDib::BuildMonochromeOutlineMaskInPlace
+0x47c000|0.43478260869565216|CDib::GetPixelAddressRespectingTopDownOrientation
+0x47c080|0.6073298429319371|CDib::LoadBitmapResourceAndInitializeSurfaceState
+0x47c1f0|0.3713355048859935|CDib::BuildMonochromeOutlineMaskInPlace
 0x47c3d0|0.22411347517730495|CDib::BuildNonTransparentOutlinePolygon
-0x47c850|0.024390243902439025|IltTarget_0047c850
+0x47c850|0.422360248447205|CDib::MapColorTableAndPixelsToPalette
 0x47c980|0.5786163522012578|CDib::FlipScanlineOrder
-0x47ca90|0.0|IltTarget_0047ca90
-0x47cb30|0.0|IltTarget_0047cb30
+0x47ca90|0.9090909090909091|CPalette::`scalar deleting destructor'
+0x47cb30|0.9090909090909091|CGdiObject::`scalar deleting destructor'
 0x47cca0|1.0|TCdAudioDevice::ResetAndOpenCdAudioDeviceHandle
 0x47ccd0|1.0|TCdAudioDevice::SendMciCommand804IfDeviceOpenAndClearHandle
 0x47cd00|1.0|TCdAudioDevice::EnsureCdAudioDeviceHandleInitialized
 0x47cd30|1.0|TCdAudioDevice::CloseDeviceAndClearHandle
 0x47cd60|1.0|TCdAudioDevice::ApplyMciPlaybackRangeFromAudioManager
 0x47cd80|1.0|TCdAudioDevice::StopPlayback
-0x47cda0|0.2222222222222222|IltTarget_0047cda0
+0x47cda0|1.0|TCdAudioDevice::GetAuxOutputVolume
 0x47cdd0|1.0|TCdAudioDevice::ApplyAuxOutputVolumeFromScalar
 0x47cdf0|1.0|TCdAudioDevice::IsPlaybackActive
-0x47ce10|0.2857142857142857|IltTarget_0047ce10
-0x47ce30|0.2857142857142857|IltTarget_0047ce30
-0x47ce50|0.2857142857142857|IltTarget_0047ce50
-0x47cfa0|0.25|`dynamic initializer for 'g_scaledShortConst_6A1528''
+0x47ce10|1.0|TCdAudioDevice::QueryMciStatusField5
+0x47ce30|1.0|TCdAudioDevice::QueryMciStatusField8
+0x47ce50|1.0|TCdAudioDevice::QueryMciStatusField3
 0x47cfd0|0.8115942028985508|TC2TemplateDialog::TC2TemplateDialog
 0x47d090|1.0|TC2TemplateDialog::`scalar deleting destructor'
 0x47d0c0|0.7407407407407407|TC2TemplateDialog
@@ -428,7 +427,7 @@ address|matching|name
 0x47d5d0|0.5|TDDTemplateDialog::GetMessageMap
 0x47d5f0|0.7146067415730337|TDDTemplateDialog::OnPaint
 0x47d960|0.9444444444444444|CGdiObject::~CGdiObject
-0x47da40|0.0|IltTarget_0047da40
+0x47da40|0.9090909090909091|CRgn::`scalar deleting destructor'
 0x47dae0|0.7674418604651163|TDDTemplateDialog::OnInitDialog
 0x47db80|1.0|TDDTemplateDialog::OnLButtonDblClk
 0x47dba0|0.6461538461538462|TDETemplateDialog::TDETemplateDialog
@@ -445,31 +444,29 @@ address|matching|name
 0x47df00|0.4782608695652174|TFATemplateDialog
 0x47df90|1.0|TFATemplateDialog::DoDataExchange
 0x47dfb0|0.5|TFATemplateDialog::GetMessageMap
-0x47dfd0|0.5373134328358209|TAutoResolutionDialog::TAutoResolutionDialog
+0x47dfd0|0.6575342465753424|TAutoResolutionDialog::TAutoResolutionDialog
 0x47e090|1.0|TAutoResolutionDialog::`scalar deleting destructor'
 0x47e0c0|1.0|TAutoResolutionDialog::DoDataExchange
 0x47e100|0.5|TAutoResolutionDialog::GetMessageMap
 0x47e120|1.0|TAutoResolutionDialog::OnInitDialog
-0x47e200|0.0|IltTarget_0047e200
-0x47e230|0.0|IltTarget_0047e230
-0x47e260|0.0|IltTarget_0047e260
+0x47e200|0.9090909090909091|CButton::`scalar deleting destructor'
+0x47e230|0.9090909090909091|CListBox::`scalar deleting destructor'
+0x47e260|0.9090909090909091|CSliderCtrl::`scalar deleting destructor'
 0x47e360|1.0|CDibPal::CDibPal
 0x47e390|1.0|CDibPal::`scalar deleting destructor'
 0x47e3c0|0.9615384615384616|CDibPal::~CDibPal
 0x47e440|0.6111111111111112|CDibPal::BuildPaletteFromBitmapColorTable
-0x47e550|0.125|IltTarget_0047e550
 0x47e590|0.5905511811023622|CDibPal::DrawPalettePreviewGridRectangles
-0x47e7a0|0.017094017094017096|IltTarget_0047e7a0
+0x47e7a0|0.7543859649122807|CDibPal::CreateIdentityPalette
 0x47e930|1.0|CDibPal::SelectIntoDcAndRealize
 0x47e960|0.40892193308550184|CDibPal::LoadPaletteFile
-0x47ec00|0.1|WrapperFor_FreeHeapBufferIfNotNull_At005ff5c5_Impl
+0x47ec00|1.0|CFileDialog::~CFileDialog
 0x47ec70|1.0|CDibPal::LoadPalette(class CFile *)
 0x47ecf0|1.0|CDibPal::LoadPalette(unsigned int)
 0x47ed70|0.23952095808383234|CDibPal::LoadPalette(struct HMMIO__*)
 0x47eea0|1.0|CDibPal::SavePalette(class CFile *)
 0x47ef20|1.0|CDibPal::SavePalette(unsigned int)
 0x47efa0|0.4796380090497738|CDibPal::SavePalette(struct HMMIO__*)
-0x47f250|0.25|`dynamic initializer for 'g_scaledShortConst_6A15C8''
 0x47f280|1.0|TA3TemplateDialog::TA3TemplateDialog
 0x47f2b0|1.0|TA3TemplateDialog::VerifyDialogContext
 0x47f2d0|1.0|TA3TemplateDialog::`scalar deleting destructor'
@@ -3272,7 +3269,7 @@ address|matching|name
 0x50bbc0|1.0|TMacViewMgr::ApplySellOrderRowToNationState
 0x50bc50|0.6167400881057269|TMacViewMgr::SyncSellTaggedChildControlWithNationState
 0x50be30|0.96|TMacViewMgr::MakeBookDialog
-0x50bea0|0.23752310536044363|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
+0x50bea0|0.23937153419593346|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 0x50d310|0.5625|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 0x50d360|0.6857142857142857|TMacViewMgr::OpenBuildingWindow
 0x50d470|0.7195121951219512|TMacViewMgr::RestoreBuildingWindowAtSavedPosition
@@ -4184,7 +4181,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.45460399227301995|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.46555054732775275|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549260|0.25|IltTarget_00549260
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
@@ -4381,7 +4378,7 @@ address|matching|name
 0x553840|0.6697247706422018|TTaskForce::OrderSendInTheMarines
 0x5539c0|1.0|TTaskForce::MaxOut
 0x553a50|1.0|TTaskForce::DropShips
-0x553b10|0.4827586206896552|TTaskForce::IsEmpty
+0x553b10|0.41379310344827586|TTaskForce::IsEmpty
 0x553b50|0.4727272727272727|TTaskForce::NoSelection
 0x553bc0|0.6536585365853659|TTaskForce::Add
 0x553e30|1.0|TTaskForce::ElectFlagship
@@ -4667,7 +4664,7 @@ address|matching|name
 0x565f80|0.7428571428571429|TOceanDialog::InvalidateZone
 0x565fc0|0.8235294117647058|TOceanDialog::InvalidateTile
 0x566060|0.6091370558375635|TOceanDialog::BoundingRect
-0x5661d0|0.4806201550387597|TOceanDialog::ConvertPoint
+0x5661d0|0.3875968992248062|TOceanDialog::ConvertPoint
 0x5662e0|0.0|IltTarget_005662e0
 0x5663c0|0.7935483870967742|DrawHexCellBorderGuideLines
 0x5665e0|0.5641025641025641|TOceanDialog::RenderStrategicTileSelectionAndNeighborHighlights
@@ -4735,7 +4732,7 @@ address|matching|name
 0x56a4e0|0.25|`dynamic initializer for 'g_scaledShortConst_6A4080''
 0x56a510|0.4897959183673469|TGamePreferencesPicture::CreateObject
 0x56a590|1.0|TGamePreferencesPicture::GetRuntimeClass
-0x56a5b0|0.7159450897571278|TGamePreferencesPicture::DoPostCreate
+0x56a5b0|0.7032734952481521|TGamePreferencesPicture::DoPostCreate
 0x56ae10|0.19915254237288135|TGamePreferencesPicture::DoEvent
 0x56b210|0.4897959183673469|TFlagOptionsPicture::CreateObject
 0x56b290|1.0|TFlagOptionsPicture::GetRuntimeClass
@@ -5903,7 +5900,7 @@ address|matching|name
 0x5a8d40|0.5252525252525253|TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x5a9090|0.8208955223880597|TTacticalBattleView::PlayTacticalTileEffect
 0x5a9170|0.9541284403669725|TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog
-0x5a9240|0.5369458128078818|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
+0x5a9240|0.5463414634146342|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
 0x5a9550|0.23429541595925296|TTacticalBattleView::DrawUiTilesAndOverlay
 0x5a99e0|1.0|DrawHexSelectionOutlineSegments
 0x5a9b40|0.92|TTacticalBattleView::UpdateTacticalActionControlBitmapForCurrentUnit
@@ -6764,7 +6761,6 @@ address|matching|name
 0x5e666a|1.0|CHotKeyCtrl::Create
 0x5e6710|1.0|CTabCtrl::Create
 0x5e67ec|1.0|CAnimateCtrl::Create
-0x5e68a2|0.7272727272727273|CGdiObject::`scalar deleting destructor'
 0x5e68be|0.42424242424242425|CBrush::~CBrush(void)
 0x5e68f1|1.0|CMenu::Detach(void)
 0x5e691b|0.868421052631579|afxMapHMENU(int)
