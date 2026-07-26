@@ -1488,7 +1488,6 @@ address|name|symbol|size|type|prototype|provenance
 49dab0|TAdorner::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 49dae0|TAdorner::~TAdorner||7|function|TAdorner::~TAdorner()|
 49db60|`dynamic initializer for 'g_scaledShortConst_6A21AC''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A21AC''(void)|library
-49dc60|`dynamic initializer for 'g_defaultPoint_006A2120''||21|function|void __cdecl `dynamic initializer for 'g_defaultPoint_006A2120''(void)|curated
 49dcc0|QuickDrawCompatibilityReturnZeroShort_0049DCC0||4|function|short __cdecl QuickDrawCompatibilityReturnZeroShort_0049DCC0(void)|
 49dce0|QuickDrawCompatibilityNoOp_0049DCE0||1|function|void __cdecl QuickDrawCompatibilityNoOp_0049DCE0(void)|
 49dd00|QuickDrawCompatibilityReturnSecondArgument_0049DD00||5|function|int __cdecl QuickDrawCompatibilityReturnSecondArgument_0049DD00(int unused, int value)|
@@ -3253,8 +3252,7 @@ address|name|symbol|size|type|prototype|provenance
 50e600|OrphanTiny_ThisAdjustJump_a4_0050e600||11|function|undefined OrphanTiny_ThisAdjustJump_a4_0050e600()|
 50e620|TMapMgr::ReadFrom||293|function|undefined WrapperFor_HandleCityDialogNoOpSlot18_At0050e620(int * param_1)|
 50e7a0|TMapMgr::WriteTo||200|function|undefined WrapperFor_HandleCityDialogNoOpSlot14_At0050e7a0(int * param_1)|
-50e8b0|TMapMgr::AllocateAndResetTerrainAndCityScoreTables||81|function|void TMapMgr::AllocateAndResetTerrainAndCityScoreTables(void)|
-50e901|InitializeUMapPrimaryTileRecordDefaultsAndEnsureAuxBuffer||341|function|uint InitializeUMapPrimaryTileRecordDefaultsAndEnsureAuxBuffer(void)|
+50e8b0|TMapMgr::AllocateAndResetTerrainAndCityScoreTables||422|function|void TMapMgr::AllocateAndResetTerrainAndCityScoreTables(void)|
 50ea56|InitializeUMapAuxEntryDefaultsAndSharedNameFields||325|function|uint InitializeUMapAuxEntryDefaultsAndSharedNameFields(void)|
 50ec60|Province::Province||18|function|Province* __thiscall Province::Province(void)|construction+shared_city_record_layout
 50ec90|TMapMgr::BuildOrLoadGlobalMapStateForSession||874|function|char __thiscall BuildOrLoadGlobalMapStateForSession(const char * mapStreamName, char * tuningOverride)|
@@ -8245,6 +8243,7 @@ address|name|symbol|size|type|prototype|provenance
 49c950|thunk_InitializeDirectSoundDeviceAndChannels|||global||
 49cca0|CreateGlobalBackdropWindowWithDefaultBmp3B6|||global||
 49dbea|loc_WriteUiRuntimeCursorTableBase_A|||global||
+49dc60|`dynamic initializer for 'g_defaultPoint_006A2120''||21|function|void __cdecl `dynamic initializer for 'g_defaultPoint_006A2120''(void)|curated
 4b7244|consume_primary_required_resource|||global||
 4b7271|consume_secondary_required_resource|||global||
 4b729a|apply_worker_group_delta|||global||
@@ -9959,11 +9958,6 @@ address|name|symbol|size|type|prototype|provenance
 6a141c|g_pUiResourceHead|||global||
 6a1420|g_pUiResourceContext|||global||
 6a143c|g_McAppUiFlag_006A143C|||global||
-6a1484|g_dibCompressAssertGate_006A1484|||global||
-6a14e0|g_gfxScale6A14E0|||global||
-6a1528|g_scaledShortConst_6A1528|||global||
-6a1580|g_gfxScale6A1580|||global||
-6a15c8|g_scaledShortConst_6A15C8|||global||
 6a15e0|g_RuntimeSelectionRecords006a15e0|||global||
 6a17b0|g_nIncludeViewAssertGate_006A17B0|||global||
 6a17c4|g_nIncludeViewPointerAssertGate_006A17C4|||global||
@@ -10265,6 +10259,11 @@ address|name|symbol|size|type|prototype|provenance
 696948|g_awDiplomacyGrantValueTable|||global||
 698010|s_GameName_00698010|||global||
 69801c|s_PlayerName_0069801c|||global||
+6a1484|g_dibCompressAssertGate_006A1484|||global||
+6a14e0|g_gfxScale6A14E0|||global||
+6a1528|g_scaledShortConst_6A1528|||global||
+6a1580|g_gfxScale6A1580|||global||
+6a15c8|g_scaledShortConst_6A15C8|||global||
 6a15cc|g_diplomacyDialogAssertGuard_006A15CC|||global||windows_listing
 6a1ce0|g_defaultRgbColor_006A1CE0|||global||
 6a1cf8|g_defaultPoint_006A1CF8|||global||
