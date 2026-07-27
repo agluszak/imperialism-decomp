@@ -245,7 +245,7 @@ void TShipyardView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
         TView* queueButton = ResolveControlByTag(kControlTagBut0 + index); // 'but0'+index
         queueButton->AssertValid();
         queueButton->RefreshControl();
-        SetStats(buildQueueSlotValues[selectedRequirementRow]);
+        SetShip(buildQueueSlotValues[selectedRequirementRow]);
       }
     }
   }
