@@ -423,6 +423,86 @@ void TTaskForce::OrderPatrol(unsigned char useType4) {
   g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
 }
 
+// Mac oracle: OrderSail. Sibling of OrderBlockade/OrderSendInTheMarines for map-order
+// kind 1; identical shape, differing only in the order kind it submits.
+// FUNCTION: IMPERIALISM 0x00553270
+void TTaskForce::OrderSail(TZone* orderTarget) {
+  target.asZone = orderTarget;
+  shipOrders = 1;
+  flagship = nullptr;
+
+  for (TMapOrderChildLinkNode* node = shipList; node != nullptr;) {
+    if (node->active != 0) {
+      node = node->next;
+      continue;
+    }
+
+    TShip* child = static_cast<TShip*>(node->payload);
+    child->taskForce = nullptr;
+
+    short bucketIndex = static_cast<short>(
+        g_NavyOrderResourceDescriptorTable[child->type].enabledFlagOrBucketOffset);
+    short* bucketCounter = &shipCountsByToolbarSlot[bucketIndex];
+    --*bucketCounter;
+
+    if (node == shipList) {
+      shipList = node->next;
+    }
+
+    TMapOrderChildLinkNode* next = node->next;
+    if (next != nullptr) {
+      next->prev = node->prev;
+    }
+    if (node->prev != nullptr) {
+      node->prev->next = next;
+    }
+    delete node;
+    node = next;
+  }
+
+  ElectFlagship();
+
+  AssertValid();
+
+  TTaskForce* head = g_pNavyOrderManager->orderQueueHead;
+  bool alreadyQueued = false;
+  for (TTaskForce* queuedEntry = head; queuedEntry != nullptr;
+       queuedEntry = queuedEntry->nextForce) {
+    if (queuedEntry == this) {
+      alreadyQueued = true;
+      break;
+    }
+  }
+
+  if (!alreadyQueued) {
+    int childCount = 0;
+    for (TMapOrderChildLinkNode* countNode = shipList; countNode != nullptr;
+         countNode = countNode->next) {
+      ++childCount;
+    }
+
+    if (childCount <= 0) {
+      Free();
+      return;
+    }
+
+    if (previousForce != nullptr) {
+      previousForce->nextForce = nextForce;
+    }
+    if (nextForce != nullptr) {
+      nextForce->previousForce = previousForce;
+    }
+    previousForce = nullptr;
+    nextForce = head;
+    if (head != nullptr) {
+      head->previousForce = this;
+    }
+    g_pNavyOrderManager->orderQueueHead = this;
+  }
+
+  g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+}
+
 // FUNCTION: IMPERIALISM 0x005533f0
 void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
   // Reseed the zone-graph BFS distance levels (TZone::distanceLevel44) from
@@ -805,6 +885,39 @@ void TTaskForce::ElectFlagship() {
   flagship = nullptr;
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
     flagship = static_cast<TShip*>(node->payload)->Finest(flagship, 0);
+  }
+}
+
+// Mac oracle: Victory. The original guards its own receiver for null (TEST ECX,ECX at
+// 0x553e72 and again at 0x553e98), so a null task force still divides by the ship count
+// it computed -- reproduced as written.
+//
+// The original inlines TAdmiral::Victory and TShip::Victory here: it emits the add and
+// the 499 clamp directly rather than calling 0x551820 / 0x550370. Both live in the same
+// original translation unit as this function (all three are in 0x55xxxx), which is what
+// let MSVC5 inline them while still emitting out-of-line bodies for other callers. Our
+// tree splits those classes into separate .cpp files, so the calls stay calls. Keeping
+// the real method calls is the correct model; the residual is TU organisation, not shape.
+// FUNCTION: IMPERIALISM 0x00553e70
+void TTaskForce::Victory(int experienceGain) {
+  short shipCount = 0;
+  if (this != nullptr) {
+    for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+      ++shipCount;
+    }
+  }
+  int perShipGain = experienceGain * 3 / shipCount;
+
+  TAdmiral* admiral = nullptr;
+  if (this != nullptr && flagship != nullptr) {
+    admiral = flagship->admiral;
+  }
+  if (admiral != nullptr) {
+    admiral->Victory(static_cast<short>(experienceGain));
+  }
+
+  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+    static_cast<TShip*>(node->payload)->Victory(static_cast<short>(perShipGain));
   }
 }
 
