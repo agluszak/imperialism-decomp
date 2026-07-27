@@ -357,7 +357,7 @@ ground truth because it is built from real nafxcw.lib. Method that worked for CI
    naming bug.
 4. Emit one `config/reviewed_library_identities.csv` row per red slot
    (`addr|CView::Name|<recomp mangled symbol>|<prototype>|nafxcw|<obj>|evidence`); take the
-   mangled symbol verbatim from the recomp PDB, never hand-mangle. `just regen-stubs` applies
+   mangled symbol verbatim from the recomp PDB, never hand-mangle. `just build` applies
    them. These are shared nafxcw functions, so the rows also fix every other CView-family
    vtable that references them — run the full `just precommit` (all vtables) to confirm no
    regression.

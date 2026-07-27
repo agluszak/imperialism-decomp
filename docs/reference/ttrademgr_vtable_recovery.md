@@ -191,7 +191,7 @@ vtables — TDealList @ +0xa8, TNextTradeCommand @ +0x100 — not TTradeMgr.)
    0x5b8fe0 slot 0x13) and must be **moved** here. Promote each: real `TTradeMgr::Method`
    with its `// FUNCTION:` marker at the listed address (honest bodies are fine — vtable
    slot correctness is body-independent). Keep markers ascending by address.
-3. `just regen-stubs` (drops the promoted stubs) → `just build` → `just vtable TTradeMgr`
+3. `just build` (regenerates the inputs, dropping the promoted stubs) → `just vtable TTradeMgr`
    and iterate to 100% (classify each residual per the vtable-matching skill:
    scalar-deleting-dtor pairing for slot 0x01, missing overrides, etc.).
 4. **Retype the global**: `g_pNationInteractionStateManager` → `TTradeMgr*` in

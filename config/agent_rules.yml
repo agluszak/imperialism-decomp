@@ -220,9 +220,9 @@ rules:
     status: active
     title: Generated trees change only through their owning tools
     triggers: [generated_touched, markers_changed]
-    required: [run_regen_stubs_after_marker_or_ownership_edits]
+    required: [rebuild_generated_inputs_after_marker_or_ownership_edits]
     forbidden: [hand_edits_under_autogen_or_ghidra_autogen]
-    tools: ["just regen-stubs", "just agent-check"]
+    tools: ["just build", "just agent-check"]
     skill: sync-pipeline
 
   - id: MFC-LIBRARY-019

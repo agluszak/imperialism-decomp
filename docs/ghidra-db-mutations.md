@@ -656,14 +656,18 @@ source-policy signal).
 The manual repair steps from the attempts above are now **automated inside the
 pipeline** (2026-07-02 tooling overhaul):
 
-- `just sync-ghidra` runs `prune-ilt-db-functions --apply` before the export, so
-  stray ILT-range Function entities can no longer survive a resync (old step 3).
-- The curated-symbols merge (`merge_curated_symbols.py`) **drops** any
-  symbols.csv row at a source `// VTABLE:` address instead of re-introducing it
-  for manual deletion (old step 5), and `sync-ghidra` ends with
-  `symbols-integrity-gate` + `vtable-collision-gate` to prove it.
-- `just db-resync` chains the whole thing: `tooling-check` → `sync-ghidra` →
-  `regen-stubs` → `build` → `detect` → `gates` → `stats` → `export-project`.
+The two targets this section was written around, `just sync-ghidra` and
+`just db-resync`, no longer exist; `just ghidra-apply-source-full` and
+`just refresh-inventory` carry the work now (docs/workflows.md §3 is canonical).
+
+- The apply pass prunes stray ILT-range Function entities before the export, so they
+  can no longer survive a resync (old step 3).
+- The curated-symbols merge (`merge_curated_symbols.py`) **drops** any inventory row
+  at a source `// VTABLE:` address instead of re-introducing it for manual deletion
+  (old step 5), and the resync ends with `symbols-integrity-gate` +
+  `vtable-collision-gate` to prove it.
+- `just ghidra-apply-source-full` chains `build` → apply `--apply` → `export-project`;
+  `build` regenerates the stubs and source index itself.
 
 So the procedure is:
 
@@ -673,7 +677,8 @@ So the procedure is:
    The tool disassembles gaps before creating functions and self-reports any
    residual degenerate (1-byte) result — treat a nonzero `degenerate` count as
    worth a look, not silently ignorable.
-3. `just db-resync`. If `just vtable` (393/393 must stay 100%) or `just stats`
+3. `just ghidra-apply-source-full`, then `just refresh-inventory`. If `just vtable`
+   (393/393 must stay 100%) or `just stats`
    (no mass regressions) fails partway, fix forward and re-run; the pipeline
    ends with `export-project`, so a completed run leaves the committed `.gzf`
    carrying everything.
