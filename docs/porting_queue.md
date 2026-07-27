@@ -378,7 +378,7 @@ untracked; structured rule KB (`config/agent_rules.yml` + `just advice` +
 (`refs/agent-claims/<addr>` refs — agent-start claims with a 24h TTL,
 `just agent-release` frees them, degrades to a warning on remotes that refuse
 custom refs); generated PR title/body from the receipt (`just agent-finish` →
-`build-msvc500/pr-body.md`); consolidated local verification (`just precommit`:
+`build-msvc500/agent-tasks/<branch>/pr-body.md`); consolidated local verification (`just precommit`:
 builds, tooling tests, gates, generated-integrity vs merge base, and the native
 runtime PR suite); `raw_this_offset` antipattern ratchet.
 

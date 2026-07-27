@@ -76,7 +76,8 @@ Start every task through the stateful entrypoint — it runs the investigation
 (`tooling-check`, `func-status`, **`ghidra-portprep`**: owner, callers,
 thunk-resolved callees + owners, virtual slots, globals, jump tables, decompile),
 refuses stale bases and already-claimed/implemented targets, and writes the task
-receipt to `build-msvc500/agent-task.json`:
+receipt to `build-msvc500/agent-tasks/<branch>/receipt.json` (one directory per
+branch, with full per-command logs under `logs/`):
 
 ```sh
 just agent-start port 0xADDR    # mandatory front door — never start blind

@@ -23,7 +23,7 @@ just agent-start port 0xADDR   # investigation front door: refuses stale bases,
                                # by another live branch (refs/agent-claims/*); runs
                                # tooling-check, func-status, ghidra-portprep, the
                                # initial compare, library-identify; writes
-                               # build-msvc500/agent-task.json
+                               # build-msvc500/agent-tasks/<branch>/receipt.json
 just advice 0xADDR             # the 5-10 most relevant active rules for this target
                                # (from config/agent_rules.yml); `just advice --diff`
                                # selects by the current working diff instead
@@ -33,7 +33,9 @@ just agent-check               # diff-aware verification: regenerates build inpu
                                # compare+triage of every touched address (added markers
                                # and edited bodies, mapped hunk->marker), gates, tests,
                                # generated-integrity gate on precommit's own base
-just agent-finish              # PR title + body from the receipt (build-msvc500/pr-body.md)
+just agent-finish              # PR title + body from the receipt; REFUSES unless
+                               # agent-check is green for this exact tree
+                               # (build-msvc500/agent-tasks/<branch>/pr-body.md)
 just agent-release             # after the work lands: free the claim refs (24h TTL otherwise)
 ```
 
