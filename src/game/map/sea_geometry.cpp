@@ -12,6 +12,7 @@
 
 #include "decomp_types.h"
 #include "game/map/TMapMgr.h"
+#include "game/map/map_overlay_geometry.h"
 #include "game/globals/prelude.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
@@ -368,6 +369,102 @@ void SeaSegment::InitFromPoints(const Seapoint* p0, const Seapoint* p1) {
 // TEMPLATE: IMPERIALISM 0x0052b500
 // stretch::Detach
 
+// Flood a region id along a chain of border segments. Starting from one segment/edge-side,
+// stamp the side's carried attribute with regionId, then find the segment whose matching
+// endpoint coincides (after horizontal map wrap) and whose heading turns least, and repeat
+// from there. Stops when the next side is already stamped.
+//
+// Both parameters are re-assigned per hop, which is why they are locals rather than a
+// recursion: the original mutates its own argument slots and jumps back to the top.
+// FUNCTION: IMPERIALISM 0x0052b520
+void AssignRegionIdAlongBorderSegmentChain(unsigned int index, char side, short regionId) {
+  while (true) {
+    int sideIndex = side == '\0';
+    // The record is taken before the slot is stretched, and the stretch's result is
+    // discarded -- the original reads through the pre-stretch pointer.
+    SeaSegment* record = g_regionBorderLinkTable_006a3900.At(index);
+    g_regionBorderLinkTable_006a3900[index];
+    if (record->AttrBySideIndex(sideIndex) != -1) {
+      return;
+    }
+    record->AttrBySideIndex(sideIndex) = regionId;
+
+    unsigned short bestTurn = 0xffff;
+    unsigned int bestIndex = 0xffffffff;
+
+    // Heading to measure the other segments' turn against. Coming in on side 0 the chain
+    // arrives from the opposite direction, so the heading is rotated half a turn.
+    short reversedAngle;
+    const short* baseAnglePtr;
+    if (side != '\0') {
+      baseAnglePtr = &g_regionBorderLinkTable_006a3900.At(index)->angle14;
+    } else {
+      reversedAngle =
+          static_cast<short>(g_regionBorderLinkTable_006a3900.At(index)->angle14 - 0x7001);
+      baseAnglePtr = &reversedAngle;
+    }
+    short baseAngle = *baseAnglePtr;
+
+    // The endpoint the chain continues from: endpoint 0 when arriving on side 1, endpoint 1
+    // when arriving on side 0.
+    SeaSegment* current = g_regionBorderLinkTable_006a3900.At(index);
+    int endpoint0[2];
+    int endpoint1[2];
+    int* joint;
+    if (side != '\0') {
+      endpoint0[0] = current->x0;
+      endpoint0[1] = current->y0;
+      joint = endpoint0;
+    } else {
+      endpoint1[0] = current->x1;
+      endpoint1[1] = current->y1;
+      joint = endpoint1;
+    }
+    joint = WrapExtendedMapXCoordinateInPlace(joint);
+    int jointX = joint[0];
+    int jointY = joint[1];
+
+    unsigned int candidate = 0;
+    if (g_regionBorderLinkTable_006a3900.count != 0) {
+      do {
+        if (candidate != index) {
+          SeaSegment* other = g_regionBorderLinkTable_006a3900.At(candidate);
+          int otherStart[2];
+          otherStart[0] = other->x0;
+          otherStart[1] = other->y0;
+          int* wrappedStart = WrapExtendedMapXCoordinateInPlace(otherStart);
+          if (jointY == wrappedStart[1] && jointX == wrappedStart[0]) {
+            unsigned short turn = static_cast<unsigned short>(
+                g_regionBorderLinkTable_006a3900.At(candidate)->angle14 - baseAngle);
+            if (turn <= bestTurn) {
+              bestTurn = turn;
+              bestIndex = candidate;
+              side = '\0';
+            }
+          }
+
+          SeaSegment* otherAgain = g_regionBorderLinkTable_006a3900.At(candidate);
+          int otherEnd[2];
+          otherEnd[0] = otherAgain->x1;
+          otherEnd[1] = otherAgain->y1;
+          int* wrappedEnd = WrapExtendedMapXCoordinateInPlace(otherEnd);
+          if (jointY == wrappedEnd[1] && jointX == wrappedEnd[0]) {
+            unsigned short turn = static_cast<unsigned short>(
+                g_regionBorderLinkTable_006a3900.At(candidate)->angle14 - baseAngle - 0x7001);
+            if (turn <= bestTurn) {
+              bestTurn = turn;
+              bestIndex = candidate;
+              side = '\x01';
+            }
+          }
+        }
+        candidate = candidate + 1;
+      } while (candidate < static_cast<unsigned int>(g_regionBorderLinkTable_006a3900.count));
+    }
+    index = bestIndex;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0052bef0
 void SeaSegment::ExtractWrappedEndpoint(int* out, char side) const {
   if (side != '\0') {
@@ -452,8 +549,8 @@ void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b
 
 // FUNCTION: IMPERIALISM 0x0052d030
 double Seapoint::WrappedDeltaMetric(const Seapoint* other) const {
-  int otherCoordinate = other->coord00;
   int thisCoordinate = coord00;
+  int otherCoordinate = other->coord00;
   int rowDelta = thisCoordinate / 0xd8 - otherCoordinate / 0xd8;
   if (rowDelta < 0) {
     rowDelta = -rowDelta;

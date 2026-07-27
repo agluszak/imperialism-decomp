@@ -84,7 +84,9 @@ public:
     if (index >= static_cast<unsigned int>(capacity)) {
       OverStretch(index + 1);
     }
-    if (static_cast<unsigned int>(count) <= index) {
+    // `index >= count` rather than `count <= index`: the original's inlined copies compare
+    // the index register against the count global in that order.
+    if (index >= static_cast<unsigned int>(count)) {
       count = index + 1;
     }
     return data[index];
