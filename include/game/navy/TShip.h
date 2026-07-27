@@ -25,6 +25,9 @@ public:
   short type;
   short pad06;
   TZone* location;
+
+  // Plain setter for `location`. 0x0054fc60, __thiscall.
+  void SetLocation(TZone* zone);
   // Parent map-order entry this node is queued under (cleared by ReassignToForce /
   // the entry-side prune paths).
   TTaskForce* taskForce;

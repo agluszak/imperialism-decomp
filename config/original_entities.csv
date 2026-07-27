@@ -2413,7 +2413,7 @@ address|name|symbol|size|type|prototype|provenance
 4d7930|AssignSharedStringFromDescriptorNameOrDefault||150|function|undefined AssignSharedStringFromDescriptorNameOrDefault()|
 4d7a00|SetNationDisplayNameAndLocalizationSlotRef||45|function|undefined SetNationDisplayNameAndLocalizationSlotRef()|
 4d7a40|TCountry::LoadNationDisplayNameSharedRefFromField8||94|function|void LoadNationDisplayNameSharedRefFromField8(CString * destString)|
-4d7ac0|IltTarget_004d7ac0||16|function|undefined IltTarget_004d7ac0()|
+4d7ac0|TCountry::LoadNationDisplayNameRawFromField8||16|function|void __thiscall TCountry::LoadNationDisplayNameRawFromField8(CString * destString)|curated
 4d7ae0|TCountry::AddToNationMetricAtField10||15|function|undefined AddToNationMetricAtField10()|
 4d7b00|TCountry::ReturnFalseNationStateActionStub||5|function|undefined ReturnFalseNationStateActionStub()|
 4d7b20|TCountry::ApplyJoinEmpireModeForTargetNation||161|function|void __thiscall ApplyJoinEmpireModeForTargetNation(int targetNationSlot,int mode)|
@@ -4235,7 +4235,7 @@ address|name|symbol|size|type|prototype|provenance
 54fab0|TShip::WriteTo||123|function|undefined SerializeNavyPrimaryOrderNodeToStream()|
 54fb50|TShip::ReadFrom||126|function|undefined DeserializeNavyPrimaryOrderNodeFromStream()|
 54fbf0|RegenerateNavyPrimaryOrderDisplayNameUntilUnique||72|function|undefined RegenerateNavyPrimaryOrderDisplayNameUntilUnique()|
-54fc60|IltTarget_0054fc60||10|function|undefined IltTarget_0054fc60()|
+54fc60|TShip::SetLocation||10|function|void __thiscall TShip::SetLocation(TZone * zone)|curated
 54fc80|IltTarget_0054fc80||19|function|undefined IltTarget_0054fc80()|
 54fd50|RecomputeGlobalCapabilityAverages||296|function|void __cdecl RecomputeGlobalCapabilityAverages(void)|
 54fee0|GetNavyContextPointerFromGlobalTableByIndex||12|function|undefined GetNavyContextPointerFromGlobalTableByIndex()|
@@ -4486,7 +4486,7 @@ address|name|symbol|size|type|prototype|provenance
 55f140|TZone::ComputeMapActionContextNodeValueAverage||337|function|int __thiscall ComputeMapActionContextNodeValueAverage(void)|
 55f300|DispatchMapActionContextCallbackViaField24||16|function|undefined DispatchMapActionContextCallbackViaField24()|
 55f320|IltTarget_0055f320||81|function|undefined IltTarget_0055f320()|
-55f3a0|IltTarget_0055f3a0||16|function|undefined IltTarget_0055f3a0()|
+55f3a0|TZone::AppendUniqueSecondaryNeighbor||16|function|void __thiscall TZone::AppendUniqueSecondaryNeighbor(Province * province)|curated
 55f3c0|IltTarget_0055f3c0||81|function|undefined IltTarget_0055f3c0()|
 55f440|ContainsCityStatePointerInZoneArrayByCityIndex||104|function|undefined ContainsCityStatePointerInZoneArrayByCityIndex()|
 55f4d0|TZone::HasSecondaryNeighborWithNationTag||73|function|undefined HasSecondaryNeighborWithNationTag()|

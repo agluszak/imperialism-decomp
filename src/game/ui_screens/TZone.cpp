@@ -274,6 +274,11 @@ void TZone::AppendUniquePrimaryNeighbor(TZone* zone) {
   primaryNeighbors.Add(zone);
 }
 
+// FUNCTION: IMPERIALISM 0x0055f3a0
+void TZone::AppendUniqueSecondaryNeighbor(Province* province) {
+  secondaryNeighbors.Add(province);
+}
+
 // FUNCTION: IMPERIALISM 0x0055f440
 char TZone::ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex) {
   unsigned int entryCount = static_cast<unsigned int>(this->secondaryNeighbors.Count());
