@@ -140,6 +140,16 @@ void TAdmiral::ReadFrom(TStream* stream) {
   }
 }
 
+// Mac oracle: Victory. Clamped so experiencePoints / 100 stays within the four
+// skill tiers the readers expect.
+// FUNCTION: IMPERIALISM 0x00551820
+void TAdmiral::Victory(short experienceGain) {
+  experiencePoints = static_cast<short>(experiencePoints + experienceGain);
+  if (experiencePoints >= 500) {
+    experiencePoints = 499;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00551850
 void TAdmiral::ReassignThyself() {
   if (this->assignedShip != 0) {
@@ -167,6 +177,19 @@ void TAdmiral::ReassignThyself() {
   if (best == 0) {
     this->Free();
   }
+}
+
+// Mac oracle: IsSeniorTo. The original tests the receiver itself for null, so a null
+// admiral compares junior to everything and any admiral outranks a null argument.
+// FUNCTION: IMPERIALISM 0x00551990
+unsigned char TAdmiral::IsSeniorTo(const TAdmiral* other) const {
+  if (this == 0) {
+    return 0;
+  }
+  if (other == 0) {
+    return 1;
+  }
+  return experiencePoints > other->experiencePoints;
 }
 
 // Mac oracle: TAdmiral::EstimateEnemyForces(short*, const TZone*, short) const.

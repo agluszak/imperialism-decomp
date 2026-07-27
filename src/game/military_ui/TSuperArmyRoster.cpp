@@ -34,7 +34,7 @@ void TSuperArmyRoster::PopulateArmyOrderPageEntries(TView* panel, int* offsetLay
       continue;
     }
     for (TMilitaryUnit* unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain98;
-         unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+         unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
       TMiniArmyLine* line = new TMiniArmyLine;
       int lineBounds[2] = {0xec, 0x12};
       line->SetLineDataRowAndBounds(0, 0, lineBounds);

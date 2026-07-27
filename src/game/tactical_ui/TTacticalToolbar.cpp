@@ -63,7 +63,7 @@ void TTacticalToolbar::Draw(RECT* rectBuffer) {
 
   TArmyTacUnit* sideAUnit = static_cast<TArmyTacUnit*>(currentUnit8C);
   if (sideAUnit != nullptr) {
-    int qualityPercent = sideAUnit->sourceUnit38->field_38;
+    int qualityPercent = sideAUnit->sourceUnit38->experiencePercent38;
     short barWidth = static_cast<short>(sideAUnit->qualityLevel10) * 0xb;
     if (qualityPercent % 100 > 0x31) {
       barWidth += 5;
@@ -82,7 +82,7 @@ void TTacticalToolbar::Draw(RECT* rectBuffer) {
   TArmyTacUnit* sideBUnit = otherSideCurrentUnit90;
   if (sideBUnit != nullptr) {
     short barWidth = static_cast<short>(sideBUnit->qualityLevel10) * 0xb;
-    int qualityPercent = sideBUnit->sourceUnit38->field_38;
+    int qualityPercent = sideBUnit->sourceUnit38->experiencePercent38;
     if (qualityPercent % 100 > 0x31) {
       barWidth += 5;
     }

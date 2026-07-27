@@ -45,6 +45,15 @@ public:
   // 0x552310..0x552404 body into three overlapping orphan functions.
   void ReassignToZone(TZone* zone); // 0x552310
 
+  // Mac oracle: Victory. A won engagement grants experience; the total is clamped to
+  // 499 so the derived skill tier (experiencePoints / 100) never exceeds four.
+  void Victory(short experienceGain); // 0x551820
+
+  // Mac oracle: IsSeniorTo. Compares experience. Guards a null receiver and a null
+  // argument the way the original does: a null admiral is junior to everyone, and
+  // any admiral is senior to none.
+  unsigned char IsSeniorTo(const TAdmiral* other) const; // 0x551990
+
   // Mac oracle: NameThyself. Regenerates displayName until it is unique in the
   // global admiral list.
   void NameThyself(); // 0x552450

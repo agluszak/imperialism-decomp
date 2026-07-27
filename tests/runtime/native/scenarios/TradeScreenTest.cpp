@@ -7,10 +7,14 @@
 #include "game/globals/ui_core_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/map/TMapUberPicture.h"
+#include "game/nation/TGreatPower.h"
 #include "game/turn_event_codes.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
+#include "game/ui_screens/TSimMgr.h"
 #include "game/ui_tags_common.h"
+#include "game/ui_widgets/TAmtBar.h"
 #include "game/ui_widgets/TTradeCluster.h"
 #include "game/ui_widgets/TTradeOrderPicture.h"
 #include "game/ui_widgets/TTradeScreenPicture.h"
@@ -19,7 +23,9 @@ namespace {
 
 class TradeScreenTestCase : public RuntimeScenario {
 public:
-  TradeScreenTestCase() : phase(kActivateTradeScreen), selectedRow(0), initialBidBitmap(0) {}
+  TradeScreenTestCase()
+      : phase(kActivateTradeScreen), selectedRow(0), selectedSellRow(0), initialBidBitmap(0),
+        initialSellValue(0), initialBarValue(0) {}
 
   const char* Name() const override {
     return "trade_screen_operates";
@@ -52,6 +58,14 @@ public:
       ActivateBid();
     } else if (phase == kVerifyBid) {
       VerifyBid();
+    } else if (phase == kActivateOffer) {
+      ActivateOffer();
+    } else if (phase == kVerifyOffer) {
+      VerifyOffer();
+    } else if (phase == kVerifyDecrease) {
+      VerifyDecrease();
+    } else if (phase == kVerifyIncrease) {
+      VerifyIncrease();
     } else if (phase == kReturnToMap) {
       ReturnToMap();
     } else {
@@ -71,6 +85,10 @@ private:
     kWaitForTradeScreen,
     kActivateBid,
     kVerifyBid,
+    kActivateOffer,
+    kVerifyOffer,
+    kVerifyDecrease,
+    kVerifyIncrease,
     kReturnToMap,
     kWaitForMap
   };
@@ -183,6 +201,156 @@ private:
       FailScenario("\"Board of Trade bid selection did not enter the active bid state\"");
       return;
     }
+    phase = kActivateOffer;
+    EnterScenarioStep("activating_trade_offer", "select_actionable_trade_offer");
+    RequestScenarioTick();
+  }
+
+  void ActivateOffer() {
+    TView* mainView = CurrentMainView();
+    if (mainView == 0 || mainView->IsKindOf(RUNTIME_CLASS(TTradeScreenPicture)) == 0) {
+      FailScenario("\"Board of Trade disappeared before offer selection\"");
+      return;
+    }
+
+    TTradeOrderPicture* offer = 0;
+    for (short commodity = 0; commodity < 0x11; ++commodity) {
+      TTradeCluster* row = static_cast<TTradeCluster*>(
+          mainView->ResolveControlByTag(kTradeSellPropagationTags[commodity]));
+      TTradeOrderPicture* candidate =
+          row != 0 ? static_cast<TTradeOrderPicture*>(row->ResolveControlByTag(kControlTagOffr))
+                   : 0;
+      TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+      if (candidate != 0 && candidate->IsActionable() != 0 &&
+          (candidate->glyphBase84 == 0x842 || candidate->glyphBase84 == 0x850) &&
+          activeNation != 0 && QueryNationMetricBySlot(activeNation, row->tradeMetricSlot) > 1) {
+        selectedSellRow = row;
+        offer = candidate;
+        break;
+      }
+    }
+    if (offer == 0) {
+      FailScenario("\"Board of Trade has no inactive actionable offer control\"");
+      return;
+    }
+
+    TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    TNumberText* capacity =
+        static_cast<TNumberText*>(mainView->ResolveControlByTag(kControlTagMCap));
+    int available = QueryNationMetricBySlot(activeNation, selectedSellRow->tradeMetricSlot);
+    int testCapacity = available < 3 ? available : 3;
+    if (capacity == 0 || testCapacity <= 1) {
+      FailScenario("\"Board of Trade could not seed an adjustable sell capacity\"");
+      return;
+    }
+    activeNation->tradeCapacity = static_cast<short>(testCapacity);
+    capacity->SetControlValue(testCapacity, 1);
+    TAmtBar* sellBar = static_cast<TAmtBar*>(selectedSellRow->ResolveControlByTag(kControlTagBar));
+    if (sellBar == 0) {
+      FailScenario("\"Board of Trade offer is missing its amount bar\"");
+      return;
+    }
+    sellBar->auxValueA = static_cast<short>(testCapacity);
+
+    phase = kVerifyOffer;
+    EnterScenarioStep("verifying_trade_offer", "click_trade_offer_control");
+    if (!RuntimeUiDriver::ClickView(offer)) {
+      FailScenario("\"Board of Trade offer control has no native host\"");
+      return;
+    }
+    RequestScenarioTick();
+  }
+
+  bool ResolveSellControls(TNumberText** sellOut, TAmtBar** barOut, TView** leftOut,
+                           TView** rightOut) {
+    if (selectedSellRow == 0) {
+      return false;
+    }
+    *sellOut = static_cast<TNumberText*>(selectedSellRow->ResolveControlByTag(kControlTagSell));
+    *barOut = static_cast<TAmtBar*>(selectedSellRow->ResolveControlByTag(kControlTagBar));
+    *leftOut = selectedSellRow->ResolveControlByTag(kControlTagLeft);
+    *rightOut = selectedSellRow->ResolveControlByTag(kControlTagRght);
+    return *sellOut != 0 && *barOut != 0 && *leftOut != 0 && *rightOut != 0;
+  }
+
+  bool SellLabelHasOwnLayout(TNumberText* sell, TView* left, TView* right) {
+    CRect sellBounds;
+    CRect leftBounds;
+    CRect rightBounds;
+    sell->QueryBounds(&sellBounds);
+    left->QueryBounds(&leftBounds);
+    right->QueryBounds(&rightBounds);
+    return sellBounds.left >= 0 && sellBounds.top >= -2 &&
+           sellBounds.bottom <= selectedSellRow->frameHeight38 &&
+           sellBounds.right <= leftBounds.left && leftBounds.right <= rightBounds.left;
+  }
+
+  void VerifyOffer() {
+    TNumberText* sell;
+    TAmtBar* bar;
+    TView* left;
+    TView* right;
+    if (!ResolveSellControls(&sell, &bar, &left, &right)) {
+      FailScenario("\"active trade offer is missing its quantity controls\"");
+      return;
+    }
+    initialSellValue = sell->UpdateControlCachedIntFromWindowText();
+    initialBarValue = bar->rangeOrMaxValue;
+    if (selectedSellRow->GetBoolSlot1DC() == 0 || initialSellValue <= 1 ||
+        !SellLabelHasOwnLayout(sell, left, right)) {
+      FailScenario("\"trade offer did not expose a non-overlapping adjustable sell quantity\"");
+      return;
+    }
+
+    phase = kVerifyDecrease;
+    EnterScenarioStep("decreasing_trade_sell_amount", "click_trade_sell_left_arrow");
+    if (!RuntimeUiDriver::ClickView(left)) {
+      FailScenario("\"trade sell decrease control has no native host\"");
+      return;
+    }
+    RequestScenarioTick();
+  }
+
+  void VerifyDecrease() {
+    TNumberText* sell;
+    TAmtBar* bar;
+    TView* left;
+    TView* right;
+    if (!ResolveSellControls(&sell, &bar, &left, &right)) {
+      FailScenario("\"trade sell controls disappeared after decrease\"");
+      return;
+    }
+    int decreasedValue = sell->UpdateControlCachedIntFromWindowText();
+    if (decreasedValue != initialSellValue - 1 || bar->rangeOrMaxValue >= initialBarValue ||
+        !SellLabelHasOwnLayout(sell, left, right)) {
+      char failure[160];
+      wsprintfA(failure, "\"trade sell decrease mismatch: sell %d->%d bar %d->%d label_layout=%d\"",
+                initialSellValue, decreasedValue, initialBarValue, bar->rangeOrMaxValue,
+                SellLabelHasOwnLayout(sell, left, right));
+      FailScenario(failure);
+      return;
+    }
+
+    phase = kVerifyIncrease;
+    EnterScenarioStep("increasing_trade_sell_amount", "click_trade_sell_right_arrow");
+    if (!RuntimeUiDriver::ClickView(right)) {
+      FailScenario("\"trade sell increase control has no native host\"");
+      return;
+    }
+    RequestScenarioTick();
+  }
+
+  void VerifyIncrease() {
+    TNumberText* sell;
+    TAmtBar* bar;
+    TView* left;
+    TView* right;
+    if (!ResolveSellControls(&sell, &bar, &left, &right) ||
+        sell->UpdateControlCachedIntFromWindowText() != initialSellValue ||
+        bar->rangeOrMaxValue != initialBarValue || !SellLabelHasOwnLayout(sell, left, right)) {
+      FailScenario("\"trade sell increase did not restore the number and bar after a decrease\"");
+      return;
+    }
     phase = kReturnToMap;
     EnterScenarioStep("returning_from_trade_screen", "click_trade_end_control");
     RequestScenarioTick();
@@ -224,7 +392,10 @@ private:
 
   Phase phase;
   TTradeCluster* selectedRow;
+  TTradeCluster* selectedSellRow;
   short initialBidBitmap;
+  int initialSellValue;
+  short initialBarValue;
 };
 
 TradeScreenTestCase g_test;

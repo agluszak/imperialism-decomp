@@ -2216,7 +2216,7 @@ void TMapDialog::DrawTile(short tileIndex, short screenX, short screenY) {
 // FUNCTION: IMPERIALISM 0x00523640
 void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX,
                                                 int projectedY, int flag, short tileIndex) {
-  bool belongsToActiveNation = orderEntry->field_18 == g_pSimMgr->GetActiveNationId();
+  bool belongsToActiveNation = orderEntry->ownerNationSlot18 == g_pSimMgr->GetActiveNationId();
   if (orderEntry->unitOrder > static_cast<UnitOrder>(4) && belongsToActiveNation) {
     int animationTag = PointerAddressLong32(orderEntry);
     if (g_pUiAnimator->FindRegisteredAnimationByTag(animationTag) == 0) {
@@ -2266,7 +2266,8 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
                                    &destinationRect, 0x24, 0);
 
   if (flag == 0 && !belongsToActiveNation) {
-    short ownerBadgeX = g_pGlobalMapState->GetMapImprovementTierBucketOffset(orderEntry->field_18);
+    short ownerBadgeX =
+        g_pGlobalMapState->GetMapImprovementTierBucketOffset(orderEntry->ownerNationSlot18);
     CRect ownerSourceRect(ownerBadgeX, 0, ownerBadgeX + 9, 6);
     CRect ownerDestinationRect(destinationRect.left + 0x1c, destinationRect.bottom - 8,
                                destinationRect.left + 0x25, destinationRect.bottom - 2);
@@ -2312,7 +2313,7 @@ void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
 
   short displayedUnitCount = 0;
   for (TMilitaryUnit* current = unit; current != 0;
-       current = static_cast<TMilitaryUnit*>(current->nextOnTile)) {
+       current = static_cast<TMilitaryUnit*>(current->nextAtLocation14)) {
     if (current->orderType != EncodeMilitaryUnitKind(kMilitaryUnitMinutemen) &&
         current->orderType != EncodeMilitaryUnitKind(kMilitaryUnitMilitia) &&
         current->orderType != EncodeMilitaryUnitKind(kMilitaryUnitConscripts)) {

@@ -52,7 +52,7 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
       unit = 0;
     }
 
-    for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+    for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
       short orderState = unit->unitOrder;
       switch (orderState) {
       case 0:

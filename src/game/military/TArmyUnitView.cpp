@@ -64,7 +64,7 @@ void TArmyUnitView::Draw(RECT* rectBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&descriptor);
   SetQuickDrawFillColor(0);
 
-  short level = militaryUnit60->field_34;
+  short level = militaryUnit60->strength34;
   short sVar1 = level / 0x19 + 1;
   if (sVar1 > 0x14) {
     sVar1 = 0x14;
@@ -90,7 +90,7 @@ void TArmyUnitView::Draw(RECT* rectBuffer) {
   DrawCenteredGuideLineOnMapDc(0x93, 0x27);
   DrawCenteredGuideLineOnMapDc(0x93, 0x21);
 
-  short xpPercent = militaryUnit60->field_38;
+  short xpPercent = militaryUnit60->experiencePercent38;
   short barWidth = (xpPercent / 100) * 0xb;
   if (xpPercent % 100 > 0x31) {
     barWidth += 5;

@@ -111,7 +111,6 @@ void TTradeCluster::DoPostCreate(int styleSeed) {
     sellControl->QueryBounds(&boundsBuffer);
     boundsBuffer.top = boundsBuffer.top - 2;
     sellControl->ApplyBounds(&boundsBuffer, 1);
-    sellControl->SetState(-1, 0);
   }
 
   TAmtBar* barControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
@@ -176,11 +175,11 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
         FailNilPointerInUSmallViews(kAssertLineTradeSellIncCap);
       }
 
-      if ((int)maxByNationMetric < sellValue) {
+      if (sellValue < (int)maxByNationMetric) {
         int capacityValue = capacityControl->UpdateControlCachedIntFromWindowText();
-        if ((int)maxByNationMetric < capacityValue) {
-          sellControl->SetEnabled(maxByNationMetric + 1 != 0, 1);
-          this->SetMoveAmount(static_cast<short>(maxByNationMetric + 1));
+        if (sellValue < capacityValue) {
+          sellControl->SetEnabled(sellValue + 1 != 0, 1);
+          this->SetMoveAmount(static_cast<short>(sellValue + 1));
           return;
         }
       }

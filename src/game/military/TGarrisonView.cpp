@@ -48,7 +48,7 @@ void TGarrisonView::StuffValues(short tileIndex) {
       line->militaryUnit10 = unit;
       AddOrderedEntry(line);
     }
-    unit = static_cast<TMilitaryUnit*>(unit->nextOnTile);
+    unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14);
   }
 
   AfterStuffValues();
@@ -69,7 +69,7 @@ void TGarrisonView::Close() {
       if (unit->unitOrder == static_cast<UnitOrder>(kDismissOnCloseOrderState)) {
         hasDismissibleOrder = 1;
       }
-      unit = static_cast<TMilitaryUnit*>(unit->nextOnTile);
+      unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14);
     }
 
     if (hasDismissibleOrder != 0) {
@@ -85,7 +85,7 @@ void TGarrisonView::Close() {
         }
         while (unit != 0) {
           if (unit->unitOrder == static_cast<UnitOrder>(kDismissOnCloseOrderState)) {
-            TMilitaryUnit* nextUnit = static_cast<TMilitaryUnit*>(unit->nextOnTile);
+            TMilitaryUnit* nextUnit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14);
             CString unitName;
             unitName = unit->name24;
             unsigned char isSecretUnit = unitName.Compare(g_szGarrisonSecretUnitNameSnidely) == 0;
@@ -108,7 +108,7 @@ void TGarrisonView::Close() {
             unit->Free();
             unit = nextUnit;
           } else {
-            unit = static_cast<TMilitaryUnit*>(unit->nextOnTile);
+            unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14);
           }
         }
       }

@@ -11,7 +11,6 @@
 
 const int kControlTagForM =
     IMPERIALISM_FOURCC('F', 'o', 'r', 'M'); // trade-desk detail-level toggle
-const int kControlTagNnkParen = IMPERIALISM_FOURCC('N', 'n', 'k', '('); // TCityInteriorMinister.cpp
 const int kControlTagAexp =
     IMPERIALISM_FOURCC('a', 'e', 'x', 'p'); // TUniversityView.cpp; 1 Mac screen(s)
 const int kControlTagApap =
