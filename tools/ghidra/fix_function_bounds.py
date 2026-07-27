@@ -52,6 +52,15 @@ def parse_args() -> argparse.Namespace:
             "turned into instructions"
         ),
     )
+    parser.add_argument(
+        "--clear-data-holes",
+        action="store_true",
+        help=(
+            "before re-bounding, clear stale DATA units inside body holes and disassemble "
+            "them; needed when a data definition masks real code in the middle of a "
+            "function (the body then stops at the data and resumes after it)"
+        ),
+    )
     parser.add_argument("--apply", action="store_true",
                         help="Fix the bounds and save the program (default: dry-run).")
     parser.add_argument("--force", action="store_true",
@@ -123,6 +132,31 @@ def main() -> int:
                         DisassembleCommand(boundary, None, True).applyTo(
                             program, pyghidra.task_monitor()
                         )
+                if args.clear_data_holes:
+                    # A defined DATA unit sitting on real code splits the body in two: the
+                    # flow that fixupFunctionBody follows stops at the data and picks up
+                    # again after it. Clearing the data and disassembling the hole hands
+                    # those bytes back. Holes that overlap another function are left alone
+                    # so this can never cannibalise a neighbour.
+                    for lo, hi in body_holes(func):
+                        start = af.getAddress(lo + 1)
+                        end = af.getAddress(hi - 1)
+                        if start.getOffset() > end.getOffset():
+                            continue
+                        owner = fm.getFunctionContaining(start)
+                        if owner is not None and owner.getEntryPoint().getOffset() != t:
+                            print(f"      hole 0x{lo + 1:08x}-0x{hi - 1:08x}: owned by "
+                                  f"0x{owner.getEntryPoint().getOffset():08x} — left alone")
+                            continue
+                        if listing.getDefinedDataAt(start) is None and (
+                            listing.getInstructionAt(start) is not None
+                        ):
+                            continue
+                        listing.clearCodeUnits(start, end, False)
+                        DisassembleCommand(start, None, True).applyTo(
+                            program, pyghidra.task_monitor()
+                        )
+                        print(f"      hole 0x{lo + 1:08x}-0x{hi - 1:08x}: cleared + disassembled")
                 before = func.getBody()
                 CreateFunctionCmd.fixupFunctionBody(program, func, pyghidra.task_monitor())
                 # Never let a re-bound body swallow a neighbouring function.

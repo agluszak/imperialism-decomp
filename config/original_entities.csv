@@ -1488,6 +1488,7 @@ address|name|symbol|size|type|prototype|provenance
 49dab0|TAdorner::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 49dae0|TAdorner::~TAdorner||7|function|TAdorner::~TAdorner()|
 49db60|`dynamic initializer for 'g_scaledShortConst_6A21AC''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A21AC''(void)|library
+49dc60|`dynamic initializer for 'g_defaultPoint_006A2120''||21|function|void __cdecl `dynamic initializer for 'g_defaultPoint_006A2120''(void)|curated
 49dcc0|QuickDrawCompatibilityReturnZeroShort_0049DCC0||4|function|short __cdecl QuickDrawCompatibilityReturnZeroShort_0049DCC0(void)|
 49dce0|QuickDrawCompatibilityNoOp_0049DCE0||1|function|void __cdecl QuickDrawCompatibilityNoOp_0049DCE0(void)|
 49dd00|QuickDrawCompatibilityReturnSecondArgument_0049DD00||5|function|int __cdecl QuickDrawCompatibilityReturnSecondArgument_0049DD00(int unused, int value)|
@@ -8243,7 +8244,6 @@ address|name|symbol|size|type|prototype|provenance
 49c950|thunk_InitializeDirectSoundDeviceAndChannels|||global||
 49cca0|CreateGlobalBackdropWindowWithDefaultBmp3B6|||global||
 49dbea|loc_WriteUiRuntimeCursorTableBase_A|||global||
-49dc60|`dynamic initializer for 'g_defaultPoint_006A2120''||21|function|void __cdecl `dynamic initializer for 'g_defaultPoint_006A2120''(void)|curated
 4b7244|consume_primary_required_resource|||global||
 4b7271|consume_secondary_required_resource|||global||
 4b729a|apply_worker_group_delta|||global||
@@ -9278,15 +9278,7 @@ address|name|symbol|size|type|prototype|provenance
 6978c8|g_MissionOrderDistanceDecayWeightTable_006978c8|||global||
 697958|g_Populate_Beachhead_Mission_LookupTable_00697958|||global||
 697998|TNavyMission::classTNavyMission|||global||
-6979b0|TControlSeaZoneMission::classTControlSeaZoneMission|||global||curated
-6979c8|TEscortMission::classTEscortMission|||global||curated
-6979e0|TBeachheadMission::classTBeachheadMission|||global||curated
-6979f8|TBlockadePortMission::classTBlockadePortMission|||global||curated
-697a10|TScatteredShipsMission::classTScatteredShipsMission|||global||curated
-697a28|TArmyMission::classTArmyMission|||global||curated
-697a40|TAttackProvinceMission::classTAttackProvinceMission|||global||curated
 697a58|TDefendProvinceMission::classTDefendProvinceMission|||global||
-697a70|TInvadeMission::classTInvadeMission|||global||curated
 697cbc|g_szClientSavePrefix_00697CBC|||global||
 698040|s_SourcePathUMultiplayerMgr_00698040|||global||
 69806c|g_szUiOpenParen_0069806C|||global||
@@ -10054,7 +10046,6 @@ address|name|symbol|size|type|prototype|provenance
 6a21c0|g_lastEdgeAutoScrollTick16|||global||
 6a21c4|g_saveDocumentAssertGuard|||global||
 6a2228|g_ptUiAnimatorSurfaceBounds|||global||
-6a224c|g_bStrategicMapSelectionOverlayPhase|||global||
 6a2318|g_ptArmyOrderModalMessage|||global||
 6a2410|g_InfoBarDummyOrigin_006A2410|||global||
 6a24d4|g_Sanitize_City_Counter_Value_006A24D4|||global||
@@ -10265,6 +10256,14 @@ address|name|symbol|size|type|prototype|provenance
 6951d8|g_szResourceMgrSourcePath|||global||
 6951f8|g_szPaletteResourceIdFormat|||global||
 696948|g_awDiplomacyGrantValueTable|||global||
+6979b0|TControlSeaZoneMission::classTControlSeaZoneMission|||global||curated
+6979c8|TEscortMission::classTEscortMission|||global||curated
+6979e0|TBeachheadMission::classTBeachheadMission|||global||curated
+6979f8|TBlockadePortMission::classTBlockadePortMission|||global||curated
+697a10|TScatteredShipsMission::classTScatteredShipsMission|||global||curated
+697a28|TArmyMission::classTArmyMission|||global||curated
+697a40|TAttackProvinceMission::classTAttackProvinceMission|||global||curated
+697a70|TInvadeMission::classTInvadeMission|||global||curated
 698010|s_GameName_00698010|||global||
 69801c|s_PlayerName_0069801c|||global||
 6a1484|g_dibCompressAssertGate_006A1484|||global||
@@ -10325,6 +10324,7 @@ address|name|symbol|size|type|prototype|provenance
 6a2198|g_defaultPoint_006A2198|||global||
 6a21ac|g_scaledShortConst_6A21AC|||global||
 6a21b0|g_defaultPoint_006A21B0|||global||
+6a224c|g_bStrategicMapSelectionOverlayPhase|||global||
 6a3448|g_MapPreviewVerticalOffset6A3448|||global||
 6a5a00|g_offerDeskSheetPosition_006a5a00|||global||listing,mac_resource
 6a5a28|g_offerDeskOffscreenPosition_006a5a28|||global||listing,mac_resource
