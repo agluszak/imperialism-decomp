@@ -131,6 +131,11 @@ case "$1" in
       fail) echo "boom" >&2; exit 1 ;;
     esac ;;
   ghidra-portprep) echo "retired recipe invoked" >&2; exit 2 ;;
+  generated-integrity-gate)
+    if [ "${FAKE_INTEGRITY:-ok}" = "fail" ]; then
+      echo "Generated artifacts must not be committed:" >&2; exit 1
+    fi
+    exit 0 ;;
   *) exit 0 ;;
 esac
 """
@@ -249,6 +254,78 @@ class AgentStartOrchestrationTests(unittest.TestCase):
             agent_task._push_claim = original_push
         self.assertEqual(rc, 2)
         self.assertFalse(agent_task.TASK_JSON.is_file())
+
+
+class AgentCheckGeneratedIntegrityTests(unittest.TestCase):
+    """agent-check must run the generated-integrity gate on precommit's own base.
+
+    imperialism-decomp-uerj: a green receipt used to be followed by a pre-commit
+    failure, because only `just precommit` ran the gate.
+    """
+
+    def setUp(self):
+        self._tmp = tempfile.mkdtemp(prefix="agent-task-check-")
+        tmp = Path(self._tmp)
+        self.origin, self.work = _init_repos(tmp)
+        bin_dir = tmp / "bin"
+        bin_dir.mkdir()
+        just = bin_dir / "just"
+        just.write_text(FAKE_JUST)
+        just.chmod(0o755)
+        self.calls_log = tmp / "calls.log"
+        self._saved_env = dict(os.environ)
+        os.environ["PATH"] = f"{bin_dir}{os.pathsep}{os.environ['PATH']}"
+        os.environ["FAKE_JUST_LOG"] = str(self.calls_log)
+        os.environ.pop("PRECOMMIT_BASE_REF", None)
+        self._saved_root = agent_task.REPO_ROOT
+        self._saved_task_json = agent_task.TASK_JSON
+        agent_task.REPO_ROOT = self.work
+        agent_task.TASK_JSON = self.work / "build-msvc500" / "agent-task.json"
+        # One committed change so cmd_check has a diff to verify. No `// FUNCTION:`
+        # marker: score extraction would then need a real reccmp report, which is not
+        # what these tests are about.
+        (self.work / "src" / "TFoo.cpp").write_text("int TFoo::Compute() { return 1; }\n")
+        _git(self.work, "add", "-A")
+        _git(self.work, "commit", "-m", "work")
+
+    def tearDown(self):
+        agent_task.REPO_ROOT = self._saved_root
+        agent_task.TASK_JSON = self._saved_task_json
+        os.environ.clear()
+        os.environ.update(self._saved_env)
+        shutil.rmtree(self._tmp, ignore_errors=True)
+
+    def _calls(self) -> list[str]:
+        if not self.calls_log.is_file():
+            return []
+        return self.calls_log.read_text().splitlines()
+
+    def test_check_runs_integrity_gate_on_the_merge_base_and_records_it(self):
+        rc = agent_task.cmd_check(Namespace(max_triage=1))
+        self.assertEqual(rc, 0)
+        expected_base = _git(self.work, "merge-base", "HEAD", "origin/main").stdout.strip()
+        self.assertIn(
+            f"generated-integrity-gate --base {expected_base}", self._calls()
+        )
+        receipt = json.loads(agent_task.TASK_JSON.read_text())
+        integrity = receipt["check"]["generated_integrity"]
+        self.assertEqual(integrity["base_ref"], "origin/main")
+        self.assertEqual(integrity["base"], expected_base)
+        self.assertTrue(integrity["ok"])
+
+    def test_integrity_failure_fails_the_check(self):
+        os.environ["FAKE_INTEGRITY"] = "fail"
+        rc = agent_task.cmd_check(Namespace(max_triage=1))
+        self.assertEqual(rc, 1)
+        receipt = json.loads(agent_task.TASK_JSON.read_text())
+        self.assertIn("generated-integrity", receipt["check"]["failures"])
+        self.assertFalse(receipt["check"]["generated_integrity"]["ok"])
+
+    def test_explicit_base_ref_is_honoured_like_precommit(self):
+        os.environ["PRECOMMIT_BASE_REF"] = "main"
+        agent_task.cmd_check(Namespace(max_triage=1))
+        receipt = json.loads(agent_task.TASK_JSON.read_text())
+        self.assertEqual(receipt["check"]["generated_integrity"]["base_ref"], "main")
 
 
 if __name__ == "__main__":

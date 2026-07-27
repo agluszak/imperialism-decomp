@@ -17,7 +17,9 @@ build-msvc500/agent-task.json.
 `agent-check` inspects the actual git diff and derives the workflow from it:
 generated/config files edited without marker changes -> hard error; touched C++ ->
 format-check; then build (which regenerates its inputs), detect, gates (including
-one full progress report), score extraction, targeted triage, and tests.
+one full progress report), score extraction, targeted triage, tests, and the
+generated-artifact integrity gate against the same integration base `just precommit`
+uses, so a green receipt cannot be followed by a pre-commit integrity failure.
 
 `agent-finish` renders the receipt + diff into a summary suitable for a PR body.
 The receipt is guidance for the agent and reviewers — `just precommit`
@@ -106,8 +108,27 @@ def _save_task(task: dict) -> None:
     print(f"[agent-task] receipt written: {TASK_JSON.relative_to(REPO_ROOT)}")
 
 
-def _merge_base() -> str:
-    return _git("merge-base", "HEAD", "origin/main")
+def _integration_base_ref() -> str:
+    """The ref this branch will be integrated into, resolved like `just precommit`.
+
+    PRECOMMIT_BASE_REF wins, then origin/main, then a local main; a single-branch
+    checkout with neither falls back to HEAD so the worktree is still inspected.
+    Keeping this identical to _precommit-generated-integrity-gate is what makes
+    agent-check's verdict mean the same thing as the pre-commit one
+    (imperialism-decomp-uerj).
+    """
+    explicit = os.environ.get("PRECOMMIT_BASE_REF")
+    if explicit:
+        return explicit
+    for ref in ("refs/remotes/origin/main", "refs/heads/main"):
+        proc = _run(["git", "rev-parse", "--verify", "--quiet", ref])
+        if proc.returncode == 0:
+            return "origin/main" if "remotes" in ref else "main"
+    return "HEAD"
+
+
+def _merge_base(base_ref: str | None = None) -> str:
+    return _git("merge-base", "HEAD", base_ref or _integration_base_ref())
 
 
 def _parse_scores(text: str) -> dict[str, float]:
@@ -547,11 +568,30 @@ def cmd_check(args: argparse.Namespace) -> int:
     if _step("test", ["just", "test"], results).returncode != 0:
         failures.append("test")
 
+    # Same gate, same base semantics as `just precommit` — a green agent-check must not
+    # be followed by a pre-commit failure on generated-artifact integrity. No
+    # --no-worktree: one diff against the integration base covers both the committed
+    # branch and uncommitted generated paths still sitting in the worktree.
+    integrity_base_ref = _integration_base_ref()
+    integrity_base = _merge_base(integrity_base_ref)
+    integrity_ok = _step(
+        "generated-integrity",
+        ["just", "generated-integrity-gate", "--base", integrity_base],
+        results,
+    ).returncode == 0
+    if not integrity_ok:
+        failures.append("generated-integrity")
+
     task.setdefault("check", {})
     task["check"] = {
         "checked_utc": _now(),
         "paths": paths,
         "markers_changed": any(MARKER_RE.match(l2) for l2 in diff_text.splitlines()),
+        "generated_integrity": {
+            "base_ref": integrity_base_ref,
+            "base": integrity_base,
+            "ok": integrity_ok,
+        },
         "scores": scores,
         "failures": failures,
         "results": {k: {kk: vv for kk, vv in v.items() if kk != "tail"} | (
