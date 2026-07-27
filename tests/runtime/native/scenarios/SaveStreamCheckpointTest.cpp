@@ -1,4 +1,5 @@
 #include "RuntimeScenario.h"
+#include "flows/RandomGameFlow.h"
 
 #include "game/ArchiveStreamAdapter.h"
 #include "game/assets/TAssetMgr.h"
@@ -76,7 +77,7 @@ public:
   int objectReads;
 };
 
-class SaveStreamCheckpointTestCase : public RuntimeScenario {
+class SaveStreamCheckpointTestCase : public RandomGameScenario {
 public:
   const char* Name() const override {
     return "save_stream_checkpoints";

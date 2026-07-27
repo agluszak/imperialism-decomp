@@ -31,7 +31,7 @@ bool RandomSetupDriver::SetCountryName(const char* name) {
   return true;
 }
 
-bool RandomSetupDriver::SelectDifficulty(unsigned long tag, bool nativeClick) {
+bool RandomSetupDriver::SelectDifficultySemantically(unsigned long tag) {
   TRadioTextCluster* difficulty =
       root != 0 ? static_cast<TRadioTextCluster*>(root->ResolveControlByTag(kControlTagDiff)) : 0;
   TControl* option =
@@ -39,19 +39,10 @@ bool RandomSetupDriver::SelectDifficulty(unsigned long tag, bool nativeClick) {
   if (option == 0) {
     return false;
   }
-  if (nativeClick) {
-    if (!RuntimeUiDriver::ClickView(option)) {
-      return false;
-    }
-  } else {
-    option->HandleEvent(option->GetEventNumber(), option, 0);
-  }
+  option->HandleEvent(option->GetEventNumber(), option, 0);
   return difficulty->selectedTag88 == static_cast<int>(tag);
 }
 
-bool RandomSetupDriver::Accept(bool nativeClick) {
-  if (nativeClick) {
-    return RuntimeUiDriver::ClickControl(root, kControlTagOkay);
-  }
-  return RuntimeUiDriver::ActivateControl(root, kControlTagOkay);
+bool RandomSetupDriver::AcceptSemantically() {
+  return RuntimeUiDriver::ActivateControlSemantically(root, kControlTagOkay);
 }

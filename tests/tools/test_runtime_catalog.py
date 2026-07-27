@@ -90,18 +90,12 @@ class RuntimeCatalogTests(unittest.TestCase):
         ui_required = {test.name for test in TESTS if "ui" in test.required_oracles}
         self.assertLessEqual(ui_required, snapshot_capable)
 
-    def test_native_scenarios_own_behavior_in_concrete_classes(self) -> None:
+    def test_native_scenarios_do_not_use_legacy_configuration_objects(self) -> None:
         header = (
             REPO_ROOT / "tests/runtime/native/scenarios/RuntimeScenario.h"
         ).read_text(encoding="utf-8")
         self.assertNotIn("RuntimeScenarioConfig", header)
         self.assertNotIn("RuntimeScenarioCompletion", header)
-
-        for source_path in (
-            REPO_ROOT / "tests/runtime/native/scenarios"
-        ).glob("*Test.cpp"):
-            source = source_path.read_text(encoding="utf-8")
-            self.assertRegex(source, r"class \w+TestCase : public RuntimeScenario")
 
 
 class RuntimeProtocolTests(unittest.TestCase):

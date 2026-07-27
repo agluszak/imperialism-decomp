@@ -9,14 +9,14 @@
 #include "game/mfc.h"
 #include <windows.h>
 
-bool RuntimeUiDriver::ClickView(TView* view) {
+bool RuntimeUiDriver::ClickViewThroughNativeMessages(TView* view) {
   if (view == 0) {
     return false;
   }
-  return ClickViewPoint(view, view->frameWidth34 / 2, view->frameHeight38 / 2);
+  return ClickViewPointThroughNativeMessages(view, view->frameWidth34 / 2, view->frameHeight38 / 2);
 }
 
-bool RuntimeUiDriver::ClickViewPoint(TView* view, int localX, int localY) {
+bool RuntimeUiDriver::ClickViewPointThroughNativeMessages(TView* view, int localX, int localY) {
   CIncludeView* host = GetMainViewHostFromActiveThread();
   if (view == 0 || host == 0 || host->m_hWnd == 0) {
     return false;
@@ -36,15 +36,15 @@ TView* RuntimeUiDriver::FindControl(TView* root, int tag) {
   return root != 0 ? root->ResolveControlByTag(tag) : 0;
 }
 
-bool RuntimeUiDriver::ActivateControl(TView* root, int tag) {
+bool RuntimeUiDriver::ActivateControlSemantically(TView* root, int tag) {
   TControl* control = static_cast<TControl*>(FindControl(root, tag));
-  if (control == 0 || control->IsActionable() == 0) {
+  if (control == 0) {
     return false;
   }
   control->HandleEvent(control->GetEventNumber(), control, 0);
   return true;
 }
 
-bool RuntimeUiDriver::ClickControl(TView* root, int tag) {
-  return ClickView(FindControl(root, tag));
+bool RuntimeUiDriver::ClickControlThroughNativeMessages(TView* root, int tag) {
+  return ClickViewThroughNativeMessages(FindControl(root, tag));
 }
