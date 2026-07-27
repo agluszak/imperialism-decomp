@@ -15,9 +15,13 @@
 class CSubViewIterator {
 public:
   CSubViewIterator(const TView* owner); // 0x004919a0 (default forward)
-  TView* FirstSubView();                // 0x00491a00
-  TView* NextSubView();                 // 0x00491a70
-  int MoreSubViews();                   // 0x00491ab0
+  // 0x00491960 -- same fields, but the caller chooses the traversal direction
+  // (non-zero = forward from head, 0 = reverse from tail). The direction arrives as a
+  // byte and is sign-extended into the int field.
+  CSubViewIterator(const TView* owner, char forward);
+  TView* FirstSubView(); // 0x00491a00
+  TView* NextSubView();  // 0x00491a70
+  int MoreSubViews();    // 0x00491ab0
 
   POSITION position00;      // +0x00 current CList position (node)
   const TView* ownerView04; // +0x04 view whose childList44 is walked

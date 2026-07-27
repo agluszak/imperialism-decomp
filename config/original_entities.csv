@@ -926,7 +926,7 @@ address|name|symbol|size|type|prototype|provenance
 48a710|TEventHandler::SelectOwner||3|function|void __thiscall SelectOwner(uchar select)|
 48a730|TEventHandler::GetWindow||3|function|TWindow * __thiscall GetWindow(void)|
 48a750|IltTarget_0048a750||45|function|undefined IltTarget_0048a750()|
-48a790|IltTarget_0048a790||31|function|undefined IltTarget_0048a790()|
+48a790|TEventHandler::CopyHandlerFieldsFrom||31|function|void __thiscall TEventHandler::CopyHandlerFieldsFrom(TEventHandler const * source)|curated
 48a7c0|TEventHandler::ShallowClone||86|function|TObject* __thiscall ShallowClone()|
 48a840|TView::CreateObject|?CreateObject@TView@@SGPAVCObject@@XZ|87|function|undefined CreateTViewInstance()|rtti
 48a8c0|TView::GetRuntimeClass||6|function|undefined GetTViewClassNamePointer()|rtti
@@ -1147,7 +1147,7 @@ address|name|symbol|size|type|prototype|provenance
 491820|IltTarget_00491820||83|function|undefined IltTarget_00491820()|
 4918a0|TCluster::ShallowClone_08||89|function|undefined OrphanCallChain_C11_I88_004874b0(void)|
 491920|IltTarget_00491920||36|function|undefined IltTarget_00491920()|
-491960|IltTarget_00491960||34|function|undefined IltTarget_00491960()|
+491960|CSubViewIterator::CSubViewIterator||34|function|void __thiscall CSubViewIterator::CSubViewIterator(TView const * owner, char forward)|curated
 4919a0|CSubViewIterator::CSubViewIterator||33|function|void __thiscall CSubViewIterator(TView* owner)|
 4919e0|IltTarget_004919e0||4|function|undefined IltTarget_004919e0()|
 491a00|CSubViewIterator::FirstSubView||71|function|TView* __thiscall FirstSubView()|

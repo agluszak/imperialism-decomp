@@ -310,6 +310,14 @@ TWindow* TEventHandler::GetWindow() {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x0048a790
+void TEventHandler::CopyHandlerFieldsFrom(const TEventHandler* source) {
+  field04 = source->field04;
+  field08 = source->field08;
+  controlTag = source->controlTag;
+  field0c = source->field0c;
+}
+
 // Slot 0x08 base body: allocates a 0x20-byte UI resource entry header (0x48a7c0). TView
 // overrides at 0x48bfd0 with CloneEngineerDialogStateToNewInstance.
 // FUNCTION: IMPERIALISM 0x0048a7c0
