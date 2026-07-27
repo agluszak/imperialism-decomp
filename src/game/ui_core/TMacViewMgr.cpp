@@ -52,9 +52,14 @@
 // Genuine __cdecl(void*, int) heap-block reallocator; cast at call sites (same pattern
 // as TAutoGreatPower.cpp/TCountry.cpp). Returns the new block, or 0 on failure.
 
+// These are file-scope helpers only so the three big refresh bodies can share them; the
+// original inlines every one of them. The build uses /Ob1, which inlines ONLY
+// inline-marked functions, so a plain `static` helper compiles to a CALL the original
+// does not have -- 0x50bea0 spent four of them (see the decomp-loop big-functions note on
+// monolithic bodies). __inline is what folds them back into the caller.
 namespace {
 
-static TTransportPicture* ResolveTaggedPanelOrFail(TView* hostView, unsigned int tag) {
+static __inline TTransportPicture* ResolveTaggedPanelOrFail(TView* hostView, unsigned int tag) {
   TTransportPicture* panel = static_cast<TTransportPicture*>(hostView->ResolveControlByTag(tag));
   if (panel == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -63,7 +68,7 @@ static TTransportPicture* ResolveTaggedPanelOrFail(TView* hostView, unsigned int
   return panel;
 }
 
-static TControl* ResolveTaggedChildOrFail(TControl* panel, unsigned int tag) {
+static __inline TControl* ResolveTaggedChildOrFail(TControl* panel, unsigned int tag) {
   TControl* child = static_cast<TControl*>(panel->ResolveControlByTag(tag));
   if (child == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -72,7 +77,7 @@ static TControl* ResolveTaggedChildOrFail(TControl* panel, unsigned int tag) {
   return child;
 }
 
-static void CopyViewLayoutFieldsToStack(int* layout0, int* layout1, TControl* srcControl) {
+static __inline void CopyViewLayoutFieldsToStack(int* layout0, int* layout1, TControl* srcControl) {
   TView* srcView = srcControl;
   layout0[0] = srcView->ownerLocalX;
   layout0[1] = srcView->ownerLocalY;
@@ -80,9 +85,9 @@ static void CopyViewLayoutFieldsToStack(int* layout0, int* layout1, TControl* sr
   layout1[1] = srcView->frameHeight38;
 }
 
-static void ScanBracketExpressionsInto(CString* dest, const CString& templateText,
-                                       const CString& token1, const CString& token2,
-                                       const CString& token3) {
+static __inline void ScanBracketExpressionsInto(CString* dest, const CString& templateText,
+                                                const CString& token1, const CString& token2,
+                                                const CString& token3) {
   // The scanner is variadic: omitting these three source CString values made [1]-[3]
   // consume unrelated stack slots and corrupted the transport ledger hover text.
   scanBracketExpressions(g_pSimMgr, dest, static_cast<LPCSTR>(templateText),
@@ -90,6 +95,8 @@ static void ScanBracketExpressionsInto(CString* dest, const CString& templateTex
                          static_cast<LPCSTR>(token3));
 }
 
+// NOT __inline, unlike its neighbours: inlining it took 0x50d6c0 from 59.26% to 51.43%,
+// so the original keeps this one out of line.
 static bool QueryPointInsideHitRegion(short x, short y, RgnHandle region) {
   CPoint point;
   point.x = x;
@@ -97,7 +104,7 @@ static bool QueryPointInsideHitRegion(short x, short y, RgnHandle region) {
   return PtInRgn(&point, region);
 }
 
-static void InvokeBuildHexNeighborHighlightPolygonForTile(short tileId, int tileIndex) {
+static __inline void InvokeBuildHexNeighborHighlightPolygonForTile(short tileId, int tileIndex) {
   BuildHexNeighborHighlightPolygonForTile(tileId, tileIndex);
 }
 
@@ -897,7 +904,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   if (resourceSlot == -1) {
     TTransportPicture* panel = ResolveTaggedPanelOrFail(hostView, kControlTagTota);
     g_pSimMgr->GetString(0x2735, 0, &scratch38);
-    panel->SetHoverHelpText(scratch38);
+    SetControlHoverHelpText(scratch38, panel);
 
     TMyStaticText* textEntry = new TMyStaticText();
 
@@ -912,7 +919,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
     textEntry->controlTag = kControlTagText;
 
     g_pSimMgr->GetString(0x2735, 1, &scratch38);
-    textEntry->SetHoverHelpText(scratch38);
+    SetControlHoverHelpText(scratch38, textEntry);
 
     short needCap = nation != 0 ? nation->needCapA6 : 0;
     panel->splitValue94 = nation != 0 ? nation->needsOverCapFlag : 0;
@@ -1175,7 +1182,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
     panel->splitLimit98 = deficitCount;
   }
 
-  panel->SetHoverHelpText(displayText);
+  SetControlHoverHelpText(displayText, panel);
 
   // A row with nothing available is greyed out and loses its stepper arrows entirely:
   // the original calls slot 7 (`CALL [edx+0x1c]` at 0x0050cae2 / 0x0050cb1c), which is
@@ -1226,7 +1233,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   textEntry->controlTag = kControlTagText;
 
   g_pSimMgr->GetString(0x2735, 4, &scratch38);
-  textEntry->SetHoverHelpText(scratch38);
+  SetControlHoverHelpText(scratch38, textEntry);
 
   if (resourceSlot == 0x15 || resourceSlot == 0x16) {
     TMyStaticText* valueEntry = new TMyStaticText();
