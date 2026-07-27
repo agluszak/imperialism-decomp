@@ -43,7 +43,7 @@ void TCommodityLine::InstallViews(TView* panel, int* offsetLayout) {
   g_pSimMgr->NumToCurrency(price, &priceText);
   displayText = commodityName + s_szSpaceSeparator_00695794 + priceText;
 
-  int textSize[2] = {field08 - 0x28, field0c};
+  int textSize[2] = {layoutWidth - 0x28, layoutHeight};
   int textOffset[2] = {offsetLayout[0] + 0x28, offsetLayout[1]};
   TMyStaticText* text = new TMyStaticText();
   text->IStaticText(panel, textOffset, textSize, 5, 5, -1, 1);

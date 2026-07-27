@@ -18,14 +18,14 @@ IMPLEMENT_DYNCREATE(TCivAnimation, TAnimation)
 
 // FUNCTION: IMPERIALISM 0x0049f580
 void TCivAnimation::Tick() {
-  ++tickCounter10;
-  if (tickCounter10 == ticksPerFrame14) {
-    ownerView04->InvalidateCityDialogRectRegion(&screenRect1C, 1);
-    ++frameIndex08;
-    tickCounter10 = 0;
-    if (frameIndex08 == frameCount0A ||
-        (frameIndex08 == randomResetFrame2c && randomResetThreshold2e > (rand() & 0xf))) {
-      frameIndex08 = 0;
+  ++ticksSinceFrameChange;
+  if (ticksSinceFrameChange == ticksPerFrame) {
+    ownerView->InvalidateCityDialogRectRegion(&screenRect, 1);
+    ++frameIndex;
+    ticksSinceFrameChange = 0;
+    if (frameIndex == frameCount ||
+        (frameIndex == randomResetFrame2c && randomResetThreshold2e > (rand() & 0xf))) {
+      frameIndex = 0;
     }
   }
 }

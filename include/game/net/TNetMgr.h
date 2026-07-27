@@ -42,10 +42,10 @@ public:
   unsigned char CheckConnectivityOrShowLocalizedWarningAndReturnReady();
   int GetSessionActiveNationId(); // 0x5e4280
 
+  void NoOpDialogModeTagChangedHook(int arg); // 0x5e42a0 (empty)
   // 0x5e42c0 — destroy the DirectPlay player when `nationId` is the local session id
   // (name kept from Ghidra; the body destroys, it does not notify). Real __thiscall on
   // the singleton (callers load g_pNetMgr006a6014 into ecx); `this` unused.
-  void NoOpDialogModeTagChangedHook(int arg); // 0x5e42a0 (empty)
   void NotifyIfNationMatchesSessionActiveNation(int nationId);
 
   // 0x5e43e0 — probe every eligible nation with an event-0x2b packet through the

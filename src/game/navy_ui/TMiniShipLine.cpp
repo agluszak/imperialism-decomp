@@ -23,7 +23,8 @@ void TMiniShipLine::IMiniShipLine(short rowArg, short colArg, int* bounds, TShip
 // FUNCTION: IMPERIALISM 0x00569c80
 void TMiniShipLine::InstallViews(TView* panel, int* offsetLayout) {
   TMiniShipView* view = new TMiniShipView();
-  view->InitializeUiResourceEntryFrameAndParent(nullptr, panel, offsetLayout, &field08, 5, 5, 0);
+  view->InitializeUiResourceEntryFrameAndParent(nullptr, panel, offsetLayout, &layoutWidth, 5, 5,
+                                                0);
   view->shipNode84 = field10;
   view->eventNumber60 = 0x22;
 }

@@ -22,16 +22,15 @@ public:
   virtual void DrawKnob();
   virtual void GetKnobRect(RECT& knobRect);
 
-  // TIconBar's own slice ends at 0x9c (RTTI oracle); all zeroed by the ctor except
-  // pad_bc, which the ctor never touches (RTTI oracle confirms sizeof(TIconSlider) ==
-  // 0xbc, 4 bytes past field_b6).
-  short value9c;
-  TBitmapResourceLoader** knobBitmapA0;
-  RECT knobBaseRectA4;
-  short minTrackOffsetB4;
-  short maxTrackOffsetB6;
-  short knobHeightB8;
-  short knobWidthBA;
+  // TIconBar's slice ends at 0x9c. The fields below occupy the complete derived
+  // slice through 0xbc; the RTTI oracle confirms sizeof(TIconSlider) == 0xbc.
+  short value;
+  TBitmapResourceLoader** knobBitmap;
+  RECT knobBaseRect;
+  short minTrackOffset;
+  short maxTrackOffset;
+  short knobHeight;
+  short knobWidth;
 
   TIconSlider();
 };

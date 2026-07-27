@@ -29,15 +29,15 @@ TTextLine::~TTextLine() {}
 // FUNCTION: IMPERIALISM 0x00570390
 void TTextLine::SetTextLineRowBoundsAndStyle(short rowArg, short colArg, int* bounds,
                                              short styleGroupCode, short styleIndex) {
-  field04 = colArg;
-  field08 = bounds[0];
-  field0c = bounds[1];
-  field06 = rowArg;
+  column = colArg;
+  layoutWidth = bounds[0];
+  layoutHeight = bounds[1];
+  row = rowArg;
   if (styleGroupCode != -1) {
     g_pSimMgr->GetString(styleGroupCode, static_cast<short>(styleIndex - 1), &captionText10);
   }
   BuildUiTextStyleDescriptor(&styleDescriptor14, 0, 0xc, 0x2b67);
-  field1e = -2;
+  textAlignmentCode = -2;
 }
 
 // FUNCTION: IMPERIALISM 0x00570420
@@ -51,16 +51,16 @@ void TTextLine::SetTextLineStyleDescriptor(const TextStyle* descriptor) {
 }
 
 // FUNCTION: IMPERIALISM 0x005704e0
-void TTextLine::SetField1E(short value) {
-  field1e = value;
+void TTextLine::SetTextAlignmentCode(short value) {
+  textAlignmentCode = value;
 }
 
 // FUNCTION: IMPERIALISM 0x00570500
 void TTextLine::InstallViews(TView* panel, int* offsetLayout) {
   TStaticText* text = new TStaticText();
-  text->IStaticText(panel, offsetLayout, &field08, 5, 5, -1, 0);
+  text->IStaticText(panel, offsetLayout, &layoutWidth, 5, 5, -1, 0);
   text->SetTextAndMaybeRefresh(&captionText10, 0);
   text->InstallTextStyle(styleDescriptor14, 0);
-  text->SetTextAlignmentAndMaybeRefresh(field1e, 0);
+  text->SetTextAlignmentAndMaybeRefresh(textAlignmentCode, 0);
   text->RefreshControl();
 }

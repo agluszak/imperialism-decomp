@@ -18,12 +18,12 @@ public:
                            unsigned char refreshNow) override;          // slot 0x70 0x58b750
   virtual bool IsSelected(short value = -1, bool refreshNow = true);    // slot 0x73 0x58b890
   virtual void SetSelectionStateAndRefreshBitmap(short selectionState); // slot 0x74 0x58b8d0
-  short glyph90;
-  short timingWord92;
-  short glyph94;
-  short glyph96;
-  short glyph98;
-  char pad_9a[2];
+  short normalBitmapId;
+  short highlightedBitmapId;
+  short selectedBitmapId;
+  short unavailableBitmapId;
+  short selectionState;
+  char padding9A[2];
 
   THQButton();
 };

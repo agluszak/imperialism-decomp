@@ -26,7 +26,7 @@ void TTradeBidNationLine::ITradeBidNationLine(short categorySlot, short nationSl
 void TTradeBidNationLine::InstallViews(TView* panel, int* offsetLayout) {
   TTradeBidNationView* view = new TTradeBidNationView();
   view->InitializeUiResourceEntryFrameAndParent(panel->resourceContext, panel, offsetLayout,
-                                                &field08, 5, 5, 0);
+                                                &layoutWidth, 5, 5, 0);
   view->categorySlot60 = categorySlot10;
   view->nationSlot62 = nationSlot12;
 }

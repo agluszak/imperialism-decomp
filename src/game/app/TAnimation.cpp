@@ -22,30 +22,30 @@ TAnimation::~TAnimation() {}
 IMPLEMENT_DYNCREATE(TAnimation, TObject)
 
 // FUNCTION: IMPERIALISM 0x0049f0c0
-void TAnimation::IAnimation(TView* ownerView, RECT* rect, short frameCount, short param4,
-                            int ticksPerFrame, int tag) {
-  ownerView04 = ownerView;
-  screenRect1C = *rect;
-  frameCount0A = frameCount;
-  field0C = param4;
-  frameIndex08 = 0;
-  tickCounter10 = 0;
-  ticksPerFrame14 = ticksPerFrame;
-  registryTag18 = tag;
+void TAnimation::IAnimation(TView* ownerViewArg, RECT* rect, short frameCountArg,
+                            short frameResourceBaseIdArg, int ticksPerFrameArg, int tag) {
+  ownerView = ownerViewArg;
+  screenRect = *rect;
+  frameCount = frameCountArg;
+  frameResourceBaseId = frameResourceBaseIdArg;
+  frameIndex = 0;
+  ticksSinceFrameChange = 0;
+  ticksPerFrame = ticksPerFrameArg;
+  registryTag = tag;
 }
 
-// Per-tick frame flip: on every ticksPerFrame14-th tick, invalidate the marker rect
+// Per-tick frame flip: on every ticksPerFrame-th tick, invalidate the marker rect
 // and advance/wrap the frame index (the old WrapperFor_InvalidateCityDialogRectRegion
 // name was junk).
 // FUNCTION: IMPERIALISM 0x0049f140
 void TAnimation::Tick() {
-  tickCounter10 = tickCounter10 + 1;
-  if (tickCounter10 == ticksPerFrame14) {
-    ownerView04->InvalidateCityDialogRectRegion(&screenRect1C, 1);
-    tickCounter10 = 0;
-    frameIndex08 = static_cast<short>(frameIndex08 + 1);
-    if (frameIndex08 == frameCount0A) {
-      frameIndex08 = 0;
+  ticksSinceFrameChange = ticksSinceFrameChange + 1;
+  if (ticksSinceFrameChange == ticksPerFrame) {
+    ownerView->InvalidateCityDialogRectRegion(&screenRect, 1);
+    ticksSinceFrameChange = 0;
+    frameIndex = static_cast<short>(frameIndex + 1);
+    if (frameIndex == frameCount) {
+      frameIndex = 0;
     }
   }
 }
@@ -55,7 +55,7 @@ void TAnimation::DrawNextFrame(POINT* offset) {
   TQuickDrawSurfaceContext* frameBuffer = g_pUiAnimator->renderSurfaceContext;
   LoadFrameIntoBuffer();
 
-  RECT destination = screenRect1C;
+  RECT destination = screenRect;
   OffsetRect(&destination, offset->x, offset->y);
   RECT source = {0, 0, destination.right - destination.left, destination.bottom - destination.top};
 
@@ -90,8 +90,8 @@ void TAnimation::LoadFrameIntoBuffer() {
   int savedFlags = 0;
   GetGWorld(&savedContext, &savedFlags);
 
-  TBitmapResourceLoader** loaderHandle =
-      CreateBitmapResourceLoaderHandle(static_cast<unsigned short>(field0C + frameIndex08));
+  TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(
+      static_cast<unsigned short>(frameResourceBaseId + frameIndex));
   QDLoadResource(loaderHandle);
   TBitmapResourceLoader* loader = loaderHandle != 0 ? *loaderHandle : 0;
   if (loader != 0) {

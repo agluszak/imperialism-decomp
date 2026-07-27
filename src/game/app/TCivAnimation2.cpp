@@ -27,44 +27,44 @@ TCivAnimation2::TCivAnimation2(TView* ownerView, RECT* rect, int kind, int tag) 
 
 // FUNCTION: IMPERIALISM 0x0049f7c0
 void TCivAnimation2::Tick() {
-  ++tickCounter10;
-  if (tickCounter10 != ticksPerFrame14) {
+  ++ticksSinceFrameChange;
+  if (ticksSinceFrameChange != ticksPerFrame) {
     return;
   }
-  ownerView04->InvalidateCityDialogRectRegion(&screenRect1C, 1);
-  ++frameIndex08;
-  tickCounter10 = 0;
+  ownerView->InvalidateCityDialogRectRegion(&screenRect, 1);
+  ++frameIndex;
+  ticksSinceFrameChange = 0;
   switch (kindIndex2c) {
   case 0:
   case 7:
-    if (frameIndex08 == 9)
-      frameIndex08 = 0;
+    if (frameIndex == 9)
+      frameIndex = 0;
     break;
   case 1:
-    if (frameIndex08 == 7)
-      frameIndex08 = 0;
+    if (frameIndex == 7)
+      frameIndex = 0;
     break;
   case 2:
-    if (frameIndex08 == 2)
-      frameIndex08 = 0;
+    if (frameIndex == 2)
+      frameIndex = 0;
     break;
   case 3:
   case 6:
-    if (frameIndex08 == 5)
-      frameIndex08 = 0;
+    if (frameIndex == 5)
+      frameIndex = 0;
     break;
   case 4:
-    if (frameIndex08 == 6)
-      frameIndex08 = 0;
+    if (frameIndex == 6)
+      frameIndex = 0;
     break;
   case 5:
-    if (frameIndex08 == 2 || (frameIndex08 == 1 && rand() % 100 <= 0x31)) {
-      frameIndex08 = 0;
+    if (frameIndex == 2 || (frameIndex == 1 && rand() % 100 <= 0x31)) {
+      frameIndex = 0;
     }
     break;
   case 8:
-    if (frameIndex08 == 5)
-      frameIndex08 = 0;
+    if (frameIndex == 5)
+      frameIndex = 0;
     break;
   }
 }
@@ -78,10 +78,10 @@ void TCivAnimation2::DrawNextFrame(POINT* offset) {
       {0, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 1, 0, 0, 1, 2, 0, 0, 0, 0},
       {0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
   };
-  short logicalFrame = frameIndex08;
-  frameIndex08 = kFrameMap[kindIndex2c][logicalFrame];
+  short logicalFrame = frameIndex;
+  frameIndex = kFrameMap[kindIndex2c][logicalFrame];
   TAnimation::DrawNextFrame(offset);
-  frameIndex08 = logicalFrame;
+  frameIndex = logicalFrame;
 }
 
 // 0x4a0d10 (AddObjectToUiTransientRegistry) and 0x4a0d30 (the registry walker) were

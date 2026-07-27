@@ -41,7 +41,7 @@ void TShipLine::IShipLine(short rowArg, short colArg, int* bounds,
 // FUNCTION: IMPERIALISM 0x00565100
 void TShipLine::InstallViews(TView* panel, int* offsetLayout) {
   TShipView* shipView = new TShipView();
-  shipView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &field08, 5, 5, 0);
+  shipView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &layoutWidth, 5, 5, 0);
   shipView->shipNode60 = shipNode10;
   shipView->field64 = taskForce18;
 

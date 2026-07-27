@@ -87,10 +87,10 @@ TAnimation* TAnimator::FindRegisteredAnimationByTag(int tag) {
   if (this != 0) {
     CIterator cursor(registryList24);
     TAnimation* animation = static_cast<TAnimation*>(cursor.Reset());
-    while (cursor.More() && animation->registryTag18 != tag) {
+    while (cursor.More() && animation->registryTag != tag) {
       animation = static_cast<TAnimation*>(cursor.Advance());
     }
-    if (animation != 0 && animation->registryTag18 == tag) {
+    if (animation != 0 && animation->registryTag == tag) {
       return animation;
     }
   }
@@ -129,12 +129,12 @@ void TAnimator::TranslateListRectsAndDropNonIntersectingEntries(int dx, int dy, 
     CIterator cursor(registryList24);
     TAnimation* entry = static_cast<TAnimation*>(cursor.Reset());
     while (cursor.More()) {
-      entry->screenRect1C.left += dx;
-      entry->screenRect1C.top += dy;
-      entry->screenRect1C.right += dx;
-      entry->screenRect1C.bottom += dy;
+      entry->screenRect.left += dx;
+      entry->screenRect.top += dy;
+      entry->screenRect.right += dx;
+      entry->screenRect.bottom += dy;
       RECT scratch;
-      if (!SectRect(&entry->screenRect1C, &clipRect, &scratch)) {
+      if (!SectRect(&entry->screenRect, &clipRect, &scratch)) {
         CPtrList* list = &registryList24->listState;
         POSITION pos = list->Find(entry, 0);
         if (pos != 0) {

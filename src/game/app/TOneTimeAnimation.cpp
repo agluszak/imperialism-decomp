@@ -31,35 +31,35 @@ IMPLEMENT_DYNCREATE(TOneTimeAnimation, TAnimation)
 // FUNCTION: IMPERIALISM 0x0049fd60
 void TOneTimeAnimation::InitializeOneTimeAnimation(TView* view, RECT* rect, short frameCountArg,
                                                    short effectId, int tickLimit, int registryTag) {
-  ownerView04 = view;
-  screenRect1C = *rect;
-  frameCount0A = frameCountArg;
-  field0C = effectId;
-  ticksPerFrame14 = tickLimit;
-  registryTag18 = registryTag;
-  frameIndex08 = 0;
-  tickCounter10 = 0;
+  ownerView = view;
+  screenRect = *rect;
+  frameCount = frameCountArg;
+  frameResourceBaseId = effectId;
+  ticksPerFrame = tickLimit;
+  this->registryTag = registryTag;
+  frameIndex = 0;
+  ticksSinceFrameChange = 0;
   completeFlag = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0049fde0
 void TOneTimeAnimation::Tick() {
   if (completeFlag == 0) {
-    int nextTick = tickCounter10 + 1;
-    tickCounter10 = nextTick;
-    if (nextTick == ticksPerFrame14) {
-      ownerView04->InvalidateCityDialogRectRegion(&screenRect1C, 1);
+    int nextTick = ticksSinceFrameChange + 1;
+    ticksSinceFrameChange = nextTick;
+    if (nextTick == ticksPerFrame) {
+      ownerView->InvalidateCityDialogRectRegion(&screenRect, 1);
 
-      ScopedMapQuickDrawContextGuard quickDrawContext(ownerView04);
-      ownerView04->PrepareForDrawing();
+      ScopedMapQuickDrawContextGuard quickDrawContext(ownerView);
+      ownerView->PrepareForDrawing();
 
       RECT renderRect;
-      CopyRect(&renderRect, &screenRect1C);
-      ownerView04->Draw(&renderRect);
+      CopyRect(&renderRect, &screenRect);
+      ownerView->Draw(&renderRect);
 
-      tickCounter10 = 0;
-      if (frameIndex08 < frameCount0A - 1) {
-        frameIndex08 = frameIndex08 + 1;
+      ticksSinceFrameChange = 0;
+      if (frameIndex < frameCount - 1) {
+        frameIndex = frameIndex + 1;
       } else {
         completeFlag = 1;
       }
