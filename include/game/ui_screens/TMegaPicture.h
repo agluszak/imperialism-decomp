@@ -30,6 +30,12 @@ public:
   CRect contentSubRect9c; // +0x9c cached content sub-rect (used when flags98 & 4)
 
   TMegaPicture();
+
+  // Two-phase init: forwards the six frame/resource arguments to TPicture::IPicture
+  // (0x48f330), then stores the initial flags98 through the slot-0x75 virtual without
+  // refreshing. 0x00573220, __thiscall.
+  void IMegaPicture(TView* panel, int* offsetLayout, int* sizeLayout, int layoutParam4,
+                    int layoutParam5, short pictureId, unsigned short flags);
 };
 
 ASSERT_SIZE(TMegaPicture, 0xac);

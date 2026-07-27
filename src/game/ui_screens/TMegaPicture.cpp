@@ -26,6 +26,13 @@ TMegaPicture::TMegaPicture() : TNoHilitePicture() {
 // FUNCTION: IMPERIALISM 0x00573200
 TMegaPicture::~TMegaPicture() {}
 
+// FUNCTION: IMPERIALISM 0x00573220
+void TMegaPicture::IMegaPicture(TView* panel, int* offsetLayout, int* sizeLayout, int layoutParam4,
+                                int layoutParam5, short pictureId, unsigned short flags) {
+  IPicture(panel, offsetLayout, sizeLayout, layoutParam4, layoutParam5, pictureId);
+  AssignFlags98AndMaybeRefresh(flags, 0);
+}
+
 // Blits the picture's own bitmap to its transformed (screen-space) rect. Normally
 // samples the whole passed-in rect; when flags98&4 is set, samples/positions from
 // contentSubRect9c instead (optionally filling the transformed rect white first when
