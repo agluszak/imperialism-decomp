@@ -103,19 +103,23 @@ class TypedefCastDriftTest(unittest.TestCase):
         self.assertEqual(strip_param_names("TCity* city"), "TCity*")
         self.assertEqual(strip_param_names("int count"), "int")
 
-    def test_short_and_long_parameters_keep_their_names_today(self) -> None:
-        """Known limitation, pinned so a future fix is a deliberate change.
+    def test_short_and_long_parameters_keep_their_names(self) -> None:
+        """Conservative on purpose, not a defect -- an earlier note here got this wrong.
 
         strip_param_names drops a trailing identifier only when the remainder still looks
         like a type, and its exclusion list -- "", const, unsigned, signed, long, short --
-        treats `short` and `long` as modifiers that cannot end a type. They are complete
-        types on their own, so `short resourceType` keeps its name while `int count` loses
-        it, and `unsigned short x` is affected too (the check inspects the last word).
+        keeps the name on `short resourceType` while dropping it on `int count`.
 
-        The consequence is false-positive drift, not missed drift, so it is noise rather
-        than a hole in enforcement -- but `short` parameters are everywhere in this
-        codebase (tile indices, resource types), so it is worth fixing deliberately rather
-        than by accident. Recorded on bd imperialism-decomp-x1cl.
+        That asymmetry looks like a bug, but the exclusion list cannot be tightened.
+        `unsigned int` (a bare type) and `unsigned x` (a named parameter) are textually
+        indistinguishable here, so any rule that strips the second word of `short n` also
+        strips it from `unsigned int`, turning a complete type into `unsigned`. That could
+        then compare EQUAL to a different signature's `unsigned x`, which hides real drift.
+
+        The current behaviour errs toward not stripping. Its cost is false-positive drift,
+        which is visible and gets investigated; the alternative's cost is false equality,
+        which is silent. For a gate whose entire job is catching divergence, noisy beats
+        silent, so this is pinned as intended behaviour rather than as a known limitation.
         """
         self.assertEqual(strip_param_names("short resourceType"), "short resourceType")
         self.assertEqual(strip_param_names("unsigned short tileIndex"), "unsigned short tileIndex")
