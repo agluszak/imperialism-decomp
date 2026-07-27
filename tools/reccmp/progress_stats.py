@@ -9,6 +9,7 @@ import hashlib
 import importlib.metadata
 import json
 import logging
+import os
 import subprocess
 import tempfile
 from contextlib import redirect_stderr, redirect_stdout
@@ -511,6 +512,48 @@ def load_baseline(path: Path) -> dict[str, Any] | None:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+POLICY_BASELINE_APPROVAL_ENV = "ALLOW_POLICY_BASELINE_UPDATE"
+
+
+def clamp_stub_count_ratchet(
+    entry: dict[str, Any], baseline: dict[str, Any] | None
+) -> str | None:
+    """Keep the stub-count ratchet armed when the full snapshot is rewritten.
+
+    `stub_count` is a policy ratchet living inside an observations file: check_stub_count
+    FAILS a rise because a rise means a marker-less owner (DYNCREATE GetRuntimeClass,
+    scalar deleting dtor, name-paired method) lost its claim and would be re-stubbed.
+    The commit policy requires stats-baseline-update before every commit, so carrying a
+    raised count into the snapshot re-arms the ratchet at the new height in the very
+    commit that raised it -- the gate can then never fire on the change that caused it,
+    and `stub-count-gate-update`'s explicit approval is bypassed entirely.
+
+    So a rise is dropped here (the lower baseline value is preserved, the gate stays red)
+    unless the same approval the `-update` targets demand is present. A fall ratchets
+    down as usual. Returns a message to print, or None when nothing was held back.
+    """
+    if baseline is None or "stub_count" not in baseline or "stub_count" not in entry:
+        return None
+    previous = int(baseline["stub_count"])
+    current = int(entry["stub_count"])
+    if current <= previous:
+        return None
+    if os.environ.get(POLICY_BASELINE_APPROVAL_ENV) == "1":
+        return (
+            f"Stub-count ratchet RAISED with {POLICY_BASELINE_APPROVAL_ENV}=1: "
+            f"{previous} -> {current} (+{current - previous})."
+        )
+    entry["stub_count"] = previous
+    return (
+        f"Stub-count ratchet held at {previous} (observed {current}, +{current - previous}).\n"
+        "  A rise means stubs would be regenerated for addresses that lost their claim,\n"
+        "  so the snapshot does NOT re-baseline it and `just stub-count-gate` stays red.\n"
+        "  Find what got un-claimed and restore the marker/claim row. If the rise really\n"
+        f"  is intended, bless it explicitly: {POLICY_BASELINE_APPROVAL_ENV}=1 "
+        "just stub-count-gate-update."
+    )
+
+
 def write_json_atomic(path: Path, data: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = json.dumps(data, indent=2, sort_keys=True) + "\n"
@@ -859,11 +902,14 @@ def main() -> int:
                 )
 
         if args.commit_baseline:
+            stub_ratchet_notice = clamp_stub_count_ratchet(entry, baseline)
             write_json_atomic(baseline_file, entry)
             write_function_baseline_atomic(func_baseline_file, curr_funcs)
             print("")
             print(f"Committed stats baseline: {baseline_file}")
             print(f"Committed function baseline: {func_baseline_file}")
+            if stub_ratchet_notice:
+                print(stub_ratchet_notice)
         return 1 if ui_errors else 0
     except Exception as exc:  # pragma: no cover - CLI error path
         print(f"ERROR: {exc}", file=__import__("sys").stderr)

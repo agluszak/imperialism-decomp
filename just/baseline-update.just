@@ -6,6 +6,8 @@
 # if they were still inline.
 
 # MUTATES: the aggregate JSON and per-function CSV reccmp progress baselines.
+# The snapshot's `stub_count` is a ratchet, not an observation: it falls freely but a
+# rise is held back (gate stays red) unless ALLOW_POLICY_BASELINE_UPDATE=1.
 [group('baseline-update')]
 stats-baseline-update:
   uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled --commit-baseline
