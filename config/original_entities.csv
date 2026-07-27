@@ -3257,7 +3257,7 @@ address|name|symbol|size|type|prototype|provenance
 50ea56|InitializeUMapAuxEntryDefaultsAndSharedNameFields||325|function|uint InitializeUMapAuxEntryDefaultsAndSharedNameFields(void)|
 50ec60|Province::Province||18|function|Province* __thiscall Province::Province(void)|construction+shared_city_record_layout
 50ec90|TMapMgr::BuildOrLoadGlobalMapStateForSession||874|function|char __thiscall BuildOrLoadGlobalMapStateForSession(const char * mapStreamName, char * tuningOverride)|
-50f0e0|IltTarget_0050f0e0||210|function|undefined IltTarget_0050f0e0()|
+50f0e0|TMapMgr::ReadInRGBMap||210|function|void __thiscall TMapMgr::ReadInRGBMap(MapPixelSourceView const * source)|curated
 50f200|TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream||337|function|undefined LoadPoliticalMapRegionSubtypeTableFromResourceStream()|
 50f3c0|VerifyMapDataAndWriteReport||434|function|void __fastcall VerifyMapDataAndWriteReport(int pMapDataContext)|
 50f5f0|WrapperFor_thunk_SetMapRecordFlagA3AndPropagateToChildren_At0050f5f0||139|function|undefined WrapperFor_thunk_SetMapRecordFlagA3AndPropagateToChildren_At0050f5f0()|
@@ -6399,7 +6399,7 @@ address|name|symbol|size|type|prototype|provenance
 5de010|TViewMgr::MakePlanetSeedDialog||992|function|int __thiscall MakePlanetSeedDialog(const char* instruction,CString& planetSeed,const char* firstChoice,const char* secondChoice,int initialChoice,unsigned char showCancel) const|
 5de4f0|ShowCivilianReportDialogAndReturnConfirm||176|function|bool __fastcall ShowCivilianReportDialogAndReturnConfirm(int * pCivilianOrderEntry)|
 5de5d0|RefreshCurrentUiViewAndActivePanelState||181|function|undefined RefreshCurrentUiViewAndActivePanelState()|
-5de6c0|IltTarget_005de6c0||278|function|undefined IltTarget_005de6c0()|
+5de6c0|TViewMgr::MakeCheaterDialog||278|function|void __thiscall TViewMgr::MakeCheaterDialog(int which)|curated
 5de830|IltTarget_005de830||140|function|undefined IltTarget_005de830()|
 5de8f0|TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView||123|function|undefined DispatchUiRuntimeMessage101AAndRefreshActiveView()|
 5de990|TViewMgr::ShowLocalizedUiPromptByGroupAndIndex||148|function|char __thiscall ShowLocalizedUiPromptByGroupAndIndex(int, int, int, int)|

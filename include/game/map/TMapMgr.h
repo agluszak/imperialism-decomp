@@ -38,6 +38,16 @@ struct ScenarioTileDiskRecord {
 };
 ASSERT_SIZE(ScenarioTileDiskRecord, 0x24);
 
+// The packed source TMapMgr::ReadInRGBMap decodes: 6480 entries of two shorts each,
+// i.e. the 108x60 tile map at four bytes per tile (0x38f40 / 0x24 records). Only the
+// +0x08 field is touched, and no call site survives to identify the owning class, so
+// just that slot is modelled rather than guessing at a type.
+struct MapPixelSourceView {
+  int unknown00;
+  int unknown04;
+  const short* packedTiles; // +0x08 two shorts per tile, in tile order
+};
+
 struct TTerrainStateRecordView {
   // Packed StrategicTerrainKind representation. Signed MOVSX reads are confirmed by
   // 0x516150/0x5161a0/0x5161e0/0x516220; -1 is the unassigned sentinel. Keep this byte
@@ -308,6 +318,13 @@ public:
   // assigns resourceTypeByEdge = {3-or-4, -1}, and refreshes gateFlag via
   // ResolveRegionTileSubtypeCodeForTileIndex.
   virtual void GuaranteeResources(); // slot 0x11 0x511a70, Mac oracle
+
+  // Mac oracle: ReadInRGBMap. Decodes the packed source into every terrain record:
+  // terrain kind and river sprite from the first short, owner tag and province index
+  // from the second, with water tiles forced to province -1. Refreshes each tile's
+  // icon variant as it goes, then rebuilds the owner-neighbour caches.
+  // 0x0050f0e0, __thiscall.
+  void ReadInRGBMap(const MapPixelSourceView* source);
   // If field8 is idle: forces hexNeighborWrapHorizontally20 and (re)opens the "mapdata"
   // session stream via BuildOrLoadGlobalMapStateForSession. If the strategic-map palette
   // preview is not ready, renders it through the strategic map view. Called from

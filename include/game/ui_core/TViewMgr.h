@@ -32,10 +32,16 @@ public:
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5d5200
   virtual void Free() override;                    // slot 0x07 0x5d51e0
   virtual void LoadTurnEventCursorTable();         // slot 0x0a 0x5d5100
-  virtual void MakeGameSetupDialog();              // slot 0x0b 0x5dcaa0
-  virtual void SetBackColor(short colorCode);      // slot 0x0c 0x5d5780
-  virtual void SetForeColor(short colorCode);      // slot 0x0d 0x5d5750
-  virtual int ClassifyTurnStateForOverlayMode();   // slot 0x0e 0x5d5960
+
+  // Mac oracle: MakeCheaterDialog. Poses the developer cheat panel (dialog resource
+  // 15000) modally with either the tech or the great-power cheater built into it,
+  // applies whatever the user entered, then closes and frees the window.
+  // `which` selects the cheater: 0 tech, 1 great power. 0x005de6c0, __thiscall.
+  void MakeCheaterDialog(int which);
+  virtual void MakeGameSetupDialog();                                          // slot 0x0b 0x5dcaa0
+  virtual void SetBackColor(short colorCode);                                  // slot 0x0c 0x5d5780
+  virtual void SetForeColor(short colorCode);                                  // slot 0x0d 0x5d5750
+  virtual int ClassifyTurnStateForOverlayMode();                               // slot 0x0e 0x5d5960
   virtual void BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg); // slot 0x0f 0x5d6480
   virtual void HandleTurnEventVtableSlot40RefreshGoldDialog();                 // slot 0x10 0x5d57b0
   virtual void ComputeTurnEventDialogPlacementByCode(TView* dialogView,
