@@ -50,6 +50,14 @@ public:
   // NOOP: verified empty in original 0x00553c25 (the new-expression proceeds
   // directly from allocation cleanup to the caller's field stores, with no ctor call)
   TMapOrderChildLinkNode() {}
+
+  // Fills the cell and splices it between two existing cells, marking it active.
+  // Either neighbour may be null. 0x005524d0, __thiscall.
+  void InitAndLinkBetween(TObject* child, TMapOrderChildLinkNode* prevNode,
+                          TMapOrderChildLinkNode* nextNode);
+  // Unlinks this cell from wherever it currently sits, then splices it between the
+  // two given cells. Either may be null. 0x00552540, __thiscall.
+  void RelinkBetween(TMapOrderChildLinkNode* prevNode, TMapOrderChildLinkNode* nextNode);
   // Inline head-insert constructor: chains the new cell in front of `nextNode`
   // (which may be null). CreateLinkedOrderNode's 0x552650 body is exactly the
   // `new`-site expansion of this ctor under /Ob1: alloc null-guard, these
