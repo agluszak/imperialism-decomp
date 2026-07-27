@@ -426,3 +426,33 @@ small function loads (count, base, size, callback) off its own stack, calls the 
 through a register with `ecx` set to a walking pointer, and returns `ret 0x10`, it is
 `` `vector constructor iterator' `` — claim it as a compiler helper (construction Hard
 Rule 6) instead of naming it after whatever the callers happen to construct.
+
+### A displacement difference smaller than the access stride is a reschedule, not a layout bug
+*(2026-07, ResolvePaletteIndexColor 0x49ace0, 82.61%)*
+
+`just triage` reported `original: [ecx + eax*4 + 0x5]` vs `recompiled: [ecx + eax*4 + 0x6]`
+and advised "likely field declaration, class layout, padding, or receiver-model error".
+All four were impossible: the struct was `PALETTEENTRY`, a Windows SDK type, so
+`peRed`/`peGreen`/`peBlue` are pinned at +0/+1/+2. `+5` and `+6` were green and blue, and
+the two loads were simply **emitted in the opposite order**.
+
+The tell is arithmetic: when the paired displacements differ by **less than the access
+stride** (1 byte inside a 4-byte stride) and both land inside the same object, no field
+can have moved — you are looking at two different members of one record being scheduled
+differently, not at one member at the wrong offset. A genuine layout defect shifts a
+displacement by at least the width of the field that changed, and usually shifts every
+later access with it.
+
+What the original did here: load the first component through the *full indexed form* while
+the index register is live, then fold `base + index*4 + 4` into a `LEA` so the remaining
+components become short displacements off it, freeing the index register for the
+accumulator. Binding a reference (`PALETTEENTRY& entry = ...`) up front instead computes
+the address before any load and reorders the components.
+
+Three source reorderings aimed at reproducing that were built and measured, all worse
+than the code already committed: three separate array expressions with no reference
+(66.67%, pins the index in `ESI` and adds a `push`/`pop` pair), reference bound after the
+first load with the mask written twice (rebuilt the whole prologue), and the same with the
+index hoisted to a local (54.17%). **Check the stride arithmetic before rewriting
+anything** — chasing this one cost three builds against a defect that did not exist. See
+bd `imperialism-decomp-g4yh.3` for the triage-wording fix.

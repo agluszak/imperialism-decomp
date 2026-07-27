@@ -299,6 +299,16 @@ destructor-placement-gate:
 symbols-integrity-gate:
   uv run python -m tools.workflow.check_symbols_integrity
 
+# Reject editor indexes, compiler output, build trees, stray logs, and large non-LFS
+# binaries from the tracked tree. Complements .gitignore: ignoring a directory only stops
+# the next add of that exact path, which is how 1933 clangd index files under .cache/
+# survived until PR #318. Whole-tree rather than diff-scoped, because every category is at
+# zero tracked hits -- a diff-scoped check would grandfather whatever slipped in earlier.
+[doc('Reject tracked build/editor artifacts and stray large binaries')]
+[group('gates')]
+repo-hygiene-gate:
+  uv run python -m tools.workflow.check_repo_hygiene
+
 # Reject generated build inputs and retired generated source trees in a branch or
 # worktree diff. `precommit` resolves the merge base and includes local changes.
 [doc('Reject generated artifacts relative to a merge base')]
@@ -391,7 +401,7 @@ source-gates:
 
 [private]
 [parallel]
-_source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-coverage-check scalar-type-audit-check fourcc-audit-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate cstring-gate cstring-ownership-audit-check dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate destructor-placement-gate symbols-integrity-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate stub-count-gate class-size-gate noop-gate ctor-placement-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate shadow-stub-gate
+_source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-coverage-check scalar-type-audit-check fourcc-audit-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate cstring-gate cstring-ownership-audit-check dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate destructor-placement-gate symbols-integrity-gate repo-hygiene-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate stub-count-gate class-size-gate noop-gate ctor-placement-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate shadow-stub-gate
 
 # Cross-check modeled class sizes (ASSERT_SIZE) against the RTTI oracle's
 # m_nObjectSize. Report-only; pass --strict to fail on mismatches, or
