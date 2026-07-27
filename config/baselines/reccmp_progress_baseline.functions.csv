@@ -3076,8 +3076,8 @@ address|matching|name
 0x4ff4d0|1.0|TFuzzyVar::`scalar deleting destructor'
 0x4ff500|1.0|TFuzzyVar::~TFuzzyVar
 0x4ff520|1.0|TFuzzyVar::IFuzzyVar
-0x4ff550|0.0|IltTarget_004ff550
-0x4ff5f0|0.0|IltTarget_004ff5f0
+0x4ff550|0.8|TFuzzyVar::Membership(int)
+0x4ff5f0|0.7948717948717948|TFuzzyVar::Membership(float)
 0x4ff690|0.42424242424242425|TFuzzySet::CreateObject
 0x4ff6c0|1.0|TFuzzySet::GetRuntimeClass
 0x4ff6e0|1.0|TFuzzySet::TFuzzySet
@@ -3572,7 +3572,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords
 0x527730|0.29577464788732394|TMapMaker::PlaceTerrainFeatureQuotas
-0x527d00|0.43478260869565216|TMapMaker::CreateRivers
+0x527d00|0.4268774703557312|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
