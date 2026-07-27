@@ -6162,7 +6162,7 @@ address|name|symbol|size|type|prototype|provenance
 5c0d80|TDealLine::ConstructTDealLineBaseState||18|function|undefined ConstructTDealLineBaseState()|
 5c0db0|TDealLine::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5c0de0|DestructTDealLineAndMaybeFree_Impl||7|function|undefined DestructTDealLineAndMaybeFree_Impl()|
-5c0e00|IltTarget_005c0e00||56|function|undefined IltTarget_005c0e00()|
+5c0e00|TDealLine::IDealLine||56|function|void __thiscall IDealLine(short rowArg, short colArg, int * bounds, short commoditySlot, short ownerNationSlot, short entryOrdinal)|
 5c0e50|TDealLine::CreateLineItemView||1190|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 5c1430|TCommodityLine::CreateObject|?CreateObject@TCommodityLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5c14a0|TCommodityLine::GetRuntimeClass||6|function|undefined GetTCommodityLineClassNamePointer()|rtti
