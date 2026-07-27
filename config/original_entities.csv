@@ -3195,7 +3195,7 @@ address|name|symbol|size|type|prototype|provenance
 508c50|NormalizeRuntimeCredentialNameToken||270|function|undefined NormalizeRuntimeCredentialNameToken()|
 508ee0|`dynamic initializer for 'g_scaledShortConst_6A32E0''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A32E0''(void)|library
 508f30|BuildHexNeighborHighlightPolygonForTile||956|function|undefined BuildHexNeighborHighlightPolygonForTile()|
-5093e0|IltTarget_005093e0||1659|function|undefined IltTarget_005093e0()|
+5093e0|DrawHexNeighborBorderGuidePathForTile||1659|function|void __cdecl DrawHexNeighborBorderGuidePathForTile(short tileId, int compareValue, short tileScale)|curated
 509c00|TMacViewMgr::CreateObject|?CreateObject@TMacViewMgr@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 509c80|TMacViewMgr::GetRuntimeClass||6|function|undefined GetTMacViewMgrClassNamePointer()|rtti
 509ca0|ConstructStrategicMapViewSystem||281|function|undefined ConstructStrategicMapViewSystem()|
