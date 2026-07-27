@@ -37,14 +37,26 @@ def parse_args() -> argparse.Namespace:
 
 
 def normalize_offset(raw: str) -> str:
-    return f"0x{raw.lower().removeprefix('0x')}"
+    """Canonical key for a marker address.
+
+    Leading zeros are stripped as well as case folded, so `0x4dfd30` and `0x004dfd30`
+    are one key. Every marker in the tree is currently written zero-padded to eight
+    digits, so this changes nothing today -- but without it a duplicate implementation
+    spelled with a different width would slip past Hard Rule 4 unreported, which is the
+    one thing this gate exists to prevent (bd imperialism-decomp-x1cl).
+    """
+    digits = raw.lower().removeprefix("0x").lstrip("0")
+    return f"0x{digits or '0'}"
 
 
 def is_declaration_line(line: str) -> bool:
     stripped = line.strip()
     if not stripped:
         return False
-    if stripped.startswith("//"):
+    # Hard Rule 3 forbids ANY comment between the marker and the declaration, so a block
+    # comment has to disqualify the line the same way a line comment does. Only `//` was
+    # rejected before, which let `/* ... */` sit in the gap unreported.
+    if stripped.startswith("//") or stripped.startswith("/*"):
         return False
     return True
 
