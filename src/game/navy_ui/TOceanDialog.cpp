@@ -566,7 +566,8 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
       SetQuickDrawFillColorFromPaletteIndex(zone->QueryPortZoneCapability() ? 0 : 0x13);
       CString label;
       zone->AssignZoneDisplayNameToOutputRef(&label);
-      short labelWidth = MeasureTextExtentWithCachedQuickDrawStyle(&label);
+      short labelWidth = MeasureTextRangeWithCachedQuickDrawStyle(
+          static_cast<LPCSTR>(label), 0, static_cast<short>(label.GetLength()));
       SetQuickDrawTextOriginWithContextOffset(static_cast<short>(labelX - labelWidth / 2),
                                               static_cast<short>(labelY + 8));
       DrawTextWithCachedQuickDrawStyleState(&label);

@@ -1172,30 +1172,39 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
         static_cast<char>(g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 1)),
         static_cast<char>(
             g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 0))};
-    const int activeNation = g_pSimMgr->GetActiveNationId();
-    bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;
-    if (!tileVisible && g_pGlobalMapState->field24 != 0) {
-      tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
-                    terrain.GetTerrainKind() == kStrategicTerrainMountain ||
-                    terrain.GetTerrainKind() == kStrategicTerrainSwamp ||
-                    terrain.GetTerrainKind() == kStrategicTerrainDesert;
-    }
+    // The original writes both edges out (0x51f6ab and 0x51f76a are the same block with
+    // different constants), so the visibility test and its GetActiveNationId call appear
+    // twice rather than once around a loop. IMPERIALISM_MAP_TILE_RESOURCE_EDGE keeps the
+    // two copies identical without a loop the compiler would have to unroll.
+#define IMPERIALISM_MAP_TILE_RESOURCE_EDGE(edgeIndex, xOffset)                                     \
+  {                                                                                                \
+    const signed char resourceType = terrain.resourceTypeByEdge[edgeIndex];                        \
+    if (resourceType >= 0) { /* kResourceKindNone sentinel */                                      \
+      const short destinationX = static_cast<short>(screenX + (xOffset));                          \
+      if (improvementClasses[edgeIndex] != 0) {                                                    \
+        g_pStrategicMapViewSystem->DrawStrategicMapUnitIconOverlay(                                \
+            destinationSurfaceObject, static_cast<unsigned short>(resourceType),                   \
+            improvementClasses[edgeIndex], destinationX, static_cast<short>(screenY + 2));         \
+      } else {                                                                                     \
+        const int activeNation = g_pSimMgr->GetActiveNationId();                                   \
+        bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;          \
+        if (!tileVisible && g_pGlobalMapState->field24 != 0) {                                     \
+          tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||                      \
+                        terrain.GetTerrainKind() == kStrategicTerrainMountain ||                   \
+                        terrain.GetTerrainKind() == kStrategicTerrainSwamp ||                      \
+                        terrain.GetTerrainKind() == kStrategicTerrainDesert;                       \
+        }                                                                                          \
+        if (tileVisible) {                                                                         \
+          g_pStrategicMapViewSystem->DrawStrategicMapUnitIcon(                                     \
+              destinationSurfaceObject, resourceType, destinationX, screenY);                      \
+        }                                                                                          \
+      }                                                                                            \
+    }                                                                                              \
+  }
 
-    for (int edge = 0; edge < 2; ++edge) {
-      const signed char resourceType = terrain.resourceTypeByEdge[edge];
-      if (resourceType < 0) { // kResourceKindNone sentinel
-        continue;
-      }
-      const short destinationX = static_cast<short>(screenX + (edge == 0 ? 2 : 0x1c));
-      if (improvementClasses[edge] != 0) {
-        g_pStrategicMapViewSystem->DrawStrategicMapUnitIconOverlay(
-            destinationSurfaceObject, static_cast<unsigned short>(resourceType),
-            improvementClasses[edge], destinationX, static_cast<short>(screenY + 2));
-      } else if (tileVisible) {
-        g_pStrategicMapViewSystem->DrawStrategicMapUnitIcon(destinationSurfaceObject, resourceType,
-                                                            destinationX, screenY);
-      }
-    }
+    IMPERIALISM_MAP_TILE_RESOURCE_EDGE(0, 2)
+    IMPERIALISM_MAP_TILE_RESOURCE_EDGE(1, 0x1c)
+#undef IMPERIALISM_MAP_TILE_RESOURCE_EDGE
 
     if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(terrain.ownerNationTag04) == 0 &&
         terrain.secondaryOwnerNationTag18 != -1) {
