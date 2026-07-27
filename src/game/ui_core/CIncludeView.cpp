@@ -47,8 +47,8 @@ static void CALLBACK UiCursorTickTimerProc(HWND hWnd, UINT uMsg, UINT idEvent, D
 // into the active TView tree. Layout/type shared with TGameWindow::DoKeyEvent (which reads
 // commandCode/handledMarker) and the not-yet-ported CMcWindow WM_CHAR handler 0x493ce0 via
 // game/TUiEvent.h (TKeyCommandEvent).
-static void PopulateKeyCommandBlock(TKeyCommandEvent& block, UINT nChar, UINT nRepCnt,
-                                    UINT nFlags) {
+static __inline void PopulateKeyCommandBlock(TKeyCommandEvent& block, UINT nChar, UINT nRepCnt,
+                                             UINT nFlags) {
   block.commandCode = (nChar == VK_F1) ? 0x68 : static_cast<short>(nChar);
   block.keyFlags = static_cast<short>(nFlags & 0xf);
   block.handledMarker = static_cast<short>(nRepCnt);
