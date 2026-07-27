@@ -3814,7 +3814,7 @@ address|name|symbol|size|type|prototype|provenance
 536fc0|TNavyMission::EnsureMissionCurrentTargetContextIsValid||60|function|undefined EnsureMissionCurrentTargetContextIsValid()|
 537010|TNavyMission::PickBestShipForMissionType||52|function|TShip * __thiscall TNavyMission::PickBestShipForMissionType(int missionType)|curated
 537060|TNavyMission::GetActiveTargetZoneByState28||25|function|undefined GetMissionOrderBudgetByMode()|
-537090|TScatteredShipsMission::QueueMissionOrdersByPriorityForContext||100|function|void __thiscall QueueMissionOrdersByPriorityForContext(int pContextAnchor, int * ppSelectedChildNode)|
+537090|TScatteredShipsMission::QueueMissionOrdersByPriorityForContext||253|function|void __thiscall QueueMissionOrdersByPriorityForContext(int pContextAnchor, int * ppSelectedChildNode)|
 5371d0|ConsolidateMissionOrderEntriesByTargetAndQueue||115|function|undefined ConsolidateMissionOrderEntriesByTargetAndQueue()|
 537270|TNavyMission::ValueOf||724|function|float ValueOf(TShip* candidate)|
 537610|TNavyMission::FitnessOf||530|function|float FitnessOf(TShip* candidate, float* targetProfile)|

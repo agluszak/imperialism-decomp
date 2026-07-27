@@ -64,6 +64,21 @@ class PuncturedBodyTests(unittest.TestCase):
         self.assertIn("0x004c8c09-0x004c8c3f", found["body_hole"].detail)
         self.assertIn("55 bytes", found["body_hole"].detail)
 
+    def test_hole_starting_at_a_neighbouring_function_is_only_a_hole(self):
+        """The collector must not label a hole whose start is a live function entry.
+
+        Reporting those as label_in_hole sent a repair pass chasing eleven non-defects:
+        fix-function-bounds correctly refuses to absorb a neighbour.
+        """
+        view = FunctionView(
+            entry=self.PUNCTURED.entry,
+            name=self.PUNCTURED.name,
+            ranges=self.PUNCTURED.ranges,
+            last_mnemonic="RET",
+            labels=(),  # collector drops the symbol when a function starts there
+        )
+        self.assertEqual(kinds(view), {"body_hole"})
+
     def test_hole_without_a_label_reports_only_the_hole(self):
         view = FunctionView(
             entry=self.PUNCTURED.entry,
