@@ -1822,6 +1822,76 @@ char TDiplomacyMgr::BuildEmbassy(DiplomaticMissionLevelStorage missionLevel, int
 // are shared stream byte-order helpers, not diplomacy code: they live in
 // src/game/core/stream_byteswap.cpp.
 
+// The byte-array twin of BuildTurnEvent2ArraySyncPacketDeltaOrFull below: same packet, same
+// full-versus-delta decision, but one byte per element, so a delta record costs 3 bytes and
+// the payload is tagged deltaKind21 == 1.
+// FUNCTION: IMPERIALISM 0x00544840
+TurnEvent2SyncPacket* __cdecl
+BuildTurnEvent2ByteArraySyncPacketDeltaOrFull(unsigned int byteCount, unsigned char* current,
+                                              unsigned char* baseline) {
+  bool sendFull = true;
+  int differing = 0;
+  if (baseline != 0) {
+    if (0 < static_cast<int>(byteCount)) {
+      unsigned char* cur = current;
+      unsigned int remaining = byteCount;
+      do {
+        if (*cur != cur[baseline - current]) {
+          ++differing;
+        }
+        ++cur;
+        --remaining;
+      } while (remaining != 0);
+    }
+    sendFull = true;
+    if (static_cast<unsigned int>(differing * 3) < byteCount) {
+      sendFull = false;
+    }
+  }
+  if (sendFull) {
+    int packetSize = byteCount + 0x24;
+    TurnEvent2SyncPacket* packet =
+        static_cast<TurnEvent2SyncPacket*>(static_cast<void*>(new unsigned char[packetSize]));
+    packet->eventCode = 0;
+    packet->fromNetworkId = 0;
+    packet->toNetworkId = 0;
+    packet->messageLength = 0;
+    packet->messageLength = 0x1c;
+    packet->pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+    packet->messageLength = packetSize;
+    packet->eventCode = 2;
+    packet->toNetworkId = 0;
+    memcpy(packet->payload.raw, current, byteCount);
+    packet->deltaKind21 = 0;
+    return packet;
+  }
+  int packetSize = (differing + 0xc) * 3;
+  TurnEvent2SyncPacket* packet =
+      static_cast<TurnEvent2SyncPacket*>(static_cast<void*>(new unsigned char[packetSize]));
+  packet->eventCode = 0;
+  packet->fromNetworkId = 0;
+  packet->toNetworkId = 0;
+  packet->messageLength = 0;
+  packet->messageLength = 0x1c;
+  short pendingSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  packet->messageLength = packetSize;
+  packet->pendingNationSlot = pendingSlot;
+  packet->eventCode = 2;
+  packet->toNetworkId = 0;
+  packet->deltaKind21 = 1;
+  TurnEvent2ByteDeltaEntry* out = packet->payload.byteEntries;
+  unsigned char* cur = current;
+  for (int i = 0; i < static_cast<int>(byteCount); ++i) {
+    if (*cur != cur[baseline - current]) {
+      out->index = static_cast<unsigned short>(i);
+      out->value = *cur;
+      ++out;
+    }
+    ++cur;
+  }
+  return packet;
+}
+
 // FUNCTION: IMPERIALISM 0x005449b0
 TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned int shortCount,
                                                                         short* current,
@@ -1878,6 +1948,74 @@ TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned
   TurnEvent2ShortDeltaEntry* out = packet->payload.shortEntries;
   short* cur = current;
   for (int i = 0; i < static_cast<int>(shortCount); ++i) {
+    if (*cur != cur[baseline - current]) {
+      out->index = static_cast<unsigned short>(i);
+      out->value = *cur;
+      ++out;
+    }
+    ++cur;
+  }
+  return packet;
+}
+
+// The int-array twin: four bytes per element, so a delta record costs 6 bytes and the
+// payload is tagged deltaKind21 == 3.
+// FUNCTION: IMPERIALISM 0x00544b30
+TurnEvent2SyncPacket* __cdecl
+BuildTurnEvent2IntArraySyncPacketDeltaOrFull(int intCount, int* current, int* baseline) {
+  bool sendFull = true;
+  int differing = 0;
+  if (baseline != 0) {
+    if (0 < intCount) {
+      int* cur = baseline;
+      int remaining = intCount;
+      do {
+        if (cur[current - baseline] != *cur) {
+          ++differing;
+        }
+        ++cur;
+        --remaining;
+      } while (remaining != 0);
+    }
+    sendFull = true;
+    if (static_cast<unsigned int>(differing * 6) < static_cast<unsigned int>(intCount * 4)) {
+      sendFull = false;
+    }
+  }
+  if (sendFull) {
+    int packetSize = intCount * 4 + 0x24;
+    TurnEvent2SyncPacket* packet =
+        static_cast<TurnEvent2SyncPacket*>(static_cast<void*>(new unsigned char[packetSize]));
+    packet->eventCode = 0;
+    packet->fromNetworkId = 0;
+    packet->toNetworkId = 0;
+    packet->messageLength = 0;
+    packet->messageLength = 0x1c;
+    packet->pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+    packet->messageLength = packetSize;
+    packet->eventCode = 2;
+    packet->toNetworkId = 0;
+    memcpy(packet->payload.raw, current, intCount * 4);
+    packet->deltaKind21 = 0;
+    return packet;
+  }
+  int packetSize = (differing + 6) * 6;
+  TurnEvent2SyncPacket* packet =
+      static_cast<TurnEvent2SyncPacket*>(static_cast<void*>(new unsigned char[packetSize]));
+  packet->eventCode = 0;
+  packet->fromNetworkId = 0;
+  packet->toNetworkId = 0;
+  packet->messageLength = 0;
+  packet->messageLength = 0x1c;
+  short pendingSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  packet->messageLength = packetSize;
+  packet->pendingNationSlot = pendingSlot;
+  packet->eventCode = 2;
+  packet->toNetworkId = 0;
+  packet->deltaKind21 = 3;
+  TurnEvent2IntDeltaEntry* out = packet->payload.intEntries;
+  int* cur = current;
+  for (int i = 0; i < intCount; ++i) {
     if (*cur != cur[baseline - current]) {
       out->index = static_cast<unsigned short>(i);
       out->value = *cur;
