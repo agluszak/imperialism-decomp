@@ -4886,7 +4886,7 @@ address|name|symbol|size|type|prototype|provenance
 573170|TMegaPicture::GetRuntimeClass||6|function|undefined GetTMegaPictureClassNamePointer()|rtti
 573190|TMegaPicture::ConstructTMegaPictureBaseState||39|function|undefined ConstructTMegaPictureBaseState()|
 5731d0|TMegaPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-573220|IltTarget_00573220||61|function|undefined IltTarget_00573220()|
+573220|TMegaPicture::IMegaPicture||61|function|void __thiscall TMegaPicture::IMegaPicture(TView * panel, int * offsetLayout, int * sizeLayout, int layoutParam4, int layoutParam5, short pictureId, unsigned short flags)|curated
 573270|TMegaPicture::Draw||340|function|undefined RenderControlRectWithPaletteAndOptionalBlit()|
 573430|TMegaPicture::SetPictureResourceIdAndRefresh||431|function|void __thiscall SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fRefreshNow)|listing
 573650|TMegaPicture::Free||48|function|void __thiscall Free(void)|

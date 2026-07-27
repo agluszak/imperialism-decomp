@@ -4953,7 +4953,7 @@ address|matching|name
 0x573190|1.0|TMegaPicture::TMegaPicture
 0x5731d0|1.0|TMegaPicture::`scalar deleting destructor'
 0x573200|1.0|TMegaPicture::~TMegaPicture
-0x573220|0.0|IltTarget_00573220
+0x573220|1.0|TMegaPicture::IMegaPicture
 0x573270|0.38095238095238093|TMegaPicture::Draw
 0x573430|0.6766917293233082|TMegaPicture::SetPictureResourceIdAndRefresh
 0x573650|1.0|TMegaPicture::Free
