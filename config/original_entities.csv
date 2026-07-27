@@ -4513,7 +4513,7 @@ address|name|symbol|size|type|prototype|provenance
 560f80|TScatteredShipsMission::PropagateMapActionContextDistanceLevelsRecursive||230|function|undefined PropagateMapActionContextDistanceLevelsRecursive()|
 5610b0|TScatteredShipsMission::GetCachedMapActionContextDistanceOrRecompute||455|function|undefined GetCachedMapActionContextDistanceOrRecompute()|
 561300|stretch<TZone*>::OverStretch||94|function|void __thiscall OverStretch(unsigned int requestedCount)|template
-561380|IltTarget_00561380||84|function|undefined IltTarget_00561380()|
+561380|TZone::CountDiplomaticallyRelatedNationsInKeyMask||84|function|int __thiscall TZone::CountDiplomaticallyRelatedNationsInKeyMask(int nation)|curated
 561400|BuildNationBitmaskForActiveType3Or4OrdersIncludingNation||97|function|undefined BuildNationBitmaskForActiveType3Or4OrdersIncludingNation()|
 561490|BuildNationBitmaskForActiveType3Or4Orders||84|function|undefined BuildNationBitmaskForActiveType3Or4Orders()|
 561510|HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask||159|function|undefined HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask()|

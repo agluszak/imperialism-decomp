@@ -1027,6 +1027,19 @@ short TZone::GetCachedMapActionContextDistanceOrRecompute(TZone* other) {
 // TEMPLATE: IMPERIALISM 0x00561300
 // stretch::OverStretch
 
+// FUNCTION: IMPERIALISM 0x00561380
+int TZone::CountDiplomaticallyRelatedNationsInKeyMask(int nation) {
+  int count = 0;
+  for (int slot = 0; slot < 7; ++slot) {
+    if (g_apTerrainTypeDescriptorTable[slot] != 0 && (nationKeyMask10 & (1 << slot)) != 0 &&
+        g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nation, slot)) {
+      ++count;
+    }
+  }
+  return count;
+}
+// stretch::OverStretch
+
 // FUNCTION: IMPERIALISM 0x00561400
 unsigned int TZone::BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(unsigned char nation) {
   unsigned int mask = 0;

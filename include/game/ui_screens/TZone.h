@@ -174,6 +174,12 @@ public:
   // itself) is diplomatically related to `nation` (per g_pDiplomacyTurnStateManager).
   unsigned int HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int nation);
 
+  // Counts the nation slots present in nationKeyMask10 that still exist and whose
+  // relation turn-stamp against `nation` is out of date. Seven slots, bounded by the
+  // descriptor table. No Mac oracle name fits, so named after what it computes.
+  // 0x00561380, __thiscall.
+  int CountDiplomaticallyRelatedNationsInKeyMask(int nation);
+
   // 0x00561b90. This port zone's owning nation code -- terrainStateTable[stylePayload48]'s
   // ownerNationTag04. (Reads the TPortZone-derived stylePayload48; only valid on a TPortZone.)
   short GetPortZoneOwnerNationCodeFromMissionField48();
