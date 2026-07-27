@@ -3858,7 +3858,7 @@ address|matching|name
 0x536fc0|1.0|TNavyMission::GetReplacementSlot48
 0x537010|1.0|TNavyMission::PickBestShipForMissionType
 0x537060|1.0|TNavyMission::GetActiveTargetZoneByState28
-0x537090|0.4028776978417266|TNavyMission::QueueMissionOrdersByPriorityForContext
+0x537090|0.62|TNavyMission::QueueMissionOrdersByPriorityForContext
 0x5371d0|1.0|TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue
 0x537270|0.8033126293995859|TNavyMission::ValueOf
 0x537610|0.8514285714285714|TNavyMission::FitnessOf
