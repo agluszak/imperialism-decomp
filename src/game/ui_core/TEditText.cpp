@@ -89,13 +89,13 @@ void TEditText::SetEnable(char enabled) {
 
 // FUNCTION: IMPERIALISM 0x00490730
 void TEditText::SetEnabled(int enabledState, int refreshFlag) {
-  if (enabledState != field08) {
-    field08 = enabledState;
+  if (enabledState != viewEnabled) {
+    viewEnabled = enabledState;
     if (refreshFlag != 0) {
       RefreshControl();
     }
     if (editWindow != nullptr) {
-      editWindow->ShowWindow(field08 != 0 ? 5 : 0);
+      editWindow->ShowWindow(viewEnabled != 0 ? 5 : 0);
       return;
     }
     TEditText::Open();
@@ -104,7 +104,7 @@ void TEditText::SetEnabled(int enabledState, int refreshFlag) {
 
 // FUNCTION: IMPERIALISM 0x004907a0
 CWnd* TEditText::Open() {
-  if (editWindow == 0 && field08 != 0 && enabled != 0 && nativeWindow50 != 0) {
+  if (editWindow == 0 && viewEnabled != 0 && enabled != 0 && nativeWindow50 != 0) {
     // The original allocates 0x3c bytes and stores the 0x0064afd8 vtable — the
     // dedicated edit-host class, not CMcWindow (0x0064b7c8) and not the plain
     // CWnd the base ctor writes.

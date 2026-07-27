@@ -29,7 +29,7 @@ void TPictureRadioButton::ViewEnable(char isEnabled, char refreshNow) {
     SetPictureResourceIdAndRefresh(alternatePictureId, false);
     controlValue3c = pictureId;
     DefaultSize(true);
-    field08 = isEnabled;
+    viewEnabled = isEnabled;
     SetEnabled(!isEnabled, refreshNow);
   }
   TView::SetState(isEnabled, refreshNow);

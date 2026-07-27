@@ -76,12 +76,12 @@ TCountry|148|pad_86|short|other|134|2|no|6c73fa626dd677d3|include/game/city_ui/T
 TCountry|148|homeTileIndex|int|other|136|4|no|6c73fa626dd677d3|include/game/city_ui/TCountry.h
 TCountry|148|overlayAnchorTileCache8c|int|other|140|4|no|6c73fa626dd677d3|include/game/city_ui/TCountry.h
 TCountry|148|ownedRegionList|TLongintList *|other|144|4|no|6c73fa626dd677d3|include/game/city_ui/TCountry.h
-TIncludeView|116|turnEventCode60|short|other|96|2|no|22960b588e13afa3|include/game/ui_core/TIncludeView.h
-TIncludeView|116|padding62|short|other|98|2|no|22960b588e13afa3|include/game/ui_core/TIncludeView.h
-TIncludeView|116|anchorPoint64|CPoint|other|100|8|no|22960b588e13afa3|include/game/ui_core/TIncludeView.h
-TIncludeView|116|labelText6c|CString|embedded|108|4|yes|22960b588e13afa3|include/game/ui_core/TIncludeView.h
-TIncludeView|116|completionFlag70|short|other|112|2|no|22960b588e13afa3|include/game/ui_core/TIncludeView.h
-TIncludeView|116|padding72|short|other|114|2|no|22960b588e13afa3|include/game/ui_core/TIncludeView.h
+TIncludeView|116|turnEventCode60|short|other|96|2|no|8a5b154f56f01f73|include/game/ui_core/TIncludeView.h
+TIncludeView|116|padding62|short|other|98|2|no|8a5b154f56f01f73|include/game/ui_core/TIncludeView.h
+TIncludeView|116|anchorPoint64|CPoint|other|100|8|no|8a5b154f56f01f73|include/game/ui_core/TIncludeView.h
+TIncludeView|116|labelText6c|CString|embedded|108|4|yes|8a5b154f56f01f73|include/game/ui_core/TIncludeView.h
+TIncludeView|116|completionFlag70|short|other|112|2|no|8a5b154f56f01f73|include/game/ui_core/TIncludeView.h
+TIncludeView|116|padding72|short|other|114|2|no|8a5b154f56f01f73|include/game/ui_core/TIncludeView.h
 TInfoBarBehavior|36|text|CString|embedded|16|4|yes|65ee622ba1a00d6e|include/game/military_ui/TInfoBarBehavior.h
 TInfoBarBehavior|36|layoutRect|CRect|other|20|16|no|65ee622ba1a00d6e|include/game/military_ui/TInfoBarBehavior.h
 TLanguageMgr|52|firstColumn|unsigned char|other|4|1|no|e8b88321d0cefa03|include/game/ui_core/TLanguageMgr.h
@@ -127,46 +127,46 @@ TMilitaryUnit|68|battleStateFlags3A|short|other|58|2|no|3fbb2a2d3410e3f9|include
 TMilitaryUnit|68|strengthSnapshot3C|short|other|60|2|no|3fbb2a2d3410e3f9|include/game/military/TMilitaryUnit.h
 TMilitaryUnit|68|pad3E|short|other|62|2|no|3fbb2a2d3410e3f9|include/game/military/TMilitaryUnit.h
 TMilitaryUnit|68|ownerMission40|TMission *|other|64|4|no|3fbb2a2d3410e3f9|include/game/military/TMilitaryUnit.h
-TMiniCivView|140|civUnit84|TCivUnit *|other|132|4|no|dff0c91fe2c62831|include/game/military_ui/TMiniCivView.h
-TMiniCivView|140|unitText88|CString|embedded|136|4|yes|dff0c91fe2c62831|include/game/military_ui/TMiniCivView.h
+TMiniCivView|140|civUnit84|TCivUnit *|other|132|4|no|a1ffecbf83613f23|include/game/military_ui/TMiniCivView.h
+TMiniCivView|140|unitText88|CString|embedded|136|4|yes|a1ffecbf83613f23|include/game/military_ui/TMiniCivView.h
 TModalMessageCommand|32|message|CString|embedded|24|4|yes|f672a59ca72305c6|include/game/ui_core/TModalMessageCommand.h
 TModalMessageCommand|32|payload|int|other|28|4|no|f672a59ca72305c6|include/game/ui_core/TModalMessageCommand.h
-TMultiplayerMgr|248|nationStatusControlSlots|TMultiplayerSlotHandle[4]|other|32|32|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|lobbyDialogView40|TView *|other|64|4|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|diplomacyQueueContext|TEventHandler *|other|68|4|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|nationSessionIds|int[7]|other|72|28|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|queueSyncDword|int|other|100|4|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|processPrimaryEventQueue|char|other|104|1|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|processSecondaryEventQueue|char|other|105|1|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|pad6a|unsigned char[2]|other|106|2|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|primaryTurnEventQueueHead|TurnEventQueuePacket *|other|108|4|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|secondaryTurnEventQueueHead|TurnEventQueuePacket *|other|112|4|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|gameNameString|CString|embedded|116|4|yes|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|defaultNationTextSlots|CString[7]|embedded_array|120|28|yes|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|nationDisplayNameSlots|CString[7]|embedded_array|148|28|yes|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|playerNameString|CString|embedded|176|4|yes|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|playerNameMirror|CString|embedded|180|4|yes|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|fieldb8|CString|embedded|184|4|yes|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|nationStatusTags|int[7]|other|188|28|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|sessionPhaseTag|int|other|216|4|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|activeNationTagIndex|unsigned char|other|220|1|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|padDd|unsigned char[3]|other|221|3|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|scenarioSelectionTag|int|other|224|4|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|sessionReadyFlag|unsigned char|other|228|1|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|padE5|unsigned char[3]|other|229|3|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|pendingNationBitmask|int|other|232|4|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|activeNationSlotIndex|int|other|236|4|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|pendingNationSlotIndex|int|other|240|4|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|fieldF4|unsigned char|other|244|1|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TMultiplayerMgr|248|padF5|unsigned char[3]|other|245|3|no|2183800f4c180d9b|include/game/net/TMultiplayerMgr.h
-TSetupRandomMapPicture|168|planetSeed94|CString|embedded|148|4|yes|507252cc9c03db24|include/game/ui_screens/TSetupRandomMapPicture.h
-TSetupRandomMapPicture|168|wrapHorizontally98|unsigned char|other|152|1|no|507252cc9c03db24|include/game/ui_screens/TSetupRandomMapPicture.h
-TSetupRandomMapPicture|168|pad99|unsigned char|other|153|1|no|507252cc9c03db24|include/game/ui_screens/TSetupRandomMapPicture.h
-TSetupRandomMapPicture|168|selectedNationSlot9A|short|other|154|2|no|507252cc9c03db24|include/game/ui_screens/TSetupRandomMapPicture.h
-TSetupRandomMapPicture|168|lastGlobeTick9C|unsigned int|other|156|4|no|507252cc9c03db24|include/game/ui_screens/TSetupRandomMapPicture.h
-TSetupRandomMapPicture|168|globeFrameA0|int|other|160|4|no|507252cc9c03db24|include/game/ui_screens/TSetupRandomMapPicture.h
-TSetupRandomMapPicture|168|countryControlReadyA4|unsigned char|other|164|1|no|507252cc9c03db24|include/game/ui_screens/TSetupRandomMapPicture.h
-TSetupRandomMapPicture|168|padA5|unsigned char[3]|other|165|3|no|507252cc9c03db24|include/game/ui_screens/TSetupRandomMapPicture.h
+TMultiplayerMgr|248|nationStatusControlSlots|TMultiplayerSlotHandle[4]|other|32|32|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|lobbyDialogView40|TView *|other|64|4|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|diplomacyQueueContext|TEventHandler *|other|68|4|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|nationSessionIds|int[7]|other|72|28|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|queueSyncDword|int|other|100|4|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|processPrimaryEventQueue|char|other|104|1|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|processSecondaryEventQueue|char|other|105|1|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|pad6a|unsigned char[2]|other|106|2|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|primaryTurnEventQueueHead|TurnEventQueuePacket *|other|108|4|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|secondaryTurnEventQueueHead|TurnEventQueuePacket *|other|112|4|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|gameNameString|CString|embedded|116|4|yes|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|defaultNationTextSlots|CString[7]|embedded_array|120|28|yes|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|nationDisplayNameSlots|CString[7]|embedded_array|148|28|yes|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|playerNameString|CString|embedded|176|4|yes|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|playerNameMirror|CString|embedded|180|4|yes|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|fieldb8|CString|embedded|184|4|yes|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|nationStatusTags|int[7]|other|188|28|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|sessionPhaseTag|int|other|216|4|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|activeNationTagIndex|unsigned char|other|220|1|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|padDd|unsigned char[3]|other|221|3|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|scenarioSelectionTag|int|other|224|4|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|sessionReadyFlag|unsigned char|other|228|1|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|padE5|unsigned char[3]|other|229|3|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|pendingNationBitmask|int|other|232|4|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|activeNationSlotIndex|int|other|236|4|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|pendingNationSlotIndex|int|other|240|4|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|fieldF4|unsigned char|other|244|1|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TMultiplayerMgr|248|padF5|unsigned char[3]|other|245|3|no|c3c686faa7fd7c54|include/game/net/TMultiplayerMgr.h
+TSetupRandomMapPicture|168|planetSeed94|CString|embedded|148|4|yes|3cbcb89b092e962f|include/game/ui_screens/TSetupRandomMapPicture.h
+TSetupRandomMapPicture|168|wrapHorizontally98|unsigned char|other|152|1|no|3cbcb89b092e962f|include/game/ui_screens/TSetupRandomMapPicture.h
+TSetupRandomMapPicture|168|pad99|unsigned char|other|153|1|no|3cbcb89b092e962f|include/game/ui_screens/TSetupRandomMapPicture.h
+TSetupRandomMapPicture|168|selectedNationSlot9A|short|other|154|2|no|3cbcb89b092e962f|include/game/ui_screens/TSetupRandomMapPicture.h
+TSetupRandomMapPicture|168|lastGlobeTick9C|unsigned int|other|156|4|no|3cbcb89b092e962f|include/game/ui_screens/TSetupRandomMapPicture.h
+TSetupRandomMapPicture|168|globeFrameA0|int|other|160|4|no|3cbcb89b092e962f|include/game/ui_screens/TSetupRandomMapPicture.h
+TSetupRandomMapPicture|168|countryControlReadyA4|unsigned char|other|164|1|no|3cbcb89b092e962f|include/game/ui_screens/TSetupRandomMapPicture.h
+TSetupRandomMapPicture|168|padA5|unsigned char[3]|other|165|3|no|3cbcb89b092e962f|include/game/ui_screens/TSetupRandomMapPicture.h
 TShip|56|type|short|other|4|2|no|127870905f9d564c|include/game/navy/TShip.h
 TShip|56|pad06|short|other|6|2|no|127870905f9d564c|include/game/navy/TShip.h
 TShip|56|location|TZone *|other|8|4|no|127870905f9d564c|include/game/navy/TShip.h
@@ -218,37 +218,37 @@ TSimMgr|280|defenseMinisterPolicyIds|short[7]|other|260|14|no|3380e17bec328f13|i
 TSimMgr|280|reloadPoliticalMapState|unsigned char|other|274|1|no|3380e17bec328f13|include/game/ui_screens/TSimMgr.h
 TSimMgr|280|pad113|unsigned char|other|275|1|no|3380e17bec328f13|include/game/ui_screens/TSimMgr.h
 TSimMgr|280|scenarioMapIndexPlusOne|short|other|276|2|no|3380e17bec328f13|include/game/ui_screens/TSimMgr.h
-TStaticText|148|text|CString *|pointer|132|4|yes|e6cc0e08e4c575ca|include/game/ui_core/TStaticText.h
-TStaticText|148|stringResourceGroupId|int|other|136|4|no|e6cc0e08e4c575ca|include/game/ui_core/TStaticText.h
-TStaticText|148|stringResourceIndex|int|other|140|4|no|e6cc0e08e4c575ca|include/game/ui_core/TStaticText.h
-TStaticText|148|textAlignmentCode|short|other|144|2|no|e6cc0e08e4c575ca|include/game/ui_core/TStaticText.h
-TStaticText|148|textOptionFlags|short|other|146|2|no|e6cc0e08e4c575ca|include/game/ui_core/TStaticText.h
+TStaticText|148|text|CString *|pointer|132|4|yes|55e1202210284c44|include/game/ui_core/TStaticText.h
+TStaticText|148|stringResourceGroupId|int|other|136|4|no|55e1202210284c44|include/game/ui_core/TStaticText.h
+TStaticText|148|stringResourceIndex|int|other|140|4|no|55e1202210284c44|include/game/ui_core/TStaticText.h
+TStaticText|148|textAlignmentCode|short|other|144|2|no|55e1202210284c44|include/game/ui_core/TStaticText.h
+TStaticText|148|textOptionFlags|short|other|146|2|no|55e1202210284c44|include/game/ui_core/TStaticText.h
 TTextLine|32|captionText10|CString|embedded|16|4|yes|d27ce56ac2acedbf|include/game/ui_screens/TTextLine.h
 TTextLine|32|styleDescriptor14|TextStyle|other|20|10|no|d27ce56ac2acedbf|include/game/ui_screens/TTextLine.h
 TTextLine|32|field1e|short|other|30|2|no|d27ce56ac2acedbf|include/game/ui_screens/TTextLine.h
-TTextPictureButton|160|buttonText|CString|embedded|148|4|yes|d52bcb4a3ec0b5cf|include/game/ui_screens/TTextPictureButton.h
-TTextPictureButton|160|pointSize98|short|other|152|2|no|d52bcb4a3ec0b5cf|include/game/ui_screens/TTextPictureButton.h
-TTextPictureButton|160|themeCode9A|short|other|154|2|no|d52bcb4a3ec0b5cf|include/game/ui_screens/TTextPictureButton.h
-TTextPictureButton|160|themeCode9C|short|other|156|2|no|d52bcb4a3ec0b5cf|include/game/ui_screens/TTextPictureButton.h
-TView|96|ownerContext|class TView *|other|32|4|no|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|ownerLocalX|int|other|36|4|no|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|ownerLocalY|int|other|40|4|no|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|absoluteX|int|other|44|4|no|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|absoluteY|int|other|48|4|no|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|frameWidth34|int|other|52|4|no|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|frameHeight38|int|other|56|4|no|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|controlValue3c|int|other|60|4|no|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|resourceContext|TView *|other|64|4|no|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|childList44|TViewChildList *|other|68|4|no|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|stylePayload48|TUiStyleBytes *|other|72|4|no|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|inputGateFlag4c|bool|other|76|1|no|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|childHitTestFlag4d|bool|other|77|1|no|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|cursorId4e|unsigned short|other|78|2|no|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|nativeWindow50|CWnd *|other|80|4|no|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|helpState54|unsigned short|other|84|2|no|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|padding_56_to_57|unsigned char[2]|other|86|2|no|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|hoverHelpText58|CString|embedded|88|4|yes|e0eb90377f5b7592|include/game/ui_core/TView.h
-TView|96|hoverHelpEnabled5c|int|other|92|4|no|e0eb90377f5b7592|include/game/ui_core/TView.h
+TTextPictureButton|160|buttonText|CString|embedded|148|4|yes|1f97ade19b81ed46|include/game/ui_screens/TTextPictureButton.h
+TTextPictureButton|160|pointSize98|short|other|152|2|no|1f97ade19b81ed46|include/game/ui_screens/TTextPictureButton.h
+TTextPictureButton|160|themeCode9A|short|other|154|2|no|1f97ade19b81ed46|include/game/ui_screens/TTextPictureButton.h
+TTextPictureButton|160|themeCode9C|short|other|156|2|no|1f97ade19b81ed46|include/game/ui_screens/TTextPictureButton.h
+TView|96|ownerContext|class TView *|other|32|4|no|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|ownerLocalX|int|other|36|4|no|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|ownerLocalY|int|other|40|4|no|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|absoluteX|int|other|44|4|no|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|absoluteY|int|other|48|4|no|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|frameWidth34|int|other|52|4|no|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|frameHeight38|int|other|56|4|no|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|controlValue3c|int|other|60|4|no|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|resourceContext|TView *|other|64|4|no|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|childList44|TViewChildList *|other|68|4|no|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|stylePayload48|TUiStyleBytes *|other|72|4|no|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|inputGateFlag4c|bool|other|76|1|no|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|childHitTestFlag4d|bool|other|77|1|no|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|cursorId4e|unsigned short|other|78|2|no|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|nativeWindow50|CWnd *|other|80|4|no|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|helpState54|unsigned short|other|84|2|no|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|padding_56_to_57|unsigned char[2]|other|86|2|no|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|hoverHelpText58|CString|embedded|88|4|yes|0040be633ff90a97|include/game/ui_core/TView.h
+TView|96|hoverHelpEnabled5c|int|other|92|4|no|0040be633ff90a97|include/game/ui_core/TView.h
 TWNetSessionManager|180|joinGamePlayerNameA8|CString|embedded|168|4|yes|e0efb16174dcd263|include/game/net/TWNetSessionManager.h
 TWNetSessionManager|180|joinGamePlayerDataTagAC|int|other|172|4|no|e0efb16174dcd263|include/game/net/TWNetSessionManager.h
 TWNetSessionManager|180|activeProtocolControlB0|TRadioTextCluster *|other|176|4|no|e0efb16174dcd263|include/game/net/TWNetSessionManager.h

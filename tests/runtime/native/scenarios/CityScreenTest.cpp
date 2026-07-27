@@ -201,7 +201,7 @@ private:
 
   bool HasCorrectNumberTextPresentationState(TNumberText* numberText, short fontSize,
                                              COLORREF textColor) {
-    return numberText->enabled == 0 && numberText->field08 != 0 &&
+    return numberText->enabled == 0 && numberText->viewEnabled != 0 &&
            numberText->stylePayload48 == 0 && numberText->textStyle78.fontFamily == 3 &&
            numberText->textStyle78.fontStyleFlags == 0 &&
            numberText->textStyle78.fontSize == fontSize &&

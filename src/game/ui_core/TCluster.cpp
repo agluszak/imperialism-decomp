@@ -48,7 +48,7 @@ void TCluster::InitializeClusterFrameAndAttachToParent(TView* parent, POINT* off
   }
   controlTag = kControlTagSpSpSpSp;
   enabled = 1;
-  field08 = 1;
+  viewEnabled = 1;
   nextHandler = parent;
   ownerLocalX = offset->x;
   ownerLocalY = offset->y;
