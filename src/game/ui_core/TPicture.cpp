@@ -49,6 +49,23 @@ TPicture::TPicture(const TPicture& source)
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0048f190
+void TPicture::CopyPictureStateFromSource(TPicture* source) {
+  // Takes a pointer, matching TView::CopyViewStateFromSource which it forwards to.
+  CopyViewStateFromSource(source);
+  eventNumber60 = source->eventNumber60;
+  controlState64 = source->controlState64;
+  contentInsets68 = source->contentInsets68;
+  textStyle78 = source->textStyle78;
+  glyphBase84 = source->glyphBase84;
+  bitmapId = source->bitmapId;
+  resourceNamespaceId = source->resourceNamespaceId;
+  cachedBitmap = source->cachedBitmap;
+  if (glyphBase84 != -1) {
+    g_pModuleLibraryCacheState->IncrementRecordRefCountById(glyphBase84);
+  }
+}
+
 // SYNTHETIC: IMPERIALISM 0x0048f050
 // TPicture::`scalar deleting destructor'
 
