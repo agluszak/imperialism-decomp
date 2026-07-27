@@ -470,6 +470,21 @@ BOOL TModuleLibraryCacheTableStateB::LoadPaletteResource(CPalette* palette,
 // FUNCTION: IMPERIALISM 0x0049ace0
 COLORREF TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor(unsigned int packedColor) {
   if (m_dibPalette != NULL && (packedColor & 0xff000000) == 0x01000000) {
+    // Reads green then blue then red off one PALETTEENTRY& binding. This scores 82.61%;
+    // the residual is a load-order difference, not a layout error. The original loads
+    // green through the full indexed form ([ecx+eax*4+5]) and only then folds
+    // base+index*4+4 into a LEA, so blue and red become [ecx+2] and [ecx]; ours binds the
+    // address first and so emits blue before green. PALETTEENTRY is a Windows struct, so
+    // peRed/peGreen/peBlue are certainly +0/+1/+2 and no field declaration can move them.
+    //
+    // Three rewrites aimed at the original's order were measured and are all WORSE -- do
+    // not retry them (bd b0tp):
+    //   three separate array expressions, no reference      66.67% (pins the index in ESI,
+    //                                                              adds a push/pop pair)
+    //   reference bound after green, mask written twice     rebuilt the whole prologue
+    //   reference bound after green, index hoisted to local 54.17%
+    // Closing the last 17% needs the register allocator to keep the index live across the
+    // green load without spilling, which no source-level ordering here reproduces.
     PALETTEENTRY& entry = m_dibPalette->m_pLogPalette->palPalEntry[packedColor & 0xffff];
     COLORREF green = entry.peGreen;
     COLORREF paletteRgb = entry.peBlue | 0x200;
