@@ -1906,7 +1906,7 @@ thunk_WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl_At00493d30 493D30 f
 CMcWindow::OnIdleUpdateMsg36A 493D50 f
 CMcWindow::PreCreateWindow 493D80 f
 WrapperFor_ftol_At00493f30 493F30 f
-InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit 493F90 f
+DynamicInitializerForDefaultQuickDrawSurfaceSentinel 493F90 f
 DestroyDefaultQuickDrawSurfaceContextAtExit 493FC0 f
 InitStub_thunk_InitializeGlobalClipRegionHandleState_At00493fe0 493FE0 f
 WrapperFor_DeleteRegionHandleFromClipState_At00494010 494010 f
@@ -2165,7 +2165,7 @@ TAdorner::'scalar_deleting_destructor' 49DAB0 f
 WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl 49DAE0 f
 WrapperFor_ftol_At0049db60 49DB60 f
 loc_WriteUiRuntimeCursorTableBase_A 49DBEA l
-loc_WriteUiRuntimeCursorTableBase_B 49DC60 l
+DynamicInitializerForDefaultPoint006A2120 49DC60 f
 IltTarget_0049dcc0 49DCC0 f
 IltTarget_0049dce0 49DCE0 f
 IltTarget_0049dd00 49DD00 f
@@ -12498,7 +12498,6 @@ g_pUiRuntimeContext 6A21BC l
 g_lastEdgeAutoScrollTick16 6A21C0 l
 g_saveDocumentAssertGuard 6A21C4 l
 g_nUiAnimatorSurfaceBoundsWidth 6A2228 l
-g_nUiAnimatorSurfaceBoundsHeight 6A222C l
 g_ptArmyOrderModalMessage 6A2318 l
 g_InfoBarDummyOrigin_006A2410 6A2410 l
 g_Sanitize_City_Counter_Value_006A24D4 6A24D4 l
