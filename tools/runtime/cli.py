@@ -12,6 +12,7 @@ import sys
 import xml.etree.ElementTree as ET
 
 from tools.runtime.catalog import TESTS, find_test, suite_names, tests_in_suite
+from tools.runtime.runner import format_console_summary
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -136,9 +137,15 @@ def run_suite(args: argparse.Namespace) -> int:
             skipped=str(len(skipped)),
         )
         for result in results:
-            case = ET.SubElement(suite, "testcase", classname="runtime", name=result.name)
+            summary = result.result.get("summary", {})
+            duration = summary.get("duration_seconds")
+            case_attributes = {"classname": "runtime", "name": result.name}
+            if isinstance(duration, (int, float)):
+                case_attributes["time"] = str(duration)
+            case = ET.SubElement(suite, "testcase", **case_attributes)
+            concise = format_console_summary(result.result)
             if result.status == "failed":
-                failure = ET.SubElement(case, "failure", message="semantic runtime test failed")
+                failure = ET.SubElement(case, "failure", message=concise)
                 failure.text = json.dumps(result.result, indent=2, sort_keys=True)
             elif result.status == "skipped":
                 ET.SubElement(
@@ -146,6 +153,8 @@ def run_suite(args: argparse.Namespace) -> int:
                     "skipped",
                     message=str(result.result.get("failure", "runtime test skipped")),
                 )
+            system_out = ET.SubElement(case, "system-out")
+            system_out.text = concise
         args.junit.parent.mkdir(parents=True, exist_ok=True)
         ET.ElementTree(suite).write(args.junit, encoding="utf-8", xml_declaration=True)
     print(
@@ -156,6 +165,8 @@ def run_suite(args: argparse.Namespace) -> int:
         print("skipped: " + ", ".join(result.name for result in skipped))
     if failed:
         print("failed: " + ", ".join(result.name for result in failed))
+        for result in failed:
+            print(format_console_summary(result.result))
     return 1 if failed else 0
 
 

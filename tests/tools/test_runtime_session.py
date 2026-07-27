@@ -6,14 +6,15 @@ from __future__ import annotations
 from pathlib import Path
 import tempfile
 import unittest
-from unittest.mock import patch
 
 from tools.runtime.debug.session import (
     DebuggerLifecycle,
     DebuggerTransportError,
     StopEvent,
 )
-from tools.runtime.session import execute_run
+from tools.runtime.models import RunConfig
+from tools.runtime.session import SessionDependencies, execute_run
+from tools.runtime.transports import GdbTransport
 
 
 class FakeProcess:
@@ -156,6 +157,54 @@ class _NoVirtualDisplay:
 
 
 class RuntimeSessionTests(unittest.TestCase):
+    @staticmethod
+    def _config(run_dir: Path, timeout: float = 30.0) -> RunConfig:
+        return RunConfig(
+            name="boot_managers",
+            run_dir=run_dir,
+            seed=1,
+            timeout_seconds=timeout,
+            phase_timeout_ms=15_000,
+            use_gdb=True,
+        )
+
+    @staticmethod
+    def _dependencies(root: Path, session_factory: type) -> SessionDependencies:
+        def transport_factory(
+            _use_gdb: bool,
+            executable: Path,
+            cwd: Path,
+            environment: dict[str, str],
+            artifact_dir: Path,
+            wine_log_name: str,
+        ) -> GdbTransport:
+            return GdbTransport(
+                executable,
+                cwd,
+                environment,
+                artifact_dir,
+                wine_log_name,
+                session_factory=session_factory,
+            )
+
+        return SessionDependencies(
+            executable_provider=lambda: root / "Imperialism.exe",
+            prefix_provider=lambda: root / "prefix",
+            environment_builder=lambda _prefix: {},
+            display_factory=lambda _environment, _log: _NoVirtualDisplay(),
+            sandbox_factory=lambda _run_dir, _executable, _fixture: (
+                root,
+                None,
+                "asset-hash",
+            ),
+            prefix_initializer=lambda _prefix, _environment: None,
+            path_translator=lambda paths, _environment: [str(path) for path in paths],
+            provenance_builder=lambda *_args: {},
+            transport_factory=transport_factory,
+            screenshot_capture=lambda *_args, **_kwargs: None,
+            sleep=lambda _seconds: None,
+        )
+
     def test_transport_failure_cannot_be_overwritten_by_healthy_heartbeat(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -163,39 +212,13 @@ class RuntimeSessionTests(unittest.TestCase):
             run_dir = root / "run"
             run_dir.mkdir()
             (run_dir / "debug-record.json").write_text("stale", encoding="utf-8")
+            result = execute_run(
+                self._config(run_dir, timeout=0.0),
+                self._dependencies(root, FailingPollGdbSession),
+            )
 
-            with (
-                patch("tools.runtime.session.BUILD_DIR", root),
-                patch("tools.runtime.session.GdbSession", FailingPollGdbSession),
-                patch("tools.runtime.session.initialize_wine_prefix"),
-                patch("tools.runtime.session.prefix_environment", return_value={}),
-                patch(
-                    "tools.runtime.session.windows_paths",
-                    side_effect=lambda paths, _environment: [str(path) for path in paths],
-                ),
-                patch("tools.runtime.session.retail_game_dir", return_value=root),
-                patch("tools.runtime.session.shut_down_wine_prefix"),
-                # No Xvfb in a unit test: it would spawn a real X server, and its
-                # clock reads would eat the patched time.monotonic sequence below.
-                patch(
-                    "tools.runtime.session.virtual_display",
-                    return_value=_NoVirtualDisplay(),
-                ),
-                patch("tools.runtime.session.capture_failure_screenshot"),
-                patch("tools.runtime.session.time.monotonic", return_value=0.0),
-            ):
-                result = execute_run(
-                    name="boot_managers",
-                    run_dir=run_dir,
-                    seed=1,
-                    timeout=0.0,
-                    phase_timeout_ms=15_000,
-                    winedebug=None,
-                    wine_log_name="wine.log",
-                )
-
-        self.assertEqual(result["classification"], "debugger_transport_failure")
-        self.assertEqual(result["debugger_transport_error"], "GDB transport disappeared")
+        self.assertEqual(result.classification, "debugger_transport_failure")
+        self.assertEqual(result.debugger_transport_error, "GDB transport disappeared")
         session = FailingPollGdbSession.instance
         self.assertIsNotNone(session)
         self.assertTrue(session.closed)
@@ -207,40 +230,13 @@ class RuntimeSessionTests(unittest.TestCase):
             root = Path(temporary)
             (root / "Imperialism.exe").write_bytes(b"")
             run_dir = root / "run"
-            run_dir.mkdir()
+            result = execute_run(
+                self._config(run_dir), self._dependencies(root, InvariantGdbSession)
+            )
 
-            with (
-                patch("tools.runtime.session.BUILD_DIR", root),
-                patch("tools.runtime.session.GdbSession", InvariantGdbSession),
-                patch("tools.runtime.session.initialize_wine_prefix"),
-                patch("tools.runtime.session.prefix_environment", return_value={}),
-                patch(
-                    "tools.runtime.session.windows_paths",
-                    side_effect=lambda paths, _environment: [str(path) for path in paths],
-                ),
-                patch("tools.runtime.session.retail_game_dir", return_value=root),
-                patch("tools.runtime.session.shut_down_wine_prefix"),
-                # No Xvfb in a unit test: it would spawn a real X server, and its
-                # clock reads would eat the patched time.monotonic sequence below.
-                patch(
-                    "tools.runtime.session.virtual_display",
-                    return_value=_NoVirtualDisplay(),
-                ),
-                patch("tools.runtime.session.capture_failure_screenshot"),
-            ):
-                result = execute_run(
-                    name="boot_managers",
-                    run_dir=run_dir,
-                    seed=1,
-                    timeout=30.0,
-                    phase_timeout_ms=15_000,
-                    winedebug=None,
-                    wine_log_name="wine.log",
-                )
-
-        self.assertEqual(result["classification"], "runtime_invariant_violation")
+        self.assertEqual(result.classification, "runtime_invariant_violation")
         self.assertEqual(
-            result["debugger_invariant"], "stationed_military_unit_destructor"
+            result.debugger_invariant, "stationed_military_unit_destructor"
         )
         session = InvariantGdbSession.instance
         self.assertIsNotNone(session)
@@ -255,75 +251,25 @@ class RuntimeSessionTests(unittest.TestCase):
             root = Path(temporary)
             (root / "Imperialism.exe").write_bytes(b"")
             run_dir = root / "run"
-            run_dir.mkdir()
-            with (
-                patch("tools.runtime.session.BUILD_DIR", root),
-                patch("tools.runtime.session.GdbSession", InferiorExitGdbSession),
-                patch("tools.runtime.session.initialize_wine_prefix"),
-                patch("tools.runtime.session.prefix_environment", return_value={}),
-                patch(
-                    "tools.runtime.session.windows_paths",
-                    side_effect=lambda paths, _environment: [str(path) for path in paths],
-                ),
-                patch("tools.runtime.session.retail_game_dir", return_value=root),
-                patch("tools.runtime.session.shut_down_wine_prefix"),
-                # No Xvfb in a unit test: it would spawn a real X server, and its
-                # clock reads would eat the patched time.monotonic sequence below.
-                patch(
-                    "tools.runtime.session.virtual_display",
-                    return_value=_NoVirtualDisplay(),
-                ),
-            ):
-                result = execute_run(
-                    name="boot_managers",
-                    run_dir=run_dir,
-                    seed=1,
-                    timeout=30.0,
-                    phase_timeout_ms=15_000,
-                    winedebug=None,
-                    wine_log_name="wine.log",
-                )
-        self.assertEqual(result["classification"], "exited_without_result")
-        self.assertEqual(result["inferior_exit_code"], 0)
-        self.assertEqual(result["inferior_terminal_reason"], "exited-normally")
-        self.assertIsNone(result["proxy_exit_code"])
+            result = execute_run(
+                self._config(run_dir), self._dependencies(root, InferiorExitGdbSession)
+            )
+        self.assertEqual(result.classification, "exited_without_result")
+        self.assertEqual(result.inferior_exit_code, 0)
+        self.assertEqual(result.inferior_terminal_reason, "exited-normally")
+        self.assertIsNone(result.proxy_exit_code)
 
     def test_proxy_exit_while_inferior_active_is_transport_failure(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             (root / "Imperialism.exe").write_bytes(b"")
             run_dir = root / "run"
-            run_dir.mkdir()
-            with (
-                patch("tools.runtime.session.BUILD_DIR", root),
-                patch("tools.runtime.session.GdbSession", ProxyExitGdbSession),
-                patch("tools.runtime.session.initialize_wine_prefix"),
-                patch("tools.runtime.session.prefix_environment", return_value={}),
-                patch(
-                    "tools.runtime.session.windows_paths",
-                    side_effect=lambda paths, _environment: [str(path) for path in paths],
-                ),
-                patch("tools.runtime.session.retail_game_dir", return_value=root),
-                patch("tools.runtime.session.shut_down_wine_prefix"),
-                # No Xvfb in a unit test: it would spawn a real X server, and its
-                # clock reads would eat the patched time.monotonic sequence below.
-                patch(
-                    "tools.runtime.session.virtual_display",
-                    return_value=_NoVirtualDisplay(),
-                ),
-            ):
-                result = execute_run(
-                    name="boot_managers",
-                    run_dir=run_dir,
-                    seed=1,
-                    timeout=30.0,
-                    phase_timeout_ms=15_000,
-                    winedebug=None,
-                    wine_log_name="wine.log",
-                )
-        self.assertEqual(result["classification"], "debugger_transport_failure")
-        self.assertEqual(result["proxy_exit_code"], 3)
-        self.assertIsNone(result["inferior_exit_code"])
+            result = execute_run(
+                self._config(run_dir), self._dependencies(root, ProxyExitGdbSession)
+            )
+        self.assertEqual(result.classification, "debugger_transport_failure")
+        self.assertEqual(result.proxy_exit_code, 3)
+        self.assertIsNone(result.inferior_exit_code)
 
 
 if __name__ == "__main__":

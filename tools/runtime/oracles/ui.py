@@ -121,15 +121,15 @@ def compare_ui_snapshot(report: dict, snapshot: dict) -> dict:
     }
 
 
-def apply_ui_oracle(result: dict) -> None:
+def evaluate_ui_oracle(result: dict) -> dict | None:
     snapshots = result.get("ui_snapshots", [])
     if not snapshots:
-        return
+        return None
     report, errors = build_report(REPO_ROOT)
     if errors:
         raise ValueError("UI platform model is invalid: " + "; ".join(errors))
     comparisons = [compare_ui_snapshot(report, snapshot) for snapshot in snapshots]
-    result["ui_oracle"] = {
+    return {
         "status": (
             "passed"
             if all(comparison["status"] == "passed" for comparison in comparisons)
@@ -137,6 +137,13 @@ def apply_ui_oracle(result: dict) -> None:
         ),
         "snapshots": comparisons,
     }
+
+
+def apply_ui_oracle(result: dict) -> None:
+    comparison = evaluate_ui_oracle(result)
+    if comparison is None:
+        return
+    result["ui_oracle"] = comparison
     if result["ui_oracle"]["status"] == "failed":
         result["status"] = "failed"
         result["failure"] = "Mac-derived UI oracle mismatch"
