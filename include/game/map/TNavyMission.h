@@ -17,6 +17,12 @@ public:
   TShip* selectedOrder1c;              // +0x1c selected primary navy-order node
   TTaskForce* taskForce20;             // +0x20 combined task-force/map-order entry
   TMapOrderChildLinkNode* orderList24; // +0x24 -- head of child order-node chain
+
+  // Returns the child ship with the highest TShip::ComputeValueForMission score for
+  // `missionType`, or null when the order list is empty. Scores start from -1, so any
+  // ship scoring 0 or better wins; ties keep the earlier node. No Mac oracle name
+  // matches this shape, so it is named descriptively. 0x00537010, __thiscall.
+  TShip* PickBestShipForMissionType(int missionType) const;
   int navyState28; // +0x28 target-selection state (0 -> zone18 active, 1..2 -> zone14)
   float requiredShipEquipageByCategory[4]; // +0x2c
 

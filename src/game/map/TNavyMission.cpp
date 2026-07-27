@@ -371,6 +371,21 @@ TMission* TNavyMission::GetReplacementSlot48() {
   return (targetZone18 != nullptr) ? this : nullptr;
 }
 
+// FUNCTION: IMPERIALISM 0x00537010
+TShip* TNavyMission::PickBestShipForMissionType(int missionType) const {
+  TShip* best = nullptr;
+  int bestValue = -1;
+  for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
+    // The payload is reloaded rather than cached, as the original does.
+    int value = static_cast<TShip*>(node->payload)->ComputeValueForMission(missionType);
+    if (value > bestValue) {
+      best = static_cast<TShip*>(node->payload);
+      bestValue = value;
+    }
+  }
+  return best;
+}
+
 // FUNCTION: IMPERIALISM 0x00537060
 TZone* TNavyMission::GetActiveTargetZoneByState28() const {
   int state = navyState28;
