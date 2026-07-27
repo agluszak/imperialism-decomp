@@ -3547,10 +3547,10 @@ address|name|symbol|size|type|prototype|provenance
 529f60|TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders||247|function|void __thiscall TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders(int mode)|
 52a0a0|CompactCityRegionIds||143|function|undefined CompactCityRegionIds()|
 52a160|GenerateCityRegionIdsBySeedAndNeighborPropagation||940|function|undefined GenerateCityRegionIdsBySeedAndNeighborPropagation()|
-52a600|IltTarget_0052a600||28|function|undefined IltTarget_0052a600()|
+52a600|TMapMaker::IsSeaTile||28|function|unsigned char __thiscall TMapMaker::IsSeaTile(int tileIndex)|curated
 52a630|IltTarget_0052a630||41|function|undefined IltTarget_0052a630()|
 52a670|GetCityRegionIdAtTileIndex||45|function|undefined GetCityRegionIdAtTileIndex()|
-52a6b0|IltTarget_0052a6b0||24|function|undefined IltTarget_0052a6b0()|
+52a6b0|TMapMaker::SetSeaZoneIndex||24|function|void __thiscall TMapMaker::SetSeaZoneIndex(int tileIndex, char zoneIndex)|curated
 52a6e0|WrapExtendedMapXCoordinateInPlace||48|function|undefined WrapExtendedMapXCoordinateInPlace()|
 52a720|WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052a720||41|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052a720()|
 52a760|stretch<SeaSegment>::Add|?Add@?$stretch@USeaSegment@@@@UAEPAUSeaSegment@@U2@@Z|132|function|SeaSegment * __thiscall Add(SeaSegment value)|template

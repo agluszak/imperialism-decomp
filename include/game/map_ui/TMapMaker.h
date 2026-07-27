@@ -261,6 +261,13 @@ public:
   int RepairOrphanedTileValuesFromNeighbors(short* tileValues);
 
   char* mapTileGrid08; // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
+
+  // Mac oracle: IsSeaTile. The tile's terrain kind byte is water. 0x0052a600.
+  unsigned char IsSeaTile(int tileIndex);
+  // Mac oracle: SetSeaZoneIndex. Stores the sea-zone ordinal into the tile's owner
+  // tag byte (+0x04), biased by 0x17 -- the same bias the map-order context applies
+  // when it turns an owner tag back into a context-array index. 0x0052a6b0.
+  void SetSeaZoneIndex(int tileIndex, char zoneIndex);
   // +0x0c the city-score record table, stored verbatim by the 0x525a30 entry
   // (the caller passes TMapMgr::cityScoreTable).
   Province* cityScoreTable0c;
