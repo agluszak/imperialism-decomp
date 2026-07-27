@@ -3512,7 +3512,7 @@ address|matching|name
 0x51e1a0|1.0|TMapDialog::ResetAllTileMarkersToSentinel
 0x51e1f0|0.2777777777777778|TMapDialog::ReleaseTileMarkerForTile
 0x51e260|0.30535894843276035|TMapDialog::Draw
-0x51eb40|0.27341772151898736|TMapDialog::DrawOneTile
+0x51eb40|0.2870337477797513|TMapDialog::DrawOneTile
 0x520670|0.860125260960334|TMapDialog::DrawBorder
 0x520970|0.7682926829268293|TMapDialog::DrawMapDialogGuidePatternSetA_00520970
 0x520a90|1.0|TMapDialog::DrawMapDialogGuidePatternSetB_00520a90
@@ -4664,7 +4664,7 @@ address|matching|name
 0x5663c0|0.7935483870967742|DrawHexCellBorderGuideLines
 0x5665e0|0.5641025641025641|TOceanDialog::RenderStrategicTileSelectionAndNeighborHighlights
 0x566750|0.8235294117647058|TOceanDialog::RefreshMapTile
-0x5667f0|0.2489539748953975|TOceanDialog::Draw
+0x5667f0|0.24960835509138382|TOceanDialog::Draw
 0x567f00|0.0|IltTarget_00567f00
 0x567fa0|0.45977011494252873|TOceanDialog::RenderMapOrderEntryTilePreview
 0x568120|0.5098039215686274|TOceanDialog::RenderTacticalStackCountIndicatorAndUnitBadge
