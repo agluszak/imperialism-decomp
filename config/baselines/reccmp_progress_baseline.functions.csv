@@ -4160,9 +4160,9 @@ address|matching|name
 0x544720|0.627906976744186|TMultiplayerMgr::EmitTurnEvent10ForFlaggedNationSlots
 0x5447e0|0.0|IltTarget_005447e0
 0x544810|0.0|IltTarget_00544810
-0x544840|0.01818181818181818|IltTarget_00544840
+0x544840|0.49074074074074076|IltTarget_00544840
 0x5449b0|0.44036697247706424|BuildTurnEvent2ArraySyncPacketDeltaOrFull
-0x544b30|0.01818181818181818|IltTarget_00544b30
+0x544b30|0.4|IltTarget_00544b30
 0x544cb0|0.3333333333333333|IltTarget_00544cb0
 0x544cd0|0.3422459893048128|TurnEvent2SyncPacket::ApplyEncodedDeltaPayloadToBufferByMode
 0x544e30|1.0|TMultiplayerMgr::DoIdle
@@ -4178,7 +4178,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.4557165861513688|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.4547504025764895|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549260|0.25|IltTarget_00549260
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
