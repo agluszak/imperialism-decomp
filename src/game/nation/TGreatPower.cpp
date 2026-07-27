@@ -2287,15 +2287,15 @@ IMPERIALISM_BEGIN_RETAIL_NULL_THIS_CHECK
 // FUNCTION: IMPERIALISM 0x004dfd30
 void TGreatPower::SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityName) {
   TCity* city = this ? this->city : 0;
-  void* selectedOrder = city->selectedOrderB0;
+  void* selectedOrder = city->homeTownMarkerB0;
 
   if (homeTileIndex != -1) {
     *(short*)((char*)selectedOrder + 0x14) = homeTileIndex;
   }
 
   short regionIndex;
-  if (city->selectedOrderB0) {
-    regionIndex = *(short*)((char*)city->selectedOrderB0 + 0x14);
+  if (city->homeTownMarkerB0) {
+    regionIndex = *(short*)((char*)city->homeTownMarkerB0 + 0x14);
   } else {
     regionIndex = 1;
   }

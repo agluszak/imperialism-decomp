@@ -187,7 +187,7 @@ void TUnitOrder::Produce() {
     ownerNationSlot = ownerNation->nationSlot;
   }
 
-  const short recruitSearchOrigin = cityContext->SelectedOrderTileId();
+  const short recruitSearchOrigin = cityContext->HomeTownTileId();
   const bool allowActiveFlag2 = entryId == 4;
   for (short i = 0; i < pendingDelta; ++i) {
     short spawnTile = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
