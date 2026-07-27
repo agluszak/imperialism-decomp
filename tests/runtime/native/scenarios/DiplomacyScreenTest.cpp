@@ -4,7 +4,9 @@
 #include "screens/StrategicMapDriver.h"
 
 #include "game/diplomacy_ui/TDiplomacyMapView.h"
+#include "game/diplomacy_ui/TOffersPanelView.h"
 #include "game/globals/prelude.h"
+#include "game/globals/diplomacy_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/globals/ui_widgets_globals.h"
@@ -17,7 +19,9 @@
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TPicture.h"
+#include "game/ui_core/TControl.h"
 #include "game/ui_screens/TSimMgr.h"
+#include "game/ui_tags_city.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_diplomacy.h"
 
@@ -68,6 +72,10 @@ public:
       InitiateAllianceAction();
     } else if (phase == kVerifyAllianceAction) {
       VerifyAllianceAction();
+    } else if (phase == kPoseAcceptedOffer) {
+      PoseAcceptedOffer();
+    } else if (phase == kPoseRejectedOffer) {
+      PoseRejectedOffer();
     } else if (phase == kReturnToMap) {
       ReturnToMap();
     } else {
@@ -94,6 +102,8 @@ private:
     kSelectAllianceAction,
     kInitiateAllianceAction,
     kVerifyAllianceAction,
+    kPoseAcceptedOffer,
+    kPoseRejectedOffer,
     kReturnToMap,
     kWaitForMap
   };
@@ -357,6 +367,90 @@ private:
       return;
     }
 
+    phase = kPoseAcceptedOffer;
+    EnterScenarioStep("posing_diplomacy_offer", "pose_offer_for_acceptance");
+    RequestScenarioTick();
+  }
+
+  TOffersPanelView* OffersPanel() const {
+    TDiplomacyMapView* diplomacy = DiplomacyView();
+    if (diplomacy == 0) {
+      return 0;
+    }
+    TView* panel = diplomacy->ResolveControlByTag(kControlTagOffr);
+    if (panel == 0 || panel->IsKindOf(RUNTIME_CLASS(TOffersPanelView)) == 0) {
+      return 0;
+    }
+    return static_cast<TOffersPanelView*>(panel);
+  }
+
+  bool QueueOfferResponse(TOffersPanelView* offers, int responseTag) const {
+    TView* sheet = offers->ResolveControlByTag(kControlTagShee);
+    if (sheet == 0) {
+      return false;
+    }
+    int offsetX = g_diplomacyPopupVisiblePosition_006a2fe0.x - sheet->ownerLocalX;
+    int offsetY = g_diplomacyPopupVisiblePosition_006a2fe0.y - sheet->ownerLocalY;
+    return RuntimeUiDriver::QueueControlClickThroughNativeMessagesAtOffset(offers, responseTag,
+                                                                           offsetX, offsetY);
+  }
+
+  bool OfferResponseUsesExpectedEvent(TOffersPanelView* offers, int responseTag) const {
+    TControl* response = static_cast<TControl*>(offers->ResolveControlByTag(responseTag));
+    return response != 0 && response->GetEventNumber() == 0xa;
+  }
+
+  void PoseAcceptedOffer() {
+    TDiplomacyMapView* diplomacy = DiplomacyView();
+    TOffersPanelView* offers = OffersPanel();
+    if (diplomacy == 0 || offers == 0) {
+      FailScenario("\"diplomacy orders disappeared before posing an accepted offer\"");
+      return;
+    }
+    if (!Require("diplomacy_offer_accept_event",
+                 OfferResponseUsesExpectedEvent(offers, kControlTagAcce),
+                 "\"diplomacy accept control did not publish event 0x0a\"")) {
+      return;
+    }
+    if (!QueueOfferResponse(offers, kControlTagAcce)) {
+      FailScenario("\"could not queue the diplomacy accept input\"");
+      return;
+    }
+    EnterScenarioStep("accepting_diplomacy_offer", "click_offer_accept_control");
+    diplomacy->PoseOffer(g_pSimMgr->GetActiveNationId(), allianceTargetNation,
+                         kDiplomacyProposalNonAggressionPact);
+    if (offers->lastNegotiationResponseTag64 != kControlTagAcce) {
+      FailScenario("\"accept did not close the blocking diplomatic offer loop\"");
+      return;
+    }
+    phase = kPoseRejectedOffer;
+    EnterScenarioStep("posing_rejected_diplomacy_offer", "pose_offer_for_rejection");
+    RequestScenarioTick();
+  }
+
+  void PoseRejectedOffer() {
+    TDiplomacyMapView* diplomacy = DiplomacyView();
+    TOffersPanelView* offers = OffersPanel();
+    if (diplomacy == 0 || offers == 0) {
+      FailScenario("\"diplomacy orders disappeared before posing a rejected offer\"");
+      return;
+    }
+    if (!Require("diplomacy_offer_reject_event",
+                 OfferResponseUsesExpectedEvent(offers, kControlTagReje),
+                 "\"diplomacy reject control did not publish event 0x0a\"")) {
+      return;
+    }
+    if (!QueueOfferResponse(offers, kControlTagReje)) {
+      FailScenario("\"could not queue the diplomacy reject input\"");
+      return;
+    }
+    EnterScenarioStep("rejecting_diplomacy_offer", "click_offer_reject_control");
+    diplomacy->PoseOffer(g_pSimMgr->GetActiveNationId(), allianceTargetNation,
+                         kDiplomacyProposalNonAggressionPact);
+    if (offers->lastNegotiationResponseTag64 != kControlTagReje) {
+      FailScenario("\"reject did not close the blocking diplomatic offer loop\"");
+      return;
+    }
     phase = kReturnToMap;
     EnterScenarioStep("returning_from_diplomacy_screen", "click_diplomacy_end_control");
     RequestScenarioTick();

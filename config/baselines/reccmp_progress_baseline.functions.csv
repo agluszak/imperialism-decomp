@@ -731,7 +731,7 @@ address|matching|name
 0x4867e0|0.9|TApplication::~TApplication
 0x486880|1.0|TApplication::SetTarget
 0x4868a0|1.0|TApplication::GetTarget
-0x4868c0|0.6115702479338843|PumpUiMessagesAndBackgroundTasks
+0x4868c0|1.0|PumpUiMessagesAndBackgroundTasks
 0x486960|1.0|TApplication::InModalState
 0x486990|1.0|TApplication::GetDefaultCursorRegion
 0x4869b0|1.0|TApplication::InstallCohandler
@@ -2985,7 +2985,7 @@ address|matching|name
 0x4f8fa0|1.0|TOffersPanelView::`scalar deleting destructor'
 0x4f8fd0|1.0|TOffersPanelView::~TOffersPanelView
 0x4f8ff0|0.4506172839506173|TOffersPanelView::DoPostCreate
-0x4f9300|0.95|TOffersPanelView::DoEvent
+0x4f9300|1.0|TOffersPanelView::DoEvent
 0x4f9350|1.0|TOffersPanelView::DoKeyEvent
 0x4f9420|1.0|TOffersPanelView::HandleMouseUp
 0x4f9450|0.5701492537313433|TOffersPanelView::PoseOffer
@@ -6460,7 +6460,7 @@ address|matching|name
 0x5d7190|1.0|TViewMgr::NoOpTurnEventStateVtableSlotD4
 0x5d71b0|1.0|TViewMgr::DispatchNationActionToMainControl
 0x5d7240|0.4098939929328622|TViewMgr::DispatchTurnEvent
-0x5d7c40|0.75|TViewMgr::DispatchTurnEvent3B8AndWaitForCompletion
+0x5d7c40|0.8|TViewMgr::DispatchTurnEvent3B8AndWaitForCompletion
 0x5d7cb0|0.9313432835820895|TViewMgr::ShowCityProductionView
 0x5d7f70|1.0|TViewMgr::RefreshCityProductionUi
 0x5d7f90|1.0|TViewMgr::ClearActiveCityBuildingViewSlot
@@ -7437,7 +7437,7 @@ address|matching|name
 0x608ba8|0.9441964285714286|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|0.9787234042553191|CWnd::OnNotify
+0x6091d9|1.0|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent
