@@ -775,7 +775,7 @@ void TZone::SetMapOrderUiFlag(bool flag) {
   unsigned char tileStateByte =
       g_pGlobalMapState->terrainStateTable[activeTileIndex20].tileActionState16;
   if (((static_cast<unsigned char>(flag) !=
-        static_cast<unsigned char>(static_cast<signed char>(tileStateByte) < 0 ? 1 : 0)) &&
+        static_cast<unsigned char>(static_cast<signed char>(tileStateByte) >= 0 ? 1 : 0)) &&
        (g_pUiRuntimeContext != 0)) &&
       (g_pUiRuntimeContext->mapUberPictureF0 != 0)) {
     char sign = static_cast<char>((-(static_cast<int>(flag)) & 2) - 1);
@@ -786,19 +786,20 @@ void TZone::SetMapOrderUiFlag(bool flag) {
       return;
     }
     int magnitude = static_cast<int>(sign);
-    SetMapTileStateByteAndNotifyObserver(activeTileIndex20,
+    short centerTile = activeTileIndex20;
+    SetMapTileStateByteAndNotifyObserver(centerTile,
                                          magnitude * kMapTileActionStateZoneCenterMarkerFrame);
-    NotifyMapUberPictureTileMarker(activeTileIndex20);
-    activeTileIndex20 = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
-        activeTileIndex20, kStrategicHexDirectionNorthWest);
-    SetMapTileStateByteAndNotifyObserver(activeTileIndex20,
+    NotifyMapUberPictureTileMarker(centerTile);
+    short northWestTile = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
+        centerTile, kStrategicHexDirectionNorthWest);
+    SetMapTileStateByteAndNotifyObserver(northWestTile,
                                          magnitude * kMapTileActionStateZoneNorthWestMarkerFrame);
-    NotifyMapUberPictureTileMarker(activeTileIndex20);
-    activeTileIndex20 = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
-        activeTileIndex20, kStrategicHexDirectionNorthEast);
-    SetMapTileStateByteAndNotifyObserver(activeTileIndex20,
+    NotifyMapUberPictureTileMarker(northWestTile);
+    short northEastTile = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
+        centerTile, kStrategicHexDirectionNorthEast);
+    SetMapTileStateByteAndNotifyObserver(northEastTile,
                                          magnitude * kMapTileActionStateZoneNorthEastMarkerFrame);
-    NotifyMapUberPictureTileMarker(activeTileIndex20);
+    NotifyMapUberPictureTileMarker(northEastTile);
   }
 }
 
