@@ -4617,7 +4617,7 @@ address|name|symbol|size|type|prototype|provenance
 565fc0|TOceanDialog::InvalidateTile||122|function|void TOceanDialog::InvalidateTile(short tileIndex)|
 566060|ComputeTileClassBoundsInViewport||285|function|undefined ComputeTileClassBoundsInViewport()|
 5661d0|TOceanDialog::ConvertPoint||200|function|void __thiscall ConvertPoint(const CPoint &point, short &outRow, short &outCol, short &outBand)|macos-name-oracle:ConvertPoint(const VPoint&, short&, short&, short&)
-5662e0|IltTarget_005662e0||174|function|undefined IltTarget_005662e0()|
+5662e0|DrawTileClassCornerTick||174|function|void __cdecl DrawTileClassCornerTick(short colorCode, int x, int y, unsigned int cornerFlags)|curated
 5663c0|DrawHexCellBorderGuideLines||422|function|void DrawHexCellBorderGuideLines(int baseX, int baseY, short cellValue, short * neighborValues)|
 5665e0|TOceanDialog::RenderStrategicTileSelectionAndNeighborHighlights||283|function|void __thiscall RenderStrategicTileSelectionAndNeighborHighlights()|listing
 566750|TOceanDialog::RefreshMapTile||122|function|void __thiscall RefreshMapTile(short tileIndex)|
