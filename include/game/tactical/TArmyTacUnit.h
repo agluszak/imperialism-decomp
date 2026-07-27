@@ -22,8 +22,8 @@ public:
 
   // Army slice (+0x34..+0x54), from the duplicated init in TArmyBattle::ReadFrom
   // (0x5a4990), the base-state ctor 0x5a5f20, and the float writers at 0x5a5fe0.
-  int morale34;                // +0x34 init = sourceUnit38->field_34; floors at 0 -> state1c = 1
-  TMilitaryUnit* sourceUnit38; // +0x38 back-pointer (persisted as its field_20 id)
+  int morale34;                // +0x34 init = sourceUnit38->strength34; floors at 0 -> state1c = 1
+  TMilitaryUnit* sourceUnit38; // +0x38 back-pointer (persisted as its persistentUnitId20 id)
   unsigned char flag3c;        // +0x3c = (source unitOrder == 2 && category[type] == 0)
   unsigned char pad3d[3];      // +0x3d
   int sapTargetTileIndex40;    // +0x40 pending sap/mine target tile; -1 = none

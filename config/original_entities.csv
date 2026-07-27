@@ -10053,8 +10053,8 @@ address|name|symbol|size|type|prototype|provenance
 6a21bc|g_pUiRuntimeContext|||global||
 6a21c0|g_lastEdgeAutoScrollTick16|||global||
 6a21c4|g_saveDocumentAssertGuard|||global||
-6a2228|g_nUiAnimatorSurfaceBoundsWidth|||global||
-6a222c|g_nUiAnimatorSurfaceBoundsHeight|||global||
+6a2228|g_ptUiAnimatorSurfaceBounds|||global||
+6a224c|g_bStrategicMapSelectionOverlayPhase|||global||
 6a2318|g_ptArmyOrderModalMessage|||global||
 6a2410|g_InfoBarDummyOrigin_006A2410|||global||
 6a24d4|g_Sanitize_City_Counter_Value_006A24D4|||global||

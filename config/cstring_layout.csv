@@ -117,16 +117,16 @@ TMapMgr|40|hexNeighborWrapHorizontally20|char|other|32|1|no|50c2504d641f47a6|inc
 TMapMgr|40|pad21|char|other|33|1|no|50c2504d641f47a6|include/game/map/TMapMgr.h
 TMapMgr|40|pendingRiverMouthTile22|StrategicTileIndex|other|34|2|no|50c2504d641f47a6|include/game/map/TMapMgr.h
 TMapMgr|40|field24|unsigned char|other|36|1|no|50c2504d641f47a6|include/game/map/TMapMgr.h
-TMilitaryUnit|68|name24|CString|embedded|36|4|yes|b3fbaee3d040ab17|include/game/military/TMilitaryUnit.h
-TMilitaryUnit|68|orderTargetTiles28|short[3]|other|40|6|no|b3fbaee3d040ab17|include/game/military/TMilitaryUnit.h
-TMilitaryUnit|68|orderTargetTilesMirror2E|short[3]|other|46|6|no|b3fbaee3d040ab17|include/game/military/TMilitaryUnit.h
-TMilitaryUnit|68|field_34|short|other|52|2|no|b3fbaee3d040ab17|include/game/military/TMilitaryUnit.h
-TMilitaryUnit|68|field_36|short|other|54|2|no|b3fbaee3d040ab17|include/game/military/TMilitaryUnit.h
-TMilitaryUnit|68|field_38|short|other|56|2|no|b3fbaee3d040ab17|include/game/military/TMilitaryUnit.h
-TMilitaryUnit|68|field_3A|short|other|58|2|no|b3fbaee3d040ab17|include/game/military/TMilitaryUnit.h
-TMilitaryUnit|68|field_3C|short|other|60|2|no|b3fbaee3d040ab17|include/game/military/TMilitaryUnit.h
-TMilitaryUnit|68|pad3E|short|other|62|2|no|b3fbaee3d040ab17|include/game/military/TMilitaryUnit.h
-TMilitaryUnit|68|ownerMission40|TMission *|other|64|4|no|b3fbaee3d040ab17|include/game/military/TMilitaryUnit.h
+TMilitaryUnit|68|name24|CString|embedded|36|4|yes|3fbb2a2d3410e3f9|include/game/military/TMilitaryUnit.h
+TMilitaryUnit|68|orderTargetTiles28|short[3]|other|40|6|no|3fbb2a2d3410e3f9|include/game/military/TMilitaryUnit.h
+TMilitaryUnit|68|orderTargetTilesMirror2E|short[3]|other|46|6|no|3fbb2a2d3410e3f9|include/game/military/TMilitaryUnit.h
+TMilitaryUnit|68|strength34|short|other|52|2|no|3fbb2a2d3410e3f9|include/game/military/TMilitaryUnit.h
+TMilitaryUnit|68|eraIndex36|short|other|54|2|no|3fbb2a2d3410e3f9|include/game/military/TMilitaryUnit.h
+TMilitaryUnit|68|experiencePercent38|short|other|56|2|no|3fbb2a2d3410e3f9|include/game/military/TMilitaryUnit.h
+TMilitaryUnit|68|battleStateFlags3A|short|other|58|2|no|3fbb2a2d3410e3f9|include/game/military/TMilitaryUnit.h
+TMilitaryUnit|68|strengthSnapshot3C|short|other|60|2|no|3fbb2a2d3410e3f9|include/game/military/TMilitaryUnit.h
+TMilitaryUnit|68|pad3E|short|other|62|2|no|3fbb2a2d3410e3f9|include/game/military/TMilitaryUnit.h
+TMilitaryUnit|68|ownerMission40|TMission *|other|64|4|no|3fbb2a2d3410e3f9|include/game/military/TMilitaryUnit.h
 TMiniCivView|140|civUnit84|TCivUnit *|other|132|4|no|0d5746f75f450f75|include/game/military_ui/TMiniCivView.h
 TMiniCivView|140|unitText88|CString|embedded|136|4|yes|0d5746f75f450f75|include/game/military_ui/TMiniCivView.h
 TModalMessageCommand|32|message|CString|embedded|24|4|yes|f672a59ca72305c6|include/game/ui_core/TModalMessageCommand.h

@@ -102,7 +102,8 @@ char TAttackProvinceMission::SmokeEmIfYouGotEm() {
       CIterator eligibilityIter(orderListAt18);
       TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(eligibilityIter.Reset());
       while (eligibilityIter.More()) {
-        if (static_cast<double>(unit->field_34) * g_ArmyMissionEligibleUnitStrengthScale_0065AA48 <
+        if (static_cast<double>(unit->strength34) *
+                g_ArmyMissionEligibleUnitStrengthScale_0065AA48 <
             g_Recompute_Nation_Order_LookupTable_0065AA20) {
           CIterator queueIter(orderListAt18);
           for (unit = static_cast<TMilitaryUnit*>(queueIter.Reset()); queueIter.More();
@@ -349,7 +350,7 @@ void TAttackProvinceMission::CalculateNeeds() {
   if (targetProvince30 >= 0 && targetProvince30 <= 0x17f) {
     for (TMilitaryUnit* unit =
              g_pGlobalMapState->cityScoreTable[targetProvince30].stationedUnitChain98;
-         unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+         unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
       AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f,
                                                     static_cast<float>(unitOrderWeight));
     }

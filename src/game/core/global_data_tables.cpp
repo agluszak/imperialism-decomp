@@ -56,12 +56,14 @@ static inline double DefaultGfxCoordinateScale() {
 TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0};
 // GLOBAL: IMPERIALISM 0x006a2158
 TDisplayMgr* g_pDisplayMgr = 0;
-// Bounds of the TAnimator offscreen surface (only known live reader:
-// TAnimator::IAnimator at 0x4a0b20).
+// Bounds of the TAnimator offscreen surface. The original static initializer at
+// 0x0049f000 writes 0x80 to both coordinates before TAnimator::IAnimator reads them.
 // GLOBAL: IMPERIALISM 0x006a2228
-int g_nUiAnimatorSurfaceBoundsWidth = 0;
-// GLOBAL: IMPERIALISM 0x006a222c
-int g_nUiAnimatorSurfaceBoundsHeight = 0;
+CPoint g_ptUiAnimatorSurfaceBounds(0x80, 0x80);
+// Alternating phase passed to the strategic-map overlay renderer every 15 active-selection
+// idle ticks by TAnimator::DoIdle.
+// GLOBAL: IMPERIALISM 0x006a224c
+unsigned char g_bStrategicMapSelectionOverlayPhase = 0;
 // Monotonic registry-tag counter for TIdleMeAnimation instances, seeded with the
 // byte pattern "0TUA" (multichar 'AUT0'); the class-name string "TIdleMeAnimation"
 // follows at 0x695938, which Ghidra folds into one s_0TUATIdleMeAnimation label.
@@ -1400,7 +1402,7 @@ short g_awUnitCombatClassBySlot[32] = {1, 2, 1, 1, 3, 2, 2, 1, 1, 2, 1, 1, 3, 2,
 unsigned char g_abStackCompositionClassTable[16] = {0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 3, 0, 0, 3, 4, 5};
 // Per-unit-type strength-weighting percent (short table at 0x6953e8, 30 unit types + 2
 // pad), read by TDefenseMinister::CreateEnemyPowerMap as
-// weightPercent * TMilitaryUnit::field_34 / 100.
+// weightPercent * TMilitaryUnit::strength34 / 100.
 // GLOBAL: IMPERIALISM 0x006953e8
 short g_anUnitStrengthWeightPercentBySlot[32] = {
     50,  50,  100, 125, 75,  150, 0, 0, 75, 100, 150, 175, 100, 200, 0, 0,

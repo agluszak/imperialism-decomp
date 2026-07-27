@@ -8,7 +8,7 @@ extern int g_nIdleMeAnimationNextRegistryTag; // 0x00695934
 
 extern "C" {
 // Per-unit-type strength-weighting percent (0x6953e8), read by TDefenseMinister::
-// CreateEnemyPowerMap as weightPercent * TMilitaryUnit::field_34
+// CreateEnemyPowerMap as weightPercent * TMilitaryUnit::strength34
 // / 100.
 extern short g_anUnitStrengthWeightPercentBySlot[32];
 

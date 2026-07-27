@@ -2370,8 +2370,8 @@ short TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex(StrategicTileIndex tileI
 // FUNCTION: IMPERIALISM 0x00514250
 TCivUnit* TMapMgr::GetTileUnitEntryByOwner(StrategicTileIndex tileIndex, short nationId) {
   TCivUnit* entry = GetFirstCivilianOrderOnTile(tileIndex);
-  while ((entry != nullptr) && (entry->field_18 != nationId)) {
-    entry = static_cast<TCivUnit*>(entry->nextOnTile);
+  while ((entry != nullptr) && (entry->ownerNationSlot18 != nationId)) {
+    entry = static_cast<TCivUnit*>(entry->nextAtLocation14);
   }
   return entry;
 }
@@ -2401,7 +2401,7 @@ short TMapMgr::ResolveTileOwnerNationCodeNormalized(int tileIndex) {
 // FUNCTION: IMPERIALISM 0x00514310
 bool TMapMgr::HasCivilianUnitKind(StrategicTileIndex tileIndex, CivilianUnitKindStorage unitKind) {
   for (TCivUnit* order = terrainStateTable[tileIndex].firstCivilianOrder20; order != nullptr;
-       order = static_cast<TCivUnit*>(order->nextOnTile)) {
+       order = static_cast<TCivUnit*>(order->nextAtLocation14)) {
     if (order->orderType == unitKind) {
       return true;
     }
@@ -2414,7 +2414,7 @@ bool TMapMgr::HasCivilianUnitKindWithOrder(StrategicTileIndex tileIndex,
                                            CivilianUnitKindStorage unitKind,
                                            UnitOrderStorage orderValue) {
   for (TCivUnit* order = terrainStateTable[tileIndex].firstCivilianOrder20; order != nullptr;
-       order = static_cast<TCivUnit*>(order->nextOnTile)) {
+       order = static_cast<TCivUnit*>(order->nextAtLocation14)) {
     if (order->orderType == unitKind && order->unitOrder == DecodeUnitOrder(orderValue)) {
       return true;
     }
@@ -2613,8 +2613,8 @@ StrategicTileIndex TMapMgr::FindReachableRecruitSpawnTileRecursive(StrategicTile
   TUnit* civilianOrder = tile->firstCivilianOrder20;
   bool noMatchingCivilian = civilianOrder == 0;
   if (!noMatchingCivilian) {
-    while (civilianOrder->field_18 != ownerNationTag) {
-      civilianOrder = civilianOrder->nextOnTile;
+    while (civilianOrder->ownerNationSlot18 != ownerNationTag) {
+      civilianOrder = civilianOrder->nextAtLocation14;
       if (civilianOrder == 0) {
         noMatchingCivilian = true;
         break;
@@ -2708,7 +2708,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCi
   if (pCivilianOrderEntry->orderType != 1 && pCivilianOrderEntry->orderType != 7) {
     return;
   }
-  if (pCivilianOrderEntry->field_1C != 0) {
+  if (pCivilianOrderEntry->militaryRegistrationFlag1C != 0) {
     return;
   }
 
@@ -2719,7 +2719,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCi
     return;
   }
 
-  if (refOwner == pCivilianOrderEntry->field_18) {
+  if (refOwner == pCivilianOrderEntry->ownerNationSlot18) {
     TTown* town = FindTownMarkerForTileByOwnerNation(refTileIndex);
     if (town->enabledFlag4d == 0) {
       return;
@@ -2731,13 +2731,14 @@ void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCi
     if (minorObj == nullptr) {
       continue;
     }
-    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(minorSlot, pCivilianOrderEntry->field_18)) {
+    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(minorSlot,
+                                                        pCivilianOrderEntry->ownerNationSlot18)) {
       continue;
     }
     terrainStateTable[static_cast<short>(minorObj->homeTileIndex)].recruitSearchVisited0e = 0;
   }
 
-  TGreatPower* owner = g_apNationStates[pCivilianOrderEntry->field_18];
+  TGreatPower* owner = g_apNationStates[pCivilianOrderEntry->ownerNationSlot18];
   TSortedList* townMarkerList = owner->townMarkerList;
   for (int ordinal = 1; ordinal <= townMarkerList->GetCount(); ++ordinal) {
     TTown* town = static_cast<TTown*>(townMarkerList->GetEntryByOrdinal(ordinal));
@@ -2761,7 +2762,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
     return;
   }
 
-  short nationSlot = unit->field_18;
+  short nationSlot = unit->ownerNationSlot18;
   field9 = 1;
   int tileScanIndex;
   for (tileScanIndex = 0; tileScanIndex < 0x1950; ++tileScanIndex) {
@@ -2807,7 +2808,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
 // FUNCTION: IMPERIALISM 0x00515330
 void TMapMgr::DimByProspecting(TCivUnit* pCivilianOrderEntry) {
   field9 = 1;
-  short nationTag = pCivilianOrderEntry->field_18;
+  short nationTag = pCivilianOrderEntry->ownerNationSlot18;
   unsigned char eligibleGateFlags[24] = {0};
   eligibleGateFlags[8] = 1;
   eligibleGateFlags[9] = 1;
@@ -2844,7 +2845,7 @@ void TMapMgr::DimByProspecting(TCivUnit* pCivilianOrderEntry) {
 
 // FUNCTION: IMPERIALISM 0x00515460
 void TMapMgr::DimByDevelopment(TCivUnit* pCivilianOrderEntry) {
-  short nationTag = pCivilianOrderEntry->field_18;
+  short nationTag = pCivilianOrderEntry->ownerNationSlot18;
   bool recruitTierFlagIsTwo =
       (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x13] == 2);
   field9 = 1;
@@ -2904,7 +2905,7 @@ void TMapMgr::DimByMining(TCivUnit* pCivilianOrderEntry) {
   }
 
   this->field9 = 1;
-  short nationTag = pCivilianOrderEntry->field_18;
+  short nationTag = pCivilianOrderEntry->ownerNationSlot18;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
     if (tile->GetTerrainKind() == kStrategicTerrainWater) {
@@ -2945,7 +2946,7 @@ void TMapMgr::DimByFishing(TCivUnit* pCivilianOrderEntry) {
     terrainStateTable[tileIndex].recruitSearchVisited0e = 1;
   }
 
-  short nationTag = pCivilianOrderEntry->field_18;
+  short nationTag = pCivilianOrderEntry->ownerNationSlot18;
   TGreatPower* nation = g_apNationStates[nationTag];
   TSortedList* townMarkerList = nation->townMarkerList;
   int townCount = townMarkerList->GetCount();
@@ -2980,7 +2981,7 @@ void TMapMgr::DimByFishing(TCivUnit* pCivilianOrderEntry) {
 // FUNCTION: IMPERIALISM 0x00515890
 void TMapMgr::DimByCompany(TCivUnit* pCivilianOrderEntry) {
   this->field9 = 1;
-  short nationTag = pCivilianOrderEntry->field_18;
+  short nationTag = pCivilianOrderEntry->ownerNationSlot18;
   short orderType = pCivilianOrderEntry->orderType;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
@@ -3024,7 +3025,7 @@ void TMapMgr::DimByTrackLaying(TCivUnit* pCivilianOrderEntry) {
     terrainStateTable[i].recruitSearchVisited0e = 1;
   }
 
-  short nationTag = pCivilianOrderEntry->field_18;
+  short nationTag = pCivilianOrderEntry->ownerNationSlot18;
   StrategicTileIndex tileIndex = pCivilianOrderEntry->tileIndex06;
 
   // Each researched technology enables another terrain in the shared capability profile.
@@ -3058,7 +3059,7 @@ void TMapMgr::DimByTrackLaying(TCivUnit* pCivilianOrderEntry) {
 // FUNCTION: IMPERIALISM 0x00515b10
 void TMapMgr::DimByEngineering(TCivUnit* pCivilianOrderEntry) {
   StrategicTileIndex tileIndex = pCivilianOrderEntry->tileIndex06;
-  short nationTag = pCivilianOrderEntry->field_18;
+  short nationTag = pCivilianOrderEntry->ownerNationSlot18;
 
   unsigned char terrainKindGate[kStrategicTerrainCount] = {1, 1, 0, 0, 0, 0, 1, 1};
   if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x06] == 2) {
@@ -3379,7 +3380,7 @@ short TMapMgr::GetMapImprovementTierBucketOffset(short tier) {
 
 // FUNCTION: IMPERIALISM 0x00517710
 short TMapMgr::ApplyMapImprovementSelectionState(TCivUnit* civUnit) {
-  if (civUnit->field_1C != 0) {
+  if (civUnit->militaryRegistrationFlag1C != 0) {
     return GetMapImprovementSpriteBaseOffset(civUnit->orderType, 1, 0);
   }
   char idleState = static_cast<char>(civUnit->IsInIdleSelectionState());
@@ -4047,7 +4048,7 @@ void TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders() {
     terrainStateTable[tileIndex].perTileVisitedFlag0f = 0;
   }
 
-  // Per active-nation order (TUnit::field_C is the order's own city-record index;
+  // Per active-nation order (TUnit::orderTargetIndex0C is the order's own city-record index;
   // tileIndex06 is read as the "stationed province id" for this unit type, per
   // TMilitaryUnit.h -- both are city-record indices, not raw map tiles, resolving the
   // earlier "unrecovered geometry helper" TODO): mark the hex-adjacent tile in the
@@ -4060,11 +4061,11 @@ void TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders() {
   CIterator cursor(g_apNationStates[activeNationId]->militaryUnitList44);
   TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
   while (cursor.More()) {
-    if (unit->field_C != -1) {
+    if (unit->orderTargetIndex0C != -1) {
       bool atWar = g_pDiplomacyTurnStateManager->IsNationPairAtWar(
-          activeNationId, cityScoreTable[unit->field_C].ownerNationCode00);
+          activeNationId, cityScoreTable[unit->orderTargetIndex0C].ownerNationCode00);
 
-      short anchorTile = cityScoreTable[unit->field_C].cityTileIndex04;
+      short anchorTile = cityScoreTable[unit->orderTargetIndex0C].cityTileIndex04;
       short direction =
           GetDirectionFrom(anchorTile, cityScoreTable[unit->tileIndex06].cityTileIndex04);
 
@@ -4210,7 +4211,7 @@ void TMapMgr::DumpAndResetMapScriptState() {
       }
       do {
         armyCountByType[unit->orderType]++;
-        unit = static_cast<TMilitaryUnit*>(unit->nextOnTile);
+        unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14);
       } while (unit != 0);
       for (i = 0; i < 30; ++i) {
         if (armyCountByType[i] > 0) {

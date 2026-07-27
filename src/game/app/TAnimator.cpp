@@ -5,6 +5,7 @@
 #include "game/app/TAnimation.h"
 #include "game/ui_core/TApplication.h"
 #include "game/gfx/TDisplayMgr.h"
+#include "game/map/TMapUberPicture.h"
 #include "game/TList.h"
 #include "game/core/TStream.h"
 #include "game/globals/prelude.h"
@@ -37,8 +38,8 @@ void TAnimator::IAnimator(int idleFrequency) {
   RECT bounds;
   bounds.left = 0;
   bounds.top = 0;
-  bounds.right = g_nUiAnimatorSurfaceBoundsWidth;
-  bounds.bottom = g_nUiAnimatorSurfaceBoundsHeight;
+  bounds.right = g_ptUiAnimatorSurfaceBounds.x;
+  bounds.bottom = g_ptUiAnimatorSurfaceBounds.y;
   g_pDisplayMgr->MakeNewGWorld(renderSurfaceContext, 8, bounds);
   registryList24 = new TList();
   field28 = 0;
@@ -52,6 +53,25 @@ void TAnimator::Install() {
 
 // FUNCTION: IMPERIALISM 0x004a0c30
 char TAnimator::DoIdle(int action) {
+  if (action == 1) {
+    if (mapUberPicture2c != 0 && mapUberPicture2c->HasActiveMapInteractionSelection()) {
+      ++field28;
+      if (field28 >= 15) {
+        mapUberPicture2c->PrepareAndRenderMapOverlayMode(g_bStrategicMapSelectionOverlayPhase);
+        g_bStrategicMapSelectionOverlayPhase = g_bStrategicMapSelectionOverlayPhase == 0;
+        field28 = 0;
+      }
+    }
+  }
+
+  if (action == 1) {
+    CIterator cursor(registryList24);
+    TAnimation* animation = static_cast<TAnimation*>(cursor.Reset());
+    while (cursor.More()) {
+      animation->Tick();
+      animation = static_cast<TAnimation*>(cursor.Advance());
+    }
+  }
   return 0;
 }
 
