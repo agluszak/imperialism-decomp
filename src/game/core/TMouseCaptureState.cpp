@@ -84,6 +84,14 @@ void TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer(unsigned int nFlags, 
   capturedControl = 0;
 }
 
+// FUNCTION: IMPERIALISM 0x00489e10
+void TMouseCaptureState::CopyCurrentPointTo(CPoint* out) {
+  LONG x = currentPoint.x;
+  LONG y = currentPoint.y;
+  out->x = x;
+  out->y = y;
+}
+
 // Copies the global mouse-capture state's latest tracked point into the caller's buffer.
 // FUNCTION: IMPERIALISM 0x00489e40
 void __cdecl CopyCurrentMouseCapturePoint(CPoint* out) {

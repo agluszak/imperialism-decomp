@@ -29,6 +29,12 @@ TArmyUnitLine::TArmyUnitLine() : TLineData() {}
 // FUNCTION: IMPERIALISM 0x004a8d90
 TArmyUnitLine::~TArmyUnitLine() {}
 
+// FUNCTION: IMPERIALISM 0x004a8db0
+void TArmyUnitLine::IArmyUnitLine(short rowArg, short colArg, int* bounds, TMilitaryUnit* item) {
+  SetLineDataRowAndBounds(rowArg, colArg, bounds);
+  militaryUnit10 = item;
+}
+
 // FUNCTION: IMPERIALISM 0x004a8df0
 void TArmyUnitLine::InstallViews(TView* panel, int* offsetLayout) {
   TArmyUnitView* armyView = new TArmyUnitView;

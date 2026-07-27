@@ -73,10 +73,15 @@ public:
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
                        TEvent* event); // 0x0f 0x48a280
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
-                           TEvent* event);          // 0x10 0x48a2e0 DoEvent
-  virtual void DoMenuCommand(int command);          // 0x11 0x48a310
-  virtual void DoKeyEvent(TToolboxEvent* event);    // 0x12 0x48a380
-  virtual char DoIdle(int action);                  // 0x13 0x48a480 (MacApp DoIdle)
+                           TEvent* event);       // 0x10 0x48a2e0 DoEvent
+  virtual void DoMenuCommand(int command);       // 0x11 0x48a310
+  virtual void DoKeyEvent(TToolboxEvent* event); // 0x12 0x48a380
+  virtual char DoIdle(int action);               // 0x13 0x48a480 (MacApp DoIdle)
+
+  // MacApp Handle*/Do* pair, mirroring HandleEvent -> DoEvent at 0x48a2e0: the
+  // non-virtual entry point simply dispatches through this handler's own virtual.
+  void HandleMenuCommand(int command);              // 0x0048a340 -> slot 0x11
+  void HandleKeyEvent(TToolboxEvent* event);        // 0x0048a360 -> slot 0x12
   virtual int GetIdleFreq();                        // 0x14 0x415d50
   virtual void SetIdleFreq(int frequency);          // 0x15 0x415d70
   virtual TWindow* GetWindow();                     // 0x16

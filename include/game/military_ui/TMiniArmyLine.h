@@ -17,6 +17,10 @@ public:
   // NOOP: verified empty in original 0x004aa8c3 (no standalone TMiniArmyLine::TMiniArmyLine body exists: CreateObject 0x004aa890 inlines this default ctor, calling the TLineData base ctor directly at that site)
   TMiniArmyLine() {}
 
+  // Two-phase init (MacApp IViewClass idiom): sets the shared TLineData row/bounds
+  // then this line's militaryUnit10. 0x004aa920, __thiscall.
+  void IMiniArmyLine(short rowArg, short colArg, int* bounds, TMilitaryUnit* item);
+
   // Army unit represented by this roster row.
   TMilitaryUnit* militaryUnit10;
 };
