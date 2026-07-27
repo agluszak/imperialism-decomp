@@ -22,9 +22,6 @@ address|kind
 00549320|label_in_hole
 0054fc80|body_hole
 0054fc80|label_in_hole
-00552310|body_hole
-00589da0|body_hole
-0058a1b0|body_hole
 005e2700|fallthrough_to_unowned
 005e55ee|truncated_into_function
 005e713a|truncated_into_function

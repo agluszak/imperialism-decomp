@@ -4300,7 +4300,7 @@ address|name|symbol|size|type|prototype|provenance
 551be0|TAdmiral::GetFleetReport||1110|function|void TAdmiral::GetFleetReport(CString* out, TZone* zone, short nation) const|
 552160|TAdmiral::EstimateStrengthRating||187|function|int __thiscall TAdmiral::EstimateStrengthRating(TTaskForce const * force, int unusedArg)|curated
 552250|TAdmiral::AssignToShip||135|function|void TAdmiral::AssignToShip(TShip* primaryOrderNode)|
-552310|TAdmiral::ReassignToZone||232|function|void TAdmiral::ReassignToZone(TZone* zone)|
+552310|TAdmiral::ReassignToZone||247|function|void TAdmiral::ReassignToZone(TZone* zone)|
 552450|TAdmiral::NameThyself||81|function|void TAdmiral::NameThyself()|macos-name-oracle:NameThyself()
 5524d0|TMapOrderChildLinkNode::InitAndLinkBetween||46|function|void __thiscall TMapOrderChildLinkNode::InitAndLinkBetween(TObject * child, TMapOrderChildLinkNode * prevNode, TMapOrderChildLinkNode * nextNode)|curated
 552510|TMapOrderChildLinkNode::FindNodeMatching||26|function|TMapOrderChildLinkNode* TMapOrderChildLinkNode::FindNodeMatching(TObject* child_node)|
