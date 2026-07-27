@@ -15,7 +15,7 @@ class TBehavior;
 struct TToolboxEvent;
 
 //
-// The real shared base of TView and TApplication (TApplication). Both
+// Shared base of TView and TApplication. Both
 // inherit this 37-slot interface (slots 0x00-0x24) and the fields through +0x1c; they
 // diverge at +0x20 (TView::ownerContext vs TApplication::activeView) and
 // each introduces its own virtuals at slot 0x25+. Proven by vtable comparison: TView
@@ -51,10 +51,8 @@ public:
   // Copies exactly the four fields the original copies -- +0x04, +0x08, +0x0c and
   // controlTag at +0x1c -- and no others. field10/field14 are the idle-throttle frequency
   // and last-idle stamp and firstBehavior is a list head, none of which a fresh copy
-  // inherits. An earlier seven-field version was generalized from the copy INLINED into
-  // TView::TView(const TView&) (0x48bd30), which folds TView's own member copies in; the
-  // standalone body at 0x48a750 is the authority (bd imperialism-decomp-n2xl).
-  // In-class deliberately: see config/ctor_placement_exceptions.csv for the measurement.
+  // inherits.
+  // MATCH: keep this in-class; see config/ctor_placement_exceptions.csv.
   // FUNCTION: IMPERIALISM 0x0048a750
   TEventHandler(const TEventHandler& source)
       : TObject(), field04(source.field04), field08(source.field08), field0c(source.field0c),
@@ -64,9 +62,7 @@ public:
   // using field10 (idle frequency, 0x7fffffff = never) / field14 (last-idle stamp).
   void HandleIdle(int idlePhase);
 
-  // Standalone binary helper @ 0x48a100 (also reached via ILT 0x403049).
-
-  // __thiscall packet/event-header field initializer (0x48a180, also reached via ILT 0x40174e).
+  // Packet/event-header field initializer (0x48a180, __thiscall).
   // Writes controlTag (0x1c) = '    ', field04/field08 = 1, field0c = packetTag.
   void IEventHandler(TEventHandler* nextHandler);
 
@@ -80,7 +76,7 @@ public:
   TObject* ShallowClone() override;        // 0x08 0x48a7c0 base; TView override 0x48bfd0
   virtual char IsEnabled();                // 0x0a 0x48a240
   virtual void SetEnable(char enabled);    // 0x0b 0x48a260
-  virtual TEventHandler* GetNextHandler(); // 0x0c 0x48a2c0 GetCityDialogValueDwordC
+  virtual TEventHandler* GetNextHandler(); // 0x0c 0x48a2c0
   virtual void DispatchQueuedUiCommandAndRelease(void* payload); // 0x0d 0x48a3b0
   virtual void DispatchUiSelectionToHandler(void* payload);      // 0x0e 0x48a3f0
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,

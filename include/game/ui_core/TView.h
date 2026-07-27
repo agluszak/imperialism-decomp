@@ -17,13 +17,12 @@ struct TToolboxEvent;
 // from TEventHandler. It overrides only the few base slots whose vtable bodies differ
 // (0x07 ReleaseRuntimeSelectionOwnerAndDestroyObject, 0x08 CloneEngineerDialogStateToNewInstance,
 // 0x16 GetWindow) and introduces its own virtuals at slot 0x25+ (declared below in exact vtable
-// slot order). See include/game/TEventHandler.h and memory tview-vtable-slot-scramble.
+// slot order). See game/ui_core/TEventHandler.h.
 
 // 8-byte style/color payload hung off TView::stylePayload48 (see TView::EnsureField48Buffer
 // 0x48b810 and ReplaceUiResourceContextPairBuffer 0x427060). Its default ctor zeroes
 // the bytes and is inlined at the new-expressions (both bodies show the 8 byte-stores
-// inline); 0x41b420 is the same zeroing as the out-of-line Reset entry the factory
-// builders call — previously mis-ported as a __cdecl free function (bd 1uj.51.4).
+// inline); factory builders call the equivalent out-of-line Reset entry at 0x41b420.
 // packedColor/styleWord names are hedged from the observed writes ({0xffffff, 0} at
 // the 0x427060 call sites).
 class TUiStyleBytes {
@@ -199,16 +198,8 @@ public:
   // branches (TControl, TCivDescription, TAmtBar, ...). The destructor is slot 1
   // (TEventHandler override), so its declaration position is irrelevant.
   //
-  // bd imperialism-decomp-1uj.27 EXPERIMENT RESULT (tested 2026-07-13, reverted): moving
-  // this definition header-inline (matching the original's own per-TU-duplicated layout
-  // at 0x0048a9d0/0x0048cb00/0x0048ec30/0x0048ee00) was tried and measured a net
-  // regression -- 1 fewer 100%-aligned function elsewhere, 18 functions across unrelated
-  // files (TGreatPower, TMapMgr, TMultiplayerMgr, ...) with lower similarity, and +160
-  // recomp-only orphan global symbols (COMDAT-per-TU noise), while the three "twin"
-  // addresses still only weakly auto-paired at 6.25% (no real per-TU duplication
-  // reproduced by our own compiler) -- vs 0x48a9d0's unchanged 90.32% either way. Do not
-  // repeat this for TView or roll it out to other classes; keep the out-of-line
-  // definition in TView.cpp.
+  // MATCH: keep the destructor out-of-line; header inlining emits unwanted per-TU COMDATs
+  // and lowers similarity in unrelated translation units.
   virtual ~TView() override;
 };
 ASSERT_SIZE(TView, 0x60);

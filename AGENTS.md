@@ -106,6 +106,18 @@ Two standing behavioral rules the topical skills exist to enforce:
 
 ## Docs (the durable record)
 
+### Production-source comment policy
+
+- Keep source ownership markers (`FUNCTION`, `GLOBAL`, `VTABLE`, `SYNTHETIC`, and
+  `TEMPLATE`) and comments that state the current contract, argument meaning,
+  sentinels, ownership, or non-obvious invariants.
+- Explain intentionally unusual source with a short `ABI:`, `MATCH:`, `ORACLE:`, or
+  `LAYOUT:` comment when the distinction is useful.
+- Do not archive investigation history in production source: no bead IDs, resolved
+  TODOs, former names/models, reverted implementations, stale paths, or narratives
+  about what Ghidra or an earlier port once claimed. Keep detailed proof in Ghidra,
+  focused evidence documents, Beads, and Git history.
+
 - Git history — clear commit messages are the durable execution record for what
   changed, how it was verified, and any score deltas.
 - `docs/workflows.md` — the canonical command playbooks (fresh-worktree bootstrap,

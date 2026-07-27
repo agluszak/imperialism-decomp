@@ -1,5 +1,5 @@
 // Shared base of TView and TApplication. Holds the vtable slots 0x00-0x24
-// and fields through +0x1c that both branches inherit (see include/game/TEventHandler.h).
+// and fields through +0x1c that both branches inherit (see game/ui_core/TEventHandler.h).
 // Bodies here are the original shared implementations referenced by both derived vtables;
 // TView/AppRoot override only the few slots where their vtable bodies differ.
 
@@ -39,11 +39,7 @@ void TEventHandler::SetIdleFreq(int value) {
 
 IMPLEMENT_DYNCREATE(TEventHandler, TObject)
 
-// 0x0048a100 is the constructor, not a "defaults helper": besides +0xc/+0x10/+0x14/+0x18
-// it stores the vptr (MOV [eax],0x6497a0), which only a ctor does. Ghidra's
-// InitializeUiResourceEntryBaseHeaderDefaults name was provisional (Hard Rule 6) and the
-// method it named has been deleted -- derived ctors reach this as their base ctor.
-// It owns an address, so per the constructor-placement decision it stays out-of-line.
+// MATCH: this address-owning base constructor stays out-of-line.
 // FUNCTION: IMPERIALISM 0x0048a100
 TEventHandler::TEventHandler() : field0c(0), field10(0x7fffffff), field14(0), firstBehavior(0) {}
 
