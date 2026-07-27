@@ -315,6 +315,23 @@ CPoint IncludeViewOverlayRectRecord::ComputeSpan() const {
   return CPoint(rect.right - rect.left, rect.bottom - rect.top);
 }
 
+// FUNCTION: IMPERIALISM 0x00483280
+void CIncludeView::BeginTracking(CPoint* startPoint, TControl* tracker) {
+  if (g_nIncludeViewCaptureAssertGate_006A17B8 == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath_00694D10, 0x16e);
+  }
+  m_capturedControl74 = tracker;
+  CWnd::FromHandle(::SetCapture(m_hWnd));
+
+  // All three points start at the press position; the update phase moves last/current.
+  m_captureStartPoint78 = *startPoint;
+  m_captureLastPoint80 = *startPoint;
+  m_captureCurrentPoint88 = *startPoint;
+
+  tracker->TrackMouse(kTrackPhaseBegin, m_captureStartPoint78, m_captureLastPoint80,
+                      m_captureCurrentPoint88, 1);
+}
+
 // Install this view as the native host window for the given TView (and its whole
 // subtree), then let it resolve the 'main' control tag against itself.
 // FUNCTION: IMPERIALISM 0x00483340

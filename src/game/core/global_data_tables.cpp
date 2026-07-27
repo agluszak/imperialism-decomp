@@ -936,6 +936,10 @@ char g_szIncludeViewSourcePath_00694D10[] = "D:\\Ambit\\IncludeView.cpp";
 // GLOBAL: IMPERIALISM 0x006a17b0
 int g_nIncludeViewAssertGate_006A17B0 = 0;
 
+// One-shot assert gate for starting a mouse-capture track without a live UI context.
+// GLOBAL: IMPERIALISM 0x006a17b8
+int g_nIncludeViewCaptureAssertGate_006A17B8 = 0;
+
 // GLOBAL: IMPERIALISM 0x006a17bc
 int g_nIncludeViewReinitAssertGate_006A17BC = 0;
 
