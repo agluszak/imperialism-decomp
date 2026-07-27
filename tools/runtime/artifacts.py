@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -17,16 +18,10 @@ def capture_failure_screenshot(
     """Best-effort diagnostic artifact; screenshots never affect pass/fail."""
     try:
         command = [
-                "uv",
-                "run",
-                "--with",
-                "python-xlib",
-                "--with",
-                "pillow",
-                "python",
-                "tools/runtime/screenshot.py",
-                str(destination),
-            ]
+            sys.executable,
+            "tools/runtime/screenshot.py",
+            str(destination),
+        ]
         if owner_pid is not None:
             command.extend(["--pid", str(owner_pid)])
         if wineprefix is not None:

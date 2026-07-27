@@ -1,0 +1,11 @@
+{
+  "creation_instructions": "Run the retail executable with default single-player settings, start a new introductory game, choose a country, finish initial setup, and save immediately after reaching the first strategic map as beginning_of_game.imp.",
+  "file": "beginning_of_game.imp",
+  "format": "imperialism-save",
+  "format_version": 62,
+  "scenario": "load_saved_game",
+  "schema": 1,
+  "sha256": "e1ad5d4bfed15dcd749cf00e2a0b944b966ff9b516e263d469bbcd56b7301587",
+  "size": 403129,
+  "source_kind": "retail_fixture_oracle"
+}
