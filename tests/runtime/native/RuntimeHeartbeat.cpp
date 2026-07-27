@@ -1,0 +1,50 @@
+#include "RuntimeHeartbeat.h"
+
+#include "RuntimeJson.h"
+#include "RuntimeObservations.h"
+#include "RuntimeRun.h"
+
+#include "game/core/global_data_tables.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/ui_core/TView.h"
+#include "game/ui_core/TViewMgr.h"
+
+#include <windows.h>
+
+namespace {
+
+CString SemanticFingerprint(RuntimeRun& run) {
+  CString fingerprint;
+  fingerprint.Format(
+      "%d|%s|%d|%s", g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
+      RuntimeClassName(RuntimeMainView()), g_ModalViewStack.GetCount(), run.PhaseName());
+  return fingerprint;
+}
+
+} // namespace
+
+void WriteRuntimeHeartbeat(RuntimeRun& run) {
+  if (run.HeartbeatPath()[0] == 0) {
+    return;
+  }
+  unsigned long now = GetTickCount();
+  CString fingerprint = SemanticFingerprint(run);
+  if (fingerprint != run.LastFingerprint()) {
+    run.LastFingerprint() = fingerprint;
+    run.MarkFallbackProgress();
+  }
+  if (run.LastHeartbeatMs() != 0 && now - run.LastHeartbeatMs() < 250) {
+    return;
+  }
+  run.SetLastHeartbeatMs(now);
+  CString json;
+  json.Format("{\"phase\": \"%s\", \"last_action\": \"%s\", \"idle_ticks\": %lu, "
+              "\"elapsed_ms\": %lu, \"turn_event\": %d, \"root_class\": \"%s\", "
+              "\"modal_depth\": %d, \"progress_counter\": %lu, \"last_progress_ms\": %lu, "
+              "\"hold\": %s}\n",
+              run.PhaseName(), run.LastAction(), run.IdleTicks(), run.ElapsedMs(),
+              g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
+              RuntimeClassName(RuntimeMainView()), g_ModalViewStack.GetCount(),
+              run.ProgressCounter(), run.LastProgressMs(), run.HoldRequested() ? "true" : "false");
+  RuntimeJson::WriteFileAtomically(run.HeartbeatPath(), json);
+}

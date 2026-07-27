@@ -14,25 +14,23 @@ public:
     RuntimeTurnEventQueue queue;
     int index;
     for (index = 0; index < RuntimeTurnEventQueue::kCapacity; ++index) {
-      if (!queue.Push(0x1000 + index)) {
-        FailScenario("\"turn-event queue rejected an in-capacity event\"");
+      if (!Require("turn_event_queue.accepts_capacity", queue.Push(0x1000 + index),
+                   "\"turn-event queue rejected an in-capacity event\"")) {
         return;
       }
     }
-    if (queue.Count() != RuntimeTurnEventQueue::kCapacity || queue.Push(0x2000)) {
-      FailScenario("\"turn-event queue did not reject overflow\"");
-      return;
-    }
+    Check("turn_event_queue.rejects_overflow",
+          queue.Count() == RuntimeTurnEventQueue::kCapacity && !queue.Push(0x2000),
+          "\"turn-event queue did not reject overflow\"");
     for (index = 0; index < RuntimeTurnEventQueue::kCapacity; ++index) {
       int eventCode = 0;
-      if (!queue.Pop(eventCode) || eventCode != 0x1000 + index) {
-        FailScenario("\"turn-event queue lost FIFO evidence at its capacity boundary\"");
-        return;
-      }
+      Check("turn_event_queue.preserves_fifo", queue.Pop(eventCode) && eventCode == 0x1000 + index,
+            "\"turn-event queue lost FIFO evidence at its capacity boundary\"");
     }
     int eventCode = 0;
-    if (queue.Count() != 0 || queue.Pop(eventCode)) {
-      FailScenario("\"turn-event queue did not become empty after complete observation\"");
+    Check("turn_event_queue.empties_after_pop", queue.Count() == 0 && !queue.Pop(eventCode),
+          "\"turn-event queue did not become empty after complete observation\"");
+    if (FinishChecks()) {
       return;
     }
     Pass();

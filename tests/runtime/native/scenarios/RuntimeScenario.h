@@ -37,6 +37,9 @@ public:
 protected:
   void Pass();
   void FailScenario(const char* failure);
+  bool Require(const char* assertionId, bool condition, const char* failure);
+  bool Check(const char* assertionId, bool condition, const char* failure);
+  bool FinishChecks();
   bool WaitForScenarioTick(const char* failure);
   void RequestScenarioTick();
   void EnterScenarioStep(const char* phaseName, const char* action);

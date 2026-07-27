@@ -2,12 +2,14 @@
 
 #include "RuntimeContext.h"
 #include "RuntimeRegistry.h"
+#include "RuntimeRun.h"
 #include "RuntimeTestCase.h"
 #include "scenarios/RuntimeScenarios.h"
 
 namespace {
 
-RuntimeContext g_context;
+RuntimeRun g_run;
+RuntimeContext g_context(g_run);
 RuntimeTestCase* g_testCase = 0;
 RuntimeTurnEventQueue g_pendingTurnEvents;
 
@@ -67,8 +69,7 @@ void RuntimeHarness::ObserveActivatedTurnEvent(int eventCode) {
   EnsureSelected();
   if (!g_pendingTurnEvents.Push(eventCode)) {
     g_testCase->FailHarness(
-        g_context,
-        "\"runtime harness turn-event queue overflowed before idle observation\"");
+        g_context, "\"runtime harness turn-event queue overflowed before idle observation\"");
   }
 }
 

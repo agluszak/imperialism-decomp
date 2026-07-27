@@ -181,6 +181,7 @@ def _result_summary(result: JsonObject, attempts: list[AttemptResult]) -> JsonOb
         "action": result.get("last_action") or primary.host.action,
         "artifact_path": str(primary.run_dir),
         "primary_failure": result.get("failure"),
+        "assertion_id": result.get("assertion_id"),
         "diagnostic_outcomes": [
             _diagnostic_summary(attempt) for attempt in attempts[1:]
         ],
@@ -200,6 +201,7 @@ def format_console_summary(result: JsonObject) -> str:
         f"phase={summary.get('phase') or 'unknown'} "
         f"classification={summary.get('classification') or 'none'} "
         f"action={summary.get('action') or 'none'} "
+        f"assertion={summary.get('assertion_id') or 'none'} "
         f"artifacts={summary.get('artifact_path') or 'none'} "
         f"failure={summary.get('primary_failure') or 'none'} diagnostics={diagnostic_text}"
     )
@@ -224,6 +226,7 @@ class RuntimeRunner:
             "action": None,
             "artifact_path": str(self.result_dir / f"{result['name']}.json"),
             "primary_failure": result.get("failure"),
+            "assertion_id": result.get("assertion_id"),
             "diagnostic_outcomes": [],
         }
         serialized = json.dumps(result, indent=2, sort_keys=True) + "\n"
