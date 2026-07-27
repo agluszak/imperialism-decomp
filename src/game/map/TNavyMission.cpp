@@ -16,12 +16,6 @@
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 
-// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
-//   CArchive& AFXAPI operator>>(CArchive&, TNavyMission*&)
-// SYNTHETIC: IMPERIALISM 0x00536490
-// operator>>
-IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
-
 // The binary body inlines TMission() (state08/importanceScore0c/marker11) and does NOT touch
 // nationId04/pathMarker06; the vtable install lands mid-way through the zero stores.
 // FUNCTION: IMPERIALISM 0x00535470
@@ -109,6 +103,15 @@ void AccumulateNavyOrderVectorFromNode(TShip* orderNode, float* vector) {
 }
 
 } // namespace
+
+// SYNTHETIC: IMPERIALISM 0x00536450
+// TNavyMission::GetRuntimeClass
+
+// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
+//   CArchive& AFXAPI operator>>(CArchive&, TNavyMission*&)
+// SYNTHETIC: IMPERIALISM 0x00536490
+// operator>>
+IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
 
 // FUNCTION: IMPERIALISM 0x005364c0
 void TNavyMission::Free() {
@@ -260,6 +263,26 @@ int TNavyMission::AccumulateLack(int* accumulatedLack, unsigned char includeExis
     total += accumulatedLack[i + 5];
   }
   return total;
+}
+
+// Mac oracle: ComputeSeaZoneImportance.
+// FUNCTION: IMPERIALISM 0x00536a40
+float TNavyMission::ComputeSeaZoneImportance(TZone* zone) {
+  float importance = static_cast<float>(zone->ComputeMapActionContextNodeValueAverage());
+
+  for (TZone* port = TZone::GetFirstPortZone(); port != 0; port = port->GetNextPortZone()) {
+    // primaryNeighbors[0] is read through the stretch's growing operator[], which is why
+    // the original reallocs the backing store here before comparing.
+    if (port->primaryNeighbors[0] == zone) {
+      if (port->GetPortZoneOwnerNationCodeFromMissionField48() == nationId04) {
+        importance = importance * 1.5f;
+      } else {
+        importance = importance * 1.25f;
+      }
+    }
+  }
+
+  return importance / 5000.0f;
 }
 
 // FUNCTION: IMPERIALISM 0x00536b30
@@ -1166,6 +1189,3 @@ float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
   }
   return best;
 }
-
-// SYNTHETIC: IMPERIALISM 0x00536450
-// TNavyMission::GetRuntimeClass

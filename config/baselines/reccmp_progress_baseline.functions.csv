@@ -2534,7 +2534,7 @@ address|matching|name
 0x4dd740|1.0|TGreatPower::GetDiplomacyExternalStateByTarget
 0x4dd770|1.0|TGreatPower::SetCityStockCounterAndRefresh
 0x4dd7b0|1.0|TGreatPower::AddToCityStockCounterAndRefresh
-0x4dd7f0|0.7228915662650602|TGreatPower::ComputeProductionMetricForOrderKind
+0x4dd7f0|0.7108433734939759|TGreatPower::ComputeProductionMetricForOrderKind
 0x4dda20|1.0|TGreatPower::DecrementDiplomacyCounterA2ByValue
 0x4dda40|1.0|TGreatPower::DecrementDiplomacyCounterA2Slot66
 0x4dda60|0.6|TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot
@@ -3849,7 +3849,7 @@ address|matching|name
 0x5367d0|0.4|TNavyMission::RejectConstituent
 0x536810|1.0|TNavyMission::ForgetTaskForce
 0x536840|0.39183673469387753|TNavyMission::AccumulateLack
-0x536a40|0.0|IltTarget_00536a40
+0x536a40|0.8769230769230769|TNavyMission::ComputeSeaZoneImportance
 0x536b30|0.2818181818181818|TNavyMission::Reassess
 0x536d60|0.64|TNavyMission::CombineForce
 0x536e40|0.6772486772486772|TNavyMission::GiveOrders
