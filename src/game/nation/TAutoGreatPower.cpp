@@ -678,6 +678,38 @@ char TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation
   return 0;
 }
 
+// Mac oracle: SetEnemy.
+// FUNCTION: IMPERIALISM 0x004e8300
+void TAutoGreatPower::SetEnemy(int nationSlot, char makeEnemy) {
+  if (g_apTerrainTypeDescriptorTable[nationSlot] == 0 ||
+      g_apTerrainTypeDescriptorTable[nationSlot]->ownedRegionList->GetSize() <= 0) {
+    return;
+  }
+
+  if (makeEnemy != 0) {
+    // Minor nations (encoded slot 100..199) are never marked; the flag can only be
+    // cleared for them.
+    bool isMinorNation = false;
+    if (g_apTerrainTypeDescriptorTable[nationSlot] != 0) {
+      short encoded = g_apTerrainTypeDescriptorTable[nationSlot]->encodedNationSlot;
+      if (encoded >= 100 && encoded <= 199) {
+        isMinorNation = true;
+      }
+    }
+    if (!isMinorNation) {
+      portZoneStateFlags[g_pActiveMapOrderContext
+                             ->FindFirstPortZoneContextByNation(static_cast<short>(nationSlot))
+                             ->GetContextOrdinalOrInvalid()] = 1;
+      return;
+    }
+    return;
+  }
+
+  portZoneStateFlags[g_pActiveMapOrderContext
+                         ->FindFirstPortZoneContextByNation(static_cast<short>(nationSlot))
+                         ->GetContextOrdinalOrInvalid()] = 0;
+}
+
 // FUNCTION: IMPERIALISM 0x004e83d0
 void TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates() {
   TLongintList* regionList = this->ownedRegionList;

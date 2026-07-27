@@ -17,10 +17,8 @@ public:
   // parameter types: the retail body reads arg1 and arg2 as dwords (0x4e6c2e/0x4e6c3e)
   // and only arg5 through MOVSX word (0x4e6c4b), so the leading pair is int-width here.
   // The Windows listing outranks the Mac signature on types.
-  void IAutoGreatPower(int nationSlot, int nationInitializationMode,
-                                                     short cityMinisterPolicyId,
-                                                     short foreignMinisterPolicyId,
-                                                     short defenseMinisterPolicyId);
+  void IAutoGreatPower(int nationSlot, int nationInitializationMode, short cityMinisterPolicyId,
+                       short foreignMinisterPolicyId, short defenseMinisterPolicyId);
   // Destructor real body 0x004e6bb0; scalar deleting destructor 0x004e6b80
   // (both paired via symbols.csv names).
 
@@ -165,6 +163,11 @@ public:
   // TControlSeaZoneMission::GetReplacementSlot48's terrain-coverage-not-found path
   // (0x5389a9) to clear this nation's flag for the target port zone's context ordinal.
   void SetByteFlagAtOffsetAF0ByIndex(int contextOrdinal, char value); // 0x4e8bf0
+  // Mac oracle: SetEnemy. Marks (or clears) the given nation's first port-zone context
+  // in portZoneStateFlags. Only nations that actually hold regions are considered, and
+  // a minor nation (encoded slot 100..199) is never marked as an enemy -- only cleared.
+  // 0x004e8300, __thiscall.
+  void SetEnemy(int nationSlot, char makeEnemy);
   // Sets mapNodeStateFlags[provinceIndex] to `value`, except when value == 1 and the
   // province's map-action-context link is unavailable (no active context for this
   // nation), in which case it's forced to 0 instead. Same gate/array
