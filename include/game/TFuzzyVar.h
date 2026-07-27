@@ -24,6 +24,12 @@ public:
   // 0x004ff520, __thiscall.
   void IFuzzyVar(float v0, float v1, float v2, float v3);
 
+  // Mac oracle: Membership. Trapezoidal membership: 0 below values[0], a rising ramp
+  // to values[1], 1 across the plateau to values[2], a falling ramp to values[3], then
+  // 0 again. The int overload converts via FILD before comparing.
+  float Membership(int input);   // 0x004ff550
+  float Membership(float input); // 0x004ff5f0
+
   // Leaf record: four raw fuzzy-logic values. TFuzzyVar is purely the record; the container
   // that counts and holds these records is TFuzzySet (m_memberCount + m_members[10]).
   // TFuzzySet::AllocateAndAppendRecord (0x4ff7d0) news a TFuzzyVar and fills these, then

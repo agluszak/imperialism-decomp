@@ -2534,7 +2534,7 @@ address|matching|name
 0x4dd740|1.0|TGreatPower::GetDiplomacyExternalStateByTarget
 0x4dd770|1.0|TGreatPower::SetCityStockCounterAndRefresh
 0x4dd7b0|1.0|TGreatPower::AddToCityStockCounterAndRefresh
-0x4dd7f0|0.6867469879518072|TGreatPower::ComputeProductionMetricForOrderKind
+0x4dd7f0|0.7228915662650602|TGreatPower::ComputeProductionMetricForOrderKind
 0x4dda20|1.0|TGreatPower::DecrementDiplomacyCounterA2ByValue
 0x4dda40|1.0|TGreatPower::DecrementDiplomacyCounterA2Slot66
 0x4dda60|0.6|TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot
@@ -2602,7 +2602,7 @@ address|matching|name
 0x4e0770|1.0|TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6
 0x4e07b0|0.35294117647058826|TGreatPower::ComputeArmyCommitBudgetSlot8E
 0x4e0890|0.26262626262626265|TGreatPower::GetScoreFactorSlot23C
-0x4e09a0|0.5542168674698795|TGreatPower::GetScoreFactorSlot240
+0x4e09a0|0.5783132530120482|TGreatPower::GetScoreFactorSlot240
 0x4e0b20|0.43902439024390244|TGreatPower::ComputeArmyScoreRatioVsNation
 0x4e0c10|0.24806201550387597|TGreatPower::ComputeArmyScoreStandingRatioVsNation
 0x4e0d80|0.43902439024390244|TGreatPower::ComputeNavyScoreRatioVsNation
@@ -3076,8 +3076,8 @@ address|matching|name
 0x4ff4d0|1.0|TFuzzyVar::`scalar deleting destructor'
 0x4ff500|1.0|TFuzzyVar::~TFuzzyVar
 0x4ff520|1.0|TFuzzyVar::IFuzzyVar
-0x4ff550|0.0|IltTarget_004ff550
-0x4ff5f0|0.0|IltTarget_004ff5f0
+0x4ff550|0.8|TFuzzyVar::Membership(int)
+0x4ff5f0|0.7948717948717948|TFuzzyVar::Membership(float)
 0x4ff690|0.42424242424242425|TFuzzySet::CreateObject
 0x4ff6c0|1.0|TFuzzySet::GetRuntimeClass
 0x4ff6e0|1.0|TFuzzySet::TFuzzySet
@@ -3572,7 +3572,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords
 0x527730|0.29577464788732394|TMapMaker::PlaceTerrainFeatureQuotas
-0x527d00|0.43478260869565216|TMapMaker::CreateRivers
+0x527d00|0.4268774703557312|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
@@ -4484,7 +4484,7 @@ address|matching|name
 0x55cd00|1.0|TNewsMgr::AddMiscEvent
 0x55cda0|1.0|TNewsMgr::ConcatenateTreaty
 0x55cf20|0.0|IltTarget_0055cf20
-0x55d090|0.0|IltTarget_0055d090
+0x55d090|0.4|TNewsMgr::ClearStoryParms
 0x55d0c0|0.0|IltTarget_0055d0c0
 0x55d160|0.4897959183673469|TNewspaperView::CreateObject
 0x55d1e0|1.0|TNewspaperView::GetRuntimeClass

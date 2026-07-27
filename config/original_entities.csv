@@ -3044,8 +3044,8 @@ address|name|symbol|size|type|prototype|provenance
 4ff4d0|TFuzzyVar::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ff500|TFuzzyVar::~TFuzzyVar||7|function|undefined ~TFuzzyVar()|
 4ff520|TFuzzyVar::IFuzzyVar||31|function|void __thiscall TFuzzyVar::IFuzzyVar(float v0, float v1, float v2, float v3)|curated
-4ff550|IltTarget_004ff550||121|function|undefined IltTarget_004ff550()|
-4ff5f0|IltTarget_004ff5f0||117|function|undefined IltTarget_004ff5f0()|
+4ff550|TFuzzyVar::Membership||121|function|float __thiscall TFuzzyVar::Membership(int input)|curated
+4ff5f0|TFuzzyVar::Membership||117|function|float __thiscall TFuzzyVar::Membership(float input)|curated
 4ff690|TFuzzySet::CreateObject|?CreateObject@TFuzzySet@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 4ff6c0|TFuzzySet::GetRuntimeClass||6|function|undefined GetTFuzzySetClassNamePointer()|rtti
 4ff6e0|TFuzzySet::TFuzzySet||9|function|undefined TFuzzySet()|
@@ -4442,7 +4442,7 @@ address|name|symbol|size|type|prototype|provenance
 55cd00|TNewsMgr::AddMiscEvent||113|function|void __thiscall AddMiscEvent(int nationSlotOrAll,int storyCode,unsigned char isReplayBypass)|
 55cda0|TNewsMgr::ConcatenateTreaty||292|function|void __thiscall ConcatenateTreaty(InterNationEventKind eventKind,int nationA,int nationB)|
 55cf20|IltTarget_0055cf20||284|function|undefined IltTarget_0055cf20()|
-55d090|IltTarget_0055d090||23|function|undefined IltTarget_0055d090()|
+55d090|TNewsMgr::ClearStoryParms||23|function|void __thiscall TNewsMgr::ClearStoryParms(newsStory * story)|curated
 55d0c0|IltTarget_0055d0c0||123|function|undefined IltTarget_0055d0c0()|
 55d160|TNewspaperView::CreateObject|?CreateObject@TNewspaperView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 55d1e0|TNewspaperView::GetRuntimeClass||6|function|undefined GetTNewspaperViewClassNamePointer()|rtti
