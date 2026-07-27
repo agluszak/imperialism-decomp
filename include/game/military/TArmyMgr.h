@@ -105,7 +105,7 @@ public:
                                            short ownerNationCode); // slot 0x0e 0x4a3200
   // stack is the same TArmyStack the tile-army-composition pass (0x4a1f80) builds and
   // ResolveNextMove (0x4a2390) iterates. Picks a random adjacent region
-  // matching the stack's head unit's field_18 tag and relocates every movable unit there
+  // matching the stack's head unit's ownerNationSlot18 tag and relocates every movable unit there
   // (TUnit::SetOrders), or resets them if none qualifies.
   virtual void
   RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack* stack,
@@ -114,9 +114,9 @@ public:
   // relocating every unit on its embedded chain to stack->tileIndex10 unless already there.
   virtual void RelocateStackUnitsToStackTile(TArmyStack* stack); // slot 0x10 0x4a37b0
   // Ground truth (RET 0x8, 2 stack args) proves the previous 0-arg declaration was a
-  // poison-pill arity mismatch. Snapshots each stack's units' field_34 into field_3C and
+  // poison-pill arity mismatch. Snapshots each stack's units' strength34 into strengthSnapshot3C and
   // resets their blink-mask bits, then repeatedly finds an eligible pair (one unit per
-  // stack whose field_34 still exceeds half its snapshot) to accumulate/decay a shared
+  // stack whose strength34 still exceeds half its snapshot) to accumulate/decay a shared
   // meter across, until one side runs out; the side that ran out gets a flat meter boost
   // instead. Returns whether any eligible pairing was ever found.
   virtual bool UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1,
@@ -238,7 +238,7 @@ public:
   short ActivateFirstActiveTacticalUnitByCategoryAtTile(short categoryId, short tileIndex);
 
   // Walks the region's stationed-unit chain (Province::stationedUnitChain98,
-  // via TUnit::nextOnTile) for one whose unitOrder is idle and whose
+  // via TUnit::nextAtLocation14) for one whose unitOrder is idle and whose
   // TMilitaryUnit::GetCategory() is nonzero. 0x004a4550, __thiscall (this unused --
   // operates purely off g_pGlobalMapState), 1 arg.
   bool HasEligibleStationedUnitInRegion(short regionId);
@@ -311,7 +311,7 @@ public:
   // adjacentRegionCount08)) owned by the active nation (TMapMgr::
   // ResolveTileOwnerNationCodeNormalized == TSimMgr::GetActiveNationId), and over their
   // stationedUnitChain98 picks the highest-scoring General TMilitaryUnit
-  // (score = field_38/100 + 1); ties keep the first found. If no adjacent region is
+  // (score = experiencePercent38/100 + 1); ties keep the first found. If no adjacent region is
   // owned (or none qualifies), falls back to the region's own city display name
   // (TMapMgr::AssignCityRecordDisplayName). Phase 2 separately scans
   // TShip::GetFirst() for a TShip owned by the active nation whose zone
@@ -354,14 +354,14 @@ public:
   //    g_apNationStates[nationId]'s order list (TCountry::militaryUnitList44, a
   //    TSortedList* of TMilitaryUnit*), and AddTail()s every entry whose tileIndex06
   //    isn't a movement-class tile (TileHasMovementClassId) for cityIndex when its
-  //    field_C == cityIndex, summing GetArmsCarried per entry into a budget.
+  //    orderTargetIndex0C == cityIndex, summing GetArmsCarried per entry into a budget.
   //  - Subtracts g_pNavyOrderManager->GetInvasionCapacity(
   //    nationId, &g_pGlobalMapState->cityScoreTable[cityIndex], 0) from that
   //    budget; if the remainder is positive, randomly evicts entries from the TList
   //    (rand() % GetCount() + 1 via GetEntryByOrdinal) until the remainder is <= 0, each
   //    time looking the evicted TMilitaryUnit* up in the TList's underlying CPtrList via
   //    CPtrList::Find/RemoveAt, re-subtracting its GetArmsCarried, and stamping
-  //    TUnit::field_34 to 0xffaa as a scratch "evicted" marker (field_34 is otherwise a
+  //    TUnit::strength34 to 0xffaa as a scratch "evicted" marker (strength34 is otherwise a
   //    persisted strength scalar -- reused here since the unit is about to be destroyed).
   //  - Grows snapshot->childRecords[side] (MapOrderBattleSideChildRecord array,
   //    map_order_battle_snapshot.h) by the evicted count, reallocating via operator new,
@@ -373,7 +373,7 @@ public:
   //    head) appending one new MapOrderBattleSideChildRecord per marked-evicted
   //    TMilitaryUnit (resourceType = orderType, stockOrRequired = 0xffaa, nameBuffer =
   //    name24 clamped to 0x20 chars, detail category = 'army' ("army"), and
-  //    strengthBucket = field_38 / 100) before DetachUnitOrderFromOwnerAndReset()
+  //    strengthBucket = experiencePercent38 / 100) before DetachUnitOrderFromOwnerAndReset()
   //    + Free()ing the evicted unit. The old childRecords array is never freed here --
   //    reproduced as a faithful leak, matching this file's other acknowledged leaks.
   void TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, int cityIndex,
@@ -394,7 +394,7 @@ public:
   // while the losing stack is redistributed to a random adjacent region (sideWonFlag
   // != 0) or relocated back to its origin tile (sideWonFlag == 0, via
   // RelocateStackUnitsToStackTile); both stacks then grow unit quality
-  // (field_38, capped at 400) -- +35 for the winner, +20 for the loser -- before
+  // (experiencePercent38, capped at 400) -- +35 for the winner, +20 for the loser -- before
   // re-running the pending-army-stack pass (slot 0x0c). 0x004a5ca0, __thiscall, ret 0x10.
   void ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack, TArmyStack* enemyStack,
                                                     int sideWonFlag, int battleSiteIndex);

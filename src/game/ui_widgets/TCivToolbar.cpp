@@ -121,7 +121,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
         (selectedTileEntry == selectedCivilianState->selectedEntry)) {
       selectedStackButton = stackButton;
     }
-    selectedTileEntry = static_cast<TCivUnit*>(selectedTileEntry->nextOnTile);
+    selectedTileEntry = static_cast<TCivUnit*>(selectedTileEntry->nextAtLocation14);
   }
   while (slotIndex < 6) {
     stackButton =

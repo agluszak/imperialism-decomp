@@ -1446,7 +1446,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
     bool hasActiveProspecting = false;
     if (prospectableTerrain[tile->GetTerrainKind()] != 0) {
       for (TCivUnit* order = tile->firstCivilianOrder20; order != 0;
-           order = static_cast<TCivUnit*>(order->nextOnTile)) {
+           order = static_cast<TCivUnit*>(order->nextAtLocation14)) {
         if (order->unitOrder == kUnitOrderPurchaseLand && order->remainingTurns24 == 8) {
           hasActiveProspecting = true;
         }

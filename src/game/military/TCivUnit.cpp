@@ -58,7 +58,7 @@ void TCivUnit::TickCivWorkOrderCountdownAndComplete() {
 void TCivUnit::SetOrders(UnitOrder order, int payload) {
   const short kRemainingTurnsByMode[14] = {0, 0, 0, 0, 0, 1, 3, 3, 1, 0, 3, 3, 4, 1};
   unitOrder = order;
-  field_C = static_cast<short>(payload);
+  orderTargetIndex0C = static_cast<short>(payload);
   remainingTurns24 = kRemainingTurnsByMode[order];
 }
 
@@ -97,35 +97,35 @@ void TCivUnit::WriteTo(TStream* stream) {
 }
 
 // Moves this unit between two tiles' civilian-order chains (terrainStateTable[tile-
-// Index06].firstCivilianOrder20, threaded via nextOnTile/field_10): detaches from the
-// current tile (if any) unlinking via field_10's prev-pointer role, then prepends to
+// Index06].firstCivilianOrder20, threaded via nextAtLocation14/previousAtLocation10): detaches from the
+// current tile (if any) unlinking via previousAtLocation10's prev-pointer role, then prepends to
 // the new tile's chain (if anchorIndex isn't -1 = none).
 // FUNCTION: IMPERIALISM 0x005c2b70
 void TCivUnit::MoveTo(short newTileIndex) {
 
   if (tileIndex06 != -1) {
-    if (field_10 == 0) {
+    if (previousAtLocation10 == 0) {
       g_pGlobalMapState->terrainStateTable[tileIndex06].firstCivilianOrder20 =
-          static_cast<TCivUnit*>(nextOnTile);
+          static_cast<TCivUnit*>(nextAtLocation14);
     } else {
-      field_10->nextOnTile = nextOnTile;
+      previousAtLocation10->nextAtLocation14 = nextAtLocation14;
     }
-    if (nextOnTile != 0) {
-      nextOnTile->field_10 = field_10;
+    if (nextAtLocation14 != 0) {
+      nextAtLocation14->previousAtLocation10 = previousAtLocation10;
     }
   }
 
   if (newTileIndex != -1) {
     TCivUnit* oldHead = g_pGlobalMapState->terrainStateTable[newTileIndex].firstCivilianOrder20;
-    field_10 = 0;
-    nextOnTile = oldHead;
+    previousAtLocation10 = 0;
+    nextAtLocation14 = oldHead;
     g_pGlobalMapState->terrainStateTable[newTileIndex].firstCivilianOrder20 = this;
-    if (nextOnTile != 0) {
-      nextOnTile->field_10 = this;
+    if (nextAtLocation14 != 0) {
+      nextAtLocation14->previousAtLocation10 = this;
     }
   } else {
-    field_10 = 0;
-    nextOnTile = 0;
+    previousAtLocation10 = 0;
+    nextAtLocation14 = 0;
   }
 
   tileIndex06 = newTileIndex;
@@ -138,7 +138,7 @@ void TCivUnit::DetachUnitOrderFromOwnerAndReset() {}
 void TCivUnit::ResetCivWorkOrderAndRefreshCounters() {
   DetachUnitOrderFromOwnerAndReset();
   if (orderType != kCivilianUnitDeveloper) {
-    TGreatPower* nation = g_apNationStates[field_18];
+    TGreatPower* nation = g_apNationStates[ownerNationSlot18];
     TCity* city = (nation != 0) ? nation->city : 0;
     // The original reads city unconditionally here (no null check), so keep the shape.
     city->productionSummary1d8->AddExpert(1);

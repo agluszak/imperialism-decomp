@@ -154,10 +154,10 @@ void TArmyBattle::ReadFrom(TStream* stream) {
     record->actionPoints28 = record->GetBaseActionPoints();
     record->aiStateCode2c = 0;
     record->attackTarget30 = NULL;
-    record->strength4 = sourceUnit->field_34;
-    record->morale34 = sourceUnit->field_34;
-    record->qualityLevel10 = static_cast<short>(sourceUnit->field_38 / 100);
-    record->ownerNationIndex14 = sourceUnit->field_18;
+    record->strength4 = sourceUnit->strength34;
+    record->morale34 = sourceUnit->strength34;
+    record->qualityLevel10 = static_cast<short>(sourceUnit->experiencePercent38 / 100);
+    record->ownerNationIndex14 = sourceUnit->ownerNationSlot18;
     record->sapTargetTileIndex40 = -1;
     record->sourceUnit38 = sourceUnit;
     // int, not unsigned char: the original materializes the flag with `mov eax,1` /
@@ -185,7 +185,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
          candidate = static_cast<TArmyTacUnit*>(linkIter.Advance())) {
       int candidateUnitId;
       if (candidate != 0 && candidate->sourceUnit38 != 0) {
-        candidateUnitId = candidate->sourceUnit38->field_20;
+        candidateUnitId = candidate->sourceUnit38->persistentUnitId20;
       } else {
         candidateUnitId = 0;
       }
@@ -257,7 +257,7 @@ void TArmyBattle::WriteTo(TStream* stream) {
        record = static_cast<TArmyTacUnit*>(recordIter.Advance())) {
     int recordUnitId;
     if (record != 0 && record->sourceUnit38 != 0) {
-      recordUnitId = record->sourceUnit38->field_20;
+      recordUnitId = record->sourceUnit38->persistentUnitId20;
     } else {
       recordUnitId = 0;
     }
@@ -269,7 +269,7 @@ void TArmyBattle::WriteTo(TStream* stream) {
   TArmyTacUnit* linked = static_cast<TArmyTacUnit*>(selectedUnit1c);
   int linkedUnitId;
   if (linked != 0 && linked->sourceUnit38 != 0) {
-    linkedUnitId = linked->sourceUnit38->field_20;
+    linkedUnitId = linked->sourceUnit38->persistentUnitId20;
   } else {
     linkedUnitId = 0;
   }
