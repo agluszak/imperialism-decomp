@@ -143,6 +143,8 @@ public:
   // LPCSTR argument, which Restock() cannot take; vtable slot 0x0e on TTown is
   // SetName(const char*) at 0x5b77e0, reached through ILT thunk 0x408acb. The slot number
   // merely coincided between the two classes.
+  // The town marker occupying this city's tile -- the city's harvesting agent, not a
+  // second city. See TTown.h for the one-city/many-towns relationship.
   TTown* homeTownMarkerB0; // +0xb0
   // +0xB4 — city power value displayed by TWarehouseView's 'powe' control and
   // snapshotted by the turn-event-0x2c packet.
