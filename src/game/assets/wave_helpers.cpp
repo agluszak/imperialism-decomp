@@ -158,6 +158,42 @@ UINT WaveCreateFile(char* pszFileName, HMMIO* phmmioOut, WAVEFORMATEX* pwfxDest,
   return ER_CANNOTWRITE;
 }
 
+// FUNCTION: IMPERIALISM 0x005e0da0
+UINT WaveCloseWriteFile(HMMIO* phmmio, MMCKINFO* pck, MMCKINFO* pckRIFF, MMIOINFO* pmmioinfo,
+                        DWORD cSamples) {
+  UINT result;
+
+  if (*phmmio == 0) {
+    return 0;
+  }
+  pmmioinfo->dwFlags |= MMIO_DIRTY;
+  result = mmioSetInfo(*phmmio, pmmioinfo, 0);
+  if (result == 0) {
+    result = mmioAscend(*phmmio, pck, 0);
+    if (result == 0) {
+      result = mmioAscend(*phmmio, pckRIFF, 0);
+      if (result == 0) {
+        mmioSeek(*phmmio, 0, SEEK_SET);
+        result = mmioDescend(*phmmio, pckRIFF, 0, 0);
+        if (result == 0) {
+          // Patch the placeholder sample count WaveCreateFile wrote into the 'fact' chunk.
+          pck->ckid = mmioFOURCC('f', 'a', 'c', 't');
+          if (mmioDescend(*phmmio, pck, pckRIFF, MMIO_FINDCHUNK) == 0) {
+            mmioWrite(*phmmio, (HPSTR)&cSamples, sizeof(cSamples));
+            mmioAscend(*phmmio, pck, 0);
+          }
+          result = mmioAscend(*phmmio, pckRIFF, 0);
+        }
+      }
+    }
+  }
+  if (*phmmio != 0) {
+    mmioClose(*phmmio, 0);
+    *phmmio = 0;
+  }
+  return result;
+}
+
 // FUNCTION: IMPERIALISM 0x005e0fb0
 int CopyMmioChunkByFourCCViaGlobalBuffer(HMMIO hmmioIn, HMMIO hmmioOut, MMCKINFO* pckIn) {
   HGLOBAL hMem;
