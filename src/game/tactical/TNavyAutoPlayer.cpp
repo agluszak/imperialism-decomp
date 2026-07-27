@@ -5,6 +5,8 @@
 #include "game/tactical/TTacticalBattle.h"
 #include "game/tactical/TTacticalUnit.h"
 #include "game/map/map_overlay_geometry.h"
+// SYNTHETIC: IMPERIALISM 0x0059f040
+// TNavyAutoPlayer::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x0059f070
 // TNavyAutoPlayer::`scalar deleting destructor'
@@ -12,13 +14,16 @@
 // SYNTHETIC: IMPERIALISM 0x0059f0a0
 // TNavyAutoPlayer::~TNavyAutoPlayer
 TNavyAutoPlayer::~TNavyAutoPlayer() {}
-// SYNTHETIC: IMPERIALISM 0x0059f040
-// TNavyAutoPlayer::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x0059f0c0
 // TNavyAutoPlayer::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TNavyAutoPlayer, TNavyPlayer)
+
+// FUNCTION: IMPERIALISM 0x0059f0e0
+void TNavyAutoPlayer::INavyAutoPlayer(TTaskForce* force, char isOurSide, int nationIndex) {
+  INavyPlayer(force, isOurSide, 1, nationIndex);
+}
 
 // FUNCTION: IMPERIALISM 0x0059f110
 void TNavyAutoPlayer::StartBattle() {
