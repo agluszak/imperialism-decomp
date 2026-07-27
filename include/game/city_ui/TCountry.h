@@ -110,6 +110,9 @@ public:
   // destString. Lives on TCountry (the field's owner): TViewMgr's overlay case 6 calls
   // it on g_apTerrainTypeDescriptorTable entries, which are TCountry*, not TGreatPower*.
   void LoadNationDisplayNameSharedRefFromField8(CString* destString);
+  // 0x004d7ac0 -- the raw counterpart of the above: copies identitySharedString1
+  // straight out, with no NormalizeRuntimeCredentialNameToken pass.
+  void LoadNationDisplayNameRawFromField8(CString* destString);
   // 0x4d8430 — sums g_aUnitOrderCostProfileByAbilityId[type][2] over militaryUnitList44.
   int ComputeSelectedMilitaryPowerScore();
   // 0x4d7930 - copy the nation's shared name text (TSimMgr::sharedTextSlots[nationSlot])

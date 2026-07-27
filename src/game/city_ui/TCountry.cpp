@@ -376,6 +376,11 @@ void TCountry::LoadNationDisplayNameSharedRefFromField8(CString* destString) {
   *destString = g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&identitySharedString1);
 }
 
+// FUNCTION: IMPERIALISM 0x004d7ac0
+void TCountry::LoadNationDisplayNameRawFromField8(CString* destString) {
+  *destString = identitySharedString1;
+}
+
 // FUNCTION: IMPERIALISM 0x004d7ae0
 void TCountry::AddToTreasury(int amount) {
   this->treasuryValue10 += amount;

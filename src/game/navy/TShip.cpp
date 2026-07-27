@@ -161,6 +161,11 @@ void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode
   } while (1);
 }
 
+// FUNCTION: IMPERIALISM 0x0054fc60
+void TShip::SetLocation(TZone* zone) {
+  location = zone;
+}
+
 // FUNCTION: IMPERIALISM 0x0054fd50
 void RecomputeGlobalCapabilityAverages(void) {
   if (g_pCityOrderCapabilityState == 0) {

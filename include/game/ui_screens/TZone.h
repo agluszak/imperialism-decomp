@@ -82,6 +82,9 @@ public:
   // 0x55f300 — find-or-append `zone` to primaryNeighbors via the stretch's virtual
   // Add (Ghidra: DispatchMapActionContextCallbackViaField24).
   void AppendUniquePrimaryNeighbor(TZone* zone);
+  // 0x55f3a0 -- the secondaryNeighbors (+0x34) counterpart of the line above; same
+  // shape, dispatching through that stretch's virtual Add.
+  void AppendUniqueSecondaryNeighbor(Province* province);
   // Picks the primaryNeighbors entry most at war with nationSlot: a neighbor qualifies
   // if it isn't a port zone or `nationSlot` doesn't hold flag D there, then scores it by
   // how many of the (up to 7) g_apTerrainTypeDescriptorTable nations it lists in
