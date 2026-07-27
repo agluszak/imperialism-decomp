@@ -47,6 +47,9 @@ public:
   // 0x004b5c00: attach this population state to a city and allocate its three
   // labor pools.
   void IPopulationMgr(TCity* city);
+  // Mac CodeWarrior oracle: AddUntrained(short) -- 0x004b6a00. Mirrors AddExpert but
+  // fills the low-skill band, and adds no strength: untrained workers contribute none.
+  void AddUntrained(short count);
   // Mac CodeWarrior oracle: AddExpert(short) -- 0x004b6a30.
   void AddExpert(short count);
 

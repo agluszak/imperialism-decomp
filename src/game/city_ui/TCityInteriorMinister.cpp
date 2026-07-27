@@ -158,11 +158,13 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
 
   cityPolicyFuzzySet = new TFuzzySet();
   cityPolicyFuzzySet->Clear();
-  cityPolicyFuzzySet->AllocateAndAppendRecord(0xccbebc20, 0xc7c35000, 0xc69c4000, 0xc61c4000);
-  cityPolicyFuzzySet->AllocateAndAppendRecord(0xc66a6000, 0xc59c4000, 0xc59c4000, 0x447a0000);
-  cityPolicyFuzzySet->AllocateAndAppendRecord(0, 0x459c4000, 0x461c4000, 0x466a6000);
-  cityPolicyFuzzySet->AllocateAndAppendRecord(0x461c4000, 0x469c4000, 0x49742400,
-                                              kControlTagNnkParen);
+  // Four trapezoidal fuzzy-membership bands. These were previously written as the raw
+  // IEEE-754 bit patterns of the float constants, because TFuzzyVar's values were
+  // modelled as int; every one decodes to a round number.
+  cityPolicyFuzzySet->AllocateAndAppendRecord(-100000000.0f, -100000.0f, -20000.0f, -10000.0f);
+  cityPolicyFuzzySet->AllocateAndAppendRecord(-15000.0f, -5000.0f, -5000.0f, 1000.0f);
+  cityPolicyFuzzySet->AllocateAndAppendRecord(0.0f, 5000.0f, 10000.0f, 15000.0f);
+  cityPolicyFuzzySet->AllocateAndAppendRecord(10000.0f, 20000.0f, 1000000.0f, 1000000000.0f);
 
   temporaryFurnitureSubstituteLumber1c2 = 0;
 }
