@@ -3811,7 +3811,7 @@ address|name|symbol|size|type|prototype|provenance
 536f70|TScatteredShipsMission::SetMapOrderEntryChildFlags||21|function|undefined SetMapOrderEntryChildFlags()|
 536fa0|RefreshMissionPortZoneContextForNation||14|function|undefined RefreshMissionPortZoneContextForNation()|
 536fc0|TNavyMission::EnsureMissionCurrentTargetContextIsValid||60|function|undefined EnsureMissionCurrentTargetContextIsValid()|
-537010|IltTarget_00537010||52|function|undefined IltTarget_00537010()|
+537010|TNavyMission::PickBestShipForMissionType||52|function|TShip * __thiscall TNavyMission::PickBestShipForMissionType(int missionType)|curated
 537060|TNavyMission::GetActiveTargetZoneByState28||25|function|undefined GetMissionOrderBudgetByMode()|
 537090|TScatteredShipsMission::QueueMissionOrdersByPriorityForContext||100|function|void __thiscall QueueMissionOrdersByPriorityForContext(int pContextAnchor, int * ppSelectedChildNode)|
 5371d0|ConsolidateMissionOrderEntriesByTargetAndQueue||115|function|undefined ConsolidateMissionOrderEntriesByTargetAndQueue()|

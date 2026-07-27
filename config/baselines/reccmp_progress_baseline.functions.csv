@@ -2528,16 +2528,16 @@ address|matching|name
 0x4dd340|0.6222222222222222|TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal
 0x4dd3b0|1.0|TGreatPower::SumAidAllocationMatrixColumnForTarget
 0x4dd3f0|1.0|TGreatPower::SumAidAllocationMatrixAllCells
-0x4dd430|0.5714285714285714|TGreatPower::ComputeRemainingDiplomacyAidBudget
+0x4dd430|0.5142857142857142|TGreatPower::ComputeRemainingDiplomacyAidBudget
 0x4dd470|1.0|TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches
 0x4dd4e0|0.4585987261146497|TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots
 0x4dd740|1.0|TGreatPower::GetDiplomacyExternalStateByTarget
 0x4dd770|1.0|TGreatPower::SetCityStockCounterAndRefresh
 0x4dd7b0|1.0|TGreatPower::AddToCityStockCounterAndRefresh
-0x4dd7f0|0.7228915662650602|TGreatPower::ComputeProductionMetricForOrderKind
+0x4dd7f0|0.7108433734939759|TGreatPower::ComputeProductionMetricForOrderKind
 0x4dda20|1.0|TGreatPower::DecrementDiplomacyCounterA2ByValue
 0x4dda40|1.0|TGreatPower::DecrementDiplomacyCounterA2Slot66
-0x4dda60|0.6|TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot
+0x4dda60|1.0|TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot
 0x4dda90|0.43478260869565216|TGreatPower::SetTradeOffersFor
 0x4ddad0|0.7916666666666666|TGreatPower::AreDiplomacyState1c6Slots13To16AllNonPositive
 0x4ddb20|1.0|TGreatPower::QueryNationMetricBySlot7C
@@ -2602,7 +2602,7 @@ address|matching|name
 0x4e0770|1.0|TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6
 0x4e07b0|0.35294117647058826|TGreatPower::ComputeArmyCommitBudgetSlot8E
 0x4e0890|0.26262626262626265|TGreatPower::GetScoreFactorSlot23C
-0x4e09a0|0.5783132530120482|TGreatPower::GetScoreFactorSlot240
+0x4e09a0|0.5542168674698795|TGreatPower::GetScoreFactorSlot240
 0x4e0b20|0.43902439024390244|TGreatPower::ComputeArmyScoreRatioVsNation
 0x4e0c10|0.24806201550387597|TGreatPower::ComputeArmyScoreStandingRatioVsNation
 0x4e0d80|0.43902439024390244|TGreatPower::ComputeNavyScoreRatioVsNation
@@ -3856,7 +3856,7 @@ address|matching|name
 0x536f70|1.0|TMapOrderChildLinkNode::SetChainActiveFlag
 0x536fa0|0.8|TNavyMission::RefreshMissionPortZoneContextForNation
 0x536fc0|0.9230769230769231|TNavyMission::GetReplacementSlot48
-0x537010|0.0|IltTarget_00537010
+0x537010|1.0|TNavyMission::PickBestShipForMissionType
 0x537060|1.0|TNavyMission::GetActiveTargetZoneByState28
 0x537090|0.4028776978417266|TNavyMission::QueueMissionOrdersByPriorityForContext
 0x5371d0|1.0|TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue
