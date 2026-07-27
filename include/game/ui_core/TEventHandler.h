@@ -26,9 +26,7 @@ struct TToolboxEvent;
 class TEventHandler : public TObject {
 public:
   int enabled;
-  // UNRESOLVED_FIELD_ATTRIBUTION: +0x08 is integer view/action state in TView::SetEnabled
-  // (0x48b1c0) and TWindow::Show; keep it opaque pending a complete writer audit.
-  int field08;
+  int viewEnabled; // +0x08 -- TView::SetEnabled state; TWindow::Show mirrors visibility here
   TEventHandler* nextHandler;
   int idleFrequencyTicks;
   int lastIdleTick;
@@ -51,7 +49,7 @@ public:
   // MATCH: keep this in-class; see config/ctor_placement_exceptions.csv.
   // FUNCTION: IMPERIALISM 0x0048a750
   TEventHandler(const TEventHandler& source)
-      : TObject(), enabled(source.enabled), field08(source.field08),
+      : TObject(), enabled(source.enabled), viewEnabled(source.viewEnabled),
         nextHandler(source.nextHandler), controlTag(source.controlTag) {}
 
   // 0x48a410 — MacApp TEventHandler::HandleIdle(IdlePhase); throttled idle dispatch
@@ -59,7 +57,7 @@ public:
   void HandleIdle(int idlePhase);
 
   // Packet/event-header field initializer (0x48a180, __thiscall).
-  // Writes controlTag (0x1c) = '    ', enabled/field08 = 1, nextHandler = the argument.
+  // Writes controlTag (0x1c) = '    ', enabled/viewEnabled = 1, nextHandler = the argument.
   void IEventHandler(TEventHandler* nextHandler);
 
   // Slot 0x00 — MFC RTTI accessor (this is CObject::GetRuntimeClass; the whole "T"

@@ -43,7 +43,7 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* ma
   }
   controlTag = kControlTagSpSpSpSp;
   enabled = 1;
-  field08 = 1;
+  viewEnabled = 1;
   nextHandler = mainView;
   ownerLocalX = g_turnEventDialogAnchorPoint.x;
   ownerLocalY = g_turnEventDialogAnchorPoint.y;

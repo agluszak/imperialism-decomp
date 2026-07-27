@@ -79,8 +79,8 @@ void TWindow::Show(unsigned char show, unsigned char refresh) {
     WPARAM wParam = show == 0 ? 3 : 2;
     SendMessageA(nativeWindow50->m_hWnd, 0x468, wParam, controlTag);
   }
-  if ((int)show != field08) {
-    field08 = (int)show;
+  if ((int)show != viewEnabled) {
+    viewEnabled = (int)show;
     if (refresh != 0) {
       RefreshControl();
     }
@@ -90,7 +90,7 @@ void TWindow::Show(unsigned char show, unsigned char refresh) {
 // FUNCTION: IMPERIALISM 0x0048d980
 bool TWindow::IsActionable() {
   return busyFlag98 != 0 && g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 &&
-         field08 != 0;
+         viewEnabled != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048d9c0

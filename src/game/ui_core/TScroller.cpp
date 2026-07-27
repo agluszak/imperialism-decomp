@@ -26,7 +26,7 @@ void TScroller::InitializeScrollerPlacement(TView* owner, int* offsetLayout, int
   }
   controlTag = kControlTagSpSpSpSp; // '    '
   enabled = 1;
-  field08 = 1;
+  viewEnabled = 1;
   nextHandler = owner;
   ownerLocalX = offsetLayout[0];
   ownerLocalY = offsetLayout[1];

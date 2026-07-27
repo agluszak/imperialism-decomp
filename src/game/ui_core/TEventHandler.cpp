@@ -55,7 +55,7 @@ TEventHandler::~TEventHandler() {}
 // FUNCTION: IMPERIALISM 0x0048a180
 void TEventHandler::IEventHandler(TEventHandler* nextHandler) {
   enabled = 1;
-  field08 = 1;
+  viewEnabled = 1;
   this->nextHandler = nextHandler;
   controlTag = kControlTagSpSpSpSp;
 }
@@ -308,7 +308,7 @@ TWindow* TEventHandler::GetWindow() {
 // FUNCTION: IMPERIALISM 0x0048a790
 void TEventHandler::CopyHandlerFieldsFrom(const TEventHandler* source) {
   enabled = source->enabled;
-  field08 = source->field08;
+  viewEnabled = source->viewEnabled;
   controlTag = source->controlTag;
   nextHandler = source->nextHandler;
 }
@@ -325,7 +325,7 @@ TObject* TEventHandler::ShallowClone() {
     return 0;
   }
   header->enabled = enabled;
-  header->field08 = field08;
+  header->viewEnabled = viewEnabled;
   header->nextHandler = nextHandler;
   header->controlTag = controlTag;
   return header;

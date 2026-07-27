@@ -200,7 +200,7 @@ void TView::InitializeUiResourceEntryFrameAndParent(TView* resourceContext, TVie
   }
   controlTag = kControlTagSpSpSpSp;
   enabled = 1;
-  field08 = 1;
+  viewEnabled = 1;
   nextHandler = panel;
   ownerLocalX = offsetLayout[0];
   ownerLocalY = offsetLayout[1];
@@ -384,8 +384,8 @@ TView* TView::GetRootView() {
 }
 // FUNCTION: IMPERIALISM 0x0048b1c0
 void TView::SetEnabled(int enabledState, int refreshFlag) {
-  if (enabledState != field08) {
-    field08 = enabledState;
+  if (enabledState != viewEnabled) {
+    viewEnabled = enabledState;
     if (refreshFlag != 0) {
       RefreshControl();
     }
@@ -393,7 +393,7 @@ void TView::SetEnabled(int enabledState, int refreshFlag) {
 }
 // FUNCTION: IMPERIALISM 0x0048b200
 bool TView::IsActionable() {
-  return g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 && field08 != 0 &&
+  return g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 && viewEnabled != 0 &&
          ownerContext != 0 && ownerContext->IsActionable() != 0;
 }
 // FUNCTION: IMPERIALISM 0x0048b250
@@ -712,7 +712,7 @@ TView::TView(const TView& source)
 // FUNCTION: IMPERIALISM 0x0048bef0
 void TView::CopyViewStateFromSource(TView* source) {
   enabled = source->enabled;
-  field08 = source->field08;
+  viewEnabled = source->viewEnabled;
   controlTag = source->controlTag;
   nextHandler = source->nextHandler;
   ownerContext = 0;
