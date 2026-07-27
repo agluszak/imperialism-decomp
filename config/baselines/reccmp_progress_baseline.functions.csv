@@ -3344,7 +3344,7 @@ address|matching|name
 0x512b50|0.4375|TMapMgr::GetNeighborTileIDArray
 0x512cc0|0.4647887323943662|TMapMgr::GetNeighborTileID
 0x512dd0|0.5435897435897435|TMapMgr::GetDirectionFrom
-0x512f10|0.018018018018018018|IltTarget_00512f10
+0x512f10|1.0|AreTileIndicesHexAdjacent
 0x513050|0.85|NormalizeWrappedMapCoord108x60
 0x5130a0|0.047619047619047616|IltTarget_005130a0
 0x513120|0.95|NormalizeWrappedMapCoord217x60
