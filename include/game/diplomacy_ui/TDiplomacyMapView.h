@@ -118,6 +118,7 @@ public:
   bool RuntimeGetNationSelectionPoint(short nationSlot, CPoint* point) const;
   short RuntimeActiveNation() const;
   int RuntimeActionTopicIndex() const;
+  short RuntimeDrawPolicyIconForNation(short nationSlot);
 #endif
 
 protected:

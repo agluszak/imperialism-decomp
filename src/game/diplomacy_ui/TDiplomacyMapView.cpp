@@ -41,6 +41,10 @@
 namespace {
 const unsigned int kAddrDiplomacyTurnStateManager = 0x006A43D0;
 
+#ifdef IMPERIALISM_RUNTIME_TESTS
+short g_runtimePolicyIconOffsetByNation[kNationSlotCount];
+#endif
+
 // The Windows port brackets minor-nation label drawing with the palette built from
 // bitmap 0x3b6. The original uses an 8-byte compiler-generated guard around
 // CDC::SelectPalette; keep that lifetime explicit and exception-safe here.
@@ -551,7 +555,8 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
         } else if (need == 0x134) {
           iconOffset = 0x160;
         } else if (need != -1) {
-          iconOffset = static_cast<short>(policyIconColumns[need] << 4);
+          iconOffset =
+              static_cast<short>(policyIconColumns[need - kDiplomacyProposalJoinEmpire] << 4);
         }
       }
     } else if (interactionModeAt94 == 2) {
@@ -598,6 +603,10 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
         }
       }
     }
+
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    g_runtimePolicyIconOffsetByNation[terrainIndex] = iconOffset;
+#endif
 
     if (iconOffset != -1) {
       RECT iconSrcRect = {iconOffset, 0, static_cast<int>(iconOffset + 0x10), 0x10};
@@ -1665,6 +1674,22 @@ short TDiplomacyMapView::RuntimeActiveNation() const {
 
 int TDiplomacyMapView::RuntimeActionTopicIndex() const {
   return stateFlagAtB8;
+}
+
+short TDiplomacyMapView::RuntimeDrawPolicyIconForNation(short nationSlot) {
+  if (nationSlot < 0 || nationSlot >= kNationSlotCount) {
+    return -1;
+  }
+
+  TQuickDrawSurfaceContext* previousSurface;
+  int contextFlags;
+  GetGWorld(&previousSurface, &contextFlags);
+  SetGWorld(g_pPrimaryRenderSurfaceContext, contextFlags);
+  g_runtimePolicyIconOffsetByNation[nationSlot] = -1;
+  RECT nationRect = nationTextHitRectsC4[nationSlot];
+  DrawIcons(&nationRect);
+  SetGWorld(previousSurface, contextFlags);
+  return g_runtimePolicyIconOffsetByNation[nationSlot];
 }
 #endif
 

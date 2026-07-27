@@ -24,6 +24,7 @@
 #include "game/ui_tags_city.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_widgets/TIndustryCluster.h"
+#include "game/ui_widgets/TPlacard.h"
 #include "game/ui_widgets/TRailCluster.h"
 
 namespace {
@@ -147,6 +148,18 @@ private:
     if (cityView->ResolveControlByTag(kControlTagLabP) == 0 ||
         cityView->ResolveControlByTag(kControlTagMeat) == 0) {
       FailScenario("\"city production view is missing required production controls\"");
+      return;
+    }
+    TPlacard* sickPlacard = static_cast<TPlacard*>(cityView->ResolveControlByTag(kControlTagSick));
+    TPlacard* deadPlacard = static_cast<TPlacard*>(
+        cityView->ResolveControlByTag(IMPERIALISM_FOURCC('d', 'e', 'a', 'd')));
+    if (sickPlacard == 0 || deadPlacard == 0) {
+      FailScenario("\"city production view is missing sickness status placards\"");
+      return;
+    }
+    if (sickPlacard->glyph90 != 0 || sickPlacard->field04 != 0 || deadPlacard->glyph90 != 0 ||
+        deadPlacard->field04 != 0) {
+      FailScenario("\"zero-count sickness status placards remained visible\"");
       return;
     }
     if (!HasScenarioUiSnapshot()) {

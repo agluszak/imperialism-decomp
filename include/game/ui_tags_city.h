@@ -94,6 +94,8 @@ const int kControlTagSnam =
     IMPERIALISM_FOURCC('s', 'n', 'a', 'm'); // TShipyardView.cpp; 1 Mac screen(s)
 const int kControlTagSold =
     IMPERIALISM_FOURCC('s', 'o', 'l', 'd'); // TDealBookPicture.cpp; 1 Mac screen(s)
+const int kControlTagSick =
+    IMPERIALISM_FOURCC('s', 'i', 'c', 'k'); // TCityProductionView.cpp; 1 Mac screen(s)
 const int kControlTagSpic =
     IMPERIALISM_FOURCC('s', 'p', 'i', 'c'); // TShipyardView.cpp; 1 Mac screen(s)
 const int kControlTagSta0 =
