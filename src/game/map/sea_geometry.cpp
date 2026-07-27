@@ -8,6 +8,7 @@
 #include "game/map/sea_geometry.h"
 
 #include <math.h>
+#include <stdio.h>
 
 #include "decomp_types.h"
 #include "game/map/TMapMgr.h"
@@ -29,6 +30,69 @@ const double kSeaAngleScale = 11733.857334728455;
 
 // TEMPLATE: IMPERIALISM 0x0052a760
 // ?Add@?$stretch@USeaSegment@@@@UAEPAUSeaSegment@@U2@@Z
+
+// Debug/authoring path: rebuild the region-border segment lattice from a "coords.txt"
+// file of "<col0> <row0> <col1> <row1>" lines instead of the generated lattice
+// (RebuildRegionBorderLinkLattice). Rows clamp to [0, 0x3c] and columns wrap at the
+// 0xd8-wide overlay grid, the same conventions the generated path uses. The original
+// checks neither the fopen result nor the fscanf field count.
+// FUNCTION: IMPERIALISM 0x0052a850
+void LoadRegionBorderLinkTableFromCoordsFile() {
+  unsigned int index = 0;
+  if (g_regionBorderLinkTable_006a3900.data != 0) {
+    free(g_regionBorderLinkTable_006a3900.Detach());
+  }
+
+  FILE* file = fopen("coords.txt", "r");
+  while (!feof(file)) {
+    int column0;
+    int row0;
+    int column1;
+    int row1;
+    fscanf(file, "%d %d %d %d", &column0, &row0, &column1, &row1);
+
+    int clampedRow1 = row1;
+    if (clampedRow1 < 0) {
+      clampedRow1 = 0;
+    }
+    if (clampedRow1 > 0x3c) {
+      clampedRow1 = 0x3c;
+    }
+    int coord1 = (clampedRow1 & 1) + column1 * 2;
+    if (coord1 >= 0xd8) {
+      coord1 = coord1 - 0xd8;
+    }
+    coord1 = coord1 + clampedRow1 * 0xd8;
+
+    int clampedRow0 = row0;
+    if (clampedRow0 < 0) {
+      clampedRow0 = 0;
+    }
+    if (clampedRow0 > 0x3c) {
+      clampedRow0 = 0x3c;
+    }
+    int coord0 = (clampedRow0 & 1) + column0 * 2;
+    if (coord0 >= 0xd8) {
+      coord0 = coord0 - 0xd8;
+    }
+    coord0 = coord0 + clampedRow0 * 0xd8;
+
+    SeaSegment segment;
+    segment.angle14 = 0;
+    segment.coord1 = coord1;
+    segment.coord0 = coord0;
+    segment.x0 = static_cast<short>(coord0 % 0xd8);
+    segment.y0 = static_cast<short>(coord0 / 0xd8);
+    segment.x1 = static_cast<short>(coord1 % 0xd8);
+    segment.y1 = static_cast<short>(coord1 / 0xd8);
+    segment.attr10 = -1;
+    segment.attr12 = -1;
+    segment.RecomputeEndpointsAndAngle();
+    g_regionBorderLinkTable_006a3900[index] = segment;
+    index = index + 1;
+  }
+  fclose(file);
+}
 
 // FUNCTION: IMPERIALISM 0x0052ab00
 void SeaSegment::RecomputeEndpointsAndAngle() {
@@ -360,23 +424,23 @@ unsigned short SeaSegment::SelectAttrByAngle() const {
 // FUNCTION: IMPERIALISM 0x0052ca20
 void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b, int extra) {
   unsigned int row = tileIndex / 0x6c;
-  int column = (row & 1) + (tileIndex % 0x6c) * 2;
-  int overlayX = column;
+  int overlayX = (row & 1) + (tileIndex % 0x6c) * 2;
   if (side == '\0') {
-    overlayX = column + 2;
+    overlayX = overlayX + 2;
     row = row + 1;
-    if (0xd7 < overlayX) {
-      overlayX = column - 0xd6;
+    if (overlayX >= 0xd8) {
+      overlayX = overlayX - 0xd8;
     }
   }
-  int hi = b;
+  int coord = overlayX + row * 0xd8;
   int lo = a;
-  if (b < a) {
-    hi = a;
+  int hi = b;
+  if (a > b) {
     lo = b;
+    hi = a;
   }
   Seapoint pt;
-  pt.coord00 = overlayX + row * 0xd8;
+  pt.coord00 = coord;
   pt.lo04 = lo;
   pt.hi08 = hi;
   pt.f0c = extra;
