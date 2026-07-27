@@ -257,6 +257,11 @@ public:
   // order lists, 0x2F/0x30 rebuild military/civilian orders, 0x31 handles the
   // 'army'/'star'+'land'/'town' tagged payloads, 0x32 resyncs the trade manager.
   void HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream);
+  // Mac oracle: ReceiveStreamMessage. Copies an inbound packet into a moveable global
+  // block, wraps it in a THandleStream and runs it through the turn-event handler above,
+  // with g_nSaveFormatVersion pinned to the 'netX' tag for the duration so the stream
+  // readers take the network layout instead of the save-file one. 0x00549f10, __thiscall.
+  void ReceiveStreamMessage(NetMessage* packet);
   // 0x54a6d0: deserialize the military recruit orders for the selected terrain
   // (turn-event-0x2F receive path).
   void CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* stream, short nationSlot);

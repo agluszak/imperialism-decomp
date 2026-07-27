@@ -201,6 +201,24 @@ unsigned short TCivMgr::ResolveCivilianTileSelectionOrReportActionCode(short nTi
   return (actionKind != 10) - 1 & 0x3f3;
 }
 
+// Mac oracle: GetTileAction.
+// FUNCTION: IMPERIALISM 0x004d2610
+int TCivMgr::GetTileAction(short tileIndex, short mode) {
+  int actionCode = 0;
+  if (g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, g_pSimMgr->GetActiveNationId()) != 0) {
+    // The original looks the unit up a second time rather than reusing the first result.
+    TCivUnit* unit =
+        g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, g_pSimMgr->GetActiveNationId());
+    if (unit->IsInIdleSelectionState() == 0) {
+      actionCode = 10;
+    } else if (mode == 2 ||
+               ((g_pGlobalMapState->terrainStateTable[tileIndex].activeFlags1c >> 5) & 1) == 0) {
+      return 2;
+    }
+  }
+  return actionCode;
+}
+
 // FUNCTION: IMPERIALISM 0x004d26d0
 bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) {
   bool handled = false;

@@ -2024,6 +2024,25 @@ struct TaggedGameStateTurnEventPacket : NetMessage {
   int valueParam;
 };
 
+// Mac oracle: ReceiveStreamMessage.
+// FUNCTION: IMPERIALISM 0x00549f10
+void TMultiplayerMgr::ReceiveStreamMessage(NetMessage* packet) {
+  g_nSaveFormatVersion = kSessionTagNetX;
+
+  unsigned long packetBytes = static_cast<unsigned long>(packet->messageLength);
+  HGLOBAL packetBlock = ::GlobalAlloc(GMEM_MOVEABLE, packetBytes);
+  void* blockBytes = ::GlobalLock(packetBlock);
+  memmove(blockBytes, packet, packetBytes);
+  ::GlobalUnlock(packetBlock);
+
+  THandleStream* stream = new THandleStream();
+  stream->AttachGlobalMemoryHandleAndResetPosition(packetBlock, 0x10);
+  HandleTurnEventCodes28_2E_2F_30_31_32(stream);
+  stream->Free();
+
+  g_nSaveFormatVersion = -1;
+}
+
 // FUNCTION: IMPERIALISM 0x0054a340
 void TMultiplayerMgr::DispatchTaggedGameStateEvent1F20(int packetTag, int param2,
                                                        int nationSlotOrMode) {
