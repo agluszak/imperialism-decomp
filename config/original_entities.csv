@@ -1083,7 +1083,7 @@ address|name|symbol|size|type|prototype|provenance
 48efc0|TPicture::TPicture||102|function|undefined TPicture()|
 48f050|TPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 48f080|TPicture::TPicture||206|function|void __thiscall TPicture::TPicture(TPicture * source)|
-48f190|IltTarget_0048f190||144|function|undefined IltTarget_0048f190()|
+48f190|TPicture::CopyPictureStateFromSource||144|function|void __thiscall TPicture::CopyPictureStateFromSource(TPicture * source)|curated
 48f250|DestructCityDialogSharedBaseState||172|function|undefined DestructCityDialogSharedBaseState()|
 48f330|InitializePictureEntryBaseAndRefresh||111|function|undefined InitializePictureEntryBaseAndRefresh()|
 48f3c0|TPicture::Draw||270|function|undefined Draw()|

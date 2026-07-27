@@ -3,6 +3,9 @@
 #include "RuntimeUiDriver.h"
 #include "screens/StrategicMapDriver.h"
 
+#include "game/app/TAnimation.h"
+#include "game/app/TAnimator.h"
+#include "game/TList.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
@@ -74,6 +77,8 @@ public:
   }
 
 private:
+  enum { kMapAnimationRegressionTag = 0x74727374 };
+
   enum Phase {
     kActivateTradeScreen,
     kWaitForTradeScreen,
@@ -98,6 +103,19 @@ private:
       WaitForScenarioTick("\"combined map was not idle before opening the trade screen\"");
       return;
     }
+    if (g_pUiAnimator == 0 || g_pUiAnimator->registryList24 == 0) {
+      FailScenario("\"UI animator registry is unavailable before opening trade\"");
+      return;
+    }
+    RECT animationBounds = {0, 0, 1, 1};
+    TAnimation* mapAnimation = new TAnimation();
+    mapAnimation->IAnimation(mainView, &animationBounds, 2, 0, 0x7fffffff,
+                             kMapAnimationRegressionTag);
+    g_pUiAnimator->AddObjectToUiTransientRegistry(mapAnimation);
+    if (g_pUiAnimator->FindRegisteredAnimationByTag(kMapAnimationRegressionTag) != mapAnimation) {
+      FailScenario("\"map-owned animation was not registered before opening trade\"");
+      return;
+    }
     phase = kWaitForTradeScreen;
     EnterScenarioStep("waiting_for_trade_screen", "activate_trade_toolbar_control");
     StrategicMapDriver map(mainView);
@@ -118,6 +136,11 @@ private:
     if (!g_ModalViewStack.IsEmpty()) {
       RecordUnexpectedModalView(static_cast<TView*>(g_ModalViewStack.GetHead()));
       FailScenario("\"trade toolbar action opened an unexpected modal\"");
+      return;
+    }
+    if (g_pUiAnimator == 0 || g_pUiAnimator->registryList24 == 0 ||
+        g_pUiAnimator->registryList24->GetCount() != 0) {
+      FailScenario("\"map-owned animations survived into the Board of Trade\"");
       return;
     }
     if (mainView->ResolveControlByTag(kControlTagMCap) == 0 ||
