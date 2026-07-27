@@ -74,6 +74,19 @@ public:
 
   // Mac-style second-phase init (Mac: INewsMgr): creates the buckets/queue and nulls
   // the tick arrays. 0x55b710.
+  // Mac oracle: EvaluateFeatureStory. Gates a feature-story template on the current
+  // economic period, then fills it through AlwaysTrueStory. storyId encodes the band:
+  // a multiple of ten N means "applies while economicTurn/4 is in [N-10, N)"; storyId 1
+  // is the ungated filler. Anything else does not apply.
+  unsigned char EvaluateFeatureStory(const newsEntry* templateRow, newsStory* story,
+                                     int nationSlot); // 0x0055cf20
+
+  // Mac oracle: AlwaysTrueStory. A filler/feature story that always applies: copies the
+  // template row into the card, tags parm 0 with this nation's bitmask, then picks a
+  // random OTHER nation that actually exists for parm 1. Always returns 1.
+  unsigned char AlwaysTrueStory(const newsEntry* templateRow, newsStory* story,
+                                int nationSlot); // 0x0055d0c0
+
   // Mac oracle: ClearStoryParms. Resets the four substitution-token kinds to 0
   // ("empty"), leaving parmValue untouched. Reads nothing from `this`.
   void ClearStoryParms(newsStory* story); // 0x0055d090

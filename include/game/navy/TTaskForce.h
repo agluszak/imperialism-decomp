@@ -142,6 +142,10 @@ public:
   // prunes remaining defeated children, rebinds shipList/flagship;
   // returns 1 (marking this entry eliminated) when no child survives.
   char SinkOrSwimShips();
+  // Mac oracle: Victory. Awards a won engagement: the flagship's admiral takes the
+  // full gain, and each child ship takes three times the gain split across the force.
+  void Victory(int experienceGain); // 0x553e70
+
   // Mac oracle: SetAggression(eAgro).
   void SetAggression(int value); // 0x552f60
   // 0x554660 -- drops inactive children (owner cleared, bucket counter decremented,
@@ -396,6 +400,8 @@ public:
   // real owner is TTaskForce, called from TControlSeaZoneMission::GiveActionOrders (0x539640)
   // and TBlockadePortMission::GiveActionOrders (0x53ba40, "QueueMapOrderType6FromContext
   // Pointer") on the map-order entry passed to that virtual slot.
+  // Mac oracle: OrderSail. Map-order kind 1.
+  void OrderSail(TZone* orderTarget);     // 0x553270
   void OrderBlockade(TZone* orderTarget); // 0x5536c0
 
   // Sibling of OrderBlockade for map-order kind 5 -- byte-identical body except
