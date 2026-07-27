@@ -7,6 +7,8 @@
 #include "scenarios/RuntimeScenario.h"
 
 #include "game/core/global_data_tables.h"
+#include "game/city/TCity.h"
+#include "game/nation/TGreatPower.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
@@ -14,6 +16,27 @@
 bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* status,
                         const char* failureJson) {
   TView* mainView = RuntimeMainView();
+  TGreatPower* activeNation = 0;
+  TCity* activeCity = 0;
+  if (g_pSimMgr != 0 && g_pSimMgr->activeNationSlot >= 0 && g_pSimMgr->activeNationSlot < 7) {
+    activeNation = g_apNationStates[g_pSimMgr->activeNationSlot];
+    if (activeNation != 0) {
+      activeCity = activeNation->city;
+    }
+  }
+  CString productionOrders("[");
+  CString productionFlags("[");
+  for (int slot = 0; slot < 0x10; ++slot) {
+    CString value;
+    value.Format("%s%d", slot == 0 ? "" : ", ",
+                 activeCity != 0 ? activeCity->productionOrderTable1dc[slot] : -1);
+    productionOrders += value;
+    value.Format("%s%d", slot == 0 ? "" : ", ",
+                 activeCity != 0 ? activeCity->productionFlags21c[slot] : -1);
+    productionFlags += value;
+  }
+  productionOrders += ']';
+  productionFlags += ']';
   CString eventSequence(run.ActivatedEventSequence());
   eventSequence += ']';
   CString handledModals(run.HandledModals());
@@ -100,6 +123,10 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
               "    \"root_class\": \"%s\",\n"
               "    \"active_nation\": %d,\n"
               "    \"selected_nation\": %d,\n"
+              "    \"economic_turn\": %d,\n"
+              "    \"city_present\": %s,\n"
+              "    \"production_orders\": %s,\n"
+              "    \"production_flags\": %s,\n"
               "    \"difficulty\": %d,\n"
               "    \"multiplayer_role\": %d,\n"
               "    \"turn_state\": %d,\n"
@@ -126,7 +153,10 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
               static_cast<LPCSTR>(assertionId), static_cast<LPCSTR>(assertions),
               g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
               RuntimeClassName(mainView), g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1,
-              run.SelectedNationSlot(), g_pSimMgr != 0 ? g_pSimMgr->difficultyLevel : -1,
+              run.SelectedNationSlot(), g_pSimMgr != 0 ? g_pSimMgr->economicTurn : -1,
+              activeCity != 0 ? "true" : "false", static_cast<LPCSTR>(productionOrders),
+              static_cast<LPCSTR>(productionFlags),
+              g_pSimMgr != 0 ? g_pSimMgr->difficultyLevel : -1,
               g_pSimMgr != 0 ? g_pSimMgr->multiplayerSessionRole : -1,
               g_pSimMgr != 0 ? g_pSimMgr->turnStateCode : -1, g_pSimMgr != 0 ? g_pSimMgr->mode : -1,
               g_pGlobalMapState != 0 ? "true" : "false", g_pDisplayMgr != 0 ? "true" : "false",
