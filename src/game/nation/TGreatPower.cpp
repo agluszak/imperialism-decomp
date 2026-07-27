@@ -2287,15 +2287,15 @@ IMPERIALISM_BEGIN_RETAIL_NULL_THIS_CHECK
 // FUNCTION: IMPERIALISM 0x004dfd30
 void TGreatPower::SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityName) {
   TCity* city = this ? this->city : 0;
-  void* selectedOrder = city->homeTownMarkerB0;
+  TTown* homeTown = city->homeTownMarkerB0;
 
   if (homeTileIndex != -1) {
-    *(short*)((char*)selectedOrder + 0x14) = homeTileIndex;
+    homeTown->tileIndex14 = homeTileIndex;
   }
 
   short regionIndex;
   if (city->homeTownMarkerB0) {
-    regionIndex = *(short*)((char*)city->homeTownMarkerB0 + 0x14);
+    regionIndex = city->homeTownMarkerB0->tileIndex14;
   } else {
     regionIndex = 1;
   }
@@ -2305,7 +2305,7 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityN
     CString nameStr(cityName);
     short cityRecordIndex = g_pGlobalMapState->terrainStateTable[regionIndex].cityRecordIndex;
     g_pGlobalMapState->SetGlobalMapCellSharedLabel(cityRecordIndex, &nameStr);
-    static_cast<TProductionOrder*>(selectedOrder)->Restock();
+    homeTown->SetName(nameStr);
   }
 
   this->RebuildNationResourceYieldCountersAndDevelopmentTargets();

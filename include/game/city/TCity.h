@@ -7,6 +7,7 @@
 #include "game/app/TObject.h"
 #include "game/city/TPopulationMgr.h"
 #include "game/city/TProductionOrder.h"
+#include "game/ui_widgets/TTown.h"
 
 class TSortedList;
 class TTaskList;
@@ -58,7 +59,7 @@ public:
   virtual void MakeTown(short selectedResourceType);
   // slot 0x11 — body 0x004b3b20: adopt the selected order/marker (TGreatPower slots
   // 0x3a/0x3b hand the new Frog City marker through this).
-  virtual void SetSelectedTownMarker(void* townMarker);
+  virtual void SetSelectedTownMarker(TTown* townMarker);
   // slot 0x12 — body 0x004b4540: pack two shorts and write them to eventQueue274
   // (slot 0x38).
   virtual void AddTransportRequest(short low, short high);
@@ -136,32 +137,13 @@ public:
   short reservedByType7e[0x17];
   class TGreatPower* ownerNationAc; // 0xAC — owning nation state (0x004b4dc0)
   // +0xb0 — the city's home TTown marker, and only ever that one type
-  // (bd imperialism-decomp-i0in). The conflicting reading this slot used to carry was a
-  // mis-modelled call, not a real variant:
-  //
-  //   TGreatPower::SetHomeCityTileAndDisplayName (0x4dfd30) reads this slot and makes a
-  //   virtual call at vtable byte offset 0x38 -- slot 0x0e, which on TProductionOrder is
-  //   Restock(). But the original passes an ARGUMENT to it:
-  //     004dfdcc  MOV ECX,dword ptr [ESP + 0x24]   ; the CString built just above
-  //     004dfdd0  MOV EAX,dword ptr [EBX]          ; EBX = this slot's value
-  //     004dfdd2  PUSH ECX                         ; <-- one LPCSTR argument
-  //     004dfdd3  MOV ECX,EBX                      ; receiver is this slot
-  //     004dfdd5  CALL dword ptr [EAX + 0x38]
-  //   TProductionOrder::Restock() takes no arguments, so it cannot be that method; the
-  //   slot number merely coincides. The call is a name-setter on the town marker, which
-  //   is why the surrounding code builds a CString from the city name and destroys it
-  //   immediately afterwards (0x6058e2).
-  //
-  // The TTown reading is independently corroborated: TMapMgr::
-  // FindTownMarkerForTileByOwnerNation (0x513170) documents TTown::tileIndex14 and
-  // TTown::ownerNation1c, and +0x14 here is exactly the short that 0x4dfd30 writes the
-  // home tile index into and reads back.
-  //
-  // Still opaque only because `class TTown` has no definition yet -- it is forward-
-  // declared in TMapMgr.h/TViewMgr.h/TPlaceCityDialog.h and never defined. Typing this
-  // as TTown* and fixing the 0x4dfd30 call to pass its argument both need that class
-  // recovered first (vtable + the slot-0x0e name setter).
-  void* homeTownMarkerB0; // +0xb0 — TTown*, pending the class
+  // (bd imperialism-decomp-i0in). The conflicting reading this slot used to carry --
+  // that TGreatPower::SetHomeCityTileAndDisplayName (0x4dfd30) called
+  // TProductionOrder::Restock through it -- was a mis-modelled call. That call passes one
+  // LPCSTR argument, which Restock() cannot take; vtable slot 0x0e on TTown is
+  // SetName(const char*) at 0x5b77e0, reached through ILT thunk 0x408acb. The slot number
+  // merely coincided between the two classes.
+  TTown* homeTownMarkerB0; // +0xb0
   // +0xB4 — city power value displayed by TWarehouseView's 'powe' control and
   // snapshotted by the turn-event-0x2c packet.
   short powerAvailableB4;
@@ -243,10 +225,7 @@ public:
   short HomeTownTileId() const {
     if (homeTownMarkerB0 != 0) {
       short tileId;
-      // TTown::tileIndex14. Read raw rather than through the class because TTown is
-      // still only forward-declared; this becomes marker->tileIndex14 once it exists.
-      const char* townMarker = static_cast<const char*>(homeTownMarkerB0);
-      memcpy(&tileId, townMarker + 0x14, sizeof(tileId));
+      tileId = homeTownMarkerB0->tileIndex14;
       return tileId;
     }
     return 1;
