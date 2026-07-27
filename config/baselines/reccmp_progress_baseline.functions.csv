@@ -1451,7 +1451,7 @@ address|matching|name
 0x49c240|1.0|TSoundResourceManager::UpdateLocalizationAudioSlot
 0x49c290|0.9733333333333334|TSoundResourceManager::LoadWaveFileByPathAndBuildBuffer
 0x49c3b0|1.0|WaveLoadDescriptor::~WaveLoadDescriptor
-0x49c430|0.2743362831858407|TSoundResourceManager::LoadWaveResourceByNumericIdAndBuildBuffer
+0x49c430|0.5059101654846335|TSoundResourceManager::LoadWaveResourceByNumericIdAndBuildBuffer
 0x49c720|1.0|TSoundResourceManager::ReadWaveDataAndFormatViaLoaderWithRetry
 0x49c850|1.0|TSoundResourceManager::SetChannelVolumesUntilAccepted
 0x49c8a0|1.0|TSoundResourceManager::SetChannelVolume

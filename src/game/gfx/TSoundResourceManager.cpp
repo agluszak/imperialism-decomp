@@ -86,14 +86,6 @@ int TSoundResourceManager::LoadWaveResourceByNumericIdAndBuildBuffer(unsigned in
     CString fileName;
     fileName.Format("%d.wav", waveId);
     char* filePath = fileName.GetBuffer(0);
-    if (desc.pwfx != 0) {
-      GlobalFreePtr(desc.pwfx);
-    }
-    desc.pwfx = 0;
-    if (desc.pbWaveData != 0) {
-      GlobalFreePtr(desc.pbWaveData);
-    }
-    desc.pbWaveData = 0;
     failed =
         WaveLoadFile(filePath, &desc.cbWaveSize, &desc.cSamples, &desc.pwfx, &desc.pbWaveData, 0);
     fileName.ReleaseBuffer(-1);
