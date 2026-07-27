@@ -17,6 +17,7 @@ from reccmp.types import EntityType
 from tools.reccmp.progress_stats import (
     build_progress_report,
     clamp_stub_count_ratchet,
+    ui_factory_fidelity,
     parse_report_counts,
     parse_report_functions,
     report_cache_is_current,
@@ -233,6 +234,67 @@ class StubCountRatchetTests(unittest.TestCase):
             self.assertIsNone(clamp_stub_count_ratchet(entry, None))
             self.assertIsNone(clamp_stub_count_ratchet(entry, {}))
         self.assertEqual(entry["stub_count"], 355)
+
+
+class UiFactoryFidelityTests(unittest.TestCase):
+    """The generated factories are ~18% of paired bytes; the aggregate is now tracked.
+
+    imperialism-decomp-wqfq: a per-function ratchet already stopped them getting worse,
+    but the headline number was recomputed by hand whenever someone asked.
+    """
+
+    def _report(self, directory: Path, rows: list[dict]) -> Path:
+        path = directory / "report.json"
+        path.write_text(json.dumps({"data": rows}), encoding="utf-8")
+        return path
+
+    def _recipes(self, *addresses: int):
+        return [SimpleNamespace(address=address) for address in addresses]
+
+    def test_weighted_by_original_size_not_by_count(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            report = self._report(directory, [
+                {"address": "0x1000", "matching": 1.0, "type": 1, "comparison": {"status": "mismatch"}},
+                {"address": "0x2000", "matching": 0.0, "type": 1, "comparison": {"status": "mismatch"}},
+            ])
+            with patch("tools.ui_codegen.load_recipes",
+                       return_value=self._recipes(0x1000, 0x2000)):
+                # 100% over 100 bytes and 0% over 900 -> 10%, not the 50% a plain mean gives.
+                result = ui_factory_fidelity(report, {0x1000: 100, 0x2000: 900}, directory)
+        self.assertEqual(result["ui_factory_count"], 2)
+        self.assertEqual(result["ui_factory_paired_count"], 2)
+        self.assertAlmostEqual(result["ui_factory_weighted_pct"], 10.0, places=6)
+
+    def test_unpaired_factories_are_counted_but_not_weighted(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            report = self._report(directory, [{"address": "0x1000", "matching": 0.5, "type": 1, "comparison": {"status": "mismatch"}}])
+            with patch("tools.ui_codegen.load_recipes",
+                       return_value=self._recipes(0x1000, 0x2000)):
+                result = ui_factory_fidelity(report, {0x1000: 10}, directory)
+        self.assertEqual(result["ui_factory_count"], 2)
+        self.assertEqual(result["ui_factory_paired_count"], 1)
+        self.assertAlmostEqual(result["ui_factory_weighted_pct"], 50.0, places=6)
+
+    def test_missing_sizes_fall_back_to_equal_weight(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            report = self._report(directory, [
+                {"address": "0x1000", "matching": 1.0, "type": 1, "comparison": {"status": "mismatch"}},
+                {"address": "0x2000", "matching": 0.0, "type": 1, "comparison": {"status": "mismatch"}},
+            ])
+            with patch("tools.ui_codegen.load_recipes",
+                       return_value=self._recipes(0x1000, 0x2000)):
+                result = ui_factory_fidelity(report, None, directory)
+        self.assertAlmostEqual(result["ui_factory_weighted_pct"], 50.0, places=6)
+
+    def test_no_recipes_contributes_no_metric(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            report = self._report(directory, [])
+            with patch("tools.ui_codegen.load_recipes", return_value=[]):
+                self.assertEqual(ui_factory_fidelity(report, {}, directory), {})
 
 
 if __name__ == "__main__":
