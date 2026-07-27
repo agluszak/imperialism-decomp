@@ -2343,7 +2343,7 @@ address|name|symbol|size|type|prototype|provenance
 4d2270|TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler||170|function|void __thiscall DispatchSelectedUnitToGlobalMapStateHandler(int * pUnitOrderEntry)|
 4d2380|TCivMgr::HandleCivilianTileSelectionOrReportClick||340|function|bool __thiscall HandleCivilianTileSelectionOrReportClick(short nTileIndex, short nClickMode)|
 4d2540|ResolveCivilianTileSelectionOrReportActionCode||152|function|ushort __stdcall ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex, short nClickMode)|
-4d2610|IltTarget_004d2610||131|function|undefined IltTarget_004d2610()|
+4d2610|TCivMgr::GetTileAction||131|function|int __thiscall TCivMgr::GetTileAction(short tileIndex, short mode)|curated
 4d26d0|TCivMgr::HandleCivilianTileOrderAction||439|function|bool __thiscall HandleCivilianTileOrderAction(short nTileIndex, short nInputHint)|
 4d2930|TCivToolbar::LookupCivilianTileOrderCursorTokenByActionIndex||26|function|undefined LookupCivilianTileOrderCursorTokenByActionIndex()|
 4d2960|TCivToolbar::ResolveCivilianTileOrderActionCode||602|function|int __thiscall ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHint)|
@@ -4151,7 +4151,7 @@ address|name|symbol|size|type|prototype|provenance
 549a90|DispatchTurnEvent31TaggedPayload||42|function|undefined DispatchTurnEvent31TaggedPayload()|
 549ad0|DispatchTurnEventPacketWithCodeAndPayloadBuffer||280|function|undefined DispatchTurnEventPacketWithCodeAndPayloadBuffer()|
 549c60|SerializeOrderDataIntoTurnEventByTag||396|function|undefined SerializeOrderDataIntoTurnEventByTag()|
-549f10|IltTarget_00549f10||172|function|undefined IltTarget_00549f10()|
+549f10|TMultiplayerMgr::ReceiveStreamMessage||172|function|void __thiscall TMultiplayerMgr::ReceiveStreamMessage(NetMessage * packet)|curated
 549ff0|TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32||623|function|void HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream)|
 54a340|DispatchTaggedGameStateEvent1F20||156|function|undefined DispatchTaggedGameStateEvent1F20()|
 54a410|TMultiplayerMgr::DispatchLobbyTextPairEvent8||184|function|void DispatchLobbyTextPairEvent8(unsigned char sourceNationSlot)|
@@ -4617,7 +4617,7 @@ address|name|symbol|size|type|prototype|provenance
 565fc0|TOceanDialog::InvalidateTile||122|function|void TOceanDialog::InvalidateTile(short tileIndex)|
 566060|ComputeTileClassBoundsInViewport||285|function|undefined ComputeTileClassBoundsInViewport()|
 5661d0|TOceanDialog::ConvertPoint||200|function|void __thiscall ConvertPoint(const CPoint &point, short &outRow, short &outCol, short &outBand)|macos-name-oracle:ConvertPoint(const VPoint&, short&, short&, short&)
-5662e0|IltTarget_005662e0||174|function|undefined IltTarget_005662e0()|
+5662e0|DrawTileClassCornerTick||174|function|void __cdecl DrawTileClassCornerTick(short colorCode, int x, int y, unsigned int cornerFlags)|curated
 5663c0|DrawHexCellBorderGuideLines||422|function|void DrawHexCellBorderGuideLines(int baseX, int baseY, short cellValue, short * neighborValues)|
 5665e0|TOceanDialog::RenderStrategicTileSelectionAndNeighborHighlights||283|function|void __thiscall RenderStrategicTileSelectionAndNeighborHighlights()|listing
 566750|TOceanDialog::RefreshMapTile||122|function|void __thiscall RefreshMapTile(short tileIndex)|

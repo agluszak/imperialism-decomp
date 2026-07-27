@@ -77,6 +77,10 @@ public:
   // map cursor resource id (0, 0x3f3, or 0x3f9). Real __thiscall on this manager even
   // though the body uses only global state. 0x004d2540.
   unsigned short ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex, short nClickMode);
+  // Mac oracle: GetTileAction. Sibling of the resolver above: 10 when this nation's unit
+  // on the tile is busy, 2 when it is idle and either the caller asked for mode 2 or the
+  // tile's bit 5 is clear, otherwise 0. 0x004d2610, __thiscall.
+  int GetTileAction(short tileIndex, short mode);
 
   // 0x004d2ef0. Attempts to queue a plain movement order (order type 1) for the selected
   // civilian onto nTileIndex; false if CanAssignCivilianOrderToTile rejects the tile. Same

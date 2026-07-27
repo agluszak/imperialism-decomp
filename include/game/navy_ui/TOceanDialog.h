@@ -62,3 +62,10 @@ public:
   TOceanDialog();
 };
 ASSERT_SIZE(TOceanDialog, 0x80);
+
+// Draws the three-segment corner tick that marks a tile class in the ocean viewport:
+// sets the fore colour, moves the pen to the corner, then strokes out, back, and down by
+// one step. `cornerFlags` bit 0 mirrors it horizontally (and shifts the origin right by
+// 0x0f), bit 1 mirrors it vertically (shifting the origin down by 0x0d rather than 2).
+// 0x005662e0, __cdecl.
+void DrawTileClassCornerTick(short colorCode, int x, int y, unsigned int cornerFlags);
