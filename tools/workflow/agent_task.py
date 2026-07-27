@@ -17,7 +17,10 @@ build-msvc500/agent-task.json.
 `agent-check` inspects the actual git diff and derives the workflow from it:
 generated/config files edited without marker changes -> hard error; touched C++ ->
 format-check; then build (which regenerates its inputs), detect, gates (including
-one full progress report), score extraction, targeted triage, tests, and the
+one full progress report), score extraction for every touched address (receipt
+targets, added markers, and -- via hunk-to-marker mapping -- edited existing bodies,
+each with its reason recorded in check.affected_functions), targeted triage, tests,
+and the
 generated-artifact integrity gate against the same integration base `just precommit`
 uses, so a green receipt cannot be followed by a pre-commit integrity failure.
 
@@ -471,6 +474,64 @@ def cmd_start(args: argparse.Namespace) -> int:
 # check
 # ---------------------------------------------------------------------------
 
+OWNED_MARKER_RE = re.compile(
+    r"//\s*(?:FUNCTION|SYNTHETIC|TEMPLATE):\s*\w+\s+(0x[0-9a-fA-F]+)"
+)
+HUNK_RE = re.compile(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@")
+
+
+def marker_lines(text: str) -> list[tuple[int, str]]:
+    """[(1-based line, normalized address)] for every owned marker in `text`."""
+    out: list[tuple[int, str]] = []
+    for index, line in enumerate(text.splitlines(), start=1):
+        match = OWNED_MARKER_RE.search(line)
+        if match:
+            out.append((index, _norm_addr(match.group(1))))
+    return out
+
+
+def changed_line_numbers(diff_text: str) -> set[int]:
+    """New-file line numbers touched by a `git diff -U0` hunk header.
+
+    A pure deletion (`+c,0`) still anchors at line c: whatever body surrounded the
+    removed lines is what changed.
+    """
+    lines: set[int] = set()
+    for line in diff_text.splitlines():
+        match = HUNK_RE.match(line)
+        if not match:
+            continue
+        start = int(match.group(1))
+        count = 1 if match.group(2) is None else int(match.group(2))
+        lines.update(range(start, start + max(count, 1)))
+    return lines
+
+
+def addresses_for_changed_lines(text: str, changed: set[int]) -> set[str]:
+    """Addresses whose marked body encloses any changed line.
+
+    A marked function is taken to run from its marker line until the next marker (or
+    EOF), which is exactly the ownership rule the marker gates already enforce: one
+    owned implementation per address, marker immediately above the declaration. Lines
+    before the first marker (includes, file comments) belong to no address.
+
+    The boundary rule deliberately over-includes: a comment block grown above a marker
+    attributes to the preceding function as well. An extra address in the compare set
+    costs one more triage line; a missing one is the defect this exists to prevent.
+    """
+    markers = marker_lines(text)
+    if not markers or not changed:
+        return set()
+    hit: set[str] = set()
+    for index, (line_no, addr) in enumerate(markers):
+        end = markers[index + 1][0] - 1 if index + 1 < len(markers) else None
+        for changed_line in changed:
+            if changed_line >= line_no and (end is None or changed_line <= end):
+                hit.add(addr)
+                break
+    return hit
+
+
 def _diff_paths(base: str) -> list[str]:
     committed = _git("diff", "--name-only", base).splitlines()
     status = [l[3:].strip() for l in _git("status", "--porcelain").splitlines() if l.strip()]
@@ -525,20 +586,40 @@ def cmd_check(args: argparse.Namespace) -> int:
     if _step("detect", ["just", "detect"], results).returncode != 0:
         failures.append("detect")
 
-    # Batch compare of every touched address.
-    addrs = set(task.get("targets", {}))
+    # Batch compare of every touched address, with a recorded reason per address so the
+    # touched set is auditable instead of heuristic (imperialism-decomp-3gn8).
+    reasons: dict[str, set[str]] = {}
+
+    def _touch(addr: str, reason: str) -> None:
+        reasons.setdefault(addr, set()).add(reason)
+
+    for addr in task.get("targets", {}):
+        _touch(_norm_addr(addr), "receipt_target")
     if any(
         path in UI_CODEGEN_INPUTS
         for path in paths
     ):
         from tools.ui_codegen import load_recipes
 
-        addrs.update(f"0x{recipe.address:08x}" for recipe in load_recipes(REPO_ROOT))
+        for recipe in load_recipes(REPO_ROOT):
+            _touch(f"0x{recipe.address:08x}", "ui_codegen_input")
     for line in diff_text.splitlines():
         if line.startswith("+"):
-            m = re.search(r"//\s*(?:FUNCTION|SYNTHETIC|TEMPLATE):\s*\w+\s+(0x[0-9a-fA-F]+)", line)
+            m = OWNED_MARKER_RE.search(line)
             if m:
-                addrs.add(_norm_addr(m.group(1)))
+                _touch(_norm_addr(m.group(1)), "marker_added")
+    # An edit to an existing body changes no marker line, so it is invisible to the scan
+    # above. Map every changed hunk back to the marked function that encloses it.
+    for path in cpp:
+        if not path.endswith(".cpp"):
+            continue
+        text = (REPO_ROOT / path).read_text(encoding="utf-8", errors="replace")
+        changed = changed_line_numbers(
+            _git("diff", "-U0", base, "--", path)
+        ) | changed_line_numbers(_git("diff", "-U0", "--", path))
+        for addr in addresses_for_changed_lines(text, changed):
+            _touch(addr, "body_edited")
+    addrs = set(reasons)
     # Gates create one fresh full-corpus progress report. Reuse its function scores
     # instead of running a second reccmp comparison solely to parse percentages.
     gates_ok = _step("gates", ["just", "gates"], results).returncode == 0
@@ -546,10 +627,11 @@ def cmd_check(args: argparse.Namespace) -> int:
         failures.append("gates")
 
     scores: dict[str, float] = {}
-    if addrs and gates_ok:
+    report_path = REPO_ROOT / "build-msvc500" / "reccmp_report.json"
+    if addrs and gates_ok and report_path.is_file():
         from tools.reccmp.progress_stats import parse_report_functions
 
-        report = parse_report_functions(REPO_ROOT / "build-msvc500" / "reccmp_report.json")
+        report = parse_report_functions(report_path)
         scores = {
             addr: float(report[hex(int(addr, 16))]["m"]) * 100.0
             for addr in sorted(addrs)
@@ -564,6 +646,9 @@ def cmd_check(args: argparse.Namespace) -> int:
                 results,
                 tolerate=True,
             )
+
+    if addrs and gates_ok and not report_path.is_file():
+        print(f"[agent-check] no reccmp report at {report_path} — scores not extracted")
 
     if _step("test", ["just", "test"], results).returncode != 0:
         failures.append("test")
@@ -593,6 +678,9 @@ def cmd_check(args: argparse.Namespace) -> int:
             "ok": integrity_ok,
         },
         "scores": scores,
+        "affected_functions": {
+            addr: {"reasons": sorted(reasons[addr])} for addr in sorted(reasons)
+        },
         "failures": failures,
         "results": {k: {kk: vv for kk, vv in v.items() if kk != "tail"} | (
             {"tail": v["tail"]} if not v["ok"] else {})

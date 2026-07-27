@@ -30,7 +30,8 @@ just advice 0xADDR             # the 5-10 most relevant active rules for this ta
 just agent-check               # diff-aware verification: regenerates build inputs
                                # (hard error on hand-edited generated files),
                                # format-check on touched paths, build, detect,
-                               # compare+triage of every touched address, gates, tests,
+                               # compare+triage of every touched address (added markers
+                               # and edited bodies, mapped hunk->marker), gates, tests,
                                # generated-integrity gate on precommit's own base
 just agent-finish              # PR title + body from the receipt (build-msvc500/pr-body.md)
 just agent-release             # after the work lands: free the claim refs (24h TTL otherwise)
