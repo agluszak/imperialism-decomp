@@ -1,4 +1,5 @@
 #include <string.h>
+#include "game/strategic_terrain.h"
 #include "game/ui_tags_common.h"
 #include <time.h>
 
@@ -1596,6 +1597,12 @@ void TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders(int mode) {
   }
 }
 
+// Mac oracle: IsSeaTile.
+// FUNCTION: IMPERIALISM 0x0052a600
+unsigned char TMapMaker::IsSeaTile(int tileIndex) {
+  return mapTileGrid08[tileIndex * 0x24] == kStrategicTerrainWater;
+}
+
 // FUNCTION: IMPERIALISM 0x0052a670
 int TMapMaker::GetCityRegionIdAtTileIndex(int tileIndex) {
   if (tileIndex >= 0) {
@@ -1605,6 +1612,12 @@ int TMapMaker::GetCityRegionIdAtTileIndex(int tileIndex) {
     }
   }
   return -1;
+}
+
+// Mac oracle: SetSeaZoneIndex.
+// FUNCTION: IMPERIALISM 0x0052a6b0
+void TMapMaker::SetSeaZoneIndex(int tileIndex, char zoneIndex) {
+  mapTileGrid08[tileIndex * 0x24 + 4] = static_cast<char>(zoneIndex + 0x17);
 }
 
 // FUNCTION: IMPERIALISM 0x0052e840
