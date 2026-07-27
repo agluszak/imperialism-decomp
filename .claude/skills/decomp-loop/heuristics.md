@@ -236,7 +236,7 @@ listing's FSTP slots (Ghidra's decompile of float-heavy code is garbage). See
 
 - Convert `just promote` output to compile-safe member-method C++ immediately; rewrite
   raw `void __thiscall Foo(T* this, ...)` blocks into real method signatures before
-  building, then `just regen-stubs` → `just build`.
+  building, then `just build` (it regenerates the stubs and source index itself).
 - If a readability cleanup drops the score, restore the higher-scoring body shape and
   keep the cleanup in helpers/typed views.
 - Batch related edits, then a single build + `just compare` over the batch; don't chase
