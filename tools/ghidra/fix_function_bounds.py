@@ -165,6 +165,29 @@ def main() -> int:
                             listing.getInstructionAt(start) is not None
                         ):
                             continue
+                        # Ghidra clears whole code units. A data item that STRADDLES the
+                        # hole's end therefore takes body bytes with it, and the re-
+                        # disassembly desynchronises from there: two 1-byte holes whose
+                        # dword ran into the body collapsed a 387-byte function to 14 and
+                        # a 225-byte one to 138. Refuse instead; those need the data item
+                        # re-typed first, which is a separate decision.
+                        straddler = None
+                        cursor = listing.getCodeUnitContaining(start)
+                        while cursor is not None and cursor.getMinAddress().getOffset() <= hi - 1:
+                            if cursor.getMaxAddress().getOffset() > hi - 1:
+                                straddler = cursor
+                                break
+                            next_address = cursor.getMaxAddress().next()
+                            if next_address is None:
+                                break
+                            cursor = listing.getCodeUnitContaining(next_address)
+                        if straddler is not None:
+                            print(
+                                f"      hole 0x{lo + 1:08x}-0x{hi - 1:08x}: a code unit at "
+                                f"0x{straddler.getMinAddress().getOffset():08x} runs past the "
+                                "hole into the body — refusing to clear (re-type it first)"
+                            )
+                            continue
                         listing.clearCodeUnits(start, end, False)
                         DisassembleCommand(start, None, True).applyTo(
                             program, pyghidra.task_monitor()
