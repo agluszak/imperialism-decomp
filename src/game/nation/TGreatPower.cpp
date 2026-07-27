@@ -2275,8 +2275,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   static_cast<TCity*>(receiver)->SetSelectedTownMarker(marker);
   marker->activeFlag4f = 1;
   this->townMarkerList->AddTail(marker);
-  g_pGlobalMapState->SetTileTransportFlagsTo0x37AndRefreshNeighbors(marker->tileIndex14,
-                                                                    this->nationSlot);
+  g_pGlobalMapState->PlaceCity(marker->tileIndex14, this->nationSlot);
   if (this->diplomacyEligibilityA0 == 0 && this->interiorMinister != 0) {
     this->interiorMinister->MakeNewCity(static_cast<TCity*>(receiver));
   }

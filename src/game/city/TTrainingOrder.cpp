@@ -89,12 +89,12 @@ short TTrainingOrder::MaxOrder() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b6cd0
-bool TTrainingOrder::SetQuantity(short param_1) {
-  short delta = static_cast<short>(param_1 - quantityField04);
-  if (param_1 > MaxOrder() || param_1 < 0) {
+bool TTrainingOrder::SetQuantity(short quantity) {
+  short delta = static_cast<short>(quantity - quantityField04);
+  if (quantity > MaxOrder() || quantity < 0) {
     return false;
   }
-  quantityField04 = param_1;
+  quantityField04 = quantity;
 
   TGreatPower* owner = cityField08->ownerNationAc;
   if (resourceTypeIndex48 == 1) {

@@ -1,7 +1,6 @@
 #pragma once
-// Split from global_data_tables.h by tools/analysis/split_globals.py
-// (bead 8mo.2). Definitions stay in src/game/global_data_tables.cpp;
-// assignment evidence: docs/reference/subsystem_assignment.csv.
+// Subsystem-owned global declarations. Definitions and address markers live in
+// src/game/core/global_data_tables.cpp.
 #include "game/globals/prelude.h"
 
 extern POINT g_ptMapModeModalMessage; // @ 0x6a45c0
@@ -80,8 +79,7 @@ extern short g_Build_Hex_Area_LookupTable_00696E80[];
 
 // TMapMgr.cpp — per-StrategicTerrainKind capability table at 0x00696f08, read by
 // MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA for both the origin tile and each
-// of its hex neighbors. Technology checks update its Hills, Mountain, and Swamp elements;
-// the old model incorrectly split those three bytes into standalone flag globals.
+// of its hex neighbors. Technology checks update its Hills, Mountain, and Swamp elements.
 extern unsigned char g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainCount];
 
 // TMapMgr.cpp — per-StrategicTerrainKind priority score, read by

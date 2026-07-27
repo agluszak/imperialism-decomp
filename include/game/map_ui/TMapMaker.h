@@ -23,31 +23,19 @@ public:
   TMapMaker();
   virtual ~TMapMaker() override;
 
-  // Draws two LCG values into out-pointers: *outColumn = rng % 27, *outRow = rng % 15
-  // (a random cell of regionClassGrid10[15][27]). Verified RET 0x8 (2 stack pointer args,
-  // void return) -- the header's previous 0-arg `char IsEnabled()` was templated off
-  // TView/TEventHandler's real slot-10 virtual of that name and does not describe this
-  // slot (TMapMaker derives from TObject, not TView, so the shared ordinal is a
-  // coincidence). slot 10 / 0x28
+  // Picks a random cell of regionClassGrid10[15][27] using two LCG values.
+  // ABI: two pointer arguments, void return. slot 10 / 0x28
   virtual void PickRandomRegionGridCell(unsigned int* outColumn, unsigned int* outRow);
-  // Runs one full terrain-generation attempt over the tile grid (was junk-named
-  // SetControlValue; 0-arg __thiscall, verified RET 0). Driver retries it until the
-  // validity checks pass. slot 11 / 0x2c
+  // Runs one full terrain-generation attempt; the driver retries until validation passes.
+  // slot 11 / 0x2c
   virtual void RunMapGenerationAttempt();
-  // Verified RET 0x10 (4 stack args) from both the caller (0x526c20, which pushes 4
-  // explicit ints) and the callee's own frame layout -- the header's previous 0-arg
-  // "GetNextHandler() -> TEventHandler*" was templated off TEventHandler's real
-  // virtual of the same name/slot position and does not describe this class's real
-  // slot. Recursively assigns a region class to a coarse grid cell and its
-  // best-scoring hex neighbour, retrying up to `retryBudget` times; returns the
-  // number of successful assignments. slot 12 / 0x30
+  // Recursively assigns a region class to a coarse grid cell and its best-scoring hex
+  // neighbour, retrying up to retryBudget times. Returns the successful assignment count.
+  // slot 12 / 0x30
   virtual int AssignRegionClassToCellAndNeighbors(int cellIndex, int mode, int classIndex,
                                                   int retryBudget);
-  // Verified 2 stack int args + char return from the 0x527040 call site (pushes
-  // classIndex then cellIndex, tests AL) -- the header's previous 1-arg void*
-  // signature was templated off TEventHandler::DispatchQueuedUiCommandAndRelease and
-  // does not describe this class's real slot. Only tried for major nations
-  // (classIndex < 7). Union-find merge of `classIndex`'s region group against each hex
+  // For major nations (classIndex < 7), union-find merges classIndex's region group
+  // against each hex
   // neighbour's already-assigned class: allocates a new group id, adopts a neighbour's
   // group, or absorbs a neighbour into this class's group (in whichever direction has
   // no group yet), tracking up to 3 member class-indices per group id in
@@ -55,56 +43,40 @@ public:
   // belong to two DIFFERENT established groups, or a group's member list is full;
   // otherwise merges/allocates group ids as a side effect and returns true. slot 13 / 0x34
   virtual char TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex, int classIndex);
-  // Map-gen pass dispatched right after city-region ids are assigned (was junk-named
-  // DispatchUiSelectionToHandler; 0-arg __thiscall, verified RET 0). slot 14 / 0x38
+  // Expands assigned city-region ids into the tile grid. slot 14 / 0x38
   virtual void ExpandRegionGridIntoTilesAndAllocateCityRecords();
-  // Map-gen pass (was junk-named DoEvent with 3 phantom args; 0-arg __thiscall).
-  // slot 15 / 0x3c
+  // Places terrain features according to their generation quotas. slot 15 / 0x3c
   virtual void PlaceTerrainFeatureQuotas();
-  // Verified 2 stack int args + char return, same call site/args as slot 0x34 above
-  // (tried for every class, not just majors) -- the header's previous 3-arg
-  // TEventHandler-shaped HandleEvent signature does not describe this class's real
-  // slot. Same union-find neighbor-merge as slot 0x34 above but WITHOUT the +0x1a8
+  // Same union-find neighbor merge as slot 0x34 for every class, but without the +0x1a8
   // group-membership bookkeeping: a class with an existing group can only merge by
   // adopting a neighbour's group (or forming a new one when neither has one yet) --
   // if this class already has a group and the neighbour doesn't, that's treated as a
   // conflict (returns false) rather than expanding this class's group. slot 16 / 0x40
   virtual char TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex);
-  // Verified 0 stack args (bare RET) -- the header's previous 1-arg form was wrong,
-  // templated off a neighboring slot's shape rather than checked. Two-pass smoothing
-  // of the full-resolution generation grid's tile ownership (offset+4 field): pass 1
+  // Two-pass smoothing of the full-resolution generation grid's tile ownership: pass 1
   // erodes tiles with 0-2 same-owner hex neighbors (50%/75% chance for 1/2) into a
   // differing neighbor's full record when one exists; pass 2 replaces any tile with
   // NO same-owner neighbor at all into a uniformly-random neighbor's record. Only
   // processes rows 1..58 (skips the border rows). slot 17 / 0x44
   virtual void SmoothCityRegionOwnershipByNeighborSampling();
-  // Verified 3 stack int args from both the caller (0x527730, which pushes 3
-  // explicit ints) and Ghidra's own (correct, for once) 3-param signature recovery
-  // on the callee itself -- the header's previous 1-arg form was wrong. Recursively
-  // walks the hex grid from `tileIndex` in direction `featureType` (0..5, cycled via
+  // Recursively walks the hex grid from tileIndex in direction 0..5,
+  // cycled via
   // random retry on collision) up to `retryBudget` steps, laying a linear terrain
   // feature (river/road-shaped); returns the number of steps placed. Uses the same
   // g_hexColOffsetEvenRow_00697450/g_hexRowOffset_00697468/g_hexColOffsetOddRow_00697480
   // hex-direction tables as GetNeighborTileIDArray. slot 18 / 0x48
-  virtual int ForwardParam(int tileIndex, int retryBudget, int featureType);
-  // Verified 0 stack args from the caller (0x527730 calls it with no pushes) -- the
-  // header's previous 1-arg form was wrong. slot 19 / 0x4c
+  // ORACLE: Mac TMapMaker::SeedMountainRange(long, long, long).
+  virtual int SeedMountainRange(int tileIndex, int retryBudget, int direction);
+  // slot 19 / 0x4c
   virtual void CreateDeserts();
   // Walks the city-region tile ring starting at `coarseIndex`, converting empty tiles
   // ('\0') to '6' with probability `percentChance`/100; returns the number marked.
-  // Verified RET 0x8 (2 stack int args, int return) -- the previous 0-arg
-  // `GetIdleFreq()` was templated off TView's real slot-20 virtual and
-  // does not describe this slot. slot 20 / 0x50
+  // slot 20 / 0x50
   virtual int TundraBand(int row, int percentChance);
   // Same city-region ring probabilistic marking as slot 0x50 but also marks a hex
-  // neighbour of each converted tile. Verified RET 0x8 (2 stack int args, int return) --
-  // the previous 1-arg `SetIdleFreq(int)` was templated off TView's real
-  // slot-21 virtual and does not describe this slot. slot 21 / 0x54
+  // neighbour of each converted tile. slot 21 / 0x54
   virtual int DesertBand(int row, int percentChance);
-  // Verified RET 0xc (3 stack args), from both Ghidra's own (correct) signature
-  // recovery and the self-recursive call inside the callee itself -- the header's
-  // previous 0-arg `TView*`-returning form was templated off TView's real
-  // GetWindow and does not describe this slot. Claims `tileIndex` (marking it 1,
+  // Claims tileIndex (marking it 1,
   // plus a variant byte at +0x13 selected by `markerVariant`), refuses if any hex
   // neighbor is already a marker (byte 6), then recursively spreads to neighbors
   // (46% chance each) until `retryBudget` spreads land. Returns the spread count.
@@ -115,41 +87,31 @@ public:
   // that already carry a river byte, mountains below the surface and hills unless the
   // run began on hills; on reaching water at depth >= 5 it stamps the outgoing direction
   // and unwinds, writing each tile's connection type from
-  // g_riverConnectionTypeByDirectionPair. The parameter names below come from the ported
-  // body, not from Ghidra. slot 24 / 0x60
+  // g_riverConnectionTypeByDirectionPair. slot 24 / 0x60
   virtual char GrowRiver(long tileIndex, long incomingDirection, long outgoingDirection, long depth,
                          unsigned char startedOnHills);
-  // Map-gen finalize pass (was junk-named ResignedTarget; takes one mode arg the
-  // driver passes as 0 -- verified RET 4). slot 25 / 0x64
+  // Finalizes or compacts city-region ids and rebuilds their borders. slot 25 / 0x64
   virtual void AssignOrCompactCityRegionIdsAndRebuildBorders(int mode);
-  // Post-attempt validity probe: nonzero means the attempt failed and the driver
-  // regenerates (was junk-named TargetValidationFailed(int); really a 0-arg __thiscall
-  // returning AL). slot 26 / 0x68
+  // Post-attempt validity probe: nonzero means the driver must regenerate. slot 26 / 0x68
   virtual char ErrorCheck();
   virtual void TargetValidationSucceeded(); // slot 27 / 0x6c
-  // Marks the region record of tile `tileIndex` (byte 0xf7) then visits its six hex
-  // neighbours via slots 0x1d/0x1c. Verified RET 0x4 (1 stack short arg, void return) --
-  // the previous 0-arg `BecameWindowTarget()` was templated off TEventHandler's
-  // real slot-28 virtual and does not describe this slot. slot 28 / 0x70
+  // Marks the region record of tileIndex, then visits its six hex neighbours.
+  // slot 28 / 0x70
   virtual void EraseZones(long coarseIndex);
-  // Resolves the region-grid cell adjacent to `cell` in hex `direction` 0..5 (was
-  // junk-named ResignedWindowTarget; verified two-arg __thiscall returning
-  // the neighbour cell index). slot 29 / 0x74
+  // Resolves the region-grid cell adjacent to cell in hex direction 0..5. slot 29 / 0x74
   virtual int GetAdjacentRegionGridCell(int cell, int direction);
-  // Map-gen pass run between ExpandRegionGridIntoTilesAndAllocateCityRecords and PlaceTerrainFeatureQuotas (was junk-named
-  // DispatchCityProductionAction1B; 0-arg __thiscall). slot 30 / 0x78
+  // Runs between region-grid expansion and terrain-feature placement. slot 30 / 0x78
   virtual void RandomizeRegionTemplatesAndSmoothOwnership();
-  // Copies a 36-byte (9-dword) region-template bank between fine-grid cells (resolved
-  // via slot 0x21), selecting the source variant by LCG randomness. RET 0x14 = 5 stack
+  // Copies a 36-byte region-template bank between fine-grid cells via slot 0x21,
+  // selecting the source variant by LCG randomness. ABI: RET 0x14 = 5 stack
   // dwords, and the body reads the trailing four as words (MOV DX,word ptr [ESP+0x10] /
   // CMP word ptr [ESP+0x18],DX), so they are shorts, not dwords. slot 31 / 0x7c
   virtual void CopyRegionTemplateBankWithRandomVariant(int coarseIndex, short regionClass,
                                                        short unusedClass, short northClass,
                                                        short southClass);
   // Copies a 36-byte region-template bank to a neighbouring cell (slots 0x1d/0x21) with
-  // an LCG-gated second copy. Verified RET 0x14 (5 stack dwords) -- the previous 0-arg
-  // `char ResignTarget()` was templated off TView's real slot-32 virtual and
-  // does not describe this slot. Arg types beyond the dword count are provisional.
+  // an LCG-gated second copy. ABI: RET 0x14; argument types beyond the dword count remain
+  // provisional.
   // slot 32 / 0x80
   virtual void CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regionClass,
                                                     short unusedClass, short northClass,
@@ -157,13 +119,8 @@ public:
   virtual MapGeneratorTileRecord*
   GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex); // slot 33 / 0x84
 
-  // TMapMaker's real vtable (0x006598f8) ends at its last reachable slot (0x21 /
-  // SelectOwner above); slots 0x22..0x28 are a literal NULL tail (matching the
-  // TZone::vtable convention, see TZone.h). The two non-NULL pointers the extractor lists
-  // beyond that run (slots 0x29/0x2a → 0x0052a760/0x0052c0a0) are NOT TMapMaker methods:
-  // they are the single vtable slots of two adjacent stretch<T> tables laid out right after
-  // TMapMaker's vtable (SeaSegmentStretch @ 0x0065999c, SeapointStretch @ 0x006599a0). Those
-  // append virtuals are owned in sea_geometry.cpp; see sea_geometry.h.
+  // LAYOUT: the vtable ends at slot 0x21, followed by null slots 0x22..0x28. The
+  // SeaSegmentStretch and SeapointStretch vtables are adjacent data, not TMapMaker methods.
 
   // City-region id (tile[4] - 0x17) at a tile index, or -1 if the tile is out of range or
   // not a water tile. 0x0052a670.
@@ -267,9 +224,9 @@ public:
 
   char* mapTileGrid08; // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
 
-  // Mac oracle: IsSeaTile. The tile's terrain kind byte is water. 0x0052a600.
+  // ORACLE: IsSeaTile. The tile's terrain kind byte is water. 0x0052a600.
   unsigned char IsSeaTile(int tileIndex);
-  // Mac oracle: SetSeaZoneIndex. Stores the sea-zone ordinal into the tile's owner
+  // ORACLE: SetSeaZoneIndex. Stores the sea-zone ordinal into the tile's owner
   // tag byte (+0x04), biased by 0x17 -- the same bias the map-order context applies
   // when it turns an owner tag back into a context-array index. 0x0052a6b0.
   void SetSeaZoneIndex(int tileIndex, char zoneIndex);

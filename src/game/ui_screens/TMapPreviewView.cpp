@@ -35,7 +35,7 @@ IMPLEMENT_DYNCREATE(TMapPreviewView, TView)
 void TMapPreviewView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
   selectedNation68 = -1;
-  field04 = 1;
+  enabled = 1;
 
   CRect contentBounds;
   QueryContentBounds(&contentBounds);

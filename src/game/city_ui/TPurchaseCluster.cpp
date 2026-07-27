@@ -29,7 +29,7 @@ TPurchaseCluster::~TPurchaseCluster() {}
 // FUNCTION: IMPERIALISM 0x004cc440
 void TPurchaseCluster::SetValueControlAndSyncAmount(TEventHandler* control) {
   field88 = control;
-  SetCityViewValueControlAmount(static_cast<short>(control->field04), 1);
+  SetCityViewValueControlAmount(static_cast<short>(control->enabled), 1);
 }
 
 // FUNCTION: IMPERIALISM 0x004cc470
@@ -43,7 +43,7 @@ void TPurchaseCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     } else if (sourceHandler->controlTag == kControlTagRaro) {
       field88->SetEnable(static_cast<char>(UpdateCityViewValueControl() + 1));
     }
-    SetCityViewValueControlAmount(static_cast<short>(field88->field04), 1);
+    SetCityViewValueControlAmount(static_cast<short>(field88->enabled), 1);
   }
   TCluster::DoEvent(commandId, sourceHandler, event);
 }

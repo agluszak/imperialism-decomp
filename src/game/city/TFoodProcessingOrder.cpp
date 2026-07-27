@@ -51,17 +51,17 @@ short TFoodProcessingOrder::MaxOrder() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b7f50
-bool TFoodProcessingOrder::SetQuantity(short param_1) {
-  if ((param_1 & 1) != 0) {
-    ++param_1;
+bool TFoodProcessingOrder::SetQuantity(short quantity) {
+  if ((quantity & 1) != 0) {
+    ++quantity;
   }
   short previousQuantity = quantityField04;
-  if (param_1 > MaxOrder() || param_1 < 0) {
+  if (quantity > MaxOrder() || quantity < 0) {
     return false;
   }
-  quantityField04 = param_1;
+  quantityField04 = quantity;
 
-  short halfDelta = static_cast<short>((param_1 - previousQuantity) / 2);
+  short halfDelta = static_cast<short>((quantity - previousQuantity) / 2);
   cityField08->cityStockGrainD8 = static_cast<short>(cityField08->cityStockGrainD8 - halfDelta * 2);
   cityField08->VerifyStocks();
   cityField08->cityStockFruitDA = static_cast<short>(cityField08->cityStockFruitDA - halfDelta);

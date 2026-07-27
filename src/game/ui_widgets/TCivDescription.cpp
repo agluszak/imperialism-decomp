@@ -274,7 +274,7 @@ void TCivDescription::Draw(RECT* rectBuffer) {
       *legendSelectionCountsBySlot = 0;
       legendSelectionCountsBySlot++;
     } while (legendSelectionCountsBySlot < g_pActiveCityDialogLegendSelectionOwner);
-    this->field04 = 0;
+    this->enabled = 0;
   }
 
   selectedClass = this->selectedCivilianClass;
@@ -467,7 +467,7 @@ void TCivDescription::DrawProspector(RECT* bounds) {
 
     if (legendInitialized == 0) {
       legendRects[terrainIcon] = destinationRect;
-      field04 = 1;
+      enabled = 1;
     }
 
     SetQuickDrawColorAndSyncGlobals(themeColor);
@@ -655,7 +655,7 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
                                          &sourceRect, &destinationRect, 0, 0);
         if (legendInitialized == 0) {
           legendRects[terrainIcon] = destinationRect;
-          field04 = 1;
+          enabled = 1;
         }
         ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
         SetQuickDrawTextOriginWithContextOffset(static_cast<short>(originX + iconX + 0x18), 0x100);

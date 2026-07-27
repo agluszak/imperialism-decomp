@@ -107,7 +107,7 @@ void TBeachheadMission::CalculateNeeds() {
   }
 
   float invadePriority = static_cast<float>(g_BeachheadMissionPriorityNormalization_0065AA30 /
-                                            GetNavyContextPointerFromGlobalTableByIndex(3)) *
+                                            GetNavyOrderCategoryBaseline(3)) *
                          parentMission3c->CalculatePriority();
   if (requiredShipEquipageByCategory[3] < invadePriority) {
     requiredShipEquipageByCategory[3] = invadePriority;

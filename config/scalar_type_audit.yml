@@ -308,9 +308,6 @@ discriminant_reviews:
   fEnabledState:
     classification: byte_or_int_predicate_not_a_domain
     evidence: TDisappearingButton and TGWorldButton test their enabled predicate.
-  featureType:
-    classification: closed_domain_needs_listing_evidence
-    evidence: TMapMaker derives it as `% 6`, so the domain is exactly 0..5 map-generation feature families; naming them requires reading each generation branch.
   finalizeState:
     classification: byte_or_int_predicate_not_a_domain
     evidence: TModalDialogBase tests whether finalization has run.

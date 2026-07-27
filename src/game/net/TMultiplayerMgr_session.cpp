@@ -112,9 +112,9 @@ TMultiplayerMgr::TMultiplayerMgr()
 TMultiplayerMgr::~TMultiplayerMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00542900
-void TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int sessionContext) {
+void TMultiplayerMgr::IMultiplayerMgr(int idleFrequency) {
   this->IEventHandler(nullptr);
-  field10 = sessionContext;
+  idleFrequencyTicks = idleFrequency;
   diplomacyQueueContext = 0;
   sessionReadyFlag = 0;
   processPrimaryEventQueue = 1;
@@ -314,7 +314,7 @@ void TMultiplayerMgr::EnsureGameFlowStateAndPostTurnEvent5E5() {
     self = new TMultiplayerMgr();
     g_pGameFlowState = self;
     if (self != 0) {
-      self->InitializeMultiplayerManagerForSessionContext(0);
+      self->IMultiplayerMgr(0);
     }
     self = g_pGameFlowState;
   }

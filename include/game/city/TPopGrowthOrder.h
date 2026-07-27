@@ -9,11 +9,11 @@
 class TPopGrowthOrder : public TProductionOrder {
 public:
   DECLARE_DYNCREATE(TPopGrowthOrder)
-  virtual ~TPopGrowthOrder() override;              // slot 0x01 (scalar deleting destructor)
-  virtual bool SetQuantity(short param_1) override; // slot 0x0b 0x4b8230
-  virtual short MaxOrder() override;                // slot 0x0c 0x4b81b0
-  virtual void Produce() override;                  // slot 0x0d 0x4b82f0
-  virtual void Restock() override;                  // slot 0x0e 0x4b8420
+  virtual ~TPopGrowthOrder() override;               // slot 0x01 (scalar deleting destructor)
+  virtual bool SetQuantity(short quantity) override; // slot 0x0b 0x4b8230
+  virtual short MaxOrder() override;                 // slot 0x0c 0x4b81b0
+  virtual void Produce() override;                   // slot 0x0d 0x4b82f0
+  virtual void Restock() override;                   // slot 0x0e 0x4b8420
   virtual void FillOrderSheet(OrderSheet* orderSheet,
                               short quantity) override; // slot 0x10 0x4b8440
   // Field-initialization body for the manual-alloc construction path (mirrors

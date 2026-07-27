@@ -1622,7 +1622,7 @@ address|name|symbol|size|type|prototype|provenance
 4a3d90|TArmyMgr::DispatchTileActionByKind||136|function|void TArmyMgr::DispatchTileActionByKind(int contextArg, short actionKind)|
 4a3e50|TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx||166|function|undefined SelectMovableUnitOnCurrentTileAndPlaySfx()|
 4a3f30|TArmyMgr::CommitCityActionGateCostIfAffordable||476|function|undefined CommitCityActionGateCostIfAffordable()|
-4a4190|ValidateGridIndexRange0To17F||47|function|undefined ValidateGridIndexRange0To17F()|
+4a4190|TMapMgr::GetMilitaryMaster||47|function|TMilitaryUnit* __thiscall GetMilitaryMaster(short provinceIndex)|mac_oracle
 4a41d0|ComputeSelectedTileCityActionGateSum||102|function|undefined ComputeSelectedTileCityActionGateSum()|
 4a4260|TArmyMgr::SetOrdersForIdleUnitsOnPendingTile||90|function|undefined SetOrdersForIdleUnitsOnPendingTile(void)|
 4a42e0|IltTarget_004a42e0||203|function|undefined IltTarget_004a42e0()|
@@ -1916,7 +1916,7 @@ address|name|symbol|size|type|prototype|provenance
 4b4fe0|TProductionOrder::WriteTo||85|function|undefined WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0(int * param_1)|
 4b5060|TProductionOrder::ReadFrom||85|function|undefined WrapperFor_HandleCityDialogNoOpSlot18_At004b5060(int * param_1)|
 4b50e0|TProductionOrder::MaxOrder||4|function|undefined MaxOrder(void)|
-4b5100|TProductionOrder::SetQuantity||39|function|undefined SetQuantity(short param_1)|
+4b5100|TProductionOrder::SetQuantity||39|function|bool SetQuantity(short quantity)|
 4b5140|TProductionOrder::ResetCityOrderItemDerivedStateNoop||1|function|undefined ResetCityOrderItemDerivedStateNoop()|
 4b5160|TProductionOrder::CommitIfPending||1|function|undefined CommitIfPending(void)|
 4b5180|TProductionOrder::InitializeCityOrderItemWorkingBuffers||32|function|undefined __thiscall InitializeCityOrderItemWorkingBuffers(undefined4 * param_1)|
@@ -1928,7 +1928,7 @@ address|name|symbol|size|type|prototype|provenance
 4b5270|TItemOrder::DestructTItemOrderAndMaybeFree||7|function|undefined DestructTItemOrderAndMaybeFree()|
 4b5290|TItemOrder::InitializeItemOrderContext||96|function|void InitializeItemOrderContext(TCity* city, short outputResourceType, short primaryInputResourceId, short secondaryInputResourceId, short productionSlot)|
 4b5310|TItemOrder::MaxOrder||142|function|undefined MaxOrder(void)|
-4b53d0|TItemOrder::SetQuantity||244|function|undefined SetQuantity(short param_1)|
+4b53d0|TItemOrder::SetQuantity||244|function|bool SetQuantity(short quantity)|
 4b5510|TItemOrder::FillOrderSheet||78|function|undefined FillOrderSheet(int param_1)|
 4b5580|TItemOrder::CommitIfPending||127|function|undefined CommitIfPending(void)|
 4b5620|TItemOrder::ResetCityOrderItemDerivedStateNoop||56|function|undefined ResetCityOrderItemDerivedStateNoop(void)|
@@ -1941,7 +1941,7 @@ address|name|symbol|size|type|prototype|provenance
 4b5850|TOrItemOrder::DestructTOrItemOrderAndMaybeFree||7|function|undefined DestructTOrItemOrderAndMaybeFree()|
 4b5870|TOrItemOrder::OrItemOrderSlot12||96|function|undefined InitializeCityProductionState_Impl_At004b5870(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)|
 4b58f0|TOrItemOrder::MaxOrder||123|function|int MaxOrder(void)|
-4b5990|TOrItemOrder::SetQuantity||331|function|bool SetQuantity(short nNewOrderAmount)|
+4b5990|TOrItemOrder::SetQuantity||331|function|bool SetQuantity(short quantity)|
 4b5b40|TPopulationMgr::CreateObject|?CreateObject@TPopulationMgr@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 4b5b70|TPopulationMgr::GetRuntimeClass||6|function|undefined GetTPopulationMgrClassNamePointer()|rtti
 4b5b90|IltTarget_004b5b90||9|function|undefined IltTarget_004b5b90()|
@@ -1971,7 +1971,7 @@ address|name|symbol|size|type|prototype|provenance
 4b6b00|TTrainingOrder::DestructTTrainingOrderAndMaybeFree||7|function|undefined DestructTTrainingOrderAndMaybeFree()|
 4b6b20|TTrainingOrder::TrainingOrderSlot11||65|function|undefined InitializeCityProductionState_Impl_At004b6b20(int param_1, undefined2 param_2)|
 4b6b90|TTrainingOrder::MaxOrder||242|function|undefined MaxOrder(void)|
-4b6cd0|TTrainingOrder::SetQuantity||197|function|undefined SetQuantity(short param_1)|
+4b6cd0|TTrainingOrder::SetQuantity||197|function|bool SetQuantity(short quantity)|
 4b6de0|TTrainingOrder::FillOrderSheet||55|function|undefined FillOrderSheet(void)|
 4b6e30|TTrainingOrder::CommitIfPending||157|function|undefined CommitIfPending(void)|
 4b6f00|TTrainingOrder::ResetCityOrderItemDerivedStateNoop||1|function|undefined ResetCityOrderItemDerivedStateNoop(void)|
@@ -1982,7 +1982,7 @@ address|name|symbol|size|type|prototype|provenance
 4b6fc0|TUnitOrder::DestructTUnitOrderAndMaybeFree||7|function|undefined DestructTUnitOrderAndMaybeFree()|
 4b6fe0|TUnitOrder::InitializeCityRecruitmentOrderContext||126|function|void __thiscall InitializeCityRecruitmentOrderContext(void * pCityState, short nEntryId, short nPrimaryInputResourceId, short nPrimaryInputPerUnit, short nSecondaryInputResourceId, short nSecondaryInputPerUnit, short nCashCostPerUnit, short nWorkforceMode, byte bSpecialistMode)|
 4b7080|TUnitOrder::MaxOrder||312|function|int MaxOrder(void)|
-4b7210|TUnitOrder::SetQuantity||197|function|bool SetQuantity(short nTargetOrderAmount)|
+4b7210|TUnitOrder::SetQuantity||197|function|bool SetQuantity(short quantity)|
 4b7320|TUnitOrder::FillOrderSheet||102|function|undefined AccumulateCityEntryCostsByAmount()|
 4b73b0|TUnitOrder::CommitIfPending||839|function|void __thiscall CommitIfPending(void)|
 4b77e0|TUnitOrder::SetOrderCostProfile||66|function|void SetOrderCostProfile(short, short, short, short, short, short, short)|
@@ -1995,7 +1995,7 @@ address|name|symbol|size|type|prototype|provenance
 4b7a90|TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree||7|function|undefined DestructTPowerPlantOrderAndMaybeFree()|
 4b7ab0|TPowerPlantOrder::InitializeCityProductionState_Impl||64|function|undefined InitializeCityProductionState_Impl()|
 4b7b00|TPowerPlantOrder::MaxOrder||21|function|undefined MaxOrder(void)|
-4b7b30|TPowerPlantOrder::SetQuantity||182|function|undefined SetQuantity(short param_1)|
+4b7b30|TPowerPlantOrder::SetQuantity||182|function|bool SetQuantity(short quantity)|
 4b7c20|TPowerPlantOrder::CommitIfPending||1|function|undefined CommitIfPending(void)|
 4b7c40|TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop||49|function|undefined ResetCityOrderItemDerivedStateNoop(void)|
 4b7c90|TPowerPlantOrder::FillOrderSheet||28|function|undefined FillOrderSheet(int param_1)|
@@ -2008,7 +2008,7 @@ address|name|symbol|size|type|prototype|provenance
 4b7e60|TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree||7|function|undefined DestructTFoodProcessingOrderAndMaybeFree()|
 4b7e80|TFoodProcessingOrder::FoodProcessingOrderSlot11||62|function|undefined InitializeCityProductionState_Impl_At004b7e80(int param_1)|
 4b7ed0|TFoodProcessingOrder::MaxOrder||85|function|undefined MaxOrder(void)|
-4b7f50|TFoodProcessingOrder::SetQuantity||198|function|undefined SetQuantity(ushort param_1)|
+4b7f50|TFoodProcessingOrder::SetQuantity||198|function|bool SetQuantity(short quantity)|
 4b8060|TFoodProcessingOrder::CommitIfPending||37|function|undefined CommitIfPending(void)|
 4b80a0|TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop||1|function|undefined ResetCityOrderItemDerivedStateNoop(void)|
 4b80c0|TFoodProcessingOrder::FillOrderSheet||51|function|undefined CreateTPopGrowthOrderInstance()|
@@ -2016,7 +2016,7 @@ address|name|symbol|size|type|prototype|provenance
 4b8140|TPopGrowthOrder::GetRuntimeClass||6|function|undefined GetTPopGrowthOrderClassNamePointer()|rtti
 4b8160|TPopGrowthOrder::IPopGrowthOrder||62|function|void IPopGrowthOrder(TCity * city)|mac_oracle
 4b81b0|TPopGrowthOrder::MaxOrder||89|function|undefined MaxOrder(void)|
-4b8230|TPopGrowthOrder::SetQuantity||138|function|undefined SetQuantity(short param_1)|
+4b8230|TPopGrowthOrder::SetQuantity||138|function|bool SetQuantity(short quantity)|
 4b82f0|TPopGrowthOrder::CommitIfPending||229|function|undefined CommitIfPending(void)|
 4b8420|TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop||1|function|undefined ResetCityOrderItemDerivedStateNoop(void)|
 4b8440|TPopGrowthOrder::FillOrderSheet||32|function|undefined CreateTShipOrderInstance()|
@@ -2048,7 +2048,7 @@ address|name|symbol|size|type|prototype|provenance
 4b9010|TExpansionOrder::ExpansionOrderSlot12||96|function|undefined InitializeCityProductionState_Impl_At004b9010(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)|
 4b9090|TExpansionOrder::CommitIfPending||267|function|undefined CommitIfPending(void)|
 4b91f0|TExpansionOrder::MaxOrder||65|function|undefined MaxOrder(void)|
-4b9260|TExpansionOrder::SetQuantity||174|function|undefined SetQuantity(short param_1)|
+4b9260|TExpansionOrder::SetQuantity||174|function|bool SetQuantity(short quantity)|
 4b9340|SwapFirstTwoBytesInBuffer||15|function|void SwapFirstTwoBytesInBuffer(short* value)|
 4b9360|TExpansionOrder::FillOrderSheet||78|function|undefined FillOrderSheet(void)|
 4b94a0|WriteByteSwappedShortArrayToStream||70|function|void WriteByteSwappedShortArrayToStream(TStream* stream, short* words, int count)|
@@ -3329,7 +3329,7 @@ address|name|symbol|size|type|prototype|provenance
 5145b0|TMapMgr::QueueDepotConstructionOrder||417|function|int __thiscall QueueDepotConstructionOrder(int * pMapContext, short nTileIndex, short nNationId)|
 5147d0|TMapMgr::QueuePortConstructionOrder||396|function|void __thiscall QueuePortConstructionOrder(int * pMapContext, short nTileIndex, short nNationId)|
 5149d0|TMapMgr::SetProvinceCapitalTileFlagBit08||56|function|void __thiscall SetProvinceCapitalTileFlagBit08(short nProvinceId)|
-514a20|TMapMgr::SetTileTransportFlagsTo0x37AndRefreshNeighbors||475|function|void __thiscall SetTileTransportFlagsTo0x37AndRefreshNeighbors(short nTileIndex, short nOwnerNationId)|
+514a20|TMapMgr::PlaceCity||475|function|void __thiscall PlaceCity(short nTileIndex, short nOwnerNationId)|mac_oracle
 514c80|FindReachableRecruitSpawnTileWithVisitedReset||61|function|undefined FindReachableRecruitSpawnTileWithVisitedReset()|
 514cd0|FindReachableRecruitSpawnTileRecursive||178|function|undefined FindReachableRecruitSpawnTileRecursive()|
 514dc0|TMapMgr::MapMgrSlot1F||81|function|undefined WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0(short param_1)|
@@ -3347,7 +3347,7 @@ address|name|symbol|size|type|prototype|provenance
 515b10|TMapMgr::DimByEngineering||331|function|void __thiscall TMapMgr::DimByEngineering(TCivUnit * pCivilianOrderEntry)|
 515d60|TMapMgr::ApplyUnitMovementClassForTileIfValid||24|function|undefined ApplyUnitMovementClassForTileIfValid(int param_1)|
 515d90|IltTarget_00515d90||1|function|undefined IltTarget_00515d90()|
-515db0|ClearPerTileByte0FForAllMapTiles||27|function|undefined ClearPerTileByte0FForAllMapTiles()|
+515db0|TMapMgr::DimmingOff||27|function|void __thiscall DimmingOff(void)|mac_oracle
 515de0|TMapMgr::NoOpVirtualSlot2D||3|function|void TMapMgr::NoOpVirtualSlot2D(int param_1, int param_2, int param_3)|
 515e00|TMapMgr::SetMapTileStateByteAndNotifyObserver||50|function|void __thiscall SetMapTileStateByteAndNotifyObserver(short tileIndex, int stateByte)|
 515e50|TileHasMovementClassId||76|function|undefined TileHasMovementClassId()|
@@ -3391,7 +3391,7 @@ address|name|symbol|size|type|prototype|provenance
 518840|ByteSwapCityScoreTableShortFields||219|function|void __cdecl ByteSwapCityScoreTableShortFields(Province * table)|
 518960|TMapMgr::SetRegionDevelopmentStageByte||29|function|undefined SetRegionDevelopmentStageByte()|
 518990|TMapMgr::ResetTileToBaseTransportFlag||98|function|void __thiscall ResetTileToBaseTransportFlag(short tileIndex)|
-518a20|AreAllLinkedEntriesTerrainFlagBit2Clear||85|function|undefined AreAllLinkedEntriesTerrainFlagBit2Clear()|
+518a20|TMapMgr::HasPortInProvince||85|function|char __thiscall HasPortInProvince(int provinceIndex)|mac_oracle
 518aa0|WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask_At00518aa0||115|function|undefined WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask_At00518aa0()|
 518b40|TMapMgr::CalculateDeveloperTilePurchaseCost||111|function|int __thiscall CalculateDeveloperTilePurchaseCost(short nTileIndex)|
 518bd0|MarkAdjacentHexOrderDirectionAndSelectTile||343|function|undefined MarkAdjacentHexOrderDirectionAndSelectTile()|
@@ -3527,7 +3527,7 @@ address|name|symbol|size|type|prototype|provenance
 527d00|TMapMaker::CreateRivers||367|function|undefined PickRandomType3SeedAndAttemptExpansion()|
 527ed0|TMapMaker::GrowRiver||493|function|undefined TryAssignCellTypeWithDirectionalConstraints()|
 528140|TMapMaker::GetWindow||499|function|undefined TryPlaceType1CoarseCellWithAdjacencyRules()|
-5283c0|TMapMaker::ForwardParam||533|function|undefined TryPlaceType3CoarseCellWithAdjacencyRules()|
+5283c0|TMapMaker::SeedMountainRange||533|function|int __thiscall SeedMountainRange(int tileIndex, int retryBudget, int direction)|mac_oracle
 528670|TMapMaker::CreateDeserts||202|function|undefined BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands()|
 528780|TMapMaker::TundraBand||222|function|undefined SpreadType6CellsAcrossCoarseRowSegments()|
 5288a0|TMapMaker::DesertBand||698|function|undefined SpreadType6CellsWithSecondaryNeighborPass()|
@@ -4097,7 +4097,7 @@ address|name|symbol|size|type|prototype|provenance
 5427c0|TMultiplayerSlotHandle::~TMultiplayerSlotHandle||16|function|void __thiscall ~TMultiplayerSlotHandle()|windows_listing
 5427e0|TMultiplayerMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 542810|TMultiplayerMgr::~TMultiplayerMgr||187|function|undefined ~TMultiplayerMgr()|
-542900|TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext||404|function|undefined InitializeMultiplayerManagerForSessionContext()|
+542900|TMultiplayerMgr::IMultiplayerMgr||404|function|void __thiscall IMultiplayerMgr(int idleFrequency)|mac_oracle
 542b10|TMultiplayerMgr::Free||152|function|void __thiscall Free(void)|
 542be0|TMultiplayerMgr::ReadFrom||823|function|undefined InitializeNationStatusSlotsFromNationListAndEmitStartupEvents()|
 542ff0|TMultiplayerMgr::WriteTo||146|function|undefined InitializeNationStatusControlArraysFromProvider()|
@@ -4239,7 +4239,7 @@ address|name|symbol|size|type|prototype|provenance
 54fc60|TShip::SetLocation||10|function|void __thiscall TShip::SetLocation(TZone * zone)|curated
 54fc80|IltTarget_0054fc80||19|function|undefined IltTarget_0054fc80()|
 54fd50|RecomputeGlobalCapabilityAverages||296|function|void __cdecl RecomputeGlobalCapabilityAverages(void)|
-54fee0|GetNavyContextPointerFromGlobalTableByIndex||12|function|undefined GetNavyContextPointerFromGlobalTableByIndex()|
+54fee0|GetNavyOrderCategoryBaseline||12|function|int __cdecl GetNavyOrderCategoryBaseline(int category)|listing
 54ff00|TShip::ComputeNavyOrderPriorityContributionPercentByCategory||297|function|undefined ComputeNavyOrderPriorityContributionPercentByCategory()|
 550090|GetNormalizedIndustryActionResourceCostPercent||207|function|int GetNormalizedIndustryActionResourceCostPercent(int nCategory, short nResourceType)|
 5501b0|TShip::ComputeValueForMission||336|function|int TShip::ComputeValueForMission(int missionType) const|
