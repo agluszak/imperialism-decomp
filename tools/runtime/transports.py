@@ -90,6 +90,10 @@ class DirectWineTransport:
         self._snapshot = replace(self._snapshot, inferior_pid=self.process.pid)
         return self._snapshot
 
+    def _saw_heartbeat(self) -> bool:
+        """Whether the game ever signalled liveness during this attempt."""
+        return (self.artifact_dir / "heartbeat.json").is_file()
+
     def poll(self, result_exists: bool) -> TransportSnapshot:
         if self.process is None:
             return self._snapshot
@@ -99,7 +103,9 @@ class DirectWineTransport:
         self._snapshot = replace(
             self._snapshot,
             terminal=True,
-            classification=classify_exit(returncode, result_exists),
+            classification=classify_exit(
+                returncode, result_exists, saw_heartbeat=self._saw_heartbeat()
+            ),
             inferior_exit_code=returncode,
             inferior_terminal_reason="process-exited",
         )
