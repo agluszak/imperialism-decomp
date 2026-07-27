@@ -20,6 +20,7 @@ from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.common.vtable_extents import containing_vtable_extent, load_verified_vtable_extents
 from tools.ghidra.merge_curated_symbols import (
     index_symbols_by_address,
+    collect_source_claimed_addresses,
     merge_curated_symbols_csv,
     write_symbols_csv,
 )
@@ -305,6 +306,7 @@ def main() -> int:
                 kept_rows,
                 curated_by_addr,
                 set(model.vtables),
+                collect_source_claimed_addresses(repo_root),
             )
             for row in kept_rows:
                 try:
@@ -356,7 +358,8 @@ def main() -> int:
                 f"symbols={merge_stats.preserved_symbols} "
                 f"prototypes={merge_stats.preserved_prototypes} "
                 f"function_types={merge_stats.preserved_function_types} "
-                f"orphans={merge_stats.retained_orphans}"
+                f"orphans={merge_stats.retained_orphans} "
+                f"unclaimed_orphans={merge_stats.unclaimed_orphans}"
             )
         print(f"  {symbols_txt}")
         print(f"  {symbols_csv}")
