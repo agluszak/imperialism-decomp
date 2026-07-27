@@ -1,4 +1,6 @@
 #include "RuntimeScenario.h"
+
+#include "../RuntimeRun.h"
 #include "RuntimeHarness.h"
 #include "RuntimeContext.h"
 #include "RuntimeDebuggerTrap.h"
@@ -342,18 +344,26 @@ bool CaptureHeldWindowBmp(const char* resultPath, HWND window, int width, int he
 }
 
 struct RuntimeTestState {
+  RuntimeTestState()
+      : scenario(0), step(0), phaseName("not_started"), finished(false), seed(1), idleTicks(0),
+        phaseTicks(0), phaseStartMs(0), lastHeartbeatMs(0), selectedNationSlot(-1),
+        mainWindowHandle(0), newspaperAdvanced(false) {
+    resultPath[0] = 0;
+    heartbeatPath[0] = 0;
+    debugRecordPath[0] = 0;
+    fixturePath[0] = 0;
+  }
+
   RuntimeScenario* scenario;
+  RuntimeRun run;
   RuntimeStep step;
   const char* phaseName;
   bool finished;
   unsigned int seed;
   unsigned long idleTicks;
   unsigned long phaseTicks;
-  unsigned long startMs;
   unsigned long phaseStartMs;
   unsigned long lastHeartbeatMs;
-  unsigned long progressCounter;
-  unsigned long lastProgressMs;
   short selectedNationSlot;
   HWND mainWindowHandle;
   bool newspaperAdvanced;
@@ -361,11 +371,9 @@ struct RuntimeTestState {
   char heartbeatPath[MAX_PATH];
   char debugRecordPath[MAX_PATH];
   char fixturePath[MAX_PATH];
-  char lastAction[64];
 };
 
-RuntimeTestState g_runtimeTestState = {0,  0, "not_started", false, 1,  0,  0,  0, 0, 0, 0, 0,
-                                       -1, 0, false,         "",    "", "", "", ""};
+RuntimeTestState g_runtimeTestState;
 CString g_randomSetupUiSnapshot;
 CString g_strategicMapUiSnapshot;
 CString g_scenarioUiSnapshot;
@@ -418,10 +426,9 @@ void AppendJsonArrayItem(CString& array, const CString& item) {
 }
 
 void RecordAction(const char* action) {
-  lstrcpynA(g_runtimeTestState.lastAction, action, sizeof(g_runtimeTestState.lastAction));
   CString entry;
   entry.Format("{\"t_ms\": %lu, \"phase\": \"%s\", \"action\": \"%s\"}",
-               GetTickCount() - g_runtimeTestState.startMs, PhaseName(), action);
+               g_runtimeTestState.run.ElapsedMs(), PhaseName(), action);
   AppendJsonArrayItem(g_actionLog, entry);
 }
 
@@ -430,6 +437,7 @@ void SetStep(RuntimeStep step, const char* phaseName, const char* action) {
   g_runtimeTestState.phaseName = phaseName;
   g_runtimeTestState.phaseTicks = 0;
   g_runtimeTestState.phaseStartMs = GetTickCount();
+  g_runtimeTestState.run.MarkProgress(action);
   RecordAction(action);
 }
 
@@ -719,60 +727,60 @@ bool WriteResultFile(const char* status, const char* failure) {
     roundtrip = g_serializationRoundtripJson;
   }
   CString json;
-  json.Format(
-      "{\n"
-      "  \"format_version\": 1,\n"
-      "  \"name\": \"%s\",\n"
-      "  \"status\": \"%s\",\n"
-      "  \"seed\": %u,\n"
-      "  \"idle_ticks\": %lu,\n"
-      "  \"elapsed_ms\": %lu,\n"
-      "  \"phase\": \"%s\",\n"
-      "  \"last_action\": \"%s\",\n"
-      "  \"event_sequence\": %s,\n"
-      "  \"actions\": %s,\n"
-      "  \"ui_snapshots\": %s,\n"
-      "  \"capital_confirmation_snapshot\": %s,\n"
-      "  \"map_state\": %s,\n"
-      "  \"serialization_roundtrip\": %s,\n"
-      "  \"state\": {\n"
-      "    \"turn_event\": %d,\n"
-      "    \"root_class\": \"%s\",\n"
-      "    \"active_nation\": %d,\n"
-      "    \"selected_nation\": %d,\n"
-      "    \"difficulty\": %d,\n"
-      "    \"multiplayer_role\": %d,\n"
-      "    \"turn_state\": %d,\n"
-      "    \"mode\": %d,\n"
-      "    \"global_map\": %s,\n"
-      "    \"display_manager\": %s,\n"
-      "    \"global_ui_root\": %s,\n"
-      "    \"simulation_manager\": %s,\n"
-      "    \"ui_runtime_context\": %s,\n"
-      "    \"ui_view_manager\": %s\n"
-      "  },\n"
-      "  \"runtime\": {\n"
-      "    \"faults\": %s,\n"
-      "    \"handled_modals\": %s,\n"
-      "    \"unexpected_modals\": %s\n"
-      "  },\n"
-      "  \"failure\": %s\n"
-      "}\n",
-      TestName(), status, g_runtimeTestState.seed, g_runtimeTestState.idleTicks,
-      GetTickCount() - g_runtimeTestState.startMs, PhaseName(), g_runtimeTestState.lastAction,
-      static_cast<LPCSTR>(eventSequence), static_cast<LPCSTR>(actionLog),
-      static_cast<LPCSTR>(uiSnapshots), static_cast<LPCSTR>(capitalConfirmationSnapshot),
-      static_cast<LPCSTR>(mapState), static_cast<LPCSTR>(roundtrip),
-      g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
-      RuntimeClassName(mainView), g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1,
-      g_runtimeTestState.selectedNationSlot, g_pSimMgr != 0 ? g_pSimMgr->difficultyLevel : -1,
-      g_pSimMgr != 0 ? g_pSimMgr->multiplayerSessionRole : -1,
-      g_pSimMgr != 0 ? g_pSimMgr->turnStateCode : -1, g_pSimMgr != 0 ? g_pSimMgr->mode : -1,
-      g_pGlobalMapState != 0 ? "true" : "false", g_pDisplayMgr != 0 ? "true" : "false",
-      g_pGlobalUiRootController != 0 ? "true" : "false", g_pSimMgr != 0 ? "true" : "false",
-      g_pUiRuntimeContext != 0 ? "true" : "false", g_pUiViewManager != 0 ? "true" : "false",
-      static_cast<LPCSTR>(faults), static_cast<LPCSTR>(handledModals),
-      static_cast<LPCSTR>(unexpectedModals), failure);
+  json.Format("{\n"
+              "  \"format_version\": 1,\n"
+              "  \"name\": \"%s\",\n"
+              "  \"status\": \"%s\",\n"
+              "  \"seed\": %u,\n"
+              "  \"idle_ticks\": %lu,\n"
+              "  \"elapsed_ms\": %lu,\n"
+              "  \"phase\": \"%s\",\n"
+              "  \"last_action\": \"%s\",\n"
+              "  \"event_sequence\": %s,\n"
+              "  \"actions\": %s,\n"
+              "  \"ui_snapshots\": %s,\n"
+              "  \"capital_confirmation_snapshot\": %s,\n"
+              "  \"map_state\": %s,\n"
+              "  \"serialization_roundtrip\": %s,\n"
+              "  \"state\": {\n"
+              "    \"turn_event\": %d,\n"
+              "    \"root_class\": \"%s\",\n"
+              "    \"active_nation\": %d,\n"
+              "    \"selected_nation\": %d,\n"
+              "    \"difficulty\": %d,\n"
+              "    \"multiplayer_role\": %d,\n"
+              "    \"turn_state\": %d,\n"
+              "    \"mode\": %d,\n"
+              "    \"global_map\": %s,\n"
+              "    \"display_manager\": %s,\n"
+              "    \"global_ui_root\": %s,\n"
+              "    \"simulation_manager\": %s,\n"
+              "    \"ui_runtime_context\": %s,\n"
+              "    \"ui_view_manager\": %s\n"
+              "  },\n"
+              "  \"runtime\": {\n"
+              "    \"faults\": %s,\n"
+              "    \"handled_modals\": %s,\n"
+              "    \"unexpected_modals\": %s\n"
+              "  },\n"
+              "  \"failure\": %s\n"
+              "}\n",
+              TestName(), status, g_runtimeTestState.seed, g_runtimeTestState.idleTicks,
+              g_runtimeTestState.run.ElapsedMs(), PhaseName(), g_runtimeTestState.run.LastAction(),
+              static_cast<LPCSTR>(eventSequence), static_cast<LPCSTR>(actionLog),
+              static_cast<LPCSTR>(uiSnapshots), static_cast<LPCSTR>(capitalConfirmationSnapshot),
+              static_cast<LPCSTR>(mapState), static_cast<LPCSTR>(roundtrip),
+              g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
+              RuntimeClassName(mainView), g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1,
+              g_runtimeTestState.selectedNationSlot,
+              g_pSimMgr != 0 ? g_pSimMgr->difficultyLevel : -1,
+              g_pSimMgr != 0 ? g_pSimMgr->multiplayerSessionRole : -1,
+              g_pSimMgr != 0 ? g_pSimMgr->turnStateCode : -1, g_pSimMgr != 0 ? g_pSimMgr->mode : -1,
+              g_pGlobalMapState != 0 ? "true" : "false", g_pDisplayMgr != 0 ? "true" : "false",
+              g_pGlobalUiRootController != 0 ? "true" : "false", g_pSimMgr != 0 ? "true" : "false",
+              g_pUiRuntimeContext != 0 ? "true" : "false", g_pUiViewManager != 0 ? "true" : "false",
+              static_cast<LPCSTR>(faults), static_cast<LPCSTR>(handledModals),
+              static_cast<LPCSTR>(unexpectedModals), failure);
 
   return WriteFileAtomically(g_runtimeTestState.resultPath, json);
 }
@@ -784,10 +792,10 @@ void TrapDebugger(RuntimeDebugReason reason, const char* failure, EXCEPTION_POIN
       g_ModalViewStack.IsEmpty() ? 0 : static_cast<TView*>(g_ModalViewStack.GetHead());
   RuntimeDebugRecord record;
   record.reason = reason;
-  record.elapsedMs = GetTickCount() - g_runtimeTestState.startMs;
+  record.elapsedMs = g_runtimeTestState.run.ElapsedMs();
   record.testName = TestName();
   record.phase = PhaseName();
-  record.lastAction = g_runtimeTestState.lastAction;
+  record.lastAction = g_runtimeTestState.run.LastAction();
   record.turnEvent = g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1;
   record.modalDepth = g_ModalViewStack.GetCount();
   record.mainView = MainView();
@@ -806,9 +814,9 @@ void TrapDebugger(RuntimeDebugReason reason, const char* failure, EXCEPTION_POIN
     json.Format("{\"reason\": %d, \"test\": \"%s\", \"phase\": \"%s\", "
                 "\"last_action\": \"%s\", \"elapsed_ms\": %lu, \"turn_event\": %d, "
                 "\"modal_depth\": %d, \"failure\": %s, \"exception\": %s}\n",
-                static_cast<int>(reason), TestName(), PhaseName(), g_runtimeTestState.lastAction,
-                record.elapsedMs, record.turnEvent, record.modalDepth, failure,
-                static_cast<LPCSTR>(exceptionJson));
+                static_cast<int>(reason), TestName(), PhaseName(),
+                g_runtimeTestState.run.LastAction(), record.elapsedMs, record.turnEvent,
+                record.modalDepth, failure, static_cast<LPCSTR>(exceptionJson));
     WriteFileAtomically(g_runtimeTestState.debugRecordPath, json);
   }
   ImperialismRuntimeDebuggerTrap(&record);
@@ -871,8 +879,7 @@ void RecordUnexpectedModal(TView* modal) {
   FourCcText(static_cast<unsigned int>(modal->controlTag), tag);
   CString entry;
   entry.Format("{\"class\": \"%s\", \"tag\": \"%s\", \"phase\": \"%s\", \"t_ms\": %lu}",
-               RuntimeClassName(modal), tag, PhaseName(),
-               GetTickCount() - g_runtimeTestState.startMs);
+               RuntimeClassName(modal), tag, PhaseName(), g_runtimeTestState.run.ElapsedMs());
   AppendJsonArrayItem(g_unexpectedModals, entry);
 }
 
@@ -892,8 +899,7 @@ void MaybeWriteHeartbeat() {
   CString fingerprint = SemanticFingerprint();
   if (fingerprint != g_lastFingerprint) {
     g_lastFingerprint = fingerprint;
-    ++g_runtimeTestState.progressCounter;
-    g_runtimeTestState.lastProgressMs = now - g_runtimeTestState.startMs;
+    g_runtimeTestState.run.MarkFallbackProgress();
   }
   if (g_runtimeTestState.lastHeartbeatMs != 0 && now - g_runtimeTestState.lastHeartbeatMs < 250) {
     return;
@@ -904,11 +910,11 @@ void MaybeWriteHeartbeat() {
               "\"elapsed_ms\": %lu, \"turn_event\": %d, \"root_class\": \"%s\", "
               "\"modal_depth\": %d, \"progress_counter\": %lu, \"last_progress_ms\": %lu, "
               "\"hold\": %s}\n",
-              PhaseName(), g_runtimeTestState.lastAction, g_runtimeTestState.idleTicks,
-              now - g_runtimeTestState.startMs,
+              PhaseName(), g_runtimeTestState.run.LastAction(), g_runtimeTestState.idleTicks,
+              g_runtimeTestState.run.ElapsedMs(),
               g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
               RuntimeClassName(MainView()), g_ModalViewStack.GetCount(),
-              g_runtimeTestState.progressCounter, g_runtimeTestState.lastProgressMs,
+              g_runtimeTestState.run.ProgressCounter(), g_runtimeTestState.run.LastProgressMs(),
               HoldRequested() ? "true" : "false");
   WriteFileAtomically(g_runtimeTestState.heartbeatPath, json);
 }
@@ -973,7 +979,7 @@ LONG WINAPI RuntimeTestUnhandledExceptionFilter(EXCEPTION_POINTERS* info) {
     fault.Format("{\"code\": \"0x%08lx\", \"address\": \"%p\", \"phase\": \"%s\", "
                  "\"last_action\": \"%s\"}",
                  info->ExceptionRecord->ExceptionCode, info->ExceptionRecord->ExceptionAddress,
-                 PhaseName(), g_runtimeTestState.lastAction);
+                 PhaseName(), g_runtimeTestState.run.LastAction());
     AppendJsonArrayItem(g_faults, fault);
     g_runtimeTestState.finished = true;
     g_runtimeTestState.step = 0;
@@ -986,8 +992,8 @@ LONG WINAPI RuntimeTestUnhandledExceptionFilter(EXCEPTION_POINTERS* info) {
 void InitializeDriver(RuntimeScenario& scenario, unsigned int seed) {
   g_runtimeTestState.scenario = &scenario;
   g_runtimeTestState.seed = seed;
-  g_runtimeTestState.startMs = GetTickCount();
-  g_runtimeTestState.phaseStartMs = g_runtimeTestState.startMs;
+  g_runtimeTestState.run.Start();
+  g_runtimeTestState.phaseStartMs = GetTickCount();
   SetUnhandledExceptionFilter(RuntimeTestUnhandledExceptionFilter);
 
   DWORD resultPathLength =

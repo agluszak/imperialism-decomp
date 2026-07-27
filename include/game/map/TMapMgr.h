@@ -372,9 +372,9 @@ public:
   virtual void ResetRecruitSearchVisitedState(); // slot 0x20 0x514ef0
   // Seeds recruitSearchVisited0e excluding terrainStateTable[pCivilianOrderEntry->tileIndex06]'s
   // owner (like SeedRecruitSearchVisitedStateExcludingNation, inlined here rather than
-  // called). If orderType is 1 or 7, field_1C == 0, and the reference tile's
+  // called). If orderType is 1 or 7, militaryRegistrationFlag1C == 0, and the reference tile's
   // activeFlags1c/gateFlag or bit-2 gate passes, and (when the reference tile is owned by
-  // pCivilianOrderEntry->field_18) its FindTownMarkerForTileByOwnerNation entry is
+  // pCivilianOrderEntry->ownerNationSlot18) its FindTownMarkerForTileByOwnerNation entry is
   // enabled: clears recruitSearchVisited0e for every not-at-war minor nation's
   // TMinor::homeTileIndex tile (via TDiplomacyMgr::IsNationPairAtWar) and every enabled
   // TTown on the owning TGreatPower's townMarkerList.
@@ -385,7 +385,7 @@ public:
   // 1 across all tiles and clears it for the found unit's own tile
   // (TUnit::tileIndex06), then clears it for the 6 hex neighbors of either the unit's
   // orderTargetTiles28[orderTargetSlot-1] (when orderTargetSlot != 0) or its own tile,
-  // provided the neighbor is owned by the same nation (TUnit::field_18) or is at war with it
+  // provided the neighbor is owned by the same nation (TUnit::ownerNationSlot18) or is at war with it
   // (TDiplomacyMgr::IsNationPairAtWar). Bails immediately if no candidate is non-null.
   virtual void SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
       class TMilitaryUnit* const candidates[6],
@@ -393,7 +393,7 @@ public:
   // Mac oracle: TMapMgr::DimByProspecting(TUnit*). Dims every tile a Prospector cannot
   // search. Water is always ineligible; land must be owned by the unit's nation or
   // diplomatically compatible. Eligibility is further gated on
-  // pCivilianOrderEntry->field_18 (nationTag) or diplomatically compatible
+  // pCivilianOrderEntry->ownerNationSlot18 (nationTag) or diplomatically compatible
   // (TDiplomacyMgr::LookupOrderCompatibilityMatrixValue == 2), further gated on
   // gateFlag being in {8,9} (or {10,11,12} when
   // g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x13]
@@ -411,7 +411,7 @@ public:
   // pendingDevelopmentFlag0d).
   virtual void DimByDevelopment(class TCivUnit* pCivilianOrderEntry); // slot 0x24 0x515460
   // Seeds recruitSearchVisited0e like the SeedRecruitSearchVisitedState* family, but each
-  // tile is eligible only if it's owned by pCivilianOrderEntry->field_18 (via
+  // tile is eligible only if it's owned by pCivilianOrderEntry->ownerNationSlot18 (via
   // ownerNationTag04 or secondaryOwnerNationTag18) and pendingDevelopmentFlag0d != 0, and
   // then gated on whether its high development nibble is below the max capability value
   // (over its qualifying resourceTypeByEdge entries) from
@@ -424,7 +424,7 @@ public:
   // TTechMgr::capabilityValueByNationAndResource[nationTag][19].
   virtual void DimByFishing(class TCivUnit* pCivilianOrderEntry); // slot 0x26 0x515720
   // Sibling of SeedRecruitSearchVisitedStateByCapabilityThreshold: defaults every tile to
-  // blocked, then clears it if owned by pCivilianOrderEntry->field_18 (via
+  // blocked, then clears it if owned by pCivilianOrderEntry->ownerNationSlot18 (via
   // ownerNationTag04 or secondaryOwnerNationTag18) and g_abGateFlagQualifies[gateFlag] is
   // set, and the max capability value (over qualifying resourceTypeByEdge entries -- an
   // entry qualifies if g_anResourceTypeRequiredOrderType[resourceType] matches
@@ -791,7 +791,7 @@ public:
 
   // 0x518d90 (thiscall, no explicit args). Clears perTileVisitedFlag0f across the whole
   // terrainStateTable, then walks the active nation's militaryUnitList44 (CIterator) and,
-  // for each order whose field_C (city-record index) is set, computes the war/peace-coded
+  // for each order whose orderTargetIndex0C (city-record index) is set, computes the war/peace-coded
   // direction overlay via MarkAdjacentHexOrderDirectionAndSelectTile (the same computation
   // that function already implements for its own caller) and stamps/notifies through it.
   void MarkDirectionalMapOverlayFlagsForNationOrders();

@@ -56,9 +56,9 @@ extern POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
 
 extern TDisplayMgr* g_pDisplayMgr;
 
-extern int g_nUiAnimatorSurfaceBoundsWidth; // 0x006a2228
+extern CPoint g_ptUiAnimatorSurfaceBounds; // 0x006a2228, initialized at 0x0049f000
 
-extern int g_nUiAnimatorSurfaceBoundsHeight; // 0x006a222c
+extern unsigned char g_bStrategicMapSelectionOverlayPhase; // 0x006a224c
 
 extern TMacViewMgr* g_pStrategicMapViewSystem;
 

@@ -1,291 +1,353 @@
-"""Launch and supervise one isolated instrumented Wine session."""
+"""Prepare, launch, poll, and tear down one isolated runtime attempt."""
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from pathlib import Path
-import shutil
-import subprocess
 import time
+from typing import Callable
 
 from tools.runtime.artifacts import capture_failure_screenshot
-from tools.runtime.classification import (
-    classify_exit,
-    classify_inferior_exit,
-    classify_poll,
-    no_progress_budget_seconds,
-)
-from tools.runtime.debug.session import DebuggerTransportError, GdbSession, is_terminal_stop
+from tools.runtime.classification import classify_poll, no_progress_budget_seconds
 from tools.runtime.display import virtual_display
+from tools.runtime.models import HostResult, JsonObject, RunConfig
 from tools.runtime.protocol import read_json_file
+from tools.runtime.transports import (
+    RuntimeTransport,
+    TransportSnapshot,
+    create_transport,
+)
 from tools.runtime.wine import (
     initialize_wine_prefix,
-    worktree_prefix,
+    prepare_game_sandbox,
     prefix_environment,
-    retail_game_dir,
-    shut_down_wine_prefix,
+    runtime_provenance,
     windows_paths,
+    worktree_prefix,
 )
+
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BUILD_DIR = REPO_ROOT / "build-runtime-tests"
 POLL_INTERVAL_SECONDS = 0.05
 
+
+TransportFactory = Callable[
+    [bool, Path, Path, dict[str, str], Path, str], RuntimeTransport
+]
+
+
+@dataclass(frozen=True)
+class PreparedAttempt:
+    game_dir: Path
+    sandbox_executable: Path
+    staged_fixture: Path | None
+    asset_manifest_sha256: str
+
+
+@dataclass(frozen=True)
+class SessionDependencies:
+    executable_provider: Callable[[], Path] = lambda: BUILD_DIR / "Imperialism.exe"
+    prefix_provider: Callable[[], Path] = worktree_prefix
+    environment_builder: Callable[[Path], dict[str, str]] = prefix_environment
+    display_factory: Callable = virtual_display
+    sandbox_factory: Callable = prepare_game_sandbox
+    prefix_initializer: Callable = initialize_wine_prefix
+    path_translator: Callable = windows_paths
+    provenance_builder: Callable = runtime_provenance
+    transport_factory: TransportFactory = create_transport
+    screenshot_capture: Callable = capture_failure_screenshot
+    monotonic: Callable[[], float] = time.monotonic
+    wall_time: Callable[[], float] = time.time
+    sleep: Callable[[float], None] = time.sleep
+
+
+def _prepare_environment(
+    config: RunConfig,
+    environment: dict[str, str],
+    result_path: Path,
+    heartbeat_path: Path,
+    debug_record_path: Path,
+    staged_fixture: Path | None,
+    translate: Callable,
+) -> None:
+    translated_paths = [result_path, heartbeat_path, debug_record_path]
+    if staged_fixture is not None:
+        translated_paths.append(staged_fixture)
+    translated = translate(translated_paths, environment)
+    environment.update(
+        {
+            "IMPERIALISM_RUNTIME_TEST": config.name,
+            "IMPERIALISM_RUNTIME_TEST_RESULT": translated[0],
+            "IMPERIALISM_RUNTIME_TEST_HEARTBEAT": translated[1],
+            "IMPERIALISM_RUNTIME_TEST_DEBUG_RECORD": translated[2],
+            "IMPERIALISM_RUNTIME_TEST_SEED": str(config.seed),
+            "IMPERIALISM_RUNTIME_TEST_PHASE_TIMEOUT_MS": str(
+                config.phase_timeout_ms
+            ),
+        }
+    )
+    if staged_fixture is not None:
+        environment["IMPERIALISM_RUNTIME_TEST_FIXTURE"] = translated[3]
+    if config.use_gdb:
+        environment["IMPERIALISM_RUNTIME_TEST_DEBUGGER"] = "1"
+
+
+def _prepare_attempt(
+    config: RunConfig,
+    dependencies: SessionDependencies,
+    prefix: Path,
+    environment: dict[str, str],
+    executable: Path,
+    result_path: Path,
+    heartbeat_path: Path,
+    debug_record_path: Path,
+    mark: Callable[[str], None],
+) -> PreparedAttempt:
+    game_dir, staged_fixture, asset_manifest_sha256 = dependencies.sandbox_factory(
+        config.run_dir, executable, config.fixture
+    )
+    sandbox_executable = game_dir / executable.name
+    mark("sandbox")
+    dependencies.prefix_initializer(prefix, environment)
+    mark("prefix")
+    _prepare_environment(
+        config,
+        environment,
+        result_path,
+        heartbeat_path,
+        debug_record_path,
+        staged_fixture,
+        dependencies.path_translator,
+    )
+    mark("path_translation")
+    return PreparedAttempt(
+        game_dir=game_dir,
+        sandbox_executable=sandbox_executable,
+        staged_fixture=staged_fixture,
+        asset_manifest_sha256=asset_manifest_sha256,
+    )
+
+
+def _heartbeat_age(path: Path, heartbeat: JsonObject | None, wall_time: Callable) -> float | None:
+    if heartbeat is None:
+        return None
+    try:
+        return wall_time() - path.stat().st_mtime
+    except OSError:
+        return None
+
+
+def _poll_attempt(
+    config: RunConfig,
+    dependencies: SessionDependencies,
+    transport: RuntimeTransport,
+    snapshot: TransportSnapshot,
+    result_path: Path,
+    heartbeat_path: Path,
+    pid_path: Path,
+    prefix: Path,
+    started: float,
+) -> TransportSnapshot:
+    budget_seconds = no_progress_budget_seconds(config.phase_timeout_ms)
+    while not snapshot.terminal:
+        snapshot = transport.poll(result_path.is_file())
+        if snapshot.inferior_pid is not None and not pid_path.is_file():
+            pid_path.write_text(f"{snapshot.inferior_pid}\n", encoding="utf-8")
+        if snapshot.terminal:
+            if snapshot.classification == "runtime_invariant_violation":
+                dependencies.screenshot_capture(
+                    config.run_dir / "failure-screenshot.png", wineprefix=prefix
+                )
+                snapshot = transport.stop(snapshot.classification)
+            break
+
+        heartbeat = read_json_file(heartbeat_path)
+        classification = classify_poll(
+            heartbeat,
+            _heartbeat_age(heartbeat_path, heartbeat, dependencies.wall_time),
+            budget_seconds,
+            process_age_seconds=dependencies.monotonic() - started,
+        )
+        if (
+            classification is None
+            and dependencies.monotonic() - started > config.timeout_seconds
+        ):
+            classification = "action_timeout"
+        if classification is not None:
+            dependencies.screenshot_capture(
+                config.run_dir / "failure-screenshot.png",
+                owner_pid=snapshot.inferior_pid,
+                wineprefix=prefix,
+            )
+            snapshot = transport.stop(classification)
+            break
+        dependencies.sleep(POLL_INTERVAL_SECONDS)
+    return snapshot
+
+
+def _close_attempt(
+    transport: RuntimeTransport | None,
+    pid_path: Path,
+    display_context,
+) -> TransportSnapshot | None:
+    try:
+        if transport is not None:
+            transport.close()
+            return transport.snapshot
+        return None
+    finally:
+        pid_path.unlink(missing_ok=True)
+        display_context.__exit__(None, None, None)
+
+
+def _build_host_result(
+    config: RunConfig,
+    dependencies: SessionDependencies,
+    prepared: PreparedAttempt,
+    transport: RuntimeTransport | None,
+    snapshot: TransportSnapshot,
+    heartbeat_path: Path,
+    display_name: str | None,
+    started: float,
+    phase_started: float,
+    phase_timings: dict[str, float],
+) -> HostResult:
+    heartbeat = read_json_file(heartbeat_path) or {}
+    provenance = dependencies.provenance_builder(
+        prepared.sandbox_executable,
+        prepared.asset_manifest_sha256,
+        display_name,
+        prepared.staged_fixture,
+    )
+    phase = heartbeat.get("phase")
+    action = heartbeat.get("last_action")
+    return HostResult(
+        classification=snapshot.classification,
+        display=display_name or "host",
+        artifact_dir=config.run_dir,
+        duration_seconds=round(dependencies.monotonic() - started, 3),
+        phase_seconds={
+            **phase_timings,
+            "teardown": round(dependencies.monotonic() - phase_started, 3),
+        },
+        phase=phase if isinstance(phase, str) else None,
+        action=action if isinstance(action, str) else None,
+        wine_exit=snapshot.inferior_exit_code,
+        proxy_pid=snapshot.proxy_pid,
+        proxy_exit_code=snapshot.proxy_exit_code,
+        gdb_pid=snapshot.gdb_pid,
+        gdb_exit_code=snapshot.gdb_exit_code,
+        inferior_pid=snapshot.inferior_pid,
+        inferior_exit_code=snapshot.inferior_exit_code,
+        inferior_terminal_reason=snapshot.inferior_terminal_reason,
+        inferior_signal=snapshot.inferior_signal,
+        debugger=(
+            transport.debugger_name
+            if transport is not None
+            else "gdb" if config.use_gdb else "none"
+        ),
+        debugger_stop_count=transport.stop_count if transport is not None else 0,
+        debugger_transport_error=snapshot.debugger_error,
+        debugger_invariant=snapshot.debugger_invariant,
+        debugger_signal=snapshot.debugger_signal,
+        game_dir=prepared.game_dir,
+        provenance=provenance,
+        fixture_metadata=config.fixture_metadata,
+        seed=config.seed,
+        timeout_seconds=config.timeout_seconds,
+        phase_timeout_ms=config.phase_timeout_ms,
+    )
+
+
 def execute_run(
-    name: str,
-    run_dir: Path,
-    seed: int,
-    timeout: float,
-    phase_timeout_ms: int,
-    winedebug: str | None,
-    wine_log_name: str,
-    fixture: Path | None = None,
-    use_gdb: bool = True,
-) -> dict:
-    """One isolated game run; returns host metadata including classification."""
-    executable = BUILD_DIR / "Imperialism.exe"
+    config: RunConfig, dependencies: SessionDependencies | None = None
+) -> HostResult:
+    """Execute one prepared attempt through the selected narrow transport."""
+    deps = dependencies or SessionDependencies()
+    executable = deps.executable_provider()
     if not executable.is_file():
         raise SystemExit(f"Missing {executable}; run `just runtime-test-build` first")
 
-    # One prefix per worktree, reused across runs; see wine.worktree_prefix().
-    prefix = worktree_prefix()
-    result_path = run_dir / "result.json"
-    heartbeat_path = run_dir / "heartbeat.json"
-    debug_record_path = run_dir / "debug-record.json"
-    result_path.unlink(missing_ok=True)
-    heartbeat_path.unlink(missing_ok=True)
-    debug_record_path.unlink(missing_ok=True)
+    config.run_dir.mkdir(parents=True, exist_ok=True)
+    result_path = config.run_dir / "result.json"
+    heartbeat_path = config.run_dir / "heartbeat.json"
+    debug_record_path = config.run_dir / "debug-record.json"
+    pid_path = config.run_dir / "pid"
+    for path in (result_path, heartbeat_path, debug_record_path, pid_path):
+        path.unlink(missing_ok=True)
 
-    environment = prefix_environment(prefix)
-    if winedebug is not None:
-        environment["WINEDEBUG"] = winedebug
+    prefix = deps.prefix_provider()
+    environment = deps.environment_builder(prefix)
+    if config.winedebug is not None:
+        environment["WINEDEBUG"] = config.winedebug
 
-    classification: str | None = None
-    debugger_error: str | None = None
-    debugger_invariant: str | None = None
-    debugger_signal: str | None = None
-    captured_stops: set[str] = set()
-    debugger: GdbSession | None = None
-    direct_process: subprocess.Popen[bytes] | None = None
-    proxy_pid: int | None = None
-    proxy_exit_code: int | None = None
-    gdb_pid: int | None = None
-    gdb_exit_code: int | None = None
-    inferior_pid: int | None = None
-    inferior_exit_code: int | None = None
-    inferior_terminal_reason: str | None = None
-    inferior_signal: str | None = None
-    budget_seconds = no_progress_budget_seconds(phase_timeout_ms)
-    pid_path = run_dir / "pid"
-    started = time.monotonic()
-    # Phase timings, so that "the suite is slow" can be answered with a measurement
-    # instead of a guess. Cheap (a handful of monotonic reads) and always on.
+    started = deps.monotonic()
+    phase_started = started
     phase_timings: dict[str, float] = {}
 
-    def mark(phase: str, since: float) -> float:
-        now = time.monotonic()
-        phase_timings[phase] = round(now - since, 3)
-        return now
+    def mark(phase: str) -> None:
+        nonlocal phase_started
+        now = deps.monotonic()
+        phase_timings[phase] = round(now - phase_started, 3)
+        phase_started = now
 
-    display_stack = virtual_display(environment, run_dir / "xvfb.log")
-    virtual_display_name = display_stack.__enter__()
-    phase_start = mark("display", started)
+    display_context = deps.display_factory(environment, config.run_dir / "xvfb.log")
+    display_name = display_context.__enter__()
+    mark("display")
+    transport: RuntimeTransport | None = None
+    snapshot = TransportSnapshot()
+    prepared: PreparedAttempt
     try:
-        initialize_wine_prefix(prefix, environment)
-        phase_start = mark("prefix", phase_start)
-
-        environment["IMPERIALISM_RUNTIME_TEST"] = name
-        # One winepath invocation for every path this run needs; see windows_paths().
-        translated_paths = [result_path, heartbeat_path, debug_record_path]
-        if fixture is not None:
-            translated_paths.append(fixture)
-        translated = windows_paths(translated_paths, environment)
-        environment["IMPERIALISM_RUNTIME_TEST_RESULT"] = translated[0]
-        environment["IMPERIALISM_RUNTIME_TEST_HEARTBEAT"] = translated[1]
-        environment["IMPERIALISM_RUNTIME_TEST_DEBUG_RECORD"] = translated[2]
-        environment["IMPERIALISM_RUNTIME_TEST_SEED"] = str(seed)
-        environment["IMPERIALISM_RUNTIME_TEST_PHASE_TIMEOUT_MS"] = str(phase_timeout_ms)
-        if fixture is not None:
-            environment["IMPERIALISM_RUNTIME_TEST_FIXTURE"] = translated[3]
-
-        phase_start = mark("path_translation", phase_start)
-        if use_gdb:
-            environment["IMPERIALISM_RUNTIME_TEST_DEBUGGER"] = "1"
-            debugger = GdbSession(
-                executable, retail_game_dir(), environment, run_dir
-            )
-            try:
-                debugger.start()
-                lifecycle = debugger.lifecycle()
-                proxy_pid = lifecycle.proxy_pid
-                gdb_pid = lifecycle.gdb_pid
-                inferior_pid = lifecycle.inferior_pid
-            except DebuggerTransportError as error:
-                debugger_error = str(error)
-                classification = "debugger_transport_failure"
-        else:
-            wine_log = (run_dir / wine_log_name).open("wb")
-            direct_process = subprocess.Popen(
-                ["wine", str(executable)], cwd=retail_game_dir(), env=environment,
-                stdout=wine_log, stderr=subprocess.STDOUT,
-            )
-            inferior_pid = direct_process.pid
-        phase_start = mark("launch", phase_start)
-        if inferior_pid is not None:
-            pid_path.write_text(f"{inferior_pid}\n", encoding="utf-8")
-        if classification is None and (debugger is not None or direct_process is not None):
-            while True:
-                if debugger is not None:
-                    try:
-                        stop = debugger.poll_stop()
-                        while stop is not None:
-                            if is_terminal_stop(stop):
-                                break
-                            debugger_invariant = debugger.consume_runtime_invariant()
-                            if debugger_invariant is not None:
-                                label = "invariant-" + debugger_invariant.replace("_", "-")
-                                debugger.capture_stop(label, stop)
-                                captured_stops.add(stop.raw)
-                                classification = "runtime_invariant_violation"
-                                break
-                            if stop.signal_name not in {None, "SIGTRAP"}:
-                                debugger_signal = stop.signal_name
-                            label = (stop.signal_name or stop.reason).lower().replace("_", "-")
-                            if stop.raw not in captured_stops:
-                                debugger.capture_stop(label, stop)
-                                captured_stops.add(stop.raw)
-                            debugger.continue_inferior()
-                            stop = debugger.poll_stop()
-                        lifecycle = debugger.lifecycle()
-                        proxy_pid = lifecycle.proxy_pid
-                        proxy_exit_code = lifecycle.proxy_exit_code
-                        gdb_pid = lifecycle.gdb_pid
-                        gdb_exit_code = lifecycle.gdb_exit_code
-                        inferior_pid = lifecycle.inferior_pid
-                        inferior_exit_code = lifecycle.inferior_exit_code
-                        inferior_terminal_reason = lifecycle.inferior_terminal_reason
-                        inferior_signal = lifecycle.inferior_signal
-                    except DebuggerTransportError as error:
-                        debugger_error = str(error)
-                        classification = "debugger_transport_failure"
-                        break
-                    if inferior_pid is not None and not pid_path.is_file():
-                        pid_path.write_text(f"{inferior_pid}\n", encoding="utf-8")
-                    if inferior_terminal_reason is not None:
-                        classification = classify_inferior_exit(
-                            inferior_terminal_reason,
-                            inferior_exit_code,
-                            inferior_signal,
-                            result_path.is_file(),
-                        )
-                        break
-                    if proxy_exit_code is not None or gdb_exit_code is not None:
-                        classification = "debugger_transport_failure"
-                        debugger_error = (
-                            f"debugger transport exited while inferior was active: "
-                            f"proxy={proxy_exit_code}, gdb={gdb_exit_code}"
-                        )
-                        break
-                if classification == "runtime_invariant_violation":
-                    capture_failure_screenshot(
-                        run_dir / "failure-screenshot.png", wineprefix=prefix
-                    )
-                    if debugger is not None:
-                        debugger.terminate_inferior()
-                    break
-                direct_returncode = (
-                    direct_process.poll() if direct_process is not None else None
-                )
-                if direct_process is not None and direct_returncode is not None:
-                    inferior_exit_code = direct_returncode
-                    inferior_terminal_reason = "process-exited"
-                    if debugger_signal is not None and not result_path.is_file():
-                        classification = "crash"
-                    else:
-                        classification = classify_exit(
-                            direct_returncode, result_path.is_file()
-                        )
-                    break
-                heartbeat = read_json_file(heartbeat_path)
-                heartbeat_age = None
-                if heartbeat is not None:
-                    try:
-                        heartbeat_age = time.time() - heartbeat_path.stat().st_mtime
-                    except OSError:
-                        heartbeat = None
-                classification = classify_poll(
-                    heartbeat,
-                    heartbeat_age,
-                    budget_seconds,
-                    process_age_seconds=time.monotonic() - started,
-                )
-                if classification is None and time.monotonic() - started > timeout:
-                    classification = "action_timeout"
-                if classification is not None:
-                    capture_failure_screenshot(
-                        run_dir / "failure-screenshot.png",
-                        owner_pid=direct_process.pid if direct_process is not None else None,
-                        wineprefix=prefix,
-                    )
-                    if debugger is not None:
-                        try:
-                            _, stop = debugger.interrupt_and_capture(classification)
-                            if stop is not None and stop.signal_name not in {None, "SIGINT", "SIGTRAP"}:
-                                debugger_signal = stop.signal_name
-                                classification = "crash"
-                        except DebuggerTransportError as error:
-                            debugger_error = str(error)
-                        debugger.terminate_inferior()
-                    elif direct_process is not None:
-                        direct_process.kill()
-                        direct_process.wait(timeout=30)
-                        inferior_exit_code = direct_process.returncode
-                        inferior_terminal_reason = "host-terminated"
-                    break
-                time.sleep(POLL_INTERVAL_SECONDS)
-        phase_start = mark("run", phase_start)
+        prepared = _prepare_attempt(
+            config,
+            deps,
+            prefix,
+            environment,
+            executable,
+            result_path,
+            heartbeat_path,
+            debug_record_path,
+            mark,
+        )
+        transport = deps.transport_factory(
+            config.use_gdb,
+            prepared.sandbox_executable,
+            prepared.game_dir,
+            environment,
+            config.run_dir,
+            config.wine_log_name,
+        )
+        snapshot = transport.start()
+        mark("launch")
+        if snapshot.inferior_pid is not None:
+            pid_path.write_text(f"{snapshot.inferior_pid}\n", encoding="utf-8")
+        snapshot = _poll_attempt(
+            config,
+            deps,
+            transport,
+            snapshot,
+            result_path,
+            heartbeat_path,
+            pid_path,
+            prefix,
+            started,
+        )
+        mark("run")
     finally:
-        if debugger is not None:
-            try:
-                lifecycle = debugger.lifecycle()
-                proxy_pid = lifecycle.proxy_pid
-                proxy_exit_code = lifecycle.proxy_exit_code
-                gdb_pid = lifecycle.gdb_pid
-                gdb_exit_code = lifecycle.gdb_exit_code
-                inferior_pid = lifecycle.inferior_pid
-                inferior_exit_code = lifecycle.inferior_exit_code
-                inferior_terminal_reason = lifecycle.inferior_terminal_reason
-                inferior_signal = lifecycle.inferior_signal
-            except DebuggerTransportError:
-                pass
-            debugger.close()
-        if not use_gdb and 'wine_log' in locals():
-            wine_log.close()
-        pid_path.unlink(missing_ok=True)
-        # Neither the prefix nor its wineserver is torn down here. Both are
-        # worktree-scoped, and keeping the server warm is the whole point: starting a
-        # fresh one per test is what the per-test cost was actually being spent on.
-        # `just runtime-clean` stops them when a worktree is done with.
-        # After the prefix is gone: wineserver has to reach the same X display the
-        # session used, so the virtual server outlives it.
-        display_stack.__exit__(None, None, None)
+        final_snapshot = _close_attempt(transport, pid_path, display_context)
+        if final_snapshot is not None:
+            snapshot = final_snapshot
 
-    return {
-        "classification": classification,
-        "display": virtual_display_name or "host",
-        "wine_exit": inferior_exit_code,
-        "proxy_pid": proxy_pid,
-        "proxy_exit_code": proxy_exit_code,
-        "gdb_pid": gdb_pid,
-        "gdb_exit_code": gdb_exit_code,
-        "inferior_pid": inferior_pid,
-        "inferior_exit_code": inferior_exit_code,
-        "inferior_terminal_reason": inferior_terminal_reason,
-        "inferior_signal": inferior_signal,
-        "duration_seconds": round(time.monotonic() - started, 3),
-        "phase_seconds": {**phase_timings, "teardown": round(time.monotonic() - phase_start, 3)},
-        "debugger": "gdb" if use_gdb else "none",
-        "debugger_stop_count": debugger.stop_count if debugger is not None else 0,
-        "debugger_transport_error": debugger_error,
-        "debugger_invariant": debugger_invariant,
-        "debugger_signal": debugger_signal,
-    }
+    return _build_host_result(
+        config,
+        deps,
+        prepared,
+        transport,
+        snapshot,
+        heartbeat_path,
+        display_name,
+        started,
+        phase_started,
+        phase_timings,
+    )

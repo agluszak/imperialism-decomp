@@ -41,6 +41,15 @@ are diagnostic only and never influence pass/fail. Use `just smoke`, `just smoke
 or `just gdb-script` for startup and debugger observation independent of native test
 instrumentation.
 
+Each semantic attempt runs from `<attempt>/game`, never from the retail installation.
+That tree hard-links a read-only, content-addressed asset cache and supplies fresh
+writable `Save`, log, result, and fixture locations. The worktree Wine prefix stays warm,
+but the game registry key is deleted and deterministically reseeded before every
+attempt. `host.provenance` records the Git commit, recomp/retail executable hashes, Wine
+version, retail-asset manifest hash, fixture hash, and display mode. A local retail save
+fixture is accepted only with an adjacent `.imp.json` sidecar binding its hash, format
+version, scenario, and reproduction instructions.
+
 ### Running off-screen
 
 Wine maps a real window per session, which steals focus while you work. Give the session
@@ -53,9 +62,9 @@ IMPERIALISM_RUNTIME_DISPLAY=host    just runtime-test <name>   # opt-in real des
 IMPERIALISM_RUNTIME_DISPLAY=:5      just runtime-test <name>   # your own server
 ```
 
-The display actually used is reported as `host.display` in the result. Needs an `Xvfb`
-binary on PATH (`brew install xorg-server`, no root); without one the session falls back
-to the inherited `DISPLAY`.
+The display actually used is reported as `host.display` in the result. Virtual mode
+requires an `Xvfb` binary on PATH (`brew install xorg-server`, no root) and fails closed
+if it cannot start one; it never falls back to the inherited `DISPLAY`.
 
 Off-screen runs seed `Managed=N` into the prefix: with no window manager present, Wine's
 managed-window path waits on a WM that never answers, and owning its windows outright is

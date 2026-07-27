@@ -27,10 +27,10 @@ void TArmyTacUnit::IArmyTacUnit(TMilitaryUnit* source) {
   actionPoints28 = GetBaseActionPoints();
   aiStateCode2c = 0;
   attackTarget30 = NULL;
-  strength4 = source->field_34;
-  morale34 = source->field_34;
-  qualityLevel10 = static_cast<short>(source->field_38 / 100);
-  ownerNationIndex14 = source->field_18;
+  strength4 = source->strength34;
+  morale34 = source->strength34;
+  qualityLevel10 = static_cast<short>(source->experiencePercent38 / 100);
+  ownerNationIndex14 = source->ownerNationSlot18;
   sapTargetTileIndex40 = -1;
   sourceUnit38 = source;
   unsigned char deployedCategory0Flag;
@@ -45,10 +45,11 @@ void TArmyTacUnit::IArmyTacUnit(TMilitaryUnit* source) {
 // FUNCTION: IMPERIALISM 0x005a5fe0
 void TArmyTacUnit::ComputeTacticalProjectionScoreVector() {
   // Quality is recomputed from the source unit's raw experience field (not the
-  // cached qualityLevel10): (short)(field_38 / 100), same derivation as the ctor.
-  float qualityFactor = static_cast<float>(g_dTacticalQualityFactorBase_00669ED0 -
-                                           static_cast<short>(sourceUnit38->field_38 / 100) *
-                                               g_dTacticalQualityFactorStep_00669EC8);
+  // cached qualityLevel10): (short)(experiencePercent38 / 100), same derivation as the ctor.
+  float qualityFactor =
+      static_cast<float>(g_dTacticalQualityFactorBase_00669ED0 -
+                         static_cast<short>(sourceUnit38->experiencePercent38 / 100) *
+                             g_dTacticalQualityFactorStep_00669EC8);
   sourceUnit38->GetAttribute(5);
   float unitFactor = 1.0f;
   float strengthTerm = strength4 * g_fTacticalStrengthProjectionScale_00669F0C;

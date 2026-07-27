@@ -7,9 +7,9 @@ re-typed by hand each session (xwininfo | grep, then an inline python-xlib
 snippet). This automates it: find the largest visible window whose class matches
 the game, grab its ZPixmap, save.
 
-Used internally by the semantic runtime runner for best-effort failure artifacts; callers supply
-python-xlib/pillow
-deps with `uv run --with`; they are deliberately not project dependencies.
+Used internally by the semantic runtime runner for best-effort failure artifacts. Its
+python-xlib and Pillow dependencies are part of the repository tooling environment, so
+failure capture performs no dependency resolution.
 
 usage: screenshot.py [out.png] [--win 0xWINDOWID] [--match imperialism]
 """

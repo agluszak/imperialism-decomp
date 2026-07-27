@@ -578,7 +578,7 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
   do {
     TMilitaryUnit* unit =
         static_cast<TMilitaryUnit*>(this->militaryUnitList44->GetEntryByOrdinal(ordinal));
-    if (unit->field_1A == 0) {
+    if (unit->unitRosterId1A == 0) {
       if (unit->orderType < EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1)) {
         CString ordinalText;
         CString typeName;
@@ -592,7 +592,7 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
         CString fullName = withSeparator + typeName;
         composedName = fullName;
         unit->name24 = composedName;
-        unit->field_1A = this->unitNameCounter84;
+        unit->unitRosterId1A = this->unitNameCounter84;
         ++this->unitNameCounter84;
         ++*nameOrdinalCounter;
       } else {
@@ -606,7 +606,7 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
         CString fullName = withSeparator + flavorName;
         flavorName = fullName;
         unit->name24 = flavorName;
-        unit->field_1A = this->unitNameCounter84;
+        unit->unitRosterId1A = this->unitNameCounter84;
         ++this->unitNameCounter84;
       }
     }
@@ -691,7 +691,7 @@ void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
     } else {
       unitChain = g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain98;
     }
-    for (; unitChain != 0; unitChain = static_cast<TMilitaryUnit*>(unitChain->nextOnTile)) {
+    for (; unitChain != 0; unitChain = static_cast<TMilitaryUnit*>(unitChain->nextAtLocation14)) {
       if (unitChain->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
         garrisonCount = static_cast<short>(garrisonCount + 1);
       }

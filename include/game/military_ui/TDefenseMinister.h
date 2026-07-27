@@ -59,10 +59,10 @@ public:
   virtual int* CreateHomeValueMap(); // 0x58 (0x4ecf20), Mac oracle
   // Per-tile stationed-unit-strength heatmap (one int per map tile): for every tile
   // this nation owns (or, when excludeEnemyTiles == 0, that a nation we're at war
-  // with owns) whose stationed-unit chain head's field_18 differs from our nation
+  // with owns) whose stationed-unit chain head's ownerNationSlot18 differs from our nation
   // slot, walks the chain accumulating a per-hex-ring (own tile / radius 1 / 2 / 3)
   // weighted strength score (g_anUnitStrengthWeightPercentBySlot[orderType] *
-  // TMilitaryUnit::field_34 / 100, cumulative up to g_awUnitCombatClassBySlot's
+  // TMilitaryUnit::strength34 / 100, cumulative up to g_awUnitCombatClassBySlot's
   // combat class) and a parallel "flag" value (2 for orderType 6/7 units, else the
   // default 1), then spreads both onto weightSum/maxWeight over the matching ring via
   // the already-ported BuildHexAreaTileIndexList. Faithfully reproduces two original

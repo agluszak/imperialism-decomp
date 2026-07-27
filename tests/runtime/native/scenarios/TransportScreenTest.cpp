@@ -14,6 +14,7 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_tags_common.h"
+#include "game/ui_widgets/TTransportPicture.h"
 
 #include <string.h>
 
@@ -127,6 +128,31 @@ private:
     if (commodityHelp == 0 || strstr(commodityHelp, "Warehouse:") == 0 ||
         strstr(commodityHelp, "Needed:") == 0 || strchr(commodityHelp, '[') != 0) {
       FailScenario("\"transport commodity help has corrupt Warehouse or Needed text\"");
+      return;
+    }
+    TTransportPicture* total =
+        static_cast<TTransportPicture*>(mainView->ResolveControlByTag(kControlTagTota));
+    TStaticText* amount =
+        total == 0 ? 0 : static_cast<TStaticText*>(total->ResolveControlByTag(kControlTagText));
+    CString currentAmount;
+    CString capacityAmount;
+    CString expectedAmount;
+    if (total != 0) {
+      currentAmount.Format("%d", static_cast<int>(total->splitValue94));
+      capacityAmount.Format("%d", static_cast<int>(total->splitValue96));
+      expectedAmount = currentAmount + "  /  " + capacityAmount;
+    }
+    if (amount == 0 || amount->text == 0) {
+      FailScenario("\"transport capacity amount label is missing\"");
+      return;
+    }
+    if (*amount->text != expectedAmount) {
+      FailScenario("\"transport capacity amount label has the wrong value\"");
+      return;
+    }
+    if (amount->ownerLocalX != 0xa2 || amount->ownerLocalY != 0x14 ||
+        amount->frameWidth34 != 0x3c || amount->frameHeight38 != 0xb) {
+      FailScenario("\"transport capacity amount label has the wrong geometry\"");
       return;
     }
     if (!HasScenarioUiSnapshot()) {

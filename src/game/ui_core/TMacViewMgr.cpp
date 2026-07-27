@@ -901,12 +901,9 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
 
     TMyStaticText* textEntry = new TMyStaticText();
 
-    int layoutHeight = 0xb;
-    int layoutWidth = 0x14;
-    int layoutPos = 0x3c;
-    int layoutAnchor = 0xa2;
-    int layoutOuter = 0x12;
-    textEntry->IStaticText(panel, &layoutAnchor, &layoutHeight, 5, 5, -1, 0);
+    int textOffset[2] = {0xa2, 0x14};
+    int textSize[2] = {0x3c, 0xb};
+    textEntry->IStaticText(panel, textOffset, textSize, 5, 5, -1, 0);
 
     TextStyle styleDescriptor;
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
@@ -1218,12 +1215,9 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
 
   TMyStaticText* textEntry = new TMyStaticText();
 
-  int textHeight = 0xb;
-  int textWidth = 0x14;
-  int textPos = 0x98;
-  int textAnchor = 0x46;
-  int textOuter = 0x12;
-  textEntry->IStaticText(panel, &textPos, &textHeight, 5, 5, -1, 0);
+  int textOffset[2] = {0x98, 0x12};
+  int textSize[2] = {0x46, 0xb};
+  textEntry->IStaticText(panel, textOffset, textSize, 5, 5, -1, 0);
 
   TextStyle styleDescriptor;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
@@ -1237,11 +1231,9 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   if (resourceSlot == 0x15 || resourceSlot == 0x16) {
     TMyStaticText* valueEntry = new TMyStaticText();
 
-    int valueHeight = 0xb;
-    int valueWidth = 0x14;
-    int valuePos = 0x3c;
-    int valueAnchor = 0x32;
-    valueEntry->IStaticText(panel, &valuePos, &valueHeight, 5, 5, -1, 0);
+    int valueOffset[2] = {0x32, 0x14};
+    int valueSize[2] = {0x3c, 0xb};
+    valueEntry->IStaticText(panel, valueOffset, valueSize, 5, 5, -1, 0);
     valueEntry->InstallTextStyle(styleDescriptor, 0);
     valueEntry->SetTextAlignmentAndMaybeRefresh(0, 0);
     valueEntry->controlTag = kControlTagValu;
