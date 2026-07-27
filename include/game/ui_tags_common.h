@@ -240,6 +240,8 @@ const int kControlTagTime = IMPERIALISM_FOURCC(
     't', 'i', 'm', 'e'); // NetMessage.cpp, TClientGreatPower.cpp, TMultiplayerMgr.cpp...
 const int kControlTagTitL = IMPERIALISM_FOURCC(
     't', 'i', 't', 'L'); // trade-book title (uppercase-L variant, distinct from kControlTagTitl)
+const int kControlTagTitR =
+    IMPERIALISM_FOURCC('t', 'i', 't', 'R'); // transport-ledger right-column title
 const int kControlTagTitl = IMPERIALISM_FOURCC('t', 'i', 't', 'l'); // title text
 const int kControlTagTnam = IMPERIALISM_FOURCC('t', 'n', 'a', 'm'); // names title label
 const int kControlTagTool = IMPERIALISM_FOURCC(

@@ -23,6 +23,17 @@ bool StrategicMapDriver::ActivateCitySemantically() {
   return RuntimeUiDriver::ActivateControlSemantically(toolbar, kControlTagCity);
 }
 
+bool StrategicMapDriver::ActivateTransport() {
+  TView* toolbar = root != 0 ? root->ResolveControlByTag(kControlTagTool) : 0;
+  TControl* transport =
+      toolbar != 0 ? static_cast<TControl*>(toolbar->ResolveControlByTag(kControlTagTran)) : 0;
+  if (transport == 0 || transport->IsActionable() == 0) {
+    return false;
+  }
+  transport->HandleEvent(transport->GetEventNumber(), transport, 0);
+  return true;
+}
+
 bool StrategicMapDriver::ActivateDiplomacySemantically() {
   TView* toolbar = root != 0 ? root->ResolveControlByTag(kControlTagTool) : 0;
   return RuntimeUiDriver::ActivateControlSemantically(toolbar, kControlTagDipl);

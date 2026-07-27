@@ -228,5 +228,5 @@ void TTransportPicture::Refresh() {
 // FUNCTION: IMPERIALISM 0x00592830
 void TTransportPicture::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
-  ForceRedraw();
+  Refresh();
 }
