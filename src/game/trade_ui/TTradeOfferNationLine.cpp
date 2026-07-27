@@ -19,6 +19,14 @@ TTradeOfferNationLine::~TTradeOfferNationLine() {}
 
 IMPLEMENT_DYNCREATE(TTradeOfferNationLine, TLineData)
 
+// FUNCTION: IMPERIALISM 0x005bd050
+void TTradeOfferNationLine::ITradeOfferNationLine(short categorySlot, short nationSlot,
+                                                  short rowArg, short colArg, int* bounds) {
+  SetLineDataRowAndBounds(rowArg, colArg, bounds);
+  nationSlot12 = nationSlot;
+  categorySlot10 = categorySlot;
+}
+
 // FUNCTION: IMPERIALISM 0x005bd090
 void TTradeOfferNationLine::InstallViews(TView* panel, int* offsetLayout) {
   TTradeOfferNationView* view = new TTradeOfferNationView();
