@@ -34,13 +34,6 @@ namespace {
 class SaveLoadRoundtripTestCase : public RandomGameScenario {
 public:
   SaveLoadRoundtripTestCase() : phase(kSave), savedTurn(0), savedNation(0) {}
-
-  const char* Name() const override {
-    return "save_load_roundtrip";
-  }
-  bool UsesRandomGameFlow() const override {
-    return true;
-  }
   int DifficultyLevel() const override {
     return 1;
   }

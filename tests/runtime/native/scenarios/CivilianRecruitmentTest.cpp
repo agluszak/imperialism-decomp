@@ -111,13 +111,6 @@ public:
   CivilianRecruitmentTestCase()
       : spawnedCivilian(0), targetHillTile(-1), targetSeaTile(-1), postOrderTicks(0),
         orderIssued(false), initialAnimationFrame(0), initialAnimationTick(0) {}
-
-  const char* Name() const override {
-    return "civilian_recruitment_selection";
-  }
-  bool UsesRandomGameFlow() const override {
-    return true;
-  }
   int DifficultyLevel() const override {
     return 1;
   }

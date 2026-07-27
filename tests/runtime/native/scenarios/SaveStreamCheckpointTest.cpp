@@ -79,12 +79,6 @@ public:
 
 class SaveStreamCheckpointTestCase : public RandomGameScenario {
 public:
-  const char* Name() const override {
-    return "save_stream_checkpoints";
-  }
-  bool UsesRandomGameFlow() const override {
-    return true;
-  }
   int DifficultyLevel() const override {
     return 1;
   }

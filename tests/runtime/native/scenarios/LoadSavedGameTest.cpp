@@ -15,9 +15,6 @@ namespace {
 
 class LoadSavedGameTestCase : public LoadGameScenario {
 public:
-  const char* Name() const override {
-    return "load_saved_game";
-  }
   bool RequiresFixture() const override {
     return true;
   }
@@ -71,8 +68,8 @@ private:
 
 class UnknownRuntimeTestCase : public RuntimeScenario {
 public:
-  const char* Name() const override {
-    return "unknown";
+  void OnManagersReady() override {
+    FailScenario("\"unknown compiled runtime test\"");
   }
 };
 

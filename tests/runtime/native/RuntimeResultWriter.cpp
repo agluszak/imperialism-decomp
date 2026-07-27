@@ -2,6 +2,7 @@
 
 #include "RuntimeJson.h"
 #include "RuntimeObservations.h"
+#include "RuntimeRegistry.h"
 #include "RuntimeRun.h"
 #include "scenarios/RuntimeScenario.h"
 
@@ -23,7 +24,7 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
   faults += ']';
   CString actionLog(run.ActionLog());
   actionLog += ']';
-  if (scenario.UsesRandomGameFlow() &&
+  if (run.CapturesSnapshot(kRuntimeSnapshotUi) &&
       (run.RandomSetupUiSnapshot().IsEmpty() || run.StrategicMapUiSnapshot().IsEmpty())) {
     status = "failed";
     failureJson = "\"generated UI factory snapshot is missing\"";
@@ -35,7 +36,7 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
     run.RecordAssertion("result.scenario_ui_snapshot.present", failureJson, true);
   }
   CString uiSnapshots("[");
-  if (scenario.UsesRandomGameFlow()) {
+  if (run.CapturesSnapshot(kRuntimeSnapshotUi)) {
     if (!run.RandomSetupUiSnapshot().IsEmpty()) {
       uiSnapshots += "\n";
       uiSnapshots += run.RandomSetupUiSnapshot();
@@ -79,6 +80,7 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
   json.Format("{\n"
               "  \"format_version\": 1,\n"
               "  \"name\": \"%s\",\n"
+              "  \"evidence_kind\": \"%s\",\n"
               "  \"status\": \"%s\",\n"
               "  \"seed\": %u,\n"
               "  \"idle_ticks\": %lu,\n"
@@ -116,12 +118,12 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
               "  },\n"
               "  \"failure\": %s\n"
               "}\n",
-              scenario.Name(), status, run.Seed(), run.IdleTicks(), run.ElapsedMs(),
-              run.PhaseName(), run.LastAction(), static_cast<LPCSTR>(eventSequence),
-              static_cast<LPCSTR>(actionLog), static_cast<LPCSTR>(uiSnapshots),
-              static_cast<LPCSTR>(capitalConfirmationSnapshot), static_cast<LPCSTR>(mapState),
-              static_cast<LPCSTR>(roundtrip), static_cast<LPCSTR>(assertionId),
-              static_cast<LPCSTR>(assertions),
+              run.TestName(), run.EvidenceKind(), status, run.Seed(), run.IdleTicks(),
+              run.ElapsedMs(), run.PhaseName(), run.LastAction(),
+              static_cast<LPCSTR>(eventSequence), static_cast<LPCSTR>(actionLog),
+              static_cast<LPCSTR>(uiSnapshots), static_cast<LPCSTR>(capitalConfirmationSnapshot),
+              static_cast<LPCSTR>(mapState), static_cast<LPCSTR>(roundtrip),
+              static_cast<LPCSTR>(assertionId), static_cast<LPCSTR>(assertions),
               g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
               RuntimeClassName(mainView), g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1,
               run.SelectedNationSlot(), g_pSimMgr != 0 ? g_pSimMgr->difficultyLevel : -1,

@@ -19,12 +19,6 @@ namespace {
 
 class IntroductoryRandomGameTestCase : public RandomGameScenario {
 public:
-  const char* Name() const override {
-    return "random_game_introductory_exits_newspaper";
-  }
-  bool UsesRandomGameFlow() const override {
-    return true;
-  }
   int DifficultyLevel() const override {
     return 0;
   }

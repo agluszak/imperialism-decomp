@@ -12,6 +12,8 @@ runtime-test-build:
 _build-runtime-tests-unlocked:
   just vtable-gate
   uv run python -m tools.generate --gen-dir "{{runtime_test_build_dir}}/generated"
+  uv run python -m tools.runtime.generate_native_registry \
+    --output "{{runtime_test_build_dir}}/generated/runtime/RuntimeRegistry.inc"
   docker run --rm --network none \
     -e CMAKE_FLAGS="-DIMPERIALISM_RUNTIME_TESTS=ON" \
     -v "$PWD":/imperialism \
@@ -27,6 +29,8 @@ cstring-runtime-probe:
 [doc('Compile the native runtime harness with clang-cl diagnostics')]
 [group('runtime-test')]
 runtime-harness-lint:
+  uv run python -m tools.runtime.generate_native_registry \
+    --output "{{lint_build_dir}}/generated/runtime/RuntimeRegistry.inc"
   just lint "-DIMPERIALISM_RUNTIME_TESTS=ON"
 
 [doc('Ask MSVC500 which array-construction shape it emits (inline / call-loop / vector-ctor iterator); --sweep varies the optimization flags')]
@@ -51,6 +55,17 @@ runtime-test name *args:
 runtime-test-suite suite='pr' *args:
   just runtime-test-build
   uv run python -m tools.runtime.cli suite "{{suite}}" {{args}}
+
+[doc('Run a suite twice, in reverse order, and optionally under GDB; compare normalized observations')]
+[group('runtime-test')]
+runtime-test-determinism suite='full' *args:
+  just runtime-test-build
+  uv run python -m tools.runtime.cli determinism "{{suite}}" {{args}}
+
+[doc('Nightly runtime determinism run, including debugger-sensitivity comparison')]
+[group('runtime-test')]
+runtime-test-nightly:
+  just runtime-test-determinism full --gdb --require-fixtures
 
 [doc('Build and run a required runtime suite using local retail assets')]
 [group('runtime-test')]

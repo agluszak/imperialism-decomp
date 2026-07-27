@@ -52,7 +52,7 @@ void RuntimeExceptionCapture::Trap(RuntimeRun& run, RuntimeScenario& scenario,
   RuntimeDebugRecord record;
   record.reason = reason;
   record.elapsedMs = run.ElapsedMs();
-  record.testName = scenario.Name();
+  record.testName = run.TestName();
   record.phase = run.PhaseName();
   record.lastAction = run.LastAction();
   record.turnEvent = g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1;
@@ -74,7 +74,7 @@ void RuntimeExceptionCapture::Trap(RuntimeRun& run, RuntimeScenario& scenario,
                 "\"last_action\": \"%s\", \"elapsed_ms\": %lu, \"turn_event\": %d, "
                 "\"modal_depth\": %d, \"assertion_id\": \"%s\", \"failure\": %s, "
                 "\"exception\": %s}\n",
-                static_cast<int>(reason), scenario.Name(), run.PhaseName(), run.LastAction(),
+                static_cast<int>(reason), run.TestName(), run.PhaseName(), run.LastAction(),
                 record.elapsedMs, record.turnEvent, record.modalDepth, run.FirstAssertionId(),
                 failureJson, static_cast<LPCSTR>(exceptionJson));
     RuntimeJson::WriteFileAtomically(run.DebugRecordPath(), json);

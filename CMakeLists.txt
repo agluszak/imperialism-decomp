@@ -40,13 +40,28 @@ set(IMPERIALISM_COMPILE_TARGETS Imperialism)
 if(IMPERIALISM_RUNTIME_TESTS)
   file(GLOB_RECURSE IMPERIALISM_RUNTIME_TEST_SOURCES CONFIGURE_DEPENDS
       tests/runtime/native/*.cpp)
+    list(FILTER IMPERIALISM_RUNTIME_TEST_SOURCES EXCLUDE REGEX "/selftest/")
     add_library(ImperialismRuntimeHarness OBJECT ${IMPERIALISM_RUNTIME_TEST_SOURCES})
-    list(APPEND IMPERIALISM_COMPILE_TARGETS ImperialismRuntimeHarness)
+    set(IMPERIALISM_RUNTIME_SELF_TEST_SOURCES
+        tests/runtime/native/selftest/RuntimeHarnessSelfTest.cpp
+        tests/runtime/native/RuntimeHarnessCore.cpp
+        tests/runtime/native/RuntimeTurnEventQueue.cpp)
+    if(IMPERIALISM_LINT_COMPILE_ONLY)
+        add_library(ImperialismRuntimeSelfTest OBJECT
+            ${IMPERIALISM_RUNTIME_SELF_TEST_SOURCES})
+    else()
+        add_executable(ImperialismRuntimeSelfTest
+            ${IMPERIALISM_RUNTIME_SELF_TEST_SOURCES})
+    endif()
+    list(APPEND IMPERIALISM_COMPILE_TARGETS
+        ImperialismRuntimeHarness ImperialismRuntimeSelfTest)
     target_sources(Imperialism PRIVATE $<TARGET_OBJECTS:ImperialismRuntimeHarness>)
     target_compile_definitions(Imperialism PRIVATE IMPERIALISM_RUNTIME_TESTS=1)
     target_compile_definitions(ImperialismRuntimeHarness PRIVATE IMPERIALISM_RUNTIME_TESTS=1)
+    target_compile_definitions(ImperialismRuntimeSelfTest PRIVATE IMPERIALISM_RUNTIME_TESTS=1)
     target_include_directories(Imperialism PRIVATE tests/runtime/native)
     target_include_directories(ImperialismRuntimeHarness PRIVATE tests/runtime/native)
+    target_include_directories(ImperialismRuntimeSelfTest PRIVATE tests/runtime/native)
 endif()
 
 # Generated build inputs (stubs) live in the build tree, not the source tree.
@@ -56,6 +71,11 @@ endif()
 set(IMPERIALISM_GENERATED_DIR
     "${CMAKE_BINARY_DIR}/generated"
     CACHE PATH "Generated build inputs (stubs)")
+
+if(IMPERIALISM_RUNTIME_TESTS)
+    target_include_directories(ImperialismRuntimeHarness PRIVATE
+        "${IMPERIALISM_GENERATED_DIR}/runtime")
+endif()
 
 file(GLOB IMPERIALISM_AUTOGEN_STUB_SOURCES CONFIGURE_DEPENDS
     "${IMPERIALISM_GENERATED_DIR}/stubs/*.cpp"
@@ -212,6 +232,10 @@ else()
                 TARGET ImperialismRuntimeHarness
                 PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
             )
+            set_property(
+                TARGET ImperialismRuntimeSelfTest
+                PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+            )
             # Runtime tests must exercise the same optimized game-code ABI as the
             # production executable. In particular, /Oy- changes frame layout and
             # can hide calling-convention or corrupted-argument failures that occur
@@ -221,6 +245,7 @@ else()
             # objects remain optimized above so runtime tests keep exercising
             # the production ABI and stack layout.
             target_compile_options(ImperialismRuntimeHarness PRIVATE /W3 /GX /GR- /Od /Oy-)
+            target_compile_options(ImperialismRuntimeSelfTest PRIVATE /W3 /GX /GR- /Od /Oy-)
             target_link_options(Imperialism PRIVATE /OPT:NOREF /OPT:NOICF)
             # VC5 PDBs predate the format understood by current LLVM tools.
             # Emit a linker map as the build-specific symbolization sidecar.

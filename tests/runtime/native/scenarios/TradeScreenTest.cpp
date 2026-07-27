@@ -27,13 +27,6 @@ public:
   TradeScreenTestCase()
       : phase(kActivateTradeScreen), selectedRow(0), selectedSellRow(0), initialBidBitmap(0),
         initialSellValue(0), initialBarValue(0) {}
-
-  const char* Name() const override {
-    return "trade_screen_operates";
-  }
-  bool UsesRandomGameFlow() const override {
-    return true;
-  }
   int DifficultyLevel() const override {
     return 1;
   }

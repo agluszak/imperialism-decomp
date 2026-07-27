@@ -5,6 +5,7 @@
 #endif
 
 #include "game/mfc.h"
+#include "RuntimeHarnessCore.h"
 
 #include <windows.h>
 
@@ -15,6 +16,7 @@ public:
   RuntimeRun();
 
   void InitializeFromEnvironment();
+  void SetDescriptor(unsigned int snapshotFlags, const char* evidenceKind);
   void StartScenario(RuntimeScenario* scenario);
   void EnterPhase(const char* phase, const char* action);
   void Finish();
@@ -36,7 +38,7 @@ public:
   unsigned long PhaseElapsedMs() const;
   unsigned long ProgressCounter() const;
   unsigned long LastProgressMs() const;
-  unsigned long LastHeartbeatMs() const;
+  bool HeartbeatDue(unsigned long now, unsigned long interval) const;
   void SetLastHeartbeatMs(unsigned long value);
   const char* LastAction() const;
   unsigned long PhaseTimeoutMs() const;
@@ -49,6 +51,8 @@ public:
   bool HoldRequested() const;
   bool HoldAt(const char* target) const;
   bool SpinRequestedForCurrentPhase() const;
+  bool CapturesSnapshot(unsigned int flag) const;
+  const char* EvidenceKind() const;
 
   short SelectedNationSlot() const;
   void SetSelectedNationSlot(short value);
@@ -76,29 +80,22 @@ public:
 
 private:
   RuntimeScenario* scenario;
-  bool finished;
+  RuntimeProgressState progress;
+  RuntimeResultAggregate resultAggregate;
   unsigned int seed;
-  unsigned long idleTicks;
-  unsigned long phaseTicks;
-  unsigned long phaseStartMs;
-  unsigned long startMs;
-  unsigned long progressCounter;
-  unsigned long lastProgressMs;
-  unsigned long lastHeartbeatMs;
   unsigned long phaseTimeoutMs;
   short selectedNationSlot;
   HWND mainWindowHandle;
   bool newspaperAdvanced;
+  unsigned int snapshotFlags;
   char testName[64];
-  char phaseName[64];
-  char lastAction[64];
   char resultPath[MAX_PATH];
   char heartbeatPath[MAX_PATH];
   char debugRecordPath[MAX_PATH];
   char fixturePath[MAX_PATH];
   char holdTarget[48];
   char spinPhase[48];
-  char firstAssertionId[96];
+  char evidenceKind[32];
   CString firstFailureJson;
   CString randomSetupUiSnapshot;
   CString strategicMapUiSnapshot;
