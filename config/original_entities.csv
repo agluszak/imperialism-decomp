@@ -4230,7 +4230,7 @@ address|name|symbol|size|type|prototype|provenance
 54f5f0|TShip::DestructTShip||62|function|undefined DestructTShip()|
 54f640|TShip::Free||241|function|undefined DestroyAndUnlinkNavyPrimaryOrderNode()|
 54f780|IltTarget_0054f780||26|function|undefined IltTarget_0054f780()|
-54f7b0|IltTarget_0054f7b0||236|function|undefined IltTarget_0054f7b0()|
+54f7b0|TShip::IShip||236|function|void __thiscall TShip::IShip(short shipType, TZone * zone, short nationArg, char const * nameOverride)|curated
 54f8e0|CreateNavyPrimaryOrderNodeAndAssignDisplayName||358|function|undefined CreateNavyPrimaryOrderNodeAndAssignDisplayName()|
 54fab0|TShip::WriteTo||123|function|undefined SerializeNavyPrimaryOrderNodeToStream()|
 54fb50|TShip::ReadFrom||126|function|undefined DeserializeNavyPrimaryOrderNodeFromStream()|
