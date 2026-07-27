@@ -6282,7 +6282,7 @@ address|matching|name
 0x5c0d80|1.0|TDealLine::TDealLine
 0x5c0db0|1.0|TDealLine::`scalar deleting destructor'
 0x5c0de0|0.0|TDealLine::~TDealLine
-0x5c0e00|0.0|IltTarget_005c0e00
+0x5c0e00|1.0|TDealLine::IDealLine
 0x5c0e50|0.5773809523809523|TDealLine::InstallViews
 0x5c1430|0.4897959183673469|TCommodityLine::CreateObject
 0x5c14a0|1.0|TCommodityLine::GetRuntimeClass
