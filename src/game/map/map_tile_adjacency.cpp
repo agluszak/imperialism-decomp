@@ -1,9 +1,6 @@
-// AreTileIndicesHexAdjacent, isolated in its own translation unit with a local declaration
-// rather than one in TMapMgr.h. Both alternatives were measured: adding the body to
-// TMapMgr.cpp, and adding only the declaration to TMapMgr.h, each moved twelve unrelated
-// functions (two of them out of an exact match). The header is included widely enough that
-// touching it at all is not free -- see the TU-codegen fragility note in the big-functions
-// skill. Declare it here until a real caller in our source needs it.
+// MATCH: own translation unit, and the declaration stays local rather than going into
+// TMapMgr.h -- either edit to that widely-included header perturbs a dozen unrelated
+// functions. Move the declaration out when a caller in our source needs it.
 
 #include "decomp_types.h"
 
