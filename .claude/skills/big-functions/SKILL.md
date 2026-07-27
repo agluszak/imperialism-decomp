@@ -261,3 +261,28 @@ static-init modeling decision; defer rather than fake with placement-new.
      `off2va(O)+5+rel32 == target`), since `just ghidra xrefs` misses address-taken/table dispatch.
 
   *(ex decomp-loop list-note 104)*
+
+### VC5's inline budget runs out inside a big body — `#pragma inline_depth(0)` restores the call shape
+
+In a body of ~1 KB the original often expands an implicitly-inline header member (a
+`stretch<T>::operator[]`, an accessor, a small collection helper) at only the *first*
+call site and calls the out-of-line COMDAT copy at every later one. Our build, compiling
+a much smaller amount of surrounding code, happily inlines all of them — and drags each
+inlined body's own callees in too (`operator[]` pulled `OverStretch`'s two `realloc`
+calls inline). The cost is double: wrong call shape at N sites, plus a fatter frame that
+shifts every stack slot and changes which loop invariants get hoisted.
+
+The tell in `just compare`: repeated `+call _realloc` / `+call <small helper>` blocks
+opposite `-call ??A?$stretch@…` lines, with the surrounding arithmetic matching
+instruction-for-instruction but at different `[esp+N]` displacements.
+
+Fix: `#pragma inline_depth(0)` immediately before the function and `#pragma inline_depth()`
+immediately after. It applies from the next function definition onward, so it cannot be
+scoped to a *region inside* a body — but function granularity is enough here. (`#pragma
+auto_inline` is the wrong tool: it acts on where a function is *defined*, not where it is
+called, so wrapping a call site does nothing.) Worked example:
+`RebuildRegionBorderLinkLattice` @0x0052ac40 went 30.45% → 53.89%, four of five append
+sites switching from inlined-with-realloc to the out-of-line `operator[]` call. Verify
+the neighbouring functions in the file kept their baseline scores — the pragma survives
+`reorder_marked_functions` only as a *stranded* comment block, so re-check its placement
+after any reorder.

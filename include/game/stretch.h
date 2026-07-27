@@ -142,7 +142,10 @@ public:
     return count;
   }
 
-protected:
+  // Public because a caller compiled under `#pragma inline_depth(0)` (see the
+  // big-functions skill) cannot use the accessors above without emitting a call the
+  // original does not have. The accessors stay the normal way to read these.
+public:
   T* data;      // +0x04
   int capacity; // +0x08
   int count;    // +0x0c
