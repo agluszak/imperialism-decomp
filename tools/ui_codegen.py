@@ -1142,14 +1142,14 @@ def _render_factory_with_map(
     if len(recipe.cases) == 1:
         body.extend(
             (
-                "  if (static_cast<unsigned short>(nEventCode) != "
+                "  if (static_cast<short>(nEventCode) != "
                 f"{vocabulary_by_event[recipe.cases[0].event]}) {{",
                 "    return 0;",
                 "  }",
             )
         )
     else:
-        body.append("  switch (static_cast<unsigned short>(nEventCode)) {")
+        body.append("  switch (static_cast<short>(nEventCode)) {")
     for case in recipe.cases:
         indent = "  " if len(recipe.cases) == 1 else "    "
         if len(recipe.cases) > 1:
@@ -1188,7 +1188,7 @@ def _render_factory_with_map(
             "",
             "#ifdef IMPERIALISM_RUNTIME_TESTS",
             "  RuntimeTestObserveBuiltUiTree(",
-            "      static_cast<unsigned short>(nEventCode), g_pUiResourceHead);",
+            "      static_cast<short>(nEventCode), g_pUiResourceHead);",
             "#endif",
             "",
             "  if (g_pUiResourceHead != 0) {",
