@@ -16,6 +16,8 @@
 #include "game/city/TUnitOrder.h"
 #include "game/globals/prelude.h"
 #include "game/globals/city_ui_globals.h"
+#include "game/globals/military_globals.h"
+#include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -67,7 +69,7 @@ void TArmoryView::DoStartup() {
         pictureVariant = (resourceType == 0x19) ? 0x10 : 0x18;
       }
     } else {
-      pictureVariant = (resourceType == 0x19) ? 0x10 : 0x18;
+      pictureVariant = resourceType;
     }
 
     TCivilianButton* button =
@@ -299,9 +301,9 @@ void TArmoryView::UpdateFields() {
 
 // FUNCTION: IMPERIALISM 0x004cfbd0
 void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
-  CString locationText;
-  CString terrainText;
-  CString resourceText;
+  CString unusedDescription;
+  CString currencyText;
+  CString resourceName;
 
   TUnitOrder* order = static_cast<TUnitOrder*>(city94->orderSlotsE4[nBuildingSlotId + 0x19]);
   if (selectedUnitOrderA8 == order) {
@@ -318,13 +320,11 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
   style.tail[2] = 0;
   style.tail[3] = 0;
 
-  // 'plaq' -- unit-type icon picture (resource base 0x1d9c + the recipe resource index).
   TPicture* plaq =
       static_cast<TPicture*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'l', 'a', 'q')));
   plaq->AssertValid();
   plaq->SetPictureResourceIdAndRefresh(static_cast<short>(order->resourceTypeIndex48 + 0x1d9c), 1);
 
-  // 'unit' -- the recipe headline text.
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
   TStaticText* unit =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('u', 'n', 'i', 't')));
@@ -332,34 +332,98 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0xc1a);
   }
-  unit->InstallTextStyle(style.desc, 1);
-  unit->SetTextFromStringResource(0x2717, 0, 1);
+  unit->SetTextFromStringResource(0x2717, static_cast<short>(order->resourceTypeIndex48 + 1), 0);
+  CRect bounds;
+  unit->QueryBounds(&bounds);
+  RECT copiedBounds;
+  CopyRect(&copiedBounds, &bounds);
+  InvalidateCityDialogRectRegion(&copiedBounds, 1);
 
-  // 'cos1' -- primary input per-unit count.
+  CString amountText;
+  g_pSimMgr->GetStringPrelude(order->primaryInputResourceId, &resourceName);
+  amountText.Format(g_szDecimalFormat, static_cast<int>(order->primaryInputPerUnit));
+  unusedDescription =
+      amountText + s_szSpaceSeparator_00695794 + resourceName + s_szLineBreak_00695880;
+
+  TNumberText* cos0 =
+      static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', '0')));
+  cos0->AssertValid();
+  cos0->SetControlValue(1, 1);
+
   TNumberText* cos1 =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', '1')));
   cos1->AssertValid();
   cos1->SetControlValue(order->primaryInputPerUnit, 1);
 
-  // 'cos2'/'ava2' -- secondary input; disabled when the recipe has no second input.
+  TNumberText* cos2 =
+      static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', '2')));
+  cos2->AssertValid();
   TNumberText* ava2 =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('a', 'v', 'a', '2')));
   ava2->AssertValid();
-  if (order->secondaryInputResourceId == -1) {
-    ava2->SetState(0, 0);
-    ava2->SetEnabled(0, 0);
+  if (order->secondaryInputResourceId != -1) {
+    cos2->SetEnabled(1, 1);
+    ava2->SetEnabled(1, 1);
+    cos2->SetControlValue(order->secondaryInputPerUnit, 1);
   } else {
-    ava2->SetState(0, 1);
-    ava2->SetEnabled(1, 0);
-    ava2->SetControlValue(order->secondaryInputPerUnit, 1);
+    cos2->SetEnabled(0, 0);
+    ava2->SetEnabled(0, 1);
   }
 
-  // 'cos3' -- cash cost per unit.
   TStaticText* cos3 =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', '3')));
   cos3->AssertValid();
-  g_pSimMgr->NumToCurrency(selectedUnitOrderA8->cashCostPerUnit, &resourceText);
-  cos3->SetTextAndMaybeRefresh(&resourceText, 1);
+  g_pSimMgr->NumToCurrency(selectedUnitOrderA8->cashCostPerUnit, &currencyText);
+  cos3->SetTextAndMaybeRefresh(&currencyText, 1);
+
+  short resourceType = order->resourceTypeIndex48;
+  TNumberText* stat0 =
+      static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 't', 'a', '0')));
+  stat0->AssertValid();
+  stat0->SetControlValue(static_cast<int>(g_afArmoryUnitFirepowerByType[resourceType] *
+                                          g_fArmoryFirepowerDisplayScale),
+                         1);
+  stat0->QueryBounds(&bounds);
+  CopyRect(&copiedBounds, &bounds);
+  plaq->InvalidateCityDialogRectRegion(&copiedBounds, 1);
+
+  TNumberText* stat1 =
+      static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 't', 'a', '1')));
+  stat1->AssertValid();
+  stat1->SetControlValue(g_awArmoryUnitActionPointsByType[resourceType] / 10, 1);
+  stat1->QueryBounds(&bounds);
+  CopyRect(&copiedBounds, &bounds);
+  plaq->InvalidateCityDialogRectRegion(&copiedBounds, 1);
+
+  TNumberText* stat2 =
+      static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 't', 'a', '2')));
+  stat2->AssertValid();
+  stat2->SetControlValue(g_anArmoryUnitRangeByType[resourceType], 1);
+  stat2->QueryBounds(&bounds);
+  CopyRect(&copiedBounds, &bounds);
+  plaq->InvalidateCityDialogRectRegion(&copiedBounds, 1);
+
+  TStaticText* stat3 =
+      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 't', 'a', '3')));
+  stat3->AssertValid();
+  stat3->SetTextFromStringResource(
+      0x271c, static_cast<short>(g_MapContextStaticTable_00695448[resourceType] + 0x21), 1);
+  stat3->QueryBounds(&bounds);
+  CopyRect(&copiedBounds, &bounds);
+  plaq->InvalidateCityDialogRectRegion(&copiedBounds, 1);
+
+  TStaticText* description =
+      static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('d', 'e', 's', 'c')));
+  if (description == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0xc57);
+  }
+  description->SetTextFromStringResource(0x2750, static_cast<short>(resourceType + 1), 0);
+  description->QueryBounds(&bounds);
+  CopyRect(&copiedBounds, &bounds);
+  InvalidateCityDialogRectRegion(&copiedBounds, 1);
+
+  UpdateFields();
 }
 
 // FUNCTION: IMPERIALISM 0x004d0470

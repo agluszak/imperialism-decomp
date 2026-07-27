@@ -8,6 +8,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/globals/ui_widgets_globals.h"
+#include "game/gfx/TDisplayMgr.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
@@ -15,6 +16,7 @@
 #include "game/turn_event_codes.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
+#include "game/ui_core/TPicture.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_diplomacy.h"
@@ -141,6 +143,15 @@ private:
         diplomacy->ResolveControlByTag(kControlTagMkey) == 0 ||
         diplomacy->ResolveControlByTag(kControlTagEnd) == 0) {
       FailScenario("\"diplomacy orders is missing info, treaty, map-key, or back controls\"");
+      return;
+    }
+    TPicture* diplomacyToolbarControl =
+        g_pDisplayMgr == 0 || g_pDisplayMgr->activeDialog == 0
+            ? 0
+            : static_cast<TPicture*>(
+                  g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDipl));
+    if (diplomacyToolbarControl == 0 || diplomacyToolbarControl->glyphBase84 != 0x24ea) {
+      FailScenario("\"diplomacy toolbar control did not use its selected picture\"");
       return;
     }
     if (ScenarioPhaseElapsedMs() < 1000) {

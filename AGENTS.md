@@ -87,7 +87,7 @@ porting or diagnosing it:
 | unknown class layout/inheritance to reconstruct | **`class-recovery`** |
 | a below-100% vtable or wrong-slot diff | **`vtable-matching`** |
 
-Two standing behavioral rules the topical skills exist to enforce:
+Standing behavioral rules the topical skills exist to enforce:
 
 1. **No function is "too complex" to port.** Strings, EH scaffolding, size, and FP
    density are never reasons to postpone, stub, approximate, or hand back a target —
@@ -98,6 +98,12 @@ Two standing behavioral rules the topical skills exist to enforce:
    every ILT thunk to its target, verify conventions per `calling-conventions`, and
    read constants/strings from the binary (`just ghidra string-oracle`, datacmp). If you
    have not run the listing, you do not know what the function does.
+3. **Assume there are no gameplay bugs in the original retail game.** A bug observed
+   in the recomp is a symptom of unfaithfully ported code, data, layout, ownership, or
+   control flow. Diagnose it against the original listing and live retail behavior,
+   then restore the original semantics. Never fix a symptom by adding a workaround,
+   guard, special case, guessed value, or alternate behavior that is absent from the
+   original.
 
 ## IMPORTANT
 - Game is compiled with MSVC500 (Visual C++ 5.0), which is an old compiler. DO NOT USE modern C++ features or syntax.

@@ -8516,6 +8516,9 @@ address|name|symbol|size|type|prototype|provenance
 650728|TRailCityMinister::classTRailCityMinister|||global||
 650758|g_AiDevelopmentResourceBudgetScale_00650758|||global||
 651030|g_anUniversityRequirementIdByRecruitRow|||global||
+651100|g_awArmoryUnitActionPointsByType|||global||
+651140|g_afArmoryUnitFirepowerByType|||global||
+6511b8|g_anArmoryUnitRangeByType|||global||
 651230|TBuildingView::classTBuildingView|||global||
 651248|TWarehouseView::classTWarehouseView|||global||
 651260|TUnitsView::classTUnitsView|||global||
@@ -8530,6 +8533,7 @@ address|name|symbol|size|type|prototype|provenance
 651338|TArmoryView::classTArmoryView|||global||
 651350|TEngineerDialog::classTEngineerDialog|||global||
 651368|TPlaceCityDialog::classTPlaceCityDialog|||global||
+651398|g_fArmoryFirepowerDisplayScale|||global||
 65318a|g_awEngineerFortBuildCostByLevel|||global||
 653194|g_adwCivilianWorkOrderCostByClass|||global||
 6531d8|g_adwEngineerRailBuildCostByTerrainType|||global||

@@ -40,6 +40,12 @@ extern int g_adwCivilianWorkOrderCostByClass[16];
 // categories. A -1 entry leaves that row empty.
 extern int g_anUniversityRequirementIdByRecruitRow[9][4];
 
+// Armory display metrics indexed by the selected TUnitOrder resource type.
+extern short g_awArmoryUnitActionPointsByType[30];
+extern float g_afArmoryUnitFirepowerByType[30];
+extern int g_anArmoryUnitRangeByType[30];
+extern float g_fArmoryFirepowerDisplayScale;
+
 extern "C" const char g_szCityProductionUniversityPrefix[];
 
 extern "C" const char g_szCityProductionArmoryPrefix[];

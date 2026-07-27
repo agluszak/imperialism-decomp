@@ -179,7 +179,7 @@ char* g_pLoungeLocalPlayerNameSharedText_0065c160 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x00668b88
 char* g_pStatusPictureMainSharedText_00668b88 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x00695448
-extern const unsigned char g_MapContextStaticTable_00695448[0x20] = {
+extern const signed char g_MapContextStaticTable_00695448[0x20] = {
     1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0};
 // Last cursor edge-auto-scroll timestamp in GetTickCountDiv16 units
 // (TAmbitApplication::HandleCursor, 0x49e320).
@@ -1439,6 +1439,24 @@ unsigned char g_abUniversityRequirementLevelById[24][4] = {
 int g_anUniversityRequirementIdByRecruitRow[9][4] = {
     {3, 4, 21, 22},  {-1, -1, -1, -1}, {0, 17, 18, -1},  {2, -1, -1, -1}, {-1, -1, -1, -1},
     {1, 20, -1, -1}, {19, -1, -1, -1}, {-1, -1, -1, -1}, {6, -1, -1, -1}};
+// Armory display action points by unit type. Retail keeps a city-view copy separate
+// from the identical tactical action-point table.
+// GLOBAL: IMPERIALISM 0x00651100
+short g_awArmoryUnitActionPointsByType[30] = {40,  60, 40,  40, 110, 90, 50, 30, 40, 60,
+                                              40,  40, 110, 90, 60,  30, 50, 70, 50, 40,
+                                              110, 90, 80,  30, 40,  40, 50, 90, 90, 90};
+// Armory firepower display values by unit type. This is a distinct retail table even
+// though its values duplicate the tactical attack table.
+// GLOBAL: IMPERIALISM 0x00651140
+float g_afArmoryUnitFirepowerByType[30] = {
+    50.0f,  50.0f,  100.0f, 125.0f, 75.0f,  150.0f, 100.0f, 160.0f, 75.0f,  100.0f,
+    150.0f, 175.0f, 100.0f, 200.0f, 175.0f, 300.0f, 100.0f, 150.0f, 225.0f, 250.0f,
+    225.0f, 450.0f, 250.0f, 500.0f, 0.0f,   0.0f,   0.0f,   0.0f,   0.0f,   0.0f};
+// GLOBAL: IMPERIALISM 0x006511b8
+int g_anArmoryUnitRangeByType[30] = {5,  5,  5,  5,  3,  3,  9,  11, 8,  8, 8, 8,  5, 5, 12,
+                                     14, 10, 10, 10, 10, 10, 12, 15, 17, 5, 8, 10, 0, 0, 0};
+// GLOBAL: IMPERIALISM 0x00651398
+float g_fArmoryFirepowerDisplayScale = 0.1f;
 // Per-resourceType "requires tiered nibble" byte table. Read by the same function above;
 // only nonzero-ness is consumed, but retail stores resource type 6 as 6 rather than bool 1.
 unsigned char g_abResourceTypeUsesHighNibbleFlag[24] = {0, 0, 0, 1, 1, 0, 6, 0, 0, 0, 0, 0,

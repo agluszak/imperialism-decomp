@@ -5,16 +5,18 @@ Extracted: 2026-02-15
 
 ## Relevant Civilian-Unlock Technologies
 
-| Tech | Approx year | Cost | Prerequisites | Effect relevant to University civilians |
-|---|---|---:|---|---|
-| Iron Railroad Bridge | 1821-24 | 1,500 | None | Enables **Forester** unit (hardwood forest level 1 improvements). |
-| Feed Grasses | 1821-24 | 1,500 | None | Enables **Rancher** unit (wool/livestock level 1 improvements). |
-| Oil Drilling | 1856-58 | 25,000 | None (per wiki table) | Enables **Driller** unit and oil production/prospecting in desert/tundra/swamp. |
+| Tech | Tech ID | Approx year | Cost | Prerequisites | Effect relevant to University civilians |
+|---|---:|---|---:|---|---|
+| Iron Railroad Bridge | 6 | 1821-24 | 1,500 | None | Enables **Forester** unit (university category 3). |
+| Feed Grasses | 7 | 1821-24 | 1,500 | None | Enables **Rancher** unit (university category 5). |
+| Oil Drilling | 0x13 | 1856-58 | 25,000 | None (per wiki table) | Enables **Driller** unit (university category 8) and oil production/prospecting. |
 
 ## Baseline Availability Notes
 
 - `Miner`, `Prospector`, `Farmer`, and `Engineer` are treated as baseline-available in current University UI investigation context.
-- Forester/Rancher/Driller should be gated by technology-state checks in University dialog code.
+- `TTechMgr::HandleAbilityUnlock` writes the per-nation availability bytes for
+  Forester/Rancher/Driller, and `TUniversityView::DoStartup` reads those bytes to enable or
+  disable the corresponding rows.
 
 ## Implications for Code Tracing
 
@@ -23,6 +25,8 @@ When tracing university unlock checks, prioritize detection of comparisons/bit t
 - Feed Grasses (Rancher)
 - Oil Drilling (Driller)
 
-Likely code locations:
-- University row construction and refresh routines around `0x00474ac5..0x004784ce`
-- University apply/commit handlers that populate row enabled/disabled state
+Confirmed code locations:
+- `TTechMgr::HandleAbilityUnlock` at `0x005afd00`: tech IDs 6, 7, and 0x13 write categories
+  3, 5, and 8 respectively in `universityRecruitmentAvailabilityByNation467`.
+- `TUniversityView::DoStartup` at `0x004cace0`: reads the active nation's nine-byte row and
+  enables/disables the `civ*` and `clu*` controls.

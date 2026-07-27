@@ -8,14 +8,17 @@
 #include "game/city/TProductionOrder.h"
 #include "game/city/TShipOrder.h"
 #include "game/city/TUnitOrder.h"
+#include "game/city_ui/TArmoryView.h"
 #include "game/city_ui/TBuildingView.h"
 #include "game/city_ui/TCityProductionView.h"
 #include "game/city_ui/TIndustryView.h"
 #include "game/city_ui/TShipyardView.h"
 #include "game/city_ui/TUniversityView.h"
 #include "game/globals/prelude.h"
+#include "game/globals/city_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/nation/TGreatPower.h"
 #include "game/turn_event_codes.h"
@@ -23,12 +26,15 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
 #include "game/ui_core/TNumberText.h"
+#include "game/ui_core/TStaticText.h"
 #include "game/ui_screens/TSimMgr.h"
+#include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_tags_city.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_widgets/TIndustryCluster.h"
 #include "game/ui_widgets/TPlacard.h"
 #include "game/ui_widgets/TRailCluster.h"
+#include "game/ui_widgets/TCivilianButton.h"
 
 namespace {
 
@@ -97,6 +103,7 @@ private:
 
   enum {
     kShipyardBuildingSlot = kTurnEventShipyard - kTurnEventTextileMill,
+    kArmoryBuildingSlot = kTurnEventArmory - kTurnEventTextileMill,
     kUniversityBuildingSlot = kTurnEventUniversity - kTurnEventTextileMill,
     kRailyardBuildingSlot = kTurnEventRailyard - kTurnEventTextileMill
   };
@@ -104,6 +111,7 @@ private:
   enum InteractionKind {
     kNoInteraction,
     kUniversityInteraction,
+    kArmoryInteraction,
     kShipyardInteraction,
     kItemInteraction
   };
@@ -247,6 +255,135 @@ private:
     }
     if (!foundLiveRecruitmentCount) {
       FailScenario("\"university has no styled live recruitment count\"");
+      return false;
+    }
+    return true;
+  }
+
+  bool ValidateArmoryState(TBuildingView* buildingView) {
+    if (buildingView->IsKindOf(RUNTIME_CLASS(TArmoryView)) == 0) {
+      FailScenario("\"armory building control opened the wrong view class\"");
+      return false;
+    }
+    TArmoryView* armory = static_cast<TArmoryView*>(buildingView);
+    short nationSlot = g_pSimMgr->GetActiveNationId();
+    bool foundActionableOrder = false;
+    short firstPictureId = -1;
+    bool foundDifferentPicture = false;
+    for (short category = 0; category < 8; ++category) {
+      TUnitOrder* order = buildingView->city94->buildOrderSlots[category];
+      TView* quantityRow = buildingView->ResolveControlByTag(kControlTagNum0 + category);
+      TNumberText* quantity =
+          quantityRow == 0
+              ? 0
+              : static_cast<TNumberText*>(quantityRow->ResolveControlByTag(kControlTagNumb));
+      TCivilianButton* button = static_cast<TCivilianButton*>(
+          buildingView->ResolveControlByTag(kControlTagCiv0 + category));
+      if (order == 0 || quantity == 0 || button == 0) {
+        FailScenario("\"armory unit row is missing its order, quantity, or picture control\"");
+        return false;
+      }
+
+      short unitType = order->resourceTypeIndex48;
+      if (g_awTacticalUnitCategoryCodeBySlot[unitType] != category + 1 ||
+          g_pCityOrderCapabilityState->nationCapRows1e8[nationSlot].slots[category + 1] !=
+              unitType ||
+          g_pCityOrderCapabilityState->abilityActiveRows395[nationSlot]
+                  .abilityActiveById[unitType] == 0) {
+        CString failure;
+        failure.Format(
+            "\"armory row %d profile mismatch: type=%d category=%d selected=%d "
+            "active=%d\"",
+            category, unitType, g_awTacticalUnitCategoryCodeBySlot[unitType],
+            g_pCityOrderCapabilityState->nationCapRows1e8[nationSlot].slots[category + 1],
+            g_pCityOrderCapabilityState->abilityActiveRows395[nationSlot]
+                .abilityActiveById[unitType]);
+        FailScenario(failure);
+        return false;
+      }
+
+      short pictureVariant;
+      if (category == 7) {
+        pictureVariant = unitType == 0x18 ? 8 : (unitType == 0x19 ? 0x10 : 0x18);
+      } else {
+        pictureVariant = unitType;
+      }
+      short expectedPictureId = static_cast<short>(0x1d60 + pictureVariant * 2);
+      short actualPictureBase = static_cast<short>(button->glyphBase84 & ~1);
+      if (actualPictureBase != expectedPictureId) {
+        CString failure;
+        failure.Format("\"armory row %d picture mismatch: type=%d actual=%d expected=%d\"",
+                       category, unitType, actualPictureBase, expectedPictureId);
+        FailScenario(failure);
+        return false;
+      }
+      if (category == 0) {
+        firstPictureId = actualPictureBase;
+      } else if (actualPictureBase != firstPictureId) {
+        foundDifferentPicture = true;
+      }
+
+      CString quantityText;
+      CString expectedQuantityText;
+      quantity->GetCurrentText(&quantityText);
+      expectedQuantityText.Format("%d", order->quantityField04);
+      if (quantityText != expectedQuantityText || quantity->value != order->quantityField04 ||
+          !HasCorrectNumberTextPresentationState(quantity, 10, PALETTEINDEX(0xd2))) {
+        FailScenario("\"armory recruitment count state does not match its live order\"");
+        return false;
+      }
+      TView* purchaseRow = buildingView->ResolveControlByTag(kControlTagClu0 + category);
+      TView* plus = purchaseRow == 0 ? 0 : purchaseRow->ResolveControlByTag(kControlTagPlus);
+      if (plus != 0 && plus->IsActionable() != 0 && order->MaxOrder() > order->quantityField04) {
+        foundActionableOrder = true;
+      }
+    }
+    if (!foundDifferentPicture) {
+      FailScenario("\"armory unit rows all use the same picture\"");
+      return false;
+    }
+    if (!foundActionableOrder) {
+      TUnitOrder* firstOrder = buildingView->city94->buildOrderSlots[0];
+      TView* firstRow = buildingView->ResolveControlByTag(kControlTagClu0);
+      TView* firstPlus = firstRow == 0 ? 0 : firstRow->ResolveControlByTag(kControlTagPlus);
+      CString failure;
+      failure.Format("\"armory has no actionable unit order: plus=%d enabled=%d actionable=%d "
+                     "quantity=%d max=%d primary_stock=%d treasury=%d\"",
+                     firstPlus != 0, firstPlus == 0 ? -1 : firstPlus->IsEnabled(),
+                     firstPlus == 0 ? -1 : firstPlus->IsActionable(), firstOrder->quantityField04,
+                     firstOrder->MaxOrder(),
+                     buildingView->city94->CityStockByType(firstOrder->primaryInputResourceId),
+                     buildingView->city94->ownerNationAc->treasuryValue10);
+      FailScenario(failure);
+      return false;
+    }
+    if (armory->selectedUnitOrderA8 == 0) {
+      FailScenario("\"armory has no selected unit order\"");
+      return false;
+    }
+
+    short selectedUnitType = armory->selectedUnitOrderA8->resourceTypeIndex48;
+    TStaticText* unitName =
+        static_cast<TStaticText*>(buildingView->ResolveControlByTag(kControlTagUnit));
+    TNumberText* firepower =
+        static_cast<TNumberText*>(buildingView->ResolveControlByTag(kControlTagSta0));
+    int expectedFirepower = static_cast<int>(g_afArmoryUnitFirepowerByType[selectedUnitType] *
+                                             g_fArmoryFirepowerDisplayScale);
+    CString expectedUnitName;
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
+        &expectedUnitName, 0x2717, static_cast<short>(selectedUnitType + 1));
+    if (unitName == 0 || unitName->text == 0 || unitName->text->IsEmpty() ||
+        *unitName->text != expectedUnitName) {
+      CString failure;
+      failure.Format("\"armory selected unit name mismatch: control=%d text=%d empty=%d type=%d\"",
+                     unitName != 0, unitName != 0 && unitName->text != 0,
+                     unitName == 0 || unitName->text == 0 ? -1 : unitName->text->IsEmpty(),
+                     selectedUnitType);
+      FailScenario(failure);
+      return false;
+    }
+    if (firepower == 0 || firepower->value != expectedFirepower || firepower->value == 999) {
+      FailScenario("\"armory selected unit firepower does not match the retail data table\"");
       return false;
     }
     return true;
@@ -449,6 +586,31 @@ private:
     return false;
   }
 
+  bool BeginArmoryInteraction(TBuildingView* buildingView) {
+    for (short category = 0; category < 8; ++category) {
+      TView* row = buildingView->ResolveControlByTag(kControlTagClu0 + category);
+      TView* plus = row == 0 ? 0 : row->ResolveControlByTag(kControlTagPlus);
+      TUnitOrder* order = buildingView->city94->buildOrderSlots[category];
+      if (plus == 0 || plus->IsActionable() == 0 || order == 0 ||
+          order->MaxOrder() <= order->quantityField04) {
+        continue;
+      }
+      CaptureUnitOrderState(order);
+      interactionKind = kArmoryInteraction;
+      interactionRowTag = kControlTagClu0 + category;
+      phase = kWaitForOrderIncrease;
+      EnterScenarioStep("waiting_for_armory_order_increase", "activate_armory_plus_arrow");
+      if (!RuntimeUiDriver::ActivateControlSemantically(row, kControlTagPlus)) {
+        FailScenario("\"armory plus arrow could not be activated\"");
+        return false;
+      }
+      RequestScenarioTick();
+      return true;
+    }
+    FailScenario("\"armory has no actionable production-order plus arrow\"");
+    return false;
+  }
+
   bool BeginShipyardInteraction(TBuildingView* buildingView) {
     for (short queueIndex = 0; queueIndex < 8; ++queueIndex) {
       TShipOrder* order = buildingView->city94->shipOrderSlots[queueIndex];
@@ -580,11 +742,14 @@ private:
       FailScenario("\"city building view disappeared during order interaction\"");
       return;
     }
-    bool stateIsCorrect = interactionKind == kUniversityInteraction ? UnitOrderStateWasReserved()
-                          : interactionKind == kShipyardInteraction ? ShipOrderStateWasReserved()
-                                                                    : ItemOrderStateWasReserved();
+    bool stateIsCorrect =
+        interactionKind == kUniversityInteraction || interactionKind == kArmoryInteraction
+            ? UnitOrderStateWasReserved()
+        : interactionKind == kShipyardInteraction ? ShipOrderStateWasReserved()
+                                                  : ItemOrderStateWasReserved();
     bool uiIsCorrect =
         interactionKind == kUniversityInteraction ? ValidateUniversityQuantities(buildingView)
+        : interactionKind == kArmoryInteraction   ? ValidateArmoryState(buildingView)
         : interactionKind == kShipyardInteraction ? ValidateShipyardQuantities(buildingView)
                                                   : ValidateItemQuantity(buildingView);
     if (!stateIsCorrect || !uiIsCorrect) {
@@ -595,7 +760,8 @@ private:
     TView* interactionRoot;
     int controlTag;
     int commandId;
-    if (interactionKind == kUniversityInteraction || interactionKind == kShipyardInteraction) {
+    if (interactionKind == kUniversityInteraction || interactionKind == kArmoryInteraction ||
+        interactionKind == kShipyardInteraction) {
       interactionRoot = buildingView->ResolveControlByTag(interactionRowTag);
       controlTag = kControlTagMinu;
       commandId = 0;
@@ -612,7 +778,8 @@ private:
 
     phase = kWaitForOrderRestore;
     EnterScenarioStep("waiting_for_city_order_restore", "activate_city_order_decrease");
-    if (interactionKind == kUniversityInteraction || interactionKind == kShipyardInteraction) {
+    if (interactionKind == kUniversityInteraction || interactionKind == kArmoryInteraction ||
+        interactionKind == kShipyardInteraction) {
       if (!RuntimeUiDriver::ActivateControlSemantically(interactionRoot, controlTag)) {
         FailScenario("\"city production minus arrow could not be activated\"");
         return;
@@ -629,11 +796,14 @@ private:
       FailScenario("\"city building view disappeared while restoring order state\"");
       return;
     }
-    bool stateIsCorrect = interactionKind == kUniversityInteraction ? UnitOrderStateWasRestored()
-                          : interactionKind == kShipyardInteraction ? ShipOrderStateWasRestored()
-                                                                    : ItemOrderStateWasRestored();
+    bool stateIsCorrect =
+        interactionKind == kUniversityInteraction || interactionKind == kArmoryInteraction
+            ? UnitOrderStateWasRestored()
+        : interactionKind == kShipyardInteraction ? ShipOrderStateWasRestored()
+                                                  : ItemOrderStateWasRestored();
     bool uiIsCorrect =
         interactionKind == kUniversityInteraction ? ValidateUniversityQuantities(buildingView)
+        : interactionKind == kArmoryInteraction   ? ValidateArmoryState(buildingView)
         : interactionKind == kShipyardInteraction ? ValidateShipyardQuantities(buildingView)
                                                   : ValidateItemQuantity(buildingView);
     if (!stateIsCorrect || !uiIsCorrect) {
@@ -668,6 +838,8 @@ private:
     bool quantitiesAreValid;
     if (activeBuildingSlot == kUniversityBuildingSlot) {
       quantitiesAreValid = ValidateUniversityQuantities(buildingView);
+    } else if (activeBuildingSlot == kArmoryBuildingSlot) {
+      quantitiesAreValid = ValidateArmoryState(buildingView);
     } else if (activeBuildingSlot == kShipyardBuildingSlot) {
       quantitiesAreValid = ValidateShipyardQuantities(buildingView);
     } else if (activeBuildingSlot == kRailyardBuildingSlot) {
@@ -732,6 +904,10 @@ private:
       BeginUniversityInteraction(buildingView);
       return;
     }
+    if (!interactionComplete && activeBuildingSlot == kArmoryBuildingSlot) {
+      BeginArmoryInteraction(buildingView);
+      return;
+    }
     if (!interactionComplete && activeBuildingSlot == kShipyardBuildingSlot) {
       BeginShipyardInteraction(buildingView);
       return;
@@ -759,6 +935,17 @@ private:
       return;
     }
     if (activeBuildingSlot == kUniversityBuildingSlot) {
+      TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+      TUnitOrder* armoryOrder = activeNation->city->buildOrderSlots[0];
+      activeNation->city->CityStockByType(armoryOrder->primaryInputResourceId) =
+          static_cast<short>(armoryOrder->primaryInputPerUnit * 2);
+      activeBuildingSlot = kArmoryBuildingSlot;
+      phase = kActivateBuilding;
+      EnterScenarioStep("activating_armory_building", "activate_armory_building_slot");
+      RequestScenarioTick();
+      return;
+    }
+    if (activeBuildingSlot == kArmoryBuildingSlot) {
       activeBuildingSlot = kShipyardBuildingSlot;
       phase = kActivateBuilding;
       EnterScenarioStep("activating_shipyard_building", "activate_shipyard_building_slot");

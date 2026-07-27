@@ -55,7 +55,7 @@ TEscortMission::TEscortMission(TZone* targetZone) : TNavyMission(targetZone) {}
 // FUNCTION: IMPERIALISM 0x00539a70
 void TEscortMission::Initialize() {
   marker11 = 0;
-  targetZone18 = targetZone14;
+  resolvedPortZone = missionTargetZone;
 }
 
 // Scales this mission's score by home-nation trade capacity and need pressure: starts from
@@ -197,7 +197,7 @@ void TEscortMission::CalculateNeeds() {
 bool TEscortMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   (void)key;
   return (missionType == kMissionTypeAttackProvince || missionType == kMissionTypeDefendProvince) &&
-         zoneContext == targetZone14;
+         zoneContext == missionTargetZone;
 }
 
 // FUNCTION: IMPERIALISM 0x0053a290
@@ -206,5 +206,5 @@ void TEscortMission::GiveOrders() {
     orderList24->active = 0;
     orderList24->next->SetChainActiveFlag(0);
   }
-  ConsolidateMissionOrderEntriesByTargetAndQueue(targetZone14);
+  ConsolidateMissionOrderEntriesByTargetAndQueue(missionTargetZone);
 }

@@ -41,8 +41,8 @@ public:
   virtual void GiveActionOrders(TTaskForce* mapOrderEntry)
       override; // slot 0x27 0x539640 -- resolve+queue port-zone map order
   // Returns the resolved port-zone context TZone* (GetReplacementSlot48 consumes it,
-  // storing the result back into targetZone18 -- confirmed by 0x538900's disassembly,
-  // which calls this virtual and assigns EAX into targetZone18); base TNavyMission
+  // storing the result back into resolvedPortZone -- confirmed by 0x538900's disassembly,
+  // which calls this virtual and assigns EAX into resolvedPortZone); base TNavyMission
   // declares it void, but every known caller of the base slot is this override.
   virtual TZone* RefreshMissionPortZoneContextForNation() override; // slot 0x28 0x539780 (shared)
 };
