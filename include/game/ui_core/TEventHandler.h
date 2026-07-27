@@ -39,6 +39,12 @@ public:
   TBehavior* firstBehavior;
   int controlTag; // 0x1c
 
+  // Copies the same four cloneable fields ShallowClone (0x48a7c0) copies into a fresh
+  // header, but into this handler from an existing one. The original writes them in
+  // the order 04, 08, 1c, 0c -- ShallowClone uses 04, 08, 0c, 1c -- so the two are
+  // separate bodies rather than one shared helper. 0x0048a790, __thiscall.
+  void CopyHandlerFieldsFrom(const TEventHandler* source);
+
   TEventHandler();
   // CObject is intentionally non-copyable in MFC, but this MacApp-derived hierarchy
   // has a real field-copying base constructor inlined into TView's 0x48bd30 copy ctor.

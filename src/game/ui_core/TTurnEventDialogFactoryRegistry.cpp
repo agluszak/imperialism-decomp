@@ -9,6 +9,16 @@
 #include "game/globals/ui_core_globals.h"
 #include "game/turn_event_dialog_factory.h"
 
+// FUNCTION: IMPERIALISM 0x00491960
+CSubViewIterator::CSubViewIterator(const TView* owner, char forward) {
+  // Same as the single-arg ctor below except the direction comes from the caller;
+  // position00 is likewise left uninitialised until FirstSubView().
+  ownerView04 = owner;
+  direction08 = forward;
+  identTag0c = kControlTagSpSpSpSp;
+  currentChild10 = nullptr;
+}
+
 // FUNCTION: IMPERIALISM 0x004919a0
 CSubViewIterator::CSubViewIterator(const TView* owner) {
   // The single-arg (const TView*) ctor defaults the traversal forward; position00 is left
