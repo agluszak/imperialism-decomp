@@ -8,17 +8,17 @@ policy (Mac resource order, read big-endian).
 
 ## Summary
 
-- Tags: 552
+- Tags: 553
 - `generated_resource_manifest_tag`: 67
 - `multiplayer_session_or_message_tag`: 32
 - `ui_tag_app_and_setup_screens`: 57
-- `ui_tag_city_and_trade`: 61
+- `ui_tag_city_and_trade`: 62
 - `ui_tag_diplomacy`: 18
 - `ui_tag_military_navy_tactical`: 49
 - `ui_tag_shared`: 146
 - `ui_tag_strategic_map`: 23
 - `ui_tag_widget_plumbing`: 99
-- Corroborated by the Mac control-tag index: 413 of 552
+- Corroborated by the Mac control-tag index: 414 of 553
 - Violations: 0
 
 ## Violations
@@ -237,6 +237,7 @@ build does not ship.
 | `kControlTagRaro` | `raro` | `0x7261726f` | `ui_tag_city_and_trade` |  |
 | `kControlTagRtil` | `rtil` | `0x7274696c` | `ui_tag_city_and_trade` | 2 |
 | `kControlTagShee` | `shee` | `0x73686565` | `ui_tag_city_and_trade` | 3 |
+| `kControlTagSick` | `sick` | `0x7369636b` | `ui_tag_city_and_trade` | 1 |
 | `kControlTagSnam` | `snam` | `0x736e616d` | `ui_tag_city_and_trade` | 1 |
 | `kControlTagSold` | `sold` | `0x736f6c64` | `ui_tag_city_and_trade` | 1 |
 | `kControlTagSpic` | `spic` | `0x73706963` | `ui_tag_city_and_trade` | 1 |
