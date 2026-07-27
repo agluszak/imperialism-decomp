@@ -976,7 +976,6 @@ address|matching|name
 0x48a6f0|1.0|TEventHandler::BecameTarget
 0x48a710|1.0|TEventHandler::SelectOwner
 0x48a730|1.0|TEventHandler::GetWindow
-0x48a750|0.0|IltTarget_0048a750
 0x48a790|1.0|TEventHandler::CopyHandlerFieldsFrom
 0x48a7c0|0.5277777777777778|TEventHandler::ShallowClone
 0x48a840|1.0|TView::CreateObject
@@ -1023,7 +1022,7 @@ address|matching|name
 0x48bc30|1.0|TView::AddControlPosToPoint
 0x48bc60|0.2413793103448276|TView::OffsetRectByCachedPos
 0x48bce0|0.6818181818181818|TView::GetQDExtent
-0x48bd30|0.62|TView::TView(class TView const &)
+0x48bd30|0.6391752577319587|TView::TView(class TView const &)
 0x48bef0|1.0|TView::CopyViewStateFromSource
 0x48bfd0|1.0|TView::ShallowClone
 0x48c000|0.8|TView::EvaluateControlInputGate
