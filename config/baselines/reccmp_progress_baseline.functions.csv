@@ -3622,10 +3622,9 @@ address|matching|name
 0x52c170|0.2|WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052c170
 0x52c1a0|0.44104410441044106|TMapMaker::BuildCityRegionBorderOverlaySegments
 0x52c990|0.8333333333333334|ConvertTileIndexToOverlayCoord216BySide
-0x52ca20|0.24242424242424243|EmitOverlaySegmentFromTileEdgeSorted
-0x52cae0|0.2030178326474623|TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks
+0x52ca20|0.6875|EmitOverlaySegmentFromTileEdgeSorted
+0x52cae0|0.2664298401420959|TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks
 0x52d030|0.8155339805825242|Seapoint::WrappedDeltaMetric
-0x52d0d0|0.6666666666666666|stretch<Seapoint>::OverStretch
 0x52d150|1.0|stretch<Seapoint>::operator[]
 0x52d1f0|0.2621082621082621|TMapMaker::ReindexContiguousCityRegionIds
 0x52d4b0|0.35856573705179284|TMapMaker::RepairOrphanedTileValuesFromNeighbors

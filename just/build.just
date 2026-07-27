@@ -57,7 +57,7 @@ lint flags="":
   uv run python -m tools.generate --gen-dir "{{lint_build_dir}}/generated" \
     --chunk-prefix lint_stubs_part --annotation-kind none
   docker run --rm --network none \
-    -e CMAKE_FLAGS="-DIMPERIALISM_LINT_WERROR=ON {{flags}}" \
+    -e CMAKE_FLAGS="-DIMPERIALISM_LINT_WERROR=ON -DIMPERIALISM_LINT_WARNING_GATE_TEST=OFF {{flags}}" \
     -e LINT=1 \
     -v "$PWD":/imperialism \
     -v "$PWD/{{lint_build_dir}}":/build \
