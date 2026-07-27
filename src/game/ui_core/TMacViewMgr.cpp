@@ -80,8 +80,14 @@ static void CopyViewLayoutFieldsToStack(int* layout0, int* layout1, TControl* sr
   layout1[1] = srcView->frameHeight38;
 }
 
-static void ScanBracketExpressionsInto(CString* dest, const CString& templateText) {
-  scanBracketExpressions(g_pSimMgr, dest, static_cast<LPCSTR>(templateText));
+static void ScanBracketExpressionsInto(CString* dest, const CString& templateText,
+                                       const CString& token1, const CString& token2,
+                                       const CString& token3) {
+  // The scanner is variadic: omitting these three source CString values made [1]-[3]
+  // consume unrelated stack slots and corrupted the transport ledger hover text.
+  scanBracketExpressions(g_pSimMgr, dest, static_cast<LPCSTR>(templateText),
+                         static_cast<LPCSTR>(token1), static_cast<LPCSTR>(token2),
+                         static_cast<LPCSTR>(token3));
 }
 
 static bool QueryPointInsideHitRegion(short x, short y, RgnHandle region) {
@@ -895,12 +901,9 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
 
     TMyStaticText* textEntry = new TMyStaticText();
 
-    int layoutHeight = 0xb;
-    int layoutWidth = 0x14;
-    int layoutPos = 0x3c;
-    int layoutAnchor = 0xa2;
-    int layoutOuter = 0x12;
-    textEntry->IStaticText(panel, &layoutAnchor, &layoutHeight, 5, 5, -1, 0);
+    int textOffset[2] = {0xa2, 0x14};
+    int textSize[2] = {0x3c, 0xb};
+    textEntry->IStaticText(panel, textOffset, textSize, 5, 5, -1, 0);
 
     TextStyle styleDescriptor;
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
@@ -930,6 +933,8 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   CString formatField;
   CString bracketScratch;
   CString displayText;
+  CString itemName;
+  CString hoverTemplate;
 
   int summaryTag = GetTradeSummarySelectionTagByIndex(static_cast<short>(resourceSlot));
   TTransportPicture* panel =
@@ -941,14 +946,13 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   short deficitCount = 0;
   short formatFieldValue = 0;
   bool useBracketOnlyPath = false;
-  bool useSummaryPath = false;
   bool useProductionTailPath = false;
 
   switch (resourceSlot) {
   case 0:
     needTarget = static_cast<short>(nation->needTargetByType[0] + nation->needTargetByType[1]);
     needCurrent = static_cast<short>(nation->needCurrentByType[0] + nation->needCurrentByType[1]);
-    g_pSimMgr->GetString(0x2735, 2, &formatTarget);
+    g_pSimMgr->GetString(0x2735, 2, &itemName);
     {
       int production = city->GetBuildingType(0);
       deficitCount =
@@ -962,7 +966,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 2:
     needTarget = nation->needTargetByType[2];
     needCurrent = nation->needCurrentByType[2];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
+    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(4);
       deficitCount = static_cast<short>(production * 2 - city->cityStockTimberBA);
@@ -978,7 +982,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 4:
     needTarget = nation->needTargetByType[resourceSlot];
     needCurrent = nation->needCurrentByType[resourceSlot];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
+    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(2);
       deficitCount = static_cast<short>(production - (&city->cityStockCottonB6)[resourceSlot]);
@@ -994,17 +998,16 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 5:
     needTarget = nation->needTargetByType[5];
     needCurrent = nation->needCurrentByType[5];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
+    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
     formatCurrent.Format(g_szDecimalFormat, static_cast<int>(needCurrent));
     formatTarget.Format(g_szDecimalFormat, static_cast<int>(needTarget));
     g_pSimMgr->GetString(0x2719, 1, &displayText);
-    ScanBracketExpressionsInto(&bracketScratch, displayText);
     useBracketOnlyPath = true;
     break;
   case 6:
     needTarget = nation->needTargetByType[6];
     needCurrent = nation->needCurrentByType[6];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
+    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(6);
       deficitCount = static_cast<short>(production * 2 - city->cityStockOilC2);
@@ -1019,7 +1022,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 8:
     needTarget = nation->needTargetByType[8];
     needCurrent = nation->needCurrentByType[8];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
+    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(1);
       deficitCount = static_cast<short>(production * 2 - city->cityStockFabricC6);
@@ -1034,7 +1037,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 9:
     needTarget = nation->needTargetByType[9];
     needCurrent = nation->needCurrentByType[9];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
+    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(5);
       deficitCount = static_cast<short>(production * 2 - city->cityStockLumberC8);
@@ -1049,7 +1052,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 0xb:
     needTarget = nation->needTargetByType[0xb];
     needCurrent = nation->needCurrentByType[0xb];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
+    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(3);
       deficitCount = static_cast<short>(production * 2 - city->cityStockSteelCC);
@@ -1064,7 +1067,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 0xc:
     needTarget = nation->needTargetByType[0xc];
     needCurrent = nation->needCurrentByType[0xc];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
+    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(0xb);
       deficitCount = static_cast<short>(production * 2 - city->cityStockFuelCE);
@@ -1081,18 +1084,17 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 0xf:
     needTarget = nation->needTargetByType[resourceSlot];
     needCurrent = nation->needCurrentByType[resourceSlot];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
+    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
     formatCurrent.Format(g_szDecimalFormat, static_cast<int>(needCurrent));
     formatTarget.Format(g_szDecimalFormat, static_cast<int>(needTarget));
     g_pSimMgr->GetString(0x2719, 8, &displayText);
-    ScanBracketExpressionsInto(&bracketScratch, displayText);
     useBracketOnlyPath = true;
     break;
   case 0x11:
   case 0x12:
     needTarget = nation->needTargetByType[resourceSlot];
     needCurrent = nation->needCurrentByType[resourceSlot];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
+    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
     {
       short* summary = city->GetCitySummaryRecordSlot74();
       short summaryValue = summary[resourceSlot];
@@ -1101,10 +1103,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
       formatCurrent.Format(g_szDecimalFormat,
                            static_cast<int>((&city->cityStockCottonB6)[resourceSlot]));
       g_pSimMgr->GetString(0x2735, 7, &displayText);
-      ScanBracketExpressionsInto(&bracketScratch, displayText);
-      displayText = bracketScratch;
       showArrowWidgets = 1;
-      useSummaryPath = true;
     }
     break;
   case 0x13:
@@ -1112,7 +1111,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
         static_cast<short>(nation->needTargetByType[0x13] + nation->needTargetByType[0x14]);
     needCurrent =
         static_cast<short>(nation->needCurrentByType[0x13] + nation->needCurrentByType[0x14]);
-    g_pSimMgr->GetString(0x2735, 3, &formatTarget);
+    g_pSimMgr->GetString(0x2735, 3, &itemName);
     {
       short* summary = city->GetCitySummaryRecordSlot74();
       short summaryValue = summary[0x14];
@@ -1120,6 +1119,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
       deficitCount =
           static_cast<short>(summaryValue - city->cityStockFishDC - city->cityStockLivestockDE);
       formatFieldValue = static_cast<short>(city->cityStockFishDC + city->cityStockLivestockDE);
+      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(formatFieldValue));
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1127,19 +1127,15 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 0x15:
     needTarget = nation->needTargetByType[0x15];
     needCurrent = nation->needCurrentByType[0x15];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
-    g_pSimMgr->GetString(500, 0, &formatCurrent);
-    g_pSimMgr->GetString(0x2735, 9, &displayText);
-    ScanBracketExpressionsInto(&bracketScratch, displayText);
+    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
+    g_pSimMgr->NumToCurrency(500, &formatCurrent);
     useBracketOnlyPath = true;
     break;
   case 0x16:
     needTarget = nation->needTargetByType[0x16];
     needCurrent = nation->needCurrentByType[0x16];
-    g_pSimMgr->NumToOrdinal(static_cast<int>(resourceSlot), &formatTarget);
-    g_pSimMgr->GetString(200, 0, &formatCurrent);
-    g_pSimMgr->GetString(0x2735, 9, &displayText);
-    ScanBracketExpressionsInto(&bracketScratch, displayText);
+    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
+    g_pSimMgr->NumToCurrency(200, &formatCurrent);
     useBracketOnlyPath = true;
     break;
   default:
@@ -1150,16 +1146,25 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
     break;
   }
 
+  short hoverTemplateIndex = 7;
+  if (resourceSlot == 5 || (resourceSlot >= 0xd && resourceSlot <= 0xf)) {
+    hoverTemplateIndex = 8;
+  } else if (resourceSlot == 0x13) {
+    hoverTemplateIndex = 10;
+  } else if (resourceSlot == 0x15 || resourceSlot == 0x16) {
+    hoverTemplateIndex = 9;
+  }
+  if (resourceSlot == 0) {
+    formatTarget = formatProduction;
+  } else if (useProductionTailPath) {
+    formatField.Format(g_szDecimalFormat, static_cast<int>(formatFieldValue));
+    formatCurrent = formatField;
+  }
+  g_pSimMgr->GetString(0x2735, hoverTemplateIndex, &hoverTemplate);
+  ScanBracketExpressionsInto(&bracketScratch, hoverTemplate, itemName, formatCurrent, formatTarget);
+  displayText = bracketScratch;
   if (useBracketOnlyPath) {
     showArrowWidgets = 0;
-    displayText = bracketScratch;
-  } else if (!useSummaryPath) {
-    if (useProductionTailPath) {
-      formatField.Format(g_szDecimalFormat, static_cast<int>(formatFieldValue));
-    }
-    g_pSimMgr->GetString(0x2735, 7, &formatTarget);
-    ScanBracketExpressionsInto(&bracketScratch, displayText);
-    displayText = bracketScratch;
   }
 
   if (showArrowWidgets == 0) {
@@ -1210,12 +1215,9 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
 
   TMyStaticText* textEntry = new TMyStaticText();
 
-  int textHeight = 0xb;
-  int textWidth = 0x14;
-  int textPos = 0x98;
-  int textAnchor = 0x46;
-  int textOuter = 0x12;
-  textEntry->IStaticText(panel, &textPos, &textHeight, 5, 5, -1, 0);
+  int textOffset[2] = {0x98, 0x12};
+  int textSize[2] = {0x46, 0xb};
+  textEntry->IStaticText(panel, textOffset, textSize, 5, 5, -1, 0);
 
   TextStyle styleDescriptor;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
@@ -1229,11 +1231,9 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   if (resourceSlot == 0x15 || resourceSlot == 0x16) {
     TMyStaticText* valueEntry = new TMyStaticText();
 
-    int valueHeight = 0xb;
-    int valueWidth = 0x14;
-    int valuePos = 0x3c;
-    int valueAnchor = 0x32;
-    valueEntry->IStaticText(panel, &valuePos, &valueHeight, 5, 5, -1, 0);
+    int valueOffset[2] = {0x32, 0x14};
+    int valueSize[2] = {0x3c, 0xb};
+    valueEntry->IStaticText(panel, valueOffset, valueSize, 5, 5, -1, 0);
     valueEntry->InstallTextStyle(styleDescriptor, 0);
     valueEntry->SetTextAlignmentAndMaybeRefresh(0, 0);
     valueEntry->controlTag = kControlTagValu;

@@ -123,6 +123,14 @@ TESTS = (
         native_snapshots=("ui",),
     ),
     RuntimeTestSpec(
+        "transport_screen_operates",
+        "TransportScreenTest",
+        ("full",),
+        "mac_resource_oracle",
+        required_oracles=("ui",),
+        native_snapshots=("ui",),
+    ),
+    RuntimeTestSpec(
         "civilian_recruitment_selection",
         "CivilianRecruitmentTest",
         ("pr", "full"),

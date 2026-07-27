@@ -8,6 +8,7 @@ public:
 
   bool EndTurnThroughNativeMessages();
   bool ActivateCitySemantically();
+  bool ActivateTransport();
   bool ActivateDiplomacySemantically();
   bool ActivateTradeSemantically();
 
