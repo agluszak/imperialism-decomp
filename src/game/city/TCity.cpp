@@ -47,7 +47,7 @@ IMPLEMENT_DYNCREATE(TCity, TObject)
 
 // FUNCTION: IMPERIALISM 0x004b24b0
 TCity::TCity() {
-  selectedOrderB0 = 0;
+  homeTownMarkerB0 = 0;
   trackedOrderList270 = 0;
   eventQueue274 = 0;
   for (int productionSlot = 0; productionSlot < 0x10; ++productionSlot) {
@@ -395,7 +395,7 @@ void TCity::Free() {
 
 // FUNCTION: IMPERIALISM 0x004b3b20
 void TCity::SetSelectedTownMarker(void* townMarker) {
-  this->selectedOrderB0 = townMarker;
+  this->homeTownMarkerB0 = townMarker;
 }
 
 // FUNCTION: IMPERIALISM 0x004b3b40

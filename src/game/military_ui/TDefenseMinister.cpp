@@ -143,7 +143,7 @@ void TDefenseMinister::DoPeacetimeDeployment() {
   int totalUnitCount = owner->militaryUnitList44->GetCount();
 
   TCity* city = owner ? owner->city : 0;
-  short homeTileId = city->SelectedOrderTileId();
+  short homeTileId = city->HomeTownTileId();
 
   short ownNationSlot = owner->nationSlot;
 

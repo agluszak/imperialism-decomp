@@ -515,7 +515,7 @@ TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
 // whose selected/coastal tile id matches the city's currently-selected order tile.
 // FUNCTION: IMPERIALISM 0x005634a0
 TZone* TOcean::FindPortZoneBySelectedTile(TCity* city) {
-  short selectedTileId = city->SelectedOrderTileId();
+  short selectedTileId = city->HomeTownTileId();
   TZone* node = g_pMapActionContextListHead;
   while (node != 0 && node->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
     node = node->prev18;

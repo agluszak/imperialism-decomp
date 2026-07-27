@@ -135,10 +135,33 @@ public:
   // (entry 0x13 doubles as the +0xa4 labor reserve in 0x004b44d0).
   short reservedByType7e[0x17];
   class TGreatPower* ownerNationAc; // 0xAC — owning nation state (0x004b4dc0)
-  // UNRESOLVED_FIELD_ATTRIBUTION: +0xb0 is a TTown* while setting the home-city marker
-  // (0x4dfb70/0x4dfca0), but 0x4dfd30 can call TProductionOrder::Restock through the same
-  // stored pointer. Keep it opaque until the state transition/discriminator is recovered.
-  void* selectedOrderB0; // +0xb0
+  // +0xb0 — the city's home TTown marker, and only ever that one type
+  // (bd imperialism-decomp-i0in). The conflicting reading this slot used to carry was a
+  // mis-modelled call, not a real variant:
+  //
+  //   TGreatPower::SetHomeCityTileAndDisplayName (0x4dfd30) reads this slot and makes a
+  //   virtual call at vtable byte offset 0x38 -- slot 0x0e, which on TProductionOrder is
+  //   Restock(). But the original passes an ARGUMENT to it:
+  //     004dfdcc  MOV ECX,dword ptr [ESP + 0x24]   ; the CString built just above
+  //     004dfdd0  MOV EAX,dword ptr [EBX]          ; EBX = this slot's value
+  //     004dfdd2  PUSH ECX                         ; <-- one LPCSTR argument
+  //     004dfdd3  MOV ECX,EBX                      ; receiver is this slot
+  //     004dfdd5  CALL dword ptr [EAX + 0x38]
+  //   TProductionOrder::Restock() takes no arguments, so it cannot be that method; the
+  //   slot number merely coincides. The call is a name-setter on the town marker, which
+  //   is why the surrounding code builds a CString from the city name and destroys it
+  //   immediately afterwards (0x6058e2).
+  //
+  // The TTown reading is independently corroborated: TMapMgr::
+  // FindTownMarkerForTileByOwnerNation (0x513170) documents TTown::tileIndex14 and
+  // TTown::ownerNation1c, and +0x14 here is exactly the short that 0x4dfd30 writes the
+  // home tile index into and reads back.
+  //
+  // Still opaque only because `class TTown` has no definition yet -- it is forward-
+  // declared in TMapMgr.h/TViewMgr.h/TPlaceCityDialog.h and never defined. Typing this
+  // as TTown* and fixing the 0x4dfd30 call to pass its argument both need that class
+  // recovered first (vtable + the slot-0x0e name setter).
+  void* homeTownMarkerB0; // +0xb0 — TTown*, pending the class
   // +0xB4 — city power value displayed by TWarehouseView's 'powe' control and
   // snapshotted by the turn-event-0x2c packet.
   short powerAvailableB4;
@@ -217,11 +240,13 @@ public:
   }
   // Marker-less accessor: the original inlines this at every call site, so it must
   // be defined in the header to inline across translation units under MSVC500.
-  short SelectedOrderTileId() const {
-    if (selectedOrderB0 != 0) {
+  short HomeTownTileId() const {
+    if (homeTownMarkerB0 != 0) {
       short tileId;
-      const char* selectedRecord = static_cast<const char*>(selectedOrderB0);
-      memcpy(&tileId, selectedRecord + 0x14, sizeof(tileId));
+      // TTown::tileIndex14. Read raw rather than through the class because TTown is
+      // still only forward-declared; this becomes marker->tileIndex14 once it exists.
+      const char* townMarker = static_cast<const char*>(homeTownMarkerB0);
+      memcpy(&tileId, townMarker + 0x14, sizeof(tileId));
       return tileId;
     }
     return 1;
