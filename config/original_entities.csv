@@ -569,7 +569,7 @@ address|name|symbol|size|type|prototype|provenance
 482fc0|CIncludeView::UpdateAndRenderMapTileHintOverlayQueue||473|function|undefined UpdateAndRenderMapTileHintOverlayQueue()|
 483220|ComputeRectSpanFromStoredBounds||29|function|undefined ComputeRectSpanFromStoredBounds()|
 483250|IltTarget_00483250||28|function|undefined IltTarget_00483250()|
-483280|IltTarget_00483280||129|function|undefined IltTarget_00483280()|
+483280|CIncludeView::BeginTracking||129|function|void __thiscall CIncludeView::BeginTracking(CPoint * startPoint, TControl * tracker)|curated
 483340|CIncludeView::SetUiRuntimeContextAndActivateMain||36|function|void SetUiRuntimeContextAndActivateMain(TView* activeDialog)|
 483380|WrapperFor_thunk_PropagateUiResourceContextRecursive_At00483380||32|function|undefined WrapperFor_thunk_PropagateUiResourceContextRecursive_At00483380()|
 4833b0|ReinitializeIncludeViewMainPaneAndRedrawWindow||300|function|undefined ReinitializeIncludeViewMainPaneAndRedrawWindow()|

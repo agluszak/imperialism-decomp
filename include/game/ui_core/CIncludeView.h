@@ -168,6 +168,11 @@ public:
   // it the state-1 drag command through TControl slots 0x67/0x68; the writer that arms
   // it is not yet located.
   TControl* m_capturedControl74;
+
+  // Starts a mouse-capture drag for `tracker`: takes the Win32 capture, seeds all three
+  // capture points to the press position, and hands the control its begin phase.
+  // 0x00483280, __thiscall.
+  void BeginTracking(CPoint* startPoint, TControl* tracker);
   CPoint m_captureStartPoint78;   // 0x78
   CPoint m_captureLastPoint80;    // 0x80
   CPoint m_captureCurrentPoint88; // 0x88

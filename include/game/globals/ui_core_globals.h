@@ -151,6 +151,7 @@ extern int g_nMcWindowStateMsgAssertGate_006A1C74;
 extern char g_szIncludeViewSourcePath_00694D10[];
 
 extern int g_nIncludeViewAssertGate_006A17B0;
+extern int g_nIncludeViewCaptureAssertGate_006A17B8;
 
 // One-shot assert / init gates used by CIncludeView's main-pane reinitialise path.
 extern int g_nIncludeViewReinitAssertGate_006A17BC;
