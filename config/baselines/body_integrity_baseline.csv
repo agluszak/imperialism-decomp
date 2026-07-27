@@ -33,9 +33,7 @@ address|kind
 005e722f|body_hole
 005e7690|body_hole
 005e7ec0|body_hole
-005e8420|body_hole
 005e98b0|body_hole
-005e9cf0|body_hole
 005ea430|body_hole
 005ed130|body_hole
 005ed430|body_hole
@@ -45,7 +43,6 @@ address|kind
 005ed9e0|body_hole
 005eddeb|body_hole
 005eddeb|label_in_hole
-005f28f0|body_hole
 005f666e|truncated_into_function
 005f6af9|truncated_into_function
 005f75c0|body_hole
