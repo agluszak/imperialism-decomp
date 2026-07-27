@@ -15,12 +15,6 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_core/CIterator.h"
 
-// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
-//   CArchive& AFXAPI operator>>(CArchive&, TArmyMission*&)
-// SYNTHETIC: IMPERIALISM 0x0053c070
-// operator>>
-IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
-
 // FUNCTION: IMPERIALISM 0x005356f0
 bool TArmyMission::IsArmyMission() const {
   return true;
@@ -46,6 +40,12 @@ short TArmyMission::GetPresentLocation() const {
 
 // SYNTHETIC: IMPERIALISM 0x0053c030
 // TArmyMission::GetRuntimeClass
+
+// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
+//   CArchive& AFXAPI operator>>(CArchive&, TArmyMission*&)
+// SYNTHETIC: IMPERIALISM 0x0053c070
+// operator>>
+IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
 
 // FUNCTION: IMPERIALISM 0x0053c0a0
 TArmyMission::TArmyMission(int nodeKey) : TMission() {
@@ -230,6 +230,34 @@ int TArmyMission::AccumulateLack(int* accumulatedLack, unsigned char includeExis
     total += rounded;
   }
   return total;
+}
+
+// Mac oracle: ComputeProvinceImportance.
+// FUNCTION: IMPERIALISM 0x0053c7a0
+float TArmyMission::ComputeProvinceImportance(short provinceIndex) {
+  short missionNation = nationId04;
+  Province& province = g_pGlobalMapState->cityScoreTable[provinceIndex];
+  float importance = static_cast<float>(province.cityScoreValue);
+
+  int ownedNeighbors = 0;
+  if (province.adjacentRegionCount08 > 0) {
+    int index = 0;
+    do {
+      if (missionNation == g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(
+                               province.adjacentRegionIds0A[index])) {
+        ++ownedNeighbors;
+      }
+      ++index;
+    } while (index < province.adjacentRegionCount08);
+  }
+
+  if (province.adjacentRegionCount08 > 0) {
+    importance =
+        (static_cast<float>(ownedNeighbors) / static_cast<float>(province.adjacentRegionCount08) +
+         1.0f) *
+        importance;
+  }
+  return importance / 5000.0f;
 }
 
 // FUNCTION: IMPERIALISM 0x0053c9d0

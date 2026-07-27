@@ -87,6 +87,12 @@ private:
   // Shared accumulation loop over orderListAt18 (0x53c620 / 0x53ceb0 both repeat
   // this exact per-unit vector-contribution pattern).
   void AccumulateOrderPriorityVector(float* vector) const;
+
+  // Mac oracle: ComputeProvinceImportance. Scores a province for this mission: its
+  // cityScoreValue, scaled by one plus the fraction of adjacent regions whose owner
+  // matches this mission's nation, then normalised by 5000 -- the province analogue of
+  // TNavyMission::ComputeSeaZoneImportance. 0x0053c7a0, __thiscall.
+  float ComputeProvinceImportance(short provinceIndex);
 };
 
 ASSERT_SIZE(TArmyMission, 0x30);

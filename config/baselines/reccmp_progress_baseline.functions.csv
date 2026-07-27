@@ -2534,7 +2534,7 @@ address|matching|name
 0x4dd740|1.0|TGreatPower::GetDiplomacyExternalStateByTarget
 0x4dd770|1.0|TGreatPower::SetCityStockCounterAndRefresh
 0x4dd7b0|1.0|TGreatPower::AddToCityStockCounterAndRefresh
-0x4dd7f0|0.7108433734939759|TGreatPower::ComputeProductionMetricForOrderKind
+0x4dd7f0|0.6987951807228916|TGreatPower::ComputeProductionMetricForOrderKind
 0x4dda20|1.0|TGreatPower::DecrementDiplomacyCounterA2ByValue
 0x4dda40|1.0|TGreatPower::DecrementDiplomacyCounterA2Slot66
 0x4dda60|0.6|TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot
@@ -2602,7 +2602,7 @@ address|matching|name
 0x4e0770|1.0|TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6
 0x4e07b0|0.35294117647058826|TGreatPower::ComputeArmyCommitBudgetSlot8E
 0x4e0890|0.2828282828282828|TGreatPower::GetScoreFactorSlot23C
-0x4e09a0|0.5662650602409639|TGreatPower::GetScoreFactorSlot240
+0x4e09a0|0.5903614457831325|TGreatPower::GetScoreFactorSlot240
 0x4e0b20|0.43902439024390244|TGreatPower::ComputeArmyScoreRatioVsNation
 0x4e0c10|0.24806201550387597|TGreatPower::ComputeArmyScoreStandingRatioVsNation
 0x4e0d80|0.43902439024390244|TGreatPower::ComputeNavyScoreRatioVsNation
@@ -3965,7 +3965,7 @@ address|matching|name
 0x53c570|0.7017543859649122|TArmyMission::AcceptReenforcement
 0x53c5e0|0.6666666666666666|TArmyMission::RejectConstituent
 0x53c620|0.7783251231527094|TArmyMission::AccumulateLack
-0x53c7a0|0.0|IltTarget_0053c7a0
+0x53c7a0|0.5420560747663551|TArmyMission::ComputeProvinceImportance
 0x53c880|0.03571428571428571|IltTarget_0053c880
 0x53c950|0.7936507936507936|TDefendProvinceMission::PropagateTargetTileToLinkedUnitsIfDifferent
 0x53c9d0|1.0|TArmyMission::ProjectEquipage
@@ -3973,9 +3973,9 @@ address|matching|name
 0x53cb50|0.9032258064516129|TArmyMission::AccumulateMissionUnitPriorityContributionWithScaleMode
 0x53cc10|0.4731182795698925|AccumulateUnitOrderPriorityVectorContribution
 0x53cda0|0.562962962962963|TArmyMission::GetWeightedEquipage
-0x53ceb0|0.4631578947368421|TArmyMission::GetWeightedSatisfaction
-0x53d020|0.4444444444444444|TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit
-0x53d200|0.4330708661417323|TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit
+0x53ceb0|0.4607329842931937|TArmyMission::GetWeightedSatisfaction
+0x53d020|0.44621513944223107|TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit
+0x53d200|0.43137254901960786|TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit
 0x53d3e0|0.7272727272727273|TArmyMission::IndustrialCostOfNeeds
 0x53d420|1.0|TArmyMission::ValueOf
 0x53d4a0|0.6985645933014354|TArmyMission::FitnessOf

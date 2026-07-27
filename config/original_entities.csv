@@ -3921,7 +3921,7 @@ address|name|symbol|size|type|prototype|provenance
 53c570|TArmyMission::AcceptReenforcement||66|function|void AcceptReenforcement(TMilitaryUnit* unit, unsigned char notify)|
 53c5e0|TArmyMission::RejectConstituent||46|function|void RejectConstituent(TMilitaryUnit* unit, unsigned char notify)|
 53c620|BuildMissionPriorityVectorAndReturnTotal||300|function|undefined BuildMissionPriorityVectorAndReturnTotal()|
-53c7a0|IltTarget_0053c7a0||161|function|undefined IltTarget_0053c7a0()|
+53c7a0|TArmyMission::ComputeProvinceImportance||161|function|float __thiscall TArmyMission::ComputeProvinceImportance(short provinceIndex)|curated
 53c880|IltTarget_0053c880||156|function|undefined IltTarget_0053c880()|
 53c950|PropagateTargetTileToLinkedUnitsIfDifferent||88|function|undefined PropagateTargetTileToLinkedUnitsIfDifferent()|
 53c9d0|AccumulateMissionUnitPriorityVectorWithOptionalFilter||182|function|undefined AccumulateMissionUnitPriorityVectorWithOptionalFilter()|
