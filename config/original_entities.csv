@@ -4392,7 +4392,7 @@ address|name|symbol|size|type|prototype|provenance
 556fd0|TNavyMgr::ScuttleEverything||67|function|void TNavyMgr::ScuttleEverything()|
 557040|TNavyMgr::ClearAllTransientOrders||47|function|void TNavyMgr::ClearAllTransientOrders()|mac-oracle
 557080|TNavyMgr::CommitForce||123|function|bool TNavyMgr::CommitForce(TTaskForce* entry)|
-557120|IltTarget_00557120||58|function|undefined IltTarget_00557120()|
+557120|TNavyMgr::ForgetForce||58|function|void __thiscall TNavyMgr::ForgetForce(TTaskForce * entry)|curated
 557170|TNavyMgr::GetInvasionCapacity||120|function|short TNavyMgr::GetInvasionCapacity( short nationSlot, Province* provinceTarget, TZone* contextFilter)|
 557210|TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists||140|function|void TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short nationSlot)|
 5572d0|GetEnabledIndustryCapabilitySlotByClass||58|function|short GetEnabledIndustryCapabilitySlotByClass(short classId)|
@@ -4412,7 +4412,7 @@ address|name|symbol|size|type|prototype|provenance
 559e00|TNavyMgr::SelectionCursor||423|function|unsigned short TNavyMgr::SelectionCursor(short nTileIndex, int nInputFlags)|
 55a020|TNavyMgr::SelectionClick||215|function|bool TNavyMgr::SelectionClick(short nTileIndex, int nInputFlags)|
 55a160|TNavyMgr::DoTileClick||648|function|int TNavyMgr::DoTileClick(short nTileIndex, int nInputFlags)|
-55a4d0|IltTarget_0055a4d0||28|function|undefined IltTarget_0055a4d0()|
+55a4d0|TNavyMgr::WhoseIngotIsAt||28|function|TTaskForce * __thiscall TNavyMgr::WhoseIngotIsAt(short tileIndex)|curated
 55a500|IltTarget_0055a500||3|function|undefined IltTarget_0055a500()|
 55a520|IltTarget_0055a520||129|function|undefined IltTarget_0055a520()|
 55a5e0|IltTarget_0055a5e0||49|function|undefined IltTarget_0055a5e0()|
