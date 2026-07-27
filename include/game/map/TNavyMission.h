@@ -23,6 +23,12 @@ public:
   // ship scoring 0 or better wins; ties keep the earlier node. No Mac oracle name
   // matches this shape, so it is named descriptively. 0x00537010, __thiscall.
   TShip* PickBestShipForMissionType(int missionType) const;
+
+  // Mac oracle: ComputeSeaZoneImportance. Scores a sea zone for this mission: the
+  // zone's own node-value average, multiplied by 1.5 for each adjacent port zone this
+  // mission's nation owns and 1.25 for each it does not, then normalised by 5000.
+  // 0x00536a40, __thiscall.
+  float ComputeSeaZoneImportance(TZone* zone);
   int navyState28; // +0x28 target-selection state (0 -> zone18 active, 1..2 -> zone14)
   float requiredShipEquipageByCategory[4]; // +0x2c
 

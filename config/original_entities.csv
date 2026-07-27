@@ -3805,7 +3805,7 @@ address|name|symbol|size|type|prototype|provenance
 5367d0|TNavyMission::RejectConstituent||40|function|void RejectConstituent(TShip* ship, unsigned char notify)|
 536810|TNavyMission::ForgetTaskForce||21|function|void ForgetTaskForce(TTaskForce* taskForce)|
 536840|BuildMissionQueuedOrderCategoryWeightsAndReturnTotal||389|function|undefined BuildMissionQueuedOrderCategoryWeightsAndReturnTotal()|
-536a40|IltTarget_00536a40||192|function|undefined IltTarget_00536a40()|
+536a40|TNavyMission::ComputeSeaZoneImportance||192|function|float __thiscall TNavyMission::ComputeSeaZoneImportance(TZone * zone)|curated
 536b30|UpdateMissionOrderSelectionStateByNationSimilarityThresholds||445|function|undefined UpdateMissionOrderSelectionStateByNationSimilarityThresholds()|
 536d60|RebuildMapOrderEntryChildrenForContext||174|function|undefined RebuildMapOrderEntryChildrenForContext()|
 536e40|ProcessMapOrderEntryContextMode||231|function|undefined ProcessMapOrderEntryContextMode()|
