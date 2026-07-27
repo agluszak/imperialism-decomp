@@ -141,7 +141,7 @@ void TWarehouseView::DoStartup() {
   TPictureNumberText** valueControlPtr = commodityValueControlsA0;
   do {
     TPictureNumberText* valueControl = *valueControlPtr;
-    if (valueControl != 0 && valueControl->field08 != 0) {
+    if (valueControl != 0 && valueControl->viewEnabled != 0) {
       int hoverOrigin[2] = {valueControl->ownerLocalX - 0xf, valueControl->ownerLocalY - 0x14};
       TView* hoverControl = new TView();
       hoverControl->InitializeUiResourceEntryFrameAndParent(0, this, hoverOrigin, hoverSize, 5, 5,
@@ -198,7 +198,7 @@ void TWarehouseView::DoStartup() {
     SetControlHoverHelpText(hoverText, hoverControl);
   }
 
-  if (powerValueControl100 != 0 && powerValueControl100->field08 != 0) {
+  if (powerValueControl100 != 0 && powerValueControl100->viewEnabled != 0) {
     int hoverOrigin[2] = {powerValueControl100->ownerLocalX - 0xf,
                           powerValueControl100->ownerLocalY - 0x14};
     TView* hoverControl = new TView();

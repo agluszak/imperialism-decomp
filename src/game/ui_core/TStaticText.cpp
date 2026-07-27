@@ -96,7 +96,7 @@ void TStaticText::IStaticText(TView* panel, int* offsetLayout, int* sizeLayout, 
   }
   controlTag = kControlTagSpSpSpSp;
   enabled = 1;
-  field08 = 1;
+  viewEnabled = 1;
   nextHandler = panel;
   ownerLocalX = offsetLayout[0];
   ownerLocalY = offsetLayout[1];
