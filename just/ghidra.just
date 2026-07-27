@@ -297,6 +297,15 @@ fix-function-bounds *args: _require-ghidra-install
 create-switch-table *args: _require-ghidra-install
   uv run python -m tools.ghidra.create_switch_table {{args}}
 
+# READ-ONLY. Body-integrity audit: punctured bodies (holes), labels sitting at a hole
+# start (the demote-to-label signature), fallthrough into unowned or foreign code,
+# entries inside another body, and curated sizes disagreeing with the DB. --strict exits
+# non-zero on any hard violation, so a DB mutation or archive update can be gated on it.
+[doc('Read-only: report Ghidra function-body integrity violations')]
+[group('ghidra-db')]
+body-integrity-audit *args: _require-ghidra-install
+  uv run python -m tools.ghidra.body_integrity {{args}}
+
 # MUTATES: Ghidra DB (with --apply).
 # Remove the Function entity at case-body pseudo-function entries (keeps the
 # label) so an enclosing dispatcher can reabsorb the bytes on the next

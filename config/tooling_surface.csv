@@ -164,3 +164,4 @@ module|tools.analysis.split_globals|direct|One-shot god-header split into per-su
 module|tools.workflow.baseline_guard|just:*-gate-update|Shrink-aware policy-baseline guard (pure shrinks pass; growth needs approval)
 module|tools.workflow.fourcc_audit|just:fourcc-audit|Classify every four-character tag by domain and reject raw hex, multi-character literals, duplicate values, and stale inventory (fourcc-audit-check gate).
 module|tools.workflow.serde_audit|just:serde-audit|Save-file byte-desync audit: compares each ported ReadFrom/WriteTo stream op sequence (direction, width, repeat count) against the original listing, so a low reccmp score with correct byte accounting is not mistaken for a desync
+module|tools.ghidra.body_integrity|just:body-integrity-audit|Read-only Ghidra body-integrity audit: body holes, labels at hole starts, fallthrough into unowned/foreign code, entries inside a body, curated-size disagreement; --strict fails on hard violations
