@@ -11,6 +11,11 @@ import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
+from tools.runtime.artifacts import (
+    BUNDLE_RETENTION,
+    bundle_retention,
+    prune_old_run_dirs,
+)
 from tools.runtime.catalog import (
     TESTS,
     find_test,
@@ -301,7 +306,39 @@ def build_parser() -> argparse.ArgumentParser:
         "clean", help="stop this worktree's warm wineserver and Xvfb, drop its prefix"
     )
     clean.set_defaults(func=clean_worktree_runtime)
+    prune = commands.add_parser(
+        "prune", help="drop old run bundles, keeping the newest per test name"
+    )
+    prune.add_argument("--keep", type=int, default=None,
+                       help=f"bundles to keep per test (default {BUNDLE_RETENTION}, "
+                            "0 removes every bundle)")
+    prune.set_defaults(func=prune_run_bundles)
     return parser
+
+
+def prune_run_bundles(args: argparse.Namespace) -> int:
+    """Apply bundle retention across every test name, not just the one that just ran.
+
+    Each bundle stages its own read-only game/ sandbox, so this is the supported way to
+    reclaim the space: hand-deleting one needs a chmod first (imperialism-decomp-mx2a).
+    """
+    keep = bundle_retention() if args.keep is None else max(args.keep, 0)
+    if not RESULT_DIR.is_dir():
+        print(f"no run bundles: {RESULT_DIR} does not exist")
+        return 0
+    names = sorted({path.name.rsplit("-2", 1)[0] for path in RESULT_DIR.iterdir() if path.is_dir()})
+    removed_total = 0
+    stuck: list[Path] = []
+    for name in names:
+        removed, survivors = prune_old_run_dirs(RESULT_DIR, name, keep)
+        removed_total += removed
+        stuck.extend(survivors)
+    remaining = sum(1 for path in RESULT_DIR.iterdir() if path.is_dir())
+    print(f"pruned {removed_total} run bundle(s) across {len(names)} test name(s); "
+          f"{remaining} kept (retention {keep})")
+    for path in stuck:
+        print(f"  could not remove: {path}")
+    return 1 if stuck else 0
 
 
 def clean_worktree_runtime(_: argparse.Namespace) -> int:
@@ -344,6 +381,7 @@ def main(argv: list[str] | None = None) -> int:
         "determinism",
         "show",
         "clean",
+        "prune",
     }:
         arguments.insert(0, "run")
     args = build_parser().parse_args(arguments)

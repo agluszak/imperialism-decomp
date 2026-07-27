@@ -75,6 +75,13 @@ runtime-check suite='pr' *args:
   just runtime-test-build
   uv run python -m tools.runtime.cli suite "{{suite}}" --require-fixtures {{args}}
 
+# Drop old run bundles (each stages its own read-only game/ sandbox, so hand-deleting
+# one needs a chmod first). Keeps the newest per test name; --keep 0 removes them all.
+[doc('Prune old runtime run bundles, keeping the newest per test')]
+[group('runtime-test')]
+runtime-prune *args:
+  uv run python -m tools.runtime.cli prune {{args}}
+
 [doc('Stop this worktree warm wineserver and Xvfb; drop the Wine prefix')]
 [group('runtime-test')]
 runtime-clean:

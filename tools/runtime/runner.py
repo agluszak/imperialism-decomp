@@ -73,7 +73,7 @@ class RunnerDependencies:
     ui_oracle: Callable[[JsonObject], JsonObject | None] = evaluate_ui_oracle
     map_oracle: Callable[[JsonObject, str, int], JsonObject | None] = evaluate_map_oracle
     fixture_validator: Callable[[Path, str], JsonObject] = validate_fixture_metadata
-    prune: Callable[[Path, str], None] = prune_old_run_dirs
+    prune: Callable[[Path, str], tuple[int, list[Path]]] = prune_old_run_dirs
     utc_stamp: Callable[[], str] = lambda: time.strftime(
         "%Y%m%dT%H%M%SZ", time.gmtime()
     )

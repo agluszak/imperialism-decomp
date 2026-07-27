@@ -48,6 +48,12 @@ are diagnostic only and never influence pass/fail. Use `just smoke`, `just smoke
 or `just gdb-script` for startup and debugger observation independent of native test
 instrumentation.
 
+Every attempt leaves a run bundle in `build-runtime-tests/runtime-results/`, each with its
+own staged `game/` tree (~165 MB). Retention keeps the newest 3 per test name
+(`IMPERIALISM_RUNTIME_BUNDLE_RETENTION` overrides); `just runtime-prune [--keep N]` applies
+it across every test name, and `--keep 0` clears them all. Use it rather than `rm -rf`: the
+staged assets are read-only, so a plain delete fails partway and leaves the bundle behind.
+
 Each semantic attempt runs from `<attempt>/game`, never from the retail installation.
 That tree hard-links a read-only, content-addressed asset cache and supplies fresh
 writable `Save`, log, result, and fixture locations. The worktree Wine prefix stays warm,
