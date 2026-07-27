@@ -3344,7 +3344,7 @@ address|matching|name
 0x512b50|0.4375|TMapMgr::GetNeighborTileIDArray
 0x512cc0|0.4647887323943662|TMapMgr::GetNeighborTileID
 0x512dd0|0.5435897435897435|TMapMgr::GetDirectionFrom
-0x512f10|0.018018018018018018|IltTarget_00512f10
+0x512f10|1.0|AreTileIndicesHexAdjacent
 0x513050|0.85|NormalizeWrappedMapCoord108x60
 0x5130a0|0.047619047619047616|IltTarget_005130a0
 0x513120|0.95|NormalizeWrappedMapCoord217x60
@@ -7440,7 +7440,7 @@ address|matching|name
 0x608ba8|0.9441964285714286|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|0.9787234042553191|CWnd::OnNotify
+0x6091d9|1.0|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent
