@@ -61,6 +61,50 @@ bool CursorDrawsVisiblePixels(HCURSOR cursor) {
   return changedPixel;
 }
 
+bool CaptureViewPixels(TView* view, DWORD** outPixels, int* outWidth, int* outHeight) {
+  if (view == 0 || view->nativeWindow50 == 0 || view->nativeWindow50->m_hWnd == 0 ||
+      view->frameWidth34 <= 0 || view->frameHeight38 <= 0) {
+    return false;
+  }
+
+  BITMAPINFO bitmapInfo;
+  ZeroMemory(&bitmapInfo, sizeof(bitmapInfo));
+  bitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+  bitmapInfo.bmiHeader.biWidth = view->frameWidth34;
+  bitmapInfo.bmiHeader.biHeight = -view->frameHeight38;
+  bitmapInfo.bmiHeader.biPlanes = 1;
+  bitmapInfo.bmiHeader.biBitCount = 32;
+  bitmapInfo.bmiHeader.biCompression = BI_RGB;
+
+  HDC windowDc = GetDC(view->nativeWindow50->m_hWnd);
+  void* capturedStorage = 0;
+  HBITMAP bitmap = CreateDIBSection(windowDc, &bitmapInfo, DIB_RGB_COLORS, &capturedStorage, 0, 0);
+  HDC memoryDc = CreateCompatibleDC(windowDc);
+  HGDIOBJ previousBitmap = SelectObject(memoryDc, bitmap);
+  BOOL copied = BitBlt(memoryDc, 0, 0, view->frameWidth34, view->frameHeight38, windowDc,
+                       view->absoluteX, view->absoluteY, SRCCOPY);
+  GdiFlush();
+
+  int pixelCount = view->frameWidth34 * view->frameHeight38;
+  DWORD* pixels = 0;
+  if (copied != 0 && capturedStorage != 0) {
+    pixels = new DWORD[pixelCount];
+    memcpy(pixels, capturedStorage, pixelCount * sizeof(DWORD));
+  }
+
+  SelectObject(memoryDc, previousBitmap);
+  DeleteDC(memoryDc);
+  DeleteObject(bitmap);
+  ReleaseDC(view->nativeWindow50->m_hWnd, windowDc);
+  if (pixels == 0) {
+    return false;
+  }
+  *outPixels = pixels;
+  *outWidth = view->frameWidth34;
+  *outHeight = view->frameHeight38;
+  return true;
+}
+
 class CivilianRecruitmentTestCase : public RuntimeScenario {
 public:
   CivilianRecruitmentTestCase()
@@ -291,6 +335,86 @@ private:
     return false;
   }
 
+  bool HoverMovementRestoresPreviousTiles(TMapDialog* mapDialog) {
+    HWND mapHost = mapDialog->nativeWindow50->m_hWnd;
+    RedrawWindow(mapHost, 0, 0, RDW_INVALIDATE | RDW_UPDATENOW);
+
+    DWORD* baseline = 0;
+    int width = 0;
+    int height = 0;
+    if (!CaptureViewPixels(mapDialog, &baseline, &width, &height)) {
+      return false;
+    }
+
+    CPoint firstPoint;
+    CPoint secondPoint;
+    short firstTile = -1;
+    short secondTile = -1;
+    for (int y = 32; y < mapDialog->frameHeight38 && secondTile == -1; y += 32) {
+      for (int x = 32; x < mapDialog->frameWidth34; x += 32) {
+        short column;
+        short row;
+        short band;
+        CPoint point(x, y);
+        mapDialog->ConvertPoint(point, column, row, band);
+        short tile = static_cast<short>(ComputeStridedRecordAddress6C(column, row));
+        if (tile == targetHillTile) {
+          continue;
+        }
+        if (firstTile == -1) {
+          firstPoint = point;
+          firstTile = tile;
+        } else if (tile != firstTile) {
+          secondPoint = point;
+          secondTile = tile;
+          break;
+        }
+      }
+    }
+    if (secondTile == -1) {
+      delete[] baseline;
+      return false;
+    }
+
+    mapDialog->activeRegionBand72 = -1;
+    CPoint firstHostPoint(firstPoint.x + mapDialog->absoluteX, firstPoint.y + mapDialog->absoluteY);
+    CPoint secondHostPoint(secondPoint.x + mapDialog->absoluteX,
+                           secondPoint.y + mapDialog->absoluteY);
+    SendMessageA(mapHost, WM_MOUSEMOVE, 0, MAKELPARAM(firstHostPoint.x, firstHostPoint.y));
+    SendMessageA(mapHost, WM_MOUSEMOVE, 0, MAKELPARAM(secondHostPoint.x, secondHostPoint.y));
+
+    DWORD* afterMovement = 0;
+    int afterWidth = 0;
+    int afterHeight = 0;
+    if (!CaptureViewPixels(mapDialog, &afterMovement, &afterWidth, &afterHeight) ||
+        afterWidth != width || afterHeight != height) {
+      delete[] afterMovement;
+      delete[] baseline;
+      return false;
+    }
+
+    short projectedY;
+    short projectedX;
+    ProjectTileIndexToWrappedScreenOffsetByScale(secondTile, &mapDialog->viewportOrigin60,
+                                                 &projectedY, &projectedX, 1);
+    CRect currentHoverRect(projectedX - 1, projectedY - 1, projectedX + 0x42, projectedY + 0x42);
+    bool restored = true;
+    for (int pixelY = 0; pixelY < height && restored; ++pixelY) {
+      for (int pixelX = 0; pixelX < width; ++pixelX) {
+        CPoint pixelPoint(pixelX, pixelY);
+        if (!currentHoverRect.PtInRect(pixelPoint) &&
+            baseline[pixelY * width + pixelX] != afterMovement[pixelY * width + pixelX]) {
+          restored = false;
+          break;
+        }
+      }
+    }
+
+    delete[] afterMovement;
+    delete[] baseline;
+    return restored;
+  }
+
   TAnimation* RenderAndResolveOrderedProspectorAnimation(TMapUberPicture* mapView,
                                                          TMapDialog* mapDialog) {
     mapView->CenterOn(targetHillTile);
@@ -420,6 +544,10 @@ private:
         reportCursor != 0x3f3 || !AnimationFrameBufferHasPixels(animation)) {
       FailScenario(
           "\"ordered prospector stopped animating, left its tile, or could not be inspected\"");
+      return;
+    }
+    if (!HoverMovementRestoresPreviousTiles(mapDialog)) {
+      FailScenario("\"ordered prospector hover left stale map pixels outside the current tile\"");
       return;
     }
     Pass();
