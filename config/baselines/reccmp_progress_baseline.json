@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
-  "git_branch": "agent/fix-industry-zero-status-icons",
-  "git_commit": "a3beb61e9f38f2ba2ea4b220f4d38fb5151f2f00",
-  "git_commit_date": "2026-07-27T02:35:54+02:00",
+  "git_branch": "main",
+  "git_commit": "841b76003c1aca4b362527452287d82d73ae77a5",
+  "git_commit_date": "2026-07-27T02:37:30+02:00",
   "global_coverage_pct": 25.370420870829925,
   "global_orig_only_count": 8210,
   "global_recomp_only_count": 8041,
@@ -63,7 +63,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 12,
   "template_canonical_paired_count": 19,
-  "timestamp_utc": "2026-07-27T00:36:19+00:00",
+  "timestamp_utc": "2026-07-27T00:37:38+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
