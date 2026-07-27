@@ -4638,7 +4638,7 @@ address|matching|name
 0x564fe0|0.5454545454545454|TNavyRoster::Close
 0x565030|1.0|TShipLine::CreateObject
 0x5650a0|1.0|TShipLine::GetRuntimeClass
-0x5650c0|0.0|IltTarget_005650c0
+0x5650c0|1.0|TShipLine::IShipLine
 0x565100|0.4641638225255973|TShipLine::InstallViews
 0x5653b0|1.0|TShipView::`scalar deleting destructor'
 0x5653e0|1.0|TShipView::~TShipView
@@ -6010,7 +6010,7 @@ address|matching|name
 0x5b1070|0.0|TTechItemLine::~TTechItemLine
 0x5b1090|1.0|TTechItemLine::CreateObject
 0x5b1100|1.0|TTechItemLine::GetRuntimeClass
-0x5b1120|0.0|IltTarget_005b1120
+0x5b1120|1.0|TTechItemLine::ITechItemLine
 0x5b1160|1.0|TTechItemLine::InstallViews
 0x5b1200|1.0|TTechItemView::`scalar deleting destructor'
 0x5b1230|1.0|TTechItemView::~TTechItemView
@@ -6235,7 +6235,7 @@ address|matching|name
 0x5bcfa0|0.0|TTradeOfferNationLine::~TTradeOfferNationLine
 0x5bcfc0|1.0|TTradeOfferNationLine::CreateObject
 0x5bd030|1.0|TTradeOfferNationLine::GetRuntimeClass
-0x5bd050|0.0|IltTarget_005bd050
+0x5bd050|1.0|TTradeOfferNationLine::ITradeOfferNationLine
 0x5bd090|0.7575757575757576|TTradeOfferNationLine::InstallViews
 0x5bd1a0|1.0|TTradeOfferNationView::`scalar deleting destructor'
 0x5bd1d0|1.0|TTradeOfferNationView::~TTradeOfferNationView
@@ -6250,7 +6250,7 @@ address|matching|name
 0x5bd930|0.0|TTradeBidNationLine::~TTradeBidNationLine
 0x5bd950|1.0|TTradeBidNationLine::CreateObject
 0x5bd9c0|1.0|TTradeBidNationLine::GetRuntimeClass
-0x5bd9e0|0.0|IltTarget_005bd9e0
+0x5bd9e0|1.0|TTradeBidNationLine::ITradeBidNationLine
 0x5bda20|0.6458333333333334|TTradeBidNationLine::InstallViews
 0x5bdaf0|1.0|TTradeBidNationView::`scalar deleting destructor'
 0x5bdb20|1.0|TTradeBidNationView::~TTradeBidNationView
@@ -7438,7 +7438,7 @@ address|matching|name
 0x608ba8|0.9441964285714286|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|1.0|CWnd::OnNotify
+0x6091d9|0.9787234042553191|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent

@@ -14,6 +14,14 @@ TTradeBidNationLine::~TTradeBidNationLine() {}
 
 IMPLEMENT_DYNCREATE(TTradeBidNationLine, TLineData)
 
+// FUNCTION: IMPERIALISM 0x005bd9e0
+void TTradeBidNationLine::ITradeBidNationLine(short categorySlot, short nationSlot, short rowArg,
+                                              short colArg, int* bounds) {
+  SetLineDataRowAndBounds(rowArg, colArg, bounds);
+  nationSlot12 = nationSlot;
+  categorySlot10 = categorySlot;
+}
+
 // FUNCTION: IMPERIALISM 0x005bda20
 void TTradeBidNationLine::InstallViews(TView* panel, int* offsetLayout) {
   TTradeBidNationView* view = new TTradeBidNationView();

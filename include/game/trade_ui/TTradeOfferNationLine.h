@@ -19,6 +19,12 @@ public:
 
   // NOOP: verified empty in original 0x005bcff3 (no standalone TTradeOfferNationLine::TTradeOfferNationLine body exists: CreateObject 0x005bcfc0 inlines this default ctor, calling the TLineData base ctor directly at that site)
   TTradeOfferNationLine() {}
+
+  // Two-phase init (MacApp IViewClass idiom). Unlike the other line initialisers this
+  // one takes its two slot ids FIRST and the shared row/bounds triple after.
+  // 0x005bd050, __thiscall.
+  void ITradeOfferNationLine(short categorySlot, short nationSlot, short rowArg, short colArg,
+                             int* bounds);
 };
 
 ASSERT_SIZE(TTradeOfferNationLine, 0x14);

@@ -4596,7 +4596,7 @@ address|name|symbol|size|type|prototype|provenance
 564fe0|TNavyRoster::Close||59|function|void Close()|macos-name-oracle:Close()
 565030|TShipLine::CreateObject|?CreateObject@TShipLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5650a0|TShipLine::GetRuntimeClass||6|function|undefined GetTShipLineClassNamePointer()|rtti
-5650c0|IltTarget_005650c0||48|function|undefined IltTarget_005650c0()|
+5650c0|TShipLine::IShipLine||48|function|void __thiscall TShipLine::IShipLine(short rowArg, short colArg, int * bounds, TMapOrderChildLinkNode * childLink, TTaskForce * force)|curated
 565100|TShipLine::CreateLineItemView||535|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 5653b0|TShipView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 565400|TShipView::CreateObject|?CreateObject@TShipView@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
@@ -5910,7 +5910,7 @@ address|name|symbol|size|type|prototype|provenance
 5b1070|DestructTTechStorePageAndMaybeFree_Impl||7|function|undefined DestructTTechStorePageAndMaybeFree_Impl()|
 5b1090|TTechItemLine::CreateObject|?CreateObject@TTechItemLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5b1100|TTechItemLine::GetRuntimeClass||6|function|undefined GetTTechItemLineClassNamePointer()|rtti
-5b1120|IltTarget_005b1120||43|function|undefined IltTarget_005b1120()|
+5b1120|TTechItemLine::ITechItemLine||43|function|void __thiscall TTechItemLine::ITechItemLine(short rowArg, short colArg, int * bounds, int nationSlot, int techId)|curated
 5b1160|TTechItemLine::CreateLineItemView||121|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 5b1200|TTechItemView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b1250|TTechItemView::CreateObject|?CreateObject@TTechItemView@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
@@ -6117,7 +6117,7 @@ address|name|symbol|size|type|prototype|provenance
 5bcfa0|TTradePageSellView::DestructTTradePageSellViewAndMaybeFree_Impl||7|function|undefined DestructTTradePageSellViewAndMaybeFree_Impl()|
 5bcfc0|TTradeOfferNationLine::CreateObject|?CreateObject@TTradeOfferNationLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5bd030|TTradeOfferNationLine::GetRuntimeClass||6|function|undefined GetTTradeOfferNationLineClassNamePointer()|rtti
-5bd050|IltTarget_005bd050||47|function|undefined IltTarget_005bd050()|
+5bd050|TTradeOfferNationLine::ITradeOfferNationLine||47|function|void __thiscall TTradeOfferNationLine::ITradeOfferNationLine(short categorySlot, short nationSlot, short rowArg, short colArg, int * bounds)|curated
 5bd090|TTradeOfferNationLine::CreateLineItemView||205|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 5bd1a0|TTradeOfferNationView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5bd1f0|TTradeOfferNationView::CreateObject|?CreateObject@TTradeOfferNationView@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
@@ -6131,7 +6131,7 @@ address|name|symbol|size|type|prototype|provenance
 5bd930|TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl||7|function|undefined DestructTTradePageBuyViewAndMaybeFree_Impl()|
 5bd950|TTradeBidNationLine::CreateObject|?CreateObject@TTradeBidNationLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5bd9c0|TTradeBidNationLine::GetRuntimeClass||6|function|undefined GetTTradeBidNationLineClassNamePointer()|rtti
-5bd9e0|IltTarget_005bd9e0||47|function|undefined IltTarget_005bd9e0()|
+5bd9e0|TTradeBidNationLine::ITradeBidNationLine||47|function|void __thiscall TTradeBidNationLine::ITradeBidNationLine(short categorySlot, short nationSlot, short rowArg, short colArg, int * bounds)|curated
 5bda20|TTradeBidNationLine::CreateLineItemView||149|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 5bdaf0|TTradeBidNationView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5bdb40|TTradeBidNationView::CreateObject|?CreateObject@TTradeBidNationView@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
