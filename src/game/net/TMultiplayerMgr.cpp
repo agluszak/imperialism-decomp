@@ -350,8 +350,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TurnEventACityAnnouncePacket* announce = static_cast<TurnEventACityAnnouncePacket*>(packet);
     if (g_pSimMgr->scenarioMapIndexPlusOne == 0) {
       int announcedNation = static_cast<char>(announce->nationId1C);
-      g_pGlobalMapState->SetTileTransportFlagsTo0x37AndRefreshNeighbors(announce->homeTile1E,
-                                                                        (char)announcedNation);
+      g_pGlobalMapState->PlaceCity(announce->homeTile1E, (char)announcedNation);
       g_apNationStates[announcedNation]->SetHomeCityTileAndDisplayName(announce->homeTile1E,
                                                                        announce->cityName20);
     }
@@ -397,8 +396,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           g_apTerrainTypeDescriptorTable[dirSlot]->identitySharedString1 = nationName2;
         }
         if (g_pSimMgr->scenarioMapIndexPlusOne == 0) {
-          g_pGlobalMapState->SetTileTransportFlagsTo0x37AndRefreshNeighbors(
-              directory->homeTileBySlot[dirSlot], (short)dirSlot);
+          g_pGlobalMapState->PlaceCity(directory->homeTileBySlot[dirSlot], (short)dirSlot);
         }
       }
       TZone* portZone =

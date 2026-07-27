@@ -1,7 +1,6 @@
 #pragma once
-// Split from global_data_tables.h by tools/analysis/split_globals.py
-// (bead 8mo.2). Definitions stay in src/game/global_data_tables.cpp;
-// assignment evidence: docs/reference/subsystem_assignment.csv.
+// Cross-subsystem and unresolved global declarations. Definitions and address markers
+// live in src/game/core/global_data_tables.cpp.
 #include "game/globals/prelude.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_tags_common.h"
@@ -1926,7 +1925,7 @@ extern "C" char g_bMultiplayerScenarioSetupActive;
 
 extern "C" const char s_PictWvGobPathFormat_00698BF4[];
 
-// TZone.cpp — zone-graph BFS distance cache (see bd 1uj.16).
+// TZone.cpp — zone-graph BFS distance cache.
 extern int g_nMapActionContextCount;
 
 extern void* g_pMapActionContextDistanceCache;

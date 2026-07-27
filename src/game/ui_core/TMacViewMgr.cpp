@@ -1254,10 +1254,10 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
 void TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1, int unusedArg2) {
   TView* dialog = activeCityProductionView04;
   g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCitySiteSelector), 0);
-  short completionFlag = static_cast<short>(dialog->field14);
+  short completionFlag = static_cast<short>(dialog->lastIdleTick);
   while (completionFlag == 0) {
     PumpUiMessagesAndBackgroundTasks(1);
-    completionFlag = static_cast<short>(dialog->field14);
+    completionFlag = static_cast<short>(dialog->lastIdleTick);
   }
 }
 

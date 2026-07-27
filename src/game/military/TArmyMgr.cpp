@@ -519,7 +519,7 @@ void TArmyMgr::ResolveNextMove() {
 // FUNCTION: IMPERIALISM 0x004a2500
 void TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits() {
   this->pendingUnitPool0c->FreePayloads();
-  g_pGlobalMapState->ClearPerTileByte0FForAllMapTiles();
+  g_pGlobalMapState->DimmingOff();
 
   for (int i = 0; i < kTerrainTypeDescriptorTableCount; ++i) {
     TCountry* nation = g_apTerrainTypeDescriptorTable[i];
@@ -1594,8 +1594,7 @@ void TArmyMgr::DispatchMapActionForRegionByAdjacency(int contextArg) {
 
 // FUNCTION: IMPERIALISM 0x004a5080
 bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityRecordIndex) {
-  TMilitaryUnit* unit =
-      g_pGlobalMapState->ValidateGridIndexRange0To17F(this->pendingMapActionIndex);
+  TMilitaryUnit* unit = g_pGlobalMapState->GetMilitaryMaster(this->pendingMapActionIndex);
   int totalCost = 0;
   for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
     if (unit->unitOrder == 0 &&
@@ -1617,7 +1616,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
     return false;
   }
 
-  if (!g_pGlobalMapState->AreAllLinkedEntriesTerrainFlagBit2Clear(this->pendingMapActionIndex)) {
+  if (!g_pGlobalMapState->HasPortInProvince(this->pendingMapActionIndex)) {
     CString atWarBody;
     CString atWarTitle;
     g_pSimMgr->GetString(0x2745, 6, &atWarBody);
@@ -1667,8 +1666,8 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
     return false;
   }
 
-  for (unit = g_pGlobalMapState->ValidateGridIndexRange0To17F(this->pendingMapActionIndex);
-       unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
+  for (unit = g_pGlobalMapState->GetMilitaryMaster(this->pendingMapActionIndex); unit != nullptr;
+       unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
     if (unit->unitOrder == 0 &&
         unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       unit->SetOrders(kUnitOrderRedeploy, cityRecordIndex);
@@ -2358,7 +2357,7 @@ void TArmyMgr::ClearNationArmyActionModesAndCycleSelection(int nationId) {
   POSITION position = regionList->GetHeadPosition();
   while (position != NULL) {
     short cityIndex = static_cast<short>(regionList->GetNext(position));
-    TMilitaryUnit* unit = g_pGlobalMapState->ValidateGridIndexRange0To17F(cityIndex);
+    TMilitaryUnit* unit = g_pGlobalMapState->GetMilitaryMaster(cityIndex);
     while (unit != 0) {
       if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia) &&
           unit->unitOrder != 1) {

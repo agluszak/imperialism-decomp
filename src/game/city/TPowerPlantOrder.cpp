@@ -40,12 +40,12 @@ short TPowerPlantOrder::MaxOrder() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b7b30
-bool TPowerPlantOrder::SetQuantity(short param_1) {
-  short delta = static_cast<short>(param_1 - quantityField04);
-  if (param_1 > MaxOrder() || param_1 < 0) {
+bool TPowerPlantOrder::SetQuantity(short quantity) {
+  short delta = static_cast<short>(quantity - quantityField04);
+  if (quantity > MaxOrder() || quantity < 0) {
     return false;
   }
-  quantityField04 = param_1;
+  quantityField04 = quantity;
 
   if (cityField08->productionSummary1d8->strength < -static_cast<int>(delta)) {
     quantityField04 = static_cast<short>(quantityField04 - delta);

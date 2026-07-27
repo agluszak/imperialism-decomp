@@ -3,13 +3,8 @@
 #include "game/gfx/TModalDialogBase.h"
 #include "game/mfc.h"
 
-// Template-driven modal dialog controller: a CDialog subclass (via TModalDialogBase). All
-// modal-create scratch state lives in the TModalDialogBase base (0x5c-0x73); this level
-// adds only behaviour, no fields — its destructor stays implicit (the inherited
-// ~TModalDialogBase teardown is the whole original body). The former
-// DestroyListBoxAndHotKeyChildren claim at 0x004152e0 was an inverted attribution — that
-// address is TAutoResolutionDialog::~TAutoResolutionDialog (bd 4ldx) — and calling its
-// finalize check from the destructor double-ran the cleanup the base already performs.
+// Template-driven modal dialog controller. TModalDialogBase owns the modal-create
+// scratch state and teardown; this level adds behavior but no fields.
 class TModalTemplateDialog : public TModalDialogBase {
 public:
   TModalTemplateDialog(UINT templateId, CWnd* pParentWnd)

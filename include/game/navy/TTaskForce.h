@@ -8,29 +8,12 @@
 #include "game/navy/TShip.h"
 #include "game/globals/navy_globals.h"
 
-class TTaskForce;
 class TStream;
 class CString;
 class TZone;
-class TShip;
 struct Province;
 
-// The former TMapOrderEntryOwnerContext placeholder struct (this comment block
-// used to sit here) is gone: bd 1uj.16.1 resolved Add's
-// receiver to be TTaskForce itself (the parent order entry), not a distinct
-// manager class -- see Add's own declaration. The `target`
-// slot (+0x0c) that was previously flagged UNRESOLVED is now modeled as the
-// shipOrders-keyed union TMapOrderContext (see the field comment below); a full
-// writer/receiver disassembly inventory confirmed the discriminator mapping and
-// found no wrong-receiver/wrong-offset defect.
-
-// Map-order queue entry (0x34 bytes). RTTI-confirmed real name TTaskForce
-// (CRuntimeClass chain: TTaskForce -> TObject -> CObject; see
-// config/symbols.csv rtti-sourced rows at 0x552770/0x5527e0/0x552870). Was
-// previously modeled under the placeholder name TMapOrderEntry; merged into
-// the RTTI name once TTaskForce's own vtable (0x0065c468) was found to be the
-// SAME vtable TNavyMission.cpp's map-order bridges dispatch through (bd
-// 1uj.16). Objects live in a global doubly-linked queue headed by
+// Map-order queue entry. Objects live in a global doubly-linked queue headed by
 // TNavyMgr::orderQueueHead (g_pNavyOrderManager @ 0x6a43e4), threaded via
 // previousForce/nextForce; TTaskForce::Free (0x552930) unlinks from that queue.
 // VTABLE: IMPERIALISM 0x0065c468
@@ -42,19 +25,13 @@ public:
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x552d10
   virtual void Free() override;                    // slot 0x07 0x552930
 
-  // TTaskForce's own fields start at absolute offset +0x04: the inherited
-  // TObject vtable pointer already occupies +0x00-0x03 (TObject is
-  // ASSERT_SIZE 0x4). A leftover `field_00` here (from before this struct
-  // was RTTI-merged from the standalone, non-TObject-derived TMapOrderEntry)
-  // double-counted that slot and pushed sizeof(TTaskForce) to 0x38; removed
-  // so aggression lands at +0x04, matching every `[this+4]` disassembly read
-  // cited across this file, and the total size matches the RTTI-confirmed
-  // 0x34 bytes (0x04 inherited + 0x30 own).
-  // Mac oracle: eAgro. SetAggression writes the complete dword, ships cache the
+  // LAYOUT: TObject occupies +0x00..+0x03; TTaskForce fields begin at +0x04 and the
+  // complete object is 0x34 bytes.
+  // ORACLE: eAgro. SetAggression writes the complete dword, ships cache the
   // complete dword, and the battle resolver uses it to index its three-entry
   // aggression threshold table.
   int aggression;
-  // Mac oracle: eShipOrders. This is the submitted ship-order kind. TNavyMgr's
+  // ORACLE: eShipOrders. This is the submitted ship-order kind. TNavyMgr's
   // RemoveMatchingTaskForceOrders (0x557170 cluster) checks this == 5 for
   // "task force" queue entries; OrderEvade (0x552f80) sets it to
   // 9 for the map-order-9 kind.
@@ -69,19 +46,15 @@ public:
   //                           +0xa1 owner-nation flag is read by ApplyMapOrderTypeExecution-
   //                           Effects, and GetProvinceIndex resolves it)
   //   shipOrders 9 / 0     -> null (OrderEvade never writes it; ctor nulls it)
-  // Proven a real tagged union (not incidental reuse) by WriteTo/ReadFrom (0x552b90/
-  // 0x552d10), which serialize THIS slot two different ways depending on shipOrders==5 (a
-  // city-table index) vs otherwise (a generic CObject reference). Every reader/writer
-  // touches [this+0xc] as one 4-byte pointer, so the members alias at offset 0 and codegen
-  // is identical to the former raw pointer.
+  // LAYOUT: WriteTo/ReadFrom (0x552b90/0x552d10) serialize this slot two ways:
+  // shipOrders==5 uses a city-table index; other values use a CObject reference. Every
+  // reader and writer treats +0x0c as one 4-byte slot.
   union TMapOrderContext {
     TZone* asZone;
     Province* asProvince;
   } target;
-  // Head of this entry's own child order-node chain (was opaque pad_10[0]).
-  // Same TMapOrderChildLinkNode shape TNavyMission::orderList24 walks. When
-  // `this` is referenced via a child's taskForce pointer, this is that child's
-  // sibling list head (former TMapOrderEntryOwnerContext::head).
+  // Head of this entry's child order-node chain. A child's taskForce backlink makes
+  // this the head of that child's sibling list.
   TMapOrderChildLinkNode* shipList; // +0x10
   // Cached "preferred active child" pointer, recomputed by
   // ElectFlagship (0x553e30) folding
@@ -105,7 +78,7 @@ public:
   // Set to 1 by AttemptToEvade (0x555c20) when this entry loses a
   // tie-break against a competing entry; checked by
   // Encounter (0x555420) to short-circuit an
-  // already-eliminated candidate (was pad_24[2]).
+  // already-eliminated candidate.
   char defeated;
   char pad_27;
   TTaskForce* previousForce;
@@ -120,14 +93,14 @@ public:
     memset(shipCountsByToolbarSlot, 0, sizeof(shipCountsByToolbarSlot));
   }
 
-  // Real constructor used when a task-force order entry is created for a specific
+  // Constructor used when a task-force order entry is created for a specific
   // context/nation slot (CreateTaskForceFromNavyOrdersForNationIfEligible 0x560a78,
   // TNavyMission::CombineForce 0x536dce). `nationArg` seeds nation.
   TTaskForce(TZone* locationArg, short nationArg);
 
   void LinkTo(TTaskForce* prev_node, TTaskForce* next_node);
 
-  // Mac oracle: RegainVirginity(int, TZone*). Removes every child ship and resets
+  // ORACLE: RegainVirginity(int, TZone*). Removes every child ship and resets
   // the task force's nation/context identity for a new map selection.
   void RegainVirginity(int nationArg, TZone* contextZone); // 0x552a70
   // 0x005528c0 — empty post-construction slot invoked thiscall (no args) by both
@@ -322,21 +295,20 @@ public:
   // without checking first, matching the original's `test esi,esi; jz` guard.
   void FreeAll(); // 0x556820
 
-  // Folds Finest over shipList into
-  // flagship (bd 1uj.16 target cluster).
+  // Folds Finest over shipList into flagship.
   void ElectFlagship(); // 0x553e30
 
   // Removes every shipList entry whose link node is inactive (unlink + delete,
   // clearing the freed entry's owner and decrementing its resource-type bucket counter
   // -- same +0x1e-based bucket region DropShips /
   // SinkOrSwimShips use), then recomputes flagship over the
-  // survivors. The original inlines both passes here rather than calling
-  // ElectFlagship for the second pass.
+  // survivors.
+  // MATCH: retail inlines both passes here rather than calling ElectFlagship again.
   void FreeAvailables(); // 0x553f10
 
-  // Mac oracle: Remove(TShip*). Removes the ship's child link, updates its class
-  // count and the preferred-child cache, then clears the ship's owner backlink.
-  // Mac oracle: TTaskForce::Remove(TShip*). The class-body definition is material:
+  // ORACLE: Remove(TShip*). Removes the ship's child link, updates its class count and
+  // preferred-child cache, then clears the ship's owner backlink.
+  // MATCH: the class-body definition is material:
   // VC5 both expands it in RegainVirginity and retains its COMDAT copy at 0x553d40.
   // FUNCTION: IMPERIALISM 0x00553d40
   void Remove(TShip* ship) {
@@ -368,57 +340,39 @@ public:
     ship->taskForce = 0;
   }
 
-  // Mac oracle: SubmitOrders(eShipOrders, void*). `orderContext` is interpreted as a
+  // ORACLE: SubmitOrders(eShipOrders, void*). orderContext is interpreted as a
   // TZone* or Province* according to orderType.
   void SubmitOrders(int orderType, void* orderContext); // 0x5540b0
 
-  // bd 1uj.16 target: sets shipOrders=9 (map-order kind 9), frees any
+  // Sets shipOrders=9, frees any
   // shipList entries whose owning link is inactive, recomputes
   // flagship, then either self-Frees (no live children) or
   // (re)inserts `this` at the head of g_pNavyOrderManager->orderQueueHead
   // and notifies g_pActiveMapOrderContext.
   void OrderEvade(); // 0x552f80
 
-  // Opens by re-seeding the zone-graph BFS distance levels from `pContextAnchor`
-  // (TZone::PropagateMapActionContextDistanceLevelsRecursive(-1), via ILT thunk
-  // 0x4081cf -- this resolved the `owner` field's TZone identity for this call
-  // site: `target.asZone` (this+0xc) is read/written here with TZone's own
-  // primaryNeighbors stretch shape (vfptr/data/capacity/count at
-  // target+0x24/+0x28/+0x2c/+0x30, matching TZonePrimaryNeighborStretch exactly)
-  // and TZone::distanceLevel44. Then walks target.asZone->primaryNeighbors,
+  // Re-seeds zone-graph BFS distance levels from pContextAnchor, then walks
+  // target.asZone->primaryNeighbors,
   // promoting the first neighbor closer to the destination; finally the
   // same free-shipList / recompute / self-Free-or-queue tail as
   // OrderEvade.
   void OrderSailTowards(TZone* pContextAnchor); // 0x5533f0
 
-  // bd 1uj.16.2/1uj.16.5 target: sibling of OrderEvade for map-order kind
-  // 6 (port-zone blockade orders) -- stores the port-zone context in target.asZone, sets
-  // shipOrders=6, then the identical free-inactive-children / recompute /
-  // self-Free-or-queue tail as OrderEvade. Ghidra/symbols.csv mis-attribute
-  // this to TControlSeaZoneMission, but its body only ever reads TTaskForce's own field
-  // offsets (target/shipOrders/shipList/flagship/bucket-count region) --
-  // real owner is TTaskForce, called from TControlSeaZoneMission::GiveActionOrders (0x539640)
-  // and TBlockadePortMission::GiveActionOrders (0x53ba40, "QueueMapOrderType6FromContext
-  // Pointer") on the map-order entry passed to that virtual slot.
-  // Mac oracle: OrderSail. Map-order kind 1.
+  // OrderSail uses map-order kind 1. OrderBlockade stores the port-zone context in
+  // target.asZone, sets shipOrders=6, then follows the OrderEvade cleanup/queue tail.
+  // ORACLE: OrderSail.
   void OrderSail(TZone* orderTarget);     // 0x553270
   void OrderBlockade(TZone* orderTarget); // 0x5536c0
 
-  // Sibling of OrderBlockade for map-order kind 5 -- byte-identical body except
-  // it stores shipOrders=5 instead of 6 (target=orderTarget, flagship=null, same
-  // free-inactive-children / recompute / self-Free-or-queue tail). Ghidra/symbols.csv model
-  // it as a free __thiscall function; real owner is TTaskForce (body reads only this class's
-  // own field offsets).
+  // OrderBlockade sibling for map-order kind 5: stores target, clears flagship, and uses
+  // the same free-inactive-children/recompute/queue tail.
   void OrderSendInTheMarines(Province* orderTarget); // 0x553840
 
-  // bd 1uj.16.2 target: another OrderEvade sibling, for map-order kind 3
-  // (useType4 == 0) or 4 (useType4 != 0); does not touch `target`. Same mis-attribution
-  // to a free function as OrderBlockade -- real owner is TTaskForce (body only
-  // reads this class's own field offsets). Called from TControlSeaZoneMission::GiveActionOrders
-  // when no matching port-zone context was found.
+  // OrderEvade sibling for map-order kind 3 (useType4 == 0) or 4 (useType4 != 0); does
+  // not touch target.
   void OrderPatrol(unsigned char useType4); // 0x5530f0
 
-  // Called from ReassignToForce's tail (0x550ff0, via ILT thunk 0x4027de) with
+  // Called from ReassignToForce's tail (0x550ff0) with
   // ReassignToForce's `self` argument re-attached as `node`'s new owner, and from
   // DropShips for each stale TShip
   // primary-order node matching this entry's location/nation.
@@ -430,7 +384,7 @@ public:
   // 0xc) and copies this entry's aggression dword and
   // ship-order-kind gate onto `node` -- the same fields/gate
   // TShip::SetTaskForce applies, just with `this` playing the role of
-  // that method's `newEntry` parameter (bd 1uj.16.1).
+  // that method's newEntry parameter.
   void Add(TShip* node); // 0x553bc0
 };
 

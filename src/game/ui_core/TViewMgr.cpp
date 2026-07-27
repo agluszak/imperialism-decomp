@@ -1364,7 +1364,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
 // FUNCTION: IMPERIALISM 0x005d7c40
 void TViewMgr::DispatchTurnEvent3B8AndWaitForCompletion(int payload, TEventHandler* waitTarget) {
   DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCitySiteSelector), payload);
-  while (static_cast<short>(waitTarget->field14) == 0) {
+  while (static_cast<short>(waitTarget->lastIdleTick) == 0) {
     if (PumpUiMessagesAndBackgroundTasks(1) == 0) {
       g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
     }
@@ -2220,8 +2220,8 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
   switch (g_pSimMgr->mode) {
   case 1:
     movieName = CString("open");
-    if (movieView->linkedChildHandler != 0) {
-      static_cast<TView*>(movieView->linkedChildHandler)->SetState(0, 0);
+    if (movieView->nextHandler != 0) {
+      static_cast<TView*>(movieView->nextHandler)->SetState(0, 0);
     }
     break;
   case 0xe:

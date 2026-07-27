@@ -1,7 +1,6 @@
 #pragma once
-// Split from global_data_tables.h by tools/analysis/split_globals.py
-// (bead 8mo.2). Definitions stay in src/game/global_data_tables.cpp;
-// assignment evidence: docs/reference/subsystem_assignment.csv.
+// Subsystem-owned global declarations. Definitions and address markers live in
+// src/game/core/global_data_tables.cpp.
 #include "game/globals/prelude.h"
 
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;
@@ -34,8 +33,7 @@ extern int g_nTurnEvent2BNationMaskAccumulator;
 
 // WNetMgr.cpp TU globals (0x6a5fxx band), consumed by TNetMgr::Send / TWNetSessionManager.
 // The pending-packet queue and its two serialization siblings are file-scope MFC template
-// statics (see the typed C++ section below); the previous six raw queue globals were the
-// members of the CList at 0x6a5f40.
+// statics (see the typed C++ section below).
 extern int DAT_006a601c;
 
 extern int g_suppressUnexpectedDirectPlaySystemMessageAssert006a6020;

@@ -51,11 +51,11 @@ char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(StrategicTileIndex ti
 void NormalizeWrappedMapCoord217x60(short* xCoord, short* yCoord);
 
 // FUNCTION: IMPERIALISM 0x004a4190
-TMilitaryUnit* TMapMgr::ValidateGridIndexRange0To17F(short index) {
-  if (index < 0 || index >= 0x180) {
+TMilitaryUnit* TMapMgr::GetMilitaryMaster(short provinceIndex) {
+  if (provinceIndex < 0 || provinceIndex >= 0x180) {
     return nullptr;
   }
-  return cityScoreTable[index].stationedUnitChain98;
+  return cityScoreTable[provinceIndex].stationedUnitChain98;
 }
 
 // Hex direction (0-6) from sourceTile to destTile on the 0x6c(108)-wide map, via each tile's
@@ -2583,8 +2583,7 @@ void TMapMgr::SetProvinceCapitalTileFlagBit08(ProvinceIndexStorage nProvinceId) 
 }
 
 // FUNCTION: IMPERIALISM 0x00514a20
-void TMapMgr::SetTileTransportFlagsTo0x37AndRefreshNeighbors(StrategicTileIndex nTileIndex,
-                                                             short nOwnerNationId) {
+void TMapMgr::PlaceCity(StrategicTileIndex nTileIndex, short nOwnerNationId) {
   short cityRecordIndex = terrainStateTable[nTileIndex].cityRecordIndex;
   SetRegionTileSubtypeAndRefreshNeighborFlags(cityRecordIndex, nTileIndex);
 
@@ -3149,7 +3148,7 @@ void TMapMgr::ApplyUnitMovementClassForTileIfValid(int tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00515db0
-void TMapMgr::ClearPerTileByte0FForAllMapTiles() {
+void TMapMgr::DimmingOff() {
   for (int tileIndex = 0; tileIndex < kGlobalMapTileCount; ++tileIndex) {
     terrainStateTable[tileIndex].perTileVisitedFlag0f = 0;
   }
@@ -3966,15 +3965,11 @@ void TMapMgr::ResetTileToBaseTransportFlag(StrategicTileIndex tileIndex) {
   InitializeTileNeighborConnectionMaskIfNeeded(tile);
 }
 
-// Verified against the disassembly: returns TRUE as soon as it finds a linked
-// region whose terrainStateTable activeFlags1c bit 2 is SET, and FALSE if
-// linkedRegionCount<=0 -- the OPPOSITE of what the Ghidra-provisional name
-// implies ("all clear" would return true only when none are set). Kept the name
-// per Hard Rule 6 pending a confident replacement; documented the real behavior
-// here instead of renaming on a single read.
+// ORACLE: Mac TMapMgr::HasPortInProvince(int). The Windows listing returns true as soon as
+// one linked tile has activeFlags1c bit 2 (the port flag) set.
 // FUNCTION: IMPERIALISM 0x00518a20
-char TMapMgr::AreAllLinkedEntriesTerrainFlagBit2Clear(int regionIndex) {
-  const Province& record = cityScoreTable[regionIndex];
+char TMapMgr::HasPortInProvince(int provinceIndex) {
+  const Province& record = cityScoreTable[provinceIndex];
   for (int i = 0; i < record.linkedRegionCount; ++i) {
     unsigned char flags = terrainStateTable[record.linkedTileIndices42[i]].activeFlags1c;
     if ((flags >> 2) & 1) {
@@ -4079,7 +4074,7 @@ const unsigned char kGateFlagScoreBucket[15] = {0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 4,
 // FUNCTION: IMPERIALISM 0x00518d90
 void TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders() {
   // Real prefix: clears perTileVisitedFlag0f across all 0x1950 tiles. Same body as the
-  // standalone ClearPerTileByte0FForAllMapTiles (0x515db0), duplicated inline here to
+  // standalone DimmingOff (0x515db0), duplicated inline here to
   // match the original, which inlines it rather than sharing one out-of-line call.
   for (int tileIndex = 0; tileIndex < kGlobalMapTileCount; ++tileIndex) {
     terrainStateTable[tileIndex].perTileVisitedFlag0f = 0;

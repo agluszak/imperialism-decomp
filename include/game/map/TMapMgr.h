@@ -105,7 +105,7 @@ struct TTerrainStateRecordView {
   unsigned char pendingDevelopmentFlag0d;
   unsigned char recruitSearchVisited0e; // 0x0e
   // 0x0f -- cleared to 0 across all 0x1950 tiles by
-  // TMapMgr::ClearPerTileByte0FForAllMapTiles (0x409250); read signed (> 0) by the tile
+  // TMapMgr::DimmingOff (0x515db0); read signed (> 0) by the tile
   // context menu (0x504e90) to gate menu item 0x2a.
   signed char perTileVisitedFlag0f;
   // Index (0..89, -1 = none) of the TMapDialog transient tile-marker slot this tile occupies;
@@ -138,10 +138,8 @@ struct TTerrainStateRecordView {
 };
 ASSERT_SIZE(TTerrainStateRecordView, 0x24);
 
-// Field evidence beyond the original recovery: TMultiplayerMgr::DispatchCityRedrawInvalidateEvent
-// (0x54abf0) snapshots the whole record field-by-field and skips exactly bytes 0x09, 0x3d and
-// 0x96..0x97 — so 0x3e/0x40/0x94 are real short fields (formerly folded into pads) and 0xa4 is
-// the CString city display name (also read by AssignCityRecordDisplayName).
+// LAYOUT: the city-redraw packet snapshots the record field-by-field. Offsets 0x3e,
+// 0x40, and 0x94 are shorts; +0xa4 is the CString city display name.
 struct Province {
   Province();
   Province& operator=(const Province& source);
@@ -182,8 +180,7 @@ struct Province {
   // (TGreatPower 0x4dbf00) increments individual entries against building caps, the
   // city-redraw packet (TMultiplayerMgr) snapshots/patches all ten words, and the map
   // context info panel (0x51b1c0) renders each nonzero entry as "<count> <resource
-  // name>" via GetString(0x2711, resourceType). Formerly split into
-  // stage1CounterA..stage2CounterC / pad88 / field94 names.
+  // name>" via GetString(0x2711, resourceType).
   short resourceDevelopmentCounts82[10];
   unsigned char pad96[2];
   TMilitaryUnit* stationedUnitChain98; // 0x98
@@ -223,8 +220,8 @@ ProvinceIndex __fastcall GetProvinceIndex(Province* province);
 // Genuine __cdecl free function (pure arithmetic).
 void SplitTileIndexToHexRasterColumnX2AndRow(StrategicTileIndex tileIndex, short* outColX2,
                                              unsigned short* outRow);
-// 0x5125a0: tileIndex -> (row = tileIndex/0x6c, col = tileIndex%0x6c). Genuine __cdecl
-// free function (pure arithmetic); Ghidra's TMapDialog:: label is spurious (no `this`).
+// 0x5125a0: tileIndex -> (row = tileIndex/0x6c, col = tileIndex%0x6c).
+// ABI: genuine __cdecl free function.
 void SplitTileIndexToRowAndColumn(StrategicTileIndex tileIndex, short* outRow, short* outCol);
 
 // 0x005114b0. Maps an editor river connection mask to the tile-sprite variant stored in
@@ -502,9 +499,8 @@ public:
   virtual void NoOpVirtualSlot2D(int param_1, int param_2, int param_3); // slot 0x2d 0x515de0
   // Reassigns cityRecordIndex's ownerNationCode00 to newNationTag: first tells
   // SetTileOwnerAndInvalidateNeighborState to update every one of the city's linkedTileIndices42,
-  // then updates the city's own owned-region-list membership (real TCountry virtuals on
-  // g_apTerrainTypeDescriptorTable, resolved from the ILT thunks at 0x4081a2/0x407f72's
-  // siblings), sets g_pMapContextActionManager's per-nation slot, notifies the new owner
+  // then updates the city's own owned-region-list membership through TCountry, sets
+  // g_pMapContextActionManager's per-nation slot, notifies the new owner
   // (TGreatPower::NotifyActionSlot94) unless it's the local player's own turn, and creates a
   // turn-12 event when running in multiplayer-host mode.
   virtual void
@@ -647,8 +643,7 @@ public:
   // ownerNationTag04 below tier 7, else a fixed overflow cell.
   virtual short
   GetMapImprovementTileSpriteOffset(StrategicTileIndex tileIndex); // slot 0x48 0x5177f0
-  // slot 0x49 0x5145b0 -- RET 8 confirms two stack args (the earlier pMapContext/param_4 were
-  // Ghidra artifacts); every call site passes (tile index, owner nation tag).
+  // ABI: RET 8; every call site passes (tile index, owner nation tag).
   virtual int QueueDepotConstructionOrder(StrategicTileIndex nTileIndex, short nNationId);
   virtual void QueuePortConstructionOrder(StrategicTileIndex nTileIndex,
                                           short nNationId); // slot 0x4a 0x5147d0
@@ -665,9 +660,7 @@ public:
   // (g_abGateFlagQualifies), calls SetCivilianDevelopmentClassNibble(neighborTile, 0, 1, 1) on
   // it. Finishes by calling EnsurePortZoneForTile(nTileIndex) and refreshing nTileIndex's
   // gateFlag via ResolveRegionTileSubtypeCodeForTileIndex.
-  virtual void
-  SetTileTransportFlagsTo0x37AndRefreshNeighbors(StrategicTileIndex nTileIndex,
-                                                 short nOwnerNationId); // slot 0x4d 0x514a20
+  virtual void PlaceCity(StrategicTileIndex nTileIndex, short nOwnerNationId); // slot 0x4d 0x514a20
 
   // Recomputes the per-region strategic-score heatmap (cityScoreTable[*].cityScoreValue)
   // used by turn-AI order planning, then updates cityScoreTotal with the mean. 0x00518130.
@@ -678,25 +671,9 @@ public:
   // more than 32 tiles. 0x0050f3c0.
   void VerifyMapDataAndWriteReport();
 
-  // Global map session state (g_pGlobalMapState @ 0x006A43D4). RTTI object size 0x28
-  // covers the TObject head; tile/city tables are heap-backed pointers below.
-  //
-  // terrainStateTable/cityScoreTable/tileOwnershipTable/cityScoreTotal previously sat 4
-  // bytes too early (declared starting at +0x08). Ground truth from TMapMgr::ReadFrom's
-  // decompile (0x50e620, whose own field_0xNN offsets are Ghidra-authoritative -- they
-  // are not subject to the header's prior offset comments): field_0xc is dereferenced as
-  // a pointer and filled with a 0x38f40-byte buffer (0x1950 tiles * 0x24-byte records,
-  // matching TTerrainStateRecordView exactly), field_0x10 is a pointer walked in 0x180
-  // steps of 0xa8 bytes (matching Province exactly), and the following
-  // divisor field lands at field_0x18 -- confirmed independently by 3 call sites reading
-  // [g_pGlobalMapState+0x10] with the cityScoreTable stride/sub-offsets directly (bd
-  // 1uj.8, bd 1uj.23: TDefendProvinceMission::CalculateImportance 0x53ed00 and
-  // TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric 0x4e8750, both FILD
-  // dword ptr [.. + 0x9c] -- an int-to-float CONVERSION of cityScoreValue, not a raw
-  // bit-reinterpret). field_0x1c (scenarioTagText1c) and field_0x20
-  // (hexNeighborWrapHorizontally20) already matched their declared offsets, so the gap
-  // is confined to +0x04..+0x0c: 4 stream-read scalars whose semantics aren't identified
-  // yet (kept generic below), aligning the first pointer to +0x0c.
+  // Global map session state (g_pGlobalMapState @ 0x006A43D4). LAYOUT: TObject occupies
+  // the head; four stream-read scalars fill +0x04..+0x09, terrainStateTable is +0x0c,
+  // cityScoreTable is +0x10, and the complete object is 0x28 bytes.
   // Only ever written, and only as a single byte (MOV byte ptr [this+4],0 in ReadFrom's
   // decompile) -- not a genuine short; a real 2-byte field there would leave its high byte
   // unaccounted for.
@@ -715,9 +692,7 @@ public:
   bool HasAdjacentProvinceOwnedByNation(int provinceIndex, int ownerNationCode);
 
   Province* cityScoreTable; // +0x10
-  // +0x14 -- no access anywhere in the binary (whole-image field-xref sweep returns
-  // zero). The "per-tile ownership table" this used to be called was a mis-attribution:
-  // ApplyJoinEmpireMode0GlobalDiplomacyReset reads [this+0x0c], i.e. terrainStateTable.
+  // +0x14 has no observed access in the binary.
   void* unused14;
   int cityScoreTotal; // +0x18
   // Real CString, not a raw char* -- ~TMapMgr's own decompile (0x50e490) shows an explicit
@@ -773,10 +748,9 @@ public:
   // 0x515e50. Despite the name, checks whether regionIndex is in nodeContext's
   // adjacent-region list -- see the .cpp body comment.
   char TileHasMovementClassId(int nodeContext, int regionIndex);
-  // 0x518a20. Returns true on the first linked region with terrainStateTable
-  // activeFlags1c bit 2 SET (not "all clear" as the name implies) -- see the .cpp
-  // body comment.
-  char AreAllLinkedEntriesTerrainFlagBit2Clear(int regionIndex);
+  // ORACLE: Mac TMapMgr::HasPortInProvince(int). Returns true on the first linked tile
+  // whose terrainStateTable activeFlags1c has the port bit (0x04) set.
+  char HasPortInProvince(int provinceIndex);
   void SetRegionDevelopmentStageByte(short regionId, unsigned char stage);
   void SetTileTransportFlags(StrategicTileIndex nTileIndex, unsigned short wTileTransportFlags);
   void ApplyRailSectionEndpointDirectionFlags(StrategicTileIndex sourceTile,
@@ -793,7 +767,7 @@ public:
   // 0x515f40. Write a city display-name CString into cityScoreTable[cityRecordIndex]+0xa4.
   void SetGlobalMapCellSharedLabel(ProvinceIndex cityRecordIndex, CString* name);
   // 0x518b40. Developer purchase cost of a tile's two edge resources (weights the trade
-  // manager's proposal-weight metric). Reattributed from TCivToolbar (heuristic 46).
+  // manager's proposal-weight metric).
   int CalculateDeveloperTilePurchaseCost(StrategicTileIndex nTileIndex);
 
   // 0x517f80. For each of cityRecordIndex's adjacent regions that itself has at least one
@@ -853,9 +827,7 @@ public:
     return terrainStateTable[tileIndex].firstCivilianOrder20;
   }
 
-  // 0x514250. Walks the tile's civilian-order chain (GetFirstCivilianOrderOnTile) for the
-  // first entry owned by nationId. Reattributed from TCivToolbar (Ghidra bucket heuristic;
-  // `this` at the callsite is the global map state, not a TCivToolbar).
+  // 0x514250. Walks the tile's civilian-order chain for the first entry owned by nationId.
   TCivUnit* GetTileUnitEntryByOwner(StrategicTileIndex tileIndex, short nationId);
 
   // 0x513980, __thiscall, RET 4. Validates a secondary-nation city-site candidate from
@@ -876,7 +848,7 @@ public:
   // tiles tagged in [7,22]. 0x00518470, __thiscall, one int param.
   void ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot);
 
-  // 0x00518bd0 (reached through the ILT thunk at 0x004079af): computes the hex-grid
+  // 0x00518bd0: computes the hex-grid
   // cell adjacent to cityScoreTable[contextArg]'s tile in the direction of
   // cityScoreTable[tileIndex]'s tile (GetDirectionFrom +
   // g_Build_Hex_Area_LookupTable_00696E70/E80's per-direction offsets), clamps it onto
@@ -911,15 +883,14 @@ public:
   // loads ECX from g_pGlobalMapState (0x6a43d4) rather than passing its own `this`.
   void ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot);
 
-  // Returns cityScoreTable[index].stationedUnitChain98 when index is in [0, 0x180), else
-  // nullptr -- the same "validate then fetch the tile's unit chain head" idiom already
-  // inlined at several other TArmyMgr callsites, but here it's the original's own
-  // standalone function. 0x004a4190, __thiscall, one short stack arg.
-  TMilitaryUnit* ValidateGridIndexRange0To17F(short index);
+  // ORACLE: Mac TMapMgr::GetMilitaryMaster(long). Returns the province's stationed-unit
+  // chain when provinceIndex is in [0, 0x180), otherwise nullptr. Windows takes a short.
+  // 0x004a4190, __thiscall, one stack argument.
+  TMilitaryUnit* GetMilitaryMaster(short provinceIndex);
 
-  // Clears terrainStateTable[i].perTileVisitedFlag0f for every one of the 0x1950
-  // (108x60) map tiles. 0x00409250, __thiscall, no args.
-  void ClearPerTileByte0FForAllMapTiles();
+  // ORACLE: Mac TMapMgr::DimmingOff(). Clears perTileVisitedFlag0f for all 0x1950
+  // strategic-map tiles. 0x00515db0, __thiscall, no args.
+  void DimmingOff();
 
   // Marks field6 ready and, on first call (g_pStrategicMapViewSystem->atlas668 still
   // null), tail-calls TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches to

@@ -26,7 +26,7 @@ TIncludeView::TIncludeView()
   anchorPoint64.y = 0;
   CString empty(g_szEmptyString);
   labelText6c = empty;
-  field04 = 0;
+  enabled = 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0048ce40
@@ -42,9 +42,9 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* ma
     nativeWindow50 = mainView->nativeWindow50;
   }
   controlTag = kControlTagSpSpSpSp;
-  field04 = 1;
+  enabled = 1;
   field08 = 1;
-  linkedChildHandler = mainView;
+  nextHandler = mainView;
   ownerLocalX = g_turnEventDialogAnchorPoint.x;
   ownerLocalY = g_turnEventDialogAnchorPoint.y;
   frameWidth34 = mainView->frameWidth34;

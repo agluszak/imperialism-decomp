@@ -251,6 +251,6 @@ void TCitySiteView::HandleMapClickByInteractionMode(short nTileIndex, int nInput
     return;
   }
 
-  g_pGlobalMapState->SetTileTransportFlagsTo0x37AndRefreshNeighbors(nTileIndex, activeNation);
+  g_pGlobalMapState->PlaceCity(nTileIndex, activeNation);
   g_pSimMgr->StartNextPhase();
 }

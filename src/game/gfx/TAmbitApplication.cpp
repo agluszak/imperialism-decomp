@@ -105,7 +105,7 @@ void TAmbitApplication::IAmbitApplication() {
 
   g_pGameFlowState = new TMultiplayerMgr();
   if (g_pGameFlowState != nullptr) {
-    g_pGameFlowState->InitializeMultiplayerManagerForSessionContext(0);
+    g_pGameFlowState->IMultiplayerMgr(0);
   }
 }
 

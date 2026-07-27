@@ -25,9 +25,9 @@ void TScroller::InitializeScrollerPlacement(TView* owner, int* offsetLayout, int
     }
   }
   controlTag = kControlTagSpSpSpSp; // '    '
-  field04 = 1;
+  enabled = 1;
   field08 = 1;
-  linkedChildHandler = owner;
+  nextHandler = owner;
   ownerLocalX = offsetLayout[0];
   ownerLocalY = offsetLayout[1];
   frameWidth34 = sizeLayout[0];
