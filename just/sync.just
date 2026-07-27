@@ -69,6 +69,7 @@ refresh-inventory *args: _require-ghidra-install
   just symbols-anchor-gate
   just symbols-integrity-gate
   just vtable-collision-gate
+  just body-integrity-gate
   @echo "refresh-inventory done. Run 'just export-project' before committing."
 
 # MUTATES: config/original_entities.csv (with --apply).

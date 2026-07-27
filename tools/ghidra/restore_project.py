@@ -8,6 +8,12 @@ GHIDRA_PROGRAM_NAME if it is not already present.
 
 Usage:
   GHIDRA_INSTALL_DIR=... uv run python -m tools.ghidra.restore_project [path/to/export.gzf]
+  ... uv run python -m tools.ghidra.restore_project --force   # roll the live DB back
+
+`--force` deletes the live program before restoring, which is the rollback path for a DB
+experiment that went wrong: the committed .gzf is the last exported state, so everything
+applied since (and never run through `just export-project`) is discarded. Without it, an
+existing program is left untouched.
 """
 
 from __future__ import annotations
@@ -25,8 +31,9 @@ DEFAULT_GZF = EXPORTS_DIR / "Imperialism.gzf"
 
 
 def resolve_gzf() -> Path | None:
-    if len(sys.argv) > 1:
-        return Path(sys.argv[1])
+    positional = [argument for argument in sys.argv[1:] if not argument.startswith("-")]
+    if positional:
+        return Path(positional[0])
     if DEFAULT_GZF.is_file():
         return DEFAULT_GZF
     # Fall back to the newest archive in the exports dir.
@@ -48,10 +55,18 @@ def main() -> int:
         root = pdata.getRootFolder()
         prog_leaf = ghidra_env.program_name().lstrip("/")
 
+        force = "--force" in sys.argv[1:]
         existing = root.getFile(prog_leaf)
-        if existing is not None:
+        if existing is not None and not force:
             print(f"Program already present: /{prog_leaf} ({existing.getContentType()})")
+            print("Pass --force to discard the live program and restore the committed .gzf.")
             return 0
+        if existing is not None:
+            print(
+                f"--force: deleting live /{prog_leaf} — any DB change not yet run through "
+                "`just export-project` is lost"
+            )
+            existing.delete()
 
         print(f"Restoring {gzf.name} -> /{prog_leaf} ...")
         df = root.createFile(

@@ -329,10 +329,47 @@ def format_report(report: Report, *, limit: int = 0, kind: str = "") -> str:
     return "\n".join(lines)
 
 
+BASELINE = REPO_ROOT / "config" / "baselines" / "body_integrity_baseline.csv"
+
+
+def baseline_keys(path: Path) -> set[tuple[int, str]]:
+    """(address, kind) pairs a human has already seen. Missing file -> empty."""
+    if not path.is_file():
+        return set()
+    keys: set[tuple[int, str]] = set()
+    with path.open(encoding="utf-8") as handle:
+        for row in csv.DictReader(handle, delimiter="|"):
+            address = (row.get("address") or "").strip()
+            kind = (row.get("kind") or "").strip()
+            if address and kind:
+                keys.add((int(address, 16), kind))
+    return keys
+
+
+def write_baseline(path: Path, report: Report) -> None:
+    keys = sorted({(violation.entry, violation.kind) for violation in report.violations
+                   if violation.hard})
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        handle.write("address|kind\n")
+        for address, kind in keys:
+            handle.write(f"{address:08x}|{kind}\n")
+
+
+def new_violations(report: Report, baseline: set[tuple[int, str]]) -> list[Violation]:
+    """Hard violations the baseline has not already accepted."""
+    return [violation for violation in report.hard
+            if (violation.entry, violation.kind) not in baseline]
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--strict", action="store_true",
                         help="exit 1 when any hard violation is present")
+    parser.add_argument("--gate", action="store_true",
+                        help="exit 1 only on hard violations absent from the baseline")
+    parser.add_argument("--write-baseline", action="store_true",
+                        help="record today's hard violations as the accepted baseline")
     parser.add_argument("--limit", type=int, default=0, help="print at most N violations")
     parser.add_argument("--kind", default="", choices=("",) + ALL_KINDS,
                         help="report only this violation kind")
@@ -354,7 +391,34 @@ def main() -> int:
             program.release(consumer)
         project.close()
 
+    if args.write_baseline:
+        write_baseline(BASELINE, report)
+        print(f"wrote {BASELINE.relative_to(REPO_ROOT)} "
+              f"({len(baseline_keys(BASELINE))} accepted hard violation(s))")
+        return 0
+
     print(format_report(report, limit=args.limit, kind=args.kind))
+
+    if args.gate:
+        accepted = baseline_keys(BASELINE)
+        fresh = new_violations(report, accepted)
+        if fresh:
+            print(f"\nbody-integrity gate FAILED: {len(fresh)} hard violation(s) not in "
+                  f"{BASELINE.relative_to(REPO_ROOT)}:", file=sys.stderr)
+            for violation in fresh:
+                print(f"  {violation.kind} 0x{violation.entry:08x} {violation.name}",
+                      file=sys.stderr)
+            print("Repair the DB (demote-functions / delete-labels / fix-function-bounds "
+                  "--force, one address at a time for --clear-data-holes), never the "
+                  "baseline.", file=sys.stderr)
+            return 1
+        stale = len(accepted) - (len(report.hard) - len(fresh))
+        print(f"body-integrity gate passed: {len(report.hard)} hard violation(s), all "
+              f"accepted by the baseline"
+              + (f"; {stale} baseline row(s) now clean — rerun with --write-baseline"
+                 if stale > 0 else ""))
+        return 0
+
     if args.strict and report.hard:
         print(f"\nbody-integrity audit FAILED: {len(report.hard)} hard violation(s). "
               "Repair the DB (demote-functions / delete-labels / fix-function-bounds "

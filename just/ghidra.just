@@ -301,6 +301,20 @@ create-switch-table *args: _require-ghidra-install
 # start (the demote-to-label signature), fallthrough into unowned or foreign code,
 # entries inside another body, and curated sizes disagreeing with the DB. --strict exits
 # non-zero on any hard violation, so a DB mutation or archive update can be gated on it.
+# Ratchet: fails only on hard body-integrity violations absent from
+# config/baselines/body_integrity_baseline.csv, so a DB mutation cannot introduce a new
+# puncture while the historical ones are worked off. Runs at the end of refresh-inventory.
+[doc('Gate: no NEW Ghidra body-integrity violations vs the baseline')]
+[group('ghidra-db')]
+body-integrity-gate:
+  uv run python -m tools.ghidra.body_integrity --gate
+
+# MUTATES: config/baselines/body_integrity_baseline.csv (accepts today's violations).
+[doc('MUTATES: body-integrity baseline. Accept the current hard violations')]
+[group('baseline-update')]
+body-integrity-gate-update:
+  uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/body_integrity_baseline.csv" -- uv run python -m tools.ghidra.body_integrity --write-baseline
+
 [doc('Read-only: report Ghidra function-body integrity violations')]
 [group('ghidra-db')]
 body-integrity-audit *args: _require-ghidra-install
