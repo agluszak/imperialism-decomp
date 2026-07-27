@@ -26,8 +26,8 @@ public:
   // TCluster's slice ends at 0x88; RTTI oracle confirms sizeof(TPurchaseCluster) == 0x8c.
   // The ctor (0x4cc3c0) zeroes the one own field. DoEvent dispatches
   // field88->vtbl[0x2c] (TEventHandler::SetEnable) and then reads a short at
-  // field88's own +0x4 -- exactly TEventHandler::field04's low word (TEventHandler has no
-  // data before field04; TObject/CObject contribute only the vtable pointer), so field88
+  // field88's own +0x4 -- exactly TEventHandler::enabled's low word (TEventHandler has no
+  // data before enabled; TObject/CObject contribute only the vtable pointer), so field88
   // is plain TEventHandler*, not an unresolved subtype.
   class TEventHandler* field88; // +0x88
 

@@ -114,7 +114,7 @@ void AppendViewTreeNodes(CString& json, TView* view, const CString& parentPath, 
   fields.Format(", \"bounds\": [%d, %d, %d, %d], \"absolute\": [%d, %d], \"state\": %d, "
                 "\"enabled\": %d, \"control_value\": %d",
                 view->ownerLocalX, view->ownerLocalY, view->frameWidth34, view->frameHeight38,
-                view->absoluteX, view->absoluteY, view->field04, view->field08,
+                view->absoluteX, view->absoluteY, view->enabled, view->field08,
                 view->controlValue3c);
   json += fields;
   if (view->IsKindOf(RUNTIME_CLASS(TPicture)) != 0) {

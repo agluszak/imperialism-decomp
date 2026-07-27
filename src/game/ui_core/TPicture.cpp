@@ -95,9 +95,9 @@ void TPicture::IPicture(TView* panel, int* offsetLayout, int* sizeLayout, int la
     nativeWindow50 = panel->nativeWindow50;
   }
   controlTag = kControlTagSpSpSpSp; // '    '
-  field04 = 1;
+  enabled = 1;
   field08 = 1;
-  linkedChildHandler = panel;
+  nextHandler = panel;
   ownerLocalX = offsetLayout[0];
   ownerLocalY = offsetLayout[1];
   frameWidth34 = sizeLayout[0];

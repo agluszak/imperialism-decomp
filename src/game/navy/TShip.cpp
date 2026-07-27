@@ -265,8 +265,8 @@ void RecomputeGlobalCapabilityAverages(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0054fee0
-int GetNavyContextPointerFromGlobalTableByIndex(int index) {
-  return g_aCategoryMetricBaselineAverage[index];
+int GetNavyOrderCategoryBaseline(int category) {
+  return g_aCategoryMetricBaselineAverage[category];
 }
 
 // Receiver-agnostic: also called directly on a TTaskForce's own

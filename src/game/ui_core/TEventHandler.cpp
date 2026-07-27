@@ -23,12 +23,12 @@
 
 // FUNCTION: IMPERIALISM 0x00415d50
 int TEventHandler::GetIdleFreq() {
-  return field10;
+  return idleFrequencyTicks;
 }
 
 // FUNCTION: IMPERIALISM 0x00415d70
 void TEventHandler::SetIdleFreq(int value) {
-  field10 = value;
+  idleFrequencyTicks = value;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0048a0a0
@@ -41,7 +41,8 @@ IMPLEMENT_DYNCREATE(TEventHandler, TObject)
 
 // MATCH: this address-owning base constructor stays out-of-line.
 // FUNCTION: IMPERIALISM 0x0048a100
-TEventHandler::TEventHandler() : field0c(0), field10(0x7fffffff), field14(0), firstBehavior(0) {}
+TEventHandler::TEventHandler()
+    : nextHandler(0), idleFrequencyTicks(0x7fffffff), lastIdleTick(0), firstBehavior(0) {}
 
 // Destructor is compiler-generated (implicit virtual dtor); the scalar deleting
 // destructor at 0x0048a130 is emitted by the compiler from real inheritance.
@@ -53,11 +54,9 @@ TEventHandler::~TEventHandler() {}
 
 // FUNCTION: IMPERIALISM 0x0048a180
 void TEventHandler::IEventHandler(TEventHandler* nextHandler) {
-  field04 = 1;
+  enabled = 1;
   field08 = 1;
-  // +0xc is the linkedChildHandler pointer, not an int payload: the Mac oracle types
-  // this parameter TEventHandler* and 0x0048a196 stores it straight into that slot.
-  linkedChildHandler = nextHandler;
+  this->nextHandler = nextHandler;
   controlTag = kControlTagSpSpSpSp;
 }
 // Slot 0x07/0x08: base implementations (overridden by TView and AppRoot).
@@ -74,7 +73,7 @@ void TEventHandler::Free() {
       }
     }
   }
-  field0c = 0;
+  nextHandler = 0;
   if (firstBehavior != 0) {
     firstBehavior->Free();
   }
@@ -84,12 +83,12 @@ void TEventHandler::Free() {
 
 // FUNCTION: IMPERIALISM 0x0048a240
 char TEventHandler::IsEnabled() {
-  return (char)field04;
+  return (char)enabled;
 }
 
 // FUNCTION: IMPERIALISM 0x0048a260
 void TEventHandler::SetEnable(char enabled) {
-  field04 = enabled;
+  this->enabled = enabled;
 }
 
 // Forward a UI command triplet to the child returned by slot 0x0c (GetNextHandler), if any.
@@ -103,7 +102,7 @@ void TEventHandler::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 
 // FUNCTION: IMPERIALISM 0x0048a2c0
 TEventHandler* TEventHandler::GetNextHandler() {
-  return linkedChildHandler;
+  return nextHandler;
 }
 
 // Bubble a UI command triplet into this handler chain (forwards to DoEvent at slot 0x0f).
@@ -160,13 +159,13 @@ void TEventHandler::DispatchUiSelectionToHandler(void* payload) {
 }
 
 // MacApp TEventHandler::HandleIdle(IdlePhase): throttled idle dispatch, driven for every
-// installed cohandler by TApplication::Idle (0x486b10). field10 is the idle frequency in
-// tick16 units (0x7fffffff = never; MacApp fIdleFreq) and field14 the last-idle stamp
+// installed cohandler by TApplication::Idle (0x486b10). idleFrequencyTicks is measured in
+// tick16 units (0x7fffffff = never; MacApp fIdleFreq) and lastIdleTick is the MacApp fLastIdle
 // (MacApp fLastIdle). Slot 0x13 (DoIdle — MacApp's DoIdle) does
 // the work; a zero return on the continue phase (1) re-stamps the throttle clock.
 // FUNCTION: IMPERIALISM 0x0048a410
 void TEventHandler::HandleIdle(int idlePhase) {
-  if (field10 == 0x7fffffff) {
+  if (idleFrequencyTicks == 0x7fffffff) {
     return;
   }
   if (!IsEnabled()) {
@@ -174,12 +173,12 @@ void TEventHandler::HandleIdle(int idlePhase) {
   }
   if (idlePhase == 1) {
     int now = GetTickCountDiv16();
-    if (now - field14 < field10) {
+    if (now - lastIdleTick < idleFrequencyTicks) {
       return;
     }
   }
   if (!DoIdle(idlePhase) && idlePhase == 1) {
-    field14 = GetTickCountDiv16();
+    lastIdleTick = GetTickCountDiv16();
   }
 }
 
@@ -308,10 +307,10 @@ TWindow* TEventHandler::GetWindow() {
 
 // FUNCTION: IMPERIALISM 0x0048a790
 void TEventHandler::CopyHandlerFieldsFrom(const TEventHandler* source) {
-  field04 = source->field04;
+  enabled = source->enabled;
   field08 = source->field08;
   controlTag = source->controlTag;
-  field0c = source->field0c;
+  nextHandler = source->nextHandler;
 }
 
 // Slot 0x08 base body: allocates a 0x20-byte UI resource entry header (0x48a7c0). TView
@@ -325,9 +324,9 @@ TObject* TEventHandler::ShallowClone() {
   if (header == 0) {
     return 0;
   }
-  header->field04 = field04;
+  header->enabled = enabled;
   header->field08 = field08;
-  header->field0c = field0c;
+  header->nextHandler = nextHandler;
   header->controlTag = controlTag;
   return header;
 }

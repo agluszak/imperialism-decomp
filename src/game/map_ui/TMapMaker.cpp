@@ -913,7 +913,7 @@ void TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords() {
   }
 }
 
-// Lays mountain-range-shaped features (ForwardParam) up to g_mapGenMountainQuota_
+// Lays mountain ranges up to g_mapGenMountainQuota_
 // 006a3470 tiles, then spreads hills around each laid tile with a 40%
 // per-neighbor chance (up to g_mapGenHillsQuota_006a38c0 tiles, falling back to
 // direct random placement once the spread pass can't find more room), places
@@ -938,8 +938,8 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
     } while (mapTileGrid08[tileIndex * 0x24] != kStrategicTerrainPlains);
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     int retryBudget = static_cast<int>((seedHigh & 0x7fff) % 0xc) + 3;
-    int featureType = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 6);
-    remaining -= ForwardParam(tileIndex, retryBudget, featureType);
+    int direction = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 6);
+    remaining -= SeedMountainRange(tileIndex, retryBudget, direction);
   }
 
   for (int hillsSrcTile = 0; hillsSrcTile < 0x1950; ++hillsSrcTile) {
@@ -1155,12 +1155,12 @@ int TMapMaker::PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget,
 
 // Recursively lays a linear terrain feature (river/road-shaped) across the
 // full-resolution generation grid: claims `tileIndex` as mountain, refuses if any
-// hex neighbor is water, then randomly perturbs `featureType`
-// (0..5, the hex direction to continue in -- more volatile when featureType is 1 or
+// hex neighbor is water, then randomly perturbs `direction`
+// (0..5, the hex direction to continue in -- more volatile when direction is 1 or
 // 4) and recurses into that neighbor with `retryBudget` decremented. Returns the
 // number of tiles successfully placed.
 // FUNCTION: IMPERIALISM 0x005283c0
-int TMapMaker::ForwardParam(int tileIndex, int retryBudget, int featureType) {
+int TMapMaker::SeedMountainRange(int tileIndex, int retryBudget, int direction) {
   if (tileIndex < 0 || tileIndex > 0x1950) {
     return 0;
   }
@@ -1176,17 +1176,17 @@ int TMapMaker::ForwardParam(int tileIndex, int retryBudget, int featureType) {
 
   mapTileGrid08[tileIndex * 0x24] = kStrategicTerrainMountain;
 
-  int nextFeatureType = featureType;
-  if (featureType == 1 || featureType == 4) {
+  int nextDirection = direction;
+  if (direction == 1 || direction == 4) {
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     int roll = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 100);
     if (roll > 0x27) {
       if (roll < 0x46) {
-        nextFeatureType = (featureType == 0) ? 5 : featureType - 1;
-      } else if (featureType == 5) {
-        nextFeatureType = 0;
+        nextDirection = (direction == 0) ? 5 : direction - 1;
+      } else if (direction == 5) {
+        nextDirection = 0;
       } else {
-        nextFeatureType = featureType + 1;
+        nextDirection = direction + 1;
       }
     }
   } else {
@@ -1194,22 +1194,22 @@ int TMapMaker::ForwardParam(int tileIndex, int retryBudget, int featureType) {
     int roll = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 100);
     if (roll > 0x3b) {
       if (roll < 0x50) {
-        nextFeatureType = (featureType == 0) ? 5 : featureType - 1;
-      } else if (featureType == 5) {
-        nextFeatureType = 0;
+        nextDirection = (direction == 0) ? 5 : direction - 1;
+      } else if (direction == 5) {
+        nextDirection = 0;
       } else {
-        nextFeatureType = featureType + 1;
+        nextDirection = direction + 1;
       }
     }
   }
 
-  int nextTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, nextFeatureType);
+  int nextTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, nextDirection);
   int placed = 1;
   if (retryBudget != 1 && nextTile != -1) {
-    // Note: the original recurses with the un-adjusted featureType, not
-    // nextFeatureType -- the random perturbation above only picks which neighbor
+    // MATCH: the original recurses with the unadjusted direction, not nextDirection;
+    // the random perturbation above only picks which neighbor
     // to step into this call, not the direction future steps inherit.
-    placed += ForwardParam(nextTile, retryBudget - 1, featureType);
+    placed += SeedMountainRange(nextTile, retryBudget - 1, direction);
   }
   return placed;
 }

@@ -59,13 +59,14 @@ public:
   // NO same-owner neighbor at all into a uniformly-random neighbor's record. Only
   // processes rows 1..58 (skips the border rows). slot 17 / 0x44
   virtual void SmoothCityRegionOwnershipByNeighborSampling();
-  // Recursively walks the hex grid from tileIndex in direction featureType (0..5),
+  // Recursively walks the hex grid from tileIndex in direction 0..5,
   // cycled via
   // random retry on collision) up to `retryBudget` steps, laying a linear terrain
   // feature (river/road-shaped); returns the number of steps placed. Uses the same
   // g_hexColOffsetEvenRow_00697450/g_hexRowOffset_00697468/g_hexColOffsetOddRow_00697480
   // hex-direction tables as GetNeighborTileIDArray. slot 18 / 0x48
-  virtual int ForwardParam(int tileIndex, int retryBudget, int featureType);
+  // ORACLE: Mac TMapMaker::SeedMountainRange(long, long, long).
+  virtual int SeedMountainRange(int tileIndex, int retryBudget, int direction);
   // slot 19 / 0x4c
   virtual void CreateDeserts();
   // Walks the city-region tile ring starting at `coarseIndex`, converting empty tiles

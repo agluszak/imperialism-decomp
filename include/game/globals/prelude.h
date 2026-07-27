@@ -151,8 +151,8 @@ void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commod
 
 // TMilitaryUnit exposes the listing-backed instance and static accessors over
 // these tables; their declarations live on the owning class.
-// 0x54fee0: returns g_aCategoryMetricBaselineAverage[index] as an integer metric.
-int GetNavyContextPointerFromGlobalTableByIndex(int index);
+// Returns the precomputed baseline for one navy-order category. 0x54fee0.
+int GetNavyOrderCategoryBaseline(int category);
 
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
 // minister's skill value at +0x0C. The foreign-minister tables have eight entries;

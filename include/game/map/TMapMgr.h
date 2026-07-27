@@ -105,7 +105,7 @@ struct TTerrainStateRecordView {
   unsigned char pendingDevelopmentFlag0d;
   unsigned char recruitSearchVisited0e; // 0x0e
   // 0x0f -- cleared to 0 across all 0x1950 tiles by
-  // TMapMgr::ClearPerTileByte0FForAllMapTiles (0x409250); read signed (> 0) by the tile
+  // TMapMgr::DimmingOff (0x515db0); read signed (> 0) by the tile
   // context menu (0x504e90) to gate menu item 0x2a.
   signed char perTileVisitedFlag0f;
   // Index (0..89, -1 = none) of the TMapDialog transient tile-marker slot this tile occupies;
@@ -660,9 +660,7 @@ public:
   // (g_abGateFlagQualifies), calls SetCivilianDevelopmentClassNibble(neighborTile, 0, 1, 1) on
   // it. Finishes by calling EnsurePortZoneForTile(nTileIndex) and refreshing nTileIndex's
   // gateFlag via ResolveRegionTileSubtypeCodeForTileIndex.
-  virtual void
-  SetTileTransportFlagsTo0x37AndRefreshNeighbors(StrategicTileIndex nTileIndex,
-                                                 short nOwnerNationId); // slot 0x4d 0x514a20
+  virtual void PlaceCity(StrategicTileIndex nTileIndex, short nOwnerNationId); // slot 0x4d 0x514a20
 
   // Recomputes the per-region strategic-score heatmap (cityScoreTable[*].cityScoreValue)
   // used by turn-AI order planning, then updates cityScoreTotal with the mean. 0x00518130.
@@ -750,10 +748,9 @@ public:
   // 0x515e50. Despite the name, checks whether regionIndex is in nodeContext's
   // adjacent-region list -- see the .cpp body comment.
   char TileHasMovementClassId(int nodeContext, int regionIndex);
-  // 0x518a20. Returns true on the first linked region with terrainStateTable
-  // activeFlags1c bit 2 SET (not "all clear" as the name implies) -- see the .cpp
-  // body comment.
-  char AreAllLinkedEntriesTerrainFlagBit2Clear(int regionIndex);
+  // ORACLE: Mac TMapMgr::HasPortInProvince(int). Returns true on the first linked tile
+  // whose terrainStateTable activeFlags1c has the port bit (0x04) set.
+  char HasPortInProvince(int provinceIndex);
   void SetRegionDevelopmentStageByte(short regionId, unsigned char stage);
   void SetTileTransportFlags(StrategicTileIndex nTileIndex, unsigned short wTileTransportFlags);
   void ApplyRailSectionEndpointDirectionFlags(StrategicTileIndex sourceTile,
@@ -886,15 +883,14 @@ public:
   // loads ECX from g_pGlobalMapState (0x6a43d4) rather than passing its own `this`.
   void ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot);
 
-  // Returns cityScoreTable[index].stationedUnitChain98 when index is in [0, 0x180), else
-  // nullptr -- the same "validate then fetch the tile's unit chain head" idiom already
-  // inlined at several other TArmyMgr callsites, but here it's the original's own
-  // standalone function. 0x004a4190, __thiscall, one short stack arg.
-  TMilitaryUnit* ValidateGridIndexRange0To17F(short index);
+  // ORACLE: Mac TMapMgr::GetMilitaryMaster(long). Returns the province's stationed-unit
+  // chain when provinceIndex is in [0, 0x180), otherwise nullptr. Windows takes a short.
+  // 0x004a4190, __thiscall, one stack argument.
+  TMilitaryUnit* GetMilitaryMaster(short provinceIndex);
 
-  // Clears terrainStateTable[i].perTileVisitedFlag0f for every one of the 0x1950
-  // (108x60) map tiles. 0x00409250, __thiscall, no args.
-  void ClearPerTileByte0FForAllMapTiles();
+  // ORACLE: Mac TMapMgr::DimmingOff(). Clears perTileVisitedFlag0f for all 0x1950
+  // strategic-map tiles. 0x00515db0, __thiscall, no args.
+  void DimmingOff();
 
   // Marks field6 ready and, on first call (g_pStrategicMapViewSystem->atlas668 still
   // null), tail-calls TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches to

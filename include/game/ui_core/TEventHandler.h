@@ -25,17 +25,13 @@ struct TToolboxEvent;
 // VTABLE: IMPERIALISM 0x006497a0
 class TEventHandler : public TObject {
 public:
-  int field04;
-  union {
-    int field08;
-    TEventHandler* resourceOwnerBackLink;
-  };
-  union {
-    int field0c;
-    TEventHandler* linkedChildHandler;
-  };
-  int field10;
-  int field14;
+  int enabled;
+  // UNRESOLVED_FIELD_ATTRIBUTION: +0x08 is integer view/action state in TView::SetEnabled
+  // (0x48b1c0) and TWindow::Show; keep it opaque pending a complete writer audit.
+  int field08;
+  TEventHandler* nextHandler;
+  int idleFrequencyTicks;
+  int lastIdleTick;
   TBehavior* firstBehavior;
   int controlTag; // 0x1c
 
@@ -49,21 +45,21 @@ public:
   // CObject is intentionally non-copyable in MFC, but this MacApp-derived hierarchy
   // has a real field-copying base constructor inlined into TView's 0x48bd30 copy ctor.
   // Copies exactly the four fields the original copies -- +0x04, +0x08, +0x0c and
-  // controlTag at +0x1c -- and no others. field10/field14 are the idle-throttle frequency
+  // controlTag at +0x1c -- and no others. idleFrequencyTicks/lastIdleTick are the idle throttle
   // and last-idle stamp and firstBehavior is a list head, none of which a fresh copy
   // inherits.
   // MATCH: keep this in-class; see config/ctor_placement_exceptions.csv.
   // FUNCTION: IMPERIALISM 0x0048a750
   TEventHandler(const TEventHandler& source)
-      : TObject(), field04(source.field04), field08(source.field08), field0c(source.field0c),
-        controlTag(source.controlTag) {}
+      : TObject(), enabled(source.enabled), field08(source.field08),
+        nextHandler(source.nextHandler), controlTag(source.controlTag) {}
 
   // 0x48a410 — MacApp TEventHandler::HandleIdle(IdlePhase); throttled idle dispatch
-  // using field10 (idle frequency, 0x7fffffff = never) / field14 (last-idle stamp).
+  // using idleFrequencyTicks (0x7fffffff = never) and lastIdleTick.
   void HandleIdle(int idlePhase);
 
   // Packet/event-header field initializer (0x48a180, __thiscall).
-  // Writes controlTag (0x1c) = '    ', field04/field08 = 1, field0c = packetTag.
+  // Writes controlTag (0x1c) = '    ', enabled/field08 = 1, nextHandler = the argument.
   void IEventHandler(TEventHandler* nextHandler);
 
   // Slot 0x00 — MFC RTTI accessor (this is CObject::GetRuntimeClass; the whole "T"
