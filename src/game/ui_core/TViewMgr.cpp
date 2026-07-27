@@ -1448,32 +1448,60 @@ void TViewMgr::SetCursorRangeAndRefreshMainPanel(int payload) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d8040
-void TViewMgr::ShowDiplomacyScreen(short) {
-  turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
-  TView* mainView = turn_event_ui_refresh::ActiveMainView();
-  if (mainView == nullptr) {
-    return;
-  }
+void TViewMgr::ShowDiplomacyScreen(short nationSlot) {
+  CString text;
+  TView* activeDialog = g_pDisplayMgr->activeDialog;
+  g_pSimMgr->SetFlags(1);
 
-  TControl* diplControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagDipl));
+  TInfoBarText* cursor =
+      static_cast<TInfoBarText*>(activeDialog->ResolveControlByTag(kControlTagCurs));
+  g_pCursorControlPanel = cursor;
+  cursor->AssertValid();
+  cursor->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
+
+  TControl* diplControl =
+      static_cast<TControl*>(activeDialog->ResolveControlByTag(kControlTagDipl));
   if (diplControl != nullptr) {
     diplControl->AssertValid();
+    TPicture* diplPicture = static_cast<TPicture*>(diplControl);
+    diplPicture->SetPictureResourceIdAndRefresh(static_cast<short>(diplPicture->glyphBase84 + 1),
+                                                0);
     diplControl->SetState(0, 0);
-    diplControl->SwitchActiveChildAndNotify(nullptr);
-    diplControl->SetHoverHelpText(g_szEmptyString);
+    g_pSimMgr->GetString(0x2730, 0x1c, &text);
+    SetControlHoverHelpTextAltEntry(text, diplControl);
   }
 
-  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTopB);
-  turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTool);
+  TToolBarCluster* topBar =
+      static_cast<TToolBarCluster*>(activeDialog->ResolveControlByTag(kControlTagTopB));
+  if (topBar != nullptr) {
+    topBar->RefreshTurnOrderStatusPanelTextsAndControls();
+  }
 
-  TControl* querControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagQuer));
+  TToolBarCluster* toolBar =
+      static_cast<TToolBarCluster*>(activeDialog->ResolveControlByTag(kControlTagTool));
+  toolBar->AssertValid();
+  toolBar->UpdateControlTagTreaTextFromNationAndMapContext(nationSlot);
+  toolBar->RefreshTurnOrderStatusPanelTextsAndControls();
+
+  TControl* querControl =
+      static_cast<TControl*>(activeDialog->ResolveControlByTag(kControlTagQuer));
   if (querControl != nullptr) {
-    querControl->AssertValid();
-    querControl->SetHoverHelpText(g_szEmptyString);
+    g_pSimMgr->GetString(0x2730, 2, &text);
+    SetControlHoverHelpText(text, querControl);
   }
 
-  if (diplControl != nullptr) {
-    diplControl->RefreshControl();
+  TView* diplomacyMap = activeDialog->ResolveControlByTag(kControlTagMain);
+  diplomacyMap->AssertValid();
+  SetControlHoverHelpText(CString(g_szEmptyString), diplomacyMap);
+
+  if (topBar != nullptr) {
+    int grantSum = g_apNationStates[nationSlot]->SumDiplomacyGrantEntriesMaskedToValueBits();
+    topBar->SehCleanup_ReleaseTwoTempSharedStringRefs(grantSum);
+  }
+
+  diplomacyMap = activeDialog->ResolveControlByTag(kControlTagMain);
+  if (diplomacyMap != nullptr && diplomacyMap->IsKindOf(RUNTIME_CLASS(TDiplomacyMapView)) != 0) {
+    static_cast<TDiplomacyMapView*>(diplomacyMap)->SetSelectedTerrainIndexForTurnEvent(nationSlot);
   }
 }
 

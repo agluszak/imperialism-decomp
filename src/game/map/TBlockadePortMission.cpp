@@ -73,11 +73,11 @@ void TBlockadePortMission::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x0053ace0
 void TBlockadePortMission::Initialize() {
-  float score = static_cast<float>(targetZone14->ComputeMapActionContextNodeValueAverage());
+  float score = static_cast<float>(missionTargetZone->ComputeMapActionContextNodeValueAverage());
 
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
     TZone** ownerSlot = &zone->primaryNeighbors[0];
-    if (*ownerSlot == targetZone14) {
+    if (*ownerSlot == missionTargetZone) {
       score *= (zone->GetPortZoneOwnerNationCodeFromMissionField48() == nationId04)
                    ? g_PortZoneFriendlyMissionScoreMultiplier_0065AA10
                    : g_PortZoneForeignMissionScoreMultiplier_0065AA18;
@@ -109,12 +109,12 @@ TMission* TBlockadePortMission::GetReplacementSlot48() {
     return nullptr;
   }
 
-  if (targetZone18 != nullptr && targetZone18->QueryPortZoneCapability() &&
-      !targetZone18->QueryZoneCapabilityFlagD(nationId04)) {
-    targetZone18 = RefreshMissionPortZoneContextForNation();
+  if (resolvedPortZone != nullptr && resolvedPortZone->QueryPortZoneCapability() &&
+      !resolvedPortZone->QueryZoneCapabilityFlagD(nationId04)) {
+    resolvedPortZone = RefreshMissionPortZoneContextForNation();
   }
 
-  return (targetZone18 != nullptr) ? this : nullptr;
+  return (resolvedPortZone != nullptr) ? this : nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x0053ae90
@@ -122,7 +122,7 @@ void TBlockadePortMission::SetStateByte8To2() {
   state08 = 3;
 }
 
-// First reproduces the base TControlSeaZoneMission::CalculateNeeds's targetZone14-tagged base
+// First reproduces the base TControlSeaZoneMission::CalculateNeeds's missionTargetZone-tagged base
 // score (duplicated inline -- see the in-body comment), then computes a second "threat"
 // score: either from a single target nation (this blockade's portZoneContext3c owner-
 // nation-code, if < 7) or maxed over every nation in g_apNationStates whose diplomacy
@@ -136,7 +136,7 @@ void TBlockadePortMission::SetStateByte8To2() {
 // own CalculateNeeds uses).
 // FUNCTION: IMPERIALISM 0x0053aeb0
 void TBlockadePortMission::CalculateNeeds() {
-  // Reproduces the base TControlSeaZoneMission::CalculateNeeds's targetZone14-tagged base score
+  // Reproduces the base TControlSeaZoneMission::CalculateNeeds's missionTargetZone-tagged base score
   // inline -- the two classes are separate translation units with no LTO, so a qualified
   // `TControlSeaZoneMission::CalculateNeeds()` call would emit a real cross-TU CALL rather than
   // reproducing the original's fully-duplicated inlined body, so the body is duplicated here
@@ -146,7 +146,7 @@ void TBlockadePortMission::CalculateNeeds() {
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
   for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
-    if (node->location != targetZone14) {
+    if (node->location != missionTargetZone) {
       continue;
     }
     if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, node->nation)) {
@@ -257,7 +257,7 @@ void TBlockadePortMission::CalculateNeeds() {
 // FUNCTION: IMPERIALISM 0x0053ba10
 bool TBlockadePortMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   (void)key;
-  return missionType == kMissionTypeBlockadePort && zoneContext == targetZone14;
+  return missionType == kMissionTypeBlockadePort && zoneContext == missionTargetZone;
 }
 
 // FUNCTION: IMPERIALISM 0x0053ba40
