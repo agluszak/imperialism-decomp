@@ -19,13 +19,33 @@ struct DiplomacyMaskBufferRun {
   void BlitMonochromeMaskBytePatternToSurface(TQuickDrawBlitSurface* surface,
                                               TUiStyleRef paletteColor, const CPoint* origin,
                                               unsigned char flipVertical);
-  bool IsMaskPixelSet(int x, int y) const;
+  // Defined here rather than in the .cpp: retail's 472-byte edge test
+  // (IsMaskPixelSetAndOnRegionEdge) expands this five times, which /Ob1 only does for an
+  // inline-marked function. The out-of-line copy at 0x004d6310 is still emitted for
+  // BuildDiplomacyOverlayHitMaskOpcodeStream, which calls it eight times.
+  // FUNCTION: IMPERIALISM 0x004d6310
+  bool IsMaskPixelSet(int x, int y) const {
+    CPoint point(x, y);
+    if (PtInRect(&boundsAt04, point) == 0) {
+      return false;
+    }
+
+    int xOffset = x - boundsAt04.left;
+    int rowStride = (boundsAt04.right - boundsAt04.left) >> 3;
+    int byteIndex = (y - boundsAt04.top) * rowStride + (xOffset >> 3);
+    return (maskBytesAt00[byteIndex] & (1 << (xOffset & 7))) != 0;
+  }
 
   unsigned char* maskBytesAt00;
   CRect boundsAt04;
 };
 
 ASSERT_SIZE(DiplomacyMaskBufferRun, 0x14);
+
+// Is the mask pixel set, and is it on the region's edge? With `edgeOnly` clear this is just
+// the pixel test; with it set, a pixel whose four orthogonal neighbours are all set counts
+// as interior and reports false, leaving only the outline. 0x004d5a90, __cdecl.
+bool IsMaskPixelSetAndOnRegionEdge(int x, int y, DiplomacyMaskBufferRun* run, char edgeOnly);
 
 // Constructor evidence calls TPicture::TPicture at 0x0048efc0, then writes the
 // complete-object vfptr at 0x00655b68. The table at 0x0066f16c is separate

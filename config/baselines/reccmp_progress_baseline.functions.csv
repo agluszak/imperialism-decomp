@@ -2392,16 +2392,19 @@ address|matching|name
 0x4d4bd0|1.0|StrategicMapCallbackRecord::SetDestinationHeightNoOp
 0x4d4bf0|0.21052631578947367|StrategicMapCallbackRecord::AppendPackedColorDword
 0x4d4dd0|1.0|stretch<unsigned char>::OverStretch
+0x4d4e40|1.0|stretch<unsigned char>::operator[]
 0x4d4ff0|0.1044776119402985|StrategicMapCallbackRecord::ApplyBitmapMaskToPixelBuffer
 0x4d5090|0.2389937106918239|StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows
 0x4d5580|1.0|StrategicMapCallbackRecord::AppendOpcodeByte
 0x4d5610|0.16842105263157894|StrategicMapCallbackRecord::AppendOpcodeBytePair
 0x4d5720|0.37423312883435583|StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment
+0x4d5970|1.0|stretch<unsigned char>::SetCapacity
 0x4d59a0|0.4|IsPointOnHitRegionEdge
-0x4d5a90|0.010309278350515464|IltTarget_004d5a90
+0x4d5a90|0.9322916666666666|IsMaskPixelSetAndOnRegionEdge
 0x4d5cf0|1.0|StrategicMapCallbackRecord::StreamOverlayHitMaskToSurfaceDib
-0x4d5d30|0.28733997155049784|StrategicMapCallbackRecord::BuildDiplomacyOverlayHitMaskOpcodeStream
-0x4d6310|0.7391304347826086|DiplomacyMaskBufferRun::IsMaskPixelSet
+0x4d5d30|0.25416036308623297|StrategicMapCallbackRecord::BuildDiplomacyOverlayHitMaskOpcodeStream
+0x4d62d0|0.5454545454545454|stretch<unsigned char>::Compact
+0x4d6310|0.7391304347826086|IsMaskPixelSet
 0x4d64d0|0.25|`dynamic initializer for 'g_scaledShortConst_6A2E28''
 0x4d6500|0.4897959183673469|TProvinceDesirabilityList::CreateObject
 0x4d6570|1.0|TProvinceDesirabilityList::GetRuntimeClass
@@ -3613,7 +3616,7 @@ address|matching|name
 0x52b460|1.0|stretch<SeaSegment>::operator[]
 0x52b500|1.0|stretch<SeaSegment>::Detach
 0x52b520|0.4582210242587601|AssignRegionIdAlongBorderSegmentChain
-0x52b820|0.01904761904761905|IltTarget_0052b820
+0x52b820|1.0|TMapMaker::AssignRegionIdsToUnclaimedBorderSegmentSides
 0x52b9b0|0.22508038585209003|TMapMaker::AssignCityRegionIdsFromOverlayScanlineIntersections
 0x52bef0|0.21359223300970873|SeaSegment::ExtractWrappedEndpoint
 0x52c000|1.0|SeaSegment::SelectAttrByAngle

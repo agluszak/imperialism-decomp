@@ -78,17 +78,26 @@ DiplomacyMaskBufferRun::~DiplomacyMaskBufferRun() {
 
 // Clamps `rect` inside `bounds`, preserving the rect's width/height.
 
-// FUNCTION: IMPERIALISM 0x004d6310
-bool DiplomacyMaskBufferRun::IsMaskPixelSet(int x, int y) const {
-  CPoint point(x, y);
-  if (PtInRect(&boundsAt04, point) == 0) {
-    return false;
+// Is the mask pixel set, and is it on the region's edge? With `edgeOnly` clear this is
+// just the pixel test; with it set, a pixel whose four orthogonal neighbours are all set is
+// interior and reports false, leaving only the outline. Retail expands IsMaskPixelSet at
+// all five sites, which is why it lives in the header.
+// FUNCTION: IMPERIALISM 0x004d5a90
+bool IsMaskPixelSetAndOnRegionEdge(int x, int y, DiplomacyMaskBufferRun* run, char edgeOnly) {
+  bool isSet = run->IsMaskPixelSet(x, y);
+  if (isSet && edgeOnly != '\0') {
+    if (run->IsMaskPixelSet(x + 1, y)) {
+      if (run->IsMaskPixelSet(x - 1, y)) {
+        if (run->IsMaskPixelSet(x, y + 1)) {
+          if (run->IsMaskPixelSet(x, y - 1)) {
+            return false;
+          }
+        }
+      }
+    }
+    isSet = true;
   }
-
-  int xOffset = x - boundsAt04.left;
-  int rowStride = (boundsAt04.right - boundsAt04.left) >> 3;
-  int byteIndex = (y - boundsAt04.top) * rowStride + (xOffset >> 3);
-  return (maskBytesAt00[byteIndex] & (1 << (xOffset & 7))) != 0;
+  return isSet;
 }
 
 // Shared nil-pointer assert used by InitializeDiplomacyMinisterActionControlsAndLabels'
