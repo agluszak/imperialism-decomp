@@ -737,9 +737,9 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
     // (ctor thunk 0x407a31 -> 0x4e6b50) -- this slot is genuinely a TAutoGreatPower, not a
     // bare TGreatPower (whose object size is 0x964, too small for the tail AI state block).
     TAutoGreatPower* pTVar5 = new TAutoGreatPower();
-    pTVar5->IAutoGreatPower(
-        slotIndex, 2, cityMinisterPolicyIds[nationIndex], foreignMinisterPolicyIds[nationIndex],
-        defenseMinisterPolicyIds[nationIndex]);
+    pTVar5->IAutoGreatPower(slotIndex, 2, cityMinisterPolicyIds[nationIndex],
+                            foreignMinisterPolicyIds[nationIndex],
+                            defenseMinisterPolicyIds[nationIndex]);
     g_apNationStates[nationIndex] = pTVar5;
     g_apTerrainTypeDescriptorTable[nationIndex] = pTVar5;
 
@@ -1414,7 +1414,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
   if (g_pSimMgr->multiplayerSessionRole != 0) {
     g_pGameFlowState->Free();
     g_pGameFlowState = new TMultiplayerMgr();
-    g_pGameFlowState->InitializeMultiplayerManagerForSessionContext(0);
+    g_pGameFlowState->IMultiplayerMgr(0);
   }
   if (eventCode == kTurnEventRandomGameSetup) {
     TSimMgr* simMgr = g_pSimMgr;

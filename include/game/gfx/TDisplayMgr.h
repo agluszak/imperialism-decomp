@@ -47,11 +47,8 @@ public:
   int field18;              // +0x18
   short clipSnapshotEvent;  // +0x1c
   unsigned short field1e;   // +0x1e
-  // Turn-order-navigation-dialog scratch list, constructed in
-  // IDisplayMgr as a real TPtrList -- not a TView
-  // (bd d9p: the port previously typed this TView* and reinterpret_cast'd a bare
-  // TSortedPtrList onto it, which made TDisplayMgr::Free's call resolve to TView's
-  // 0x28-slot vtable entry instead of the list's; fixed to call the real list method).
+  // Turn-order-navigation-dialog scratch list, constructed by IDisplayMgr and freed
+  // through the TPtrList API.
   TPtrList* turnOrderList; // +0x20
 
   TDisplayMgr();

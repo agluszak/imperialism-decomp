@@ -372,7 +372,7 @@ void TSoundPlayer::StartDeferredAudioFadeTimerIfIdle() {
 // Slot 0x25 — allocate the two sound-channel peer objects and bring up DirectSound.
 
 // FUNCTION: IMPERIALISM 0x005e4e70
-void TSoundPlayer::ISoundPlayer(int param_1) {
+void TSoundPlayer::ISoundPlayer(int idleFrequency) {
   this->IEventHandler(nullptr);
   char ok = static_cast<char>(g_soundResourceManager.InitializeDirectSoundDeviceAndChannels());
   this->directSoundInitOkAt20 = static_cast<unsigned char>(ok);
@@ -387,7 +387,7 @@ void TSoundPlayer::ISoundPlayer(int param_1) {
 
   this->activeAudioCueId = 0;
   g_cdAudioDevice.EnsureCdAudioDeviceHandleInitialized();
-  this->field10 = param_1;
+  this->idleFrequencyTicks = idleFrequency;
   // Notify the global UI root controller via its slot 0x29 (peer class unrecovered).
   g_pGlobalUiRootController->InstallCohandler(this, 1);
 }

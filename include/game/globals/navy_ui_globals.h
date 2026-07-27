@@ -1,7 +1,6 @@
 #pragma once
-// Split from global_data_tables.h by tools/analysis/split_globals.py
-// (bead 8mo.2). Definitions stay in src/game/global_data_tables.cpp;
-// assignment evidence: docs/reference/subsystem_assignment.csv.
+// Subsystem-owned global declarations. Definitions and address markers live in
+// src/game/core/global_data_tables.cpp.
 #include "game/globals/prelude.h"
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
@@ -19,7 +18,7 @@ extern "C" const char s_SourcePathUOceanViews_00698650[];
 } // extern "C"
 
 extern "C" {
-extern char* g_pGamePreferencesSharedText_0065DDC8;                 // @ 0x65ddc8
-extern const char* const g_pGamePreferencesAutoResKey_0065DDCC;     // @ 0x65ddcc
-extern const int g_anGamePreferenceIndexByRow[5];                   // @ 0x65dde0
+extern char* g_pGamePreferencesSharedText_0065DDC8;             // @ 0x65ddc8
+extern const char* const g_pGamePreferencesAutoResKey_0065DDCC; // @ 0x65ddcc
+extern const int g_anGamePreferenceIndexByRow[5];               // @ 0x65dde0
 }

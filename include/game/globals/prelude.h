@@ -1,13 +1,11 @@
 #pragma once
-// Split from global_data_tables.h by tools/analysis/split_globals.py
-// (bead 8mo.2). Definitions stay in src/game/global_data_tables.cpp;
-// assignment evidence: docs/reference/subsystem_assignment.csv.
-#pragma once
+
+// Transitional declarations shared by subsystem global headers. Definitions and address
+// markers live in src/game/core/global_data_tables.cpp.
 
 #include "game/ui_screens/CString.h"
 
-// reccmp `// GLOBAL:` address markers for symbols declared here live in
-// src/game/global_data_tables.cpp only (one marker per address).
+// Each symbol has exactly one reccmp GLOBAL marker in the defining translation unit.
 
 #include "decomp_types.h"
 
@@ -79,14 +77,8 @@ struct GlobalViewportRectDefaultsRecord {
   RECT viewportBounds;
 };
 
-// Per-resource-type navy-order descriptor (base 0x00698108, stride 0x24). Ghidra's
-// auto-analysis had split this into five separately-named "tables"
-// (g_Resolve_Map_Order_LookupTable_00698108, g_Calculate_Mission_Order_LookupTable_0069810C,
-// g_Task_Force_Order_LookupTable_00698110, g_Navy_Order_Priority_LookupTable_00698118,
-// g_ResourceDescriptorWeightWord0Base0069811c); every one of those "tables" is read at
-// per-index byte offset `index * 0x24` from a base address exactly 4/8/0x10/0x14 bytes
-// apart -- confirmed via TShip.cpp/TTaskForce.cpp callsite disassembly, they are one
-// struct array. The initializer and all indexed users agree on fourteen resource rows.
+// LAYOUT: fourteen per-resource navy-order descriptors at 0x00698108 with stride 0x24.
+// Indexed users address the fields below as offsets within one struct array.
 struct TNavyOrderResourceDescriptor {
   union {
     struct {
@@ -159,9 +151,8 @@ void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commod
 
 // TMilitaryUnit exposes the listing-backed instance and static accessors over
 // these tables; their declarations live on the owning class.
-// 0x54fee0: g_aCategoryMetricBaselineAverage[index] (returns the int metric, not a pointer
-// despite Ghidra's placeholder name).
-int GetNavyContextPointerFromGlobalTableByIndex(int index);
+// Returns the precomputed baseline for one navy-order category. 0x54fee0.
+int GetNavyOrderCategoryBaseline(int category);
 
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
 // minister's skill value at +0x0C. The foreign-minister tables have eight entries;
@@ -205,9 +196,7 @@ int ClearGlobalUiInvalidationFlagAndReturnPrevious();
 int GetMcAppUiActiveFlag();
 
 // ============================================================================
-// bd cwa: globals that were locally re-declared via raw extern in a consumer
-// .cpp instead of being declared here (see AGENTS.md's global_data_tables.h
-// consolidation rule). Grouped by consumer cluster below.
+// Cross-consumer globals grouped by their current consumer cluster.
 // ============================================================================
 
 // Per-nation-variant mapped flavor-text table (mapped_flavor_text.cpp / global_data_tables.cpp).

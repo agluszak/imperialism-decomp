@@ -374,7 +374,7 @@ void TWindow::Free() {
       }
     }
   }
-  field0c = 0;
+  nextHandler = 0;
   if (firstBehavior != 0) {
     firstBehavior->Free();
   }

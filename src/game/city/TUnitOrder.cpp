@@ -111,12 +111,12 @@ short TUnitOrder::MaxOrder() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b7210
-bool TUnitOrder::SetQuantity(short param_1) {
-  short delta = static_cast<short>(param_1 - quantityField04);
-  if (param_1 > MaxOrder() || param_1 < 0) {
+bool TUnitOrder::SetQuantity(short quantity) {
+  short delta = static_cast<short>(quantity - quantityField04);
+  if (quantity > MaxOrder() || quantity < 0) {
     return false;
   }
-  quantityField04 = param_1;
+  quantityField04 = quantity;
 
   cityField08->CityStockByType(primaryInputResourceId) = static_cast<short>(
       cityField08->CityStockByType(primaryInputResourceId) - primaryInputPerUnit * delta);

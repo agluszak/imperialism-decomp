@@ -1,8 +1,7 @@
 #pragma once
-// Umbrella over the per-subsystem globals headers (split by
-// tools/analysis/split_globals.py, bead 8mo.2). New globals go in the
-// subsystem header their users live in (shared_globals.h when unsure);
-// consumers should migrate to the specific headers over time.
+// Transitional umbrella over per-subsystem global declarations. New semantic globals
+// belong in exactly one owning subsystem header; cross-subsystem state requires a
+// narrowly named owner rather than defaulting to shared_globals.h.
 #include "game/globals/prelude.h"
 #include "game/globals/assets_globals.h"
 #include "game/globals/city_globals.h"

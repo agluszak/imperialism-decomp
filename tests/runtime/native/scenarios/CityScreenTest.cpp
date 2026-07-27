@@ -159,8 +159,8 @@ private:
       FailScenario("\"city production view is missing sickness status placards\"");
       return;
     }
-    if (sickPlacard->glyph90 != 0 || sickPlacard->field04 != 0 || deadPlacard->glyph90 != 0 ||
-        deadPlacard->field04 != 0) {
+    if (sickPlacard->glyph90 != 0 || sickPlacard->enabled != 0 || deadPlacard->glyph90 != 0 ||
+        deadPlacard->enabled != 0) {
       FailScenario("\"zero-count sickness status placards remained visible\"");
       return;
     }
@@ -201,7 +201,7 @@ private:
 
   bool HasCorrectNumberTextPresentationState(TNumberText* numberText, short fontSize,
                                              COLORREF textColor) {
-    return numberText->field04 == 0 && numberText->field08 != 0 &&
+    return numberText->enabled == 0 && numberText->field08 != 0 &&
            numberText->stylePayload48 == 0 && numberText->textStyle78.fontFamily == 3 &&
            numberText->textStyle78.fontStyleFlags == 0 &&
            numberText->textStyle78.fontSize == fontSize &&

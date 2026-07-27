@@ -15,7 +15,7 @@ struct TQuickDrawSurfaceContext;
 // g_pGlobalUiRootController via InstallCohandler(this, 0) in Free) that owns the
 // transient-animation registry -- a TList of TAnimation-shaped objects keyed by
 // their +0x18 registry tag -- plus the shared offscreen surface the animations
-// blit into. field10 (the inherited TEventHandler idle-frequency slot) is set by
+// blit into. idleFrequencyTicks (inherited from TEventHandler) is set by
 // IAnimator and serialized in WriteTo/ReadFrom.
 // Base edge (TEventHandler) recovered from RTTI CRuntimeClass chain:
 // TAnimator -> TEventHandler -> TObject -> CObject.
@@ -34,7 +34,7 @@ public:
   void RemoveUiTransientRegistryObjectByTag(int tag);
   // Creates the shared offscreen surface (bounds from the global surface dims, bit
   // depth 8) and the registry TList, and stores the idle frequency into the
-  // inherited field10 slot. 0x4a0b20.
+  // inherited idle-frequency slot. 0x4a0b20.
   void IAnimator(int idleFrequency);
   // Appends an animation object to the registry list. The registry stores
   // heterogeneous animation-shaped objects (tag at +0x18, Free at vtable slot 7);

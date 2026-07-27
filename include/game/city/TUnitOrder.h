@@ -19,11 +19,11 @@ enum eUnitOrderWorkforceMode {
 class TUnitOrder : public TProductionOrder {
 public:
   DECLARE_DYNCREATE(TUnitOrder)
-  virtual ~TUnitOrder() override;                   // slot 0x01 (scalar deleting destructor)
-  virtual void WriteTo(TStream* stream) override;   // slot 0x05 0x4b7850
-  virtual void ReadFrom(TStream* stream) override;  // slot 0x06 0x4b7920
-  virtual bool SetQuantity(short param_1) override; // slot 0x0b 0x4b7210
-  virtual short MaxOrder() override;                // slot 0x0c 0x4b7080
+  virtual ~TUnitOrder() override;                    // slot 0x01 (scalar deleting destructor)
+  virtual void WriteTo(TStream* stream) override;    // slot 0x05 0x4b7850
+  virtual void ReadFrom(TStream* stream) override;   // slot 0x06 0x4b7920
+  virtual bool SetQuantity(short quantity) override; // slot 0x0b 0x4b7210
+  virtual short MaxOrder() override;                 // slot 0x0c 0x4b7080
 
   // Loads one g_aUnitOrderCostProfileByAbilityId row into the order's cost fields
   // (called by TTechMgr::ActivateSlotAndUpdateUI when an ability activates a slot).

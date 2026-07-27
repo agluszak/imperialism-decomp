@@ -34,7 +34,7 @@ TAnimator::~TAnimator() {}
 // FUNCTION: IMPERIALISM 0x004a0b20
 void TAnimator::IAnimator(int idleFrequency) {
   IEventHandler(nullptr);
-  field10 = idleFrequency;
+  idleFrequencyTicks = idleFrequency;
   RECT bounds;
   bounds.left = 0;
   bounds.top = 0;
@@ -110,14 +110,14 @@ void TAnimator::Free() {
 // FUNCTION: IMPERIALISM 0x004a0e10
 void TAnimator::ReadFrom(TStream* stream) {
   mapUberPicture2c = 0;
-  field10 = 0x7fffffff;
-  field10 = stream->ReadLong();
+  idleFrequencyTicks = 0x7fffffff;
+  idleFrequencyTicks = stream->ReadLong();
   TObject::ReadFrom(stream);
 }
 
 // FUNCTION: IMPERIALISM 0x004a0e50
 void TAnimator::WriteTo(TStream* stream) {
-  stream->WriteLong(field10);
+  stream->WriteLong(idleFrequencyTicks);
   TObject::WriteTo(stream);
 }
 

@@ -12,13 +12,13 @@ class TStream;
 class TPowerPlantOrder : public TProductionOrder {
 public:
   DECLARE_DYNCREATE(TPowerPlantOrder)
-  virtual ~TPowerPlantOrder() override;             // slot 0x01 (scalar deleting destructor)
-  virtual void WriteTo(TStream* stream) override;   // slot 0x05 0x4b7cc0
-  virtual void ReadFrom(TStream* stream) override;  // slot 0x06 0x4b7d40
-  virtual bool SetQuantity(short param_1) override; // slot 0x0b 0x4b7b30
-  virtual short MaxOrder() override;                // slot 0x0c 0x4b7b00
-  virtual void Produce() override;                  // slot 0x0d 0x4b7c20
-  virtual void Restock() override;                  // slot 0x0e 0x4b7c40
+  virtual ~TPowerPlantOrder() override;              // slot 0x01 (scalar deleting destructor)
+  virtual void WriteTo(TStream* stream) override;    // slot 0x05 0x4b7cc0
+  virtual void ReadFrom(TStream* stream) override;   // slot 0x06 0x4b7d40
+  virtual bool SetQuantity(short quantity) override; // slot 0x0b 0x4b7b30
+  virtual short MaxOrder() override;                 // slot 0x0c 0x4b7b00
+  virtual void Produce() override;                   // slot 0x0d 0x4b7c20
+  virtual void Restock() override;                   // slot 0x0e 0x4b7c40
   virtual void FillOrderSheet(OrderSheet* orderSheet,
                               short quantity) override; // slot 0x10 0x4b7c90
   virtual void IPowerPlantOrder(TCity* city);           // slot 0x11 0x4b7ab0

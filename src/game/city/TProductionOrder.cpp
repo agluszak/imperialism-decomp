@@ -58,11 +58,11 @@ short TProductionOrder::MaxOrder() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b5100
-bool TProductionOrder::SetQuantity(short param_1) {
-  if (param_1 > MaxOrder() || param_1 < 0) {
+bool TProductionOrder::SetQuantity(short quantity) {
+  if (quantity > MaxOrder() || quantity < 0) {
     return false;
   }
-  quantityField04 = param_1;
+  quantityField04 = quantity;
   return true;
 }
 

@@ -34,7 +34,7 @@ public:
   char DoIdle(int action) override; // 0x13 -> 0x593400
 
   // TSoundPlayer-introduced slots (0x25+).
-  virtual void ISoundPlayer(int param_1);                                 // 0x25 -> 0x5e4e70
+  virtual void ISoundPlayer(int idleFrequency);                           // 0x25 -> 0x5e4e70
   virtual unsigned char ReturnConstantTrue_SoundPredicate();              // 0x26 -> 0x5e4f60
   virtual unsigned char ReturnConstantFalse_SoundPredicate(int a, int b); // 0x27 -> 0x5e4fb0
   virtual void RequestDirectSoundInitIfAllowed();                         // 0x28 -> 0x5e4f80

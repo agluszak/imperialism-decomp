@@ -9,10 +9,10 @@
 class TExpansionOrder : public TItemOrder {
 public:
   DECLARE_DYNCREATE(TExpansionOrder)
-  virtual ~TExpansionOrder() override;              // slot 0x01 (scalar deleting destructor)
-  virtual bool SetQuantity(short param_1) override; // slot 0x0b 0x4b9260
-  virtual short MaxOrder() override;                // slot 0x0c 0x4b91f0
-  virtual void Produce() override;                  // slot 0x0d 0x4b9090
+  virtual ~TExpansionOrder() override;               // slot 0x01 (scalar deleting destructor)
+  virtual bool SetQuantity(short quantity) override; // slot 0x0b 0x4b9260
+  virtual short MaxOrder() override;                 // slot 0x0c 0x4b91f0
+  virtual void Produce() override;                   // slot 0x0d 0x4b9090
   virtual void FillOrderSheet(OrderSheet* orderSheet,
                               short quantity) override; // slot 0x10 0x4b9360
   virtual void IExpansionOrder(TCity* city, short resourceType, short primaryInputResource,

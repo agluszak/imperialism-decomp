@@ -1,7 +1,6 @@
 #pragma once
-// Split from global_data_tables.h by tools/analysis/split_globals.py
-// (bead 8mo.2). Definitions stay in src/game/global_data_tables.cpp;
-// assignment evidence: docs/reference/subsystem_assignment.csv.
+// Subsystem-owned global declarations. Definitions and address markers live in
+// src/game/core/global_data_tables.cpp.
 #include "game/globals/prelude.h"
 
 extern int g_nIdleMeAnimationNextRegistryTag; // 0x00695934

@@ -199,9 +199,9 @@ void TView::InitializeUiResourceEntryFrameAndParent(TView* resourceContext, TVie
     nativeWindow50 = panel->nativeWindow50;
   }
   controlTag = kControlTagSpSpSpSp;
-  field04 = 1;
+  enabled = 1;
   field08 = 1;
-  linkedChildHandler = panel;
+  nextHandler = panel;
   ownerLocalX = offsetLayout[0];
   ownerLocalY = offsetLayout[1];
   frameWidth34 = sizeLayout[0];
@@ -238,7 +238,7 @@ void TView::NoOpUiCallback() {}
 // FUNCTION: IMPERIALISM 0x0048abe0
 void TView::AttachChildControl(class TView* child, int flag) {
   child->ownerContext = this;
-  child->linkedChildHandler = this;
+  child->nextHandler = this;
 
   if (childList44 == nullptr) {
     childList44 = new TViewChildList();
@@ -360,7 +360,7 @@ void TView::Free() {
       }
     }
   }
-  field0c = 0;
+  nextHandler = 0;
   if (firstBehavior != 0) {
     firstBehavior->Free();
   }
@@ -711,10 +711,10 @@ TView::TView(const TView& source)
 }
 // FUNCTION: IMPERIALISM 0x0048bef0
 void TView::CopyViewStateFromSource(TView* source) {
-  field04 = source->field04;
+  enabled = source->enabled;
   field08 = source->field08;
   controlTag = source->controlTag;
-  field0c = source->field0c;
+  nextHandler = source->nextHandler;
   ownerContext = 0;
   nativeWindow50 = source->nativeWindow50;
   childList44 = 0;

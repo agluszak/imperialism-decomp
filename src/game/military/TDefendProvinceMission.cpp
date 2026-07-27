@@ -159,7 +159,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
             }
           }
         } else if (remainingBudgetByNation[candidateNationIndex] > 0 &&
-                   g_pGlobalMapState->AreAllLinkedEntriesTerrainFlagBit2Clear(regionIndex) != 0) {
+                   g_pGlobalMapState->HasPortInProvince(regionIndex) != 0) {
           short checkedRegion = static_cast<short>(regionIndex);
           TMilitaryUnit* unit = 0;
           if (checkedRegion >= 0 && checkedRegion < 0x180) {
