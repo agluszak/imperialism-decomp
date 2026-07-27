@@ -1,0 +1,360 @@
+#!/usr/bin/env python3
+"""Read-only Ghidra body-integrity audit: find functions that own the wrong bytes.
+
+`check-function-extents` catches exactly one shape -- a body whose last instruction is
+not a terminator. That misses the failure that cost real work twice: a *punctured* body,
+where an inner pseudo-function was demoted to a label and its bytes were never handed
+back, so the enclosing function's range has a hole in the middle and the code inside it
+is owned by nobody. The curated inventory stays self-consistent, every existing gate
+passes, and reccmp silently compares through a keyhole.
+
+This audit looks at the body as a whole and reports:
+
+  body_hole                    the body is split into several ranges: either bytes were
+                               carved out of the middle and never returned, or the body
+                               claims two far-apart regions
+  label_in_hole                a label sits exactly at the start of a hole -- the
+                               demote-to-label signature (bd 6q2)
+  fallthrough_to_unowned       the body ends on a non-terminator and the next byte is
+                               code owned by no function: flow runs off the edge
+  truncated_into_function      same, but the next byte belongs to another function --
+                               usually a fragment carved out of this one
+  contains_other_entry         another function's entry point lies inside this body
+  curated_size_mismatch        config/original_entities.csv disagrees with the DB body
+
+The first four are hard violations: they mean bytes are unowned or misowned, which is
+never intentional. `--strict` exits non-zero when any hard violation is present, so a DB
+mutation or archive update can be gated on it. The last two are advisory -- an entry
+inside a body can be a legitimately shared tail, and a curated size can lead the DB
+during a repair.
+
+usage:
+  body-integrity-audit [--strict] [--limit N] [--kind KIND]
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import sys
+from dataclasses import dataclass, field
+from pathlib import Path
+
+TERMINATORS = {"RET", "RETF", "JMP", "INT3", "UD2"}
+REPO_ROOT = Path(__file__).resolve().parents[2]
+INVENTORY = REPO_ROOT / "config" / "original_entities.csv"
+
+HARD_KINDS = (
+    "body_hole",
+    "label_in_hole",
+    "fallthrough_to_unowned",
+    "truncated_into_function",
+)
+ADVISORY_KINDS = ("contains_other_entry", "curated_size_mismatch")
+ALL_KINDS = HARD_KINDS + ADVISORY_KINDS
+
+
+@dataclass(frozen=True)
+class FunctionView:
+    """Everything the analysis needs about one function, with no Ghidra types."""
+
+    entry: int
+    name: str
+    # Inclusive byte ranges of the body, in ascending order.
+    ranges: tuple[tuple[int, int], ...]
+    # Mnemonic of the last instruction inside the body ("" when undisassembled).
+    last_mnemonic: str = ""
+    # Mnemonic at the first byte past the body; None when that byte is not code.
+    boundary_mnemonic: str | None = None
+    # Entry of the function owning the byte past the body; None when unowned.
+    boundary_owner: int | None = None
+    # Entries of other functions whose entry point falls inside this body.
+    inner_entries: tuple[int, ...] = ()
+    # Label addresses inside this function's span (entry .. end of last range).
+    labels: tuple[int, ...] = ()
+    curated_size: int | None = None
+
+
+@dataclass
+class Violation:
+    kind: str
+    entry: int
+    name: str
+    detail: str
+
+    @property
+    def hard(self) -> bool:
+        return self.kind in HARD_KINDS
+
+
+@dataclass
+class Report:
+    violations: list[Violation] = field(default_factory=list)
+    checked: int = 0
+
+    @property
+    def hard(self) -> list[Violation]:
+        return [v for v in self.violations if v.hard]
+
+
+def body_holes(ranges: tuple[tuple[int, int], ...]) -> list[tuple[int, int]]:
+    """Inclusive [start, end] of each gap between consecutive body ranges."""
+    ordered = sorted(ranges)
+    return [
+        (ordered[i][1] + 1, ordered[i + 1][0] - 1)
+        for i in range(len(ordered) - 1)
+        if ordered[i + 1][0] - ordered[i][1] > 1
+    ]
+
+
+def body_size(ranges: tuple[tuple[int, int], ...]) -> int:
+    return sum(hi - lo + 1 for lo, hi in ranges)
+
+
+def analyze(function: FunctionView) -> list[Violation]:
+    """Every body-integrity violation visible in one function's view."""
+    out: list[Violation] = []
+    if not function.ranges:
+        return out
+
+    holes = body_holes(function.ranges)
+    for lo, hi in holes:
+        out.append(
+            Violation(
+                "body_hole",
+                function.entry,
+                function.name,
+                f"body is split; 0x{lo:08x}-0x{hi:08x} ({hi - lo + 1} bytes) sits "
+                "outside it — bytes carved out of the middle and never returned, or a "
+                "body claiming two far-apart regions",
+            )
+        )
+        if lo in function.labels:
+            out.append(
+                Violation(
+                    "label_in_hole",
+                    function.entry,
+                    function.name,
+                    f"label at 0x{lo:08x} starts a body hole "
+                    "(demoted pseudo-function whose bytes were never returned)",
+                )
+            )
+
+    terminated = function.last_mnemonic.upper() in TERMINATORS
+    if not terminated and function.boundary_mnemonic is not None:
+        end = function.ranges[-1][1] + 1
+        if function.boundary_owner is None:
+            out.append(
+                Violation(
+                    "fallthrough_to_unowned",
+                    function.entry,
+                    function.name,
+                    f"body ends on {function.last_mnemonic} and falls through into "
+                    f"unowned code at 0x{end:08x} ({function.boundary_mnemonic})",
+                )
+            )
+        elif function.boundary_owner != function.entry:
+            out.append(
+                Violation(
+                    "truncated_into_function",
+                    function.entry,
+                    function.name,
+                    f"body ends on {function.last_mnemonic}; 0x{end:08x} belongs to "
+                    f"0x{function.boundary_owner:08x} ({function.boundary_mnemonic})",
+                )
+            )
+
+    for inner in function.inner_entries:
+        out.append(
+            Violation(
+                "contains_other_entry",
+                function.entry,
+                function.name,
+                f"function 0x{inner:08x} starts inside this body",
+            )
+        )
+
+    if function.curated_size is not None:
+        actual = body_size(function.ranges)
+        if function.curated_size != actual:
+            out.append(
+                Violation(
+                    "curated_size_mismatch",
+                    function.entry,
+                    function.name,
+                    f"inventory says {function.curated_size} bytes, DB body is {actual}",
+                )
+            )
+    return out
+
+
+def audit(functions: list[FunctionView]) -> Report:
+    report = Report(checked=len(functions))
+    for function in functions:
+        report.violations.extend(analyze(function))
+    return report
+
+
+def curated_sizes() -> dict[int, int]:
+    sizes: dict[int, int] = {}
+    if not INVENTORY.is_file():
+        return sizes
+    with INVENTORY.open(encoding="utf-8") as handle:
+        for row in csv.DictReader(handle, delimiter="|"):
+            if (row.get("type") or "").strip() != "function":
+                continue
+            size = (row.get("size") or "").strip()
+            address = (row.get("address") or "").strip()
+            if size.isdigit() and address:
+                sizes[int(address, 16)] = int(size)
+    return sizes
+
+
+def collect(program) -> list[FunctionView]:
+    """Build FunctionViews from the live program (the only Ghidra-aware step)."""
+    listing = program.getListing()
+    space = program.getAddressFactory().getDefaultAddressSpace()
+    fm = program.getFunctionManager()
+    sizes = curated_sizes()
+
+    entry_set = {function.getEntryPoint().getOffset() for function in fm.getFunctions(True)}
+
+    views: list[FunctionView] = []
+    for function in fm.getFunctions(True):
+        entry = function.getEntryPoint().getOffset()
+        body = function.getBody()
+        ranges = tuple(
+            (r.getMinAddress().getOffset(), r.getMaxAddress().getOffset())
+            for r in body.getAddressRanges()
+        )
+        if not ranges:
+            continue
+        ordered = tuple(sorted(ranges))
+        end = ordered[-1][1] + 1
+
+        last_mnemonic = ""
+        cursor = listing.getInstructionAt(space.getAddress(entry))
+        while cursor is not None:
+            offset = cursor.getAddress().getOffset()
+            if offset >= end:
+                break
+            if body.contains(cursor.getAddress()):
+                last_mnemonic = str(cursor.getMnemonicString()).upper()
+            cursor = cursor.getNext()
+
+        boundary_addr = space.getAddress(end)
+        boundary_insn = listing.getInstructionAt(boundary_addr)
+        boundary_owner = fm.getFunctionContaining(boundary_addr)
+        inner = tuple(
+            other
+            for other in entry_set
+            if other != entry and any(lo <= other <= hi for lo, hi in ordered)
+        )
+        # Labels are filled in by _attach_hole_labels: only hole starts need a lookup,
+        # and iterating the whole symbol table per function would be far too slow.
+        views.append(
+            FunctionView(
+                entry=entry,
+                name=str(function.getName()),
+                ranges=ordered,
+                last_mnemonic=last_mnemonic,
+                boundary_mnemonic=str(boundary_insn.getMnemonicString()).upper()
+                if boundary_insn is not None
+                else None,
+                boundary_owner=boundary_owner.getEntryPoint().getOffset()
+                if boundary_owner is not None
+                else None,
+                inner_entries=inner,
+                labels=(),
+                curated_size=sizes.get(entry),
+            )
+        )
+    return _attach_hole_labels(program, views)
+
+
+def _attach_hole_labels(program, views: list[FunctionView]) -> list[FunctionView]:
+    """Second pass: only hole starts need a label lookup, so ask about those addresses."""
+    space = program.getAddressFactory().getDefaultAddressSpace()
+    symbols = program.getSymbolTable()
+    out: list[FunctionView] = []
+    for view in views:
+        holes = body_holes(view.ranges)
+        if not holes:
+            out.append(view)
+            continue
+        labelled = tuple(
+            lo
+            for lo, _ in holes
+            if symbols.getPrimarySymbol(space.getAddress(lo)) is not None
+        )
+        out.append(
+            FunctionView(
+                entry=view.entry,
+                name=view.name,
+                ranges=view.ranges,
+                last_mnemonic=view.last_mnemonic,
+                boundary_mnemonic=view.boundary_mnemonic,
+                boundary_owner=view.boundary_owner,
+                inner_entries=view.inner_entries,
+                labels=labelled,
+                curated_size=view.curated_size,
+            )
+        )
+    return out
+
+
+def format_report(report: Report, *, limit: int = 0, kind: str = "") -> str:
+    lines = [f"functions checked: {report.checked}"]
+    selected = [v for v in report.violations if not kind or v.kind == kind]
+    by_kind: dict[str, int] = {}
+    for violation in selected:
+        by_kind[violation.kind] = by_kind.get(violation.kind, 0) + 1
+    summary = "  ".join(f"{k}={by_kind.get(k, 0)}" for k in ALL_KINDS)
+    lines.append(f"violations: {len(selected)}  [{summary}]")
+    lines.append("")
+    ordered = sorted(selected, key=lambda v: (not v.hard, v.kind, v.entry))
+    for violation in ordered[: limit or len(ordered)]:
+        mark = "HARD" if violation.hard else "note"
+        lines.append(f"[{mark}] {violation.kind} 0x{violation.entry:08x} {violation.name}")
+        lines.append(f"    {violation.detail}")
+    if limit and len(ordered) > limit:
+        lines.append(f"... {len(ordered) - limit} more (raise --limit)")
+    return "\n".join(lines)
+
+
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--strict", action="store_true",
+                        help="exit 1 when any hard violation is present")
+    parser.add_argument("--limit", type=int, default=0, help="print at most N violations")
+    parser.add_argument("--kind", default="", choices=("",) + ALL_KINDS,
+                        help="report only this violation kind")
+    return parser.parse_args(argv)
+
+
+def main() -> int:
+    args = parse_args()
+    from tools.common import ghidra_env
+
+    project = ghidra_env.open_project()
+    consumer = None
+    program = None
+    try:
+        consumer, program = ghidra_env.open_program(project)
+        report = audit(collect(program))
+    finally:
+        if program is not None:
+            program.release(consumer)
+        project.close()
+
+    print(format_report(report, limit=args.limit, kind=args.kind))
+    if args.strict and report.hard:
+        print(f"\nbody-integrity audit FAILED: {len(report.hard)} hard violation(s). "
+              "Repair the DB (demote-functions / delete-labels / fix-function-bounds "
+              "--force [--clear-data-holes]), never the curated size.", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
