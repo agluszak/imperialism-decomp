@@ -1449,9 +1449,9 @@ address|matching|name
 0x49bfd0|1.0|TD0TemplateDialog::OnCancel
 0x49c150|0.42857142857142855|TSoundResourceManager::CreateChannelBuffer
 0x49c240|1.0|TSoundResourceManager::UpdateLocalizationAudioSlot
-0x49c290|0.3389830508474576|TSoundResourceManager::LoadWaveFileByPathAndBuildBuffer
+0x49c290|0.9733333333333334|TSoundResourceManager::LoadWaveFileByPathAndBuildBuffer
 0x49c3b0|1.0|WaveLoadDescriptor::~WaveLoadDescriptor
-0x49c430|0.7074468085106383|TSoundResourceManager::LoadWaveResourceByNumericIdAndBuildBuffer
+0x49c430|0.2743362831858407|TSoundResourceManager::LoadWaveResourceByNumericIdAndBuildBuffer
 0x49c720|1.0|TSoundResourceManager::ReadWaveDataAndFormatViaLoaderWithRetry
 0x49c850|1.0|TSoundResourceManager::SetChannelVolumesUntilAccepted
 0x49c8a0|1.0|TSoundResourceManager::SetChannelVolume
