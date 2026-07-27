@@ -1,4 +1,5 @@
 #include "game/ui_core/TNumberedIcon.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/ui_widgets/TMyNumberText.h"
 // SYNTHETIC: IMPERIALISM 0x005072e0
 // TNumberedIcon::CreateObject
@@ -15,6 +16,25 @@ TNumberedIcon::TNumberedIcon() : TMegaPicture(), numberTextAc(0) {}
 // TNumberedIcon::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00507400
 TNumberedIcon::~TNumberedIcon() {}
+
+// FUNCTION: IMPERIALISM 0x00507420
+void TNumberedIcon::INumberedIcon(TView* panel, int* offsetLayout, int* sizeLayout,
+                                  int layoutParam4, int layoutParam5, short pictureId,
+                                  short value) {
+  IMegaPicture(panel, offsetLayout, sizeLayout, layoutParam4, layoutParam5, pictureId, 5);
+  InstallNumberText();
+  SetValue(value, 1);
+
+  if (numberTextAc != 0) {
+    // A 16x16 box hung off the icon's bottom-right corner.
+    CRect numberBounds;
+    numberBounds.right = frameWidth34;
+    numberBounds.bottom = frameHeight38;
+    numberBounds.left = numberBounds.right - 0x10;
+    numberBounds.top = numberBounds.bottom - 0x10;
+    numberTextAc->ApplyBounds(&numberBounds, 1);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x005074e0
 void TNumberedIcon::DoPostCreate(int arg) {

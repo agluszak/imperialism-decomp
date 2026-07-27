@@ -3168,7 +3168,7 @@ address|name|symbol|size|type|prototype|provenance
 507380|TNumberedIcon::GetRuntimeClass||6|function|undefined GetTNumberedIconClassNamePointer()|rtti
 5073a0|TNumberedIcon::ConstructTNumberedIconBaseState||28|function|undefined ConstructTNumberedIconBaseState()|
 5073d0|TNumberedIcon::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-507420|IltTarget_00507420||132|function|undefined IltTarget_00507420()|
+507420|TNumberedIcon::INumberedIcon||132|function|void __thiscall TNumberedIcon::INumberedIcon(TView * panel, int * offsetLayout, int * sizeLayout, int layoutParam4, int layoutParam5, short pictureId, short value)|curated
 5074e0|TNumberedIcon::DoPostCreate||100|function|undefined OrphanCallChain_C6_I49_004875d0(void)|
 507570|TNumberedIcon::InstallNumberText||260|function|void __thiscall InstallNumberText(void)|mac-symbol
 5076d0|TNumberedIcon::SetValue||32|function|void __thiscall SetValue(short value, unsigned char refresh)|
