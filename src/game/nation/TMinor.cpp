@@ -1062,7 +1062,7 @@ namespace {
 
 void DispatchCivilianOrderRelationMaskSlots(TUnit* orderNode) {
   if (orderNode->orderType == EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
-    TGreatPower* ownerNation = g_apNationStates[orderNode->field_18];
+    TGreatPower* ownerNation = g_apNationStates[orderNode->ownerNationSlot18];
     if (ownerNation != 0) {
       short payload = static_cast<short>(ownerNation->homeTileIndex);
       orderNode->MoveTo(static_cast<int>(payload));
@@ -1077,8 +1077,8 @@ void WalkTileCivilianOrdersForRelationMask(TTerrainStateRecordView* terrainTiles
                                            const char* relationMaskByNation) {
   TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder20;
   while (orderNode != 0) {
-    TUnit* nextNode = orderNode->nextOnTile;
-    if (relationMaskByNation[orderNode->field_18] != 0) {
+    TUnit* nextNode = orderNode->nextAtLocation14;
+    if (relationMaskByNation[orderNode->ownerNationSlot18] != 0) {
       DispatchCivilianOrderRelationMaskSlots(orderNode);
     }
     orderNode = nextNode;
@@ -1241,9 +1241,9 @@ void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int priorOwnerNati
     TMilitaryUnit* unitNode = g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain98;
     while (unitNode != 0) {
       TUnit* unit = unitNode;
-      TMilitaryUnit* nextNode = static_cast<TMilitaryUnit*>(unitNode->nextOnTile);
-      if (unit->field_18 == priorOwnerNationSlot) {
-        unit->field_18 = this->nationSlot;
+      TMilitaryUnit* nextNode = static_cast<TMilitaryUnit*>(unitNode->nextAtLocation14);
+      if (unit->ownerNationSlot18 == priorOwnerNationSlot) {
+        unit->ownerNationSlot18 = this->nationSlot;
         CPtrList* sourceList = &this->militaryUnitList44->listState;
         POSITION pos = sourceList->Find(unit, 0);
         if (pos != 0) {
@@ -1261,7 +1261,7 @@ void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int priorOwnerNati
 namespace {
 
 void RetargetUnitOrderForAllowedNation(TUnit* orderNode) {
-  short ownerNationSlot = orderNode->field_18;
+  short ownerNationSlot = orderNode->ownerNationSlot18;
   TGreatPower* ownerNation = g_apNationStates[ownerNationSlot];
   if (ownerNation == 0) {
     return;
@@ -1278,7 +1278,7 @@ void RetargetUnitOrderForAllowedNation(TUnit* orderNode) {
 }
 
 void RetargetUnitOrderForAllowedNationWithModeReset(TUnit* orderNode) {
-  short ownerNationSlot = orderNode->field_18;
+  short ownerNationSlot = orderNode->ownerNationSlot18;
   TGreatPower* ownerNation = g_apNationStates[ownerNationSlot];
   if (ownerNation == 0) {
     return;
@@ -1299,8 +1299,8 @@ void WalkTileUnitOrdersForRelationMask(TTerrainStateRecordView* terrainTiles, sh
                                        const char* relationMaskByNation, char resetOrderMode) {
   TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder20;
   while (orderNode != 0) {
-    TUnit* nextNode = orderNode->nextOnTile;
-    if (relationMaskByNation[orderNode->field_18] != 0) {
+    TUnit* nextNode = orderNode->nextAtLocation14;
+    if (relationMaskByNation[orderNode->ownerNationSlot18] != 0) {
       if (resetOrderMode != 0) {
         RetargetUnitOrderForAllowedNationWithModeReset(orderNode);
       } else {
@@ -1401,7 +1401,7 @@ void TMinor::RelinkTileUnitsToCountryOrderManager(int destinationNationSlot) {
   CIterator unitCursor(this->militaryUnitList44);
   TUnit* unit = static_cast<TUnit*>(unitCursor.Reset());
   while (unitCursor.More() != 0) {
-    unit->field_18 = static_cast<short>(destinationNationSlot);
+    unit->ownerNationSlot18 = static_cast<short>(destinationNationSlot);
     CPtrList* sourceList = &this->militaryUnitList44->listState;
     POSITION pos = sourceList->Find(unit, 0);
     if (pos != 0) {

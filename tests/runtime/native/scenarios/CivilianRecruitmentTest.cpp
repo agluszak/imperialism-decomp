@@ -1,6 +1,11 @@
 #include "RuntimeScenario.h"
 #include "RuntimeUiDriver.h"
 
+#include "decomp_types.h"
+
+#include "game/TQuickDrawSurfaceContext.h"
+#include "game/app/TAnimator.h"
+#include "game/app/TCivAnimation2.h"
 #include "game/city/TCity.h"
 #include "game/city/TUnitOrder.h"
 #include "game/city_ui/TCivMgr.h"
@@ -11,6 +16,7 @@
 #include "game/map_ui/TMapDialog.h"
 #include "game/military/TCivUnit.h"
 #include "game/nation/TGreatPower.h"
+#include "game/pointer_representation.h"
 #include "game/strategic_terrain.h"
 #include "game/ui_core/TSortedList.h"
 #include "game/ui_core/TViewMgr.h"
@@ -58,8 +64,8 @@ bool CursorDrawsVisiblePixels(HCURSOR cursor) {
 class CivilianRecruitmentTestCase : public RuntimeScenario {
 public:
   CivilianRecruitmentTestCase()
-      : spawnedCivilian(0), targetHillTile(-1), targetMountainTile(-1), targetSeaTile(-1),
-        selectionTicks(0) {}
+      : spawnedCivilian(0), targetHillTile(-1), targetSeaTile(-1), postOrderTicks(0),
+        orderIssued(false), initialAnimationFrame(0), initialAnimationTick(0) {}
 
   const char* Name() const override {
     return "civilian_recruitment_selection";
@@ -76,7 +82,8 @@ public:
 
   void OnMapReadyWithoutCapitalSelection() override {
     spawnedCivilian = 0;
-    selectionTicks = 0;
+    postOrderTicks = 0;
+    orderIssued = false;
     EnterScenarioStep("recruiting_civilian", "produce_and_select_recruited_civilian");
     RequestScenarioTick();
   }
@@ -87,12 +94,17 @@ public:
       return;
     }
 
-    ++selectionTicks;
-    if (selectionTicks < 20) {
+    if (!orderIssued) {
+      VerifyProspectorOrdersAndCursors();
+      return;
+    }
+
+    ++postOrderTicks;
+    if (postOrderTicks < 20) {
       RequestScenarioTick();
       return;
     }
-    VerifyProspectorOrdersAndCursors();
+    VerifyOrderedProspectorRemainsVisibleAndInspectable();
   }
 
 private:
@@ -118,6 +130,7 @@ private:
     }
 
     int oldCount = nation->trackedObjectList->GetCount();
+    int oldPersistentUnitId = g_pSimMgr->field_64;
     TUnitOrder recruitOrder;
     recruitOrder.IUnitOrder(nation->city, EncodeCivilianUnitKind(kCivilianUnitProspector), 0, 0, -1,
                             0, 0, kLowSkillWorkforceMode, 0);
@@ -128,11 +141,24 @@ private:
       FailScenario("\"civilian production did not register exactly one recruit\"");
       return;
     }
-    spawnedCivilian = static_cast<TCivUnit*>(
-        nation->trackedObjectList->GetEntryByOrdinal(nation->trackedObjectList->GetCount()));
+    if (g_pSimMgr->field_64 != oldPersistentUnitId + 1) {
+      FailScenario("\"civilian production did not allocate exactly one persistent unit ID\"");
+      return;
+    }
+    spawnedCivilian = 0;
+    for (int ordinal = 1; ordinal <= nation->trackedObjectList->GetCount(); ++ordinal) {
+      CObject* entry = static_cast<CObject*>(nation->trackedObjectList->GetEntryByOrdinal(ordinal));
+      if (entry != 0 && entry->IsKindOf(RUNTIME_CLASS(TCivUnit)) != 0) {
+        TCivUnit* civilian = static_cast<TCivUnit*>(entry);
+        if (civilian->persistentUnitId20 == g_pSimMgr->field_64) {
+          spawnedCivilian = civilian;
+          break;
+        }
+      }
+    }
     if (spawnedCivilian == 0 || spawnedCivilian->tileIndex06 < 0 ||
         spawnedCivilian->tileIndex06 >= kGlobalMapTileCount) {
-      FailScenario("\"recruited civilian has an invalid strategic-map tile\"");
+      FailScenario("\"newly allocated civilian has an invalid strategic-map tile\"");
       return;
     }
 
@@ -144,37 +170,33 @@ private:
       return;
     }
 
-    for (short prospectingNation = 0; prospectingNation < 7; ++prospectingNation) {
-      spawnedCivilian->field_18 = prospectingNation;
-      g_pGlobalMapState->DimByProspecting(spawnedCivilian);
-      targetHillTile = FindProspectorTarget(kStrategicTerrainHills, true);
-      targetMountainTile = FindProspectorTarget(kStrategicTerrainMountain, true);
-      if (targetHillTile != -1 && targetMountainTile != -1) {
-        break;
-      }
+    if (spawnedCivilian->ownerNationSlot18 != nationSlot) {
+      FailScenario("\"produced civilian is not owned by the active nation\"");
+      return;
     }
+    g_pGlobalMapState->DimByProspecting(spawnedCivilian);
+    targetHillTile = FindProspectorTarget(kStrategicTerrainHills, true);
     targetSeaTile = FindProspectorTarget(kStrategicTerrainWater, false);
-    if (targetHillTile == -1 || targetMountainTile == -1 || targetSeaTile == -1) {
+    if (targetHillTile == -1 || targetSeaTile == -1) {
       char failure[160];
-      wsprintfA(failure,
-                "\"prospector samples missing: eligible hill=%d mountain=%d prohibited sea=%d\"",
-                targetHillTile, targetMountainTile, targetSeaTile);
+      wsprintfA(failure, "\"prospector samples missing: eligible hill=%d prohibited sea=%d\"",
+                targetHillTile, targetSeaTile);
       FailScenario(failure);
       return;
     }
     g_pSelectedCivilianOrderState->SetActiveCivilianSelection(spawnedCivilian, 1);
     TMapUberPicture* mapView = static_cast<TMapUberPicture*>(mainView);
-    mapView->CenterOn(targetMountainTile);
-    EnterScenarioStep("waiting_after_civilian_selection",
+    mapView->CenterOn(targetHillTile);
+    EnterScenarioStep("ordering_recruited_civilian",
                       "selected_prospector_with_real_terrain_eligibility");
-    RequestScenarioTick();
+    VerifyProspectorOrdersAndCursors();
   }
 
   short FindProspectorTarget(StrategicTerrainKind terrainKind, bool mustBeEligible) {
     for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
       const TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tile];
       if (terrain.GetTerrainKind() != terrainKind || terrain.firstCivilianOrder20 != 0 ||
-          tile % 0x6c == 0 || tile % 0x6c == 0x6b) {
+          tile == spawnedCivilian->tileIndex06 || tile % 0x6c == 0 || tile % 0x6c == 0x6b) {
         continue;
       }
       if ((terrain.recruitSearchVisited0e == 0) != mustBeEligible) {
@@ -247,6 +269,41 @@ private:
     return true;
   }
 
+  bool AnimationFrameBufferHasPixels(TAnimation* animation) {
+    TQuickDrawSurfaceContext* surface = g_pUiAnimator->renderSurfaceContext;
+    if (surface == 0 || surface->blitSurface.pixelBits == 0 ||
+        surface->blitSurface.surfaceDib == 0 ||
+        surface->blitSurface.surfaceDib->m_pInfoHeader == 0) {
+      return false;
+    }
+    int height = surface->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+    if (height < 0) {
+      height = -height;
+    }
+    int byteCount = surface->blitSurface.stride * height;
+    memset(surface->blitSurface.pixelBits, 0, byteCount);
+    animation->LoadFrameIntoBuffer();
+    for (int index = 0; index < byteCount; ++index) {
+      if (surface->blitSurface.pixelBits[index] != 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  TAnimation* RenderAndResolveOrderedProspectorAnimation(TMapUberPicture* mapView,
+                                                         TMapDialog* mapDialog) {
+    mapView->CenterOn(targetHillTile);
+    TQuickDrawSurfaceContext* savedSurface;
+    int savedSurfaceFlags;
+    GetGWorld(&savedSurface, &savedSurfaceFlags);
+    SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
+    CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
+    mapDialog->Draw(&mapBounds);
+    SetGWorld(savedSurface, savedSurfaceFlags);
+    return g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(spawnedCivilian));
+  }
+
   void VerifyProspectorOrdersAndCursors() {
     for (int index = 0; index < 0x36; ++index) {
       if (g_pUiRuntimeContext->turnEventCursors[index] == 0) {
@@ -275,28 +332,94 @@ private:
     }
 
     CPoint hillPoint;
-    CPoint mountainPoint;
     CPoint seaPoint;
-    if (!VerifyCursorForTile(mapDialog, targetHillTile, 1001, &hillPoint) ||
-        !VerifyCursorForTile(mapDialog, targetSeaTile, 1008, &seaPoint) ||
-        !VerifyCursorForTile(mapDialog, targetMountainTile, 1001, &mountainPoint)) {
+    if (spawnedCivilian->unitOrder != kUnitOrderIdle) {
+      SetGWorld(savedSurface, savedSurfaceFlags);
+      FailScenario("\"new prospector left idle state before cursor verification\"");
+      return;
+    }
+    if (!VerifyCursorForTile(mapDialog, targetSeaTile, 1008, &seaPoint)) {
+      SetGWorld(savedSurface, savedSurfaceFlags);
+      return;
+    }
+    if (spawnedCivilian->unitOrder != kUnitOrderIdle) {
+      SetGWorld(savedSurface, savedSurfaceFlags);
+      FailScenario("\"sea cursor verification changed the selected prospector order\"");
+      return;
+    }
+    if (!VerifyCursorForTile(mapDialog, targetHillTile, 1001, &hillPoint)) {
       SetGWorld(savedSurface, savedSurfaceFlags);
       return;
     }
 
-    short oldTile = spawnedCivilian->tileIndex06;
-    UnitOrder oldOrder = spawnedCivilian->unitOrder;
-    if (!RuntimeUiDriver::ClickViewPoint(mapDialog, mountainPoint.x, mountainPoint.y)) {
+    if (spawnedCivilian->unitOrder != kUnitOrderIdle ||
+        spawnedCivilian->tileIndex06 == targetHillTile) {
+      char failure[144];
+      wsprintfA(failure, "\"prospector was not idle before click: order=%d tile=%d target=%d\"",
+                spawnedCivilian->unitOrder, spawnedCivilian->tileIndex06, targetHillTile);
+      SetGWorld(savedSurface, savedSurfaceFlags);
+      FailScenario(failure);
+      return;
+    }
+    if (!RuntimeUiDriver::ClickViewPoint(mapDialog, hillPoint.x, hillPoint.y)) {
       SetGWorld(savedSurface, savedSurfaceFlags);
       FailScenario("\"strategic map click could not be routed through its native host\"");
       return;
     }
     SetGWorld(savedSurface, savedSurfaceFlags);
 
-    if (oldOrder != kUnitOrderIdle || oldTile == targetMountainTile ||
-        spawnedCivilian->unitOrder != kUnitOrderProspect ||
-        spawnedCivilian->tileIndex06 != targetMountainTile) {
-      FailScenario("\"clicking an eye-cursor mountain did not queue the prospector order\"");
+    if (spawnedCivilian->unitOrder != kUnitOrderProspect ||
+        spawnedCivilian->tileIndex06 != targetHillTile) {
+      char failure[144];
+      wsprintfA(failure, "\"prospector click mismatch: order=%d tile=%d target=%d\"",
+                spawnedCivilian->unitOrder, spawnedCivilian->tileIndex06, targetHillTile);
+      FailScenario(failure);
+      return;
+    }
+
+    TCivUnit* tileCivilian =
+        g_pGlobalMapState->GetTileUnitEntryByOwner(targetHillTile, g_pSimMgr->GetActiveNationId());
+    TAnimation* animation = RenderAndResolveOrderedProspectorAnimation(mapView, mapDialog);
+    int animationKind = animation != 0 ? animation->IsKindOf(RUNTIME_CLASS(TCivAnimation2)) : 0;
+    int hasFramePixels = animation != 0 ? AnimationFrameBufferHasPixels(animation) : 0;
+    if (tileCivilian != spawnedCivilian || animation == 0 || animationKind == 0 ||
+        hasFramePixels == 0) {
+      char failure[176];
+      wsprintfA(failure, "\"prospector animation invalid: tile=%d animation=%d kind=%d pixels=%d\"",
+                tileCivilian == spawnedCivilian, animation != 0, animationKind, hasFramePixels);
+      FailScenario(failure);
+      return;
+    }
+
+    initialAnimationFrame = animation->frameIndex08;
+    initialAnimationTick = animation->tickCounter10;
+    orderIssued = true;
+    postOrderTicks = 0;
+    EnterScenarioStep("waiting_for_ordered_civilian_animation",
+                      "verify_ordered_prospector_remains_visible_and_inspectable");
+    RequestScenarioTick();
+  }
+
+  void VerifyOrderedProspectorRemainsVisibleAndInspectable() {
+    TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+    TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+    if (mapDialog == 0) {
+      FailScenario("\"strategic map disappeared while the prospector order was active\"");
+      return;
+    }
+
+    TAnimation* animation = RenderAndResolveOrderedProspectorAnimation(mapView, mapDialog);
+    TCivUnit* tileCivilian =
+        g_pGlobalMapState->GetTileUnitEntryByOwner(targetHillTile, g_pSimMgr->GetActiveNationId());
+    unsigned short reportCursor =
+        g_pSelectedCivilianOrderState->ResolveCivilianTileSelectionOrReportActionCode(
+            targetHillTile, 0);
+    if (tileCivilian != spawnedCivilian || animation == 0 ||
+        (animation->frameIndex08 == initialAnimationFrame &&
+         animation->tickCounter10 == initialAnimationTick) ||
+        reportCursor != 0x3f3 || !AnimationFrameBufferHasPixels(animation)) {
+      FailScenario(
+          "\"ordered prospector stopped animating, left its tile, or could not be inspected\"");
       return;
     }
     Pass();
@@ -304,9 +427,11 @@ private:
 
   TCivUnit* spawnedCivilian;
   short targetHillTile;
-  short targetMountainTile;
   short targetSeaTile;
-  unsigned long selectionTicks;
+  unsigned long postOrderTicks;
+  bool orderIssued;
+  short initialAnimationFrame;
+  int initialAnimationTick;
 };
 
 CivilianRecruitmentTestCase g_test;

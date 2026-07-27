@@ -155,7 +155,7 @@ void TArmyPlayer::CommitTacticalResultsToSourceUnits(int unused) {
     CIterator unitIter(unitList4);
     for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(unitIter.Reset()); unitIter.More();
          record = static_cast<TArmyTacUnit*>(unitIter.Advance())) {
-      record->sourceUnit38->field_34 = static_cast<short>(record->strength4);
+      record->sourceUnit38->strength34 = static_cast<short>(record->strength4);
       if (record->strength4 == 0) {
         record->sourceUnit38->DetachUnitOrderFromOwnerAndReset();
       }
@@ -166,7 +166,7 @@ void TArmyPlayer::CommitTacticalResultsToSourceUnits(int unused) {
     for (TArmyTacUnit* secondaryRecord = static_cast<TArmyTacUnit*>(secondaryIter.Reset());
          secondaryIter.More();
          secondaryRecord = static_cast<TArmyTacUnit*>(secondaryIter.Advance())) {
-      secondaryRecord->sourceUnit38->field_34 = static_cast<short>(secondaryRecord->strength4);
+      secondaryRecord->sourceUnit38->strength34 = static_cast<short>(secondaryRecord->strength4);
       if (secondaryRecord->strength4 == 0) {
         secondaryRecord->sourceUnit38->DetachUnitOrderFromOwnerAndReset();
       }
@@ -188,7 +188,7 @@ void TArmyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
   unitList4->listState.AddHead(unit);
   unit->FlipUnitSideAffiliation();
   TMilitaryUnit* sourceUnit = static_cast<TArmyTacUnit*>(unit)->sourceUnit38;
-  sourceUnit->field_18 = static_cast<short>(nationIndex1C);
+  sourceUnit->ownerNationSlot18 = static_cast<short>(nationIndex1C);
   sourceUnit->MoveTo(battle14->battleSiteIndex38);
   armyStack28->AddUnitToChainHead(sourceUnit);
   static_cast<TArmyTacUnit*>(unit)->morale34 = unit->strength4;

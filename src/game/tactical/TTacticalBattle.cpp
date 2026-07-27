@@ -2436,7 +2436,7 @@ unsigned char TTacticalBattle::IsTacticalTileAtFortWallSectionSlot(TacticalTileI
   return 0;
 }
 
-// Walks recordList20 for the tactical unit whose source army unit's TUnit::field_20 id
+// Walks recordList20 for the tactical unit whose source army unit's TUnit::persistentUnitId20 id
 // matches nestedId; 0 when nestedId is 0 or nothing matches.
 // FUNCTION: IMPERIALISM 0x005a53e0
 TArmyTacUnit* TTacticalBattle::SeekLinkedListCursorByNestedId(int nestedId) {
@@ -2448,7 +2448,7 @@ TArmyTacUnit* TTacticalBattle::SeekLinkedListCursorByNestedId(int nestedId) {
        unit = static_cast<TArmyTacUnit*>(unitIter.Advance())) {
     int foundId;
     if (unit != 0 && unit->sourceUnit38 != 0) {
-      foundId = unit->sourceUnit38->field_20;
+      foundId = unit->sourceUnit38->persistentUnitId20;
     } else {
       foundId = 0;
     }

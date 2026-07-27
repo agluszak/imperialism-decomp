@@ -8,17 +8,17 @@ policy (Mac resource order, read big-endian).
 
 ## Summary
 
-- Tags: 553
+- Tags: 552
 - `generated_resource_manifest_tag`: 67
 - `multiplayer_session_or_message_tag`: 32
 - `ui_tag_app_and_setup_screens`: 57
-- `ui_tag_city_and_trade`: 62
+- `ui_tag_city_and_trade`: 61
 - `ui_tag_diplomacy`: 18
 - `ui_tag_military_navy_tactical`: 49
 - `ui_tag_shared`: 146
 - `ui_tag_strategic_map`: 23
 - `ui_tag_widget_plumbing`: 99
-- Corroborated by the Mac control-tag index: 413 of 553
+- Corroborated by the Mac control-tag index: 413 of 552
 - Violations: 0
 
 ## Violations
@@ -228,7 +228,6 @@ build does not ship.
 | `kControlTagMeat` | `meat` | `0x6d656174` | `ui_tag_city_and_trade` | 1 |
 | `kControlTagMon1` | `mon1` | `0x6d6f6e31` | `ui_tag_city_and_trade` | 1 |
 | `kControlTagMon2` | `mon2` | `0x6d6f6e32` | `ui_tag_city_and_trade` | 1 |
-| `kControlTagNnkParen` | `Nnk(` | `0x4e6e6b28` | `ui_tag_city_and_trade` |  |
 | `kControlTagNomo` | `nomo` | `0x6e6f6d6f` | `ui_tag_city_and_trade` | 1 |
 | `kControlTagNum0` | `num0` | `0x6e756d30` | `ui_tag_city_and_trade` | 3 |
 | `kControlTagOrSpSp` | `or  ` | `0x6f722020` | `ui_tag_city_and_trade` | 5 |

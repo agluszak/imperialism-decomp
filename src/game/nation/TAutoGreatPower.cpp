@@ -73,11 +73,9 @@ TAutoGreatPower::TAutoGreatPower() : TGreatPower() {
 TAutoGreatPower::~TAutoGreatPower() {}
 
 // FUNCTION: IMPERIALISM 0x004e6c20
-void TAutoGreatPower::IAutoGreatPower(int nationSlot,
-                                                                    int nationInitializationMode,
-                                                                    short cityMinisterPolicyId,
-                                                                    short foreignMinisterPolicyId,
-                                                                    short defenseMinisterPolicyId) {
+void TAutoGreatPower::IAutoGreatPower(int nationSlot, int nationInitializationMode,
+                                      short cityMinisterPolicyId, short foreignMinisterPolicyId,
+                                      short defenseMinisterPolicyId) {
   IGreatPower(nationSlot, nationInitializationMode);
   treasuryValue10 = 10000;
   memset(actionMetricByQuarter, 0, sizeof(actionMetricByQuarter));
@@ -1626,10 +1624,10 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
     if (unit->CanUpgrade()) {
-      int qualityLevel = unit->field_38 / 100;
+      int qualityLevel = unit->experiencePercent38 / 100;
       short unitType = unit->orderType;
       if (bestUnitByType[unitType] == 0 ||
-          bestUnitByType[unitType]->field_38 / 100 < qualityLevel) {
+          bestUnitByType[unitType]->experiencePercent38 / 100 < qualityLevel) {
         bestUnitByType[unitType] = unit;
       }
     }
@@ -2038,7 +2036,7 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
         weightedCost += static_cast<float>(costDelta * resourcePools[poolIndex]);
       }
     }
-    int qualityMultiplier = (bestUnitByType[unitType]->field_38 / 100 + 10) / 10;
+    int qualityMultiplier = (bestUnitByType[unitType]->experiencePercent38 / 100 + 10) / 10;
     weightedCost *= static_cast<float>(qualityMultiplier);
     float score = weightedCost / static_cast<TAutoGreatPower*>(g_apNationStates[nationSlot])
                                      ->ComputeAiCityActionCostFromSlotAndMode(upgradeSlot, 1);

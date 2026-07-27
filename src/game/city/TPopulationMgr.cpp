@@ -517,6 +517,13 @@ void TPopulationMgr::Free() {
 // band of both the baseline and working labor pools, to the aggregate population
 // count, and 4x to strength. Sole caller is TCivUnit::ResetCivWorkOrderAndRefreshCounters
 // (disbanding a civilian specialist returns an expert).
+// FUNCTION: IMPERIALISM 0x004b6a00
+void TPopulationMgr::AddUntrained(short count) {
+  baselineSlots10->lowSkillCount04 = baselineSlots10->lowSkillCount04 + count;
+  productionSlots14->lowSkillCount04 = productionSlots14->lowSkillCount04 + count;
+  populationCount08 = populationCount08 + count;
+}
+
 // FUNCTION: IMPERIALISM 0x004b6a30
 void TPopulationMgr::AddExpert(short count) {
   baselineSlots10->highSkillCount08 = baselineSlots10->highSkillCount08 + count;

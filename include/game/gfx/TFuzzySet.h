@@ -20,7 +20,7 @@ public:
   void Clear();
 
   // Allocates a 4-value TFuzzyVar leaf, fills its values, and appends it to m_members. 0x4ff7d0
-  void AllocateAndAppendRecord(int value0, int value1, int value2, int value3);
+  void AllocateAndAppendRecord(float value0, float value1, float value2, float value3);
 
   // Evaluates each trapezoidal membership record at `input`, normalizes the weights,
   // and randomly selects one member index from the resulting distribution.
