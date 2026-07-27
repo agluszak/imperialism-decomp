@@ -272,9 +272,12 @@ class GdbSession:
     def continue_inferior(self) -> None:
         self._command("-exec-continue --all")
 
-    def set_breakpoint(self, address: int) -> str:
+    def set_breakpoint(self, address: int, condition: str | None = None) -> str:
         mi = self._require_mi()
-        result = self._call(mi.command(f"-break-insert *0x{address:08x}"), 32)
+        # A conditional breakpoint is the difference between observing a hot helper and
+        # drowning in it: the interesting call is usually one in hundreds.
+        prefix = f"-break-insert -c {json.dumps(condition)} " if condition else "-break-insert "
+        result = self._call(mi.command(f"{prefix}*0x{address:08x}"), 32)
         payload = result.result.payload
         breakpoint = payload.get("bkpt") if isinstance(payload, dict) else None
         number = breakpoint.get("number") if isinstance(breakpoint, dict) else None

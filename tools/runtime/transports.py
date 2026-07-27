@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import os
+
 from dataclasses import dataclass, replace
 from pathlib import Path
 import subprocess
@@ -123,6 +125,41 @@ class DirectWineTransport:
             self._log = None
 
 
+WATCH_ENV = "IMPERIALISM_RUNTIME_GDB_WATCH"
+
+
+def watch_addresses(raw: str | None = None) -> list[tuple[int, str | None]]:
+    """Extra breakpoints for an investigation, from $IMPERIALISM_RUNTIME_GDB_WATCH.
+
+    Recomp addresses, each optionally carrying a gdb condition after a colon:
+
+        IMPERIALISM_RUNTIME_GDB_WATCH='0x4013d9:$eax == 0;0x4013d7'
+
+    Entries are separated by `;` (not whitespace) so a condition may contain spaces.
+
+    Each hit is captured like any other stop -- registers, stack, `x/32i $pc-32`,
+    symbolized against the linker map -- and the run continues, so a scenario can be
+    driven to a specific decision point without hand-building a gdb session around it.
+    The condition matters: an unconditional breakpoint on a hot helper is captured once
+    (identical stops are deduped) and then just slows the run down, while a condition
+    puts the stop exactly on the call that misbehaves. Unparsable entries are ignored
+    rather than failing a run that was only meant to be observed.
+    """
+    text = os.environ.get(WATCH_ENV, "") if raw is None else raw
+    out: list[tuple[int, str | None]] = []
+    for token in text.split(";"):
+        token = token.strip()
+        if not token:
+            continue
+        address_text, _, condition = token.partition(":")
+        try:
+            address = int(address_text, 16) if address_text.lower().startswith("0x") else int(address_text, 0)
+        except ValueError:
+            continue
+        out.append((address, condition or None))
+    return out
+
+
 class GdbTransport:
     debugger_name = "gdb"
 
@@ -172,7 +209,17 @@ class GdbTransport:
 
     def start(self) -> TransportSnapshot:
         try:
-            self.session.start()
+            watches = watch_addresses()
+            if watches:
+                # -break-insert is refused once the inferior is running, so a watched run
+                # holds the auto-continue until the breakpoints are in. An unwatched run
+                # is left byte-identical to before, kwarg included.
+                self.session.start(auto_continue=False)
+                for address, condition in watches:
+                    self.session.set_breakpoint(address, condition)
+                self.session.continue_inferior()
+            else:
+                self.session.start()
             self._snapshot = self._lifecycle_snapshot()
             return self._snapshot
         except DebuggerTransportError as error:
