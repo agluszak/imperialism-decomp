@@ -34,10 +34,29 @@ def classify_poll(
     return None
 
 
-def classify_exit(returncode: int, result_exists: bool) -> str | None:
+def classify_exit(
+    returncode: int, result_exists: bool, saw_heartbeat: bool = True
+) -> str | None:
+    """Classify a runtime process that has exited without being killed by us.
+
+    `saw_heartbeat` separates two failures that a non-zero exit code alone conflates:
+    the game running and then dying, versus the game never getting far enough to run.
+    Wine, X or the wineserver failing to come up under machine load also exits non-zero
+    with no result file, and reporting that as `crash` sends whoever reads the run
+    hunting for a bug in the port that is not there.
+
+    A process that never wrote a heartbeat never reached the scenario, so it is reported
+    as `exited_before_first_heartbeat`. That is deliberately not called a harness fault:
+    an early crash in startup code looks the same from here, and the run bundle's
+    wine.log is what tells the two apart. The classification only says which half of the
+    search space to look in. Defaults to True so callers that cannot observe liveness
+    keep the previous behaviour.
+    """
     if result_exists:
         return None
-    return "crash" if returncode != 0 else "exited_without_result"
+    if returncode == 0:
+        return "exited_without_result"
+    return "crash" if saw_heartbeat else "exited_before_first_heartbeat"
 
 
 def classify_inferior_exit(

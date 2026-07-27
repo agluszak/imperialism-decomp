@@ -79,7 +79,23 @@ class ClassifyExitTests(unittest.TestCase):
         self.assertIsNone(classify_exit(0, True))
         self.assertIsNone(classify_exit(5, True))
 
-    def test_nonzero_exit_without_result_is_crash(self) -> None:
+    def test_nonzero_exit_after_liveness_is_crash(self) -> None:
+        self.assertEqual(classify_exit(-11, False, saw_heartbeat=True), "crash")
+
+    def test_nonzero_exit_before_any_heartbeat_is_not_called_a_crash(self) -> None:
+        """A process that never signalled liveness never reached the scenario.
+
+        Wine, X or the wineserver failing to come up under load exits non-zero with no
+        result file, exactly like a crashing game. Reporting both as `crash` sent an
+        investigation hunting for a port bug that was not there (see
+        imperialism-decomp-gdqr), so the two are now distinguishable from the result
+        line alone.
+        """
+        self.assertEqual(
+            classify_exit(-11, False, saw_heartbeat=False), "exited_before_first_heartbeat"
+        )
+
+    def test_liveness_defaults_to_true_for_callers_that_cannot_observe_it(self) -> None:
         self.assertEqual(classify_exit(-11, False), "crash")
 
     def test_clean_exit_without_result_is_exited_without_result(self) -> None:
