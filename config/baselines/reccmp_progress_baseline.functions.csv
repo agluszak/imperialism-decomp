@@ -655,7 +655,7 @@ address|matching|name
 0x4840d0|1.0|CIncludeView::CalcWindowRect
 0x484190|0.6938775510204082|CIncludeView::OnParentNotify
 0x484230|1.0|CIncludeView::OnMciNotifyMode
-0x484260|0.2198581560283688|CIncludeView::OnKeyDown
+0x484260|0.26136363636363635|CIncludeView::OnKeyDown
 0x4845a0|0.875|TUiEvent::TUiEvent
 0x484610|1.0|CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::Serialize
 0x484860|0.0|WrapperFor_FreeLinkedBlockChain_At00484860
@@ -3691,7 +3691,7 @@ address|matching|name
 0x5311d0|0.06666666666666667|TTedForeignMinister::TTedForeignMinister
 0x531240|1.0|TTedForeignMinister::`scalar deleting destructor'
 0x531270|0.0|TTedForeignMinister
-0x531290|0.2662337662337662|TTedForeignMinister::SetBuyPriorities
+0x531290|0.30670926517571884|TTedForeignMinister::SetBuyPriorities
 0x531550|0.30303030303030304|TTedForeignMinister::SetTradeBids
 0x531770|0.3025210084033613|TTedForeignMinister::ReplyToTradeOffer
 0x531a10|0.48484848484848486|TTedForeignMinister::DoFirstTurnDiplomacy
@@ -3704,7 +3704,7 @@ address|matching|name
 0x531c80|0.0|TBillForeignMinister
 0x531ca0|1.0|TBillForeignMinister::ReadFrom
 0x531ce0|1.0|TBillForeignMinister::WriteTo
-0x531d20|0.35384615384615387|TBillForeignMinister::SetBuyPriorities
+0x531d20|0.3851851851851852|TBillForeignMinister::SetBuyPriorities
 0x531e50|0.3510392609699769|TBillForeignMinister::SetTradeBids
 0x532190|0.3527272727272727|TBillForeignMinister::ReplyToTradeOffer
 0x532520|0.8035714285714286|TBillForeignMinister::DoFirstTurnDiplomacy
@@ -3717,7 +3717,7 @@ address|matching|name
 0x532820|0.0|TDiplomatForeignMinister
 0x532840|1.0|TDiplomatForeignMinister::DoFirstTurnDiplomacy
 0x5328d0|1.0|TDiplomatForeignMinister::DoSecondTurnDiplomacy
-0x5328f0|0.32793522267206476|TDiplomatForeignMinister::SetBuyPriorities
+0x5328f0|0.3373493975903614|TDiplomatForeignMinister::SetBuyPriorities
 0x532c60|0.32917705735660846|TDiplomatForeignMinister::SetTradeBids
 0x532f70|0.24390243902439024|TDiplomatForeignMinister::ReplyToTradeOffer
 0x533050|1.0|TDiplomatForeignMinister::MakeNewCity
@@ -3726,7 +3726,7 @@ address|matching|name
 0x533110|0.07142857142857142|TTextileForeignMinister::TTextileForeignMinister
 0x533180|1.0|TTextileForeignMinister::`scalar deleting destructor'
 0x5331b0|0.0|TTextileForeignMinister
-0x5331d0|0.3333333333333333|TTextileForeignMinister::SetBuyPriorities
+0x5331d0|0.3024390243902439|TTextileForeignMinister::SetBuyPriorities
 0x533380|0.3165829145728643|TTextileForeignMinister::SetTradeBids
 0x533670|0.20155038759689922|TTextileForeignMinister::ReplyToTradeOffer
 0x533780|1.0|TTextileForeignMinister::MakeNewCity
@@ -3735,7 +3735,7 @@ address|matching|name
 0x5338a0|0.07142857142857142|TTraderForeignMinister::TTraderForeignMinister
 0x533910|1.0|TTraderForeignMinister::`scalar deleting destructor'
 0x533940|0.0|TTraderForeignMinister
-0x533960|0.5204081632653061|TTraderForeignMinister::SetBuyPriorities
+0x533960|0.5714285714285714|TTraderForeignMinister::SetBuyPriorities
 0x533b10|0.3651685393258427|TTraderForeignMinister::SetTradeBids
 0x533db0|0.1322314049586777|TTraderForeignMinister::ReplyToTradeOffer
 0x533e90|0.3963963963963964|TTraderForeignMinister::DoFirstTurnDiplomacy
@@ -3745,9 +3745,9 @@ address|matching|name
 0x534010|0.11764705882352941|TArmsForeignMinister::TArmsForeignMinister
 0x534080|1.0|TArmsForeignMinister::`scalar deleting destructor'
 0x5340b0|0.0|TArmsForeignMinister
-0x5340d0|0.39436619718309857|TArmsForeignMinister::SetBuyPriorities
+0x5340d0|0.4634146341463415|TArmsForeignMinister::SetBuyPriorities
 0x534190|0.2864583333333333|TArmsForeignMinister::SetTradeBids
-0x534450|0.3787878787878788|TArmsForeignMinister::ReplyToTradeOffer
+0x534450|0.4074074074074074|TArmsForeignMinister::ReplyToTradeOffer
 0x534660|1.0|TArmsForeignMinister::MakeNewCity
 0x534680|0.4897959183673469|TSortByPriceList::CreateObject
 0x5346f0|1.0|TSortByPriceList::GetRuntimeClass
