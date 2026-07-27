@@ -4543,7 +4543,7 @@ address|matching|name
 0x560150|0.674364896073903|TZone::FindBestCoastalTileForContextAndCityStateByHeuristic
 0x560470|0.5373134328358209|TMapMgr::AdvanceSpiralSearchStateAndStepHexCoordinates
 0x5604e0|0.03773584905660377|IltTarget_005604e0
-0x560580|0.40404040404040403|TZone::SetMapOrderUiFlag
+0x560580|0.31958762886597936|TZone::SetMapOrderUiFlag
 0x5606f0|0.5460992907801419|TZone::BuildNavalIntelligenceSourceDescription
 0x560970|0.8|TZone::FindReportingAdmiralForNation
 0x5609e0|1.0|TZone::CreateTaskForceFromNavyOrdersForNationIfEligible
