@@ -96,6 +96,7 @@ module|tools.ghidra.raw_disasm|query:raw-disasm|Capstone raw-byte disassembly by
 module|tools.ghidra.rtti_class_oracle|just:rtti-oracle|Walk MFC CRuntimeClass descriptors: names, sizes, bases, CreateObject
 module|tools.ghidra.search_whole_binary|query:search|Whole-binary text/dword search for handler hunting
 module|tools.workflow.check_symbols_integrity|just:symbols-integrity-gate|Structural integrity of config/original_entities.csv
+module|tools.workflow.check_repo_hygiene|just:repo-hygiene-gate|Reject tracked build/editor artifacts and stray large binaries
 module|tools.workflow.check_generated_integrity|just:generated-integrity-gate|Reject generated artifacts committed relative to a merge base
 module|tools.ghidra.linear_disasm|query:linear-disasm|Linear disassembly by address ignoring Ghidra function boundaries
 module|tools.workflow.check_class_sizes|just:class-size-check|Modeled class sizes vs RTTI oracle object_size
