@@ -48,9 +48,16 @@ public:
   TEventHandler();
   // CObject is intentionally non-copyable in MFC, but this MacApp-derived hierarchy
   // has a real field-copying base constructor inlined into TView's 0x48bd30 copy ctor.
+  // Copies exactly the four fields the original copies -- +0x04, +0x08, +0x0c and
+  // controlTag at +0x1c -- and no others. field10/field14 are the idle-throttle frequency
+  // and last-idle stamp and firstBehavior is a list head, none of which a fresh copy
+  // inherits. An earlier seven-field version was generalized from the copy INLINED into
+  // TView::TView(const TView&) (0x48bd30), which folds TView's own member copies in; the
+  // standalone body at 0x48a750 is the authority (bd imperialism-decomp-n2xl).
+  // In-class deliberately: see config/ctor_placement_exceptions.csv for the measurement.
+  // FUNCTION: IMPERIALISM 0x0048a750
   TEventHandler(const TEventHandler& source)
       : TObject(), field04(source.field04), field08(source.field08), field0c(source.field0c),
-        field10(source.field10), field14(source.field14), firstBehavior(source.firstBehavior),
         controlTag(source.controlTag) {}
 
   // 0x48a410 — MacApp TEventHandler::HandleIdle(IdlePhase); throttled idle dispatch
