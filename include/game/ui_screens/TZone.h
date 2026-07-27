@@ -3,6 +3,7 @@
 #include "decomp_types.h"
 
 #include "game/mfc.h"
+#include "game/nation_domain_types.h"
 #include "game/ui_screens/CString.h"
 #include "game/app/TObject.h"
 #include "game/stretch.h"
@@ -62,11 +63,14 @@ public:
   virtual bool QueryZoneCapabilityFlagA();                                  // slot 0x0d 0x55e820
   virtual bool QueryPortZoneCapability();                                   // slot 0x0e 0x55e840
   virtual bool QueryZoneCapabilityFlagC();                                  // slot 0x0f 0x55e860
-  virtual bool QueryZoneCapabilityFlagD(int unused);                        // slot 0x10 0x55e880
-  virtual bool QueryZoneCapabilityFlagE(int unused);                        // slot 0x11 0x55e8a0
-  virtual bool HasZoneActiveChildCount(int unused);                         // slot 0x12 0x55e8c0
-  virtual short FindNearestActiveSeaContextTileFromOffset216();             // slot 0x13 0x55fe60
-  virtual short GetActiveNationSlotTile();                                  // slot 0x14 0x55fef0
+  // The base bodies ignore their argument, but the TPortZone overrides (0x561b10 /
+  // 0x561b50 / 0x561dc0) pin the real parameter types: slots 0x10/0x11 compare a 16-bit
+  // nation slot, slot 0x12 dereferences a task force's +0x18 zone and +0x1c nation.
+  virtual bool QueryZoneCapabilityFlagD(NationSlot nationSlot); // slot 0x10 0x55e880
+  virtual bool QueryZoneCapabilityFlagE(NationSlot nationSlot); // slot 0x11 0x55e8a0
+  virtual bool HasZoneActiveChildCount(TTaskForce* force);      // slot 0x12 0x55e8c0
+  virtual short FindNearestActiveSeaContextTileFromOffset216(); // slot 0x13 0x55fe60
+  virtual short GetActiveNationSlotTile();                      // slot 0x14 0x55fef0
   virtual short FindBestCoastalTileForContextAndCityStateByHeuristic(
       Province* contextProvince);            // slot 0x15 0x560150
   virtual void SetMapOrderUiFlag(bool flag); // slot 0x16 0x560580

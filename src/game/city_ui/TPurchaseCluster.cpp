@@ -81,7 +81,13 @@ void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, char redrawFl
   static_cast<TBuildingView*>(ownerContext)->UpdateFields();
 }
 
+// Re-reads the 'valu' amount control's window text into its cached int and returns it;
+// DoEvent applies the DEC/INC delta to this result before feeding it back.
 // FUNCTION: IMPERIALISM 0x004cc640
 int TPurchaseCluster::UpdateCityViewValueControl() {
-  return 0;
+  TNumberText* valueControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagValu));
+  if (valueControl == 0) {
+    FailNilPointerWithAssert(s_SourcePathUCityViews_00696650, 0x793);
+  }
+  return valueControl->UpdateControlCachedIntFromWindowText();
 }

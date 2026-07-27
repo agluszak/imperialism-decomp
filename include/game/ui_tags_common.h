@@ -217,6 +217,8 @@ const int kControlTagSave =
 const int kControlTagScen = IMPERIALISM_FOURCC('s', 'c', 'e', 'n'); // main-menu scenario button
 const int kControlTagScro =
     IMPERIALISM_FOURCC('s', 'c', 'r', 'o'); // TScrollView.cpp, TTreatiesView.cpp; 1 Mac screen(s)
+const int kControlTagSanc =
+    IMPERIALISM_FOURCC('s', 'a', 'n', 'c'); // diplomacy sanction toggle (TDipDlgCluster)
 const int kControlTagSeas = IMPERIALISM_FOURCC('s', 'e', 'a', 's'); // season label
 const int kControlTagSele = IMPERIALISM_FOURCC(
     's', 'e', 'l',

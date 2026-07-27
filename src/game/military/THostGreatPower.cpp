@@ -39,13 +39,17 @@ void THostGreatPower::WriteTo(TStream* stream) {
   stream->WriteBytes(&nationLostEventDispatched, 1);
 }
 
+// The host runs the base dispatch first (local UI runtime context); when that accepts the
+// action it also mirrors it to the remote nations over the wire.
 // FUNCTION: IMPERIALISM 0x00541080
 char THostGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                                     int arg4) {
-  (void)arg1;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
+  if (TGreatPower::TryDispatchNationActionViaUiContextOrFallback(arg1, arg2, arg3, arg4) != 0) {
+    g_pGameFlowState->DispatchTurnEvent1AWithNationActionPayload(
+        this->nationSlot, static_cast<short>(arg1), static_cast<short>(arg2),
+        static_cast<short>(arg3), static_cast<short>(arg4));
+    return 1;
+  }
   return 0;
 }
 

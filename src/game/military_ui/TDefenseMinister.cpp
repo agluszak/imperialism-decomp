@@ -98,10 +98,21 @@ void TDefenseMinister::ReadFrom(TStream* stream) {
 
 // Slot 10 override (0x4ec3d0).
 
+// The defense minister ranks a nation by its army's total strength, each unit's
+// strength34 scaled down by 100. Ordinals are 1-based (TSortedList), and the running
+// total accumulates in 32 bits before the 16-bit return truncation.
 // FUNCTION: IMPERIALISM 0x004ec3d0
 short TDefenseMinister::GetRankingCriterionForGP(short nationSlot) {
-  (void)nationSlot;
-  return 0;
+  TSortedList* units = g_apNationStates[nationSlot]->militaryUnitList44;
+  short unitCount = static_cast<short>(units->GetCount());
+  int strengthTotal = 0;
+  short ranking = 0;
+  for (int ordinal = 1; ordinal <= unitCount; ++ordinal) {
+    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(units->GetEntryByOrdinal(ordinal));
+    strengthTotal += unit->strength34 / 100;
+    ranking = static_cast<short>(strengthTotal);
+  }
+  return ranking;
 }
 
 // FUNCTION: IMPERIALISM 0x004ec450

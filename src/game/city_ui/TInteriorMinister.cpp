@@ -58,9 +58,12 @@ void TInteriorMinister::WriteTo(TStream* stream) {
   WriteShortArrayElems(stream, trailingTable, 7);
 }
 
+// The interior minister ranks a nation purely by its remaining need capacity.
 // FUNCTION: IMPERIALISM 0x004be3c0
 short TInteriorMinister::GetRankingCriterionForGP(short nationSlot) {
-  (void)nationSlot;
+  if (g_apNationStates[nationSlot] != 0) {
+    return g_apNationStates[nationSlot]->needCapA6;
+  }
   return 0;
 }
 

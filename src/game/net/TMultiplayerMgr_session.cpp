@@ -251,7 +251,7 @@ void TMultiplayerMgr::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005430c0
-void TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44(void* nContext,
+void TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44(TEventHandler* nContext,
                                                                       char fEnable) {
   processPrimaryEventQueue = 1;
   processSecondaryEventQueue = 1;
@@ -374,9 +374,14 @@ void TMultiplayerMgr::EmitTurnEvent10ForFlaggedNationSlots() {
   }
 }
 
+// Forwards the idle tick to the routing child handler (the lounge dialog, when one is
+// open) before draining the diplomacy turn-state queue. Always reports "not handled".
 // FUNCTION: IMPERIALISM 0x00544e30
 char TMultiplayerMgr::DoIdle(int action) {
-  (void)action;
+  if (diplomacyQueueContext != 0) {
+    diplomacyQueueContext->DoIdle(action);
+  }
+  RouteAndProcessDiplomacyTurnStateEventQueue();
   return 0;
 }
 

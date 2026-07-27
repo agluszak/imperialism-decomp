@@ -110,14 +110,27 @@ class TestTrivialReturnClassification(unittest.TestCase):
             findings = _scan(Path(d), source, {"TFoo::Compute": (0x500000, 400)})
         self.assertEqual(findings, [])
 
-    def test_audit_kind_excluded_from_ratchet(self):
+    def test_promoted_kind_is_counted_by_the_ratchet(self):
+        """bd rziq: trivial_return_but_big is a gated violation, not audit-only."""
         import tempfile
 
         with tempfile.TemporaryDirectory() as d:
             findings = _scan(Path(d), self.SOURCE, {"TFoo::Compute": (0x500000, 400)})
             counts = counts_per_file(findings, Path(d))
-        self.assertEqual(counts, {})
+        self.assertEqual(
+            [row["trivial_return_but_big"] for row in counts.values()], [1]
+        )
+        self.assertIn("trivial_return_but_big", VIOLATION_KINDS)
+        self.assertNotIn("trivial_return_but_big", AUDIT_KINDS)
         self.assertTrue(set(AUDIT_KINDS).isdisjoint(VIOLATION_KINDS))
+
+    def test_audit_only_kind_still_excluded_from_ratchet(self):
+        """ctor_missing_derived_init stays outside the baseline until it is triaged."""
+        import tempfile
+
+        finding = {"kind": "ctor_missing_derived_init", "file": "src/game/TFoo.cpp"}
+        with tempfile.TemporaryDirectory() as d:
+            self.assertEqual(counts_per_file([finding], Path(d)), {})
 
 
 class TestDerivedStoreOffsets(unittest.TestCase):

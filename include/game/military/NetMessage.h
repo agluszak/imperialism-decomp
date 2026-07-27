@@ -88,6 +88,17 @@ struct TurnEvent17ProposalResolutionPacket : TimelyMessageHeader {
   unsigned char pad1e[2];
 };
 
+// Event-0x1D war-transition check/propagate. Emitted by the proxy great power (0x540cf0 /
+// 0x540dc0), which stamps the turn token at +0x18 and broadcasts (toNetworkId = -1) before
+// DestinateTo; the 0x1d receive case dispatches on actionCode1C, and only the 'a' form
+// carries mode1F. Shared here because both the emitters and the receiver need it.
+struct TurnEvent1DWarTransitionPacket : TimelyNetMessagePrefix {
+  char actionCode1C;     // +0x1c - 'i' selects the two-arg check
+  signed char nationA1D; // +0x1d
+  signed char nationB1E; // +0x1e
+  unsigned char mode1F;  // +0x1f, total 0x20
+};
+
 // Packed network payload entries used by TurnEvent2SyncPacket. These are wire records,
 // not views of the destination arrays: x86 intentionally performs the unaligned word/dword
 // loads at +0 and +2 that the packet encoding requires.
