@@ -9,6 +9,7 @@
 #include "game/app/TObject.h"
 
 class TShip;
+class TTaskForce;
 class TZone;
 
 // Navy task-force secondary order node (vtable 0x0065c498, eight slots).
@@ -53,6 +54,12 @@ public:
   // argument the way the original does: a null admiral is junior to everyone, and
   // any admiral is senior to none.
   unsigned char IsSeniorTo(const TAdmiral* other) const; // 0x551990
+
+  // Mac oracle: EstimateStrengthRating. Sums TShip::GetBattleStrengthRating over the
+  // given force's child ships. The original ignores its receiver and inlines the
+  // per-ship rating (TShip lives in the same original translation unit); the second
+  // argument is never read. 0x552160, __thiscall.
+  int EstimateStrengthRating(const TTaskForce* force, int unusedArg) const;
 
   // Mac oracle: NameThyself. Regenerates displayName until it is unique in the
   // global admiral list.

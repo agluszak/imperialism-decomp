@@ -309,6 +309,17 @@ void TAdmiral::GetFleetReport(CString* out, TZone* zone, NationSlot nation) cons
                          static_cast<LPCSTR>(observedComposition));
 }
 
+// Mac oracle: EstimateStrengthRating.
+// FUNCTION: IMPERIALISM 0x00552160
+int TAdmiral::EstimateStrengthRating(const TTaskForce* force, int unusedArg) const {
+  (void)unusedArg;
+  int total = 0;
+  for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
+    total += static_cast<TShip*>(node->payload)->GetBattleStrengthRating();
+  }
+  return total;
+}
+
 // FUNCTION: IMPERIALISM 0x00552250
 void TAdmiral::AssignToShip(TShip* primaryOrderNode) {
   if (this->assignedShip != 0) {

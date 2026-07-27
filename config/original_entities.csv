@@ -4297,7 +4297,7 @@ address|name|symbol|size|type|prototype|provenance
 5519d0|FindCumulativeWeightBucketIndex||29|function|int FindCumulativeWeightBucketIndex(short* weightTable, short roll)|
 551a00|TAdmiral::EstimateEnemyForces||373|function|short TAdmiral::EstimateEnemyForces(short* estimatedCounts, const TZone* zone, short nation) const|
 551be0|TAdmiral::GetFleetReport||1110|function|void TAdmiral::GetFleetReport(CString* out, TZone* zone, short nation) const|
-552160|IltTarget_00552160||187|function|undefined IltTarget_00552160()|
+552160|TAdmiral::EstimateStrengthRating||187|function|int __thiscall TAdmiral::EstimateStrengthRating(TTaskForce const * force, int unusedArg)|curated
 552250|TAdmiral::AssignToShip||135|function|void TAdmiral::AssignToShip(TShip* primaryOrderNode)|
 552310|TAdmiral::ReassignToZone||232|function|void TAdmiral::ReassignToZone(TZone* zone)|
 552450|TAdmiral::NameThyself||81|function|void TAdmiral::NameThyself()|macos-name-oracle:NameThyself()
