@@ -143,3 +143,8 @@ void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b
 // backing store, then walk the staggered column/row lattice appending three SeaSegments per
 // cell and close it along the map's vertical edges. 0x0052ac40, __cdecl.
 void RebuildRegionBorderLinkLattice();
+
+// Flood a region id along a chain of border segments starting at one segment/edge side,
+// hopping to the segment whose matching endpoint coincides and whose heading turns least.
+// Stops when the next side is already stamped. 0x0052b520, __cdecl.
+void AssignRegionIdAlongBorderSegmentChain(unsigned int index, char side, short regionId);
