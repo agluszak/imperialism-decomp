@@ -21,7 +21,7 @@ correct process so you never have to reconstruct it:
 just agent-start port 0xADDR   # investigation front door: refuses stale bases,
                                # already-implemented targets, and addresses claimed
                                # by another live branch (refs/agent-claims/*); runs
-                               # tooling-check, func-status, ghidra-portprep, the
+                               # tooling-check, func-status, ghidra portprep, the
                                # initial compare, library-identify; writes
                                # build-msvc500/agent-tasks/<branch>/receipt.json
 just advice 0xADDR             # the 5-10 most relevant active rules for this target

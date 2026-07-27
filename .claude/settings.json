@@ -33,7 +33,20 @@
       "Bash(just tooling-check)",
       "Bash(bd ready)",
       "Bash(just ghidra search *)",
-      "Bash(just symbols-integrity-gate)"
+      "Bash(just symbols-integrity-gate)",
+      "Bash(just agent-start *)",
+      "Bash(just advice *)",
+      "Bash(just agent-check)",
+      "Bash(just agent-finish)",
+      "Bash(just agent-release)",
+      "Bash(just build)",
+      "Bash(just triage *)",
+      "Bash(just ghidra portprep *)",
+      "Bash(just precommit)",
+      "Bash(just func-status *)",
+      "Bash(just roadmap *)",
+      "Bash(just stackcmp *)",
+      "Bash(just serde-audit *)"
     ]
   }
 }
