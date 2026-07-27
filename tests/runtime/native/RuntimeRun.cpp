@@ -6,7 +6,7 @@
 #include <windows.h>
 
 RuntimeRun::RuntimeRun()
-    : scenario(0), step(0), finished(false), seed(1), idleTicks(0), phaseTicks(0), phaseStartMs(0),
+    : scenario(0), finished(false), seed(1), idleTicks(0), phaseTicks(0), phaseStartMs(0),
       startMs(0), progressCounter(0), lastProgressMs(0), lastHeartbeatMs(0), phaseTimeoutMs(60000),
       selectedNationSlot(-1), mainWindowHandle(0), newspaperAdvanced(false),
       activatedEventSequence("["), handledModals("["), unexpectedModals("["), faults("["),
@@ -77,7 +77,6 @@ void RuntimeRun::InitializeFromEnvironment() {
 
 void RuntimeRun::StartScenario(RuntimeScenario* value) {
   scenario = value;
-  step = 0;
   finished = false;
   idleTicks = 0;
   phaseTicks = 0;
@@ -108,8 +107,7 @@ void RuntimeRun::StartScenario(RuntimeScenario* value) {
   assertionFailures = "[";
 }
 
-void RuntimeRun::SetStep(RuntimeStep value, const char* phase, const char* action) {
-  step = value;
+void RuntimeRun::EnterPhase(const char* phase, const char* action) {
   lstrcpynA(phaseName, phase, sizeof(phaseName));
   phaseTicks = 0;
   phaseStartMs = GetTickCount();
@@ -119,7 +117,6 @@ void RuntimeRun::SetStep(RuntimeStep value, const char* phase, const char* actio
 
 void RuntimeRun::Finish() {
   finished = true;
-  step = 0;
   lstrcpyA(phaseName, "finished");
 }
 
@@ -167,10 +164,6 @@ void RuntimeRun::RecordAssertion(const char* assertionId, const char* failureJso
 
 RuntimeScenario* RuntimeRun::Scenario() const {
   return scenario;
-}
-
-RuntimeStep RuntimeRun::Step() const {
-  return step;
 }
 
 bool RuntimeRun::IsFinished() const {

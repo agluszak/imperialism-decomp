@@ -1,4 +1,5 @@
 #include "RuntimeScenario.h"
+#include "flows/RandomGameFlow.h"
 
 #include "game/app/TAnimator.h"
 #include "game/city_ui/TCountry.h"
@@ -77,7 +78,7 @@ struct RoundtripTarget {
   const char* expectedUnstable;
 };
 
-class SerializationRoundtripTestCase : public RuntimeScenario {
+class SerializationRoundtripTestCase : public RandomGameScenario {
 public:
   const char* Name() const override {
     return "serialization_roundtrip";

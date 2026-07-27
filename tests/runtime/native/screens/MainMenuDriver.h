@@ -5,7 +5,7 @@ class TView;
 class MainMenuDriver {
 public:
   explicit MainMenuDriver(TView* root);
-  bool StartRandomGame();
+  bool StartRandomGameSemantically();
 
 private:
   TView* root;

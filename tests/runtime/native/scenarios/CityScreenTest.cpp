@@ -1,4 +1,5 @@
 #include "RuntimeScenario.h"
+#include "flows/RandomGameFlow.h"
 #include "RuntimeUiDriver.h"
 #include "screens/StrategicMapDriver.h"
 
@@ -28,7 +29,7 @@
 
 namespace {
 
-class CityScreenTestCase : public RuntimeScenario {
+class CityScreenTestCase : public RandomGameScenario {
 public:
   CityScreenTestCase()
       : phase(kActivateCityScreen), activeBuildingSlot(kUniversityBuildingSlot),
@@ -57,7 +58,7 @@ public:
     RequestScenarioTick();
   }
 
-  void RunScenarioStep() override {
+  void TickScenario() override {
     if (phase == kActivateCityScreen) {
       ActivateCityScreen();
     } else if (phase == kWaitForCityScreen) {
@@ -124,7 +125,7 @@ private:
     phase = kWaitForCityScreen;
     EnterScenarioStep("waiting_for_city_screen", "activate_city_toolbar_control");
     StrategicMapDriver map(mainView);
-    if (!map.ActivateCity()) {
+    if (!map.ActivateCitySemantically()) {
       FailScenario("\"city toolbar control is missing or disabled\"");
       return;
     }
@@ -376,7 +377,7 @@ private:
       interactionRowTag = kControlTagClu0 + category;
       phase = kWaitForOrderIncrease;
       EnterScenarioStep("waiting_for_university_order_increase", "activate_university_plus_arrow");
-      if (!RuntimeUiDriver::ActivateControl(row, kControlTagPlus)) {
+      if (!RuntimeUiDriver::ActivateControlSemantically(row, kControlTagPlus)) {
         FailScenario("\"university plus arrow could not be activated\"");
         return false;
       }
@@ -517,7 +518,7 @@ private:
     phase = kWaitForOrderRestore;
     EnterScenarioStep("waiting_for_city_order_restore", "activate_city_order_decrease");
     if (interactionKind == kUniversityInteraction) {
-      if (!RuntimeUiDriver::ActivateControl(interactionRoot, controlTag)) {
+      if (!RuntimeUiDriver::ActivateControlSemantically(interactionRoot, controlTag)) {
         FailScenario("\"university minus arrow could not be activated\"");
         return;
       }
@@ -700,7 +701,7 @@ private:
     }
     phase = kWaitForMap;
     EnterScenarioStep("waiting_for_strategic_map_return", "activate_city_end_control");
-    if (!RuntimeUiDriver::ClickControl(mainView, kControlTagEnd)) {
+    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(mainView, kControlTagEnd)) {
       FailScenario("\"city back control is missing or cannot receive native input\"");
       return;
     }

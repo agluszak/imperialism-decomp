@@ -1,4 +1,5 @@
 #include "RuntimeScenario.h"
+#include "flows/RandomGameFlow.h"
 #include "RuntimeUiDriver.h"
 #include "screens/StrategicMapDriver.h"
 
@@ -21,7 +22,7 @@
 
 namespace {
 
-class TradeScreenTestCase : public RuntimeScenario {
+class TradeScreenTestCase : public RandomGameScenario {
 public:
   TradeScreenTestCase()
       : phase(kActivateTradeScreen), selectedRow(0), selectedSellRow(0), initialBidBitmap(0),
@@ -49,7 +50,7 @@ public:
     RequestScenarioTick();
   }
 
-  void RunScenarioStep() override {
+  void TickScenario() override {
     if (phase == kActivateTradeScreen) {
       ActivateTradeScreen();
     } else if (phase == kWaitForTradeScreen) {
@@ -107,7 +108,7 @@ private:
     phase = kWaitForTradeScreen;
     EnterScenarioStep("waiting_for_trade_screen", "activate_trade_toolbar_control");
     StrategicMapDriver map(mainView);
-    if (!map.ActivateTrade()) {
+    if (!map.ActivateTradeSemantically()) {
       FailScenario("\"trade toolbar control is missing or disabled\"");
       return;
     }
@@ -181,7 +182,7 @@ private:
     initialBidBitmap = bid->glyphBase84;
     phase = kVerifyBid;
     EnterScenarioStep("verifying_trade_bid", "click_first_trade_bid_control");
-    if (!RuntimeUiDriver::ClickView(bid)) {
+    if (!RuntimeUiDriver::ClickViewThroughNativeMessages(bid)) {
       FailScenario("\"Board of Trade bid control has no native host\"");
       return;
     }
@@ -254,7 +255,7 @@ private:
 
     phase = kVerifyOffer;
     EnterScenarioStep("verifying_trade_offer", "click_trade_offer_control");
-    if (!RuntimeUiDriver::ClickView(offer)) {
+    if (!RuntimeUiDriver::ClickViewThroughNativeMessages(offer)) {
       FailScenario("\"Board of Trade offer control has no native host\"");
       return;
     }
@@ -304,7 +305,7 @@ private:
 
     phase = kVerifyDecrease;
     EnterScenarioStep("decreasing_trade_sell_amount", "click_trade_sell_left_arrow");
-    if (!RuntimeUiDriver::ClickView(left)) {
+    if (!RuntimeUiDriver::ClickViewThroughNativeMessages(left)) {
       FailScenario("\"trade sell decrease control has no native host\"");
       return;
     }
@@ -333,7 +334,7 @@ private:
 
     phase = kVerifyIncrease;
     EnterScenarioStep("increasing_trade_sell_amount", "click_trade_sell_right_arrow");
-    if (!RuntimeUiDriver::ClickView(right)) {
+    if (!RuntimeUiDriver::ClickViewThroughNativeMessages(right)) {
       FailScenario("\"trade sell increase control has no native host\"");
       return;
     }
@@ -364,7 +365,7 @@ private:
     }
     phase = kWaitForMap;
     EnterScenarioStep("waiting_for_map_after_trade", "activate_trade_end_control");
-    if (!RuntimeUiDriver::ClickControl(mainView, kControlTagEnd)) {
+    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(mainView, kControlTagEnd)) {
       FailScenario("\"Board of Trade back control is missing or cannot receive native input\"");
       return;
     }

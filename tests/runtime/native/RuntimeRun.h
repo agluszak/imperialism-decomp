@@ -9,7 +9,6 @@
 #include <windows.h>
 
 class RuntimeScenario;
-typedef void (*RuntimeStep)();
 
 class RuntimeRun {
 public:
@@ -17,7 +16,7 @@ public:
 
   void InitializeFromEnvironment();
   void StartScenario(RuntimeScenario* scenario);
-  void SetStep(RuntimeStep step, const char* phase, const char* action);
+  void EnterPhase(const char* phase, const char* action);
   void Finish();
   void CountTick();
   void ResetHeartbeat();
@@ -27,7 +26,6 @@ public:
   void RecordAssertion(const char* assertionId, const char* failureJson, bool fatal);
 
   RuntimeScenario* Scenario() const;
-  RuntimeStep Step() const;
   bool IsFinished() const;
   const char* TestName() const;
   unsigned int Seed() const;
@@ -78,7 +76,6 @@ public:
 
 private:
   RuntimeScenario* scenario;
-  RuntimeStep step;
   bool finished;
   unsigned int seed;
   unsigned long idleTicks;

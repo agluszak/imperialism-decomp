@@ -1,9 +1,19 @@
 #pragma once
 
+#ifndef IMPERIALISM_RUNTIME_SCENARIO_H
+#define IMPERIALISM_RUNTIME_SCENARIO_H
+
 #include "RuntimeTestCase.h"
+#include "flows/RuntimeFlow.h"
 
 class CString;
 class RuntimeContext;
+class RuntimeRun;
+class MainMenuFlow;
+class RandomSetupFlow;
+class StrategicMapEntryFlow;
+class RandomGameFlow;
+class LoadGameFlow;
 class TView;
 
 // Shared protocol and navigation flow for native runtime tests. Concrete tests
@@ -11,6 +21,7 @@ class TView;
 // extend a central completion enum.
 class RuntimeScenario : public RuntimeTestCase {
 public:
+  RuntimeScenario();
   void Start(RuntimeContext& context) override;
   void Tick(RuntimeContext& context) override;
   void ObserveTurnEvent(RuntimeContext& context, int eventCode) override;
@@ -31,10 +42,12 @@ public:
   virtual void OnManagersReady();
   virtual void OnMapReadyWithoutCapitalSelection();
   virtual void OnCombinedMapReady();
-  virtual void RunScenarioStep();
+  virtual void TickScenario();
   virtual void ObserveScenarioUiTree(int eventCode, TView* root);
 
 protected:
+  virtual RuntimeFlow* NavigationFlow();
+  virtual void OnFlowCheckpoint(RuntimeFlowCheckpoint checkpoint);
   void Pass();
   void FailScenario(const char* failure);
   bool Require(const char* assertionId, bool condition, const char* failure);
@@ -43,7 +56,6 @@ protected:
   bool WaitForScenarioTick(const char* failure);
   void RequestScenarioTick();
   void EnterScenarioStep(const char* phaseName, const char* action);
-  void StartRandomGameFlow();
 
   TView* CurrentMainView() const;
   unsigned long ScenarioPhaseTicks() const;
@@ -59,4 +71,24 @@ protected:
   // Per-class serialization round-trip findings, emitted verbatim into the result file
   // under "serialization_roundtrip" (null when no scenario recorded any).
   void RecordSerializationRoundtripReport(const CString& reportJson);
+
+private:
+  enum DriverState { kWaitingForManagers, kRunningFlow, kRunningScenario };
+
+  void TickWaitingForManagers();
+  void Finish(const char* status, const char* failure);
+  void EnterFlowPhase(const char* phaseName, const char* action);
+  RuntimeRun& RunState() const;
+
+  RuntimeRun* run;
+  RuntimeFlow* activeFlow;
+  DriverState driverState;
+
+  friend class RandomGameFlow;
+  friend class MainMenuFlow;
+  friend class RandomSetupFlow;
+  friend class StrategicMapEntryFlow;
+  friend class LoadGameFlow;
 };
+
+#endif

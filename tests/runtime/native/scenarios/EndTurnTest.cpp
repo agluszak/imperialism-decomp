@@ -1,4 +1,5 @@
 #include "RuntimeScenario.h"
+#include "flows/RandomGameFlow.h"
 #include "screens/StrategicMapDriver.h"
 
 #include "game/core/global_data_tables.h"
@@ -9,7 +10,7 @@
 
 namespace {
 
-class EndTurnTestCase : public RuntimeScenario {
+class EndTurnTestCase : public RandomGameScenario {
 public:
   EndTurnTestCase() : phase(kActivateEndTurn), baselineEconomicTurn(0), leftDealBook(false) {}
 
@@ -32,7 +33,7 @@ public:
     RequestScenarioTick();
   }
 
-  void RunScenarioStep() override {
+  void TickScenario() override {
     if (phase == kActivateEndTurn) {
       ActivateEndTurn();
     } else {
@@ -54,7 +55,7 @@ private:
     leftDealBook = false;
     ResetNewspaperAdvance();
     StrategicMapDriver map(mainView);
-    if (!map.EndTurn()) {
+    if (!map.EndTurnThroughNativeMessages()) {
       FailScenario("\"end-turn control is missing\"");
       return;
     }

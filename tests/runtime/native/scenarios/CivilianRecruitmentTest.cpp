@@ -1,4 +1,5 @@
 #include "RuntimeScenario.h"
+#include "flows/RandomGameFlow.h"
 #include "RuntimeUiDriver.h"
 
 #include "decomp_types.h"
@@ -105,7 +106,7 @@ bool CaptureViewPixels(TView* view, DWORD** outPixels, int* outWidth, int* outHe
   return true;
 }
 
-class CivilianRecruitmentTestCase : public RuntimeScenario {
+class CivilianRecruitmentTestCase : public RandomGameScenario {
 public:
   CivilianRecruitmentTestCase()
       : spawnedCivilian(0), targetHillTile(-1), targetSeaTile(-1), postOrderTicks(0),
@@ -132,7 +133,7 @@ public:
     RequestScenarioTick();
   }
 
-  void RunScenarioStep() override {
+  void TickScenario() override {
     if (spawnedCivilian == 0) {
       RecruitCivilian();
       return;
@@ -485,7 +486,8 @@ private:
       FailScenario(failure);
       return;
     }
-    if (!RuntimeUiDriver::ClickViewPoint(mapDialog, hillPoint.x, hillPoint.y)) {
+    if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(mapDialog, hillPoint.x,
+                                                              hillPoint.y)) {
       SetGWorld(savedSurface, savedSurfaceFlags);
       FailScenario("\"strategic map click could not be routed through its native host\"");
       return;
