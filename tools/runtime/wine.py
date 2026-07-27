@@ -14,6 +14,7 @@ import subprocess
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BUILD_DIR = REPO_ROOT / "build-runtime-tests"
 PREFIX_TEMPLATE_SCHEMA = 2
+GAME_ASSET_STAMP_NAME = ".imperialism-assets.json"
 GAME_ASSET_TEMPLATE_SCHEMA = 1
 SETTINGS_KEY = "HKCU\\Software\\SSI\\Imperialism\\Settings"
 SEEDED_REGISTRY_VALUES = (
@@ -348,7 +349,7 @@ def ensure_game_asset_template() -> tuple[Path, str]:
     source = retail_game_dir()
     manifest_hash, rows = _game_asset_manifest(source)
     template = BUILD_DIR / f"game-assets-{manifest_hash[:16]}"
-    stamp = template / ".imperialism-assets.json"
+    stamp = template / GAME_ASSET_STAMP_NAME
     BUILD_DIR.mkdir(parents=True, exist_ok=True)
     with (BUILD_DIR / "game-assets.lock").open("a+b") as lock:
         fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
@@ -399,6 +400,32 @@ def ensure_game_asset_template() -> tuple[Path, str]:
         return template, manifest_hash
 
 
+def _link_asset_tree(template: Path, game_dir: Path) -> None:
+    """Mirror the immutable asset template into `game_dir` using symlinks.
+
+    Only Imperialism.exe and Save/ differ between attempts, so there is no reason to
+    duplicate the retail assets per run: they are ~237MB, and copying them per attempt
+    cost 27GB across a single session's runs (enough to fill the disk). Directories are
+    created for real so the game can still write new files anywhere it likes; every
+    asset file becomes a symlink into the read-only template.
+
+    This preserves the previous behaviour rather than loosening it. The old `cp -a`
+    copied the template's modes too, so per-run asset files were already 0444 and the
+    game could never write through them -- a symlink into a 0444 file denies writes the
+    same way, and denies them at the same place.
+    """
+    for source in template.rglob("*"):
+        relative = source.relative_to(template)
+        if relative.name == GAME_ASSET_STAMP_NAME:
+            continue
+        destination = game_dir / relative
+        if source.is_dir():
+            destination.mkdir(mode=0o755, parents=True, exist_ok=True)
+            continue
+        destination.parent.mkdir(mode=0o755, parents=True, exist_ok=True)
+        destination.symlink_to(source)
+
+
 def prepare_game_sandbox(
     run_dir: Path, executable: Path, fixture: Path | None = None
 ) -> tuple[Path, Path | None, str]:
@@ -408,12 +435,7 @@ def prepare_game_sandbox(
     if game_dir.exists():
         raise RuntimeError(f"attempt game sandbox already exists: {game_dir}")
     game_dir.mkdir(parents=True)
-    subprocess.run(
-        ["cp", "-a", "--reflink=auto", f"{template}/.", str(game_dir)],
-        check=True,
-        capture_output=True,
-        timeout=180,
-    )
+    _link_asset_tree(template, game_dir)
     game_dir.chmod(0o755)
     save_dir = game_dir / "Save"
     save_dir.mkdir(mode=0o755)
