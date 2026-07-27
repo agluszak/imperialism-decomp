@@ -12,8 +12,8 @@
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
   "git_branch": "agent/fix-transport-amount-labels",
-  "git_commit": "024115b768a475b0f9500451f6a54212524cbe89",
-  "git_commit_date": "2026-07-27T02:12:26+02:00",
+  "git_commit": "ab16baef3deba37bef19e1a17ee793c95023bb0f",
+  "git_commit_date": "2026-07-27T02:17:38+02:00",
   "global_coverage_pct": 25.370420870829925,
   "global_orig_only_count": 8210,
   "global_recomp_only_count": 8041,
@@ -63,7 +63,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 12,
   "template_canonical_paired_count": 19,
-  "timestamp_utc": "2026-07-27T00:17:02+00:00",
+  "timestamp_utc": "2026-07-27T00:17:59+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }
