@@ -5,6 +5,7 @@
 
 #include "game/map/TMapMgr.h"
 #include "game/gfx/quickdraw_regions.h"
+#include "game/ui_core/quickdraw_rendering.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/navy/TNavyMgr.h"
 #include "game/navy/TOcean.h"
@@ -92,6 +93,136 @@ void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
       terrain[neighborTiles[0]].GetTerrainKind() == kStrategicTerrainWater) {
     QDFrameRect(&edgeCornerTR);
   }
+}
+
+// Sibling of BuildHexNeighborHighlightPolygonForTile above: same neighbour geometry and the
+// same cityRecordIndex comparison, but emitted as a pen path (one origin + guide-line
+// segments) rather than per-edge rectangles. The neighbour tests are written out at each
+// vertex rather than factored into a helper, matching the original, which has them inlined.
+// FUNCTION: IMPERIALISM 0x005093e0
+void DrawHexNeighborBorderGuidePathForTile(short tileId, int compareValue, short tileScale) {
+  short neighborTiles[6];
+  TMapMgr::GetNeighborTileIDArray(tileId, neighborTiles,
+                                  g_pGlobalMapState->hexNeighborWrapHorizontally20);
+  int screenXY[2];
+  ComputeWrappedIsometricScreenOffsetFromTile(tileId, screenXY, 0x10, 0, 0);
+
+  int x0;
+  int y0;
+  int x1;
+  int x2;
+  int x3;
+  int x4;
+  int y1;
+  int y2;
+  int y3;
+  int y4;
+  int y5;
+  int yUp;
+  if (tileScale == 0x10) {
+    x0 = static_cast<short>(screenXY[0]);
+    y0 = static_cast<short>(screenXY[1]);
+    x1 = x0 + 4;
+    x2 = x0 + 8;
+    x3 = x0 + 0xc;
+    x4 = x0 + 0x10;
+    y1 = y0 + 4;
+    y2 = y0 + 8;
+    y3 = y0 + 0xc;
+    y4 = y0 + 0x10;
+    y5 = y0 + 0x14;
+    yUp = y0 - 4;
+  } else {
+    y0 = static_cast<short>(0x2d -
+                            static_cast<int>(static_cast<float>(static_cast<short>(screenXY[1])) *
+                                             g_HexHighlightScreenScale_00658640));
+    x0 = static_cast<short>(0x31 -
+                            static_cast<int>(static_cast<float>(static_cast<short>(screenXY[0])) *
+                                             g_HexHighlightScreenScale_00658640));
+    x1 = x0 + 1;
+    x2 = x0 + 2;
+    x3 = x0 + 4;
+    x4 = x0 + 5;
+    y1 = y0 + 1;
+    y2 = y0 + 2;
+    y3 = y0 + 4;
+    y4 = y0 + 5;
+    y5 = y0 + 7;
+    yUp = y0 - 2;
+  }
+
+  TTerrainStateRecordView* terrain = g_pGlobalMapState->terrainStateTable;
+
+  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(x2), static_cast<short>(y0));
+
+  if (neighborTiles[5] != -1 && neighborTiles[0] != -1 &&
+      terrain[neighborTiles[5]].cityRecordIndex == compareValue &&
+      terrain[neighborTiles[0]].cityRecordIndex != compareValue) {
+    DrawCenteredGuideLineOnMapDc(static_cast<short>(x2), static_cast<short>(yUp));
+  }
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(x3), static_cast<short>(y0));
+
+  if (neighborTiles[0] == -1 || neighborTiles[1] == -1 ||
+      terrain[neighborTiles[0]].cityRecordIndex == compareValue ||
+      terrain[neighborTiles[1]].cityRecordIndex == compareValue ||
+      terrain[neighborTiles[0]].cityRecordIndex != terrain[neighborTiles[1]].cityRecordIndex) {
+    DrawCenteredGuideLineOnMapDc(static_cast<short>(x4), static_cast<short>(y0));
+  }
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(x4), static_cast<short>(y1));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(x4), static_cast<short>(y2));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(x4), static_cast<short>(y3));
+
+  if (neighborTiles[1] == -1 || neighborTiles[2] == -1 ||
+      terrain[neighborTiles[1]].cityRecordIndex == compareValue ||
+      terrain[neighborTiles[2]].cityRecordIndex == compareValue ||
+      terrain[neighborTiles[1]].cityRecordIndex != terrain[neighborTiles[2]].cityRecordIndex) {
+    DrawCenteredGuideLineOnMapDc(static_cast<short>(x4), static_cast<short>(y4));
+  }
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(x3), static_cast<short>(y4));
+
+  // The bottom-centre pair is emitted in whichever order puts the in-region side first.
+  int pendingX = x2;
+  int pendingY = y4;
+  if (neighborTiles[2] != -1 && neighborTiles[3] != -1) {
+    if (terrain[neighborTiles[2]].cityRecordIndex == compareValue) {
+      if (terrain[neighborTiles[3]].cityRecordIndex != compareValue) {
+        DrawCenteredGuideLineOnMapDc(static_cast<short>(x2), static_cast<short>(y4));
+        pendingX = x2;
+        pendingY = y5;
+      }
+    } else if (terrain[neighborTiles[3]].cityRecordIndex == compareValue) {
+      DrawCenteredGuideLineOnMapDc(static_cast<short>(x2), static_cast<short>(y5));
+      pendingX = x2;
+      pendingY = y4;
+    }
+  }
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(pendingX), static_cast<short>(pendingY));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(x1), static_cast<short>(y4));
+
+  if (neighborTiles[3] == -1 || neighborTiles[4] == -1 ||
+      terrain[neighborTiles[3]].cityRecordIndex == compareValue ||
+      terrain[neighborTiles[4]].cityRecordIndex == compareValue ||
+      terrain[neighborTiles[3]].cityRecordIndex != terrain[neighborTiles[4]].cityRecordIndex) {
+    DrawCenteredGuideLineOnMapDc(static_cast<short>(x0), static_cast<short>(y4));
+  }
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(x0), static_cast<short>(y3));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(x0), static_cast<short>(y2));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(x0), static_cast<short>(y1));
+
+  if (neighborTiles[4] == -1 || neighborTiles[5] == -1 ||
+      terrain[neighborTiles[4]].cityRecordIndex == compareValue ||
+      terrain[neighborTiles[5]].cityRecordIndex == compareValue ||
+      terrain[neighborTiles[4]].cityRecordIndex != terrain[neighborTiles[5]].cityRecordIndex) {
+    DrawCenteredGuideLineOnMapDc(static_cast<short>(x0), static_cast<short>(y0));
+  }
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(x1), static_cast<short>(y0));
+
+  if (neighborTiles[5] != -1 && neighborTiles[0] != -1 &&
+      terrain[neighborTiles[5]].cityRecordIndex != compareValue &&
+      terrain[neighborTiles[0]].cityRecordIndex == compareValue) {
+    DrawCenteredGuideLineOnMapDc(static_cast<short>(x2), static_cast<short>(yUp));
+  }
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(x2), static_cast<short>(y0));
 }
 
 // FUNCTION: IMPERIALISM 0x00528c10
