@@ -16,6 +16,7 @@ from reccmp.types import EntityType
 
 from tools.reccmp.progress_stats import (
     build_progress_report,
+    clamp_stub_count_ratchet,
     parse_report_counts,
     parse_report_functions,
     report_cache_is_current,
@@ -194,6 +195,44 @@ class ProgressStatsTests(unittest.TestCase):
         self.assertFalse(
             report_cache_is_current(cache_path, "IMPERIALISM", inputs, outputs)
         )
+
+
+class StubCountRatchetTests(unittest.TestCase):
+    """stats-baseline-update must not re-arm the stub ratchet at a raised height.
+
+    The commit policy runs stats-baseline-update before every commit, so a rise that
+    rode along in the snapshot would disarm `just stub-count-gate` on exactly the
+    commit that caused it (imperialism-decomp-3s7y).
+    """
+
+    def test_rise_is_held_back_so_the_gate_still_fires(self) -> None:
+        entry = {"stub_count": 720, "exact_fun_count": 4350}
+        with patch.dict("os.environ", {}, clear=True):
+            notice = clamp_stub_count_ratchet(entry, {"stub_count": 355})
+        self.assertEqual(entry["stub_count"], 355)
+        self.assertIn("held at 355", notice or "")
+        self.assertIn("ALLOW_POLICY_BASELINE_UPDATE=1", notice or "")
+
+    def test_rise_is_recorded_with_explicit_approval(self) -> None:
+        entry = {"stub_count": 720}
+        with patch.dict("os.environ", {"ALLOW_POLICY_BASELINE_UPDATE": "1"}, clear=True):
+            notice = clamp_stub_count_ratchet(entry, {"stub_count": 355})
+        self.assertEqual(entry["stub_count"], 720)
+        self.assertIn("RAISED", notice or "")
+
+    def test_fall_ratchets_down_without_approval(self) -> None:
+        entry = {"stub_count": 300}
+        with patch.dict("os.environ", {}, clear=True):
+            self.assertIsNone(clamp_stub_count_ratchet(entry, {"stub_count": 355}))
+        self.assertEqual(entry["stub_count"], 300)
+
+    def test_equal_count_and_missing_baseline_are_untouched(self) -> None:
+        entry = {"stub_count": 355}
+        with patch.dict("os.environ", {}, clear=True):
+            self.assertIsNone(clamp_stub_count_ratchet(entry, {"stub_count": 355}))
+            self.assertIsNone(clamp_stub_count_ratchet(entry, None))
+            self.assertIsNone(clamp_stub_count_ratchet(entry, {}))
+        self.assertEqual(entry["stub_count"], 355)
 
 
 if __name__ == "__main__":
