@@ -321,11 +321,77 @@ class AgentCheckGeneratedIntegrityTests(unittest.TestCase):
         self.assertIn("generated-integrity", receipt["check"]["failures"])
         self.assertFalse(receipt["check"]["generated_integrity"]["ok"])
 
+    def test_edited_existing_body_enters_the_touched_set_with_a_reason(self):
+        """imperialism-decomp-3gn8: the marker line is unchanged, the body is not."""
+        source = self.work / "src" / "TBar.cpp"
+        source.write_text(
+            "// FUNCTION: IMPERIALISM 0x00500000\n"
+            "void TBar::A() {\n"
+            "  int x = 1;\n"
+            "}\n"
+        )
+        _git(self.work, "add", "-A")
+        _git(self.work, "commit", "-m", "add body")
+        source.write_text(
+            "// FUNCTION: IMPERIALISM 0x00500000\n"
+            "void TBar::A() {\n"
+            "  int x = 2;\n"
+            "}\n"
+        )
+        agent_task.cmd_check(Namespace(max_triage=1))
+        receipt = json.loads(agent_task.TASK_JSON.read_text())
+        affected = receipt["check"]["affected_functions"]
+        self.assertIn("0x00500000", affected)
+        self.assertIn("body_edited", affected["0x00500000"]["reasons"])
+
     def test_explicit_base_ref_is_honoured_like_precommit(self):
         os.environ["PRECOMMIT_BASE_REF"] = "main"
         agent_task.cmd_check(Namespace(max_triage=1))
         receipt = json.loads(agent_task.TASK_JSON.read_text())
         self.assertEqual(receipt["check"]["generated_integrity"]["base_ref"], "main")
+
+
+class HunkToMarkerMappingTests(unittest.TestCase):
+    """imperialism-decomp-3gn8: an edited existing body must enter the touched set."""
+
+    SOURCE = (
+        '#include "game/TFoo.h"\n'
+        "\n"
+        "// FUNCTION: IMPERIALISM 0x00500000\n"
+        "void TFoo::A() {\n"
+        "  int x = 1;\n"
+        "}\n"
+        "\n"
+        "// SYNTHETIC: IMPERIALISM 0x00500100\n"
+        "void TFoo::B() {\n"
+        "  int y = 2;\n"
+        "}\n"
+    )
+
+    def test_marker_lines_are_located_and_normalized(self):
+        self.assertEqual(
+            agent_task.marker_lines(self.SOURCE),
+            [(3, "0x00500000"), (8, "0x00500100")],
+        )
+
+    def test_hunk_headers_expand_to_new_file_line_numbers(self):
+        diff = "@@ -5,0 +5,2 @@\n@@ -10,1 +12,0 @@\n"
+        self.assertEqual(agent_task.changed_line_numbers(diff), {5, 6, 12})
+
+    def test_changed_body_line_maps_to_its_enclosing_marker(self):
+        self.assertEqual(
+            agent_task.addresses_for_changed_lines(self.SOURCE, {5}), {"0x00500000"}
+        )
+        self.assertEqual(
+            agent_task.addresses_for_changed_lines(self.SOURCE, {10}), {"0x00500100"}
+        )
+
+    def test_lines_before_the_first_marker_touch_no_address(self):
+        self.assertEqual(agent_task.addresses_for_changed_lines(self.SOURCE, {1}), set())
+
+    def test_no_markers_or_no_changes_is_empty(self):
+        self.assertEqual(agent_task.addresses_for_changed_lines("int main() {}\n", {1}), set())
+        self.assertEqual(agent_task.addresses_for_changed_lines(self.SOURCE, set()), set())
 
 
 if __name__ == "__main__":

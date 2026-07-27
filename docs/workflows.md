@@ -95,8 +95,10 @@ Verify + pre-commit (always):
 
 ```sh
 just agent-check              # diff-aware: format-check, build+regen, detect, gates+stats,
-                              # extract touched scores, triage mismatches, unit tests, then
-                              # the generated-integrity gate on the same base as precommit
+                              # extract scores for every touched address (added markers AND
+                              # edited existing bodies, mapped hunk->marker), triage
+                              # mismatches, unit tests, then the generated-integrity gate
+                              # on the same base as precommit
 just stats-baseline-update    # accepts the hash-verified report; commit the refreshed baseline
 just agent-finish             # machine-derived summary / PR body from the receipt
 ```
