@@ -24,7 +24,23 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RULES_YML = REPO_ROOT / "config" / "agent_rules.yml"
-TASK_JSON = REPO_ROOT / "build-msvc500" / "agent-task.json"
+# Receipts are per-branch since imperialism-decomp-j201; the flat file is the legacy
+# fallback so a checkout mid-migration still yields advice.
+TASKS_DIR = REPO_ROOT / "build-msvc500" / "agent-tasks"
+LEGACY_TASK_JSON = REPO_ROOT / "build-msvc500" / "agent-task.json"
+
+
+def _receipt_path() -> Path:
+    import re
+    import subprocess
+
+    branch = subprocess.run(
+        ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+        cwd=REPO_ROOT, capture_output=True, text=True, check=False,
+    ).stdout.strip()
+    task_id = re.sub(r"[^A-Za-z0-9._-]+", "-", branch).strip("-") or "detached"
+    per_branch = TASKS_DIR / task_id / "receipt.json"
+    return per_branch if per_branch.is_file() else LEGACY_TASK_JSON
 
 MAX_RULES = 10
 
@@ -104,8 +120,9 @@ def tags_for_address(addr: str) -> set[str]:
     tags = {"task_start", "callee_to_declare"}
     import json
     text = ""
-    if TASK_JSON.is_file():
-        task = json.loads(TASK_JSON.read_text(encoding="utf-8"))
+    receipt = _receipt_path()
+    if receipt.is_file():
+        task = json.loads(receipt.read_text(encoding="utf-8"))
         entry = task.get("targets", {}).get(addr) or task.get("targets", {}).get(
             f"0x{int(addr, 16):08x}")
         if entry:

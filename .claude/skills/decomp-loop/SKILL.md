@@ -53,7 +53,8 @@ Two config-file readers replace the by-hand grep-across-CSVs dance:
    **`ghidra-portprep`** (owner, callers, thunk-resolved callees + their owners,
    virtual slots, globals, jump tables, signature hints, decompile), the initial
    compare, and `library-identify` for library-shaped addresses, writing everything
-   to `build-msvc500/agent-task.json`. Do NOT assemble this investigation by hand,
+   to `build-msvc500/agent-tasks/<branch>/receipt.json` (per-branch, with full
+   command logs beside it). Do NOT assemble this investigation by hand,
    and do NOT skip it: an agent that hasn't seen the portprep dossier does not know
    the function's owner, convention, or dependencies. (`just ghidra portprep 0xADDR`
    directly is fine for extra addresses mid-task.)
