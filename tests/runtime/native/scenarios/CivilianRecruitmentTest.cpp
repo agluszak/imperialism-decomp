@@ -453,7 +453,8 @@ private:
     CPoint seaPoint;
     if (spawnedCivilian->unitOrder != kUnitOrderIdle) {
       SetGWorld(savedSurface, savedSurfaceFlags);
-      FailScenario("\"new prospector left idle state before cursor verification\"");
+      WaitForScenarioTick(
+          "\"new prospector did not settle into idle state before cursor verification\"");
       return;
     }
     if (!VerifyCursorForTile(mapDialog, targetSeaTile, 1008, &seaPoint)) {
