@@ -64,7 +64,7 @@ match (not name similarity) proves two recoveries are the same game class. Evide
 ~86%) shared `GetRuntimeClass` body 0x5c2dd0 — one class recovered twice; the old model's
 "unmodeled pad regions" decomposed exactly into the other's inherited fields. Fix = merge:
 keep the better-evidenced class, move fields/getters, delete the duplicate file, rename
-call sites, `just regen-stubs`, and rename the scalar-dtor's curated backtick row to
+call sites, `just build`, and rename the scalar-dtor's curated backtick row to
 match. Note `config/rtti_class_oracle.csv` descriptor addresses are the `CRuntimeClass`
 struct (`class<X>`), **not** the vtable — verify a bead's "vtable at 0xNNNN" claim via
 the ctor listing before trusting it. TU-wide ripple on merge is accepted noise (§16/§47).

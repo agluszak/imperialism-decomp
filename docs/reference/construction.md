@@ -336,9 +336,9 @@ X* __fastcall DestructXAndMaybeFree(X* self, int unusedEdx, unsigned char freeSe
 
 Required — model the class with real inheritance from a polymorphic base, make the
 ordinary destructor IMPLICIT, and claim the scalar-deleting address with a `SYNTHETIC`
-marker plus an exact backtick name in `config/symbols.csv` so reccmp pairs it:
+marker plus an exact backtick name in `config/original_entities.csv` so reccmp pairs it:
 
-1. `config/symbols.csv`: set the scalar-deleting address's name to
+1. `config/original_entities.csv`: set the scalar-deleting address's name to
    `` Class::`scalar deleting destructor' `` (backtick + trailing apostrophe). This is the
    ONLY way it pairs — a compiler-generated body has no source line for marker matching.
 2. Source: delete the hand-written body/bridge; replace with
@@ -347,7 +347,10 @@ marker plus an exact backtick name in `config/symbols.csv` so reccmp pairs it:
    the base's virtual destructor. A hand-written empty `~Class(){}` COMDAT-folds with
    sibling empty dtors and triggers reccmp "Debug data out of sync", collaterally dropping
    the adjacent ctor.
-4. `just sync-ownership` → `just regen-stubs` → `just build` → `just compare`.
+4. `just build` → `just compare`. `just build` regenerates the build inputs (source
+   index + stubs) from the current markers on its own (Hard Rule 5), so there is no
+   separate ownership or stub-regeneration step to run first. `just synthetic-gate`
+   checks that the `SYNTHETIC` comment name matches the inventory row exactly.
 
 Canonical example: `src/game/TSortedByRelationshipList.cpp` (+ its header). This only
 works once the class is genuinely polymorphic (its base has a virtual destructor); if it

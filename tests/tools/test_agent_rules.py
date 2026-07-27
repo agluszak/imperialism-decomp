@@ -114,3 +114,34 @@ class OtherValidationsTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ToolTargetExistenceTest(unittest.TestCase):
+    """bd imperialism-decomp-g7z6: `just advice` was handing agents a deleted target.
+
+    Being `just`-shaped is not the same as being real. GEN-NOHAND-018 recommended
+    `just regen-stubs` long after that recipe was folded into `just build`, so an agent
+    following the rule got an error instead of the workflow it teaches.
+    """
+
+    def test_dead_target_is_rejected(self):
+        rules = [{"id": "AAA-B-001", "status": "active", "tools": ["just no-such-target-xyz"]}]
+        failures = _lint(rules)
+        self.assertTrue(
+            any("does not exist" in failure for failure in failures),
+            f"expected a dead-target failure, got {failures}",
+        )
+
+    def test_live_target_passes(self):
+        self.assertEqual(_lint([{"id": "AAA-B-001", "status": "active", "tools": ["just build"]}]), [])
+
+    def test_target_with_arguments_is_checked_on_the_recipe_name_only(self):
+        # Arguments are the rule author's business; only the recipe name is checkable.
+        rules = [{"id": "AAA-B-001", "status": "active", "tools": ["just compare 0x49ace0"]}]
+        self.assertEqual(_lint(rules), [])
+
+    def test_non_just_tool_is_still_rejected_without_a_target_lookup(self):
+        rules = [{"id": "AAA-B-001", "status": "active", "tools": ["python -m tools.x"]}]
+        failures = _lint(rules)
+        self.assertTrue(any("is not a `just` command" in failure for failure in failures))
+        self.assertFalse(any("does not exist" in failure for failure in failures))

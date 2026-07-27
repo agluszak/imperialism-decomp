@@ -209,9 +209,8 @@ the same string if no better display name exists.
 5. Re-run:
 
 ```text
-just apply-msvc500-library-region --apply
-just sync-ownership
-just regen-stubs
+just library-identify
+just build
 just build
 just compare 0x4885d0
 just stats

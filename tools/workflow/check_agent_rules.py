@@ -7,7 +7,7 @@ Rejects:
   - superseded rules without a `superseded_by` pointing at an existing ACTIVE rule;
   - a rule both requiring and forbidding the same action token;
   - `tools:` entries that are not `just ...` commands (raw module runs re-teach the
-    wrong habit — Hard Rule 2);
+    wrong habit — Hard Rule 2), or that name a `just` target which does not exist;
   - trigger tags that no other rule shares AND the advice engine cannot derive
     (unknown tags silently never fire).
 
@@ -17,6 +17,7 @@ Also cross-checks that every `skill:` reference names an existing skill director
 from __future__ import annotations
 
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -28,6 +29,34 @@ SKILLS_DIR = REPO_ROOT / ".claude" / "skills"
 ADVICE_PY = REPO_ROOT / "tools" / "workflow" / "advice.py"
 
 ID_RE = re.compile(r"^[A-Z]+-[A-Z0-9]+-(\d{3})$")
+
+
+def just_targets() -> set[str] | None:
+    """Every recipe name `just` knows about, or None if `just` cannot be run.
+
+    Checking that a tool is `just`-shaped is not the same as checking it is real. Nine
+    targets named in the rules and docs had been deleted or renamed without their callers
+    following -- `just advice` was handing agents `just regen-stubs`, which has not existed
+    for some time, and an agent that runs it gets an error instead of the workflow the rule
+    is trying to teach (bd imperialism-decomp-g7z6).
+
+    Returns None rather than failing when `just` is unavailable, so the rest of the lint
+    still runs in an environment without it.
+    """
+    try:
+        proc = subprocess.run(
+            ["just", "--summary"],
+            cwd=REPO_ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if proc.returncode != 0:
+        return None
+    return set(proc.stdout.split())
+
 
 
 def derivable_tags() -> set[str]:
@@ -51,6 +80,7 @@ def lint_rules(
     superseded/superseded_by path that the real KB has never exercised — is unit
     testable. `main()` supplies `known_skills`/`known_tags` from the repo.
     """
+    known_targets = just_targets()
     failures: list[str] = []
 
     seen: dict[str, int] = {}
@@ -92,6 +122,21 @@ def lint_rules(
             if not str(tool).startswith("just "):
                 failures.append(f"{rid}: tool {tool!r} is not a `just` command "
                                 "(Hard Rule 2: tools teach just targets)")
+                continue
+            if known_targets is None:
+                continue
+            # `just foo --bar 0xADDR` -> `foo`. Only the recipe name is checkable here;
+            # arguments are the rule author's business.
+            words = str(tool).split()
+            if len(words) < 2:
+                failures.append(f"{rid}: tool {tool!r} names no `just` target")
+                continue
+            target = words[1]
+            if target not in known_targets:
+                failures.append(
+                    f"{rid}: tool {tool!r} names `just {target}`, which does not exist "
+                    "(a dead target hands agents a command that only errors)"
+                )
 
         skill = rule.get("skill")
         if skill and skill not in known_skills:
