@@ -4301,9 +4301,9 @@ address|name|symbol|size|type|prototype|provenance
 552250|TAdmiral::AssignToShip||135|function|void TAdmiral::AssignToShip(TShip* primaryOrderNode)|
 552310|TAdmiral::ReassignToZone||232|function|void TAdmiral::ReassignToZone(TZone* zone)|
 552450|TAdmiral::NameThyself||81|function|void TAdmiral::NameThyself()|macos-name-oracle:NameThyself()
-5524d0|IltTarget_005524d0||46|function|undefined IltTarget_005524d0()|
+5524d0|TMapOrderChildLinkNode::InitAndLinkBetween||46|function|void __thiscall TMapOrderChildLinkNode::InitAndLinkBetween(TObject * child, TMapOrderChildLinkNode * prevNode, TMapOrderChildLinkNode * nextNode)|curated
 552510|TMapOrderChildLinkNode::FindNodeMatching||26|function|TMapOrderChildLinkNode* TMapOrderChildLinkNode::FindNodeMatching(TObject* child_node)|
-552540|IltTarget_00552540||60|function|undefined IltTarget_00552540()|
+552540|TMapOrderChildLinkNode::RelinkBetween||60|function|void __thiscall TMapOrderChildLinkNode::RelinkBetween(TMapOrderChildLinkNode * prevNode, TMapOrderChildLinkNode * nextNode)|curated
 552590|TMapOrderChildLinkNode::DeleteMapOrderChildLinkAndReturnNext||40|function|TMapOrderChildLinkNode* TMapOrderChildLinkNode::DeleteMapOrderChildLinkAndReturnNext()|
 5525d0|TMapOrderChildLinkNode::RemoveLinkedOrderNodeByValueRecursive||83|function|TMapOrderChildLinkNode* TMapOrderChildLinkNode::RemoveLinkedOrderNodeByValueRecursive(TObject* child_node)|
 552650|TMapOrderChildLinkNode::CreateLinkedOrderNode||107|function|TMapOrderChildLinkNode* TMapOrderChildLinkNode::CreateLinkedOrderNode(TObject* child_node)|

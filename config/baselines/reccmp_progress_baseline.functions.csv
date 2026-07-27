@@ -1610,7 +1610,7 @@ address|matching|name
 0x4a2390|0.8355555555555556|TArmyMgr::ResolveNextMove
 0x4a2500|0.984375|TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits
 0x4a2610|0.4068767908309456|BuildArmyActionLabelFromLocalizationAndCounts
-0x4a2900|0.6073926073926074|BuildArmyContextActionRecordsAndDispatchLabel
+0x4a2900|0.6053946053946054|BuildArmyContextActionRecordsAndDispatchLabel
 0x4a3200|0.7086614173228346|TArmyMgr::TryCreateTacticalBattleViewForTileArmies
 0x4a35e0|0.6006825938566553|TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion
 0x4a37b0|1.0|TArmyMgr::RelocateStackUnitsToStackTile
@@ -2534,7 +2534,7 @@ address|matching|name
 0x4dd740|1.0|TGreatPower::GetDiplomacyExternalStateByTarget
 0x4dd770|1.0|TGreatPower::SetCityStockCounterAndRefresh
 0x4dd7b0|1.0|TGreatPower::AddToCityStockCounterAndRefresh
-0x4dd7f0|0.7228915662650602|TGreatPower::ComputeProductionMetricForOrderKind
+0x4dd7f0|0.7108433734939759|TGreatPower::ComputeProductionMetricForOrderKind
 0x4dda20|1.0|TGreatPower::DecrementDiplomacyCounterA2ByValue
 0x4dda40|1.0|TGreatPower::DecrementDiplomacyCounterA2Slot66
 0x4dda60|1.0|TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot
@@ -3572,7 +3572,7 @@ address|matching|name
 0x5274d0|0.3088235294117647|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.45871559633027525|TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords
 0x527730|0.29577464788732394|TMapMaker::PlaceTerrainFeatureQuotas
-0x527d00|0.4268774703557312|TMapMaker::CreateRivers
+0x527d00|0.43478260869565216|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::ForwardParam
@@ -4176,7 +4176,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.45331616226658084|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.4547504025764895|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549260|0.25|IltTarget_00549260
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
@@ -4346,9 +4346,9 @@ address|matching|name
 0x552250|1.0|TAdmiral::AssignToShip
 0x552310|0.7039106145251397|TAdmiral::ReassignToZone
 0x552450|0.1728395061728395|TAdmiral::NameThyself
-0x5524d0|0.0|IltTarget_005524d0
+0x5524d0|1.0|TMapOrderChildLinkNode::InitAndLinkBetween
 0x552510|0.6153846153846154|TMapOrderChildLinkNode::FindNodeMatching
-0x552540|0.0|IltTarget_00552540
+0x552540|1.0|TMapOrderChildLinkNode::RelinkBetween
 0x552590|1.0|TMapOrderChildLinkNode::DeleteMapOrderChildLinkAndReturnNext
 0x5525d0|1.0|TMapOrderChildLinkNode::RemoveLinkedOrderNodeByValueRecursive
 0x552650|1.0|TMapOrderChildLinkNode::CreateLinkedOrderNode
@@ -4373,7 +4373,7 @@ address|matching|name
 0x553840|0.6697247706422018|TTaskForce::OrderSendInTheMarines
 0x5539c0|1.0|TTaskForce::MaxOut
 0x553a50|1.0|TTaskForce::DropShips
-0x553b10|0.4827586206896552|TTaskForce::IsEmpty
+0x553b10|0.41379310344827586|TTaskForce::IsEmpty
 0x553b50|0.4727272727272727|TTaskForce::NoSelection
 0x553bc0|0.6536585365853659|TTaskForce::Add
 0x553e30|1.0|TTaskForce::ElectFlagship
@@ -4401,7 +4401,7 @@ address|matching|name
 0x555090|0.4647887323943662|TTaskForce::RemoveStragglers
 0x5551a0|0.36363636363636365|IltTarget_005551a0
 0x5551d0|0.37104072398190047|TTaskForce::GetAuthority
-0x555420|0.5531914893617021|TTaskForce::Encounter
+0x555420|0.5638297872340425|TTaskForce::Encounter
 0x555720|0.248|TTaskForce::TryToSpot
 0x555920|0.39628482972136225|TTaskForce::ResolveEncounterWith
 0x555c20|0.5945945945945946|TTaskForce::AttemptToEvade
@@ -4460,7 +4460,7 @@ address|matching|name
 0x55a5e0|0.19047619047619047|IltTarget_0055a5e0
 0x55a630|0.2857142857142857|IltTarget_0055a630
 0x55a690|0.03278688524590164|IltTarget_0055a690
-0x55a780|0.33935018050541516|TNavyMgr::ResolveStrategicBattle
+0x55a780|0.34975961538461536|TNavyMgr::ResolveStrategicBattle
 0x55b640|0.25|`dynamic initializer for 'g_scaledShortConst_6A3F60''
 0x55b670|1.0|TNewsMgr::CreateObject
 0x55b6a0|1.0|TNewsMgr::`scalar deleting destructor'
@@ -4553,7 +4553,7 @@ address|matching|name
 0x560e70|0.4583333333333333|TZone::SelectBestPrimaryNeighborForNationDiplomacyMask
 0x560f80|1.0|TZone::PropagateMapActionContextDistanceLevelsRecursive
 0x5610b0|0.10223642172523961|TZone::GetCachedMapActionContextDistanceOrRecompute
-0x561380|0.7297297297297297|TZone::CountDiplomaticallyRelatedNationsInKeyMask
+0x561380|0.7567567567567568|TZone::CountDiplomaticallyRelatedNationsInKeyMask
 0x561400|0.6666666666666666|TZone::BuildNationBitmaskForActiveType3Or4OrdersIncludingNation
 0x561490|0.7058823529411765|TZone::BuildNationBitmaskForActiveType3Or4Orders
 0x561510|0.5970149253731343|TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask
@@ -5825,7 +5825,7 @@ address|matching|name
 0x5a5520|1.0|TNavyBattle::GetRuntimeClass
 0x5a5540|0.06451612903225806|IltTarget_005a5540
 0x5a55c0|1.0|TNavyBattle::DeployTacticalUnitToTile
-0x5a5730|0.6686046511627907|TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
+0x5a5730|0.6744186046511628|TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
 0x5a59a0|1.0|ConvertHexTileIndexToRowAndDoubleColumn
 0x5a59f0|1.0|TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory
 0x5a5b70|1.0|TNavyBattle::FinalizeTacticalBattleOutcome
@@ -7438,7 +7438,7 @@ address|matching|name
 0x608ba8|0.9441964285714286|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|0.9787234042553191|CWnd::OnNotify
+0x6091d9|1.0|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent

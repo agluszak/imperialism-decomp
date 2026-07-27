@@ -13,6 +13,21 @@ void TMapOrderChildLinkNode::SetChainActiveFlag(unsigned char flag) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005524d0
+void TMapOrderChildLinkNode::InitAndLinkBetween(TObject* child, TMapOrderChildLinkNode* prevNode,
+                                                TMapOrderChildLinkNode* nextNode) {
+  payload = child;
+  next = nextNode;
+  prev = prevNode;
+  active = 1;
+  if (nextNode != nullptr) {
+    nextNode->prev = this;
+  }
+  if (prev != nullptr) {
+    prev->next = this;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00552510
 TMapOrderChildLinkNode* TMapOrderChildLinkNode::FindNodeMatching(TObject* child_node) {
   if (this == 0) {
@@ -26,6 +41,25 @@ TMapOrderChildLinkNode* TMapOrderChildLinkNode::FindNodeMatching(TObject* child_
     }
   }
   return node;
+}
+
+// FUNCTION: IMPERIALISM 0x00552540
+void TMapOrderChildLinkNode::RelinkBetween(TMapOrderChildLinkNode* prevNode,
+                                           TMapOrderChildLinkNode* nextNode) {
+  if (prev != nullptr) {
+    prev->next = next;
+  }
+  if (next != nullptr) {
+    next->prev = prev;
+  }
+  prev = prevNode;
+  next = nextNode;
+  if (prevNode != nullptr) {
+    prevNode->next = this;
+  }
+  if (next != nullptr) {
+    next->prev = this;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00552590
