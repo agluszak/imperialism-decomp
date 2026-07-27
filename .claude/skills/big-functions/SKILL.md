@@ -297,3 +297,12 @@ The fix is both levers together: define the helper in the header, and give the b
 a scoped `#pragma inline_depth(0)`. Check the helper's own address is still paired
 afterwards; a vanished COMDAT shows up as `unpaired now (were paired)` in `just stats`,
 not as a compile error.
+
+**A declaration alone is not codegen-free.** Adding only
+`char AreTileIndicesHexAdjacent(short, short);` to `include/game/map/TMapMgr.h` — no body, no
+caller — moved twelve unrelated functions, two of them out of an exact match, exactly as
+adding the body to `TMapMgr.cpp` did. Isolating the body in its own TU does not help if the
+declaration still lands in a widely-included header. When a new free function has no caller
+in our source yet, declare it in its own TU and leave the shared header alone. Measure the
+header edit separately from the body edit before blaming TU placement: they are different
+levers and the diff-vs-baseline looks identical either way.
