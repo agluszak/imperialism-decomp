@@ -533,7 +533,8 @@ void TGreatPower::ReadFrom(TStream* stream) {
   // reaches CPtrList::FindIndex(-1) and faults. The original also guards on the city
   // existing (0x4d9893) before selecting into it.
   if (entryCount > 0 && this->city != nullptr) {
-    this->city->SetSelectedTownMarker(this->townMarkerList->GetEntryByOrdinal(1));
+    this->city->SetSelectedTownMarker(
+        static_cast<TTown*>(this->townMarkerList->GetEntryByOrdinal(1)));
   }
 
   if (this->trackedObjectList->GetCount() != 0) {

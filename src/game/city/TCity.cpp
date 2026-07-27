@@ -394,7 +394,7 @@ void TCity::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b3b20
-void TCity::SetSelectedTownMarker(void* townMarker) {
+void TCity::SetSelectedTownMarker(TTown* townMarker) {
   this->homeTownMarkerB0 = townMarker;
 }
 
