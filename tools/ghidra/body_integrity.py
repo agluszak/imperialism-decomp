@@ -12,7 +12,11 @@ This audit looks at the body as a whole and reports:
 
   body_hole                    the body is split into several ranges: either bytes were
                                carved out of the middle and never returned, or the body
-                               claims two far-apart regions
+                               claims two far-apart regions. A hole that holds only
+                               alignment padding, or an in-body jump table (data the
+                               body's own instructions reference), is NOT a violation:
+                               Ghidra is right to keep data out of a body, and memmove
+                               alone has seven such "holes"
   label_in_hole                a label sits exactly at the start of a hole -- the
                                demote-to-label signature (bd 6q2)
   fallthrough_to_unowned       the body ends on a non-terminator and the next byte is
@@ -72,6 +76,9 @@ class FunctionView:
     inner_entries: tuple[int, ...] = ()
     # Label addresses inside this function's span (entry .. end of last range).
     labels: tuple[int, ...] = ()
+    # Holes verified benign by the collector: only padding and/or data the body's own
+    # instructions reference (an inline switch table). Skipped by analyze().
+    benign_holes: tuple[tuple[int, int], ...] = ()
     curated_size: int | None = None
 
 
@@ -107,6 +114,23 @@ def body_holes(ranges: tuple[tuple[int, int], ...]) -> list[tuple[int, int]]:
     ]
 
 
+def hole_is_benign(unit_kinds: list[str], data_referenced_from_body: bool) -> bool:
+    """Decide one hole from its code units: 'padding' | 'data' | 'code' each.
+
+    Real code in a hole is always a violation -- that is the punctured-body signature.
+    Padding alone (alignment nop / int3 / zero fill) is benign. Data is benign only when
+    the body's own instructions reference it: that is an inline jump table, which Ghidra
+    deliberately keeps out of the body. Unreferenced data stays a violation -- data that
+    nothing points at is exactly what a stale definition masking real code looks like
+    (the 0x4c49f0 case, 23 bytes of code hidden under a DATA unit).
+    """
+    if not unit_kinds or any(kind == "code" for kind in unit_kinds):
+        return False
+    if any(kind == "data" for kind in unit_kinds):
+        return data_referenced_from_body
+    return True
+
+
 def body_size(ranges: tuple[tuple[int, int], ...]) -> int:
     return sum(hi - lo + 1 for lo, hi in ranges)
 
@@ -119,6 +143,9 @@ def analyze(function: FunctionView) -> list[Violation]:
 
     holes = body_holes(function.ranges)
     for lo, hi in holes:
+        if (lo, hi) in function.benign_holes:
+            # Padding or an in-body jump table; a label here (switchdataD_...) is normal.
+            continue
         out.append(
             Violation(
                 "body_hole",
@@ -272,6 +299,116 @@ def collect(program) -> list[FunctionView]:
     return _attach_hole_labels(program, views)
 
 
+# x86 alignment filler the compiler emits between basic blocks. Byte VALUES are not
+# enough: MSVC pads with multi-byte semantic no-ops (`2E 8B C0` = mov eax,eax with a CS
+# prefix, `8D 49 00` = lea ecx,[ecx+0]), which look like "code" one byte at a time.
+FILLER_PREFIXES = {0x26, 0x2E, 0x36, 0x3E, 0x64, 0x65, 0x66, 0x67}
+MOV_SAME_REG_MODRM = {0xC0, 0xC9, 0xD2, 0xDB, 0xE4, 0xED, 0xF6, 0xFF}
+
+
+def is_filler_bytes(raw: bytes) -> bool:
+    """True when `raw` is entirely x86 alignment filler.
+
+    Conservative by construction: anything the matcher does not recognise counts as
+    code, which keeps the violation. Recognised forms: nop / int3 / zero fill, optional
+    segment or size prefixes, `mov reg,reg` (same register), and zero-displacement
+    `lea reg,[reg]` in its disp8, disp32 and ESP/SIB encodings.
+    """
+    i = 0
+    n = len(raw)
+    if n == 0:
+        return True
+    while i < n:
+        b = raw[i]
+        if b in (0x90, 0xCC, 0x00):
+            i += 1
+            continue
+        if b in FILLER_PREFIXES and i + 1 < n:
+            i += 1
+            continue
+        if b == 0x8B and i + 1 < n and raw[i + 1] in MOV_SAME_REG_MODRM:
+            i += 2
+            continue
+        if b == 0x8D and i + 1 < n:
+            modrm = raw[i + 1]
+            mod, reg, rm = modrm >> 6, (modrm >> 3) & 7, modrm & 7
+            if mod == 1 and rm != 4 and reg == rm and i + 2 < n and raw[i + 2] == 0:
+                i += 3
+                continue
+            if (mod == 1 and rm == 4 and reg == 4 and i + 3 < n
+                    and raw[i + 2] == 0x24 and raw[i + 3] == 0):
+                i += 4
+                continue
+            if (mod == 2 and rm != 4 and reg == rm and i + 6 <= n
+                    and all(raw[j] == 0 for j in range(i + 2, i + 6))):
+                i += 6
+                continue
+            if (mod == 2 and rm == 4 and reg == 4 and i + 7 <= n
+                    and raw[i + 2] == 0x24
+                    and all(raw[j] == 0 for j in range(i + 3, i + 7))):
+                i += 7
+                continue
+        return False
+    return True
+
+
+def _hole_unit_kinds(program, space, lo: int, hi: int) -> list[str]:
+    """'padding' | 'data' | 'code' per segment of the hole.
+
+    Defined data stays its own segment; everything between data units (instructions and
+    undefined bytes alike) is gathered into contiguous byte runs and judged as a whole
+    with is_filler_bytes -- multi-byte filler spans several 1-byte undefined units, so
+    unit-at-a-time classification cannot see it.
+    """
+    listing = program.getListing()
+    from ghidra.program.model.listing import Data
+
+    kinds: list[str] = []
+    pending = bytearray()
+
+    def flush() -> None:
+        if pending:
+            kinds.append("padding" if is_filler_bytes(bytes(pending)) else "code")
+            pending.clear()
+
+    address = space.getAddress(lo)
+    end = space.getAddress(hi)
+    while address is not None and address.compareTo(end) <= 0:
+        unit = listing.getCodeUnitAt(address) or listing.getCodeUnitContaining(address)
+        if unit is None:
+            flush()
+            kinds.append("code")  # unreadable: never benign
+            break
+        if isinstance(unit, Data) and unit.isDefined():
+            flush()
+            kinds.append("data")
+        else:
+            try:
+                pending.extend(value & 0xFF for value in unit.getBytes())
+            except Exception:
+                flush()
+                kinds.append("code")
+                break
+        address = unit.getMaxAddress().next()
+    flush()
+    return kinds
+
+
+def _hole_data_referenced_from_body(program, space, ranges, lo: int, hi: int) -> bool:
+    """Does any instruction inside the body reference data inside this hole?"""
+    listing = program.getListing()
+    reference_manager = program.getReferenceManager()
+    for data in listing.getDefinedData(space.getAddress(lo), True):
+        offset = data.getAddress().getOffset()
+        if offset > hi:
+            break
+        for reference in reference_manager.getReferencesTo(data.getAddress()):
+            from_offset = reference.getFromAddress().getOffset()
+            if any(range_lo <= from_offset <= range_hi for range_lo, range_hi in ranges):
+                return True
+    return False
+
+
 def _attach_hole_labels(program, views: list[FunctionView]) -> list[FunctionView]:
     """Second pass: only hole starts need a label lookup, so ask about those addresses."""
     space = program.getAddressFactory().getDefaultAddressSpace()
@@ -294,6 +431,14 @@ def _attach_hole_labels(program, views: list[FunctionView]) -> list[FunctionView
             if symbols.getPrimarySymbol(space.getAddress(lo)) is not None
             and fm.getFunctionAt(space.getAddress(lo)) is None
         )
+        benign = tuple(
+            (lo, hi)
+            for lo, hi in holes
+            if hole_is_benign(
+                _hole_unit_kinds(program, space, lo, hi),
+                _hole_data_referenced_from_body(program, space, view.ranges, lo, hi),
+            )
+        )
         out.append(
             FunctionView(
                 entry=view.entry,
@@ -304,6 +449,7 @@ def _attach_hole_labels(program, views: list[FunctionView]) -> list[FunctionView
                 boundary_owner=view.boundary_owner,
                 inner_entries=view.inner_entries,
                 labels=labelled,
+                benign_holes=benign,
                 curated_size=view.curated_size,
             )
         )

@@ -13,6 +13,8 @@ import unittest
 
 from tools.ghidra.body_integrity import (
     ALL_KINDS,
+    hole_is_benign,
+    is_filler_bytes,
     new_violations,
     FunctionView,
     Report,
@@ -238,6 +240,80 @@ class BaselineRatchetTests(unittest.TestCase):
             last_mnemonic="RET", curated_size=999,
         )
         self.assertEqual(new_violations(audit([view]), set()), [])
+
+
+class FillerByteTests(unittest.TestCase):
+    """MSVC pads with multi-byte semantic no-ops, not just 0x90."""
+
+    def test_recognised_filler_forms(self) -> None:
+        for label, raw in (
+            ("nop run", bytes([0x90, 0x90, 0x90])),
+            ("int3 fill", bytes([0xCC, 0xCC])),
+            ("zero fill", bytes([0x00, 0x00, 0x00])),
+            ("mov eax,eax + CS prefix (memmove's 3-byte filler)", bytes([0x2E, 0x8B, 0xC0])),
+            ("mov edi,edi", bytes([0x8B, 0xFF])),
+            ("lea ecx,[ecx+0]", bytes([0x8D, 0x49, 0x00])),
+            ("lea esp,[esp+0] SIB", bytes([0x8D, 0x64, 0x24, 0x00])),
+            ("lea esi,[esi+0] disp32", bytes([0x8D, 0xB6, 0x00, 0x00, 0x00, 0x00])),
+            ("mixed run", bytes([0x90, 0x2E, 0x8B, 0xC0, 0xCC])),
+            ("empty", b""),
+        ):
+            self.assertTrue(is_filler_bytes(raw), label)
+
+    def test_real_code_is_never_filler(self) -> None:
+        for label, raw in (
+            ("push ebp", bytes([0x55])),
+            ("mov eax,[ebp+8]", bytes([0x8B, 0x45, 0x08])),
+            ("lea eax,[ecx+4] (nonzero disp)", bytes([0x8D, 0x41, 0x04])),
+            ("lea eax,[ecx+0] (reg != rm)", bytes([0x8D, 0x41, 0x00])),
+            ("filler then code", bytes([0x90, 0x55])),
+            ("truncated lea", bytes([0x8D])),
+        ):
+            self.assertFalse(is_filler_bytes(raw), label)
+
+
+class BenignHoleTests(unittest.TestCase):
+    """A hole of padding and/or an in-body jump table is Ghidra being right, not damage."""
+
+    def test_padding_only_is_benign(self) -> None:
+        self.assertTrue(hole_is_benign(["padding"], data_referenced_from_body=False))
+
+    def test_referenced_jump_table_is_benign(self) -> None:
+        # memmove's 35-byte hole: 3 bytes of filler, then the dispatch table the body's
+        # own `jmp dword ptr [ecx*4 + table]` reads.
+        self.assertTrue(hole_is_benign(["padding", "data"], data_referenced_from_body=True))
+
+    def test_unreferenced_data_stays_a_violation(self) -> None:
+        # Data nothing points at is what a stale definition masking real code looks like
+        # (0x4c49f0: 23 bytes of code hidden under a DATA unit).
+        self.assertFalse(hole_is_benign(["padding", "data"], data_referenced_from_body=False))
+
+    def test_any_code_stays_a_violation_even_beside_a_table(self) -> None:
+        self.assertFalse(hole_is_benign(["code"], data_referenced_from_body=False))
+        self.assertFalse(hole_is_benign(["data", "code"], data_referenced_from_body=True))
+
+    def test_empty_classification_is_not_benign(self) -> None:
+        self.assertFalse(hole_is_benign([], data_referenced_from_body=True))
+
+    def test_analyze_skips_benign_holes_and_their_labels(self) -> None:
+        view = FunctionView(
+            entry=0x005E8420,
+            name="memmove",
+            ranges=((0x005E8420, 0x005E84F8), (0x005E851C, 0x005E86B8)),
+            last_mnemonic="RET",
+            labels=(0x005E84F9,),  # switchdataD_... label on the table
+            benign_holes=((0x005E84F9, 0x005E851B),),
+        )
+        self.assertEqual(analyze(view), [])
+
+    def test_analyze_still_reports_a_hole_not_marked_benign(self) -> None:
+        view = FunctionView(
+            entry=0x005E8420,
+            name="memmove",
+            ranges=((0x005E8420, 0x005E84F8), (0x005E851C, 0x005E86B8)),
+            last_mnemonic="RET",
+        )
+        self.assertEqual([v.kind for v in analyze(view)], ["body_hole"])
 
 
 if __name__ == "__main__":
