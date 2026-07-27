@@ -115,6 +115,37 @@ def orphan_is_unclaimed(row: dict[str, str], claimed_addresses: set[int]) -> boo
     return address is not None and address not in claimed_addresses
 
 
+def resolve_embedded_owner_size(exported_size: str, curated_size: str) -> str | None:
+    """Pick the body size for an embedded-function owner, or None to keep the export's.
+
+    An owner is a function with other labels defined inside its body. Ghidra sometimes
+    promotes those inner labels to functions of their own, which truncates the owner's
+    recorded body to the bytes before the first inner label -- so the curated size is
+    deliberately allowed to win, and that is why this override exists at all.
+
+    It used to win unconditionally, which broke repair in the other direction: after
+    `fix_function_bounds ... --apply` grew an owner's body in the DB, `refresh-inventory`
+    put the old smaller curated number straight back, and the stale size then hid genuine
+    range overlaps from the symbols-integrity gate (bd imperialism-decomp-777c, reproduced
+    on 0x43dbc0 at 18464 vs 29558 and 0x4601b0 at 41928 vs 47351).
+
+    Both directions are handled by asking which number is larger. Fragmentation can only
+    shrink an export below the truth, and a repair can only grow it, so the larger of the
+    two is the better estimate of the real extent in both cases.
+    """
+    curated = curated_size.strip()
+    if not curated:
+        return None
+    exported = exported_size.strip()
+    if not (exported.isdigit() and curated.isdigit()):
+        # A non-numeric size on either side is not something to reason about; keep the
+        # previous behaviour of trusting curation.
+        return curated
+    if int(exported) >= int(curated):
+        return None
+    return curated
+
+
 def merge_curated_symbols_csv(
     fieldnames: list[str],
     exported_rows: list[dict[str, str]],
