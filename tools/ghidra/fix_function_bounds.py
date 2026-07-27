@@ -80,6 +80,19 @@ def main() -> int:
     args = parse_args()
     targets = [int(a, 16) for a in args.addresses]
 
+    if args.clear_data_holes and len(targets) > 1:
+        # Clearing a hole is only sound once you have looked at the bytes and seen real
+        # code (`just ghidra raw-disasm <hole start>`). Run over a batch it also clears
+        # holes that were correctly data, and the re-bound then collapses: a 387-byte body
+        # became 14 bytes, a 225-byte one became 138, in a single 12-address invocation.
+        # One address at a time, deliberately.
+        print(
+            "--clear-data-holes takes ONE address: verify the hole holds code "
+            f"(just ghidra raw-disasm ...) before clearing it; got {len(targets)}.",
+            file=sys.stderr,
+        )
+        return 2
+
     import pyghidra
 
     project = ghidra_env.open_project()

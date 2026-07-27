@@ -13,6 +13,7 @@ import unittest
 
 from tools.ghidra.body_integrity import (
     ALL_KINDS,
+    new_violations,
     FunctionView,
     Report,
     analyze,
@@ -209,6 +210,34 @@ class ReportTests(unittest.TestCase):
 
     def test_empty_report_renders(self):
         self.assertIn("violations: 0", format_report(Report(checked=7)))
+
+
+class BaselineRatchetTests(unittest.TestCase):
+    """The gate accepts what a human already saw and nothing else."""
+
+    def _report(self):
+        return audit([PuncturedBodyTests.PUNCTURED])
+
+    def test_everything_new_when_the_baseline_is_empty(self) -> None:
+        fresh = new_violations(self._report(), set())
+        self.assertEqual({v.kind for v in fresh}, {"body_hole", "label_in_hole"})
+
+    def test_a_baselined_pair_is_accepted(self) -> None:
+        accepted = {(0x004C8AC0, "body_hole"), (0x004C8AC0, "label_in_hole")}
+        self.assertEqual(new_violations(self._report(), accepted), [])
+
+    def test_the_same_address_with_a_different_kind_is_still_new(self) -> None:
+        """Baselining a hole must not silently accept a later truncation there."""
+        accepted = {(0x004C8AC0, "body_hole")}
+        fresh = new_violations(self._report(), accepted)
+        self.assertEqual([v.kind for v in fresh], ["label_in_hole"])
+
+    def test_advisory_violations_never_reach_the_gate(self) -> None:
+        view = FunctionView(
+            entry=0x2000, name="fn", ranges=((0x2000, 0x20FF),),
+            last_mnemonic="RET", curated_size=999,
+        )
+        self.assertEqual(new_violations(audit([view]), set()), [])
 
 
 if __name__ == "__main__":
