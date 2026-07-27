@@ -98,12 +98,19 @@ class GameSandboxTests(unittest.TestCase):
                     root / "attempt-1", runtime_executable, fixture
                 )
                 cached_asset = next((root / "build").glob("game-assets-*/Data/asset.gob"))
-                self.assertNotEqual(
-                    (game1 / "Data" / "asset.gob").stat().st_ino,
-                    cached_asset.stat().st_ino,
-                )
-                (game1 / "Data" / "asset.gob").chmod(0o644)
-                (game1 / "Data" / "asset.gob").write_bytes(b"attempt-1 mutation")
+                # Assets are shared with the immutable template rather than duplicated
+                # per attempt: copying them cost ~237MB a run. Cross-attempt isolation
+                # now comes from the template being read-only, not from duplication --
+                # a stronger guarantee, since a stray write fails instead of silently
+                # diverging one attempt's copy.
+                staged_asset = game1 / "Data" / "asset.gob"
+                self.assertTrue(staged_asset.is_symlink())
+                self.assertEqual(staged_asset.resolve(), cached_asset.resolve())
+                with self.assertRaises(PermissionError):
+                    staged_asset.open("wb")
+
+                # Directories are real, so the game can still create new files.
+                (game1 / "Data" / "scratch.tmp").write_bytes(b"scratch")
                 (game1 / "Save" / "new.imp").write_bytes(b"new")
                 game2, _, identity2 = wine.prepare_game_sandbox(
                     root / "attempt-2", runtime_executable
@@ -112,11 +119,12 @@ class GameSandboxTests(unittest.TestCase):
             self.assertNotEqual(game1, retail)
             self.assertEqual(identity1, identity2)
             self.assertEqual((game1 / "Imperialism.exe").read_bytes(), b"instrumented")
-            self.assertEqual(
-                (game1 / "Data" / "asset.gob").read_bytes(), b"attempt-1 mutation"
-            )
+            # The instrumented binary is a real file, not a link into the template --
+            # it is the one thing that differs between attempts.
+            self.assertFalse((game1 / "Imperialism.exe").is_symlink())
             self.assertFalse((game1 / "Save" / "contamination.imp").exists())
             self.assertFalse((game2 / "Save" / "new.imp").exists())
+            self.assertFalse((game2 / "Data" / "scratch.tmp").exists())
             self.assertEqual((game2 / "Data" / "asset.gob").read_bytes(), b"asset")
             self.assertEqual((game2 / "Data" / "asset.gob").stat().st_mode & 0o222, 0)
             self.assertEqual((retail / "Data" / "asset.gob").read_bytes(), b"asset")
