@@ -26,6 +26,15 @@ TDealLine::TDealLine() : TLineData() {}
 // FUNCTION: IMPERIALISM 0x005c0de0
 TDealLine::~TDealLine() {}
 
+// FUNCTION: IMPERIALISM 0x005c0e00
+void TDealLine::IDealLine(short rowArg, short colArg, int* bounds, short commoditySlot,
+                          short ownerNationSlot, short entryOrdinal) {
+  SetLineDataRowAndBounds(rowArg, colArg, bounds);
+  commoditySlot10 = commoditySlot;
+  ownerNationSlot12 = ownerNationSlot;
+  entryOrdinal14 = entryOrdinal;
+}
+
 // FUNCTION: IMPERIALISM 0x005c0e50
 void TDealLine::InstallViews(TView* panel, int* offsetLayout) {
   CString counterpartyName;

@@ -97,6 +97,12 @@ struct SeaSegment {
     return attr12;
   }
 
+  // The two carried attributes are addressed by edge side: side != 0 selects attr10
+  // (index 0), side == 0 selects attr12 (index 1). The chain linker walks them this way.
+  short& AttrBySideIndex(int sideIndex) {
+    return (&attr10)[sideIndex];
+  }
+
   // Build the segment from two Seapoints' linear coords, normalize endpoint order and
   // recompute the heading angle. 0x0052b220.
   void InitFromPoints(const Seapoint* p0, const Seapoint* p1);
@@ -137,3 +143,8 @@ void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b
 // backing store, then walk the staggered column/row lattice appending three SeaSegments per
 // cell and close it along the map's vertical edges. 0x0052ac40, __cdecl.
 void RebuildRegionBorderLinkLattice();
+
+// Flood a region id along a chain of border segments starting at one segment/edge side,
+// hopping to the segment whose matching endpoint coincides and whose heading turns least.
+// Stops when the next side is already stamped. 0x0052b520, __cdecl.
+void AssignRegionIdAlongBorderSegmentChain(unsigned int index, char side, short regionId);

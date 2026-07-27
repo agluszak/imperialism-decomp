@@ -149,3 +149,10 @@ struct TurnEvent2SyncPacket : NetMessage {
 };
 TurnEvent2SyncPacket* __cdecl
 BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned int shortCount, short* current, short* baseline);
+// 0x544840 / 0x544b30: the byte- and int-element twins of the builder above; their delta
+// payloads are tagged deltaKind21 == 1 and 3 respectively.
+TurnEvent2SyncPacket* __cdecl
+BuildTurnEvent2ByteArraySyncPacketDeltaOrFull(unsigned int byteCount, unsigned char* current,
+                                              unsigned char* baseline);
+TurnEvent2SyncPacket* __cdecl
+BuildTurnEvent2IntArraySyncPacketDeltaOrFull(int intCount, int* current, int* baseline);

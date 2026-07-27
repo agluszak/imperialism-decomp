@@ -286,3 +286,14 @@ sites switching from inlined-with-realloc to the out-of-line `operator[]` call. 
 the neighbouring functions in the file kept their baseline scores — the pragma survives
 `reorder_marked_functions` only as a *stranded* comment block, so re-check its placement
 after any reorder.
+
+The same budget split also happens *across* two functions that share one small helper:
+retail expanded `DiplomacyMaskBufferRun::IsMaskPixelSet` at all five sites in the 472-byte
+`IsMaskPixelSetAndOnRegionEdge` (0x004d5a90) and called the out-of-line copy at all eight
+sites in the 1149-byte `BuildDiplomacyOverlayHitMaskOpcodeStream` (0x004d5d30). Neither
+placement of the helper alone reproduces both — and header-inlining it also stops the
+out-of-line COMDAT being emitted at all, silently *unpairing* the helper's own address.
+The fix is both levers together: define the helper in the header, and give the big caller
+a scoped `#pragma inline_depth(0)`. Check the helper's own address is still paired
+afterwards; a vanished COMDAT shows up as `unpaired now (were paired)` in `just stats`,
+not as a compile error.
