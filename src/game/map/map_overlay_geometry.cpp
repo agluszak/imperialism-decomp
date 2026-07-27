@@ -256,17 +256,18 @@ int GetNeighborTileIndexOnMap108x60(int tileIndex, int direction) {
 }
 
 // FUNCTION: IMPERIALISM 0x0052a6e0
-void WrapExtendedMapXCoordinateInPlace(int* x) {
+int* WrapExtendedMapXCoordinateInPlace(int* x) {
   if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == '\0') {
     int value = *x;
     if (value >= 0xd8) {
       *x = value - 0xd8;
-      return;
+      return x;
     }
     if (value < 0) {
       *x = value + 0xd8;
     }
   }
+  return x;
 }
 
 // FUNCTION: IMPERIALISM 0x0052c990

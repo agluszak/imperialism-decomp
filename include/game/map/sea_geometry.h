@@ -97,6 +97,12 @@ struct SeaSegment {
     return attr12;
   }
 
+  // The two carried attributes are addressed by edge side: side != 0 selects attr10
+  // (index 0), side == 0 selects attr12 (index 1). The chain linker walks them this way.
+  short& AttrBySideIndex(int sideIndex) {
+    return (&attr10)[sideIndex];
+  }
+
   // Build the segment from two Seapoints' linear coords, normalize endpoint order and
   // recompute the heading angle. 0x0052b220.
   void InitFromPoints(const Seapoint* p0, const Seapoint* p1);
