@@ -107,7 +107,19 @@ public:
   unsigned char* pbWaveData; // 0x0c — GlobalAlloc'd wave data bytes
 
   WaveLoadDescriptor() : cbWaveSize(0), cSamples(0), pwfx(0), pbWaveData(0) {}
-  ~WaveLoadDescriptor();
+  // Defined in-class so MSVC500 can inline it at the two loaders, which is what the
+  // original does (the comment above records that both carry an EH state for it and run
+  // an inlined destructor). The out-of-line copy at 0x49c3b0 is still emitted.
+  ~WaveLoadDescriptor() {
+    if (pwfx != 0) {
+      GlobalFreePtr(pwfx);
+    }
+    pwfx = 0;
+    if (pbWaveData != 0) {
+      GlobalFreePtr(pbWaveData);
+    }
+    pbWaveData = 0;
+  }
 };
 
 class TSoundResourceManager {

@@ -26,16 +26,6 @@ TSoundResourceManager g_soundResourceManager;
 
 // SYNTHETIC: IMPERIALISM 0x0049c3b0
 // WaveLoadDescriptor::~WaveLoadDescriptor
-WaveLoadDescriptor::~WaveLoadDescriptor() {
-  if (pwfx != 0) {
-    GlobalFreePtr(pwfx);
-  }
-  pwfx = 0;
-  if (pbWaveData != 0) {
-    GlobalFreePtr(pbWaveData);
-  }
-  pbWaveData = 0;
-}
 
 // FUNCTION: IMPERIALISM 0x0049c150
 int TSoundResourceManager::CreateChannelBuffer(IDirectSoundBuffer** ppChannel) {
