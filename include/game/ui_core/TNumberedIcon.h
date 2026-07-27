@@ -18,5 +18,11 @@ public:
   class TNumberText* numberTextAc; // +0xac
 
   TNumberedIcon();
+
+  // Two-phase init: builds the TMegaPicture base with flags 5, installs the number
+  // text, seeds its value, and parks the text in a 16x16 box anchored to the icon's
+  // bottom-right corner. 0x00507420, __thiscall.
+  void INumberedIcon(TView* panel, int* offsetLayout, int* sizeLayout, int layoutParam4,
+                     int layoutParam5, short pictureId, short value);
 };
 ASSERT_SIZE(TNumberedIcon, 0xb0);

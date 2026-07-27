@@ -3209,7 +3209,7 @@ address|matching|name
 0x5073a0|1.0|TNumberedIcon::TNumberedIcon
 0x5073d0|1.0|TNumberedIcon::`scalar deleting destructor'
 0x507400|1.0|TNumberedIcon::~TNumberedIcon
-0x507420|0.0|IltTarget_00507420
+0x507420|0.8085106382978723|TNumberedIcon::INumberedIcon
 0x5074e0|1.0|TNumberedIcon::DoPostCreate
 0x507570|0.6153846153846154|TNumberedIcon::InstallNumberText
 0x5076d0|0.8571428571428571|TNumberedIcon::SetValue
