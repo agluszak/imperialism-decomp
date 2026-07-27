@@ -7,6 +7,7 @@
 #include "RuntimeJson.h"
 #include "RuntimeObservations.h"
 #include "RuntimeResultWriter.h"
+#include "RuntimeRegistry.h"
 #include "RuntimeRun.h"
 #include "flows/RuntimeFlow.h"
 
@@ -66,10 +67,6 @@ void RuntimeScenario::Start(RuntimeContext& context) {
 
   if (RequiresFixture() && !run->HasFixturePath()) {
     Finish("failed", "\"IMPERIALISM_RUNTIME_TEST_FIXTURE is not set for load_saved_game\"");
-    return;
-  }
-  if (lstrcmpA(Name(), "unknown") == 0) {
-    Finish("failed", "\"unknown compiled runtime test\"");
     return;
   }
   run->EnterPhase("waiting_for_managers", "wait_for_managers");
@@ -143,7 +140,7 @@ void RuntimeScenario::Pulse(RuntimeContext&) {
 }
 
 void RuntimeScenario::ObserveBuiltUiTree(RuntimeContext&, int eventCode, TView* root) {
-  if (!UsesRandomGameFlow()) {
+  if (!run->CapturesSnapshot(kRuntimeSnapshotUi)) {
     return;
   }
   if (eventCode == 0x5dd) {
@@ -190,10 +187,6 @@ bool RuntimeScenario::RequiresMainWindow() const {
 }
 
 bool RuntimeScenario::RequiresFixture() const {
-  return false;
-}
-
-bool RuntimeScenario::UsesRandomGameFlow() const {
   return false;
 }
 

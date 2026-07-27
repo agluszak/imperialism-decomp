@@ -4,9 +4,6 @@ namespace {
 
 class BootManagersTestCase : public RuntimeScenario {
 public:
-  const char* Name() const override {
-    return "boot_managers";
-  }
   bool RequiresMainWindow() const override {
     return false;
   }

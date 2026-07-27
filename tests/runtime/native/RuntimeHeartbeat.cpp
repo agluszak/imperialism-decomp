@@ -33,7 +33,7 @@ void WriteRuntimeHeartbeat(RuntimeRun& run) {
     run.LastFingerprint() = fingerprint;
     run.MarkFallbackProgress();
   }
-  if (run.LastHeartbeatMs() != 0 && now - run.LastHeartbeatMs() < 250) {
+  if (!run.HeartbeatDue(now, 250)) {
     return;
   }
   run.SetLastHeartbeatMs(now);

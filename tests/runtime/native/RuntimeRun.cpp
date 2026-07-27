@@ -6,21 +6,22 @@
 #include <windows.h>
 
 RuntimeRun::RuntimeRun()
-    : scenario(0), finished(false), seed(1), idleTicks(0), phaseTicks(0), phaseStartMs(0),
-      startMs(0), progressCounter(0), lastProgressMs(0), lastHeartbeatMs(0), phaseTimeoutMs(60000),
-      selectedNationSlot(-1), mainWindowHandle(0), newspaperAdvanced(false),
-      activatedEventSequence("["), handledModals("["), unexpectedModals("["), faults("["),
-      actionLog("["), assertionFailures("[") {
+    : scenario(0), seed(1), phaseTimeoutMs(60000), selectedNationSlot(-1), mainWindowHandle(0),
+      newspaperAdvanced(false), snapshotFlags(0), activatedEventSequence("["), handledModals("["),
+      unexpectedModals("["), faults("["), actionLog("["), assertionFailures("[") {
   testName[0] = 0;
-  phaseName[0] = 0;
-  lastAction[0] = 0;
   resultPath[0] = 0;
   heartbeatPath[0] = 0;
   debugRecordPath[0] = 0;
   fixturePath[0] = 0;
   holdTarget[0] = 0;
   spinPhase[0] = 0;
-  firstAssertionId[0] = 0;
+  lstrcpyA(evidenceKind, "internal_invariant");
+}
+
+void RuntimeRun::SetDescriptor(unsigned int flags, const char* kind) {
+  snapshotFlags = flags;
+  lstrcpynA(evidenceKind, kind, sizeof(evidenceKind));
 }
 
 void RuntimeRun::InitializeFromEnvironment() {
@@ -77,20 +78,11 @@ void RuntimeRun::InitializeFromEnvironment() {
 
 void RuntimeRun::StartScenario(RuntimeScenario* value) {
   scenario = value;
-  finished = false;
-  idleTicks = 0;
-  phaseTicks = 0;
-  startMs = GetTickCount();
-  phaseStartMs = startMs;
-  progressCounter = 0;
-  lastProgressMs = 0;
-  lastHeartbeatMs = 0;
+  progress.Reset(GetTickCount());
+  resultAggregate.Reset();
   selectedNationSlot = -1;
   mainWindowHandle = 0;
   newspaperAdvanced = false;
-  lstrcpyA(phaseName, "not_started");
-  lastAction[0] = 0;
-  firstAssertionId[0] = 0;
   firstFailureJson.Empty();
   randomSetupUiSnapshot.Empty();
   strategicMapUiSnapshot.Empty();
@@ -108,36 +100,28 @@ void RuntimeRun::StartScenario(RuntimeScenario* value) {
 }
 
 void RuntimeRun::EnterPhase(const char* phase, const char* action) {
-  lstrcpynA(phaseName, phase, sizeof(phaseName));
-  phaseTicks = 0;
-  phaseStartMs = GetTickCount();
-  MarkProgress(action);
+  progress.EnterPhase(phase, action, GetTickCount());
   RecordAction(action);
 }
 
 void RuntimeRun::Finish() {
-  finished = true;
-  lstrcpyA(phaseName, "finished");
+  progress.Finish();
 }
 
 void RuntimeRun::CountTick() {
-  ++idleTicks;
-  ++phaseTicks;
+  progress.CountTick();
 }
 
 void RuntimeRun::ResetHeartbeat() {
-  lastHeartbeatMs = 0;
+  progress.ResetHeartbeat();
 }
 
 void RuntimeRun::MarkProgress(const char* action) {
-  lstrcpynA(lastAction, action, sizeof(lastAction));
-  ++progressCounter;
-  lastProgressMs = ElapsedMs();
+  progress.MarkProgress(action, GetTickCount());
 }
 
 void RuntimeRun::MarkFallbackProgress() {
-  ++progressCounter;
-  lastProgressMs = ElapsedMs();
+  progress.MarkFallbackProgress(GetTickCount());
 }
 
 void RuntimeRun::RecordAction(const char* action) {
@@ -148,6 +132,7 @@ void RuntimeRun::RecordAction(const char* action) {
 }
 
 void RuntimeRun::RecordAssertion(const char* assertionId, const char* failureJson, bool fatal) {
+  resultAggregate.RecordAssertion(assertionId, failureJson, fatal);
   CString entry("{\"id\": ");
   RuntimeJson::AppendString(entry, assertionId);
   entry += ", \"severity\": ";
@@ -156,8 +141,7 @@ void RuntimeRun::RecordAssertion(const char* assertionId, const char* failureJso
   entry += failureJson;
   entry += "}";
   RuntimeJson::AppendArrayItem(assertionFailures, entry);
-  if (firstAssertionId[0] == 0) {
-    lstrcpynA(firstAssertionId, assertionId, sizeof(firstAssertionId));
+  if (resultAggregate.FailureCount() == 1) {
     firstFailureJson = failureJson;
   }
 }
@@ -167,7 +151,7 @@ RuntimeScenario* RuntimeRun::Scenario() const {
 }
 
 bool RuntimeRun::IsFinished() const {
-  return finished;
+  return progress.IsFinished();
 }
 
 const char* RuntimeRun::TestName() const {
@@ -179,43 +163,43 @@ unsigned int RuntimeRun::Seed() const {
 }
 
 const char* RuntimeRun::PhaseName() const {
-  return phaseName;
+  return progress.PhaseName();
 }
 
 unsigned long RuntimeRun::ElapsedMs() const {
-  return GetTickCount() - startMs;
+  return progress.ElapsedMs(GetTickCount());
 }
 
 unsigned long RuntimeRun::IdleTicks() const {
-  return idleTicks;
+  return progress.IdleTicks();
 }
 
 unsigned long RuntimeRun::PhaseTicks() const {
-  return phaseTicks;
+  return progress.PhaseTicks();
 }
 
 unsigned long RuntimeRun::PhaseElapsedMs() const {
-  return GetTickCount() - phaseStartMs;
+  return progress.PhaseElapsedMs(GetTickCount());
 }
 
 unsigned long RuntimeRun::ProgressCounter() const {
-  return progressCounter;
+  return progress.ProgressCounter();
 }
 
 unsigned long RuntimeRun::LastProgressMs() const {
-  return lastProgressMs;
+  return progress.LastProgressMs();
 }
 
-unsigned long RuntimeRun::LastHeartbeatMs() const {
-  return lastHeartbeatMs;
+bool RuntimeRun::HeartbeatDue(unsigned long now, unsigned long interval) const {
+  return progress.HeartbeatDue(now, interval);
 }
 
 void RuntimeRun::SetLastHeartbeatMs(unsigned long value) {
-  lastHeartbeatMs = value;
+  progress.MarkHeartbeatWritten(value);
 }
 
 const char* RuntimeRun::LastAction() const {
-  return lastAction;
+  return progress.LastAction();
 }
 
 unsigned long RuntimeRun::PhaseTimeoutMs() const {
@@ -244,7 +228,13 @@ bool RuntimeRun::HoldAt(const char* target) const {
   return holdTarget[0] != 0 && lstrcmpiA(holdTarget, target) == 0;
 }
 bool RuntimeRun::SpinRequestedForCurrentPhase() const {
-  return spinPhase[0] != 0 && lstrcmpiA(spinPhase, phaseName) == 0;
+  return spinPhase[0] != 0 && lstrcmpiA(spinPhase, progress.PhaseName()) == 0;
+}
+bool RuntimeRun::CapturesSnapshot(unsigned int flag) const {
+  return (snapshotFlags & flag) != 0;
+}
+const char* RuntimeRun::EvidenceKind() const {
+  return evidenceKind;
 }
 
 short RuntimeRun::SelectedNationSlot() const {
@@ -310,10 +300,10 @@ CString RuntimeRun::AssertionFailuresJson() const {
 }
 
 bool RuntimeRun::HasAssertionFailures() const {
-  return assertionFailures.GetLength() > 1;
+  return resultAggregate.HasFailures();
 }
 const char* RuntimeRun::FirstAssertionId() const {
-  return firstAssertionId;
+  return resultAggregate.FirstAssertionId();
 }
 const char* RuntimeRun::FirstFailureJson() const {
   return firstFailureJson;

@@ -35,13 +35,6 @@ public:
       : phase(kActivateCityScreen), activeBuildingSlot(kUniversityBuildingSlot),
         interactionComplete(false), interactionKind(kNoInteraction), interactionUnitOrder(0),
         interactionItemOrder(0), interactionRowTag(0) {}
-
-  const char* Name() const override {
-    return "city_screen_opens";
-  }
-  bool UsesRandomGameFlow() const override {
-    return true;
-  }
   int DifficultyLevel() const override {
     return 1;
   }

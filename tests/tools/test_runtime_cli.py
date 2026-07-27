@@ -64,7 +64,9 @@ class RuntimeSuiteTests(unittest.TestCase):
 
     def test_single_run_uses_catalog_timeout_when_not_overridden(self) -> None:
         args = argparse.Namespace(name="custom", seed=1, timeout=None)
-        spec = RuntimeTestSpec("custom", ("full",), default_timeout=42.5)
+        spec = RuntimeTestSpec(
+            "custom", "CustomTest", ("full",), "internal_invariant", default_timeout=42.5
+        )
         with (
             patch("tools.runtime.cli.find_test", return_value=spec),
             patch("tools.runtime.runtime_tests.run_test", return_value=0) as run_test_mock,
@@ -72,10 +74,33 @@ class RuntimeSuiteTests(unittest.TestCase):
             self.assertEqual(run_one(args), 0)
         self.assertEqual(run_test_mock.call_args.args[0].timeout, 42.5)
 
+    def test_harness_only_catalog_entry_does_not_use_game_runner(self) -> None:
+        args = argparse.Namespace(name="harness", seed=1, timeout=None)
+        spec = RuntimeTestSpec(
+            "harness",
+            "RuntimeHarnessSelfTest",
+            ("pr",),
+            "internal_invariant",
+            execution="harness",
+            default_timeout=1.0,
+        )
+        with (
+            patch("tools.runtime.cli.find_test", return_value=spec),
+            patch(
+                "tools.runtime.harness_selftest.run_harness_selftest", return_value=0
+            ) as harness,
+            patch("tools.runtime.runtime_tests.run_test") as game,
+        ):
+            self.assertEqual(run_one(args), 0)
+        harness.assert_called_once()
+        game.assert_not_called()
+
     def test_suite_command_uses_catalog_timeout_unless_cli_overrides_it(self) -> None:
         args = suite_args(Path("runtime.xml"))
         args.timeout = None
-        spec = RuntimeTestSpec("custom", ("full",), default_timeout=42.5)
+        spec = RuntimeTestSpec(
+            "custom", "CustomTest", ("full",), "internal_invariant", default_timeout=42.5
+        )
         with patch("tools.runtime.cli.find_test", return_value=spec):
             command = _suite_command("custom", args)
             self.assertEqual(command[command.index("--timeout") + 1], "42.5")

@@ -80,12 +80,6 @@ struct RoundtripTarget {
 
 class SerializationRoundtripTestCase : public RandomGameScenario {
 public:
-  const char* Name() const override {
-    return "serialization_roundtrip";
-  }
-  bool UsesRandomGameFlow() const override {
-    return true;
-  }
   int DifficultyLevel() const override {
     return 1;
   }

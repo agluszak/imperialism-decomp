@@ -11,7 +11,13 @@ import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
-from tools.runtime.catalog import TESTS, find_test, suite_names, tests_in_suite
+from tools.runtime.catalog import (
+    TESTS,
+    find_test,
+    promotion_candidates,
+    suite_names,
+    tests_in_suite,
+)
 from tools.runtime.runner import format_console_summary
 
 
@@ -50,6 +56,10 @@ def run_one(args: argparse.Namespace) -> int:
         raise SystemExit("--seed must be a positive integer")
     if args.timeout is None:
         args.timeout = test.default_timeout
+    if test.execution == "harness":
+        from tools.runtime.harness_selftest import run_harness_selftest
+
+        return run_harness_selftest(test, args.seed, REPO_ROOT / "build-runtime-tests", RESULT_DIR)
     from tools.runtime.runtime_tests import run_test
 
     return run_test(args)
@@ -57,8 +67,13 @@ def run_one(args: argparse.Namespace) -> int:
 
 def list_tests(_: argparse.Namespace) -> int:
     for test in TESTS:
-        fixture = f" fixture={test.fixture}" if test.fixture else ""
-        print(f"{test.name:38s} suites={','.join(test.suite)}{fixture}")
+        fixture = f" fixture={test.fixture.filename}" if test.fixture else ""
+        expected = " expected_failure" if test.expected_failure else ""
+        print(
+            f"{test.name:38s} factory={test.native_factory:34s} execution={test.execution:7s} "
+            f"suites={','.join(test.suites)} evidence={test.evidence_kind}"
+            f"{fixture}{expected}"
+        )
     return 0
 
 
@@ -106,7 +121,7 @@ def _read_suite_case(name: str, returncode: int) -> SuiteCaseResult:
     except (OSError, json.JSONDecodeError) as error:
         parsed = {"status": "failed", "failure": f"missing or invalid canonical result: {error}"}
     reported_status = parsed.get("status")
-    if returncode == 0 and reported_status in {"passed", "skipped"}:
+    if returncode == 0 and reported_status in {"passed", "skipped", "expected_failure"}:
         status = reported_status
     else:
         status = "failed"
@@ -127,6 +142,9 @@ def run_suite(args: argparse.Namespace) -> int:
         results = list(executor.map(lambda test: invoke(test.name), tests))
     failed = [result for result in results if result.status == "failed"]
     skipped = [result for result in results if result.status == "skipped"]
+    expected_failures = [
+        result for result in results if result.status == "expected_failure"
+    ]
     passed = [result for result in results if result.status == "passed"]
     if args.junit is not None:
         suite = ET.Element(
@@ -134,7 +152,7 @@ def run_suite(args: argparse.Namespace) -> int:
             name=f"imperialism-runtime-{args.suite}",
             tests=str(len(results)),
             failures=str(len(failed)),
-            skipped=str(len(skipped)),
+            skipped=str(len(skipped) + len(expected_failures)),
         )
         for result in results:
             summary = result.result.get("summary", {})
@@ -147,18 +165,23 @@ def run_suite(args: argparse.Namespace) -> int:
             if result.status == "failed":
                 failure = ET.SubElement(case, "failure", message=concise)
                 failure.text = json.dumps(result.result, indent=2, sort_keys=True)
-            elif result.status == "skipped":
+            elif result.status in {"skipped", "expected_failure"}:
                 ET.SubElement(
                     case,
                     "skipped",
-                    message=str(result.result.get("failure", "runtime test skipped")),
+                    message=(
+                        "expected failure: " + str(result.result.get("failure", "matched"))
+                        if result.status == "expected_failure"
+                        else str(result.result.get("failure", "runtime test skipped"))
+                    ),
                 )
             system_out = ET.SubElement(case, "system-out")
             system_out.text = concise
         args.junit.parent.mkdir(parents=True, exist_ok=True)
         ET.ElementTree(suite).write(args.junit, encoding="utf-8", xml_declaration=True)
     print(
-        f"suite {args.suite}: {len(passed)} passed, {len(skipped)} skipped, "
+        f"suite {args.suite}: {len(passed)} passed, {len(expected_failures)} expected failures, "
+        f"{len(skipped)} skipped, "
         f"{len(failed)} failed"
     )
     if skipped:
@@ -167,6 +190,12 @@ def run_suite(args: argparse.Namespace) -> int:
         print("failed: " + ", ".join(result.name for result in failed))
         for result in failed:
             print(format_console_summary(result.result))
+    candidates = promotion_candidates({result.name: result.result for result in results})
+    for candidate in candidates:
+        print(
+            f"promotion candidate: {candidate.name} -> "
+            f"{','.join(candidate.promotion_suites)} (order {candidate.promotion_order})"
+        )
     return 1 if failed else 0
 
 
@@ -177,6 +206,59 @@ def show_result(args: argparse.Namespace) -> int:
     parsed = json.loads(path.read_text(encoding="utf-8"))
     print(json.dumps(parsed, indent=2, sort_keys=True))
     return 0
+
+
+def run_determinism(args: argparse.Namespace) -> int:
+    from tools.runtime.determinism import classify_leaks
+
+    tests = tests_in_suite(args.suite)
+    if not tests:
+        raise SystemExit(f"unknown or empty suite {args.suite!r}")
+
+    def run_order(label: str, ordered_tests: tuple, use_gdb: bool) -> dict[str, dict]:
+        observations: dict[str, dict] = {}
+        for test in ordered_tests:
+            run_args = argparse.Namespace(
+                seed=args.seed,
+                timeout=args.timeout,
+                phase_timeout_ms=args.phase_timeout_ms,
+                rerun_seh=False,
+                gdb=use_gdb,
+                no_gdb=not use_gdb,
+                require_fixtures=args.require_fixtures,
+            )
+            (RESULT_DIR / f"{test.name}.json").unlink(missing_ok=True)
+            completed = subprocess.run(
+                _suite_command(test.name, run_args), cwd=REPO_ROOT, check=False
+            )
+            case = _read_suite_case(test.name, completed.returncode)
+            observations[test.name] = case.result
+        print(f"determinism {label}: captured {len(observations)} tests")
+        return observations
+
+    baseline = run_order("same_order_1", tests, False)
+    comparisons = [
+        ("same_order", run_order("same_order_2", tests, False)),
+        ("reverse_order", run_order("reverse_order", tuple(reversed(tests)), False)),
+    ]
+    if args.gdb:
+        comparisons.append(("gdb", run_order("gdb", tests, True)))
+    findings = [
+        finding
+        for label, observations in comparisons
+        for finding in classify_leaks(baseline, observations, label)
+    ]
+    report = {
+        "suite": args.suite,
+        "seed": args.seed,
+        "orders": [label for label, _ in comparisons],
+        "findings": findings,
+        "status": "failed" if findings else "passed",
+    }
+    report_path = RESULT_DIR / f"determinism-{args.suite}.json"
+    report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    print(json.dumps(report, indent=2, sort_keys=True))
+    return 1 if findings else 0
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -205,6 +287,16 @@ def build_parser() -> argparse.ArgumentParser:
     show = commands.add_parser("show", help="show the latest canonical result")
     show.add_argument("name")
     show.set_defaults(func=show_result)
+    determinism = commands.add_parser(
+        "determinism", help="repeat a suite in same/reverse order and compare observations"
+    )
+    determinism.add_argument("suite", choices=suite_names())
+    determinism.add_argument("--seed", type=int, default=1)
+    determinism.add_argument("--timeout", type=float)
+    determinism.add_argument("--phase-timeout-ms", type=int, default=60000)
+    determinism.add_argument("--gdb", action="store_true")
+    determinism.add_argument("--require-fixtures", action="store_true")
+    determinism.set_defaults(func=run_determinism)
     clean = commands.add_parser(
         "clean", help="stop this worktree's warm wineserver and Xvfb, drop its prefix"
     )
@@ -245,7 +337,14 @@ def clean_worktree_runtime(_: argparse.Namespace) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     arguments = list(sys.argv[1:] if argv is None else argv)
-    if arguments and arguments[0] not in {"run", "list", "suite", "show", "clean"}:
+    if arguments and arguments[0] not in {
+        "run",
+        "list",
+        "suite",
+        "determinism",
+        "show",
+        "clean",
+    }:
         arguments.insert(0, "run")
     args = build_parser().parse_args(arguments)
     return args.func(args)

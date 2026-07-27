@@ -30,10 +30,8 @@ public:
   unsigned int RandomSeed(RuntimeContext& context) override;
   void FailHarness(RuntimeContext& context, const char* failure) override;
 
-  virtual const char* Name() const = 0;
   virtual bool RequiresMainWindow() const;
   virtual bool RequiresFixture() const;
-  virtual bool UsesRandomGameFlow() const;
   virtual int DifficultyLevel() const;
   virtual bool RecordsGameFlow() const;
   virtual bool RequiresScenarioUiSnapshot() const;

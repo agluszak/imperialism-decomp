@@ -16,13 +16,6 @@ namespace {
 class MapZoomToggleTestCase : public RandomGameScenario {
 public:
   MapZoomToggleTestCase() : phase(kActivateZoomOut), toggleCycles(0) {}
-
-  const char* Name() const override {
-    return "map_zoom_toggle_remains_responsive";
-  }
-  bool UsesRandomGameFlow() const override {
-    return true;
-  }
   bool RecordsGameFlow() const override {
     return true;
   }

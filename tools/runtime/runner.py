@@ -13,6 +13,7 @@ from typing import Callable
 from tools.runtime.artifacts import prune_old_run_dirs
 from tools.runtime.catalog import (
     FIXTURES,
+    apply_expected_failure,
     find_test,
     missing_required_oracles,
     record_missing_oracles,
@@ -202,6 +203,7 @@ def format_console_summary(result: JsonObject) -> str:
         f"classification={summary.get('classification') or 'none'} "
         f"action={summary.get('action') or 'none'} "
         f"assertion={summary.get('assertion_id') or 'none'} "
+        f"expectation={summary.get('expectation_outcome') or 'none'} "
         f"artifacts={summary.get('artifact_path') or 'none'} "
         f"failure={summary.get('primary_failure') or 'none'} diagnostics={diagnostic_text}"
     )
@@ -219,6 +221,9 @@ class RuntimeRunner:
         self.dependencies = dependencies or RunnerDependencies()
 
     def _publish_without_attempt(self, result: JsonObject, exit_code: int) -> RunOutcome:
+        test_spec = find_test(str(result["name"]))
+        if test_spec is not None:
+            apply_expected_failure(test_spec, result)
         result["summary"] = {
             "duration_seconds": None,
             "phase": None,
@@ -356,6 +361,13 @@ class RuntimeRunner:
         result["host"] = primary.host.to_json()
         result["attempts"] = [attempt.to_json() for attempt in attempts]
         result["summary"] = _result_summary(result, attempts)
+        test_spec = find_test(request.name)
+        if test_spec is not None:
+            apply_expected_failure(test_spec, result)
+            result["summary"]["expectation_outcome"] = result.get(
+                "expectation_outcome"
+            )
+            result["summary"]["primary_failure"] = result.get("failure")
         serialized = json.dumps(result, indent=2, sort_keys=True) + "\n"
         (run_dir / "result.json").write_text(serialized, encoding="utf-8")
         (self.result_dir / f"{request.name}.json").write_text(
@@ -368,6 +380,6 @@ class RuntimeRunner:
             exit_code = 1
         elif primary.host.inferior_exit_code not in {None, 0}:
             exit_code = 1
-        elif result.get("status") != "passed":
+        elif result.get("status") not in {"passed", "expected_failure"}:
             exit_code = 1
         return RunOutcome(result=result, attempts=tuple(attempts), exit_code=exit_code)

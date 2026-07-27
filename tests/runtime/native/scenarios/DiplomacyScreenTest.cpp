@@ -26,13 +26,6 @@ public:
   DiplomacyScreenTestCase()
       : phase(kActivateDiplomacyScreen), targetNation(-1), policyBeforeAction(-1),
         allianceTargetNation(-1), alliancePolicyBeforeAction(-1) {}
-
-  const char* Name() const override {
-    return "diplomacy_screen_operates";
-  }
-  bool UsesRandomGameFlow() const override {
-    return true;
-  }
   int DifficultyLevel() const override {
     return 1;
   }

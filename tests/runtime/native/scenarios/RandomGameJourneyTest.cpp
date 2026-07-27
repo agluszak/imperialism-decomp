@@ -18,13 +18,6 @@ namespace {
 class RandomGameJourneyTestCase : public RandomGameScenario {
 public:
   RandomGameJourneyTestCase() : phase(kReturnToRandomSetup), exercisedReentry(false) {}
-
-  const char* Name() const override {
-    return "random_game_enters_map";
-  }
-  bool UsesRandomGameFlow() const override {
-    return true;
-  }
   bool RecordsGameFlow() const override {
     return true;
   }

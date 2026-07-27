@@ -13,13 +13,6 @@ namespace {
 class EndTurnTestCase : public RandomGameScenario {
 public:
   EndTurnTestCase() : phase(kActivateEndTurn), baselineEconomicTurn(0), leftDealBook(false) {}
-
-  const char* Name() const override {
-    return "easy_turns_advance";
-  }
-  bool UsesRandomGameFlow() const override {
-    return true;
-  }
   int DifficultyLevel() const override {
     return 1;
   }
