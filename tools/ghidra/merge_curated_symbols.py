@@ -15,6 +15,28 @@ VTABLE_MARKER_RE = re.compile(
     r"^\s*//\s*VTABLE\s*:\s*[A-Za-z0-9_]+\s+(?P<offset>(?:0x)?[0-9a-fA-F]+)"
 )
 
+# Any address-claiming marker in manual source. Source is the claim authority, so a row
+# a marker points at is kept even when the Ghidra DB has forgotten the entity -- that is
+# the DYNCREATE GetRuntimeClass / scalar-deleting-dtor case whose rows have no DB twin
+# and whose removal silently re-stubs them and breaks vtables.
+SOURCE_MARKER_RE = re.compile(
+    r"//\s*(?:FUNCTION|SYNTHETIC|TEMPLATE|LIBRARY|STUB|GLOBAL|VTABLE)\s*:\s*"
+    r"[A-Za-z0-9_]+\s+(?P<offset>(?:0x)?[0-9a-fA-F]+)"
+)
+
+
+def collect_source_claimed_addresses(repo_root: Path) -> set[int]:
+    """Every address any manual-source marker claims."""
+    addrs: set[int] = set()
+    for path in iter_files([repo_root / "src", repo_root / "include"]):
+        for match in SOURCE_MARKER_RE.finditer(
+            path.read_text(encoding="utf-8", errors="ignore")
+        ):
+            addr = addr_key(match.group("offset"))
+            if addr is not None:
+                addrs.add(addr)
+    return addrs
+
 
 @dataclass(frozen=True)
 class MergeStats:
@@ -24,6 +46,7 @@ class MergeStats:
     preserved_function_types: int = 0
     new_from_export: int = 0
     retained_orphans: int = 0
+    unclaimed_orphans: int = 0
     dropped_vtable_collisions: int = 0
 
 
@@ -70,14 +93,38 @@ def index_symbols_by_address(rows: list[dict[str, str]]) -> dict[int, dict[str, 
     return indexed
 
 
+def orphan_is_unclaimed(row: dict[str, str], claimed_addresses: set[int]) -> bool:
+    """True when an orphan row has nothing vouching for it -- a REPORTING signal only.
+
+    An orphan is an inventory row this export produced no entity for. Most are legitimate:
+    manual source claims plenty of addresses the DB does not model (DYNCREATE
+    GetRuntimeClass bodies, scalar deleting destructors), and an oracle or a human may
+    have put a row there deliberately -- provenance records that.
+
+    A row with neither a source marker nor any provenance is a candidate for removal, and
+    nothing more. Absence from an export does NOT mean the DB lost the entity: the export
+    omits things the DB still holds (`__seh_longjmp_unwind@4` and the `_$E3xx` EH thunks
+    are in the DB and absent from every export). Deleting on this signal alone removed
+    nine live entities from the inventory when it was tried, so this feeds a report and
+    `just inventory-drop`, which re-checks each address against the DB before touching it
+    (imperialism-decomp-e5ik).
+    """
+    if (row.get("provenance") or "").strip():
+        return False
+    address = addr_key(row.get("address") or "")
+    return address is not None and address not in claimed_addresses
+
+
 def merge_curated_symbols_csv(
     fieldnames: list[str],
     exported_rows: list[dict[str, str]],
     curated_by_addr: dict[int, dict[str, str]],
     vtable_addrs: set[int] | None = None,
+    claimed_addresses: set[int] | None = None,
 ) -> tuple[list[dict[str, str]], MergeStats]:
     """Keep curated name/prototype for known addresses; append curated-only rows."""
     vtable_addrs = vtable_addrs or set()
+    claimed_addresses = set() if claimed_addresses is None else claimed_addresses
 
     merged_addrs: set[int] = set()
     out_rows: list[dict[str, str]] = []
@@ -139,6 +186,7 @@ def merge_curated_symbols_csv(
         out_rows.append(merged)
 
     retained_orphans = 0
+    unclaimed_orphans = 0
     for addr in sorted(curated_by_addr):
         if addr in merged_addrs:
             continue
@@ -146,6 +194,9 @@ def merge_curated_symbols_csv(
         if collides_with_source_vtable(retained, vtable_addrs):
             dropped_vtable_collisions += 1
             continue
+        if orphan_is_unclaimed(retained, claimed_addresses):
+            # Reported, never dropped here -- see orphan_is_unclaimed.
+            unclaimed_orphans += 1
         out_rows.append(retained)
         retained_orphans += 1
 
@@ -156,6 +207,7 @@ def merge_curated_symbols_csv(
         preserved_function_types=preserved_function_types,
         new_from_export=new_from_export,
         retained_orphans=retained_orphans,
+        unclaimed_orphans=unclaimed_orphans,
         dropped_vtable_collisions=dropped_vtable_collisions,
     )
 
