@@ -172,12 +172,19 @@ TMapDialog::~TMapDialog() {}
 void TMapDialog::Free() {
   if (quickDrawSurface350 != 0) {
     g_pDisplayMgr->RemoveGWorld(quickDrawSurface350);
+    quickDrawSurface350 = 0;
+  }
+  if (g_pCitySiteCachedPrimaryRenderSurfaceContext != 0 &&
+      g_pCitySiteCachedPrimaryRenderSurfaceContext != g_pPrimaryRenderSurfaceContext) {
+    g_pDisplayMgr->RemoveGWorld(g_pCitySiteCachedPrimaryRenderSurfaceContext);
+    g_pCitySiteCachedPrimaryRenderSurfaceContext = 0;
   }
   if (overlayObject35C != 0) {
     overlayObject35C->Free();
   }
   overlayObject35C = 0;
   TView::Free();
+  g_pUiAnimator->FreeUiTransientRegistryPayloads();
 }
 
 // FUNCTION: IMPERIALISM 0x00519D30

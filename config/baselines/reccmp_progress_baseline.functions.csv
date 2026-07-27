@@ -3449,7 +3449,7 @@ address|matching|name
 0x519b50|0.8210526315789474|TMapDialog::TMapDialog
 0x519c40|1.0|TMapDialog::`scalar deleting destructor'
 0x519c70|1.0|TMapDialog::~TMapDialog
-0x519c90|0.38461538461538464|TMapDialog::Free
+0x519c90|1.0|TMapDialog::Free
 0x519d30|0.8604651162790697|TMapDialog::DoPostCreate
 0x519e00|0.3269961977186312|TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights
 0x51a2a0|0.7175925925925926|TMapDialog::DrawHexNeighborOutlineFromTileArray
