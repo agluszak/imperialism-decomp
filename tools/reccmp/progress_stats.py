@@ -60,6 +60,7 @@ METRICS: tuple[tuple[str, str, str, str], ...] = (
     ("exact_vs_original_pct", "exact/original", "pct", "higher"),
     ("exact_vs_paired_pct", "exact/paired", "pct", "higher"),
     ("size_weighted_matching_pct", "size-weighted similarity", "pct", "higher"),
+    ("ui_factory_weighted_pct", "generated UI factory fidelity", "pct", "higher"),
     ("avg_matching_pct", "average similarity (unweighted)", "pct", "higher"),
     ("paired_global_count", "paired globals", "int", "higher"),
     ("global_orig_only_count", "global original-only", "int", "lower"),
@@ -486,6 +487,45 @@ def parse_report_counts(path: Path, sizes: dict[int, int] | None = None) -> dict
     }
 
 
+def ui_factory_fidelity(
+    report_json: Path, sizes: dict[int, int] | None, repo_root: Path
+) -> dict[str, Any]:
+    """Size-weighted match across the generated UI factory set.
+
+    The 17 recipe factories are ~18% of all paired bytes and by far the largest single
+    score deficit, but the only thing watching them was a per-function ratchet ("do not
+    get worse") -- the aggregate number itself was recomputed by hand whenever someone
+    asked (imperialism-decomp-wqfq). Tracking it as a first-class metric puts it in the
+    committed baseline and in every precommit diff, so the deficit has a visible owner
+    and any drift shows up next to the other aggregates.
+    """
+    try:
+        from tools.ui_codegen import load_recipes
+
+        addresses = {recipe.address for recipe in load_recipes(repo_root)}
+    except Exception:  # pragma: no cover - recipes are optional for this metric
+        return {}
+    if not addresses:
+        return {}
+    functions = parse_report_functions(report_json)
+    weighted_sum = 0.0
+    weight_total = 0.0
+    paired = 0
+    for address in addresses:
+        row = functions.get(hex(address))
+        if row is None:
+            continue
+        paired += 1
+        weight = max((sizes or {}).get(address, 1), 1)
+        weighted_sum += float(row["m"]) * weight
+        weight_total += weight
+    return {
+        "ui_factory_count": len(addresses),
+        "ui_factory_paired_count": paired,
+        "ui_factory_weighted_pct": (weighted_sum / weight_total) * 100.0 if weight_total else 0.0,
+    }
+
+
 def parse_noise_counts(report_log_path: Path) -> dict[str, int]:
     counts = {
         "dropped_duplicate_address_count": 0,
@@ -715,6 +755,7 @@ def build_entry(args: argparse.Namespace, build_dir: Path) -> dict[str, Any]:
         **parse_roadmap_counts(roadmap_csv),
         **parse_report_counts(report_json, load_function_sizes(build_dir)),
         **parse_noise_counts(noise_log),
+        **ui_factory_fidelity(report_json, load_function_sizes(build_dir), repo_root_from_file(__file__)),
     }
     # Generated-stub count (formerly config/baselines/stub_count_baseline.json): the
     # stub set the generator would emit (symbols.csv function rows minus source-claimed
@@ -816,6 +857,12 @@ def print_summary(entry: dict[str, Any], baseline: dict[str, Any] | None, baseli
     print_pct_line("exact/paired", entry, baseline, "exact_vs_paired_pct")
     print_pct_line("size-weighted similarity", entry, baseline, "size_weighted_matching_pct")
     print_pct_line("average similarity (unweighted)", entry, baseline, "avg_matching_pct")
+    if "ui_factory_weighted_pct" in entry:
+        print_pct_line(
+            f"generated UI factories ({entry.get('ui_factory_paired_count', 0)}"
+            f"/{entry.get('ui_factory_count', 0)} paired)",
+            entry, baseline, "ui_factory_weighted_pct",
+        )
     print("")
 
     print("Globals / non-functions")
