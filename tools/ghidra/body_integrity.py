@@ -282,10 +282,17 @@ def _attach_hole_labels(program, views: list[FunctionView]) -> list[FunctionView
         if not holes:
             out.append(view)
             continue
+        # A symbol at a hole start only means "demoted pseudo-function" when nothing
+        # owns that address any more. When a real function starts there, the gap is a
+        # neighbour, not an orphan, and fix-function-bounds correctly refuses to absorb
+        # it -- reporting those as label_in_hole sent an earlier repair pass chasing
+        # eleven non-defects.
+        fm = program.getFunctionManager()
         labelled = tuple(
             lo
             for lo, _ in holes
             if symbols.getPrimarySymbol(space.getAddress(lo)) is not None
+            and fm.getFunctionAt(space.getAddress(lo)) is None
         )
         out.append(
             FunctionView(
