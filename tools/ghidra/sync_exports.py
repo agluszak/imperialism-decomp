@@ -22,6 +22,7 @@ from tools.ghidra.merge_curated_symbols import (
     index_symbols_by_address,
     collect_source_claimed_addresses,
     merge_curated_symbols_csv,
+    resolve_embedded_owner_size,
     write_symbols_csv,
 )
 from tools.source_model import build_model
@@ -316,8 +317,13 @@ def main() -> int:
                 if address not in embedded_owner_addresses:
                     continue
                 curated = curated_by_addr.get(address)
-                if curated is not None and (curated.get("size") or "").strip():
-                    row["size"] = curated["size"]
+                if curated is None:
+                    continue
+                resolved = resolve_embedded_owner_size(
+                    row.get("size") or "", curated.get("size") or ""
+                )
+                if resolved is not None:
+                    row["size"] = resolved
             filtered_rows = []
             for row in kept_rows:
                 address_text = (row.get("address") or "").strip()
