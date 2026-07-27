@@ -11,7 +11,7 @@
 # Investigate + claim-check target(s) and write the per-branch receipt under
 # build-msvc500/agent-tasks/<branch>/ (receipt.json, pr-body.md, logs/):
 # verifies worktree/base freshness, refuses already-implemented targets, then runs
-# tooling-check, func-status, ghidra-portprep, the initial compare, and
+# tooling-check, func-status, ghidra portprep, the initial compare, and
 # library-identify for library-shaped addresses. `just agent-start port 0xADDR...`.
 [doc('Start a porting task: investigate, claim-check, write the task receipt')]
 [group('agent')]
