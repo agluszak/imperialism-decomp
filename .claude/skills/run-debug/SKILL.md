@@ -28,6 +28,13 @@ holds `Data/` and the other assets; `just build` first.
   winedbg breakpoints from `// FUNCTION` markers, memory notes, or crash
   addresses when `break SymbolName` won't resolve (free functions, renamed
   bodies).
+- `IMPERIALISM_RUNTIME_GDB_WATCH='0xADDR:<cond>;0xADDR' just runtime-test <name> --gdb`
+  — drive a whole scenario under gdb and stop at your own breakpoints. Entries are
+  `;`-separated so a condition may contain spaces; addresses are RECOMP addresses in
+  the runtime build (`build-runtime-tests/Imperialism.map`), not original ones. Each hit
+  is captured like any other stop (registers, `x/256wx $sp`, `x/32i $pc-32`, symbolized
+  against the map) and the run continues. Use a condition: an unconditional breakpoint on
+  a hot helper is captured once (identical stops are deduped) and then only slows the run.
 - OutputDebugString from the game shows up under the `debugstr` channel.
 - winedbg pitfalls: breakpoints freeze the message pump (step, don't free-run,
   once inside), and named-parameter printing at a function's first instruction is
