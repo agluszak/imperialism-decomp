@@ -52,11 +52,11 @@ bool TControlSeaZoneMission::IsDefensiveSeaZoneMission() const {
 
 // FUNCTION: IMPERIALISM 0x005387f0
 void TControlSeaZoneMission::Initialize() {
-  float score = static_cast<float>(targetZone14->ComputeMapActionContextNodeValueAverage());
+  float score = static_cast<float>(missionTargetZone->ComputeMapActionContextNodeValueAverage());
 
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
     TZone** ownerSlot = &zone->primaryNeighbors[0];
-    if (*ownerSlot == targetZone14) {
+    if (*ownerSlot == missionTargetZone) {
       score *= (zone->GetPortZoneOwnerNationCodeFromMissionField48() == nationId04)
                    ? g_PortZoneFriendlyMissionScoreMultiplier_0065AA10
                    : g_PortZoneForeignMissionScoreMultiplier_0065AA18;
@@ -70,10 +70,10 @@ void TControlSeaZoneMission::Initialize() {
 // Inherited unchanged by TBeachheadMission (real base class relationship).
 // Confirms this mission's nation has terrain coverage: scans g_apTerrainTypeDescriptorTable
 // for a nation that either IS this mission's nation or has an encoded-slot match with it, then
-// checks whether targetZone18 lists that nation among its secondary neighbors. If no terrain
+// checks whether missionTargetZone lists that nation among its secondary neighbors. If no terrain
 // coverage is found, clears this nation's per-context flag and returns null (mission invalid).
-// Otherwise, if targetZone18 is a port zone that doesn't already flag this nation, refreshes
-// targetZone18 via RefreshMissionPortZoneContextForNation; returns `this` iff targetZone18 ends
+// Otherwise, if resolvedPortZone is a port zone that doesn't already flag this nation, refreshes
+// resolvedPortZone via RefreshMissionPortZoneContextForNation; returns `this` iff resolvedPortZone ends
 // up non-null.
 // FUNCTION: IMPERIALISM 0x00538900
 TMission* TControlSeaZoneMission::GetReplacementSlot48() {
@@ -86,7 +86,7 @@ TMission* TControlSeaZoneMission::GetReplacementSlot48() {
     if (terrainIndex != nationId04 && !nation->IsEncodedNationSlotMinus200Equal(nationId04)) {
       continue;
     }
-    if (targetZone18->HasSecondaryNeighborWithNationTag(static_cast<short>(terrainIndex))) {
+    if (missionTargetZone->HasSecondaryNeighborWithNationTag(static_cast<short>(terrainIndex))) {
       foundCoverage = true;
       break;
     }
@@ -96,17 +96,17 @@ TMission* TControlSeaZoneMission::GetReplacementSlot48() {
     // See TAttackProvinceMission::Free: the tail AI state block is TAutoGreatPower-only.
     TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
     nationState->AssertValid();
-    short contextOrdinal = targetZone18->GetContextOrdinalOrInvalid();
+    short contextOrdinal = missionTargetZone->GetContextOrdinalOrInvalid();
     nationState->SetByteFlagAtOffsetAF0ByIndex(contextOrdinal, 0);
     return nullptr;
   }
 
-  if (targetZone18 != nullptr && targetZone18->QueryPortZoneCapability() &&
-      !targetZone18->QueryZoneCapabilityFlagD(nationId04)) {
-    targetZone18 = RefreshMissionPortZoneContextForNation();
+  if (resolvedPortZone != nullptr && resolvedPortZone->QueryPortZoneCapability() &&
+      !resolvedPortZone->QueryZoneCapabilityFlagD(nationId04)) {
+    resolvedPortZone = RefreshMissionPortZoneContextForNation();
   }
 
-  return (targetZone18 != nullptr) ? this : nullptr;
+  return (resolvedPortZone != nullptr) ? this : nullptr;
 }
 
 // Inherited unchanged by TBeachheadMission (real base class relationship).
@@ -114,10 +114,10 @@ TMission* TControlSeaZoneMission::GetReplacementSlot48() {
 void TControlSeaZoneMission::SetStateByte8To2() {
   TZone* homePort = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId04);
   TZone** ownerSlot = &homePort->primaryNeighbors[0];
-  if (*ownerSlot == targetZone14) {
+  if (*ownerSlot == missionTargetZone) {
     float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
     for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
-      if (ship->location != targetZone14 ||
+      if (ship->location != missionTargetZone ||
           !g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, ship->nation)) {
         continue;
       }
@@ -164,11 +164,11 @@ void TControlSeaZoneMission::SetStateByte8To2() {
 // Inherited unchanged by TBeachheadMission and TBlockadePortMission (real base class relationship).
 // FUNCTION: IMPERIALISM 0x00539290
 void TControlSeaZoneMission::CalculateImportance() {
-  float score = static_cast<float>(targetZone14->ComputeMapActionContextNodeValueAverage());
+  float score = static_cast<float>(missionTargetZone->ComputeMapActionContextNodeValueAverage());
 
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
     TZone** ownerSlot = &zone->primaryNeighbors[0];
-    if (*ownerSlot == targetZone14) {
+    if (*ownerSlot == missionTargetZone) {
       score *= (zone->GetPortZoneOwnerNationCodeFromMissionField48() == nationId04)
                    ? g_PortZoneFriendlyMissionScoreMultiplier_0065AA10
                    : g_PortZoneForeignMissionScoreMultiplier_0065AA18;
@@ -182,7 +182,7 @@ void TControlSeaZoneMission::CalculateImportance() {
 void TControlSeaZoneMission::CalculateNeeds() {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
-    if (node->location != targetZone14) {
+    if (node->location != missionTargetZone) {
       continue;
     }
     if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, node->nation)) {
@@ -228,7 +228,7 @@ void TControlSeaZoneMission::CalculateNeeds() {
 bool TControlSeaZoneMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   (void)key;
   return (missionType == kMissionTypeAttackProvince || missionType == kMissionTypeDefendProvince) &&
-         zoneContext == targetZone14;
+         zoneContext == missionTargetZone;
 }
 
 // Resolves a port-zone context command into a queued order type. `pMapOrderEntry` is the
@@ -269,16 +269,16 @@ void TControlSeaZoneMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
 // Caches this mission's target port zone into the first port zone's primaryNeighbors slot 0
 // (a per-nation "current port zone owner" cache slot, not a real neighbor list entry -- ground
 // truth forces the slot to exist through grow-on-access operator[] unconditionally).
-// If that cached slot still points at targetZone14, just re-touches the port zone lookup and
+// If that cached slot still points at missionTargetZone, just re-touches the port zone lookup and
 // returns its result; otherwise returns the best-scoring neighbor via SelectBestPrimaryNeighbor-
 // ForNationDiplomacyMask. GetReplacementSlot48 (0x538900) consumes this return value (stores it
-// back into targetZone18), so it is no longer discarded.
+// back into resolvedPortZone), so it is no longer discarded.
 // FUNCTION: IMPERIALISM 0x00539780
 TZone* TControlSeaZoneMission::RefreshMissionPortZoneContextForNation() {
   TZone* firstPortZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId04);
   TZone** cachedOwnerSlot = &firstPortZone->primaryNeighbors[0];
-  if (*cachedOwnerSlot == targetZone14) {
+  if (*cachedOwnerSlot == missionTargetZone) {
     return g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId04);
   }
-  return targetZone14->SelectBestPrimaryNeighborForNationDiplomacyMask(nationId04);
+  return missionTargetZone->SelectBestPrimaryNeighborForNationDiplomacyMask(nationId04);
 }

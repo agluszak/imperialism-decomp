@@ -48,3 +48,34 @@ bool RuntimeUiDriver::ActivateControlSemantically(TView* root, int tag) {
 bool RuntimeUiDriver::ClickControlThroughNativeMessages(TView* root, int tag) {
   return ClickViewThroughNativeMessages(FindControl(root, tag));
 }
+
+bool RuntimeUiDriver::QueueViewClickThroughNativeMessages(TView* view) {
+  return QueueViewClickThroughNativeMessagesAtOffset(view, 0, 0);
+}
+
+bool RuntimeUiDriver::QueueViewClickThroughNativeMessagesAtOffset(TView* view, int offsetX,
+                                                                  int offsetY) {
+  CIncludeView* host = GetMainViewHostFromActiveThread();
+  if (view == 0 || host == 0 || host->m_hWnd == 0) {
+    return false;
+  }
+
+  CPoint position;
+  view->GetAbsolutePosition(&position);
+  position.x += view->frameWidth34 / 2 + offsetX;
+  position.y += view->frameHeight38 / 2 + offsetY;
+  LPARAM mousePosition = MAKELPARAM(position.x, position.y);
+  if (!PostMessageA(host->m_hWnd, WM_LBUTTONDOWN, MK_LBUTTON, mousePosition)) {
+    return false;
+  }
+  return PostMessageA(host->m_hWnd, WM_LBUTTONUP, 0, mousePosition) != 0;
+}
+
+bool RuntimeUiDriver::QueueControlClickThroughNativeMessages(TView* root, int tag) {
+  return QueueViewClickThroughNativeMessages(FindControl(root, tag));
+}
+
+bool RuntimeUiDriver::QueueControlClickThroughNativeMessagesAtOffset(TView* root, int tag,
+                                                                     int offsetX, int offsetY) {
+  return QueueViewClickThroughNativeMessagesAtOffset(FindControl(root, tag), offsetX, offsetY);
+}

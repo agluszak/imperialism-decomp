@@ -82,8 +82,10 @@ void TOffersPanelView::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x004f9300
 void TOffersPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   int tag = sourceHandler->controlTag;
-  if (commandId == 5 || (commandId == 0xa && (tag == kControlTagAcce || tag == kControlTagReje))) {
-    lastNegotiationResponseTag64 = tag;
+  if (commandId != 5 && commandId == 0xa) {
+    if (tag == kControlTagAcce || tag == kControlTagReje) {
+      lastNegotiationResponseTag64 = tag;
+    }
   }
   TEventHandler::DoEvent(commandId, sourceHandler, event);
 }

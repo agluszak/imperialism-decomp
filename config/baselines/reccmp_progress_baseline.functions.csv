@@ -731,7 +731,7 @@ address|matching|name
 0x4867e0|0.9|TApplication::~TApplication
 0x486880|1.0|TApplication::SetTarget
 0x4868a0|1.0|TApplication::GetTarget
-0x4868c0|0.6115702479338843|PumpUiMessagesAndBackgroundTasks
+0x4868c0|1.0|PumpUiMessagesAndBackgroundTasks
 0x486960|1.0|TApplication::InModalState
 0x486990|1.0|TApplication::GetDefaultCursorRegion
 0x4869b0|1.0|TApplication::InstallCohandler
@@ -2155,18 +2155,18 @@ address|matching|name
 0x4bfa50|1.0|TCityInteriorMinister::QueueCityProductionPolicyCommands
 0x4bfb20|0.7736185383244206|TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
 0x4bff60|1.0|TCityInteriorMinister::NoOpProductionCommandHook24
-0x4bff80|0.5138888888888888|TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit
+0x4bff80|0.5|TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit
 0x4c0090|0.38848920863309355|TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders
-0x4c02c0|0.5923076923076923|TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio
+0x4c02c0|0.6|TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio
 0x4c04e0|1.0|TCityInteriorMinister::QueueRandomCityProductionCommand19To1C
 0x4c05a0|0.6363636363636364|TCityInteriorMinister::QueueShipProductionCommandIfMissing
 0x4c0690|1.0|TCityInteriorMinister::QueuePendingRecruitmentProductionCommand
 0x4c0730|1.0|TCityInteriorMinister::QueuePendingUnitProductionCommand
-0x4c07d0|0.32737276478679506|TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits
+0x4c07d0|0.3328748280605227|TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits
 0x4c0d90|1.0|TCityInteriorMinister::MakeNewCity
 0x4c0de0|1.0|TCityInteriorMinister::RaiseNeedTargetWithinAvailableSurplus
 0x4c0e50|0.27616926503340755|TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls
-0x4c11c0|0.2815533980582524|TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore
+0x4c11c0|0.3058252427184466|TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore
 0x4c1510|0.6192468619246861|TCityInteriorMinister::ProcessUnitOrders
 0x4c18a0|0.6060606060606061|stretch<short>::Add
 0x4c1960|0.2|IltTarget_004c1960
@@ -2191,7 +2191,7 @@ address|matching|name
 0x4c4690|0.5872340425531914|TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutputs
 0x4c4840|0.8477366255144033|TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle
 0x4c49f0|0.8155844155844156|TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex
-0x4c4d40|0.5035971223021583|TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget
+0x4c4d40|0.5899280575539568|TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget
 0x4c4e60|0.7973856209150327|TCityInteriorMinister::FillRemainingNeedCapacityAndReducePowerPlantOrder
 0x4c4f90|1.0|TCityInteriorMinister::GetAverageDevelopmentOrderAllocation
 0x4c4fe0|0.10344827586206896|TCityInteriorMinister::RequestResource
@@ -2306,7 +2306,7 @@ address|matching|name
 0x4cc440|1.0|TPurchaseCluster::SetValueControlAndSyncAmount
 0x4cc470|1.0|TPurchaseCluster::DoMouseCommand
 0x4cc490|0.3368421052631579|TPurchaseCluster::DoEvent
-0x4cc550|0.864406779661017|TPurchaseCluster::SetCityViewValueControlAmount
+0x4cc550|0.8813559322033898|TPurchaseCluster::SetCityViewValueControlAmount
 0x4cc640|0.9523809523809523|TPurchaseCluster::UpdateCityViewValueControl
 0x4cc6b0|0.5614035087719298|TIndustryView::CreateObject
 0x4cc770|1.0|TIndustryView::GetRuntimeClass
@@ -2335,10 +2335,10 @@ address|matching|name
 0x4ceda0|0.9|TArmoryView::TArmoryView
 0x4cedd0|1.0|TArmoryView::`scalar deleting destructor'
 0x4cee00|1.0|TArmoryView::~TArmoryView
-0x4cee20|0.7197549770290965|TArmoryView::DoStartup
+0x4cee20|0.8018154311649016|TArmoryView::DoStartup
 0x4cf350|0.7208480565371025|TArmoryView::DoEvent
 0x4cf5c0|0.2440677966101695|TArmoryView::UpdateFields
-0x4cfbd0|0.2316715542521994|TArmoryView::RefreshCityViewProductionDetails
+0x4cfbd0|0.6186440677966102|TArmoryView::RefreshCityViewProductionDetails
 0x4d0470|1.0|TArmoryView::Free
 0x4d04b0|0.5245901639344263|TEngineerDialog::CreateObject
 0x4d0540|1.0|TEngineerDialog::GetRuntimeClass
@@ -2988,7 +2988,7 @@ address|matching|name
 0x4f8fa0|1.0|TOffersPanelView::`scalar deleting destructor'
 0x4f8fd0|1.0|TOffersPanelView::~TOffersPanelView
 0x4f8ff0|0.4506172839506173|TOffersPanelView::DoPostCreate
-0x4f9300|0.95|TOffersPanelView::DoEvent
+0x4f9300|1.0|TOffersPanelView::DoEvent
 0x4f9350|1.0|TOffersPanelView::DoKeyEvent
 0x4f9420|1.0|TOffersPanelView::HandleMouseUp
 0x4f9450|0.5701492537313433|TOffersPanelView::PoseOffer
@@ -3878,7 +3878,7 @@ address|matching|name
 0x5387a0|0.3333333333333333|`dynamic initializer for '_init_TControlSeaZoneMission''
 0x5387c0|1.0|operator>>(class CArchive &, class TControlSeaZoneMission *&)
 0x5387f0|0.7746478873239436|TControlSeaZoneMission::Initialize
-0x538900|0.45161290322580644|TControlSeaZoneMission::GetReplacementSlot48
+0x538900|0.5161290322580645|TControlSeaZoneMission::GetReplacementSlot48
 0x5389f0|0.29714285714285715|TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter
 0x538bf0|0.294478527607362|TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation
 0x538dd0|0.3486238532110092|TNavyMission::ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile
@@ -6463,12 +6463,12 @@ address|matching|name
 0x5d7190|1.0|TViewMgr::NoOpTurnEventStateVtableSlotD4
 0x5d71b0|1.0|TViewMgr::DispatchNationActionToMainControl
 0x5d7240|0.4098939929328622|TViewMgr::DispatchTurnEvent
-0x5d7c40|0.75|TViewMgr::DispatchTurnEvent3B8AndWaitForCompletion
+0x5d7c40|0.8|TViewMgr::DispatchTurnEvent3B8AndWaitForCompletion
 0x5d7cb0|0.9313432835820895|TViewMgr::ShowCityProductionView
 0x5d7f70|1.0|TViewMgr::RefreshCityProductionUi
 0x5d7f90|1.0|TViewMgr::ClearActiveCityBuildingViewSlot
 0x5d7fc0|0.53125|TViewMgr::SetCursorRangeAndRefreshMainPanel
-0x5d8040|0.24437299035369775|TViewMgr::ShowDiplomacyScreen
+0x5d8040|0.6706948640483383|TViewMgr::ShowDiplomacyScreen
 0x5d8310|0.0|IltTarget_005d8310
 0x5d83b0|0.956140350877193|TViewMgr::ShowTransportScreen
 0x5d8750|0.9318181818181818|TViewMgr::RefreshTechnologyStorePageAndHudText

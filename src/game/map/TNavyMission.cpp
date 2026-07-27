@@ -20,8 +20,8 @@
 // nationId04/pathMarker06; the vtable install lands mid-way through the zero stores.
 // FUNCTION: IMPERIALISM 0x00535470
 TNavyMission::TNavyMission(TZone* targetZone) : TMission() {
-  targetZone14 = targetZone;
-  targetZone18 = nullptr;
+  missionTargetZone = targetZone;
+  resolvedPortZone = nullptr;
   selectedOrder1c = nullptr;
   taskForce20 = nullptr;
   orderList24 = nullptr;
@@ -134,10 +134,11 @@ void TNavyMission::Free() {
 void TNavyMission::WriteTo(TStream* stream) {
   TMission::WriteTo(stream);
 
-  int nodeIdx1 = targetZone14 != nullptr ? targetZone14->GetContextOrdinalOrInvalid() : -1;
+  int nodeIdx1 =
+      missionTargetZone != nullptr ? missionTargetZone->GetContextOrdinalOrInvalid() : -1;
   stream->WriteInteger(nodeIdx1);
 
-  int nodeIdx2 = targetZone18 != nullptr ? targetZone18->GetContextOrdinalOrInvalid() : -1;
+  int nodeIdx2 = resolvedPortZone != nullptr ? resolvedPortZone->GetContextOrdinalOrInvalid() : -1;
   stream->WriteInteger(nodeIdx2);
 
   WriteFloatArrayElems(stream, requiredShipEquipageByCategory, 4);
@@ -159,10 +160,10 @@ void TNavyMission::ReadFrom(TStream* stream) {
   // Both zone ids are 2-byte reads through slot 0x4c (ReadInteger), not the 1-byte
   // slot 0x40: the original does CALL [vt+0x4c] at 0x536667 and 0x536677.
   short targetZoneId = stream->ReadInteger();
-  targetZone14 = FindMapActionContextByNodeId(targetZoneId);
+  missionTargetZone = FindMapActionContextByNodeId(targetZoneId);
 
   short secondaryZoneId = stream->ReadInteger();
-  targetZone18 = FindMapActionContextByNodeId(secondaryZoneId);
+  resolvedPortZone = FindMapActionContextByNodeId(secondaryZoneId);
 
   stream->ReadBytes(&requiredShipEquipageByCategory[0], 0x10);
   // In-place four-byte reverse over the array (0x53669e), not a per-element temporary.
@@ -292,7 +293,7 @@ void TNavyMission::Reassess() {
   CalculateImportance();
   CalculateNeeds();
 
-  targetZone14->IsZoneMaskOrArrayEntryPresentForKey(nationId04);
+  missionTargetZone->IsZoneMaskOrArrayEntryPresentForKey(nationId04);
 
   if (orderList24 == nullptr) {
     navyState28 = 0;
@@ -313,7 +314,7 @@ void TNavyMission::Reassess() {
   } else if (mode == 2) {
     if (ComputeNavyOrderCategorySimilarityRatio(1) < 0.8f) {
       navyState28 = 0;
-      targetZone18 = RefreshMissionPortZoneContextForNation();
+      resolvedPortZone = RefreshMissionPortZoneContextForNation();
     }
   }
 }
@@ -346,8 +347,8 @@ void TNavyMission::GiveOrders() {
   }
 
   if (navyState28 == 2) {
-    ConsolidateMissionOrderEntriesByTargetAndQueue(targetZone14);
-    CombineForce(targetZone14, taskForce20);
+    ConsolidateMissionOrderEntriesByTargetAndQueue(missionTargetZone);
+    CombineForce(missionTargetZone, taskForce20);
     if (taskForce20 != nullptr) {
       GiveActionOrders(taskForce20);
     }
@@ -355,8 +356,8 @@ void TNavyMission::GiveOrders() {
   }
 
   if (navyState28 == 1) {
-    ConsolidateMissionOrderEntriesByTargetAndQueue(targetZone14);
-    CombineForce(targetZone14, taskForce20);
+    ConsolidateMissionOrderEntriesByTargetAndQueue(missionTargetZone);
+    CombineForce(missionTargetZone, taskForce20);
     if (taskForce20 != nullptr) {
       taskForce20->OrderEvade();
     }
@@ -364,12 +365,12 @@ void TNavyMission::GiveOrders() {
   }
 
   if (navyState28 == 0) {
-    if (targetZone18 == nullptr) {
-      targetZone18 = RefreshMissionPortZoneContextForNation();
+    if (resolvedPortZone == nullptr) {
+      resolvedPortZone = RefreshMissionPortZoneContextForNation();
     }
-    QueueMissionOrdersByPriorityForContext(targetZone14, &selectedOrder1c);
-    ConsolidateMissionOrderEntriesByTargetAndQueue(targetZone18);
-    CombineForce(targetZone18, taskForce20);
+    QueueMissionOrdersByPriorityForContext(missionTargetZone, &selectedOrder1c);
+    ConsolidateMissionOrderEntriesByTargetAndQueue(resolvedPortZone);
+    CombineForce(resolvedPortZone, taskForce20);
     if (taskForce20 != nullptr) {
       taskForce20->SetAggression(0);
       taskForce20->OrderPatrol(0);
@@ -379,19 +380,19 @@ void TNavyMission::GiveOrders() {
 
 // FUNCTION: IMPERIALISM 0x00536fa0
 TZone* TNavyMission::RefreshMissionPortZoneContextForNation() {
-  return targetZone14->SelectBestPrimaryNeighborForNationDiplomacyMask(nationId04);
+  return missionTargetZone->SelectBestPrimaryNeighborForNationDiplomacyMask(nationId04);
 }
 
 // FUNCTION: IMPERIALISM 0x00536fc0
 TMission* TNavyMission::GetReplacementSlot48() {
-  if (targetZone18 != nullptr) {
-    if (targetZone18->QueryPortZoneCapability() != 0) {
-      if (targetZone18->QueryZoneCapabilityFlagD(nationId04) == 0) {
-        targetZone18 = RefreshMissionPortZoneContextForNation();
+  if (resolvedPortZone != nullptr) {
+    if (resolvedPortZone->QueryPortZoneCapability() != 0) {
+      if (resolvedPortZone->QueryZoneCapabilityFlagD(nationId04) == 0) {
+        resolvedPortZone = RefreshMissionPortZoneContextForNation();
       }
     }
   }
-  return (targetZone18 != nullptr) ? this : nullptr;
+  return (resolvedPortZone != nullptr) ? this : nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x00537010
@@ -414,11 +415,11 @@ TZone* TNavyMission::GetActiveTargetZoneByState28() const {
   int state = navyState28;
   if (state != 0) {
     if (state > 0 && state <= 2) {
-      return targetZone14;
+      return missionTargetZone;
     }
     return 0;
   }
-  return targetZone18;
+  return resolvedPortZone;
 }
 
 // FUNCTION: IMPERIALISM 0x00537090
@@ -452,11 +453,11 @@ void TNavyMission::QueueMissionOrdersByPriorityForContext(TZone* location, TShip
     } else {
       if (*selectedOrder != nullptr) {
         // Ground truth (0x537090): the original compares the *existing selection's*
-        // zone-distance against the *candidate's* zone-distance, both to targetZone14 --
-        // the prior port dropped this argument and used targetZone14 itself as a fake
+        // zone-distance against the *candidate's* zone-distance, both to missionTargetZone --
+        // the prior port dropped this argument and used missionTargetZone itself as a fake
         // receiver for target1 instead of selectedOrder.
-        short target1 = (*selectedOrder)->GetTurnDistanceTo(targetZone14);
-        short target2 = topOrder->GetTurnDistanceTo(targetZone14);
+        short target1 = (*selectedOrder)->GetTurnDistanceTo(missionTargetZone);
+        short target2 = topOrder->GetTurnDistanceTo(missionTargetZone);
         if (target1 < target2) {
           goto LAB_0053711a;
         }
@@ -727,7 +728,7 @@ void TNavyMission::BuildNavyOrderCategoryVectorForNationWithExclusion(float* vec
 float TNavyMission::ComputeNavyOrderCategorySimilarityRatio(int excludeCurrent) {
   float vector[4];
   BuildNavyOrderCategoryVectorForNationWithExclusion(
-      vector, targetZone14, static_cast<short>(excludeCurrent), targetZone18);
+      vector, missionTargetZone, static_cast<short>(excludeCurrent), resolvedPortZone);
   float numerator = 0.0f;
   float denominator = 0.0f;
   for (int i = 0; i < 4; ++i) {
@@ -795,13 +796,13 @@ void TNavyMission::BuildMissionQueuedOrderCategoryVector(float* vector) {
 }
 
 // Same shape as ComputeNavyOrderCategorySimilarityRatio above, but always scores against
-// targetZone14 (near) / targetZone18 (far), with an explicit
+// missionTargetZone (near) / resolvedPortZone (far), with an explicit
 // caller-supplied distance threshold instead of a fixed 0/1.
 // FUNCTION: IMPERIALISM 0x00537eb0
 float TNavyMission::ComputeMissionQueuedOrderSimilarityForTargetNation(short distanceThreshold) {
   float vector[4];
-  BuildNavyOrderCategoryVectorForNationWithExclusion(vector, targetZone14, distanceThreshold,
-                                                     targetZone18);
+  BuildNavyOrderCategoryVectorForNationWithExclusion(vector, missionTargetZone, distanceThreshold,
+                                                     resolvedPortZone);
   float numerator = 0.0f;
   float denominator = 0.0f;
   for (int i = 0; i < 4; ++i) {
