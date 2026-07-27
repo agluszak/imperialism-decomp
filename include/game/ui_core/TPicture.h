@@ -26,6 +26,12 @@ public:
 
   TPicture();
   TPicture(const TPicture& source); // 0x48f080
+  // Assignment-style counterpart of the copy ctor above and of
+  // TView::CopyViewStateFromSource (0x48bef0): copies the control and picture state
+  // into an already-constructed object, taking a reference on the glyph resource.
+  // Writes no vptr and returns nothing, so it is not a ctor and not operator=.
+  // 0x0048f190, __thiscall.
+  void CopyPictureStateFromSource(TPicture* source);
 
   // TPicture-family clone of TView::InitializeUiResourceEntryFrameAndParent: seeds the
   // frame/parent base fields, attaches to the panel, and loads the picture resource via
