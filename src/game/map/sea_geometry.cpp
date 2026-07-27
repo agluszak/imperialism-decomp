@@ -360,23 +360,23 @@ unsigned short SeaSegment::SelectAttrByAngle() const {
 // FUNCTION: IMPERIALISM 0x0052ca20
 void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b, int extra) {
   unsigned int row = tileIndex / 0x6c;
-  int column = (row & 1) + (tileIndex % 0x6c) * 2;
-  int overlayX = column;
+  int overlayX = (row & 1) + (tileIndex % 0x6c) * 2;
   if (side == '\0') {
-    overlayX = column + 2;
+    overlayX = overlayX + 2;
     row = row + 1;
-    if (0xd7 < overlayX) {
-      overlayX = column - 0xd6;
+    if (overlayX >= 0xd8) {
+      overlayX = overlayX - 0xd8;
     }
   }
-  int hi = b;
+  int coord = overlayX + row * 0xd8;
   int lo = a;
-  if (b < a) {
-    hi = a;
+  int hi = b;
+  if (a > b) {
     lo = b;
+    hi = a;
   }
   Seapoint pt;
-  pt.coord00 = overlayX + row * 0xd8;
+  pt.coord00 = coord;
   pt.lo04 = lo;
   pt.hi08 = hi;
   pt.f0c = extra;

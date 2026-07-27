@@ -16,29 +16,24 @@
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 
-namespace {
-
-// Code-generation adapter for the sites where retail exhausts VC5's inline budget and
-// calls stretch<Seapoint>::operator[] out of line. Comparison reads below intentionally
-// use quad[index] directly because retail inlines those earlier accesses.
-inline Seapoint* QuadAccessForCall(unsigned int index) {
-  return &g_seapointQuadTable_006a3478[index];
-}
-
-} // namespace
-
+// A body this size exhausts VC5's inline budget: retail expands
+// stretch<Seapoint>::operator[] only at the first few sites and calls the out-of-line copy
+// at the rest (see the big-functions skill). Suspending automatic expansion for this one
+// function reproduces the majority case; the handful of early sites retail did inline are
+// the residual.
+#pragma inline_depth(0)
 // FUNCTION: IMPERIALISM 0x0052cae0
 void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
   SeaSegmentStretch& seg = g_regionBorderLinkTable_006a3900;
   SeapointStretch& quad = g_seapointQuadTable_006a3478;
 
   // Reset the output segment table.
-  if (seg.Data() != nullptr) {
+  if (seg.data != nullptr) {
     free(seg.Detach());
   }
 
   unsigned int i = 0;
-  if (quad.Count() == 0) {
+  if (quad.count == 0) {
     return;
   }
   do {
@@ -52,7 +47,7 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
     unsigned int j = i + 1;
     unsigned int bestPrimary = 0xffffffff;
     unsigned int bestSecondary = 0xffffffff;
-    if (j < static_cast<unsigned int>(quad.Count())) {
+    if (j < static_cast<unsigned int>(quad.count)) {
       do {
         Seapoint* a = &quad[i];
         Seapoint* b = &quad[j];
@@ -74,18 +69,15 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
               }
               float candidateDist = static_cast<float>(
                   sqrt(static_cast<double>(colDelta * colDelta * rowDelta * rowDelta)));
-              if (QuadAccessForCall(bestPrimary)->WrappedDeltaMetric(QuadAccessForCall(i)) <=
-                  candidateDist) {
+              if ((&quad[bestPrimary])->WrappedDeltaMetric((&quad[i])) <= candidateDist) {
                 goto next;
               }
             }
             bestPrimary = j;
           } else if (bestPrimary == 0xffffffff) {
             if (bestSecondary != 0xffffffff) {
-              float candidateDist = static_cast<float>(
-                  QuadAccessForCall(j)->WrappedDeltaMetric(QuadAccessForCall(i)));
-              if (QuadAccessForCall(bestSecondary)->WrappedDeltaMetric(QuadAccessForCall(i)) <=
-                  candidateDist) {
+              float candidateDist = static_cast<float>((&quad[j])->WrappedDeltaMetric((&quad[i])));
+              if ((&quad[bestSecondary])->WrappedDeltaMetric((&quad[i])) <= candidateDist) {
                 goto next;
               }
             }
@@ -94,29 +86,30 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
         }
       next:
         j = j + 1;
-      } while (j < static_cast<unsigned int>(quad.Count()));
+      } while (j < static_cast<unsigned int>(quad.count));
     }
     if (bestPrimary == 0xffffffff) {
       bestPrimary = bestSecondary;
     }
     if (bestPrimary == 0xffffffff) {
-      Seapoint* p = QuadAccessForCall(i);
+      Seapoint* p = (&quad[i]);
       p->coord00 = -1;
       p->hi08 = -1;
       p->lo04 = -1;
     } else {
       SeaSegment tmp;
-      tmp.InitFromPoints(QuadAccessForCall(bestPrimary), QuadAccessForCall(i));
+      tmp.InitFromPoints((&quad[bestPrimary]), (&quad[i]));
       stretch<SeaSegment>* out = &seg;
       out->Add(tmp);
-      Seapoint* pi = QuadAccessForCall(i);
+      Seapoint* pi = (&quad[i]);
       pi->coord00 = -1;
       pi->hi08 = -1;
       pi->lo04 = -1;
-      Seapoint* pm = QuadAccessForCall(bestPrimary);
+      Seapoint* pm = (&quad[bestPrimary]);
       pm->coord00 = -1;
       pm->hi08 = -1;
       pm->lo04 = -1;
     }
-  } while (i < static_cast<unsigned int>(quad.Count()));
+  } while (i < static_cast<unsigned int>(quad.count));
 }
+#pragma inline_depth()
