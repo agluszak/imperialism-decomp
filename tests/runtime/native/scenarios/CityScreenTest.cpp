@@ -6,10 +6,12 @@
 #include "game/city/TCity.h"
 #include "game/city/TItemOrder.h"
 #include "game/city/TProductionOrder.h"
+#include "game/city/TShipOrder.h"
 #include "game/city/TUnitOrder.h"
 #include "game/city_ui/TBuildingView.h"
 #include "game/city_ui/TCityProductionView.h"
 #include "game/city_ui/TIndustryView.h"
+#include "game/city_ui/TShipyardView.h"
 #include "game/city_ui/TUniversityView.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
@@ -35,7 +37,7 @@ public:
   CityScreenTestCase()
       : phase(kActivateCityScreen), activeBuildingSlot(kUniversityBuildingSlot),
         interactionComplete(false), interactionKind(kNoInteraction), interactionUnitOrder(0),
-        interactionItemOrder(0), interactionRowTag(0) {}
+        interactionItemOrder(0), interactionShipOrder(0), interactionRowTag(0) {}
   int DifficultyLevel() const override {
     return 1;
   }
@@ -94,11 +96,17 @@ private:
   };
 
   enum {
+    kShipyardBuildingSlot = kTurnEventShipyard - kTurnEventTextileMill,
     kUniversityBuildingSlot = kTurnEventUniversity - kTurnEventTextileMill,
     kRailyardBuildingSlot = kTurnEventRailyard - kTurnEventTextileMill
   };
 
-  enum InteractionKind { kNoInteraction, kUniversityInteraction, kItemInteraction };
+  enum InteractionKind {
+    kNoInteraction,
+    kUniversityInteraction,
+    kShipyardInteraction,
+    kItemInteraction
+  };
 
   void ActivateCityScreen() {
     if (ScenarioPhaseTicks() < 60) {
@@ -244,6 +252,43 @@ private:
     return true;
   }
 
+  bool ValidateShipyardQuantities(TBuildingView* buildingView) {
+    if (buildingView->IsKindOf(RUNTIME_CLASS(TShipyardView)) == 0) {
+      FailScenario("\"shipyard building control opened the wrong view class\"");
+      return false;
+    }
+    bool foundLiveShipOrder = false;
+    for (short queueIndex = 0; queueIndex < 8; ++queueIndex) {
+      TShipOrder* order = buildingView->city94->shipOrderSlots[queueIndex];
+      if (order == 0 || order->resourceTypeIndex48 == 0) {
+        continue;
+      }
+      TView* queueRow = buildingView->ResolveControlByTag(kControlTagClu0 + queueIndex);
+      TNumberText* quantity =
+          queueRow == 0 ? 0
+                        : static_cast<TNumberText*>(queueRow->ResolveControlByTag(kControlTagNumb));
+      if (quantity == 0) {
+        FailScenario("\"shipyard build-queue count control is missing\"");
+        return false;
+      }
+      foundLiveShipOrder = true;
+      CString quantityText;
+      CString expectedText;
+      quantity->GetCurrentText(&quantityText);
+      expectedText.Format("%d", order->quantityField04);
+      if (quantityText != expectedText || quantity->value != order->quantityField04 ||
+          !HasCorrectNumberTextPresentationState(quantity, 10, PALETTEINDEX(0xd2))) {
+        FailScenario("\"shipyard build-queue count does not match its live order\"");
+        return false;
+      }
+    }
+    if (!foundLiveShipOrder) {
+      FailScenario("\"shipyard has no live ship order\"");
+      return false;
+    }
+    return true;
+  }
+
   bool ValidateRailyardQuantity(TBuildingView* buildingView) {
     if (buildingView->IsKindOf(RUNTIME_CLASS(TIndustryView)) == 0) {
       FailScenario("\"railyard building control opened the wrong view class\"");
@@ -328,6 +373,7 @@ private:
     interactionKind = kUniversityInteraction;
     interactionUnitOrder = order;
     interactionItemOrder = 0;
+    interactionShipOrder = 0;
     priorQuantity = order->quantityField04;
     priorPrimaryStock = order->cityField08->CityStockByType(order->primaryInputResourceId);
     priorSecondaryStock =
@@ -351,6 +397,7 @@ private:
     interactionKind = kItemInteraction;
     interactionUnitOrder = 0;
     interactionItemOrder = order;
+    interactionShipOrder = 0;
     priorQuantity = order->quantityField04;
     priorRequestedQuantity = order->requestedQuantity4c;
     priorPrimaryStock = order->cityField08->CityStockByType(order->primaryInputResourceId);
@@ -365,6 +412,14 @@ private:
     priorStrength = order->summaryField0c->strength;
     priorField3e = order->field3e;
     priorProductionAccum = order->cityField08->productionAccum1fc[order->productionSlot];
+  }
+
+  void CaptureShipOrderState(TShipOrder* order) {
+    interactionKind = kShipyardInteraction;
+    interactionUnitOrder = 0;
+    interactionItemOrder = 0;
+    interactionShipOrder = order;
+    priorQuantity = order->quantityField04;
   }
 
   bool BeginUniversityInteraction(TBuildingView* buildingView) {
@@ -391,6 +446,30 @@ private:
       return true;
     }
     FailScenario("\"university has no actionable production-order plus arrow\"");
+    return false;
+  }
+
+  bool BeginShipyardInteraction(TBuildingView* buildingView) {
+    for (short queueIndex = 0; queueIndex < 8; ++queueIndex) {
+      TShipOrder* order = buildingView->city94->shipOrderSlots[queueIndex];
+      TView* queueRow = buildingView->ResolveControlByTag(kControlTagClu0 + queueIndex);
+      TView* plus = queueRow == 0 ? 0 : queueRow->ResolveControlByTag(kControlTagPlus);
+      if (order == 0 || order->resourceTypeIndex48 == 0 || plus == 0 || plus->IsActionable() == 0 ||
+          order->MaxOrder() <= order->quantityField04) {
+        continue;
+      }
+      CaptureShipOrderState(order);
+      interactionRowTag = kControlTagClu0 + queueIndex;
+      phase = kWaitForOrderIncrease;
+      EnterScenarioStep("waiting_for_ship_order_increase", "activate_shipyard_plus_arrow");
+      if (!RuntimeUiDriver::ActivateControlSemantically(queueRow, kControlTagPlus)) {
+        FailScenario("\"shipyard plus arrow could not be activated\"");
+        return false;
+      }
+      RequestScenarioTick();
+      return true;
+    }
+    FailScenario("\"shipyard has no actionable build-order plus arrow\"");
     return false;
   }
 
@@ -487,6 +566,14 @@ private:
            order->cityField08->productionAccum1fc[order->productionSlot] == priorProductionAccum;
   }
 
+  bool ShipOrderStateWasReserved() {
+    return interactionShipOrder->quantityField04 == priorQuantity + 1;
+  }
+
+  bool ShipOrderStateWasRestored() {
+    return interactionShipOrder->quantityField04 == priorQuantity;
+  }
+
   void WaitForOrderIncrease() {
     TBuildingView* buildingView = ActiveBuildingView();
     if (buildingView == 0) {
@@ -494,10 +581,12 @@ private:
       return;
     }
     bool stateIsCorrect = interactionKind == kUniversityInteraction ? UnitOrderStateWasReserved()
+                          : interactionKind == kShipyardInteraction ? ShipOrderStateWasReserved()
                                                                     : ItemOrderStateWasReserved();
-    bool uiIsCorrect = interactionKind == kUniversityInteraction
-                           ? ValidateUniversityQuantities(buildingView)
-                           : ValidateItemQuantity(buildingView);
+    bool uiIsCorrect =
+        interactionKind == kUniversityInteraction ? ValidateUniversityQuantities(buildingView)
+        : interactionKind == kShipyardInteraction ? ValidateShipyardQuantities(buildingView)
+                                                  : ValidateItemQuantity(buildingView);
     if (!stateIsCorrect || !uiIsCorrect) {
       FailScenario("\"city production increase did not reserve model state and refresh UI\"");
       return;
@@ -506,7 +595,7 @@ private:
     TView* interactionRoot;
     int controlTag;
     int commandId;
-    if (interactionKind == kUniversityInteraction) {
+    if (interactionKind == kUniversityInteraction || interactionKind == kShipyardInteraction) {
       interactionRoot = buildingView->ResolveControlByTag(interactionRowTag);
       controlTag = kControlTagMinu;
       commandId = 0;
@@ -523,9 +612,9 @@ private:
 
     phase = kWaitForOrderRestore;
     EnterScenarioStep("waiting_for_city_order_restore", "activate_city_order_decrease");
-    if (interactionKind == kUniversityInteraction) {
+    if (interactionKind == kUniversityInteraction || interactionKind == kShipyardInteraction) {
       if (!RuntimeUiDriver::ActivateControlSemantically(interactionRoot, controlTag)) {
-        FailScenario("\"university minus arrow could not be activated\"");
+        FailScenario("\"city production minus arrow could not be activated\"");
         return;
       }
     } else {
@@ -541,10 +630,12 @@ private:
       return;
     }
     bool stateIsCorrect = interactionKind == kUniversityInteraction ? UnitOrderStateWasRestored()
+                          : interactionKind == kShipyardInteraction ? ShipOrderStateWasRestored()
                                                                     : ItemOrderStateWasRestored();
-    bool uiIsCorrect = interactionKind == kUniversityInteraction
-                           ? ValidateUniversityQuantities(buildingView)
-                           : ValidateItemQuantity(buildingView);
+    bool uiIsCorrect =
+        interactionKind == kUniversityInteraction ? ValidateUniversityQuantities(buildingView)
+        : interactionKind == kShipyardInteraction ? ValidateShipyardQuantities(buildingView)
+                                                  : ValidateItemQuantity(buildingView);
     if (!stateIsCorrect || !uiIsCorrect) {
       FailScenario("\"city production decrease did not restore model state and refresh UI\"");
       return;
@@ -577,6 +668,8 @@ private:
     bool quantitiesAreValid;
     if (activeBuildingSlot == kUniversityBuildingSlot) {
       quantitiesAreValid = ValidateUniversityQuantities(buildingView);
+    } else if (activeBuildingSlot == kShipyardBuildingSlot) {
+      quantitiesAreValid = ValidateShipyardQuantities(buildingView);
     } else if (activeBuildingSlot == kRailyardBuildingSlot) {
       quantitiesAreValid = ValidateRailyardQuantity(buildingView);
     } else {
@@ -639,6 +732,10 @@ private:
       BeginUniversityInteraction(buildingView);
       return;
     }
+    if (!interactionComplete && activeBuildingSlot == kShipyardBuildingSlot) {
+      BeginShipyardInteraction(buildingView);
+      return;
+    }
     if (!interactionComplete && activeBuildingSlot != kRailyardBuildingSlot) {
       BeginItemInteraction(buildingView);
       return;
@@ -662,6 +759,13 @@ private:
       return;
     }
     if (activeBuildingSlot == kUniversityBuildingSlot) {
+      activeBuildingSlot = kShipyardBuildingSlot;
+      phase = kActivateBuilding;
+      EnterScenarioStep("activating_shipyard_building", "activate_shipyard_building_slot");
+      RequestScenarioTick();
+      return;
+    }
+    if (activeBuildingSlot == kShipyardBuildingSlot) {
       activeBuildingSlot = kRailyardBuildingSlot;
       phase = kActivateBuilding;
       EnterScenarioStep("activating_railyard_building", "activate_railyard_building_slot");
@@ -739,6 +843,7 @@ private:
   InteractionKind interactionKind;
   TUnitOrder* interactionUnitOrder;
   TItemOrder* interactionItemOrder;
+  TShipOrder* interactionShipOrder;
   int interactionRowTag;
   short priorQuantity;
   short priorRequestedQuantity;
