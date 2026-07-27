@@ -85,10 +85,12 @@ Per-nation ranges (compressed):
 | 23195 | Allows building of a Driller and production of Oil at Level I. Prospect for Oil in Desert and Swamp. Build Refinery and Power Plant. |
 | 23204 | Allows recruiting of armored and mechanized regiments and upgrading older units to these modern types. Drillers may improve Oil wells to Level III |
 
-## Working Hypothesis
-- `techId` in `.SCN` appears to mark technologies granted at scenario start (by nation).
-- University unit availability gates (Forester/Rancher/Driller) are controlled by global researched-tech flags checked by university UI/build-order logic.
-- Next Ghidra step: locate university availability function and bind specific bit/ID checks to named techs using `techId` comparisons and string/bitmap anchors (`9926`, `9930`, `9936`).
+## Confirmed model
+- `techId` in `.SCN` marks technologies granted at scenario start by nation.
+- University unit availability is a per-nation nine-byte table at `TTechMgr+0x467`.
+- `TTechMgr::HandleAbilityUnlock` writes category 3 for tech 6, category 5 for tech 7,
+  and category 8 for tech 0x13. The university UI reads those categories as
+  Forester/Rancher/Driller via the confirmed `civ3`/`civ5`/`civ8` resource bindings.
 
 ## 2026-07-13 update (bd imperialism-decomp-1uj.34): availability check located
 
@@ -134,7 +136,8 @@ confirmed from Ghidra disassembly, not guessed):
   unlock path from the university civilian rows, not the one gating Forester/Rancher/
   Driller.
 
-**Not yet resolved**: which specific `techId` values (if any -- vs. direct
+**Historical unresolved note (superseded by the 2026-07-28 resolution below):** which
+specific `techId` values (if any -- vs. direct
 scenario-start `.SCN` seeding of the `TTechMgr+0x467` per-nation table, per the
 "Working Hypothesis" above) flip Forester/Rancher/Driller's `TTechMgr+0x467` bytes.
 `InitializeCityOrderCapabilityStateDefaults` (0x5aeff0) seeds that table's bytes to a
@@ -145,3 +148,22 @@ per-row bytes from the `.SCN` `tech` records (or a runtime writer not yet locate
 Good next-session anchors: `TTechMgr::InitializeCityOrderCapabilityStateDefaults`
 (0x5aeff0), the `.SCN` tech-record loader, and `include/game/TTechMgr.h`'s currently
 undeclared `+0x467` region.
+
+## 2026-07-28 resolution
+
+The remaining writer was recovered and ported after the earlier update:
+
+- `TTechMgr::HandleAbilityUnlock` (`0x005afd00`, currently 96.21%) is the per-nation writer.
+  Its switch maps tech 6 to `availableByCategory[3]`, tech 7 to category 5, and tech
+  0x13 to category 8.
+- `TUniversityView::DoStartup` (`0x004cace0`) consumes the same named
+  `universityRecruitmentAvailabilityByNation467[nation].availableByCategory[category]`
+  field. The field now occupies its exact `TTechMgr+0x467` layout rather than overlapping
+  another provisional row.
+- `TTechMgr::ActivateSlotAndUpdateUI` (`0x005b0340`, currently 87.88%) is the separate
+  armory path: a military technology replaces the `TUnitOrder` profile for its category,
+  including the selected unit resource type and costs. Retail does not add a second
+  technology gate inside `TArmoryView`; the armory always presents the eight category slots.
+
+This supersedes the “Not yet resolved” paragraph above and completes
+`imperialism-decomp-1uj.34`'s missing-writer investigation.

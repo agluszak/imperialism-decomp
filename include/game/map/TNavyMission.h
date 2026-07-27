@@ -12,8 +12,8 @@ class TShip;
 class TNavyMission : public TMission {
   DECLARE_SERIAL(TNavyMission)
 public:
-  TZone* targetZone14;                 // +0x14
-  TZone* targetZone18;                 // +0x18
+  TZone* missionTargetZone;            // +0x14
+  TZone* resolvedPortZone;             // +0x18
   TShip* selectedOrder1c;              // +0x1c selected primary navy-order node
   TTaskForce* taskForce20;             // +0x20 combined task-force/map-order entry
   TMapOrderChildLinkNode* orderList24; // +0x24 -- head of child order-node chain
@@ -35,8 +35,8 @@ public:
   // In-class inline: the original has no out-of-line TNavyMission::TNavyMission -- every
   // caller absorbs it, so an out-of-line definition pessimizes them into a call.
   TNavyMission() : TMission() {
-    targetZone14 = nullptr;
-    targetZone18 = nullptr;
+    missionTargetZone = nullptr;
+    resolvedPortZone = nullptr;
     selectedOrder1c = nullptr;
     taskForce20 = nullptr;
     orderList24 = nullptr;
@@ -89,11 +89,11 @@ public:
   // task-force/map-order entry passed by GiveOrders (taskForce20).
   virtual void GiveActionOrders(TTaskForce* mapOrderEntry); // slot 0x27 0x5354c0
   // Returns the best neighbor port zone for the current nation (delegates to
-  // targetZone14->SelectBestPrimaryNeighborForNationDiplomacyMask); every override
+  // missionTargetZone->SelectBestPrimaryNeighborForNationDiplomacyMask); every override
   // (TControlSeaZoneMission/TScatteredShipsMission) also returns a TZone*, and
   // TControlSeaZoneMission::GetReplacementSlot48 consumes the caller's result, so this
   // could not stay void (confirmed by 0x538900's disassembly storing EAX back into
-  // targetZone18).
+  // resolvedPortZone).
   virtual TZone* RefreshMissionPortZoneContextForNation(); // slot 0x28 0x536fa0
   virtual void
   ConsolidateMissionOrderEntriesByTargetAndQueue(TZone* location); // slot 0x29 0x5371d0
@@ -155,8 +155,8 @@ public:
   // rather than calling out to 0x537c60, so the body is reproduced inline to match. 0x537d40.
   void BuildMissionQueuedOrderCategoryVector(float* vector);
   // Same shape as ComputeNavyOrderCategorySimilarityRatio (BuildNavyOrderCategoryVectorFor-
-  // NationWithExclusion + a sqrt-coefficient tail), but always uses targetZone14 as the near
-  // zone and targetZone18 as the far zone, with an explicit caller-
+  // NationWithExclusion + a sqrt-coefficient tail), but always uses missionTargetZone as the near
+  // zone and resolvedPortZone as the far zone, with an explicit caller-
   // supplied distance threshold instead of a fixed 0/1. 0x537eb0.
   float ComputeMissionQueuedOrderSimilarityForTargetNation(short distanceThreshold);
 

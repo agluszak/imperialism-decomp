@@ -54,7 +54,7 @@ TBeachheadMission::~TBeachheadMission() {}
 TBeachheadMission::TBeachheadMission(TZone* targetZone, TInvadeMission* parentMission)
     : TControlSeaZoneMission(targetZone), parentMission3c(parentMission) {}
 
-// Reproduces the base TControlSeaZoneMission::CalculateNeeds's targetZone14-tagged base score
+// Reproduces the base TControlSeaZoneMission::CalculateNeeds's missionTargetZone-tagged base score
 // inline -- the two classes are separate translation units with no LTO, so a qualified
 // `TControlSeaZoneMission::CalculateNeeds()` call (which the original's own object code shows
 // fully duplicated, not a real CALL) would either emit a real cross-TU CALL or, since this
@@ -65,7 +65,7 @@ TBeachheadMission::TBeachheadMission(TZone* targetZone, TInvadeMission* parentMi
 void TBeachheadMission::CalculateNeeds() {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
-    if (node->location != targetZone14) {
+    if (node->location != missionTargetZone) {
       continue;
     }
     if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, node->nation)) {
@@ -117,7 +117,7 @@ void TBeachheadMission::CalculateNeeds() {
 // FUNCTION: IMPERIALISM 0x0053a7b0
 bool TBeachheadMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   return missionType == kMissionTypeInvadeProvince && key != -1 &&
-         key == parentMission3c->targetProvince30 && zoneContext == targetZone14;
+         key == parentMission3c->targetProvince30 && zoneContext == missionTargetZone;
 }
 
 // this->parentMission3c->targetProvince30 (city/region record index) reads

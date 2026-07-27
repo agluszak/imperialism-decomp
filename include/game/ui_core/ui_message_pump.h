@@ -6,4 +6,4 @@
 // pending or idling is exhausted, then dispatches one message via PumpMessage. This is
 // the application event loop, not UI invalidation -- it only shared a file with the
 // invalidation-flag helpers historically.
-int __stdcall PumpUiMessagesAndBackgroundTasks(int nTaskPumpMode);
+char __stdcall PumpUiMessagesAndBackgroundTasks(int nTaskPumpMode);

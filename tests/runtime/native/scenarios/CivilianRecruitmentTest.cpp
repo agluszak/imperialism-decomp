@@ -109,8 +109,8 @@ bool CaptureViewPixels(TView* view, DWORD** outPixels, int* outWidth, int* outHe
 class CivilianRecruitmentTestCase : public RandomGameScenario {
 public:
   CivilianRecruitmentTestCase()
-      : spawnedCivilian(0), targetHillTile(-1), targetSeaTile(-1), postOrderTicks(0),
-        orderIssued(false), initialAnimationFrame(0), initialAnimationTick(0) {}
+      : spawnedCivilian(0), targetHillTile(-1), targetSeaTile(-1), orderIssued(false),
+        initialAnimationFrame(0), initialAnimationTick(0) {}
   int DifficultyLevel() const override {
     return 1;
   }
@@ -120,7 +120,6 @@ public:
 
   void OnMapReadyWithoutCapitalSelection() override {
     spawnedCivilian = 0;
-    postOrderTicks = 0;
     orderIssued = false;
     EnterScenarioStep("recruiting_civilian", "produce_and_select_recruited_civilian");
     RequestScenarioTick();
@@ -137,11 +136,7 @@ public:
       return;
     }
 
-    ++postOrderTicks;
-    if (postOrderTicks < 20) {
-      RequestScenarioTick();
-      return;
-    }
+    g_pUiAnimator->DoIdle(1);
     VerifyOrderedProspectorRemainsVisibleAndInspectable();
   }
 
@@ -514,7 +509,6 @@ private:
     initialAnimationFrame = animation->frameIndex08;
     initialAnimationTick = animation->tickCounter10;
     orderIssued = true;
-    postOrderTicks = 0;
     EnterScenarioStep("waiting_for_ordered_civilian_animation",
                       "verify_ordered_prospector_remains_visible_and_inspectable");
     RequestScenarioTick();
@@ -534,12 +528,20 @@ private:
     unsigned short reportCursor =
         g_pSelectedCivilianOrderState->ResolveCivilianTileSelectionOrReportActionCode(
             targetHillTile, 0);
-    if (tileCivilian != spawnedCivilian || animation == 0 ||
-        (animation->frameIndex08 == initialAnimationFrame &&
-         animation->tickCounter10 == initialAnimationTick) ||
-        reportCursor != 0x3f3 || !AnimationFrameBufferHasPixels(animation)) {
-      FailScenario(
-          "\"ordered prospector stopped animating, left its tile, or could not be inspected\"");
+    int animationAdvanced = animation != 0 && (animation->frameIndex08 != initialAnimationFrame ||
+                                               animation->tickCounter10 != initialAnimationTick);
+    int hasFramePixels = animation != 0 ? AnimationFrameBufferHasPixels(animation) : 0;
+    if (tileCivilian != spawnedCivilian || animation == 0 || animationAdvanced == 0 ||
+        reportCursor != 0x3f3 || hasFramePixels == 0) {
+      char failure[240];
+      wsprintfA(failure,
+                "\"ordered prospector validation failed: tile=%d animation=%d advanced=%d "
+                "frame=%d/%d tick=%d/%d cursor=%d pixels=%d\"",
+                tileCivilian == spawnedCivilian, animation != 0, animationAdvanced,
+                animation == 0 ? -1 : animation->frameIndex08, initialAnimationFrame,
+                animation == 0 ? -1 : animation->tickCounter10, initialAnimationTick, reportCursor,
+                hasFramePixels);
+      FailScenario(failure);
       return;
     }
     if (!HoverMovementRestoresPreviousTiles(mapDialog)) {
@@ -552,7 +554,6 @@ private:
   TCivUnit* spawnedCivilian;
   short targetHillTile;
   short targetSeaTile;
-  unsigned long postOrderTicks;
   bool orderIssued;
   short initialAnimationFrame;
   int initialAnimationTick;
