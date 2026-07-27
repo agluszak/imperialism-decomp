@@ -5623,7 +5623,7 @@ address|name|symbol|size|type|prototype|provenance
 59ebb0|TNavyPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 59ebe0|TNavyPlayer::~TNavyPlayer|??1TNavyPlayer@@UAE@XZ|7|function|void __thiscall ~TNavyPlayer()|
 59ec00|TNavyPlayer::GetRuntimeClass||6|function|undefined GetTNavyPlayerClassNamePointer()|rtti
-59ec20|IltTarget_0059ec20||247|function|undefined IltTarget_0059ec20()|
+59ec20|TNavyPlayer::INavyPlayer||247|function|void __thiscall TNavyPlayer::INavyPlayer(TTaskForce * force, char isOurSide, char watchFlag, int nationIndex)|curated
 59ed60|TNavyTacUnit::GetSourceShip||4|function|TShip* __thiscall GetSourceShip(void)|
 59ed80|TNavyTacUnit::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 59edb0|TNavyTacUnit::~TNavyTacUnit|??1TNavyTacUnit@@UAE@XZ|7|function|void __thiscall ~TNavyTacUnit()|
@@ -5634,13 +5634,13 @@ address|name|symbol|size|type|prototype|provenance
 59ef20|TNavyHumanPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 59ef50|TNavyHumanPlayer::~TNavyHumanPlayer|??1TNavyHumanPlayer@@UAE@XZ|7|function|void __thiscall ~TNavyHumanPlayer()|
 59ef70|TNavyHumanPlayer::GetRuntimeClass||6|function|undefined GetTNavyHumanPlayerClassNamePointer()|rtti
-59ef90|IltTarget_0059ef90||25|function|undefined IltTarget_0059ef90()|
+59ef90|TNavyHumanPlayer::INavyHumanPlayer||25|function|void __thiscall TNavyHumanPlayer::INavyHumanPlayer(TTaskForce * force, char isOurSide, int nationIndex)|curated
 59efc0|TNavyHumanPlayer::DeploymentClick||89|function|void __thiscall DeploymentClick(int tileIndex)|
 59f040|TNavyAutoPlayer::CreateObject|?CreateObject@TNavyAutoPlayer@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 59f070|TNavyAutoPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 59f0a0|TNavyAutoPlayer::~TNavyAutoPlayer|??1TNavyAutoPlayer@@UAE@XZ|7|function|void __thiscall ~TNavyAutoPlayer()|
 59f0c0|TNavyAutoPlayer::GetRuntimeClass||6|function|undefined GetTNavyAutoPlayerClassNamePointer()|rtti
-59f0e0|IltTarget_0059f0e0||25|function|undefined IltTarget_0059f0e0()|
+59f0e0|TNavyAutoPlayer::INavyAutoPlayer||25|function|void __thiscall TNavyAutoPlayer::INavyAutoPlayer(TTaskForce * force, char isOurSide, int nationIndex)|curated
 59f110|TNavyAutoPlayer::StartBattle||64|function|undefined StartBattle(void)|
 59f160|TNavyAutoPlayer::AdvanceTacticalTurnPulse||428|function|undefined OrphanRetStub_0059ad90(void)|
 59f5c0|`dynamic initializer for 'g_scaledShortConst_6A4748''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A4748''(void)|library

@@ -5722,7 +5722,7 @@ address|matching|name
 0x59ebb0|1.0|TNavyPlayer::`scalar deleting destructor'
 0x59ebe0|0.0|TNavyPlayer::~TNavyPlayer
 0x59ec00|1.0|TNavyPlayer::GetRuntimeClass
-0x59ec20|0.0|IltTarget_0059ec20
+0x59ec20|0.9693251533742331|TNavyPlayer::INavyPlayer
 0x59ed60|1.0|TNavyTacUnit::GetSourceShip
 0x59ed80|1.0|TNavyTacUnit::`scalar deleting destructor'
 0x59edb0|0.0|TNavyTacUnit::~TNavyTacUnit
@@ -5733,13 +5733,13 @@ address|matching|name
 0x59ef20|1.0|TNavyHumanPlayer::`scalar deleting destructor'
 0x59ef50|0.0|TNavyHumanPlayer::~TNavyHumanPlayer
 0x59ef70|1.0|TNavyHumanPlayer::GetRuntimeClass
-0x59ef90|0.0|IltTarget_0059ef90
+0x59ef90|1.0|TNavyHumanPlayer::INavyHumanPlayer
 0x59efc0|0.6813186813186813|TNavyHumanPlayer::DeploymentClick
 0x59f040|1.0|TNavyAutoPlayer::CreateObject
 0x59f070|1.0|TNavyAutoPlayer::`scalar deleting destructor'
 0x59f0a0|0.0|TNavyAutoPlayer::~TNavyAutoPlayer
 0x59f0c0|1.0|TNavyAutoPlayer::GetRuntimeClass
-0x59f0e0|0.0|IltTarget_0059f0e0
+0x59f0e0|1.0|TNavyAutoPlayer::INavyAutoPlayer
 0x59f110|1.0|TNavyAutoPlayer::StartBattle
 0x59f160|0.38977635782747605|TNavyAutoPlayer::AdvanceTacticalTurnPulse
 0x59f5c0|0.25|`dynamic initializer for 'g_scaledShortConst_6A4748''
@@ -5825,7 +5825,7 @@ address|matching|name
 0x5a5520|1.0|TNavyBattle::GetRuntimeClass
 0x5a5540|0.06451612903225806|IltTarget_005a5540
 0x5a55c0|1.0|TNavyBattle::DeployTacticalUnitToTile
-0x5a5730|0.6686046511627907|TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
+0x5a5730|0.6744186046511628|TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
 0x5a59a0|1.0|ConvertHexTileIndexToRowAndDoubleColumn
 0x5a59f0|1.0|TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory
 0x5a5b70|1.0|TNavyBattle::FinalizeTacticalBattleOutcome
@@ -7438,7 +7438,7 @@ address|matching|name
 0x608ba8|0.9441964285714286|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|0.9787234042553191|CWnd::OnNotify
+0x6091d9|1.0|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent

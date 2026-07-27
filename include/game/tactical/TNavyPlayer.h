@@ -21,6 +21,12 @@ public:
                                  // eliminated and prunes its order head after commit)
   NavyTargeting targetingMode2c; // +0x2c targeting mode set by the navy toolbar
 
+  // Two-phase init (MacApp IViewClass idiom): seeds the side's flags, allocates the
+  // unit list, and builds one TNavyTacUnit per ship in `force`. No Mac oracle name
+  // covers it, so it follows the IViewClass naming this tree already uses.
+  // 0x0059ec20, __thiscall.
+  void INavyPlayer(TTaskForce* force, char isOurSide, char watchFlag, int nationIndex);
+
   // In-class inline: the original has no out-of-line TNavyPlayer::TNavyPlayer -- every
   // caller absorbs it, so an out-of-line definition pessimizes them into a call.
   // NOOP: verified empty in original 0x0059eb82 (no standalone TNavyPlayer::TNavyPlayer body exists: construction is fully inlined into CreateObject 0x0059eb80; that address is its operator-new call site)
