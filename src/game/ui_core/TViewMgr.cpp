@@ -1,4 +1,6 @@
 #include "game/ui_core/TViewMgr.h"
+#include "game/military_ui/TTechCheater.h"
+#include "game/TGPCheater.h"
 #include "game/GameAssert.h"
 #include "game/ui_core/TDialogBehavior.h"
 #include "game/ui_tags_common.h"
@@ -2561,4 +2563,31 @@ void TViewMgr::MakeGameSetupDialog() {
     }
     delete setup;
   }
+}
+
+// Mac oracle: MakeCheaterDialog. Reads nothing from `this`.
+// FUNCTION: IMPERIALISM 0x005de6c0
+void TViewMgr::MakeCheaterDialog(int which) {
+  TWindow* panel =
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(static_cast<TurnEventId>(15000));
+  if (panel == 0) {
+    GAME_FAIL_NIL_POINTER();
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UViewMgr.more.cpp", 0x303);
+  }
+
+  TCheater* cheater = 0;
+  if (which == 0) {
+    TTechCheater* techCheater = new TTechCheater();
+    techCheater->ConstructTTechCheaterBaseState(panel);
+    cheater = techCheater;
+  } else if (which == 1) {
+    TGPCheater* gpCheater = new TGPCheater();
+    gpCheater->ConstructTGPCheaterBaseState(panel);
+    cheater = gpCheater;
+  }
+
+  panel->PoseModally();
+  cheater->ApplyCheats();
+  panel->Close();
+  panel->Free();
 }

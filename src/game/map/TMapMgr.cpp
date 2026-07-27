@@ -382,6 +382,43 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
   return 1;
 }
 
+// Mac oracle: ReadInRGBMap.
+// FUNCTION: IMPERIALISM 0x0050f0e0
+void TMapMgr::ReadInRGBMap(const MapPixelSourceView* source) {
+  const short* packed = source->packedTiles;
+  if (packed == 0) {
+    GAME_FAIL_NIL_POINTER();
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMap.cpp", 0x2b0);
+  }
+
+  int tileIndex = 0;
+  for (int offset = 0; offset < 0x38f40; offset += 0x24) {
+    short kindAndRiver = packed[0];
+    short ownerAndProvince = packed[1];
+    TTerrainStateRecordView& record = terrainStateTable[tileIndex];
+
+    record.ownerNationTag04 = static_cast<signed char>(ownerAndProvince);
+    packed += 2;
+    record.formerOwnerNationTag03 = record.ownerNationTag04;
+    record.terrainKindStorage00 = static_cast<StrategicTerrainKindStorage>(kindAndRiver);
+    record.riverSpriteCode = static_cast<RiverSpriteCodeStorage>(kindAndRiver >> 8);
+
+    // Water carries no province; everything else takes the source's high byte.
+    if (record.GetTerrainKind() == kStrategicTerrainWater) {
+      record.cityRecordIndex = -1;
+    } else {
+      record.cityRecordIndex = static_cast<ProvinceIndexStorage>(ownerAndProvince >> 8);
+    }
+    record.tileActionOrdinal1a = -1;
+    record.activeFlags1c = 0;
+
+    UpdateStrategicMapTileIconVariantState(static_cast<StrategicTileIndex>(tileIndex));
+    ++tileIndex;
+  }
+
+  RebuildTileOwnerNeighborCachesAndFallbackAssignments();
+}
+
 // FUNCTION: IMPERIALISM 0x0050f200
 void TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
   CString streamName;
