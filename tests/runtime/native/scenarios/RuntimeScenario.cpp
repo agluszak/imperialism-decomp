@@ -1,547 +1,49 @@
 #include "RuntimeScenario.h"
 
-#include "../RuntimeRun.h"
-#include "RuntimeHarness.h"
 #include "RuntimeContext.h"
-#include "RuntimeDebuggerTrap.h"
-#include "RuntimeUiDriver.h"
-#include "screens/MainMenuDriver.h"
-#include "screens/RandomSetupDriver.h"
+#include "RuntimeExceptionCapture.h"
+#include "RuntimeHarness.h"
+#include "RuntimeHeartbeat.h"
+#include "RuntimeJson.h"
+#include "RuntimeObservations.h"
+#include "RuntimeResultWriter.h"
+#include "RuntimeRegistry.h"
+#include "RuntimeRun.h"
+#include "flows/RuntimeFlow.h"
 
-#include "game/ui_core/bitmap_descriptor_helpers.h"
-#include "game/ui_core/CIncludeView.h"
-#include "game/gfx/CDib.h"
-#include "game/gfx/TAmbitApplication.h"
-#include "game/ui_core/TControl.h"
-#include "game/map_ui/TCitySiteView.h"
-#include "game/gfx/TDisplayMgr.h"
-#include "game/ui_core/TDialogBehavior.h"
-#include "game/ui_core/CMcEditWindow.h"
-#include "game/ui_core/TEditText.h"
-#include "game/ui_screens/TGameSetupPicture.h"
 #include "game/ImperialismApp.h"
-#include "game/TQuickDrawSurfaceContext.h"
-#include "game/map/TMiniMapView.h"
-#include "game/map/TMapUberPicture.h"
-#include "game/map/TMapMgr.h"
-#include "game/navy_ui/TOceanDialog.h"
-#include "game/ui_screens/TNewspaperView.h"
-#include "game/ui_core/TPicture.h"
-#include "game/ui_screens/TRadioTextCluster.h"
-#include "game/ui_screens/TSetupRandomMapPicture.h"
-#include "game/ui_screens/TSimMgr.h"
-#include "game/ui_core/TStaticText.h"
-#include "game/ui_core/TUiEvent.h"
+#include "game/core/global_data_tables.h"
+#include "game/gfx/TAmbitApplication.h"
+#include "game/ui_core/CIncludeView.h"
+#include "game/ui_core/TControl.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/ui_core/TWindow.h"
-#include "game/core/global_data_tables.h"
-#include "game/mfc.h"
+#include "game/ui_screens/TGameSetupPicture.h"
+#include "game/ui_screens/TNewspaperView.h"
+#include "game/ui_screens/TSetupRandomMapPicture.h"
+#include "game/ui_screens/TSimMgr.h"
 #include "game/ui_tags_common.h"
-#include "game/ui_tags_map.h"
-#include "game/ui_tags_screens.h"
-#include "game/ui_tags_widgets.h"
+#include "game/mfc.h"
 
-#include <stdlib.h>
-#include <string.h>
 #include <windows.h>
 
 namespace {
-
-typedef void (*RuntimeStep)();
-
-void RunWaitingForManagers();
-void RunScenarioOwnedStep();
-void RunWaitingForMainMenu();
-void RunWaitingForRandomSetup();
-void RunSettingCountryName();
-void RunSelectingDifficulty();
-void RunActivatingOkay();
-void RunWaitingForDirectStrategicMap();
-void RunWaitingForStrategicMap();
-void RunVerifyingStrategicMap();
-void RunWaitingForModalDismissal();
-void RunPrimingMapHover();
-void RunDispatchingMapHotkey();
-void RunExercisingMapHover();
-void RunReturningToRandomSetup();
-void RunReturningToMainMenu();
-void RunReenteringRandomSetup();
-void RunVerifyingReturnedRandomSetup();
-void RunWaitingForSecondCitySite();
-void RunWaitingForSecondPromptDismissal();
-void RunWaitingForCitySiteConfirmation();
-void RunWaitingForCombinedMap();
-void RunVerifyingCombinedMapExtents();
-
-void CopySurfaceTile(unsigned char* destination, const unsigned char* source, int stride) {
-  for (int row = 0; row < 0x40; ++row) {
-    memcpy(destination + row * 0x40, source + row * stride, 0x40);
-  }
-}
-
-bool VerifyStrategicCoastCornerComposite(TMapDialog* mapDialog) {
-  if (mapDialog == 0 || mapDialog->quickDrawSurface350 == 0 || g_pStrategicMapViewSystem == 0 ||
-      g_pStrategicMapViewSystem->atlas668 == 0) {
-    return false;
-  }
-  short coastTile = -1;
-  for (short tile = 0; tile < 0x1950; ++tile) {
-    const TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tile];
-    if (terrain.GetTerrainKind() != kStrategicTerrainWater || terrain.adjacencyMaskB0b == 0 ||
-        tile % 108 == 0 || tile % 108 == 107) {
-      continue;
-    }
-    for (int corner = 0; corner < 6; ++corner) {
-      int previousDirection = (corner + 5) % 6;
-      int cornerBits = (1 << previousDirection) | (1 << corner);
-      if ((terrain.adjacencyMaskB0b & cornerBits) == 0) {
-        continue;
-      }
-      char useAltOffset = static_cast<char>(terrain.spriteVariantIndex01 & (1 << corner));
-      if (g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariant(
-              static_cast<char>(terrain.adjacencyMaskB0b), static_cast<char>(corner + 1),
-              useAltOffset) != 0) {
-        coastTile = tile;
-        break;
-      }
-    }
-    if (coastTile != -1) {
-      break;
-    }
-  }
-  if (coastTile == -1) {
-    return false;
-  }
-
-  TBitmapSurfaceNode** destinationHandle = GetGWorldPixMap(mapDialog->quickDrawSurface350);
-  TBitmapSurfaceNode** sourceHandle = GetGWorldPixMap(g_pStrategicMapViewSystem->atlas668);
-  if (destinationHandle == 0 || *destinationHandle == 0 || sourceHandle == 0 ||
-      *sourceHandle == 0 || !LockPixels(destinationHandle)) {
-    return false;
-  }
-  if (!LockPixels(sourceHandle)) {
-    UnlockPixels(destinationHandle);
-    return false;
-  }
-  TBitmapSurfaceNode* destinationSurface = *destinationHandle;
-  TBitmapSurfaceNode* sourceSurface = *sourceHandle;
-  int destinationStride = destinationSurface->stride & 0x3fff;
-  int sourceStride = sourceSurface->stride & 0x3fff;
-  unsigned char expected[0x1000];
-  unsigned char actual[0x1000];
-  TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[coastTile];
-  TTerrainStateRecordView savedTerrain = terrain;
-  short sourceOffset = g_pGlobalMapState->LookupTileSpriteVariantOffsetByAdjacencyMaskB(coastTile);
-  CopySurfaceTile(expected, sourceSurface->pixelBits + sourceOffset, sourceStride);
-
-  for (int corner = 0; corner < 6; ++corner) {
-    int previousDirection = (corner + 5) % 6;
-    int cornerBits = (1 << previousDirection) | (1 << corner);
-    if ((terrain.adjacencyMaskB0b & cornerBits) == 0) {
-      continue;
-    }
-    int coastOffset = g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariant(
-        static_cast<char>(terrain.adjacencyMaskB0b), static_cast<char>(corner + 1),
-        static_cast<char>(terrain.spriteVariantIndex01 & (1 << corner)));
-    if (coastOffset == 0) {
-      continue;
-    }
-    unsigned char* coastSource = sourceSurface->pixelBits + coastOffset;
-    switch (corner) {
-    case 0:
-      mapDialog->CopyCoastCornerMaskBetweenDirections5And0(coastSource, expected, sourceStride,
-                                                           0x40);
-      break;
-    case 1:
-      mapDialog->CopyCoastCornerMaskBetweenDirections0And1(coastSource, expected, sourceStride,
-                                                           0x40);
-      break;
-    case 2:
-      mapDialog->CopyCoastCornerMaskBetweenDirections1And2(coastSource, expected, sourceStride,
-                                                           0x40);
-      break;
-    case 3:
-      mapDialog->CopyCoastCornerMaskBetweenDirections2And3(coastSource, expected, sourceStride,
-                                                           0x40);
-      break;
-    case 4:
-      mapDialog->CopyCoastCornerMaskBetweenDirections3And4(coastSource, expected, sourceStride,
-                                                           0x40);
-      break;
-    case 5:
-      mapDialog->CopyCoastCornerMaskBetweenDirections4And5(coastSource, expected, sourceStride,
-                                                           0x40);
-      break;
-    }
-  }
-
-  terrain.riverSpriteCode = kRiverSpriteCodeNone;
-  terrain.ownerBorderMask07 = 0;
-  terrain.cityBorderMask08 = 0;
-  terrain.adjacencyBits06 = 0;
-  terrain.railFlags17 = 0;
-  terrain.activeFlags1c = 0;
-  terrain.resourceTypeByEdge[0] = -1;
-  terrain.resourceTypeByEdge[1] = -1;
-  terrain.secondaryOwnerNationTag18 = -1;
-  terrain.perTileVisitedFlag0f = 0;
-  terrain.tileActionState16 = static_cast<MapTileActionStateStorage>(-1);
-  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
-  short savedCategory = mapView->activeUnitCategoryIndex96;
-  short savedRiverMouth = g_pGlobalMapState->pendingRiverMouthTile22;
-  mapView->activeUnitCategoryIndex96 = 4;
-  g_pGlobalMapState->pendingRiverMouthTile22 = -1;
-  TQuickDrawSurfaceContext* savedSurface;
-  int savedSurfaceFlags;
-  GetGWorld(&savedSurface, &savedSurfaceFlags);
-  SetGWorld(mapDialog->quickDrawSurface350, savedSurfaceFlags);
-  mapDialog->DrawOneTile(coastTile, 0, 0);
-  CopySurfaceTile(actual, destinationSurface->pixelBits, destinationStride);
-  terrain = savedTerrain;
-  mapView->activeUnitCategoryIndex96 = savedCategory;
-  g_pGlobalMapState->pendingRiverMouthTile22 = savedRiverMouth;
-  mapDialog->DrawOneTile(coastTile, 0, 0);
-  SetGWorld(savedSurface, savedSurfaceFlags);
-  UnlockPixels(sourceHandle);
-  UnlockPixels(destinationHandle);
-  return memcmp(expected, actual, sizeof(expected)) == 0;
-}
-
-bool VerifyMiniMapViewportFrame(TMiniMapView* miniMap) {
-  if (miniMap == 0 || miniMap->markerBoxWidth98 != 9 || miniMap->markerBoxHeight9c != 8 ||
-      g_pPrimaryRenderSurfaceContext == 0) {
-    return false;
-  }
-  TQuickDrawBlitSurface* surface = g_pPrimaryRenderSurfaceContext->GetBlitSurface();
-  int surfaceWidth = surface->stride;
-  int surfaceHeight = surface->clipRect.bottom - surface->clipRect.top;
-  if (surface->pixelBits == 0 || surfaceWidth <= 0 || surfaceHeight <= 0) {
-    return false;
-  }
-
-  int surfaceBytes = surfaceWidth * surfaceHeight;
-  unsigned char* framed = new unsigned char[surfaceBytes];
-  unsigned char* shiftedFrame = new unsigned char[surfaceBytes];
-  TQuickDrawSurfaceContext* savedSurface;
-  int savedSurfaceFlags;
-  GetGWorld(&savedSurface, &savedSurfaceFlags);
-  SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
-  miniMap->PrepareForDrawing();
-  miniMap->Draw(0);
-  GdiFlush();
-  memcpy(framed, surface->pixelBits, surfaceBytes);
-  int savedMarkerX = miniMap->markerBoxX90;
-  int savedMarkerY = miniMap->markerBoxY94;
-  miniMap->markerBoxX90 = savedMarkerX + 2;
-  miniMap->markerBoxY94 = savedMarkerY + 2;
-  miniMap->PrepareForDrawing();
-  miniMap->Draw(0);
-  GdiFlush();
-  memcpy(shiftedFrame, surface->pixelBits, surfaceBytes);
-  miniMap->markerBoxX90 = savedMarkerX;
-  miniMap->markerBoxY94 = savedMarkerY;
-  miniMap->PrepareForDrawing();
-  miniMap->Draw(0);
-  GdiFlush();
-  SetGWorld(savedSurface, savedSurfaceFlags);
-  bool differs = memcmp(framed, shiftedFrame, surfaceBytes) != 0;
-  delete[] shiftedFrame;
-  delete[] framed;
-  return differs;
-}
-
-bool CaptureHeldPrimarySurfaceBmp(const char* resultPath) {
-  if (g_pPrimaryRenderSurfaceContext == 0) {
-    return false;
-  }
-  TQuickDrawBlitSurface* surface = g_pPrimaryRenderSurfaceContext->GetBlitSurface();
-  CDib* dib = surface->surfaceDib;
-  if (dib == 0 || dib->m_pInfoHeader == 0 || surface->pixelBits == 0) {
-    return false;
-  }
-
-  char screenshotPath[MAX_PATH];
-  lstrcpynA(screenshotPath, resultPath, sizeof(screenshotPath));
-  char* extension = strrchr(screenshotPath, '.');
-  if (extension == 0) {
-    extension = screenshotPath + lstrlenA(screenshotPath);
-  }
-  lstrcpyA(extension, ".bmp");
-  CFile file;
-  CFileException error;
-  if (!file.Open(screenshotPath, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyNone,
-                 &error)) {
-    return false;
-  }
-  int height = dib->GetAbsoluteHeight();
-  int pixelBytes = surface->stride * height;
-  int infoBytes = sizeof(BITMAPINFOHEADER) + dib->m_paletteCount * sizeof(RGBQUAD);
-  BITMAPFILEHEADER fileHeader;
-  fileHeader.bfType = 0x4d42;
-  fileHeader.bfReserved1 = 0;
-  fileHeader.bfReserved2 = 0;
-  fileHeader.bfOffBits = sizeof(BITMAPFILEHEADER) + infoBytes;
-  fileHeader.bfSize = fileHeader.bfOffBits + pixelBytes;
-  file.Write(&fileHeader, sizeof(fileHeader));
-  file.Write(dib->m_pInfoHeader, infoBytes);
-  file.Write(surface->pixelBits, pixelBytes);
-  file.Close();
-  return true;
-}
-
-bool CaptureHeldWindowBmp(const char* resultPath, HWND window, int width, int height) {
-  if (window == 0 || width <= 0 || height <= 0) {
-    return false;
-  }
-  HDC sourceDc = GetDC(window);
-  HDC captureDc = CreateCompatibleDC(sourceDc);
-  BITMAPINFO info;
-  memset(&info, 0, sizeof(info));
-  info.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-  info.bmiHeader.biWidth = width;
-  info.bmiHeader.biHeight = -height;
-  info.bmiHeader.biPlanes = 1;
-  info.bmiHeader.biBitCount = 32;
-  info.bmiHeader.biCompression = BI_RGB;
-  info.bmiHeader.biSizeImage = width * height * 4;
-  void* pixels = 0;
-  HBITMAP bitmap = CreateDIBSection(sourceDc, &info, DIB_RGB_COLORS, &pixels, 0, 0);
-  HGDIOBJ savedBitmap = SelectObject(captureDc, bitmap);
-  BOOL copied = BitBlt(captureDc, 0, 0, width, height, sourceDc, 0, 0, SRCCOPY);
-  GdiFlush();
-
-  char screenshotPath[MAX_PATH];
-  lstrcpynA(screenshotPath, resultPath, sizeof(screenshotPath));
-  char* extension = strrchr(screenshotPath, '.');
-  if (extension == 0) {
-    extension = screenshotPath + lstrlenA(screenshotPath);
-  }
-  lstrcpyA(extension, "-window.bmp");
-  CFile file;
-  CFileException error;
-  bool wrote = false;
-  if (copied && pixels != 0 &&
-      file.Open(screenshotPath, CFile::modeCreate | CFile::modeWrite | CFile::shareDenyNone,
-                &error)) {
-    BITMAPFILEHEADER fileHeader;
-    fileHeader.bfType = 0x4d42;
-    fileHeader.bfReserved1 = 0;
-    fileHeader.bfReserved2 = 0;
-    fileHeader.bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
-    fileHeader.bfSize = fileHeader.bfOffBits + info.bmiHeader.biSizeImage;
-    file.Write(&fileHeader, sizeof(fileHeader));
-    file.Write(&info.bmiHeader, sizeof(info.bmiHeader));
-    file.Write(pixels, info.bmiHeader.biSizeImage);
-    file.Close();
-    wrote = true;
-  }
-  SelectObject(captureDc, savedBitmap);
-  DeleteObject(bitmap);
-  DeleteDC(captureDc);
-  ReleaseDC(window, sourceDc);
-  return wrote;
-}
-
-struct RuntimeTestState {
-  RuntimeTestState()
-      : scenario(0), step(0), phaseName("not_started"), finished(false), seed(1), idleTicks(0),
-        phaseTicks(0), phaseStartMs(0), lastHeartbeatMs(0), selectedNationSlot(-1),
-        mainWindowHandle(0), newspaperAdvanced(false) {
-    resultPath[0] = 0;
-    heartbeatPath[0] = 0;
-    debugRecordPath[0] = 0;
-    fixturePath[0] = 0;
-  }
-
-  RuntimeScenario* scenario;
-  RuntimeRun run;
-  RuntimeStep step;
-  const char* phaseName;
-  bool finished;
-  unsigned int seed;
-  unsigned long idleTicks;
-  unsigned long phaseTicks;
-  unsigned long phaseStartMs;
-  unsigned long lastHeartbeatMs;
-  short selectedNationSlot;
-  HWND mainWindowHandle;
-  bool newspaperAdvanced;
-  char resultPath[MAX_PATH];
-  char heartbeatPath[MAX_PATH];
-  char debugRecordPath[MAX_PATH];
-  char fixturePath[MAX_PATH];
-};
-
-RuntimeTestState g_runtimeTestState;
-CString g_randomSetupUiSnapshot;
-CString g_strategicMapUiSnapshot;
-CString g_scenarioUiSnapshot;
-CString g_capitalConfirmationUiSnapshot;
-CString g_activatedEventSequence("[");
-CString g_handledModals("[");
-CString g_unexpectedModals("[");
-CString g_faults("[");
-CString g_actionLog("[");
-CString g_lastFingerprint;
-CString g_mapStateJson;
-CString g_serializationRoundtripJson;
-
-// Introductory and Easy share the setup flow: native difficulty click, then no capital pick.
-RuntimeScenario& ActiveScenario() {
-  return *g_runtimeTestState.scenario;
-}
-
-int SelectedDifficultyLevel() {
-  return ActiveScenario().DifficultyLevel();
-}
-
-bool SkipsCapitalSelection() {
-  return SelectedDifficultyLevel() <= 1;
-}
-
-bool IsRandomGameTest() {
-  return ActiveScenario().UsesRandomGameFlow();
-}
-
-// Kinds whose runs end on a live map and want the normalized simulation
-// snapshot + activated-event sequence in the result.
-bool RecordsGameFlow() {
-  return ActiveScenario().RecordsGameFlow();
-}
-
-const char* TestName() {
-  return ActiveScenario().Name();
-}
-
-const char* PhaseName() {
-  return g_runtimeTestState.phaseName;
-}
-
-void AppendJsonArrayItem(CString& array, const CString& item) {
-  if (array.GetLength() > 1) {
-    array += ", ";
-  }
-  array += item;
-}
-
-void RecordAction(const char* action) {
-  CString entry;
-  entry.Format("{\"t_ms\": %lu, \"phase\": \"%s\", \"action\": \"%s\"}",
-               g_runtimeTestState.run.ElapsedMs(), PhaseName(), action);
-  AppendJsonArrayItem(g_actionLog, entry);
-}
-
-void SetStep(RuntimeStep step, const char* phaseName, const char* action) {
-  g_runtimeTestState.step = step;
-  g_runtimeTestState.phaseName = phaseName;
-  g_runtimeTestState.phaseTicks = 0;
-  g_runtimeTestState.phaseStartMs = GetTickCount();
-  g_runtimeTestState.run.MarkProgress(action);
-  RecordAction(action);
-}
 
 bool RequiredManagersAreInitialized() {
   return g_pGlobalUiRootController != 0 && g_pSimMgr != 0 && g_pUiRuntimeContext != 0 &&
          g_pDisplayMgr != 0 && g_pUiViewManager != 0;
 }
 
-TView* MainView() {
-  if (g_pDisplayMgr == 0 || g_pDisplayMgr->activeDialog == 0) {
-    return 0;
-  }
-  return g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
-}
-
-const char* RuntimeClassName(TView* view) {
-  if (view == 0) {
-    return "";
-  }
-  CRuntimeClass* runtimeClass = view->GetRuntimeClass();
-  if (runtimeClass == 0 || runtimeClass->m_lpszClassName == 0) {
-    return "";
-  }
-  return runtimeClass->m_lpszClassName;
-}
-
-bool IsViewKindOf(TView* view, CRuntimeClass* runtimeClass) {
-  return view != 0 && view->IsKindOf(runtimeClass) != 0;
-}
-
 void RequestAnotherDriverTick() {
   PostThreadMessageA(GetCurrentThreadId(), WM_NULL, 0, 0);
 }
 
-void RequestGameClose() {
-  if (g_runtimeTestState.mainWindowHandle != 0) {
-    PostMessageA(g_runtimeTestState.mainWindowHandle, WM_CLOSE, 0, 0);
+void RequestGameClose(HWND mainWindow) {
+  if (mainWindow != 0) {
+    PostMessageA(mainWindow, WM_CLOSE, 0, 0);
   } else {
     PostQuitMessage(0);
   }
-}
-
-bool WriteAll(HANDLE file, const char* bytes, DWORD size) {
-  DWORD written = 0;
-  return WriteFile(file, bytes, size, &written, 0) != 0 && written == size;
-}
-
-bool WriteFileAtomically(const char* path, const CString& json) {
-  CString temporaryPath(path);
-  temporaryPath += ".tmp";
-  HANDLE file =
-      CreateFileA(temporaryPath, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
-  if (file == INVALID_HANDLE_VALUE) {
-    return false;
-  }
-  const char* bytes = static_cast<LPCSTR>(json);
-  bool wrote = WriteAll(file, bytes, static_cast<DWORD>(json.GetLength()));
-  if (wrote) {
-    wrote = FlushFileBuffers(file) != 0;
-  }
-  CloseHandle(file);
-  if (!wrote) {
-    DeleteFileA(temporaryPath);
-    return false;
-  }
-  if (MoveFileExA(temporaryPath, path, MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH) == 0) {
-    DeleteFileA(temporaryPath);
-    return false;
-  }
-  return true;
-}
-
-void AppendJsonString(CString& json, const char* value) {
-  json += '"';
-  for (const unsigned char* cursor = reinterpret_cast<const unsigned char*>(value); *cursor != 0;
-       ++cursor) {
-    char escaped[7];
-    switch (*cursor) {
-    case '"':
-      json += "\\\"";
-      break;
-    case '\\':
-      json += "\\\\";
-      break;
-    case '\n':
-      json += "\\n";
-      break;
-    case '\r':
-      json += "\\r";
-      break;
-    case '\t':
-      json += "\\t";
-      break;
-    default:
-      if (*cursor < 0x20) {
-        wsprintfA(escaped, "\\u%04x", static_cast<unsigned int>(*cursor));
-        json += escaped;
-      } else {
-        json += static_cast<char>(*cursor);
-      }
-      break;
-    }
-  }
-  json += '"';
 }
 
 void FourCcText(unsigned int tag, char text[5]) {
@@ -552,1247 +54,100 @@ void FourCcText(unsigned int tag, char text[5]) {
   text[4] = 0;
 }
 
-int TagOccurrenceBefore(TView* parent, TView* target) {
-  if (parent == 0 || parent->childList44 == 0) {
-    return 1;
-  }
-  int occurrence = 1;
-  POSITION position = parent->childList44->GetHeadPosition();
-  while (position != 0) {
-    TView* sibling = parent->childList44->GetNext(position);
-    if (sibling == target) {
-      break;
-    }
-    if (sibling->controlTag == target->controlTag) {
-      ++occurrence;
-    }
-  }
-  return occurrence;
-}
-
-CString ViewPath(TView* view, const CString& parentPath) {
-  CString path;
-  path.Format("%08x#%d", static_cast<unsigned int>(view->controlTag),
-              TagOccurrenceBefore(view->ownerContext, view));
-  if (!parentPath.IsEmpty()) {
-    path = parentPath + "/" + path;
-  }
-  return path;
-}
-
-void AppendViewTreeNodes(CString& json, TView* view, const CString& parentPath, bool& firstNode) {
-  if (view == 0) {
-    return;
-  }
-  CString path = ViewPath(view, parentPath);
-  char tag[5];
-  FourCcText(static_cast<unsigned int>(view->controlTag), tag);
-  if (!firstNode) {
-    json += ",\n";
-  }
-  firstNode = false;
-  json += "      {\"path\": ";
-  AppendJsonString(json, path);
-  json += ", \"parent\": ";
-  if (parentPath.IsEmpty()) {
-    json += "null";
-  } else {
-    AppendJsonString(json, parentPath);
-  }
-  json += ", \"tag\": ";
-  AppendJsonString(json, tag);
-  json += ", \"class\": ";
-  AppendJsonString(json, RuntimeClassName(view));
-  CString fields;
-  fields.Format(", \"bounds\": [%d, %d, %d, %d], \"absolute\": [%d, %d], \"state\": %d, "
-                "\"enabled\": %d, \"control_value\": %d",
-                view->ownerLocalX, view->ownerLocalY, view->frameWidth34, view->frameHeight38,
-                view->absoluteX, view->absoluteY, view->field04, view->field08,
-                view->controlValue3c);
-  json += fields;
-  if (view->IsKindOf(RUNTIME_CLASS(TPicture)) != 0) {
-    TPicture* picture = static_cast<TPicture*>(view);
-    fields.Format(", \"picture_id\": %d", static_cast<int>(picture->glyphBase84));
-    json += fields;
-  }
-  if (view->IsKindOf(RUNTIME_CLASS(TStaticText)) != 0) {
-    TStaticText* text = static_cast<TStaticText*>(view);
-    json += ", \"text\": ";
-    AppendJsonString(json, text->text != 0 ? static_cast<LPCSTR>(*text->text) : "");
-  }
-  json += "}";
-
-  if (view->childList44 == 0) {
-    return;
-  }
-  POSITION position = view->childList44->GetHeadPosition();
-  while (position != 0) {
-    TView* child = view->childList44->GetNext(position);
-    AppendViewTreeNodes(json, child, path, firstNode);
-  }
-}
-
-CString CaptureUiSnapshot(int eventCode, TView* root) {
-  CString json;
-  CString header;
-  header.Format("    {\"event\": %d, \"nodes\": [\n", eventCode);
-  json += header;
-  bool firstNode = true;
-  AppendViewTreeNodes(json, root, CString(), firstNode);
-  json += "\n    ]}";
-  return json;
-}
-
-bool HoldRequested() {
-  static bool resolved = false;
-  static bool hold = false;
-  if (!resolved) {
-    resolved = true;
-    char value[16];
-    hold = GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_HOLD", value, sizeof(value)) != 0;
-  }
-  return hold;
-}
-
-// Debug hook for the host runner's liveness classification: name a phase in
-// IMPERIALISM_RUNTIME_TEST_SPIN and the driver keeps pumping/heartbeating in
-// that phase without making semantic progress or enforcing its own deadline.
-bool SpinRequestedForCurrentPhase() {
-  static bool resolved = false;
-  static char spinPhase[48];
-  if (!resolved) {
-    resolved = true;
-    if (GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_SPIN", spinPhase, sizeof(spinPhase)) ==
-        0) {
-      spinPhase[0] = 0;
-    }
-  }
-  return spinPhase[0] != 0 && lstrcmpiA(spinPhase, PhaseName()) == 0;
-}
-
-bool WriteResultFile(const char* status, const char* failure) {
-  TView* mainView = MainView();
-  CString eventSequence(g_activatedEventSequence);
-  eventSequence += ']';
-  CString handledModals(g_handledModals);
-  handledModals += ']';
-  CString unexpectedModals(g_unexpectedModals);
-  unexpectedModals += ']';
-  CString faults(g_faults);
-  faults += ']';
-  CString actionLog(g_actionLog);
-  actionLog += ']';
-  if (IsRandomGameTest() &&
-      (g_randomSetupUiSnapshot.IsEmpty() || g_strategicMapUiSnapshot.IsEmpty())) {
-    status = "failed";
-    failure = "\"generated UI factory snapshot is missing\"";
-  }
-  if (ActiveScenario().RequiresScenarioUiSnapshot() && g_scenarioUiSnapshot.IsEmpty()) {
-    status = "failed";
-    failure = "\"scenario UI snapshot is missing\"";
-  }
-  CString uiSnapshots("[");
-  if (IsRandomGameTest()) {
-    if (!g_randomSetupUiSnapshot.IsEmpty()) {
-      uiSnapshots += "\n";
-      uiSnapshots += g_randomSetupUiSnapshot;
-    }
-    if (!g_strategicMapUiSnapshot.IsEmpty()) {
-      if (!g_randomSetupUiSnapshot.IsEmpty()) {
-        uiSnapshots += ",";
-      }
-      uiSnapshots += "\n";
-      uiSnapshots += g_strategicMapUiSnapshot;
-    }
-    if (!g_scenarioUiSnapshot.IsEmpty()) {
-      if (!g_randomSetupUiSnapshot.IsEmpty() || !g_strategicMapUiSnapshot.IsEmpty()) {
-        uiSnapshots += ",";
-      }
-      uiSnapshots += "\n";
-      uiSnapshots += g_scenarioUiSnapshot;
-    }
-    uiSnapshots += "\n  ";
-  }
-  uiSnapshots += "]";
-  CString capitalConfirmationSnapshot("null");
-  if (!g_capitalConfirmationUiSnapshot.IsEmpty()) {
-    capitalConfirmationSnapshot = g_capitalConfirmationUiSnapshot;
-  }
-  CString mapState("null");
-  if (!g_mapStateJson.IsEmpty()) {
-    mapState = g_mapStateJson;
-  }
-  CString roundtrip("null");
-  if (!g_serializationRoundtripJson.IsEmpty()) {
-    roundtrip = g_serializationRoundtripJson;
-  }
-  CString json;
-  json.Format("{\n"
-              "  \"format_version\": 1,\n"
-              "  \"name\": \"%s\",\n"
-              "  \"status\": \"%s\",\n"
-              "  \"seed\": %u,\n"
-              "  \"idle_ticks\": %lu,\n"
-              "  \"elapsed_ms\": %lu,\n"
-              "  \"phase\": \"%s\",\n"
-              "  \"last_action\": \"%s\",\n"
-              "  \"event_sequence\": %s,\n"
-              "  \"actions\": %s,\n"
-              "  \"ui_snapshots\": %s,\n"
-              "  \"capital_confirmation_snapshot\": %s,\n"
-              "  \"map_state\": %s,\n"
-              "  \"serialization_roundtrip\": %s,\n"
-              "  \"state\": {\n"
-              "    \"turn_event\": %d,\n"
-              "    \"root_class\": \"%s\",\n"
-              "    \"active_nation\": %d,\n"
-              "    \"selected_nation\": %d,\n"
-              "    \"difficulty\": %d,\n"
-              "    \"multiplayer_role\": %d,\n"
-              "    \"turn_state\": %d,\n"
-              "    \"mode\": %d,\n"
-              "    \"global_map\": %s,\n"
-              "    \"display_manager\": %s,\n"
-              "    \"global_ui_root\": %s,\n"
-              "    \"simulation_manager\": %s,\n"
-              "    \"ui_runtime_context\": %s,\n"
-              "    \"ui_view_manager\": %s\n"
-              "  },\n"
-              "  \"runtime\": {\n"
-              "    \"faults\": %s,\n"
-              "    \"handled_modals\": %s,\n"
-              "    \"unexpected_modals\": %s\n"
-              "  },\n"
-              "  \"failure\": %s\n"
-              "}\n",
-              TestName(), status, g_runtimeTestState.seed, g_runtimeTestState.idleTicks,
-              g_runtimeTestState.run.ElapsedMs(), PhaseName(), g_runtimeTestState.run.LastAction(),
-              static_cast<LPCSTR>(eventSequence), static_cast<LPCSTR>(actionLog),
-              static_cast<LPCSTR>(uiSnapshots), static_cast<LPCSTR>(capitalConfirmationSnapshot),
-              static_cast<LPCSTR>(mapState), static_cast<LPCSTR>(roundtrip),
-              g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
-              RuntimeClassName(mainView), g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1,
-              g_runtimeTestState.selectedNationSlot,
-              g_pSimMgr != 0 ? g_pSimMgr->difficultyLevel : -1,
-              g_pSimMgr != 0 ? g_pSimMgr->multiplayerSessionRole : -1,
-              g_pSimMgr != 0 ? g_pSimMgr->turnStateCode : -1, g_pSimMgr != 0 ? g_pSimMgr->mode : -1,
-              g_pGlobalMapState != 0 ? "true" : "false", g_pDisplayMgr != 0 ? "true" : "false",
-              g_pGlobalUiRootController != 0 ? "true" : "false", g_pSimMgr != 0 ? "true" : "false",
-              g_pUiRuntimeContext != 0 ? "true" : "false", g_pUiViewManager != 0 ? "true" : "false",
-              static_cast<LPCSTR>(faults), static_cast<LPCSTR>(handledModals),
-              static_cast<LPCSTR>(unexpectedModals), failure);
-
-  return WriteFileAtomically(g_runtimeTestState.resultPath, json);
-}
-
-void CaptureMapStateSnapshot();
-
-void TrapDebugger(RuntimeDebugReason reason, const char* failure, EXCEPTION_POINTERS* exception) {
-  TView* activeModal =
-      g_ModalViewStack.IsEmpty() ? 0 : static_cast<TView*>(g_ModalViewStack.GetHead());
-  RuntimeDebugRecord record;
-  record.reason = reason;
-  record.elapsedMs = g_runtimeTestState.run.ElapsedMs();
-  record.testName = TestName();
-  record.phase = PhaseName();
-  record.lastAction = g_runtimeTestState.run.LastAction();
-  record.turnEvent = g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1;
-  record.modalDepth = g_ModalViewStack.GetCount();
-  record.mainView = MainView();
-  record.activeModal = activeModal;
-  record.simMgr = g_pSimMgr;
-  record.exceptionPointers = exception;
-
-  if (g_runtimeTestState.debugRecordPath[0] != 0) {
-    CString exceptionJson("null");
-    if (exception != 0 && exception->ExceptionRecord != 0) {
-      exceptionJson.Format("{\"code\": \"0x%08lx\", \"address\": \"%p\"}",
-                           exception->ExceptionRecord->ExceptionCode,
-                           exception->ExceptionRecord->ExceptionAddress);
-    }
-    CString json;
-    json.Format("{\"reason\": %d, \"test\": \"%s\", \"phase\": \"%s\", "
-                "\"last_action\": \"%s\", \"elapsed_ms\": %lu, \"turn_event\": %d, "
-                "\"modal_depth\": %d, \"failure\": %s, \"exception\": %s}\n",
-                static_cast<int>(reason), TestName(), PhaseName(),
-                g_runtimeTestState.run.LastAction(), record.elapsedMs, record.turnEvent,
-                record.modalDepth, failure, static_cast<LPCSTR>(exceptionJson));
-    WriteFileAtomically(g_runtimeTestState.debugRecordPath, json);
-  }
-  ImperialismRuntimeDebuggerTrap(&record);
-}
-
-void Finish(const char* status, const char* failure) {
-  g_runtimeTestState.finished = true;
-  g_runtimeTestState.step = 0;
-  g_runtimeTestState.phaseName = "finished";
-  if (RecordsGameFlow() && lstrcmpA(status, "passed") == 0) {
-    CaptureMapStateSnapshot();
-  }
-  if (!WriteResultFile(status, failure)) {
-    OutputDebugStringA("Imperialism runtime test could not write its result file.\n");
-  }
-  if (HoldRequested()) {
-    return;
-  }
-  RequestGameClose();
-}
-
-void Fail(const char* failure) {
-  TrapDebugger(kRuntimeDebugSemanticFailure, failure, 0);
-  Finish("failed", failure);
-}
-
-unsigned long PhaseTimeoutMs() {
-  static unsigned long timeoutMs = 0;
-  if (timeoutMs == 0) {
-    timeoutMs = 60000;
-    char text[16];
-    if (GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_PHASE_TIMEOUT_MS", text, sizeof(text)) !=
-        0) {
-      unsigned long parsed = strtoul(text, 0, 10);
-      if (parsed != 0) {
-        timeoutMs = parsed;
-      }
-    }
-  }
-  return timeoutMs;
-}
-
-bool WaitForNextTickOrTimeout(const char* failure) {
-  if (GetTickCount() - g_runtimeTestState.phaseStartMs >= PhaseTimeoutMs()) {
-    Fail(failure);
-    return false;
-  }
-  RequestAnotherDriverTick();
-  return true;
-}
-
-void RecordHandledModal(const char* label) {
-  CString entry;
-  entry.Format("\"%s\"", label);
-  AppendJsonArrayItem(g_handledModals, entry);
-}
-
-void RecordUnexpectedModal(TView* modal) {
-  char tag[5];
-  FourCcText(static_cast<unsigned int>(modal->controlTag), tag);
-  CString entry;
-  entry.Format("{\"class\": \"%s\", \"tag\": \"%s\", \"phase\": \"%s\", \"t_ms\": %lu}",
-               RuntimeClassName(modal), tag, PhaseName(), g_runtimeTestState.run.ElapsedMs());
-  AppendJsonArrayItem(g_unexpectedModals, entry);
-}
-
-CString SemanticFingerprint() {
-  CString fingerprint;
-  fingerprint.Format("%d|%s|%d|%s",
-                     g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
-                     RuntimeClassName(MainView()), g_ModalViewStack.GetCount(), PhaseName());
-  return fingerprint;
-}
-
-void MaybeWriteHeartbeat() {
-  if (g_runtimeTestState.heartbeatPath[0] == 0) {
-    return;
-  }
-  unsigned long now = GetTickCount();
-  CString fingerprint = SemanticFingerprint();
-  if (fingerprint != g_lastFingerprint) {
-    g_lastFingerprint = fingerprint;
-    g_runtimeTestState.run.MarkFallbackProgress();
-  }
-  if (g_runtimeTestState.lastHeartbeatMs != 0 && now - g_runtimeTestState.lastHeartbeatMs < 250) {
-    return;
-  }
-  g_runtimeTestState.lastHeartbeatMs = now;
-  CString json;
-  json.Format("{\"phase\": \"%s\", \"last_action\": \"%s\", \"idle_ticks\": %lu, "
-              "\"elapsed_ms\": %lu, \"turn_event\": %d, \"root_class\": \"%s\", "
-              "\"modal_depth\": %d, \"progress_counter\": %lu, \"last_progress_ms\": %lu, "
-              "\"hold\": %s}\n",
-              PhaseName(), g_runtimeTestState.run.LastAction(), g_runtimeTestState.idleTicks,
-              g_runtimeTestState.run.ElapsedMs(),
-              g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
-              RuntimeClassName(MainView()), g_ModalViewStack.GetCount(),
-              g_runtimeTestState.run.ProgressCounter(), g_runtimeTestState.run.LastProgressMs(),
-              HoldRequested() ? "true" : "false");
-  WriteFileAtomically(g_runtimeTestState.heartbeatPath, json);
-}
-
-// Seed-stable normalized simulation snapshot for the host-side map oracle:
-// per-terrain-kind tile counts, per-nation owned-tile counts, and a few
-// derived scalars. Captured at the first strategic map the scenario reaches, and at
-// Finish for scenarios that never reach one earlier.
-//
-// The first map is the only reproducible one. random_game_enters_map deliberately
-// returns to the main menu and starts a *second* random game to exercise the return
-// path, and that second generation continues from whatever RNG state the first
-// session left behind -- which depends on how much play and animation happened, so it
-// varies run to run (observed representative tiles 1360, 4061 and 5050 for one seed).
-// Capturing once, at the first map, keeps the oracle comparing a stable value.
-void CaptureMapStateSnapshot() {
-  if (g_pGlobalMapState == 0 || !g_mapStateJson.IsEmpty()) {
-    return;
-  }
-  long terrainCounts[kStrategicTerrainCount + 1]; // [+1] = unassigned/other
-  long ownedTiles[7];
-  memset(terrainCounts, 0, sizeof(terrainCounts));
-  memset(ownedTiles, 0, sizeof(ownedTiles));
-  for (short tile = 0; tile < 0x1950; ++tile) {
-    const TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tile];
-    int kind = static_cast<int>(terrain.GetTerrainKind());
-    if (kind < 0 || kind >= kStrategicTerrainCount) {
-      kind = kStrategicTerrainCount;
-    }
-    ++terrainCounts[kind];
-    short owner = terrain.ownerNationTag04;
-    if (owner >= 0 && owner < 7) {
-      ++ownedTiles[owner];
-    }
-  }
-  CString terrainJson("[");
-  CString item;
-  for (int kindIndex = 0; kindIndex <= kStrategicTerrainCount; ++kindIndex) {
-    item.Format("%s%ld", kindIndex == 0 ? "" : ", ", terrainCounts[kindIndex]);
-    terrainJson += item;
-  }
-  terrainJson += "]";
-  CString ownedJson("[");
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    item.Format("%s%ld", nationSlot == 0 ? "" : ", ", ownedTiles[nationSlot]);
-    ownedJson += item;
-  }
-  ownedJson += "]";
-  g_mapStateJson.Format("{\"terrain_counts\": %s, \"owned_tiles\": %s, \"wrap\": %d, "
-                        "\"representative_tile\": %d, \"economic_turn\": %d}",
-                        static_cast<LPCSTR>(terrainJson), static_cast<LPCSTR>(ownedJson),
-                        g_pGlobalMapState->hexNeighborWrapHorizontally20,
-                        g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(
-                            g_runtimeTestState.selectedNationSlot),
-                        g_pSimMgr != 0 ? static_cast<int>(g_pSimMgr->economicTurn) : -1);
-}
-
-LONG WINAPI RuntimeTestUnhandledExceptionFilter(EXCEPTION_POINTERS* info) {
-  if (!g_runtimeTestState.finished && info != 0 && info->ExceptionRecord != 0) {
-    TrapDebugger(kRuntimeDebugUnhandledException, "\"unhandled exception\"", info);
-    CString fault;
-    fault.Format("{\"code\": \"0x%08lx\", \"address\": \"%p\", \"phase\": \"%s\", "
-                 "\"last_action\": \"%s\"}",
-                 info->ExceptionRecord->ExceptionCode, info->ExceptionRecord->ExceptionAddress,
-                 PhaseName(), g_runtimeTestState.run.LastAction());
-    AppendJsonArrayItem(g_faults, fault);
-    g_runtimeTestState.finished = true;
-    g_runtimeTestState.step = 0;
-    g_runtimeTestState.phaseName = "finished";
-    WriteResultFile("failed", "\"unhandled exception\"");
-  }
-  return EXCEPTION_CONTINUE_SEARCH;
-}
-
-void InitializeDriver(RuntimeScenario& scenario, unsigned int seed) {
-  g_runtimeTestState.scenario = &scenario;
-  g_runtimeTestState.seed = seed;
-  g_runtimeTestState.run.Start();
-  g_runtimeTestState.phaseStartMs = GetTickCount();
-  SetUnhandledExceptionFilter(RuntimeTestUnhandledExceptionFilter);
-
-  DWORD resultPathLength =
-      GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_RESULT", g_runtimeTestState.resultPath,
-                              sizeof(g_runtimeTestState.resultPath));
-  if (resultPathLength == 0 || resultPathLength >= sizeof(g_runtimeTestState.resultPath)) {
-    lstrcpyA(g_runtimeTestState.resultPath, "runtime-test-result.json");
-  }
-
-  DWORD heartbeatPathLength = GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_HEARTBEAT",
-                                                      g_runtimeTestState.heartbeatPath,
-                                                      sizeof(g_runtimeTestState.heartbeatPath));
-  if (heartbeatPathLength >= sizeof(g_runtimeTestState.heartbeatPath)) {
-    g_runtimeTestState.heartbeatPath[0] = 0;
-  }
-
-  DWORD debugRecordPathLength = GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_DEBUG_RECORD",
-                                                        g_runtimeTestState.debugRecordPath,
-                                                        sizeof(g_runtimeTestState.debugRecordPath));
-  if (debugRecordPathLength >= sizeof(g_runtimeTestState.debugRecordPath)) {
-    g_runtimeTestState.debugRecordPath[0] = 0;
-  }
-
-  if (scenario.RequiresFixture()) {
-    DWORD fixtureLength =
-        GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_FIXTURE", g_runtimeTestState.fixturePath,
-                                sizeof(g_runtimeTestState.fixturePath));
-    if (fixtureLength == 0 || fixtureLength >= sizeof(g_runtimeTestState.fixturePath)) {
-      Finish("failed", "\"IMPERIALISM_RUNTIME_TEST_FIXTURE is not set for load_saved_game\"");
-      return;
-    }
-  } else if (lstrcmpA(scenario.Name(), "unknown") == 0) {
-    Finish("failed", "\"unknown compiled runtime test\"");
-    return;
-  }
-  SetStep(RunWaitingForManagers, "waiting_for_managers", "wait_for_managers");
-}
-
-void RunWaitingForManagers() {
-  if (!RequiredManagersAreInitialized()) {
-    WaitForNextTickOrTimeout("\"manager initialization timed out\"");
-    return;
-  }
-  if (!ActiveScenario().RequiresMainWindow()) {
-    ActiveScenario().OnManagersReady();
-    return;
-  }
-  if (GetMainViewHostFromActiveThread() == 0) {
-    WaitForNextTickOrTimeout("\"main view host initialization timed out\"");
-    return;
-  }
-  CWnd* mainWindow = AfxGetThread()->GetMainWnd();
-  if (mainWindow == 0 || mainWindow->m_hWnd == 0) {
-    WaitForNextTickOrTimeout("\"main window initialization timed out\"");
-    return;
-  }
-  g_runtimeTestState.mainWindowHandle = mainWindow->m_hWnd;
-
-  ActiveScenario().OnManagersReady();
-}
-
-bool AdvanceInitialNewspaperIfNeeded();
-
-void RunWaitingForMainMenu() {
-  TView* mainView = MainView();
-  if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dc ||
-      !IsViewKindOf(mainView, RUNTIME_CLASS(TGameSetupPicture))) {
-    WaitForNextTickOrTimeout("\"main menu did not become active\"");
-    return;
-  }
-
-  srand(g_runtimeTestState.seed);
-  // The random-map tuning string is generated by the map-context flavor LCG, whose
-  // production dynamic initializer uses GetTickCount()/16. Seeding CRT rand() alone
-  // never controlled it, so one runtime seed still selected different maps.
-  g_zoneStatusCodePrngSeed_006a5aec = g_runtimeTestState.seed;
-  MainMenuDriver menu(mainView);
-  if (!menu.StartRandomGame()) {
-    Fail("\"main-menu random-game button or native host is missing\"");
-    return;
-  }
-  SetStep(RunWaitingForRandomSetup, "waiting_for_random_setup", "click_main_menu_rand");
-  RequestAnotherDriverTick();
-}
-
-void RunWaitingForRandomSetup() {
-  TView* mainView = MainView();
-  if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dd ||
-      !IsViewKindOf(mainView, RUNTIME_CLASS(TSetupRandomMapPicture))) {
-    WaitForNextTickOrTimeout("\"random-map setup did not become active\"");
-    return;
-  }
-
-  RandomSetupDriver setup(mainView);
-  g_runtimeTestState.selectedNationSlot = setup.SelectedNationSlot();
-  SetStep(RunSettingCountryName, "setting_country_name", "wait_for_event_0x05dd");
-  RequestAnotherDriverTick();
-}
-
-void RunSettingCountryName() {
-  TView* mainView = MainView();
-  if (!IsViewKindOf(mainView, RUNTIME_CLASS(TSetupRandomMapPicture))) {
-    Fail("\"random-map setup disappeared before set_text\"");
-    return;
-  }
-  RandomSetupDriver setup(mainView);
-  if (!setup.SetCountryName("Testland")) {
-    Fail("\"country-name control is missing\"");
-    return;
-  }
-  SetStep(RunSelectingDifficulty, "selecting_difficulty", "set_text_coun");
-  RequestAnotherDriverTick();
-}
-
-void RunSelectingDifficulty() {
-  TView* mainView = MainView();
-  const unsigned long expectedTag = kControlTagDif0 + SelectedDifficultyLevel();
-  RandomSetupDriver setup(mainView);
-  if (!setup.SelectDifficulty(expectedTag, SkipsCapitalSelection())) {
-    Fail("\"requested difficulty control is missing\"");
-    return;
-  }
-  SetStep(RunActivatingOkay, "activating_okay", "select_requested_difficulty");
-  RequestAnotherDriverTick();
-}
-
-void RunActivatingOkay() {
-  TView* mainView = MainView();
-  RandomSetupDriver setup(mainView);
-  if (!setup.Accept(SkipsCapitalSelection())) {
-    Fail("\"okay control or requested input path is missing\"");
-    return;
-  }
-  if (SkipsCapitalSelection()) {
-    SetStep(RunWaitingForDirectStrategicMap, "waiting_for_direct_strategic_map", "click_okay");
-  } else {
-    SetStep(RunWaitingForStrategicMap, "waiting_for_strategic_map", "activate_okay");
-  }
-  RequestAnotherDriverTick();
-}
-
-bool NationModesMatchSelectedNation() {
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    short expected = nationSlot == g_runtimeTestState.selectedNationSlot ? 1 : 2;
-    if (g_pSimMgr->nationControlModes[nationSlot] != expected) {
-      return false;
-    }
-  }
-  return true;
-}
-
-bool AdvanceInitialNewspaperIfNeeded() {
-  if (g_pUiRuntimeContext->currentTurnEventCode != 0x2103) {
-    return false;
-  }
-  TView* mainView = MainView();
-  if (!IsViewKindOf(mainView, RUNTIME_CLASS(TNewspaperView))) {
-    Fail("\"event 0x2103 did not construct the newspaper view\"");
-    return true;
-  }
-  if (g_runtimeTestState.newspaperAdvanced) {
-    WaitForNextTickOrTimeout("\"newspaper end action did not advance to the combined map\"");
-    return true;
-  }
-  if (!ActiveScenario().BeforeInitialNewspaperExit()) {
-    return true;
-  }
-  TControl* endControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagEnd));
-  if (endControl == 0 || endControl->IsActionable() == 0) {
-    Fail("\"newspaper end control is missing or disabled\"");
-    return true;
-  }
-  g_runtimeTestState.newspaperAdvanced = true;
-  RecordAction("activate_newspaper_end");
-  endControl->HandleEvent(endControl->GetEventNumber(), endControl, 0);
-  RequestAnotherDriverTick();
-  return true;
-}
-
-void RunWaitingForDirectStrategicMap() {
-  const int eventCode = g_pUiRuntimeContext->currentTurnEventCode;
-  if (eventCode == 0x3b8) {
-    Fail("\"difficulty that skips capital selection entered the city-site selector\"");
-    return;
-  }
-  if (eventCode == 0x5e4) {
-    Fail("\"single-player random game incorrectly entered multiplayer synchronization\"");
-    return;
-  }
-  if (AdvanceInitialNewspaperIfNeeded()) {
-    return;
-  }
-  TView* mainView = MainView();
-  if (eventCode != 0x7dd || !IsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture))) {
-    WaitForNextTickOrTimeout("\"random game did not reach the combined strategic map\"");
-    return;
-  }
-  if (!g_ModalViewStack.IsEmpty()) {
-    RecordUnexpectedModal(static_cast<TView*>(g_ModalViewStack.GetHead()));
-    Fail("\"random game unexpectedly displayed a modal capital prompt\"");
-    return;
-  }
-  if (g_pSimMgr->difficultyLevel != SelectedDifficultyLevel()) {
-    Fail("\"native difficulty selection did not store the requested level\"");
-    return;
-  }
-  if (g_pSimMgr->multiplayerSessionRole != 0) {
-    Fail("\"single-player Easy game has a multiplayer session role\"");
-    return;
-  }
-  if (!NationModesMatchSelectedNation()) {
-    Fail("\"nation control modes do not match the setup selection\"");
-    return;
-  }
-  TMapUberPicture* mapView = static_cast<TMapUberPicture*>(mainView);
-  if (!VerifyStrategicCoastCornerComposite(mapView->subview2A8)) {
-    Fail("\"strategic coast corners do not match the adjacency-selected atlas composite\"");
-    return;
-  }
-  const char* holdPhase = getenv("IMPERIALISM_RUNTIME_TEST_HOLD");
-  if (holdPhase != 0 && lstrcmpiA(holdPhase, "strategic") == 0) {
-    RedrawWindow(mapView->nativeWindow50->m_hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
-    if (!CaptureHeldPrimarySurfaceBmp(g_runtimeTestState.resultPath) ||
-        !CaptureHeldWindowBmp(g_runtimeTestState.resultPath, mapView->nativeWindow50->m_hWnd,
-                              mapView->frameWidth34, mapView->frameHeight38)) {
-      Fail("\"could not capture the held strategic map\"");
-      return;
-    }
-    Finish("passed", "null");
-    return;
-  }
-  ActiveScenario().OnMapReadyWithoutCapitalSelection();
-}
-
-void RunWaitingForStrategicMap() {
-  TView* mainView = MainView();
-  if (g_pUiRuntimeContext->currentTurnEventCode != 0x3b8 ||
-      !IsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture))) {
-    WaitForNextTickOrTimeout("\"strategic map did not become active\"");
-    return;
-  }
-  SetStep(RunVerifyingStrategicMap, "verifying_strategic_map", "observe_event_0x03b8");
-  RequestAnotherDriverTick();
-}
-
-void RunVerifyingStrategicMap() {
-  TView* mainView = MainView();
-  if (g_pUiRuntimeContext->currentTurnEventCode != 0x3b8 ||
-      !IsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture))) {
-    Fail("\"strategic map did not remain active\"");
-    return;
-  }
-  if (g_ModalViewStack.IsEmpty()) {
-    WaitForNextTickOrTimeout("\"city-site prompt did not become active\"");
-    return;
-  }
-
-  TWindow* modal = static_cast<TWindow*>(g_ModalViewStack.GetHead());
-  TDialogBehavior* behavior = modal->GetDialogBehavior();
-  TControl* okay = static_cast<TControl*>(modal->ResolveControlByTag(kControlTagOkay));
-  if (behavior == 0 || behavior->defaultCommandCode != kControlTagOkay || okay == 0) {
-    RecordUnexpectedModal(modal);
-    Fail("\"unexpected modal while entering the strategic map\"");
-    return;
-  }
-  RecordHandledModal("city_site_prompt");
-  okay->HandleEvent(okay->GetEventNumber(), okay, 0);
-  SetStep(RunWaitingForModalDismissal, "waiting_for_modal_dismissal",
-          "activate_city_site_prompt_okay");
-  RequestAnotherDriverTick();
-}
-
-void RunWaitingForModalDismissal() {
-  if (!g_ModalViewStack.IsEmpty()) {
-    WaitForNextTickOrTimeout("\"city-site prompt did not dismiss\"");
-    return;
-  }
-  TView* mainView = MainView();
-  if (g_pUiRuntimeContext->currentTurnEventCode != 0x3b8 ||
-      !IsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture))) {
-    Fail("\"strategic map did not remain active after the city-site prompt\"");
-    return;
-  }
-  if (g_pGlobalMapState == 0) {
-    Fail("\"strategic map has no global map state\"");
-    return;
-  }
-  if (g_pSimMgr->activeNationSlot != g_runtimeTestState.selectedNationSlot) {
-    Fail("\"active nation differs from setup selection\"");
-    return;
-  }
-  if (!NationModesMatchSelectedNation()) {
-    Fail("\"nation control modes do not match the setup selection\"");
-    return;
-  }
-  if (g_pSimMgr->difficultyLevel != 2) {
-    Fail("\"difficulty level is not Normal\"");
-    return;
-  }
-  TMapUberPicture* mapView = static_cast<TMapUberPicture*>(mainView);
-  TView* cancel = mapView->ResolveControlByTag(kControlTagCanc);
-  TView* query = mapView->ResolveControlByTag(kControlTagQuer);
-  if (cancel == 0 || query == 0) {
-    Fail("\"city-site toolbar button controls are missing\"");
-    return;
-  }
-  if (mapView->miniMapViewC0 == 0) {
-    Fail("\"strategic map did not create its mini-map view\"");
-    return;
-  }
-  if (!VerifyStrategicCoastCornerComposite(mapView->subview2A8)) {
-    Fail("\"strategic coast corners do not match the adjacency-selected atlas composite\"");
-    return;
-  }
-  // Snapshot the map here rather than leaving it to Finish: this is the first
-  // strategic map, and scenarios that continue past it may start a second random game
-  // whose generation is not reproducible. CaptureMapStateSnapshot only records once.
-  if (RecordsGameFlow()) {
-    CaptureMapStateSnapshot();
-  }
-  const char* holdPhase = getenv("IMPERIALISM_RUNTIME_TEST_HOLD");
-  if (holdPhase != 0 && lstrcmpiA(holdPhase, "strategic") == 0) {
-    RedrawWindow(mapView->nativeWindow50->m_hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
-    if (!CaptureHeldPrimarySurfaceBmp(g_runtimeTestState.resultPath) ||
-        !CaptureHeldWindowBmp(g_runtimeTestState.resultPath, mapView->nativeWindow50->m_hWnd,
-                              mapView->frameWidth34, mapView->frameHeight38)) {
-      Fail("\"could not capture the held strategic map\"");
-      return;
-    }
-    Finish("passed", "null");
-    return;
-  }
-  SetStep(RunPrimingMapHover, "priming_map_hover", "prime_city_site_hover");
-  RequestAnotherDriverTick();
-}
-
-void RunPrimingMapHover() {
-  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
-  TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
-  if (mapDialog == 0 || !IsViewKindOf(mapDialog, RUNTIME_CLASS(TCitySiteView))) {
-    Fail("\"strategic map has no city-site hover view\"");
-    return;
-  }
-
-  // Drive the map's semantic draw entry directly. An invalidation plus UpdateWindow is not
-  // sufficient under every virtual-display host: the window manager may coalesce the paint,
-  // leaving the tile cache empty while the scenario proceeds to the hover path.
-  TQuickDrawSurfaceContext* savedSurface;
-  int savedSurfaceFlags;
-  GetGWorld(&savedSurface, &savedSurfaceFlags);
-  SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
-  CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
-  mapDialog->Draw(&mapBounds);
-  SetGWorld(savedSurface, savedSurfaceFlags);
-  CPoint point(256, 224);
-  mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&point, 0);
-  short paintedTile = static_cast<short>(mapDialog->paintedHoverTileIndex6e);
-  signed char markerIndex = g_pGlobalMapState->terrainStateTable[paintedTile].markerSlotIndex10;
-  if (markerIndex == -1 || mapDialog->tileMarkers7c[markerIndex].flag == 0) {
-    Fail("\"primed city-site hover tile is not present in the render cache\"");
-    return;
-  }
-  SetStep(RunDispatchingMapHotkey, "dispatching_map_hotkey", "forward_map_hotkey_x");
-  RequestAnotherDriverTick();
-}
-
-void RunDispatchingMapHotkey() {
-  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
-  if (mapView == 0) {
-    Fail("\"strategic map has no map input view\"");
-    return;
-  }
-
-  TKeyCommandEvent commandEvent;
-  commandEvent.commandCode = 'x';
-  commandEvent.keyFlags = 0;
-  commandEvent.handledMarker = 0;
-  mapView->DoKeyEvent(&commandEvent);
-
-  TMapDialog* mapDialog = mapView->subview2A8;
-  if (mapDialog == 0) {
-    Fail("\"strategic map has no scrollable map dialog\"");
-    return;
-  }
-
-  TCitySiteView* citySiteView = static_cast<TCitySiteView*>(mapDialog);
-  if (g_wMapDialogViewportTileSpan != 9) {
-    Fail("\"strategic-map viewport tile span was not initialized\"");
-    return;
-  }
-  mapDialog->SetMapDialogCellCoordinatesAndRefresh(citySiteView->minColBound368 + 1,
-                                                   citySiteView->minRowBound370 + 1, 0);
-  for (int scroll = 0; scroll < 0x80; ++scroll) {
-    mapView->Scroll(4);
-  }
-  int rightEdgeViewportX = mapDialog->viewportOrigin60.x;
-  if (rightEdgeViewportX != citySiteView->maxColBound36c * 0x40) {
-    Fail("\"right-edge scrolling stopped before the strategic map clamp\"");
-    return;
-  }
-  mapView->Scroll(4);
-  if (mapDialog->viewportOrigin60.x != rightEdgeViewportX) {
-    Fail("\"right-edge scrolling moved beyond the strategic map clamp\"");
-    return;
-  }
-  int viewportYBeforeTopEdgeScroll = mapDialog->viewportOrigin60.y;
-  mapView->Scroll(2);
-  if (mapDialog->viewportOrigin60.y <= viewportYBeforeTopEdgeScroll) {
-    Fail("\"top-edge scrolling moved the strategic map viewport downward\"");
-    return;
-  }
-  short finalTile = static_cast<short>(g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(
-      g_runtimeTestState.selectedNationSlot));
-  for (short tile = 0; tile < 0x1950; ++tile) {
-    const TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tile];
-    if (terrain.GetTerrainKind() == kStrategicTerrainMountain &&
-        terrain.ownerNationTag04 == g_runtimeTestState.selectedNationSlot) {
-      finalTile = tile;
-      break;
-    }
-  }
-  citySiteView->SetMapViewTileIndex(finalTile);
-  if (g_pUiRuntimeContext->currentTurnEventCode != 0x3b8 ||
-      !IsViewKindOf(MainView(), RUNTIME_CLASS(TMapUberPicture))) {
-    Fail("\"map hotkey forwarding left the strategic map\"");
-    return;
-  }
-  SetStep(RunExercisingMapHover, "exercising_map_hover", "exercise_city_site_hover");
-  RequestAnotherDriverTick();
-}
-
-void RunExercisingMapHover() {
-  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
-  TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
-  if (mapDialog == 0 || !IsViewKindOf(mapDialog, RUNTIME_CLASS(TCitySiteView))) {
-    Fail("\"strategic map has no city-site hover view\"");
-    return;
-  }
-
-  TQuickDrawSurfaceContext* savedSurface;
-  int savedSurfaceFlags;
-  GetGWorld(&savedSurface, &savedSurfaceFlags);
-  SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
-  CPoint point(0, 0);
-  mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&point, 0);
-  SetGWorld(savedSurface, savedSurfaceFlags);
-  mapView->RefreshControl();
-  mapView->ForceRedraw();
-  TView* cancel = mapView->ResolveControlByTag(kControlTagCanc);
-  if (!RuntimeUiDriver::ClickView(cancel)) {
-    Fail("\"strategic-map return button or native host is missing\"");
-    return;
-  }
-  SetStep(RunReturningToRandomSetup, "returning_to_random_setup", "click_strategic_map_canc");
-  RequestAnotherDriverTick();
-}
-
-void RunReturningToRandomSetup() {
-  TView* mainView = MainView();
-  if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dd ||
-      !IsViewKindOf(mainView, RUNTIME_CLASS(TSetupRandomMapPicture))) {
-    WaitForNextTickOrTimeout("\"random setup did not return after leaving the strategic map\"");
-    return;
-  }
-
-  TView* cancel = mainView->ResolveControlByTag(kControlTagCncl);
-  if (!RuntimeUiDriver::ClickView(cancel)) {
-    Fail("\"returned random setup main-menu button or native host is missing\"");
-    return;
-  }
-  SetStep(RunReturningToMainMenu, "returning_to_main_menu", "click_returned_setup_cncl");
-  RequestAnotherDriverTick();
-}
-
-void RunReturningToMainMenu() {
-  TView* mainView = MainView();
-  if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dc ||
-      !IsViewKindOf(mainView, RUNTIME_CLASS(TGameSetupPicture))) {
-    WaitForNextTickOrTimeout("\"main menu did not return after leaving random setup\"");
-    return;
-  }
-
-  TView* randomButton = mainView->ResolveControlByTag(kControlTagRand);
-  if (!RuntimeUiDriver::ClickView(randomButton)) {
-    Fail("\"returned main-menu random-game button or native host is missing\"");
-    return;
-  }
-  SetStep(RunReenteringRandomSetup, "reentering_random_setup", "click_returned_main_menu_rand");
-  RequestAnotherDriverTick();
-}
-
-void RunReenteringRandomSetup() {
-  TView* mainView = MainView();
-  if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dd ||
-      !IsViewKindOf(mainView, RUNTIME_CLASS(TSetupRandomMapPicture))) {
-    WaitForNextTickOrTimeout("\"random setup did not reopen from the returned main menu\"");
-    return;
-  }
-
-  TView* hard = mainView->ResolveControlByTag(kControlTagDif3);
-  if (!RuntimeUiDriver::ClickView(hard)) {
-    Fail("\"reopened random setup difficulty control or native host is missing\"");
-    return;
-  }
-  SetStep(RunVerifyingReturnedRandomSetup, "verifying_returned_random_setup",
-          "click_reopened_setup_dif3");
-  RequestAnotherDriverTick();
-}
-
-void RunVerifyingReturnedRandomSetup() {
-  TView* mainView = MainView();
-  TRadioTextCluster* difficulty =
-      mainView != 0
-          ? static_cast<TRadioTextCluster*>(mainView->ResolveControlByTag(kControlTagDiff))
-          : 0;
-  if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dd || difficulty == 0 ||
-      difficulty->selectedTag88 != static_cast<int>(kControlTagDif3)) {
-    Fail("\"returned random setup did not accept the difficulty click\"");
-    return;
-  }
-
-  TControl* okay = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagOkay));
-  if (okay == 0) {
-    Fail("\"reopened random setup okay control is missing\"");
-    return;
-  }
-  okay->HandleEvent(okay->GetEventNumber(), okay, 0);
-  SetStep(RunWaitingForSecondCitySite, "waiting_for_second_city_site",
-          "activate_reopened_setup_okay");
-  RequestAnotherDriverTick();
-}
-
-void RunWaitingForSecondCitySite() {
-  TView* mainView = MainView();
-  if (g_pUiRuntimeContext->currentTurnEventCode != 0x3b8 ||
-      !IsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture)) || g_ModalViewStack.IsEmpty()) {
-    WaitForNextTickOrTimeout("\"second city-site selector or prompt did not become active\"");
-    return;
-  }
-
-  TWindow* modal = static_cast<TWindow*>(g_ModalViewStack.GetHead());
-  TControl* okay = static_cast<TControl*>(modal->ResolveControlByTag(kControlTagOkay));
-  if (okay == 0) {
-    RecordUnexpectedModal(modal);
-    Fail("\"second city-site prompt has no okay control\"");
-    return;
-  }
-  RecordHandledModal("city_site_prompt");
-  okay->HandleEvent(okay->GetEventNumber(), okay, 0);
-  SetStep(RunWaitingForSecondPromptDismissal, "waiting_for_second_prompt_dismissal",
-          "activate_second_city_site_prompt_okay");
-  RequestAnotherDriverTick();
-}
-
-void RunWaitingForSecondPromptDismissal() {
-  if (!g_ModalViewStack.IsEmpty()) {
-    WaitForNextTickOrTimeout("\"second city-site prompt did not dismiss\"");
-    return;
-  }
-
-  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
-  TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
-  if (mapDialog == 0 || !IsViewKindOf(mapDialog, RUNTIME_CLASS(TCitySiteView))) {
-    Fail("\"second city-site selector has no TCitySiteView\"");
-    return;
-  }
-
-  short citySite = -1;
-  for (short tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-    const TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-    StrategicTerrainKind terrainKind = tile.GetTerrainKind();
-    bool supportsCity =
-        terrainKind == kStrategicTerrainPlains || terrainKind == kStrategicTerrainFarmland ||
-        terrainKind == kStrategicTerrainForest || terrainKind == kStrategicTerrainDesert;
-    if (supportsCity && tile.ownerNationTag04 == g_runtimeTestState.selectedNationSlot &&
-        tile.recruitSearchVisited0e == 0) {
-      citySite = tileIndex;
-      break;
-    }
-  }
-  if (citySite == -1) {
-    Fail("\"random map has no valid city-site candidate for the selected nation\"");
-    return;
-  }
-
-  SetStep(RunWaitingForCitySiteConfirmation, "waiting_for_city_site_confirmation",
-          "submit_valid_city_site");
-  static_cast<TCitySiteView*>(mapDialog)->HandleMapClickByInteractionMode(citySite, 0);
-  RequestAnotherDriverTick();
-}
-
-void RunWaitingForCitySiteConfirmation() {
-  if (g_ModalViewStack.IsEmpty()) {
-    WaitForNextTickOrTimeout("\"city-site confirmation did not become active\"");
-    return;
-  }
-
-  TWindow* modal = static_cast<TWindow*>(g_ModalViewStack.GetHead());
-  TView* dialog = modal->ResolveControlByTag(kControlTagDialog);
-  TControl* okay = static_cast<TControl*>(modal->ResolveControlByTag(kControlTagOkay));
-  if (dialog == 0 || okay == 0) {
-    Fail("\"city-site confirmation tree is incomplete\"");
-    return;
-  }
-  if (modal->IsActionable() == 0 || dialog->IsActionable() == 0 || okay->IsActionable() == 0 ||
-      dialog->ownerContext != modal || okay->ownerContext != dialog || modal->nativeWindow50 == 0 ||
-      dialog->nativeWindow50 != modal->nativeWindow50 ||
-      okay->nativeWindow50 != modal->nativeWindow50) {
-    Fail("\"city-site confirmation tree is not attached to its active native host\"");
-    return;
-  }
-  g_capitalConfirmationUiSnapshot = CaptureUiSnapshot(0x3b9, modal);
-  if (g_pActiveQuickDrawSurfaceContextHead != &g_defaultQuickDrawSurfaceSentinel ||
-      g_pQuickDrawMemoryDc != 0) {
-    Fail("\"city-site confirmation inherited the strategic map QuickDraw surface\"");
-    return;
-  }
-  RedrawWindow(modal->nativeWindow50->m_hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
-  const char* holdPhase = getenv("IMPERIALISM_RUNTIME_TEST_HOLD");
-  if (holdPhase != 0 && lstrcmpiA(holdPhase, "capital") == 0) {
-    Finish("passed", "null");
-    return;
-  }
-  RecordHandledModal("city_site_confirmation");
-  SetStep(RunWaitingForCombinedMap, "waiting_for_combined_map", "accept_city_site_confirmation");
-  okay->HandleEvent(okay->GetEventNumber(), okay, 0);
-  RequestAnotherDriverTick();
-}
-
-void RunWaitingForCombinedMap() {
-  if (AdvanceInitialNewspaperIfNeeded()) {
-    return;
-  }
-  WaitForNextTickOrTimeout("\"accepted city site did not advance to the combined map\"");
-}
-
-void RunVerifyingCombinedMapExtents() {
-  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
-  TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
-  if (mapDialog == 0 || IsViewKindOf(mapDialog, RUNTIME_CLASS(TCitySiteView))) {
-    Fail("\"combined map retained the country-bounded city-site view\"");
-    return;
-  }
-  if (g_pActiveQuickDrawSurfaceContextHead != &g_defaultQuickDrawSurfaceSentinel ||
-      g_pQuickDrawMemoryDc != 0) {
-    Fail("\"combined map retained an offscreen QuickDraw surface after construction\"");
-    return;
-  }
-  if (HoldRequested()) {
-    RedrawWindow(mapView->nativeWindow50->m_hWnd, NULL, NULL,
-                 RDW_INVALIDATE | RDW_ALLCHILDREN | RDW_UPDATENOW);
-    if (!CaptureHeldPrimarySurfaceBmp(g_runtimeTestState.resultPath) ||
-        !CaptureHeldWindowBmp(g_runtimeTestState.resultPath, mapView->nativeWindow50->m_hWnd,
-                              mapView->frameWidth34, mapView->frameHeight38)) {
-      Fail("\"could not capture the held combined map\"");
-      return;
-    }
-    Finish("passed", "null");
-    return;
-  }
-  if (!VerifyStrategicCoastCornerComposite(mapDialog)) {
-    Fail("\"strategic coast corners do not match the adjacency-selected atlas composite\"");
-    return;
-  }
-  if (GetMcAppUiActiveFlag() == 0) {
-    Fail("\"combined map left the global UI paint gate disabled\"");
-    return;
-  }
-  if (!VerifyMiniMapViewportFrame(mapView->miniMapViewC0)) {
-    Fail("\"mini-map viewport frame did not alter the rendered thumbnail\"");
-    return;
-  }
-
-  mapDialog->RefreshControl();
-  mapDialog->ForceRedraw();
-  CPoint firstHoverPoint(160, 160);
-  CPoint secondHoverPoint(352, 288);
-  TQuickDrawBlitSurface* mapCache = g_pPrimaryRenderSurfaceContext->GetBlitSurface();
-  int mapCacheBytes = mapCache->stride * (mapCache->clipRect.bottom - mapCache->clipRect.top);
-  unsigned char* mapCacheBeforeHover = new unsigned char[mapCacheBytes];
-  memcpy(mapCacheBeforeHover, mapCache->pixelBits, mapCacheBytes);
-  TQuickDrawSurfaceContext* savedSurface;
-  int savedSurfaceFlags;
-  GetGWorld(&savedSurface, &savedSurfaceFlags);
-  short savedInteractionMode = mapView->activeUnitCategoryIndex96;
-  mapView->activeUnitCategoryIndex96 = 5;
-  SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
-  mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&firstHoverPoint, 0);
-  if (g_pActiveQuickDrawSurfaceContextHead != g_pPrimaryRenderSurfaceContext ||
-      memcmp(mapCacheBeforeHover, mapCache->pixelBits, mapCacheBytes) != 0) {
-    mapView->activeUnitCategoryIndex96 = savedInteractionMode;
-    SetGWorld(savedSurface, savedSurfaceFlags);
-    delete[] mapCacheBeforeHover;
-    Fail("\"combined-map hover painted its transient frame into the map cache\"");
-    return;
-  }
-  mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&secondHoverPoint, 0);
-  mapView->activeUnitCategoryIndex96 = savedInteractionMode;
-  SetGWorld(savedSurface, savedSurfaceFlags);
-  bool mapCacheUnchanged = memcmp(mapCacheBeforeHover, mapCache->pixelBits, mapCacheBytes) == 0;
-  delete[] mapCacheBeforeHover;
-  if (!mapCacheUnchanged) {
-    Fail("\"moving the combined-map cursor retained a frame in the map cache\"");
-    return;
-  }
-  g_MapInteractionPreviewPoint_006a3370 = CPoint(0, 0);
-  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == 0) {
-    mapDialog->SetMapDialogCellCoordinatesAndRefresh(0x6b, 0, 0);
-    mapView->Scroll(4);
-    if (mapDialog->viewportOrigin60.x != 0) {
-      Fail("\"combined-map right-edge scrolling did not wrap to the left edge\"");
-      return;
-    }
-    mapView->Scroll(8);
-    if (mapDialog->viewportOrigin60.x != 0x6b * 0x40) {
-      Fail("\"combined-map left-edge scrolling did not wrap to the right edge\"");
-      return;
-    }
-  } else {
-    int rightColumn = 0x6e - g_wMapDialogViewportTileSpan;
-    mapDialog->SetMapDialogCellCoordinatesAndRefresh(0x7fff, 0, 0);
-    if (mapDialog->viewportOrigin60.x != rightColumn * 0x40) {
-      Fail("\"combined-map scrolling stopped before the full right edge\"");
-      return;
-    }
-    mapDialog->SetMapDialogCellCoordinatesAndRefresh(-0x7fff, 0, 0);
-    if (mapDialog->viewportOrigin60.x != 0x40) {
-      Fail("\"combined-map scrolling stopped before the full left edge\"");
-      return;
-    }
-  }
-
-  mapDialog->SetMapDialogCellCoordinatesAndRefresh(1, 0x7fff, 0);
-  if (mapDialog->viewportOrigin60.y != 0x35 * 0x40) {
-    Fail("\"combined-map scrolling stopped before the full bottom edge\"");
-    return;
-  }
-  mapDialog->SetMapDialogCellCoordinatesAndRefresh(1, -0x7fff, 0);
-  if (mapDialog->viewportOrigin60.y != 0) {
-    Fail("\"combined-map scrolling stopped before the full top edge\"");
-    return;
-  }
-  ActiveScenario().OnCombinedMapReady();
-}
-
-void RunScenarioOwnedStep() {
-  ActiveScenario().RunScenarioStep();
-}
-
 } // namespace
 
+RuntimeScenario::RuntimeScenario() : run(0), activeFlow(0), driverState(kWaitingForManagers) {}
+
 void RuntimeScenario::Start(RuntimeContext& context) {
-  InitializeDriver(*this, context.Seed());
+  run = &context.Run();
+  activeFlow = 0;
+  driverState = kWaitingForManagers;
+  run->StartScenario(this);
+  RuntimeExceptionCapture::Install(*run, *this);
+
+  if (RequiresFixture() && !run->HasFixturePath()) {
+    Finish("failed", "\"IMPERIALISM_RUNTIME_TEST_FIXTURE is not set for load_saved_game\"");
+    return;
+  }
+  run->EnterPhase("waiting_for_managers", "wait_for_managers");
 }
 
 void RuntimeScenario::Tick(RuntimeContext&) {
-  if (g_runtimeTestState.finished) {
-    if (HoldRequested()) {
-      MaybeWriteHeartbeat();
+  if (run->IsFinished()) {
+    if (run->HoldRequested()) {
+      WriteRuntimeHeartbeat(*run);
       RequestAnotherDriverTick();
     }
     return;
   }
 
-  ++g_runtimeTestState.idleTicks;
-  ++g_runtimeTestState.phaseTicks;
-  MaybeWriteHeartbeat();
+  run->CountTick();
+  WriteRuntimeHeartbeat(*run);
   char forcedFailure[2];
   if (GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_FORCE_FAILURE", forcedFailure,
                               sizeof(forcedFailure)) != 0) {
-    Fail("\"forced runtime debugger failure\"");
+    FailScenario("\"forced runtime debugger failure\"");
     return;
   }
-  if (SpinRequestedForCurrentPhase()) {
+  if (run->SpinRequestedForCurrentPhase()) {
     RequestAnotherDriverTick();
     return;
   }
-  if (g_runtimeTestState.step == 0) {
-    Fail("\"runtime-test driver entered an invalid phase\"");
+
+  if (driverState == kWaitingForManagers) {
+    TickWaitingForManagers();
     return;
   }
-  g_runtimeTestState.step();
+  if (driverState == kRunningScenario) {
+    TickScenario();
+    return;
+  }
+  if (activeFlow == 0) {
+    FailScenario("\"runtime scenario has no active navigation flow\"");
+    return;
+  }
+
+  RuntimeFlowStatus status = activeFlow->Tick(*this);
+  if (status == kRuntimeFlowCheckpoint) {
+    OnFlowCheckpoint(activeFlow->Checkpoint());
+  } else if (status == kRuntimeFlowComplete && !run->IsFinished()) {
+    FailScenario("\"navigation flow completed without handing control to the scenario\"");
+  }
+}
+
+void RuntimeScenario::TickWaitingForManagers() {
+  if (!RequiredManagersAreInitialized()) {
+    WaitForScenarioTick("\"manager initialization timed out\"");
+    return;
+  }
+  if (RequiresMainWindow()) {
+    if (GetMainViewHostFromActiveThread() == 0) {
+      WaitForScenarioTick("\"main view host initialization timed out\"");
+      return;
+    }
+    CWnd* mainWindow = AfxGetThread()->GetMainWnd();
+    if (mainWindow == 0 || mainWindow->m_hWnd == 0) {
+      WaitForScenarioTick("\"main window initialization timed out\"");
+      return;
+    }
+    run->SetMainWindowHandle(mainWindow->m_hWnd);
+  }
+  OnManagersReady();
 }
 
 void RuntimeScenario::Pulse(RuntimeContext&) {
-  MaybeWriteHeartbeat();
+  WriteRuntimeHeartbeat(*run);
 }
 
 void RuntimeScenario::ObserveBuiltUiTree(RuntimeContext&, int eventCode, TView* root) {
-  if (!IsRandomGameTest()) {
+  if (!run->CapturesSnapshot(kRuntimeSnapshotUi)) {
     return;
   }
   if (eventCode == 0x5dd) {
-    g_randomSetupUiSnapshot = CaptureUiSnapshot(eventCode, root);
-  } else if (eventCode == 0x3b8 || (SkipsCapitalSelection() && eventCode == 0x7dd)) {
-    // Capture only the first arrival: later 0x7dd trees (turn-advance cycles)
-    // legitimately diverge from the factory expectation as the game evolves.
-    if (g_strategicMapUiSnapshot.IsEmpty()) {
-      g_strategicMapUiSnapshot = CaptureUiSnapshot(eventCode, root);
+    run->RandomSetupUiSnapshot() = CaptureRuntimeUiSnapshot(eventCode, root);
+  } else if (eventCode == 0x3b8 || (DifficultyLevel() <= 1 && eventCode == 0x7dd)) {
+    if (run->StrategicMapUiSnapshot().IsEmpty()) {
+      run->StrategicMapUiSnapshot() = CaptureRuntimeUiSnapshot(eventCode, root);
     }
   }
   ObserveScenarioUiTree(eventCode, root);
@@ -1801,28 +156,22 @@ void RuntimeScenario::ObserveBuiltUiTree(RuntimeContext&, int eventCode, TView* 
 void RuntimeScenario::ObserveTurnEvent(RuntimeContext&, int eventCode) {
   if (RecordsGameFlow()) {
     CString event;
-    event.Format("%s\"0x%04x\"", g_activatedEventSequence.GetLength() == 1 ? "" : ", ",
+    event.Format("%s\"0x%04x\"", run->ActivatedEventSequence().GetLength() == 1 ? "" : ", ",
                  static_cast<unsigned short>(eventCode));
-    g_activatedEventSequence += event;
+    run->ActivatedEventSequence() += event;
   }
   if (RecordsGameFlow() && g_pSimMgr != 0 && g_pSimMgr->multiplayerSessionRole == 0 &&
       eventCode == 0x5e4) {
-    Fail("\"single-player game entered multiplayer synchronization event 0x5e4\"");
+    FailScenario("\"single-player game entered multiplayer synchronization event 0x5e4\"");
     return;
   }
-  if (SkipsCapitalSelection() && eventCode == 0x3b8) {
-    Fail("\"Easy difficulty entered capital-site selection event 0x3b8\"");
+  if (DifficultyLevel() <= 1 && eventCode == 0x3b8) {
+    FailScenario("\"difficulty that skips capital selection entered event 0x3b8\"");
     return;
   }
-  if (g_runtimeTestState.step != RunWaitingForCitySiteConfirmation &&
-      g_runtimeTestState.step != RunWaitingForCombinedMap) {
-    return;
+  if (driverState == kRunningFlow && activeFlow != 0) {
+    activeFlow->ObserveTurnEvent(*this, eventCode);
   }
-  if (eventCode != 0x7dd) {
-    return;
-  }
-  SetStep(RunVerifyingCombinedMapExtents, "verifying_combined_map_extents", "observe_event_0x07dd");
-  RunVerifyingCombinedMapExtents();
 }
 
 unsigned int RuntimeScenario::RandomSeed(RuntimeContext& context) {
@@ -1830,7 +179,7 @@ unsigned int RuntimeScenario::RandomSeed(RuntimeContext& context) {
 }
 
 void RuntimeScenario::FailHarness(RuntimeContext&, const char* failure) {
-  Fail(failure);
+  FailScenario(failure);
 }
 
 bool RuntimeScenario::RequiresMainWindow() const {
@@ -1838,10 +187,6 @@ bool RuntimeScenario::RequiresMainWindow() const {
 }
 
 bool RuntimeScenario::RequiresFixture() const {
-  return false;
-}
-
-bool RuntimeScenario::UsesRandomGameFlow() const {
   return false;
 }
 
@@ -1861,8 +206,34 @@ bool RuntimeScenario::BeforeInitialNewspaperExit() {
   return true;
 }
 
+RuntimeFlow* RuntimeScenario::NavigationFlow() {
+  return 0;
+}
+
 void RuntimeScenario::OnManagersReady() {
-  StartRandomGameFlow();
+  activeFlow = NavigationFlow();
+  if (activeFlow == 0) {
+    FailScenario("\"scenario did not provide a navigation flow\"");
+    return;
+  }
+  driverState = kRunningFlow;
+  activeFlow->Start(*this);
+}
+
+void RuntimeScenario::OnFlowCheckpoint(RuntimeFlowCheckpoint checkpoint) {
+  if (checkpoint == kRuntimeCapitalSelectionReady) {
+    activeFlow->ContinueFromCheckpoint();
+    RequestScenarioTick();
+    return;
+  }
+  driverState = kRunningScenario;
+  if (checkpoint == kRuntimeMapReadyWithoutCapitalSelection) {
+    OnMapReadyWithoutCapitalSelection();
+  } else if (checkpoint == kRuntimeCombinedMapReady || checkpoint == kRuntimeLoadedMapReady) {
+    OnCombinedMapReady();
+  } else {
+    FailScenario("\"navigation flow reported an unknown checkpoint\"");
+  }
 }
 
 void RuntimeScenario::OnMapReadyWithoutCapitalSelection() {
@@ -1873,22 +244,69 @@ void RuntimeScenario::OnCombinedMapReady() {
   Pass();
 }
 
-void RuntimeScenario::RunScenarioStep() {
+void RuntimeScenario::TickScenario() {
   FailScenario("\"scenario entered an unimplemented owned phase\"");
 }
 
 void RuntimeScenario::ObserveScenarioUiTree(int, TView*) {}
+
+void RuntimeScenario::Finish(const char* status, const char* failure) {
+  run->Finish();
+  if (RecordsGameFlow() && lstrcmpA(status, "passed") == 0) {
+    CaptureRuntimeMapState(*run);
+  }
+  if (!WriteRuntimeResult(*run, *this, status, failure)) {
+    OutputDebugStringA("Imperialism runtime test could not write its result file.\n");
+  }
+  if (!run->HoldRequested()) {
+    RequestGameClose(run->MainWindowHandle());
+  }
+}
 
 void RuntimeScenario::Pass() {
   Finish("passed", "null");
 }
 
 void RuntimeScenario::FailScenario(const char* failure) {
-  Fail(failure);
+  run->RecordAssertion(run->PhaseName(), failure, true);
+  RuntimeExceptionCapture::Trap(*run, *this, kRuntimeDebugSemanticFailure, failure, 0);
+  Finish("failed", failure);
+}
+
+bool RuntimeScenario::Require(const char* assertionId, bool condition, const char* failure) {
+  if (condition) {
+    return true;
+  }
+  run->RecordAssertion(assertionId, failure, true);
+  RuntimeExceptionCapture::Trap(*run, *this, kRuntimeDebugSemanticFailure, failure, 0);
+  Finish("failed", failure);
+  return false;
+}
+
+bool RuntimeScenario::Check(const char* assertionId, bool condition, const char* failure) {
+  if (!condition) {
+    run->RecordAssertion(assertionId, failure, false);
+  }
+  return condition;
+}
+
+bool RuntimeScenario::FinishChecks() {
+  if (!run->HasAssertionFailures()) {
+    return false;
+  }
+  RuntimeExceptionCapture::Trap(*run, *this, kRuntimeDebugSemanticFailure, run->FirstFailureJson(),
+                                0);
+  Finish("failed", run->FirstFailureJson());
+  return true;
 }
 
 bool RuntimeScenario::WaitForScenarioTick(const char* failure) {
-  return WaitForNextTickOrTimeout(failure);
+  if (run->PhaseElapsedMs() >= run->PhaseTimeoutMs()) {
+    FailScenario(failure);
+    return false;
+  }
+  RequestAnotherDriverTick();
+  return true;
 }
 
 void RuntimeScenario::RequestScenarioTick() {
@@ -1896,68 +314,96 @@ void RuntimeScenario::RequestScenarioTick() {
 }
 
 void RuntimeScenario::EnterScenarioStep(const char* phaseName, const char* action) {
-  SetStep(RunScenarioOwnedStep, phaseName, action);
-  g_runtimeTestState.lastHeartbeatMs = 0;
-  MaybeWriteHeartbeat();
+  driverState = kRunningScenario;
+  run->EnterPhase(phaseName, action);
+  run->ResetHeartbeat();
+  WriteRuntimeHeartbeat(*run);
+}
+
+void RuntimeScenario::EnterFlowPhase(const char* phaseName, const char* action) {
+  driverState = kRunningFlow;
+  run->EnterPhase(phaseName, action);
 }
 
 void RuntimeScenario::RecordSerializationRoundtripReport(const CString& reportJson) {
-  g_serializationRoundtripJson = reportJson;
-}
-
-void RuntimeScenario::StartRandomGameFlow() {
-  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
-  SetStep(RunWaitingForMainMenu, "waiting_for_main_menu", "post_turn_event_0x05dc");
-  RequestAnotherDriverTick();
+  run->SerializationRoundtripJson() = reportJson;
 }
 
 TView* RuntimeScenario::CurrentMainView() const {
-  return MainView();
+  return RuntimeMainView();
 }
 
 unsigned long RuntimeScenario::ScenarioPhaseTicks() const {
-  return g_runtimeTestState.phaseTicks;
+  return run->PhaseTicks();
 }
 
 unsigned long RuntimeScenario::ScenarioPhaseElapsedMs() const {
-  return GetTickCount() - g_runtimeTestState.phaseStartMs;
+  return run->PhaseElapsedMs();
 }
 
 const char* RuntimeScenario::FixturePath() const {
-  return g_runtimeTestState.fixturePath;
+  return run->FixturePath();
 }
 
 void RuntimeScenario::SetSelectedNation(short nationSlot) {
-  g_runtimeTestState.selectedNationSlot = nationSlot;
+  run->SetSelectedNationSlot(nationSlot);
 }
 
 bool RuntimeScenario::AdvanceNewspaperIfNeeded() {
-  return AdvanceInitialNewspaperIfNeeded();
+  if (g_pUiRuntimeContext->currentTurnEventCode != 0x2103) {
+    return false;
+  }
+  TView* mainView = RuntimeMainView();
+  if (!RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TNewspaperView))) {
+    FailScenario("\"event 0x2103 did not construct the newspaper view\"");
+    return true;
+  }
+  if (run->NewspaperAdvanced()) {
+    WaitForScenarioTick("\"newspaper end action did not advance to the combined map\"");
+    return true;
+  }
+  if (!BeforeInitialNewspaperExit()) {
+    return true;
+  }
+  TControl* endControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagEnd));
+  if (endControl == 0 || endControl->IsActionable() == 0) {
+    FailScenario("\"newspaper end control is missing or disabled\"");
+    return true;
+  }
+  run->SetNewspaperAdvanced(true);
+  run->RecordAction("activate_newspaper_end");
+  endControl->HandleEvent(endControl->GetEventNumber(), endControl, 0);
+  RequestAnotherDriverTick();
+  return true;
 }
 
 void RuntimeScenario::ResetNewspaperAdvance() {
-  g_runtimeTestState.newspaperAdvanced = false;
+  run->SetNewspaperAdvanced(false);
 }
 
 void RuntimeScenario::RecordUnexpectedModalView(TView* modal) {
-  RecordUnexpectedModal(modal);
+  char tag[5];
+  FourCcText(static_cast<unsigned int>(modal->controlTag), tag);
+  CString entry;
+  entry.Format("{\"class\": \"%s\", \"tag\": \"%s\", \"phase\": \"%s\", \"t_ms\": %lu}",
+               RuntimeClassName(modal), tag, run->PhaseName(), run->ElapsedMs());
+  RuntimeJson::AppendArrayItem(run->UnexpectedModals(), entry);
 }
 
 bool RuntimeScenario::HasScenarioUiSnapshot() const {
-  return !g_scenarioUiSnapshot.IsEmpty();
+  return !run->ScenarioUiSnapshot().IsEmpty();
 }
 
 void RuntimeScenario::CaptureScenarioUiSnapshot(int eventCode, TView* root) {
-  g_scenarioUiSnapshot = CaptureUiSnapshot(eventCode, root);
+  run->ScenarioUiSnapshot() = CaptureRuntimeUiSnapshot(eventCode, root);
 }
 
 bool RuntimeScenario::HoldAtScenarioScreen(const char* screenName) const {
-  char holdTarget[48];
-  if (GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_HOLD", holdTarget, sizeof(holdTarget)) ==
-      0) {
-    return false;
-  }
-  return lstrcmpiA(holdTarget, screenName) == 0;
+  return run->HoldAt(screenName);
+}
+
+RuntimeRun& RuntimeScenario::RunState() const {
+  return *run;
 }
 
 void RuntimeTestObserveBuiltUiTree(int eventCode, TView* root) {

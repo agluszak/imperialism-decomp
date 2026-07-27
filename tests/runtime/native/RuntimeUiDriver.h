@@ -9,8 +9,8 @@ class TView;
 class RuntimeUiDriver {
 public:
   static TView* FindControl(TView* root, int tag);
-  static bool ActivateControl(TView* root, int tag);
-  static bool ClickControl(TView* root, int tag);
-  static bool ClickView(TView* view);
-  static bool ClickViewPoint(TView* view, int localX, int localY);
+  static bool ActivateControlSemantically(TView* root, int tag);
+  static bool ClickControlThroughNativeMessages(TView* root, int tag);
+  static bool ClickViewThroughNativeMessages(TView* view);
+  static bool ClickViewPointThroughNativeMessages(TView* view, int localX, int localY);
 };

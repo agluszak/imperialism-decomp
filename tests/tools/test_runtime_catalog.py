@@ -4,18 +4,23 @@
 from __future__ import annotations
 
 import json
-import re
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 from tools.runtime.catalog import (
     TESTS,
+    ExpectedFailureSpec,
+    RuntimeTestSpec,
+    apply_expected_failure,
     find_test,
     missing_required_oracles,
+    promotion_candidates,
     record_missing_oracles,
     tests_in_suite,
 )
 from tools.runtime.fixtures import validate_fixture_metadata
+from tools.runtime.generate_native_registry import render_registry
 from tools.runtime.protocol import validate_result
 
 
@@ -33,27 +38,94 @@ class RuntimeCatalogTests(unittest.TestCase):
         self.assertTrue(pr_names)
         self.assertLessEqual(pr_names, full_names)
 
-    def test_known_broken_reproducers_are_not_in_full_suite(self) -> None:
-        repro_names = {test.name for test in tests_in_suite("repro")}
+    def test_expected_failures_are_isolated_from_gating_suites(self) -> None:
         full_names = {test.name for test in tests_in_suite("full")}
-        self.assertEqual(
-            repro_names,
-            {
-                "city_screen_opens",
-                "transport_screen_operates",
-                "diplomacy_screen_operates",
-                "map_zoom_toggle_remains_responsive",
-                "trade_screen_operates",
-            },
-        )
-        self.assertFalse(repro_names & full_names)
+        for test in TESTS:
+            if test.expected_failure is None:
+                continue
+            self.assertIn("repro", test.suites)
+            self.assertNotIn(test.name, full_names)
 
-    def test_native_registry_matches_host_catalog(self) -> None:
-        source = (
-            REPO_ROOT / "tests/runtime/native/RuntimeRegistry.cpp"
-        ).read_text(encoding="utf-8")
-        native_names = set(re.findall(r'^\s*\{"([a-z0-9_]+)",', source, re.MULTILINE))
-        self.assertEqual(native_names, {test.name for test in TESTS})
+    def test_native_factories_are_unique(self) -> None:
+        factories = [test.native_factory for test in TESTS]
+        self.assertEqual(len(factories), len(set(factories)))
+
+    def test_generated_registry_contains_each_catalog_entry_once(self) -> None:
+        generated = render_registry()
+        for test in TESTS:
+            row = f'{{"{test.name}", {test.native_factory}(),'
+            self.assertEqual(generated.count(row), test.execution == "game")
+        self.assertEqual(generated.count("RuntimeTestDescriptor g_descriptors[]"), 1)
+
+    def test_expected_failures_require_a_structured_signature(self) -> None:
+        for test in tests_in_suite("repro"):
+            expected = test.expected_failure
+            self.assertIsNotNone(expected)
+            assert expected is not None
+            self.assertTrue(
+                expected.assertion_ids or expected.phases or expected.classifications
+            )
+
+    def test_expected_failure_distinguishes_match_difference_and_xpass(self) -> None:
+        spec = RuntimeTestSpec(
+            "known_failure",
+            "KnownFailureTest",
+            ("repro",),
+            "internal_invariant",
+            expected_failure=ExpectedFailureSpec(
+                assertion_ids=("map.zoom",), classifications=("crash",)
+            ),
+        )
+        matched = {
+            "status": "failed",
+            "assertion_id": "map.zoom",
+            "classification": "crash",
+        }
+        apply_expected_failure(spec, matched)
+        self.assertEqual(matched["status"], "expected_failure")
+        self.assertEqual(matched["expectation_outcome"], "expected_failure")
+
+        different = {
+            "status": "failed",
+            "assertion_id": "map.coast",
+            "classification": "crash",
+        }
+        apply_expected_failure(spec, different)
+        self.assertEqual(different["status"], "failed")
+        self.assertEqual(different["expectation_outcome"], "different_failure")
+
+        passed = {"status": "passed"}
+        apply_expected_failure(spec, passed)
+        self.assertEqual(passed["status"], "failed")
+        self.assertEqual(passed["expectation_outcome"], "unexpected_pass")
+        self.assertIn("XPASS", passed["failure"])
+
+    def test_promotion_candidates_follow_catalog_order(self) -> None:
+        later = RuntimeTestSpec(
+            "later",
+            "LaterTest",
+            ("repro",),
+            "internal_invariant",
+            promotion_suites=("full",),
+            promotion_order=2,
+        )
+        first = RuntimeTestSpec(
+            "first",
+            "FirstTest",
+            ("repro",),
+            "internal_invariant",
+            promotion_suites=("full",),
+            promotion_order=1,
+        )
+        results = {
+            "later": {"expectation_outcome": "unexpected_pass"},
+            "first": {"expectation_outcome": "unexpected_pass"},
+        }
+        with patch("tools.runtime.catalog.TESTS", (later, first)):
+            candidates = promotion_candidates(results)
+        orders = [test.promotion_order for test in candidates]
+        self.assertEqual(orders, [1, 2])
+        self.assertTrue(all(test.promotion_suites for test in candidates))
 
     def test_find_test_rejects_unknown_name(self) -> None:
         self.assertIsNone(find_test("not_a_runtime_test"))
@@ -63,8 +135,10 @@ class RuntimeCatalogTests(unittest.TestCase):
         for test in TESTS:
             if test.fixture is None:
                 continue
-            metadata = validate_fixture_metadata(fixture_root / test.fixture, test.name)
-            self.assertEqual(metadata["source_kind"], "retail_fixture_oracle")
+            metadata = validate_fixture_metadata(
+                fixture_root / test.fixture.filename, test.name
+            )
+            self.assertEqual(metadata["source_kind"], test.fixture.evidence_kind)
 
     def test_required_oracle_cannot_be_silently_skipped(self) -> None:
         test = find_test("random_game_easy_skips_capital")
@@ -74,35 +148,16 @@ class RuntimeCatalogTests(unittest.TestCase):
             ("map",),
         )
 
-    def test_ui_oracle_requirements_have_native_snapshot_policy(self) -> None:
-        snapshot_capable = set()
-        for source_path in (
-            REPO_ROOT / "tests/runtime/native/scenarios"
-        ).glob("*Test.cpp"):
-            source = source_path.read_text(encoding="utf-8")
-            name = re.search(r'return "([a-z0-9_]+)";', source)
-            random_flow = re.search(
-                r"bool UsesRandomGameFlow\(\) const override\s*\{\s*return true;\s*\}",
-                source,
-            )
-            if name is not None and random_flow is not None:
-                snapshot_capable.add(name.group(1))
+    def test_oracle_requirements_have_declared_native_snapshot_policy(self) -> None:
+        for test in TESTS:
+            self.assertLessEqual(set(test.required_oracles), set(test.native_snapshots))
 
-        ui_required = {test.name for test in TESTS if "ui" in test.required_oracles}
-        self.assertLessEqual(ui_required, snapshot_capable)
-
-    def test_native_scenarios_own_behavior_in_concrete_classes(self) -> None:
+    def test_native_scenarios_do_not_use_legacy_configuration_objects(self) -> None:
         header = (
             REPO_ROOT / "tests/runtime/native/scenarios/RuntimeScenario.h"
         ).read_text(encoding="utf-8")
         self.assertNotIn("RuntimeScenarioConfig", header)
         self.assertNotIn("RuntimeScenarioCompletion", header)
-
-        for source_path in (
-            REPO_ROOT / "tests/runtime/native/scenarios"
-        ).glob("*Test.cpp"):
-            source = source_path.read_text(encoding="utf-8")
-            self.assertRegex(source, r"class \w+TestCase : public RuntimeScenario")
 
 
 class RuntimeProtocolTests(unittest.TestCase):
@@ -224,7 +279,7 @@ class MapExpectationConsistencyTests(unittest.TestCase):
                 continue
             # repro-only entries are known-broken reproducers, not gates; they are
             # expected to have no recorded expectation yet.
-            if set(test.suite) <= {"repro"}:
+            if set(test.suites) <= {"repro"}:
                 continue
             path = REPO_ROOT / "tests" / "runtime" / "expectations" / f"{test.name}.seed1.json"
             self.assertTrue(path.is_file(), f"{test.name} requires the map oracle but has no {path}")

@@ -1,4 +1,5 @@
 #include "RuntimeScenario.h"
+#include "flows/RandomGameFlow.h"
 #include "RuntimeUiDriver.h"
 
 #include "game/core/global_data_tables.h"
@@ -12,16 +13,9 @@
 
 namespace {
 
-class MapZoomToggleTestCase : public RuntimeScenario {
+class MapZoomToggleTestCase : public RandomGameScenario {
 public:
   MapZoomToggleTestCase() : phase(kActivateZoomOut), toggleCycles(0) {}
-
-  const char* Name() const override {
-    return "map_zoom_toggle_remains_responsive";
-  }
-  bool UsesRandomGameFlow() const override {
-    return true;
-  }
   bool RecordsGameFlow() const override {
     return true;
   }
@@ -32,7 +26,7 @@ public:
     RequestScenarioTick();
   }
 
-  void RunScenarioStep() override {
+  void TickScenario() override {
     if (phase == kActivateZoomOut) {
       ActivateZoomOut();
     } else if (phase == kVerifyZoomOut) {
@@ -59,7 +53,7 @@ private:
     }
     phase = kVerifyZoomOut;
     EnterScenarioStep("verifying_map_zoom_out", "click_map_zoom_out");
-    if (!RuntimeUiDriver::ClickView(zoom)) {
+    if (!RuntimeUiDriver::ClickViewThroughNativeMessages(zoom)) {
       FailScenario("\"combined-map zoom-out control has no native host\"");
       return;
     }
@@ -75,7 +69,8 @@ private:
     }
     phase = kVerifyZoomIn;
     EnterScenarioStep("verifying_map_zoom_in", "click_map_zoom_in");
-    if (!RuntimeUiDriver::ClickView(mapView->ResolveControlByTag(kControlTagZmIn))) {
+    if (!RuntimeUiDriver::ClickViewThroughNativeMessages(
+            mapView->ResolveControlByTag(kControlTagZmIn))) {
       FailScenario("\"combined-map zoom-in control has no native host\"");
       return;
     }

@@ -1,4 +1,5 @@
 #include "RuntimeScenario.h"
+#include "flows/RandomGameFlow.h"
 #include "RuntimeUiDriver.h"
 #include "screens/StrategicMapDriver.h"
 
@@ -20,16 +21,10 @@
 
 namespace {
 
-class TransportScreenTestCase : public RuntimeScenario {
+class TransportScreenTestCase : public RandomGameScenario {
 public:
   TransportScreenTestCase() : phase(kActivateTransportScreen) {}
 
-  const char* Name() const override {
-    return "transport_screen_operates";
-  }
-  bool UsesRandomGameFlow() const override {
-    return true;
-  }
   int DifficultyLevel() const override {
     return 1;
   }
@@ -47,7 +42,7 @@ public:
     RequestScenarioTick();
   }
 
-  void RunScenarioStep() override {
+  void TickScenario() override {
     if (phase == kActivateTransportScreen) {
       ActivateTransportScreen();
     } else if (phase == kWaitForTransportScreen) {
@@ -176,7 +171,7 @@ private:
     }
     phase = kWaitForMap;
     EnterScenarioStep("waiting_for_map_after_transport", "activate_transport_end_control");
-    if (!RuntimeUiDriver::ClickControl(mainView, kControlTagEnd)) {
+    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(mainView, kControlTagEnd)) {
       FailScenario("\"transport back control is missing or cannot receive native input\"");
       return;
     }

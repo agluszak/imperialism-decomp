@@ -1,4 +1,5 @@
 #include "RuntimeScenario.h"
+#include "flows/RandomGameFlow.h"
 
 #include "game/assets/TAssetMgr.h"
 #include "game/map/TMapMgr.h"
@@ -30,16 +31,9 @@
 
 namespace {
 
-class SaveLoadRoundtripTestCase : public RuntimeScenario {
+class SaveLoadRoundtripTestCase : public RandomGameScenario {
 public:
   SaveLoadRoundtripTestCase() : phase(kSave), savedTurn(0), savedNation(0) {}
-
-  const char* Name() const override {
-    return "save_load_roundtrip";
-  }
-  bool UsesRandomGameFlow() const override {
-    return true;
-  }
   int DifficultyLevel() const override {
     return 1;
   }
@@ -55,7 +49,7 @@ public:
     SaveAndReload();
   }
 
-  void RunScenarioStep() override {
+  void TickScenario() override {
     WaitForLoadedMap();
   }
 

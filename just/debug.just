@@ -58,11 +58,12 @@ smoke *args:
 smoke-diff *args:
   uv run python tools/runtime/smoke.py diff {{args}}
 
-# Run one external semantic scenario against the retail binary and the matching
-# recomp in separate prefixes, then report the first normalized trace divergence.
-[doc('Compare one semantic trace tape against OG and matching recomp')]
+# Run the recomp through its native semantic driver and observe the retail binary
+# through the narrow GDB tape, then compare their normalized semantic checkpoint.
+[doc('Compare one native recomp checkpoint against the retail GDB oracle')]
 [group('debug')]
 diff-run scenario *args:
+  just runtime-test-build
   uv run python -m tools.runtime.differential "{{scenario}}" {{args}}
 
 # Scripted gdb session against the recomp (winedbg --gdb proxy; real gdb front

@@ -1,10 +1,9 @@
-"""Run one semantic trace tape against the original and matching recomp."""
+"""Compare a native recomp checkpoint with a narrow retail GDB observation."""
 
 from __future__ import annotations
 
 import argparse
 from dataclasses import dataclass
-import hashlib
 import json
 import os
 from pathlib import Path
@@ -13,14 +12,23 @@ import time
 
 import yaml
 
-from tools.runtime.debug.address_map import matching_addresses
+from tools.runtime.checkpoints import (
+    SCHEMAS,
+    first_checkpoint_difference,
+    normalize_native_combined_map,
+    normalize_retail_combined_map,
+    validate_checkpoint,
+)
 from tools.runtime.debug.binary import direct_call_target_after
 from tools.runtime.debug.mi_process import DebuggerTransportError
 from tools.runtime.debug.session import GdbSession, is_terminal_stop
+from tools.runtime.display import virtual_display
+from tools.runtime.runner import RunRequest, RuntimeRunner
 from tools.runtime.wine import (
+    file_identity,
     initialize_wine_prefix,
     prefix_environment,
-    retail_game_dir,
+    prepare_game_sandbox,
     shut_down_wine_prefix,
     windows_path,
 )
@@ -58,6 +66,12 @@ class DeferredShellAction:
     owner_address: int
     after_call_to: int
     replay_after: ProbeWait
+    rewrite_probe: str
+    rewrite_field: str
+    rewrite_from: int
+    rewrite_to: int
+    rewrite_expression: str
+    rewrite_action_id: str
 
 
 @dataclass(frozen=True)
@@ -65,11 +79,15 @@ class Checkpoint:
     probe: str
     field: str
     equals: int
+    checkpoint_id: str
+    fields: dict[str, FieldCapture]
 
 
 @dataclass(frozen=True)
 class Scenario:
     name: str
+    native_test: str
+    action_id: str
     fixture: Path
     probes: tuple[Probe, ...]
     terminal_checkpoint: Checkpoint
@@ -88,7 +106,7 @@ def load_scenario(name: str) -> Scenario:
     if not path.is_file():
         raise SystemExit(f"unknown differential scenario {name!r}: missing {path}")
     parsed = yaml.safe_load(path.read_text(encoding="utf-8"))
-    if not isinstance(parsed, dict) or parsed.get("format_version") not in {1, 2}:
+    if not isinstance(parsed, dict) or parsed.get("format_version") != 2:
         raise SystemExit(f"unsupported differential scenario format in {path}")
     fixture_name = parsed.get("start", {}).get("fixture")
     fixture_root = Path(os.environ.get("IMPERIALISM_SAVE_FIXTURES", FIXTURE_DIR))
@@ -116,10 +134,33 @@ def load_scenario(name: str) -> Scenario:
             )
         )
     stop = parsed.get("stop", {})
+    schema = SCHEMAS.get(stop.get("checkpoint_id"))
+    if schema is None:
+        raise SystemExit(f"unknown differential checkpoint in {path}")
+    if parsed.get("action_id") != schema.action_id:
+        raise SystemExit(
+            f"checkpoint {schema.checkpoint_id!r} requires action {schema.action_id!r}"
+        )
+    if parsed.get("native_test") != schema.native_test:
+        raise SystemExit(
+            f"checkpoint {schema.checkpoint_id!r} requires native test {schema.native_test!r}"
+        )
+    checkpoint_fields = {}
+    for field_name, field_value in stop.get("capture", {}).items():
+        if isinstance(field_value, str):
+            checkpoint_fields[field_name] = FieldCapture(field_value)
+        else:
+            checkpoint_fields[field_name] = FieldCapture(
+                expression=str(field_value["expression"]),
+                normalize=str(field_value.get("normalize", "int")),
+            )
     deferred = parsed.get("start", {}).get("defer_shell_command_until", {})
     replay = deferred.get("after_probe", {})
+    rewrite = deferred.get("rewrite_event", {})
     return Scenario(
         name=str(parsed.get("name", name)),
+        native_test=str(parsed["native_test"]),
+        action_id=str(parsed["action_id"]),
         fixture=fixture,
         probes=tuple(probes),
         terminal_checkpoint=Checkpoint(
@@ -128,6 +169,8 @@ def load_scenario(name: str) -> Scenario:
             equals=int(stop["equals"], 0)
             if isinstance(stop["equals"], str)
             else int(stop["equals"]),
+            checkpoint_id=str(stop["checkpoint_id"]),
+            fields=checkpoint_fields,
         ),
         timeout_seconds=float(parsed.get("timeout_seconds", 90)),
         start_action=DeferredShellAction(
@@ -140,6 +183,16 @@ def load_scenario(name: str) -> Scenario:
                 if isinstance(replay["equals"], str)
                 else int(replay["equals"]),
             ),
+            rewrite_probe=str(rewrite["probe"]),
+            rewrite_field=str(rewrite["field"]),
+            rewrite_from=int(rewrite["from"], 0)
+            if isinstance(rewrite["from"], str)
+            else int(rewrite["from"]),
+            rewrite_to=int(rewrite["to"], 0)
+            if isinstance(rewrite["to"], str)
+            else int(rewrite["to"]),
+            rewrite_expression=str(rewrite["expression"]),
+            rewrite_action_id=str(rewrite["action_id"]),
         ),
     )
 
@@ -186,17 +239,10 @@ def _write_trace(path: Path, metadata: dict, records: list[dict]) -> None:
     )
 
 
-def _file_identity(path: Path) -> dict:
-    digest = hashlib.sha256()
-    with path.open("rb") as source:
-        while chunk := source.read(1024 * 1024):
-            digest.update(chunk)
-    return {"path": str(path.resolve()), "sha256": digest.hexdigest(), "size": path.stat().st_size}
-
-
 def _normalize_value(raw: str, normalization: str) -> int | str:
+    numeric_text = raw if normalization == "string" else raw.split(maxsplit=1)[0]
     try:
-        value = int(raw, 0)
+        value = int(numeric_text, 0)
     except ValueError:
         return raw.strip() if normalization == "string" else raw
     if normalization == "u16":
@@ -206,6 +252,8 @@ def _normalize_value(raw: str, normalization: str) -> int | str:
         return value - 0x10000 if value & 0x8000 else value
     if normalization == "u32":
         return value & 0xFFFFFFFF
+    if normalization == "bool":
+        return value != 0
     if normalization not in {"int", "pointer"}:
         raise ValueError(f"unknown differential field normalization {normalization!r}")
     return value
@@ -233,13 +281,23 @@ def run_binary(
     artifact_dir.mkdir(parents=True, exist_ok=True)
     prefix = artifact_dir / "prefix"
     environment = prefix_environment(prefix)
-    initialize_wine_prefix(prefix, environment)
-    staged_fixture = prefix / "drive_c" / "imperialism-diff.imp"
-    shutil.copy2(scenario.fixture, staged_fixture)
+    display_context = virtual_display(environment, artifact_dir / "xvfb.log")
+    display = display_context.__enter__()
+    try:
+        initialize_wine_prefix(prefix, environment)
+        game_dir, staged_fixture, asset_manifest_sha256 = prepare_game_sandbox(
+            artifact_dir, executable, scenario.fixture
+        )
+    except BaseException:
+        display_context.__exit__(None, None, None)
+        raise
+    if staged_fixture is None:
+        raise RuntimeError("differential retail fixture was not staged")
+    sandbox_executable = game_dir / "Imperialism.exe"
     fixture_argument = windows_path(staged_fixture, environment)
     session = GdbSession(
-        executable,
-        retail_game_dir(),
+        sandbox_executable,
+        game_dir,
         environment,
         artifact_dir,
         arguments=(fixture_argument,),
@@ -249,8 +307,12 @@ def run_binary(
         "format_version": 2,
         "scenario": scenario.name,
         "binary_kind": kind,
-        "binary": _file_identity(executable),
-        "fixture": _file_identity(scenario.fixture),
+        "binary": file_identity(executable),
+        "sandbox_binary": file_identity(sandbox_executable),
+        "fixture": file_identity(scenario.fixture),
+        "retail_asset_manifest_sha256": asset_manifest_sha256,
+        "display": display,
+        "source_assets_read_only": True,
         "status": "running",
     }
     occurrences: dict[str, int] = {}
@@ -267,6 +329,7 @@ def run_binary(
         breakpoint_roles[deferred_number] = ("defer_shell_command", None)
         replay_number: str | None = None
         replay_address: int | None = None
+        terminal_return_number: str | None = None
         for probe in scenario.probes:
             number = session.set_breakpoint(addresses[probe.probe_id])
             breakpoint_roles[number] = ("probe", probe)
@@ -335,6 +398,26 @@ def run_binary(
                 session.assign("$eip", open_document)
                 session.continue_inferior()
                 continue
+            if role_name == "terminal_checkpoint":
+                fields = _capture_fields(
+                    session,
+                    Probe(
+                        scenario.terminal_checkpoint.checkpoint_id,
+                        0,
+                        scenario.terminal_checkpoint.fields,
+                    ),
+                )
+                records.append(
+                    {
+                        "type": "checkpoint",
+                        "seq": len(records),
+                        "probe": scenario.terminal_checkpoint.checkpoint_id,
+                        "occurrence": 1,
+                        "fields": fields,
+                    }
+                )
+                metadata["status"] = "completed"
+                break
             if probe is None:
                 raise RuntimeError(f"{kind} probe breakpoint has no probe definition")
             occurrence = occurrences.get(probe.probe_id, 0) + 1
@@ -348,6 +431,17 @@ def run_binary(
                 "fields": fields,
             }
             records.append(record)
+            if (
+                probe.probe_id == scenario.start_action.rewrite_probe
+                and fields.get(scenario.start_action.rewrite_field)
+                == scenario.start_action.rewrite_from
+            ):
+                session.assign(
+                    scenario.start_action.rewrite_expression,
+                    scenario.start_action.rewrite_to,
+                )
+                record["action_id"] = scenario.start_action.rewrite_action_id
+                record["effective_event"] = scenario.start_action.rewrite_to
             if (
                 deferred_context is not None
                 and replay_number is None
@@ -365,8 +459,13 @@ def run_binary(
                 and fields.get(scenario.terminal_checkpoint.field)
                 == scenario.terminal_checkpoint.equals
             ):
-                metadata["status"] = "completed"
-                break
+                if terminal_return_number is not None:
+                    raise RuntimeError(f"{kind} reached terminal event twice")
+                terminal_return_address = int(
+                    session.evaluate("*(unsigned int*)$esp"), 0
+                )
+                terminal_return_number = session.set_breakpoint(terminal_return_address)
+                breakpoint_roles[terminal_return_number] = ("terminal_checkpoint", None)
             session.continue_inferior()
         else:
             session.interrupt_and_capture("differential-timeout")
@@ -381,6 +480,7 @@ def run_binary(
         _write_trace(artifact_dir / "trace.ndjson", metadata, records)
         session.close()
         shut_down_wine_prefix(environment)
+        display_context.__exit__(None, None, None)
         shutil.rmtree(prefix, ignore_errors=True)
     return Trace(metadata, records)
 
@@ -390,50 +490,87 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
     original_executable = Path(os.environ.get("ORIGINAL_BINARY", "")).resolve()
     if not original_executable.is_file():
         raise SystemExit("Set ORIGINAL_BINARY in .env")
-    recomp_executable = BUILD_DIR / "Imperialism.exe"
-    original_addresses = tuple(probe.original_address for probe in scenario.probes)
     control_original = {
         "initialization_owner": scenario.start_action.owner_address,
         "before_shell_callee": scenario.start_action.after_call_to,
     }
-    all_original_addresses = original_addresses + tuple(control_original.values())
-    recomp_map = matching_addresses("IMPERIALISM", BUILD_DIR, all_original_addresses)
     run_id = f"{scenario.name}-{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}-{os.getpid()}"
     run_dir = RESULT_DIR / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
     original_trace = run_binary(
         scenario,
-        "original",
+        "retail",
         original_executable,
         {probe.probe_id: probe.original_address for probe in scenario.probes},
         control_original,
         run_dir,
         timeout_seconds,
     )
-    recomp_trace = run_binary(
-        scenario,
-        "recomp",
-        recomp_executable,
-        {probe.probe_id: recomp_map[probe.original_address] for probe in scenario.probes},
-        {name: recomp_map[address] for name, address in control_original.items()},
-        run_dir,
-        timeout_seconds,
+    native_outcome = RuntimeRunner(
+        run_dir / "recomp", scenario.fixture.parent
+    ).run(
+        RunRequest(
+            name=scenario.native_test,
+            seed=1,
+            timeout_seconds=timeout_seconds,
+            phase_timeout_ms=60_000,
+            rerun_seh=False,
+            gdb_first=False,
+            no_gdb=True,
+            require_fixtures=True,
+        )
     )
-    original = original_trace.records
-    recomp = recomp_trace.records
-    divergence = first_divergence(original, recomp)
+    if native_outcome.exit_code != 0:
+        raise RuntimeError(
+            f"native recomp driver {scenario.native_test} failed; see "
+            f"{run_dir / 'recomp' / (scenario.native_test + '.json')}"
+        )
+    retail_records = [
+        record
+        for record in original_trace.records
+        if record.get("probe") == scenario.terminal_checkpoint.checkpoint_id
+    ]
+    if len(retail_records) != 1:
+        raise RuntimeError(
+            f"retail produced {len(retail_records)} terminal checkpoint records"
+        )
+    retail_observation = normalize_retail_combined_map(retail_records[0]["fields"])
+    recomp_observation = normalize_native_combined_map(native_outcome.result)
+    validate_checkpoint(retail_observation)
+    validate_checkpoint(recomp_observation)
+    divergence = first_checkpoint_difference(retail_observation, recomp_observation)
     result = {
-        "format_version": 1,
+        "format_version": 2,
         "scenario": scenario.name,
+        "evidence_kind": "retail_differential",
         "status": "matched" if divergence is None else "diverged",
-        "original_records": len(original),
-        "recomp_records": len(recomp),
+        "execution": {
+            "retail": "gdb_checkpoint_tape",
+            "recomp": "native_runtime_driver",
+        },
+        "checkpoint_sequence": [scenario.terminal_checkpoint.checkpoint_id],
+        "observations": {
+            "retail": retail_observation,
+            "recomp": recomp_observation,
+        },
         "first_divergence": divergence,
         "binary_identities": {
-            "original": original_trace.metadata["binary"],
-            "recomp": recomp_trace.metadata["binary"],
+            "retail": original_trace.metadata["binary"],
+            "recomp": native_outcome.result["host"]["provenance"]["runtime_executable"],
         },
         "fixture_identity": original_trace.metadata["fixture"],
+        "retail_assets": {
+            "source_read_only": original_trace.metadata["source_assets_read_only"],
+            "manifest_sha256": original_trace.metadata["retail_asset_manifest_sha256"],
+        },
+        "excluded_noise": [
+            "elapsed_ms",
+            "idle_ticks",
+            "process_ids",
+            "debugger_stop_counts",
+            "window_handles",
+            "raw_pointer_values",
+        ],
         "run_dir": str(run_dir),
     }
     serialized = json.dumps(result, indent=2, sort_keys=True) + "\n"

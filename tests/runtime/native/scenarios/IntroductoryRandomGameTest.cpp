@@ -1,4 +1,5 @@
 #include "RuntimeScenario.h"
+#include "flows/RandomGameFlow.h"
 
 #include "game/city_ui/TCivMgr.h"
 #include "game/globals/prelude.h"
@@ -16,14 +17,8 @@
 
 namespace {
 
-class IntroductoryRandomGameTestCase : public RuntimeScenario {
+class IntroductoryRandomGameTestCase : public RandomGameScenario {
 public:
-  const char* Name() const override {
-    return "random_game_introductory_exits_newspaper";
-  }
-  bool UsesRandomGameFlow() const override {
-    return true;
-  }
   int DifficultyLevel() const override {
     return 0;
   }

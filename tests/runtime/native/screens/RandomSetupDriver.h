@@ -8,8 +8,8 @@ public:
 
   short SelectedNationSlot() const;
   bool SetCountryName(const char* name);
-  bool SelectDifficulty(unsigned long tag, bool nativeClick);
-  bool Accept(bool nativeClick);
+  bool SelectDifficultySemantically(unsigned long tag);
+  bool AcceptSemantically();
 
 private:
   TView* root;

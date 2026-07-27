@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from tools.runtime.catalog import EVIDENCE_KINDS
+
 
 FORMAT_VERSION = 1
 
@@ -27,3 +29,6 @@ def validate_result(result: dict[str, Any], expected_name: str, expected_seed: i
         raise ValueError(f"driver ran with seed {result.get('seed')}, requested {expected_seed}")
     if result.get("status") not in {"passed", "failed", "skipped"}:
         raise ValueError(f"invalid runtime result status {result.get('status')!r}")
+    evidence_kind = result.get("evidence_kind")
+    if evidence_kind is not None and evidence_kind not in EVIDENCE_KINDS:
+        raise ValueError(f"invalid evidence_kind {evidence_kind!r}")

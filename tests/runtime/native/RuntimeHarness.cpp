@@ -2,42 +2,19 @@
 
 #include "RuntimeContext.h"
 #include "RuntimeRegistry.h"
+#include "RuntimeRun.h"
 #include "RuntimeTestCase.h"
+#include "RuntimeTurnEventQueue.h"
 #include "scenarios/RuntimeScenarios.h"
 
 namespace {
 
-RuntimeContext g_context;
+RuntimeRun g_run;
+RuntimeContext g_context(g_run);
 RuntimeTestCase* g_testCase = 0;
 RuntimeTurnEventQueue g_pendingTurnEvents;
 
 } // namespace
-
-RuntimeTurnEventQueue::RuntimeTurnEventQueue() : head(0), count(0) {}
-
-bool RuntimeTurnEventQueue::Push(int eventCode) {
-  if (count == kCapacity) {
-    return false;
-  }
-  int tail = (head + count) % kCapacity;
-  events[tail] = eventCode;
-  ++count;
-  return true;
-}
-
-bool RuntimeTurnEventQueue::Pop(int& eventCode) {
-  if (count == 0) {
-    return false;
-  }
-  eventCode = events[head];
-  head = (head + 1) % kCapacity;
-  --count;
-  return true;
-}
-
-int RuntimeTurnEventQueue::Count() const {
-  return count;
-}
 
 void RuntimeHarness::EnsureSelected() {
   if (g_testCase != 0) {
@@ -46,6 +23,9 @@ void RuntimeHarness::EnsureSelected() {
   g_context.InitializeFromEnvironment();
   const RuntimeTestDescriptor* descriptor = RuntimeRegistry::Find(g_context.TestName());
   g_testCase = descriptor != 0 ? descriptor->testCase : UnknownRuntimeTest();
+  if (descriptor != 0) {
+    g_run.SetDescriptor(descriptor->snapshotFlags, descriptor->evidenceKind);
+  }
   g_testCase->Start(g_context);
 }
 
@@ -67,8 +47,7 @@ void RuntimeHarness::ObserveActivatedTurnEvent(int eventCode) {
   EnsureSelected();
   if (!g_pendingTurnEvents.Push(eventCode)) {
     g_testCase->FailHarness(
-        g_context,
-        "\"runtime harness turn-event queue overflowed before idle observation\"");
+        g_context, "\"runtime harness turn-event queue overflowed before idle observation\"");
   }
 }
 

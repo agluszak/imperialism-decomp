@@ -9,24 +9,18 @@
 
 StrategicMapDriver::StrategicMapDriver(TView* view) : root(view) {}
 
-bool StrategicMapDriver::EndTurn() {
+bool StrategicMapDriver::EndTurnThroughNativeMessages() {
   TControl* done =
       root != 0 ? static_cast<TControl*>(root->ResolveControlByTag(kControlTagDoneCaps)) : 0;
   if (done == 0) {
     return false;
   }
-  return RuntimeUiDriver::ClickView(done);
+  return RuntimeUiDriver::ClickViewThroughNativeMessages(done);
 }
 
-bool StrategicMapDriver::ActivateCity() {
+bool StrategicMapDriver::ActivateCitySemantically() {
   TView* toolbar = root != 0 ? root->ResolveControlByTag(kControlTagTool) : 0;
-  TControl* city =
-      toolbar != 0 ? static_cast<TControl*>(toolbar->ResolveControlByTag(kControlTagCity)) : 0;
-  if (city == 0 || city->IsActionable() == 0) {
-    return false;
-  }
-  city->HandleEvent(city->GetEventNumber(), city, 0);
-  return true;
+  return RuntimeUiDriver::ActivateControlSemantically(toolbar, kControlTagCity);
 }
 
 bool StrategicMapDriver::ActivateTransport() {
@@ -40,24 +34,12 @@ bool StrategicMapDriver::ActivateTransport() {
   return true;
 }
 
-bool StrategicMapDriver::ActivateDiplomacy() {
+bool StrategicMapDriver::ActivateDiplomacySemantically() {
   TView* toolbar = root != 0 ? root->ResolveControlByTag(kControlTagTool) : 0;
-  TControl* diplomacy =
-      toolbar != 0 ? static_cast<TControl*>(toolbar->ResolveControlByTag(kControlTagDipl)) : 0;
-  if (diplomacy == 0 || diplomacy->IsActionable() == 0) {
-    return false;
-  }
-  diplomacy->HandleEvent(diplomacy->GetEventNumber(), diplomacy, 0);
-  return true;
+  return RuntimeUiDriver::ActivateControlSemantically(toolbar, kControlTagDipl);
 }
 
-bool StrategicMapDriver::ActivateTrade() {
+bool StrategicMapDriver::ActivateTradeSemantically() {
   TView* toolbar = root != 0 ? root->ResolveControlByTag(kControlTagTool) : 0;
-  TControl* trade =
-      toolbar != 0 ? static_cast<TControl*>(toolbar->ResolveControlByTag(kControlTagTrad)) : 0;
-  if (trade == 0 || trade->IsActionable() == 0) {
-    return false;
-  }
-  trade->HandleEvent(trade->GetEventNumber(), trade, 0);
-  return true;
+  return RuntimeUiDriver::ActivateControlSemantically(toolbar, kControlTagTrad);
 }

@@ -8,21 +8,6 @@ class RuntimeContext;
 class RuntimeTestCase;
 class TView;
 
-class RuntimeTurnEventQueue {
-public:
-  enum { kCapacity = 32 };
-
-  RuntimeTurnEventQueue();
-  bool Push(int eventCode);
-  bool Pop(int& eventCode);
-  int Count() const;
-
-private:
-  int events[kCapacity];
-  int head;
-  int count;
-};
-
 class RuntimeHarness {
 public:
   static void OnIdle();

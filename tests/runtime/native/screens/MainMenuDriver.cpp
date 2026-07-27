@@ -5,6 +5,6 @@
 
 MainMenuDriver::MainMenuDriver(TView* view) : root(view) {}
 
-bool MainMenuDriver::StartRandomGame() {
-  return RuntimeUiDriver::ClickControl(root, kControlTagRand);
+bool MainMenuDriver::StartRandomGameSemantically() {
+  return RuntimeUiDriver::ActivateControlSemantically(root, kControlTagRand);
 }

@@ -1,5 +1,7 @@
 format_version: 2
 name: load_save_to_map
+native_test: load_saved_game
+action_id: combined_map.enter
 
 start:
   fixture: beginning_of_game.imp
@@ -9,7 +11,14 @@ start:
     after_probe:
       probe: turn_event.dispatch
       field: event
-      equals: 0x05dc
+      equals: 0x11f8
+    rewrite_event:
+      action_id: opening_cinematic.skip_to_main_menu
+      probe: turn_event.dispatch
+      field: event
+      from: 0x11f8
+      to: 0x05dc
+      expression: "*(short*)($esp+4)"
 
 probes:
   - id: turn_event.dispatch
@@ -26,5 +35,64 @@ stop:
   probe: turn_event.dispatch
   field: event
   equals: 0x07dd
+  checkpoint_id: combined_map.ready
+  capture:
+    turn_event:
+      expression: "*(short*)(*(unsigned int*)0x006a21bc + 4)"
+      normalize: u16
+    combined_map_view_present:
+      expression: "*(unsigned int*)(*(unsigned int*)0x006a21bc + 0xf0)"
+      normalize: bool
+    active_nation:
+      expression: "*(short*)(*(unsigned int*)0x006a20f8 + 0x2e)"
+      normalize: s16
+    economic_turn:
+      expression: "*(short*)(*(unsigned int*)0x006a20f8 + 0x2c)"
+      normalize: s16
+    map_present:
+      expression: "*(unsigned int*)0x006a43d4"
+      normalize: bool
+    map_wrap:
+      expression: "*(char*)(*(unsigned int*)0x006a43d4 + 0x20)"
+      normalize: int
+    city_present:
+      expression: "*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894)"
+      normalize: bool
+    production_order_00: &production_order
+      expression: "*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1dc)"
+      normalize: s16
+    production_order_01: { <<: *production_order, expression: "*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1de)" }
+    production_order_02: { <<: *production_order, expression: "*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1e0)" }
+    production_order_03: { <<: *production_order, expression: "*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1e2)" }
+    production_order_04: { <<: *production_order, expression: "*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1e4)" }
+    production_order_05: { <<: *production_order, expression: "*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1e6)" }
+    production_order_06: { <<: *production_order, expression: "*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1e8)" }
+    production_order_07: { <<: *production_order, expression: "*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1ea)" }
+    production_order_08: { <<: *production_order, expression: "*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1ec)" }
+    production_order_09: { <<: *production_order, expression: "*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1ee)" }
+    production_order_10: { <<: *production_order, expression: "*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1f0)" }
+    production_order_11: { <<: *production_order, expression: "*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1f2)" }
+    production_order_12: { <<: *production_order, expression: "*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1f4)" }
+    production_order_13: { <<: *production_order, expression: "*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1f6)" }
+    production_order_14: { <<: *production_order, expression: "*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1f8)" }
+    production_order_15: { <<: *production_order, expression: "*(short*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x1fa)" }
+    production_flag_00: &production_flag
+      expression: "*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x21c)"
+      normalize: int
+    production_flag_01: { <<: *production_flag, expression: "*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x21d)" }
+    production_flag_02: { <<: *production_flag, expression: "*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x21e)" }
+    production_flag_03: { <<: *production_flag, expression: "*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x21f)" }
+    production_flag_04: { <<: *production_flag, expression: "*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x220)" }
+    production_flag_05: { <<: *production_flag, expression: "*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x221)" }
+    production_flag_06: { <<: *production_flag, expression: "*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x222)" }
+    production_flag_07: { <<: *production_flag, expression: "*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x223)" }
+    production_flag_08: { <<: *production_flag, expression: "*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x224)" }
+    production_flag_09: { <<: *production_flag, expression: "*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x225)" }
+    production_flag_10: { <<: *production_flag, expression: "*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x226)" }
+    production_flag_11: { <<: *production_flag, expression: "*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x227)" }
+    production_flag_12: { <<: *production_flag, expression: "*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x228)" }
+    production_flag_13: { <<: *production_flag, expression: "*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x229)" }
+    production_flag_14: { <<: *production_flag, expression: "*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x22a)" }
+    production_flag_15: { <<: *production_flag, expression: "*(unsigned char*)(*(unsigned int*)(*(unsigned int*)(0x006a4370 + (*(short*)(*(unsigned int*)0x006a20f8 + 0x2e))*4) + 0x894) + 0x22b)" }
 
 timeout_seconds: 90

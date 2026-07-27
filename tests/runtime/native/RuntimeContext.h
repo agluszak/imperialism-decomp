@@ -4,15 +4,17 @@
 #error RuntimeContext is test-only and must not be included in the production build
 #endif
 
+class RuntimeRun;
+
 class RuntimeContext {
 public:
-  RuntimeContext();
+  explicit RuntimeContext(RuntimeRun& run);
 
   void InitializeFromEnvironment();
   const char* TestName() const;
   unsigned int Seed() const;
+  RuntimeRun& Run() const;
 
 private:
-  char testName[64];
-  unsigned int seed;
+  RuntimeRun* run;
 };

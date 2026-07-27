@@ -6,9 +6,17 @@
 
 class RuntimeTestCase;
 
+enum RuntimeSnapshotFlags {
+  kRuntimeSnapshotNone = 0,
+  kRuntimeSnapshotUi = 1,
+  kRuntimeSnapshotMap = 2
+};
+
 struct RuntimeTestDescriptor {
   const char* name;
   RuntimeTestCase* testCase;
+  unsigned int snapshotFlags;
+  const char* evidenceKind;
 };
 
 class RuntimeRegistry {

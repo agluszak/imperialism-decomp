@@ -40,3 +40,12 @@ void ComputeWrappedIsometricScreenOffsetFromTile(int tileIndex, int* outScreenXY
 // Draws the hex-cell border-highlight polygon for a tile (per-edge QDFrameRect segments
 // where the tile borders a different owner or an ocean neighbor). 0x00508f30.
 void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue);
+
+// Traces the border of the region identified by `compareValue` around one tile as a pen
+// path: the origin call moves to the start vertex and each guide-line call extends the
+// path. Interior edges are skipped -- a side is not drawn when the two tiles across it
+// belong to the same foreign region. `tileScale` selects the vertex pitch: 0x10 uses the
+// full-size 4px grid, anything else the compressed mini-map spacing off a scaled origin.
+// Sibling of BuildHexNeighborHighlightPolygonForTile, which draws the same border as
+// per-edge QDFrameRect segments instead. 0x005093e0.
+void DrawHexNeighborBorderGuidePathForTile(short tileId, int compareValue, short tileScale);

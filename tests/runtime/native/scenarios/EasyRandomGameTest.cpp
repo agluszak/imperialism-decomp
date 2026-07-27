@@ -1,15 +1,10 @@
 #include "RuntimeScenario.h"
+#include "flows/RandomGameFlow.h"
 
 namespace {
 
-class EasyRandomGameTestCase : public RuntimeScenario {
+class EasyRandomGameTestCase : public RandomGameScenario {
 public:
-  const char* Name() const override {
-    return "random_game_easy_skips_capital";
-  }
-  bool UsesRandomGameFlow() const override {
-    return true;
-  }
   int DifficultyLevel() const override {
     return 1;
   }

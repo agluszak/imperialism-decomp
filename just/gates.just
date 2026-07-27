@@ -87,8 +87,9 @@ ui-platform-diff-check:
 [group('gates')]
 precommit:
   just build
-  just runtime-test-build
   just gates
+  just cstring-runtime-probe
+  just runtime-harness-lint
   just lint-warning-gate-test
   just test
   just _precommit-generated-integrity-gate

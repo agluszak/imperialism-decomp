@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "game/ui_screens/TNewsMgr.h"
 
 #include "game/military/TArmyMgr.h"
@@ -679,6 +681,25 @@ void TNewsMgr::ConcatenateTreaty(InterNationEventKind eventKind, int nationA, in
     sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&recordB);
   }
 }
+// call. The original emits the story-filling code twice, once per call site, because
+// AlwaysTrueStory is inlined into both branches -- which is exactly why there are two
+// identical blocks jumping to one shared epilogue.
+// FUNCTION: IMPERIALISM 0x0055cf20
+unsigned char TNewsMgr::EvaluateFeatureStory(const newsEntry* templateRow, newsStory* story,
+                                             int nationSlot) {
+  int kind = templateRow->storyId;
+  if (kind > 9 && kind % 10 == 0) {
+    short period = static_cast<short>(g_pSimMgr->economicTurn / 4);
+    if (period >= kind - 10 && period < kind) {
+      return AlwaysTrueStory(templateRow, story, nationSlot);
+    }
+    return 0;
+  }
+  if (kind == 1) {
+    return AlwaysTrueStory(templateRow, story, nationSlot);
+  }
+  return 0;
+}
 
 // Mac oracle: ClearStoryParms.
 // FUNCTION: IMPERIALISM 0x0055d090
@@ -691,3 +712,30 @@ void TNewsMgr::ClearStoryParms(newsStory* story) {
   story->parmKind[2] = 0;
   story->parmKind[3] = 0;
 }
+
+// Mac oracle: AlwaysTrueStory. Reads nothing from `this`.
+//
+// The original inlines ClearStoryParms (0x55d090) here rather than calling it -- both
+// live in the same original translation unit -- so the four parmKind stores appear
+// directly. Keeping the call is the correct model; see bd imperialism-decomp-0051.
+// FUNCTION: IMPERIALISM 0x0055d0c0
+unsigned char TNewsMgr::AlwaysTrueStory(const newsEntry* templateRow, newsStory* story,
+                                        int nationSlot) {
+  ClearStoryParms(story);
+  story->entry = *templateRow;
+
+  story->parmKind[0] = 1;
+  story->feature38 = 1;
+  story->parmValue[0] = 1 << nationSlot;
+
+  short otherNation;
+  do {
+    otherNation = static_cast<short>(rand() % 7);
+  } while (otherNation == nationSlot || g_apTerrainTypeDescriptorTable[otherNation] == nullptr);
+
+  story->parmKind[1] = 1;
+  story->parmValue[1] = 1 << otherNation;
+  return 1;
+}
+
+// Mac oracle: EvaluateFeatureStory. Reads nothing from `this` beyond the AlwaysTrueStory

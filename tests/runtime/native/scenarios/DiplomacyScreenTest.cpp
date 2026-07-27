@@ -1,4 +1,5 @@
 #include "RuntimeScenario.h"
+#include "flows/RandomGameFlow.h"
 #include "RuntimeUiDriver.h"
 #include "screens/StrategicMapDriver.h"
 
@@ -20,18 +21,11 @@
 
 namespace {
 
-class DiplomacyScreenTestCase : public RuntimeScenario {
+class DiplomacyScreenTestCase : public RandomGameScenario {
 public:
   DiplomacyScreenTestCase()
       : phase(kActivateDiplomacyScreen), targetNation(-1), policyBeforeAction(-1),
         allianceTargetNation(-1), alliancePolicyBeforeAction(-1) {}
-
-  const char* Name() const override {
-    return "diplomacy_screen_operates";
-  }
-  bool UsesRandomGameFlow() const override {
-    return true;
-  }
   int DifficultyLevel() const override {
     return 1;
   }
@@ -49,7 +43,7 @@ public:
     RequestScenarioTick();
   }
 
-  void RunScenarioStep() override {
+  void TickScenario() override {
     if (phase == kActivateDiplomacyScreen) {
       ActivateDiplomacyScreen();
     } else if (phase == kWaitForDiplomacyScreen) {
@@ -124,7 +118,7 @@ private:
     phase = kWaitForDiplomacyScreen;
     EnterScenarioStep("waiting_for_diplomacy_screen", "activate_diplomacy_toolbar_control");
     StrategicMapDriver map(mainView);
-    if (!map.ActivateDiplomacy()) {
+    if (!map.ActivateDiplomacySemantically()) {
       FailScenario("\"diplomacy toolbar control is missing or disabled\"");
       return;
     }
@@ -188,7 +182,7 @@ private:
     }
     phase = kVerifyForeignNation;
     EnterScenarioStep("verifying_diplomacy_nation", "inspect_selected_foreign_nation");
-    if (!RuntimeUiDriver::ClickViewPoint(diplomacy, point.x, point.y)) {
+    if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(diplomacy, point.x, point.y)) {
       FailScenario("\"diplomacy nation map has no native host\"");
       return;
     }
@@ -214,7 +208,7 @@ private:
     }
     phase = kVerifyTreatiesTopic;
     EnterScenarioStep("verifying_diplomacy_treaties", "activate_treaties_action_topic");
-    if (!RuntimeUiDriver::ClickControl(diplomacy, kControlTagTrtt)) {
+    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(diplomacy, kControlTagTrtt)) {
       FailScenario("\"diplomacy treaties action control is missing or cannot receive input\"");
       return;
     }
@@ -248,7 +242,7 @@ private:
     }
     phase = kVerifyPrimaryAction;
     EnterScenarioStep("verifying_diplomacy_action", "apply_consulate_diplomacy_policy");
-    if (!RuntimeUiDriver::ClickViewPoint(diplomacy, point.x, point.y)) {
+    if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(diplomacy, point.x, point.y)) {
       FailScenario("\"diplomacy consulate action could not reach the native host\"");
       return;
     }
@@ -284,7 +278,7 @@ private:
     }
     phase = kInitiateAllianceAction;
     EnterScenarioStep("initiating_diplomacy_alliance", "click_alliance_target_nation");
-    if (!RuntimeUiDriver::ClickControl(diplomacy, kControlTagScr0 + 1)) {
+    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(diplomacy, kControlTagScr0 + 1)) {
       FailScenario("\"diplomacy alliance action is missing or cannot receive input\"");
       return;
     }
@@ -322,7 +316,7 @@ private:
 
     phase = kVerifyAllianceAction;
     EnterScenarioStep("verifying_diplomacy_alliance", "render_alliance_policy_icon");
-    if (!RuntimeUiDriver::ClickViewPoint(diplomacy, point.x, point.y)) {
+    if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(diplomacy, point.x, point.y)) {
       FailScenario("\"diplomacy alliance action could not reach the native host\"");
       return;
     }
@@ -365,7 +359,7 @@ private:
     }
     phase = kWaitForMap;
     EnterScenarioStep("waiting_for_map_after_diplomacy", "activate_diplomacy_end_control");
-    if (!RuntimeUiDriver::ClickControl(diplomacy, kControlTagEnd)) {
+    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(diplomacy, kControlTagEnd)) {
       FailScenario("\"diplomacy back control is missing or cannot receive native input\"");
       return;
     }
