@@ -15,6 +15,7 @@ from tools.runtime.catalog import (
     record_missing_oracles,
     tests_in_suite,
 )
+from tools.runtime.fixtures import validate_fixture_metadata
 from tools.runtime.protocol import validate_result
 
 
@@ -56,6 +57,14 @@ class RuntimeCatalogTests(unittest.TestCase):
 
     def test_find_test_rejects_unknown_name(self) -> None:
         self.assertIsNone(find_test("not_a_runtime_test"))
+
+    def test_catalog_fixtures_have_valid_retail_provenance_sidecars(self) -> None:
+        fixture_root = REPO_ROOT / "tests/runtime/fixtures"
+        for test in TESTS:
+            if test.fixture is None:
+                continue
+            metadata = validate_fixture_metadata(fixture_root / test.fixture, test.name)
+            self.assertEqual(metadata["source_kind"], "retail_fixture_oracle")
 
     def test_required_oracle_cannot_be_silently_skipped(self) -> None:
         test = find_test("random_game_easy_skips_capital")

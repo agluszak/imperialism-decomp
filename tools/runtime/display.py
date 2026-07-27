@@ -60,10 +60,9 @@ def _xvfb_binary() -> str | None:
 def virtual_display(environment: dict[str, str], log_path: Path | None = None):
     """Point `environment["DISPLAY"]` at a private Xvfb for the duration.
 
-    Yields the display string in use, or None when running on the host display. Never
-    fails the run: if Xvfb cannot start, the session falls back to the inherited
-    DISPLAY, because a missing off-screen server is a comfort problem, not a
-    correctness one.
+    Yields the display string in use, or None when running on the explicitly selected
+    host display. Virtual mode is isolation policy, not a best-effort convenience: a
+    missing or failed Xvfb aborts before Wine can touch an inherited desktop.
     """
     requested = os.environ.get("IMPERIALISM_RUNTIME_DISPLAY", "virtual").strip() or "virtual"
     if requested == "host":
@@ -91,8 +90,10 @@ def virtual_display(environment: dict[str, str], log_path: Path | None = None):
 
     binary = _xvfb_binary()
     if binary is None:
-        yield None
-        return
+        raise RuntimeError(
+            "IMPERIALISM_RUNTIME_DISPLAY=virtual requires Xvfb on PATH; "
+            "use IMPERIALISM_RUNTIME_DISPLAY=host explicitly for the desktop"
+        )
 
     log_handle = log_path.open("wb") if log_path is not None else None
     read_fd, write_fd = os.pipe()
@@ -119,8 +120,9 @@ def virtual_display(environment: dict[str, str], log_path: Path | None = None):
 
         display_number = _read_display_number(read_fd, process)
         if display_number is None:
-            yield None
-            return
+            raise RuntimeError(
+                f"Xvfb failed to start for virtual runtime display; see {log_path}"
+            )
 
         display = f":{display_number}"
         environment["DISPLAY"] = display
