@@ -37,7 +37,7 @@ struct ScratchSharedString {
 } // namespace
 
 static __inline void InitializeNextTradeCommandForHandler(TNextTradeCommand* packet, int eventTag,
-                                                       TApplication* owner) {
+                                                          TApplication* owner) {
   packet->ICommand(eventTag, owner, 0, 0, 0);
 }
 
@@ -431,15 +431,14 @@ bool TDiplomacyMgr::IsNationPairAtWar(NationSlot sourceNationSlot, NationSlot ta
 }
 
 // FUNCTION: IMPERIALISM 0x004ef590
-bool TDiplomacyMgr::IsNationPairRelationTurnStampOutOfDate(int sourceNationSlot,
-                                                           int targetNationSlot) {
+bool TDiplomacyMgr::IsNationPairRelationTurnStampOutOfDate(NationSlot sourceNationSlot,
+                                                           NationSlot targetNationSlot) {
   if (IsNationPairAtWar(sourceNationSlot, targetNationSlot) == 0) {
     return false;
   }
   short currentTurn = g_pSimMgr->GetEconomicTurn();
-  int source = static_cast<short>(sourceNationSlot);
-  int target = static_cast<short>(targetNationSlot);
-  return relationTurnStampMatrixFe0[source * kNationSlotCount + target] != currentTurn;
+  return relationTurnStampMatrixFe0[sourceNationSlot * kNationSlotCount + targetNationSlot] !=
+         currentTurn;
 }
 
 // FUNCTION: IMPERIALISM 0x004ef600

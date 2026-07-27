@@ -44,10 +44,14 @@ public:
   virtual void BuildMajorNationDiplomacyStandingRanking(int* topNationSlot,
                                                         int* secondNationSlot);     // 16 (0x40)
   virtual bool IsNationPairAtWar(NationSlot sourceNation, NationSlot targetNation); // 17 (0x44)
-  virtual bool IsNationPairRelationTurnStampOutOfDate(int sourceNation,
-                                                      int targetNation);       // 18 (0x48)
-  virtual bool HasAnyWarRelationForNation(int sourceNation);                   // 19 (0x4c)
-  virtual bool HasAnyWarRelationTurnStampOutOfDateForNation(int sourceNation); // 20 (0x50)
+  // NationSlot, not int: the body reads both parameters through MOVSX from their low
+  // words (0x4ef5b3 / 0x4ef5be), and the 0x561b50 caller pushes a value whose high half is
+  // deliberately garbage (MOVSX AX from a byte, then PUSH EAX) -- only a 16-bit parameter
+  // makes that callsite correct.
+  virtual bool IsNationPairRelationTurnStampOutOfDate(NationSlot sourceNation,
+                                                      NationSlot targetNation); // 18 (0x48)
+  virtual bool HasAnyWarRelationForNation(int sourceNation);                    // 19 (0x4c)
+  virtual bool HasAnyWarRelationTurnStampOutOfDateForNation(int sourceNation);  // 20 (0x50)
   virtual bool IsSpecialRelationSourceForMinorNationSlot(int nationSlot,
                                                          int minorNationSlot); // 21 (0x54)
   virtual bool IsSpecialRelationTargetForMinorNationSlot(int nationSlot,
