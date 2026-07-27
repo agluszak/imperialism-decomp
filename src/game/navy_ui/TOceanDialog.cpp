@@ -278,6 +278,22 @@ void TOceanDialog::ConvertPoint(const CPoint& point, short& outColumn, short& ou
 // Draws the guide-line border around a hex map cell: for each edge where the cell's own
 // value differs from the corresponding neighbor value, it moves the pen origin and strokes a
 // centered guide line via the two quickdraw helpers. `neighborValues` holds the adjacent
+
+// FUNCTION: IMPERIALISM 0x005662e0
+void DrawTileClassCornerTick(short colorCode, int x, int y, unsigned int cornerFlags) {
+  int stepX = (cornerFlags & 1) != 0 ? -1 : 1;
+  int stepY = (cornerFlags & 2) != 0 ? -1 : 1;
+  int originX = (cornerFlags & 1) != 0 ? x + 0xf : x;
+  int originY = (cornerFlags & 2) != 0 ? y + 0xd : y + 2;
+
+  g_pUiRuntimeContext->SetForeColor(colorCode);
+  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(originX), static_cast<short>(originY));
+
+  int tipY = originY - stepY * 2;
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(originX + stepX * 2), static_cast<short>(tipY));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(originX), static_cast<short>(tipY));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(originX), static_cast<short>(tipY + stepY));
+}
 // cell values indexed by edge.
 // FUNCTION: IMPERIALISM 0x005663c0
 void DrawHexCellBorderGuideLines(int baseX, int baseY, short cellValue, short* neighborValues) {
