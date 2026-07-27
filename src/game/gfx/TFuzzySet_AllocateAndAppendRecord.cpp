@@ -13,7 +13,7 @@
 // TFuzzyVar; its receiver is a 0x30-byte TFuzzySet (count@0x4 + m_members[10]@0x8),
 // not the 0x14-byte TFuzzyVar leaf it allocates.
 // FUNCTION: IMPERIALISM 0x004ff7d0
-void TFuzzySet::AllocateAndAppendRecord(int value0, int value1, int value2, int value3) {
+void TFuzzySet::AllocateAndAppendRecord(float value0, float value1, float value2, float value3) {
   TFuzzyVar* record = new TFuzzyVar();
   record->values[0] = value0;
   record->values[1] = value1;
