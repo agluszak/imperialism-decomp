@@ -192,6 +192,11 @@ public:
   // 0x0052cae0.
   void BuildOverlaySpanRecordsFromQuadBorderLinks();
 
+  // Give every still-unclaimed border-segment side its own region id: walk the
+  // region-border table and, for each side whose carried attribute is still -1, take the
+  // next ordinal from cityRegionCount2a4 and flood it along that side's chain. 0x0052b820.
+  void AssignRegionIdsToUnclaimedBorderSegmentSides();
+
   // Compacts city-region ids into a contiguous range, propagating labels across same-region
   // hex neighbours; writes tile[4] = newId + 0x17 and updates cityRegionCount2a4. 0x0052d1f0.
   void ReindexContiguousCityRegionIds();
