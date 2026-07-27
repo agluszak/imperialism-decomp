@@ -925,7 +925,7 @@ address|name|symbol|size|type|prototype|provenance
 48a6f0|TEventHandler::BecameTarget||11|function|void __thiscall BecameTarget(void)|
 48a710|TEventHandler::SelectOwner||3|function|void __thiscall SelectOwner(uchar select)|
 48a730|TEventHandler::GetWindow||3|function|TWindow * __thiscall GetWindow(void)|
-48a750|IltTarget_0048a750||45|function|undefined IltTarget_0048a750()|
+48a750|TEventHandler::TEventHandler||45|function|undefined __thiscall TEventHandler(TEventHandler const & source)|
 48a790|TEventHandler::CopyHandlerFieldsFrom||31|function|void __thiscall TEventHandler::CopyHandlerFieldsFrom(TEventHandler const * source)|curated
 48a7c0|TEventHandler::ShallowClone||86|function|TObject* __thiscall ShallowClone()|
 48a840|TView::CreateObject|?CreateObject@TView@@SGPAVCObject@@XZ|87|function|undefined CreateTViewInstance()|rtti
