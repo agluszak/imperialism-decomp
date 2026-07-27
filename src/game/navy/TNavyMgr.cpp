@@ -614,6 +614,22 @@ bool TNavyMgr::CommitForce(TTaskForce* entry) {
   return true;
 }
 
+// Mac oracle: ForgetForce.
+// FUNCTION: IMPERIALISM 0x00557120
+void TNavyMgr::ForgetForce(TTaskForce* entry) {
+  if (this != nullptr && orderQueueHead == entry) {
+    orderQueueHead = entry->nextForce;
+  }
+  if (entry->previousForce != nullptr) {
+    entry->previousForce->nextForce = entry->nextForce;
+  }
+  if (entry->nextForce != nullptr) {
+    entry->nextForce->previousForce = entry->previousForce;
+  }
+  entry->previousForce = nullptr;
+  entry->nextForce = nullptr;
+}
+
 // FUNCTION: IMPERIALISM 0x00557170
 short TNavyMgr::GetInvasionCapacity(short nationSlot, Province* provinceTarget,
                                     TZone* contextFilter) {
@@ -1695,6 +1711,16 @@ int TNavyMgr::DoTileClick(short nTileIndex, int nInputFlags) {
     return 0;
   }
   return 1;
+}
+
+// Mac oracle: WhoseIngotIsAt.
+// FUNCTION: IMPERIALISM 0x0055a4d0
+TTaskForce* TNavyMgr::WhoseIngotIsAt(short tileIndex) {
+  TTaskForce* entry = orderQueueHead;
+  while (entry != nullptr && entry->ingotTileIndex != tileIndex) {
+    entry = entry->nextForce;
+  }
+  return entry;
 }
 
 // FUNCTION: IMPERIALISM 0x0055a780

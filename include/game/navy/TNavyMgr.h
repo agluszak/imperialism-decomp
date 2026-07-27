@@ -32,6 +32,10 @@ public:
   // OrderSailTowards (TTaskForce.cpp) all read/write this same
   // field via the g_pNavyOrderManager global.
   TTaskForce* orderQueueHead;
+
+  // Mac oracle: WhoseIngotIsAt. First queued task force whose ingot sits on `tileIndex`,
+  // or null. Walks orderQueueHead through nextForce. 0x0055a4d0, __thiscall.
+  TTaskForce* WhoseIngotIsAt(short tileIndex);
   // Mac oracle: PrepareToCarryOutAllOrders(short). Stores the phase passed to that step.
   short executionPhase;
   char pad0a[2];
@@ -96,6 +100,11 @@ public:
   // frees it and returns false; else unlinks it from wherever it is
   // currently queued and (re)inserts it at orderQueueHead, returning true.
   bool CommitForce(TTaskForce* entry); // 0x557080
+
+  // Mac oracle: ForgetForce, the counterpart to CommitForce directly above. Unlinks
+  // `entry` from orderQueueHead and clears both of its queue links. Guards its own
+  // receiver for null, as the original does. 0x00557120, __thiscall.
+  void ForgetForce(TTaskForce* entry);
 
   // Called from TTaskForce::Encounter's tail
   // (ECX=g_pNavyOrderManager evidence at that callsite) when neither entry's priority
