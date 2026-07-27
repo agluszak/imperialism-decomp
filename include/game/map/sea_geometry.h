@@ -122,6 +122,18 @@ IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 ASSERT_SIZE(SeapointStretch, 0x10);
 ASSERT_SIZE(SeaSegmentStretch, 0x10);
 
+// Convert a tile COLUMN + ROW + edge side to a linear overlay-grid coord, the same mapping
+// EmitOverlaySegmentFromTileEdgeSorted derives from a packed tile index: the row is clamped
+// to [0, 0x3c], the column doubles and picks up the row-parity stagger, side 0 steps to the
+// next row and shifts two columns right, and the result wraps at the 0xd8-wide grid.
+// 0x0052b160, __cdecl.
+int OverlayCoordFromTileColumnRowAndSide(int column, int row, char side);
+
 // Convert a tile index + edge side to an overlay coord, sort the two attribute values, and
 // append the resulting Seapoint to the overlay-quad table global (0x006a3478). 0x0052ca20.
 void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b, int extra);
+
+// Rebuild the region-border segment lattice global (0x006a3900) from scratch: free the old
+// backing store, then walk the staggered column/row lattice appending three SeaSegments per
+// cell and close it along the map's vertical edges. 0x0052ac40, __cdecl.
+void RebuildRegionBorderLinkLattice();
