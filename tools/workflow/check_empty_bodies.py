@@ -51,20 +51,28 @@ MARKER_RE = re.compile(
 NOOP_RE = re.compile(r"//\s*NOOP:.*?0x(?P<addr>[0-9a-fA-F]+)")
 SLOT_COMMENT_RE = re.compile(r"//\s*0x[0-9a-fA-F]{1,3}\s+0x(?P<addr>[0-9a-fA-F]{5,8})")
 
-VIOLATION_KINDS = ("empty_but_big", "empty_unmarked", "empty_unresolved", "noop_contradicted")
+# trivial_return_but_big was promoted out of AUDIT_KINDS (bd rziq) once its last 19
+# findings were recovered from the listings: a bare `return <literal>;` in front of a real
+# retail body is the same silent-no-op failure mode as empty_but_big, just spelled
+# deceptively, so it must not be reintroducible. The baseline carries no rows for it --
+# the floor is zero, and a new finding trips the new-file path of the shared compare.
+VIOLATION_KINDS = (
+    "empty_but_big",
+    "empty_unmarked",
+    "empty_unresolved",
+    "noop_contradicted",
+    "trivial_return_but_big",
+)
 
 # Audit-only kinds (bd kwee): reported by the audit and `--kind`, but excluded from
 # the ratchet baseline so introducing the detector does not require a policy-baseline
 # update. Promote a kind into VIOLATION_KINDS together with a human-approved
 # `just noop-gate-update` once its findings are triaged.
 #
-#   trivial_return_but_big    body is a bare `return <literal>;` while the original is
-#                             real code — the same silent-no-op failure mode as
-#                             empty_but_big, just spelled deceptively.
 #   ctor_missing_derived_init an empty, init-list-free ctor whose original stores to
 #                             offsets beyond the base-class size — the derived fields
 #                             are seeded in the retail binary but not by our port.
-AUDIT_KINDS = ("trivial_return_but_big", "ctor_missing_derived_init")
+AUDIT_KINDS = ("ctor_missing_derived_init",)
 
 
 def sizes_by_address(symbols: dict[str, tuple[int, int]]) -> dict[int, int]:

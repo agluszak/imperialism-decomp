@@ -334,7 +334,14 @@ def build_rows(repo_root: Path) -> tuple[list[dict], list[dict], dict]:
             {factory["identity"] for factory in factory_rows}
             | ({screen_names[event]} if event in screen_names else set())
         )
-        if factory_rows and (senders or dialogs or event in boot):
+        if event == 0:
+            # kTurnEventRebuildRegisteredWindows is not a screen code: the handler closes
+            # and rebuilds the registered windows (mainView->Close / window->CloseAndFree)
+            # instead of resolving a view factory. Senders of it (TCloseButton::
+            # HandleMouseDown 0x584b70) are therefore internal dispatch, never a missing
+            # builder -- so this classification comes before the factory/sender split.
+            status = "internal_dispatch"
+        elif factory_rows and (senders or dialogs or event in boot):
             status = "implemented_reachable"
         elif factory_rows:
             status = "implemented_apparently_unreachable"
@@ -342,8 +349,6 @@ def build_rows(repo_root: Path) -> tuple[list[dict], list[dict], dict]:
             status = "posted_missing_builder"
             if event in dispositions:
                 status = str(dispositions[event]["status"])
-        elif event == 0:
-            status = "internal_dispatch"
         else:
             status = "dispatch_only_unknown"
         boot_row = boot.get(event)

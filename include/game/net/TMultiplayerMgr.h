@@ -40,9 +40,10 @@ public:
   // +0x40 — the active lobby dialog view when one is open; the code-9 receive path
   // checks IsKindOf(RUNTIME_CLASS(TLoungeDialog)) before using it as the lounge.
   TView* lobbyDialogView40; // +0x40
-  // +0x44 — child handler for queue routing. Opaque: TLoungeDialog::DoPostCreate
-  // passes `this` (a TView-derived dialog) as the sole non-zero writer seen so far.
-  void* diplomacyQueueContext;
+  // +0x44 — child handler for queue routing. TLoungeDialog::DoPostCreate passes `this`
+  // (a TView, hence a TEventHandler) as the sole non-zero writer, and DoIdle (0x544e30)
+  // dispatches through TEventHandler slot 0x13, so the field is that base, not void*.
+  TEventHandler* diplomacyQueueContext;
   int nationSessionIds[kMajorNationSessionSlotCount]; // +0x48
   int queueSyncDword;                                 // +0x64
   char processPrimaryEventQueue;                      // +0x68
@@ -104,7 +105,7 @@ public:
   // primaryTurnEventQueueHead. 0x549280.
   void AppendNodeToTurnEventLinkedListAt6C(TurnEventQueuePacket* node);
   // 0x5430c0 — enable both diplomacy queue-processing flags and set the routing context.
-  void EnableDiplomacyQueueRoutingAndSetContextField44(void* nContext, char fEnable);
+  void EnableDiplomacyQueueRoutingAndSetContextField44(TEventHandler* nContext, char fEnable);
   // 0x54b4c0, RET 0x10 (4 stack args). Builds and sends a LobbyChatEvent9Packet: reasonCode
   // becomes nationSlot18 (the field's original comment names it for the AWOL use case; this
   // caller uses it as a generic status/reason byte instead), field1CValue becomes field1C,

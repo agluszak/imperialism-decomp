@@ -108,12 +108,10 @@ void TOffersPanelView::DoKeyEvent(TToolboxEvent* event) {
   }
 }
 
+// Pure forward to the plain TView release handling; the panel adds nothing of its own.
 // FUNCTION: IMPERIALISM 0x004f9420
 char TOffersPanelView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint origin) {
-  (void)point;
-  (void)event;
-  (void)origin;
-  return 0;
+  return TView::HandleMouseUp(point, event, origin);
 }
 
 // FUNCTION: IMPERIALISM 0x004f9450

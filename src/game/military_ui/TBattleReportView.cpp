@@ -27,6 +27,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TSoundPlayer.h"
+#include "game/ui_core/ScopedMapQuickDrawContext.h"
 #include "game/ui_core/TSortedPtrList.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/globals/prelude.h"
@@ -267,9 +268,55 @@ void TBattleReportView::Free() {
   TDiplomacyMapView::Free();
 }
 
+// Blinks the selected battle marker on the strategic map: every 15th action-1 idle tick it
+// blits one of the two marker sprite columns over the record's map pixel position and flips
+// the phase, so the marker alternates while the report is open. The destination rect is
+// mirrored into the DIB's bottom-up coordinate space before the blit.
 // FUNCTION: IMPERIALISM 0x004ad5a0
 char TBattleReportView::DoIdle(int action) {
-  (void)action;
+  if (action == 1) {
+    ++g_nBattleReportMarkerBlinkTicks;
+    if (g_nBattleReportMarkerBlinkTicks >= 15) {
+      ScopedMapQuickDrawContextGuard quickDraw(this);
+      PrepareForDrawing();
+
+      MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
+          g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
+              selectedReportIndex24c8));
+
+      RECT markerRect;
+      markerRect.left = record->markerPixelX258;
+      markerRect.top = record->markerPixelY25c;
+      markerRect.right = record->markerPixelX258 + 0x12;
+      markerRect.bottom = record->markerPixelY25c + 0x12;
+
+      CDib* surfaceDib = g_pActiveQuickDrawSurfaceContext->blitSurface.surfaceDib;
+      if (surfaceDib != 0) {
+        int surfaceHeight = surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+        if (surfaceHeight <= 0) {
+          surfaceHeight = -surfaceHeight;
+        }
+        OffsetRect(&markerRect, 0, surfaceHeight - markerRect.top - markerRect.bottom);
+      }
+
+      RECT spriteRect;
+      spriteRect.left =
+          (record->markerSpriteCode262 + (g_bBattleReportMarkerBlinkPhase == 0)) * 0x12;
+      spriteRect.top = 0;
+      spriteRect.right = spriteRect.left + 0x12;
+      spriteRect.bottom = 0x12;
+
+      UpdatePaletteIndexWithDefaultFallback(0x10);
+      BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[3]->GetBlitSurface(),
+                                       g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                       &spriteRect, &markerRect, 0x24, 0);
+      UpdatePaletteIndexWithDefaultFallback(0x13);
+
+      g_nBattleReportMarkerBlinkTicks = 0;
+      g_bBattleReportMarkerBlinkPhase = g_bBattleReportMarkerBlinkPhase == 0;
+      PostRender();
+    }
+  }
   return 0;
 }
 

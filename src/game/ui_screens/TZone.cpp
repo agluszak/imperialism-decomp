@@ -94,20 +94,20 @@ bool TZone::QueryZoneCapabilityFlagC() {
 }
 
 // FUNCTION: IMPERIALISM 0x0055e880
-bool TZone::QueryZoneCapabilityFlagD(int unused) {
-  (void)unused;
+bool TZone::QueryZoneCapabilityFlagD(NationSlot nationSlot) {
+  (void)nationSlot;
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0055e8a0
-bool TZone::QueryZoneCapabilityFlagE(int unused) {
-  (void)unused;
+bool TZone::QueryZoneCapabilityFlagE(NationSlot nationSlot) {
+  (void)nationSlot;
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0055e8c0
-bool TZone::HasZoneActiveChildCount(int unused) {
-  (void)unused;
+bool TZone::HasZoneActiveChildCount(TTaskForce* force) {
+  (void)force;
   return distanceLevel44 > 0;
 }
 

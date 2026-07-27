@@ -2,6 +2,7 @@
 
 #include "game/gfx/CDib.h"
 #include "game/ui_core/TCluster.h"
+#include "game/ui_screens/TUberCluster.h"
 // SYNTHETIC: IMPERIALISM 0x00570cc0
 // TPictureRadioButton::CreateObject
 
@@ -61,11 +62,33 @@ void TPictureRadioButton::Select(bool isPressed, bool notifyParent) {
   }
 }
 
+// A radio button ignores the press unless it is currently deselected and enabled; the
+// press position never matters. The original re-reads IsSelected() after the enable check
+// instead of reusing the first result (two separate virtual calls in the listing), and
+// keeps the toggle-on / toggle-off notifications as two distinct HandleEvent callsites.
+// The owner is the hosting TUberCluster, whose slot 0x73 reports whether any sibling in
+// the group is currently selected: with nothing selected anywhere the press is swallowed.
 // FUNCTION: IMPERIALISM 0x00570fb0
 char TPictureRadioButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event,
                                           CPoint origin) {
   (void)point;
   (void)event;
   (void)origin;
-  return 0;
+  if (IsSelected()) {
+    return 0;
+  }
+  if (IsEnabled() == 0) {
+    return 0;
+  }
+  bool wasSelected = IsSelected();
+  if (!wasSelected && static_cast<TUberCluster*>(ownerContext)->IsTradeControlAtMinimum() == 0) {
+    return 1;
+  }
+  Select(!wasSelected, true);
+  if (wasSelected) {
+    ownerContext->HandleEvent(0x67, this, 0);
+  } else {
+    ownerContext->HandleEvent(0x68, this, 0);
+  }
+  return 1;
 }

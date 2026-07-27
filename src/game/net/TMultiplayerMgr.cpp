@@ -276,13 +276,8 @@ struct TurnEvent1CProposalAmountPacket : TimelyNetMessagePrefix {
   unsigned char pad27;           // total 0x28
 };
 
-// Event-0x1D war-transition check/propagate.
-struct TurnEvent1DWarTransitionPacket : TimelyNetMessagePrefix {
-  char actionCode1C;     // +0x1c - 'i' selects the two-arg check
-  signed char nationA1D; // +0x1d
-  signed char nationB1E; // +0x1e
-  unsigned char mode1F;  // +0x1f, total 0x20
-};
+// TurnEvent1DWarTransitionPacket now lives in game/military/NetMessage.h: the proxy
+// great-power emitters (0x540cf0 / 0x540dc0) build the same packet this case decodes.
 
 // Event-0x1E diplomacy relation action.
 struct TurnEvent1EDiplomacyActionPacket : TimelyNetMessagePrefix {
@@ -2503,7 +2498,7 @@ void TMultiplayerMgr::SetNationStatusAwolByNationIdAndDispatchNotices(int networ
         if (g_pGameFlowState != this || fieldF4 == 0) {
           TCancelGameOptionsCommand* cancelCommand = new TCancelGameOptionsCommand();
           cancelCommand->ICommand(kSessionTagCgop, g_pGlobalUiRootController, 0, 0,
-                                             0); // 'pogc'
+                                  0); // 'pogc'
           g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommand);
         }
       }

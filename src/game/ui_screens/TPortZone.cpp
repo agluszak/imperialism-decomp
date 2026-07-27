@@ -3,6 +3,8 @@
 #include <new.h>
 
 #include "game/map/TMapMgr.h"
+#include "game/military_ui/TDiplomacyMgr.h"
+#include "game/navy/TTaskForce.h"
 #include "game/navy/TOcean.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/core/TStream.h"
@@ -110,21 +112,37 @@ void TPortZone::Free() {
   delete this;
 }
 
-// slot 0x10 — TZone::QueryZoneCapabilityFlagD override.
+// slot 0x10 — TZone::QueryZoneCapabilityFlagD override. The port belongs to nationSlot
+// when the owner tag of its tile matches; the tag is a signed byte widened to 16 bits,
+// so the compare is 16-bit (`CMP AX, word ptr [ESP+4]`), not int.
 // FUNCTION: IMPERIALISM 0x00561b10
-bool TPortZone::QueryZoneCapabilityFlagD(int unused) {
-  return false;
+bool TPortZone::QueryZoneCapabilityFlagD(NationSlot nationSlot) {
+  return g_pGlobalMapState->terrainStateTable[portTileIndex48].ownerNationTag04 == nationSlot;
 }
 
-// slot 0x11 — TZone::QueryZoneCapabilityFlagE override.
+// slot 0x11 — TZone::QueryZoneCapabilityFlagE override. Same owner tag as slot 0x10, but
+// asks the diplomacy manager about the (owner, caller) pair instead of demanding identity.
 // FUNCTION: IMPERIALISM 0x00561b50
-bool TPortZone::QueryZoneCapabilityFlagE(int unused) {
-  return false;
+bool TPortZone::QueryZoneCapabilityFlagE(NationSlot nationSlot) {
+  short ownerNation = g_pGlobalMapState->terrainStateTable[portTileIndex48].ownerNationTag04;
+  return g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(ownerNation,
+                                                                              nationSlot);
 }
 
-// slot 0x12 — TZone::HasZoneActiveChildCount override.
+// slot 0x12 — TZone::HasZoneActiveChildCount override. Keeps the base's distance-level
+// test, then rejects the force's own location and accepts the port only when the force's
+// nation owns it or the diplomacy manager relates the pair.
 // FUNCTION: IMPERIALISM 0x00561dc0
-bool TPortZone::HasZoneActiveChildCount(int unused) {
+bool TPortZone::HasZoneActiveChildCount(TTaskForce* force) {
+  bool zoneActive = distanceLevel44 > 0;
+  if (zoneActive && force->location != this) {
+    short ownerNation = g_pGlobalMapState->terrainStateTable[portTileIndex48].ownerNationTag04;
+    if (force->nation == ownerNation ||
+        g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(ownerNation,
+                                                                             force->nation)) {
+      return true;
+    }
+  }
   return false;
 }
 

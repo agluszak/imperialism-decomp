@@ -2322,6 +2322,13 @@ extern "C" const int g_anGreatPowerPressureHardAlertThresholdByLocale[6] = {6, 6
 // GLOBAL: IMPERIALISM 0x00653558
 extern "C" const int g_anNationStartingTreasuryByLocale[6] = {50000, 10000, 10000, 5000, 5000, 0};
 
+// Battle-report marker blink state, owned by TBattleReportView::DoIdle (0x4ad5a0): the
+// idle tick counter fires the blink every 15th action-1 tick, and the phase byte selects
+// which of the two marker sprite columns is blitted (and is toggled after each blit).
+// GLOBAL: IMPERIALISM 0x006a23b4
+unsigned char g_bBattleReportMarkerBlinkPhase = 0;
+// GLOBAL: IMPERIALISM 0x006a23b8
+int g_nBattleReportMarkerBlinkTicks = 0;
 // GLOBAL: IMPERIALISM 0x006a2318
 POINT g_ptArmyOrderModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a2288

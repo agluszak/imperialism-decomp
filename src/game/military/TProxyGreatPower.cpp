@@ -83,9 +83,19 @@ void TProxyGreatPower::QueueDiplomacyProposalCodeForTargetNation(
 // FUNCTION: IMPERIALISM 0x00540b80
 void TProxyGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary() {}
 
+// Same split as the TGreatPower base (0x4ddbb0), but a proxy nation routes the accepted
+// action to the host over the wire instead of into the local UI runtime context.
 // FUNCTION: IMPERIALISM 0x00540ba0
 char TProxyGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                                      int arg4) {
+  if (this->IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(static_cast<short>(arg4)) != 0) {
+    g_pGameFlowState->DispatchTurnEvent1AWithNationActionPayload(
+        this->nationSlot, static_cast<short>(arg1), static_cast<short>(arg2),
+        static_cast<short>(arg3), static_cast<short>(arg4));
+    return 1;
+  }
+
+  this->AppendTrackedSlotEntry(1, arg1, 0, static_cast<short>(arg4), 0);
   return 0;
 }
 
@@ -109,13 +119,46 @@ void TProxyGreatPower::SorryYouLose() {
   g_pGameFlowState->ReplaceNationStateForSlotAndRefreshStatus(this->nationSlot);
 }
 
+// Emits the event-0x1D war-transition request and reports 2 ("request pending"): a proxy
+// nation cannot resolve the transition locally, the host answers.
 // FUNCTION: IMPERIALISM 0x00540cf0
 int TProxyGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNation) {
-  return 0;
+  TurnEvent1DWarTransitionPacket packet;
+  packet.messageTag = kControlTagTime;
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.eventCode = 0x1d;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = 0;
+  packet.messageLength = 0x20;
+  packet.SetTimeEmitPacketGameFlowTurnId();
+  packet.toNetworkId = -1;
+  packet.DestinateTo(this->nationSlot);
+  packet.actionCode1C = 'i';
+  packet.nationA1D = static_cast<signed char>(targetNation);
+  packet.nationB1E = static_cast<signed char>(sourceNation);
+  g_pNetMgr006a6014->Send(&packet, 0);
+  return 2;
 }
 
+// The role-swap sibling of 0x540cf0: same event-0x1D packet with the 'a' request kind and
+// the extra swapRoles byte at +0x1F.
 // FUNCTION: IMPERIALISM 0x00540dc0
 int TProxyGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
                                                              char swapRoles) {
-  return 0;
+  TurnEvent1DWarTransitionPacket packet;
+  packet.messageTag = kControlTagTime;
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.eventCode = 0x1d;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = 0;
+  packet.messageLength = 0x20;
+  packet.SetTimeEmitPacketGameFlowTurnId();
+  packet.toNetworkId = -1;
+  packet.DestinateTo(this->nationSlot);
+  packet.actionCode1C = 'a';
+  packet.nationA1D = static_cast<signed char>(targetNation);
+  packet.nationB1E = static_cast<signed char>(sourceNation);
+  packet.mode1F = static_cast<unsigned char>(swapRoles);
+  g_pNetMgr006a6014->Send(&packet, 0);
+  return 2;
 }

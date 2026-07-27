@@ -638,12 +638,17 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
   }
 }
 
+// Releasing anywhere on the desk un-arms whichever of the accept/reject buttons is still
+// actionable, then runs the plain TView release handling.
 // FUNCTION: IMPERIALISM 0x005c0930
 char TOfferDeskPicture::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint origin) {
-  (void)point;
-  (void)event;
-  (void)origin;
-  return 0;
+  if (acceptButtonA0 != 0 && acceptButtonA0->IsActionable()) {
+    acceptButtonA0->SetEnabled(0, 1);
+  }
+  if (rejectButtonA4 != 0 && rejectButtonA4->IsActionable()) {
+    rejectButtonA4->SetEnabled(0, 1);
+  }
+  return TView::HandleMouseUp(point, event, origin);
 }
 
 // FUNCTION: IMPERIALISM 0x005c09d0

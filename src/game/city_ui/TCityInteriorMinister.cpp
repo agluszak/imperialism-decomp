@@ -210,10 +210,22 @@ void TCityInteriorMinister::FillLists() {
   list2c->InsertLast(6);
 }
 
+// The city interior minister ranks a nation by its capital's seven building types plus
+// the nation's remaining need capacity. The nation slot is re-read after the loop, so a
+// nation that vanished mid-loop contributes only the building sum.
 // FUNCTION: IMPERIALISM 0x004bee20
 short TCityInteriorMinister::GetRankingCriterionForGP(short nationSlot) {
-  (void)nationSlot;
-  return 0;
+  short ranking = 0;
+  TCity* capital = g_apNationStates[nationSlot] != 0 ? g_apNationStates[nationSlot]->city : 0;
+  if (capital != 0) {
+    for (short buildingSlot = 0; buildingSlot < 7; ++buildingSlot) {
+      ranking = static_cast<short>(ranking + capital->GetBuildingType(buildingSlot));
+    }
+    if (g_apNationStates[nationSlot] != 0) {
+      return static_cast<short>(ranking + g_apNationStates[nationSlot]->needCapA6);
+    }
+  }
+  return ranking;
 }
 
 // FUNCTION: IMPERIALISM 0x004beeb0
