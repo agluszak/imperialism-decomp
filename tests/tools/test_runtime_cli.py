@@ -9,6 +9,8 @@ from pathlib import Path
 from types import SimpleNamespace
 import tempfile
 import unittest
+
+from tools.runtime import runner
 from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
@@ -373,3 +375,25 @@ class RuntimeSuiteTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class OutcomeExitCodeTests(unittest.TestCase):
+    """A matched ExpectedFailureSpec must not still fail the run.
+
+    ExpectedFailureSpec.classifications lets a spec name the classification a crash
+    produces; before this, the classification forced exit 1 regardless, so declaring one
+    was pointless -- the repro suite went red while reporting the failure as expected.
+    """
+
+    def test_matched_expectation_exits_zero_even_for_a_crashed_inferior(self):
+        self.assertEqual(runner.outcome_exit_code("expected_failure", "heartbeat_stopped", 5), 0)
+        self.assertEqual(runner.outcome_exit_code("expected_failure", None, None), 0)
+
+    def test_unexpected_classification_or_inferior_exit_still_fails(self):
+        self.assertEqual(runner.outcome_exit_code("passed", "crash", 0), 1)
+        self.assertEqual(runner.outcome_exit_code("passed", None, 3), 1)
+
+    def test_plain_pass_and_plain_failure(self):
+        self.assertEqual(runner.outcome_exit_code("passed", None, 0), 0)
+        self.assertEqual(runner.outcome_exit_code("failed", None, 0), 1)
+        self.assertEqual(runner.outcome_exit_code(None, None, 0), 1)

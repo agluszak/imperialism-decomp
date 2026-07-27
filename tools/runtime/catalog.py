@@ -115,6 +115,23 @@ TESTS = (
         native_snapshots=("ui", "map"),
     ),
     RuntimeTestSpec(
+        "easy_turns_advance_three_times",
+        "MultiTurnAdvanceTest",
+        ("repro",),
+        "internal_invariant",
+        required_oracles=("ui", "map"),
+        native_snapshots=("ui", "map"),
+        # Reproduces the turn-2 crash of imperialism-decomp-uccn: the game faults in
+        # CFrameWnd::GetActiveView with a null receiver while processing the second ended
+        # turn, so the harness loses the heartbeat. Kept out of the gating suites until
+        # the null main window is explained; the signature is structural, so a *different*
+        # failure here still reports as unexpected.
+        expected_failure=ExpectedFailureSpec(
+            assertion_ids=("waiting_for_turn_processed",),
+            classifications=("heartbeat_stopped",),
+        ),
+    ),
+    RuntimeTestSpec(
         "city_screen_opens",
         "CityScreenTest",
         ("full",),

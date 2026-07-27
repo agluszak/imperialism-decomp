@@ -7,6 +7,7 @@ RuntimeTestCase* RandomGameJourneyTest();
 RuntimeTestCase* EasyRandomGameTest();
 RuntimeTestCase* IntroductoryRandomGameTest();
 RuntimeTestCase* EndTurnTest();
+RuntimeTestCase* MultiTurnAdvanceTest();
 RuntimeTestCase* CityScreenTest();
 RuntimeTestCase* TransportScreenTest();
 RuntimeTestCase* CivilianRecruitmentTest();

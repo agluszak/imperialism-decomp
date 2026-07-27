@@ -34,6 +34,27 @@ from tools.runtime.protocol import read_json_file, validate_result
 from tools.runtime.session import execute_run
 
 
+def outcome_exit_code(
+    status: str | None, classification: str | None, inferior_exit_code: int | None
+) -> int:
+    """Process exit code for one finished run.
+
+    A matched ExpectedFailureSpec wins outright. The spec can name the very
+    classification a crash produces (ExpectedFailureSpec.classifications), so letting a
+    classification force a non-zero exit would make that field undeclarable in practice:
+    the run would fail the suite while reporting the failure as expected.
+    """
+    if status == "expected_failure":
+        return 0
+    if classification is not None:
+        return 1
+    if inferior_exit_code not in {None, 0}:
+        return 1
+    if status != "passed":
+        return 1
+    return 0
+
+
 @dataclass(frozen=True)
 class RunRequest:
     name: str
@@ -375,11 +396,9 @@ class RuntimeRunner:
         )
         self.dependencies.prune(self.result_dir, request.name)
 
-        exit_code = 0
-        if primary.host.classification is not None:
-            exit_code = 1
-        elif primary.host.inferior_exit_code not in {None, 0}:
-            exit_code = 1
-        elif result.get("status") not in {"passed", "expected_failure"}:
-            exit_code = 1
+        exit_code = outcome_exit_code(
+            result.get("status"),
+            primary.host.classification,
+            primary.host.inferior_exit_code,
+        )
         return RunOutcome(result=result, attempts=tuple(attempts), exit_code=exit_code)
