@@ -74,6 +74,9 @@ public:
 
   // Mac-style second-phase init (Mac: INewsMgr): creates the buckets/queue and nulls
   // the tick arrays. 0x55b710.
+  // Mac oracle: ClearStoryParms. Resets the four substitution-token kinds to 0
+  // ("empty"), leaving parmValue untouched. Reads nothing from `this`.
+  void ClearStoryParms(newsStory* story); // 0x0055d090
   void InitializeNewsManager();
 
   // Mac-oracle event-queue API (gameplay side).

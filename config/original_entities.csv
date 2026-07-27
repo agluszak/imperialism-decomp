@@ -4442,7 +4442,7 @@ address|name|symbol|size|type|prototype|provenance
 55cd00|TNewsMgr::AddMiscEvent||113|function|void __thiscall AddMiscEvent(int nationSlotOrAll,int storyCode,unsigned char isReplayBypass)|
 55cda0|TNewsMgr::ConcatenateTreaty||292|function|void __thiscall ConcatenateTreaty(InterNationEventKind eventKind,int nationA,int nationB)|
 55cf20|IltTarget_0055cf20||284|function|undefined IltTarget_0055cf20()|
-55d090|IltTarget_0055d090||23|function|undefined IltTarget_0055d090()|
+55d090|TNewsMgr::ClearStoryParms||23|function|void __thiscall TNewsMgr::ClearStoryParms(newsStory * story)|curated
 55d0c0|IltTarget_0055d0c0||123|function|undefined IltTarget_0055d0c0()|
 55d160|TNewspaperView::CreateObject|?CreateObject@TNewspaperView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 55d1e0|TNewspaperView::GetRuntimeClass||6|function|undefined GetTNewspaperViewClassNamePointer()|rtti
