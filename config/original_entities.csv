@@ -4322,7 +4322,7 @@ address|name|symbol|size|type|prototype|provenance
 552f60|TTaskForce::SetAggression||10|function|void TTaskForce::SetAggression(int value)|
 552f80|TTaskForce::OrderEvade||282|function|void TTaskForce::OrderEvade()|
 5530f0|TTaskForce::OrderPatrol||296|function|void TTaskForce::OrderPatrol(unsigned char useType4)|
-553270|IltTarget_00553270||293|function|undefined IltTarget_00553270()|
+553270|TTaskForce::OrderSail||293|function|void __thiscall TTaskForce::OrderSail(TZone * orderTarget)|curated
 5533f0|TTaskForce::OrderSailTowards||566|function|void TTaskForce::OrderSailTowards(TZone* pContextAnchor)|
 5536c0|TTaskForce::OrderBlockade||293|function|void TTaskForce::OrderBlockade(TZone* orderTarget)|
 553840|TTaskForce::OrderSendInTheMarines||293|function|void TTaskForce::OrderSendInTheMarines(Province* orderTarget)|
@@ -4333,7 +4333,7 @@ address|name|symbol|size|type|prototype|provenance
 553bc0|TTaskForce::Add||293|function|void TTaskForce::Add(TShip* node)|
 553d40|TTaskForce::Remove||180|function|void TTaskForce::Remove(TShip* ship)|
 553e30|TTaskForce::ElectFlagship||44|function|void TTaskForce::ElectFlagship()|
-553e70|IltTarget_00553e70||120|function|undefined IltTarget_00553e70()|
+553e70|TTaskForce::Victory||120|function|void __thiscall TTaskForce::Victory(int experienceGain)|curated
 553f10|TTaskForce::FreeAvailables||146|function|void TTaskForce::FreeAvailables()|
 553fe0|TTaskForce::SinkOrSwimShips||154|function|char TTaskForce::SinkOrSwimShips()|
 5540b0|TTaskForce::SubmitOrders||424|function|void TTaskForce::SubmitOrders(int orderType, void* orderContext)|
@@ -4441,9 +4441,9 @@ address|name|symbol|size|type|prototype|provenance
 55cbd0|TNewsMgr::AddShortageEvent||226|function|void __thiscall AddShortageEvent(int subjectNation,int affectedNation,int relatedNation,unsigned char isReplayBypass)|
 55cd00|TNewsMgr::AddMiscEvent||113|function|void __thiscall AddMiscEvent(int nationSlotOrAll,int storyCode,unsigned char isReplayBypass)|
 55cda0|TNewsMgr::ConcatenateTreaty||292|function|void __thiscall ConcatenateTreaty(InterNationEventKind eventKind,int nationA,int nationB)|
-55cf20|IltTarget_0055cf20||284|function|undefined IltTarget_0055cf20()|
+55cf20|TNewsMgr::EvaluateFeatureStory||284|function|unsigned char __thiscall TNewsMgr::EvaluateFeatureStory(newsEntry const * templateRow, newsStory * story, int nationSlot)|curated
 55d090|TNewsMgr::ClearStoryParms||23|function|void __thiscall TNewsMgr::ClearStoryParms(newsStory * story)|curated
-55d0c0|IltTarget_0055d0c0||123|function|undefined IltTarget_0055d0c0()|
+55d0c0|TNewsMgr::AlwaysTrueStory||123|function|unsigned char __thiscall TNewsMgr::AlwaysTrueStory(newsEntry const * templateRow, newsStory * story, int nationSlot)|curated
 55d160|TNewspaperView::CreateObject|?CreateObject@TNewspaperView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 55d1e0|TNewspaperView::GetRuntimeClass||6|function|undefined GetTNewspaperViewClassNamePointer()|rtti
 55d200|TNewspaperView::StuffValues||1415|function|void TNewspaperView::StuffValues(int pageNation)|
