@@ -8,6 +8,7 @@
 #include "game/globals/ui_core_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/map/TMapUberPicture.h"
+#include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
 #include "game/resource_manifest_tags.h"
 #include "game/turn_event_codes.h"
@@ -22,7 +23,8 @@ namespace {
 class DiplomacyScreenTestCase : public RuntimeScenario {
 public:
   DiplomacyScreenTestCase()
-      : phase(kActivateDiplomacyScreen), targetNation(-1), policyBeforeAction(-1) {}
+      : phase(kActivateDiplomacyScreen), targetNation(-1), policyBeforeAction(-1),
+        allianceTargetNation(-1), alliancePolicyBeforeAction(-1) {}
 
   const char* Name() const override {
     return "diplomacy_screen_operates";
@@ -64,6 +66,12 @@ public:
       InitiatePrimaryAction();
     } else if (phase == kVerifyPrimaryAction) {
       VerifyPrimaryAction();
+    } else if (phase == kSelectAllianceAction) {
+      SelectAllianceAction();
+    } else if (phase == kInitiateAllianceAction) {
+      InitiateAllianceAction();
+    } else if (phase == kVerifyAllianceAction) {
+      VerifyAllianceAction();
     } else if (phase == kReturnToMap) {
       ReturnToMap();
     } else {
@@ -87,6 +95,9 @@ private:
     kVerifyTreatiesTopic,
     kInitiatePrimaryAction,
     kVerifyPrimaryAction,
+    kSelectAllianceAction,
+    kInitiateAllianceAction,
+    kVerifyAllianceAction,
     kReturnToMap,
     kWaitForMap
   };
@@ -260,6 +271,87 @@ private:
       FailScenario("\"diplomacy consulate action opened an unexpected modal\"");
       return;
     }
+    phase = kSelectAllianceAction;
+    EnterScenarioStep("selecting_diplomacy_alliance", "click_alliance_treaty_action");
+    RequestScenarioTick();
+  }
+
+  void SelectAllianceAction() {
+    TDiplomacyMapView* diplomacy = DiplomacyView();
+    if (diplomacy == 0) {
+      FailScenario("\"diplomacy orders disappeared before alliance selection\"");
+      return;
+    }
+    phase = kInitiateAllianceAction;
+    EnterScenarioStep("initiating_diplomacy_alliance", "click_alliance_target_nation");
+    if (!RuntimeUiDriver::ClickControl(diplomacy, kControlTagScr0 + 1)) {
+      FailScenario("\"diplomacy alliance action is missing or cannot receive input\"");
+      return;
+    }
+    RequestScenarioTick();
+  }
+
+  void InitiateAllianceAction() {
+    TDiplomacyMapView* diplomacy = DiplomacyView();
+    if (diplomacy == 0 || diplomacy->actionCodeBC != kDipActionAlliance) {
+      FailScenario("\"diplomacy alliance action did not become active\"");
+      return;
+    }
+
+    const short activeNation = g_pSimMgr->GetActiveNationId();
+    CPoint point;
+    for (short nation = 0; nation < 7; ++nation) {
+      if (nation != activeNation && g_apTerrainTypeDescriptorTable[nation] != 0 &&
+          diplomacy->RuntimeGetNationSelectionPoint(nation, &point) &&
+          g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
+              activeNation, nation, kDipActionAlliance)) {
+        allianceTargetNation = nation;
+        break;
+      }
+    }
+    TGreatPower* sourceNation = g_apNationStates[activeNation];
+    if (allianceTargetNation < 0 || sourceNation == 0) {
+      FailScenario("\"diplomacy map has no valid major-nation alliance target\"");
+      return;
+    }
+    alliancePolicyBeforeAction = sourceNation->diplomacyPolicyByNation[allianceTargetNation];
+    if (!diplomacy->RuntimeGetNationSelectionPoint(allianceTargetNation, &point)) {
+      FailScenario("\"diplomacy alliance target disappeared before selection\"");
+      return;
+    }
+
+    phase = kVerifyAllianceAction;
+    EnterScenarioStep("verifying_diplomacy_alliance", "render_alliance_policy_icon");
+    if (!RuntimeUiDriver::ClickViewPoint(diplomacy, point.x, point.y)) {
+      FailScenario("\"diplomacy alliance action could not reach the native host\"");
+      return;
+    }
+    RequestScenarioTick();
+  }
+
+  void VerifyAllianceAction() {
+    TDiplomacyMapView* diplomacy = DiplomacyView();
+    TGreatPower* sourceNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    const short expectedPolicy = alliancePolicyBeforeAction == kDiplomacyProposalAlliance
+                                     ? -1
+                                     : static_cast<short>(kDiplomacyProposalAlliance);
+    if (diplomacy == 0 || sourceNation == 0 ||
+        sourceNation->diplomacyPolicyByNation[allianceTargetNation] != expectedPolicy) {
+      FailScenario("\"diplomacy alliance action did not update the target policy\"");
+      return;
+    }
+    if (!g_ModalViewStack.IsEmpty()) {
+      RecordUnexpectedModalView(static_cast<TView*>(g_ModalViewStack.GetHead()));
+      FailScenario("\"diplomacy alliance action opened an unexpected modal\"");
+      return;
+    }
+
+    if (expectedPolicy == kDiplomacyProposalAlliance &&
+        diplomacy->RuntimeDrawPolicyIconForNation(allianceTargetNation) != 0x30) {
+      FailScenario("\"diplomacy alliance policy did not render its treaty icon\"");
+      return;
+    }
+
     phase = kReturnToMap;
     EnterScenarioStep("returning_from_diplomacy_screen", "click_diplomacy_end_control");
     RequestScenarioTick();
@@ -302,6 +394,8 @@ private:
   Phase phase;
   short targetNation;
   short policyBeforeAction;
+  short allianceTargetNation;
+  short alliancePolicyBeforeAction;
 };
 
 DiplomacyScreenTestCase g_test;
