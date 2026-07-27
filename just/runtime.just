@@ -7,7 +7,6 @@ runtime-test-build:
   mkdir -p "{{runtime_test_build_dir}}"
   uv run python -m tools.workflow.msvc_build_lock \
     --lock "{{build_dir}}/.msvc-build.lock" -- just _build-runtime-tests-unlocked
-  just cstring-runtime-probe
 
 [private]
 _build-runtime-tests-unlocked:
@@ -24,6 +23,11 @@ _build-runtime-tests-unlocked:
 cstring-runtime-probe:
   uv run python -m tools.workflow.cstring_runtime_probe \
     --work-dir "{{build_dir}}/cstring-runtime-probe"
+
+[doc('Compile the native runtime harness with clang-cl diagnostics')]
+[group('runtime-test')]
+runtime-harness-lint:
+  just lint "-DIMPERIALISM_RUNTIME_TESTS=ON"
 
 [doc('Ask MSVC500 which array-construction shape it emits (inline / call-loop / vector-ctor iterator); --sweep varies the optimization flags')]
 [group('runtime-test')]
@@ -53,7 +57,8 @@ runtime-test-suite suite='pr' *args:
 runtime-check suite='pr' *args:
   : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY to your legally obtained Imperialism.exe}"
   test -f "$ORIGINAL_BINARY"
-  just runtime-test-suite "{{suite}}" --require-fixtures {{args}}
+  just runtime-test-build
+  uv run python -m tools.runtime.cli suite "{{suite}}" --require-fixtures {{args}}
 
 [doc('Stop this worktree warm wineserver and Xvfb; drop the Wine prefix')]
 [group('runtime-test')]

@@ -32,15 +32,21 @@ else()
     )
 endif()
 
+set(IMPERIALISM_COMPILE_TARGETS Imperialism)
+
 # Runtime-test instrumentation belongs to a separate build tree. Nothing under
 # tests/runtime/native is part of the production source glob, and the compile
 # definition below is absent from the byte-matching build.
 if(IMPERIALISM_RUNTIME_TESTS)
-    file(GLOB_RECURSE IMPERIALISM_RUNTIME_TEST_SOURCES CONFIGURE_DEPENDS
-        tests/runtime/native/*.cpp)
-    target_sources(Imperialism PRIVATE ${IMPERIALISM_RUNTIME_TEST_SOURCES})
-    target_include_directories(Imperialism PRIVATE tests/runtime/native)
+  file(GLOB_RECURSE IMPERIALISM_RUNTIME_TEST_SOURCES CONFIGURE_DEPENDS
+      tests/runtime/native/*.cpp)
+    add_library(ImperialismRuntimeHarness OBJECT ${IMPERIALISM_RUNTIME_TEST_SOURCES})
+    list(APPEND IMPERIALISM_COMPILE_TARGETS ImperialismRuntimeHarness)
+    target_sources(Imperialism PRIVATE $<TARGET_OBJECTS:ImperialismRuntimeHarness>)
     target_compile_definitions(Imperialism PRIVATE IMPERIALISM_RUNTIME_TESTS=1)
+    target_compile_definitions(ImperialismRuntimeHarness PRIVATE IMPERIALISM_RUNTIME_TESTS=1)
+    target_include_directories(Imperialism PRIVATE tests/runtime/native)
+    target_include_directories(ImperialismRuntimeHarness PRIVATE tests/runtime/native)
 endif()
 
 # Generated build inputs (stubs) live in the build tree, not the source tree.
@@ -102,8 +108,10 @@ if(IMPERIALISM_LINK_MFC AND MSVC AND NOT IMPERIALISM_LINT_COMPILE_ONLY)
         advapi32 shell32 comctl32 comdlg32 winspool ole32 oleaut32 oledlg uuid)
 endif()
 
-target_include_directories(Imperialism PRIVATE include)
-target_compile_definitions(Imperialism PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+foreach(_imp_compile_target IN LISTS IMPERIALISM_COMPILE_TARGETS)
+    target_include_directories(${_imp_compile_target} PRIVATE include)
+    target_compile_definitions(${_imp_compile_target} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+endforeach()
 
 if(IMPERIALISM_LINT_COMPILE_ONLY)
     # Lint-only modern compiler (clang/MinGW or clang-cl). Never used for reccmp; its job is
@@ -113,16 +121,17 @@ if(IMPERIALISM_LINT_COMPILE_ONLY)
     option(IMPERIALISM_LINT_WARNING_GATE_TEST
            "Lint build: add an intentionally warning-producing regression fixture" OFF)
 
-    target_compile_definitions(Imperialism PRIVATE IMPERIALISM_LINT)
+    foreach(_imp_compile_target IN LISTS IMPERIALISM_COMPILE_TARGETS)
+        target_compile_definitions(${_imp_compile_target} PRIVATE IMPERIALISM_LINT)
 
-    # MFC 4.2 release headers enable optional inline bodies whose CMenu
-    # definitions rely on VC5's implicit-int extension. Force one lint-only
-    # compatibility boundary before any source header can include MFC directly.
-    target_compile_options(Imperialism PRIVATE
-        "/FI${CMAKE_CURRENT_SOURCE_DIR}/tools/lint/msvc500_mfc_compat.h"
-    )
+        # MFC 4.2 release headers enable optional inline bodies whose CMenu
+        # definitions rely on VC5's implicit-int extension. Force one lint-only
+        # compatibility boundary before any source header can include MFC directly.
+        target_compile_options(${_imp_compile_target} PRIVATE
+            "/FI${CMAKE_CURRENT_SOURCE_DIR}/tools/lint/msvc500_mfc_compat.h"
+        )
 
-    target_compile_options(Imperialism PRIVATE
+        target_compile_options(${_imp_compile_target} PRIVATE
         # Core diagnostics. NOTE: this compiler is clang-cl (see cmake/clang-cl-i686.cmake),
         # where bare "-Wall"/"-Wextra" are parsed as the MSVC /Wall/​/Wextra spelling — i.e.
         # "enable nearly every diagnostic clang has", not GNU clang's modest -Wall/-Wextra
@@ -162,11 +171,12 @@ if(IMPERIALISM_LINT_COMPILE_ONLY)
         -Wno-c++98-compat
         -Wno-global-constructors
         -Wno-exit-time-destructors
-    )
+        )
 
-    if(IMPERIALISM_LINT_WERROR)
-        target_compile_options(Imperialism PRIVATE -Werror)
-    endif()
+        if(IMPERIALISM_LINT_WERROR)
+            target_compile_options(${_imp_compile_target} PRIVATE -Werror)
+        endif()
+    endforeach()
     if(IMPERIALISM_LINT_WARNING_GATE_TEST)
         target_sources(Imperialism PRIVATE tests/lint/intentional_warning.cpp)
     endif()
@@ -198,11 +208,19 @@ else()
         endforeach()
 
         if(IMPERIALISM_RUNTIME_TESTS)
+            set_property(
+                TARGET ImperialismRuntimeHarness
+                PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+            )
             # Runtime tests must exercise the same optimized game-code ABI as the
             # production executable. In particular, /Oy- changes frame layout and
             # can hide calling-convention or corrupted-argument failures that occur
             # under `just debug`'s /Oy /Ob1 build.
             target_compile_options(Imperialism PRIVATE /Oy /Ob1)
+            # Only the test-owned harness objects are debugger-friendly. Game
+            # objects remain optimized above so runtime tests keep exercising
+            # the production ABI and stack layout.
+            target_compile_options(ImperialismRuntimeHarness PRIVATE /W3 /GX /GR- /Od /Oy-)
             target_link_options(Imperialism PRIVATE /OPT:NOREF /OPT:NOICF)
             # VC5 PDBs predate the format understood by current LLVM tools.
             # Emit a linker map as the build-specific symbolization sidecar.

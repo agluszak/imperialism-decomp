@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 207,
   "flo_recomp_only_count": 0,
-  "git_branch": "refactor/runtime-harness",
-  "git_commit": "22508f9169a013ce7428c5fa83e247aa772d7dd1",
-  "git_commit_date": "2026-07-27T02:12:08+02:00",
+  "git_branch": "refactor/runtime-native-core",
+  "git_commit": "314a2ec1b12ad232b8dece59421aa6d35057bbde",
+  "git_commit_date": "2026-07-27T02:15:03+02:00",
   "global_coverage_pct": 25.370420870829925,
   "global_orig_only_count": 8210,
   "global_recomp_only_count": 8038,
@@ -63,7 +63,7 @@
   "target": "IMPERIALISM",
   "template_alias_recognized_count": 12,
   "template_canonical_paired_count": 19,
-  "timestamp_utc": "2026-07-27T00:14:50+00:00",
+  "timestamp_utc": "2026-07-27T00:37:48+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }

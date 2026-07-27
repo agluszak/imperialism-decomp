@@ -137,6 +137,7 @@ class RuntimeSuiteTests(unittest.TestCase):
                         "action": "wait_for_managers",
                         "artifact_path": "/tmp/runtime-bundle",
                         "primary_failure": "primary crashed",
+                        "assertion_id": "managers.initialized",
                         "diagnostic_outcomes": [
                             {
                                 "kind": "diagnostic_gdb",
@@ -164,6 +165,7 @@ class RuntimeSuiteTests(unittest.TestCase):
             self.assertIn("phase=waiting_for_managers", failure.get("message", ""))
             self.assertIn("classification=crash", failure.get("message", ""))
             self.assertIn("action=wait_for_managers", failure.get("message", ""))
+            self.assertIn("assertion=managers.initialized", failure.get("message", ""))
             self.assertIn("artifacts=/tmp/runtime-bundle", failure.get("message", ""))
             self.assertIn("diagnostic_gdb=passed/none", failure.get("message", ""))
 
