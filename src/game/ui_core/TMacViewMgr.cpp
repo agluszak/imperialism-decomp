@@ -110,7 +110,7 @@ static __inline void InvokeBuildHexNeighborHighlightPolygonForTile(short tileId,
 
 // The loader's original vtable has no destructor slot; every caller owns this exact type.
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
-void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
+static __inline void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
   if (loaderHandle == nullptr) {
     return;
   }
@@ -119,9 +119,8 @@ void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
 }
 IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
-void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstRect) {
+static __inline void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstRect) {
   TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(resourceId);
-  QDLoadResource(loaderHandle);
   TBitmapResourceLoader* loader = loaderHandle != 0 ? *loaderHandle : 0;
   if (loader != 0) {
     loader->EnsureBitmapResourceLoadedAndCopyRectSize();

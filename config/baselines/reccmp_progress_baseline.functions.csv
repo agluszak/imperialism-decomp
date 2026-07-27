@@ -3249,15 +3249,15 @@ address|matching|name
 0x509f70|0.7171717171717171|TMacViewMgr::Free
 0x50a140|1.0|TMacViewMgr::ReadFrom
 0x50a180|1.0|TMacViewMgr::WriteTo
-0x50a1a0|0.39245283018867927|TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722
+0x50a1a0|0.4492753623188406|TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722
 0x50a3b0|1.0|TMacViewMgr::LoadStrategicMapUnitIconAtlas750
 0x50a3e0|1.0|TMacViewMgr::LoadStrategicMapUnitOverlayAtlas751
 0x50a410|1.0|TMacViewMgr::LoadStrategicMapOverlayAtlas8699
 0x50a440|1.0|TMacViewMgr::LoadStrategicMapMarkerAtlas1372
-0x50a470|0.30985915492957744|TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423
+0x50a470|0.445993031358885|TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423
 0x50a6a0|0.7757575757575758|TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation
 0x50a820|0.4576271186440678|TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807
-0x50a9f0|0.22532894736842105|TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches
+0x50a9f0|0.2878138395590937|TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches
 0x50b5b0|0.9354838709677419|TMacViewMgr::ReloadBitmap244AndRefreshUiCaches
 0x50b640|0.45727482678983833|TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress
 0x50b9e0|0.4444444444444444|TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles
@@ -3272,7 +3272,7 @@ address|matching|name
 0x50d5b0|1.0|TMacViewMgr::OpenConstructionWindow
 0x50d680|1.0|TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion
 0x50d6c0|0.5925925925925926|TMacViewMgr::IsPointInsideClipRegionSlot
-0x50d700|0.5737704918032787|TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext
+0x50d700|0.6509803921568628|TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext
 0x50d8d0|1.0|TMacViewMgr::RefreshActiveCityBuildingActionAvailabilityIndicators
 0x50d8f0|1.0|TMacViewMgr::ClearActiveCityBuildingViewSlot
 0x50d920|1.0|TMacViewMgr::ClearActiveCityProductionViewAndDiscardRegion
