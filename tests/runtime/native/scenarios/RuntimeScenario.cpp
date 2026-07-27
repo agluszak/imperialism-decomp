@@ -329,6 +329,12 @@ void RuntimeScenario::RecordSerializationRoundtripReport(const CString& reportJs
   run->SerializationRoundtripJson() = reportJson;
 }
 
+void RuntimeScenario::RecordHandledModal(const char* label) {
+  CString entry;
+  entry.Format("\"%s\"", label);
+  RuntimeJson::AppendArrayItem(run->HandledModals(), entry);
+}
+
 TView* RuntimeScenario::CurrentMainView() const {
   return RuntimeMainView();
 }

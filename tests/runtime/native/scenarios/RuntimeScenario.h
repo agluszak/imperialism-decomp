@@ -62,6 +62,7 @@ protected:
   void SetSelectedNation(short nationSlot);
   bool AdvanceNewspaperIfNeeded();
   void ResetNewspaperAdvance();
+  void RecordHandledModal(const char* label);
   void RecordUnexpectedModalView(TView* modal);
   bool HasScenarioUiSnapshot() const;
   void CaptureScenarioUiSnapshot(int eventCode, TView* root);
