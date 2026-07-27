@@ -16,8 +16,13 @@ methods) lost its claim and would be re-stubbed, which silently breaks vtables.
 
 The baseline value is the `stub_count` field of config/baselines/reccmp_progress_baseline.json
 (it used to live in a separate stub_count_baseline.json). `stats-baseline-update`
-recomputes it as part of the full progress snapshot; `--write-baseline` here updates
-just that one field in place (cheap, no build) for ratcheting down between snapshots.
+recomputes it as part of the full progress snapshot, but only ever ratchets it DOWN:
+raising it needs ALLOW_POLICY_BASELINE_UPDATE=1, or the commit-policy snapshot would
+re-arm this ratchet at the new height in the very commit that raised it and the gate
+could never fire (see clamp_stub_count_ratchet in tools/reccmp/progress_stats.py).
+`--write-baseline` here updates just that one field in place (cheap, no build) for
+ratcheting down between snapshots; `just stub-count-gate-update` wraps it in the same
+approval guard.
 """
 
 from __future__ import annotations
