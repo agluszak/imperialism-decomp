@@ -71,6 +71,16 @@ refresh-inventory *args: _require-ghidra-install
   just vtable-collision-gate
   @echo "refresh-inventory done. Run 'just export-project' before committing."
 
+# MUTATES: config/original_entities.csv (with --apply).
+# Drop inventory rows whose Ghidra entity is gone (after demote-functions /
+# delete-labels / a fix-function-bounds reabsorb). Verifies against the live DB that each
+# named address has no function and no label, and that no source marker claims it; keeps
+# anything that fails a check. Dry-run by default.
+[doc('MUTATES: original_entities.csv (--apply). Drop rows whose Ghidra entity is gone')]
+[group('sync')]
+inventory-drop *args: _require-ghidra-install
+  uv run python -m tools.ghidra.inventory_drop {{args}}
+
 # MUTATES: config/original_entities.csv.
 # Drop incremental-link `jmp` thunk rows (linker artifacts) from config/original_entities.csv.
 # reccmp auto-detects unannotated jmp thunks and excludes them from the report.
